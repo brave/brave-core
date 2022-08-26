@@ -33,6 +33,9 @@ public class BraveClassAdapter {
         chain = new BraveIncognitoToggleTabLayoutClassAdapter(chain);
         chain = new BraveIntentHandlerClassAdapter(chain);
         chain = new BraveLaunchIntentDispatcherClassAdapter(chain);
+        chain = new BraveLocationBarCoordinatorClassAdapter(chain);
+        chain = new BraveLocationBarLayoutClassAdapter(chain);
+        chain = new BraveLocationBarMediatorClassAdapter(chain);
         chain = new BraveMainPreferenceBaseClassAdapter(chain);
         chain = new BraveManageAccountDevicesLinkViewClassAdapter(chain);
         chain = new BraveManageSyncSettingsClassAdapter(chain);

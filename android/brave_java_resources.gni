@@ -829,6 +829,7 @@ brave_java_resources = [
   "java/res/layout/fragment_binance_deposit.xml",
   "java/res/layout/fragment_binance_summary.xml",
   "java/res/layout/fragment_brave_ads_onboarding.xml",
+  "java/res/layout/fragment_brave_location_bar_qr_dialog.xml",
   "java/res/layout/fragment_brave_rewards_onboarding.xml",
   "java/res/layout/fragment_brave_vpn_always_on_error_dialog.xml",
   "java/res/layout/fragment_brave_vpn_confirm_dialog.xml",

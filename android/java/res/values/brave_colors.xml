@@ -59,6 +59,9 @@
     <color name="onboarding_search_highlight_color">#737ADE</color>
     <color name="onboarding_arrow_color">#4D54D3</color>
 
+    <color name="scan_qr_code_text_color">#212529</color>
+    <color name="scan_qr_code_bg_color">@android:color/white</color>
+
     <!-- Set Default Browser colors -->
     <color name="set_default_bottom_sheet_bg_color">@android:color/white</color>
     <color name="set_default_text_color">#212529</color>

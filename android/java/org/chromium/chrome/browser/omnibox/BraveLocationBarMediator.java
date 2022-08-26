@@ -1,0 +1,175 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+package org.chromium.chrome.browser.omnibox;
+
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.view.View;
+
+import androidx.annotation.NonNull;
+
+import org.chromium.base.BraveReflectionUtil;
+import org.chromium.base.supplier.BooleanSupplier;
+import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.OneshotSupplier;
+import org.chromium.base.supplier.OneshotSupplierImpl;
+import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.lens.LensController;
+import org.chromium.chrome.browser.locale.LocaleManager;
+import org.chromium.chrome.browser.omnibox.voice.AssistantVoiceSearchService;
+import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManager;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.ui.theme.BrandedColorScheme;
+import org.chromium.components.search_engines.TemplateUrlService;
+import org.chromium.ui.base.WindowAndroid;
+import org.chromium.ui.permissions.PermissionCallback;
+
+public class BraveLocationBarMediator extends LocationBarMediator {
+    private WindowAndroid mWindowAndroid;
+    private LocationBarLayout mLocationBarLayout;
+    private boolean mIsUrlFocusChangeInProgress;
+    private boolean mUrlHasFocus;
+    private boolean mIsTablet;
+    private boolean mNativeInitialized;
+    private boolean mIsLocationBarFocusedFromNtpScroll;
+    private Context mContext;
+    private @BrandedColorScheme int mBrandedColorScheme = BrandedColorScheme.APP_DEFAULT;
+    private OneshotSupplierImpl<AssistantVoiceSearchService> mAssistantVoiceSearchServiceSupplier;
+
+    public BraveLocationBarMediator(@NonNull Context context,
+            @NonNull LocationBarLayout locationBarLayout,
+            @NonNull LocationBarDataProvider locationBarDataProvider,
+            @NonNull ObservableSupplier<Profile> profileSupplier,
+            @NonNull PrivacyPreferencesManager privacyPreferencesManager,
+            @NonNull OverrideUrlLoadingDelegate overrideUrlLoadingDelegate,
+            @NonNull LocaleManager localeManager,
+            @NonNull OneshotSupplier<TemplateUrlService> templateUrlServiceSupplier,
+            @NonNull BackKeyBehaviorDelegate backKeyBehavior, @NonNull WindowAndroid windowAndroid,
+            boolean isTablet, @NonNull SearchEngineLogoUtils searchEngineLogoUtils,
+            @NonNull LensController lensController,
+            @NonNull Runnable launchAssistanceSettingsAction,
+            @NonNull SaveOfflineButtonState saveOfflineButtonState, @NonNull OmniboxUma omniboxUma,
+            @NonNull BooleanSupplier isToolbarMicEnabledSupplier) {
+        super(context, locationBarLayout, locationBarDataProvider, profileSupplier,
+                privacyPreferencesManager, overrideUrlLoadingDelegate, localeManager,
+                templateUrlServiceSupplier, backKeyBehavior, windowAndroid, isTablet,
+                searchEngineLogoUtils, lensController, launchAssistanceSettingsAction,
+                saveOfflineButtonState, omniboxUma, isToolbarMicEnabledSupplier);
+    }
+
+    public static Class<OmniboxUma> getOmniboxUmaClass() {
+        return OmniboxUma.class;
+    }
+
+    public static Class<SaveOfflineButtonState> getSaveOfflineButtonStateClass() {
+        return SaveOfflineButtonState.class;
+    }
+
+    public static Class<LensController> getLensControllerClass() {
+        return LensController.class;
+    }
+
+    public static Class<LocaleManager> getLocaleManagerClass() {
+        return LocaleManager.class;
+    }
+
+    public static Class<PrivacyPreferencesManager> getPrivacyPreferencesManagerClass() {
+        return PrivacyPreferencesManager.class;
+    }
+
+    @Override
+    void updateButtonVisibility() {
+        super.updateButtonVisibility();
+        updateQRButtonVisibility();
+    }
+
+    @Override
+    public void onPrimaryColorChanged() {
+        super.onPrimaryColorChanged();
+        updateQRButtonColors();
+    }
+
+    @Override
+    public void onAssistantVoiceSearchServiceChanged() {
+        super.onAssistantVoiceSearchServiceChanged();
+        updateQRButtonColors();
+    }
+
+    void updateQRButtonColors() {
+        AssistantVoiceSearchService assistantVoiceSearchService =
+                mAssistantVoiceSearchServiceSupplier.get();
+        if (assistantVoiceSearchService == null) return;
+
+        if (mLocationBarLayout instanceof BraveLocationBarLayout) {
+            ((BraveLocationBarLayout) mLocationBarLayout)
+                    .setQRButtonTint(assistantVoiceSearchService.getButtonColorStateList(
+                            mBrandedColorScheme, mContext));
+        }
+    }
+
+    private void updateQRButtonVisibility() {
+        if (mLocationBarLayout instanceof BraveLocationBarLayout) {
+            ((BraveLocationBarLayout) mLocationBarLayout)
+                    .setQRButtonVisibility(shouldShowQRButton());
+        }
+    }
+
+    private boolean shouldShowQRButton() {
+        if (!mNativeInitialized) {
+            return false;
+        }
+        if (mIsTablet) {
+            return mUrlHasFocus || mIsUrlFocusChangeInProgress;
+        } else {
+            return !mIsTablet && !shouldShowDeleteButton()
+                    && (mUrlHasFocus || mIsUrlFocusChangeInProgress
+                            || mIsLocationBarFocusedFromNtpScroll);
+        }
+    }
+
+    protected boolean shouldShowDeleteButton() {
+        assert (false);
+        return false;
+    }
+
+    void qrButtonClicked(View view) {
+        if (!mNativeInitialized) return;
+        if (ensureCameraPermission()) {
+            openQRCodeDialog();
+        }
+    }
+
+    private boolean ensureCameraPermission() {
+        if (mWindowAndroid.hasPermission(Manifest.permission.CAMERA)) {
+            return true;
+        }
+
+        PermissionCallback callback = (permissions, grantResults) -> {
+            if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openQRCodeDialog();
+            }
+        };
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mWindowAndroid.requestPermissions(new String[] {Manifest.permission.CAMERA}, callback);
+        }
+
+        return false;
+    }
+
+    private void openQRCodeDialog() {
+        if (BraveActivity.getBraveActivity() != null) {
+            BraveLocationBarQRDialogFragment braveLocationBarQRDialogFragment =
+                    BraveLocationBarQRDialogFragment.newInstance(this);
+            braveLocationBarQRDialogFragment.setCancelable(false);
+            braveLocationBarQRDialogFragment.show(
+                    BraveActivity.getBraveActivity().getSupportFragmentManager(),
+                    "BraveLocationBarQRDialogFragment");
+        }
+    }
+}

@@ -502,6 +502,15 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_DEFAULT_BROWSER_GO_TO_SETTINGS" desc="Toast message for those without 7.0 to go to settings to change default browser">
         You've already set a default browser. You may change the default browser in your app settings.
       </message>
+      <message name="IDS_SCAN_QR_CODE" desc="Title for scan qr code dialog from addressbar">
+        Scan QR Code
+      </message>
+      <message name="IDS_INSTRUCTIONS" desc="Instructions title for scan qr code dialog from addressbar">
+        Instructions
+      </message>
+      <message name="IDS_INSTRUCTIONS_DESC" desc="Instructions description for scan qr code dialog from addressbar">
+        To search by QR Code, align the QR Code in the center of frame.
+      </message>
       <message name="IDS_MENU_BRAVE_REWARDS" desc="Title for brave rewards menu item">
         Brave Rewards
       </message>

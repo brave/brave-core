@@ -9,7 +9,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Handler;
-import android.util.AttributeSet;
+import android.view.ActionMode;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
@@ -49,10 +49,15 @@ import org.chromium.chrome.browser.identity_disc.IdentityDiscController;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.ntp.NewTabPageUma;
+import org.chromium.chrome.browser.omnibox.BackKeyBehaviorDelegate;
+import org.chromium.chrome.browser.omnibox.BraveLocationBarMediator;
 import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
+import org.chromium.chrome.browser.omnibox.LocationBarLayout;
+import org.chromium.chrome.browser.omnibox.OverrideUrlLoadingDelegate;
 import org.chromium.chrome.browser.omnibox.SearchEngineLogoUtils;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.status.PageInfoIPHController;
+import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.FaviconFetcher;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxPedalDelegate;
@@ -104,6 +109,7 @@ import org.chromium.components.permissions.PermissionDialogController;
 import org.chromium.content_public.browser.BrowserContextHandle;
 import org.chromium.ui.ViewProvider;
 import org.chromium.ui.base.WindowAndroid;
+import org.chromium.ui.base.WindowDelegate;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modelutil.MVCListAdapter;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
@@ -263,6 +269,20 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListManager"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListManager"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/omnibox/LocationBarCoordinator"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/omnibox/BraveLocationBarCoordinator"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/omnibox/LocationBarLayout"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/omnibox/BraveLocationBarLayout"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/omnibox/LocationBarPhone"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/omnibox/LocationBarTablet"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/searchwidget/SearchActivityLocationBarLayout"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/omnibox/LocationBarMediator"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/omnibox/BraveLocationBarMediator"));
     }
 
     @Test
@@ -391,6 +411,14 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
                 "updateTilePlaceholderVisibility", true, void.class));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/omnibox/LocationBarMediator",
+                "onPrimaryColorChanged", false, null));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/omnibox/LocationBarMediator",
+                "updateButtonVisibility", false, null));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/omnibox/LocationBarMediator",
+                "onAssistantVoiceSearchServiceChanged", false, null));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/omnibox/LocationBarMediator",
+                "shouldShowDeleteButton", false, null));
     }
 
     @Test
@@ -617,6 +645,32 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListManager",
                 "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListManager",
                 ModelList.class, Context.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/omnibox/LocationBarCoordinator",
+                "org/chromium/chrome/browser/omnibox/BraveLocationBarCoordinator", View.class,
+                View.class, ObservableSupplier.class,
+                BraveLocationBarMediator.getPrivacyPreferencesManagerClass(),
+                LocationBarDataProvider.class, ActionMode.Callback.class, WindowDelegate.class,
+                WindowAndroid.class, Supplier.class, Supplier.class, Supplier.class,
+                IncognitoStateProvider.class, ActivityLifecycleDispatcher.class,
+                OverrideUrlLoadingDelegate.class, BackKeyBehaviorDelegate.class,
+                SearchEngineLogoUtils.class, Runnable.class, PageInfoAction.class, Callback.class,
+                BraveLocationBarMediator.getSaveOfflineButtonStateClass(),
+                BraveLocationBarMediator.getOmniboxUmaClass(), Supplier.class, BookmarkState.class,
+                BooleanSupplier.class, JankTracker.class, Supplier.class,
+                OmniboxPedalDelegate.class, BrowserStateBrowserControlsVisibilityDelegate.class,
+                Callback.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/omnibox/LocationBarMediator",
+                "org/chromium/chrome/browser/omnibox/BraveLocationBarMediator", Context.class,
+                LocationBarLayout.class, LocationBarDataProvider.class, ObservableSupplier.class,
+                BraveLocationBarMediator.getPrivacyPreferencesManagerClass(),
+                OverrideUrlLoadingDelegate.class, BraveLocationBarMediator.getLocaleManagerClass(),
+                OneshotSupplier.class, BackKeyBehaviorDelegate.class, WindowAndroid.class,
+                boolean.class, SearchEngineLogoUtils.class,
+                BraveLocationBarMediator.getLensControllerClass(), Runnable.class,
+                BraveLocationBarMediator.getSaveOfflineButtonStateClass(),
+                BraveLocationBarMediator.getOmniboxUmaClass(), BooleanSupplier.class));
     }
 
     @Test
@@ -783,7 +837,6 @@ public class BytecodeTest {
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder",
                 "mPriorityOrderedSuggestionProcessors"));
-
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
                 "mPrepopulatedSearchEngines"));
@@ -793,6 +846,28 @@ public class BytecodeTest {
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
                 "mSelectedSearchEnginePosition"));
+        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/omnibox/LocationBarCoordinator",
+                "mLocationBarMediator"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/omnibox/LocationBarMediator", "mNativeInitialized"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/omnibox/LocationBarMediator", "mWindowAndroid"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/omnibox/LocationBarMediator", "mLocationBarLayout"));
+        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/omnibox/LocationBarMediator",
+                "mIsUrlFocusChangeInProgress"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/omnibox/LocationBarMediator", "mUrlHasFocus"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/omnibox/LocationBarMediator", "mIsTablet"));
+        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/omnibox/LocationBarMediator",
+                "mIsLocationBarFocusedFromNtpScroll"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/omnibox/LocationBarMediator", "mContext"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/omnibox/LocationBarMediator", "mBrandedColorScheme"));
+        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/omnibox/LocationBarMediator",
+                "mAssistantVoiceSearchServiceSupplier"));
     }
 
     @Test
@@ -851,6 +926,13 @@ public class BytecodeTest {
         Assert.assertTrue(checkSuperName(
                 "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator",
                 "org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteCoordinator"));
+        Assert.assertTrue(checkSuperName("org/chromium/chrome/browser/omnibox/LocationBarPhone",
+                "org/chromium/chrome/browser/omnibox/BraveLocationBarLayout"));
+        Assert.assertTrue(checkSuperName("org/chromium/chrome/browser/omnibox/LocationBarTablet",
+                "org/chromium/chrome/browser/omnibox/BraveLocationBarLayout"));
+        Assert.assertTrue(checkSuperName(
+                "org/chromium/chrome/browser/searchwidget/SearchActivityLocationBarLayout",
+                "org/chromium/chrome/browser/omnibox/BraveLocationBarLayout"));
     }
 
     private boolean classExists(String className) {
