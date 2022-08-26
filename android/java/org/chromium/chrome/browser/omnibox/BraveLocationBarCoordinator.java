@@ -16,6 +16,7 @@ import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.supplier.BooleanSupplier;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.Supplier;
+import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.merchant_viewer.MerchantTrustSignalsCoordinator;
@@ -60,7 +61,8 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                     merchantTrustSignalsCoordinatorSupplier,
             @NonNull OmniboxPedalDelegate omniboxPedalDelegate,
             BrowserStateBrowserControlsVisibilityDelegate browserControlsVisibilityDelegate,
-            Callback<Throwable> reportExceptionCallback) {
+            Callback<Throwable> reportExceptionCallback,
+            @Nullable BackPressManager backPressManager) {
         super(locationBarLayout, autocompleteAnchorView, profileObservableSupplier,
                 privacyPreferencesManager, locationBarDataProvider, actionModeCallback,
                 windowDelegate, windowAndroid, activityTabSupplier, modalDialogManagerSupplier,
@@ -69,7 +71,8 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 launchAssistanceSettingsAction, pageInfoAction, bringTabToFrontCallback,
                 saveOfflineButtonState, omniboxUma, tabWindowManagerSupplier, bookmarkState,
                 isToolbarMicEnabledSupplier, jankTracker, merchantTrustSignalsCoordinatorSupplier,
-                omniboxPedalDelegate, browserControlsVisibilityDelegate, reportExceptionCallback);
+                omniboxPedalDelegate, browserControlsVisibilityDelegate, reportExceptionCallback,
+                backPressManager);
 
         if (mLocationBarMediator instanceof BraveLocationBarMediator) {
             mQRButton = locationBarLayout.findViewById(R.id.qr_button);

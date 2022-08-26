@@ -659,7 +659,7 @@ public class BytecodeTest {
                 BraveLocationBarMediator.getOmniboxUmaClass(), Supplier.class, BookmarkState.class,
                 BooleanSupplier.class, JankTracker.class, Supplier.class,
                 OmniboxPedalDelegate.class, BrowserStateBrowserControlsVisibilityDelegate.class,
-                Callback.class));
+                Callback.class, BackPressManager.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/LocationBarMediator",
                 "org/chromium/chrome/browser/omnibox/BraveLocationBarMediator", Context.class,
