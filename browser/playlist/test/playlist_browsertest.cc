@@ -294,7 +294,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, ApiFunctions) {
   // When we try to recover with same playlist item, we should get
   // notification: kAborted because included media files are still
   // invalid_media_file. before we get kAborted message, we may get
-  // kThunbmailReady.
+  // kThumbnailReady.
   ResetStatus();
   service->RecoverPlaylistItem(lastly_added_playlist_id_);
   WaitForEvents(2);

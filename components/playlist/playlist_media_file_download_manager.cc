@@ -27,7 +27,7 @@ PlaylistMediaFileDownloadManager::PlaylistMediaFileDownloadManager(
 
 PlaylistMediaFileDownloadManager::~PlaylistMediaFileDownloadManager() = default;
 
-void PlaylistMediaFileDownloadManager::GenerateMediaFileForPlaylistItem(
+void PlaylistMediaFileDownloadManager::DownloadMediaFile(
     const PlaylistItemInfo& playlist_item) {
   pending_media_file_creation_jobs_.push(playlist_item);
 
@@ -35,7 +35,7 @@ void PlaylistMediaFileDownloadManager::GenerateMediaFileForPlaylistItem(
   // delay the next playlist generation. It will be triggered when the current
   // one is finished.
   if (!IsCurrentDownloadingInProgress())
-    GenerateMediaFiles();
+    TryStartingDownloadTask();
 }
 
 void PlaylistMediaFileDownloadManager::CancelDownloadRequest(
@@ -46,7 +46,7 @@ void PlaylistMediaFileDownloadManager::CancelDownloadRequest(
   // Otherwise, GetNextPlaylistItemTarget() will drop canceled one.
   if (GetCurrentDownloadingPlaylistItemID() == id) {
     CancelCurrentDownloadingPlaylistItem();
-    GenerateMediaFiles();
+    TryStartingDownloadTask();
     return;
   }
 }
@@ -56,7 +56,7 @@ void PlaylistMediaFileDownloadManager::CancelAllDownloadRequests() {
   pending_media_file_creation_jobs_ = {};
 }
 
-void PlaylistMediaFileDownloadManager::GenerateMediaFiles() {
+void PlaylistMediaFileDownloadManager::TryStartingDownloadTask() {
   if (IsCurrentDownloadingInProgress())
     return;
 
@@ -113,7 +113,7 @@ void PlaylistMediaFileDownloadManager::OnMediaFileReady(
 
   base::SequencedTaskRunnerHandle::Get()->PostTask(
       FROM_HERE,
-      base::BindOnce(&PlaylistMediaFileDownloadManager::GenerateMediaFiles,
+      base::BindOnce(&PlaylistMediaFileDownloadManager::TryStartingDownloadTask,
                      weak_factory_.GetWeakPtr()));
 }
 
@@ -127,7 +127,7 @@ void PlaylistMediaFileDownloadManager::OnMediaFileGenerationFailed(
 
   base::SequencedTaskRunnerHandle::Get()->PostTask(
       FROM_HERE,
-      base::BindOnce(&PlaylistMediaFileDownloadManager::GenerateMediaFiles,
+      base::BindOnce(&PlaylistMediaFileDownloadManager::TryStartingDownloadTask,
                      weak_factory_.GetWeakPtr()));
 }
 
