@@ -189,8 +189,8 @@ void BraveNewTabPageHandler::OnSearchPromotionDismissed() {
 void BraveNewTabPageHandler::UseColorBackground(const std::string& color,
                                                 bool use_random_color) {
   if (use_random_color) {
-    CHECK(color == brave_new_tab_page::mojom::kRandomSolidColorValue ||
-          color == brave_new_tab_page::mojom::kRandomGradientColorValue)
+    DCHECK(color == brave_new_tab_page::mojom::kRandomSolidColorValue ||
+           color == brave_new_tab_page::mojom::kRandomGradientColorValue)
         << "When |use_random_color| is true, |color| should be "
            "kRandomSolidColorValue or kRandomGradientColorValue";
   }

@@ -173,14 +173,14 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "settingsNavigateBack", IDS_BRAVE_NEW_TAB_SETTINGS_BACK },
         { "solidColorTitle", IDS_BRAVE_NEW_TAB_SOLID_COLOR},
         { "gradientColorTitle", IDS_BRAVE_NEW_TAB_GRADIENT_COLOR},
-        { "refreshBackgroundOnNewTab", IDS_BRAVE_NEW_TAB_REFRESH_BACKGROUND_ON_NEW_TAB},
+        { "refreshBackgroundOnNewTab", IDS_BRAVE_NEW_TAB_REFRESH_BACKGROUND_ON_NEW_TAB},  // NOLINT
 
         // search promotion
         { "searchPromotionNTPPopupTitle1", IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_TITLE_1},  // NOLINT
         { "searchPromotionNTPPopupTitle2", IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_TITLE_2},  // NOLINT
         { "searchPromotionNTPPopupDesc", IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_DESC},       // NOLINT
         { "searchPromotionNTPPopupBottom", IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_BOTTOM},   // NOLINT
-        { "searchPromotionSearchBoxPlaceholderLabel", IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_SEARCH_BOX_PLACEHOLDER},   // NOLINT
+        { "searchPromotionSearchBoxPlaceholderLabel", IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_SEARCH_BOX_PLACEHOLDER},  // NOLINT
 
         { "braveTodayTitle", IDS_BRAVE_TODAY_TITLE },
         { "braveTodayIntroTitle", IDS_BRAVE_TODAY_INTRO_TITLE },

@@ -22,7 +22,7 @@ export const randomBackgroundImage = (): NewTab.BackgroundWallpaper => {
 export const randomColorBackground = (color: string): NewTab.BackgroundWallpaper => {
   console.assert(color === BraveNewTabPage.RANDOM_SOLID_COLOR_VALUE || color === BraveNewTabPage.RANDOM_GRADIENT_COLOR_VALUE)
 
-  let targetColors = color === BraveNewTabPage.RANDOM_SOLID_COLOR_VALUE ? solidColorsForBackground : gradientColorsForBackground
+  const targetColors = color === BraveNewTabPage.RANDOM_SOLID_COLOR_VALUE ? solidColorsForBackground : gradientColorsForBackground
   const randomIndex: number = Math.floor(Math.random() * targetColors.length)
   const randomColor: NewTab.BackgroundWallpaper = {
     type: 'color',

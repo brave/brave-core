@@ -101,6 +101,8 @@ bool NTPBackgroundImagesData::IsValid() const {
 base::Value::Dict NTPBackgroundImagesData::GetBackgroundAt(size_t index) {
   DCHECK(index >= 0 && index < backgrounds.size());
 
+  // The |data| should be compliant with NewTab.BackgroundWallpaper type from JS
+  // side.
   base::Value::Dict data;
   if (!IsValid())
     return data;
@@ -116,6 +118,7 @@ base::Value::Dict NTPBackgroundImagesData::GetBackgroundAt(size_t index) {
   data.Set(kIsBackgroundKey, true);
   data.Set(kImageAuthorKey, backgrounds[index].author);
   data.Set(kImageLinkKey, backgrounds[index].link);
+  data.Set(kWallpaperTypeKey, "image");
   return data;
 }
 

@@ -58,7 +58,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
 
       if (initialDataPayload.wallpaperData) {
         let backgroundWallpaper = initialDataPayload.wallpaperData.backgroundWallpaper
-        if (backgroundWallpaper?.type === 'color' && backgroundWallpaper?.random) {
+        if (backgroundWallpaper?.type === 'color' && backgroundWallpaper.random) {
           backgroundWallpaper = backgroundAPI.randomColorBackground(backgroundWallpaper.wallpaperColor)
         }
 

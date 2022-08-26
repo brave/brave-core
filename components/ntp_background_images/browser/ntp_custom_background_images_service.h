@@ -27,12 +27,12 @@ class NTPCustomBackgroundImagesService : public KeyedService {
  public:
   class Delegate {
    public:
-    virtual bool IsCustomImageBackgroundEnabled() = 0;
-    virtual base::FilePath GetCustomBackgroundImageLocalFilePath() = 0;
+    virtual bool IsCustomImageBackgroundEnabled() const = 0;
+    virtual base::FilePath GetCustomBackgroundImageLocalFilePath() const = 0;
 
-    virtual bool IsColorBackgroundEnabled() = 0;
-    virtual std::string GetColor() = 0;
-    virtual bool ShouldUseRandomValue() = 0;
+    virtual bool IsColorBackgroundEnabled() const = 0;
+    virtual std::string GetColor() const = 0;
+    virtual bool ShouldUseRandomValue() const = 0;
 
     virtual ~Delegate() = default;
   };

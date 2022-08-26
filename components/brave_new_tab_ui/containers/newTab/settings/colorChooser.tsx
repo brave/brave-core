@@ -32,8 +32,6 @@ function ColorChooser ({ title, values, onBack, onSelectValue, currentValue, usi
     containerEl.current?.scrollIntoView(true)
   }, [])
 
-  console.log(usingRandomColor)
-
   return (
       <div ref={containerEl}>
         <NavigateBack onBack={onBack} title={title} />
@@ -45,7 +43,7 @@ function ColorChooser ({ title, values, onBack, onSelectValue, currentValue, usi
           />
         </SettingsRow>
         <StyledCustomBackgroundSettings>
-          {values.map(value => <ColorBackgroundOption key={value} color={value} onSelectValue={color => onSelectValue(color, false/* =useRandomColor */)} selected={!usingRandomColor && currentValue === value} />)}
+          {values.map(value => <ColorBackgroundOption key={value} color={value} onSelectValue={color => onSelectValue(color, /* useRandomColor= */false)} selected={!usingRandomColor && currentValue === value} />)}
         </StyledCustomBackgroundSettings>
       </div>
   )

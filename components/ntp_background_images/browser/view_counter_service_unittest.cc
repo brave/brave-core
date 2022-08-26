@@ -118,13 +118,16 @@ class TestDelegate : public NTPCustomBackgroundImagesService::Delegate {
   ~TestDelegate() override = default;
 
   // Delegate overrides:
-  bool IsCustomImageBackgroundEnabled() override { return image_enabled_; }
-  base::FilePath GetCustomBackgroundImageLocalFilePath() override {
+  bool IsCustomImageBackgroundEnabled() const override {
+    return image_enabled_;
+  }
+  base::FilePath GetCustomBackgroundImageLocalFilePath() const override {
     return base::FilePath();
   }
 
-  bool IsColorBackgroundEnabled() override { return color_enabled_; }
-  std::string GetColor() override { return "#ff0000"; }
+  bool IsColorBackgroundEnabled() const override { return color_enabled_; }
+  std::string GetColor() const override { return "#ff0000"; }
+  bool ShouldUseRandomValue() const override { return false; }
 
   bool image_enabled_ = false;
   bool color_enabled_ = false;
