@@ -108,4 +108,19 @@ bool BraveWalletProviderDelegateBridge::IsPermissionDenied(
   return [bridge_ isPermissionDenied:static_cast<BraveWalletCoinType>(type)];
 }
 
+void BraveWalletProviderDelegateBridge::AddSolanaConnectedAccount(
+    const std::string& account) {
+  [bridge_ addSolanaConnectedAccount:base::SysUTF8ToNSString(account)];
+}
+
+void BraveWalletProviderDelegateBridge::RemoveSolanaConnectedAccount(
+    const std::string& account) {
+  [bridge_ removeSolanaConnectedAccount:base::SysUTF8ToNSString(account)];
+}
+
+bool BraveWalletProviderDelegateBridge::IsSolanaAccountConnected(
+    const std::string& account) {
+  return [bridge_ isSolanaAccountConnected:base::SysUTF8ToNSString(account)];
+}
+
 }  // namespace brave_wallet
