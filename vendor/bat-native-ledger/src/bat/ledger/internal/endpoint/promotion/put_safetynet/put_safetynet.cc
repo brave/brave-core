@@ -32,8 +32,8 @@ std::string PutSafetynet::GetUrl(const std::string& nonce) {
 }
 
 std::string PutSafetynet::GeneratePayload(const std::string& token) {
-  base::Value dictionary(base::Value::Type::DICTIONARY);
-  dictionary.SetStringKey("token", token);
+  base::Value::Dict dictionary;
+  dictionary.Set("token", token);
   std::string payload;
   base::JSONWriter::Write(dictionary, &payload);
 

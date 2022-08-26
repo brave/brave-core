@@ -34,9 +34,9 @@ std::string PutDevicecheck::GetUrl(const std::string& nonce) {
 std::string PutDevicecheck::GeneratePayload(
     const std::string& blob,
     const std::string& signature) {
-  base::Value dictionary(base::Value::Type::DICTIONARY);
-  dictionary.SetStringKey("attestationBlob", blob);
-  dictionary.SetStringKey("signature", signature);
+  base::Value::Dict dictionary;
+  dictionary.Set("attestationBlob", blob);
+  dictionary.Set("signature", signature);
   std::string payload;
   base::JSONWriter::Write(dictionary, &payload);
 

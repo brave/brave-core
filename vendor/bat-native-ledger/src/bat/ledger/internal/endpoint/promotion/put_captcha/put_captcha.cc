@@ -32,11 +32,11 @@ std::string PutCaptcha::GetUrl(const std::string& captcha_id) {
 }
 
 std::string PutCaptcha::GeneratePayload(const int x, const int y) {
-  base::Value dictionary(base::Value::Type::DICTIONARY);
-  base::Value solution_dict(base::Value::Type::DICTIONARY);
-  solution_dict.SetIntKey("x", x);
-  solution_dict.SetIntKey("y", y);
-  dictionary.SetKey("solution", std::move(solution_dict));
+  base::Value::Dict dictionary;
+  base::Value::Dict solution_dict;
+  solution_dict.Set("x", x);
+  solution_dict.Set("y", y);
+  dictionary.Set("solution", std::move(solution_dict));
   std::string payload;
   base::JSONWriter::Write(dictionary, &payload);
 

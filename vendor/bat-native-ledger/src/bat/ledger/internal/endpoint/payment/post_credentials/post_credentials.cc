@@ -36,10 +36,10 @@ std::string PostCredentials::GeneratePayload(
     const std::string& item_id,
     const std::string& type,
     base::Value::List&& blinded_creds) {
-  base::Value body(base::Value::Type::DICTIONARY);
-  body.SetStringKey("itemId", item_id);
-  body.SetStringKey("type", type);
-  body.SetKey("blindedCreds", base::Value(std::move(blinded_creds)));
+  base::Value::Dict body;
+  body.Set("itemId", item_id);
+  body.Set("type", type);
+  body.Set("blindedCreds", std::move(blinded_creds));
 
   std::string json;
   base::JSONWriter::Write(body, &json);

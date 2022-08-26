@@ -47,8 +47,8 @@ std::string PostClaimBrave::GetUrl() {
 
 std::string PostClaimBrave::GeneratePayload(
     const std::string& destination_payment_id) {
-  base::Value payload(base::Value::Type::DICTIONARY);
-  payload.SetStringKey("depositDestination", destination_payment_id);
+  base::Value::Dict payload;
+  payload.Set("depositDestination", destination_payment_id);
   std::string json;
   base::JSONWriter::Write(payload, &json);
 

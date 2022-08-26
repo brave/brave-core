@@ -35,10 +35,9 @@ std::string PostTransactionGemini::GetUrl(const std::string& order_id) {
 
 std::string PostTransactionGemini::GeneratePayload(
     const type::SKUTransaction& transaction) {
-  base::Value body(base::Value::Type::DICTIONARY);
-  body.SetStringKey("externalTransactionId",
-                    transaction.external_transaction_id);
-  body.SetStringKey("kind", "gemini");
+  base::Value::Dict body;
+  body.Set("externalTransactionId", transaction.external_transaction_id);
+  body.Set("kind", "gemini");
 
   std::string json;
   base::JSONWriter::Write(body, &json);

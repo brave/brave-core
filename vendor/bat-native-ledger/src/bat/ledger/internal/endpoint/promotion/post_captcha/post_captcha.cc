@@ -35,10 +35,8 @@ std::string PostCaptcha::GeneratePayload() {
     return "";
   }
 
-  base::Value body(base::Value::Type::DICTIONARY);
-  body.SetStringKey(
-      "paymentId",
-      wallet->payment_id);
+  base::Value::Dict body;
+  body.Set("paymentId", wallet->payment_id);
 
   std::string json;
   base::JSONWriter::Write(body, &json);

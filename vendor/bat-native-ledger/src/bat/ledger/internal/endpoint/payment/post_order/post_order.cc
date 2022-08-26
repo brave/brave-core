@@ -34,16 +34,16 @@ std::string PostOrder::GetUrl() {
 
 std::string PostOrder::GeneratePayload(
     const std::vector<type::SKUOrderItem>& items) {
-  base::Value order_items(base::Value::Type::LIST);
+  base::Value::List order_items;
   for (const auto& item : items) {
-    base::Value order_item(base::Value::Type::DICTIONARY);
-    order_item.SetStringKey("sku", item.sku);
-    order_item.SetIntKey("quantity", item.quantity);
+    base::Value::Dict order_item;
+    order_item.Set("sku", item.sku);
+    order_item.Set("quantity", item.quantity);
     order_items.Append(std::move(order_item));
   }
 
-  base::Value body(base::Value::Type::DICTIONARY);
-  body.SetKey("items", std::move(order_items));
+  base::Value::Dict body;
+  body.Set("items", std::move(order_items));
 
   std::string json;
   base::JSONWriter::Write(body, &json);
