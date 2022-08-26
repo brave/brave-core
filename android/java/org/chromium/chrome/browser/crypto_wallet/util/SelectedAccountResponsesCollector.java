@@ -43,8 +43,7 @@ public class SelectedAccountResponsesCollector {
                             selectedAccountInfosPerCoinMultiResponse.singleResponseComplete, coin);
 
             accountsPermissionsContexts.add(accountContext);
-            if (CoinType.FIL == coin) {
-            } else {
+            if (CoinType.FIL != coin) {
                 mKeyringService.getSelectedAccount(coin, accountContext);
             }
         }
