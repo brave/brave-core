@@ -7,6 +7,7 @@ import * as WalletActions from '../common/actions/wallet_actions'
 import { Store } from './async/types'
 import { getBraveKeyring } from './api/hardware_keyrings'
 import { BraveWallet } from '../constants/types'
+import { objectEquals } from '../utils/object-utils'
 
 export class WalletApiProxy {
   walletHandler = new BraveWallet.WalletHandlerRemote()
@@ -92,15 +93,7 @@ export class WalletApiProxy {
 
         // check that the origin has changed from the stored values
         // in any way before dispatching the update action
-        if (
-          state.activeOrigin.eTldPlusOne === originInfo.eTldPlusOne &&
-          state.activeOrigin.origin.host === originInfo.origin.host &&
-          state.activeOrigin.origin.nonceIfOpaque?.high === originInfo.origin.nonceIfOpaque?.high &&
-          state.activeOrigin.origin.nonceIfOpaque?.low === originInfo.origin.nonceIfOpaque?.low &&
-          state.activeOrigin.origin.port === originInfo.origin.port &&
-          state.activeOrigin.origin.scheme === originInfo.origin.scheme &&
-          state.activeOrigin.originSpec === originInfo.originSpec
-        ) {
+        if (objectEquals(state.activeOrigin, originInfo)) {
           return
         }
 
