@@ -64,6 +64,10 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
 
     base::android::ScopedJavaLocalRef<jstring> GetPublisherName(JNIEnv* env,
                                                                 uint64_t tabId);
+    base::android::ScopedJavaLocalRef<jstring> GetCaptchaSolutionURL(
+        JNIEnv* env,
+        const base::android::JavaParamRef<jstring>& paymentId,
+        const base::android::JavaParamRef<jstring>& captchaId);
 
     base::android::ScopedJavaLocalRef<jstring> GetPublisherId(JNIEnv* env,
         uint64_t tabId);

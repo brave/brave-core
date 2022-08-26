@@ -61,7 +61,7 @@ interface BatAdsClient {
   LoadDataResource(string name) => (mojo_base.mojom.BigString value);
 
   GetScheduledCaptcha(string payment_id) => (string captcha_id);
-  ShowScheduledCaptchaNotification(string payment_id, string captcha_id);
+  ShowScheduledCaptchaNotification(string payment_id, string captcha_id, bool should_show_tooltip_notification);
   ClearScheduledCaptcha();
 
   RunDBTransaction(ads.mojom.DBTransaction transaction) => (ads.mojom.DBCommandResponse response);

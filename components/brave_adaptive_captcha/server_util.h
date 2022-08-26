@@ -8,9 +8,29 @@
 
 #include <string>
 
+#include "base/no_destructor.h"
+
 namespace brave_adaptive_captcha {
 
-std::string GetServerUrl(const std::string& path);
+class ServerUtil {
+ public:
+  ServerUtil(const ServerUtil&) = delete;
+  ServerUtil& operator=(const ServerUtil&) = delete;
+  ~ServerUtil();
+
+  static ServerUtil* GetInstance();
+
+  std::string GetServerUrl(const std::string& path);
+  void SetServerHostForTesting(const std::string& host);
+
+ private:
+  friend class base::NoDestructor<ServerUtil>;
+  ServerUtil();
+
+  std::string GetHost();
+
+  std::string server_host_;
+};
 
 }  // namespace brave_adaptive_captcha
 

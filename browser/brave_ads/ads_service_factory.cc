@@ -27,7 +27,6 @@
 
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
-#include "brave/browser/brave_ads/tooltips/ads_tooltips_delegate_impl.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #endif
 
@@ -65,6 +64,15 @@ AdsServiceFactory::AdsServiceFactory()
 
 AdsServiceFactory::~AdsServiceFactory() = default;
 
+std::unique_ptr<AdsTooltipsDelegateImpl>
+AdsServiceFactory::CreateAdsTooltipsDelegate(Profile* profile) const {
+#if BUILDFLAG(IS_ANDROID)
+  return nullptr;
+#else
+  return std::make_unique<AdsTooltipsDelegateImpl>(profile);
+#endif
+}
+
 KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   auto* profile = Profile::FromBrowserContext(context);
@@ -94,8 +102,7 @@ KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
       std::make_unique<AdsServiceImpl>(
           profile,
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-          brave_adaptive_captcha_service,
-          std::make_unique<AdsTooltipsDelegateImpl>(profile),
+          brave_adaptive_captcha_service, CreateAdsTooltipsDelegate(profile),
 #endif
           std::make_unique<DeviceIdImpl>(), history_service, rewards_service,
           notification_ad_async_data_store);
