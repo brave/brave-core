@@ -14,6 +14,7 @@
 #include "base/path_service.h"
 #include "base/strings/escape.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "net/http/http_status_code.h"
 
@@ -68,10 +69,7 @@ base::FilePath GetTestDataPath() {
   return path;
 }
 
-TestLedgerClient::TestLedgerClient()
-    : ledger_database_(base::FilePath()),
-      state_store_(base::Value::Type::DICTIONARY),
-      option_store_(base::Value::Type::DICTIONARY) {
+TestLedgerClient::TestLedgerClient() : ledger_database_(base::FilePath()) {
   CHECK(ledger_database_.GetInternalDatabaseForTesting()->OpenInMemory());
 }
 
@@ -135,48 +133,45 @@ void TestLedgerClient::PublisherListNormalized(
     std::vector<mojom::PublisherInfoPtr> list) {}
 
 void TestLedgerClient::SetBooleanState(const std::string& name, bool value) {
-  state_store_.SetBoolPath(name, value);
+  state_store_.SetByDottedPath(name, value);
 }
 
 bool TestLedgerClient::GetBooleanState(const std::string& name) const {
-  auto opt = state_store_.FindBoolPath(name);
-  return opt ? *opt : false;
+  return state_store_.FindBoolByDottedPath(name).value_or(false);
 }
 
 void TestLedgerClient::SetIntegerState(const std::string& name, int value) {
-  state_store_.SetIntPath(name, value);
+  state_store_.SetByDottedPath(name, value);
 }
 
 int TestLedgerClient::GetIntegerState(const std::string& name) const {
-  auto opt = state_store_.FindIntPath(name);
-  return opt ? *opt : 0;
+  return state_store_.FindIntByDottedPath(name).value_or(0);
 }
 
 void TestLedgerClient::SetDoubleState(const std::string& name, double value) {
-  state_store_.SetDoublePath(name, value);
+  state_store_.SetByDottedPath(name, value);
 }
 
 double TestLedgerClient::GetDoubleState(const std::string& name) const {
-  auto opt = state_store_.FindDoublePath(name);
-  return opt ? *opt : 0.0;
+  return state_store_.FindDoubleByDottedPath(name).value_or(0.0);
 }
 
 void TestLedgerClient::SetStringState(const std::string& name,
                                       const std::string& value) {
-  state_store_.SetStringPath(name, value);
+  state_store_.SetByDottedPath(name, value);
 }
 
 std::string TestLedgerClient::GetStringState(const std::string& name) const {
-  const std::string* opt = state_store_.FindStringPath(name);
-  return opt ? *opt : "";
+  const auto* value = state_store_.FindStringByDottedPath(name);
+  return value ? *value : base::EmptyString();
 }
 
 void TestLedgerClient::SetInt64State(const std::string& name, int64_t value) {
-  state_store_.SetStringPath(name, base::NumberToString(value));
+  state_store_.SetByDottedPath(name, base::NumberToString(value));
 }
 
 int64_t TestLedgerClient::GetInt64State(const std::string& name) const {
-  if (const std::string* opt = state_store_.FindStringPath(name)) {
+  if (const std::string* opt = state_store_.FindStringByDottedPath(name)) {
     int64_t value;
     if (base::StringToInt64(*opt, &value)) {
       return value;
@@ -186,11 +181,11 @@ int64_t TestLedgerClient::GetInt64State(const std::string& name) const {
 }
 
 void TestLedgerClient::SetUint64State(const std::string& name, uint64_t value) {
-  state_store_.SetStringPath(name, base::NumberToString(value));
+  state_store_.SetByDottedPath(name, base::NumberToString(value));
 }
 
 uint64_t TestLedgerClient::GetUint64State(const std::string& name) const {
-  if (const std::string* opt = state_store_.FindStringPath(name)) {
+  if (const std::string* opt = state_store_.FindStringByDottedPath(name)) {
     uint64_t value;
     if (base::StringToUint64(*opt, &value)) {
       return value;
@@ -200,31 +195,28 @@ uint64_t TestLedgerClient::GetUint64State(const std::string& name) const {
 }
 
 void TestLedgerClient::ClearState(const std::string& name) {
-  state_store_.RemovePath(name);
+  state_store_.RemoveByDottedPath(name);
 }
 
 bool TestLedgerClient::GetBooleanOption(const std::string& name) const {
-  auto opt = option_store_.FindBoolPath(name);
-  return opt ? *opt : false;
+  return option_store_.FindBoolByDottedPath(name).value_or(false);
 }
 
 int TestLedgerClient::GetIntegerOption(const std::string& name) const {
-  auto opt = option_store_.FindIntPath(name);
-  return opt ? *opt : 0;
+  return option_store_.FindIntByDottedPath(name).value_or(0);
 }
 
 double TestLedgerClient::GetDoubleOption(const std::string& name) const {
-  auto opt = option_store_.FindDoublePath(name);
-  return opt ? *opt : 0.0;
+  return option_store_.FindDoubleByDottedPath(name).value_or(0.0);
 }
 
 std::string TestLedgerClient::GetStringOption(const std::string& name) const {
-  const std::string* opt = option_store_.FindStringPath(name);
-  return opt ? *opt : "";
+  const auto* value = option_store_.FindStringByDottedPath(name);
+  return value ? *value : base::EmptyString();
 }
 
 int64_t TestLedgerClient::GetInt64Option(const std::string& name) const {
-  if (const std::string* opt = option_store_.FindStringPath(name)) {
+  if (const std::string* opt = option_store_.FindStringByDottedPath(name)) {
     int64_t value;
     if (base::StringToInt64(*opt, &value)) {
       return value;
@@ -234,7 +226,7 @@ int64_t TestLedgerClient::GetInt64Option(const std::string& name) const {
 }
 
 uint64_t TestLedgerClient::GetUint64Option(const std::string& name) const {
-  if (const std::string* opt = option_store_.FindStringPath(name)) {
+  if (const std::string* opt = option_store_.FindStringByDottedPath(name)) {
     uint64_t value;
     if (base::StringToUint64(*opt, &value)) {
       return value;
@@ -303,8 +295,8 @@ absl::optional<std::string> TestLedgerClient::DecryptString(
 }
 
 void TestLedgerClient::SetOptionForTesting(const std::string& name,
-                                           base::Value&& value) {
-  option_store_.SetPath(name, std::move(value));
+                                           base::Value value) {
+  option_store_.SetByDottedPath(name, std::move(value));
 }
 
 void TestLedgerClient::AddNetworkResultForTesting(
