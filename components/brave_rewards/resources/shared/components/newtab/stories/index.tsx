@@ -30,7 +30,6 @@ export function Card () {
   const daysUntilPayment = knobs.number('Days Until Payment', 20)
   const nextPaymentDate = Date.now() + 1000 * 60 * 60 * 24 * daysUntilPayment
   const showGrant = knobs.boolean('Grant Available', false)
-  const earningsReceived = knobs.boolean('Earnings received', false)
   const disconnectedWallet = knobs.boolean('Disconnected', false)
 
   return (
@@ -65,7 +64,6 @@ export function Card () {
             nextPaymentDate={nextPaymentDate}
             earningsThisMonth={0.142}
             earningsLastMonth={1.25}
-            earningsReceived={earningsReceived}
             contributionsThisMonth={10}
             onEnableRewards={actionLogger('onEnableRewards')}
             onEnableAds={actionLogger('onEnableAds')}
