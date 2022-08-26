@@ -23,7 +23,7 @@ CreateConfirmationUrlRequestBuilder::CreateConfirmationUrlRequestBuilder(
 CreateConfirmationUrlRequestBuilder::~CreateConfirmationUrlRequestBuilder() =
     default;
 
-// POST /v2/confirmation/{confirmation_id}/{credential}
+// POST /v2/confirmation/{transactionId}/{credential}
 
 mojom::UrlRequestInfoPtr CreateConfirmationUrlRequestBuilder::Build() {
   mojom::UrlRequestInfoPtr url_request = mojom::UrlRequestInfo::New();
@@ -41,7 +41,7 @@ mojom::UrlRequestInfoPtr CreateConfirmationUrlRequestBuilder::Build() {
 GURL CreateConfirmationUrlRequestBuilder::BuildUrl() const {
   std::string spec = base::StringPrintf(
       "%s/v2/confirmation/%s", GetAnonymousHost(confirmation_.ad_type).c_str(),
-      confirmation_.id.c_str());
+      confirmation_.transaction_id.c_str());
 
   if (!confirmation_.credential.empty()) {
     spec += "/";

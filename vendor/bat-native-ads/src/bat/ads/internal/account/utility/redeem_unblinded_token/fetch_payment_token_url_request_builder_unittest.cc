@@ -29,9 +29,8 @@ TEST_F(BatAdsFetchPaymentTokenUrlRequestBuilderTest, BuildUrl) {
   privacy::SetUnblindedTokens(1);
 
   const ConfirmationInfo confirmation = BuildConfirmation(
-      /*id*/ "d990ed8d-d739-49fb-811b-c2e02158fb60",
-      /*transaction_id*/ "8b742869-6e4a-490c-ac31-31b49130098a",
-      /*creative_instance_id*/ "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
+      /* transaction_id */ "8b742869-6e4a-490c-ac31-31b49130098a",
+      /* creative_instance_id */ "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
       ConfirmationType::kViewed, AdType::kNotificationAd);
 
   FetchPaymentTokenUrlRequestBuilder url_request_builder(confirmation);
@@ -42,7 +41,7 @@ TEST_F(BatAdsFetchPaymentTokenUrlRequestBuilderTest, BuildUrl) {
   // Assert
   mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(
-      R"(https://anonymous.ads.bravesoftware.com/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/paymentToken)");
+      R"(https://anonymous.ads.bravesoftware.com/v2/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken)");
   expected_url_request->method = mojom::UrlRequestMethodType::kGet;
 
   EXPECT_EQ(expected_url_request, url_request);
