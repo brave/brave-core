@@ -16,10 +16,9 @@ public class BraveManageAccountDevicesLinkViewClassAdapter extends BraveClassVis
     public BraveManageAccountDevicesLinkViewClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        redirectConstructor(sManageAccountDevicesLinkView, sBraveManageAccountDevicesLinkView);
+        changeSuperName(sManageAccountDevicesLinkView, sBraveManageAccountDevicesLinkView);
 
-        makePublicMethod(sManageAccountDevicesLinkView, "inflateIfVisible");
-        addMethodAnnotation(
-                sBraveManageAccountDevicesLinkView, "inflateIfVisible", "Ljava/lang/Override;");
+        changeMethodOwner(sManageAccountDevicesLinkView, "inflateIfVisible",
+                sBraveManageAccountDevicesLinkView);
     }
 }
