@@ -1102,6 +1102,7 @@ if (!is_android) {
       "//brave/app/theme:brave_theme_resources_grit",
       "//brave/app/theme:brave_unscaled_resources_grit",
       "//brave/browser/ethereum_remote_client/buildflags",
+      "//brave/browser/farbling:browser_tests",
       "//brave/browser/metrics/buildflags",
       "//brave/browser/net",
       "//brave/browser/partnerbookmarks:delegate_public_impl_java",
