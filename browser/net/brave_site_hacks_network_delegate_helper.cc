@@ -61,6 +61,8 @@ static constexpr auto kSimpleQueryStringTrackers =
          // https://github.com/brave/brave-browser/issues/22082
          "oft_id", "oft_k", "oft_lk", "oft_d", "oft_c", "oft_ck", "oft_ids",
          "oft_sk",
+         // https://github.com/brave/brave-browser/issues/24988
+         "ss_email_id",
          // https://github.com/brave/brave-browser/issues/11580
          "igshid"});
 
