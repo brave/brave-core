@@ -9,6 +9,7 @@ declare namespace NewTab {
   export type BackgroundWallpaper = {
     type: 'color'
     wallpaperColor: string
+    random: boolean
   } | {
     type: 'image'
     wallpaperImageUrl: string

@@ -106,7 +106,8 @@ bool NTPBackgroundPrefs::ShouldUseRandomValue() const {
 }
 
 void NTPBackgroundPrefs::SetShouldUseRandomValue(bool random) {
-  NOTIMPLEMENTED();
+  prefs::ScopedDictionaryPrefUpdate update(service_, kPrefName);
+  update->Set(kRandomKey, std::make_unique<base::Value>(random));
 }
 
 void NTPBackgroundPrefs::SetSelectedValue(const std::string& value) {
@@ -123,11 +124,6 @@ absl::variant<GURL, std::string> NTPBackgroundPrefs::GetSelectedValue() const {
     return *selected_value;
 
   return GURL(*selected_value);
-}
-
-absl::variant<GURL, std::string> NTPBackgroundPrefs::GetRandomValue() const {
-  NOTIMPLEMENTED();
-  return std::string{};
 }
 
 const base::Value::Dict* NTPBackgroundPrefs::GetPrefValue() const {

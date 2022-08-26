@@ -22,6 +22,7 @@ import { setMostVisitedSettings } from '../api/topSites'
 // Utils
 import { handleWidgetPrefsChange } from './stack_widget_reducer'
 import { NewTabAdsData } from '../api/newTabAdsData'
+import { CustomBackground } from '../api/background'
 
 let sideEffectState: NewTab.State = storage.load()
 
@@ -56,19 +57,9 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
 
       if (initialDataPayload.wallpaperData) {
-        // Payload passed from native UI doesn't have 'type' property. We should
-        // fix up here.
-        let backgroundWallpaper = payload.wallpaperData.backgroundWallpaper
-        if (backgroundWallpaper?.wallpaperImageUrl) {
-          backgroundWallpaper = {
-            ...backgroundWallpaper,
-            type: 'image'
-          }
-        } else if (backgroundWallpaper?.wallpaperColor) {
-          backgroundWallpaper = {
-            ...backgroundWallpaper,
-            type: 'color'
-          }
+        let backgroundWallpaper = initialDataPayload.wallpaperData.backgroundWallpaper
+        if (backgroundWallpaper?.type === 'color' && backgroundWallpaper.random) {
+          backgroundWallpaper = backgroundAPI.randomColorBackground(backgroundWallpaper.wallpaperColor)
         }
 
         state = {
@@ -134,13 +125,16 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         ...state,
         brandedWallpaper: undefined
       }
+
       // Empty custom bg url means using brave background.
-      const url = payload.customBackground.url.url
-      const color = payload.customBackground.color
+      const customBackground = payload.customBackground as CustomBackground
+      const url = customBackground.url.url
+      const color = customBackground.color
+      const random = customBackground.useRandomItem
       if (url) {
         state.backgroundWallpaper = { type: 'image', wallpaperImageUrl: url }
       } else if (color) {
-        state.backgroundWallpaper = { type: 'color', wallpaperColor: color }
+        state.backgroundWallpaper = random ? backgroundAPI.randomColorBackground(color) : { type: 'color', wallpaperColor: color, random }
       } else {
         state.backgroundWallpaper = backgroundAPI.randomBackgroundImage()
       }

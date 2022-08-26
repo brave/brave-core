@@ -31,12 +31,18 @@ bool NTPCustomBackgroundImagesService::ShouldShowCustomBackground() const {
 base::Value::Dict NTPCustomBackgroundImagesService::GetBackground() const {
   DCHECK(ShouldShowCustomBackground());
 
+  // The |data| will be mapped to NewTab.BackgroundWallpaper type from JS side.
+  // So we need to keep names of properties same.
   base::Value::Dict data;
   data.Set(kIsBackgroundKey, true);
   if (delegate_->IsCustomImageBackgroundEnabled()) {
     data.Set(kWallpaperImageURLKey, kCustomWallpaperURL);
+    data.Set(kWallpaperTypeKey, "image");
+    data.Set(kWallpaperRandomKey, false);
   } else {
     data.Set(kWallpaperColorKey, delegate_->GetColor());
+    data.Set(kWallpaperTypeKey, "color");
+    data.Set(kWallpaperRandomKey, delegate_->ShouldUseRandomValue());
   }
   return data;
 }
