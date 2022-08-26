@@ -8,9 +8,21 @@
 
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
-#define BuildServiceInstanceFor                                           \
-  BuildServiceInstanceFor_ChromiumImpl(content::BrowserContext* profile)  \
-      const;                                                              \
+namespace brave_wallet {
+class EthereumProviderImplUnitTest;
+class SolanaProviderImplUnitTest;
+}  // namespace brave_wallet
+
+namespace permissions {
+class BraveWalletPermissionContextUnitTest;
+}
+
+#define BuildServiceInstanceFor                                          \
+  BuildServiceInstanceFor_ChromiumImpl(content::BrowserContext* profile) \
+      const;                                                             \
+  friend brave_wallet::EthereumProviderImplUnitTest;                     \
+  friend brave_wallet::SolanaProviderImplUnitTest;                       \
+  friend permissions::BraveWalletPermissionContextUnitTest;              \
   KeyedService* BuildServiceInstanceFor
 
 #include "src/chrome/browser/permissions/permission_manager_factory.h"

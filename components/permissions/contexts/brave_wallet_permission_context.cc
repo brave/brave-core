@@ -8,9 +8,6 @@
 #include <utility>
 
 #include "brave/components/brave_wallet/browser/permission_utils.h"
-#include "brave/components/permissions/brave_permission_manager.h"
-#include "chrome/browser/permissions/permission_manager_factory.h"
-#include "chrome/browser/profiles/profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
@@ -19,6 +16,7 @@
 #include "components/permissions/permission_request_id.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/permissions/permissions_client.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/permission_controller_delegate.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
@@ -169,11 +167,14 @@ void BraveWalletPermissionContext::RequestPermissions(
   }
 
   auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
-  auto* permission_manager = static_cast<permissions::BravePermissionManager*>(
-      PermissionManagerFactory::GetForProfile(
-          Profile::FromBrowserContext(web_contents->GetBrowserContext())));
+  if (!web_contents) {
+    std::move(callback).Run(std::vector<blink::mojom::PermissionStatus>());
+    return;
+  }
 
-  if (!permission_manager) {
+  content::PermissionControllerDelegate* delegate =
+      web_contents->GetBrowserContext()->GetPermissionControllerDelegate();
+  if (!delegate) {
     std::move(callback).Run(std::vector<blink::mojom::PermissionStatus>());
     return;
   }
@@ -193,9 +194,9 @@ void BraveWalletPermissionContext::RequestPermissions(
   }
 
   std::vector<blink::PermissionType> types(addresses.size(), permission);
-  permission_manager->RequestPermissionsForOrigin(
-      types, rfh, origin.GetURL(), rfh->HasTransientUserActivation(),
-      std::move(callback));
+  delegate->RequestPermissionsForOrigin(types, rfh, origin.GetURL(),
+                                        rfh->HasTransientUserActivation(),
+                                        std::move(callback));
 }
 
 // static
@@ -216,10 +217,9 @@ void BraveWalletPermissionContext::GetAllowedAccounts(
     return;
   }
 
-  auto* permission_manager = static_cast<permissions::BravePermissionManager*>(
-      PermissionManagerFactory::GetForProfile(
-          Profile::FromBrowserContext(web_contents->GetBrowserContext())));
-  if (!permission_manager) {
+  content::PermissionControllerDelegate* delegate =
+      web_contents->GetBrowserContext()->GetPermissionControllerDelegate();
+  if (!delegate) {
     std::move(callback).Run(false, std::vector<std::string>());
     return;
   }
@@ -235,7 +235,7 @@ void BraveWalletPermissionContext::GetAllowedAccounts(
         ContentSettingsTypeToRequestType(content_settings_type), origin,
         address, &sub_request_origin);
     if (success) {
-      auto status = permission_manager->GetPermissionStatusForOrigin(
+      auto status = delegate->GetPermissionStatusForOrigin(
           permission, rfh, sub_request_origin.GetURL());
       if (status == blink::mojom::PermissionStatus::GRANTED) {
         allowed_accounts.push_back(address);
