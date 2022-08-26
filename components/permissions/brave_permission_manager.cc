@@ -43,11 +43,5 @@ BravePermissionManager::GetPermissionStatusForOrigin(
                                                      requesting_origin);
   return GetPermissionStatusForCurrentDocument(permission, render_frame_host);
 }
-void BravePermissionManager::ResetPermission(blink::PermissionType permission,
-                                             const GURL& requesting_origin,
-                                             const GURL& embedding_origin) {
-  PermissionManager::ResetPermission(permission, requesting_origin,
-                                     embedding_origin);
-}
 
 }  // namespace permissions
