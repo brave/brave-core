@@ -551,7 +551,7 @@ void JSSolanaProvider::FireEvent(
       render_frame()->GetWebFrame()->MainWorldScriptContext();
   std::vector<v8::Local<v8::Value>> args;
   const base::Value event_value(event);
-  args.push_back(v8_value_converter_->ToV8Value(&event_value, context));
+  args.push_back(v8_value_converter_->ToV8Value(event_value, context));
   args.insert(args.end(), event_args.begin(), event_args.end());
   CallMethodOfObject(render_frame()->GetWebFrame(), u"braveSolana", u"emit",
                      std::move(args));
@@ -575,7 +575,7 @@ void JSSolanaProvider::OnConnect(
   } else {
     base::Value formed_response =
         GetSolanaProviderErrorDictionary(error, error_message);
-    result = v8_value_converter_->ToV8Value(&formed_response, context);
+    result = v8_value_converter_->ToV8Value(formed_response, context);
   }
 
   SendResponse(std::move(global_context), std::move(promise_resolver), isolate,
@@ -605,11 +605,11 @@ void JSSolanaProvider::OnSignAndSendTransaction(
   v8::Local<v8::Value> v8_result;
   if (error == mojom::SolanaProviderError::kSuccess) {
     base::Value value(std::move(result));
-    v8_result = v8_value_converter_->ToV8Value(&value, context);
+    v8_result = v8_value_converter_->ToV8Value(value, context);
   } else {
     base::Value formed_response =
         GetSolanaProviderErrorDictionary(error, error_message);
-    v8_result = v8_value_converter_->ToV8Value(&formed_response, context);
+    v8_result = v8_value_converter_->ToV8Value(formed_response, context);
   }
 
   SendResponse(std::move(global_context), std::move(promise_resolver), isolate,
@@ -641,7 +641,7 @@ void JSSolanaProvider::OnSignMessage(
     CHECK(Base58Decode(*signature, &signature_bytes, signature_bytes.size()));
     const base::Value signature_value(signature_bytes);
     v8::Local<v8::Value> v8_signature =
-        v8_value_converter_->ToV8Value(&signature_value, context);
+        v8_value_converter_->ToV8Value(signature_value, context);
     // From ArraryBuffer to Uint8Array
     v8_signature =
         v8::Uint8Array::New(v8::Local<v8::ArrayBuffer>::Cast(v8_signature), 0,
@@ -656,7 +656,7 @@ void JSSolanaProvider::OnSignMessage(
   } else {
     base::Value formed_response =
         GetSolanaProviderErrorDictionary(error, error_message);
-    v8_result = v8_value_converter_->ToV8Value(&formed_response, context);
+    v8_result = v8_value_converter_->ToV8Value(formed_response, context);
   }
 
   SendResponse(std::move(global_context), std::move(promise_resolver), isolate,
@@ -680,7 +680,7 @@ void JSSolanaProvider::OnSignTransaction(
   } else {
     base::Value formed_response =
         GetSolanaProviderErrorDictionary(error, error_message);
-    result = v8_value_converter_->ToV8Value(&formed_response, context);
+    result = v8_value_converter_->ToV8Value(formed_response, context);
   }
 
   SendResponse(std::move(global_context), std::move(promise_resolver), isolate,
@@ -714,7 +714,7 @@ void JSSolanaProvider::OnSignAllTransactions(
   } else {
     base::Value formed_response =
         GetSolanaProviderErrorDictionary(error, error_message);
-    result = v8_value_converter_->ToV8Value(&formed_response,
+    result = v8_value_converter_->ToV8Value(formed_response,
                                             global_context.Get(isolate));
   }
 
@@ -746,12 +746,12 @@ void JSSolanaProvider::OnRequest(
       // Dictionary to object
       base::Value value(std::move(result));
       v8_result =
-          v8_value_converter_->ToV8Value(&value, global_context.Get(isolate));
+          v8_value_converter_->ToV8Value(value, global_context.Get(isolate));
     }
   } else {
     base::Value formed_response =
         GetSolanaProviderErrorDictionary(error, error_message);
-    v8_result = v8_value_converter_->ToV8Value(&formed_response,
+    v8_result = v8_value_converter_->ToV8Value(formed_response,
                                                global_context.Get(isolate));
   }
 
@@ -867,7 +867,7 @@ v8::Local<v8::Value> JSSolanaProvider::CreatePublicKey(
   ExecuteScript(render_frame()->GetWebFrame(), *g_provider_internal_script);
   const base::Value public_key_value(base58_str);
   std::vector<v8::Local<v8::Value>> args;
-  args.push_back(v8_value_converter_->ToV8Value(&public_key_value, context));
+  args.push_back(v8_value_converter_->ToV8Value(public_key_value, context));
   v8::MaybeLocal<v8::Value> public_key_result =
       CallMethodOfObject(render_frame()->GetWebFrame(), u"_brave_solana",
                          u"createPublickey", std::move(args));
@@ -882,7 +882,7 @@ v8::Local<v8::Value> JSSolanaProvider::CreateTransaction(
   ExecuteScript(render_frame()->GetWebFrame(), *g_provider_internal_script);
   const base::Value serialized_tx_value(serialized_tx);
   std::vector<v8::Local<v8::Value>> args;
-  args.push_back(v8_value_converter_->ToV8Value(&serialized_tx_value, context));
+  args.push_back(v8_value_converter_->ToV8Value(serialized_tx_value, context));
 
   v8::MaybeLocal<v8::Value> transaction_result =
       CallMethodOfObject(render_frame()->GetWebFrame(), u"_brave_solana",

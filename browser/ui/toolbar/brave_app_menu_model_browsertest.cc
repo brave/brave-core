@@ -31,6 +31,7 @@
 #include "content/public/browser/notification_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
@@ -93,7 +94,7 @@ void CheckCommandsAreDisabledInMenuModel(
     ui::SimpleMenuModel* model,
     const std::vector<int>& disabled_commands) {
   for (int id : disabled_commands)
-    EXPECT_EQ(-1, model->GetIndexOfCommandId(id));
+    EXPECT_FALSE(model->GetIndexOfCommandId(id).has_value());
 }
 
 void CheckCommandsAreDisabledInMenuModel(
@@ -117,11 +118,11 @@ void CheckIpfsCommandsAreDisabledForMode(Browser* browser,
 void CheckCommandsAreInOrderInMenuModel(
     ui::SimpleMenuModel* model,
     const std::vector<int>& commands_in_order) {
-  std::vector<int> commands_index;
+  std::vector<size_t> commands_index;
   for (int id : commands_in_order) {
-    int index = model->GetIndexOfCommandId(id);
-    EXPECT_NE(-1, index);
-    commands_index.push_back(index);
+    absl::optional<size_t> index = model->GetIndexOfCommandId(id);
+    EXPECT_TRUE(index.has_value());
+    commands_index.push_back(index.value());
   }
   EXPECT_TRUE(
       std::is_sorted(std::begin(commands_index), std::end(commands_index)));

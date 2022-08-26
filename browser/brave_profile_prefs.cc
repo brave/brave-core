@@ -323,10 +323,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(prefs::kPrivacySandboxApisEnabledV2,
                                 base::Value(false));
 
-  // Disable Chromium's privacy sandbox
-  registry->SetDefaultPrefValue(prefs::kPrivacySandboxFlocEnabled,
-                                base::Value(false));
-
   // Importer: selected data types
   registry->RegisterBooleanPref(kImportDialogExtensions, true);
   registry->RegisterBooleanPref(kImportDialogPayments, true);

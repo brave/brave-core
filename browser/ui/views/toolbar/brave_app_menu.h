@@ -19,9 +19,9 @@ class BraveAppMenu : public AppMenu {
  private:
   // AppMenu overrides:
   views::MenuItemView* AddMenuItem(views::MenuItemView* parent,
-                                   int menu_index,
+                                   size_t menu_index,
                                    ui::MenuModel* model,
-                                   int model_index,
+                                   size_t model_index,
                                    ui::MenuModel::ItemType menu_type) override;
 };
 

@@ -133,7 +133,7 @@ void BraveMockRenderViewContextMenu::AddSubMenu(int command_id,
   item.has_submenu = true;
   items_.push_back(item);
 
-  for (int i = 0; i < model->GetItemCount(); ++i) {
+  for (size_t i = 0; i < model->GetItemCount(); ++i) {
     MockMenuItem sub_item;
     sub_item.is_submenu = true;
     if (model->GetTypeAt(i) != ui::MenuModel::TYPE_SEPARATOR) {

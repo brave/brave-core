@@ -81,7 +81,7 @@ Browser* FindBrowserAndAdjustBubbleForBraveWalletPanel(
       browser->tab_strip_model()->GetActiveWebContents
 
 #define BubbleDialogDelegateView BraveBubbleDialogDelegateView
-#include "src/chrome/browser/ui/views/permission_bubble/chooser_bubble_ui.cc"
+#include "src/chrome/browser/ui/views/permissions/chooser_bubble_ui.cc"
 #undef BubbleDialogDelegateView
 #undef GetActiveWebContents
 #undef FindBrowserWithWebContents

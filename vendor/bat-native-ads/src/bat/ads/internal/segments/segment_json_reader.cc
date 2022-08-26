@@ -14,17 +14,13 @@ namespace JSONReader {
 
 SegmentList ReadSegments(const std::string& json) {
   absl::optional<base::Value> value = base::JSONReader::Read(json);
-  if (!value) {
-    return {};
-  }
-
-  base::ListValue* list = nullptr;
-  if (!value->GetAsList(&list)) {
+  if (!value || !value->is_list()) {
     return {};
   }
 
   SegmentList segments;
-  for (const auto& element : list->GetList()) {
+  auto& list = value->GetList();
+  for (const auto& element : list) {
     if (!element.is_string()) {
       return {};
     }

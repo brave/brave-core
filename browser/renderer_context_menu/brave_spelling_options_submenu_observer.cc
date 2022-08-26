@@ -27,9 +27,9 @@ void BraveSpellingOptionsSubMenuObserver::InitMenu(
   // 2. We overrode RenderViewContextMenu::AddSpellCheckServiceItem so that the
   // spelling suggestions toggle isn't added to the menu by the base class.
   DCHECK(!use_spelling_service_.GetValue());
-  DCHECK_EQ(
-      submenu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_SPELLING_TOGGLE),
-      -1);
+  DCHECK(
+      !submenu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_SPELLING_TOGGLE)
+           .has_value());
 
   // Check if we ended up with a separator as the last item and, if so, get rid
   // of it.

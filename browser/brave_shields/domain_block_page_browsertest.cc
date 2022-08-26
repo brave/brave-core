@@ -64,12 +64,12 @@ class DomainBlockTestBase : public AdBlockServiceTest {
 
   void NavigateTo(const GURL& url) {
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-    content::RenderFrameHost* frame = web_contents()->GetMainFrame();
+    content::RenderFrameHost* frame = web_contents()->GetPrimaryMainFrame();
     ASSERT_TRUE(WaitForRenderFrameReady(frame));
   }
 
   void Click(const std::string& id) {
-    content::RenderFrameHost* frame = web_contents()->GetMainFrame();
+    content::RenderFrameHost* frame = web_contents()->GetPrimaryMainFrame();
     frame->ExecuteJavaScriptForTests(
         base::ASCIIToUTF16("document.getElementById('" + id + "').click();\n"),
         base::NullCallback());

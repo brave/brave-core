@@ -54,11 +54,11 @@ import org.chromium.chrome.browser.omnibox.SearchEngineLogoUtils;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.status.PageInfoIPHController;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
+import org.chromium.chrome.browser.omnibox.suggestions.FaviconFetcher;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxPedalDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
 import org.chromium.chrome.browser.omnibox.suggestions.UrlBarDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
-import org.chromium.chrome.browser.omnibox.suggestions.mostvisited.ExploreIconProvider;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegateImpl;
 import org.chromium.chrome.browser.share.crow.CrowButtonDelegate;
@@ -506,7 +506,7 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
                 "org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessor",
-                Context.class, SuggestionHost.class, UrlBarDelegate.class, Supplier.class,
+                Context.class, SuggestionHost.class, UrlBarDelegate.class, FaviconFetcher.class,
                 Supplier.class, Supplier.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
@@ -516,11 +516,11 @@ public class BytecodeTest {
                 List.class, OneshotSupplier.class, ThemeColorProvider.class,
                 ThemeColorProvider.class, MenuButtonCoordinator.class, MenuButtonCoordinator.class,
                 ObservableSupplier.class, ObservableSupplier.class, ObservableSupplier.class,
-                ObservableSupplier.class, ObservableSupplier.class, ObservableSupplier.class,
-                Callback.class, Supplier.class, Supplier.class, ObservableSupplier.class,
-                BooleanSupplier.class, boolean.class, boolean.class, boolean.class, boolean.class,
-                boolean.class, HistoryDelegate.class, BooleanSupplier.class,
-                OfflineDownloader.class, boolean.class, ObservableSupplier.class, Callback.class));
+                ObservableSupplier.class, Callback.class, Supplier.class, Supplier.class,
+                ObservableSupplier.class, BooleanSupplier.class, boolean.class, boolean.class,
+                boolean.class, boolean.class, boolean.class, HistoryDelegate.class,
+                BooleanSupplier.class, OfflineDownloader.class, boolean.class,
+                ObservableSupplier.class, Callback.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
                 "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator",
@@ -543,7 +543,7 @@ public class BytecodeTest {
                 Context.class, AutocompleteDelegate.class, UrlBarEditingTextStateProvider.class,
                 PropertyModel.class, Handler.class, Supplier.class, Supplier.class, Supplier.class,
                 LocationBarDataProvider.class, Callback.class, Supplier.class, BookmarkState.class,
-                JankTracker.class, ExploreIconProvider.class, OmniboxPedalDelegate.class));
+                JankTracker.class, OmniboxPedalDelegate.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/feed/FeedSurfaceMediator",
                 "org/chromium/chrome/browser/feed/BraveFeedSurfaceMediator",
                 FeedSurfaceCoordinator.class, Context.class, SnapScrollHelper.class,

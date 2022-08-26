@@ -51,7 +51,7 @@ void JSEthereumProvider::OnIsUnlocked(
   v8::Local<v8::Context> context = global_context.Get(isolate);
   base::Value result = base::Value(!locked);
   v8::Local<v8::Value> local_result =
-      content::V8ValueConverter::Create()->ToV8Value(&result, context);
+      content::V8ValueConverter::Create()->ToV8Value(result, context);
   std::ignore = resolver->Resolve(context, local_result);
 }
 
@@ -78,7 +78,7 @@ void JSEthereumProvider::SendResponse(
   }
 
   v8::Local<v8::Value> result =
-      content::V8ValueConverter::Create()->ToV8Value(&formed_response, context);
+      content::V8ValueConverter::Create()->ToV8Value(formed_response, context);
   if (global_callback) {
     v8::Local<v8::Value> result_null = v8::Null(isolate);
     v8::Local<v8::Value> argv[] = {success ? result_null : result,
@@ -593,7 +593,7 @@ void JSEthereumProvider::FireEvent(const std::string& event,
   std::vector<v8::Local<v8::Value>> args;
   for (auto const& argument : args_list) {
     args.push_back(
-        content::V8ValueConverter::Create()->ToV8Value(&argument, context));
+        content::V8ValueConverter::Create()->ToV8Value(argument, context));
   }
   CallMethodOfObject(render_frame_->GetWebFrame(), u"ethereum", u"emit",
                      std::move(args));

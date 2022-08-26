@@ -3,7 +3,7 @@
 <link rel="import" href="chrome://resources/html/web_ui_listener_behavior.html">
 <link rel="import" href="chrome://resources/cr_elements/md_select_css.html">
 <link rel="import" href="brave_new_tab_browser_proxy.html">
-<script type="module" src="../settings_shared_css.js"></script>
+<script type="module" src="../settings_shared.css.js"></script>
 <script type="module" src="../settings_vars.css.js"></script>
 
 <dom-module id="settings-brave-new-tab-page">
@@ -36,7 +36,7 @@
     </div>
     <template is="dom-if" if="[[showNewTabDashboardSettings_]]">
       <div class="settings-row">
-        <cr-link-row
+        <cr-link-row class="hr"
           label="$i18n{braveNewTabNewTabCustomizeWidgets}"
           on-click="openNewTabPage_" external>
         </cr-link-row>

@@ -22,9 +22,9 @@ using views::MenuItemView;
 BraveAppMenu::~BraveAppMenu() = default;
 
 MenuItemView* BraveAppMenu::AddMenuItem(views::MenuItemView* parent,
-                                        int menu_index,
+                                        size_t menu_index,
                                         ui::MenuModel* model,
-                                        int model_index,
+                                        size_t model_index,
                                         ui::MenuModel::ItemType menu_type) {
   MenuItemView* menu_item =
       AppMenu::AddMenuItem(parent, menu_index, model, model_index, menu_type);

@@ -1,8 +1,8 @@
 diff --git a/ui/webui/resources/cr_elements/BUILD.gn b/ui/webui/resources/cr_elements/BUILD.gn
-index 9a0313f63c318ee137424a9616c420add1dede5d..351453f65a40161c411aab31597748fd263faa86 100644
+index cb8f7cbc8e1e4a6bbe19c83fd59f9d252a784005..f1d38635832805a6943ddc1d0994570fd1c5d704 100644
 --- a/ui/webui/resources/cr_elements/BUILD.gn
 +++ b/ui/webui/resources/cr_elements/BUILD.gn
-@@ -111,7 +111,7 @@ preprocess_if_expr("preprocess_src_ts") {
+@@ -114,7 +114,7 @@ preprocess_if_expr("preprocess_src_ts") {
        "mouse_hoverable_mixin.ts",
      ]
  
@@ -11,7 +11,7 @@ index 9a0313f63c318ee137424a9616c420add1dede5d..351453f65a40161c411aab31597748fd
        in_files += [ "cr_searchable_drop_down/cr_searchable_drop_down.ts" ]
      }
    }
-@@ -274,7 +274,7 @@ preprocess_if_expr("preprocess_generated_ts") {
+@@ -277,7 +277,7 @@ preprocess_if_expr("preprocess_generated_ts") {
        "search_highlight_style.css.ts",
      ]
  
@@ -20,7 +20,7 @@ index 9a0313f63c318ee137424a9616c420add1dede5d..351453f65a40161c411aab31597748fd
        in_files += [ "cr_searchable_drop_down/cr_searchable_drop_down.html.ts" ]
      }
    }
-@@ -498,7 +498,7 @@ if (include_polymer) {
+@@ -503,7 +503,7 @@ if (include_polymer) {
        "mwb_shared_icons.html",
      ]
  

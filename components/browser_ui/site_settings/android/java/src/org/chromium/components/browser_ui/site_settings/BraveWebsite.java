@@ -31,7 +31,7 @@ public class BraveWebsite {
                         ((WebsiteAddress) BraveReflectionUtil.InvokeMethod(
                                  Website.class, this, "getAddress"))
                                 .getHost(),
-                        value, "");
+                        value, "", false);
                 BraveReflectionUtil.InvokeMethod(Website.class, this, "setContentSettingException",
                         int.class, type, ContentSettingException.class, exception);
             }

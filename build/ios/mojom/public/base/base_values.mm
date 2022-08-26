@@ -268,11 +268,9 @@
 
 - (nullable instancetype)initWithJSONString:(NSString*)json {
   auto string = base::SysNSStringToUTF8(json);
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          string, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                      base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& response = value_with_error.value;
+  absl::optional<base::Value> response = base::JSONReader::Read(
+      string, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                  base::JSONParserOptions::JSON_PARSE_RFC);
   if (response) {
     return [self initWithValue:response->Clone()];
   }

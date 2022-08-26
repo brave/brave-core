@@ -17,7 +17,6 @@ import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
-import org.chromium.chrome.browser.omnibox.suggestions.mostvisited.ExploreIconProvider;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.share.ShareDelegate;
@@ -43,12 +42,11 @@ class BraveAutocompleteMediator extends AutocompleteMediator {
             @NonNull Callback<Tab> bringTabToFrontCallback,
             @NonNull Supplier<TabWindowManager> tabWindowManagerSupplier,
             @NonNull BookmarkState bookmarkState, @NonNull JankTracker jankTracker,
-            @NonNull ExploreIconProvider exploreIconProvider,
             @NonNull OmniboxPedalDelegate omniboxPedalDelegate) {
         super(context, delegate, textProvider, listPropertyModel, handler,
                 modalDialogManagerSupplier, activityTabSupplier, shareDelegateSupplier,
                 locationBarDataProvider, bringTabToFrontCallback, tabWindowManagerSupplier,
-                bookmarkState, jankTracker, exploreIconProvider, omniboxPedalDelegate);
+                bookmarkState, jankTracker, omniboxPedalDelegate);
     }
 
     @Override

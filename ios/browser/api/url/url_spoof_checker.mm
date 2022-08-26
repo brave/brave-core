@@ -154,14 +154,6 @@ BraveSpoofCheckerLookalikeURLMatchType const
              suggestedURL:nil];
   }
 
-  // If the URL is in the component updater allowlist, don't show any warning.
-  if (reputation::IsUrlAllowlistedBySafetyTipsComponent(
-          proto, response_url.GetWithEmptyPath())) {
-    return [[BraveURLSpoofCheckerResult alloc]
-        initWithMatchType:LookalikeUrlMatchType::kNone
-             suggestedURL:nil];
-  }
-
   const DomainInfo navigated_domain = GetDomainInfo(response_url);
   // Empty domain_and_registry happens on private domains.
   if (navigated_domain.domain_and_registry.empty() ||
@@ -181,7 +173,10 @@ BraveSpoofCheckerLookalikeURLMatchType const
       });
   if (!GetMatchingDomain(navigated_domain, engaged_sites, in_target_allowlist,
                          proto, &matched_domain, &match_type)) {
-    if (ShouldBlockBySpoofCheckResult(navigated_domain)) {
+    if (ShouldBlockBySpoofCheckResult(navigated_domain) &&
+        !reputation::IsUrlAllowlistedBySafetyTipsComponent(
+            proto, response_url.GetWithEmptyPath(),
+            response_url.GetWithEmptyPath())) {
       return [[BraveURLSpoofCheckerResult alloc]
           initWithMatchType:LookalikeUrlMatchType::kFailedSpoofChecks
                suggestedURL:nil];
@@ -192,14 +187,23 @@ BraveSpoofCheckerLookalikeURLMatchType const
              suggestedURL:nil];
   }
   DCHECK(!matched_domain.empty());
+  const std::string suggested_domain = GetETLDPlusOne(matched_domain);
+  DCHECK(!suggested_domain.empty());
+  GURL::Replacements replace_host;
+  replace_host.SetHostStr(suggested_domain);
+  const GURL suggested_url =
+      response_url.ReplaceComponents(replace_host).GetWithEmptyPath();
+
+  // If the URL is in the component updater allowlist, don't show any warning.
+  if (reputation::IsUrlAllowlistedBySafetyTipsComponent(
+          proto, response_url.GetWithEmptyPath(),
+          suggested_url.GetWithEmptyPath())) {
+    return [[BraveURLSpoofCheckerResult alloc]
+        initWithMatchType:LookalikeUrlMatchType::kNone
+             suggestedURL:nil];
+  }
 
   if (ShouldBlockLookalikeUrlNavigation(match_type)) {
-    const std::string suggested_domain = GetETLDPlusOne(matched_domain);
-    DCHECK(!suggested_domain.empty());
-    GURL::Replacements replace_host;
-    replace_host.SetHostStr(suggested_domain);
-    const GURL suggested_url =
-        response_url.ReplaceComponents(replace_host).GetWithEmptyPath();
     return [[BraveURLSpoofCheckerResult alloc]
         initWithMatchType:match_type
              suggestedURL:net::NSURLWithGURL(suggested_url)];

@@ -187,10 +187,9 @@ gfx::Image GetPlaceholderAvatarIconWithColors(SkColor fill_color,
 // GetPlaceholderAvatarIconWithColors function above which is used in this
 // function. Also, changes the label from "Default Avatar" to our placeholder
 // avatar name.
-base::flat_map<std::string, base::Value> GetDefaultProfileAvatarIconAndLabel(
-    SkColor fill_color,
-    SkColor stroke_color,
-    bool selected) {
+base::Value::Dict GetDefaultProfileAvatarIconAndLabel(SkColor fill_color,
+                                                      SkColor stroke_color,
+                                                      bool selected) {
   gfx::Image icon = profiles::GetPlaceholderAvatarIconWithColors(
       fill_color, stroke_color, kAvatarIconSize);
   size_t index = profiles::GetPlaceholderAvatarIndex();

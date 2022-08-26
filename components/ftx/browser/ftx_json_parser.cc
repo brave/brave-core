@@ -18,11 +18,9 @@ bool FTXJSONParser::GetFuturesDataFromJSON(const std::string& json,
   if (!data) {
     return false;
   }
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                    base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& records_v = value_with_error.value;
+  absl::optional<base::Value> records_v =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
     LOG(ERROR) << "FTX GetFuturesDataFromJSON: did not understand json";
     return false;
@@ -70,12 +68,9 @@ bool FTXJSONParser::GetChartDataFromJSON(const std::string& json,
     return false;
   }
 
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                    base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& records_v = value_with_error.value;
-
+  absl::optional<base::Value> records_v =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
     LOG(ERROR) << "FTX GetChartDataFromJSON: did not understand json";
     return false;
@@ -116,11 +111,9 @@ bool FTXJSONParser::GetAccessTokenFromJSON(const std::string& json,
     return false;
   }
 
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                    base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& records_v = value_with_error.value;
+  absl::optional<base::Value> records_v =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
     LOG(ERROR) << "FTX GetAccessTokenFromJSON: did not understand json";
     return false;
@@ -178,12 +171,9 @@ bool FTXJSONParser::GetAccountBalancesFromJSON(const std::string& json,
     return false;
   }
 
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                    base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& records_v = value_with_error.value;
-
+  absl::optional<base::Value> records_v =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
     LOG(ERROR) << "FTX GetAccountBalancesFromJSON: Did not understand json";
     return false;
@@ -213,12 +203,9 @@ bool FTXJSONParser::GetAccountBalancesFromJSON(const std::string& json,
 
 bool FTXJSONParser::GetQuoteIdJSON(const std::string& json,
                                    std::string* quote_id) {
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                    base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& records_v = value_with_error.value;
-
+  absl::optional<base::Value> records_v =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
     LOG(ERROR) << "FTX GetQuoteIdJSON: Did not understand json";
     return false;
@@ -259,12 +246,9 @@ bool FTXJSONParser::GetQuoteStatusJSON(const std::string& json,
   //     "expiry": 1619158147.924754
   //   }
   // }
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                    base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& records_v = value_with_error.value;
-
+  absl::optional<base::Value> records_v =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
     LOG(ERROR) << "FTX GetQuoteStatusJSON: did not understand json";
     return false;

@@ -65,6 +65,7 @@ public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
             params.getRedirectHandler().setShouldNotOverrideUrlLoadingOnCurrentRedirectChain();
         }
         GURL browserFallbackGURL = new GURL(browserFallbackUrl);
-        return clobberCurrentTab(browserFallbackGURL, params.getReferrerUrl());
+        return clobberCurrentTab(browserFallbackGURL, params.getReferrerUrl(),
+                params.getInitiatorOrigin(), params.isRendererInitiated());
     }
 }

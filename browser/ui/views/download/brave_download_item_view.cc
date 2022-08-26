@@ -19,7 +19,7 @@
 #include "content/public/common/origin_util.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/resource/resource_bundle.h"
-#include "ui/base/theme_provider.h"
+#include "ui/color/color_provider.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/paint_vector_icon.h"
@@ -193,7 +193,7 @@ void BraveDownloadItemView::DrawOriginURL(gfx::Canvas* canvas) {
   int mirrored_x = GetMirroredXWithWidthInView(x, text_width);
 
   SkColor dimmed_text_color = SkColorSetA(
-      GetThemeProvider()->GetColor(ThemeProperties::COLOR_BOOKMARK_TEXT), 0xC7);
+      GetColorProvider()->GetColor(ThemeProperties::COLOR_BOOKMARK_TEXT), 0xC7);
   canvas->DrawStringRect(
       originURL, origin_url_font_list_, dimmed_text_color,
       gfx::Rect(mirrored_x, GetYForOriginURLText(), text_width,

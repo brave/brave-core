@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 
 #define ToolbarView BraveToolbarView

@@ -55,8 +55,8 @@ class NavigatorConnectionAttributeBrowserTest
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  content::RenderFrameHost* main_frame() {
-    return web_contents()->GetMainFrame();
+  content::RenderFrameHost* primary_main_frame() {
+    return web_contents()->GetPrimaryMainFrame();
   }
 
  protected:
@@ -73,7 +73,8 @@ IN_PROC_BROWSER_TEST_P(NavigatorConnectionAttributeBrowserTest,
   const GURL url = https_server_.GetURL("/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
-  auto result = content::EvalJs(main_frame(), "'connection' in navigator");
+  auto result =
+      content::EvalJs(primary_main_frame(), "'connection' in navigator");
   EXPECT_EQ(IsNavigatorConnectionAttributeEnabled(), result);
 }
 

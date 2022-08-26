@@ -304,16 +304,16 @@ void BraveReferralsService::OnReferralInitLoadComplete(
     return;
   }
 
-  base::JSONReader::ValueWithError parsed_json =
+  auto parsed_json =
       base::JSONReader::ReadAndReturnValueWithError(*response_body);
-  if (!parsed_json.value || !parsed_json.value->is_dict()) {
+  if (!parsed_json.has_value() || !parsed_json->is_dict()) {
     LOG(ERROR) << "Failed to parse referral initialization response: "
-               << (!parsed_json.value ? parsed_json.error_message
-                                      : "not a dictionary");
+               << (!parsed_json.has_value() ? parsed_json.error().message
+                                            : "not a dictionary");
     return;
   }
 
-  const auto& root = parsed_json.value->GetDict();
+  const auto& root = parsed_json->GetDict();
   const auto* download_id = root.FindString("download_id");
   if (!download_id) {
     LOG(ERROR)
@@ -359,14 +359,15 @@ void BraveReferralsService::OnReferralFinalizationCheckLoadComplete(
     return;
   }
 
-  base::JSONReader::ValueWithError parsed_json =
+  auto parsed_json =
       base::JSONReader::ReadAndReturnValueWithError(*response_body);
-  if (!parsed_json.value || !parsed_json.value->is_dict()) {
+  if (!parsed_json.has_value() || !parsed_json->is_dict()) {
     LOG(ERROR) << "Failed to parse referral finalization check response: "
-               << parsed_json.error_message;
+               << (!parsed_json.has_value() ? parsed_json.error().message
+                                            : "not a dictionary");
     return;
   }
-  const auto& root = parsed_json.value->GetDict();
+  const auto& root = parsed_json->GetDict();
   auto finalized = root.FindBool("finalized");
   if (!finalized.has_value() || !finalized.value()) {
     LOG(ERROR) << "Referral is not ready, please wait at least 30 days";
