@@ -359,13 +359,7 @@ export default class Settings extends React.PureComponent<Props, State> {
                   />
                 ) : null
               }
-              {
-                activeTab === TabType.BraveStats
-                  ? (
-                    <BraveStatsSettings
-                    />
-                  ) : null
-              }
+              {activeTab === TabType.BraveStats && <BraveStatsSettings />}
               {
                 activeTab === TabType.TopSites
                   ? (
@@ -393,7 +387,7 @@ export default class Settings extends React.PureComponent<Props, State> {
                   />
                 ) : null
               }
-              {activeTab === TabType.Clock ? <ClockSettings /> : null}
+              {activeTab === TabType.Clock && <ClockSettings />}
               {
                 activeTab === TabType.Cards
                   ? (
