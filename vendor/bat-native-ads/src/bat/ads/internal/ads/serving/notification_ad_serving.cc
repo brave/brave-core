@@ -9,7 +9,6 @@
 #include "base/check.h"
 #include "base/rand_util.h"
 #include "base/time/time.h"
-#include "bat/ads/ad_type.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_base.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_factory.h"
 #include "bat/ads/internal/ads/serving/notification_ad_serving_util.h"

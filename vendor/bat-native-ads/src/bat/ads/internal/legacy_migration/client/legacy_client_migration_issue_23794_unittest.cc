@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/legacy_migration/client/legacy_client_migration.h"
-
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager_constants.h"
 #include "bat/ads/internal/legacy_migration/client/legacy_client_migration_unittest_util.h"

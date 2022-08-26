@@ -29,7 +29,6 @@
 #include "bat/ads/internal/base/unittest/unittest_test_suite_util.h"
 #include "bat/ads/internal/base/unittest/unittest_url_response_util.h"
 #include "bat/ads/notification_ad_info.h"
-#include "testing/gmock/include/gmock/gmock.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 

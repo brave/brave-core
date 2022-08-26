@@ -13,9 +13,9 @@
 #include "base/files/file_path.h"
 #include "bat/ads/internal/base/database/database_bind_util.h"
 #include "bat/ads/internal/base/database/database_record_util.h"
+#include "sql/meta_table.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
-#include "third_party/sqlite/sqlite3.h"
 
 namespace ads {
 

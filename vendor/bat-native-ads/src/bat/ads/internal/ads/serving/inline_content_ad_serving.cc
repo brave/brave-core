@@ -7,7 +7,6 @@
 
 #include "base/check.h"
 #include "base/rand_util.h"
-#include "bat/ads/ad_type.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/inline_content_ads/eligible_inline_content_ads_base.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/inline_content_ads/eligible_inline_content_ads_factory.h"

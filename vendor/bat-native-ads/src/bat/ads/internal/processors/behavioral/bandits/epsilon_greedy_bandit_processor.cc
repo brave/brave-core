@@ -13,7 +13,6 @@
 #include "bat/ads/internal/processors/behavioral/bandits/bandit_feedback_info.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arm_info.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arm_util.h"
-#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arm_values_util.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arms_alias.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_constants.h"
 #include "bat/ads/internal/segments/segment_util.h"

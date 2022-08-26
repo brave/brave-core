@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/privacy/p2a/impressions/p2a_impression_questions.h"
 
-#include "testing/gtest/include/gtest/gtest.h"
+#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

@@ -14,7 +14,6 @@
 #include "base/time/time.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/net/http/http_status_code.h"
 #include "bat/ads/internal/base/time/time_formatting_util.h"
 #include "bat/ads/internal/base/url/url_request_string_util.h"
 #include "bat/ads/internal/base/url/url_response_string_util.h"
@@ -25,6 +24,7 @@
 #include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/database/database_manager.h"
 #include "bat/ads/internal/flags/flag_manager_util.h"
+#include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {

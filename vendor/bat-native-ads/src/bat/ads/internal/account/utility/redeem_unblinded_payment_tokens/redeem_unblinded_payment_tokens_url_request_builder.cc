@@ -11,7 +11,6 @@
 #include "base/json/json_writer.h"
 #include "base/notreached.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_user_data_builder.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/token_preimage.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/verification_key.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/verification_signature.h"

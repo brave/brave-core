@@ -15,7 +15,6 @@
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_user_data_builder.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/net/http/http_status_code.h"
 #include "bat/ads/internal/base/time/time_formatting_util.h"
 #include "bat/ads/internal/base/url/url_request_string_util.h"
 #include "bat/ads/internal/base/url/url_response_string_util.h"
@@ -24,6 +23,7 @@
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
 #include "bat/ads/pref_names.h"
 #include "brave_base/random.h"
+#include "net/http/http_status_code.h"
 
 namespace ads {
 

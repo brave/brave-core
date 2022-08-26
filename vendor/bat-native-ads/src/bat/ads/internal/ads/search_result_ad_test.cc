@@ -14,7 +14,6 @@
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_unittest_util.h"
 #include "bat/ads/internal/history/history_unittest_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

@@ -7,7 +7,7 @@
 
 #include <string>
 
-#include "testing/gtest/include/gtest/gtest.h"
+#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

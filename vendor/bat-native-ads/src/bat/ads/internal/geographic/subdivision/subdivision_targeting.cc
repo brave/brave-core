@@ -15,7 +15,6 @@
 #include "base/values.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/net/http/http_status_code.h"
 #include "bat/ads/internal/base/time/time_formatting_util.h"
 #include "bat/ads/internal/base/url/url_request_string_util.h"
 #include "bat/ads/internal/base/url/url_response_string_util.h"
@@ -26,6 +25,7 @@
 #include "bat/ads/internal/prefs/pref_manager.h"
 #include "bat/ads/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
+#include "net/http/http_status_code.h"
 
 namespace ads {
 namespace geographic {

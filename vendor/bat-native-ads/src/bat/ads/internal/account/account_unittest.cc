@@ -15,7 +15,6 @@
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/net/http/http_status_code.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
@@ -25,6 +24,7 @@
 #include "bat/ads/internal/privacy/tokens/token_generator_unittest_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "bat/ads/pref_names.h"
+#include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 

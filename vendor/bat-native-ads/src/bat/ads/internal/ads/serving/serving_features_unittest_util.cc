@@ -11,7 +11,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/internal/ads/serving/serving_features.h"
-#include "testing/gtest/include/gtest/gtest.h"
+#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

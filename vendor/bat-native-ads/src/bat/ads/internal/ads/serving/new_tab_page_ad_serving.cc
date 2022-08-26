@@ -7,7 +7,6 @@
 
 #include "base/check.h"
 #include "base/rand_util.h"
-#include "bat/ads/ad_type.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_base.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_factory.h"
 #include "bat/ads/internal/ads/serving/permission_rules/new_tab_page_ads/new_tab_page_ad_permission_rules.h"

@@ -8,7 +8,7 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/legacy_migration/client/legacy_client_migration.h"
 #include "bat/ads/pref_names.h"
-#include "testing/gtest/include/gtest/gtest.h"
+#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
 namespace ads {
 namespace client {

@@ -20,7 +20,6 @@
 #include "bat/ads/internal/account/issuers/issuer_types.h"
 #include "bat/ads/internal/account/issuers/issuers_util.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/create_confirmation_url_request_builder.h"
-#include "bat/ads/internal/account/utility/redeem_unblinded_token/create_confirmation_util.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/fetch_payment_token_url_request_builder.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"

@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/ads/notification_ad.h"
-
 #include "base/time/time.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
@@ -12,15 +10,13 @@
 #include "bat/ads/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "bat/ads/internal/ads/serving/notification_ad_serving_util.h"
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
-#include "bat/ads/internal/base/net/http/http_status_code.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
-#include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "bat/ads/internal/history/history_unittest_util.h"
 #include "bat/ads/internal/privacy/p2a/impressions/p2a_impression.h"
 #include "bat/ads/internal/privacy/p2a/opportunities/p2a_opportunity.h"
 #include "bat/ads/notification_ad_info.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

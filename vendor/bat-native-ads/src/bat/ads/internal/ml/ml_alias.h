@@ -11,10 +11,10 @@
 #include <string>
 #include <vector>
 
+#include "bat/ads/internal/ml/transformation/transformation.h"
+
 namespace ads {
 namespace ml {
-
-class Transformation;
 
 using PredictionMap = std::map<std::string, double>;
 using TransformationPtr = std::unique_ptr<Transformation>;

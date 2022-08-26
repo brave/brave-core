@@ -24,11 +24,9 @@
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
 #include "bat/ads/internal/processors/behavioral/purchase_intent/purchase_intent_processor.h"
 #include "bat/ads/internal/processors/contextual/text_classification/text_classification_processor.h"
-#include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource.h"
 #include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource_util.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
 #include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
-#include "bat/ads/internal/segments/segment_util.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

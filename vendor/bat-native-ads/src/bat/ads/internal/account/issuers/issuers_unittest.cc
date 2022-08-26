@@ -11,10 +11,9 @@
 #include "bat/ads/internal/account/issuers/issuers_info.h"
 #include "bat/ads/internal/account/issuers/issuers_unittest_util.h"
 #include "bat/ads/internal/account/issuers/issuers_util.h"
-#include "bat/ads/internal/base/net/http/http_status_code.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
-#include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
+#include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

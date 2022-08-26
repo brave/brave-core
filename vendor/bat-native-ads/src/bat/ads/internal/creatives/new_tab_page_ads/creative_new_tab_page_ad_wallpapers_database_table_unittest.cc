@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpapers_database_table.h"
 
-#include "testing/gtest/include/gtest/gtest.h"
+#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

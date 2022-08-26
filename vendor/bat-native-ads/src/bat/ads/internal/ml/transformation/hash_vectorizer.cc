@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/ml/transformation/hash_vectorizer.h"
 
-#include "bat/ads/internal/ml/data/text_data.h"
 #include "third_party/zlib/zlib.h"
 
 namespace ads {

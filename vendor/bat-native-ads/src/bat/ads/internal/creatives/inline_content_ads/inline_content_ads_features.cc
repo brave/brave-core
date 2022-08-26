@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/creatives/inline_content_ads/inline_content_ads_features.h"
 
-#include "base/metrics/field_trial_params.h"
-
 namespace ads {
 namespace inline_content_ads {
 namespace features {
