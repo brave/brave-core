@@ -59,6 +59,19 @@ using content::WebUIMessageHandler;
 
 namespace {
 
+#if !BUILDFLAG(IS_ANDROID)
+
+brave_rewards::RewardsPanelCoordinator* GetPanelCoordinator(
+    content::WebContents* web_contents) {
+  DCHECK(web_contents);
+  if (auto* browser = chrome::FindBrowserWithWebContents(web_contents)) {
+    return brave_rewards::RewardsPanelCoordinator::FromBrowser(browser);
+  }
+  return nullptr;
+}
+
+#endif
+
 // The handler for Javascript messages for Brave about: pages
 class RewardsDOMHandler
     : public WebUIMessageHandler,
@@ -189,7 +202,7 @@ class RewardsDOMHandler
   void OnGetWalletPassphrase(const std::string& pass);
 
   void GetOnboardingStatus(const base::Value::List& args);
-  void SaveOnboardingResult(const base::Value::List& args);
+  void EnableRewards(const base::Value::List& args);
   void GetExternalWalletProviders(const base::Value::List& args);
   void SetExternalWalletType(const base::Value::List& args);
 
@@ -505,8 +518,8 @@ void RewardsDOMHandler::RegisterMessages() {
       base::BindRepeating(&RewardsDOMHandler::GetOnboardingStatus,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "brave_rewards.saveOnboardingResult",
-      base::BindRepeating(&RewardsDOMHandler::SaveOnboardingResult,
+      "brave_rewards.enableRewards",
+      base::BindRepeating(&RewardsDOMHandler::EnableRewards,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards.getExternalWalletProviders",
@@ -772,19 +785,9 @@ void RewardsDOMHandler::ClaimPromotion(const base::Value::List& args) {
   const std::string promotion_id = args[0].GetString();
 
 #if !BUILDFLAG(IS_ANDROID)
-  auto* browser =
-      chrome::FindBrowserWithWebContents(web_ui()->GetWebContents());
-  if (!browser) {
-    return;
+  if (auto* coordinator = GetPanelCoordinator(web_ui()->GetWebContents())) {
+    coordinator->ShowGrantCaptcha(promotion_id);
   }
-
-  auto* coordinator =
-      brave_rewards::RewardsPanelCoordinator::FromBrowser(browser);
-  if (!coordinator) {
-    return;
-  }
-
-  coordinator->ShowGrantCaptcha(promotion_id);
 #else
   // No need for a callback. The UI receives "brave_rewards.promotionFinish".
   brave_rewards::AttestPromotionCallback callback = base::DoNothing();
@@ -2036,24 +2039,26 @@ void RewardsDOMHandler::OnGetWalletPassphrase(const std::string& passphrase) {
 }
 
 void RewardsDOMHandler::GetOnboardingStatus(const base::Value::List& args) {
-  if (!rewards_service_) {
-    return;
-  }
   AllowJavascript();
+  Profile* profile = Profile::FromWebUI(web_ui());
   base::Value::Dict data;
-  data.Set("showOnboarding", rewards_service_->ShouldShowOnboarding());
+  data.Set("showOnboarding",
+           !profile->GetPrefs()->GetBoolean(brave_rewards::prefs::kEnabled));
   CallJavascriptFunction("brave_rewards.onboardingStatus",
                          base::Value(std::move(data)));
 }
 
-void RewardsDOMHandler::SaveOnboardingResult(const base::Value::List& args) {
-  CHECK_EQ(1U, args.size());
-  if (!rewards_service_)
-    return;
-
+void RewardsDOMHandler::EnableRewards(const base::Value::List& args) {
+#if !BUILDFLAG(IS_ANDROID)
   AllowJavascript();
-  if (args[0].GetString() == "opted-in")
-    rewards_service_->EnableRewards();
+  if (auto* coordinator = GetPanelCoordinator(web_ui()->GetWebContents())) {
+    coordinator->OpenRewardsPanel();
+  }
+#else
+  // On Android, a native onboarding modal is displayed when the user navigates
+  // to the Rewards page. This message handler should not be called.
+  NOTREACHED();
+#endif
 }
 
 void RewardsDOMHandler::GetExternalWalletProviders(
