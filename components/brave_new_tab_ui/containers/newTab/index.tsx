@@ -53,7 +53,6 @@ import { FTXState } from '../../widgets/ftx/ftx_state'
 // NTP features
 import Settings, { TabType as SettingsTabType } from './settings'
 import { MAX_GRID_SIZE } from '../../constants/new_tab_ui'
-import { saveShowStats } from '../../api/preferences'
 import GridWidget from './gridWidget'
 
 interface Props {
@@ -1179,18 +1178,15 @@ class NewTabPage extends React.Component<Props, State> {
             showBrandedWallpaper={isShowingBrandedWallpaper}
         >
           {this.renderSearchPromotion()}
-          {showStats &&
-          <Page.GridItemStats>
-            <Stats
-              paddingType={'right'}
-              widgetTitle={getLocale('statsTitle')}
-              textDirection={newTabData.textDirection}
-              stats={newTabData.stats}
-              hideWidget={() => saveShowStats(false)}
-              menuPosition={'right'}
-            />
-          </Page.GridItemStats>
-          }
+          <GridWidget
+            pref='showStats'
+            container={Page.GridItemStats}
+            paddingType={'right'}
+            widgetTitle={getLocale('statsTitle')}
+            textDirection={newTabData.textDirection}
+            menuPosition={'right'}>
+            <Stats stats={newTabData.stats}/>
+          </GridWidget>
           <GridWidget
             pref='showClock'
             container={Page.GridItemClock}

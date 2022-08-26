@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { StatsContainer, StatsItem, createWidget } from '../../components/default'
+import { StatsContainer, StatsItem } from '../../components/default'
 
 // Utils
 import { getLocale } from '../../../common/locale'
@@ -12,7 +12,7 @@ interface Props {
   stats: NewTab.Stats
 }
 
-class Stats extends React.Component<Props, {}> {
+export default class Stats extends React.Component<Props, {}> {
   get millisecondsPerItem () {
     return 50
   }
@@ -117,5 +117,3 @@ class Stats extends React.Component<Props, {}> {
     )
   }
 }
-
-export default createWidget(Stats)
