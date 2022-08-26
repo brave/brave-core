@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5 b/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5
-index 8690c632cff7a298861719c0098d5e13b92d68bd..7b423fae6b1dff9d52212272a8c6be5bf7bddd77 100644
+index 31d45afd16c3a7cb51e4edaccbd69e4f45509eee..090370f8e7dbf63c6f0360660c147d7c637ef780 100644
 --- a/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5
 +++ b/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5
 @@ -400,5 +400,13 @@

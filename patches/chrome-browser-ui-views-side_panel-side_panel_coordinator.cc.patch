@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/side_panel/side_panel_coordinator.cc b/chrome/browser/ui/views/side_panel/side_panel_coordinator.cc
-index fc61f1dd68ea2e410af19590be9dfa047dc353c4..a2c044662eae17cc7d0359a0dce2335fd2966a53 100644
+index d987aa8efd9c78c21b529ef2a9e6e0cfe22899f8..aab65cf9071fa7eb2968cecfe15a120824ee9577 100644
 --- a/chrome/browser/ui/views/side_panel/side_panel_coordinator.cc
 +++ b/chrome/browser/ui/views/side_panel/side_panel_coordinator.cc
 @@ -175,6 +175,7 @@ SidePanelCoordinator::~SidePanelCoordinator() {
