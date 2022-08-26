@@ -24,6 +24,7 @@ def collect_data(browser, out_dir, url):
     url = result.groups()[1]
 
   out = out_dir + "/" + urlparse(url.strip()).netloc
+  out = os.path.abspath(out)
 
   if os.path.exists(out + "/distilled.html") :
     print("Skip " + urlparse(url).netloc)
@@ -40,7 +41,8 @@ def collect_data(browser, out_dir, url):
     time.sleep(1)
 
   if ticket != '':
-    with open(out + "/ticket.url", "w") as f : f.write(ticket)
+    with open(out + "/ticket.url", "w") as f :
+      f.write("https://github.com/brave/brave-browser/issues/" + ticket)
 
   time.sleep(1)
   process.terminate()
