@@ -22,13 +22,8 @@ export interface StatsProps {
  * @prop {string} testId - the component's id used for testing purposes
  * @prop {React.ReactNode} children - the child elements
  */
-export class StatsContainer extends React.PureComponent<StatsProps, {}> {
-  render () {
-    const { testId, children } = this.props
-    return (
-      <StyledStatsItemContainer data-test-id={testId}>{children}</StyledStatsItemContainer>
-    )
-  }
+export function StatsContainer ({ testId, children }: StatsProps) {
+    return <StyledStatsItemContainer data-test-id={testId}>{children}</StyledStatsItemContainer>
 }
 
 export interface StatsItemProps {
@@ -45,16 +40,10 @@ export interface StatsItemProps {
  * @prop {string} text - descriptive text that goes along the stat
  * @prop {string} description - describes what the counter is showing
  */
-export class StatsItem extends React.PureComponent<StatsItemProps, {}> {
-  render () {
-    const { testId, counter, text, description } = this.props
-
-    return (
-      <StyledStatsItem data-test-id={testId}>
+export function StatsItem ({ testId, counter, text, description }: StatsItemProps) {
+    return <StyledStatsItem data-test-id={testId}>
         <StyledStatsItemCounter>{counter}</StyledStatsItemCounter>
           {text && <StyledStatsItemText>{text}</StyledStatsItemText>}
         <StyledStatsItemDescription>{description}</StyledStatsItemDescription>
       </StyledStatsItem>
-    )
-  }
 }
