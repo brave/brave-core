@@ -1,6 +1,4 @@
 import styled from 'styled-components'
-import RampIcon from '../../../assets/svg-icons/ramp-icon.svg'
-import WyreIcon from '../../../assets/svg-icons/wyre-icon.svg'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -8,30 +6,6 @@ export const StyledWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-`
-
-const LogoBase = styled.div`
-  width: 19px;
-  height: 22px;
-  margin-right: 5px;
-  background-size: cover;
-  background-repeat: no-repeat;
-`
-
-export const WyreLogo = styled(LogoBase)`
-  width: 19px;
-  height:17px;
-  margin-right: 5px;
-  background-image: url(${WyreIcon});
-  background-size: contain;
-  background-position: center;
-`
-
-export const RampLogo = styled(LogoBase)`
-  width: 19px;
-  height: 12px;
-  margin-right: 5px;
-  background-image: url(${RampIcon});
 `
 
 export const Spacer = styled.div`

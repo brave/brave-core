@@ -89,7 +89,7 @@ export const Buy = ({
     return [...rampAssetOptions, ...wyreAssetOptions, ...sardineAssetOptions]
       .map(asset => asset.chainId.toLowerCase())
       .includes(selectedNetwork.chainId.toLowerCase())
-  }, [selectedNetwork, rampAssetOptions, wyreAssetOptions])
+  }, [selectedNetwork, rampAssetOptions, wyreAssetOptions, sardineAssetOptions])
 
   // methods
   const onSubmitBuy = React.useCallback(async (buyOption: BraveWallet.OnRampProvider) => {

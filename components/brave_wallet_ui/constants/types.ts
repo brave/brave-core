@@ -572,7 +572,8 @@ export const BuySupportedChains = [
   BraveWallet.CELO_MAINNET_CHAIN_ID,
   BraveWallet.SOLANA_MAINNET,
   BraveWallet.OPTIMISM_MAINNET_CHAIN_ID,
-  BraveWallet.FILECOIN_MAINNET
+  BraveWallet.FILECOIN_MAINNET,
+  BraveWallet.FANTOM_MAINNET_CHAIN_ID
 ]
 
 export interface GetAllNetworksList {
@@ -719,7 +720,11 @@ export const SupportedOnRampNetworks = [
   BraveWallet.POLYGON_MAINNET_CHAIN_ID,
   BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID,
   BraveWallet.CELO_MAINNET_CHAIN_ID,
-  BraveWallet.AVALANCHE_MAINNET_CHAIN_ID
+  BraveWallet.AVALANCHE_MAINNET_CHAIN_ID,
+  BraveWallet.FANTOM_MAINNET_CHAIN_ID,
+  BraveWallet.CELO_MAINNET_CHAIN_ID,
+  BraveWallet.OPTIMISM_MAINNET_CHAIN_ID
+
 ]
 
 export const SupportedTestNetworks = [
