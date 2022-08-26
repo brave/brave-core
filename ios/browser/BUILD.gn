@@ -32,7 +32,6 @@ source_set("browser") {
     "api/url",
     "api/version_info",
     "brave_wallet",
-    "metrics",
     "//base",
     "//brave/browser/sync",
     "//brave/chromium_src/ios/chrome/browser/prefs",
