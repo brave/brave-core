@@ -54,7 +54,6 @@ export interface Props {
   onDisplayTodaySection: () => any
   onClearTodayPrefs: () => any
   toggleShowBackgroundImage: () => void
-  toggleShowClock: () => void
   toggleShowToday: () => any
   toggleShowBraveNewsButton: () => any
   toggleShowTopSites: () => void
@@ -73,8 +72,6 @@ export interface Props {
   showBackgroundImage: boolean
   showToday: boolean
   showBraveNewsButton: boolean
-  showClock: boolean
-  clockFormat: string
   showTopSites: boolean
   customLinksEnabled: boolean
   brandedWallpaperOptIn: boolean
@@ -267,7 +264,6 @@ export default class Settings extends React.PureComponent<Props, State> {
     const {
       textDirection,
       showSettingsMenu,
-      toggleShowClock,
       toggleShowTopSites,
       setMostVisitedSettings,
       toggleShowRewards,
@@ -275,8 +271,6 @@ export default class Settings extends React.PureComponent<Props, State> {
       toggleBrandedWallpaperOptIn,
       showBackgroundImage,
       featureCustomBackgroundEnabled,
-      showClock,
-      clockFormat,
       showTopSites,
       customLinksEnabled,
       showRewards,
@@ -399,17 +393,7 @@ export default class Settings extends React.PureComponent<Props, State> {
                   />
                 ) : null
               }
-              {
-                activeTab === TabType.Clock
-                  ? (
-                    <ClockSettings
-                      actions={this.props.actions}
-                      toggleShowClock={toggleShowClock}
-                      showClock={showClock}
-                      clockFormat={clockFormat}
-                    />
-                  ) : null
-              }
+              {activeTab === TabType.Clock ? <ClockSettings /> : null}
               {
                 activeTab === TabType.Cards
                   ? (

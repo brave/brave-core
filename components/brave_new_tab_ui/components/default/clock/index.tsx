@@ -3,19 +3,24 @@
 * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import { useNewTabPref } from '../../../hooks/usePref'
 
 import createWidget from '../widget/index'
 import { StyledClock, StyledTime } from './style'
 
-interface Props {
-  clockFormat: string
-  toggleClickFormat: () => void
-}
-
 // Tick once every two seconds.
 const TICK_RATE = 2000
-function Clock ({ clockFormat, toggleClickFormat }: Props) {
+function Clock () {
   const [now, setNow] = React.useState<Date>()
+  const [clockFormat, setClockFormat] = useNewTabPref('clockFormat')
+  const toggleClockFormat = () => {
+    switch (clockFormat) {
+      case '': return setClockFormat('12')
+      case '12': return setClockFormat('24')
+      case '24': return setClockFormat('')
+    }
+  }
+
   React.useEffect(() => {
     const interval = setInterval(() => setNow(new Date()), TICK_RATE)
     return () => clearInterval(interval)
@@ -38,7 +43,7 @@ function Clock ({ clockFormat, toggleClickFormat }: Props) {
       ? null
       : t.value), [formatter, now])
 
-  return <StyledClock onDoubleClick={toggleClickFormat}>
+  return <StyledClock onDoubleClick={toggleClockFormat}>
     <StyledTime>{formattedTime}</StyledTime>
   </StyledClock>
 }
