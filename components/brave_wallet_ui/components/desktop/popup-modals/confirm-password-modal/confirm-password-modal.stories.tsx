@@ -4,8 +4,8 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import WalletPageStory from '../../../../stories/wrappers/wallet-page-story-wrapper'
 
+import { WalletPageStory } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import { ConfirmPasswordModal } from './confirm-password-modal'
 
 export const _ConfirmPasswordModal = () => {
@@ -18,8 +18,6 @@ export const _ConfirmPasswordModal = () => {
   </WalletPageStory>
 }
 
-_ConfirmPasswordModal.story = {
-  name: 'Confirm Password Modal'
-}
+_ConfirmPasswordModal.storyName = 'Confirm Password Modal'
 
 export default _ConfirmPasswordModal

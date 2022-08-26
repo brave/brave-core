@@ -37,8 +37,6 @@ interface ParamsType {
 
 export interface Props {
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
-  onViewPrivateKey: (address: string, isDefault: boolean, coin: BraveWallet.CoinType) => void
-  onDoneViewingPrivateKey: () => void
   onOpenWalletSettings: () => void
   needsBackup: boolean
   defaultEthereumWallet: BraveWallet.DefaultWallet
@@ -50,8 +48,6 @@ export interface Props {
 const CryptoView = (props: Props) => {
   const {
     onUpdateAccountName,
-    onViewPrivateKey,
-    onDoneViewingPrivateKey,
     onOpenWalletSettings,
     defaultEthereumWallet,
     defaultSolanaWallet,
@@ -214,8 +210,6 @@ const CryptoView = (props: Props) => {
           <Account
             toggleNav={toggleNav}
             onUpdateAccountName={onUpdateAccountName}
-            onDoneViewingPrivateKey={onDoneViewingPrivateKey}
-            onViewPrivateKey={onViewPrivateKey}
             goBack={goBack}
           />
         </Route>

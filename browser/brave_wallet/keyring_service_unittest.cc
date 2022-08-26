@@ -380,11 +380,12 @@ class KeyringServiceUnitTest : public testing::Test {
   static absl::optional<std::string> GetPrivateKeyForKeyringAccount(
       KeyringService* service,
       const std::string& address,
-      mojom::CoinType coin) {
+      mojom::CoinType coin,
+      const std::string& password = kPasswordBrave) {
     absl::optional<std::string> private_key;
     base::RunLoop run_loop;
     service->GetPrivateKeyForKeyringAccount(
-        address, coin,
+        address, password, coin,
         base::BindLambdaForTesting([&](bool success, const std::string& key) {
           if (success)
             private_key = key;
@@ -1726,6 +1727,11 @@ TEST_F(KeyringServiceUnitTest, ImportedAccounts) {
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
+  // Unlocked but with wrong password won't get private key.
+  EXPECT_FALSE(
+      GetPrivateKeyForKeyringAccount(&service, imported_accounts[0].address,
+                                     mojom::CoinType::ETH, kPasswordBrave123));
+
   // private key should also be available now
   private_key = GetPrivateKeyForKeyringAccount(
       &service, imported_accounts[0].address, mojom::CoinType::ETH);
@@ -1834,6 +1840,11 @@ TEST_F(KeyringServiceUnitTest, GetPrivateKeyForKeyringAccount) {
   KeyringService service(json_rpc_service(), GetPrefs());
   ASSERT_TRUE(RestoreWallet(&service, kMnemonic1, "brave", false));
 
+  // Can't get private key with wrong password.
+  EXPECT_FALSE(GetPrivateKeyForKeyringAccount(
+      &service, "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db",
+      mojom::CoinType::ETH, kPasswordBrave123));
+
   absl::optional<std::string> private_key = GetPrivateKeyForKeyringAccount(
       &service, "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db",
       mojom::CoinType::ETH);
@@ -1865,6 +1876,10 @@ TEST_F(KeyringServiceUnitTest, GetPrivateKeyForKeyringAccount) {
       &service, "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
       mojom::CoinType::SOL));
   ASSERT_TRUE(AddAccount(&service, "Account 1", mojom::CoinType::SOL));
+  // Wrong password.
+  EXPECT_FALSE(GetPrivateKeyForKeyringAccount(
+      &service, "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+      mojom::CoinType::SOL, kPasswordBrave123));
   private_key = GetPrivateKeyForKeyringAccount(
       &service, "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
       mojom::CoinType::SOL);
@@ -1968,7 +1983,7 @@ TEST_F(KeyringServiceUnitTest, SetDefaultKeyringImportedAccountName) {
   TestKeyringServiceObserver observer;
   service.AddObserver(observer.GetReceiver());
 
-  ASSERT_TRUE(CreateWallet(&service, "barve"));
+  ASSERT_TRUE(CreateWallet(&service, kPasswordBrave));
 
   const struct {
     const char* name;

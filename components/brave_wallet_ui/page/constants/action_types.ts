@@ -71,18 +71,8 @@ export type ShowRecoveryPhrasePayload = {
   password: string
 }
 
-export type ViewPrivateKeyPayloadType = {
-  isDefault: boolean
-  address: string
-  coin: BraveWallet.CoinType
-}
-
 export type RecoveryWordsAvailablePayloadType = {
   mnemonic: string
-}
-
-export type PrivateKeyAvailablePayloadType = {
-  privateKey: string
 }
 
 export type UpdateSelectedAssetType = {

@@ -860,12 +860,17 @@ void KeyringService::AddAccount(const std::string& account_name,
 
 void KeyringService::GetPrivateKeyForKeyringAccount(
     const std::string& address,
+    const std::string& password,
     mojom::CoinType coin,
     GetPrivateKeyForKeyringAccountCallback callback) {
-  std::string keyring_id = GetKeyringId(coin, address);
+  if (address.empty() || !ValidatePasswordInternal(password)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
 
+  std::string keyring_id = GetKeyringId(coin, address);
   auto* keyring = GetHDKeyringById(keyring_id);
-  if (address.empty() || !keyring) {
+  if (!keyring) {
     std::move(callback).Run(false, "");
     return;
   }
