@@ -84,11 +84,8 @@ type::Result PostClaimBrave::CheckStatusCode(const int status_code) {
   return type::Result::LEDGER_OK;
 }
 
-void PostClaimBrave::Request(
-    const std::string& destination_payment_id,
-    PostClaimBraveCallback callback) {
-  auto url_callback = base::BindOnce(
-      &PostClaimBrave::OnRequest, base::Unretained(this), std::move(callback));
+void PostClaimBrave::Request(const std::string& destination_payment_id,
+                             PostClaimBraveCallback callback) {
   const std::string payload = GeneratePayload(destination_payment_id);
 
   const auto wallet = ledger_->wallet()->GetWallet();
@@ -97,6 +94,9 @@ void PostClaimBrave::Request(
     std::move(callback).Run(type::Result::LEDGER_ERROR);
     return;
   }
+
+  auto url_callback = base::BindOnce(
+      &PostClaimBrave::OnRequest, base::Unretained(this), std::move(callback));
 
   const auto sign_url =  base::StringPrintf(
       "post %s",

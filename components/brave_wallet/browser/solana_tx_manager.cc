@@ -148,8 +148,10 @@ void SolanaTxManager::OnGetLatestBlockhashHardware(
   tx_state_manager_->AddOrUpdateTx(*meta);
 
   auto message_signers_pair = meta->tx()->GetSerializedMessage();
-  if (!message_signers_pair)
+  if (!message_signers_pair) {
     std::move(callback).Run(nullptr);
+    return;
+  }
 
   auto& message_bytes = message_signers_pair->first;
   std::move(callback).Run(

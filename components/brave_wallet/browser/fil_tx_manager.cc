@@ -309,6 +309,7 @@ void FilTxManager::OnGetNextNonceForHardware(
   auto message = meta->tx()->GetMessageToSign();
   if (!message.has_value()) {
     std::move(callback).Run(nullptr);
+    return;
   }
 
   std::move(callback).Run(mojom::MessageToSignUnion::NewMessageStr(*message));

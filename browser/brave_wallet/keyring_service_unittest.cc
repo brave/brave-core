@@ -10,6 +10,7 @@
 #include "base/base64.h"
 #include "base/callback_helpers.h"
 #include "base/json/json_reader.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
@@ -2151,6 +2152,10 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
       "0xFILTEST", "m/44'/1'/2'/0/0", "filecoin testnet 1", "Ledger", "device2",
       mojom::CoinType::FIL, mojom::kFilecoinTestnet));
 
+  std::vector<mojom::HardwareWalletAccountPtr> accounts;
+  base::ranges::transform(new_accounts, std::back_inserter(accounts),
+                          [](const auto& account) { return account.Clone(); });
+
   EXPECT_FALSE(observer.AccountsChangedFired());
   service.AddHardwareAccounts(std::move(new_accounts));
   EXPECT_TRUE(service.IsHardwareAccount("0x111"));
@@ -2158,7 +2163,7 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(observer.AccountsChangedFired());
   observer.Reset();
-  for (const auto& account : new_accounts) {
+  for (const auto& account : accounts) {
     auto keyring_id =
         account->coin == mojom::CoinType::FIL
             ? brave_wallet::GetFilecoinKeyringId(*account->network)
