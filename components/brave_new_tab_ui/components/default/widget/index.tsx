@@ -32,82 +32,62 @@ export interface WidgetState {
   widgetMenuPersist: boolean
 }
 
+function Widget ({
+  menuPosition,
+  hideWidget,
+  textDirection,
+  preventFocus,
+  isCrypto,
+  isCryptoTab,
+  widgetTitle,
+  hideMenu,
+  isForeground,
+  lightWidget,
+  paddingType,
+  onLearnMore,
+  onDisconnect,
+  onRefreshData,
+  onAddSite,
+  customLinksEnabled,
+  onToggleCustomLinksEnabled,
+  children
+}: WidgetProps & { children: React.ReactNode }) {
+  const [widgetMenuPersist, setWidgetMenuPersist] = React.useState(!!isForeground)
+  return <StyledWidgetContainer
+  menuPosition={menuPosition}
+  textDirection={textDirection}>
+  <StyledWidget
+    isCrypto={isCrypto}
+    isCryptoTab={isCryptoTab}
+    widgetMenuPersist={widgetMenuPersist}
+    preventFocus={preventFocus}
+    paddingType={paddingType}>
+    {children}
+  </StyledWidget>
+  {hideWidget && !hideMenu && !preventFocus &&
+    <WidgetMenu
+      widgetTitle={widgetTitle}
+      onLearnMore={onLearnMore}
+      onDisconnect={onDisconnect}
+      onRefreshData={onRefreshData}
+      onAddSite={onAddSite}
+      customLinksEnabled={customLinksEnabled}
+      onToggleCustomLinksEnabled={onToggleCustomLinksEnabled}
+      isForeground={isForeground}
+      widgetMenuPersist={widgetMenuPersist}
+      textDirection={textDirection}
+      menuPosition={menuPosition}
+      hideWidget={hideWidget}
+      persistWidget={() => setWidgetMenuPersist(true)}
+      unpersistWidget={() => setWidgetMenuPersist(false)}
+      lightWidget={lightWidget}
+      paddingType={paddingType} />}
+</StyledWidgetContainer>
+}
+
 const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>) =>
-  class Widget extends React.Component<P & WidgetProps, WidgetState> {
-    constructor (props: P & WidgetProps) {
-      super(props)
-      this.state = {
-        widgetMenuPersist: !!props.isForeground
-      }
-    }
-
-    persistWidget = () => {
-      this.setState({ widgetMenuPersist: true })
-    }
-
-    unpersistWidget = () => {
-      this.setState({ widgetMenuPersist: false })
-    }
-
-    render () {
-      const {
-        menuPosition,
-        hideWidget,
-        textDirection,
-        preventFocus,
-        isCrypto,
-        isCryptoTab,
-        widgetTitle,
-        hideMenu,
-        isForeground,
-        lightWidget,
-        paddingType,
-        onLearnMore,
-        onDisconnect,
-        onRefreshData,
-        onAddSite,
-        customLinksEnabled,
-        onToggleCustomLinksEnabled
-      } = this.props
-      const { widgetMenuPersist } = this.state
-
-      return (
-        <StyledWidgetContainer
-          menuPosition={menuPosition}
-          textDirection={textDirection}
-        >
-          <StyledWidget
-            isCrypto={isCrypto}
-            isCryptoTab={isCryptoTab}
-            widgetMenuPersist={widgetMenuPersist}
-            preventFocus={preventFocus}
-            paddingType={paddingType}
-          >
-            <WrappedComponent {...this.props as P}/>
-          </StyledWidget>
-          {hideWidget && !hideMenu && !preventFocus &&
-          <WidgetMenu
-            widgetTitle={widgetTitle}
-            onLearnMore={onLearnMore}
-            onDisconnect={onDisconnect}
-            onRefreshData={onRefreshData}
-            onAddSite={onAddSite}
-            customLinksEnabled={customLinksEnabled}
-            onToggleCustomLinksEnabled={onToggleCustomLinksEnabled}
-            isForeground={isForeground}
-            widgetMenuPersist={widgetMenuPersist}
-            textDirection={textDirection}
-            menuPosition={menuPosition}
-            hideWidget={hideWidget}
-            persistWidget={this.persistWidget}
-            unpersistWidget={this.unpersistWidget}
-            lightWidget={lightWidget}
-            paddingType={paddingType}
-          />
-          }
-        </StyledWidgetContainer>
-      )
-    }
-  }
+  (props: P & WidgetProps) => <Widget {...props as WidgetProps}>
+    <WrappedComponent {...props as P}/>
+  </Widget>
 
 export default createWidget
