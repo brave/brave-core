@@ -97,7 +97,9 @@ void TextClassification::OnTextContentDidChange(
     const int32_t /*tab_id*/,
     const std::vector<GURL>& redirect_chain,
     const std::string& content) {
-  DCHECK(!redirect_chain.empty());
+  if (redirect_chain.empty()) {
+    return;
+  }
 
   const GURL& url = redirect_chain.back();
 

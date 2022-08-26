@@ -225,7 +225,9 @@ void PurchaseIntent::OnTextContentDidChange(
     const int32_t /*tab_id*/,
     const std::vector<GURL>& redirect_chain,
     const std::string& /*content*/) {
-  DCHECK(!redirect_chain.empty());
+  if (redirect_chain.empty()) {
+    return;
+  }
 
   const GURL& url = redirect_chain.back();
 
@@ -241,7 +243,10 @@ void PurchaseIntent::OnTextContentDidChange(
     return;
   }
 
-  DCHECK(!last_visible_tab->redirect_chain.empty());
+  if (last_visible_tab->redirect_chain.empty()) {
+    return;
+  }
+
   if (SameDomainOrHost(url, last_visible_tab->redirect_chain.back())) {
     return;
   }
