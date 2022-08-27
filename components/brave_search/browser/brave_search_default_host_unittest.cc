@@ -78,9 +78,9 @@ class BraveSearchDefaultHostTest : public ::testing::Test {
     pref_service_.ClearPref(prefs::kTotalAsked);
   }
 
-  BraveSearchDefaultHost* GetAPIHost(const std::string& host) {
-    return new BraveSearchDefaultHost(host, &template_url_service_,
-                                      &pref_service_);
+  std::unique_ptr<BraveSearchDefaultHost> GetAPIHost(const std::string& host) {
+    return std::make_unique<BraveSearchDefaultHost>(
+        host, &template_url_service_, &pref_service_);
   }
 
   TemplateURL* AddSearchProviderForHost(const std::string& host) {
@@ -93,7 +93,7 @@ class BraveSearchDefaultHostTest : public ::testing::Test {
 };
 
 TEST_F(BraveSearchDefaultHostTest, AllowsIfPresent) {
-  BraveSearchDefaultHost* host = GetAPIHost("search.test.com");
+  auto host = GetAPIHost("search.test.com");
   // Add a search provider
   AddSearchProviderForHost("search.test.com");
   // Verify can ask to set default
@@ -103,7 +103,7 @@ TEST_F(BraveSearchDefaultHostTest, AllowsIfPresent) {
 }
 
 TEST_F(BraveSearchDefaultHostTest, DisallowsIfNotPresent) {
-  BraveSearchDefaultHost* host = GetAPIHost("search.test.com");
+  auto host = GetAPIHost("search.test.com");
   // Do not add search provider
   // Verify can not ask to set default
   MockGetCanSetCallback first;
@@ -112,7 +112,7 @@ TEST_F(BraveSearchDefaultHostTest, DisallowsIfNotPresent) {
 }
 
 TEST_F(BraveSearchDefaultHostTest, DisallowsIfDefault) {
-  BraveSearchDefaultHost* host = GetAPIHost("search.test.com");
+  auto host = GetAPIHost("search.test.com");
   // Add a search provider for the host
   auto* provider = AddSearchProviderForHost("search.test.com");
   ASSERT_TRUE(template_url_service_.CanMakeDefault(provider));
@@ -124,7 +124,7 @@ TEST_F(BraveSearchDefaultHostTest, DisallowsIfDefault) {
 }
 
 TEST_F(BraveSearchDefaultHostTest, AllowsIfNotDefault) {
-  BraveSearchDefaultHost* host = GetAPIHost("search.test.com");
+  auto host = GetAPIHost("search.test.com");
   // Add a search provider for the host
   AddSearchProviderForHost("search.test.com");
   // Make another search provider default
@@ -138,7 +138,7 @@ TEST_F(BraveSearchDefaultHostTest, AllowsIfNotDefault) {
 }
 
 TEST_F(BraveSearchDefaultHostTest, DisallowsAfterMaxTimesAsked) {
-  BraveSearchDefaultHost* host = GetAPIHost("search.test.com");
+  auto host = GetAPIHost("search.test.com");
   // Add a search provider for the host
   AddSearchProviderForHost("search.test.com");
   // Verify can initially set default
@@ -161,7 +161,7 @@ TEST_F(BraveSearchDefaultHostTest, CanSetDefaultAlwaysTestWithSearchPromotion) {
   brave_l10n::LocaleHelper::GetInstance()->SetForTesting(&locale_helper_mock);
   ON_CALL(locale_helper_mock, GetLocale()).WillByDefault(Return("en-US"));
 
-  BraveSearchDefaultHost* host = GetAPIHost("search.test.com");
+  auto host = GetAPIHost("search.test.com");
   // Add a search provider for the host
   AddSearchProviderForHost("search.test.com");
   // Make another search provider default

@@ -1181,7 +1181,7 @@ bool TorControl::ParseKV(const std::string& string,
     }
 
     // Check for internal quotes; they are forbidden.
-    if ((i = string.find("\"", vstart)) != std::string::npos)
+    if (string.find("\"", vstart) != std::string::npos)
       return false;
 
     // Extract the key and value and we're done.

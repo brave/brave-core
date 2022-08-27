@@ -186,6 +186,7 @@ void TxStateManager::RetireTxByStatus(mojom::TransactionStatus status,
         }
       }
     }
+    DCHECK(oldest_meta);
     DeleteTx(oldest_meta->id());
   }
 }

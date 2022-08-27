@@ -325,6 +325,5 @@ void BraveToolbarView::ResetButtonBounds() {
     const int bookmark_x =
         location_bar_->x() - bookmark_width - button_right_margin;
     bookmark_->SetX(bookmark_x);
-    button_right_margin = bookmark_x;
   }
 }

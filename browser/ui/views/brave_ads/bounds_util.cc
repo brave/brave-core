@@ -83,7 +83,6 @@ void SnapBoundsToEdgeOfWorkArea(const gfx::Rect& work_area, gfx::Rect* bounds) {
 
   dist = work_area.x() + work_area.width() - bounds->x() - bounds->width();
   if (min_dist > dist) {
-    min_dist = dist;
     gravity = EdgeGravity::kRight;
   }
 

@@ -31,7 +31,7 @@ bool FTXJSONParser::GetFuturesDataFromJSON(const std::string& json,
   }
   for (const base::Value& asset : result->GetList()) {
     const base::Value* group = asset.FindKey("group");
-    if (!(group || group->is_string())) {
+    if (!group || !group->is_string()) {
       continue;
     } else if (filter != group->GetString()) {
       continue;
