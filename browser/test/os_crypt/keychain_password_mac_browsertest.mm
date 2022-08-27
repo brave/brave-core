@@ -43,7 +43,7 @@ class BraveKeychainPasswordTest
     : public InProcessBrowserTest,
       public ::testing::WithParamInterface<TestParams> {
  public:
-  BraveKeychainPasswordTest() : InProcessBrowserTest() {}
+  BraveKeychainPasswordTest() = default;
   BraveKeychainPasswordTest(const BraveKeychainPasswordTest&) = delete;
   BraveKeychainPasswordTest& operator=(const BraveKeychainPasswordTest&) =
       delete;

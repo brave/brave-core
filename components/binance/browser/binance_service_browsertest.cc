@@ -208,9 +208,7 @@ const char kBinanceAPIExistsScript[] =
 
 class BinanceAPIBrowserTest : public InProcessBrowserTest {
  public:
-  BinanceAPIBrowserTest() :
-      expected_success_(false) {
-  }
+  BinanceAPIBrowserTest() = default;
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -440,7 +438,7 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
  private:
   net::EmbeddedTestServer* https_server() { return https_server_.get(); }
 
-  bool expected_success_;
+  bool expected_success_ = false;
   std::string expected_quote_id_;
   std::string expected_quote_price_;
   std::string expected_total_fee_;

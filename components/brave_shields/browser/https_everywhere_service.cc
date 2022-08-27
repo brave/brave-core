@@ -355,8 +355,7 @@ void HTTPSEverywhereService::AddHTTPSEUrlToRedirectList(
       // The queue is full, erase the first element
       httpse_urls_redirects_count_.erase(httpse_urls_redirects_count_.begin());
     }
-    httpse_urls_redirects_count_.push_back(
-        HTTPSE_REDIRECTS_COUNT_ST(request_identifier, 1));
+    httpse_urls_redirects_count_.emplace_back(request_identifier, 1);
   }
 }
 

@@ -21,7 +21,7 @@ PlaylistRenderFrameObserver::PlaylistRenderFrameObserver(
     : RenderFrameObserver(render_frame),
       RenderFrameObserverTracker<PlaylistRenderFrameObserver>(render_frame) {}
 
-PlaylistRenderFrameObserver::~PlaylistRenderFrameObserver() {}
+PlaylistRenderFrameObserver::~PlaylistRenderFrameObserver() = default;
 
 void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
   // TODO(sko) This list should be dynamically updated from browser process.

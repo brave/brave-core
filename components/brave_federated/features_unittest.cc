@@ -54,8 +54,8 @@ TEST(BraveFederatedLearningFeaturesTest, OperationalPatternsEnabled) {
       "operational_patterns_enabled";
   kFederatedLearningParameters[kFieldTrialParameterOperationalPatternsEnabled] =
       "true";
-  enabled_features.push_back(
-      {features::kFederatedLearning, kFederatedLearningParameters});
+  enabled_features.emplace_back(features::kFederatedLearning,
+                                kFederatedLearningParameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -98,8 +98,8 @@ TEST(BraveFederatedLearningFeaturesTest, CollectionSizeInSeconds) {
       "collection_slot_size_in_seconds";
   kFederatedLearningParameters
       [kFieldTrialParameterCollectionSlotSizeInSeconds] = "420";
-  enabled_features.push_back(
-      {features::kFederatedLearning, kFederatedLearningParameters});
+  enabled_features.emplace_back(features::kFederatedLearning,
+                                kFederatedLearningParameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -140,8 +140,8 @@ TEST(BraveFederatedLearningFeaturesTest, MockTaskDuration) {
       "mock_task_duration_in_seconds";
   kFederatedLearningParameters[kFieldTrialParameterMockTaskDurationInSeconds] =
       "600";
-  enabled_features.push_back(
-      {features::kFederatedLearning, kFederatedLearningParameters});
+  enabled_features.emplace_back(features::kFederatedLearning,
+                                kFederatedLearningParameters);
 
   const std::vector<base::Feature> disabled_features;
 
@@ -185,8 +185,8 @@ TEST(BraveFederatedLearningFeaturesTest, CollectionIdLifetimeInSeconds) {
       "collection_id_lifetime_in_seconds";
   kFederatedLearningParameters
       [kFieldTrialParameterCollectionIdLifetimeInSeconds] = "2592000";
-  enabled_features.push_back(
-      {features::kFederatedLearning, kFederatedLearningParameters});
+  enabled_features.emplace_back(features::kFederatedLearning,
+                                kFederatedLearningParameters);
 
   const std::vector<base::Feature> disabled_features;
 

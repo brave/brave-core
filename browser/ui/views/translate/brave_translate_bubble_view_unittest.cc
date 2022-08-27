@@ -18,21 +18,8 @@ namespace {
 
 class MockTranslateBubbleModel : public TranslateBubbleModel {
  public:
-  explicit MockTranslateBubbleModel(TranslateBubbleModel::ViewState view_state)
-      : error_type_(translate::TranslateErrors::NONE),
-        original_language_index_(0),
-        target_language_index_(1),
-        never_translate_language_(false),
-        never_translate_site_(false),
-        should_always_translate_(false),
-        always_translate_checked_(false),
-        set_always_translate_called_count_(0),
-        translate_called_(false),
-        revert_translation_called_(false),
-        translation_declined_(false),
-        original_language_index_on_translation_(-1),
-        target_language_index_on_translation_(-1),
-        can_add_site_to_never_prompt_list_(true) {
+  explicit MockTranslateBubbleModel(
+      TranslateBubbleModel::ViewState view_state) {
     DCHECK_NE(VIEW_STATE_SOURCE_LANGUAGE, view_state);
     DCHECK_NE(VIEW_STATE_TARGET_LANGUAGE, view_state);
     current_view_state_ = view_state;
@@ -140,20 +127,21 @@ class MockTranslateBubbleModel : public TranslateBubbleModel {
   void ReportUIChange(bool is_ui_shown) override {}
 
   ViewState current_view_state_;
-  translate::TranslateErrors::Type error_type_;
-  int original_language_index_;
-  int target_language_index_;
-  bool never_translate_language_;
-  bool never_translate_site_;
-  bool should_always_translate_;
-  bool always_translate_checked_;
-  int set_always_translate_called_count_;
-  bool translate_called_;
-  bool revert_translation_called_;
-  bool translation_declined_;
-  int original_language_index_on_translation_;
-  int target_language_index_on_translation_;
-  bool can_add_site_to_never_prompt_list_;
+  translate::TranslateErrors::Type error_type_ =
+      translate::TranslateErrors::NONE;
+  int original_language_index_ = 0;
+  int target_language_index_ = 1;
+  bool never_translate_language_ = false;
+  bool never_translate_site_ = false;
+  bool should_always_translate_ = false;
+  bool always_translate_checked_ = false;
+  int set_always_translate_called_count_ = 0;
+  bool translate_called_ = false;
+  bool revert_translation_called_ = false;
+  bool translation_declined_ = false;
+  int original_language_index_on_translation_ = -1;
+  int target_language_index_on_translation_ = -1;
+  bool can_add_site_to_never_prompt_list_ = true;
 };
 
 class MockBraveTranslateBubbleView : public BraveTranslateBubbleView {
@@ -167,8 +155,7 @@ class MockBraveTranslateBubbleView : public BraveTranslateBubbleView {
                                  std::move(model),
                                  error_type,
                                  web_contents,
-                                 std::move(on_closing)),
-        install_google_translate_called_(false) {}
+                                 std::move(on_closing)) {}
 
   ~MockBraveTranslateBubbleView() override = default;
 
@@ -182,7 +169,7 @@ class MockBraveTranslateBubbleView : public BraveTranslateBubbleView {
   }
 
  private:
-  bool install_google_translate_called_;
+  bool install_google_translate_called_ = false;
 };
 
 }  // namespace

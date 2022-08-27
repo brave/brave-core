@@ -198,9 +198,8 @@ void DatabaseContributionInfoPublishers::OnGetContributionPublisherInfoMap(
     publisher->status_updated_at = GetInt64Column(record_pointer, 7);
     publisher->provider = GetStringColumn(record_pointer, 8);
 
-    pair_list.push_back(std::make_pair(
-        GetStringColumn(record_pointer, 0),
-        std::move(publisher)));
+    pair_list.emplace_back(GetStringColumn(record_pointer, 0),
+                           std::move(publisher));
   }
 
   callback(std::move(pair_list));

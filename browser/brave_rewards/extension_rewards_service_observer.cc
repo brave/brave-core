@@ -81,11 +81,7 @@ void ExtensionRewardsServiceObserver::OnFetchPromotions(
         PromotionsType> promotions;
 
   for (const auto& item : list) {
-    promotions.push_back(
-        extensions::api::brave_rewards::OnPromotions::PromotionsType());
-
-    auto& promotion = promotions[promotions.size() -1];
-
+    extensions::api::brave_rewards::OnPromotions::PromotionsType promotion;
     promotion.promotion_id = item->id;
     promotion.type = static_cast<int>(item->type);
     promotion.status = static_cast<int>(item->status);
@@ -93,6 +89,7 @@ void ExtensionRewardsServiceObserver::OnFetchPromotions(
     promotion.claimable_until = item->claimable_until;
     promotion.expires_at = item->expires_at;
     promotion.amount = item->approximate_value;
+    promotions.emplace_back(std::move(promotion));
   }
 
   std::unique_ptr<extensions::Event> event(new extensions::Event(
@@ -172,15 +169,12 @@ void ExtensionRewardsServiceObserver::OnPublisherListNormalized(
         PublishersType> publishers;
 
   for (const auto& item : list) {
-    publishers.push_back(
-        extensions::api::brave_rewards::OnPublisherListNormalized::
-        PublishersType());
-
-    auto& publisher = publishers[publishers.size() -1];
-
+    extensions::api::brave_rewards::OnPublisherListNormalized::PublishersType
+        publisher;
     publisher.publisher_key = item->id;
     publisher.percentage = item->percent;
     publisher.status = static_cast<int>(item->status);
+    publishers.emplace_back(std::move(publisher));
   }
 
   std::unique_ptr<extensions::Event> event(new extensions::Event(

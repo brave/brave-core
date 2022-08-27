@@ -25,7 +25,7 @@ constexpr auto kBorderInset = gfx::Insets::TLBR(
 
 }  // namespace
 
-PaddedImageView::PaddedImageView() : views::ImageView() {
+PaddedImageView::PaddedImageView() {
   SetBackground(views::CreateSolidBackground(kBackgroundColor));
 
   SetBorder(views::CreateEmptyBorder(kBorderInset));

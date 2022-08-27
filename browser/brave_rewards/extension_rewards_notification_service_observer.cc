@@ -112,15 +112,13 @@ void ExtensionRewardsNotificationServiceObserver::OnGetAllNotifications(
                   NotificationsType>
       notifications_list;
   for (auto& item : rewards_notifications_list) {
-    notifications_list.push_back(
-        extensions::api::rewards_notifications::OnGetAllNotifications::
-            NotificationsType());
-    auto& notifications_type =
-        notifications_list[notifications_list.size() - 1];
+    extensions::api::rewards_notifications::OnGetAllNotifications::
+        NotificationsType notifications_type;
     notifications_type.id = item.id_;
     notifications_type.type = item.type_;
     notifications_type.timestamp = item.timestamp_;
     notifications_type.args = item.args_;
+    notifications_list.emplace_back(std::move(notifications_type));
   }
 
   std::unique_ptr<extensions::Event> event(new extensions::Event(

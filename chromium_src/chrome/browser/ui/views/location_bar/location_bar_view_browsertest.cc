@@ -33,7 +33,7 @@ class SecurityIndicatorTest
     : public InProcessBrowserTest,
       public ::testing::WithParamInterface<SecurityIndicatorTestParams> {
  public:
-  SecurityIndicatorTest() : InProcessBrowserTest(), cert_(nullptr) {}
+  SecurityIndicatorTest() : cert_(nullptr) {}
 
   SecurityIndicatorTest(const SecurityIndicatorTest&) = delete;
   SecurityIndicatorTest& operator=(const SecurityIndicatorTest&) = delete;

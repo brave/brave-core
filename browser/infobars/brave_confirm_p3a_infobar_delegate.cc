@@ -43,7 +43,7 @@ void BraveConfirmP3AInfoBarDelegate::Create(
 
 BraveConfirmP3AInfoBarDelegate::BraveConfirmP3AInfoBarDelegate(
     PrefService* local_state)
-    : ConfirmInfoBarDelegate(), local_state_(local_state) {}
+    : local_state_(local_state) {}
 
 BraveConfirmP3AInfoBarDelegate::~BraveConfirmP3AInfoBarDelegate() = default;
 
