@@ -9,8 +9,9 @@ import * as statsAPI from './api/stats'
 import * as topSitesAPI from './api/topSites'
 import * as privateTabDataAPI from './api/privateTabData'
 import * as newTabAdsDataAPI from './api/newTabAdsData'
-import getNTPBrowserAPI, { CustomBackground } from './api/background'
+import getNTPBrowserAPI, { Background } from './api/background'
 import { getInitialData, getRewardsInitialData, getRewardsPreInitialData } from './api/initialData'
+import * as BackgroundData from './data/backgrounds'
 
 async function updatePreferences (prefData: NewTab.Preferences) {
   getActions().preferencesUpdated(prefData)
@@ -39,8 +40,8 @@ async function onMostVisitedInfoChanged (topSites: topSitesAPI.MostVisitedInfoCh
   getActions().topSitesStateUpdated(topSites.visible, topSites.custom_links_enabled, topSites.custom_links_num)
 }
 
-async function onCustomBackgroundUpdated (customBackground: CustomBackground) {
-  getActions().customBackgroundUpdated(customBackground)
+async function onBackgroundUpdated (background: Background) {
+  getActions().customBackgroundUpdated(background)
 }
 
 // Not marked as async so we don't return a promise
@@ -61,7 +62,9 @@ export function wireApiEventsToStore () {
     preferencesAPI.addChangeListener(onRewardsToggled)
     privateTabDataAPI.addChangeListener(updatePrivateTabData)
     newTabAdsDataAPI.addChangeListener(updateNewTabAdsData)
-    getNTPBrowserAPI().addCustomBackgroundUpdatedListener(onCustomBackgroundUpdated)
+    BackgroundData.updateImages(initialData.braveBackgrounds)
+
+    getNTPBrowserAPI().addBackgroundUpdatedListener(onBackgroundUpdated)
     getNTPBrowserAPI().addSearchPromotionDisabledListener(() => getActions().searchPromotionDisabled())
   })
   .catch(e => {

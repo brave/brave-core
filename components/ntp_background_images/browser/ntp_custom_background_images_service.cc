@@ -25,11 +25,20 @@ NTPCustomBackgroundImagesService::~NTPCustomBackgroundImagesService() = default;
 
 bool NTPCustomBackgroundImagesService::ShouldShowCustomBackground() const {
   return delegate_->IsCustomImageBackgroundEnabled() ||
-         delegate_->IsColorBackgroundEnabled();
+         delegate_->IsColorBackgroundEnabled() ||
+         delegate_->HasPreferredBraveBackground();
 }
 
 base::Value::Dict NTPCustomBackgroundImagesService::GetBackground() const {
   DCHECK(ShouldShowCustomBackground());
+
+  if (delegate_->HasPreferredBraveBackground()) {
+    if (auto background = delegate_->GetPreferredBraveBackground();
+        !background.empty()) {
+      background.Set(kWallpaperRandomKey, false);
+      return background;
+    }
+  }
 
   // The |data| will be mapped to NewTab.BackgroundWallpaper type from JS side.
   // So we need to keep names of properties same.
@@ -39,7 +48,7 @@ base::Value::Dict NTPCustomBackgroundImagesService::GetBackground() const {
     data.Set(kWallpaperImageURLKey, kCustomWallpaperURL);
     data.Set(kWallpaperTypeKey, "image");
     data.Set(kWallpaperRandomKey, false);
-  } else {
+  } else if (delegate_->IsColorBackgroundEnabled()) {
     data.Set(kWallpaperColorKey, delegate_->GetColor());
     data.Set(kWallpaperTypeKey, "color");
     data.Set(kWallpaperRandomKey, delegate_->ShouldUseRandomValue());

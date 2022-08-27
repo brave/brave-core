@@ -34,6 +34,9 @@ class NTPCustomBackgroundImagesService : public KeyedService {
     virtual std::string GetColor() const = 0;
     virtual bool ShouldUseRandomValue() const = 0;
 
+    virtual bool HasPreferredBraveBackground() const = 0;
+    virtual base::Value::Dict GetPreferredBraveBackground() const = 0;
+
     virtual ~Delegate() = default;
   };
 

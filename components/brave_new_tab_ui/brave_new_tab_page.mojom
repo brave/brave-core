@@ -10,6 +10,14 @@ import "url/mojom/url.mojom";
 const string kRandomSolidColorValue = "solid";
 const string kRandomGradientColorValue = "gradient";
 
+struct BraveBackground {
+  string name;
+  string author;
+  url.mojom.Url image_url;
+  url.mojom.Url link;
+  url.mojom.Url original_url;
+};
+
 struct CustomBackground {
   url.mojom.Url url;
 
@@ -21,6 +29,11 @@ struct CustomBackground {
   string color;
 
   bool use_random_item = false;
+};
+
+union Background {
+  CustomBackground custom;
+  BraveBackground brave;
 };
 
 // Used by the WebUI page to bootstrap bidirectional communication.
@@ -35,7 +48,10 @@ interface PageHandlerFactory {
 interface PageHandler {
   // Choose custom background from local file system.
   ChooseLocalCustomBackground();
-  UseBraveBackground();
+
+  // When |seleteceBackground| is empty, should use random background.
+  UseBraveBackground(string selected_background);
+  GetBraveBackgrounds() => (array<BraveBackground> backgrounds);
   
   // |color| is a 
   //   * color value for css background property or 'gradient' when 
@@ -44,6 +60,7 @@ interface PageHandler {
   //     |use_random_color| is true
   UseColorBackground(string color, bool use_random_color);
 
+
   TryBraveSearchPromotion(string input, bool open_new_tab);
   DismissBraveSearchPromotion();
   IsSearchPromotionEnabled() => (bool enabled);
@@ -51,6 +68,7 @@ interface PageHandler {
 
 // WebUI-side handler for requests from the browser.
 interface Page {
-  OnBackgroundUpdated(CustomBackground custom_background);
+  OnBackgroundUpdated(Background? background);
+
   OnSearchPromotionDisabled();
 };

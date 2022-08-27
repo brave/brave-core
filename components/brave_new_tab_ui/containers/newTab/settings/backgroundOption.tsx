@@ -8,22 +8,25 @@ import * as React from 'react'
 import {
   StyledCustomBackgroundOption,
   StyledCustomBackgroundOptionColor,
+  StyledCustomBackgroundOptionImage,
   StyledSelectionBorder
 } from '../../../components/default'
 
 interface Props {
-  color: string
+  background: NewTab.BackgroundWallpaper
   selected: boolean
-  onSelectValue: (color: string) => void
+  onSelectValue: (value: NewTab.BackgroundWallpaper) => void
 }
 
-export default function SolidColorBackgroundOption ({ color, selected, onSelectValue }: Props) {
+export default function BackgroundOption ({ background, selected, onSelectValue }: Props) {
   return (
-    <StyledCustomBackgroundOption onClick={_ => onSelectValue(color)}>
+    <StyledCustomBackgroundOption onClick={_ => onSelectValue(background)}>
       <StyledSelectionBorder selected={selected}>
-          <StyledCustomBackgroundOptionColor
-            colorValue={color}
-            selected={selected}/>
+          {
+            background.type === 'color'
+              ? <StyledCustomBackgroundOptionColor colorValue={background.wallpaperColor} selected={selected}/>
+              : <StyledCustomBackgroundOptionImage image={background.wallpaperImageUrl } selected={selected}/>
+          }
       </StyledSelectionBorder>
     </StyledCustomBackgroundOption>
   )

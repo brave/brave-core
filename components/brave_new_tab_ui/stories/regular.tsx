@@ -10,11 +10,12 @@ import NewTabPage from '../containers/newTab'
 import { getActionsForDispatch } from '../api/getActions'
 import store from '../store'
 import { useNewTabData, getGridSitesData } from './default/data/storybookState'
-import { onChangeColoredBackground, onUseCustomBackground } from './default/data/backgroundWallpaper'
+import { onChangeColoredBackground, onUseBraveBackground } from './default/data/backgroundWallpaper'
 import getTodayState from './default/data/todayStorybookState'
 import getBraveNewsDisplayAd from './default/data/getBraveNewsDisplayAd'
 import { getDataUrl, getUnpaddedAsDataUrl } from '../../common/privateCDN'
 import getFTXStorybookState from '../widgets/ftx/ftx_storybook_state'
+import { images, updateImages } from '../data/backgrounds'
 
 const doNothingDispatch: Dispatch = (action: any) => action
 
@@ -49,6 +50,13 @@ export default {
   ]
 }
 
+updateImages(images.map((image): NewTab.BraveBackground => {
+  return {
+    ...image,
+    wallpaperImageUrl: require('../../img/newtab/backgrounds/' + image.wallpaperImageUrl)
+  }
+}))
+
 export const Regular = () => {
   const doNothing = (value: boolean) => value
   const state = store.getState()
@@ -75,7 +83,8 @@ export const Regular = () => {
       saveBrandedWallpaperOptIn={doNothing}
       saveSetAllStackWidgets={doNothing}
       getBraveNewsDisplayAd={getBraveNewsDisplayAd}
-      useCustomBackgroundImage={onUseCustomBackground}
+      setBraveBackground={onUseBraveBackground}
+      useCustomBackgroundImage={() => {}}
       setColorBackground={onChangeColoredBackground}
     />
   )

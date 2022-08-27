@@ -7,15 +7,14 @@ import * as BraveNewTabPage from 'gen/brave/components/brave_new_tab_ui/brave_ne
 // Provide access to all the generated types
 export * from 'gen/brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.m.js'
 
-import { images as backgrounds } from '../data/backgrounds'
-import { solidColorsForBackground, gradientColorsForBackground } from '../data/colors'
+import { images as backgrounds, solidColorsForBackground, gradientColorsForBackground } from '../data/backgrounds'
 
 /**
  * Generates a random image for new tab backgrounds
  */
-export const randomBackgroundImage = (): NewTab.BackgroundWallpaper => {
+export const randomBackgroundImage = (): NewTab.BraveBackground => {
   const randomIndex: number = Math.floor(Math.random() * backgrounds.length)
-  const image: NewTab.BackgroundWallpaper = { ...backgrounds[randomIndex] }
+  const image: NewTab.BraveBackground = { ...backgrounds[randomIndex], random: true }
   return image
 }
 
@@ -24,9 +23,8 @@ export const randomColorBackground = (color: string): NewTab.BackgroundWallpaper
 
   const targetColors = color === BraveNewTabPage.RANDOM_SOLID_COLOR_VALUE ? solidColorsForBackground : gradientColorsForBackground
   const randomIndex: number = Math.floor(Math.random() * targetColors.length)
-  const randomColor: NewTab.BackgroundWallpaper = {
-    type: 'color',
-    wallpaperColor: targetColors[randomIndex],
+  const randomColor: NewTab.ColorBackground = {
+    ...targetColors[randomIndex],
     random: true
   }
   return randomColor
@@ -35,11 +33,11 @@ export const randomColorBackground = (color: string): NewTab.BackgroundWallpaper
 interface API {
   pageCallbackRouter: BraveNewTabPage.PageCallbackRouter
   pageHandler: BraveNewTabPage.PageHandlerRemote
-  addCustomBackgroundUpdatedListener: (listener: CustomBackgroundUpdated) => void
+  addBackgroundUpdatedListener: (listener: BackgroundUpdated) => void
   addSearchPromotionDisabledListener: (listener: () => void) => void
 }
 
-type CustomBackgroundUpdated = (background: BraveNewTabPage.CustomBackground) => void
+type BackgroundUpdated = (background: BraveNewTabPage.Background) => void
 
 let ntpBrowserAPIInstance: API
 
@@ -55,7 +53,7 @@ class NTPBrowserAPI implements API {
     )
   }
 
-  addCustomBackgroundUpdatedListener (listener: CustomBackgroundUpdated) {
+  addBackgroundUpdatedListener (listener: BackgroundUpdated) {
     this.pageCallbackRouter.onBackgroundUpdated.addListener(listener)
   }
 

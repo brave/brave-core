@@ -4,20 +4,32 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 declare namespace NewTab {
-  // Type for custom background and brave background.
-  // Custom background uses only image url prop.
-  export type BackgroundWallpaper = {
+  // Custom background with solid color or gradation
+  export type ColorBackground = {
     type: 'color'
     wallpaperColor: string
-    random: boolean
-  } | {
+    random?: boolean
+  }
+
+  // Backgrounds based on image. Custom image background or Brave background.
+  export type ImageBackground = {
     type: 'image'
     wallpaperImageUrl: string
-    author?: string
+  }
+
+  export type BraveBackground = Omit<ImageBackground, 'type'> & {
+    type: 'brave'
+    author: string
     link?: string
     originalUrl?: string
     license?: string
+    
+    // Picked by our rotating algorithm. When it's false, it means that the user 
+    // has picked this background.
+    random?: boolean
   }
+
+  export type BackgroundWallpaper = ColorBackground | ImageBackground | BraveBackground
 
   export type BrandedWallpaperLogo = {
     image: string

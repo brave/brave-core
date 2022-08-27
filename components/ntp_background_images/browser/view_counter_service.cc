@@ -163,8 +163,10 @@ absl::optional<base::Value::Dict> ViewCounterService::GetCurrentWallpaper()
     return custom_bi_service_->GetBackground();
 #endif
 
-  return GetCurrentWallpaperData()->GetBackgroundAt(
+  auto background = GetCurrentWallpaperData()->GetBackgroundAt(
       model_.current_wallpaper_image_index());
+  background.Set(kWallpaperRandomKey, true);
+  return background;
 }
 
 absl::optional<base::Value::Dict>

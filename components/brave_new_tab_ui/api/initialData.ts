@@ -15,6 +15,7 @@ export type InitialData = {
   stats: statsAPI.Stats
   privateTabData: privateTabDataAPI.PrivateTabData
   wallpaperData?: NewTab.Wallpaper
+  braveBackgrounds: NewTab.BraveBackground[]
   braveTalkSupported: boolean
   geminiSupported: boolean
   binanceSupported: boolean
@@ -54,7 +55,8 @@ export async function getInitialData (): Promise<InitialData> {
       cryptoDotComSupported,
       ftxSupported,
       binanceSupported,
-      searchPromotionEnabled
+      searchPromotionEnabled,
+      braveBackgrounds
     ] = await Promise.all([
       preferencesAPI.getPreferences(),
       statsAPI.getStats(),
@@ -90,7 +92,10 @@ export async function getInitialData (): Promise<InitialData> {
           resolve(supported)
         })
       }),
-      getNTPBrowserAPI().pageHandler.isSearchPromotionEnabled().then(({ enabled }) => enabled)
+      getNTPBrowserAPI().pageHandler.isSearchPromotionEnabled().then(({ enabled }) => enabled),
+      getNTPBrowserAPI().pageHandler.getBraveBackgrounds().then(({ backgrounds }) => {
+        return backgrounds.map(background => { return { type: 'brave', wallpaperImageUrl: background.imageUrl.url, author: background.author, link: background.link.url } })
+      })
     ])
     console.timeStamp('Got all initial data.')
     return {
@@ -98,6 +103,7 @@ export async function getInitialData (): Promise<InitialData> {
       stats,
       privateTabData,
       wallpaperData,
+      braveBackgrounds,
       braveTalkSupported,
       geminiSupported,
       cryptoDotComSupported,
