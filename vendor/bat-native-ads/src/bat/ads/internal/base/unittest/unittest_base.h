@@ -43,22 +43,6 @@ namespace ads {
 
 class Database;
 
-// The only time you should derive from UnitTestBase is when defining a test
-// fixture to be used in a TEST_F. For example:
-//
-//   class FooTest : public UnitTestBase {
-//    protected:
-//     void SetUp() override { ... }
-//     void SetUpMocks() override { ... }
-//     void TearDown() override { ... }
-//     ...
-//   };
-//
-//   TEST_F(FooTest, Bar) { ... }
-//   TEST_F(FooTest, Baz) { ... }
-//
-// UnitTestBase is not copyable.
-
 class UnitTestBase : public testing::Test {
  public:
   UnitTestBase(const UnitTestBase&) = delete;
