@@ -180,7 +180,7 @@ void ResourceComponent::OnGetManifest(const std::string& component_id,
 
     const std::string* id = resource_value.FindStringPath(kResourceIdPath);
     if (!id) {
-      VLOG(1) << *id << " resource id is missing";
+      VLOG(1) << "Resource id is missing";
       continue;
     }
     resource.id = *id;

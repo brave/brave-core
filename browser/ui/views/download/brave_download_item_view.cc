@@ -160,9 +160,7 @@ int BraveDownloadItemView::GetYForFilenameText() const {
 }
 
 int BraveDownloadItemView::GetYForOriginURLText() const {
-  int y = GetYForFilenameText();
-  y = file_name_label_->y() + kBraveVerticalTextPadding;
-  return y;
+  return file_name_label_->y() + kBraveVerticalTextPadding;
 }
 
 int BraveDownloadItemView::GetYForStatusText() const {

@@ -15,7 +15,7 @@ void CompactU16Encode(uint16_t u16, std::vector<uint8_t>* compact_u16) {
   DCHECK(compact_u16);
 
   uint16_t rem_val = u16;
-  while (1) {
+  while (true) {
     uint8_t elem = rem_val & 0x7f;
     rem_val >>= 7;
     if (rem_val == 0) {

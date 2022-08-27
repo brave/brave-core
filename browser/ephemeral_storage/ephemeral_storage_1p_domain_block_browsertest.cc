@@ -203,8 +203,7 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(
     EphemeralStorage1pDomainBlockBrowserTest,
     FirstPartyEphemeralIsAutoEnabledInAggressiveBlockingMode) {
-  WebContents* first_party_tab =
-      BlockAndNavigateToBlockedDomain(a_site_simple_url_, true, false);
+  BlockAndNavigateToBlockedDomain(a_site_simple_url_, true, false);
   EXPECT_EQ(GetCookieSetting(a_site_simple_url_),
             ContentSetting::CONTENT_SETTING_SESSION_ONLY);
   EXPECT_EQ(0u, GetAllCookies().size());
@@ -212,7 +211,7 @@ IN_PROC_BROWSER_TEST_F(
   // After keepalive values should be cleared.
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), b_site_simple_url_));
   WaitForCleanupAfterKeepAlive();
-  first_party_tab = WebContents::FromRenderFrameHost(
+  WebContents* first_party_tab = WebContents::FromRenderFrameHost(
       ui_test_utils::NavigateToURL(browser(), a_site_simple_url_));
 
   EXPECT_TRUE(IsShowingInterstitial(first_party_tab));
@@ -231,13 +230,12 @@ IN_PROC_BROWSER_TEST_F(
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorage1pDomainBlockBrowserTest,
                        FirstPartyEphemeralIsNotEnabledWhenDontWarnChecked) {
-  WebContents* first_party_tab =
-      BlockAndNavigateToBlockedDomain(a_site_simple_url_, true, true);
+  BlockAndNavigateToBlockedDomain(a_site_simple_url_, true, true);
 
   // After keepalive values should be cleared.
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), b_site_simple_url_));
   WaitForCleanupAfterKeepAlive();
-  first_party_tab = WebContents::FromRenderFrameHost(
+  WebContents* first_party_tab = WebContents::FromRenderFrameHost(
       ui_test_utils::NavigateToURL(browser(), a_site_simple_url_));
   EXPECT_FALSE(IsShowingInterstitial(first_party_tab));
 

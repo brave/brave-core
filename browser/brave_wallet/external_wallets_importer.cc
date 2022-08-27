@@ -11,6 +11,7 @@
 #include "base/base64.h"
 #include "base/bind.h"
 #include "base/json/json_reader.h"
+#include "base/stl_util.h"
 #include "base/strings/utf_string_conversion_utils.h"
 #include "base/task/bind_post_task.h"
 #include "base/task/thread_pool.h"
@@ -170,9 +171,14 @@ void ExternalWalletsImporter::Initialize(InitCallback callback) {
       std::move(callback).Run(false);
       return;
     }
+  } else {
+    NOTREACHED() << "Unsupported ExternalWalletType type. value="
+                 << base::to_underlying(type_);
+    std::move(callback).Run(false);
+    return;
   }
 
-  GetLocalStorage(extension, std::move(callback));
+  GetLocalStorage(*extension, std::move(callback));
 }
 
 bool ExternalWalletsImporter::IsInitialized() const {
@@ -187,7 +193,7 @@ void ExternalWalletsImporter::OnCryptoWalletsLoaded(InitCallback callback) {
     return;
   }
 
-  GetLocalStorage(extension, std::move(callback));
+  GetLocalStorage(*extension, std::move(callback));
 
   EthereumRemoteClientService* service =
       EthereumRemoteClientServiceFactory::GetInstance()->GetForContext(
@@ -269,13 +275,13 @@ const Extension* ExternalWalletsImporter::GetMetaMask() const {
 }
 
 void ExternalWalletsImporter::GetLocalStorage(
-    const extensions::Extension* extension,
+    const extensions::Extension& extension,
     InitCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   std::string error;
   extension_ = Extension::Create(
-      extension->path(), ManifestLocation::kExternalPref,
-      *extension->manifest()->value(), extension->creation_flags(), &error);
+      extension.path(), ManifestLocation::kExternalPref,
+      *extension.manifest()->value(), extension.creation_flags(), &error);
 
   StorageFrontend* frontend = StorageFrontend::Get(context_);
   if (!frontend) {

@@ -148,7 +148,6 @@ void SidebarService::MigrateSidebarShowOptions() {
       static_cast<ShowSidebarOption>(prefs_->GetInteger(kSidebarShowOption));
   // Show on click is deprecated. Treat it as show on mouse over.
   if (option == ShowSidebarOption::kShowOnClick) {
-    option = ShowSidebarOption::kShowOnMouseOver;
     prefs_->SetInteger(kSidebarShowOption,
                        static_cast<int>(ShowSidebarOption::kShowOnMouseOver));
   }

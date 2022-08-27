@@ -165,7 +165,7 @@ void OnRequestResponse(bool* callback_called,
   *callback_called = true;
   std::string response;
   base::JSONWriter::Write(formed_response, &response);
-  mojom::ProviderError error;
+  mojom::ProviderError error = mojom::ProviderError::kUnknown;
   std::string error_message;
   GetErrorCodeMessage(std::move(formed_response), &error, &error_message);
   bool success = error == brave_wallet::mojom::ProviderError::kSuccess;
