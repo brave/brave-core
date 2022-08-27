@@ -31,7 +31,7 @@ namespace syncer {
 class BraveModelTypeWorkerTest : public ::testing::Test {
  protected:
   explicit BraveModelTypeWorkerTest(ModelType model_type = PREFERENCES)
-      : model_type_(model_type), is_processor_disconnected_(false) {}
+      : model_type_(model_type) {}
 
   ~BraveModelTypeWorkerTest() override = default;
 
@@ -88,7 +88,7 @@ class BraveModelTypeWorkerTest : public ::testing::Test {
   CancelationSignal cancelation_signal_;
   std::unique_ptr<BraveModelTypeWorker> worker_;
   MockNudgeHandler mock_nudge_handler_;
-  bool is_processor_disconnected_;
+  bool is_processor_disconnected_ = false;
 };
 
 namespace {

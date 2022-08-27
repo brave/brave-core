@@ -749,7 +749,7 @@ class TestAdBlockSubscriptionServiceManagerObserver
   // Constructs a TestAdBlockSubscriptionServiceManagerObserver which will
   // observe |sub_service_manager| for updates to the status of any registered
   // subscriptions.
-  TestAdBlockSubscriptionServiceManagerObserver(
+  explicit TestAdBlockSubscriptionServiceManagerObserver(
       brave_shields::AdBlockSubscriptionServiceManager* sub_service_manager)
       : sub_service_manager_(sub_service_manager) {
     sub_service_manager_->AddObserver(this);

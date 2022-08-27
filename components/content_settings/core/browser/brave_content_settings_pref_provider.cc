@@ -620,10 +620,10 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
 
     // Shields down.
     if (ValueToContentSetting(shield_rule.value) == CONTENT_SETTING_BLOCK) {
-      rules.emplace_back(Rule(ContentSettingsPattern::Wildcard(),
-                              shield_rule.primary_pattern,
-                              ContentSettingToValue(CONTENT_SETTING_ALLOW),
-                              base::Time(), SessionModel::Durable));
+      rules.emplace_back(ContentSettingsPattern::Wildcard(),
+                         shield_rule.primary_pattern,
+                         ContentSettingToValue(CONTENT_SETTING_ALLOW),
+                         base::Time(), SessionModel::Durable);
       brave_shield_down_rules_[incognito].emplace_back(
           Rule(ContentSettingsPattern::Wildcard(), shield_rule.primary_pattern,
                ContentSettingToValue(CONTENT_SETTING_ALLOW), base::Time(),
@@ -665,8 +665,8 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
         });
     if (match == brave_cookie_rules_[incognito].end()) {
       brave_cookie_updates.emplace_back(
-          Rule(old_rule.primary_pattern, old_rule.secondary_pattern,
-               base::Value(), old_rule.expiration, old_rule.session_model));
+          old_rule.primary_pattern, old_rule.secondary_pattern, base::Value(),
+          old_rule.expiration, old_rule.session_model);
     }
   }
   {

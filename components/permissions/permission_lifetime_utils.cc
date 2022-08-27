@@ -52,23 +52,20 @@ std::vector<PermissionLifetimeOption> CreatePermissionLifetimeOptions() {
   options.reserve(kOptionsCount);
 
   if (base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage)) {
-    options.emplace_back(PermissionLifetimeOption(
+    options.emplace_back(
         brave_l10n::GetLocalizedResourceUTF16String(
             IDS_PERMISSIONS_BUBBLE_UNTIL_PAGE_CLOSE_LIFETIME_OPTION),
-        base::TimeDelta()));
+        base::TimeDelta());
   }
-  options.emplace_back(PermissionLifetimeOption(
-      brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_PERMISSIONS_BUBBLE_24_HOURS_LIFETIME_OPTION),
-      base::Hours(24)));
-  options.emplace_back(PermissionLifetimeOption(
-      brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_PERMISSIONS_BUBBLE_1_WEEK_LIFETIME_OPTION),
-      base::Days(7)));
-  options.emplace_back(PermissionLifetimeOption(
-      brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_PERMISSIONS_BUBBLE_FOREVER_LIFETIME_OPTION),
-      absl::nullopt));
+  options.emplace_back(brave_l10n::GetLocalizedResourceUTF16String(
+                           IDS_PERMISSIONS_BUBBLE_24_HOURS_LIFETIME_OPTION),
+                       base::Hours(24));
+  options.emplace_back(brave_l10n::GetLocalizedResourceUTF16String(
+                           IDS_PERMISSIONS_BUBBLE_1_WEEK_LIFETIME_OPTION),
+                       base::Days(7));
+  options.emplace_back(brave_l10n::GetLocalizedResourceUTF16String(
+                           IDS_PERMISSIONS_BUBBLE_FOREVER_LIFETIME_OPTION),
+                       absl::nullopt);
   DCHECK_LE(options.size(), kOptionsCount);
 
   // This is strictly for manual testing.

@@ -59,8 +59,7 @@ class ClientHintsBrowserTest
       public ::testing::WithParamInterface<std::tuple<bool, bool>> {
  public:
   ClientHintsBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS),
-        count_client_hints_headers_seen_(0) {
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
@@ -173,7 +172,7 @@ class ClientHintsBrowserTest
   GURL client_hints_meta_http_equiv_accept_ch_url_;
   GURL client_hints_meta_name_accept_ch_url_;
   GURL client_hints_url_;
-  size_t count_client_hints_headers_seen_;
+  size_t count_client_hints_headers_seen_ = 0;
   std::vector<std::string> allowed_hints_;
   base::test::ScopedFeatureList scoped_feature_list_;
 };

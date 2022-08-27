@@ -221,9 +221,7 @@ IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTest, VerifyRemovalMasks) {
 
 class BraveClearDataOnExitTwoBrowsersTest : public BraveClearDataOnExitTest {
  public:
-  BraveClearDataOnExitTwoBrowsersTest() : BraveClearDataOnExitTest() {
-    browsers_count_ = 2u;
-  }
+  BraveClearDataOnExitTwoBrowsersTest() { browsers_count_ = 2u; }
 
   BraveClearDataOnExitTwoBrowsersTest(
       const BraveClearDataOnExitTwoBrowsersTest&) = delete;

@@ -43,8 +43,7 @@
 #include "brave/components/playlist/renderer/playlist_render_frame_observer.h"
 #endif
 
-BraveContentRendererClient::BraveContentRendererClient()
-    : ChromeContentRendererClient() {}
+BraveContentRendererClient::BraveContentRendererClient() = default;
 
 void BraveContentRendererClient::
     SetRuntimeFeaturesDefaultsBeforeBlinkInitialization() {

@@ -65,8 +65,7 @@ class WebstoreInstallerForImporting
 }  // namespace
 
 BraveExternalProcessImporterHost::BraveExternalProcessImporterHost()
-    : ExternalProcessImporterHost(),
-      weak_ptr_factory_(this) {}
+    : weak_ptr_factory_(this) {}
 BraveExternalProcessImporterHost::~BraveExternalProcessImporterHost() = default;
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)

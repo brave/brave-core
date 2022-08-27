@@ -73,9 +73,8 @@ void SolanaMessage::GetUniqueAccountMetas(
 
   // Get program ID from each instruction and put at the end.
   for (const auto& instruction : instructions_) {
-    account_metas.push_back(SolanaAccountMeta(instruction.GetProgramId(),
-                                              false /* is_signer */,
-                                              false /* is_writable */));
+    account_metas.emplace_back(instruction.GetProgramId(),
+                               false /* is_signer */, false /* is_writable */);
   }
 
   // Fee payer will always be placed at first.
@@ -233,8 +232,7 @@ absl::optional<SolanaMessage> SolanaMessage::Deserialize(
         (i >= num_required_signatures &&
          i < num_of_accounts - num_readonly_unsigned_accounts);
 
-    accounts.push_back(
-        SolanaAccountMeta(Base58Encode(address_bytes), is_signer, is_writable));
+    accounts.emplace_back(Base58Encode(address_bytes), is_signer, is_writable);
     bytes_index += kSolanaPubkeySize;
   }
 

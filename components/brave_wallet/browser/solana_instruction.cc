@@ -114,8 +114,7 @@ absl::optional<SolanaInstruction> SolanaInstruction::Deserialize(
     uint8_t account_index = bytes[(*bytes_index)++];
     if (account_index >= message_account_metas.size())
       return absl::nullopt;
-    account_metas.push_back(
-        SolanaAccountMeta(message_account_metas[account_index]));
+    account_metas.emplace_back(message_account_metas[account_index]);
   }
 
   ret = CompactU16Decode(bytes, *bytes_index);

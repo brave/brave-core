@@ -54,9 +54,9 @@ void SyncCannotRunInfoBarDelegate::Create(
 // Start class impl
 SyncCannotRunInfoBarDelegate::SyncCannotRunInfoBarDelegate(Browser* browser,
                                                            Profile* profile)
-    : ConfirmInfoBarDelegate(), profile_(profile), browser_(browser) {}
+    : profile_(profile), browser_(browser) {}
 
-SyncCannotRunInfoBarDelegate::~SyncCannotRunInfoBarDelegate() {}
+SyncCannotRunInfoBarDelegate::~SyncCannotRunInfoBarDelegate() = default;
 
 infobars::InfoBarDelegate::InfoBarIdentifier
 SyncCannotRunInfoBarDelegate::GetIdentifier() const {

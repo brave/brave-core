@@ -495,8 +495,8 @@ KeyringService::GetImportedAccountsForKeyring(PrefService* prefs,
       coin = static_cast<mojom::CoinType>(*coin_name_value);
     }
 
-    result.push_back(ImportedAccountInfo(*account_name, *account_address,
-                                         *encrypted_private_key, coin));
+    result.emplace_back(*account_name, *account_address, *encrypted_private_key,
+                        coin);
   }
   return result;
 }

@@ -105,9 +105,8 @@ std::vector<FilterList> RegionalCatalogFromJSON(
       continue;
     }
 
-    catalog.push_back(adblock::FilterList(*uuid, *url, *title, langs,
-                                          *support_url, *component_id,
-                                          *base64_public_key, *desc));
+    catalog.emplace_back(*uuid, *url, *title, langs, *support_url,
+                         *component_id, *base64_public_key, *desc);
   }
 
   return catalog;

@@ -87,7 +87,7 @@ AdBlockSubscriptionDownloadManager* MaybeGetDownloadManager() {
 class AdBlockSubscriptionDownloadManagerGetterImpl
     : public ProfileManagerObserver {
  public:
-  AdBlockSubscriptionDownloadManagerGetterImpl(
+  explicit AdBlockSubscriptionDownloadManagerGetterImpl(
       base::OnceCallback<void(AdBlockSubscriptionDownloadManager*)> callback)
       : callback_(std::move(callback)) {
     g_browser_process->profile_manager()->AddObserver(this);

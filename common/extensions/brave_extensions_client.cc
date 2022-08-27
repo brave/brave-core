@@ -42,7 +42,7 @@ std::string ParseUpdateUrlHost(std::string options) {
 
 }  // namespace
 
-BraveExtensionsClient::BraveExtensionsClient() : ChromeExtensionsClient() {}
+BraveExtensionsClient::BraveExtensionsClient() = default;
 
 void BraveExtensionsClient::InitializeWebStoreUrls(
     base::CommandLine* command_line) {
