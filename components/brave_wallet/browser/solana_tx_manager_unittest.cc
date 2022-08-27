@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/solana_tx_manager.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/base64.h"
@@ -64,12 +65,12 @@ class SolanaTxManagerUnitTest : public testing::Test {
     SetInterceptor(latest_blockhash1_, last_valid_block_height1_, tx_hash1_, "",
                    false, last_valid_block_height1_);
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
-    json_rpc_service_.reset(
-        new JsonRpcService(shared_url_loader_factory_, &prefs_));
-    keyring_service_.reset(
-        new KeyringService(json_rpc_service_.get(), &prefs_));
-    tx_service_.reset(new TxService(json_rpc_service_.get(),
-                                    keyring_service_.get(), &prefs_));
+    json_rpc_service_ =
+        std::make_unique<JsonRpcService>(shared_url_loader_factory_, &prefs_);
+    keyring_service_ =
+        std::make_unique<KeyringService>(json_rpc_service_.get(), &prefs_);
+    tx_service_ = std::make_unique<TxService>(json_rpc_service_.get(),
+                                              keyring_service_.get(), &prefs_);
     CreateWallet();
     AddAccount();
   }

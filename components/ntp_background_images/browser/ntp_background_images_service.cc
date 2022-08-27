@@ -6,6 +6,7 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 
 #include <algorithm>
+#include <memory>
 #include <utility>
 
 #include "base/bind.h"
@@ -211,8 +212,8 @@ void NTPBackgroundImagesService::CheckSuperReferralComponent() {
         prefs::kNewTabPageCachedSuperReferralComponentData);
     if (!cached_data.empty()) {
       DVLOG(2) << __func__ << ": Initialized SR Data from cache.";
-      sr_images_data_.reset(
-          new NTPSponsoredImagesData(cached_data, sr_installed_dir_));
+      sr_images_data_ = std::make_unique<NTPSponsoredImagesData>(
+          cached_data, sr_installed_dir_);
     }
     return;
   }
@@ -468,8 +469,8 @@ void NTPBackgroundImagesService::OnComponentReady(
 
 void NTPBackgroundImagesService::OnGetComponentJsonData(
     const std::string& json_string) {
-  bi_images_data_.reset(
-      new NTPBackgroundImagesData(json_string, bi_installed_dir_));
+  bi_images_data_ =
+      std::make_unique<NTPBackgroundImagesData>(json_string, bi_installed_dir_);
 
   for (auto& observer : observer_list_) {
     observer.OnUpdated(bi_images_data_.get());
@@ -502,8 +503,8 @@ void NTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
     local_pref_->SetBoolean(
           prefs::kNewTabPageGetInitialSRComponentInProgress,
           false);
-    sr_images_data_.reset(
-        new NTPSponsoredImagesData(json_string, sr_installed_dir_));
+    sr_images_data_ = std::make_unique<NTPSponsoredImagesData>(
+        json_string, sr_installed_dir_);
     // |initial_sr_component_info_| has proper data only for initial component
     // downloading. After that, it's empty. In test, it's also empty.
     if (initial_sr_component_info_.is_dict()) {
@@ -513,8 +514,8 @@ void NTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
     local_pref_->SetString(prefs::kNewTabPageCachedSuperReferralComponentData,
                            json_string);
   } else {
-    si_images_data_.reset(
-        new NTPSponsoredImagesData(json_string, si_installed_dir_));
+    si_images_data_ = std::make_unique<NTPSponsoredImagesData>(
+        json_string, si_installed_dir_);
   }
 
   if (is_super_referral && !sr_images_data_->IsValid()) {

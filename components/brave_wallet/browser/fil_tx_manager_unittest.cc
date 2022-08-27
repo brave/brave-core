@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/fil_tx_manager.h"
+#include <memory>
 #include <unordered_map>
 
 #include <utility>
@@ -74,12 +75,12 @@ class FilTxManagerUnitTest : public testing::Test {
         brave_wallet::features::kBraveWalletFilecoinFeature);
 
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
-    json_rpc_service_.reset(
-        new JsonRpcService(shared_url_loader_factory_, &prefs_));
-    keyring_service_.reset(
-        new KeyringService(json_rpc_service_.get(), &prefs_));
-    tx_service_.reset(new TxService(json_rpc_service_.get(),
-                                    keyring_service_.get(), &prefs_));
+    json_rpc_service_ =
+        std::make_unique<JsonRpcService>(shared_url_loader_factory_, &prefs_);
+    keyring_service_ =
+        std::make_unique<KeyringService>(json_rpc_service_.get(), &prefs_);
+    tx_service_ = std::make_unique<TxService>(json_rpc_service_.get(),
+                                              keyring_service_.get(), &prefs_);
 
     base::RunLoop run_loop;
     json_rpc_service_->SetNetwork(brave_wallet::mojom::kLocalhostChainId,

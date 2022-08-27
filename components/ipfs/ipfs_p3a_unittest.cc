@@ -23,7 +23,7 @@ class IPFSP3ATest : public testing::Test {
   void SetUp() override {
     auto* registry = pref_service_.registry();
     IpfsService::RegisterProfilePrefs(registry);
-    histogram_tester_.reset(new base::HistogramTester);
+    histogram_tester_ = std::make_unique<base::HistogramTester>();
   }
 
   PrefService* GetPrefs() { return &pref_service_; }

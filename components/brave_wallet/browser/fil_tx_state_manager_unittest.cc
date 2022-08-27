@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/fil_tx_state_manager.h"
 
+#include <memory>
 #include <utility>
 #include <vector>
 
@@ -34,10 +35,10 @@ class FilTxStateManagerUnitTest : public testing::Test {
  protected:
   void SetUp() override {
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
-    json_rpc_service_.reset(
-        new JsonRpcService(shared_url_loader_factory_, GetPrefs()));
-    fil_tx_state_manager_.reset(
-        new FilTxStateManager(GetPrefs(), json_rpc_service_.get()));
+    json_rpc_service_ = std::make_unique<JsonRpcService>(
+        shared_url_loader_factory_, GetPrefs());
+    fil_tx_state_manager_ = std::make_unique<FilTxStateManager>(
+        GetPrefs(), json_rpc_service_.get());
   }
 
   void SetNetwork(const std::string& chain_id) {

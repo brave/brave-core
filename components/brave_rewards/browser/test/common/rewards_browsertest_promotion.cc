@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
 #include <utility>
 
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
@@ -31,7 +32,7 @@ void RewardsBrowserTestPromotion::WaitForPromotionInitialization() {
     return;
   }
 
-  wait_for_initialization_loop_.reset(new base::RunLoop);
+  wait_for_initialization_loop_ = std::make_unique<base::RunLoop>();
   wait_for_initialization_loop_->Run();
 }
 
@@ -54,7 +55,7 @@ void RewardsBrowserTestPromotion::WaitForPromotionFinished(
     return;
   }
 
-  wait_for_finished_loop_.reset(new base::RunLoop);
+  wait_for_finished_loop_ = std::make_unique<base::RunLoop>();
   wait_for_finished_loop_->Run();
 }
 
@@ -81,7 +82,7 @@ void RewardsBrowserTestPromotion::WaitForUnblindedTokensReady() {
     return;
   }
 
-  wait_for_unblinded_tokens_loop_.reset(new base::RunLoop);
+  wait_for_unblinded_tokens_loop_ = std::make_unique<base::RunLoop>();
   wait_for_unblinded_tokens_loop_->Run();
 }
 

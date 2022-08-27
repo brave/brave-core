@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
 #include <utility>
 
 #include "bat/ledger/internal/ledger_impl.h"
@@ -61,7 +62,7 @@ void LegacyPublisherState::OnLoad(ledger::type::Result result,
     return;
   }
 
-  state_.reset(new ledger::PublisherSettingsProperties(state));
+  state_ = std::make_unique<ledger::PublisherSettingsProperties>(state);
   callback(ledger::type::Result::LEDGER_OK);
 }
 

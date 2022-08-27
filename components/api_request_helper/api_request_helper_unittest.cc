@@ -5,6 +5,7 @@
 
 #include "brave/components/api_request_helper/api_request_helper.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/callback.h"
@@ -35,9 +36,9 @@ class ApiRequestHelperUnitTest : public testing::Test {
       : shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &url_loader_factory_)) {
-    api_request_helper_.reset(new APIRequestHelper(
+    api_request_helper_ = std::make_unique<APIRequestHelper>(
         net::NetworkTrafficAnnotationTag(TRAFFIC_ANNOTATION_FOR_TESTS),
-        shared_url_loader_factory_));
+        shared_url_loader_factory_);
   }
   ~ApiRequestHelperUnitTest() override = default;
 

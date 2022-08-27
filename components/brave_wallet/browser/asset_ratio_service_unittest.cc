@@ -60,8 +60,8 @@ class AssetRatioServiceUnitTest : public testing::Test {
       : shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &url_loader_factory_)) {
-    asset_ratio_service_.reset(
-        new AssetRatioService(shared_url_loader_factory_));
+    asset_ratio_service_ =
+        std::make_unique<AssetRatioService>(shared_url_loader_factory_);
   }
 
   ~AssetRatioServiceUnitTest() override = default;

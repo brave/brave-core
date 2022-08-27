@@ -264,14 +264,14 @@ TEST_F(NTPBackgroundImagesViewCounterTest, BINotActiveInitially) {
 
 TEST_F(NTPBackgroundImagesViewCounterTest, SINotActiveWithBadData) {
   // Set some bad data explicitly.
-  service_->si_images_data_.reset(new NTPSponsoredImagesData);
-  service_->sr_images_data_.reset(new NTPSponsoredImagesData);
+  service_->si_images_data_ = std::make_unique<NTPSponsoredImagesData>();
+  service_->sr_images_data_ = std::make_unique<NTPSponsoredImagesData>();
   EXPECT_FALSE(view_counter_->IsBrandedWallpaperActive());
 }
 
 TEST_F(NTPBackgroundImagesViewCounterTest, BINotActiveWithBadData) {
   // Set some bad data explicitly.
-  service_->bi_images_data_.reset(new NTPBackgroundImagesData);
+  service_->bi_images_data_ = std::make_unique<NTPBackgroundImagesData>();
   EXPECT_FALSE(view_counter_->IsBackgroundWallpaperActive());
 }
 
@@ -382,7 +382,7 @@ TEST_F(NTPBackgroundImagesViewCounterTest, ModelTest) {
   view_counter_->RegisterPageView();
   EXPECT_EQ(expected_count, view_counter_->model_.count_to_branded_wallpaper_);
 
-  service_->sr_images_data_.reset(new NTPSponsoredImagesData);
+  service_->sr_images_data_ = std::make_unique<NTPSponsoredImagesData>();
   view_counter_->OnSuperReferralEnded();
   EXPECT_FALSE(view_counter_->model_.always_show_branded_wallpaper_);
   EXPECT_EQ(expected_count, view_counter_->model_.count_to_branded_wallpaper_);

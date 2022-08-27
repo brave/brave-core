@@ -104,10 +104,10 @@ class SwapServiceUnitTest : public testing::Test {
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &url_loader_factory_)) {
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
-    json_rpc_service_.reset(
-        new JsonRpcService(shared_url_loader_factory_, &prefs_));
-    swap_service_.reset(
-        new SwapService(shared_url_loader_factory_, json_rpc_service_.get()));
+    json_rpc_service_ =
+        std::make_unique<JsonRpcService>(shared_url_loader_factory_, &prefs_);
+    swap_service_ = std::make_unique<SwapService>(shared_url_loader_factory_,
+                                                  json_rpc_service_.get());
   }
 
   ~SwapServiceUnitTest() override = default;

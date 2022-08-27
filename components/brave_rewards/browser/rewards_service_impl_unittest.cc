@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <map>
+#include <memory>
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/memory/raw_ptr.h"
@@ -86,7 +87,7 @@ class RewardsServiceTest : public testing::Test {
         RewardsServiceFactory::GetForProfile(profile()));
     ASSERT_TRUE(RewardsServiceFactory::GetInstance());
     ASSERT_TRUE(rewards_service());
-    observer_.reset(new MockRewardsServiceObserver);
+    observer_ = std::make_unique<MockRewardsServiceObserver>();
     rewards_service_->AddObserver(observer_.get());
   }
 

@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
 #include <utility>
 
 #include "base/strings/stringprintf.h"
@@ -265,7 +266,7 @@ void RewardsBrowserTestContribution::WaitForPendingTipToBeSaved() {
     return;
   }
 
-  wait_for_pending_tip_saved_loop_.reset(new base::RunLoop);
+  wait_for_pending_tip_saved_loop_ = std::make_unique<base::RunLoop>();
   wait_for_pending_tip_saved_loop_->Run();
 }
 
@@ -287,7 +288,7 @@ void RewardsBrowserTestContribution::WaitForTipReconcileCompleted() {
     return;
   }
 
-  wait_for_tip_completed_loop_.reset(new base::RunLoop);
+  wait_for_tip_completed_loop_ = std::make_unique<base::RunLoop>();
   wait_for_tip_completed_loop_->Run();
 }
 
@@ -376,7 +377,7 @@ void RewardsBrowserTestContribution::WaitForRecurringTipToBeSaved() {
     return;
   }
 
-  wait_for_recurring_tip_saved_loop_.reset(new base::RunLoop);
+  wait_for_recurring_tip_saved_loop_ = std::make_unique<base::RunLoop>();
   wait_for_recurring_tip_saved_loop_->Run();
 }
 
@@ -401,7 +402,7 @@ void RewardsBrowserTestContribution::WaitForMultipleTipReconcileCompleted(
     return;
   }
 
-  wait_for_multiple_tip_completed_loop_.reset(new base::RunLoop);
+  wait_for_multiple_tip_completed_loop_ = std::make_unique<base::RunLoop>();
   wait_for_multiple_tip_completed_loop_->Run();
 }
 
@@ -413,7 +414,7 @@ void RewardsBrowserTestContribution::WaitForMultipleACReconcileCompleted(
     return;
   }
 
-  wait_for_multiple_ac_completed_loop_.reset(new base::RunLoop);
+  wait_for_multiple_ac_completed_loop_ = std::make_unique<base::RunLoop>();
   wait_for_multiple_ac_completed_loop_->Run();
 }
 
@@ -422,7 +423,7 @@ void RewardsBrowserTestContribution::WaitForACReconcileCompleted() {
     return;
   }
 
-  wait_for_ac_completed_loop_.reset(new base::RunLoop);
+  wait_for_ac_completed_loop_ = std::make_unique<base::RunLoop>();
   wait_for_ac_completed_loop_->Run();
 }
 

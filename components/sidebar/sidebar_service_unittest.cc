@@ -30,7 +30,7 @@ class SidebarServiceTest : public testing::Test,
   void TearDown() override { service_->RemoveObserver(this); }
 
   void InitService() {
-    service_.reset(new SidebarService(&prefs_));
+    service_ = std::make_unique<SidebarService>(&prefs_);
     service_->AddObserver(this);
   }
 

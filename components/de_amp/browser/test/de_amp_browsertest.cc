@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
 #include <string>
 
 #include "base/bind.h"
@@ -76,8 +77,8 @@ class DeAmpBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
-    https_server_.reset(new net::EmbeddedTestServer(
-        net::test_server::EmbeddedTestServer::TYPE_HTTPS));
+    https_server_ = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
     prefs_ = browser()->profile()->GetPrefs();
 
     content::SetupCrossSiteRedirector(https_server_.get());
@@ -240,8 +241,8 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, SimpleDeAmp) {
   EXPECT_EQ(web_contents()->GetLastCommittedURL(), simple);
 
   // Now go to an AMP page
-  https_server_.reset(new net::EmbeddedTestServer(
-      net::test_server::EmbeddedTestServer::TYPE_HTTPS));
+  https_server_ = std::make_unique<net::EmbeddedTestServer>(
+      net::test_server::EmbeddedTestServer::TYPE_HTTPS);
   https_server_->RegisterRequestHandler(
       base::BindRepeating(HandleRequest, kTestCanonicalPage, GetTestAmpBody()));
   ASSERT_TRUE(https_server_->Start());
@@ -269,8 +270,8 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, CanonicalLinkOutsideChunkWithinMax) {
   EXPECT_EQ(web_contents()->GetLastCommittedURL(), simple);
 
   // Now go to an AMP page
-  https_server_.reset(new net::EmbeddedTestServer(
-      net::test_server::EmbeddedTestServer::TYPE_HTTPS));
+  https_server_ = std::make_unique<net::EmbeddedTestServer>(
+      net::test_server::EmbeddedTestServer::TYPE_HTTPS);
   https_server_->RegisterRequestHandler(
       base::BindRepeating(HandleRequest, kTestCanonicalPage, amp_body_large));
   ASSERT_TRUE(https_server_->Start());
@@ -299,8 +300,8 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, CanonicalLinkOutsideChunkOutsideMax) {
   EXPECT_EQ(web_contents()->GetLastCommittedURL(), simple);
 
   // Now go to an AMP page
-  https_server_.reset(new net::EmbeddedTestServer(
-      net::test_server::EmbeddedTestServer::TYPE_HTTPS));
+  https_server_ = std::make_unique<net::EmbeddedTestServer>(
+      net::test_server::EmbeddedTestServer::TYPE_HTTPS);
   https_server_->RegisterRequestHandler(
       base::BindRepeating(HandleRequest, kTestCanonicalPage, amp_body_large));
   ASSERT_TRUE(https_server_->Start());
@@ -439,8 +440,8 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, AmpURLNotStoredInHistory) {
   NavigateToURLAndWaitForRedirects(simple, simple);
 
   // Now go to an AMP page
-  https_server_.reset(new net::EmbeddedTestServer(
-      net::test_server::EmbeddedTestServer::TYPE_HTTPS));
+  https_server_ = std::make_unique<net::EmbeddedTestServer>(
+      net::test_server::EmbeddedTestServer::TYPE_HTTPS);
   https_server_->RegisterRequestHandler(
       base::BindRepeating(HandleRequest, kTestCanonicalPage, GetTestAmpBody()));
   ASSERT_TRUE(https_server_->Start());
@@ -452,8 +453,8 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, AmpURLNotStoredInHistory) {
 
   // Go to another AMP page
   const std::string another_canonical_page = "/simple_canonical2.html";
-  https_server_.reset(new net::EmbeddedTestServer(
-      net::test_server::EmbeddedTestServer::TYPE_HTTPS));
+  https_server_ = std::make_unique<net::EmbeddedTestServer>(
+      net::test_server::EmbeddedTestServer::TYPE_HTTPS);
   https_server_->RegisterRequestHandler(base::BindRepeating(
       HandleRequest, another_canonical_page, GetTestAmpBody()));
   ASSERT_TRUE(https_server_->Start());

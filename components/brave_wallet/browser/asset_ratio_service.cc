@@ -110,8 +110,8 @@ AssetRatioService::~AssetRatioService() = default;
 
 void AssetRatioService::SetAPIRequestHelperForTesting(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
-  api_request_helper_.reset(new api_request_helper::APIRequestHelper(
-      GetNetworkTrafficAnnotationTag(), url_loader_factory));
+  api_request_helper_ = std::make_unique<api_request_helper::APIRequestHelper>(
+      GetNetworkTrafficAnnotationTag(), url_loader_factory);
 }
 
 mojo::PendingRemote<mojom::AssetRatioService> AssetRatioService::MakeRemote() {

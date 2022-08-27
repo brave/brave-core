@@ -28,9 +28,10 @@ class NTPBackgroundImagesSourceTest : public testing::Test {
     auto* registry = local_pref_.registry();
     NTPBackgroundImagesService::RegisterLocalStatePrefs(registry);
     brave::RegisterPrefsForBraveReferralsService(registry);
-    service_.reset(new NTPBackgroundImagesService(nullptr, &local_pref_));
-    source_.reset(new NTPSponsoredImagesSource(service_.get()));
-    bg_source_.reset(new NTPBackgroundImagesSource(service_.get()));
+    service_ =
+        std::make_unique<NTPBackgroundImagesService>(nullptr, &local_pref_);
+    source_ = std::make_unique<NTPSponsoredImagesSource>(service_.get());
+    bg_source_ = std::make_unique<NTPBackgroundImagesSource>(service_.get());
     local_pref_.Set(prefs::kNewTabPageCachedSuperReferralComponentInfo,
                     base::Value(base::Value::Type::DICTIONARY));
   }
