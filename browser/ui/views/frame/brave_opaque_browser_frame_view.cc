@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/frame/brave_opaque_browser_frame_view.h"
 
+#include <memory>
+
 #include "brave/browser/ui/views/frame/brave_window_frame_graphic.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -18,8 +20,8 @@ BraveOpaqueBrowserFrameView::BraveOpaqueBrowserFrameView(
     BrowserView* browser_view,
     OpaqueBrowserFrameViewLayout* layout)
     : OpaqueBrowserFrameView(frame, browser_view, layout) {
-  frame_graphic_.reset(
-      new BraveWindowFrameGraphic(browser_view->browser()->profile()));
+  frame_graphic_ = std::make_unique<BraveWindowFrameGraphic>(
+      browser_view->browser()->profile());
 }
 
 BraveOpaqueBrowserFrameView::~BraveOpaqueBrowserFrameView() = default;

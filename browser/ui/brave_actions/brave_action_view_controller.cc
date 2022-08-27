@@ -162,10 +162,9 @@ BraveActionViewController::GetIconImageSource(
   std::string badge_text =
       extension_action()->GetExplicitlySetBadgeText(tab_id);
   if (!badge_text.empty()) {
-    badge.reset(new IconWithBadgeImageSource::Badge(
-            badge_text,
-            extension_action()->GetBadgeTextColor(tab_id),
-            extension_action()->GetBadgeBackgroundColor(tab_id)));
+    badge = std::make_unique<IconWithBadgeImageSource::Badge>(
+        badge_text, extension_action()->GetBadgeTextColor(tab_id),
+        extension_action()->GetBadgeBackgroundColor(tab_id));
   }
   image_source->SetBadge(std::move(badge));
   // state

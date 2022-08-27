@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "brave/browser/ui/views/frame/brave_browser_non_client_frame_view_mac.h"
 
 #include "brave/browser/ui/views/frame/brave_window_frame_graphic.h"
@@ -15,8 +17,8 @@
 BraveBrowserNonClientFrameViewMac::BraveBrowserNonClientFrameViewMac(
     BrowserFrame* frame, BrowserView* browser_view)
     : BrowserNonClientFrameViewMac(frame, browser_view) {
-  frame_graphic_.reset(
-      new BraveWindowFrameGraphic(browser_view->browser()->profile()));
+  frame_graphic_ = std::make_unique<BraveWindowFrameGraphic>(
+      browser_view->browser()->profile());
 }
 
 BraveBrowserNonClientFrameViewMac::~BraveBrowserNonClientFrameViewMac() = default;

@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "brave/browser/search_engines/search_engine_tracker.h"
 
 #include "base/test/metrics/histogram_tester.h"
@@ -23,7 +25,7 @@
 class SearchEngineProviderP3ATest : public InProcessBrowserTest {
  public:
   SearchEngineProviderP3ATest() {
-    histogram_tester_.reset(new base::HistogramTester);
+    histogram_tester_ = std::make_unique<base::HistogramTester>();
 
     // Override the default region. Defaults vary and this
     // ties the expected test results to a specific region

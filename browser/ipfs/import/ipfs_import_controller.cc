@@ -5,6 +5,7 @@
 
 #include "brave/browser/ipfs/import/ipfs_import_controller.h"
 
+#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -194,10 +195,10 @@ void IpfsImportController::SaveWebPage(const base::FilePath& directory) {
       FILE_PATH_LITERAL("_files"));
   auto* download_manager =
       web_contents_->GetBrowserContext()->GetDownloadManager();
-  save_package_observer_.reset(new SavePackageFinishedObserver(
+  save_package_observer_ = std::make_unique<SavePackageFinishedObserver>(
       download_manager, saved_main_file_path,
       base::BindOnce(&IpfsImportController::OnDownloadFinished,
-                     weak_ptr_factory_.GetWeakPtr(), directory)));
+                     weak_ptr_factory_.GetWeakPtr(), directory));
   web_contents_->SavePage(saved_main_file_path, saved_main_directory_path,
                           content::SAVE_PAGE_TYPE_AS_COMPLETE_HTML);
 }

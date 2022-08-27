@@ -5,13 +5,15 @@
 
 #include "brave/browser/themes/brave_theme_service.h"
 
+#include <memory>
+
 #include "brave/browser/extensions/brave_theme_event_router.h"
 
 BraveThemeService::BraveThemeService(Profile* profile,
                                      const ThemeHelper& theme_helper)
     : ThemeService(profile, theme_helper) {
-  brave_theme_event_router_.reset(
-      new extensions::BraveThemeEventRouter(profile));
+  brave_theme_event_router_ =
+      std::make_unique<extensions::BraveThemeEventRouter>(profile);
 }
 
 BraveThemeService::~BraveThemeService() = default;

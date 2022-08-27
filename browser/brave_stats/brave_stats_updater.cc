@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/barrier_closure.h"
@@ -353,7 +354,7 @@ void BraveStatsUpdater::QueueServerPing() {
       base::BindOnce(&BraveStatsUpdater::StartServerPingStartupTimer,
                      base::Unretained(this)));
   if (!referrals_initialized) {
-    pref_change_registrar_.reset(new PrefChangeRegistrar());
+    pref_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
     pref_change_registrar_->Init(pref_service_);
     pref_change_registrar_->Add(
         kReferralInitialization,

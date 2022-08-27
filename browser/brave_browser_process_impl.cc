@@ -353,8 +353,8 @@ brave_stats::BraveStatsUpdater* BraveBrowserProcessImpl::brave_stats_updater() {
 
 brave_ads::ResourceComponent* BraveBrowserProcessImpl::resource_component() {
   if (!resource_component_) {
-    resource_component_.reset(
-        new brave_ads::ResourceComponent(brave_component_updater_delegate()));
+    resource_component_ = std::make_unique<brave_ads::ResourceComponent>(
+        brave_component_updater_delegate());
   }
   return resource_component_.get();
 }
@@ -377,9 +377,9 @@ BraveBrowserProcessImpl::notification_platform_bridge() {
 speedreader::SpeedreaderRewriterService*
 BraveBrowserProcessImpl::speedreader_rewriter_service() {
   if (!speedreader_rewriter_service_) {
-    speedreader_rewriter_service_.reset(
-        new speedreader::SpeedreaderRewriterService(
-            brave_component_updater_delegate()));
+    speedreader_rewriter_service_ =
+        std::make_unique<speedreader::SpeedreaderRewriterService>(
+            brave_component_updater_delegate());
   }
   return speedreader_rewriter_service_.get();
 }

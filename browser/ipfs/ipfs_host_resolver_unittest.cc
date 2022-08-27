@@ -128,7 +128,7 @@ class IPFSHostResolverTest : public testing::Test {
   IPFSHostResolverTest() {
     local_state_ = std::make_unique<ScopedTestingLocalState>(
         TestingBrowserProcess::GetGlobal());
-    network_context_.reset(new FakeNetworkContext());
+    network_context_ = std::make_unique<FakeNetworkContext>();
   }
 
   void HostResolvedCallback(base::OnceClosure callback,

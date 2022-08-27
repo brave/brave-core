@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/auto_reset.h"
@@ -302,10 +303,11 @@ void SidebarContainerView::OnItemRemoved(int index) {
 SidebarShowOptionsEventDetectWidget*
 SidebarContainerView::GetEventDetectWidget() {
   if (!show_options_widget_) {
-    show_options_widget_.reset(new SidebarShowOptionsEventDetectWidget(
-        static_cast<BraveBrowserView*>(
-            BrowserView::GetBrowserViewForBrowser(browser_)),
-        this));
+    show_options_widget_ =
+        std::make_unique<SidebarShowOptionsEventDetectWidget>(
+            static_cast<BraveBrowserView*>(
+                BrowserView::GetBrowserViewForBrowser(browser_)),
+            this);
   }
 
   return show_options_widget_.get();

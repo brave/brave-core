@@ -35,13 +35,14 @@ class WalletNotificationServiceUnitTest : public testing::Test {
                 &url_loader_factory_)) {}
 
   void SetUp() override {
-    json_rpc_service_.reset(
-        new JsonRpcService(shared_url_loader_factory_, prefs()));
-    keyring_service_.reset(
-        new KeyringService(json_rpc_service_.get(), prefs()));
-    tx_service_.reset(new TxService(json_rpc_service_.get(),
-                                    keyring_service_.get(), prefs()));
-    notification_service_.reset(new WalletNotificationService(profile()));
+    json_rpc_service_ =
+        std::make_unique<JsonRpcService>(shared_url_loader_factory_, prefs());
+    keyring_service_ =
+        std::make_unique<KeyringService>(json_rpc_service_.get(), prefs());
+    tx_service_ = std::make_unique<TxService>(json_rpc_service_.get(),
+                                              keyring_service_.get(), prefs());
+    notification_service_ =
+        std::make_unique<WalletNotificationService>(profile());
     tester_ = std::make_unique<NotificationDisplayServiceTester>(profile());
   }
   Profile* profile() { return &profile_; }

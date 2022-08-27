@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "brave/components/brave_wallet/browser/solana_provider_impl.h"
 
 #include "base/feature_list.h"
@@ -118,7 +120,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
         keyring_service_, brave_wallet_service_, tx_service_,
         std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
             web_contents(), web_contents()->GetPrimaryMainFrame()));
-    observer_.reset(new TestEventsListener());
+    observer_ = std::make_unique<TestEventsListener>();
     provider_->Init(observer_->GetReceiver());
   }
 

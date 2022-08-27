@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "brave/components/ipfs/keys/ipns_keys_manager.h"
 
 #include "base/memory/raw_ptr.h"
@@ -44,8 +46,8 @@ class IpnsManagerBrowserTest : public InProcessBrowserTest {
 
   void ResetTestServer(
       const net::EmbeddedTestServer::HandleRequestCallback& callback) {
-    test_server_.reset(new net::EmbeddedTestServer(
-        net::test_server::EmbeddedTestServer::TYPE_HTTPS));
+    test_server_ = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
     test_server_->RegisterRequestHandler(callback);
     ASSERT_TRUE(test_server_->Start());
     ipfs_service_->GetIpnsKeysManager()->SetServerEndpointForTest(
@@ -184,7 +186,7 @@ IN_PROC_BROWSER_TEST_F(IpnsManagerBrowserTest, RemoveKey) {
   ASSERT_FALSE(ipns_manager->KeyExists("self"));
   ASSERT_FALSE(ipns_manager->KeyExists("MyNewKey"));
   std::unique_ptr<base::RunLoop> run_loop;
-  run_loop.reset(new base::RunLoop);
+  run_loop = std::make_unique<base::RunLoop>();
   ipns_manager->GenerateNewKey(
       "MyNewKey",
       base::BindOnce(
@@ -206,7 +208,7 @@ IN_PROC_BROWSER_TEST_F(IpnsManagerBrowserTest, RemoveKey) {
       base::BindRepeating(&IpnsManagerBrowserTest::HandleKeysRequests,
                           base::Unretained(this), response));
 
-  run_loop.reset(new base::RunLoop);
+  run_loop = std::make_unique<base::RunLoop>();
   ipns_manager->RemoveKey("MyNewKey",
                           base::BindOnce(
                               [](base::OnceCallback<void(void)> launch_callback,

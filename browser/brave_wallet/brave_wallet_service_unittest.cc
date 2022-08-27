@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include <memory>
 #include <string>
 
 #include "base/json/json_reader.h"
@@ -256,16 +257,16 @@ class BraveWalletServiceUnitTest : public testing::Test {
     RegisterUserProfilePrefs(prefs->registry());
     builder.SetPrefService(std::move(prefs));
     profile_ = builder.Build();
-    histogram_tester_.reset(new base::HistogramTester);
+    histogram_tester_ = std::make_unique<base::HistogramTester>();
     keyring_service_ =
         KeyringServiceFactory::GetServiceForContext(profile_.get());
     json_rpc_service_ =
         JsonRpcServiceFactory::GetServiceForContext(profile_.get());
     tx_service = TxServiceFactory::GetServiceForContext(profile_.get());
-    service_.reset(new BraveWalletService(
+    service_ = std::make_unique<BraveWalletService>(
         BraveWalletServiceDelegate::Create(profile_.get()), keyring_service_,
-        json_rpc_service_, tx_service, GetPrefs()));
-    observer_.reset(new TestBraveWalletServiceObserver());
+        json_rpc_service_, tx_service, GetPrefs());
+    observer_ = std::make_unique<TestBraveWalletServiceObserver>();
     service_->AddObserver(observer_->GetReceiver());
 
     auto* registry = BlockchainRegistry::GetInstance();

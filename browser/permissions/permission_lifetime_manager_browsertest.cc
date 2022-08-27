@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "brave/components/permissions/permission_lifetime_manager.h"
 
 #include "base/bind.h"
@@ -79,7 +81,8 @@ class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpOnMainThread();
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     PermissionRequestManager* manager = GetPermissionRequestManager();
-    prompt_factory_.reset(new MockPermissionLifetimePromptFactory(manager));
+    prompt_factory_ =
+        std::make_unique<MockPermissionLifetimePromptFactory>(manager);
 
     host_resolver()->AddRule("*", "127.0.0.1");
     https_server()->ServeFilesFromSourceDirectory(GetChromeTestDataDir());

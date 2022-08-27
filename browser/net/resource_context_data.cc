@@ -5,6 +5,7 @@
 
 #include "brave/browser/net/resource_context_data.h"
 
+#include <memory>
 #include <string>
 #include <utility>
 
@@ -43,7 +44,7 @@ void ResourceContextData::StartProxying(
   }
 
   if (!self->request_handler_) {
-    self->request_handler_.reset(new BraveRequestHandler);
+    self->request_handler_ = std::make_unique<BraveRequestHandler>();
   }
 
   auto proxy = std::make_unique<BraveProxyingURLLoaderFactory>(
@@ -80,7 +81,7 @@ BraveProxyingWebSocket* ResourceContextData::StartProxyingWebSocket(
   }
 
   if (!self->request_handler_) {
-    self->request_handler_.reset(new BraveRequestHandler);
+    self->request_handler_ = std::make_unique<BraveRequestHandler>();
   }
 
   network::ResourceRequest request;
