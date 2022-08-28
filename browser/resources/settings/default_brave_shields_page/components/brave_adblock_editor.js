@@ -8,7 +8,7 @@ import {PolymerElement, html} from 'chrome://resources/polymer/v3_0/polymer/poly
 import {BaseMixin} from '../../base_mixin.js';
 import {PrefsMixin} from '../../prefs/prefs_mixin.js';
 
-import 'chrome://resources/cr_elements/cr_button/cr_button.m.js';
+import 'chrome://resources/cr_elements/cr_button/cr_button.js';
 
 const AdBlockFiltersEditorBase = PrefsMixin(I18nMixin(BaseMixin(PolymerElement)))
 
