@@ -1,7 +1,7 @@
 import { BraveWallet } from '../../constants/types'
-import { SignedLotusMessage } from '@glif/filecoin-message'
 import { LedgerError } from './ledgerjs/ledger-messages'
 import { EthereumSignedTx } from './ledgerjs/eth-ledger-messages'
+import { FilSignedLotusMessage } from './ledgerjs/fil-ledger-messages'
 
 export const FilecoinNetworkTypes = [
   BraveWallet.FILECOIN_MAINNET, BraveWallet.FILECOIN_TESTNET
@@ -33,7 +33,7 @@ export type HardwareOperationResult = {
 }
 
 export type SignHardwareOperationResult = HardwareOperationResult & {
-  payload?: EthereumSignedTx | SignedLotusMessage | Buffer | string
+  payload?: EthereumSignedTx | FilSignedLotusMessage | Buffer | string
 }
 
 export enum LedgerDerivationPaths {
