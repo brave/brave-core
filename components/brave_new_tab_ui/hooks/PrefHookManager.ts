@@ -27,7 +27,7 @@ export class PrefHookManager<T> {
         getInitialValue().then(this.notifyListeners)
     }
 
-    notifyListeners (prefs: T) {
+    notifyListeners = (prefs: T) => {
         const oldPrefs = this.#lastValue ?? {} as Partial<T>
         this.#lastValue = prefs
 
