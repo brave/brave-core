@@ -177,7 +177,7 @@ class BraveActionsContainer : public views::View,
   // BraveActionAPI::Observer
   void OnBraveActionShouldTrigger(
       const std::string& extension_id,
-      std::unique_ptr<std::string> ui_relative_path) override;
+      const absl::optional<std::string>& ui_relative_path) override;
 
   bool should_hide_ = false;
 
