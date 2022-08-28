@@ -6,13 +6,14 @@
 #ifndef BRAVE_BROWSER_EXTENSIONS_API_BRAVE_ACTION_API_H_
 #define BRAVE_BROWSER_EXTENSIONS_API_BRAVE_ACTION_API_H_
 
-#include <memory>
 #include <string>
 
 #include "base/observer_list.h"
+#include "base/types/expected.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "extensions/browser/extension_function.h"
 #include "extensions/common/extension.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class Browser;
 
@@ -23,25 +24,23 @@ class BraveActionAPI : public KeyedService {
    public:
     Observer();
     virtual void OnBraveActionShouldTrigger(
-      const std::string& extension_id,
-      std::unique_ptr<std::string> ui_relative_path) = 0;
+        const std::string& extension_id,
+        const absl::optional<std::string>& ui_relative_path) = 0;
 
    protected:
     virtual ~Observer();
   };
 
   static BraveActionAPI* Get(Browser* context);
-  static bool ShowActionUI(
-        ExtensionFunction* extension_function,
-        const std::string& extension_id,
-        std::unique_ptr<int> window_id,
-        std::unique_ptr<std::string> ui_relative_path,
-        std::string* error);
-  static bool ShowActionUI(
-        Browser* browser,
-        const std::string& extension_id,
-        std::unique_ptr<std::string> ui_relative_path,
-        std::string* error);
+  static base::expected<bool, std::string> ShowActionUI(
+      ExtensionFunction* extension_function,
+      const std::string& extension_id,
+      absl::optional<int> window_id,
+      absl::optional<std::string> ui_relative_path);
+  static base::expected<bool, std::string> ShowActionUI(
+      Browser* browser,
+      const std::string& extension_id,
+      absl::optional<std::string> ui_relative_path);
   BraveActionAPI();
   BraveActionAPI(const BraveActionAPI&) = delete;
   BraveActionAPI& operator=(const BraveActionAPI&) = delete;
@@ -53,7 +52,7 @@ class BraveActionAPI : public KeyedService {
 
  protected:
   bool NotifyObservers(const std::string& extension_id,
-      std::unique_ptr<std::string> ui_relative_path_param);
+                       absl::optional<std::string> ui_relative_path_param);
 
  private:
   base::ObserverList<Observer>::Unchecked observers_;

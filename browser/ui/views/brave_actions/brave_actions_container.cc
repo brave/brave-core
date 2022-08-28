@@ -444,7 +444,7 @@ void BraveActionsContainer::OnExtensionActionUpdated(
 // BraveActionAPI::Observer
 void BraveActionsContainer::OnBraveActionShouldTrigger(
     const std::string& extension_id,
-    std::unique_ptr<std::string> ui_relative_path) {
+    const absl::optional<std::string>& ui_relative_path) {
   if (!IsContainerAction(extension_id)) {
     return;
   }

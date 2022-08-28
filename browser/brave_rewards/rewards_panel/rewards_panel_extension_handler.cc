@@ -78,10 +78,11 @@ void RewardsPanelExtensionHandler::OnRewardsPanelRequested(
       extension_service->component_loader())
       ->AddRewardsExtension();
 
-  std::string error;
-  extensions::BraveActionAPI::ShowActionUI(
-      browser_, brave_rewards_extension_id,
-      std::make_unique<std::string>(GetExtensionPath(args)), &error);
+  auto result = extensions::BraveActionAPI::ShowActionUI(
+      browser_, brave_rewards_extension_id, GetExtensionPath(args));
+  if (!result.has_value()) {
+    LOG(ERROR) << "Failure to show Action UI. error=" << result.error();
+  }
 }
 
 }  // namespace brave_rewards
