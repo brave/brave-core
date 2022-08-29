@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/containers/flat_map.h"
 #include "base/values.h"
 
 // Helper functions for building out JSON RPC requests across all blockchains.
@@ -39,6 +40,9 @@ std::string GetJsonRpcString(base::StringPiece method, Args&&... args) {
 void AddKeyIfNotEmpty(base::Value::Dict* dict,
                       base::StringPiece name,
                       base::StringPiece val);
+
+base::flat_map<std::string, std::string> MakeCommonJsonRpcHeaders(
+    const std::string& json_payload);
 
 }  // namespace brave_wallet
 

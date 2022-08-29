@@ -65,6 +65,7 @@ std::vector<uint8_t> ToBytes(const std::string& hex) {
 }  // namespace
 
 namespace brave_wallet::eth_abi {
+
 TEST(EthAbiUtilsTest, OffchainLookup) {
   auto bytes = ToBytes(GetOffchainLookupResponse());
 

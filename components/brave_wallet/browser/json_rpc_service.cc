@@ -22,6 +22,7 @@
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
 #include "brave/components/brave_wallet/browser/fil_requests.h"
 #include "brave/components/brave_wallet/browser/fil_response_parser.h"
+#include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
@@ -221,10 +222,11 @@ void JsonRpcService::RequestInternal(
         base::NullCallback()) {
   DCHECK(network_url.is_valid());
 
-  api_request_helper_->Request(
-      "POST", network_url, json_payload, "application/json",
-      auto_retry_on_network_change, std::move(callback),
-      MakeCommonEthHeaders(json_payload), -1u, std::move(conversion_callback));
+  api_request_helper_->Request("POST", network_url, json_payload,
+                               "application/json", auto_retry_on_network_change,
+                               std::move(callback),
+                               MakeCommonJsonRpcHeaders(json_payload), -1u,
+                               std::move(conversion_callback));
 }
 
 void JsonRpcService::Request(const std::string& json_payload,

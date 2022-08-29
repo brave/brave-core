@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_requests.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
+#include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
@@ -442,7 +443,7 @@ void EnsResolverTask::RequestInternal(const std::string& json_payload,
                                       RequestIntermediateCallback callback) {
   api_request_helper_->Request("POST", network_url_, json_payload,
                                "application/json", false, std::move(callback),
-                               MakeCommonEthHeaders(json_payload), -1u,
+                               MakeCommonJsonRpcHeaders(json_payload), -1u,
                                base::NullCallback());
 }
 

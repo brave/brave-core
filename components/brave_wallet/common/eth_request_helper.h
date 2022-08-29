@@ -20,9 +20,6 @@ bool GetEthJsonRequestInfo(const std::string& json,
                            std::string* method,
                            std::string* params);
 
-base::flat_map<std::string, std::string> MakeCommonEthHeaders(
-    const std::string& json_payload);
-
 mojom::TxDataPtr ParseEthSendTransactionParams(const std::string& json,
                                                std::string* from);
 mojom::TxData1559Ptr ParseEthSendTransaction1559Params(const std::string& json,

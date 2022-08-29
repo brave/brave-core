@@ -65,6 +65,8 @@ class EnsResolverTask {
                   std::vector<uint8_t> ens_call,
                   const std::string& domain,
                   const GURL& network_url);
+  EnsResolverTask(const EnsResolverTask&) = delete;
+  EnsResolverTask& operator=(const EnsResolverTask&) = delete;
   ~EnsResolverTask();
 
   const std::string& domain() const { return domain_; }
