@@ -111,6 +111,7 @@ std::string eth_call(const std::string& from_address,
                      const std::string& value,
                      const std::string& data,
                      const std::string& quantity_tag);
+std::string eth_call(const std::string& to_address, const std::string& data);
 // Generates and returns an estimate of how much gas is necessary to allow the
 // transaction to complete. The transaction will not be added to the blockchain.
 // Note that the estimate may be significantly more than the amount of gas

@@ -35,5 +35,8 @@ const base::Feature kBraveWalletSolanaProviderFeature{
 const base::Feature kBraveWalletDappsSupportFeature{
     "BraveWalletDappsSupport", base::FEATURE_ENABLED_BY_DEFAULT};
 
+const base::Feature kBraveWalletENSL2Feature{"BraveWalletENSL2",
+                                             base::FEATURE_DISABLED_BY_DEFAULT};
+
 }  // namespace features
 }  // namespace brave_wallet

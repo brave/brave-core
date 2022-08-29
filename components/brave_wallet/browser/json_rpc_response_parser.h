@@ -24,6 +24,9 @@ namespace brave_wallet {
 bool ParseSingleStringResult(const std::string& json, std::string* result);
 absl::optional<std::string> ParseSingleStringResult(const std::string& json);
 
+absl::optional<std::vector<uint8_t>> ParseDecodedBytesResult(
+    const std::string& json);
+
 template <typename Error>
 void ParseErrorResult(const std::string& json,
                       Error* error,
@@ -58,7 +61,6 @@ void ParseErrorResult(const std::string& json,
   }
 }
 
-absl::optional<base::Value> ParseResultValue(const std::string& json);
 absl::optional<base::Value::Dict> ParseResultDict(const std::string& json);
 bool ParseBoolResult(const std::string& json, bool* value);
 

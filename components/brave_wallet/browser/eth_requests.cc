@@ -204,6 +204,10 @@ std::string eth_call(const std::string& from_address,
   return GetJSON(dictionary);
 }
 
+std::string eth_call(const std::string& to_address, const std::string& data) {
+  return eth::eth_call("", to_address, "", "", "", data, "latest");
+}
+
 std::string eth_estimateGas(const std::string& from_address,
                             const std::string& to_address,
                             const std::string& gas,

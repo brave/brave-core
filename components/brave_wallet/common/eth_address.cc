@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/common/eth_address.h"
 
+#include <utility>
+
 #include "base/check_op.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
@@ -15,20 +17,22 @@
 namespace brave_wallet {
 
 namespace {
-#define ADDRESS_LEN 20
+constexpr size_t kAddressLength = 20u;
 }  // namespace
 
-EthAddress::EthAddress(const std::vector<uint8_t>& bytes) : bytes_(bytes) {}
+EthAddress::EthAddress(std::vector<uint8_t> bytes) : bytes_(std::move(bytes)) {}
+EthAddress::EthAddress(base::span<const uint8_t> bytes)
+    : bytes_(bytes.begin(), bytes.end()) {}
 EthAddress::EthAddress() = default;
 EthAddress::EthAddress(const EthAddress& other) = default;
 EthAddress::~EthAddress() = default;
 
 bool EthAddress::operator==(const EthAddress& other) const {
-  return std::equal(bytes_.begin(), bytes_.end(), other.bytes_.begin());
+  return bytes_ == other.bytes_;
 }
 
 bool EthAddress::operator!=(const EthAddress& other) const {
-  return !std::equal(bytes_.begin(), bytes_.end(), other.bytes_.begin());
+  return !(*this == other);
 }
 
 // static
@@ -39,11 +43,11 @@ EthAddress EthAddress::FromPublicKey(const std::vector<uint8_t>& public_key) {
   }
 
   std::vector<uint8_t> hash = KeccakHash(public_key);
-  std::vector<uint8_t> result(hash.end() - ADDRESS_LEN, hash.end());
+  std::vector<uint8_t> result(hash.end() - kAddressLength, hash.end());
 
-  DCHECK(result.size() == ADDRESS_LEN);
+  DCHECK_EQ(result.size(), kAddressLength);
 
-  return EthAddress(result);
+  return EthAddress(std::move(result));
 }
 
 // static
@@ -57,6 +61,13 @@ EthAddress EthAddress::FromHex(const std::string& input) {
     return EthAddress();
   }
 
+  return EthAddress(std::move(bytes));
+}
+
+// static
+EthAddress EthAddress::FromBytes(base::span<const uint8_t> bytes) {
+  if (bytes.size() != kAddressLength)
+    return EthAddress();
   return EthAddress(bytes);
 }
 
@@ -66,7 +77,7 @@ bool EthAddress::IsValidAddress(const std::string& input) {
     VLOG(1) << __func__ << ": input is not a valid hex representation";
     return false;
   }
-  if (input.size() - 2 != ADDRESS_LEN * 2) {
+  if (input.size() - 2 != kAddressLength * 2) {
     VLOG(1) << __func__ << ": input should be 20 bytes long";
     return false;
   }
