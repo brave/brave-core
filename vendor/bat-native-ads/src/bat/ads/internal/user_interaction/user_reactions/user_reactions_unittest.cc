@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/user_interaction/reactions/reactions.h"
+#include "bat/ads/internal/user_interaction/user_reactions/user_reactions.h"
 
 #include <memory>
 #include <string>
@@ -45,7 +45,7 @@ class BatAdsReactionsTest : public AccountObserver, public UnitTestBase {
     account_ = std::make_unique<Account>(token_generator_mock_.get());
     account_->AddObserver(this);
 
-    reactions_ = std::make_unique<Reactions>(account_.get());
+    user_reactions_ = std::make_unique<UserReactions>(account_.get());
 
     ON_CALL(*token_generator_mock_, Generate(_))
         .WillByDefault(Return(privacy::GetTokens(1)));
@@ -84,7 +84,7 @@ class BatAdsReactionsTest : public AccountObserver, public UnitTestBase {
   bool did_process_deposit_ = false;
   bool failed_to_process_deposit_ = false;
 
-  std::unique_ptr<Reactions> reactions_;
+  std::unique_ptr<UserReactions> user_reactions_;
 };
 
 TEST_F(BatAdsReactionsTest, LikeAd) {

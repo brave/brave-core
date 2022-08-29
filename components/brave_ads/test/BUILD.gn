@@ -392,13 +392,13 @@ source_set("brave_ads_unit_tests") {
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/transfer/transfer_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/user_interaction/idle_detection/idle_detection_manager_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/user_interaction/idle_detection/idle_detection_util_unittest.cc",
-    "//brave/vendor/bat-native-ads/src/bat/ads/internal/user_interaction/reactions/reactions_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/user_interaction/user_activity/page_transition_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/user_interaction/user_activity/user_activity_features_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/user_interaction/user_activity/user_activity_manager_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/user_interaction/user_activity/user_activity_scoring_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/user_interaction/user_activity/user_activity_scoring_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/user_interaction/user_activity/user_activity_util_unittest.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/user_interaction/user_reactions/user_reactions_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/new_tab_page_ad_info_unittest.cc",
   ]
 

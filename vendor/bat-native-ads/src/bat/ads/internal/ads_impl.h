@@ -71,12 +71,12 @@ class NotificationAd;
 class NotificationAdManager;
 class PrefManager;
 class PromotedContentAd;
-class Reactions;
 class ResourceManager;
 class SearchResultAd;
 class TabManager;
 class Transfer;
 class UserActivityManager;
+class UserReactions;
 struct AdInfo;
 struct ConversionQueueItemInfo;
 struct HistoryInfo;
@@ -262,7 +262,7 @@ class AdsImpl final : public Ads,
   std::unique_ptr<PromotedContentAd> promoted_content_ad_;
   std::unique_ptr<SearchResultAd> search_result_ad_;
 
-  std::unique_ptr<Reactions> reactions_;
+  std::unique_ptr<UserReactions> user_reactions_;
 };
 
 }  // namespace ads

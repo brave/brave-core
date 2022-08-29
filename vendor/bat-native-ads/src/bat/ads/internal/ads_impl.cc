@@ -57,8 +57,8 @@
 #include "bat/ads/internal/tabs/tab_manager.h"
 #include "bat/ads/internal/transfer/transfer.h"
 #include "bat/ads/internal/user_interaction/idle_detection/idle_detection_manager.h"
-#include "bat/ads/internal/user_interaction/reactions/reactions.h"
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_manager.h"
+#include "bat/ads/internal/user_interaction/user_reactions/user_reactions.h"
 #include "bat/ads/notification_ad_info.h"
 #include "url/gurl.h"
 
@@ -122,7 +122,7 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
   search_result_ad_ =
       std::make_unique<SearchResultAd>(account_.get(), transfer_.get());
 
-  reactions_ = std::make_unique<Reactions>(account_.get());
+  user_reactions_ = std::make_unique<UserReactions>(account_.get());
 
   account_->AddObserver(this);
   conversions_->AddObserver(this);
