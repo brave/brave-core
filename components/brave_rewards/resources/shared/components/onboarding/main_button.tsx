@@ -8,13 +8,18 @@ import * as style from './main_button.style'
 
 interface Props {
   onClick: () => void
+  disabled?: boolean
   children: React.ReactNode
 }
 
 export function MainButton (props: Props) {
   return (
     <style.root>
-      <button onClick={props.onClick} data-test-id='rewards-onboarding-main-button'>
+      <button
+        onClick={props.onClick}
+        data-test-id='rewards-onboarding-main-button'
+        disabled={props.disabled}
+      >
         {props.children}
       </button>
     </style.root>

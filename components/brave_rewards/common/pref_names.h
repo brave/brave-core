@@ -26,6 +26,7 @@ extern const char kExternalWallets[];  // DEPRECATED
 extern const char kBadgeText[];
 extern const char kUseRewardsStagingServer[];
 extern const char kExternalWalletType[];
+extern const char kDeclaredCountry[];
 
 // Defined in native-ledger
 extern const char kServerPublisherListStamp[];

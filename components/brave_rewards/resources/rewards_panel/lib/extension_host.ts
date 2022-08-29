@@ -348,6 +348,9 @@ export function createHost (): Host {
       apiAdapter.getRewardsSummaryData().then((summaryData) => {
         stateManager.update({ summaryData })
       }),
+      apiAdapter.getDeclaredCountry().then((declaredCountry) => {
+        stateManager.update({ declaredCountry })
+      }),
       updatePublisherInfo()
     ])
 
@@ -394,9 +397,12 @@ export function createHost (): Host {
 
     getString,
 
-    enableRewards () {
-      chrome.braveRewards.enableRewards()
-      stateManager.update({ rewardsEnabled: true })
+    enableRewards (country: string) {
+      chrome.braveRewards.enableRewards(country)
+
+      // TODO(zenparsing): We need to wait for this operation to complete
+      // successfully.
+      stateManager.update({ rewardsEnabled: true, declaredCountry: country })
     },
 
     openAdaptiveCaptchaSupport () {
@@ -596,6 +602,12 @@ export function createHost (): Host {
           loadAdaptiveCaptcha()
           break
       }
+    },
+
+    async getAvailableCountries () {
+      apiAdapter.getAvailableCountries().then((availableCountries) => {
+        stateManager.update({ availableCountries })
+      })
     },
 
     onAppRendered () {

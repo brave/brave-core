@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 export { RewardsOptInModal } from './rewards_opt_in_modal'
+export { SelectCountryModal } from './select_country_modal'
 export { RewardsTour } from './rewards_tour'
 export { RewardsTourModal } from './rewards_tour_modal'
 export { SettingsOptInForm } from './settings_opt_in_form'

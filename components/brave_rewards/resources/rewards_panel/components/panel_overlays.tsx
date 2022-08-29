@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 import { HostContext, useHostListener } from '../lib/host_context'
-import { RewardsOptInModal, RewardsTourModal } from '../../shared/components/onboarding'
+import { RewardsOptInModal, RewardsTourModal, SelectCountryModal } from '../../shared/components/onboarding'
 import { AdaptiveCaptchaView } from '../../rewards_panel/components/adaptive_captcha_view'
 import { GrantCaptchaModal } from './grant_captcha_modal'
 import { NotificationOverlay } from './notification_overlay'
@@ -43,10 +43,14 @@ export function PanelOverlays () {
     React.useState(host.state.externalWalletProviders)
   const [grantCaptchaInfo, setGrantCaptchaInfo] =
     React.useState(host.state.grantCaptchaInfo)
-  const [adaptiveCaptchaInfo, setAdaptiveCaptchaInfo] =
-    React.useState(host.state.adaptiveCaptchaInfo)
   const [notifications, setNotifications] =
     React.useState(host.state.notifications)
+  const [adaptiveCaptchaInfo, setAdaptiveCaptchaInfo] =
+    React.useState(host.state.adaptiveCaptchaInfo)
+  const [declaredCountry, setDeclaredCountry] =
+    React.useState(host.state.declaredCountry)
+  const [availableCountries, setAvailableCountries] =
+    React.useState(host.state.availableCountries)
 
   const [showTour, setShowTour] = React.useState(false)
   const [notificationsHidden, setNotificationsHidden] = React.useState(false)
@@ -60,6 +64,8 @@ export function PanelOverlays () {
     setGrantCaptchaInfo(state.grantCaptchaInfo)
     setNotifications(state.notifications)
     setAdaptiveCaptchaInfo(state.adaptiveCaptchaInfo)
+    setDeclaredCountry(state.declaredCountry)
+    setAvailableCountries(state.availableCountries)
   })
 
   React.useEffect(() => {
@@ -68,12 +74,19 @@ export function PanelOverlays () {
     }
   }, [requestedView])
 
+  React.useEffect(() => {
+    // Load the list of available countries if required by an onboarding modal.
+    if ((!rewardsEnabled || !declaredCountry) && !availableCountries) {
+      host.getAvailableCountries()
+    }
+  }, [rewardsEnabled, declaredCountry])
+
   function toggleTour () {
     setShowTour(!showTour)
   }
 
-  function onEnable () {
-    host.enableRewards()
+  function onEnable (country: string) {
+    host.enableRewards(country)
     setShowTour(true)
   }
 
@@ -103,8 +116,21 @@ export function PanelOverlays () {
   if (!rewardsEnabled) {
     return (
       <NamedOverlay name='opt-in'>
-        <RewardsOptInModal onEnable={onEnable} onTakeTour={toggleTour} />
+        <RewardsOptInModal
+          availableCountries={availableCountries || []}
+          onEnable={onEnable}
+          onTakeTour={toggleTour}
+        />
       </NamedOverlay>
+    )
+  }
+
+  if (!declaredCountry) {
+    return (
+      <SelectCountryModal
+        availableCountries={availableCountries || []}
+        onSave={onEnable}
+      />
     )
   }
 

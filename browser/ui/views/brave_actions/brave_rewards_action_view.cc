@@ -361,8 +361,19 @@ BraveRewardsActionView::GetBadgeTextAndBackground() {
 }
 
 size_t BraveRewardsActionView::GetRewardsNotificationCount() {
-  auto* service = GetNotificationService();
-  return service ? service->GetAllNotifications().size() : 0;
+  size_t count = 0;
+
+  if (auto* service = GetNotificationService()) {
+    count += service->GetAllNotifications().size();
+  }
+
+  auto* prefs = browser_->profile()->GetPrefs();
+  if (prefs->GetBoolean(brave_rewards::prefs::kEnabled) &&
+      prefs->GetString(brave_rewards::prefs::kDeclaredCountry).empty()) {
+    count += 1;
+  }
+
+  return count;
 }
 
 bool BraveRewardsActionView::UpdatePublisherStatus() {

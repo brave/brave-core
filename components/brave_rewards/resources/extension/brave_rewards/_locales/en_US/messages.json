@@ -406,6 +406,22 @@
     "message": "Earn tokens by viewing privacy-respecting ads and support your favorite sites and content creators automatically.",
     "description": ""
   },
+  "onboardingGeoHeader": {
+    "message": "Select your country",
+    "description": ""
+  },
+  "onboardingGeoText": {
+    "message": "To continue using Brave Rewards, select your country so we can show you the right options and ads for your region.",
+    "description": ""
+  },
+  "onboardingSave": {
+    "message": "Save",
+    "description": ""
+  },
+  "onboardingSelectCountry": {
+    "message": "Select your country",
+    "description": ""
+  },
   "onboardingSetupAdsHeader": {
     "message": "How often do you want to see ads?",
     "description": ""

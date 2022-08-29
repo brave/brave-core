@@ -578,6 +578,29 @@ class BraveRewardsUpdatePrefsFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveRewardsGetAvailableCountriesFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getAvailableCountries", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetAvailableCountriesFunction() override;
+
+ private:
+  void GetAvailableCountriesCallback(std::vector<std::string> countries);
+
+  ResponseAction Run() override;
+};
+
+class BraveRewardsGetDeclaredCountryFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getDeclaredCountry", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetDeclaredCountryFunction() override;
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

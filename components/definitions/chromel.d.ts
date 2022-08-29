@@ -171,7 +171,7 @@ declare namespace chrome.braveRewards {
 
   const shouldShowOnboarding: (callback: (showOnboarding: boolean) => void) => {}
 
-  const enableRewards: () => void
+  const enableRewards: (country: string) => void
   const enableAds: () => void
 
   interface RewardsPrefs {
@@ -184,6 +184,8 @@ declare namespace chrome.braveRewards {
   const getPrefs: (callback: (prefs: RewardsPrefs) => void) => void
   const updatePrefs: (prefs: Partial<RewardsPrefs>) => void
   const requestAdsEnabledPopupClosed: (adsEnabled: boolean) => void
+  const getAvailableCountries: (callback: (countries: string[]) => void) => void
+  const getDeclaredCountry: (callback: (country: string) => void) => void
 }
 
 declare namespace chrome.binance {

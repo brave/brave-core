@@ -4,7 +4,10 @@
 
 import styled from 'styled-components'
 
+import selectCaret from '../../assets/select_caret.svg'
 import modalBackground from './assets/opt_in_modal_bg.svg'
+
+import { enableRewardsButton } from './css_mixins'
 
 export const root = styled.div`
   flex: 0 0 auto;
@@ -18,26 +21,7 @@ export const root = styled.div`
   background-position: 4px -11px;
   background-size: auto 200px;
   box-shadow: 0px 0px 16px rgba(99, 105, 110, 0.2);
-  border-radius: 8px;
-`
-
-export const close = styled.div`
-  color: var(--brave-palette-neutral600);
-  text-align: right;
-
-  button {
-    margin: 0;
-    padding: 2px;
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-
-  .icon {
-    display: block;
-    width: 14px;
-    height: auto;
-  }
+  border-radius: 16px;
 `
 
 export const header = styled.div`
@@ -45,7 +29,7 @@ export const header = styled.div`
   color: var(--brave-palette-black);
   font-weight: 600;
   font-size: 18px;
-  line-height: 22px;
+  line-height: 26px;
 
   .icon {
     vertical-align: middle;
@@ -56,20 +40,56 @@ export const header = styled.div`
 `
 
 export const text = styled.div`
-  margin: 8px 6px 0;
+  margin-top: 8px;
+  padding: 0 23px;
   color: var(--brave-palette-neutral700);
   font-size: 14px;
-  line-height: 24px;
+  line-height: 23px;
+`
+
+export const selectCountry = styled.div`
+  margin-top: 16px;
+  padding: 0 23px;
+
+  select {
+    -webkit-appearance: none;
+    background: url(${selectCaret}) calc(100% - 12px) center no-repeat, #fff;
+    background-size: 12px;
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid var(--brave-palette-grey500);
+    color: var(--brave-palette-neutral900);
+    font-size: 12px;
+    line-height: 18px;
+    padding: 7px 36px 7px 12px;
+
+    &.empty {
+      color: var(--brave-palette-neutral600);
+    }
+  }
+`
+
+export const enable = styled.div`
+  margin-top: 16px;
+  padding: 0 23px;
+
+  button {
+    ${enableRewardsButton}
+    width: 100%;
+    font-size: 13px;
+    line-height: 20px;
+  }
 `
 
 export const takeTour = styled.div`
-  margin-top: 20px;
+  margin-top: 18px;
+  margin-bottom: 42px;
   color: var(--brave-color-brandBat);
 
   button {
     font-weight: 600;
-    font-size: 14px;
-    line-height: 21px;
+    font-size: 13px;
+    line-height: 20px;
     border: 0;
     background: 0;
     margin: 0;
@@ -78,14 +98,10 @@ export const takeTour = styled.div`
   }
 `
 
-export const enable = styled.div`
-  margin-top: 25px;
-`
-
 export const terms = styled.div`
-  margin: 50px 14px 15px;
+  margin: 32px 0 15px;
   color: var(--brave-palette-neutral600);
-  font-size: 11px;
+  font-size: 12px;
   line-height: 16px;
 
   a {

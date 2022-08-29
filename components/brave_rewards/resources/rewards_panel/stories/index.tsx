@@ -112,7 +112,8 @@ function createHost (): Host {
     adaptiveCaptchaInfo: {
       url: '',
       status: 'pending'
-    }
+    },
+    availableCountries: null
   })
 
   return {
@@ -255,6 +256,9 @@ function createHost (): Host {
         case 'error':
           break
       }
+    },
+    async getAvailableCountries () {
+      stateManager.update({ availableCountries: ['US'] })
     },
     onAppRendered () {
       console.log('onAppRendered')

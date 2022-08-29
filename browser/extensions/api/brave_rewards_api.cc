@@ -1350,12 +1350,20 @@ BraveRewardsEnableRewardsFunction::~BraveRewardsEnableRewardsFunction() =
     default;
 
 ExtensionFunction::ResponseAction BraveRewardsEnableRewardsFunction::Run() {
+  auto params = brave_rewards::EnableRewards::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
+
+  if (params->country.empty()) {
+    return RespondNow(Error("Country code cannot be empty"));
+  }
+
   auto* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-  if (!rewards_service)
+  if (!rewards_service) {
     return RespondNow(Error("Rewards service is not initialized"));
+  }
 
-  rewards_service->EnableRewards();
+  rewards_service->EnableRewards(params->country);
   return RespondNow(NoArguments());
 }
 
@@ -1440,6 +1448,44 @@ ExtensionFunction::ResponseAction BraveRewardsUpdatePrefsFunction::Run() {
   }
 
   return RespondNow(NoArguments());
+}
+
+BraveRewardsGetAvailableCountriesFunction::
+    ~BraveRewardsGetAvailableCountriesFunction() = default;
+
+ExtensionFunction::ResponseAction
+BraveRewardsGetAvailableCountriesFunction::Run() {
+  auto* profile = Profile::FromBrowserContext(browser_context());
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+
+  if (!rewards_service) {
+    return RespondNow(Error("Rewards service is not initialized"));
+  }
+
+  rewards_service->GetAvailableCountries(base::BindOnce(
+      &BraveRewardsGetAvailableCountriesFunction::GetAvailableCountriesCallback,
+      this));
+
+  return RespondLater();
+}
+
+void BraveRewardsGetAvailableCountriesFunction::GetAvailableCountriesCallback(
+    std::vector<std::string> countries) {
+  base::Value::List country_list;
+  for (const auto& country : countries) {
+    country_list.Append(std::move(country));
+  }
+  Respond(OneArgument(base::Value(std::move(country_list))));
+}
+
+BraveRewardsGetDeclaredCountryFunction::
+    ~BraveRewardsGetDeclaredCountryFunction() = default;
+
+ExtensionFunction::ResponseAction
+BraveRewardsGetDeclaredCountryFunction::Run() {
+  auto* prefs = Profile::FromBrowserContext(browser_context())->GetPrefs();
+  return RespondNow(OneArgument(base::Value(
+      prefs->GetString(::brave_rewards::prefs::kDeclaredCountry))));
 }
 
 }  // namespace api

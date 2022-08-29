@@ -6,34 +6,34 @@ import * as React from 'react'
 
 import { LocaleContext } from '../../lib/locale_context'
 import { Modal } from '../modal'
+import { GeoPinIcon } from './icons/geo_pin_icon'
 import { TermsOfService } from '../terms_of_service'
-import { BatIcon } from '../icons/bat_icon'
 import { CountrySelect } from './country_select'
 
-import * as style from './rewards_opt_in_modal.style'
+import * as style from './select_country_modal.style'
 
 interface Props {
   availableCountries: string[]
-  onTakeTour: () => void
-  onEnable: (country: string) => void
+  onSave: (country: string) => void
 }
 
-export function RewardsOptInModal (props: Props) {
+export function SelectCountryModal (props: Props) {
   const { getString } = React.useContext(LocaleContext)
   const [countryCode, setCountryCode] = React.useState('')
 
-  const onEnableClick = () => {
-    props.onEnable(countryCode)
+  const onSaveClick = () => {
+    props.onSave(countryCode)
   }
 
   return (
     <Modal>
       <style.root>
         <style.header>
-          <BatIcon />{getString('onboardingEarnHeader')}
+          <style.headerIcon><GeoPinIcon /></style.headerIcon>
+          {getString('onboardingGeoHeader')}
         </style.header>
         <style.text>
-          {getString('onboardingEarnText')}
+          {getString('onboardingGeoText')}
         </style.text>
         <style.selectCountry>
           <CountrySelect
@@ -45,15 +45,10 @@ export function RewardsOptInModal (props: Props) {
           />
         </style.selectCountry>
         <style.enable>
-          <button onClick={onEnableClick} disabled={!countryCode}>
-            {getString('onboardingStartUsingRewards')}
+          <button onClick={onSaveClick} disabled={!countryCode}>
+            {getString('onboardingSave')}
           </button>
         </style.enable>
-        <style.takeTour>
-          <button onClick={props.onTakeTour}>
-            {getString('onboardingTakeTour')}
-          </button>
-        </style.takeTour>
         <style.terms>
           <TermsOfService />
         </style.terms>

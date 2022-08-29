@@ -76,6 +76,7 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
+#include "third_party/icu/source/common/unicode/locid.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/image/image.h"
 #include "url/gurl.h"
@@ -1605,7 +1606,19 @@ bool RewardsServiceImpl::ShouldShowOnboarding() const {
   return !enabled && !ads_enabled && ads_supported;
 }
 
-void RewardsServiceImpl::EnableRewards() {
+void RewardsServiceImpl::GetAvailableCountries(
+    base::OnceCallback<void(std::vector<std::string>)> callback) {
+  std::vector<std::string> countries;
+  for (const char* const* country_pointer = icu::Locale::getISOCountries();
+       *country_pointer; ++country_pointer) {
+    countries.emplace_back(*country_pointer);
+  }
+  base::SequencedTaskRunnerHandle::Get()->PostTask(
+      FROM_HERE, base::BindOnce(std::move(callback), std::move(countries)));
+}
+
+void RewardsServiceImpl::EnableRewards(const std::string& country) {
+  profile_->GetPrefs()->SetString(prefs::kDeclaredCountry, country);
   StartProcess(base::BindOnce(
       &RewardsServiceImpl::OnStartProcessForEnableRewards, AsWeakPtr()));
 }

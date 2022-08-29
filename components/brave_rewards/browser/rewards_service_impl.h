@@ -322,7 +322,10 @@ class RewardsServiceImpl : public RewardsService,
 
   bool ShouldShowOnboarding() const override;
 
-  void EnableRewards() override;
+  void GetAvailableCountries(
+      base::OnceCallback<void(std::vector<std::string>)> callback) override;
+
+  void EnableRewards(const std::string& country) override;
 
   void GetMonthlyReport(
       const uint32_t month,

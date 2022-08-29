@@ -333,6 +333,12 @@
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_EARN_TEXT" desc="">
     Earn tokens by viewing privacy-respecting ads and support your favorite sites and content creators automatically.
   </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_HEADER" desc="">
+    Select your country
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_TEXT" desc="">
+    To continue using Brave Rewards, select your country so we can show you the right options and ads for your region.
+  </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_MAYBE_LATER" desc="">
     Maybe Later
   </message>
@@ -341,6 +347,12 @@
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_PROMO_TEXT" desc="">
     Take a quick tour to brush up on how it works to go down in history as a Rewards rockstar!
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SAVE" desc="">
+    Save
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SELECT_COUNTRY" desc="">
+    Select your country
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_HEADER" desc="">
     How often do you want to see ads?

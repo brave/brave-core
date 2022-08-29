@@ -45,6 +45,18 @@ export function getSettings () {
   })
 }
 
+export function getAvailableCountries () {
+  return new Promise<string[]>((resolve) => {
+    chrome.braveRewards.getAvailableCountries(resolve)
+  })
+}
+
+export function getDeclaredCountry () {
+  return new Promise<string>((resolve) => {
+    chrome.braveRewards.getDeclaredCountry(resolve)
+  })
+}
+
 export function getEarningsInfo () {
   return new Promise<EarningsInfo | null>((resolve) => {
     chrome.braveRewards.getAdsAccountStatement((success, statement) => {

@@ -86,6 +86,8 @@ export interface HostState {
   externalWallet: ExternalWallet | null
   summaryData: RewardsSummaryData
   notifications: Notification[]
+  declaredCountry: string
+  availableCountries: string[] | null
 }
 
 export type HostListener = (state: HostState) => void
@@ -96,7 +98,7 @@ export interface Host {
   state: HostState
   addListener: (callback: HostListener) => () => void
   getString: (key: string) => string
-  enableRewards: () => void
+  enableRewards: (country: string) => void
   openAdaptiveCaptchaSupport: () => void
   openRewardsSettings: () => void
   refreshPublisherStatus: () => void
@@ -112,5 +114,6 @@ export interface Host {
   clearGrantCaptcha: () => void
   clearAdaptiveCaptcha: () => void
   handleAdaptiveCaptchaResult: (result: AdaptiveCaptchaResult) => void
+  getAvailableCountries: () => void
   onAppRendered: () => void
 }

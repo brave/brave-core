@@ -71,7 +71,6 @@ using GetInlineTippingPlatformEnabledCallback = base::OnceCallback<void(bool)>;
 using GetShareURLCallback = base::OnceCallback<void(const std::string&)>;
 using GetPendingContributionsCallback = base::OnceCallback<void(
     std::vector<ledger::mojom::PendingContributionInfoPtr> list)>;
-using GetCurrentCountryCallback = base::OnceCallback<void(const std::string&)>;
 using FetchBalanceCallback =
     base::OnceCallback<void(const ledger::mojom::Result,
                             ledger::mojom::BalancePtr)>;
@@ -198,10 +197,15 @@ class RewardsService : public KeyedService {
   virtual void SetAutoContributeEnabled(bool enabled) = 0;
   virtual bool ShouldShowOnboarding() const = 0;
 
+  // Asynchronously returns a vector of ISO country codes that the user can
+  // select when creating a Rewards ID.
+  virtual void GetAvailableCountries(
+      base::OnceCallback<void(std::vector<std::string>)> callback) = 0;
+
   // Enables Rewards for the current profile. Enabling Rewards for the first
   // time will turn on both Ads and auto-contribute. Subsequent calls will only
   // turn on Ads.
-  virtual void EnableRewards() = 0;
+  virtual void EnableRewards(const std::string& country) = 0;
 
   virtual void GetBalanceReport(
       const uint32_t month,

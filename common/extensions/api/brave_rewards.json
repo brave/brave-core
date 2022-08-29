@@ -1419,7 +1419,12 @@
         "name": "enableRewards",
         "type": "function",
         "description": "Enables rewards for the current profile.",
-        "parameters": []
+        "parameters": [
+          {
+            "name": "country",
+            "type": "string"
+          }
+        ]
       },
       {
         "name": "enableAds",
@@ -1484,6 +1489,42 @@
                 "optional": true
               }
             }
+          }
+        ]
+      },
+      {
+        "name": "getAvailableCountries",
+        "type": "function",
+        "description": "",
+        "parameters": [
+          {
+            "name": "callback",
+            "type": "function",
+            "parameters": [
+              {
+                "name": "countries",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getDeclaredCountry",
+        "type": "function",
+        "parameters": [
+          {
+            "name": "callback",
+            "type": "function",
+            "parameters": [
+              {
+                "name": "country",
+                "type": "string"
+              }
+            ]
           }
         ]
       }

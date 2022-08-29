@@ -9,6 +9,7 @@ import { WithThemeVariables } from '../../with_theme_variables'
 
 import { RewardsTourModal } from '../rewards_tour_modal'
 import { RewardsOptInModal } from '../rewards_opt_in_modal'
+import { SelectCountryModal } from '../select_country_modal'
 import { SettingsOptInForm } from '../settings_opt_in_form'
 import { RewardsTourPromo } from '../rewards_tour_promo'
 
@@ -90,9 +91,20 @@ export function OptInModal () {
   return (
     <StoryWrapper>
       <RewardsOptInModal
+        availableCountries={['US']}
         onEnable={actionLogger('onEnable')}
-        onClose={actionLogger('onClose')}
         onTakeTour={actionLogger('onTakeTour')}
+      />
+    </StoryWrapper>
+  )
+}
+
+export function CountryModal () {
+  return (
+    <StoryWrapper>
+      <SelectCountryModal
+        availableCountries={['US']}
+        onSave={actionLogger('onEnable')}
       />
     </StoryWrapper>
   )

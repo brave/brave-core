@@ -20,6 +20,7 @@ export function getInitialState (): HostState {
       autoContributeAmounts: []
     },
     grantCaptchaInfo: null,
+    adaptiveCaptchaInfo: null,
     exchangeInfo: {
       currency: 'USD',
       rate: 0
@@ -42,6 +43,7 @@ export function getInitialState (): HostState {
       pendingTips: 0
     },
     notifications: [],
-    adaptiveCaptchaInfo: null
+    declaredCountry: '',
+    availableCountries: null
   }
 }

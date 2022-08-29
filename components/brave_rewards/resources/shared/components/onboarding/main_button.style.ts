@@ -19,5 +19,10 @@ export const root = styled.div`
     &:active {
       background: var(--brave-color-brandBatActive);
     }
+
+    &[disabled] {
+      background: var(--brave-palette-grey200);
+      cursor: default;
+    }
   }
 `
