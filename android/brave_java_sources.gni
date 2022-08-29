@@ -257,6 +257,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/rate/RateUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/rewards/BraveRewardsPanel.java",
   "../../brave/android/java/org/chromium/chrome/browser/safe_browsing/settings/BraveStandardProtectionSettingsFragment.java",
+  "../../brave/android/java/org/chromium/chrome/browser/searchwidget/SearchWidgetProviderActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/set_default_browser/BraveSetDefaultBrowserUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/set_default_browser/OnBraveSetDefaultBrowserListener.java",
   "../../brave/android/java/org/chromium/chrome/browser/set_default_browser/SetDefaultBrowserBottomSheetFragment.java",
