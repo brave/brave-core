@@ -1490,4 +1490,35 @@
 <translation id="6973157709854838218">残高を非表示</translation>
 <translation id="4548946945059463969">画面に残高を表示</translation>
 <translation id="242959166945779492">アカウントに残高がありません。購入するにはFTXへ移動します。</translation>
+<translation id="9190084253595768053">接続に問題がある場合は、<ph name="BEGIN_LINK"/>Braveの設定<ph name="END_LINK"/>を開いてTorプライベートウィンドウを無効にし、もう一度有効にします。こうして問題が解決されたかどうかをご確認ください。</translation>
+<translation id="6977372887576114613">預けたBAT</translation>
+<translation id="194625454574835815">回復キー</translation>
+<translation id="5717619667204259673">この回復キーは安全な場所に保管してください。</translation>
+<translation id="7018390569051511373">あなたのブラウザやコンピューターに問題が発生した場合、いつでもこのキーを使用して、リワードプロフィールを元に戻すことができます。しかし、このキーを持っていれば誰でもあなたのリワードプロフィールを手に入れることができるため、しっかりと保管しておいてください。紙に書き写すか、普段大切な情報を保管する場所にしまっておくのが一番安全かもしれません。</translation>
+<translation id="8979401359137062629">注記：</translation>
+<translation id="7934806082615382155">資金の一部はBraveが提供する場合もあり、これはバックアップデータに含まれません。バックアップは任意だからです。この資金はBraveでのみ利用可能です。</translation>
+<translation id="1738658589626889850">ファイルとして保存</translation>
+<translation id="2173151783558384314">BraveはInfuraを使用して、Unstoppable DomainsからスマートコントラクトにEthereum JSON-RPCの呼び出しをかけることで、.crypto (および.x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin) ドメイン名のルックアップ要求を解決します。これを有効にすると、Infuraはあなたがアクセスしようとしている特定のドメインを見ることができますが、他のドメインを見ることはできません。Infuraの<ph name="BEGIN_INFURA_TOU_LINK"/>利用規約<ph name="END_INFURA_TOU_LINK"/>および<ph name="BEGIN_INFURA_PRIVACY_LINK"/>プライバシーポリシー<ph name="END_INFURA_PRIVACY_LINK"/>をご覧ください。</translation>
+<translation id="2630264552940126640">Braveリワードのバックアップ</translation>
+<translation id="238922425564381955">Braveリワードをバックアップしてください。</translation>
+<translation id="2860280209982026951">BraveはDEXアグリゲーターとして<ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/>を使用しています。</translation>
+<translation id="4626407663177532837">見積りには0.875%のBrave手数料が含まれます。</translation>
+<translation id="1420318137760245955">新しい Brave Wallet へようこそ</translation>
+<translation id="3671745544278414606">あなたの管理下に暗号資産を保持します。ポートフォリオのパフォーマンスを追跡し、Web3 DAppと通信を行います。DeFiで取引、投資、借り入れ、貸し出しを行います。Braveプライバシーブラウザからご利用いただけます。拡張機能やダウンロードは必要ありません。</translation>
+<translation id="6972754398087986839">開始する</translation>
+<translation id="2813156651070657572">暗号資産をパスワードで保護</translation>
+<translation id="6901073872645365201">パスワードは、7 文字以上で、少なくとも 1 つの数字と 1 つの特殊文字を含む必要があります。</translation>
+<translation id="5486261815000869482">パスワードを確認</translation>
+<translation id="7982184974053636367">Brave Wallet には、より安全なパスワードが必要です</translation>
+<translation id="2372897697869224590">Brave ウォレットのパスワードを設定する</translation>
+<translation id="7739762330714405363">同じパスワードを使用する</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="7102907656918333773"><ph name="WALLET_EXTENSION"/>からインポート</translation>
+<translation id="1737856990004825123">お使いの<ph name="WALLET_EXTENSION"/>アカウントをBraveウォレットにインポートします。暗号資産の管理やWeb3 DAppsとの通信を、より速く安全に行うことができます。</translation>
+<translation id="4237840336687249184">MetaMask パスワード</translation>
+<translation id="2381605201035323535">暗号資産ウォレット</translation>
+<translation id="4938145712652668388">「開始する」 をクリックすると、以前の暗号資産ウォレットを新しい Brave Walletにインポートし、上記のすべてのメリットを享受できます。ぜひお試しいただき、ご感想をお聞かせください。</translation>
+<translation id="9099900965604225657">暗号資産ウォレットのパスワード</translation>
+<translation id="4020495774166914146">パスワードとリカバリフレーズを紛失しました。新しいウォレットを作成します。</translation>
+<translation id="7709075156958117386">サイトの表示に問題があると思われる場合は、シールドを無効化してください<ph name="LINK_BEFORE"/>注意：これにより、Braveのプライバシー保護機能が低下する場合があります。<ph name="LINK_AFTER"/></translation>
 </translationbundle>

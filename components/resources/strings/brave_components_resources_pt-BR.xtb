@@ -1487,4 +1487,36 @@
 <translation id="6973157709854838218">Ocultar a exibição dos seus saldos</translation>
 <translation id="4548946945059463969">Revelar seus saldos na tela</translation>
 <translation id="242959166945779492">Você não tem nenhum saldo na sua conta. Acesse o FTX para adquirir saldo.</translation>
+<translation id="9190084253595768053">Está tendo dificuldades para se conectar? Abra as <ph name="BEGIN_LINK"/>configurações do Brave<ph name="END_LINK"/>, desative a Janela privada com o Tor e, em seguida, ative-a novamente. Ainda está com dificuldades?</translation>
+<translation id="6977372887576114613">BAT depositado</translation>
+<translation id="194625454574835815">Redefinir senha</translation>
+<translation id="5717619667204259673">Armazene esta chave de recuperação com segurança.</translation>
+<translation id="7018390569051511373">Você pode utilizar essa chave a qualquer momento para recuperar seu perfil das Recompensas caso algo aconteça com seu navegador ou computador. Mas certifique-se de protegê-la, pois qualquer pessoa que tiver essa chave poderá roubar seu perfil das Recompensas. A medida mais segura é, provavelmente, anotá-la e guardá-la em algum lugar onde você mantenha informações importantes.</translation>
+<translation id="8979401359137062629">Observação:</translation>
+<translation id="7934806082615382155">Parte dos fundos podem ser recebidos da Brave e não estão incluídos no backup, pois não é exigido. É disponível a você gastar exclusivamente neste navegador.</translation>
+<translation id="1738658589626889850">Salvar como arquivo</translation>
+<translation id="2173151783558384314">O Brave utilizará o Infura para emitir chamadas JSON-RPC de Ethereum ao contrato inteligente da Unstoppable Domains para resolver solicitações de pesquisa do nome de domínio .crypto (e também .x, .coin, .nft, .dao, .wallet, .888, .blockchain e .bitcoin). Se você ativar essa opção, o Infura verá esses domínios específicos que você está tentando acessar, mas não verá outros. Consulte os <ph name="BEGIN_INFURA_TOU_LINK"/>termos de uso<ph name="END_INFURA_TOU_LINK"/> e a <ph name="BEGIN_INFURA_PRIVACY_LINK"/>política de privacidade<ph name="END_INFURA_PRIVACY_LINK"/> do Infura.</translation>
+<translation id="2630264552940126640">Fazer backup das Recompensas Brave</translation>
+<translation id="238922425564381955">Faça o backup das suas Recompensas Brave.</translation>
+<translation id="2860280209982026951">O Brave usa a <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> como agregador DEX.</translation>
+<translation id="4626407663177532837">A cotação inclui uma taxa de 0,875% do Brave.</translation>
+<translation id="1420318137760245955">Esta é a nova Carteira Brave</translation>
+<translation id="3671745544278414606">Guarde criptoativos em custódia. Monitore o desempenho do portfólio e interaja com DApps Web3. Negocie, solicite e faça empréstimos e invista com DeFi. Tudo isso diretamente na privacidade do navegador Brave. Sem necessidade de extensões nem downloads.</translation>
+<translation id="6972754398087986839">Primeiros passos</translation>
+<translation id="2813156651070657572">Proteja seus criptoativos com uma senha</translation>
+<translation id="6901073872645365201">As senhas precisam ter pelo menos 7 caracteres e conter pelo menos um número e um caractere especial.</translation>
+<translation id="5486261815000869482">Confirmar senha</translation>
+<translation id="7982184974053636367">É necessária uma senha mais segura para a Carteira Brave.</translation>
+<translation id="2372897697869224590">Definir uma senha para a carteira Brave</translation>
+<translation id="7739762330714405363">Usar a mesma senha</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="7102907656918333773">Importar do <ph name="WALLET_EXTENSION"/></translation>
+<translation id="1737856990004825123">Importe suas contas do <ph name="WALLET_EXTENSION"/> para a Carteira Brave. Conheça uma forma mais rápida e segura de gerenciar criptoativos e interagir com DApps Web3.</translation>
+<translation id="4237840336687249184">Senha do MetaMask</translation>
+<translation id="2381605201035323535">carteiras de criptomoedas</translation>
+<translation id="4938145712652668388">Ao clicar em "Primeiros passos", você importará sua carteira de criptomoedas anterior para a nova experiência da Carteira Brave e poderá aproveitar todos os benefícios descritos acima. Faça um teste e nos conte o que achou!</translation>
+<translation id="9099900965604225657">Senha das carteiras de criptomoedas</translation>
+<translation id="4020495774166914146">Perdi minha senha e minha frase de recuperação. Crie uma nova carteira.</translation>
+<translation id="7709075156958117386">Se este site parece não estar funcionando corretamente, tente desativar as Proteções. 
+    <ph name="LINK_BEFORE"/>Observação: isso poderá reduzir as proteções de privacidade do Brave.<ph name="LINK_AFTER"/></translation>
 </translationbundle>

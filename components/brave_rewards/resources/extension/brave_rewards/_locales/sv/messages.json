@@ -311,6 +311,18 @@
       }
     }
   },
+  "notificationBackupWalletTitle": {
+    "message": "Säkerhetskopiera Brave Rewards",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "Säkerhetskopiera Brave Rewards",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "Säkerhetskopiera nu",
+    "description": ""
+  },
   "notificationWalletDisconnectedTitle": {
     "message": "Du är utloggad",
     "description": ""

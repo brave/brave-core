@@ -311,6 +311,18 @@
       }
     }
   },
+  "notificationBackupWalletTitle": {
+    "message": "النسخة الاحتياطية لمكافآت Brave",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "يرجى إجراء نسخة احتياطية لمكافآت Brave الخاصة بك.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "اعمل نسخة احتياطية الآن",
+    "description": ""
+  },
   "notificationWalletDisconnectedTitle": {
     "message": "تم تسجيل خروجك",
     "description": ""

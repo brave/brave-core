@@ -885,4 +885,35 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="2832270987629018596">Ikke en gyldig SOL-adresse</translation>
 <translation id="8181161042860463420">Den tilknyttede merkekontoen eksisterer ikke ennå. Et lite antall SOL blir brukt for å opprette og fylle den. <ph name="CLICK_START"/>Les mer<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Oppdaterer VPN-profilen ...</translation>
+<translation id="4258022280942725182">Dine Brave-belønninger</translation>
+<translation id="3826081199286264109">USD</translation>
+<translation id="880893465294676334">Denne Brave-verifiserte skaperen har ennå ikke konfigurert kontoen sin til å kunne motta bidrag fra Brave-brukere.
+  Eventuell driks du sender, forblir i lommeboken din inntil de har gjennomført denne prosessen.</translation>
+<translation id="8918760045046434238">Send tips …</translation>
+<translation id="1978261665418056203">Ingen aktiviterer denne måneden enda …</translation>
+<translation id="9182287025588539628">Engangstips</translation>
+<translation id="4914597931214386232">Tokenstipender gjort krav på</translation>
+<translation id="298067735430872465">Opptjente midler fra reklamer</translation>
+<translation id="2730771409541953249">REWARDS-SAMMENDRAG</translation>
+<translation id="5463954686005964104">Gi tips til denne siden hver måned</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">Sikkerhetskopier Brave Rewards</translation>
+<translation id="238922425564381955">Sikkerhetskopier Brave Rewards-kontoen din.</translation>
+<translation id="3692362746128814480">Du har tildelt <ph name="BAT_VALUE"/> BAT til skapere som ikke har
+registrert seg for å motta bidrag ennå. Nettleseren din kommer til å fortsette å prøve å bidra
+helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</translation>
+<translation id="8782039523249932839">Dette medfører sletting av Brave-lommeboken og tilbakestilling av alle Brave Rewards-dataene dine</translation>
+<translation id="7924320838799747606">Din saldo</translation>
+<translation id="8030169304546394654">Koblet fra</translation>
+<translation id="543510923939676996">Lommeboken er verifisert</translation>
+<translation id="4488355059795908907">Denne Brave-verifiserte skaperen har ennå ikke konfigurert sin konto til å motta bidrag fra Brave-brukere. Tips som du har sendt vil forbli i lommeboken din til de har fullført denne prosessen.</translation>
+<translation id="7559243474426790340">Oppdater status</translation>
+<translation id="3769645103175790584">Tjen tokener og gi produsenter belønning for flott innhold mens du surfer. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">Rask omvisning</translation>
+<translation id="1080013038789678738">Jeg er med!</translation>
+<translation id="5587305863196367357">Ved å bekrefte lommeboken kan du enkelt administrere midlene dine, og gjøre innskudd og uttak</translation>
+<translation id="5760671211380791582">Du har ikke nok BAT.</translation>
+<translation id="442469478596827903">Du må ha minst 15 BAT for å lage en bekreftet Uphold-lommebok. Prøv igjen senere.</translation>
+<translation id="4389085954549744469">Hvis du allerede har en bekreftet Uphold-konto, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">fortsett til innlogging</translation>
 </translationbundle>

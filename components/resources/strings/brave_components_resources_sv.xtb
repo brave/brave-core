@@ -1487,4 +1487,36 @@
 <translation id="6973157709854838218">Dölj dina saldon från att visas</translation>
 <translation id="4548946945059463969">Visa dina saldon på skärmen</translation>
 <translation id="242959166945779492">Du har inga saldon på ditt konto. Besök FTX för att köpa.</translation>
+<translation id="9190084253595768053">Har du problem med att ansluta? Öppna <ph name="BEGIN_LINK"/>Brave-inställningarna<ph name="END_LINK"/>, inaktivera privat fönster med Tor och aktivera det sedan igen. Har du fortfarande problem?</translation>
+<translation id="6977372887576114613">Satte in BAT</translation>
+<translation id="194625454574835815">Återställningsnyckel</translation>
+<translation id="5717619667204259673">Förvara återställningsnyckeln på ett säkert ställe.</translation>
+<translation id="7018390569051511373">Du kan alltid använda denna nyckel för att få tillbaka din Rewards-profil om något händer din webbläsare eller dator. Se dock till att skydda den #8212; den som kommer åt denna nyckel kan stjäla din Rewards-profil. Det är troligen säkrast att skriva ner den på ett papper eller spara den på ett annat ställe där du förvarar viktig information.</translation>
+<translation id="8979401359137062629">Anteckning:</translation>
+<translation id="7934806082615382155">En del av medlen kan erhållas från Brave och inte ingå i säkerhetskopian då det inte krävs. De medlen kan du spendera enbart på denna webbläsare.</translation>
+<translation id="1738658589626889850">Spara som fil</translation>
+<translation id="2173151783558384314">Brave kommer att använda Infura för att utfärda Ethereum JSON-RPC-anrop till det smarta kontraktet från Unstoppable Domains för att lösa domännamnsökningar för .crypto (och även .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin). Om du aktiverar detta kommer Infura att se de specifika domäner som du försöker besöka, men de kommer inte att kunna se andra domäner. Se Infuras <ph name="BEGIN_INFURA_TOU_LINK"/>användningsvillkor<ph name="END_INFURA_TOU_LINK"/> och <ph name="BEGIN_INFURA_PRIVACY_LINK"/>integritetspolicy<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="2630264552940126640">Säkerhetskopiera Brave Rewards</translation>
+<translation id="238922425564381955">Säkerhetskopiera Brave Rewards</translation>
+<translation id="2860280209982026951">Brave använder <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> som en DEX-aggregator.</translation>
+<translation id="4626407663177532837">Offerten inkluderar en avgift på 0,875 % till Brave.</translation>
+<translation id="1420318137760245955">Välkommen till den nya Brave Wallet</translation>
+<translation id="3671745544278414606">Förvara kryptotillgångar. Spåra portföljens prestanda och interagera med Web3 DApps. Handla, investera, låna och låna ut med DeFi. Allt detta direkt via Braves sekretesswebbläsare. Inga tillägg, illa nedladdningar behövs.</translation>
+<translation id="6972754398087986839">Komma igång</translation>
+<translation id="2813156651070657572">Skydda dina kryptotillgångar med ett lösenord</translation>
+<translation id="6901073872645365201">Lösenord måste innehålla minst 7 tecken och innehålla minst ett nummer och ett specialtecken.</translation>
+<translation id="5486261815000869482">Bekräfta lösenord.</translation>
+<translation id="7982184974053636367">Ett säkrare lösenord krävs för Brave Wallet</translation>
+<translation id="2372897697869224590">Ställ in ett Brave wallet lösenord</translation>
+<translation id="7739762330714405363">Använd samma lösenord</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="7102907656918333773">Importera från <ph name="WALLET_EXTENSION"/></translation>
+<translation id="1737856990004825123">Importera dina <ph name="WALLET_EXTENSION"/>-konton till Brave-plånboken. Njut av ett snabbare och säkrare sätt att hantera kryptotillgångar och interagera med Web3 DApps.</translation>
+<translation id="4237840336687249184">MetaMask lösenord</translation>
+<translation id="2381605201035323535">krypto plånböcker</translation>
+<translation id="4938145712652668388">När du klickar på "Kom igång" importerar du din tidigare Crypto Wallet till den nya Brave Wallet upplevelsen och njuter av alla fördelarna som beskrivs ovan. Testa och berätta vad du tycker!</translation>
+<translation id="9099900965604225657">Kryptoplånböckers lösenord</translation>
+<translation id="4020495774166914146">I’ve tappat bort mitt lösenord och återställningsfras, skapa en ny plånbok.</translation>
+<translation id="7709075156958117386">Om webbplatsen inte fungerar kan du testa att inaktivera Shields. 
+    <ph name="LINK_BEFORE"/>Obs: Det kan försämra Braves sekretesskydd.<ph name="LINK_AFTER"/></translation>
 </translationbundle>

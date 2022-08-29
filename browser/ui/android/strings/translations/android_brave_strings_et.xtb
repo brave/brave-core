@@ -885,4 +885,36 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="2832270987629018596">Ei ole kehtiv SOL-i aadress</translation>
 <translation id="8181161042860463420">Seotud tokenikontot ei ole veel olemas. Selle loomiseks ja rahastamiseks kulub veidi SOL-e. <ph name="CLICK_START"/>Lisateave<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">VPN-i profiili värskendamine ...</translation>
+<translation id="4258022280942725182">Teie Brave'i Preemiad</translation>
+<translation id="3826081199286264109">USD</translation>
+<translation id="880893465294676334">See Brave'i kinnitatud looja ei ole oma kontot veel Brave'i kasutajate maksete vastuvõtmiseks konfigureerinud.
+        Kõik teie saadetud preemiad jäävad kuni selle protsessi lõpuleviimiseni teie rahakotti.</translation>
+<translation id="8918760045046434238">Saada preemia...</translation>
+<translation id="1978261665418056203">Sel kuul tegevusi veel
+pole...</translation>
+<translation id="9182287025588539628">Ühekordsed preemiad</translation>
+<translation id="4914597931214386232">Kasutatud tokenivõimalused</translation>
+<translation id="298067735430872465">Reklaamidest saadud tulu</translation>
+<translation id="2730771409541953249">REWARDSI KOKKUVÕTE</translation>
+<translation id="5463954686005964104">Premeeri seda veebisaiti igakuiselt</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">Varunda Brave'i Preemiad</translation>
+<translation id="238922425564381955">Varundage oma Brave'i Preemiad.</translation>
+<translation id="3692362746128814480">Oled eraldanud <ph name="BAT_VALUE"/> BAT loojatele, kes pole
+veel registreerunud annetusi vastu võtma. Brauser üritab jätkata annetamist
+kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
+<translation id="8782039523249932839">See kustutab Brave’i rahakoti ja taastab kõik Brave Rewardsi andmed.</translation>
+<translation id="7924320838799747606">Sinu kontojääk</translation>
+<translation id="8030169304546394654">Ühendus katkestatud</translation>
+<translation id="543510923939676996">Rahakott on kinnitatud</translation>
+<translation id="4488355059795908907">See Brave’i kinnitatud looja pole veel oma kontot Brave’i kasutajatelt annetuste saamiseks seadistanud. Kogu saadetav jootraha jääb tema rahakotti, kuni nad lõpetavad seadistamise.</translation>
+<translation id="7559243474426790340">Värskenda olekut</translation>
+<translation id="3769645103175790584">Veebilehti vaadates saate teenida tokeneid ja premeerida loojaid. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">Kiire tuur</translation>
+<translation id="1080013038789678738">I’m In!</translation>
+<translation id="5587305863196367357">Rahakoti kinnitamine laseb sul oma raha tõhusamalt hallata lisada ja välja võtta</translation>
+<translation id="5760671211380791582">Sul pole piisavalt BATi.</translation>
+<translation id="442469478596827903">Kinnitatud Upholdi konto loomiseks on vaja vähemalt 2 BAT-i. Proovige hiljem uuesti.</translation>
+<translation id="4389085954549744469">Kui sul juba on kinnitatud Upholdi rahakott, siis <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">jätka sisse logimisega</translation>
 </translationbundle>

@@ -1487,4 +1487,36 @@
 <translation id="6973157709854838218">Oculta els teus saldos de la pantalla</translation>
 <translation id="4548946945059463969">Mostra els teus saldos a la pantalla</translation>
 <translation id="242959166945779492">No tens cap balanç al teu compte. Visita FTX per comprar-ne algunes.</translation>
+<translation id="9190084253595768053">Tens problemes per connectar-t'hi? Obre <ph name="BEGIN_LINK"/>la configuració de Brave<ph name="END_LINK"/>, desactiva les finestres d'incògnit a Tor i torna a activar-les. Encara tens problemes?</translation>
+<translation id="6977372887576114613">BAT depositada</translation>
+<translation id="194625454574835815">Clau de recuperació</translation>
+<translation id="5717619667204259673">Desa aquesta clau de recuperació en un lloc segur.</translation>
+<translation id="7018390569051511373">Sempre pots fer servir aquesta clau d'accés per recuperar el teu perfil de Recompenses si li passa res al teu navegador o al teu ordinador. Tanmateix, assegura't de protegir-la — qualsevol persona que tingui aquesta clau d'accés podria robar-te el perfil de Recompenses. El més segur és que l'escriguis en un paper o on sigui que guardes la informació important.</translation>
+<translation id="8979401359137062629">Nota:</translation>
+<translation id="7934806082615382155">Part dels fons es poden rebre de Brave i no s'inclouen a la còpia de seguretat ja que no és necessari. Els teniu disponibles per a gastar exclusivament amb aquest navegador.</translation>
+<translation id="1738658589626889850">Guarda com a Fitxer</translation>
+<translation id="2173151783558384314">Brave usarà Infura per emetre sol·licituds a Ethereum JSON-RPC al contracte intel·ligent de Dominis Instoppable per resoldre .crypto (i també .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin). Si ho habilites, Infura veurà els dominis específics que intentes visitar però no podran veure altres dominis. Consulta <ph name="BEGIN_INFURA_TOU_LINK"/>les condicions d'ús<ph name="END_INFURA_TOU_LINK"/> i <ph name="BEGIN_INFURA_PRIVACY_LINK"/>la política de privadesa<ph name="END_INFURA_PRIVACY_LINK"/> de Infura.</translation>
+<translation id="2630264552940126640">Fes una còpia de seguretat de Recompenses de Brave</translation>
+<translation id="238922425564381955">Fes una còpia de seguretat del teu compte de Recompenses de Brave.</translation>
+<translation id="2860280209982026951">Brave utilitza <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> com a agregador DEX.</translation>
+<translation id="4626407663177532837">El pressupost inclou una taxa de 0,875% de Brave.</translation>
+<translation id="1420318137760245955">Benvinguts a la nova cartera de Brave</translation>
+<translation id="3671745544278414606">Mantingues actius en criptomoneda sota la teva custòdia. Fes un seguiment del rendiment de la cartera i interactua amb aplicacions descentralitzades de Web3. Comercialitza, inverteix, manlleva i presta amb DeFi. Tot des del navegador de privadesa de Brave. Sense extensions ni descàrregues.</translation>
+<translation id="6972754398087986839">Comença</translation>
+<translation id="2813156651070657572">Protegiu els vostres actius en criptomoneda amb una contrasenya</translation>
+<translation id="6901073872645365201">Les contrasenyes han de tenir com a mínim 7 caràcters i incloure, almenys, un número i un caràcter especial.</translation>
+<translation id="5486261815000869482">Confirma la contrasenya</translation>
+<translation id="7982184974053636367">Es requereix una contrasenya més segura per a la cartera de Brave</translation>
+<translation id="2372897697869224590">Establiu una contrasenya per a la cartera de Brave</translation>
+<translation id="7739762330714405363">Utilitzeu la mateixa contrasenya</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="7102907656918333773">Importar de <ph name="WALLET_EXTENSION"/></translation>
+<translation id="1737856990004825123">Importa els teus comptes <ph name="WALLET_EXTENSION"/> a la cartera de Brave. Gaudeix d'una manera més ràpida i segura de gestionar actius de criptomoneda i interactua amb aplicacions descentralitzades de Web 3.</translation>
+<translation id="4237840336687249184">Contrasenya de MetaMask</translation>
+<translation id="2381605201035323535">carteres de criptomoneda</translation>
+<translation id="4938145712652668388">Quan feu clic a "Comença", importareu les vostres carteres de criptomoneda anteriors a la nova experiència de cartera de Brave i gaudireu de tots els avantatges esmentats anteriorment. Proveu-ho i feu-nos saber què en penseu!</translation>
+<translation id="9099900965604225657">Contrasenya de les carteres de criptomoneda</translation>
+<translation id="4020495774166914146">He perdut la contrasenya i la frase de recuperació. Crea una nova cartera.</translation>
+<translation id="7709075156958117386">Si aquest lloc sembla que no funciona, proveu de desactivar els protectors. 
+    <ph name="LINK_BEFORE"/>Nota: això pot reduir les proteccions de privadesa del Brave.<ph name="LINK_AFTER"/></translation>
 </translationbundle>

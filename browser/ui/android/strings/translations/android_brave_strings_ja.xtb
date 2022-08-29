@@ -885,4 +885,34 @@
 <translation id="2832270987629018596">有効なSOLアドレスではありません</translation>
 <translation id="8181161042860463420">関連するトークン・アカウントはまだ存在しません。作成と資金調達のために少量のSOLが費やされます。 <ph name="CLICK_START"/>詳細<ph name="CLICK_END"/>をご覧ください。</translation>
 <translation id="168154537623654021">VPNプロファイルを更新する ...</translation>
+<translation id="4258022280942725182">現在のBraveリワード</translation>
+<translation id="3826081199286264109">米ドル</translation>
+<translation id="880893465294676334">このBrave認定クリエーターは、Braveユーザーからの支援を受け取るためのアカウント設定を完了していません。
+          設定が完了するまで、チップは全て送ったユーザーのウォレット内に留まります。</translation>
+<translation id="8918760045046434238">チップを送る</translation>
+<translation id="1978261665418056203">今月はまだ
+アクティビティがありません…</translation>
+<translation id="9182287025588539628">一度だけチップを送る</translation>
+<translation id="4914597931214386232">取得済のポイント</translation>
+<translation id="298067735430872465">広告閲覧報酬</translation>
+<translation id="2730771409541953249">報酬の概要</translation>
+<translation id="5463954686005964104">毎月このサイトにチップを払う</translation>
+<translation id="937392350501765664"><ph name="MONTH"/><ph name="YEAR"/></translation>
+<translation id="2630264552940126640">Braveリワードのバックアップ</translation>
+<translation id="238922425564381955">Braveリワードをバックアップしてください。</translation>
+<translation id="3692362746128814480">あなたは、寄付を受け取るためにまだサインアップしていないクリエイターに対して<ph name="BAT_VALUE"/>BATを指定しました。あなたのブラウザーは、クリエイターたちが認証するまで、または90日が経過するまで寄付の実行を試み続けます。</translation>
+<translation id="8782039523249932839">Braveウォレットが削除され、Brave Rewards のデータがすべてリセットされます</translation>
+<translation id="7924320838799747606">残高</translation>
+<translation id="8030169304546394654">切断されました</translation>
+<translation id="543510923939676996">ウォレットが認証済み</translation>
+<translation id="4488355059795908907">このBrave承認済みクリエイターのアカウントは、まだ支援を受け取る設定が完了していません。クリエイターがプロセスが完了するまで、あなたの送ったチップはウォレット内に残ります。</translation>
+<translation id="7559243474426790340">ステータスを更新する</translation>
+<translation id="3769645103175790584">閲覧中にトークンを獲得し、クリエイターの素晴らしいコンテンツに対して報酬を与えます。<ph name="QUICK_TOUR"/>。</translation>
+<translation id="6912901278692845878">クイックツアー</translation>
+<translation id="1080013038789678738">参加します！</translation>
+<translation id="5587305863196367357">ウォレットを認証すると、資金の追加や引き出しを簡単に管理できます</translation>
+<translation id="5760671211380791582">BATが不足しています。</translation>
+<translation id="442469478596827903">認証済みのUpholdウォレットを作成するには、2 BAT以上必要です。後ほどもう一度お試しください。</translation>
+<translation id="4389085954549744469">認証済みのUpholdアカウントをお持ちの場合は、<ph name="CONTINUE_TO_LOGIN"/>。</translation>
+<translation id="6146966915297143881">ログインに進みます</translation>
 </translationbundle>

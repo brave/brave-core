@@ -1487,4 +1487,36 @@
 <translation id="6973157709854838218">Ukryj swoje salda na ekranie</translation>
 <translation id="4548946945059463969">Pokaż swoje salda na ekranie</translation>
 <translation id="242959166945779492">Nie masz żadnych środków na swoim koncie. Odwiedź FTX, aby je nabyć.</translation>
+<translation id="9190084253595768053">Masz problemy z połączeniem? Otwórz <ph name="BEGIN_LINK"/>Ustawienia Brave<ph name="END_LINK"/>, zamknij prywatne okno w Tor, a następnie otwórz je ponownie. Wciąż masz problemy?</translation>
+<translation id="6977372887576114613">Wpłacone BAT</translation>
+<translation id="194625454574835815">Klucz odzyskiwania</translation>
+<translation id="5717619667204259673">Klucz ten należy przechowywać w bezpiecznym miejscu.</translation>
+<translation id="7018390569051511373">Zawsze możesz użyć tego klucza, aby odzyskać profil nagród, jeśli coś stanie się z przeglądarką lub komputerem. Jednak pamiętaj o jego zabezpieczeniu — każdy, kto pobierze ten klucz, może ukraść Twój profil nagród. Prawdopodobnie najbezpieczniejszym sposobem jest zapisanie go na kartce papieru lub w jakimkolwiek innym miejscu, w którym notujesz ważne informacje.</translation>
+<translation id="8979401359137062629">Uwaga:</translation>
+<translation id="7934806082615382155">Część środków może zostać odebrana z Brave i nie jest uwzględniona w backupie, jako że nie jest to wymagane. Możesz je wydać wyłącznie w tej przeglądarce.</translation>
+<translation id="1738658589626889850">Zapisz jako plik</translation>
+<translation id="2173151783558384314">Brave będzie korzystać z usługi Infura na potrzeby wykonywania wywołań Ethereum JSON-RPC do inteligentnego kontraktu z Unstoppable Domains w celu rozwiązywania żądań wyszukiwania nazw domen .crypto (a także .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin). Jeśli włączysz tę opcję, Infura zobaczy te konkretne domeny, które będziesz próbować odwiedzić, ale nie będzie widzieć innych domen. Zapoznaj się z <ph name="BEGIN_INFURA_TOU_LINK"/>regulaminem<ph name="END_INFURA_TOU_LINK"/> i <ph name="BEGIN_INFURA_PRIVACY_LINK"/>polityką prywatności<ph name="END_INFURA_PRIVACY_LINK"/> usługi Infura.</translation>
+<translation id="2630264552940126640">Zrób kopię zapasową nagród Brave</translation>
+<translation id="238922425564381955">Zrób kopię zapasową nagród Brave.</translation>
+<translation id="2860280209982026951">Brave korzysta z <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> jako agregatora DEX.</translation>
+<translation id="4626407663177532837">Oferta zawiera opłatę Brave w wysokości 0,875%</translation>
+<translation id="1420318137760245955">Witamy w nowym portfelu Brave</translation>
+<translation id="3671745544278414606">Przechowuj kryptoaktywa w portfelu powierniczym. Śledź wyniki portfela i działaj z aplikacjami Web3 DApps. Handluj, inwestuj oraz pożyczaj, korzystając z DeFi. Wszystko to z poziomu prywatnej przeglądarki Brave, bez konieczności instalowania wtyczek i pobierania plików.</translation>
+<translation id="6972754398087986839">Rozpocznij</translation>
+<translation id="2813156651070657572">Zabezpiecz swoje kryptoaktywa hasłem</translation>
+<translation id="6901073872645365201">Hasło musi składać się z co najmniej 7 znaków, w tym co najmniej jednej cyfry i jednego znaku specjalnego.</translation>
+<translation id="5486261815000869482">Potwierdź hasło</translation>
+<translation id="7982184974053636367">Portfel Brave wymaga bezpieczniejszego hasła</translation>
+<translation id="2372897697869224590">Ustaw hasło do portfela Brave</translation>
+<translation id="7739762330714405363">Użyj tego samego hasła</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="7102907656918333773">Importowanie z <ph name="WALLET_EXTENSION"/></translation>
+<translation id="1737856990004825123">Zaimportuj konta do <ph name="WALLET_EXTENSION"/> do portfela Brave. Korzystaj z szybszej i bezpieczniejszej metody zarządzania kryptoaktywami i interakcji z aplikacjami Web3 DApps.</translation>
+<translation id="4237840336687249184">Hasło MetaMask</translation>
+<translation id="2381605201035323535">portfele kryptowalutowe</translation>
+<translation id="4938145712652668388">Kliknięcie opcji „Rozpocznij” spowoduje importowanie Twojego poprzedniego portfela krypowalutowego do nowego portfela Brave, dzięki czemu uzyskasz dostęp do wszystkich korzyści opisanych powyżej. Wypróbuj go i daj nam znać, co o nim sądzisz!</translation>
+<translation id="9099900965604225657">Hasła do portfeli kryptowalutowych</translation>
+<translation id="4020495774166914146">Hasło i wyrażenie odzyskiwania zostały utracone. Utwórz nowy portfel.</translation>
+<translation id="7709075156958117386">Jeśli ta strona nie działa, wyłącz Tarczę. 
+    <ph name="LINK_BEFORE"/>Uwaga: to może zmniejszyć ochronę prywatności zapewnianą przez Brave. <ph name="LINK_AFTER"/></translation>
 </translationbundle>

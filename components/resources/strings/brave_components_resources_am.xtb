@@ -1499,4 +1499,43 @@
 <translation id="6973157709854838218">ሂሳቦን ከማሳያ ይደብቁ</translation>
 <translation id="4548946945059463969">ቀሪ ሂሳብዎን በማያ ገጽ ላይ ያሳዩ</translation>
 <translation id="242959166945779492">በመለያዎ ውስጥ ምንም ቀሪ ሂሳቦች የሉዎትም። የተወሰኑትን ለመግዛት FTX ን ይጎብኙ።</translation>
+<translation id="9190084253595768053">ለመያያዝ ተቸግረዋል?  ክፈት<ph name="BEGIN_LINK"/>ብሬቭ ቅንብርን<ph name="END_LINK"/>፣ ቲኦር ያለውን ግላዊ መስኮት አቦዝን፣ ከዚያም ዳግም አንቃ። አሁንም ተቸግረዋል?</translation>
+<translation id="6977372887576114613">የተጠራቀመ BAT</translation>
+<translation id="194625454574835815">የዳግም ማግኛ ቁልፍ</translation>
+<translation id="5717619667204259673">ይህን የመልሶ ማግኛ ቁልፍ ደህንነት ይጠብቁ፡፡</translation>
+<translation id="7018390569051511373">አሳሽዎ ወይም ኮምፒውተርዎ ላይ ችግር ቢገጥምዎ የሽልማቶች መገለጫዎን መልሶ ለማግኘት ይህንን ቁልፍ ሁልጊዜ መጠቀም ይችላሉ። ነገር ግን ጠብቀው ማቆየትዎን ያረጋግጡ፤ ይህን ቁልፍ ያገኘ ማንኛውም ሰው የሽልማት መገለጫዎን ሊሰርቆት ይችላል። ምናልባትም በወረቀት ላይ መፃፍ ወይም ጠቃሚ መረጃዎችን በሚያስቀምጡበት በማንኛውም ቦታ ላይ ማስቀመጡ ደህንነቱን ለማስጠበቅ የተሻለው መንገድ ነው።</translation>
+<translation id="8979401359137062629">ያስታውሱ፤</translation>
+<translation id="7934806082615382155">ከገንዘቡ ውስጥ የተወሰነው የተወሰነ ክፍል ከ Brave ሊቀበል ይችላል እና አስፈላጊ ስላልሆነ በመጠባበቂያው ውስጥ አይካተትም። በዚህ አሳሽ ላይ ሙሉ በሙሉ ለማሳለፍ ለእርስዎ ይገኛል።</translation>
+<translation id="1738658589626889850">እንደ ፋይል ያስቀምጡ</translation>
+<translation id="2173151783558384314">Brave ከUnstoppable Domains .crypto (እንዲሁም .x፣ .coin, .nft፣ .dao፣ .wallet፣ .888፣ .blockchain፣ .bitcoin) የጎራ ስም ፍለጋ ጥያቄዎች ለመፍታት የEthereum JSON-RPC ጥሪዎችን ወደ ዘመናዊው ኮንትራትከ  Infura በመጠቀም  ያቀርባል። ይህንን ካነቁት Infura እርስዎ ሊጎበኟቸው የሚፈልጓቸውን የተወሰኑ ጎራዎች ያያሉ ነገር ግን ሌሎች ጎራዎችን ማየት አይችሉም። የ Infuraን ይመልከቱ
+1 <ph name="BEGIN_INFURA_TOU_LINK"/>
+የአጠቃቀም ውል
+2 <ph name="END_INFURA_TOU_LINK"/>
+እና
+3 <ph name="BEGIN_INFURA_PRIVACY_LINK"/>
+የግላዊነት መመሪያ
+4 <ph name="END_INFURA_PRIVACY_LINK"/></translation>
+<translation id="2630264552940126640">የብሬቭ ሽልማቶችን መጠባበቂያ ይያዙ</translation>
+<translation id="238922425564381955">እባክዎ የብሬቭ ሽልማቶች መጠባበቂያ ይያዙ።</translation>
+<translation id="2860280209982026951">Brave <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> ን የሚጠቀመው እንደ DEX ሰብሳቢ ነው።</translation>
+<translation id="4626407663177532837">ጥቅሱ 0.875% የBrave ክፍያን ያካትታል።</translation>
+<translation id="1420318137760245955">ወደ አዲሱ Brave ዋሌት እንኳን በደህና መጡ</translation>
+<translation id="3671745544278414606">በእርስዎ ጥበቃ ውስጥ የcrypto ንብረቶችን ይያዙ። የፖርትፎሊዮ አፈፃፀምን ይከታተሉ እና ከድር Web3 DApps ጋር መስተጋብር ይፍጠሩ። በDeFi አማካኝነት ይገበያዩ፣ ኢንቨስት ያድርጉ፣ ይበደሩ እና ያበድሩ። ከBrave የግላዊነት አሳሽ ደህና ነው። ምንም ቅጥያዎች የሉም፣ ማውረድ አያስፈልግም።</translation>
+<translation id="6972754398087986839">ይጀምሩ</translation>
+<translation id="2813156651070657572">በይለፍ ቃል የcryptoንብረቶችዎን የይለፍ ቃልዎን ይጠብቁ</translation>
+<translation id="6901073872645365201">የይለፍ ቃላት ቢያንስ 7 ቁምፊደሎች መሆን አለባቸው ፣ እና ቢያንስ አንድ ቁጥር እና አንድ ልዩ ቁምፊደል መያዝ አለባቸው።</translation>
+<translation id="5486261815000869482">የይለፍ ቃል አረጋግጥ</translation>
+<translation id="7982184974053636367">ለ Brave Wallet የበለጠ ደህንነቱ የተጠበቀ የይለፍ ቃል ያስፈልጋል</translation>
+<translation id="2372897697869224590">የBrave wallet ይለፍ ቃል ያዘጋጁ</translation>
+<translation id="7739762330714405363">ተመሳሳዩን የይለፍ ቃል ይጠቀሙ</translation>
+<translation id="1085027414516521238">ሜታ ጭንብል</translation>
+<translation id="7102907656918333773">ከ <ph name="WALLET_EXTENSION"/>የመጣ</translation>
+<translation id="1737856990004825123">የእርስዎን <ph name="WALLET_EXTENSION"/>መለያዎች  ወደ Brave ዋሌት ያስመጡ። የክሪፕቶ ንብረቶችን ለማስተዳደር እና ከWeb3 DApps ጋር መስተጋብር ለመፍጠር ይበልጥ ፈጣን በሆነ እና ደህንነቱ በተጠበቀው መንገድ ይደሰቱ።</translation>
+<translation id="4237840336687249184">MetaMask የይለፍ ቃል</translation>
+<translation id="2381605201035323535">... crypto wallets</translation>
+<translation id="4938145712652668388">«ጀምር» ን ጠቅ ሲያደርጉ የቀደመውን የ Crypto Walletዎን ወደ አዲሱ የ Brave Wallet ተሞክሮ ያስመጡ እና ከላይ በተዘረዘሩት ጥቅሞች ሁሉ ይደሰቱ። ይሞክሩት ፣ እና እርስዎ ምን እንደሚያስቡ ያሳውቁን!</translation>
+<translation id="9099900965604225657">የ Crypto wallets የይለፍ ቃል</translation>
+<translation id="4020495774166914146">የይለፍ ቃሌን እና የመልሶ ማግኛ ሐረጉን አጣሁ ፣ አዲስ ዋሌት ይፍጠሩ።</translation>
+<translation id="7709075156958117386">ይህ ጣቢያ የተበላሸ ከመሰለ፣ እባክዎ መከለያዎች ተነስተዋል ይሞክሩ። 
+    <ph name="LINK_BEFORE"/>ማስታወሻ፡ ይህ የ Brave የግላዊነት ጥበቃ ሊቀንስ ይችላል።<ph name="LINK_AFTER"/></translation>
 </translationbundle>

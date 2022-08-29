@@ -885,4 +885,33 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="2832270987629018596">Keine gültige SOL-Adresse</translation>
 <translation id="8181161042860463420">Das zugehörige Token-Konto existiert noch nicht. Eine kleine Menge an SOL wird ausgegeben, um es zu erstellen und zu finanzieren. <ph name="CLICK_START"/>Weitere Informationen<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Aktualisieren des VPN-Profils ...</translation>
+<translation id="4258022280942725182">Ihre Brave Belohnungen</translation>
+<translation id="3826081199286264109">USD</translation>
+<translation id="880893465294676334">Dieser verifizierte Content-Ersteller hat sein Konto noch nicht so konfiguriert, dass er Beiträge von Brave-Nutzern erhalten kann.
+        Wenn Sie Trinkgeld geben, bleibt dieses in Ihrer Wallet, bis der Content-Ersteller diesen Vorgang abgeschlossen hat.</translation>
+<translation id="8918760045046434238">Spenden Sie ...</translation>
+<translation id="1978261665418056203">Noch keine Aktivitäten in diesem Monat ...</translation>
+<translation id="9182287025588539628">Einmalige Spenden</translation>
+<translation id="4914597931214386232">Kostenlose Tokens erhalten</translation>
+<translation id="298067735430872465">Einnahmen durch Werbung</translation>
+<translation id="2730771409541953249">REWARDS-ZUSAMMENFASSUNG</translation>
+<translation id="5463954686005964104">Dieser Seite monatlich ein Trinkgeld spendieren</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">Brave Belohnungen sichern</translation>
+<translation id="238922425564381955">Bitte sichern Sie Ihre Brave Belohnungen</translation>
+<translation id="3692362746128814480">Sie haben Creators, die sich noch nicht für den Erhalt von Beiträgen registriert haben, <ph name="BAT_VALUE"/> BAT zugewiesen.  Ihr Browser wird weiter versuchen, Beiträge weiterzugeben, bis der Creator sich registriert hat oder bis 90 Tage vergangen sind.</translation>
+<translation id="8782039523249932839">Dadurch wird Ihre Brave-Geldbörse gelöscht und alle Ihre Brave-Rewards-Daten werden zurückgesetzt</translation>
+<translation id="7924320838799747606">Ihr Guthaben</translation>
+<translation id="8030169304546394654">Verbindung getrennt</translation>
+<translation id="543510923939676996">Wallet verifiziert</translation>
+<translation id="4488355059795908907">Dieser von Brave verifizierte Ersteller hat sein Konto noch nicht eingerichtet, um Beiträge von Brave-Benutzern zu erhalten. Alles Geld, das sie senden, bleibt in Ihrem Wallet, bis er diesen Prozess abschließt.</translation>
+<translation id="7559243474426790340">Status aktualisieren</translation>
+<translation id="3769645103175790584">Verdienen Sie beim Browsen Token und belohnen Sie Ersteller für tolle Inhalte. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">Schnelleinführung</translation>
+<translation id="1080013038789678738">Ich bin dabei!</translation>
+<translation id="5587305863196367357">Wenn Sie ihre Wallet verifizieren, können Sie Ihr Guthaben ganz leicht verwalten, einzahlen und abheben.</translation>
+<translation id="5760671211380791582">Sie haben nicht genügend BAT.</translation>
+<translation id="442469478596827903">Sie brauchen mindestens 2 BAT für eine verifizierte Uphold-Wallet. Bitte versuchen Sie es später erneut.</translation>
+<translation id="4389085954549744469">Wenn Sie bereits ein verifiziertes Uphold-Konto haben, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">melden Sie sich an</translation>
 </translationbundle>

@@ -885,4 +885,34 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="2832270987629018596">SOL adresa nije važeća</translation>
 <translation id="8181161042860463420">Povezani token nalog još uvek ne postoji. Mala količina kriptovalute SOL biće potrošena da se on kreira i finansira. <ph name="CLICK_START"/>Saznajte više<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Ažuriranje VPN profila...</translation>
+<translation id="4258022280942725182">Vaše Brave nagrade</translation>
+<translation id="3826081199286264109">Američki dolar</translation>
+<translation id="880893465294676334">Ovaj Brave Stvaralac Verifikacija nije još uvek konfigurisao njihove naloge da bi dobijali doprinose od Brave korisnika.
+        Svaki bakšiš koji pošaljete ostaće u vašem novčaniku dok ne završe ovaj proces.</translation>
+<translation id="8918760045046434238">Pošalji bakšiš...</translation>
+<translation id="1978261665418056203">Još nema aktivnosti ovog
+meseca...</translation>
+<translation id="9182287025588539628">Jednokratne donacije</translation>
+<translation id="4914597931214386232">Traženi tokeni odobrenja</translation>
+<translation id="298067735430872465">Zarade od oglasa</translation>
+<translation id="2730771409541953249">KRATAK PREGLED NAGRADA</translation>
+<translation id="5463954686005964104">Doniraj mesečno ovu veb lokaciju</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">Napravite rezervnu kopiju Brave nagrada</translation>
+<translation id="238922425564381955">Napravite rezervnu kopiju vaših Brave nagrada.</translation>
+<translation id="3692362746128814480">Namenili ste <ph name="BAT_VALUE"/> BAT kreatorima koji se još nisu prijavili da bi dobili doprinose. Vaš pregledač će nastaviti da doprinosi dok se ne verifikuju, ili dok ne prođe 90 dana.</translation>
+<translation id="8782039523249932839">Ovo će obrisati vaš Brave novčanik i poništiće sve podatke vaših Brave nagrada</translation>
+<translation id="7924320838799747606">Vaše stanje</translation>
+<translation id="8030169304546394654">Veza je prekinuta</translation>
+<translation id="543510923939676996">Novčanik verifikovan</translation>
+<translation id="4488355059795908907">Ovaj Brave verifikovani stvaralac još nije konfigurisao svoj nalog za primanje doprinosa od Brave korisnika. Sve napojnice koje pošaljete, ostaće u vašem novčaniku, sve dok oni ne završe ovaj postupak.</translation>
+<translation id="7559243474426790340">Osveži status</translation>
+<translation id="3769645103175790584">Zaradite tokene i nagradite kreatore za sjajan sadržaj dok pregledavate. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">Brza tura</translation>
+<translation id="1080013038789678738">Ulazim!</translation>
+<translation id="5587305863196367357">Verifikovanje novčanika vam omogućava lakše upravljanje vašim sredstvima, dodavanjem i povlačenja</translation>
+<translation id="5760671211380791582">Nemate dovoljno BAT-a.</translation>
+<translation id="442469478596827903">Treba vam najmanje 2 BAT-a da biste kreirali verifikovani Uphold novčanik. Molimo pokušajte ponovo kasnije.</translation>
+<translation id="4389085954549744469">Ako već imate verifikovani Uphold nalog, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">nastavite s prijavom</translation>
 </translationbundle>

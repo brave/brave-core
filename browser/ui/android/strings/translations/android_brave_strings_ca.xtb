@@ -886,4 +886,36 @@ Si no accepteu la sol·licitud, la VPN no es tornarà a connectar i la vostra co
 <translation id="2832270987629018596">No és una adreça de SOL vàlida</translation>
 <translation id="8181161042860463420">El compte de testimoni associat encara no existeix. Es gastarà una petita quantitat de SOL per crear-lo i finançar-lo. <ph name="CLICK_START"/>Més informació<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">S'està actualitzant el perfil VPN...</translation>
+<translation id="4258022280942725182">Les teves Recompenses de Brave</translation>
+<translation id="3826081199286264109">Dòlars dels Estats Units</translation>
+<translation id="880893465294676334">Aquest creador verificat de Brave encara no ha configurat el seu compte per poder rebre aportacions per part dels usuaris de Brave.
+Qualsevol propina que enviïs es quedarà a la teva cartera fins que hagi completat el procés.</translation>
+<translation id="8918760045046434238">Envia una propina...</translation>
+<translation id="1978261665418056203">Encara no hi ha activitats
+aquest mes...</translation>
+<translation id="9182287025588539628">Propines d'una sola vegada</translation>
+<translation id="4914597931214386232">Donacions sol·licitades</translation>
+<translation id="298067735430872465">Guanys dels anuncis</translation>
+<translation id="2730771409541953249">RESUM DE PREMIS</translation>
+<translation id="5463954686005964104">Dona propines en aquest lloc mensualment</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">Fes una còpia de seguretat de Recompenses de Brave</translation>
+<translation id="238922425564381955">Fes una còpia de seguretat del teu compte de Recompenses de Brave.</translation>
+<translation id="3692362746128814480">Has designat <ph name="BAT_VALUE"/> BAT per a creadors que encara no s'han 
+registrat per rebre aportacions. El teu navegador seguirà intentant realitzar aportacions
+fins que es verifiqui o fins que hagin passat 90 dies.</translation>
+<translation id="8782039523249932839">Això suprimirà la cartera de Brave i reiniciarà totes les teves dades de Premis de Brave</translation>
+<translation id="7924320838799747606">El vostre balanç</translation>
+<translation id="8030169304546394654">Sense connexió</translation>
+<translation id="543510923939676996">Moneder Verificat</translation>
+<translation id="4488355059795908907">Aquest Creador Verificat de Brave encara no ha configurat el seu compte per a rebre contribucions d'usuaris Brave. Qualsevol consell que envieu es quedarà al vostre moneder fins que completin el procés.</translation>
+<translation id="7559243474426790340">Actualitza l'estat</translation>
+<translation id="3769645103175790584">Guanyeu fitxes i recompenseu els creadors per al bon contingut mentre navegueu. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">Recorregut ràpid</translation>
+<translation id="1080013038789678738">’M'hi apunto!</translation>
+<translation id="5587305863196367357">Verificar la cartera et permet gestionar els teus fons, afegir-ne i retirar-ne, de manera fàcil.</translation>
+<translation id="5760671211380791582">No tens prou BAT.</translation>
+<translation id="442469478596827903">Has de tenir un mínim de 2 BAT per a crear una cartera Uphold verificada. Si us plau, prova-ho més tard.</translation>
+<translation id="4389085954549744469">Si ja tens un compte Uphold verificat, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">continua per a iniciar sessió</translation>
 </translationbundle>

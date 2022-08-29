@@ -884,4 +884,33 @@
 <translation id="2832270987629018596">यह SOL पता मान्य नहीं है</translation>
 <translation id="8181161042860463420">संबंधित टोकन अकाउंट अभी मौजूद नहीं है. इसे बनाने और फंड करने के लिए SOL की एक छोटी राशि खर्च करनी होगी. <ph name="CLICK_START"/>और जानें<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">VPN प्रोफ़ाइल अपडेट किया जा रहा है...</translation>
+<translation id="4258022280942725182">आपका Brave Rewards</translation>
+<translation id="3826081199286264109">USD</translation>
+<translation id="880893465294676334">इस Brave वेरीफ़ाइड निर्माता ने अभी तक अपने अकाउंट को Brave उपयोगकर्ताओं से योगदान प्राप्त करने के लिए कॉन्फ़िगर नहीं किया है.
+आपके द्वारा भेजे गए कोई भी सुझाव आपके वॉलेट में तब तक रहेंगे जब तक वे इस प्रक्रिया को पूरा नहीं कर लेते.</translation>
+<translation id="8918760045046434238">एक टिप भेजें...</translation>
+<translation id="1978261665418056203">इस महीने अभी तक कोई गतिविधि नहीं ...</translation>
+<translation id="9182287025588539628">1-टाइम टिप्स</translation>
+<translation id="4914597931214386232">टोकन अनुदान पर दावा किया गया</translation>
+<translation id="298067735430872465">विज्ञापन से कमाई</translation>
+<translation id="2730771409541953249">रिवार्ड्स सारांश</translation>
+<translation id="5463954686005964104">इस साइट को मासिक टिप करें</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">Brave Rewards का बैकअप लें</translation>
+<translation id="238922425564381955">कृपया अपने Brave Reward का बैकअप लें.</translation>
+<translation id="3692362746128814480">आपने उन निर्माताओं के लिए <ph name="BAT_VALUE"/> BAT निर्धारित किया है, जिन्होंने अभी तक योगदान प्राप्त करने के लिए साइन अप नहीं किया है। आपका ब्राउज़र योगदान करने का प्रयास करता रहेगा जब तक वे सत्यापित नहीं करते हैं, या 90 दिन बीत नहीं जाते हैं।</translation>
+<translation id="8782039523249932839">यह आपके Brave वॉलेट को हटा देगा और आपके सभी Brave रिवार्ड्स डेटा को रीसेट कर देगा</translation>
+<translation id="7924320838799747606">आपकी शेष धनराशि</translation>
+<translation id="8030169304546394654">डिसकनेक्ट करें</translation>
+<translation id="543510923939676996">वॉलेट सत्यापन पूरा हुआ</translation>
+<translation id="4488355059795908907">इस Brave सत्यापित निर्माता ने Brave उपयोगकर्ताओं से योगदान प्राप्त करने के लिए अभी तक अपना खाता कॉन्फ़िगर नहीं किया है। जब तक वे इस प्रक्रिया को पूरा नहीं करते, तब तक आपके द्वारा भेजे गए सभी टिप आपके वॉलेट में रहेंगे।</translation>
+<translation id="7559243474426790340">स्टेटस रिफ्रेश करें</translation>
+<translation id="3769645103175790584">ब्राउज़ करते हुए टोकन कमाएँ और अच्छे कंटेंट के रचनाकारों को इनाम दें। <ph name="QUICK_TOUR"/></translation>
+<translation id="6912901278692845878">क्विक टूर</translation>
+<translation id="1080013038789678738">मैं भी शामिल हूँ!</translation>
+<translation id="5587305863196367357">वॉलेट वेरिफ़ाई करने के बाद आप अपने फंड को आसानी से मैनेज कर सकते हैं, जैसे पैसे डालना और निकालना</translation>
+<translation id="5760671211380791582">आपके पास पर्याप्त BAT नहीं हैं.</translation>
+<translation id="442469478596827903">एक वेरिफ़ाईड Uphold वॉलेट बनाने के लिए आपको कम से कम 2 BAT की ज़रूरत होती है. कृपया बाद में दोबारा कोशिश करें.</translation>
+<translation id="4389085954549744469">अगर आपके पास पहले से एक वेरिफ़ाड Uphold अकाउंट है तो, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">लॉगिन ब्लॉक करना जारी रखें</translation>
 </translationbundle>

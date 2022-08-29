@@ -887,4 +887,34 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="2832270987629018596">Geen geldig SOL-adres</translation>
 <translation id="8181161042860463420">Het bijbehorende tokenaccount bestaat nog niet. Er zal een klein bedrag aan SOL worden besteed om het aan te maken en er tegoed op te zetten. <ph name="CLICK_START"/>Meer informatie<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">VPN-profiel bijwerken ...</translation>
+<translation id="4258022280942725182">Uw Brave-beloningen</translation>
+<translation id="3826081199286264109">USD</translation>
+<translation id="880893465294676334">Deze geverifieerde maker van Brave heeft zijn account nog niet geconfigureerd en kan daarom geen bijdragen van Brave-gebruikers ontvangen.
+        Alle door jou verzonden fooien blijven in je wallet, totdat deze gebruiker dit proces heeft voltooid.</translation>
+<translation id="8918760045046434238">Stuur een fooitje...</translation>
+<translation id="1978261665418056203">Nog geen activiteiten
+deze maand...</translation>
+<translation id="9182287025588539628">Eenmalige Tips</translation>
+<translation id="4914597931214386232">Geclaimde giften</translation>
+<translation id="298067735430872465">Inkomsten uit Advertenties</translation>
+<translation id="2730771409541953249">SAMENVATTING VAN BELONINGEN</translation>
+<translation id="5463954686005964104">Tip deze site maandelijks</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">Back-up maken van Brave Beloningen</translation>
+<translation id="238922425564381955">Maak een back-up van Brave Beloningen.</translation>
+<translation id="3692362746128814480">Je hebt <ph name="BAT_VALUE"/> BAT aangewezen voor makers die dat zich nog niet hebben aangemeld om bijdragen te ontvangen. Je browser blijft proberen bij te dragen totdat ze verifiëren of tot 90 dagen zijn verstreken.</translation>
+<translation id="8782039523249932839">Hiermee wordt je Brave-wallet verwijderd en worden al je Brave Rewards-gegevens gereset</translation>
+<translation id="7924320838799747606">Je overzicht</translation>
+<translation id="8030169304546394654">Verbinding verbroken</translation>
+<translation id="543510923939676996">Wallet geverifieerd</translation>
+<translation id="4488355059795908907">Deze Brave Verified Creator heeft zijn account nog niet geconfigureerd om bijdragen van Brave gebruikers te ontvangen. Eventuele fooien die je stuurt, zullen in je portemonnee blijven totdat ze dit proces hebben voltooid.</translation>
+<translation id="7559243474426790340">Status vernieuwen</translation>
+<translation id="3769645103175790584">Verdien tokens en beloon makers voor hun geweldige inhoud terwijl je bladert. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">Beknopt overzicht</translation>
+<translation id="1080013038789678738">Ik doe mee!</translation>
+<translation id="5587305863196367357">Door uw wallet te verifiëren, kunt u uw geld efficiënter beheren en eenvoudiger geld toevoegen en opnemen</translation>
+<translation id="5760671211380791582">U hebt niet genoeg BAT.</translation>
+<translation id="442469478596827903">U moet minimaal 2 BAT hebben om een geverifieerde Uphold-wallet aan te maken. Probeer het later opnieuw.</translation>
+<translation id="4389085954549744469">Indien u al een geverifieerd Uphold-account hebt, kunt u zich <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">aanmelden</translation>
 </translationbundle>

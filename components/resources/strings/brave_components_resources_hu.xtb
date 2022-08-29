@@ -1487,4 +1487,36 @@
 <translation id="6973157709854838218">Az egyenlegek elrejtése a megjelenítésből</translation>
 <translation id="4548946945059463969">Az egyenlegek mutatása a képernyőn</translation>
 <translation id="242959166945779492">Fiókja nem rendelkezik egyenleggel. A beszerzéshez látogasson el az FTX-re.</translation>
+<translation id="9190084253595768053">Problémákba ütközik a kapcsolódással? Nyissa meg a <ph name="BEGIN_LINK"/>Brave beállításokat<ph name="END_LINK"/>, kapcsolja ki a Privát ablak Torral funkciót, majd engedélyezze újra. Továbbra is problémákba ütközik?</translation>
+<translation id="6977372887576114613">Letétbe helyezett BAT</translation>
+<translation id="194625454574835815">Helyreállító kód</translation>
+<translation id="5717619667204259673">Gondosan őrizze meg az alábbi helyreállítási kulcsot.</translation>
+<translation id="7018390569051511373">Ezzel a kulccsal mindig visszaállíthatja a Jutalmakhoz kapcsolódó profilját, ha valami történik böngészőjével vagy számítógépével. Győződjön meg róla, hogy biztonságban tartja; a kulccsal bárki ellophatja Jutalmak profilját. Talán az a legbiztonságosabb, ha leírja egy darab papírra, vagy bárhova ahol fontos adatait őrzi.</translation>
+<translation id="8979401359137062629">Jegyzet:</translation>
+<translation id="7934806082615382155">A pénzalapok egy része a Brave-től érkezhet, és nem szerepel a biztonsági mentésben, mert nem szükséges. Ezt kizárólag ebben a böngészőben tudja elkölteni.</translation>
+<translation id="1738658589626889850">Elmentés fájlként</translation>
+<translation id="2173151783558384314">A Brave az Infura használatával fog kiadni Ethereum JSON-RPC-hívásokat az „Unstoppable Domains”-ből származó intelligens szerződés felé azért, hogy teljesítse a .crypto (valamint az .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin) doménnevek keresési kérését. Ha engedélyezi ezt, az Infura látni fogja az Ön által felkeresni kívánt doméneket, de más doméneket nem fog látni. Olvassa el az Infura <ph name="BEGIN_INFURA_TOU_LINK"/>felhasználási feltételeit<ph name="END_INFURA_TOU_LINK"/> és <ph name="BEGIN_INFURA_PRIVACY_LINK"/>adatvédelmi szabályzatát<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="2630264552940126640">Brave Jutalmak biztonsági másolat készítése</translation>
+<translation id="238922425564381955">Készítsen biztonsági másolatot a Brave Jutalmakról.</translation>
+<translation id="2860280209982026951">A Brave a következőt használja DEX aggregátorként: <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/>.</translation>
+<translation id="4626407663177532837">Az árajánlat tartalmazza a Brave 0,875% -os díját.</translation>
+<translation id="1420318137760245955">Üdvözli az új Brave pénztárca</translation>
+<translation id="3671745544278414606">Tartson magánál letétben kriptoeszközöket. Kövesse nyomon a portfóliója teljesítményét és lépjen interakcióba Web3 decentralizált applikációkkal. Kereskedjen, fektessen be, vegyen fel kölcsönt, és adjon kölcsön a DeFi-vel. Mindezt egyenesen a Brave adatvédelmi böngészőből. Nincsenek bővítmények és a letöltés sem szükséges.</translation>
+<translation id="6972754398087986839">Első lépések</translation>
+<translation id="2813156651070657572">Biztosítsa kriptoeszközei biztonságát jelszóval</translation>
+<translation id="6901073872645365201">A jelszónak legalább 7 karakterből kell állnia, és tartalmaznia kell legalább egy számot és egy különleges karaktert.</translation>
+<translation id="5486261815000869482">Jelszó megerősítése</translation>
+<translation id="7982184974053636367">Biztonságosabb jelszóra van szükség a Brave pénztárcához</translation>
+<translation id="2372897697869224590">Új Brave pénztárca jelszó beállítása</translation>
+<translation id="7739762330714405363">Ugyanazon jelszó használata</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="7102907656918333773">Importálás innen: <ph name="WALLET_EXTENSION"/></translation>
+<translation id="1737856990004825123">Importálja <ph name="WALLET_EXTENSION"/>  fiókjait a Brave pénztárcába. Élvezze a kriptoeszközök kezelésének gyorsabb és biztonságosabb módját, és lépjen interakcióba Web3 decentralizált applikációkkal.</translation>
+<translation id="4237840336687249184">MetaMask jelszó</translation>
+<translation id="2381605201035323535">a kriptotárcákat</translation>
+<translation id="4938145712652668388">Ha az "Első lépések"-re kattint, importálja a korábbi kriptotárcáját az új Brave pénztárca-élménybe, és élvezheti annak már említett előnyeit. Próbálja ki, és ossza meg velünk a véleményét!</translation>
+<translation id="9099900965604225657">Kriptotárca jelszava</translation>
+<translation id="4020495774166914146">Elfelejtettem a jelszavam és a helyreállítási kifejezésem, új tárcát szeretnék létrehozni.</translation>
+<translation id="7709075156958117386">Ha a webhely látszólag helytelenül működik, próbálja kikapcsolni a pajzsokat.
+    <ph name="LINK_BEFORE"/>Megjegyzés: ez korlátozhatja a Brave adatvédelmi mechanizmusait.<ph name="LINK_AFTER"/></translation>
 </translationbundle>

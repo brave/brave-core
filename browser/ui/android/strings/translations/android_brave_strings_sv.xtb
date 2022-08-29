@@ -885,4 +885,36 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="2832270987629018596">Ogiltig SOL-adress</translation>
 <translation id="8181161042860463420">Det associerade tokenkontot finns inte ännu. En liten mängd SOL kommer att spenderas för att skapa och finansiera den.<ph name="CLICK_START"/>Läs mer<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Uppdaterar VPN-profil ...</translation>
+<translation id="4258022280942725182">Din Brave Rewards</translation>
+<translation id="3826081199286264109">USD</translation>
+<translation id="880893465294676334">Den här verifierade skaparen hos Brave har ännu inte ställt in sitt konto för att kunna ta emot bidrag från Brave-användare. 
+         Den dricks du skickar kommer att finnas kvar i din plånbok till dess de slutför denna process.</translation>
+<translation id="8918760045046434238">Skicka dricks...</translation>
+<translation id="1978261665418056203">Inga aktiviteter ännu 
+denna månad...</translation>
+<translation id="9182287025588539628">Engångsdricks</translation>
+<translation id="4914597931214386232">Tilldelning av token utnyttjades</translation>
+<translation id="298067735430872465">Intäkter från annonser</translation>
+<translation id="2730771409541953249">REWARDS-ÖVERSIKT</translation>
+<translation id="5463954686005964104">Ge dricks till denna webbplats varje månad</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">Säkerhetskopiera Brave Rewards</translation>
+<translation id="238922425564381955">Säkerhetskopiera Brave Rewards</translation>
+<translation id="3692362746128814480">Du har angett <ph name="BAT_VALUE"/> BAT för innehållsskapare som inte 
+har registrerat sig för att ta emot bidrag ännu. Din webbläsare kommer att fortsätta 
+försöka bidra tills de verifierar sig eller tills 90 dagar har gått.</translation>
+<translation id="8782039523249932839">Detta tar bort din Brave-plånbok och återställer alla data för dina Brave Rewards</translation>
+<translation id="7924320838799747606">Din behållning</translation>
+<translation id="8030169304546394654">Frånkopplad</translation>
+<translation id="543510923939676996">Plånbok verifierad</translation>
+<translation id="4488355059795908907">Denna av Brave verifierade skapare har ännu inte konfigurerat sitt konto för att ta emot bidrag från Brave-användare. Pengar du ger kommer att vara kvar i din plånbok tills skaparen slutför denna process.</translation>
+<translation id="7559243474426790340">Uppdatera status</translation>
+<translation id="3769645103175790584">Tjäna tokens och belöna skapare för bra innehåll medan du surfar. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">Snabbtur</translation>
+<translation id="1080013038789678738">Jag är med!</translation>
+<translation id="5587305863196367357">Genom att verifiera plånboken kan du hantera dina pengar enkelt och sätta in och ta ut pengar</translation>
+<translation id="5760671211380791582">Du har inte tillräckligt med BAT.</translation>
+<translation id="442469478596827903">Du måste ha minst 2 BAT för att skapa en verifierad Uphold-plånbok. Försök igen senare.</translation>
+<translation id="4389085954549744469">Om du redan har ett verifierat Uphold-konto kan du <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">fortsätta till inloggning</translation>
 </translationbundle>

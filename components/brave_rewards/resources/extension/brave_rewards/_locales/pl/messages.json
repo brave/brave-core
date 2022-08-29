@@ -311,6 +311,18 @@
       }
     }
   },
+  "notificationBackupWalletTitle": {
+    "message": "Zrób kopię zapasową nagród Brave",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "Zrób kopię zapasową nagród Brave.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "Utwórz kopię zapasową teraz",
+    "description": ""
+  },
   "notificationWalletDisconnectedTitle": {
     "message": "Wylogowano Cię",
     "description": ""

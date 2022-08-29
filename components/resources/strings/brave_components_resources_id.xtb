@@ -1487,4 +1487,36 @@
 <translation id="6973157709854838218">Sembunyikan saldo Anda agar tidak ditampilkan</translation>
 <translation id="4548946945059463969">Tampilkan saldo Anda pada layar</translation>
 <translation id="242959166945779492">Anda tidak memiliki saldo apa pun di akun Anda. Kunjungi FTX untuk membelinya.</translation>
+<translation id="9190084253595768053">Bermasalah dengan koneksi? Buka <ph name="BEGIN_LINK"/>Pengaturan Brave <ph name="END_LINK"/>, nonaktifkan Jendela Privat dengan Tor, kemudian aktifkan kembali. Masih bermasalah?</translation>
+<translation id="6977372887576114613">BAT Disetorkan</translation>
+<translation id="194625454574835815">Kunci Pemulihan</translation>
+<translation id="5717619667204259673">Selalu simpan kunci pemulihan ini secara aman.</translation>
+<translation id="7018390569051511373">Anda dapat selalu menggunakan kunci ini untuk mendapatkan kembali profil Rewards Anda jika sesuatu terjadi pada peramban atau komputer Anda. Namun pastikan untuk melindunginya. Siapa pun yang mendapatkan kunci ini dapat mencuri profil Rewards Anda. Mungkin paling aman untuk menuliskannya di sepotong kertas, atau di mana pun Anda dapat menyimpan info penting.</translation>
+<translation id="8979401359137062629">Catatan:</translation>
+<translation id="7934806082615382155">Sebagian dana dapat diterima dari Brave dan tidak disertakan dalam cadangan karena tidak diperlukan. Itu tersedia untuk Anda gunakan secara eksklusif di peramban ini.</translation>
+<translation id="1738658589626889850">Simpan sebagai Berkas</translation>
+<translation id="2173151783558384314">Brave akan menggunakan Infura untuk menerbitkan panggilan Ethereum JSON-RPC ke kontrak pintar dari Unstoppable Domains untuk menyelesaikan permohonan pencarian nama domain .crypto (dan juga .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin). Jika Anda mengaktifkan hal ini, Infura akan melihat domain tertentu yang ingin Anda kunjungi namun mereka tidak akan melihat domain lainnya. Bacalah <ph name="BEGIN_INFURA_TOU_LINK"/>syarat penggunaan<ph name="END_INFURA_TOU_LINK"/> dan <ph name="BEGIN_INFURA_PRIVACY_LINK"/>kebijakan privasi<ph name="END_INFURA_PRIVACY_LINK"/> Infura.</translation>
+<translation id="2630264552940126640">Cadangkan Brave Rewards</translation>
+<translation id="238922425564381955">Silakan cadangkan Brave Rewards Anda.</translation>
+<translation id="2860280209982026951">Brave menggunakan <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> sebagai agregrator DEX.</translation>
+<translation id="4626407663177532837">Penawaran termasuk 0,875% biaya Brave.</translation>
+<translation id="1420318137760245955">Selamat datang di Brave Wallet yang baru</translation>
+<translation id="3671745544278414606">Pertahankan aset kripto dalam penyimpanan Anda. Lacak kinerja portofolio, dan berinteraksi dengan web 3 DApps. Perdagangkan, investasikan, pinjam, dan pinjamkan dengan DeFi. Seluruhnya langsung dari perambah pribadi Brave. Tanpa ekstensi, tanpa perlu mengunduh.</translation>
+<translation id="6972754398087986839">Mulai</translation>
+<translation id="2813156651070657572">Amankan aset kripto Anda dengan kata sandi</translation>
+<translation id="6901073872645365201">Kata sandi harus terdiri dari minimal 7 karakter dan mencakup minimal satu angka dan satu karakter khusus.</translation>
+<translation id="5486261815000869482">Konfirmasi kata sandi</translation>
+<translation id="7982184974053636367">Kata sandi yang lebih aman diwajibkan untuk Brave Wallet</translation>
+<translation id="2372897697869224590">Atur kata sandi dompet Brave</translation>
+<translation id="7739762330714405363">Gunakan kata sandi yang sama</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="7102907656918333773">Impor dari <ph name="WALLET_EXTENSION"/></translation>
+<translation id="1737856990004825123">Impor akun <ph name="WALLET_EXTENSION"/> Anda ke Dompet Brave. Nikmatilah cara yang lebih cepat dan lebih aman untuk mengelola aset kripto dan berinteraksi dengan Web3 DApps.</translation>
+<translation id="4237840336687249184">Kata sandi MetaMask</translation>
+<translation id="2381605201035323535">dompet kripto</translation>
+<translation id="4938145712652668388">Ketika Anda mengklik "Mulai", Anda akan mengimpor Crypto Wallet Anda sebelumnya ke pengalaman Brave Wallet yang baru, dan menikmati semua manfaat yang diuraikan di atas. Cobalah, dan beri tahu kami pendapat Anda!</translation>
+<translation id="9099900965604225657">Kata sandi dompet kripto</translation>
+<translation id="4020495774166914146">Saya telah kehilangan kata sandi dan frasa pemulihan saya, buat dompet yang baru.</translation>
+<translation id="7709075156958117386">Jika situs ini tampak rusak, coba nonaktifkan Perisai. 
+    <ph name="LINK_BEFORE"/>Catatan: ini dapat mengurangi perlindungan privasi Brave.<ph name="LINK_AFTER"/></translation>
 </translationbundle>

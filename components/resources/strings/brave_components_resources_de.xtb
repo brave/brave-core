@@ -1487,4 +1487,36 @@ hat <ph name="NUMBER"/> Tracker, Anzeigen und mehr blockiert</translation>
 <translation id="6973157709854838218">Guthabenanzeige ausblenden</translation>
 <translation id="4548946945059463969">Guthabenanzeige erlauben</translation>
 <translation id="242959166945779492">Sie haben kein Guthaben auf Ihrem Konto. Gehen Sie zu FTX, um welches zu kaufen.</translation>
+<translation id="9190084253595768053">Haben Sie Verbindungsprobleme? Öffnen Sie die <ph name="BEGIN_LINK"/>Brave-Einstellungen<ph name="END_LINK"/>, deaktivieren Sie das private Fenster mit Tor und aktivieren Sie es dann erneut. Sind die Probleme noch nicht beseitigt?</translation>
+<translation id="6977372887576114613">Eingezahlte BAT</translation>
+<translation id="194625454574835815">Wiederherstellungsschlüssel</translation>
+<translation id="5717619667204259673">Bewahren Sie diesen Wiederherstellungsschlüssel sicher auf.</translation>
+<translation id="7018390569051511373">Sie können diesen Schlüssel jederzeit verwenden, um Ihre Belohnungs-Wallet zurückzuerhalten, falls Ihrem Browser oder Computer etwas zustößt. Doch sorgen Sie dafür, dass er geschützt ist — jeder, der diesen Schlüssel erlangt, könnte Ihr Belohnungsprofil stehlen. Am sichersten ist es wohl, ihn auf einem Stück Papier aufzuschreiben oder wo immer Sie sonst wichtige Informationen aufbewahren.</translation>
+<translation id="8979401359137062629">Notiz:</translation>
+<translation id="7934806082615382155">Es ist möglich, dass ein Teil des Guthabens von Brave kommt und nicht in der Sicherung enthalten ist, da dies nicht erforderlich ist. Es steht Ihnen ausschließlich zur Verwendung in diesem Browser zur Verfügung.</translation>
+<translation id="1738658589626889850">Als Datei speichern</translation>
+<translation id="2173151783558384314">Brave verwendet Infura, um Ethereum-JSON-RPC-Aufrufe an den Smart Contract von Unstoppable-Domains zu senden, um Domainnamensuchanforderungen für .crypto (und .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin) aufzulösen. Wenn Sie dies aktivieren, wird Infura die Domains anzeigen, die Sie besuchen möchten, andere Domains können jedoch nicht angezeigt werden.  Weitere Informationen finden Sie in den <ph name="BEGIN_INFURA_TOU_LINK"/>Nutzungsbedingungen<ph name="END_INFURA_TOU_LINK"/> und der<ph name="BEGIN_INFURA_PRIVACY_LINK"/>Datenschutzerklärung<ph name="END_INFURA_PRIVACY_LINK"/> von Infura.</translation>
+<translation id="2630264552940126640">Brave Belohnungen sichern</translation>
+<translation id="238922425564381955">Bitte sichern Sie Ihre Brave Belohnungen</translation>
+<translation id="2860280209982026951">Brave verwendet <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> als DEX-Aggregator.</translation>
+<translation id="4626407663177532837">Angebot beinhaltet eine Brave-Gebühr von 0,875 %.</translation>
+<translation id="1420318137760245955">Willkommen zur neuen Brave Wallet</translation>
+<translation id="3671745544278414606">Halten Sie Krypto-Assets in Ihrer Verwahrung. Verfolgen Sie die Portfolioleistung und interagieren Sie mit Web3 DApps. Handeln, investieren, leihen und verleihen Sie mit DeFi. Alles direkt über den Brave-Datenschutzbrowser. Keine Erweiterungen, kein Download erforderlich.</translation>
+<translation id="6972754398087986839">Erste Schritte</translation>
+<translation id="2813156651070657572">Schützen Sie Ihre Krypto-Assets mit einem Passwort</translation>
+<translation id="6901073872645365201">Passwörter müssen mindestens 7 Zeichen lang sein und mindestens eine Zahl und ein Sonderzeichen enthalten.</translation>
+<translation id="5486261815000869482">Passwort bestätigen</translation>
+<translation id="7982184974053636367">Für Brave Wallet ist ein sichereres Passwort erforderlich</translation>
+<translation id="2372897697869224590">Legen Sie ein Brave Wallet-Passwort fest</translation>
+<translation id="7739762330714405363">Verwenden Sie dasselbe Passwort</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="7102907656918333773">Import aus <ph name="WALLET_EXTENSION"/></translation>
+<translation id="1737856990004825123">Importieren Sie Ihre <ph name="WALLET_EXTENSION"/>-Konten in Brave Wallet. Profitieren Sie von einer schnelleren und sichereren Methode, Krypto-Assets zu verwalten und mit Web3 DApps zu interagieren.</translation>
+<translation id="4237840336687249184">MetaMask-Passwort</translation>
+<translation id="2381605201035323535">Krypto-Wallets</translation>
+<translation id="4938145712652668388">Wenn Sie auf "Erste Schritte" klicken, importieren Sie Ihre vorheriges Krypto-Wallet in die neue Brave Wallet-Version und genießen alle oben beschriebenen Vorteile. Probieren Sie es aus und teilen Sie uns Ihre Meinung mit!</translation>
+<translation id="9099900965604225657">Passwort für Krypto-Wallets</translation>
+<translation id="4020495774166914146">Ich habe mein Passwort und meine Wiederherstellungsphrase verloren. Ich möchte eine neue Wallet erstellen.</translation>
+<translation id="7709075156958117386">Wenn diese Seite kaputt zu sein scheint, versuchen Sie es mit deaktiviertem Schutz.
+<ph name="LINK_BEFORE"/>Hinweis: Dies kann den Datenschutz von Brave beeinträchtigen.<ph name="LINK_AFTER"/></translation>
 </translationbundle>

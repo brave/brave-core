@@ -311,6 +311,18 @@
       }
     }
   },
+  "notificationBackupWalletTitle": {
+    "message": "Fazer backup das Recompensas Brave",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "Faça o backup das suas Recompensas Brave.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "Fazer backup agora",
+    "description": ""
+  },
   "notificationWalletDisconnectedTitle": {
     "message": "Sua sessão foi encerrada",
     "description": ""

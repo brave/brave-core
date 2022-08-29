@@ -1487,4 +1487,36 @@
 <translation id="6973157709854838218">Piilota saldosi näytöltä</translation>
 <translation id="4548946945059463969">Näytä saldosi näytöllä</translation>
 <translation id="242959166945779492">Sinulla ei ole yhtään saldoa tililläsi. Käy FTX:ssä ostaaksesi valuuttoja.</translation>
+<translation id="9190084253595768053">Onko sinulla vaikeuksia muodostaa yhteys? Avaa <ph name="BEGIN_LINK"/>Brave-asetukset<ph name="END_LINK"/>, poista yksityinen ikkuna käytöstä Torin avulla, ja ota se uudelleen käyttöön. Onko sinulla edelleen vaikeuksia?</translation>
+<translation id="6977372887576114613">Talletettu BAT</translation>
+<translation id="194625454574835815">Palautusavain</translation>
+<translation id="5717619667204259673">Keep this recovery key safe.</translation>
+<translation id="7018390569051511373">Voit aina käyttää tätä avainta palkintoprofiilisi palauttamiseen, jos jotain tapahtuu selaimellesi tai tietokoneellesi. Muista kuitenkin pitää se turvassa; kuka tahansa avaimen omaava voi nimittäin varastaa palkintoprofiilisi. On todennäköisesti turvallisinta kirjoittaa se muistiin paperille tai jonnekin, jossa säilytät tärkeitä tietoja.</translation>
+<translation id="8979401359137062629">Huomio:</translation>
+<translation id="7934806082615382155">Jotkin varoista voidaan saada Bravesta, eivätkä ne sisälly varmuuskopioon, sillä ne eivät ole pakollisia. Voit käyttää niitä ainoastaan tässä selaimessa.</translation>
+<translation id="1738658589626889850">Tallenna tiedostona</translation>
+<translation id="2173151783558384314">Brave tulee käyttämään Infuraa lähettääkseen Ethereum JSON-RPC -kutsuja älykkääseen sopimukseen pysäyttämättömistä verkkotunnuksista selvittääkseen .crypto (ja myös .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin) -verkkotunnuksen nimen hakupyynnöt. Jos otat tämän käyttöön, Infura näkee ne tietyt verkkotunnukset, joissa yrität käydä, mutta se ei pysty näkemään muita verkkotunnuksia. Katso Infuran <ph name="BEGIN_INFURA_TOU_LINK"/>käyttöehtoja<ph name="END_INFURA_TOU_LINK"/> ja <ph name="BEGIN_INFURA_PRIVACY_LINK"/>tietosuojakäytäntöä<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="2630264552940126640">Varmuuskopioi Brave-palkinnot</translation>
+<translation id="238922425564381955">Varmuuskopioi Brave-palkintosi.</translation>
+<translation id="2860280209982026951">Brave käyttää <ph name="LINK_BEFORE"/>0x:ää<ph name="LINK_AFTER"/> DEX-aggregaattorina.</translation>
+<translation id="4626407663177532837">Hintatarjous sisältää 0,875 %:n Brave-maksun.</translation>
+<translation id="1420318137760245955">Tervetuloa uuteen Brave-lompakkoon</translation>
+<translation id="3671745544278414606">Pidä kryptovaroja mukanasi. Seuraa portfolion kehitystä ja ole vuorovaikutuksessa Web3-sovellusten ja hajautettujen sovellusten kanssa. Vaihda, sijoita ja lainaa DeFin avulla. Kaikki tämä suoraan yksityisestä Brave-selaimesta. Ei laajennuksia, ei latausta.</translation>
+<translation id="6972754398087986839">Aloitusopas</translation>
+<translation id="2813156651070657572">Suojaa kryptovarasi salasanalla</translation>
+<translation id="6901073872645365201">Salasanassa on oltava vähintään 7 merkkiä, yksi numero ja yksi erikoismerkki.</translation>
+<translation id="5486261815000869482">Vahvista salasana</translation>
+<translation id="7982184974053636367">Brave Wallet -lompakko vaatii turvallisemman salasanan</translation>
+<translation id="2372897697869224590">Aseta Brave Wallet -lompakolle salasana</translation>
+<translation id="7739762330714405363">Käytä samaa salasanaa</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="7102907656918333773">Tuo kohteesta <ph name="WALLET_EXTENSION"/></translation>
+<translation id="1737856990004825123">Tuo <ph name="WALLET_EXTENSION"/>-tilisi Brave-lompakkoon. Nauti nopeammasta ja turvallisemmasta tavasta hallita kryptovaroja ja ole vuorovaikutuksessa Web3-sovellusten ja hajautettujen sovellusten kanssa.</translation>
+<translation id="4237840336687249184">MetaMask-salasana</translation>
+<translation id="2381605201035323535">kryptolompakot</translation>
+<translation id="4938145712652668388">Kun napsautat Aloita-kohtaa, tuot vanhat Crypto Wallet -lompakot uuteen Brave Wallet -kokemukseen ja pääset nauttimaan kaikista edellä mainituista eduista. Kokeile sitä ja kerro meille mielipiteesi!</translation>
+<translation id="9099900965604225657">Kryptolompakkojen salasana</translation>
+<translation id="4020495774166914146">Olen hukannut salasanani ja palautuslauseeni, luo uusi lompakko.</translation>
+<translation id="7709075156958117386">Jos tämä sivusto vaikuttaa olevan rikki, kokeile poistaa suojaukset. 
+    <ph name="LINK_BEFORE"/>Huomaa: tämä saattaa heikentää Braven tarjoamaa yksityisyyden suojaa.<ph name="LINK_AFTER"/></translation>
 </translationbundle>

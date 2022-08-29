@@ -1488,4 +1488,36 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6973157709854838218">ซ่อนยอดคงเหลือของคุณจากจอแสดงผล</translation>
 <translation id="4548946945059463969">เปิดเผยยอดคงเหลือของคุณบนหน้าจอ</translation>
 <translation id="242959166945779492">คุณไม่มียอดคงเหลือในบัญชีของคุณ โปรดไปยัง FTX เพื่อซื้อเพิ่ม</translation>
+<translation id="9190084253595768053">พบปัญหากับการเชื่อมต่อใช่หรือไม่ เปิด<ph name="BEGIN_LINK"/>การตั้งค่า Brave<ph name="END_LINK"/> ปิดใช้งานหน้าต่างโหมดส่วนตัวพร้อมใช้ Tor แล้วเปิดใช้งานใหม่ ยังพบปัญหาอยู่หรือไม่</translation>
+<translation id="6977372887576114613">BAT ที่ฝาก</translation>
+<translation id="194625454574835815">กุญแจกู้คืน</translation>
+<translation id="5717619667204259673">เก็บรักษาคีย์กู้คืนนี้ไว้ให้ปลอดภัย</translation>
+<translation id="7018390569051511373">คุณสามารถใช้คีย์นี้ในการกู้คืนโปรไฟล์ Rewards ของคุณได้ตลอดเวลาหากมีอะไรเกิดขึ้นกับเบราว์เซอร์หรือคอมพิวเตอร์ของคุณ ทั้งนี้ โปรดดูแลรักษาคีย์นี้ให้ดี เพราะผู้ใดที่มีคีย์นี้จะสามารถขโมยโปรไฟล์ Rewards ของคุณไปได้ เพื่อให้ปลอดภัยที่สุด ควรจดคีย์ดังกล่าวลงในกระดาษ หรือลงในที่ใดก็ได้ที่คุณเอาไว้เก็บข้อมูลสำคัญ</translation>
+<translation id="8979401359137062629">หมายเหตุ:</translation>
+<translation id="7934806082615382155">เงินบางส่วนอาจได้รับจาก Brave และไม่รวมอยู่ในข้อมูลสำรองเนื่องจากไม่จำเป็น เงินนี้มีให้คุณใช้จ่ายเฉพาะบนเบราว์เซอร์นี้เท่านั้น</translation>
+<translation id="1738658589626889850">บันทึกเป็นไฟล์</translation>
+<translation id="2173151783558384314">Brave จะใช้ Infura เพื่อออกคำสั่ง Ethereum JSON-RPC ไปยัง Smart Contract จาก Unstoppable Domains เพื่อแก้ไขคำขอค้นหาชื่อโดเมน .crypto (และ .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin) หากคุณเปิดใช้งานคำสั่งนี้ Infura จะมองเห็นโดเมนดังกล่าวที่คุณพยายามเข้าชม แต่จะไม่เห็นโดเมนอื่นๆ โปรดอ่าน<ph name="BEGIN_INFURA_TOU_LINK"/>เงื่อนไขการใช้บริการ<ph name="END_INFURA_TOU_LINK"/>และ<ph name="BEGIN_INFURA_PRIVACY_LINK"/>นโยบายความเป็นส่วนตัว<ph name="END_INFURA_PRIVACY_LINK"/></translation>
+<translation id="2630264552940126640">สำรองข้อมูล Brave Rewards</translation>
+<translation id="238922425564381955">โปรดสำรองข้อมูล Brave Rewards ของคุณ</translation>
+<translation id="2860280209982026951">Brave ใช้ <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> เป็นระบบค้นหาตลาดแลกเปลี่ยน (DEX Aggregator)</translation>
+<translation id="4626407663177532837">ใบเสนอราคารวมค่าธรรมเนียม Brave 0.875%</translation>
+<translation id="1420318137760245955">ยินดีต้อนรับสู่ Brave วอลเล็ตใหม่</translation>
+<translation id="3671745544278414606">ถือครองสินทรัพย์คริปโตไว้ในการดูแลของคุณ ติดตามผลงานของพอร์ตโฟลิโอและโต้ตอบกับ Web3 DApps เทรด ลงทุน กู้ยืม และให้กู้ยืมด้วย DeFi ทั้งหมดนี้ทำได้จากเบราว์เซอร์ที่มีความเป็นส่วนตัวจาก Brave โดยไม่ต้องใช้ส่วนขยาย ไม่ต้องดาวน์โหลด</translation>
+<translation id="6972754398087986839">Get Started</translation>
+<translation id="2813156651070657572">รักษาความปลอดภัยให้สินทรัพย์คริปโตของคุณด้วยรหัสผ่าน</translation>
+<translation id="6901073872645365201">รหัสผ่านต้องมีอย่างน้อย 7 อักขระ และมีอย่างน้อย 1 ตัวเลขและ 1 อักขระพิเศษ</translation>
+<translation id="5486261815000869482">ยืนยันรหัสผ่าน</translation>
+<translation id="7982184974053636367">ต้องใช้รหัสผ่านที่ปลอดภัยมากขึ้นสำหรับ Brave วอลเล็ต</translation>
+<translation id="2372897697869224590">ตั้งรหัสผ่าน Brave วอลเล็ต</translation>
+<translation id="7739762330714405363">ใช้รหัสผ่านเดียวกัน</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="7102907656918333773">นำเข้าจาก <ph name="WALLET_EXTENSION"/></translation>
+<translation id="1737856990004825123">นำเข้าบัญชี <ph name="WALLET_EXTENSION"/> ของคุณไปยัง Brave วอลเล็ต เพลิดเพลินไปกับวิธีในการจัดการสินทรัพย์คริปโตและโต้ตอบกับ Web 3 DApps ที่รวดเร็วและปลอดภัยยิ่งขึ้น</translation>
+<translation id="4237840336687249184">รหัสผ่าน MetaMask</translation>
+<translation id="2381605201035323535">คริปโตวอลเล็ต</translation>
+<translation id="4938145712652668388">เมื่อคลิก "เริ่มต้นใช้งาน" คุณจะนำเข้าคริปโตวอลเล็ตของคุณที่มีอยู่ก่อนหน้านี้ไปยังประสบการณ์การใช้งานรูปแบบใหม่บน Brave วอลเล็ต แล้วเพลิดเพลินไปกับสิทธิประโยชน์ทั้งหมดที่ระบุไว้ข้างต้น ลองดูเลย แล้วบอกเราว่าคุณคิดยังไง!</translation>
+<translation id="9099900965604225657">รหัสผ่านคริปโตวอลเล็ต</translation>
+<translation id="4020495774166914146">รหัสผ่านและกลุ่มคำสำหรับการกู้คืนของฉันสูญหาย สร้างวอลเล็ตใหม่</translation>
+<translation id="7709075156958117386">หากเว็บไซต์นี้ดูเหมือนมีปัญหา ลองปิดใช้งาน Shields 
+    <ph name="LINK_BEFORE"/>หมายเหตุ: การดำเนินการนี้อาจลดการป้องกันความเป็นส่วนตัวของ Brave<ph name="LINK_AFTER"/></translation>
 </translationbundle>

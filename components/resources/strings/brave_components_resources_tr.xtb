@@ -1487,4 +1487,36 @@
 <translation id="6973157709854838218">Bakiyenizi ekranda gizleyin</translation>
 <translation id="4548946945059463969">Bakiyenizi ekranda gösterin</translation>
 <translation id="242959166945779492">Hesabınızda bakiye yok. Satın almak için FTX'i ziyaret edin.</translation>
+<translation id="9190084253595768053">Bağlantı sorunu mu yaşıyorsunuz? <ph name="BEGIN_LINK"/>Brave Ayarlarını<ph name="END_LINK"/> açın, Tor ile Gizli Pencereyi devre dışı bırakın ve ardından tekrar etkinleştirin. Sorun hala devam ediyor mu?</translation>
+<translation id="6977372887576114613">Yatırılan BAT</translation>
+<translation id="194625454574835815">Yedekleme Anahtarı</translation>
+<translation id="5717619667204259673">Bu kurtarma anahtarını güvenli bir yerde tutun.</translation>
+<translation id="7018390569051511373">Tarayıcınıza veya bilgisayarınıza bir şey olursa, Ödüller profilinizi geri almak için her zaman bu anahtarı kullanabilirsiniz. Ama onu koruduğunuzdan emin olun, bu anahtarı ele geçiren herhangi biri Ödüller profilinizi çalabilir. Muhtemelen en güvenilir olanı bunu bir kağıda ya da önemli bilgileri sakladığınız herhangi bir yere yazmak olacaktır.</translation>
+<translation id="8979401359137062629">Not:</translation>
+<translation id="7934806082615382155">Meblağların bazı kısımları Brave'den gelebilir ve gerekli olmadığı için yedeklenmeye dahil değildir. Özellikle bu tarayıcıda harcama yapmanız mümkündür.</translation>
+<translation id="1738658589626889850">Dosya Olarak Kaydet</translation>
+<translation id="2173151783558384314">Brave .crypto (ve ek olarak .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin) etki alanı adı arama isteklerini çözmek için Unstoppable Domains'den aldığı akıllı kontrata Ethereum JSON-RPC çağrıları iletmek için Infura'yı kullanacaktır. Bunu etkinleştirirseniz, Infura ziyaret etmeye çalıştığınız bu belirli etki alanlarını görebilecek ama diğer etki alanlarını göremeyecektir. Infura'nın <ph name="BEGIN_INFURA_TOU_LINK"/>kullanım şartlarına<ph name="END_INFURA_TOU_LINK"/> ve <ph name="BEGIN_INFURA_PRIVACY_LINK"/>gizlilik ilkesine<ph name="END_INFURA_PRIVACY_LINK"/> bakın.</translation>
+<translation id="2630264552940126640">Brave Ödülllerini Yedekle</translation>
+<translation id="238922425564381955">Lütfen Brave Ödüllerinizi yedekleyin.</translation>
+<translation id="2860280209982026951">Brave, <ph name="LINK_BEFORE"/>0x'i<ph name="LINK_AFTER"/> bir DEX toplayıcısı olarak kullanır.</translation>
+<translation id="4626407663177532837">Teklif %0,875 Brave ücretini de içerir.</translation>
+<translation id="1420318137760245955">Yeni Brave Cüzdan'a hoş geldiniz</translation>
+<translation id="3671745544278414606">Kripto varlıklarınızı himayenizde tutun. Portföy performansınızı izleyin ve Web3 DApps ile etkileşime geçin. DeFi sayesinde alışveriş ve yatırım yapın, ödünç alıp verin. Hepsi doğrudan Brave gizlilik tarayıcısı üzerinden. Eklentiye, indirmeye gerek yok.</translation>
+<translation id="6972754398087986839">Get Started</translation>
+<translation id="2813156651070657572">Kripto varlıklarınızı bir şifreyle güvenceye alın</translation>
+<translation id="6901073872645365201">Şifreler en az 7 karakterden oluşmalı, en az bir rakam ve bir özel karakter içermelidir.</translation>
+<translation id="5486261815000869482">Şifreyi Onayla</translation>
+<translation id="7982184974053636367">Brave Cüzdan için daha güvenli bir şifre gerekiyor</translation>
+<translation id="2372897697869224590">Bir Brave cüzdanı şifresi belirleyin</translation>
+<translation id="7739762330714405363">Aynı şifreyi kullanın</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="7102907656918333773"><ph name="WALLET_EXTENSION"/> cüzdanından içe aktar</translation>
+<translation id="1737856990004825123"><ph name="WALLET_EXTENSION"/> hesaplarınızı Brave Cüzdan'a aktarın. Kripto varlıkları yönetmenin ve Web3 DApps ile etkileşim kurmanın daha hızlı ve güvenli bir yolunun keyfini sürün.</translation>
+<translation id="4237840336687249184">MetaMask şifresi</translation>
+<translation id="2381605201035323535">kripto cüzdanlarınızı aktarın</translation>
+<translation id="4938145712652668388">"Başlarken" bağlantısına tıklayarak daha önceki Crypto Wallet'ınızı Brave Cüzdan deneyimine aktarabilir ve yukarıda özetlenen tüm avantajlardan faydalanabilirsiniz. Lütfen deneyin ve düşüncelerinizi bizimle paylaşın!</translation>
+<translation id="9099900965604225657">Kripto cüzdanlar şifresi</translation>
+<translation id="4020495774166914146">Şifremi ve kurtarma cümlemi kaybettim, yeni bir cüzdan oluştur.</translation>
+<translation id="7709075156958117386">Bu web sitesi bozuk görünüyorsa Kalkanları kapatmayı deneyin. 
+    <ph name="LINK_BEFORE"/>Not: Bu Brave'in gizlilik korumalarını azaltabilir.<ph name="LINK_AFTER"/></translation>
 </translationbundle>

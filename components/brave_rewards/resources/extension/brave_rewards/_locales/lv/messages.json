@@ -311,6 +311,18 @@
       }
     }
   },
+  "notificationBackupWalletTitle": {
+    "message": "Saglabāt Brave Rewards",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "Lūdzu, saglabājiet savas Brave Rewards.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "Dublēt tagad",
+    "description": ""
+  },
   "notificationWalletDisconnectedTitle": {
     "message": "Jūs esat izrakstījies",
     "description": ""

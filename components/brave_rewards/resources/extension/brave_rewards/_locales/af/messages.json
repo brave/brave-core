@@ -311,6 +311,18 @@
       }
     }
   },
+  "notificationBackupWalletTitle": {
+    "message": "Back up Brave Rewards",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "Please back up your Brave Rewards.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "Maak nou rugsteun",
+    "description": ""
+  },
   "notificationWalletDisconnectedTitle": {
     "message": "U is uitgeteken",
     "description": ""

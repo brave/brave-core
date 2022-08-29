@@ -311,6 +311,18 @@
       }
     }
   },
+  "notificationBackupWalletTitle": {
+    "message": "பணப்பையைப் பிரதியெடு",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "உம் பிரேவ் பணப்பையைப் பிரதியெடுக்கவும்.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "Back up now",
+    "description": ""
+  },
   "notificationWalletDisconnectedTitle": {
     "message": "You are logged out",
     "description": ""

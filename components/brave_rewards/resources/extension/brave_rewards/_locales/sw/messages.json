@@ -311,6 +311,18 @@
       }
     }
   },
+  "notificationBackupWalletTitle": {
+    "message": "Hifadhi Nakala ya Zawadi za Brave",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "Tafadhali hifadhi nakala ya Zawadi zako za Brave.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "Hifadhi nakala sasa",
+    "description": ""
+  },
   "notificationWalletDisconnectedTitle": {
     "message": "Umeondoka kwenye akaunti",
     "description": ""

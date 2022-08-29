@@ -1487,4 +1487,36 @@
 <translation id="6973157709854838218">Nu afișați soldurile</translation>
 <translation id="4548946945059463969">Afișați soldurile pe ecran</translation>
 <translation id="242959166945779492">Nu aveți niciun sold în contul dvs. Accesați FTX pentru a achiziționa.</translation>
+<translation id="9190084253595768053">Nu reușiți să vă conectați? Deschideți <ph name="BEGIN_LINK"/>Setările Brave<ph name="END_LINK"/>, dezactivați apoi reactivați fereastra privată cu Tor. Aveți în continuare probleme?</translation>
+<translation id="6977372887576114613">BAT depus</translation>
+<translation id="194625454574835815">Cod de recuperare</translation>
+<translation id="5717619667204259673">Păstrați în siguranță această cheie de recuperare.</translation>
+<translation id="7018390569051511373">Puteți mereu utiliza această cheie pentru a vă recupera profilul de recompense în caz că browserul sau computerul se defectează. Însă e important să o protejați — oricine are acces la această cheie vă poate fura profilul de recompense. Pentru siguranță maximă, notați-o pe o coală de hârtie sau într-un loc în care păstrați informații importante.</translation>
+<translation id="8979401359137062629">Observație:</translation>
+<translation id="7934806082615382155">O parte dintre fonduri poate fi primită de la Brave și nu este inclusă în backup, deoarece acest lucru nu este obligatoriu. Este disponibilă pentru a fi cheltuită exclusiv pe acest browser.</translation>
+<translation id="1738658589626889850">Salvează ca fișier</translation>
+<translation id="2173151783558384314">Brave va utiliza Infura pentru a efectua apeluri Ethereum JSON-RPC către contractul inteligent de la  domeniile Unstoppable, pentru a rezolva solicitările de căutare nume de domenii .crypto (și, de asemenea, .x, .coin, .nft, .dao, .wallet, .888, .blockchain și .bitcoin). Dacă activați această opțiune, Infura va vedea domeniile pe care încercați să le accesați, dar nu veți putea vedea alte domenii. Vedeți <ph name="BEGIN_INFURA_TOU_LINK"/>termenii de utilizare<ph name="END_INFURA_TOU_LINK"/> și <ph name="BEGIN_INFURA_PRIVACY_LINK"/>politica de confidențialitate<ph name="END_INFURA_PRIVACY_LINK"/> Infura.</translation>
+<translation id="2630264552940126640">Creați o copie de rezervă a recompenselor Brave</translation>
+<translation id="238922425564381955">Creați-vă o copie de rezervă a recompenselor Brave.</translation>
+<translation id="2860280209982026951">Brave utilizează <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> ca agregator de schimb descentralizat.</translation>
+<translation id="4626407663177532837">Oferta include o taxă Brave de 0,875%.</translation>
+<translation id="1420318137760245955">Bun venit la noul portofel Brave</translation>
+<translation id="3671745544278414606">Țineți criptomonedele în custodia dvs. Urmăriți performanța portofoliului și interacționați cu aplicații descentralizate Web3. Tranzacționați, investiți, oferiți și obțineți împrumuturi cu DeFi, totul din browserul Brave, care protejează confidențialitatea dvs. Nu aveți nevoie de extensii sau descărcări.</translation>
+<translation id="6972754398087986839">Începe</translation>
+<translation id="2813156651070657572">Securizați criptomonedele dvs. cu o parolă</translation>
+<translation id="6901073872645365201">Parolele trebuie să conțină cel puțin 7 caractere, dintre care o cifră și un caracter special.</translation>
+<translation id="5486261815000869482">Confirmați parola</translation>
+<translation id="7982184974053636367">Este necesară o parolă mai sigură pentru portofelul Brave</translation>
+<translation id="2372897697869224590">Setați o parolă pentru portofelul Brave</translation>
+<translation id="7739762330714405363">Utilizați aceeași parolă</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="7102907656918333773">Importați din <ph name="WALLET_EXTENSION"/></translation>
+<translation id="1737856990004825123">Importați conturile dvs. <ph name="WALLET_EXTENSION"/>în portofelul Brave. Beneficiați de un mod mai rapid și mai sigur de a gestiona criptomonedele și de a interacționa cu aplicațiile descentralizate Web3.</translation>
+<translation id="4237840336687249184">Parolă MetaMask</translation>
+<translation id="2381605201035323535">portofelele dvs. de criptomonede</translation>
+<translation id="4938145712652668388">Când dați clic pe „Începeți”, veți importa portofelul dvs. anterior de criptomonede în noul portofel Brave și veți avea parte de toate beneficiile prezentate mai sus. Încercați și spuneți-ne părerea dvs.!</translation>
+<translation id="9099900965604225657">Parola portofelelor de criptomonede</translation>
+<translation id="4020495774166914146">Am pierdut parola și expresia de recuperare. Creați un portofel nou.</translation>
+<translation id="7709075156958117386">Dacă site-ul pare defect, încercați să dezactivați scuturile.
+<ph name="LINK_BEFORE"/>Notă: Această acțiune poate reduce protecțiile de confidențialitate Brave.<ph name="LINK_AFTER"/></translation>
 </translationbundle>

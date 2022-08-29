@@ -311,6 +311,18 @@
       }
     }
   },
+  "notificationBackupWalletTitle": {
+    "message": "Архивиране на Brave награди",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "Архивирайте Brave наградите си.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "Архивиране сега",
+    "description": ""
+  },
   "notificationWalletDisconnectedTitle": {
     "message": "Не сте влезли",
     "description": ""

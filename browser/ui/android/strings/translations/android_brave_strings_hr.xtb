@@ -890,4 +890,36 @@ račun. Želite li ga sada napraviti?</translation>
 <translation id="2832270987629018596">Nevaljana adresa SOL</translation>
 <translation id="8181161042860463420">Povezani račun tokena još ne postoji. Mali iznos SOL-a potrošit će se na njegovo stvaranje i financiranje. <ph name="CLICK_START"/>Saznajte više<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Ažuriranje profila VPN...</translation>
+<translation id="4258022280942725182">Vaše Nagrade Brave</translation>
+<translation id="3826081199286264109">USD</translation>
+<translation id="880893465294676334">Ovaj provjereni stvaratelj Brave nije još konfigurirao svoj račun za primanje doprinosa od korisnika preglednika Brave.
+         Sve napojnice koje pošaljete ostaju u vašem novčaniku dok se ne završi taj postupak.</translation>
+<translation id="8918760045046434238">Slanje napojnice...</translation>
+<translation id="1978261665418056203">Nema nikakvih aktivnosti ovog
+mjeseca...</translation>
+<translation id="9182287025588539628">Jednokratne napojnice</translation>
+<translation id="4914597931214386232">Zatražena odobrenja za token</translation>
+<translation id="298067735430872465">Zarada od oglasa</translation>
+<translation id="2730771409541953249">SAŽETAK NAGRADA</translation>
+<translation id="5463954686005964104">Daj mjesečnu napojnicu ovom mrežnom mjestu</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">Izradi sigurnosnu kopiju Nagrada Brave</translation>
+<translation id="238922425564381955">Izradite sigurnosnu kopiju Nagrada Brave.</translation>
+<translation id="3692362746128814480">Odredili ste <ph name="BAT_VALUE"/> BAT za stvaratelje koji se još nisu
+prijavili za primanje doprinosa. Vašim se preglednikom pokušavaju ustupiti doprinosi
+dok se ne provjere ili do isteka 90 dana.</translation>
+<translation id="8782039523249932839">Ovom se radnjom briše vaš novčanik Brave i poništavaju svi podatci o nagradama Brave</translation>
+<translation id="7924320838799747606">Vaš raspoloživi iznos</translation>
+<translation id="8030169304546394654">Prekinuta veza</translation>
+<translation id="543510923939676996">Provjeren novčanik</translation>
+<translation id="4488355059795908907">Ovaj provjereni stvaratelj Brave nije još konfigurirao svoj račun za primanje doprinosa od korisnika Brave. Bilo kakve napojnice koje pošaljete ostaju u vašem novčaniku dok oni ne završe ovaj postupak.</translation>
+<translation id="7559243474426790340">Osvježi stanje</translation>
+<translation id="3769645103175790584">Tijekom pregledavanja, zaradite tokene i nagradite autore za izvrstan sadržaj. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">Kratkotrajno uvodno razgledavanje</translation>
+<translation id="1080013038789678738">Sudjelujem!</translation>
+<translation id="5587305863196367357">Potvrđivanjem novčanika možete jednostavno upravljati svojim sredstvima, dodavanje i podizanje</translation>
+<translation id="5760671211380791582">Nemate dovoljno BATA.</translation>
+<translation id="442469478596827903">Treba vam najmanje 2 BATA za stvaranje potvrđenog novčanika za uslugu Uphold. Pokušajte ponovno kasnije.</translation>
+<translation id="4389085954549744469">Ako već imate potvrđen račun za uslugu Uphold, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">nastavi do prijave</translation>
 </translationbundle>

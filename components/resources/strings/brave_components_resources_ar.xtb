@@ -1488,4 +1488,36 @@
 <translation id="6973157709854838218">إخفاء أرصدتك من العرض</translation>
 <translation id="4548946945059463969">الكشف عن أرصدتك على الشاشة</translation>
 <translation id="242959166945779492">ليس لديك أي أرصدة في حسابك. تفضل بزيارة FTX لشراء بعضها.</translation>
+<translation id="9190084253595768053">هل تواجه مشكلة في الاتصال؟ افتح <ph name="BEGIN_LINK"/>إعدادات Brave<ph name="END_LINK"/>، وعطل النافذة الخاصة ذات برنامج Tor، ثم أعد تنشيطها. هل لا زلت تواجه مشكلة؟</translation>
+<translation id="6977372887576114613">الكمية المودعة من التوكن الأساسي لتبادل العملات المشفرة</translation>
+<translation id="194625454574835815">مفتاح الاسترداد</translation>
+<translation id="5717619667204259673">حافظ على أمان مفتاح الاسترداد هذا.</translation>
+<translation id="7018390569051511373">يمكنك دائمًا استخدام هذا المفتاح لاستعادة ملف المكافآت الخاص بك إذا حدث شيء لمتصفحك أو جهاز الكمبيوتر الخاص بك. ولكن تأكد من حمايته — يمكن لأي شخص يحصل على هذا المفتاح سرقة ملف المكافآت الخاص بك. ربما تكون كتابته على قطعة ورق أكثر أمانًا، أو في أي مكان آخر تحتفظ به بالمعلومات المهمة.</translation>
+<translation id="8979401359137062629">ملحوظة:</translation>
+<translation id="7934806082615382155">قد يتم استلام جزء من الأموال من Brave ولا يتم تضمينه في النسخة الاحتياطية لأنه غير مطلوب. إنها متاحة لك لتنفقها حصرياً على هذا المتصفح.</translation>
+<translation id="1738658589626889850">حفظ كملف</translation>
+<translation id="2173151783558384314">سيستخدم Brave منصة Infura لإصدار استدعاءات بروتوكول JSON-RPC للإيثريوم إلى العقد الذكي من النطاقات التي لا يمكن إيقافها لحل طلبات البحث عن اسم نطاق .crypto (وأيضًا .x، .coin، .nft، .dao، .wallet، .888، .blockchain، .bitcoin). إذا قمت بتمكين هذا، فستتعرف Infura على هذه النطاقات المحددة التي تحاول زيارتها ولكنها لن تتمكن من التعرف على النطاقات الأخرى. راجع <ph name="BEGIN_INFURA_TOU_LINK"/>شروط الاستخدام<ph name="END_INFURA_TOU_LINK"/> و<ph name="BEGIN_INFURA_PRIVACY_LINK"/>سياسة الخصوصية<ph name="END_INFURA_PRIVACY_LINK"/> من Infura.</translation>
+<translation id="2630264552940126640">النسخة الاحتياطية لمكافآت Brave</translation>
+<translation id="238922425564381955">يرجى إجراء نسخة احتياطية لمكافآت Brave الخاصة بك.</translation>
+<translation id="2860280209982026951">تستخدم Brave <ph name="LINK_BEFORE"/>0x <ph name="LINK_AFTER"/>كمجمع بيانات DEX</translation>
+<translation id="4626407663177532837">يشمل عرض الأسعار 0.875٪ كرسوم خاصة بـ Brave.</translation>
+<translation id="1420318137760245955">مرحبًا بك في Brave Wallet الجديد</translation>
+<translation id="3671745544278414606">احتفظ بأصول التشفير. تتبع أداء الحافظة، وتفاعل مع Web3 DApps على الويب. تداول واستثمر واقترض وأقرض مع DeFi. استمتع بكامل الحقوق من متصفح الخصوصية Brave. لا توجد هناك ملحقات ولا يتطلب الأمر تنزيل أي ملف.</translation>
+<translation id="6972754398087986839">البدء</translation>
+<translation id="2813156651070657572">تأمين أصول التشفير الخاصة بك بكلمة مرور</translation>
+<translation id="6901073872645365201">يجب أن تتكون كلمات المرور من 7 أحرف على الأقل ، وأن تحتوي على رقم واحد وحرف خاص واحد على الأقل.</translation>
+<translation id="5486261815000869482">تأكيد كلمة المرور</translation>
+<translation id="7982184974053636367">مطلوب كلمة مرور أكثر أمانًا لـ Brave Wallet</translation>
+<translation id="2372897697869224590">تعيين كلمة مرور لمحفظة Brave</translation>
+<translation id="7739762330714405363">استخدام نفس كلمة المرور</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="7102907656918333773">قم بالاستيراد من <ph name="WALLET_EXTENSION"/></translation>
+<translation id="1737856990004825123">قم باستيراد حسابات<ph name="WALLET_EXTENSION"/> إلى Brave Wallet. استمتع بطريقة أسرع وأكثر أمانًا لإدارة أصول التشفير والتفاعل مع Web3 DApps.</translation>
+<translation id="4237840336687249184">كلمة المرور الخاصة بـ MetaMask</translation>
+<translation id="2381605201035323535">محافظ Crypto Wallets</translation>
+<translation id="4938145712652668388">عند النقر فوق "البدء" ، ستقوم باستيراد محفظة Crypto السابقة الخاصة بك إلى تجربة Brave Wallet الجديدة، والاستمتاع بجميع المزايا الموضحة أعلاه. جربه وأخبرنا برأيك!</translation>
+<translation id="9099900965604225657">كلمة مرور محافظ التشفير</translation>
+<translation id="4020495774166914146">فقدت كلمة المرور الخاصة بي وعبارة الاسترداد، قم بإنشاء محفظة جديدة</translation>
+<translation id="7709075156958117386">إذا كان هذا الموقع يبدو معطلاً، فجرّب إيقاف تشغيل دروع الحماية.
+<ph name="LINK_BEFORE"/>انتبه: قد يقلل ذلك من حماية الخصوصية لـBrave. <ph name="LINK_AFTER"/></translation>
 </translationbundle>

@@ -885,4 +885,36 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="2832270987629018596">Not a valid SOL address</translation>
 <translation id="8181161042860463420">The associated token account does not exist yet. A small amount of SOL will be spent to create and fund it. <ph name="CLICK_START"/>Learn more<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Updating VPN Profile ...</translation>
+<translation id="4258022280942725182">Your Brave Rewards</translation>
+<translation id="3826081199286264109">USD</translation>
+<translation id="880893465294676334">This Brave Verified Creator has not yet configured their account to receive contributions from Brave Users.
+        Any tips you send will remain in your wallet until they complete this process.</translation>
+<translation id="8918760045046434238">Send a tip ...</translation>
+<translation id="1978261665418056203">No activities yet this
+month ...</translation>
+<translation id="9182287025588539628">One-time Tips</translation>
+<translation id="4914597931214386232">Token Grants Claimed</translation>
+<translation id="298067735430872465">Earnings from Ads</translation>
+<translation id="2730771409541953249">REWARDS SUMMARY</translation>
+<translation id="5463954686005964104">Tip this site monthly</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">Back up Brave Rewards</translation>
+<translation id="238922425564381955">Please back up your Brave Rewards.</translation>
+<translation id="3692362746128814480">You've designated <ph name="BAT_VALUE"/> BAT for creators who haven't
+yet signed up to receive contributions. Your browser will keep trying to contribute
+until they verify, or until 90 days have passed.</translation>
+<translation id="8782039523249932839">This will delete your Brave wallet and reset all of your Brave Rewards data</translation>
+<translation id="7924320838799747606">Your balance</translation>
+<translation id="8030169304546394654">Disconnected</translation>
+<translation id="543510923939676996">Wallet verified</translation>
+<translation id="4488355059795908907">This Brave Verified Creator has not yet configured their account to receive contributions from Brave users. Any tips you send will remain in your wallet until they complete this process.</translation>
+<translation id="7559243474426790340">Refresh Status</translation>
+<translation id="3769645103175790584">Earn tokens and reward creators for great content while you browse. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">Quick tour</translation>
+<translation id="1080013038789678738">I’m In!</translation>
+<translation id="5587305863196367357">Verifying wallet allows you to manage your funds easily, adding &amp; withdrawing</translation>
+<translation id="5760671211380791582">You don't have enough BAT.</translation>
+<translation id="442469478596827903">You need to have minimum 2 BAT to create a verified Uphold wallet. Please try again later.</translation>
+<translation id="4389085954549744469">If you already have a verified Uphold account, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">continue to login</translation>
 </translationbundle>

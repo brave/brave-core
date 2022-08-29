@@ -1487,4 +1487,36 @@
 <translation id="6973157709854838218">Itago ang iyong mga balanse sa display</translation>
 <translation id="4548946945059463969">Ipakita ang iyong mga balanse sa screen</translation>
 <translation id="242959166945779492">Wala kang anumang balanse sa iyong account. Bisitahin ang FTX para bumili ng ganito.</translation>
+<translation id="9190084253595768053">Nagkakaproblema sa pagkonekta? Buksan ang <ph name="BEGIN_LINK"/>Mga Setting ng Brave<ph name="END_LINK"/>, i-disable ang Pribadong Window na may Tor, pagkatapos ay i-enable ulit ito. Nagkakaproblema pa rin?</translation>
+<translation id="6977372887576114613">Nag-deposit ng BAT</translation>
+<translation id="194625454574835815">Recovery Key</translation>
+<translation id="5717619667204259673">Panatilihing ligtas ang recovery key na ito.</translation>
+<translation id="7018390569051511373">Puwede mong gamitin ang key na ito anumang oras para maibalik ang iyong profile sa Mga Reward kung may mangyari sa iyong browser o computer. Pero tiyaking protektahan ito — puwedeng nakawin ng sinumang makakakuha ng key na ito ang iyong profile sa Mga Reward. Malamang na pinakaligtas na isulat ito sa isang piraso ng papel, o kung saan mo man itinatago ang mahalagang impormasyon.</translation>
+<translation id="8979401359137062629">Tandaan:</translation>
+<translation id="7934806082615382155">Ang bahagi ng pondo ay maaaring matanggap mula sa Brave at hindi kasama sa backup dahil hindi ito kailangan. Available ito na magastos mo nang eksklusibo sa browser na ito.</translation>
+<translation id="1738658589626889850">I-save bilang File</translation>
+<translation id="2173151783558384314">Gagamit ang Brave ng Infura para magbigay ng mga Ethereum JSON-RPC na pagtawag sa smart contract mula sa Mga Hindi Napipigilang Domain para lutasin ang mga kahilingan sa paghahanap ng .crypto (pati ng .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin) na domain name. Kung io-on mo ito, makikita ng Infura ang mga partikular na domain na sinusubukan mong bisitahin pero hindi nila makikita ang iba pang domain. Tingnan ang <ph name="BEGIN_INFURA_TOU_LINK"/>mga tuntunin ng paggamit<ph name="END_INFURA_TOU_LINK"/> at <ph name="BEGIN_INFURA_PRIVACY_LINK"/>patakaran sa privacy<ph name="END_INFURA_PRIVACY_LINK"/> ng Infura.</translation>
+<translation id="2630264552940126640">I-back up ang Mga Reward ng Brave</translation>
+<translation id="238922425564381955">Paki-back up ang iyong Mga Reward ng Brave.</translation>
+<translation id="2860280209982026951">Ginagamit ng Brave ang <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> bilang DEX aggregator.</translation>
+<translation id="4626407663177532837">Ang quote ay may kasamang Brave fee na 0.875%.</translation>
+<translation id="1420318137760245955">Welcome sa bagong Brave Wallet</translation>
+<translation id="3671745544278414606">I-hold ang iyong mga crypto asset. I-track ang performance ng portfolio, at gumamit ng mga Web3 DApp. Mag-trade, mag-invest, humiram, at magpahiram gamit ang DeFi. Lahat ng iyong sa Brave privacy browser. Walang mga extension, walang kinakailangang pag-download.</translation>
+<translation id="6972754398087986839">Magsimula</translation>
+<translation id="2813156651070657572">I-secure ang iyong mga asset ng cryptocurrency gamit ang isang password</translation>
+<translation id="6901073872645365201">Ang mga password ay dapat mayroong hindi bababa sa 7 character, at naglalaman ng kahit isang numero at isang espesyal na character.</translation>
+<translation id="5486261815000869482">Kumpirmahin ang password</translation>
+<translation id="7982184974053636367">Nangangailangan ng mas ligtas na password para sa Brave Wallet</translation>
+<translation id="2372897697869224590">Magtakda ng password sa Brave wallet</translation>
+<translation id="7739762330714405363">Gamitin ang parehong password</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="7102907656918333773">I-import mula sa <ph name="WALLET_EXTENSION"/></translation>
+<translation id="1737856990004825123">I-import ang iyong  <ph name="WALLET_EXTENSION"/> account sa Brave Wallet. I-enjoy ang mas mabilis at mas secure na paraan ng pamamahala ng mga crypto asset at gumamit ng Web3 DApps.</translation>
+<translation id="4237840336687249184">password sa MetaMask</translation>
+<translation id="2381605201035323535">mga wallet ng cryptocurrency</translation>
+<translation id="4938145712652668388">Kapag na-click mo ang "Magsimula" mai-import mo ang iyong dating Walllet ng Crytocurrency sa bagong karanasan sa Brave Wallet, at mae-enjoy mo ang lahat ng mga benepisyong nakabalangkas sa itaas. Subukan ito, at sabihin sa amin kung ano ang palagay mo!</translation>
+<translation id="9099900965604225657">Password sa mga wallet ng cryptocurrency</translation>
+<translation id="4020495774166914146">Nawala ko ang aking password at parirala sa pag-recover, gumawa ng bagong wallet.</translation>
+<translation id="7709075156958117386">Kung mukhang sira ang site na ito, subukang naka-off ang Shields. 
+    <ph name="LINK_BEFORE"/>Tandaan: posibleng mabawasan nito ang mga privacy protection ng Brave.<ph name="LINK_AFTER"/></translation>
 </translationbundle>

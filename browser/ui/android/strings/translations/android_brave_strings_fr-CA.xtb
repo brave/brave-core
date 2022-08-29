@@ -885,4 +885,36 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="2832270987629018596">Adresse SOL non valide</translation>
 <translation id="8181161042860463420">Le compte de jeton associé n'existe pas encore. Une petite quantité de SOL sera dépensée pour le créer et l'alimenter. <ph name="CLICK_START"/>En savoir plus<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Mise à jour du profil VPN…</translation>
+<translation id="4258022280942725182">Vos récompenses Brave</translation>
+<translation id="3826081199286264109">USD</translation>
+<translation id="880893465294676334">Ce créateur vérifié de Brave n'a pas encore configuré son compte pour recevoir les contributions des utilisateurs de Brave.
+        Tous les dons que vous envoyez resteront dans votre portefeuille jusqu'à ce qu'ils aient terminé ce processus.</translation>
+<translation id="8918760045046434238">Envoyer un pourboire...</translation>
+<translation id="1978261665418056203">Pas encore d'activités ce
+mois-ci...</translation>
+<translation id="9182287025588539628">Pourboires uniques</translation>
+<translation id="4914597931214386232">Octrois de jetons réclamés</translation>
+<translation id="298067735430872465">Revenus publicitaires</translation>
+<translation id="2730771409541953249">RÉCAPITULATIF DES RÉCOMPENSES</translation>
+<translation id="5463954686005964104">Verser un pourboire à ce site chaque mois</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">Sauvegarder les récompenses Brave</translation>
+<translation id="238922425564381955">Veuillez sauvegarder vos récompenses Brave.</translation>
+<translation id="3692362746128814480">Vous avez désigné <ph name="BAT_VALUE"/> BAT pour les créateurs qui ne se sont pas
+encore inscrits pour recevoir des contributions. Votre navigateur continuera d'essayer de contribuer
+jusqu'à ce qu'ils vérifient, ou jusqu'à ce que 90 jours se soient écoulés.</translation>
+<translation id="8782039523249932839">Ceci supprimera votre porte-monnaie Brave et réinitialisera toutes vos données Brave Rewards</translation>
+<translation id="7924320838799747606">Votre solde</translation>
+<translation id="8030169304546394654">Déconnecté</translation>
+<translation id="543510923939676996">Portefeuille vérifié</translation>
+<translation id="4488355059795908907">Ce créateur vérifié Brave n'a pas encore configuré son compte pour recevoir les contributions des utilisateurs de Brave. Tous les pourboires que vous envoyez resteront dans votre portefeuille jusqu'à ce qu'il ait terminé ce processus.</translation>
+<translation id="7559243474426790340">Actualiser l'état</translation>
+<translation id="3769645103175790584">Gagnez des jetons et récompensez les créateurs pour leur contenu génial tout en navigant. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">Viside rapide</translation>
+<translation id="1080013038789678738">J'embarque!</translation>
+<translation id="5587305863196367357">La vérification du portefeuille vous permet de gérer vos fonds facilement (ajouts et retraits)</translation>
+<translation id="5760671211380791582">Vous ne possédez pas suffisamment de BAT.</translation>
+<translation id="442469478596827903">Vous avez besoin d'au moins 2 BAT pour créer un portefeuille Uphold vérifié. Merci de réessayer plus tard.</translation>
+<translation id="4389085954549744469">Si vous disposez déjà d'un compte Uphold vérifié, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">continuez pour vous connecter</translation>
 </translationbundle>

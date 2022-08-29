@@ -311,6 +311,18 @@
       }
     }
   },
+  "notificationBackupWalletTitle": {
+    "message": "બૅકઅપ વૉલેટ",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "કૃપયા કરીને તમારા બૅકઅપ વૉલેટનું બૅકઅપ લો.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "Back up now",
+    "description": ""
+  },
   "notificationWalletDisconnectedTitle": {
     "message": "You are logged out",
     "description": ""

@@ -890,4 +890,36 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="2832270987629018596">Netinkamas SOL adresas</translation>
 <translation id="8181161042860463420">Susietos prieigos rakto paskyra dar neegzistuoja. Jai sukurti ir finansuoti bus išleista nedidelė SOL suma. <ph name="CLICK_START"/>Sužinokite daugiau<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Atnaujinamas VPN profilis...</translation>
+<translation id="4258022280942725182">Jūsų „Brave Rewards“</translation>
+<translation id="3826081199286264109">USD</translation>
+<translation id="880893465294676334">Šis „Brave“ patvirtintas kūrėjas dar nesukonfigūravo savo sąskaitos indėliams iš „Brave“ naudotojų gauti.
+        Visi jūsų siunčiami arbatpinigiai liks jūsų piniginėje, kol jis užbaigs šį procesą.</translation>
+<translation id="8918760045046434238">Siųsti arbatpinigių...</translation>
+<translation id="1978261665418056203">Šį mėnesį veiklos
+dar nebuvo...</translation>
+<translation id="9182287025588539628">Vienkartiniai arbatpinigiai</translation>
+<translation id="4914597931214386232">Atsiimtos žetonų išmokos</translation>
+<translation id="298067735430872465">Uždarbis iš reklamos</translation>
+<translation id="2730771409541953249">„REWARDS“ SUVESTINĖ</translation>
+<translation id="5463954686005964104">Duoti arbatpinigių šiai svetainei kas mėnesį</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">Atsarginė „Brave Rewards“ kopija</translation>
+<translation id="238922425564381955">Padarykite atsarginę „Brave Rewards“ kopiją.</translation>
+<translation id="3692362746128814480">Paskyrėte <ph name="BAT_VALUE"/> BAT kūrėjams, kurie dar neužsiregistravo, kad gautų aukas.
+Jūsų naršyklė mėgins paaukoti, kol jie patvirtins,
+arba ne ilgiau nei 90 dienų.</translation>
+<translation id="8782039523249932839">Taip bus panaikinta jūsų „Brave“ piniginė ir iš naujo nustatyti jūsų „Brave Rewards“ duomenys</translation>
+<translation id="7924320838799747606">Jūsų likutis</translation>
+<translation id="8030169304546394654">Atsijungta</translation>
+<translation id="543510923939676996">Piniginė patvirtinta</translation>
+<translation id="4488355059795908907">Šis „Brave“ patvirtintas kūrėjas dar nesukonfigūravo savo sąskaitos indėliams iš „Brave“ naudotojų gauti. Visi jūsų siunčiami arbatpinigiai liks jūsų piniginėje, kol jis užbaigs šį procesą.</translation>
+<translation id="7559243474426790340">Atnaujinti būseną</translation>
+<translation id="3769645103175790584">Naršydami gaukite žetonų ir atlyginkite kūrėjams už puikų turinį. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">Trumpa apžvalga</translation>
+<translation id="1080013038789678738">Dalyvauju!</translation>
+<translation id="5587305863196367357">Kai jūsų piniginė bus patvirtinta, galėsite lengvai tvarkyti savo pinigus, jų pridėti ar juos išsigryninti</translation>
+<translation id="5760671211380791582">Neturite pakankamai BAT.</translation>
+<translation id="442469478596827903">Jums reikia mažiausiai 2 BAT, kad galėtumėte susikurti patvirtintą „Uphold“ piniginę. Bandykite dar kartą vėliau.</translation>
+<translation id="4389085954549744469">Jei jau turite patvirtintą „Uphold“ paskyrą, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">pereikite prie prisijungimo</translation>
 </translationbundle>

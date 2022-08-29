@@ -885,4 +885,33 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="2832270987629018596">Não é um endereço SOL válido</translation>
 <translation id="8181161042860463420">A conta de token associada ainda não existe. Uma pequena quantidade de SOL será utilizada para criá-la e financiá-la. <ph name="CLICK_START"/>Saiba mais<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Atualizando perfil de VPN...</translation>
+<translation id="4258022280942725182">Suas Recompensas Brave</translation>
+<translation id="3826081199286264109">USD</translation>
+<translation id="880893465294676334">Este Criador Verificado pelo Brave ainda não configurou a própria conta para receber contribuições de usuários do Brave.
+        Qualquer doação que você enviar permanecerá na sua carteira até que ele conclua esse processo.</translation>
+<translation id="8918760045046434238">Doe...</translation>
+<translation id="1978261665418056203">Ainda não há atividades este mês...</translation>
+<translation id="9182287025588539628">Doações Únicas</translation>
+<translation id="4914597931214386232">Auxílios Token Reivindicados</translation>
+<translation id="298067735430872465">Ganhos de Anúncios</translation>
+<translation id="2730771409541953249">SUMÁRIO DO PROGRAMA DE RECOMPENSAS</translation>
+<translation id="5463954686005964104">Doar mensalmente para este site</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">Fazer backup das Recompensas Brave</translation>
+<translation id="238922425564381955">Faça o backup das suas Recompensas Brave.</translation>
+<translation id="3692362746128814480">Você enviou You've designated <ph name="BAT_VALUE"/> BAT para criadores que ainda não estão inscritos para receberem contribuições. Seu navegador continuará tentando enviar as contribuições até que eles sejam verificados ou até um prazo de 90 dias.</translation>
+<translation id="8782039523249932839">Essa ação deletará sua carteira Brave e redefinirá todos os seus dados do Programa de Recompensas Brave</translation>
+<translation id="7924320838799747606">Seu saldo</translation>
+<translation id="8030169304546394654">Desconectado</translation>
+<translation id="543510923939676996">Carteira verificada</translation>
+<translation id="4488355059795908907">Este Criador Verificado do Brave ainda não configurou sua conta para receber contribuições dos usuários do Brave. Todas as contribuições que você enviar permanecerão na sua carteira até que ele conclua o processo.</translation>
+<translation id="7559243474426790340">Atualizar Status</translation>
+<translation id="3769645103175790584">Ganhe tokens e recompense os criadores pelo seu conteúdo excelente enquanto você navega. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">Tour rápido</translation>
+<translation id="1080013038789678738">Estou dentro!</translation>
+<translation id="5587305863196367357">A verificação da carteira permite que você gerencie (adicione e saque) seus fundos facilmente</translation>
+<translation id="5760671211380791582">Você não tem BATs suficientes.</translation>
+<translation id="442469478596827903">Você precisa de no mínimo 2 BATs para criar uma carteira verificada do Uphold. Tente novamente mais tarde.</translation>
+<translation id="4389085954549744469">Se você já tem uma conta verificada do Uphold, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">continue para o login</translation>
 </translationbundle>

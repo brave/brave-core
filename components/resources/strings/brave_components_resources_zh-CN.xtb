@@ -1487,4 +1487,36 @@
 <translation id="6973157709854838218">隐藏余额</translation>
 <translation id="4548946945059463969">在屏幕上显示余额</translation>
 <translation id="242959166945779492">账户中没有任何余额。访问 FTX 购买资产。</translation>
+<translation id="9190084253595768053">无法连接？打开 <ph name="BEGIN_LINK"/>Brave 设置<ph name="END_LINK"/>，禁用带 Tor 的无痕窗口，然后再开启。仍有问题？</translation>
+<translation id="6977372887576114613">存入 BAT</translation>
+<translation id="194625454574835815">恢复密钥</translation>
+<translation id="5717619667204259673">保持此恢复密钥的安全性。</translation>
+<translation id="7018390569051511373">如果您的浏览器或电脑出现问题，您可以随时使用此密钥找回您的奖励档案。请妥善保管，取得密钥的人可盗窃您的奖励档案。最安全的办法是把它记在纸上，或保存在您保管重要信息的地方。</translation>
+<translation id="8979401359137062629">备注：</translation>
+<translation id="7934806082615382155">接收自 Brave 的部分资金可能并不包含在备份中，因为并不需要。它仅能供您在本浏览器中使用。</translation>
+<translation id="1738658589626889850">保存为文件</translation>
+<translation id="2173151783558384314">Brave 将会使用 Infura 从 Unstoppable Domains 向智能合约发出以太坊 JSON-RPC 调用，以解析 .crypto（以及 .x、.coin、.nft、.dao、.wallet、.888、.blockchain、.bitcoin）域名查询请求。如果您启用此功能，Infura 将能看到您尝试访问的那些特定域，但他们将无法看到其他域。请参阅 Infura 的<ph name="BEGIN_INFURA_TOU_LINK"/>使用条款<ph name="END_INFURA_TOU_LINK"/>和<ph name="BEGIN_INFURA_PRIVACY_LINK"/>隐私权政策<ph name="END_INFURA_PRIVACY_LINK"/>。</translation>
+<translation id="2630264552940126640">备份 Brave 奖励</translation>
+<translation id="238922425564381955">请备份您的 Brave 奖励。</translation>
+<translation id="2860280209982026951">Brave 使用 <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> 作为 DEX 聚合器。</translation>
+<translation id="4626407663177532837">报价包含 0.875% 的 Brave 费用</translation>
+<translation id="1420318137760245955">欢迎来到新的 Brave 钱包</translation>
+<translation id="3671745544278414606">保管加密货币资产、跟踪投资组合绩效，并与 Web3 DApp 进行交互。使用 DeFi 进行交易、投资、借入和借出。所有这一切都能在 Brave 隐私浏览器中完成。无需扩展，无需下载。</translation>
+<translation id="6972754398087986839">开始使用</translation>
+<translation id="2813156651070657572">用密码保护您的加密资产</translation>
+<translation id="6901073872645365201">密码必须具有至少 7 个字符，至少包含 1 个数字和 1 个特殊字符。</translation>
+<translation id="5486261815000869482">确认密码</translation>
+<translation id="7982184974053636367">Brave 钱包需要一个更安全的密码</translation>
+<translation id="2372897697869224590">设置 Brave 钱包密码</translation>
+<translation id="7739762330714405363">使用相同密码</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="7102907656918333773">从 <ph name="WALLET_EXTENSION"/> 导入</translation>
+<translation id="1737856990004825123">将您的 <ph name="WALLET_EXTENSION"/> 帐户导入 。享受以更快、更安全的方式来管理加密资产并与 Web3 DApps 交互。</translation>
+<translation id="4237840336687249184">MetaMask 密码</translation>
+<translation id="2381605201035323535">加密货币钱包</translation>
+<translation id="4938145712652668388">点击“开始”后，您将把之前的加密钱包导入到新的 Brave 钱包中，并享受上面列出的所有福利。试试吧，让我们知道您的想法！</translation>
+<translation id="9099900965604225657">加密货币钱包密码</translation>
+<translation id="4020495774166914146">我丢失了密码和恢复短语，创建新钱包。</translation>
+<translation id="7709075156958117386">如果这个网站无法正常工作，试试关闭 Shields。
+<ph name="LINK_BEFORE"/>注意：这可能会削弱 Brave 的隐私保护。<ph name="LINK_AFTER"/></translation>
 </translationbundle>

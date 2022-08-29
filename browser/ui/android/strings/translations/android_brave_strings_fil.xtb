@@ -885,4 +885,36 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="2832270987629018596">Hindi valid na SOL address</translation>
 <translation id="8181161042860463420">Wala pang ganitong nauugnay na token account. May kaunting SOL na gagastusin para gawin at pondohan ito. <ph name="CLICK_START"/>Matuto pa<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Nag-a-update ng VPN Profile ...</translation>
+<translation id="4258022280942725182">Iyong Mga Reward ng Brave</translation>
+<translation id="3826081199286264109">USD</translation>
+<translation id="880893465294676334">Hindi pa nako-configure ng Brave Verified Creator na ito ang kanilang account para makatanggap ng mga kontribusyon mula sa mga user ng Brave.
+        Ang anumang tip na ipapadala mo ay mananatili sa iyong wallet hanggang makumpleto ang proseso na ito.</translation>
+<translation id="8918760045046434238">Magpadala ng tip...</translation>
+<translation id="1978261665418056203">Wala pang aktibidad ngayong
+buwang ito...</translation>
+<translation id="9182287025588539628">Isang Beses na Pagbibigay ng Mga Tip</translation>
+<translation id="4914597931214386232">Mga Na-claim na Grant para sa Token</translation>
+<translation id="298067735430872465">Mga kita mula sa Mga Ad</translation>
+<translation id="2730771409541953249">Buod ng Mga Reward</translation>
+<translation id="5463954686005964104">Nagbigay ng tip sa site na ito buwan-buwan</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">I-back up ang Mga Reward ng Brave</translation>
+<translation id="238922425564381955">Paki-back up ang iyong Mga Reward ng Brave.</translation>
+<translation id="3692362746128814480">Nagtakda ka ng <ph name="BAT_VALUE"/> BAT para sa mga creator na hindi
+pa nagsa-sign up para makatanggap ng mga ambag. Patuloy na susubukan ng iyong browser na mag-ambag
+hanggang sa mag-verify sila o hanggang sa lumipas ang 90 araw.</translation>
+<translation id="8782039523249932839">Made-delete nito ang iyong wallet sa Brave at mare-reset nito ang data ng iyong Brave Rewards</translation>
+<translation id="7924320838799747606">Ang iyong balanse</translation>
+<translation id="8030169304546394654">Nadiskonekta</translation>
+<translation id="543510923939676996">Na-verify ang Wallet</translation>
+<translation id="4488355059795908907">Hindi pa nako-configure ng Creator na ito na Na-verify ng Brave ang kanyang account upang makatanggap ng mga kontribusyon mula sa mga user ng Brave. Mananatili sa iyong wallet ang anumang tip na ipapadala mo hanggang makumpleto nila ang prosesong ito.</translation>
+<translation id="7559243474426790340">I-refresh ang Status</translation>
+<translation id="3769645103175790584">Makakuha ng mga token at bigyan ng reward ang mga creator para sa mahusay na content habang nagba-browse ka. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">Mabilisang paglilibot</translation>
+<translation id="1080013038789678738">Gusto Ko Ito!</translation>
+<translation id="5587305863196367357">Binibigyang-daan ka ng pag-verify ng wallet na pamahalaan ang iyong pondo nang madali, magdagdag, at mag-withdraw</translation>
+<translation id="5760671211380791582">Wala kang sapat na BAT.</translation>
+<translation id="442469478596827903">Kailangan mo ng minimum na 2 BAT para makagawa ng na-verify na Uphold wallet. Pakisubukan ulit sa ibang pagkakataon.</translation>
+<translation id="4389085954549744469">Kung mayroon ka nang na-verify na Uphold account, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">patuloy na mag-log in</translation>
 </translationbundle>

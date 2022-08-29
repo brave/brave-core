@@ -1487,4 +1487,36 @@
 <translation id="6973157709854838218">Sembunyikan baki anda dari paparan</translation>
 <translation id="4548946945059463969">Dedahkan baki anda di skrin</translation>
 <translation id="242959166945779492">Anda tidak mempunyai sebarang baki dalam akaun anda. Lawati FTX untuk membeli sedikit.</translation>
+<translation id="9190084253595768053">Mengalami masalah mendapatkan sambungan? Buka <ph name="BEGIN_LINK"/>Tetapan Brave<ph name="END_LINK"/>, nyahdayakan Tetingkap Private dengan Tor, kemudian dayakan semula. Masih mengalami masalah?</translation>
+<translation id="6977372887576114613">BAT yang didepositkan</translation>
+<translation id="194625454574835815">Kunci Pemulihan</translation>
+<translation id="5717619667204259673">Simpan kunci pemulihan ini dengan selamat.</translation>
+<translation id="7018390569051511373">Anda boleh gunakan kunci ini pada bila-bila masa untuk mendapatkan kembali profil Rewards anda jika sesuatu berlaku pada penyemak imbas atau komputer anda. Tetapi, pastikan anda melindunginya — sesiapa yang mendapat kunci ini boleh mencuri profil Rewards anda.  Mungkin lebih selamat jika catat pada sekeping kertas, atau pada mana-mana tempat lain yang anda simpan maklumat penting.</translation>
+<translation id="8979401359137062629">Nota:</translation>
+<translation id="7934806082615382155">Sebahagian daripada dana mungkin akan diterima daripada Brave dan tidak dimasukkan dalam sandaran kerana ia tidak diperlukan. Ia tersedia untuk dibelanjakan secara eksklusif dalam pelayar ini.</translation>
+<translation id="1738658589626889850">Simpan sebagai Fail</translation>
+<translation id="2173151783558384314">Brave akan menggunakan Infura untuk mengeluarkan panggilan Ethereum JSON-RPC kepada kontrak pintar daripada Domain yang Tidak Dapat Dihentikan bagi menyelesaikan permintaan carian nama domain .crypto (dan juga .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin). Jika anda mendayakan tetapan ini, Infura dapat melihat domain tertentu tersebut yang cuba anda lawati tetapi Infura tidak dapat melihat domain lain. Lihat <ph name="BEGIN_INFURA_TOU_LINK"/>syarat penggunaan<ph name="END_INFURA_TOU_LINK"/> dan <ph name="BEGIN_INFURA_PRIVACY_LINK"/>dasar privasi<ph name="END_INFURA_PRIVACY_LINK"/> Infura.</translation>
+<translation id="2630264552940126640">Sandarkan Brave Rewards</translation>
+<translation id="238922425564381955">Sila sandarkan Brave Rewards anda.</translation>
+<translation id="2860280209982026951">Brave menggunakan <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> sebagai agregator DEX.</translation>
+<translation id="4626407663177532837">Sebut harga termasuk yuran Brave sebanyak 0.875%.</translation>
+<translation id="1420318137760245955">Selamat datang ke Dompet Brave yang baharu</translation>
+<translation id="3671745544278414606">Simpan aset kripto dalam jagaan anda. Jejaki prestasi portfolio, dan berinteraksi dengan Web3 DApps. Dagangan, labur, pinjam, dan beri pinjaman dengan DeFi. Semuanya terus daripada pelayar privasi Brave. Tiada sambungan, dan muat turun tidak diperlukan</translation>
+<translation id="6972754398087986839">Bermula</translation>
+<translation id="2813156651070657572">Lindungi aset kripto anda dengan kata laluan</translation>
+<translation id="6901073872645365201">Kata laluan mesti sekurang-kurangnya 7 aksara, dan mengandungi sekurang-kurangnya satu nombor dan satu aksara khas.</translation>
+<translation id="5486261815000869482">Sahkan kata laluan</translation>
+<translation id="7982184974053636367">Kata laluan yang lebih selamat diperlukan untuk Brave Wallet</translation>
+<translation id="2372897697869224590">Tetapkan kata laluan dompet Brave</translation>
+<translation id="7739762330714405363">Gunakan kata laluan yang sama</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="7102907656918333773">Import daripada <ph name="WALLET_EXTENSION"/></translation>
+<translation id="1737856990004825123">Import akaun <ph name="WALLET_EXTENSION"/> anda ke dalam Dompet Brave. Nikmati cara yang lebih pantas dan selamat untuk mengurus aset kripto dan berinteraksi melalui Web3 DApps.</translation>
+<translation id="4237840336687249184">Kata laluan MetaMask</translation>
+<translation id="2381605201035323535">dompet kripto</translation>
+<translation id="4938145712652668388">Apabila anda klik "Bermula" anda akan mengimport Crypto Wallets anda yang sebelumnya ke Brave Wallet yang baharu, dan menikmati semua manfaat yang dinyatakan di atas. Cubanya dan beritahu kami pendapat anda!</translation>
+<translation id="9099900965604225657">Kata laluan dompet kripto</translation>
+<translation id="4020495774166914146">Saya telah kehilangan kata laluan dan frasa pemulihan, cipta dompet baharu.</translation>
+<translation id="7709075156958117386">Jika laman ini kelihatan terjejas, cuba Shields ke bawah. 
+    <ph name="LINK_BEFORE"/>Perhatian: tindakan ini mungkin mengurangkan perlindungan privasi Brave.<ph name="LINK_AFTER"/></translation>
 </translationbundle>

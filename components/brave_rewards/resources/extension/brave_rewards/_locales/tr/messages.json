@@ -311,6 +311,18 @@
       }
     }
   },
+  "notificationBackupWalletTitle": {
+    "message": "Brave Ödülllerini Yedekle",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "Lütfen Brave Ödüllerinizi yedekleyin.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "Şimdi yedekleyin",
+    "description": ""
+  },
   "notificationWalletDisconnectedTitle": {
     "message": "Oturumunuz kapatıldı",
     "description": ""

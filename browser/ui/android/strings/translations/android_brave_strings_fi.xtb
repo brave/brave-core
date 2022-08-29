@@ -885,4 +885,36 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="2832270987629018596">Virheellinen SOL-osoite</translation>
 <translation id="8181161042860463420">Liitettyä tokentiliä ei ole vielä olemassa. Sen luomiseen ja rahoittamiseen käytetään pieni määrä SOL-tokeneita. <ph name="CLICK_START"/>Lisätietoja<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Päivitetään VPN-profiilia...</translation>
+<translation id="4258022280942725182">Brave-palkintosi</translation>
+<translation id="3826081199286264109">USD</translation>
+<translation id="880893465294676334">Tämä Braven vahvistettu kehittäjä ei ole vielä määrittänyt tiliään vastaanottamaan Braven käyttäjien lahjoituksia.
+        Kaikki lähettämäsi tipit säilytetään lompakossasi tämän prosessin viimeistelyyn saakka.</translation>
+<translation id="8918760045046434238">Anna tippi…</translation>
+<translation id="1978261665418056203">Tässä kuussa ei ole vielä
+tapahtumia…</translation>
+<translation id="9182287025588539628">Kertatipit</translation>
+<translation id="4914597931214386232">Lunastetut tunnuslahjoitukset</translation>
+<translation id="298067735430872465">Ansaitset mainoksilla</translation>
+<translation id="2730771409541953249">YHTEENVETO PALKKIOISTA</translation>
+<translation id="5463954686005964104">Anna tälle sivustolle tippi kuukausittain</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">Varmuuskopioi Brave-palkinnot</translation>
+<translation id="238922425564381955">Varmuuskopioi Brave-palkintosi.</translation>
+<translation id="3692362746128814480">Olet varannut <ph name="BAT_VALUE"/> BAT sisällöntuottajille, jotka eivät ole
+vielä rekisteröityneet eivätkä voi vastaanottaa lahjoituksia. Selaimesi yrittää lähettää lahjoituksia toistuvasti,
+kunnes sisällöntuottajat vahvistetaan tai 90 päivää on kulunut.</translation>
+<translation id="8782039523249932839">Tämä toiminto poistaa Brave-lompakkosi ja nollaa kaikki Brave Rewards -tietosi</translation>
+<translation id="7924320838799747606">Oma saldosi</translation>
+<translation id="8030169304546394654">Yhteys katkaistu</translation>
+<translation id="543510923939676996">Lompakko vahvistettu</translation>
+<translation id="4488355059795908907">Braven vahvistettu kehittäjä ei ole vielä asettanut tiliään vastaanottamaan Braven käyttäjien lahjoituksia. Kaikki lähettämäsi tipit säilytetään lompakossasi tämän prosessin viimeistelyyn saakka.</translation>
+<translation id="7559243474426790340">Päivitä tila</translation>
+<translation id="3769645103175790584">Ansaitse makustunnuksia ja palkitse kehittäjiä heidän upeasta sisällöstään selatessasi verkkoa. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">Pikakatsaus</translation>
+<translation id="1080013038789678738">Olen mukana!</translation>
+<translation id="5587305863196367357">Lompakon todentaminen mahdollistaa varojesi helpomman hallinnan sekä varojen lisäämisen ja noston</translation>
+<translation id="5760671211380791582">Sinulla ei ole tarpeeksi BATteja.</translation>
+<translation id="442469478596827903">Sinulla täytyy olla vähintään 2 BATtia luodaksesi todennetun Uphold-lompakon. Yritä myöhemmin uudelleen.</translation>
+<translation id="4389085954549744469">Jos sinulla on jo todennettu Uphold-tili, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">jatka sisäänkirjautumista</translation>
 </translationbundle>

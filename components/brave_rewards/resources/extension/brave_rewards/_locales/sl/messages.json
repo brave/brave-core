@@ -311,6 +311,18 @@
       }
     }
   },
+  "notificationBackupWalletTitle": {
+    "message": "Varnostno kopirajte nagrade Brave Rewards",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "Prosimo, varnostno kopirajte svoje nagrade Brave Rewards.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "Varnostno kopijo naredite zdaj",
+    "description": ""
+  },
   "notificationWalletDisconnectedTitle": {
     "message": "Odjavljeni ste",
     "description": ""

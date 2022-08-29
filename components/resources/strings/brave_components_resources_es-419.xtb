@@ -1487,4 +1487,36 @@ Se han bloqueado <ph name="NUMBER"/> rastreadores, anuncios y otros elementos</t
 <translation id="6973157709854838218">Oculta tus saldos de la pantalla</translation>
 <translation id="4548946945059463969">Muestra tus saldos en la pantalla</translation>
 <translation id="242959166945779492">No tienes ningún saldo en tu cuenta. Visita FTX para adquirir un poco.</translation>
+<translation id="9190084253595768053">¿Problemas de conexión? Abre <ph name="BEGIN_LINK"/>Ajustes de Brave<ph name="END_LINK"/>, deshabilita Ventana de incógnito con Tor y, luego, vuelve a habilitarla. ¿Sigues teniendo problemas?</translation>
+<translation id="6977372887576114613">BAT depositados</translation>
+<translation id="194625454574835815">Clave de recuperación</translation>
+<translation id="5717619667204259673">Guarde esta clave de recuperación en un lugar seguro.</translation>
+<translation id="7018390569051511373">Puedes usar esta clave en todo momento para recuperar tu perfil de Recompensas de Brave si algo le sucede a tu navegador o computadora. Pero asegúrate de que está protegida, ya que cualquiera que consiga esta clave podría robar tu perfil de Recompensas de Brave. Probablemente, lo más seguro sea escribirla en un papel o en cualquier otro lugar donde guardes información importante.</translation>
+<translation id="8979401359137062629">Nota:</translation>
+<translation id="7934806082615382155">Es posible que parte de los fondos provengan de Brave y no estén incluidos en la copia de seguridad, ya que no es necesario. Está disponible para usar exclusivamente en este navegador.</translation>
+<translation id="1738658589626889850">Guardar como archivo</translation>
+<translation id="2173151783558384314">Brave comenzará a usar Infura para hacer llamadas JSON-RPC de Ethereum al contrato inteligente de dominios imparables para resolver solicitudes de búsqueda de nombres de dominio .crypto (y también .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin). Si activas esto, Infura verá esos dominos específicos que intentas visitar, pero no podrá ver otros dominios. Consulta las <ph name="BEGIN_INFURA_TOU_LINK"/>condiciones de uso<ph name="END_INFURA_TOU_LINK"/> y la <ph name="BEGIN_INFURA_PRIVACY_LINK"/>política de privacidad<ph name="END_INFURA_PRIVACY_LINK"/> de Infura.</translation>
+<translation id="2630264552940126640">Haz una copia de seguridad de Recompensas de Brave</translation>
+<translation id="238922425564381955">Haz una copia de seguridad de Recompensas de Brave.</translation>
+<translation id="2860280209982026951">Brave utiliza <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> como agregador DEX.</translation>
+<translation id="4626407663177532837">La cotización incluye una tarifa de Brave del 0,875 %</translation>
+<translation id="1420318137760245955">Le damos la bienvenida a la nueva billetera Brave</translation>
+<translation id="3671745544278414606">Conserva criptoactivos bajo tu custodia. Lleva un seguimiento del rendimiento de tu portafolio e interactúa con aplicaciones descentralizadas de Web3. Intercambia, invierte, toma prestados y presta activos mediante operaciones de DeFi, y todo ello sin salir del navegador de Brave para no poner en riesgo tu privacidad. No se requieren extensiones ni descargas.</translation>
+<translation id="6972754398087986839">Comenzar</translation>
+<translation id="2813156651070657572">Proteja sus criptoactivos mediante contraseña</translation>
+<translation id="6901073872645365201">La contraseña debe tener al menos 7 caracteres, entre ellos un número y un carácter especial.</translation>
+<translation id="5486261815000869482">Confirmar la contraseña</translation>
+<translation id="7982184974053636367">Se requiere una contraseña más segura para la billetera Brave</translation>
+<translation id="2372897697869224590">Establecer una contraseña para la billetera Brave</translation>
+<translation id="7739762330714405363">Usar la misma contraseña</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="7102907656918333773">Importar de <ph name="WALLET_EXTENSION"/></translation>
+<translation id="1737856990004825123">Importa tus cuentas de <ph name="WALLET_EXTENSION"/> a Billetera de Brave. Administra criptoactivos e interactúa con aplicaciones descentralizadas de Web3 de forma más rápida y segura.</translation>
+<translation id="4237840336687249184">Contraseña de MetaMask</translation>
+<translation id="2381605201035323535">billeteras de criptomonedas</translation>
+<translation id="4938145712652668388">Al hacer clic en "Comenzar", importará su billetera de criptomonedas anterior a la nueva billetera Brave. Así, aprovechará todos los beneficios descritos anteriormente. Pruébela y cuéntenos lo que piensa.</translation>
+<translation id="9099900965604225657">Contraseña de billeteras de criptomonedas</translation>
+<translation id="4020495774166914146">Perdí mi contraseña y mi frase de recuperación, por lo que quiero crear una nueva billetera.</translation>
+<translation id="7709075156958117386">Si el sitio no funciona, prueba a desactivar Protecciones. 
+    <ph name="LINK_BEFORE"/>Nota: esto puede reducir la protección de la privacidad de Brave.<ph name="LINK_AFTER"/></translation>
 </translationbundle>

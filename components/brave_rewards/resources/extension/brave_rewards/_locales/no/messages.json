@@ -311,6 +311,18 @@
       }
     }
   },
+  "notificationBackupWalletTitle": {
+    "message": "Sikkerhetskopier Brave Rewards",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "Sikkerhetskopier Brave Rewards-kontoen din.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "Sikkerhetskopier nå",
+    "description": ""
+  },
   "notificationWalletDisconnectedTitle": {
     "message": "Du er logget ut.",
     "description": ""

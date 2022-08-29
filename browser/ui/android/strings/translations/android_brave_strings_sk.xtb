@@ -885,4 +885,34 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="2832270987629018596">Neplatná adresa SOL</translation>
 <translation id="8181161042860463420">Priradený tokenový účet zatiaľ neexistuje. Na jeho vytvorenie a financovanie sa vynaloží malé množstvo SOL. <ph name="CLICK_START"/>Viac informácií<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Aktualizuje sa profil VPN...</translation>
+<translation id="4258022280942725182">Vaše Brave Rewards</translation>
+<translation id="3826081199286264109">USD</translation>
+<translation id="880893465294676334">Tento Brave Verified Creator ešte nenakonfiguroval účet na príjem príspevkov od používateľov Brave.
+       Všetky finančné príspevky, ktoré pošlete, zostanú vo vašej peňaženke, kým nedokončia tento proces.</translation>
+<translation id="8918760045046434238">Poslať finančný príspevok ...</translation>
+<translation id="1978261665418056203">Zatiaľ žiadne aktivity za tento mesiac ...</translation>
+<translation id="9182287025588539628">Jednorazové príspevky</translation>
+<translation id="4914597931214386232">Kupónové granty nárokované</translation>
+<translation id="298067735430872465">Zárobky z reklám</translation>
+<translation id="2730771409541953249">ZHRNUTIE ODMIEN</translation>
+<translation id="5463954686005964104">Podporiť túto stránku každý mesiac</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">Zálohovať Brave Rewards</translation>
+<translation id="238922425564381955">Zálohujte si Brave Rewards.</translation>
+<translation id="3692362746128814480">Určili ste <ph name="BAT_VALUE"/> žetón pozornosti (BAT) pre tvorcov, ktorí zatiaľ nepožiadali o získanie finančných príspevkov. Váš prehliadač sa bude naďalej snažiť prispieť, kým nebudú overení 
+alebo kým neuplynie 90 dní.</translation>
+<translation id="8782039523249932839">Týmto vymažete svoju Brave peňaženku a vynulujete všetky vaše údaje v Brave odmenách.</translation>
+<translation id="7924320838799747606">Váš zostatok</translation>
+<translation id="8030169304546394654">Prerušené spojenie</translation>
+<translation id="543510923939676996">Peňaženka verifikovaná</translation>
+<translation id="4488355059795908907">Tento Brave overený tvorca si ešte nenakonfiguroval svoj účet na prijímanie príspevkov od používateľov Brave. Všetky dary, ktoré odošlete, zostanú vo vašej peňaženke, kým si tento proces nedokončia.</translation>
+<translation id="7559243474426790340">Obnoviť stav</translation>
+<translation id="3769645103175790584">Zarábajte žetóny a odmeňujte tvorcov za skvelý obsah pri prehliadaní. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">Rýchla prehliadka</translation>
+<translation id="1080013038789678738">I’m In!</translation>
+<translation id="5587305863196367357">Overenie peňaženky vám umožní jednoduchú správu vašich finančných prostriedkov pomocou vkladu a výberu</translation>
+<translation id="5760671211380791582">Nemáte dostatok BAT.</translation>
+<translation id="442469478596827903">Na vytvorenie overenej peňaženky Uphold musíte mať minimálne 2 BAT. Skúste to znova neskôr.</translation>
+<translation id="4389085954549744469">Ak už máte overený účet Uphold, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">pokračujte v prihlasovaní</translation>
 </translationbundle>

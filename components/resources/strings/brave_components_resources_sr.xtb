@@ -1487,4 +1487,36 @@
 <translation id="6973157709854838218">Sakriti saldo sa ekrana</translation>
 <translation id="4548946945059463969">Prikazati saldo na ekranu</translation>
 <translation id="242959166945779492">Nemate ništa na stanju na vašem računu. Posetite FTX da biste nešto imali.</translation>
+<translation id="9190084253595768053">Imate problema s povezivanjem? Otvorite <ph name="BEGIN_LINK"/>podešavanja za Brave<ph name="END_LINK"/>, onemogućite privatni prozor s torom i zatim ga ponovo omogućite. Da li još uvek imate poteškoća?</translation>
+<translation id="6977372887576114613">Uplaćen BAT</translation>
+<translation id="194625454574835815">Šifra za oporavak</translation>
+<translation id="5717619667204259673">Čuvajte ovaj ključ za osposobljavanje.</translation>
+<translation id="7018390569051511373">Uvek možete koristiti ovaj ključ da biste povratili vaš profil s nagradama ako se nešto desi vašem pregledaču ili računaru. Ali pobrinite se da ga zaštitite — svako ko dobije ovaj ključ može da vam ukrade profil s nagradama. Verovatno je najsigurnije da ga zapišete na papiru, ili gde god da čuvate važne informacije.</translation>
+<translation id="8979401359137062629">Beleška:</translation>
+<translation id="7934806082615382155">Deo sredstava može biti primljen od strane Brave-a i nisu uključena u rezervnu kopiju jer nije zahtevano. Na vama je na raspolaganju da ih potrošite isključivo na ovom pregledaču.</translation>
+<translation id="1738658589626889850">Sačuvaj kao datoteku</translation>
+<translation id="2173151783558384314">Brave će koristiti Infura server za izdavanje Ethereum JSON-RPC poziva za „smart contract“ od strane Unstoppable Domains kako biste razrešili zahteve za pronalaženje naziva .crypto domena (kao i .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin). Ako ovo omogućite, Infura će videti ove posebne domene koje pokušavate da posetite, ali neće biti u mogućnosti da vidi druge domene. Videti Infura <ph name="BEGIN_INFURA_TOU_LINK"/>uslove korišćenja<ph name="END_INFURA_TOU_LINK"/> i <ph name="BEGIN_INFURA_PRIVACY_LINK"/>smernice za privatnost<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="2630264552940126640">Napravite rezervnu kopiju Brave nagrada</translation>
+<translation id="238922425564381955">Napravite rezervnu kopiju vaših Brave nagrada.</translation>
+<translation id="2860280209982026951">Brave koristi <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> kao DEX agregator.</translation>
+<translation id="4626407663177532837">Ponuda uključuje i 0,875% Brave naknade.</translation>
+<translation id="1420318137760245955">Dobro došli u novi Brave novčanik</translation>
+<translation id="3671745544278414606">Čuvajte kripto sredstva pod svojim nadzorom. Pratite učinak portfolija i vršite interakciju sa veb 3 decentralizovanim aplikacijama (dapps). Trgujte, investirajte, uzimajte i dajte zajmove pomoću decentralizovanih finansija. Sve to direktno iz Brave privatnog pregledača. Bez proširenja i potrebe za preuzimanjem.</translation>
+<translation id="6972754398087986839">Започнимо</translation>
+<translation id="2813156651070657572">Obezbedite svoja kripto sredstva lozinkom</translation>
+<translation id="6901073872645365201">Lozinke moraju da imaju bar 7 znakova i da sadrže najmanje jedan broj i jedan posebni znak.</translation>
+<translation id="5486261815000869482">Potvrdi lozinku</translation>
+<translation id="7982184974053636367">Za Brave novčanik je potrebna bezbednija lozinka</translation>
+<translation id="2372897697869224590">Postavite lozinku za Brave novčanik</translation>
+<translation id="7739762330714405363">Koristite istu lozinku</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="7102907656918333773">Uvesti iz <ph name="WALLET_EXTENSION"/></translation>
+<translation id="1737856990004825123">Uvezite vaše <ph name="WALLET_EXTENSION"/> račune u Brave novčanik. Uživajte u bržem i bezbednijem načinu rukovanja kripto sredstvima i interakcijom sa web 3 DApps.</translation>
+<translation id="4237840336687249184">MetaMask lozinka</translation>
+<translation id="2381605201035323535">kripto novčanike</translation>
+<translation id="4938145712652668388">Kada kliknete na opciju „Početak“ (Get started), obavićete uvoz svog prethodnog kripto novčanika u novi Brave novčanik i možete uživati u svim prethodno navedenim pogodnostima. Isprobajte ga i recite nam šta mislite!</translation>
+<translation id="9099900965604225657">Lozinka za kripto novčanik</translation>
+<translation id="4020495774166914146">Izgubio sam lozinku i frazu za oporavak. Napravi nov novčanik.</translation>
+<translation id="7709075156958117386">Ako vam se čini da je ovaj sajt pokvaren, pokušajte da spustite štitove. 
+    <ph name="LINK_BEFORE"/>Napomena: na taj način se mogu smanjiti Brave zaštite privatnosti.<ph name="LINK_AFTER"/></translation>
 </translationbundle>

@@ -311,6 +311,18 @@
       }
     }
   },
+  "notificationBackupWalletTitle": {
+    "message": "የብሬቭ ሽልማቶችን መጠባበቂያ ይያዙ",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "እባክዎ የብሬቭ ሽልማቶች መጠባበቂያ ይያዙ።",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "አሁን ምትኬ ያስቀምጡ",
+    "description": ""
+  },
   "notificationWalletDisconnectedTitle": {
     "message": "ወጥተዋል",
     "description": ""

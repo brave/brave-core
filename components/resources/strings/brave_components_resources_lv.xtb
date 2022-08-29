@@ -1487,4 +1487,36 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="6973157709854838218">Paslēpt bilanci no displeja</translation>
 <translation id="4548946945059463969">Atklājiet savu bilanci ekrānā</translation>
 <translation id="242959166945779492">Jūsu kontā nav atlikuma. Apmeklējiet FTX, lai iegādātos valūtu.</translation>
+<translation id="9190084253595768053">Vai jums ir savienojuma problēmas? Atveriet <ph name="BEGIN_LINK"/>Brave iestatījumus<ph name="END_LINK"/>, atspējojiet inkognito logu ar Tor, tad iespējojiet vēlreiz. Vai problēma joprojām pastāv?</translation>
+<translation id="6977372887576114613">Noguldītie BAT</translation>
+<translation id="194625454574835815">Atkopšanas atslēga</translation>
+<translation id="5717619667204259673">Turiet šo atkopšanas atslēgu drošībā.</translation>
+<translation id="7018390569051511373">Jūs vienmēr varat izmantot šo atslēgu, lai atgūtu savu Rewards profilu, ja ar jūsu pārlūkprogrammu vai datoru kaut kas ir noticis. Taču parūpējieties par tās drošību, un ikviens, kas iegūst šo atslēgu, var nozagt jūsu Rewards profilu. Visdrošāk būtu to pierakstīt uz papīra vai turēt vietā, kur glabājat svarīgu informāciju.</translation>
+<translation id="8979401359137062629">Piezīme.</translation>
+<translation id="7934806082615382155">Daļu no līdzekļiem nav iespējams saņemt no Brave, un tie nav iekļauti dublējumā, jo tas nav nepieciešams. Tie jums ir pieejami tērēšanai tikai šajā pārlūkprogrammā.</translation>
+<translation id="1738658589626889850">Saglabāt kā failu</translation>
+<translation id="2173151783558384314">Brave izmanto Infura, lai nosūtītu Ethereum JSON-RPC pieprasījumus Unstoppable Domains viedajam līgumam, lai atrisinātu .crypto (un .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin) domēna nosaukuma uzmeklēšanas pieprasījumus. Ja to iespējojat, Infura redz attiecīgos domēnus, kurus mēģināt apmeklēt, bet neredz citus domēnus. Skatiet Infura <ph name="BEGIN_INFURA_TOU_LINK"/> lietošanas noteikumus <ph name="END_INFURA_TOU_LINK"/> un<ph name="BEGIN_INFURA_PRIVACY_LINK"/> privātuma politiku<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="2630264552940126640">Saglabāt Brave Rewards</translation>
+<translation id="238922425564381955">Lūdzu, saglabājiet savas Brave Rewards.</translation>
+<translation id="2860280209982026951">Brave izmanto<ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> kā DEX apkopotāju.</translation>
+<translation id="4626407663177532837">Piedāvājuma cenā ir iekļauta Brave maksa 0,875% apmērā.</translation>
+<translation id="1420318137760245955">Laipni lūdzam jaunajā Brave makā</translation>
+<translation id="3671745544278414606">Turiet kripto līdzekļus slepenībā. Sekojiet portfeļa rādītājiem un darbojieties ar tīmekļa 3 DApps. Tirgojieties, ieguldiet, aizņemieties un aizdodiet ar DeFi. Atzīst Brave privātuma pārlūks. Bez paplašinājumiem, bez lejupielādes.</translation>
+<translation id="6972754398087986839">Sākt darbu</translation>
+<translation id="2813156651070657572">Aizsargājiet savus kriptovalūtas līdzekļus ar paroli</translation>
+<translation id="6901073872645365201">Parolēm jābūt vismaz 7 rakstzīmju garām, kā arī jāietver vismaz viens cipars un viena īpašā rakstzīme.</translation>
+<translation id="5486261815000869482">Apstiprināt paroli</translation>
+<translation id="7982184974053636367">Brave makam ir nepieciešama drošāka parole</translation>
+<translation id="2372897697869224590">Iestatiet Brave maka paroli</translation>
+<translation id="7739762330714405363">Izmantot to pašu paroli</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="7102907656918333773">Importēt no <ph name="WALLET_EXTENSION"/></translation>
+<translation id="1737856990004825123">Importējiet savus <ph name="WALLET_EXTENSION"/> kontus uz Brave maciņu. Izmantojiet ātrāku un drošāku veidu, kā pārvaldīt kriptovalūtas aktīvus un komunicēt ar 3 DApps.</translation>
+<translation id="4237840336687249184">MetaMask parole</translation>
+<translation id="2381605201035323535">kriptovalūtas makus</translation>
+<translation id="4938145712652668388">Noklikšķinot uz "Sākt darbu", importējiet iepriekšējo kriptovalūtas maku, lai izmantotu jauno Brave maku. Izbaudiet visas iepriekš minētās priekšrocības. Izmēģiniet un pastāstiet mums, ko par to domājat!</translation>
+<translation id="9099900965604225657">Kriptovalūtas maku parole</translation>
+<translation id="4020495774166914146">Esmu pazaudējis paroli un atkopšanas frāzi, izveidot jaunu maku.</translation>
+<translation id="7709075156958117386">Ja vietne šķiet kļūdaina, pamēģiniet deaktivizēt aizsargus. 
+    <ph name="LINK_BEFORE"/>Piezīme: tas var samazināt Brave privātuma aizsardzību.<ph name="LINK_AFTER"/></translation>
 </translationbundle>

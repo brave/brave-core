@@ -885,4 +885,35 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="2832270987629018596">Bukan alamat SOL yang valid</translation>
 <translation id="8181161042860463420">Akun token terkait belum ada. Sejumlah kecil SOL akan dihabiskan untuk membuat dan mendanainya. <ph name="CLICK_START"/>Pelajari lebih lanjut<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Memperbarui Profil VPN ...</translation>
+<translation id="4258022280942725182">Brave Rewards Anda</translation>
+<translation id="3826081199286264109">USD</translation>
+<translation id="880893465294676334">Pencipta Terverifikasi Brave ini belum mengatur akunnya untuk menerima kontribusi dari Pengguna Brave. 
+     Tip yang Anda kirim akan tetap disimpan di dompet Anda sampai mereka menyelesaikan proses ini.</translation>
+<translation id="8918760045046434238">Kirim tip...</translation>
+<translation id="1978261665418056203">Belum ada aktivitas pada
+bulan ini...</translation>
+<translation id="9182287025588539628">Tip Satu Kali</translation>
+<translation id="4914597931214386232">Hibah Token Diklaim</translation>
+<translation id="298067735430872465">Pendapatan dari Iklan</translation>
+<translation id="2730771409541953249">RINGKASAN REWARDS</translation>
+<translation id="5463954686005964104">Beri tip bulanan untuk situs ini</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">Cadangkan Brave Rewards</translation>
+<translation id="238922425564381955">Silakan cadangkan Brave Rewards Anda.</translation>
+<translation id="3692362746128814480">Anda memberikan <ph name="BAT_VALUE"/> BAT bagi pembuat konten yang belum
+mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memberikan kontribusi sampai mereka memverifikasi, atau sampai 90 hari telah berlalu.</translation>
+<translation id="8782039523249932839">Tindakan ini akan menghapus dompet Brave Anda dan menghapus semua data Brave Rewards Anda.</translation>
+<translation id="7924320838799747606">Saldo Anda</translation>
+<translation id="8030169304546394654">Terputus</translation>
+<translation id="543510923939676996">Dompet Terverifikasi</translation>
+<translation id="4488355059795908907">Brave Verified Creator ini belum mengonfigurasi akunnya untuk menerima kontribusi dari pengguna Brave. Segala tips yang Anda kirimkan akan tetap berada di dompet sampai mereka menyelesaikan prosesnya.</translation>
+<translation id="7559243474426790340">Segarkan Status</translation>
+<translation id="3769645103175790584">Dapatkan token dan beri imbalan bagi pencipta konten hebat sambil menjelajah. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">Tur singkat</translation>
+<translation id="1080013038789678738">Saya ikut!</translation>
+<translation id="5587305863196367357">Memverifikasi dompet memungkinkan Anda untuk mengelola, menambahkan, &amp; menarik dana Anda dengan lebih mudah</translation>
+<translation id="5760671211380791582">Anda tidak memiliki cukup BAT.</translation>
+<translation id="442469478596827903">Anda perlu minimal 2 BAT untuk membuat dompet Uphold yang terverifikasi. Silakan coba kembali nanti.</translation>
+<translation id="4389085954549744469">Jika Anda telah memiliki dompet Uphold yang terverifikasi, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">lanjut untuk masuk</translation>
 </translationbundle>

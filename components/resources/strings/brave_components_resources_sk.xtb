@@ -1487,4 +1487,36 @@
 <translation id="6973157709854838218">Skryť vaše zostatky na displeji</translation>
 <translation id="4548946945059463969">Ukázať vaše zostatky na obrazovke</translation>
 <translation id="242959166945779492">Na svojom účte nemáte žiadne zostatky. Navštívte FTX a niektoré si zakúpte.</translation>
+<translation id="9190084253595768053">Máte problémy s pripojením? Otvorte <ph name="BEGIN_LINK"/>nastavenia prehliadača Brave<ph name="END_LINK"/>, vypnite súkromné okno pomocou softvéru Tor a potom ho znova zapnite. Stále máte problémy?</translation>
+<translation id="6977372887576114613">Vložené BAT</translation>
+<translation id="194625454574835815">Kľúč pre obnovu</translation>
+<translation id="5717619667204259673">Uchovávajte tento obnovovací kľúč v bezpečí.</translation>
+<translation id="7018390569051511373">Tento kláves môžete kedykoľvek použiť na vrátenie svojho profilu Rewards, ak sa niečo stane s vaším prehliadačom alebo počítačom. Nezabudnite si ho však chrániť – každý, kto získa tento kľúč, vám môže ukradnúť váš profil Rewards. Bude asi najbezpečnejšie zapísať si ho na kus papiera alebo kdekoľvek inde, kde si uchovávate dôležité informácie.</translation>
+<translation id="8979401359137062629">Poznámka</translation>
+<translation id="7934806082615382155">Časť prostriedkov môže byť prijatá z aplikácie Brave a nie je zahrnutá do zálohy, pretože sa to nevyžaduje. Je k dispozícii, aby ste ju mohli minúť výlučne v tomto prehliadači.</translation>
+<translation id="1738658589626889850">Uložiť ako súbor</translation>
+<translation id="2173151783558384314">Brave bude používať službu Infura na prenos hovorov Ethereum JSON-RPC do smart kontraktu z Unstoppable Domain na vyriešenie požiadaviek na vyhľadanie názvu domény .crypto (a tiež domén .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin). Ak povolíte túto možnosť, Infura uvidí konkrétne domény, ktoré sa pokúšate navštíviť, ale nebude vidieť ďalšie domény. Prečítajte si  <ph name="BEGIN_INFURA_TOU_LINK"/>podmienky používania<ph name="END_INFURA_TOU_LINK"/> a <ph name="BEGIN_INFURA_PRIVACY_LINK"/>zásady ochrany osobných údajov<ph name="END_INFURA_PRIVACY_LINK"/>služby Infura.</translation>
+<translation id="2630264552940126640">Zálohovať Brave Rewards</translation>
+<translation id="238922425564381955">Zálohujte si Brave Rewards.</translation>
+<translation id="2860280209982026951">Brave používa <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> ako agregátor DEX.</translation>
+<translation id="4626407663177532837">Cenová ponuka zahŕňa poplatok Brave vo výške 0,875 %.</translation>
+<translation id="1420318137760245955">Vitajte v novej peňaženke Brave</translation>
+<translation id="3671745544278414606">Držte kryptografické aktíva vo svojej úschove. Sledujte výkonnosť portfólia a komunikujte s aplikáciami Web3 DApps. Obchodujte, investujte, požičiavajte si a požičiavajte s DeFi. Všetko priamo zo súkromného prehliadača Brave. Nie sú potrebné žiadne rozšírenia ani sťahovanie.</translation>
+<translation id="6972754398087986839">Začať</translation>
+<translation id="2813156651070657572">Zabezpečte si kryptoaktíva heslom</translation>
+<translation id="6901073872645365201">Heslo musí mať aspoň 7 znakov a obsahovať aspoň jednu číslicu a jeden špeciálny znak.</translation>
+<translation id="5486261815000869482">Potvrďte heslo</translation>
+<translation id="7982184974053636367">Peňaženka Brave si vyžaduje bezpečnejšie heslo</translation>
+<translation id="2372897697869224590">Nastavenie hesla peňaženky Brave</translation>
+<translation id="7739762330714405363">Použiť rovnaké heslo</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="7102907656918333773">Importovať z <ph name="WALLET_EXTENSION"/></translation>
+<translation id="1737856990004825123">Importujte si účty <ph name="WALLET_EXTENSION"/> do peňaženky Brave. Využite rýchlejší a bezpečnejší spôsob správy kryptoaktív a interakcie s aplikáciami Web3 DApps.</translation>
+<translation id="4237840336687249184">Heslo MetaMask</translation>
+<translation id="2381605201035323535">kryptopeňaženky</translation>
+<translation id="4938145712652668388">Kliknutím na možnosť „Začíname“ importujete svoju predošlú kryptopeňaženku do novej verzie peňaženky Brave a užijete si všetky benefity popísané vyššie. Vyskúšajte ju a dajte nám vedieť, čo si o nej myslíte!</translation>
+<translation id="9099900965604225657">Heslo kryptopeňaženiek</translation>
+<translation id="4020495774166914146">Mám stratené heslo a frázu na obnovenie, vytvorte novú peňaženku.</translation>
+<translation id="7709075156958117386">Ak sa vám zdá, že táto webová stránka nefunguje, skúste vypnúť štíty. 
+    <ph name="LINK_BEFORE"/>Poznámka: Toto môže znížiť ochranu osobných údajov Brave.<ph name="LINK_AFTER"/></translation>
 </translationbundle>

@@ -311,6 +311,18 @@
       }
     }
   },
+  "notificationBackupWalletTitle": {
+    "message": "Створіть резервну копію Brave Rewards",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "Створіть резервну копію профілю Brave Rewards.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "Створити резервну копію",
+    "description": ""
+  },
   "notificationWalletDisconnectedTitle": {
     "message": "Ви вийшли з облікового запису",
     "description": ""

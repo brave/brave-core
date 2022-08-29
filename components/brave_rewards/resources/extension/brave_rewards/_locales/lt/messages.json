@@ -311,6 +311,18 @@
       }
     }
   },
+  "notificationBackupWalletTitle": {
+    "message": "Atsarginė „Brave Rewards“ kopija",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "Padarykite atsarginę „Brave Rewards“ kopiją.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "Kurti atsarginę kopiją dabar",
+    "description": ""
+  },
   "notificationWalletDisconnectedTitle": {
     "message": "Jūs esate atsijungę",
     "description": ""

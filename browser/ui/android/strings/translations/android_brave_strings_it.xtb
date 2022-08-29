@@ -885,4 +885,35 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="2832270987629018596">Non è un indirizzo SOL valido</translation>
 <translation id="8181161042860463420">Il conto token associato non esiste ancora. Verrà spesa una piccola quantità di SOL per crearlo e finanziarlo. <ph name="CLICK_START"/>Per saperne di più<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Aggiornamento del profilo VPN...</translation>
+<translation id="4258022280942725182">Le tue Ricompense Brave</translation>
+<translation id="3826081199286264109">USD</translation>
+<translation id="880893465294676334">Questo creatore verificato di Brave non ha ancora configurato il suo account per ricevere contributi dagli utenti di Brave.
+        Qualsiasi mancia inviata rimarrà nel tuo portafoglio finché non avrà completato questo processo.</translation>
+<translation id="8918760045046434238">Invia una mancia...</translation>
+<translation id="1978261665418056203">Ancora nessuna
+attività in questo mese...</translation>
+<translation id="9182287025588539628">Donazioni singole</translation>
+<translation id="4914597931214386232">Contributi in Token Riscossi</translation>
+<translation id="298067735430872465">Guadagni da Annunci Pubblicitari</translation>
+<translation id="2730771409541953249">RIASSUNTO DELLE RICOMPENSE</translation>
+<translation id="5463954686005964104">Fai una donazione a questo sito ogni mese</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">Esegui il back up di Ricompense Brave</translation>
+<translation id="238922425564381955">Effettua il backup delle Ricompense Brave.</translation>
+<translation id="3692362746128814480">Hai designato <ph name="BAT_VALUE"/> BAT per i creatori che non si sono 
+ancora iscritti per ricevere contributi. Il tuo browser continuerà a cercare di contribuire fino a quando non avranno effettuato la verifica, o fino a quando non saranno trascorsi 90 giorni.</translation>
+<translation id="8782039523249932839">Questo cancellerà il tuo portafoglio Brave e resetterà tutti i tuoi dati di ricompense di Brave.</translation>
+<translation id="7924320838799747606">Il tuo saldo</translation>
+<translation id="8030169304546394654">Disconnesso</translation>
+<translation id="543510923939676996">Portafoglio verificato</translation>
+<translation id="4488355059795908907">Questo creatore verificato di Brave non ha ancora configurato il suo account per ricevere i contributi degli utenti di Brave. Tutte le mance che invierai rimarranno nel tuo portafoglio fino a quando non completeranno questo processo.</translation>
+<translation id="7559243474426790340">Aggiorna status</translation>
+<translation id="3769645103175790584">Guadagna gettoni e premia i cretori per i bei contenuti mentre navighi. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">Tour veloce</translation>
+<translation id="1080013038789678738">Sono dentro</translation>
+<translation id="5587305863196367357">Se verifichi il portafoglio puoi gestire il tuo denaro più agevolmente, facendo depositi e prelievi</translation>
+<translation id="5760671211380791582">Non hai abbastanza BAT.</translation>
+<translation id="442469478596827903">Per creare un portafoglio Uphold verificato devi avere almeno 2 BAT. Riprova in seguito.</translation>
+<translation id="4389085954549744469">Se hai già un account Uphold verificato, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">continua per eseguire l’accesso</translation>
 </translationbundle>

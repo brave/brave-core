@@ -311,6 +311,18 @@
       }
     }
   },
+  "notificationBackupWalletTitle": {
+    "message": "สำรองข้อมูล Brave Rewards",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "โปรดสำรองข้อมูล Brave Rewards ของคุณ",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "เก็บสำรองเลยตอนนี้",
+    "description": ""
+  },
   "notificationWalletDisconnectedTitle": {
     "message": "คุณออกจากระบบแล้ว",
     "description": ""

@@ -885,4 +885,34 @@
 <translation id="2832270987629018596">유효한 SOL 주소 아님</translation>
 <translation id="8181161042860463420">아직 연결된 토큰 계정이 없습니다. 계정을 만들고 입금하는 데 소액의 SOL이 사용됩니다. <ph name="CLICK_START"/>자세히 알아보기<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">VPN 프로필 업데이트 중...</translation>
+<translation id="4258022280942725182">회원님의 Brave Rewards</translation>
+<translation id="3826081199286264109">USD</translation>
+<translation id="880893465294676334">이 Brave Verified Creator는 아직 계정을 구성하지 않아 Brave 사용자로부터 기부금을 받을 수 없습니다.
+        이 프로세스가 완료되기 전에는 보내신 팁이 귀하의 지갑에 남아 있게 됩니다.</translation>
+<translation id="8918760045046434238">팁 보내기...</translation>
+<translation id="1978261665418056203">이번 달에는 아직 
+활동이 없음...</translation>
+<translation id="9182287025588539628">일회성 팁</translation>
+<translation id="4914597931214386232">토큰 승인 요청됨</translation>
+<translation id="298067735430872465">광고 수입</translation>
+<translation id="2730771409541953249">Rewards 요약</translation>
+<translation id="5463954686005964104">이 사이트에 매월 팁 주기</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">Brave Rewards 백업</translation>
+<translation id="238922425564381955">Brave Rewards를 백업하세요.</translation>
+<translation id="3692362746128814480">아직 후원금 수령을 위한 등록을 하지 않은 크리에이터에게 <ph name="BAT_VALUE"/>를 지정했습니다. 브라우저는 크리에이터가 인증될 때까지 또는 90일이 경과할 때까지 계속해서 후원을 시도합니다.</translation>
+<translation id="8782039523249932839">계속 진행하면 당신의 Brave 월렛이 삭제되고 Brave 리워드 데이터가 초기화됩니다.</translation>
+<translation id="7924320838799747606">내 잔액</translation>
+<translation id="8030169304546394654">연결 해제됨</translation>
+<translation id="543510923939676996">지갑 인증됨</translation>
+<translation id="4488355059795908907">이 Brave 확인된 제작자는 Brave 사용자로부터 기부금을 받도록 아직 계정을 구성하지 않았습니다. 귀하가 보낸 모든 팁은 이 프로세스가 완료될 때까지 지갑에 남아 있습니다.</translation>
+<translation id="7559243474426790340">상태 새로 고침</translation>
+<translation id="3769645103175790584">탐색하는 동안 훌륭한 콘텐츠에 대해 토큰을 획득하고 크리에이터에게 보상하세요. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">빠른 투어</translation>
+<translation id="1080013038789678738">저도 낄게요!</translation>
+<translation id="5587305863196367357">지갑을 확인하면 자금 관리, 추가, 인출이 쉬워집니다.</translation>
+<translation id="5760671211380791582">BAT가 충분하지 않습니다.</translation>
+<translation id="442469478596827903">확인된 Uphold 지갑을 만들려면 최소 2BAT가 필요합니다. 다시 시도하세요.</translation>
+<translation id="4389085954549744469">이미 확인된 Uphold 계정이 있는 경우, <ph name="CONTINUE_TO_LOGIN"/>하세요.</translation>
+<translation id="6146966915297143881">로그인하여 계속</translation>
 </translationbundle>

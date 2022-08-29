@@ -885,4 +885,33 @@
 <translation id="2832270987629018596">並非有效的 SOL 位址</translation>
 <translation id="8181161042860463420">相關聯的代幣帳戶不存在。將花費少量的 SOL 來建立和儲值。<ph name="CLICK_START"/>瞭解詳情<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">正在更新 VPN 設定檔……</translation>
+<translation id="4258022280942725182">您的 Brave 獎勵</translation>
+<translation id="3826081199286264109">美元</translation>
+<translation id="880893465294676334">此 Brave Verified Creator 尚未設定其帳號來接收 Brave 使用者的捐款。
+        您傳送的任何小費都會保留在您的錢包內，直至此程序完成。</translation>
+<translation id="8918760045046434238">發送打賞……</translation>
+<translation id="1978261665418056203">本月尚未有任何活動……</translation>
+<translation id="9182287025588539628">一次性小費</translation>
+<translation id="4914597931214386232">代幣經費已領</translation>
+<translation id="298067735430872465">自廣告而來的收益</translation>
+<translation id="2730771409541953249">獎賞摘要</translation>
+<translation id="5463954686005964104">每月給此網站小費</translation>
+<translation id="937392350501765664"><ph name="MONTH"/><ph name="YEAR"/></translation>
+<translation id="2630264552940126640">備份 Brave 獎勵</translation>
+<translation id="238922425564381955">請備份您的 Brave 獎勵。</translation>
+<translation id="3692362746128814480">你已打賞<ph name="BAT_VALUE"/> BAT 給尚未註冊接受打賞的內容創造者。你的瀏覽器將繼續嘗試打賞，直到他們完成認證為止，否則打賞將在  90 天後停止。</translation>
+<translation id="8782039523249932839">此操作將刪除你的 Brave 錢包，並重設所有 Brave 獎賞數據</translation>
+<translation id="7924320838799747606">您的餘額</translation>
+<translation id="8030169304546394654">已取消連結</translation>
+<translation id="543510923939676996">電子錢包已驗證</translation>
+<translation id="4488355059795908907">此 Brave Verified Creator 尚未配置帳號以接收來自 Brave 使用者的貢獻。您所發送的任何提示將保留在您的錢包中直到他們完成此流程。</translation>
+<translation id="7559243474426790340">重新整理狀態</translation>
+<translation id="3769645103175790584">瀏覽豐富的內容時賺取代幣並獎勵創作者。 <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">快速瀏覽</translation>
+<translation id="1080013038789678738">算我一份！</translation>
+<translation id="5587305863196367357">驗證錢包讓您能更有簡單地管理資金、存款與提款</translation>
+<translation id="5760671211380791582">您沒有足夠的 BAT。</translation>
+<translation id="442469478596827903">您必須至少有 2 BAT 才能建立驗證過得 Uphold 錢包。請稍後再試。</translation>
+<translation id="4389085954549744469">如果您有已驗證過的 Uphold 帳號，<ph name="CONTINUE_TO_LOGIN"/>。</translation>
+<translation id="6146966915297143881">繼續登入</translation>
 </translationbundle>

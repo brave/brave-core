@@ -885,4 +885,36 @@
 <translation id="2832270987629018596">ที่อยู่ SOL ไม่ถูกต้อง</translation>
 <translation id="8181161042860463420">ยังไม่มีบัญชีโทเค็นที่เกี่ยวข้อง SOL จำนวนเล็กน้อยจะถูกใช้เพื่อสร้างและจัดหาทุน <ph name="CLICK_START"/>เรียนรู้เพิ่มเติม<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">กำลังอัปเดตโปรไฟล์ VPN ...</translation>
+<translation id="4258022280942725182">Brave Rewards ของคุณ</translation>
+<translation id="3826081199286264109">USD</translation>
+<translation id="880893465294676334">ครีเอเตอร์ที่ได้รับการรับรองจาก Brave รายนี้ยังไม่ได้กำหนดค่าบัญชีของตนเพื่อรับเงินสนับสนุนจากผู้ใช้ Brave
+        ทิปที่คุณส่งให้จะยังคงอยู่ในกระเป๋าเงินของคุณจนกว่าขั้นตอนนี้จะเสร็จสมบูรณ์</translation>
+<translation id="8918760045046434238">ส่งทิป...</translation>
+<translation id="1978261665418056203">ยังไม่มีกิจกรรมใน
+เดือนนี้...</translation>
+<translation id="9182287025588539628">ทิปครั้งเดียว</translation>
+<translation id="4914597931214386232">โทเค็นเงินบริจาคที่เบิกแล้ว</translation>
+<translation id="298067735430872465">ได้รายได้จากโฆษณา</translation>
+<translation id="2730771409541953249">สรุป REWARDS</translation>
+<translation id="5463954686005964104">เคล็ดลับประจำเดือนในเว็บไซต์นี้</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">สำรองข้อมูล Brave Rewards</translation>
+<translation id="238922425564381955">โปรดสำรองข้อมูล Brave Rewards ของคุณ</translation>
+<translation id="3692362746128814480">คุณได้กำหนด <ph name="BAT_VALUE"/> BAT ให้กับผู้สร้างที่ยังไม่ได้
+ลงทะเบียนเพื่อรับการสนับสนุน เบราว์เซอร์ของคุณจะพยายามที่จะส่งการสนับสนุนให้ต่อไป
+จนกว่าผู้สร้างจะยืนยันตัวตน หรือจนเมื่อผ่านไปครบ 90 วัน</translation>
+<translation id="8782039523249932839">คำสั่งนี้จะลบ Brave วอลเล็ทของคุณและรีเซ็ตข้อมูล Brave Rewards ของคุณทั้งหมด</translation>
+<translation id="7924320838799747606">ยอดคงเหลือของคุณ</translation>
+<translation id="8030169304546394654">ไม่ได้เชื่อมต่อ</translation>
+<translation id="543510923939676996">ยืนยันวอลเล็ตแล้ว</translation>
+<translation id="4488355059795908907">Brave Verified Creator นี้ยังไม่ได้ตั้งค่าบัญชีเพื่อรับเงินช่วยเหลือจากผู้ใช้งาน Brave ทิปใด ๆ ที่คุณส่งจะยังอยู่ในกระเป๋าเงินของคุณจนกว่ากระบวนการนี้จะทำสำเร็จ</translation>
+<translation id="7559243474426790340">รีเฟรชสถานะ</translation>
+<translation id="3769645103175790584">รับโทเค็นเพื่อนำไปให้รางวัลแก่ผู้สร้างสำหรับเนื้อหาดีๆ ในระหว่างที่คุณเรียกดูเนื้อหา <ph name="QUICK_TOUR"/></translation>
+<translation id="6912901278692845878">การแนะนำสั้นๆ</translation>
+<translation id="1080013038789678738">ฉันขอร่วมด้วย</translation>
+<translation id="5587305863196367357">การยืนยันกระเป๋าเงินจะทำให้คุณจัดการเงินของคุณได้อย่างง่ายดายในส่วนของการเติมเงินและการถอนเงิน</translation>
+<translation id="5760671211380791582">คุณมี BAT ไม่เพียงพอ</translation>
+<translation id="442469478596827903">คุณต้องมีอย่างน้อย 2 BAT เพื่อสร้างกระเป๋าเงิน Uphold ที่ได้รับการยืนยันแล้ว โปรดลองใหม่อีกครั้งในภายหลัง</translation>
+<translation id="4389085954549744469">หากคุณมีบัญชี Uphold ที่ได้รับการยืนยันแล้ว  <ph name="CONTINUE_TO_LOGIN"/></translation>
+<translation id="6146966915297143881">ดำเนินการเข้าสู่ระบบ</translation>
 </translationbundle>

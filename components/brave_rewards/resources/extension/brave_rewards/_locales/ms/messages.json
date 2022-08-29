@@ -311,6 +311,18 @@
       }
     }
   },
+  "notificationBackupWalletTitle": {
+    "message": "Sandarkan Brave Rewards",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "Sila sandarkan Brave Rewards anda.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "Buat sandaran sekarang",
+    "description": ""
+  },
   "notificationWalletDisconnectedTitle": {
     "message": "Anda telah log keluar",
     "description": ""

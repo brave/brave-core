@@ -886,4 +886,34 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="2832270987629018596">Geçerli bir SOL adresi değil</translation>
 <translation id="8181161042860463420">İlişkili belirteç hesabı henüz mevcut değil. Oluşturmak ve finanse etmek için küçük miktarda SOL harcanacaktır. <ph name="CLICK_START"/>Daha fazla bilgi edinin<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">VPN Profili Güncelleniyor ...</translation>
+<translation id="4258022280942725182">Brave Ödülleriniz</translation>
+<translation id="3826081199286264109">USD</translation>
+<translation id="880893465294676334">Bu Brave Doğrulanmış Oluşturucusu, henüz hesabını Brave Kullanıcılarından katkı alacak biçimde yapılandırmadı.
+        Gönderdiğiniz tüm bahşişler, bu kişi bu işlemi tamamlayana kadar cüzdanınızda kalacaktır.</translation>
+<translation id="8918760045046434238">Bir bahşiş gönder...</translation>
+<translation id="1978261665418056203">Bu ay henüz hiç etkinlik
+yok...</translation>
+<translation id="9182287025588539628">Tek-Seferlik Bahşiş</translation>
+<translation id="4914597931214386232">Token Bağışları Talep Edildi</translation>
+<translation id="298067735430872465">Reklam Kazançları</translation>
+<translation id="2730771409541953249">ÖDÜL ÖZETİ</translation>
+<translation id="5463954686005964104">Bu siteye aylık bahşiş verin</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">Brave Ödülllerini Yedekle</translation>
+<translation id="238922425564381955">Lütfen Brave Ödüllerinizi yedekleyin.</translation>
+<translation id="3692362746128814480">Katkılar almak üzere henüz kaydolmamış oluşturucular için <ph name="BAT_VALUE"/> BAT'i belirlediniz. Tarayıcınız onlar doğrulayana kadar veya 90 gün geçene kadar katkıda bulunmaya çalışmaya devam eder.</translation>
+<translation id="8782039523249932839">Bu işlem, Brave cüzdanınızı siler ve tüm Brave Ödülleri verilerinizi sıfırlar</translation>
+<translation id="7924320838799747606">Bakiyeniz</translation>
+<translation id="8030169304546394654">Bağlantı kesildi</translation>
+<translation id="543510923939676996">Cüzdan Onaylandı</translation>
+<translation id="4488355059795908907">Bu Brave Onaylı Oluşturucu, Brave kullanıcılarından katkı almak için hesabına henüz ayar yapmamış. Göndereceğiniz herhangi bir miktar süreç tamamlanana kadar cüzdanınızda kalacak.</translation>
+<translation id="7559243474426790340">Durumu Yenile</translation>
+<translation id="3769645103175790584">İnternette gezinirken jeton kazanın ve içerik üreticilerini harika içerikler için ödüllendirin. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">Hızlı tur</translation>
+<translation id="1080013038789678738">Ben Varım!</translation>
+<translation id="5587305863196367357">Cüzdanın onaylanması, paranızı daha kolay yönetmenize, ekleme ve çekim yapmanıza imkan verir</translation>
+<translation id="5760671211380791582">Yeterli BAT'a sahip değilsiniz.</translation>
+<translation id="442469478596827903">Doğrulanmış bir Uphold cüzdanı oluşturmak için en az 2 BAT'nizin olması gerekiyor. Lütfen daha sonra tekrar deneyin.</translation>
+<translation id="4389085954549744469">Zaten onaylanmış bir Uphold hesabınız varsa, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">oturum açmak için devam edin</translation>
 </translationbundle>

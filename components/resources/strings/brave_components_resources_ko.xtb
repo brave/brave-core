@@ -1487,4 +1487,36 @@
 <translation id="6973157709854838218">화면에서 잔액 숨김</translation>
 <translation id="4548946945059463969">화면에 잔액 표시</translation>
 <translation id="242959166945779492">계정 내에 잔액이 없습니다. FTX를 방문하여 구매하세요.</translation>
+<translation id="9190084253595768053">연결에 문제가 있습니까? <ph name="BEGIN_LINK"/>Brave 설정<ph name="END_LINK"/>을 열고 Tor를 적용한 비공개 창을 비활성화한 다음 다시 활성화해보세요. 그래도 문제가 있습니까?</translation>
+<translation id="6977372887576114613">입금된 BAT</translation>
+<translation id="194625454574835815">복구 키</translation>
+<translation id="5717619667204259673">이 복구 키를 안전하게 보관하세요.</translation>
+<translation id="7018390569051511373">브라우저나 컴퓨터에 문제가 생겼을 때, 이 키를 사용하면 언제든 Rewards 프로필을 복구할 수 있습니다. 이 키가 다른 사람 손에 들어가면 Rewards 프로필을 훔칠 수 있으니 잘 보호하세요. 종이에 적어 중요한 정보를 따로 보관해두는 곳에 넣어두는 것이 가장 안전합니다.</translation>
+<translation id="8979401359137062629">참고:</translation>
+<translation id="7934806082615382155">Brave에서 일부 자금을 받을 수 있으며, 필요하지 않기 때문에 백업에 포함되지 않습니다. 이 브라우저에서만 사용이 가능합니다.</translation>
+<translation id="1738658589626889850">파일로 저장하기</translation>
+<translation id="2173151783558384314">Brave는 Infura를 사용하여 이더리움 JSON-RPC 콜을 Unstoppable Domains에서의 스마트 컨트랙트로 발행하고 .crypto (및 .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin도 해당) 도메인 이름 조회 요청을 해석합니다. 이 기능을 활성화하면 귀하가 방문하려는 특정 도메인은 Infura가 볼 수 있지만 다른 도메인은 볼 수 없습니다. Infura <ph name="BEGIN_INFURA_TOU_LINK"/>이용 약관<ph name="END_INFURA_TOU_LINK"/> 및 <ph name="BEGIN_INFURA_PRIVACY_LINK"/>개인정보처리방침<ph name="END_INFURA_PRIVACY_LINK"/>을 참조하세요.</translation>
+<translation id="2630264552940126640">Brave Rewards 백업</translation>
+<translation id="238922425564381955">Brave Rewards를 백업하세요.</translation>
+<translation id="2860280209982026951">Brave는 DEX 애그리게이터로 <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/>를 사용합니다.</translation>
+<translation id="4626407663177532837">견적에는 Brave 수수료 0.875%가 포함됩니다.</translation>
+<translation id="1420318137760245955">새로운 Brave 월렛에 오신 것을 환영합니다</translation>
+<translation id="3671745544278414606">보호관리 계정에 암호화폐 자산 보유. 포트폴리오 실적 추적, Web3 DApps를 이용. DeFi로 거래, 투자, 대출, 대부까지. Brave 프라이버시 브라우저에서 모두 이용합니다. 확장 프로그램도, 다운로드도 필요하지 않습니다.</translation>
+<translation id="6972754398087986839">시작하기</translation>
+<translation id="2813156651070657572">비밀번호로 암호화폐 안전하게 보호</translation>
+<translation id="6901073872645365201">비밀번호는 7자 이상이어야 하며, 숫자와 특수문자를 각각 하나 이상 포함해야 합니다.</translation>
+<translation id="5486261815000869482">비밀번호 확인</translation>
+<translation id="7982184974053636367">Brave 월렛에는 더욱 안전한 비밀번호 필요</translation>
+<translation id="2372897697869224590">Brave 월렛 비밀번호 설정</translation>
+<translation id="7739762330714405363">동일한 비밀번호 사용</translation>
+<translation id="1085027414516521238">메타마스크</translation>
+<translation id="7102907656918333773"><ph name="WALLET_EXTENSION"/>에서 가져오기</translation>
+<translation id="1737856990004825123"><ph name="WALLET_EXTENSION"/> 계정을 Brave 월렛 속으로 가져오세요. 더욱 빠르고 안전하게 암호화폐 자산을 관리하고 Web3 DApps를 이용하세요.</translation>
+<translation id="4237840336687249184">MetaMask 비밀번호</translation>
+<translation id="2381605201035323535">암호화폐 월렛</translation>
+<translation id="4938145712652668388">"시작하기"를 클릭하면 이전 암호화폐 월렛을 새 Brave 월렛 경험으로 가져와 위에 언급된 혜택을 누릴 수 있습니다. 사용해보시고 의견이 있으면 알려주세요!</translation>
+<translation id="9099900965604225657">암호화폐 월렛 비밀번호</translation>
+<translation id="4020495774166914146">비밀번호와 복구 문구를 잊어서 새 월렛을 만듭니다.</translation>
+<translation id="7709075156958117386">사이트가 깨져 보이면, 실드를 비활성화해 보세요.
+    <ph name="LINK_BEFORE"/>참고: 이렇게 하면 Brave의 프라이버시 보호 수준이 낮아집니다.<ph name="LINK_AFTER"/></translation>
 </translationbundle>

@@ -881,4 +881,33 @@
 <translation id="2832270987629018596">عنوان SOL غير صالح</translation>
 <translation id="8181161042860463420">حساب العملة الرمزية المرتبط غير موجود حتى الآن. سينفق مبلغًا صغيرًا من SOL لإنشائه وتمويله. <ph name="CLICK_START"/>تعرف على المزيد<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">جارٍ تحديث ملف تعريف VPN ...</translation>
+<translation id="4258022280942725182">مكافآت Brave الخاصة بك</translation>
+<translation id="3826081199286264109">دولار أمريكي</translation>
+<translation id="880893465294676334">لم يضبط منشئ Brave المعتمد هذا حسابه لتلقي المساهمات من مستخدمي Brave حتى الآن. ستظل أي مساهمات ترسلها في محفظتك حتى يستكمل هذه العملية.</translation>
+<translation id="8918760045046434238">جارٍ إرسال نصيحة...</translation>
+<translation id="1978261665418056203">لا توجد أنشطة بعد في هذا
+الشهر...</translation>
+<translation id="9182287025588539628">مكافآت لمرة واحدة</translation>
+<translation id="4914597931214386232">تم جمع المكافأة المالية التي منحت لك</translation>
+<translation id="298067735430872465">أرباح من الإعلانات</translation>
+<translation id="2730771409541953249">ملخص المكافآت</translation>
+<translation id="5463954686005964104">امنح المال لهذا الموقع شهرياً</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">النسخة الاحتياطية لمكافآت Brave</translation>
+<translation id="238922425564381955">يرجى إجراء نسخة احتياطية لمكافآت Brave الخاصة بك.</translation>
+<translation id="3692362746128814480">لقد تم تخصيصك <ph name="BAT_VALUE"/> BAT لمنشئي المحتوى الذين لم يقوموا بتسجيل الاشتراك حتى الآن لتلقي المساهمات. سوف يستمر متصفحك في محاولة المساهمة حتى يتم التحقق منهم وتأكيد بياناتهم، أو إلى أن يمر 90 يوماً.</translation>
+<translation id="8782039523249932839">سيؤدي هذا إلى حذف محفظة Brave الخاصة بك وإعادة تعيين كل ما لديك من بيانات مكافآت Brave</translation>
+<translation id="7924320838799747606">رصيدك</translation>
+<translation id="8030169304546394654">قُطع الاتصال</translation>
+<translation id="543510923939676996">تمَّ التحقق من المحفظة</translation>
+<translation id="4488355059795908907">لم يضبط منشئ Brave المعتمد هذا حسابه لتلقي المساهمات من مستخدمي Brave حتى الآن. ستظل أي مساهمات ترسلها في محفظتك حتى يستكمل هذه العملية.</translation>
+<translation id="7559243474426790340">تحديث الحالة</translation>
+<translation id="3769645103175790584">اربح العملات الرمزية وكافئ منشئي المحتوى مقابل المحتوى الرائع أثناء التصفح <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">جولة سريعة</translation>
+<translation id="1080013038789678738">سوف ’ أنضم!</translation>
+<translation id="5587305863196367357">يسمح لك اعتماد المحفظة بإدارة أموالك بسهولة وإضافة الأموال وسحبها</translation>
+<translation id="5760671211380791582">ليس لديك ما يكفي من BAT.</translation>
+<translation id="442469478596827903">يتعين أن يكون لديك عملتا BAT كحد أدنى لإنشاء محفظة Uphold معتمدة. يُرجى إعادة المحاولة لاحقًا.</translation>
+<translation id="4389085954549744469">إذا كان لديك بالفعل حساب Uphold مُتحقق منه، <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">يمكنك المتابعة إلى تسجيل الدخول</translation>
 </translationbundle>

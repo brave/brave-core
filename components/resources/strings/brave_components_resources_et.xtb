@@ -1486,4 +1486,36 @@
 <translation id="6973157709854838218">Varja oma saldod kuval</translation>
 <translation id="4548946945059463969">Näita kuval oma saldosid</translation>
 <translation id="242959166945779492">Teie konto saldo on tühi. Külastage FTXi, et vahendeid osta.</translation>
+<translation id="9190084253595768053">Kas ühendamisega esineb probleeme? Avage <ph name="BEGIN_LINK"/>Brave'i seaded<ph name="END_LINK"/>, keelage Toriga privaatne aken ja seejärel lubage see. Kas teil esineb endiselt probleeme?</translation>
+<translation id="6977372887576114613">Sissemakstud BAT</translation>
+<translation id="194625454574835815">Taastusvõti</translation>
+<translation id="5717619667204259673">Hoidke seda taastamisvõtit turvaliselt.</translation>
+<translation id="7018390569051511373">Seda võtit saate alati kasutada oma Preemiate profiil tagasisaamiseks, kui teie brauseri või arvutiga midagi juhtub. Kuid kaitske seda kindlasti – kõigil, kes selle võtme kätte saavad, on võimalik teie Preemiate profiil varastada. Arvatavasti on kõige turvalisem kirjutada see paberile või muusse kohta, kus te olulist teavet säilitate.</translation>
+<translation id="8979401359137062629">Märkus.</translation>
+<translation id="7934806082615382155">Osasid vaheneid võib saada Brave'lt ja need pole varundatud, sest see pole vajalik. Vahendeid saab kasutada ainult selles brauseris.</translation>
+<translation id="1738658589626889850">Salvesta failina</translation>
+<translation id="2173151783558384314">Brave kasutab Infurat Ethereumi JSON-RPC kutsete väljastamiseks Unstoppable Domainsi nutilepingusse domeeninime .crypto (ja ka .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin) leidmispäringute lahendamiseks. Kui selle lubate, näeb Infura neid konkreetseid domeene, mida üritate külastada, kuid ei näe muid domeene. Vaadake Infura <ph name="BEGIN_INFURA_TOU_LINK"/>kasutustingimusi<ph name="END_INFURA_TOU_LINK"/> ja <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privaatsuspõhimõtteid<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="2630264552940126640">Varunda Brave'i Preemiad</translation>
+<translation id="238922425564381955">Varundage oma Brave'i Preemiad.</translation>
+<translation id="2860280209982026951">Brave'is on DEX-i agregaatorina kasutusel <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/>.</translation>
+<translation id="4626407663177532837">Hinnapakkumine sisaldab 0,875% Brave'i tasu.</translation>
+<translation id="1420318137760245955">Tere tulemast kasutama uut Brave'i rahakotti!</translation>
+<translation id="3671745544278414606">Hoidke krüptovarad oma valduses. Saate jälgida portfelli tootlust ja suhelda Web 3 detsentraliseeritud rakenduste abil. Kauplemine, investeerimine, laenamine ja laenu andmine DeFi kaudu. Kõik otse Brave'i privaatsest brauserist. Ei mingeid laiendusi, ei mingit allalaadimist.</translation>
+<translation id="6972754398087986839">Alustamine</translation>
+<translation id="2813156651070657572">Turvake oma krüptovarad parooliga</translation>
+<translation id="6901073872645365201">Parool peab koosnema vähemalt 7 märgist, sisaldama vähemalt ühte numbrit ja ühte erimärki.</translation>
+<translation id="5486261815000869482">Kinnitage parool</translation>
+<translation id="7982184974053636367">Brave'i rahakoti jaoks on vaja turvalisemat parooli</translation>
+<translation id="2372897697869224590">Määrake Brave’i rahakoti parool</translation>
+<translation id="7739762330714405363">Kasuta sama parooli</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="7102907656918333773">Importimine laiendusest <ph name="WALLET_EXTENSION"/></translation>
+<translation id="1737856990004825123">Importige oma laienduse <ph name="WALLET_EXTENSION"/> kontod Brave'i rahakotti. Saate nautida kiiremat ja turvalisemat krüptovarade haldamise viisi ning suhelda Web 3 detsentraliseeritud rakenduste abil.</translation>
+<translation id="4237840336687249184">MetaMaski parool</translation>
+<translation id="2381605201035323535">krüptorahakotid</translation>
+<translation id="4938145712652668388">Kui klõpsate nupul „Alustamine“, impordite oma varasema krüptorahakoti Brave'i rahakotti ja saate nautida kõiki ülalkirjeldatud eeliseid. Proovige järele ja andke meile teada, mida arvate!</translation>
+<translation id="9099900965604225657">Krüptorahakoti parool</translation>
+<translation id="4020495774166914146">Olen kaotanud parooli ja taastefraasi, loo uus rahakott.</translation>
+<translation id="7709075156958117386">Kui tundub, et veebisait on katki, proovige mahavõetud kaitsetega. 
+   <ph name="LINK_BEFORE"/>Märkus: see võib nõrgendada Brave'i privaatsuse kaitset.<ph name="LINK_AFTER"/></translation>
 </translationbundle>

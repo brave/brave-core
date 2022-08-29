@@ -1487,4 +1487,36 @@
 <translation id="6973157709854838218">Hide your balances from display</translation>
 <translation id="4548946945059463969">Reveal your balances on screen</translation>
 <translation id="242959166945779492">You do not have any balances in your account. Visit FTX to purchase some.</translation>
+<translation id="9190084253595768053">Having trouble connecting? Open <ph name="BEGIN_LINK"/>Brave Settings<ph name="END_LINK"/>, disable Private Window with Tor, then re-enable. Still having trouble?</translation>
+<translation id="6977372887576114613">Deposited BAT</translation>
+<translation id="194625454574835815">Recovery Key</translation>
+<translation id="5717619667204259673">Keep this recovery key safe.</translation>
+<translation id="7018390569051511373">You can always use this key to get your Rewards profile back if something happens to your browser or computer. But make sure to protect it – anyone who gets this key could steal your Rewards profile. It’s probably safest to write it down on a piece of paper, or wherever else you keep important info.</translation>
+<translation id="8979401359137062629">Please note:</translation>
+<translation id="7934806082615382155">Part of the funds may be received from Brave and are not included in the backup as it is not required. It's available for you to spend exclusively on this browser.</translation>
+<translation id="1738658589626889850">Save as File</translation>
+<translation id="2173151783558384314">Brave will be using Infura to issue Ethereum JSON-RPC calls to the smart contract from Unstoppable Domains to resolve .crypto (and also .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin) domain name look-up requests. If you enable this, Infura will see those specific domains that you're trying to visit, but they will not be able to see other domains. See Infura's <ph name="BEGIN_INFURA_TOU_LINK"/>terms of use<ph name="END_INFURA_TOU_LINK"/> and <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privacy policy<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="2630264552940126640">Back up Brave Rewards</translation>
+<translation id="238922425564381955">Please back up your Brave Rewards.</translation>
+<translation id="2860280209982026951">Brave uses <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> as a DEX aggregator.</translation>
+<translation id="4626407663177532837">Quote includes a 0.875% Brave fee.</translation>
+<translation id="1420318137760245955">Welcome to the new Brave Wallet</translation>
+<translation id="3671745544278414606">Hold crypto assets in your custody. Track portfolio performance and interact with Web3 DApps. Trade, invest, borrow and lend with DeFi. All right from the Brave privacy browser. No extensions, no download required.</translation>
+<translation id="6972754398087986839">Get Started</translation>
+<translation id="2813156651070657572">Secure your crypto assets with a password</translation>
+<translation id="6901073872645365201">Passwords must be at least 7 characters and contain at least one number and one special character.</translation>
+<translation id="5486261815000869482">Confirm password</translation>
+<translation id="7982184974053636367">A more secure password is required for Brave Wallet</translation>
+<translation id="2372897697869224590">Set a Brave wallet password</translation>
+<translation id="7739762330714405363">Use the same password</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="7102907656918333773">Import from <ph name="WALLET_EXTENSION"/></translation>
+<translation id="1737856990004825123">Import your <ph name="WALLET_EXTENSION"/> accounts into Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with Web3 DApps.</translation>
+<translation id="4237840336687249184">MetaMask password</translation>
+<translation id="2381605201035323535">crypto wallets</translation>
+<translation id="4938145712652668388">When you click "Get started", you'll import your previous Crypto Wallet to the new Brave Wallet experience and enjoy all the benefits outlined above. Give it a try and let us know what you think.</translation>
+<translation id="9099900965604225657">Crypto wallets password</translation>
+<translation id="4020495774166914146">I’ve lost my password and recovery phrase, create a new wallet.</translation>
+<translation id="7709075156958117386">If this site seems broken, try Shields down. 
+   <ph name="LINK_BEFORE"/>Note: this may reduce Brave's privacy protections.<ph name="LINK_AFTER"/></translation>
 </translationbundle>

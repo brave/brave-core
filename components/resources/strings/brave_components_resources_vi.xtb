@@ -1487,4 +1487,36 @@
 <translation id="6973157709854838218">Ẩn số dư của bạn khỏi màn hình</translation>
 <translation id="4548946945059463969">Tiết lộ số dư của bạn trên màn hình</translation>
 <translation id="242959166945779492">Bạn không có bất kỳ số dư nào trong tài khoản của mình. Hãy truy cập FTX để mua.</translation>
+<translation id="9190084253595768053">Gặp vấn đề khi kết nối? Mở <ph name="BEGIN_LINK"/>Cài đặt Brave<ph name="END_LINK"/> tắt Cửa sổ Riêng tư với Tor, sau đó bật lại. Vẫn gặp vấn đề?</translation>
+<translation id="6977372887576114613">BAT đã lưu ký</translation>
+<translation id="194625454574835815">Khoá Khôi phục</translation>
+<translation id="5717619667204259673">Giữ an toàn khóa khôi phục này.</translation>
+<translation id="7018390569051511373">Bạn luôn có thể sử dụng khóa này để lấy lại hồ sơ Phần thưởng của mình nếu có điều gì đó xảy ra với trình duyệt hoặc máy tính của bạn. Nhưng hãy đảm bảo bảo vệ khóa này cẩn thận — bất kỳ ai lấy được khóa này đều có thể đánh cắp hồ sơ Phần thưởng của bạn. Có lẽ an toàn nhất là viết nó ra một tờ giấy hoặc bất cứ nơi nào khác mà bạn lưu giữ thông tin quan trọng.</translation>
+<translation id="8979401359137062629">Lưu ý:</translation>
+<translation id="7934806082615382155">Một phần tiền có thể được nhận từ Brave và không được bao gồm trong bản sao lưu vì không bắt buộc. Số tiền đó có sẵn để bạn chi tiêu riêng trên trình duyệt này.</translation>
+<translation id="1738658589626889850">Lưu thành Tập tin</translation>
+<translation id="2173151783558384314">Brave sẽ sử dụng Infura để đưa ra các lệnh gọi Ethereum JSON-RPC tới hợp đồng thông minh từ Unstoppable Domains để xử lý các yêu cầu tra cứu tên miền .crypto (và cả .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin). Nếu bạn bật tính năng này thì Infura sẽ thấy các tên miền cụ thể mà bạn đang cố gắng truy cập nhưng họ sẽ không thể thấy các tên miền khác. Xem <ph name="BEGIN_INFURA_TOU_LINK"/>điều khoản sử dụng<ph name="END_INFURA_TOU_LINK"/> và <ph name="BEGIN_INFURA_PRIVACY_LINK"/>chính sách bảo mật <ph name="END_INFURA_PRIVACY_LINK"/> của Infura.</translation>
+<translation id="2630264552940126640">Sao lưu Phần thưởng Brave</translation>
+<translation id="238922425564381955">Vui lòng sao lưu Phần thưởng Brave của bạn.</translation>
+<translation id="2860280209982026951">Brave sử dụng <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> làm bộ tổng hợp DEX.</translation>
+<translation id="4626407663177532837">Báo giá bao gồm một khoản phí Brave 0,875%.</translation>
+<translation id="1420318137760245955">Chào mừng đến với Ví Brave</translation>
+<translation id="3671745544278414606">Nắm giữ tài sản mã hóa trong lòng bàn tay. Theo dõi hiệu suất danh mục và tương tác với các ứng dụng Web3 DApps. Giao dịch, đầu tư, vay và cho vay với DeFi. Tất cả ngay từ trình duyệt riêng tư Brave. Không yêu cầu phần mở rộng, tải xuống.</translation>
+<translation id="6972754398087986839">Get Started</translation>
+<translation id="2813156651070657572">Bảo vệ an toàn tài sản tiền mã hóa của bạn bằng mật khẩu</translation>
+<translation id="6901073872645365201">Mật khẩu phải dài ít nhất 7 ký tự và chứa ít nhất một con số và một ký tự đặc biệt.</translation>
+<translation id="5486261815000869482">Xác nhận mật khẩu</translation>
+<translation id="7982184974053636367">Yêu cầu một mật khẩu bảo mật hơn cho Ví Brave</translation>
+<translation id="2372897697869224590">Đặt mật khẩu Ví Brave</translation>
+<translation id="7739762330714405363">Sử dụng mật khẩu giống nhau</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="7102907656918333773">Nhập từ <ph name="WALLET_EXTENSION"/></translation>
+<translation id="1737856990004825123">Nhập tài khoản <ph name="WALLET_EXTENSION"/> của bạn vào Ví Brave. Tận hưởng cách thức quản lý tài sản mã hóa và tương tác với các ứng dụng Web3 DApps nhanh hơn và bảo mật hơn.</translation>
+<translation id="4237840336687249184">Mật khẩu MetaMask</translation>
+<translation id="2381605201035323535">ví tiền mã hóa</translation>
+<translation id="4938145712652668388">Khi bạn nhấp vào "Bắt đầu" bạn sẽ nhập Ví tiền mã hóa trước đây vào trải nghiệm Ví Brave mới và tận hưởng tất cả các lợi ích được nêu ra ở trên. Hãy dùng thử và cho chúng tôi biết suy nghĩ của bạn!</translation>
+<translation id="9099900965604225657">Mật khẩu ví tiền mã hóa</translation>
+<translation id="4020495774166914146">Tôi bị mất mật khẩu và cụm từ khôi phục, hãy tạo một ví mới.</translation>
+<translation id="7709075156958117386">Nếu trang web này có vẻ bị hỏng thì hãy thử tắt Khiên. 
+   <ph name="LINK_BEFORE"/>Lưu ý: điều này có thể làm giảm các khả năng bảo vệ quyền riêng tư của Brave.<ph name="LINK_AFTER"/></translation>
 </translationbundle>

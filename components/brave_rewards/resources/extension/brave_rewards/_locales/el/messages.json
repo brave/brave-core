@@ -311,6 +311,18 @@
       }
     }
   },
+  "notificationBackupWalletTitle": {
+    "message": "Δημιουργήστε αντίγραφο ασφαλείας των Ανταμοιβών Brave",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "Παρακαλώ δημιουργήστε αντίγραφο ασφαλείας των Ανταμοιβών Brave σας.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "Δημιουργία αντιγράφων ασφαλείας τώρα",
+    "description": ""
+  },
   "notificationWalletDisconnectedTitle": {
     "message": "Έχετε αποσυνδεθεί",
     "description": ""

@@ -886,4 +886,34 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="2832270987629018596">Nu este o adresă SOL validă</translation>
 <translation id="8181161042860463420">Contul token asociat nu există încă. O cantitate mică de SOL va fi cheltuită pentru a o crea și a o finanța. <ph name="CLICK_START"/>Aflați mai multe<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Actualizarea profilului VPN ...</translation>
+<translation id="4258022280942725182">Recompensele dvs. Brave</translation>
+<translation id="3826081199286264109">Dolari SUA</translation>
+<translation id="880893465294676334">Acest Creator verificat Brave nu și-a configurat contul încă pentru a primi contribuții de la utilizatori Brave.
+Cadourile bănești vor rămâne în portofelul dvs. până la finalizarea acestui proces.</translation>
+<translation id="8918760045046434238">Trimiteți o plată...</translation>
+<translation id="1978261665418056203">Nicio activitate deocamdată în această
+lună...</translation>
+<translation id="9182287025588539628">Plăți Unice</translation>
+<translation id="4914597931214386232">Granturi Token Revendicate</translation>
+<translation id="298067735430872465">Câștiguri din Reclame</translation>
+<translation id="2730771409541953249">SUMAR RĂSPLĂȚI</translation>
+<translation id="5463954686005964104">Plată lunară către acest site</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">Creați o copie de rezervă a recompenselor Brave</translation>
+<translation id="238922425564381955">Creați-vă o copie de rezervă a recompenselor Brave.</translation>
+<translation id="3692362746128814480">Ați desemnat <ph name="BAT_VALUE"/> TVA pentru creatorii care nu s-au înregistrat încă pentru a primi contribuții. Browserul va continua să încerce să contribuie până când sunt verificați sau până când trec 90 de zile.</translation>
+<translation id="8782039523249932839">Aceasta va șterge portofelul Brave și va reseta toate datele despre recompensele Brave</translation>
+<translation id="7924320838799747606">Soldul dvs.</translation>
+<translation id="8030169304546394654">Deconectat</translation>
+<translation id="543510923939676996">Portofelul a fost verificat</translation>
+<translation id="4488355059795908907">Acest Creator Verificat Brave nu și-a configurat contul încă pentru a primi contribuții de la utilizatori Brave. Orice fonduri pe care doriți să i le trimiteți vor rămâne în portofelul dvs. până când utilizatorul va finaliza acest proces.</translation>
+<translation id="7559243474426790340">Reîmprospătați starea</translation>
+<translation id="3769645103175790584">Câștigați tokenuri și trimiteți recompense creatorilor pentru conținutul de calitate în timp ce navigați. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">Tur rapid</translation>
+<translation id="1080013038789678738">Particip!</translation>
+<translation id="5587305863196367357">După ce confirmați portofelul, puteți gestiona fondurile mai eficient, având posibilitatea de a efectua depuneri și retrageri</translation>
+<translation id="5760671211380791582">Nu aveți suficiente token-uri BAT.</translation>
+<translation id="442469478596827903">Trebuie să aveți minimum 2 BAT pentru a crea un portofel Uphold verificat. Încercați din nou mai târziu.</translation>
+<translation id="4389085954549744469">Dacă aveți deja un cont Uphold confirmat, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">continuați la conectare</translation>
 </translationbundle>

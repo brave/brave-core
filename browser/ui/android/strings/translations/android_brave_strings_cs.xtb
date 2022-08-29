@@ -885,4 +885,33 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="2832270987629018596">Neplatná adresa SOL</translation>
 <translation id="8181161042860463420">Přidružený účet tokenu zatím neexistuje. Malé množství SOL bude vynaloženo na jeho vytvoření a financování. <ph name="CLICK_START"/> <ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Aktualizace profilu VPN...</translation>
+<translation id="4258022280942725182">Tvé odměny Brave</translation>
+<translation id="3826081199286264109">USD</translation>
+<translation id="880893465294676334">Tento ověřený tvůrce Brave zatím nenakonfiguroval svůj účet pro příjem příspěvků od uživatelů Brave.
+        Jakékoli tipy, které pošlete, zůstanou ve vaší peněžence, dokud tento proces nedokončí.</translation>
+<translation id="8918760045046434238">Poslat příspěvek...</translation>
+<translation id="1978261665418056203">Tento měsíc zatím žádné činnosti...</translation>
+<translation id="9182287025588539628">Jednorázové příspěvky</translation>
+<translation id="4914597931214386232">Nárokovaných žetonových grantů</translation>
+<translation id="298067735430872465">Zisk z reklam</translation>
+<translation id="2730771409541953249">SOUHRN ODMĚN</translation>
+<translation id="5463954686005964104">Přispívat této stránce měsíčně</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">Zálohovat odměny Brave</translation>
+<translation id="238922425564381955">Zálohujte si prosím své odměny Brave.</translation>
+<translation id="3692362746128814480">Nastavili jste  <ph name="BAT_VALUE"/> BAT pro tvůrce, kteří se ještě nepřihlásili k přijímání příspěvků. Váš prohlížeč se bude i nadále snažit přispět dokud neprovedou ověření nebo dokud neuplyne 90 dní.</translation>
+<translation id="8782039523249932839">Tímto vymažete svou Brave peněženku a obnovíte všechny vaše údaje odměn Brave</translation>
+<translation id="7924320838799747606">Váš zůstatek</translation>
+<translation id="8030169304546394654">Odpojeno</translation>
+<translation id="543510923939676996">Ověřená peněženka</translation>
+<translation id="4488355059795908907">Tento ověřený tvůrce Brave si ještě nenastavil svůj účet pro příjem příspěvků od uživatelů Brave. Všechny vámi zaslané příspěvky zůstanou ve vaší peněžence, dokud tento proces nedokončí.</translation>
+<translation id="7559243474426790340">Obnovit status</translation>
+<translation id="3769645103175790584">Vydělávejte tokeny a odměňujte tvůrce za skvělý obsah, zatímco prohlížíte. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">Rychlá prohlídka</translation>
+<translation id="1080013038789678738">Jsem tam!</translation>
+<translation id="5587305863196367357">Ověření peněženky vám umožní snadno spravovat své finanční prostředky, přidávat a vybírat</translation>
+<translation id="5760671211380791582">Nemáte dostatek BAT.</translation>
+<translation id="442469478596827903">Potřebujete mít minimálně 2 BAT, abyste mohli vytvořit ověřenou peněženku služby Uphold. Zkuste to prosím znovu později.</translation>
+<translation id="4389085954549744469">Pokud již máte ověřený účet služby Uphold, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">pokračujte k přihlášení</translation>
 </translationbundle>

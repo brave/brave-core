@@ -1492,4 +1492,37 @@ neįmanoma, matyti, kokiose svetainėse lankotės. Tačiau net ir privatus langa
 <translation id="6973157709854838218">Slėpti likučius ekrane</translation>
 <translation id="4548946945059463969">Likučius matykite ekrane</translation>
 <translation id="242959166945779492">Jūsų sąskaitoje likučio nėra. Apsilankykite FTX ir šiek tiek įsigykite.</translation>
+<translation id="9190084253595768053">Problemos prisijungiant? Atidarykite<ph name="BEGIN_LINK"/>„Brave“ nustatymus<ph name="END_LINK"/>, išjunkite „Private
+Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
+<translation id="6977372887576114613">Deponuotas BAT</translation>
+<translation id="194625454574835815">Atkūrimo kodas</translation>
+<translation id="5717619667204259673">Saugokite šį atkūrimo kodą.</translation>
+<translation id="7018390569051511373">Šį raktą visada galite naudoti „Rewards“ profiliu atkurti, jei kas nors nutiktų jūsų naršyklei ar kompiuteriui. Tačiau būtinai jį saugokite; bet kas, gavęs šį raktą, galės pavogti jūsų „Rewards“ profilį. Tikriausiai saugiausia jį užsirašyti ant popieriaus lapo arba kur nors kitur, kur laikote svarbią informaciją.</translation>
+<translation id="8979401359137062629">Pastaba.</translation>
+<translation id="7934806082615382155">Dalis lėšų gali būti gauta iš „Brave“, jos nebus įtrauktos į atsarginę kopiją, nes to nereikalaujama. Galite jas išleisti išimtinai šioje naršyklėje.</translation>
+<translation id="1738658589626889850">Įrašyti kaip failą</translation>
+<translation id="2173151783558384314">„Brave“ naudos „Infura“ išmaniosios sutarties „Ethereum“ JSON-RPC skambučiams iš „Unstoppable Domains“, kai reikia spręsti .crypto (taip pat .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin) domeno vardo paieškos užklausas. Jei tai įjungsite, „Infura“ matys šiuos konkrečius domenus, kuriuos bandote aplankyti, bet negalės matyti kitų domenų. Žr. „Infura“ <ph name="BEGIN_INFURA_TOU_LINK"/>naudojimo sąlygas<ph name="END_INFURA_TOU_LINK"/> ir <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privatumo politiką<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="2630264552940126640">Atsarginė „Brave Rewards“ kopija</translation>
+<translation id="238922425564381955">Padarykite atsarginę „Brave Rewards“ kopiją.</translation>
+<translation id="2860280209982026951">„Brave“ <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> naudoja kaip DEX rinktuvą.</translation>
+<translation id="4626407663177532837">Į pasiūlymą įtrauktas 0,875% „Brave“ mokestis.</translation>
+<translation id="1420318137760245955">Sveiki, tai naujoji „Brave“ piniginė</translation>
+<translation id="3671745544278414606">Laikykite kriptoaktyvus savo žinioje. Stebėkite investicijų portfelio rezultatus ir sąveikaukite naudodami „Web3 DApps“. Prekiaukite, skolinkitės ir skolinkite naudodami „DeFi“ tiesiai privačioje naršyklėje „Brave“. Jokių plėtinių ar atsisiuntimų.</translation>
+<translation id="6972754398087986839">Darbo pradžia</translation>
+<translation id="2813156651070657572">Apsaugokite kriptoaktyvus slaptažodžiu</translation>
+<translation id="6901073872645365201">Slaptažodžiai turi būti sudaryti bent iš 7 simbolių, turi būti panaudotas bent vienas skaičius ir bent vienas specialusis simbolis.</translation>
+<translation id="5486261815000869482">Patvirtinti slaptažodį</translation>
+<translation id="7982184974053636367">„Brave“ piniginei reikia naudoti saugesnį slaptažodį.</translation>
+<translation id="2372897697869224590">Nustatykite „Brave“ piniginės slaptažodį</translation>
+<translation id="7739762330714405363">Naudoti tą patį slaptažodį</translation>
+<translation id="1085027414516521238">„MetaMask“</translation>
+<translation id="7102907656918333773">Importuoti iš <ph name="WALLET_EXTENSION"/></translation>
+<translation id="1737856990004825123">Importuokite savo <ph name="WALLET_EXTENSION"/> sąskaitas į „Brave“ piniginę. Mėgaukitės greitesniu ir saugesniu būdu valdyti kriptovaliutų išteklius ir sąveikauti naudodami „Web3 DApps“.</translation>
+<translation id="4237840336687249184">„MetaMask“ slaptažodis</translation>
+<translation id="2381605201035323535">kriptovaliutų piniginių</translation>
+<translation id="4938145712652668388">Spustelėję „Pradėti“ ankstesnę kriptovaliutų piniginę importuosite į naująją „Brave“ piniginę ir galėsite naudotis visais pirmiau nurodytais privalumais. Išbandykite ir pateikite mums savo nuomonę!</translation>
+<translation id="9099900965604225657">Kriptovaliutų piniginių slaptažodis</translation>
+<translation id="4020495774166914146">Pamiršau slaptažodį ir atkūrimo frazę, sukurti naują piniginę.</translation>
+<translation id="7709075156958117386">Jei ši svetainė neveikia, pabandykite išjungti skydus. 
+    <ph name="LINK_BEFORE"/>Pastaba. Dėl to gali sumažėti „Brave“ privatumo apsauga.<ph name="LINK_AFTER"/></translation>
 </translationbundle>

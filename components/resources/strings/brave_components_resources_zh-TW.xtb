@@ -1487,4 +1487,36 @@
 <translation id="6973157709854838218">隱藏顯示餘額</translation>
 <translation id="4548946945059463969">在螢幕上顯示您的餘額</translation>
 <translation id="242959166945779492">您的帳戶中沒有任何餘額。請造訪 FTX 購買。</translation>
+<translation id="9190084253595768053">無法連線嗎？請開啟 <ph name="BEGIN_LINK"/>Brave 設定<ph name="END_LINK"/>，停用使用 Tor 的隱私視窗，然後重新啟用。問題仍未解決？</translation>
+<translation id="6977372887576114613">存入 BAT</translation>
+<translation id="194625454574835815">還原金鑰</translation>
+<translation id="5717619667204259673">請確保此復原金鑰的安全。</translation>
+<translation id="7018390569051511373">如果瀏覽器或電腦發生問題，您隨時可以使用此金鑰取回您的獎勵個人資料。不過，請務必妥善保護此金鑰，否則任何取得此金鑰的人都可以竊取您的獎勵個人資料。最安全的方式可能是寫在一張紙上，或您記錄重要資訊的任何其他地方。</translation>
+<translation id="8979401359137062629">請注意：</translation>
+<translation id="7934806082615382155">部份資金可能是從 Brave 接收的，且並未包含在備份中，因為這不是必須的。您可以專門在此瀏覽器上使用。</translation>
+<translation id="1738658589626889850">另存為檔案</translation>
+<translation id="2173151783558384314">Brave 將會使用 Infura 將 Ethereum JSON-RPC 呼叫發送到 Unstoppable Domains 的智能合約，以解析 .crypto (以及 .x、.coin、.nft、.dao、.wallet、.888、.blockchain、.bitcoin) 網域名稱的查詢請求。如果您啟用此功能，Infura 將能看見您嘗試造訪的特定網域，但無法看到其他網域。請參閱 Infura 的<ph name="BEGIN_INFURA_TOU_LINK"/>使用條款<ph name="END_INFURA_TOU_LINK"/>和<ph name="BEGIN_INFURA_PRIVACY_LINK"/>隱私權政策<ph name="END_INFURA_PRIVACY_LINK"/>。</translation>
+<translation id="2630264552940126640">備份 Brave 獎勵</translation>
+<translation id="238922425564381955">請備份您的 Brave 獎勵。</translation>
+<translation id="2860280209982026951">Brave 使用 <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> 做為 DEX 彙總工具。</translation>
+<translation id="4626407663177532837">報價已含 0.875% Brave 手續費。</translation>
+<translation id="1420318137760245955">歡迎使用新 Brave 錢包</translation>
+<translation id="3671745544278414606">保管加密貨幣資產，追蹤投資組合效能，並與 Web3 DApps 互動。使用 DeFi 交易、投資、借貸和出借資金。這一切都能在 Brave 私密瀏覽器中完成。無需安裝擴充功能及下載。</translation>
+<translation id="6972754398087986839">開始使用</translation>
+<translation id="2813156651070657572">使用密碼保護您的加密幣資產</translation>
+<translation id="6901073872645365201">密碼必須至少 7 個字元，且包含至少一個數字與一個特殊字元。</translation>
+<translation id="5486261815000869482">確認密碼</translation>
+<translation id="7982184974053636367">Brave 錢包需要更安全的密碼。</translation>
+<translation id="2372897697869224590">設定 Brave 錢包密碼</translation>
+<translation id="7739762330714405363">使用相同密碼</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="7102907656918333773">匯入自 <ph name="WALLET_EXTENSION"/></translation>
+<translation id="1737856990004825123">將您的 <ph name="WALLET_EXTENSION"/> 帳戶匯入 Brave 錢包。以更快速、更安全的方式管理加密貨幣資產，並與 Web3 DApps 互動。</translation>
+<translation id="4237840336687249184">MetaMask 密碼</translation>
+<translation id="2381605201035323535">加密錢包</translation>
+<translation id="4938145712652668388">按一下「開始」時，您之前的加密錢包將匯入至新的 Brave 錢包，並享受上述所有益處。試試吧，讓我們知道您的想法！</translation>
+<translation id="9099900965604225657">加密幣錢包密碼</translation>
+<translation id="4020495774166914146">我遺失了密碼與還原片語，建立新錢包。</translation>
+<translation id="7709075156958117386">如果此網站感覺不太正常，請嘗試將 Shields 停用。
+    <ph name="LINK_BEFORE"/>注意：這麼做可能會減損 Brave 的隱私防護。<ph name="LINK_AFTER"/></translation>
 </translationbundle>

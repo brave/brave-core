@@ -1490,4 +1490,35 @@
 <translation id="6973157709854838218">הסתר יתרות בתצוגה</translation>
 <translation id="4548946945059463969">הציגו את היתרות על המסך</translation>
 <translation id="242959166945779492">אין לך יתרות בחשבון. בקר ב-FTX לרכישת יתרה.</translation>
+<translation id="9190084253595768053">יש לך בעיה להתחבר? לִפְתוֹחַ<ph name="BEGIN_LINK"/>Brave הגדרות<ph name="END_LINK"/>, השבת Private Window עם Tor, ולאחר מכן הפעל מחדש. ובכל זאת, מתקשה?</translation>
+<translation id="6977372887576114613">BAT מופקדים</translation>
+<translation id="194625454574835815">מפתח שחזור</translation>
+<translation id="5717619667204259673">שמרו את מפתח השחזור הזה באופן מוגן.</translation>
+<translation id="7018390569051511373">באפשרותך להשתמש במפתח זה בכל על כדי להחזיר את פרופיל ה-Rewards שלך אם משהו יקרה לדפדפן או למחשב שלך. אבל חשוב מאוד להגן עליו - כל מי שהמפתח הזה יגיע לידיו עלול לגנוב את פרופיל ה-Rewards שלך. הדרך הבטוחה ביותר היא כלל הנראה לרשום אותו על דף נייר, או בכל מקום אחר בו מידע חשוב נשמר על ידך.</translation>
+<translation id="8979401359137062629">הערה:</translation>
+<translation id="7934806082615382155">חלק מהכספים עשויים להתקבל מ-Brave ואינם כלולים בגיבוי מכיוון שזה לא נדרש. הם זמינים לשימושך באופן בלעדי בדפדפן זה.</translation>
+<translation id="1738658589626889850">שמירה כקובץ</translation>
+<translation id="2173151783558384314">Brave ישתמש ב-Infura כדי להנפיק קריאות אתריום JSON-RPC לחוזה החכם מ-Unstoppable Domains כדי לפתור בקשות לחיפוש את שם הדומיין crypto. (וכמו גם את .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin). כאשר ההגדרה מופעלת, Infura תראה את הדומיינים הספציפיים שבהם ניסית לבקר אך הם לא יוכלו לראות דומיינים אחרים. יש לעיין בתנאי השימוש <ph name="END_INFURA_TOU_LINK"/> ואת <ph name="BEGIN_INFURA_PRIVACY_LINK"/>מדיניות הפרטיות <ph name="END_INFURA_PRIVACY_LINK"/> של Infura <ph name="BEGIN_INFURA_TOU_LINK"/>.</translation>
+<translation id="2630264552940126640">גבה את Brave Rewards</translation>
+<translation id="238922425564381955">נא לגבות את Brave Rewards.</translation>
+<translation id="2860280209982026951">Brave משתמש ב<ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> כאגרגטור של נתוני DEX .</translation>
+<translation id="4626407663177532837">הצעת המחיר כוללת עמלת Brave של 0.875%.</translation>
+<translation id="1420318137760245955">ברוכים הבאים ל-Brave Wallet החדש</translation>
+<translation id="3671745544278414606">החזיקו בנכסי קריפטו תחת ידכם. עקבו אחר ביצועי תיק ההשקעות, עשו שימוש ב-DApps של Web3. סחרו, השקיעו, קחו והעניקו הלוואות באמצעות DeFi. הכל היישר מדפדפן הפרטיות Brave. ללא הרחבות, וללא צורך בהורדה.</translation>
+<translation id="6972754398087986839">תחילת העבודה</translation>
+<translation id="2813156651070657572">אבטח את נכסי הקריפטו שלך עם סיסמה</translation>
+<translation id="6901073872645365201">הסיסמה חייבת להיות באורך של 7 תווים לפחות והיא חייבת להכיל לפחות מספר אחד ותו מיוחד אחד</translation>
+<translation id="5486261815000869482">אשר סיסמה</translation>
+<translation id="7982184974053636367">נדרשת סיסמה חזקה יותר עבור Brave Wallet</translation>
+<translation id="2372897697869224590">הגדר סיסמה ל-Brave Wallet</translation>
+<translation id="7739762330714405363">השתמש באותה סיסמה</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="7102907656918333773">ייבוא מן <ph name="WALLET_EXTENSION"/></translation>
+<translation id="1737856990004825123">באפשרותך לייבא את חשבונות ה-<ph name="WALLET_EXTENSION"/>  שלך אל Brave Wallet, ולהנות מדרך מהירה ובטוחה יותר לנהל נכסי קריפטו ואינטראקציה עם DApps של Web3.</translation>
+<translation id="4237840336687249184">סיסמה ל-MetaMask</translation>
+<translation id="2381605201035323535">ארנקי קריפטו</translation>
+<translation id="4938145712652668388">כאשר תלחץ על "התחל" תייבא את ה-Crypto Wallet הקודם שלך לחוויית ה-Brave Wallet, ותיהנה מכל היתרונות המתוארים לעיל. נסה וספר לנו מה אתה חושב!</translation>
+<translation id="9099900965604225657">סיסמת ארנקי הקריפטו</translation>
+<translation id="4020495774166914146">איבדתי את הסיסמא וביטוי השחזור שלי, צור ארנק חדש.</translation>
+<translation id="7709075156958117386">אם יש בעיה באתר, נסו שלא להפעיל הגנות. <ph name="LINK_BEFORE"/> שימו לב: ייתכן והגנות הפרטיות של Brave יצטמצמו.<ph name="LINK_AFTER"/></translation>
 </translationbundle>

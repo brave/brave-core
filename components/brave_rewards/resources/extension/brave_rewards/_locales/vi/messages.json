@@ -311,6 +311,18 @@
       }
     }
   },
+  "notificationBackupWalletTitle": {
+    "message": "Sao lưu Phần thưởng Brave",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "Vui lòng sao lưu Phần thưởng Brave của bạn.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "Sao lưu ngay",
+    "description": ""
+  },
   "notificationWalletDisconnectedTitle": {
     "message": "Bạn đã đăng xuất",
     "description": ""

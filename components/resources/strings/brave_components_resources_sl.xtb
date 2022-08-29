@@ -1487,4 +1487,36 @@
 <translation id="6973157709854838218">Skrijte svoje stanje pred prikazom</translation>
 <translation id="4548946945059463969">Razkrijte svoje stanje na zaslonu</translation>
 <translation id="242959166945779492">Na vašem računu ni nobenih sredstev. Obiščite FTX, če jih želite kupiti.</translation>
+<translation id="9190084253595768053">Imate težave pri povezovanju? Odprite <ph name="BEGIN_LINK"/>Brave nastavitve<ph name="END_LINK"/>, onemogočite zasebno okno s Torom, nato ga znova omogočite. Imate še vedno težave?</translation>
+<translation id="6977372887576114613">Vplačani BAT</translation>
+<translation id="194625454574835815">Obnovitveni ključ</translation>
+<translation id="5717619667204259673">Poskrbite za varnost tega obnovitvenega ključa.</translation>
+<translation id="7018390569051511373">Ta ključ lahko vedno uporabite za vrnitev profila Rewards, če se vašemu brskalniku ali računalniku kaj zgodi. Poskrbite za ustrezno zaščito, kajti vsak, ki prejme ta ključ, vam lahko profil nagrad ukrade. Verjetno bo najvarneje, če si to zapišete na kos papirja ali na neko varno mesto, kjer hranite pomembne podatke.</translation>
+<translation id="8979401359137062629">Opomba:</translation>
+<translation id="7934806082615382155">Del sredstev lahko prejmete prek programa Brave in niso vključena v rezervno kopijo, saj to ni potrebno. Na voljo so vam, če jih porabite izključno v tem brskalniku.</translation>
+<translation id="1738658589626889850">Shrani kot datoteko</translation>
+<translation id="2173151783558384314">Podjetje Brave bo uporabljalo aplikacijo Infura za izdajanje klicev Ethereum JSON-RPC pametni pogodbi podjetja Unstoppable Domains za reševanje zahtevkov za iskanje domenskih imen .crypto (in tudi .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin). Če to omogočite, bo Infura videla te določene domene, ki jih poskušate obiskati, ne bo pa mogla videti drugih domen. Oglejte si <ph name="BEGIN_INFURA_TOU_LINK"/>pogoje uporabe<ph name="END_INFURA_TOU_LINK"/> in <ph name="BEGIN_INFURA_PRIVACY_LINK"/>politiko zasebnosti<ph name="END_INFURA_PRIVACY_LINK"/> družbe Infura.</translation>
+<translation id="2630264552940126640">Varnostno kopirajte nagrade Brave Rewards</translation>
+<translation id="238922425564381955">Prosimo, varnostno kopirajte svoje nagrade Brave Rewards.</translation>
+<translation id="2860280209982026951">Brave uporablja <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> kot DEX agregator.</translation>
+<translation id="4626407663177532837">Ponudba vključuje 0,875 % Brave pristojbine.</translation>
+<translation id="1420318137760245955">Dobrodošli v novi Brave denarnici</translation>
+<translation id="3671745544278414606">Kripto premoženje imejte v skrbništvu. Spremljajte uspešnost portfelja in sodelujte z aplikacijami Web3 DApps. Trgujte, vlagajte, najemajte in posojajte z DeFi. Vse to neposredno iz brskalnika Brave za zasebnost. Brez razširitev in prenosa.</translation>
+<translation id="6972754398087986839">Začnite</translation>
+<translation id="2813156651070657572">Zaščitite svoja kripto sredstva z geslom</translation>
+<translation id="6901073872645365201">Gesla morajo biti sestavljena iz najmanj 7 znakov in vsebovati vsaj eno številko in en poseben znak.</translation>
+<translation id="5486261815000869482">Potrdi geslo</translation>
+<translation id="7982184974053636367">Za Brave denarnico potrebujete varnejše geslo</translation>
+<translation id="2372897697869224590">Nastavite geslo za Brave denarnico</translation>
+<translation id="7739762330714405363">Uporabi isto geslo</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="7102907656918333773">Uvozi iz <ph name="WALLET_EXTENSION"/></translation>
+<translation id="1737856990004825123">Uvozite račune <ph name="WALLET_EXTENSION"/> v denarnico Brave. Uživajte v hitrejšem in varnejšem načinu upravljanja kripto sredstev in interakcije z aplikacijami Web3 DApps.</translation>
+<translation id="4237840336687249184">Geslo za MetaMask</translation>
+<translation id="2381605201035323535">kripto denarnice</translation>
+<translation id="4938145712652668388">Ko kliknete »Začni«, boste uvozili svojo prejšnjo kripto denarnico v novo Brave denarnico in uživali v vseh zgoraj opisanih prednostih. Poskusite in nam sporočite, kako se vam zdi!</translation>
+<translation id="9099900965604225657">Geslo za kripto denarnice</translation>
+<translation id="4020495774166914146">Izgubil sem geslo in frazo za obnovitev, ustvarite novo denarnico.</translation>
+<translation id="7709075156958117386">Če se vam zdi, da se to spletno mesto ne odpira, poskusite ščit izklopiti. 
+    <ph name="LINK_BEFORE"/>Opomba: to lahko zmanjša zaščito zasebnosti Brave.<ph name="LINK_AFTER"/></translation>
 </translationbundle>

@@ -311,6 +311,18 @@
       }
     }
   },
+  "notificationBackupWalletTitle": {
+    "message": "Резервная копия Brave Наград",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "Создайте резервную копию Brave Наград.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "Создать резервную копию",
+    "description": ""
+  },
   "notificationWalletDisconnectedTitle": {
     "message": "Выполнен выход.",
     "description": ""

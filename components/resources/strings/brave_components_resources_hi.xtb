@@ -1488,4 +1488,36 @@
 <translation id="6973157709854838218">अपना बैलेंस छुपाएं</translation>
 <translation id="4548946945059463969">अपना बैलेंस स्क्रीन पर दिखाएं</translation>
 <translation id="242959166945779492">आपके अकाउंट में कोई बैलेंस नहीं है. खरीदने के लिए FTX पर जाएं.</translation>
+<translation id="9190084253595768053">कनेक्ट करने में समस्या आ रही है? <ph name="END_LINK"/>Brave सेटिंग्स <ph name="BEGIN_LINK"/>खोलें, टोर से प्राइवेट विंडो बंद करें, फिर दोबारा शुरू करें. अभी भी परेशानी हो रही है?</translation>
+<translation id="6977372887576114613">जमा किया गया BAT</translation>
+<translation id="194625454574835815">रिकवरी कुंजी</translation>
+<translation id="5717619667204259673">इस पुनर्प्राप्ति कुंजी को सुरक्षित रखें।</translation>
+<translation id="7018390569051511373">जब भी आपके ब्राउज़र या कंप्यूटर में कोई समस्या हो तो आप हमेशा इस की का इस्तेमाल  कर सकते हैं. लेकिन इसकी सुरक्षा को सुनिश्चित करें — जिस किसी को भी यह की  मिलेगी वह आपके Reward प्रोफ़ाइल को चुरा सकता है. शायद सबसे सुरक्षित इसे एक कागज़ पर लिख कर रखना है, या फिर ऐसी जगह जहाँ आप अपनी महत्वपूर्ण जानकारियाँ रखते हैं.</translation>
+<translation id="8979401359137062629">नोट:</translation>
+<translation id="7934806082615382155">फ़ंड का एक हिस्सा Brave से प्राप्त किया जा सकता है और बैकअप में शामिल नहीं होता है क्योंकि इसकी आवश्यकता नहीं होती है। यह आपके लिए इस ब्राउज़र पर विशेष रूप से खर्च करने के लिए उपलब्ध होता है।</translation>
+<translation id="1738658589626889850">फाइल की तरह सुरक्षित करें</translation>
+<translation id="2173151783558384314">अनस्टॉपेबल डोमेन से स्मार्ट कॉन्ट्रैक्ट करने के लिए Brave, Infura का इस्तेमाल करके Ethereum JSON-RPC कॉल जारी करेगा ताकि .crypto (और साथ ही .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin) डोमेन नेम के लुकअप के अनुरोधों को हल किया जा सके. अगर आप इसे चालू करते हैं, तो Infura को वो डोमेन दिखाई देंगे जिन पर आप जाने की कोशिश कर रहे हैं, लेकिन वे दूसरे डोमेन नहीं देख पाएँगे. Infura के <ph name="BEGIN_INFURA_TOU_LINK"/>इस्तेमाल की शर्तें<ph name="END_INFURA_TOU_LINK"/> और <ph name="BEGIN_INFURA_PRIVACY_LINK"/>गोपनीयता नीति<ph name="END_INFURA_PRIVACY_LINK"/> देखें.</translation>
+<translation id="2630264552940126640">Brave Rewards का बैकअप लें</translation>
+<translation id="238922425564381955">कृपया अपने Brave Reward का बैकअप लें.</translation>
+<translation id="2860280209982026951">Brave <ph name="LINK_BEFORE"/>0x <ph name="LINK_AFTER"/>का उपयोग DEX एग्रीगेटर के तौर पर  करता है.</translation>
+<translation id="4626407663177532837">कोट में 0.875% Brave शुल्क शामिल है.</translation>
+<translation id="1420318137760245955">नए Brave Wallet में आपका स्वागत है</translation>
+<translation id="3671745544278414606">क्रिप्टो ऐसेट को अपने पास सुरक्षित रखें. पोर्टफ़ोलियो की परफ़ॉर्मेंस को ट्रैक करें और Web3 DApps के साथ इंटरैक्ट करें. DeFi के साथ ट्रेड करें, निवेश करें, उधार लें और उधार दें. ये सब सीधे Brave प्राइवेसी ब्राउज़र के ज़रिए करें. किसी एक्सटेंशन या कुछ डाउनलोड करने की ज़रूरत नहीं है.</translation>
+<translation id="6972754398087986839">आरंभ करें</translation>
+<translation id="2813156651070657572">एक पासवर्ड के साथ अपनी क्रिप्टो संपत्ति सुरक्षित करें</translation>
+<translation id="6901073872645365201">पासवर्ड कम से कम 7 वर्णों का होना चाहिए, और इसमें कम से कम एक संख्या और एक विशेष वर्ण होना चाहिए.</translation>
+<translation id="5486261815000869482">पासवर्ड की पुष्टि कीजिये</translation>
+<translation id="7982184974053636367">Brave Wallet के लिए एक अधिक सुरक्षित पासवर्ड की आवश्यकता होती है</translation>
+<translation id="2372897697869224590">एक Brave wallet पासवर्ड सेट करें</translation>
+<translation id="7739762330714405363">वही पासवर्ड इस्तेमाल करें</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="7102907656918333773"><ph name="WALLET_EXTENSION"/> से इंपोर्ट करें</translation>
+<translation id="1737856990004825123">अपने <ph name="WALLET_EXTENSION"/> अकाउंट को Brave वॉलेट में इंपोर्ट करें. क्रिप्टो ऐसेट को मैनेज करने और Web3 DApps के साथ इंटरैक्ट करने के ज़्यादा तेज़ और सुरक्षित तरीके के मज़े लें.</translation>
+<translation id="4237840336687249184">MetaMask पासवर्ड</translation>
+<translation id="2381605201035323535">crypto wallets</translation>
+<translation id="4938145712652668388">जब आप "शुरू करें" पर क्लिक करते हैं तो आप अपने पिछले Crypto Wallet को नए Brave Wallet अनुभव में इम्पोर्ट करेंगे, और ऊपर दिए गए सभी सुविधाओं का फ़ायदा उठाएंगे.  इसे आज़माएं, और हमें बताएं कि आप क्या सोचते हैं!</translation>
+<translation id="9099900965604225657">क्रिप्टो वॉलेट पासवर्ड</translation>
+<translation id="4020495774166914146">मैंने अपना पासवर्ड और रिकवरी फ़्रेज़ खो दिया है, एक नया वॉलेट बनाएं.</translation>
+<translation id="7709075156958117386">अगर यह साइट काम नहीं कर रही है, तो शील्ड को बंद करके कोशिश करें.
+<ph name="LINK_BEFORE"/>ध्यान दें: ऐसा करने से Brave की गोपनीयता सुरक्षा घट जाएगी.<ph name="LINK_AFTER"/></translation>
 </translationbundle>

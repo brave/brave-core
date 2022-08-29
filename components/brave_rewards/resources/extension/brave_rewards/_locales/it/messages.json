@@ -311,6 +311,18 @@
       }
     }
   },
+  "notificationBackupWalletTitle": {
+    "message": "Esegui il back up di Ricompense Brave",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "Effettua il backup delle Ricompense Brave.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "Esegui subito il backup",
+    "description": ""
+  },
   "notificationWalletDisconnectedTitle": {
     "message": "Sei disconnesso",
     "description": ""

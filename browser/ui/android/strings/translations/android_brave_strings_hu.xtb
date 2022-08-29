@@ -885,4 +885,34 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="2832270987629018596">Érvénytelen SOL-cím</translation>
 <translation id="8181161042860463420">A kapcsolódó tokenszámla még nem létezik. Ennek létrehozására és fenntartására egy kisebb SOL-összeg lesz felhasználva. <ph name="CLICK_START"/>További információ:<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">VPN-profil frissítése...</translation>
+<translation id="4258022280942725182">Az Ön Brave Jutalmai</translation>
+<translation id="3826081199286264109">USD</translation>
+<translation id="880893465294676334">Ez az ellenőrzött Brave alkotó még nem állította be fiókját a hozzájárulások fogadására a Brave felhasználóktól.
+         Minden küldött borravaló az Ön pénztárcájában marad, amíg elvégzik ezt a műveletet.</translation>
+<translation id="8918760045046434238">Küldjön egy borravalót...</translation>
+<translation id="1978261665418056203">Még nincs tevékenység ebben a 
+hónapban...</translation>
+<translation id="9182287025588539628">Egyszeri adomány</translation>
+<translation id="4914597931214386232">Beváltott zseton adományok</translation>
+<translation id="298067735430872465">Jövedelem hirdetésekből</translation>
+<translation id="2730771409541953249">JUTALOM ÖSSZESÍTŐ</translation>
+<translation id="5463954686005964104">Adakozz havonta ennek az oldalnak</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">Brave Jutalmak biztonsági másolat készítése</translation>
+<translation id="238922425564381955">Készítsen biztonsági másolatot a Brave Jutalmakról.</translation>
+<translation id="3692362746128814480">Kijelölt <ph name="BAT_VALUE"/> BAT-ot olyan alkotóknak, akik még nem jelentkeztek be hozzájárulások fogadására. Böngészője próbálkozni fog a hozzájárulással, amíg elvégzik az ellenőrzést, vagy eltelik 90 nap.</translation>
+<translation id="8782039523249932839">Ez törölni fogja a Brave pénztárcádat és minden Brave Jutalom adatod alapállapotba fog kerülni.</translation>
+<translation id="7924320838799747606">Egyenleg</translation>
+<translation id="8030169304546394654">Nincs kapcsolat</translation>
+<translation id="543510923939676996">Pénztárca ellenőrizve</translation>
+<translation id="4488355059795908907">Ez az ellenőrzött Brave alkotó még nem állította be fiókját a hozzájárulások fogadására a Brave felhasználóktól. Minden küldött borravaló a pénztárcádban marad, amíg elvégzik ezt a műveletet.</translation>
+<translation id="7559243474426790340">Frissítési állapot</translation>
+<translation id="3769645103175790584">Szerezzen tokeneket és jutalmazza meg a készítőket a kiváló tartalmakért.<ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">Gyors bemutató</translation>
+<translation id="1080013038789678738">Benne vagyok!</translation>
+<translation id="5587305863196367357">A pénztárca ellenőrzésével egyszerűen kezelheti alapjait, adhat hozzá vagy vehet le belőle.</translation>
+<translation id="5760671211380791582">Nem rendelkezik elegendő BAT-tal.</translation>
+<translation id="442469478596827903">Legalább 2 BAT-ra van szükség ellenőrzött Uphold pénztárca létrehozásához. Próbálja újra később.</translation>
+<translation id="4389085954549744469">Ha már van hitelesített Uphold-fiókja, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">lépjen tovább a bejelentkezéshez</translation>
 </translationbundle>

@@ -311,6 +311,18 @@
       }
     }
   },
+  "notificationBackupWalletTitle": {
+    "message": "גבה את Brave Rewards",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "נא לגבות את Brave Rewards.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "גבה כעת",
+    "description": ""
+  },
   "notificationWalletDisconnectedTitle": {
     "message": "אתה מנותק",
     "description": ""

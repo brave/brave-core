@@ -311,6 +311,18 @@
       }
     }
   },
+  "notificationBackupWalletTitle": {
+    "message": "Zálohovať Brave Rewards",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "Zálohujte si Brave Rewards.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "Zálohovať teraz",
+    "description": ""
+  },
   "notificationWalletDisconnectedTitle": {
     "message": "Ste odhlásení",
     "description": ""

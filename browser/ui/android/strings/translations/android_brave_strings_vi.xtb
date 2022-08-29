@@ -885,4 +885,34 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="2832270987629018596">Không phải là địa chỉ SOL hợp lệ</translation>
 <translation id="8181161042860463420">Tài khoản mã thông báo được liên kết chưa tồn tại. Một lượng nhỏ SOL sẽ được sử dụng để tạo và cấp vốn cho nó. <ph name="CLICK_START"/>Tìm hiểu thêm<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Đang cập nhật cấu hình VPN...</translation>
+<translation id="4258022280942725182">Phần thưởng Brave của bạn</translation>
+<translation id="3826081199286264109">USD</translation>
+<translation id="880893465294676334">Nhà sáng tạo Brave đã xác thực này chưa cấu hình tài khoản của họ để nhận các khoản đóng góp từ Người dùng Brave.
+        Mọi khoản tiền boa mà bạn gửi sẽ vẫn ở trong ví của bạn cho đến khi họ hoàn tất quá trình này.</translation>
+<translation id="8918760045046434238">Gửi tip...</translation>
+<translation id="1978261665418056203">Chưa có hoạt động nào
+tháng này...</translation>
+<translation id="9182287025588539628">Tiền Tip Một lần</translation>
+<translation id="4914597931214386232">Khoản thưởng Token Đã nhận</translation>
+<translation id="298067735430872465">Tiền kiếm được từ Quảng cáo</translation>
+<translation id="2730771409541953249">TÓM TẮT PHẦN THƯỞNG</translation>
+<translation id="5463954686005964104">Gửi tiền boa cho trang web này hàng tháng</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">Sao lưu Phần thưởng Brave</translation>
+<translation id="238922425564381955">Vui lòng sao lưu Phần thưởng Brave của bạn.</translation>
+<translation id="3692362746128814480">Bạn đã chỉ định <ph name="BAT_VALUE"/> BAT cho những người sáng tạo nội dung chưa đăng ký nhận đóng góp. Trình duyệt của bạn sẽ tiếp tục cố đóng góp cho đến khi họ xác thực, hoặc cho đến khi hết 90 ngày.</translation>
+<translation id="8782039523249932839">Thao tác này sẽ xóa ví Brave của bạn và đặt lại mọi dữ liệu Phần thưởng Brave của bạn</translation>
+<translation id="7924320838799747606">Số dư của bạn</translation>
+<translation id="8030169304546394654">Đã ngắt kết nối</translation>
+<translation id="543510923939676996">Ví đã được xác thực.</translation>
+<translation id="4488355059795908907">Người sáng tạo Đã xác minh của Brave này chưa định cấu hình tài khoản của họ để nhận đóng góp từ người dùng Brave. Bất kỳ khoản tiền tip nào bạn gửi sẽ vẫn còn trong ví của bạn cho đến khi họ hoàn thành quá trình này.</translation>
+<translation id="7559243474426790340">Làm mới Trạng thái</translation>
+<translation id="3769645103175790584">Kiếm token và tặng cho những người sáng tạo có nội dung tuyệt vời khi bạn duyệt web. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">Giới thiệu nhanh</translation>
+<translation id="1080013038789678738">Tôi Tham gia!</translation>
+<translation id="5587305863196367357">Việc xác minh ví cho phép bạn quản lý tiền của mình một cách dễ dàng, thêm &amp; rút tiền</translation>
+<translation id="5760671211380791582">Bạn không có đủ BAT.</translation>
+<translation id="442469478596827903">Bạn cần có ít nhất 2 BAT để tạo một ví Uphold được xác minh. Vui lòng thử lại sau.</translation>
+<translation id="4389085954549744469">Nếu bạn đã có tài khoản Uphold được xác minh, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">tiếp tục đăng nhập</translation>
 </translationbundle>

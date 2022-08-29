@@ -311,6 +311,18 @@
       }
     }
   },
+  "notificationBackupWalletTitle": {
+    "message": "Varunda Brave'i Preemiad",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "Varundage oma Brave'i Preemiad.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "Varunda kohe",
+    "description": ""
+  },
   "notificationWalletDisconnectedTitle": {
     "message": "Olete välja logitud",
     "description": ""
