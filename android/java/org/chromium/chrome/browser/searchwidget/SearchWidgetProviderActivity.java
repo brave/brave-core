@@ -7,13 +7,25 @@
 
 package org.chromium.chrome.browser.searchwidget;
 
+import android.app.SearchManager;
 import android.content.Intent;
 
+import org.chromium.base.IntentUtils;
 import org.chromium.chrome.browser.searchwidget.SearchActivity;
+import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityConstants;
 
 public class SearchWidgetProviderActivity extends SearchActivity {
     @Override
     public void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
+        Intent newIntent = new Intent();
+        if (IntentUtils.safeGetStringExtra(intent, SearchManager.QUERY) != null) {
+            newIntent.putExtra(
+                    "query", IntentUtils.safeGetStringExtra(intent, SearchManager.QUERY));
+        }
+
+        if (intent.getAction().equals(SearchActivityConstants.ACTION_START_TEXT_SEARCH)) {
+            newIntent.setAction(SearchActivityConstants.ACTION_START_TEXT_SEARCH);
+        }
+        super.onNewIntent(newIntent);
     }
 }
