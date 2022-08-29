@@ -69,7 +69,8 @@ export const VirtualizedTokensList = ({
   getItemSize
 }: VirtualizedTokensListProps) => {
   // computed
-  const minimumItems = (Math.min(5, userAssetList.length || 1)) // min: 1, max: 5
+  // last item shown as 50% visible to indicate that scrolling is possible here
+  const minimumItems = (Math.min(4.5, userAssetList.length || 1)) // min: 1, max: 4.5
   const listHeight = estimatedItemSize * minimumItems
 
   // render
