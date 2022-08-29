@@ -26,18 +26,6 @@ export function saveShowBackgroundImage (value: boolean): void {
   sendSavePref('showBackgroundImage', value)
 }
 
-export function saveShowClock (value: boolean): void {
-  sendSavePref('showClock', value)
-}
-
-export function saveClockFormat (value: string): void {
-  sendSavePref('clockFormat', value)
-}
-
-export function saveShowStats (value: boolean): void {
-  sendSavePref('showStats', value)
-}
-
 export function saveShowToday (value: boolean): void {
   sendSavePref('showToday', value)
 }
