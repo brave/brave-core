@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/environment.h"
