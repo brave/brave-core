@@ -6,9 +6,9 @@
 r"""A tool to make a local comparison of few binaries/args
 
 The tool:
-1. Download a proper binary.
+1. Download proper binaries and profiles.
 2. Run a subset of telemetry perftests from the provided config.
-3. Report the result to brave-perf-dashboard.appspot.com
+3. Store results as a local .html file.
 
 The tool is best run on specially prepared hardware/OS to minimize jitter.
  vpython3 perf_compare.py --working-directory=e:\work\tmp\perf0\
