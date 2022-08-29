@@ -20,6 +20,7 @@ import Combine
 import Brave
 import BraveVPN
 import RuntimeWarnings
+import BraveNews
 
 #if DEBUG
 import os

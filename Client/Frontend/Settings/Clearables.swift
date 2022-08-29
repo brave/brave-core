@@ -8,6 +8,7 @@ import Data
 import BraveShared
 import WebKit
 import BraveCore
+import BraveNews
 
 private let log = Logger.browserLogger
 

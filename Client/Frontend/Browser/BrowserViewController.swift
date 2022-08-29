@@ -26,6 +26,7 @@ import SwiftUI
 import class Combine.AnyCancellable
 import BraveWallet
 import BraveVPN
+import BraveNews
 
 private let log = Logger.browserLogger
 
@@ -315,7 +316,7 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
       }
     }
 
-    feedDataSource.rewards = rewards
+    feedDataSource.ads = rewards.ads
     
     // Observer watching tab information is sent by another device
     openTabsModelStateListener = braveCore.sendTabAPI.add(

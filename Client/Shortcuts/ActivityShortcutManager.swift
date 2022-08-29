@@ -12,6 +12,7 @@ import MobileCoreServices
 import UIKit
 import BrowserIntentsModels
 import BraveVPN
+import BraveNews
 
 private let log = Logger.browserLogger
 
@@ -160,7 +161,7 @@ public class ActivityShortcutManager: NSObject {
         guard let newTabPageController = bvc.tabManager.selectedTab?.newTabPageViewController else { return }
         newTabPageController.scrollToBraveNews()
       } else {
-        let controller = BraveNewsSettingsViewController(dataSource: bvc.feedDataSource, rewards: bvc.rewards)
+        let controller = BraveNewsSettingsViewController(dataSource: bvc.feedDataSource, ads: bvc.rewards.ads)
         let container = UINavigationController(rootViewController: controller)
         bvc.present(container, animated: true)
       }

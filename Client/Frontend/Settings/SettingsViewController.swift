@@ -16,6 +16,7 @@ import SwiftUI
 import BraveWallet
 import BraveUI
 import BraveVPN
+import BraveNews
 
 extension TabBarVisibility: RepresentableOptionType {
   public var displayString: String {
@@ -233,7 +234,7 @@ class SettingsViewController: TableViewController {
       Row(
         text: Strings.BraveNews.braveNews,
         selection: {
-          let todaySettings = BraveNewsSettingsViewController(dataSource: self.feedDataSource, rewards: self.rewards)
+          let todaySettings = BraveNewsSettingsViewController(dataSource: self.feedDataSource, ads: self.rewards?.ads)
           self.navigationController?.pushViewController(todaySettings, animated: true)
         }, image: UIImage(named: "settings-brave-today", in: .current, compatibleWith: nil)!.template, accessory: .disclosureIndicator)
     )

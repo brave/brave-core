@@ -25,6 +25,7 @@
 		27BEDCCC28AD37CE0073425E /* BraveWidgets.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = CA0391E5271E1382000EB13C /* BraveWidgets.intentdefinition */; settings = {ATTRIBUTES = (no_codegen, ); }; };
 		27D6761A282DA10700BCE16E /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27D67619282DA10700BCE16E /* Icons.xcassets */; };
 		27D67623282DAD3700BCE16E /* BrowserIntents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 27D67621282DAD3700BCE16E /* BrowserIntents.intentdefinition */; settings = {ATTRIBUTES = (no_codegen, ); }; };
+		27D972E628BD4D9900DDCF79 /* BraveNews in Frameworks */ = {isa = PBXBuildFile; productRef = 27D972E528BD4D9900DDCF79 /* BraveNews */; };
 		27F4439F2135E11200296C58 /* ShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 27F443952135E11200296C58 /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		27F443AD2135E25300296C58 /* ShareToBraveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F443AC2135E25300296C58 /* ShareToBraveViewController.swift */; };
 		27FA21752837F8EA00FA2C45 /* BrowserIntentsModels in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA21742837F8EA00FA2C45 /* BrowserIntentsModels */; };
@@ -359,6 +360,7 @@
 				27AD20C326851C5400889AA7 /* BraveCore.xcframework in Frameworks */,
 				E6231C051B90A472005ABB0D /* libxml2.2.tbd in Frameworks */,
 				E6231C011B90A44F005ABB0D /* libz.tbd in Frameworks */,
+				27D972E628BD4D9900DDCF79 /* BraveNews in Frameworks */,
 				27FA217F2837FB0100FA2C45 /* BraveShared in Frameworks */,
 				27FA21812837FB0100FA2C45 /* BraveWallet in Frameworks */,
 				279A9BC22823370100F40FC6 /* ObjcExceptionBridging in Frameworks */,
@@ -770,6 +772,7 @@
 				27FA218A2837FB0100FA2C45 /* Storage */,
 				270ECFC72838210F0089B8B7 /* Brave */,
 				27466BB0288EDB9C00584C90 /* RuntimeWarnings */,
+				27D972E528BD4D9900DDCF79 /* BraveNews */,
 			);
 			productName = Client;
 			productReference = F84B21BE1A090F8100AAB793 /* Client.app */;
@@ -2911,6 +2914,10 @@
 		27AAA114283D2BC6004C9B5E /* BraveWidgetsModels */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = BraveWidgetsModels;
+		};
+		27D972E528BD4D9900DDCF79 /* BraveNews */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BraveNews;
 		};
 		27FA21742837F8EA00FA2C45 /* BrowserIntentsModels */ = {
 			isa = XCSwiftPackageProductDependency;
