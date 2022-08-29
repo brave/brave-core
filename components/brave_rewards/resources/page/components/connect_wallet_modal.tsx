@@ -15,13 +15,6 @@ import connectWalletGraphic from '../assets/connect_wallet.svg'
 
 import * as style from './connect_wallet_modal.style'
 
-export function getMinimumBalance (provider: string) {
-  switch (provider) {
-    case 'uphold': return 2
-    default: return 0
-  }
-}
-
 function renderProviderIcon (provider: string) {
   switch (provider) {
     case 'bitflyer': return <BitflyerIcon />
@@ -51,8 +44,6 @@ export function ConnectWalletModal (props: Props) {
   const [modalState, setModalState] = React.useState<ModalState>('info')
   const [selectedProvider, setSelectedProvider] =
     React.useState<ExternalWalletProvider | null>(null)
-  const [showMinimumBalanceWarning, setShowMinimumBalanceWarning] =
-    React.useState(false)
 
   if (props.providers.length === 0) {
     return null
@@ -126,26 +117,6 @@ export function ConnectWalletModal (props: Props) {
             <style.panelText>
               {getString('connectWalletChooseText')}
             </style.panelText>
-            {
-              showMinimumBalanceWarning && selectedProvider &&
-                <style.minimumBalanceWarning>
-                  {
-                    formatMessage(getString('minimumBalanceWarning'), [
-                      selectedProvider.name,
-                      getMinimumBalance(selectedProvider.type)
-                    ])
-                  }
-                  <div className='login'>
-                    <a
-                      data-test-id='connect-login-button'
-                      href='#'
-                      onClick={onLoginLinkClicked}
-                    >
-                      {getString('continueToLogin')}
-                    </a>
-                  </div>
-                </style.minimumBalanceWarning>
-            }
           </style.selectWalletContent>
           <style.selectWalletNote>
             {getString('connectWalletChooseNote')}
@@ -158,12 +129,7 @@ export function ConnectWalletModal (props: Props) {
             props.providers.map((provider) => {
               const onClick = () => {
                 setSelectedProvider(provider)
-                if (props.rewardsBalance < getMinimumBalance(provider.type)) {
-                  setShowMinimumBalanceWarning(true)
-                } else {
-                  setShowMinimumBalanceWarning(false)
-                  props.onContinue(provider.type)
-                }
+                props.onContinue(provider.type)
               }
 
               const selected =
