@@ -13,6 +13,7 @@ import * as gridSitesActions from '../../actions/grid_sites_actions'
 import * as newTabActions from '../../actions/new_tab_actions'
 // Feature-specific components
 import { GridPagesContainer, List, PagesContainer } from '../../components/default/gridSites'
+import createWidget from '../../components/default/widget'
 // Constants
 import { MAX_GRID_SIZE } from '../../constants/new_tab_ui'
 import { useMaintainScrollPosition } from '../../helpers/scrolling'
@@ -60,7 +61,7 @@ function TopSitesPage (props: Props & { maxGridSize: number, page: number }) {
   </List>
 }
 
-export default function TopSitesList (props: Props) {
+function TopSitesList (props: Props) {
   const { gridSites, customLinksEnabled } = props
   const maxGridSize = customLinksEnabled ? MAX_GRID_SIZE : (MAX_GRID_SIZE / 2)
 
@@ -104,3 +105,5 @@ export default function TopSitesList (props: Props) {
       <GridPageButtons numPages={pageCount} pageContainerRef={gridPagesContainerRef} />}
   </PagesContainer>
 }
+
+export default createWidget(TopSitesList)

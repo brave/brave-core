@@ -282,6 +282,11 @@ class NewTabPage extends React.Component<Props, State> {
     )
   }
 
+  toggleShowTopSites = () => {
+    const { showTopSites, customLinksEnabled } = this.props.newTabData
+    this.props.actions.setMostVisitedSettings(!showTopSites, customLinksEnabled)
+  }
+
   toggleShowBraveNewsButton = () => {
     this.props.saveShowBraveNewsButton(
       !this.props.newTabData.showBraveNewsButton
@@ -1191,21 +1196,26 @@ class NewTabPage extends React.Component<Props, State> {
             menuPosition='left'>
             <Clock />
           </GridWidget>
-          <GridWidget
-            pref='showTopSites'
-            container={Page.GridItemTopSites}
-            paddingType='none'
-            widgetTitle={getLocale('topSitesTitle')}
-            menuPosition={'right'}
-            onAddSite={showAddNewSiteMenuItem ? this.showEditTopSite : undefined}
-            onToggleCustomLinksEnabled={this.toggleCustomLinksEnabled}
-            textDirection={newTabData.textDirection}>
-            <TopSitesGrid
-              actions={actions}
-              customLinksEnabled={newTabData.customLinksEnabled}
-              gridSites={gridSitesData.gridSites}
-              onShowEditTopSite={this.showEditTopSite} />
-          </GridWidget>
+          {
+            showTopSites
+              ? (
+              <Page.GridItemTopSites>
+                <TopSitesGrid
+                  actions={actions}
+                  paddingType={'none'}
+                  customLinksEnabled={newTabData.customLinksEnabled}
+                  onShowEditTopSite={this.showEditTopSite}
+                  widgetTitle={getLocale('topSitesTitle')}
+                  gridSites={gridSitesData.gridSites}
+                  menuPosition={'right'}
+                  hideWidget={this.toggleShowTopSites}
+                  onAddSite={showAddNewSiteMenuItem ? this.showEditTopSite : undefined}
+                  onToggleCustomLinksEnabled={this.toggleCustomLinksEnabled}
+                  textDirection={newTabData.textDirection}
+                />
+              </Page.GridItemTopSites>
+              ) : null
+          }
           {
             gridSitesData.shouldShowSiteRemovedNotification
             ? (
@@ -1287,6 +1297,7 @@ class NewTabPage extends React.Component<Props, State> {
           toggleShowBackgroundImage={this.toggleShowBackgroundImage}
           toggleShowToday={this.toggleShowToday}
           toggleShowBraveNewsButton={this.toggleShowBraveNewsButton}
+          toggleShowTopSites={this.toggleShowTopSites}
           setMostVisitedSettings={this.setMostVisitedSettings}
           toggleBrandedWallpaperOptIn={this.toggleShowBrandedWallpaper}
           useCustomBackgroundImage={this.props.useCustomBackgroundImage}
@@ -1295,6 +1306,7 @@ class NewTabPage extends React.Component<Props, State> {
           showBackgroundImage={newTabData.showBackgroundImage}
           showToday={newTabData.showToday}
           showBraveNewsButton={newTabData.showBraveNewsButton}
+          showTopSites={newTabData.showTopSites}
           customLinksEnabled={newTabData.customLinksEnabled}
           showRewards={newTabData.showRewards}
           showBinance={newTabData.showBinance}
