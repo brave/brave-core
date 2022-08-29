@@ -10,6 +10,8 @@
 #include "base/logging.h"
 #include "base/time/time.h"
 #include "bat/ads/notification_ad_info.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
 #include "mojo/public/cpp/bindings/sync_call_restrictions.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 

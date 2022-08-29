@@ -6,7 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FEATURES_EPSILON_GREEDY_BANDIT_FEATURES_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FEATURES_EPSILON_GREEDY_BANDIT_FEATURES_H_
 
-#include "base/feature_list.h"
+#include "base/feature_list.h"  // IWYU pragma: keep
 
 namespace ads {
 namespace targeting {

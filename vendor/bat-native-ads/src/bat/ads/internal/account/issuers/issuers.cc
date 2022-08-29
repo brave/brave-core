@@ -20,6 +20,7 @@
 #include "bat/ads/internal/base/url/url_request_string_util.h"
 #include "bat/ads/internal/base/url/url_response_string_util.h"
 #include "bat/ads/pref_names.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 

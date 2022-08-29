@@ -7,7 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FLAGS_FLAG_MANAGER_CONSTANTS_H_
 
 #include "bat/ads/internal/flags/environment/environment_types.h"
-#include "build/build_config.h"
+#include "build/build_config.h"  // IWYU pragma: keep
 
 namespace ads {
 

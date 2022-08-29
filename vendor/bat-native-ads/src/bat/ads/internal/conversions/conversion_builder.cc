@@ -5,8 +5,8 @@
 
 #include "bat/ads/internal/conversions/conversion_builder.h"
 
-#include "base/time/time.h"
 #include "bat/ads/internal/conversions/conversion_info.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 

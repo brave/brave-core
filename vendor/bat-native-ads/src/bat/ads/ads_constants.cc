@@ -6,11 +6,11 @@
 #include "bat/ads/ads_constants.h"  // IWYU pragma: keep
 
 namespace ads {
-namespace resource {
 namespace data {
+namespace resource {
 
-const char g_catalog_json_schema_name[] = "catalog-schema.json";
+const char kCatalogJsonSchemaName[] = "catalog-schema.json";
 
-}  // namespace data
 }  // namespace resource
+}  // namespace data
 }  // namespace ads

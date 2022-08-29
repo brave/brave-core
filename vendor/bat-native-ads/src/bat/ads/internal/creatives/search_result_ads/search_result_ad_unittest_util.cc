@@ -7,6 +7,7 @@
 
 #include "base/guid.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "url/gurl.h"
 
 namespace ads {

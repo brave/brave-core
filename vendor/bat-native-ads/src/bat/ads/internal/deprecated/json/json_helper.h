@@ -16,8 +16,8 @@
 
 #include "base/check.h"
 #include "rapidjson/document.h"
-#include "rapidjson/error/en.h"
-#include "rapidjson/schema.h"
+#include "rapidjson/error/en.h"  // IWYU pragma: keep
+#include "rapidjson/schema.h"    // IWYU pragma: keep
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/writer.h"
 

@@ -6,6 +6,7 @@
 #include "bat/ads/build_channel.h"
 
 #include "base/no_destructor.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 

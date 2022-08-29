@@ -6,19 +6,18 @@
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 
 #include "base/bind.h"
+#include "base/check.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/creatives/creative_ad_unittest_util.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
-#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
 namespace ads {
 
 void SaveCreativeAds(const CreativeNotificationAdList& creative_ads) {
   database::table::CreativeNotificationAds database_table;
-  database_table.Save(creative_ads, base::BindOnce([](const bool success) {
-                        ASSERT_TRUE(success);
-                      }));
+  database_table.Save(
+      creative_ads, base::BindOnce([](const bool success) { CHECK(success); }));
 }
 
 CreativeNotificationAdList BuildCreativeNotificationAds(const int count) {

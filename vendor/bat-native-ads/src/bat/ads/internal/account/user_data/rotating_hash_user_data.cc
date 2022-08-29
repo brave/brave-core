@@ -12,6 +12,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/base/crypto/crypto_util.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ads/sys_info.h"
 
 namespace ads {

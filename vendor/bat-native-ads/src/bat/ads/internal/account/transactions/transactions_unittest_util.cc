@@ -6,6 +6,7 @@
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 
 #include "base/bind.h"
+#include "base/check.h"
 #include "base/guid.h"
 #include "base/time/time.h"
 #include "bat/ads/ad_type.h"
@@ -13,15 +14,13 @@
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
-#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
 namespace ads {
 
 void SaveTransactions(const TransactionList& transactions) {
   database::table::Transactions database_table;
-  database_table.Save(transactions, base::BindOnce([](const bool success) {
-                        ASSERT_TRUE(success);
-                      }));
+  database_table.Save(
+      transactions, base::BindOnce([](const bool success) { CHECK(success); }));
 }
 
 TransactionInfo BuildTransaction(const double value,
@@ -53,7 +52,7 @@ int GetTransactionCount() {
       DistantPast(), DistantFuture(),
       [&count](const bool success,
                const TransactionList& transactions) mutable {
-        ASSERT_TRUE(success);
+        CHECK(success);
         count = transactions.size();
       });
 

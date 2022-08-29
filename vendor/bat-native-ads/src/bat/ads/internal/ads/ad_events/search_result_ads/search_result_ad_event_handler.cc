@@ -24,6 +24,7 @@
 #include "bat/ads/internal/conversions/conversions_database_table.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_builder.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_info.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"  // IWYU pragma: keep
 
 namespace ads {
 namespace search_result_ads {

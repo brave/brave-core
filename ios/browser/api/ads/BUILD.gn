@@ -33,6 +33,7 @@ source_set("ads") {
     ":ads_mojom_wrappers",
     ":ads_resources",
     "//base",
+    "//brave/components/brave_federated/public/interfaces",
     "//brave/components/brave_rewards/common",
     "//brave/ios/browser/api/common",
     "//brave/vendor/bat-native-ads",

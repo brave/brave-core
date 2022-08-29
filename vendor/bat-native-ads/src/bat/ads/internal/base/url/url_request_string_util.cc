@@ -12,6 +12,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 

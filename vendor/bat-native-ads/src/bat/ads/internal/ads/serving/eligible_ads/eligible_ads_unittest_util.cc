@@ -6,10 +6,10 @@
 #include "bat/ads/internal/ads/serving/eligible_ads/eligible_ads_unittest_util.h"
 
 #include "base/bind.h"
+#include "base/check.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table_unittest_util.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
-#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
 namespace ads {
 
@@ -19,7 +19,7 @@ void ResetEligibleAds(const AdType& type) {
   ClientStateManager::GetInstance()->ResetAllSeenAdvertisersForType(type);
 
   database::table::ad_events::Reset(
-      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
+      base::BindOnce([](const bool success) { CHECK(success); }));
 }
 
 }  // namespace ads

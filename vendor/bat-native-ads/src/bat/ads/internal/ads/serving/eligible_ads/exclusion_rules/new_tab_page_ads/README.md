@@ -2,7 +2,7 @@
 
 Exclusion rules frequency cap the number of times a user can see a new tab page ad.
 
-| permission rule | explanation |
+| permission rule  | explanation  |
 |---|---|
 | anti-targeting  | Exclude the ad if a previously visited site is in the anti-targeting list for the creative set  |
 | conversion  | Exclude the ad if the user has previously converted for the same creative set  |

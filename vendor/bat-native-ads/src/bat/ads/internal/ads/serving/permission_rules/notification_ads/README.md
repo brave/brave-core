@@ -2,7 +2,7 @@
 
 Permission rules determine if users are allowed to see notification ads. Also see [global permission rules](../README.md).
 
-| permission rule | explanation |
+| permission rule  | explanation  |
 |---|---|
 | ads per hour  | Check if the user has exceeded the allowed ads per hour |
 | ads per day  | Check if the user has exceeded the allowed ads per day |

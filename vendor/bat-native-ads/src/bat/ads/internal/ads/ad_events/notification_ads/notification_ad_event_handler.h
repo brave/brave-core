@@ -10,7 +10,7 @@
 
 #include "base/observer_list.h"
 #include "bat/ads/internal/ads/ad_events/notification_ads/notification_ad_event_handler_observer.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom-shared.h"
 
 namespace ads {
 

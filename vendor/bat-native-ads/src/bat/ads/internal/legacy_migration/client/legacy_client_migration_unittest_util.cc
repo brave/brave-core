@@ -5,21 +5,17 @@
 
 #include "bat/ads/internal/legacy_migration/client/legacy_client_migration_unittest_util.h"
 
+#include "base/check.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/legacy_migration/client/legacy_client_migration.h"
 #include "bat/ads/pref_names.h"
-#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
 namespace ads {
 namespace client {
 
 void Migrate(const bool should_migrate) {
   Migrate([should_migrate](const bool success) {
-    if (should_migrate) {
-      ASSERT_TRUE(success);
-    } else {
-      ASSERT_FALSE(success);
-    }
+    CHECK_EQ(success, should_migrate);
   });
 }
 

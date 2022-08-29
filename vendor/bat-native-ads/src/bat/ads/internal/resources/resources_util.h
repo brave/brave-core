@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "base/callback.h"
+#include "base/callback.h"  // IWYU pragma: keep
 #include "bat/ads/internal/resources/parsing_result.h"
 
 namespace ads {

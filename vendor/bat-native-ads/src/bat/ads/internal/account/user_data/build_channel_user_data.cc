@@ -7,6 +7,7 @@
 
 #include "base/check.h"
 #include "bat/ads/build_channel.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 namespace user_data {

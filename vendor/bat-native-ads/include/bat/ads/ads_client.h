@@ -10,16 +10,13 @@
 #include <string>
 #include <vector>
 
+#include "base/time/time.h"
 #include "base/values.h"
 #include "bat/ads/ads_client_callback.h"
 #include "bat/ads/export.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
-#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom-forward.h"
+#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom-forward.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
-
-namespace base {
-class Time;
-}  // namespace base
 
 namespace ads {
 

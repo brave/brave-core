@@ -6,8 +6,6 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BASE_NET_HTTP_HTTP_STATUS_CODE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BASE_NET_HTTP_HTTP_STATUS_CODE_H_
 
-#include "net/http/http_status_code.h"
-
 namespace net {
 
 constexpr int kHttpImATeapot = 418;
