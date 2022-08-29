@@ -993,8 +993,13 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
 Object.defineProperty(Config.prototype, 'outputDir', {
   get: function () {
     const baseDir = path.join(this.srcDir, 'out')
-    if (this.__outputDir)
+    if (this.__outputDir) {
+      if (path.isAbsolute(this.__outputDir)) {
+        return this.__outputDir;
+      }
       return path.join(baseDir, this.__outputDir)
+    }
+
     let buildConfigDir = this.buildConfig
     if (this.targetArch && this.targetArch != 'x64') {
       buildConfigDir = buildConfigDir + '_' + this.targetArch
