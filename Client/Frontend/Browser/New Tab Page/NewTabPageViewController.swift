@@ -12,6 +12,8 @@ import BraveShared
 import BraveCore
 import SnapKit
 import SwiftUI
+import BraveNews
+import Combine
 
 /// The behavior for sizing sections when the user is in landscape orientation
 enum NTPLandscapeSizingBehavior {
@@ -109,6 +111,7 @@ class NewTabPageViewController: UIViewController {
   private var preventReloadOnBraveNewsEnabledChange = false
 
   private let notifications: NewTabPageNotifications
+  private var cancellables: Set<AnyCancellable> = []
 
   init(
     tab: Tab,
@@ -187,9 +190,13 @@ class NewTabPageViewController: UIViewController {
     }
 
     Preferences.BraveNews.isEnabled.observe(from: self)
-    feedDataSource.observeState(from: self) { [weak self] in
-      self?.handleFeedStateChange($0, $1)
-    }
+    feedDataSource.$state
+      .scan((.initial, .initial), { ($0.1, $1) })
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] (oldState, newState) in
+        self?.handleFeedStateChange(oldState, newState)
+      }
+      .store(in: &cancellables)
     NotificationCenter.default.addObserver(self, selector: #selector(checkForUpdatedFeed), name: UIApplication.didBecomeActiveNotification, object: nil)
   }
 
@@ -579,11 +586,7 @@ class NewTabPageViewController: UIViewController {
       let isEnabled = feedDataSource.isSourceEnabled(context.item.source)
       feedDataSource.toggleSource(context.item.source, enabled: !isEnabled)
       if isEnabled {
-        let alert = FeedActionAlertView(
-          image: UIImage(named: "disable.feed.source.alert", in: .current, compatibleWith: nil)!,
-          title: Strings.BraveNews.disabledAlertTitle,
-          message: String(format: Strings.BraveNews.disabledAlertBody, context.item.source.name)
-        )
+        let alert = FeedActionAlertView.feedDisabledAlertView(for: context.item)
         alert.present(on: self)
       }
     case .inlineContentAdAction(.opened(let inNewTab, let switchingToPrivateMode), let ad):
@@ -732,7 +735,7 @@ class NewTabPageViewController: UIViewController {
   }
 
   @objc private func tappedBraveNewsSettings() {
-    let controller = BraveNewsSettingsViewController(dataSource: feedDataSource, rewards: rewards)
+    let controller = BraveNewsSettingsViewController(dataSource: feedDataSource, ads: rewards.ads)
     let container = UINavigationController(rootViewController: controller)
     present(container, animated: true)
   }

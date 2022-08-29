@@ -5,6 +5,7 @@
 import UIKit
 import BraveCore
 import Shared
+import BraveUI
 
 /// The main ads view. Mimics a system notification in that it shows an icon, "app name" (always will be "Brave Rewards"), title and body.
 class AdContentButton: UIControl {
@@ -55,7 +56,7 @@ class AdContentButton: UIControl {
     stackView.addArrangedSubview(titleLabel)
     stackView.addArrangedSubview(bodyLabel)
 
-    let iconImageView = UIImageView(image: UIImage(named: "bat-small", in: .current, compatibleWith: nil)!)
+    let iconImageView = UIImageView(image: UIImage(sharedNamed: "bat-small")!)
 
     headerStackView.addArrangedSubview(iconImageView)
     headerStackView.addArrangedSubview(appNameLabel)

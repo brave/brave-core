@@ -8,6 +8,8 @@ import BraveUI
 import Shared
 import BraveShared
 import BraveCore
+import BraveNews
+import DesignSystem
 
 /// Additonal information related to an action performed on a feed item
 struct FeedItemActionContext {
@@ -436,11 +438,11 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
       }
 
       var disableSource: UIAction {
-        .init(title: String(format: Strings.BraveNews.disablePublisherContent, item.source.name), image: UIImage(named: "disable.feed.source", in: .current, compatibleWith: nil), attributes: .destructive, handler: mapDeferredHandler(toggleSourceHandler))
+        .init(title: String(format: Strings.BraveNews.disablePublisherContent, item.source.name), image: UIImage(braveSystemNamed: "brave.eye.slash"), attributes: .destructive, handler: mapDeferredHandler(toggleSourceHandler))
       }
 
       var enableSource: UIAction {
-        .init(title: String(format: Strings.BraveNews.enablePublisherContent, item.source.name), image: UIImage(named: "enable.feed.source", in: .current, compatibleWith: nil), handler: mapDeferredHandler(toggleSourceHandler))
+        .init(title: String(format: Strings.BraveNews.enablePublisherContent, item.source.name), image: UIImage(braveSystemNamed: "brave.eye"), handler: mapDeferredHandler(toggleSourceHandler))
       }
 
       let openActions: [UIAction] = [

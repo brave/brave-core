@@ -9,6 +9,7 @@ import BraveShared
 import SnapKit
 import Shared
 import UIKit
+import BraveNews
 
 /// A set of feed related components that overlay the New Tab Page when Brave News is enabled
 class NewTabPageFeedOverlayView: UIView {

@@ -25,6 +25,7 @@ let package = Package(
     .library(name: "BraveWidgetsModels", targets: ["BraveWidgetsModels"]),
     .library(name: "Strings", targets: ["Strings"]),
     .library(name: "BraveVPN", targets: ["BraveVPN"]),
+    .library(name: "BraveNews", targets: ["BraveNews"]),
     .library(name: "RuntimeWarnings", targets: ["RuntimeWarnings"]),
     .plugin(name: "IntentBuilderPlugin", targets: ["IntentBuilderPlugin"]),
     .plugin(name: "CurrentBundleGenPlugin", targets: ["CurrentBundleGenPlugin"]),
@@ -68,7 +69,6 @@ let package = Package(
         "Static",
         "ZIPFoundation",
         "SDWebImage",
-        "FeedKit",
         "Then",
         "SwiftKeychainWrapper",
         "SwiftyJSON",
@@ -76,6 +76,8 @@ let package = Package(
         "BrowserIntentsModels",
         "BraveWidgetsModels",
         "BraveVPN",
+        "BraveNews",
+        "CodableHelpers",
         .product(name: "Lottie", package: "lottie-ios"),
         .product(name: "Collections", package: "swift-collections"),
       ],
@@ -152,7 +154,6 @@ let package = Package(
         .copy("Frontend/Browser/Onboarding/onboarding-shields.json"),
         .copy("Frontend/Browser/Onboarding/Welcome/disconnect-entitylist.json"),
         .copy("Frontend/Browser/BrowserViewController/ProductNotifications/blocking-summary.json"),
-        .copy("Frontend/Brave Today/Lottie Assets/brave-today-welcome-graphic.json"),
         .copy("Frontend/Sync/WebFilter/Bookmarks/Bookmarks.html"),
         .copy("Frontend/UserContent/UserScripts/ArchiveIsCompat.js"),
         .copy("Frontend/UserContent/UserScripts/BraveSearchHelper.js"),
@@ -310,6 +311,34 @@ let package = Package(
       resources: [.copy("vpncheckmark.json")],
       plugins: ["CurrentBundleGenPlugin"]
     ),
+    .target(
+      name: "BraveNews",
+      dependencies: [
+        "BraveShared",
+        "Strings",
+        "SnapKit",
+        "Then",
+        "XCGLogger",
+        "Data",
+        "BraveUI",
+        "DesignSystem",
+        "CodableHelpers",
+        "BraveCore",
+        "Static",
+        "FeedKit",
+        "Fuzi",
+        .product(name: "Lottie", package: "lottie-ios")
+      ],
+      resources: [
+        .copy("Lottie Assets/brave-today-welcome-graphic.json"),
+      ],
+      plugins: ["CurrentBundleGenPlugin"]
+    ),
+    .testTarget(name: "BraveNewsTests", dependencies: ["BraveNews"], resources: [
+      .copy("opml-test-files/subscriptionList.opml"),
+      .copy("opml-test-files/states.opml"),
+    ]),
+    .target(name: "CodableHelpers"),
     .testTarget(name: "SharedTests", dependencies: ["Shared"]),
     .testTarget(
       name: "BraveSharedTests",
@@ -342,8 +371,6 @@ let package = Package(
         .copy("Resources/debouncing.json"),
         .copy("Resources/google-search-plugin.xml"),
         .copy("Resources/duckduckgo-search-plugin.xml"),
-        .copy("opml-test-files/subscriptionList.opml"),
-        .copy("opml-test-files/states.opml"),
         .copy("blocking-summary-test.json"),
       ]
     ),
