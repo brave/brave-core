@@ -73,7 +73,6 @@ interface Props {
   nextPaymentDate: number
   earningsThisMonth: number
   earningsLastMonth: number
-  earningsReceived: boolean
   contributionsThisMonth: number
   grantInfo: GrantInfo | null
   externalWallet: ExternalWallet | null
@@ -135,7 +134,6 @@ export function RewardsCard (props: Props) {
           <style.pendingRewards>
             <PaymentStatusView
               earningsLastMonth={props.earningsLastMonth}
-              earningsReceived={props.earningsReceived}
               nextPaymentDate={props.nextPaymentDate}
               providerPayoutStatus={props.providerPayoutStatus}
             />
@@ -175,7 +173,6 @@ export function RewardsCard (props: Props) {
         <style.pendingRewards>
           <PaymentStatusView
             earningsLastMonth={props.earningsLastMonth}
-            earningsReceived={props.earningsReceived}
             nextPaymentDate={props.nextPaymentDate}
             providerPayoutStatus={props.providerPayoutStatus}
           />

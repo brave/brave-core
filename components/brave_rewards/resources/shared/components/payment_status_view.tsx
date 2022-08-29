@@ -76,7 +76,6 @@ function RewardAmount (props: RewardAmountProps) {
 
 interface Props {
   earningsLastMonth: number
-  earningsReceived: boolean
   nextPaymentDate: number
   providerPayoutStatus: ProviderPayoutStatus
 }
