@@ -300,12 +300,22 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Tor
       </message>
 
-      <!-- Sync Infobar -->
+      <!-- Sync Infobars -->
       <message name="IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_MESSAGE" desc="Message text shown to users who used a previous version of Brave Sync and need to perform setup again for the new version.">
         Brave Sync has been upgraded and requires setup
       </message>
       <message name="IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_COMMAND" desc="Command text shown to users who used a previous version of Brave Sync and need to perform setup again for the new version.">
         Begin Setup
+      </message>
+
+      <message name="IDS_BRAVE_SYNC_CANNOT_RUN_INFOBAR_MESSAGE" desc="Message text shown to users when Sync service cannot run and additional attention is required">
+        Sync service could not be started, Brave Sync is not running
+      </message>
+      <message name="IDS_BRAVE_SYNC_CANNOT_RUN_INFOBAR_DONT_SHOW_BUTTON" desc="Button text on Sync is not running informer. This button makes the informer fo not appear again">
+        Don't show again
+      </message>
+      <message name="IDS_BRAVE_SYNC_CANNOT_RUN_INFOBAR_CHECK_DETAILS_BUTTON" desc="Button text on Sync is not running informer. This button opens Sync settings">
+        Check details
       </message>
 
       <!-- IPFS -->
