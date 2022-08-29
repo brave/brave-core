@@ -27,11 +27,15 @@ export function buildExplorerUrl (
   const isFileCoinNet =
     (network.chainId === BraveWallet.FILECOIN_TESTNET || network.chainId === BraveWallet.FILECOIN_MAINNET)
 
+  const isSolanaMainNet = network.chainId === BraveWallet.SOLANA_MAINNET
+
   const isSolanaDevOrTestNet =
     (network.chainId === BraveWallet.SOLANA_TESTNET || network.chainId === BraveWallet.SOLANA_DEVNET)
 
   if (isFileCoinNet) {
     return `${explorerURL}?cid=${value}`
+  } else if (isSolanaMainNet && type === 'token') {
+    return `${explorerURL}/address/${value}`
   } else if (isSolanaDevOrTestNet) {
     const explorerIndex = explorerURL.lastIndexOf('?')
     return `${explorerURL.substring(0, explorerIndex)}/${type}/${value}${explorerURL.substring(explorerIndex)}`
