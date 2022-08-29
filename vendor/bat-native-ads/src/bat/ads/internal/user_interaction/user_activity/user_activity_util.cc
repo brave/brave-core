@@ -60,7 +60,7 @@ UserActivityTriggerList ToUserActivityTriggers(const std::string& param_value) {
       continue;
     }
 
-    const std::string event_sequence = value.at(0);
+    const std::string& event_sequence = value.at(0);
     if (event_sequence.length() % 2 != 0) {
       continue;
     }

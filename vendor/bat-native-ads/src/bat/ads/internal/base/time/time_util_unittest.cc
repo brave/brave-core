@@ -7,12 +7,15 @@
 
 #include <string>
 
-#include "base/environment.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
-#include "build/build_config.h"
+#include "build/build_config.h"  // IWYU pragma: keep
+
+#if BUILDFLAG(IS_LINUX)
+#include "base/environment.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#endif  // BUILDFLAG(IS_LINUX)
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

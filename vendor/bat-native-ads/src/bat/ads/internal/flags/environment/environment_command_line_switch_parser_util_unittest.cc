@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/flags/environment/environment_command_line_switch_parser_util.h"
-
 #include <string>
 
 #include "base/strings/stringprintf.h"

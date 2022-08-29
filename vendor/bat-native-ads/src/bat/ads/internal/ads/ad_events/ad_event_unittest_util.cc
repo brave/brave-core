@@ -19,7 +19,7 @@
 #include "bat/ads/internal/base/instance_id_constants.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
-#include "testing/gtest/include/gtest/gtest.h"
+#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
 namespace ads {
 

@@ -70,7 +70,7 @@ class Account final : public PrefManagerObserver,
   void ProcessDeposit(const std::string& creative_instance_id,
                       const AdType& ad_type,
                       const ConfirmationType& confirmation_type,
-                      const double value) const;
+                      double value) const;
   void FailedToProcessDeposit(const std::string& creative_instance_id,
                               const AdType& ad_type,
                               const ConfirmationType& confirmation_type) const;

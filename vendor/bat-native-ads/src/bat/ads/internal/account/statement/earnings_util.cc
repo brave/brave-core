@@ -7,7 +7,6 @@
 
 #include "base/time/time.h"
 #include "bat/ads/internal/account/transactions/reconciled_transactions_util.h"
-#include "bat/ads/internal/account/transactions/transactions_util.h"
 #include "bat/ads/internal/base/time/time_util.h"
 
 namespace ads {

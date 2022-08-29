@@ -14,7 +14,7 @@
 namespace ads {
 namespace inline_content_ads {
 
-PermissionRules::PermissionRules() : PermissionRulesBase() {}
+PermissionRules::PermissionRules() = default;
 
 PermissionRules::~PermissionRules() = default;
 

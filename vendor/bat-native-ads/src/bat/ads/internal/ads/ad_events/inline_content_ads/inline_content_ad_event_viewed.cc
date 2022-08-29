@@ -9,7 +9,6 @@
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/ads/ad_events/ad_events.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/history/history_manager.h"
 
 namespace ads {
 namespace inline_content_ads {

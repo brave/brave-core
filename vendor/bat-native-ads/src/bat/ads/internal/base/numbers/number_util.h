@@ -8,11 +8,11 @@
 
 namespace ads {
 
-bool DoubleEquals(const double lhs, const double rhs);
-bool DoubleIsGreaterEqual(const double lhs, const double rhs);
-bool DoubleIsGreater(const double lhs, const double rhs);
-bool DoubleIsLessEqual(const double lhs, const double rhs);
-bool DoubleIsLess(const double lhs, const double rhs);
+bool DoubleEquals(double lhs, double rhs);
+bool DoubleIsGreaterEqual(double lhs, double rhs);
+bool DoubleIsGreater(double lhs, double rhs);
+bool DoubleIsLessEqual(double lhs, double rhs);
+bool DoubleIsLess(double lhs, double rhs);
 
 }  // namespace ads
 

@@ -14,12 +14,12 @@ namespace targeting {
 struct UserModelInfo;
 
 SegmentList GetTopSegments(const SegmentList& segments,
-                           const int max_count,
-                           const bool parent_only);
+                           int max_count,
+                           bool parent_only);
 
 SegmentList GetTopSegments(const UserModelInfo& user_model,
-                           const int max_count,
-                           const bool parent_only);
+                           int max_count,
+                           bool parent_only);
 
 }  // namespace targeting
 }  // namespace ads

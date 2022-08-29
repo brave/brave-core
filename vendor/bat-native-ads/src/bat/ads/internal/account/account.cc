@@ -27,10 +27,8 @@
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/internal/prefs/pref_manager.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
-#include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/pref_names.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 

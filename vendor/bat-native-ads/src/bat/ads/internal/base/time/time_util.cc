@@ -221,7 +221,7 @@ base::Time AdjustLocalTimeToEndOfMonth(const base::Time time) {
 }
 
 base::Time GetTimeInDistantPast() {
-  return base::Time();
+  return {};
 }
 
 base::Time GetLocalTimeAtBeginningOfLastMonth() {

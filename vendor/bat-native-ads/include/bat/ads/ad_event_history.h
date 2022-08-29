@@ -28,7 +28,7 @@ class ADS_EXPORT AdEventHistory final {
   void RecordForId(const std::string& id,
                    const std::string& ad_type,
                    const std::string& confirmation_type,
-                   const base::Time time);
+                   base::Time time);
 
   std::vector<base::Time> Get(const std::string& ad_type,
                               const std::string& confirmation_type) const;

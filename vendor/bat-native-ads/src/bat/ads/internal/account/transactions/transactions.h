@@ -30,13 +30,13 @@ using GetCallback = std::function<void(const bool, const TransactionList&)>;
 using RemoveAllCallback = std::function<void(const bool)>;
 
 TransactionInfo Add(const std::string& creative_instance_id,
-                    const double value,
+                    double value,
                     const AdType& ad_type,
                     const ConfirmationType& confirmation_type,
                     AddCallback callback);
 
-void GetForDateRange(const base::Time from_time,
-                     const base::Time to_time,
+void GetForDateRange(base::Time from_time,
+                     base::Time to_time,
                      GetCallback callback);
 
 void RemoveAll(RemoveAllCallback callback);

@@ -9,7 +9,7 @@
 namespace ads {
 namespace features {
 
-void ForceServingVersion(const int version);
+void ForceServingVersion(int version);
 
 }  // namespace features
 }  // namespace ads

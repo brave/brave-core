@@ -18,11 +18,11 @@ class ConfirmationType;
 
 void SaveTransactions(const TransactionList& transactions);
 
-TransactionInfo BuildTransaction(const double value,
+TransactionInfo BuildTransaction(double value,
                                  const ConfirmationType& confirmation_type,
-                                 const base::Time reconciled_at);
+                                 base::Time reconciled_at);
 
-TransactionInfo BuildTransaction(const double value,
+TransactionInfo BuildTransaction(double value,
                                  const ConfirmationType& confirmation_type);
 
 int GetTransactionCount();

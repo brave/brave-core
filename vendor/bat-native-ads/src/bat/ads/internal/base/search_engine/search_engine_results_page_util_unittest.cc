@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "bat/ads/internal/base/search_engine/search_engine_results_page_unittest_constants.h"
-#include "testing/gtest/include/gtest/gtest.h"
+#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

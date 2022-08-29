@@ -15,7 +15,7 @@
 namespace ads {
 namespace new_tab_page_ads {
 
-PermissionRules::PermissionRules() : PermissionRulesBase() {}
+PermissionRules::PermissionRules() = default;
 
 PermissionRules::~PermissionRules() = default;
 

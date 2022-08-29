@@ -40,8 +40,7 @@ class CreativeAds final : public TableInterface {
 
   std::string GetTableName() const override;
 
-  void Migrate(mojom::DBTransactionInfo* transaction,
-               const int to_version) override;
+  void Migrate(mojom::DBTransactionInfo* transaction, int to_version) override;
 
  private:
   std::string BuildInsertOrUpdateQuery(

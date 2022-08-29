@@ -50,7 +50,7 @@ class InlineContentAd final : public inline_content_ads::EventHandlerObserver,
 
   void TriggerEvent(const std::string& placement_id,
                     const std::string& creative_instance_id,
-                    const mojom::InlineContentAdEventType event_type);
+                    mojom::InlineContentAdEventType event_type);
 
  private:
   // inline_content_ads::ServingObserver:

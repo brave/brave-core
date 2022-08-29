@@ -12,8 +12,8 @@
 namespace ads {
 
 void Log(const char* file,
-         const int line,
-         const int verbose_level,
+         int line,
+         int verbose_level,
          const std::string& message);
 
 // |verbose_level| is an arbitrary integer value (higher numbers should be used

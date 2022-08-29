@@ -11,13 +11,11 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "bat/ads/internal/ads/ad_events/notification_ads/notification_ad_event_handler_observer.h"
-#include "bat/ads/internal/ads/serving/serving_features.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "bat/ads/notification_ad_info.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

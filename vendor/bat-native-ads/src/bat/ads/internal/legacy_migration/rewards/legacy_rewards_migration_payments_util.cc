@@ -38,7 +38,7 @@ absl::optional<PaymentInfo> GetPaymentForMonth(const PaymentList& payments,
     return absl::nullopt;
   }
 
-  const PaymentInfo payment = *iter;
+  const PaymentInfo& payment = *iter;
 
   return payment;
 }

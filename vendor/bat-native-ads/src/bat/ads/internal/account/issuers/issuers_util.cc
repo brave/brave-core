@@ -7,7 +7,6 @@
 
 #include <algorithm>
 
-#include "base/check.h"
 #include "base/containers/flat_map.h"
 #include "bat/ads/internal/account/issuers/issuer_info.h"
 #include "bat/ads/internal/account/issuers/issuers_info.h"

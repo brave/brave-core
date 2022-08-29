@@ -21,7 +21,7 @@
 namespace ads {
 namespace notification_ads {
 
-PermissionRules::PermissionRules() : PermissionRulesBase() {}
+PermissionRules::PermissionRules() = default;
 
 PermissionRules::~PermissionRules() = default;
 

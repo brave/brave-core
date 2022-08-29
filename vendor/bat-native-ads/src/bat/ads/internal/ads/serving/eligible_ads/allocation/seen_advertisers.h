@@ -16,7 +16,6 @@
 
 namespace ads {
 
-class ClientStateManager;
 struct CreativeAdInfo;
 
 template <typename T>

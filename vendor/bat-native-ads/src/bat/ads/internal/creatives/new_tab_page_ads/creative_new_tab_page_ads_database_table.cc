@@ -610,7 +610,7 @@ void CreativeNewTabPageAds::OnGetForCreativeInstanceId(
     return;
   }
 
-  const CreativeNewTabPageAdInfo creative_ad = creative_ads.front();
+  const CreativeNewTabPageAdInfo& creative_ad = creative_ads.front();
 
   callback(/*success*/ true, creative_instance_id, creative_ad);
 }

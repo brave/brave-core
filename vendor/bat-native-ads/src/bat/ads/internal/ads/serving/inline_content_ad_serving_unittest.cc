@@ -8,13 +8,11 @@
 #include <memory>
 
 #include "bat/ads/inline_content_ad_info.h"
-#include "bat/ads/internal/ads/serving/eligible_ads/eligible_ads_unittest_util.h"
 #include "bat/ads/internal/ads/serving/inline_content_ad_serving_observer.h"
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "bat/ads/internal/ads/serving/serving_features_unittest_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
-#include "bat/ads/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/segments/segment_alias.h"

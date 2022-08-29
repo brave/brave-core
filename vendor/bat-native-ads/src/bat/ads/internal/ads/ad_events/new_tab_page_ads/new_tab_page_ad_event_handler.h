@@ -30,27 +30,26 @@ class EventHandler final : public EventHandlerObserver {
 
   void FireEvent(const std::string& placement_id,
                  const std::string& creative_instance_id,
-                 const mojom::NewTabPageAdEventType event_type);
+                 mojom::NewTabPageAdEventType event_type);
 
  private:
   void FireEvent(const NewTabPageAdInfo& ad,
                  const std::string& placement_id,
                  const std::string& creative_instance_id,
-                 const mojom::NewTabPageAdEventType event_type);
+                 mojom::NewTabPageAdEventType event_type);
   void FailedToFireEvent(const std::string& placement_id,
                          const std::string& creative_instance_id,
-                         const mojom::NewTabPageAdEventType event_type) const;
+                         mojom::NewTabPageAdEventType event_type) const;
 
-  void NotifyNewTabPageAdEvent(
-      const NewTabPageAdInfo& ad,
-      const mojom::NewTabPageAdEventType event_type) const;
+  void NotifyNewTabPageAdEvent(const NewTabPageAdInfo& ad,
+                               mojom::NewTabPageAdEventType event_type) const;
   void NotifyNewTabPageAdServed(const NewTabPageAdInfo& ad) const;
   void NotifyNewTabPageAdViewed(const NewTabPageAdInfo& ad) const;
   void NotifyNewTabPageAdClicked(const NewTabPageAdInfo& ad) const;
   void NotifyNewTabPageAdEventFailed(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      const mojom::NewTabPageAdEventType event_type) const;
+      mojom::NewTabPageAdEventType event_type) const;
 
   base::ObserverList<EventHandlerObserver> observers_;
 };

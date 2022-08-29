@@ -67,7 +67,7 @@ class Conversions final : public LocaleManagerObserver,
 
   void AddItemToQueue(const AdEventInfo& ad_event,
                       const VerifiableConversionInfo& verifiable_conversion);
-  void OnSaveConversionQueue(const bool success);
+  void OnSaveConversionQueue(bool success);
 
   void ProcessQueueItem(const ConversionQueueItemInfo& queue_item);
   void ProcessQueue();
@@ -76,12 +76,12 @@ class Conversions final : public LocaleManagerObserver,
       const ConversionQueueItemInfo& conversion_queue_item);
   void OnRemoveInvalidQueueItem(
       const ConversionQueueItemInfo& conversion_queue_item,
-      const bool success);
+      bool success);
   void MarkQueueItemAsProcessed(
       const ConversionQueueItemInfo& conversion_queue_item);
   void OnMarkQueueItemAsProcessed(
       const ConversionQueueItemInfo& conversion_queue_item,
-      const bool success);
+      bool success);
   void FailedToConvertQueueItem(
       const ConversionQueueItemInfo& conversion_queue_item);
   void ConvertedQueueItem(const ConversionQueueItemInfo& conversion_queue_item);
@@ -100,7 +100,7 @@ class Conversions final : public LocaleManagerObserver,
   void OnResourceDidUpdate(const std::string& id) override;
 
   // TabManagerObserver:
-  void OnHtmlContentDidChange(const int32_t tab_id,
+  void OnHtmlContentDidChange(int32_t tab_id,
                               const std::vector<GURL>& redirect_chain,
                               const std::string& content) override;
 

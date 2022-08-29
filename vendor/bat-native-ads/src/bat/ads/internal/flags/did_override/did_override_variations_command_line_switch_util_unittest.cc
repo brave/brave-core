@@ -9,13 +9,11 @@
 #include <string>
 #include <utility>
 
-#include "base/feature_list.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/internal/base/unittest/command_line_switch_info.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_command_line_switch_util.h"
-#include "bat/ads/internal/flags/flag_manager_util.h"
 #include "components/variations/variations_switches.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

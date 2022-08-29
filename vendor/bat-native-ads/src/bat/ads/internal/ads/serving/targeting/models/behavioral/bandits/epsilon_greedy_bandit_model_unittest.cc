@@ -14,9 +14,7 @@
 #include "bat/ads/internal/processors/behavioral/bandits/bandit_feedback_info.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_constants.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
-#include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource.h"
 #include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource_util.h"
-#include "bat/ads/internal/segments/segment_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

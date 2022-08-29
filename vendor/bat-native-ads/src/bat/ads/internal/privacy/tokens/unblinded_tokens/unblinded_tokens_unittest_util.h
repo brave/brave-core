@@ -22,7 +22,7 @@ class UnblindedTokens;
 
 UnblindedTokens* GetUnblindedTokens();
 
-UnblindedTokenList SetUnblindedTokens(const int count);
+UnblindedTokenList SetUnblindedTokens(int count);
 
 UnblindedTokenInfo CreateUnblindedToken(
     const std::string& unblinded_token_base64);
@@ -30,11 +30,11 @@ UnblindedTokenInfo CreateUnblindedToken(
 UnblindedTokenList CreateUnblindedTokens(
     const std::vector<std::string>& unblinded_tokens_base64);
 
-UnblindedTokenList GetUnblindedTokens(const int count);
+UnblindedTokenList GetUnblindedTokens(int count);
 
-UnblindedTokenList GetRandomUnblindedTokens(const int count);
+UnblindedTokenList GetRandomUnblindedTokens(int count);
 
-base::Value GetUnblindedTokensAsList(const int count);
+base::Value GetUnblindedTokensAsList(int count);
 
 }  // namespace privacy
 }  // namespace ads

@@ -6,8 +6,6 @@
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/inline_content_ads/eligible_inline_content_ads_v2.h"
 
 #include "base/bind.h"
-#include "base/check.h"
-#include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
 #include "bat/ads/internal/ads/serving/choose/predict_ad.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rules_util.h"
@@ -17,10 +15,8 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
-#include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
-#include "bat/ads/internal/segments/segment_alias.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {

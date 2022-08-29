@@ -23,7 +23,6 @@
 #include "bat/ads/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/pref_names.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

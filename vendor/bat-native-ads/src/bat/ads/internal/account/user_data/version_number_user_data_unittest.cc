@@ -10,7 +10,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/test/values_test_util.h"
 #include "bat/ads/internal/browser/browser_util.h"
-#include "testing/gtest/include/gtest/gtest.h"
+#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

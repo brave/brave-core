@@ -6,7 +6,6 @@
 #include "bat/ads/internal/flags/did_override/did_override_features_from_command_line_util.h"
 
 #include "base/check.h"
-#include "base/feature_list.h"
 #include "base/ranges/algorithm.h"
 #include "bat/ads/internal/account/statement/ad_rewards_features.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/eligible_ads_features.h"

@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "base/base_switches.h"
-#include "base/feature_list.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
@@ -28,7 +27,6 @@
 #include "bat/ads/internal/features/epsilon_greedy_bandit_features.h"
 #include "bat/ads/internal/features/purchase_intent_features.h"
 #include "bat/ads/internal/features/text_classification_features.h"
-#include "bat/ads/internal/flags/flag_manager_util.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_features.h"
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_features.h"
 #include "components/variations/variations_switches.h"

@@ -5,9 +5,6 @@
 
 #include "bat/ads/internal/ads/serving/targeting/top_segments_util.h"
 
-#include "bat/ads/internal/ads/serving/targeting/models/behavioral/bandits/epsilon_greedy_bandit_model.h"
-#include "bat/ads/internal/ads/serving/targeting/models/behavioral/purchase_intent/purchase_intent_model.h"
-#include "bat/ads/internal/ads/serving/targeting/models/contextual/text_classification/text_classification_model.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_info.h"
 #include "bat/ads/internal/segments/segment_util.h"
 

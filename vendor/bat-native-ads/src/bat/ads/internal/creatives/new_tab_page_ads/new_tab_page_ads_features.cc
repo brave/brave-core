@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/creatives/new_tab_page_ads/new_tab_page_ads_features.h"
 
-#include "base/metrics/field_trial_params.h"
-
 namespace ads {
 namespace new_tab_page_ads {
 namespace features {

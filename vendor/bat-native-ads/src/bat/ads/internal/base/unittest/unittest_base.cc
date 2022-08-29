@@ -17,7 +17,6 @@
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/pref_names.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
 
 using ::testing::NiceMock;
 

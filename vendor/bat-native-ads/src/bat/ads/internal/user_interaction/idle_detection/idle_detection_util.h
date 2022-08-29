@@ -12,9 +12,9 @@ class TimeDelta;
 
 namespace ads {
 
-bool WasLocked(const bool was_locked);
+bool WasLocked(bool was_locked);
 
-bool HasExceededMaximumIdleTime(const base::TimeDelta idle_time);
+bool HasExceededMaximumIdleTime(base::TimeDelta idle_time);
 
 bool MaybeUpdateIdleTimeThreshold();
 

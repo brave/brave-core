@@ -7,7 +7,6 @@
 
 #include "base/test/values_test_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/sys_info.h"
 

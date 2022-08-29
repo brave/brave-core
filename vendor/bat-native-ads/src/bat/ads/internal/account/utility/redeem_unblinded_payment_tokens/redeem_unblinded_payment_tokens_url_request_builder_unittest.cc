@@ -41,7 +41,7 @@ privacy::UnblindedPaymentTokenList GetUnblindedPaymentTokens(const int count) {
   for (int i = 0; i < count; i++) {
     privacy::UnblindedPaymentTokenInfo unblinded_payment_token;
 
-    const std::string unblinded_payment_token_base64 =
+    const std::string& unblinded_payment_token_base64 =
         unblinded_payment_tokens_base64.at(i % modulo);
     unblinded_payment_token.value =
         privacy::cbr::UnblindedToken(unblinded_payment_token_base64);

@@ -13,7 +13,7 @@
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
-#include "third_party/googletest/src/googletest/include/gtest/gtest.h"
+#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
 namespace ads {
 

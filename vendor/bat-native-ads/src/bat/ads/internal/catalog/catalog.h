@@ -41,8 +41,7 @@ class Catalog final : public DatabaseManagerObserver {
   void NotifyFailedToUpdateCatalog() const;
 
   // DatabaseManagerObserver:
-  void OnDidMigrateDatabase(const int from_version,
-                            const int to_version) override;
+  void OnDidMigrateDatabase(int from_version, int to_version) override;
 
   base::ObserverList<CatalogObserver> observers_;
 

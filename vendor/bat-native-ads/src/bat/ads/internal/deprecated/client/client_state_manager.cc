@@ -18,7 +18,6 @@
 #include "bat/ads/ad_info.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/history_item_info.h"
-#include "bat/ads/internal/ads/serving/serving_features.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/deprecated/client/client_info.h"
@@ -26,7 +25,7 @@
 #include "bat/ads/internal/features/text_classification_features.h"
 #include "bat/ads/internal/history/history_constants.h"
 #include "bat/ads/pref_names.h"
-#include "build/build_config.h"
+#include "build/build_config.h"  // IWYU pragma: keep
 
 namespace ads {
 

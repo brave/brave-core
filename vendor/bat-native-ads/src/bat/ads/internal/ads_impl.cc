@@ -13,7 +13,6 @@
 #include "bat/ads/ad_info.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/history_info.h"
-#include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/account/account.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_util.h"
 #include "bat/ads/internal/ads/ad_events/ad_events.h"
@@ -30,7 +29,6 @@
 #include "bat/ads/internal/conversions/conversions.h"
 #include "bat/ads/internal/covariates/covariate_manager.h"
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_manager.h"
-#include "bat/ads/internal/creatives/search_result_ads/search_result_ad_info.h"
 #include "bat/ads/internal/database/database_manager.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
@@ -47,7 +45,6 @@
 #include "bat/ads/internal/locale/locale_manager.h"
 #include "bat/ads/internal/prefs/pref_manager.h"
 #include "bat/ads/internal/privacy/tokens/token_generator.h"
-#include "bat/ads/internal/processors/behavioral/bandits/bandit_feedback_info.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
 #include "bat/ads/internal/processors/behavioral/purchase_intent/purchase_intent_processor.h"
 #include "bat/ads/internal/processors/contextual/text_classification/text_classification_processor.h"
@@ -62,9 +59,7 @@
 #include "bat/ads/internal/transfer/transfer.h"
 #include "bat/ads/internal/user_interaction/idle_detection/idle_detection_manager.h"
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_manager.h"
-#include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/notification_ad_info.h"
-#include "bat/ads/promoted_content_ad_info.h"
 #include "url/gurl.h"
 
 namespace ads {

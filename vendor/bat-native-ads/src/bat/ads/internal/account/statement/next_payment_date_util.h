@@ -14,7 +14,7 @@ class Time;
 
 namespace ads {
 
-base::Time CalculateNextPaymentDate(const base::Time next_token_redemption_at,
+base::Time CalculateNextPaymentDate(base::Time next_token_redemption_at,
                                     const TransactionList& transactions);
 
 }  // namespace ads

@@ -12,7 +12,7 @@
 
 namespace ads {
 
-std::string EnvironmentTypeEnumToString(const EnvironmentType environment_type);
+std::string EnvironmentTypeEnumToString(EnvironmentType environment_type);
 
 }  // namespace ads
 

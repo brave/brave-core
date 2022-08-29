@@ -20,7 +20,7 @@ namespace search_result_ads {
 class AdEventFactory final {
  public:
   static std::unique_ptr<AdEventInterface<SearchResultAdInfo>> Build(
-      const mojom::SearchResultAdEventType event_type);
+      mojom::SearchResultAdEventType event_type);
 };
 
 }  // namespace search_result_ads

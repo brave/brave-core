@@ -23,7 +23,7 @@ std::string GetFieldTrialParamByFeatureAsString(
 base::TimeDelta GetFieldTrialParamByFeatureAsTimeDelta(
     const base::Feature& feature,
     const std::string& param_name,
-    const base::TimeDelta default_value);
+    base::TimeDelta default_value);
 
 }  // namespace ads
 

@@ -7,7 +7,6 @@
 
 #include "base/check.h"
 #include "base/rand_util.h"
-#include "bat/ads/ad_type.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_base.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_factory.h"
 #include "bat/ads/internal/ads/serving/permission_rules/new_tab_page_ads/new_tab_page_ad_permission_rules.h"
@@ -89,7 +88,7 @@ void Serving::MaybeServeAd(MaybeServeNewTabPageAdCallback callback) {
         BLOG(1, "Found " << creative_ads.size() << " eligible ads");
 
         const int rand = base::RandInt(0, creative_ads.size() - 1);
-        const CreativeNewTabPageAdInfo creative_ad = creative_ads.at(rand);
+        const CreativeNewTabPageAdInfo& creative_ad = creative_ads.at(rand);
 
         const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad);
         ServeAd(ad, callback);

@@ -25,7 +25,7 @@ class EligibleAdsBase;
 class EligibleAdsFactory final {
  public:
   static std::unique_ptr<EligibleAdsBase> Build(
-      const int version,
+      int version,
       geographic::SubdivisionTargeting* subdivision_targeting,
       resource::AntiTargeting* anti_targeting_resource);
 };
