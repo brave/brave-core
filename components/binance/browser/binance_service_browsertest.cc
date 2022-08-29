@@ -707,6 +707,7 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, RevokeToken) {
       base::BindOnce(
           &BinanceAPIBrowserTest::OnGetAccessToken,
           base::Unretained(this), true)));
+  WaitForGetAccessToken(true);
 
   ASSERT_TRUE(service->RevokeToken(
       base::BindOnce(
