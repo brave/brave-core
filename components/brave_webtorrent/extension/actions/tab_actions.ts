@@ -8,7 +8,7 @@ import { action } from 'typesafe-actions'
 import { types } from '../constants/tab_types'
 
 export const tabUpdated = (tabId: number,
-    changeInfo: chrome.webNavigation.WebNavigationFramedCallbackDetails) =>
+    changeInfo: { url: string }) =>
   action(types.TAB_UPDATED, {
     tabId, changeInfo
   })

@@ -4,6 +4,16 @@
 
 import tabActions from '../actions/tabActions'
 
+// On initialization, make sure we tell WebTorrent about all existing tabs. This
+// fixes a bug where WebTorrent wouldn't load for the first click of magnet
+// links (as the background page would not be running on that first load).
+// Note: Empty query for {} returns all tabs this extension is interested in.
+chrome.tabs.query({}, tabs => {
+  for (const tab of tabs) {
+    tabActions.tabUpdated(tab.id!, { url: tab.url ?? '' })
+  }
+})
+
 chrome.webNavigation.onCommitted.addListener(
   (details: chrome.webNavigation.WebNavigationFramedCallbackDetails) => {
     tabActions.tabUpdated(details.tabId, details)
