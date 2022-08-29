@@ -32,7 +32,4 @@
 #define IDS_SETTINGS_SAFEBROWSING_NONE_DESC \
   IDS_SETTINGS_BRAVE_SAFEBROWSING_NONE_DESC
 
-#define GetVersionNumber GetBraveVersionNumberForDisplay
-
 #include "src/chrome/browser/ui/webui/settings/settings_localized_strings_provider.cc"
-#undef GetVersionNumber
