@@ -147,30 +147,6 @@ export const connectGraphic = styled.div`
   }
 `
 
-export const minimumBalanceWarning = styled.div`
-  margin-top: 16px;
-  background: var(--brave-palette-neutral000);
-  border-radius: 8px;
-  padding: 16px 17px 26px 41px;
-  font-size: 14px;
-  line-height: 22px;
-
-  background-repeat: no-repeat;
-  background-position: 17px 21px;
-  background-size: 16px 16px;
-  background-image: url('${warningCircleImage}');
-
-  .login {
-    margin-top: 8px;
-    font-weight: 600;
-  }
-
-  .layout-narrow & {
-    font-size: 12px;
-    line-height: 16px;
-  }
-`
-
 export const selectWalletLeftPanel = styled.div`
   margin-top: 30px;
 
