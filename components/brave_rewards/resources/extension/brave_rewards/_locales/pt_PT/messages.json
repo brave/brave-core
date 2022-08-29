@@ -311,18 +311,6 @@
       }
     }
   },
-  "notificationBackupWalletTitle": {
-    "message": "Criar cópia de segurança das Recompensas Brave",
-    "description": ""
-  },
-  "notificationBackupWalletText": {
-    "message": "Crie uma cópia de segurança das suas Recompensas Brave.",
-    "description": ""
-  },
-  "notificationBackupWalletAction": {
-    "message": "Realizar cópia de segurança agora",
-    "description": ""
-  },
   "notificationWalletDisconnectedTitle": {
     "message": "Não tem sessão iniciada",
     "description": ""

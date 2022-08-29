@@ -311,18 +311,6 @@
       }
     }
   },
-  "notificationBackupWalletTitle": {
-    "message": "Cadangkan Brave Rewards",
-    "description": ""
-  },
-  "notificationBackupWalletText": {
-    "message": "Silakan cadangkan Brave Rewards Anda.",
-    "description": ""
-  },
-  "notificationBackupWalletAction": {
-    "message": "Cadangkan sekarang",
-    "description": ""
-  },
   "notificationWalletDisconnectedTitle": {
     "message": "Anda telah keluar",
     "description": ""

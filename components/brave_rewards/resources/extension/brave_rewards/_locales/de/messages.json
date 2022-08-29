@@ -311,18 +311,6 @@
       }
     }
   },
-  "notificationBackupWalletTitle": {
-    "message": "Brave Belohnungen sichern",
-    "description": ""
-  },
-  "notificationBackupWalletText": {
-    "message": "Bitte sichern Sie Ihre Brave Belohnungen",
-    "description": ""
-  },
-  "notificationBackupWalletAction": {
-    "message": "Jetzt sichern",
-    "description": ""
-  },
   "notificationWalletDisconnectedTitle": {
     "message": "Sie sind abgemeldet",
     "description": ""

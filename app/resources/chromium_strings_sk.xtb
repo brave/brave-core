@@ -13,14 +13,15 @@ Niektoré funkcie nemusia byť k dispozícii a zmeny vykonané v predvoľbách s
 <translation id="8541922081612557424">Informácie o prehliadači Brave</translation>
 <translation id="1203500561924088507">Ďakujeme za inštaláciu. Než začnete aplikáciu <ph name="BUNDLE_NAME"/> používať, musíte reštartovať prehliadač.</translation>
 <translation id="4798342026247191171">Nastavte si nový profil prehliadača Brave</translation>
+<translation id="6361779936989026201">Asistent Brave v prehliadači Brave</translation>
 <translation id="113959764510199339">Prehliadač Brave sa snaží zobraziť heslá.</translation>
 <translation id="8132634101975074716">Ste prihlásený/-á do prehliadača Brave.</translation>
 <translation id="5147525139567260139">Zdieľajte kartu prehliadača Brave</translation>
 <translation id="1530633922026945685">Brave potrebuje povolenie použiť fotoaparát, aby mohol vytvoriť 3D mapu vášho okolia</translation>
-<translation id="473077451702478797">Brave zablokoval tento súbor, pretože je na kontrolu príliš veľký. Skúste to znova, avšak súbor musí mať maximálne 50 MB.</translation>
 <translation id="4449148723378534338">Pozrite si hlavné ovládacie prvky ochrany súkromia a zabezpečenia v prehliadači Brave</translation>
 <translation id="1640672724030957280">Sťahuje sa…</translation>
 <translation id="5616153642055197778">K dispozícii je nová bezpečnejšia verzia prehliadača Brave.</translation>
+<translation id="5846727201643228411">Môžete si prezrieť témy záujmu, pomocou ktorých vám weby zobrazujú reklamy, a odstrániť ich. Brave odhaduje záujmy na základe nedávnej histórie prehliadania.</translation>
 <translation id="6797402139308059782">Povoliť prehliadaču Brave spustenie na pozadí</translation>
 <translation id="5875673934455379806">Preinštalovať prehliadač Brave</translation>
 <translation id="6888366668010117849">Weby môžu v prehliadači Brave ukladať údaje o vašich záujmoch. Ak napríklad navštívite web na nákup obuvi na maratón, daný web môže definovať váš záujem ako behanie maratónov. Ak neskôr navštívite iný, aby ste sa zaregistrovali na preteky, tento web vám môže zobraziť reklamu na bežeckú obuv na základe vašich záujmov.</translation>
@@ -34,6 +35,7 @@ Niektoré funkcie nemusia byť k dispozícii a zmeny vykonané v predvoľbách s
 <translation id="2018879682492276940">Inštalácia bola neúspešná. Skúste to znova.</translation>
 <translation id="831418749472885028">Ak chcete skontrolovať, či sú vaše ostatné heslá chránené pred porušením ochrany údajov a inými bezpečnostnými hrozbami, <ph name="BEGIN_LINK"/>prihláste sa do prehliadača Brave<ph name="END_LINK"/>.</translation>
 <translation id="5499149312981370855">Vyberte, či sa má zahrnúť história prehliadača Brave na zaistenie prispôsobenejšieho prostredia v službách Googlu</translation>
+<translation id="849607431499549468">Informácie o tom, ako Brave spravuje koreňové certifikáty</translation>
 <translation id="142389341645668510">Prispôsobiť Brave</translation>
 <translation id="2174917724755363426">Inštalácia nie je dokončená. Naozaj ju chcete zrušiť?</translation>
 <translation id="8745514854244955877">Brave – prihlásenie do siete – <ph name="PAGE_TITLE"/></translation>
@@ -94,6 +96,7 @@ Niektoré funkcie nemusia byť k dispozícii a zmeny vykonané v predvoľbách s
 <translation id="5853262807109651878">Táto akcia odstráni zo zariadenia niekoľko položiek (počet: <ph name="ITEMS_COUNT"/>). Ak budete chcieť svoje údaje neskôr opäť načítať, prihláste sa do prehliadača Brave ako <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">Skratkou <ph name="SHORTCUT"/> môžete prepínať profily prehliadača Brave</translation>
 <translation id="8703492925273919597">Zatvorte všetky okná prehliadača Brave a skúste to znova.</translation>
+<translation id="5350485513372498152">Asistent Brave v prehliadači Brave môže za vás dokončiť akcie na weboch</translation>
 <translation id="4061445349373849749">V rámci ochrany vášho súkromia automaticky odstraňujeme záujmy, ktoré sú staršie ako štyri týždne. Pri ďalšom prehliadaní sa v zozname môže znova zobraziť určitý záujem. Prípadne môžete odstrániť záujmy, ktoré nemá Brave posudzovať.</translation>
 <translation id="691208314680168371">Vaša história prehliadania, teda záznam webov, ktoré ste navštívili pomocou prehliadača Brave v tomto zariadení.</translation>
 <translation id="1384923383737428730">V počítači máte škodlivý softvér. Brave ho môže odstrániť, obnoviť nastavenia a deaktivovať rozšírenia, aby prehliadač znova normálne fungoval.</translation>
@@ -260,7 +263,6 @@ Niektoré funkcie nemusia byť k dispozícii. Zadajte iný adresár profilu aleb
 <translation id="5101812148953915496">Navštevované weby si pamätajú vaše informácie, dokým nezavriete Brave</translation>
 <translation id="5516268345616100622">Správca úloh – Brave</translation>
 <translation id="713191641919118540">Vaše záujmy podľa odhadu prehliadača Brave</translation>
-<translation id="2777705643687998385">Brave zablokoval tento súbor, pretože je šifrovaný. Požiadajte jeho vlastníka o dešifrovanie.</translation>
 <translation id="9068395155143628872">Meranie reklám umožňuje webom, ktoré navštívite, požadovať od prehliadača Brave údaje, ktoré im pomáhajú merať výkonnosť reklám. Meranie reklám obmedzuje sledovanie na rôznych weboch presúvaním minimálneho množstva údajov medzi webmi.</translation>
 <translation id="1864557848095568223">Brave sa aktualizuje</translation>
 <translation id="3403365884036456766">Súbor predvolieb je poškodený alebo neplatný. 
@@ -349,6 +351,7 @@ Prehliadač Brave nedokáže obnoviť vaše nastavenia.</translation>
 <translation id="7902365066753170041">Znova spustiť a aktualizovať Brave</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Brave nemusí fungovať správne, pretože v systémoch Windows XP a Windows Vista už nie je podporovaný</translation>
+<translation id="8180288330711585962">Certifikáty, ktoré spravuje Brave</translation>
 <translation id="1611678871603620428">Ak chcete dostávať budúce aktualizácie prehliadača Brave, musíte používať systém macOS 10.13 alebo novší. V tomto počítači používate OS X 10.11.</translation>
 <translation id="4484434718272972655">Kto používa Brave?</translation>
 <translation id="7173394303099002355">Získajte najsilnejšie zabezpečenie prehliadača Brave</translation>

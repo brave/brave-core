@@ -11,14 +11,15 @@
 <translation id="8541922081612557424">Sobre o Brave</translation>
 <translation id="1203500561924088507">Agradecemos por fazer a instalação. É necessário reiniciar o navegador antes de utilizar o <ph name="BUNDLE_NAME"/>.</translation>
 <translation id="4798342026247191171">Configure seu novo perfil do Brave</translation>
+<translation id="6361779936989026201">Brave Assistente no Brave</translation>
 <translation id="113959764510199339">O Brave está tentando mostrar senhas.</translation>
 <translation id="8132634101975074716">Você está conectado ao Brave.</translation>
 <translation id="5147525139567260139">Compartilhar uma guia do Brave</translation>
 <translation id="1530633922026945685">O Brave precisa de permissão para acessar sua câmera e criar um mapa 3D do ambiente a sua volta</translation>
-<translation id="473077451702478797">O Brave bloqueou esse arquivo por ser grande demais para uma verificação de segurança. Tente novamente com arquivos de até 50 MB</translation>
 <translation id="4449148723378534338">Revise os principais controles de privacidade e segurança no Brave</translation>
 <translation id="1640672724030957280">Fazendo download...</translation>
 <translation id="5616153642055197778">Há uma nova versão mais segura do Brave disponível.</translation>
+<translation id="5846727201643228411">É possível ver e remover os assuntos de interesse que os sites usam para mostrar anúncios a você. O Brave faz uma estimativa dos seus interesses com base no seu histórico de navegação recente.</translation>
 <translation id="6797402139308059782">Permitir que o Brave seja executado em segundo plano</translation>
 <translation id="5875673934455379806">Reinstalar o Brave</translation>
 <translation id="6888366668010117849">Sites podem armazenar informações sobre seus interesses com o Brave. Por exemplo, se você visitar um site para comprar sapatos de maratona, ele pode definir "maratonas" como um dos seus interesses. Depois, se você visitar outro site para se inscrever em uma maratona, esse site pode mostrar um anúncio de sapatos de corrida com base nos seus interesses.</translation>
@@ -32,6 +33,7 @@
 <translation id="2018879682492276940">Falha na instalação. Tente novamente.</translation>
 <translation id="831418749472885028">Para verificar se suas outras senhas estão protegidas contra violações de dados e outros problemas de segurança, <ph name="BEGIN_LINK"/>faça login no Brave<ph name="END_LINK"/>.</translation>
 <translation id="5499149312981370855">Escolha se você quer incluir o histórico do Brave para ter experiências mais personalizadas nos Serviços do Brave</translation>
+<translation id="849607431499549468">Informações sobre como o Brave gerencia os certificados raiz</translation>
 <translation id="142389341645668510">Personalizar o Brave</translation>
 <translation id="2174917724755363426">A instalação não foi concluída. Tem certeza de que quer cancelar?</translation>
 <translation id="8745514854244955877">Brave - Login na rede - <ph name="PAGE_TITLE"/></translation>
@@ -90,6 +92,7 @@
 <translation id="5853262807109651878">Essa ação excluirá <ph name="ITEMS_COUNT"/> itens deste dispositivo. Para recuperar seus dados mais tarde, faça login no Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">O atalho <ph name="SHORTCUT"/> permite alternar entre os perfis do Brave</translation>
 <translation id="8703492925273919597">Feche todas as janelas do Brave e tente novamente.</translation>
+<translation id="5350485513372498152">O Brave Assistente no Brave pode concluir ações em sites para você</translation>
 <translation id="4061445349373849749">Para proteger sua privacidade, excluímos automaticamente seus interesses que têm mais de quatro semanas. Enquanto você navega, um interesse pode aparecer na lista novamente. Você também pode remover interesses que não quer que o Brave considere.</translation>
 <translation id="691208314680168371">Seu histórico de navegação, um registro de sites visitados usando o Brave neste dispositivo.</translation>
 <translation id="1384923383737428730">Há um software nocivo no seu computador. O Brave pode removê-lo, restaurar as configurações e desativar as extensões para que o navegador volte a funcionar normalmente.</translation>
@@ -254,7 +257,6 @@
 <translation id="5101812148953915496">Os sites que você acessar armazenarão suas informações até que o Brave seja fechado</translation>
 <translation id="5516268345616100622">Gerenciador de tarefas - Brave</translation>
 <translation id="713191641919118540">Seus interesses estimados pelo Brave</translation>
-<translation id="2777705643687998385">O Brave bloqueou este arquivo porque está criptografado. Peça ao proprietário para o descriptografar</translation>
 <translation id="9068395155143628872">A medição de anúncios permite que os sites que você visita solicitem informações do Brave, ajudando a medir o desempenho dos anúncios. Ela também restringe o rastreamento entre sites transferindo o mínimo de informações possível entre eles.</translation>
 <translation id="1864557848095568223">Atualizando o Brave</translation>
 <translation id="3403365884036456766">Seu arquivo de preferências foi corrompido ou não é válido. O Brave não conseguiu recuperar suas configurações.</translation>
@@ -342,6 +344,7 @@
 <translation id="7902365066753170041">Reinicializar para atualizar o &amp;Brave</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">É possível que o Brave não funcione corretamente, porque ele não é mais compatível com o Windows XP ou Windows Vista</translation>
+<translation id="8180288330711585962">Certificados gerenciados pelo Brave</translation>
 <translation id="1611678871603620428">Para receber as próximas atualizações do Brave, você vai precisar do macOS 10.13 ou mais recente. Este computador está usando o OS X 10.11.</translation>
 <translation id="4484434718272972655">Quem está usando o Brave?</translation>
 <translation id="7173394303099002355">Use o nível mais alto de segurança do Brave</translation>

@@ -17,6 +17,7 @@
 <translation id="7658239707568436148">રદ કરો</translation>
 <translation id="3333887201479867589">Brave પુરસ્કારો</translation>
 <translation id="385051799172605136">પાછળ</translation>
+<translation id="370665806235115550">લોડ કરી રહ્યું છે...</translation>
 <translation id="780301667611848630">નહીં, આભાર</translation>
 <translation id="8890516388109605451">સ્રોતો</translation>
 <translation id="7791543448312431591">ઉમેરો</translation>
@@ -57,7 +58,6 @@
 <translation id="2631006050119455616">સાચવ્યો</translation>
 <translation id="3819257035322786455">બેકઅપ</translation>
 <translation id="13853865024308201">દાવો</translation>
-<translation id="6896758677409633944">કૉપિ કરો</translation>
 <translation id="3866249974567520381">વર્ણન</translation>
 <translation id="298067735430872465">જાહેરાતો દ્વારા કમાણી</translation>
 <translation id="6302422639282249274">ગોપનીયતા-આદર આપતી જાહેરાતો જોવા માટે</translation>
@@ -82,6 +82,7 @@
 <translation id="8151638057146502721">ગોઠવો</translation>
 <translation id="5308380583665731573">કનેક્ટ કરો</translation>
 <translation id="7144878232160441200">ફરી પ્રયાસ કરો</translation>
+<translation id="6896758677409633944">કૉપિ કરો</translation>
 <translation id="1383876407941801731">શોધો</translation>
 <translation id="6680650203439190394">રેટ કરો</translation>
 <translation id="8131740175452115882">પુષ્ટિ કરો</translation>
@@ -102,8 +103,6 @@
 <translation id="6965382102122355670">બરાબર, સમજાઇ ગયું</translation>
 <translation id="7550470870580166294">અપૂરતું ભંડોળ</translation>
 <translation id="2775064702681588061">તમારું Brave Rewards ખાતું એક ડિપોઝિટની રાહ જોઈ રહ્યું છે.</translation>
-<translation id="2630264552940126640">બૅકઅપ વૉલેટ</translation>
-<translation id="238922425564381955">કૃપયા કરીને તમારા બૅકઅપ વૉલેટનું બૅકઅપ લો.</translation>
 <translation id="2429828319207652823">તમારા યોગદાન પર પ્રક્રિયા કરવામાં સમસ્યા આવી.</translation>
 <translation id="5234764350956374838">કાઢી નાખો</translation>
 <translation id="8281886186245836920">છોડો</translation>
@@ -111,10 +110,9 @@
 <translation id="1987317783729300807">એકાઉન્ટ્સ</translation>
 <translation id="629730747756840877">એકાઉન્ટ</translation>
 <translation id="1483493594462132177">મોકલો</translation>
+<translation id="8712637175834984815">સમજાઈ ગયું</translation>
 <translation id="2704606927547763573">કૉપિ કર્યું</translation>
-<translation id="6972754398087986839">પ્રારંભ કરો</translation>
-<translation id="6657585470893396449">પાસવર્ડ</translation>
-<translation id="5486261815000869482">Confirm Password</translation>
+<translation id="6042308850641462728">વધુ</translation>
 <translation id="9111102763498581341">અનલોક કરો</translation>
 <translation id="5045550434625856497">ખોટો પાસવર્ડ</translation>
 <translation id="765834632354589737">બૅકઅપ વૉલેટ</translation>
@@ -134,7 +132,11 @@
 <translation id="5677928146339483299">અવરોધિત</translation>
 <translation id="1165039591588034296">ભૂલ</translation>
 <translation id="3380365263193509176">અજ્ઞાત ભૂલ</translation>
+<translation id="4430019312045809116">વૉલ્યૂમ</translation>
+<translation id="8297006494302853456">નબળું</translation>
+<translation id="6657585470893396449">પાસવર્ડ</translation>
 <translation id="5657156137487675418">બધી કૂકીઝને મંજૂરી આપો</translation>
+<translation id="6303294677342628402">શિલ્ડ્સ</translation>
 <translation id="5747552184818312860">સમાપ્ત થાય છે</translation>
 <translation id="1116694919640316211">વિશે</translation>
 <translation id="7138678301420049075">અન્ય</translation>

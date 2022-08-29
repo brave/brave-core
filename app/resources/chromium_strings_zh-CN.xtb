@@ -11,14 +11,15 @@
 <translation id="8541922081612557424">关于 Brave</translation>
 <translation id="1203500561924088507">感谢您完成安装。您必须重启浏览器才能使用 <ph name="BUNDLE_NAME"/>。</translation>
 <translation id="4798342026247191171">设置您的新 Brave 个人资料</translation>
+<translation id="6361779936989026201">Brave 中的 Brave 助理</translation>
 <translation id="113959764510199339">Brave 正尝试显示密码。</translation>
 <translation id="8132634101975074716">您已登录 Brave！</translation>
 <translation id="5147525139567260139">共享 Brave 标签页</translation>
 <translation id="1530633922026945685">Brave 需要获得相应权限，才能使用您的摄像头为您的周边环境创建 3D 地图</translation>
-<translation id="473077451702478797">Brave 屏蔽了此文件，因为它太大，无法进行安全检查。请使用不超过 50 MB 的文件重试</translation>
 <translation id="4449148723378534338">检查 Brave 中重要的隐私控制设置和安全控件</translation>
 <translation id="1640672724030957280">正在下载...</translation>
 <translation id="5616153642055197778">Brave 现已推出更安全的新版本。</translation>
+<translation id="5846727201643228411">您可看到并移除被网站用来向您展示广告的兴趣主题。Brave 会根据您近期的浏览记录推测出您的兴趣。</translation>
 <translation id="6797402139308059782">让 Brave 在后台运行</translation>
 <translation id="5875673934455379806">重新安装Brave</translation>
 <translation id="6888366668010117849">网站可以将您的兴趣信息存储在 Brave 中。例如，如果您访问某个网站购买马拉松跑鞋，系统可能会根据该网站推测您对跑马拉松感兴趣。之后，如果您访问其他网站报名参加比赛，相应网站就可以根据您的兴趣向您展示跑鞋广告。</translation>
@@ -32,6 +33,7 @@
 <translation id="2018879682492276940">安装失败。请重试。</translation>
 <translation id="831418749472885028">若要检查您的其他密码是否未曾遭遇数据泄露和其他安全问题，请<ph name="BEGIN_LINK"/>登录 Brave<ph name="END_LINK"/>。</translation>
 <translation id="5499149312981370855">选择是否要包含 Brave 历史记录以便在各款 Brave 服务中获享更个性化的体验</translation>
+<translation id="849607431499549468">与 Brave 如何管理其根证书有关的信息</translation>
 <translation id="142389341645668510">自定义 Brave</translation>
 <translation id="2174917724755363426">尚未完成安装，确定要取消吗？</translation>
 <translation id="8745514854244955877">Brave - 网络登录 - <ph name="PAGE_TITLE"/></translation>
@@ -92,6 +94,7 @@
 <translation id="5853262807109651878">这会从这台设备上删除 <ph name="ITEMS_COUNT"/> 项内容。如果日后想要检索您的数据，届时请以 <ph name="USER_EMAIL"/> 的身份登录 Brave。</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> 可用于切换 Brave 个人资料</translation>
 <translation id="8703492925273919597">请关闭所有 Brave 窗口并重试。</translation>
+<translation id="5350485513372498152">Brave 中的 Brave 助理可帮您在各网站上完成所需操作</translation>
 <translation id="4061445349373849749">为了保护您的隐私，如果您的兴趣保留时间超过 4 周，系统便会自动将其删除。随着您继续浏览，某项兴趣可能会再次出现在列表中。您也可以移除不希望纳入 Brave 考虑范围的兴趣。</translation>
 <translation id="691208314680168371">您的浏览记录，即您在此设备上使用 Brave 访问过的网站的记录。</translation>
 <translation id="1384923383737428730">您的计算机上存在有害软件。Brave 可以移除该软件、恢复您的设置并停用扩展程序，以确保您的浏览器能够重新正常运行。</translation>
@@ -257,7 +260,6 @@
 <translation id="5101812148953915496">您访问的网站会记住您的信息，直到您关闭 Brave</translation>
 <translation id="5516268345616100622">任务管理器 - Brave</translation>
 <translation id="713191641919118540">Brave 推测出的您的兴趣</translation>
-<translation id="2777705643687998385">Brave 屏蔽了此文件，因为它已加密。请让文件所有者解密</translation>
 <translation id="9068395155143628872">借助 Ad measurement，您访问的网站可向 Brave 请求信息，以便对网站上的广告进行效果衡量。Ad measurement 会在网站间传输尽可能少的信息，从而限制跨网站跟踪。</translation>
 <translation id="1864557848095568223">正在更新 Brave</translation>
 <translation id="3403365884036456766">您的偏好设置文件已损坏或无效。
@@ -346,6 +348,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="7902365066753170041">重新启动以更新 Brave(&amp;C)</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Brave 可能无法正常运行，因为它不再支持 Windows XP 和 Windows Vista</translation>
+<translation id="8180288330711585962">由 Brave 管理的证书</translation>
 <translation id="1611678871603620428">若要接收后续 Brave 更新，您需使用 macOS 10.13 或更高版本。该计算机目前使用的是 OS X 10.11。</translation>
 <translation id="4484434718272972655">谁在使用 Brave？</translation>
 <translation id="7173394303099002355">获享 Brave 的最强安全保护</translation>

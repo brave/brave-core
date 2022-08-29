@@ -15,6 +15,7 @@
 <translation id="5317780077021120954">సేవ్ చేయి</translation>
 <translation id="7658239707568436148">రద్దు చేయి</translation>
 <translation id="385051799172605136">వెనుకకు</translation>
+<translation id="370665806235115550">లోడ్ అవుతోంది...</translation>
 <translation id="780301667611848630">వద్దు , ధన్యవాదాలు</translation>
 <translation id="8890516388109605451">మూలాధారాలు</translation>
 <translation id="7791543448312431591">జోడించు</translation>
@@ -50,7 +51,6 @@
 <translation id="3587482841069643663">మొత్తం</translation>
 <translation id="2631006050119455616">సేవ్ చేయబడింది</translation>
 <translation id="3819257035322786455">బ్యాకప్</translation>
-<translation id="6896758677409633944">కాపీ చెయ్యి</translation>
 <translation id="3866249974567520381">వివరణ</translation>
 <translation id="1430915738399379752">ముద్రించు</translation>
 <translation id="8725066075913043281">మళ్లీ ప్రయత్నించు</translation>
@@ -65,6 +65,7 @@
 <translation id="8151638057146502721">కాన్ఫిగర్ చేయి</translation>
 <translation id="5308380583665731573">కనెక్ట్ చేయండి</translation>
 <translation id="7144878232160441200">మళ్లీ ప్రయత్నించండి</translation>
+<translation id="6896758677409633944">కాపీ చేయి</translation>
 <translation id="1383876407941801731">వెతుకు</translation>
 <translation id="6680650203439190394">రేట్</translation>
 <translation id="8131740175452115882">నిర్ధారించు</translation>
@@ -87,9 +88,9 @@
 <translation id="1987317783729300807">ఖాతాలు</translation>
 <translation id="629730747756840877">ఖాతా</translation>
 <translation id="1483493594462132177">పంపు</translation>
+<translation id="8712637175834984815">అర్థమైంది</translation>
 <translation id="2704606927547763573">కాపీ చేయబడింది</translation>
-<translation id="6972754398087986839">ప్రారంభించండి</translation>
-<translation id="6657585470893396449">పాస్‌వర్డ్</translation>
+<translation id="6042308850641462728">మరింత</translation>
 <translation id="9111102763498581341">అన్‌లాక్ చెయ్యి</translation>
 <translation id="5045550434625856497">సరికాని పాస్‌వర్డ్</translation>
 <translation id="7525067979554623046">సృష్టించు</translation>
@@ -106,6 +107,9 @@
 <translation id="5677928146339483299">బ్లాక్ చేయబడింది</translation>
 <translation id="1165039591588034296">ఎర్రర్</translation>
 <translation id="3380365263193509176">తెలియని లోపం</translation>
+<translation id="4430019312045809116">వాల్యూమ్</translation>
+<translation id="8297006494302853456">బలహీనం</translation>
+<translation id="6657585470893396449">పాస్‌వర్డ్</translation>
 <translation id="5657156137487675418">అన్ని కుక్కీలను అనుమతించు</translation>
 <translation id="5747552184818312860">గడువు ముగింపు</translation>
 <translation id="1116694919640316211">గురించి</translation>

@@ -11,14 +11,15 @@
 <translation id="8541922081612557424">‏על Brave</translation>
 <translation id="1203500561924088507">תודה שהתקנת. עליך להפעיל מחדש את הדפדפן לפני השימוש ב-<ph name="BUNDLE_NAME"/>.</translation>
 <translation id="4798342026247191171">‏הגדרת הפרופיל החדש שלך ב-Brave</translation>
+<translation id="6361779936989026201">‏Brave Assistant ב-Brave</translation>
 <translation id="113959764510199339">‏Brave מנסה להציג סיסמאות.</translation>
 <translation id="8132634101975074716">‏נכנסת ל-Brave!</translation>
 <translation id="5147525139567260139">‏שיתוף כרטיסיית Brave</translation>
 <translation id="1530633922026945685">‏Brave זקוק להרשאת גישה למצלמה כדי ליצור מפה תלת-ממדית של הסביבה שלך</translation>
-<translation id="473077451702478797">‏הקובץ הזה גדול מדי לבדיקת אבטחה ולכן הוא נחסם על ידי Brave. אפשר לנסות שוב עם קבצים עד גודל של MB‏ 50</translation>
 <translation id="4449148723378534338">‏בדיקה של אמצעי הבקרה החשובים ביותר על פרטיות ואבטחה ב-Brave</translation>
 <translation id="1640672724030957280">מוריד...</translation>
 <translation id="5616153642055197778">‏גרסה חדשה ובטוחה יותר של Brave זמינה כעת.</translation>
+<translation id="5846727201643228411">‏יש לך אפשרות לראות ולהסיר את תחומי העניין שלפיהם האתרים מציגים לך את המודעות. ההערכה של תחומי העניין ב-Brave מתבססת על היסטוריית הגלישה שלך מהזמן האחרון.</translation>
 <translation id="6797402139308059782">‏התרה ל-Brave לפעול ברקע</translation>
 <translation id="5875673934455379806">‏התקנת Brave מחדש</translation>
 <translation id="6888366668010117849">‏אתרים יכולים לשמור מידע ב-Brave לגבי תחומי העניין שלך. לדוגמה, אם ביקרת באתר כדי לקנות נעליים למרתון, האתר עשוי להגדיר 'ריצת מרתון' כתחום עניין שלך. לאחר מכן, בביקור באתר שונה, למשל כדי להירשם למרוץ, יכול להיות שתוצג לך מודעה לנעלי ריצה על סמך תחומי העניין שלך.</translation>
@@ -32,6 +33,7 @@
 <translation id="2018879682492276940">ההתקנה נכשלה. יש לנסות שוב.</translation>
 <translation id="831418749472885028">‏כדי לבדוק אם שאר הסיסמאות מוגנות מפני פרצות באבטחת מידע ובעיות אבטחה אחרות, <ph name="BEGIN_LINK"/>יש להיכנס ל-Brave<ph name="END_LINK"/>.</translation>
 <translation id="5499149312981370855">‏בוחרים אם לכלול את ההיסטוריה ב-Brave להתאמה אישית מדויקת יותר בשירותי Brave</translation>
+<translation id="849607431499549468">‏מידע על האופן שבו Brave מנהל את אישורי הבסיס שלו</translation>
 <translation id="142389341645668510">‏התאמה אישית של Brave</translation>
 <translation id="2174917724755363426">ההתקנה לא הושלמה. להמשיך בביטול?</translation>
 <translation id="8745514854244955877">‏Brave – כניסה לרשת – <ph name="PAGE_TITLE"/></translation>
@@ -90,6 +92,7 @@
 <translation id="5853262807109651878">‏פעולה זו תמחק <ph name="ITEMS_COUNT"/> פריטים מהמכשיר. כדי לשחזר את הנתונים מאוחר יותר, יש להיכנס אל Brave עם <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">‏ניתן לעבור בין פרופילים של Brave באמצעות <ph name="SHORTCUT"/></translation>
 <translation id="8703492925273919597">‏יש לסגור את כל חלונות Brave ולנסות שוב.</translation>
+<translation id="5350485513372498152">‏Brave Assistant ב-Brave יכולה להשלים עבורך פעולות באתרים</translation>
 <translation id="4061445349373849749">‏כדי להגן על הפרטיות שלך, תחומי עניין שהוגדרו לפני יותר מ-4 שבועות נמחקים אוטומטית. עם המשך הגלישה, תחום עניין כלשהו עשוי להופיע שוב ברשימה. יש גם אפשרות להסיר תחומי עניין מ-Brave כדי שלא יילקחו בחשבון.</translation>
 <translation id="691208314680168371">‏היסטוריית הגלישה – תיעוד האתרים שביקרת בהם באמצעות Brave במכשיר הזה.</translation>
 <translation id="1384923383737428730">‏יש במחשב שלך תוכנה מזיקה. Brave יכול להסיר אותה, לשחזר את ההגדרות שלך ולהשבית תוספים כדי שהדפדפן יחזור שוב לפעולה רגילה.</translation>
@@ -256,7 +259,6 @@
 <translation id="5101812148953915496">‏אתרים שביקרת בהם יזכרו את הפרטים שלך עד לסגירת Brave</translation>
 <translation id="5516268345616100622">‏מנהל המשימות - Brave</translation>
 <translation id="713191641919118540">‏תחומי העניין שלך בהתאם להערכה של Brave</translation>
-<translation id="2777705643687998385">‏הקובץ הזה מוצפן ולכן הוא נחסם על ידי Brave. אפשר לבקש מהבעלים לפענח אותו</translation>
 <translation id="9068395155143628872">‏מדידת המודעות מאפשרת לאתרים שביקרת בהם לבקש מ-Brave מידע שיעזור לבעלי האתרים למדוד את הביצועים של המודעות שלהם. מדידת המודעות מגבילה את המעקב באתרים שונים על ידי העברת כמות קטנה ככל האפשר של מידע בין אתרים.</translation>
 <translation id="1864557848095568223">‏העדכון של Brave‏ מתבצע</translation>
 <translation id="3403365884036456766">‏קובץ ההעדפות שלך פגום או לא חוקי. 
@@ -346,6 +348,7 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="7902365066753170041">‏הפעלה מחדש לצורך עדכון &amp;Brave</translation>
 <translation id="3350544518197210895">‏Brave ‏(mDNS-In)</translation>
 <translation id="7977787072794666032">‏ייתכן ש-Brave לא יפעל כראוי כי הוא כבר לא נתמך ב-Windows XP וב-Windows Vista</translation>
+<translation id="8180288330711585962">‏אישורים שמנוהלים על ידי Brave</translation>
 <translation id="1611678871603620428">‏כדי לקבל עדכונים של Brave בעתיד, צריך להשתמש ב-macOS מגרסה 10.13 ואילך. במחשב הזה פועלת מערכת ההפעלה ‎OS X 10.11.</translation>
 <translation id="4484434718272972655">‏מי משתמש/ת ב-Brave?</translation>
 <translation id="7173394303099002355">‏רוצה להשיג את רמת האבטחה הגבוהה ביותר של Brave?</translation>

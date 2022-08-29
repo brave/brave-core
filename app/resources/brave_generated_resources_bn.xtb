@@ -25,6 +25,7 @@
 <translation id="4150684676757176434">অটোপ্লে ব্লক করা চালিয়ে যান</translation>
 <translation id="8988939298652262600">Brave সুরক্ষা এবং নিরাপত্তার জন্য এক্সটেনশনগুলো পর্যালোচনা করে না। আপনি ডেভেলপারকে বিশ্বাস করলেই শুধুমাত্র এই এক্সটেনশনটি ইনস্টল করুন।</translation>
 <translation id="120759863357279975">Brave-এ <ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>")এর অনুমতি দেওয়া হয় না।</translation>
+<translation id="9005883459983913482">Tor উইন্ডোগুলি</translation>
 <translation id="7965178729203412357">নতুন টর পরিচিতি</translation>
 <translation id="6924909138923993900">এই সাইটের জন্য নতুন টর সংযোগ</translation>
 <translation id="4734294903299549345">টরের সাথে প্রাইভেট উইন্ডো থেকে প্রস্থান করুন</translation>
@@ -38,6 +39,9 @@
 <translation id="1725356094208762656">Tor এ খুলুন</translation>
 <translation id="3396347744975515056">Brave সিঙ্ক আপগ্রেড করা হয়েছে এবং সেটআপ করা প্রয়োজন</translation>
 <translation id="7473245612074035141">সেটআপ আরম্ভ করুন</translation>
+<translation id="3975865347033939965">সিঙ্ক পরিষেবা শুরু করা যায়নি, Brave সিঙ্ক চলছে না</translation>
+<translation id="4450893287417543264">আবার দেখাবেন না</translation>
+<translation id="4595286989346610620">বিস্তারিত চেক করুন</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">IPFS থেকে ফাইলগুলো প্রকাশ এবং পুনরুদ্ধার করুন</translation>
 <translation id="7398397225367092613">.onion</translation>
@@ -144,7 +148,7 @@
 <translation id="8490082094734500369">রীডার মোড বন্ধ করুন</translation>
 <translation id="2036503787657622020">রীডার মোড চালু করুন</translation>
 <translation id="5226458915125328323">স্পীডরিডার সেটিংস</translation>
-<translation id="1621606336827646158">আসল পৃষ্ঠা দেখান</translation>
+<translation id="8591883849678260674">আসল দেখুন</translation>
 <translation id="6284218950354553099">স্বয়ংক্রিয়ভাবে Brave-এ প্রতিদিনের ব্যবহারের পিং পাঠান</translation>
 <translation id="5288333155754958121">এই নামবিহীন, গোপন পিংটি Brave-কে সক্রিয় ব্যবহারকারী অনুমান করতে দেয়।</translation>
 <translation id="1872784258300710671">নির্দিষ্ট কিছু বৈশিষ্ট্যের সামগ্রিক ব্যবহার অনুমান করতে Brave সম্পূর্ণরূপে ব্যক্তিগত পণ্য বিশ্লেষক ব্যবহার করে</translation>
@@ -211,6 +215,10 @@
 <translation id="8721331068159819483">macOS এর মত একইরকমের</translation>
 <translation id="1692470335103807198">আরো থিম পান</translation>
 <translation id="2906510232093002459">Brave ডিফল্ট ছবিসমূহ</translation>
+<translation id="3367129510799209147">ট্যাব হোভার মোড</translation>
+<translation id="2113977810652731515">কার্ড</translation>
+<translation id="4096343215397759358">পূর্বরূপ সহ কার্ড</translation>
+<translation id="5297085818601043899">টুলটিপ</translation>
 <translation id="2396127686705429331">বুকমার্ক বোতাম দেখান</translation>
 <translation id="2814998458708016836">ওয়াইড অ্যাড্রেস বার ব্যবহার করুন</translation>
 <translation id="4109670531935487117">ঠিকানা বারে স্বয়ংসম্পূর্ণ পরামর্শ দেখান</translation>
@@ -238,7 +246,7 @@
 <translation id="6388201778088078932">সেটিংস।</translation>
 <translation id="4800195524776354947">শিল্ডস আইকনে অবরুদ্ধ উপকরণগুলির সংখ্যা দেখান</translation>
 <translation id="5510493033031835532">AMP পৃষ্ঠাগুলি অটো-রিডাইরেক্ট করুন</translation>
-<translation id="5197219128592971597">Google-এর অ্যাক্সিলারেটেড মোবাইল পৃষ্ঠা সংস্করণের পরিবর্তে সর্বদা আসল (নন-AMP) পৃষ্ঠার URL দেখুন</translation>
+<translation id="7630031867325944356">AMP এবং অনুরূপ সংস্করণের পরিবর্তে প্রকাশক পৃষ্ঠার URL পছন্দ করুন।</translation>
 <translation id="7607166182943595829">অআমার ভাষার পছন্দগুলির উপর ভিত্ত করে সাইটগুলিকে আঙুলের ছাপ মূদ্রণ করা থেকে বাধা দেয়</translation>
 <translation id="3497934980362703405">এই সেটিং সক্ষম করা ওয়েব সাইটগুলিকে আপনার ভাষার পছন্দগুলি সম্পর্কে জানার পরিমাণকে কমায়।</translation>
 <translation id="2133317862976486547">ট্র্যাকারগুলি &amp; বিজ্ঞাপন ব্লকিং</translation>
@@ -286,6 +294,7 @@
 <translation id="1758947220824279023">দেখানোর জন্য বিজ্ঞাপনের সর্বাধিক সংখ্যা</translation>
 <translation id="2356652719351432565">আঞ্চলিক বিজ্ঞাপনের প্রাসঙ্গিকতা</translation>
 <translation id="2196950072404588793">এটি Brave-কে সুনির্দিষ্টভাবে আপনার অঞ্চলের জন্য বিজ্ঞাপনগুলি দেখানোর অনুমতি দেয়। <ph name="BEGIN_LINK"/>আরও জানুন<ph name="END_LINK"/></translation>
+<translation id="2433507940547922241">উপস্থিতি</translation>
 <translation id="6112368337882254910">স্বতঃ-প্রদান</translation>
 <translation id="9132509928968869844">মাসিক স্বয়ংক্রিয় অবদানের সীমা</translation>
 <translation id="7286722244752781970">একটি সাক্ষাত লগ করার জন্য প্রয়োজন ন্যুনতম পেজ টাইম</translation>
@@ -375,6 +384,7 @@
     যে ডিভাইসে এই কোড ওয়ার্ডগুলি তৈরি হয় আপনিই যে সেটির মালিক অনুগ্রহ করে তা দুবার পরীক্ষা করুন।
 
     আপনি কি এটি করার ব্যাপারে নিশ্চিত?</translation>
+<translation id="7443185843787879670">Brave আপনার অপারেটিং সিস্টেমের নিরাপদ স্টোরেজ প্রবেশ করতে পারেনি। এটি পাসওয়ার্ড এবং কুকির মতো ডেটা সুরক্ষিত করতে ব্যবহৃত হয়; ডিভাইসগুলির মধ্যে আপনার ব্রাউজার প্রোফাইল সংযোগ করার জন্য Brave সিঙ্কের জন্যও এটি প্রয়োজনীয়। এর মানে Brave সিঙ্ক চলছে না। এই সমস্যাটি সমাধান করতে, অনুগ্রহ করে <ph name="BEGIN_LINK_SYNC_GUIDE"/>Brave সিঙ্কের সমস্যা সমাধানের নির্দেশিকা দেখুন<ph name="END_LINK_SYNC_GUIDE"/>।</translation>
 <translation id="6285118765755298263">অন্যান্য সার্চ ইঞ্জিনকে ইনডেক্স করুন</translation>
 <translation id="919715748352669592">OpenSearch স্পেসিফিকেশন অনুসরণ করে এমন ওয়েবসাইটগুলিকে স্বয়ংক্রিয়ভাবে ইনডেক্স করে।</translation>
 <translation id="842628013524824194">সাধারণ উইন্ডো - ঠিকানা বারে সার্চ ইঞ্জিন ব্যবহার করা হয়েছে</translation>
@@ -387,6 +397,23 @@
 <translation id="5248318250177143470">Ethereum Name Service (ENS) সমাধানের উপায়</translation>
 <translation id="6241402707160226266">Tor এর সাথে ব্যক্তিগত উইন্ডো</translation>
 <translation id="8762452230727230396">Tor আপনার দেখা সাইটগুলি থেকে IP ঠিকানাগুলিকে লুকায়।</translation>
+<translation id="2959986444009520721">ব্রিজগুলি ব্যবহার করুন</translation>
+<translation id="6003484976430531384">ব্রিজগুলি আপনাকে Tor ব্লকের জায়গায় Tor নেটওয়ার্ক পেতে সহায়তা করে। আপনি কোথায় আছেন তার উপর নির্ভর করে, একটি সেতু অন্যটির চেয়ে ভাল কাজ করতে পারে।</translation>
+<translation id="7206799843254049470">Tor সংযোগ সেটিংস</translation>
+<translation id="3194502271166340944">Tor সহ প্রাইভেট উইন্ডোস কীভাবে Tor নেটওয়ার্কের সাথে সংযুক্ত হবে তা নিয়ন্ত্রণ করে</translation>
+<translation id="4859228830700205299">একটি অন্তর্নির্মিত সেতু নির্বাচন করুন</translation>
+<translation id="3233137871426528317">torproject.org থেকে একটি সেতুর অনুরোধ করুন</translation>
+<translation id="5701503934456421898">একটি নতুন সেতুর অনুরোধ করুন...</translation>
+<translation id="8149806369020180959">একটি সেতু প্রদান করুন</translation>
+<translation id="454073978993625597">একটি বিশ্বস্ত সোর্স থেকে সেতু তথ্য লিখুন।</translation>
+<translation id="4425607417590286548">পরিবর্তনগুলি প্রয়োগ করুন</translation>
+<translation id="2128143836897950793">সেতু পেতে 'নতুন সেতুর অনুরোধ করুন...'-এ ক্লিক করুন</translation>
+<translation id="3314921753580327793">টাইপ ঠিকানা: পোর্ট (প্রতি লাইনে একটি)</translation>
+<translation id="3755189300481406891">সেতুর অনুরোধ জানান</translation>
+<translation id="6924425739431382319">BridgeDB এর সাথে যোগাযোগ করা হচ্ছে। অনুগ্রহপূর্বক অপেক্ষা করুন।</translation>
+<translation id="811745063252080651">একটি সেতু অনুরোধ করতে CAPTCHA সমাধান করুন।</translation>
+<translation id="6936835573742749135">একটি CAPTCHA অনুরোধ করতে পারবেন না। পরে আবার চেষ্টা করুন।</translation>
+<translation id="2653659639078652383">জমা দিন</translation>
 <translation id="1369311132025451972">স্বয়ংক্রিয়ভাবে .onion সাইটগুলিতে পুনঃনির্দেশিত করে</translation>
 <translation id="2843777623071353503">যখন উপলব্ধ হবে তখন Brave ওয়েবসাইটের onion পরিষেবা বা Tor উইন্ডোতে .onion ডোমেন খুলবে।</translation>
 <translation id="2896916411183256228">সরাসরি ব্রাউজারে torrents প্রদর্শন করতে WebTorrent ব্যবহার করে। torrent ফাইলগুলি এবং magnet লিঙ্কগুলিকে সমর্থন করে।</translation>
@@ -433,7 +460,6 @@
 <translation id="7059127752542505809">URL লিখুন</translation>
 <translation id="3047726704186619366">আইকন URLগুলি</translation>
 <translation id="2487558607408469181">এক্সপ্লোরার URLগুলি ব্লক করুন</translation>
-<translation id="2653659639078652383">জমা দিন</translation>
 <translation id="2156993118928861787">অবৈধ ঠিকানা</translation>
 <translation id="6301398959353668507">এই ক্ষেত্রটি খালি রাখা যাবে না।</translation>
 <translation id="7504462451153306677">অবৈধ ফরম্যাট, চেন আইডিটি একটি পজিটিভ নম্বর</translation>

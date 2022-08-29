@@ -3,6 +3,7 @@
 <translationbundle lang="en-GB">
 <translation id="1800311840305731850">IPFS page cannot be loaded.</translation>
 <translation id="5712742401570874902">IPFS pages are not allowed in private windows.</translation>
+<translation id="5749639013106315553">IPFS is disabled. Select IPFS resolve method in settings to open this site.</translation>
 <translation id="5288293905681750318">Trackers &amp; ads blocked</translation>
 <translation id="2313532038420432247">HTTPS Upgrades</translation>
 <translation id="788493840831967104">Time saved</translation>
@@ -60,6 +61,7 @@
 <translation id="6699628638740071563">It's time to ditch Google.</translation>
 <translation id="2045455461902775806">Brave Search doesn't bias or censor results and it doesn't track you, your queries or your clicks.</translation>
 <translation id="6811221529729056895">Try Brave Search now</translation>
+<translation id="5525668735313040116">Search the web privately</translation>
 <translation id="3446024864193919737">Show Brave Rewards</translation>
 <translation id="6274899614137380422">Show Binance</translation>
 <translation id="5585019845078534178">Cards</translation>
@@ -70,12 +72,19 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="3159285901314605198">Background Image</translation>
 <translation id="385051799172605136">Back</translation>
+<translation id="4225429340218993596">Solid colours</translation>
 <translation id="9024104284526126630">You can start a private call in Brave.</translation>
 <translation id="4903286433687221248">Start unlimited calls with friends and colleagues in Brave Talk.</translation>
 <translation id="7115051913071512405">Try it out</translation>
 <translation id="7415602225677446066">Today's top stories in a completely private feed, just for you.</translation>
 <translation id="6903061332999399632">Brave News is ad-supported with completely private and anonymised ads matched on your device. Your personal information always stays private, per our <ph name="LINK_START"/>privacy policy<ph name="LINK_END"/>.</translation>
 <translation id="7823038307453615214">Show Brave News</translation>
+<translation id="1447534717041828517">Show Brave News button in the toolbar</translation>
+<translation id="370665806235115550">Loading...</translation>
+<translation id="4634933166298842522">Manage Subscriptions</translation>
+<translation id="3632460243282703117">Subscribe</translation>
+<translation id="4720556299488643018">Unsubscribe</translation>
+<translation id="5227905322248018544">Hide and don't show this again</translation>
 <translation id="780301667611848630">No, thanks</translation>
 <translation id="9164544612367905452">Fetching…</translation>
 <translation id="1276592121036104130">Load new content</translation>
@@ -101,6 +110,7 @@
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="8820817407110198400">Bookmarks bar</translation>
 <translation id="1644574205037202324">History</translation>
+<translation id="2702801445560668637">Reading List</translation>
 <translation id="6165508094623778733">Learn more</translation>
 <translation id="8730621377337864115">Done</translation>
 <translation id="730042046912793465">This is a</translation>
@@ -127,9 +137,11 @@
 <translation id="4712050378540986986">Tor status</translation>
 <translation id="1939334281379458295">Tor connected successfully</translation>
 <translation id="8030169304546394654">Disconnected</translation>
+<translation id="2795840524629682765">Tor connection failed</translation>
 <translation id="1149108864689950951">Tor is connecting ... [[percentage]]%</translation>
 <translation id="3651192084771403430">Having problems connecting? Try <ph name="BEGIN_LINK"/>turning off<ph name="END_LINK"/> Private Window with Tor and back on again in settings.</translation>
-<translation id="9190084253595768053">Having trouble connecting? Open <ph name="BEGIN_LINK"/>Brave Settings<ph name="END_LINK"/>, disable Private Window with Tor, then re-enable. Still having trouble?</translation>
+<translation id="8834376622642889380">Open <ph name="BEGIN_LINK"/>Brave Settings<ph name="END_LINK"/>, disable Private Window with Tor, then re-enable.</translation>
+<translation id="1576202729986800142"><ph name="BEGIN_BOLD"/>Still having trouble?<ph name="END_BOLD"/> Try using <ph name="BEGIN_BRIDGES_LINK"/>bridges<ph name="END_BRIDGES_LINK"/> or <ph name="BEGIN_SUPPORT_LINK"/>contact support<ph name="END_SUPPORT_LINK"/>.</translation>
 <translation id="8388043004918289671">Contact support.</translation>
 <translation id="4272382368346338917">Additional Filters</translation>
 <translation id="8949292968394988358">Warning: Turning on too many filters will degrade performance</translation>
@@ -146,7 +158,6 @@
 <translation id="9204006549413740506">Last updated</translation>
 <translation id="6745592621698551453">Update now</translation>
 <translation id="5334844597069022743">View source</translation>
-<translation id="4720556299488643018">Unsubscribe</translation>
 <translation id="1209739344687072997">Report a broken site</translation>
 <translation id="8510478288840333677">Let Brave's developers know that this site doesn't work properly with Shields:</translation>
 <translation id="4105411033440701818">Note: when you click "Submit", you'll share the site address, your Brave version number and your IP address with Brave developers. (The IP address will not be stored.)</translation>
@@ -257,6 +268,8 @@
 <translation id="5028274575541726856">Error: Brave Rewards profile is flagged</translation>
 <translation id="2607420597216860026">Please try again after you have completed ID verification on <ph name="PROVIDER"/>.</translation>
 <translation id="3183954159462541696">Error: you need a verified account to log in</translation>
+<translation id="6650468331440842419">Hmm, it looks like your Brave Rewards profile was already connected to a custodial account in another region. Please try connecting again with your previous custodial account, or update your custodial account's region to match your previous account.</translation>
+<translation id="5955021799827127089">Error: Different account region</translation>
 <translation id="5260522591743022748">Hmm, it looks like your Brave Rewards has already been verified with another <ph name="PROVIDER"/> account. Please try verifying again using your previous account.</translation>
 <translation id="5111921830714291902">Error: Different account</translation>
 <translation id="6933939911547091461">Unfortunately, your Brave Rewards cannot be verified because your region is not supported for Brave Rewards verification at this time.</translation>
@@ -423,7 +436,6 @@
 <translation id="7656781188259414093">target.</translation>
 <translation id="13853865024308201">Claim</translation>
 <translation id="1767561995429774671">Contribute</translation>
-<translation id="6896758677409633944">Copy</translation>
 <translation id="4932733599132424254">Date</translation>
 <translation id="3552003743293281224">Deposits</translation>
 <translation id="3866249974567520381">Description</translation>
@@ -470,8 +482,6 @@
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6569877533335686968">Uphold</translation>
-<translation id="6977372887576114613">Deposited BAT</translation>
-<translation id="194625454574835815">Recovery Key</translation>
 <translation id="6354568176665589146">Recurring</translation>
 <translation id="2799223571221894425">Relaunch</translation>
 <translation id="1110535155349301542">remove</translation>
@@ -482,10 +492,6 @@
 <translation id="1797334173232638045">Your pinned sites have been moved to</translation>
 <translation id="542042553430131913">If your Brave Rewards is not verified, your BAT balance is stored in local files on your device.</translation>
 <translation id="2142973554991645476">If you'd like to secure your BAT in case you need to do a clean reinstall of the browser or reformat your device and would like to enjoy other benefits such as adding or withdrawing your BAT, we recommend <ph name="LINK_BEGIN"/>verifying<ph name="LINK_END"/>.</translation>
-<translation id="5717619667204259673">Keep this recovery key safe.</translation>
-<translation id="7018390569051511373">You can always use this key to get your Rewards profile back if something happens to your browser or computer. But make sure to protect it – anyone who gets this key could steal your Rewards profile. It’s probably safest to write it down on a piece of paper, or wherever else you keep important info.</translation>
-<translation id="8979401359137062629">Please note:</translation>
-<translation id="7934806082615382155">Part of the funds may be received from Brave and are not included in the backup as it is not required. It's available for you to spend exclusively on this browser.</translation>
 <translation id="7354412786785889047">You can support this content creator by sending a tip. It’s a way of thanking them for making great content. Verified creators get paid for their tips during the first week of each calendar month.</translation>
 <translation id="3074127054582480056">Attention</translation>
 <translation id="3034163433136515805">View QR Code</translation>
@@ -498,7 +504,6 @@
 <translation id="3548849774726860833">Your Rewards data will be permanently lost if you reset your Brave Rewards.</translation>
 <translation id="4914597931214386232">Token Grants Claimed</translation>
 <translation id="3494964159182650590">Rewards Summary</translation>
-<translation id="1738658589626889850">Save as File</translation>
 <translation id="2913994227901456490">See all [[numItems]] items</translation>
 <translation id="1549705559752367917">Send Tip</translation>
 <translation id="3536298624341433814">Send my Tip</translation>
@@ -576,6 +581,7 @@
 <translation id="3909193058140362331">The conversion could not be processed. Please try again.</translation>
 <translation id="5721542149042740780">The amount you entered exceeds the amount you currently have available.</translation>
 <translation id="7144878232160441200">Retry</translation>
+<translation id="6896758677409633944">Copy</translation>
 <translation id="7431764818502638140">Info not available</translation>
 <translation id="6409345078064530735">Deposit address</translation>
 <translation id="7153116947319792513">Deposit Memo</translation>
@@ -632,7 +638,7 @@
 <translation id="1164622162816276433">24HR Volume</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Enable support of Unstoppable Domains in Brave?</translation>
-<translation id="2173151783558384314">Brave will be using Infura to issue Ethereum JSON-RPC calls to the smart contract from Unstoppable Domains to resolve .crypto (and also .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin) domain name look-up requests. If you enable this, Infura will see those specific domains that you're trying to visit, but they will not be able to see other domains. See Infura's <ph name="BEGIN_INFURA_TOU_LINK"/>terms of use<ph name="END_INFURA_TOU_LINK"/> and <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privacy policy<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="6783637972818687030">Brave will be using Infura to issue Ethereum JSON-RPC calls to the smart contract from Unstoppable Domains to resolve .crypto (and also .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin, .zil) domain name lookup requests. If you enable this, Infura will see those specific domains that you're trying to visit but they will not be able to see other domains. See Infura's <ph name="BEGIN_INFURA_TOU_LINK"/>terms of use<ph name="END_INFURA_TOU_LINK"/> and <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privacy policy<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">Enable support of Ethereum Name Service (ENS) in Brave?</translation>
 <translation id="8328137586971750853">Brave will be using Infura to issue Ethereum JSON-RPC calls to the smart contract from Ethereum Name Service to resolve .eth domain name look-up requests. If you enable this, Infura will see the .eth domain that you're trying to visit, but they will not be able to see other domains. See Infura's <ph name="BEGIN_INFURA_TOU_LINK"/>terms of use<ph name="END_INFURA_TOU_LINK"/> and <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privacy policy<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
@@ -778,9 +784,6 @@
 <translation id="7550470870580166294">Insufficient Funds</translation>
 <translation id="2775064702681588061">Your Brave Rewards account is waiting for a deposit.</translation>
 <translation id="3358400027937159351">You've contributed <ph name="AMOUNT"/>.</translation>
-<translation id="2630264552940126640">Back up Brave Rewards</translation>
-<translation id="238922425564381955">Please back up your Brave Rewards.</translation>
-<translation id="1018806299114415224">Back up now</translation>
 <translation id="1619753851206150396">You are logged out</translation>
 <translation id="5142174225142816130">This can happen to keep your account secure. Click below to reconnect now.</translation>
 <translation id="2807965672895914288">Your scheduled monthly payment for Auto-Contribute and monthly tips could not be completed due to insufficient funds. We’ll try again in 30 days.</translation>
@@ -907,6 +910,7 @@
 <translation id="2805756323405976993">Apps</translation>
 <translation id="3586775666459823714">NFTs</translation>
 <translation id="1987317783729300807">Accounts</translation>
+<translation id="3567988240819868195">Market</translation>
 <translation id="3188963375823360044">1H</translation>
 <translation id="8163269366661594721">1D</translation>
 <translation id="7640956400175663828">1W</translation>
@@ -930,15 +934,18 @@
 <translation id="4500473291496079954">Expires in</translation>
 <translation id="2236833281018938257">Wallet address or URL</translation>
 <translation id="928500657730628112">Wallet address</translation>
-<translation id="2860280209982026951">Brave uses <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> as a DEX aggregator.</translation>
+<translation id="6812967455478797345">Brave uses <ph name="LINK_BEFORE"/><ph name="SWAP_PROVIDER"/><ph name="LINK_AFTER"/> as a DEX aggregator.</translation>
 <translation id="151946611346774041">0x will process the Ethereum address and IP address to fulfill a transaction (including getting quotes). 0x will ONLY use this data for the purposes of processing transactions.</translation>
-<translation id="4626407663177532837">Quote includes a 0.875% Brave fee.</translation>
+<translation id="7465227658364622464">Jupiter will process the Solana address and IP address to fulfill a transaction (including getting quotes). Jupiter will ONLY use this data for the purposes of processing transactions.</translation>
+<translation id="712738518060477110">Quote includes a <ph name="SWAP_FEE_PERCENTAGE"/> Brave fee.</translation>
 <translation id="8368540604723748428">Too many decimal places</translation>
 <translation id="6575120282593094155">You don’t yet have a <ph name="ACCOUNT_TYPE"/> account. Create one now?</translation>
+<translation id="8712637175834984815">Got it</translation>
 <translation id="2704606927547763573">Copied</translation>
-<translation id="1420318137760245955">Welcome to the new Brave Wallet</translation>
-<translation id="3671745544278414606">Hold crypto assets in your custody. Track portfolio performance and interact with Web3 DApps. Trade, invest, borrow and lend with DeFi. All right from the Brave privacy browser. No extensions, no download required.</translation>
-<translation id="6972754398087986839">Get Started</translation>
+<translation id="6042308850641462728">More</translation>
+<translation id="768236965975208017">Secure. Multi-chain. And oh-so-easy to use. Your Brave Wallet is just a few clicks away</translation>
+<translation id="2484275747844666540">Create new wallet</translation>
+<translation id="3662348701117072366">Import existing wallet</translation>
 <translation id="375882617301124395">Back up your crypto wallet</translation>
 <translation id="180032279811483155">In the next step you’ll see a <ph name="RECOVERY_PHRASE_LENGTH"/>-word recovery phrase, which you can use to recover your primary crypto accounts. Save it someplace safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.</translation>
 <translation id="5024543173656851695">I understand that if I lose my recovery words, I will not be able to access my crypto wallet.</translation>
@@ -951,10 +958,13 @@
 <translation id="2339124864228588937">Verify recovery phrase</translation>
 <translation id="3747079125031086337">Select the words in your recovery phrase in their correct order.</translation>
 <translation id="802060020117206314">Recovery phrase did not match, please try again.</translation>
-<translation id="2813156651070657572">Secure your crypto assets with a password</translation>
-<translation id="6901073872645365201">Passwords must be at least 7 characters and contain at least one number and one special character.</translation>
-<translation id="6657585470893396449">Password</translation>
-<translation id="5486261815000869482">Confirm password</translation>
+<translation id="8412783472871103529">Verify your recovery phrase</translation>
+<translation id="2226686084760581391">Click the <ph name="FIRST_BEFORE"/><ph name="FIRST"/> (<ph name="FIRST_ORDINAL"/>)<ph name="FIRST_AFTER"/>, <ph name="SECOND_BEFORE"/><ph name="SECOND"/> (<ph name="SECOND_ORDINAL"/>)<ph name="SECOND_AFTER"/>, and <ph name="THIRD_BEFORE"/><ph name="THIRD"/> (<ph name="THIRD_ORDINAL"/>)<ph name="THIRD_AFTER"/> words of your recovery phrase.</translation>
+<translation id="7575574239720542222">Recovery phrase didn't match</translation>
+<translation id="8692301574305033504">Create a new password</translation>
+<translation id="4384286220811524581">You'll use this password each time you access your wallet.</translation>
+<translation id="2136372518715274136">Enter new password</translation>
+<translation id="4450951602553063001">Re-enter password</translation>
 <translation id="6138471905279127211">Password criteria doesn't match.</translation>
 <translation id="467510802200863975">Passwords do not match</translation>
 <translation id="5168349973342709369">Enter password to unlock wallet</translation>
@@ -964,6 +974,7 @@
 <translation id="765834632354589737">Backup Wallet</translation>
 <translation id="1108298724135935307">Connected sites</translation>
 <translation id="163697698769819510">Back up your wallet now to protect your assets and ensure you never lose access.</translation>
+<translation id="1018806299114415224">Back up now</translation>
 <translation id="1400709719911593089">Brave Wallet is not set as your default wallet and will not respond to Web3 DApps. Visit settings to change your default wallet.</translation>
 <translation id="4362717653795263052">Restore primary crypto accounts</translation>
 <translation id="3038077262567136741">Enter your recovery phrase to restore your Brave wallet crypto account.</translation>
@@ -974,6 +985,7 @@
 <translation id="3331452756822160641">New password</translation>
 <translation id="8624315169751085215">Copy to clipboard</translation>
 <translation id="7885157704277298658">Copied!</translation>
+<translation id="6346952829206698721">Paste from clipboard</translation>
 <translation id="1121335910737476837">Primary crypto accounts</translation>
 <translation id="6969147029062037757">Imported accounts</translation>
 <translation id="4057718162494343222">You can create primary accounts in Brave Wallet that may be backed up or restored from your recovery phrase. To learn more about account types, visit account help.</translation>
@@ -1058,7 +1070,6 @@
 <translation id="6323024765179772761">Search coins</translation>
 <translation id="6998989275928107238">To</translation>
 <translation id="1506421160138798546">estimate</translation>
-<translation id="3567988240819868195">Market</translation>
 <translation id="59223531494896848">Limit</translation>
 <translation id="8569380433211549748">Price in</translation>
 <translation id="2490428413101944234">Test faucet</translation>
@@ -1123,20 +1134,10 @@
 <translation id="4874303883488468190">Select accounts(s)</translation>
 <translation id="2018472018751735678">View the addresses of your permitted accounts (required)</translation>
 <translation id="7029403458170657879">Connect with Brave Wallet</translation>
-<translation id="7982184974053636367">A more secure password is required for Brave Wallet</translation>
-<translation id="2372897697869224590">Set a Brave wallet password</translation>
-<translation id="7739762330714405363">Use the same password</translation>
-<translation id="1085027414516521238">MetaMask</translation>
-<translation id="7102907656918333773">Import from <ph name="WALLET_EXTENSION"/></translation>
-<translation id="1737856990004825123">Import your <ph name="WALLET_EXTENSION"/> accounts into Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with Web3 DApps.</translation>
-<translation id="4237840336687249184">MetaMask password</translation>
-<translation id="2381605201035323535">crypto wallets</translation>
 <translation id="2770851145415891830">Existing crypto wallets detected</translation>
-<translation id="4938145712652668388">When you click "Get started", you'll import your previous Crypto Wallet to the new Brave Wallet experience and enjoy all the benefits outlined above. Give it a try and let us know what you think.</translation>
 <translation id="2237759620789871865">If you'd rather skip the import and keep the old Crypto Wallets experience, just navigate to the Brave Browser <ph name="LINK_BEFORE"/>Settings<ph name="LINK_AFTER"/> and change the default back to Crypto Wallets. You can also import, try the new Brave Wallet and change back at any time.</translation>
 <translation id="5590175005414413980">Enter your existing crypto wallets password to import to Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with Web3 DApps.</translation>
-<translation id="9099900965604225657">Crypto wallets password</translation>
-<translation id="4020495774166914146">I’ve lost my password and recovery phrase, create a new wallet.</translation>
+<translation id="880619123281809987">Type Crypto wallets password</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> connected</translation>
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> disconnected</translation>
 <translation id="5317781812114905957">Instructions</translation>
@@ -1239,13 +1240,25 @@
 <translation id="1752214435563414457">Brave swap-stakes</translation>
 <translation id="7829441065063984927">7 days of crypto giveaways, ~$500k in prizes.</translation>
 <translation id="8292716346768453265">Enter now!</translation>
+<translation id="1935944189549132903">All Assets</translation>
+<translation id="203041314293794507">Tradable</translation>
+<translation id="6169371176266800104">24hr</translation>
+<translation id="7677692756188354224">Mkt. Cap</translation>
+<translation id="4430019312045809116">Volume</translation>
+<translation id="5133421763709317473">No assets matching search or filter found</translation>
+<translation id="8813832913015888458">This asset is not supported by Brave Wallet</translation>
 <translation id="6423985584914773314">Not a valid FIL address</translation>
 <translation id="3898731124813934210">Buy with Wyre</translation>
 <translation id="5522073372365069684">Buy with Ramp</translation>
+<translation id="7902920577183739843">Buy with Sardine</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
+<translation id="1130009472404762036">Sardine</translation>
 <translation id="7667423728712601865">Buy crypto with Visa or Mastercard.</translation>
+<translation id="3101839349578102016">Instant buy with your bank account. Lower fees.</translation>
 <translation id="8528916244724490964">All networks</translation>
+<translation id="4038403584813842767">Balance ↑</translation>
+<translation id="1695096446857675822">Balance ↓</translation>
 <translation id="2781668117338732220">Secondary networks</translation>
 <translation id="2816106784624007524">Gas limit must be an integer greater than 0</translation>
 <translation id="3354376789153561654">Transaction data 'to' must be specified</translation>
@@ -1273,9 +1286,103 @@
 <translation id="7843211152394841558">Max retries:</translation>
 <translation id="8496335570810457">Preflight commitment:</translation>
 <translation id="5100124500279922001">Skip preflight:</translation>
+<translation id="3568017348462868931">Select currency</translation>
+<translation id="4420924466038521900">Search currencies</translation>
 <translation id="8060029310790625334">Help Centre</translation>
 <translation id="2095142195578664632">Need help? See</translation>
 <translation id="3253669416991680932">This hardware wallet does not support this operation.</translation>
+<translation id="7457027586454688423">Enter your Brave Wallet password</translation>
+<translation id="2021055898001510484">Open rainbowbridge.app?</translation>
+<translation id="6550403756693197933">Bridging assets across networks allows you to use your crypto on other networks and other DApp ecosystems. Bridging assets to other networks has some risks.</translation>
+<translation id="8315999527212828722">Open rainbowbridge.app</translation>
+<translation id="4903322403594141291">Learn more about Brave Wallet</translation>
+<translation id="3875185448438395303">At least:</translation>
+<translation id="2029465635925899949">8 characters</translation>
+<translation id="6697810017029555732">Match!</translation>
+<translation id="8918368616587206671">Strong!</translation>
+<translation id="574392208103952083">Medium</translation>
+<translation id="8297006494302853456">Weak</translation>
+<translation id="6782556046178425980">Before you start backing up wallet</translation>
+<translation id="9080057079069917346">The 12-word recovery phrase is a private key you can use to regain access to your wallet in case you lose a connected device(s). Store it someplace safe, and in the exact order it appears below.</translation>
+<translation id="3259018319025894691">Brave cannot access your secret recovery phrase. Keep it safe, and never share it with anyone else.</translation>
+<translation id="7650284207965419234"><ph name="TAG_BEFORE"/>Important: <ph name="TAG_AFTER"/>Never share your recovery phrase. Anyone with this phrase can take your assets forever.</translation>
+<translation id="7509948206688764960">Back up your wallet recovery phrase</translation>
+<translation id="8052898407431791827">Copied to clipboard</translation>
+<translation id="4576741736874242970">Click to see your phrase</translation>
+<translation id="9202365664128598850">First</translation>
+<translation id="4768459022382175196">Second</translation>
+<translation id="1623839863951450045">Third</translation>
+<translation id="7951561964148328147">Fourth</translation>
+<translation id="774053374251285774">Fifth</translation>
+<translation id="5547116790089504956">Sixth</translation>
+<translation id="271762450358244560">Seventh</translation>
+<translation id="4990381733707493303">Eighth</translation>
+<translation id="4204240559971494450">Ninth</translation>
+<translation id="1264599863456102502">Tenth</translation>
+<translation id="2030919906296886809">Eleventh</translation>
+<translation id="7097617722759601686">st</translation>
+<translation id="2781276194026093899">nd</translation>
+<translation id="7992766987062040279">rd</translation>
+<translation id="2295726992010694229">th</translation>
+<translation id="8241405611628876973">Congratulations! Your Brave Wallet is ready to go!</translation>
+<translation id="6828327990705355767">To access your wallet, just click the wallet icon at the top right of any Brave browser window.</translation>
+<translation id="396152018598329740">How to use a crypto wallet?</translation>
+<translation id="7512061585041489067">What’s the best crypto wallet?</translation>
+<translation id="1342755158522323177">What’s a crypto browser?</translation>
+<translation id="4702762916247565868">Crypto wallets 101</translation>
+<translation id="4674552515763857735">What’s a recovery phrase?</translation>
+<translation id="7328255859839881981">What are DApps?</translation>
+<translation id="3852489285890032403">What’s web 3?</translation>
+<translation id="5448233694500869445">We detected the MetaMask extension in your browser</translation>
+<translation id="8436080536329710282">Enter your MetaMask wallet password to easily import to Brave Wallet.</translation>
+<translation id="7543512765962444927">Connect to your existing wallet</translation>
+<translation id="3551682252653406110">To connect a wallet you already have, you may need to enter your recovery phrase. At this time we support restoring / importing from Ethereum and Solana wallets.</translation>
+<translation id="346929827081904572">Restore from seed phrase</translation>
+<translation id="5645597512426471834">12-24 words</translation>
+<translation id="6560930409313980969">Type your Brave Wallet 12-word recovery phrase.</translation>
+<translation id="5419707890586509000">Import from MetaMask</translation>
+<translation id="2265945811107390939">Use your MetaMask password to import your seed phrase</translation>
+<translation id="7060680423657442298">Never mind, I’ll create a new wallet</translation>
+<translation id="4570057016351082582">Type your MetaMask 12-word recovery phrase.</translation>
+<translation id="7720392926833259937">Type MetaMask password</translation>
+<translation id="6657585470893396449">Password</translation>
+<translation id="6260144012548445299">Learn more about my new wallet</translation>
+<translation id="8746910870914151528">Legal stuff</translation>
+<translation id="5148123176978018397">Please acknowledge the following:</translation>
+<translation id="6088314935678153800">I understand this is a self-custody wallet, and that I alone am responsible for any associated funds, assets, or accounts, and for taking appropriate action to secure, protect and back up my wallet. I understand that Brave can NOT access my wallet or reverse transactions on my behalf, and that my recovery phrase is the ONLY way to regain access in the event of a lost password, stolen device, or similar circumstance.</translation>
+<translation id="7781090633800450517">I have read and agree to the <ph name="LINK_BEFORE"/>Terms of use<ph name="LINK_AFTER"/></translation>
+<translation id="3887541341068007345">Checking for wallet extensions...</translation>
+<translation id="3567994771568272606">Import from legacy Brave crypto wallets</translation>
+<translation id="8407091560429310499">Select an asset</translation>
+<translation id="756590380936155533">To finish your <ph name="ASSET_TICKER"/> purchase, select one of our partners</translation>
+<translation id="7880860489474966219">On completion, your funds will be transferred to your Brave Wallet</translation>
+<translation id="6182661078713714878">Deposit crypto</translation>
+<translation id="3683305208314702347">Deposit <ph name="VALUE"/></translation>
+<translation id="5768739294929936862">Deposit Solana or SPL tokens</translation>
+<translation id="4121839963291930673">Deposit ERC-based tokens</translation>
+<translation id="5882719778740918116">Only send tokens to this address on <ph name="VALUE"/></translation>
+<translation id="6885009592653876601">Buy, send, and swap 200+ crypto assets</translation>
+<translation id="8716223552348254401">Browser-native, no risky extensions</translation>
+<translation id="4559901986238865734">Multi-chain &amp; NFT support</translation>
+<translation id="8280970992918660431">Unlock needed to create an account</translation>
+<translation id="296101411136980896">Click to switch</translation>
+<translation id="753655478253155745">Twelfth</translation>
+<translation id="2679592211386970368">Thirteenth</translation>
+<translation id="342115958836807536">Fourteenth</translation>
+<translation id="5056187827935389857">Fifteenth</translation>
+<translation id="6102061955158863607">Sixteenth</translation>
+<translation id="4701532342602356554">Seventeenth</translation>
+<translation id="3483191565919702242">Eighteenth</translation>
+<translation id="5872204767075410422">Nineteenth</translation>
+<translation id="992226442673942344">Twentieth</translation>
+<translation id="4685557586001281760">Twenty-first</translation>
+<translation id="6646456430109279404">Twenty-second</translation>
+<translation id="1961743941324393172">Twenty-third</translation>
+<translation id="9079035825546416393">Twenty-fourth</translation>
+<translation id="2894654529758326923">Information</translation>
+<translation id="152455748535966757">Rank</translation>
+<translation id="4958716607782044952">24h Volume</translation>
+<translation id="128834189395075789">Market Cap</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">General info</translation>
 <translation id="4045404575593562245">Tor control events</translation>
@@ -1287,8 +1394,8 @@
 <translation id="8458987127502506209">Enable Brave Shields</translation>
 <translation id="7509914170164691086">Shields are UP <ph name="LINK_BEFORE"/>for<ph name="LINK_AFTER"/></translation>
 <translation id="260764436039299868">Shields are DOWN <ph name="LINK_BEFORE"/>for<ph name="LINK_AFTER"/></translation>
-<translation id="7709075156958117386">If this site seems broken, try Shields down. 
-   <ph name="LINK_BEFORE"/>Note: this may reduce Brave's privacy protections.<ph name="LINK_AFTER"/></translation>
+<translation id="3907405056878805220">If this site seems broken, try Shields down.
+    <ph name="LINK_BEFORE"/>Note: this may reduce Brave's privacy protections.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Trackers, ads and more blocked <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Not protected by Brave Shields <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Advanced controls</translation>
@@ -1317,6 +1424,10 @@
 <translation id="7194012750329511146">Brave Shields
 <ph name="NUMBER"/> Trackers, ads and more blocked</translation>
 <translation id="4292121526390005808">Blocked scripts</translation>
+<translation id="6303294677342628402">Shields</translation>
+<translation id="264682546981571963">Tired of cookie consent notices?</translation>
+<translation id="4986297793092101884">Brave already blocks third-party cookies. We can block cookie consent notices, too.</translation>
+<translation id="535688588637568715">Yes, block cookie consent notices</translation>
 <translation id="3541307549916475335">Brave VPN Panel UI</translation>
 <translation id="1742469581923031760">Connecting…</translation>
 <translation id="1287487756047817908">Disconnecting…</translation>

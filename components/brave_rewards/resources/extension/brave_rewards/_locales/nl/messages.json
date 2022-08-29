@@ -311,18 +311,6 @@
       }
     }
   },
-  "notificationBackupWalletTitle": {
-    "message": "Back-up maken van Brave Beloningen",
-    "description": ""
-  },
-  "notificationBackupWalletText": {
-    "message": "Maak een back-up van Brave Beloningen.",
-    "description": ""
-  },
-  "notificationBackupWalletAction": {
-    "message": "Nu een back-up maken",
-    "description": ""
-  },
   "notificationWalletDisconnectedTitle": {
     "message": "U bent uitgelogd",
     "description": ""

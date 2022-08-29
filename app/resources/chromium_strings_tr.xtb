@@ -11,14 +11,15 @@
 <translation id="8541922081612557424">Brave hakkında</translation>
 <translation id="1203500561924088507">Yüklediğiniz için teşekkürler. <ph name="BUNDLE_NAME"/> uygulamasını kullanmadan önce tarayıcınızı yeniden başlatmanız gerekir.</translation>
 <translation id="4798342026247191171">Yeni Brave profilinizi oluşturun</translation>
+<translation id="6361779936989026201">Brave'da Brave Asistan</translation>
 <translation id="113959764510199339">Brave, şifreleri göstermeye çalışıyor.</translation>
 <translation id="8132634101975074716">Brave'da oturum açtınız!</translation>
 <translation id="5147525139567260139">Brave sekmesini paylaşın</translation>
 <translation id="1530633922026945685">Çevrenizin 3D haritasını oluşturmak için Brave'un kameranıza erişim iznine ihtiyacı var</translation>
-<translation id="473077451702478797">Güvenlik kontrolü için fazla büyük olması nedeniyle bu dosya Brave tarafından engellendi. 50 MB'a kadar dosyalarla tekrar deneyin.</translation>
 <translation id="4449148723378534338">Brave'daki önemli gizlilik ve güvenlik kontrollerini inceleyin</translation>
 <translation id="1640672724030957280">İndiriliyor...</translation>
 <translation id="5616153642055197778">Brave'un kullanabileceğiniz yeni, daha güvenli bir sürümü var.</translation>
+<translation id="5846727201643228411">Sitelerin size reklam göstermek için kullandığı ilgi alanlarını görebilir ve kaldırabilirsiniz. Brave, ilgi alanlarınızı tahmin ederken son tarama geçmişinizi kullanır.</translation>
 <translation id="6797402139308059782">Brave'un arka planda çalışmasına izin ver</translation>
 <translation id="5875673934455379806">Brave'u yeniden yükle</translation>
 <translation id="6888366668010117849">Siteler, ilgi alanlarınız hakkındaki bilgileri Brave'da saklayabilir. Örneğin, maraton ayakkabısı satın almak için ziyaret ettiğiniz bir site, maraton koşmayı ilgi alanınız olarak tanımlayabilir. Daha sonra bir yarışa kaydolmak için farklı bir siteyi ziyaret ettiğinizde o site ilgi alanlarınıza dayalı olarak size koşu ayakkabısı reklamı gösterebilir.</translation>
@@ -32,6 +33,7 @@
 <translation id="2018879682492276940">Yükleme başarısız oldu. Lütfen tekrar deneyin.</translation>
 <translation id="831418749472885028">Öteki şifrelerinizin veri ihlali ve diğer güvenlik sorunlarına karşı güvende olup olmadığını kontrol etmek için <ph name="BEGIN_LINK"/>Brave'da oturum açın<ph name="END_LINK"/>.</translation>
 <translation id="5499149312981370855">Brave hizmetlerinde daha fazla kişiselleştirilmiş deneyimden faydalanmak için Brave geçmişinin eklenip eklenmeyeceğini seçin</translation>
+<translation id="849607431499549468">Brave'un kök sertifikalarını nasıl yönettiği hakkında bilgi</translation>
 <translation id="142389341645668510">Brave'u özelleştir</translation>
 <translation id="2174917724755363426">Yükleme işlemi tamamlanmadı. İptal etmek istediğinizden emin misiniz?</translation>
 <translation id="8745514854244955877">Brave - Ağda Oturum Açın - <ph name="PAGE_TITLE"/></translation>
@@ -90,6 +92,7 @@
 <translation id="5853262807109651878">Bu işlem, <ph name="ITEMS_COUNT"/> öğeyi bu cihazdan silecektir. Verilerinizi daha sonra geri almak için Brave'da <ph name="USER_EMAIL"/> hesabıyla oturum açın.</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/>, Brave profilleri arasında geçiş yapabilir</translation>
 <translation id="8703492925273919597">Lütfen tüm Brave pencerelerini kapatıp tekrar deneyin.</translation>
+<translation id="5350485513372498152">Brave'daki Brave Asistan sizin için web sitelerindeki işlemleri tamamlayabilir</translation>
 <translation id="4061445349373849749">Gizliliğinizi korumak için 4 haftadan eski ilgi alanlarınızı otomatik olarak sileriz. Siz internette gezindikçe ilgi alanları tekrar listede görünmeye başlayabilir. Dilerseniz Brave'un dikkate almasını istemediğiniz ilgi alanlarını kaldırabilirsiniz.</translation>
 <translation id="691208314680168371">Tarama geçmişiniz, bu cihazda Brave'u kullanarak ziyaret ettiğiniz sitelerin kaydı.</translation>
 <translation id="1384923383737428730">Bilgisayarınızda zararlı yazılım var. Brave, tarayıcınızın tekrar normal şekilde çalışmasını sağlamak için bunu kaldırabilir, ayarlarınızı geri yükleyebilir ve uzantıları devre dışı bırakabilir.</translation>
@@ -255,7 +258,6 @@ Bazı özellikler kullanılamayabilir. Lütfen farklı bir profil dizini belirti
 <translation id="5101812148953915496">Ziyaret ettiğiniz siteler, Brave'u kapatana kadar bilgilerinizi hatırlar</translation>
 <translation id="5516268345616100622">Görev Yöneticisi - Brave</translation>
 <translation id="713191641919118540">Brave'un tahmin ettiği ilgi alanlarınız</translation>
-<translation id="2777705643687998385">Şifrelenmiş olması nedeniyle bu dosya Brave tarafından engellendi. Dosyanın sahibinden şifresini çözmesini isteyin.</translation>
 <translation id="9068395155143628872">Reklam ölçümü, ziyaret ettiğiniz sitelerin Brave'dan bilgi istemesine olanak tanır. Bu bilgiler de sitenin, reklamlarının performansını ölçmesine yardımcı olur. Reklam ölçümü, siteler arasında mümkün olduğunca az bilgi aktararak siteler arası izlemeyi kısıtlar.</translation>
 <translation id="1864557848095568223">Brave güncelleniyor</translation>
 <translation id="3403365884036456766">Tercihler dosyanız bozuk veya geçersiz.
@@ -345,6 +347,7 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="7902365066753170041">&amp;Brave'u güncellemek için yeniden başlat</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Brave artık Windows XP veya Windows Vista üzerinde desteklenmediği için doğru şekilde çalışmayabilir</translation>
+<translation id="8180288330711585962">Brave tarafından yönetilen sertifikalar</translation>
 <translation id="1611678871603620428">Gelecekteki Brave güncellemelerini almak için macOS 10.13 veya sonraki bir sürümün yüklü olması gerekir. Bu bilgisayar OS X 10.11 kullanıyor.</translation>
 <translation id="4484434718272972655">Brave'u kim kullanıyor?</translation>
 <translation id="7173394303099002355">Brave'un en güçlü güvenlik özelliğinden faydalanın</translation>
