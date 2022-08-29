@@ -38,10 +38,14 @@
 #undef AnnotateAndMoveUserBlockedCookies
 #undef IsCookieAccessible
 
-namespace network {
+namespace {
 
 constexpr base::TimeDelta kMaxCookieExpiration =
     base::Days(7);  // For JS cookies: CookieStore and document.cookie
+
+}  // namespace
+
+namespace network {
 
 base::Time RestrictedCookieManager::ModifyExpiration(
     const base::Time& expiry_date,

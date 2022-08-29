@@ -21,6 +21,7 @@ brave_browser_brave_shields_deps = [
   "//brave/components/brave_perf_predictor/browser",
   "//brave/components/brave_shields/browser",
   "//brave/components/brave_shields/common",
+  "//brave/components/constants",
   "//chrome/browser/profiles:profile",
   "//chrome/common",
   "//components/content_settings/core/browser",

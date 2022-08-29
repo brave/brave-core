@@ -6,7 +6,7 @@ index 91d210fa1683da314922a15734d4fabbde8ab873..20eb17aef84b0f3bf8182b62e6afe13b
      // * network_handler.cc::MakeCookieFromProtocolValues
      fixed_creation_date = base::Time::Now();
    }
-+  BRAVE_CREATE
++  BRAVE_CANONICAL_COOKIE_VALIDATE_AND_ADJUST_EXPIRY_DATE
    if (base::FeatureList::IsEnabled(features::kClampCookieExpiryTo400Days)) {
      base::Time maximum_expiry_date = fixed_creation_date + base::Days(400);
      if (expiry_date > maximum_expiry_date)
