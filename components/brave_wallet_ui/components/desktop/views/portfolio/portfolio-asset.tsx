@@ -25,10 +25,15 @@ import { sortTransactionByDate } from '../../../../utils/tx-utils'
 import { getTokensCoinType, getTokensNetwork } from '../../../../utils/network-utils'
 import useExplorer from '../../../../common/hooks/explorer'
 import {
+  CommandMessage,
   NftUiCommand,
   sendMessageToNftUiFrame,
-  UpdateLoadingMessage, UpdateNFtMetadataMessage,
-  UpdateSelectedAssetMessage, UpdateTokenNetworkMessage
+  ToggleNftModal,
+  UpdateLoadingMessage,
+  UpdateNFtMetadataMessage,
+  UpdateSelectedAssetMessage,
+  UpdateTokenNetworkMessage,
+  braveNftDisplayOrigin
 } from '../../../../nft/nft-ui-messages'
 import { auroraSupportedContractAddresses } from '../../../../utils/asset-utils'
 import { getLocale } from '../../../../../common/locale'
@@ -79,6 +84,7 @@ import { AssetMorePopup } from './components/asset-more-popup/asset-more-popup'
 import { TokenDetailsModal } from './components/token-details-modal/token-details-modal'
 import { WalletActions } from '../../../../common/actions'
 import { HideTokenModal } from './components/hide-token-modal/hide-token-modal'
+import { NftModal } from './components/nft-modal/nft-modal'
 
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 12 })
 const rainbowbridgeLink = 'https://rainbowbridge.app'
@@ -97,6 +103,8 @@ export const PortfolioAsset = (props: Props) => {
   const [showMore, setShowMore] = React.useState<boolean>(false)
   const [showTokenDetailsModal, setShowTokenDetailsModal] = React.useState<boolean>(false)
   const [showHideTokenModel, setShowHideTokenModal] = React.useState<boolean>(false)
+  const [showNftModal, setshowNftModal] = React.useState<boolean>(false)
+
   // routing
   const history = useHistory()
   const { id: assetId, tokenId } = useParams<{ id?: string, tokenId?: string }>()
@@ -427,6 +435,21 @@ export const PortfolioAsset = (props: Props) => {
     }
   }, [selectedAsset])
 
+  const onCloseNftModal = React.useCallback(() => {
+    setshowNftModal(false)
+  }, [])
+
+  const onMessageEventListener = React.useCallback((event: MessageEvent<CommandMessage>) => {
+    // validate message origin
+    if (event.origin !== braveNftDisplayOrigin) return
+
+    const message = event.data
+    if (message.command === NftUiCommand.ToggleNftModal) {
+      const { payload } = message as ToggleNftModal
+      setshowNftModal(payload)
+    }
+  }, [])
+
   // effects
   React.useEffect(() => {
     setfilteredAssetList(userAssetList)
@@ -483,6 +506,12 @@ export const PortfolioAsset = (props: Props) => {
   React.useEffect(() => {
     setBridgeToAuroraWarningShown(localStorage.getItem(bridgeToAuroraWarningShownKey) === 'true')
   })
+
+  // Receive postMessage from chrome-untrusted://nft-display
+  React.useEffect(() => {
+    window.addEventListener('message', onMessageEventListener)
+    return () => window.removeEventListener('message', onMessageEventListener)
+  }, [onMessageEventListener])
 
   // token list needs to load before we can find an asset to select from the url params
   if (userVisibleTokensInfo.length === 0) {
@@ -615,6 +644,10 @@ export const PortfolioAsset = (props: Props) => {
         sandbox="allow-scripts allow-popups allow-same-origin"
         src='chrome-untrusted://nft-display'
       />
+
+      {showNftModal && nftMetadata &&
+        <NftModal nftImageUrl={nftMetadata.imageURL} onClose={onCloseNftModal} />
+      }
 
       {isTokenSupported
         ? <AccountsAndTransactionsList
