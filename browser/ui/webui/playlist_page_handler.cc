@@ -108,5 +108,6 @@ void PlaylistPageHandler::RemovePlaylist(const std::string& playlist_id) {
 
 void PlaylistPageHandler::OnPlaylistStatusChanged(
     const playlist::PlaylistChangeParams& params) {
-  page_->OnEvent(playlist::mojom::PlaylistEvent::kItemAdded);
+  // TODO(sko) Send proper events based on |params|
+  page_->OnEvent(playlist::mojom::PlaylistEvent::kUpdated);
 }

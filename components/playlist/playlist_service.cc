@@ -88,9 +88,10 @@ void PlaylistService::RequestDownloadMediaFilesFromContents(
 
   PlaylistDownloadRequestManager::Request request;
   request.url_or_contents = contents->GetWeakPtr();
-  request.callback = base::BindOnce(
-      &PlaylistService::OnPlaylistCreationParamsReady, base::Unretained(this),
-      playlist_id.empty() ? kDefaultPlaylistID : playlist_id);
+  request.callback =
+      base::BindOnce(&PlaylistService::RequestDownloadMediaFilesFromItems,
+                     base::Unretained(this),
+                     playlist_id.empty() ? kDefaultPlaylistID : playlist_id);
   download_request_manager_->GetMediaFilesFromPage(std::move(request));
 }
 
@@ -100,9 +101,10 @@ void PlaylistService::RequestDownloadMediaFilesFromPage(
   VLOG(2) << __func__ << " " << playlist_id << " " << url;
   PlaylistDownloadRequestManager::Request request;
   request.url_or_contents = url;
-  request.callback = base::BindOnce(
-      &PlaylistService::OnPlaylistCreationParamsReady, base::Unretained(this),
-      playlist_id.empty() ? kDefaultPlaylistID : playlist_id);
+  request.callback =
+      base::BindOnce(&PlaylistService::RequestDownloadMediaFilesFromItems,
+                     base::Unretained(this),
+                     playlist_id.empty() ? kDefaultPlaylistID : playlist_id);
   download_request_manager_->GetMediaFilesFromPage(std::move(request));
 }
 
@@ -148,7 +150,7 @@ void PlaylistService::RemoveItemFromPlaylist(const std::string& playlist_id,
   DeletePlaylistItem(item_id);
 }
 
-void PlaylistService::OnPlaylistCreationParamsReady(
+void PlaylistService::RequestDownloadMediaFilesFromItems(
     const std::string& playlist_id,
     const std::vector<PlaylistItemInfo>& params) {
   if (params.empty())
@@ -199,10 +201,9 @@ bool PlaylistService::HasPrefStorePlaylistItem(const std::string& id) const {
   return !!playlist_info;
 }
 
-void PlaylistService::GenerateMediafileForPlaylistItem(
-    const PlaylistItemInfo& info) {
+void PlaylistService::DownloadMediaFile(const PlaylistItemInfo& info) {
   VLOG(2) << __func__;
-  media_file_download_manager_->GenerateMediaFileForPlaylistItem(info);
+  media_file_download_manager_->DownloadMediaFile(info);
 }
 
 base::FilePath PlaylistService::GetPlaylistItemDirPath(
@@ -247,7 +248,7 @@ void PlaylistService::OnPlaylistItemDirCreated(const PlaylistItemInfo& info,
   }
 
   DownloadThumbnail(info);
-  GenerateMediafileForPlaylistItem(info);
+  DownloadMediaFile(info);
 }
 
 void PlaylistService::DownloadThumbnail(const PlaylistItemInfo& info) {
@@ -423,6 +424,16 @@ std::vector<PlaylistInfo> PlaylistService::GetAllPlaylists() {
   return result;
 }
 
+void PlaylistService::FindMediaFilesFromContents(
+    content::WebContents* contents,
+    FindMediaFilesCallback callback) {
+  PlaylistDownloadRequestManager::Request request;
+  request.url_or_contents = contents->GetWeakPtr();
+  request.callback =
+      base::BindOnce(std::move(callback), contents->GetWeakPtr());
+  download_request_manager_->GetMediaFilesFromPage(std::move(request));
+}
+
 void PlaylistService::RecoverPlaylistItem(const std::string& id) {
   const base::Value* playlist_value =
       prefs_->Get(kPlaylistItemsPref)->FindDictKey(id);
@@ -461,7 +472,7 @@ void PlaylistService::RecoverPlaylistItem(const std::string& id) {
 
   if (media_file_path && !media_file_path->empty()) {
     VLOG(2) << __func__ << ": Regenerate media file";
-    GenerateMediafileForPlaylistItem(info);
+    DownloadMediaFile(info);
   }
 }
 
