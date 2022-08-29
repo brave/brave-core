@@ -311,18 +311,6 @@
       }
     }
   },
-  "notificationBackupWalletTitle": {
-    "message": "پشتیبان‌گیری از پاداش‌های Brave",
-    "description": ""
-  },
-  "notificationBackupWalletText": {
-    "message": "لطفاً از پاداش‌های Brave‌ خود پشتیبان‌گیری کنید.",
-    "description": ""
-  },
-  "notificationBackupWalletAction": {
-    "message": "همین حالا پشتیبان بگیرید",
-    "description": ""
-  },
   "notificationWalletDisconnectedTitle": {
     "message": "از سیستم خارج شدید",
     "description": ""

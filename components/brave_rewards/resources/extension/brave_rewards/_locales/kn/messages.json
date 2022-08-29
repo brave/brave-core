@@ -311,18 +311,6 @@
       }
     }
   },
-  "notificationBackupWalletTitle": {
-    "message": "Brave ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಬ್ಯಾಕ್ ಅಪ್ ಮಾಡಿ",
-    "description": ""
-  },
-  "notificationBackupWalletText": {
-    "message": "ದಯವಿಟ್ಟು ನಿಮ್ಮ Brave ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಬ್ಯಾಕಪ್ ಮಾಡಿ.",
-    "description": ""
-  },
-  "notificationBackupWalletAction": {
-    "message": "ಈಗ ಬ್ಯಾಕಪ್‌ ಮಾಡಿ",
-    "description": ""
-  },
   "notificationWalletDisconnectedTitle": {
     "message": "ನೀವು ಲಾಗ್ ಔಟ್ ಆಗಿರುವಿರಿ",
     "description": ""

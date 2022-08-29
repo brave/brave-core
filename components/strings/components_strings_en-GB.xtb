@@ -108,6 +108,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="1263231323834454256">Reading list</translation>
 <translation id="1264309058268477500">Alternative</translation>
 <translation id="1264974993859112054">Sports</translation>
+<translation id="1266469291454105242">Device unlock</translation>
 <translation id="53564677632020212">Create a new site in Brave Sites quickly</translation>
 <translation id="1270502636509132238">Pickup Method</translation>
 <translation id="1281476433249504884">Stacker 1</translation>
@@ -167,6 +168,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="1391289752476847787">Stocks and bonds</translation>
 <translation id="139305205187523129"><ph name="HOST_NAME"/> didn’t send any data.</translation>
 <translation id="1405567553485452995">Light green</translation>
+<translation id="1406500794671479665">Verifying...</translation>
 <translation id="1407135791313364759">Open all</translation>
 <translation id="1408787208417187241">Triple staple top</translation>
 <translation id="1413407968866574823">Action and platform games</translation>
@@ -243,7 +245,6 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="1583429793053364125">Something went wrong while displaying this web page.</translation>
 <translation id="1586541204584340881">Which extensions you have installed</translation>
 <translation id="1588438908519853928">Normal</translation>
-<translation id="1589050138437146318">Install ARCore?</translation>
 <translation id="1592005682883173041">Local Data Access</translation>
 <translation id="1594030484168838125">Choose</translation>
 <translation id="1596296697375291157">Thriller, crime and mystery movies</translation>
@@ -315,14 +316,11 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="1753068535428855445">Dating and personals</translation>
 <translation id="1753706481035618306">Page number</translation>
 <translation id="1755621011177747277">Adoption</translation>
+<translation id="1756026472674246267">Open link in new tab</translation>
 <translation id="175656076281618225">Magic</translation>
 <translation id="1757773103848038814">Monospace font</translation>
 <translation id="1763864636252898013">This server could not prove that it is <ph name="DOMAIN"/>; its security certificate is not trusted by your device's operating system. This may be caused by a misconfiguration or an attacker intercepting your connection.</translation>
 <translation id="1768211456781949159"><ph name="BEGIN_LINK"/>Try running Windows Network Diagnostics<ph name="END_LINK"/>.</translation>
-<translation id="1772163372082567643">The server that you are going to, <ph name="ORIGIN"/>, has set a header
-    requiring that an origin policy is to be applied to all requests to it. But
-    the header is malformed, which prevents the browser from fulfilling
-    your request for <ph name="SITE"/>. Origin policies can be used by site operators to configure security and other properties for a site.</translation>
 <translation id="1778646502362731194">JIS B0</translation>
 <translation id="1787142507584202372">Your open tabs appear here</translation>
 <translation id="3480410886581896628">Brave Smart Lock</translation>
@@ -365,7 +363,6 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="1908217026282415406">Camera use and movement</translation>
 <translation id="191374271204266022">Copy as JSON</translation>
 <translation id="1914326953223720820">Unzip Service</translation>
-<translation id="1915697529809968049">Use Touch ID instead of CVC?</translation>
 <translation id="1916770123977586577">To apply your updated settings to this site, reload this page</translation>
 <translation id="1919345977826869612">Ads</translation>
 <translation id="1919367280705858090">Get help with a specific error message</translation>
@@ -441,6 +438,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="214556005048008348">Cancel payment</translation>
 <translation id="2148613324460538318">Add Card</translation>
 <translation id="2149968176347646218">Connection is not secure</translation>
+<translation id="2153609454945889823">Install Google Play Services for AR?</translation>
 <translation id="2154054054215849342">Sync is not available for your domain</translation>
 <translation id="2154484045852737596">Edit card</translation>
 <translation id="2161656808144014275">Text</translation>
@@ -801,6 +799,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="3226387218769101247">Thumbnails</translation>
 <translation id="3227137524299004712">Microphone</translation>
 <translation id="3229041911291329567">Version information about your device and browser</translation>
+<translation id="3229277193950731405">Copy version string</translation>
 <translation id="323107829343500871">Enter the CVC for <ph name="CREDIT_CARD"/></translation>
 <translation id="3234666976984236645">Always detect important content on this site</translation>
 <translation id="3240683217920639535"><ph name="MANAGE_CHROME_THEMES_FOCUSED_FRIENDLY_MATCH_TEXT"/>; press tab and then Enter to customise the look of your browser</translation>
@@ -913,6 +912,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="3531780078352352885">Job sheets</translation>
 <translation id="3532844647053365774"><ph name="HOST"/> wants to use your microphone</translation>
 <translation id="3533328374079021623">Mailbox 5</translation>
+<translation id="3542768452570884558">Open link in new window</translation>
 <translation id="3550112004925580947">Hospitality industry</translation>
 <translation id="3552297013052089404">Sans-serif font</translation>
 <translation id="3558573058928565255">Day time</translation>
@@ -1019,6 +1019,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="3807873520724684969">Harmful content blocked.</translation>
 <translation id="3810973564298564668">Manage</translation>
 <translation id="3816482573645936981">Value (superseded)</translation>
+<translation id="3823402221513322552">Your browser is managed by <ph name="BROWSER_DOMAIN"/> and your profile is managed by <ph name="PROFILE_DOMAIN"/></translation>
 <translation id="382518646247711829">If you use a proxy server...</translation>
 <translation id="3826050100957962900">Third-party sign-in</translation>
 <translation id="3827112369919217609">Absolute</translation>
@@ -1070,8 +1071,6 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="3987940399970879459">Less than 1 MB</translation>
 <translation id="3990250421422698716">Jog offset</translation>
 <translation id="3992684624889376114">About this page</translation>
-<translation id="3996311196211510766">The site <ph name="ORIGIN"/> has requested that an origin policy will
-    apply to all requests to it, but this policy cannot presently be applied.</translation>
 <translation id="4006465311664329701">Payment methods, offers and addresses using Google Pay</translation>
 <translation id="4009243425692662128">The content of pages that you print is sent to Google Cloud or third parties for analysis. For example, it might be scanned for sensitive data.</translation>
 <translation id="4010758435855888356">Allow storage access?</translation>
@@ -1082,14 +1081,15 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="4040350669425716613">Colleges and universities</translation>
 <translation id="4056223980640387499">Sepia</translation>
 <translation id="4058922952496707368">Key "<ph name="SUBKEY"/>": <ph name="ERROR"/></translation>
+<translation id="4063924980214801036">Use device unlock to confirm cards faster</translation>
 <translation id="4067098466788473230">Study grants and scholarships</translation>
 <translation id="4067263367174615723">C1 (Envelope)</translation>
 <translation id="4067947977115446013">Add Valid Address</translation>
 <translation id="4072193657607981494">Loading policies</translation>
 <translation id="4072486802667267160">There was an error processing your order. Please try again.</translation>
+<translation id="4073376909608563327">Couldn't use device unlock</translation>
 <translation id="4073797364926776829">View card</translation>
 <translation id="4075732493274867456">The client and server don't support a common SSL protocol version or cipher suite.</translation>
-<translation id="4075941231477579656">Touch ID</translation>
 <translation id="4079302484614802869">Proxy configuration is set to use a .pac script URL, not fixed proxy servers.</translation>
 <translation id="4082393374666368382">Settings – Management</translation>
 <translation id="8049340108547416244">Create event button: press Enter to create a new event in Brave Calendar quickly</translation>
@@ -1136,11 +1136,6 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="4202554117186904723">Fifth roll</translation>
 <translation id="4203896806696719780"><ph name="BEGIN_LINK"/>Checking firewall and antivirus configurations<ph name="END_LINK"/></translation>
 <translation id="4209092469652827314">Large</translation>
-<translation id="4209166701302774460">The server that you are going to, <ph name="ORIGIN"/>, has requested that
-    an origin policy will be applied to all requests to it. But it has now failed to
-    deliver a policy, which prevents the browser from fulfilling your request
-    for <ph name="SITE"/>. Origin policies can be used by site operators
-    to configure security and other properties for a site.</translation>
 <translation id="4210602799576081649">Verification code expired. Request a new code</translation>
 <translation id="421066178035138955">Use virtual reality devices and data</translation>
 <translation id="4213305257324635756">Animated movies</translation>
@@ -1151,7 +1146,6 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="422022731706691852">Attackers on <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> might attempt to trick you into installing programs that harm your browsing experience (for example, by changing your homepage or showing extra ads on sites that you visit). <ph name="BEGIN_LEARN_MORE_LINK"/>Learn more<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="4226937834893929579"><ph name="BEGIN_LINK"/>Try running Network Diagnostics<ph name="END_LINK"/>.</translation>
 <translation id="4230204356098880324">Can ask to use and move your camera</translation>
-<translation id="4234495348042597185"><ph name="BEGIN_LINK"/>Proceed to <ph name="SITE"/><ph name="END_LINK"/></translation>
 <translation id="4235360514405112390">Valid</translation>
 <translation id="4250431568374086873">Your connection to this site is not fully secure</translation>
 <translation id="4250680216510889253">No</translation>
@@ -1247,7 +1241,6 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="4506176782989081258">Validation error: <ph name="VALIDATION_ERROR"/></translation>
 <translation id="4506599922270137252">Contacting the system admin</translation>
 <translation id="450710068430902550">Sharing with Administrator</translation>
-<translation id="4508814173490746936">Couldn't use Touch ID</translation>
 <translation id="7581711177899574338"><ph name="TRANSLATE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, press tab, then enter to translate this page with Brave Translate</translation>
 <translation id="4510487217173779431">Chou4 (Envelope)</translation>
 <translation id="4514308731478712184">Turn off Journeys</translation>
@@ -1345,7 +1338,6 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="4796594887379589189">Job account ID</translation>
 <translation id="7110430050177876111">Enter the expiry date and CVC for <ph name="CREDIT_CARD"/> to update your card details. Once you confirm, card details from your Brave sync chain will be shared with this site.</translation>
 <translation id="4800132727771399293">Check your expiration date and CVC and try again</translation>
-<translation id="480334179571489655">Origin Policy Error</translation>
 <translation id="4803924862070940586"><ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
 <translation id="4809079943450490359">Instructions from your device administrator:</translation>
 <translation id="4812751092864334025">Wearable technology</translation>
@@ -1361,6 +1353,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="246176083348620700">View your Brave history</translation>
 <translation id="484462545196658690">Auto</translation>
 <translation id="484671803914931257">Get discount on <ph name="MERCHANT_NAME"/> and more</translation>
+<translation id="484988093836683706">Use device unlock</translation>
 <translation id="4850886885716139402">View</translation>
 <translation id="4852429274334674023">Operating systems</translation>
 <translation id="485316830061041779">German</translation>
@@ -1405,6 +1398,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="4969341057194253438">Delete recording</translation>
 <translation id="4973922308112707173">Dual punch top</translation>
 <translation id="4976702386844183910">Last visited <ph name="DATE"/></translation>
+<translation id="498323057460789381">Schema validation error: <ph name="ERROR"/></translation>
 <translation id="4984088539114770594">Use microphone?</translation>
 <translation id="4984339528288761049">Prc5 (Envelope)</translation>
 <translation id="4989163558385430922">See all</translation>
@@ -1493,6 +1487,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="5177076414499237632">Learn about this page's source and topic</translation>
 <translation id="5179510805599951267">Not in <ph name="ORIGINAL_LANGUAGE"/>? Report this error</translation>
 <translation id="518639307526414276">Pet food and pet care supplies</translation>
+<translation id="5191315092027169558">Your profile is managed by <ph name="DOMAIN"/></translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> wants to download multiple files</translation>
 <translation id="519422657042045905">Annotation not available</translation>
 <translation id="5201306358585911203">An embedded page on this page says</translation>
@@ -1735,7 +1730,6 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="5901630391730855834">Yellow</translation>
 <translation id="5903264686717710770">Title:</translation>
 <translation id="5904360430676679685">Family and relationships</translation>
-<translation id="5905445707201418379">Blocked according to <ph name="ORIGIN"/>'s origin policy.</translation>
 <translation id="5908541034548427511"><ph name="TYPE_1"/> (synced)</translation>
 <translation id="59174027418879706">Enabled</translation>
 <translation id="5919090499915321845">B10</translation>
@@ -1744,6 +1738,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="5921185718311485855">On</translation>
 <translation id="2687595201721621314">Save card to Brave sync chain?</translation>
 <translation id="5922853866070715753">Almost finished</translation>
+<translation id="5923492272538889093">Use device unlock instead of CVC?</translation>
 <translation id="5928444777041341328">Home and garden</translation>
 <translation id="5932224571077948991">Site shows intrusive or misleading ads</translation>
 <translation id="5937560539988385583">Page translated</translation>
@@ -1899,19 +1894,21 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="6390662030813198813">Engineering-E</translation>
 <translation id="6391700400718590966">Secure payment credential no matching credential sheet is closed</translation>
 <translation id="6393956493820063117">Pasting from <ph name="ORIGIN_NAME"/> to this location is blocked by administrator policy</translation>
+<translation id="6394852772105848029">This site wants to open the <ph name="APP_NAME"/> app</translation>
 <translation id="6398277657359595425">Loudly crying</translation>
 <translation id="6398765197997659313">Exit full screen</translation>
 <translation id="6401136357288658127">This policy is deprecated. You should use the <ph name="NEW_POLICY"/> policy instead.</translation>
 <translation id="6404511346730675251">Edit bookmark</translation>
+<translation id="6405181733356710802">Continue to <ph name="APP_NAME"/>?</translation>
 <translation id="6406765186087300643">C0 (Envelope)</translation>
 <translation id="6410264514553301377">Enter the expiry date and CVC for <ph name="CREDIT_CARD"/></translation>
-<translation id="6423385022588644828">Confirm your cards faster by using Touch ID from now on</translation>
 <translation id="6425092077175753609">Material</translation>
 <translation id="6427730057873428458">Gate fold</translation>
 <translation id="6428450836711225518">Verifying your phone number</translation>
 <translation id="7772223497488184427">Change Brave password</translation>
 <translation id="6433490469411711332">Edit contact info</translation>
 <translation id="6433595998831338502"><ph name="HOST_NAME"/> refused to connect.</translation>
+<translation id="6433797564277305076">Confirm your cards faster by using device unlock from now on</translation>
 <translation id="6440503408713884761">Ignored</translation>
 <translation id="6443406338865242315">Which extensions and plug-ins you have installed</translation>
 <translation id="6446163441502663861">Kahu (Envelope)</translation>
@@ -2117,6 +2114,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="705310974202322020">{NUM_CARDS,plural, =1{This card can't be saved at the moment}other{These cards can't be saved at the moment}}</translation>
 <translation id="7053983685419859001">Block</translation>
 <translation id="7058163556978339998"><ph name="BROWSER"/> verified that <ph name="ISSUER"/> issued this website's certificate.</translation>
+<translation id="7058774143982824355">CSV password parser service</translation>
 <translation id="7061777300866737982">Home safety and security</translation>
 <translation id="7062635574500127092">Teal</translation>
 <translation id="5320462991730735481">Add and manage addresses in Brave settings</translation>
@@ -2177,6 +2175,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="7238585580608191973">SHA-256 fingerprint</translation>
 <translation id="7240120331469437312">Certificate Subject Alternative Name</translation>
 <translation id="7243010569062352439"><ph name="PASSWORDS"/>; <ph name="SIGNIN_DATA"/></translation>
+<translation id="7244465398154211886">{NUM_MATCHES,plural, =1{# match}other{# matches}}</translation>
 <translation id="724691107663265825">The site ahead contains malware</translation>
 <translation id="724975217298816891">Enter the expiry date and CVC for <ph name="CREDIT_CARD"/> to update your card details. Once you've confirmed, your card details will be shared with this site.</translation>
 <translation id="7251437084390964440">The network configuration doesn't comply to the ONC standard. Parts of the configuration may not be imported.
@@ -2368,6 +2367,7 @@ Additional details:
 <translation id="7696089921647603491">Classic rock and oldies</translation>
 <translation id="7697066736081121494">Prc8 (Envelope)</translation>
 <translation id="769721561045429135">At the moment, you have cards that can only be used on this device. Click Continue to review cards.</translation>
+<translation id="7698864304447945242">Update Google Play Services for AR?</translation>
 <translation id="7699293099605015246">Articles aren't available at the moment.</translation>
 <translation id="7701040980221191251">None</translation>
 <translation id="7704050614460855821"><ph name="BEGIN_LINK"/>Proceed to <ph name="SITE"/> (unsafe)<ph name="END_LINK"/></translation>
@@ -2380,6 +2380,7 @@ Additional details:
 <translation id="7723047071702270851">Edit Card</translation>
 <translation id="1296098648902562076">Create a new form in Brave Forms quickly</translation>
 <translation id="773466115871691567">Always translate pages in <ph name="SOURCE_LANGUAGE"/></translation>
+<translation id="7736959720849233795">Copy link address</translation>
 <translation id="7740996059027112821">Standard</translation>
 <translation id="77424286611022110">This site shows intrusive or misleading ads. <ph name="LEARN_MORE_LINK_TEXT"/></translation>
 <translation id="774634243536837715">Dangerous content blocked.</translation>
@@ -2580,7 +2581,6 @@ Additional details:
 <translation id="830498451218851433">Fold half</translation>
 <translation id="8307358339886459768">Small-Photo</translation>
 <translation id="8307888238279532626">Apps installed and how often they are used</translation>
-<translation id="8317207217658302555">Update ARCore?</translation>
 <translation id="831997045666694187">Evening</translation>
 <translation id="8321476692217554900">notifications</translation>
 <translation id="8332188693563227489">Access to <ph name="HOST_NAME"/> was denied</translation>
@@ -2639,6 +2639,7 @@ Additional details:
 <translation id="8508648098325802031">Search icon</translation>
 <translation id="8511402995811232419">Manage cookies</translation>
 <translation id="851353418319061866">Accuracy check</translation>
+<translation id="8513580896341796021">Download started. To see it, press |<ph name="ACCELERATOR"/>|.</translation>
 <translation id="8519753333133776369">HID device allowed by your administrator</translation>
 <translation id="1426902392270366682">Brave can help you protect your Brave account and change your password.</translation>
 <translation id="1215802963054007211">Clear your browsing history, cookies, cache and more in Brave settings</translation>
@@ -2655,7 +2656,6 @@ Additional details:
 <translation id="8557066899867184262">The CVC is located behind your card.</translation>
 <translation id="8559762987265718583">A private connection to <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> can't be established because your device's date and time (<ph name="DATE_AND_TIME"/>) are incorrect.</translation>
 <translation id="8564182942834072828">Separate documents/Uncollated copies</translation>
-<translation id="8574899947864779331">Use Touch ID to confirm cards faster</translation>
 <translation id="8576310925653847813">Home theater systems</translation>
 <translation id="8577348305244205642">Virtual card not available</translation>
 <translation id="858637041960032120">Add phone no.</translation>
@@ -2669,6 +2669,7 @@ Additional details:
 <translation id="8623885649813806493">No matching passwords. Show all saved passwords.</translation>
 <translation id="8624354461147303341">Get discounts</translation>
 <translation id="8625384913736129811">Save This Card to This Device</translation>
+<translation id="8637577059508742477">Your profile and browser are managed by <ph name="DOMAIN"/></translation>
 <translation id="865032292777205197">motion sensors</translation>
 <translation id="8663226718884576429">Order Summary, <ph name="TOTAL_LABEL"/>, More Details</translation>
 <translation id="8666678546361132282">English</translation>
@@ -2807,7 +2808,6 @@ Additional details:
 <translation id="9039213469156557790">Furthermore, this page includes other resources which are not secure. These resources can be viewed by others while in transit, and can be modified by an attacker to change the behaviour of the page.</translation>
 <translation id="6093455506390049122">Find my device button, press Enter to visit find your device in the Brave sync chain</translation>
 <translation id="9042617223719777575">Large capacity</translation>
-<translation id="9044359186343685026">Use Touch ID</translation>
 <translation id="9045525010788763347"><ph name="RESULT_MODIFIED_DATE"/> – <ph name="RESULT_PRODUCT_SOURCE"/></translation>
 <translation id="9049981332609050619">You attempted to reach <ph name="DOMAIN"/>, but the server presented an invalid certificate.</translation>
 <translation id="9050666287014529139">Passphrase</translation>
@@ -2980,4 +2980,5 @@ Additional details:
     &lt;p&gt;Remember to turn your antivirus program back on when you've finished.&lt;/p&gt;
     &lt;h4&gt;Step 5: Get extra help&lt;/h4&gt;
     &lt;p&gt;If you still see the error, contact the website owner.&lt;/p&gt;</translation>
+<translation id="2977472760057091832">Open Link in Private Window</translation>
 </translationbundle>

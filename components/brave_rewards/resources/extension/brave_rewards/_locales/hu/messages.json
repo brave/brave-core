@@ -311,18 +311,6 @@
       }
     }
   },
-  "notificationBackupWalletTitle": {
-    "message": "Brave Jutalmak biztonsági másolat készítése",
-    "description": ""
-  },
-  "notificationBackupWalletText": {
-    "message": "Készítsen biztonsági másolatot a Brave Jutalmakról.",
-    "description": ""
-  },
-  "notificationBackupWalletAction": {
-    "message": "Készítsen biztonsági mentést most",
-    "description": ""
-  },
   "notificationWalletDisconnectedTitle": {
     "message": "Ön kijelentkezett",
     "description": ""

@@ -311,18 +311,6 @@
       }
     }
   },
-  "notificationBackupWalletTitle": {
-    "message": "備份 Brave 獎勵",
-    "description": ""
-  },
-  "notificationBackupWalletText": {
-    "message": "請備份您的 Brave 獎勵。",
-    "description": ""
-  },
-  "notificationBackupWalletAction": {
-    "message": "現在備份",
-    "description": ""
-  },
   "notificationWalletDisconnectedTitle": {
     "message": "您已登出",
     "description": ""

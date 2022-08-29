@@ -13,14 +13,15 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="8541922081612557424">Meer oor Brave</translation>
 <translation id="1203500561924088507">Dankie dat jy geïnstalleer het. Jy moet jou blaaier herbegin voordat jy <ph name="BUNDLE_NAME"/> gebruik.</translation>
 <translation id="4798342026247191171">Stel jou nuwe Brave-profiel op</translation>
+<translation id="6361779936989026201">Brave Assistent in Brave</translation>
 <translation id="113959764510199339">Brave probeer tans om wagwoorde te wys.</translation>
 <translation id="8132634101975074716">Jy is by Brave aangemeld!</translation>
 <translation id="5147525139567260139">Deel 'n Brave-oortjie</translation>
 <translation id="1530633922026945685">Brave moet toestemming hê om toegang te kry tot jou kamera om 'n 3D-kaart van jou omgewing te skep</translation>
-<translation id="473077451702478797">Brave het hierdie lêer geblokkeer omdat te groot is vir ’n sekuriteitkontrole. Probeer weer met lêers tot 50 MB</translation>
 <translation id="4449148723378534338">Gaan belangrike privaatheid- en sekuriteitkontroles in Brave na</translation>
 <translation id="1640672724030957280">Laai tans af …</translation>
 <translation id="5616153642055197778">Daar is 'n nuwe, veiliger weergawe van Brave beskikbaar.</translation>
+<translation id="5846727201643228411">Jy kan onderwerpe van belangstelling wat werwe gebruik om vir jou advertensies te wys, sien en verwyder. Brave skat jou belangstellings op grond van jou onlangse blaaigeskiedenis.</translation>
 <translation id="6797402139308059782">Laat Brave in die agtergrond loop</translation>
 <translation id="5875673934455379806">Herinstalleer Brave</translation>
 <translation id="6888366668010117849">Werwe kan inligting oor jou belangstellings in Brave stoor. As jy byvoorbeeld ’n werf besoek om skoene vir ’n marathon te koop, kan die werf jou belangstelling definieer as iemand wat marathons hardloop. As jy later ’n ander werf besoek om vir ’n wedloop te registreer, kan daardie werf vir jou ’n advertensie vir drafskoene op grond van jou belangstellings wys.</translation>
@@ -34,6 +35,7 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="2018879682492276940">Kan nie installeer nie. Probeer weer.</translation>
 <translation id="831418749472885028"><ph name="BEGIN_LINK"/>Meld by Brave aan<ph name="END_LINK"/> om te kyk of jou ander wagwoorde teen dataskendings en ander sekuriteitkwessies beveilig word.</translation>
 <translation id="5499149312981370855">Kies of jy Brave-geskiedenis wil insluit vir meer gepersonaliseerde ervarings in Brave-dienste</translation>
+<translation id="849607431499549468">Inligting oor hoe Brave sy kernsertifikate bestuur</translation>
 <translation id="142389341645668510">Pasmaak Brave</translation>
 <translation id="2174917724755363426">Installering is nie afgehandel nie. Is jy seker jy wil kanselleer?</translation>
 <translation id="8745514854244955877">Brave – Netwerkaanmelding – <ph name="PAGE_TITLE"/></translation>
@@ -94,6 +96,7 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="5853262807109651878">Dit sal <ph name="ITEMS_COUNT"/> items op hierdie toestel uitvee. Meld as <ph name="USER_EMAIL"/> by Brave aan om jou data later op te haal.</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> kan tussen Brave-profiele wissel</translation>
 <translation id="8703492925273919597">Maak asseblief alle Brave-vensters toe en probeer weer.</translation>
+<translation id="5350485513372498152">Brave Assistent in Brave kan oor webwerwe heen handelinge namens jou voltooi</translation>
 <translation id="4061445349373849749">Ons vee outomaties jou belangstellings uit wat ouer as 4 weke is om jou privaatheid te beskerm. Terwyl jy aanhou blaai, kan ’n belangstelling weer op die lys verskyn. Of jy kan belangstellings verwyder wat jy nie wil hê Brave moet oorweeg nie.</translation>
 <translation id="691208314680168371">Jou blaaigeskiedenis, ’n rekord van werwe wat jy besoek het deur Brave op hierdie toestel te gebruik.</translation>
 <translation id="1384923383737428730">Daar is skadelike sagteware op jou rekenaar. Brave kan dit verwyder, jou instellings teruglaai en uitbreidings deaktiveer om jou blaaier weer normaal te laat werk.</translation>
@@ -260,7 +263,6 @@ Sommige kenmerke sal dalk nie beskikbaar wees nie. Spesifiseer 'n ander profielg
 <translation id="5101812148953915496">Werwe wat jy besoek, onthou jou inligting totdat jy Brave toemaak</translation>
 <translation id="5516268345616100622">Taakbestuurder – Brave</translation>
 <translation id="713191641919118540">Jou belangstellings soos geskat deur Brave</translation>
-<translation id="2777705643687998385">Brave het hierdie lêer geblokkeer omdat dit geënkripteer word. Vra die eienaar daarvan om dit te dekripteer</translation>
 <translation id="9068395155143628872">Advertensiemeting stel werwe wat jy besoek in staat om inligting van Brave af te versoek wat die werf help om die werkverrigting van hul advertensies te meet. Advertensiemeting beperk oorkruiswerfnasporing deur so min inligting moontlik tussen werwe oor te dra.</translation>
 <translation id="1864557848095568223">Dateer tans Brave op</translation>
 <translation id="3403365884036456766">Jou voorkeurelêer is korrup of ongeldig.
@@ -350,6 +352,7 @@ Brave kan nie jou instellings herwin nie.</translation>
 <translation id="7902365066753170041">Begin weer om &amp;Brave op te dateer</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Brave sal dalk nie reg werk nie omdat dit nie meer in Windows XP en Windows Vista gesteun word nie</translation>
+<translation id="8180288330711585962">Sertifikate wat deur Brave bestuur word</translation>
 <translation id="1611678871603620428">Jy het macOS 10.13 of nuwer nodig om in die toekoms Brave-opdaterings te kry. Hierdie rekenaar gebruik OS X 10.11.</translation>
 <translation id="4484434718272972655">Wie gebruik tans Brave?</translation>
 <translation id="7173394303099002355">Kry Brave se sterkste sekuriteit</translation>

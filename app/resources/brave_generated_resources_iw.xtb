@@ -24,6 +24,7 @@
 <translation id="4150684676757176434">המשיכו לחסום הפעלה אוטומטית</translation>
 <translation id="8988939298652262600">Brave אינו בודק את האבטחה והבטיחות של הרחבות. התקן/י הרחבה זו רק אם יש לך אמון במפתח.</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") לא נתמך ב-Brave.</translation>
+<translation id="9005883459983913482">חלונות Tor</translation>
 <translation id="7965178729203412357">זהות Tor חדשה</translation>
 <translation id="6924909138923993900">חיבור Tor חדש לאתר זה</translation>
 <translation id="4734294903299549345">צא מחלון פרטי עם Tor</translation>
@@ -37,6 +38,9 @@
 <translation id="1725356094208762656">פתח ב-Tor</translation>
 <translation id="3396347744975515056">Brave Sync שודרג ודורש התקנה</translation>
 <translation id="7473245612074035141">התחל התקנה</translation>
+<translation id="3975865347033939965">לא ניתן היה להפעיל את שירות הסנכרון, Brave Sync אינו פועל</translation>
+<translation id="4450893287417543264">אל תציג שוב</translation>
+<translation id="4595286989346610620">בדוק פרטים</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">פרסם והחזר קבצים מ-IPFS</translation>
 <translation id="7398397225367092613">.בצל</translation>
@@ -144,7 +148,7 @@
 <translation id="8490082094734500369">כבה מצב קורא</translation>
 <translation id="2036503787657622020">הפעל מצב קורא</translation>
 <translation id="5226458915125328323">הגדרות Speedreader</translation>
-<translation id="1621606336827646158">הצגת עמוד מקורי</translation>
+<translation id="8591883849678260674">צפה במקור</translation>
 <translation id="6284218950354553099">שלח PING של שימוש יומי ל-Brave</translation>
 <translation id="5288333155754958121">PING אנונימי, פרטי זה מאפשר ל-Brave להעריך את המשתמשים הפעילים.</translation>
 <translation id="1872784258300710671">Brave משתמש באנליטיקות מוצר פרטיות לחלוטין כדי להעריך את השימוש הכולל בתכונות מסוימות</translation>
@@ -210,6 +214,10 @@
 <translation id="8721331068159819483">כמו macOS</translation>
 <translation id="1692470335103807198">קבל/י ערכות נושא נוספות</translation>
 <translation id="2906510232093002459">תמונות ברירת מחדל של Brave</translation>
+<translation id="3367129510799209147">מצב ריחוף בכרטיסייה</translation>
+<translation id="2113977810652731515">כרטיס</translation>
+<translation id="4096343215397759358">כרטיס עם תצוגה מקדימה</translation>
+<translation id="5297085818601043899">טיפים לכלי עבודה</translation>
 <translation id="2396127686705429331">הצג כפתור סימניות</translation>
 <translation id="2814998458708016836">השתמש בשורת כתובת רחבה</translation>
 <translation id="4109670531935487117">להציג הצעות השלמה אוטומטית בשורת הכתובת</translation>
@@ -237,7 +245,7 @@
 <translation id="6388201778088078932">הגדרות.</translation>
 <translation id="4800195524776354947">הצג את מספר הפריטים החסומים בסמל Shields</translation>
 <translation id="5510493033031835532">הפניה אוטומטית של דפי AMP</translation>
-<translation id="5197219128592971597">בקר תמיד בכתובות URL של דפים מקוריים (שאינם AMP), במקום בגרסאות דפי המוביל המואצים של גוגל.</translation>
+<translation id="7630031867325944356">העדיפו כתובות אתרים של דפי בעלי אתרים, במקום AMP וגרסאות דומות.</translation>
 <translation id="7607166182943595829">חסימת האפשרות של אתרים ליצור טביעת אצבע שלי בהתאם להעדפות השפה</translation>
 <translation id="3497934980362703405">הפעלת ההגדרה תקטין את יכולתם של אתרים שונים ללמוד על העדפות השפה שלך.</translation>
 <translation id="2133317862976486547">חסימת עוקבים &amp; פרסומות</translation>
@@ -285,6 +293,7 @@
 <translation id="1758947220824279023">מספר מרבי של המודעות הניתנות להצגה</translation>
 <translation id="2356652719351432565">פרסומות ממוקדות איזור</translation>
 <translation id="2196950072404588793">כך Brave תוכל להציג לך מודעות המיועדות באופן מיוחד לאזורך.<ph name="BEGIN_LINK"/>פרטים נוספים<ph name="END_LINK"/></translation>
+<translation id="2433507940547922241">מראה</translation>
 <translation id="6112368337882254910">תרומה אוטומטית</translation>
 <translation id="9132509928968869844">גבול התרומה החודשית האוטומטית</translation>
 <translation id="7286722244752781970">זמן מינימלי בדף לפני כניסה שנרשמת כביקור</translation>
@@ -374,6 +383,7 @@
 יש לוודא שוב שמילות הקוד הללו נוצרו על ידי מכשיר ששייך לך.
 
 ברצונך לעשות זאת בוודאות?</translation>
+<translation id="7443185843787879670">Brave לא הצליח לגשת לאחסון הבטוח של מערכת ההפעלה שלך המשמש לאבטחת נתונים, כגון סיסמאות וקובצי Cookie; האחסון גם נדרש עבור Brave Sync לצורך חיבור פרופיל הדפדפן שלך בין מכשירים. משמעות הדבר היא Brave Sync לא פועל. כדי לפתור בעיה זו, עיין ב<ph name="BEGIN_LINK_SYNC_GUIDE"/>מדריך לפתרון בעיות של Brave Sync<ph name="END_LINK_SYNC_GUIDE"/>.</translation>
 <translation id="6285118765755298263">תצרו אינדקס למנועי חיפוש אחרים</translation>
 <translation id="919715748352669592">כולל אינדקס באופן אוטומטי לאתרי אינטרנט העוקבים אחר מפרט OpenSearch.</translation>
 <translation id="842628013524824194">חלון רגיל - מנוע החיפוש יוצג בשורת הכתובת</translation>
@@ -386,6 +396,23 @@
 <translation id="5248318250177143470">שיטה לזיהוי Ethereum Name Service (ENS)</translation>
 <translation id="6241402707160226266">חלון פרטי עם Tor</translation>
 <translation id="8762452230727230396">Tor מסתיר את כתובת ה-IP שלכם מהאתרים בהם אתם מבקרים.</translation>
+<translation id="2959986444009520721">השתמש בגשרים</translation>
+<translation id="6003484976430531384">גשרים עוזרים לך לגשת לרשת Tor במקום שבו Tor חסום. תלוי איפה אתה נמצא, גשר אחד עשוי לעבוד טוב יותר מאחר.</translation>
+<translation id="7206799843254049470">הגדרות חיבור Tor</translation>
+<translation id="3194502271166340944">שולט באופן שבו Private Windows עם  Tor מתחברים לרשת Tor</translation>
+<translation id="4859228830700205299">בחר גשר מובנה</translation>
+<translation id="3233137871426528317">בקש גשר מ-torproject.org</translation>
+<translation id="5701503934456421898">בקש גשר חדש...</translation>
+<translation id="8149806369020180959">תן גשר</translation>
+<translation id="454073978993625597">הזן מידע גשר ממקור מהימן.</translation>
+<translation id="4425607417590286548">החל שינויים</translation>
+<translation id="2128143836897950793">לחץ על 'בקש גשר חדש...' כדי לקבל גשרים</translation>
+<translation id="3314921753580327793">הקלד כתובת: יציאה (אחת בכל שורה)</translation>
+<translation id="3755189300481406891">בקש גשר</translation>
+<translation id="6924425739431382319">מתקשר עם BridgeDB. המתן בבקשה.</translation>
+<translation id="811745063252080651">פתרו את ה-CAPTCHA כדי לבקש גשר.</translation>
+<translation id="6936835573742749135">לא ניתן לבקש CAPTCHA. נסה שוב מאוחר יותר.</translation>
+<translation id="2653659639078652383">שלח</translation>
 <translation id="1369311132025451972">הפנה מחדש אוטומטית אתרי .onion</translation>
 <translation id="2843777623071353503">Brave יפתח שירות onion של האתר כאשר הוא זמין או תחום .onion בחלון Tor.</translation>
 <translation id="2896916411183256228">משתמש ב-WebTorrent להצגת טורנטים ישירות בדפדפן. תומך בקבצי torrent וקישורי מגנט.</translation>
@@ -432,7 +459,6 @@
 <translation id="7059127752542505809">הזן כתובת URL</translation>
 <translation id="3047726704186619366">כתובות URL של הסמל</translation>
 <translation id="2487558607408469181">חסימת כתובות URL של סייר</translation>
-<translation id="2653659639078652383">שלח</translation>
 <translation id="2156993118928861787">כתובת לא חוקית</translation>
 <translation id="6301398959353668507">שדה זה לא יכול להיות ריק.</translation>
 <translation id="7504462451153306677">פורמט לא חוקי, מזהה השרשרת הינו מספר חיובי</translation>

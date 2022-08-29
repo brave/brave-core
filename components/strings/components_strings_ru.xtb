@@ -108,6 +108,7 @@
 <translation id="1263231323834454256">Список для чтения</translation>
 <translation id="1264309058268477500">Другой</translation>
 <translation id="1264974993859112054">Спорт</translation>
+<translation id="1266469291454105242">Разблокировка устройства</translation>
 <translation id="53564677632020212">Быстро создать сайт в Brave Сайтах</translation>
 <translation id="1270502636509132238">Способ получения</translation>
 <translation id="1281476433249504884">Укладчик 1</translation>
@@ -167,6 +168,7 @@
 <translation id="1391289752476847787">Акции и облигации</translation>
 <translation id="139305205187523129">Сайт <ph name="HOST_NAME"/> не отправил данных.</translation>
 <translation id="1405567553485452995">Светло-зеленый</translation>
+<translation id="1406500794671479665">Проверка…</translation>
 <translation id="1407135791313364759">Открыть все</translation>
 <translation id="1408787208417187241">Три скобы сверху</translation>
 <translation id="1413407968866574823">Экшен-игры и платформеры</translation>
@@ -243,7 +245,6 @@
 <translation id="1583429793053364125">При загрузке этой страницы возникли неполадки.</translation>
 <translation id="1586541204584340881">Установленные расширения.</translation>
 <translation id="1588438908519853928">Обычный</translation>
-<translation id="1589050138437146318">Установить ARCore?</translation>
 <translation id="1592005682883173041">Доступ к данным на устройстве</translation>
 <translation id="1594030484168838125">Выбрать</translation>
 <translation id="1596296697375291157">Триллеры, криминальные и детективные фильмы</translation>
@@ -260,7 +261,7 @@
 <translation id="1634828734222219955">Всего</translation>
 <translation id="163669211644121865">Расчет и планирование налогов</translation>
 <translation id="1638780421120290329">Не удалось сохранить карту</translation>
-<translation id="1639239467298939599">Загрузка</translation>
+<translation id="1639239467298939599">Загрузка…</translation>
 <translation id="1640180200866533862">Пользовательские правила</translation>
 <translation id="1640244768702815859">Попробуйте <ph name="BEGIN_LINK"/>открыть главную страницу сайта<ph name="END_LINK"/>.</translation>
 <translation id="1641976391427233992">Задержать вывод результатов</translation>
@@ -315,11 +316,11 @@
 <translation id="1753068535428855445">Встречи и знакомства</translation>
 <translation id="1753706481035618306">Номер страницы</translation>
 <translation id="1755621011177747277">Усыновление/удочерение</translation>
+<translation id="1756026472674246267">Открыть ссылку в новой вкладке</translation>
 <translation id="175656076281618225">Магия</translation>
 <translation id="1757773103848038814">Моноширинный шрифт</translation>
 <translation id="1763864636252898013">Не удалось подтвердить, что это сервер <ph name="DOMAIN"/>. Операционная система устройства не доверяет его сертификату безопасности. Возможно, сервер настроен неправильно или кто-то пытается перехватить ваши данные.</translation>
 <translation id="1768211456781949159"><ph name="BEGIN_LINK"/>Выполните диагностику сети в Windows<ph name="END_LINK"/>.</translation>
-<translation id="1772163372082567643">Сервер <ph name="ORIGIN"/>, на который вы переходите, установил заголовок, требующий применять правило источника ко всем запросам. Однако из-за неверного формата заголовка браузер не может выполнить ваш запрос для сайта <ph name="SITE"/>. Правила в отношении источников позволяют операторам настраивать параметры безопасности и другие свойства сайтов.</translation>
 <translation id="1778646502362731194">JIS B0</translation>
 <translation id="1787142507584202372">Здесь появятся открытые вкладки.</translation>
 <translation id="3480410886581896628">Brave Smart Lock</translation>
@@ -362,7 +363,6 @@
 <translation id="1908217026282415406">Использование и перемещение камеры</translation>
 <translation id="191374271204266022">Копировать в JSON-файл</translation>
 <translation id="1914326953223720820">Распаковщик файлов</translation>
-<translation id="1915697529809968049">Использовать Touch ID вместо CVC-кода?</translation>
 <translation id="1916770123977586577">Чтобы применить к сайту новые настройки, перезагрузите страницу</translation>
 <translation id="1919345977826869612">Реклама</translation>
 <translation id="1919367280705858090">Как устранить определенные виды ошибок</translation>
@@ -438,6 +438,7 @@
 <translation id="214556005048008348">Отменить оплату</translation>
 <translation id="2148613324460538318">Добавить карту</translation>
 <translation id="2149968176347646218">Подключение не защищено</translation>
+<translation id="2153609454945889823">Установить Сервисы Google Play для AR?</translation>
 <translation id="2154054054215849342">В вашем домене синхронизация недоступна</translation>
 <translation id="2154484045852737596">Изменение данных карты</translation>
 <translation id="2161656808144014275">Текст</translation>
@@ -797,6 +798,7 @@
 <translation id="3226387218769101247">Уменьшенные изображения</translation>
 <translation id="3227137524299004712">Микрофон</translation>
 <translation id="3229041911291329567">Версия вашего устройства и браузера</translation>
+<translation id="3229277193950731405">Скопировать строку с версией</translation>
 <translation id="323107829343500871">Введите CVC-код карты <ph name="CREDIT_CARD"/></translation>
 <translation id="3234666976984236645">Всегда находить важный контент на этом сайте</translation>
 <translation id="3240683217920639535"><ph name="MANAGE_CHROME_THEMES_FOCUSED_FRIENDLY_MATCH_TEXT"/>. Нажмите Tab, а затем Ввод, чтобы настроить внешний вид браузера.</translation>
@@ -909,6 +911,7 @@
 <translation id="3531780078352352885">Листы задания</translation>
 <translation id="3532844647053365774">Сайт <ph name="HOST"/> запрашивает доступ к микрофону.</translation>
 <translation id="3533328374079021623">Почтовый ящик 5</translation>
+<translation id="3542768452570884558">Открыть ссылку в новом окне</translation>
 <translation id="3550112004925580947">Индустрия гостеприимства</translation>
 <translation id="3552297013052089404">Шрифт без засечек</translation>
 <translation id="3558573058928565255">До дня</translation>
@@ -1015,6 +1018,7 @@
 <translation id="3807873520724684969">Заблокирован опасный контент</translation>
 <translation id="3810973564298564668">Управление</translation>
 <translation id="3816482573645936981">Значение (заменяемое)</translation>
+<translation id="3823402221513322552">Вашим браузером управляет <ph name="BROWSER_DOMAIN"/>, а вашим профилем – <ph name="PROFILE_DOMAIN"/></translation>
 <translation id="382518646247711829">Если вы используете прокси-сервер...</translation>
 <translation id="3826050100957962900">Предложения войти в аккаунт от третьих сторон</translation>
 <translation id="3827112369919217609">Абсолютный</translation>
@@ -1066,7 +1070,6 @@
 <translation id="3987940399970879459">Менее 1 МБ</translation>
 <translation id="3990250421422698716">Смещение</translation>
 <translation id="3992684624889376114">Об этой странице</translation>
-<translation id="3996311196211510766">Сайт <ph name="ORIGIN"/>, на который вы переходите, требует применять правило источника ко всем запросам, однако это сейчас невозможно.</translation>
 <translation id="4006465311664329701">Способы оплаты, адреса и специальные предложения из Google Pay</translation>
 <translation id="4009243425692662128">Содержание страниц, которые вы печатаете, отправляется в Google Cloud или третьим лицам для анализа. В частности, оно может быть просканировано на наличие конфиденциальных данных.</translation>
 <translation id="4010758435855888356">Предоставить доступ к хранилищу?</translation>
@@ -1077,14 +1080,15 @@
 <translation id="4040350669425716613">Колледжи и университеты</translation>
 <translation id="4056223980640387499">Сепия</translation>
 <translation id="4058922952496707368">Ключ "<ph name="SUBKEY"/>": <ph name="ERROR"/></translation>
+<translation id="4063924980214801036">Использовать разблокировку устройства для быстрого подтверждения карт</translation>
 <translation id="4067098466788473230">Гранты на образование и стипендии</translation>
 <translation id="4067263367174615723">C1 (конверт)</translation>
 <translation id="4067947977115446013">Введите действительный адрес</translation>
 <translation id="4072193657607981494">Загрузка правил</translation>
 <translation id="4072486802667267160">При обработке заказа произошла ошибка. Повторите попытку.</translation>
+<translation id="4073376909608563327">Не удалось разблокировать устройство</translation>
 <translation id="4073797364926776829">Посмотреть карту</translation>
 <translation id="4075732493274867456">Клиент и сервер поддерживают разные версии протокола SSL или набора шифров.</translation>
-<translation id="4075941231477579656">Touch ID</translation>
 <translation id="4079302484614802869">Конфигурация прокси-сервера предусматривает использование URL PAC-скриптов вместо фиксированных прокси-серверов.</translation>
 <translation id="4082393374666368382">Настройки – Управление</translation>
 <translation id="8049340108547416244">Кнопка "Создать мероприятие". Чтобы быстро создать мероприятие в Brave Календаре, нажмите Ввод.</translation>
@@ -1131,7 +1135,6 @@
 <translation id="4202554117186904723">Пятый рулон</translation>
 <translation id="4203896806696719780"><ph name="BEGIN_LINK"/>Проверьте настройки брандмауэра и антивирусного ПО<ph name="END_LINK"/>.</translation>
 <translation id="4209092469652827314">Крупный</translation>
-<translation id="4209166701302774460">Сервер <ph name="ORIGIN"/>, на который вы переходите, требует применять правило источника ко всем запросам. Однако серверу не удалось отправить правило, поэтому браузер не может выполнить ваш запрос для сайта <ph name="SITE"/>. Правила в отношении источников позволяют операторам настраивать параметры безопасности и другие свойства сайтов.</translation>
 <translation id="4210602799576081649">Код подтверждения больше не действителен. Запросите новый.</translation>
 <translation id="421066178035138955">Использование устройств и данных виртуальной реальности.</translation>
 <translation id="4213305257324635756">Анимационные фильмы</translation>
@@ -1142,7 +1145,6 @@
 <translation id="422022731706691852">Посещение сайта <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> может привести к установке вредоносного ПО, которое будет мешать вашей работе в браузере (например, менять стартовую страницу или показывать дополнительную рекламу на сайтах). <ph name="BEGIN_LEARN_MORE_LINK"/>Подробнее…<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="4226937834893929579"><ph name="BEGIN_LINK"/>Выполните диагностику сети<ph name="END_LINK"/>.</translation>
 <translation id="4230204356098880324">Разрешено отправлять запрос на использование камеры и ее перемещение</translation>
-<translation id="4234495348042597185"><ph name="BEGIN_LINK"/>Перейти на сайт <ph name="SITE"/><ph name="END_LINK"/></translation>
 <translation id="4235360514405112390">Действительный</translation>
 <translation id="4250431568374086873">Подключение к сайту защищено не полностью</translation>
 <translation id="4250680216510889253">Нет</translation>
@@ -1238,7 +1240,6 @@
 <translation id="4506176782989081258">Ошибка проверки: <ph name="VALIDATION_ERROR"/></translation>
 <translation id="4506599922270137252">Обратитесь за помощью к системному администратору.</translation>
 <translation id="450710068430902550">Доступ администратора</translation>
-<translation id="4508814173490746936">Не удалось использовать Touch ID</translation>
 <translation id="7581711177899574338"><ph name="TRANSLATE_FOCUSED_FRIENDLY_MATCH_TEXT"/>. Нажмите Tab и затем Ввод, чтобы с помощью Brave Переводчика ознакомиться с содержанием страницы.</translation>
 <translation id="4510487217173779431">Chou4 (конверт)</translation>
 <translation id="4514308731478712184">Отключить сеансы</translation>
@@ -1336,7 +1337,6 @@
 <translation id="4796594887379589189">Идентификатор аккаунта, в котором выполняется задание</translation>
 <translation id="7110430050177876111">Введите срок действия и CVC-код карты <ph name="CREDIT_CARD"/>. После этого ее реквизиты из аккаунта Brave будут переданы сайту.</translation>
 <translation id="4800132727771399293">Проверьте срок действия и CVC-код, а затем повторите попытку</translation>
-<translation id="480334179571489655">Ошибка политики источника</translation>
 <translation id="4803924862070940586"><ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
 <translation id="4809079943450490359">Инструкции от администратора вашего устройства:</translation>
 <translation id="4812751092864334025">Носимые устройства</translation>
@@ -1352,6 +1352,7 @@
 <translation id="246176083348620700">Посмотреть историю Brave</translation>
 <translation id="484462545196658690">Выбрать автоматически</translation>
 <translation id="484671803914931257">Получите скидку в магазине "<ph name="MERCHANT_NAME"/>" и у других продавцов</translation>
+<translation id="484988093836683706">Использовать разблокировку устройства</translation>
 <translation id="4850886885716139402">Посмотреть</translation>
 <translation id="4852429274334674023">Операционные системы</translation>
 <translation id="485316830061041779">Немецкий</translation>
@@ -1396,6 +1397,7 @@
 <translation id="4969341057194253438">Удалить запись</translation>
 <translation id="4973922308112707173">Два отверстия сверху</translation>
 <translation id="4976702386844183910">Последнее посещение: <ph name="DATE"/></translation>
+<translation id="498323057460789381">Ошибка проверки схемы: <ph name="ERROR"/></translation>
 <translation id="4984088539114770594">Использовать микрофон?</translation>
 <translation id="4984339528288761049">Prc5 (конверт)</translation>
 <translation id="4989163558385430922">Показать все</translation>
@@ -1484,6 +1486,7 @@
 <translation id="5177076414499237632">Подробнее об источнике и теме этой страницы</translation>
 <translation id="5179510805599951267">Это не <ph name="ORIGINAL_LANGUAGE"/>? Сообщите об ошибке</translation>
 <translation id="518639307526414276">Корм и товары для домашних животных</translation>
+<translation id="5191315092027169558">Вашим профилем управляет <ph name="DOMAIN"/></translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> хочет скачать несколько файлов</translation>
 <translation id="519422657042045905">В этот PDF-файл нельзя добавлять заметки</translation>
 <translation id="5201306358585911203">Подтвердите действие</translation>
@@ -1726,7 +1729,6 @@
 <translation id="5901630391730855834">Желтый</translation>
 <translation id="5903264686717710770">Заголовок:</translation>
 <translation id="5904360430676679685">Семья и взаимоотношения</translation>
-<translation id="5905445707201418379">Заблокировано в соответствии с политикой в отношении источников <ph name="ORIGIN"/></translation>
 <translation id="5908541034548427511"><ph name="TYPE_1"/> (данные синхронизируются)</translation>
 <translation id="59174027418879706">Включено</translation>
 <translation id="5919090499915321845">B10</translation>
@@ -1735,6 +1737,7 @@
 <translation id="5921185718311485855">ВКЛ</translation>
 <translation id="2687595201721621314">Сохранить карту в аккаунте Brave?</translation>
 <translation id="5922853866070715753">Почти готово…</translation>
+<translation id="5923492272538889093">Использовать разблокировку устройства вместо CVC-кода?</translation>
 <translation id="5928444777041341328">Дом и сад</translation>
 <translation id="5932224571077948991">Сайт показывает навязчивую или вводящую в заблуждение рекламу</translation>
 <translation id="5937560539988385583">Страница переведена</translation>
@@ -1890,19 +1893,21 @@
 <translation id="6390662030813198813">Engineering-E</translation>
 <translation id="6391700400718590966">Экран несоответствия учетных данных для защищенных платежей закрыт</translation>
 <translation id="6393956493820063117">Администратор запретил вставлять сюда контент со страницы <ph name="ORIGIN_NAME"/>.</translation>
+<translation id="6394852772105848029">Этот сайт пытается открыть приложение "<ph name="APP_NAME"/>".</translation>
 <translation id="6398277657359595425">Рыдание</translation>
 <translation id="6398765197997659313">Обычный режим</translation>
 <translation id="6401136357288658127">Правило устарело. Используйте <ph name="NEW_POLICY"/>.</translation>
 <translation id="6404511346730675251">Изменить закладку</translation>
+<translation id="6405181733356710802">Открыть приложение "<ph name="APP_NAME"/>"?</translation>
 <translation id="6406765186087300643">C0 (конверт)</translation>
 <translation id="6410264514553301377">Введите срок действия и CVC-код карты <ph name="CREDIT_CARD"/></translation>
-<translation id="6423385022588644828">Подтверждайте карты быстрее с помощью Touch ID</translation>
 <translation id="6425092077175753609">Material design</translation>
 <translation id="6427730057873428458">Фальцовка калиткой в два сгиба</translation>
 <translation id="6428450836711225518">Подтвердите номер телефона</translation>
 <translation id="7772223497488184427">Изменить пароль Brave</translation>
 <translation id="6433490469411711332">Изменить контактную информацию</translation>
 <translation id="6433595998831338502">Сайт <ph name="HOST_NAME"/> не позволяет установить соединение.</translation>
+<translation id="6433797564277305076">Подтверждайте карты быстрее с помощью разблокировки устройства.</translation>
 <translation id="6440503408713884761">Пропускается</translation>
 <translation id="6443406338865242315">Установленные расширения и плагины.</translation>
 <translation id="6446163441502663861">Kahu (конверт)</translation>
@@ -2108,6 +2113,7 @@
 <translation id="705310974202322020">{NUM_CARDS,plural, =1{Сейчас сохранить эту карту нельзя.}one{Сейчас сохранить эти карты нельзя.}few{Сейчас сохранить эти карты нельзя.}many{Сейчас сохранить эти карты нельзя.}other{Сейчас сохранить эти карты нельзя.}}</translation>
 <translation id="7053983685419859001">Блокировать</translation>
 <translation id="7058163556978339998">Данные браузера <ph name="BROWSER"/> подтверждают, что сертификат сайта выпущен компанией <ph name="ISSUER"/>.</translation>
+<translation id="7058774143982824355">Сервис синтаксического анализа паролей в файлах CSV</translation>
 <translation id="7061777300866737982">Обеспечение безопасности и охрана дома</translation>
 <translation id="7062635574500127092">Бирюзовый</translation>
 <translation id="5320462991730735481">Добавить и изменить адреса в настройках Brave</translation>
@@ -2168,6 +2174,7 @@
 <translation id="7238585580608191973">Отпечаток SHA-256</translation>
 <translation id="7240120331469437312">Альтернативное имя субъекта сертификата</translation>
 <translation id="7243010569062352439"><ph name="PASSWORDS"/>; <ph name="SIGNIN_DATA"/></translation>
+<translation id="7244465398154211886">{NUM_MATCHES,plural, =1{# совпадение}one{# совпадение}few{# совпадения}many{# совпадений}other{# совпадения}}</translation>
 <translation id="724691107663265825">Осторожно, вредоносное ПО!</translation>
 <translation id="724975217298816891">Введите срок действия и CVC-код карты <ph name="CREDIT_CARD"/>. После этого ее данные будут переданы сайту.</translation>
 <translation id="7251437084390964440">Некоторые элементы сетевой конфигурации невозможно импортировать, поскольку она не соответствует стандарту ONC.
@@ -2359,6 +2366,7 @@
 <translation id="7696089921647603491">Классический рок и старые популярные песни</translation>
 <translation id="7697066736081121494">Prc8 (конверт)</translation>
 <translation id="769721561045429135">Сейчас ваши карты можно использовать только на этом устройстве. Чтобы посмотреть информацию о них, нажмите "Продолжить".</translation>
+<translation id="7698864304447945242">Обновить Сервисы Google Play для AR?</translation>
 <translation id="7699293099605015246">Статьи пока недоступны</translation>
 <translation id="7701040980221191251">Нет</translation>
 <translation id="7704050614460855821"><ph name="BEGIN_LINK"/>Перейти на сайт <ph name="SITE"/> (небезопасно)<ph name="END_LINK"/></translation>
@@ -2371,6 +2379,7 @@
 <translation id="7723047071702270851">Измените данные карты</translation>
 <translation id="1296098648902562076">Быстро создать форму в Brave Формах</translation>
 <translation id="773466115871691567">Переводить страницы на этом языке: <ph name="SOURCE_LANGUAGE"/></translation>
+<translation id="7736959720849233795">Копировать адрес ссылки</translation>
 <translation id="7740996059027112821">Стандартный</translation>
 <translation id="77424286611022110">Этот сайт показывает навязчивую или вводящую в заблуждение рекламу. <ph name="LEARN_MORE_LINK_TEXT"/></translation>
 <translation id="774634243536837715">Опасный контент заблокирован</translation>
@@ -2571,7 +2580,6 @@
 <translation id="830498451218851433">Фальцовка книжкой</translation>
 <translation id="8307358339886459768">Small-Photo</translation>
 <translation id="8307888238279532626">установленные приложения и частоту их использования.</translation>
-<translation id="8317207217658302555">Обновить ARCore?</translation>
 <translation id="831997045666694187">До вечера</translation>
 <translation id="8321476692217554900">Уведомления</translation>
 <translation id="8332188693563227489">Доступ к <ph name="HOST_NAME"/> запрещен</translation>
@@ -2630,6 +2638,7 @@
 <translation id="8508648098325802031">Значок поиска</translation>
 <translation id="8511402995811232419">Открыть настройки файлов cookie</translation>
 <translation id="851353418319061866">Проверка точности</translation>
+<translation id="8513580896341796021">Скачивание началось. Чтобы посмотреть файл, нажмите |<ph name="ACCELERATOR"/>|.</translation>
 <translation id="8519753333133776369">Разрешенное администратором HID-устройство</translation>
 <translation id="1426902392270366682">Защитите свой аккаунт Brave и смените пароль с помощью Brave.</translation>
 <translation id="1215802963054007211">Удалить историю браузера, файлы cookie, кеш и другие данные в настройках Brave</translation>
@@ -2646,7 +2655,6 @@
 <translation id="8557066899867184262">CVC-код указан на обратной стороне карты.</translation>
 <translation id="8559762987265718583">Не удалось установить защищенное соединение с доменом <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> из-за неверных настроек системных часов и календаря (<ph name="DATE_AND_TIME"/>).</translation>
 <translation id="8564182942834072828">Несколько документов/без разбора по копиям</translation>
-<translation id="8574899947864779331">Использовать Touch ID для быстрого подтверждения карт</translation>
 <translation id="8576310925653847813">Домашние кинотеатры</translation>
 <translation id="8577348305244205642">Виртуальная карта недоступна</translation>
 <translation id="858637041960032120">Добавьте номер</translation>
@@ -2660,6 +2668,7 @@
 <translation id="8623885649813806493">Нет подходящих паролей. Показать все сохраненные пароли.</translation>
 <translation id="8624354461147303341">Разрешить</translation>
 <translation id="8625384913736129811">Сохранить карту на этом устройстве</translation>
+<translation id="8637577059508742477">Вашим профилем и браузером управляет <ph name="DOMAIN"/></translation>
 <translation id="865032292777205197">Датчики движения</translation>
 <translation id="8663226718884576429">Информация о заказе, <ph name="TOTAL_LABEL"/>, дополнительные сведения</translation>
 <translation id="8666678546361132282">Английский</translation>
@@ -2798,7 +2807,6 @@
 <translation id="9039213469156557790">Обратите внимание, что на странице обнаружен небезопасный контент. Возможно, при передаче ресурсы просматриваются третьими лицами, а злоумышленники могут получить доступ к странице и изменить ее поведение.</translation>
 <translation id="6093455506390049122">Кнопка "Где мой телефон". Нажмите Ввод, чтобы найти устройство в аккаунте Brave.</translation>
 <translation id="9042617223719777575">Большая емкость</translation>
-<translation id="9044359186343685026">Использовать Touch ID</translation>
 <translation id="9045525010788763347"><ph name="RESULT_MODIFIED_DATE"/> – <ph name="RESULT_PRODUCT_SOURCE"/></translation>
 <translation id="9049981332609050619">Вы попытались открыть <ph name="DOMAIN"/>, однако представленный сервером сертификат недействителен.</translation>
 <translation id="9050666287014529139">Кодовая фраза</translation>
@@ -2971,4 +2979,5 @@
     &lt;p&gt;Не забудьте включить его снова, когда закончите работу.&lt;/p&gt;
     &lt;h4&gt;Шаг 5. Обратитесь за помощью&lt;/h4&gt;
     &lt;p&gt;Если проблему решить не удалось, обратитесь к владельцу сайта.&lt;/p&gt;</translation>
+<translation id="2977472760057091832">Открыть ссылку в окне инкогнито</translation>
 </translationbundle>
