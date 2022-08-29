@@ -21,16 +21,15 @@ def GetProcessOutput(args: List[str], cwd: str = None,
   try:
     logging.debug('Run binary: %s, cwd = %s', ' '.join(args), cwd)
 
-    output = subprocess.check_output(args, stderr=subprocess.STDOUT, cwd=cwd)
-    decoded_output = output.decode()
-    logging.debug('Binary output: %s', decoded_output)
-    return True, decoded_output
+    output = subprocess.check_output(
+        args, stderr=subprocess.STDOUT, cwd=cwd, text=True)
+    logging.debug('Binary output: %s', output)
+    return True, output
   except subprocess.CalledProcessError as e:
-    decoded_error = e.output.decode()
-    logging.error(decoded_error)
+    logging.error(e.output)
     if check:
       raise
-    return False, decoded_error
+    return False, e.output
 
 
 def GetConfigPath(config_path: str) -> str:
