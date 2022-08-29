@@ -116,11 +116,6 @@ export const onRecurringTips = (result: RewardsExtension.RecurringTips) => actio
   result
 })
 
-export const onPublisherBanner = (banner: RewardsExtension.PublisherBanner) =>
-  action(types.ON_PUBLISHER_BANNER, {
-    banner
-  })
-
 export const refreshPublisher = (status: number, publisherKey: string) => action(types.ON_PUBLISHER_STATUS_REFRESHED, {
   status,
   publisherKey

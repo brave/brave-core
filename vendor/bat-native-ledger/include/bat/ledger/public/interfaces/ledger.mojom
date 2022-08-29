@@ -71,7 +71,6 @@ struct PublisherBanner {
   string description;
   string background;
   string logo;
-  array<double> amounts;
   string provider;
   map<string, string> links;
   PublisherStatus status = PublisherStatus.NOT_VERIFIED;

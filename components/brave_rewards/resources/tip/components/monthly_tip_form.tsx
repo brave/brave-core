@@ -4,7 +4,7 @@
 
 import * as React from 'react'
 
-import { PaymentKind, RewardsParameters, PublisherInfo } from '../lib/interfaces'
+import { PaymentKind, RewardsParameters } from '../lib/interfaces'
 import { HostContext } from '../lib/host_context'
 
 import { CurrentMonthlyForm } from './current_monthly_form'
@@ -14,14 +14,7 @@ import { ExchangeAmount } from '../../shared/components/exchange_amount'
 
 import * as style from './monthly_tip_form.style'
 
-function generateTipOptions (
-  rewardsParameters: RewardsParameters,
-  publisherInfo: PublisherInfo
-) {
-  const publisherAmounts = publisherInfo.amounts
-  if (publisherAmounts && publisherAmounts.length > 0) {
-    return publisherAmounts
-  }
+function generateTipOptions (rewardsParameters: RewardsParameters) {
   const { monthlyTipChoices } = rewardsParameters
   if (monthlyTipChoices.length > 0) {
     return monthlyTipChoices
@@ -31,14 +24,13 @@ function generateTipOptions (
 
 function getDefaultTipAmount (
   rewardsParameters: RewardsParameters | undefined,
-  publisherInfo: PublisherInfo | undefined,
   currentAmount: number
 ) {
-  if (!rewardsParameters || !publisherInfo) {
+  if (!rewardsParameters) {
     return 0
   }
 
-  const options = generateTipOptions(rewardsParameters, publisherInfo)
+  const options = generateTipOptions(rewardsParameters)
 
   if (currentAmount > 0) {
     // Select the current monthly tip amount, if available
@@ -60,8 +52,6 @@ export function MonthlyTipForm () {
     host.state.balanceInfo)
   const [rewardsParameters, setRewardsParameters] = React.useState(
     host.state.rewardsParameters)
-  const [publisherInfo, setPublisherInfo] = React.useState(
-    host.state.publisherInfo)
   const [currentMonthlyTip, setCurrentMonthlyTip] = React.useState(
     host.state.currentMonthlyTip || 0)
   const [nextReconcileDate, setNextReconcileDate] = React.useState(
@@ -76,13 +66,12 @@ export function MonthlyTipForm () {
     return host.addListener((state) => {
       setBalanceInfo(state.balanceInfo)
       setRewardsParameters(state.rewardsParameters)
-      setPublisherInfo(state.publisherInfo)
       setNextReconcileDate(state.nextReconcileDate)
       setCurrentMonthlyTip(state.currentMonthlyTip || 0)
     })
   }, [host])
 
-  if (!balanceInfo || !rewardsParameters || !publisherInfo) {
+  if (!balanceInfo || !rewardsParameters) {
     return null
   }
 
@@ -99,7 +88,7 @@ export function MonthlyTipForm () {
     )
   }
 
-  const tipOptions = generateTipOptions(rewardsParameters, publisherInfo)
+  const tipOptions = generateTipOptions(rewardsParameters)
 
   const tipAmountOptions = tipOptions.map((value) => ({
     value,
@@ -109,10 +98,7 @@ export function MonthlyTipForm () {
     )
   }))
 
-  const defaultTipAmount = getDefaultTipAmount(
-    rewardsParameters,
-    publisherInfo,
-    currentMonthlyTip)
+  const defaultTipAmount = getDefaultTipAmount(rewardsParameters, currentMonthlyTip)
 
   const onSubmitTip = (tipAmount: number) => {
     if (tipAmount > 0) {

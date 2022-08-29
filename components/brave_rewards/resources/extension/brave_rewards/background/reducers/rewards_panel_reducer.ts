@@ -353,18 +353,6 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
       state.recurringTips = payload.result.recurringTips
       break
     }
-    case types.ON_PUBLISHER_BANNER: {
-      if (!payload.banner || !payload.banner.publisherKey) {
-        break
-      }
-
-      state = { ...state }
-      if (!state.tipAmounts) {
-        state.tipAmounts = {}
-      }
-      state.tipAmounts[payload.banner.publisherKey] = payload.banner.amounts
-      break
-    }
     case types.ON_PUBLISHER_STATUS_REFRESHED: {
       const publisherKey = payload.publisherKey
       if (publisherKey) {
