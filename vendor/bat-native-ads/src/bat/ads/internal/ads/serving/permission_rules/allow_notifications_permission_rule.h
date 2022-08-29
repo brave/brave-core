@@ -15,6 +15,10 @@ namespace ads {
 class AllowNotificationsPermissionRule final : public PermissionRuleInterface {
  public:
   AllowNotificationsPermissionRule();
+  AllowNotificationsPermissionRule(const AllowNotificationsPermissionRule&) =
+      delete;
+  AllowNotificationsPermissionRule& operator=(
+      const AllowNotificationsPermissionRule&) = delete;
   ~AllowNotificationsPermissionRule() override;
 
   bool ShouldAllow() override;
@@ -23,11 +27,6 @@ class AllowNotificationsPermissionRule final : public PermissionRuleInterface {
 
  private:
   bool DoesRespectCap();
-
-  AllowNotificationsPermissionRule(const AllowNotificationsPermissionRule&) =
-      delete;
-  AllowNotificationsPermissionRule& operator=(
-      const AllowNotificationsPermissionRule&) = delete;
 
   std::string last_message_;
 };

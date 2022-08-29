@@ -4,7 +4,10 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+
+// Types
+import { BraveWallet, WalletState } from '../../../constants/types'
 
 // actions
 import { WalletActions } from '../../../common/actions'
@@ -40,6 +43,7 @@ const WalletMorePopup = (props: Props) => {
 
   // redux
   const dispatch = useDispatch()
+  const selectedNetwork = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetwork)
 
   // methods
   const lockWallet = React.useCallback(() => {
@@ -47,12 +51,13 @@ const WalletMorePopup = (props: Props) => {
   }, [])
 
   const onClickConnectedSites = React.useCallback(() => {
-    chrome.tabs.create({ url: 'brave://settings/content/ethereum' }, () => {
+    const route = selectedNetwork.coin === BraveWallet.CoinType.ETH ? 'ethereum' : 'solana'
+    chrome.tabs.create({ url: `brave://settings/content/${route}` }, () => {
       if (chrome.runtime.lastError) {
         console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
       }
     })
-  }, [])
+  }, [selectedNetwork])
 
   const onClickHelpCenter = React.useCallback(() => {
     chrome.tabs.create({ url: 'https://support.brave.com/hc/en-us/articles/4415497656461-Brave-Wallet-FAQ' }, () => {
@@ -77,10 +82,12 @@ const WalletMorePopup = (props: Props) => {
         </PopupButton>
       }
 
-      <PopupButton onClick={onClickConnectedSites}>
-        <ConnectedSitesIcon />
-        <PopupButtonText>{getLocale('braveWalletWalletPopupConnectedSites')}</PopupButtonText>
-      </PopupButton>
+      {selectedNetwork.coin !== BraveWallet.CoinType.FIL &&
+        <PopupButton onClick={onClickConnectedSites}>
+          <ConnectedSitesIcon />
+          <PopupButtonText>{getLocale('braveWalletWalletPopupConnectedSites')}</PopupButtonText>
+        </PopupButton>
+      }
 
       {onClickSetting &&
         <PopupButton onClick={onClickSetting}>

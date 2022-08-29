@@ -9,37 +9,14 @@ import * as React from 'react'
 import { BraveWallet, WalletAccountType } from '../../constants/types'
 
 // utils
-import { getTokensCoinType } from '../../utils/network-utils'
-import { createTokenBalanceRegistryKey } from '../../utils/account-utils'
+import { getBalance } from '../../utils/balance-utils'
 
 export const useBalance = (networks: BraveWallet.NetworkInfo[]) => {
-  const getBalance = React.useCallback((account?: WalletAccountType, token?: BraveWallet.BlockchainToken) => {
-    if (!account || !token) {
-      return ''
-    }
-
-    if (!account.tokenBalanceRegistry) {
-      return ''
-    }
-
-    const tokensCoinType = getTokensCoinType(networks, token)
-    // Return native asset balance
-    if (
-      token.contractAddress === '' &&
-      !token.isErc20 &&
-
-      // Since all coinTypes share the same chainId for localHost networks,
-      // we want to make sure we return the right balance for that token.
-      account.coin === tokensCoinType
-    ) {
-      return (account.nativeBalanceRegistry || {})[token.chainId || ''] || ''
-    }
-
-    const registryKey = createTokenBalanceRegistryKey(token)
-    return (account.tokenBalanceRegistry || {})[registryKey] || ''
+  const _getBalance = React.useCallback((account?: WalletAccountType, token?: BraveWallet.BlockchainToken) => {
+    return getBalance(networks, account, token)
   }, [networks])
 
-  return getBalance
+  return _getBalance
 }
 
 export default useBalance

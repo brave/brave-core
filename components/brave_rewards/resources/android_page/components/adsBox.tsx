@@ -217,12 +217,10 @@ class AdsBox extends React.Component<Props, {}> {
     let adsReceivedThisMonth = 0
     let earningsThisMonth = 0
     let earningsLastMonth = 0
-    let adEarningsReceived = false
     let needsBrowserUpgradeToServeAds = false
 
     const {
       adsData,
-      balanceReport,
       externalWallet,
       safetyNetFailed,
       parameters
@@ -237,10 +235,6 @@ class AdsBox extends React.Component<Props, {}> {
       earningsThisMonth = adsData.adsEarningsThisMonth || 0
       earningsLastMonth = adsData.adsEarningsLastMonth || 0
       needsBrowserUpgradeToServeAds = adsData.needsBrowserUpgradeToServeAds
-    }
-
-    if (balanceReport) {
-      adEarningsReceived = Number(balanceReport.ads || 0) > 0
     }
 
     // disabled / alert state
@@ -290,7 +284,6 @@ class AdsBox extends React.Component<Props, {}> {
         <StyledArrivingSoon>
           <PaymentStatusView
             earningsLastMonth={earningsLastMonth}
-            earningsReceived={adEarningsReceived}
             nextPaymentDate={nextPaymentDate}
             providerPayoutStatus={providerPayoutStatus}
           />

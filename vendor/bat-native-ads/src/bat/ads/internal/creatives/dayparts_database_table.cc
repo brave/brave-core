@@ -11,10 +11,8 @@
 #include "base/bind.h"
 #include "base/check.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/daypart_exclusion_rule.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/database/database_bind_util.h"
-#include "bat/ads/internal/base/database/database_column_util.h"
 #include "bat/ads/internal/base/database/database_table_util.h"
 #include "bat/ads/internal/base/database/database_transaction_util.h"
 

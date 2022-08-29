@@ -98,7 +98,7 @@ BuildTransactionsForReconciledTransactionsThisMonth(
   // received this month
   for (int i = 0; i < payment->transaction_count - 1; i++) {
     reconciled_transactions.push_back(BuildTransaction(time,
-                                                       /* value */ 0.0));
+                                                       /*value*/ 0.0));
   }
 
   return reconciled_transactions;

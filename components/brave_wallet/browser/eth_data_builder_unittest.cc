@@ -10,6 +10,16 @@
 
 namespace brave_wallet {
 
+namespace {
+
+std::vector<uint8_t> VectorFromBinaryString(const std::string& str) {
+  std::vector<uint8_t> result(str.begin(), str.end());
+  result.push_back('\0');
+  return result;
+}
+
+}  // namespace
+
 namespace erc20 {
 
 TEST(EthCallDataBuilderTest, Transfer) {
@@ -152,6 +162,10 @@ TEST(EthCallDataBuilderTest, SupportsInterface) {
   EXPECT_EQ(data,
             "0x01ffc9a7ffffffff000000000000000000000000000000000000000000000000"
             "00000000");
+  const uint8_t selector[] = {0xff, 0xff, 0xff, 0xff};
+  EXPECT_EQ(ToHex(SupportsInterface(selector)),
+            "0x01ffc9a7ffffffff000000000000000000000000000000000000000000000000"
+            "00000000");
 
   EXPECT_FALSE(SupportsInterface("", &data));
   EXPECT_FALSE(SupportsInterface("123", &data));
@@ -235,9 +249,7 @@ TEST(EthCallDataBuilderTest, Get) {
 namespace ens {
 
 TEST(EthCallDataBuilderTest, Resolver) {
-  std::string data;
-  EXPECT_TRUE(Resolver("brantly.eth", &data));
-  EXPECT_EQ(data,
+  EXPECT_EQ(Resolver("brantly.eth"),
             "0x0178b8bf"
             // Name hash of brantly.eth.
             "43fcd34d8589090581e1d2bdcf5dc17feb05b2006401fb1c3fdded335a465b51");
@@ -257,6 +269,70 @@ TEST(EthCallDataBuilderTest, Addr) {
   EXPECT_EQ(data,
             "0x3b3b57de"
             "43fcd34d8589090581e1d2bdcf5dc17feb05b2006401fb1c3fdded335a465b51");
+}
+
+TEST(EthCallDataBuilderTest, DnsEncode) {
+  // Based on DNSUtilTest.DNSDomainFromDot test. But without total length limit
+  // and support of terminal dot.
+
+  EXPECT_FALSE(DnsEncode(""));
+  EXPECT_FALSE(DnsEncode("."));
+  EXPECT_FALSE(DnsEncode(".."));
+  EXPECT_FALSE(DnsEncode("foo,bar.com"));
+
+  EXPECT_EQ(DnsEncode("com"), VectorFromBinaryString("\003com"));
+  EXPECT_EQ(DnsEncode("google.com"),
+            VectorFromBinaryString("\x006google\003com"));
+  EXPECT_EQ(DnsEncode("www.google.com"),
+            VectorFromBinaryString("\003www\006google\003com"));
+
+  // Label is 63 chars: still valid
+  EXPECT_EQ(
+      DnsEncode(
+          "z23456789a123456789a123456789a123456789a123456789a123456789a123"),
+      VectorFromBinaryString(
+          "\077z23456789a123456789a123456789a123456789a123456"
+          "789a123456789a123"));
+
+  // Label is too long: invalid
+  EXPECT_FALSE(DnsEncode(
+      "123456789a123456789a123456789a123456789a123456789a123456789a1234"));
+
+  // 253 characters in the name: still valid
+  EXPECT_EQ(DnsEncode("abcdefghi.abcdefghi.abcdefghi.abcdefghi.abcdefghi."
+                      "abcdefghi.abcdefghi."
+                      "abcdefghi.abcdefghi.abcdefghi.abcdefghi.abcdefghi."
+                      "abcdefghi.abcdefghi."
+                      "abcdefghi.abcdefghi.abcdefghi.abcdefghi.abcdefghi."
+                      "abcdefghi.abcdefghi."
+                      "abcdefghi.abcdefghi.abcdefghi.abcdefghi.abc"),
+            VectorFromBinaryString(
+                "\011abcdefghi\011abcdefghi\011abcdefghi\011abcdefghi\011a"
+                "bcdefghi\011abcdefghi\011abcdefghi\011abcdefghi\011abcdef"
+                "ghi\011abcdefghi\011abcdefghi\011abcdefghi\011abcdefghi"
+                "\011abcdefghi\011abcdefghi\011abcdefghi\011abcdefghi\011a"
+                "bcdefghi\011abcdefghi\011abcdefghi\011abcdefghi\011abcdef"
+                "ghi\011abcdefghi\011abcdefghi\011abcdefghi\003abc"));
+
+  // 254 characters in the name: still valid.
+  // Per ENS spec there is no total lenght limitation.
+  // https://docs.ens.domains/ens-improvement-proposals/ensip-10-wildcard-resolution#specification
+  EXPECT_TRUE(DnsEncode(
+      "123456789.123456789.123456789.123456789.123456789.123456789.123456789."
+      "123456789.123456789.123456789.123456789.123456789.123456789.123456789."
+      "123456789.123456789.123456789.123456789.123456789.123456789.123456789."
+      "123456789.123456789.123456789.123456789.1234"));
+
+  // Zero length labels should fail, except that one trailing dot is allowed
+  // (to disable suffix search):
+  EXPECT_FALSE(DnsEncode(".google.com"));
+  EXPECT_FALSE(DnsEncode("www..google.com"));
+
+  // Don't support terminal dot for ENS.
+  EXPECT_FALSE(DnsEncode("www.google.com."));
+
+  // Spaces and parenthesis not permitted.
+  EXPECT_FALSE(DnsEncode("_ipp._tcp.local.foo printer (bar)"));
 }
 
 }  // namespace ens

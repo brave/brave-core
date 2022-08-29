@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/location.h"
-#include "base/timer/timer.h"
 
 namespace ads {
 

@@ -29,15 +29,14 @@
 #include "bat/ads/internal/base/unittest/unittest_test_suite_util.h"
 #include "bat/ads/internal/base/unittest/unittest_url_response_util.h"
 #include "bat/ads/notification_ad_info.h"
-#include "testing/gmock/include/gmock/gmock.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
+
+namespace ads {
 
 using ::testing::_;
 using ::testing::Invoke;
 using ::testing::Return;
-
-namespace ads {
 
 using AdEventHistoryMap = base::flat_map<std::string, std::vector<base::Time>>;
 using AdEventMap = base::flat_map<std::string, AdEventHistoryMap>;
@@ -85,7 +84,7 @@ void MockBuildChannel(const BuildChannelType type) {
 
 void MockLocaleHelper(const std::unique_ptr<brave_l10n::LocaleHelperMock>& mock,
                       const std::string& locale) {
-  brave_l10n::LocaleHelper::GetInstance()->SetForTesting(mock.get());
+  brave_l10n::LocaleHelper::SetForTesting(mock.get());
 
   ON_CALL(*mock, GetLocale()).WillByDefault(Return(locale));
 }
@@ -254,7 +253,7 @@ void MockResetAdEventHistoryForId(const std::unique_ptr<AdsClientMock>& mock) {
 
 void MockGetBrowsingHistory(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, GetBrowsingHistory(_, _, _))
-      .WillByDefault(Invoke([](const int max_count, const int days_ago,
+      .WillByDefault(Invoke([](const int max_count, const int /*days_ago*/,
                                GetBrowsingHistoryCallback callback) {
         std::vector<GURL> history;
 
@@ -289,9 +288,9 @@ void MockUrlResponses(const std::unique_ptr<AdsClientMock>& mock,
 void MockSave(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, Save(_, _, _))
       .WillByDefault(
-          Invoke([](const std::string& name, const std::string& value,
+          Invoke([](const std::string& /*name*/, const std::string& /*value*/,
                     SaveCallback callback) {
-            std::move(callback).Run(/* success */ true);
+            std::move(callback).Run(/*success*/ true);
           }));
 }
 
@@ -308,17 +307,17 @@ void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
 
             std::string value;
             if (!base::ReadFileToString(path, &value)) {
-              std::move(callback).Run(/* success */ false, value);
+              std::move(callback).Run(/*success*/ false, value);
               return;
             }
 
-            std::move(callback).Run(/* success */ true, value);
+            std::move(callback).Run(/*success*/ true, value);
           }));
 }
 
 void MockLoadFileResource(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, LoadFileResource(_, _, _))
-      .WillByDefault(Invoke([](const std::string& id, const int version,
+      .WillByDefault(Invoke([](const std::string& id, const int /*version*/,
                                LoadFileCallback callback) {
         const base::FilePath path = GetFileResourcePath().AppendASCII(id);
 

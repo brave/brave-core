@@ -4,27 +4,15 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { createStore, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
 import { act, renderHook } from '@testing-library/react-hooks'
 
-import { createWalletReducer } from '../reducers/wallet_reducer'
 import { usePasswordAttempts } from './use-password-attempts'
-import { mockWalletState } from '../../stories/mock-data/mock-wallet-state'
 import { ApiProxyContext } from '../context/api-proxy.context'
-import { getMockedAPIProxy } from '../async/__mocks__/bridge'
+import { getMockedAPIProxy, makeMockedStoreWithSpy } from '../async/__mocks__/bridge'
+import { WalletActions } from '../actions'
 
 const proxy = getMockedAPIProxy()
-proxy.keyringService.lock = jest.fn(proxy.keyringService.lock)
-
-const makeStore = () => {
-  const store = createStore(combineReducers({
-    wallet: createWalletReducer(mockWalletState)
-  }))
-
-  store.dispatch = jest.fn(store.dispatch)
-  return store
-}
 
 function renderHookOptionsWithCustomStore (store: any) {
   return {
@@ -37,17 +25,14 @@ function renderHookOptionsWithCustomStore (store: any) {
   }
 }
 
-const MAX_ATTEMPTS = 3
-
-describe('useTransactionParser hook', () => {
-  it('should increment attempts on bad password ', async () => {
-    const store = makeStore()
+describe('usePasswordAttempts hook', () => {
+  it('should increment attempts on bad password & lock wallet after 3 failed attempts', async () => {
+    const { store, dispatchSpy } = makeMockedStoreWithSpy()
+    proxy.setMockedStore(store)
 
     const {
       result
-    } = renderHook(() => usePasswordAttempts({
-      maxAttempts: MAX_ATTEMPTS
-    }), renderHookOptionsWithCustomStore(store))
+    } = renderHook(() => usePasswordAttempts(), renderHookOptionsWithCustomStore(store))
 
     expect(result.current.attempts).toEqual(0)
 
@@ -60,20 +45,54 @@ describe('useTransactionParser hook', () => {
 
     // attempt 2
     await act(async () => {
-      await result.current.attemptPasswordEntry('pass')
+      await result.current.attemptPasswordEntry('pass2')
     })
 
     expect(result.current.attempts).toEqual(2)
 
     // attempt 3
     await act(async () => {
-      await result.current.attemptPasswordEntry('pass')
+      await result.current.attemptPasswordEntry('pass3')
     })
 
     // Wallet is now locked
-    expect(proxy.keyringService.lock).toHaveBeenCalled()
-
-    // attempts should be reset since wallet was locked
+    await act(async () => {
+      expect(dispatchSpy).toHaveBeenCalledWith(WalletActions.locked())
+      expect(store.getState().wallet.isWalletLocked).toBe(true)
+    })
+    // attempts should be reset since the wallet was locked
     expect(result.current.attempts).toEqual(0)
+  })
+
+  it('should return "true" for valid password', async () => {
+    const { store } = makeMockedStoreWithSpy()
+
+    const {
+      result
+    } = renderHook(() => usePasswordAttempts(), renderHookOptionsWithCustomStore(store))
+
+    expect(result.current.attempts).toEqual(0)
+
+    await act(async () => {
+      // enter correct password
+      const isValid = await result.current.attemptPasswordEntry('password')
+      expect(isValid).toBe(true)
+    })
+  })
+
+  it('should return "false" for invalid password', async () => {
+    const { store } = makeMockedStoreWithSpy()
+
+    const {
+      result
+    } = renderHook(() => usePasswordAttempts(), renderHookOptionsWithCustomStore(store))
+
+    expect(result.current.attempts).toEqual(0)
+
+    await act(async () => {
+      // enter incorrect password
+      const isValid = await result.current.attemptPasswordEntry('wrong!')
+      expect(isValid).toBe(false)
+    })
   })
 })

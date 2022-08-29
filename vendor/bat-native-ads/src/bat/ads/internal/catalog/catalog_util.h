@@ -24,13 +24,13 @@ std::string GetCatalogId();
 void SetCatalogId(const std::string& id);
 
 int GetCatalogVersion();
-void SetCatalogVersion(const int version);
+void SetCatalogVersion(int version);
 
 base::TimeDelta GetCatalogPing();
-void SetCatalogPing(const base::TimeDelta ping);
+void SetCatalogPing(base::TimeDelta ping);
 
 base::Time GetCatalogLastUpdated();
-void SetCatalogLastUpdated(const base::Time last_updated_at);
+void SetCatalogLastUpdated(base::Time last_updated_at);
 
 bool DoesCatalogExist();
 bool HasCatalogChanged(const std::string& catalog_id);

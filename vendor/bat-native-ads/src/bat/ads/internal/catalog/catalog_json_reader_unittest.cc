@@ -9,10 +9,21 @@
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_file_util.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
+#include "bat/ads/internal/catalog/campaign/catalog_campaign_info.h"
+#include "bat/ads/internal/catalog/campaign/catalog_daypart_info.h"
+#include "bat/ads/internal/catalog/campaign/catalog_geo_target_info.h"
+#include "bat/ads/internal/catalog/campaign/creative_set/catalog_creative_set_info.h"
+#include "bat/ads/internal/catalog/campaign/creative_set/catalog_os_info.h"
+#include "bat/ads/internal/catalog/campaign/creative_set/catalog_segment_info.h"
+#include "bat/ads/internal/catalog/campaign/creative_set/creative/catalog_type_info.h"
+#include "bat/ads/internal/catalog/campaign/creative_set/creative/inline_content_ad/catalog_creative_inline_content_ad_info.h"
+#include "bat/ads/internal/catalog/campaign/creative_set/creative/new_tab_page_ad/catalog_creative_new_tab_page_ad_info.h"
 #include "bat/ads/internal/catalog/campaign/creative_set/creative/new_tab_page_ad/catalog_new_tab_page_ad_wallpaper_focal_point_info.h"
 #include "bat/ads/internal/catalog/campaign/creative_set/creative/new_tab_page_ad/catalog_new_tab_page_ad_wallpaper_info.h"
+#include "bat/ads/internal/catalog/campaign/creative_set/creative/notification_ad/catalog_creative_notification_ad_info.h"
+#include "bat/ads/internal/catalog/campaign/creative_set/creative/promoted_content_ad/catalog_creative_promoted_content_ad_info.h"
 #include "bat/ads/internal/catalog/catalog_info.h"
-#include "bat/ads/internal/catalog/catalog_type_info.h"
+#include "bat/ads/internal/conversions/conversion_info.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -176,7 +187,8 @@ class BatAdsCatalogTest : public UnitTestBase {
     conversion.type = "postview";
     conversion.url_pattern = "https://www.brave.com/1/*";
     conversion.observation_window = 30;
-    conversion.expire_at = base::Time::FromDoubleT(4105036799);
+    conversion.expire_at =
+        DistantFuture() + base::Days(conversion.observation_window);
     conversions.push_back(conversion);
 
     // Creative Sets
@@ -380,7 +392,8 @@ class BatAdsCatalogTest : public UnitTestBase {
     conversion.url_pattern = "https://www.brave.com/2/*";
     conversion.observation_window = 7;
     conversion.advertiser_public_key = "";
-    conversion.expire_at = base::Time::FromDoubleT(4103049599);
+    conversion.expire_at =
+        DistantFuture() + base::Days(conversion.observation_window);
     conversions.push_back(conversion);
 
     // Creative Sets
@@ -494,6 +507,9 @@ TEST_F(BatAdsCatalogTest, ParseEmptyCatalog) {
 
   // Assert
   CatalogInfo expected_catalog;
+  expected_catalog.id = "29e5c8bc0ba319069980bb390d8e8f9b58c05a20";
+  expected_catalog.version = 9;
+  expected_catalog.ping = base::Milliseconds(7200000);
 
   EXPECT_EQ(expected_catalog, *catalog);
 }

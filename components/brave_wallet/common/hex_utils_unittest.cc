@@ -9,18 +9,29 @@
 #include <vector>
 
 #include "base/logging.h"
+#include "base/strings/string_piece.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
 
 TEST(HexUtilsUnitTest, ToHex) {
+  const base::StringPiece str = "hello world";
   ASSERT_EQ(ToHex(""), "0x0");
-  ASSERT_EQ(ToHex("hello world"), "0x68656c6c6f20776f726c64");
+  ASSERT_EQ(ToHex(std::string(str)), "0x68656c6c6f20776f726c64");
+  ASSERT_EQ(ToHex(base::as_bytes(base::make_span(str))),
+            "0x68656c6c6f20776f726c64");
 
   ASSERT_EQ(ToHex(std::vector<uint8_t>()), "0x0");
-  const std::string str1("hello world");
-  ASSERT_EQ(ToHex(std::vector<uint8_t>(str1.begin(), str1.end())),
+  ASSERT_EQ(ToHex(std::vector<uint8_t>(str.begin(), str.end())),
             "0x68656c6c6f20776f726c64");
+}
+
+TEST(HexUtilsUnitTest, HexEncodeLower) {
+  std::string test_string = "hello world";
+  ASSERT_EQ(HexEncodeLower(base::as_bytes(base::make_span(test_string))),
+            "68656c6c6f20776f726c64");
+  ASSERT_EQ(HexEncodeLower(test_string.data(), test_string.size()),
+            "68656c6c6f20776f726c64");
 }
 
 TEST(HexUtilsUnitTest, IsValidHexString) {
@@ -190,6 +201,17 @@ TEST(HexUtilsUnitTest, PrefixedHexStringToBytes) {
   EXPECT_FALSE(PrefixedHexStringToBytes("hello", &bytes));
   EXPECT_FALSE(PrefixedHexStringToBytes("01", &bytes));
   EXPECT_FALSE(PrefixedHexStringToBytes("", &bytes));
+
+  EXPECT_EQ(PrefixedHexStringToBytes("0x"), (std::vector<uint8_t>()));
+  EXPECT_EQ(PrefixedHexStringToBytes("0x0"), (std::vector<uint8_t>{0}));
+  EXPECT_EQ(PrefixedHexStringToBytes("0x00"), (std::vector<uint8_t>{0}));
+  EXPECT_EQ(PrefixedHexStringToBytes("0x1"), (std::vector<uint8_t>{1}));
+  EXPECT_EQ(PrefixedHexStringToBytes("0xdeadbeef"),
+            (std::vector<uint8_t>{222, 173, 190, 239}));
+  EXPECT_FALSE(PrefixedHexStringToBytes("0x0g"));
+  EXPECT_FALSE(PrefixedHexStringToBytes("hello"));
+  EXPECT_FALSE(PrefixedHexStringToBytes("01"));
+  EXPECT_FALSE(PrefixedHexStringToBytes(""));
 }
 
 }  // namespace brave_wallet

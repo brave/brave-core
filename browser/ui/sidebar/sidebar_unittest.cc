@@ -65,7 +65,7 @@ class SidebarModelTest : public testing::Test, public SidebarModel::Observer {
 
 TEST_F(SidebarModelTest, ItemsChangedTest) {
   auto built_in_items_size =
-      SidebarService::GetDefaultBuiltInItemTypes_ForTesting().size();
+      std::size(SidebarService::kDefaultBuiltInItemTypes);
   EXPECT_EQ(built_in_items_size, service()->items().size());
   model()->Init(nullptr);
 

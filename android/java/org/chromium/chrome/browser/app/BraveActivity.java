@@ -612,6 +612,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                     BraveVpnUtils.openBraveVpnProfileActivity(BraveActivity.this);
                     return;
                 }
+                BraveVpnNativeWorker.getInstance().reportForegroundP3A();
                 BraveVpnProfileUtils.getInstance().startVpn(BraveActivity.this);
             }
         }.start();
@@ -1365,6 +1366,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                         isProcessingPendingDappsTxRequest = true;
                         openBraveWalletDAppsActivity(
                                 BraveWalletDAppsActivity.ActivityType.CONFIRM_TRANSACTION);
+                    }
+                    // update badge if there's a pending tx
+                    if (transactionInfo != null && keyringInfo != null && !keyringInfo.isLocked) {
+                        updateWalletBadgeVisibility();
                     }
                 });
         mWalletModel.getDappsModel().mWalletIconNotificationVisible.observe(

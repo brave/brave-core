@@ -15,6 +15,9 @@ namespace ads {
 class DoNotDisturbPermissionRule final : public PermissionRuleInterface {
  public:
   DoNotDisturbPermissionRule();
+  DoNotDisturbPermissionRule(const DoNotDisturbPermissionRule&) = delete;
+  DoNotDisturbPermissionRule& operator=(const DoNotDisturbPermissionRule&) =
+      delete;
   ~DoNotDisturbPermissionRule() override;
 
   bool ShouldAllow() override;
@@ -23,10 +26,6 @@ class DoNotDisturbPermissionRule final : public PermissionRuleInterface {
 
  private:
   bool DoesRespectCap();
-
-  DoNotDisturbPermissionRule(const DoNotDisturbPermissionRule&) = delete;
-  DoNotDisturbPermissionRule& operator=(const DoNotDisturbPermissionRule&) =
-      delete;
 
   std::string last_message_;
 };

@@ -7,9 +7,20 @@ module brave_new_tab_page.mojom;
 
 import "url/mojom/url.mojom";
 
+const string kRandomSolidColorValue = "solid";
+const string kRandomGradientColorValue = "gradient";
+
 struct CustomBackground {
   url.mojom.Url url;
-  string solid_color;
+
+  // |color| is a 
+  //   * color value for css background property or 'gradient' when 
+  //     |use_random_item| is false.
+  //   * either kRandomSlidColorValue or kRandomGradientColorValue when 
+  //     |use_random_item| is true
+  string color;
+
+  bool use_random_item = false;
 };
 
 // Used by the WebUI page to bootstrap bidirectional communication.
@@ -25,10 +36,17 @@ interface PageHandler {
   // Choose custom background from local file system.
   ChooseLocalCustomBackground();
   UseBraveBackground();
+  
+  // |color| is a 
+  //   * color value for css background property or 'gradient' when 
+  //     |use_random_color| is false.
+  //   * either kRandomSlidColorValue or kRandomGradientColorValue when 
+  //     |use_random_color| is true
+  UseColorBackground(string color, bool use_random_color);
+
   TryBraveSearchPromotion(string input, bool open_new_tab);
   DismissBraveSearchPromotion();
   IsSearchPromotionEnabled() => (bool enabled);
-  UseSolidColorBackground(string color);
 };
 
 // WebUI-side handler for requests from the browser.

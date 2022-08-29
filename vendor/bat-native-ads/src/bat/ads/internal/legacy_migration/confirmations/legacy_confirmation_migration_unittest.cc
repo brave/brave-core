@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
-
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager_constants.h"
 #include "bat/ads/internal/legacy_migration/confirmations/legacy_confirmation_migration_unittest_util.h"
@@ -44,7 +42,7 @@ TEST_F(BatAdsLegacyConfirmationMigrationTest, Migrate) {
   SetHash(kConfirmationJsonHash);
 
   // Act
-  Migrate(/* should_migrate */ true);
+  Migrate(/*should_migrate*/ true);
 
   // Assert
   EXPECT_EQ(kMigratedConfirmationJsonHash, GetHash());
@@ -56,7 +54,7 @@ TEST_F(BatAdsLegacyConfirmationMigrationTest, InvalidState) {
                                  kConfirmationStateFilename);
 
   // Act
-  Migrate(/* should_migrate */ false);
+  Migrate(/*should_migrate*/ false);
 
   // Assert
   EXPECT_FALSE(HasMigrated());
@@ -68,11 +66,11 @@ TEST_F(BatAdsLegacyConfirmationMigrationTest, AlreadyMigrated) {
 
   SetHash(kConfirmationJsonHash);
 
-  Migrate(/* should_migrate */ true);
+  Migrate(/*should_migrate*/ true);
   ASSERT_EQ(kMigratedConfirmationJsonHash, GetHash());
 
   // Act
-  Migrate(/* should_migrate */ true);
+  Migrate(/*should_migrate*/ true);
 
   // Assert
   EXPECT_EQ(kMigratedConfirmationJsonHash, GetHash());

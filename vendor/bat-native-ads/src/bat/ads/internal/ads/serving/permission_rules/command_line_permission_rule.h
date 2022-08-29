@@ -15,6 +15,9 @@ namespace ads {
 class CommandLinePermissionRule final : public PermissionRuleInterface {
  public:
   CommandLinePermissionRule();
+  CommandLinePermissionRule(const CommandLinePermissionRule&) = delete;
+  CommandLinePermissionRule& operator=(const CommandLinePermissionRule&) =
+      delete;
   ~CommandLinePermissionRule() override;
 
   bool ShouldAllow() override;
@@ -23,10 +26,6 @@ class CommandLinePermissionRule final : public PermissionRuleInterface {
 
  private:
   bool DoesRespectCap();
-
-  CommandLinePermissionRule(const CommandLinePermissionRule&) = delete;
-  CommandLinePermissionRule& operator=(const CommandLinePermissionRule&) =
-      delete;
 
   std::string last_message_;
 };

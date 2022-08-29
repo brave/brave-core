@@ -12,12 +12,10 @@
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "bat/ads/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_handler_observer.h"
-#include "bat/ads/internal/ads/serving/serving_features.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
 #include "bat/ads/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -70,9 +68,9 @@ class BatAdsInlineContentAdEventHandlerTest : public EventHandlerObserver,
   }
 
   void OnInlineContentAdEventFailed(
-      const std::string& placement_id,
-      const std::string& creative_instance_id,
-      const mojom::InlineContentAdEventType event_type) override {
+      const std::string& /*placement_id*/,
+      const std::string& /*creative_instance_id*/,
+      const mojom::InlineContentAdEventType /*event_type*/) override {
     did_fail_to_fire_event_ = true;
   }
 

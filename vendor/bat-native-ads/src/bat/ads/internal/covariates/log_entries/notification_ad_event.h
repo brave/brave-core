@@ -20,7 +20,7 @@ class NotificationAdEvent final : public CovariateLogEntryInterface {
   NotificationAdEvent& operator=(const NotificationAdEvent&) = delete;
   ~NotificationAdEvent() override;
 
-  void SetEventType(const mojom::NotificationAdEventType event_type);
+  void SetEventType(mojom::NotificationAdEventType event_type);
 
   // CovariateLogEntryInterface:
   brave_federated::mojom::DataType GetDataType() const override;

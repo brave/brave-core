@@ -14,7 +14,6 @@ import {
 import {
   WalletCreatedPayloadType,
   RecoveryWordsAvailablePayloadType,
-  PrivateKeyAvailablePayloadType,
   SelectAssetPayloadType,
   ImportWalletErrorPayloadType
 } from '../constants/action_types'
@@ -62,19 +61,6 @@ export const createPageReducer = (initialState: PageState) => {
     }
   })
 
-  reducer.on(Actions.privateKeyAvailable, (state: PageState, payload: PrivateKeyAvailablePayloadType) => {
-    return {
-      ...state,
-      privateKey: payload.privateKey
-    }
-  })
-
-  reducer.on(Actions.doneViewingPrivateKey, (state: PageState) => {
-    const newState = { ...state }
-    delete newState.privateKey
-    return newState
-  })
-
   reducer.on(Actions.walletSetupComplete, (state: PageState, payload?: boolean): PageState => {
     // complete setup unless explicitly halted
     const setupStillInProgress = !payload
@@ -95,10 +81,10 @@ export const createPageReducer = (initialState: PageState) => {
     return newState
   })
 
-  reducer.on(Actions.showRecoveryPhrase, (state: PageState, payload: boolean) => {
+  reducer.on(Actions.showRecoveryPhrase, (state: PageState, payload) => {
     return {
       ...state,
-      showRecoveryPhrase: payload
+      showRecoveryPhrase: payload.show
     }
   })
 

@@ -31,23 +31,27 @@ class BatAdsTabManagerTest : public TabManagerObserver, public UnitTestBase {
     UnitTestBase::TearDown();
   }
 
-  void OnTabDidChangeFocus(const int32_t tab_id) override {
+  void OnTabDidChangeFocus(const int32_t /*tab_id*/) override {
     tab_did_change_focus_ = true;
   }
 
-  void OnTabDidChange(const TabInfo& tab) override { tab_did_change_ = true; }
+  void OnTabDidChange(const TabInfo& /*tab*/) override {
+    tab_did_change_ = true;
+  }
 
-  void OnDidOpenNewTab(const TabInfo& tab) override {
+  void OnDidOpenNewTab(const TabInfo& /*tab*/) override {
     did_open_new_tab_ = true;
   }
 
-  void OnDidCloseTab(const int32_t tab_id) override { did_close_tab_ = true; }
+  void OnDidCloseTab(const int32_t /*tab_id*/) override {
+    did_close_tab_ = true;
+  }
 
-  void OnTabDidStartPlayingMedia(const int32_t tab_id) override {
+  void OnTabDidStartPlayingMedia(const int32_t /*tab_id*/) override {
     tab_did_start_playing_media_ = true;
   }
 
-  void OnTabDidStopPlayingMedia(const int32_t tab_id) override {
+  void OnTabDidStopPlayingMedia(const int32_t /*tab_id*/) override {
     tab_did_stop_playing_media_ = true;
   }
 

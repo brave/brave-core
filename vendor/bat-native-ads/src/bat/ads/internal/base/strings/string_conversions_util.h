@@ -10,7 +10,7 @@
 
 namespace ads {
 
-std::string BoolToString(const bool value);
+std::string BoolToString(bool value);
 
 }  // namespace ads
 

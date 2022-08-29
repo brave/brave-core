@@ -64,6 +64,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletOrdinalFifth", IDS_BRAVE_WALLET_ORDINAL_FIFTH},
     {"braveWalletOrdinalFourth", IDS_BRAVE_WALLET_ORDINAL_FOURTH},
     {"braveWalletOrdinalSecond", IDS_BRAVE_WALLET_ORDINAL_SECOND},
+    {"braveWalletRemoveAccountModalTitle",
+     IDS_BRAVE_WALLET_REMOVE_ACCOUNT_MODAL_TITLE},
     {"braveWalletEnterYourPassword", IDS_BRAVE_WALLET_ENTER_YOUR_PASSWORD},
     {"braveWalletClickToSwitch", BRAVE_WALLET_CLICK_TO_SWITCH},
     {"braveWalletUnlockNeededToCreateAccount",
@@ -851,7 +853,17 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletHelpCenter", IDS_BRAVE_WALLET_HELP_CENTER},
     {"braveWalletBuyTapBuyNotSupportedMessage",
      IDS_BRAVE_WALLET_BUY_TAB_BUY_NOT_SUPPORTED_MESSAGE},
-};
+    {"braveWalletPortfolioTokenDetailsMenuLabel",
+     IDS_BRAVE_WALLET_PORTFOLIO_TOKEN_DETAILS_MENU_LABEL},
+    {"braveWalletPortfolioViewOnExplorerMenuLabel",
+     IDS_BRAVE_WALLET_PORTFOLIO_VIEW_ON_EXPLORER_MENU_LABEL},
+    {"braveWalletPortfolioHideTokenMenuLabel",
+     IDS_BRAVE_WALLET_PORTFOLIO_VIEW_HIDE_TOKEN_LABEL},
+    {"braveWalletHideTokenModalTitle", IDS_BRAVE_WALLET_HIDE_TOKEN_MODAL_TITLE},
+    {"braveWalletMakeTokenVisibleInstructions",
+     IDS_BRAVE_WALLET_MAKE_TOKEN_VISIBLE_INSTRUCTIONS},
+    {"braveWalletConfirmHidingToken", IDS_BRAVE_WALLET_CONFIRM_HIDING_TOKEN},
+    {"braveWalletCancelHidingToken", IDS_BRAVE_WALLET_CANCEL_HIDING_TOKEN}};
 
 // 0x swap constants
 constexpr char kRopstenSwapBaseAPIURL[] = "https://ropsten.api.0x.org/";

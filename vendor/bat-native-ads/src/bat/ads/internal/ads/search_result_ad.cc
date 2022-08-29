@@ -92,7 +92,7 @@ void SearchResultAd::MaybeTriggerAdViewedEventFromQueue() {
 
   event_handler_->FireEvent(
       std::move(ad_mojom), mojom::SearchResultAdEventType::kViewed,
-      [=](const bool success, const std::string& placement_id,
+      [=](const bool /*success*/, const std::string& /*placement_id*/,
           const mojom::SearchResultAdEventType event_type) {
         DCHECK(mojom::IsKnownEnumValue(event_type));
 

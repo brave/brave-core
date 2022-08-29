@@ -555,7 +555,7 @@ interface KeyringService {
   // Obtains the mnemonic code words for an already existing wallet
   // TODO(darkdh): make result optional instead of using empty string indicated
   // failure
-  GetMnemonicForDefaultKeyring() => (string mnemonic);
+  GetMnemonicForDefaultKeyring(string password) => (string mnemonic);
 
   // Restores a wallet with the specified mnemonic and encrypts it with the
   // new password provided. isLegacyBraveWallet can be used to restore the
@@ -580,7 +580,7 @@ interface KeyringService {
   AddFilecoinAccount(string accountName, string fileCoinNetwork) => (bool success);
 
   // Obtains the private key for the keyring.
-  GetPrivateKeyForKeyringAccount(string address, CoinType coin)
+  GetPrivateKeyForKeyringAccount(string address, string password, CoinType coin)
     => (bool success, string privateKey);
 
   // Imports an account with a specific private key to the corresponding keyring
@@ -598,7 +598,7 @@ interface KeyringService {
     => (bool success, string address);
 
   // Removes an imported account
-  RemoveImportedAccount(string address, CoinType coin) => (bool success);
+  RemoveImportedAccount(string address, string password, CoinType coin) => (bool success);
 
   // Determines if the keyring has been backed up
   IsWalletBackedUp() => (bool backed_up);
@@ -627,7 +627,7 @@ interface KeyringService {
   AddHardwareAccounts(array<HardwareWalletAccount> info);
 
   // Removes a hardware account
-  RemoveHardwareAccount(string address, CoinType coin);
+  RemoveHardwareAccount(string address, string password, CoinType coin) => (bool success);
 
   // Informs the user that user interaction occurred so auto-lock doesn't occur
   NotifyUserInteraction();

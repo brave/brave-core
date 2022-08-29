@@ -8,7 +8,7 @@
 #include "base/containers/circular_deque.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/base/containers/container_util.h"
-#include "testing/gtest/include/gtest/gtest.h"
+#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

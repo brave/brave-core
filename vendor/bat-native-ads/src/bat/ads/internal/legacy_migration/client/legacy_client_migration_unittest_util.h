@@ -11,10 +11,10 @@
 namespace ads {
 namespace client {
 
-void Migrate(const bool should_migrate);
+void Migrate(bool should_migrate);
 
 uint64_t GetHash();
-void SetHash(const uint64_t hash);
+void SetHash(uint64_t hash);
 
 }  // namespace client
 }  // namespace ads

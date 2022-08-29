@@ -10,7 +10,6 @@ declare namespace RewardsExtension {
     pendingContributionTotal: number
     parameters: RewardsParameters
     recurringTips: Record<string, number>[]
-    tipAmounts: Record<string, number[]>
     externalWallet?: ExternalWallet
     initializing: boolean
     showOnboarding: boolean

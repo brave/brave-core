@@ -8,7 +8,6 @@
 #include <string>
 
 #include "base/bind.h"
-#include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
@@ -37,13 +36,13 @@ bool HasMigrated() {
 }
 
 void FailedToMigrate(InitializeCallback callback) {
-  callback(/* success */ false);
+  callback(/*success*/ false);
 }
 
 void SuccessfullyMigrated(InitializeCallback callback) {
   AdsClientHelper::GetInstance()->SetBooleanPref(
       prefs::kHasMigratedConversionState, true);
-  callback(/* success */ true);
+  callback(/*success*/ true);
 }
 
 absl::optional<ConversionQueueItemInfo> GetFromDictionary(
@@ -159,7 +158,7 @@ void OnMigrate(InitializeCallback callback,
 
 void Migrate(InitializeCallback callback) {
   if (HasMigrated()) {
-    callback(/* success */ true);
+    callback(/*success*/ true);
     return;
   }
 

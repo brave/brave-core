@@ -42,7 +42,7 @@ absl::optional<base::TimeDelta> ParseTimeDelta(const std::string& value) {
     return absl::nullopt;
   }
 
-  const std::string period = components.at(1);
+  const std::string& period = components.at(1);
   if (period == kSecondsDeltaTimeTagValue) {
     return base::Seconds(n);
   }
@@ -107,7 +107,7 @@ void ReplaceTagsForText(const std::vector<std::string>& tags,
         tag, ":", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
     CHECK(components.size() == 2) << "Invalid tag: " << tag;
 
-    const std::string key = components.at(0);
+    const std::string& key = components.at(0);
     std::string value = components.at(1);
 
     if (key == kTimeTagKey) {

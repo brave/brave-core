@@ -9,13 +9,20 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/brave_wallet/common/eth_abi_utils.h"
+
 namespace brave_wallet {
+class EthAddress;
 
 std::string MakeJsonRpcStringArrayResponse(
     const std::vector<std::string>& items);
 std::string MakeJsonRpcStringResponse(const std::string& str);
+std::string MakeJsonRpcTupleResponse(const eth_abi::TupleEncoder& tuple);
 std::string MakeJsonRpcErrorResponse(int error,
                                      const std::string& error_message);
+std::string MakeJsonRpcErrorResponseWithData(int error,
+                                             const std::string& error_message,
+                                             const std::string& data);
 
 }  // namespace brave_wallet
 

@@ -10,6 +10,7 @@
 #include <vector>
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
@@ -70,7 +71,11 @@ bool Uri(uint256_t token_id, std::string* data);
 
 namespace erc165 {
 
+// supportsInterface(bytes4)
+constexpr uint8_t kSupportsInterfaceBytes4[] = {0x01, 0xff, 0xc9, 0xa7};
+
 bool SupportsInterface(const std::string& interface_id, std::string* data);
+std::vector<uint8_t> SupportsInterface(eth_abi::Span4 interface);
 
 }  // namespace erc165
 
@@ -88,11 +93,13 @@ absl::optional<std::string> Get(const std::string& key,
 
 namespace ens {
 
-bool Resolver(const std::string& domain, std::string* data);
+std::string Resolver(const std::string& domain);
 bool ContentHash(const std::string& domain, std::string* data);
 
 // Get Ethereum address from an ENS name.
 bool Addr(const std::string& domain, std::string* data);
+
+absl::optional<std::vector<uint8_t>> DnsEncode(const std::string& dotted_name);
 
 }  // namespace ens
 

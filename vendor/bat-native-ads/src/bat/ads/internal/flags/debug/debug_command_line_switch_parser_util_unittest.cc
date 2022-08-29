@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/flags/debug/debug_command_line_switch_parser_util.h"
-
 #include <string>
 
 #include "base/strings/stringprintf.h"
@@ -24,16 +22,15 @@ constexpr char kRewardsSwitch[] = "rewards";
 struct ParamInfo final {
   CommandLineSwitchInfo command_line_switch;
   bool expected_should_debug;
-} kTests[] = {
-    {/* command_line_switch */ {kRewardsSwitch, "debug=true"},
-     /* expected_should_debug */ true},
-    {/* command_line_switch */ {kRewardsSwitch, "debug=1"},
-     /* expected_should_debug */ true},
-    {/* command_line_switch */ {kRewardsSwitch, "debug=false"},
-     /* expected_should_debug */ false},
-    {/* command_line_switch */ {kRewardsSwitch, "debug=foobar"},
-     /* expected_should_debug */ false},
-    {/* command_line_switch */ {}, /* expected_should_debug */ false}};
+} kTests[] = {{/*command_line_switch*/ {kRewardsSwitch, "debug=true"},
+               /*expected_should_debug*/ true},
+              {/*command_line_switch*/ {kRewardsSwitch, "debug=1"},
+               /*expected_should_debug*/ true},
+              {/*command_line_switch*/ {kRewardsSwitch, "debug=false"},
+               /*expected_should_debug*/ false},
+              {/*command_line_switch*/ {kRewardsSwitch, "debug=foobar"},
+               /*expected_should_debug*/ false},
+              {/*command_line_switch */ {}, /* expected_should_debug*/ false}};
 
 }  // namespace
 

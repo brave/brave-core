@@ -23,46 +23,6 @@ namespace ads {
 
 namespace {
 
-// Mocked URL responses for the specified URL requests can be defined inline or
-// read from a file. Filenames should begin with a forward slash, i.e.
-//
-//    {
-//      "/foo/bar", {
-//        {
-//          net::HTTP_NOT_FOUND, "Not found"
-//        },
-//        {
-//          net::HTTP_OK, "/response.json"
-//        }
-//      }
-//    }
-//
-// Inline responses can contain |<time:period>| tags for mocking timestamps,
-// where |period| can be |now|, |distant_past|, |distant_future|, |+/-#
-// seconds|, |+/-# minutes|, |+/-# hours| or |+/-# days|, i.e.
-//
-//    {
-//      "/foo/bar", {
-//        {
-//          net::HTTP_OK, "An example response with a <time:+7 days> timestamp"
-//        }
-//      }
-//    }
-//
-// Multiple URL responses can be added for URL requests which will be returned
-// in the specified order, i.e.
-//
-//    {
-//      "/foo/bar", {
-//        {
-//           net::HTTP_INTERNAL_SERVER_ERROR, "Internal server error"
-//        },
-//        {
-//           net::HTTP_CREATED, "To me there's no creativity without boundaries"
-//        }
-//      }
-//    }
-
 base::flat_map<std::string, size_t>& UrlResponseIndexes() {
   static base::NoDestructor<base::flat_map<std::string, size_t>> indexes;
   return *indexes;

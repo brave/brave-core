@@ -125,9 +125,9 @@ absl::optional<std::string> GetBoolFromData(const std::vector<uint8_t>& input,
   if (!value)
     return absl::nullopt;
 
-  if (value == 0)
+  if (value == static_cast<uint256_t>(0))
     return "false";
-  else if (value == 1)
+  else if (value == static_cast<uint256_t>(1))
     return "true";
 
   return absl::nullopt;

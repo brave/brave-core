@@ -49,7 +49,7 @@ class NewTabPageAd final : public new_tab_page_ads::EventHandlerObserver,
 
   void TriggerEvent(const std::string& placement_id,
                     const std::string& creative_instance_id,
-                    const mojom::NewTabPageAdEventType event_type);
+                    mojom::NewTabPageAdEventType event_type);
 
  private:
   // new_tab_page_ads::ServingObserver:

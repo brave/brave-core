@@ -7,13 +7,14 @@ import { CHANGE } from '@storybook/addon-knobs'
 import { addons } from '@storybook/addons'
 
 import { images } from '../../../data/backgrounds'
-import { solidColorsForBackground } from '../../../data/colors'
+import { solidColorsForBackground, gradientColorsForBackground } from '../../../data/colors'
 
 const addonsChannel = addons.getChannel()
 
 export const backgroundWallpapers = (function (images: NewTab.BackgroundWallpaper[],
-                                               solidColors: string[]) {
-  const staticImages = { defaultImage: undefined }
+                                               solidColors: string[],
+                                               gradientColors: string[]) {
+  let staticImages = { defaultImage: undefined }
   for (const image of images) {
     // author is optional field.
     if (image.type !== 'image' || !image.author) {
@@ -32,30 +33,34 @@ export const backgroundWallpapers = (function (images: NewTab.BackgroundWallpape
     }
   }
 
-  for (const color of solidColors) {
-    Object.assign(staticImages, {
+  const reducer = (prev: any, color: string) => {
+    return {
+      ...prev,
       [color]: {
-        type: 'solidColor',
-        wallpaperSolidColor: color
+        type: 'color',
+        wallpaperColor: color
       }
-    })
+    }
   }
 
+  staticImages = solidColors.reduce(reducer, staticImages)
+  staticImages = gradientColors.reduce(reducer, staticImages)
+
   return staticImages
-})(images, solidColorsForBackground)
+})(images, solidColorsForBackground, gradientColorsForBackground)
 
 /**
- * Mock handler for solid color backgrounds. Emits a change event to knobs
- * @param {string} color
+ * Mock handler for colored backgrounds. Emits a change event to knobs
+ * @param {string} value
  */
-export const onChangeSolidColorBackground = (color: string) => {
+export const onChangeColoredBackground = (value: string, useRandomValue: boolean) => {
   addonsChannel.emit(CHANGE, {
     name: 'Show branded background image?',
     value: false
   })
   addonsChannel.emit(CHANGE, {
     name: 'Background',
-    value: backgroundWallpapers[color]
+    value: backgroundWallpapers[value]
   })
 }
 

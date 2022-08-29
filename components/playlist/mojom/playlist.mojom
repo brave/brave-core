@@ -8,13 +8,7 @@ module playlist.mojom;
 import "url/mojom/url.mojom";
 
 enum PlaylistEvent {
-  kItemAdded,            
-  kItemThumbnailReady,
-  kItemThumbnailFailed, 
-  kItemReadyToPlay,
-  kItemDeleted,
-  kAllItemsDeleted,
-  kItemAborted,
+  kUpdated,
 };
 
 struct Playlist {
@@ -50,6 +44,9 @@ interface PageHandler {
   GetPlaylist(string id) => (Playlist? playlist);
 
   AddMediaFilesFromPageToPlaylist(string playlist_id, url.mojom.Url url);
+  
+  // Store all media files from tabs in this window.
+  AddMediaFilesFromOpenTabsToPlaylist(string playlist_id);
 
   RemoveItemFromPlaylist(string playlist_id, string item_id);
 
@@ -59,6 +56,8 @@ interface PageHandler {
 
 // WebUI-side handler for requests from the browser.
 interface Page {
+  // TODO(sko) For now, we only send |kUpdated| event. Need to make more events
+  // and parameters for client side.
   OnEvent(PlaylistEvent event);
 };
 

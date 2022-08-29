@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/files/file_path.h"
-#include "base/values.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "content/public/common/url_constants.h"
 #include "url/gurl.h"
@@ -26,18 +25,24 @@ NTPCustomBackgroundImagesService::~NTPCustomBackgroundImagesService() = default;
 
 bool NTPCustomBackgroundImagesService::ShouldShowCustomBackground() const {
   return delegate_->IsCustomImageBackgroundEnabled() ||
-         delegate_->IsSolidColorBackgroundEnabled();
+         delegate_->IsColorBackgroundEnabled();
 }
 
-base::Value NTPCustomBackgroundImagesService::GetBackground() const {
+base::Value::Dict NTPCustomBackgroundImagesService::GetBackground() const {
   DCHECK(ShouldShowCustomBackground());
 
-  base::Value data(base::Value::Type::DICTIONARY);
-  data.SetBoolKey(kIsBackgroundKey, true);
+  // The |data| will be mapped to NewTab.BackgroundWallpaper type from JS side.
+  // So we need to keep names of properties same.
+  base::Value::Dict data;
+  data.Set(kIsBackgroundKey, true);
   if (delegate_->IsCustomImageBackgroundEnabled()) {
-    data.SetStringKey(kWallpaperImageURLKey, kCustomWallpaperURL);
+    data.Set(kWallpaperImageURLKey, kCustomWallpaperURL);
+    data.Set(kWallpaperTypeKey, "image");
+    data.Set(kWallpaperRandomKey, false);
   } else {
-    data.SetStringKey(kWallpaperSolidColorKey, delegate_->GetSolidColor());
+    data.Set(kWallpaperColorKey, delegate_->GetColor());
+    data.Set(kWallpaperTypeKey, "color");
+    data.Set(kWallpaperRandomKey, delegate_->ShouldUseRandomValue());
   }
   return data;
 }

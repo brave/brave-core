@@ -11,7 +11,7 @@
 
 namespace {
 
-const int kCurrentVersionNumber = 34;
+const int kCurrentVersionNumber = 35;
 const int kCompatibleVersionNumber = 1;
 
 }  // namespace

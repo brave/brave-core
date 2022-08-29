@@ -17,7 +17,6 @@
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/pref_names.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
 
 using ::testing::NiceMock;
 
@@ -41,7 +40,7 @@ UnitTestBase::~UnitTestBase() {
 }
 
 void UnitTestBase::SetUp() {
-  SetUpForTesting(/* is_integration_test */ false);
+  SetUpForTesting(/*is_integration_test*/ false);
 }
 
 void UnitTestBase::TearDown() {
@@ -98,7 +97,7 @@ bool UnitTestBase::CopyDirectoryFromTestPathToTempPath(
   const base::FilePath to_temp_path = temp_dir_.GetPath().AppendASCII(to_path);
 
   const bool success = base::CopyDirectory(from_test_path, to_temp_path,
-                                           /* recursive */ true);
+                                           /*recursive*/ true);
   CHECK(success) << "Failed to copy directory from " << from_test_path << " to "
                  << to_temp_path;
   return success;

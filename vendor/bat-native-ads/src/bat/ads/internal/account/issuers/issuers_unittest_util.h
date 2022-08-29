@@ -12,7 +12,7 @@ namespace ads {
 
 struct IssuersInfo;
 
-IssuersInfo BuildIssuers(const int ping,
+IssuersInfo BuildIssuers(int ping,
                          const PublicKeyMap& confirmations_public_keys,
                          const PublicKeyMap& payments_public_keys);
 

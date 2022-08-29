@@ -6,7 +6,6 @@
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_util.h"
 
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_payments_json_reader.h"
-#include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_payments_util.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_transaction_history_json_reader.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_transaction_util.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_unblinded_payment_tokens_json_reader.h"

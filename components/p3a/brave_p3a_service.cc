@@ -186,7 +186,7 @@ std::string BraveP3AService::Serialize(base::StringPiece histogram_name,
   // the serialized value can be obtained from persisted log storage at the
   // point when the actual histogram is not ready yet.
   UpdateMessageMeta();
-  base::Value p3a_json_value =
+  base::Value::Dict p3a_json_value =
       GenerateP3AMessageDict(histogram_name, value, message_meta_);
   std::string p3a_json_message;
   const bool ok = base::JSONWriter::Write(p3a_json_value, &p3a_json_message);

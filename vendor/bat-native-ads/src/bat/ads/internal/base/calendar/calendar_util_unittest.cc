@@ -7,7 +7,7 @@
 
 #include "base/time/time.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
-#include "testing/gtest/include/gtest/gtest.h"
+#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -64,10 +64,10 @@ TEST(BatAdsCalendarUtilTest, GetDayOfWeekForYearMonthAndDay) {
 TEST(BatAdsCalendarUtilTest, GetDayOfWeek) {
   // Arrange
   const base::Time time =
-      TimeFromString("November 18 1970", /* is_local */ false);
+      TimeFromString("November 18 1970", /*is_local*/ false);
 
   // Act
-  const int day_of_week = GetDayOfWeek(time, /* is_local */ false);
+  const int day_of_week = GetDayOfWeek(time, /*is_local*/ false);
 
   // Assert
   const int expected_day_of_week = 3;  // Wednesday

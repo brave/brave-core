@@ -12,18 +12,18 @@
 
 namespace ads {
 
-bool IsNewNavigation(const PageTransitionType type);
+bool IsNewNavigation(PageTransitionType type);
 
-bool DidUseBackOrFowardButtonToTriggerNavigation(const PageTransitionType type);
+bool DidUseBackOrFowardButtonToTriggerNavigation(PageTransitionType type);
 
-bool DidUseAddressBarToTriggerNavigation(const PageTransitionType type);
+bool DidUseAddressBarToTriggerNavigation(PageTransitionType type);
 
-bool DidNavigateToHomePage(const PageTransitionType type);
+bool DidNavigateToHomePage(PageTransitionType type);
 
-bool DidTransitionFromExternalApplication(const PageTransitionType type);
+bool DidTransitionFromExternalApplication(PageTransitionType type);
 
 absl::optional<UserActivityEventType> ToUserActivityEventType(
-    const PageTransitionType type);
+    PageTransitionType type);
 
 }  // namespace ads
 

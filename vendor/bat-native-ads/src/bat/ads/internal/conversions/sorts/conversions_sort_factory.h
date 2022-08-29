@@ -16,7 +16,7 @@ namespace ads {
 class ConversionsSortFactory final {
  public:
   static std::unique_ptr<ConversionsSortInterface> Build(
-      const ConversionSortType type);
+      ConversionSortType type);
 };
 
 }  // namespace ads

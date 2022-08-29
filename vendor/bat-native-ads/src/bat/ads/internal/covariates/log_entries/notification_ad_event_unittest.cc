@@ -7,7 +7,7 @@
 
 #include <sstream>
 
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

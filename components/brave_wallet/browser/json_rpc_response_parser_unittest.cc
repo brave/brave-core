@@ -44,6 +44,19 @@ TEST(JsonRpcResponseParserUnitTest, ParseSingleStringResult) {
   EXPECT_TRUE(value.empty());
 }
 
+TEST(JsonRpcResponseParserUnitTest, ParseDecodedBytesResult) {
+  std::string json =
+      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+      "\"0x556f1830\"}";
+  EXPECT_EQ(std::vector<uint8_t>({0x55, 0x6f, 0x18, 0x30}),
+            brave_wallet::ParseDecodedBytesResult(json));
+
+  json =
+      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+      "\"\"}";
+  EXPECT_FALSE(brave_wallet::ParseDecodedBytesResult(json));
+}
+
 TEST(JsonRpcResponseParserUnitTest, ParseBoolResult) {
   std::string json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"

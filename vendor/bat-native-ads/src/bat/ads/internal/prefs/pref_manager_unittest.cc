@@ -33,7 +33,9 @@ class BatAdsPrefManagerTest : public PrefManagerObserver, public UnitTestBase {
     UnitTestBase::TearDown();
   }
 
-  void OnPrefChanged(const std::string& path) override { pref_changed_ = true; }
+  void OnPrefChanged(const std::string& /*path*/) override {
+    pref_changed_ = true;
+  }
 
   bool pref_changed_ = false;
 };

@@ -14,13 +14,13 @@ class Time;
 
 namespace ads {
 
-std::string LongFriendlyDateAndTime(const base::Time time,
-                                    const bool use_sentence_style = true);
+std::string LongFriendlyDateAndTime(base::Time time,
+                                    bool use_sentence_style = true);
 
-std::string FriendlyDateAndTime(const base::Time time,
-                                const bool use_sentence_style = true);
+std::string FriendlyDateAndTime(base::Time time,
+                                bool use_sentence_style = true);
 
-std::string TimeAsTimestampString(const base::Time time);
+std::string TimeAsTimestampString(base::Time time);
 
 }  // namespace ads
 

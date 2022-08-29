@@ -74,11 +74,11 @@ export function SelectAccountItem ({
 
   // render
   return (
-    <StyledWrapper onKeyPress={onKeyPress}>
+    <StyledWrapper onKeyPress={onKeyPress} onClick={onSelectAccount}>
       <LeftSide>
-        {!selectedNetwork && <AccountCircle orb={orb} onClick={onSelectAccount} />}
+        {!selectedNetwork && <AccountCircle orb={orb} />}
         {selectedNetwork &&
-          <IconsWrapper onClick={onSelectAccount}>
+          <IconsWrapper>
             <AccountCircle orb={orb} style={{ width: '36px', height: '36px' }} />
             <NetworkIconWrapper>
               <CreateNetworkIcon size='small' network={selectedNetwork} />
@@ -94,7 +94,7 @@ export function SelectAccountItem ({
             }
             isAddress={!showSwitchAccountsLink}
           >
-            <Row justifyContent={'flex-start'} onClick={onSelectAccount}>
+            <Row justifyContent={'flex-start'}>
               <AccountName>{reduceAccountDisplayName(account.name, 22)}</AccountName>
               {showSwitchAccountsLink &&
                 <>

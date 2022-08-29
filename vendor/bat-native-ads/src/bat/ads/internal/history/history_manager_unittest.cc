@@ -10,13 +10,10 @@
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/base/containers/container_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_info.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
-#include "bat/ads/internal/history/history_item_util.h"
-#include "bat/ads/internal/history/history_util.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/promoted_content_ad_info.h"
@@ -46,36 +43,38 @@ class BatAdsHistoryManagerTest : public HistoryManagerObserver,
 
   void OnHistoryDidChange() override { history_did_change_ = true; }
 
-  void OnDidLikeAd(const AdContentInfo& ad_content) override {
+  void OnDidLikeAd(const AdContentInfo& /*ad_content*/) override {
     did_like_ad_ = true;
   }
 
-  void OnDidDislikeAd(const AdContentInfo& ad_content) override {
+  void OnDidDislikeAd(const AdContentInfo& /*ad_content*/) override {
     did_dislike_ad_ = true;
   }
 
   void OnDidMarkToNoLongerReceiveAdsForCategory(
-      const std::string& category) override {
+      const std::string& /*category*/) override {
     did_mark_to_no_longer_receive_ads_for_category_ = true;
   }
 
-  void OnDidMarkToReceiveAdsForCategory(const std::string& category) override {
+  void OnDidMarkToReceiveAdsForCategory(
+      const std::string& /*category*/) override {
     did_mark_to_receive_ads_for_category_ = true;
   }
 
-  void OnDidMarkAdAsInappropriate(const AdContentInfo& ad_content) override {
+  void OnDidMarkAdAsInappropriate(
+      const AdContentInfo& /*ad_content*/) override {
     did_mark_ad_as_inappropriate_ = true;
   }
 
-  void OnDidMarkAdAsAppropriate(const AdContentInfo& ad_content) override {
+  void OnDidMarkAdAsAppropriate(const AdContentInfo& /*ad_content*/) override {
     did_mark_ad_as_appropriate_ = true;
   }
 
-  void OnDidSaveAd(const AdContentInfo& ad_content) override {
+  void OnDidSaveAd(const AdContentInfo& /*ad_content*/) override {
     did_save_ad_ = true;
   }
 
-  void OnDidUnsaveAd(const AdContentInfo& ad_content) override {
+  void OnDidUnsaveAd(const AdContentInfo& /*ad_content*/) override {
     did_unsave_ad_ = true;
   }
 

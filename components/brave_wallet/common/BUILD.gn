@@ -21,6 +21,8 @@ static_library("common") {
     "brave_wallet_response_helpers.h",
     "brave_wallet_types.cc",
     "brave_wallet_types.h",
+    "eth_abi_utils.cc",
+    "eth_abi_utils.h",
     "eth_address.cc",
     "eth_address.h",
     "eth_request_helper.cc",
@@ -45,7 +47,6 @@ static_library("common") {
   deps = [
     ":common_constants",
     ":mojom__generator",
-    "//base",
     "//brave/third_party/argon2",
     "//brave/third_party/ethash",
     "//components/base32",
@@ -53,7 +54,7 @@ static_library("common") {
     "//url",
   ]
 
-  public_deps = [ "//brave/third_party/boost" ]
+  public_deps = [ "//base" ]
 }
 
 source_set("common_constants") {
@@ -100,6 +101,7 @@ source_set("unit_tests") {
   testonly = true
   sources = [
     "brave_wallet_types_unittest.cc",
+    "eth_abi_utils_unittest.cc",
     "eth_request_helper_unittest.cc",
     "eth_sign_typed_data_helper_unittest.cc",
     "hash_utils_unittest.cc",

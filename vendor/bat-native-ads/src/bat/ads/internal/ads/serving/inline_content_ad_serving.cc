@@ -7,7 +7,6 @@
 
 #include "base/check.h"
 #include "base/rand_util.h"
-#include "bat/ads/ad_type.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/inline_content_ads/eligible_inline_content_ads_base.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/inline_content_ads/eligible_inline_content_ads_factory.h"
@@ -92,7 +91,7 @@ void Serving::MaybeServeAd(const std::string& dimensions,
         BLOG(1, "Found " << creative_ads.size() << " eligible ads");
 
         const int rand = base::RandInt(0, creative_ads.size() - 1);
-        const CreativeInlineContentAdInfo creative_ad = creative_ads.at(rand);
+        const CreativeInlineContentAdInfo& creative_ad = creative_ads.at(rand);
 
         const InlineContentAdInfo ad = BuildInlineContentAd(creative_ad);
         ServeAd(ad, callback);

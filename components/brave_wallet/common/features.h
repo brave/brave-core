@@ -18,6 +18,7 @@ extern const base::Feature kBraveWalletFilecoinFeature;
 extern const base::Feature kBraveWalletSolanaFeature;
 extern const base::Feature kBraveWalletSolanaProviderFeature;
 extern const base::Feature kBraveWalletDappsSupportFeature;
+extern const base::Feature kBraveWalletENSL2Feature;
 
 }  // namespace features
 }  // namespace brave_wallet

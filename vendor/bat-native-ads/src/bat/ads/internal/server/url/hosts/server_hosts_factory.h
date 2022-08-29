@@ -15,7 +15,7 @@ namespace ads {
 
 class ServerHostsFactory final {
  public:
-  static std::unique_ptr<ServerHostInterface> Build(const ServerHostType type);
+  static std::unique_ptr<ServerHostInterface> Build(ServerHostType type);
 };
 
 }  // namespace ads

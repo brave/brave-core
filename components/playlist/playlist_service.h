@@ -37,22 +37,30 @@ namespace playlist {
 class PlaylistServiceObserver;
 class MediaDetectorComponentManager;
 
-// This class is key interace for playlist. Client will ask any playlist related
-// requests to this class.
-// This handles youtube playlist download request by orchestrating three other
-// classes. They are PlaylistMediaFileDownloadManager,
-// PlaylistThunbnailDownloadManager and PlaylistDownloadRequestManager.
-// PlaylistService owns all these managers.
-// This notifies each playlist's status to users via PlaylistServiceObserver.
-
-// Playlist download request is started by calling RequestDownload() from
-// client. Passed argument is youtube url. Then, PlaylistDownloadRequestManager
-// gives meta data. That meta data has urls for playlist item's audio/video
-// media file urls and thumbnail url.
-// Next, PlaylistService asks downloading audio/video media files and thumbnails
-// to PlaylistMediaFileDownloadManager and PlaylistThumbnailDownloader.
-// When each of data is ready to use it's notified to client.
-// You can see all notification type - PlaylistItemChangeParams::Type.
+// This class is key interface for playlist. Client will ask any playlist
+// related requests to this class. This handles youtube playlist download
+// request by orchestrating three other classes. They are
+// PlaylistMediaFileDownloadManager, PlaylistThumbnailDownloadManager and
+// PlaylistDownloadRequestManager. PlaylistService owns all these managers. This
+// notifies each playlist's status to users via PlaylistServiceObserver.
+//
+//                  Service│ Request             Update prefs/Create dir
+//                         │    │                       ▲ │
+//   DownloadRequestManager│    └─► Find Media files ───┘ │
+//                         │                              │
+//      ThumbnailDownloader│                              ├──►Download thumbnail
+//                         │                              │
+// MediaFileDownloadManager│                              └──►Download media
+//
+//
+// Playlist download request is started by calling
+// RequestDownloadMediaFilesFrom{Contents, Page, Items}() from client. Then,
+// PlaylistDownloadRequestManager gives meta data. That meta data has urls for
+// playlist item's audio/video media file urls and thumbnail url. Next,
+// PlaylistService asks downloading audio/video media files and thumbnails to
+// PlaylistMediaFileDownloadManager and PlaylistThumbnailDownloader. When each
+// of data is ready to use it's notified to client. You can see all notification
+// type - PlaylistItemChangeParams::Type.
 class PlaylistService : public KeyedService,
                         public PlaylistMediaFileDownloadManager::Delegate,
                         public PlaylistThumbnailDownloader::Delegate {
@@ -72,8 +80,27 @@ class PlaylistService : public KeyedService,
   absl::optional<PlaylistInfo> GetPlaylist(const std::string& id);
   std::vector<PlaylistInfo> GetAllPlaylists();
 
+  // Finds media files from |contents| or |url| and adds them to given
+  // |playlist_id|.
+  void RequestDownloadMediaFilesFromContents(const std::string& playlist_id,
+                                             content::WebContents* contents);
   void RequestDownloadMediaFilesFromPage(const std::string& playlist_id,
                                          const std::string& url);
+
+  // Add given |items| to the |playlist_id|. Usually follows after
+  // FindMediaFilesFromContents().
+  void RequestDownloadMediaFilesFromItems(
+      const std::string& playlist_id,
+      const std::vector<PlaylistItemInfo>& items);
+
+  // Unlike Request methods above, do nothing with prefs or downloading. Just
+  // find media files from given |contents| and return them via callback.
+  using FindMediaFilesCallback =
+      base::OnceCallback<void(base::WeakPtr<content::WebContents>,
+                              const std::vector<PlaylistItemInfo>&)>;
+  void FindMediaFilesFromContents(content::WebContents* contents,
+                                  FindMediaFilesCallback callback);
+
   void RecoverPlaylistItem(const std::string& id);
 
   void RemoveItemFromPlaylist(const std::string& playlist_id,
@@ -111,17 +138,12 @@ class PlaylistService : public KeyedService,
   void OnThumbnailDownloaded(const std::string& id,
                              const base::FilePath& path) override;
 
-  // Called when meta data is fetched from url.
-  void OnPlaylistCreationParamsReady(
-      const std::string& playlist_id,
-      const std::vector<PlaylistItemInfo>& params);
-
   void OnPlaylistItemDirCreated(const PlaylistItemInfo& info,
                                 bool directory_ready);
 
   void CreatePlaylistItem(const PlaylistItemInfo& info);
   void DownloadThumbnail(const PlaylistItemInfo& info);
-  void GenerateMediafileForPlaylistItem(const PlaylistItemInfo& info);
+  void DownloadMediaFile(const PlaylistItemInfo& info);
 
   base::SequencedTaskRunner* task_runner();
 

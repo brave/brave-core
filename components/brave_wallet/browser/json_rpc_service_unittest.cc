@@ -17,17 +17,22 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service_test_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/eth_abi_utils.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/constants/brave_services_key.h"
@@ -302,14 +307,26 @@ class TestJsonRpcServiceObserver
 constexpr char https_metadata_response[] =
     R"({"attributes":[{"trait_type":"Feet","value":"Green Shoes"},{"trait_type":"Legs","value":"Tan Pants"},{"trait_type":"Suspenders","value":"White Suspenders"},{"trait_type":"Upper Body","value":"Indigo Turtleneck"},{"trait_type":"Sleeves","value":"Long Sleeves"},{"trait_type":"Hat","value":"Yellow / Blue Pointy Beanie"},{"trait_type":"Eyes","value":"White Nerd Glasses"},{"trait_type":"Mouth","value":"Toothpick"},{"trait_type":"Ears","value":"Bing Bong Stick"},{"trait_type":"Right Arm","value":"Swinging"},{"trait_type":"Left Arm","value":"Diamond Hand"},{"trait_type":"Background","value":"Blue"}],"description":"5,000 animated Invisible Friends hiding in the metaverse. A collection by Markus Magnusson & Random Character Collective.","image":"https://rcc.mypinata.cloud/ipfs/QmXmuSenZRnofhGMz2NyT3Yc4Zrty1TypuiBKDcaBsNw9V/1817.gif","name":"Invisible Friends #1817"})";
 
+absl::optional<base::Value> ToValue(const network::ResourceRequest& request) {
+  base::StringPiece request_string(request.request_body->elements()
+                                       ->at(0)
+                                       .As<network::DataElementBytes>()
+                                       .AsStringPiece());
+  return base::JSONReader::Read(request_string,
+                                base::JSONParserOptions::JSON_PARSE_RFC);
+}
+
 }  // namespace
 
 class JsonRpcServiceUnitTest : public testing::Test {
  public:
-  JsonRpcServiceUnitTest()
-      : shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {
+  JsonRpcServiceUnitTest() = default;
+
+  void SetUp() override {
+    Test::SetUp();
+    shared_url_loader_factory_ =
+        base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+            &url_loader_factory_);
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
@@ -2288,14 +2305,14 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_ManyCalls) {
   json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
                                                   callback2.Get());
   EXPECT_EQ(2, url_loader_factory_.NumPending());  // No new requests.
-  json_rpc_service_->UnstoppableDomainsResolveDns("brave.888", callback3.Get());
+  json_rpc_service_->UnstoppableDomainsResolveDns("brave.x", callback3.Get());
   EXPECT_EQ(4, url_loader_factory_.NumPending());
 
   // This will resolve brave.crypto requests.
   SetEthResponse(DnsIpfsResponse());
   SetPolygonResponse(DnsBraveResponse());
 
-  // This will resolve brave.888 requests.
+  // This will resolve brave.x requests.
   SetEthResponse(DnsBraveResponse());
   SetPolygonResponse(DnsIpfsResponse());
 
@@ -2502,7 +2519,6 @@ TEST_F(JsonRpcServiceUnitTest, IsValidUnstoppableDomain) {
       "test.nft",
       "test.dao",
       "test.wallet",
-      "test.888",
       "test.blockchain",
       "test.bitcoin",
       "brave.zil",
@@ -2519,6 +2535,7 @@ TEST_F(JsonRpcServiceUnitTest, IsValidUnstoppableDomain) {
       "crypto.brave",
       "brave.crypto-",
       "brave.test.crypto",
+      "test.888",
   };
   // clang-format on
   for (const auto& domain : valid_domains)
@@ -3866,6 +3883,308 @@ TEST_F(JsonRpcServiceUnitTest, SendFilecoinTransaction) {
   GetSendFilecoinTransaction(
       "", "", mojom::FilecoinProviderError::kInternalError,
       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+}
+
+class EthCallHandler {
+ public:
+  EthCallHandler() = default;
+  virtual ~EthCallHandler() = default;
+
+  virtual absl::optional<std::string> HandleEthCall(const std::string& data,
+                                                    const EthAddress& to) = 0;
+};
+
+class GetEnsResolverHandler : public EthCallHandler {
+ public:
+  explicit GetEnsResolverHandler(const EthAddress& resolver_address)
+      : resolver_address_(resolver_address) {}
+
+  ~GetEnsResolverHandler() override = default;
+  absl::optional<std::string> HandleEthCall(const std::string& data,
+                                            const EthAddress& to) override {
+    if (to != EthAddress::FromHex(
+                  GetEnsRegistryContractAddress(mojom::kMainnetChainId)))
+      return absl::nullopt;
+
+    auto bytes = *PrefixedHexStringToBytes(data);
+    auto [selector, args] =
+        eth_abi::ExtractFunctionSelectorAndArgsFromCall(bytes);
+
+    if (ToHex(selector) != GetFunctionHash("resolver(bytes32)")) {
+      return absl::nullopt;
+    }
+
+    return MakeJsonRpcTupleResponse(
+        eth_abi::TupleEncoder().AddAddress(resolver_address_));
+  }
+
+ private:
+  EthAddress resolver_address_;
+};
+
+class Ensip10SupportHandler : public EthCallHandler {
+ public:
+  explicit Ensip10SupportHandler(const EthAddress& resolver_address)
+      : resolver_address_(resolver_address) {}
+
+  ~Ensip10SupportHandler() override = default;
+  absl::optional<std::string> HandleEthCall(const std::string& data,
+                                            const EthAddress& to) override {
+    if (to != resolver_address_)
+      return absl::nullopt;
+
+    if (data != ToHex(erc165::SupportsInterface(kResolveBytesBytesSelector)))
+      return absl::nullopt;
+
+    return MakeJsonRpcTupleResponse(
+        eth_abi::TupleEncoder().AddUint256(uint256_t(1)));
+  }
+
+ private:
+  EthAddress resolver_address_;
+};
+
+class Ensip10ResolveHandler : public EthCallHandler {
+ public:
+  explicit Ensip10ResolveHandler(const EthAddress& resolver_address,
+                                 const std::string& host_name,
+                                 const GURL& gateway_url)
+      : resolver_address_(resolver_address),
+        host_name_(host_name),
+        gateway_url_(gateway_url) {}
+
+  ~Ensip10ResolveHandler() override = default;
+
+  absl::optional<std::string> HandleEthCall(const std::string& data,
+                                            const EthAddress& to) override {
+    if (to != resolver_address_)
+      return absl::nullopt;
+
+    auto bytes = *PrefixedHexStringToBytes(data);
+    auto [selector, args] =
+        eth_abi::ExtractFunctionSelectorAndArgsFromCall(bytes);
+
+    if (ToHex(selector) != GetFunctionHash("resolve(bytes,bytes)")) {
+      return absl::nullopt;
+    }
+
+    auto name_arg = eth_abi::ExtractBytesFromTuple(args, 0);
+    auto call_arg = eth_abi::ExtractBytesFromTuple(args, 1);
+
+    if (*ens::DnsEncode(host_name_) != name_arg) {
+      return absl::nullopt;
+    }
+
+    auto call_data = eth_abi::TupleEncoder().AddString("call data").Encode();
+    auto extra_data = eth_abi::TupleEncoder().AddString("extra data").Encode();
+
+    auto offchain_lookup =
+        eth_abi::TupleEncoder()
+            .AddAddress(resolver_address_)          // address
+            .AddStringArray({gateway_url_.spec()})  // urls
+            .AddBytes(call_data)                    // callData
+            .AddFixedBytes(GetFunctionHashBytes4(
+                "resolveCallback(bytes,bytes)"))  // callbackFunction
+            .AddBytes(extra_data)                 // extraData
+            .EncodeWithSelector(kOffchainLookupSelector);
+
+    return MakeJsonRpcErrorResponseWithData(3, "execution reverted",
+                                            ToHex(offchain_lookup));
+  }
+
+ private:
+  EthAddress resolver_address_;
+  std::string host_name_;
+  GURL gateway_url_;
+};
+
+class Ensip10ResolveCallbackHandler : public EthCallHandler {
+ public:
+  explicit Ensip10ResolveCallbackHandler(const EthAddress& resolver_address)
+      : resolver_address_(resolver_address) {}
+  ~Ensip10ResolveCallbackHandler() override = default;
+
+  absl::optional<std::string> HandleEthCall(const std::string& data,
+                                            const EthAddress& to) override {
+    if (to != resolver_address_)
+      return absl::nullopt;
+
+    auto bytes = *PrefixedHexStringToBytes(data);
+    auto [selector, args] =
+        eth_abi::ExtractFunctionSelectorAndArgsFromCall(bytes);
+
+    if (!base::ranges::equal(
+            selector, GetFunctionHashBytes4("resolveCallback(bytes,bytes)"))) {
+      return absl::nullopt;
+    }
+
+    auto extra_data_bytes = eth_abi::ExtractBytesFromTuple(args, 1);
+    EXPECT_EQ("extra data",
+              eth_abi::ExtractStringFromTuple(*extra_data_bytes, 0));
+
+    auto bytes_result = eth_abi::ExtractBytesFromTuple(args, 0);
+    if (!bytes_result)
+      return absl::nullopt;
+
+    return MakeJsonRpcTupleResponse(
+        eth_abi::TupleEncoder().AddBytes(*bytes_result));
+  }
+
+ private:
+  EthAddress resolver_address_;
+};
+
+class JsonRpcEnpointHandler {
+ public:
+  explicit JsonRpcEnpointHandler(const GURL& endpoint) : endpoint_(endpoint) {}
+
+  absl::optional<std::string> HandleRequest(
+      const network::ResourceRequest& request) {
+    if (request.url != endpoint_)
+      return absl::nullopt;
+
+    auto value = ToValue(request);
+    if (value && value->is_dict()) {
+      auto response = HandleCall(value->GetDict());
+      if (response) {
+        return response;
+      }
+    }
+
+    return absl::nullopt;
+  }
+
+  void AddEthCallHandler(std::unique_ptr<EthCallHandler> handler) {
+    eth_call_handlers_.push_back(std::move(handler));
+  }
+
+ protected:
+  absl::optional<std::string> HandleCall(const base::Value::Dict& dict) {
+    auto* method = dict.FindString("method");
+    if (!method || *method != "eth_call")
+      return absl::nullopt;
+
+    auto* params_list = dict.FindList("params");
+    if (!params_list || params_list->size() == 0 ||
+        !params_list->begin()->is_dict()) {
+      return absl::nullopt;
+    }
+
+    auto& transaction_params = params_list->begin()->GetDict();
+    auto* data_param = transaction_params.FindString("data");
+    auto* to_param = transaction_params.FindString("to");
+    if (!data_param || !to_param || !EthAddress::FromHex(*to_param).IsValid())
+      return absl::nullopt;
+
+    for (auto& handler : eth_call_handlers_) {
+      auto response =
+          handler->HandleEthCall(*data_param, EthAddress::FromHex(*to_param));
+      if (response)
+        return response;
+    }
+    return absl::nullopt;
+  }
+
+ private:
+  GURL endpoint_;
+  std::vector<std::unique_ptr<EthCallHandler>> eth_call_handlers_;
+};
+
+class GatewayHandler {
+ public:
+  explicit GatewayHandler(const GURL& gateway_url,
+                          const EthAddress& resolver_address,
+                          const EthAddress& result_address)
+      : gateway_url_(gateway_url),
+        resolver_address_(resolver_address),
+        result_address_(result_address) {}
+
+  absl::optional<std::string> HandleRequest(
+      const network::ResourceRequest& request) {
+    if (request.url.host() != gateway_url_.host())
+      return absl::nullopt;
+
+    auto payload = ToValue(request);
+    if (!payload || !payload->is_dict())
+      return absl::nullopt;
+    auto* sender = payload->GetDict().FindString("sender");
+    EXPECT_EQ(EthAddress::FromHex(*sender), resolver_address_);
+
+    auto* data = payload->GetDict().FindString("data");
+    EXPECT_EQ("call data", eth_abi::ExtractStringFromTuple(
+                               *PrefixedHexStringToBytes(*data), 0));
+
+    base::Value::Dict result;
+    result.Set(
+        "data",
+        ToHex(eth_abi::TupleEncoder().AddAddress(result_address_).Encode()));
+    std::string response;
+    base::JSONWriter::Write(result, &response);
+    return response;
+  }
+
+ private:
+  GURL gateway_url_;
+  EthAddress resolver_address_;
+  EthAddress result_address_;
+};
+
+class ENSL2JsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
+ public:
+  ENSL2JsonRpcServiceUnitTest() = default;
+
+  void SetUp() override {
+    JsonRpcServiceUnitTest::SetUp();
+    json_rpc_endpoint_handler_ = std::make_unique<JsonRpcEnpointHandler>(
+        GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH));
+    json_rpc_endpoint_handler_->AddEthCallHandler(
+        std::make_unique<GetEnsResolverHandler>(offchain_resolver_address()));
+    json_rpc_endpoint_handler_->AddEthCallHandler(
+        std::make_unique<Ensip10SupportHandler>(offchain_resolver_address()));
+    json_rpc_endpoint_handler_->AddEthCallHandler(
+        std::make_unique<Ensip10ResolveHandler>(offchain_resolver_address(),
+                                                ens_host(), gateway_url()));
+    json_rpc_endpoint_handler_->AddEthCallHandler(
+        std::make_unique<Ensip10ResolveCallbackHandler>(
+            offchain_resolver_address()));
+    gateway_handler_ = std::make_unique<GatewayHandler>(
+        gateway_url(), offchain_resolver_address(), offchain_address());
+
+    url_loader_factory_.SetInterceptor(base::BindRepeating(
+        &ENSL2JsonRpcServiceUnitTest::HandleRequest, base::Unretained(this)));
+  }
+
+  std::string ens_host() { return "offchainexample.eth"; }
+  GURL gateway_url() { return GURL("https://gateway.brave.com/"); }
+  EthAddress offchain_resolver_address() {
+    return EthAddress::FromHex("0xc1735677a60884abbcf72295e88d47764beda282");
+  }
+  EthAddress offchain_address() {
+    return EthAddress::FromHex("0xaabbccddeeaabbccddeeaabbccddeeaabbccddee");
+  }
+
+ protected:
+  void HandleRequest(const network::ResourceRequest& request) {
+    if (auto response = json_rpc_endpoint_handler_->HandleRequest(request)) {
+      url_loader_factory_.AddResponse(request.url.spec(), *response);
+    } else if (auto response = gateway_handler_->HandleRequest(request)) {
+      url_loader_factory_.AddResponse(request.url.spec(), *response);
+    }
+  }
+
+ private:
+  std::unique_ptr<JsonRpcEnpointHandler> json_rpc_endpoint_handler_;
+  std::unique_ptr<GatewayHandler> gateway_handler_;
+  base::test::ScopedFeatureList feature_list_{
+      features::kBraveWalletENSL2Feature};
+};
+
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr) {
+  base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
+  EXPECT_CALL(callback, Run(offchain_address().ToHex(),
+                            mojom::ProviderError::kSuccess, ""));
+  json_rpc_service_->EnsGetEthAddr(ens_host(), callback.Get());
+  base::RunLoop().RunUntilIdle();
 }
 
 }  // namespace brave_wallet

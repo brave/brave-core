@@ -83,6 +83,7 @@ export const GridPageButtons = (props: { numPages: number, pageContainerRef: Rea
             indicatorRef.current?.setAttribute('style', `transform: translateX(${translationX}%)`)
         }
         el.addEventListener('scroll', scrollHandler)
+        scrollHandler()
 
         return () => el.removeEventListener('scroll', scrollHandler)
     }, [props.pageContainerRef, props.numPages])

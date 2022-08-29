@@ -38,7 +38,7 @@ std::string LastUnIdleTimeDiagnosticEntry::GetValue() const {
   }
 
   return LongFriendlyDateAndTime(last_unidle_time_,
-                                 /* use_sentence_style */ false);
+                                 /*use_sentence_style*/ false);
 }
 
 }  // namespace ads

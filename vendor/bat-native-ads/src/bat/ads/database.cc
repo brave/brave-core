@@ -13,9 +13,9 @@
 #include "base/files/file_path.h"
 #include "bat/ads/internal/base/database/database_bind_util.h"
 #include "bat/ads/internal/base/database/database_record_util.h"
+#include "sql/meta_table.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
-#include "third_party/sqlite/sqlite3.h"
 
 namespace ads {
 
@@ -106,7 +106,7 @@ mojom::DBCommandResponseInfo::StatusType Database::Initialize(
 
   if (!is_initialized_) {
     bool table_exists = false;
-    if (meta_table_.DoesTableExist(&db_)) {
+    if (sql::MetaTable::DoesTableExist(&db_)) {
       table_exists = true;
     }
 
@@ -224,7 +224,8 @@ void Database::OnErrorCallback(const int error, sql::Statement* statement) {
 }
 
 void Database::OnMemoryPressure(
-    base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level) {
+    base::MemoryPressureListener::
+        MemoryPressureLevel /*memory_pressure_level*/) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   db_.TrimMemory();
 }

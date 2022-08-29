@@ -20,7 +20,7 @@ namespace inline_content_ads {
 class AdEventFactory final {
  public:
   static std::unique_ptr<AdEventInterface<InlineContentAdInfo>> Build(
-      const mojom::InlineContentAdEventType event_type);
+      mojom::InlineContentAdEventType event_type);
 };
 
 }  // namespace inline_content_ads

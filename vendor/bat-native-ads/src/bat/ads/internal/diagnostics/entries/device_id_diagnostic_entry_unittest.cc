@@ -6,7 +6,6 @@
 #include "bat/ads/internal/diagnostics/entries/device_id_diagnostic_entry.h"
 
 #include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/diagnostics/diagnostic_entry_types.h"
 #include "bat/ads/sys_info.h"
 

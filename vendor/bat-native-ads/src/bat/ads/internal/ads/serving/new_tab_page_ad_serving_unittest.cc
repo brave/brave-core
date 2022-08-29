@@ -7,13 +7,11 @@
 
 #include <memory>
 
-#include "bat/ads/internal/ads/serving/eligible_ads/eligible_ads_unittest_util.h"
 #include "bat/ads/internal/ads/serving/new_tab_page_ad_serving_observer.h"
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "bat/ads/internal/ads/serving/serving_features_unittest_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_unittest_util.h"
-#include "bat/ads/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/segments/segment_alias.h"
@@ -52,7 +50,7 @@ class BatAdsNewTabPageAdServingTest : public ServingObserver,
   }
 
   void OnOpportunityAroseToServeNewTabPageAd(
-      const SegmentList& segments) override {
+      const SegmentList& /*segments*/) override {
     had_opportunuity_ = true;
   }
 

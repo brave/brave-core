@@ -411,13 +411,11 @@ class AdsBox extends React.Component<Props, State> {
     let adsReceivedThisMonth = 0
     let earningsThisMonth = 0
     let earningsLastMonth = 0
-    let adEarningsReceived = false
     let needsBrowserUpgradeToServeAds = false
 
     const {
       adsData,
       adsHistory,
-      balanceReport,
       externalWallet,
       parameters
     } = this.props.rewardsData
@@ -432,10 +430,6 @@ class AdsBox extends React.Component<Props, State> {
       earningsThisMonth = adsData.adsEarningsThisMonth || 0
       earningsLastMonth = adsData.adsEarningsLastMonth || 0
       needsBrowserUpgradeToServeAds = adsData.needsBrowserUpgradeToServeAds
-    }
-
-    if (balanceReport) {
-      adEarningsReceived = Number(balanceReport.ads || 0) > 0
     }
 
     const enabled = adsEnabled && adsIsSupported
@@ -477,7 +471,6 @@ class AdsBox extends React.Component<Props, State> {
           <style.paymentStatus>
             <PaymentStatusView
               earningsLastMonth={earningsLastMonth}
-              earningsReceived={adEarningsReceived}
               nextPaymentDate={nextPaymentDate}
               providerPayoutStatus={providerPayoutStatus}
             />

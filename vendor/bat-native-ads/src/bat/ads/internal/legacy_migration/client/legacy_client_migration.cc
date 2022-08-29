@@ -21,20 +21,20 @@ namespace client {
 namespace {
 
 void FailedToMigrate(InitializeCallback callback) {
-  callback(/* success */ false);
+  callback(/*success*/ false);
 }
 
 void SuccessfullyMigrated(InitializeCallback callback) {
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kHasMigratedClientState,
                                                  true);
-  callback(/* success */ true);
+  callback(/*success*/ true);
 }
 
 }  // namespace
 
 void Migrate(InitializeCallback callback) {
   if (HasMigrated()) {
-    callback(/* success */ true);
+    callback(/*success*/ true);
     return;
   }
 

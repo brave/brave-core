@@ -18,6 +18,7 @@ source_set("renderer") {
     "//brave/components/brave_wallet/common:solana_utils",
     "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
     "//brave/components/resources:strings_grit",
+    "//brave/components/safe_builtins/renderer",
     "//content/public/common",
     "//content/public/renderer",
     "//gin",

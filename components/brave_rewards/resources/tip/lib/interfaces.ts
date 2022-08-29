@@ -68,7 +68,6 @@ export interface PublisherInfo {
   description: string
   background: string
   logo: string
-  amounts: number[]
   provider: string
   links: Record<string, string>
   status: PublisherStatus

@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/base/platform/platform_helper.h"
 
-#include "build/build_config.h"
+#include "build/build_config.h"  // IWYU pragma: keep
 #if BUILDFLAG(IS_ANDROID)
 #include "bat/ads/internal/base/platform/platform_helper_android.h"
 #elif BUILDFLAG(IS_IOS)

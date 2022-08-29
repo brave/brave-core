@@ -6,7 +6,6 @@
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_v2.h"
 
 #include "base/bind.h"
-#include "base/check.h"
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
 #include "bat/ads/internal/ads/serving/choose/predict_ad.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rules_util.h"
@@ -16,11 +15,8 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
-#include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
-#include "bat/ads/internal/segments/segment_alias.h"
-#include "bat/ads/new_tab_page_ad_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
@@ -44,7 +40,7 @@ void EligibleAdsV2::GetForUserModel(
       [=](const bool success, const AdEventList& ad_events) {
         if (!success) {
           BLOG(1, "Failed to get ad events");
-          callback(/* had_opportunity */ false, {});
+          callback(/*had_opportunity*/ false, {});
           return;
         }
 
@@ -72,17 +68,17 @@ void EligibleAdsV2::GetEligibleAds(
     GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
     const BrowsingHistoryList& browsing_history) {
   database::table::CreativeNewTabPageAds database_table;
-  database_table.GetAll([=](const bool success, const SegmentList& segments,
+  database_table.GetAll([=](const bool success, const SegmentList& /*segments*/,
                             const CreativeNewTabPageAdList& creative_ads) {
     if (!success) {
       BLOG(1, "Failed to get ads");
-      callback(/* had_opportunity */ false, {});
+      callback(/*had_opportunity*/ false, {});
       return;
     }
 
     if (creative_ads.empty()) {
       BLOG(1, "No eligible ads");
-      callback(/* had_opportunity */ false, {});
+      callback(/*had_opportunity*/ false, {});
       return;
     }
 
@@ -90,7 +86,7 @@ void EligibleAdsV2::GetEligibleAds(
         FilterCreativeAds(creative_ads, ad_events, browsing_history);
     if (eligible_creative_ads.empty()) {
       BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
-      callback(/* had_opportunity */ true, {});
+      callback(/*had_opportunity*/ true, {});
       return;
     }
 
@@ -98,14 +94,14 @@ void EligibleAdsV2::GetEligibleAds(
         PredictAd(user_model, ad_events, eligible_creative_ads);
     if (!creative_ad) {
       BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
-      callback(/* had_opportunity */ true, {});
+      callback(/*had_opportunity*/ true, {});
       return;
     }
 
     BLOG(1, eligible_creative_ads.size()
                 << " eligible ads out of " << creative_ads.size() << " ads");
 
-    callback(/* had_opportunity */ true, {*creative_ad});
+    callback(/*had_opportunity*/ true, {*creative_ad});
   });
 }
 

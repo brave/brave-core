@@ -47,6 +47,8 @@ class ExclusionRulesBase {
                      geographic::SubdivisionTargeting* subdivision_targeting,
                      resource::AntiTargeting* anti_targeting_resource,
                      const BrowsingHistoryList& browsing_history);
+  ExclusionRulesBase(const ExclusionRulesBase&) = delete;
+  ExclusionRulesBase& operator=(const ExclusionRulesBase&) = delete;
   virtual ~ExclusionRulesBase();
 
   virtual bool ShouldExcludeCreativeAd(const CreativeAdInfo& creative_ad);
@@ -62,9 +64,6 @@ class ExclusionRulesBase {
  private:
   bool IsCached(const CreativeAdInfo& creative_ad) const;
   void AddToCache(const std::string& uuid);
-
-  ExclusionRulesBase(const ExclusionRulesBase&) = delete;
-  ExclusionRulesBase& operator=(const ExclusionRulesBase&) = delete;
 
   std::unique_ptr<AntiTargetingExclusionRule> anti_targeting_exclusion_rule_;
   std::unique_ptr<ConversionExclusionRule> conversion_exclusion_rule_;

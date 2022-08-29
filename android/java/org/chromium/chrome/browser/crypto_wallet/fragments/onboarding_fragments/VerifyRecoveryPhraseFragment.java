@@ -17,6 +17,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +27,7 @@ import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.RecoveryPhraseAdapter;
+import org.chromium.chrome.browser.crypto_wallet.model.OnboardingViewModel;
 import org.chromium.chrome.browser.crypto_wallet.util.ItemOffsetDecoration;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.ui.widget.Toast;
@@ -43,6 +46,7 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
 
     private Button recoveryPhraseButton;
     private List<String> recoveryPhrases;
+    private OnboardingViewModel mOnboardingViewModel;
 
     private KeyringService getKeyringService() {
         Activity activity = getActivity();
@@ -66,13 +70,17 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mOnboardingViewModel = new ViewModelProvider((ViewModelStoreOwner) requireActivity())
+                                       .get(OnboardingViewModel.class);
         recoveryPhraseButton = view.findViewById(R.id.btn_verify_recovery_phrase_continue);
         recoveryPhraseButton.setOnClickListener(v -> {
+            String password = mOnboardingViewModel.getPassword().getValue();
             if (recoveryPhrasesToVerifyAdapter != null
-                    && recoveryPhrasesToVerifyAdapter.getRecoveryPhraseList().size() > 0) {
+                    && recoveryPhrasesToVerifyAdapter.getRecoveryPhraseList().size() > 0
+                    && password != null) {
                 KeyringService keyringService = getKeyringService();
                 if (keyringService != null) {
-                    keyringService.getMnemonicForDefaultKeyring(result -> {
+                    keyringService.getMnemonicForDefaultKeyring(password, result -> {
                         String recoveryPhraseToVerify = Utils.getRecoveryPhraseFromList(
                                 recoveryPhrasesToVerifyAdapter.getRecoveryPhraseList());
                         if (result.equals(recoveryPhraseToVerify)) {
@@ -92,15 +100,20 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
         TextView recoveryPhraseSkipButton = view.findViewById(R.id.btn_verify_recovery_phrase_skip);
         recoveryPhraseSkipButton.setOnClickListener(v -> onNextPage.gotoNextPage(true));
 
-        KeyringService keyringService = getKeyringService();
-        if (keyringService != null) {
-            keyringService.getMnemonicForDefaultKeyring(result -> {
-                recoveryPhrases = Utils.getRecoveryPhraseAsList(result);
-                Collections.shuffle(recoveryPhrases);
-                setupRecoveryPhraseRecyclerView(view);
-                setupSelectedRecoveryPhraseRecyclerView(view);
-            });
-        }
+        mOnboardingViewModel.getPassword().observe(getViewLifecycleOwner(), password -> {
+            if (password == null) {
+                return;
+            }
+            KeyringService keyringService = getKeyringService();
+            if (keyringService != null) {
+                keyringService.getMnemonicForDefaultKeyring(password, result -> {
+                    recoveryPhrases = Utils.getRecoveryPhraseAsList(result);
+                    Collections.shuffle(recoveryPhrases);
+                    setupRecoveryPhraseRecyclerView(view);
+                    setupSelectedRecoveryPhraseRecyclerView(view);
+                });
+            }
+        });
     }
 
     private void phraseNotMatch() {

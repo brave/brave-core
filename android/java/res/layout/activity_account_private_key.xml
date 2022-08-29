@@ -24,11 +24,13 @@
         <include layout="@layout/wallet_backup_banner"/>
 
         <LinearLayout
+            android:id="@+id/ll_private_key_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_margin="16dp"
-            android:background="@drawable/rounded_wallet_edittext">
+            android:background="@drawable/rounded_wallet_edittext"
+            android:visibility="gone">
 
             <EditText
                 android:id="@+id/private_key_text"
@@ -69,6 +71,52 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/tv_wallet_password_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginVertical="24dp"
+            android:text="@string/backup_wallet_password"
+            android:textColor="@color/wallet_text_color"
+            android:visibility="gone"
+            android:textSize="14sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="48dp"
+            android:layout_marginBottom="32dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_wallet_password"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/password"
+                android:importantForAutofill="no"
+                android:inputType="textPassword"
+                android:paddingHorizontal="18dp"
+                android:paddingVertical="10dp"
+                style="@style/BraveWalletEditTextBordered"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/iv_biometric_unlock_wallet"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="2dp"
+                android:contentDescription="@string/accessibility_biometric_unlock"
+                android:padding="6dp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_fingerprint"
+                app:tint="@color/brave_action_color" />
+
+        </LinearLayout>
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_show_private_key"
             android:layout_width="wrap_content"
@@ -79,14 +127,14 @@
             android:foreground="?android:attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
-            android:text="@string/show_private_key"
+            android:text="@string/continue_text"
             android:textAllCaps="false"
             android:textSize="16sp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
+            android:paddingVertical="8dp"
+            android:paddingHorizontal="16dp"
             android:layout_marginBottom="8dp"
+            android:enabled="false"
+            android:alpha="0.5"
             android:textColor="@android:color/white"
             style="?android:attr/borderlessButtonStyle"/>
 

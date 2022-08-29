@@ -43,11 +43,13 @@ export type ImportAccountFromJsonPayloadType = {
 export type RemoveImportedAccountPayloadType = {
   address: string
   coin: BraveWallet.CoinType
+  password: string
 }
 
 export type RemoveHardwareAccountPayloadType = {
   address: string
   coin: BraveWallet.CoinType
+  password: string
 }
 
 export type RestoreWalletPayloadType = {
@@ -61,18 +63,16 @@ export type WalletCreatedPayloadType = {
   mnemonic: string
 }
 
-export type ViewPrivateKeyPayloadType = {
-  isDefault: boolean
-  address: string
-  coin: BraveWallet.CoinType
+export type ShowRecoveryPhrasePayload = {
+  show: false
+  password?: string
+} | {
+  show: true
+  password: string
 }
 
 export type RecoveryWordsAvailablePayloadType = {
   mnemonic: string
-}
-
-export type PrivateKeyAvailablePayloadType = {
-  privateKey: string
 }
 
 export type UpdateSelectedAssetType = {

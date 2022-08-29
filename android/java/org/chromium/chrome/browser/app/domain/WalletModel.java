@@ -59,7 +59,7 @@ public class WalletModel {
         mDappsModel = new DappsModel(
                 mJsonRpcService, mBraveWalletService, mCryptoModel.getPendingTxHelper());
         mKeyringModel = new KeyringModel(
-                keyringService, mCryptoModel.getSharedData(), braveWalletService, mCryptoActions);
+                mKeyringService, mCryptoModel.getSharedData(), mBraveWalletService, mCryptoActions);
         // be careful with dependencies, must avoid cycles
         mCryptoModel.setAccountInfosFromKeyRingModel(mKeyringModel.mAccountInfos);
         init();
@@ -201,6 +201,8 @@ public class WalletModel {
                 mKeyringModel.update();
                 // update network per selected coin
                 mCryptoModel.getNetworkModel().init();
+                // update transactions
+                mCryptoModel.refreshTransactions();
             });
         }
 

@@ -33,7 +33,7 @@ class PromotedContentAd final
 
   void TriggerEvent(const std::string& placement_id,
                     const std::string& creative_instance_id,
-                    const mojom::PromotedContentAdEventType event_type);
+                    mojom::PromotedContentAdEventType event_type);
 
  private:
   // promoted_content_ads::EventHandlerObserver:

@@ -6,13 +6,6 @@ import rewardsPanelActions from '../actions/rewardsPanelActions'
 
 chrome.braveRewards.onPublisherData.addListener((windowId: number, publisher: RewardsExtension.Publisher) => {
   rewardsPanelActions.onPublisherData(windowId, publisher)
-
-  // Get publisher amounts
-  if (publisher && publisher.publisherKey && publisher.status !== 0) {
-    chrome.braveRewards.getPublisherBanner(publisher.publisherKey, (banner: RewardsExtension.PublisherBanner) => {
-      rewardsPanelActions.onPublisherBanner(banner)
-    })
-  }
 })
 
 chrome.braveRewards.onPromotions.addListener((result: number, promotions: RewardsExtension.Promotion[]) => {

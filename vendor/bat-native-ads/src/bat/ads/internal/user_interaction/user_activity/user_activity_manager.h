@@ -35,14 +35,14 @@ class UserActivityManager final : public BrowserManagerObserver,
 
   static bool HasInstance();
 
-  void RecordEvent(const UserActivityEventType event_type);
-  void RecordEventForPageTransition(const int32_t type);
+  void RecordEvent(UserActivityEventType event_type);
+  void RecordEventForPageTransition(int32_t type);
 
   UserActivityEventList GetHistoryForTimeWindow(
-      const base::TimeDelta time_window) const;
+      base::TimeDelta time_window) const;
 
  private:
-  void RecordEventForPageTransition(const PageTransitionType type);
+  void RecordEventForPageTransition(PageTransitionType type);
 
   // BrowserManagerObserver:
   void OnBrowserDidBecomeActive() override;
@@ -51,12 +51,12 @@ class UserActivityManager final : public BrowserManagerObserver,
   void OnBrowserDidEnterBackground() override;
 
   // TabManagerObserver:
-  void OnTabDidChangeFocus(const int32_t tab_id) override;
+  void OnTabDidChangeFocus(int32_t tab_id) override;
   void OnTabDidChange(const TabInfo& tab) override;
   void OnDidOpenNewTab(const TabInfo& tab) override;
-  void OnDidCloseTab(const int32_t tab_id) override;
-  void OnTabDidStartPlayingMedia(const int32_t tab_id) override;
-  void OnTabDidStopPlayingMedia(const int32_t tab_id) override;
+  void OnDidCloseTab(int32_t tab_id) override;
+  void OnTabDidStartPlayingMedia(int32_t tab_id) override;
+  void OnTabDidStopPlayingMedia(int32_t tab_id) override;
 
   UserActivityEventList history_;
 };

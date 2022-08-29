@@ -8,13 +8,11 @@
 #include <memory>
 
 #include "bat/ads/inline_content_ad_info.h"
-#include "bat/ads/internal/ads/serving/eligible_ads/eligible_ads_unittest_util.h"
 #include "bat/ads/internal/ads/serving/inline_content_ad_serving_observer.h"
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "bat/ads/internal/ads/serving/serving_features_unittest_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
-#include "bat/ads/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/segments/segment_alias.h"
@@ -52,7 +50,7 @@ class BatAdsInlineContentAdServingTest : public ServingObserver,
   }
 
   void OnOpportunityAroseToServeInlineContentAd(
-      const SegmentList& segments) override {
+      const SegmentList& /*segments*/) override {
     had_opportunuity_ = true;
   }
 
@@ -79,7 +77,7 @@ TEST_F(BatAdsInlineContentAdServingTest, DoNotServeAdForUnsupportedVersion) {
 
   // Act
   serving_->MaybeServeAd("200x100",
-                         [=](const std::string& dimensions,
+                         [=](const std::string& /*dimensions*/,
                              const absl::optional<InlineContentAdInfo>& ad) {
                            // Assert
                            EXPECT_FALSE(ad);
@@ -101,7 +99,7 @@ TEST_F(BatAdsInlineContentAdServingTest, ServeAd) {
 
   // Act
   serving_->MaybeServeAd("200x100",
-                         [=](const std::string& dimensions,
+                         [=](const std::string& /*dimensions*/,
                              const absl::optional<InlineContentAdInfo>& ad) {
                            // Assert
                            EXPECT_TRUE(ad);
@@ -124,7 +122,7 @@ TEST_F(BatAdsInlineContentAdServingTest, DoNotServeAdForNonExistentDimensions) {
 
   // Act
   serving_->MaybeServeAd("?x?",
-                         [=](const std::string& dimensions,
+                         [=](const std::string& /*dimensions*/,
                              const absl::optional<InlineContentAdInfo>& ad) {
                            // Assert
                            EXPECT_FALSE(ad);
@@ -147,7 +145,7 @@ TEST_F(BatAdsInlineContentAdServingTest,
 
   // Act
   serving_->MaybeServeAd("200x100",
-                         [=](const std::string& dimensions,
+                         [=](const std::string& /*dimensions*/,
                              const absl::optional<InlineContentAdInfo>& ad) {
                            // Assert
                            EXPECT_FALSE(ad);

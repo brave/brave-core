@@ -18,8 +18,8 @@ bool DidReconcileTransaction(const TransactionInfo& transaction);
 bool DidReconcileTransactionsLastMonth(const TransactionList& transactions);
 bool DidReconcileTransactionsThisMonth(const TransactionList& transactions);
 bool DidReconcileTransactionWithinDateRange(const TransactionInfo& transaction,
-                                            const base::Time from_time,
-                                            const base::Time to_time);
+                                            base::Time from_time,
+                                            base::Time to_time);
 
 }  // namespace ads
 

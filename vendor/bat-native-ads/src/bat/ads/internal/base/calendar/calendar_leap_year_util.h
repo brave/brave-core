@@ -8,7 +8,7 @@
 
 namespace ads {
 
-bool IsLeapYear(const int year);
+bool IsLeapYear(int year);
 
 }  // namespace ads
 

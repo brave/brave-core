@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/daypart_exclusion_rule.h"
 
+#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -63,22 +64,15 @@ bool DaypartExclusionRule::DoesRespectCap(
 
   const int local_time_as_minutes = GetLocalTimeAsMinutes(now);
 
-  const int day_of_week = GetDayOfWeek(now, /* is_local */ true);
+  const int day_of_week = GetDayOfWeek(now, /*is_local*/ true);
   const std::string day_of_week_as_string = base::NumberToString(day_of_week);
 
-  for (const CreativeDaypartInfo& daypart : creative_ad.dayparts) {
-    if (!MatchDayOfWeek(daypart, day_of_week_as_string)) {
-      continue;
-    }
-
-    if (!MatchTimeSlot(daypart, local_time_as_minutes)) {
-      continue;
-    }
-
-    return true;
-  }
-
-  return false;
+  return base::ranges::any_of(
+      creative_ad.dayparts, [day_of_week_as_string, local_time_as_minutes](
+                                const CreativeDaypartInfo& daypart) {
+        return MatchDayOfWeek(daypart, day_of_week_as_string) &&
+               MatchTimeSlot(daypart, local_time_as_minutes);
+      });
 }
 
 }  // namespace ads

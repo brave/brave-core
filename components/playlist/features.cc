@@ -6,13 +6,12 @@
 #include "brave/components/playlist/features.h"
 
 #include "base/feature_list.h"
-#include "build/build_config.h"
-#include "ui/base/ui_base_features.h"
 
-namespace playlist {
-namespace features {
+namespace playlist::features {
 
 const base::Feature kPlaylist{"Playlist", base::FEATURE_DISABLED_BY_DEFAULT};
 
-}  // namespace features
-}  // namespace playlist
+const base::Feature kCompareOnlyHostForTesting{
+    "CompareOnlyHostForTesting", base::FEATURE_DISABLED_BY_DEFAULT};
+
+}  // namespace playlist::features

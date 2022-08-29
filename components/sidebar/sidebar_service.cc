@@ -11,8 +11,8 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/logging.h"
-#include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
@@ -34,6 +34,11 @@ using version_info::Channel;
 namespace sidebar {
 
 namespace {
+
+// A list of preferred item types
+constexpr SidebarItem::BuiltInItemType kPreferredPanelOrder[] = {
+    SidebarItem::BuiltInItemType::kReadingList,
+    SidebarItem::BuiltInItemType::kBookmarks};
 
 SidebarItem GetBuiltInItemForType(SidebarItem::BuiltInItemType type) {
   switch (type) {
@@ -76,20 +81,31 @@ SidebarItem GetBuiltInItemForType(SidebarItem::BuiltInItemType type) {
   return SidebarItem();
 }
 
-const std::vector<SidebarItem::BuiltInItemType>& GetDefaultBuiltInItemTypes() {
-  // This is the default display order
-  static const base::NoDestructor s_built_in_item_types(
-      std::vector<SidebarItem::BuiltInItemType>{
-          SidebarItem::BuiltInItemType::kBraveTalk,
-          SidebarItem::BuiltInItemType::kWallet,
-          SidebarItem::BuiltInItemType::kBookmarks,
-          SidebarItem::BuiltInItemType::kReadingList});
-  return *s_built_in_item_types;
+SidebarItem::BuiltInItemType GetBuiltInItemTypeForLegacyURL(
+    const std::string& url) {
+  // A previous version of prefs used the URL even for built-in items, and not
+  // the |SidebarItem::BuiltInItemType|. Therefore, this list should not
+  // need to be updated.
+  if (url == "https://together.brave.com/" || url == "https://talk.brave.com/")
+    return SidebarItem::BuiltInItemType::kBraveTalk;
+
+  if (url == "chrome://wallet/")
+    return SidebarItem::BuiltInItemType::kWallet;
+
+  if (url == "chrome://sidebar-bookmarks.top-chrome/" ||
+      url == "chrome://bookmarks/")
+    return SidebarItem::BuiltInItemType::kBookmarks;
+
+  if (url == "chrome://history/")
+    return SidebarItem::BuiltInItemType::kHistory;
+
+  NOTREACHED() << url;
+  return SidebarItem::BuiltInItemType::kNone;
 }
 
 std::vector<SidebarItem> GetDefaultSidebarItems() {
   std::vector<SidebarItem> items;
-  for (const auto& item_type : GetDefaultBuiltInItemTypes()) {
+  for (const auto& item_type : SidebarService::kDefaultBuiltInItemTypes) {
     items.push_back(GetBuiltInItemForType(item_type));
   }
   return items;
@@ -108,12 +124,6 @@ void SidebarService::RegisterProfilePrefs(PrefRegistrySimple* registry,
           ? static_cast<int>(ShowSidebarOption::kShowNever)
           : static_cast<int>(ShowSidebarOption::kShowAlways));
   registry->RegisterIntegerPref(kSidebarItemAddedFeedbackBubbleShowCount, 0);
-}
-
-// static
-std::vector<SidebarItem::BuiltInItemType>
-SidebarService::GetDefaultBuiltInItemTypes_ForTesting() {
-  return GetDefaultBuiltInItemTypes();
 }
 
 SidebarService::SidebarService(PrefService* prefs) : prefs_(prefs) {
@@ -171,21 +181,30 @@ void SidebarService::MigratePrefSidebarBuiltInItemsToHidden() {
   built_in_items_to_hide.push_back(
       GetBuiltInItemForType(SidebarItem::BuiltInItemType::kBookmarks));
 
+  // We will also correct built-in items which did not specify their type
+  // and instead relied on Url matching to find the built-in type.
+  bool items_are_modified = false;
+  constexpr char kSidebarItemShouldRemoveKey[] = "should_remove";
+
   const auto& items = preference->GetValue()->GetList();
   VLOG(2) << "MigratePrefSidebarBuiltInItemsToHidden: item count is "
           << items.size();
 
-  // Find built-in items in items pref and keep them visible
-  for (const auto& item : items) {
-    DVLOG(2) << "Found an item: " << item.DebugString();
+  // Find built-in items in items pref and keep them visible. Clone so that we
+  // can potentially modify and re-save.
+  auto new_items = items.Clone();
+  for (auto& item_value : new_items) {
+    DVLOG(2) << "Found an item: " << item_value.DebugString();
     // Verify item is valid
-    if (!item.is_dict() || item.GetDict().empty()) {
-      DVLOG(1) << "Item in prefs was not a valid dict: " << item.DebugString();
+    auto* item = item_value.GetIfDict();
+    if (!item || item->empty()) {
+      DVLOG(1) << "Item in prefs was not a valid dict: "
+               << item_value.DebugString();
       continue;
     }
     // Only care about built-in type
     SidebarItem::Type type;
-    const auto type_value = item.FindIntKey(kSidebarItemTypeKey);
+    const auto type_value = item->FindInt(kSidebarItemTypeKey);
     if (!type_value) {
       VLOG(1) << "Item has no type item";
       continue;
@@ -196,11 +215,41 @@ void SidebarService::MigratePrefSidebarBuiltInItemsToHidden() {
       continue;
     }
     // Found a built-in item to keep
-    const auto item_id = item.FindIntKey(kSidebarItemBuiltInItemTypeKey);
+    auto item_id = item->FindInt(kSidebarItemBuiltInItemTypeKey);
     if (!item_id.has_value()) {
-      LOG(ERROR) << "MigratePrefSidebarBuiltInItemsToHidden: A built-in item "
-                    "was found in the older pref format without a valid id.";
-      DVLOG(1) << "Pref list item was: " << item.DebugString();
+      // Attempt to get item_id from the url, which was a legacy method of
+      // storing the built-in type.
+      VLOG(1) << "MigratePrefSidebarBuiltInItemsToHidden: A built-in item "
+                 "was found in the older pref format without a valid id. "
+                 "Attempting to migrate...";
+      DVLOG(1) << "Pref list item was: " << item->DebugString();
+      const auto* url = item->FindString(kSidebarItemURLKey);
+      if (url->empty()) {
+        // This should be impossible (a built-in item without a url or type),
+        // but could happen if someone manually edited the settings file.
+        VLOG(1)
+            << "...could not migrate item, url was empty! Marking for removal.";
+        item->Set(kSidebarItemShouldRemoveKey, true);
+        items_are_modified = true;
+        continue;
+      }
+      const auto item_type = GetBuiltInItemTypeForLegacyURL(*url);
+      if (item_type == SidebarItem::BuiltInItemType::kNone) {
+        // This should be impossible (a built-in item without a url or type),
+        // but could happen if someone manually edited the settings file.
+        VLOG(1)
+            << "...could not migrate item, url was empty! Marking for removal.";
+        item->Set(kSidebarItemShouldRemoveKey, true);
+        items_are_modified = true;
+        continue;
+      }
+      const auto item_id_parsed = static_cast<int>(item_type);
+      // Mark this item to be updated
+      items_are_modified = true;
+      item->Set(kSidebarItemBuiltInItemTypeKey, item_id_parsed);
+      item->Remove(kSidebarItemURLKey);
+      // Proceed with new value
+      item_id = item_id_parsed;
     }
     // Remember not to hide this item
     auto iter = base::ranges::find_if(
@@ -232,6 +281,21 @@ void SidebarService::MigratePrefSidebarBuiltInItemsToHidden() {
     // Always store something so that we know migration is done
     // when pref isn't default value.
     builtin_items_update->ClearList();
+  }
+
+  // Fix items pref, if needed
+  if (items_are_modified) {
+    ListPrefUpdate items_update(prefs_, kSidebarItems);
+    items_update->ClearList();
+    for (const auto& item_value : new_items) {
+      auto* item = item_value.GetIfDict();
+      DCHECK(item);
+      const auto should_ignore = item->FindBool(kSidebarItemShouldRemoveKey);
+      if (should_ignore.value_or(false)) {
+        continue;
+      }
+      items_update->Append(base::Value(item->Clone()));
+    }
   }
 }
 
@@ -292,16 +356,16 @@ void SidebarService::UpdateSidebarItemsToPrefStore() {
   for (const auto& item : items_) {
     DVLOG(2) << "Adding item to pref list: "
              << static_cast<int>(item.built_in_item_type);
-    base::Value dict(base::Value::Type::DICTIONARY);
-    dict.SetIntKey(kSidebarItemTypeKey, static_cast<int>(item.type));
-    dict.SetIntKey(kSidebarItemBuiltInItemTypeKey,
-                   static_cast<int>(item.built_in_item_type));
+    base::Value::Dict dict;
+    dict.Set(kSidebarItemTypeKey, static_cast<int>(item.type));
+    dict.Set(kSidebarItemBuiltInItemTypeKey,
+             static_cast<int>(item.built_in_item_type));
     if (item.type != SidebarItem::Type::kTypeBuiltIn) {
-      dict.SetStringKey(kSidebarItemURLKey, item.url.spec());
-      dict.SetStringKey(kSidebarItemTitleKey, base::UTF16ToUTF8(item.title));
-      dict.SetBoolKey(kSidebarItemOpenInPanelKey, item.open_in_panel);
+      dict.Set(kSidebarItemURLKey, item.url.spec());
+      dict.Set(kSidebarItemTitleKey, base::UTF16ToUTF8(item.title));
+      dict.Set(kSidebarItemOpenInPanelKey, item.open_in_panel);
     }
-    update->Append(std::move(dict));
+    update->GetList().Append(std::move(dict));
   }
 
   // Store which built-in items should be hidden
@@ -327,24 +391,26 @@ void SidebarService::RemoveObserver(Observer* observer) {
 }
 
 std::vector<SidebarItem> SidebarService::GetHiddenDefaultSidebarItems() const {
+  const auto added_default_items = GetCurrentlyPresentBuiltInTypes();
   auto default_items = GetDefaultSidebarItems();
-  const auto added_default_items = GetDefaultSidebarItemsFromCurrentItems();
-  for (const auto& added_item : added_default_items) {
-    auto iter = base::ranges::find_if(
-        default_items, [&added_item](const auto& default_item) {
-          return default_item.built_in_item_type ==
-                 added_item.built_in_item_type;
-        });
-    default_items.erase(iter);
-  }
+
+  default_items.erase(
+      base::ranges::remove_if(default_items,
+                              [&added_default_items](auto& item) {
+                                return base::Contains(added_default_items,
+                                                      item.built_in_item_type);
+                              }),
+      default_items.end());
   return default_items;
 }
 
-std::vector<SidebarItem>
-SidebarService::GetDefaultSidebarItemsFromCurrentItems() const {
-  std::vector<SidebarItem> items;
-  std::copy_if(items_.begin(), items_.end(), std::back_inserter(items),
-               [](const auto& item) { return IsBuiltInType(item); });
+std::vector<SidebarItem::BuiltInItemType>
+SidebarService::GetCurrentlyPresentBuiltInTypes() const {
+  std::vector<SidebarItem::BuiltInItemType> items;
+  base::ranges::for_each(items_, [&items](const auto& item) {
+    if (IsBuiltInType(item))
+      items.push_back(item.built_in_item_type);
+  });
   return items;
 }
 
@@ -353,12 +419,8 @@ SidebarService::ShowSidebarOption SidebarService::GetSidebarShowOption() const {
 }
 
 absl::optional<SidebarItem> SidebarService::GetDefaultPanelItem() const {
-  static const base::NoDestructor preferred_item_types(
-      std::vector<SidebarItem::BuiltInItemType>{
-          SidebarItem::BuiltInItemType::kReadingList,
-          SidebarItem::BuiltInItemType::kBookmarks});
   absl::optional<SidebarItem> default_item;
-  for (const auto& type : *preferred_item_types) {
+  for (const auto& type : kPreferredPanelOrder) {
     auto found_item_iter = base::ranges::find_if(
         items_,
         [type](SidebarItem item) { return (item.built_in_item_type == type); });
@@ -393,23 +455,28 @@ void SidebarService::LoadSidebarItems() {
       }
       // Always use latest properties for built-in type item.
       if (type == SidebarItem::Type::kTypeBuiltIn) {
-        if (const auto value =
-                item.FindIntKey(kSidebarItemBuiltInItemTypeKey)) {
-          auto id = static_cast<SidebarItem::BuiltInItemType>(*value);
-          auto iter = std::find_if(
-              default_items_to_add.begin(), default_items_to_add.end(),
-              [id](const auto& default_item) {
-                return default_item.built_in_item_type == id;
-              });
-          // It might be an item which is no longer is offered as built-in
-          if (iter == default_items_to_add.end()) {
-            continue;
-          }
-          // Valid built-in item, add it
-          items_.emplace_back(*std::make_move_iterator(iter));
-          default_items_to_add.erase(iter);
+        const auto built_in_type_value =
+            item.FindIntKey(kSidebarItemBuiltInItemTypeKey);
+        if (!built_in_type_value.has_value()) {
+          VLOG(1) << "built-in item did not have a type: "
+                  << item.DebugString();
           continue;
         }
+        auto id =
+            static_cast<SidebarItem::BuiltInItemType>(*built_in_type_value);
+        auto iter = base::ranges::find_if(
+            default_items_to_add, [id](const auto& default_item) {
+              return default_item.built_in_item_type == id;
+            });
+        // It might be an item which is no longer is offered as built-in
+        if (iter == default_items_to_add.end()) {
+          VLOG(1) << "item not found: " << item.DebugString();
+          continue;
+        }
+        // Valid built-in item, add it
+        items_.emplace_back(*std::make_move_iterator(iter));
+        default_items_to_add.erase(iter);
+        continue;
       }
       // Deserialize custom item
       std::string url;
@@ -461,12 +528,11 @@ void SidebarService::LoadSidebarItems() {
   // Add the items the user has never seen (or never persisted).
   // Get the initial order of items so that we can attempt to
   // insert at the intended order.
-  auto default_item_types = GetDefaultBuiltInItemTypes();
   for (const auto& item : default_items_to_add) {
-    const auto& default_item_iter =
-        std::find(default_item_types.begin(), default_item_types.end(),
-                  item.built_in_item_type);
-    auto default_index = default_item_iter - default_item_types.begin();
+    const auto* default_item_iter = base::ranges::find(
+        SidebarService::kDefaultBuiltInItemTypes, item.built_in_item_type);
+    auto default_index = default_item_iter -
+                         std::begin(SidebarService::kDefaultBuiltInItemTypes);
     // Add at the default index for the first time. For users which haven't
     // changed any order, or removed items, this will be at the intentional
     // index. For users who have re-ordered, this will be different but still

@@ -17,7 +17,7 @@ namespace ml {
 class HashVectorizer final {
  public:
   HashVectorizer();
-  HashVectorizer(const int bucket_count, const std::vector<int>& subgrams);
+  HashVectorizer(int bucket_count, const std::vector<int>& subgrams);
   ~HashVectorizer();
   HashVectorizer(const HashVectorizer& info) = delete;
   HashVectorizer& operator=(const HashVectorizer& info) = delete;

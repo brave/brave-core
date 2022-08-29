@@ -15,9 +15,6 @@
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_info.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_util.h"
-#include "bat/ads/internal/ml/transformation/hashed_ngrams_transformation.h"
-#include "bat/ads/internal/ml/transformation/lowercase_transformation.h"
-#include "bat/ads/internal/ml/transformation/normalization_transformation.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
@@ -113,7 +110,7 @@ PredictionMap TextProcessing::GetTopPredictions(
 
 PredictionMap TextProcessing::ClassifyPage(const std::string& content) const {
   if (!IsInitialized()) {
-    return PredictionMap();
+    return {};
   }
 
   return GetTopPredictions(content);

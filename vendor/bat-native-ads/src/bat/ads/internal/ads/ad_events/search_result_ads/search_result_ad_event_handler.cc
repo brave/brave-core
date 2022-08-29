@@ -258,7 +258,7 @@ void EventHandler::NotifySearchResultAdEvent(
     }
   }
 
-  callback(/* success */ true, ad.placement_id, event_type);
+  callback(/*success*/ true, ad.placement_id, event_type);
 }
 
 void EventHandler::NotifySearchResultAdServed(
@@ -292,7 +292,7 @@ void EventHandler::NotifySearchResultAdEventFailed(
     observer.OnSearchResultAdEventFailed(ad, event_type);
   }
 
-  callback(/* success */ false, ad.placement_id, event_type);
+  callback(/*success*/ false, ad.placement_id, event_type);
 }
 
 }  // namespace search_result_ads

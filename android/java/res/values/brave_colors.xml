@@ -9,6 +9,7 @@
 
     <!-- Theme colors -->
     <color name="brave_white">@android:color/white</color>
+    <color name="brave_link">#0000EE</color>
 
     <!-- Overriding chromium theme colors to brave theme colors -->
     <color name="baseline_primary_100">#F9C3B6</color>
@@ -57,6 +58,9 @@
     <color name="onboarding_negative_button_color">#4C54D2</color>
     <color name="onboarding_search_highlight_color">#737ADE</color>
     <color name="onboarding_arrow_color">#4D54D3</color>
+
+    <color name="scan_qr_code_text_color">#212529</color>
+    <color name="scan_qr_code_bg_color">@android:color/white</color>
 
     <!-- Set Default Browser colors -->
     <color name="set_default_bottom_sheet_bg_color">@android:color/white</color>

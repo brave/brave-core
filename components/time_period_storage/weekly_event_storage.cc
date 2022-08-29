@@ -75,13 +75,12 @@ void WeeklyEventStorage::FilterToWeek() {
 
 void WeeklyEventStorage::Load() {
   DCHECK(events_.empty());
-  const base::Value* list = prefs_->GetList(pref_name_);
-  if (!list) {
-    return;
-  }
-  for (auto& it : list->GetList()) {
-    const auto day = base::ValueToTime(it.FindKey("day"));
-    const auto value = it.FindIntKey("value");
+  const base::Value::List& list = prefs_->GetValueList(pref_name_);
+  for (const auto& it : list) {
+    DCHECK(it.is_dict());
+    const auto& item = it.GetDict();
+    const auto day = base::ValueToTime(item.Find("day"));
+    const auto value = item.FindInt("value");
     if (!day || !value) {
       continue;
     }
@@ -94,9 +93,9 @@ void WeeklyEventStorage::Save() {
   base::Value* list = update.Get();
   list->ClearList();
   for (const auto& u : events_) {
-    base::Value value(base::Value::Type::DICTIONARY);
-    value.SetKey("day", base::TimeToValue(u.day));
-    value.SetIntKey("value", static_cast<int>(u.value));
-    list->Append(std::move(value));
+    base::Value::Dict value;
+    value.Set("day", base::TimeToValue(u.day));
+    value.Set("value", static_cast<int>(u.value));
+    list->GetList().Append(std::move(value));
   }
 }

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2022 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+<LinearLayout
+     xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:orientation="vertical"
+     android:paddingTop="10dp"
+     android:paddingBottom="10dp"
+     android:background="@color/scan_qr_code_bg_color">
+
+     <FrameLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+
+          <ImageView
+               android:id="@+id/back_imageview"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:contentDescription="@null"
+               android:layout_marginStart="10dp"
+               android:layout_gravity="center_vertical"
+               app:srcCompat="@drawable/ic_back"
+               app:tint="@color/scan_qr_code_text_color"/>
+
+          <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center_horizontal"
+               android:text="@string/scan_qr_code"
+               android:textSize="22sp"
+               android:textColor="@color/scan_qr_code_text_color"
+               android:textStyle="bold" />
+
+     </FrameLayout>
+
+     <ScrollView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"> 
+
+          <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="vertical">
+
+               <FrameLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_marginTop="10dp">
+
+                    <org.chromium.chrome.browser.qrreader.CameraSourcePreview
+                         android:id="@+id/preview"
+                         android:layout_width="match_parent"
+                         android:layout_height="match_parent"
+                         android:scaleType="center"/>
+
+                    <FrameLayout
+                         android:id="@+id/camera_overlay"
+                         android:layout_width="match_parent"
+                         android:layout_height="match_parent"
+                         android:background="@drawable/rounded_shape">
+
+                         <ImageView
+                              android:id="@+id/camera_overlay_image"
+                              android:layout_width="match_parent"
+                              android:layout_height="match_parent"
+                              android:src="@drawable/camera"
+                              android:scaleType="center"
+                              android:contentDescription="@null"
+                              android:background="@android:color/transparent" />
+
+                    </FrameLayout>
+               </FrameLayout>
+
+               <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/instructions"
+                    android:textSize="20sp"
+                    android:textColor="@color/scan_qr_code_text_color"
+                    android:textStyle="bold" />
+
+               <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/instructions_desc"
+                    android:textSize="16sp"
+                    android:textColor="@color/scan_qr_code_text_color" />
+          
+          </LinearLayout>
+     </ScrollView>
+</LinearLayout>

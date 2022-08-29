@@ -56,7 +56,7 @@ class ADS_EXPORT AdsClient {
   virtual void RecordAdEventForId(const std::string& id,
                                   const std::string& ad_type,
                                   const std::string& confirmation_type,
-                                  const base::Time time) const = 0;
+                                  base::Time time) const = 0;
 
   // Get ad event history for the specified |ad_type| and |confirmation_type|.
   virtual std::vector<base::Time> GetAdEventHistory(
@@ -69,8 +69,8 @@ class ADS_EXPORT AdsClient {
   // Get browsing history from |days_ago| limited to |max_count| items. The
   // callback takes one argument - |std::vector<GURL>| containing a list of
   // URLs.
-  virtual void GetBrowsingHistory(const int max_count,
-                                  const int days_ago,
+  virtual void GetBrowsingHistory(int max_count,
+                                  int days_ago,
                                   GetBrowsingHistoryCallback callback) = 0;
 
   // Fetch and return data for the |url_request|. Loading should be performed
@@ -96,7 +96,7 @@ class ADS_EXPORT AdsClient {
   // storage. The callback takes 1 argument - |base::File| will be valid if
   // successful otherwise invalid.
   virtual void LoadFileResource(const std::string& id,
-                                const int version,
+                                int version,
                                 LoadFileCallback callback) = 0;
 
   // Load a data resource for the specified |name|. Returns the resource if
@@ -115,7 +115,7 @@ class ADS_EXPORT AdsClient {
   virtual void ShowScheduledCaptchaNotification(
       const std::string& payment_id,
       const std::string& captcha_id,
-      const bool should_show_tooltip_notification) = 0;
+      bool should_show_tooltip_notification) = 0;
 
   // Clear the scheduled captcha, if any.
   virtual void ClearScheduledCaptcha() = 0;
@@ -135,7 +135,7 @@ class ADS_EXPORT AdsClient {
 
   // Log |training_instance|.
   virtual void LogTrainingInstance(
-      const std::vector<brave_federated::mojom::CovariateInfoPtr>
+      std::vector<brave_federated::mojom::CovariateInfoPtr>
           training_instance) = 0;
 
   // Get the value from the specified preference |path|. Returns the default
@@ -153,14 +153,14 @@ class ADS_EXPORT AdsClient {
       const std::string& path) const = 0;
 
   // Update the value for the specified preference |path|.
-  virtual void SetBooleanPref(const std::string& path, const bool value) = 0;
-  virtual void SetIntegerPref(const std::string& path, const int value) = 0;
-  virtual void SetDoublePref(const std::string& path, const double value) = 0;
+  virtual void SetBooleanPref(const std::string& path, bool value) = 0;
+  virtual void SetIntegerPref(const std::string& path, int value) = 0;
+  virtual void SetDoublePref(const std::string& path, double value) = 0;
   virtual void SetStringPref(const std::string& path,
                              const std::string& value) = 0;
-  virtual void SetInt64Pref(const std::string& path, const int64_t value) = 0;
-  virtual void SetUint64Pref(const std::string& path, const uint64_t value) = 0;
-  virtual void SetTimePref(const std::string& path, const base::Time value) = 0;
+  virtual void SetInt64Pref(const std::string& path, int64_t value) = 0;
+  virtual void SetUint64Pref(const std::string& path, uint64_t value) = 0;
+  virtual void SetTimePref(const std::string& path, base::Time value) = 0;
   virtual void SetDictPref(const std::string& path,
                            base::Value::Dict value) = 0;
   virtual void SetListPref(const std::string& path,
@@ -175,8 +175,8 @@ class ADS_EXPORT AdsClient {
   // Log a |message| to |file| and the console log with |line| and
   // |verbose_level|.
   virtual void Log(const char* file,
-                   const int line,
-                   const int verbose_level,
+                   int line,
+                   int verbose_level,
                    const std::string& message) = 0;
 };
 

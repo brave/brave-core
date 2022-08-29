@@ -319,7 +319,7 @@ handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Stor
       return
     }
 
-    if (code) {
+    if (code !== undefined) {
       if (code === 'unauthorized') {
         await store.dispatch(PanelActions.setHardwareWalletInteractionError(code))
         return

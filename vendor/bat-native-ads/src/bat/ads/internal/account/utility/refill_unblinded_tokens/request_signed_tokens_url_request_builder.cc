@@ -31,7 +31,7 @@ RequestSignedTokensUrlRequestBuilder::RequestSignedTokensUrlRequestBuilder(
 RequestSignedTokensUrlRequestBuilder::~RequestSignedTokensUrlRequestBuilder() =
     default;
 
-// POST /v2/confirmation/token/{payment_id}
+// POST /v2/confirmation/token/{paymentId}
 
 mojom::UrlRequestInfoPtr RequestSignedTokensUrlRequestBuilder::Build() {
   mojom::UrlRequestInfoPtr url_request = mojom::UrlRequestInfo::New();

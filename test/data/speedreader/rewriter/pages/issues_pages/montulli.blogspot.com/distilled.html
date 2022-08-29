@@ -5,10 +5,10 @@ the press.&nbsp;&nbsp;&nbsp; I thought I would try and explain some of the motiv
 and history behind Web cookies as well as some of the design behind 
 them.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Feel free to post more questions and I will try and expand 
 this article with more details.
-
+<br>
 <a href="http://www.montulli-blog.com/2013/05/why-blocking-3rd-party-cookies-could-be.html">See my recent post on 3rd party cookies as well!</a>
 
-
+<br clear="left">
 <b>Motivation</b><br>
 <a href="http://en.wikipedia.org/wiki/Http">HTTP</a> is the 
 networking language behind your browser.&nbsp;&nbsp;&nbsp; HTTP, or Hyper Text 
@@ -33,7 +33,7 @@ concept of a session. &nbsp; &nbsp; Without a session, each time a user clicked 
 with no way to associate them with an action they had done just moments 
 ago.&nbsp;&nbsp;&nbsp;&nbsp; This is a bit like talking to someone with Alzheimer 
 disease.&nbsp;&nbsp;&nbsp; Each interaction would result in having to introduce yourself again, and again, and again.
-
+<br>
 <b>History</b><br>
 By the summer 1994 the idea of adding some form of "memory" to HTTP had
  been kicking around the WWW design groups for a while.&nbsp;&nbsp; I'm not sure 
@@ -59,7 +59,7 @@ that would get sent back only to the server appealed to me and prevented
 utility so that we could do a lot more than just shopping carts, so I 
 extended the concept of the session identifier into a general payload 
 that would get sent back to the server.&nbsp;&nbsp;&nbsp; 
-
+<br>
 <b>Design</b><br>
 With a rough sketch in my head I worked on the general design of 
 cookies.&nbsp;&nbsp;&nbsp; The goal was to create a session identifier and general 
@@ -79,12 +79,12 @@ transferred, either over secure connections or not and if the cookie
 should be erased when the user closes the browser or reboots their 
 computer.&nbsp;&nbsp; 
 
-
+<br>
 <b>The name</b><br>
 <br>
 I had heard the term "magic cookie" from an operating systems course from college.&nbsp;&nbsp;&nbsp;&nbsp; The term has a somewhat similar meaning to the way Web Cookies worked and I liked the term "cookies" for aesthetic reasons.&nbsp;&nbsp;&nbsp;&nbsp; Cookies was the first thing I came up with and the name stuck.&nbsp;&nbsp;&nbsp; 
 
-
+<br>
 <b>Usefulness</b><br>
 <br>
 We released the Netscape browser in the fall of 1994 and within a 
@@ -101,7 +101,7 @@ business.&nbsp;&nbsp;&nbsp; Most websites offered their content for free and wer
 advertising supported.&nbsp;&nbsp;&nbsp;&nbsp; Advertisers were looking for ways to increase
  the effectiveness of their ads and they looked to Web Cookies to help them with that.&nbsp;&nbsp;&nbsp;&nbsp; 
 
-
+<br>
 <b>An Unforeseen Problem</b><br>
 A problem that I missed during the Cookie design phase was an 
 interaction between cookies and embedded content within a webpage.&nbsp;&nbsp;&nbsp; 
@@ -112,7 +112,7 @@ plug-ins are all references within an HTML document and any of those
 resources can be loaded from anywhere in the world.&nbsp;&nbsp;&nbsp;&nbsp; This referencing
  technique is one of the things that make the Web so amazingly 
 powerful.&nbsp;&nbsp;&nbsp;&nbsp; When Web Cookies are combined with embedded references that point to other websites they are called "3rd party cookies" and they represent a new way in which users can be tracked across multiple web sites.
-
+<br>
 <b>Advertising uses</b><br>
 Big ad companies, in particular <a href="http://en.wikipedia.org/wiki/Doubleclick">DoubleClick</a>, started using 3rd party 
 cookies to track a browser uniquely across all of the sites that used 
@@ -131,12 +131,11 @@ designed with the opposite intention, but what could be done at that point to fi
  One of the solutions we came up with was to add controls to give
  each user control over what cookies to accept and from whom.&nbsp;&nbsp;&nbsp; The big
  question at the time was whether or not to disable 3rd party cookies completely or not.&nbsp;&nbsp;&nbsp;&nbsp; The decision had wide ranging effects since advertising was paying for most of the web and disabling 3rd party cookies would also disable many legitimate uses for cookies on embedded resources.&nbsp;&nbsp;&nbsp;&nbsp; 
-
+<br>
 <b>An uncomfortable decision</b><br>
 In the end the decision to disable 3rd party cookies or keep them on was
  left to me.&nbsp;&nbsp;&nbsp;&nbsp; I agonized about the decision for weeks and in the end I
  chose to keep them.&nbsp;&nbsp; My logic was two fold: 
-
 </p><blockquote>
 Any company that had the ability to track users across a 
 large section of the web would need to be a large publicly visible 
@@ -156,7 +155,7 @@ regulations and enforce them.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Most importantly, th
 mechanisms that can replace Web cookies for tracking if they are 
 universally disabled, and those mechanisms would be much harder to 
 observe and disable.
-
+<br>
 <b>Durability</b><br>
 The design of Cookies have remained fairly unchanged for the last 19 
 years.&nbsp;&nbsp; The biggest changes have been to how users can view and control
@@ -164,7 +163,7 @@ years.&nbsp;&nbsp; The biggest changes have been to how users can view and contr
 have caught on.&nbsp;&nbsp;&nbsp;&nbsp; Cookies are not perfect, but they have certainly 
 proved good enough and much of the functionality of the web depends on 
 them.&nbsp;&nbsp;&nbsp; 
-
+<br>
 <b>Summary</b><br>
 Web Cookies find themselves in the midst of a very controversial area, 
 and have gained a level of notoriety because of it.&nbsp;&nbsp;&nbsp; Even though they 
@@ -173,7 +172,6 @@ sometimes infringing upon it.&nbsp;&nbsp;&nbsp; Many efforts have been taken to 
  the privacy of Web users and Cookie controls have been put into the hands of every 
 user.&nbsp; &nbsp; The future of Cookies and user privacy is surely to continue as
  an interesting news item for a very long time and rightfully so. &nbsp;&nbsp; The nature of the advertising business is to collect as much information as it possibly can, so the public needs to push back when it goes too far.&nbsp; 
-
 
 
 

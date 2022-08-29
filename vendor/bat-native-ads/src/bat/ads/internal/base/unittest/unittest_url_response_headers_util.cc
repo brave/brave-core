@@ -21,8 +21,8 @@ base::flat_map<std::string, std::string> ToUrlResponseHeaders(
         header, ":", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
     CHECK(components.size() == 2) << "Invalid header: " << header;
 
-    const std::string key = components.at(0);
-    const std::string value = components.at(1);
+    const std::string& key = components.at(0);
+    const std::string& value = components.at(1);
 
     response_headers[key] = value;
   }

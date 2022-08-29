@@ -19,6 +19,9 @@ struct CatalogInfo final {
   CatalogInfo& operator=(const CatalogInfo& info);
   ~CatalogInfo();
 
+  bool operator==(const CatalogInfo& rhs) const;
+  bool operator!=(const CatalogInfo& rhs) const;
+
   std::string id;
   int version = 0;
   base::TimeDelta ping;

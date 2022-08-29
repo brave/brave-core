@@ -21,12 +21,9 @@ const char kTableName[] = "server_publisher_banner";
 namespace ledger {
 namespace database {
 
-DatabaseServerPublisherBanner::DatabaseServerPublisherBanner(
-    LedgerImpl* ledger) :
-    DatabaseTable(ledger),
-    links_(std::make_unique<DatabaseServerPublisherLinks>(ledger)),
-    amounts_(std::make_unique<DatabaseServerPublisherAmounts>(ledger)) {
-}
+DatabaseServerPublisherBanner::DatabaseServerPublisherBanner(LedgerImpl* ledger)
+    : DatabaseTable(ledger),
+      links_(std::make_unique<DatabaseServerPublisherLinks>(ledger)) {}
 
 DatabaseServerPublisherBanner::~DatabaseServerPublisherBanner() = default;
 
@@ -61,7 +58,6 @@ void DatabaseServerPublisherBanner::InsertOrUpdate(
   transaction->commands.push_back(std::move(command));
 
   links_->InsertOrUpdate(transaction, server_info);
-  amounts_->InsertOrUpdate(transaction, server_info);
 }
 
 void DatabaseServerPublisherBanner::DeleteRecords(
@@ -82,7 +78,6 @@ void DatabaseServerPublisherBanner::DeleteRecords(
   transaction->commands.push_back(std::move(command));
 
   links_->DeleteRecords(transaction, publisher_key_list);
-  amounts_->DeleteRecords(transaction, publisher_key_list);
 }
 
 void DatabaseServerPublisherBanner::GetRecord(
@@ -170,28 +165,12 @@ void DatabaseServerPublisherBanner::OnGetRecordLinks(
     const std::map<std::string, std::string>& links,
     const type::PublisherBanner& banner,
     ledger::PublisherBannerCallback callback) {
-  auto banner_new = banner;
+  auto banner_pointer = type::PublisherBanner::New(banner);
 
-  for (auto& link : links) {
-    banner_new.links.insert(link);
+  for (const auto& link : links) {
+    banner_pointer->links.insert(link);
   }
 
-  // Get amounts
-  auto amounts_callback =
-      std::bind(&DatabaseServerPublisherBanner::OnGetRecordAmounts,
-          this,
-          _1,
-          banner_new,
-          callback);
-  amounts_->GetRecord(banner_new.publisher_key, amounts_callback);
-}
-
-void DatabaseServerPublisherBanner::OnGetRecordAmounts(
-    const std::vector<double>& amounts,
-    const type::PublisherBanner& banner,
-    ledger::PublisherBannerCallback callback) {
-  auto banner_pointer = type::PublisherBanner::New(banner);
-  banner_pointer->amounts = amounts;
   callback(std::move(banner_pointer));
 }
 

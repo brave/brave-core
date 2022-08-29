@@ -22,8 +22,8 @@ NTPCustomBackgroundImagesServiceDelegate::
 NTPCustomBackgroundImagesServiceDelegate::
     ~NTPCustomBackgroundImagesServiceDelegate() = default;
 
-bool NTPCustomBackgroundImagesServiceDelegate::
-    IsCustomImageBackgroundEnabled() {
+bool NTPCustomBackgroundImagesServiceDelegate::IsCustomImageBackgroundEnabled()
+    const {
   auto* prefs = profile_->GetPrefs();
   if (prefs->IsManagedPreference(prefs::kNtpCustomBackgroundDict))
     return false;
@@ -32,23 +32,28 @@ bool NTPCustomBackgroundImagesServiceDelegate::
 }
 
 base::FilePath NTPCustomBackgroundImagesServiceDelegate::
-    GetCustomBackgroundImageLocalFilePath() {
+    GetCustomBackgroundImageLocalFilePath() const {
   if (!IsCustomImageBackgroundEnabled())
     return base::FilePath();
   return profile_->GetPath().AppendASCII(
       ntp_background_images::kSanitizedImageFileName);
 }
 
-bool NTPCustomBackgroundImagesServiceDelegate::IsSolidColorBackgroundEnabled() {
-  return NTPBackgroundPrefs(profile_->GetPrefs()).IsSolidColorType();
+bool NTPCustomBackgroundImagesServiceDelegate::IsColorBackgroundEnabled()
+    const {
+  return NTPBackgroundPrefs(profile_->GetPrefs()).IsColorType();
 }
 
-std::string NTPCustomBackgroundImagesServiceDelegate::GetSolidColor() {
-  if (!IsSolidColorBackgroundEnabled())
+std::string NTPCustomBackgroundImagesServiceDelegate::GetColor() const {
+  if (!IsColorBackgroundEnabled())
     return {};
 
   auto selected_value =
       NTPBackgroundPrefs(profile_->GetPrefs()).GetSelectedValue();
   DCHECK(absl::holds_alternative<std::string>(selected_value));
   return absl::get<std::string>(selected_value);
+}
+
+bool NTPCustomBackgroundImagesServiceDelegate::ShouldUseRandomValue() const {
+  return NTPBackgroundPrefs(profile_->GetPrefs()).ShouldUseRandomValue();
 }

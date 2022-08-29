@@ -20,7 +20,7 @@ namespace promoted_content_ads {
 class AdEventFactory final {
  public:
   static std::unique_ptr<AdEventInterface<PromotedContentAdInfo>> Build(
-      const mojom::PromotedContentAdEventType event_type);
+      mojom::PromotedContentAdEventType event_type);
 };
 
 }  // namespace promoted_content_ads

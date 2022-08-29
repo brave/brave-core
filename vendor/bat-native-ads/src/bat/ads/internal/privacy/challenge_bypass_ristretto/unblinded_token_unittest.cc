@@ -9,7 +9,7 @@
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/token_preimage.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/token_preimage_unittest_util.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/verification_key.h"
-#include "testing/gtest/include/gtest/gtest.h"
+#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

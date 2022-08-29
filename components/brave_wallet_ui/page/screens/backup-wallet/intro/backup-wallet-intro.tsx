@@ -10,7 +10,11 @@ import { getLocale } from '../../../../../common/locale'
 
 // components
 import { Checkbox } from 'brave-ui'
-import { NavButton } from '../../../../components/extension'
+import NavButton from '../../../../components/extension/buttons/nav-button/index'
+import PasswordInput from '../../../../components/shared/password-input/index'
+
+// hooks
+import { usePasswordAttempts } from '../../../../common/hooks/use-password-attempts'
 
 // style
 import {
@@ -19,8 +23,12 @@ import {
   Description,
   TermsRow,
   SkipButton,
-  PageIcon
+  PageIcon,
+  PasswordColumn
 } from './backup-wallet-intro.style'
+import { useDispatch } from 'react-redux'
+import { WalletPageActions } from '../../../actions'
+import { InputLabelText } from '../../../../components/shared/style'
 
 export interface Props {
   onSubmit: () => void
@@ -39,18 +47,109 @@ export const BackupWalletIntroStep = ({
   onCancel,
   recoveryPhraseLength
 }: Props) => {
+  // redux
+  const dispatch = useDispatch()
+
+  // state
+  const [password, setPassword] = React.useState<string>('')
+  const [isCorrectPassword, setIsCorrectPassword] = React.useState<boolean>(true)
+
+  const hasPasswordError = isOnboarding
+    ? false // password not needed during onboarding
+    : !password || !isCorrectPassword // needs correct value
+
+  // custom hooks
+  const { attemptPasswordEntry } = usePasswordAttempts()
+
+  // methods
+  const onPasswordChange = React.useCallback((value: string): void => {
+    setIsCorrectPassword(true) // clear error
+    setPassword(value)
+  }, [])
+
+  const onContinue = React.useCallback(async () => {
+    // not password-protected during onboarding
+    if (isOnboarding) {
+      return onSubmit()
+    }
+
+    if (!password) { // require password to view key
+      return
+    }
+
+    // entered password must be correct
+    const isPasswordValid = await attemptPasswordEntry(password)
+
+    if (!isPasswordValid) {
+      setIsCorrectPassword(isPasswordValid) // set or clear error
+      return // need valid password to continue
+    }
+
+    // clear entered password & error
+    setPassword('')
+    setIsCorrectPassword(true)
+
+    // reveal recovery phrase
+    dispatch(WalletPageActions.showRecoveryPhrase({ show: true, password }))
+
+    // continue on
+    onSubmit()
+  }, [
+    onSubmit,
+    isOnboarding,
+    password,
+    attemptPasswordEntry
+  ])
+
+  const handleKeyDown = React.useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      onContinue()
+    }
+  }, [onContinue])
+
+  // render
   return (
     <StyledWrapper>
       <PageIcon />
+
       <Title>{getLocale('braveWalletBackupIntroTitle')}</Title>
       <Description>{getLocale('braveWalletBackupIntroDescription').replace('$1', recoveryPhraseLength.toString())}</Description>
+
       <TermsRow>
-        <Checkbox value={{ backupTerms: isBackupTermsAccepted }} onChange={onSubmitTerms}>
-          <div data-key='backupTerms'>{getLocale('braveWalletBackupIntroTerms')}</div>
+        <Checkbox
+          value={{ backupTerms: isBackupTermsAccepted }}
+          onChange={onSubmitTerms}
+        >
+          <div onKeyDown={handleKeyDown} data-key='backupTerms'>
+            {getLocale('braveWalletBackupIntroTerms')}
+          </div>
         </Checkbox>
       </TermsRow>
-      <NavButton disabled={!isBackupTermsAccepted} buttonType='primary' text={getLocale('braveWalletButtonContinue')} onSubmit={onSubmit} />
-      <SkipButton onClick={onCancel}>{isOnboarding ? getLocale('braveWalletButtonSkip') : getLocale('braveWalletButtonCancel')}</SkipButton>
+
+      {!isOnboarding &&
+        <PasswordColumn>
+          <InputLabelText>{getLocale('braveWalletEnterYourPassword')}</InputLabelText>
+          <PasswordInput
+            placeholder={getLocale('braveWalletCreatePasswordInput')}
+            onChange={onPasswordChange}
+            error={getLocale('braveWalletLockScreenError')}
+            hasError={!!password && !isCorrectPassword}
+            onKeyDown={handleKeyDown}
+            value={password}
+            autoFocus={false}
+          />
+        </PasswordColumn>
+      }
+      <NavButton
+        disabled={!isBackupTermsAccepted || hasPasswordError}
+        buttonType='primary'
+        text={getLocale('braveWalletButtonContinue')}
+        onSubmit={onContinue}
+      />
+
+      <SkipButton onClick={onCancel}>
+        {getLocale(isOnboarding ? 'braveWalletButtonSkip' : 'braveWalletButtonCancel')}
+      </SkipButton>
     </StyledWrapper>
   )
 }

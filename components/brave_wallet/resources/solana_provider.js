@@ -9,7 +9,7 @@
   }
   const EventEmitter = require('events')
   var SolanaEventEmitter = new EventEmitter()
-  Object.defineProperties(window.braveSolana, {
+  $Object.defineProperties(window.braveSolana, {
     on: {
       value: SolanaEventEmitter.on,
       writable: false

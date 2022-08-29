@@ -376,7 +376,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
         std::make_unique<mojo::DataPipeProducer>(std::move(producer));
 
     base::StringPiece string_piece(write_data->data);
-    write_data->producer->Write(
+    WriteData* write_data_ptr = write_data.get();
+    write_data_ptr->producer->Write(
         std::make_unique<mojo::StringDataSource>(
             string_piece, mojo::StringDataSource::AsyncWritingMode::
                               STRING_STAYS_VALID_UNTIL_COMPLETION),

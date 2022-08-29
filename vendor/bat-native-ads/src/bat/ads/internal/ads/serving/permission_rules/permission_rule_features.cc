@@ -6,8 +6,6 @@
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rule_features.h"
 
 #include "base/metrics/field_trial_params.h"
-#include "base/time/time.h"
-#include "bat/ads/internal/base/metrics/field_trial_params_util.h"
 
 namespace ads {
 namespace permission_rules {

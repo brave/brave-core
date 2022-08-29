@@ -14,13 +14,11 @@ namespace search_result_ads {
 class PermissionRules final : public PermissionRulesBase {
  public:
   PermissionRules();
+  PermissionRules(const PermissionRules&) = delete;
+  PermissionRules& operator=(const PermissionRules&) = delete;
   ~PermissionRules() override;
 
   bool HasPermission() const;
-
- private:
-  PermissionRules(const PermissionRules&) = delete;
-  PermissionRules& operator=(const PermissionRules&) = delete;
 };
 
 }  // namespace search_result_ads

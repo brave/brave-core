@@ -114,7 +114,7 @@ std::string ExtractConversionIdFromText(
         return conversion_id;
       }
 
-      GURL url = *url_iter;
+      const GURL& url = *url_iter;
       text = url.spec();
     }
 
@@ -208,10 +208,12 @@ void Conversions::MaybeConvert(
     const std::vector<GURL>& redirect_chain,
     const std::string& html,
     const ConversionIdPatternMap& conversion_id_patterns) {
-  DCHECK(!redirect_chain.empty());
-
   if (!ShouldAllow()) {
     BLOG(1, "Conversions are not allowed");
+    return;
+  }
+
+  if (redirect_chain.empty()) {
     return;
   }
 
@@ -436,7 +438,7 @@ void Conversions::FailedToConvertQueueItem(
               << " and advertiser id " << conversion_queue_item.advertiser_id
               << " "
               << LongFriendlyDateAndTime(conversion_queue_item.process_at,
-                                         /* use_sentence_style */ true));
+                                         /*use_sentence_style*/ true));
 
   NotifyConversionFailed(conversion_queue_item);
 
@@ -454,7 +456,7 @@ void Conversions::ConvertedQueueItem(
               << " and advertiser id " << conversion_queue_item.advertiser_id
               << " "
               << LongFriendlyDateAndTime(conversion_queue_item.process_at,
-                                         /* use_sentence_style */ true));
+                                         /*use_sentence_style*/ true));
 
   NotifyConversion(conversion_queue_item);
 
@@ -552,7 +554,7 @@ void Conversions::StartTimer(
                      << " and advertiser id "
                      << conversion_queue_item.advertiser_id << " "
                      << FriendlyDateAndTime(process_queue_at,
-                                            /* use_sentence_style */ true));
+                                            /*use_sentence_style*/ true));
 }
 
 void Conversions::NotifyConversion(
@@ -569,7 +571,7 @@ void Conversions::NotifyConversionFailed(
   }
 }
 
-void Conversions::OnLocaleDidChange(const std::string& locale) {
+void Conversions::OnLocaleDidChange(const std::string& /*locale*/) {
   resource_->Load();
 }
 
@@ -580,7 +582,7 @@ void Conversions::OnResourceDidUpdate(const std::string& id) {
 }
 
 void Conversions::OnHtmlContentDidChange(
-    const int32_t tab_id,
+    const int32_t /*tab_id*/,
     const std::vector<GURL>& redirect_chain,
     const std::string& content) {
   MaybeConvert(redirect_chain, content, resource_->get()->id_patterns);

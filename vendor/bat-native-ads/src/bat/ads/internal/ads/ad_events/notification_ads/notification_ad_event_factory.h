@@ -20,7 +20,7 @@ namespace notification_ads {
 class AdEventFactory final {
  public:
   static std::unique_ptr<AdEventInterface<NotificationAdInfo>> Build(
-      const mojom::NotificationAdEventType event_type);
+      mojom::NotificationAdEventType event_type);
 };
 
 }  // namespace notification_ads

@@ -13,7 +13,6 @@
 #include "bat/ads/ad_info.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/history_info.h"
-#include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/account/account.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_util.h"
 #include "bat/ads/internal/ads/ad_events/ad_events.h"
@@ -30,7 +29,6 @@
 #include "bat/ads/internal/conversions/conversions.h"
 #include "bat/ads/internal/covariates/covariate_manager.h"
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_manager.h"
-#include "bat/ads/internal/creatives/search_result_ads/search_result_ad_info.h"
 #include "bat/ads/internal/database/database_manager.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
@@ -47,11 +45,9 @@
 #include "bat/ads/internal/locale/locale_manager.h"
 #include "bat/ads/internal/prefs/pref_manager.h"
 #include "bat/ads/internal/privacy/tokens/token_generator.h"
-#include "bat/ads/internal/processors/behavioral/bandits/bandit_feedback_info.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
 #include "bat/ads/internal/processors/behavioral/purchase_intent/purchase_intent_processor.h"
 #include "bat/ads/internal/processors/contextual/text_classification/text_classification_processor.h"
-#include "bat/ads/internal/reactions/reactions.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
@@ -61,10 +57,9 @@
 #include "bat/ads/internal/tabs/tab_manager.h"
 #include "bat/ads/internal/transfer/transfer.h"
 #include "bat/ads/internal/user_interaction/idle_detection/idle_detection_manager.h"
+#include "bat/ads/internal/user_interaction/reactions/reactions.h"
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_manager.h"
-#include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/notification_ad_info.h"
-#include "bat/ads/promoted_content_ad_info.h"
 #include "url/gurl.h"
 
 namespace ads {
@@ -161,13 +156,13 @@ void AdsImpl::Initialize(InitializeCallback callback) {
 void AdsImpl::Shutdown(ShutdownCallback callback) {
   if (!is_initialized_) {
     BLOG(0, "Shutdown failed as not initialized");
-    callback(/* success */ false);
+    callback(/*success*/ false);
     return;
   }
 
   NotificationAdManager::GetInstance()->CloseAll();
 
-  callback(/* success */ true);
+  callback(/*success*/ true);
 }
 
 void AdsImpl::OnChangeLocale(const std::string& locale) {
@@ -282,7 +277,7 @@ void AdsImpl::TriggerNotificationAdEvent(
 
 void AdsImpl::MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) {
   if (!IsInitialized()) {
-    callback(/* ads */ absl::nullopt);
+    callback(/*ads*/ absl::nullopt);
     return;
   }
 
@@ -350,19 +345,19 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
   PurgeOrphanedAdEvents(ad_type, [ad_type, callback](const bool success) {
     if (!success) {
       BLOG(0, "Failed to purge orphaned ad events for " << ad_type);
-      callback(/* success */ false);
+      callback(/*success*/ false);
       return;
     }
 
     BLOG(1, "Successfully purged orphaned ad events for " << ad_type);
-    callback(/* success */ true);
+    callback(/*success*/ true);
   });
 }
 
 void AdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
   ClientStateManager::GetInstance()->RemoveAllHistory();
 
-  callback(/* success */ true);
+  callback(/*success*/ true);
 }
 
 HistoryInfo AdsImpl::GetHistory(const HistoryFilterType filter_type,
@@ -379,7 +374,7 @@ HistoryInfo AdsImpl::GetHistory(const HistoryFilterType filter_type,
 
 void AdsImpl::GetStatementOfAccounts(GetStatementOfAccountsCallback callback) {
   if (!IsInitialized()) {
-    callback(/* statement */ nullptr);
+    callback(/*statement*/ nullptr);
     return;
   }
 
@@ -495,7 +490,7 @@ void AdsImpl::LoadClientState(InitializeCallback callback) {
 void AdsImpl::MigrateConfirmationState(InitializeCallback callback) {
   confirmations::Migrate([=](const bool success) {
     if (!success) {
-      callback(/* success */ false);
+      callback(/*success*/ false);
       return;
     }
 
@@ -517,7 +512,7 @@ void AdsImpl::LoadConfirmationState(InitializeCallback callback) {
 void AdsImpl::MigrateNotificationState(InitializeCallback callback) {
   notifications::Migrate([=](const bool success) {
     if (!success) {
-      callback(/* success */ false);
+      callback(/*success*/ false);
       return;
     }
 
@@ -528,7 +523,7 @@ void AdsImpl::MigrateNotificationState(InitializeCallback callback) {
 void AdsImpl::FailedToInitialize(InitializeCallback callback) {
   BLOG(1, "Failed to initialize ads");
 
-  callback(/* success */ false);
+  callback(/*success*/ false);
 }
 
 void AdsImpl::SuccessfullyInitialized(InitializeCallback callback) {
@@ -539,7 +534,7 @@ void AdsImpl::SuccessfullyInitialized(InitializeCallback callback) {
   UserActivityManager::GetInstance()->RecordEvent(
       UserActivityEventType::kInitializedAds);
 
-  callback(/* success */ true);
+  callback(/*success*/ true);
 
   Start();
 }

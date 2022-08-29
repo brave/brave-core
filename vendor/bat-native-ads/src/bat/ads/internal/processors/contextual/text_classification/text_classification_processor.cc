@@ -83,7 +83,7 @@ void TextClassification::Process(const std::string& text) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void TextClassification::OnLocaleDidChange(const std::string& locale) {
+void TextClassification::OnLocaleDidChange(const std::string& /*locale*/) {
   resource_->Load();
 }
 
@@ -94,10 +94,12 @@ void TextClassification::OnResourceDidUpdate(const std::string& id) {
 }
 
 void TextClassification::OnTextContentDidChange(
-    const int32_t tab_id,
+    const int32_t /*tab_id*/,
     const std::vector<GURL>& redirect_chain,
     const std::string& content) {
-  DCHECK(!redirect_chain.empty());
+  if (redirect_chain.empty()) {
+    return;
+  }
 
   const GURL& url = redirect_chain.back();
 

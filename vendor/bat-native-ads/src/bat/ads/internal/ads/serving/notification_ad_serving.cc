@@ -9,7 +9,6 @@
 #include "base/check.h"
 #include "base/rand_util.h"
 #include "base/time/time.h"
-#include "bat/ads/ad_type.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_base.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_factory.h"
 #include "bat/ads/internal/ads/serving/notification_ad_serving_util.h"
@@ -71,8 +70,8 @@ void Serving::StartServingAdsAtRegularIntervals() {
 
   const base::TimeDelta delay = CalculateDelayBeforeServingAnAd();
   const base::Time serve_ad_at = MaybeServeAdAfter(delay);
-  BLOG(1, "Maybe serve notification ad " << FriendlyDateAndTime(
-              serve_ad_at, /* use_sentence_style */ true));
+  BLOG(1, "Maybe serve notification ad "
+              << FriendlyDateAndTime(serve_ad_at, /*use_sentence_style*/ true));
 }
 
 void Serving::StopServingAdsAtRegularIntervals() {
@@ -127,7 +126,7 @@ void Serving::MaybeServeAd() {
         BLOG(1, "Found " << creative_ads.size() << " eligible ads");
 
         const int rand = base::RandInt(0, creative_ads.size() - 1);
-        const CreativeNotificationAdInfo creative_ad = creative_ads.at(rand);
+        const CreativeNotificationAdInfo& creative_ad = creative_ads.at(rand);
 
         const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
         ServeAd(ad);
@@ -153,8 +152,8 @@ void Serving::MaybeServeAdAtNextRegularInterval() {
   const base::TimeDelta delay =
       base::Seconds(base::Time::kSecondsPerHour / ads_per_hour);
   const base::Time serve_ad_at = MaybeServeAdAfter(delay);
-  BLOG(1, "Maybe serve notification ad " << FriendlyDateAndTime(
-              serve_ad_at, /* use_sentence_style */ true));
+  BLOG(1, "Maybe serve notification ad "
+              << FriendlyDateAndTime(serve_ad_at, /*use_sentence_style*/ true));
 }
 
 void Serving::RetryServingAdAtNextInterval() {
@@ -163,8 +162,8 @@ void Serving::RetryServingAdAtNextInterval() {
   }
 
   const base::Time serve_ad_at = MaybeServeAdAfter(kRetryServingAdAfterDelay);
-  BLOG(1, "Maybe serve notification ad " << FriendlyDateAndTime(
-              serve_ad_at, /* use_sentence_style */ true));
+  BLOG(1, "Maybe serve notification ad "
+              << FriendlyDateAndTime(serve_ad_at, /*use_sentence_style*/ true));
 }
 
 base::Time Serving::MaybeServeAdAfter(const base::TimeDelta delay) {

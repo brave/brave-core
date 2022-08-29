@@ -34,7 +34,7 @@ class BatAdsResourceManagerTest : public ResourceManagerObserver,
     UnitTestBase::TearDown();
   }
 
-  void OnResourceDidUpdate(const std::string& id) override {
+  void OnResourceDidUpdate(const std::string& /*id*/) override {
     resource_did_update_ = true;
   }
 

@@ -21,7 +21,7 @@ struct PipelineInfo final {
   PipelineInfo& operator=(PipelineInfo&& info) noexcept;
   ~PipelineInfo();
 
-  PipelineInfo(const int version,
+  PipelineInfo(int version,
                const std::string& timestamp,
                const std::string& locale,
                TransformationVector transformations,

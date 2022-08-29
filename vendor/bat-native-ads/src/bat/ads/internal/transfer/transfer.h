@@ -37,27 +37,24 @@ class Transfer final : public TabManagerObserver {
 
   void SetLastClickedAd(const AdInfo& ad) { last_clicked_ad_ = ad; }
 
-  void MaybeTransferAd(const int32_t tab_id,
-                       const std::vector<GURL>& redirect_chain);
+  void MaybeTransferAd(int32_t tab_id, const std::vector<GURL>& redirect_chain);
 
  private:
-  void TransferAd(const int32_t tab_id,
-                  const std::vector<GURL>& redirect_chain);
-  void OnTransferAd(const int32_t tab_id,
-                    const std::vector<GURL>& redirect_chain);
+  void TransferAd(int32_t tab_id, const std::vector<GURL>& redirect_chain);
+  void OnTransferAd(int32_t tab_id, const std::vector<GURL>& redirect_chain);
 
-  void Cancel(const int32_t tab_id);
+  void Cancel(int32_t tab_id);
 
   void FailedToTransferAd(const AdInfo& ad) const;
 
-  void NotifyWillTransferAd(const AdInfo& ad, const base::Time time) const;
+  void NotifyWillTransferAd(const AdInfo& ad, base::Time time) const;
   void NotifyDidTransferAd(const AdInfo& ad) const;
-  void NotifyCancelledTransfer(const AdInfo& ad, const int32_t tab_id) const;
+  void NotifyCancelledTransfer(const AdInfo& ad, int32_t tab_id) const;
   void NotifyFailedToTransferAd(const AdInfo& ad) const;
 
   // TabManagerObserver:
   void OnTabDidChange(const TabInfo& tab) override;
-  void OnDidCloseTab(const int32_t tab_id) override;
+  void OnDidCloseTab(int32_t tab_id) override;
 
   base::ObserverList<TransferObserver> observers_;
 

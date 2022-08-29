@@ -11,7 +11,7 @@
 #include "base/strings/strcat.h"
 #include "bat/ads/internal/base/search_engine/search_engine_domain_extension_constants.h"
 #include "bat/ads/internal/base/search_engine/search_engine_subdomain_constants.h"
-#include "testing/gtest/include/gtest/gtest.h"
+#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

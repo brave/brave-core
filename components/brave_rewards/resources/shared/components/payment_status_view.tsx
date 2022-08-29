@@ -76,7 +76,6 @@ function RewardAmount (props: RewardAmountProps) {
 
 interface Props {
   earningsLastMonth: number
-  earningsReceived: boolean
   nextPaymentDate: number
   providerPayoutStatus: ProviderPayoutStatus
 }
@@ -106,7 +105,7 @@ export function PaymentStatusView (props: Props) {
     )
   }
 
-  if (props.earningsReceived && props.providerPayoutStatus === 'complete') {
+  if (props.providerPayoutStatus === 'complete') {
     return (
       <div className='rewards-payment-completed'>
         <div><PaymentCompleteIcon /></div>
@@ -121,7 +120,7 @@ export function PaymentStatusView (props: Props) {
     )
   }
 
-  if (!props.earningsReceived && props.providerPayoutStatus === 'processing') {
+  if (props.providerPayoutStatus === 'processing') {
     return (
       <div className='rewards-payment-processing'>
         <div>

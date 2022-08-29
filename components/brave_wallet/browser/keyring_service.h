@@ -125,6 +125,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   // mojom::KeyringService
   // Must unlock before using this API otherwise it will return empty string
   void GetMnemonicForDefaultKeyring(
+      const std::string& password,
       GetMnemonicForDefaultKeyringCallback callback) override;
   void CreateWallet(const std::string& password,
                     CreateWalletCallback callback) override;
@@ -146,6 +147,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
 
   void GetPrivateKeyForKeyringAccount(
       const std::string& address,
+      const std::string& password,
       mojom::CoinType coin,
       GetPrivateKeyForKeyringAccountCallback callback) override;
   void ImportAccount(const std::string& account_name,
@@ -163,8 +165,11 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void AddHardwareAccounts(
       std::vector<mojom::HardwareWalletAccountPtr> info) override;
   void RemoveHardwareAccount(const std::string& address,
-                             mojom::CoinType coin) override;
+                             const std::string& password,
+                             mojom::CoinType coin,
+                             RemoveHardwareAccountCallback callback) override;
   void RemoveImportedAccount(const std::string& address,
+                             const std::string& password,
                              mojom::CoinType coin,
                              RemoveImportedAccountCallback callback) override;
   void IsWalletBackedUp(IsWalletBackedUpCallback callback) override;
@@ -393,6 +398,8 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
 
   void AddHardwareAccounts(std::vector<mojom::HardwareWalletAccountPtr> info,
                            const std::string keyring_id);
+
+  bool ValidatePasswordInternal(const std::string& password);
 
   std::unique_ptr<base::OneShotTimer> auto_lock_timer_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;

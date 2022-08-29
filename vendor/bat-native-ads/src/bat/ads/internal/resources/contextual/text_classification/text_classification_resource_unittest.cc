@@ -14,10 +14,12 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-using testing::_;
-using testing::Invoke;
+namespace ads {
 
 namespace {
+
+using testing::_;
+using testing::Invoke;
 
 constexpr char kInvalidJsonResourceFile[] =
     "feibnmjhecfbjpeciancnchbmlobenjn_invalid_json";
@@ -26,7 +28,6 @@ constexpr char kNotExistantResourceFile[] =
 
 }  // namespace
 
-namespace ads {
 namespace resource {
 
 class BatAdsTextClassificationResourceTest : public UnitTestBase {
@@ -52,7 +53,7 @@ TEST_F(BatAdsTextClassificationResourceTest, LoadInvalidJsonResource) {
   // Arrange
   TextClassification resource;
   EXPECT_CALL(*ads_client_mock_, LoadFileResource(_, _, _))
-      .WillOnce(Invoke([](const std::string& id, const int version,
+      .WillOnce(Invoke([](const std::string& /*id*/, const int /*version*/,
                           LoadFileCallback callback) {
         const base::FilePath path =
             GetFileResourcePath().AppendASCII(kInvalidJsonResourceFile);
@@ -74,7 +75,7 @@ TEST_F(BatAdsTextClassificationResourceTest, LoadNotExistantJsonResource) {
   // Arrange
   TextClassification resource;
   EXPECT_CALL(*ads_client_mock_, LoadFileResource(_, _, _))
-      .WillOnce(Invoke([](const std::string& id, const int version,
+      .WillOnce(Invoke([](const std::string& /*id*/, const int /*version*/,
                           LoadFileCallback callback) {
         const base::FilePath path =
             GetFileResourcePath().AppendASCII(kNotExistantResourceFile);
@@ -96,7 +97,7 @@ TEST_F(BatAdsTextClassificationResourceTest, LoadNotInitializedFile) {
   // Arrange
   TextClassification resource;
   EXPECT_CALL(*ads_client_mock_, LoadFileResource(_, _, _))
-      .WillOnce(Invoke([](const std::string& id, const int version,
+      .WillOnce(Invoke([](const std::string& /*id*/, const int /*version*/,
                           LoadFileCallback callback) {
         std::move(callback).Run(base::File());
       }));

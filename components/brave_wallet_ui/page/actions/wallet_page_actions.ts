@@ -8,18 +8,17 @@ import {
   CreateWalletPayloadType,
   WalletCreatedPayloadType,
   RecoveryWordsAvailablePayloadType,
-  PrivateKeyAvailablePayloadType,
   SelectAssetPayloadType,
   UpdateSelectedAssetType,
   ImportAccountPayloadType,
   RemoveImportedAccountPayloadType,
   RemoveHardwareAccountPayloadType,
-  ViewPrivateKeyPayloadType,
   ImportAccountFromJsonPayloadType,
   ImportFromExternalWalletPayloadType,
   ImportWalletErrorPayloadType,
   ImportFilecoinAccountPayloadType,
-  RestoreWalletPayloadType
+  RestoreWalletPayloadType,
+  ShowRecoveryPhrasePayload
 } from '../constants/action_types'
 import {
   BraveWallet,
@@ -36,11 +35,8 @@ export const importAccountFromJson = createAction<ImportAccountFromJsonPayloadTy
 export const removeImportedAccount = createAction<RemoveImportedAccountPayloadType>('removeImportedAccount')
 export const walletCreated = createAction<WalletCreatedPayloadType>('walletCreated')
 export const walletSetupComplete = createAction<boolean>('walletSetupComplete')
-export const showRecoveryPhrase = createAction<boolean>('showRecoveryPhrase')
-export const viewPrivateKey = createAction<ViewPrivateKeyPayloadType>('viewPrivateKey')
-export const doneViewingPrivateKey = createAction('doneViewingPrivateKey')
+export const showRecoveryPhrase = createAction<ShowRecoveryPhrasePayload>('showRecoveryPhrase')
 export const recoveryWordsAvailable = createAction<RecoveryWordsAvailablePayloadType>('recoveryWordsAvailable')
-export const privateKeyAvailable = createAction<PrivateKeyAvailablePayloadType>('privateKeyAvailable')
 export const walletBackupComplete = createAction('walletBackupComplete')
 export const hasMnemonicError = createAction<boolean>('hasMnemonicError')
 export const setShowAddModal = createAction<boolean>('setShowAddModal')

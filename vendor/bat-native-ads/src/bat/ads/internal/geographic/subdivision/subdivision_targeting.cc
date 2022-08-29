@@ -15,7 +15,6 @@
 #include "base/values.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/net/http/http_status_code.h"
 #include "bat/ads/internal/base/time/time_formatting_util.h"
 #include "bat/ads/internal/base/url/url_request_string_util.h"
 #include "bat/ads/internal/base/url/url_response_string_util.h"
@@ -26,6 +25,7 @@
 #include "bat/ads/internal/prefs/pref_manager.h"
 #include "bat/ads/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
+#include "net/http/http_status_code.h"
 
 namespace ads {
 namespace geographic {
@@ -246,7 +246,7 @@ void SubdivisionTargeting::Retry() {
       base::BindOnce(&SubdivisionTargeting::Fetch, base::Unretained(this)));
 
   BLOG(1, "Retry fetching subdivision target "
-              << FriendlyDateAndTime(retry_at, /* use_sentence_style */ true));
+              << FriendlyDateAndTime(retry_at, /*use_sentence_style*/ true));
 }
 
 void SubdivisionTargeting::FetchAfterDelay() {
@@ -259,7 +259,7 @@ void SubdivisionTargeting::FetchAfterDelay() {
       base::BindOnce(&SubdivisionTargeting::Fetch, base::Unretained(this)));
 
   BLOG(1, "Fetch ads subdivision target "
-              << FriendlyDateAndTime(fetch_at, /* use_sentence_style */ true));
+              << FriendlyDateAndTime(fetch_at, /*use_sentence_style*/ true));
 }
 
 void SubdivisionTargeting::OnLocaleDidChange(const std::string& locale) {

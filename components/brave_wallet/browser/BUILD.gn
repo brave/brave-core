@@ -33,6 +33,8 @@ static_library("browser") {
     "brave_wallet_service.h",
     "brave_wallet_service_delegate.cc",
     "brave_wallet_service_delegate.h",
+    "ens_resolver_task.cc",
+    "ens_resolver_task.h",
     "eth_abi_decoder.cc",
     "eth_abi_decoder.h",
     "eth_block_tracker.cc",

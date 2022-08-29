@@ -6,7 +6,7 @@
 #include "bat/ads/internal/flags/did_override/did_override_features_from_command_line_util.h"
 
 #include "base/check.h"
-#include "base/feature_list.h"
+#include "base/ranges/algorithm.h"
 #include "bat/ads/internal/account/statement/ad_rewards_features.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/eligible_ads_features.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
@@ -43,16 +43,12 @@ const base::Feature* const kFeatures[] = {
 }  // namespace
 
 bool DidOverrideFeaturesFromCommandLine() {
-  for (const auto* feature : kFeatures) {
+  return base::ranges::any_of(kFeatures, [](const auto* feature) {
     DCHECK(feature);
 
-    if (base::FeatureList::GetInstance()->IsFeatureOverriddenFromCommandLine(
-            feature->name)) {
-      return true;
-    }
-  }
-
-  return false;
+    return base::FeatureList::GetInstance()->IsFeatureOverriddenFromCommandLine(
+        feature->name);
+  });
 }
 
 }  // namespace ads

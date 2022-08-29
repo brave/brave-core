@@ -108,7 +108,7 @@ void ConfirmationStateManager::OnLoaded(const bool success,
 
       BLOG(3, "Failed to parse confirmations state: " << json);
 
-      callback_(/* success */ false);
+      callback_(/*success*/ false);
       return;
     }
 
@@ -122,7 +122,7 @@ void ConfirmationStateManager::OnLoaded(const bool success,
     BLOG(9, "Confirmation state is mutated");
   }
 
-  callback_(/* success */ true);
+  callback_(/*success*/ true);
 }
 
 void ConfirmationStateManager::Save() {
@@ -169,11 +169,12 @@ bool ConfirmationStateManager::RemoveFailedConfirmation(
 
   DCHECK(is_initialized_);
 
-  const auto iter =
-      std::find_if(failed_confirmations_.cbegin(), failed_confirmations_.cend(),
-                   [&confirmation](const ConfirmationInfo& info) {
-                     return info.id == confirmation.id;
-                   });
+  const auto iter = std::find_if(
+      failed_confirmations_.cbegin(), failed_confirmations_.cend(),
+      [&confirmation](const ConfirmationInfo& failed_confirmation) {
+        return failed_confirmation.transaction_id ==
+               confirmation.transaction_id;
+      });
 
   if (iter == failed_confirmations_.cend()) {
     return false;
@@ -265,7 +266,6 @@ base::Value::Dict ConfirmationStateManager::GetFailedConfirmationsAsDictionary(
     }
 
     base::Value::Dict confirmation_dict;
-    confirmation_dict.Set("id", confirmation.id);
     confirmation_dict.Set("transaction_id", confirmation.transaction_id);
     confirmation_dict.Set("creative_instance_id",
                           confirmation.creative_instance_id);
@@ -322,15 +322,6 @@ bool ConfirmationStateManager::GetFailedConfirmationsFromDictionary(
     }
 
     ConfirmationInfo confirmation;
-
-    // Id
-    const std::string* id = dict->FindString("id");
-    if (!id) {
-      // Id missing, skip confirmation
-      BLOG(0, "Confirmation missing id");
-      continue;
-    }
-    confirmation.id = *id;
 
     // Transaction id
     const std::string* transaction_id = dict->FindString("transaction_id");

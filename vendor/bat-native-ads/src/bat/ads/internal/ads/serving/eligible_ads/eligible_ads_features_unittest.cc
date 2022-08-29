@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/eligible_ads_features.h"
 
-#include "testing/gtest/include/gtest/gtest.h"
+#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -13,7 +13,7 @@ namespace ads {
 namespace features {
 
 namespace {
-constexpr unsigned int kNumberOfServingFeatures = 7u;
+constexpr unsigned int kNumberOfServingFeatures = 7U;
 }  // namespace
 
 TEST(BatAdsEligibleAdsFeaturesTest, EligibleAdsEnabled) {

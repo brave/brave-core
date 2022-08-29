@@ -53,7 +53,7 @@ class PlaylistMediaFileDownloadManager
   PlaylistMediaFileDownloadManager& operator=(
       const PlaylistMediaFileDownloadManager&) = delete;
 
-  void GenerateMediaFileForPlaylistItem(const PlaylistItemInfo& playlist_item);
+  void DownloadMediaFile(const PlaylistItemInfo& playlist_item);
   void CancelDownloadRequest(const std::string& id);
   void CancelAllDownloadRequests();
 
@@ -63,7 +63,7 @@ class PlaylistMediaFileDownloadManager
                         const std::string& media_file_path) override;
   void OnMediaFileGenerationFailed(const std::string& id) override;
 
-  void GenerateMediaFiles();
+  void TryStartingDownloadTask();
   std::unique_ptr<PlaylistItemInfo> GetNextPlaylistItemTarget();
   std::string GetCurrentDownloadingPlaylistItemID() const;
   void CancelCurrentDownloadingPlaylistItem();

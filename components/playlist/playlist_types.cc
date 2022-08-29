@@ -51,6 +51,13 @@ PlaylistInfo::PlaylistInfo(PlaylistInfo&& rhs) noexcept = default;
 PlaylistInfo& PlaylistInfo::operator=(PlaylistInfo&& rhs) noexcept = default;
 
 PlaylistItemInfo::PlaylistItemInfo() = default;
+PlaylistItemInfo::PlaylistItemInfo(const Title& title,
+                                   const ThumbnailPath& thumbnail_path,
+                                   const MediaFilePath& media_file_path)
+    : title(title),
+      thumbnail_path(thumbnail_path),
+      media_file_path(media_file_path) {}
+
 PlaylistItemInfo::~PlaylistItemInfo() = default;
 PlaylistItemInfo::PlaylistItemInfo(const PlaylistItemInfo& rhs) = default;
 PlaylistItemInfo& PlaylistItemInfo::operator=(const PlaylistItemInfo& rhs) =

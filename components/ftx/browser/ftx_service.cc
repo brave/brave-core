@@ -232,13 +232,10 @@ bool FTXService::AuthenticateFromAuthToken(const std::string& auth_token) {
       std::move(onRequest), true);
 }
 
-bool FTXService::GetConvertQuote(
-    const std::string& from,
-    const std::string& to,
-    const std::string& amount,
-    GetConvertQuoteCallback callback) {
-  auto internal_callback = base::BindOnce(&FTXService::OnGetConvertQuote,
-      base::Unretained(this), std::move(callback));
+bool FTXService::GetConvertQuote(const std::string& from,
+                                 const std::string& to,
+                                 const std::string& amount,
+                                 GetConvertQuoteCallback callback) {
   GURL url = GetOAuthURL(oauth_quote_path);
   base::Value::Dict request_data;
   request_data.Set("fromCoin", from);
@@ -250,8 +247,11 @@ bool FTXService::GetConvertQuote(
     std::move(callback).Run("");
     return false;
   }
-  return NetworkRequest(url, "POST", body, "application/json",
-      std::move(internal_callback), true);
+  return NetworkRequest(
+      url, "POST", body, "application/json",
+      base::BindOnce(&FTXService::OnGetConvertQuote, base::Unretained(this),
+                     std::move(callback)),
+      true);
 }
 
 void FTXService::OnGetConvertQuote(

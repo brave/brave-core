@@ -10,7 +10,6 @@
 
 #include "base/base64.h"
 #include "bat/ads/internal/base/crypto/crypto_unittest_util.h"
-#include "bat/ads/internal/base/crypto/crypto_util.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_envelope_info.h"
 #include "tweetnacl.h"  // NOLINT
 
@@ -96,7 +95,7 @@ absl::optional<std::string> OpenEnvelope(
   const std::vector<uint8_t> plaintext = Decrypt(
       *ciphertext, *nonce, *ephemeral_public_key, *advertiser_secret_key);
 
-  return std::string((const char*)&plaintext.front());
+  return std::string(reinterpret_cast<const char*>(&plaintext.front()));
 }
 
 absl::optional<std::string> OpenEvenlopeForUserDataAndAdvertiserSecretKey(

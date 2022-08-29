@@ -31,7 +31,7 @@ class Timer final {
   // running, it will be replaced to call the given |user_task|. Returns the
   // time the delayed task will be fired.
   base::Time Start(const base::Location& location,
-                   const base::TimeDelta delay,
+                   base::TimeDelta delay,
                    base::OnceClosure user_task);
 
   // |location| provides basic info where the timer was posted from. Returns the
@@ -39,7 +39,7 @@ class Timer final {
   // geometrically distributed number of seconds |~delay| from now. If the timer
   // is already running, it will be replaced to call the given |user_task|.
   base::Time StartWithPrivacy(const base::Location& location,
-                              const base::TimeDelta delay,
+                              base::TimeDelta delay,
                               base::OnceClosure user_task);
 
   // Returns true if the timer is running (i.e., not stopped).
