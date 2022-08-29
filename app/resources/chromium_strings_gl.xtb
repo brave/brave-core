@@ -13,14 +13,15 @@
 <translation id="8541922081612557424">Acerca de Brave</translation>
 <translation id="1203500561924088507">Grazas por levar a cabo a instalación. Para utilizar <ph name="BUNDLE_NAME"/>, debes reiniciar o navegador.</translation>
 <translation id="4798342026247191171">Configura o teu novo perfil de Brave</translation>
+<translation id="6361779936989026201">Asistente de Brave en Brave</translation>
 <translation id="113959764510199339">Brave está tentando mostrar contrasinais.</translation>
 <translation id="8132634101975074716">Iniciaches sesión en Brave.</translation>
 <translation id="5147525139567260139">Compartir unha pestana de Brave</translation>
 <translation id="1530633922026945685">Brave necesita permiso para acceder á cámara co fin de crear un mapa 3D do que te rodea</translation>
-<translation id="473077451702478797">Brave bloqueou este ficheiro porque é demasiado grande para realizar unha comprobación de seguranza. Téntao de novo con ficheiros de ata 50 MB</translation>
 <translation id="4449148723378534338">Revisa os controis clave de privacidade e seguranza en Brave</translation>
 <translation id="1640672724030957280">Descargando…</translation>
 <translation id="5616153642055197778">Hai unha versión nova e máis segura de Brave dispoñible.</translation>
+<translation id="5846727201643228411">Podes ver e eliminar temas de interese que usan os sitios para mostrarche anuncios. Brave estima os teus intereses en función do teu historial de navegación recente.</translation>
 <translation id="6797402139308059782">Deixar que Brave se execute en segundo plano</translation>
 <translation id="5875673934455379806">Reinstalar Brave</translation>
 <translation id="6888366668010117849">Os sitios poden almacenar con Brave información sobre os teus intereses. Por exemplo, se visitas un sitio para comprar zapatillas deportivas para un maratón, ese sitio podería determinar que che interesa correr maratóns. Máis tarde, se visitas un sitio distinto que che permite rexistrarte para participar nunha carreira, pode mostrárseche nel un anuncio de zapatillas deportivas baseado nos teus intereses.</translation>
@@ -34,6 +35,7 @@
 <translation id="2018879682492276940">Produciuse un erro durante a instalación. Téntao de novo.</translation>
 <translation id="831418749472885028">Para comprobar se os teus outros contrasinais están protexidos fronte a violacións da seguranza dos datos e outros problemas de seguranza, debes <ph name="BEGIN_LINK"/>iniciar sesión en Brave<ph name="END_LINK"/>.</translation>
 <translation id="5499149312981370855">Escolle se queres incluír o historial de Brave para gozar de experiencias máis personalizadas cos servizos de Brave</translation>
+<translation id="849607431499549468">Información acerca de como xestiona Brave os seus certificados raíz</translation>
 <translation id="142389341645668510">Personalizar Brave</translation>
 <translation id="2174917724755363426">A instalación non finalizou. Seguro que queres cancelala?</translation>
 <translation id="8745514854244955877">Brave (inicio de sesión de rede, <ph name="PAGE_TITLE"/>)</translation>
@@ -94,6 +96,7 @@
 <translation id="5853262807109651878">Esta acción eliminará <ph name="ITEMS_COUNT"/> elementos deste dispositivo. Para recuperar os teus datos máis tarde, inicia sesión en Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">O atallo <ph name="SHORTCUT"/> permite cambiar entre perfís de Brave</translation>
 <translation id="8703492925273919597">Pecha todas as ventás de Brave e téntao de novo.</translation>
+<translation id="5350485513372498152">O Asistente de Brave en Brave pode completar accións por ti nos sitios web</translation>
 <translation id="4061445349373849749">Para protexer a túa privacidade, eliminamos automaticamente os teus intereses cuxa antigüidade sexa superior a 4 semanas. Algúns poderían volver incluírse na lista ao seguires navegando. Se o prefires, podes quitar os intereses que non queiras que teña en conta Brave.</translation>
 <translation id="691208314680168371">O teu historial de navegación e un rexistro dos sitios que visitases usando Brave neste dispositivo.</translation>
 <translation id="1384923383737428730">O teu ordenador ten software daniño. Brave pode quitalo, restaurar a configuración e desactivar as extensións para que o navegador funcione con normalidade de novo.</translation>
@@ -259,7 +262,6 @@
 <translation id="5101812148953915496">Os sitios que visites lembran a túa información ata que pechas Brave</translation>
 <translation id="5516268345616100622">Xestor de tarefas: Brave</translation>
 <translation id="713191641919118540">Os teus intereses estimados por Brave</translation>
-<translation id="2777705643687998385">Brave bloqueou este ficheiro porque está encriptado. Pídelle ao seu propietario que o desencripte</translation>
 <translation id="9068395155143628872">A medición dos anuncios permite que os sitios que visites lle soliciten a Brave información que lles axude a medir o rendemento dos seus anuncios. Ademais, restrinxe o seguimento en varios sitios, dado que se transfire a menor cantidade posible de información entre eles.</translation>
 <translation id="1864557848095568223">Actualizando Brave</translation>
 <translation id="3403365884036456766">O teu ficheiro de preferencias está danado ou non é válido.
@@ -348,6 +350,7 @@ Brave non pode recuperar a túa configuración.</translation>
 <translation id="7902365066753170041">Reiniciar para actualizar &amp;Brave</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">É posible que Brave non funcione correctamente porque xa non admite Windows XP nin Windows Vista</translation>
+<translation id="8180288330711585962">Certificados que xestiona Brave</translation>
 <translation id="1611678871603620428">Se queres recibir actualizacións de Brave no futuro, debes instalar o sistema operativo macOS 10.13 ou unha versión posterior. Este ordenador ten OS X 10.11.</translation>
 <translation id="4484434718272972655">Quen está utilizando Brave?</translation>
 <translation id="7173394303099002355">Goza da máxima seguranza de Brave</translation>

@@ -311,18 +311,6 @@
       }
     }
   },
-  "notificationBackupWalletTitle": {
-    "message": "Varmuuskopioi Brave-palkinnot",
-    "description": ""
-  },
-  "notificationBackupWalletText": {
-    "message": "Varmuuskopioi Brave-palkintosi.",
-    "description": ""
-  },
-  "notificationBackupWalletAction": {
-    "message": "Varmuuskopioi nyt",
-    "description": ""
-  },
   "notificationWalletDisconnectedTitle": {
     "message": "Olet kirjautunut ulos",
     "description": ""

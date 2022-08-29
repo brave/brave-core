@@ -11,14 +11,15 @@
 <translation id="8541922081612557424">A Brave névjegye</translation>
 <translation id="1203500561924088507">Köszönjük, hogy elvégezte a telepítést. A(z) <ph name="BUNDLE_NAME"/> használata előtt újra kell indítania a böngészőt.</translation>
 <translation id="4798342026247191171">Új Brave-profil beállítása</translation>
+<translation id="6361779936989026201">Brave Segéd a Braveban</translation>
 <translation id="113959764510199339">A Brave megpróbálja megjeleníteni a jelszavakat.</translation>
 <translation id="8132634101975074716">Bejelentkezett a Braveba.</translation>
 <translation id="5147525139567260139">Brave-lap megosztása</translation>
 <translation id="1530633922026945685">A Bravenak engedélyre van szüksége a kamerájához való hozzáféréshez annak érdekében, hogy 3D-s térképet készíthessen az Ön környezetéről.</translation>
-<translation id="473077451702478797">A Brave letiltotta ezt a fájlt, mert túl nagy méretű a biztonsági ellenőrzés elvégzéséhez. Próbálkozzon újra legfeljebb 50 MB méretű fájllal.</translation>
 <translation id="4449148723378534338">A legfontosabb adatvédelmi és biztonsági beállítások áttekintése a Braveban</translation>
 <translation id="1640672724030957280">Letöltés...</translation>
 <translation id="5616153642055197778">Elérhető a Brave új, biztonságosabb verziója.</translation>
+<translation id="5846727201643228411">Megtekintheti és eltávolíthatja azokat a témaköröket, amelyeket a webhelyek hirdetések megjelenítésére használnak. A Brave az Önt esetlegesen érdeklő témaköröket a legutóbbi böngészési előzményei alapján határozza meg.</translation>
 <translation id="6797402139308059782">A Brave fusson a háttérben</translation>
 <translation id="5875673934455379806">A Brave újratelepítése</translation>
 <translation id="6888366668010117849">A webhelyek tárolhatnak az Ön érdeklődési köreivel kapcsolatos információkat a Braveban. Ha például felkeres egy webhelyet, ahol maratonfutáshoz való cipőt vásárol, akkor a webhely meghatározhatja a maratonfutást az Ön egyik érdeklődési köreként. Ha később felkeres egy másik webhelyet, hogy jelentkezzen egy versenyre, ezen a webhelyen megjelenhet egy futócipőket reklámozó hirdetés az Ön érdeklődési köre alapján.</translation>
@@ -32,6 +33,7 @@
 <translation id="2018879682492276940">Sikertelen telepítés. Próbálja újra.</translation>
 <translation id="831418749472885028">Ha ellenőrizni szeretné, hogy a többi jelszava biztonságban van-e az adatvédelmi incidensektől és más biztonsági problémáktól, <ph name="BEGIN_LINK"/>jelentkezzen be a Braveba<ph name="END_LINK"/>.</translation>
 <translation id="5499149312981370855">Válassza ki, hogy szeretné-e használni a Brave-előzményeket személyre szabott élmények biztosításához a Brave-szolgáltatásokban.</translation>
+<translation id="849607431499549468">Információ arról, hogy a Brave hogyan kezeli a főtanúsítványokat</translation>
 <translation id="142389341645668510">A Brave személyre szabása</translation>
 <translation id="2174917724755363426">A telepítés még nem fejeződött be. Biztosan megszakítja a műveletet?</translation>
 <translation id="8745514854244955877">Brave – Hálózati bejelentkezés – <ph name="PAGE_TITLE"/></translation>
@@ -92,6 +94,7 @@
 <translation id="5853262807109651878">Ezzel <ph name="ITEMS_COUNT"/> elemet töröl erről az eszközről. Az adatok későbbi lekéréséhez jelentkezzen be a Braveba a következő e-mail-címmel: <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">A(z) <ph name="SHORTCUT"/> billentyűkombinációval válthat a Brave-profilok között</translation>
 <translation id="8703492925273919597">Zárjon be minden Brave-ablakot, és próbálkozzon újra.</translation>
+<translation id="5350485513372498152">A „Brave Segéd a Braveban” elvégezhet bizonyos műveleteket Önnek különböző webhelyeken</translation>
 <translation id="4061445349373849749">Adatai védelme érdekében a négy hétnél régebbi érdeklődési köreit automatikusan töröljük. Böngészési tevékenysége alapján az érdeklődési körök újra megjelenhetnek a listákon. Arra is lehetősége van, hogy eltávolítsa azokat az érdeklődési köröket, amelyeket nem szeretne, hogy a Brave figyelembe vegyen.</translation>
 <translation id="691208314680168371">Böngészési előzményei és az Ön által az ezen az eszközön használt Braveban felkeresett webhelyek jegyzéke.</translation>
 <translation id="1384923383737428730">A számítógépen kártékony szoftver található. A Brave képes a kártékony szoftver eltávolítására, a beállítások visszaállítására és a bővítmények letiltására, hogy a böngésző újra a szokásos módon működhessen.</translation>
@@ -256,7 +259,6 @@
 <translation id="5101812148953915496">A felkeresett webhelyek megjegyzik az Ön adatait a Brave bezárásáig</translation>
 <translation id="5516268345616100622">Feladatkezelő -- Brave</translation>
 <translation id="713191641919118540">Az Ön Brave által megbecsült érdeklődési körei</translation>
-<translation id="2777705643687998385">A Brave letiltotta ezt a fájlt, mert titkosítva van. Kérje meg a tulajdonosát, hogy oldja fel a titkosítást.</translation>
 <translation id="9068395155143628872">A hirdetésmérés segítségével az Ön által felkeresett webhelyek olyan adatokat kérhetnek a Bravetól, amelyek segítségével a webhely mérheti hirdetéseinek teljesítményét. A hirdetésmérés azáltal korlátozza a webhelyeken átnyúló nyomon követést, hogy a lehető legkevesebb adatot továbbítja a webhelyek között.</translation>
 <translation id="1864557848095568223">A Brave frissítése</translation>
 <translation id="3403365884036456766">A beállításait tartalmazó fájl hibás vagy érvénytelen.
@@ -346,6 +348,7 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="7902365066753170041">Indítsa újra a Brave frissítéshez</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Előfordulhat, hogy a Brave nem működik majd megfelelően, mert a továbbiakban már nem támogatja a következő rendszereket: Windows XP és Windows Vista</translation>
+<translation id="8180288330711585962">A Brave által kezelt tanúsítványok</translation>
 <translation id="1611678871603620428">Ha a jövőben Brave-frissítéseket szeretne kapni, akkor a macOS 10.13-as vagy újabb verziójára lesz szüksége. Ezen a számítógépen az OS X 10.11 fut.</translation>
 <translation id="4484434718272972655">Ki használja a Braveot?</translation>
 <translation id="7173394303099002355">Állítsa be a Brave legerősebb védelmét</translation>

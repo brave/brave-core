@@ -114,7 +114,7 @@
   <message name="IDS_BRAVE_WALLET_WELCOME_TITLE" desc="Onboarding welcome screen title">Secure. Multi-chain. And oh-so-easy to use. Your Brave Wallet is just a few clicks away</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_RESTORE_BUTTON" desc="Restore screen button">Restore</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_BUTTON" desc="Onboarding get started button">Create new wallet</message>
-  <message name="BRAVE_WALLET_IMPORT_EXISTING_WALLET" desc="Wallet onboarding welcome import wallet button">Import existing wallet</message>
+  <message name="IDS_BRAVE_WALLET_IMPORT_EXISTING_WALLET" desc="Wallet onboarding welcome import wallet button">Import existing wallet</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_INTRO_TITLE" desc="Backup screen title">Back up your crypto wallet</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_INTRO_DESCRIPTION" desc="Backup screen description">In the next step you’ll see a <ph name="RECOVERY_PHRASE_LENGTH">$1</ph>-word recovery phrase, which you can use to recover your primary crypto accounts. Save it someplace safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_INTRO_TERMS" desc="Backup screen terms check box">I understand that if I lose my recovery words, I will not be able to access my crypto wallet.</message>
@@ -597,11 +597,11 @@
   <message name="IDS_BRAVE_WALLET_DEPOSIT_SOL_SPL_TOKENS" desc="Description of depositable Solana wallet assets">Deposit Solana or SPL tokens</message>
   <message name="IDS_BRAVE_WALLET_DEPOSIT_ERC" desc="Description of depositable ERC assets">Deposit ERC-based tokens</message>
   <message name="IDS_BRAVE_WALLET_DEPOSIT_ONLY_SEND_ON_X_NETWORK" desc="Warning to only send tokens to a address via a specific network">Only send tokens to this address on <ph name="VALUE">$1</ph></message>
-  <message name="BRAVE_WALLET_PERKS_TOKENS" desc="Description of how the wallet allows access to many crypto tokens">Buy, send, and swap 200+ crypto assets</message>
-  <message name="BRAVE_WALLET_PERKS_BROWSER_NATIVE" desc="Description of how the wallet is browser-native">Browser-native, no risky extensions</message>
-  <message name="BRAVE_WALLET_MULTI_CHAIN" desc="Description of how the wallet allows access to multiple blockchains">Multi-chain &amp; NFT support</message>
-  <message name="BRAVE_WALLET_UNLOCK_NEEDED_TO_CREATE_ACCOUNT" desc="Message to inform the user that their wallet must be unlocked before a new account can be created">Unlock needed to create an account</message>
-  <message name="BRAVE_WALLET_CLICK_TO_SWITCH" desc="Action text for switching selection">Click to switch</message>
+  <message name="IDS_BRAVE_WALLET_PERKS_TOKENS" desc="Description of how the wallet allows access to many crypto tokens">Buy, send, and swap 200+ crypto assets</message>
+  <message name="IDS_BRAVE_WALLET_PERKS_BROWSER_NATIVE" desc="Description of how the wallet is browser-native">Browser-native, no risky extensions</message>
+  <message name="IDS_BRAVE_WALLET_MULTI_CHAIN" desc="Description of how the wallet allows access to multiple blockchains">Multi-chain &amp; NFT support</message>
+  <message name="IDS_BRAVE_WALLET_UNLOCK_NEEDED_TO_CREATE_ACCOUNT" desc="Message to inform the user that their wallet must be unlocked before a new account can be created">Unlock needed to create an account</message>
+  <message name="IDS_BRAVE_WALLET_CLICK_TO_SWITCH" desc="Action text for switching selection">Click to switch</message>
   <message name="IDS_BRAVE_WALLET_ORDINAL_TWELFTH" desc="Twelfth list item ordinal">Twelfth</message>
   <message name="IDS_BRAVE_WALLET_ORIDINAL_THIRTEENTH" desc="Thirteenth list item ordinal">Thirteenth</message>
   <message name="IDS_BRAVE_WALLET_ORDINAL_FOURTEENTH" desc="Fourteenth list item ordinal">Fourteenth</message>

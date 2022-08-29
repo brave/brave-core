@@ -11,14 +11,15 @@
 <translation id="8541922081612557424">Quant a Brave</translation>
 <translation id="1203500561924088507">T'agraïm la instal·lació. Has de reiniciar el navegador abans d'utilitzar <ph name="BUNDLE_NAME"/>.</translation>
 <translation id="4798342026247191171">Configura el teu perfil de Brave nou</translation>
+<translation id="6361779936989026201">L'Assistent de Brave a Brave</translation>
 <translation id="113959764510199339">Brave està provant de mostrar les contrasenyes.</translation>
 <translation id="8132634101975074716">Teniu la sessió iniciada a Brave.</translation>
 <translation id="5147525139567260139">Comparteix una pestanya de Brave</translation>
 <translation id="1530633922026945685">Brave necessita permís per accedir a la càmera i poder crear un mapa 3D del teu entorn</translation>
-<translation id="473077451702478797">Brave ha bloquejat aquest fitxer perquè és massa gran per fer-ne una comprovació de seguretat. Torna-ho a provar amb fitxers de fins a 50 MB.</translation>
 <translation id="4449148723378534338">Revisa els controls principals de privadesa i seguretat a Brave</translation>
 <translation id="1640672724030957280">S'està baixant...</translation>
 <translation id="5616153642055197778">Hi ha disponible una versió nova més segura de Brave.</translation>
+<translation id="5846727201643228411">Pots veure i suprimir els temes d'interès que els llocs web utilitzen per mostrar-te anuncis. Brave estima els teus interessos basant-se en l'historial de navegació recent.</translation>
 <translation id="6797402139308059782">Permet que Brave s'executi en segon pla</translation>
 <translation id="5875673934455379806">Torna a instal·lar Brave</translation>
 <translation id="6888366668010117849">Els llocs web poden emmagatzemar informació a Brave sobre els teus interessos. Per exemple, si visites un lloc web per comprar sabatilles per a una marató, és possible que el lloc web defineixi que t'interessa córrer maratons. Més endavant, si visites un altre lloc web per inscriure't a una cursa, aquest altre lloc web et pot mostrar un anunci de sabatilles de curses basant-se en els teus interessos.</translation>
@@ -32,6 +33,7 @@
 <translation id="2018879682492276940">La instal·lació ha fallat. Torna-ho a provar.</translation>
 <translation id="831418749472885028">Per comprovar si les teves altres contrasenyes estan protegides contra violacions de les dades i contra altres problemes de seguretat, <ph name="BEGIN_LINK"/>inicia la sessió a Brave<ph name="END_LINK"/>.</translation>
 <translation id="5499149312981370855">Tria si vols incloure l'historial de Brave per obtenir experiències més personalitzades als serveis de Brave</translation>
+<translation id="849607431499549468">Informació sobre com gestiona Brave els seus certificats arrel</translation>
 <translation id="142389341645668510">Personalitza Brave</translation>
 <translation id="2174917724755363426">La instal·lació no s'ha completat. Confirmes que vols cancel·lar-la?</translation>
 <translation id="8745514854244955877">Brave - Inici de sessió a la xarxa - <ph name="PAGE_TITLE"/></translation>
@@ -92,6 +94,7 @@
 <translation id="5853262807109651878">Amb aquesta acció, se suprimiran <ph name="ITEMS_COUNT"/> elements d'aquest dispositiu. Per recuperar les teves dades més endavant, inicia la sessió a Brave com a <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> permet canviar entre perfils de Brave</translation>
 <translation id="8703492925273919597">Tanqueu totes les finestres de Brave i torneu-ho a provar.</translation>
+<translation id="5350485513372498152">L'Assistent de Brave a Brave pot dur a terme accions per tu en llocs web</translation>
 <translation id="4061445349373849749">Amb la finalitat de protegir la teva privadesa, suprimim automàticament els interessos que tenen més de 4 setmanes. A mesura que continuïs navegant, és possible que torni a aparèixer un interès a la llista. També pots suprimir els interessos que no vulguis que Brave tingui en compte.</translation>
 <translation id="691208314680168371">El teu historial de navegació, que és un registre dels llocs web que has visitat amb Brave en aquest dispositiu.</translation>
 <translation id="1384923383737428730">Hi ha programari nociu a l'ordinador. Brave el pot suprimir, restaurar la configuració i desactivar les extensions perquè el navegador torni a funcionar amb normalitat.</translation>
@@ -258,7 +261,6 @@
 <translation id="5101812148953915496">Els llocs web que visites recorden la teva informació fins que tanques Brave.</translation>
 <translation id="5516268345616100622">Gestor de tasques: Brave</translation>
 <translation id="713191641919118540">Els teus interessos segons les estimacions de Brave</translation>
-<translation id="2777705643687998385">Brave ha bloquejat aquest fitxer perquè està encriptat. Demana al propietari que el desencripti.</translation>
 <translation id="9068395155143628872">El mesurament d'anuncis permet als llocs web que visites sol·licitar informació de Brave que els ajudi a mesurar el rendiment dels anuncis. El mesurament d'anuncis restringeix el seguiment entre llocs web transferint la quantitat mínima possible d'informació entre llocs web.</translation>
 <translation id="1864557848095568223">S'està actualitzant Brave</translation>
 <translation id="3403365884036456766">El fitxer de preferències està malmès o no és vàlid.
@@ -348,6 +350,7 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="7902365066753170041">Reinicia per actualitzar &amp;Brave</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Pot ser que Brave no funcioni correctament perquè ja no és compatible amb Windows XP ni Windows Vista</translation>
+<translation id="8180288330711585962">Certificats gestionats per Brave</translation>
 <translation id="1611678871603620428">Per obtenir actualitzacions de Brave en un futur, necessitaràs macOS 10.13 o una versió posterior. Aquest ordinador utilitza OS X 10.11.</translation>
 <translation id="4484434718272972655">Qui està utilitzant Brave?</translation>
 <translation id="7173394303099002355">Obtén la seguretat més efectiva de Brave</translation>

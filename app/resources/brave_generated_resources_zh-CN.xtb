@@ -24,6 +24,7 @@
 <translation id="4150684676757176434">继续禁止自动播放</translation>
 <translation id="8988939298652262600">Brave 不审查扩展程序的安全性。如果您信任这个开发者，请仅安装这个扩展程序。</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/>(Brave中不允许使用扩展ID“<ph name="EXTENSION_ID"/>”）。</translation>
+<translation id="9005883459983913482">Tor 窗口</translation>
 <translation id="7965178729203412357">新 Tor 身份</translation>
 <translation id="6924909138923993900">此站点的新 Tor 连接</translation>
 <translation id="4734294903299549345">退出 Tor 的私人窗口</translation>
@@ -37,6 +38,9 @@
 <translation id="1725356094208762656">在 Tor 中打开</translation>
 <translation id="3396347744975515056">Brave 同步已升级，并需要进行设置</translation>
 <translation id="7473245612074035141">开始设置</translation>
+<translation id="3975865347033939965">同步服务无法启动，Brave Sync 未运行</translation>
+<translation id="4450893287417543264">不再显示</translation>
+<translation id="4595286989346610620">查看详情</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">发布并从 IPFS 检索文件</translation>
 <translation id="7398397225367092613">.onion</translation>
@@ -113,7 +117,7 @@
 <translation id="5240031343741051161">尝试Brave搜索</translation>
 <translation id="5026874946691314267">别再给我看这个了</translation>
 <translation id="5234764350956374838">关闭</translation>
-<translation id="5100490448228945668">解除 Brave 搜索转换，按回车键删除此建议</translation>
+<translation id="5100490448228945668">解除 Brave 搜索转换功能，按回车键删除此建议</translation>
 <translation id="2515126961943087659">Bat Ads 服务</translation>
 <translation id="7924918279836988121">Bat Ledger 服务</translation>
 <translation id="6040143037577758943">关闭</translation>
@@ -143,7 +147,7 @@
 <translation id="8490082094734500369">关闭阅读器模式</translation>
 <translation id="2036503787657622020">打开阅读器模式</translation>
 <translation id="5226458915125328323">速读器设置</translation>
-<translation id="1621606336827646158">显示原始页面</translation>
+<translation id="8591883849678260674">查看原文</translation>
 <translation id="6284218950354553099">自动向 Brave 发送每日使用 ping</translation>
 <translation id="5288333155754958121">这种匿名的私人 ping 可以让 Brave 估计活跃用户数</translation>
 <translation id="1872784258300710671">Brave 使用完全隐私的产品分析来估计某些功能的整体使用情况</translation>
@@ -210,6 +214,10 @@
 <translation id="8721331068159819483">与 macOS 相同</translation>
 <translation id="1692470335103807198">获得更多主题</translation>
 <translation id="2906510232093002459">Brave 默认图片</translation>
+<translation id="3367129510799209147">标签悬停模式</translation>
+<translation id="2113977810652731515">信用卡</translation>
+<translation id="4096343215397759358">带预览的卡片</translation>
+<translation id="5297085818601043899">工具提示</translation>
 <translation id="2396127686705429331">显示书签栏按钮</translation>
 <translation id="2814998458708016836">使用宽地址栏</translation>
 <translation id="4109670531935487117">在地址栏中显示自动完成建议</translation>
@@ -237,7 +245,7 @@
 <translation id="6388201778088078932">控制的）。</translation>
 <translation id="4800195524776354947">在屏蔽图标上显示被拦截的项目的数量</translation>
 <translation id="5510493033031835532">自动重定向 AMP 页面</translation>
-<translation id="5197219128592971597">始终访问原始（非 AMP）页面 URL，而非谷歌的”加速移动页面“版本</translation>
+<translation id="7630031867325944356">首选发布商页面的 URL，而不是 AMP 和类似版本。</translation>
 <translation id="7607166182943595829">防止网站根据我的语言偏好对我进行指纹识别</translation>
 <translation id="3497934980362703405">启用此设置会减少网站对您的语言首选项的了解。</translation>
 <translation id="2133317862976486547">跟踪器和和广告拦截</translation>
@@ -285,6 +293,7 @@
 <translation id="1758947220824279023">待显示的最大广告个数</translation>
 <translation id="2356652719351432565">区域广告相关性</translation>
 <translation id="2196950072404588793">这使 Brave 可以向您显示专门针对您所在地区的广告。<ph name="BEGIN_LINK"/>了解详情<ph name="END_LINK"/></translation>
+<translation id="2433507940547922241">外观</translation>
 <translation id="6112368337882254910">自动贡献</translation>
 <translation id="9132509928968869844">每月自动打赏限制</translation>
 <translation id="7286722244752781970">登录访问前最短页面时间</translation>
@@ -374,6 +383,7 @@
 请再次确认这些单词由您所拥有的设备生成。
 
 确定要这么做吗？</translation>
+<translation id="7443185843787879670">Brave 无法访问您操作系统的安全存储。这用于保护密码和 cookie 等数据； Brave Sync 还需要在设备之间连接您的浏览器配置文件。这意味着 Brave Sync 未运行。要解决此问题，请参阅 <ph name="BEGIN_LINK_SYNC_GUIDE"/>Brave Sync 故障排除指南<ph name="END_LINK_SYNC_GUIDE"/>。</translation>
 <translation id="6285118765755298263">对其他搜索引擎构建索引</translation>
 <translation id="919715748352669592">自动对遵循 OpenSearch 规范的网站构建索引</translation>
 <translation id="842628013524824194">一般窗口 - 地址栏中使用的搜索引擎</translation>
@@ -386,6 +396,23 @@
 <translation id="5248318250177143470">解决以太坊名称服务（ENS）相关问题的方法</translation>
 <translation id="6241402707160226266">带 Tor 的私人窗户</translation>
 <translation id="8762452230727230396">Tor 对你访问的网站隐藏了你的 IP 地址。</translation>
+<translation id="2959986444009520721">使用网桥</translation>
+<translation id="6003484976430531384">网桥可帮助您在 Tor 被阻止的地方访问 Tor 网络。根据您所在的位置，一个网桥可能会比另一个网桥的性能更好。</translation>
+<translation id="7206799843254049470">Tor 连接设置</translation>
+<translation id="3194502271166340944">控制带有 Tor 的私密窗口如何连接到 Tor 网络</translation>
+<translation id="4859228830700205299">选择内置网桥</translation>
+<translation id="3233137871426528317">从 torproject.org 请求网桥</translation>
+<translation id="5701503934456421898">申请新网桥...</translation>
+<translation id="8149806369020180959">提供一个网桥</translation>
+<translation id="454073978993625597">输入来自可信来源的网桥信息。</translation>
+<translation id="4425607417590286548">应用更改</translation>
+<translation id="2128143836897950793">要获取网桥，请点击“请求新网桥...”</translation>
+<translation id="3314921753580327793">输入地址：端口（每行一个）</translation>
+<translation id="3755189300481406891">请求提供网桥</translation>
+<translation id="6924425739431382319">联系 BridgeDB。请稍等。</translation>
+<translation id="811745063252080651">解决验证码问题即可请求提供网桥。</translation>
+<translation id="6936835573742749135">无法请求验证码。请稍后再试。</translation>
+<translation id="2653659639078652383">提交</translation>
 <translation id="1369311132025451972">自动重定向 .onion 网站</translation>
 <translation id="2843777623071353503">如果可用，Brave 会在 Tor 窗口中打开网站的 onion 服务或 .onion 域名</translation>
 <translation id="2896916411183256228">使用 WebTorrent 直接在浏览器中显示种子。支持种子文件和磁力链接。</translation>
@@ -432,7 +459,6 @@
 <translation id="7059127752542505809">输入网址</translation>
 <translation id="3047726704186619366">图标 URL</translation>
 <translation id="2487558607408469181">拦截浏览器 URL</translation>
-<translation id="2653659639078652383">提交</translation>
 <translation id="2156993118928861787">无效地址</translation>
 <translation id="6301398959353668507">此字段不能为空。</translation>
 <translation id="7504462451153306677">无效格式，链 ID 是一个正数</translation>

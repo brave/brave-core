@@ -82,11 +82,14 @@
 <translation id="7207456302801184289">Välkommen till Brave</translation>
 <translation id="4117451092682672487">Sekretess har gjorts enkelt.</translation>
 <translation id="7909375417585209817">Om du gör Brave till standard öppnas alla länkar som du trycker på med Braves sekretesskydd.</translation>
+<translation id="7370959926683925817">Blockera annonser. Spara data. Varje dag.</translation>
+<translation id="7281027579943912834">Med Brave som standard får varje länk du trycker på Braves annonsblocksskydd. Varje sida, video och stream.</translation>
 <translation id="5148943178722443958">Hjälp till att göra Brave bättre.</translation>
 <translation id="6188781052835527980">Skicka anonyma diagnostikrapporter om systemet kraschar eller låser sig.</translation>
 <translation id="1929905278861178845">Dela fullständigt anonyma produktinsikter om vilka funktioner som Brave-användarna använder.</translation>
 <translation id="2877653791257935258">Ange ett webbplatsnamn eller URL</translation>
 <translation id="5329830149661250028">Se Brave-skillnaden: Inga annonser. Inga spårare. Mycket snabbare hämtning av sidor.</translation>
+<translation id="3941792073703079607">Se den modiga skillnaden: Blockera annonser. Spara data. Streama snabbare.</translation>
 <translation id="3545804467215833536">Tryck för att visa Brave Shields</translation>
 <translation id="1724327820822194498">Se alla dåliga saker som Brave har blockerat, på varje sida, med Shields.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> och <ph name="TRACKER"/> andra annonser och spårare har blockerats</translation>
@@ -114,7 +117,6 @@
 <translation id="19715420010996093">Välj webbläsaren Brave och tryck på ”Alltid”.</translation>
 <translation id="3546439402724649282">Brave är redan inställd som din standardwebbläsare.</translation>
 <translation id="8389661903259423907">Du har redan angett en standardwebbläsare. Du kan ändra din standardwebbläsare i appinställningarna.</translation>
-<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="8826007068782654809">Tack</translation>
 <translation id="6665366815203065060">Du skickade precis dricks till:</translation>
 <translation id="5441565662498481293">Du skickar automatiskt dricks till:</translation>
@@ -134,6 +136,10 @@
 <translation id="8481779960444041069">Om du vill förbättra din integritet anger du Brave som standardwebbläsare</translation>
 <translation id="1938402585819943124">Välj Brave på nästa skärm.</translation>
 <translation id="8926389886865778422">Fråga inte igen.</translation>
+<translation id="745974920645827035">Oberoende sökning med bättre integritet</translation>
+<translation id="4717018805430015801">Brave-sökning spårar inte dig, dina sökningar eller dina klick.</translation>
+<translation id="5240031343741051161">Prova Brave-sökning</translation>
+<translation id="5234764350956374838">Ta bort permanent</translation>
 <translation id="6639570430554986719">JANUARI</translation>
 <translation id="1807352595146144483">FEBRUARI</translation>
 <translation id="2021828608097804771">MARS</translation>
@@ -146,31 +152,16 @@
 <translation id="8220228041552340594">OKTOBER</translation>
 <translation id="8280223431922155812">NOVEMBER</translation>
 <translation id="4254029385847607686">DECEMBER</translation>
-<translation id="4258022280942725182">Din Brave Rewards</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
 <translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
-<translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">Sätt in pengar</translation>
 <translation id="8428213095426709021">Inställningar</translation>
 <translation id="6020176662032623904">Verifierad skapare</translation>
 <translation id="2369994359029526515">Overifierad skapare</translation>
-<translation id="880893465294676334">Den här verifierade skaparen hos Brave har ännu inte ställt in sitt konto för att kunna ta emot bidrag från Brave-användare. 
-         Den dricks du skickar kommer att finnas kvar i din plånbok till dess de slutför denna process.</translation>
-<translation id="8918760045046434238">Skicka dricks...</translation>
-<translation id="1978261665418056203">Inga aktiviteter ännu 
-denna månad...</translation>
-<translation id="9182287025588539628">Engångsdricks</translation>
-<translation id="7577100371127227294">Månatliga dricks</translation>
-<translation id="3074127054582480056">Observation</translation>
-<translation id="4914597931214386232">Tilldelning av token utnyttjades</translation>
-<translation id="298067735430872465">Intäkter från annonser</translation>
 <translation id="6112368337882254910">Bidra automatiskt</translation>
-<translation id="2730771409541953249">REWARDS-ÖVERSIKT</translation>
 <translation id="13853865024308201">Hämta</translation>
-<translation id="7335371657242627509">Inkludera i automatiska bidrag</translation>
-<translation id="5463954686005964104">Ge dricks till denna webbplats varje månad</translation>
-<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="8494748383523030337">Ditt saldo</translation>
 <translation id="4781696154289395607">Du har bidragit med <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="7997676409547731821">Din schemalagda månatliga betalning för Auto-bidrag och månatlig dricks kunde inte slutföras på grund av otillräckliga medel. Vi försöker igen om 30 dagar.</translation>
 <translation id="5306913077198665897">Det gick inte att behandla din dricks, försök igen.</translation>
@@ -181,15 +172,10 @@ denna månad...</translation>
 <translation id="8689997599821157251">Du har tjänat</translation>
 <translation id="7550470870580166294">Otillräckliga medel</translation>
 <translation id="2775064702681588061">Det återstår att sätta in pengar på ditt Brave Rewards-konto.</translation>
-<translation id="2630264552940126640">Säkerhetskopiera Brave Rewards</translation>
-<translation id="238922425564381955">Säkerhetskopiera Brave Rewards</translation>
 <translation id="2323069945529668668">Hoppsan!</translation>
 <translation id="7510166204621526816">Servern för Brave Rewards svarar inte. Vi åtgärdar detta så snart som möjligt.</translation>
 <translation id="683765328936486920">på YouTube</translation>
 <translation id="8969049974285901797">på Twitch</translation>
-<translation id="3692362746128814480">Du har angett <ph name="BAT_VALUE"/> BAT för innehållsskapare som inte 
-har registrerat sig för att ta emot bidrag ännu. Din webbläsare kommer att fortsätta 
-försöka bidra tills de verifierar sig eller tills 90 dagar har gått.</translation>
 <translation id="3101693828171454453">inte tillräckligt med <ph name="TOKEN"/>s</translation>
 <translation id="6940273954212603510">vänligen</translation>
 <translation id="1036277985068412734">Sätt in pengar</translation>
@@ -245,7 +231,7 @@ försöka bidra tills de verifierar sig eller tills 90 dagar har gått.</transla
 <translation id="4114170343590425996">Det gick inte att återställa Brave Rewards. Starta om Brave och försök igen.</translation>
 <translation id="6393502589311632553">Visa annonser när Brave inte används</translation>
 <translation id="3349204812119681938">Återställ Brave Rewards</translation>
-<translation id="8782039523249932839">Detta tar bort din Brave-plånbok och återställer alla data för dina Brave Rewards</translation>
+<translation id="6606319453795180219">Detta kommer att radera dina Brave Rewards och återställa alla dina Brave Rewards-data</translation>
 <translation id="6810078320346589989">Skapa ett bokmärke</translation>
 <translation id="3396347744975515056">Brave Sync har uppgraderats och måste installeras</translation>
 <translation id="7473245612074035141">Påbörja installation</translation>
@@ -274,7 +260,6 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="2975780980638932742">Brave Ads är här!</translation>
 <translation id="7541582550122501404">Pågående bidrag</translation>
 <translation id="8520059774736886747">Skaparen <ph name="PUBLISHER_NAME"/> verifierades nyligen</translation>
-<translation id="7924320838799747606">Din behållning</translation>
 <translation id="1486343603936278248">pollett</translation>
 <translation id="7781069478569868053">Ny flik</translation>
 <translation id="8522669544471808198">Visa bakgrundsbilder</translation>
@@ -285,9 +270,9 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="7136586167396205364">Dölj sponsrade bilder</translation>
 <translation id="2927095357213611519">Du kan stödja skapare på webben med polletter.\nDu får polletterna när du tittar på annonser som värnar din integritet.</translation>
 <translation id="213787746370741250">Öppna flikar i Anpassade flikar.</translation>
-<translation id="8030169304546394654">Frånkopplad</translation>
+<translation id="2394961582378297792">Utloggad</translation>
 <translation id="6181762795539107980">Ej verifierad</translation>
-<translation id="543510923939676996">Plånbok verifierad</translation>
+<translation id="4569155249847375786">Verifierad</translation>
 <translation id="8673913984316081937">Det är frivilligt att verifiera plånboken.</translation>
 <translation id="8558636200953226885">Men om du verifierar kan du...</translation>
 <translation id="8697510149346635496">Ta ut BAT som du tjänar genom att se integritetsrespekterande annonser</translation>
@@ -306,11 +291,9 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="6239274080752256452">Ta ut tillgångar</translation>
 <translation id="8874184842967597500">Inte ansluten</translation>
 <translation id="3368922792935385530">Ansluten</translation>
-<translation id="4569155249847375786">Verifierad</translation>
 <translation id="5358719431303818601">Frånkopplad ej verifierad</translation>
 <translation id="4241449868720191203">Frånkopplad verifierad</translation>
 <translation id="3248185426436836442">Väntande</translation>
-<translation id="4488355059795908907">Denna av Brave verifierade skapare har ännu inte konfigurerat sitt konto för att ta emot bidrag från Brave-användare. Pengar du ger kommer att vara kvar i din plånbok tills skaparen slutför denna process.</translation>
 <translation id="2495032782748793764">Ordinarie för Brave</translation>
 <translation id="9132378787893584761">Dela Brave med dina vänner!</translation>
 <translation id="717952606991220586">Oj, något gick fel. Försök igen senare.</translation>
@@ -341,6 +324,8 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="5657156137487675418">Tillåt alla kakor</translation>
 <translation id="3895527457258986253">Blockera fingeravtrycksläsning</translation>
 <translation id="7854108565842971747">Det här är standardinställningarna för Shields för nya webbplatser. Om du ändrar dessa påverkas inte dina befintliga inställningar per webbplats.</translation>
+<translation id="218587021686734263">Förhindra fingeravtryck via språkinställningar</translation>
+<translation id="1706099589708266367">Minskar hur mycket webbplatser kan lära sig om dig baserat på din webbläsares språkinställningar.</translation>
 <translation id="184568144098869637">Förhindrar att webbläsaren känner igen din enhet</translation>
 <translation id="7445306466605902444">Fingeravtrycksläsning hindrad (strikt, kan bryta sajter)</translation>
 <translation id="5582686930349810484">Fingeravtrycksläsning hindrad (standard)</translation>
@@ -405,7 +390,6 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="3980704343258720102">Rensar alla webbläsardata</translation>
 <translation id="8089997572759938512">Återställer dina integritetsrapporter till noll</translation>
 <translation id="2718046830255553131">Data för integritetsrapporter har rensats.</translation>
-<translation id="7559243474426790340">Uppdatera status</translation>
 <translation id="8376263745431603066">Aktivera "Nattläge" (experimentellt)</translation>
 <translation id="1383876407941801731">Sök</translation>
 <translation id="8446884382197647889">Läs mer</translation>
@@ -468,9 +452,6 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="2434574859640694129">Efter att du har fått din första utbetalning kan du komma tillbaka och ge ett bidrag till denna skapare!</translation>
 <translation id="207242986925259074">Snabb uppdatering</translation>
 <translation id="8342862030112839977">Din första belöningsutbetalning kommer att anlända:</translation>
-<translation id="3769645103175790584">Tjäna tokens och belöna skapare för bra innehåll medan du surfar. <ph name="QUICK_TOUR"/>.</translation>
-<translation id="6912901278692845878">Snabbtur</translation>
-<translation id="1080013038789678738">Jag är med!</translation>
 <translation id="8037420924417098685">För att starta ett kostnadsfritt samtal, starta Brave Rewards</translation>
 <translation id="8961724619078500274">Med Brave Rewards tjänar du tokens för att se privata annonser (din data är säker). Gör dessa tokens till kontanter, presentkort... eller till och med tipsa de webbplatser som du älskar. Ingen spårning. Inga långsamma nedgångar.</translation>
 <translation id="7307847920988946894">Aktivera Rewards</translation>
@@ -514,11 +495,6 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="1822560017823072927">Offentliga och privata standardgränssnitt</translation>
 <translation id="5825943197137337319">Endast offentligt standardgränssnitt</translation>
 <translation id="1689062823386843231">Inaktivera icke-proxad UDP</translation>
-<translation id="5587305863196367357">Genom att verifiera plånboken kan du hantera dina pengar enkelt och sätta in och ta ut pengar</translation>
-<translation id="5760671211380791582">Du har inte tillräckligt med BAT.</translation>
-<translation id="442469478596827903">Du måste ha minst 2 BAT för att skapa en verifierad Uphold-plånbok. Försök igen senare.</translation>
-<translation id="4389085954549744469">Om du redan har ett verifierat Uphold-konto kan du <ph name="CONTINUE_TO_LOGIN"/>.</translation>
-<translation id="6146966915297143881">fortsätta till inloggning</translation>
 <translation id="1483493594462132177">Skicka</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="1420318137760245955">Välkommen till den nya Brave Wallet</translation>
@@ -793,11 +769,13 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="3494964159182650590">Sammanfattning av Rewards</translation>
 <translation id="590733288489975971">Belöningar från Ads</translation>
 <translation id="207268487070188114">Engångsdricks</translation>
-<translation id="8494748383523030337">Ditt saldo</translation>
+<translation id="7577100371127227294">Månatlig dricks</translation>
 <translation id="7091980679045978090">Beräknade intäkter</translation>
 <translation id="1346059596910821859">Dricks</translation>
 <translation id="1549705559752367917">Skicka dricks</translation>
+<translation id="7335371657242627509">Inkludera i Donera automatiskt</translation>
 <translation id="6727102863431372879">Ange</translation>
+<translation id="3074127054582480056">Viktigt</translation>
 <translation id="6413162919383874653">Månatlig dricks</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
@@ -904,4 +882,7 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="9023148942866814328">Visa systemappar</translation>
 <translation id="5472400694702418949">Lägg till appar som ska exkluderas från VPN-trafiken.</translation>
 <translation id="7002577172732106572">Split tunneling</translation>
+<translation id="2832270987629018596">Ogiltig SOL-adress</translation>
+<translation id="8181161042860463420">Det associerade tokenkontot finns inte ännu. En liten mängd SOL kommer att spenderas för att skapa och finansiera den.<ph name="CLICK_START"/>Läs mer<ph name="CLICK_END"/></translation>
+<translation id="168154537623654021">Uppdaterar VPN-profil ...</translation>
 </translationbundle>

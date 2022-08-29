@@ -108,6 +108,7 @@
 <translation id="1263231323834454256">เรื่องรออ่าน</translation>
 <translation id="1264309058268477500">อื่นๆ</translation>
 <translation id="1264974993859112054">กีฬา</translation>
+<translation id="1266469291454105242">การปลดล็อกอุปกรณ์</translation>
 <translation id="53564677632020212">สร้างเว็บไซต์แบบใหม่ใน Brave Sites อย่างรวดเร็ว</translation>
 <translation id="1270502636509132238">วิธีการรับสินค้า</translation>
 <translation id="1281476433249504884">สแต็กเกอร์ 1</translation>
@@ -167,6 +168,7 @@
 <translation id="1391289752476847787">หุ้นและตราสารหนี้</translation>
 <translation id="139305205187523129"><ph name="HOST_NAME"/> ไม่ส่งข้อมูลใดๆ</translation>
 <translation id="1405567553485452995">เขียวอ่อน</translation>
+<translation id="1406500794671479665">กำลังยืนยันความถูกต้อง...</translation>
 <translation id="1407135791313364759">เปิดทั้งหมด</translation>
 <translation id="1408787208417187241">เย็บด้วยลวดเย็บกระดาษด้านบน 3 ครั้ง</translation>
 <translation id="1413407968866574823">เกมแอ็กชันและแพลตฟอร์ม</translation>
@@ -243,7 +245,6 @@
 <translation id="1583429793053364125">มีสิ่งผิดปกติเกิดขึ้นในขณะที่แสดงหน้าเว็บนี้</translation>
 <translation id="1586541204584340881">ส่วนขยายที่คุณติดตั้ง</translation>
 <translation id="1588438908519853928">ปกติ</translation>
-<translation id="1589050138437146318">ติดตั้ง ARCore ไหม</translation>
 <translation id="1592005682883173041">การเข้าถึงข้อมูลในเครื่อง</translation>
 <translation id="1594030484168838125">เลือก</translation>
 <translation id="1596296697375291157">ภาพยนตร์ลึกลับ สืบสวน และเขย่าขวัญ</translation>
@@ -315,11 +316,11 @@
 <translation id="1753068535428855445">หาคู่และโฆษณาหาเพื่อน</translation>
 <translation id="1753706481035618306">เลขหน้า</translation>
 <translation id="1755621011177747277">การรับเลี้ยงบุตรบุญธรรม</translation>
+<translation id="1756026472674246267">เปิดลิงก์ในแท็บใหม่</translation>
 <translation id="175656076281618225">มายากล</translation>
 <translation id="1757773103848038814">แบบอักษรที่มีความกว้างคงที่</translation>
 <translation id="1763864636252898013">เซิร์ฟเวอร์นี้ไม่สามารถพิสูจน์ได้ว่าเป็น <ph name="DOMAIN"/> เพราะระบบปฏิบัติการของอุปกรณ์ของคุณไม่เชื่อถือใบรับรองความปลอดภัย โดยอาจเกิดจากการกำหนดค่าผิดหรือผู้บุกรุกที่ขัดขวางการเชื่อมต่อของคุณ</translation>
 <translation id="1768211456781949159"><ph name="BEGIN_LINK"/>ลองเรียกใช้การวินิจฉัยเครือข่ายของ Windows<ph name="END_LINK"/></translation>
-<translation id="1772163372082567643">เซิร์ฟเวอร์ที่คุณกำลังจะเข้าถึง <ph name="ORIGIN"/> ได้ตั้งค่าส่วนหัวที่กำหนดให้บังคับใช้นโยบายดั้งเดิมกับคำขอทั้งหมดที่ส่งถึงเซิร์ฟเวอร์ แต่ส่วนหัวดังกล่าวมีรูปแบบที่ไม่ถูกต้อง ซึ่งทำให้เบราว์เซอร์ดำเนินการตามคำขอของคุณสำหรับ <ph name="SITE"/> ไม่ได้ ผู้ให้บริการเว็บไซต์อาจใช้นโยบายดั้งเดิมในการกำหนดค่าความปลอดภัยและพร็อพเพอร์ตี้อื่นๆ ของเว็บไซต์</translation>
 <translation id="1778646502362731194">JIS B0</translation>
 <translation id="1787142507584202372">แท็บที่คุณเปิดไว้จะปรากฏที่นี่</translation>
 <translation id="3480410886581896628">Brave Smart Lock</translation>
@@ -362,7 +363,6 @@
 <translation id="1908217026282415406">การใช้และเคลื่อนย้ายกล้อง</translation>
 <translation id="191374271204266022">คัดลอกเป็น JSON</translation>
 <translation id="1914326953223720820">บริการแตกไฟล์</translation>
-<translation id="1915697529809968049">ใช้ Touch ID แทน CVC ไหม</translation>
 <translation id="1916770123977586577">โหลดหน้านี้ซ้ำเพื่อใช้การตั้งค่าที่อัปเดตกับไซต์นี้</translation>
 <translation id="1919345977826869612">โฆษณา</translation>
 <translation id="1919367280705858090">ขอความช่วยเหลือเกี่ยวกับข้อความแสดงข้อผิดพลาดที่เจาะจง</translation>
@@ -438,6 +438,7 @@
 <translation id="214556005048008348">ยกเลิกการชำระเงิน</translation>
 <translation id="2148613324460538318">เพิ่มบัตร</translation>
 <translation id="2149968176347646218">การเชื่อมต่อไม่ปลอดภัย</translation>
+<translation id="2153609454945889823">ติดตั้งบริการ Google Play สำหรับ AR ไหม</translation>
 <translation id="2154054054215849342">ไม่มีการซิงค์สำหรับโดเมนของคุณ</translation>
 <translation id="2154484045852737596">แก้ไขบัตร</translation>
 <translation id="2161656808144014275">ข้อความ</translation>
@@ -798,6 +799,7 @@
 <translation id="3226387218769101247">ภาพขนาดย่อ</translation>
 <translation id="3227137524299004712">ไมโครโฟน</translation>
 <translation id="3229041911291329567">ข้อมูลเวอร์ชันเกี่ยวกับอุปกรณ์และเบราว์เซอร์</translation>
+<translation id="3229277193950731405">คัดลอกสตริงเวอร์ชัน</translation>
 <translation id="323107829343500871">ป้อน CVC สำหรับ <ph name="CREDIT_CARD"/></translation>
 <translation id="3234666976984236645">ตรวจหาเนื้อหาที่สำคัญบนไซต์นี้เสมอ</translation>
 <translation id="3240683217920639535"><ph name="MANAGE_CHROME_THEMES_FOCUSED_FRIENDLY_MATCH_TEXT"/> กด Tab ตามด้วย Enter เพื่อปรับแต่งรูปลักษณ์ของเบราว์เซอร์</translation>
@@ -909,6 +911,7 @@
 <translation id="3531780078352352885">แผ่นงาน</translation>
 <translation id="3532844647053365774"><ph name="HOST"/> ต้องการใช้ไมโครโฟนของคุณ</translation>
 <translation id="3533328374079021623">กล่องจดหมาย 5</translation>
+<translation id="3542768452570884558">เปิดลิงก์ในหน้าต่างใหม่</translation>
 <translation id="3550112004925580947">อุตสาหกรรมการบริการ</translation>
 <translation id="3552297013052089404">แบบอักษร Sans Serif</translation>
 <translation id="3558573058928565255">ตอนกลางวัน</translation>
@@ -1015,6 +1018,7 @@
 <translation id="3807873520724684969">บล็อกเนื้อหาอันตรายแล้ว</translation>
 <translation id="3810973564298564668">จัดการ</translation>
 <translation id="3816482573645936981">ค่า (ถูกแทนที่)</translation>
+<translation id="3823402221513322552">เบราว์เซอร์ของคุณจัดการโดย <ph name="BROWSER_DOMAIN"/> และโปรไฟล์ของคุณจัดการโดย <ph name="PROFILE_DOMAIN"/></translation>
 <translation id="382518646247711829">หากคุณใช้พร็อกซีเซิร์ฟเวอร์...</translation>
 <translation id="3826050100957962900">การลงชื่อเข้าใช้ของบุคคลที่สาม</translation>
 <translation id="3827112369919217609">Absolute</translation>
@@ -1066,7 +1070,6 @@
 <translation id="3987940399970879459">ไม่ถึง 1 MB</translation>
 <translation id="3990250421422698716">การชดเชยพื้นผิวที่ไม่สม่ำเสมอ</translation>
 <translation id="3992684624889376114">เกี่ยวกับหน้านี้</translation>
-<translation id="3996311196211510766">เว็บไซต์ <ph name="ORIGIN"/> ขอให้บังคับใช้นโยบายดั้งเดิมกับคำขอทั้งหมดที่ส่งถึงเว็บไซต์ แต่ขณะนี้ใช้นโยบายนี้ไม่ได้</translation>
 <translation id="4006465311664329701">วิธีการชำระเงิน ข้อเสนอ และที่อยู่จาก Google Pay</translation>
 <translation id="4009243425692662128">ระบบจะส่งเนื้อหาของหน้าที่คุณพิมพ์ไปยัง Google Cloud หรือบุคคลที่สามเพื่อการวิเคราะห์ เช่น สแกนหาข้อมูลที่ละเอียดอ่อน</translation>
 <translation id="4010758435855888356">อนุญาตให้เข้าถึงพื้นที่เก็บข้อมูลไหม</translation>
@@ -1077,14 +1080,15 @@
 <translation id="4040350669425716613">วิทยาลัยและมหาวิทยาลัย</translation>
 <translation id="4056223980640387499">ซีเปีย</translation>
 <translation id="4058922952496707368">คีย์ "<ph name="SUBKEY"/>": <ph name="ERROR"/></translation>
+<translation id="4063924980214801036">ใช้การปลดล็อกอุปกรณ์เพื่อยืนยันบัตรได้เร็วขึ้น</translation>
 <translation id="4067098466788473230">ทุนการศึกษา</translation>
 <translation id="4067263367174615723">C1 (ซองจดหมาย)</translation>
 <translation id="4067947977115446013">เพิ่มที่อยู่ที่ถูกต้อง</translation>
 <translation id="4072193657607981494">กำลังโหลดนโยบาย</translation>
 <translation id="4072486802667267160">เกิดข้อผิดพลาดในการประมวลผลคำสั่งซื้อของคุณ โปรดลองอีกครั้ง</translation>
+<translation id="4073376909608563327">ใช้การปลดล็อกอุปกรณ์ไม่ได้</translation>
 <translation id="4073797364926776829">ดูบัตร</translation>
 <translation id="4075732493274867456">ไคลเอ็นต์และเซิร์ฟเวอร์ไม่รองรับโปรโตคอล SSL เวอร์ชันทั่วไปหรือชุดการเข้ารหัส</translation>
-<translation id="4075941231477579656">Touch ID</translation>
 <translation id="4079302484614802869">การกำหนดค่าพร็อกซีมีการตั้งค่าให้ใช้ URL สคริปต์ .pac ไม่ใช่พร็อกซีเซิร์ฟเวอร์แบบคงที่</translation>
 <translation id="4082393374666368382">การตั้งค่า - การจัดการ</translation>
 <translation id="8049340108547416244">ปุ่มสร้างกิจกรรม กด Enter เพื่อสร้างกิจกรรมใหม่ใน Brave ปฏิทินอย่างรวดเร็ว</translation>
@@ -1131,7 +1135,6 @@
 <translation id="4202554117186904723">ม้วนกระดาษ 5</translation>
 <translation id="4203896806696719780"><ph name="BEGIN_LINK"/>ตรวจสอบไฟร์วอลล์และการกำหนดค่าการป้องกันไวรัส<ph name="END_LINK"/></translation>
 <translation id="4209092469652827314">ขนาดใหญ่</translation>
-<translation id="4209166701302774460">เซิร์ฟเวอร์ที่คุณกำลังจะเข้าถึง <ph name="ORIGIN"/> ขอให้บังคับใช้นโยบายดั้งเดิมกับคำขอทั้งหมดที่ส่งถึงเซิร์ฟเวอร์ แต่ขณะนี้เซิร์ฟเวอร์แสดงนโยบายไม่ได้ ซึ่งทำให้เบราว์เซอร์ดำเนินการตามคำขอของคุณสำหรับ <ph name="SITE"/> ไม่ได้ ผู้ให้บริการเว็บไซต์อาจใช้นโยบายดั้งเดิมในการกำหนดค่าความปลอดภัยและพร็อพเพอร์ตี้อื่นๆ ของเว็บไซต์</translation>
 <translation id="4210602799576081649">รหัสยืนยันหมดอายุแล้ว โปรดขอรหัสใหม่</translation>
 <translation id="421066178035138955">ใช้อุปกรณ์และข้อมูล Virtual Reality</translation>
 <translation id="4213305257324635756">ภาพยนตร์แอนิเมชัน</translation>
@@ -1142,7 +1145,6 @@
 <translation id="422022731706691852">ผู้โจมตีที่อยู่ใน <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> อาจพยายามหลอกล่อให้คุณติดตั้งโปรแกรมที่ทำให้การท่องเว็บเป็นเรื่องอันตราย (ตัวอย่างเช่น การเปลี่ยนหน้าแรกหรือการแสดงโฆษณาเพิ่มเติมในไซต์ที่คุณเข้าชม) <ph name="BEGIN_LEARN_MORE_LINK"/>ดูข้อมูลเพิ่มเติม<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="4226937834893929579"><ph name="BEGIN_LINK"/>ลองเรียกใช้การวินิจฉัยเครือข่าย<ph name="END_LINK"/></translation>
 <translation id="4230204356098880324">สามารถขอใช้และเลื่อนกล้องของคุณได้</translation>
-<translation id="4234495348042597185"><ph name="BEGIN_LINK"/>ดำเนินการต่อที่ <ph name="SITE"/><ph name="END_LINK"/></translation>
 <translation id="4235360514405112390">ถูกต้อง</translation>
 <translation id="4250431568374086873">การเชื่อมต่อกับเว็บไซต์นี้ไม่ปลอดภัยโดยสมบูรณ์</translation>
 <translation id="4250680216510889253">ไม่</translation>
@@ -1238,7 +1240,6 @@
 <translation id="4506176782989081258">ข้อผิดพลาดในการตรวจสอบ: <ph name="VALIDATION_ERROR"/></translation>
 <translation id="4506599922270137252">ติดต่อผู้ดูแลระบบ</translation>
 <translation id="450710068430902550">การแชร์กับผู้ดูแลระบบ</translation>
-<translation id="4508814173490746936">ใช้ Touch ID ไม่ได้</translation>
 <translation id="7581711177899574338"><ph name="TRANSLATE_FOCUSED_FRIENDLY_MATCH_TEXT"/> กด Tab ตามด้วย Enter เพื่อแปลหน้านี้ด้วย Brave แปลภาษา</translation>
 <translation id="4510487217173779431">Chou4 (ซองจดหมาย)</translation>
 <translation id="4514308731478712184">ปิดใช้เส้นทางการท่องเว็บ</translation>
@@ -1336,7 +1337,6 @@
 <translation id="4796594887379589189">รหัสบัญชีงาน</translation>
 <translation id="7110430050177876111">ป้อนวันที่หมดอายุและ CVC ของ <ph name="CREDIT_CARD"/> เพื่ออัปเดตรายละเอียดของบัตร เมื่อยืนยันแล้ว ระบบจะแชร์รายละเอียดของบัตรจากบัญชี Brave กับเว็บไซต์นี้</translation>
 <translation id="4800132727771399293">ตรวจสอบวันหมดอายุและ CVC แล้วลองอีกครั้ง</translation>
-<translation id="480334179571489655">ข้อผิดพลาดเกี่ยวกับนโยบายต้นทาง</translation>
 <translation id="4803924862070940586"><ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
 <translation id="4809079943450490359">วิธีการจากผู้ดูแลระบบอุปกรณ์ของคุณ</translation>
 <translation id="4812751092864334025">เทคโนโลยีที่สวมใส่ได้</translation>
@@ -1352,6 +1352,7 @@
 <translation id="246176083348620700">ดูประวัติการเข้าชมใน Brave</translation>
 <translation id="484462545196658690">อัตโนมัติ</translation>
 <translation id="484671803914931257">รับส่วนลดสำหรับ <ph name="MERCHANT_NAME"/> และอื่นๆ</translation>
+<translation id="484988093836683706">ใช้การปลดล็อกอุปกรณ์</translation>
 <translation id="4850886885716139402">มุมมอง</translation>
 <translation id="4852429274334674023">ระบบปฏิบัติการ</translation>
 <translation id="485316830061041779">เยอรมัน</translation>
@@ -1396,6 +1397,7 @@
 <translation id="4969341057194253438">ลบการบันทึก</translation>
 <translation id="4973922308112707173">เจาะรูด้านบน 2 รู</translation>
 <translation id="4976702386844183910">เข้าชมล่าสุด <ph name="DATE"/></translation>
+<translation id="498323057460789381">ข้อผิดพลาดในการตรวจสอบความถูกต้องของสคีมา: <ph name="ERROR"/></translation>
 <translation id="4984088539114770594">ใช้ไมโครโฟนไหม</translation>
 <translation id="4984339528288761049">Prc5 (ซองจดหมาย)</translation>
 <translation id="4989163558385430922">ดูทั้งหมด</translation>
@@ -1484,6 +1486,7 @@
 <translation id="5177076414499237632">ดูข้อมูลเกี่ยวกับแหล่งที่มาและหัวข้อของหน้านี้</translation>
 <translation id="5179510805599951267">หากไม่มีในภาษา <ph name="ORIGINAL_LANGUAGE"/> ให้รายงานข้อผิดพลาดนี้</translation>
 <translation id="518639307526414276">อาหารและอุปกรณ์ดูแลสัตว์เลี้ยง</translation>
+<translation id="5191315092027169558">โปรไฟล์ของคุณจัดการโดย <ph name="DOMAIN"/></translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> ต้องการดาวน์โหลดหลายไฟล์</translation>
 <translation id="519422657042045905">โหมดคำอธิบายประกอบไม่พร้อมใช้งาน</translation>
 <translation id="5201306358585911203">หน้าที่ฝังไว้ในหน้าเว็บนี้บอกว่า</translation>
@@ -1726,7 +1729,6 @@
 <translation id="5901630391730855834">สีเหลือง</translation>
 <translation id="5903264686717710770">ชื่อ:</translation>
 <translation id="5904360430676679685">ครอบครัวและความสัมพันธ์</translation>
-<translation id="5905445707201418379">ถูกบล็อกตามนโยบายดั้งเดิมของ <ph name="ORIGIN"/></translation>
 <translation id="5908541034548427511"><ph name="TYPE_1"/> (ซิงค์แล้ว)</translation>
 <translation id="59174027418879706">เปิดใช้งาน</translation>
 <translation id="5919090499915321845">B10</translation>
@@ -1735,6 +1737,7 @@
 <translation id="5921185718311485855">เปิด</translation>
 <translation id="2687595201721621314">บันทึกบัตรลงในบัญชี Brave ไหม</translation>
 <translation id="5922853866070715753">เกือบเสร็จแล้ว</translation>
+<translation id="5923492272538889093">ใช้การปลดล็อกอุปกรณ์แทน CVC ใช่ไหม</translation>
 <translation id="5928444777041341328">บ้านและสวน</translation>
 <translation id="5932224571077948991">เว็บไซต์แสดงโฆษณาที่แทรกหรือทำให้เข้าใจผิด</translation>
 <translation id="5937560539988385583">แปลหน้าเว็บแล้ว</translation>
@@ -1890,19 +1893,21 @@
 <translation id="6390662030813198813">Engineering-E</translation>
 <translation id="6391700400718590966">ระบบได้ปิด Bottom Sheet ซึ่งแจ้งว่าไม่พบข้อมูลเข้าสู่ระบบที่ตรงกันสำหรับข้อมูลเข้าสู่ระบบการชำระเงินที่ปลอดภัย</translation>
 <translation id="6393956493820063117">นโยบายของผู้ดูแลระบบบล็อกการวางจาก <ph name="ORIGIN_NAME"/> ลงในตำแหน่งนี้ไว้</translation>
+<translation id="6394852772105848029">เว็บไซต์นี้ต้องการเปิดแอป <ph name="APP_NAME"/></translation>
 <translation id="6398277657359595425">ร้องไห้ฟูมฟาย</translation>
 <translation id="6398765197997659313">ออกจากการแสดงแบบเต็มหน้าจอ</translation>
 <translation id="6401136357288658127">นโยบายนี้เลิกใช้งานไปแล้ว คุณควรใช้นโยบาย <ph name="NEW_POLICY"/> แทน</translation>
 <translation id="6404511346730675251">แก้ไขบุ๊กมาร์ก</translation>
+<translation id="6405181733356710802">ไปที่ <ph name="APP_NAME"/> ไหม</translation>
 <translation id="6406765186087300643">C0 (ซองจดหมาย)</translation>
 <translation id="6410264514553301377">ป้อนวันหมดอายุและ CVC ของ <ph name="CREDIT_CARD"/></translation>
-<translation id="6423385022588644828">ยืนยันบัตรได้เร็วขึ้นโดยใช้ Touch ID จากนี้ไป</translation>
 <translation id="6425092077175753609">วัสดุ</translation>
 <translation id="6427730057873428458">พับทบ</translation>
 <translation id="6428450836711225518">ยืนยันเบอร์โทรศัพท์</translation>
 <translation id="7772223497488184427">เปลี่ยนรหัสผ่าน Brave</translation>
 <translation id="6433490469411711332">แก้ไขข้อมูลติดต่อ</translation>
 <translation id="6433595998831338502"><ph name="HOST_NAME"/> ปฏิเสธการเชื่อมต่อ</translation>
+<translation id="6433797564277305076">ยืนยันบัตรได้เร็วขึ้นโดยใช้การปลดล็อกอุปกรณ์จากนี้ไป</translation>
 <translation id="6440503408713884761">ละเว้น</translation>
 <translation id="6443406338865242315">ส่วนขยายและปลั๊กอินที่คุณติดตั้ง</translation>
 <translation id="6446163441502663861">Kahu (ซองจดหมาย)</translation>
@@ -2108,6 +2113,7 @@
 <translation id="705310974202322020">{NUM_CARDS,plural, =1{บันทึกบัตรนี้ไม่ได้ในตอนนี้}other{บันทึกบัตรเหล่านี้ไม่ได้ในตอนนี้}}</translation>
 <translation id="7053983685419859001">บล็อก</translation>
 <translation id="7058163556978339998"><ph name="BROWSER"/> ยืนยันว่า <ph name="ISSUER"/> ได้ออกใบรับรองของเว็บไซต์นี้</translation>
+<translation id="7058774143982824355">บริการโปรแกรมแยกวิเคราะห์รหัสผ่าน CSV</translation>
 <translation id="7061777300866737982">ความปลอดภัยสำหรับบ้าน</translation>
 <translation id="7062635574500127092">น้ำเงินอมเขียว</translation>
 <translation id="5320462991730735481">เพิ่มและจัดการที่อยู่ในการตั้งค่า Brave</translation>
@@ -2168,6 +2174,7 @@
 <translation id="7238585580608191973">ลายนิ้วมือ SHA-256</translation>
 <translation id="7240120331469437312">ชื่อสำรองของหัวเรื่องใบรับรอง</translation>
 <translation id="7243010569062352439"><ph name="PASSWORDS"/> <ph name="SIGNIN_DATA"/></translation>
+<translation id="7244465398154211886">{NUM_MATCHES,plural, =1{ตรงกัน # รายการ}other{ตรงกัน # รายการ}}</translation>
 <translation id="724691107663265825">ไซต์ที่จะเปิดมีมัลแวร์</translation>
 <translation id="724975217298816891">ป้อนวันหมดอายุและ CVC สำหรับ <ph name="CREDIT_CARD"/> เพื่ออัปเดตรายละเอียดของบัตร เมื่อคุณยืนยันแล้ว รายละเอียดบัตรของคุณจะแชร์กับเว็บไซต์นี้</translation>
 <translation id="7251437084390964440">การกำหนดค่าเครือข่ายไม่เป็นไปตามมาตรฐาน ONC ระบบอาจไม่นำเข้าการกำหนดค่าบางส่วน
@@ -2188,7 +2195,7 @@
 <translation id="7308436126008021607">การซิงค์ในเบื้องหลัง</translation>
 <translation id="7310392214323165548">อุปกรณ์จะรีสตาร์ทเร็วๆ นี้</translation>
 <translation id="7319430975418800333">A3</translation>
-<translation id="7320336641823683070">ความช่วยเหลือเกี่ยวกับการเชื่อมต่อ</translation>
+<translation id="7320336641823683070">ความช่วยเหลือในการเชื่อมต่อ</translation>
 <translation id="7323804146520582233">ซ่อนส่วน "<ph name="SECTION"/>"</translation>
 <translation id="733354035281974745">ลบล้างบัญชีภายในอุปกรณ์</translation>
 <translation id="7334320624316649418">&amp;ทำซ้ำการจัดลำดับใหม่</translation>
@@ -2359,6 +2366,7 @@
 <translation id="7696089921647603491">ร็อกคลาสสิกและเพลงเก่า</translation>
 <translation id="7697066736081121494">Prc8 (ซองจดหมาย)</translation>
 <translation id="769721561045429135">ขณะนี้คุณมีบัตรต่างๆ ที่ใช้ได้ในอุปกรณ์นี้เท่านั้น คลิก "ทำต่อ" เพื่อดูบัตร</translation>
+<translation id="7698864304447945242">อัปเดตบริการ Google Play สำหรับ AR ไหม</translation>
 <translation id="7699293099605015246">บทความไม่พร้อมใช้งานในขณะนี้</translation>
 <translation id="7701040980221191251">ไม่มี</translation>
 <translation id="7704050614460855821"><ph name="BEGIN_LINK"/>ไปยัง <ph name="SITE"/> (ไม่ปลอดภัย)<ph name="END_LINK"/></translation>
@@ -2371,6 +2379,7 @@
 <translation id="7723047071702270851">แก้ไขบัตร</translation>
 <translation id="1296098648902562076">สร้างแบบฟอร์มใหม่ใน Brave ฟอร์มอย่างรวดเร็ว</translation>
 <translation id="773466115871691567">แปลหน้าเว็บภาษา<ph name="SOURCE_LANGUAGE"/>ทุกครั้ง</translation>
+<translation id="7736959720849233795">คัดลอกที่อยู่ลิงก์</translation>
 <translation id="7740996059027112821">มาตรฐาน</translation>
 <translation id="77424286611022110">เว็บไซต์นี้แสดงโฆษณาที่รบกวนหรือทำให้เข้าใจผิด <ph name="LEARN_MORE_LINK_TEXT"/></translation>
 <translation id="774634243536837715">บล็อกเนื้อหาอันตรายแล้ว</translation>
@@ -2571,7 +2580,6 @@
 <translation id="830498451218851433">พับครึ่ง</translation>
 <translation id="8307358339886459768">รูปภาพขนาดเล็ก</translation>
 <translation id="8307888238279532626">แอปที่ติดตั้งและความถี่ในการใช้</translation>
-<translation id="8317207217658302555">อัปเดต ARCore ไหม</translation>
 <translation id="831997045666694187">ตอนเย็น</translation>
 <translation id="8321476692217554900">การแจ้งเตือน</translation>
 <translation id="8332188693563227489">การเข้าถึง <ph name="HOST_NAME"/> ถูกปฏิเสธ</translation>
@@ -2630,6 +2638,7 @@
 <translation id="8508648098325802031">ไอคอนค้นหา</translation>
 <translation id="8511402995811232419">จัดการคุกกี้</translation>
 <translation id="851353418319061866">การตรวจสอบความถูกต้อง</translation>
+<translation id="8513580896341796021">เริ่มดาวน์โหลดแล้ว หากต้องการดู ให้กด |<ph name="ACCELERATOR"/>|</translation>
 <translation id="8519753333133776369">อุปกรณ์ HID นี้ได้รับอนุญาตจากผู้ดูแลระบบ</translation>
 <translation id="1426902392270366682">Brave ช่วยคุณปกป้องบัญชี Brave และเปลี่ยนรหัสผ่านได้</translation>
 <translation id="1215802963054007211">ล้างประวัติการท่องเว็บ คุกกี้ แคช และอื่นๆ ในการตั้งค่า Brave</translation>
@@ -2646,7 +2655,6 @@
 <translation id="8557066899867184262">CVC จะอยู่ที่ด้านหลังบัตร</translation>
 <translation id="8559762987265718583">ไม่สามารถเริ่มการเชื่อมต่อส่วนตัวกับ <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> ได้เนื่องจากวันที่และเวลาของอุปกรณ์ (<ph name="DATE_AND_TIME"/>) ไม่ถูกต้อง</translation>
 <translation id="8564182942834072828">เอกสารแยกกัน/ไม่จัดชุดสำเนา</translation>
-<translation id="8574899947864779331">ใช้ Touch ID เพื่อยืนยันบัตรได้เร็วขึ้น</translation>
 <translation id="8576310925653847813">ระบบโฮมเธียเตอร์</translation>
 <translation id="8577348305244205642">บัตรเสมือนไม่พร้อมใช้งาน</translation>
 <translation id="858637041960032120">เพิ่มเบอร์โทร
@@ -2661,6 +2669,7 @@
 <translation id="8623885649813806493">ไม่มีรหัสผ่านที่ตรงกัน แสดงรหัสผ่านที่บันทึกไว้ทั้งหมด</translation>
 <translation id="8624354461147303341">รับส่วนลด</translation>
 <translation id="8625384913736129811">บันทึกบัตรนี้ลงในอุปกรณ์นี้</translation>
+<translation id="8637577059508742477">โปรไฟล์และเบราว์เซอร์ของคุณจัดการโดย <ph name="DOMAIN"/></translation>
 <translation id="865032292777205197">เซ็นเซอร์ตรวจจับการเคลื่อนไหว</translation>
 <translation id="8663226718884576429">สรุปคำสั่งซื้อ <ph name="TOTAL_LABEL"/> รายละเอียดเพิ่มเติม</translation>
 <translation id="8666678546361132282">อังกฤษ</translation>
@@ -2799,7 +2808,6 @@
 <translation id="9039213469156557790">นอกจากนี้ หน้านี้ประกอบด้วยทรัพยากรอื่นๆ ซึ่งไม่ปลอดภัย ผู้อื่นสามารถดูทรัพยากรเหล่านี้ขณะถ่ายโอน และผู้บุกรุกสามารถแก้ไขเพื่อเปลี่ยนการทำงานของหน้าได้</translation>
 <translation id="6093455506390049122">ปุ่มหาอุปกรณ์ของฉัน กด Enter เพื่อหาอุปกรณ์ในบัญชี Brave</translation>
 <translation id="9042617223719777575">ความจุมาก</translation>
-<translation id="9044359186343685026">ใช้ Touch ID</translation>
 <translation id="9045525010788763347"><ph name="RESULT_MODIFIED_DATE"/> - <ph name="RESULT_PRODUCT_SOURCE"/></translation>
 <translation id="9049981332609050619">คุณพยายามเข้าถึง <ph name="DOMAIN"/> แต่เซิร์ฟเวอร์แสดงใบรับรองที่ไม่ถูกต้อง</translation>
 <translation id="9050666287014529139">ข้อความรหัสผ่าน</translation>
@@ -2972,4 +2980,5 @@
     &lt;p&gt;อย่าลืมเปิดโปรแกรมป้องกันไวรัสอีกครั้ง เมื่อคุณใช้งานเสร็จแล้ว&lt;/p&gt;
     &lt;h4&gt;ขั้นตอนที่ 5: รับความช่วยเหลือเพิ่มเติม&lt;/h4&gt;
     &lt;p&gt;หากคุณยังคงเห็นข้อผิดพลาด โปรดติดต่อเจ้าของเว็บไซต์&lt;/p&gt;</translation>
+<translation id="2977472760057091832">เปิดลิงก์ในหน้าต่างส่วนบุคคล</translation>
 </translationbundle>

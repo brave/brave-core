@@ -13,14 +13,15 @@ Disa funksione mund të mos ofrohen dhe ndryshimet në preferenca nuk do të ruh
 <translation id="8541922081612557424">Rreth Brave</translation>
 <translation id="1203500561924088507">Faleminderit që e instalove. Duhet të rinisësh shfletuesin përpara se të përdorësh <ph name="BUNDLE_NAME"/>.</translation>
 <translation id="4798342026247191171">Konfiguro profilin tënd të ri të Brave</translation>
+<translation id="6361779936989026201">"Asistenti i Brave" në Brave</translation>
 <translation id="113959764510199339">Brave po përpiqet të shfaqë fjalëkalimet.</translation>
 <translation id="8132634101975074716">Je i identifikuar në Brave!</translation>
 <translation id="5147525139567260139">Ndaj një skedë të Brave</translation>
 <translation id="1530633922026945685">Brave ka nevojë për leje për t'u qasur te kamera jote për të krijuar një hartë 3D të ambientit tënd rrethues</translation>
-<translation id="473077451702478797">Brave e bllokoi këtë skedar sepse ai është shumë i madh për kontroll sigurie. Provo përsëri me skedarë deri në 50 MB</translation>
 <translation id="4449148723378534338">Shqyrto kontrollet kryesore të sigurisë dhe privatësisë në Brave</translation>
 <translation id="1640672724030957280">Po shkarkohet...</translation>
 <translation id="5616153642055197778">Ofrohet një version i ri më i sigurt i Brave.</translation>
+<translation id="5846727201643228411">Mund të shikosh dhe të heqësh temat e interesit që përdorin sajtet për të të shfaqur reklama. Brave i përllogarit interesat e tu bazuar në historikun tënd të shfletimit së fundi.</translation>
 <translation id="6797402139308059782">Lejo që Brave të ekzekutohet në sfond</translation>
 <translation id="5875673934455379806">Instalo përsëri Brave</translation>
 <translation id="6888366668010117849">Sajtet mund të ruajnë informacione rreth interesave të tua në Brave. Për shembull, nëse viziton një sajt për të blerë këpucë për një maratonë, sajti mund ta përcaktojë interesin tënd si vrapim në maratona. Më vonë, nëse viziton një sajt tjetër për t'u regjistruar për një garë, ai sajt mund të të shfaqë një reklamë për këpucë vrapimi bazuar në interesat e tua.</translation>
@@ -34,6 +35,7 @@ Disa funksione mund të mos ofrohen dhe ndryshimet në preferenca nuk do të ruh
 <translation id="2018879682492276940">Instalimi nuk u krye. Provo përsëri.</translation>
 <translation id="831418749472885028">Për të kontrolluar nëse fjalëkalimet e tjera janë të sigurta nga nxjerrjet e paautorizuara të të dhënave dhe probleme të tjera të sigurisë, <ph name="BEGIN_LINK"/>identifikohu në Brave<ph name="END_LINK"/>.</translation>
 <translation id="5499149312981370855">Zgjidh nëse do ta përfshish historikun e Brave për përvoja më të personalizuara në shërbimet e Brave</translation>
+<translation id="849607431499549468">Informacione rreth mënyrës se si i menaxhon Brave certifikatat e veta rrënjë</translation>
 <translation id="142389341645668510">Personalizo Brave</translation>
 <translation id="2174917724755363426">Instalimi nuk përfundoi. E konfirmon që dëshiron ta anulosh?</translation>
 <translation id="8745514854244955877">Brave - identifikimi në rrjet - <ph name="PAGE_TITLE"/></translation>
@@ -94,6 +96,7 @@ Disa funksione mund të mos ofrohen dhe ndryshimet në preferenca nuk do të ruh
 <translation id="5853262807109651878">Kjo do të fshijë <ph name="ITEMS_COUNT"/> artikuj nga kjo pajisje. Për t'i marrë më vonë të dhënat, identifikohu te Brave si <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> mund të kalojë nga një profil i Brave te një tjetër</translation>
 <translation id="8703492925273919597">Mbyll të gjitha dritaret e Brave dhe provo sërish.</translation>
+<translation id="5350485513372498152">"Asistenti i Brave" në Brave mund të kryejë veprime nëpër sajte uebi për ty</translation>
 <translation id="4061445349373849749">Për të mbrojtur privatësinë tënde, ne fshijmë automatikisht interesat e tua që janë më të vjetra se 4 javë. Ndërsa vazhdon të shfletosh, një interes mund të shfaqet përsëri në listë. Ndryshe, mund të heqësh interesat që nuk dëshiron që Brave të marrë parasysh.</translation>
 <translation id="691208314680168371">Historiku yt i shfletimit, regjistri i sajteve që ke vizituar duke përdorur Brave në këtë pajisje.</translation>
 <translation id="1384923383737428730">Ka një softuer keqdashës në kompjuterin tënd. Brave mund ta heqë atë, të restaurojë cilësimet e tua dhe të çaktivizojë shtesat për të bërë që shfletuesi yt të punojë përsëri si normalisht.</translation>
@@ -259,7 +262,6 @@ Disa funksione mund të mos ofrohen. Specifiko një direktori tjetër profili os
 <translation id="5101812148953915496">Sajtet që ti viziton i kujtojnë informacionet e tua derisa ti mbyll Brave</translation>
 <translation id="5516268345616100622">Menaxheri i detyrave - Brave</translation>
 <translation id="713191641919118540">Interesat e tua sipas përllogaritjes nga Brave</translation>
-<translation id="2777705643687998385">Brave e bllokoi këtë skedar sepse ai është i enkriptuar. Kërkoji zotëruesit ta dekriptojë atë</translation>
 <translation id="9068395155143628872">Ad measurement lejon që sajtet që ti viziton të kërkojnë informacione nga Brave të cilat ndihmojnë sajtin të masë cilësinë e funksionimit të reklamave të tij. Ad measurement kufizon gjurmimin nëpër sajte duke transferuar sa më pak informacion të jetë e mundur ndërmjet sajteve.</translation>
 <translation id="1864557848095568223">Po përditëson Brave</translation>
 <translation id="3403365884036456766">Skedari i preferencave është i dëmtuar ose i pavlefshëm.
@@ -349,6 +351,7 @@ Brave nuk është në gjendje të rikuperojë cilësimet e tua.</translation>
 <translation id="7902365066753170041">Nise përsëri për të përditësuar &amp;Brave</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Brave mund të mos funksionojë si duhet sepse nuk mbështetet më në Windows XP ose Windows Vista</translation>
+<translation id="8180288330711585962">Certifikatat e menaxhuara nga Brave</translation>
 <translation id="1611678871603620428">Për të marrë përditësimet e ardhshme të Brave, do të të duhet macOS 10.13 e lart. Ky kompjuter përdor OS X 10.11.</translation>
 <translation id="4484434718272972655">Kush po e përdor Brave?</translation>
 <translation id="7173394303099002355">Merr sigurinë më të fortë të Brave</translation>

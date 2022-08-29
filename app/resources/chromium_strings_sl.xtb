@@ -13,14 +13,15 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="8541922081612557424">O Braveu</translation>
 <translation id="1203500561924088507">Hvala, ker ste se odločili za namestitev. Preden uporabite <ph name="BUNDLE_NAME"/>, morate znova zagnati brskalnik.</translation>
 <translation id="4798342026247191171">Nastavitev novega profila v Braveu</translation>
+<translation id="6361779936989026201">Pomočnik Brave v Braveu</translation>
 <translation id="113959764510199339">Brave poskuša prikazati gesla.</translation>
 <translation id="8132634101975074716">Prijavljeni ste v Brave.</translation>
 <translation id="5147525139567260139">Deljenje zavihka v Braveu</translation>
 <translation id="1530633922026945685">Brave potrebuje dovoljenje za dostop do fotoaparata zaradi ustvarjanja tridimenzionalnega zemljevida okolice.</translation>
-<translation id="473077451702478797">Brave je blokiral to datoteko, ker je prevelika za varnostno preverjanje. Poskusite znova z datotekami velikosti do 50 MB.</translation>
 <translation id="4449148723378534338">Oglejte si ključne kontrolnike zasebnosti in varnosti v Braveu.</translation>
 <translation id="1640672724030957280">Prenos ...</translation>
 <translation id="5616153642055197778">Na voljo je nova, varnejša različica Bravea.</translation>
+<translation id="5846727201643228411">Vidite ali odstranite lahko teme zanimanja, ki jih spletna mesta uporabljajo, da vam prikazujejo oglase. Brave oceni vaša zanimanja glede na nedavno zgodovino brskanja.</translation>
 <translation id="6797402139308059782">Naj se Brave izvaja v ozadju</translation>
 <translation id="5875673934455379806">Vnovična namestitev Bravea</translation>
 <translation id="6888366668010117849">Spletna mesta lahko v Braveu shranjujejo podatke o vaših zanimanjih. Če na primer obiščete spletno mesto zaradi nakupa športnih copatov za maraton, bo spletno mesto morda določilo vaše zanimanje kot udeleževanje maratonov. Če pozneje obiščete drugo spletno mesto za registriranje za tek, vam lahko to spletno mesto glede na vaša zanimanja prikaže oglas za tekaško obutev.</translation>
@@ -34,6 +35,7 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="2018879682492276940">Namestitev ni uspela. Poskusite znova.</translation>
 <translation id="831418749472885028">Če želite preveriti, ali so druga gesla varna pred podatkovnimi kršitvami in drugimi varnostnimi težavami, <ph name="BEGIN_LINK"/>se prijavite v Brave<ph name="END_LINK"/>.</translation>
 <translation id="5499149312981370855">Izberite, ali želite, da je zaradi osebno bolj prilagojenih izkušenj v Googlovih storitvah vključena zgodovina v Braveu.</translation>
+<translation id="849607431499549468">Informacije o tem, kako Brave upravlja korenska potrdila.</translation>
 <translation id="142389341645668510">Prilagodi Brave</translation>
 <translation id="2174917724755363426">Namestitev še ni končana. Ali ste prepričani, da jo želite preklicati?</translation>
 <translation id="8745514854244955877">Brave – Prijava v omrežje – <ph name="PAGE_TITLE"/></translation>
@@ -94,6 +96,7 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="5853262807109651878">S tem bo iz te naprave izbrisanih več elementov (<ph name="ITEMS_COUNT"/>). Če želite pozneje prenesti podatke, se v Brave prijavite kot <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">Bližnjica <ph name="SHORTCUT"/> omogoča preklop med profili v Braveu</translation>
 <translation id="8703492925273919597">Zaprite vsa okna Bravea in poskusite znova.</translation>
+<translation id="5350485513372498152">Pomočnik Brave v Braveu lahko dokonča dejanja na spletnih mestih namesto vas.</translation>
 <translation id="4061445349373849749">Zaradi zaščite vaše varnosti samodejno izbrišemo vaša zanimanja, starejša od 4 tednov. Ko brskate naprej, se zanimanje morda znova prikaže na seznamu. Odstranite lahko tudi zanimanja, za katera ne želite, da jih Brave predlaga.</translation>
 <translation id="691208314680168371">Zgodovina brskanja, evidenca spletnih mest, ki ste jih obiskali s Braveom v tej napravi.</translation>
 <translation id="1384923383737428730">V računalniku je nameščena škodljiva programska oprema. Brave jo lahko odstrani, obnovi vaše nastavitve in onemogoči razširitve, da bo brskalnik spet normalno deloval.</translation>
@@ -260,7 +263,6 @@ Nekatere funkcije morda ne bodo na voljo. Določite drug imenik profila ali upor
 <translation id="5101812148953915496">Spletna mesta, ki jih obiščete, si zapomnijo vaše podatke, dokler ne zaprete Bravea.</translation>
 <translation id="5516268345616100622">Upravitelj opravil – Brave</translation>
 <translation id="713191641919118540">Vaša zanimanja po Braveovi oceni</translation>
-<translation id="2777705643687998385">Brave je blokiral to datoteko, ker je šifrirana. Lastnika prosite, da jo dešifrira.</translation>
 <translation id="9068395155143628872">Merjenje oglasov spletnim mestom omogoča, da od Bravea zahtevajo podatke, ki jim pomagajo pri merjenju učinkovitosti oglasov. Merjenje oglasov omejuje sledenje na več spletnih mestih s prenašanjem čim manj podatkov med spletnimi mesti.</translation>
 <translation id="1864557848095568223">Posodabljanje Bravea</translation>
 <translation id="3403365884036456766">Datoteka z nastavitvami je poškodovana ali neveljavna.
@@ -350,6 +352,7 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="7902365066753170041">Znova zaženite, če želite posodobiti &amp;Brave</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Brave morda ne bo deloval pravilno, ker ni več podprt v sistemu Windows XP ali Windows Vista</translation>
+<translation id="8180288330711585962">Potrdila, ki jih upravlja Brave</translation>
 <translation id="1611678871603620428">Če želite prejemati prihodnje posodobitve Bravea, potrebujete macOS 10.13 ali novejšega. V tem računalniku je nameščen OS X 10.11.</translation>
 <translation id="4484434718272972655">Kdo uporablja Brave?</translation>
 <translation id="7173394303099002355">Prejmite Braveovo najmočnejšo varnost</translation>

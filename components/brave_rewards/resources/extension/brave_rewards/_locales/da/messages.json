@@ -311,18 +311,6 @@
       }
     }
   },
-  "notificationBackupWalletTitle": {
-    "message": "Backup Brave Belønninger",
-    "description": ""
-  },
-  "notificationBackupWalletText": {
-    "message": "Sikkerhedskopiér din Brave Belønninger.",
-    "description": ""
-  },
-  "notificationBackupWalletAction": {
-    "message": "Back-up nu",
-    "description": ""
-  },
   "notificationWalletDisconnectedTitle": {
     "message": "Du er logget ud",
     "description": ""

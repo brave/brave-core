@@ -11,14 +11,15 @@
 <translation id="8541922081612557424">Mengenai Brave</translation>
 <translation id="1203500561924088507">Terima kasih kerana memasang. Anda perlu memulakan semula penyemak imbas anda sebelum menggunakan <ph name="BUNDLE_NAME"/>.</translation>
 <translation id="4798342026247191171">Sediakan profil Brave baharu anda</translation>
+<translation id="6361779936989026201">Brave Assistant dalam Brave</translation>
 <translation id="113959764510199339">Brave sedang cuba memaparkan kata laluan.</translation>
 <translation id="8132634101975074716">Anda log masuk ke Brave!</translation>
 <translation id="5147525139567260139">Kongsi tab Brave</translation>
 <translation id="1530633922026945685">Brave memerlukan kebenaran untuk mengakses kamera anda untuk membuat peta 3D persekitaran anda</translation>
-<translation id="473077451702478797">Brave menyekat fail ini kerana terlalu besar untuk semakan keselamatan. Cuba lagi dengan fail hingga 50 MB</translation>
 <translation id="4449148723378534338">Semak privasi dan kawalan keselamatan utama dalam Brave</translation>
 <translation id="1640672724030957280">Memuat turun...</translation>
 <translation id="5616153642055197778">Terdapat versi Brave baharu yang lebih selamat tersedia.</translation>
+<translation id="5846727201643228411">Anda boleh melihat dan mengalih keluar topik minat yang digunakan oleh laman untuk memaparkan iklan kepada anda. Brave menganggarkan minat anda berdasarkan sejarah penyemakan imbas anda baru-baru ini.</translation>
 <translation id="6797402139308059782">Benarkan Brave dijalankan dalam latar belakang</translation>
 <translation id="5875673934455379806">Pasang semula Brave</translation>
 <translation id="6888366668010117849">Laman boleh menyimpan maklumat tentang minat anda menggunakan Brave. Contohnya, jika anda melawat laman untuk membeli kasut untuk maraton, laman tersebut mungkin mentakrifkan minat anda sebagai larian maraton. Kemudian, jika anda melawati laman lain untuk mendaftar perlumbaan, laman tersebut boleh memaparkan kepada anda iklan kasut untuk berlari berdasarkan minat anda.</translation>
@@ -32,6 +33,7 @@
 <translation id="2018879682492276940">Pemasangan gagal. Sila cuba lagi.</translation>
 <translation id="831418749472885028">Untuk menyemak sama ada kata laluan anda yang lain selamat daripada pelanggaran data dan isu keselamatan lain, <ph name="BEGIN_LINK"/>log masuk ke Brave<ph name="END_LINK"/>.</translation>
 <translation id="5499149312981370855">Pilih sama ada untuk memasukkan sejarah Brave untuk mendapatkan pengalaman yang lebih diperibadikan dalam Perkhidmatan Brave</translation>
+<translation id="849607431499549468">Maklumat tentang cara Brave mengurus sijil akarnya</translation>
 <translation id="142389341645668510">Sesuaikan Brave</translation>
 <translation id="2174917724755363426">Pemasangan belum selesai. Anda pasti ingin membatalkan?</translation>
 <translation id="8745514854244955877">Brave - Log Masuk Rangkaian - <ph name="PAGE_TITLE"/></translation>
@@ -92,6 +94,7 @@
 <translation id="5853262807109651878">Tindakan ini akan memadamkan <ph name="ITEMS_COUNT"/> item daripada peranti ini. Untuk mendapatkan kembali data anda kemudian, log masuk ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> boleh digunakan untuk beralih antara profil Brave</translation>
 <translation id="8703492925273919597">Sila tutup semua tetingkap Brave dan cuba lagi.</translation>
+<translation id="5350485513372498152">Brave Assistant dalam Brave boleh melengkapkan tindakan merentas laman web untuk anda</translation>
 <translation id="4061445349373849749">Untuk melindungi privasi anda, kami memadamkan minat anda yang disimpan melebihi 4 minggu secara automatik. Semasa anda terus menyemak imbas, minat itu mungkin muncul semula dalam senarai. Anda juga boleh mengalih keluar minat yang anda tidak mahu dipertimbangkan oleh Brave.</translation>
 <translation id="691208314680168371">Sejarah penyemakan imbas anda, rekod laman yang anda lawati menggunakan Brave pada peranti ini.</translation>
 <translation id="1384923383737428730">Terdapat perisian yang berbahaya pada komputer anda. Brave boleh mengalih keluar perisian tersebut, memulihkan tetapan anda dan melumpuhkan sambungan supaya penyemak imbas anda dapat berfungsi seperti biasa semula.</translation>
@@ -258,7 +261,6 @@ Beberapa ciri mungkin tidak tersedia. Sila nyatakan direktori profil yang berbez
 <translation id="5101812148953915496">Laman yang anda lawati mengingati maklumat anda sehingga anda menutup Brave</translation>
 <translation id="5516268345616100622">Pengurus Tugas - Brave</translation>
 <translation id="713191641919118540">Minat anda seperti yang dianggarkan oleh Brave</translation>
-<translation id="2777705643687998385">Brave menyekat fail ini kerana fail ini disulitkan. Minta pemilik fail ini untuk menyahsulitnya</translation>
 <translation id="9068395155143628872">Pengukuran iklan membolehkan laman yang anda lawati meminta maklumat daripada Brave yang membantu laman tersebut mengukur prestasi iklan mereka. Pengukuran iklan mengehadkan penjejakan rentas laman dengan memindahkan maklumat antara laman sedikit yang mungkin.</translation>
 <translation id="1864557848095568223">Mengemas kini Brave</translation>
 <translation id="3403365884036456766">Fail pilihan anda rosak atau tidak sah.
@@ -348,6 +350,7 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="7902365066753170041">Lancarkan semula untuk mengemas kini &amp;Brave</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Brave mungkin tidak akan berfungsi dengan betul kerana tidak lagi disokong pada Windows XP atau Windows Vista</translation>
+<translation id="8180288330711585962">Sijil diurus oleh Brave</translation>
 <translation id="1611678871603620428">Untuk mendapatkan kemaskinian Brave yang akan datang, anda memerlukan macOS 10.13 atau yang lebih baharu. Komputer ini menggunakan OS X 10.11.</translation>
 <translation id="4484434718272972655">Siapakah yang sedang menggunakan Brave?</translation>
 <translation id="7173394303099002355">Dapatkan keselamatan Brave yang paling kukuh</translation>
