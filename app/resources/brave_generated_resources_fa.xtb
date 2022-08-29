@@ -24,6 +24,7 @@
 <translation id="4150684676757176434">پخش خودکار همچنان مسدود شود</translation>
 <translation id="8988939298652262600">Brave ایمنی و امنیت افزونه‌ها را بررسی نمی‌کند. فقط درصورتی‌که به برنامه‌نویس اعتماد دارید، این افزونه را نصب کنید.</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (شناسه افزونه "<ph name="EXTENSION_ID"/>") در Brave مجاز نیست.</translation>
+<translation id="9005883459983913482">پنجره های Tor</translation>
 <translation id="7965178729203412357">هویت تور جدید</translation>
 <translation id="6924909138923993900">اتصال Tor جدید برای این سایت</translation>
 <translation id="4734294903299549345">خروج از پنجره خصوصی با Tor</translation>
@@ -37,6 +38,9 @@
 <translation id="1725356094208762656">باز کردن در Tor</translation>
 <translation id="3396347744975515056">همگام‌سازی Brave ارتقا یافته و نیازمند راه‌اندازی است</translation>
 <translation id="7473245612074035141">شروع راه‌اندازی</translation>
+<translation id="3975865347033939965">سرویس همگام‌سازی راه‌اندازی نشد، Brave Sync اجرا نمی‌شود</translation>
+<translation id="4450893287417543264">دیگر نشان داده نشود</translation>
+<translation id="4595286989346610620">جزئیات را بررسی کنید</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">انتشار و دریافت فایل‌ها از IPFS</translation>
 <translation id="7398397225367092613">.onion</translation>
@@ -143,7 +147,7 @@
 <translation id="8490082094734500369">خاموش کردن حالت خواننده</translation>
 <translation id="2036503787657622020">روشن کردن حالت خواننده</translation>
 <translation id="5226458915125328323">تنظیمات تندخوان</translation>
-<translation id="1621606336827646158">نمایش صفحه اصلی</translation>
+<translation id="8591883849678260674">مشاهده اصلی</translation>
 <translation id="6284218950354553099">ارسال خودکار پینگ مصرف روزانه به Brave</translation>
 <translation id="5288333155754958121">این پینگ ناشناس خصوصی امکان تخمین کاربران فعال را برای Brave فراهم می‌کند.</translation>
 <translation id="1872784258300710671">Brave از تجزیه‌وتحلیل‌های کاملاً خصوصی محصول برای تخمین استفاده کلی از بعضی از قابلیت‌ها استفاده می‌کند.</translation>
@@ -210,6 +214,10 @@
 <translation id="8721331068159819483">مشابه macOS</translation>
 <translation id="1692470335103807198">دریافت طرح‌های زمینه بیشتر</translation>
 <translation id="2906510232093002459">تصاویر پیش‌فرض Brave</translation>
+<translation id="3367129510799209147">حالت شناور برگه</translation>
+<translation id="2113977810652731515">کارت</translation>
+<translation id="4096343215397759358">کارت با پیش نمایش</translation>
+<translation id="5297085818601043899">راهنمای ابزار</translation>
 <translation id="2396127686705429331">نمایش دکمه نشانک‌ها</translation>
 <translation id="2814998458708016836">استفاده از نوار نشانی عریض</translation>
 <translation id="4109670531935487117">نشان دادن پیشنهادهای تکمیل خودکار در نوار نشانی</translation>
@@ -237,7 +245,7 @@
 <translation id="6388201778088078932">تنظیمات.</translation>
 <translation id="4800195524776354947">نمایش تعداد موارد مسدودشده روی نماد سپر ایمنی</translation>
 <translation id="5510493033031835532">تغییر مسیر خودکار صفحات AMP</translation>
-<translation id="5197219128592971597">به‌جای نسخه‌های صفحه تلفن همراه تسریع‌شده Google، همیشه از نشانی‌های وب صفحه اصلی (غیر AMP) بازدید کنید</translation>
+<translation id="7630031867325944356">به جای AMP و نسخه‌های مشابه، نشانی‌های وب صفحه ناشر را ترجیح دهید.</translation>
 <translation id="7607166182943595829">ممانعت از سایت‌ها برای گرفتن اثرانگشتم بر اساس اولویت‌های زبانی من</translation>
 <translation id="3497934980362703405">فعال کردن این تنظیم،‌ مقدار اطلاعاتی را که سایت‌ها می‌توانند درباره اولویت‌های زبانی شما به‌دست آورند، کاهش می‌دهد.</translation>
 <translation id="2133317862976486547">مسدود کردن ردیاب‌ها و آگهی‌ها</translation>
@@ -284,6 +292,7 @@
 <translation id="1758947220824279023">حداکثر تعداد آگهی‌ها برای نمایش</translation>
 <translation id="2356652719351432565">ارتباط آگهی منطقه‌ای</translation>
 <translation id="2196950072404588793">این کار به Brave اجازه می‌دهد که آگهی‌هایی را به شما نشان دهد که مختص منطقه شما هستند. <ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/></translation>
+<translation id="2433507940547922241">شکل ظاهری</translation>
 <translation id="6112368337882254910">کمک خودکار</translation>
 <translation id="9132509928968869844">محدودیت کمک خودکار ماهانه</translation>
 <translation id="7286722244752781970">حداقل زمان صفحهْ قبل از ثبت بازدید</translation>
@@ -373,6 +382,7 @@
 لطفاً دقیق بررسی کنید که این کلمات کد با دستگاهی ایجاد شده باشند که متعلق به شما است.
 
 مطمئنید می‌خواهید این کار را انجام دهید؟</translation>
+<translation id="7443185843787879670">Brave نتوانست به فضای ذخیره سازی ایمن سیستم عامل شما دسترسی پیدا کند. این چیزی است که برای ایمن سازی داده هایی مانند رمز عبور و کوکی ها استفاده می شود. همچنین برای Brave Sync برای اتصال نمایه مرورگر شما بین دستگاه ها لازم است. این بدان معناست که Brave Sync اجرا نمی شود. برای حل این مشکل، لطفاً به مراجعه کنید.<ph name="BEGIN_LINK_SYNC_GUIDE"/>راهنمای عیب‌یابی Brave Sync<ph name="END_LINK_SYNC_GUIDE"/>.</translation>
 <translation id="6285118765755298263">فهرست‌بندی سایر موتورهای جستجو</translation>
 <translation id="919715748352669592">فهرست‌بندی خودکار وبسایت‌هایی که از مشخصات OpenSearch پیروی می‌کنند.</translation>
 <translation id="842628013524824194">پنجره عادی - موتور جستجو استفاده‌شده در نوار نشانی</translation>
@@ -385,6 +395,23 @@
 <translation id="5248318250177143470">روشی برای تحلیل «سرویس نام اتریوم» (ENS)</translation>
 <translation id="6241402707160226266">پنجره خصوصی با Tor</translation>
 <translation id="8762452230727230396">Tor نشانی IP شما را از سایت‌هایی که بازدید می‌کنید، مخفی می‌کند.</translation>
+<translation id="2959986444009520721">از پل ها استفاده کنید</translation>
+<translation id="6003484976430531384">پل ها به شما کمک می کنند به شبکه Tor در جایی که Tor مسدود شده است دسترسی پیدا کنید. بسته به جایی که هستید، یک پل ممکن است بهتر از پل دیگر کار کند.</translation>
+<translation id="7206799843254049470">تنظیمات اتصال Tor</translation>
+<translation id="3194502271166340944">نحوه اتصال ویندوز خصوصی با Tor به شبکه Tor را کنترل می کند</translation>
+<translation id="4859228830700205299">یک پل داخلی را انتخاب کنید</translation>
+<translation id="3233137871426528317">درخواست یک پل از torproject.org</translation>
+<translation id="5701503934456421898">درخواست پل جدید...</translation>
+<translation id="8149806369020180959">یک پل فراهم کنید</translation>
+<translation id="454073978993625597">اطلاعات پل را از یک منبع قابل اعتماد وارد کنید.</translation>
+<translation id="4425607417590286548">تغغیرات را اعمال کن</translation>
+<translation id="2128143836897950793">برای دریافت پل ها روی "درخواست پل جدید..." کلیک کنید</translation>
+<translation id="3314921753580327793">آدرس: پورت (یکی در هر خط) را تایپ کنید</translation>
+<translation id="3755189300481406891">درخواست پل</translation>
+<translation id="6924425739431382319">تماس با BridgeDB لطفا صبر کنید.</translation>
+<translation id="811745063252080651">برای درخواست پل، CAPTCHA را حل کنید.</translation>
+<translation id="6936835573742749135">نمی توان CAPTCHA درخواست کرد. بعدا دوباره تلاش کنید.</translation>
+<translation id="2653659639078652383">ارائه</translation>
 <translation id="1369311132025451972">هدایت خودکار سایت‌های ‎Onion</translation>
 <translation id="2843777623071353503">در صورت وجود، Brave سرویس onion وب‌سایت یا دامنه ‎.onion را در پنجره Tor باز خواهد کرد.</translation>
 <translation id="2896916411183256228">از WebTorrent برای نمایش مستقیم تورنت‌ها در مرورگر استفاده می‌کند. از فایل‌های تورنت و پیوندهای آهنربایی پشتیبانی می‌کند.</translation>
@@ -431,7 +458,6 @@
 <translation id="7059127752542505809">وارد کردن نشانی وب</translation>
 <translation id="3047726704186619366">آدرس وب نماد</translation>
 <translation id="2487558607408469181">آدرس وب کاوشگر بلوک</translation>
-<translation id="2653659639078652383">ارائه</translation>
 <translation id="2156993118928861787">آدرس نامعتبر</translation>
 <translation id="6301398959353668507">این فیلد نباید خالی باشد.</translation>
 <translation id="7504462451153306677">قالب نامعتبر است، شناسه‌ی زنجیره یک عدد مثبت است</translation>

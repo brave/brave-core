@@ -311,18 +311,6 @@
       }
     }
   },
-  "notificationBackupWalletTitle": {
-    "message": "Brave Rewards 백업",
-    "description": ""
-  },
-  "notificationBackupWalletText": {
-    "message": "Brave Rewards를 백업하세요.",
-    "description": ""
-  },
-  "notificationBackupWalletAction": {
-    "message": "지금 백업하기",
-    "description": ""
-  },
   "notificationWalletDisconnectedTitle": {
     "message": "로그아웃 상태",
     "description": ""

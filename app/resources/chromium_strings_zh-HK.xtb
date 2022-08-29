@@ -13,11 +13,11 @@
 <translation id="8541922081612557424">關於 Brave</translation>
 <translation id="1203500561924088507">多謝安裝。您必須先重新啟動瀏覽器，才能使用 <ph name="BUNDLE_NAME"/>。</translation>
 <translation id="4798342026247191171">設定新的 Brave 設定檔</translation>
+<translation id="6361779936989026201">Brave 的「Brave 助理」</translation>
 <translation id="113959764510199339">Brave 即將顯示密碼。</translation>
 <translation id="8132634101975074716">您已登入 Brave！</translation>
 <translation id="5147525139567260139">分享 Brave 分頁</translation>
 <translation id="1530633922026945685">Brave 需要取得權限，才能存取相機以建立您身處環境的 3D 地圖</translation>
-<translation id="473077451702478797">由於此檔案太大，無法進行安全檢查，因此已被 Brave 封鎖。請嘗試使用大小不超過 50 MB 的檔案再試一次</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{管理員要求您重新啟動 Brave，以套用更新}=1{管理員要求您重新啟動 Brave，以套用更新。您的無痕式視窗不會重新開啟。}other{管理員要求您重新啟動 Brave，以套用更新。您的 # 個無痕式視窗不會重新開啟。}}</translation>
 <translation id="4449148723378534338">查看 Brave 中重要的私隱和安全控制項</translation>
 <translation id="5359574361379286250">如果您只想使用此帳戶一次，可以在 Brave 瀏覽器中使用<ph name="GUEST_LINK_BEGIN"/>訪客模式<ph name="GUEST_LINK_END"/>。如要新增其他人的帳戶，請<ph name="LINK_BEGIN"/>新增使用者<ph name="LINK_END"/>至您的 <ph name="DEVICE_TYPE"/>。
@@ -25,6 +25,7 @@
 您已向網站和應用程式授予的權限，可能會套用到此帳戶。您可在「<ph name="SETTINGS_LINK_BEGIN"/>設定<ph name="SETTINGS_LINK_END"/>」中管理 Brave 帳戶。</translation>
 <translation id="1640672724030957280">下載中…</translation>
 <translation id="5616153642055197778">更新、更安全的 Brave 版本現已推出。</translation>
+<translation id="5846727201643228411">您可以查看及移除網站用來向您顯示廣告的感興趣主題。Brave 會根據您最近的瀏覽記錄，推測您感興趣的主題。</translation>
 <translation id="6797402139308059782">讓 Brave 在背景執行</translation>
 <translation id="1448049584457347995">為了讓 Brave 的安全性更有保障，我們已將部分未列在 <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> 中的擴充功能停用，它們可能在您不知情的情況下加入瀏覽器。</translation>
 <translation id="5875673934455379806">重新安裝 Brave</translation>
@@ -43,6 +44,7 @@
 <translation id="2018879682492276940">無法安裝，請再試一次。</translation>
 <translation id="831418749472885028">如要檢查其他密碼是否安全，且未受資料外洩或其他安全性問題影響，請<ph name="BEGIN_LINK"/>登入 Brave<ph name="END_LINK"/>。</translation>
 <translation id="5499149312981370855">選擇是否包含 Brave 記錄，以便在 Brave 服務中享有更個人化的體驗</translation>
+<translation id="849607431499549468">Brave 如何管理根憑證的相關資訊</translation>
 <translation id="142389341645668510">自訂 Brave</translation>
 <translation id="2174917724755363426">安裝尚未完成。確定要取消嗎？</translation>
 <translation id="8745514854244955877">Brave - 網絡登入 - <ph name="PAGE_TITLE"/></translation>
@@ -104,6 +106,7 @@
 <translation id="5853262807109651878">這會刪除此裝置上的 <ph name="ITEMS_COUNT"/> 個項目。如果日後想擷取資料，請以 <ph name="USER_EMAIL"/> 的身分登入 Brave。</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> 可以切換唔同嘅 Brave 設定檔</translation>
 <translation id="8703492925273919597">請關閉所有 Brave 視窗，然後再試一次。</translation>
+<translation id="5350485513372498152">Brave 的「Brave 助理」可助您完成各網站的操作</translation>
 <translation id="4061445349373849749">為保障您的私隱，我們會自動刪除超過 4 星期的興趣。按瀏覽內容而定，某個主題可能會再次在您的興趣清單中顯示。您亦可移除不希望 Brave 列在興趣喜好清單中的項目。</translation>
 <translation id="691208314680168371">您的瀏覽記錄，亦即您在此裝置上使用 Brave 瀏覽過的網站記錄。</translation>
 <translation id="1384923383737428730">在您的電腦上發現有害軟件。Brave 可移除該軟件、復原設定及停用擴充程式，讓瀏覽器恢復正常運作。</translation>
@@ -274,7 +277,6 @@
 <translation id="5101812148953915496">在 Brave 關閉前，您瀏覽的網站可以記住您的資料</translation>
 <translation id="5516268345616100622">工作管理員 - Brave</translation>
 <translation id="713191641919118540">Brave 推測您有以下興趣</translation>
-<translation id="2777705643687998385">由於此檔案已加密，因此已被 Brave 封鎖。請要求擁有者解密檔案</translation>
 <translation id="9068395155143628872">「廣告評估」允許您瀏覽的網站向 Brave 要求資料，以便評估廣告的效益。「廣告評估」會透過盡量減少在網站之間傳送的資料，從而限制跨網站追蹤功能。</translation>
 <translation id="1864557848095568223">正在更新 Brave</translation>
 <translation id="3403365884036456766">您的偏好設定檔案已損毀或無效。
@@ -366,6 +368,7 @@ Brave 無法復原您的設定。</translation>
 <translation id="7902365066753170041">重新啟動以更新 &amp;Brave</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">由於 Brave 將不再支援 Windows XP 或 Windows Vista，因此可能無法正常運作</translation>
+<translation id="8180288330711585962">由 Brave 管理的憑證</translation>
 <translation id="1611678871603620428">如要取得日後的 Brave 更新，您將需要 macOS 10.13 或以上版本。此電腦正在使用 OS X 10.11。</translation>
 <translation id="4484434718272972655">誰在使用 Brave？</translation>
 <translation id="7173394303099002355">取得 Brave 最強大的安全防護功能</translation>

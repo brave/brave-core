@@ -3,6 +3,7 @@
 <translationbundle lang="cs">
 <translation id="1800311840305731850">Stránku IPFS nelze načíst.</translation>
 <translation id="5712742401570874902">Stránky IPFS nejsou v soukromých oknech povoleny.</translation>
+<translation id="5749639013106315553">IPFS je zakázán. Chcete-li otevřít tento web, vyberte metodu řešení IPFS v nastavení.</translation>
 <translation id="5288293905681750318">Sledování &amp; ads blokována</translation>
 <translation id="2313532038420432247">Aktualizace na HTTPS</translation>
 <translation id="788493840831967104">Ušetřený čas</translation>
@@ -60,6 +61,7 @@
 <translation id="6699628638740071563">Je čas opustit Google.</translation>
 <translation id="2045455461902775806">Vyhledávač Brave nezkresluje ani necenzuruje výsledky a nesleduje vás, vaše dotazy ani kliknutí.</translation>
 <translation id="6811221529729056895">Vyzkoušejte vyhledávač Brave nyní</translation>
+<translation id="5525668735313040116">Hledat na webu soukromě</translation>
 <translation id="3446024864193919737">Ukázat odměny Brave</translation>
 <translation id="6274899614137380422">Ukázat Binance</translation>
 <translation id="5585019845078534178">Karty</translation>
@@ -70,12 +72,19 @@
 <translation id="3333887201479867589">Odměny Brave</translation>
 <translation id="3159285901314605198">Obrázek na pozadí</translation>
 <translation id="385051799172605136">Zpět</translation>
+<translation id="4225429340218993596">Plné barvy</translation>
 <translation id="9024104284526126630">V Brave můžete zahájit soukromý hovor.</translation>
 <translation id="4903286433687221248">Pusťte se do neomezených hovorů s přáteli a kolegy v aplikaci Brave Talk.</translation>
 <translation id="7115051913071512405">Vyzkoušet</translation>
 <translation id="7415602225677446066">Nejdůležitější příběhy dnešního dne v naprosto soukromém kanálu, pouze pro vás.</translation>
 <translation id="6903061332999399632">Služba zprávy Brave je podporována reklamami, které jsou zcela soukromé a anonymizované a odpovídají vašemu zařízení. Vaše osobní údaje zůstanou vždy soukromé, podle našich <ph name="LINK_START"/>zásad ochrany osobních údajů<ph name="LINK_END"/>.</translation>
 <translation id="7823038307453615214">Zobrazit zprávy Brave</translation>
+<translation id="1447534717041828517">Zobrazit tlačítko Brave News na panelu nástrojů</translation>
+<translation id="370665806235115550">Načítání...</translation>
+<translation id="4634933166298842522">Správa předplatného</translation>
+<translation id="3632460243282703117">Přihlásit se</translation>
+<translation id="4720556299488643018">Odhlásit z odběru</translation>
+<translation id="5227905322248018544">Skrýt a znovu to nezobrazovat</translation>
 <translation id="780301667611848630">Ne, děkuji</translation>
 <translation id="9164544612367905452">Načítání...</translation>
 <translation id="1276592121036104130">Načíst nový obsah</translation>
@@ -101,6 +110,7 @@
 <translation id="8488282162676695335">Peněženka Brave</translation>
 <translation id="8820817407110198400">Záložky</translation>
 <translation id="1644574205037202324">Historie</translation>
+<translation id="2702801445560668637">Seznam čtení</translation>
 <translation id="6165508094623778733">Zjistit více</translation>
 <translation id="8730621377337864115">Hotovo</translation>
 <translation id="730042046912793465">Toto je</translation>
@@ -127,9 +137,11 @@
 <translation id="4712050378540986986">Status Toru</translation>
 <translation id="1939334281379458295">Systém Tor byl úspěšně připojen.</translation>
 <translation id="8030169304546394654">Odpojeno</translation>
+<translation id="2795840524629682765">Připojení Tor selhalo</translation>
 <translation id="1149108864689950951">Systém Tor se připojuje... [[percentage]]%</translation>
 <translation id="3651192084771403430">Máte problém s připojením? Zkuste v nastavení<ph name="BEGIN_LINK"/>vypnout<ph name="END_LINK"/> a znovu zapnout Soukromé okno s Tor.</translation>
-<translation id="9190084253595768053">Máte problém s připojením? Otevřete <ph name="BEGIN_LINK"/>Nastavení Brave<ph name="END_LINK"/>, vypněte Soukromé okno s Tor a poté jej znovu zapněte. Stále se nejde připojit?</translation>
+<translation id="8834376622642889380">Otevřete <ph name="BEGIN_LINK"/> Brave Settings <ph name="END_LINK"/>, vypněte Soukromé okno s Tor a poté znovu povolte.</translation>
+<translation id="1576202729986800142"><ph name="BEGIN_BOLD"/> máš potíže? <ph name="END_BOLD"/> Zkuste použít <ph name="BEGIN_BRIDGES_LINK"/> mosty <ph name="END_BRIDGES_LINK"/> nebo <ph name="BEGIN_SUPPORT_LINK"/> kontaktujte podporu <ph name="END_SUPPORT_LINK"/>.</translation>
 <translation id="8388043004918289671">Obraťte se na podporu.</translation>
 <translation id="4272382368346338917">Další filtry</translation>
 <translation id="8949292968394988358">Varování: Po zapnutí příliš mnoha filtrů dojde ke snížení výkonu</translation>
@@ -146,7 +158,6 @@
 <translation id="9204006549413740506">Poslední aktualizace</translation>
 <translation id="6745592621698551453">Aktualizovat</translation>
 <translation id="5334844597069022743">Zobrazit zdroj</translation>
-<translation id="4720556299488643018">Odhlásit z odběru</translation>
 <translation id="1209739344687072997">Nahlásit porouchané stránky</translation>
 <translation id="8510478288840333677">Dejte vývojářům Brave vědět, že tyto stránky se zabezpečením Shields nefungují správně:</translation>
 <translation id="4105411033440701818">Poznámka: Po kliknutí na tlačítko „Odeslat“ se vývojářům prohlížeče Brave odešle adresa webové stránky, číslo verze vašeho prohlížeče Brave a vaše IP adresa. (IP adresa se nikam neuloží).</translation>
@@ -257,6 +268,8 @@
 <translation id="5028274575541726856">Chyba: profil odměn Brave je nahlášený</translation>
 <translation id="2607420597216860026">Zkuste to znovu po dokončení ověření ID ve službě <ph name="PROVIDER"/>.</translation>
 <translation id="3183954159462541696">Chyba: Pro přihlášení je potřeba ověřený účet</translation>
+<translation id="6650468331440842419">Hmm, vypadá to, že váš profil Brave Rewards byl již připojen k účtu odnětí svobody v jiné oblasti. Zkuste se znovu připojit k předchozímu účtu úschovy, nebo aktualizujte region svého účtu úschovy tak, aby odpovídal vašemu předchozímu účtu.</translation>
+<translation id="5955021799827127089">Chyba: Různá oblast účtu</translation>
 <translation id="5260522591743022748">Hmm, zdá se, že vaše odměny Brave už byly ověřeny jiným účtem <ph name="PROVIDER"/>. Zkuste ověření provést znova pomocí předchozího účtu.</translation>
 <translation id="5111921830714291902">Chyba: Jiný účet</translation>
 <translation id="6933939911547091461">Vaše odměny Brave bohužel nelze ověřit, protože ověření odměn Brave momentálně nepodporuje vaši oblast.</translation>
@@ -423,7 +436,6 @@
 <translation id="7656781188259414093">cíl.</translation>
 <translation id="13853865024308201">Nárokovat</translation>
 <translation id="1767561995429774671">Přispět</translation>
-<translation id="6896758677409633944">Kopírovat</translation>
 <translation id="4932733599132424254">Datum</translation>
 <translation id="3552003743293281224">Vklady</translation>
 <translation id="3866249974567520381">Popis</translation>
@@ -470,8 +482,6 @@
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6569877533335686968">Potvrdit</translation>
-<translation id="6977372887576114613">Vložené BAT</translation>
-<translation id="194625454574835815">Klíč pro obnovení</translation>
 <translation id="6354568176665589146">Opakující se</translation>
 <translation id="2799223571221894425">Restartovat</translation>
 <translation id="1110535155349301542">odstranit</translation>
@@ -482,10 +492,6 @@
 <translation id="1797334173232638045">Seznam vašich připnutých stránek byl přesunut do</translation>
 <translation id="542042553430131913">Pokud nejsou vaše odměny Brave ověřeny, ukládá se váš zůstatek BAT mezi místní soubory ve vašem zařízení.</translation>
 <translation id="2142973554991645476">Chcete-li svůj zůstatek BAT zabezpečit pro případ čisté přeinstalace prohlížeče nebo formátování vašeho zařízení a pokud chcete využívat výhody, jako je přidávání nebo odebírání ze zůstatku BAT, doporučujeme provést<ph name="LINK_BEGIN"/>ověření<ph name="LINK_END"/>.</translation>
-<translation id="5717619667204259673">Tento klíč pro obnovení bezpečně uchovejte.</translation>
-<translation id="7018390569051511373">Tento klíč můžete použít, abyste své odměny získali zpět, pokud by se stalo něco s vaším prohlížečem nebo počítačem. Klíč si chraňte — pokud ho někdo získá, může vám váš profil odměn odcizit. Pravděpodobně nejbezpečnější je si jej zapsat na kus papíru nebo na jiné místo, kde si uchováváte důležité údaje.</translation>
-<translation id="8979401359137062629">Poznámka:</translation>
-<translation id="7934806082615382155">Část financí může pocházet od Brave a není součástí zálohy, protože tato není nutná. Můžete ji použít výlučně v tomto prohlížeči.</translation>
 <translation id="7354412786785889047">Tento obsah a jeho tvůrce můžete podpořit darem. Je to způsob vašeho poděkování za skvělý obsah. Ověřeným tvůrcům jejich příspěvky vyplácíme během prvního týdne každého kalendářního měsíce.</translation>
 <translation id="3074127054582480056">Pozor</translation>
 <translation id="3034163433136515805">Zobrazit QR kód</translation>
@@ -498,7 +504,6 @@
 <translation id="3548849774726860833">Pokud si resetujete peněženku, data vašich Odměn se nenávratně ztratí.</translation>
 <translation id="4914597931214386232">Nárokovaných žetonových grantů</translation>
 <translation id="3494964159182650590">Přehled odměn</translation>
-<translation id="1738658589626889850">Uložit jako soubor</translation>
 <translation id="2913994227901456490">Zobrazit všechny položky [[numItems]]</translation>
 <translation id="1549705559752367917">Zaslat tip</translation>
 <translation id="3536298624341433814">Odeslat můj příspěvek</translation>
@@ -576,6 +581,7 @@
 <translation id="3909193058140362331">Převod se nepovedlo zpracovat. Zkuste to prosím znovu.</translation>
 <translation id="5721542149042740780">Zadaná částka přesahuje částku, kterou máte aktuálně k dispozici.</translation>
 <translation id="7144878232160441200">Zkusit znovu</translation>
+<translation id="6896758677409633944">Kopírovat</translation>
 <translation id="7431764818502638140">Informace nedostupné</translation>
 <translation id="6409345078064530735">Adresa pro vklad</translation>
 <translation id="7153116947319792513">Uložit sdělení</translation>
@@ -632,7 +638,7 @@
 <translation id="1164622162816276433">Objem za 24 h</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Chcete povolit podporu služby Unstoppable Domains v prohlížeči Brave?</translation>
-<translation id="2173151783558384314">Služba Brave bude používat server Infura k vydávání požadavků na vyhledávání doménových jmen .crypto (a také .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin) pomocí protokolu Ethereum JSON-RPC na inteligentní smlouvu od společnosti Unstoppable Domains. Pokud tuto funkci povolíte, Infura uvidí tyto konkrétní domény, které se snažíte navštívit, ale nebude schopna zobrazit jiné domény. Viz <ph name="BEGIN_INFURA_TOU_LINK"/>podmínky použití <ph name="END_INFURA_TOU_LINK"/> a <ph name="BEGIN_INFURA_PRIVACY_LINK"/>zásady ochrany osobních údajů<ph name="END_INFURA_PRIVACY_LINK"/> společnosti Infura.</translation>
+<translation id="6783637972818687030">Brave bude používat Infura k vydávání volání Ethereum JSON-RPC na inteligentní smlouvu z Unstoppable Domains k vyřešení .crypto (a také .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin, .zil) požadavky na vyhledávání doménových jmen. Pokud to povolíte, Infura uvidí ty konkrétní domény, které se pokoušíte navštívit, ale nebudou moci vidět jiné domény. Viz Infura"s <ph name="BEGIN_INFURA_TOU_LINK"/>podmínky použití<ph name="END_INFURA_TOU_LINK"/> a <ph name="BEGIN_INFURA_PRIVACY_LINK"/>Zásady ochrany osobních údajů<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
 <translation id="6513892817556267573">Služba Ethereum Name Service</translation>
 <translation id="4335039108389860301">Chcete v prohlížeči Brave povolit podporu služby ENS (Ethereum Name Service)?</translation>
 <translation id="8328137586971750853">Služba Brave bude používat server Infura k vydávání požadavků na vyhledávání doménových jmen .eth na inteligentní smlouvu Ethereum JSON-RPC ze služby Ethereum Name Service. Pokud tuto funkci povolíte, Infura uvidí doménu .eth, kterou se snažíte navštívit, ale nebude schopna vidět jiné domény. Viz <ph name="BEGIN_INFURA_TOU_LINK"/> podmínky použití <ph name="END_INFURA_TOU_LINK"/> a <ph name="BEGIN_INFURA_PRIVACY_LINK"/> zásady ochrany osobních údajů <ph name="END_INFURA_PRIVACY_LINK"/> společnosti Infura.</translation>
@@ -778,9 +784,6 @@
 <translation id="7550470870580166294">Nedostatečné finance</translation>
 <translation id="2775064702681588061">Váš účet Brave Rewards čeká na převod prostředků.</translation>
 <translation id="3358400027937159351">Přispěli jste <ph name="AMOUNT"/>.</translation>
-<translation id="2630264552940126640">Zálohovat odměny Brave</translation>
-<translation id="238922425564381955">Zálohujte si prosím své odměny Brave.</translation>
-<translation id="1018806299114415224">Záloha je nyní k dispozici</translation>
 <translation id="1619753851206150396">Jste odhlášeni</translation>
 <translation id="5142174225142816130">To se může stát, aby váš účet zůstával zabezpečený. Kliknutím níže se znovu připojíte.</translation>
 <translation id="2807965672895914288">Vaše naplánované měsíční automatické příspěvky a měsíční spropitné nemohly být odeslány kvůli nedostatečnému zůstatku na účtu. Zkusíme to znovu za 30 dní.</translation>
@@ -907,6 +910,7 @@
 <translation id="2805756323405976993">Aplikace</translation>
 <translation id="3586775666459823714">NFT</translation>
 <translation id="1987317783729300807">Účty</translation>
+<translation id="3567988240819868195">Trh</translation>
 <translation id="3188963375823360044">1H</translation>
 <translation id="8163269366661594721">1D</translation>
 <translation id="7640956400175663828">1W</translation>
@@ -930,15 +934,18 @@
 <translation id="4500473291496079954">Platnost vyprší</translation>
 <translation id="2236833281018938257">Adresa peněženky nebo URL</translation>
 <translation id="928500657730628112">Adresa peněženky</translation>
-<translation id="2860280209982026951">Brave používá <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> jako agregátor DEX.</translation>
+<translation id="6812967455478797345">Brave používá <ph name="LINK_BEFORE"/> <ph name="SWAP_PROVIDER"/> <ph name="LINK_AFTER"/> jako agregátor DEX.</translation>
 <translation id="151946611346774041">0x zpracuje adresu Etherea a IP adresu pro provedení transakce (včetně získání cenových nabídek). 0x bude tyto údaje používat POUZE pro účely zpracování transakcí.</translation>
-<translation id="4626407663177532837">Cenová nabídka zahrnuje poplatek pro Brave ve výši $0,875 %.</translation>
+<translation id="7465227658364622464">Jupiter zpracuje adresu Solana a IP adresu, aby splnil transakci (včetně získání nabídek). Jupiter bude tyto údaje používat POUZE pro účely zpracování transakcí.</translation>
+<translation id="712738518060477110">Nabídka zahrnuje a <ph name="SWAP_FEE_PERCENTAGE"/> Statečný poplatek.</translation>
 <translation id="8368540604723748428">Příliš mnoho desetinných čárek</translation>
 <translation id="6575120282593094155">Nemáte účet <ph name="ACCOUNT_TYPE"/>. Chcete jej nyní vytvořit?</translation>
+<translation id="8712637175834984815">Hotovo</translation>
 <translation id="2704606927547763573">Zkopírováno</translation>
-<translation id="1420318137760245955">Vítejte v nové peněžence Brave Wallet</translation>
-<translation id="3671745544278414606">Držte kryptoaktiva pod svojí kontrolou. Sledujte výkonnost portfolia a komunikujte s decentralizovanými aplikacemi Web3 DApps. Obchodujte, investujte, půjčujte si a půjčujte ostatním s DeFi. To vše přímo ze soukromého prohlížeče Brave. Žádná rozšíření, žádné stahování není potřeba.</translation>
-<translation id="6972754398087986839">Get Started</translation>
+<translation id="6042308850641462728">Více</translation>
+<translation id="768236965975208017">Zabezpečit. Multi-řetězec. A oh-tak-snadné použití. Peněženka Brave je vzdálená jen pár kliknutí</translation>
+<translation id="2484275747844666540">Vytvořit novou peněženku</translation>
+<translation id="3662348701117072366">Import existující peněženky</translation>
 <translation id="375882617301124395">Zálohujte si kryptopeněženku</translation>
 <translation id="180032279811483155">V dalším kroku se zobrazí fráze pro obnovení o <ph name="RECOVERY_PHRASE_LENGTH"/> slovech, kterou můžete použít k obnovení primárních krypto účtů. Uložte si ji na bezpečné místo. Vaše fráze pro obnovení je jediným způsobem, jak znovu získat přístup k účtu v případě zapomenutého hesla, ztráty nebo krádeže zařízení nebo v případě, že chcete změnit peněženku.</translation>
 <translation id="5024543173656851695">Chápu, že pokud ztratím obnovovací slova, ztratím přístup ke své kryptopeněžence.</translation>
@@ -951,10 +958,13 @@
 <translation id="2339124864228588937">Ověřte frázi pro obnovení</translation>
 <translation id="3747079125031086337">Vyberte slova ve frázi pro obnovu ve správném pořadí.</translation>
 <translation id="802060020117206314">Fráze pro obnovení se neshoduje, zkuste to znovu.</translation>
-<translation id="2813156651070657572">Zabezpečte svá kryptoaktiva heslem</translation>
-<translation id="6901073872645365201">Hesla musí mít alespoň 7 znaků a obsahovat alespoň jedno číslo a jeden speciální znak.</translation>
-<translation id="6657585470893396449">Heslo</translation>
-<translation id="5486261815000869482">Potvrdit heslo</translation>
+<translation id="8412783472871103529">Ověřte svou frázi pro obnovení</translation>
+<translation id="2226686084760581391">Klikněte na <ph name="FIRST_BEFORE"/> <ph name="FIRST"/> (<ph name="FIRST_ORDINAL"/>) <ph name="FIRST_AFTER"/>, <ph name="SECOND_BEFORE"/> <ph name="SECOND"/> (<ph name="SECOND_ORDINAL"/>) <ph name="SECOND_AFTER"/> a <ph name="THIRD_BEFORE"/><ph name="THIRD"/> (<ph name="THIRD_ORDINAL"/>) <ph name="THIRD_AFTER"/> slova vaší obnovovací fráze.</translation>
+<translation id="7575574239720542222">Fráze pro obnovení se neshodovala</translation>
+<translation id="8692301574305033504">Vytvoření nového hesla</translation>
+<translation id="4384286220811524581">Toto heslo použijete pokaždé, když přistupujete k peněžence.</translation>
+<translation id="2136372518715274136">Zadejte nové heslo</translation>
+<translation id="4450951602553063001">Zadejte heslo znovu</translation>
 <translation id="6138471905279127211">Kritéria hesla nebyla splněna</translation>
 <translation id="467510802200863975">Hesla se neshodují</translation>
 <translation id="5168349973342709369">Zadejte heslo pro odemknutí peněženky</translation>
@@ -964,6 +974,7 @@
 <translation id="765834632354589737">Záložní peněženka</translation>
 <translation id="1108298724135935307">Připojené weby</translation>
 <translation id="163697698769819510">Zálohujte si peněženku, abyste ochránili svá kryptoaktiva a zajistili, že k nim nikdy neztratíte přístup.</translation>
+<translation id="1018806299114415224">Záloha je nyní k dispozici</translation>
 <translation id="1400709719911593089">Peněženka Brave není nastavena jako výchozí peněženka a nebude reagovat na Web3 DApps. Přejděte do nastavení a změňte svou výchozí peněženku.</translation>
 <translation id="4362717653795263052">Obnovení primárních účtů kryptoměn</translation>
 <translation id="3038077262567136741">Zadejte frázi pro obnovení a obnovte svůj účet s kryptoměnami v peněžence Brave Wallet.</translation>
@@ -974,6 +985,7 @@
 <translation id="3331452756822160641">Nové heslo</translation>
 <translation id="8624315169751085215">Zkopírovat do schránky</translation>
 <translation id="7885157704277298658">Copied!</translation>
+<translation id="6346952829206698721">Vložit ze schránky</translation>
 <translation id="1121335910737476837">Primární kryptoměnové účty</translation>
 <translation id="6969147029062037757">Importované účty</translation>
 <translation id="4057718162494343222">V peněžence Brave si můžete vytvořit primární účty, které lze zálohovat nebo obnovit pomocí fráze pro obnovení. Další informace o typech účtů naleznete v nápovědě k účtům.</translation>
@@ -1058,7 +1070,6 @@
 <translation id="6323024765179772761">Vyhledávání mincí</translation>
 <translation id="6998989275928107238">Komu</translation>
 <translation id="1506421160138798546">odhad</translation>
-<translation id="3567988240819868195">Trh</translation>
 <translation id="59223531494896848">Limit</translation>
 <translation id="8569380433211549748">Cena v</translation>
 <translation id="2490428413101944234">Zkušební kohoutek</translation>
@@ -1123,20 +1134,10 @@
 <translation id="4874303883488468190">Vyberte účty</translation>
 <translation id="2018472018751735678">Zobrazit adresy vašich povolených účtů (povinné)</translation>
 <translation id="7029403458170657879">Propojit s peněženkou Brave Wallet</translation>
-<translation id="7982184974053636367">Pro peněženku Brave Wallet se vyžaduje bezpečnější heslo.</translation>
-<translation id="2372897697869224590">Nastavit heslo k peněžence Brave Wallet</translation>
-<translation id="7739762330714405363">Použijte stejné heslo</translation>
-<translation id="1085027414516521238">MetaMask</translation>
-<translation id="7102907656918333773">Import z <ph name="WALLET_EXTENSION"/></translation>
-<translation id="1737856990004825123">Importujte své <ph name="WALLET_EXTENSION"/> účty do peněženky Brave. Užívejte si rychlejší a bezpečnější správu kryptoaktiv a interakce s decentralizovanými aplikacemi Web3 DApps.</translation>
-<translation id="4237840336687249184">Heslo k MetaMask</translation>
-<translation id="2381605201035323535">kryptopeněženky</translation>
 <translation id="2770851145415891830">Byly zjištěny existující kryptopeněženky</translation>
-<translation id="4938145712652668388">Po kliknutí na "Začít" importujete svou předchozí kryptopeněženku do nové peněženky Brave Wallet a můžete využívat všechny výše uvedené výhody. Vyzkoušejte to a dejte nám vědět, co si o tom myslíte!</translation>
 <translation id="2237759620789871865">Pokud chcete import raději přeskočit a zachovat staré prostředí kryptopeněženek, stačí přejít do <ph name="LINK_BEFORE"/>Nastavení<ph name="LINK_AFTER"/> prohlížeče Brave a změnit výchozí nastavení zpět na Kryptopeněženky. Můžete také importovat a vyzkoušet novou peněženku Brave a nastavení kdykoli změnit zpět.</translation>
 <translation id="5590175005414413980">Zadejte heslo své stávající kryptopeněženky a importujte ji do peněženky Brave. Užijte si rychlejší a bezpečnější způsob správy kryptoaktiv a interakce s decentralizovanými aplikacemi Web3.</translation>
-<translation id="9099900965604225657">Heslo pro kryptopeněženky</translation>
-<translation id="4020495774166914146">Ztratil/a jsem heslo a frázi pro obnovení, chci vytvořit novou peněženku.</translation>
+<translation id="880619123281809987">Zadejte heslo krypto peněženky</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> je připojen</translation>
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> je odpojen</translation>
 <translation id="5317781812114905957">Pokyny</translation>
@@ -1239,13 +1240,25 @@
 <translation id="1752214435563414457">Soutěž Brave Swap</translation>
 <translation id="7829441065063984927">7 dní krypto odměn, odměny v hodnotě až 500 000 $</translation>
 <translation id="8292716346768453265">Přidej se!</translation>
+<translation id="1935944189549132903">Všechna aktiva</translation>
+<translation id="203041314293794507">Obchodovatelné</translation>
+<translation id="6169371176266800104">24 hodin</translation>
+<translation id="7677692756188354224">Mkt. Čepice</translation>
+<translation id="4430019312045809116">Hlasitost</translation>
+<translation id="5133421763709317473">Nebyly nalezeny žádné datové zdroje odpovídající vyhledávání nebo filtru</translation>
+<translation id="8813832913015888458">Tento datový zdroj není podporován brave peněženkou</translation>
 <translation id="6423985584914773314">Neplatná adresa FIL</translation>
 <translation id="3898731124813934210">Koupit pomocí Wyre</translation>
 <translation id="5522073372365069684">Koupit pomocí Ramp</translation>
+<translation id="7902920577183739843">Koupit se sardinkou</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
+<translation id="1130009472404762036">Sardinka</translation>
 <translation id="7667423728712601865">Nakupujte kryptoměny prostřednictvím karet Visa nebo Mastercard.</translation>
+<translation id="3101839349578102016">Okamžitý nákup s vaším bankovním účtem. Nižší poplatky.</translation>
 <translation id="8528916244724490964">Všechny sítě</translation>
+<translation id="4038403584813842767">Zůstatek ↑</translation>
+<translation id="1695096446857675822">Zůstatek ↓</translation>
 <translation id="2781668117338732220">Sekundární sítě</translation>
 <translation id="2816106784624007524">Limit paliva musí být celé číslo větší než 0</translation>
 <translation id="3354376789153561654">Je nutné uvést transakční údaj „to“</translation>
@@ -1273,9 +1286,103 @@
 <translation id="7843211152394841558">Max. počet opakování:</translation>
 <translation id="8496335570810457">Závazek před spuštěním:</translation>
 <translation id="5100124500279922001">Přeskočit přípravu před spuštěním:</translation>
+<translation id="3568017348462868931">Vyberte měnu</translation>
+<translation id="4420924466038521900">Hledat měny</translation>
 <translation id="8060029310790625334">Centrum nápovědy</translation>
 <translation id="2095142195578664632">Potřebujete pomoc? Podívejte se na</translation>
 <translation id="3253669416991680932">Tato hardwarová peněženka tuto operaci nepodporuje.</translation>
+<translation id="7457027586454688423">Zadejte heslo Brave Wallet</translation>
+<translation id="2021055898001510484">Otevřít rainbowbridge.app?</translation>
+<translation id="6550403756693197933">Překlenutí aktiv napříč sítěmi vám umožňuje používat krypto v jiných sítích a dalších ekosystémech DApp. Překlenutí aktiv do jiných sítí má určitá rizika.</translation>
+<translation id="8315999527212828722">Otevřete rainbowbridge.app</translation>
+<translation id="4903322403594141291">Další informace o Brave Wallet</translation>
+<translation id="3875185448438395303">Alespoň:</translation>
+<translation id="2029465635925899949">8 znaků</translation>
+<translation id="6697810017029555732">Zápas!</translation>
+<translation id="8918368616587206671">Silný!</translation>
+<translation id="574392208103952083">Střední</translation>
+<translation id="8297006494302853456">Slabý</translation>
+<translation id="6782556046178425980">Než začnete zálohovat peněženku</translation>
+<translation id="9080057079069917346">Fráze pro obnovení 12 slov je soukromý klíč, který můžete použít k opětovnému získání přístupu k peněžence v případě, že ztratíte připojené zařízení. Uložte jej někde v bezpečí a v přesném pořadí je uvedeno níže.</translation>
+<translation id="3259018319025894691">Brave nemá přístup k vaší tajné frázi pro obnovení. Udržujte to v bezpečí, a nikdy to nesdílejte s nikým jiným.</translation>
+<translation id="7650284207965419234"><ph name="TAG_BEFORE"/> Důležité: <ph name="TAG_AFTER"/> Nikdy nesdílejte svou frázi pro obnovení. Každý, kdo má tuto frázi, může vzít vaše aktiva navždy.</translation>
+<translation id="7509948206688764960">Zálohujte frázi pro obnovení peněženky</translation>
+<translation id="8052898407431791827">Zkopírováno do schránky</translation>
+<translation id="4576741736874242970">Kliknutím zobrazíte svou frázi</translation>
+<translation id="9202365664128598850">První</translation>
+<translation id="4768459022382175196">Druhý</translation>
+<translation id="1623839863951450045">Třetina</translation>
+<translation id="7951561964148328147">Čtvrtý</translation>
+<translation id="774053374251285774">Pátý</translation>
+<translation id="5547116790089504956">Šestý</translation>
+<translation id="271762450358244560">Sedmý</translation>
+<translation id="4990381733707493303">Osmý</translation>
+<translation id="4204240559971494450">devátý</translation>
+<translation id="1264599863456102502">Desátý</translation>
+<translation id="2030919906296886809">Jedenáctý</translation>
+<translation id="7097617722759601686">sv.</translation>
+<translation id="2781276194026093899">nd</translation>
+<translation id="7992766987062040279">rd</translation>
+<translation id="2295726992010694229">th</translation>
+<translation id="8241405611628876973">Gratulujeme! Vaše Brave Peněženka je připravena jít!</translation>
+<translation id="6828327990705355767">Chcete-li získat přístup k peněžence, stačí kliknout na ikonu peněženky v pravém horním rohu libovolného okna prohlížeče Brave.</translation>
+<translation id="396152018598329740">Jak používat krypto peněženku?</translation>
+<translation id="7512061585041489067">Jaká je nejlepší krypto peněženka?</translation>
+<translation id="1342755158522323177">Co je to krypto prohlížeč?</translation>
+<translation id="4702762916247565868">Krypto peněženky 101</translation>
+<translation id="4674552515763857735">Co je to fráze pro zotavení?</translation>
+<translation id="7328255859839881981">Co jsou DApps?</translation>
+<translation id="3852489285890032403">Co je web 3?</translation>
+<translation id="5448233694500869445">Ve vašem prohlížeči jsme zjistili rozšíření MetaMask</translation>
+<translation id="8436080536329710282">Zadejte heslo peněženky MetaMask pro snadný import do Brave Wallet.</translation>
+<translation id="7543512765962444927">Připojte se k vaší stávající peněžence</translation>
+<translation id="3551682252653406110">Chcete-li připojit peněženku, kterou již máte, možná budete muset zadat frázi pro obnovení. V tuto chvíli podporujeme obnovu/import z peněženek Ethereum a Solana.</translation>
+<translation id="346929827081904572">Obnovení ze semenné fráze</translation>
+<translation id="5645597512426471834">12-24 slov</translation>
+<translation id="6560930409313980969">Zadejte 12slovnou frázi pro obnovení Brave Wallet.</translation>
+<translation id="5419707890586509000">Import z MetaMask</translation>
+<translation id="2265945811107390939">Pomocí hesla MetaMask importujte svou počáteční frázi</translation>
+<translation id="7060680423657442298">Nevadí, vytvořím novou peněženku</translation>
+<translation id="4570057016351082582">Zadejte svou 12slovnou frázi pro obnovení MetaMask.</translation>
+<translation id="7720392926833259937">Zadejte heslo MetaMask</translation>
+<translation id="6657585470893396449">Password</translation>
+<translation id="6260144012548445299">Další informace o mé nové peněžence</translation>
+<translation id="8746910870914151528">Právní věci</translation>
+<translation id="5148123176978018397">Vezměte prosím na vědomí následující:</translation>
+<translation id="6088314935678153800">Chápu, že se jedná o peněženku s vlastní péčí, a že já sám jsem zodpovědný za veškeré související finanční prostředky, aktiva, nebo účty, a za přijetí příslušných opatření k zajištění, chránit a zálohovat moji peněženku. Chápu, že Brave NEMÁ přístup k mé peněžence nebo reverzním transakcím mým jménem, a že moje fráze pro obnovení je JEDINÝ způsob, jak znovu získat přístup v případě ztraceného hesla, odcizené zařízení, nebo podobné okolnosti.</translation>
+<translation id="7781090633800450517">Přečetl jsem si a souhlasím s <ph name="LINK_BEFORE"/> Podmínky použití <ph name="LINK_AFTER"/></translation>
+<translation id="3887541341068007345">Kontrola rozšíření peněženky...</translation>
+<translation id="3567994771568272606">Import ze starších Brave krypto peněženek</translation>
+<translation id="8407091560429310499">Výběr datového zdroje</translation>
+<translation id="756590380936155533">Chcete-li dokončit nákup <ph name="ASSET_TICKER"/>, vyberte jednoho z našich partnerů</translation>
+<translation id="7880860489474966219">Po dokončení budou vaše prostředky převedeny do peněženky Brave</translation>
+<translation id="6182661078713714878">Vklad krypto</translation>
+<translation id="3683305208314702347">Vklad <ph name="VALUE"/></translation>
+<translation id="5768739294929936862">Vložte žetony Solana nebo SPL</translation>
+<translation id="4121839963291930673">Vložte tokeny založené na ERC</translation>
+<translation id="5882719778740918116">Na tuto adresu posílejte žetony pouze na <ph name="VALUE"/></translation>
+<translation id="6885009592653876601">Nakupujte, odesílejte a vyměňujte více než 200 krypto aktiv</translation>
+<translation id="8716223552348254401">Prohlížeč nativní, žádné riskantní rozšíření</translation>
+<translation id="4559901986238865734">Podpora více řetězců a NFT</translation>
+<translation id="8280970992918660431">Odemknout potřebné k vytvoření účtu</translation>
+<translation id="296101411136980896">Klikněte pro přepnutí</translation>
+<translation id="753655478253155745">Dvanáctý</translation>
+<translation id="2679592211386970368">Třináctý</translation>
+<translation id="342115958836807536">Čtrnáctý</translation>
+<translation id="5056187827935389857">Patnáctý</translation>
+<translation id="6102061955158863607">šestnáctý</translation>
+<translation id="4701532342602356554">Sedmnáctý</translation>
+<translation id="3483191565919702242">osmnáctý</translation>
+<translation id="5872204767075410422">devatenáctý</translation>
+<translation id="992226442673942344">dvacátý</translation>
+<translation id="4685557586001281760">Dvacátý první</translation>
+<translation id="6646456430109279404">Dvacátý druhý</translation>
+<translation id="1961743941324393172">Dvacátý třetí</translation>
+<translation id="9079035825546416393">Dvacátý čtvrtý</translation>
+<translation id="2894654529758326923">Informace</translation>
+<translation id="152455748535966757">Hodnost</translation>
+<translation id="4958716607782044952">24h Objem</translation>
+<translation id="128834189395075789">Tržní kapitalizace</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Obecné info</translation>
 <translation id="4045404575593562245">Kontrolní události Toru</translation>
@@ -1287,8 +1394,8 @@
 <translation id="8458987127502506209">Aktivovat štíty Brave</translation>
 <translation id="7509914170164691086">Štíty <ph name="LINK_BEFORE"/>pro<ph name="LINK_AFTER"/> jsou ZAPNUTY</translation>
 <translation id="260764436039299868">Štíty <ph name="LINK_BEFORE"/>pro<ph name="LINK_AFTER"/> jsou VYPNUTÉ</translation>
-<translation id="7709075156958117386">Pokud se stránka nezobrazuje správně, zkuste štíty vypnout. 
-    <ph name="LINK_BEFORE"/>Poznámka: může dojít k omezení ochrany soukromí Brave.<ph name="LINK_AFTER"/></translation>
+<translation id="3907405056878805220">Pokud se zdá, že tento web je poškozen, zkuste Shields dolů. 
+ <ph name="LINK_BEFORE"/> Poznámka: to může snížit ochranu soukromí Brave. <ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Počet zablokovaných sledovačů, reklam, atd. <ph name="LINK_BEFORE"/>Další informace<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Ochrana štíty Brave není zapnuta <ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Pokročilé nastavení</translation>
@@ -1317,6 +1424,10 @@
 <translation id="7194012750329511146">Štíty Brave odrazily
 <ph name="NUMBER"/> měření, reklam a další nežádoucí prvky</translation>
 <translation id="4292121526390005808">Blokované skripty</translation>
+<translation id="6303294677342628402">Štíty</translation>
+<translation id="264682546981571963">Už vás nebaví oznámení o souhlasu s cookies?</translation>
+<translation id="4986297793092101884">Brave již blokuje soubory cookie třetích stran. Můžeme zablokovat oznámení o souhlasu s cookies, také.</translation>
+<translation id="535688588637568715">Ano, blokovat oznámení o souhlasu s cookies</translation>
 <translation id="3541307549916475335">Uživatelské rozhraní panelu Brave VPN</translation>
 <translation id="1742469581923031760">Připojování…</translation>
 <translation id="1287487756047817908">Odpojování…</translation>

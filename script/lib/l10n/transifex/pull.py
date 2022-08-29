@@ -209,6 +209,10 @@ def process_bad_ph_tags_for_one_string(val):
     if val.find('&lt;ph') == -1:
         return val
     val = (val.replace('&lt;', '<')
+           .replace('ph name=&quot;', 'ph name="')
+           .replace('ph name= &quot;', 'ph name="')
+           .replace('ph name= ', 'ph name=')
+           .replace('&quot;&gt;', '">')
            .replace('&gt;', '>')
            .replace('>  ', '> ')
            .replace('  <', ' <'))

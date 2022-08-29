@@ -311,18 +311,6 @@
       }
     }
   },
-  "notificationBackupWalletTitle": {
-    "message": "I-back up ang Mga Reward ng Brave",
-    "description": ""
-  },
-  "notificationBackupWalletText": {
-    "message": "Paki-back up ang iyong Mga Reward ng Brave.",
-    "description": ""
-  },
-  "notificationBackupWalletAction": {
-    "message": "Mag-back up na ngayon",
-    "description": ""
-  },
   "notificationWalletDisconnectedTitle": {
     "message": "Naka-log out ka",
     "description": ""

@@ -311,18 +311,6 @@
       }
     }
   },
-  "notificationBackupWalletTitle": {
-    "message": "Haz una copia de seguridad de Recompensas de Brave",
-    "description": ""
-  },
-  "notificationBackupWalletText": {
-    "message": "Haz una copia de seguridad de Recompensas de Brave.",
-    "description": ""
-  },
-  "notificationBackupWalletAction": {
-    "message": "Hacer copia de seguridad ahora",
-    "description": ""
-  },
   "notificationWalletDisconnectedTitle": {
     "message": "Has cerrado sesión",
     "description": ""

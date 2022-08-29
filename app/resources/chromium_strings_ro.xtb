@@ -11,14 +11,15 @@
 <translation id="8541922081612557424">Despre Brave</translation>
 <translation id="1203500561924088507">Mulțumim pentru instalare. Înainte să folosești <ph name="BUNDLE_NAME"/> trebuie să repornești browserul.</translation>
 <translation id="4798342026247191171">Configurează noul profil Brave</translation>
+<translation id="6361779936989026201">Asistentul Brave în Brave</translation>
 <translation id="113959764510199339">Brave încearcă să afișeze parolele.</translation>
 <translation id="8132634101975074716">V-ați conectat la Brave!</translation>
 <translation id="5147525139567260139">Distribuie o filă Brave</translation>
 <translation id="1530633922026945685">Brave are nevoie de permisiunea de a accesa camera foto pentru a crea o hartă 3D a lucrurilor din jurul tău</translation>
-<translation id="473077451702478797">Brave a blocat fișierul deoarece este prea mare pentru verificarea de siguranță. Încearcă din nou cu fișiere de până la 50 MB</translation>
 <translation id="4449148723378534338">Examinează cele mai importante opțiuni de confidențialitate și de securitate din Brave</translation>
 <translation id="1640672724030957280">Se descarcă…</translation>
 <translation id="5616153642055197778">Brave este disponibil într-o versiune nouă și mai sigură.</translation>
+<translation id="5846727201643228411">Poți să vezi și să elimini subiecte de interes folosite de site-uri pentru a-ți afișa anunțuri. Brave îți estimează interesele pe baza istoricului tău de navigare recent.</translation>
 <translation id="6797402139308059782">Permiteți Brave să ruleze în fundal</translation>
 <translation id="5875673934455379806">Reinstalați Brave</translation>
 <translation id="6888366668010117849">Site-urile pot stoca informații în Brave despre interesele tale. De exemplu, dacă accesezi un site ca să cumperi pantofi pentru un maraton, site-ul poate defini interesul tău drept maraton. Mai târziu, dacă accesezi alt site ca să te înscrii într-o cursă, acel site îți poate afișa un anunț pentru pantofi de alergare pe baza intereselor tale.</translation>
@@ -32,6 +33,7 @@
 <translation id="2018879682492276940">Nu s-a instalat. Încearcă din nou.</translation>
 <translation id="831418749472885028">Ca să verifici dacă celelalte parole sunt protejate împotriva încălcării securității datelor și a altor probleme de securitate, <ph name="BEGIN_LINK"/>conectează-te la Brave<ph name="END_LINK"/>.</translation>
 <translation id="5499149312981370855">Alege dacă se include istoricul Brave pentru experiențe mai personalizate în serviciile Brave</translation>
+<translation id="849607431499549468">Informații despre modul în care Brave gestionează certificatele rădăcină</translation>
 <translation id="142389341645668510">Personalizează Brave</translation>
 <translation id="2174917724755363426">Instalarea nu este finalizată. Sigur anulezi?</translation>
 <translation id="8745514854244955877">Brave – conectare la rețea – <ph name="PAGE_TITLE"/></translation>
@@ -92,6 +94,7 @@
 <translation id="5853262807109651878">Astfel, se vor șterge <ph name="ITEMS_COUNT"/> elemente de pe acest dispozitiv. Pentru a recupera datele mai târziu, conectează-te la Brave ca <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> poate comuta între profilurile Brave</translation>
 <translation id="8703492925273919597">Închideți toate ferestrele Brave și încercați din nou.</translation>
+<translation id="5350485513372498152">În Brave, Asistentul Brave poate să realizeze pentru tine acțiuni pe site-uri</translation>
 <translation id="4061445349373849749">Pentru a-ți proteja confidențialitatea, ștergem automat categoriile de interese mai vechi de patru săptămâni. Pe măsură ce navighezi, o categorie de interese poate să reapară în listă. Sau poți elimina categoriile de interese pe care nu dorești ca Brave să le ia în considerare.</translation>
 <translation id="691208314680168371">istoricul tău de navigare, o evidență a site-urilor pe care le-ai accesat folosind Brave pe acest dispozitiv;</translation>
 <translation id="1384923383737428730">Ai software dăunător pe computer. Brave poate să îl elimine, să restabilească setările și să dezactiveze extensiile pentru ca browserul să funcționeze normal din nou.</translation>
@@ -257,7 +260,6 @@ Este posibil ca unele funcții să nu fie disponibile. Specificați un director 
 <translation id="5101812148953915496">Site-urile pe care le accesezi rețin informațiile tale până când închizi Brave</translation>
 <translation id="5516268345616100622">Manager de activități - Brave</translation>
 <translation id="713191641919118540">Interesele tale estimate de Brave</translation>
-<translation id="2777705643687998385">Brave a blocat fișierul deoarece este criptat. Solicită-i proprietarului să-l decripteze</translation>
 <translation id="9068395155143628872">Ad measurement le dă site-urilor pe care le accesezi posibilitatea de a solicita informații de la Brave care le ajută să măsoare performanța anunțurilor asociate. Ad measurement restricționează urmărirea pe mai multe site-uri prin transferul câtor mai puține informații între site-uri.</translation>
 <translation id="1864557848095568223">Brave se actualizează</translation>
 <translation id="3403365884036456766">Fișierul de preferințe este fie deteriorat, fie nevalid.
@@ -346,6 +348,7 @@ Brave nu poate recupera setările.</translation>
 <translation id="7902365066753170041">Relansează pentru a actualiza &amp;Brave</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Este posibil ca Brave să nu funcționeze corespunzător, deoarece nu mai este acceptat pe Windows XP sau Windows Vista</translation>
+<translation id="8180288330711585962">Certificate gestionate de Brave</translation>
 <translation id="1611678871603620428">Pentru a primi actualizările Brave viitoare, vei avea nevoie de macOS 10.13 sau o versiune ulterioară. Acest computer folosește OS X 10.11.</translation>
 <translation id="4484434718272972655">Cine folosește Brave?</translation>
 <translation id="7173394303099002355">Beneficiază de cel mai înalt nivel de securitate de la Brave</translation>

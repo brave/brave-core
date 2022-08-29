@@ -311,18 +311,6 @@
       }
     }
   },
-  "notificationBackupWalletTitle": {
-    "message": "Creați o copie de rezervă a recompenselor Brave",
-    "description": ""
-  },
-  "notificationBackupWalletText": {
-    "message": "Creați-vă o copie de rezervă a recompenselor Brave.",
-    "description": ""
-  },
-  "notificationBackupWalletAction": {
-    "message": "Creați o copie de rezervă acum",
-    "description": ""
-  },
   "notificationWalletDisconnectedTitle": {
     "message": "Sunteți autentificat(ă)",
     "description": ""
