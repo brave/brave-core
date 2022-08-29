@@ -990,10 +990,8 @@ void BraveVpnService::OnCredentialSummary(const std::string& domain,
     return;
   }
 
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          summary_string, base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& records_v = value_with_error.value;
+  absl::optional<base::Value> records_v = base::JSONReader::Read(
+      summary_string, base::JSONParserOptions::JSON_PARSE_RFC);
 
   if (records_v && records_v->is_dict()) {
     auto active = records_v->GetDict().FindBool("active").value_or(false);
