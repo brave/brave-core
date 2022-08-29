@@ -109,6 +109,9 @@ class SidebarContainerView
   bool ShouldForceShowSidebar() const;
   void UpdateToolbarButtonVisibility();
 
+  // true when fullscreen is initiated by tab. (Ex, fullscreen mode in youtube)
+  bool IsFullscreenByTab() const;
+
   // On some condition(ex, add item bubble is visible),
   // sidebar should not be hidden even if mouse goes out from sidebar ui.
   // If it's hidden, only bubble ui is visible. Then, weird situation happens.
