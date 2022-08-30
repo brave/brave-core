@@ -184,9 +184,11 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, NonWritable) {
     EXPECT_EQ(base::Value(true), result.value) << result.error;
   }
   // window.ethereum.* (methods)
+  // send should be writable because of
+  // https://github.com/brave/brave-browser/issues/25078
   for (const std::string& method :
        {"on", "emit", "removeListener", "removeAllListeners", "request",
-        "isConnected", "enable", "sendAsync", "send"}) {
+        "isConnected", "enable", "sendAsync"}) {
     SCOPED_TRACE(method);
     auto result =
         EvalJs(web_contents(), NonWriteableScriptMethod("ethereum", method),
