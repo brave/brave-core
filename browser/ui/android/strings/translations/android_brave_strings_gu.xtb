@@ -59,6 +59,7 @@
 <translation id="7658239707568436148">રદ કરો</translation>
 <translation id="1201402288615127009">આગલું</translation>
 <translation id="8926389886865778422">ફરિથી પુછશો નહીં</translation>
+<translation id="5234764350956374838">કાઢી નાખો</translation>
 <translation id="6639570430554986719">જાન્યુઆરી</translation>
 <translation id="1807352595146144483">ફેબ્રુઆરી</translation>
 <translation id="2021828608097804771">માર્ચ</translation>
@@ -71,24 +72,11 @@
 <translation id="8220228041552340594">ઑક્ટોબર</translation>
 <translation id="8280223431922155812">નવેમ્બર</translation>
 <translation id="4254029385847607686">ડિસેમ્બર</translation>
-<translation id="4258022280942725182">તમારું વૉલેટ</translation>
 <translation id="7760215798627399379"><ph name="VALUE"/> યુએસ ડૉલર</translation>
 <translation id="1165667598801520610">ભંડોળ ઉમેરો</translation>
 <translation id="8428213095426709021">સેટિંગ્સ</translation>
-<translation id="8918760045046434238">એક ટીપ મોકલો...</translation>
-<translation id="1978261665418056203">આ મહિનામાં હજી સુધી 
-કોઈ પ્રવૃત્તિઓ નથી...</translation>
-<translation id="9182287025588539628">એક-વખતની ટીપ</translation>
-<translation id="7577100371127227294">માસિક ટીપ</translation>
-<translation id="3074127054582480056">ધ્યાન આપો</translation>
-<translation id="4914597931214386232">ટોકન અનુદાનનો દાવો કરવામાં આવ્યો</translation>
-<translation id="298067735430872465">જાહેરાતો દ્વારા કમાણી</translation>
 <translation id="6112368337882254910">આપમેળે-ફાળો</translation>
-<translation id="2730771409541953249">પુરસ્કારોનો સારાંશ</translation>
 <translation id="13853865024308201">દાવો</translation>
-<translation id="7335371657242627509">આપમેળે-ફાળામાં સામેલ કરો</translation>
-<translation id="5463954686005964104">આ સાઇટને માસિક ટીપ આપો</translation>
-<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
 <translation id="4781696154289395607">તમે <ph name="BAT_VALUE"/> BAT નો ફાળો આપ્યો છે.</translation>
 <translation id="7997676409547731821">અપૂરતા ભંડોળને કારણે આપમેળે-ફાળો અને માસિક ટીપ્સ માટે તમારું શેડ્યૂલ કરેલ માસિક ચુકવણી પૂર્ણ થઈ શક્યું નથી. અમે 30 દિવસમાં ફરી પ્રયાસ કરીશું.</translation>
 <translation id="5306913077198665897">તમારી ટીપ પર પ્રક્રિયા કરવામાં સમસ્યા આવી, કૃપયા ફરી પ્રયાસ કરો.</translation>
@@ -98,15 +86,10 @@
 <translation id="8689997599821157251">તમે કમાયા</translation>
 <translation id="7550470870580166294">અપૂરતું ભંડોળ</translation>
 <translation id="2775064702681588061">તમારું Brave પુરસ્કારો ખાતું એક ડિપોઝિટની રાહ જોઈ રહ્યું છે.</translation>
-<translation id="2630264552940126640">બૅકઅપ વૉલેટ</translation>
-<translation id="238922425564381955">કૃપયા કરીને તમારા બૅકઅપ વૉલેટનું બૅકઅપ લો.</translation>
 <translation id="2323069945529668668">ઉહ-ઓહ!</translation>
 <translation id="7510166204621526816">Brave પુરસ્કારો સર્વર પ્રતિસાદ આપતું નથી. અમે તેને શક્ય તેટલી વહેલી તકે ઠીક કરીશું.</translation>
 <translation id="683765328936486920">YouTube પર</translation>
 <translation id="8969049974285901797">Twitch પર</translation>
-<translation id="3692362746128814480">તમે યોગદાન પ્રાપ્ત કરવા માટે હજી સુધી સાઇન અપ કર્યા નથી 
-તેવા નિર્માતાઓ માટે <ph name="BAT_VALUE"/> BAT નિયુક્ત કર્યા છે. તમારું બ્રાઉઝર તેઓની ચકાસણી કરે ત્યાં સુધી 
-અથવા 90 દિવસ પસાર ન થાય ત્યાં સુધી યોગદાન આપવાનો પ્રયત્ન કરશે.</translation>
 <translation id="6940273954212603510">કૃપયા કરીને</translation>
 <translation id="1036277985068412734">ભંડોળ ઉમેરો</translation>
 <translation id="3492491948683276944">માસિક ટીપ સેટ કરો</translation>
@@ -148,7 +131,6 @@
 <translation id="4114170343590425996">Brave પુરસ્કારોને રીસેટ કરવામાં ભૂલ આવી હતી. કૃપયા Brave ને ફરીથી લોંચ કરો અને ફરીથી પ્રયાસ કરો.</translation>
 <translation id="6393502589311632553">Brave ઉપયોગમાં ન હોય ત્યારે જાહેરાતો દર્શાવો</translation>
 <translation id="3349204812119681938">Brave પુરસ્કારો રીસેટ કરો</translation>
-<translation id="8782039523249932839">આ તમારા Brave વૉલેટને હટાવી નાખશે અને તમારા બધા Brave પુરસ્કારો ડેટાને રીસેટ કરશે</translation>
 <translation id="6810078320346589989">એક બુકમાર્ક બનાવો</translation>
 <translation id="8985635554450124959">સિંક્રનાઇઝ સેટ થઈ શક્યું નથી</translation>
 <translation id="7173114856073700355">સેટિંગ ખોલો</translation>
@@ -204,6 +186,9 @@
 <translation id="1974060860693918893">વિગતવાર</translation>
 <translation id="7791543448312431591">ઉમેરો</translation>
 <translation id="4250680216510889253">નહીં</translation>
+<translation id="7577100371127227294">માસિક ટીપ</translation>
+<translation id="7335371657242627509">આપમેળે-ફાળામાં સામેલ કરો</translation>
+<translation id="3074127054582480056">ધ્યાન આપો</translation>
 <translation id="2653659639078652383">સબમિટ કરો</translation>
 <translation id="5233638681132016545">નવું ટૅબ</translation>
 <translation id="5308380583665731573">કનેક્ટ કરો</translation>
@@ -212,4 +197,20 @@
 <translation id="4804818685124855865">ડિસ્કનેક્ટ કરો</translation>
 <translation id="7982789257301363584">નેટવર્ક</translation>
 <translation id="5039804452771397117">મંજૂરી આપો</translation>
+<translation id="4258022280942725182">તમારું વૉલેટ</translation>
+<translation id="8918760045046434238">એક ટીપ મોકલો...</translation>
+<translation id="1978261665418056203">આ મહિનામાં હજી સુધી 
+કોઈ પ્રવૃત્તિઓ નથી...</translation>
+<translation id="9182287025588539628">એક-વખતની ટીપ</translation>
+<translation id="4914597931214386232">ટોકન અનુદાનનો દાવો કરવામાં આવ્યો</translation>
+<translation id="298067735430872465">જાહેરાતો દ્વારા કમાણી</translation>
+<translation id="2730771409541953249">પુરસ્કારોનો સારાંશ</translation>
+<translation id="5463954686005964104">આ સાઇટને માસિક ટીપ આપો</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">બૅકઅપ વૉલેટ</translation>
+<translation id="238922425564381955">કૃપયા કરીને તમારા બૅકઅપ વૉલેટનું બૅકઅપ લો.</translation>
+<translation id="3692362746128814480">તમે યોગદાન પ્રાપ્ત કરવા માટે હજી સુધી સાઇન અપ કર્યા નથી 
+તેવા નિર્માતાઓ માટે <ph name="BAT_VALUE"/> BAT નિયુક્ત કર્યા છે. તમારું બ્રાઉઝર તેઓની ચકાસણી કરે ત્યાં સુધી 
+અથવા 90 દિવસ પસાર ન થાય ત્યાં સુધી યોગદાન આપવાનો પ્રયત્ન કરશે.</translation>
+<translation id="8782039523249932839">આ તમારા Brave વૉલેટને હટાવી નાખશે અને તમારા બધા Brave પુરસ્કારો ડેટાને રીસેટ કરશે</translation>
 </translationbundle>

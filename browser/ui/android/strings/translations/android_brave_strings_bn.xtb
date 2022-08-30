@@ -82,11 +82,14 @@
 <translation id="7207456302801184289">Brave-এ আপনাকে স্বাগত</translation>
 <translation id="4117451092682672487">গোপনীয়তা। সহজ করা হয়েছে।</translation>
 <translation id="7909375417585209817">ডিফল্ট হিসাবে Brave-এর মাধ্যমে, আপনি যে লিঙ্কেই ক্লিক করবেন সেটি Brave-এর গোপনীয়তা সুরক্ষার মাধ্যমে খুলবে।</translation>
+<translation id="7370959926683925817">বিজ্ঞাপন ব্লক করুন। তথ্য সংরক্ষন করুন। প্রতি এক দিন।</translation>
+<translation id="7281027579943912834">Brave ডিফল্ট হিসাবে, আপনার ট্যাপ করা প্রতিটি লিঙ্ক Brave-এর বিজ্ঞাপন-ব্লক সুরক্ষা পায়। প্রতিটি পৃষ্ঠা, ভিডিও এবং স্ট্রিম।</translation>
 <translation id="5148943178722443958">Brave কে আরও ভালো করে তুলতে সাহায্য করুন৷।</translation>
 <translation id="6188781052835527980">আপনি ক্রাশ বা ফ্রিজের অভিজ্ঞতা লাভ করলে বেনামী ডায়াগোনস্টিক রিপোর্ট পাঠান।</translation>
 <translation id="1929905278861178845">Brave-এর ইউজাররা কী ধরনের ফিচার ব্যবহার করে সেই সম্পর্কে সম্পূর্ণ ব্যক্তিগত ও বেনামী প্রোডাক্টের তথ্য শেয়ার করুন।</translation>
 <translation id="2877653791257935258">ওয়েবসাইটের নাম বা URL লিখুন</translation>
 <translation id="5329830149661250028">Brave-এর পার্থক্য দেখুন: কোনও বিজ্ঞাপন নেই। কোনও ট্র্যাকার নেই। পেজ দ্রুত লোড হওয়ার উপায়।</translation>
+<translation id="3941792073703079607">Brave পার্থক্য দেখুন: বিজ্ঞাপন ব্লক করুন। তথ্য সংরক্ষন করুন। দ্রুত স্ট্রিম করুন।</translation>
 <translation id="3545804467215833536">Brave শিল্ড দেখতে ট্যাপ করুন</translation>
 <translation id="1724327820822194498">শিল্ডের সাথে প্রতিটি পেজে Brave ব্লকের সব খারাপ জিনিসগুলো দেখুন।</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> এবং অন্য <ph name="TRACKER"/>টি বিজ্ঞাপন &amp; ট্র্যাকার ব্লক করা আছে</translation>
@@ -114,7 +117,6 @@
 <translation id="19715420010996093">Brave ব্রাউজার নির্বাচন করুন এবং 'সর্বদা' ট্যাপ করুন</translation>
 <translation id="3546439402724649282">ইতিমধ্যেই আপনার ডিফল্ট ব্রাউজার হিসাবে Brave সেট করা হয়েছে।</translation>
 <translation id="8389661903259423907">আপনি ইতিমধ্যেই একটি ডিফল্ট ব্রাউজার সেট করেছেন। আপনি আপনার অ্যাপ সেটিংসে ডিফল্ট ব্রাউজার পরিবর্তন করতে পারেন।</translation>
-<translation id="8112367589167674370">Brave বাক্যালাপ</translation>
 <translation id="8826007068782654809">আপনাকে ধন্যবাদ</translation>
 <translation id="6665366815203065060">আপনি এইমাত্র একটি বখশিশ পাঠিয়েছেন একে:</translation>
 <translation id="5441565662498481293">আপনি স্বয়ংক্রিয়ভাবে একটি বখশিশ পাঠিয়েছেন একে:</translation>
@@ -134,6 +136,10 @@
 <translation id="8481779960444041069">আপনার গোপনীয়তা আরও উন্নত করতে, Brave-কে আপনার ডিফল্ট ব্রাউজার হিসাবে সেট করুন</translation>
 <translation id="1938402585819943124">পররবর্তী স্ক্রিনে Brave নির্বাচন করুন।</translation>
 <translation id="8926389886865778422">আর জিজ্ঞাসা করবেন না</translation>
+<translation id="745974920645827035">উন্নত গোপনীয়তার সাথে স্বাধীন অনুসন্ধান</translation>
+<translation id="4717018805430015801">Brave অনুসন্ধান আপনাকে, আপনার প্রশ্নগুলি বা আপনার ক্লিকগুলিকে ট্র্যাক করে না।</translation>
+<translation id="5240031343741051161">Brave সার্চ ব্যবহার করুন</translation>
+<translation id="5234764350956374838">খারিজ</translation>
 <translation id="6639570430554986719">জানুয়ারি</translation>
 <translation id="1807352595146144483">ফেব্রুয়ারি</translation>
 <translation id="2021828608097804771">মার্চ</translation>
@@ -146,31 +152,16 @@
 <translation id="8220228041552340594">অক্টোবর</translation>
 <translation id="8280223431922155812">নভেম্বর</translation>
 <translation id="4254029385847607686">ডিসেম্বর</translation>
-<translation id="4258022280942725182">আপনার Brave রিওয়ার্ডস</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave নিউজ</translation>
 <translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
-<translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">অর্থ যোগ করুন</translation>
 <translation id="8428213095426709021">সেটিংস</translation>
 <translation id="6020176662032623904">যাচাই করা স্রষ্টা</translation>
 <translation id="2369994359029526515">অযাচাইকৃত স্রষ্টা</translation>
-<translation id="880893465294676334">এই Brave যাচাইকৃত স্রষ্টা Brave ব্যবহারকারীদের থেকে অবদানগুলি পেতে এখনও তাদের অ্যকাউন্ট কনফিগার করেন নি।
-        আপনার পাঠানো যে কোনও টিপস তারা প্রক্রিয়াটি সম্পূর্ণ না করা অবধি আপনার ওয়ালেটে থেকে যাবে।</translation>
-<translation id="8918760045046434238">একটি পরামর্শ পাঠান...</translation>
-<translation id="1978261665418056203">এই মাসে এখনও পর্যন্ত
-কোনো কার্যকলাপ নেই...</translation>
-<translation id="9182287025588539628">একবারের দান/পরামর্শ</translation>
-<translation id="7577100371127227294">মাসিক পরামর্শ</translation>
-<translation id="3074127054582480056">মনোযোগ</translation>
-<translation id="4914597931214386232">মঞ্জুরি দেওয়া টোকেনের দাবি করা হয়েছে</translation>
-<translation id="298067735430872465">Brave বিজ্ঞাপন থেকে করা উপার্জন</translation>
 <translation id="6112368337882254910">স্বতঃ-প্রদান</translation>
-<translation id="2730771409541953249">রিওয়ার্ডের সারসংক্ষেপ</translation>
 <translation id="13853865024308201">দাবি</translation>
-<translation id="7335371657242627509">স্বয়ংক্রিয়ভাবে অবদান রাখায় অন্তর্ভুক্ত করুন</translation>
-<translation id="5463954686005964104">প্রতি মাসে সাইটে টিপ দিন</translation>
-<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="8494748383523030337">আপনার ব্যালেন্স</translation>
 <translation id="4781696154289395607">আপনি <ph name="BAT_VALUE"/> BAT এ অবদান রেখেছেন।</translation>
 <translation id="7997676409547731821">স্বতঃ-অবদান এবং মাসিক পরামর্শের জন্য আপনার সময়সূচিত মাসিক পেমেন্ট পর্যাপ্ত ফান্ড না থাকায় সম্পূর্ণ করা যাবে না। আমরা 30 দিনের মধ্যে আবার চেষ্টা করব।</translation>
 <translation id="5306913077198665897">আপনার পরামর্শ প্রক্রিয়া করার সময় একটি সমস্যা হয়েছে, অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
@@ -181,15 +172,10 @@
 <translation id="8689997599821157251">আপনি অর্জন করেছেন</translation>
 <translation id="7550470870580166294">অপর্যাপ্ত তহবিল</translation>
 <translation id="2775064702681588061">আপনার Brave পুরস্কারের অ্যাকাউন্ট একটি জমার জন্য অপেক্ষা করছে।</translation>
-<translation id="2630264552940126640">Brave রিওয়ার্ডস-এর ব্যাক আপ নিন</translation>
-<translation id="238922425564381955">অনুগ্রহ করে আপনার Brave রিওয়ার্ডস-এর ব্যাকআপ নিন।</translation>
 <translation id="2323069945529668668">ওহহো!</translation>
 <translation id="7510166204621526816">Brave পুরস্কারের সার্ভারটি কাজ করছে না। আমরা যত তাড়াতাড়ি সম্ভব এটির সমাধান করব।</translation>
 <translation id="683765328936486920">YouTube এ</translation>
 <translation id="8969049974285901797">Twitch এ</translation>
-<translation id="3692362746128814480">আপনি অবদানগুলি গ্রহণ করতে এখনও পর্যন্ত সাইন আপ করেননি এমন নির্মাতার জন্য <ph name="BAT_VALUE"/> BAT
-ডিজাইন করেছেন। আপনার ব্রাউজার অবদান রাখার চেষ্টা চালিয়ে যাবে
-যতক্ষণ না তারা যাচাই করে বা 90 দিন কেটে যায়।</translation>
 <translation id="3101693828171454453">পর্যাপ্ত <ph name="TOKEN"/> নেই</translation>
 <translation id="6940273954212603510">অনুগ্রহ করে</translation>
 <translation id="1036277985068412734">অর্থ যোগ করুন</translation>
@@ -245,7 +231,7 @@
 <translation id="4114170343590425996">Brave রিওয়ার্ড পুনরায় সেট করার সময় এখানে একটি ত্রুটি ঘটেছে। অনুগ্রহ করে Brave পুনরায় চালু করে আবার চেষ্টা করুন।</translation>
 <translation id="6393502589311632553">Brave ব্যবহার না করার সময় বিজ্ঞাপনগুলি প্রদর্শন করুন</translation>
 <translation id="3349204812119681938">Brave রিওয়ার্ড রিসেট করুন</translation>
-<translation id="8782039523249932839">এটি আপনার Brave ওয়ালেট মুছে ফেলবে এবং আপনার সমস্ত Brave রিওয়ার্ড ডেটা রিসেট করুন</translation>
+<translation id="6606319453795180219">এটি আপনার Brave রিয়ার্ডসগুলি মুছে ফেলবে এবং আপনার সমস্ত Brave রিয়ার্ডস ডেটা পুনরায় সেট করবে</translation>
 <translation id="6810078320346589989">একটি বুকমার্ক তৈরি করুন</translation>
 <translation id="3396347744975515056">Brave সিঙ্ক আপগ্রেড করা হয়েছে এবং সেটআপ করা প্রয়োজন</translation>
 <translation id="7473245612074035141">সেটআপ আরম্ভ করুন</translation>
@@ -274,7 +260,6 @@
 <translation id="2975780980638932742">ব্রেভ বিজ্ঞাপনগুলি এসে পৌঁছেছে!</translation>
 <translation id="7541582550122501404">অবদান মুলতুবি রয়েছে</translation>
 <translation id="8520059774736886747">সৃষ্টিকর্তা <ph name="PUBLISHER_NAME"/> একদম সাম্প্রতিক কালেই যাচাই করা হয়েছে</translation>
-<translation id="7924320838799747606">আপনার ব্যালেন্স পরিমাণ</translation>
 <translation id="1486343603936278248">স্মারক</translation>
 <translation id="7781069478569868053">নতুন ট্যাব পৃষ্ঠা</translation>
 <translation id="8522669544471808198">পটভূমির চিত্রগুলি দেখান</translation>
@@ -285,9 +270,9 @@
 <translation id="7136586167396205364">স্পনসর করা ছবিগুলি লুকিয়ে রাখুন</translation>
 <translation id="2927095357213611519">আপনি স্মারক দিয়ে ওয়েব নির্মাতাদের সাহায্য ও সমর্থন করতে পারেন।\nগোপনীয়তা-মান্যতাজনিত বিজ্ঞাপনগুলি দেখে স্মারকগুলি আয় করুন।</translation>
 <translation id="213787746370741250">কাস্টম ট্যাবগুলিতে ট্যাবগুলি খুলুন</translation>
-<translation id="8030169304546394654">সংযোগবিচ্ছিন্ন</translation>
+<translation id="2394961582378297792">লগ আউট করেছেন</translation>
 <translation id="6181762795539107980">যাচাই করা হয়নি</translation>
-<translation id="543510923939676996">ওয়ালেট যাচাই করা হয়েছে</translation>
+<translation id="4569155249847375786">যাচাইকৃত</translation>
 <translation id="8673913984316081937">আপনার ওয়ালেট যাচাই করা ঐচ্ছিক</translation>
 <translation id="8558636200953226885">কিন্তু আপনি যদি যাচাই করেন, তাহলে আপনি এগুলি করতে পারেন...</translation>
 <translation id="8697510149346635496">গোপনীয়তাকে সম্মান করা বিজ্ঞাপনগুলি থেকে আপনি যে BAT অর্জন করেছেন তা উইথড্র করুন</translation>
@@ -306,11 +291,9 @@
 <translation id="6239274080752256452">ফান্ড তুলে নিন</translation>
 <translation id="8874184842967597500">সংযুক্ত নয়</translation>
 <translation id="3368922792935385530">সংযুক্ত</translation>
-<translation id="4569155249847375786">যাচাইকৃত</translation>
 <translation id="5358719431303818601">সংযোগ বিচ্ছিন্ন হয়েছে যে তা যাচাই করা হয়নি</translation>
 <translation id="4241449868720191203">সংযোগ যে বিচ্ছিন্ন হয়েছে তা যাচাই করা হয়েছে</translation>
 <translation id="3248185426436836442">বিচারাধীন রয়েছে</translation>
-<translation id="4488355059795908907">এই ব্রেভ যাচাইকৃত নির্মাতা ব্রেভ ব্যবহারকারীদের কাছ থেকে এতে তাদের অবদানগুলি পেতে তাদের অ্যাকাউন্টটি এখনও কনফিগার করেনি। আপনার পাঠানো যে কোনও বখশিস এই প্রক্রিয়াটি শেষ না হওয়া পর্যন্ত আপনার ওয়ালেটে থাকবে।</translation>
 <translation id="2495032782748793764">ব্রেভ ডিফল্ট</translation>
 <translation id="9132378787893584761">আপনার বন্ধুদের সাথে ব্রেভ ভাগ করে নিন!</translation>
 <translation id="717952606991220586">ওহো, কিছু ভুল হয়েছে। অনুগ্রহ করে পরে আবার চেষ্টা করুন।</translation>
@@ -341,6 +324,8 @@
 <translation id="5657156137487675418">সমস্ত কুকির জন্য অনুমতি দিন</translation>
 <translation id="3895527457258986253">আঙুলের ছাপ দেওয়া অবরুদ্ধ করুন</translation>
 <translation id="7854108565842971747">নতুন সাইটগুলির জন্য এগুলি হল ডিফল্ট শীল্ড সেটিংস। এগুলির পরিবর্তন আপনার বিদ্যমান পার-সাইট সেটিংসকে ক্ষতিগ্রস্ত করবে না।</translation>
+<translation id="218587021686734263">ভাষা সেটিংসের মাধ্যমে ফিঙ্গারপ্রিন্টিং প্রতিরোধ করুন</translation>
+<translation id="1706099589708266367">আপনার ব্রাউজারের ভাষা সেটিংসের উপর ভিত্তি করে ওয়েবসাইটগুলি আপনার সম্পর্কে কতটা শিখতে পারে তা হ্রাস করে৷।</translation>
 <translation id="184568144098869637">আপনার ডিভাইসটি ব্রাউজারটিকে শনাক্ত করতে বাধা দেয়</translation>
 <translation id="7445306466605902444">ফ্রিঙ্গারপ্রিন্টিং ব্লক করা হয়েছে  (কঠোর, সাইটগুলিকে ভাঙ্গতে পারে)</translation>
 <translation id="5582686930349810484">ফ্রিঙ্গারপ্রিন্টিং ব্লক করা হয়েছে (আদর্শ)</translation>
@@ -405,7 +390,6 @@
 <translation id="3980704343258720102">সমস্ত ব্রাউজিং ডেটা সাফ করুন</translation>
 <translation id="8089997572759938512">আপনার গোপনীয়তার রিপোর্টগুলিকে শূণ্যতে রিসেট করে</translation>
 <translation id="2718046830255553131">গোপনীয়তা রিপোর্টগুলির ডেটা সাফ করা হয়েছে।</translation>
-<translation id="7559243474426790340">রিফ্রেশের স্থিতি</translation>
 <translation id="8376263745431603066">"নাইট মোড" সক্রিয় করুন (পরীক্ষামূলক)</translation>
 <translation id="1383876407941801731">সার্চ করুন</translation>
 <translation id="8446884382197647889">আরও জানুন</translation>
@@ -468,9 +452,6 @@
 <translation id="2434574859640694129">আপনার প্রথম বিজ্ঞাপনের অর্থ প্রদানের পরে আপনি ফিরে এসে এই স্রষ্টাকে টিপতে পারেন!</translation>
 <translation id="207242986925259074">দ্রুত সতেজ সফর</translation>
 <translation id="8342862030112839977">আপনার প্রথম পুরষ্কার প্রদানের মাধ্যমে আগত হবে:</translation>
-<translation id="3769645103175790584">আপনি ব্রাউজ করার সময় দুর্দান্ত সামগ্রীর জন্য টোকেন এবং পুরষ্কার প্রদানকারীদের উপার্জন করুন।<ph name="QUICK_TOUR"/>.</translation>
-<translation id="6912901278692845878">দ্রুত ভ্রমণ</translation>
-<translation id="1080013038789678738">I’m In!</translation>
 <translation id="8037420924417098685">একটি বিনামূল্যে কল শুরু করতে Brave রিওয়ার্ডস চালু করুন</translation>
 <translation id="8961724619078500274">Brave Rewards-এর সাহায্যে আপনি ব্যক্তিগত বিজ্ঞাপনগুলো দেখার জন্য টোকেন অর্জন করেন (আপনার ডেটা নিরাপদ)। সেই টোকেনগুলো নগদ, উপহার কার্ডে…বা এমনকি আপনি ভালবাসেন এমন টিপে পরিণত করুন। কোনও ট্র্যাকিং নেই। কোনও গতি হ্রাস নেই।</translation>
 <translation id="7307847920988946894">পুরষ্কারগুলির বোতাম চালু করুন</translation>
@@ -514,11 +495,6 @@
 <translation id="1822560017823072927">ডিফল্ট সর্বজনীন এবং ব্যক্তিগত ইন্টারফেসগুলি</translation>
 <translation id="5825943197137337319">শুধু ডিফল্ট সর্বজনীন ইন্টারফেস</translation>
 <translation id="1689062823386843231">নন-প্রক্সি UDP অক্ষম করুন</translation>
-<translation id="5587305863196367357">যাচাই করা ওয়ালেট থাকলে সেটি আপনাকে আপনার ফান্ড সহজে নিয়ন্ত্রন করতে, যেমন যোগ করার বা তুলে নেওয়ার অনুমতি দেয়</translation>
-<translation id="5760671211380791582">আপনার যথেষ্ট BAT নেই।</translation>
-<translation id="442469478596827903">একটি যাচাইকৃত আপহোল্ড ওয়ালেট তৈরি করতে আপনার ন্যুনতম 2 BAT চাই। অনুগ্রহ করে পরে চেষ্টা করুন।</translation>
-<translation id="4389085954549744469">আপনার যদি আগের থেকেই একটি যাচাইকরা আপহোল্ড অ্যাকাউন্ট থেকে থাকে, <ph name="CONTINUE_TO_LOGIN"/>।</translation>
-<translation id="6146966915297143881">লগইন করতে থাকুন</translation>
 <translation id="1483493594462132177">পাঠান</translation>
 <translation id="538450413584738399">সোয়াপ করুন</translation>
 <translation id="1420318137760245955">নতুন Brave ওয়্যালেটে স্বাগতম</translation>
@@ -793,11 +769,13 @@
 <translation id="3494964159182650590">রিওয়ার্ডসের সংক্ষিপ্তসার</translation>
 <translation id="590733288489975971">বিজ্ঞাপন থেকে পুরস্কার</translation>
 <translation id="207268487070188114">এককালীন টিপ</translation>
-<translation id="8494748383523030337">আপনার ব্যালেন্স</translation>
+<translation id="7577100371127227294">পুনরাবৃত্তি হওয়া দান</translation>
 <translation id="7091980679045978090">আনুমানিক উপার্জন</translation>
 <translation id="1346059596910821859">দান</translation>
 <translation id="1549705559752367917">টিপ পাঠান</translation>
+<translation id="7335371657242627509">স্বয়ংক্রিয়ভাবে অবদান রাখায় অন্তর্ভুক্ত করুন</translation>
 <translation id="6727102863431372879">সেট করুন</translation>
+<translation id="3074127054582480056">মনোযোগ</translation>
 <translation id="6413162919383874653">পুনরাবৃত্তি হওয়া দান</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
@@ -904,4 +882,39 @@
 <translation id="9023148942866814328">সিস্টেম অ্যাপস দেখান</translation>
 <translation id="5472400694702418949">VPN ট্রাফিক থেকে বাদ দেওয়ার জন্য অ্যাপ যোগ করুন।</translation>
 <translation id="7002577172732106572">স্প্লিট টানেলিং</translation>
+<translation id="2832270987629018596">কোনও বৈধ SOL ঠিকানা নয়</translation>
+<translation id="8181161042860463420">সংশ্লিষ্ট টোকেন অ্যাকাউন্টটি এখনও বিদ্যমান নেই। এটি তৈরি করতে এবং তহবিল দেওয়ার জন্য অল্প পরিমাণ SOL ব্যয় করা হবে। <ph name="CLICK_START"/>আরো জানুন<ph name="CLICK_END"/></translation>
+<translation id="168154537623654021">VPN প্রোফাইল আপডেট করা হচ্ছে ...</translation>
+<translation id="4258022280942725182">আপনার Brave রিওয়ার্ডস</translation>
+<translation id="3826081199286264109">USD</translation>
+<translation id="880893465294676334">এই Brave যাচাইকৃত স্রষ্টা Brave ব্যবহারকারীদের থেকে অবদানগুলি পেতে এখনও তাদের অ্যকাউন্ট কনফিগার করেন নি।
+        আপনার পাঠানো যে কোনও টিপস তারা প্রক্রিয়াটি সম্পূর্ণ না করা অবধি আপনার ওয়ালেটে থেকে যাবে।</translation>
+<translation id="8918760045046434238">একটি পরামর্শ পাঠান...</translation>
+<translation id="1978261665418056203">এই মাসে এখনও পর্যন্ত
+কোনো কার্যকলাপ নেই...</translation>
+<translation id="9182287025588539628">একবারের দান/পরামর্শ</translation>
+<translation id="4914597931214386232">মঞ্জুরি দেওয়া টোকেনের দাবি করা হয়েছে</translation>
+<translation id="298067735430872465">Brave বিজ্ঞাপন থেকে করা উপার্জন</translation>
+<translation id="2730771409541953249">রিওয়ার্ডের সারসংক্ষেপ</translation>
+<translation id="5463954686005964104">প্রতি মাসে সাইটে টিপ দিন</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">Brave রিওয়ার্ডস-এর ব্যাক আপ নিন</translation>
+<translation id="238922425564381955">অনুগ্রহ করে আপনার Brave রিওয়ার্ডস-এর ব্যাকআপ নিন।</translation>
+<translation id="3692362746128814480">আপনি অবদানগুলি গ্রহণ করতে এখনও পর্যন্ত সাইন আপ করেননি এমন নির্মাতার জন্য <ph name="BAT_VALUE"/> BAT
+ডিজাইন করেছেন। আপনার ব্রাউজার অবদান রাখার চেষ্টা চালিয়ে যাবে
+যতক্ষণ না তারা যাচাই করে বা 90 দিন কেটে যায়।</translation>
+<translation id="8782039523249932839">এটি আপনার Brave ওয়ালেট মুছে ফেলবে এবং আপনার সমস্ত Brave রিওয়ার্ড ডেটা রিসেট করুন</translation>
+<translation id="7924320838799747606">আপনার ব্যালেন্স পরিমাণ</translation>
+<translation id="8030169304546394654">সংযোগবিচ্ছিন্ন</translation>
+<translation id="543510923939676996">ওয়ালেট যাচাই করা হয়েছে</translation>
+<translation id="4488355059795908907">এই ব্রেভ যাচাইকৃত নির্মাতা ব্রেভ ব্যবহারকারীদের কাছ থেকে এতে তাদের অবদানগুলি পেতে তাদের অ্যাকাউন্টটি এখনও কনফিগার করেনি। আপনার পাঠানো যে কোনও বখশিস এই প্রক্রিয়াটি শেষ না হওয়া পর্যন্ত আপনার ওয়ালেটে থাকবে।</translation>
+<translation id="7559243474426790340">রিফ্রেশের স্থিতি</translation>
+<translation id="3769645103175790584">আপনি ব্রাউজ করার সময় দুর্দান্ত সামগ্রীর জন্য টোকেন এবং পুরষ্কার প্রদানকারীদের উপার্জন করুন।<ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">দ্রুত ভ্রমণ</translation>
+<translation id="1080013038789678738">I’m In!</translation>
+<translation id="5587305863196367357">যাচাই করা ওয়ালেট থাকলে সেটি আপনাকে আপনার ফান্ড সহজে নিয়ন্ত্রন করতে, যেমন যোগ করার বা তুলে নেওয়ার অনুমতি দেয়</translation>
+<translation id="5760671211380791582">আপনার যথেষ্ট BAT নেই।</translation>
+<translation id="442469478596827903">একটি যাচাইকৃত আপহোল্ড ওয়ালেট তৈরি করতে আপনার ন্যুনতম 2 BAT চাই। অনুগ্রহ করে পরে চেষ্টা করুন।</translation>
+<translation id="4389085954549744469">আপনার যদি আগের থেকেই একটি যাচাইকরা আপহোল্ড অ্যাকাউন্ট থেকে থাকে, <ph name="CONTINUE_TO_LOGIN"/>।</translation>
+<translation id="6146966915297143881">লগইন করতে থাকুন</translation>
 </translationbundle>

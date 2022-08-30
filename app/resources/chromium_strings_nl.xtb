@@ -13,14 +13,15 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 <translation id="8541922081612557424">Over Brave</translation>
 <translation id="1203500561924088507">Bedankt voor het installeren. Je moet de browser opnieuw opstarten voordat je <ph name="BUNDLE_NAME"/> kunt gebruiken.</translation>
 <translation id="4798342026247191171">Je nieuwe Brave-profiel instellen</translation>
+<translation id="6361779936989026201">De Brave Assistent in Brave</translation>
 <translation id="113959764510199339">Brave probeert wachtwoorden te bekijken.</translation>
 <translation id="8132634101975074716">Je bent ingelogd bij Brave.</translation>
 <translation id="5147525139567260139">Een Brave-tabblad delen</translation>
 <translation id="1530633922026945685">Brave heeft toegangsrechten voor de camera nodig om een 3D-kaart van je omgeving te maken</translation>
-<translation id="473077451702478797">Brave heeft dit bestand geblokkeerd omdat het te groot is voor een beveiligingscontrole. Probeer het opnieuw met bestanden van maximaal 50 MB.</translation>
 <translation id="4449148723378534338">Neem belangrijke privacy- en beveiligingsopties in Brave door</translation>
 <translation id="1640672724030957280">Bezig met downloaden...</translation>
 <translation id="5616153642055197778">Er is een nieuwe, veiligere versie van Brave beschikbaar.</translation>
+<translation id="5846727201643228411">Je kunt interessante onderwerpen bekijken en verwijderen die sites hebben gebruikt om je advertenties te laten zien. Brave schat je interesses op basis van je recente browsegeschiedenis</translation>
 <translation id="6797402139308059782">Brave laten uitvoeren op de achtergrond</translation>
 <translation id="5875673934455379806">Brave opnieuw installeren</translation>
 <translation id="6888366668010117849">Sites kunnen informatie over je interesses in Brave opslaan. Als je bijvoorbeeld een site bezoekt om schoenen voor een marathon te kopen, kan de site je interesse definiëren als 'deelname aan marathons'. Als je later een andere site bezoekt om je aan te melden voor een race, kan die site je een advertentie voor hardloopschoenen laten zien op basis van je interesses.</translation>
@@ -34,6 +35,7 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 <translation id="2018879682492276940">Installatie mislukt. Probeer het opnieuw.</translation>
 <translation id="831418749472885028">Als je wilt checken of je andere wachtwoorden zijn beveiligd tegen gegevenslekken en andere beveiligingsproblemen, <ph name="BEGIN_LINK"/>log je in bij Brave<ph name="END_LINK"/>.</translation>
 <translation id="5499149312981370855">Kies of je de Brave-geschiedenis wilt opnemen voor meer gepersonaliseerde functies in Brave-services</translation>
+<translation id="849607431499549468">Informatie over hoe Brave rootcertificaten beheert</translation>
 <translation id="142389341645668510">Brave aanpassen</translation>
 <translation id="2174917724755363426">Installatie niet afgerond. Weet je zeker dat je wilt annuleren?</translation>
 <translation id="8745514854244955877">Brave - Inloggen bij netwerk - <ph name="PAGE_TITLE"/></translation>
@@ -94,6 +96,7 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 <translation id="5853262807109651878">Hiermee worden <ph name="ITEMS_COUNT"/> items verwijderd van dit apparaat. Als je je gegevens later wilt terughalen, log je in bij Brave als <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> kan schakelen tussen Brave-profielen</translation>
 <translation id="8703492925273919597">Sluit alle Brave-vensters en probeer het opnieuw.</translation>
+<translation id="5350485513372498152">De Brave Assistent in Brave kan acties voor je voltooien op websites</translation>
 <translation id="4061445349373849749">Ter bescherming van je privacy verwijderen we automatisch interesses die ouder zijn dan 4 weken. Het kan gebeuren dat een interesse weer in de lijst komt te staan als je blijft browsen. Je kunt ook interesses verwijderen waarvan je niet wilt dat Brave deze overweegt.</translation>
 <translation id="691208314680168371">Je browsegeschiedenis, een lijst van de sites die je via Brave op dit apparaat hebt bezocht.</translation>
 <translation id="1384923383737428730">Je hebt schadelijke software op je computer. Brave kan deze verwijderen, je instellingen herstellen en extensies uitzetten, zodat je browser weer normaal werkt.</translation>
@@ -259,7 +262,6 @@ Sommige functies zijn mogelijk niet beschikbaar. Geef een andere profieldirector
 <translation id="5101812148953915496">Sites die je bezoekt, onthouden je informatie totdat je Brave sluit</translation>
 <translation id="5516268345616100622">Taakbeheer - Brave</translation>
 <translation id="713191641919118540">Je interesses volgens schattingen van Brave</translation>
-<translation id="2777705643687998385">Brave heeft dit bestand geblokkeerd omdat het versleuteld is. Vraag de eigenaar om het te ontgrendelen.</translation>
 <translation id="9068395155143628872">Via Advertentiemeting kunnen sites die je bezoekt Brave om informatie vragen zodat ze de prestaties van hun advertenties kunnen meten. Advertentiemeting beperkt tracking op meerdere sites door zo min mogelijk informatie over te dragen tussen sites.</translation>
 <translation id="1864557848095568223">Brave updaten</translation>
 <translation id="3403365884036456766">Je bestand met voorkeuren is beschadigd of ongeldig.
@@ -348,6 +350,7 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="7902365066753170041">Opnieuw starten om &amp;Brave te updaten</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Brave werkt mogelijk niet naar behoren omdat dit niet langer wordt ondersteund op Windows XP en Windows Vista</translation>
+<translation id="8180288330711585962">Certificaten beheerd door Brave</translation>
 <translation id="1611678871603620428">Als je toekomstige Brave-updates wilt krijgen, heb je macOS 10.13 of hoger nodig. Deze computer gebruikt OS X 10.11.</translation>
 <translation id="4484434718272972655">Wie gebruikt Brave?</translation>
 <translation id="7173394303099002355">Gebruik het hoogste beveiligingsniveau van Brave</translation>

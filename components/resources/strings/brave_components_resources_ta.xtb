@@ -43,6 +43,7 @@
 <translation id="3333887201479867589">பிரேவ் வெகுமதிகள்</translation>
 <translation id="385051799172605136">முந்தைய பக்கம்</translation>
 <translation id="7823038307453615214">பிரேவ் செய்திகளை காட்டு</translation>
+<translation id="370665806235115550">ஏற்றுகிறது…</translation>
 <translation id="780301667611848630">தேவையில்லை</translation>
 <translation id="8510120023634509743">பிரேவ் செய்திகள் மூலமுதல்களை அகரமாக்கு</translation>
 <translation id="8890516388109605451">மூலங்கள்</translation>
@@ -149,7 +150,6 @@
 <translation id="7656781188259414093">இலக்கு.</translation>
 <translation id="13853865024308201">உரிமைகோரு</translation>
 <translation id="1767561995429774671">பங்களி</translation>
-<translation id="6896758677409633944">நகலெடு</translation>
 <translation id="4932733599132424254">தேதி</translation>
 <translation id="3552003743293281224">வைப்புகள்</translation>
 <translation id="3866249974567520381">விவரம்</translation>
@@ -171,20 +171,17 @@
 <translation id="5082474983463379713">தயவுசெய்து கவனிக்கவும்:</translation>
 <translation id="1430915738399379752">அச்சிடுக</translation>
 <translation id="8725066075913043281">மீண்டும் முயல்க</translation>
-<translation id="194625454574835815">மீட்டமைப்பு திறவி</translation>
 <translation id="6354568176665589146">தொடர்ச்சியான</translation>
 <translation id="2799223571221894425">மீண்டும் தொடங்கு</translation>
 <translation id="1110535155349301542">நீக்கு</translation>
 <translation id="8204292894173669182">சேமித்ததிலிருந்து நீக்கு</translation>
 <translation id="5939518447894949180">மீட்டமை</translation>
 <translation id="3157931365184549694">மீட்டமை</translation>
-<translation id="5717619667204259673">இம்மீட்பு விசையை பத்திரமாக வை.</translation>
 <translation id="3074127054582480056">கவனத்திற்கு</translation>
 <translation id="3034163433136515805">விரைவுக்குறியை பார்</translation>
 <translation id="3267911153934785912">மீட்டெடுப்பு திறவியை உள்ளிடு அ</translation>
 <translation id="4914597931214386232">கிள்ளாக்கு நல்கைகள் உரிமைகோரப்பட்டது</translation>
 <translation id="3494964159182650590">வெகுமதிகள் சுருக்கம்</translation>
-<translation id="1738658589626889850">கோப்பாக சேமி</translation>
 <translation id="2913994227901456490">எல்லா [[numItems]] உறுப்படிகளையும் காண்</translation>
 <translation id="1549705559752367917">துணுக்குதவி அனுப்பு</translation>
 <translation id="3536298624341433814">என் துணுக்குதவியை அனுப்பு</translation>
@@ -213,6 +210,7 @@
 <translation id="8151638057146502721">உள்ளமை</translation>
 <translation id="5308380583665731573">இணை</translation>
 <translation id="7144878232160441200">மீண்டும் முயலவும்</translation>
+<translation id="6896758677409633944">நகலெடு</translation>
 <translation id="1383876407941801731">தேடல்</translation>
 <translation id="6680650203439190394">மதிப்பிடு</translation>
 <translation id="8131740175452115882">உறுதிப்படுத்து</translation>
@@ -235,8 +233,6 @@
 <translation id="717952606991220586">ஐயோ, ஏதோ தவறானது. பின்னர் மீண்டும் முயலவும்.</translation>
 <translation id="7210234701206674260">பிரேவ் வெகுமதிகள் ஒரு சிக்கலைக் கொண்டுள்ளது. பின்னர் மீண்டும் முயல்க.</translation>
 <translation id="7550470870580166294">போதாத நிதிகள்</translation>
-<translation id="2630264552940126640">பணப்பையைப் பிரதியெடு</translation>
-<translation id="238922425564381955">உம் பிரேவ் பணப்பையைப் பிரதியெடுக்கவும்.</translation>
 <translation id="5234764350956374838">நிராகரி</translation>
 <translation id="1275213816424141989">ஒருவேளை பின்பு</translation>
 <translation id="8281886186245836920">தவிர்</translation>
@@ -246,9 +242,9 @@
 <translation id="629730747756840877">கணக்கு</translation>
 <translation id="1483493594462132177">அனுப்பு</translation>
 <translation id="2236833281018938257">0x முகவரி அ உரலி</translation>
+<translation id="8712637175834984815">புரிந்தது</translation>
 <translation id="2704606927547763573">நகலெடுக்கப்பட்டது</translation>
-<translation id="6972754398087986839">தொடங்குக</translation>
-<translation id="6657585470893396449">கடவுச்சொல்</translation>
+<translation id="6042308850641462728">மேலும்</translation>
 <translation id="9111102763498581341">பூட்டைத் திற</translation>
 <translation id="5045550434625856497">தவறான கடவுச்சொல்</translation>
 <translation id="765834632354589737">பணப்பையைப் பிரதியெடு</translation>
@@ -275,6 +271,9 @@
 <translation id="6666273175654835609">சமர்ப்பிக்கப்பட்டது</translation>
 <translation id="1165039591588034296">பிழை</translation>
 <translation id="3380365263193509176">அறியப்படாத பிழை</translation>
+<translation id="4430019312045809116">அளவு</translation>
+<translation id="8297006494302853456">வலுவாக இல்லை</translation>
+<translation id="6657585470893396449">கடவுச்சொல்</translation>
 <translation id="3570081523466826008">HTTPSக்கு இணைப்புகளை தரமுயர்த்து</translation>
 <translation id="4824468494729001999">சிறுநிரல்களைத் தடு</translation>
 <translation id="4448697385961650078">தடமிகள் &amp; விளம்பரங்கள் தடு</translation>
@@ -282,7 +281,14 @@
 <translation id="6883611015375728278">எல்லா நினைவிகளையும் தடு</translation>
 <translation id="5657156137487675418">எல்லா நினைவிகளையும் அனுமதி</translation>
 <translation id="4292121526390005808">தடுக்கப்பட்ட சிறுநிரல்கள்</translation>
+<translation id="6303294677342628402">கவசங்கள்</translation>
 <translation id="5747552184818312860">காலாவதியாகும் தேதி</translation>
 <translation id="1116694919640316211">அறிமுகம்</translation>
 <translation id="7138678301420049075">மற்றவை</translation>
+<translation id="194625454574835815">மீட்டமைப்பு திறவி</translation>
+<translation id="5717619667204259673">இம்மீட்பு விசையை பத்திரமாக வை.</translation>
+<translation id="1738658589626889850">கோப்பாக சேமி</translation>
+<translation id="2630264552940126640">பணப்பையைப் பிரதியெடு</translation>
+<translation id="238922425564381955">உம் பிரேவ் பணப்பையைப் பிரதியெடுக்கவும்.</translation>
+<translation id="6972754398087986839">தொடங்குக</translation>
 </translationbundle>

@@ -16,6 +16,7 @@
 <translation id="5317780077021120954">सेव्ह करा</translation>
 <translation id="7658239707568436148">रद्द करा</translation>
 <translation id="385051799172605136">मागील</translation>
+<translation id="370665806235115550">लोड करीत आहे...</translation>
 <translation id="780301667611848630">नाही, नको</translation>
 <translation id="8890516388109605451">स्रोत</translation>
 <translation id="7791543448312431591">जोडा</translation>
@@ -51,7 +52,6 @@
 <translation id="3587482841069643663">सर्व</translation>
 <translation id="2631006050119455616">सेव्ह केले</translation>
 <translation id="3819257035322786455">बॅक अप</translation>
-<translation id="6896758677409633944">कॉपी करा</translation>
 <translation id="3866249974567520381">वर्णन</translation>
 <translation id="6302422639282249274">Brave (ब्रेव्ह) पुरस्कार व्यवस्थापित करा</translation>
 <translation id="1430915738399379752">प्रिंट</translation>
@@ -67,6 +67,7 @@
 <translation id="8151638057146502721">कॉन्फिगर करा</translation>
 <translation id="5308380583665731573">कनेक्‍ट करा</translation>
 <translation id="7144878232160441200">पुन्हा प्रयत्न करा</translation>
+<translation id="6896758677409633944">कॉपी करा</translation>
 <translation id="1383876407941801731">शोधा</translation>
 <translation id="6680650203439190394">रेट करा</translation>
 <translation id="8131740175452115882">पुष्टी करा</translation>
@@ -89,9 +90,9 @@
 <translation id="1987317783729300807">खाती</translation>
 <translation id="629730747756840877">खाते</translation>
 <translation id="1483493594462132177">पाठवा</translation>
+<translation id="8712637175834984815">समजले</translation>
 <translation id="2704606927547763573">कॉपी केले</translation>
-<translation id="6972754398087986839">प्रारंभ करा</translation>
-<translation id="6657585470893396449">पासवर्ड</translation>
+<translation id="6042308850641462728">अधिक</translation>
 <translation id="9111102763498581341">अनलॉक करा</translation>
 <translation id="5045550434625856497">अयोग्य पासवर्ड</translation>
 <translation id="7525067979554623046">तयार करा</translation>
@@ -108,9 +109,14 @@
 <translation id="5677928146339483299">अवरोधित</translation>
 <translation id="1165039591588034296">एरर</translation>
 <translation id="3380365263193509176">अज्ञात एरर</translation>
+<translation id="4430019312045809116">व्हॉल्यूम</translation>
+<translation id="8297006494302853456">कमकुवत</translation>
+<translation id="6657585470893396449">पासवर्ड</translation>
 <translation id="3570081523466826008">HTTPS वर कनेक्शन श्रेणीसुधारित करा</translation>
 <translation id="5657156137487675418">सर्व कुकीजना परवानगी द्या</translation>
+<translation id="6303294677342628402">शिल्ड्स</translation>
 <translation id="5747552184818312860">कालबाह्य होईल</translation>
 <translation id="1116694919640316211">बद्दल</translation>
 <translation id="7138678301420049075">इतर</translation>
+<translation id="6972754398087986839">प्रारंभ करा</translation>
 </translationbundle>

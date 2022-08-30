@@ -82,11 +82,14 @@
 <translation id="7207456302801184289">Welcome to Brave</translation>
 <translation id="4117451092682672487">Privacy. Made simple.</translation>
 <translation id="7909375417585209817">With Brave as default, every link you tap opens with Brave's privacy protections.</translation>
+<translation id="7370959926683925817">Block ads. Save data. Every single day.</translation>
+<translation id="7281027579943912834">With Brave as default, every link you tap gets Brave's ad-block protection. Every page, video, and stream.</translation>
 <translation id="5148943178722443958">Help make Brave better.</translation>
 <translation id="6188781052835527980">Send anonymous diagnostic reports if you experience a crash or freeze.</translation>
 <translation id="1929905278861178845">Share completely private and anonymous product insights about what features are being used by Brave's users.</translation>
 <translation id="2877653791257935258">Type a website name or URL</translation>
 <translation id="5329830149661250028">See the Brave difference: No ads. No trackers. Way faster page load.</translation>
+<translation id="3941792073703079607">See the Brave difference: Block ads. Save data. Stream faster.</translation>
 <translation id="3545804467215833536">Tap to view Brave Shields</translation>
 <translation id="1724327820822194498">See all the bad stuff Brave blocked, on every page, with Shields.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> and <ph name="TRACKER"/> other ads &amp; trackers blocked</translation>
@@ -114,7 +117,6 @@
 <translation id="19715420010996093">Select Brave Browser and tap 'Always'</translation>
 <translation id="3546439402724649282">Brave is already set as your default browser.</translation>
 <translation id="8389661903259423907">You've already set a default browser. You can change the default browser in your app settings.</translation>
-<translation id="8112367589167674370">Brave talk</translation>
 <translation id="8826007068782654809">Thank you</translation>
 <translation id="6665366815203065060">You've just sent a tip to:</translation>
 <translation id="5441565662498481293">You are automatically sending a tip to:</translation>
@@ -134,6 +136,10 @@
 <translation id="8481779960444041069">To improve your privacy, set Brave as your default browser</translation>
 <translation id="1938402585819943124">Choose Brave on the next screen.</translation>
 <translation id="8926389886865778422">Don't ask again</translation>
+<translation id="745974920645827035">Independent search with better privacy</translation>
+<translation id="4717018805430015801">Brave Search doesn't track you, your queries, or your clicks.</translation>
+<translation id="5240031343741051161">Try Brave search</translation>
+<translation id="5234764350956374838">Dismiss</translation>
 <translation id="6639570430554986719">JANUARY</translation>
 <translation id="1807352595146144483">FEBRUARY</translation>
 <translation id="2021828608097804771">MARCH</translation>
@@ -146,31 +152,16 @@
 <translation id="8220228041552340594">OCTOBER</translation>
 <translation id="8280223431922155812">NOVEMBER</translation>
 <translation id="4254029385847607686">DECEMBER</translation>
-<translation id="4258022280942725182">Your Brave Rewards</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
 <translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
-<translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">Add Funds</translation>
 <translation id="8428213095426709021">Settings</translation>
 <translation id="6020176662032623904">Verified creator</translation>
 <translation id="2369994359029526515">Unverified creator</translation>
-<translation id="880893465294676334">This Brave Verified Creator has not yet configured their account to receive contributions from Brave Users.
-        Any tips you send will remain in your wallet until they complete this process.</translation>
-<translation id="8918760045046434238">Send a tip ...</translation>
-<translation id="1978261665418056203">No activities yet this
-month ...</translation>
-<translation id="9182287025588539628">One-time Tips</translation>
-<translation id="7577100371127227294">Monthly Tips</translation>
-<translation id="3074127054582480056">Attention</translation>
-<translation id="4914597931214386232">Token Grants Claimed</translation>
-<translation id="298067735430872465">Earnings from Ads</translation>
 <translation id="6112368337882254910">Auto-Contribute</translation>
-<translation id="2730771409541953249">REWARDS SUMMARY</translation>
 <translation id="13853865024308201">Claim</translation>
-<translation id="7335371657242627509">Include in Auto-Contribute</translation>
-<translation id="5463954686005964104">Tip this site monthly</translation>
-<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="8494748383523030337">Your balance</translation>
 <translation id="4781696154289395607">You've contributed <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="7997676409547731821">Your scheduled monthly payment for Auto-Contribute and monthly tips could not be completed due to insufficient funds. We'll try again in 30 days.</translation>
 <translation id="5306913077198665897">There was a problem processing your tip, please try again.</translation>
@@ -181,15 +172,10 @@ month ...</translation>
 <translation id="8689997599821157251">You've earned</translation>
 <translation id="7550470870580166294">Insufficient Funds</translation>
 <translation id="2775064702681588061">Your Brave Rewards account is waiting for a deposit.</translation>
-<translation id="2630264552940126640">Back up Brave Rewards</translation>
-<translation id="238922425564381955">Please back up your Brave Rewards.</translation>
 <translation id="2323069945529668668">Uh oh!</translation>
 <translation id="7510166204621526816">The Brave Rewards server is not responding. We will fix this as soon as possible.</translation>
 <translation id="683765328936486920">on YouTube</translation>
 <translation id="8969049974285901797">on Twitch</translation>
-<translation id="3692362746128814480">You've designated <ph name="BAT_VALUE"/> BAT for creators who haven't
-yet signed up to receive contributions. Your browser will keep trying to contribute
-until they verify, or until 90 days have passed.</translation>
 <translation id="3101693828171454453">not enough <ph name="TOKEN"/>s</translation>
 <translation id="6940273954212603510">please</translation>
 <translation id="1036277985068412734">add funds</translation>
@@ -245,7 +231,7 @@ until they verify, or until 90 days have passed.</translation>
 <translation id="4114170343590425996">There was an error resetting Brave Rewards. Please relaunch Brave and try again.</translation>
 <translation id="6393502589311632553">Show ads when Brave is not in use</translation>
 <translation id="3349204812119681938">Reset Brave Rewards</translation>
-<translation id="8782039523249932839">This will delete your Brave wallet and reset all of your Brave Rewards data</translation>
+<translation id="6606319453795180219">This will delete your Brave Rewards and reset all of your Brave Rewards data</translation>
 <translation id="6810078320346589989">Create a bookmark</translation>
 <translation id="3396347744975515056">Brave Sync has been upgraded and requires setup</translation>
 <translation id="7473245612074035141">Begin Setup</translation>
@@ -274,7 +260,6 @@ Are you sure you want to do this?</translation>
 <translation id="2975780980638932742">Brave Ads has arrived!</translation>
 <translation id="7541582550122501404">Pending contribution</translation>
 <translation id="8520059774736886747">Creator <ph name="PUBLISHER_NAME"/> recently verified</translation>
-<translation id="7924320838799747606">Your balance</translation>
 <translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">New tab page</translation>
 <translation id="8522669544471808198">Show background images</translation>
@@ -285,9 +270,9 @@ Are you sure you want to do this?</translation>
 <translation id="7136586167396205364">Hide sponsored images</translation>
 <translation id="2927095357213611519">You can support web creators with tokens.\nEarn tokens by viewing privacy-respecting ads.</translation>
 <translation id="213787746370741250">Open tabs in Custom Tabs</translation>
-<translation id="8030169304546394654">Disconnected</translation>
+<translation id="2394961582378297792">Logged out</translation>
 <translation id="6181762795539107980">Unverified</translation>
-<translation id="543510923939676996">Wallet verified</translation>
+<translation id="4569155249847375786">Verified</translation>
 <translation id="8673913984316081937">Verifying your wallet is optional</translation>
 <translation id="8558636200953226885">But if you verify, you can...</translation>
 <translation id="8697510149346635496">Withdraw BAT that you earn from viewing privacy-respecting ads</translation>
@@ -306,11 +291,9 @@ Are you sure you want to do this?</translation>
 <translation id="6239274080752256452">Withdraw Funds</translation>
 <translation id="8874184842967597500">Not connected</translation>
 <translation id="3368922792935385530">Connected</translation>
-<translation id="4569155249847375786">Verified</translation>
 <translation id="5358719431303818601">Disconnected not verified</translation>
 <translation id="4241449868720191203">Disconnected verified</translation>
 <translation id="3248185426436836442">Pending</translation>
-<translation id="4488355059795908907">This Brave Verified Creator has not yet configured their account to receive contributions from Brave users. Any tips you send will remain in your wallet until they complete this process.</translation>
 <translation id="2495032782748793764">Brave Default</translation>
 <translation id="9132378787893584761">Share Brave with your friends!</translation>
 <translation id="717952606991220586">Oops, something is wrong. Please try again later.</translation>
@@ -341,6 +324,8 @@ Are you sure you want to do this?</translation>
 <translation id="5657156137487675418">Allow all cookies</translation>
 <translation id="3895527457258986253">Block fingerprinting</translation>
 <translation id="7854108565842971747">These are the default Shields settings for new sites. Changing these won't affect your existing per-site settings.</translation>
+<translation id="218587021686734263">Prevent fingerprinting via language settings</translation>
+<translation id="1706099589708266367">Reduces how much websites can learn about you based on your browser's language settings.</translation>
 <translation id="184568144098869637">Prevents browser from recognising your device</translation>
 <translation id="7445306466605902444">Fingerprinting blocked (strict, may break sites)</translation>
 <translation id="5582686930349810484">Fingerprinting blocked (standard)</translation>
@@ -405,7 +390,6 @@ Are you sure you want to do this?</translation>
 <translation id="3980704343258720102">Clears all browsing data</translation>
 <translation id="8089997572759938512">Resets your privacy reports to zero</translation>
 <translation id="2718046830255553131">Privacy reports data has been cleared.</translation>
-<translation id="7559243474426790340">Refresh Status</translation>
 <translation id="8376263745431603066">Enable "Night Mode" (Experimental)</translation>
 <translation id="1383876407941801731">Search</translation>
 <translation id="8446884382197647889">Learn More</translation>
@@ -468,9 +452,6 @@ Are you sure you want to do this?</translation>
 <translation id="2434574859640694129">After you receive your first ads payout, you can come back and tip this creator!</translation>
 <translation id="207242986925259074">Quick refresher tour</translation>
 <translation id="8342862030112839977">Your 1st rewards payout will arrive by:</translation>
-<translation id="3769645103175790584">Earn tokens and reward creators for great content while you browse. <ph name="QUICK_TOUR"/>.</translation>
-<translation id="6912901278692845878">Quick tour</translation>
-<translation id="1080013038789678738">I’m In!</translation>
 <translation id="8037420924417098685">To start a free call, turn on Brave Rewards</translation>
 <translation id="8961724619078500274">With Brave Rewards, you earn tokens for viewing private ads (your data is safe). Turn those tokens into cash, gift cards…or even tip the websites you love. No tracking. No slow downs.</translation>
 <translation id="7307847920988946894">Turn on Rewards</translation>
@@ -514,11 +495,6 @@ Are you sure you want to do this?</translation>
 <translation id="1822560017823072927">Default public and private interfaces</translation>
 <translation id="5825943197137337319">Default public interface only</translation>
 <translation id="1689062823386843231">Disable non-proxied UDP</translation>
-<translation id="5587305863196367357">Verifying wallet allows you to manage your funds easily, adding &amp; withdrawing</translation>
-<translation id="5760671211380791582">You don't have enough BAT.</translation>
-<translation id="442469478596827903">You need to have minimum 2 BAT to create a verified Uphold wallet. Please try again later.</translation>
-<translation id="4389085954549744469">If you already have a verified Uphold account, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
-<translation id="6146966915297143881">continue to login</translation>
 <translation id="1483493594462132177">Send</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="1420318137760245955">Welcome to the new Brave Wallet</translation>
@@ -793,11 +769,13 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="3494964159182650590">Rewards Summary</translation>
 <translation id="590733288489975971">Rewards from Ads</translation>
 <translation id="207268487070188114">One-time tip</translation>
-<translation id="8494748383523030337">Your balance</translation>
+<translation id="7577100371127227294">Monthly Tips</translation>
 <translation id="7091980679045978090">Estimated earnings</translation>
 <translation id="1346059596910821859">Tip</translation>
 <translation id="1549705559752367917">Send Tip</translation>
+<translation id="7335371657242627509">Include in Auto-Contribute</translation>
 <translation id="6727102863431372879">Set</translation>
+<translation id="3074127054582480056">Attention</translation>
 <translation id="6413162919383874653">Monthly tip</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
@@ -904,4 +882,39 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="9023148942866814328">Show system apps</translation>
 <translation id="5472400694702418949">Add apps to be excluded from the VPN traffic.</translation>
 <translation id="7002577172732106572">Split tunnelling</translation>
+<translation id="2832270987629018596">Not a valid SOL address</translation>
+<translation id="8181161042860463420">The associated token account does not exist yet. A small amount of SOL will be spent to create and fund it. <ph name="CLICK_START"/>Learn more<ph name="CLICK_END"/></translation>
+<translation id="168154537623654021">Updating VPN Profile ...</translation>
+<translation id="4258022280942725182">Your Brave Rewards</translation>
+<translation id="3826081199286264109">USD</translation>
+<translation id="880893465294676334">This Brave Verified Creator has not yet configured their account to receive contributions from Brave Users.
+        Any tips you send will remain in your wallet until they complete this process.</translation>
+<translation id="8918760045046434238">Send a tip ...</translation>
+<translation id="1978261665418056203">No activities yet this
+month ...</translation>
+<translation id="9182287025588539628">One-time Tips</translation>
+<translation id="4914597931214386232">Token Grants Claimed</translation>
+<translation id="298067735430872465">Earnings from Ads</translation>
+<translation id="2730771409541953249">REWARDS SUMMARY</translation>
+<translation id="5463954686005964104">Tip this site monthly</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">Back up Brave Rewards</translation>
+<translation id="238922425564381955">Please back up your Brave Rewards.</translation>
+<translation id="3692362746128814480">You've designated <ph name="BAT_VALUE"/> BAT for creators who haven't
+yet signed up to receive contributions. Your browser will keep trying to contribute
+until they verify, or until 90 days have passed.</translation>
+<translation id="8782039523249932839">This will delete your Brave wallet and reset all of your Brave Rewards data</translation>
+<translation id="7924320838799747606">Your balance</translation>
+<translation id="8030169304546394654">Disconnected</translation>
+<translation id="543510923939676996">Wallet verified</translation>
+<translation id="4488355059795908907">This Brave Verified Creator has not yet configured their account to receive contributions from Brave users. Any tips you send will remain in your wallet until they complete this process.</translation>
+<translation id="7559243474426790340">Refresh Status</translation>
+<translation id="3769645103175790584">Earn tokens and reward creators for great content while you browse. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">Quick tour</translation>
+<translation id="1080013038789678738">I’m In!</translation>
+<translation id="5587305863196367357">Verifying wallet allows you to manage your funds easily, adding &amp; withdrawing</translation>
+<translation id="5760671211380791582">You don't have enough BAT.</translation>
+<translation id="442469478596827903">You need to have minimum 2 BAT to create a verified Uphold wallet. Please try again later.</translation>
+<translation id="4389085954549744469">If you already have a verified Uphold account, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">continue to login</translation>
 </translationbundle>

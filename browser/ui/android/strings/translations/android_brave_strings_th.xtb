@@ -82,11 +82,14 @@
 <translation id="7207456302801184289">ยินดีต้อนรับสู่ Brave</translation>
 <translation id="4117451092682672487">ปกป้องความเป็นส่วนตัวง่ายๆ</translation>
 <translation id="7909375417585209817">เมื่อ Brave เป็นค่าเริ่มต้น ทุกลิงก์ที่คุณคลิกจะเปิดด้วยการป้องกันความเป็นส่วนตัวของ Brave</translation>
+<translation id="7370959926683925817">บล็อกโฆษณาและบันทึกข้อมูลทุกวัน</translation>
+<translation id="7281027579943912834">ด้วยการตั้ง Brave เป็นค่าเริ่มต้น ทุกลิงก์ที่คุณคลิกจะได้รับการป้องกันด้วย ad-block ของ Brave ในทุกหน้าเพจ วิดีโอ และสตรีม</translation>
 <translation id="5148943178722443958">ช่วยปรับปรุง Brave ให้ดีขึ้น</translation>
 <translation id="6188781052835527980">ส่งรายงานการวินิจฉัยแบบไม่ระบุชื่อหากคุณพบข้อขัดข้องหรืออาการค้าง</translation>
 <translation id="1929905278861178845">แชร์ข้อมูลเชิงลึกของผลิตภัณฑ์แบบส่วนตัวและไม่ระบุชื่อ ซึ่งมีข้อมูลเกี่ยวกับคุณสมบัติที่ผู้ใช้ Brave ใช้</translation>
 <translation id="2877653791257935258">พิมพ์ชื่อเว็บไซต์หรือ URL</translation>
 <translation id="5329830149661250028">ดูความแตกต่างที่ Brave มอบให้: ไม่มีโฆษณา ไม่มีตัวติดตาม โหลดหน้าเร็วกว่า</translation>
+<translation id="3941792073703079607">ดูความแตกต่างของ Brave: บล็อกโฆษณา บันทึกข้อมูล สตรีมได้เร็วขึ้น</translation>
 <translation id="3545804467215833536">แตะเพื่อดู Brave Shields</translation>
 <translation id="1724327820822194498">ดูสิ่งรบกวนทั้งหมดที่ Brave บล็อกในทุกหน้าด้วย Brave Shields</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> และ <ph name="TRACKER"/> บล็อกโฆษณาอื่นๆ &amp; ตัวติดตามแล้ว</translation>
@@ -114,7 +117,6 @@
 <translation id="19715420010996093">เลือกเบราว์เซอร์ Brave แล้วแตะ 'เสมอ'</translation>
 <translation id="3546439402724649282">Brave ถูกตั้งเป็นเบราว์เซอร์เริ่มต้นของคุณอยู่แล้ว</translation>
 <translation id="8389661903259423907">คุณตั้งเบราว์เซอร์เริ่มต้นไปแล้ว คุณสามารถเปลี่ยนเบราว์เซอร์เริ่มต้นได้ในการตั้งค่าแอป</translation>
-<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="8826007068782654809">ขอบคุณ</translation>
 <translation id="6665366815203065060">คุณเพิ่งส่งทิปให้กับ:</translation>
 <translation id="5441565662498481293">คุณกำลังส่งทิปโดยอัตโนมัติไปยัง:</translation>
@@ -134,6 +136,10 @@
 <translation id="8481779960444041069">เพื่อการปรับปรุงความเป็นส่วนตัวของคุณ โปรดตั้งค่า Brave เป็นเบราว์เซอร์เริ่มต้นของคุณ</translation>
 <translation id="1938402585819943124">เลือก Brave ในหน้าจอถัดไป</translation>
 <translation id="8926389886865778422">ไม่ต้องถามอีก</translation>
+<translation id="745974920645827035">ค้นหาอย่างอิสระพร้อมความเป็นส่วนตัวที่มากขึ้น</translation>
+<translation id="4717018805430015801">Brave Search ไม่ได้ติดตามคุณ คำค้นหา หรือการคลิกของคุณ</translation>
+<translation id="5240031343741051161">ลอง Brave Search</translation>
+<translation id="5234764350956374838">ปิด</translation>
 <translation id="6639570430554986719">มกราคม</translation>
 <translation id="1807352595146144483">กุมภาพันธ์</translation>
 <translation id="2021828608097804771">มีนาคม</translation>
@@ -146,31 +152,16 @@
 <translation id="8220228041552340594">ตุลาคม</translation>
 <translation id="8280223431922155812">พฤศจิกายน</translation>
 <translation id="4254029385847607686">ธันวาคม</translation>
-<translation id="4258022280942725182">Brave Rewards ของคุณ</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">ข่าว Brave</translation>
 <translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
-<translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">เพิ่มเงิน</translation>
 <translation id="8428213095426709021">การตั้งค่า</translation>
 <translation id="6020176662032623904">ผู้สร้างยืนยันตัวตนแล้ว</translation>
 <translation id="2369994359029526515">ผู้สร้างยังไม่ยืนยันตัวตน</translation>
-<translation id="880893465294676334">ครีเอเตอร์ที่ได้รับการรับรองจาก Brave รายนี้ยังไม่ได้กำหนดค่าบัญชีของตนเพื่อรับเงินสนับสนุนจากผู้ใช้ Brave
-        ทิปที่คุณส่งให้จะยังคงอยู่ในกระเป๋าเงินของคุณจนกว่าขั้นตอนนี้จะเสร็จสมบูรณ์</translation>
-<translation id="8918760045046434238">ส่งทิป...</translation>
-<translation id="1978261665418056203">ยังไม่มีกิจกรรมใน
-เดือนนี้...</translation>
-<translation id="9182287025588539628">ทิปครั้งเดียว</translation>
-<translation id="7577100371127227294">การให้ทิปรายเดือน</translation>
-<translation id="3074127054582480056">โปรดระวัง</translation>
-<translation id="4914597931214386232">โทเค็นเงินบริจาคที่เบิกแล้ว</translation>
-<translation id="298067735430872465">ได้รายได้จากโฆษณา</translation>
 <translation id="6112368337882254910">มีส่วนร่วมอัตโนมัติ</translation>
-<translation id="2730771409541953249">สรุป REWARDS</translation>
 <translation id="13853865024308201">รับ</translation>
-<translation id="7335371657242627509">รวมไว้ในการบริจาคแบบอัตโนมัติ</translation>
-<translation id="5463954686005964104">เคล็ดลับประจำเดือนในเว็บไซต์นี้</translation>
-<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="8494748383523030337">ยอดของคุณ</translation>
 <translation id="4781696154289395607">คุณได้สนับสนุน <ph name="BAT_VALUE"/> BAT</translation>
 <translation id="7997676409547731821">คุณได้ตั้งการชำระเงินรายเดือนสำหรับฟีเจอร์สนับสนุนอัตโนมัติเอาไว้ และไม่สามารถให้ทิปรายเดือนได้สำเร็จเนื่องจากมียอดเงินไม่เพียงพอ เราจะลองใหม่อีกครั้งในอีก 30 วัน</translation>
 <translation id="5306913077198665897">มีปัญหาเกิดขึ้นขณะประมวลผลทิปของคุณ โปรดลองใหม่อีกครั้ง</translation>
@@ -181,15 +172,10 @@
 <translation id="8689997599821157251">คุณได้รับ</translation>
 <translation id="7550470870580166294">ยอดเงินไม่พอ</translation>
 <translation id="2775064702681588061">บัญชี Brave Rewards ของคุณกำลังรอเงินฝาก</translation>
-<translation id="2630264552940126640">สำรองข้อมูล Brave Rewards</translation>
-<translation id="238922425564381955">โปรดสำรองข้อมูล Brave Rewards ของคุณ</translation>
 <translation id="2323069945529668668">โอ๊ะโอ!</translation>
 <translation id="7510166204621526816">เซิร์ฟเวอร์ Brave Rewards ไม่ตอบสนอง เราจะทำการแก้ไขให้โดยเร็วที่สุด</translation>
 <translation id="683765328936486920">บน YouTube</translation>
 <translation id="8969049974285901797">บน Twitch</translation>
-<translation id="3692362746128814480">คุณได้กำหนด <ph name="BAT_VALUE"/> BAT ให้กับผู้สร้างที่ยังไม่ได้
-ลงทะเบียนเพื่อรับการสนับสนุน เบราว์เซอร์ของคุณจะพยายามที่จะส่งการสนับสนุนให้ต่อไป
-จนกว่าผู้สร้างจะยืนยันตัวตน หรือจนเมื่อผ่านไปครบ 90 วัน</translation>
 <translation id="3101693828171454453"><ph name="TOKEN"/> มีไม่เพียงพอ</translation>
 <translation id="6940273954212603510">โปรด</translation>
 <translation id="1036277985068412734">เพิ่มเงินทุน</translation>
@@ -245,7 +231,7 @@
 <translation id="4114170343590425996">มีข้อผิดพลาดเกิดขึ้นขณะรีเซ็ต Brave Rewards โปรดเปิดใช้งาน Brave ใหม่แล้วลองอีกครั้ง</translation>
 <translation id="6393502589311632553">แสดงโฆษณาเมื่อไม่ได้ใช้งาน Brave</translation>
 <translation id="3349204812119681938">รีเซ็ต Brave Rewards</translation>
-<translation id="8782039523249932839">คำสั่งนี้จะลบ Brave วอลเล็ทของคุณและรีเซ็ตข้อมูล Brave Rewards ของคุณทั้งหมด</translation>
+<translation id="6606319453795180219">การดำเนินการนี้จะลบ Brave Rewards ของคุณและรีเซ็ตข้อมูล Brave Rewards ใหม่ทั้งหมด</translation>
 <translation id="6810078320346589989">สร้างบุ๊กมาร์ก</translation>
 <translation id="3396347744975515056">Brave Sync ได้อัปเกรดและต้องการติดตั้ง</translation>
 <translation id="7473245612074035141">เริ่มติดตั้ง</translation>
@@ -274,7 +260,6 @@
 <translation id="2975780980638932742">Brave Ads มาแล้ว!</translation>
 <translation id="7541582550122501404">เงินสนับสนุนที่รอดำเนินการ</translation>
 <translation id="8520059774736886747">ผู้สร้าง <ph name="PUBLISHER_NAME"/> เพิ่งได้รับการยืนยัน</translation>
-<translation id="7924320838799747606">ยอดคงเหลือของคุณ</translation>
 <translation id="1486343603936278248">โทเคน</translation>
 <translation id="7781069478569868053">หน้าแท็บใหม่</translation>
 <translation id="8522669544471808198">แสดงรูปภาพพื้นหลัง</translation>
@@ -285,9 +270,9 @@
 <translation id="7136586167396205364">ซ่อนรูปภาพที่มีผู้สนับสนุน</translation>
 <translation id="2927095357213611519">คุณสามารถสนับสนุนผู้สร้างเว็บได้ด้วยโทเคน\nรับโทเคนผ่านการชมโฆษณาที่เกี่ยวข้องกับความเป็นส่วนตัว</translation>
 <translation id="213787746370741250">เปิดแท็บใน Custom Tabs</translation>
-<translation id="8030169304546394654">ไม่ได้เชื่อมต่อ</translation>
+<translation id="2394961582378297792">ออกจากระบบ</translation>
 <translation id="6181762795539107980">ยังไม่ยืนยัน</translation>
-<translation id="543510923939676996">ยืนยันวอลเล็ตแล้ว</translation>
+<translation id="4569155249847375786">ยืนยันแล้ว</translation>
 <translation id="8673913984316081937">สามารถเลือกยืนยันกระเป๋าเงินของคุณได้</translation>
 <translation id="8558636200953226885">แต่หากยืนยัน คุณจะสามารถ...</translation>
 <translation id="8697510149346635496">ถอน BAT ที่คุณได้รับจากการดูโฆษณาที่เคารพความเป็นส่วนตัว</translation>
@@ -306,11 +291,9 @@
 <translation id="6239274080752256452">ถอนเงิน</translation>
 <translation id="8874184842967597500">ไม่ได้เชื่อมต่อ</translation>
 <translation id="3368922792935385530">เชื่อมต่อแล้ว</translation>
-<translation id="4569155249847375786">ยืนยันแล้ว</translation>
 <translation id="5358719431303818601">ยังไม่ได้รับการยืนยันการยกเลิกการเชื่อมต่อ</translation>
 <translation id="4241449868720191203">ยืนยันการยกเลิกการเชื่อมต่อแล้ว</translation>
 <translation id="3248185426436836442">รอดำเนินการ</translation>
-<translation id="4488355059795908907">Brave Verified Creator นี้ยังไม่ได้ตั้งค่าบัญชีเพื่อรับเงินช่วยเหลือจากผู้ใช้งาน Brave ทิปใด ๆ ที่คุณส่งจะยังอยู่ในกระเป๋าเงินของคุณจนกว่ากระบวนการนี้จะทำสำเร็จ</translation>
 <translation id="2495032782748793764">Brave Default</translation>
 <translation id="9132378787893584761">แชร์ Brave กับเพื่อนของคุณ!</translation>
 <translation id="717952606991220586">อุ๊ย มีบางอย่างผิดปกติ โปรดลองใหม่ภายหลัง</translation>
@@ -341,6 +324,8 @@
 <translation id="5657156137487675418">อนุญาตคุกกี้ทั้งหมด</translation>
 <translation id="3895527457258986253">บล็อกการเก็บร่องรอย</translation>
 <translation id="7854108565842971747">นี่คือการตั้งค่า Shields เริ่มต้นสำหรับเว็บไซต์ใหม่ โดยการเปลี่ยนแปลงเหล่านี้จะไม่ส่งผลต่อการตั้งค่าที่มีอยู่ของแต่ละเว็บไซต์</translation>
+<translation id="218587021686734263">ป้องกันลายนิ้วมือผ่านการตั้งค่าภาษา</translation>
+<translation id="1706099589708266367">ลดจำนวนเว็บไซต์ที่สามารถเรียนรู้เกี่ยวกับคุณตามภาษาของเบราว์เซอร์ที่คุณตั้งค่าไว้</translation>
 <translation id="184568144098869637">ป้องกันเบราว์เซอร์จากการจำอุปกรณ์ของคุณ</translation>
 <translation id="7445306466605902444">บล็อก Fingerprinting แล้ว (เข้มงวด อาจทำหน้าเว็บเสียหาย)</translation>
 <translation id="5582686930349810484">บล็อก Fingerprinting แล้ว (ธรรมดา)</translation>
@@ -405,7 +390,6 @@
 <translation id="3980704343258720102">ล้างข้อมูลการท่องเว็บทั้งหมด</translation>
 <translation id="8089997572759938512">รีเซ็ตรายงานความเป็นส่วนตัวของคุณเป็นศูนย์</translation>
 <translation id="2718046830255553131">ล้างข้อมูลรายงานความเป็นส่วนตัวแล้ว</translation>
-<translation id="7559243474426790340">รีเฟรชสถานะ</translation>
 <translation id="8376263745431603066">เปิดใช้งาน "โหมดการคืน" (ทดลอง)</translation>
 <translation id="1383876407941801731">ค้นหา</translation>
 <translation id="8446884382197647889">เรียนรู้เพิ่มเติม</translation>
@@ -468,9 +452,6 @@
 <translation id="2434574859640694129">หลังจากที่คุณได้รับเงินค่าโฆษณาก้อนแรกแล้ว คุณสามารถกลับมาให้ทิปครีเอเตอร์คนนี้ได้!</translation>
 <translation id="207242986925259074">การแนะนำสั้นๆ สำหรับผู้เริ่มต้น</translation>
 <translation id="8342862030112839977">การจ่าย Reward ครั้งที่ 1 จะเข้าบัญชีภายใน:</translation>
-<translation id="3769645103175790584">รับโทเค็นเพื่อนำไปให้รางวัลแก่ผู้สร้างสำหรับเนื้อหาดีๆ ในระหว่างที่คุณเรียกดูเนื้อหา <ph name="QUICK_TOUR"/></translation>
-<translation id="6912901278692845878">การแนะนำสั้นๆ</translation>
-<translation id="1080013038789678738">ฉันขอร่วมด้วย</translation>
 <translation id="8037420924417098685">หากต้องการเริ่มการโทรฟรี ให้เปิดการทำงานของ Brave รีวอร์ด</translation>
 <translation id="8961724619078500274">ด้วย Brave รีวอร์ด คุณจะสามารถรับโทเค็นจากการดูโฆษณาแบบส่วนตัว (ข้อมูลของคุณจะปลอดภัย) เปลี่ยนโทเค็นเหล่านั้นเป็นเงินสด บัตรของขวัญ… หรือแม้แต่เป็นทิปให้แก่เว็บไซต์ที่คุณชื่นชอบ โดยไม่มีการติดตาม และไม่ทำให้การทำงานช้าลง</translation>
 <translation id="7307847920988946894">เปิดใช้งาน Rewards</translation>
@@ -514,11 +495,6 @@
 <translation id="1822560017823072927">อินเตอร์เฟซสาธารณะและส่วนตัวเริ่มต้น</translation>
 <translation id="5825943197137337319">เฉพาะหน้าอินเตอร์เฟซสาธารณะค่าเดิมเท่านั้น</translation>
 <translation id="1689062823386843231">ปิดการใช้งาน UDP ที่ไม่ใช่พร็อกซี่</translation>
-<translation id="5587305863196367357">การยืนยันกระเป๋าเงินจะทำให้คุณจัดการเงินของคุณได้อย่างง่ายดายในส่วนของการเติมเงินและการถอนเงิน</translation>
-<translation id="5760671211380791582">คุณมี BAT ไม่เพียงพอ</translation>
-<translation id="442469478596827903">คุณต้องมีอย่างน้อย 2 BAT เพื่อสร้างกระเป๋าเงิน Uphold ที่ได้รับการยืนยันแล้ว โปรดลองใหม่อีกครั้งในภายหลัง</translation>
-<translation id="4389085954549744469">หากคุณมีบัญชี Uphold ที่ได้รับการยืนยันแล้ว  <ph name="CONTINUE_TO_LOGIN"/></translation>
-<translation id="6146966915297143881">ดำเนินการเข้าสู่ระบบ</translation>
 <translation id="1483493594462132177">ส่ง</translation>
 <translation id="538450413584738399">สวอป</translation>
 <translation id="1420318137760245955">ยินดีต้อนรับสู่ Brave วอลเล็ตใหม่</translation>
@@ -793,11 +769,13 @@
 <translation id="3494964159182650590">รางวัลทั้งหมด</translation>
 <translation id="590733288489975971">Rewards จาก Ads</translation>
 <translation id="207268487070188114">ทิปครั้งเดียว</translation>
-<translation id="8494748383523030337">ยอดของคุณ</translation>
+<translation id="7577100371127227294">การให้ทิปรายเดือน</translation>
 <translation id="7091980679045978090">รายได้โดยประมาณ</translation>
 <translation id="1346059596910821859">ทิป</translation>
 <translation id="1549705559752367917">ส่งทิป</translation>
+<translation id="7335371657242627509">รวมไว้ในการบริจาคแบบอัตโนมัติ</translation>
 <translation id="6727102863431372879">ตั้งค่า</translation>
+<translation id="3074127054582480056">โปรดระวัง</translation>
 <translation id="6413162919383874653">การให้ทิปรายเดือน</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
@@ -904,4 +882,39 @@
 <translation id="9023148942866814328">แสดงแอประบบ</translation>
 <translation id="5472400694702418949">เพิ่มแอปที่จะแยกออกจากการรับส่งข้อมูลผ่าน VPN</translation>
 <translation id="7002577172732106572">แยกอุโมงค์ VPN</translation>
+<translation id="2832270987629018596">ที่อยู่ SOL ไม่ถูกต้อง</translation>
+<translation id="8181161042860463420">ยังไม่มีบัญชีโทเค็นที่เกี่ยวข้อง SOL จำนวนเล็กน้อยจะถูกใช้เพื่อสร้างและจัดหาทุน <ph name="CLICK_START"/>เรียนรู้เพิ่มเติม<ph name="CLICK_END"/></translation>
+<translation id="168154537623654021">กำลังอัปเดตโปรไฟล์ VPN ...</translation>
+<translation id="4258022280942725182">Brave Rewards ของคุณ</translation>
+<translation id="3826081199286264109">USD</translation>
+<translation id="880893465294676334">ครีเอเตอร์ที่ได้รับการรับรองจาก Brave รายนี้ยังไม่ได้กำหนดค่าบัญชีของตนเพื่อรับเงินสนับสนุนจากผู้ใช้ Brave
+        ทิปที่คุณส่งให้จะยังคงอยู่ในกระเป๋าเงินของคุณจนกว่าขั้นตอนนี้จะเสร็จสมบูรณ์</translation>
+<translation id="8918760045046434238">ส่งทิป...</translation>
+<translation id="1978261665418056203">ยังไม่มีกิจกรรมใน
+เดือนนี้...</translation>
+<translation id="9182287025588539628">ทิปครั้งเดียว</translation>
+<translation id="4914597931214386232">โทเค็นเงินบริจาคที่เบิกแล้ว</translation>
+<translation id="298067735430872465">ได้รายได้จากโฆษณา</translation>
+<translation id="2730771409541953249">สรุป REWARDS</translation>
+<translation id="5463954686005964104">เคล็ดลับประจำเดือนในเว็บไซต์นี้</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">สำรองข้อมูล Brave Rewards</translation>
+<translation id="238922425564381955">โปรดสำรองข้อมูล Brave Rewards ของคุณ</translation>
+<translation id="3692362746128814480">คุณได้กำหนด <ph name="BAT_VALUE"/> BAT ให้กับผู้สร้างที่ยังไม่ได้
+ลงทะเบียนเพื่อรับการสนับสนุน เบราว์เซอร์ของคุณจะพยายามที่จะส่งการสนับสนุนให้ต่อไป
+จนกว่าผู้สร้างจะยืนยันตัวตน หรือจนเมื่อผ่านไปครบ 90 วัน</translation>
+<translation id="8782039523249932839">คำสั่งนี้จะลบ Brave วอลเล็ทของคุณและรีเซ็ตข้อมูล Brave Rewards ของคุณทั้งหมด</translation>
+<translation id="7924320838799747606">ยอดคงเหลือของคุณ</translation>
+<translation id="8030169304546394654">ไม่ได้เชื่อมต่อ</translation>
+<translation id="543510923939676996">ยืนยันวอลเล็ตแล้ว</translation>
+<translation id="4488355059795908907">Brave Verified Creator นี้ยังไม่ได้ตั้งค่าบัญชีเพื่อรับเงินช่วยเหลือจากผู้ใช้งาน Brave ทิปใด ๆ ที่คุณส่งจะยังอยู่ในกระเป๋าเงินของคุณจนกว่ากระบวนการนี้จะทำสำเร็จ</translation>
+<translation id="7559243474426790340">รีเฟรชสถานะ</translation>
+<translation id="3769645103175790584">รับโทเค็นเพื่อนำไปให้รางวัลแก่ผู้สร้างสำหรับเนื้อหาดีๆ ในระหว่างที่คุณเรียกดูเนื้อหา <ph name="QUICK_TOUR"/></translation>
+<translation id="6912901278692845878">การแนะนำสั้นๆ</translation>
+<translation id="1080013038789678738">ฉันขอร่วมด้วย</translation>
+<translation id="5587305863196367357">การยืนยันกระเป๋าเงินจะทำให้คุณจัดการเงินของคุณได้อย่างง่ายดายในส่วนของการเติมเงินและการถอนเงิน</translation>
+<translation id="5760671211380791582">คุณมี BAT ไม่เพียงพอ</translation>
+<translation id="442469478596827903">คุณต้องมีอย่างน้อย 2 BAT เพื่อสร้างกระเป๋าเงิน Uphold ที่ได้รับการยืนยันแล้ว โปรดลองใหม่อีกครั้งในภายหลัง</translation>
+<translation id="4389085954549744469">หากคุณมีบัญชี Uphold ที่ได้รับการยืนยันแล้ว  <ph name="CONTINUE_TO_LOGIN"/></translation>
+<translation id="6146966915297143881">ดำเนินการเข้าสู่ระบบ</translation>
 </translationbundle>

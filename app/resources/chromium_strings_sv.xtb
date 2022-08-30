@@ -13,14 +13,15 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="8541922081612557424">Om Brave</translation>
 <translation id="1203500561924088507">Tack för att du installerat programmet. Du måste starta om webbläsaren innan du använder <ph name="BUNDLE_NAME"/>.</translation>
 <translation id="4798342026247191171">Konfigurera din nya profil i Brave</translation>
+<translation id="6361779936989026201">Brave Assistent i Brave</translation>
 <translation id="113959764510199339">Brave försöker visa lösenord.</translation>
 <translation id="8132634101975074716">Du är inloggad i Brave.</translation>
 <translation id="5147525139567260139">Dela en flik i Brave</translation>
 <translation id="1530633922026945685">Du behöver ge Brave behörighet att använda kameran om du vill skapa en 3D-karta över dina omgivningar</translation>
-<translation id="473077451702478797">Den här filen blockerades av Brave eftersom den är för stor för en säkerhetskontroll. Försök igen med filer som är upp till 50 MB stora</translation>
 <translation id="4449148723378534338">Granska viktiga integritets- och säkerhetskontroller i Brave</translation>
 <translation id="1640672724030957280">Hämtar ...</translation>
 <translation id="5616153642055197778">Det finns en ny, ännu säkrare version av Brave.</translation>
+<translation id="5846727201643228411">Du kan se och ta bort intressanta ämnen som används på webbplatser för att visa annonser för dig. Uppskattningen av vad du är intresserad av görs utifrån den senaste webbhistoriken i Brave.</translation>
 <translation id="6797402139308059782">Låt Brave köras i bakgrunden</translation>
 <translation id="5875673934455379806">Installera om Brave</translation>
 <translation id="6888366668010117849">Webbplatser kan lagra information om dina intressen med Brave. Om du till exempel besöker en webbplats för att köpa skor till ett maraton kanske webbplatsen anger att du är intresserad av att springa maraton. Om du sedan besöker en annan webbplats för att registrera dig för ett lopp kan webbplatsen visa en annons för löparskor utifrån dina intressen.</translation>
@@ -34,6 +35,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="2018879682492276940">Installationen misslyckades. Försök igen.</translation>
 <translation id="831418749472885028"><ph name="BEGIN_LINK"/>Logga in i Brave<ph name="END_LINK"/> om du vill kontrollera att dina andra lösenord skyddas från dataintrång och andra säkerhetsproblem.</translation>
 <translation id="5499149312981370855">Välj om du vill inkludera Brave-historiken och få en mer anpassad upplevelse i Braves tjänster</translation>
+<translation id="849607431499549468">Information om hur Brave hanterar sina rotcertifikat</translation>
 <translation id="142389341645668510">Anpassa Brave</translation>
 <translation id="2174917724755363426">Installationen är inte klar. Är du säker på att du vill avbryta?</translation>
 <translation id="8745514854244955877">Brave – nätverksinloggning – <ph name="PAGE_TITLE"/></translation>
@@ -94,6 +96,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="5853262807109651878"><ph name="ITEMS_COUNT"/> objekt tas bort från enheten. Logga in i Brave som <ph name="USER_EMAIL"/> om du vill kunna återställa datan senare.</translation>
 <translation id="2024972335338126423">Du kan använda <ph name="SHORTCUT"/> för att byta mellan Brave-profiler</translation>
 <translation id="8703492925273919597">Stäng alla Brave-fönster och försök igen.</translation>
+<translation id="5350485513372498152">Brave Assistent i Brave kan slutföra åtgärder åt dig på webbplatser</translation>
 <translation id="4061445349373849749">För att skydda din integritet raderar vi automatiskt intressen som är äldre än fyra veckor. Medan du surfar kan ett intresse dyka upp på listan igen. Du kan också ta bort intressen som du inte vill att Brave ska inkludera.</translation>
 <translation id="691208314680168371">Webbhistoriken, där webbplatser som du besökt i Brave på den här enheten registreras.</translation>
 <translation id="1384923383737428730">Det finns skadlig programvara på datorn. Den skadliga programvaran kan tas bort, inställningarna återställas och tillägg inaktiveras så att webbläsaren fungerar som den ska igen.</translation>
@@ -260,7 +263,6 @@ Vissa funktioner är kanske inte tillgängliga. Ange en annan profilkatalog elle
 <translation id="5101812148953915496">Webbplatser du besöker kommer ihåg dina uppgifter tills du stänger Brave</translation>
 <translation id="5516268345616100622">Aktivitetshanteraren – Brave</translation>
 <translation id="713191641919118540">Braves uppskattning av dina intressen</translation>
-<translation id="2777705643687998385">Den här filen blockerades av Brave eftersom den är krypterad. Be ägaren att dekryptera den</translation>
 <translation id="9068395155143628872">Genom annonsmätning kan webbplatser du besöker begära information från Brave som hjälper dem att mäta annonsernas resultat. Med annonsmätning begränsas spårningen från webbplats till webbplats genom att så lite information som möjligt överförs mellan webbplatserna.</translation>
 <translation id="1864557848095568223">Brave uppdateras</translation>
 <translation id="3403365884036456766">Inställningsfilen är skadad eller ogiltig.
@@ -350,6 +352,7 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="7902365066753170041">Starta om för att uppdatera &amp;Brave</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Brave kanske inte fungerar ordentligt eftersom den inte längre stöds på Windows XP och Windows Vista</translation>
+<translation id="8180288330711585962">Certifikat som hanteras av Brave</translation>
 <translation id="1611678871603620428">Du behöver macOS 10.13 eller senare för att få kommande uppdateringar av Brave. På den här datorn används OS X 10.11.</translation>
 <translation id="4484434718272972655">Vem ska använda Brave?</translation>
 <translation id="7173394303099002355">Få det bästa skyddet i Brave</translation>

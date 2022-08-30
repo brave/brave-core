@@ -82,11 +82,14 @@
 <translation id="7207456302801184289">Willkommen bei Brave</translation>
 <translation id="4117451092682672487">Privatsphäre. Ganz einfach gemacht.</translation>
 <translation id="7909375417585209817">Mit Brave als Standard öffnet sich jeder Link, auf den Sie tippen, mit Braves Datenschutzbestimmungen.</translation>
+<translation id="7370959926683925817">Werbung blockieren. Daten speichern. Jeden einzelnen Tag.</translation>
+<translation id="7281027579943912834">Mit Brave als Standard erhält jeder Link, den Sie antippen, den Werbeblockerschutz von Brave. Jede Seite, jedes Video und jeder Stream.</translation>
 <translation id="5148943178722443958">Brave mit Ihrer Hilfe verbessern.</translation>
 <translation id="6188781052835527980">Senden Sie anonyme Diagnoseberichte, wenn ein Absturz auftritt oder eine Website einfriert.</translation>
 <translation id="1929905278861178845">Teilen Sie vollständig private und anonyme Produkteinblicke darüber, welche Funktionen von Brave-Benutzern verwendet werden.</translation>
 <translation id="2877653791257935258">Geben Sie einen Namen einer Website oder eine URL ein.</translation>
 <translation id="5329830149661250028">Entdecken Sie den Unterschied mit Brave: Keine Werbung. Keine Tracker. Viel schnelleres Laden von Websites.</translation>
+<translation id="3941792073703079607">Sehen Sie sich den Brave-Unterschied an: Anzeigen blockieren. Daten speichern. Schneller streamen.</translation>
 <translation id="3545804467215833536">Tippen, um Brave Shields anzuzeigen</translation>
 <translation id="1724327820822194498">Sehen Sie all die fiesen Dinge, die Brave auf jeder Website mit Shields blockiert hat.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> und <ph name="TRACKER"/> andere Tracker blockiert</translation>
@@ -114,7 +117,6 @@
 <translation id="19715420010996093">Wählen Sie Brave-Browser und tippen Sie auf „Immer“</translation>
 <translation id="3546439402724649282">Brave ist bereits aus Ihr Standardbrowser gesetzt.</translation>
 <translation id="8389661903259423907">Sie haben bereits einen Standardbrowser festgelegt. Sie können den Standardbrowser in Ihren App-Einstellungen ändern.</translation>
-<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="8826007068782654809">Vielen Dank</translation>
 <translation id="6665366815203065060">Sie haben gerade Trinkgeld gesendet an:</translation>
 <translation id="5441565662498481293">Sie senden automatisch Trinkgeld an:</translation>
@@ -134,6 +136,10 @@
 <translation id="8481779960444041069">Um Ihre Privatsphäre zu verbessern, legen Sie Brave als Ihren Standardbrowser fest</translation>
 <translation id="1938402585819943124">Wählen Sie auf dem nächsten Bildschirm Brave.</translation>
 <translation id="8926389886865778422">Nicht mehr fragen</translation>
+<translation id="745974920645827035">Unabhängige Suche mit besserer Privatsphäre</translation>
+<translation id="4717018805430015801">Die Brave-Suche verfolgt Ihre Aktivitäten, Anfragen oder Klicks nicht nach.</translation>
+<translation id="5240031343741051161">Probiere Brave Search</translation>
+<translation id="5234764350956374838">Schließen</translation>
 <translation id="6639570430554986719">JANUAR</translation>
 <translation id="1807352595146144483">FEBRUAR</translation>
 <translation id="2021828608097804771">MÄRZ</translation>
@@ -146,30 +152,16 @@
 <translation id="8220228041552340594">OKTOBER</translation>
 <translation id="8280223431922155812">NOVEMBER</translation>
 <translation id="4254029385847607686">DEZEMBER</translation>
-<translation id="4258022280942725182">Ihre Brave Belohnungen</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
 <translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
-<translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">Konto aufladen</translation>
 <translation id="8428213095426709021">Einstellungen</translation>
 <translation id="6020176662032623904">Verifizierter Urheber</translation>
 <translation id="2369994359029526515">Unverifizierter Urheber</translation>
-<translation id="880893465294676334">Dieser verifizierte Content-Ersteller hat sein Konto noch nicht so konfiguriert, dass er Beiträge von Brave-Nutzern erhalten kann.
-        Wenn Sie Trinkgeld geben, bleibt dieses in Ihrer Wallet, bis der Content-Ersteller diesen Vorgang abgeschlossen hat.</translation>
-<translation id="8918760045046434238">Spenden Sie ...</translation>
-<translation id="1978261665418056203">Noch keine Aktivitäten in diesem Monat ...</translation>
-<translation id="9182287025588539628">Einmalige Spenden</translation>
-<translation id="7577100371127227294">Monatliche Spenden</translation>
-<translation id="3074127054582480056">Anteil</translation>
-<translation id="4914597931214386232">Kostenlose Tokens erhalten</translation>
-<translation id="298067735430872465">Einnahmen durch Werbung</translation>
 <translation id="6112368337882254910">Automatische Spenden</translation>
-<translation id="2730771409541953249">REWARDS-ZUSAMMENFASSUNG</translation>
 <translation id="13853865024308201">Öffnen</translation>
-<translation id="7335371657242627509">Automatisch unterstützen</translation>
-<translation id="5463954686005964104">Dieser Seite monatlich ein Trinkgeld spendieren</translation>
-<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="8494748383523030337">Ihr Kontostand</translation>
 <translation id="4781696154289395607">Sie haben <ph name="BAT_VALUE"/> BAT gegeben.</translation>
 <translation id="7997676409547731821">Ihre geplante monatliche Zahlung für Auto-Contribute und monatliche Spenden konnte aufgrund unzureichender Mittel nicht ausgeführt werden. Wir werden es in 30 Tagen erneut versuchen.</translation>
 <translation id="5306913077198665897">Es gab ein Problem bei der Verarbeitung Ihres Trinkgelds, bitte versuchen Sie es erneut.</translation>
@@ -180,13 +172,10 @@
 <translation id="8689997599821157251">Sie haben verdient</translation>
 <translation id="7550470870580166294">Unzureichendes Guthaben</translation>
 <translation id="2775064702681588061">Ihr Brave-Rewards-Konto wartet auf eine Einzahlung.</translation>
-<translation id="2630264552940126640">Brave Belohnungen sichern</translation>
-<translation id="238922425564381955">Bitte sichern Sie Ihre Brave Belohnungen</translation>
 <translation id="2323069945529668668">Hoppla!</translation>
 <translation id="7510166204621526816">Der Brave-Rewards-Server antwortet nicht. Wir werden dieses Problem schnellstmöglich beheben.</translation>
 <translation id="683765328936486920">auf YouTube</translation>
 <translation id="8969049974285901797">auf Twitch</translation>
-<translation id="3692362746128814480">Sie haben Creators, die sich noch nicht für den Erhalt von Beiträgen registriert haben, <ph name="BAT_VALUE"/> BAT zugewiesen.  Ihr Browser wird weiter versuchen, Beiträge weiterzugeben, bis der Creator sich registriert hat oder bis 90 Tage vergangen sind.</translation>
 <translation id="3101693828171454453">nicht genügend <ph name="TOKEN"/></translation>
 <translation id="6940273954212603510">bitte</translation>
 <translation id="1036277985068412734">Konto aufladen</translation>
@@ -242,7 +231,7 @@
 <translation id="4114170343590425996">Beim Zurücksetzen von Brave Rewards ist ein Fehler aufgetreten. Bitte starten Sie Brave neu und versuchen Sie es erneut.</translation>
 <translation id="6393502589311632553">Anzeigen zeigen, wenn Brave nicht verwendet wird</translation>
 <translation id="3349204812119681938">Brave Rewards zurücksetzen</translation>
-<translation id="8782039523249932839">Dadurch wird Ihre Brave-Geldbörse gelöscht und alle Ihre Brave-Rewards-Daten werden zurückgesetzt</translation>
+<translation id="6606319453795180219">Dadurch werden Ihre Brave Rewards gelöscht und alle Ihre Brave Rewards-Daten zurückgesetzt</translation>
 <translation id="6810078320346589989">Erstellen Sie ein Lesezeichen</translation>
 <translation id="3396347744975515056">Brave Sync wurde aufgerüstet und macht eine Einrichtung notwendig</translation>
 <translation id="7473245612074035141">Einrichtung beginnen</translation>
@@ -271,7 +260,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="2975780980638932742">Brave Ads ist da!</translation>
 <translation id="7541582550122501404">Offener Beitrag</translation>
 <translation id="8520059774736886747">Der Inhaltsersteller <ph name="PUBLISHER_NAME"/> wurde kürzlich verifiziert</translation>
-<translation id="7924320838799747606">Ihr Guthaben</translation>
 <translation id="1486343603936278248">Token</translation>
 <translation id="7781069478569868053">Neuer-Tab-Seite</translation>
 <translation id="8522669544471808198">Hintergrundbilder anzeigen</translation>
@@ -282,9 +270,9 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="7136586167396205364">Gesponserte Bilder ausblenden</translation>
 <translation id="2927095357213611519">Sie können Ersteller von Web-Inhalten mit Token unterstützen.\nVerdienen Sie Token, indem Sie sich Werbung ansehen, die Ihre Privatsphäre respektiert.</translation>
 <translation id="213787746370741250">Tabs in Benutzerdefinierte Tabs öffnen</translation>
-<translation id="8030169304546394654">Verbindung getrennt</translation>
+<translation id="2394961582378297792">Abgemeldet</translation>
 <translation id="6181762795539107980">Nicht verifiziert</translation>
-<translation id="543510923939676996">Wallet verifiziert</translation>
+<translation id="4569155249847375786">Verifiziert</translation>
 <translation id="8673913984316081937">Die Verifizierung Ihres Wallets ist optional</translation>
 <translation id="8558636200953226885">Aber wenn Sie sich verifizieren, können Sie …</translation>
 <translation id="8697510149346635496">BAT abheben, die Sie mit dem Ansehen von Werbung verdienen, die Ihre Privatsphäre respektiert.</translation>
@@ -303,11 +291,9 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="6239274080752256452">Geld abheben</translation>
 <translation id="8874184842967597500">Nicht verbunden</translation>
 <translation id="3368922792935385530">Verbunden</translation>
-<translation id="4569155249847375786">Verifiziert</translation>
 <translation id="5358719431303818601">Trennung nicht verifiziert</translation>
 <translation id="4241449868720191203">Trennung verifiziert</translation>
 <translation id="3248185426436836442">Ausstehend</translation>
-<translation id="4488355059795908907">Dieser von Brave verifizierte Ersteller hat sein Konto noch nicht eingerichtet, um Beiträge von Brave-Benutzern zu erhalten. Alles Geld, das sie senden, bleibt in Ihrem Wallet, bis er diesen Prozess abschließt.</translation>
 <translation id="2495032782748793764">Brave Default</translation>
 <translation id="9132378787893584761">Teilen Sie Brave mit Ihren Freunden!</translation>
 <translation id="717952606991220586">Hoppla, etwas stimmt nicht. Bitte versuchen Sie es später erneut.</translation>
@@ -338,6 +324,8 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="5657156137487675418">Alle Cookies erlauben</translation>
 <translation id="3895527457258986253">Fingerprinting blockieren</translation>
 <translation id="7854108565842971747">Dies sind die Standardeinstellungen für Shields für neue Seiten. Wenn Sie die folgenden Einstellungen ändern, hat dies keine Auswirkung auf die Einstellungen, die Sie für bestimmte Websites gemacht haben</translation>
+<translation id="218587021686734263">Fingerabdrücke über Spracheinstellungen verhindern</translation>
+<translation id="1706099589708266367">Verringert, wie viel Websites basierend auf den Spracheinstellungen Ihres Browsers über Sie erfahren können.</translation>
 <translation id="184568144098869637">Hindert den Browser, Ihr Gerät zu erkennen</translation>
 <translation id="7445306466605902444">Fingerabdruck blockiert (streng, könnte Websites kaputtmachen)</translation>
 <translation id="5582686930349810484">Fingerabdruck blockiert (Standard)</translation>
@@ -402,7 +390,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="3980704343258720102">Löscht alle Browserdaten</translation>
 <translation id="8089997572759938512">Setzt Ihre Privatsphäreberichte auf Null zurück</translation>
 <translation id="2718046830255553131">Die Privatsphäreberichtsdaten wurden gelöscht.</translation>
-<translation id="7559243474426790340">Status aktualisieren</translation>
 <translation id="8376263745431603066">"Nachtmodus" aktivieren (experimentell)</translation>
 <translation id="1383876407941801731">Suchen</translation>
 <translation id="8446884382197647889">Mehr...</translation>
@@ -465,9 +452,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="2434574859640694129">Nachdem Sie Ihre Werbeauszahlung erhalten haben, können Sie zurückkommen und an diesen Creator spenden!</translation>
 <translation id="207242986925259074">Kurze Tour zur Auffrischung unternehmen</translation>
 <translation id="8342862030112839977">Die Auszahlung Ihrer ersten Belohnung erfolgt vor dem oder am:</translation>
-<translation id="3769645103175790584">Verdienen Sie beim Browsen Token und belohnen Sie Ersteller für tolle Inhalte. <ph name="QUICK_TOUR"/>.</translation>
-<translation id="6912901278692845878">Schnelleinführung</translation>
-<translation id="1080013038789678738">Ich bin dabei!</translation>
 <translation id="8037420924417098685">Um einen kostenlosen Anruf zu starten, aktivieren Sie Brave-Prämien</translation>
 <translation id="8961724619078500274">Mit Brave-Prämien verdienen Sie Token für das Ansehen privater Anzeigen (Ihre Daten sind sicher). Verwandeln Sie diese Token in Bargeld, Geschenkkarten … oder geben Sie sogar den Websites, die Sie lieben, Trinkgeld. Kein Tracking. Keine Verlangsamungen.</translation>
 <translation id="7307847920988946894">Rewards aktivieren</translation>
@@ -511,11 +495,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="1822560017823072927">Voreingestellte öffentliche und private Benutzerschnittstellen</translation>
 <translation id="5825943197137337319">Nur die voreingestellte öffentliche Benutzerschnittstelle</translation>
 <translation id="1689062823386843231">Nicht-proxisiertes UDP deaktivieren</translation>
-<translation id="5587305863196367357">Wenn Sie ihre Wallet verifizieren, können Sie Ihr Guthaben ganz leicht verwalten, einzahlen und abheben.</translation>
-<translation id="5760671211380791582">Sie haben nicht genügend BAT.</translation>
-<translation id="442469478596827903">Sie brauchen mindestens 2 BAT für eine verifizierte Uphold-Wallet. Bitte versuchen Sie es später erneut.</translation>
-<translation id="4389085954549744469">Wenn Sie bereits ein verifiziertes Uphold-Konto haben, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
-<translation id="6146966915297143881">melden Sie sich an</translation>
 <translation id="1483493594462132177">Senden</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="1420318137760245955">Willkommen zur neuen Brave Wallet</translation>
@@ -790,11 +769,13 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="3494964159182650590">Belohnungs-Übersicht</translation>
 <translation id="590733288489975971">Belohnungen aus Ads</translation>
 <translation id="207268487070188114">Einmaliges Trinkgeld</translation>
-<translation id="8494748383523030337">Ihr Kontostand</translation>
+<translation id="7577100371127227294">Monatliche Trinkgelder</translation>
 <translation id="7091980679045978090">Geschätzter Verdienst</translation>
 <translation id="1346059596910821859">Spenden</translation>
 <translation id="1549705559752367917">Trinkgeld senden</translation>
+<translation id="7335371657242627509">Zu Auto-Beitrag hinzufügen</translation>
 <translation id="6727102863431372879">Festlegen</translation>
+<translation id="3074127054582480056">Achtung</translation>
 <translation id="6413162919383874653">Monatliches Trinkgeld</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
@@ -901,4 +882,36 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="9023148942866814328">Systemanwendungen anzeigen</translation>
 <translation id="5472400694702418949">Anwendungen hinzufügen, die vom VPN-Verkehr ausgeschlossen werden sollen.</translation>
 <translation id="7002577172732106572">Split Tunneling</translation>
+<translation id="2832270987629018596">Keine gültige SOL-Adresse</translation>
+<translation id="8181161042860463420">Das zugehörige Token-Konto existiert noch nicht. Eine kleine Menge an SOL wird ausgegeben, um es zu erstellen und zu finanzieren. <ph name="CLICK_START"/>Weitere Informationen<ph name="CLICK_END"/></translation>
+<translation id="168154537623654021">Aktualisieren des VPN-Profils ...</translation>
+<translation id="4258022280942725182">Ihre Brave Belohnungen</translation>
+<translation id="3826081199286264109">USD</translation>
+<translation id="880893465294676334">Dieser verifizierte Content-Ersteller hat sein Konto noch nicht so konfiguriert, dass er Beiträge von Brave-Nutzern erhalten kann.
+        Wenn Sie Trinkgeld geben, bleibt dieses in Ihrer Wallet, bis der Content-Ersteller diesen Vorgang abgeschlossen hat.</translation>
+<translation id="8918760045046434238">Spenden Sie ...</translation>
+<translation id="1978261665418056203">Noch keine Aktivitäten in diesem Monat ...</translation>
+<translation id="9182287025588539628">Einmalige Spenden</translation>
+<translation id="4914597931214386232">Kostenlose Tokens erhalten</translation>
+<translation id="298067735430872465">Einnahmen durch Werbung</translation>
+<translation id="2730771409541953249">REWARDS-ZUSAMMENFASSUNG</translation>
+<translation id="5463954686005964104">Dieser Seite monatlich ein Trinkgeld spendieren</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="2630264552940126640">Brave Belohnungen sichern</translation>
+<translation id="238922425564381955">Bitte sichern Sie Ihre Brave Belohnungen</translation>
+<translation id="3692362746128814480">Sie haben Creators, die sich noch nicht für den Erhalt von Beiträgen registriert haben, <ph name="BAT_VALUE"/> BAT zugewiesen.  Ihr Browser wird weiter versuchen, Beiträge weiterzugeben, bis der Creator sich registriert hat oder bis 90 Tage vergangen sind.</translation>
+<translation id="8782039523249932839">Dadurch wird Ihre Brave-Geldbörse gelöscht und alle Ihre Brave-Rewards-Daten werden zurückgesetzt</translation>
+<translation id="7924320838799747606">Ihr Guthaben</translation>
+<translation id="8030169304546394654">Verbindung getrennt</translation>
+<translation id="543510923939676996">Wallet verifiziert</translation>
+<translation id="4488355059795908907">Dieser von Brave verifizierte Ersteller hat sein Konto noch nicht eingerichtet, um Beiträge von Brave-Benutzern zu erhalten. Alles Geld, das sie senden, bleibt in Ihrem Wallet, bis er diesen Prozess abschließt.</translation>
+<translation id="7559243474426790340">Status aktualisieren</translation>
+<translation id="3769645103175790584">Verdienen Sie beim Browsen Token und belohnen Sie Ersteller für tolle Inhalte. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">Schnelleinführung</translation>
+<translation id="1080013038789678738">Ich bin dabei!</translation>
+<translation id="5587305863196367357">Wenn Sie ihre Wallet verifizieren, können Sie Ihr Guthaben ganz leicht verwalten, einzahlen und abheben.</translation>
+<translation id="5760671211380791582">Sie haben nicht genügend BAT.</translation>
+<translation id="442469478596827903">Sie brauchen mindestens 2 BAT für eine verifizierte Uphold-Wallet. Bitte versuchen Sie es später erneut.</translation>
+<translation id="4389085954549744469">Wenn Sie bereits ein verifiziertes Uphold-Konto haben, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">melden Sie sich an</translation>
 </translationbundle>

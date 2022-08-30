@@ -3,6 +3,7 @@
 <translationbundle lang="ko">
 <translation id="1800311840305731850">IPFS 페이지를 로드할 수 없습니다.</translation>
 <translation id="5712742401570874902">비공개 창에서는 IPFS 페이지를 표시할 수 없습니다.</translation>
+<translation id="5749639013106315553">IPFS가 비활성화되어 있습니다. 이 사이트를 열려면 설정에서 IPFS 해독 방법을 선택하세요.</translation>
 <translation id="5288293905681750318">트래커 &amp; 광고 차단됨</translation>
 <translation id="2313532038420432247">HTTPS 업그레이드</translation>
 <translation id="788493840831967104">시간 절약됨</translation>
@@ -60,6 +61,7 @@
 <translation id="6699628638740071563">Google에 이별을 고하세요.</translation>
 <translation id="2045455461902775806">Brave 검색은 편향된 결과를 내놓거나 검열하지 않으며, 사용자의 신원이나 검색어, 클릭 활동을 추적하지 않습니다.</translation>
 <translation id="6811221529729056895">지금 Brave 검색 사용해보기</translation>
+<translation id="5525668735313040116">프라이버시를 보호하며 웹 검색</translation>
 <translation id="3446024864193919737">Brave (브레이브) 리워드 표시</translation>
 <translation id="6274899614137380422">Binance 표시</translation>
 <translation id="5585019845078534178">카드</translation>
@@ -70,12 +72,19 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="3159285901314605198">배경 이미지</translation>
 <translation id="385051799172605136">뒤로</translation>
+<translation id="4225429340218993596">단색</translation>
 <translation id="9024104284526126630">Brave에서 프라이빗 통화를 걸 수 있습니다.</translation>
 <translation id="4903286433687221248">Brave Talk로 친구 및 동료와 무제한 통화를 즐기세요.</translation>
 <translation id="7115051913071512405">시도해 보기</translation>
 <translation id="7415602225677446066">나만을 위한 완벽한 비공개 피드의 오늘의 주요 스토리입니다.</translation>
 <translation id="6903061332999399632">Brave News는 광고의 도움으로 제공되는 서비스로, 기기에 맞춘 비공개 익명 광고를 표시합니다. <ph name="LINK_START"/>개인정보처리방침<ph name="LINK_END"/>에 따라 모든 개인정보는 비공개로 유지됩니다.</translation>
 <translation id="7823038307453615214">Brave News 표시</translation>
+<translation id="1447534717041828517">툴바에 Brave News 버튼 표시</translation>
+<translation id="370665806235115550">로딩중...</translation>
+<translation id="4634933166298842522">구독 관리</translation>
+<translation id="3632460243282703117">구독</translation>
+<translation id="4720556299488643018">구독 취소</translation>
+<translation id="5227905322248018544">숨기고 다시 표시하지 않음</translation>
 <translation id="780301667611848630">아니요, 괜찮습니다.</translation>
 <translation id="9164544612367905452">가져 오는 중…</translation>
 <translation id="1276592121036104130">새 콘텐츠 로드하기</translation>
@@ -101,6 +110,7 @@
 <translation id="8488282162676695335">Brave 월렛</translation>
 <translation id="8820817407110198400">북마크</translation>
 <translation id="1644574205037202324">방문 기록</translation>
+<translation id="2702801445560668637">읽기 목록</translation>
 <translation id="6165508094623778733">더 알아보기</translation>
 <translation id="8730621377337864115">완료</translation>
 <translation id="730042046912793465">이것은</translation>
@@ -127,9 +137,11 @@
 <translation id="4712050378540986986">Tor 상태</translation>
 <translation id="1939334281379458295">Tor 연결 성공</translation>
 <translation id="8030169304546394654">연결 해제됨</translation>
+<translation id="2795840524629682765">Tor 연결 실패</translation>
 <translation id="1149108864689950951">Tor 연결 중... [[percentage]]%</translation>
 <translation id="3651192084771403430">연결에 문제가 있습니까? 설정에서 Tor를 적용한 비공개 창을 <ph name="BEGIN_LINK"/>끈<ph name="END_LINK"/> 다음 다시 켜보세요.</translation>
-<translation id="9190084253595768053">연결에 문제가 있습니까? <ph name="BEGIN_LINK"/>Brave 설정<ph name="END_LINK"/>을 열고 Tor를 적용한 비공개 창을 비활성화한 다음 다시 활성화해보세요. 그래도 문제가 있습니까?</translation>
+<translation id="8834376622642889380"><ph name="BEGIN_LINK"/>Brave 설정<ph name="END_LINK"/>을 열고 Tor를 적용한 비공개 창을 비활성화한 다음, 다시 활성화해보세요.</translation>
+<translation id="1576202729986800142"><ph name="BEGIN_BOLD"/>그래도 문제가 있습니까?<ph name="END_BOLD"/> <ph name="BEGIN_BRIDGES_LINK"/>브리지<ph name="END_BRIDGES_LINK"/>를 사용해보거나 <ph name="BEGIN_SUPPORT_LINK"/>지원팀에 문의<ph name="END_SUPPORT_LINK"/>하세요.</translation>
 <translation id="8388043004918289671">그러면 지원팀에 문의하세요.</translation>
 <translation id="4272382368346338917">추가 필터</translation>
 <translation id="8949292968394988358">경고: 너무 많은 필터를 켜면 성능이 저하됩니다</translation>
@@ -146,7 +158,6 @@
 <translation id="9204006549413740506">최근 업데이트</translation>
 <translation id="6745592621698551453">지금 업데이트</translation>
 <translation id="5334844597069022743">소스 보기</translation>
-<translation id="4720556299488643018">구독 취소</translation>
 <translation id="1209739344687072997">작동이 멈춘 사이트 보고</translation>
 <translation id="8510478288840333677">Brave (브레이브) 개발자에게 이 사이트가 Shields (실드)와 함께 제대로 작동하지 않는다는 것을 알리십시오.</translation>
 <translation id="4105411033440701818">참고: "제출"을 클릭하면 사이트 주소, 사용 중인 Brave 버전 번호, 귀하의 IP 주소가 Brave 개발자에게 공유됩니다. (IP 주소가 저장되지는 않음.)</translation>
@@ -257,6 +268,8 @@
 <translation id="5028274575541726856">오류: Brave Rewards 프로필이 플래깅됨</translation>
 <translation id="2607420597216860026"><ph name="PROVIDER"/>에서 ID 확인을 완료하고 다시 시도하세요.</translation>
 <translation id="3183954159462541696">오류: 로그인하려면 계정을 검증해야 함</translation>
+<translation id="6650468331440842419">회원님의 Brave Rewards 프로필이 이미 다른 지역의 보호관리 계정에 연결되어 있는 것 같습니다. 전에 사용했던 보호관리 계정을 다시 연결해보거나 이전 계정과 동일한 지역으로 보호관리 계정을 업데이트하세요.</translation>
+<translation id="5955021799827127089">오류: 계정 지역 다름</translation>
 <translation id="5260522591743022748">다른 <ph name="PROVIDER"/> 계정에서 이미 확인을 완료한 Brave Rewards인 것 같습니다. 이전 계정으로 확인을 다시 시도해보세요.</translation>
 <translation id="5111921830714291902">오류: 다른 계정</translation>
 <translation id="6933939911547091461">현재 Brave Rewards 검증이 지원되지 않는 지역에 거주하시기 때문에 Brave Rewards를 검증받으실 수 없습니다.</translation>
@@ -423,7 +436,6 @@
 <translation id="7656781188259414093">타킷.</translation>
 <translation id="13853865024308201">클레임</translation>
 <translation id="1767561995429774671">기부</translation>
-<translation id="6896758677409633944">복사</translation>
 <translation id="4932733599132424254">날짜</translation>
 <translation id="3552003743293281224">예치금</translation>
 <translation id="3866249974567520381">설명</translation>
@@ -470,8 +482,6 @@
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">제미니</translation>
 <translation id="6569877533335686968">유지</translation>
-<translation id="6977372887576114613">입금된 BAT</translation>
-<translation id="194625454574835815">복구 키</translation>
 <translation id="6354568176665589146">반복하기</translation>
 <translation id="2799223571221894425">다시 시작</translation>
 <translation id="1110535155349301542">제거</translation>
@@ -482,10 +492,6 @@
 <translation id="1797334173232638045">고정된 사이트가 다음으로 이동됨</translation>
 <translation id="542042553430131913">Brave Rewards가 검증되지 않으면 BAT 잔액이 디바이스상의 로컬 파일에 저장됩니다.</translation>
 <translation id="2142973554991645476">브라우저를 다시 클린 설치하거나 디바이스를 초기화해야 하는 경우에도 BAT를 안전하게 보관하고 BAT 추가 또는 인출 등 혜택까지 받으려면 <ph name="LINK_BEGIN"/>검증<ph name="LINK_END"/>하는 것이 좋습니다.</translation>
-<translation id="5717619667204259673">이 복구 키를 안전하게 보관하세요.</translation>
-<translation id="7018390569051511373">브라우저나 컴퓨터에 문제가 생겼을 때, 이 키를 사용하면 언제든 Rewards 프로필을 복구할 수 있습니다. 이 키가 다른 사람 손에 들어가면 Rewards 프로필을 훔칠 수 있으니 잘 보호하세요. 종이에 적어 중요한 정보를 따로 보관해두는 곳에 넣어두는 것이 가장 안전합니다.</translation>
-<translation id="8979401359137062629">참고:</translation>
-<translation id="7934806082615382155">Brave에서 일부 자금을 받을 수 있으며, 필요하지 않기 때문에 백업에 포함되지 않습니다. 이 브라우저에서만 사용이 가능합니다.</translation>
 <translation id="7354412786785889047">팁을 보내서 이 콘텐츠 크리에이터를 지원할 수 있습니다. 이것은 훌륭한 콘텐츠를 만드는 분들에게 감사를 전하는 방법입니다. 인증된 크리에이터는 각 달 첫 주에 자신의 팁에 대한 돈을 받습니다.</translation>
 <translation id="3074127054582480056">주의</translation>
 <translation id="3034163433136515805">QR 코드 보기</translation>
@@ -498,7 +504,6 @@
 <translation id="3548849774726860833">Brave Rewards를 초기화하면 귀하의 리워드 데이터가 영구적으로 소실됩니다.</translation>
 <translation id="4914597931214386232">토큰 승인 요청됨</translation>
 <translation id="3494964159182650590">보상 요약</translation>
-<translation id="1738658589626889850">파일로 저장하기</translation>
 <translation id="2913994227901456490">[[numItems]]개 항목 모두 보기</translation>
 <translation id="1549705559752367917">팁 보내기</translation>
 <translation id="3536298624341433814">내 팁 보내기</translation>
@@ -576,6 +581,7 @@
 <translation id="3909193058140362331">전환을 처리할 수 없습니다. 다시 시도하세요.</translation>
 <translation id="5721542149042740780">입력하신 금액은 현재 보유하신 유효 금액을 초과합니다.</translation>
 <translation id="7144878232160441200">재시도</translation>
+<translation id="6896758677409633944">복사하기</translation>
 <translation id="7431764818502638140">사용할 수 없는 정보</translation>
 <translation id="6409345078064530735">입금 주소</translation>
 <translation id="7153116947319792513">입금 메모</translation>
@@ -632,7 +638,7 @@
 <translation id="1164622162816276433">24시간 거래량</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Brave에서 Unstoppable Domains 지원을 활성화할까요?</translation>
-<translation id="2173151783558384314">Brave는 Infura를 사용하여 이더리움 JSON-RPC 콜을 Unstoppable Domains에서의 스마트 컨트랙트로 발행하고 .crypto (및 .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin도 해당) 도메인 이름 조회 요청을 해석합니다. 이 기능을 활성화하면 귀하가 방문하려는 특정 도메인은 Infura가 볼 수 있지만 다른 도메인은 볼 수 없습니다. Infura <ph name="BEGIN_INFURA_TOU_LINK"/>이용 약관<ph name="END_INFURA_TOU_LINK"/> 및 <ph name="BEGIN_INFURA_PRIVACY_LINK"/>개인정보처리방침<ph name="END_INFURA_PRIVACY_LINK"/>을 참조하세요.</translation>
+<translation id="6783637972818687030">Brave는 Infura를 사용하여 이더리움 JSON-RPC 콜을 Unstoppable Domains에서의 스마트 컨트랙트로 발행하고 .crypto (및 .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin도 해당) 도메인 이름 조회 요청을 해석합니다. 이 기능을 활성화하면 귀하가 방문하려는 특정 도메인은 Infura가 볼 수 있지만 다른 도메인은 볼 수 없습니다. Infura <ph name="BEGIN_INFURA_TOU_LINK"/>이용 약관<ph name="END_INFURA_TOU_LINK"/> 및 <ph name="BEGIN_INFURA_PRIVACY_LINK"/>개인정보처리방침<ph name="END_INFURA_PRIVACY_LINK"/>을 참조하세요.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">Brave에서 Ethereum Name Service(ENS) 지원을 활성화할까요?</translation>
 <translation id="8328137586971750853">Brave는 Infura를 사용하여 이더리움 JSON-RPC 콜을 이더리움 네임 서비스에서의 스마트 컨트랙트로 발행하고 .eth 도메인 이름 조회 요청을 해석합니다. 이 기능을 활성화하면 귀하가 방문하려는 특정 도메인은 Infura가 볼 수 있지만 다른 도메인은 볼 수 없습니다. Infura <ph name="BEGIN_INFURA_TOU_LINK"/>이용 약관<ph name="END_INFURA_TOU_LINK"/> 및 <ph name="BEGIN_INFURA_PRIVACY_LINK"/>개인정보처리방침<ph name="END_INFURA_PRIVACY_LINK"/>을 참조하세요.</translation>
@@ -778,9 +784,6 @@
 <translation id="7550470870580166294">부족한 자금</translation>
 <translation id="2775064702681588061">귀하의 Brave Rewards 계정이 입금을 기다리고 있습니다.</translation>
 <translation id="3358400027937159351"><ph name="AMOUNT"/>를 기부하셨습니다.</translation>
-<translation id="2630264552940126640">Brave Rewards 백업</translation>
-<translation id="238922425564381955">Brave Rewards를 백업하세요.</translation>
-<translation id="1018806299114415224">지금 백업하기</translation>
 <translation id="1619753851206150396">로그아웃 상태</translation>
 <translation id="5142174225142816130">이렇게 하면 귀하의 계정이 안전하게 보호됩니다. 재연결하려면 아래를 클릭하세요.</translation>
 <translation id="2807965672895914288">잔고가 부족하여, 자동 기부를 위해 설정된 정기 월간 결제 및 월간 팁을 완료할 수 없습니다. 30일 후, 저희가 다시 시도하겠습니다.</translation>
@@ -907,6 +910,7 @@
 <translation id="2805756323405976993">앱</translation>
 <translation id="3586775666459823714">NFT</translation>
 <translation id="1987317783729300807">계정</translation>
+<translation id="3567988240819868195">시장</translation>
 <translation id="3188963375823360044">1시간</translation>
 <translation id="8163269366661594721">1일</translation>
 <translation id="7640956400175663828">1주</translation>
@@ -930,15 +934,18 @@
 <translation id="4500473291496079954">만료까지 남은 기간</translation>
 <translation id="2236833281018938257">지갑 주소 또는 URL</translation>
 <translation id="928500657730628112">월렛 주소</translation>
-<translation id="2860280209982026951">Brave는 DEX 애그리게이터로 <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/>를 사용합니다.</translation>
+<translation id="6812967455478797345">Brave는 DEX 애그리게이터로 <ph name="LINK_BEFORE"/><ph name="SWAP_PROVIDER"/><ph name="LINK_AFTER"/>을(를) 사용합니다.</translation>
 <translation id="151946611346774041">0x는 이더리움 주소와 IP 주소를 처리하여 거래를 수행합니다(견적 받기 포함). 0x는 거래 처리 목적으로만 이 데이터를 사용합니다.</translation>
-<translation id="4626407663177532837">견적에는 Brave 수수료 0.875%가 포함됩니다.</translation>
+<translation id="7465227658364622464">Jupiter는 이더리움 주소와 IP 주소를 처리하여 트랜잭션을 수행합니다(견적 받기 포함). Jupiter는 트랜잭션 처리 목적으로만 이 데이터를 사용합니다.</translation>
+<translation id="712738518060477110">견적에 Brave 수수료 <ph name="SWAP_FEE_PERCENTAGE"/> 포함입니다.</translation>
 <translation id="8368540604723748428">소수 자릿수 너무 많음</translation>
 <translation id="6575120282593094155">아직 <ph name="ACCOUNT_TYPE"/> 계정이 없습니다. 새로 만드시겠습니까?</translation>
+<translation id="8712637175834984815">확인</translation>
 <translation id="2704606927547763573">복사됨</translation>
-<translation id="1420318137760245955">새로운 Brave 월렛에 오신 것을 환영합니다</translation>
-<translation id="3671745544278414606">보호관리 계정에 암호화폐 자산 보유. 포트폴리오 실적 추적, Web3 DApps를 이용. DeFi로 거래, 투자, 대출, 대부까지. Brave 프라이버시 브라우저에서 모두 이용합니다. 확장 프로그램도, 다운로드도 필요하지 않습니다.</translation>
-<translation id="6972754398087986839">시작하기</translation>
+<translation id="6042308850641462728">더보기</translation>
+<translation id="768236965975208017">보안. 멀티체인. 손쉬운 사용. 이런 Brave 월렛까지 클릭 몇 번만 남았습니다</translation>
+<translation id="2484275747844666540">새 월렛 만들기</translation>
+<translation id="3662348701117072366">기존 월렛 가져오기</translation>
 <translation id="375882617301124395">암호화폐 월렛 백업</translation>
 <translation id="180032279811483155">다음 단계에서는 <ph name="RECOVERY_PHRASE_LENGTH"/>단어 복구 문구가 표시되며, 이 문구는 주 암호화폐 계정을 복구하는 데 사용됩니다. 적어두고 안전하게 보관하세요. 복구 문구는 비밀번호 복구, 디바이스 분실 또는 도난, 월렛 전환 시 계정에 다시 액세스할 수 있는 유일한 수단입니다.</translation>
 <translation id="5024543173656851695">복구 단어를 잊어버리면 내 암호화폐 계정에 액세스할 수 없음을 이해합니다.</translation>
@@ -951,10 +958,13 @@
 <translation id="2339124864228588937">복구 문구 확인</translation>
 <translation id="3747079125031086337">복구 문구 내의 단어를 올바른 순서대로 선택하세요.</translation>
 <translation id="802060020117206314">복구 문구가 일치하지 않습니다. 다시 시도하세요.</translation>
-<translation id="2813156651070657572">비밀번호로 암호화폐 안전하게 보호</translation>
-<translation id="6901073872645365201">비밀번호는 7자 이상이어야 하며, 숫자와 특수문자를 각각 하나 이상 포함해야 합니다.</translation>
-<translation id="6657585470893396449">비밀번호</translation>
-<translation id="5486261815000869482">비밀번호 확인</translation>
+<translation id="8412783472871103529">복구 문구 검증</translation>
+<translation id="2226686084760581391">복구 문구의 <ph name="FIRST_BEFORE"/><ph name="FIRST"/> (<ph name="FIRST_ORDINAL"/>)<ph name="FIRST_AFTER"/>, <ph name="SECOND_BEFORE"/><ph name="SECOND"/> (<ph name="SECOND_ORDINAL"/>)<ph name="SECOND_AFTER"/>, <ph name="THIRD_BEFORE"/><ph name="THIRD"/> (<ph name="THIRD_ORDINAL"/>)<ph name="THIRD_AFTER"/> 단어를 클릭하세요.</translation>
+<translation id="7575574239720542222">복구 문구가 일치하지 않음</translation>
+<translation id="8692301574305033504">새 비밀번호 만들기</translation>
+<translation id="4384286220811524581">월렛에 액세스할 때마다 이 비밀번호를 사용하게 됩니다.</translation>
+<translation id="2136372518715274136">새 비밀번호 입력</translation>
+<translation id="4450951602553063001">비밀번호 다시 입력</translation>
 <translation id="6138471905279127211">비밀번호 기준이 일치하지 않습니다.</translation>
 <translation id="467510802200863975">비밀번호가 일치하지 않음</translation>
 <translation id="5168349973342709369">월렛을 잠금 해제하려면 비밀번호 입력</translation>
@@ -964,6 +974,7 @@
 <translation id="765834632354589737">지갑 백업</translation>
 <translation id="1108298724135935307">연결된 사이트</translation>
 <translation id="163697698769819510">지금 월렛을 백업하여 자산을 보호하고 액세스를 잃지 마세요.</translation>
+<translation id="1018806299114415224">지금 백업하기</translation>
 <translation id="1400709719911593089">Brave 월렛이 기본 월렛으로 설정되어 있지 않아 Web3 DApps에 응답할 수 없습니다. 설정을 방문하여 기본 월렛을 변경하세요.</translation>
 <translation id="4362717653795263052">주사용 암호화폐 계정 복구</translation>
 <translation id="3038077262567136741">Brave 월렛 암호화폐 계정을 복구하려면 복구 문구를 입력하세요.</translation>
@@ -974,6 +985,7 @@
 <translation id="3331452756822160641">새 비밀번호</translation>
 <translation id="8624315169751085215">클립보드에 복사</translation>
 <translation id="7885157704277298658">복사됨!</translation>
+<translation id="6346952829206698721">클립보드에서 붙여넣기</translation>
 <translation id="1121335910737476837">주사용 암호화폐 계정</translation>
 <translation id="6969147029062037757">가져온 계정</translation>
 <translation id="4057718162494343222">Brave 월렛에 주사용 계정을 만들 수 있으며, 유사시 복구 문구로 백업 및 복구할 수 있습니다. 계정 유형에 대해 알아보려면 계정 도움말을 방문하세요.</translation>
@@ -1058,7 +1070,6 @@
 <translation id="6323024765179772761">코인 검색</translation>
 <translation id="6998989275928107238">받는이</translation>
 <translation id="1506421160138798546">환전 예상액</translation>
-<translation id="3567988240819868195">시장</translation>
 <translation id="59223531494896848">한도</translation>
 <translation id="8569380433211549748">가격, 통화:</translation>
 <translation id="2490428413101944234">파우셋 테스트</translation>
@@ -1110,7 +1121,7 @@
 <translation id="523862956770478816">사이트 권한</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/>개의 계정 연결됨</translation>
 <translation id="4305817255990598646">전환</translation>
-<translation id="3423275441470187644">신뢰</translation>
+<translation id="3423275441470187644">신뢰함</translation>
 <translation id="2391762656119864333">취소</translation>
 <translation id="5677928146339483299">차단됨</translation>
 <translation id="3890989020011724401">새 계정</translation>
@@ -1123,20 +1134,10 @@
 <translation id="4874303883488468190">계정 선택</translation>
 <translation id="2018472018751735678">허용된 계정의 주소 보기(필수)</translation>
 <translation id="7029403458170657879">Brave 월렛으로 연결</translation>
-<translation id="7982184974053636367">Brave 월렛에는 더욱 안전한 비밀번호 필요</translation>
-<translation id="2372897697869224590">Brave 월렛 비밀번호 설정</translation>
-<translation id="7739762330714405363">동일한 비밀번호 사용</translation>
-<translation id="1085027414516521238">메타마스크</translation>
-<translation id="7102907656918333773"><ph name="WALLET_EXTENSION"/>에서 가져오기</translation>
-<translation id="1737856990004825123"><ph name="WALLET_EXTENSION"/> 계정을 Brave 월렛 속으로 가져오세요. 더욱 빠르고 안전하게 암호화폐 자산을 관리하고 Web3 DApps를 이용하세요.</translation>
-<translation id="4237840336687249184">MetaMask 비밀번호</translation>
-<translation id="2381605201035323535">암호화폐 월렛</translation>
 <translation id="2770851145415891830">기존 암호화폐 월렛 감지됨</translation>
-<translation id="4938145712652668388">"시작하기"를 클릭하면 이전 암호화폐 월렛을 새 Brave 월렛 경험으로 가져와 위에 언급된 혜택을 누릴 수 있습니다. 사용해보시고 의견이 있으면 알려주세요!</translation>
 <translation id="2237759620789871865">가져오기를 건너뛰고 기존 암호화폐 월렛 경험을 유지하려면 Brave 브라우저 <ph name="LINK_BEFORE"/>설정<ph name="LINK_AFTER"/>으로 이동하여 기본값을 암호화폐 월렛으로 변경하세요. 언제든지 새 Brave 월렛을 가져와 사용해보거나 되돌릴 수 있습니다.</translation>
 <translation id="5590175005414413980">기존 암호화폐 월렛 비밀번호를 입력하면 Brave 계정으로 가져옵니다. 더욱 빠르고 안전하게 암호화폐 자산을 관리하고 Web3 DApps를 이용하세요.</translation>
-<translation id="9099900965604225657">암호화폐 월렛 비밀번호</translation>
-<translation id="4020495774166914146">비밀번호와 복구 문구를 잊어서 새 월렛을 만듭니다.</translation>
+<translation id="880619123281809987">암호화폐 월렛 비밀번호 입력</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> 연결됨</translation>
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> 연결 해제됨</translation>
 <translation id="5317781812114905957">지침</translation>
@@ -1239,13 +1240,25 @@
 <translation id="1752214435563414457">Brave Swap-스테이크</translation>
 <translation id="7829441065063984927">7일간 암호화폐 경품, 최대 50만 $ 상금.</translation>
 <translation id="8292716346768453265">지금 응모하세요!</translation>
+<translation id="1935944189549132903">모든 자산</translation>
+<translation id="203041314293794507">거래 가능</translation>
+<translation id="6169371176266800104">24시간</translation>
+<translation id="7677692756188354224">시가총액</translation>
+<translation id="4430019312045809116">볼륨</translation>
+<translation id="5133421763709317473">검색어 또는 필터와 일치하는 자산 없음</translation>
+<translation id="8813832913015888458">Brave 월렛이 지원하지 않는 자산</translation>
 <translation id="6423985584914773314">유효한 FIL 주소 아님</translation>
 <translation id="3898731124813934210">Wyre로 구매</translation>
 <translation id="5522073372365069684">Ramp로 구매</translation>
+<translation id="7902920577183739843">Sardine으로 구매</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
+<translation id="1130009472404762036">Sardine</translation>
 <translation id="7667423728712601865">Visa 또는 Mastercard로 암호화폐를 구입할 수 있습니다.</translation>
+<translation id="3101839349578102016">은행 계좌로 즉시 매수. 수수료는 더 낮게.</translation>
 <translation id="8528916244724490964">모든 네트워크</translation>
+<translation id="4038403584813842767">잔액 ↑</translation>
+<translation id="1695096446857675822">잔액 ↓</translation>
 <translation id="2781668117338732220">보조 네트워크</translation>
 <translation id="2816106784624007524">가스 한도는 0보다 큰 정수여야 합니다.</translation>
 <translation id="3354376789153561654">트랜잭션 데이터 'to'를 지정해야 함</translation>
@@ -1273,9 +1286,103 @@
 <translation id="7843211152394841558">최대 재시도 횟수:</translation>
 <translation id="8496335570810457">프리플라이트 약속:</translation>
 <translation id="5100124500279922001">프리플라이트 건너뛰기:</translation>
+<translation id="3568017348462868931">통화 선택</translation>
+<translation id="4420924466038521900">통화 검색</translation>
 <translation id="8060029310790625334">도움말 센터</translation>
 <translation id="2095142195578664632">도움이 필요하시면 다음을 참조하세요.</translation>
 <translation id="3253669416991680932">이 하드웨어 월렛에서는 이 작업이 지원되지 않습니다.</translation>
+<translation id="7457027586454688423">Brave Wallet 비밀번호 입력</translation>
+<translation id="2021055898001510484">rainbowbridge.app을 여시겠습니까?</translation>
+<translation id="6550403756693197933">자산을 여러 네트워크에 걸쳐 브리징하면, 보유한 암호화폐를 다른 네트워크 및 다른 DApp 생태계에서도 사용할 수 있습니다. 자산을 다른 네트워크로 브리징하면 다소 위험이 따릅니다.</translation>
+<translation id="8315999527212828722">rainbowbridge.app 열기</translation>
+<translation id="4903322403594141291">Brave 월렛 자세히 알아보기</translation>
+<translation id="3875185448438395303">최소:</translation>
+<translation id="2029465635925899949">8자</translation>
+<translation id="6697810017029555732">일치합니다!</translation>
+<translation id="8918368616587206671">강력합니다!</translation>
+<translation id="574392208103952083">보통</translation>
+<translation id="8297006494302853456">약함</translation>
+<translation id="6782556046178425980">월렛 백업을 시작하기 전에</translation>
+<translation id="9080057079069917346">12단어 복구 문구는 연결된 디바이스를 분실했을 때 월렛에 다시 액세스하는 데 사용되는 비공개 키입니다. 아래 순서대로 정확하게 적어 안전한 곳에 보관하세요.</translation>
+<translation id="3259018319025894691">비밀 복구 문구에는 Brave도 액세스할 수 없습니다. 안전한 곳에 보관하고 그 누구에게도 공유하지 마세요.</translation>
+<translation id="7650284207965419234"><ph name="TAG_BEFORE"/>중요: <ph name="TAG_AFTER"/>복구 문구를 절대 공유하지 마세요. 이 문구를 아는 누군가가 회원님의 자산을 탈취하면 되찾을 수 없습니다.</translation>
+<translation id="7509948206688764960">월렛 복구 문구 백업</translation>
+<translation id="8052898407431791827">클립보드에 복사됨</translation>
+<translation id="4576741736874242970">문구를 보려면 클릭</translation>
+<translation id="9202365664128598850">첫 번째</translation>
+<translation id="4768459022382175196">두 번째</translation>
+<translation id="1623839863951450045">세 번째</translation>
+<translation id="7951561964148328147">네 번째</translation>
+<translation id="774053374251285774">다섯 번째</translation>
+<translation id="5547116790089504956">여섯 번째</translation>
+<translation id="271762450358244560">일곱 번째</translation>
+<translation id="4990381733707493303">여덟 번째</translation>
+<translation id="4204240559971494450">아홉 번째</translation>
+<translation id="1264599863456102502">열 번째</translation>
+<translation id="2030919906296886809">열한 번째</translation>
+<translation id="7097617722759601686">번째</translation>
+<translation id="2781276194026093899">번째</translation>
+<translation id="7992766987062040279">번째</translation>
+<translation id="2295726992010694229">번째</translation>
+<translation id="8241405611628876973">축하합니다! 이제 Brave 월렛을 사용하실 수 있습니다!</translation>
+<translation id="6828327990705355767">월렛에 액세스하려면 Brave 브라우저 창 오른쪽 상단에 있는 지갑 아이콘을 클릭하세요.</translation>
+<translation id="396152018598329740">암호화폐 월렛은 어떻게 사용할 수 있나요?</translation>
+<translation id="7512061585041489067">최고의 암호화폐 월렛은 무엇인가요?</translation>
+<translation id="1342755158522323177">암호화폐 브라우저란 무엇인가요?</translation>
+<translation id="4702762916247565868">암호화폐 월렛 기본 상식</translation>
+<translation id="4674552515763857735">복구 문구란 무엇인가요?</translation>
+<translation id="7328255859839881981">DApps이란 무엇인가요?</translation>
+<translation id="3852489285890032403">Web3란 무엇인가요?</translation>
+<translation id="5448233694500869445">브라우저에서 MetaMask 확장 프로그램 감지됨</translation>
+<translation id="8436080536329710282">MetaMask 월렛 비밀번호를 입력하면 쉽게 Brave 월렛으로 가져올 수 있습니다.</translation>
+<translation id="7543512765962444927">기존 월렛에 연결</translation>
+<translation id="3551682252653406110">이미 가지고 계신 월렛을 연결하려면 복구 문구를 입력해야 할 수 있습니다. 현재 이더리움 및 Solana 월렛 복구와 가져오기를 지원합니다.</translation>
+<translation id="346929827081904572">시드 문구에서 복구</translation>
+<translation id="5645597512426471834">12~24단어</translation>
+<translation id="6560930409313980969">Brave 월렛 12단어 복구 문구를 입력하세요.</translation>
+<translation id="5419707890586509000">MetaMask에서 가져오기</translation>
+<translation id="2265945811107390939">MetaMask 비밀번호를 사용하여 시드 문구 가져오기</translation>
+<translation id="7060680423657442298">괜찮습니다. 새 월렛을 만들겠습니다.</translation>
+<translation id="4570057016351082582">MetaMask 12단어 복구 문구를 입력하세요.</translation>
+<translation id="7720392926833259937">MetaMask 비밀번호 입력</translation>
+<translation id="6657585470893396449">비밀번호</translation>
+<translation id="6260144012548445299">새 월렛 자세히 알아보기</translation>
+<translation id="8746910870914151528">법률 문구</translation>
+<translation id="5148123176978018397">다음을 주의하여 읽고 동의해주세요.</translation>
+<translation id="6088314935678153800">나는 이것이 자기 보호관리 월렛이므로 연결된 자금, 자산, 계좌에 대한 책임은 전적으로 내게 있고, 적절한 조치를 통해 월렛의 보안을 유지하고 보호하며 백업해야 한다는 사실을 이해합니다. 나는 Brave가 내 월렛에 액세스하거나 나를 대신하여 트랜잭션을 번복할 수 없고, 비밀번호 분실, 디바이스 도난 등의 상황에서 복구 구문이 월렛에 다시 액세스할 수 있는 유일한 수단임을 이해합니다.</translation>
+<translation id="7781090633800450517"><ph name="LINK_BEFORE"/>이용 약관<ph name="LINK_AFTER"/>을 읽었으며 이에 동의합니다.</translation>
+<translation id="3887541341068007345">월렛 확장 프로그램 확인 중...</translation>
+<translation id="3567994771568272606">레거시 Brave 암호화폐 월렛에서 가져오기</translation>
+<translation id="8407091560429310499">자산 선택</translation>
+<translation id="756590380936155533"><ph name="ASSET_TICKER"/> 구매를 완료하려면 파트너 중 하나를 선택하세요.</translation>
+<translation id="7880860489474966219">완료되면 자금이 용감한 지갑으로 이체됩니다.</translation>
+<translation id="6182661078713714878">암호화폐 입금</translation>
+<translation id="3683305208314702347"><ph name="VALUE"/> 입금</translation>
+<translation id="5768739294929936862">Solana 또는 SPL 토큰 입금</translation>
+<translation id="4121839963291930673">ERC 기반 토큰 입금</translation>
+<translation id="5882719778740918116">이 주소가 <ph name="VALUE"/>상에 있을 경우에만 토큰을 보내세요.</translation>
+<translation id="6885009592653876601">200여 암호화폐 자산 매수, 송금, 스왑</translation>
+<translation id="8716223552348254401">브라우저 네이티브, 위험한 확장 기능 없음</translation>
+<translation id="4559901986238865734">멀티 체인 및 NFT 지원</translation>
+<translation id="8280970992918660431">계정을 만들려면 잠금 해제 필요</translation>
+<translation id="296101411136980896">클릭하여 전환</translation>
+<translation id="753655478253155745">열두 번째</translation>
+<translation id="2679592211386970368">열세 번째</translation>
+<translation id="342115958836807536">열네 번째</translation>
+<translation id="5056187827935389857">열다섯 번째</translation>
+<translation id="6102061955158863607">열여섯 번째</translation>
+<translation id="4701532342602356554">열일곱 번째</translation>
+<translation id="3483191565919702242">열여덟 번째</translation>
+<translation id="5872204767075410422">열아홉 번째</translation>
+<translation id="992226442673942344">스무 번째</translation>
+<translation id="4685557586001281760">스물한 번째</translation>
+<translation id="6646456430109279404">스물두 번째</translation>
+<translation id="1961743941324393172">스물세 번째</translation>
+<translation id="9079035825546416393">스물네 번째</translation>
+<translation id="2894654529758326923">정보</translation>
+<translation id="152455748535966757">순위</translation>
+<translation id="4958716607782044952">24시간 거래량</translation>
+<translation id="128834189395075789">시가총액</translation>
 <translation id="3155170474926428993">Tor 런처</translation>
 <translation id="3745016858329272300">일반 정보</translation>
 <translation id="4045404575593562245">Tor 제어 이벤트</translation>
@@ -1287,8 +1394,8 @@
 <translation id="8458987127502506209">Brave Shields 활성화</translation>
 <translation id="7509914170164691086">다음에 대해 실드 <ph name="LINK_BEFORE"/>활성화됨<ph name="LINK_AFTER"/></translation>
 <translation id="260764436039299868">Brave Shields <ph name="LINK_BEFORE"/>비활성화됨<ph name="LINK_AFTER"/></translation>
-<translation id="7709075156958117386">사이트가 깨져 보이면, 실드를 비활성화해 보세요.
-    <ph name="LINK_BEFORE"/>참고: 이렇게 하면 Brave의 프라이버시 보호 수준이 낮아집니다.<ph name="LINK_AFTER"/></translation>
+<translation id="3907405056878805220">이 사이트가 깨져 보이면 Shields를 비활성화해보세요.
+    <ph name="LINK_BEFORE"/>참고: 이렇게 하면 Brave의 프라이버시 보호력이 저하될 수 있습니다.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">트래커, 광고 등이 차단됨 <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Brave Shields로 보호되지 않음 <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">고급 컨트롤</translation>
@@ -1317,6 +1424,10 @@
 <translation id="7194012750329511146">Brave Shields
 <ph name="NUMBER"/> 트래커, 광고 등 차단</translation>
 <translation id="4292121526390005808">차단된 스크립트</translation>
+<translation id="6303294677342628402">보호</translation>
+<translation id="264682546981571963">쿠키 동의 문구를 보면 지치시지요?</translation>
+<translation id="4986297793092101884">Brave는 타사 쿠키를 기본으로 차단합니다. 쿠키 동의 문구도 차단할 수 있습니다.</translation>
+<translation id="535688588637568715">예, 쿠키 동의 문구 차단</translation>
 <translation id="3541307549916475335">Brave VPN 패널 UI</translation>
 <translation id="1742469581923031760">연결 중…</translation>
 <translation id="1287487756047817908">연결 해제 중…</translation>
@@ -1376,4 +1487,36 @@
 <translation id="6973157709854838218">화면에서 잔액 숨김</translation>
 <translation id="4548946945059463969">화면에 잔액 표시</translation>
 <translation id="242959166945779492">계정 내에 잔액이 없습니다. FTX를 방문하여 구매하세요.</translation>
+<translation id="9190084253595768053">연결에 문제가 있습니까? <ph name="BEGIN_LINK"/>Brave 설정<ph name="END_LINK"/>을 열고 Tor를 적용한 비공개 창을 비활성화한 다음 다시 활성화해보세요. 그래도 문제가 있습니까?</translation>
+<translation id="6977372887576114613">입금된 BAT</translation>
+<translation id="194625454574835815">복구 키</translation>
+<translation id="5717619667204259673">이 복구 키를 안전하게 보관하세요.</translation>
+<translation id="7018390569051511373">브라우저나 컴퓨터에 문제가 생겼을 때, 이 키를 사용하면 언제든 Rewards 프로필을 복구할 수 있습니다. 이 키가 다른 사람 손에 들어가면 Rewards 프로필을 훔칠 수 있으니 잘 보호하세요. 종이에 적어 중요한 정보를 따로 보관해두는 곳에 넣어두는 것이 가장 안전합니다.</translation>
+<translation id="8979401359137062629">참고:</translation>
+<translation id="7934806082615382155">Brave에서 일부 자금을 받을 수 있으며, 필요하지 않기 때문에 백업에 포함되지 않습니다. 이 브라우저에서만 사용이 가능합니다.</translation>
+<translation id="1738658589626889850">파일로 저장하기</translation>
+<translation id="2173151783558384314">Brave는 Infura를 사용하여 이더리움 JSON-RPC 콜을 Unstoppable Domains에서의 스마트 컨트랙트로 발행하고 .crypto (및 .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin도 해당) 도메인 이름 조회 요청을 해석합니다. 이 기능을 활성화하면 귀하가 방문하려는 특정 도메인은 Infura가 볼 수 있지만 다른 도메인은 볼 수 없습니다. Infura <ph name="BEGIN_INFURA_TOU_LINK"/>이용 약관<ph name="END_INFURA_TOU_LINK"/> 및 <ph name="BEGIN_INFURA_PRIVACY_LINK"/>개인정보처리방침<ph name="END_INFURA_PRIVACY_LINK"/>을 참조하세요.</translation>
+<translation id="2630264552940126640">Brave Rewards 백업</translation>
+<translation id="238922425564381955">Brave Rewards를 백업하세요.</translation>
+<translation id="2860280209982026951">Brave는 DEX 애그리게이터로 <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/>를 사용합니다.</translation>
+<translation id="4626407663177532837">견적에는 Brave 수수료 0.875%가 포함됩니다.</translation>
+<translation id="1420318137760245955">새로운 Brave 월렛에 오신 것을 환영합니다</translation>
+<translation id="3671745544278414606">보호관리 계정에 암호화폐 자산 보유. 포트폴리오 실적 추적, Web3 DApps를 이용. DeFi로 거래, 투자, 대출, 대부까지. Brave 프라이버시 브라우저에서 모두 이용합니다. 확장 프로그램도, 다운로드도 필요하지 않습니다.</translation>
+<translation id="6972754398087986839">시작하기</translation>
+<translation id="2813156651070657572">비밀번호로 암호화폐 안전하게 보호</translation>
+<translation id="6901073872645365201">비밀번호는 7자 이상이어야 하며, 숫자와 특수문자를 각각 하나 이상 포함해야 합니다.</translation>
+<translation id="5486261815000869482">비밀번호 확인</translation>
+<translation id="7982184974053636367">Brave 월렛에는 더욱 안전한 비밀번호 필요</translation>
+<translation id="2372897697869224590">Brave 월렛 비밀번호 설정</translation>
+<translation id="7739762330714405363">동일한 비밀번호 사용</translation>
+<translation id="1085027414516521238">메타마스크</translation>
+<translation id="7102907656918333773"><ph name="WALLET_EXTENSION"/>에서 가져오기</translation>
+<translation id="1737856990004825123"><ph name="WALLET_EXTENSION"/> 계정을 Brave 월렛 속으로 가져오세요. 더욱 빠르고 안전하게 암호화폐 자산을 관리하고 Web3 DApps를 이용하세요.</translation>
+<translation id="4237840336687249184">MetaMask 비밀번호</translation>
+<translation id="2381605201035323535">암호화폐 월렛</translation>
+<translation id="4938145712652668388">"시작하기"를 클릭하면 이전 암호화폐 월렛을 새 Brave 월렛 경험으로 가져와 위에 언급된 혜택을 누릴 수 있습니다. 사용해보시고 의견이 있으면 알려주세요!</translation>
+<translation id="9099900965604225657">암호화폐 월렛 비밀번호</translation>
+<translation id="4020495774166914146">비밀번호와 복구 문구를 잊어서 새 월렛을 만듭니다.</translation>
+<translation id="7709075156958117386">사이트가 깨져 보이면, 실드를 비활성화해 보세요.
+    <ph name="LINK_BEFORE"/>참고: 이렇게 하면 Brave의 프라이버시 보호 수준이 낮아집니다.<ph name="LINK_AFTER"/></translation>
 </translationbundle>
