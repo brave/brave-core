@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/thread_test_helper.h"
@@ -71,9 +73,9 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
-    content_client_.reset(new ChromeContentClient);
+    content_client_ = std::make_unique<ChromeContentClient>();
     content::SetContentClient(content_client_.get());
-    browser_content_client_.reset(new BraveContentBrowserClient());
+    browser_content_client_ = std::make_unique<BraveContentBrowserClient>();
     content::SetBrowserClientForTesting(browser_content_client_.get());
     g_brave_browser_process->brave_farbling_service()
         ->set_session_tokens_for_testing(kTestingSessionToken,

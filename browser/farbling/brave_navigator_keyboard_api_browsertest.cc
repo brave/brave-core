@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "base/containers/contains.h"
 #include "base/path_service.h"
 #include "brave/browser/brave_content_browser_client.h"
@@ -52,9 +54,9 @@ class BraveNavigatorKeyboardAPIBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
-    content_client_.reset(new ChromeContentClient);
+    content_client_ = std::make_unique<ChromeContentClient>();
     content::SetContentClient(content_client_.get());
-    browser_content_client_.reset(new BraveContentBrowserClient());
+    browser_content_client_ = std::make_unique<BraveContentBrowserClient>();
     content::SetBrowserClientForTesting(browser_content_client_.get());
 
     host_resolver()->AddRule("*", "127.0.0.1");

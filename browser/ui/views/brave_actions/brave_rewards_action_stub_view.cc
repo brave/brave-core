@@ -5,8 +5,8 @@
 
 #include "brave/browser/ui/views/brave_actions/brave_rewards_action_stub_view.h"
 
-#include <string>
 #include <memory>
+#include <string>
 #include <utility>
 
 #include "brave/browser/ui/brave_actions/brave_action_icon_with_badge_image_source.h"  // NOLINT
@@ -107,10 +107,8 @@ BraveRewardsActionStubView::BraveRewardsActionStubView(
   // after a restart.
   badge_text_pref_.Init(
     brave_rewards::prefs::kBadgeText, profile->GetPrefs());
-  badge.reset(new IconWithBadgeImageSource::Badge(
-          badge_text_pref_.GetValue(),
-          SK_ColorWHITE,
-          kRewardsBadgeBg));
+  badge = std::make_unique<IconWithBadgeImageSource::Badge>(
+      badge_text_pref_.GetValue(), SK_ColorWHITE, kRewardsBadgeBg);
   image_source->SetBadge(std::move(badge));
   gfx::ImageSkia icon(gfx::Image(
       gfx::ImageSkia(

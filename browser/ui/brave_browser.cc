@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
 #include <utility>
 
 #include "brave/browser/ui/brave_browser.h"
@@ -46,7 +47,8 @@ BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
   // ready yet. BraveBrowserView is instantiated by the ctor of Browser.
   // So, initializing sidebar controller/model here and then ask to initialize
   // sidebar UI. After that, UI will be updated for model's change.
-  sidebar_controller_.reset(new sidebar::SidebarController(this, profile()));
+  sidebar_controller_ =
+      std::make_unique<sidebar::SidebarController>(this, profile());
   sidebar_controller_->SetSidebar(brave_window()->InitSidebar());
 #endif
 }

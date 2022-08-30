@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
 #include <string>
 
 #include "base/base64.h"
@@ -126,8 +127,8 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
 
   void ResetTestServer(
       const net::EmbeddedTestServer::HandleRequestCallback& callback) {
-    test_server_.reset(new net::EmbeddedTestServer(
-        net::test_server::EmbeddedTestServer::TYPE_HTTPS));
+    test_server_ = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
     test_server_->RegisterRequestHandler(callback);
     ASSERT_TRUE(test_server_->Start());
     ipfs_service_->SetServerEndpointForTest(test_server_->base_url());
@@ -659,7 +660,7 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
       return;
     }
 
-    wait_for_request_.reset(new base::RunLoop);
+    wait_for_request_ = std::make_unique<base::RunLoop>();
     wait_for_request_->Run();
   }
 

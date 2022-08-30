@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "base/command_line.h"
 #include "base/environment.h"
 #include "base/files/file_util.h"
@@ -123,7 +125,7 @@ class BraveStatsUpdaterBrowserTest : public PlatformBrowserTest {
       return;
     }
 
-    wait_for_referral_initialized_loop_.reset(new base::RunLoop);
+    wait_for_referral_initialized_loop_ = std::make_unique<base::RunLoop>();
     wait_for_referral_initialized_loop_->Run();
   }
 
@@ -141,7 +143,7 @@ class BraveStatsUpdaterBrowserTest : public PlatformBrowserTest {
       return;
     }
 
-    wait_for_standard_stats_updated_loop_.reset(new base::RunLoop);
+    wait_for_standard_stats_updated_loop_ = std::make_unique<base::RunLoop>();
     wait_for_standard_stats_updated_loop_->Run();
   }
 
@@ -159,7 +161,7 @@ class BraveStatsUpdaterBrowserTest : public PlatformBrowserTest {
       return;
     }
 
-    wait_for_threshold_stats_updated_loop_.reset(new base::RunLoop);
+    wait_for_threshold_stats_updated_loop_ = std::make_unique<base::RunLoop>();
     wait_for_threshold_stats_updated_loop_->Run();
   }
 

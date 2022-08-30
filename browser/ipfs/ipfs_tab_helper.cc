@@ -5,6 +5,7 @@
 
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
 
+#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -72,8 +73,8 @@ IPFSTabHelper::IPFSTabHelper(content::WebContents* web_contents)
   auto* storage_partition =
       web_contents->GetBrowserContext()->GetDefaultStoragePartition();
 
-  resolver_.reset(new IPFSHostResolver(storage_partition->GetNetworkContext(),
-                                       kDnsDomainPrefix));
+  resolver_ = std::make_unique<IPFSHostResolver>(
+      storage_partition->GetNetworkContext(), kDnsDomainPrefix);
   pref_change_registrar_.Init(pref_service_);
   pref_change_registrar_.Add(
       kIPFSResolveMethod,

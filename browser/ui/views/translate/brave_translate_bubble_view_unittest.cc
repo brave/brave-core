@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
 #include <string>
 
 #include "base/memory/raw_ptr.h"
@@ -200,7 +201,7 @@ class BraveTranslateBubbleViewTest : public ChromeViewsTestBase {
     params.ownership =
       views::Widget::InitParams::WIDGET_OWNS_NATIVE_WIDGET;
 
-    anchor_widget_.reset(new views::Widget());
+    anchor_widget_ = std::make_unique<views::Widget>();
     anchor_widget_->Init(std::move(params));
     anchor_widget_->Show();
 

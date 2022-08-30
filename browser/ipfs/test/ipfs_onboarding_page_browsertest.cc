@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
@@ -101,8 +103,8 @@ class IpfsOnboardingPageBrowserTest : public InProcessBrowserTest {
 
   void ResetTestServer(
       const net::EmbeddedTestServer::HandleRequestCallback& callback) {
-    test_server_.reset(new net::EmbeddedTestServer(
-        net::test_server::EmbeddedTestServer::TYPE_HTTPS));
+    test_server_ = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
     test_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
     test_server_->RegisterRequestHandler(callback);
     ASSERT_TRUE(test_server_->Start());

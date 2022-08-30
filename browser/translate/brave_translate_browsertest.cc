@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "base/files/file_path.h"
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
@@ -101,8 +103,8 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
   BraveTranslateBrowserTest() {
     scoped_feature_list_.InitAndEnableFeature(features::kUseBraveTranslateGo);
 
-    https_server_.reset(new net::EmbeddedTestServer(
-        net::test_server::EmbeddedTestServer::TYPE_HTTPS));
+    https_server_ = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
 
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;

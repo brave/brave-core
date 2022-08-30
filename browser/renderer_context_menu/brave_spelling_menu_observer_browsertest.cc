@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "chrome/browser/renderer_context_menu/spelling_menu_observer.h"
 
 #include "base/strings/utf_string_conversions.h"
@@ -39,11 +41,11 @@ class BraveSpellingMenuObserverTest : public InProcessBrowserTest {
 
   void Reset(bool incognito = false) {
     observer_.reset();
-    menu_.reset(new BraveMockRenderViewContextMenu(
+    menu_ = std::make_unique<BraveMockRenderViewContextMenu>(
         incognito ? browser()->profile()->GetPrimaryOTRProfile(
                         /*create_if_needed=*/true)
-                  : browser()->profile()));
-    observer_.reset(new SpellingMenuObserver(menu_.get()));
+                  : browser()->profile());
+    observer_ = std::make_unique<SpellingMenuObserver>(menu_.get());
     menu_->SetObserver(observer_.get());
     // Uncomment to print the menu to standard output for each test.
     // menu_->EnablePrintMenu();

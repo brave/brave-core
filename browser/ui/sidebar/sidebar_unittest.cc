@@ -32,7 +32,7 @@ class SidebarModelTest : public testing::Test, public SidebarModel::Observer {
   void SetUp() override {
     profile_ = std::make_unique<TestingProfile>();
     service_ = SidebarServiceFactory::GetForProfile(profile_.get());
-    model_.reset(new SidebarModel(profile_.get()));
+    model_ = std::make_unique<SidebarModel>(profile_.get());
     observation_.Observe(model_.get());
   }
 

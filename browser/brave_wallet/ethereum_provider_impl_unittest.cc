@@ -217,7 +217,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
             web_contents(), web_contents()->GetPrimaryMainFrame()),
         prefs());
 
-    observer_.reset(new TestEventsListener());
+    observer_ = std::make_unique<TestEventsListener>();
     provider_->Init(observer_->GetReceiver());
   }
 
