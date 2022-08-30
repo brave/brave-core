@@ -241,10 +241,10 @@ const std::vector<mojom::BlockchainToken>& GetSardineBuyTokens() {
         true, false, "USDC", 6, true, "", "", mojom::kMainnetChainId,
         mojom::CoinType::ETH},
        {"0xe41d2489571d322189246dafa5ebde1f4699f498", "Ox", "zrx.png", true,
-        false, "ZRX", 6, true, "", "", mojom::kMainnetChainId,
+        false, "ZRX", 18, true, "", "", mojom::kMainnetChainId,
         mojom::CoinType::ETH},
        {"0xbb0e17ef65f82ab018d8edd776e8dd940327b28b", "Axie Infinity",
-        "axs.png", true, false, "AXS", 6, true, "", "", mojom::kMainnetChainId,
+        "axs.png", true, false, "AXS", 18, true, "", "", mojom::kMainnetChainId,
         mojom::CoinType::ETH}});
   return *tokens;
 }
