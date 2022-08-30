@@ -16,6 +16,7 @@
 
 namespace base {
 class FilePath;
+class FilePathWatcher;
 }
 
 class GURL;
@@ -50,6 +51,12 @@ class SpeedreaderComponent
   void OnComponentReady(const std::string& component_id,
                         const base::FilePath& install_dir,
                         const std::string& manifest) override;
+
+  void OnFileChanged(const base::FilePath& path, bool error);
+  void OnWatcherStarted(base::FilePathWatcher* file_watcher);
+
+  scoped_refptr<base::SequencedTaskRunner> watch_task_runner_;
+  base::FilePathWatcher* file_watcher_ = nullptr;
 
   base::ObserverList<Observer> observers_;
   base::FilePath stylesheet_path_;

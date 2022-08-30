@@ -52,6 +52,8 @@ std::string GetDistilledPageStylesheet(const base::FilePath& stylesheet_path) {
         IDR_SPEEDREADER_STYLE_DESKTOP);
   }
 
+  base::ReplaceChars(stylesheet, "\r\n", "\n", &stylesheet);
+
   return WrapStylesheetWithCSP(stylesheet);
 }
 
