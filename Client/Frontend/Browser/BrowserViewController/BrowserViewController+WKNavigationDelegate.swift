@@ -39,6 +39,10 @@ extension URL {
 }
 
 extension BrowserViewController {
+  private func tab(for webView: WKWebView) -> Tab? {
+    tabManager[webView] ?? (webView as? TabWebView)?.tab
+  }
+  
   fileprivate func handleExternalURL(_ url: URL, openedURLCompletionHandler: ((Bool) -> Void)? = nil) {
     self.view.endEditing(true)
     let popup = AlertPopupView(
@@ -198,7 +202,7 @@ extension BrowserViewController: WKNavigationDelegate {
     }
 
     let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
-    let tab = tabManager[webView]
+    let tab = tab(for: webView)
 
     let domainForRequestURL = Domain.getOrCreate(
       forUrl: url,
@@ -305,7 +309,7 @@ extension BrowserViewController: WKNavigationDelegate {
 
     if ["http", "https", "data", "blob", "file"].contains(url.scheme) {
       if navigationAction.targetFrame?.isMainFrame == true {
-        tabManager[webView]?.updateUserAgent(webView, newURL: url)
+        tab?.updateUserAgent(webView, newURL: url)
       }
 
       pendingRequests[url.absoluteString] = navigationAction.request
@@ -352,7 +356,7 @@ extension BrowserViewController: WKNavigationDelegate {
       }
 
       // Cookie Blocking code below
-      if let tab = tabManager[webView] {
+      if let tab = tab {
         tab.userScriptManager?.isCookieBlockingEnabled = Preferences.Privacy.blockAllCookies.value
       }
 
@@ -393,8 +397,9 @@ extension BrowserViewController: WKNavigationDelegate {
   public func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
     let response = navigationResponse.response
     let responseURL = response.url
+    let tab = tab(for: webView)
 
-    if let tab = tabManager[webView],
+    if let tab = tab,
       let responseURL = responseURL,
       InternalURL(responseURL)?.isSessionRestore == true {
       tab.shouldClassifyLoadsForAds = false
@@ -414,8 +419,8 @@ extension BrowserViewController: WKNavigationDelegate {
       // If an upgraded https load happens with a host which was upgraded, increase the stats
       if url.scheme == "https", let _ = pendingHTTPUpgrades.removeValue(forKey: urlHost) {
         BraveGlobalShieldStats.shared.httpse += 1
-        if let stats = self.tabManager[webView]?.contentBlocker.stats {
-          self.tabManager[webView]?.contentBlocker.stats = stats.adding(httpsCount: 1)
+        if let stats = tab?.contentBlocker.stats {
+          tab?.contentBlocker.stats = stats.adding(httpsCount: 1)
         }
       }
     }
@@ -449,7 +454,7 @@ extension BrowserViewController: WKNavigationDelegate {
 
     // If the content type is not HTML, create a temporary document so it can be downloaded and
     // shared to external applications later. Otherwise, clear the old temporary document.
-    if let tab = tabManager[webView], navigationResponse.isForMainFrame {
+    if let tab = tab, navigationResponse.isForMainFrame {
       if response.mimeType?.isKindOfHTML == false, let request = request {
         tab.temporaryDocument = TemporaryDocument(preflightResponse: response, request: request, tab: tab)
       } else {
@@ -476,8 +481,10 @@ extension BrowserViewController: WKNavigationDelegate {
       return
     }
 
-    guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic || challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPDigest || challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodNTLM,
-      let tab = tabManager[webView]
+    guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic ||
+          challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPDigest ||
+          challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodNTLM,
+          let tab = tab(for: webView)
     else {
       completionHandler(.performDefaultHandling, nil)
       return
@@ -504,7 +511,7 @@ extension BrowserViewController: WKNavigationDelegate {
   }
 
   public func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-    guard let tab = tabManager[webView] else { return }
+    guard let tab = tab(for: webView) else { return }
     // Set the committed url which will also set tab.url
     tab.committedURL = webView.url
     
@@ -603,7 +610,7 @@ extension BrowserViewController: WKNavigationDelegate {
   }
 
   public func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
-    guard let tab = tabManager[webView], let url = webView.url, rewards.isEnabled else { return }
+    guard let tab = tab(for: webView), let url = webView.url, rewards.isEnabled else { return }
     tab.redirectURLs.append(url)
   }
 }

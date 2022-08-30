@@ -315,7 +315,7 @@ class Tab: NSObject {
       if configuration!.urlSchemeHandler(forURLScheme: InternalURL.scheme) == nil {
         configuration!.setURLSchemeHandler(InternalSchemeHandler(), forURLScheme: InternalURL.scheme)
       }
-      let webView = TabWebView(frame: .zero, configuration: configuration!, isPrivate: isPrivate)
+      let webView = TabWebView(frame: .zero, tab: self, configuration: configuration!, isPrivate: isPrivate)
       webView.delegate = self
       configuration = nil
 
@@ -839,6 +839,12 @@ private protocol TabWebViewDelegate: AnyObject {
 
 class TabWebView: BraveWebView, MenuHelperInterface {
   fileprivate weak var delegate: TabWebViewDelegate?
+  private(set) weak var tab: Tab?
+  
+  init(frame: CGRect, tab: Tab, configuration: WKWebViewConfiguration = WKWebViewConfiguration(), isPrivate: Bool = true) {
+    self.tab = tab
+    super.init(frame: frame, configuration: configuration, isPrivate: isPrivate)
+  }
 
   override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
     if action == MenuHelper.selectorForcePaste {

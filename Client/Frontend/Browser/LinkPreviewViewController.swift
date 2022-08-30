@@ -9,10 +9,15 @@ import Shared
 
 class LinkPreviewViewController: UIViewController {
 
-  let url: URL
+  private let url: URL
+  private weak var parentTab: Tab?
+  private var currentTab: Tab?
+  private weak var browserController: BrowserViewController?
 
-  init(url: URL) {
+  init(url: URL, for tab: Tab, browserController: BrowserViewController) {
     self.url = url
+    self.parentTab = tab
+    self.browserController = browserController
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -20,22 +25,33 @@ class LinkPreviewViewController: UIViewController {
   required init?(coder aDecoder: NSCoder) { fatalError() }
 
   override func viewDidLoad() {
-    let configuration = WKWebViewConfiguration().then {
-      $0.setURLSchemeHandler(InternalSchemeHandler(), forURLScheme: InternalURL.scheme)
+    guard let parentTab = parentTab,
+          let tabWebView = parentTab.webView else {
+      return
     }
-
-    let wk = WKWebView(frame: view.frame, configuration: configuration)
-
-    let domain = Domain.getOrCreate(forUrl: url, persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
-
-    BlocklistName.blocklists(forDomain: domain).on.forEach {
-      ContentBlockerHelper.ruleStore.lookUpContentRuleList(forIdentifier: $0.filename) { rule, _ in
-        guard let rule = rule else { return }
-        wk.configuration.userContentController.add(rule)
-      }
+    
+    currentTab = Tab(configuration: tabWebView.configuration,
+                     type: parentTab.isPrivate ? .private : .regular,
+                     tabGeneratorAPI: nil).then {
+      $0.tabDelegate = browserController
+      $0.navigationDelegate = browserController
+      $0.createWebview()
+      $0.webView?.scrollView.layer.masksToBounds = true
     }
-
-    view.addSubview(wk)
-    wk.load(URLRequest(url: url))
+    
+    guard let currentTab = currentTab,
+          let webView = currentTab.webView else {
+      return
+    }
+    
+    webView.frame = view.bounds
+    view.addSubview(webView)
+    
+    webView.load(URLRequest(url: url))
+  }
+  
+  deinit {
+    self.currentTab?.navigationDelegate = nil
+    self.currentTab = nil
   }
 }
