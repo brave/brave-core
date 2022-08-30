@@ -161,6 +161,13 @@ void PlaylistDownloadRequestManager::GetMedia(content::WebContents* contents) {
 void PlaylistDownloadRequestManager::OnGetMedia(
     base::WeakPtr<content::WebContents> contents,
     base::Value value) {
+  ProcessFoundMedia(contents, std::move(value));
+  FetchPendingRequest();
+}
+
+void PlaylistDownloadRequestManager::ProcessFoundMedia(
+    base::WeakPtr<content::WebContents> contents,
+    base::Value value) {
   if (!contents)
     return;
 
@@ -226,8 +233,6 @@ void PlaylistDownloadRequestManager::OnGetMedia(
     info.media_file_path = *src;
     items.push_back(std::move(info));
   }
-
-  FetchPendingRequest();
 
   std::move(callback).Run(std::move(items));
 }

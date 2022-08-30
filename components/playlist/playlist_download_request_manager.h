@@ -77,6 +77,8 @@ class PlaylistDownloadRequestManager
   void GetMedia(content::WebContents* contents);
   void OnGetMedia(base::WeakPtr<content::WebContents> contents,
                   base::Value value);
+  void ProcessFoundMedia(base::WeakPtr<content::WebContents> contents,
+                         base::Value value);
 
   // Pop a task from queue and detect media from the page if any.
   void FetchPendingRequest();
