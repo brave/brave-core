@@ -161,10 +161,13 @@ void PlaylistDownloadRequestManager::GetMedia(content::WebContents* contents) {
 void PlaylistDownloadRequestManager::OnGetMedia(
     base::WeakPtr<content::WebContents> contents,
     base::Value value) {
-  base::ScopedClosureRunner scoped_closure_runner(
-      base::BindOnce(&PlaylistDownloadRequestManager::FetchPendingRequest,
-                     weak_factory_.GetWeakPtr()));
+  ProcessFoundMedia(contents, std::move(value));
+  FetchPendingRequest();
+}
 
+void PlaylistDownloadRequestManager::ProcessFoundMedia(
+    base::WeakPtr<content::WebContents> contents,
+    base::Value value) {
   if (!contents)
     return;
 
