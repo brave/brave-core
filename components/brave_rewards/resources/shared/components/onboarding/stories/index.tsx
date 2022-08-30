@@ -9,7 +9,6 @@ import { WithThemeVariables } from '../../with_theme_variables'
 
 import { RewardsTourModal } from '../rewards_tour_modal'
 import { RewardsOptInModal } from '../rewards_opt_in_modal'
-import { TipOptInForm } from '../tip_opt_in_form'
 import { SettingsOptInForm } from '../settings_opt_in_form'
 import { RewardsTourPromo } from '../rewards_tour_promo'
 import { BraveTalkOptInForm } from '../brave_talk_opt_in_form'
@@ -94,18 +93,6 @@ export function OptInModal () {
       <RewardsOptInModal
         onEnable={actionLogger('onEnable')}
         onClose={actionLogger('onClose')}
-        onTakeTour={actionLogger('onTakeTour')}
-      />
-    </StoryWrapper>
-  )
-}
-
-export function TipOptIn () {
-  return (
-    <StoryWrapper style={{ width: '363px', height: '404px' }}>
-      <TipOptInForm
-        onEnable={actionLogger('onEnable')}
-        onDismiss={actionLogger('onDismiss')}
         onTakeTour={actionLogger('onTakeTour')}
       />
     </StoryWrapper>

@@ -59,8 +59,3 @@ export const main = styled.div`
   margin-top: 17px;
   margin-left: 0;
 `
-
-export const tour = styled.div`
-  padding: 46px 40px 20px;
-  height: 100%;
-`

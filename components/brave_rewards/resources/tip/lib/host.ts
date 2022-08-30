@@ -4,7 +4,6 @@
 
 import { addWebUIListener } from 'chrome://resources/js/cr.m'
 import { loadTimeData } from '../../../../common/loadTimeData'
-import { OnboardingCompletedStore } from '../../shared/lib/onboarding_completed_store'
 
 import { createStateManager } from '../../shared/lib/state_manager'
 
@@ -18,8 +17,7 @@ import {
   DialogArgs,
   EntryPoint,
   TipKind,
-  ShareTarget,
-  OnboardingResult
+  ShareTarget
 } from './interfaces'
 
 interface RecurringTipInfo {
@@ -62,7 +60,6 @@ function addWebUIListeners (listeners: Record<string, any>) {
 export function createHost (): Host {
   const stateManager = createStateManager<HostState>({})
   const dialogArgs = getDialogArgs()
-  const onboardingCompleted = new OnboardingCompletedStore()
   let tipResultPending = false
 
   function checkPendingTipResult (result: number) {
@@ -93,12 +90,9 @@ export function createHost (): Host {
       chrome.send('getRewardsParameters')
       chrome.send('fetchBalance')
       chrome.send('getReconcileStamp')
-      chrome.send('getAutoContributeAmount')
-      chrome.send('getAdsPerHour')
       chrome.send('getExternalWallet')
       chrome.send('getRecurringTips')
       chrome.send('getPublisherBanner', [publisherKey])
-      chrome.send('getOnboardingStatus')
     },
 
     externalWalletUpdated (externalWalletInfo: ExternalWalletInfo) {
@@ -126,12 +120,6 @@ export function createHost (): Host {
       stateManager.update({ rewardsParameters })
     },
 
-    onboardingStatusUpdated (result: { showOnboarding: boolean }) {
-      stateManager.update({
-        showOnboarding: result.showOnboarding && !onboardingCompleted.load()
-      })
-    },
-
     recurringTipsUpdated (tips?: RecurringTipInfo[]) {
       if (!tips) {
         return
@@ -148,14 +136,6 @@ export function createHost (): Host {
 
     reconcileStampUpdated (stamp: number) {
       stateManager.update({ nextReconcileDate: new Date(stamp * 1000) })
-    },
-
-    autoContributeAmountUpdated (autoContributeAmount: number) {
-      stateManager.update({ autoContributeAmount })
-    },
-
-    adsPerHourUpdated (adsPerHour: number) {
-      stateManager.update({ adsPerHour })
     },
 
     balanceUpdated (result: { status: number, balance: BalanceInfo }) {
@@ -232,22 +212,6 @@ export function createHost (): Host {
 
     closeDialog () {
       chrome.send('dialogClose')
-    },
-
-    setAutoContributeAmount (autoContributeAmount: number) {
-      chrome.send('setAutoContributeAmount', [autoContributeAmount])
-      stateManager.update({ autoContributeAmount })
-    },
-
-    setAdsPerHour (adsPerHour: number) {
-      chrome.send('setAdsPerHour', [adsPerHour])
-      stateManager.update({ adsPerHour })
-    },
-
-    saveOnboardingResult (result: OnboardingResult) {
-      chrome.send('saveOnboardingResult', [result])
-      stateManager.update({ showOnboarding: false })
-      onboardingCompleted.save()
     },
 
     processTip (amount: number, kind: TipKind) {
