@@ -148,31 +148,30 @@ void RewardsNotificationServiceImpl::ReadRewardsNotificationsJSON() {
       profile_->GetPrefs()->GetString(prefs::kNotifications);
   if (json.empty())
     return;
-  absl::optional<base::Value> dictionary = base::JSONReader::Read(json);
+  absl::optional<base::Value> parsed = base::JSONReader::Read(json);
 
   // legacy read
-  if (!dictionary || !dictionary->is_dict()) {
-    absl::optional<base::Value> list = base::JSONReader::Read(json);
-    if (!list || !list->is_list()) {
-      LOG(ERROR) << "Failed to deserialize rewards notifications on startup";
-      return;
-    }
-
-    ReadRewardsNotifications(list->GetList());
+  if (!parsed || (!parsed->is_dict() && !parsed->is_list())) {
+    LOG(ERROR) << "Failed to deserialize rewards notifications on startup";
+    return;
+  }
+  if (parsed->is_list()) {
+    ReadRewardsNotifications(parsed->GetList());
     return;
   }
 
-  base::Value* notifications =
-      dictionary->FindKeyOfType("notifications", base::Value::Type::LIST);
+  const base::Value::Dict& dict = parsed->GetDict();
+
+  const base::Value::List* notifications = dict.FindList("notifications");
   if (notifications) {
-    ReadRewardsNotifications(notifications->GetList());
+    ReadRewardsNotifications(*notifications);
   }
 
-  base::Value* displayed =
-      dictionary->FindKeyOfType("displayed", base::Value::Type::LIST);
+  const base::Value::List* displayed = dict.FindList("displayed");
   if (displayed) {
-    for (const auto& it : displayed->GetList()) {
-      rewards_notifications_displayed_.push_back(it.GetString());
+    for (const auto& item : *displayed) {
+      DCHECK(item.is_string());
+      rewards_notifications_displayed_.push_back(item.GetString());
     }
   }
 }
@@ -182,19 +181,20 @@ void RewardsNotificationServiceImpl::ReadRewardsNotifications(
   for (const auto& item : root) {
     if (!item.is_dict())
       continue;
+    const base::Value::Dict& dict = item.GetDict();
     std::string notification_id;
-    const std::string* notification_id_opt = item.FindStringKey("id");
+    const std::string* notification_id_opt = dict.FindString("id");
     if (notification_id_opt)
       notification_id = *notification_id_opt;
-    int notification_type = item.FindIntKey("type").value_or(0);
-    int notification_timestamp = item.FindIntKey("timestamp").value_or(0);
+    int notification_type = dict.FindInt("type").value_or(0);
+    int notification_timestamp = dict.FindInt("timestamp").value_or(0);
     RewardsNotificationArgs notification_args;
 
     // The notification ID was originally an integer, but now it's a
     // string. For backwards compatibility, we need to handle the
     // case where the ID contains an invalid string or integer
     if (notification_id.empty()) {
-      int old_id = item.FindIntKey("id").value_or(0);
+      int old_id = dict.FindInt("id").value_or(0);
       if (old_id == 0 && notification_type == 2)
         notification_id = "rewards_notification_grant";
       else
@@ -203,10 +203,9 @@ void RewardsNotificationServiceImpl::ReadRewardsNotifications(
       notification_id = "rewards_notification_grant";
     }
 
-    const base::Value* args =
-        item.FindKeyOfType("args", base::Value::Type::LIST);
+    const base::Value::List* args = dict.FindList("args");
     if (args) {
-      for (auto& arg : args->GetList()) {
+      for (auto& arg : *args) {
         std::string arg_string = arg.GetString();
         notification_args.push_back(arg_string);
       }
