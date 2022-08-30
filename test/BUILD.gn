@@ -1186,7 +1186,6 @@ if (!is_android) {
       "//brave/app/brave_main_delegate_runtime_flags_browsertest.cc",
       "//brave/browser/brave_prefs_browsertest.cc",
       "//brave/browser/brave_resources_browsertest.cc",
-      "//brave/browser/brave_shields/cookie_expiry_browsertest.cc",
       "//brave/browser/brave_shields/cookie_pref_service_browsertest.cc",
       "//brave/browser/brave_stats/brave_stats_updater_browsertest.cc",
       "//brave/browser/net/brave_system_request_handler_browsertest.cc",
