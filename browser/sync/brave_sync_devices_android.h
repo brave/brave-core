@@ -39,7 +39,7 @@ class BraveSyncDevicesAndroid : public syncer::DeviceInfoTracker::Observer {
   // syncer::DeviceInfoTracker::Observer
   void OnDeviceInfoChange() override;
 
-  base::Value GetSyncDeviceList();
+  base::Value::List GetSyncDeviceList();
 
   syncer::BraveSyncServiceImpl* GetSyncService() const;
 
