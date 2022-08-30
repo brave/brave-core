@@ -524,9 +524,6 @@ class JsonRpcServiceUnitTest : public testing::Test {
                                             metadata_response, metadata_status);
             return;
           }
-
-          url_loader_factory_.AddResponse(request.url.spec(), "",
-                                          net::HTTP_REQUEST_TIMEOUT);
         }));
   }
 

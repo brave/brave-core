@@ -120,9 +120,7 @@ bool SetEncryptionKey(const base::FilePath& source_path) {
   config->user_data_path = source_path;
   OSCrypt::SetConfig(std::move(config));
   return true;
-#endif
-
-#if BUILDFLAG(IS_WIN)
+#elif BUILDFLAG(IS_WIN)
   base::FilePath local_state_path = source_path.Append(
       base::FilePath::StringType(FILE_PATH_LITERAL("Local State")));
   if (!base::PathExists(local_state_path))
@@ -130,9 +128,9 @@ bool SetEncryptionKey(const base::FilePath& source_path) {
   if (!SetEncryptionKeyForPasswordImporting(local_state_path))
     return false;
   return true;
-#endif
-
+#else
   return true;
+#endif
 }
 
 std::u16string DecryptedCardFromColumn(sql::Statement* s, int column_index) {

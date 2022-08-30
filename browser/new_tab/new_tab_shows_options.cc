@@ -42,8 +42,6 @@ GURL GetNewTabPageURL(Profile* profile) {
     DCHECK_EQ(NewTabPageShowsOptions::kDashboard, option);
     return GURL();
   }
-
-  return GURL();
 }
 
 base::Value::List GetNewTabShowsOptionsList(Profile* profile) {

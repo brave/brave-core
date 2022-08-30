@@ -107,7 +107,6 @@ FilecoinKeyring::GetProtocolFromAddress(const std::string& address) {
       return absl::nullopt;
     }
   }
-  return absl::nullopt;
 }
 
 std::string FilecoinKeyring::GetEncodedPrivateKey(const std::string& address) {

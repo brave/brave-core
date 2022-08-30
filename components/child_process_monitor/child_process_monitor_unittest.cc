@@ -46,10 +46,9 @@ class ChildProcessMonitorTest : public base::MultiProcessTest {
 };
 
 MULTIPROCESS_TEST_MAIN(NeverDieChildProcess) {
-  while (1) {
+  while (true) {
     base::PlatformThread::Sleep(TestTimeouts::action_max_timeout());
   }
-  return 0;
 }
 
 TEST_F(ChildProcessMonitorTest, Terminate) {

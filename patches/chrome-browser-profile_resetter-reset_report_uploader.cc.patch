@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/profile_resetter/reset_report_uploader.cc b/chrome/browser/profile_resetter/reset_report_uploader.cc
-index a28016ddb65a9419f64b315e62854d5144142e79..862c3270de67149a1491028d04f44864825b2fc8 100644
+index a28016ddb65a9419f64b315e62854d5144142e79..e13fce2714c8a4de39df424b45616dc6742263e3 100644
 --- a/chrome/browser/profile_resetter/reset_report_uploader.cc
 +++ b/chrome/browser/profile_resetter/reset_report_uploader.cc
 @@ -49,6 +49,7 @@ void ResetReportUploader::DispatchReport(
  
  void ResetReportUploader::DispatchReportInternal(
      const std::string& request_data) {
-+  return; // feature disabled in Brave
++  if ((true)) return; // feature disabled in Brave
    // Create traffic annotation tag.
    net::NetworkTrafficAnnotationTag traffic_annotation =
        net::DefineNetworkTrafficAnnotation("profile_resetter_upload", R"(
