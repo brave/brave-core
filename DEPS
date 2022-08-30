@@ -2,7 +2,6 @@ use_relative_paths = True
 
 deps = {
   "vendor/extension-whitelist": "https://github.com/brave/extension-whitelist.git@7f5d63711561bbc6b89dfa1c18f4d8d51df8c6d8",
-  "vendor/hashset-cpp": "https://github.com/brave/hashset-cpp.git@6eab0271d014ff09bd9f38abe1e0c117e13e9aa9",
   "vendor/requests": "https://github.com/kennethreitz/requests@e4d59bedfd3c7f4f254f4f5d036587bcd8152458",
   "vendor/boto": "https://github.com/boto/boto@f7574aa6cc2c819430c1f05e9a1a1a666ef8169b",
   "vendor/python-patch": "https://github.com/brave/python-patch@d8880110be6554686bc08261766538c2926d4e82",
