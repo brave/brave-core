@@ -1,6 +1,6 @@
 [package]
 name = "skus-sdk"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["eV <ev@7pr.xyz>"]
 edition = "2018"
 
