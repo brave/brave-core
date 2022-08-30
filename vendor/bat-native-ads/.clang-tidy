@@ -184,7 +184,7 @@
                     performance-no-automatic-move,
                     performance-no-int-to-ptr,
                     performance-noexcept-move-constructor,
-                    # performance-trivially-destructible, (https://github.com/brave/brave-browser/issues/25037)
+                    performance-trivially-destructible, (https://github.com/brave/brave-browser/issues/25037)
                     performance-type-promotion-in-math-fn,
                     performance-unnecessary-copy-initialization,
                     # performance-unnecessary-value-param, (https://github.com/brave/brave-browser/issues/25080)
