@@ -24,7 +24,7 @@ EmbeddingPipelineInfo& EmbeddingPipelineInfo::operator=(
 
 EmbeddingPipelineInfo::~EmbeddingPipelineInfo() = default;
 
-bool EmbeddingPipelineInfo::FromValue(base::Value::Dict& root) {
+bool EmbeddingPipelineInfo::FromValue(const base::Value::Dict& root) {
   if (absl::optional<int> value = root.FindInt("version")) {
     version = value.value();
   } else {
@@ -43,10 +43,10 @@ bool EmbeddingPipelineInfo::FromValue(base::Value::Dict& root) {
     return false;
   }
 
-  if (auto* value = root.FindDict("embeddings")) {
+  if (const auto* value = root.FindDict("embeddings")) {
     dim = 1;
     for (const auto item : *value) {
-      const auto list = std::move(item.second.GetList());
+      const auto& list = item.second.GetList();
       std::vector<float> embedding;
       embedding.reserve(list.size());
       for (const base::Value& v_raw : list) {

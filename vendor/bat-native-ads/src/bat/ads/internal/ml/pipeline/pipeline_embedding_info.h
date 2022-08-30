@@ -24,7 +24,7 @@ struct EmbeddingPipelineInfo final {
   EmbeddingPipelineInfo& operator=(EmbeddingPipelineInfo&& info) noexcept;
   ~EmbeddingPipelineInfo();
 
-  bool FromValue(base::Value::Dict& root);
+  bool FromValue(const base::Value::Dict& root);
 
   int version = 0;
   base::Time time;
