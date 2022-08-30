@@ -467,11 +467,7 @@
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.DropdownItemViewInfoListBuilder {
-    *** mDropdownHeight;
-    *** mPriorityOrderedSuggestionProcessors;
     public <init>(...);
-    *** getVisibleSuggestionsCount(...);
-    *** getProcessorForSuggestion(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.BraveDropdownItemViewInfoListBuilder {
