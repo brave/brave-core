@@ -19,6 +19,8 @@ bool IsIpfsDisabledByFeatureOrPolicy(PrefService* prefs);
 bool IsIpfsMenuEnabled(PrefService* prefs);
 bool IsIpfsDisabledByPolicy(PrefService* prefs);
 bool IsValidCID(const std::string& cid);
+bool HasIPFSOrIPNSPath(const GURL& url);
+bool HasIPNSPath(const GURL& url);
 bool HasIPFSPath(const GURL& url);
 bool IsDefaultGatewayURL(const GURL& url, PrefService* prefs);
 bool IsLocalGatewayURL(const GURL& url);

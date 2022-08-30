@@ -7,18 +7,50 @@
 
 #include <string>
 
+#include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "chrome/common/channel_info.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "net/base/net_errors.h"
+#include "net/base/url_util.h"
+#include "url/url_constants.h"
 
 namespace ipfs {
+
+int OnBeforeStartTransaction_AddXForwardedProtoHeader(
+    net::HttpRequestHeaders* headers,
+    const brave::ResponseCallback& next_callback,
+    std::shared_ptr<brave::BraveRequestInfo> ctx) {
+  // Add header when navigate to localhost/ipns/<path> so local node could
+  // redirect to proper url under ipns.localhost domain.
+  if (ctx->request_url.SchemeIsHTTPOrHTTPS() &&
+      net::IsLocalhost(ctx->request_url) && HasIPNSPath(ctx->request_url)) {
+    headers->AddHeadersFromString("X-Forwarded-Proto: https");
+  }
+  return net::OK;
+}
 
 int OnBeforeURLRequest_IPFSRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
+  MaybeReduceHTTPSScheme(ctx);
+  return MaybeRedirectToIPFSScheme(ctx);
+}
+
+void MaybeReduceHTTPSScheme(std::shared_ptr<brave::BraveRequestInfo> ctx) {
+  // Reduce HTTPS to HTTP because local IPFS node can't handle HTTPS.
+  if (ctx->request_url.DomainIs("ipns.localhost") &&
+      ctx->request_url.SchemeIs(url::kHttpsScheme)) {
+    GURL::Replacements replacements;
+    replacements.SetSchemeStr(url::kHttpScheme);
+    ctx->new_url_spec = ctx->request_url.ReplaceComponents(replacements).spec();
+  }
+}
+
+int MaybeRedirectToIPFSScheme(std::shared_ptr<brave::BraveRequestInfo> ctx) {
   const bool has_ipfs_scheme = IsIPFSScheme(ctx->request_url);
   if (!ctx->browser_context) {
     // IPFS url translation depends on selected gateway.

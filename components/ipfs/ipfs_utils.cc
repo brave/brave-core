@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/strings/string_piece_forward.h"
 #include "base/strings/string_split.h"
@@ -134,17 +135,25 @@ bool IsIpfsDisabledByPolicy(PrefService* prefs) {
          !prefs->GetBoolean(kIPFSEnabled);
 }
 
+bool HasIPFSOrIPNSPath(const GURL& gurl) {
+  return gurl.is_valid() && (HasIPFSPath(gurl) || HasIPNSPath(gurl));
+}
+
 bool HasIPFSPath(const GURL& gurl) {
   const auto& path = gurl.path();
-  return gurl.is_valid() && ((path.find("/ipfs/") != std::string::npos) ||
-                             (path.find("/ipns/") != std::string::npos));
+  return gurl.is_valid() && base::Contains(path, "/ipfs/");
+}
+
+bool HasIPNSPath(const GURL& gurl) {
+  const auto& path = gurl.path();
+  return gurl.is_valid() && base::Contains(path, "/ipns/");
 }
 
 bool IsDefaultGatewayURL(const GURL& url, PrefService* prefs) {
   DCHECK(prefs);
   std::string gateway_host = GetDefaultIPFSGateway(prefs).host();
   return url.DomainIs(gateway_host) &&
-         (HasIPFSPath(url) ||
+         (HasIPFSOrIPNSPath(url) ||
           url.DomainIs(std::string("ipfs.") + gateway_host) ||
           url.DomainIs(std::string("ipns.") + gateway_host));
 }
@@ -164,7 +173,7 @@ bool IsAPIGateway(const GURL& url, version_info::Channel channel) {
 
 bool IsLocalGatewayURL(const GURL& url) {
   return url.SchemeIsHTTPOrHTTPS() &&
-         ((net::IsLocalhost(url) && HasIPFSPath(url)) ||
+         ((net::IsLocalhost(url) && HasIPFSOrIPNSPath(url)) ||
           url.DomainIs(std::string("ipfs.localhost")) ||
           url.DomainIs(std::string("ipns.localhost")));
 }

@@ -84,7 +84,7 @@ TEST_F(IpfsUtilsUnitTest, CIDValidation) {
       "ba%ybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"));
 }
 
-TEST_F(IpfsUtilsUnitTest, HasIPFSPath) {
+TEST_F(IpfsUtilsUnitTest, HasIPFSOrIPNSPath) {
   std::vector<GURL> ipfs_urls(
       {GURL("http://localhost:48080/ipfs/"
             "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/wiki/"
@@ -93,7 +93,7 @@ TEST_F(IpfsUtilsUnitTest, HasIPFSPath) {
             "Anasayfa.html")});
 
   for (auto url : ipfs_urls) {
-    EXPECT_TRUE(ipfs::HasIPFSPath(url)) << url;
+    EXPECT_TRUE(ipfs::HasIPFSOrIPNSPath(url)) << url;
   }
 }
 

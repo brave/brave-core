@@ -14,9 +14,18 @@
 
 namespace ipfs {
 
+int OnBeforeStartTransaction_AddXForwardedProtoHeader(
+    net::HttpRequestHeaders* headers,
+    const brave::ResponseCallback& next_callback,
+    std::shared_ptr<brave::BraveRequestInfo> ctx);
+
 int OnBeforeURLRequest_IPFSRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx);
+
+void MaybeReduceHTTPSScheme(std::shared_ptr<brave::BraveRequestInfo> ctx);
+
+int MaybeRedirectToIPFSScheme(std::shared_ptr<brave::BraveRequestInfo> ctx);
 
 int OnHeadersReceived_IPFSRedirectWork(
     const net::HttpResponseHeaders* original_response_headers,

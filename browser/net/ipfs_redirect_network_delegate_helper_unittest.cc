@@ -405,4 +405,140 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, PrivateProfile) {
   EXPECT_TRUE(brave_request_info->new_url_spec.empty());
 }
 
+TEST_F(IPFSRedirectNetworkDelegateHelperTest, XForwardedProtoHeaderAdded) {
+  GURL url("http://localhost/ipns/en.wikipedia-on-ipfs.org/");
+  auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  brave_request_info->browser_context = profile()->GetPrimaryOTRProfile(true);
+  brave_request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
+
+  net::HttpRequestHeaders headers;
+
+  int rc = ipfs::OnBeforeStartTransaction_AddXForwardedProtoHeader(
+      &headers, brave::ResponseCallback(), brave_request_info);
+
+  EXPECT_EQ(rc, net::OK);
+  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
+  std::string header_value;
+  headers.GetHeader("X-Forwarded-Proto", &header_value);
+  EXPECT_EQ(header_value, "https");
+}
+
+TEST_F(IPFSRedirectNetworkDelegateHelperTest,
+       XForwardedProtoHeaderNotAdded_AfterIPNSRedirect) {
+  GURL url("http://en-wikipedia--on--ipfs-org.ipns.localhost/");
+  auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  brave_request_info->browser_context = profile()->GetPrimaryOTRProfile(true);
+  brave_request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
+
+  net::HttpRequestHeaders headers;
+
+  int rc = ipfs::OnBeforeStartTransaction_AddXForwardedProtoHeader(
+      &headers, brave::ResponseCallback(), brave_request_info);
+
+  EXPECT_EQ(rc, net::OK);
+  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
+  std::string header_value;
+  ASSERT_FALSE(headers.GetHeader("X-Forwarded-Proto", &header_value));
+}
+
+TEST_F(IPFSRedirectNetworkDelegateHelperTest,
+       XForwardedProtoHeaderNotAdded_NavigateToIPFS) {
+  GURL url(
+      "http://localhost/ipfs/QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG/");
+  auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  brave_request_info->browser_context = profile()->GetPrimaryOTRProfile(true);
+  brave_request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
+
+  net::HttpRequestHeaders headers;
+
+  int rc = ipfs::OnBeforeStartTransaction_AddXForwardedProtoHeader(
+      &headers, brave::ResponseCallback(), brave_request_info);
+
+  EXPECT_EQ(rc, net::OK);
+  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
+  std::string header_value;
+  ASSERT_FALSE(headers.GetHeader("X-Forwarded-Proto", &header_value));
+}
+
+TEST_F(IPFSRedirectNetworkDelegateHelperTest,
+       XForwardedProtoHeaderNotAdded_AfterIPFSRedirect) {
+  GURL url(
+      "http://"
+      "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq.ipfs."
+      "localhost/");
+  auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  brave_request_info->browser_context = profile()->GetPrimaryOTRProfile(true);
+  brave_request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
+
+  net::HttpRequestHeaders headers;
+
+  int rc = ipfs::OnBeforeStartTransaction_AddXForwardedProtoHeader(
+      &headers, brave::ResponseCallback(), brave_request_info);
+
+  EXPECT_EQ(rc, net::OK);
+  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
+  std::string header_value;
+  ASSERT_FALSE(headers.GetHeader("X-Forwarded-Proto", &header_value));
+}
+
+TEST_F(IPFSRedirectNetworkDelegateHelperTest,
+       HTTPSSchemeReduced_ForIPNSLocalhostUrl) {
+  GURL url("https://en-wikipedia--on--ipfs-org.ipns.localhost/");
+  auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  brave_request_info->browser_context = profile()->GetPrimaryOTRProfile(true);
+  brave_request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
+
+  net::HttpRequestHeaders headers;
+
+  int rc = ipfs::OnBeforeURLRequest_IPFSRedirectWork(brave::ResponseCallback(),
+                                                     brave_request_info);
+
+  EXPECT_EQ(rc, net::OK);
+  EXPECT_EQ(brave_request_info->new_url_spec,
+            "http://en-wikipedia--on--ipfs-org.ipns.localhost/");
+}
+
+TEST_F(IPFSRedirectNetworkDelegateHelperTest, MaybeReduceHTTPSScheme) {
+  {
+    GURL url("https://en-wikipedia--on--ipfs-org.ipns.localhost/");
+    auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
+    brave_request_info->browser_context = profile()->GetPrimaryOTRProfile(true);
+
+    ipfs::MaybeReduceHTTPSScheme(brave_request_info);
+
+    EXPECT_EQ(brave_request_info->new_url_spec,
+              "http://en-wikipedia--on--ipfs-org.ipns.localhost/");
+  }
+
+  {
+    GURL url("http://en-wikipedia--on--ipfs-org.ipns.localhost/");
+    auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
+    brave_request_info->browser_context = profile()->GetPrimaryOTRProfile(true);
+
+    ipfs::MaybeReduceHTTPSScheme(brave_request_info);
+
+    EXPECT_TRUE(brave_request_info->new_url_spec.empty());
+  }
+
+  {
+    GURL url("https://en-wikipedia--on--ipfs-org.ipfs.localhost/");
+    auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
+    brave_request_info->browser_context = profile()->GetPrimaryOTRProfile(true);
+
+    ipfs::MaybeReduceHTTPSScheme(brave_request_info);
+
+    EXPECT_TRUE(brave_request_info->new_url_spec.empty());
+  }
+
+  {
+    GURL url("https://brave.com/");
+    auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
+    brave_request_info->browser_context = profile()->GetPrimaryOTRProfile(true);
+
+    ipfs::MaybeReduceHTTPSScheme(brave_request_info);
+
+    EXPECT_TRUE(brave_request_info->new_url_spec.empty());
+  }
+}
+
 }  // namespace ipfs

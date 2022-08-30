@@ -99,6 +99,13 @@ void BraveRequestHandler::SetupCallbacks() {
       base::BindRepeating(brave::OnBeforeStartTransaction_SiteHacksWork);
   before_start_transaction_callbacks_.push_back(start_transaction_callback);
 
+#if BUILDFLAG(ENABLE_IPFS)
+  if (base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
+    start_transaction_callback = base::BindRepeating(
+        ipfs::OnBeforeStartTransaction_AddXForwardedProtoHeader);
+    before_start_transaction_callbacks_.push_back(start_transaction_callback);
+  }
+#endif
   start_transaction_callback = base::BindRepeating(
       brave::OnBeforeStartTransaction_GlobalPrivacyControlWork);
   before_start_transaction_callbacks_.push_back(start_transaction_callback);
