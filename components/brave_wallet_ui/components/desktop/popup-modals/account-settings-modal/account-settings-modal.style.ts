@@ -5,7 +5,7 @@
 
 import styled from 'styled-components'
 
-import ClipboardIcon from '../../../../assets/svg-icons/clipboard-icon.svg'
+import ClipboardIcon from '../../../../assets/svg-icons/copy-to-clipboard-icon.svg'
 import { WalletButton } from '../../../shared/style'
 
 export const StyledWrapper = styled.div`
