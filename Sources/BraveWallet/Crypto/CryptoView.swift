@@ -189,6 +189,7 @@ public struct CryptoView: View {
               EditSiteConnectionView(
                 keyringStore: keyringStore,
                 origin: origin,
+                coin: .eth, // TODO: switch to dynamic coin type once we support Solona Dapps
                 onDismiss: { accounts in
                   handler(accounts)
                   dismissAction?()

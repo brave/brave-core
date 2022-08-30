@@ -2479,6 +2479,20 @@ extension Strings {
       value: "Switch",
       comment: "The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen."
     )
+    public static let editSiteConnectionAccountActionTrust = NSLocalizedString(
+      "wallet.editSiteConnectionAccountActionTrust",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Trust",
+      comment: "The title of the button for users to click so that they grant wallet account permission for the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen."
+    )
+    public static let editSiteConnectionAccountActionRevoke = NSLocalizedString(
+      "wallet.editSiteConnectionAccountActionRevoke",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Revoke",
+      comment: "The title of the button for users to click so that they remove wallet account permission from the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen"
+    )
     public static let walletPanelConnected = NSLocalizedString(
       "wallet.walletPanelConnected",
       tableName: "BraveWallet",
