@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_USER_INTERACTION_REACTIONS_REACTIONS_H_
-#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_USER_INTERACTION_REACTIONS_REACTIONS_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_USER_INTERACTION_USER_REACTIONS_USER_REACTIONS_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_USER_INTERACTION_USER_REACTIONS_USER_REACTIONS_H_
 
 #include "base/memory/raw_ptr.h"
 #include "bat/ads/internal/history/history_manager_observer.h"
@@ -14,12 +14,12 @@ namespace ads {
 class Account;
 struct AdContentInfo;
 
-class Reactions final : public HistoryManagerObserver {
+class UserReactions final : public HistoryManagerObserver {
  public:
-  explicit Reactions(Account* account);
-  Reactions(const Reactions&) = delete;
-  Reactions& operator=(const Reactions&) = delete;
-  ~Reactions() override;
+  explicit UserReactions(Account* account);
+  UserReactions(const UserReactions&) = delete;
+  UserReactions& operator=(const UserReactions&) = delete;
+  ~UserReactions() override;
 
  private:
   // HistoryManagerObserver:
@@ -33,4 +33,4 @@ class Reactions final : public HistoryManagerObserver {
 
 }  // namespace ads
 
-#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_USER_INTERACTION_REACTIONS_REACTIONS_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_USER_INTERACTION_USER_REACTIONS_USER_REACTIONS_H_
