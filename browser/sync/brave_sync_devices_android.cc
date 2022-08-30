@@ -62,7 +62,7 @@ void BraveSyncDevicesAndroid::OnDeviceInfoChange() {
       weak_java_brave_sync_worker_.get(env));
 }
 
-base::Value BraveSyncDevicesAndroid::GetSyncDeviceList() {
+base::Value::List BraveSyncDevicesAndroid::GetSyncDeviceList() {
   auto* device_info_service =
       DeviceInfoSyncServiceFactory::GetForProfile(profile_);
   syncer::DeviceInfoTracker* tracker =
@@ -71,7 +71,7 @@ base::Value BraveSyncDevicesAndroid::GetSyncDeviceList() {
   const syncer::DeviceInfo* local_device_info = device_info_service
      ->GetLocalDeviceInfoProvider()->GetLocalDeviceInfo();
 
-  base::Value device_list(base::Value::Type::LIST);
+  base::Value::List device_list;
 
   for (const auto& device : tracker->GetAllBraveDeviceInfo()) {
     auto device_value = base::Value::FromUniquePtrValue(device->ToValue());
@@ -91,9 +91,8 @@ base::Value BraveSyncDevicesAndroid::GetSyncDeviceList() {
 
 base::android::ScopedJavaLocalRef<jstring>
 BraveSyncDevicesAndroid::GetSyncDeviceListJson(JNIEnv* env) {
-  base::Value device_list = GetSyncDeviceList();
   std::string json_string;
-  if (!base::JSONWriter::Write(device_list, &json_string)) {
+  if (!base::JSONWriter::Write(GetSyncDeviceList(), &json_string)) {
     VLOG(1) << "Writing as JSON failed. Passing empty string to Java code.";
     json_string = std::string();
   }
