@@ -100,13 +100,6 @@ export function ConnectWalletModal (props: Props) {
   }
 
   function renderSelectWallet () {
-    const onLoginLinkClicked = (evt: React.MouseEvent) => {
-      evt.preventDefault()
-      if (selectedProvider) {
-        props.onContinue(selectedProvider.type)
-      }
-    }
-
     return {
       left: (
         <style.selectWalletLeftPanel>

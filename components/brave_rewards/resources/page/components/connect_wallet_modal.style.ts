@@ -4,7 +4,6 @@
 
 import styled from 'styled-components'
 
-import warningCircleImage from '../../shared/assets/warning_circle.svg'
 import greenCheckIcon from '../assets/green_check.svg'
 
 export const root = styled.div`
