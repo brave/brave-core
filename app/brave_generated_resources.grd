@@ -689,6 +689,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_SIDEBAR_ITEMS_SCROLL_DOWN_BUTTON_ACCESSIBLE_NAME" desc="Text to be spoken when scroll down button is shown">
           Scroll down
         </message>
+        <message name="IDS_SIDEBAR_ADD_ITEM_BUTTON_TOOLTIP" desc="Text of sidebar add item button tooltip">
+          Add to Sidebar
+        </message>
       </if>
 
       <!-- Speedreader -->
