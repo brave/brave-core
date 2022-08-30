@@ -73,7 +73,7 @@ base::Value::Dict
 NTPCustomBackgroundImagesServiceDelegate::GetPreferredBraveBackground() const {
   DCHECK(HasPreferredBraveBackground());
 
-  const auto pref = NTPBackgroundPrefs(profile_->GetPrefs());
+  auto pref = NTPBackgroundPrefs(profile_->GetPrefs());
   const auto selected_value = pref.GetSelectedValue();
   const auto image_url = absl::get<GURL>(selected_value);
 
@@ -94,7 +94,14 @@ NTPCustomBackgroundImagesServiceDelegate::GetPreferredBraveBackground() const {
                image_url.spec();
       });
 
-  DCHECK(iter != image_data->backgrounds.end());
+  if (iter == image_data->backgrounds.end()) {
+    // Due to version update, the data could have been invalidated.
+    // Try fixing up the data and return empty value.
+    pref.SetShouldUseRandomValue(true);
+    pref.SetSelectedValue(base::EmptyString());
+    return {};
+  }
+
   return image_data->GetBackgroundAt(
       std::distance(image_data->backgrounds.begin(), iter));
 }

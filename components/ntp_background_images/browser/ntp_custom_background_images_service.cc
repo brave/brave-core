@@ -33,11 +33,14 @@ base::Value::Dict NTPCustomBackgroundImagesService::GetBackground() const {
   DCHECK(ShouldShowCustomBackground());
 
   if (delegate_->HasPreferredBraveBackground()) {
-    if (auto background = delegate_->GetPreferredBraveBackground();
-        !background.empty()) {
-      background.Set(kWallpaperRandomKey, false);
+    auto background = delegate_->GetPreferredBraveBackground();
+    if (background.empty()) {
+      // Return empty value so that it falls back to random Brave background.
       return background;
     }
+
+    background.Set(kWallpaperRandomKey, false);
+    return background;
   }
 
   // The |data| will be mapped to NewTab.BackgroundWallpaper type from JS side.

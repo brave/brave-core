@@ -10,7 +10,7 @@ export const images: NewTab.BraveBackground[] = [{
   'originalUrl': 'Contributor sent the hi-res version through email',
   'license': 'used with permission'
 }]
-// If you change the size of this array (e.g. adding a new background, adding a new property), 
+// If you change the size of this array (e.g. adding a new background, adding a new property),
 // then you must also update `script/generate_licenses.py`
 
 export const updateImages = (newImages: NewTab.BraveBackground[]) => {
