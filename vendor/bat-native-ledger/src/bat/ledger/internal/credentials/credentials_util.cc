@@ -35,11 +35,9 @@ std::vector<Token> GenerateCreds(const int count) {
 }
 
 std::string GetCredsJSON(const std::vector<Token>& creds) {
-  base::Value creds_list(base::Value::Type::LIST);
+  base::Value::List creds_list;
   for (auto & cred : creds) {
-    auto cred_base64 = cred.encode_base64();
-    auto cred_value = base::Value(cred_base64);
-    creds_list.Append(std::move(cred_value));
+    creds_list.Append(cred.encode_base64());
   }
 
   std::string json;
@@ -62,11 +60,9 @@ std::vector<BlindedToken> GenerateBlindCreds(const std::vector<Token>& creds) {
 
 std::string GetBlindedCredsJSON(
     const std::vector<BlindedToken>& blinded_creds) {
-  base::Value blinded_list(base::Value::Type::LIST);
+  base::Value::List blinded_list;
   for (auto & cred : blinded_creds) {
-    auto cred_base64 = cred.encode_base64();
-    auto cred_value = base::Value(cred_base64);
-    blinded_list.Append(std::move(cred_value));
+    blinded_list.Append(cred.encode_base64());
   }
 
   std::string json;

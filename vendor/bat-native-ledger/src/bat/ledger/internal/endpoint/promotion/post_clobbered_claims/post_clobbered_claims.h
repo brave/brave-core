@@ -3,10 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_ENDPOINT_PROMOTION_POST_CLOBBERED_\
-CLAIMS_POST_CLOBBERED_CLAIMS_H_
-#define BRAVELEDGER_ENDPOINT_PROMOTION_POST_CLOBBERED_\
-CLAIMS_POST_CLOBBERED_CLAIMS_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_POST_CLOBBERED_CLAIMS_POST_CLOBBERED_CLAIMS_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_POST_CLOBBERED_CLAIMS_POST_CLOBBERED_CLAIMS_H_
 
 #include <string>
 
@@ -44,14 +42,13 @@ class PostClobberedClaims {
   explicit PostClobberedClaims(LedgerImpl* ledger);
   ~PostClobberedClaims();
 
-  void Request(
-    base::Value corrupted_claims,
-    PostClobberedClaimsCallback callback);
+  void Request(base::Value::List corrupted_claims,
+               PostClobberedClaimsCallback callback);
 
  private:
   std::string GetUrl();
 
-  std::string GeneratePayload(base::Value corrupted_claims);
+  std::string GeneratePayload(base::Value::List corrupted_claims);
 
   type::Result CheckStatusCode(const int status_code);
 
@@ -66,5 +63,4 @@ class PostClobberedClaims {
 }  // namespace endpoint
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_ENDPOINT_PROMOTION_POST_CLOBBERED_\
-// CLAIMS_POST_CLOBBERED_CLAIMS_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_POST_CLOBBERED_CLAIMS_POST_CLOBBERED_CLAIMS_H_

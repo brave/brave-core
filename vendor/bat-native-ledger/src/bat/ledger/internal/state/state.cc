@@ -21,9 +21,9 @@
 namespace {
 
 std::string VectorDoubleToString(const std::vector<double>& items) {
-  base::Value list(base::Value::Type::LIST);
+  base::Value::List list;
   for (const auto& item : items) {
-    list.Append(base::Value(item));
+    list.Append(item);
   }
 
   std::string items_string;

@@ -661,7 +661,7 @@ void Promotion::CheckForCorruptedCreds(type::CredsBatchList list) {
 void Promotion::CorruptedPromotions(
     type::PromotionList promotions,
     const std::vector<std::string>& ids) {
-  base::Value corrupted_claims(base::Value::Type::LIST);
+  base::Value::List corrupted_claims;
 
   for (auto& item : promotions) {
     if (!item) {
@@ -671,7 +671,7 @@ void Promotion::CorruptedPromotions(
     corrupted_claims.Append(base::Value(item->claim_id));
   }
 
-  if (corrupted_claims.GetList().empty()) {
+  if (corrupted_claims.empty()) {
     BLOG(1, "No corrupted creds");
     ledger_->state()->SetPromotionCorruptedMigrated(true);
     return;

@@ -53,7 +53,7 @@ TEST_F(PostClobberedClaimsTest, ServerOK) {
             std::move(callback).Run(response);
           }));
 
-  base::Value corrupted_claims(base::Value::Type::LIST);
+  base::Value::List corrupted_claims;
   corrupted_claims.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
   claims_->Request(
@@ -74,7 +74,7 @@ TEST_F(PostClobberedClaimsTest, ServerError400) {
             std::move(callback).Run(response);
           }));
 
-  base::Value corrupted_claims(base::Value::Type::LIST);
+  base::Value::List corrupted_claims;
   corrupted_claims.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
   claims_->Request(
@@ -95,7 +95,7 @@ TEST_F(PostClobberedClaimsTest, ServerError500) {
             std::move(callback).Run(response);
           }));
 
-  base::Value corrupted_claims(base::Value::Type::LIST);
+  base::Value::List corrupted_claims;
   corrupted_claims.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
   claims_->Request(
@@ -116,7 +116,7 @@ TEST_F(PostClobberedClaimsTest, ServerErrorRandom) {
             std::move(callback).Run(response);
           }));
 
-  base::Value corrupted_claims(base::Value::Type::LIST);
+  base::Value::List corrupted_claims;
   corrupted_claims.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
   claims_->Request(
