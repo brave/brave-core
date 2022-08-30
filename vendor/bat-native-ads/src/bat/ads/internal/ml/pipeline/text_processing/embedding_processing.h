@@ -10,8 +10,6 @@
 #include <memory>
 #include <string>
 
-#include "base/time/time.h"
-#include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_embedding_info.h"
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_info.h"
 
