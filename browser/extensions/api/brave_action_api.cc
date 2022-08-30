@@ -96,52 +96,44 @@ BraveActionAPI* BraveActionAPI::Get(Browser* context) {
 }
 
 // static
-bool BraveActionAPI::ShowActionUI(
-      ExtensionFunction* extension_function,
-      const std::string& extension_id,
-      std::unique_ptr<int> window_id_param,
-      std::unique_ptr<std::string> ui_relative_path_param,
-      std::string* error) {
+base::expected<bool, std::string> BraveActionAPI::ShowActionUI(
+    ExtensionFunction* extension_function,
+    const std::string& extension_id,
+    absl::optional<int> window_id_param,
+    absl::optional<std::string> ui_relative_path_param) {
   // Which browser should we send the action to
   Browser* browser = nullptr;
   // If the windowId is specified, find it. Otherwise get the active
   // window for the profile.
-  if (!window_id_param.get()) {
+  if (!window_id_param) {
     browser = ChromeExtensionFunctionDetails(extension_function)
         .GetCurrentBrowser();
     if (!browser) {
-      *error = tabs_constants::kNoCurrentWindowError;
-      return false;
+      return base::unexpected(tabs_constants::kNoCurrentWindowError);
     }
   } else {
-    int window_id = *window_id_param;
     std::string get_browser_error;
     if (!windows_util::GetBrowserFromWindowID(
-            extension_function,
-            window_id,
-            WindowController::GetAllWindowFilter(),
-            &browser,
+            extension_function, *window_id_param,
+            WindowController::GetAllWindowFilter(), &browser,
             &get_browser_error)) {
-      *error = get_browser_error;
-      return false;
+      return base::unexpected(get_browser_error);
     }
   }
-  return ShowActionUI(browser, extension_id, std::move(ui_relative_path_param),
-      error);
+  return ShowActionUI(browser, extension_id, std::move(ui_relative_path_param));
 }
 
 // static
-bool BraveActionAPI::ShowActionUI(
-        Browser* browser,
-        const std::string& extension_id,
-        std::unique_ptr<std::string> ui_relative_path_param,
-        std::string* error) {
+base::expected<bool, std::string> BraveActionAPI::ShowActionUI(
+    Browser* browser,
+    const std::string& extension_id,
+    absl::optional<std::string> ui_relative_path_param) {
   bool did_notify = BraveActionAPI::Get(browser)->NotifyObservers(extension_id,
       std::move(ui_relative_path_param));
   if (!did_notify) {
-    *error = "No toolbar is registered to observe BraveActionUI "
-              "calls for this window";
-    return false;
+    return base::unexpected(
+        "No toolbar is registered to observe BraveActionUI "
+        "calls for this window");
   }
   return true;
 }
@@ -158,12 +150,12 @@ void BraveActionAPI::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
-bool BraveActionAPI::NotifyObservers(const std::string& extension_id,
-      std::unique_ptr<std::string> ui_relative_path_param) {
+bool BraveActionAPI::NotifyObservers(
+    const std::string& extension_id,
+    absl::optional<std::string> ui_relative_path_param) {
   bool did_notify = false;
   for (auto& observer : observers_) {
-    observer.OnBraveActionShouldTrigger(extension_id,
-        std::move(ui_relative_path_param));
+    observer.OnBraveActionShouldTrigger(extension_id, ui_relative_path_param);
     did_notify = true;
   }
   return did_notify;

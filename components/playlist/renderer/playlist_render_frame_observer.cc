@@ -33,9 +33,6 @@ void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
   const auto current_origin =
       render_frame()->GetWebFrame()->GetSecurityOrigin();
   if (base::ranges::any_of(*origins, [&current_origin](const auto& origin) {
-        if (base::FeatureList::IsEnabled(features::kCompareOnlyHostForTesting))
-          return origin.Host() == current_origin.Host();
-
         return origin.IsSameOriginWith(current_origin);
       })) {
     HideMediaSourceAPI();

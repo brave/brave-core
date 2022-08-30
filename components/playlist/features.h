@@ -14,8 +14,6 @@ namespace playlist::features {
 
 extern const base::Feature kPlaylist;
 
-extern const base::Feature kCompareOnlyHostForTesting;
-
 }  // namespace playlist::features
 
 #endif  // BRAVE_COMPONENTS_PLAYLIST_FEATURES_H_

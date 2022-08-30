@@ -19,6 +19,19 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #endif
 
+// Usage of this matcher:
+//   std::vector<PlaylistItemInfo> actual = { ... };
+//   std::vector<PlaylistItemInfo> expected = { ... };
+//   EXPECT_THAT(actual, IsSamePlaylistItems(expected));
+MATCHER_P(IsSamePlaylistItems, expected, "") {
+  auto equal = [](const auto& a, const auto& b) {
+    // id is not compared because it is generated for actual items.
+    return a.media_file_path == b.media_file_path && a.title == b.title &&
+           a.thumbnail_path == b.thumbnail_path;
+  };
+  return base::ranges::equal(arg, expected, equal);
+}
+
 class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
  public:
   PlaylistDownloadRequestManagerBrowserTest() {
@@ -45,7 +58,6 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
     const GURL url = embedded_test_server()->GetURL("/test");
     auto* active_web_contents = chrome_test_utils::GetActiveWebContents(this);
 
-    // This is a blocking call.
     ASSERT_TRUE(content::NavigateToURL(active_web_contents, url));
 
     // Run script and find media files
@@ -127,40 +139,7 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
 
     std::vector sorted_actual(actual_items.begin(), actual_items.end());
     base::ranges::sort(sorted_actual, comparer);
-
-    auto equal = [](const auto& a, const auto& b) {
-      // id is not compared because it is generated for |expected_items|.
-      return a.media_file_path == b.media_file_path && a.title == b.title &&
-             a.thumbnail_path == b.thumbnail_path;
-    };
-
-    if (!base::ranges::equal(sorted_expected, sorted_actual, equal)) {
-      std::string log("[");
-      log += test_name;
-      log += " Failed] Expected: [";
-      for (const auto& item : sorted_expected) {
-        log += "{ ";
-        log += item.media_file_path;
-        log += ", ";
-        log += item.title;
-        log += ", ";
-        log += item.thumbnail_path;
-        log += " },";
-      }
-      log += "] Actual: [";
-      for (const auto& item : sorted_actual) {
-        log += "{ ";
-        log += item.media_file_path;
-        log += ", ";
-        log += item.title;
-        log += ", ";
-        log += item.thumbnail_path;
-        log += " }";
-      }
-      log += "]";
-
-      FAIL() << log;
-    }
+    EXPECT_THAT(sorted_actual, IsSamePlaylistItems(sorted_expected));
 
     ASSERT_TRUE(run_loop_);
     run_loop_->Quit();
