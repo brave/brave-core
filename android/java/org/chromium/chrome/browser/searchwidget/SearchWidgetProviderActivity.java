@@ -19,8 +19,8 @@ public class SearchWidgetProviderActivity extends SearchActivity {
     public void onNewIntent(Intent intent) {
         Intent newIntent = new Intent();
         if (IntentUtils.safeGetStringExtra(intent, SearchManager.QUERY) != null) {
-            newIntent.putExtra(
-                    "query", IntentUtils.safeGetStringExtra(intent, SearchManager.QUERY));
+            newIntent.putExtra(SearchManager.QUERY,
+                    IntentUtils.safeGetStringExtra(intent, SearchManager.QUERY));
         }
 
         if (intent.getAction().equals(SearchActivityConstants.ACTION_START_TEXT_SEARCH)) {
