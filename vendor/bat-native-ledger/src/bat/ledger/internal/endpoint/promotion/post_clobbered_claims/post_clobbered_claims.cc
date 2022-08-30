@@ -28,7 +28,8 @@ std::string PostClobberedClaims::GetUrl() {
   return GetServerUrl("/v2//promotions/reportclobberedclaims");
 }
 
-std::string PostClobberedClaims::GeneratePayload(base::Value corrupted_claims) {
+std::string PostClobberedClaims::GeneratePayload(
+    base::Value::List corrupted_claims) {
   base::Value::Dict body;
   body.Set("claimIds", std::move(corrupted_claims));
 
@@ -57,9 +58,8 @@ type::Result PostClobberedClaims::CheckStatusCode(const int status_code) {
   return type::Result::LEDGER_OK;
 }
 
-void PostClobberedClaims::Request(
-    base::Value corrupted_claims,
-    PostClobberedClaimsCallback callback) {
+void PostClobberedClaims::Request(base::Value::List corrupted_claims,
+                                  PostClobberedClaimsCallback callback) {
   auto url_callback = std::bind(&PostClobberedClaims::OnRequest,
       this,
       _1,
