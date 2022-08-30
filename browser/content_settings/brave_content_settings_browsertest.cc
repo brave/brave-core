@@ -115,7 +115,14 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsBrowserTest,
       EXPECT_EQ(
           info->incognito_behavior(),
           content_settings::ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE)
-          << "Unexpected inheritance setting found. Please review this test.";
+          << "Unexpected inheritance setting found. Most likely you should "
+             "make adjustments to the logic to handle it properly.";
+
+      EXPECT_NE(info->GetInitialDefaultSetting(), CONTENT_SETTING_ALLOW)
+          << "INHERIT_IF_LESS_PERMISSIVE setting should not default to ALLOW, "
+             "otherwise it's a privacy issue. Please review this setting and "
+             "most likely add an exception for it to always use upstream "
+             "IsMorePermissive() call.";
     }
 
     // Set ALLOW value in normal profile.
