@@ -234,7 +234,8 @@ class NTPBackgroundImagesServiceTest : public testing::Test {
   }
 
   void Init() {
-    service_.reset(new TestNTPBackgroundImagesService(nullptr, &pref_service_));
+    service_ = std::make_unique<TestNTPBackgroundImagesService>(nullptr,
+                                                                &pref_service_);
     service_->Init();
   }
 

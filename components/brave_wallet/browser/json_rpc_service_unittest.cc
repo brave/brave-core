@@ -345,8 +345,8 @@ class JsonRpcServiceUnitTest : public testing::Test {
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     brave_wallet::RegisterProfilePrefsForMigration(prefs_.registry());
     ipfs::IpfsService::RegisterProfilePrefs(prefs_.registry());
-    json_rpc_service_.reset(
-        new JsonRpcService(shared_url_loader_factory_, &prefs_));
+    json_rpc_service_ =
+        std::make_unique<JsonRpcService>(shared_url_loader_factory_, &prefs_);
     SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH);
     SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::SOL);
     SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL);

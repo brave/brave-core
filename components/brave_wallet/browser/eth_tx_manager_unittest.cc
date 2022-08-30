@@ -238,12 +238,12 @@ class EthTxManagerUnitTest : public testing::Test {
         }));
 
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
-    json_rpc_service_.reset(
-        new JsonRpcService(shared_url_loader_factory_, &prefs_));
-    keyring_service_.reset(
-        new KeyringService(json_rpc_service_.get(), &prefs_));
-    tx_service_.reset(new TxService(json_rpc_service_.get(),
-                                    keyring_service_.get(), &prefs_));
+    json_rpc_service_ =
+        std::make_unique<JsonRpcService>(shared_url_loader_factory_, &prefs_);
+    keyring_service_ =
+        std::make_unique<KeyringService>(json_rpc_service_.get(), &prefs_);
+    tx_service_ = std::make_unique<TxService>(json_rpc_service_.get(),
+                                              keyring_service_.get(), &prefs_);
 
     base::RunLoop run_loop;
     json_rpc_service_->SetNetwork(brave_wallet::mojom::kLocalhostChainId,
@@ -2110,7 +2110,7 @@ TEST_F(EthTxManagerUnitTest, MakeERC721TransferFromDataTxType) {
                      mojom::TransactionType::ERC721SafeTransferFrom));
   run_loop->Run();
 
-  run_loop.reset(new base::RunLoop());
+  run_loop = std::make_unique<base::RunLoop>();
   eth_tx_manager()->MakeERC721TransferFromData(
       "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f",
       "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a", "0xf",
@@ -2120,7 +2120,7 @@ TEST_F(EthTxManagerUnitTest, MakeERC721TransferFromDataTxType) {
   run_loop->Run();
 
   // Invalid token ID should fail.
-  run_loop.reset(new base::RunLoop());
+  run_loop = std::make_unique<base::RunLoop>();
   eth_tx_manager()->MakeERC721TransferFromData(
       "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f",
       "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a", "1", contract_transfer_from,

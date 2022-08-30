@@ -4,6 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <algorithm>
+#include <memory>
 #include <utility>
 
 #include "bat/ledger/internal/common/time_util.h"
@@ -49,7 +50,7 @@ void LegacyBatState::OnLoad(ledger::type::Result result,
     return;
   }
 
-  state_.reset(new ledger::ClientProperties(state));
+  state_ = std::make_unique<ledger::ClientProperties>(state);
 
   // fix timestamp ms to s conversion
   if (std::to_string(state_->reconcile_timestamp).length() > 10) {

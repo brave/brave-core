@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "base/path_service.h"
 #include "brave/browser/crypto_dot_com/crypto_dot_com_service_factory.h"
 #include "brave/components/constants/brave_paths.h"
@@ -180,8 +182,8 @@ class CryptoDotComAPIBrowserTest : public InProcessBrowserTest {
 
   void ResetHTTPSServer(
       const net::EmbeddedTestServer::HandleRequestCallback& callback) {
-    https_server_.reset(new net::EmbeddedTestServer(
-        net::test_server::EmbeddedTestServer::TYPE_HTTPS));
+    https_server_ = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
     https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
     https_server_->RegisterRequestHandler(callback);
     ASSERT_TRUE(https_server_->Start());
@@ -201,7 +203,7 @@ class CryptoDotComAPIBrowserTest : public InProcessBrowserTest {
 
     expected_ticker_info_ = info;
 
-    wait_for_request_.reset(new base::RunLoop);
+    wait_for_request_ = std::make_unique<base::RunLoop>();
     wait_for_request_->Run();
   }
 
@@ -219,7 +221,7 @@ class CryptoDotComAPIBrowserTest : public InProcessBrowserTest {
 
     expected_chart_data_ = data;
 
-    wait_for_request_.reset(new base::RunLoop);
+    wait_for_request_ = std::make_unique<base::RunLoop>();
     wait_for_request_->Run();
   }
 
@@ -237,7 +239,7 @@ class CryptoDotComAPIBrowserTest : public InProcessBrowserTest {
 
     expected_pairs_ = pairs;
 
-    wait_for_request_.reset(new base::RunLoop);
+    wait_for_request_ = std::make_unique<base::RunLoop>();
     wait_for_request_->Run();
   }
 
@@ -255,7 +257,7 @@ class CryptoDotComAPIBrowserTest : public InProcessBrowserTest {
 
     expected_rankings_ = rankings;
 
-    wait_for_request_.reset(new base::RunLoop);
+    wait_for_request_ = std::make_unique<base::RunLoop>();
     wait_for_request_->Run();
   }
 

@@ -30,9 +30,7 @@ class NTPWidgetUtilsRegionUtilTest : public testing::Test {
   }
 
  protected:
-  void SetUp() override {
-    profile_.reset(new TestingProfile());
-  }
+  void SetUp() override { profile_ = std::make_unique<TestingProfile>(); }
 
   void TearDown() override {
     TestingBrowserProcess::GetGlobal()->SetLocalState(nullptr);

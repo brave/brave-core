@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
 
 #include "base/run_loop.h"
@@ -80,13 +82,13 @@ class TxStateManagerUnitTest : public testing::Test {
  protected:
   void SetUp() override {
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
-    json_rpc_service_.reset(
-        new JsonRpcService(shared_url_loader_factory_, &prefs_));
+    json_rpc_service_ =
+        std::make_unique<JsonRpcService>(shared_url_loader_factory_, &prefs_);
     // The only different between each coin type's tx state manager in these
     // base functions are their pref paths, so here we just use
     // EthTxStateManager to test common methods in TxStateManager.
-    tx_state_manager_.reset(
-        new EthTxStateManager(&prefs_, json_rpc_service_.get()));
+    tx_state_manager_ =
+        std::make_unique<EthTxStateManager>(&prefs_, json_rpc_service_.get());
   }
 
   void SetNetwork(const std::string& chain_id, mojom::CoinType coin) {

@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "base/path_service.h"
 #include "brave/browser/gemini/gemini_service_factory.h"
 #include "brave/components/constants/brave_paths.h"
@@ -163,8 +165,8 @@ class GeminiAPIBrowserTest : public InProcessBrowserTest {
 
   void ResetHTTPSServer(
       const net::EmbeddedTestServer::HandleRequestCallback& callback) {
-    https_server_.reset(new net::EmbeddedTestServer(
-        net::test_server::EmbeddedTestServer::TYPE_HTTPS));
+    https_server_ = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
     https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
     https_server_->RegisterRequestHandler(callback);
     ASSERT_TRUE(https_server_->Start());
@@ -193,7 +195,7 @@ class GeminiAPIBrowserTest : public InProcessBrowserTest {
       return;
     }
     expected_success_ = expected_success;
-    wait_for_request_.reset(new base::RunLoop);
+    wait_for_request_ = std::make_unique<base::RunLoop>();
     wait_for_request_->Run();
   }
 
@@ -202,7 +204,7 @@ class GeminiAPIBrowserTest : public InProcessBrowserTest {
       return;
     }
     expected_success_ = expected_success;
-    wait_for_request_.reset(new base::RunLoop);
+    wait_for_request_ = std::make_unique<base::RunLoop>();
     wait_for_request_->Run();
   }
 
@@ -235,7 +237,7 @@ class GeminiAPIBrowserTest : public InProcessBrowserTest {
     expected_quantity_ = expected_quantity;
     expected_total_price_ = expected_total_price;
 
-    wait_for_request_.reset(new base::RunLoop);
+    wait_for_request_ = std::make_unique<base::RunLoop>();
     wait_for_request_->Run();
   }
 
@@ -257,7 +259,7 @@ class GeminiAPIBrowserTest : public InProcessBrowserTest {
     }
     expected_balances_ = expected_balances;
     expected_success_ = expected_success;
-    wait_for_request_.reset(new base::RunLoop);
+    wait_for_request_ = std::make_unique<base::RunLoop>();
     wait_for_request_->Run();
   }
 
@@ -273,7 +275,7 @@ class GeminiAPIBrowserTest : public InProcessBrowserTest {
       return;
     }
     expected_address_ = expected_address;
-    wait_for_request_.reset(new base::RunLoop);
+    wait_for_request_ = std::make_unique<base::RunLoop>();
     wait_for_request_->Run();
   }
 

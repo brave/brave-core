@@ -50,8 +50,8 @@ class EthBlockTrackerUnitTest : public testing::Test {
                 &url_loader_factory_)) {}
   void SetUp() override {
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
-    json_rpc_service_.reset(
-        new brave_wallet::JsonRpcService(shared_url_loader_factory_, &prefs_));
+    json_rpc_service_ = std::make_unique<brave_wallet::JsonRpcService>(
+        shared_url_loader_factory_, &prefs_);
   }
   std::string GetResponseString() const {
     return "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"" +

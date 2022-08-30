@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_federated/brave_federated_service.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/logging.h"
@@ -58,13 +59,13 @@ void BraveFederatedService::Init() {
 
   base::FilePath db_path(
       browser_context_path_.AppendASCII("data_store.sqlite"));
-  data_store_service_.reset(new DataStoreService(db_path));
+  data_store_service_ = std::make_unique<DataStoreService>(db_path);
   data_store_service_->Init();
 
-  eligibility_service_.reset(new EligibilityService());
+  eligibility_service_ = std::make_unique<EligibilityService>();
 
-  operational_patterns_.reset(
-      new OperationalPatterns(prefs_, url_loader_factory_));
+  operational_patterns_ =
+      std::make_unique<OperationalPatterns>(prefs_, url_loader_factory_);
 
   MaybeStartOperationalPatterns();
 }

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/solana_tx_state_manager.h"
 
+#include <memory>
 #include <utility>
 #include <vector>
 
@@ -37,10 +38,10 @@ class SolanaTxStateManagerUnitTest : public testing::Test {
  protected:
   void SetUp() override {
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
-    json_rpc_service_.reset(
-        new JsonRpcService(shared_url_loader_factory_, GetPrefs()));
-    solana_tx_state_manager_.reset(
-        new SolanaTxStateManager(GetPrefs(), json_rpc_service_.get()));
+    json_rpc_service_ = std::make_unique<JsonRpcService>(
+        shared_url_loader_factory_, GetPrefs());
+    solana_tx_state_manager_ = std::make_unique<SolanaTxStateManager>(
+        GetPrefs(), json_rpc_service_.get());
   }
 
   void SetNetwork(const std::string& chain_id) {

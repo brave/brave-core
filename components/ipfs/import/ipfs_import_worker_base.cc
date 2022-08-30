@@ -5,6 +5,7 @@
 
 #include "brave/components/ipfs/import/ipfs_import_worker_base.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/command_line.h"
@@ -67,7 +68,7 @@ IpfsImportWorkerBase::IpfsImportWorkerBase(
       key_to_publish_(key),
       weak_factory_(this) {
   DCHECK(endpoint.is_valid());
-  data_.reset(new ipfs::ImportedData());
+  data_ = std::make_unique<ipfs::ImportedData>();
 }
 
 IpfsImportWorkerBase::~IpfsImportWorkerBase() = default;

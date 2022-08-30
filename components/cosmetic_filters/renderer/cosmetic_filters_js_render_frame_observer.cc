@@ -5,6 +5,7 @@
 
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/bind.h"
@@ -73,7 +74,7 @@ void CosmeticFiltersJsRenderFrameObserver::DidStartNavigation(
 
 void CosmeticFiltersJsRenderFrameObserver::ReadyToCommitNavigation(
     blink::WebDocumentLoader* document_loader) {
-  ready_.reset(new base::OneShotEvent());
+  ready_ = std::make_unique<base::OneShotEvent>();
   // invalidate weak pointers on navigation so we don't get callbacks from the
   // previous url load
   weak_factory_.InvalidateWeakPtrs();

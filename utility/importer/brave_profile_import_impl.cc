@@ -5,6 +5,7 @@
 
 #include "brave/utility/importer/brave_profile_import_impl.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/bind.h"
@@ -85,7 +86,7 @@ void BraveProfileImportImpl::StartImport(
   items_to_import_ = items;
 
   // Create worker thread in which importer runs.
-  import_thread_.reset(new base::Thread("import_thread"));
+  import_thread_ = std::make_unique<base::Thread>("import_thread");
 #if BUILDFLAG(IS_WIN)
   import_thread_->init_com_with_mta(false);
 #endif

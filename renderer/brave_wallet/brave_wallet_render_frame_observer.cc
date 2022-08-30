@@ -5,6 +5,7 @@
 
 #include "brave/renderer/brave_wallet/brave_wallet_render_frame_observer.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/feature_list.h"
@@ -65,8 +66,8 @@ void BraveWalletRenderFrameObserver::DidCreateScriptContext(
           render_frame()->GetWebFrame()->MainWorldScriptContext(),
           "ethereum")) {
     if (!js_ethereum_provider_) {
-      js_ethereum_provider_.reset(new JSEthereumProvider(
-          render_frame(), dynamic_params.brave_use_native_ethereum_wallet));
+      js_ethereum_provider_ = std::make_unique<JSEthereumProvider>(
+          render_frame(), dynamic_params.brave_use_native_ethereum_wallet);
     }
     js_ethereum_provider_->AddJavaScriptObjectToFrame(
         context, dynamic_params.allow_overwrite_window_ethereum_provider,

@@ -42,8 +42,8 @@ class RewardsFlagBrowserTest : public InProcessBrowserTest {
     brave_rewards::RewardsFlags::SetForceParsingForTesting(true);
 
     // HTTP resolver
-    https_server_.reset(new net::EmbeddedTestServer(
-        net::test_server::EmbeddedTestServer::TYPE_HTTPS));
+    https_server_ = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
     https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
     https_server_->RegisterRequestHandler(
         base::BindRepeating(&rewards_browsertest_util::HandleRequest));
@@ -88,7 +88,7 @@ class RewardsFlagBrowserTest : public InProcessBrowserTest {
 
   void ResetWaitForCallback() {
     callback_called_ = false;
-    wait_for_callback_.reset(new base::RunLoop);
+    wait_for_callback_ = std::make_unique<base::RunLoop>();
   }
 
   void WaitForCallback() {

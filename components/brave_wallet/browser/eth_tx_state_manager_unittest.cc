@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/run_loop.h"
@@ -41,10 +42,10 @@ class EthTxStateManagerUnitTest : public testing::Test {
  protected:
   void SetUp() override {
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
-    json_rpc_service_.reset(
-        new JsonRpcService(shared_url_loader_factory_, GetPrefs()));
-    eth_tx_state_manager_.reset(
-        new EthTxStateManager(GetPrefs(), json_rpc_service_.get()));
+    json_rpc_service_ = std::make_unique<JsonRpcService>(
+        shared_url_loader_factory_, GetPrefs());
+    eth_tx_state_manager_ = std::make_unique<EthTxStateManager>(
+        GetPrefs(), json_rpc_service_.get());
   }
 
   void SetNetwork(const std::string& chain_id) {
