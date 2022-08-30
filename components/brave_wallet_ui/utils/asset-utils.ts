@@ -154,3 +154,13 @@ export const getBatTokensFromList = (tokenList: BraveWallet.BlockchainToken[]) =
     nonBat
   }
 }
+
+/**
+ * @param asset The token to get an id for
+ * @returns an id that can be used as a react element key
+ */
+export const getAssetIdKey = (asset: BraveWallet.BlockchainToken) => {
+  return asset.isErc721
+    ? `${asset.contractAddress}-${asset.symbol}-${asset.tokenId}-${asset.chainId}`
+    : `${asset.contractAddress}-${asset.symbol}-${asset.chainId}`
+}

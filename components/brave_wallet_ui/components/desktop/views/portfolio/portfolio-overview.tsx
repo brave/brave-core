@@ -160,8 +160,8 @@ export const PortfolioOverview = () => {
   },
   [
     userAssetList,
-    defaultCurrencies,
-    transactionSpotPrices
+    defaultCurrencies.fiat,
+    computeFiatAmount
   ])
 
   const isZeroBalance = React.useMemo((): boolean => {
@@ -259,8 +259,9 @@ export const PortfolioOverview = () => {
       <TokenLists
         userAssetList={userAssetList}
         networks={networkList}
-        renderToken={(item, mode) =>
-          mode === 'list'
+        estimatedItemSize={58}
+        renderToken={({ item, viewMode }) =>
+          viewMode === 'list'
           ? <PortfolioAssetItem
               spotPrices={transactionSpotPrices}
               defaultCurrencies={defaultCurrencies}

@@ -39,17 +39,18 @@ import {
   Spacer,
   FilterTokenRow
 } from '../../style'
-
-type ViewMode = 'list' | 'grid'
+import { RenderTokenFunc, VirtualizedTokensList } from './virtualized-tokens-list'
+import { HorizontallyPaddedDiv } from './token-list.style'
 
 interface Props {
   userAssetList: UserAssetInfoType[]
   networks: BraveWallet.NetworkInfo[]
-  renderToken: (item: UserAssetInfoType, viewMode: ViewMode) => JSX.Element
+  renderToken: RenderTokenFunc
   hideAddButton?: boolean
   hideAssetFilter?: boolean
   enableScroll?: boolean
   maxListHeight?: string
+  estimatedItemSize: number
 }
 
 export const TokenLists = ({
@@ -59,7 +60,8 @@ export const TokenLists = ({
   hideAddButton,
   enableScroll,
   maxListHeight,
-  hideAssetFilter
+  hideAssetFilter,
+  estimatedItemSize = 58
 }: Props) => {
   // routing
   const history = useHistory()
@@ -74,7 +76,7 @@ export const TokenLists = ({
   // state
   const [searchValue, setSearchValue] = React.useState<string>('')
 
-   // methods
+  // methods
 
   // This filters a list of assets when the user types in search bar
   const onSearchValueChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -121,7 +123,7 @@ export const TokenLists = ({
       selectedAssetFilter.id === 'highToLow' ||
       selectedAssetFilter.id === 'lowToHigh'
     ) {
-      return fungibleTokens.sort(function (a, b) {
+      return [...fungibleTokens].sort(function (a, b) {
         const aBalance = a.assetBalance
         const bBalance = b.assetBalance
         const bFiatBalance = computeFiatAmount(bBalance, b.asset.symbol, b.asset.decimals)
@@ -132,30 +134,58 @@ export const TokenLists = ({
       })
     }
     return fungibleTokens
-  }, [fungibleTokens, selectedAssetFilter, computeFiatAmount])
+  }, [fungibleTokens, selectedAssetFilter.id, computeFiatAmount])
+
+  // computed
+  // length of fungible tokens list is first NFT index
+  const firstNftIndex = sortedFungibleTokensList.length || undefined
+
+  const sortedFungibleTokensAndNftsList: UserAssetInfoType[] = React.useMemo(() => {
+    return sortedFungibleTokensList.concat(nonFungibleTokens)
+  }, [sortedFungibleTokensList, nonFungibleTokens])
 
   const listUi = React.useMemo(() => {
-    return <>
-      {selectedAssetFilter.id !== 'nfts' ? (
-          <>
-            {sortedFungibleTokensList.map((token) => renderToken(token, 'list'))}
-            {nonFungibleTokens.length !== 0 &&
-              <>
-                <Spacer />
-                <DividerText>{getLocale('braveWalletTopNavNFTS')}</DividerText>
-                <SubDivider />
-                {nonFungibleTokens.map((token) => renderToken(token, 'list'))}
-              </>
-            }
-          </>
-        ) : (
-          <NFTGridView
-            nonFungibleTokens={nonFungibleTokens}
-            renderToken={(token) => renderToken(token, 'grid')}
-          />
-        )}
-    </>
-  }, [selectedAssetFilter, sortedFungibleTokensList, nonFungibleTokens, renderToken])
+    return selectedAssetFilter.id !== 'nfts' ? (
+      <VirtualizedTokensList
+        key={`${selectedAssetFilter.id}-${Number(firstNftIndex)}`}
+        getItemSize={
+          // only the first Nft element has a bigger height due to the section divider
+          (index) => index === firstNftIndex ? 94 : estimatedItemSize
+        }
+        renderToken={(args) => {
+          if (args.index === firstNftIndex) {
+            return <HorizontallyPaddedDiv>
+              <Spacer />
+              <DividerText>{getLocale('braveWalletTopNavNFTS')}</DividerText>
+              <SubDivider />
+              {renderToken(args)}
+            </HorizontallyPaddedDiv>
+          }
+          return <HorizontallyPaddedDiv>
+            {renderToken(args)}
+          </HorizontallyPaddedDiv>
+        }}
+        userAssetList={sortedFungibleTokensAndNftsList}
+        estimatedItemSize={estimatedItemSize}
+      />
+    ) : (
+      <NFTGridView
+        key={selectedAssetFilter.id}
+        nonFungibleTokens={nonFungibleTokens}
+        renderToken={(token, index) => renderToken({
+          index,
+          item: token,
+          viewMode: 'grid'
+        })}
+      />
+    )
+  }, [
+    firstNftIndex,
+    selectedAssetFilter.id,
+    sortedFungibleTokensAndNftsList,
+    nonFungibleTokens,
+    renderToken
+  ])
 
   // effects
   React.useEffect(() => {
@@ -179,9 +209,11 @@ export const TokenLists = ({
       </FilterTokenRow>
 
       {enableScroll
-        ? <ScrollableColumn maxHeight={maxListHeight}>
+        ? (
+          <ScrollableColumn maxHeight={maxListHeight}>
             {listUi}
           </ScrollableColumn>
+        )
         : listUi
       }
 
