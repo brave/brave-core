@@ -5,27 +5,24 @@
 
 import * as React from 'react'
 
+// types
 import { BraveWallet } from '../../constants/types'
+
+// utils
 import Amount from '../../utils/amount'
+import { findAssetPrice, computeFiatAmount } from '../../utils/pricing-utils'
 
 export default function usePricing (spotPrices: BraveWallet.AssetPrice[]) {
-  const findAssetPrice = React.useCallback((symbol: string) => {
-    return spotPrices.find(
-      (token) => token.fromAsset.toLowerCase() === symbol.toLowerCase()
-    )?.price ?? ''
+  const _findAssetPrice = React.useCallback((symbol: string) => {
+    return findAssetPrice(spotPrices, symbol)
   }, [spotPrices])
 
-  const computeFiatAmount = React.useCallback((value: string, symbol: string, decimals: number): Amount => {
-    const price = findAssetPrice(symbol)
-
-    if (!price || !value) {
-      return Amount.empty()
-    }
-
-    return new Amount(value)
-      .divideByDecimals(decimals) // Wei → ETH conversion
-      .times(price)
+  const _computeFiatAmount = React.useCallback((value: string, symbol: string, decimals: number): Amount => {
+    return computeFiatAmount(spotPrices, { decimals, symbol, value })
   }, [findAssetPrice])
 
-  return { computeFiatAmount, findAssetPrice }
+  return {
+    computeFiatAmount: _computeFiatAmount,
+    findAssetPrice: _findAssetPrice
+  }
 }

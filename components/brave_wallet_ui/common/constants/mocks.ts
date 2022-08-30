@@ -8,6 +8,7 @@ import {
   BraveWallet,
   WalletAccountType
 } from '../../constants/types'
+import { mockBasicAttentionToken } from '../../stories/mock-data/mock-asset-options'
 
 export const getMockedTransactionInfo = (): BraveWallet.TransactionInfo => {
   return {
@@ -191,6 +192,12 @@ export const mockAssetPrices: BraveWallet.AssetPrice[] = [
   {
     fromAsset: 'DOG',
     price: '100',
+    toAsset: 'mockValue',
+    assetTimeframeChange: 'mockValue'
+  },
+  {
+    fromAsset: mockBasicAttentionToken.symbol,
+    price: '0.88',
     toAsset: 'mockValue',
     assetTimeframeChange: 'mockValue'
   }

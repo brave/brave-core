@@ -24,13 +24,11 @@ import { getTokensCoinType } from '../../../../utils/network-utils'
 import { formatAsDouble } from '../../../../utils/string-utils'
 import Amount from '../../../../utils/amount'
 import { getBalance } from '../../../../utils/balance-utils'
+import { computeFiatAmount } from '../../../../utils/pricing-utils'
 
 // Options
 import { ChartTimelineOptions } from '../../../../options/chart-timeline-options'
 import { AllNetworksOption } from '../../../../options/network-filter-options'
-
-// Hooks
-import usePricing from '../../../../common/hooks/pricing'
 
 // Components
 import { LoadingSkeleton } from '../../../shared'
@@ -75,9 +73,6 @@ export const PortfolioOverview = () => {
   const selectedTimeline = useSelector(({ page }: { page: PageState }) => page.selectedTimeline)
   const nftMetadata = useSelector(({ page }: { page: PageState }) => page.nftMetadata)
 
-  // custom hooks
-  const { computeFiatAmount } = usePricing(transactionSpotPrices)
-
   // memos / computed
 
   // This will scrape all the user's accounts and combine the asset balances for a single asset
@@ -98,7 +93,7 @@ export const PortfolioOverview = () => {
         ? new Amount(a).plus(b).format()
         : ''
     })
-  }, [accounts, networkList])
+  }, [accounts, getBalance])
 
   // filter the user's assets based on the selected network
   const visibleTokensForSupportedChains = React.useMemo(() => {
@@ -132,14 +127,12 @@ export const PortfolioOverview = () => {
     }))
   }, [visibleTokensForSupportedChains, fullAssetBalance])
 
+  const visibleAssetOptions = React.useMemo((): UserAssetInfoType[] => {
+    return userAssetList.filter(({ asset }) => asset.visible && !asset.isErc721)
+  }, [userAssetList])
+
   // This will scrape all of the user's accounts and combine the fiat value for every asset
   const fullPortfolioFiatBalance = React.useMemo((): string => {
-    const visibleAssetOptions = userAssetList
-      .filter((token) =>
-        token.asset.visible &&
-        !token.asset.isErc721
-      )
-
     if (visibleAssetOptions.length === 0) {
       return ''
     }
@@ -147,9 +140,12 @@ export const PortfolioOverview = () => {
     const visibleAssetFiatBalances = visibleAssetOptions
       .map((item) => {
         return computeFiatAmount(
-          item.assetBalance,
-          item.asset.symbol,
-          item.asset.decimals
+          transactionSpotPrices,
+          {
+            value: item.assetBalance,
+            decimals: item.asset.decimals,
+            symbol: item.asset.symbol
+          }
         )
       })
 
@@ -159,9 +155,9 @@ export const PortfolioOverview = () => {
     return grandTotal.formatAsFiat(defaultCurrencies.fiat)
   },
   [
-    userAssetList,
+    visibleAssetOptions,
     defaultCurrencies.fiat,
-    computeFiatAmount
+    transactionSpotPrices
   ])
 
   const isZeroBalance = React.useMemo((): boolean => {
