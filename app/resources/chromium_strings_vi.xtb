@@ -11,14 +11,15 @@
 <translation id="8541922081612557424">Giới thiệu về Brave</translation>
 <translation id="1203500561924088507">Cảm ơn bạn đã cài đặt. Bạn phải khởi động lại trình duyệt trước khi sử dụng <ph name="BUNDLE_NAME"/>.</translation>
 <translation id="4798342026247191171">Thiết lập hồ sơ Brave mới</translation>
+<translation id="6361779936989026201">Trợ lý Brave trong Brave</translation>
 <translation id="113959764510199339">Brave đang cố gắng hiển thị mật khẩu.</translation>
 <translation id="8132634101975074716">Bạn đã đăng nhập vào Brave!</translation>
 <translation id="5147525139567260139">Chia sẻ một thẻ Brave</translation>
 <translation id="1530633922026945685">Brave cần có quyền sử dụng máy ảnh của bạn để tạo bản đồ 3D về các khu vực xung quanh bạn</translation>
-<translation id="473077451702478797">Brave đã chặn tệp này vì tệp này quá lớn nên không kiểm tra bảo mật được. Hãy thử lại với tệp tối đa 50 MB</translation>
 <translation id="4449148723378534338">Xem các chế độ kiểm soát quan trọng đối với quyền riêng tư và tính bảo mật trong Brave</translation>
 <translation id="1640672724030957280">Đang tải xuống...</translation>
 <translation id="5616153642055197778">Hiện đã có phiên bản Brave mới an toàn hơn.</translation>
+<translation id="5846727201643228411">Bạn có thể xem và xoá những chủ đề quan tâm mà các trang web dựa vào để hiện quảng cáo cho bạn. Brave ước đoán các mối quan tâm dựa trên nhật ký duyệt web gần đây của bạn.</translation>
 <translation id="6797402139308059782">Cho phép Brave chạy dưới nền</translation>
 <translation id="5875673934455379806">Cài đặt lại Brave</translation>
 <translation id="6888366668010117849">Các trang web có thể lưu trữ thông tin trên Brave về mối quan tâm của bạn. Ví dụ: sau khi bạn truy cập một trang web bán giày chạy marathon, trang web đó có thể sẽ xác định rằng bạn quan tâm đến chạy marathon. Sau đó, nếu bạn truy cập một trang web khác để đăng ký thi chạy, thì trang web đó sẽ hiện quảng cáo giày chạy dựa trên mối quan tâm của bạn.</translation>
@@ -32,6 +33,7 @@
 <translation id="2018879682492276940">Không cài đặt được. Vui lòng thử lại.</translation>
 <translation id="831418749472885028">Để kiểm tra xem các mật khẩu khác của bạn có bị ảnh hưởng bởi các vụ rò rỉ dữ liệu và sự cố bảo mật khác hay không, hãy <ph name="BEGIN_LINK"/>đăng nhập vào Brave<ph name="END_LINK"/>.</translation>
 <translation id="5499149312981370855">Chọn xem có bao gồm nhật ký duyệt web trên Brave hay không để mang lại trải nghiệm phù hợp hơn trong các dịch vụ của Brave</translation>
+<translation id="849607431499549468">Thông tin về cách Brave quản lý các chứng chỉ gốc của Brave</translation>
 <translation id="142389341645668510">Tùy chỉnh Brave</translation>
 <translation id="2174917724755363426">Chưa cài đặt xong. Bạn có chắc chắn muốn huỷ không?</translation>
 <translation id="8745514854244955877">Brave – Đăng nhập vào mạng – <ph name="PAGE_TITLE"/></translation>
@@ -92,6 +94,7 @@
 <translation id="5853262807109651878">Thao tác này sẽ xóa <ph name="ITEMS_COUNT"/> mục khỏi thiết bị này. Để truy xuất dữ liệu của bạn sau, hãy đăng nhập vào Brave dưới dạng <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">Phím tắt <ph name="SHORTCUT"/> có thể giúp chuyển đổi giữa các hồ sơ trên Brave</translation>
 <translation id="8703492925273919597">Hãy đóng tất cả cửa sổ Brave và thử lại.</translation>
+<translation id="5350485513372498152">Trợ lý Brave trong Brave có thể giúp bạn thực hiện các thao tác trên trang web</translation>
 <translation id="4061445349373849749">Để bảo vệ quyền riêng tư của bạn, chúng tôi tự động xoá các mối quan tâm không được làm mới sau 4 tuần. Trong quá trình bạn duyệt web, các mối quan tâm có thể xuất hiện lại trong danh sách. Bạn cũng có thể xoá các mối quan tâm mà bạn không muốn Brave xem xét.</translation>
 <translation id="691208314680168371">Nhật ký duyệt web của bạn, một bản ghi các trang web bạn từng truy cập bằng Brave trên thiết bị này.</translation>
 <translation id="1384923383737428730">Máy tính của bạn có phần mềm độc hại. Brave có thể xóa phần mềm này, khôi phục các tùy chọn cài đặt của bạn và tắt tiện ích để giúp trình duyệt hoạt động lại bình thường.</translation>
@@ -258,7 +261,6 @@ Một số tính năng có thể không khả dụng. Hãy chỉ định thư m�
 <translation id="5101812148953915496">Các trang web bạn truy cập ghi nhớ thông tin của bạn cho đến khi bạn đóng Brave</translation>
 <translation id="5516268345616100622">Trình quản lý tác vụ - Brave</translation>
 <translation id="713191641919118540">Mối quan tâm của bạn theo ước đoán của Brave</translation>
-<translation id="2777705643687998385">Brave đã chặn tệp này vì tệp này đã mã hoá. Hãy đề nghị chủ sở hữu tệp đó giải mã</translation>
 <translation id="9068395155143628872">Tính năng Đo lường quảng cáo cho phép các trang web bạn truy cập đề nghị Brave cung cấp thông tin để đo lường hiệu quả quảng cáo. Tính năng Đo lường quảng cáo hạn chế hoạt động theo dõi qua nhiều trang web bằng cách chuyển ít thông tin nhất có thể giữa các trang web.</translation>
 <translation id="1864557848095568223">Đang cập nhật Brave</translation>
 <translation id="3403365884036456766">Tệp tùy chọn của bạn bị hỏng hoặc không hợp lệ. 
@@ -348,6 +350,7 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="7902365066753170041">Chạy lại để cập nhật &amp;Brave</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Brave có thể không hoạt động chính xác do không được hỗ trợ trên Windows XP hoặc Windows Vista nữa</translation>
+<translation id="8180288330711585962">Chứng chỉ do Brave quản lý</translation>
 <translation id="1611678871603620428">Để nhận các bản cập nhật Brave sau này, bạn cần có macOS 10.13 trở lên. Máy tính này đang dùng OS X 10.11.</translation>
 <translation id="4484434718272972655">Ai đang sử dụng Brave?</translation>
 <translation id="7173394303099002355">Có được chế độ bảo mật mạnh nhất của Brave</translation>

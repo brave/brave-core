@@ -25,6 +25,7 @@
 <translation id="4150684676757176434">ทำการบล็อกการเล่นอัตโนมัติต่อ</translation>
 <translation id="8988939298652262600">Brave จะไม่ตรวจสอบความมั่นคงและปลอดภัยของส่วนขยาย โปรดติดตั้งส่วนขยายนี้ในกรณีที่คุณเชื่อมั่นในผู้พัฒนาเท่านั้น</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (การระบุชื่อสกุลแฟ้ม "<ph name="EXTENSION_ID"/>") ไม่ได้รับอนุญาตในโปรแกรมของเบรฟ (Brave)</translation>
+<translation id="9005883459983913482">ทอร์วินโดว์</translation>
 <translation id="7965178729203412357">ตัวตน Tor ใหม่</translation>
 <translation id="6924909138923993900">การเชื่อมต่อ Tor ใหม่สำหรับเว็บไซต์นี้</translation>
 <translation id="4734294903299549345">ออกจากหน้าต่างส่วนตัวของ Tor</translation>
@@ -38,6 +39,9 @@
 <translation id="1725356094208762656">เปิดใน Tor</translation>
 <translation id="3396347744975515056">Brave Sync ได้อัปเกรดและต้องการติดตั้ง</translation>
 <translation id="7473245612074035141">เริ่มติดตั้ง</translation>
+<translation id="3975865347033939965">ไม่สามารถเริ่มบริการซิงค์ได้ เนื่องจาก Brave Sync ไม่ทำงาน</translation>
+<translation id="4450893287417543264">ไม่ต้องแสดงอีก</translation>
+<translation id="4595286989346610620">ตรวจสอบรายละเอียด</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">เผยแพร่และเรียกดูไฟล์จาก IPFS</translation>
 <translation id="7398397225367092613">.onion</translation>
@@ -114,7 +118,7 @@
 <translation id="5240031343741051161">ลอง Brave Search</translation>
 <translation id="5026874946691314267">ไม่ต้องแสดงสิ่งนี้อีก</translation>
 <translation id="5234764350956374838">ปิด</translation>
-<translation id="5100490448228945668">ยกเลิกคอนเวอร์ชันการค้นหา Brave กด Enter เพื่อลบคำแนะนำนี้</translation>
+<translation id="5100490448228945668">เปลี่ยนคอนเวอร์ชันการค้นหา Brave กด Enter เพื่อลบคำแนะนำนี้</translation>
 <translation id="2515126961943087659">บริการโฆษณา BAT</translation>
 <translation id="7924918279836988121">บริการรายการเดินบัญชี Bat</translation>
 <translation id="6040143037577758943">ปิด</translation>
@@ -144,7 +148,7 @@
 <translation id="8490082094734500369">ปิดโหมดผู้อ่าน</translation>
 <translation id="2036503787657622020">เปิดโหมดผู้อ่าน</translation>
 <translation id="5226458915125328323">ตั้งค่า Speedreader</translation>
-<translation id="1621606336827646158">แสดงหน้าเดิม</translation>
+<translation id="8591883849678260674">ดูต้นฉบับ</translation>
 <translation id="6284218950354553099">ส่งปิงการใช้งานรายวันไปยัง Brave โดยอัตโนมัติ</translation>
 <translation id="5288333155754958121">ปิงส่วนตัวที่ไม่ระบุตัวตนนี้จะช่วยให้ Brave ประเมินผู้ใช้ที่ใช้งานอยู่ได้</translation>
 <translation id="1872784258300710671">Brave ใช้เครื่องมือวิเคราะห์ผลิตภัณฑ์แบบส่วนตัวโดยสมบูรณ์ในการคาดคะเนการใช้งานโดยรวมของฟีเจอร์บางอย่าง</translation>
@@ -211,6 +215,10 @@
 <translation id="8721331068159819483">เหมือนกับ macOS</translation>
 <translation id="1692470335103807198">รับธีมเพิ่มเติม</translation>
 <translation id="2906510232093002459">ภาพเริ่มต้นของ Brave</translation>
+<translation id="3367129510799209147">โหมดโฮเวอร์แท็บ</translation>
+<translation id="2113977810652731515">การ์ด</translation>
+<translation id="4096343215397759358">การ์ดพร้อมตัวอย่าง</translation>
+<translation id="5297085818601043899">เคล็ดลับเครื่องมือ</translation>
 <translation id="2396127686705429331">แสดงปุ่มบุ๊กมาร์ก</translation>
 <translation id="2814998458708016836">ใช้แถบที่อยู่แบบกว้าง</translation>
 <translation id="4109670531935487117">แสดงคำแนะนำการเติมข้อความอัตโนมัติในแถบที่อยู่</translation>
@@ -238,7 +246,7 @@
 <translation id="6388201778088078932">การตั้งค่า</translation>
 <translation id="4800195524776354947">แสดงจำนวนรายการที่ถูกบล็อคบนไอคอนชิลด์</translation>
 <translation id="5510493033031835532">เปลี่ยนเส้นทางหน้า AMP อัตโนมัติ</translation>
-<translation id="5197219128592971597">ไปที่ URL หน้าเดิม (ที่ไม่ใช่ AMP) เสมอแทนเวอร์ชัน Accelerated Mobile Page ของ Google</translation>
+<translation id="7630031867325944356">ต้องการ URL หน้าเพจของผู้เผยแพร่โฆษณา แทนที่จะเป็น AMP และเวอร์ชันที่คล้ายกัน</translation>
 <translation id="7607166182943595829">ป้องกันไม่ให้เว็บไซต์พิมพ์ลายนิ้วมือฉันตามการตั้งค่าภาษาของฉัน</translation>
 <translation id="3497934980362703405">การเปิดใช้งานการตั้งค่านี้จะช่วยลดจำนวนเว็บไซต์ที่สามารถเรียนรู้การตั้งค่าภาษาของคุณ</translation>
 <translation id="2133317862976486547">การบล็อก Tracker &amp; โฆษณา</translation>
@@ -286,6 +294,7 @@
 <translation id="1758947220824279023">จำนวนโฆษณาสูงสุดที่จะแสดง</translation>
 <translation id="2356652719351432565">โฆษณาในภูมิภาค</translation>
 <translation id="2196950072404588793">การดำเนินการนี้จะอนุญาตให้ Brave แสดงโฆษณาสำหรับภูมิภาคของคุณโดยเฉพาะ<ph name="BEGIN_LINK"/>เรียนรู้เพิ่มเติม<ph name="END_LINK"/></translation>
+<translation id="2433507940547922241">ลักษณะที่ปรากฏ</translation>
 <translation id="6112368337882254910">มีส่วนร่วมอัตโนมัติ</translation>
 <translation id="9132509928968869844">การจำกัดการสนับสนุนรายเดือนอัตโนมัติ</translation>
 <translation id="7286722244752781970">เวลาแสดงหน้าขั้นต่ำก่อนเข้าสู่ระบบ</translation>
@@ -375,6 +384,7 @@
 โปรดตรวจสอบข้อความโค้ดเหล่านี้อีกครั้งว่าสร้างโดยอุปกรณ์ที่คุณเป็นเจ้าของหรือไม่
 
 คุณแน่ใจหรือว่าต้องการดำเนินการนี้</translation>
+<translation id="7443185843787879670">Brave ไม่สามารถเข้าถึงพื้นที่เก็บข้อมูลที่ปลอดภัยในระบบปฏิบัติการของคุณได้ นี่คือสิ่งที่ใช้เพื่อรักษาความปลอดภัยของข้อมูล เช่น รหัสผ่านและคุกกี้ นอกจากนี้ Brave Sync ยังจำเป็นที่จะต้องเชื่อมต่อโปรไฟล์เบราว์เซอร์ของคุณระหว่างอุปกรณ์ต่างๆ ซึ่งหมายความว่า Brave Sync จะหยุดทำงาน ในการแก้ไขปัญหานี้ โปรดดูที่<ph name="BEGIN_LINK_SYNC_GUIDE"/>คำแนะนำในการแก้ไขปัญหา Brave Synce<ph name="END_LINK_SYNC_GUIDE"/></translation>
 <translation id="6285118765755298263">จัดทำดัชนีเครื่องมือค้นหาอื่นๆ</translation>
 <translation id="919715748352669592">จัดทำดัชนีเว็บไซต์ที่เป็นไปตามข้อกำหนดของ OpenSearch โดยอัตโนมัติ</translation>
 <translation id="842628013524824194">หน้าต่างทั่วไป - เครื่องมือค้นหาที่ใช้ในแถบที่อยู่</translation>
@@ -387,6 +397,23 @@
 <translation id="5248318250177143470">วิธีการแปลงที่อยู่ของ Ethereum Name Service (ENS)</translation>
 <translation id="6241402707160226266">หน้าต่างส่วนตัวด้วย Tor</translation>
 <translation id="8762452230727230396">Tor จะซ่อนที่อยู่ IP ของคุณจากเว็บไซต์ที่คุณเยี่ยมชม</translation>
+<translation id="2959986444009520721">ใช้สะพาน</translation>
+<translation id="6003484976430531384">สะพานช่วยให้คุณเข้าถึงเครือข่ายทอร์ในตำแหน่งที่ทอร์ถูกบล็อก บริดจ์ตัวหนึ่งอาจทำงานได้ดีกว่าสะพานตัวอื่น ทั้งนี้ขึ้นอยู่กับว่าคุณอยู่ที่ไหน</translation>
+<translation id="7206799843254049470">การตั้งค่าการเชื่อมต่อทอร์</translation>
+<translation id="3194502271166340944">ควบคุมวิธีที่วินโดว์ส่วนบุคคลด้วยทอร์เชื่อมต่อกับเครือข่ายทอร์</translation>
+<translation id="4859228830700205299">เลือกสะพานในตัว</translation>
+<translation id="3233137871426528317">ขอสะพานจาก torproject.org</translation>
+<translation id="5701503934456421898">ขอสะพานใหม่...</translation>
+<translation id="8149806369020180959">จัดหาสะพาน</translation>
+<translation id="454073978993625597">ป้อนข้อมูลสะพานจากแหล่งที่เชื่อถือได้</translation>
+<translation id="4425607417590286548">ใช้การเปลี่ยนแปลง</translation>
+<translation id="2128143836897950793">คลิกที่ 'ขอสะพานใหม่...' เพื่อรับสะพาน</translation>
+<translation id="3314921753580327793">พิมพ์ที่อยู่:พอร์ต (หนึ่งรายการต่อบรรทัด)</translation>
+<translation id="3755189300481406891">ขอสะพาน</translation>
+<translation id="6924425739431382319">ติดต่อ BridgeDB โปรดรอ</translation>
+<translation id="811745063252080651">แก้ไข CAPTCHA เพื่อขอสะพาน</translation>
+<translation id="6936835573742749135">ไม่สามารถขอ CAPTCHA ได้ โปรดลองอีกครั้งภายหลัง</translation>
+<translation id="2653659639078652383">ส่ง</translation>
 <translation id="1369311132025451972">ย้ายไปที่เว็บ .onion โดยอัตโนมัติ</translation>
 <translation id="2843777623071353503">Brave จะเปิดบริการเว็บไซต์แบบหัวหอมเมื่อมีให้บริการหรือโดเมนแบบหัวหอมในหน้าต่าง Tor</translation>
 <translation id="2896916411183256228">ใช้ WebTorrent สำหรับแสดงทอร์เรนต์ในเบราว์เซอร์โดยตรง รองรับไฟล์ทอร์เรนต์และแม็กเน็ตลิงก์</translation>
@@ -433,7 +460,6 @@
 <translation id="7059127752542505809">ป้อน URL</translation>
 <translation id="3047726704186619366">URL ไอคอน</translation>
 <translation id="2487558607408469181">URL ของ Block Explorer</translation>
-<translation id="2653659639078652383">ส่ง</translation>
 <translation id="2156993118928861787">แอดแดรสไม่ถูกต้อง</translation>
 <translation id="6301398959353668507">ต้องกรอกข้อมูลในช่องนี้</translation>
 <translation id="7504462451153306677">รูปแบบไม่ถูกต้อง Chain ID ต้องเป็นจำนวนบวก</translation>

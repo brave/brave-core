@@ -11,14 +11,15 @@
 <translation id="8541922081612557424">關於 Brave</translation>
 <translation id="1203500561924088507">感謝你安裝本服務。你必須重新啟動瀏覽器，才能使用 <ph name="BUNDLE_NAME"/>。</translation>
 <translation id="4798342026247191171">設定新的 Brave 設定檔</translation>
+<translation id="6361779936989026201">Brave 版 Brave 助理</translation>
 <translation id="113959764510199339">Brave 即將顯示密碼。</translation>
 <translation id="8132634101975074716">你已登入 Brave！</translation>
 <translation id="5147525139567260139">分享 Brave 分頁</translation>
 <translation id="1530633922026945685">Brave 需要取得攝影機權限，才能根據你的周遭環境建立 3D 地圖</translation>
-<translation id="473077451702478797">這個檔案過大，無法進行安全檢查，因此遭到 Brave 封鎖。請嘗試使用大小不超過 50 MB 的檔案再試一次</translation>
 <translation id="4449148723378534338">查看 Brave 中最重要的隱私權和安全性控制項</translation>
 <translation id="1640672724030957280">下載中…</translation>
 <translation id="5616153642055197778">新版 Brave 現已推出，安全更上一層樓。</translation>
+<translation id="5846727201643228411">你可以查看網站用於顯示廣告的興趣主題，並且視需要移除。Brave 會根據近期瀏覽記錄推測你可能感興趣的主題。</translation>
 <translation id="6797402139308059782">讓 Brave 在背景執行</translation>
 <translation id="5875673934455379806">重新安裝 Brave</translation>
 <translation id="6888366668010117849">網站可以將你的興趣喜好相關資訊儲存在 Brave 中。舉例來說，如果你造訪某個網站想購買適合馬拉松活動的慢跑鞋，網站可能會判斷你的興趣是跑馬拉松。在此之後，如果你造訪另一個網站報名參加比賽，該網站就可以根據你的興趣喜好向你顯示慢跑鞋的廣告。</translation>
@@ -32,6 +33,7 @@
 <translation id="2018879682492276940">無法安裝，請再試一次。</translation>
 <translation id="831418749472885028">如要檢查你其他的密碼是否因資料侵害事件而遭到外洩，或是否有其他安全性問題，<ph name="BEGIN_LINK"/>請登入 Brave<ph name="END_LINK"/>。</translation>
 <translation id="5499149312981370855">選擇是否要包含 Brave 歷史記錄，取得更貼近個人需求的 Brave 服務體驗</translation>
+<translation id="849607431499549468">瞭解 Brave 如何管理根憑證</translation>
 <translation id="142389341645668510">自訂 Brave</translation>
 <translation id="2174917724755363426">安裝作業尚未完成，確定要取消安裝嗎？</translation>
 <translation id="8745514854244955877">Brave - 網路登入 - <ph name="PAGE_TITLE"/></translation>
@@ -92,6 +94,7 @@
 <translation id="5853262807109651878">登出後，系統會將 <ph name="ITEMS_COUNT"/> 個項目從這個裝置上刪除。日後如要重新取得你的資料，請以 <ph name="USER_EMAIL"/> 身分登入 Brave。</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> 可以切換不同的 Brave 設定檔</translation>
 <translation id="8703492925273919597">請關閉所有 Brave 視窗，然後再試一次。</translation>
+<translation id="5350485513372498152">Brave 版 Brave 助理可協助你在不同的網站上完成動作</translation>
 <translation id="4061445349373849749">為保護個人隱私，我們會自動刪除 4 週以上的興趣喜好。視瀏覽內容而定，某個主題可能會再次顯示在你的興趣喜好清單中。或者，你可以移除不希望 Brave 列在興趣喜好清單中的項目。</translation>
 <translation id="691208314680168371">你的瀏覽記錄，也就是在這部裝置上透過 Brave 造訪網站的記錄。</translation>
 <translation id="1384923383737428730">你的電腦安裝了有害軟體。Brave 可以移除該軟體、復原設定及停用擴充功能，讓你的瀏覽器恢復正常運作。</translation>
@@ -257,7 +260,6 @@
 <translation id="5101812148953915496">在 Brave 關閉前，你造訪的網站會記住你的資訊</translation>
 <translation id="5516268345616100622">工作管理員 - Brave</translation>
 <translation id="713191641919118540">Brave 推測的興趣喜好</translation>
-<translation id="2777705643687998385">這個檔案已加密，因此遭到 Brave 封鎖。請要求檔案擁有者解密</translation>
 <translation id="9068395155143628872">廣告評估功能會允許你造訪的網站向 Brave 要求資訊，以便協助網站評估自家廣告的成效。廣告評估功能會盡可能減少網站之間分享資訊的情況，藉此限制跨網站追蹤行為。</translation>
 <translation id="1864557848095568223">正在更新 Brave</translation>
 <translation id="3403365884036456766">你的偏好設定檔案已毀損或無效。
@@ -347,6 +349,7 @@ Brave 無法復原你的設定。</translation>
 <translation id="7902365066753170041">重新啟動以更新 &amp;Brave</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Brave 已不適用於 Windows XP 或 Windows Vista，因此可能無法正常運作</translation>
+<translation id="8180288330711585962">由 Brave 管理的憑證</translation>
 <translation id="1611678871603620428">如要取得日後的 Brave 更新，必須使用 macOS 10.13 以上版本。這部電腦目前版本為 OS X 10.11。</translation>
 <translation id="4484434718272972655">誰在使用 Brave？</translation>
 <translation id="7173394303099002355">獲得 Brave 最強大的安全防護</translation>

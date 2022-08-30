@@ -13,14 +13,15 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="8541922081612557424">About Brave</translation>
 <translation id="1203500561924088507">Thanks for installing. You must restart your browser before using <ph name="BUNDLE_NAME"/>.</translation>
 <translation id="4798342026247191171">Set up your new Brave profile</translation>
+<translation id="6361779936989026201">Brave Assistant in Brave</translation>
 <translation id="113959764510199339">Brave is trying to show passwords.</translation>
 <translation id="8132634101975074716">You're signed in to Brave!</translation>
 <translation id="5147525139567260139">Share a Brave tab</translation>
 <translation id="1530633922026945685">Brave needs permission to access your camera to create a 3D map of your surroundings</translation>
-<translation id="473077451702478797">Brave blocked this file because it's too big for a security check. Try again with files up to 50 MB</translation>
 <translation id="4449148723378534338">Review key privacy and security controls in Brave</translation>
 <translation id="1640672724030957280">Downloading ...</translation>
 <translation id="5616153642055197778">There's a new, safer version of Brave available.</translation>
+<translation id="5846727201643228411">You can see and remove topics of interest that sites use to show you ads. Brave estimates your interests based on your recent browsing history.</translation>
 <translation id="6797402139308059782">Let Brave run in the background</translation>
 <translation id="5875673934455379806">Reinstall Brave</translation>
 <translation id="6888366668010117849">Sites can store information with Brave about your interests. For example, if you visit a site to buy shoes for a marathon, the site might define your interest as running marathons. Later, if you visit a different site to register for a race, that site can show you an ad for running shoes based on your interests.</translation>
@@ -34,6 +35,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="2018879682492276940">Installation failed. Please try again.</translation>
 <translation id="831418749472885028">To check if your other passwords are safe from data breaches and other security issues, <ph name="BEGIN_LINK"/>sign in to Brave<ph name="END_LINK"/>.</translation>
 <translation id="5499149312981370855">Choose whether to include Brave history for more personalised experiences in Brave services</translation>
+<translation id="849607431499549468">Information about how Brave manages its root certificates</translation>
 <translation id="142389341645668510">Customise Brave</translation>
 <translation id="2174917724755363426">Installation is not complete. Are you sure that you want to cancel?</translation>
 <translation id="8745514854244955877">Brave – Network sign-in – <ph name="PAGE_TITLE"/></translation>
@@ -94,6 +96,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="5853262807109651878">This will delete <ph name="ITEMS_COUNT"/> items from this device. To retrieve your data later, sign in to Brave as <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> can switch between Brave profiles</translation>
 <translation id="8703492925273919597">Please close all Brave windows and try again.</translation>
+<translation id="5350485513372498152">Brave Assistant in Brave can complete actions across websites for you</translation>
 <translation id="4061445349373849749">To protect your privacy, we auto-delete your interests that are older than four weeks. As you keep browsing, an interest might appear on the list again. Or you can remove interests you don't want Brave to consider.</translation>
 <translation id="691208314680168371">Your browsing history, a record of sites that you've visited using Brave on this device.</translation>
 <translation id="1384923383737428730">There's harmful software on your computer. Brave can remove it, restore your settings and disable extensions to make your browser work normally again.</translation>
@@ -259,7 +262,6 @@ Some features may be unavailable. Please specify a different profile directory o
 <translation id="5101812148953915496">Sites that you visit remember your information until you close Brave</translation>
 <translation id="5516268345616100622">Task Manager - Brave</translation>
 <translation id="713191641919118540">Your interests as estimated by Brave</translation>
-<translation id="2777705643687998385">Brave blocked this file because it's encrypted. Ask its owner to decrypt it</translation>
 <translation id="9068395155143628872">Ad measurement allows sites that you visit to request information from Brave that helps the site measure the performance of their ads. Ad measurement restricts cross-site tracking by transferring as little information as possible between sites.</translation>
 <translation id="1864557848095568223">Updating Brave</translation>
 <translation id="3403365884036456766">Your preferences file is corrupt or invalid.
@@ -349,6 +351,7 @@ Brave is unable to recover your settings.</translation>
 <translation id="7902365066753170041">Relaunch to update &amp;Brave</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Brave may not function correctly because it is no longer supported on Windows XP or Windows Vista</translation>
+<translation id="8180288330711585962">Certificates managed by Brave</translation>
 <translation id="1611678871603620428">To get future Brave updates, you'll need macOS 10.13 or later. This computer is using OS X 10.11.</translation>
 <translation id="4484434718272972655">Who's using Brave?</translation>
 <translation id="7173394303099002355">Get Brave's strongest security</translation>

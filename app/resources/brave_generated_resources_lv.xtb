@@ -24,6 +24,7 @@
 <translation id="4150684676757176434">Turpināt bloķēt automātisko atskaņošanu</translation>
 <translation id="8988939298652262600">Brave nepārskata paplašinājumu aizsardzību un drošumu. Instalējiet šo paplašinājumu tikai tad, ja uzticaties izstrādātājam.</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") nav atļauts Brave.</translation>
+<translation id="9005883459983913482">Tor logi</translation>
 <translation id="7965178729203412357">Jauna Tor identitāte</translation>
 <translation id="6924909138923993900">Jauns Tor savienojums šai vietnei</translation>
 <translation id="4734294903299549345">Iziet no inkognito loga ar Tor</translation>
@@ -37,6 +38,9 @@
 <translation id="1725356094208762656">Atvērt Tor</translation>
 <translation id="3396347744975515056">Brave sinhronizācijas pakalpojums ir atjaunināts, un to nepieciešams iestatīt</translation>
 <translation id="7473245612074035141">Sākt iestatīšanu</translation>
+<translation id="3975865347033939965">Sinhronizācijas pakalpojumu nevarēja palaist, Brave Sync nedarbojas</translation>
+<translation id="4450893287417543264">Vairs nerādīt</translation>
+<translation id="4595286989346610620">Pārbaudiet detaļas</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">Publicēt un izgūt datnes no IPFS</translation>
 <translation id="7398397225367092613">.onion</translation>
@@ -143,7 +147,7 @@
 <translation id="8490082094734500369">Izslēgt lasītāja režīmu</translation>
 <translation id="2036503787657622020">Ieslēgt lasītāja režīmu</translation>
 <translation id="5226458915125328323">Ātrā lasītāja iestatījumi</translation>
-<translation id="1621606336827646158">Rādīt oriģinālo lapu</translation>
+<translation id="8591883849678260674">Skatīt oriģinālu</translation>
 <translation id="6284218950354553099">Automātiski nosūtīt dienas lietošanas ehotestu Brave</translation>
 <translation id="5288333155754958121">Šis anonīmais un privātais ehotests ļauj Brave aprēķināt aktīvos lietotājus.</translation>
 <translation id="1872784258300710671">Brave izmanto pilnīgi privātu produktu analīzi, lai novērtētu konkrētu funkciju vispārējo lietojumu.</translation>
@@ -210,6 +214,10 @@
 <translation id="8721331068159819483">Tāds pats kā macOS</translation>
 <translation id="1692470335103807198">Iegūt vairāk motīvu</translation>
 <translation id="2906510232093002459">Brave noklusējuma attēli</translation>
+<translation id="3367129510799209147">Tabulēšanas kursora režīms</translation>
+<translation id="2113977810652731515">Kart</translation>
+<translation id="4096343215397759358">Karte ar priekšskatījumu</translation>
+<translation id="5297085818601043899">Rīka padoms</translation>
 <translation id="2396127686705429331">Parādīt grāmatzīmju pogu</translation>
 <translation id="2814998458708016836">Izmantot platu adreses joslu</translation>
 <translation id="4109670531935487117">Rādīt automātiskās pabeigšanas ieteikumus adrešu joslā</translation>
@@ -237,7 +245,7 @@
 <translation id="6388201778088078932">iestatījumi.</translation>
 <translation id="4800195524776354947">Rādīt bloķēto vienumu skaitu uz aizsargu ikonas</translation>
 <translation id="5510493033031835532">Automātiski novirzīt AMP lapas</translation>
-<translation id="5197219128592971597">Vienmēr apmeklējiet sākotnējo (kas nav AMP) lapu URL, nevis Google paātrināto mobilo lapu versijas</translation>
+<translation id="7630031867325944356">Dodiet priekšroku izdevēja lapu vietrāžiem URL, nevis AMP un līdzīgām versijām.</translation>
 <translation id="7607166182943595829">Neļauj vietnēm veidot manu identificējošo ciparvirkni, pamatojoties uz manu valodas preferenci</translation>
 <translation id="3497934980362703405">Iespējojot šo iestatījumu, tiek samazināts tas, cik daudz tīmekļa vietnes var uzzināt par jūsu valodas preferencēm</translation>
 <translation id="2133317862976486547">Izsekotāju un reklāmu bloķēšana</translation>
@@ -285,6 +293,7 @@
 <translation id="1758947220824279023">Maksimālais attēlojamo reklāmu skaits</translation>
 <translation id="2356652719351432565">Reģionālo reklāmu atbilstība</translation>
 <translation id="2196950072404588793">Tas ļauj Brave jums rādīt jūsu reģionam paredzētas reklāmas. <ph name="BEGIN_LINK"/>Uzzināt vairāk<ph name="END_LINK"/></translation>
+<translation id="2433507940547922241">Izskats</translation>
 <translation id="6112368337882254910">Automātiska ziedošana</translation>
 <translation id="9132509928968869844">Ikmēneša automātiskas ziedojumu limits</translation>
 <translation id="7286722244752781970">Minimālais laiks lapā pirms apmeklējuma reģistrēšanas</translation>
@@ -374,6 +383,7 @@
 Lūdzu, vēlreiz pārbaudiet, vai šos atslēgvārdus ģenerēja ierīce, kas pieder jums.
 
 Vai tiešām vēlaties to darīt?</translation>
+<translation id="7443185843787879670">Brave nevarēja piekļūt jūsu operētājsistēmas drošajai krātuvei. Tas tiek izmantots, lai aizsargātu datus, piemēram, paroles un sīkfailus; tas ir nepieciešams arī Brave Sync, lai savienotu jūsu pārlūkprogrammas profilu starp ierīcēm. Tas nozīmē, ka Brave Sync nedarbojas. Lai atrisinātu šo problēmu, lūdzu, skatiet <ph name="BEGIN_LINK_SYNC_GUIDE"/>Brave Sync problēmu novēršanas rokasgrāmatu<ph name="END_LINK_SYNC_GUIDE"/>.</translation>
 <translation id="6285118765755298263">Indeksēt citas meklētājprogrammas</translation>
 <translation id="919715748352669592">Automātiski indeksē tīmekļa vietnes, kas atbilst OpenSearch specifikācijām.</translation>
 <translation id="842628013524824194">Parastais logs - adrešu joslā izmantotā meklētājprogramma</translation>
@@ -386,6 +396,23 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="5248318250177143470">Ethereum Name Service (ENS) atrisināšanas metode</translation>
 <translation id="6241402707160226266">Inkognito logs ar Tor</translation>
 <translation id="8762452230727230396">Paslēpj Jūsu IP adresi no apmeklētajām vietnēm.</translation>
+<translation id="2959986444009520721">Izmantojiet tiltus</translation>
+<translation id="6003484976430531384">Tilti palīdz piekļūt Tor tīklam vietā, kur Tor ir bloķēts. Atkarībā no jūsu atrašanās vietas viens tilts var darboties labāk nekā otrs.</translation>
+<translation id="7206799843254049470">Tor savienojuma iestatījumi</translation>
+<translation id="3194502271166340944">Kontrolē, kā privātā Windows ar Tor savienojas ar Tor tīklu</translation>
+<translation id="4859228830700205299">Izvēlieties iebūvēto tiltu</translation>
+<translation id="3233137871426528317">Pieprasiet tiltu no torproject.org</translation>
+<translation id="5701503934456421898">Pieprasīt jaunu tiltu...</translation>
+<translation id="8149806369020180959">Nodrošiniet tiltu</translation>
+<translation id="454073978993625597">Ievadiet tilta informāciju no uzticama avota.</translation>
+<translation id="4425607417590286548">Lietot izmaiņas</translation>
+<translation id="2128143836897950793">Noklikšķiniet uz "Pieprasīt jaunu tiltu...", lai iegūtu tiltus</translation>
+<translation id="3314921753580327793">Ierakstiet adresi:ports (pa vienam katrā rindā)</translation>
+<translation id="3755189300481406891">Pieprasīt tiltu</translation>
+<translation id="6924425739431382319">Sazinieties ar BridgeDB. Lūdzu uzgaidiet.</translation>
+<translation id="811745063252080651">Atrisiniet CAPTCHA, lai pieprasītu tiltu.</translation>
+<translation id="6936835573742749135">Nevar pieprasīt CAPTCHA. Pamēģini vēlreiz vēlāk.</translation>
+<translation id="2653659639078652383">Iesniegt</translation>
 <translation id="1369311132025451972">Automātiski novirzīt .onion vietnes</translation>
 <translation id="2843777623071353503">Brave atvērs tīmekļa vietnes onion pakalpojumu, kad tas būs pieejams, vai .onion domēnu Tor logā.</translation>
 <translation id="2896916411183256228">Izmanto programmu WebTorrent, lai torentus parādītu uzreiz pārlūkprogrammā. Atbalsta torentu failus un magnētiskās saites.</translation>
@@ -432,7 +459,6 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="7059127752542505809">Ievadiet URL</translation>
 <translation id="3047726704186619366">Ikonas URL</translation>
 <translation id="2487558607408469181">Bloķēt pārlūka URL</translation>
-<translation id="2653659639078652383">Iesniegt</translation>
 <translation id="2156993118928861787">Nederīga adrese</translation>
 <translation id="6301398959353668507">Šis lauks nevar būt tukšs.</translation>
 <translation id="7504462451153306677">Nederīgs formāts, ķēdes ID ir pozitīvs skaitlis</translation>

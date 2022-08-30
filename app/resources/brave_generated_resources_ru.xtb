@@ -25,6 +25,7 @@
 <translation id="4150684676757176434">Продолжить блокирование автоматического воспроизведения</translation>
 <translation id="8988939298652262600">Brave не контролирует безопасность и безвредность устанавливаемых расширений. Устанавливайте только те расширения, разработчикам которых вы доверяете.</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID расширения "<ph name="EXTENSION_ID"/>") не разрешено в Brave.</translation>
+<translation id="9005883459983913482">Окна Tor</translation>
 <translation id="7965178729203412357">Новый Tor-идентификатор</translation>
 <translation id="6924909138923993900">Новое соединение Tor для этого сайта</translation>
 <translation id="4734294903299549345">Выйти из Приватного окна с Tor.</translation>
@@ -38,6 +39,9 @@
 <translation id="1725356094208762656">Открыть в Tor</translation>
 <translation id="3396347744975515056">Синхронизация Brave улучшена и требует настройки</translation>
 <translation id="7473245612074035141">Начать настройку</translation>
+<translation id="3975865347033939965">Не удалось запустить Brave Синхронизацию</translation>
+<translation id="4450893287417543264">Не показывать снова</translation>
+<translation id="4595286989346610620">Узнать больше</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">Публиковать и скачивать файлы из IPFS</translation>
 <translation id="7398397225367092613">.onion</translation>
@@ -144,7 +148,7 @@
 <translation id="8490082094734500369">Отключить режим чтения</translation>
 <translation id="2036503787657622020">Включить режим чтения</translation>
 <translation id="5226458915125328323">Настройки Speedreader</translation>
-<translation id="1621606336827646158">Показать исходную страницу</translation>
+<translation id="8591883849678260674">Посмотреть оригинал</translation>
 <translation id="6284218950354553099">Автоматически отправлять ежедневные данные PING в Brave</translation>
 <translation id="5288333155754958121">Закрытые анонимные данные PING позволяют Brave определить число активных пользователей.</translation>
 <translation id="1872784258300710671">Brave использует полностью конфиденциальную аналитику для оценки общего использования определенных функций</translation>
@@ -211,6 +215,10 @@
 <translation id="8721331068159819483">Как на macOS</translation>
 <translation id="1692470335103807198">Больше тем</translation>
 <translation id="2906510232093002459">Изображения Brave по умолчанию</translation>
+<translation id="3367129510799209147">Режим наведения указателя на вкладку</translation>
+<translation id="2113977810652731515">Карта</translation>
+<translation id="4096343215397759358">Карточка с предварительным просмотром</translation>
+<translation id="5297085818601043899">Всплывающая подсказка</translation>
 <translation id="2396127686705429331">Показывать кнопку закладок</translation>
 <translation id="2814998458708016836">Использовать широкую адресную строку</translation>
 <translation id="4109670531935487117">Показывать предложения для автозаполнения в адресной строке</translation>
@@ -238,7 +246,7 @@
 <translation id="6388201778088078932">настройки.</translation>
 <translation id="4800195524776354947">Показывать количество заблокированных элементов на значке Shields</translation>
 <translation id="5510493033031835532">Автоматически перенаправлять с AMP-страниц</translation>
-<translation id="5197219128592971597">Всегда открывать оригинальные страницы вместо ускоренных мобильных версий (AMP)</translation>
+<translation id="7630031867325944356">Использовать ссылки на страницы издателей, а не ускоренные мобильные версии (AMP) или аналогичные варианты.</translation>
 <translation id="7607166182943595829">Запрещать сайтам использовать цифровые отпечатки для выбора языка</translation>
 <translation id="3497934980362703405">Веб-сайты не смогут получать информацию о ваших языковых настройках.</translation>
 <translation id="2133317862976486547">Блокировка трекеров и рекламы</translation>
@@ -285,6 +293,7 @@
 <translation id="1758947220824279023">Максимальное количество рекламы</translation>
 <translation id="2356652719351432565">Региональная реклама</translation>
 <translation id="2196950072404588793">Это позволяет Brave показывать рекламу, подобранную специально для вашего региона. <ph name="BEGIN_LINK"/>Подробнее…<ph name="END_LINK"/></translation>
+<translation id="2433507940547922241">Внешний вид</translation>
 <translation id="6112368337882254910">Автоматический взнос</translation>
 <translation id="9132509928968869844">Лимит на ежемесячный регулярный взнос</translation>
 <translation id="7286722244752781970">Минимальное время нахождения на странице до регистрации посещения</translation>
@@ -374,6 +383,7 @@
     Убедитесь, что кодовые слова были созданы на вашем устройстве.
 
     Продолжить?</translation>
+<translation id="7443185843787879670">Brave не удалось получить доступ к безопасному хранилищу вашей операционной системы, в котором размещаются такие данные, как пароли и файлы cookie. Brave Синхронизация не работает и не сможет настроить один и тот же профиль браузера на нескольких устройствах. Чтобы решить проблему, ознакомьтесь с <ph name="BEGIN_LINK_SYNC_GUIDE"/>руководством<ph name="END_LINK_SYNC_GUIDE"/>.</translation>
 <translation id="6285118765755298263">Добавлять другие поисковые системы</translation>
 <translation id="919715748352669592">Сайты, соответствующие спецификациям OpenSearch, будут автоматически индексироваться.</translation>
 <translation id="842628013524824194">Обычное окно — поисковая система используется в адресной строке</translation>
@@ -386,6 +396,23 @@
 <translation id="5248318250177143470">Метод разрешения службы имен Ethereum (ENS)</translation>
 <translation id="6241402707160226266">Приватное окно с Tor</translation>
 <translation id="8762452230727230396">Tor скрывает ваш IP-адрес от веб-сайтов, которые вы посещае</translation>
+<translation id="2959986444009520721">Использовать мосты</translation>
+<translation id="6003484976430531384">Мосты помогают получить доступ к сети Tor там, где он заблокирован. Мосты работают с разной эффективностью в зависимости от вашего местоположения.</translation>
+<translation id="7206799843254049470">Настройки подключения Tor</translation>
+<translation id="3194502271166340944">Управляет тем, как окна инкогнито с Tor подключаются к сети Tor</translation>
+<translation id="4859228830700205299">Выбрать встроенный мост</translation>
+<translation id="3233137871426528317">Запросить мост у torproject.org</translation>
+<translation id="5701503934456421898">Запросить мост</translation>
+<translation id="8149806369020180959">Предоставить мост</translation>
+<translation id="454073978993625597">Введите информацию о мосте из надежного источника.</translation>
+<translation id="4425607417590286548">Применить</translation>
+<translation id="2128143836897950793">Чтобы получить мосты, нажмите «Запросить мост»</translation>
+<translation id="3314921753580327793">Введите значение в формате адрес:порт (по одной комбинации на строку)</translation>
+<translation id="3755189300481406891">Запрос моста</translation>
+<translation id="6924425739431382319">Связываемся с BridgeDB…</translation>
+<translation id="811745063252080651">Чтобы запросить мост, введите ответ на капчу.</translation>
+<translation id="6936835573742749135">Не удалось запросить капчу. Повторите попытку позже.</translation>
+<translation id="2653659639078652383">Submit</translation>
 <translation id="1369311132025451972">Автоматически перенаправлять с сайтов .onion</translation>
 <translation id="2843777623071353503">Brave откроет onion-версию сайта, если она доступна, или домен .onion в окне с режимом Tor.</translation>
 <translation id="2896916411183256228">WebTorrent позволит отображать информацию о торрентах прямо в браузере. Поддерживаются торрент-файлы и magnet-ссылки.</translation>
@@ -432,7 +459,6 @@
 <translation id="7059127752542505809">Введите URL-адрес</translation>
 <translation id="3047726704186619366">URL значка</translation>
 <translation id="2487558607408469181">Блокировка ссылок Explorer</translation>
-<translation id="2653659639078652383">Отправить</translation>
 <translation id="2156993118928861787">Неверный адрес</translation>
 <translation id="6301398959353668507">Это поле не может быть пустым.</translation>
 <translation id="7504462451153306677">Идентификатор цепи должен быть положительным числом.</translation>

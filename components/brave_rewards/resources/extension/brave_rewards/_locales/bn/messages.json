@@ -311,18 +311,6 @@
       }
     }
   },
-  "notificationBackupWalletTitle": {
-    "message": "Brave রিওয়ার্ডস-এর ব্যাক আপ নিন",
-    "description": ""
-  },
-  "notificationBackupWalletText": {
-    "message": "অনুগ্রহ করে আপনার Brave রিওয়ার্ডস-এর ব্যাকআপ নিন।",
-    "description": ""
-  },
-  "notificationBackupWalletAction": {
-    "message": "এখন ব্যাক আপ নিন",
-    "description": ""
-  },
   "notificationWalletDisconnectedTitle": {
     "message": "আপনি লগ আউট করেছেন",
     "description": ""

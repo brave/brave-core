@@ -311,18 +311,6 @@
       }
     }
   },
-  "notificationBackupWalletTitle": {
-    "message": "Zálohovat odměny Brave",
-    "description": ""
-  },
-  "notificationBackupWalletText": {
-    "message": "Zálohujte si prosím své odměny Brave.",
-    "description": ""
-  },
-  "notificationBackupWalletAction": {
-    "message": "Záloha je nyní k dispozici",
-    "description": ""
-  },
   "notificationWalletDisconnectedTitle": {
     "message": "Jste odhlášeni",
     "description": ""

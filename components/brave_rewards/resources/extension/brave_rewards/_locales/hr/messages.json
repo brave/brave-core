@@ -311,18 +311,6 @@
       }
     }
   },
-  "notificationBackupWalletTitle": {
-    "message": "Izradi sigurnosnu kopiju Nagrada Brave",
-    "description": ""
-  },
-  "notificationBackupWalletText": {
-    "message": "Izradite sigurnosnu kopiju Nagrada Brave.",
-    "description": ""
-  },
-  "notificationBackupWalletAction": {
-    "message": "Sada izradi sigurnosnu kopiju",
-    "description": ""
-  },
   "notificationWalletDisconnectedTitle": {
     "message": "Odjavljeni ste",
     "description": ""

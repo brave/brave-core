@@ -25,6 +25,7 @@
 <translation id="4150684676757176434">계속해서 자동 재생 차단</translation>
 <translation id="8988939298652262600">Brave는 확장 프로그램의 보안 및 안전을 검토하지 않습니다. 개발자를 신뢰하는 경우에만 이 확장 프로그램을 설치하세요.</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>")은(는) Brave에서 허용되지 않습니다.</translation>
+<translation id="9005883459983913482">Tor 창</translation>
 <translation id="7965178729203412357">새로운 Tor 계정</translation>
 <translation id="6924909138923993900">이 사이트용 새 Tor 연결</translation>
 <translation id="4734294903299549345">Tor 비공개 창 종료</translation>
@@ -38,6 +39,9 @@
 <translation id="1725356094208762656">Tor에서 열기</translation>
 <translation id="3396347744975515056">Brave 동기화가 업그레이드되어서 설정이 필요합니다</translation>
 <translation id="7473245612074035141">설치 시작</translation>
+<translation id="3975865347033939965">동기화 서비스를 시작할 수 없습니다. Brave Sync가 미실행 중입니다.</translation>
+<translation id="4450893287417543264">다시 표시하지 않음</translation>
+<translation id="4595286989346610620">세부정보 확인</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">IPFS에서 게시 및 파일 받기</translation>
 <translation id="7398397225367092613">.onion</translation>
@@ -144,7 +148,7 @@
 <translation id="8490082094734500369">리더 모드 끄기</translation>
 <translation id="2036503787657622020">리더 모드 켜기</translation>
 <translation id="5226458915125328323">Speedreader 설정</translation>
-<translation id="1621606336827646158">원본 페이지 표시</translation>
+<translation id="8591883849678260674">원본 보기</translation>
 <translation id="6284218950354553099">일일 사용 Ping을 Brave에 자동으로 보내기</translation>
 <translation id="5288333155754958121">이 익명, 비공개 Ping으로 Brave는 활성 사용자 수를 추산합니다.</translation>
 <translation id="1872784258300710671">Brave는 비밀이 완전히 보장되는 제품 애널리틱스를 사용하여 특정 기능의 전체 사용량을 추정합니다</translation>
@@ -211,6 +215,10 @@
 <translation id="8721331068159819483">macOS와 동일</translation>
 <translation id="1692470335103807198">더 많은 테마 받기</translation>
 <translation id="2906510232093002459">Brave 기본 이미지</translation>
+<translation id="3367129510799209147">탭 호버 모드</translation>
+<translation id="2113977810652731515">카드</translation>
+<translation id="4096343215397759358">미리보기가 있는 카드</translation>
+<translation id="5297085818601043899">툴팁</translation>
 <translation id="2396127686705429331">북마크 버튼 표시</translation>
 <translation id="2814998458708016836">넓은 주소 표시줄 사용</translation>
 <translation id="4109670531935487117">주소 표시줄에 자동 완성 추천 표시</translation>
@@ -238,7 +246,7 @@
 <translation id="6388201778088078932">설정.</translation>
 <translation id="4800195524776354947">방패 아이콘에 차단된 항목 수 표시</translation>
 <translation id="5510493033031835532">AMP 페이지 자동 리디렉션</translation>
-<translation id="5197219128592971597">항상 Google AMP(Accelerated Mobile Page) 버전이 아닌 원본(비AMP) 페이지 URL을 방문하세요.</translation>
+<translation id="7630031867325944356">AMP와 이와 유사한 버전 대신 게시자 페이지 URL을 선호합니다.</translation>
 <translation id="7607166182943595829">언어 환경 설정을 기반으로 사이트가 지문을 남기지 못하게 합니다.</translation>
 <translation id="3497934980362703405">이 설정을 활성화하면 언어 환경설정에 대해 웹사이트가 수집하는 데이터의 양을 줄입니다.</translation>
 <translation id="2133317862976486547">추적기 &amp; 광고 차단</translation>
@@ -285,6 +293,7 @@
 <translation id="1758947220824279023">표시할 최대 광고 개수</translation>
 <translation id="2356652719351432565">지역 광고 관련성</translation>
 <translation id="2196950072404588793">이 설정을 켜면 Brave가 현재 지역에 적합한 광고를 표시합니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
+<translation id="2433507940547922241">모양</translation>
 <translation id="6112368337882254910">자동 기부</translation>
 <translation id="9132509928968869844">월간 자동 기부 한도</translation>
 <translation id="7286722244752781970">방문을 로그하기 전의 최소 페이지 시간</translation>
@@ -374,6 +383,7 @@
     본인이 소유한 디바이스에서 생성된 코드 단어인지 주의하여 확인하시기 바랍니다.
 
     계속하시겠습니까?</translation>
+<translation id="7443185843787879670">Brave가 운영체제의 안전한 스토리지에 액세스할 수 없습니다. 이 영역은 비밀번호와 쿠키 등의 데이터를 보호하는 데 사용되며, 또한 Brave Sync가 디바이스 간에 브라우저 프로필을 연결하는 데에도 필요합니다. 따라서, Brave Sync가 실행되고 있지 않습니다. 이 문제를 해결하려면 <ph name="BEGIN_LINK_SYNC_GUIDE"/>Brave Sync 문제 해결 가이드<ph name="END_LINK_SYNC_GUIDE"/>를 참조하세요.</translation>
 <translation id="6285118765755298263">다른 검색 엔진 색인</translation>
 <translation id="919715748352669592">OpenSearch 사양을 준수하는 웹사이트를 자동으로 색인합니다.</translation>
 <translation id="842628013524824194">일반 창 - 주소 표시줄에 검색 엔진 사용</translation>
@@ -386,6 +396,23 @@
 <translation id="5248318250177143470">Ethereum Name Service(ENS) 해석 방법</translation>
 <translation id="6241402707160226266">Tor와 함께하는 개인정보 보호 창</translation>
 <translation id="8762452230727230396">Tor는 방문하는 사이트에서 IP 주소를 숨깁니다.</translation>
+<translation id="2959986444009520721">Bridges 사용</translation>
+<translation id="6003484976430531384">Bridges는 Tor가 차단된 장소에서 Tor 네트워크에 액세스하는 데 도움을 줍니다. 현재 위치에 따라 가장 나은 브리지가 선택됩니다.</translation>
+<translation id="7206799843254049470">Tor 연결 설정</translation>
+<translation id="3194502271166340944">Tor가 있는 비공개 창이 Tor 네트워크에 연결되는 방법 제어</translation>
+<translation id="4859228830700205299">내장 브리지 선택</translation>
+<translation id="3233137871426528317">torproject.org에서 브리지 요청하기</translation>
+<translation id="5701503934456421898">새 브리지 요청...</translation>
+<translation id="8149806369020180959">브리지 제공</translation>
+<translation id="454073978993625597">신뢰할 수 있는 출처에서 제공된 브리지 정보를 입력하세요.</translation>
+<translation id="4425607417590286548">변경사항 적용</translation>
+<translation id="2128143836897950793">브리지를 얻으려면 '새 브리지 요청...' 클릭</translation>
+<translation id="3314921753580327793">주소:포트를 (한 줄에 하나씩) 입력</translation>
+<translation id="3755189300481406891">브리지 요청</translation>
+<translation id="6924425739431382319">BridgeDB 접촉 중. 기다려주세요.</translation>
+<translation id="811745063252080651">브리지를 요청하려면 CAPTCHA를 푸세요.</translation>
+<translation id="6936835573742749135">CAPTCHA를 요청할 수 없습니다. 다시 시도하세요.</translation>
+<translation id="2653659639078652383">제출</translation>
 <translation id="1369311132025451972">.onion 사이트 자동 리디렉션</translation>
 <translation id="2843777623071353503">Tor 창에서 .onion 도메인을 사용할 수 있을 때 Brave가 웹사이트의 onion 서비스를 엽니다.</translation>
 <translation id="2896916411183256228">브라우저에 직접 토렌트를 표시하려면 웹 토렌트를 사용하세요. 토렌트 파일들과 마그넷 링크들을 지원하세요.</translation>
@@ -432,7 +459,6 @@
 <translation id="7059127752542505809">URL 입력</translation>
 <translation id="3047726704186619366">아이콘 URL</translation>
 <translation id="2487558607408469181">블록 탐색기 URL</translation>
-<translation id="2653659639078652383">제출</translation>
 <translation id="2156993118928861787">올바르지 않은 주소</translation>
 <translation id="6301398959353668507">이 필드는 비워 둘 수 없습니다.</translation>
 <translation id="7504462451153306677">유효하지 않은 형식입니다. 체인 ID는 양수입니다.</translation>
