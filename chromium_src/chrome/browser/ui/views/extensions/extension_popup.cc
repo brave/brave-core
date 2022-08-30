@@ -13,8 +13,9 @@ bool IsBraveExtension(extensions::ExtensionViewHost* host) {
 #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
   const auto extensionId = host->extension()->id();
   return (extensionId == brave_rewards_extension_id);
-#endif
+#else
   return false;
+#endif
 }
 }  // namespace
 

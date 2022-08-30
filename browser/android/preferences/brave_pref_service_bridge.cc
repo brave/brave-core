@@ -335,7 +335,6 @@ jlong JNI_BravePrefServiceBridge_GetDataSaved(
   Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
   return profile->GetPrefs()->GetUint64(
       brave_perf_predictor::prefs::kBandwidthSavedBytes);
-  return 0;
 }
 
 void JNI_BravePrefServiceBridge_SetOldTrackersBlockedCount(
@@ -419,8 +418,6 @@ jboolean JNI_BravePrefServiceBridge_GetBooleanForContentSetting(JNIEnv* env,
     default:
       return false;
   }
-
-  return false;
 }
 
 void JNI_BravePrefServiceBridge_SetReferralAndroidFirstRunTimestamp(

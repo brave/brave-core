@@ -45,7 +45,6 @@ bool IsSearchEvent(const AutocompleteMatch& match) {
     default:
       return false;
   }
-  return false;
 }
 
 void RecordSearchEventP3A(uint64_t number_of_searches) {

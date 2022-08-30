@@ -137,7 +137,8 @@ void ShowDefaultBraveBrowserPrompt(Profile* profile) {
 #if !defined(OFFICIAL_BUILD)
   // Disable in developer build. Showing with infobar didn't bother much but
   // modal dialog could distract developers.
-  return;
+  if ((true))
+    return;
 #endif
 
   PrefService* local_prefs = g_browser_process->local_state();

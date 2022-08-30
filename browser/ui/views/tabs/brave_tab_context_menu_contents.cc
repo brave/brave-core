@@ -93,7 +93,6 @@ bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
     case BraveTabMenuModel::CommandRestoreTab:
       return restore_service_ && (!restore_service_->IsLoaded() ||
                                   !restore_service_->entries().empty());
-      break;
     case BraveTabMenuModel::CommandBookmarkAllTabs:
       if (browser_) {
         return browser_defaults::bookmarks_enabled &&

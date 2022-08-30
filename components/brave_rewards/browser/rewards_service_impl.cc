@@ -249,10 +249,10 @@ ledger::type::InlineTipsPlatforms ConvertInlineTipStringToPlatform(
 }
 
 bool ProcessPublisher(const GURL& url) {
-  // we should always process publisher on desktop
 #if !BUILDFLAG(IS_ANDROID)
+  // we should always process publisher on desktop
   return true;
-#endif
+#else
 
   const std::vector<GURL> excluded = {
       GURL("https://twitter.com")
@@ -268,6 +268,7 @@ bool ProcessPublisher(const GURL& url) {
   }
 
   return true;
+#endif
 }
 
 std::string GetPrefPath(const std::string& name) {
