@@ -89,7 +89,6 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
     private void initComponents() {
         fillSignMessageInfo(true);
         updateAccount();
-        updateNetwork();
     }
 
     private void fillSignMessageInfo(boolean init) {
@@ -119,6 +118,7 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
                         Utils.geteTLD(new GURL(mCurrentSignMessageRequest.originInfo.originSpec),
                                 mCurrentSignMessageRequest.originInfo.eTldPlusOne));
             }
+            updateNetwork(mCurrentSignMessageRequest.coin);
         });
     }
 
@@ -138,8 +138,8 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
         }
     }
 
-    private void updateNetwork() {
-        getJsonRpcService().getNetwork(CoinType.ETH,
-                selectedNetwork -> { mNetworkName.setText(selectedNetwork.chainName); });
+    private void updateNetwork(@CoinType.EnumType int coin) {
+        getJsonRpcService().getNetwork(
+                coin, selectedNetwork -> { mNetworkName.setText(selectedNetwork.chainName); });
     }
 }
