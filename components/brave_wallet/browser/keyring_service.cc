@@ -165,27 +165,29 @@ void SerializeHardwareAccounts(const std::string& device_id,
                                const base::Value* account_value,
                                const std::string& keyring_id,
                                std::vector<mojom::AccountInfoPtr>* accounts) {
-  for (const auto account : account_value->DictItems()) {
+  for (const auto account : account_value->GetDict()) {
+    DCHECK(account.second.is_dict());
     std::string address = account.first;
+    const base::Value::Dict& dict = account.second.GetDict();
+
     std::string hardware_vendor;
-    const std::string* hardware_value =
-        account.second.FindStringKey(kHardwareVendor);
+    const std::string* hardware_value = dict.FindString(kHardwareVendor);
     if (hardware_value)
       hardware_vendor = *hardware_value;
 
     std::string name;
-    const std::string* name_value = account.second.FindStringKey(kAccountName);
+    const std::string* name_value = dict.FindString(kAccountName);
     if (name_value)
       name = *name_value;
 
     std::string derivation_path;
     const std::string* derivation_path_value =
-        account.second.FindStringKey(kHardwareDerivationPath);
+        dict.FindString(kHardwareDerivationPath);
     if (derivation_path_value)
       derivation_path = *derivation_path_value;
 
     mojom::CoinType coin = mojom::CoinType::ETH;
-    auto coin_name_value = account.second.FindIntKey(kCoinType);
+    auto coin_name_value = dict.FindInt(kCoinType);
     if (coin_name_value) {
       coin = static_cast<mojom::CoinType>(*coin_name_value);
     }
@@ -206,6 +208,28 @@ void SerializeHardwareAccounts(const std::string& device_id,
 int GetPbkdf2Iterations() {
   return KeyringService::GetPbkdf2IterationsForTesting().value_or(
       kPbkdf2Iterations);
+}
+
+const base::Value::List* GetPrefForKeyringList(const PrefService& prefs,
+                                               const std::string& key,
+                                               const std::string& id) {
+  if (const base::Value* result =
+          KeyringService::GetPrefForKeyring(prefs, key, id);
+      result && result->is_list()) {
+    return result->GetIfList();
+  }
+  return nullptr;
+}
+
+const base::Value::Dict* GetPrefForKeyringDict(const PrefService& prefs,
+                                               const std::string& key,
+                                               const std::string& id) {
+  if (const base::Value* result =
+          KeyringService::GetPrefForKeyring(prefs, key, id);
+      result && result->is_dict()) {
+    return result->GetIfDict();
+  }
+  return nullptr;
 }
 
 }  // namespace
@@ -298,7 +322,7 @@ void KeyringService::MigrateObsoleteProfilePrefs(PrefService* prefs) {
 }
 
 // static
-bool KeyringService::HasPrefForKeyring(PrefService* prefs,
+bool KeyringService::HasPrefForKeyring(const PrefService& prefs,
                                        const std::string& key,
                                        const std::string& id) {
   return GetPrefForKeyring(prefs, key, id) != nullptr;
@@ -319,38 +343,28 @@ std::vector<std::string> KeyringService::GetAvailableKeyringsFromPrefs(
 }
 
 // static
-const base::Value* KeyringService::GetPrefForKeyring(PrefService* prefs,
+const base::Value* KeyringService::GetPrefForKeyring(const PrefService& prefs,
                                                      const std::string& key,
                                                      const std::string& id) {
-  DCHECK(prefs);
-  const base::Value* keyrings_pref = prefs->GetDictionary(kBraveWalletKeyrings);
-  if (!keyrings_pref)
-    return nullptr;
-  const base::Value* keyring_dict = keyrings_pref->FindKey(id);
+  const base::Value::Dict& keyrings_pref =
+      prefs.GetValueDict(kBraveWalletKeyrings);
+  const base::Value::Dict* keyring_dict = keyrings_pref.FindDict(id);
   if (!keyring_dict)
     return nullptr;
 
-  return keyring_dict->FindKey(key);
+  return keyring_dict->Find(key);
 }
 
 // static
-base::Value* KeyringService::GetPrefForKeyringUpdate(PrefService* prefs,
-                                                     const std::string& key,
-                                                     const std::string& id) {
+base::Value::Dict& KeyringService::GetPrefForKeyringUpdate(
+    PrefService* prefs,
+    const std::string& key,
+    const std::string& id) {
   DCHECK(prefs);
   DictionaryPrefUpdate update(prefs, kBraveWalletKeyrings);
   base::Value* keyrings_pref = update.Get();
-  if (!keyrings_pref)
-    return nullptr;
-  base::Value* keyring_dict = keyrings_pref->FindKey(id);
-  if (!keyring_dict)
-    keyring_dict =
-        keyrings_pref->SetKey(id, base::Value(base::Value::Type::DICTIONARY));
-  base::Value* pref = keyring_dict->FindKey(key);
-  if (!pref)
-    pref =
-        keyring_dict->SetKey(key, base::Value(base::Value::Type::DICTIONARY));
-  return pref;
+  DCHECK(keyrings_pref);
+  return *keyrings_pref->GetDict().EnsureDict(id)->EnsureDict(key);
 }
 
 // static
@@ -361,16 +375,8 @@ void KeyringService::SetPrefForKeyring(PrefService* prefs,
   DCHECK(prefs);
   DictionaryPrefUpdate update(prefs, kBraveWalletKeyrings);
   base::Value* keyrings_pref = update.Get();
-
-  if (!keyrings_pref->FindKey(id)) {
-    keyrings_pref->SetKey(id, base::Value(base::Value::Type::DICTIONARY));
-  }
-
-  base::Value* keyring_dict = keyrings_pref->FindKey(id);
-  if (!keyring_dict)
-    return;
-
-  keyring_dict->SetKey(key, std::move(value));
+  DCHECK(keyrings_pref);
+  keyrings_pref->GetDict().EnsureDict(id)->Set(key, std::move(value));
 }
 
 // static
@@ -380,58 +386,50 @@ void KeyringService::SetAccountMetaForKeyring(
     const absl::optional<std::string> name,
     const absl::optional<std::string> address,
     const std::string& id) {
-  base::Value* account_metas =
+  base::Value::Dict& account_metas =
       GetPrefForKeyringUpdate(prefs, kAccountMetas, id);
-  if (!account_metas)
-    return;
 
-  if (!account_metas->FindKey(account_path))
-    account_metas->SetKey(account_path,
-                          base::Value(base::Value::Type::DICTIONARY));
-  base::Value* account_meta = account_metas->FindKey(account_path);
-  if (!account_meta)
-    return;
-
+  base::Value::Dict* account_meta = account_metas.EnsureDict(account_path);
   if (name)
-    account_meta->SetStringKey(kAccountName, *name);
+    account_meta->Set(kAccountName, *name);
   if (address)
-    account_meta->SetStringKey(kAccountAddress, *address);
+    account_meta->Set(kAccountAddress, *address);
 }
 
 // static
 std::string KeyringService::GetAccountNameForKeyring(
-    PrefService* prefs,
+    const PrefService& prefs,
     const std::string& account_path,
     const std::string& id) {
-  const base::Value* account_metas =
-      GetPrefForKeyring(prefs, kAccountMetas, id);
+  const base::Value::Dict* account_metas =
+      GetPrefForKeyringDict(prefs, kAccountMetas, id);
   if (!account_metas)
     return std::string();
 
-  const base::Value* name =
-      account_metas->FindPath(account_path + "." + kAccountName);
+  const std::string* name = account_metas->FindStringByDottedPath(
+      base::JoinString({account_path, kAccountName}, "."));
   if (!name)
     return std::string();
 
-  return name->GetString();
+  return *name;
 }
 
 // static
 std::string KeyringService::GetAccountAddressForKeyring(
-    PrefService* prefs,
+    const PrefService& prefs,
     const std::string& account_path,
     const std::string& id) {
-  const base::Value* account_metas =
-      GetPrefForKeyring(prefs, kAccountMetas, id);
+  const base::Value::Dict* account_metas =
+      GetPrefForKeyringDict(prefs, kAccountMetas, id);
   if (!account_metas)
     return std::string();
 
-  const base::Value* address =
-      account_metas->FindPath(account_path + "." + kAccountAddress);
+  const std::string* address = account_metas->FindStringByDottedPath(
+      base::JoinString({account_path, kAccountAddress}, "."));
   if (!address)
     return std::string();
 
-  return address->GetString();
+  return *address;
 }
 
 // static
@@ -453,45 +451,49 @@ void KeyringService::SetImportedAccountForKeyring(
     PrefService* prefs,
     const ImportedAccountInfo& info,
     const std::string& id) {
-  base::Value imported_account(base::Value::Type::DICTIONARY);
-  imported_account.SetStringKey(kAccountName, info.account_name);
-  imported_account.SetStringKey(kAccountAddress, info.account_address);
-  imported_account.SetStringKey(kEncryptedPrivateKey,
-                                info.encrypted_private_key);
-  imported_account.SetIntKey(kCoinType, static_cast<int>(info.coin));
+  DCHECK(prefs);
+  base::Value::Dict imported_account;
+  imported_account.Set(kAccountName, info.account_name);
+  imported_account.Set(kAccountAddress, info.account_address);
+  imported_account.Set(kEncryptedPrivateKey, info.encrypted_private_key);
+  imported_account.Set(kCoinType, static_cast<int>(info.coin));
 
-  base::Value imported_accounts(base::Value::Type::LIST);
-  const base::Value* value = GetPrefForKeyring(prefs, kImportedAccounts, id);
+  base::Value::List imported_accounts;
+  const base::Value::List* value =
+      GetPrefForKeyringList(*prefs, kImportedAccounts, id);
   if (value)
     imported_accounts = value->Clone();
   imported_accounts.Append(std::move(imported_account));
 
-  SetPrefForKeyring(prefs, kImportedAccounts, std::move(imported_accounts), id);
+  SetPrefForKeyring(prefs, kImportedAccounts,
+                    base::Value(std::move(imported_accounts)), id);
 }
 
 // static
 std::vector<KeyringService::ImportedAccountInfo>
-KeyringService::GetImportedAccountsForKeyring(PrefService* prefs,
+KeyringService::GetImportedAccountsForKeyring(const PrefService& prefs,
                                               const std::string& id) {
   std::vector<ImportedAccountInfo> result;
-  const base::Value* imported_accounts =
-      GetPrefForKeyring(prefs, kImportedAccounts, id);
+  const base::Value::List* imported_accounts =
+      GetPrefForKeyringList(prefs, kImportedAccounts, id);
   if (!imported_accounts)
     return result;
-  for (const auto& imported_account : imported_accounts->GetList()) {
-    const std::string* account_name =
-        imported_account.FindStringKey(kAccountName);
+  for (const auto& item : *imported_accounts) {
+    DCHECK(item.is_dict());
+    const auto& imported_account = item.GetDict();
+    const std::string* account_name = imported_account.FindString(kAccountName);
     const std::string* account_address =
-        imported_account.FindStringKey(kAccountAddress);
+        imported_account.FindString(kAccountAddress);
     const std::string* encrypted_private_key =
-        imported_account.FindStringKey(kEncryptedPrivateKey);
+        imported_account.FindString(kEncryptedPrivateKey);
     if (!account_name || !account_address || !encrypted_private_key) {
       VLOG(0) << __func__ << "Imported accounts corruppted";
       continue;
     }
     mojom::CoinType coin = GetCoinForKeyring(id);
-    auto coin_name_value = imported_account.FindIntKey(kCoinType);
+    auto coin_name_value = imported_account.FindInt(kCoinType);
     if (coin_name_value) {
+      // TODO(cdesouza): Review removing this unsafe enum class type conversion.
       coin = static_cast<mojom::CoinType>(*coin_name_value);
     }
 
@@ -504,22 +506,25 @@ KeyringService::GetImportedAccountsForKeyring(PrefService* prefs,
 void KeyringService::RemoveImportedAccountForKeyring(PrefService* prefs,
                                                      const std::string& address,
                                                      const std::string& id) {
-  base::Value imported_accounts(base::Value::Type::LIST);
-  const base::Value* value = GetPrefForKeyring(prefs, kImportedAccounts, id);
+  DCHECK(prefs);
+  base::Value::List imported_accounts;
+  const base::Value::List* value =
+      GetPrefForKeyringList(*prefs, kImportedAccounts, id);
   if (!value)
     return;
   imported_accounts = value->Clone();
-  const auto& imported_accounts_list = imported_accounts.GetList();
-  for (const auto& imported_account : imported_accounts_list) {
+  for (const auto& imported_account : imported_accounts) {
+    DCHECK(imported_account.is_dict());
     const std::string* account_address =
-        imported_account.FindStringKey(kAccountAddress);
+        imported_account.GetDict().FindString(kAccountAddress);
     if (account_address && *account_address == address) {
-      imported_accounts.EraseListValue(imported_account);
+      imported_accounts.EraseValue(imported_account);
       break;
     }
   }
 
-  SetPrefForKeyring(prefs, kImportedAccounts, std::move(imported_accounts), id);
+  SetPrefForKeyring(prefs, kImportedAccounts,
+                    base::Value(std::move(imported_accounts)), id);
 }
 
 HDKeyring* KeyringService::CreateKeyring(const std::string& keyring_id,
@@ -553,6 +558,7 @@ void KeyringService::RequestUnlock() {
 
 HDKeyring* KeyringService::ResumeKeyring(const std::string& keyring_id,
                                          const std::string& password) {
+  DCHECK(prefs_);
   if (!CreateEncryptorForKeyring(password, keyring_id)) {
     return nullptr;
   }
@@ -560,7 +566,7 @@ HDKeyring* KeyringService::ResumeKeyring(const std::string& keyring_id,
   const std::string mnemonic = GetMnemonicForKeyringImpl(keyring_id);
   bool is_legacy_brave_wallet = false;
   const base::Value* value =
-      GetPrefForKeyring(prefs_, kLegacyBraveWallet, keyring_id);
+      GetPrefForKeyring(*prefs_, kLegacyBraveWallet, keyring_id);
   if (value)
     is_legacy_brave_wallet = value->GetBool();
   if (mnemonic.empty() ||
@@ -582,7 +588,7 @@ HDKeyring* KeyringService::ResumeKeyring(const std::string& keyring_id,
   }
 
   for (const auto& imported_account_info :
-       GetImportedAccountsForKeyring(prefs_, keyring_id)) {
+       GetImportedAccountsForKeyring(*prefs_, keyring_id)) {
     auto private_key_decoded =
         base::Base64Decode(imported_account_info.encrypted_private_key);
     if (!private_key_decoded)
@@ -612,6 +618,7 @@ HDKeyring* KeyringService::RestoreKeyring(const std::string& keyring_id,
                                           const std::string& mnemonic,
                                           const std::string& password,
                                           bool is_legacy_brave_wallet) {
+  DCHECK(prefs_);
   if (!IsValidMnemonic(mnemonic))
     return nullptr;
   // Try getting existing mnemonic first
@@ -622,7 +629,7 @@ HDKeyring* KeyringService::RestoreKeyring(const std::string& keyring_id,
     // choose the option wrongly and then want to start over with same mnemonic
     // but different is_legacy_brave_wallet value
     const base::Value* value =
-        GetPrefForKeyring(prefs_, kLegacyBraveWallet, keyring_id);
+        GetPrefForKeyring(*prefs_, kLegacyBraveWallet, keyring_id);
     if (!current_mnemonic.empty() && current_mnemonic == mnemonic && value &&
         value->GetBool() == is_legacy_brave_wallet) {
       return ResumeKeyring(keyring_id, password);
@@ -654,13 +661,14 @@ HDKeyring* KeyringService::RestoreKeyring(const std::string& keyring_id,
 
 mojom::KeyringInfoPtr KeyringService::GetKeyringInfoSync(
     const std::string& keyring_id) {
+  DCHECK(prefs_);
   mojom::KeyringInfoPtr keyring_info = mojom::KeyringInfo::New();
   keyring_info->id = keyring_id;
   keyring_info->is_keyring_created = IsKeyringCreated(keyring_id);
   keyring_info->is_locked = IsLocked(keyring_id);
   bool backup_complete = false;
   const base::Value* value =
-      GetPrefForKeyring(prefs_, kBackupComplete, keyring_id);
+      GetPrefForKeyring(*prefs_, kBackupComplete, keyring_id);
   if (value)
     backup_complete = value->GetBool();
   keyring_info->is_backed_up = backup_complete;
@@ -804,7 +812,7 @@ std::string KeyringService::GetMnemonicForKeyringImpl(
   }
   DCHECK(encryptors_[keyring_id]);
   auto encrypted_mnemonic =
-      GetPrefInBytesForKeyring(prefs_, kEncryptedMnemonic, keyring_id);
+      GetPrefInBytesForKeyring(*prefs_, kEncryptedMnemonic, keyring_id);
   if (!encrypted_mnemonic)
     return std::string();
 
@@ -1213,7 +1221,7 @@ void KeyringService::RemoveImportedAccount(
   RemoveImportedAccountForKeyring(prefs_, address, keyring_id);
   NotifyAccountsChanged();
   const base::Value* value =
-      GetPrefForKeyring(prefs_, kSelectedAccount, keyring_id);
+      GetPrefForKeyring(*prefs_, kSelectedAccount, keyring_id);
   if (value && address == value->GetString()) {
     RemoveSelectedAccountForCoin(coin, keyring_id);
   }
@@ -1223,7 +1231,7 @@ void KeyringService::RemoveImportedAccount(
 void KeyringService::IsWalletBackedUp(IsWalletBackedUpCallback callback) {
   bool backup_complete = false;
   const base::Value* value =
-      GetPrefForKeyring(prefs_, kBackupComplete, mojom::kDefaultKeyringId);
+      GetPrefForKeyring(*prefs_, kBackupComplete, mojom::kDefaultKeyringId);
   if (value)
     backup_complete = value->GetBool();
   std::move(callback).Run(backup_complete);
@@ -1324,12 +1332,12 @@ absl::optional<std::string> KeyringService::ImportAccountForKeyring(
 
 size_t KeyringService::GetAccountMetasNumberForKeyring(
     const std::string& id) const {
-  const base::Value* account_metas =
-      GetPrefForKeyring(prefs_, kAccountMetas, id);
+  const base::Value::Dict* account_metas =
+      GetPrefForKeyringDict(*prefs_, kAccountMetas, id);
   if (!account_metas)
     return 0;
 
-  return account_metas->DictSize();
+  return account_metas->size();
 }
 
 // This member function should not assume that the wallet is unlocked!
@@ -1341,9 +1349,9 @@ std::vector<mojom::AccountInfoPtr> KeyringService::GetAccountInfosForKeyring(
   for (size_t i = 0; i < account_no; ++i) {
     mojom::AccountInfoPtr account_info = mojom::AccountInfo::New();
     account_info->address = GetAccountAddressForKeyring(
-        prefs_, GetAccountPathByIndex(i, keyring_id), keyring_id);
+        *prefs_, GetAccountPathByIndex(i, keyring_id), keyring_id);
     account_info->name = GetAccountNameForKeyring(
-        prefs_, GetAccountPathByIndex(i, keyring_id), keyring_id);
+        *prefs_, GetAccountPathByIndex(i, keyring_id), keyring_id);
     account_info->is_imported = false;
     account_info->coin = GetCoinForKeyring(keyring_id);
     account_info->keyring_id = IsFilecoinKeyringId(keyring_id)
@@ -1353,7 +1361,7 @@ std::vector<mojom::AccountInfoPtr> KeyringService::GetAccountInfosForKeyring(
   }
   // append imported account info
   for (const auto& imported_account_info :
-       GetImportedAccountsForKeyring(prefs_, keyring_id)) {
+       GetImportedAccountsForKeyring(*prefs_, keyring_id)) {
     mojom::AccountInfoPtr account_info = mojom::AccountInfo::New();
     account_info->address = imported_account_info.account_address;
     account_info->name = imported_account_info.account_name;
@@ -1376,18 +1384,15 @@ std::vector<mojom::AccountInfoPtr> KeyringService::GetAccountInfosForKeyring(
 std::vector<mojom::AccountInfoPtr> KeyringService::GetHardwareAccountsSync(
     const std::string& keyring_id) const {
   std::vector<mojom::AccountInfoPtr> accounts;
-  const base::Value* value =
+  const auto& keyring =
       GetPrefForKeyringUpdate(prefs_, kHardwareAccounts, keyring_id);
-  if (!value) {
-    return {};
-  }
 
-  for (const auto hw_keyring : value->DictItems()) {
-    std::string device_id = hw_keyring.first;
-    const base::Value* account_value = hw_keyring.second.FindKey(kAccountMetas);
+  for (const auto [id, value] : keyring) {
+    DCHECK(value.is_dict());
+    const base::Value* account_value = value.GetDict().Find(kAccountMetas);
     if (!account_value)
       continue;
-    SerializeHardwareAccounts(device_id, account_value, keyring_id, &accounts);
+    SerializeHardwareAccounts(id, account_value, keyring_id, &accounts);
   }
 
   return accounts;
@@ -1407,29 +1412,20 @@ void KeyringService::AddHardwareAccounts(
     DCHECK_EQ(hardware_vendor, info->hardware_vendor);
     if (hardware_vendor != info->hardware_vendor)
       continue;
-    base::Value hw_account(base::Value::Type::DICTIONARY);
-    hw_account.SetStringKey(kAccountName, info->name);
-    hw_account.SetStringKey(kHardwareVendor, info->hardware_vendor);
-    hw_account.SetStringKey(kHardwareDerivationPath, info->derivation_path);
-    hw_account.SetIntKey(kCoinType, static_cast<int>(info->coin));
+    base::Value::Dict hw_account;
+    hw_account.Set(kAccountName, info->name);
+    hw_account.Set(kHardwareVendor, info->hardware_vendor);
+    hw_account.Set(kHardwareDerivationPath, info->derivation_path);
+    hw_account.Set(kCoinType, static_cast<int>(info->coin));
     auto keyring_id =
         GetKeyringIdForNetwork(info->coin, info->network.value_or(""));
 
-    base::Value* hardware_keyrings =
+    base::Value::Dict& hardware_keyrings =
         GetPrefForKeyringUpdate(prefs_, kHardwareAccounts, keyring_id);
-    base::Value* device_value = hardware_keyrings->FindKey(device_id);
-    if (!device_value) {
-      device_value = hardware_keyrings->SetKey(
-          device_id, base::Value(base::Value::Type::DICTIONARY));
-    }
 
-    base::Value* meta_value = device_value->FindKey(kAccountMetas);
-    if (!meta_value) {
-      meta_value = device_value->SetKey(
-          kAccountMetas, base::Value(base::Value::Type::DICTIONARY));
-    }
-
-    meta_value->SetKey(info->address, std::move(hw_account));
+    hardware_keyrings.EnsureDict(device_id)
+        ->EnsureDict(kAccountMetas)
+        ->Set(info->address, std::move(hw_account));
 
     if (!account_selected) {
       SetSelectedAccountForCoinSilently(infos[0]->coin, infos[0]->address);
@@ -1452,24 +1448,25 @@ void KeyringService::RemoveHardwareAccount(
   }
 
   auto keyring_id = GetHardwareKeyringId(coin, address);
-  base::Value* hardware_keyrings =
+  base::Value::Dict& hardware_keyrings =
       GetPrefForKeyringUpdate(prefs_, kHardwareAccounts, keyring_id);
-  for (auto devices : hardware_keyrings->DictItems()) {
-    base::Value* account_metas = devices.second.FindKey(kAccountMetas);
+  for (auto [id, device] : hardware_keyrings) {
+    DCHECK(device.is_dict());
+    base::Value::Dict* account_metas = device.GetDict().FindDict(kAccountMetas);
     if (!account_metas)
       continue;
-    const base::Value* address_key = account_metas->FindKey(address);
+    const base::Value* address_key = account_metas->Find(address);
     if (!address_key)
       continue;
-    account_metas->RemoveKey(address);
+    account_metas->Remove(address);
 
-    if (account_metas->DictEmpty())
-      hardware_keyrings->RemoveKey(devices.first);
+    if (account_metas->empty())
+      hardware_keyrings.Remove(id);
 
     NotifyAccountsChanged();
-    const base::Value* value =
-        GetPrefForKeyring(prefs_, kSelectedAccount, keyring_id);
-    if (value && address == value->GetString()) {
+    const base::Value* pref =
+        GetPrefForKeyring(*prefs_, kSelectedAccount, keyring_id);
+    if (pref && address == pref->GetString()) {
       RemoveSelectedAccountForCoin(coin, keyring_id);
     }
     std::move(callback).Run(true);
@@ -1615,7 +1612,7 @@ absl::optional<std::string> KeyringService::GetSelectedAccount(
     NOTREACHED() << "GetFilecoinSelectedAccount must be used";
   }
   const base::Value* value =
-      GetPrefForKeyring(prefs_, kSelectedAccount, *keyring_id);
+      GetPrefForKeyring(*prefs_, kSelectedAccount, *keyring_id);
   if (!value)
     return absl::nullopt;
   std::string address = value->GetString();
@@ -1628,7 +1625,7 @@ absl::optional<std::string> KeyringService::GetSelectedAccount(
 absl::optional<std::string> KeyringService::GetFilecoinSelectedAccount(
     const std::string& net) const {
   const base::Value* value =
-      GetPrefForKeyring(prefs_, kSelectedAccount, GetFilecoinKeyringId(net));
+      GetPrefForKeyring(*prefs_, kSelectedAccount, GetFilecoinKeyringId(net));
 
   if (!value)
     return absl::nullopt;
@@ -1747,11 +1744,11 @@ void KeyringService::MaybeMigratePBKDF2Iterations(const std::string& password) {
        {mojom::kDefaultKeyringId, mojom::kFilecoinKeyringId,
         mojom::kFilecoinTestnetKeyringId, mojom::kSolanaKeyringId}) {
     auto legacy_encrypted_mnemonic =
-        GetPrefInBytesForKeyring(prefs_, kEncryptedMnemonic, keyring_id);
+        GetPrefInBytesForKeyring(*prefs_, kEncryptedMnemonic, keyring_id);
     auto legacy_nonce =
-        GetPrefInBytesForKeyring(prefs_, kPasswordEncryptorNonce, keyring_id);
+        GetPrefInBytesForKeyring(*prefs_, kPasswordEncryptorNonce, keyring_id);
     auto legacy_salt =
-        GetPrefInBytesForKeyring(prefs_, kPasswordEncryptorSalt, keyring_id);
+        GetPrefInBytesForKeyring(*prefs_, kPasswordEncryptorSalt, keyring_id);
 
     if (!legacy_encrypted_mnemonic || !legacy_nonce || !legacy_salt) {
       continue;
@@ -1785,12 +1782,12 @@ void KeyringService::MaybeMigratePBKDF2Iterations(const std::string& password) {
       prefs_->SetBoolean(kBraveWalletKeyringEncryptionKeysMigrated, true);
     }
 
-    const base::Value* imported_accounts_legacy =
-        GetPrefForKeyring(prefs_, kImportedAccounts, keyring_id);
-    if (!imported_accounts_legacy || !imported_accounts_legacy->is_list())
+    const base::Value::List* imported_accounts_legacy =
+        GetPrefForKeyringList(*prefs_, kImportedAccounts, keyring_id);
+    if (!imported_accounts_legacy)
       continue;
-    base::Value imported_accounts = imported_accounts_legacy->Clone();
-    for (auto& imported_account : imported_accounts.GetList()) {
+    base::Value::List imported_accounts = imported_accounts_legacy->Clone();
+    for (auto& imported_account : imported_accounts) {
       if (!imported_account.is_dict())
         continue;
 
@@ -1813,8 +1810,8 @@ void KeyringService::MaybeMigratePBKDF2Iterations(const std::string& password) {
           kEncryptedPrivateKey,
           base::Base64Encode(encryptor->Encrypt(*private_key, nonce)));
     }
-    SetPrefForKeyring(prefs_, kImportedAccounts, std::move(imported_accounts),
-                      keyring_id);
+    SetPrefForKeyring(prefs_, kImportedAccounts,
+                      base::Value(std::move(imported_accounts)), keyring_id);
   }
 }
 
@@ -1835,7 +1832,7 @@ void KeyringService::ResetAutoLockTimer() {
 
 // static
 absl::optional<std::vector<uint8_t>> KeyringService::GetPrefInBytesForKeyring(
-    PrefService* prefs,
+    const PrefService& prefs,
     const std::string& key,
     const std::string& id) {
   const base::Value* value = GetPrefForKeyring(prefs, key, id);
@@ -1863,7 +1860,7 @@ std::vector<uint8_t> KeyringService::GetOrCreateNonceForKeyring(
     bool force_create) {
   if (!force_create) {
     if (auto nonce =
-            GetPrefInBytesForKeyring(prefs_, kPasswordEncryptorNonce, id)) {
+            GetPrefInBytesForKeyring(*prefs_, kPasswordEncryptorNonce, id)) {
       return *nonce;
     }
   }
@@ -1879,7 +1876,7 @@ std::vector<uint8_t> KeyringService::GetOrCreateSaltForKeyring(
     bool force_create) {
   if (!force_create) {
     if (auto salt =
-            GetPrefInBytesForKeyring(prefs_, kPasswordEncryptorSalt, id)) {
+            GetPrefInBytesForKeyring(*prefs_, kPasswordEncryptorSalt, id)) {
       return *salt;
     }
   }
@@ -1951,7 +1948,7 @@ bool KeyringService::CreateKeyringInternal(const std::string& keyring_id,
 }
 
 bool KeyringService::IsKeyringCreated(const std::string& keyring_id) const {
-  return HasPrefForKeyring(prefs_, kEncryptedMnemonic, keyring_id);
+  return HasPrefForKeyring(*prefs_, kEncryptedMnemonic, keyring_id);
 }
 
 void KeyringService::AddObserver(
@@ -2050,16 +2047,17 @@ bool KeyringService::UpdateNameForHardwareAccountSync(
     const std::string& name,
     mojom::CoinType coin) {
   auto keyring_id = GetHardwareKeyringId(coin, address);
-  base::Value* hardware_keyrings =
+  base::Value::Dict& hardware_keyrings =
       GetPrefForKeyringUpdate(prefs_, kHardwareAccounts, keyring_id);
-  for (auto devices : hardware_keyrings->DictItems()) {
-    base::Value* account_metas = devices.second.FindKey(kAccountMetas);
+  for (auto [id, device] : hardware_keyrings) {
+    DCHECK(device.is_dict());
+    base::Value::Dict* account_metas = device.GetDict().FindDict(kAccountMetas);
     if (!account_metas)
       continue;
-    base::Value* address_key = account_metas->FindKey(address);
+    base::Value::Dict* address_key = account_metas->FindDict(address);
     if (!address_key)
       continue;
-    address_key->SetStringKey(kAccountName, name);
+    address_key->Set(kAccountName, name);
     NotifyAccountsChanged();
     return true;
   }
@@ -2091,24 +2089,25 @@ void KeyringService::SetKeyringImportedAccountName(
     return;
   }
 
-  base::Value imported_accounts(base::Value::Type::LIST);
-  const base::Value* value =
-      GetPrefForKeyring(prefs_, kImportedAccounts, keyring_id);
+  base::Value::List imported_accounts;
+  const base::Value::List* value =
+      GetPrefForKeyringList(*prefs_, kImportedAccounts, keyring_id);
   if (!value) {
     std::move(callback).Run(false);
     return;
   }
 
   imported_accounts = value->Clone();
-  base::Value::List& imported_accounts_list = imported_accounts.GetList();
 
   bool name_updated = false;
-  for (auto& entry : imported_accounts_list) {
-    const std::string* account_address = entry.FindStringKey(kAccountAddress);
+  for (auto& entry : imported_accounts) {
+    DCHECK(entry.is_dict());
+    base::Value::Dict& dict = entry.GetDict();
+    const std::string* account_address = dict.FindString(kAccountAddress);
     if (account_address && *account_address == address) {
-      entry.SetStringKey(kAccountName, name);
-      SetPrefForKeyring(prefs_, kImportedAccounts, std::move(imported_accounts),
-                        keyring_id);
+      dict.Set(kAccountName, name);
+      SetPrefForKeyring(prefs_, kImportedAccounts,
+                        base::Value(std::move(imported_accounts)), keyring_id);
       NotifyAccountsChanged();
       name_updated = true;
       break;
@@ -2194,11 +2193,11 @@ bool KeyringService::ValidatePasswordInternal(const std::string& password) {
   const std::string keyring_id = mojom::kDefaultKeyringId;
 
   auto salt =
-      GetPrefInBytesForKeyring(prefs_, kPasswordEncryptorSalt, keyring_id);
+      GetPrefInBytesForKeyring(*prefs_, kPasswordEncryptorSalt, keyring_id);
   auto encrypted_mnemonic =
-      GetPrefInBytesForKeyring(prefs_, kEncryptedMnemonic, keyring_id);
+      GetPrefInBytesForKeyring(*prefs_, kEncryptedMnemonic, keyring_id);
   auto nonce =
-      GetPrefInBytesForKeyring(prefs_, kPasswordEncryptorNonce, keyring_id);
+      GetPrefInBytesForKeyring(*prefs_, kPasswordEncryptorNonce, keyring_id);
 
   if (!salt || !encrypted_mnemonic || !nonce) {
     return false;
