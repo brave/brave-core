@@ -66,7 +66,7 @@ class CookieExpirationTest : public InProcessBrowserTest {
   }
 
   void JSCookieStoreWriteCookie(Browser* browser, std::string expires_in_ms) {
-    content::EvalJsResult result = content::EvalJs(
+    ASSERT_TRUE(content::ExecJs(
         browser->tab_strip_model()->GetActiveWebContents(),
         base::StringPrintf("(async () => {"
                            "return await window.cookieStore.set("
@@ -75,7 +75,7 @@ class CookieExpirationTest : public InProcessBrowserTest {
                            "         expires: Date.now() + %s,"
                            "       });"
                            "})()",
-                           expires_in_ms.c_str()));
+                           expires_in_ms.c_str())));
   }
 
   std::vector<net::CanonicalCookie> GetAllCookiesDirect(Browser* browser) {
