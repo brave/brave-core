@@ -75,7 +75,7 @@ export const ConnectHardwareWalletPanel = ({
       return getLocale('braveWalletConnectHardwarePanelConnect').replace('$1', walletName)
     }
 
-    let network = getAppName(coinType)
+    const network = getAppName(coinType)
     return getLocale('braveWalletConnectHardwarePanelOpenApp')
       .replace('$1', network)
       .replace('$2', walletName)
