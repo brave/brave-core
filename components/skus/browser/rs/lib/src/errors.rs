@@ -42,40 +42,35 @@ impl Display for InternalError {
         match self {
             InternalError::RequestFailed => write!(f, "HTTP request failed"),
             InternalError::InternalServer(app_err) => {
+                let code: StatusCode =
+                    StatusCode::from_u16(app_err.code).unwrap_or(StatusCode::INTERNAL_SERVER_ERROR);
                 write!(
                     f,
                     "Server internal error: {} {}",
-                    StatusCode::from_u16(app_err.code)
-                        .unwrap_or(StatusCode::INTERNAL_SERVER_ERROR)
-                        .as_str(),
-                    StatusCode::from_u16(app_err.code)
-                        .unwrap_or(StatusCode::INTERNAL_SERVER_ERROR)
-                        .canonical_reason()
-                        .unwrap_or("unknown")
+                    code.as_str(),
+                    code.canonical_reason().unwrap_or("unknown")
                 )
             }
             InternalError::BadRequest(app_err) => {
+                let code: StatusCode =
+                    StatusCode::from_u16(app_err.code).unwrap_or(StatusCode::BAD_REQUEST);
                 write!(
                     f,
                     "Bad client request: {} {} - {} {}",
-                    StatusCode::from_u16(app_err.code).unwrap_or(StatusCode::BAD_REQUEST).as_str(),
-                    StatusCode::from_u16(app_err.code)
-                        .unwrap_or(StatusCode::BAD_REQUEST)
-                        .canonical_reason()
-                        .unwrap_or("unknown"),
+                    code.as_str(),
+                    code.canonical_reason().unwrap_or("unknown"),
                     app_err.error_code,
                     app_err.data.get("validationErrors").unwrap_or(&Value::Null)
                 )
             }
             InternalError::UnhandledStatus(app_err) => {
+                let code: StatusCode =
+                    StatusCode::from_u16(app_err.code).unwrap_or(StatusCode::INTERNAL_SERVER_ERROR);
                 write!(
                     f,
                     "Unhandled request status: {} {}",
-                    StatusCode::from_u16(app_err.code).unwrap_or(StatusCode::BAD_REQUEST).as_str(),
-                    StatusCode::from_u16(app_err.code)
-                        .unwrap_or(StatusCode::BAD_REQUEST)
-                        .canonical_reason()
-                        .unwrap_or("unknown")
+                    code.as_str(),
+                    code.canonical_reason().unwrap_or("unknown")
                 )
             }
             InternalError::RetryLater(after) => write!(

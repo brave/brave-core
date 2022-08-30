@@ -141,7 +141,7 @@ impl JSSDK {
                 }
             }
 
-            let order = sdk.refresh_order(&order_id).await.map_err(|e| JsError::from(e))?;
+            let order = sdk.refresh_order(&order_id).await.map_err(JsError::from)?;
             let js_value = serde_wasm_bindgen::to_value(&order)?;
             Ok(js_value)
         };
@@ -154,8 +154,7 @@ impl JSSDK {
         let sdk = self.sdk.clone();
 
         let future = async move {
-            let resp =
-                sdk.submit_receipt(&order_id, &receipt).await.map_err(|e| JsError::from(e))?;
+            let resp = sdk.submit_receipt(&order_id, &receipt).await.map_err(JsError::from)?;
             let js_value = serde_wasm_bindgen::to_value(&resp)?;
             Ok(js_value)
         };
@@ -168,10 +167,8 @@ impl JSSDK {
         let sdk = self.sdk.clone();
 
         let future = async move {
-            let order = sdk
-                .submit_order_credentials_to_sign(&order_id)
-                .await
-                .map_err(|e| JsError::from(e))?;
+            let order =
+                sdk.submit_order_credentials_to_sign(&order_id).await.map_err(JsError::from)?;
             let js_value = serde_wasm_bindgen::to_value(&order)?;
             Ok(js_value)
         };
@@ -192,8 +189,7 @@ impl JSSDK {
                 }
             }
 
-            let order =
-                sdk.fetch_order_credentials(&order_id).await.map_err(|e| JsError::from(e))?;
+            let order = sdk.fetch_order_credentials(&order_id).await.map_err(JsError::from)?;
             let js_value = serde_wasm_bindgen::to_value(&order)?;
             Ok(js_value)
         };
@@ -206,8 +202,7 @@ impl JSSDK {
         let sdk = self.sdk.clone();
 
         let future = async move {
-            let order =
-                sdk.delete_order_credentials(&order_id).await.map_err(|e| JsError::from(e))?;
+            let order = sdk.delete_order_credentials(&order_id).await.map_err(JsError::from)?;
             let js_value = serde_wasm_bindgen::to_value(&order)?;
             Ok(js_value)
         };
@@ -232,7 +227,7 @@ impl JSSDK {
             }
 
             if let Some(credential_summary) =
-                sdk.matching_credential_summary(&subdomain).await.map_err(|e| JsError::from(e))?
+                sdk.matching_credential_summary(&subdomain).await.map_err(JsError::from)?
             {
                 return {
                     let js_value = serde_wasm_bindgen::to_value(&credential_summary)?;
@@ -261,7 +256,7 @@ impl JSSDK {
             if let Some(credential_summary) = sdk
                 .matching_order_credential_summary(&order_id, &subdomain.unwrap_or(host))
                 .await
-                .map_err(|e| JsError::from(e))?
+                .map_err(JsError::from)?
             {
                 return {
                     let js_value = serde_wasm_bindgen::to_value(&credential_summary)?;
@@ -287,7 +282,7 @@ impl JSSDK {
             let presentation = sdk
                 .prepare_credentials_presentation(&origin, &path.unwrap_or_else(|| "/".to_string()))
                 .await
-                .map_err(|e| JsError::from(e))?;
+                .map_err(JsError::from)?;
             let js_value = serde_wasm_bindgen::to_value(&presentation)?;
             Ok(js_value)
         };
@@ -314,7 +309,7 @@ impl JSSDK {
                 &path.unwrap_or_else(|| "/".to_string()),
             )
             .await
-            .map_err(|e| JsError::from(e))?;
+            .map_err(JsError::from)?;
             Ok(JsValue::UNDEFINED)
         };
 
@@ -339,7 +334,7 @@ impl JSSDK {
                     &path.unwrap_or_else(|| "/".to_string()),
                 )
                 .await
-                .map_err(|e| JsError::from(e))?
+                .map_err(JsError::from)?
             {
                 return Ok(JsValue::from_str(&cred));
             }
@@ -417,7 +412,7 @@ impl HTTPClient for JSClient {
         let mut opts = RequestInit::new();
         opts.mode(RequestMode::Cors);
 
-        opts.method(&req.method().to_string());
+        opts.method(req.method().as_ref());
 
         let body = req.body();
 

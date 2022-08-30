@@ -217,12 +217,14 @@ where
                 builder.method("POST");
                 builder.uri(format!("{}/v1/orders/{}/submit-receipt", self.base_url, order_id));
 
-                let receipt_bytes: Vec<u8> = receipt.as_bytes().to_vec();
-                let req = builder.body(receipt_bytes).unwrap();
+                let receipt_bytes = receipt.as_bytes().to_vec();
+                let req =
+                    builder.body(receipt_bytes).or(Err(InternalError::SerializationFailed))?;
+
                 let resp = self.fetch(req).await?;
                 event!(
                     Level::DEBUG,
-                    response = str::from_utf8(resp.body()).unwrap(),
+                    response = str::from_utf8(resp.body()).unwrap_or("<invalid body>"),
                     "submit_receipt called"
                 );
                 match resp.status() {

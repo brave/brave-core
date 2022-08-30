@@ -81,7 +81,7 @@ impl From<ffi::SkusResult> for skus::errors::InternalError {
             }
             ffi::SkusResult::UnhandledStatus => {
                 skus::errors::InternalError::UnhandledStatus(skus::models::APIError {
-                    code: 499,
+                    code: 699,
                     message: "unhandled error".to_string(),
                     error_code: "unknown".to_string(),
                     data: serde_json::Value::Null,
