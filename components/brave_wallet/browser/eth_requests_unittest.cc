@@ -279,18 +279,18 @@ TEST(EthRequestUnitTest, eth_compileSerpent) {
 }
 
 TEST(EthRequestUnitTest, eth_newFilter) {
-  base::Value topics(base::Value::Type::LIST);
-  topics.Append(base::Value(
-      "0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b"));
-  base::Value sub_topics(base::Value::Type::LIST);
-  sub_topics.Append(base::Value(
-      "0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b"));
-  sub_topics.Append(base::Value(
-      "0x0000000000000000000000000aff3454fce5edbc8cca8697c15331677e6ebccc"));
+  base::Value::List topics;
+  topics.Append(
+      "0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b");
+  base::Value::List sub_topics;
+  sub_topics.Append(
+      "0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b");
+  sub_topics.Append(
+      "0x0000000000000000000000000aff3454fce5edbc8cca8697c15331677e6ebccc");
   topics.Append(std::move(sub_topics));
   ASSERT_EQ(
       eth_newFilter("0x1", "0x2", "0x8888f1f195afa192cfee860698584c030f4c9db1",
-                    &topics),
+                    std::move(topics)),
       R"({"id":1,"jsonrpc":"2.0","method":"eth_newFilter","params":[{"address":"0x8888f1f195afa192cfee860698584c030f4c9db1","fromBlock":"0x1","toBlock":"0x2","topics":["0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b",["0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b","0x0000000000000000000000000aff3454fce5edbc8cca8697c15331677e6ebccc"]]}]})");  // NOLINT
 }
 
@@ -325,18 +325,19 @@ TEST(EthRequestUnitTest, eth_getFilterLogs) {
 }
 
 TEST(EthRequestUnitTest, eth_getLogs) {
-  base::Value topics(base::Value::Type::LIST);
-  topics.Append(base::Value(
-      "0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b"));
-  base::Value sub_topics(base::Value::Type::LIST);
-  sub_topics.Append(base::Value(
-      "0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b"));
-  sub_topics.Append(base::Value(
-      "0x0000000000000000000000000aff3454fce5edbc8cca8697c15331677e6ebccc"));
+  base::Value::List topics;
+  topics.Append(
+      "0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b");
+  base::Value::List sub_topics;
+  sub_topics.Append(
+      "0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b");
+  sub_topics.Append(
+      "0x0000000000000000000000000aff3454fce5edbc8cca8697c15331677e6ebccc");
   topics.Append(std::move(sub_topics));
   ASSERT_EQ(
       eth_getLogs(
-          "0x1", "0x2", "0x8888f1f195afa192cfee860698584c030f4c9db1", &topics,
+          "0x1", "0x2", "0x8888f1f195afa192cfee860698584c030f4c9db1",
+          std::move(topics),
           "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238"),
       R"({"id":1,"jsonrpc":"2.0","method":"eth_getLogs","params":[{"address":"0x8888f1f195afa192cfee860698584c030f4c9db1","blockhash":"0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238","fromBlock":"0x1","toBlock":"0x2","topics":["0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b",["0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b","0x0000000000000000000000000aff3454fce5edbc8cca8697c15331677e6ebccc"]]}]})");  // NOLINT
 }
