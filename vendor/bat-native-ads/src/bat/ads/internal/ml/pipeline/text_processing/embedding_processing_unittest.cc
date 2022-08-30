@@ -10,16 +10,12 @@
 #include <vector>
 
 #include "base/files/file.h"
-#include "base/time/time.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_file_util.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/resources/contextual/text_embedding/text_embedding_resource.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
-
-using testing::_;
-using testing::Invoke;
 
 namespace {
 
@@ -29,6 +25,9 @@ constexpr char kSimpleResourceFile[] =
 }  // namespace
 
 namespace ads {
+
+using testing::_;
+using testing::Invoke;
 
 class BatAdsEmbeddingProcessingPipelineTest : public UnitTestBase {
  protected:
@@ -41,7 +40,7 @@ TEST_F(BatAdsEmbeddingProcessingPipelineTest, EmbedTextSimple) {
   // Arrange
   resource::TextEmbedding resource;
   EXPECT_CALL(*ads_client_mock_, LoadFileResource(_, _, _))
-      .WillOnce(Invoke([](const std::string& id, const int version,
+      .WillOnce(Invoke([](const std::string& /*id*/, const int /*version*/,
                           LoadFileCallback callback) {
         const base::FilePath path =
             GetFileResourcePath().AppendASCII(kSimpleResourceFile);

@@ -46,8 +46,8 @@ class VectorData final : public Data {
   int GetDimensionCount() const;
   int GetNonZeroElementCount() const;
 
-  const std::string GetVectorAsString() const;
   const std::vector<float>& GetValuesForTesting() const;
+  std::string GetVectorAsString() const;
 
  private:
   std::unique_ptr<class VectorDataStorage> storage_;

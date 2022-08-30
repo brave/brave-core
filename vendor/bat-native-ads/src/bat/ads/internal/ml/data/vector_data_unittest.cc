@@ -172,9 +172,9 @@ TEST_F(BatAdsVectorDataTest, Add) {
 
   // Assert
   for (int i = 0; i < 3; i++) {
-    EXPECT_NEAR(v12[i], v1.GetValuesForTesting().at(i), 0.001f);
-    EXPECT_NEAR(v21[i], v2.GetValuesForTesting().at(i), 0.001f);
-    EXPECT_NEAR(v34[i], v3.GetValuesForTesting().at(i), 0.001f);
+    EXPECT_NEAR(v12[i], v1.GetValuesForTesting().at(i), 0.001F);
+    EXPECT_NEAR(v21[i], v2.GetValuesForTesting().at(i), 0.001F);
+    EXPECT_NEAR(v34[i], v3.GetValuesForTesting().at(i), 0.001F);
   }
 }
 
@@ -198,10 +198,10 @@ TEST_F(BatAdsVectorDataTest, ScalarDivide) {
 
   // Assert
   for (int i = 0; i < 3; i++) {
-    EXPECT_NEAR(v1d[i], v1.GetValuesForTesting().at(i), 0.001f);
-    EXPECT_NEAR(v2d[i], v2.GetValuesForTesting().at(i), 0.001f);
-    EXPECT_NEAR(v3d[i], v3.GetValuesForTesting().at(i), 0.001f);
-    EXPECT_NEAR(v4d[i], v4.GetValuesForTesting().at(i), 0.001f);
+    EXPECT_NEAR(v1d[i], v1.GetValuesForTesting().at(i), 0.001F);
+    EXPECT_NEAR(v2d[i], v2.GetValuesForTesting().at(i), 0.001F);
+    EXPECT_NEAR(v3d[i], v3.GetValuesForTesting().at(i), 0.001F);
+    EXPECT_NEAR(v4d[i], v4.GetValuesForTesting().at(i), 0.001F);
   }
 }
 

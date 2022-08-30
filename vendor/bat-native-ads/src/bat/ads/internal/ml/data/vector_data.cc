@@ -217,7 +217,7 @@ const std::vector<float>& VectorData::GetValuesForTesting() const {
   return storage_->values();
 }
 
-const std::string VectorData::GetVectorAsString() const {
+std::string VectorData::GetVectorAsString() const {
   if (!storage_->DimensionCount()) {
     return {};
   }

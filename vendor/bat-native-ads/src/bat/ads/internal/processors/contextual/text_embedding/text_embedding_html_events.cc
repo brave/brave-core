@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "base/time/time.h"
-#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_event_info.h"
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events_database_table.h"

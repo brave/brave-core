@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
 
-#include "base/time/time.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/features/text_embedding_features.h"
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_info.h"

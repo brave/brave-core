@@ -55,18 +55,14 @@ bool EmbeddingProcessing::SetEmbeddingPipeline(base::Value resource_value) {
   }
 
   const bool success = embedding_pipeline_.FromValue(*value);
-  if (success) {
-    is_initialized_ = true;
-  } else {
-    is_initialized_ = false;
-  }
+  is_initialized_ = success;
 
   return is_initialized_;
 }
 
 TextEmbeddingInfo EmbeddingProcessing::EmbedText(
     const std::string& text) const {
-  std::vector<float> embedding_zeroed(embedding_pipeline_.dim, 0.0f);
+  std::vector<float> embedding_zeroed(embedding_pipeline_.dim, 0.0F);
   VectorData embedding_vector = VectorData(embedding_zeroed);
   TextEmbeddingInfo embedding_info;
   embedding_info.embedding = embedding_vector;
@@ -105,7 +101,7 @@ TextEmbeddingInfo EmbeddingProcessing::EmbedText(
   const std::vector<uint8_t> sha256_hash = security::Sha256(in_vocab_text);
   embedding_info.text_hashed = base::Base64Encode(sha256_hash);
 
-  const float scalar = static_cast<float>(n_tokens);
+  const auto scalar = static_cast<float>(n_tokens);
   embedding_info.embedding.DivideByScalar(scalar);
   return embedding_info;
 }

@@ -1029,8 +1029,6 @@ source_set("ads") {
     "src/bat/ads/internal/processors/contextual/text_embedding/text_embedding_processor.h",
     "src/bat/ads/internal/processors/contextual/text_embedding/text_embedding_processor_util.cc",
     "src/bat/ads/internal/processors/contextual/text_embedding/text_embedding_processor_util.h",
-    "src/bat/ads/internal/reactions/reactions.cc",
-    "src/bat/ads/internal/reactions/reactions.h",
     "src/bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_features.cc",
     "src/bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_features.h",
     "src/bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_info.cc",

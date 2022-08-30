@@ -85,7 +85,7 @@ void TextEmbedding::Process(const std::string& text) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void TextEmbedding::OnLocaleDidChange(const std::string& locale) {
+void TextEmbedding::OnLocaleDidChange(const std::string& /*locale*/) {
   resource_->Load();
 }
 
@@ -96,7 +96,7 @@ void TextEmbedding::OnResourceDidUpdate(const std::string& id) {
 }
 
 void TextEmbedding::OnHtmlContentDidChange(
-    const int32_t tab_id,
+    const int32_t /*tab_id*/,
     const std::vector<GURL>& redirect_chain,
     const std::string& html) {
   const GURL& url = redirect_chain.back();

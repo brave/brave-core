@@ -14,9 +14,6 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-using testing::_;
-using testing::Invoke;
-
 namespace {
 
 constexpr char kInvalidJsonResourceFile[] =
@@ -28,6 +25,9 @@ constexpr char kNotExistantResourceFile[] =
 
 namespace ads {
 namespace resource {
+
+using testing::_;
+using testing::Invoke;
 
 class BatAdsTextEmbeddingResourceTest : public UnitTestBase {
  protected:
@@ -52,7 +52,7 @@ TEST_F(BatAdsTextEmbeddingResourceTest, LoadInvalidJsonResource) {
   // Arrange
   TextEmbedding resource;
   EXPECT_CALL(*ads_client_mock_, LoadFileResource(_, _, _))
-      .WillOnce(Invoke([](const std::string& id, const int version,
+      .WillOnce(Invoke([](const std::string& /*id*/, const int /*version*/,
                           LoadFileCallback callback) {
         const base::FilePath path =
             GetFileResourcePath().AppendASCII(kInvalidJsonResourceFile);
@@ -74,7 +74,7 @@ TEST_F(BatAdsTextEmbeddingResourceTest, LoadNotExistantJsonResource) {
   // Arrange
   TextEmbedding resource;
   EXPECT_CALL(*ads_client_mock_, LoadFileResource(_, _, _))
-      .WillOnce(Invoke([](const std::string& id, const int version,
+      .WillOnce(Invoke([](const std::string& /*id*/, const int /*version*/,
                           LoadFileCallback callback) {
         const base::FilePath path =
             GetFileResourcePath().AppendASCII(kNotExistantResourceFile);
@@ -96,7 +96,7 @@ TEST_F(BatAdsTextEmbeddingResourceTest, LoadNotInitializedFile) {
   // Arrange
   TextEmbedding resource;
   EXPECT_CALL(*ads_client_mock_, LoadFileResource(_, _, _))
-      .WillOnce(Invoke([](const std::string& id, const int version,
+      .WillOnce(Invoke([](const std::string& /*id*/, const int /*version*/,
                           LoadFileCallback callback) {
         std::move(callback).Run(base::File());
       }));
