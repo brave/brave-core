@@ -175,7 +175,7 @@ std::string eth_compileSerpent(const std::string& source_code);
 std::string eth_newFilter(const std::string& from_block_quantity_tag,
                           const std::string& to_block_quantity_tag,
                           const std::string& address,
-                          base::Value* topics);
+                          base::Value::List topics);
 // Creates a filter in the node, to notify when a new block arrives.
 std::string eth_newBlockFilter();
 // Creates a filter in the node, to notify when new pending transactions arrive.
@@ -193,7 +193,7 @@ std::string eth_getFilterLogs(const std::string& filter_id);
 std::string eth_getLogs(const std::string& from_block_quantity_tag,
                         const std::string& to_block_quantity_tag,
                         const std::string& address,
-                        base::Value* topics,
+                        base::Value::List topics,
                         const std::string& block_hash);
 // Returns the hash of the current block, the seedHash, and the boundary
 // condition to be met (“target”).
