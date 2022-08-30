@@ -121,7 +121,7 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
             mCalculatedSuggestionsHeight += mBraveSearchBannerProcessor.getMinimumViewHeight();
             int viewHeight = mContext.getResources().getDimensionPixelSize(
                     R.dimen.omnibox_suggestion_semicompact_height);
-            while (mCalculatedSuggestionsHeight >= mDropdownHeight) {
+            while (mCalculatedSuggestionsHeight >= mDropdownHeight && viewInfoList.size() > 0) {
                 mCalculatedSuggestionsHeight -= viewHeight;
                 viewInfoList.remove(viewInfoList.size() - 1);
             }
