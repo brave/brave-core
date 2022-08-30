@@ -616,4 +616,14 @@
   <message name="IDS_BRAVE_WALLET_RANK_STAT" desc="Label show in coin market detail view for coin market rank">Rank</message>
   <message name="IDS_BRAVE_WALLET_VOLUME_STAT" desc="Label show in coin market detail view for coin market 24 hour volume">24h Volume</message>
   <message name="IDS_BRAVE_WALLET_MARKET_CAP_STAT" desc="Label show in coin market detail view for coin market marketcap">Market Cap</message>
+  <message name="IDS_BRAVE_WALLET_PORTFOLIO_TOKEN_DETAILS_MENU_LABEL" desc="Label for token details menu item">Token details</message>
+  <message name="IDS_BRAVE_WALLET_PORTFOLIO_VIEW_ON_EXPLORER_MENU_LABEL" desc="Label for view on explorer menu item">View on block explorer</message>
+  <message name="IDS_BRAVE_WALLET_PORTFOLIO_VIEW_HIDE_TOKEN_LABEL" desc="Label for hide token menu item">Hide <ph name="SYMBOL"><ex>BAT</ex>$1</ph></message>
+  <message name="IDS_BRAVE_WALLET_HIDE_TOKEN_MODAL_TITLE" desc="Modal title for hide token modal">Hide token?</message>
+  <message name="IDS_BRAVE_WALLET_MAKE_TOKEN_VISIBLE_INSTRUCTIONS" desc="Instructions for making a token visible">You can make this asset visible again in the future by clicking the "+ Visible assets" button at the bottom of the "Portfolio" tab</message>
+  <message name="IDS_BRAVE_WALLET_CONFIRM_HIDING_TOKEN" desc="Text for confirm hide token action in hide token modal">Hide</message>
+  <message name="IDS_BRAVE_WALLET_CANCEL_HIDING_TOKEN" desc="Text for cancel hide token action in hide token modal">Cancel</message>
+  <message name="IDS_BRAVE_WALLET_REMOVE_ACCOUNT_MODAL_TITLE" desc="Title prompt to confirm removal of a wallet account">Are you sure you want to remove "<ph name="ACCOUNT_NAME">$1<ex>Eth Account 1</ex></ph>"?</message>
+  <message name="IDS_BRAVE_WALLET_REQUEST_FEATURE_BUTTON_TEXT" desc="Text displayed in request feature button">Request feature</message>
+  <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_LENGTH_ERROR" desc="Error message for when a supplied recovery phrase has an invalid number of words">Recovery phrase must be 12, 15, 18, 21, or 24 words long</message>
 </grit-part>
