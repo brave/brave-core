@@ -1,3 +1,3 @@
 # Machine Learning Text Processing Pipeline
 
-Please add to it!
+Pipeline instructions specifically related to processing model input text.

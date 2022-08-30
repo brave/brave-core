@@ -1,3 +1,3 @@
 # Linear Machine Learning Model
 
-Please add to it!
+Functions for applying a simple linear classification model.
