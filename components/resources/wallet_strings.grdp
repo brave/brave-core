@@ -615,6 +615,9 @@
   <message name="IDS_BRAVE_WALLET_ORDINAL_TWENTY_SECOND" desc="Twenty-second">Twenty-second</message>
   <message name="IDS_BRAVE_WALLET_ORDINAL_TWENTY_THIRD" desc="Twenty-third">Twenty-third</message>
   <message name="IDS_BRAVE_WALLET_ORDINAL_TWENTY_FOURTH" desc="Twenty-fourth">Twenty-fourth</message>
+  <message name="IDS_BRAVE_WALLET_NON_ASCII_CHARACTERS_IN_MESSAGE_WARNING" desc="Warning to alert user that a message contains non-ASCII characters ">Non-ASCII characters detected!</message>
+  <message name="IDS_BRAVE_WALLET_VIEW_ENCODED_MESSAGE" desc="Button text to toggle to encoded message view">View original message</message>
+  <message name="IDS_BRAVE_WALLET_VIEW_DECODED_MESSAGE" desc="Button text to toggle to decoded message view">View message in ASCII encoding</message>
   <message name="IDS_BRAVE_WALLET_INFORMATION" desc="Information label shown in coin market detail view">Information</message>
   <message name="IDS_BRAVE_WALLET_RANK_STAT" desc="Label show in coin market detail view for coin market rank">Rank</message>
   <message name="IDS_BRAVE_WALLET_VOLUME_STAT" desc="Label show in coin market detail view for coin market 24 hour volume">24h Volume</message>

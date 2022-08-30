@@ -6,6 +6,7 @@ import { SignMessagePayload } from '../../../panel/constants/action_types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
+import { unicodeEscape, hasUnicode } from '../../../utils/string-utils'
 
 // Components
 import { NavButton, PanelTab } from '../'
@@ -57,7 +58,17 @@ enum SignDataSteps {
   SignData = 1
 }
 
-function SignPanel (props: Props) {
+const onClickLearnMore = () => {
+  chrome.tabs.create({
+    url: 'https://support.brave.com/hc/en-us/articles/4409513799693'
+  }, () => {
+    if (chrome.runtime.lastError) {
+      console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+    }
+  })
+}
+
+export const SignPanel = (props: Props) => {
   const {
     accounts,
     defaultNetworks,
@@ -67,34 +78,16 @@ function SignPanel (props: Props) {
     onCancel,
     showWarning
   } = props
+
+  // state
   const [signStep, setSignStep] = React.useState<SignDataSteps>(SignDataSteps.SignData)
   const [selectedQueueData, setSelectedQueueData] = React.useState<SignMessagePayload>(signMessageData[0])
+  const [renderUnicode, setRenderUnicode] = React.useState<boolean>(true)
 
-  const findAccountName = (address: string) => {
-    return accounts.find((account) => account.address.toLowerCase() === address.toLowerCase())?.name
-  }
-
+  // memos
   const orb = React.useMemo(() => {
     return create({ seed: selectedQueueData.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [selectedQueueData.address])
-
-  React.useEffect(() => {
-    setSelectedQueueData(signMessageData[0])
-  }, [signMessageData])
-
-  React.useMemo(() => {
-    if (showWarning) {
-      setSignStep(SignDataSteps.SignRisk)
-    }
-  }, [showWarning])
-
-  const onContinueSigning = () => {
-    setSignStep(SignDataSteps.SignData)
-  }
-
-  const onClickLearnMore = () => {
-    window.open('https://support.brave.com/hc/en-us/articles/4409513799693', '_blank')
-  }
 
   const signMessageQueueInfo = React.useMemo(() => {
     return {
@@ -102,14 +95,6 @@ function SignPanel (props: Props) {
       queueNumber: signMessageData.findIndex((data) => data.id === selectedQueueData.id) + 1
     }
   }, [signMessageData, selectedQueueData])
-
-  const onQueueNextSignMessage = () => {
-    if (signMessageQueueInfo.queueNumber === signMessageQueueInfo.queueLength) {
-      setSelectedQueueData(signMessageData[0])
-      return
-    }
-    setSelectedQueueData(signMessageData[signMessageQueueInfo.queueNumber])
-  }
 
   const isDisabled = React.useMemo((): boolean => signMessageData.findIndex(
     (data) =>
@@ -121,6 +106,35 @@ function SignPanel (props: Props) {
     return defaultNetworks.find((n) => n.coin === signMessageData[0].coin) ?? selectedNetwork
   }, [defaultNetworks, selectedNetwork, signMessageData])
 
+  // methods
+  const findAccountName = (address: string) => {
+    return accounts.find((account) => account.address.toLowerCase() === address.toLowerCase())?.name
+  }
+
+  const onContinueSigning = () => {
+    setSignStep(SignDataSteps.SignData)
+  }
+
+  const onQueueNextSignMessage = () => {
+    if (signMessageQueueInfo.queueNumber === signMessageQueueInfo.queueLength) {
+      setSelectedQueueData(signMessageData[0])
+      return
+    }
+    setSelectedQueueData(signMessageData[signMessageQueueInfo.queueNumber])
+  }
+
+  // effects
+  React.useEffect(() => {
+    setSelectedQueueData(signMessageData[0])
+  }, [signMessageData])
+
+  React.useEffect(() => {
+    if (showWarning) {
+      setSignStep(SignDataSteps.SignRisk)
+    }
+  }, [showWarning])
+
+  // render
   return (
     <StyledWrapper>
       <TopRow>
@@ -166,8 +180,37 @@ function SignPanel (props: Props) {
               text={getLocale('braveWalletSignTransactionMessageTitle')}
             />
           </TabRow>
+
+          {hasUnicode(selectedQueueData.message) &&
+            <WarningBox warningType='warning'>
+              <WarningTitleRow>
+                <WarningIcon color={'warningIcon'} />
+                <WarningTitle warningType='warning'>
+                  {
+                    getLocale('braveWalletNonAsciiCharactersInMessageWarning')
+                  }
+                </WarningTitle>
+              </WarningTitleRow>
+              <LearnMoreButton
+                onClick={() => setRenderUnicode(prev => !prev)}
+              >
+                {
+                 renderUnicode
+                  ? getLocale('braveWalletViewDecodedMessage')
+                  : getLocale('braveWalletViewEncodedMessage')
+                }
+              </LearnMoreButton>
+            </WarningBox>
+          }
+
           <MessageBox>
-            <MessageText>{selectedQueueData.message}</MessageText>
+            <MessageText>
+              {
+                renderUnicode
+                  ? selectedQueueData.message
+                  : unicodeEscape(selectedQueueData.message)
+              }
+            </MessageText>
           </MessageBox>
         </>
       }
