@@ -3,6 +3,7 @@ import { ArrowUpIcon } from 'brave-ui/components/icons'
 import EyeOnIcon from '../../../../assets/svg-icons/eye-on-icon.svg'
 import EyeOffIcon from '../../../../assets/svg-icons/eye-off-icon.svg'
 import { AssetIconProps, AssetIconFactory, WalletButton } from '../../../shared/style'
+import More from '../../../extension/assets/actions.svg'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -287,4 +288,21 @@ export const NotSupportedText = styled.span`
   color: ${(p) => p.theme.color.text03};
   margin-left: 10px;
   padding: 28px 0 40px;
+`
+
+export const MoreButton = styled(WalletButton)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  margin-left: 16px;
+  outline: none;
+  border: none;
+  padding: 0;
+  background-color: ${(p) => p.theme.color.interactive07};
+  -webkit-mask-image: url(${More});
+  mask-image: url(${More});
+  mask-size: cover;
 `

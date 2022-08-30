@@ -6,7 +6,7 @@
 #include "bat/ads/internal/privacy/p2a/p2a_values_util.h"
 
 #include "base/test/values_test_util.h"
-#include "testing/gtest/include/gtest/gtest.h"
+#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

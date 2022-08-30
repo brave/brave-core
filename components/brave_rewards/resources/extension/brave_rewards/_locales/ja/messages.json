@@ -311,18 +311,6 @@
       }
     }
   },
-  "notificationBackupWalletTitle": {
-    "message": "Braveリワードのバックアップ",
-    "description": ""
-  },
-  "notificationBackupWalletText": {
-    "message": "Braveリワードをバックアップしてください。",
-    "description": ""
-  },
-  "notificationBackupWalletAction": {
-    "message": "今すぐバックアップ",
-    "description": ""
-  },
   "notificationWalletDisconnectedTitle": {
     "message": "ログアウトしています",
     "description": ""

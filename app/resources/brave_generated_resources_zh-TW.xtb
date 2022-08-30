@@ -25,6 +25,7 @@
 <translation id="4150684676757176434">繼續阻擋自動撥放</translation>
 <translation id="8988939298652262600">Brave 不會審查延伸套件的漏洞和安全性。僅在您信任開發者的情況下，才安裝這個延伸套件。</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") 在 Brave 中是不允許的。</translation>
+<translation id="9005883459983913482">Tor 視窗</translation>
 <translation id="7965178729203412357">新 Tor 身分</translation>
 <translation id="6924909138923993900">此網站的新 Tor 連線</translation>
 <translation id="4734294903299549345">離開 Tor 的私人視窗</translation>
@@ -38,6 +39,9 @@
 <translation id="1725356094208762656">在 Tor 中開啟</translation>
 <translation id="3396347744975515056">Brave 同步已升級並需要設定</translation>
 <translation id="7473245612074035141">開始設定</translation>
+<translation id="3975865347033939965">同步服務無法啟動，Brave 同步未執行</translation>
+<translation id="4450893287417543264">不要再顯示</translation>
+<translation id="4595286989346610620">查看詳情</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">在 IPFS 發佈並擷取檔案</translation>
 <translation id="7398397225367092613">.onion</translation>
@@ -144,7 +148,7 @@
 <translation id="8490082094734500369">關閉閱讀器模式</translation>
 <translation id="2036503787657622020">開啟閱讀器模式</translation>
 <translation id="5226458915125328323">Speedreader 設定</translation>
-<translation id="1621606336827646158">顯示原始頁面</translation>
+<translation id="8591883849678260674">查看原始頁面</translation>
 <translation id="6284218950354553099">自動傳送每日使用 ping 到 Brave</translation>
 <translation id="5288333155754958121">這種匿名且私人的 ping 讓 Brave 可以估計活躍使用者。</translation>
 <translation id="1872784258300710671">Brave 使用完全私密的產品分析來評估特定功能的整體使用量</translation>
@@ -211,6 +215,10 @@
 <translation id="8721331068159819483">與 macOS 相同</translation>
 <translation id="1692470335103807198">取得更多主題</translation>
 <translation id="2906510232093002459">Brave 預設圖像</translation>
+<translation id="3367129510799209147">索引標籤懸停模式</translation>
+<translation id="2113977810652731515">信用卡</translation>
+<translation id="4096343215397759358">顯示預覽的圖卡</translation>
+<translation id="5297085818601043899">工具提示</translation>
 <translation id="2396127686705429331">顯示書籤按鈕</translation>
 <translation id="2814998458708016836">使用寬網址列</translation>
 <translation id="4109670531935487117">在網址列顯示自動完成建議</translation>
@@ -238,7 +246,7 @@
 <translation id="6388201778088078932">設定。</translation>
 <translation id="4800195524776354947">在 Shields 圖示上顯示封鎖項目的數量</translation>
 <translation id="5510493033031835532">自動重新導向 AMP 頁面</translation>
-<translation id="5197219128592971597">務必前往原始 (非 AMP) 頁面的 URL，而非使用 Google 的 Accelerated Mobile Page 版本</translation>
+<translation id="7630031867325944356">首選發佈商頁面 URL，而不是 AMP 和類似版本。</translation>
 <translation id="7607166182943595829">根據我的語言偏好設定，防止網站識別我的指紋</translation>
 <translation id="3497934980362703405">啟用此設定會降低網站瞭解您語言偏好設定的程度。</translation>
 <translation id="2133317862976486547">追蹤器與廣告封鎖</translation>
@@ -286,6 +294,7 @@
 <translation id="1758947220824279023">廣告顯示數量上限</translation>
 <translation id="2356652719351432565">區域廣告相關度</translation>
 <translation id="2196950072404588793">這能讓 Brave 向您顯示所在區域特有的廣告。<ph name="BEGIN_LINK"/>瞭解詳情<ph name="END_LINK"/></translation>
+<translation id="2433507940547922241">外觀</translation>
 <translation id="6112368337882254910">自動捐獻</translation>
 <translation id="9132509928968869844">每月自動捐獻限制</translation>
 <translation id="7286722244752781970">紀錄一次造訪前的最少頁面時間</translation>
@@ -375,6 +384,7 @@
 請再次確認這些代碼文字是出自您所擁有的裝置。
 
 確定要這麼做嗎？</translation>
+<translation id="7443185843787879670">Brave 無法存取您作業系統的安全儲存。安全儲存用於保護密碼和 Cookie 等資料；Brave 同步也需要安全儲存，才能在裝置之間連結您的瀏覽器設定檔。因此這表示 Brave 同步目前並未運作。若要解決此問題，請參閱 <ph name="BEGIN_LINK_SYNC_GUIDE"/>Brave 同步疑難排解指南<ph name="END_LINK_SYNC_GUIDE"/>。</translation>
 <translation id="6285118765755298263">為其他搜尋引擎編製索引</translation>
 <translation id="919715748352669592">為遵循 OpenSearch 規範的網站自動編製索引。</translation>
 <translation id="842628013524824194">一般視窗 - 在網址列使用搜尋引擎</translation>
@@ -387,6 +397,23 @@
 <translation id="5248318250177143470">處理以太坊域名服務 (ENS) 的方式</translation>
 <translation id="6241402707160226266">使用 Tor 的隱私視窗</translation>
 <translation id="8762452230727230396">Tor 會讓您對您造訪的網站隱藏 IP 位置。</translation>
+<translation id="2959986444009520721">使用橋接器</translation>
+<translation id="6003484976430531384">橋接器可幫助您在 Tor 遭到阻擋的地方存取 Tor 網路。橋接器的效能可能會因為您所在的位置而有所不同。</translation>
+<translation id="7206799843254049470">Tor 連線設定</translation>
+<translation id="3194502271166340944">控制 Tor 私密視窗連結到 Tor 網路的方式</translation>
+<translation id="4859228830700205299">選擇內建的橋接器</translation>
+<translation id="3233137871426528317">從 torproject.org 申請橋接器</translation>
+<translation id="5701503934456421898">申請新橋接器……</translation>
+<translation id="8149806369020180959">提供橋接器</translation>
+<translation id="454073978993625597">輸入來自可信任來源的橋接器資訊。</translation>
+<translation id="4425607417590286548">套用變更</translation>
+<translation id="2128143836897950793">點擊「申請新橋接器……」以取得橋接器</translation>
+<translation id="3314921753580327793">輸入地址：連接埠（每行一個）</translation>
+<translation id="3755189300481406891">申請橋接器</translation>
+<translation id="6924425739431382319">正在聯繫 BridgeDB，請稍候。</translation>
+<translation id="811745063252080651">解決 CAPTCHA 以申請橋接器。</translation>
+<translation id="6936835573742749135">無法申請 CAPTCHA，請稍後再試。</translation>
+<translation id="2653659639078652383">提交</translation>
 <translation id="1369311132025451972">自動重新導向 .onion 網站</translation>
 <translation id="2843777623071353503">Brave 會在服務可用時開啟網站的洋蔥服務，或在 Tor 視窗中開啟 .onion 網域。</translation>
 <translation id="2896916411183256228">使用 WebTorrent 直接在瀏覽器顯示種子檔案。支援種子檔案和磁力連結。</translation>
@@ -433,7 +460,6 @@
 <translation id="7059127752542505809">輸入 URL</translation>
 <translation id="3047726704186619366">圖示 URL</translation>
 <translation id="2487558607408469181">區塊瀏覽器 URL</translation>
-<translation id="2653659639078652383">提交</translation>
 <translation id="2156993118928861787">錯誤的位址</translation>
 <translation id="6301398959353668507">這個欄位不能留空。</translation>
 <translation id="7504462451153306677">格式無效，區塊鏈 ID 必須是正數。</translation>

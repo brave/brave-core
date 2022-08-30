@@ -428,6 +428,7 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
   if (!mnemonic) {
     VLOG(0) << "Failed to find mnemonic in decrypted keyrings";
     std::move(callback).Run(false, ImportInfo(), ImportError::kJsonError);
+    return;
   }
 
   std::move(callback).Run(

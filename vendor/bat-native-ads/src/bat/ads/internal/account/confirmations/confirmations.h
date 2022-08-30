@@ -49,7 +49,7 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
   void ProcessRetryQueue();
 
  private:
-  ConfirmationInfo CreateConfirmation(const base::Time created_at,
+  ConfirmationInfo CreateConfirmation(base::Time created_at,
                                       const std::string& transaction_id,
                                       const std::string& creative_instance_id,
                                       const ConfirmationType& confirmation_type,
@@ -68,13 +68,13 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
   // RedeemUnblindedTokenDelegate:
   void OnDidSendConfirmation(const ConfirmationInfo& confirmation) override;
   void OnFailedToSendConfirmation(const ConfirmationInfo& confirmation,
-                                  const bool should_retry) override;
+                                  bool should_retry) override;
   void OnDidRedeemUnblindedToken(const ConfirmationInfo& confirmation,
                                  const privacy::UnblindedPaymentTokenInfo&
                                      unblinded_payment_token) override;
   void OnFailedToRedeemUnblindedToken(const ConfirmationInfo& confirmation,
-                                      const bool should_retry,
-                                      const bool should_backoff) override;
+                                      bool should_retry,
+                                      bool should_backoff) override;
 
   raw_ptr<ConfirmationsDelegate> delegate_ = nullptr;
 

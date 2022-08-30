@@ -15,4 +15,13 @@ CatalogInfo& CatalogInfo::operator=(const CatalogInfo& info) = default;
 
 CatalogInfo::~CatalogInfo() = default;
 
+bool CatalogInfo::operator==(const CatalogInfo& rhs) const {
+  return id == rhs.id && version == rhs.version && ping == rhs.ping &&
+         campaigns == rhs.campaigns;
+}
+
+bool CatalogInfo::operator!=(const CatalogInfo& rhs) const {
+  return !(*this == rhs);
+}
+
 }  // namespace ads

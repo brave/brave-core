@@ -7,7 +7,6 @@ import * as React from 'react'
 import {
   PaymentKind,
   RewardsParameters,
-  PublisherInfo,
   BalanceInfo
 } from '../lib/interfaces'
 
@@ -19,14 +18,7 @@ import { ExchangeAmount } from '../../shared/components/exchange_amount'
 
 import * as style from './one_time_tip_form.style'
 
-function generateTipOptions (
-  rewardsParameters: RewardsParameters,
-  publisherInfo: PublisherInfo
-) {
-  const publisherAmounts = publisherInfo.amounts
-  if (publisherAmounts && publisherAmounts.length > 0) {
-    return publisherAmounts
-  }
+function generateTipOptions (rewardsParameters: RewardsParameters) {
   const { tipChoices } = rewardsParameters
   if (tipChoices.length > 0) {
     return tipChoices
@@ -36,13 +28,12 @@ function generateTipOptions (
 
 function getDefaultTipAmount (
   rewardsParameters: RewardsParameters | undefined,
-  publisherInfo: PublisherInfo | undefined,
   balanceInfo: BalanceInfo | undefined
 ) {
-  if (!rewardsParameters || !publisherInfo || !balanceInfo) {
+  if (!rewardsParameters || !balanceInfo) {
     return 0
   }
-  const options = generateTipOptions(rewardsParameters, publisherInfo)
+  const options = generateTipOptions(rewardsParameters)
   if (options.length > 0) {
     // Select the highest amount that is greater than or equal
     // to the user's balance, starting from the middle option.
@@ -62,8 +53,6 @@ export function OneTimeTipForm () {
     host.state.balanceInfo)
   const [rewardsParameters, setRewardsParameters] = React.useState(
     host.state.rewardsParameters)
-  const [publisherInfo, setPublisherInfo] = React.useState(
-    host.state.publisherInfo)
 
   const [paymentKind, setPaymentKind] = React.useState<PaymentKind>('bat')
 
@@ -71,15 +60,14 @@ export function OneTimeTipForm () {
     return host.addListener((state) => {
       setBalanceInfo(state.balanceInfo)
       setRewardsParameters(state.rewardsParameters)
-      setPublisherInfo(state.publisherInfo)
     })
   }, [host])
 
-  if (!balanceInfo || !rewardsParameters || !publisherInfo) {
+  if (!balanceInfo || !rewardsParameters) {
     return null
   }
 
-  const tipOptions = generateTipOptions(rewardsParameters, publisherInfo)
+  const tipOptions = generateTipOptions(rewardsParameters)
 
   const tipAmountOptions = tipOptions.map((value) => ({
     value,
@@ -89,10 +77,7 @@ export function OneTimeTipForm () {
     )
   }))
 
-  const defaultTipAmount = getDefaultTipAmount(
-    rewardsParameters,
-    publisherInfo,
-    balanceInfo)
+  const defaultTipAmount = getDefaultTipAmount(rewardsParameters, balanceInfo)
 
   const onSubmitTip = (tipAmount: number) => {
     if (tipAmount > 0) {

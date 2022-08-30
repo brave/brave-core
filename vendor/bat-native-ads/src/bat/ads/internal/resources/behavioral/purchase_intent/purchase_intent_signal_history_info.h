@@ -19,8 +19,7 @@ namespace targeting {
 
 struct PurchaseIntentSignalHistoryInfo final {
   PurchaseIntentSignalHistoryInfo();
-  PurchaseIntentSignalHistoryInfo(const base::Time created_at,
-                                  const uint16_t weight);
+  PurchaseIntentSignalHistoryInfo(base::Time created_at, uint16_t weight);
   PurchaseIntentSignalHistoryInfo(const PurchaseIntentSignalHistoryInfo& info);
   PurchaseIntentSignalHistoryInfo& operator=(
       const PurchaseIntentSignalHistoryInfo& info);

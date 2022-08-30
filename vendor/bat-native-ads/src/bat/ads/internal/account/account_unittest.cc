@@ -15,7 +15,6 @@
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/net/http/http_status_code.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
@@ -25,16 +24,17 @@
 #include "bat/ads/internal/privacy/tokens/token_generator_unittest_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "bat/ads/pref_names.h"
+#include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
+namespace ads {
+
 using ::testing::_;
 using ::testing::NiceMock;
 using ::testing::Return;
-
-namespace ads {
 
 namespace {
 
@@ -66,11 +66,11 @@ class BatAdsAccountTest : public AccountObserver, public UnitTestBase {
     UnitTestBase::TearDown();
   }
 
-  void OnWalletDidUpdate(const WalletInfo& wallet) override {
+  void OnWalletDidUpdate(const WalletInfo& /*wallet*/) override {
     wallet_did_update_ = true;
   }
 
-  void OnWalletDidChange(const WalletInfo& wallet) override {
+  void OnWalletDidChange(const WalletInfo& /*wallet*/) override {
     wallet_did_change_ = true;
   }
 
@@ -82,9 +82,9 @@ class BatAdsAccountTest : public AccountObserver, public UnitTestBase {
   }
 
   void OnFailedToProcessDeposit(
-      const std::string& creative_instance_id,
-      const AdType& ad_type,
-      const ConfirmationType& confirmation_type) override {
+      const std::string& /*creative_instance_id*/,
+      const AdType& /*ad_type*/,
+      const ConfirmationType& /*confirmation_type*/) override {
     failed_to_process_deposit_ = true;
   }
 
@@ -414,10 +414,10 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
 
   const URLResponseMap url_responses = {
       {// Create confirmation request
-       R"(/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
+       R"(/v2/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
        {{net::HTTP_CREATED, R"(
             {
-              "id" : "d990ed8d-d739-49fb-811b-c2e02158fb60",
+              "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "payload" : {},
               "createdAt" : "2020-04-20T10:27:11.717Z",
               "type" : "view",
@@ -426,10 +426,10 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
             }
           )"}}},
       {// Fetch payment token request
-       R"(/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/paymentToken)",
+       R"(/v2/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken)",
        {{net::HTTP_OK, R"(
             {
-              "id" : "d990ed8d-d739-49fb-811b-c2e02158fb60",
+              "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
               "type" : "view",
               "modifiedAt" : "2020-04-20T10:27:11.736Z",
@@ -596,7 +596,7 @@ TEST_F(BatAdsAccountTest, GetStatement) {
   // Arrange
   TransactionList transactions;
 
-  AdvanceClockTo(TimeFromString("31 October 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("31 October 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_1 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
@@ -606,7 +606,7 @@ TEST_F(BatAdsAccountTest, GetStatement) {
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_2);
 
-  AdvanceClockTo(TimeFromString("18 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("18 November 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_3 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
@@ -616,7 +616,7 @@ TEST_F(BatAdsAccountTest, GetStatement) {
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_4);
 
-  AdvanceClockTo(TimeFromString("25 December 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_5 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
@@ -640,7 +640,7 @@ TEST_F(BatAdsAccountTest, GetStatement) {
     expected_statement->earnings_last_month = 0.01;
     expected_statement->earnings_this_month = 0.05;
     expected_statement->next_payment_date =
-        TimeFromString("5 January 2021 23:59:59.999", /* is_local */ false);
+        TimeFromString("5 January 2021 23:59:59.999", /*is_local*/ false);
     expected_statement->ads_received_this_month = 3;
 
     EXPECT_EQ(expected_statement, statement);

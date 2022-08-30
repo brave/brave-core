@@ -233,7 +233,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
+            android:gravity="center"
+            android:layout_marginHorizontal="1dp"
             android:layout_marginBottom="16dp"
             android:orientation="horizontal">
 
@@ -241,7 +242,6 @@
                 android:id="@+id/btn_buy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:gravity="center"
                 android:background="@drawable/crypto_wallet_blue_button"
                 android:text="@string/buy"
@@ -259,7 +259,6 @@
                 android:id="@+id/btn_send"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:gravity="center"
                 android:background="@drawable/crypto_wallet_blue_button"
                 android:text="@string/send"
@@ -277,20 +276,17 @@
                 android:id="@+id/btn_swap"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center"
-                android:background="@drawable/crypto_wallet_blue_button"
                 android:text="@string/swap"
-                android:textAllCaps="false"
-                android:textSize="16sp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:layout_marginBottom="8dp"
-                android:textColor="@android:color/white"
-                style="?android:attr/borderlessButtonStyle"/>
+                android:layout_marginEnd="8dp"
+                style="@style/BraveWalletButton" />
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_aurora_bridge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/brave_wallet_aurora_button_text"
+                style="@style/BraveWalletButton"
+                android:visibility="gone"/>
         </LinearLayout>
 
         <TextView

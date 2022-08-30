@@ -79,7 +79,6 @@ class NTPBackgroundPrefs final {
 
   // Return a value to use as NTP background.
   absl::variant<GURL, std::string> GetSelectedValue() const;
-  absl::variant<GURL, std::string> GetRandomValue() const;
 
  private:
   const base::Value::Dict* GetPrefValue() const;

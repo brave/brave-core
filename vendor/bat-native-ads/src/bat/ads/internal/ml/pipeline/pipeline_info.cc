@@ -7,8 +7,6 @@
 
 #include <utility>
 
-#include "bat/ads/internal/ml/transformation/transformation.h"
-
 namespace ads {
 namespace ml {
 namespace pipeline {

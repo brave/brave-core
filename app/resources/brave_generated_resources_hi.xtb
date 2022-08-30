@@ -26,6 +26,7 @@
 <translation id="4150684676757176434">ऑटोप्ले को बाधित करना चालू रखें</translation>
 <translation id="8988939298652262600">Brave सुरक्षा और बचाव के लिए एक्सटेंशन की समीक्षा नहीं करता है। यदि आप डेवलपर पर भरोसा करते हैं तो ही इस एक्सटेंशन को इंस्टॉल करें।</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") की Brave में अनुमति नहीं है।</translation>
+<translation id="9005883459983913482">Tor विंडोज़</translation>
 <translation id="7965178729203412357">नई टोर पहचान</translation>
 <translation id="6924909138923993900">इस साइट के लिए नया टॉर कनेक्शन</translation>
 <translation id="4734294903299549345">टोर के साथ निजी विंडो से बाहर निकलें</translation>
@@ -39,6 +40,9 @@
 <translation id="1725356094208762656">Tor में खोलें</translation>
 <translation id="3396347744975515056">Brave सिंक को अपग्रेड किया गया है और सेटअप की आवश्यकता है</translation>
 <translation id="7473245612074035141">सेटअप शुरू करें</translation>
+<translation id="3975865347033939965">सिंक सेवा शुरू नहीं की जा सकी, Brave सिंक काम नहीं कर रहा है</translation>
+<translation id="4450893287417543264">इसे दोबारा न दिखाएँ</translation>
+<translation id="4595286989346610620">ब्यौरा देखें</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">IPFS से फ़ाइलें प्रकाशित और पुनर्प्राप्त करें</translation>
 <translation id="7398397225367092613">.onion</translation>
@@ -115,7 +119,7 @@
 <translation id="5240031343741051161">Brave सर्च को आज़माएँ</translation>
 <translation id="5026874946691314267">इसे फिर से न दिखाएँँ</translation>
 <translation id="5234764350956374838">खारिज करें</translation>
-<translation id="5100490448228945668">Brave सर्च में होने वाले कन्वर्ज़न को नामंज़ूर करें, इस सुझाव को हटाने के लिए इन्टर दबाएँ</translation>
+<translation id="5100490448228945668">Brave सर्च में होने वाले कन्वर्ज़न को नामंज़ूर करें, इस सुझाव को हटाने के लिए एन्टर दबाएँ</translation>
 <translation id="2515126961943087659">Bat विज्ञापन सेवा</translation>
 <translation id="7924918279836988121">Bat खाता सेवाएं</translation>
 <translation id="6040143037577758943">बंद करें</translation>
@@ -145,7 +149,7 @@
 <translation id="8490082094734500369">रीडर मोड बंद करें</translation>
 <translation id="2036503787657622020">रीडर मोड चालू करें</translation>
 <translation id="5226458915125328323">स्पीड रीडर सेटिंग्स</translation>
-<translation id="1621606336827646158">मूल पेज दिखाएँ</translation>
+<translation id="8591883849678260674">मूल देखें</translation>
 <translation id="6284218950354553099">हर दिन के उपयोग पिंग Brave को अपने आप भेजें</translation>
 <translation id="5288333155754958121">यह अनाम, निजी पिंग Brave को एक्टिव उपयोगकर्ताओं का अनुमान लगाने देता है</translation>
 <translation id="1872784258300710671">Brave कुछ फ़ीचर्स के समग्र उपयोग का अनुमान लगाने के लिए पूरी तरह से निजी प्रोडक्ट एनालिटिक्स का उपयोग करता है</translation>
@@ -245,6 +249,10 @@ Binance
 प्रायोजित चित्र
 अधिक थीम प्राप्त करें</translation>
 <translation id="2906510232093002459">Brave डिफ़ॉल्ट इमेजिस</translation>
+<translation id="3367129510799209147">टैब होवर मोड</translation>
+<translation id="2113977810652731515">कार्ड</translation>
+<translation id="4096343215397759358">प्रीव्यू के साथ कार्ड</translation>
+<translation id="5297085818601043899">टूलटिप</translation>
 <translation id="2396127686705429331">बुकमार्क आइकन दिखाएँ</translation>
 <translation id="2814998458708016836">विस्तृत एड्रेस बार का उपयोग करें</translation>
 <translation id="4109670531935487117">एड्रेस बार में ऑटोकंप्लीट के सुझाव दिखाएँ</translation>
@@ -272,7 +280,7 @@ Binance
 <translation id="6388201778088078932">सेटिंग।</translation>
 <translation id="4800195524776354947">शील्ड्स आइकन पर ब्लॉक किए गए वस्तुओं की संख्या दिखाएँ</translation>
 <translation id="5510493033031835532">AMP पेज को ऑटो-रीडाइरेक्ट करें</translation>
-<translation id="5197219128592971597">Google के एक्सीलरेटेड मोबाइल पेज वर्ज़न के बजाय, हमेशा असली (नॉन-AMP) पेज के URL पर जाएँ</translation>
+<translation id="7630031867325944356">AMP और इससे मिलते-जुलते वर्ज़न के बजाय पब्लिशर पेज के URL पसंद करता है.</translation>
 <translation id="7607166182943595829">मेरी भाषा प्राथमिकताओं के आधार पर साइट को मेरे फ़िंगरप्रिंट लेने से रोकें</translation>
 <translation id="3497934980362703405">आपकी भाषा प्राथमिकताओं के बारे में वेब साइटें कितना जान सकती हैं, यह आप इस सेटिंग को चालू करके कम कर सकते हैं.</translation>
 <translation id="2133317862976486547">ट्रैकर्स &amp; विज्ञापन ब्लॉक करना</translation>
@@ -320,6 +328,7 @@ Binance
 <translation id="1758947220824279023">दिखाए जाने वाले विज्ञापन की अधिकतम संख्या</translation>
 <translation id="2356652719351432565">क्षेत्रीय विज्ञापन से जुड़ी ज़रूरी जानकारी</translation>
 <translation id="2196950072404588793">इससे Brave आपको वो विज्ञापन दिखा पाता है, जो खास तौर पर आपके क्षेत्र के लिए हैं. <ph name="BEGIN_LINK"/>और जानें<ph name="END_LINK"/></translation>
+<translation id="2433507940547922241">प्रकटन</translation>
 <translation id="6112368337882254910">स्वतः-योगदान</translation>
 <translation id="9132509928968869844">ऑटोमैटिक योगदान की हर महीने की सीमा</translation>
 <translation id="7286722244752781970">विजिट दर्ज़ करने के लिए न्यूनतम पेज समय</translation>
@@ -409,6 +418,7 @@ Binance
     कृपया पूरा ध्यान रखें कि ये कोड आपके अपने डिवाइस से ही जनरेट किए गए हों.
 
     क्या आप सचमुच ऐसा करना चाहते हैं?</translation>
+<translation id="7443185843787879670">Brave आपके ऑपरेटिंग सिस्टम की सेफ़ स्टोरेज को ऐक्सेस नहीं कर पाया. पासवर्ड और कुकीज़ जैसे डेटा को सुरक्षित करने के लिए इसका इस्तेमाल किया जाता है; Brave सिंक के लिए आपनी ब्राउज़र प्रोफ़ाइल को डिवाइस के बीच कनेक्ट करना भी ज़रूरी है. इसका मतलब है कि Brave सिंक नहीं चल रहा है. इस समस्या को हल करने के लिए, कृपया <ph name="BEGIN_LINK_SYNC_GUIDE"/>Brave सिंक ट्रबलशूटिंग गाइड<ph name="END_LINK_SYNC_GUIDE"/> देखें.</translation>
 <translation id="6285118765755298263">अन्य सर्च इंजन इंडेक्स करें</translation>
 <translation id="919715748352669592">अपने आप उन वेबसाइटों को इंडेक्स करता है जो OpenSearch निर्देशों का पालन करती हैं.</translation>
 <translation id="842628013524824194">सामान्य विंडो - एड्रेस बार में इस्तेमाल किया गया सर्च इंजन</translation>
@@ -421,6 +431,23 @@ Binance
 <translation id="5248318250177143470">Ethereum नाम सेवा (ENS) को हल करने की विधि</translation>
 <translation id="6241402707160226266">Tor के साथ प्राइवेट विंडो</translation>
 <translation id="8762452230727230396">Tor आपके आईपी एड्रेस को आपके द्वारा देखी जाने वाली साइटों से छुपाता है।</translation>
+<translation id="2959986444009520721">ब्रिज का इस्तेमाल करें</translation>
+<translation id="6003484976430531384">ब्रिज आपको उस जगह पर Tor नेटवर्क को ऐक्सेस करने में मदद करते हैं जहाँ Tor ब्लॉक है. आप कहाँ मौजूद हैं, इसके हिसाब से, एक ब्रिज दूसरे से बेहतर काम कर सकता है.</translation>
+<translation id="7206799843254049470">Tor कनेक्शन सेटिंग</translation>
+<translation id="3194502271166340944">Tor वाली गोपनीय विंडोज़ Tor नेटवर्क से कैसे कनेक्ट करेगी, यह उसे कंट्रोल करता है</translation>
+<translation id="4859228830700205299">इसमें मौजूद कोई ब्रिज चुनें</translation>
+<translation id="3233137871426528317">torproject.org से ब्रिज का अनुरोध करें</translation>
+<translation id="5701503934456421898">नए ब्रिज का अनुरोध करें...</translation>
+<translation id="8149806369020180959">ब्रिज दें</translation>
+<translation id="454073978993625597">किसी भरोसेमंद सोर्स से ब्रिज की जानकारी डालें.</translation>
+<translation id="4425607417590286548">बदलाव लागू करें</translation>
+<translation id="2128143836897950793">ब्रिज पाने के लिए 'नए ब्रिज का अनुरोध करें' पर क्लिक करें</translation>
+<translation id="3314921753580327793">पता:पोर्ट टाइप करें (हर लाइन में एक)</translation>
+<translation id="3755189300481406891">ब्रिज का अनुरोध करें</translation>
+<translation id="6924425739431382319">BridgeDB से संपर्क किया जा रहा हैं. कृपया इंतज़ार करें.</translation>
+<translation id="811745063252080651">ब्रिज का अनुरोध करने के लिए CAPTCHA को हल करें.</translation>
+<translation id="6936835573742749135">CAPTCHA का अनुरोध नहीं कर सकते. बाद में फिर से कोशिश करें.</translation>
+<translation id="2653659639078652383">सबमिट करें</translation>
 <translation id="1369311132025451972">.onion साइटों पर अपने आप रीडायरेक्ट करें</translation>
 <translation id="2843777623071353503">Brave उपलब्ध होने पर वेबसाइट की onion सेवा या Tor विंडो में .onion खोलेगा</translation>
 <translation id="2896916411183256228">टोरेंट को सीधे अपने ब्राउज़र में देखने के लिए WebTorrent का उपयोग करें। टोरेंट फाइलों और मैग्नेट लिंक के लिए समर्थित।</translation>
@@ -467,7 +494,6 @@ Binance
 <translation id="7059127752542505809">URL डालें</translation>
 <translation id="3047726704186619366">आइकन के URL</translation>
 <translation id="2487558607408469181">Explorer के URL ब्लॉक करें</translation>
-<translation id="2653659639078652383">सबमिट करें</translation>
 <translation id="2156993118928861787">अमान्य पता</translation>
 <translation id="6301398959353668507">यह फ़ील्ड खाली नहीं रह सकता</translation>
 <translation id="7504462451153306677">अमान्य फ़ॉर्मैट, सीरीज़ आईडी एक पॉज़िटिव नंबर है</translation>

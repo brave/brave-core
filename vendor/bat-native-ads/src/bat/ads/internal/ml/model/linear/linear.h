@@ -29,7 +29,7 @@ class Linear final {
   PredictionMap Predict(const VectorData& x) const;
 
   PredictionMap GetTopPredictions(const VectorData& x,
-                                  const int top_count = -1) const;
+                                  int top_count = -1) const;
 
  private:
   std::map<std::string, VectorData> weights_;

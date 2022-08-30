@@ -210,7 +210,8 @@ public class CryptoModel {
                         WalletUtils.getAccountInfosFromKeyrings(keyringInfos);
                 new SelectedAccountResponsesCollector(mKeyringService, coins, accountInfos)
                         .getAccounts(defaultAccountPerCoin -> {
-                            mPendingTxHelper.setAccountInfos(accountInfos);
+                            mPendingTxHelper.setAccountInfos(
+                                    new ArrayList<>(defaultAccountPerCoin));
                         });
             });
         }

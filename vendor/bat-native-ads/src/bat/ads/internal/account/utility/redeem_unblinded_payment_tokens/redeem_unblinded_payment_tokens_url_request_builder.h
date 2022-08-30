@@ -43,9 +43,9 @@ class RedeemUnblindedPaymentTokensUrlRequestBuilder final
 
   std::string CreatePayload() const;
 
-  base::Value CreatePaymentRequestDTO(const std::string& payload) const;
+  base::Value::List CreatePaymentRequestDTO(const std::string& payload) const;
 
-  base::Value CreateCredential(
+  base::Value::Dict CreateCredential(
       const privacy::UnblindedPaymentTokenInfo& unblinded_payment_token,
       const std::string& payload) const;
 

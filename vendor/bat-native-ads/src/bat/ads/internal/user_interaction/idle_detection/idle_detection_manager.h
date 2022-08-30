@@ -30,13 +30,12 @@ class IdleDetectionManager final {
   void AddObserver(IdleDetectionManagerObserver* observer);
   void RemoveObserver(IdleDetectionManagerObserver* observer);
 
-  void UserDidBecomeActive(const base::TimeDelta idle_time,
-                           const bool was_locked) const;
+  void UserDidBecomeActive(base::TimeDelta idle_time, bool was_locked) const;
   void UserDidBecomeIdle() const;
 
  private:
-  void NotifyUserDidBecomeActive(const base::TimeDelta idle_time,
-                                 const bool was_locked) const;
+  void NotifyUserDidBecomeActive(base::TimeDelta idle_time,
+                                 bool was_locked) const;
   void NotifyUserDidBecomeIdle() const;
 
   base::ObserverList<IdleDetectionManagerObserver> observers_;

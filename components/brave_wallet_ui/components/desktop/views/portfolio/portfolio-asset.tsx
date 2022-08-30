@@ -23,6 +23,7 @@ import Amount from '../../../../utils/amount'
 import { mojoTimeDeltaToJSDate } from '../../../../../common/mojomUtils'
 import { sortTransactionByDate } from '../../../../utils/tx-utils'
 import { getTokensCoinType, getTokensNetwork } from '../../../../utils/network-utils'
+import useExplorer from '../../../../common/hooks/explorer'
 import {
   NftUiCommand,
   sendMessageToNftUiFrame,
@@ -69,10 +70,15 @@ import {
   StyledWrapper,
   TopRow,
   SubDivider,
-  NotSupportedText
+  NotSupportedText,
+  MoreButton
 } from './style'
 import { Skeleton } from '../../../shared/loading-skeleton/styles'
 import { CoinStats } from './components/coin-stats/coin-stats'
+import { AssetMorePopup } from './components/asset-more-popup/asset-more-popup'
+import { TokenDetailsModal } from './components/token-details-modal/token-details-modal'
+import { WalletActions } from '../../../../common/actions'
+import { HideTokenModal } from './components/hide-token-modal/hide-token-modal'
 
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 12 })
 const rainbowbridgeLink = 'https://rainbowbridge.app'
@@ -88,6 +94,9 @@ export const PortfolioAsset = (props: Props) => {
   const [showBridgeToAuroraModal, setShowBridgeToAuroraModal] = React.useState<boolean>(false)
   const [bridgeToAuroraWarningShown, setBridgeToAuroraWarningShown] = React.useState<boolean>()
   const [isTokenSupported, setIsTokenSupported] = React.useState<boolean>()
+  const [showMore, setShowMore] = React.useState<boolean>(false)
+  const [showTokenDetailsModal, setShowTokenDetailsModal] = React.useState<boolean>(false)
+  const [showHideTokenModel, setShowHideTokenModal] = React.useState<boolean>(false)
   // routing
   const history = useHistory()
   const { id: assetId, tokenId } = useParams<{ id?: string, tokenId?: string }>()
@@ -185,6 +194,7 @@ export const PortfolioAsset = (props: Props) => {
   // more custom hooks
   const parseTransaction = useTransactionParser(selectedAssetsNetwork)
   const { computeFiatAmount } = usePricing(transactionSpotPrices)
+  const openExplorer = useExplorer(selectedAssetsNetwork)
 
   // memos / computed
   const selectedAssetFromParams = React.useMemo(() => {
@@ -312,6 +322,14 @@ export const PortfolioAsset = (props: Props) => {
       .formatAsAsset(6, selectedAsset?.symbol ?? '') + ')'
     : ''
 
+  const formattedAssetBalance = React.useMemo(() => {
+    if (!fullAssetBalances?.assetBalance) return ''
+
+    return new Amount(fullAssetBalances.assetBalance)
+      .divideByDecimals(selectedAsset?.decimals ?? 18)
+      .formatAsAsset()
+  }, [fullAssetBalances, selectedAsset])
+
   const isNftAsset = selectedAssetFromParams?.isErc721
 
   // methods
@@ -371,6 +389,43 @@ export const PortfolioAsset = (props: Props) => {
   const onCloseAuroraModal = React.useCallback(() => {
     setShowBridgeToAuroraModal(false)
   }, [])
+
+  const onShowMore = React.useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
+    setShowMore(true)
+  }, [])
+
+  const onHideMore = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation()
+    setShowMore(false)
+  }, [])
+
+  const onShowTokenDetailsModal = React.useCallback(() => setShowTokenDetailsModal(true), [])
+
+  const onCloseTokenDetailsModal = React.useCallback(() => setShowTokenDetailsModal(false), [])
+
+  const onShowHideTokenModal = React.useCallback(() => setShowHideTokenModal(true), [])
+
+  const onCloseHideTokenModal = React.useCallback(() => setShowHideTokenModal(false), [])
+
+  const onHideAsset = React.useCallback(() => {
+    if (!selectedAsset) return
+    dispatch(WalletActions.setUserAssetVisible({ token: selectedAsset, isVisible: false }))
+    dispatch(WalletActions.refreshBalancesAndPriceHistory())
+    dispatch(WalletPageActions.selectAsset({
+      asset: undefined,
+      timeFrame: BraveWallet.AssetPriceTimeframe.OneDay
+    }))
+    if (showHideTokenModel) setShowHideTokenModal(false)
+    if (showTokenDetailsModal) setShowTokenDetailsModal(false)
+    history.push(WalletRoutes.Portfolio)
+  }, [selectedAsset, showTokenDetailsModal])
+
+  const onViewOnExplorer = React.useCallback(() => {
+    if (selectedAsset) {
+      openExplorer('token', selectedAsset.contractAddress)()
+    }
+  }, [selectedAsset])
 
   // effects
   React.useEffect(() => {
@@ -441,7 +496,7 @@ export const PortfolioAsset = (props: Props) => {
 
   // render
   return (
-    <StyledWrapper>
+    <StyledWrapper onClick={onHideMore}>
       <TopRow>
         <BalanceRow>
           <BackButton onSubmit={goBack} />
@@ -458,6 +513,17 @@ export const PortfolioAsset = (props: Props) => {
             hideBalances={hideBalances}
             onClick={onToggleHideBalances}
           />
+          {selectedAsset?.contractAddress && !selectedAsset?.isErc721 &&
+            <MoreButton onClick={onShowMore}/>
+          }
+          {showMore && selectedAsset &&
+            <AssetMorePopup
+              assetSymbol={selectedAsset.symbol}
+              onClickTokenDetails={onShowTokenDetailsModal}
+              onClickViewOnExplorer={onViewOnExplorer}
+              onClickHideToken={onShowHideTokenModal}
+            />
+          }
         </BalanceRow>
       </TopRow>
 
@@ -519,6 +585,26 @@ export const PortfolioAsset = (props: Props) => {
         <BridgeToAuroraModal
           onClose={onCloseAuroraModal}
           onOpenRainbowAppClick={onOpenRainbowAppClick}
+        />
+      }
+
+      {showTokenDetailsModal && selectedAsset && selectedAssetsNetwork &&
+        <TokenDetailsModal
+          onClose={onCloseTokenDetailsModal}
+          selectedAsset={selectedAsset}
+          selectedAssetNetwork={selectedAssetsNetwork}
+          assetBalance={formattedAssetBalance}
+          formattedFiatBalance={fullAssetFiatBalance.formatAsFiat(defaultCurrencies.fiat)}
+          onShowHideTokenModal={onShowHideTokenModal}
+        />
+      }
+
+      {showHideTokenModel && selectedAsset && selectedAssetsNetwork &&
+        <HideTokenModal
+          selectedAsset={selectedAsset}
+          selectedAssetNetwork={selectedAssetsNetwork}
+          onClose={onCloseHideTokenModal}
+          onHideAsset={onHideAsset}
         />
       }
 

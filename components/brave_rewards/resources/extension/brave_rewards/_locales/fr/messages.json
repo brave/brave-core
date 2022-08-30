@@ -311,18 +311,6 @@
       }
     }
   },
-  "notificationBackupWalletTitle": {
-    "message": "Sauvegarder les récompenses Brave",
-    "description": ""
-  },
-  "notificationBackupWalletText": {
-    "message": "Veuillez sauvegarder vos récompenses Brave.",
-    "description": ""
-  },
-  "notificationBackupWalletAction": {
-    "message": "Sauvegarder maintenant",
-    "description": ""
-  },
   "notificationWalletDisconnectedTitle": {
     "message": "Vous êtes déconnecté",
     "description": ""

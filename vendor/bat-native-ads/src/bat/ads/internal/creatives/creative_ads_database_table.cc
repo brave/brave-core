@@ -161,7 +161,7 @@ void CreativeAds::GetForCreativeInstanceId(
   CreativeAdInfo creative_ad;
 
   if (creative_instance_id.empty()) {
-    callback(/* success */ false, creative_instance_id, creative_ad);
+    callback(/*success*/ false, creative_instance_id, creative_ad);
     return;
   }
 
@@ -257,7 +257,7 @@ void CreativeAds::OnGetForCreativeInstanceId(
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative ad");
-    callback(/* success */ false, creative_instance_id, {});
+    callback(/*success*/ false, creative_instance_id, {});
     return;
   }
 
@@ -266,13 +266,13 @@ void CreativeAds::OnGetForCreativeInstanceId(
 
   if (creative_ads.size() != 1) {
     BLOG(0, "Failed to get creative ad");
-    callback(/* success */ false, creative_instance_id, {});
+    callback(/*success*/ false, creative_instance_id, {});
     return;
   }
 
-  const CreativeAdInfo creative_ad = creative_ads.front();
+  const CreativeAdInfo& creative_ad = creative_ads.front();
 
-  callback(/* success */ true, creative_instance_id, creative_ad);
+  callback(/*success*/ true, creative_instance_id, creative_ad);
 }
 
 void CreativeAds::MigrateToV24(mojom::DBTransactionInfo* transaction) {

@@ -13,14 +13,15 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="8541922081612557424">O prohlížeči Brave</translation>
 <translation id="1203500561924088507">Děkujeme za instalaci aplikace <ph name="BUNDLE_NAME"/>. Před jejím použitím je potřeba restartovat prohlížeč.</translation>
 <translation id="4798342026247191171">Nastavení nového profilu Brave</translation>
+<translation id="6361779936989026201">Asistent Brave v prohlížeči Brave</translation>
 <translation id="113959764510199339">Brave se pokouší zobrazit hesla.</translation>
 <translation id="8132634101975074716">Jste přihlášeni do prohlížeče Brave.</translation>
 <translation id="5147525139567260139">Sdílet kartu prohlížeče Brave</translation>
 <translation id="1530633922026945685">Prohlížeč Brave potřebuje oprávnění k přístupu k fotoaparátu, aby mohl vytvořit 3D mapu vašeho okolí</translation>
-<translation id="473077451702478797">Prohlížeč Brave tento soubor zablokoval, protože je příliš velký na kontrolu zabezpečení. Zkuste to znovu se soubory do 50 MB.</translation>
 <translation id="4449148723378534338">Zkontrolujte klíčové ovládací prvky ochrany soukromí a zabezpečení v prohlížeči Brave</translation>
 <translation id="1640672724030957280">Stahování...</translation>
 <translation id="5616153642055197778">K dispozici je nová, bezpečnější verze prohlížeče Brave.</translation>
+<translation id="5846727201643228411">Můžete zobrazovat a odstraňovat zájmy, které weby používají k zobrazování reklam. Brave zájmy odhaduje na základě vaší nedávné historie prohlížení.</translation>
 <translation id="6797402139308059782">Nechat prohlížeč Brave spuštěný na pozadí</translation>
 <translation id="5875673934455379806">Přeinstalovat Brave</translation>
 <translation id="6888366668010117849">Weby mohou v prohlížeči Brave ukládat informace o vašich zájmech. Např. když navštívíte web, kde se prodávají boty na maraton, web může definovat váš zájem jako běhání maratonů. Když později navštívíte jiný web s registrací na závod, může se vám na něm na základě vašich zájmů zobrazit reklama na boty na běhání.</translation>
@@ -34,6 +35,7 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="2018879682492276940">Instalace se nezdařila. Zkuste to znovu.</translation>
 <translation id="831418749472885028">Chcete-li zkontrolovat, zda jsou ostatní hesla v bezpečí před porušením zabezpečení údajů a ostatními bezpečnostními hrozbami, <ph name="BEGIN_LINK"/>přihlaste se do prohlížeče Brave<ph name="END_LINK"/>.</translation>
 <translation id="5499149312981370855">Zvolte, zda pro lépe personalizované prostředí ve službách Brave chcete zahrnout historii prohlížeče Brave</translation>
+<translation id="849607431499549468">Informace o tom, jak Brave spravuje své kořenové certifikáty</translation>
 <translation id="142389341645668510">Přizpůsobit prohlížeč Brave</translation>
 <translation id="2174917724755363426">Instalace není dokončena. Opravdu ji chcete zrušit?</translation>
 <translation id="8745514854244955877">Brave – přihlášení k síti – <ph name="PAGE_TITLE"/></translation>
@@ -94,6 +96,7 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="5853262807109651878">Z tohoto zařízení bude smazán následující počet položek: <ph name="ITEMS_COUNT"/>. Budete-li chtít své údaje později načíst, přihlaste se do prohlížeče Brave jako <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">Zkratkou <ph name="SHORTCUT"/> lze přepínat mezi profily Brave</translation>
 <translation id="8703492925273919597">Zavřete prosím všechna okna prohlížeče Brave a zkuste to znovu.</translation>
+<translation id="5350485513372498152">Asistent Brave v prohlížeči Brave může na webech provádět různé akce za vás</translation>
 <translation id="4061445349373849749">Abychom chránili vaše soukromí, vaše zájmy starší než 4 měsíce automaticky mažeme. Jak budete pracovat s internetem, zájmy se mohou na seznamu znovu objevit. Pokud se zájmy nemají zohledňovat, můžete je z Chromia odstranit.</translation>
 <translation id="691208314680168371">Vaši historii prohlížení, což je seznam webů, které jste navštívili v Chromiu na tomto zařízení.</translation>
 <translation id="1384923383737428730">Máte v počítači škodlivý software. Brave ho může odstranit, obnovit vaše nastavení a zakázat rozšíření, aby prohlížeč opět fungoval jako obvykle.</translation>
@@ -260,7 +263,6 @@ Některé funkce mohou být nedostupné. Zadejte prosím jiný adresář profilu
 <translation id="5101812148953915496">Navštívené weby si pamatují vaše údaje, dokud Brave nezavřete</translation>
 <translation id="5516268345616100622">Správce úloh – Brave</translation>
 <translation id="713191641919118540">Vaše zájmy podle odhadu Brave</translation>
-<translation id="2777705643687998385">Prohlížeč Brave tento soubor zablokoval, protože je zašifrovaný. Požádejte jeho vlastníka, aby ho dešifroval</translation>
 <translation id="9068395155143628872">Měření reklam umožňuje navštíveným webům žádat Brave o informace, na základě kterých mohou měřit výkonnost svých reklam. Měření reklam zabraňuje sledování mezi weby, protože se při něm mezi weby přenáší co možná nejméně informací.</translation>
 <translation id="1864557848095568223">Aktualizace prohlížeče Brave</translation>
 <translation id="3403365884036456766">Soubor nastavení je poškozený nebo neplatný.
@@ -349,6 +351,7 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="7902365066753170041">Znovu spustit a aktualizovat &amp;Brave</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Prohlížeč Brave nemusí fungovat správně, protože v systémech Windows XP a Windows Vista již není podporován</translation>
+<translation id="8180288330711585962">Certifikáty spravované prohlížečem Brave</translation>
 <translation id="1611678871603620428">Pokud chcete v budoucnu dostávat aktualizace prohlížeče Brave, budete potřebovat systém macOS 10.13 nebo novější. Tento počítač používá systém OS X 10.11.</translation>
 <translation id="4484434718272972655">Kdo Brave používá?</translation>
 <translation id="7173394303099002355">Aktivujte si v prohlížeči Brave maximální zabezpečení</translation>

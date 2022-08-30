@@ -211,7 +211,7 @@ uint16_t PurchaseIntent::GetFunnelWeightForSearchQuery(
   return max_weight;
 }
 
-void PurchaseIntent::OnLocaleDidChange(const std::string& locale) {
+void PurchaseIntent::OnLocaleDidChange(const std::string& /*locale*/) {
   resource_->Load();
 }
 
@@ -222,10 +222,12 @@ void PurchaseIntent::OnResourceDidUpdate(const std::string& id) {
 }
 
 void PurchaseIntent::OnTextContentDidChange(
-    const int32_t tab_id,
+    const int32_t /*tab_id*/,
     const std::vector<GURL>& redirect_chain,
-    const std::string& content) {
-  DCHECK(!redirect_chain.empty());
+    const std::string& /*content*/) {
+  if (redirect_chain.empty()) {
+    return;
+  }
 
   const GURL& url = redirect_chain.back();
 
@@ -241,7 +243,10 @@ void PurchaseIntent::OnTextContentDidChange(
     return;
   }
 
-  DCHECK(!last_visible_tab->redirect_chain.empty());
+  if (last_visible_tab->redirect_chain.empty()) {
+    return;
+  }
+
   if (SameDomainOrHost(url, last_visible_tab->redirect_chain.back())) {
     return;
   }

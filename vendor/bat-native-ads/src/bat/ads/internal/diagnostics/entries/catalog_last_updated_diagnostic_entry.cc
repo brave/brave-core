@@ -36,7 +36,7 @@ std::string CatalogLastUpdatedDiagnosticEntry::GetValue() const {
   }
 
   return LongFriendlyDateAndTime(catalog_last_updated,
-                                 /* use_sentence_style */ false);
+                                 /*use_sentence_style*/ false);
 }
 
 }  // namespace ads

@@ -25,7 +25,7 @@ class BatAdsCreatedAtTimestampUserDataTest : public UnitTestBase {
 TEST_F(BatAdsCreatedAtTimestampUserDataTest, GetCreatedAtTimestamp) {
   // Arrange
   const base::Time time =
-      TimeFromString("November 18 2020 12:34:56.789", /* is_local */ false);
+      TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false);
   AdvanceClockTo(time);
 
   // Act

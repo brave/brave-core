@@ -5,12 +5,12 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rules_base.h"
 
+#include "base/ranges/algorithm.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/anti_targeting_exclusion_rule.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/conversion_exclusion_rule.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/daily_cap_exclusion_rule.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/daypart_exclusion_rule.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/dislike_exclusion_rule.h"
-#include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_util.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/marked_as_inappropriate_exclusion_rule.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/marked_to_no_longer_receive_exclusion_rule.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/per_day_exclusion_rule.h"
@@ -92,15 +92,9 @@ ExclusionRulesBase::~ExclusionRulesBase() = default;
 
 bool ExclusionRulesBase::ShouldExcludeCreativeAd(
     const CreativeAdInfo& creative_ad) {
-  for (auto* exclusion_rule : exclusion_rules_) {
-    DCHECK(exclusion_rule);
-
-    if (AddToCacheIfNeeded(creative_ad, exclusion_rule)) {
-      return true;
-    }
-  }
-
-  return false;
+  return base::ranges::any_of(exclusion_rules_, [=](auto* exclusion_rule) {
+    return AddToCacheIfNeeded(creative_ad, exclusion_rule);
+  });
 }
 
 ///////////////////////////////////////////////////////////////////////////////

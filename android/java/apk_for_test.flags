@@ -462,6 +462,50 @@
     public <init>(...);
 }
 
+-keep class org.chromium.chrome.browser.omnibox.LocationBarCoordinator {
+    *** mLocationBarMediator;
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.BraveLocationBarCoordinator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.LocationBarLayout {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.BraveLocationBarLayout {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.LocationBarMediator {
+    *** mWindowAndroid;
+    *** mLocationBarLayout;
+    *** mIsUrlFocusChangeInProgress;
+    *** mUrlHasFocus;
+    *** mIsTablet;
+    *** mNativeInitialized;
+    *** mIsLocationBarFocusedFromNtpScroll;
+    *** mContext;
+    *** mBrandedColorScheme;
+    *** mAssistantVoiceSearchServiceSupplier;
+    <init>(...);
+    *** updateButtonVisibility(...);
+    *** onPrimaryColorChanged(...);
+    *** shouldShowDeleteButton(...);
+    *** onAssistantVoiceSearchServiceChanged(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.BraveLocationBarMediator {
+    public <init>(...);
+    *** getOmniboxUmaClass(...);
+    *** getSaveOfflineButtonStateClass(...);
+    *** getLensControllerClass(...);
+    *** getLocaleManagerClass(...);
+    *** getPrivacyPreferencesManagerClass(...);
+}
+
 -keep class org.chromium.chrome.browser.omnibox.suggestions.DropdownItemViewInfoListBuilder {
     *** mDropdownHeight;
     *** mPriorityOrderedSuggestionProcessors;

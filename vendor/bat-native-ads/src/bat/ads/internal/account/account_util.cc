@@ -22,7 +22,7 @@ void ResetRewards(ResetRewardsCallback callback) {
   transactions::RemoveAll([callback](const bool success) {
     if (!success) {
       BLOG(0, "Failed to remove transactions");
-      callback(/* success */ false);
+      callback(/*success*/ false);
       return;
     }
 
@@ -34,7 +34,7 @@ void ResetRewards(ResetRewardsCallback callback) {
 
     ConfirmationStateManager::GetInstance()->Save();
 
-    callback(/* success */ true);
+    callback(/*success*/ true);
   });
 }
 

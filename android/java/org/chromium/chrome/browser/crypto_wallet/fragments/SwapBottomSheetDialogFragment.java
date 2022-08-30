@@ -97,8 +97,8 @@ public class SwapBottomSheetDialogFragment
 
     private void updateViewState() {
         if (getView() == null) return;
-        if (!mIsCustomNetwork
-                && !(mNetworkInfo.coin == CoinType.SOL || mNetworkInfo.coin == CoinType.FIL)) {
+        if (!mIsCustomNetwork && mNetworkInfo.coin == CoinType.ETH
+                && WalletConstants.BUY_SUPPORTED_NETWORKS.contains(mNetworkInfo.chainId)) {
             mSwapLayout.setVisibility(View.VISIBLE);
         } else {
             mSwapLayout.setVisibility(View.GONE);

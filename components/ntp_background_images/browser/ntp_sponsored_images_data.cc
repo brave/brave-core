@@ -294,50 +294,49 @@ bool NTPSponsoredImagesData::IsSuperReferral() const {
   return IsValid() && !theme_name.empty();
 }
 
-base::Value NTPSponsoredImagesData::GetBackgroundAt(size_t campaign_index,
-                                                    size_t background_index) {
+absl::optional<base::Value::Dict> NTPSponsoredImagesData::GetBackgroundAt(
+    size_t campaign_index,
+    size_t background_index) {
   DCHECK(campaign_index < campaigns.size() && background_index >= 0 &&
          background_index < campaigns[campaign_index].backgrounds.size());
 
   const auto campaign = campaigns[campaign_index];
   if (!campaign.IsValid())
-    return base::Value();
+    return absl::nullopt;
 
-  base::Value data(base::Value::Type::DICTIONARY);
-  data.SetStringKey(kThemeNameKey, theme_name);
-  data.SetBoolKey(kIsSponsoredKey, !IsSuperReferral());
-  data.SetBoolKey(kIsBackgroundKey, false);
-  data.SetStringKey(kWallpaperIDKey, base::GenerateGUID());
+  base::Value::Dict data;
+  data.Set(kThemeNameKey, theme_name);
+  data.Set(kIsSponsoredKey, !IsSuperReferral());
+  data.Set(kIsBackgroundKey, false);
+  data.Set(kWallpaperIDKey, base::GenerateGUID());
 
   const auto background_file_path =
       campaign.backgrounds[background_index].image_file;
   const std::string wallpaper_image_url =
       url_prefix + background_file_path.BaseName().AsUTF8Unsafe();
 
-  data.SetStringKey(kWallpaperImageURLKey, wallpaper_image_url);
-  data.SetStringKey(kWallpaperImagePathKey,
-                    background_file_path.AsUTF8Unsafe());
-  data.SetIntKey(kWallpaperFocalPointXKey,
-                 campaign.backgrounds[background_index].focal_point.x());
-  data.SetIntKey(kWallpaperFocalPointYKey,
-                 campaign.backgrounds[background_index].focal_point.y());
+  data.Set(kWallpaperImageURLKey, wallpaper_image_url);
+  data.Set(kWallpaperImagePathKey, background_file_path.AsUTF8Unsafe());
+  data.Set(kWallpaperFocalPointXKey,
+           campaign.backgrounds[background_index].focal_point.x());
+  data.Set(kWallpaperFocalPointYKey,
+           campaign.backgrounds[background_index].focal_point.y());
 
-  data.SetStringKey(
-      kCreativeInstanceIDKey,
-      campaign.backgrounds[background_index].creative_instance_id);
+  data.Set(kCreativeInstanceIDKey,
+           campaign.backgrounds[background_index].creative_instance_id);
 
-  base::Value logo_data(base::Value::Type::DICTIONARY);
+  base::Value::Dict logo_data;
   Logo logo = campaign.backgrounds[background_index].logo;
-  logo_data.SetStringKey(kImageKey, logo.image_url);
-  logo_data.SetStringKey(kImagePathKey, logo.image_file.AsUTF8Unsafe());
-  logo_data.SetStringKey(kCompanyNameKey, logo.company_name);
-  logo_data.SetStringKey(kAltKey, logo.alt_text);
-  logo_data.SetStringKey(kDestinationURLKey, logo.destination_url);
-  data.SetKey(kLogoKey, std::move(logo_data));
+  logo_data.Set(kImageKey, logo.image_url);
+  logo_data.Set(kImagePathKey, logo.image_file.AsUTF8Unsafe());
+  logo_data.Set(kCompanyNameKey, logo.company_name);
+  logo_data.Set(kAltKey, logo.alt_text);
+  logo_data.Set(kDestinationURLKey, logo.destination_url);
+  data.Set(kLogoKey, std::move(logo_data));
   return data;
 }
 
-base::Value NTPSponsoredImagesData::GetBackgroundByAdInfo(
+absl::optional<base::Value::Dict> NTPSponsoredImagesData::GetBackgroundByAdInfo(
     const ads::NewTabPageAdInfo& ad_info) {
   // Find campaign
   size_t campaign_index = 0;
@@ -349,7 +348,7 @@ base::Value NTPSponsoredImagesData::GetBackgroundByAdInfo(
   if (campaign_index == campaigns.size()) {
     VLOG(0) << "The ad campaign wasn't found in the NTP sponsored images data: "
             << ad_info.campaign_id;
-    return base::Value();
+    return absl::nullopt;
   }
 
   const auto& sponsored_backgrounds = campaigns[campaign_index].backgrounds;
@@ -363,7 +362,7 @@ base::Value NTPSponsoredImagesData::GetBackgroundByAdInfo(
   if (background_index == sponsored_backgrounds.size()) {
     VLOG(0) << "Creative instance wasn't found in NTP sposored images data: "
             << ad_info.creative_instance_id;
-    return base::Value();
+    return absl::nullopt;
   }
 
   if (VLOG_IS_ON(0)) {
@@ -376,9 +375,10 @@ base::Value NTPSponsoredImagesData::GetBackgroundByAdInfo(
     }
   }
 
-  base::Value data = GetBackgroundAt(campaign_index, background_index);
-  if (data.is_dict()) {
-    data.SetStringKey(kWallpaperIDKey, ad_info.placement_id);
+  absl::optional<base::Value::Dict> data =
+      GetBackgroundAt(campaign_index, background_index);
+  if (data) {
+    data->Set(kWallpaperIDKey, ad_info.placement_id);
   }
   return data;
 }

@@ -39,8 +39,7 @@ namespace {
 
 std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
     const net::test_server::HttpRequest& request) {
-  std::unique_ptr<net::test_server::BasicHttpResponse> http_response(
-      new net::test_server::BasicHttpResponse());
+  auto http_response = std::make_unique<net::test_server::BasicHttpResponse>();
   if (request.relative_url == "/valid_thumbnail" ||
       request.relative_url == "/valid_media_file_1" ||
       request.relative_url == "/valid_media_file_2") {
@@ -51,7 +50,7 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
     http_response->set_code(net::HTTP_NOT_FOUND);
   }
 
-  return std::move(http_response);
+  return http_response;
 }
 
 }  // namespace
@@ -294,7 +293,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, ApiFunctions) {
   // When we try to recover with same playlist item, we should get
   // notification: kAborted because included media files are still
   // invalid_media_file. before we get kAborted message, we may get
-  // kThunbmailReady.
+  // kThumbnailReady.
   ResetStatus();
   service->RecoverPlaylistItem(lastly_added_playlist_id_);
   WaitForEvents(2);

@@ -147,6 +147,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
 
   void GetPrivateKeyForKeyringAccount(
       const std::string& address,
+      const std::string& password,
       mojom::CoinType coin,
       GetPrivateKeyForKeyringAccountCallback callback) override;
   void ImportAccount(const std::string& account_name,
@@ -164,8 +165,11 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void AddHardwareAccounts(
       std::vector<mojom::HardwareWalletAccountPtr> info) override;
   void RemoveHardwareAccount(const std::string& address,
-                             mojom::CoinType coin) override;
+                             const std::string& password,
+                             mojom::CoinType coin,
+                             RemoveHardwareAccountCallback callback) override;
   void RemoveImportedAccount(const std::string& address,
+                             const std::string& password,
                              mojom::CoinType coin,
                              RemoveImportedAccountCallback callback) override;
   void IsWalletBackedUp(IsWalletBackedUpCallback callback) override;

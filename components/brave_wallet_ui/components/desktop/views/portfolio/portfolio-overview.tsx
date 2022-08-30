@@ -23,10 +23,14 @@ import { getLocale } from '../../../../../common/locale'
 import { getTokensCoinType } from '../../../../utils/network-utils'
 import { formatAsDouble } from '../../../../utils/string-utils'
 import Amount from '../../../../utils/amount'
+import { getBalance } from '../../../../utils/balance-utils'
 
 // Options
 import { ChartTimelineOptions } from '../../../../options/chart-timeline-options'
 import { AllNetworksOption } from '../../../../options/network-filter-options'
+
+// Hooks
+import usePricing from '../../../../common/hooks/pricing'
 
 // Components
 import { LoadingSkeleton } from '../../../shared'
@@ -36,11 +40,8 @@ import {
   PortfolioAssetItem,
   WithHideBalancePlaceholder
 } from '../../'
-
+import { NFTGridViewItem } from './components/nft-grid-view/nft-grid-view-item'
 import { TokenLists } from './components/token-lists/token-list'
-
-// Hooks
-import { useBalance, usePricing } from '../../../../common/hooks'
 
 // Styled Components
 import {
@@ -55,7 +56,6 @@ import {
 // actions
 import { WalletActions } from '../../../../common/actions'
 import { WalletPageActions } from '../../../../page/actions'
-import { NFTGridViewItem } from './components/nft-grid-view/nft-grid-view-item'
 
 export const PortfolioOverview = () => {
   // routing
@@ -76,7 +76,6 @@ export const PortfolioOverview = () => {
   const nftMetadata = useSelector(({ page }: { page: PageState }) => page.nftMetadata)
 
   // custom hooks
-  const getAccountAssetBalance = useBalance(networkList)
   const { computeFiatAmount } = usePricing(transactionSpotPrices)
 
   // memos / computed
@@ -86,7 +85,7 @@ export const PortfolioOverview = () => {
     const tokensCoinType = getTokensCoinType(networkList, asset)
     const amounts = accounts
       .filter((account) => account.coin === tokensCoinType)
-      .map((account) => getAccountAssetBalance(account, asset))
+      .map((account) => getBalance(networkList, account, asset))
 
     // If a user has not yet created a FIL or SOL account,
     // we return 0 until they create an account
@@ -99,29 +98,39 @@ export const PortfolioOverview = () => {
         ? new Amount(a).plus(b).format()
         : ''
     })
-  }, [accounts, networkList, getAccountAssetBalance])
+  }, [accounts, networkList])
 
-  // This looks at the users asset list and returns the full balance for each asset
-  const userAssetList = React.useMemo(() => {
-    const allAssets = userVisibleTokensInfo.map((asset) => ({
-      asset: asset,
-      assetBalance: fullAssetBalance(asset)
-    }) as UserAssetInfoType)
+  // filter the user's assets based on the selected network
+  const visibleTokensForSupportedChains = React.useMemo(() => {
     // By default we dont show any testnetwork assets
     if (selectedNetworkFilter.chainId === AllNetworksOption.chainId) {
-      return allAssets.filter((asset) => !SupportedTestNetworks.includes(asset.asset.chainId))
+      return userVisibleTokensInfo.filter((token) => !SupportedTestNetworks.includes(token.chainId))
     }
+
     // If chainId is Localhost we also do a check for coinType to return
     // the correct asset
     if (selectedNetworkFilter.chainId === BraveWallet.LOCALHOST_CHAIN_ID) {
-      return allAssets.filter((asset) =>
-        asset.asset.chainId === selectedNetworkFilter.chainId &&
-        getTokensCoinType(networkList, asset.asset) === selectedNetworkFilter.coin
+      return userVisibleTokensInfo.filter((token) =>
+        token.chainId === selectedNetworkFilter.chainId &&
+        getTokensCoinType(networkList, token) === selectedNetworkFilter.coin
       )
     }
     // Filter by all other assets by chainId's
-    return allAssets.filter((asset) => asset.asset.chainId === selectedNetworkFilter.chainId)
-  }, [userVisibleTokensInfo, selectedNetworkFilter, fullAssetBalance, networkList])
+    return userVisibleTokensInfo.filter((token) => token.chainId === selectedNetworkFilter.chainId)
+  }, [
+    selectedNetworkFilter.chainId,
+    selectedNetworkFilter.coin,
+    userVisibleTokensInfo,
+    networkList
+  ])
+
+  // This looks at the users asset list and returns the full balance for each asset
+  const userAssetList: UserAssetInfoType[] = React.useMemo(() => {
+    return visibleTokensForSupportedChains.map((asset) => ({
+      asset: asset,
+      assetBalance: fullAssetBalance(asset)
+    }))
+  }, [visibleTokensForSupportedChains, fullAssetBalance])
 
   // This will scrape all of the user's accounts and combine the fiat value for every asset
   const fullPortfolioFiatBalance = React.useMemo((): string => {
@@ -137,14 +146,23 @@ export const PortfolioOverview = () => {
 
     const visibleAssetFiatBalances = visibleAssetOptions
       .map((item) => {
-        return computeFiatAmount(item.assetBalance, item.asset.symbol, item.asset.decimals)
+        return computeFiatAmount(
+          item.assetBalance,
+          item.asset.symbol,
+          item.asset.decimals
+        )
       })
 
     const grandTotal = visibleAssetFiatBalances.reduce(function (a, b) {
       return a.plus(b)
     })
     return grandTotal.formatAsFiat(defaultCurrencies.fiat)
-  }, [userAssetList, defaultCurrencies, computeFiatAmount])
+  },
+  [
+    userAssetList,
+    defaultCurrencies,
+    transactionSpotPrices
+  ])
 
   const isZeroBalance = React.useMemo((): boolean => {
     // In some cases we need to check if the balance is zero
@@ -186,11 +204,11 @@ export const PortfolioOverview = () => {
 
   const onUpdateBalance = React.useCallback((value: number | undefined) => {
     setHoverBalance(value ? new Amount(value).formatAsFiat(defaultCurrencies.fiat) : undefined)
-  }, [defaultCurrencies])
+  }, [defaultCurrencies.fiat])
 
   const onToggleHideBalances = React.useCallback(() => {
-    setHideBalances(!hideBalances)
-  }, [hideBalances])
+    setHideBalances(prev => !prev)
+  }, [])
 
   // effects
   React.useEffect(() => {

@@ -68,7 +68,7 @@ export interface Props {
   toggleBrandedWallpaperOptIn: () => void
   toggleCards: (show: boolean) => void
   useCustomBackgroundImage: (useCustom: boolean) => void
-  setColorBackground: (color: string) => void
+  setColorBackground: (color: string, useRandomColor: boolean) => void
   showBackgroundImage: boolean
   showToday: boolean
   showBraveNewsButton: boolean
@@ -188,8 +188,8 @@ export default class Settings extends React.PureComponent<Props, State> {
     this.props.useCustomBackgroundImage(useCustom)
   }
 
-  setColorBackground = (color: string) => {
-    this.props.setColorBackground(color)
+  setColorBackground = (color: string, useRandomColor: boolean) => {
+    this.props.setColorBackground(color, useRandomColor)
   }
 
   setActiveTab (activeTab: TabType) {

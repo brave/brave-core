@@ -139,8 +139,8 @@ class BatAdsSearchResultAdEventHandlerTest : public EventHandlerObserver,
   }
 
   void OnSearchResultAdEventFailed(
-      const SearchResultAdInfo& ad,
-      const mojom::SearchResultAdEventType event_type) override {
+      const SearchResultAdInfo& /*ad*/,
+      const mojom::SearchResultAdEventType /*event_type*/) override {
     did_fail_to_fire_event_ = true;
   }
 

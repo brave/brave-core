@@ -8,7 +8,6 @@
 #include <string>
 #include <utility>
 
-#include "base/check.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 

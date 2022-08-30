@@ -1124,6 +1124,8 @@ source_set("ads") {
     "src/bat/ads/internal/user_interaction/user_activity/user_activity_trigger_info.h",
     "src/bat/ads/internal/user_interaction/user_activity/user_activity_util.cc",
     "src/bat/ads/internal/user_interaction/user_activity/user_activity_util.h",
+    "src/bat/ads/internal/user_interaction/user_reactions/user_reactions.cc",
+    "src/bat/ads/internal/user_interaction/user_reactions/user_reactions.h",
     "src/bat/ads/new_tab_page_ad_info.cc",
     "src/bat/ads/new_tab_page_ad_wallpaper_focal_point_info.cc",
     "src/bat/ads/new_tab_page_ad_wallpaper_info.cc",

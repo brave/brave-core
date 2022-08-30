@@ -9,7 +9,6 @@
 
 #include "base/bind.h"
 #include "base/check_op.h"
-#include "base/guid.h"
 #include "base/json/json_writer.h"
 #include "base/time/time.h"
 #include "bat/ads/ad_type.h"
@@ -97,7 +96,7 @@ void Confirmations::Retry() {
       base::BindOnce(&Confirmations::OnRetry, base::Unretained(this)));
 
   BLOG(1, "Retry sending failed confirmations "
-              << FriendlyDateAndTime(retry_at, /* use_sentence_style */ true));
+              << FriendlyDateAndTime(retry_at, /*use_sentence_style*/ true));
 }
 
 void Confirmations::OnRetry() {
@@ -132,7 +131,6 @@ ConfirmationInfo Confirmations::CreateConfirmation(
 
   ConfirmationInfo confirmation;
 
-  confirmation.id = base::GUID::GenerateRandomV4().AsLowercaseString();
   confirmation.transaction_id = transaction_id;
   confirmation.creative_instance_id = creative_instance_id;
   confirmation.type = confirmation_type;
@@ -208,8 +206,8 @@ void Confirmations::AppendToRetryQueue(const ConfirmationInfo& confirmation) {
   ConfirmationStateManager::GetInstance()->Save();
 
   BLOG(1, "Added " << confirmation.type << " confirmation for "
-                   << confirmation.ad_type << " with id " << confirmation.id
-                   << ", transaction id " << confirmation.transaction_id
+                   << confirmation.ad_type << " with transaction id "
+                   << confirmation.transaction_id
                    << " and creative instance id "
                    << confirmation.creative_instance_id
                    << " to the confirmations queue");
@@ -220,20 +218,19 @@ void Confirmations::RemoveFromRetryQueue(const ConfirmationInfo& confirmation) {
 
   if (!ConfirmationStateManager::GetInstance()->RemoveFailedConfirmation(
           confirmation)) {
-    BLOG(0, "Failed to remove " << confirmation.type << " confirmation for "
-                                << confirmation.ad_type << " with id "
-                                << confirmation.id << ", transaction id "
-                                << confirmation.transaction_id
-                                << " and creative instance id "
-                                << confirmation.creative_instance_id
-                                << " from the confirmations queue");
+    BLOG(0, "Failed to remove "
+                << confirmation.type << " confirmation for "
+                << confirmation.ad_type << " with transaction id "
+                << confirmation.transaction_id << " and creative instance id "
+                << confirmation.creative_instance_id
+                << " from the confirmations queue");
 
     return;
   }
 
   BLOG(1, "Removed " << confirmation.type << " confirmation for "
-                     << confirmation.ad_type << " with id " << confirmation.id
-                     << ", transaction id " << confirmation.transaction_id
+                     << confirmation.ad_type << " with transaction id "
+                     << confirmation.transaction_id
                      << " and creative instance id "
                      << confirmation.creative_instance_id
                      << " from the confirmations queue");
@@ -273,8 +270,8 @@ void Confirmations::OnDidRedeemUnblindedToken(
           ->GetUnblindedPaymentTokens()
           ->TokenExists(unblinded_payment_token)) {
     BLOG(1, "Unblinded payment token is a duplicate");
-    OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ false,
-                                   /* should_backoff */ false);
+    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ false,
+                                   /*should_backoff*/ false);
     return;
   }
 
@@ -295,7 +292,7 @@ void Confirmations::OnDidRedeemUnblindedToken(
   BLOG(1, "You have " << unblinded_payment_tokens_count
                       << " unblinded payment tokens which will be redeemed "
                       << FriendlyDateAndTime(next_token_redemption_at,
-                                             /* use_sentence_style */ true));
+                                             /*use_sentence_style*/ true));
 
   if (delegate_) {
     delegate_->OnDidConfirm(confirmation);

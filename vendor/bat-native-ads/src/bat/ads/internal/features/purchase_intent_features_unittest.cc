@@ -6,7 +6,7 @@
 #include "bat/ads/internal/features/purchase_intent_features.h"
 
 #include "base/time/time.h"
-#include "testing/gtest/include/gtest/gtest.h"
+#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -29,7 +29,7 @@ TEST(BatAdsPurchaseIntentFeaturesTest, PurchaseIntentTreshold) {
   // Act
 
   // Assert
-  EXPECT_EQ(3u, GetPurchaseIntentThreshold());
+  EXPECT_EQ(3U, GetPurchaseIntentThreshold());
 }
 
 TEST(BatAdsPurchaseIntentFeaturesTest, PurchaseIntentTimeWindowInSeconds) {

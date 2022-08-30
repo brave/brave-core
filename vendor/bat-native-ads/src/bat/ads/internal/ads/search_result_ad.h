@@ -31,7 +31,7 @@ class SearchResultAd final : public search_result_ads::EventHandlerObserver {
   SearchResultAd& operator=(const SearchResultAd&) = delete;
 
   void TriggerEvent(mojom::SearchResultAdInfoPtr ad_mojom,
-                    const mojom::SearchResultAdEventType event_type);
+                    mojom::SearchResultAdEventType event_type);
 
   static void DeferTriggeringOfAdViewedEventForTesting();
   static void TriggerDeferredAdViewedEventForTesting();

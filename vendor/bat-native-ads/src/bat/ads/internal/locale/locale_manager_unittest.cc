@@ -36,7 +36,7 @@ class BatAdsLocaleManagerTest : public LocaleManagerObserver,
     UnitTestBase::TearDown();
   }
 
-  void OnLocaleDidChange(const std::string& locale) override {
+  void OnLocaleDidChange(const std::string& /*locale*/) override {
     locale_did_change_ = true;
   }
 

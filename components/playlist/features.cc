@@ -7,10 +7,11 @@
 
 #include "base/feature_list.h"
 
-namespace playlist {
-namespace features {
+namespace playlist::features {
 
 const base::Feature kPlaylist{"Playlist", base::FEATURE_DISABLED_BY_DEFAULT};
 
-}  // namespace features
-}  // namespace playlist
+const base::Feature kCompareOnlyHostForTesting{
+    "CompareOnlyHostForTesting", base::FEATURE_DISABLED_BY_DEFAULT};
+
+}  // namespace playlist::features

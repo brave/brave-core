@@ -25,6 +25,7 @@
 <translation id="4150684676757176434">自動再生のブロックを継続する</translation>
 <translation id="8988939298652262600">Braveではセキュリティーおよび安全を目的とした拡張機能の確認を行っていません。デベロッパーを信用できる場合にのみ、この拡張機能をインストールしてください。</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") はBraveでは許可されていません。</translation>
+<translation id="9005883459983913482">Torウィンドウ</translation>
 <translation id="7965178729203412357">新しいTorのID</translation>
 <translation id="6924909138923993900">このサイトに新しくTor接続する</translation>
 <translation id="4734294903299549345">Torを備えたプライベートウィンドウを終了</translation>
@@ -38,6 +39,9 @@
 <translation id="1725356094208762656">Torで開く</translation>
 <translation id="3396347744975515056">Brave Syncがアップグレードされたのでセットアップする必要があります</translation>
 <translation id="7473245612074035141">セットアップ開始</translation>
+<translation id="3975865347033939965">Syncサービスを開始できませんでした。</translation>
+<translation id="4450893287417543264">次回から表示しない</translation>
+<translation id="4595286989346610620">詳細を確認する</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">公開してファイルをIPFSから取得</translation>
 <translation id="7398397225367092613">.onion</translation>
@@ -114,7 +118,7 @@
 <translation id="5240031343741051161">Brave Searchを試してみる</translation>
 <translation id="5026874946691314267">再度表示しない</translation>
 <translation id="5234764350956374838">閉じる</translation>
-<translation id="5100490448228945668">Brave 検索変換を無効にし、[Enter] キーを押してこの案を削除します。</translation>
+<translation id="5100490448228945668">Brave 検索への切り替えを無効にします。[Enter] キーを押してこの提案を消します。</translation>
 <translation id="2515126961943087659">BAT 広告サービス</translation>
 <translation id="7924918279836988121">BAT 台帳サービス</translation>
 <translation id="6040143037577758943">近い</translation>
@@ -144,7 +148,7 @@
 <translation id="8490082094734500369">リーダーモードをオフにする</translation>
 <translation id="2036503787657622020">リーダーモードをオンにする</translation>
 <translation id="5226458915125328323">Speedreader設定</translation>
-<translation id="1621606336827646158">元のページを表示</translation>
+<translation id="8591883849678260674">オリジナルを見る</translation>
 <translation id="6284218950354553099">毎日の使用状況のpingをBraveに自動送信する</translation>
 <translation id="5288333155754958121">この匿名かつプライベートなPingにより、Braveはアクティブユーザーを推定することができます。</translation>
 <translation id="1872784258300710671">Braveは完全に匿名の製品分析を使い、特定の機能が全体でどの程度使われているか予測します</translation>
@@ -211,6 +215,10 @@
 <translation id="8721331068159819483">Mac OS と同様</translation>
 <translation id="1692470335103807198">より多くのテーマを取得する</translation>
 <translation id="2906510232093002459">Braveデフォルト画像</translation>
+<translation id="3367129510799209147">タブホバーモード</translation>
+<translation id="2113977810652731515">カード</translation>
+<translation id="4096343215397759358">プレビュー付きカード</translation>
+<translation id="5297085818601043899">ツールヒント</translation>
 <translation id="2396127686705429331">ブックマークボタンを表示する</translation>
 <translation id="2814998458708016836">ワイドアドレスバーを使用する</translation>
 <translation id="4109670531935487117">アドレスバー入力中に自動でサイト候補を表示</translation>
@@ -238,7 +246,7 @@
 <translation id="6388201778088078932">設定で管理できます。</translation>
 <translation id="4800195524776354947">シールドアイコン上でブロックされているアイテムの数を表示</translation>
 <translation id="5510493033031835532">AMPページを自動でリダイレクト</translation>
-<translation id="5197219128592971597">GoogleのAccelerated Mobile Pageバージョンではなく、常にオリジナルの (AMPでない) ページURLにアクセスしてください。</translation>
+<translation id="7630031867325944356">AMPや類似のバージョンではなく、パブリッシャーページのURLを優先します。</translation>
 <translation id="7607166182943595829">言語設定に基づく、サイトのフィンガープリンティングを禁止</translation>
 <translation id="3497934980362703405">この設定を有効にすると、ウェブサイトに収集される言語設定に関する情報を減らすことができます。</translation>
 <translation id="2133317862976486547">トラッカーと広告をブロック中</translation>
@@ -286,6 +294,7 @@
 <translation id="1758947220824279023">表示する広告の最大数</translation>
 <translation id="2356652719351432565">地域に特化した広告</translation>
 <translation id="2196950072404588793">これにより、Braveはあなたの地域に特化した広告を表示することができます。<ph name="BEGIN_LINK"/>詳しくはこちら<ph name="END_LINK"/></translation>
+<translation id="2433507940547922241">デザイン</translation>
 <translation id="6112368337882254910">自動支援</translation>
 <translation id="9132509928968869844">毎月の自動支援上限</translation>
 <translation id="7286722244752781970">サイト訪問を記録する最小ページ数</translation>
@@ -376,6 +385,7 @@
     これらのコード単語があなたの所有するデバイスによって生成されたものであることを再確認してください。
 
     続行してよろしいですか？</translation>
+<translation id="7443185843787879670">Braveは、お使いのオペレーティングシステムの安全なストレージにアクセスすることができませんでした。これは、パスワードやクッキーなどのデータを保護するために使用されるものです。また、Brave Syncがデバイス間でブラウザプロファイルを接続するために必要なものです。これは、Brave Syncが実行されていないことを意味します。この問題を解決するには、<ph name="BEGIN_LINK_SYNC_GUIDE"/>Brave Sync トラブルシューティング ガイド<ph name="END_LINK_SYNC_GUIDE"/>を参照してください。</translation>
 <translation id="6285118765755298263">他の検索エンジンのインデックス</translation>
 <translation id="919715748352669592">OpenSearchの仕様に従うウェブサイトのインデックスを自動的に作成します。</translation>
 <translation id="842628013524824194">標準ウィンドウ - アドレスバーで使用される検索エンジン</translation>
@@ -388,6 +398,23 @@
 <translation id="5248318250177143470">イーサリアムネームサービス（ENS）を解決する方法</translation>
 <translation id="6241402707160226266">Tor搭載のプライベートウィンドウ</translation>
 <translation id="8762452230727230396">Torは訪問サイトからあなたのIPアドレスを隠します。</translation>
+<translation id="2959986444009520721">ブリッジの使用</translation>
+<translation id="6003484976430531384">ブリッジはTorがブロックされている場所でTorネットワークにアクセスするのに役立ちます。あなたがいる場所によって、あるブリッジは他のブリッジよりうまく機能するかもしれません。</translation>
+<translation id="7206799843254049470">Tor接続設定</translation>
+<translation id="3194502271166340944">プライベートウィンドウのTorネットワークへの接続方法を制御します。</translation>
+<translation id="4859228830700205299">内蔵ブリッジを選択</translation>
+<translation id="3233137871426528317">torproject.orgのブリッジをリクエストする</translation>
+<translation id="5701503934456421898">新しいブリッジをリクエストする...</translation>
+<translation id="8149806369020180959">ブリッジを提供する</translation>
+<translation id="454073978993625597">信頼できるソースからブリッジ情報を入力します。</translation>
+<translation id="4425607417590286548">変更を適用する</translation>
+<translation id="2128143836897950793">「新しいブリッジをリクエストする...」をクリックして、ブリッジを取得します</translation>
+<translation id="3314921753580327793">アドレス:ポートを入力 (1行に1つ)</translation>
+<translation id="3755189300481406891">リクエストブリッジ</translation>
+<translation id="6924425739431382319">BridgeDBに問い合わせています。しばらくお待ちください。</translation>
+<translation id="811745063252080651">CAPTCHAを解いて、ブリッジをリクエストしてください。</translation>
+<translation id="6936835573742749135">CAPTCHAを要求できません。後で再試行してください。</translation>
+<translation id="2653659639078652383">送信</translation>
 <translation id="1369311132025451972">.onionサイトに自動的にリダイレクトします</translation>
 <translation id="2843777623071353503">Braveは、利用可能な場合はウェブサイトのオニオンサービスを開くか、またはTorウィンドウで.onionドメインを開きます。</translation>
 <translation id="2896916411183256228">WebTorrentを有効にして、直接Torrentファイルやマグネットリンクを表示</translation>
@@ -434,7 +461,6 @@
 <translation id="7059127752542505809">URLを入力</translation>
 <translation id="3047726704186619366">アイコンURL</translation>
 <translation id="2487558607408469181">ブロックエクスプローラーURL</translation>
-<translation id="2653659639078652383">送信</translation>
 <translation id="2156993118928861787">アドレスが無効です。</translation>
 <translation id="6301398959353668507">この項目は必須です。</translation>
 <translation id="7504462451153306677">形式が無効です。チェーンIDは正の数にしてください</translation>

@@ -15,7 +15,6 @@
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_user_data_builder.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/net/http/http_status_code.h"
 #include "bat/ads/internal/base/time/time_formatting_util.h"
 #include "bat/ads/internal/base/url/url_request_string_util.h"
 #include "bat/ads/internal/base/url/url_response_string_util.h"
@@ -24,6 +23,7 @@
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
 #include "bat/ads/pref_names.h"
 #include "brave_base/random.h"
+#include "net/http/http_status_code.h"
 
 namespace ads {
 
@@ -52,7 +52,7 @@ void RedeemUnblindedPaymentTokens::MaybeRedeemAfterDelay(
 
   if (!wallet.IsValid()) {
     BLOG(0, "Failed to redeem unblinded payment tokens due to invalid wallet");
-    FailedToRedeemUnblindedPaymentTokens(/* should_retry */ false);
+    FailedToRedeemUnblindedPaymentTokens(/*should_retry*/ false);
     return;
   }
 
@@ -64,7 +64,7 @@ void RedeemUnblindedPaymentTokens::MaybeRedeemAfterDelay(
                                   base::Unretained(this)));
 
   BLOG(1, "Redeem unblinded payment tokens "
-              << FriendlyDateAndTime(redeem_at, /* use_sentence_style */ true));
+              << FriendlyDateAndTime(redeem_at, /*use_sentence_style*/ true));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -83,7 +83,7 @@ void RedeemUnblindedPaymentTokens::Redeem() {
     return;
   }
 
-  BLOG(2, "PUT /v2/confirmation/payment/{payment_id}");
+  BLOG(2, "PUT /v2/confirmation/payment/{paymentId}");
 
   is_processing_ = true;
 
@@ -117,7 +117,7 @@ void RedeemUnblindedPaymentTokens::OnRedeem(
   BLOG(7, UrlResponseHeadersToString(url_response));
 
   if (url_response.status_code != net::HTTP_OK) {
-    FailedToRedeemUnblindedPaymentTokens(/* should_retry */ true);
+    FailedToRedeemUnblindedPaymentTokens(/*should_retry*/ true);
     return;
   }
 
@@ -177,7 +177,7 @@ void RedeemUnblindedPaymentTokens::Retry() {
                      base::Unretained(this)));
 
   BLOG(1, "Retry redeeming unblinded payment tokens "
-              << FriendlyDateAndTime(retry_at, /* use_sentence_style */ true));
+              << FriendlyDateAndTime(retry_at, /*use_sentence_style*/ true));
 
   if (delegate_) {
     delegate_->OnWillRetryRedeemingUnblindedPaymentTokens(retry_at);

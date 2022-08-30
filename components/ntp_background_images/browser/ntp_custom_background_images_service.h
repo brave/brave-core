@@ -9,10 +9,10 @@
 #include <memory>
 #include <string>
 
+#include "base/values.h"
 #include "components/keyed_service/core/keyed_service.h"
 
 namespace base {
-class Value;
 class FilePath;
 }  // namespace base
 
@@ -27,11 +27,12 @@ class NTPCustomBackgroundImagesService : public KeyedService {
  public:
   class Delegate {
    public:
-    virtual bool IsCustomImageBackgroundEnabled() = 0;
-    virtual base::FilePath GetCustomBackgroundImageLocalFilePath() = 0;
+    virtual bool IsCustomImageBackgroundEnabled() const = 0;
+    virtual base::FilePath GetCustomBackgroundImageLocalFilePath() const = 0;
 
-    virtual bool IsColorBackgroundEnabled() = 0;
-    virtual std::string GetColor() = 0;
+    virtual bool IsColorBackgroundEnabled() const = 0;
+    virtual std::string GetColor() const = 0;
+    virtual bool ShouldUseRandomValue() const = 0;
 
     virtual ~Delegate() = default;
   };
@@ -45,7 +46,7 @@ class NTPCustomBackgroundImagesService : public KeyedService {
       const NTPCustomBackgroundImagesService&) = delete;
 
   bool ShouldShowCustomBackground() const;
-  base::Value GetBackground() const;
+  base::Value::Dict GetBackground() const;
   base::FilePath GetImageFilePath();
 
  private:

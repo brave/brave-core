@@ -8,7 +8,6 @@
 #include "base/test/values_test_util.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -27,7 +26,7 @@ TEST_F(BatAdsMutatedUserDataTest, GetMutatedConfirmations) {
   // Arrange
   AdsClientHelper::GetInstance()->SetUint64Pref(
       prefs::kConfirmationsHash,
-      /* data/test/confirmations.json has a hash of 3780921521 */ 1251290873);
+      /*data/test/confirmations.json has a hash of 3780921521*/ 1251290873);
 
   // Act
   const base::Value::Dict user_data = GetMutated();
@@ -44,7 +43,7 @@ TEST_F(BatAdsMutatedUserDataTest, GetMutatedClient) {
   // Arrange
   AdsClientHelper::GetInstance()->SetUint64Pref(
       prefs::kClientHash,
-      /* data/test/client.json has a hash of 2810715844 */ 4485170182);
+      /*data/test/client.json has a hash of 2810715844*/ 4485170182);
 
   // Act
   const base::Value::Dict user_data = GetMutated();

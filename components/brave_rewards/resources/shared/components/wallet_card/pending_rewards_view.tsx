@@ -11,7 +11,6 @@ import * as style from './pending_rewards_view.style'
 
 interface Props {
   earningsLastMonth: number
-  earningsReceived: boolean
   nextPaymentDate: number
   providerPayoutStatus: ProviderPayoutStatus
 }
@@ -21,7 +20,6 @@ export function PendingRewardsView (props: Props) {
     <style.root>
       <PaymentStatusView
         earningsLastMonth={props.earningsLastMonth}
-        earningsReceived={props.earningsReceived}
         nextPaymentDate={props.nextPaymentDate}
         providerPayoutStatus={props.providerPayoutStatus}
       />

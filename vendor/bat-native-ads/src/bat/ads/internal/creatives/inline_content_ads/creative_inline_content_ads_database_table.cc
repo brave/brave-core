@@ -176,7 +176,7 @@ void CreativeInlineContentAds::Save(
     const CreativeInlineContentAdList& creative_ads,
     ResultCallback callback) {
   if (creative_ads.empty()) {
-    std::move(callback).Run(/* success */ true);
+    std::move(callback).Run(/*success*/ true);
     return;
   }
 
@@ -218,7 +218,7 @@ void CreativeInlineContentAds::GetForCreativeInstanceId(
     const std::string& creative_instance_id,
     GetCreativeInlineContentAdCallback callback) {
   if (creative_instance_id.empty()) {
-    callback(/* success */ false, creative_instance_id, {});
+    callback(/*success*/ false, creative_instance_id, {});
     return;
   }
 
@@ -315,7 +315,7 @@ void CreativeInlineContentAds::GetForSegmentsAndDimensions(
     const std::string& dimensions,
     GetCreativeInlineContentAdsCallback callback) {
   if (segments.empty() || dimensions.empty()) {
-    callback(/* success */ true, segments, {});
+    callback(/*success*/ true, segments, {});
     return;
   }
 
@@ -421,7 +421,7 @@ void CreativeInlineContentAds::GetForDimensions(
     const std::string& dimensions,
     GetCreativeInlineContentAdsForDimensionsCallback callback) {
   if (dimensions.empty()) {
-    callback(/* success */ true, {});
+    callback(/*success*/ true, {});
     return;
   }
 
@@ -671,7 +671,7 @@ void CreativeInlineContentAds::OnGetForCreativeInstanceId(
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative inline content ad");
-    callback(/* success */ false, creative_instance_id, {});
+    callback(/*success*/ false, creative_instance_id, {});
     return;
   }
 
@@ -680,13 +680,13 @@ void CreativeInlineContentAds::OnGetForCreativeInstanceId(
 
   if (creative_ads.size() != 1) {
     BLOG(0, "Failed to get creative inline content ad");
-    callback(/* success */ false, creative_instance_id, {});
+    callback(/*success*/ false, creative_instance_id, {});
     return;
   }
 
-  const CreativeInlineContentAdInfo creative_ad = creative_ads.front();
+  const CreativeInlineContentAdInfo& creative_ad = creative_ads.front();
 
-  callback(/* success */ true, creative_instance_id, creative_ad);
+  callback(/*success*/ true, creative_instance_id, creative_ad);
 }
 
 void CreativeInlineContentAds::OnGetForSegmentsAndDimensions(
@@ -696,14 +696,14 @@ void CreativeInlineContentAds::OnGetForSegmentsAndDimensions(
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative inline content ads");
-    callback(/* success */ false, segments, {});
+    callback(/*success*/ false, segments, {});
     return;
   }
 
   const CreativeInlineContentAdList creative_ads =
       GetCreativeAdsFromResponse(std::move(response));
 
-  callback(/* success */ true, segments, creative_ads);
+  callback(/*success*/ true, segments, creative_ads);
 }
 
 void CreativeInlineContentAds::OnGetForDimensions(
@@ -712,14 +712,14 @@ void CreativeInlineContentAds::OnGetForDimensions(
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative inline content ads");
-    callback(/* success */ false, {});
+    callback(/*success*/ false, {});
     return;
   }
 
   const CreativeInlineContentAdList creative_ads =
       GetCreativeAdsFromResponse(std::move(response));
 
-  callback(/* success */ true, creative_ads);
+  callback(/*success*/ true, creative_ads);
 }
 
 void CreativeInlineContentAds::OnGetAll(
@@ -728,7 +728,7 @@ void CreativeInlineContentAds::OnGetAll(
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get all creative inline content ads");
-    callback(/* success */ false, {}, {});
+    callback(/*success*/ false, {}, {});
     return;
   }
 
@@ -737,7 +737,7 @@ void CreativeInlineContentAds::OnGetAll(
 
   const SegmentList segments = GetSegments(creative_ads);
 
-  callback(/* success */ true, segments, creative_ads);
+  callback(/*success*/ true, segments, creative_ads);
 }
 
 void CreativeInlineContentAds::MigrateToV24(

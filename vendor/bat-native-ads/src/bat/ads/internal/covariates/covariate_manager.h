@@ -42,8 +42,8 @@ class CovariateManager final {
   std::vector<brave_federated::mojom::CovariateInfoPtr> GetTrainingInstance()
       const;
 
-  void SetNotificationAdServedAt(const base::Time time);
-  void SetNotificationAdEvent(const mojom::NotificationAdEventType event_type);
+  void SetNotificationAdServedAt(base::Time time);
+  void SetNotificationAdEvent(mojom::NotificationAdEventType event_type);
   void LogTrainingInstance() const;
 
  private:

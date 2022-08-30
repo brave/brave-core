@@ -311,18 +311,6 @@
       }
     }
   },
-  "notificationBackupWalletTitle": {
-    "message": "Napravite rezervnu kopiju Brave nagrada",
-    "description": ""
-  },
-  "notificationBackupWalletText": {
-    "message": "Napravite rezervnu kopiju vaših Brave nagrada.",
-    "description": ""
-  },
-  "notificationBackupWalletAction": {
-    "message": "Napravi rezervnu kopiju sada",
-    "description": ""
-  },
   "notificationWalletDisconnectedTitle": {
     "message": "Odjavljeni ste",
     "description": ""

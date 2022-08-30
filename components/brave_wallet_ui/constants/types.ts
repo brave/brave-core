@@ -278,7 +278,6 @@ export interface PageState {
   selectedAssetPriceHistory: GetPriceHistoryReturnInfo[]
   portfolioPriceHistory: PriceDataObjectType[]
   mnemonic?: string
-  privateKey?: string
   isFetchingPriceHistory: boolean
   setupStillInProgress: boolean
   showIsRestoring: boolean

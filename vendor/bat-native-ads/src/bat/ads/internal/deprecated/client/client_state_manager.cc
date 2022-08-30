@@ -18,7 +18,6 @@
 #include "bat/ads/ad_info.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/history_item_info.h"
-#include "bat/ads/internal/ads/serving/serving_features.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/deprecated/client/client_info.h"
@@ -26,7 +25,7 @@
 #include "bat/ads/internal/features/text_classification_features.h"
 #include "bat/ads/internal/history/history_constants.h"
 #include "bat/ads/pref_names.h"
-#include "build/build_config.h"
+#include "build/build_config.h"  // IWYU pragma: keep
 
 namespace ads {
 
@@ -568,7 +567,7 @@ void ClientStateManager::OnLoaded(const bool success, const std::string& json) {
 
       BLOG(3, "Failed to parse client state: " << json);
 
-      callback_(/* success */ false);
+      callback_(/*success*/ false);
       return;
     }
 
@@ -582,7 +581,7 @@ void ClientStateManager::OnLoaded(const bool success, const std::string& json) {
     BLOG(9, "Client state is mutated");
   }
 
-  callback_(/* success  */ true);
+  callback_(/*success */ true);
 }
 
 bool ClientStateManager::FromJson(const std::string& json) {

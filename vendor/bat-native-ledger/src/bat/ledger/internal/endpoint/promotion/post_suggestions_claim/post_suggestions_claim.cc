@@ -70,13 +70,8 @@ type::Result PostSuggestionsClaim::CheckStatusCode(const int status_code) {
   return type::Result::LEDGER_OK;
 }
 
-void PostSuggestionsClaim::Request(
-    const credential::CredentialsRedeem& redeem,
-    PostSuggestionsClaimCallback callback) {
-  auto url_callback =
-      base::BindOnce(&PostSuggestionsClaim::OnRequest, base::Unretained(this),
-                     std::move(callback));
-
+void PostSuggestionsClaim::Request(const credential::CredentialsRedeem& redeem,
+                                   PostSuggestionsClaimCallback callback) {
   const std::string payload = GeneratePayload(redeem);
 
   auto wallet = ledger_->wallet()->GetWallet();
@@ -85,6 +80,10 @@ void PostSuggestionsClaim::Request(
     std::move(callback).Run(type::Result::LEDGER_ERROR, "");
     return;
   }
+
+  auto url_callback =
+      base::BindOnce(&PostSuggestionsClaim::OnRequest, base::Unretained(this),
+                     std::move(callback));
 
   auto headers = util::BuildSignHeaders(
       "post /v2/suggestions/claim",

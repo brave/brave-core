@@ -33,20 +33,15 @@ class DatabaseManager final {
   void OnCreateOrOpen(ResultCallback callback,
                       mojom::DBCommandResponseInfoPtr response);
 
-  void MaybeMigrate(const int from_version, ResultCallback callback) const;
-  void OnMigrate(const int from_version,
-                 ResultCallback callback,
-                 const bool success) const;
+  void MaybeMigrate(int from_version, ResultCallback callback) const;
+  void OnMigrate(int from_version, ResultCallback callback, bool success) const;
 
   void NotifyWillCreateOrOpenDatabase() const;
   void NotifyDidCreateOrOpenDatabase() const;
   void NotifyFailedToCreateOrOpenDatabase() const;
-  void NotifyWillMigrateDatabase(const int from_version,
-                                 const int to_version) const;
-  void NotifyDidMigrateDatabase(const int from_version,
-                                const int to_version) const;
-  void NotifyFailedToMigrateDatabase(const int from_version,
-                                     const int to_version) const;
+  void NotifyWillMigrateDatabase(int from_version, int to_version) const;
+  void NotifyDidMigrateDatabase(int from_version, int to_version) const;
+  void NotifyFailedToMigrateDatabase(int from_version, int to_version) const;
   void NotifyDatabaseIsReady() const;
 
   base::ObserverList<DatabaseManagerObserver> observers_;

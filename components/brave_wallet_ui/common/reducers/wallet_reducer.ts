@@ -151,6 +151,13 @@ export const createWalletReducer = (initialState: WalletState) => {
     }
   })
 
+  reducer.on(WalletActions.locked, (state): WalletState => {
+    return {
+      ...state,
+      isWalletLocked: true
+    }
+  })
+
   reducer.on(WalletActions.hasIncorrectPassword, (state: WalletState, payload: boolean): WalletState => {
     return {
       ...state,

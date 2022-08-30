@@ -10,7 +10,6 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
-#include "base/timer/timer.h"
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_observer.h"
@@ -29,9 +28,6 @@ class SidebarItemAddButton : public SidebarButtonView,
   SidebarItemAddButton& operator=(const SidebarItemAddButton&) = delete;
 
   // SidebarButtonView overrides:
-  void OnMouseEntered(const ui::MouseEvent& event) override;
-  void OnMouseExited(const ui::MouseEvent& event) override;
-  void OnGestureEvent(ui::GestureEvent* event) override;
   void AddedToWidget() override;
   void OnThemeChanged() override;
 
@@ -41,14 +37,12 @@ class SidebarItemAddButton : public SidebarButtonView,
   bool IsBubbleVisible() const;
 
  private:
-  void ShowBubbleWithDelay();
-  void DoShowBubble();
+  void ShowBubble();
 
   void UpdateButtonImages();
   void OnButtonPressed();
 
   raw_ptr<BraveBrowser> browser_ = nullptr;
-  base::OneShotTimer timer_;
   base::CallbackListSubscription on_enabled_changed_subscription_;
   base::ScopedObservation<views::Widget, views::WidgetObserver> observation_{
       this};

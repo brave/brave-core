@@ -311,18 +311,6 @@
       }
     }
   },
-  "notificationBackupWalletTitle": {
-    "message": "Brave Rewards का बैकअप लें",
-    "description": ""
-  },
-  "notificationBackupWalletText": {
-    "message": "कृपया अपने Brave Reward का बैकअप लें.",
-    "description": ""
-  },
-  "notificationBackupWalletAction": {
-    "message": "अभी बैकअप करें",
-    "description": ""
-  },
   "notificationWalletDisconnectedTitle": {
     "message": "आप लॉग आउट हो गए हैं",
     "description": ""

@@ -14,7 +14,6 @@
 #include "base/time/time.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/net/http/http_status_code.h"
 #include "bat/ads/internal/base/time/time_formatting_util.h"
 #include "bat/ads/internal/base/url/url_request_string_util.h"
 #include "bat/ads/internal/base/url/url_response_string_util.h"
@@ -25,6 +24,7 @@
 #include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/database/database_manager.h"
 #include "bat/ads/internal/flags/flag_manager_util.h"
+#include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
@@ -146,8 +146,8 @@ void Catalog::FetchAfterDelay() {
       FROM_HERE, delay,
       base::BindOnce(&Catalog::Fetch, base::Unretained(this)));
 
-  BLOG(1, "Fetch catalog " << FriendlyDateAndTime(
-              fetch_at, /* use_sentence_style */ true));
+  BLOG(1, "Fetch catalog " << FriendlyDateAndTime(fetch_at,
+                                                  /*use_sentence_style*/ true));
 }
 
 void Catalog::Retry() {
@@ -156,7 +156,7 @@ void Catalog::Retry() {
       base::BindOnce(&Catalog::OnRetry, base::Unretained(this)));
 
   BLOG(1, "Retry fetching catalog "
-              << FriendlyDateAndTime(retry_at, /* use_sentence_style */ true));
+              << FriendlyDateAndTime(retry_at, /*use_sentence_style*/ true));
 }
 
 void Catalog::OnRetry() {
@@ -177,8 +177,8 @@ void Catalog::NotifyFailedToUpdateCatalog() const {
   }
 }
 
-void Catalog::OnDidMigrateDatabase(const int from_version,
-                                   const int to_version) {
+void Catalog::OnDidMigrateDatabase(const int /*from_version*/,
+                                   const int /*to_version*/) {
   ResetCatalog();
 }
 

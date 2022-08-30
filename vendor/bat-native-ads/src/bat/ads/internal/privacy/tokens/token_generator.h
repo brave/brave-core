@@ -24,7 +24,7 @@ class TokenGenerator : public TokenGeneratorInterface {
   TokenGenerator(const TokenGenerator&) = delete;
   TokenGenerator& operator=(const TokenGenerator&) = delete;
 
-  std::vector<cbr::Token> Generate(const int count) const override;
+  std::vector<cbr::Token> Generate(int count) const override;
 };
 
 }  // namespace privacy

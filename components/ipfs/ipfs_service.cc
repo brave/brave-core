@@ -861,9 +861,8 @@ void IpfsService::PreWarmShareableLink(const GURL& url) {
   auto url_loader = CreateURLLoader(url, "HEAD");
   auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory_.get(),
-      base::BindOnce(&IpfsService::OnPreWarmComplete, base::Unretained(this),
-                     std::move(iter)));
+      url_loader_factory_.get(), base::BindOnce(&IpfsService::OnPreWarmComplete,
+                                                base::Unretained(this), iter));
 }
 
 void IpfsService::OnPreWarmComplete(
@@ -885,8 +884,7 @@ void IpfsService::ValidateGateway(const GURL& url, BoolCallback callback) {
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory_.get(),
       base::BindOnce(&IpfsService::OnGatewayValidationComplete,
-                     base::Unretained(this), std::move(iter),
-                     std::move(callback), url));
+                     base::Unretained(this), iter, std::move(callback), url));
 }
 
 void IpfsService::OnGatewayValidationComplete(

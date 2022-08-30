@@ -22,50 +22,50 @@ constexpr int kTopPurchaseIntentSegmentsMaxCount = 3;
 
 SegmentList GetTopChildSegments(const UserModelInfo& user_model) {
   return GetTopSegments(user_model, kTopSegmentsMaxCount,
-                        /* parent_only */ false);
+                        /*parent_only*/ false);
 }
 
 SegmentList GetTopParentSegments(const UserModelInfo& user_model) {
   return GetTopSegments(user_model, kTopSegmentsMaxCount,
-                        /* parent_only */ true);
+                        /*parent_only*/ true);
 }
 
 SegmentList GetTopChildInterestSegments(const UserModelInfo& user_model) {
   return GetTopSegments(user_model.interest_segments,
                         kTopInterestSegmentsMaxCount,
-                        /* parent_only */ false);
+                        /*parent_only*/ false);
 }
 
 SegmentList GetTopParentInterestSegments(const UserModelInfo& user_model) {
   return GetTopSegments(user_model.interest_segments,
                         kTopInterestSegmentsMaxCount,
-                        /* parent_only */ true);
+                        /*parent_only*/ true);
 }
 
 SegmentList GetTopChildLatentInterestSegments(const UserModelInfo& user_model) {
   return GetTopSegments(user_model.latent_interest_segments,
                         kTopLatentInterestSegmentsMaxCount,
-                        /* parent_only */ false);
+                        /*parent_only*/ false);
 }
 
 SegmentList GetTopParentLatentInterestSegments(
     const UserModelInfo& user_model) {
   return GetTopSegments(user_model.latent_interest_segments,
                         kTopLatentInterestSegmentsMaxCount,
-                        /* parent_only */ true);
+                        /*parent_only*/ true);
 }
 
 SegmentList GetTopChildPurchaseIntentSegments(const UserModelInfo& user_model) {
   return GetTopSegments(user_model.purchase_intent_segments,
                         kTopPurchaseIntentSegmentsMaxCount,
-                        /* parent_only */ false);
+                        /*parent_only*/ false);
 }
 
 SegmentList GetTopParentPurchaseIntentSegments(
     const UserModelInfo& user_model) {
   return GetTopSegments(user_model.purchase_intent_segments,
                         kTopPurchaseIntentSegmentsMaxCount,
-                        /* parent_only */ true);
+                        /*parent_only*/ true);
 }
 
 }  // namespace targeting

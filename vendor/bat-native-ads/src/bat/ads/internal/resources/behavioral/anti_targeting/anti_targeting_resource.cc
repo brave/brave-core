@@ -14,7 +14,6 @@
 #include "bat/ads/internal/resources/country_components.h"
 #include "bat/ads/internal/resources/resource_manager.h"
 #include "bat/ads/internal/resources/resources_util_impl.h"
-#include "brave/components/l10n/common/locale_util.h"
 
 namespace ads {
 namespace resource {
@@ -75,7 +74,7 @@ void AntiTargeting::OnLoadAndParseResource(
                                       << " anti-targeting resource");
 }
 
-void AntiTargeting::OnLocaleDidChange(const std::string& locale) {
+void AntiTargeting::OnLocaleDidChange(const std::string& /*locale*/) {
   Load();
 }
 

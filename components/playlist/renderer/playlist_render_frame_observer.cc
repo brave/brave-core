@@ -7,7 +7,9 @@
 
 #include <vector>
 
+#include "base/feature_list.h"
 #include "base/no_destructor.h"
+#include "brave/components/playlist/features.h"
 #include "content/public/renderer/render_frame.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
@@ -31,6 +33,9 @@ void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
   const auto current_origin =
       render_frame()->GetWebFrame()->GetSecurityOrigin();
   if (base::ranges::any_of(*origins, [&current_origin](const auto& origin) {
+        if (base::FeatureList::IsEnabled(features::kCompareOnlyHostForTesting))
+          return origin.Host() == current_origin.Host();
+
         return origin.IsSameOriginWith(current_origin);
       })) {
     HideMediaSourceAPI();

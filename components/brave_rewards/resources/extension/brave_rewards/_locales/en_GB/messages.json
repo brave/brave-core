@@ -311,18 +311,6 @@
       }
     }
   },
-  "notificationBackupWalletTitle": {
-    "message": "Back up Brave Rewards",
-    "description": ""
-  },
-  "notificationBackupWalletText": {
-    "message": "Please back up your Brave Rewards.",
-    "description": ""
-  },
-  "notificationBackupWalletAction": {
-    "message": "Back up now",
-    "description": ""
-  },
   "notificationWalletDisconnectedTitle": {
     "message": "You are logged out",
     "description": ""

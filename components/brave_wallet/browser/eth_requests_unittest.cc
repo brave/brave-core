@@ -179,6 +179,12 @@ TEST(EthRequestUnitTest, eth_call) {
                "bb8eb970870f072445675",
                "latest"),
       R"({"id":1,"jsonrpc":"2.0","method":"eth_call","params":[{"data":"0xd46e8dd67c5d32be8d46e8dd67c5d32be8058bb8eb970870f072445675058bb8eb970870f072445675","from":"0xb60e8dd61c5d32be8058bb8eb970870f07233155","gas":"0x76c0","gasPrice":"0x9184e72a000","to":"0xd46e8dd67c5d32be8058bb8eb970870f07244567","value":"0x9184e72a"},"latest"]})");  // NOLINT
+
+  ASSERT_EQ(
+      eth_call(
+          "0xd46e8dd67c5d32be8058bb8eb970870f07244567",
+          "0xd46e8dd67c5d32be8d46e8dd67c5d32be8058bb8eb970870f072445675058"),
+      R"({"id":1,"jsonrpc":"2.0","method":"eth_call","params":[{"data":"0xd46e8dd67c5d32be8d46e8dd67c5d32be8058bb8eb970870f072445675058","to":"0xd46e8dd67c5d32be8058bb8eb970870f07244567"},"latest"]})");  // NOLINT
 }
 
 TEST(EthRequestUnitTest, eth_estimateGas) {

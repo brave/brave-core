@@ -11,14 +11,15 @@
 <translation id="8541922081612557424">Teave Bravei kohta</translation>
 <translation id="1203500561924088507">Täname teid installimise eest. Enne brauseri <ph name="BUNDLE_NAME"/> kasutamist peate selle taaskäivitama.</translation>
 <translation id="4798342026247191171">Uue Bravei profiili seadistamine</translation>
+<translation id="6361779936989026201">Brave'i assistent Braveis</translation>
 <translation id="113959764510199339">Brave püüab paroole kuvada.</translation>
 <translation id="8132634101975074716">Olete Bravei sisse logitud.</translation>
 <translation id="5147525139567260139">Bravei vahekaardi jagamine</translation>
 <translation id="1530633922026945685">Brave vajab luba teie kaamerale juurdepääsemiseks, et luua teid ümbritsevast 3D-kaart</translation>
-<translation id="473077451702478797">Brave blokeeris selle faili, kuna see on turvakontrolli tegemiseks liiga suur. Proovige uuesti failidega, mis on kuni 50 MB</translation>
 <translation id="4449148723378534338">Vaadake üle Bravei peamised privaatsus- ja turvaseaded</translation>
 <translation id="1640672724030957280">Allalaadimine ...</translation>
 <translation id="5616153642055197778">Saadaval on Bravei uus, turvalisem versioon.</translation>
+<translation id="5846727201643228411">Saate vaadata ja eemaldada huvipakkuvaid teemasid, mida saidid teile reklaamide näitamiseks kasutavad. Brave prognoosib teie huvisid teie hiljutise sirvimisajaloo põhjal.</translation>
 <translation id="6797402139308059782">Luba Braveil taustal töötada</translation>
 <translation id="5875673934455379806">Installi Brave uuesti</translation>
 <translation id="6888366668010117849">Saidid võivad talletada Braveisse teavet teie huvide kohta. Näiteks kui külastate saiti, et osta maratoni jooksmiseks jalatseid, võib sait määratleda teie huviks maratonijooksu. Kui külastate hiljem jooksule registreerumiseks muud saiti, võib see sait näidata teile teie huvide alusel jooksujalatsite reklaami.</translation>
@@ -32,6 +33,7 @@
 <translation id="2018879682492276940">Installimine ebaõnnestus. Proovige uuesti.</translation>
 <translation id="831418749472885028">Kui soovite kontrollida, kas teie muud paroolid on andmetega seotud rikkumiste ja muude turvaprobleemide eest kaitstud, <ph name="BEGIN_LINK"/>logige Bravei sisse<ph name="END_LINK"/>.</translation>
 <translation id="5499149312981370855">Valige, kas Brave'i teenustes rohkem isikupärastatud kasutuskogemuse saamiseks kaasata Bravei ajalugu</translation>
+<translation id="849607431499549468">Teave selle kohta, kuidas Brave oma juursertifikaate haldab</translation>
 <translation id="142389341645668510">Bravei kohandamine</translation>
 <translation id="2174917724755363426">Installimine ei ole lõpetatud. Kas soovite kindlasti tühistada?</translation>
 <translation id="8745514854244955877">Brave – võrku sisselogimine – <ph name="PAGE_TITLE"/></translation>
@@ -92,6 +94,7 @@
 <translation id="5853262807109651878">See kustutab seadmest <ph name="ITEMS_COUNT"/> üksust. Hiljem oma andmete toomiseks logige Bravei sisse kasutajana <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">Bravei profiilide vahel vahetamiseks vajutage klahve <ph name="SHORTCUT"/></translation>
 <translation id="8703492925273919597">Sulgege kõik Bravei aknad ja proovige uuesti.</translation>
+<translation id="5350485513372498152">Brave'i assistent Braveis saab veebisaitidel teie eest toiminguid teha</translation>
 <translation id="4061445349373849749">Teie privaatsuse kaitsmiseks kustutame automaatselt teie huvid, mis on vanemad kui 4 nädalat. Kui jätkate sirvimist, võib huvi uuesti loendis ilmuda. Võite ka eemaldada huvid, mida te ei soovi lasta Braveil arvesse võtta.</translation>
 <translation id="691208314680168371">Teie sirvimisajalugu, selles seadmes Braveiga külastatud saitide andmed.</translation>
 <translation id="1384923383737428730">Teie arvutis on kahjulik tarkvara. Brave saab selle eemaldada, taastada teie seaded ja keelata laiendused, et brauser töötaks jälle normaalselt.</translation>
@@ -257,7 +260,6 @@ On võimalik, et mõni funktsioon ei ole saadaval. Määrake muu profiilikataloo
 <translation id="5101812148953915496">Külastatud saidid jätavad teie teabe meelde, kuni Bravei sulgete</translation>
 <translation id="5516268345616100622">Tegumihaldur – Brave</translation>
 <translation id="713191641919118540">Teie huvid Bravei prognooside kohaselt</translation>
-<translation id="2777705643687998385">Brave blokeeris selle faili, kuna see on krüpteeritud. Paluge omanikul see dekrüpteerida</translation>
 <translation id="9068395155143628872">Reklaamide mõõtmine võimaldab külastatavatel saitidel paluda Braveilt teavet, mis aitab saidil oma reklaamide toimivust mõõta. Reklaamide mõõtmine piirab saitidevahelist jälgimist, edastades saitide vahel võimalikult vähe teavet.</translation>
 <translation id="1864557848095568223">Bravei värskendamine</translation>
 <translation id="3403365884036456766">Teie eelistuste fail on rikutud või kehtetu.
@@ -347,6 +349,7 @@ Brave ei saa teie seadeid taastada.</translation>
 <translation id="7902365066753170041">Taaskäivitage &amp;Bravei värskendamiseks</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Brave ei pruugi õigesti töötada, kuna seda ei toetata enam Windows XP-s ega Windows Vistas</translation>
+<translation id="8180288330711585962">Bravei hallatavad sertifikaadid</translation>
 <translation id="1611678871603620428">Bravei tulevaste värskenduste saamiseks on teil vaja operatsioonisüsteemi macOS 10.13 või uuemat versiooni. See arvuti kasutab operatsioonisüsteemi OS X 10.11.</translation>
 <translation id="4484434718272972655">Kes kasutab Bravei?</translation>
 <translation id="7173394303099002355">Hankige Bravei parimad turbefunktsioonid</translation>

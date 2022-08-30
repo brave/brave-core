@@ -264,6 +264,7 @@
       </message>
       <message name="IDS_BRAVE_NEW_TAB_SOLID_COLOR" desc="Solid background colors title">Solid colors</message>
       <message name="IDS_BRAVE_NEW_TAB_GRADIENT_COLOR" desc="Gradient background colors title">Gradients</message>
+      <message name="IDS_BRAVE_NEW_TAB_REFRESH_BACKGROUND_ON_NEW_TAB" desc="Label for random toggle button">Refresh on every new tab</message>
 
       <message name="IDS_BRAVE_TALK_PROMPT_TITLE" desc="Title for prompt about Brave Talk">
         You can start a private call in Brave.

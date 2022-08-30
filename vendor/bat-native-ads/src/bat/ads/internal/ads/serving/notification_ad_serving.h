@@ -59,7 +59,7 @@ class Serving final : public PrefManagerObserver {
 
   void MaybeServeAdAtNextRegularInterval();
   void RetryServingAdAtNextInterval();
-  base::Time MaybeServeAdAfter(const base::TimeDelta delay);
+  base::Time MaybeServeAdAfter(base::TimeDelta delay);
 
   void ServeAd(const NotificationAdInfo& ad);
   void FailedToServeAd();

@@ -72,7 +72,7 @@ class ADS_EXPORT Ads {
   // occurred on the way to the current page. The current page is the last one
   // in the list (so even when there's no redirect, there should be one entry in
   // the list). |html| containing the page content as HTML.
-  virtual void OnHtmlLoaded(const int32_t tab_id,
+  virtual void OnHtmlLoaded(int32_t tab_id,
                             const std::vector<GURL>& redirect_chain,
                             const std::string& html) = 0;
 
@@ -81,7 +81,7 @@ class ADS_EXPORT Ads {
   // occurred on the way to the current page. The current page is the last one
   // in the list (so even when there's no redirect, there should be one entry in
   // the list). |text| containing the page content as text.
-  virtual void OnTextLoaded(const int32_t tab_id,
+  virtual void OnTextLoaded(int32_t tab_id,
                             const std::vector<GURL>& redirect_chain,
                             const std::string& text) = 0;
 
@@ -94,13 +94,12 @@ class ADS_EXPORT Ads {
   // seconds that the user was idle. |was_locked| should be |true| if the screen
   // was locked, otherwise |false|. NOTE: This should not be called on mobile
   // devices.
-  virtual void OnUnIdle(const base::TimeDelta idle_time,
-                        const bool was_locked) = 0;
+  virtual void OnUnIdle(base::TimeDelta idle_time, bool was_locked) = 0;
 
   // Called when a page navigation was initiated by a user gesture.
   // |page_transition_type| containing the page transition type, see enums for
   // |PageTransitionType|.
-  virtual void OnUserGesture(const int32_t page_transition_type) = 0;
+  virtual void OnUserGesture(int32_t page_transition_type) = 0;
 
   // Called when the browser did enter the foreground.
   virtual void OnBrowserDidEnterForeground() = 0;
@@ -110,11 +109,11 @@ class ADS_EXPORT Ads {
 
   // Called when media starts playing on a browser tab for the specified
   // |tab_id|.
-  virtual void OnMediaPlaying(const int32_t tab_id) = 0;
+  virtual void OnMediaPlaying(int32_t tab_id) = 0;
 
   // Called when media stops playing on a browser tab for the specified
   // |tab_id|.
-  virtual void OnMediaStopped(const int32_t tab_id) = 0;
+  virtual void OnMediaStopped(int32_t tab_id) = 0;
 
   // Called when a browser tab is updated with the specified |redirect_chain|
   // containing a list of redirect URLs that occurred on the way to the current
@@ -124,14 +123,14 @@ class ADS_EXPORT Ads {
   // |false|. |is_browser_active| is set to |true| if the browser window is
   // active otherwise |false|. |is_incognito| is set to |true| if the tab is
   // incognito otherwise |false|.
-  virtual void OnTabUpdated(const int32_t tab_id,
+  virtual void OnTabUpdated(int32_t tab_id,
                             const std::vector<GURL>& redirect_chain,
-                            const bool is_active,
-                            const bool is_browser_active,
-                            const bool is_incognito) = 0;
+                            bool is_active,
+                            bool is_browser_active,
+                            bool is_incognito) = 0;
 
   // Called when a browser tab with the specified |tab_id| was closed.
-  virtual void OnTabClosed(const int32_t tab_id) = 0;
+  virtual void OnTabClosed(int32_t tab_id) = 0;
 
   // Called when the user's wallet has been updated.
   virtual void OnWalletUpdated(const std::string& payment_id,
@@ -159,7 +158,7 @@ class ADS_EXPORT Ads {
   virtual void TriggerInlineContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      const mojom::InlineContentAdEventType event_type) = 0;
+      mojom::InlineContentAdEventType event_type) = 0;
 
   // Should be called to serve a new tab page ad. The callback takes one
   // argument - |NewTabPageAdInfo| containing the info for the ad.
@@ -175,7 +174,7 @@ class ADS_EXPORT Ads {
   virtual void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      const mojom::NewTabPageAdEventType event_type) = 0;
+      mojom::NewTabPageAdEventType event_type) = 0;
 
   // Called to get the notification ad specified by |placement_id|. Returns
   // |NotificationAdInfo| containing the info of the ad.
@@ -190,7 +189,7 @@ class ADS_EXPORT Ads {
   // placement.
   virtual void TriggerNotificationAdEvent(
       const std::string& placement_id,
-      const mojom::NotificationAdEventType event_type) = 0;
+      mojom::NotificationAdEventType event_type) = 0;
 
   // Called when a user views or interacts with a promoted content ad to trigger
   // an |event_type| event for the specified |placement_id| and
@@ -201,27 +200,27 @@ class ADS_EXPORT Ads {
   virtual void TriggerPromotedContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      const mojom::PromotedContentAdEventType event_type) = 0;
+      mojom::PromotedContentAdEventType event_type) = 0;
 
   // Called when a user views or interacts with a search result ad to trigger an
   // |event_type| event for the ad specified in |ad_mojom|.
   virtual void TriggerSearchResultAdEvent(
       mojom::SearchResultAdInfoPtr ad_mojom,
-      const mojom::SearchResultAdEventType event_type) = 0;
+      mojom::SearchResultAdEventType event_type) = 0;
 
   // Called to purge orphaned served ad events. NOTE: You should call before
   // triggering new ad events for the specified |ad_type|.
   virtual void PurgeOrphanedAdEventsForType(
-      const mojom::AdType ad_type,
+      mojom::AdType ad_type,
       PurgeOrphanedAdEventsForTypeCallback callback) = 0;
 
   // Called to get history filtered by |filter_type| and sorted by |sort_type|
   // between |from_time| and |to_time| date range. Returns |HistoryInfo|
   // containing info of the obtained history.
-  virtual HistoryInfo GetHistory(const HistoryFilterType filter_type,
-                                 const HistorySortType sort_type,
-                                 const base::Time from_time,
-                                 const base::Time to_time) = 0;
+  virtual HistoryInfo GetHistory(HistoryFilterType filter_type,
+                                 HistorySortType sort_type,
+                                 base::Time from_time,
+                                 base::Time to_time) = 0;
 
   // Called to remove all history. The callback takes one argument - |bool| is
   // set to |true| if successful otherwise |false|.

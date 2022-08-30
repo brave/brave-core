@@ -201,7 +201,7 @@ RegisterStyleOverride(
 
 RegisterStyleOverride('iron-icon', html`
  <style>
-    :host svg {
+    :host-context(.cr-nav-menu-item) svg {
       fill: url(#selectedGradient);
     }
  </style>`)

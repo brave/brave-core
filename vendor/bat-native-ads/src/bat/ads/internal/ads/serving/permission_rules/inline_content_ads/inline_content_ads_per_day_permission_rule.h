@@ -20,6 +20,8 @@ namespace ads {
 class AdsPerDayPermissionRule final : public PermissionRuleInterface {
  public:
   AdsPerDayPermissionRule();
+  AdsPerDayPermissionRule(const AdsPerDayPermissionRule&) = delete;
+  AdsPerDayPermissionRule& operator=(const AdsPerDayPermissionRule&) = delete;
   ~AdsPerDayPermissionRule() override;
 
   bool ShouldAllow() override;
@@ -28,9 +30,6 @@ class AdsPerDayPermissionRule final : public PermissionRuleInterface {
 
  private:
   bool DoesRespectCap(const std::vector<base::Time>& history);
-
-  AdsPerDayPermissionRule(const AdsPerDayPermissionRule&) = delete;
-  AdsPerDayPermissionRule& operator=(const AdsPerDayPermissionRule&) = delete;
 
   std::string last_message_;
 };

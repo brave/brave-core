@@ -41,10 +41,6 @@ ledger::type::PublisherBannerPtr GetPublisherBannerFromMessage(
     banner->logo = "chrome://rewards-image/" + banner_details.logo_url();
   }
 
-  for (const auto& amount : banner_details.donation_amounts()) {
-    banner->amounts.push_back(amount);
-  }
-
   if (banner_details.has_social_links()) {
     auto& links = banner_details.social_links();
     if (!links.youtube().empty()) {

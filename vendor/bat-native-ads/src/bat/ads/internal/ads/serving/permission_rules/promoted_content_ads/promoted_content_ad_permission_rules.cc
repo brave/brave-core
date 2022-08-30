@@ -13,7 +13,7 @@
 namespace ads {
 namespace promoted_content_ads {
 
-PermissionRules::PermissionRules() : PermissionRulesBase() {}
+PermissionRules::PermissionRules() = default;
 
 PermissionRules::~PermissionRules() = default;
 

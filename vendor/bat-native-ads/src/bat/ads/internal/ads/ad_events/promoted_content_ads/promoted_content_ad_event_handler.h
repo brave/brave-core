@@ -30,28 +30,27 @@ class EventHandler final : public EventHandlerObserver {
 
   void FireEvent(const std::string& placement_id,
                  const std::string& creative_instance_id,
-                 const mojom::PromotedContentAdEventType event_type);
+                 mojom::PromotedContentAdEventType event_type);
 
  private:
   void FireEvent(const PromotedContentAdInfo& ad,
                  const std::string& placement_id,
                  const std::string& creative_instance_id,
-                 const mojom::PromotedContentAdEventType event_type);
-  void FailedToFireEvent(
-      const std::string& placement_id,
-      const std::string& creative_instance_id,
-      const mojom::PromotedContentAdEventType event_type) const;
+                 mojom::PromotedContentAdEventType event_type);
+  void FailedToFireEvent(const std::string& placement_id,
+                         const std::string& creative_instance_id,
+                         mojom::PromotedContentAdEventType event_type) const;
 
   void NotifyPromotedContentAdEvent(
       const PromotedContentAdInfo& ad,
-      const mojom::PromotedContentAdEventType event_type) const;
+      mojom::PromotedContentAdEventType event_type) const;
   void NotifyPromotedContentAdServed(const PromotedContentAdInfo& ad) const;
   void NotifyPromotedContentAdViewed(const PromotedContentAdInfo& ad) const;
   void NotifyPromotedContentAdClicked(const PromotedContentAdInfo& ad) const;
   void NotifyPromotedContentAdEventFailed(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      const mojom::PromotedContentAdEventType event_type) const;
+      mojom::PromotedContentAdEventType event_type) const;
 
   base::ObserverList<EventHandlerObserver> observers_;
 };

@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/flags/environment/environment_command_line_switch_parser_util.h"
-
 #include <string>
 
 #include "base/strings/stringprintf.h"
@@ -27,16 +25,16 @@ constexpr char kRewardsSwitch[] = "rewards";
 struct ParamInfo final {
   CommandLineSwitchInfo command_line_switch;
   EnvironmentType expected_environment_type;
-} kTests[] = {{/* command_line_switch */ {kRewardsSwitch, "staging=true"},
-               /* expected_environment_type */ EnvironmentType::kStaging},
-              {/* command_line_switch */ {kRewardsSwitch, "staging=1"},
-               /* expected_environment_type */ EnvironmentType::kStaging},
-              {/* command_line_switch */ {kRewardsSwitch, "staging=false"},
-               /* expected_environment_type */ EnvironmentType::kProduction},
-              {/* command_line_switch */ {kRewardsSwitch, "staging=foobar"},
-               /* expected_environment_type */ EnvironmentType::kProduction},
-              {/* command_line_switch */ {},
-               /* expected_environment_type */ kDefaultEnvironmentType}};
+} kTests[] = {{/*command_line_switch*/ {kRewardsSwitch, "staging=true"},
+               /*expected_environment_type*/ EnvironmentType::kStaging},
+              {/*command_line_switch*/ {kRewardsSwitch, "staging=1"},
+               /*expected_environment_type*/ EnvironmentType::kStaging},
+              {/*command_line_switch*/ {kRewardsSwitch, "staging=false"},
+               /*expected_environment_type*/ EnvironmentType::kProduction},
+              {/*command_line_switch*/ {kRewardsSwitch, "staging=foobar"},
+               /*expected_environment_type*/ EnvironmentType::kProduction},
+              {/*command_line_switch*/ {},
+               /*expected_environment_type*/ kDefaultEnvironmentType}};
 
 }  // namespace
 

@@ -10,21 +10,21 @@
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate_mock.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/account/wallet/wallet_unittest_util.h"
-#include "bat/ads/internal/base/net/http/http_status_code.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
 #include "bat/ads/pref_names.h"
+#include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
+
+namespace ads {
 
 using ::testing::_;
 using ::testing::InSequence;
 using ::testing::NiceMock;
-
-namespace ads {
 
 class BatAdsRedeemUnblindedPaymentTokensTest : public UnitTestBase {
  protected:

@@ -286,19 +286,8 @@ public class Utils {
         });
     }
 
-    public static String[] makeNetworksList(Activity activity, NetworkInfo[] allNetworks) {
-        List<String> categories = new ArrayList<String>();
-        for (NetworkInfo network : allNetworks) {
-            // Disables localhost on Release builds
-            if ((network.chainId.equals(BraveWalletConstants.LOCALHOST_CHAIN_ID)
-                        && 0
-                                != (activity.getApplicationInfo().flags
-                                        & ApplicationInfo.FLAG_DEBUGGABLE))
-                    || !network.chainId.equals(BraveWalletConstants.LOCALHOST_CHAIN_ID))
-                categories.add(network.chainName);
-        }
-
-        return categories.toArray(new String[0]);
+    public static boolean isDebuggable(Activity activity) {
+        return 0 != (activity.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE);
     }
 
     public static String[] makeNetworksAbbrevList(Activity activity, NetworkInfo[] allNetworks) {
@@ -341,22 +330,6 @@ public class Utils {
 
     public static String getNetworkShortText(NetworkInfo network) {
         return getShortNameOfNetwork(network.chainName);
-    }
-
-    public static String getBuyUrlForTestChain(String chainId) {
-        switch (chainId) {
-            case BraveWalletConstants.RINKEBY_CHAIN_ID:
-                return "https://www.rinkeby.io/#stats";
-            case BraveWalletConstants.ROPSTEN_CHAIN_ID:
-                return "https://faucet.ropsten.be/";
-            case BraveWalletConstants.GOERLI_CHAIN_ID:
-                return "https://goerli-faucet.slock.it/";
-            case BraveWalletConstants.KOVAN_CHAIN_ID:
-                return "https://github.com/kovan-testnet/faucet";
-            default:
-                // Unavailable for MAINNET_CHAIN_ID and LOCALHOST_CHAIN_ID
-                return "";
-        }
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -1330,15 +1303,15 @@ public class Utils {
      * @param stringRes       The id of resource string
      * @param onClickListener The callback when clickable substring is clicked.
      */
-    public static Spannable createSpanForSurroundedPhrase(
+    public static SpannableString createSpanForSurroundedPhrase(
             Context context, @StringRes int stringRes, View.OnClickListener onClickListener) {
         String htmlString =
                 String.format(context.getResources().getString(stringRes), "<a href=\"\">", "</a>");
-        Spannable spannable = new SpannableString(AndroidUtils.formatHTML(htmlString));
+        SpannableString spannable = new SpannableString(AndroidUtils.formatHTML(htmlString));
         URLSpan[] spans = spannable.getSpans(0, spannable.length(), URLSpan.class);
         for (URLSpan urlSpan : spans) {
             NoUnderlineClickableSpan linkSpan = new NoUnderlineClickableSpan(
-                    context, (view) -> { onClickListener.onClick(view); });
+                    context, R.color.brave_link, (view) -> { onClickListener.onClick(view); });
             int spanStart = spannable.getSpanStart(urlSpan);
             int spanEnd = spannable.getSpanEnd(urlSpan);
             spannable.setSpan(linkSpan, spanStart, spanEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -1644,10 +1617,6 @@ public class Utils {
     public static boolean allowBuyAndSwap(String chainId) {
         switch (chainId) {
             case BraveWalletConstants.MAINNET_CHAIN_ID:
-            case BraveWalletConstants.RINKEBY_CHAIN_ID:
-            case BraveWalletConstants.ROPSTEN_CHAIN_ID:
-            case BraveWalletConstants.GOERLI_CHAIN_ID:
-            case BraveWalletConstants.KOVAN_CHAIN_ID:
                 return true;
             default:
                 break;

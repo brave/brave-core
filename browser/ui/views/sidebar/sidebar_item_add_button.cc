@@ -5,15 +5,21 @@
 
 #include "brave/browser/ui/views/sidebar/sidebar_item_add_button.h"
 
+#include <memory>
+#include <utility>
+
 #include "base/bind.h"
 #include "base/time/time.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/sidebar/sidebar_add_item_bubble_delegate_view.h"
+#include "brave/components/l10n/common/locale_util.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "ui/views/controls/button/menu_button_controller.h"
 
 SidebarItemAddButton::SidebarItemAddButton(
     BraveBrowser* browser,
@@ -25,8 +31,16 @@ SidebarItemAddButton::SidebarItemAddButton(
       AddEnabledChangedCallback(base::BindRepeating(
           &SidebarItemAddButton::UpdateButtonImages, base::Unretained(this)));
 
-  SetCallback(base::BindRepeating(&SidebarItemAddButton::OnButtonPressed,
-                                  base::Unretained(this)));
+  // The MenuButtonController makes sure the bubble closes when clicked if the
+  // bubble is already open.
+  auto menu_button_controller = std::make_unique<views::MenuButtonController>(
+      this,
+      base::BindRepeating(&SidebarItemAddButton::OnButtonPressed,
+                          base::Unretained(this)),
+      std::make_unique<views::Button::DefaultButtonControllerDelegate>(this));
+  SetButtonController(std::move(menu_button_controller));
+  SetTooltipText(brave_l10n::GetLocalizedResourceUTF16String(
+      IDS_SIDEBAR_ADD_ITEM_BUTTON_TOOLTIP));
 }
 
 SidebarItemAddButton::~SidebarItemAddButton() = default;
@@ -35,29 +49,7 @@ void SidebarItemAddButton::OnButtonPressed() {
   if (IsBubbleVisible())
     return;
 
-  if (timer_.IsRunning())
-    timer_.Stop();
-
-  DoShowBubble();
-}
-
-void SidebarItemAddButton::OnMouseEntered(const ui::MouseEvent& event) {
-  SidebarButtonView::OnMouseEntered(event);
-  ShowBubbleWithDelay();
-}
-
-void SidebarItemAddButton::OnMouseExited(const ui::MouseEvent& event) {
-  SidebarButtonView::OnMouseExited(event);
-  // Don't show bubble if user goes outo from add item quickly.
-  timer_.Stop();
-}
-
-void SidebarItemAddButton::OnGestureEvent(ui::GestureEvent* event) {
-  SidebarButtonView::OnGestureEvent(event);
-  if (event->type() == ui::ET_GESTURE_TAP) {
-    // Show bubble immediately after tapping.
-    DoShowBubble();
-  }
+  ShowBubble();
 }
 
 void SidebarItemAddButton::OnThemeChanged() {
@@ -74,19 +66,7 @@ void SidebarItemAddButton::OnWidgetDestroying(views::Widget* widget) {
   observation_.Reset();
 }
 
-void SidebarItemAddButton::ShowBubbleWithDelay() {
-  if (IsBubbleVisible())
-    return;
-
-  if (timer_.IsRunning())
-    timer_.Stop();
-
-  constexpr int kBubbleLaunchDelayInMS = 200;
-  timer_.Start(FROM_HERE, base::Milliseconds(kBubbleLaunchDelayInMS), this,
-               &SidebarItemAddButton::DoShowBubble);
-}
-
-void SidebarItemAddButton::DoShowBubble() {
+void SidebarItemAddButton::ShowBubble() {
   auto* bubble = views::BubbleDialogDelegateView::CreateBubble(
       new SidebarAddItemBubbleDelegateView(browser_, this));
   observation_.Observe(bubble);

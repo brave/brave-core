@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/base/search_engine/search_engine_url_pattern_constants.h"
 
-#include "testing/gtest/include/gtest/gtest.h"
+#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

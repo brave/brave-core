@@ -121,7 +121,6 @@ export function RewardsSummary (props: Props) {
         </style.dataTable>
         <PendingRewardsView
           earningsLastMonth={props.earningsLastMonth}
-          earningsReceived={props.data.adEarnings > 0}
           nextPaymentDate={props.nextPaymentDate}
           providerPayoutStatus={props.providerPayoutStatus}
         />

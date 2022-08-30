@@ -7,9 +7,9 @@
 
 #include <vector>
 
-#include "bat/ads/internal/base/net/http/http_status_code.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
+#include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -24,7 +24,7 @@ class BatAdsCreativePromotedContentAdsDatabaseTableIntegrationTest
       default;
 
   void SetUp() override {
-    UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
+    UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
   }
 
   void SetUpMocks() override {
@@ -46,7 +46,7 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableIntegrationTest,
   database::table::CreativePromotedContentAds creative_promoted_content_ads;
   creative_promoted_content_ads.GetForSegments(
       segments,
-      [](const bool success, const SegmentList& segments,
+      [](const bool success, const SegmentList& /*segments*/,
          const CreativePromotedContentAdList& creative_promoted_content_ads) {
         EXPECT_TRUE(success);
         EXPECT_EQ(1UL, creative_promoted_content_ads.size());

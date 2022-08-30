@@ -14,7 +14,7 @@ class Time;
 
 namespace ads {
 
-base::Time TimeFromString(const std::string& time_string, const bool is_local);
+base::Time TimeFromString(const std::string& time_string, bool is_local);
 
 base::Time DistantPast();
 std::string DistantPastAsISO8601();

@@ -45,7 +45,7 @@ class RedeemUnblindedPaymentTokens final {
 
   void SuccessfullyRedeemedUnblindedPaymentTokens(
       const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens);
-  void FailedToRedeemUnblindedPaymentTokens(const bool should_retry);
+  void FailedToRedeemUnblindedPaymentTokens(bool should_retry);
 
   void ScheduleNextTokenRedemption();
 

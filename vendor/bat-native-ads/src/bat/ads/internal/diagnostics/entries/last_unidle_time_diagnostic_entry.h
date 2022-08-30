@@ -21,7 +21,7 @@ class LastUnIdleTimeDiagnosticEntry final : public DiagnosticEntryInterface {
       const LastUnIdleTimeDiagnosticEntry&) = delete;
   ~LastUnIdleTimeDiagnosticEntry() override;
 
-  void SetLastUnIdleTime(const base::Time time);
+  void SetLastUnIdleTime(base::Time time);
 
   // DiagnosticEntryInterface:
   DiagnosticEntryType GetType() const override;

@@ -182,7 +182,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             mIvArrowDown.setVisibility(View.VISIBLE);
 
             String countryCode = Locale.getDefault().getCountry();
-            if (countryCode.equals("IN")) {
+            if (countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)) {
                 mTvCard.setText(getResources().getString(R.string.privacy_onboarding_india));
                 mTvDefault.setText(getResources().getString(R.string.onboarding_set_default_india));
             }

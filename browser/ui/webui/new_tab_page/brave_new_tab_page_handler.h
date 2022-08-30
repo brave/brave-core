@@ -64,7 +64,8 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
   void DismissBraveSearchPromotion() override;
   void IsSearchPromotionEnabled(
       IsSearchPromotionEnabledCallback callback) override;
-  void UseColorBackground(const std::string& color) override;
+  void UseColorBackground(const std::string& color,
+                          bool use_random_color) override;
 
   // Observe NTPCustomBackgroundImagesService.
   void OnCustomBackgroundUpdated();

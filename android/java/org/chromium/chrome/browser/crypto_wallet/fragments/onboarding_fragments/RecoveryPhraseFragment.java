@@ -78,7 +78,6 @@ public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
                                 Utils.getRecoveryPhraseFromList(recoveryPhrases),
                                 R.string.text_has_been_copied, true);
                     });
-                    setupRecoveryPhraseRecyclerView(view);
                 });
             }
         });

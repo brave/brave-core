@@ -7,6 +7,7 @@ import * as WalletActions from '../common/actions/wallet_actions'
 import { Store } from './async/types'
 import { getBraveKeyring } from './api/hardware_keyrings'
 import { BraveWallet } from '../constants/types'
+import { objectEquals } from '../utils/object-utils'
 
 export class WalletApiProxy {
   walletHandler = new BraveWallet.WalletHandlerRemote()
@@ -88,6 +89,14 @@ export class WalletApiProxy {
   addBraveWalletServiceObserver (store: Store) {
     const braveWalletServiceObserverReceiver = new BraveWallet.BraveWalletServiceObserverReceiver({
       onActiveOriginChanged: function (originInfo) {
+        const state = store.getState().wallet
+
+        // check that the origin has changed from the stored values
+        // in any way before dispatching the update action
+        if (objectEquals(state.activeOrigin, originInfo)) {
+          return
+        }
+
         store.dispatch(WalletActions.activeOriginChanged(originInfo))
       },
       onDefaultEthereumWalletChanged: function (defaultWallet) {

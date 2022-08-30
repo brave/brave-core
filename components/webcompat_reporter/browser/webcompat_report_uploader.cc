@@ -41,12 +41,12 @@ void WebcompatReportUploader::SubmitReport(const GURL& report_url,
 
   url::Origin report_url_origin = url::Origin::Create(report_url);
 
-  base::Value post_data_obj(base::Value::Type::DICTIONARY);
-  post_data_obj.SetKey("url", base::Value(report_url.spec()));
-  post_data_obj.SetKey("domain", base::Value(report_url_origin.Serialize()));
-  post_data_obj.SetKey("additionalDetails", details.Clone());
-  post_data_obj.SetKey("contactInfo", contact.Clone());
-  post_data_obj.SetKey("api_key", base::Value(api_key));
+  base::Value::Dict post_data_obj;
+  post_data_obj.Set("url", base::Value(report_url.spec()));
+  post_data_obj.Set("domain", base::Value(report_url_origin.Serialize()));
+  post_data_obj.Set("additionalDetails", details.Clone());
+  post_data_obj.Set("contactInfo", contact.Clone());
+  post_data_obj.Set("api_key", base::Value(api_key));
 
   std::string post_data;
   base::JSONWriter::Write(post_data_obj, &post_data);

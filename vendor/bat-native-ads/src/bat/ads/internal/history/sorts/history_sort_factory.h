@@ -15,8 +15,7 @@ namespace ads {
 
 class HistorySortFactory final {
  public:
-  static std::unique_ptr<HistorySortInterface> Build(
-      const HistorySortType type);
+  static std::unique_ptr<HistorySortInterface> Build(HistorySortType type);
 };
 
 }  // namespace ads

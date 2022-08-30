@@ -27,7 +27,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest,
   BrowserManager::GetInstance()->OnBrowserDidResignActive();
   BrowserManager::GetInstance()->OnBrowserDidEnterBackground();
 
-  AdvanceClockToMidnight(/* is_local */ true);
+  AdvanceClockToMidnight(/*is_local*/ true);
 
   // Act
   {
@@ -79,7 +79,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest,
   BrowserManager::GetInstance()->OnBrowserDidBecomeActive();
   BrowserManager::GetInstance()->OnBrowserDidEnterForeground();
 
-  AdvanceClockToMidnight(/* is_local */ true);
+  AdvanceClockToMidnight(/*is_local*/ true);
 
   // Act
   {
@@ -130,7 +130,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForIOS) {
   BrowserManager::GetInstance()->OnBrowserDidBecomeActive();
   BrowserManager::GetInstance()->OnBrowserDidEnterForeground();
 
-  AdvanceClockToMidnight(/* is_local */ true);
+  AdvanceClockToMidnight(/*is_local*/ true);
 
   // Act
   {
@@ -160,7 +160,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForMacOS) {
   BrowserManager::GetInstance()->OnBrowserDidBecomeActive();
   BrowserManager::GetInstance()->OnBrowserDidEnterForeground();
 
-  AdvanceClockToMidnight(/* is_local */ true);
+  AdvanceClockToMidnight(/*is_local*/ true);
 
   // Act
   {
@@ -190,7 +190,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForWindows) {
   BrowserManager::GetInstance()->OnBrowserDidBecomeActive();
   BrowserManager::GetInstance()->OnBrowserDidEnterForeground();
 
-  AdvanceClockToMidnight(/* is_local */ true);
+  AdvanceClockToMidnight(/*is_local*/ true);
 
   // Act
   {
@@ -220,7 +220,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForLinux) {
   BrowserManager::GetInstance()->OnBrowserDidBecomeActive();
   BrowserManager::GetInstance()->OnBrowserDidEnterForeground();
 
-  AdvanceClockToMidnight(/* is_local */ true);
+  AdvanceClockToMidnight(/*is_local*/ true);
 
   // Act
   {

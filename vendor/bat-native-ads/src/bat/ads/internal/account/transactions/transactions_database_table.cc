@@ -77,7 +77,7 @@ Transactions::~Transactions() = default;
 void Transactions::Save(const TransactionList& transactions,
                         ResultCallback callback) {
   if (transactions.empty()) {
-    std::move(callback).Run(/* success */ true);
+    std::move(callback).Run(/*success*/ true);
     return;
   }
 
@@ -273,12 +273,12 @@ std::string Transactions::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(7, count).c_str());
 }
 
-void Transactions::OnGetTransactions(GetTransactionsCallback callback,
+void Transactions::OnGetTransactions(const GetTransactionsCallback& callback,
                                      mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get transactions");
-    callback(/* success */ false, {});
+    callback(/*success*/ false, {});
     return;
   }
 
@@ -289,7 +289,7 @@ void Transactions::OnGetTransactions(GetTransactionsCallback callback,
     transactions.push_back(info);
   }
 
-  callback(/* success */ true, transactions);
+  callback(/*success*/ true, transactions);
 }
 
 void Transactions::MigrateToV18(mojom::DBTransactionInfo* transaction) {

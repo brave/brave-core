@@ -16,7 +16,7 @@ struct HistoryItemInfo;
 
 class DateRangeHistoryFilter final : public HistoryFilterInterface {
  public:
-  DateRangeHistoryFilter(const base::Time from_time, const base::Time to_time);
+  DateRangeHistoryFilter(base::Time from_time, base::Time to_time);
   ~DateRangeHistoryFilter() override;
   DateRangeHistoryFilter(const DateRangeHistoryFilter&) = delete;
   DateRangeHistoryFilter& operator=(const DateRangeHistoryFilter&) = delete;

@@ -29,15 +29,15 @@ class EventHandler final : public EventHandlerObserver {
   void RemoveObserver(EventHandlerObserver* observer);
 
   void FireEvent(const std::string& placement_id,
-                 const mojom::NotificationAdEventType event_type);
+                 mojom::NotificationAdEventType event_type);
 
  private:
   void FailedToFireEvent(const std::string& placement_id,
-                         const mojom::NotificationAdEventType event_type) const;
+                         mojom::NotificationAdEventType event_type) const;
 
   void NotifyNotificationAdEvent(
       const NotificationAdInfo& ad,
-      const mojom::NotificationAdEventType event_type) const;
+      mojom::NotificationAdEventType event_type) const;
   void NotifyNotificationAdServed(const NotificationAdInfo& ad) const;
   void NotifyNotificationAdViewed(const NotificationAdInfo& ad) const;
   void NotifyNotificationAdClicked(const NotificationAdInfo& ad) const;
@@ -45,7 +45,7 @@ class EventHandler final : public EventHandlerObserver {
   void NotifyNotificationAdTimedOut(const NotificationAdInfo& ad) const;
   void NotifyNotificationAdEventFailed(
       const std::string& placement_id,
-      const mojom::NotificationAdEventType event_type) const;
+      mojom::NotificationAdEventType event_type) const;
 
   base::ObserverList<EventHandlerObserver> observers_;
 };

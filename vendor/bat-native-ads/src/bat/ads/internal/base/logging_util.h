@@ -12,8 +12,8 @@
 namespace ads {
 
 void Log(const char* file,
-         const int line,
-         const int verbose_level,
+         int line,
+         int verbose_level,
          const std::string& message);
 
 // |verbose_level| is an arbitrary integer value (higher numbers should be used
@@ -43,7 +43,7 @@ void Log(const char* file,
 
 #define BLOG(verbose_level, stream)           \
   ads::Log(__FILE__, __LINE__, verbose_level, \
-           (std::ostringstream() << stream).str());
+           (std::ostringstream() << stream).str());  // NOLINT
 
 // You can also do conditional verbose logging when some extra computation and
 // preparation for logs is not needed:

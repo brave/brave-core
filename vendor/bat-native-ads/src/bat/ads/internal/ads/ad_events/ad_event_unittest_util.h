@@ -23,12 +23,12 @@ struct CreativeAdInfo;
 AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
                          const AdType& ad_type,
                          const ConfirmationType& confirmation_type,
-                         const base::Time created_at);
+                         base::Time created_at);
 
 AdEventInfo BuildAdEvent(const AdInfo& ad,
                          const AdType& ad_type,
                          const ConfirmationType& confirmation_type,
-                         const base::Time created_at);
+                         base::Time created_at);
 
 AdEventInfo BuildAdEvent(const std::string& placement_id,
                          const std::string& creative_set_id,
@@ -40,10 +40,10 @@ void RecordAdEvent(const AdType& type,
                    const ConfirmationType& confirmation_type);
 void RecordAdEvents(const AdType& type,
                     const ConfirmationType& confirmation_type,
-                    const int count);
+                    int count);
 
 void FireAdEvent(const AdEventInfo& ad_event);
-void FireAdEvents(const AdEventInfo& ad_event, const int count);
+void FireAdEvents(const AdEventInfo& ad_event, int count);
 
 int GetAdEventCount(const AdType& ad_type,
                     const ConfirmationType& confirmation_type);

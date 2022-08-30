@@ -33,16 +33,14 @@ class AdEvents final : public TableInterface {
 
   void GetAll(GetAdEventsCallback callback);
 
-  void GetForType(const mojom::AdType ad_type, GetAdEventsCallback callback);
+  void GetForType(mojom::AdType ad_type, GetAdEventsCallback callback);
 
   void PurgeExpired(ResultCallback callback) const;
-  void PurgeOrphaned(const mojom::AdType ad_type,
-                     ResultCallback callback) const;
+  void PurgeOrphaned(mojom::AdType ad_type, ResultCallback callback) const;
 
   std::string GetTableName() const override;
 
-  void Migrate(mojom::DBTransactionInfo* transaction,
-               const int to_version) override;
+  void Migrate(mojom::DBTransactionInfo* transaction, int to_version) override;
 
  private:
   void RunTransaction(const std::string& query, GetAdEventsCallback callback);

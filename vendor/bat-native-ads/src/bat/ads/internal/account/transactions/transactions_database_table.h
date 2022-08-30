@@ -35,8 +35,8 @@ class Transactions final : public TableInterface {
   void Save(const TransactionList& transactions, ResultCallback callback);
 
   void GetAll(GetTransactionsCallback callback);
-  void GetForDateRange(const base::Time from_time,
-                       const base::Time to_time,
+  void GetForDateRange(base::Time from_time,
+                       base::Time to_time,
                        GetTransactionsCallback callback);
 
   void Update(
@@ -47,8 +47,7 @@ class Transactions final : public TableInterface {
 
   std::string GetTableName() const override;
 
-  void Migrate(mojom::DBTransactionInfo* transaction,
-               const int to_version) override;
+  void Migrate(mojom::DBTransactionInfo* transaction, int to_version) override;
 
  private:
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
@@ -58,7 +57,7 @@ class Transactions final : public TableInterface {
       mojom::DBCommandInfo* command,
       const TransactionList& transactions) const;
 
-  void OnGetTransactions(GetTransactionsCallback callback,
+  void OnGetTransactions(const GetTransactionsCallback& callback,
                          mojom::DBCommandResponseInfoPtr response);
 
   void MigrateToV18(mojom::DBTransactionInfo* transaction);

@@ -24,11 +24,11 @@ absl::optional<IssuersInfo> GetIssuers();
 bool HasIssuers();
 bool HasIssuersChanged(const IssuersInfo& issuers);
 
-bool IssuerExistsForType(const IssuerType issuer_type);
+bool IssuerExistsForType(IssuerType issuer_type);
 absl::optional<IssuerInfo> GetIssuerForType(const IssuersInfo& issuers,
-                                            const IssuerType issuer_type);
+                                            IssuerType issuer_type);
 
-bool PublicKeyExistsForIssuerType(const IssuerType issuer_type,
+bool PublicKeyExistsForIssuerType(IssuerType issuer_type,
                                   const std::string& public_key);
 
 }  // namespace ads

@@ -32,8 +32,9 @@ AdPredictorWeightList ToAdPredictorWeights(const std::string& param_value) {
     weights.push_back(value_as_double);
   }
 
-  const double sum = std::accumulate(weights.cbegin(), weights.cend(),
-                                     decltype(weights)::value_type(0));
+  const double sum =
+      std::accumulate(weights.cbegin(), weights.cend(),
+                      static_cast<decltype(weights)::value_type>(0));
   if (DoubleIsLessEqual(sum, 0)) {
     return {};
   }

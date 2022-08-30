@@ -10,13 +10,12 @@
 #include <string>
 
 #include "base/values.h"
+#include "bat/ads/inline_content_ad_info.h"
+#include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
-
-struct InlineContentAdInfo;
-struct NewTabPageAdInfo;
 
 using InitializeCallback = std::function<void(const bool)>;
 using ShutdownCallback = std::function<void(const bool)>;

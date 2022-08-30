@@ -25,6 +25,7 @@
 <translation id="4150684676757176434">አውቶለይ መከላከሉን ይቀጥል</translation>
 <translation id="8988939298652262600">Brave የዚህን ቅጥያ ደህንነትና አስተማማኝነት አያጣራም። ይህን ቅጥያ መጫን ያለብዎ ገንቢውን የሚያምኑት ከሆነ ብቻ ነው።</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") በብሬቭ ውስጥ አይፈቀድም፡፡</translation>
+<translation id="9005883459983913482">የቶር መስኮቶች</translation>
 <translation id="7965178729203412357">አዲስ ቶር ተለይቷል</translation>
 <translation id="6924909138923993900">ለዚህ ጣቢያ አዲስ የ ቶር ግንኙነት</translation>
 <translation id="4734294903299549345">የግል መስኮት ከቶር ጋር ይዝጉ</translation>
@@ -38,6 +39,9 @@
 <translation id="1725356094208762656">ቶር ውስጥ ይክፈቱ</translation>
 <translation id="3396347744975515056">ብራቭ ማመሳሰል የተሻሻለ እና ማዋቀር ይፈልጋል</translation>
 <translation id="7473245612074035141">ማዋቀር ይጀምሩ</translation>
+<translation id="3975865347033939965">የማመሳሰል አገልግሎት ሊጀመር አልቻለም፣ Brave Sync እየሰራ አይደለም።</translation>
+<translation id="4450893287417543264">እንደገና አታሳይ</translation>
+<translation id="4595286989346610620">ዝርዝሮችን ይፈትሹ</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">ፋይሎችን ከ IPFS ያትሙ እና ሰርስሮ ያውጡ</translation>
 <translation id="7398397225367092613">.onion</translation>
@@ -147,7 +151,7 @@
 <translation id="8490082094734500369">የአንባቢ ሁነታን ያጥፉ</translation>
 <translation id="2036503787657622020">የአንባቢ ሁነታን ያብሩ</translation>
 <translation id="5226458915125328323">የፍጥነት አንባቢን ቅንብሮች</translation>
-<translation id="1621606336827646158">የመጀመሪያውን ገጽ አሳይ</translation>
+<translation id="8591883849678260674">ዋናውን ይመልከቱ</translation>
 <translation id="6284218950354553099">የእለታዊ ፒንጅ ኣጠቃቀም በራስ-ሰር ወደ Brave  ላክ</translation>
 <translation id="5288333155754958121">ይህ ስም አልባ፣ የግል ፒንጅ፣ Brave ንቁ ተጠቃሚዎችን እንዲገምት ያስችለዋል።</translation>
 <translation id="1872784258300710671">Brave የተወሰኑ ባህርያትን አጠቃላይ አጠቃቀም ለመገመት ሙሉ በሙሉ ግላዊ የምርት ትንተናዎችን ይጠቀማል።</translation>
@@ -214,6 +218,10 @@
 <translation id="8721331068159819483">ከ macOS ጋር ተመሳሳይ</translation>
 <translation id="1692470335103807198">ተጨማሪ ገጽታዎችን ያግኙ</translation>
 <translation id="2906510232093002459">የ Brave ነባሪ ምስሎች</translation>
+<translation id="3367129510799209147">የትር ማንዣበብ ሁናቴ</translation>
+<translation id="2113977810652731515">ካርድ</translation>
+<translation id="4096343215397759358">ካርድ ከቅድመ እይታ ጋር</translation>
+<translation id="5297085818601043899">አጭር መረጃ</translation>
 <translation id="2396127686705429331">የዕልባቶች አዝራር አሳይ</translation>
 <translation id="2814998458708016836">ሰፊ የአድራሻ አሞሌን ተጠቀም</translation>
 <translation id="4109670531935487117">በአድራሻ ማስገቢያው ላይ የራስ-አጠናቅቅ ጥቆማዎችን አሳይ</translation>
@@ -241,7 +249,7 @@
 <translation id="6388201778088078932">ቅንብሮች።</translation>
 <translation id="4800195524776354947">የታገዱ ንጥሎችን በጋሻዎች አዶ ላይ አሳይ</translation>
 <translation id="5510493033031835532">የ AMP ገጾችን በራስ ሰር አዙር</translation>
-<translation id="5197219128592971597">ሁልጊዜ ኦሪጅናል (AMP ያልሆኑ) ገጽ URLs ን ይጎብኙ፣ ከ Google Accelerated Mobile ገጽ ስሪቶች ይልቅ</translation>
+<translation id="7630031867325944356">ከAMP እና ተመሳሳይ ስሪቶች ይልቅ የአሳታሚ ገጽ ዩአርኤሎችን ይምረጡ።</translation>
 <translation id="7607166182943595829">በቋንቋ ምርጫዎቼ መሰረት ጣቢያዎች የእኔን የጣት አሻራ እንዳይሰሩ አግድ</translation>
 <translation id="3497934980362703405">ይህን ቅንብር ማንቃት ድረ-ገጾች ምን ያህል ስለቋንቋ ምርጫዎችዎ መማር እንደሚችሉ ይቀንሳል።</translation>
 <translation id="2133317862976486547">መከታተያ &amp; ማስታወቂያዎች እየታገዱ ናቸው</translation>
@@ -288,6 +296,7 @@
 <translation id="1758947220824279023">የሚታየው ከፍተኛው የማስታወቂያ ብዛት</translation>
 <translation id="2356652719351432565">የአከባቢ ማስታወቂያ ተገቢነት</translation>
 <translation id="2196950072404588793">ይህ Brave በተለይ ለአከባቢዎ የታሰቡ ማስታወቂያዎችን እንዲያሳይ ያስችለዋል። <ph name="BEGIN_LINK"/>የበለጠ ይወቁ<ph name="END_LINK"/></translation>
+<translation id="2433507940547922241">ገጽታ</translation>
 <translation id="6112368337882254910">የራስ-አስተዋፅዎ</translation>
 <translation id="9132509928968869844">ወርሀዊ የራስ-መዋጮ አልተሳካም</translation>
 <translation id="7286722244752781970">ከመጎብኘቶ በፊት ዝቅተኛው የገፅ ሰዓት</translation>
@@ -375,6 +384,7 @@
 <translation id="4400414577602898435">ማስጠንቀቂያ፦ ይህ የእርስዎን የBrave ውሂብ፣ የይለፍ ቃሎችዎን ጨምሮ እነዚህን የኮድ ቃላቶች ለፈጠረው መሳሪያ ያጋራል። እባክዎ እነዚህ የኮድ ቃላቶች እርስዎ በያዙት መሳሪያ የተፈጠሩ መሆናቸውን ደግመው ያረጋግጡ። 
 
 እርግጠኛ ነዎት ይህን ማድረግ ይፈልጋሉ?</translation>
+<translation id="7443185843787879670">Brave የስርዓተ ክወናህን ደህንነቱ የተጠበቀ ማከማቻ መድረስ አልቻለም። እንደ የይለፍ ቃሎች እና ኩኪዎች ያሉ መረጃዎችን ለመጠበቅ የሚያገለግለው ይህ ነው። የአሳሽዎን መገለጫ በመሳሪያዎች መካከል ለማገናኘት ለ Brave Sync እንዲሁ ያስፈልጋል። ይህ ማለት Brave Sync እየሰራ አይደለም ማለት ነው። ይህንን ችግር ለመፍታት፣ እባክዎን <ph name="BEGIN_LINK_SYNC_GUIDE"/>የBrave Sync መላ ፍለጋ መመሪያን ይመልከቱ<ph name="END_LINK_SYNC_GUIDE"/></translation>
 <translation id="6285118765755298263">ማውጫ ሌላ የፍለጋ ፕሮግራሞች</translation>
 <translation id="919715748352669592">የ OpenSearch ዝርዝርን የሚከተሉ ድር ጣቢያዎችን በራስ-ሰር ይጠቁማል።</translation>
 <translation id="842628013524824194">መደበኛ መስኮት - በአድራሻ ማስገቢያው ውስጥ ጥቅም ላይ የሚውል የፍለጋ ኤንጅን</translation>
@@ -387,6 +397,23 @@
 <translation id="5248318250177143470">የEthereum ስም አገልግሎት (ENS) የአፈታት ዘዴ</translation>
 <translation id="6241402707160226266">የግል መስኮት በ Tor</translation>
 <translation id="8762452230727230396">Tor የ IP አድራሻዎን ከሚጎበኟቸው ጣቢያዎች ይደብቃል።</translation>
+<translation id="2959986444009520721">ድልድዮችን ተጠቀም</translation>
+<translation id="6003484976430531384">ድልድዮች ቶር በተከለከሉበት ቦታ የቶር ኔትወርክን እንዲደርሱ ይረዱዎታል። እርስዎ እንዳሉበት ቦታ፣ አንዱ ድልድይ ከሌላው በተሻለ ሁኔታ ሊሠራ ይችላል።</translation>
+<translation id="7206799843254049470">የቶር ግንኙነት ቅንብሮች</translation>
+<translation id="3194502271166340944">ቶር ያላቸው የግል መስኮቶች እንዴት ከቶር ኔትወርክ ጋር እንደሚገናኙ ይቆጣጠራል</translation>
+<translation id="4859228830700205299">አብሮ የተሰራ ድልድይ ይምረጡ</translation>
+<translation id="3233137871426528317">ከ torproject.org ድልድይ ይጠይቁ</translation>
+<translation id="5701503934456421898">አዲስ ድልድይ ይጠይቁ...</translation>
+<translation id="8149806369020180959">ድልድይ ያቅርቡ</translation>
+<translation id="454073978993625597">የድልድይ መረጃን ከታመነ ምንጭ አስገባ።</translation>
+<translation id="4425607417590286548">ለውጦችን ተግብር</translation>
+<translation id="2128143836897950793">ድልድዮችን ለማግኘት 'አዲስ ድልድይ ጠይቅ…' የሚለው ላይ ጠቅ ያድርጉ</translation>
+<translation id="3314921753580327793">አድራሻ ይተይቡ: ፖርት (በአንድ መስመር አንድ)</translation>
+<translation id="3755189300481406891">ድልድይ ጠይቅ</translation>
+<translation id="6924425739431382319">BridgeDBን በማነጋገር ላይ። እባክዎን ይጠብቁ።</translation>
+<translation id="811745063252080651">ድልድይ ለመጠየቅ CAPTCHA ን ይፍቱ።</translation>
+<translation id="6936835573742749135">CAPTCHA መጠየቅ አልተቻለም። ቆይተው እንደገና ይሞክሩ።</translation>
+<translation id="2653659639078652383">አስገባ</translation>
 <translation id="1369311132025451972">.onion ጣቢያዎችን በራስ-ሰር አዛውር</translation>
 <translation id="2843777623071353503">Brave በሚገኝበት ጊዜ የድር ጣቢያውን ኦንዬን አገልግሎት ወይም በ Tor መስኮት ውስጥ .onion ዶሜንን ይከፍታል።</translation>
 <translation id="2896916411183256228">WebTorrent ን በመጠቀም በቀጥታ ቶረንቶችን ማሰሻ ላይ ያሳያል። ለቶረንት ፋይሎች እና ማግኔት ሊንኮች ድጋፍ ያደርጋል።</translation>
@@ -433,7 +460,6 @@
 <translation id="7059127752542505809">URL ያስገቡ</translation>
 <translation id="3047726704186619366">ኣይከን URLs</translation>
 <translation id="2487558607408469181">አሳሽ URLs ን አግድ</translation>
-<translation id="2653659639078652383">አስገባ</translation>
 <translation id="2156993118928861787">ልክ ያልሆነ አድራሻ</translation>
 <translation id="6301398959353668507">ይህ መስክ ባዶ ሊሆን አይችልም።</translation>
 <translation id="7504462451153306677">ልክ ያልሆነ ቅርጸት፣ የሰንሰለቱ መታወቂያ አወንታዊ ቁጥር ነው።</translation>

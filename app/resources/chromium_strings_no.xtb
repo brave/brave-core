@@ -11,14 +11,15 @@
 <translation id="8541922081612557424">Om Brave</translation>
 <translation id="1203500561924088507">Installasjonen er fullført. Start nettleseren på nytt før du tar i bruk <ph name="BUNDLE_NAME"/>.</translation>
 <translation id="4798342026247191171">Konfigurer den nye Brave-profilen din</translation>
+<translation id="6361779936989026201">Brave-assistenten i Brave</translation>
 <translation id="113959764510199339">Brave prøver å vise passord.</translation>
 <translation id="8132634101975074716">Du er logget på Brave.</translation>
 <translation id="5147525139567260139">Del en Brave-fane</translation>
 <translation id="1530633922026945685">Brave trenger tilgang til kameraet for å lage et 3D-kart av omgivelsene</translation>
-<translation id="473077451702478797">Brave har blokkert denne filen fordi den er for stor til at det kan kjøres en sikkerhetssjekk. Prøv på nytt med filer på opptil 50 MB</translation>
 <translation id="4449148723378534338">Gjennomgå viktige personvern- og sikkerhetskontroller i Brave</translation>
 <translation id="1640672724030957280">Laster ned …</translation>
 <translation id="5616153642055197778">En ny, sikrere versjon av Brave er tilgjengelig.</translation>
+<translation id="5846727201643228411">Du kan se og fjerne interesseemnene som nettsteder bruker for å vise deg annonser. Brave anslår interessene dine basert på den nylige nettleserloggen din.</translation>
 <translation id="6797402139308059782">La Brave kjøre i bakgrunnen</translation>
 <translation id="5875673934455379806">Installer Brave på nytt</translation>
 <translation id="6888366668010117849">Nettsteder kan lagre informasjon om interessene dine i Brave. Hvis du for eksempel besøker et nettsted for å kjøpe maratonsko, kan det hende nettstedet definerer interessen din som maratonløp. Hvis du senere besøker et annet nettsted for å melde deg på et løp, kan dette nettstedet vise deg en annonse for løpesko basert på interessene dine.</translation>
@@ -32,6 +33,7 @@
 <translation id="2018879682492276940">Installasjonen mislyktes. Prøv igjen.</translation>
 <translation id="831418749472885028">For å sjekke om de andre passordene dine er trygge mot databrudd og andre sikkerhetsproblemer, <ph name="BEGIN_LINK"/>logg på Brave<ph name="END_LINK"/>.</translation>
 <translation id="5499149312981370855">Velg om Brave-loggen skal inkluderes for å gi opplevelser i Brave-tjenester mer personlig preg</translation>
+<translation id="849607431499549468">Informasjon om hvordan Brave administrerer rotsertifikatene sine</translation>
 <translation id="142389341645668510">Tilpass Brave</translation>
 <translation id="2174917724755363426">Installasjonen er ikke fullført. Er du sikker på at du vil avbryte?</translation>
 <translation id="8745514854244955877">Brave – nettverkspålogging – <ph name="PAGE_TITLE"/></translation>
@@ -92,6 +94,7 @@
 <translation id="5853262807109651878">Dette sletter <ph name="ITEMS_COUNT"/> elementer fra denne enheten. For å hente dataene dine igjen senere må du logge på Brave som <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">Bruk <ph name="SHORTCUT"/> til å bytte mellom Brave-profiler</translation>
 <translation id="8703492925273919597">Lukk alle Brave-vinduer og prøv på nytt.</translation>
+<translation id="5350485513372498152">Brave-assistenten i Brave kan utføre handlinger for deg på ulike nettsteder</translation>
 <translation id="4061445349373849749">For å beskytte personvernet ditt sletter vi automatisk interessene dine som er eldre enn fire uker. Når du fortsetter å surfe, kan det hende at interesser havner på listen igjen. Alternativt kan du fjerne interesse du ikke vil at Brave skal vurdere.</translation>
 <translation id="691208314680168371">Nettleserloggen din, som er en logg over nettsteder du har besøkt med Brave på denne enheten.</translation>
 <translation id="1384923383737428730">Det finnes skadelig programvare på datamaskinen din. Brave kan fjerne den, gjenopprette innstillingene dine og deaktivere utvidelser for å få nettleseren til å fungere som normalt igjen.</translation>
@@ -257,7 +260,6 @@ Det er mulig at enkelte funksjoner ikke er tilgjengelige. Angi en annen profilka
 <translation id="5101812148953915496">Nettsteder du besøker, husker informasjonen din til du lukker Brave</translation>
 <translation id="5516268345616100622">Oppgavebehandling – Brave</translation>
 <translation id="713191641919118540">Interessene dine som Brave har anslått</translation>
-<translation id="2777705643687998385">Brave har blokkert denne filen fordi den er kryptert. Be eieren om å dekryptere den</translation>
 <translation id="9068395155143628872">Med annonsemålinger kan nettsteder du besøker, spørre Brave om informasjon som hjelper nettstedet å måle annonseresultatene sine. Annonsemålinger begrenser sporing på tvers av nettsteder ved å overføre så lite informasjon som mulig mellom nettsteder.</translation>
 <translation id="1864557848095568223">Oppdaterer Brave</translation>
 <translation id="3403365884036456766">Innstillingerfilen din er ødelagt eller ugyldig.
@@ -347,6 +349,7 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="7902365066753170041">Start på nytt for å oppdatere &amp;Brave</translation>
 <translation id="3350544518197210895">Brave (mDNS-Inn)</translation>
 <translation id="7977787072794666032">Brave fungerer kanskje ikke riktig fordi den ikke lenger støttes på Windows XP eller Windows Vista</translation>
+<translation id="8180288330711585962">Sertifikater administreres av Brave</translation>
 <translation id="1611678871603620428">For å få fremtidige Brave-oppdateringer må du ha macOS 10.13 eller nyere. Denne datamaskinen bruker OS X 10.11.</translation>
 <translation id="4484434718272972655">Hvem bruker Brave?</translation>
 <translation id="7173394303099002355">Få den sterkeste sikkerheten i Brave</translation>

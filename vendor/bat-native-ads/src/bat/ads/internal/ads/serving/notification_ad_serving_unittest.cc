@@ -7,7 +7,6 @@
 
 #include <memory>
 
-#include "bat/ads/internal/ads/serving/eligible_ads/eligible_ads_unittest_util.h"
 #include "bat/ads/internal/ads/serving/notification_ad_serving_observer.h"
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "bat/ads/internal/ads/serving/serving_features_unittest_util.h"
@@ -51,7 +50,7 @@ class BatAdsNotificationAdServingTest : public ServingObserver,
   }
 
   void OnOpportunityAroseToServeNotificationAd(
-      const SegmentList& segments) override {
+      const SegmentList& /*segments*/) override {
     had_opportunuity_ = true;
   }
 

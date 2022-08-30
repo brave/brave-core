@@ -52,19 +52,21 @@ import {
   WarningWrapper,
   PrivateKeyBubble,
   ButtonWrapper,
-  ErrorText,
-  InputLabelText
+  ErrorText
 } from './account-settings-modal.style'
+import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
 
 interface Props {
   onClose: () => void
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   onChangeTab: (id: AccountSettingsNavTypes) => void
-  onRemoveAccount: (address: string, hardware: boolean, coin: BraveWallet.CoinType) => void
-  onViewPrivateKey: (address: string, isDefault: boolean, coin: BraveWallet.CoinType) => void
-  onDoneViewingPrivateKey: () => void
+  onRemoveAccount: (
+    address: string,
+    hardware: boolean,
+    coin: BraveWallet.CoinType,
+    password: string
+  ) => void
   onToggleNav: () => void
-  privateKey: string
   hideNav: boolean
   tab: AccountSettingsNavTypes
   title: string
@@ -76,23 +78,21 @@ export const AccountSettingsModal = ({
   account,
   tab,
   hideNav,
-  privateKey,
   onClose,
   onToggleNav,
   onUpdateAccountName,
   onChangeTab,
-  onRemoveAccount,
-  onViewPrivateKey,
-  onDoneViewingPrivateKey
+  onRemoveAccount
 }: Props) => {
   // custom hooks
   const isMounted = useIsMounted()
+  const { keyringService } = useApiProxy()
 
   // state
   const [accountName, setAccountName] = React.useState<string>(account.name)
-  const [showPrivateKey, setShowPrivateKey] = React.useState<boolean>(false)
   const [updateError, setUpdateError] = React.useState<boolean>(false)
   const [password, setPassword] = React.useState<string>('')
+  const [privateKey, setPrivateKey] = React.useState<string>('')
   const [isCorrectPassword, setIsCorrectPassword] = React.useState<boolean>(true)
   const [qrCode, setQRCode] = React.useState<string>('')
 
@@ -100,6 +100,27 @@ export const AccountSettingsModal = ({
   const { attemptPasswordEntry } = usePasswordAttempts()
 
   // methods
+  const onViewPrivateKey = React.useCallback(async (
+    address: string,
+    coin: BraveWallet.CoinType
+  ) => {
+    const { privateKey, success } = await keyringService.getPrivateKeyForKeyringAccount(
+      address,
+      password,
+      coin
+    )
+    if (isMounted) {
+      if (success) {
+        return setPrivateKey(privateKey)
+      }
+      return setPrivateKey('')
+    }
+  }, [password, keyringService, isMounted])
+
+  const onDoneViewingPrivateKey = React.useCallback(() => {
+    setPrivateKey('')
+  }, [])
+
   const handleAccountNameChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAccountName(event.target.value)
     setUpdateError(false)
@@ -121,15 +142,15 @@ export const AccountSettingsModal = ({
         setQRCode(qr)
       }
     })
-  }, [account, isMounted])
+  }, [account.address, isMounted])
 
   const onSelectTab = (id: AccountSettingsNavTypes) => {
-    setShowPrivateKey(false)
+    setPrivateKey('')
     onChangeTab(id)
   }
 
   const removeAccount = () => {
-    onRemoveAccount(account.address, false, account.coin)
+    onRemoveAccount(account.address, false, account.coin, password)
     onToggleNav()
     onClose()
   }
@@ -151,16 +172,15 @@ export const AccountSettingsModal = ({
     setPassword('')
     setIsCorrectPassword(true)
 
-    if (onViewPrivateKey) {
-      const isDefault = account?.accountType === 'Primary'
-      onViewPrivateKey(account?.address ?? '', isDefault, account?.coin)
-    }
-    setShowPrivateKey(true)
+    onViewPrivateKey(
+      account?.address ?? '',
+      account?.coin
+    )
   }
 
   const onHidePrivateKey = () => {
     onDoneViewingPrivateKey()
-    setShowPrivateKey(false)
+    setPrivateKey('')
   }
 
   const onClickClose = () => {
@@ -201,7 +221,7 @@ export const AccountSettingsModal = ({
   // effects
   React.useEffect(() => {
     generateQRData()
-  })
+  }, [])
 
   // render
   return (
@@ -251,7 +271,7 @@ export const AccountSettingsModal = ({
             <WarningWrapper>
               <WarningText>{getLocale('braveWalletAccountSettingsDisclaimer')}</WarningText>
             </WarningWrapper>
-            {showPrivateKey
+            {privateKey
               ? <>
                 {account.coin === BraveWallet.CoinType.FIL &&
                   <WarningWrapper>
@@ -268,10 +288,8 @@ export const AccountSettingsModal = ({
                   <PrivateKeyBubble>{privateKey}</PrivateKeyBubble>
                 </CopyTooltip>
               </>
-              : <>
-                <InputLabelText>{getLocale('braveWalletEnterYourPassword')}</InputLabelText>
-                <PasswordInput
-                  placeholder={getLocale('braveWalletCreatePasswordInput')}
+              : <PasswordInput
+                  placeholder={getLocale('braveWalletEnterYourPassword')}
                   onChange={onPasswordChange}
                   hasError={!!password && !isCorrectPassword}
                   error={getLocale('braveWalletLockScreenError')}
@@ -279,18 +297,17 @@ export const AccountSettingsModal = ({
                   value={password}
                   onKeyDown={handlePasswordKeyDown}
                 />
-              </>
             }
             <ButtonWrapper>
               <NavButton
-                onSubmit={!showPrivateKey ? onShowPrivateKey : onHidePrivateKey}
-                text={getLocale(!showPrivateKey
+                onSubmit={!privateKey ? onShowPrivateKey : onHidePrivateKey}
+                text={getLocale(!privateKey
                   ? 'braveWalletAccountSettingsShowKey'
                   : 'braveWalletAccountSettingsHideKey'
                 )}
                 buttonType='primary'
                 disabled={
-                  showPrivateKey
+                  privateKey
                     ? false
                     : password ? !isCorrectPassword : true
                 }

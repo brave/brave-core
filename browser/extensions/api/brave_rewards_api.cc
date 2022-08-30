@@ -926,12 +926,6 @@ void BraveRewardsGetPublisherBannerFunction::OnPublisherBanner(
     result.Set("provider", banner->provider);
     result.Set("verified", static_cast<int>(banner->status));
 
-    base::Value::List amounts;
-    for (auto const& value : banner->amounts) {
-      amounts.Append(value);
-    }
-    result.Set("amounts", std::move(amounts));
-
     base::Value::Dict links;
     for (auto const& item : banner->links) {
       links.Set(item.first, item.second);

@@ -28,13 +28,13 @@ bool HasMigrated() {
 }
 
 void FailedToMigrate(InitializeCallback callback) {
-  callback(/* success */ false);
+  callback(/*success*/ false);
 }
 
 void SuccessfullyMigrated(InitializeCallback callback) {
   AdsClientHelper::GetInstance()->SetBooleanPref(
       prefs::kHasMigratedRewardsState, true);
-  callback(/* success */ true);
+  callback(/*success*/ true);
 }
 
 void OnMigrate(InitializeCallback callback,
@@ -78,7 +78,7 @@ void OnMigrate(InitializeCallback callback,
 
 void Migrate(InitializeCallback callback) {
   if (HasMigrated()) {
-    callback(/* success */ true);
+    callback(/*success*/ true);
     return;
   }
 

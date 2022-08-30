@@ -24,7 +24,7 @@ base::Time TimeFromString(const std::string& time_string, const bool is_local) {
 }
 
 base::Time DistantPast() {
-  return base::Time();
+  return {};
 }
 
 std::string DistantPastAsISO8601() {

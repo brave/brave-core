@@ -25,7 +25,7 @@ class EpsilonGreedyBandit final {
  private:
   void InitializeArms() const;
 
-  void UpdateArm(const int reward, const std::string& segment) const;
+  void UpdateArm(int reward, const std::string& segment) const;
 };
 
 }  // namespace processor

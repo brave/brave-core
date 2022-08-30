@@ -13,13 +13,13 @@ class Time;
 namespace ads {
 
 // Four digit year "2007", 1-based month (values 1 = January, etc.)
-int GetLastDayOfMonth(const int year, const int month);
+int GetLastDayOfMonth(int year, int month);
 
 // Four digit year "2007", 1-based month (values 1 = January, etc.), 1-based day
 // of month (1-31)
 int GetDayOfWeek(int year, int month, int day);
 
-int GetDayOfWeek(const base::Time time, const bool is_local);
+int GetDayOfWeek(base::Time time, bool is_local);
 
 }  // namespace ads
 

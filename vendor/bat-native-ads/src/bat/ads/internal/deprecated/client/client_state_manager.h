@@ -71,10 +71,10 @@ class ClientStateManager final {
 
   CategoryContentOptActionType ToggleAdOptIn(
       const std::string& category,
-      const CategoryContentOptActionType action_type);
+      CategoryContentOptActionType action_type);
   CategoryContentOptActionType ToggleAdOptOut(
       const std::string& category,
-      const CategoryContentOptActionType action_type);
+      CategoryContentOptActionType action_type);
   CategoryContentOptActionType GetCategoryContentOptActionTypeForSegment(
       const std::string& segment);
 
@@ -104,10 +104,10 @@ class ClientStateManager final {
 
  private:
   void Save();
-  void OnSaved(const bool success);
+  void OnSaved(bool success);
 
   void Load();
-  void OnLoaded(const bool success, const std::string& json);
+  void OnLoaded(bool success, const std::string& json);
 
   bool FromJson(const std::string& json);
 

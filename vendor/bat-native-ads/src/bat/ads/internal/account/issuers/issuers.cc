@@ -16,11 +16,11 @@
 #include "bat/ads/internal/account/issuers/issuers_url_request_builder.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/net/http/http_status_code.h"
 #include "bat/ads/internal/base/time/time_formatting_util.h"
 #include "bat/ads/internal/base/url/url_request_string_util.h"
 #include "bat/ads/internal/base/url/url_response_string_util.h"
 #include "bat/ads/pref_names.h"
+#include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
@@ -70,7 +70,7 @@ void Issuers::OnFetch(const mojom::UrlResponseInfo& url_response) {
   BLOG(7, UrlResponseHeadersToString(url_response));
 
   if (url_response.status_code != net::HTTP_OK) {
-    FailedToFetchIssuers(/* should_retry */ true);
+    FailedToFetchIssuers(/*should_retry*/ true);
     return;
   }
 
@@ -78,7 +78,7 @@ void Issuers::OnFetch(const mojom::UrlResponseInfo& url_response) {
       JSONReader::ReadIssuers(url_response.body);
   if (!issuers) {
     BLOG(3, "Failed to parse response: " << url_response.body);
-    FailedToFetchIssuers(/* should_retry */ true);
+    FailedToFetchIssuers(/*should_retry*/ true);
     return;
   }
 
@@ -118,8 +118,8 @@ void Issuers::FetchAfterDelay() {
       FROM_HERE, GetFetchDelay(),
       base::BindOnce(&Issuers::Fetch, base::Unretained(this)));
 
-  BLOG(1, "Fetch issuers " << FriendlyDateAndTime(
-              fetch_at, /* use_sentence_style */ true));
+  BLOG(1, "Fetch issuers " << FriendlyDateAndTime(fetch_at,
+                                                  /*use_sentence_style*/ true));
 }
 
 base::TimeDelta Issuers::GetFetchDelay() const {
@@ -136,7 +136,7 @@ void Issuers::RetryAfterDelay() {
       base::BindOnce(&Issuers::OnRetry, base::Unretained(this)));
 
   BLOG(1, "Retry fetching issuers "
-              << FriendlyDateAndTime(retry_at, /* use_sentence_style */ true));
+              << FriendlyDateAndTime(retry_at, /*use_sentence_style*/ true));
 
   if (delegate_) {
     delegate_->OnWillRetryFetchingIssuers(retry_at);

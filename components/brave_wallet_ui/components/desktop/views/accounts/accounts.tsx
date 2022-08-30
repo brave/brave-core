@@ -42,6 +42,7 @@ import {
   AccountListItem,
   AddButton
 } from '../..'
+import { ConfirmPasswordModal } from '../../popup-modals/confirm-password-modal/confirm-password-modal'
 
 export const Accounts = () => {
   // routing
@@ -50,6 +51,14 @@ export const Accounts = () => {
   // redux
   const dispatch = useDispatch()
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
+
+  // state
+  const [accountToRemove, setAccountToRemove] = React.useState<{
+    address: string
+    hardware: boolean
+    coin: BraveWallet.CoinType
+    name: string
+  } | undefined>(undefined)
 
   // methods
   const onSelectAccount = React.useCallback((account: WalletAccountType | undefined) => {
@@ -67,13 +76,37 @@ export const Accounts = () => {
     }
   }, [])
 
-  const onRemoveAccount = React.useCallback((address: string, hardware: boolean, coin: BraveWallet.CoinType) => {
-    if (hardware) {
-      dispatch(WalletPageActions.removeHardwareAccount({ address, coin }))
+  const onRemoveAccount = React.useCallback((
+    address: string,
+    hardware: boolean,
+    coin: BraveWallet.CoinType,
+    name: string
+  ) => {
+    setAccountToRemove({
+      address,
+      coin,
+      hardware,
+      name
+    })
+  }, [])
+
+  const onConfirmRemoveAccount = React.useCallback((password: string) => {
+    if (!accountToRemove) {
       return
     }
-    dispatch(WalletPageActions.removeImportedAccount({ address, coin }))
-  }, [])
+
+    const { address, coin, hardware } = accountToRemove
+
+    if (hardware) {
+      dispatch(WalletPageActions.removeHardwareAccount({ address, coin, password }))
+    }
+
+    if (!hardware) {
+      dispatch(WalletPageActions.removeImportedAccount({ address, coin, password }))
+    }
+
+    setAccountToRemove(undefined) // close modal
+  }, [accountToRemove])
 
   // memos
   const primaryAccounts = React.useMemo(() => {
@@ -94,6 +127,7 @@ export const Accounts = () => {
     return groupAccountsById(foundLedgerAccounts, 'deviceId')
   }, [accounts])
 
+  // render
   return (
     <StyledWrapper>
 
@@ -179,6 +213,17 @@ export const Accounts = () => {
           <ButtonText>{getLocale('braveWalletAddAccountImportHardware')}</ButtonText>
         </StyledButton>
       </ButtonRow>
+
+      {/* Modals */}
+      {accountToRemove !== undefined &&
+        <ConfirmPasswordModal
+          title={getLocale('braveWalletRemoveAccountModalTitle')
+            .replace('$1', accountToRemove.name ?? accountToRemove.address)
+          }
+          onClose={() => setAccountToRemove(undefined)}
+          onSuccess={onConfirmRemoveAccount}
+        />
+      }
     </StyledWrapper>
   )
 }

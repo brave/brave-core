@@ -279,12 +279,9 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
     }
 
     private void postTxUpdates() {
-        if (mTransactionInfos.size() > 0) {
-            _mSelectedPendingRequest.postValue(getFirstUnapprovedTx());
-        } else {
-            _mSelectedPendingRequest.postValue(null);
-            _mHasNoPendingTxAfterProcessing.postValue(true);
-        }
+        TransactionInfo mFirstPendingInfo = getFirstUnapprovedTx();
+        _mSelectedPendingRequest.postValue(mFirstPendingInfo);
+        _mHasNoPendingTxAfterProcessing.postValue(mFirstPendingInfo == null);
     }
 
     private void updatePending(List<TransactionInfo> transactionInfos) {

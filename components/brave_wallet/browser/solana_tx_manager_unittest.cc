@@ -663,6 +663,7 @@ TEST_F(SolanaTxManagerUnitTest, MakeTokenProgramTransferTxData) {
       spl_token_mint_address, from_wallet_address, to_wallet_address, 10000000,
       std::move(tx_data), mojom::SolanaProviderError::kSuccess, "");
 
+  account_metas.clear();
   auto solana_account_meta4 =
       mojom::SolanaAccountMeta::New(from_wallet_address, true, true);
   auto solana_account_meta5 =
@@ -684,6 +685,8 @@ TEST_F(SolanaTxManagerUnitTest, MakeTokenProgramTransferTxData) {
   account_metas.push_back(std::move(solana_account_meta8));
   account_metas.push_back(std::move(solana_account_meta9));
   account_metas.push_back(std::move(solana_account_meta10));
+
+  instructions.clear();
   auto mojom_create_associated_account_instruction =
       mojom::SolanaInstruction::New(kSolanaAssociatedTokenProgramId,
                                     std::move(account_metas),

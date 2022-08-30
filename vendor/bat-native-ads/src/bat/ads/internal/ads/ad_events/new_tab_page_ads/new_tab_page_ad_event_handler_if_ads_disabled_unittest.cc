@@ -23,7 +23,6 @@
 #include "bat/ads/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/pref_names.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -79,9 +78,9 @@ class BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest
   }
 
   void OnNewTabPageAdEventFailed(
-      const std::string& placement_id,
-      const std::string& creative_instance_id,
-      const mojom::NewTabPageAdEventType event_type) override {
+      const std::string& /*placement_id*/,
+      const std::string& /*creative_instance_id*/,
+      const mojom::NewTabPageAdEventType /*event_type*/) override {
     did_fail_to_fire_event_ = true;
   }
 

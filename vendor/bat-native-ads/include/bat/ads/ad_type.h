@@ -33,7 +33,7 @@ class AdType final {
       : value_(value) {}
 
   explicit AdType(const std::string& value);
-  explicit AdType(const mojom::AdType value);
+  explicit AdType(mojom::AdType value);
 
   Value value() const;
   std::string ToString() const;

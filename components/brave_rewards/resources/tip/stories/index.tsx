@@ -64,7 +64,6 @@ function createHostState (): HostState {
         'ecosystem of rewards. Join us. It’s time to fix the web together!',
       background: '',
       logo: 'https://rewards.brave.com/LH3yQwkb78iP28pJDSSFPJwU',
-      amounts: [0.25, 2, 10],
       provider: '',
       links: {
         twitter: 'https://twitter.com/brave',

@@ -10,10 +10,12 @@ namespace base {
 struct Feature;
 }  // namespace base
 
-namespace playlist {
-namespace features {
+namespace playlist::features {
+
 extern const base::Feature kPlaylist;
-}  // namespace features
-}  // namespace playlist
+
+extern const base::Feature kCompareOnlyHostForTesting;
+
+}  // namespace playlist::features
 
 #endif  // BRAVE_COMPONENTS_PLAYLIST_FEATURES_H_

@@ -7,11 +7,11 @@
 
 #include <memory>
 
-#include "bat/ads/internal/base/net/http/http_status_code.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/pref_names.h"
+#include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

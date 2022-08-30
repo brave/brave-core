@@ -63,7 +63,7 @@ class PlaylistDownloadRequestManager
   PlaylistDownloadRequestManager& operator=(
       const PlaylistDownloadRequestManager&) = delete;
 
-  // Delegate will get called with generated param.
+  // Request::callback will be called with generated param.
   void GetMediaFilesFromPage(Request request);
 
  private:

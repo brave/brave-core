@@ -198,7 +198,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
   database_table_->GetForCreativeInstanceId(
       creative_instance_id,
       [&expected_conversion_queue_items](
-          const bool success, const std::string& creative_instance_id,
+          const bool success, const std::string& /*creative_instance_id*/,
           const ConversionQueueItemList& conversion_queue_items) {
         ASSERT_TRUE(success);
         EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);

@@ -23,7 +23,6 @@ export const defaultState: RewardsExtension.State = {
   enabledAC: false,
   promotions: [],
   recurringTips: [],
-  tipAmounts: {},
   balance: {
     total: 0,
     wallets: {}

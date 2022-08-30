@@ -64,10 +64,11 @@ bool IsNTPPromotionEnabled(Profile* profile) {
     return false;
 
   // Only show promotion if current wallpaper is not sponsored images.
-  base::Value data = service->GetCurrentWallpaperForDisplay();
-  if (const auto* dict = data.GetIfDict()) {
+  absl::optional<base::Value::Dict> data =
+      service->GetCurrentWallpaperForDisplay();
+  if (data) {
     if (const auto is_background =
-            dict->FindBool(ntp_background_images::kIsBackgroundKey)) {
+            data->FindBool(ntp_background_images::kIsBackgroundKey)) {
       return is_background.value();
     }
   }
@@ -185,10 +186,19 @@ void BraveNewTabPageHandler::OnSearchPromotionDismissed() {
   NotifySearchPromotionDisabledIfNeeded();
 }
 
-void BraveNewTabPageHandler::UseColorBackground(const std::string& color) {
+void BraveNewTabPageHandler::UseColorBackground(const std::string& color,
+                                                bool use_random_color) {
+  if (use_random_color) {
+    DCHECK(color == brave_new_tab_page::mojom::kRandomSolidColorValue ||
+           color == brave_new_tab_page::mojom::kRandomGradientColorValue)
+        << "When |use_random_color| is true, |color| should be "
+           "kRandomSolidColorValue or kRandomGradientColorValue";
+  }
+
   auto background_pref = NTPBackgroundPrefs(profile_->GetPrefs());
   background_pref.SetType(NTPBackgroundPrefs::Type::kColor);
   background_pref.SetSelectedValue(color);
+  background_pref.SetShouldUseRandomValue(use_random_color);
 
   OnCustomBackgroundUpdated();
   DeleteSanitizedImageFile();
@@ -217,10 +227,11 @@ void BraveNewTabPageHandler::OnCustomBackgroundUpdated() {
     std::string local_string(ntp_background_images::kCustomWallpaperURL);
     value->url = GURL(local_string + "?ts=" + time_string);
   } else if (IsColorBackgroundEnabled()) {
-    auto selected_value =
-        NTPBackgroundPrefs(profile_->GetPrefs()).GetSelectedValue();
+    auto ntp_background_prefs = NTPBackgroundPrefs(profile_->GetPrefs());
+    auto selected_value = ntp_background_prefs.GetSelectedValue();
     DCHECK(absl::holds_alternative<std::string>(selected_value));
     value->color = absl::get<std::string>(selected_value);
+    value->use_random_item = ntp_background_prefs.ShouldUseRandomValue();
   }
 
   page_->OnBackgroundUpdated(std::move(value));

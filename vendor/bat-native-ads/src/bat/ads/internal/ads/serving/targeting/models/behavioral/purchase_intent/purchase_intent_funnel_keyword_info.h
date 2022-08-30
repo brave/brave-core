@@ -14,8 +14,7 @@ namespace targeting {
 
 struct PurchaseIntentFunnelKeywordInfo final {
   PurchaseIntentFunnelKeywordInfo();
-  PurchaseIntentFunnelKeywordInfo(const std::string& keywords,
-                                  const uint16_t weight);
+  PurchaseIntentFunnelKeywordInfo(const std::string& keywords, uint16_t weight);
   PurchaseIntentFunnelKeywordInfo(const PurchaseIntentFunnelKeywordInfo& info);
   PurchaseIntentFunnelKeywordInfo& operator=(
       const PurchaseIntentFunnelKeywordInfo& info);

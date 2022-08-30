@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/pref_names.h"
+#include "bat/ads/pref_names.h"  // IWYU pragma: keep
 
 namespace ads {
 namespace prefs {
@@ -75,7 +75,7 @@ const char kHasMigratedNotificationState[] =
 const char kHasMigratedRewardsState[] =
     "brave.brave_ads.migrated.rewards_state";
 
-const char kConfirmationsHash[] = "brave.brave_ads.confirmations.hash.v2";
+const char kConfirmationsHash[] = "brave.brave_ads.confirmations.hash.v3";
 const char kClientHash[] = "brave.brave_ads.client.hash.v3";
 
 // Browser version

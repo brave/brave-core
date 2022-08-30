@@ -15,8 +15,7 @@ namespace ads {
 
 class HistoryFilterFactory final {
  public:
-  static std::unique_ptr<HistoryFilterInterface> Build(
-      const HistoryFilterType type);
+  static std::unique_ptr<HistoryFilterInterface> Build(HistoryFilterType type);
 };
 
 }  // namespace ads

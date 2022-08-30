@@ -227,7 +227,7 @@ export const webtorrentReducer = (state: TorrentsState = defaultState, action: a
   switch (action.type) {
     case tabTypes.types.TAB_UPDATED:
       if (payload.changeInfo.url) {
-        state = tabUpdated(payload.changeInfo.tabId, payload.changeInfo.url, state)
+        state = tabUpdated(payload.tabId, payload.changeInfo.url, state)
       }
       break
     case tabTypes.types.TAB_REMOVED:

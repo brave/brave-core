@@ -35,49 +35,49 @@ class TabManager final {
   void AddObserver(TabManagerObserver* observer);
   void RemoveObserver(TabManagerObserver* observer);
 
-  bool IsTabVisible(const int32_t id) const;
+  bool IsTabVisible(int32_t id) const;
 
-  void OnTabUpdated(const int32_t id,
+  void OnTabUpdated(int32_t id,
                     const std::vector<GURL>& redirect_chain,
-                    const bool is_visible,
-                    const bool is_incognito);
+                    bool is_visible,
+                    bool is_incognito);
 
-  void OnTextContentDidChange(const int32_t id,
+  void OnTextContentDidChange(int32_t id,
                               const std::vector<GURL>& redirect_chain,
                               const std::string& content);
-  void OnHtmlContentDidChange(const int32_t id,
+  void OnHtmlContentDidChange(int32_t id,
                               const std::vector<GURL>& redirect_chain,
                               const std::string& content);
 
-  void OnTabClosed(const int32_t id);
+  void OnTabClosed(int32_t id);
 
-  void OnMediaPlaying(const int32_t id);
-  void OnMediaStopped(const int32_t id);
+  void OnMediaPlaying(int32_t id);
+  void OnMediaStopped(int32_t id);
 
-  bool IsPlayingMedia(const int32_t id) const;
+  bool IsPlayingMedia(int32_t id) const;
 
   absl::optional<TabInfo> GetVisibleTab() const;
   absl::optional<TabInfo> GetLastVisibleTab() const;
 
-  absl::optional<TabInfo> GetTabForId(const int32_t id) const;
+  absl::optional<TabInfo> GetTabForId(int32_t id) const;
 
  private:
   void AddTab(const TabInfo& tab);
   void UpdateTab(const TabInfo& tab);
-  void RemoveTab(const int32_t id);
+  void RemoveTab(int32_t id);
 
-  void NotifyTabDidChangeFocus(const int32_t id) const;
+  void NotifyTabDidChangeFocus(int32_t id) const;
   void NotifyTabDidChange(const TabInfo& tab) const;
   void NotifyDidOpenNewTab(const TabInfo& tab) const;
-  void NotifyTextContentDidChange(const int32_t id,
+  void NotifyTextContentDidChange(int32_t id,
                                   const std::vector<GURL>& redirect_chain,
                                   const std::string& content);
-  void NotifyHtmlContentDidChange(const int32_t id,
+  void NotifyHtmlContentDidChange(int32_t id,
                                   const std::vector<GURL>& redirect_chain,
                                   const std::string& content);
-  void NotifyDidCloseTab(const int32_t id) const;
-  void NotifyTabDidStartPlayingMedia(const int32_t id) const;
-  void NotifyTabDidStopPlayingMedia(const int32_t id) const;
+  void NotifyDidCloseTab(int32_t id) const;
+  void NotifyTabDidStartPlayingMedia(int32_t id) const;
+  void NotifyTabDidStopPlayingMedia(int32_t id) const;
 
   base::ObserverList<TabManagerObserver> observers_;
 

@@ -465,15 +465,6 @@ public class PortfolioFragment
         return mCurrentPendingTx != null;
     }
 
-    private void getPendingTx(AccountInfo[] accountInfos, @Nullable Runnable callback) {
-        PendingTxHelper pendingTxHelper = new PendingTxHelper(getTxService(), accountInfos, false);
-        pendingTxHelper.fetchTransactions(() -> {
-            mPendingTxInfos = pendingTxHelper.getTransactions();
-            pendingTxHelper.destroy();
-            if (callback != null) callback.run();
-        });
-    }
-
     private void updatePendingTxNotification() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity)

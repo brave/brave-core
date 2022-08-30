@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/bind.h"
+#include "base/ranges/algorithm.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -93,8 +94,10 @@ void WalletHandler::AddFavoriteApp(
 void WalletHandler::RemoveFavoriteApp(
     brave_wallet::mojom::AppItemPtr app_item) {
   favorite_apps.erase(
-      remove_if(favorite_apps.begin(), favorite_apps.end(),
-                [&app_item](const brave_wallet::mojom::AppItemPtr& it) -> bool {
-                  return it->name == app_item->name;
-                }));
+      base::ranges::remove_if(
+          favorite_apps,
+          [&app_item](const brave_wallet::mojom::AppItemPtr& it) -> bool {
+            return it->name == app_item->name;
+          }),
+      favorite_apps.end());
 }

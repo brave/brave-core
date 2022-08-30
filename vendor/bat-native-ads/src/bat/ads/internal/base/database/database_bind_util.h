@@ -15,25 +15,19 @@
 namespace ads {
 namespace database {
 
-std::string BuildBindingParameterPlaceholder(const size_t parameters_count);
-std::string BuildBindingParameterPlaceholders(const size_t parameters_count,
-                                              const size_t values_count);
+std::string BuildBindingParameterPlaceholder(size_t parameters_count);
+std::string BuildBindingParameterPlaceholders(size_t parameters_count,
+                                              size_t values_count);
 
 void Bind(sql::Statement* statement,
           const mojom::DBCommandBindingInfo& binding);
-void BindNull(mojom::DBCommandInfo* command, const int index);
-void BindInt(mojom::DBCommandInfo* command,
-             const int index,
-             const int32_t value);
-void BindInt64(mojom::DBCommandInfo* command,
-               const int index,
-               const int64_t value);
-void BindDouble(mojom::DBCommandInfo* command,
-                const int index,
-                const double value);
-void BindBool(mojom::DBCommandInfo* command, const int index, const bool value);
+void BindNull(mojom::DBCommandInfo* command, int index);
+void BindInt(mojom::DBCommandInfo* command, int index, int32_t value);
+void BindInt64(mojom::DBCommandInfo* command, int index, int64_t value);
+void BindDouble(mojom::DBCommandInfo* command, int index, double value);
+void BindBool(mojom::DBCommandInfo* command, int index, bool value);
 void BindString(mojom::DBCommandInfo* command,
-                const int index,
+                int index,
                 const std::string& value);
 
 }  // namespace database
