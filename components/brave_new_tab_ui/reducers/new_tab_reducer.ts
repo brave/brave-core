@@ -140,14 +140,13 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
 
       if (!state.backgroundWallpaper && background?.brave) {
-        const braveBackground: NewTab.BraveBackground = {
+        state.backgroundWallpaper = {
           type: 'brave',
           author: background.brave.author,
           link: background.brave.link.url,
           wallpaperImageUrl: background.brave.imageUrl.url,
           random: false
         }
-        state.backgroundWallpaper = braveBackground
       }
 
       if (!state.backgroundWallpaper) {
