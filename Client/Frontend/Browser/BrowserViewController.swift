@@ -3169,8 +3169,11 @@ extension BrowserViewController: WKUIDelegate {
       return UIMenu(title: url.absoluteString.truncate(length: 100), children: actions)
     }
 
-    let linkPreview: UIContextMenuContentPreviewProvider = {
-      return LinkPreviewViewController(url: url)
+    let linkPreview: UIContextMenuContentPreviewProvider? = { [unowned self] in
+      if let tab = tabManager.tabForWebView(webView) {
+        return LinkPreviewViewController(url: url, for: tab, browserController: self)
+      }
+      return nil
     }
 
     let linkPreviewProvider = Preferences.General.enableLinkPreview.value ? linkPreview : nil
