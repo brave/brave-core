@@ -38,13 +38,8 @@ struct PlaylistChangeParams {
 };
 
 struct PlaylistItemInfo {
-  struct TitleTag {};
   using Title = base::StrongAlias<struct TitleTag, std::string>;
-
-  struct ThumbnailPathTag {};
   using ThumbnailPath = base::StrongAlias<struct ThumbnailPathTag, std::string>;
-
-  struct MediaFilePathTag {};
   using MediaFilePath = base::StrongAlias<struct MediaFilePathTag, std::string>;
 
   PlaylistItemInfo();
@@ -62,6 +57,13 @@ struct PlaylistItemInfo {
   std::string thumbnail_path;
   std::string media_file_path;
   bool ready{false};
+
+  friend std::ostream& operator<<(std::ostream& os,
+                                  const PlaylistItemInfo& item) {
+    return os << "{ media_file_path: " << item.media_file_path
+              << ", title: " << item.title
+              << ", thumbnail_path: " << item.thumbnail_path << " }";
+  }
 };
 
 struct PlaylistInfo {

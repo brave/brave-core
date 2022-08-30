@@ -11,6 +11,7 @@
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
+#include "services/network/public/cpp/network_switches.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "chrome/test/base/android/android_browser_test.h"
@@ -26,11 +27,21 @@ class PlaylistRenderFrameObserverBrowserTest : public PlatformBrowserTest {
   };
 
   PlaylistRenderFrameObserverBrowserTest() {
-    scoped_feature_list_.InitWithFeatures(
-        {playlist::features::kPlaylist,
-         playlist::features::kCompareOnlyHostForTesting},
-        {});
+    scoped_feature_list_.InitAndEnableFeature(playlist::features::kPlaylist);
+
+    https_server_ = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
+    https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
+    https_server_->RegisterRequestHandler(
+        base::BindRepeating(&PlaylistRenderFrameObserverBrowserTest::Serve,
+                            base::Unretained(this)));
+    embedded_test_server()->RegisterRequestHandler(
+        base::BindRepeating(&PlaylistRenderFrameObserverBrowserTest::Serve,
+                            base::Unretained(this)));
+    EXPECT_TRUE(https_server_->Start());
+    EXPECT_TRUE(embedded_test_server()->Start());
   }
+
   ~PlaylistRenderFrameObserverBrowserTest() override = default;
 
   void CheckMediaSourceAPI(const GURL& url, APIVisibility visibility) {
@@ -41,7 +52,6 @@ class PlaylistRenderFrameObserverBrowserTest : public PlatformBrowserTest {
     ASSERT_TRUE(url.is_valid());
 
     auto* active_web_contents = chrome_test_utils::GetActiveWebContents(this);
-    // This is blocking call.
     ASSERT_TRUE(content::NavigateToURL(active_web_contents, url));
     EXPECT_EQ(visibility == APIVisibility::kVisible,
               EvalJs(active_web_contents, "!!window.MediaSource"));
@@ -50,21 +60,19 @@ class PlaylistRenderFrameObserverBrowserTest : public PlatformBrowserTest {
  protected:
   // PlatformBrowserTest:
   void SetUpCommandLine(base::CommandLine* command_line) override {
+    ASSERT_TRUE(https_server_);
     PlatformBrowserTest::SetUpCommandLine(command_line);
     mock_cert_verifier_.SetUpCommandLine(command_line);
+
+    command_line->AppendSwitchASCII(
+        network::switches::kHostResolverRules,
+        base::StringPrintf("MAP *:80 127.0.0.1:%d,"
+                           "MAP *:443 127.0.0.1:%d",
+                           embedded_test_server()->port(),
+                           https_server_->port()));
   }
   void SetUpOnMainThread() override {
     PlatformBrowserTest::SetUpOnMainThread();
-
-    host_resolver()->AddRule("*", "127.0.0.1");
-
-    https_server_ = std::make_unique<net::EmbeddedTestServer>(
-        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
-    https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
-    https_server_->RegisterRequestHandler(
-        base::BindRepeating(&PlaylistRenderFrameObserverBrowserTest::Serve,
-                            base::Unretained(this)));
-    ASSERT_TRUE(https_server_->Start());
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
   }
 
@@ -76,12 +84,6 @@ class PlaylistRenderFrameObserverBrowserTest : public PlatformBrowserTest {
   void TearDownInProcessBrowserTestFixture() override {
     mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
     PlatformBrowserTest::TearDownInProcessBrowserTestFixture();
-  }
-
-  void TearDownOnMainThread() override {
-    ASSERT_TRUE(https_server_->ShutdownAndWaitUntilComplete());
-
-    PlatformBrowserTest::TearDownOnMainThread();
   }
 
  protected:
@@ -103,8 +105,7 @@ class PlaylistRenderFrameObserverBrowserTest : public PlatformBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(PlaylistRenderFrameObserverBrowserTest,
                        CheckNormalSites) {
-  CheckMediaSourceAPI(https_server_->GetURL("www.a.com", "/"),
-                      APIVisibility::kVisible);
+  CheckMediaSourceAPI(GURL("http://a.com/"), APIVisibility::kVisible);
 }
 
 #if BUILDFLAG(IS_ANDROID)
@@ -115,6 +116,5 @@ IN_PROC_BROWSER_TEST_F(PlaylistRenderFrameObserverBrowserTest,
 #define CheckYoutube CheckYoutube
 #endif
 IN_PROC_BROWSER_TEST_F(PlaylistRenderFrameObserverBrowserTest, CheckYoutube) {
-  CheckMediaSourceAPI(https_server_->GetURL("www.youtube.com", "/"),
-                      APIVisibility::kHidden);
+  CheckMediaSourceAPI(GURL("https://www.youtube.com/"), APIVisibility::kHidden);
 }
