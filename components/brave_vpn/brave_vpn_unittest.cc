@@ -935,8 +935,7 @@ TEST_F(BraveVPNServiceTest, CheckInitialPurchasedStateTest) {
   EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
 
   // Dirty region list prefs to pretend it's already cached.
-  profile_pref_service_.Set(prefs::kBraveVPNRegionList,
-                            base::Value(base::Value::Type::LIST));
+  profile_pref_service_.SetList(prefs::kBraveVPNRegionList, {});
   ResetVpnService();
   EXPECT_EQ(PurchasedState::LOADING, GetPurchasedStateSync());
 }
