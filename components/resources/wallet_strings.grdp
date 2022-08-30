@@ -628,4 +628,5 @@
   <message name="IDS_BRAVE_WALLET_CANCEL_HIDING_TOKEN" desc="Text for cancel hide token action in hide token modal">Cancel</message>
   <message name="IDS_BRAVE_WALLET_REMOVE_ACCOUNT_MODAL_TITLE" desc="Title prompt to confirm removal of a wallet account">Are you sure you want to remove "<ph name="ACCOUNT_NAME">$1<ex>Eth Account 1</ex></ph>"?</message>
   <message name="IDS_BRAVE_WALLET_REQUEST_FEATURE_BUTTON_TEXT" desc="Text displayed in request feature button">Request feature</message>
+  <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_LENGTH_ERROR" desc="Error message for when a supplied recovery phrase has an invalid number of words">Recovery phrase must be 12, 15, 18, 21, or 24 words long</message>
 </grit-part>
