@@ -37,17 +37,11 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
     private @Nullable BraveSearchBannerProcessor mBraveSearchBannerProcessor;
     private UrlBarEditingTextStateProvider mUrlBarEditingTextProvider;
     private @NonNull Supplier<Tab> mActivityTabSupplier;
-    private List<SuggestionProcessor> mPriorityOrderedSuggestionProcessors;
     private static final List<String> mBraveSearchEngineDefaultRegions =
             Arrays.asList("CA", "DE", "FR", "GB", "US", "AT", "ES", "MX");
     @Px
     private static final int DROPDOWN_HEIGHT_UNKNOWN = -1;
     private static final int DEFAULT_SIZE_OF_VISIBLE_GROUP = 5;
-
-    @Px
-    private int mDropdownHeight;
-    @Px
-    private int mCalculatedSuggestionsHeight;
     private Context mContext;
 
     BraveDropdownItemViewInfoListBuilder(@NonNull Supplier<Tab> tabSupplier,
@@ -81,51 +75,14 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
         mBraveSearchBannerProcessor.onNativeInitialized();
     }
 
-    private void calculateSuggestionsHeight(
-            AutocompleteResult autocompleteResult, int visibleSuggestionsCount) {
-        final List<AutocompleteMatch> suggestions = autocompleteResult.getSuggestionsList();
-
-        @Px
-        int calculatedSuggestionsHeight = 0;
-        int lastVisibleIndex;
-        for (lastVisibleIndex = 0; lastVisibleIndex < visibleSuggestionsCount; lastVisibleIndex++) {
-            final AutocompleteMatch suggestion = suggestions.get(lastVisibleIndex);
-
-            final SuggestionProcessor processor =
-                    (SuggestionProcessor) BraveReflectionUtil.InvokeMethod(
-                            DropdownItemViewInfoListBuilder.class, this,
-                            "getProcessorForSuggestion", AutocompleteMatch.class, suggestion,
-                            int.class, lastVisibleIndex);
-
-            calculatedSuggestionsHeight += processor.getMinimumViewHeight();
-        }
-
-        mCalculatedSuggestionsHeight = calculatedSuggestionsHeight;
-    }
-
     @Override
     @NonNull
     List<DropdownItemViewInfo> buildDropdownViewInfoList(AutocompleteResult autocompleteResult) {
         mBraveSearchBannerProcessor.onSuggestionsReceived();
         List<DropdownItemViewInfo> viewInfoList =
                 super.buildDropdownViewInfoList(autocompleteResult);
-        if (mDropdownHeight != DROPDOWN_HEIGHT_UNKNOWN) {
-            int visibleSuggestionsCount = (int) BraveReflectionUtil.InvokeMethod(
-                    DropdownItemViewInfoListBuilder.class, this, "getVisibleSuggestionsCount",
-                    AutocompleteResult.class, autocompleteResult);
-
-            calculateSuggestionsHeight(autocompleteResult, visibleSuggestionsCount);
-        }
 
         if (isBraveSearchPromoBanner()) {
-            mCalculatedSuggestionsHeight += mBraveSearchBannerProcessor.getMinimumViewHeight();
-            int viewHeight = mContext.getResources().getDimensionPixelSize(
-                    R.dimen.omnibox_suggestion_semicompact_height);
-            while (mCalculatedSuggestionsHeight >= mDropdownHeight) {
-                mCalculatedSuggestionsHeight -= viewHeight;
-                viewInfoList.remove(viewInfoList.size() - 1);
-            }
-
             final PropertyModel model = mBraveSearchBannerProcessor.createModel();
             mBraveSearchBannerProcessor.populateModel(model);
             viewInfoList.add(new DropdownItemViewInfo(mBraveSearchBannerProcessor, model,
