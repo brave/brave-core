@@ -6,22 +6,21 @@
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_unittest_util.h"
 
 #include "base/bind.h"
+#include "base/check.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/creatives/creative_ad_unittest_util.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_focal_point_info.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_info.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
-#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 #include "url/gurl.h"
 
 namespace ads {
 
 void SaveCreativeAds(const CreativeNewTabPageAdList& creative_ads) {
   database::table::CreativeNewTabPageAds database_table;
-  database_table.Save(creative_ads, base::BindOnce([](const bool success) {
-                        ASSERT_TRUE(success);
-                      }));
+  database_table.Save(
+      creative_ads, base::BindOnce([](const bool success) { CHECK(success); }));
 }
 
 CreativeNewTabPageAdList BuildCreativeNewTabPageAds(const int count) {

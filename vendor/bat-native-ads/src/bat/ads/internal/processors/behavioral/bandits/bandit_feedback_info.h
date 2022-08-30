@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom-shared.h"
 
 namespace ads {
 namespace processor {

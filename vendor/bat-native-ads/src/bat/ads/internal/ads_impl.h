@@ -18,7 +18,8 @@
 #include "bat/ads/internal/conversions/conversions_observer.h"
 #include "bat/ads/internal/database/database_manager_observer.h"
 #include "bat/ads/internal/transfer/transfer_observer.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom-forward.h"
+#include "bat/ads/public/interfaces/ads.mojom-shared.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;

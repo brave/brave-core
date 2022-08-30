@@ -16,13 +16,14 @@
 #include "bat/ads/export.h"
 #include "bat/ads/history_filter_types.h"
 #include "bat/ads/history_sort_types.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom-forward.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 
 namespace base {
 class Time;
+class TimeDelta;
 }  // namespace base
 
 namespace ads {

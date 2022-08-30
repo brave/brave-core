@@ -16,6 +16,7 @@
 #include "bat/ads/internal/base/crypto/crypto_util.h"
 #include "bat/ads/internal/server/headers/via_header_util.h"
 #include "bat/ads/internal/server/url/hosts/server_host_util.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "url/gurl.h"
 
 namespace ads {

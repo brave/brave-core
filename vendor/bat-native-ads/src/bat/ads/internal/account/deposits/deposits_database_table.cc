@@ -16,6 +16,7 @@
 #include "bat/ads/internal/base/database/database_column_util.h"
 #include "bat/ads/internal/base/database/database_transaction_util.h"
 #include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 namespace database {

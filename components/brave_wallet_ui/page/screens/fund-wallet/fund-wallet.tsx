@@ -244,7 +244,8 @@ export const FundWalletScreen = () => {
                       networks={networksFilterOptions}
                       hideAddButton
                       hideAssetFilter
-                      renderToken={({ asset }) => {
+                      estimatedItemSize={100}
+                      renderToken={({ item: { asset } }) => {
                         return <BuyAssetOptionItem
                           isSelected={asset === selectedAsset}
                           key={asset.isErc721

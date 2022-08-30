@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/observer_list_types.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom-shared.h"
 
 namespace ads {
 

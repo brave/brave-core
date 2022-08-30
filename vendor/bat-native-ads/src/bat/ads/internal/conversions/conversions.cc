@@ -28,6 +28,7 @@
 #include "bat/ads/internal/conversions/verifiable_conversion_info.h"
 #include "bat/ads/internal/flags/flag_manager_util.h"
 #include "bat/ads/internal/locale/locale_manager.h"
+#include "bat/ads/internal/resources/behavioral/conversions/conversions_info.h"
 #include "bat/ads/internal/resources/behavioral/conversions/conversions_resource.h"
 #include "bat/ads/internal/resources/country_components.h"
 #include "bat/ads/internal/resources/resource_manager.h"

@@ -507,8 +507,6 @@
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.DropdownItemViewInfoListBuilder {
-    *** mDropdownHeight;
-    *** mPriorityOrderedSuggestionProcessors;
     public <init>(...);
 }
 

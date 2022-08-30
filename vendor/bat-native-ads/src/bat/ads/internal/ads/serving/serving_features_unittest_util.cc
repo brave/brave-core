@@ -8,10 +8,10 @@
 #include <map>
 #include <string>
 
+#include "base/check_op.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/internal/ads/serving/serving_features.h"
-#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -26,7 +26,7 @@ void ForceServingVersion(const int version) {
   scoped_feature_list.InitWithFeaturesAndParameters(
       {{kServing, serving_parameters}}, {});
 
-  ASSERT_EQ(version, GetServingVersion());
+  CHECK_EQ(version, GetServingVersion());
 }
 
 }  // namespace features

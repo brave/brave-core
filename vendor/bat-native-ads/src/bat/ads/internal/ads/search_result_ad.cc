@@ -16,6 +16,7 @@
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_info.h"
 #include "bat/ads/internal/history/history_manager.h"
 #include "bat/ads/internal/transfer/transfer.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"  // IWYU pragma: keep
 
 namespace ads {
 

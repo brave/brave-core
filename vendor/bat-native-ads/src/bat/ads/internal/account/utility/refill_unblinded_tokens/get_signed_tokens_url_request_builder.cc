@@ -8,6 +8,7 @@
 #include "base/check.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/server/url/hosts/server_host_util.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "url/gurl.h"
 
 namespace ads {

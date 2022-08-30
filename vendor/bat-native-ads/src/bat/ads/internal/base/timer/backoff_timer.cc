@@ -7,8 +7,6 @@
 
 #include <utility>
 
-#include "base/location.h"
-
 namespace ads {
 
 BackoffTimer::BackoffTimer() = default;

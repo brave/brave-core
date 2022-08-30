@@ -25,7 +25,13 @@ import {
 import 'emptykit.css'
 import '../../../ui/webui/resources/fonts/poppins.css'
 import '../../../ui/webui/resources/fonts/muli.css'
-import { SimplePageWrapper, WalletWidgetStandIn } from './screens/page-screen.styles'
+import {
+  ButtonText,
+  FeatureRequestButton,
+  IdeaButtonIcon,
+  SimplePageWrapper,
+  WalletWidgetStandIn
+} from './screens/page-screen.styles'
 
 // components
 import { CryptoView, LockScreen, WalletPageLayout, WalletSubViewLayout } from '../components/desktop'
@@ -38,6 +44,9 @@ import { FundWalletScreen } from './screens/fund-wallet/fund-wallet'
 import { OnboardingSuccess } from './screens/onboarding/onboarding-success/onboarding-success'
 import { DepositFundsScreen } from './screens/fund-wallet/deposit-funds'
 import { RestoreWallet } from './screens/restore-wallet/restore-wallet'
+import { getLocale } from '$web-common/locale'
+
+const featureRequestUrl = 'https://community.brave.com/tags/c/wallet/131/feature-request'
 
 export const Container = () => {
   // routing
@@ -113,6 +122,14 @@ export const Container = () => {
 
   const onOpenWalletSettings = React.useCallback(() => {
     dispatch(WalletPageActions.openWalletSettings())
+  }, [])
+
+  const onClickFeatureRequestButton = React.useCallback(() => {
+    chrome.tabs.create({ url: featureRequestUrl }, () => {
+      if (chrome.runtime.lastError) {
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+      }
+    })
   }, [])
 
   // computed
@@ -240,6 +257,13 @@ export const Container = () => {
           />
           <SweepstakesBanner />
         </WalletWidgetStandIn>
+      }
+
+      {!isWalletLocked &&
+        <FeatureRequestButton onClick={onClickFeatureRequestButton}>
+          <IdeaButtonIcon />
+          <ButtonText>{getLocale('braveWalletRequestFeatureButtonText')}</ButtonText>
+        </FeatureRequestButton>
       }
     </WalletPageLayout>
   )

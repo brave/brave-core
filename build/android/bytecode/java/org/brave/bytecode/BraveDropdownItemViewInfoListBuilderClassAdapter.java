@@ -19,12 +19,5 @@ public class BraveDropdownItemViewInfoListBuilderClassAdapter extends BraveClass
 
         redirectConstructor(
                 sDropdownItemViewInfoListBuilder, sBraveDropdownItemViewInfoListBuilder);
-
-        deleteField(sBraveDropdownItemViewInfoListBuilder, "mDropdownHeight");
-        makeProtectedField(sDropdownItemViewInfoListBuilder, "mDropdownHeight");
-
-        deleteField(sBraveDropdownItemViewInfoListBuilder, "mPriorityOrderedSuggestionProcessors");
-        makeProtectedField(
-                sDropdownItemViewInfoListBuilder, "mPriorityOrderedSuggestionProcessors");
     }
 }

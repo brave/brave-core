@@ -727,5 +727,8 @@ provideStrings({
   // Token detail modals
   braveWalletMakeTokenVisibleInstructions: 'You can make this asset visible again in the future by clicking the "+ Visible assets" button at the bottom of the "Portfolio" tab',
   braveWalletConfirmHidingToken: 'Hide',
-  braveWalletCancelHidingToken: 'Cancel'
+  braveWalletCancelHidingToken: 'Cancel',
+
+  // Request feature button
+  braveWalletRequestFeatureButtonText: 'Request feature'
 })

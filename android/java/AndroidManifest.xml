@@ -187,3 +187,8 @@
         <action android:name="android.net.VpnService" />
     </intent-filter>
 </service>
+
+<!-- This activity is used for search provider widget -->
+<activity android:name="org.chromium.chrome.browser.searchwidget.SearchWidgetProviderActivity"
+    android:theme="@style/Theme.Chromium.SearchActivity"
+    android:exported="true"/>

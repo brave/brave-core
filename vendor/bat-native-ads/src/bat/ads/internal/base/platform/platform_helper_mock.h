@@ -9,7 +9,7 @@
 #include <string>
 
 #include "bat/ads/internal/base/platform/platform_helper.h"
-#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
 
 namespace ads {
 

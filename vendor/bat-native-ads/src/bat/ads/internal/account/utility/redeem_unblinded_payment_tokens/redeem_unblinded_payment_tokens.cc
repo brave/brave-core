@@ -22,6 +22,7 @@
 #include "bat/ads/internal/flags/flag_manager_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
 #include "bat/ads/pref_names.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave_base/random.h"
 #include "net/http/http_status_code.h"
 

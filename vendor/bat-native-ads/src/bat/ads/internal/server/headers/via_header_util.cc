@@ -6,6 +6,7 @@
 #include "bat/ads/internal/server/headers/via_header_util.h"
 
 #include "base/strings/stringprintf.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ads/sys_info.h"
 
 namespace ads {

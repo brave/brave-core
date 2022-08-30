@@ -24,6 +24,7 @@
 #include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/database/database_manager.h"
 #include "bat/ads/internal/flags/flag_manager_util.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 

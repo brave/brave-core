@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
+#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom-shared.h"
 
 namespace ads {
 

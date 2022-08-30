@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/diagnostics/entries/device_id_diagnostic_entry.h"
 
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ads/sys_info.h"
 
 namespace ads {

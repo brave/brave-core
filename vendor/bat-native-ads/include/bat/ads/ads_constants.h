@@ -6,14 +6,16 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_CONSTANTS_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_CONSTANTS_H_
 
+#include "bat/ads/export.h"
+
 namespace ads {
-namespace resource {
 namespace data {
+namespace resource {
 
-extern const char g_catalog_json_schema_name[];
+ADS_EXPORT extern const char kCatalogJsonSchemaName[];
 
-}  // namespace data
 }  // namespace resource
+}  // namespace data
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_CONSTANTS_H_

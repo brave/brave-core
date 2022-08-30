@@ -15,7 +15,7 @@
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 #include "bat/ads/internal/database/database_table_interface.h"
 #include "bat/ads/internal/segments/segment_alias.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom-forward.h"
 
 namespace ads {
 namespace database {

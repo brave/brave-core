@@ -13,7 +13,7 @@
 #include "bat/ads/ads_callback.h"
 #include "bat/ads/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_handler_observer.h"
 #include "bat/ads/internal/ads/serving/inline_content_ad_serving_observer.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom-shared.h"
 
 namespace ads {
 

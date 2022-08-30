@@ -6,18 +6,17 @@
 #include "bat/ads/internal/creatives/promoted_content_ads/creative_promoted_content_ad_unittest_util.h"
 
 #include "base/bind.h"
+#include "base/check.h"
 #include "bat/ads/internal/creatives/creative_ad_unittest_util.h"
 #include "bat/ads/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info.h"
 #include "bat/ads/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_table.h"
-#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
 namespace ads {
 
 void SaveCreativeAds(const CreativePromotedContentAdList& creative_ads) {
   database::table::CreativePromotedContentAds database_table;
-  database_table.Save(creative_ads, base::BindOnce([](const bool success) {
-                        ASSERT_TRUE(success);
-                      }));
+  database_table.Save(
+      creative_ads, base::BindOnce([](const bool success) { CHECK(success); }));
 }
 
 CreativePromotedContentAdList BuildCreativePromotedContentAds(const int count) {

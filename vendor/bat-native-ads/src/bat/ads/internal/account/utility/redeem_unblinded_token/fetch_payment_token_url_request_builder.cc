@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token_util.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "url/gurl.h"
 
 namespace ads {

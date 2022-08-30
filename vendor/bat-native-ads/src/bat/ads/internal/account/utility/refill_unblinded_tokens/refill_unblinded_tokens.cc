@@ -32,7 +32,9 @@
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"  // IWYU pragma: keep
+#include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {

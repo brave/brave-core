@@ -127,7 +127,7 @@ constexpr char kNotificationAdUrlPrefix[] = "https://www.brave.com/ads/?";
 const base::Feature kServing{"AdServing", base::FEATURE_ENABLED_BY_DEFAULT};
 
 int GetDataResourceId(const std::string& name) {
-  if (name == ads::resource::data::g_catalog_json_schema_name) {
+  if (name == ads::data::resource::kCatalogJsonSchemaName) {
     return IDR_ADS_CATALOG_SCHEMA;
   }
 
