@@ -20,7 +20,7 @@ import org.chromium.chrome.browser.omnibox.suggestions.DropdownItemProcessor;
 import org.chromium.ui.base.PageTransition;
 import org.chromium.ui.modelutil.PropertyModel;
 
-/** A class that handles model and view creation for the suggestion headers. */
+/** A class that handles model and view creation for the suggestion brave search banner. */
 public class BraveSearchBannerProcessor implements DropdownItemProcessor {
     private final BraveSuggestionHost mSuggestionHost;
     private final int mMinimumHeight;

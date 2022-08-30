@@ -13,11 +13,6 @@
     *** createViewProvider(...);
 }
 
--keep class org.chromium.chrome.browser.omnibox.suggestions.DropdownItemViewInfoListBuilder {
-    *** getVisibleSuggestionsCount(...);
-    *** getProcessorForSuggestion(...);
-}
-
 -keep class org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter {
     *** didSearchEnginesChange(...);
     *** computeStartIndexForRecentSearchEngines(...);
