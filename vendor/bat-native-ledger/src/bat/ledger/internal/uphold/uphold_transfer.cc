@@ -5,6 +5,8 @@
 
 #include <utility>
 
+#include "chrome/browser/lifetime/application_lifetime.h"
+
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/endpoint/uphold/uphold_server.h"
@@ -18,116 +20,120 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace ledger {
-namespace uphold {
+namespace ledger::uphold {
 
 UpholdTransfer::UpholdTransfer(LedgerImpl* ledger)
-    : ledger_(ledger),
+    : ledger_((DCHECK(ledger), ledger)),
       uphold_server_(std::make_unique<endpoint::UpholdServer>(ledger)) {}
 
 UpholdTransfer::~UpholdTransfer() = default;
 
-void UpholdTransfer::Start(const Transaction& transaction,
-                           client::TransactionCallback callback) {
-  auto uphold_wallet = ledger_->uphold()->GetWallet();
-  if (!uphold_wallet) {
+void UpholdTransfer::CreateTransaction(
+    const Transaction& transaction,
+    client::CreateTransactionCallback callback) {
+  const auto wallet = ledger_->uphold()->GetWallet();
+  if (!wallet) {
     BLOG(0, "Uphold wallet is null!");
-    return callback(type::Result::LEDGER_ERROR, "");
+    return std::move(callback).Run(type::Result::LEDGER_ERROR, "");
   }
 
-  if (uphold_wallet->status != type::WalletStatus::VERIFIED) {
-    BLOG(0, "Wallet status should have been VERIFIED!");
-    return callback(type::Result::LEDGER_ERROR, "");
+  if (wallet->status != type::WalletStatus::VERIFIED) {
+    BLOG(0, "Uphold wallet status should have been VERIFIED!");
+    return std::move(callback).Run(type::Result::LEDGER_ERROR, "");
   }
 
-  CheckWalletState(uphold_wallet.get());
-
-  auto url_callback =
-      std::bind(&UpholdTransfer::OnCreateTransaction, this, _1, _2, callback);
+  CheckWalletState(wallet.get());
 
   uphold_server_->post_transaction()->Request(
-      uphold_wallet->token, uphold_wallet->address, transaction, url_callback);
+      wallet->token, wallet->address, transaction,
+      base::BindOnce(&UpholdTransfer::OnCreateTransaction,
+                     base::Unretained(this), std::move(callback)));
 }
 
-void UpholdTransfer::OnCreateTransaction(const type::Result result,
-                                         const std::string& id,
-                                         client::TransactionCallback callback) {
-  auto uphold_wallet = ledger_->uphold()->GetWallet();
-  if (!uphold_wallet) {
+void UpholdTransfer::OnCreateTransaction(
+    client::CreateTransactionCallback callback,
+    type::Result result,
+    std::string&& transaction_id) {
+  const auto wallet = ledger_->uphold()->GetWallet();
+  if (!wallet) {
     BLOG(0, "Uphold wallet is null!");
-    return callback(type::Result::LEDGER_ERROR, "");
+    return std::move(callback).Run(type::Result::LEDGER_ERROR, "");
   }
 
-  if (uphold_wallet->status != type::WalletStatus::VERIFIED) {
-    BLOG(0, "Wallet status should have been VERIFIED!");
-    return callback(type::Result::LEDGER_ERROR, "");
+  if (wallet->status != type::WalletStatus::VERIFIED) {
+    BLOG(0, "Uphold wallet status should have been VERIFIED!");
+    return std::move(callback).Run(type::Result::LEDGER_ERROR, "");
   }
 
-  CheckWalletState(uphold_wallet.get());
+  CheckWalletState(wallet.get());
 
   if (result == type::Result::EXPIRED_TOKEN) {
     ledger_->uphold()->DisconnectWallet(
         ledger::notifications::kWalletDisconnected);
-    return callback(type::Result::EXPIRED_TOKEN, "");
+    return std::move(callback).Run(type::Result::EXPIRED_TOKEN, "");
   }
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK || transaction_id.empty()) {
     // TODO(nejczdovc): add retry logic to all errors in this function
-    return callback(type::Result::LEDGER_ERROR, "");
+    return std::move(callback).Run(type::Result::LEDGER_ERROR, "");
   }
 
-  CommitTransaction(id, callback);
+  std::move(callback).Run(result, std::move(transaction_id));
 }
 
 void UpholdTransfer::CommitTransaction(const std::string& transaction_id,
-                                       client::TransactionCallback callback) {
-  auto uphold_wallet = ledger_->uphold()->GetWallet();
-  if (!uphold_wallet) {
+                                       ledger::ResultCallback callback) {
+  const auto wallet = ledger_->uphold()->GetWallet();
+  if (!wallet) {
     BLOG(0, "Uphold wallet is null!");
-    return callback(type::Result::LEDGER_ERROR, "");
+    return std::move(callback).Run(type::Result::LEDGER_ERROR);
   }
+
+  if (wallet->status != type::WalletStatus::VERIFIED) {
+    BLOG(0, "Uphold wallet status should have been VERIFIED!");
+    return std::move(callback).Run(type::Result::LEDGER_ERROR);
+  }
+
+  CheckWalletState(wallet.get());
 
   if (transaction_id.empty()) {
-    BLOG(0, "Transaction id not found");
-    return callback(type::Result::LEDGER_ERROR, "");
+    BLOG(0, "Transaction ID is empty!");
+    return std::move(callback).Run(type::Result::LEDGER_ERROR);
   }
-
-  auto url_callback = std::bind(&UpholdTransfer::OnCommitTransaction, this, _1,
-                                transaction_id, callback);
 
   uphold_server_->post_transaction_commit()->Request(
-      uphold_wallet->token, uphold_wallet->address, transaction_id,
-      url_callback);
+      wallet->token, wallet->address, transaction_id,
+      base::BindOnce(&UpholdTransfer::OnCommitTransaction,
+                     base::Unretained(this), std::move(callback)));
 }
 
-void UpholdTransfer::OnCommitTransaction(const type::Result result,
-                                         const std::string& transaction_id,
-                                         client::TransactionCallback callback) {
-  auto uphold_wallet = ledger_->uphold()->GetWallet();
-  if (!uphold_wallet) {
+void UpholdTransfer::OnCommitTransaction(ledger::ResultCallback callback,
+                                         type::Result result) {
+  // chrome::AttemptUserExit();
+  const auto wallet = ledger_->uphold()->GetWallet();
+  if (!wallet) {
     BLOG(0, "Uphold wallet is null!");
-    return callback(type::Result::LEDGER_ERROR, "");
+    return std::move(callback).Run(type::Result::LEDGER_ERROR);
   }
 
-  if (uphold_wallet->status != type::WalletStatus::VERIFIED) {
-    BLOG(0, "Wallet status should have been VERIFIED!");
-    return callback(type::Result::LEDGER_ERROR, "");
+  if (wallet->status != type::WalletStatus::VERIFIED) {
+    BLOG(0, "Uphold wallet status should have been VERIFIED!");
+    return std::move(callback).Run(type::Result::LEDGER_ERROR);
   }
 
-  CheckWalletState(uphold_wallet.get());
+  CheckWalletState(wallet.get());
 
   if (result == type::Result::EXPIRED_TOKEN) {
     ledger_->uphold()->DisconnectWallet(
         ledger::notifications::kWalletDisconnected);
-    return callback(type::Result::EXPIRED_TOKEN, "");
+    return std::move(callback).Run(type::Result::EXPIRED_TOKEN);
   }
 
   if (result != type::Result::LEDGER_OK) {
-    return callback(type::Result::LEDGER_ERROR, "");
+    return std::move(callback).Run(type::Result::LEDGER_ERROR);
   }
 
-  callback(type::Result::LEDGER_OK, transaction_id);
+  std::move(callback).Run(result);
 }
 
-}  // namespace uphold
-}  // namespace ledger
+}  // namespace ledger::uphold

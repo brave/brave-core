@@ -73,6 +73,7 @@ void SKUTransaction::Create(type::SKUOrderPtr order,
       *transaction,
       destination,
       wallet_type,
+      order->contribution_id,
       callback);
 
   ledger_->database()->SaveSKUTransaction(transaction->Clone(), save_callback);
@@ -82,6 +83,7 @@ void SKUTransaction::OnTransactionSaved(type::Result result,
                                         const type::SKUTransaction& transaction,
                                         const std::string& destination,
                                         const std::string& wallet_type,
+                                        const std::string& contribution_id,
                                         ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Transaction was not saved");
@@ -92,7 +94,6 @@ void SKUTransaction::OnTransactionSaved(type::Result result,
   auto transfer_callback = std::bind(&SKUTransaction::OnTransfer,
       this,
       _1,
-      _2,
       transaction,
       callback);
 
@@ -100,11 +101,11 @@ void SKUTransaction::OnTransactionSaved(type::Result result,
       transaction,
       destination,
       wallet_type,
+      contribution_id,
       transfer_callback);
 }
 
 void SKUTransaction::OnTransfer(type::Result result,
-                                const std::string& external_transaction_id,
                                 const type::SKUTransaction& transaction,
                                 ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
@@ -113,6 +114,8 @@ void SKUTransaction::OnTransfer(type::Result result,
     return;
   }
 
+  // TODO: do a transaction_id lookup in external_transactions based on contribution_id
+  std::string external_transaction_id;
   if (external_transaction_id.empty()) {
     callback(type::Result::LEDGER_OK);
     return;

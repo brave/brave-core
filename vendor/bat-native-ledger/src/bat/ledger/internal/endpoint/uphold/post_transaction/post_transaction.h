@@ -107,45 +107,36 @@
 namespace ledger {
 class LedgerImpl;
 
-namespace endpoint {
-namespace uphold {
+namespace endpoint::uphold {
 
-using PostTransactionCallback = std::function<void(
-    const type::Result result,
-    const std::string& id)>;
+using PostTransactionCallback =
+    base::OnceCallback<void(type::Result, std::string&& transaction_id)>;
 
 class PostTransaction {
  public:
-  explicit PostTransaction(LedgerImpl* ledger);
+  explicit PostTransaction(LedgerImpl*);
   ~PostTransaction();
 
-  void Request(
-      const std::string& token,
-      const std::string& address,
-      const ::ledger::uphold::Transaction& transaction,
-      PostTransactionCallback callback);
+  void Request(const std::string& token,
+               const std::string& address,
+               const ledger::uphold::Transaction&,
+               PostTransactionCallback);
 
  private:
   std::string GetUrl(const std::string& address);
 
-  std::string GeneratePayload(
-      const ::ledger::uphold::Transaction& transaction);
+  std::string GeneratePayload(const ledger::uphold::Transaction&);
 
-  type::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(int status_code);
 
-  type::Result ParseBody(
-      const std::string& body,
-      std::string* id);
+  type::Result ParseBody(const std::string& body, std::string* id);
 
-  void OnRequest(
-      const type::UrlResponse& response,
-      PostTransactionCallback callback);
+  void OnRequest(PostTransactionCallback, const type::UrlResponse&);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
 
-}  // namespace uphold
-}  // namespace endpoint
+}  // namespace endpoint::uphold
 }  // namespace ledger
 
 #endif  // BRAVELEDGER_ENDPOINT_UPHOLD_POST_TRANSACTION_POST_TRANSACTION_H_

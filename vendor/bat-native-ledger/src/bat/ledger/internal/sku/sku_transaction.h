@@ -37,10 +37,10 @@ class SKUTransaction {
                           const type::SKUTransaction& transaction,
                           const std::string& destination,
                           const std::string& wallet_type,
+                          const std::string& contribution_id,
                           ledger::LegacyResultCallback callback);
 
   void OnTransfer(type::Result result,
-                  const std::string& external_transaction_id,
                   const type::SKUTransaction& transaction,
                   ledger::LegacyResultCallback callback);
 

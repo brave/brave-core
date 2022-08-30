@@ -83,6 +83,7 @@ source_set("bat_native_ledger_tests") {
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/uphold/get_card/get_card_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/uphold/get_cards/get_cards_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/uphold/get_me/get_me_unittest.cc",
+    #"//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/uphold/get_transaction/get_transaction_uphold_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/uphold/patch_card/patch_card_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/uphold/post_cards/post_cards_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/uphold/post_oauth/post_oauth_unittest.cc",

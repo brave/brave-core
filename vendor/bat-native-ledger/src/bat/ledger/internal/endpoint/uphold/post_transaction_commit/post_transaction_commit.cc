@@ -12,31 +12,23 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-using std::placeholders::_1;
+namespace ledger::endpoint::uphold {
 
-namespace ledger {
-namespace endpoint {
-namespace uphold {
-
-PostTransactionCommit::PostTransactionCommit(LedgerImpl* ledger):
-    ledger_(ledger) {
-  DCHECK(ledger_);
-}
+PostTransactionCommit::PostTransactionCommit(LedgerImpl* ledger)
+    : ledger_((DCHECK(ledger), ledger)) {}
 
 PostTransactionCommit::~PostTransactionCommit() = default;
 
-std::string PostTransactionCommit::GetUrl(
-    const std::string& address,
-    const std::string& transaction_id) {
-  const std::string path = base::StringPrintf(
-      "/v0/me/cards/%s/transactions/%s/commit",
-      address.c_str(),
-      transaction_id.c_str());
+std::string PostTransactionCommit::GetUrl(const std::string& address,
+                                          const std::string& transaction_id) {
+  const std::string path =
+      base::StringPrintf("/v0/me/cards/%s/transactions/%s/commit",
+                         address.c_str(), transaction_id.c_str());
 
   return GetServerUrl(path);
 }
 
-type::Result PostTransactionCommit::CheckStatusCode(const int status_code) {
+type::Result PostTransactionCommit::CheckStatusCode(int status_code) {
   if (status_code == net::HTTP_UNAUTHORIZED) {
     BLOG(0, "Unauthorized access");
     return type::Result::EXPIRED_TOKEN;
@@ -50,31 +42,25 @@ type::Result PostTransactionCommit::CheckStatusCode(const int status_code) {
   return type::Result::LEDGER_OK;
 }
 
-void PostTransactionCommit::Request(
-    const std::string& token,
-    const std::string& address,
-    const std::string& transaction_id,
-    PostTransactionCommitCallback callback) {
-  auto url_callback = std::bind(&PostTransactionCommit::OnRequest,
-      this,
-      _1,
-      callback);
-
+void PostTransactionCommit::Request(const std::string& token,
+                                    const std::string& address,
+                                    const std::string& transaction_id,
+                                    PostTransactionCommitCallback callback) {
   auto request = type::UrlRequest::New();
   request->url = GetUrl(address, transaction_id);
   request->headers = RequestAuthorization(token);
   request->content_type = "application/json; charset=utf-8";
   request->method = type::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), url_callback);
+
+  ledger_->LoadURL(std::move(request),
+                   base::BindOnce(&PostTransactionCommit::OnRequest,
+                                  base::Unretained(this), std::move(callback)));
 }
 
-void PostTransactionCommit::OnRequest(
-    const type::UrlResponse& response,
-    PostTransactionCommitCallback callback) {
+void PostTransactionCommit::OnRequest(PostTransactionCommitCallback callback,
+                                      const type::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
-  callback(CheckStatusCode(response.status_code));
+  std::move(callback).Run(CheckStatusCode(response.status_code));
 }
 
-}  // namespace uphold
-}  // namespace endpoint
-}  // namespace ledger
+}  // namespace ledger::endpoint::uphold

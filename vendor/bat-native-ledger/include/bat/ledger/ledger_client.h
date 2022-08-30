@@ -47,6 +47,9 @@ using GetPromotionListCallback = std::function<void(type::PromotionList)>;
 using TransactionCallback =
     std::function<void(const type::Result, const std::string&)>;
 
+using CreateTransactionCallback =
+    base::OnceCallback<void(type::Result, std::string&& transaction_id)>;
+
 using GetServerPublisherInfoCallback =
     std::function<void(type::ServerPublisherInfoPtr)>;
 

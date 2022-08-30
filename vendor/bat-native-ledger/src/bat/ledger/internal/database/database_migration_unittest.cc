@@ -808,4 +808,11 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_35) {
   EXPECT_FALSE(GetDB()->DoesTableExist("server_publisher_amounts"));
 }
 
+TEST_F(LedgerDatabaseMigrationTest, Migration_36) {
+  DatabaseMigration::SetTargetVersionForTesting(36);
+  InitializeDatabaseAtVersion(35);
+  InitializeLedger();
+  EXPECT_TRUE(GetDB()->DoesTableExist("external_transactions"));
+}
+
 }  // namespace ledger

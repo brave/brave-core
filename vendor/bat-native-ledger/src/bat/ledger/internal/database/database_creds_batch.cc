@@ -61,11 +61,10 @@ void DatabaseCredsBatch::InsertOrUpdate(type::CredsBatchPtr creds,
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback,
-      _1,
-      callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->RunDBTransaction(
+      std::move(transaction),
+      std::bind(&OnResultCallback<ledger::LegacyResultCallback>,
+                std::move(callback), _1));
 }
 
 void DatabaseCredsBatch::GetRecordByTrigger(
@@ -176,11 +175,10 @@ void DatabaseCredsBatch::SaveSignedCreds(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback,
-      _1,
-      callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->RunDBTransaction(
+      std::move(transaction),
+      std::bind(&OnResultCallback<ledger::LegacyResultCallback>,
+                std::move(callback), _1));
 }
 
 void DatabaseCredsBatch::GetAllRecords(
@@ -278,11 +276,10 @@ void DatabaseCredsBatch::UpdateStatus(const std::string& trigger_id,
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback,
-      _1,
-      callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->RunDBTransaction(
+      std::move(transaction),
+      std::bind(&OnResultCallback<ledger::LegacyResultCallback>,
+                std::move(callback), _1));
 }
 
 void DatabaseCredsBatch::UpdateRecordsStatus(
@@ -312,11 +309,10 @@ void DatabaseCredsBatch::UpdateRecordsStatus(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback,
-      _1,
-      callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->RunDBTransaction(
+      std::move(transaction),
+      std::bind(&OnResultCallback<ledger::LegacyResultCallback>,
+                std::move(callback), _1));
 }
 
 void DatabaseCredsBatch::GetRecordsByTriggers(

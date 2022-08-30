@@ -14,22 +14,29 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-namespace ledger::endpoint::uphold {
+using std::placeholders::_1;
 
-PostTransaction::PostTransaction(LedgerImpl* ledger)
-    : ledger_((DCHECK(ledger), ledger)) {}
+namespace ledger {
+namespace endpoint {
+namespace uphold {
+
+PostTransaction::PostTransaction(LedgerImpl* ledger):
+    ledger_(ledger) {
+  DCHECK(ledger_);
+}
 
 PostTransaction::~PostTransaction() = default;
 
 std::string PostTransaction::GetUrl(const std::string& address) {
-  const std::string path =
-      base::StringPrintf("/v0/me/cards/%s/transactions", address.c_str());
+  const std::string path = base::StringPrintf(
+      "/v0/me/cards/%s/transactions",
+      address.c_str());
 
   return GetServerUrl(path);
 }
 
 std::string PostTransaction::GeneratePayload(
-    const ledger::uphold::Transaction& transaction) {
+    const ::ledger::uphold::Transaction& transaction) {
   base::Value::Dict denomination;
   denomination.Set("amount", base::StringPrintf("%f", transaction.amount));
   denomination.Set("currency", "BAT");
@@ -44,7 +51,7 @@ std::string PostTransaction::GeneratePayload(
   return json;
 }
 
-type::Result PostTransaction::CheckStatusCode(int status_code) {
+type::Result PostTransaction::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_UNAUTHORIZED) {
     BLOG(0, "Unauthorized access");
     return type::Result::EXPIRED_TOKEN;
@@ -58,56 +65,65 @@ type::Result PostTransaction::CheckStatusCode(int status_code) {
   return type::Result::LEDGER_OK;
 }
 
-type::Result PostTransaction::ParseBody(const std::string& body,
-                                        std::string* transaction_id) {
-  DCHECK(transaction_id);
+type::Result PostTransaction::ParseBody(
+    const std::string& body,
+    std::string* id) {
+  DCHECK(id);
 
-  const auto value = base::JSONReader::Read(body);
+  absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Invalid body!");
+    BLOG(0, "Invalid JSON");
     return type::Result::LEDGER_ERROR;
   }
 
   const base::Value::Dict& dict = value->GetDict();
-  const auto* id = dict.FindString("id");
-  if (!id) {
-    BLOG(0, "id is missing!");
+  const auto* id_str = dict.FindString("id");
+  if (!id_str) {
+    BLOG(0, "Missing id");
     return type::Result::LEDGER_ERROR;
   }
 
-  *transaction_id = *id;
+  *id = *id_str;
 
   return type::Result::LEDGER_OK;
 }
 
-void PostTransaction::Request(const std::string& token,
-                              const std::string& address,
-                              const ledger::uphold::Transaction& transaction,
-                              PostTransactionCallback callback) {
+void PostTransaction::Request(
+    const std::string& token,
+    const std::string& address,
+    const ::ledger::uphold::Transaction& transaction,
+    PostTransactionCallback callback) {
+  auto url_callback = std::bind(&PostTransaction::OnRequest,
+      this,
+      _1,
+      callback);
+
   auto request = type::UrlRequest::New();
   request->url = GetUrl(address);
   request->content = GeneratePayload(transaction);
   request->headers = RequestAuthorization(token);
   request->content_type = "application/json; charset=utf-8";
   request->method = type::UrlMethod::POST;
-
-  ledger_->LoadURL(std::move(request),
-                   base::BindOnce(&PostTransaction::OnRequest,
-                                  base::Unretained(this), std::move(callback)));
+  ledger_->LoadURL(std::move(request), url_callback);
 }
 
-void PostTransaction::OnRequest(PostTransactionCallback callback,
-                                const type::UrlResponse& response) {
+void PostTransaction::OnRequest(
+    const type::UrlResponse& response,
+    PostTransactionCallback callback) {
   ledger::LogUrlResponse(__func__, response);
 
   type::Result result = CheckStatusCode(response.status_code);
+
   if (result != type::Result::LEDGER_OK) {
-    return std::move(callback).Run(result, "");
+    callback(result, "");
+    return;
   }
 
-  std::string transaction_id;
-  result = ParseBody(response.body, &transaction_id);
-  std::move(callback).Run(result, std::move(transaction_id));
+  std::string id;
+  result = ParseBody(response.body, &id);
+  callback(result, id);
 }
 
-}  // namespace ledger::endpoint::uphold
+}  // namespace uphold
+}  // namespace endpoint
+}  // namespace ledger

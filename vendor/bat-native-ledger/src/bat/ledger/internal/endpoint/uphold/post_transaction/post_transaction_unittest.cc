@@ -133,10 +133,10 @@ TEST_F(PostTransactionTest, ServerOK) {
       "bd91a720-f3f9-42f8-b2f5-19548004f6a7",
       "4c2b665ca060d912fec5c735c734859a06118cc8",
       transaction,
-      [](const type::Result result, const std::string& id) {
+      base::BindOnce([](type::Result result, const std::string& id) {
         EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(id, "d382d3ae-8462-4b2c-9b60-b669539f41b2");
-      });
+      }));
 }
 
 TEST_F(PostTransactionTest, ServerError401) {
@@ -158,10 +158,10 @@ TEST_F(PostTransactionTest, ServerError401) {
       "bd91a720-f3f9-42f8-b2f5-19548004f6a7",
       "4c2b665ca060d912fec5c735c734859a06118cc8",
       transaction,
-      [](const type::Result result, const std::string& id) {
+      base::BindOnce([](const type::Result result, const std::string& id) {
         EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
         EXPECT_EQ(id, "");
-      });
+      }));
 }
 
 TEST_F(PostTransactionTest, ServerErrorRandom) {
@@ -183,10 +183,10 @@ TEST_F(PostTransactionTest, ServerErrorRandom) {
       "bd91a720-f3f9-42f8-b2f5-19548004f6a7",
       "4c2b665ca060d912fec5c735c734859a06118cc8",
       transaction,
-      [](const type::Result result, const std::string& id) {
+      base::BindOnce([](const type::Result result, const std::string& id) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_EQ(id, "");
-      });
+      }));
 }
 
 }  // namespace uphold

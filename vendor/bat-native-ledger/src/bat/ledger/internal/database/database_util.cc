@@ -11,7 +11,7 @@
 
 namespace {
 
-const int kCurrentVersionNumber = 35;
+const int kCurrentVersionNumber = 36;
 const int kCompatibleVersionNumber = 1;
 
 }  // namespace
@@ -108,17 +108,6 @@ int32_t GetCurrentVersion() {
 
 int32_t GetCompatibleVersion() {
   return kCompatibleVersionNumber;
-}
-
-void OnResultCallback(type::DBCommandResponsePtr response,
-                      ledger::LegacyResultCallback callback) {
-  if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
-    callback(type::Result::LEDGER_ERROR);
-    return;
-  }
-
-  callback(type::Result::LEDGER_OK);
 }
 
 int GetIntColumn(type::DBRecord* record, const int index) {

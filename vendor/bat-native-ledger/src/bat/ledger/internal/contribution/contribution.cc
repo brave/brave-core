@@ -527,30 +527,33 @@ void Contribution::TransferFunds(
     const type::SKUTransaction& transaction,
     const std::string& destination,
     const std::string& wallet_type,
-    client::TransactionCallback callback) {
+    const std::string& contribution_id,
+    ledger::LegacyResultCallback callback) {
   if (wallet_type == constant::kWalletUphold) {
     ledger_->uphold()->TransferFunds(
-        transaction.amount,
-        destination,
-        callback);
+        contribution_id, transaction.amount, destination,
+        base::BindOnce([](ledger::LegacyResultCallback callback,
+                          type::Result result) { callback(result); },
+                       std::move(callback)));
     return;
   }
 
-  if (wallet_type == constant::kWalletBitflyer) {
-    ledger_->bitflyer()->TransferFunds(transaction.amount, destination,
-                                       callback);
-    return;
-  }
+  //if (wallet_type == constant::kWalletBitflyer) {
+  //  ledger_->bitflyer()->TransferFunds(transaction.amount, destination,
+  //                                     callback);
+  //  return;
+  //}
 
-  if (wallet_type == constant::kWalletGemini) {
-    ledger_->gemini()->TransferFunds(transaction.amount, destination, callback);
-    return;
-  }
+  //if (wallet_type == constant::kWalletGemini) {
+  //  ledger_->gemini()->
+  //      (transaction.amount, destination, callback);
+  //  return;
+  //}
 
-  if (wallet_type == constant::kWalletUnBlinded) {
-    sku_->Merchant(transaction, callback);
-    return;
-  }
+  //if (wallet_type == constant::kWalletUnBlinded) {
+  //  sku_->Merchant(transaction, callback);
+  //  return;
+  //}
 
   NOTREACHED();
   BLOG(0, "Wallet type not supported: " << wallet_type);

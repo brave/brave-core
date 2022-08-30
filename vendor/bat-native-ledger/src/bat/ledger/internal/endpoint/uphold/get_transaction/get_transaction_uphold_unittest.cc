@@ -11,12 +11,12 @@
 #include "base/test/task_environment.h"
 #include "bat/ledger/internal/ledger_client_mock.h"
 #include "bat/ledger/internal/ledger_impl_mock.h"
-#include "bat/ledger/internal/endpoint/uphold/post_transaction_commit/post_transaction_commit.h"
+#include "bat/ledger/internal/endpoint/uphold/post_transaction/post_transaction.h"
 #include "bat/ledger/ledger.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=PostTransactionCommitTest.*
+// npm run test -- brave_unit_tests --filter=PostTransactionTest.*
 
 using ::testing::_;
 using ::testing::Invoke;
@@ -25,68 +25,61 @@ namespace ledger {
 namespace endpoint {
 namespace uphold {
 
-class PostTransactionCommitTest : public testing::Test {
+class PostTransactionTest : public testing::Test {
  private:
   base::test::TaskEnvironment scoped_task_environment_;
 
  protected:
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
   std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
-  std::unique_ptr<PostTransactionCommit> transaction_;
+  std::unique_ptr<PostTransaction> transaction_;
 
-  PostTransactionCommitTest() {
+  PostTransactionTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
         std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
-    transaction_ =
-        std::make_unique<PostTransactionCommit>(mock_ledger_impl_.get());
+    transaction_ = std::make_unique<PostTransaction>(mock_ledger_impl_.get());
   }
 };
 
-TEST_F(PostTransactionCommitTest, ServerOK) {
+TEST_F(PostTransactionTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
           [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
-            response.status_code = 200;
+            response.status_code = 202;
             response.url = request->url;
             response.body = R"({
-             "application": {
-               "name": "Brave Browser"
-             },
-             "createdAt": "2020-06-10T18:58:22.351Z",
+             "createdAt": "2020-06-10T18:58:21.683Z",
              "denomination": {
-               "pair": "BATBAT",
-               "rate": "1.00",
                "amount": "1.00",
-               "currency": "BAT"
+               "currency": "BAT",
+               "pair": "BATBAT",
+               "rate": "1.00"
              },
              "fees": [],
              "id": "d382d3ae-8462-4b2c-9b60-b669539f41b2",
-             "message": null,
              "network": "uphold",
              "normalized": [
                {
+                 "commission": "0.00",
+                 "currency": "USD",
                  "fee": "0.00",
                  "rate": "0.24688",
-                 "amount": "0.25",
                  "target": "origin",
-                 "currency": "USD",
-                 "commission": "0.00"
+                 "amount": "0.25"
                }
              ],
              "params": {
                "currency": "BAT",
                "margin": "0.00",
                "pair": "BATBAT",
-               "progress": "1",
                "rate": "1.00",
                "ttl": 3599588,
                "type": "internal"
              },
              "priority": "normal",
-             "reference": null,
-             "status": "completed",
+             "status": "pending",
              "type": "transfer",
              "destination": {
                "amount": "1.00",
@@ -125,28 +118,28 @@ TEST_F(PostTransactionCommitTest, ServerOK) {
                  }
                },
                "rate": "1.00",
-               "sources": [
-                 {
-                   "id": "463dca02-83ec-4bd6-93b0-73bf5dbe35ac",
-                   "amount": "1.00"
-                 }
-               ],
+               "sources": [],
                "type": "card"
              }
             })";
             std::move(callback).Run(response);
           }));
 
+  ::ledger::uphold::Transaction transaction;
+  transaction.amount = 1.0;
+  transaction.address = "6654ecb0-6079-4f6c-ba58-791cc890a561";
+
   transaction_->Request(
       "bd91a720-f3f9-42f8-b2f5-19548004f6a7",
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      "6654ecb0-6079-4f6c-ba58-791cc890a561",
-      base::BindOnce([](type::Result result) {
+      transaction,
+      [](const type::Result result, const std::string& id) {
         EXPECT_EQ(result, type::Result::LEDGER_OK);
-      }));
+        EXPECT_EQ(id, "d382d3ae-8462-4b2c-9b60-b669539f41b2");
+      });
 }
 
-TEST_F(PostTransactionCommitTest, ServerError401) {
+TEST_F(PostTransactionTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
           [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
@@ -157,16 +150,21 @@ TEST_F(PostTransactionCommitTest, ServerError401) {
             std::move(callback).Run(response);
           }));
 
+  ::ledger::uphold::Transaction transaction;
+  transaction.amount = 1.0;
+  transaction.address = "6654ecb0-6079-4f6c-ba58-791cc890a561";
+
   transaction_->Request(
       "bd91a720-f3f9-42f8-b2f5-19548004f6a7",
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      "6654ecb0-6079-4f6c-ba58-791cc890a561",
-      base::BindOnce([](type::Result result) {
+      transaction,
+      [](const type::Result result, const std::string& id) {
         EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
-      }));
+        EXPECT_EQ(id, "");
+      });
 }
 
-TEST_F(PostTransactionCommitTest, ServerErrorRandom) {
+TEST_F(PostTransactionTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
           [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
@@ -177,13 +175,18 @@ TEST_F(PostTransactionCommitTest, ServerErrorRandom) {
             std::move(callback).Run(response);
           }));
 
+  ::ledger::uphold::Transaction transaction;
+  transaction.amount = 1.0;
+  transaction.address = "6654ecb0-6079-4f6c-ba58-791cc890a561";
+
   transaction_->Request(
       "bd91a720-f3f9-42f8-b2f5-19548004f6a7",
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      "6654ecb0-6079-4f6c-ba58-791cc890a561",
-      base::BindOnce([](type::Result result) {
+      transaction,
+      [](const type::Result result, const std::string& id) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      }));
+        EXPECT_EQ(id, "");
+      });
 }
 
 }  // namespace uphold

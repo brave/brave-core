@@ -561,3 +561,23 @@ struct BraveWallet {
   string payment_id;
   array<uint8> recovery_seed;
 };
+
+enum WalletProvider {
+  BITFLYER = 0,
+  GEMINI = 1,
+  UPHOLD = 2
+};
+
+enum ExternalTransactionStatus {
+  STATUS_0 = 0,
+  STATUS_1 = 1,
+  STATUS_2 = 2
+};
+
+struct ExternalTransaction {
+  WalletProvider wallet_provider;
+  string transaction_id;
+  string contribution_id;
+  bool is_fee;
+  ExternalTransactionStatus status;
+};

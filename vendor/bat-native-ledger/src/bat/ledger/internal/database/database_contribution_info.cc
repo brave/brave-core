@@ -90,11 +90,10 @@ void DatabaseContributionInfo::InsertOrUpdate(
 
   publishers_->InsertOrUpdate(transaction.get(), info->Clone());
 
-  auto transaction_callback = std::bind(&OnResultCallback,
-      _1,
-      callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->RunDBTransaction(
+      std::move(transaction),
+      std::bind(&OnResultCallback<ledger::LegacyResultCallback>,
+                std::move(callback), _1));
 }
 
 void DatabaseContributionInfo::GetRecord(
@@ -588,11 +587,10 @@ void DatabaseContributionInfo::UpdateStep(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback,
-      _1,
-      callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->RunDBTransaction(
+      std::move(transaction),
+      std::bind(&OnResultCallback<ledger::LegacyResultCallback>,
+                std::move(callback), _1));
 }
 
 void DatabaseContributionInfo::UpdateStepAndCount(
@@ -622,11 +620,10 @@ void DatabaseContributionInfo::UpdateStepAndCount(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback,
-      _1,
-      callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->RunDBTransaction(
+      std::move(transaction),
+      std::bind(&OnResultCallback<ledger::LegacyResultCallback>,
+                std::move(callback), _1));
 }
 
 void DatabaseContributionInfo::UpdateContributedAmount(
@@ -657,11 +654,10 @@ void DatabaseContributionInfo::FinishAllInProgressRecords(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback,
-      _1,
-      callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->RunDBTransaction(
+      std::move(transaction),
+      std::bind(&OnResultCallback<ledger::LegacyResultCallback>,
+                std::move(callback), _1));
 }
 
 }  // namespace database

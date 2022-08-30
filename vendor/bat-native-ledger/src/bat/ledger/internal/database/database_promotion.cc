@@ -70,11 +70,10 @@ void DatabasePromotion::InsertOrUpdate(type::PromotionPtr info,
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback,
-      _1,
-      callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->RunDBTransaction(
+      std::move(transaction),
+      std::bind(&OnResultCallback<ledger::LegacyResultCallback>,
+                std::move(callback), _1));
 }
 
 void DatabasePromotion::GetRecord(
@@ -262,11 +261,10 @@ void DatabasePromotion::SaveClaimId(const std::string& promotion_id,
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback,
-      _1,
-      callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->RunDBTransaction(
+      std::move(transaction),
+      std::bind(&OnResultCallback<ledger::LegacyResultCallback>,
+                std::move(callback), _1));
 }
 
 void DatabasePromotion::UpdateStatus(const std::string& promotion_id,
@@ -292,11 +290,10 @@ void DatabasePromotion::UpdateStatus(const std::string& promotion_id,
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback,
-      _1,
-      callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->RunDBTransaction(
+      std::move(transaction),
+      std::bind(&OnResultCallback<ledger::LegacyResultCallback>,
+                std::move(callback), _1));
 }
 
 void DatabasePromotion::UpdateRecordsStatus(
@@ -323,11 +320,10 @@ void DatabasePromotion::UpdateRecordsStatus(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback,
-      _1,
-      callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->RunDBTransaction(
+      std::move(transaction),
+      std::bind(&OnResultCallback<ledger::LegacyResultCallback>,
+                std::move(callback), _1));
 }
 
 void DatabasePromotion::CredentialCompleted(
@@ -357,11 +353,10 @@ void DatabasePromotion::CredentialCompleted(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback,
-      _1,
-      callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->RunDBTransaction(
+      std::move(transaction),
+      std::bind(&OnResultCallback<ledger::LegacyResultCallback>,
+                std::move(callback), _1));
 }
 
 void DatabasePromotion::GetRecords(
@@ -472,11 +467,10 @@ void DatabasePromotion::UpdateRecordsBlankPublicKey(
   command->command = query;
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback,
-      _1,
-      callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->RunDBTransaction(
+      std::move(transaction),
+      std::bind(&OnResultCallback<ledger::LegacyResultCallback>,
+                std::move(callback), _1));
 }
 
 }  // namespace database

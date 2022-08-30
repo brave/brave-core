@@ -60,11 +60,10 @@ void DatabaseContributionQueuePublishers::InsertOrUpdate(
     transaction->commands.push_back(command->Clone());
   }
 
-  auto transaction_callback = std::bind(&OnResultCallback,
-      _1,
-      callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->RunDBTransaction(
+      std::move(transaction),
+      std::bind(&OnResultCallback<ledger::LegacyResultCallback>,
+                std::move(callback), _1));
 }
 
 void DatabaseContributionQueuePublishers::GetRecordsByQueueId(

@@ -3,61 +3,64 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_ENDPOINT_UPHOLD_POST_TRANSACTION_COMMIT_\
-POST_TRANSACTION_COMMIT_H_
-#define BRAVELEDGER_ENDPOINT_UPHOLD_POST_TRANSACTION_COMMIT_\
-POST_TRANSACTION_COMMIT_H_
+#ifndef BRAVELEDGER_ENDPOINT_UPHOLD_POST_TRANSACTION_GET_TRANSACTIONS_H_
+#define BRAVELEDGER_ENDPOINT_UPHOLD_POST_TRANSACTION_GET_TRANSACTIONS_H_
 
 #include <string>
 
+#include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/ledger.h"
 
-// POST https://api.uphold.com/v0/me/cards/{wallet_address}/transactions/{transaction_id}/commit //NOLINT
+// POST https://api.uphold.com/v0/me/cards/{wallet_address}/transactions
+//
+// Request body:
+// {
+//   "denomination": {
+//     "amount": 1.0,
+//     "currency: "BAT
+//   }
+//   "destination": "f5e37294-68f1-49ae-89e2-b24b64aedd37",
+//   "message": "Hi"
+// }
 //
 // Success code:
-// HTTP_OK (200)
+// HTTP_ACCEPTED (202)
 //
 // Error codes:
 // HTTP_UNAUTHORIZED (401)
 //
 // Response body:
 // {
-//   "application": {
-//     "name": "Brave Browser"
-//   },
-//   "createdAt": "2020-06-10T18:58:22.351Z",
+//   "createdAt": "2020-06-10T18:58:21.683Z",
 //   "denomination": {
-//     "pair": "BATBAT",
-//     "rate": "1.00",
 //     "amount": "1.00",
-//     "currency": "BAT"
+//     "currency": "BAT",
+//     "pair": "BATBAT",
+//     "rate": "1.00"
 //   },
 //   "fees": [],
 //   "id": "d382d3ae-8462-4b2c-9b60-b669539f41b2",
-//   "message": null,
 //   "network": "uphold",
 //   "normalized": [
 //     {
+//       "commission": "0.00",
+//       "currency": "USD",
 //       "fee": "0.00",
 //       "rate": "0.24688",
-//       "amount": "0.25",
 //       "target": "origin",
-//       "currency": "USD",
-//       "commission": "0.00"
+//       "amount": "0.25"
 //     }
 //   ],
 //   "params": {
 //     "currency": "BAT",
 //     "margin": "0.00",
 //     "pair": "BATBAT",
-//     "progress": "1",
 //     "rate": "1.00",
 //     "ttl": 3599588,
 //     "type": "internal"
 //   },
 //   "priority": "normal",
-//   "reference": null,
-//   "status": "completed",
+//   "status": "pending",
 //   "type": "transfer",
 //   "destination": {
 //     "amount": "1.00",
@@ -96,12 +99,7 @@ POST_TRANSACTION_COMMIT_H_
 //       }
 //     },
 //     "rate": "1.00",
-//     "sources": [
-//       {
-//         "id": "463dca02-83ec-4bd6-93b0-73bf5dbe35ac",
-//         "amount": "1.00"
-//       }
-//     ],
+//     "sources": [],
 //     "type": "card"
 //   }
 // }
@@ -109,33 +107,45 @@ POST_TRANSACTION_COMMIT_H_
 namespace ledger {
 class LedgerImpl;
 
-namespace endpoint::uphold {
+namespace endpoint {
+namespace uphold {
 
-using PostTransactionCommitCallback = base::OnceCallback<void(type::Result)>;
+using GetTransactionsCallback = std::function<void(
+    const type::Result result,
+    const std::string& id)>;
 
-class PostTransactionCommit {
+class PostTransaction {
  public:
-  explicit PostTransactionCommit(LedgerImpl*);
-  ~PostTransactionCommit();
+  explicit PostTransaction(LedgerImpl* ledger);
+  ~PostTransaction();
 
-  void Request(const std::string& token,
-               const std::string& address,
-               const std::string& transaction_id,
-               PostTransactionCommitCallback);
+  void Request(
+      const std::string& token,
+      const std::string& address,
+      const ::ledger::uphold::Transaction& transaction,
+      PostTransactionCallback callback);
 
  private:
-  std::string GetUrl(const std::string& address,
-                     const std::string& transaction_id);
+  std::string GetUrl(const std::string& address);
 
-  type::Result CheckStatusCode(int status_code);
+  std::string GeneratePayload(
+      const ::ledger::uphold::Transaction& transaction);
 
-  void OnRequest(PostTransactionCommitCallback, const type::UrlResponse&);
+  type::Result CheckStatusCode(const int status_code);
+
+  type::Result ParseBody(
+      const std::string& body,
+      std::string* id);
+
+  void OnRequest(
+      const type::UrlResponse& response,
+      PostTransactionCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
 
-}  // namespace endpoint::uphold
+}  // namespace uphold
+}  // namespace endpoint
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_ENDPOINT_UPHOLD_POST_TRANSACTION_COMMIT_\
-// POST_TRANSACTION_COMMIT_H_
+#endif  // BRAVELEDGER_ENDPOINT_UPHOLD_POST_TRANSACTION_GET_TRANSACTIONS_H_
