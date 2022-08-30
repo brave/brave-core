@@ -13,7 +13,7 @@
 #include "bat/ads/ads_client_callback.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/internal/database/database_table_interface.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom-forward.h"
 
 namespace ads {
 namespace database {

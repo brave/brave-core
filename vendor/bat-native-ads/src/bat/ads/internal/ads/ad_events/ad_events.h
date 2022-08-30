@@ -9,7 +9,7 @@
 #include <functional>
 #include <vector>
 
-#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom-shared.h"
 
 namespace base {
 class Time;

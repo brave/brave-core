@@ -11,8 +11,8 @@
 
 #include "base/containers/flat_map.h"
 #include "bat/ads/internal/covariates/covariate_log_entry_interface.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
-#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom-shared.h"
+#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom-forward.h"
 
 namespace base {
 class Time;

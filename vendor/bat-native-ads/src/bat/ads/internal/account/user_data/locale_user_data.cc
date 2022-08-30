@@ -10,6 +10,7 @@
 #include "bat/ads/build_channel.h"
 #include "bat/ads/internal/locale/locale_manager.h"
 #include "bat/ads/internal/privacy/locale/country_code_util.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/l10n/common/locale_util.h"
 
 namespace ads {

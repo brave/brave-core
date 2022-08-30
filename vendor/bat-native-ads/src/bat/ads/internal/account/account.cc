@@ -30,6 +30,7 @@
 #include "bat/ads/internal/prefs/pref_manager.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
 #include "bat/ads/pref_names.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"  // IWYU pragma: keep
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {

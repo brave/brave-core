@@ -11,6 +11,7 @@
 #include "base/check_op.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 namespace database {

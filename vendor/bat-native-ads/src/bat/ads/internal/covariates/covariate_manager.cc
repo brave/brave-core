@@ -17,6 +17,7 @@
 #include "bat/ads/internal/covariates/log_entries/notification_ad_served_at.h"
 #include "bat/ads/internal/covariates/log_entries/number_of_user_activity_events.h"
 #include "bat/ads/internal/covariates/log_entries/time_since_last_user_activity_event.h"
+#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
 
 namespace ads {
 

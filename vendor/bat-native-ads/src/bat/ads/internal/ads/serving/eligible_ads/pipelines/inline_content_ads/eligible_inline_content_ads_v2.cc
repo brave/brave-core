@@ -17,6 +17,7 @@
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
+#include "bat/ads/public/interfaces/ads.mojom-shared.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {

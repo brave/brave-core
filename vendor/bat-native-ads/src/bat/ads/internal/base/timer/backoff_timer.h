@@ -8,12 +8,9 @@
 
 #include <cstdint>
 
+#include "base/location.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/base/timer/timer.h"
-
-namespace base {
-class Location;
-}  // namespace base
 
 namespace ads {
 

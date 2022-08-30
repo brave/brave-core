@@ -30,6 +30,7 @@
 #include "bat/ads/internal/creatives/geo_targets_database_table.h"
 #include "bat/ads/internal/creatives/segments_database_table.h"
 #include "bat/ads/internal/segments/segment_util.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "url/gurl.h"
 
 namespace ads {

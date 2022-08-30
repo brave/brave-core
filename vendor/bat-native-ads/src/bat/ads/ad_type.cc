@@ -7,6 +7,7 @@
 
 #include "base/check.h"
 #include "base/notreached.h"
+#include "bat/ads/public/interfaces/ads.mojom-shared.h"
 
 namespace ads {
 

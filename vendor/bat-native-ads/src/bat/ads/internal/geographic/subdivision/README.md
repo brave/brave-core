@@ -2,7 +2,7 @@
 
 Target ads to an area within a country.
 
-See [ISO_3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) for a list of assigned subdivision codes.
+See [ISO_3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) for a list of assigned subdivision targeting codes.
 
 ## Supported subdivision codes
 

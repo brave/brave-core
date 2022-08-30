@@ -19,7 +19,6 @@
 #include "bat/ads/internal/deprecated/client/preferences/filtered_advertiser_info.h"
 #include "bat/ads/internal/deprecated/client/preferences/filtered_category_info.h"
 #include "bat/ads/internal/deprecated/client/preferences/flagged_ad_info.h"
-#include "bat/ads/internal/deprecated/client/preferences/saved_ad_info.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 
 namespace base {

@@ -6,6 +6,7 @@
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_builder.h"
 
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_info.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 

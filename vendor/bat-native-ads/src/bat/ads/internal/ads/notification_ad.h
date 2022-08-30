@@ -17,7 +17,7 @@
 #include "bat/ads/internal/prefs/pref_manager_observer.h"
 #include "bat/ads/internal/segments/segment_alias.h"
 #include "bat/ads/internal/user_interaction/idle_detection/idle_detection_manager_observer.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom-shared.h"
 
 namespace base {
 class TimeDelta;

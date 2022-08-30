@@ -7,6 +7,7 @@
 
 #include "base/time/time.h"
 #include "bat/ads/internal/account/deposits/deposit_info.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 

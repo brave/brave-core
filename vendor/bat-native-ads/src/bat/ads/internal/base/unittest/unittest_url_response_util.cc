@@ -17,6 +17,7 @@
 #include "bat/ads/internal/base/unittest/unittest_tag_parser_util.h"
 #include "bat/ads/internal/base/unittest/unittest_test_suite_util.h"
 #include "bat/ads/internal/base/unittest/unittest_url_response_headers_util.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "url/gurl.h"
 
 namespace ads {

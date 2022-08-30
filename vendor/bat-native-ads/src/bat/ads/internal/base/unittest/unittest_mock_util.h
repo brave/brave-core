@@ -14,7 +14,6 @@
 #include "bat/ads/internal/base/platform/platform_helper_mock.h"
 #include "bat/ads/internal/base/unittest/unittest_build_channel_types.h"
 #include "bat/ads/internal/base/unittest/unittest_url_response_alias.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/l10n/browser/locale_helper_mock.h"
 
 namespace ads {

@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom-forward.h"
 
 namespace ads {
 namespace database {

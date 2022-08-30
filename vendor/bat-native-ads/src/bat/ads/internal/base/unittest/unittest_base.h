@@ -31,8 +31,8 @@
 #include "bat/ads/internal/user_interaction/idle_detection/idle_detection_manager.h"
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_manager.h"
 #include "brave/components/l10n/browser/locale_helper_mock.h"
-#include "testing/gmock/include/gmock/gmock.h"
-#include "testing/gtest/include/gtest/gtest.h"
+#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
+#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
 namespace base {
 class Time;

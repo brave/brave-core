@@ -19,7 +19,6 @@
 #include "bat/ads/internal/base/instance_id_constants.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
-#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
 namespace ads {
 
@@ -114,7 +113,7 @@ void RecordAdEvents(const AdType& type,
 }
 
 void FireAdEvent(const AdEventInfo& ad_event) {
-  LogAdEvent(ad_event, [](const bool success) { ASSERT_TRUE(success); });
+  LogAdEvent(ad_event, [](const bool success) { CHECK(success); });
 }
 
 void FireAdEvents(const AdEventInfo& ad_event, const int count) {

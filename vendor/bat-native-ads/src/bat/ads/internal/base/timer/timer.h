@@ -8,10 +8,10 @@
 
 #include <memory>
 
-#include "base/callback.h"
+#include "base/callback.h"  // IWYU pragma: keep
+#include "base/location.h"
 
 namespace base {
-class Location;
 class Time;
 class TimeDelta;
 class WallClockTimer;

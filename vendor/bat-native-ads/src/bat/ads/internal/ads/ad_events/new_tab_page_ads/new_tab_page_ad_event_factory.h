@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "bat/ads/internal/ads/ad_events/ad_event_interface.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom-shared.h"
 
 namespace ads {
 

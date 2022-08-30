@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/location.h"
 #include "base/time/time.h"
 #include "base/timer/wall_clock_timer.h"
 #include "brave_base/random.h"

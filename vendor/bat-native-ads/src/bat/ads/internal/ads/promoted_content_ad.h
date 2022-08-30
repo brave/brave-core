@@ -11,7 +11,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "bat/ads/internal/ads/ad_events/promoted_content_ads/promoted_content_ad_event_handler_observer.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom-shared.h"
 
 namespace ads {
 

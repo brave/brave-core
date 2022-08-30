@@ -9,7 +9,7 @@
 #include <string>
 
 #include "bat/ads/internal/covariates/covariate_log_entry_interface.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom-shared.h"
 
 namespace ads {
 

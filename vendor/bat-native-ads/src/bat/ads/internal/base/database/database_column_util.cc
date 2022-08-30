@@ -6,6 +6,7 @@
 #include "bat/ads/internal/base/database/database_column_util.h"
 
 #include "base/check_op.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 namespace database {

@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ads/sys_info.h"
 
 namespace ads {

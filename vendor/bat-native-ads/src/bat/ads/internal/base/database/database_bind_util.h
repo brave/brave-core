@@ -9,7 +9,7 @@
 #include <cstdint>
 #include <string>
 
-#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom-forward.h"
 #include "sql/statement.h"
 
 namespace ads {

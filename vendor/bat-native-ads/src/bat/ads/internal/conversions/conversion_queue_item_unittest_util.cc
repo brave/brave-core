@@ -6,9 +6,9 @@
 #include "bat/ads/internal/conversions/conversion_queue_item_unittest_util.h"
 
 #include "base/bind.h"
+#include "base/check.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/conversions/conversion_queue_database_table.h"
-#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
 namespace ads {
 
@@ -26,7 +26,7 @@ void SaveConversionQueueItems(
   database::table::ConversionQueue database_table;
   database_table.Save(
       conversion_queue_items,
-      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
+      base::BindOnce([](const bool success) { CHECK(success); }));
 }
 
 ConversionQueueItemInfo BuildConversionQueueItem(

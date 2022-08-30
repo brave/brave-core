@@ -10,7 +10,7 @@
 
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
 #include "bat/ads/internal/privacy/tokens/token_generator.h"
-#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
 
 namespace ads {
 namespace privacy {

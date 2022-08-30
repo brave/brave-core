@@ -60,6 +60,7 @@
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_manager.h"
 #include "bat/ads/internal/user_interaction/user_reactions/user_reactions.h"
 #include "bat/ads/notification_ad_info.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"  // IWYU pragma: keep
 #include "url/gurl.h"
 
 namespace ads {
