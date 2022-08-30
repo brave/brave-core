@@ -18,12 +18,21 @@ namespace ads {
 namespace targeting {
 
 struct PurchaseIntentSignalHistoryInfo final {
-  PurchaseIntentSignalHistoryInfo();
+  PurchaseIntentSignalHistoryInfo() = default;
+
   PurchaseIntentSignalHistoryInfo(base::Time created_at, uint16_t weight);
-  PurchaseIntentSignalHistoryInfo(const PurchaseIntentSignalHistoryInfo& info);
+
+  PurchaseIntentSignalHistoryInfo(
+      const PurchaseIntentSignalHistoryInfo& other) = default;
   PurchaseIntentSignalHistoryInfo& operator=(
-      const PurchaseIntentSignalHistoryInfo& info);
-  ~PurchaseIntentSignalHistoryInfo();
+      const PurchaseIntentSignalHistoryInfo& other) = default;
+
+  PurchaseIntentSignalHistoryInfo(
+      PurchaseIntentSignalHistoryInfo&& other) noexcept = default;
+  PurchaseIntentSignalHistoryInfo& operator=(
+      PurchaseIntentSignalHistoryInfo&&) noexcept = default;
+
+  ~PurchaseIntentSignalHistoryInfo() = default;
 
   bool operator==(const PurchaseIntentSignalHistoryInfo& rhs) const;
   bool operator!=(const PurchaseIntentSignalHistoryInfo& rhs) const;

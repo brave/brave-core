@@ -9,24 +9,15 @@
 
 namespace ads {
 
-UserActivityTriggerInfo::UserActivityTriggerInfo() = default;
-
-UserActivityTriggerInfo::UserActivityTriggerInfo(
-    const UserActivityTriggerInfo& info) = default;
-
-UserActivityTriggerInfo& UserActivityTriggerInfo::operator=(
-    const UserActivityTriggerInfo& info) = default;
-
-UserActivityTriggerInfo::~UserActivityTriggerInfo() = default;
-
-bool UserActivityTriggerInfo::operator==(
-    const UserActivityTriggerInfo& rhs) const {
-  return event_sequence == rhs.event_sequence && DoubleEquals(score, rhs.score);
+bool operator==(const UserActivityTriggerInfo& lhs,
+                const UserActivityTriggerInfo& rhs) {
+  return lhs.event_sequence == rhs.event_sequence &&
+         DoubleEquals(lhs.score, rhs.score);
 }
 
-bool UserActivityTriggerInfo::operator!=(
-    const UserActivityTriggerInfo& rhs) const {
-  return !(*this == rhs);
+bool operator!=(const UserActivityTriggerInfo& lhs,
+                const UserActivityTriggerInfo& rhs) {
+  return !(lhs == rhs);
 }
 
 }  // namespace ads

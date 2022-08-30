@@ -7,25 +7,15 @@
 
 namespace ads {
 
-ConversionIdPatternInfo::ConversionIdPatternInfo() = default;
-
-ConversionIdPatternInfo::ConversionIdPatternInfo(
-    const ConversionIdPatternInfo& info) = default;
-
-ConversionIdPatternInfo& ConversionIdPatternInfo::operator=(
-    const ConversionIdPatternInfo& info) = default;
-
-ConversionIdPatternInfo::~ConversionIdPatternInfo() = default;
-
-bool ConversionIdPatternInfo::operator==(
-    const ConversionIdPatternInfo& rhs) const {
-  return id_pattern == rhs.id_pattern && url_pattern == rhs.url_pattern &&
-         search_in == rhs.search_in;
+bool operator==(const ConversionIdPatternInfo& lhs,
+                const ConversionIdPatternInfo& rhs) {
+  return lhs.id_pattern == rhs.id_pattern &&
+         lhs.url_pattern == rhs.url_pattern && lhs.search_in == rhs.search_in;
 }
 
-bool ConversionIdPatternInfo::operator!=(
-    const ConversionIdPatternInfo& rhs) const {
-  return !(*this == rhs);
+bool operator!=(const ConversionIdPatternInfo& lhs,
+                const ConversionIdPatternInfo& rhs) {
+  return !(lhs == rhs);
 }
 
 }  // namespace ads

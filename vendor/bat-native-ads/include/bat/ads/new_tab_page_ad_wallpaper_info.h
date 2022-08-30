@@ -15,16 +15,14 @@
 namespace ads {
 
 struct ADS_EXPORT NewTabPageAdWallpaperInfo final {
-  NewTabPageAdWallpaperInfo();
-  NewTabPageAdWallpaperInfo(const NewTabPageAdWallpaperInfo& info);
-  NewTabPageAdWallpaperInfo& operator=(const NewTabPageAdWallpaperInfo& info);
-  ~NewTabPageAdWallpaperInfo();
-
-  bool operator==(const NewTabPageAdWallpaperInfo& rhs) const;
-
   GURL image_url;
   NewTabPageAdWallpaperFocalPointInfo focal_point;
 };
+
+bool operator==(const NewTabPageAdWallpaperInfo& lhs,
+                const NewTabPageAdWallpaperInfo& rhs);
+bool operator!=(const NewTabPageAdWallpaperInfo& lhs,
+                const NewTabPageAdWallpaperInfo& rhs);
 
 using NewTabPageAdWallpaperList = std::vector<NewTabPageAdWallpaperInfo>;
 

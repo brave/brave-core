@@ -12,17 +12,12 @@
 namespace ads {
 
 struct CatalogOsInfo final {
-  CatalogOsInfo();
-  CatalogOsInfo(const CatalogOsInfo& info);
-  CatalogOsInfo& operator=(const CatalogOsInfo& info);
-  ~CatalogOsInfo();
-
-  bool operator==(const CatalogOsInfo& rhs) const;
-  bool operator!=(const CatalogOsInfo& rhs) const;
-
   std::string code;
   std::string name;
 };
+
+bool operator==(const CatalogOsInfo& lhs, const CatalogOsInfo& rhs);
+bool operator!=(const CatalogOsInfo& lhs, const CatalogOsInfo& rhs);
 
 using CatalogOsList = std::vector<CatalogOsInfo>;
 

@@ -12,17 +12,12 @@
 namespace ads {
 
 struct CatalogSegmentInfo final {
-  CatalogSegmentInfo();
-  CatalogSegmentInfo(const CatalogSegmentInfo& info);
-  CatalogSegmentInfo& operator=(const CatalogSegmentInfo& info);
-  ~CatalogSegmentInfo();
-
-  bool operator==(const CatalogSegmentInfo& rhs) const;
-  bool operator!=(const CatalogSegmentInfo& rhs) const;
-
   std::string code;
   std::string name;
 };
+
+bool operator==(const CatalogSegmentInfo& lhs, const CatalogSegmentInfo& rhs);
+bool operator!=(const CatalogSegmentInfo& lhs, const CatalogSegmentInfo& rhs);
 
 using CatalogSegmentList = std::vector<CatalogSegmentInfo>;
 

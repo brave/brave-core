@@ -11,18 +11,14 @@
 namespace ads {
 
 struct ADS_EXPORT NewTabPageAdWallpaperFocalPointInfo final {
-  NewTabPageAdWallpaperFocalPointInfo();
-  NewTabPageAdWallpaperFocalPointInfo(
-      const NewTabPageAdWallpaperFocalPointInfo& info);
-  NewTabPageAdWallpaperFocalPointInfo& operator=(
-      const NewTabPageAdWallpaperFocalPointInfo& info);
-  ~NewTabPageAdWallpaperFocalPointInfo();
-
-  bool operator==(const NewTabPageAdWallpaperFocalPointInfo& rhs) const;
-
-  int x;
-  int y;
+  int x = 0;
+  int y = 0;
 };
+
+bool operator==(const NewTabPageAdWallpaperFocalPointInfo& lhs,
+                const NewTabPageAdWallpaperFocalPointInfo& rhs);
+bool operator!=(const NewTabPageAdWallpaperFocalPointInfo& lhs,
+                const NewTabPageAdWallpaperFocalPointInfo& rhs);
 
 }  // namespace ads
 

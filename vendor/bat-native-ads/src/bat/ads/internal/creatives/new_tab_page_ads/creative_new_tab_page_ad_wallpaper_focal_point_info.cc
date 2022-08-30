@@ -7,28 +7,14 @@
 
 namespace ads {
 
-CreativeNewTabPageAdWallpaperFocalPointInfo::
-    CreativeNewTabPageAdWallpaperFocalPointInfo() = default;
-
-CreativeNewTabPageAdWallpaperFocalPointInfo::
-    CreativeNewTabPageAdWallpaperFocalPointInfo(
-        const CreativeNewTabPageAdWallpaperFocalPointInfo& info) = default;
-
-CreativeNewTabPageAdWallpaperFocalPointInfo&
-CreativeNewTabPageAdWallpaperFocalPointInfo::operator=(
-    const CreativeNewTabPageAdWallpaperFocalPointInfo& info) = default;
-
-CreativeNewTabPageAdWallpaperFocalPointInfo::
-    ~CreativeNewTabPageAdWallpaperFocalPointInfo() = default;
-
-bool CreativeNewTabPageAdWallpaperFocalPointInfo::operator==(
-    const CreativeNewTabPageAdWallpaperFocalPointInfo& rhs) const {
-  return x == rhs.x && y == rhs.y;
+bool operator==(const CreativeNewTabPageAdWallpaperFocalPointInfo& lhs,
+                const CreativeNewTabPageAdWallpaperFocalPointInfo& rhs) {
+  return lhs.x == rhs.x && lhs.y == rhs.y;
 }
 
-bool CreativeNewTabPageAdWallpaperFocalPointInfo::operator!=(
-    const CreativeNewTabPageAdWallpaperFocalPointInfo& rhs) const {
-  return !(*this == rhs);
+bool operator!=(const CreativeNewTabPageAdWallpaperFocalPointInfo& lhs,
+                const CreativeNewTabPageAdWallpaperFocalPointInfo& rhs) {
+  return !(lhs == rhs);
 }
 
 }  // namespace ads
