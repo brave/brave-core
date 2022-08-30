@@ -8,35 +8,29 @@
 package org.chromium.chrome.browser.rate;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.net.Uri;
-import android.view.LayoutInflater;
-import android.widget.LinearLayout;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.EditText;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
-import androidx.fragment.app.DialogFragment;
-import android.content.DialogInterface;
-import android.util.DisplayMetrics;
-import android.content.res.Configuration;
-
-import org.chromium.chrome.R;
 
 import org.chromium.base.task.AsyncTask;
-import org.chromium.ui.base.DeviceFormFactor;
-import org.chromium.chrome.browser.util.ConfigurationUtils;
-import org.chromium.chrome.browser.rate.RateFeedbackUtils;
+import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveDialogFragment;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
+import org.chromium.chrome.browser.rate.RateFeedbackUtils;
 
-public class RateDialogFragment extends DialogFragment implements View.OnClickListener {
+public class RateDialogFragment extends BraveDialogFragment implements View.OnClickListener {
     private static final String SAD = "sad";
     private static final String NEUTRAL = "neutral";
 
@@ -66,28 +60,6 @@ public class RateDialogFragment extends DialogFragment implements View.OnClickLi
         if (bundle != null) {
             mIsFromSettings = bundle.getBoolean(RateUtils.FROM_SETTINGS, false);
         }
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        setDialogParams();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
-            @Override
-            public boolean onKey(android.content.DialogInterface dialog,
-                                 int keyCode, android.view.KeyEvent event) {
-                if ((keyCode ==  android.view.KeyEvent.KEYCODE_BACK)) {
-                    dismiss();
-                    return true;
-                } else return false;
-            }
-        });
-        setDialogParams();
     }
 
     @Override
@@ -193,28 +165,6 @@ public class RateDialogFragment extends DialogFragment implements View.OnClickLi
         mNegativeButton.setText(getResources().getString(R.string.later));
 
         mRateTitleTextView.setText(getResources().getString(R.string.would_you_mind_leaving_rating));
-    }
-
-    private void setDialogParams() {
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int mDeviceHeight = displayMetrics.heightPixels;
-        int mDeviceWidth = displayMetrics.widthPixels;
-
-        ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
-        boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
-        boolean isLandscape = ConfigurationUtils.isLandscape(getActivity());
-        if (isTablet) {
-            params.width = (int) (0.5 * mDeviceWidth);
-        } else {
-            if (isLandscape) {
-                params.width = (int) (0.5 * mDeviceWidth);
-            } else {
-                params.width = (int) (0.9 * mDeviceWidth);
-            }
-        }
-        params.height = LinearLayout.LayoutParams.WRAP_CONTENT;
-        getDialog().getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
     }
 
     private RateFeedbackUtils.RateFeedbackCallback rateFeedbackCallback = new RateFeedbackUtils.RateFeedbackCallback() {

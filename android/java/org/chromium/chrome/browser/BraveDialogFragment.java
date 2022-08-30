@@ -1,11 +1,11 @@
 /**
- * Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser.vpn.fragments;
+package org.chromium.chrome.browser;
 
 import android.content.DialogInterface;
 import android.content.res.Configuration;
@@ -19,7 +19,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 
-public class BraveVpnDialogFragment extends DialogFragment {
+public class BraveDialogFragment extends DialogFragment {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);

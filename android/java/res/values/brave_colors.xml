@@ -67,6 +67,10 @@
     <color name="set_default_text_color">#212529</color>
     <color name="set_default_bottom_sheet_button_disable_color">#DADCE8</color>
 
+    <color name="ad_free_card_cancel_color">#212529</color>
+    <color name="ad_free_card_bg_color">@android:color/white</color>
+    <color name="ad_free_check_color">#737ADE</color>
+    
     <!-- Sync colors -->
     <color name="brave_sync_bg_color">@android:color/transparent</color>
     <color name="brave_sync_border_color">@color/modern_grey_50</color>

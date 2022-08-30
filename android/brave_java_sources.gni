@@ -13,10 +13,12 @@ import("//brave/components/safetynet/java_sources.gni")
 import("//components/feed/features.gni")
 
 brave_java_sources = [
+  "../../brave/android/java/org/chromium/chrome/browser/BraveAdFreeCalloutDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveAdaptiveCaptchaUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveAppHooks.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveApplicationImplBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveBadge.java",
+  "../../brave/android/java/org/chromium/chrome/browser/BraveDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveFeatureUtil.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveIntentHandler.java",
@@ -363,7 +365,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/vpn/fragments/BraveVpnAlwaysOnErrorDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/fragments/BraveVpnCalloutDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/fragments/BraveVpnConfirmDialogFragment.java",
-  "../../brave/android/java/org/chromium/chrome/browser/vpn/fragments/BraveVpnDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/models/BraveVpnPrefModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/models/BraveVpnProfileCredentials.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/models/BraveVpnServerRegion.java",

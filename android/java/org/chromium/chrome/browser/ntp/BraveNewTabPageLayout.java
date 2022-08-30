@@ -1031,6 +1031,7 @@ public class BraveNewTabPageLayout
         assert (activity instanceof BraveActivity);
         mActivity = activity;
         ((BraveActivity) mActivity).dismissShieldsTooltip();
+        ((BraveActivity) mActivity).setNewTabPageManager(manager);
     }
 
     public void setTabProvider(Supplier<Tab> tabProvider) {
