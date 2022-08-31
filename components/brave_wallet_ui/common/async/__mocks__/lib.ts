@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import { mockBasicAttentionToken, mockEthToken } from '../../../stories/mock-data/mock-asset-options'
-import { BraveWallet, GetChecksumEthAddressReturnInfo, GetEthAddrReturnInfo } from '../../../constants/types'
+import { BraveWallet, GetBlockchainTokenInfoReturnInfo, GetChecksumEthAddressReturnInfo, GetEthAddrReturnInfo } from '../../../constants/types'
 import { HardwareWalletConnectOpts } from '../../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 
 let mockedAllowance = '1000000000000000000' // 1 unit
@@ -121,4 +121,10 @@ export const getBalance = (): Promise<string> => {
 
 export const getBuyAssetUrl = () => {
   return 'brave.com'
+}
+
+export const getBlockchainTokenInfo = async (contractAddress: string): Promise<GetBlockchainTokenInfoReturnInfo> => {
+  return {
+    token: mockBasicAttentionToken
+  }
 }
