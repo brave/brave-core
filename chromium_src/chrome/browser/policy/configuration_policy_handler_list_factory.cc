@@ -5,20 +5,23 @@
 
 #include "chrome/browser/policy/configuration_policy_handler_list_factory.h"
 
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/tor/pref_names.h"
+#include "build/build_config.h"
 #include "components/policy/core/browser/configuration_policy_handler.h"
 #include "components/policy/policy_constants.h"
 
 namespace {
 
-// Wrap whole array definition in build flags to avoid unused variable build
-// error. It can happen if the platform doesn't support any of these features.
-#if BUILDFLAG(ENABLE_TOR) || BUILDFLAG(ENABLE_IPFS)
 const policy::PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+    {policy::key::kBraveRewardsDisabled,
+     brave_rewards::prefs::kDisabledByPolicy, base::Value::Type::BOOLEAN},
+#endif
 #if BUILDFLAG(ENABLE_TOR)
     {policy::key::kTorDisabled, tor::prefs::kTorDisabled,
      base::Value::Type::BOOLEAN},
@@ -27,7 +30,6 @@ const policy::PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
     {policy::key::kIPFSEnabled, kIPFSEnabled, base::Value::Type::BOOLEAN},
 #endif
 };
-#endif  // BUILDFLAG(ENABLE_TOR) || BUILDFLAG(ENABLE_IPFS)
 
 }  // namespace
 
@@ -42,16 +44,11 @@ std::unique_ptr<ConfigurationPolicyHandlerList> BuildHandlerList(
   std::unique_ptr<ConfigurationPolicyHandlerList> handlers =
       BuildHandlerList_ChromiumImpl(chrome_schema);
 
-  // TODO(simonhong): Remove this guard when array size is not empty w/o tor.
-  // std::size failed to instantiate with zero-size array.
-#if BUILDFLAG(ENABLE_TOR) || BUILDFLAG(ENABLE_IPFS)
-  for (size_t i = 0; i < std::size(kBraveSimplePolicyMap); ++i) {
+  for (const auto& entry : kBraveSimplePolicyMap) {
     handlers->AddHandler(std::make_unique<SimplePolicyHandler>(
-        kBraveSimplePolicyMap[i].policy_name,
-        kBraveSimplePolicyMap[i].preference_path,
-        kBraveSimplePolicyMap[i].value_type));
+        entry.policy_name, entry.preference_path, entry.value_type));
   }
-#endif
+
   return handlers;
 }
 

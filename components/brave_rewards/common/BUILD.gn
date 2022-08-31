@@ -14,6 +14,8 @@ source_set("features") {
 
 static_library("common") {
   sources = [
+    "policy_util.cc",
+    "policy_util.h",
     "pref_names.cc",
     "pref_names.h",
     "rewards_flags.cc",
@@ -25,6 +27,7 @@ static_library("common") {
   deps = [
     ":features",
     "//base",
+    "//components/prefs",
     "//third_party/abseil-cpp:absl",
   ]
 }

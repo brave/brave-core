@@ -84,6 +84,7 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kWalletUphold, "");
   registry->RegisterStringPref(prefs::kWalletBitflyer, "");
   registry->RegisterStringPref(prefs::kWalletGemini, "");
+  registry->RegisterBooleanPref(prefs::kDisabledByPolicy, false);
 }
 
 }  // namespace brave_rewards
