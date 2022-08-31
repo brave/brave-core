@@ -705,11 +705,12 @@ provideStrings({
   braveWalletRemoveAccountModalTitle: 'Are you sure you want to remove "$1"?',
 
   // Bridge to Aurora
-  braveWalletAuroraModalTitle: 'Open rainbowbridge.app',
-  braveWalletAuroraModalDescription: 'Bridging assets across networks allows you to use your crypto on other networks and other DApp' +
-    ' ecosystems. Bridging assets to other networks has some risks',
-  braveWalletAuroraModalLearnMore: 'Learn more',
-  braveWalletAuroraModalOPenButtonText: 'Open rainbowbridge.app',
+  braveWalletAuroraModalTitle: 'Open the Rainbow Bridge app?',
+  braveWalletAuroraModalDescription: 'Rainbow Bridge is an independent service that helps you bridge assets across networks, and use your crypto on other networks and DApp ecosystems. Bridging assets to other networks has some risks.',
+  braveWalletAuroraModalLearnMore: 'Learn more about using Rainbow Bridge',
+  braveWalletAuroraModalLearnMoreAboutRisk: 'Learn more about mitigating risk on Rainbow Bridge',
+  braveWalletAuroraModalDontShowAgain: 'Don\'t show again',
+  braveWalletAuroraModalOPenButtonText: 'Open the Rainbow Bridge app',
 
   // Input field labels
   braveWalletInputLabelPassword: 'Password',
