@@ -15,6 +15,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
+#include "brave/components/brave_rewards/common/policy_util.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
@@ -50,7 +51,8 @@ RewardsService* RewardsServiceFactory::GetForProfile(
     return testing_service_;
   }
 
-  if (!brave::IsRegularProfile(profile)) {
+  if (IsDisabledByPolicy(profile->GetPrefs()) ||
+      !brave::IsRegularProfile(profile)) {
     return nullptr;
   }
 

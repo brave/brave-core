@@ -38,6 +38,7 @@ brave_browser_brave_ads_deps = [
   "//brave/components/brave_federated",
   "//brave/components/brave_federated/public/interfaces",
   "//brave/components/brave_rewards/browser",
+  "//brave/components/brave_rewards/common",
   "//chrome/browser/notifications",
   "//chrome/browser/profiles",
   "//chrome/browser/profiles:profile",

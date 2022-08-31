@@ -17,6 +17,7 @@
 #include "brave/components/brave_federated/brave_federated_service.h"
 #include "brave/components/brave_federated/data_store_service.h"
 #include "brave/components/brave_federated/notification_ad_task_constants.h"
+#include "brave/components/brave_rewards/common/policy_util.h"
 #include "chrome/browser/dom_distiller/dom_distiller_service_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/notifications/notification_display_service_factory.h"
@@ -34,7 +35,8 @@ namespace brave_ads {
 
 // static
 AdsService* AdsServiceFactory::GetForProfile(Profile* profile) {
-  if (!brave::IsRegularProfile(profile)) {
+  if (brave_rewards::IsDisabledByPolicy(profile->GetPrefs()) ||
+      !brave::IsRegularProfile(profile)) {
     return nullptr;
   }
 
