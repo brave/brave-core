@@ -29,7 +29,8 @@
 
 namespace api_request_helper {
 class APIRequestHelper;
-}
+class APIRequestResult;
+}  // namespace api_request_helper
 
 namespace brave_adaptive_captcha {
 
@@ -52,11 +53,8 @@ class GetAdaptiveCaptchaChallenge {
 
   bool ParseBody(const std::string& body, std::string* captcha_id);
 
-  void OnResponse(
-      OnGetAdaptiveCaptchaChallenge callback,
-      int response_code,
-      const std::string& response_body,
-      const base::flat_map<std::string, std::string>& response_headers);
+  void OnResponse(OnGetAdaptiveCaptchaChallenge callback,
+                  api_request_helper::APIRequestResult api_request_result);
 
   raw_ptr<api_request_helper::APIRequestHelper> api_request_helper_ = nullptr;
 };

@@ -194,21 +194,20 @@ void EnsResolverTask::FetchEnsResolver() {
 }
 
 void EnsResolverTask::OnFetchEnsResolverDone(
-    int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
+    APIRequestResult api_request_result) {
   ScopedWorkOnTask work_on_task(this);
 
-  if (status < 200 || status > 299) {
+  if (!api_request_result.Is2XXResponseCode()) {
     error_ = mojom::ProviderError::kInternalError;
     error_message_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
     return;
   }
 
   std::string resolver_address;
-  if (!eth::ParseAddressResult(body, &resolver_address) ||
+  if (!eth::ParseAddressResult(api_request_result.body(), &resolver_address) ||
       resolver_address.empty()) {
-    ParseErrorResult<mojom::ProviderError>(body, &error_.emplace(),
+    ParseErrorResult<mojom::ProviderError>(api_request_result.body(),
+                                           &error_.emplace(),
                                            &error_message_.emplace());
     return;
   }
@@ -228,20 +227,19 @@ void EnsResolverTask::FetchEnsip10Support() {
 }
 
 void EnsResolverTask::OnFetchEnsip10SupportDone(
-    int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
+    APIRequestResult api_request_result) {
   ScopedWorkOnTask work_on_task(this);
 
-  if (status < 200 || status > 299) {
+  if (!api_request_result.Is2XXResponseCode()) {
     error_ = mojom::ProviderError::kInternalError;
     error_message_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
     return;
   }
 
   bool is_supported = false;
-  if (!ParseBoolResult(body, &is_supported)) {
-    ParseErrorResult<mojom::ProviderError>(body, &error_.emplace(),
+  if (!ParseBoolResult(api_request_result.body(), &is_supported)) {
+    ParseErrorResult<mojom::ProviderError>(api_request_result.body(),
+                                           &error_.emplace(),
                                            &error_message_.emplace());
     return;
   }
@@ -261,20 +259,19 @@ void EnsResolverTask::FetchEnsRecord() {
 }
 
 void EnsResolverTask::OnFetchEnsRecordDone(
-    int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
+    APIRequestResult api_request_result) {
   ScopedWorkOnTask work_on_task(this);
 
-  if (status < 200 || status > 299) {
+  if (!api_request_result.Is2XXResponseCode()) {
     error_ = mojom::ProviderError::kInternalError;
     error_message_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
     return;
   }
 
-  auto bytes_result = ParseDecodedBytesResult(body);
+  auto bytes_result = ParseDecodedBytesResult(api_request_result.body());
   if (!bytes_result) {
-    ParseErrorResult<mojom::ProviderError>(body, &error_.emplace(),
+    ParseErrorResult<mojom::ProviderError>(api_request_result.body(),
+                                           &error_.emplace(),
                                            &error_message_.emplace());
     return;
   }
@@ -314,25 +311,25 @@ void EnsResolverTask::FetchWithEnsip10Resolve() {
 }
 
 void EnsResolverTask::OnFetchWithEnsip10ResolveDone(
-    int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
+    APIRequestResult api_request_result) {
   ScopedWorkOnTask work_on_task(this);
 
-  if (status < 200 || status > 299) {
+  if (!api_request_result.Is2XXResponseCode()) {
     error_ = mojom::ProviderError::kInternalError;
     error_message_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
     return;
   }
 
-  if (auto offchain_lookup = OffchainLookupData::ExtractFromJson(body)) {
+  if (auto offchain_lookup =
+          OffchainLookupData::ExtractFromJson(api_request_result.body())) {
     offchain_lookup_data_ = std::move(offchain_lookup);
     return;
   }
 
-  auto bytes_result = ParseDecodedBytesResult(body);
+  auto bytes_result = ParseDecodedBytesResult(api_request_result.body());
   if (!bytes_result) {
-    ParseErrorResult<mojom::ProviderError>(body, &error_.emplace(),
+    ParseErrorResult<mojom::ProviderError>(api_request_result.body(),
+                                           &error_.emplace(),
                                            &error_message_.emplace());
     return;
   }
@@ -406,19 +403,16 @@ void EnsResolverTask::FetchOffchainData() {
       {}, -1u, base::NullCallback());
 }
 
-void EnsResolverTask::OnFetchOffchainDone(
-    int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
+void EnsResolverTask::OnFetchOffchainDone(APIRequestResult api_request_result) {
   ScopedWorkOnTask work_on_task(this);
 
-  if (status < 200 || status > 299) {
+  if (!api_request_result.Is2XXResponseCode()) {
     error_ = mojom::ProviderError::kInternalError;
     error_message_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
     return;
   }
 
-  auto bytes_result = ExtractGatewayResult(body);
+  auto bytes_result = ExtractGatewayResult(api_request_result.body());
   if (!bytes_result) {
     error_ = mojom::ProviderError::kInternalError;
     error_message_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);

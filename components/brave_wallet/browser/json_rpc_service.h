@@ -60,7 +60,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void Bind(mojo::PendingReceiver<mojom::JsonRpcService> receiver);
 
   using APIRequestHelper = api_request_helper::APIRequestHelper;
-
+  using APIRequestResult = api_request_helper::APIRequestResult;
   using StringResultCallback =
       base::OnceCallback<void(const std::string& result,
                               mojom::ProviderError error,
@@ -70,10 +70,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       base::OnceCallback<void(uint256_t result,
                               mojom::ProviderError error,
                               const std::string& error_message)>;
-  using RequestIntermediateCallback = base::OnceCallback<void(
-      int http_code,
-      const std::string& response,
-      const base::flat_map<std::string, std::string>& headers)>;
+  using RequestIntermediateCallback =
+      base::OnceCallback<void(APIRequestResult api_request_result)>;
   using GetFeeHistoryCallback = base::OnceCallback<void(
       const std::vector<std::string>& base_fee_per_gas,
       const std::vector<double>& gas_used_ratio,
@@ -92,9 +90,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   void OnRequestResult(RequestCallback callback,
                        base::Value id,
-                       const int code,
-                       const std::string& message,
-                       const base::flat_map<std::string, std::string>& headers);
+                       APIRequestResult api_request_result);
 
   void GetBalance(const std::string& address,
                   mojom::CoinType coin,
@@ -383,139 +379,67 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void OnGetFilStateSearchMsgLimited(
       GetFilStateSearchMsgLimitedCallback callback,
       const std::string& cid,
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
-  void OnGetFilBlockHeight(
-      GetFilBlockHeightCallback callback,
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
-  void OnGetBlockNumber(
-      GetBlockNumberCallback callback,
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
+      APIRequestResult api_request_result);
+  void OnGetFilBlockHeight(GetFilBlockHeightCallback callback,
+                           APIRequestResult api_request_result);
+  void OnGetBlockNumber(GetBlockNumberCallback callback,
+                        APIRequestResult api_request_result);
   void OnGetFeeHistory(GetFeeHistoryCallback callback,
-                       const int status,
-                       const std::string& body,
-                       const base::flat_map<std::string, std::string>& headers);
+                       APIRequestResult api_request_result);
   void OnEthGetBalance(GetBalanceCallback callback,
-                       const int status,
-                       const std::string& body,
-                       const base::flat_map<std::string, std::string>& headers);
+                       APIRequestResult api_request_result);
   void OnFilGetBalance(GetBalanceCallback callback,
-                       const int status,
-                       const std::string& body,
-                       const base::flat_map<std::string, std::string>& headers);
-
-  void OnEthGetTransactionCount(
-      GetTxCountCallback callback,
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
-  void OnFilGetTransactionCount(
-      GetFilTxCountCallback callback,
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
-  void OnSendFilecoinTransaction(
-      SendFilecoinTransactionCallback callback,
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
-  void OnGetTransactionReceipt(
-      GetTxReceiptCallback callback,
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
-  void OnSendRawTransaction(
-      SendRawTxCallback callback,
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
-  void OnGetERC20TokenBalance(
-      GetERC20TokenBalanceCallback callback,
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
-  void OnGetERC20TokenAllowance(
-      GetERC20TokenAllowanceCallback callback,
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
-
-  void OnUnstoppableDomainsResolveDns(
-      const std::string& domain,
-      const std::string& chain_id,
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
-
-  void OnUnstoppableDomainsGetEthAddr(
-      const std::string& domain,
-      const std::string& chain_id,
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
-
+                       APIRequestResult api_request_result);
+  void OnEthGetTransactionCount(GetTxCountCallback callback,
+                                APIRequestResult api_request_result);
+  void OnFilGetTransactionCount(GetFilTxCountCallback callback,
+                                APIRequestResult api_request_result);
+  void OnSendFilecoinTransaction(SendFilecoinTransactionCallback callback,
+                                 APIRequestResult api_request_result);
+  void OnGetTransactionReceipt(GetTxReceiptCallback callback,
+                               APIRequestResult api_request_result);
+  void OnSendRawTransaction(SendRawTxCallback callback,
+                            APIRequestResult api_request_result);
+  void OnGetERC20TokenBalance(GetERC20TokenBalanceCallback callback,
+                              APIRequestResult api_request_result);
+  void OnGetERC20TokenAllowance(GetERC20TokenAllowanceCallback callback,
+                                APIRequestResult api_request_result);
+  void OnUnstoppableDomainsResolveDns(const std::string& domain,
+                                      const std::string& chain_id,
+                                      APIRequestResult api_request_result);
+  void OnUnstoppableDomainsGetEthAddr(const std::string& domain,
+                                      const std::string& chain_id,
+                                      APIRequestResult api_request_result);
   void EnsRegistryGetResolver(const std::string& domain,
                               StringResultCallback callback);
-
-  void OnEnsRegistryGetResolver(
-      StringResultCallback callback,
-      int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
-
+  void OnEnsRegistryGetResolver(StringResultCallback callback,
+                                APIRequestResult api_request_result);
   void ContinueEnsResolverGetContentHash(const std::string& domain,
                                          StringResultCallback callback,
                                          const std::string& resolver_address,
                                          mojom::ProviderError error,
                                          const std::string& error_message);
-
-  void OnEnsResolverGetContentHash(
-      StringResultCallback callback,
-      int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
-
+  void OnEnsResolverGetContentHash(StringResultCallback callback,
+                                   APIRequestResult api_request_result);
   void ContinueEnsGetEthAddr(const std::string& domain,
                              StringResultCallback callback,
                              const std::string& resolver_address,
                              mojom::ProviderError error,
                              const std::string& error_message);
-
   void OnEnsResolverTaskDone(EnsResolverTask* task,
                              std::vector<uint8_t> resolved_result,
                              mojom::ProviderError error,
                              std::string error_message);
-
   void OnEnsGetEthAddr(StringResultCallback callback,
-                       int status,
-                       const std::string& body,
-                       const base::flat_map<std::string, std::string>& headers);
-  void OnGetFilEstimateGas(
-      GetFilEstimateGasCallback callback,
-      int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
-
-  void OnGetEstimateGas(
-      GetEstimateGasCallback callback,
-      int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
-
+                       APIRequestResult api_request_result);
+  void OnGetFilEstimateGas(GetFilEstimateGasCallback callback,
+                           APIRequestResult api_request_result);
+  void OnGetEstimateGas(GetEstimateGasCallback callback,
+                        APIRequestResult api_request_result);
   void OnGetGasPrice(GetGasPriceCallback callback,
-                     int status,
-                     const std::string& body,
-                     const base::flat_map<std::string, std::string>& headers);
-
+                     APIRequestResult api_request_result);
   void OnGetIsEip1559(GetIsEip1559Callback callback,
-                      int status,
-                      const std::string& body,
-                      const base::flat_map<std::string, std::string>& headers);
+                      APIRequestResult api_request_result);
 
   void MaybeUpdateIsEip1559(const std::string& chain_id);
   void UpdateIsEip1559(const std::string& chain_id,
@@ -529,20 +453,14 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const GURL& network_url,
       RequestIntermediateCallback callback,
       APIRequestHelper::ResponseConversionCallback conversion_callback);
-  void OnEthChainIdValidatedForOrigin(
-      const std::string& chain_id,
-      const GURL& rpc_url,
-      const int http_code,
-      const std::string& response,
-      const base::flat_map<std::string, std::string>& headers);
+  void OnEthChainIdValidatedForOrigin(const std::string& chain_id,
+                                      const GURL& rpc_url,
+                                      APIRequestResult api_request_result);
 
-  void OnEthChainIdValidated(
-      mojom::NetworkInfoPtr chain,
-      const GURL& rpc_url,
-      AddEthereumChainCallback callback,
-      const int http_code,
-      const std::string& response,
-      const base::flat_map<std::string, std::string>& headers);
+  void OnEthChainIdValidated(mojom::NetworkInfoPtr chain,
+                             const GURL& rpc_url,
+                             AddEthereumChainCallback callback,
+                             APIRequestResult api_request_result);
 
   FRIEND_TEST_ALL_PREFIXES(JsonRpcServiceUnitTest, IsValidDomain);
   FRIEND_TEST_ALL_PREFIXES(JsonRpcServiceUnitTest, IsValidUnstoppableDomain);
@@ -550,11 +468,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   static bool IsValidDomain(const std::string& domain);
   static bool IsValidUnstoppableDomain(const std::string& domain);
 
-  void OnGetERC721OwnerOf(
-      GetERC721OwnerOfCallback callback,
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
+  void OnGetERC721OwnerOf(GetERC721OwnerOfCallback callback,
+                          APIRequestResult api_request_result);
 
   void OnGetSupportsInterfaceTokenMetadata(const std::string& contract_address,
                                            const std::string& signature,
@@ -570,67 +485,35 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                                      mojom::ProviderError error,
                                      const std::string& error_message);
   void OnGetTokenUri(GetTokenMetadataCallback callback,
-                     const int status,
-                     const std::string& body,
-                     const base::flat_map<std::string, std::string>& headers);
+                     const APIRequestResult api_request_result);
 
-  void OnGetTokenMetadataPayload(
-      GetTokenMetadataCallback callback,
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
+  void OnGetTokenMetadataPayload(GetTokenMetadataCallback callback,
+                                 APIRequestResult api_request_result);
 
   void OnSanitizeTokenMetadata(GetTokenMetadataCallback callback,
                                data_decoder::JsonSanitizer::Result result);
 
-  void OnGetSupportsInterface(
-      GetSupportsInterfaceCallback callback,
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
+  void OnGetSupportsInterface(GetSupportsInterfaceCallback callback,
+                              APIRequestResult api_request_result);
 
   // Solana
-  void OnGetSolanaBalance(
-      GetSolanaBalanceCallback callback,
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
-  void OnGetSPLTokenAccountBalance(
-      GetSPLTokenAccountBalanceCallback callback,
+  void OnGetSolanaBalance(GetSolanaBalanceCallback callback,
+                          APIRequestResult api_request_result);
+  void OnGetSPLTokenAccountBalance(GetSPLTokenAccountBalanceCallback callback,
 
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
-  void OnSendSolanaTransaction(
-      SendSolanaTransactionCallback callback,
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
-  void OnGetSolanaLatestBlockhash(
-      GetSolanaLatestBlockhashCallback callback,
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
-  void OnGetSolanaSignatureStatuses(
-      GetSolanaSignatureStatusesCallback callback,
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
-  void OnGetSolanaAccountInfo(
-      GetSolanaAccountInfoCallback callback,
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
-  void OnGetSolanaFeeForMessage(
-      GetSolanaFeeForMessageCallback callback,
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
-  void OnGetSolanaBlockHeight(
-      GetSolanaBlockHeightCallback callback,
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
+                                   APIRequestResult api_request_result);
+  void OnSendSolanaTransaction(SendSolanaTransactionCallback callback,
+                               APIRequestResult api_request_result);
+  void OnGetSolanaLatestBlockhash(GetSolanaLatestBlockhashCallback callback,
+                                  APIRequestResult api_request_result);
+  void OnGetSolanaSignatureStatuses(GetSolanaSignatureStatusesCallback callback,
+                                    APIRequestResult api_request_result);
+  void OnGetSolanaAccountInfo(GetSolanaAccountInfoCallback callback,
+                              APIRequestResult api_request_result);
+  void OnGetSolanaFeeForMessage(GetSolanaFeeForMessageCallback callback,
+                                APIRequestResult api_request_result);
+  void OnGetSolanaBlockHeight(GetSolanaBlockHeightCallback callback,
+                              APIRequestResult api_request_result);
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<APIRequestHelper> api_request_helper_;

@@ -866,13 +866,11 @@ BraveVPNOSConnectionAPI* BraveVpnService::GetBraveVPNConnectionAPI() {
 // Android and iOS directly send an email.
 void BraveVpnService::OnCreateSupportTicket(
     CreateSupportTicketCallback callback,
-    int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  bool success = status == 200;
+    APIRequestResult api_request_result) {
+  bool success = api_request_result.response_code() == 200;
   VLOG(2) << "OnCreateSupportTicket success=" << success
-          << "\nresponse_code=" << status;
-  std::move(callback).Run(success, body);
+          << "\nresponse_code=" << api_request_result.response_code();
+  std::move(callback).Run(success, api_request_result.body());
 }
 void BraveVpnService::OnSuspend() {
   // Set reconnection state in case if computer/laptop is going to sleep.
@@ -1303,14 +1301,12 @@ void BraveVpnService::VerifyPurchaseToken(ResponseCallback callback,
 
 void BraveVpnService::OnGetResponse(
     ResponseCallback callback,
-    int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
+    api_request_helper::APIRequestResult result) {
   // NOTE: |api_request_helper_| uses JsonSanitizer to sanitize input made with
   // requests. |body| will be empty when the response from service is invalid
   // json.
-  const bool success = status == 200;
-  std::move(callback).Run(body, success);
+  const bool success = result.response_code() == 200;
+  std::move(callback).Run(result.body(), success);
 }
 
 void BraveVpnService::GetSubscriberCredential(
@@ -1336,16 +1332,15 @@ void BraveVpnService::GetSubscriberCredential(
 
 void BraveVpnService::OnGetSubscriberCredential(
     ResponseCallback callback,
-    int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
+    APIRequestResult api_request_result) {
   std::string subscriber_credential;
-  bool success = status == 200;
+  bool success = api_request_result.response_code() == 200;
   if (success) {
-    subscriber_credential = GetSubscriberCredentialFromJson(body);
+    subscriber_credential =
+        GetSubscriberCredentialFromJson(api_request_result.body());
   } else {
     VLOG(1) << __func__ << " Response from API was not HTTP 200 (Received "
-            << status << ")";
+            << api_request_result.response_code() << ")";
   }
   std::move(callback).Run(subscriber_credential, success);
 }

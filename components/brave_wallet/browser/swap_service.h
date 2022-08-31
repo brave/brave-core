@@ -34,6 +34,8 @@ class JsonRpcService;
 
 class SwapService : public KeyedService, public mojom::SwapService {
  public:
+  using APIRequestResult = api_request_helper::APIRequestResult;
+
   SwapService(scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
               JsonRpcService* json_rpc_service);
   ~SwapService() override;
@@ -80,26 +82,15 @@ class SwapService : public KeyedService, public mojom::SwapService {
 
  private:
   void OnGetPriceQuote(GetPriceQuoteCallback callback,
-                       const int status,
-                       const std::string& body,
-                       const base::flat_map<std::string, std::string>& headers);
-  void OnGetTransactionPayload(
-      GetTransactionPayloadCallback callback,
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
+                       APIRequestResult api_request_result);
+  void OnGetTransactionPayload(GetTransactionPayloadCallback callback,
+                               APIRequestResult api_request_result);
 
-  void OnGetJupiterQuote(
-      GetJupiterQuoteCallback callback,
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
+  void OnGetJupiterQuote(GetJupiterQuoteCallback callback,
+                         APIRequestResult api_request_result);
 
-  void OnGetJupiterSwapTransactions(
-      GetJupiterSwapTransactionsCallback callback,
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
+  void OnGetJupiterSwapTransactions(GetJupiterSwapTransactionsCallback callback,
+                                    APIRequestResult api_request_result);
 
   static GURL base_url_for_test_;
   api_request_helper::APIRequestHelper api_request_helper_;

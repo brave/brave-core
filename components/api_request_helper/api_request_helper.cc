@@ -25,7 +25,8 @@ void OnSanitize(const int http_code,
   std::string response_body;
   if (result.error) {
     VLOG(1) << "Response validation error:" << *result.error;
-    std::move(result_callback).Run(http_code, "", headers);
+    std::move(result_callback)
+        .Run(APIRequestResult(http_code, "", std::move(headers)));
     return;
   }
 
@@ -33,12 +34,31 @@ void OnSanitize(const int http_code,
     response_body = result.value.value();
   }
 
-  std::move(result_callback).Run(http_code, response_body, headers);
+  std::move(result_callback)
+      .Run(APIRequestResult(http_code, std::move(response_body),
+                            std::move(headers)));
 }
 
 const unsigned int kRetriesCountOnNetworkChange = 1;
 
 }  // namespace
+
+APIRequestResult::APIRequestResult() = default;
+APIRequestResult::APIRequestResult(
+    int response_code,
+    std::string body,
+    base::flat_map<std::string, std::string> headers)
+    : response_code_(response_code), body_(body), headers_(headers) {}
+APIRequestResult::APIRequestResult(const APIRequestResult&) = default;
+APIRequestResult& APIRequestResult::operator=(const APIRequestResult&) =
+    default;
+APIRequestResult::APIRequestResult(APIRequestResult&&) = default;
+APIRequestResult& APIRequestResult::operator=(APIRequestResult&&) = default;
+APIRequestResult::~APIRequestResult() = default;
+
+bool APIRequestResult::Is2XXResponseCode() const {
+  return response_code_ >= 200 && response_code_ <= 299;
+}
 
 APIRequestHelper::APIRequestHelper(
     net::NetworkTrafficAnnotationTag annotation_tag,
@@ -166,14 +186,16 @@ void APIRequestHelper::OnResponse(
 
   url_loaders_.erase(iter);
   if (!response_body) {
-    std::move(callback).Run(response_code, "", headers);
+    std::move(callback).Run(
+        APIRequestResult(response_code, "", std::move(headers)));
     return;
   }
   auto& raw_body = *response_body;
   if (conversion_callback) {
     auto converted_body = std::move(conversion_callback).Run(raw_body);
     if (!converted_body) {
-      std::move(callback).Run(422, raw_body, headers);
+      std::move(callback).Run(
+          APIRequestResult(422, std::move(raw_body), std::move(headers)));
       return;
     }
     raw_body = converted_body.value();

@@ -87,18 +87,16 @@ void GetAdaptiveCaptchaChallenge::Request(
 
 void GetAdaptiveCaptchaChallenge::OnResponse(
     OnGetAdaptiveCaptchaChallenge callback,
-    int response_code,
-    const std::string& response_body,
-    const base::flat_map<std::string, std::string>& response_headers) {
-  bool result = CheckStatusCode(response_code);
-  if (!result) {
+    api_request_helper::APIRequestResult api_request_result) {
+  bool check_result = CheckStatusCode(api_request_result.response_code());
+  if (!check_result) {
     std::move(callback).Run("");
     return;
   }
 
   std::string captcha_id;
-  result = ParseBody(response_body, &captcha_id);
-  if (!result) {
+  bool parse_result = ParseBody(api_request_result.body(), &captcha_id);
+  if (!parse_result) {
     std::move(callback).Run("");
     return;
   }

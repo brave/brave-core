@@ -13,6 +13,7 @@
 #include "base/environment.h"
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "net/base/load_flags.h"
@@ -261,15 +262,13 @@ void AssetRatioService::OnGetSardineAuthToken(
     const std::string& amount,
     const std::string& currency_code,
     GetBuyUrlV1Callback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run("", "INTERNAL_SERVICE_ERROR");
     return;
   }
 
-  auto auth_token = ParseSardineAuthToken(body);
+  auto auth_token = ParseSardineAuthToken(api_request_result.body());
   if (!auth_token) {
     std::move(callback).Run("", "INTERNAL_SERVICE_ERROR");
     return;
@@ -280,19 +279,17 @@ void AssetRatioService::OnGetSardineAuthToken(
   std::move(callback).Run(std::move(sardine_buy_url.spec()), absl::nullopt);
 }
 
-void AssetRatioService::OnGetPrice(
-    std::vector<std::string> from_assets,
-    std::vector<std::string> to_assets,
-    GetPriceCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
+void AssetRatioService::OnGetPrice(std::vector<std::string> from_assets,
+                                   std::vector<std::string> to_assets,
+                                   GetPriceCallback callback,
+                                   APIRequestResult api_request_result) {
   std::vector<brave_wallet::mojom::AssetPricePtr> prices;
-  if (status < 200 || status > 299) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(false, std::move(prices));
     return;
   }
-  if (!ParseAssetPrice(body, from_assets, to_assets, &prices)) {
+  if (!ParseAssetPrice(api_request_result.body(), from_assets, to_assets,
+                       &prices)) {
     std::move(callback).Run(false, std::move(prices));
     return;
   }
@@ -315,17 +312,14 @@ void AssetRatioService::GetPriceHistory(
       true, std::move(internal_callback));
 }
 
-void AssetRatioService::OnGetPriceHistory(
-    GetPriceHistoryCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
+void AssetRatioService::OnGetPriceHistory(GetPriceHistoryCallback callback,
+                                          APIRequestResult api_request_result) {
   std::vector<brave_wallet::mojom::AssetTimePricePtr> values;
-  if (status < 200 || status > 299) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(false, std::move(values));
     return;
   }
-  if (!ParseAssetPriceHistory(body, &values)) {
+  if (!ParseAssetPriceHistory(api_request_result.body(), &values)) {
     std::move(callback).Run(false, std::move(values));
     return;
   }
@@ -353,18 +347,15 @@ void AssetRatioService::GetTokenInfo(const std::string& contract_address,
                                true, std::move(internal_callback));
 }
 
-void AssetRatioService::OnGetTokenInfo(
-    GetTokenInfoCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+void AssetRatioService::OnGetTokenInfo(GetTokenInfoCallback callback,
+                                       APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(nullptr);
     return;
   }
 
-  std::move(callback).Run(
-      ParseTokenInfo(body, mojom::kMainnetChainId, mojom::CoinType::ETH));
+  std::move(callback).Run(ParseTokenInfo(
+      api_request_result.body(), mojom::kMainnetChainId, mojom::CoinType::ETH));
 }
 
 // static
@@ -390,18 +381,15 @@ void AssetRatioService::GetCoinMarkets(const std::string& vs_asset,
                                "", "", true, std::move(internal_callback));
 }
 
-void AssetRatioService::OnGetCoinMarkets(
-    GetCoinMarketsCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
+void AssetRatioService::OnGetCoinMarkets(GetCoinMarketsCallback callback,
+                                         APIRequestResult api_request_result) {
   std::vector<brave_wallet::mojom::CoinMarketPtr> values;
-  if (status != 200) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(false, std::move(values));
     return;
   }
 
-  if (!ParseCoinMarkets(body, &values)) {
+  if (!ParseCoinMarkets(api_request_result.body(), &values)) {
     std::move(callback).Run(false, std::move(values));
     return;
   }
