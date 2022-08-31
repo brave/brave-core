@@ -35,7 +35,7 @@ Building the code
     xcode-select --install
     ```
 1. Make sure `npm` is installed, `node` version 12 is recommended
-1. Install SwiftLint:
+1. Install SwiftLint (0.49.0 or higher):
     ```shell
     brew update
     brew install swiftlint
