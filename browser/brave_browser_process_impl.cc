@@ -378,8 +378,7 @@ speedreader::SpeedreaderRewriterService*
 BraveBrowserProcessImpl::speedreader_rewriter_service() {
   if (!speedreader_rewriter_service_) {
     speedreader_rewriter_service_ =
-        std::make_unique<speedreader::SpeedreaderRewriterService>(
-            brave_component_updater_delegate());
+        std::make_unique<speedreader::SpeedreaderRewriterService>();
   }
   return speedreader_rewriter_service_.get();
 }
