@@ -522,7 +522,8 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
 
   ContentSetting content_setting;
   if (type == ControlType::DEFAULT || type == ControlType::BLOCK_THIRD_PARTY) {
-    content_setting = CONTENT_SETTING_DEFAULT;
+    type = ControlType::DEFAULT;
+    content_setting = CONTENT_SETTING_ASK;
   } else {
     content_setting = GetDefaultBlockFromControlType(type);
   }
@@ -555,8 +556,12 @@ ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
 
   ContentSetting fp_setting =
       GetBraveFPContentSettingFromRules(fingerprinting_rules, url);
-  if (fp_setting == CONTENT_SETTING_DEFAULT)
+
+  if (fp_setting == CONTENT_SETTING_ASK ||
+      fp_setting == CONTENT_SETTING_DEFAULT) {
     return ControlType::DEFAULT;
+  }
+
   return fp_setting == CONTENT_SETTING_ALLOW ? ControlType::ALLOW
                                              : ControlType::BLOCK;
 }

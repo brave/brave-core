@@ -8,6 +8,7 @@
 #include <set>
 #include <string>
 
+#include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
@@ -17,20 +18,12 @@ namespace brave_shields {
 ContentSetting GetBraveFPContentSettingFromRules(
     const ContentSettingsForOneType& fp_rules,
     const GURL& primary_url) {
-  absl::optional<ContentSettingPatternSource> global_fp_rule;
-
+  ContentSettingPatternSource fp_rule;
   for (const auto& rule : fp_rules) {
-    if (rule.primary_pattern == ContentSettingsPattern::Wildcard()) {
-      if (rule.secondary_pattern == ContentSettingsPattern::Wildcard()) {
-        global_fp_rule = rule;
-      }
-    } else if (rule.primary_pattern.Matches(primary_url)) {
+    if (rule.primary_pattern.Matches(primary_url)) {
       return rule.GetContentSetting();
     }
   }
-
-  if (global_fp_rule)
-    return global_fp_rule->GetContentSetting();
 
   return CONTENT_SETTING_DEFAULT;
 }
@@ -43,16 +36,12 @@ ShieldsSettingCounts GetFPSettingCountFromRules(
     if (rule.primary_pattern.MatchesAllHosts()) {
       continue;
     }
-    if (rule.secondary_pattern.MatchesAllHosts()) {
-      if (rule.GetContentSetting() == CONTENT_SETTING_ALLOW) {
-        result.allow++;
-      } else {
-        result.aggressive++;
-      }
+    if (rule.GetContentSetting() == CONTENT_SETTING_ALLOW) {
+      result.allow++;
+    } else if (rule.GetContentSetting() == CONTENT_SETTING_BLOCK) {
+      result.aggressive++;
     } else {
-      if (rule.GetContentSetting() == CONTENT_SETTING_BLOCK) {
-        result.standard++;
-      }
+      result.standard++;
     }
   }
 

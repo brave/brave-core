@@ -209,13 +209,7 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
 
   MigrateShieldsSettingsV3ToV4(version);
 
-  bool run_fp_migration = run_fp_migration_for_testing_;
-#if BUILDFLAG(IS_ANDROID)
-  run_fp_migration = true;
-#endif
-  if (run_fp_migration) {
-    MigrateFPShieldsSettingsAndroid();
-  }
+  MigrateFPShieldsSettings();
 }
 
 void BravePrefProvider::EnsureNoWildcardEntries(
@@ -465,7 +459,7 @@ void BravePrefProvider::MigrateShieldsSettingsV1ToV2ForOneType(
   }
 }
 
-void BravePrefProvider::MigrateFPShieldsSettingsAndroid() {
+void BravePrefProvider::MigrateFPShieldsSettings() {
   if (prefs_->GetBoolean(kBraveShieldsFPSettingsMigration))
     return;
 
@@ -484,17 +478,25 @@ void BravePrefProvider::MigrateFPShieldsSettingsAndroid() {
   for (const auto& fp_rule : rules) {
     if (fp_rule.secondary_pattern == ContentSettingsPattern::Wildcard() &&
         fp_rule.value == CONTENT_SETTING_BLOCK) {
+#if BUILDFLAG(IS_ANDROID)
       SetWebsiteSettingInternal(fp_rule.primary_pattern,
                                 fp_rule.secondary_pattern,
                                 ContentSettingsType::BRAVE_FINGERPRINTING_V2,
-                                ContentSettingToValue(CONTENT_SETTING_DEFAULT),
+                                ContentSettingToValue(CONTENT_SETTING_ASK),
                                 {fp_rule.expiration, fp_rule.session_model});
+#endif
     } else if (fp_rule.secondary_pattern ==
                ContentSettingsPattern::FromString("https://balanced/*")) {
+      // delete the "balanced" override
       SetWebsiteSettingInternal(
           fp_rule.primary_pattern, fp_rule.secondary_pattern,
           ContentSettingsType::BRAVE_FINGERPRINTING_V2,
           ContentSettingToValue(CONTENT_SETTING_DEFAULT), {});
+      // replace with ask
+      SetWebsiteSettingInternal(fp_rule.primary_pattern,
+                                ContentSettingsPattern::Wildcard(),
+                                ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+                                ContentSettingToValue(CONTENT_SETTING_ASK), {});
     }
   }
 

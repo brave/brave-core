@@ -149,6 +149,10 @@ class ShieldsSetting {
     CheckSettings(url, CONTENT_SETTING_ALLOW);
   }
 
+  void CheckSettingsWouldAsk(const GURL& url) const {
+    CheckSettings(url, CONTENT_SETTING_ASK);
+  }
+
  protected:
   virtual void CheckSettings(const GURL& url, ContentSetting setting) const {
     for (const auto& url_source : urls_) {
@@ -212,27 +216,22 @@ class CookieSettings : public ShieldsSetting {
 class ShieldsFingerprintingSetting : public ShieldsSetting {
  public:
   explicit ShieldsFingerprintingSetting(BravePrefProvider* provider)
-      : ShieldsSetting(provider,
-                       {{GURL(), ContentSettingsType::BRAVE_FINGERPRINTING_V2},
-                        {GURL("https://firstParty/*"),
-                         ContentSettingsType::BRAVE_FINGERPRINTING_V2}}) {}
+      : ShieldsSetting(provider, {}) {}
 
-  void SetPreMigrationSettingsAndroid(
+  void SetPreMigrationSettings(const ContentSettingsPattern& pattern,
+                               ContentSetting setting) override {
+    provider_->SetWebsiteSetting(pattern, ContentSettingsPattern::Wildcard(),
+                                 ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+                                 ContentSettingToValue(setting), {});
+  }
+
+  void SetPreMigrationSettingsWithSecondary(
       const ContentSettingsPattern& pattern,
       const ContentSettingsPattern& secondary_pattern,
       ContentSetting setting) {
     provider_->SetWebsiteSetting(pattern, secondary_pattern,
                                  ContentSettingsType::BRAVE_FINGERPRINTING_V2,
                                  ContentSettingToValue(setting), {});
-  }
-
-  void CheckSettingsAndroid(const GURL& url, ContentSetting setting) {
-    for (const auto& url_source : urls_) {
-      EXPECT_EQ(setting,
-                TestUtils::GetContentSetting(
-                    provider_, url_source.first, url,
-                    ContentSettingsType::BRAVE_FINGERPRINTING_V2, false));
-    }
   }
 };
 
@@ -459,27 +458,39 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationVersion) {
   provider.ShutdownOnUIThread();
 }
 
-TEST_F(BravePrefProviderTest, MigrateFPShieldsSettingsAndroid) {
+TEST_F(BravePrefProviderTest, MigrateFPShieldsSettings) {
   BravePrefProvider provider(
       testing_profile()->GetPrefs(), false /* incognito */,
       true /* store_last_modified */, false /* restore_session */);
-  provider.run_fp_migration_for_testing_ = true;
   ShieldsFingerprintingSetting fp_settings(&provider);
 
   GURL url("http://brave.com:8080/");
   ContentSettingsPattern pattern = ContentSettingsPattern::FromURL(url);
+  fp_settings.SetPreMigrationSettings(pattern, CONTENT_SETTING_BLOCK);
 
   GURL url2("http://brave.com:3030");
   ContentSettingsPattern pattern2 = ContentSettingsPattern::FromURL(url2);
-
-  fp_settings.SetPreMigrationSettingsAndroid(
-      pattern, ContentSettingsPattern::Wildcard(), CONTENT_SETTING_BLOCK);
-  fp_settings.SetPreMigrationSettingsAndroid(
+  fp_settings.SetPreMigrationSettingsWithSecondary(
       pattern2, ContentSettingsPattern::FromString("https://balanced/*"),
       CONTENT_SETTING_BLOCK);
-  provider.MigrateFPShieldsSettingsAndroid();
-  fp_settings.CheckSettingsAndroid(url, CONTENT_SETTING_DEFAULT);
-  fp_settings.CheckSettingsAndroid(url2, CONTENT_SETTING_DEFAULT);
+
+  GURL url3("http://brave.com:8181/");
+  ContentSettingsPattern pattern3 = ContentSettingsPattern::FromURL(url3);
+  fp_settings.SetPreMigrationSettings(pattern3, CONTENT_SETTING_ALLOW);
+
+  GURL url4("http://brave.com:8282/");
+  ContentSettingsPattern pattern4 = ContentSettingsPattern::FromURL(url4);
+  fp_settings.SetPreMigrationSettings(pattern4, CONTENT_SETTING_ASK);
+
+  provider.MigrateFPShieldsSettings();
+#if BUILDFLAG(IS_ANDROID)
+  fp_settings.CheckSettingsWouldAsk(url);
+#else
+  fp_settings.CheckSettingsWouldBlock(url);
+#endif
+  fp_settings.CheckSettingsWouldAsk(url2);
+  fp_settings.CheckSettingsWouldAllow(url3);
+  fp_settings.CheckSettingsWouldAsk(url4);
 
   provider.ShutdownOnUIThread();
 }

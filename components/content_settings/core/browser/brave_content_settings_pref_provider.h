@@ -33,8 +33,6 @@ class BravePrefProvider : public PrefProvider,
   BravePrefProvider& operator=(const BravePrefProvider&) = delete;
   ~BravePrefProvider() override;
 
-  bool run_fp_migration_for_testing_ = false;
-
   static void CopyPluginSettingsForMigration(PrefService* prefs);
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
@@ -61,8 +59,7 @@ class BravePrefProvider : public PrefProvider,
   FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest,
                            TestShieldsSettingsMigrationFromUnknownSettings);
   FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest, EnsureNoWildcardEntries);
-  FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest,
-                           MigrateFPShieldsSettingsAndroid);
+  FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest, MigrateFPShieldsSettings);
   void MigrateShieldsSettings(bool incognito);
   void EnsureNoWildcardEntries(ContentSettingsType content_type);
   void MigrateShieldsSettingsFromResourceIds();
@@ -77,7 +74,7 @@ class BravePrefProvider : public PrefProvider,
   void MigrateShieldsSettingsV1ToV2ForOneType(ContentSettingsType content_type);
   void MigrateShieldsSettingsV2ToV3();
   void MigrateShieldsSettingsV3ToV4(int start_version);
-  void MigrateFPShieldsSettingsAndroid();
+  void MigrateFPShieldsSettings();
   void UpdateCookieRules(ContentSettingsType content_type, bool incognito);
   void OnCookieSettingsChanged(ContentSettingsType content_type);
   void NotifyChanges(const std::vector<Rule>& rules, bool incognito);
