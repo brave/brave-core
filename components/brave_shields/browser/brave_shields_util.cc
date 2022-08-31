@@ -519,6 +519,11 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
     return;
 
   ControlType prev_setting = GetFingerprintingControlType(map, url);
+  content_settings::SettingInfo setting_info;
+  base::Value web_setting = map->GetWebsiteSetting(
+      url, GURL(), ContentSettingsType::BRAVE_FINGERPRINTING_V2, &setting_info);
+  bool was_default =
+      web_setting.is_none() || setting_info.primary_pattern.MatchesAllHosts();
 
   ContentSetting content_setting;
   if (type == ControlType::DEFAULT || type == ControlType::BLOCK_THIRD_PARTY) {
@@ -543,7 +548,8 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
       // If domain specific setting changed, recalculate counts
       ControlType global_setting = GetFingerprintingControlType(map, GURL());
       RecordShieldsDomainSettingCountsWithChange(
-          profile_state, true, global_setting, &prev_setting, type);
+          profile_state, true, global_setting,
+          was_default ? nullptr : &prev_setting, type);
     }
   }
 }
