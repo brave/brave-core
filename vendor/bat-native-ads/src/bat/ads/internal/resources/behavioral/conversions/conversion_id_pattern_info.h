@@ -12,18 +12,15 @@
 namespace ads {
 
 struct ConversionIdPatternInfo final {
-  ConversionIdPatternInfo();
-  ConversionIdPatternInfo(const ConversionIdPatternInfo& info);
-  ConversionIdPatternInfo& operator=(const ConversionIdPatternInfo& info);
-  ~ConversionIdPatternInfo();
-
-  bool operator==(const ConversionIdPatternInfo& rhs) const;
-  bool operator!=(const ConversionIdPatternInfo& rhs) const;
-
   std::string id_pattern;
   std::string url_pattern;
   std::string search_in;
 };
+
+bool operator==(const ConversionIdPatternInfo& lhs,
+                const ConversionIdPatternInfo& rhs);
+bool operator!=(const ConversionIdPatternInfo& lhs,
+                const ConversionIdPatternInfo& rhs);
 
 using ConversionIdPatternMap = std::map<std::string, ConversionIdPatternInfo>;
 

@@ -12,17 +12,14 @@
 namespace ads {
 
 struct CatalogGeoTargetInfo final {
-  CatalogGeoTargetInfo();
-  CatalogGeoTargetInfo(const CatalogGeoTargetInfo& info);
-  CatalogGeoTargetInfo& operator=(const CatalogGeoTargetInfo& info);
-  ~CatalogGeoTargetInfo();
-
-  bool operator==(const CatalogGeoTargetInfo& rhs) const;
-  bool operator!=(const CatalogGeoTargetInfo& rhs) const;
-
   std::string code;
   std::string name;
 };
+
+bool operator==(const CatalogGeoTargetInfo& lhs,
+                const CatalogGeoTargetInfo& rhs);
+bool operator!=(const CatalogGeoTargetInfo& lhs,
+                const CatalogGeoTargetInfo& rhs);
 
 using CatalogGeoTargetList = std::vector<CatalogGeoTargetInfo>;
 

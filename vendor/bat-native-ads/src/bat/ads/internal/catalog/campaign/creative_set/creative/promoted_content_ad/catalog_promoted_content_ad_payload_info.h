@@ -13,20 +13,15 @@
 namespace ads {
 
 struct CatalogPromotedContentAdPayloadInfo final {
-  CatalogPromotedContentAdPayloadInfo();
-  CatalogPromotedContentAdPayloadInfo(
-      const CatalogPromotedContentAdPayloadInfo& info);
-  CatalogPromotedContentAdPayloadInfo& operator=(
-      const CatalogPromotedContentAdPayloadInfo& info);
-  ~CatalogPromotedContentAdPayloadInfo();
-
-  bool operator==(const CatalogPromotedContentAdPayloadInfo& rhs) const;
-  bool operator!=(const CatalogPromotedContentAdPayloadInfo& rhs) const;
-
   std::string title;
   std::string description;
   GURL target_url;
 };
+
+bool operator==(const CatalogPromotedContentAdPayloadInfo& lhs,
+                const CatalogPromotedContentAdPayloadInfo& rhs);
+bool operator!=(const CatalogPromotedContentAdPayloadInfo& lhs,
+                const CatalogPromotedContentAdPayloadInfo& rhs);
 
 }  // namespace ads
 

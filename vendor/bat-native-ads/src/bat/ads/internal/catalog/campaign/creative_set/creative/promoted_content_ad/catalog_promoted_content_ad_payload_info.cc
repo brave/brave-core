@@ -7,28 +7,15 @@
 
 namespace ads {
 
-CatalogPromotedContentAdPayloadInfo::CatalogPromotedContentAdPayloadInfo() =
-    default;
-
-CatalogPromotedContentAdPayloadInfo::CatalogPromotedContentAdPayloadInfo(
-    const CatalogPromotedContentAdPayloadInfo& info) = default;
-
-CatalogPromotedContentAdPayloadInfo&
-CatalogPromotedContentAdPayloadInfo::operator=(
-    const CatalogPromotedContentAdPayloadInfo& info) = default;
-
-CatalogPromotedContentAdPayloadInfo::~CatalogPromotedContentAdPayloadInfo() =
-    default;
-
-bool CatalogPromotedContentAdPayloadInfo::operator==(
-    const CatalogPromotedContentAdPayloadInfo& rhs) const {
-  return title == rhs.title && description == rhs.description &&
-         target_url == rhs.target_url;
+bool operator==(const CatalogPromotedContentAdPayloadInfo& lhs,
+                const CatalogPromotedContentAdPayloadInfo& rhs) {
+  return lhs.title == rhs.title && lhs.description == rhs.description &&
+         lhs.target_url == rhs.target_url;
 }
 
-bool CatalogPromotedContentAdPayloadInfo::operator!=(
-    const CatalogPromotedContentAdPayloadInfo& rhs) const {
-  return !(*this == rhs);
+bool operator!=(const CatalogPromotedContentAdPayloadInfo& lhs,
+                const CatalogPromotedContentAdPayloadInfo& rhs) {
+  return !(lhs == rhs);
 }
 
 }  // namespace ads

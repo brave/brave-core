@@ -11,20 +11,10 @@
 namespace ads {
 namespace targeting {
 
-PurchaseIntentSignalHistoryInfo::PurchaseIntentSignalHistoryInfo() = default;
-
 PurchaseIntentSignalHistoryInfo::PurchaseIntentSignalHistoryInfo(
     const base::Time created_at,
     const uint16_t weight)
     : created_at(created_at), weight(weight) {}
-
-PurchaseIntentSignalHistoryInfo::PurchaseIntentSignalHistoryInfo(
-    const PurchaseIntentSignalHistoryInfo& info) = default;
-
-PurchaseIntentSignalHistoryInfo& PurchaseIntentSignalHistoryInfo::operator=(
-    const PurchaseIntentSignalHistoryInfo& info) = default;
-
-PurchaseIntentSignalHistoryInfo::~PurchaseIntentSignalHistoryInfo() = default;
 
 bool PurchaseIntentSignalHistoryInfo::operator==(
     const PurchaseIntentSignalHistoryInfo& rhs) const {

@@ -12,17 +12,14 @@
 namespace ads {
 
 struct UserActivityTriggerInfo final {
-  UserActivityTriggerInfo();
-  UserActivityTriggerInfo(const UserActivityTriggerInfo& info);
-  UserActivityTriggerInfo& operator=(const UserActivityTriggerInfo& info);
-  ~UserActivityTriggerInfo();
-
-  bool operator==(const UserActivityTriggerInfo& rhs) const;
-  bool operator!=(const UserActivityTriggerInfo& rhs) const;
-
   std::string event_sequence;
   double score = 0.0;
 };
+
+bool operator==(const UserActivityTriggerInfo& lhs,
+                const UserActivityTriggerInfo& rhs);
+bool operator!=(const UserActivityTriggerInfo& lhs,
+                const UserActivityTriggerInfo& rhs);
 
 using UserActivityTriggerList = std::vector<UserActivityTriggerInfo>;
 

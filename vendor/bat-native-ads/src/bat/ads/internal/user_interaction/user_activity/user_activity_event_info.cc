@@ -9,23 +9,15 @@
 
 namespace ads {
 
-UserActivityEventInfo::UserActivityEventInfo() = default;
-
-UserActivityEventInfo::UserActivityEventInfo(
-    const UserActivityEventInfo& info) = default;
-
-UserActivityEventInfo& UserActivityEventInfo::operator=(
-    const UserActivityEventInfo& info) = default;
-
-UserActivityEventInfo::~UserActivityEventInfo() = default;
-
-bool UserActivityEventInfo::operator==(const UserActivityEventInfo& rhs) const {
-  return type == rhs.type &&
-         DoubleEquals(created_at.ToDoubleT(), rhs.created_at.ToDoubleT());
+bool operator==(const UserActivityEventInfo& lhs,
+                const UserActivityEventInfo& rhs) {
+  return lhs.type == rhs.type &&
+         DoubleEquals(lhs.created_at.ToDoubleT(), rhs.created_at.ToDoubleT());
 }
 
-bool UserActivityEventInfo::operator!=(const UserActivityEventInfo& rhs) const {
-  return !(*this == rhs);
+bool operator!=(const UserActivityEventInfo& lhs,
+                const UserActivityEventInfo& rhs) {
+  return !(lhs == rhs);
 }
 
 }  // namespace ads

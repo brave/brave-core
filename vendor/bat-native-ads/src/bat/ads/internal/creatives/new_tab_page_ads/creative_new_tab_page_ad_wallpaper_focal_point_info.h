@@ -9,19 +9,14 @@
 namespace ads {
 
 struct CreativeNewTabPageAdWallpaperFocalPointInfo final {
-  CreativeNewTabPageAdWallpaperFocalPointInfo();
-  CreativeNewTabPageAdWallpaperFocalPointInfo(
-      const CreativeNewTabPageAdWallpaperFocalPointInfo& info);
-  CreativeNewTabPageAdWallpaperFocalPointInfo& operator=(
-      const CreativeNewTabPageAdWallpaperFocalPointInfo& info);
-  ~CreativeNewTabPageAdWallpaperFocalPointInfo();
-
-  bool operator==(const CreativeNewTabPageAdWallpaperFocalPointInfo& rhs) const;
-  bool operator!=(const CreativeNewTabPageAdWallpaperFocalPointInfo& rhs) const;
-
-  int x;
-  int y;
+  int x = 0;
+  int y = 0;
 };
+
+bool operator==(const CreativeNewTabPageAdWallpaperFocalPointInfo& lhs,
+                const CreativeNewTabPageAdWallpaperFocalPointInfo& rhs);
+bool operator!=(const CreativeNewTabPageAdWallpaperFocalPointInfo& lhs,
+                const CreativeNewTabPageAdWallpaperFocalPointInfo& rhs);
 
 }  // namespace ads
 

@@ -108,8 +108,7 @@ void DatabaseManager::MaybeMigrate(const int from_version,
 
   NotifyWillMigrateDatabase(from_version, to_version);
 
-  database::Migration database_migration;
-  database_migration.FromVersion(
+  database::MigrateFromVersion(
       from_version,
       base::BindOnce(&DatabaseManager::OnMigrate, base::Unretained(this),
                      from_version, std::move(callback)));

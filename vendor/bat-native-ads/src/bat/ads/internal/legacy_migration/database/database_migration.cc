@@ -28,37 +28,15 @@
 #include "bat/ads/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_table.h"
 #include "bat/ads/internal/creatives/segments_database_table.h"
 #include "bat/ads/internal/legacy_migration/database/database_constants.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 namespace database {
 
-Migration::Migration() = default;
+namespace {
 
-Migration::~Migration() = default;
-
-void Migration::FromVersion(const int from_version, ResultCallback callback) {
-  const int to_version = database::kVersion;
-  DCHECK(from_version < to_version);
-
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-  for (int i = from_version + 1; i <= to_version; i++) {
-    ToVersion(transaction.get(), i);
-  }
-
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::MIGRATE;
-
-  transaction->version = to_version;
-  transaction->compatible_version = database::kCompatibleVersion;
-  transaction->commands.push_back(std::move(command));
-
-  AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      base::BindOnce(&OnResultCallback, std::move(callback)));
-}
-
-void Migration::ToVersion(mojom::DBTransactionInfo* transaction,
-                          const int to_version) {
+void MigrateToVersion(mojom::DBTransactionInfo* transaction,
+                      const int to_version) {
   DCHECK(transaction);
 
   table::Conversions conversions_database_table;
@@ -108,6 +86,29 @@ void Migration::ToVersion(mojom::DBTransactionInfo* transaction,
 
   table::Dayparts dayparts_database_table;
   dayparts_database_table.Migrate(transaction, to_version);
+}
+
+}  // namespace
+
+void MigrateFromVersion(const int from_version, ResultCallback callback) {
+  const int to_version = database::kVersion;
+  DCHECK(from_version < to_version);
+
+  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
+  for (int i = from_version + 1; i <= to_version; i++) {
+    MigrateToVersion(transaction.get(), i);
+  }
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::MIGRATE;
+
+  transaction->version = to_version;
+  transaction->compatible_version = database::kCompatibleVersion;
+  transaction->commands.push_back(std::move(command));
+
+  AdsClientHelper::GetInstance()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 }  // namespace database

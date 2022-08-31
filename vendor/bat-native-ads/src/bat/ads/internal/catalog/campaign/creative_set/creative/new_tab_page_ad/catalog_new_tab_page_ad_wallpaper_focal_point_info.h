@@ -9,19 +9,14 @@
 namespace ads {
 
 struct CatalogNewTabPageAdWallpaperFocalPointInfo final {
-  CatalogNewTabPageAdWallpaperFocalPointInfo();
-  CatalogNewTabPageAdWallpaperFocalPointInfo(
-      const CatalogNewTabPageAdWallpaperFocalPointInfo& info);
-  CatalogNewTabPageAdWallpaperFocalPointInfo& operator=(
-      const CatalogNewTabPageAdWallpaperFocalPointInfo& info);
-  ~CatalogNewTabPageAdWallpaperFocalPointInfo();
-
-  bool operator==(const CatalogNewTabPageAdWallpaperFocalPointInfo& rhs) const;
-  bool operator!=(const CatalogNewTabPageAdWallpaperFocalPointInfo& rhs) const;
-
-  int x;
-  int y;
+  int x = 0;
+  int y = 0;
 };
+
+bool operator==(const CatalogNewTabPageAdWallpaperFocalPointInfo& lhs,
+                const CatalogNewTabPageAdWallpaperFocalPointInfo& rhs);
+bool operator!=(const CatalogNewTabPageAdWallpaperFocalPointInfo& lhs,
+                const CatalogNewTabPageAdWallpaperFocalPointInfo& rhs);
 
 }  // namespace ads
 

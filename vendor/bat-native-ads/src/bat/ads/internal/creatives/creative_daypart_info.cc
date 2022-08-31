@@ -7,23 +7,15 @@
 
 namespace ads {
 
-CreativeDaypartInfo::CreativeDaypartInfo() = default;
-
-CreativeDaypartInfo::CreativeDaypartInfo(const CreativeDaypartInfo& info) =
-    default;
-
-CreativeDaypartInfo& CreativeDaypartInfo::operator=(
-    const CreativeDaypartInfo& info) = default;
-
-CreativeDaypartInfo::~CreativeDaypartInfo() = default;
-
-bool CreativeDaypartInfo::operator==(const CreativeDaypartInfo& rhs) const {
-  return dow == rhs.dow && start_minute == rhs.start_minute &&
-         end_minute == rhs.end_minute;
+bool operator==(const CreativeDaypartInfo& lhs,
+                const CreativeDaypartInfo& rhs) {
+  return lhs.dow == rhs.dow && lhs.start_minute == rhs.start_minute &&
+         lhs.end_minute == rhs.end_minute;
 }
 
-bool CreativeDaypartInfo::operator!=(const CreativeDaypartInfo& rhs) const {
-  return !(*this == rhs);
+bool operator!=(const CreativeDaypartInfo& lhs,
+                const CreativeDaypartInfo& rhs) {
+  return !(lhs == rhs);
 }
 
 }  // namespace ads
