@@ -9,6 +9,10 @@
     *** hideOverview(...);
 }
 
+-keep class org.chromium.chrome.browser.omnibox.suggestions.AutocompleteCoordinator {
+    *** createViewProvider(...);
+}
+
 -keep class org.chromium.components.browser_ui.site_settings.ContentSettingsResources {
     *** getResourceItem(...);
 }

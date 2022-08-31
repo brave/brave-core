@@ -16,7 +16,9 @@ import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
+import org.chromium.chrome.browser.omnibox.suggestions.BraveDropdownItemViewInfoListManager;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
+import org.chromium.chrome.browser.omnibox.suggestions.brave_search.BraveSearchBannerProcessor;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.share.ShareDelegate;
@@ -26,10 +28,11 @@ import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modelutil.PropertyModel;
 
-class BraveAutocompleteMediator extends AutocompleteMediator {
+class BraveAutocompleteMediator extends AutocompleteMediator implements BraveSuggestionHost {
     private static final String AUTOCOMPLETE_ENABLED = "brave.autocomplete_enabled";
 
     private boolean mNativeInitialized;
+    private DropdownItemViewInfoListManager mDropdownViewInfoListManager;
 
     public BraveAutocompleteMediator(@NonNull Context context,
             @NonNull AutocompleteDelegate delegate,
@@ -65,5 +68,13 @@ class BraveAutocompleteMediator extends AutocompleteMediator {
         if (!mNativeInitialized) return;
 
         super.onUrlFocusChange(hasFocus);
+    }
+
+    @Override
+    public void removeBraveSearchSuggestion() {
+        if (mDropdownViewInfoListManager instanceof BraveDropdownItemViewInfoListManager) {
+            ((BraveDropdownItemViewInfoListManager) mDropdownViewInfoListManager)
+                    .removeSuggestionsForGroup(BraveSearchBannerProcessor.BRAVE_SEARCH_PROMO_GROUP);
+        }
     }
 }

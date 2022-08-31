@@ -8,20 +8,34 @@ import("//chrome/browser/buildflags.gni")
 
 android_library("java") {
   sources = [
+    "java/src/org/chromium/chrome/browser/omnibox/OmniboxPrefManager.java",
     "java/src/org/chromium/chrome/browser/omnibox/status/BraveStatusMediator.java",
+    "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteCoordinator.java",
     "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteMediator.java",
+    "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListBuilder.java",
+    "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListManager.java",
+    "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveOmniboxSuggestionUiType.java",
+    "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveSuggestionHost.java",
+    "java/src/org/chromium/chrome/browser/omnibox/suggestions/brave_search/BraveSearchBannerProcessor.java",
+    "java/src/org/chromium/chrome/browser/omnibox/suggestions/brave_search/BraveSearchBannerProperties.java",
+    "java/src/org/chromium/chrome/browser/omnibox/suggestions/brave_search/BraveSearchBannerViewBinder.java",
     "java/src/org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessor.java",
   ]
 
   deps = [
+    ":java_resources",
     "//base:base_java",
+    "//brave/android/java/org/chromium/chrome/browser/search_engines/settings:java",
+    "//brave/build/android:android_brave_strings_grd",
     "//brave/components/p3a_utils",
     "//chrome/browser/commerce/merchant_viewer/android:java",
+    "//chrome/browser/flags:java",
     "//chrome/browser/profiles/android:java",
     "//chrome/browser/share:java",
     "//chrome/browser/tab:java",
     "//chrome/browser/tabmodel:java",
     "//chrome/browser/ui/android/omnibox:java",
+    "//chrome/browser/ui/android/omnibox:java_resources",
     "//components/favicon/android:java",
     "//components/omnibox/browser:browser_java",
     "//components/permissions/android:java",
@@ -29,6 +43,29 @@ android_library("java") {
     "//components/search_engines/android:java",
     "//components/user_prefs/android:java",
     "//third_party/androidx:androidx_annotation_annotation_java",
+    "//third_party/androidx:androidx_recyclerview_recyclerview_java",
     "//ui/android:ui_no_recycler_view_java",
+  ]
+
+  resources_package = "org.chromium.chrome.browser.omnibox"
+}
+
+android_resources("java_resources") {
+  sources = [
+    "java/res/drawable-hdpi/ic_brave_search_banner.png",
+    "java/res/drawable-mdpi/ic_brave_search_banner.png",
+    "java/res/drawable-night-hdpi/ic_brave_search_banner.png",
+    "java/res/drawable-night-mdpi/ic_brave_search_banner.png",
+    "java/res/drawable-night-xhdpi/ic_brave_search_banner.png",
+    "java/res/drawable-night-xxhdpi/ic_brave_search_banner.png",
+    "java/res/drawable-night-xxxhdpi/ic_brave_search_banner.png",
+    "java/res/drawable-xhdpi/ic_brave_search_banner.png",
+    "java/res/drawable-xxhdpi/ic_brave_search_banner.png",
+    "java/res/drawable-xxxhdpi/ic_brave_search_banner.png",
+    "java/res/drawable/bg_brave_search_banner.xml",
+    "java/res/layout/omnibox_brave_search_banner.xml",
+    "java/res/values-night/colors.xml",
+    "java/res/values/colors.xml",
+    "java/res/values/dimens.xml",
   ]
 }

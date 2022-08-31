@@ -448,13 +448,39 @@
     public <init>(...);
 }
 
+-keep class org.chromium.chrome.browser.omnibox.suggestions.AutocompleteCoordinator {
+    *** createViewProvider(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.suggestions.BraveAutocompleteCoordinator {
+    *** createViewProvider(...);
+}
+
 -keep class org.chromium.chrome.browser.omnibox.suggestions.AutocompleteMediator {
     *** mNativeInitialized;
+    *** mDropdownViewInfoListManager;
     public <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.BraveAutocompleteMediator {
     public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.suggestions.DropdownItemViewInfoListBuilder {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.suggestions.BraveDropdownItemViewInfoListBuilder {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.suggestions.DropdownItemViewInfoListManager {
+    <init>(...);
+    *** removeSuggestionsForGroup(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.suggestions.BraveDropdownItemViewInfoListManager {
+    <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.ui.default_browser_promo.BraveDefaultBrowserPromoUtils {
