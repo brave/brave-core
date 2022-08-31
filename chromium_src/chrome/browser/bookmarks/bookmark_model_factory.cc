@@ -5,6 +5,10 @@
 
 #include "brave/browser/profiles/profile_util.h"
 
-#define GetBrowserContextRedirectedInIncognito \
-  GetBrowserContextRedirectedInIncognitoOverride
 #include "src/chrome/browser/bookmarks/bookmark_model_factory.cc"
+
+content::BrowserContext* BookmarkModelFactory::GetBrowserContextToUse(
+    content::BrowserContext* context) const {
+  // To make different service for normal and incognito profile.
+  return chrome::GetBrowserContextRedirectedInIncognitoOverride(context);
+}
