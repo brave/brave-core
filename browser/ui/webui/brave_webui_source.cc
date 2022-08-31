@@ -768,8 +768,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "connectWalletInfoListItem1", IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_LIST_ITEM_1 },  // NOLINT
         { "connectWalletInfoListItem2", IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_LIST_ITEM_2 },  // NOLINT
         { "continue", IDS_BRAVE_REWARDS_CONTINUE },
-        { "continueToLogin", IDS_BRAVE_REWARDS_CONTINUE_TO_LOGIN },
-        { "minimumBalanceWarning", IDS_BRAVE_REWARDS_MINIMUM_BALANCE_WARNING },
         { "contributionPendingUntil", IDS_BRAVE_REWARDS_CONTRIBUTION_PENDING_UNTIL },  // NOLINT
 
         { "walletAccountLink", IDS_REWARDS_WALLET_ACCOUNT_LINK },
