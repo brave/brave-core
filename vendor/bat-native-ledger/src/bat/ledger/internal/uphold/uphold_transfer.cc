@@ -14,7 +14,6 @@
 #include "bat/ledger/internal/notifications/notification_keys.h"
 #include "bat/ledger/internal/uphold/uphold_transfer.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
-#include "bat/ledger/internal/wallet/wallet_util.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;

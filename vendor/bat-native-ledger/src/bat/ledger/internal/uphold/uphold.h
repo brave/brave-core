@@ -17,6 +17,7 @@
 #include "base/timer/timer.h"
 #include "bat/ledger/internal/endpoint/uphold/get_capabilities/get_capabilities.h"
 #include "bat/ledger/internal/uphold/uphold_user.h"
+#include "bat/ledger/internal/wallet_provider/wallet_provider.h"
 #include "bat/ledger/ledger.h"
 
 namespace ledger {
@@ -44,11 +45,18 @@ using CreateCardCallback =
     base::OnceCallback<void(type::Result, const std::string&)>;
 using endpoint::uphold::GetCapabilitiesCallback;
 
-class Uphold {
+class Uphold : public WalletProvider {
  public:
   explicit Uphold(LedgerImpl* ledger);
 
-  ~Uphold();
+  ~Uphold() override;
+
+  const char* Name() const override;
+
+  type::ExternalWalletPtr ResetWallet(type::ExternalWalletPtr) override;
+
+  type::ExternalWalletPtr GenerateLinks(
+      type::ExternalWalletPtr wallet) override;
 
   void Initialize();
 
@@ -72,15 +80,9 @@ class Uphold {
 
   void CreateCard(CreateCardCallback callback);
 
-  void DisconnectWallet(const absl::optional<std::string>& notification);
-
   void GetUser(GetUserCallback callback);
 
   void GetCapabilities(GetCapabilitiesCallback callback);
-
-  type::ExternalWalletPtr GetWallet();
-
-  bool SetWallet(type::ExternalWalletPtr wallet);
 
  private:
   void OnCreateTransaction(ledger::ResultCallback,

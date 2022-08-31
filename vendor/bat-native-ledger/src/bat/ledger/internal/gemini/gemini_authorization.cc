@@ -15,10 +15,8 @@
 #include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/logging/event_log_util.h"
 #include "bat/ledger/internal/notifications/notification_keys.h"
-#include "bat/ledger/internal/wallet/wallet_util.h"
 #include "crypto/sha2.h"
 
-using ledger::wallet::OnWalletStatusChange;
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
@@ -115,7 +113,8 @@ void GeminiAuthorization::OnAuthorize(
     ledger::ExternalWalletAuthorizationCallback callback) {
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
-    ledger_->gemini()->DisconnectWallet();
+    ledger_->gemini()->DisconnectWallet(
+        ledger::notifications::kWalletDisconnected);
     callback(type::Result::EXPIRED_TOKEN, {});
     return;
   }
@@ -152,7 +151,8 @@ void GeminiAuthorization::OnFetchRecipientId(
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
     callback(type::Result::EXPIRED_TOKEN, {});
-    ledger_->gemini()->DisconnectWallet();
+    ledger_->gemini()->DisconnectWallet(
+        ledger::notifications::kWalletDisconnected);
     return;
   }
 
@@ -183,7 +183,8 @@ void GeminiAuthorization::OnPostAccount(
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
     callback(type::Result::EXPIRED_TOKEN, {});
-    ledger_->gemini()->DisconnectWallet();
+    ledger_->gemini()->DisconnectWallet(
+        ledger::notifications::kWalletDisconnected);
     return;
   }
 
@@ -239,8 +240,7 @@ void GeminiAuthorization::OnClaimWallet(
       }
   }
 
-  const auto from = wallet_ptr->status;
-  const auto to = wallet_ptr->status = type::WalletStatus::VERIFIED;
+  wallet_ptr->status = type::WalletStatus::VERIFIED;
   wallet_ptr->address = recipient_id;
 
   if (!ledger_->gemini()->SetWallet(std::move(wallet_ptr))) {
@@ -248,7 +248,6 @@ void GeminiAuthorization::OnClaimWallet(
     return callback(type::Result::LEDGER_ERROR, {});
   }
 
-  OnWalletStatusChange(ledger_, from, to);
   ledger_->database()->SaveEventLog(
       log::kWalletVerified,
       constant::kWalletGemini + std::string("/") + recipient_id.substr(0, 5));

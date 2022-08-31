@@ -12,9 +12,6 @@
 #include "bat/ledger/internal/gemini/gemini_wallet.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
-#include "bat/ledger/internal/wallet/wallet_util.h"
-
-using ledger::wallet::OnWalletStatusChange;
 
 namespace ledger {
 namespace gemini {
@@ -33,18 +30,14 @@ void GeminiWallet::Generate(ledger::ResultCallback callback) {
       BLOG(0, "Unable to set Gemini wallet!");
       return std::move(callback).Run(type::Result::LEDGER_ERROR);
     }
-
-    OnWalletStatusChange(ledger_, {}, wallet->status);
   }
 
   if (wallet->one_time_string.empty()) {
     wallet->one_time_string = util::GenerateRandomHexString();
   }
 
-  absl::optional<type::WalletStatus> from;
   if (wallet->token.empty() &&
       (wallet->status == type::WalletStatus::PENDING)) {
-    from = wallet->status;
     wallet->status = type::WalletStatus::NOT_CONNECTED;
   }
 
@@ -52,10 +45,6 @@ void GeminiWallet::Generate(ledger::ResultCallback callback) {
   if (!ledger_->gemini()->SetWallet(wallet->Clone())) {
     BLOG(0, "Unable to set Gemini wallet!");
     return std::move(callback).Run(type::Result::LEDGER_ERROR);
-  }
-
-  if (from) {
-    OnWalletStatusChange(ledger_, from, wallet->status);
   }
 
   if (wallet->status == type::WalletStatus::VERIFIED ||

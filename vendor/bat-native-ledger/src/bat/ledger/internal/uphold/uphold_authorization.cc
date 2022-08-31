@@ -12,9 +12,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
-#include "bat/ledger/internal/wallet/wallet_util.h"
 
-using ledger::wallet::OnWalletStatusChange;
 using std::placeholders::_1;
 using std::placeholders::_2;
 
@@ -137,16 +135,13 @@ void UpholdAuthorization::OnAuthorize(
     return callback(type::Result::LEDGER_ERROR, {});
   }
 
-  const auto from = uphold_wallet->status;
-  const auto to = uphold_wallet->status = type::WalletStatus::PENDING;
+  uphold_wallet->status = type::WalletStatus::PENDING;
   uphold_wallet->token = token;
   uphold_wallet = GenerateLinks(std::move(uphold_wallet));
   if (!ledger_->uphold()->SetWallet(std::move(uphold_wallet))) {
     BLOG(0, "Unable to set the Uphold wallet!");
     return callback(type::Result::LEDGER_ERROR, {});
   }
-
-  OnWalletStatusChange(ledger_, from, to);
 
   callback(type::Result::LEDGER_OK, {});
 }

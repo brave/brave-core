@@ -16,7 +16,6 @@
 #include "bat/ledger/internal/publisher/publisher_status_helper.h"
 #include "bat/ledger/internal/sku/sku_factory.h"
 #include "bat/ledger/internal/sku/sku_merchant.h"
-#include "bat/ledger/internal/wallet/wallet_util.h"
 
 using std::placeholders::_1;
 
@@ -819,13 +818,25 @@ void LedgerImpl::GetExternalWallet(const std::string& wallet_type,
                                    ExternalWalletCallback callback) {
   WhenReady([this, wallet_type, callback = std::move(callback)]() mutable {
     auto on_generated = base::BindOnce(
-        [](ExternalWalletCallback callback, LedgerImpl* ledger_impl,
+        [](ExternalWalletCallback callback, LedgerImpl* ledger,
            const std::string& wallet_type, type::Result result) {
           if (result == type::Result::CONTINUE) {
             result = type::Result::LEDGER_OK;
           }
-          std::move(callback).Run(result,
-                                  wallet::GetWallet(ledger_impl, wallet_type));
+
+          WalletProvider* wallet_provider = nullptr;
+          if (wallet_type == constant::kWalletUphold) {
+            wallet_provider = ledger->uphold();
+          } else if (wallet_type == constant::kWalletBitflyer) {
+            wallet_provider = ledger->bitflyer();
+          } else if (wallet_type == constant::kWalletGemini) {
+            wallet_provider = ledger->gemini();
+          } else {
+            NOTREACHED();
+          }
+
+          std::move(callback).Run(
+              result, wallet_provider ? wallet_provider->GetWallet() : nullptr);
         },
         std::move(callback), this, wallet_type);
 

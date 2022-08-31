@@ -188,7 +188,7 @@ void Wallet::DisconnectWallet(const std::string& wallet_type,
             callback(result);
             return;
           }
-          ledger_->bitflyer()->DisconnectWallet(true);
+          ledger_->bitflyer()->DisconnectWallet({});
           ledger_->state()->ResetWalletType();
           callback(type::Result::LEDGER_OK);
         });
@@ -203,7 +203,7 @@ void Wallet::DisconnectWallet(const std::string& wallet_type,
             callback(result);
             return;
           }
-          ledger_->gemini()->DisconnectWallet(true);
+          ledger_->gemini()->DisconnectWallet({});
           ledger_->state()->ResetWalletType();
           callback(type::Result::LEDGER_OK);
         });

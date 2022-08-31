@@ -1,52 +1,44 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ledger/internal/wallet/wallet_util.h"
-
-#include <utility>
+#include "bat/ledger/internal/wallet_provider/wallet_provider.h"
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/strings/string_number_conversions.h"
-#include "base/strings/stringprintf.h"
-#include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
-#include "bat/ledger/internal/state/state_keys.h"
 
 namespace ledger {
-namespace wallet {
 
-namespace {
+WalletProvider::WalletProvider(LedgerImpl* ledger) : ledger_(ledger) {
+  DCHECK(ledger_);
 
-std::string WalletTypeToState(const std::string& wallet_type) {
-  if (wallet_type == constant::kWalletBitflyer) {
-    return state::kWalletBitflyer;
-  } else if (wallet_type == constant::kWalletGemini) {
-    return state::kWalletGemini;
-  } else if (wallet_type == constant::kWalletUphold) {
-    return state::kWalletUphold;
+  if (auto wallet = GetWallet()) {
+    previous_status = wallet->status;
   }
-
-  NOTREACHED();
-  return "";
 }
 
-}  // namespace
+WalletProvider::~WalletProvider() = default;
 
-type::ExternalWalletPtr ExternalWalletPtrFromJSON(std::string wallet_string,
-                                                  std::string wallet_type) {
-  absl::optional<base::Value> value = base::JSONReader::Read(wallet_string);
-  if (!value || !value->is_dict()) {
-    BLOG(0, "Parsing of " + wallet_type + " wallet failed");
+type::ExternalWalletPtr WalletProvider::GetWallet() const {
+  const auto wallet_string =
+      ledger_->state()->GetEncryptedString(std::string{"wallets."} + Name());
+
+  if (!wallet_string || wallet_string->empty()) {
     return nullptr;
   }
 
-  const base::Value::Dict& dict = value->GetDict();
+  const auto wallet_json = base::JSONReader::Read(*wallet_string);
+  if (!wallet_json || !wallet_json->is_dict()) {
+    BLOG(0, "Failed to parse " << Name() << " wallet!");
+    return nullptr;
+  }
+
+  const base::Value::Dict& dict = wallet_json->GetDict();
   auto wallet = ledger::type::ExternalWallet::New();
-  wallet->type = wallet_type;
+  wallet->type = Name();
 
   const auto* token = dict.FindString("token");
   if (token) {
@@ -68,7 +60,7 @@ type::ExternalWalletPtr ExternalWalletPtrFromJSON(std::string wallet_string,
     wallet->code_verifier = *code_verifier;
   }
 
-  auto status = dict.FindInt("status");
+  const auto status = dict.FindInt("status");
   if (status) {
     wallet->status = static_cast<ledger::type::WalletStatus>(*status);
   }
@@ -98,7 +90,7 @@ type::ExternalWalletPtr ExternalWalletPtrFromJSON(std::string wallet_string,
     wallet->account_url = *account_url;
   }
 
-  auto* login_url = dict.FindString("login_url");
+  const auto* login_url = dict.FindString("login_url");
   if (login_url) {
     wallet->login_url = *login_url;
   }
@@ -114,37 +106,21 @@ type::ExternalWalletPtr ExternalWalletPtrFromJSON(std::string wallet_string,
         continue;
       }
 
-      wallet->fees.insert(std::make_pair(key, value.GetDouble()));
+      wallet->fees.emplace(key, value.GetDouble());
     }
   }
 
   return wallet;
 }
 
-type::ExternalWalletPtr GetWallet(LedgerImpl* ledger,
-                                  const std::string wallet_type) {
-  DCHECK(ledger);
-
-  auto json =
-      ledger->state()->GetEncryptedString(WalletTypeToState(wallet_type));
-
-  if (!json || json->empty())
-    return nullptr;
-
-  return ExternalWalletPtrFromJSON(*json, wallet_type);
-}
-
-bool SetWallet(LedgerImpl* ledger,
-               type::ExternalWalletPtr wallet,
-               const std::string state) {
-  DCHECK(ledger);
+bool WalletProvider::SetWallet(type::ExternalWalletPtr wallet) {
   if (!wallet) {
     return false;
   }
 
   base::Value::Dict fees;
-  for (const auto& fee : wallet->fees) {
-    fees.Set(fee.first, fee.second);
+  for (auto [contribution_id, amount] : wallet->fees) {
+    fees.Set(std::move(contribution_id), amount);
   }
 
   base::Value::Dict new_wallet;
@@ -162,33 +138,74 @@ bool SetWallet(LedgerImpl* ledger,
   new_wallet.Set("activity_url", wallet->activity_url);
   new_wallet.Set("fees", std::move(fees));
 
-  std::string json;
-  base::JSONWriter::Write(new_wallet, &json);
-  return ledger->state()->SetEncryptedString(state, json);
+  std::string wallet_json;
+  if (!base::JSONWriter::Write(new_wallet, &wallet_json)) {
+    return false;
+  }
+
+  const bool success = ledger_->state()->SetEncryptedString(
+      std::string{"wallets."} + Name(), wallet_json);
+
+  if (success) {
+    LogWalletStatusChange(previous_status, wallet->status);
+    previous_status = wallet->status;
+  }
+
+  return success;
 }
 
-type::ExternalWalletPtr ResetWallet(type::ExternalWalletPtr wallet) {
+void WalletProvider::DisconnectWallet(
+    const absl::optional<std::string>& notification) {
+  auto wallet = GetWallet();
+  if (!wallet) {
+    return;
+  }
+
+  BLOG(1, "Disconnecting wallet");
+  const std::string wallet_address = wallet->address;
+
+  const bool manual = !notification.has_value();
+
+  wallet = ResetWallet(std::move(wallet));
+  if (manual) {
+    wallet->status = type::WalletStatus::NOT_CONNECTED;
+  }
+
+  const bool shutting_down = ledger_->IsShuttingDown();
+
+  if (!manual && !shutting_down && !notification->empty()) {
+    ledger_->ledger_client()->ShowNotification(*notification, {"Uphold"},
+                                               [](type::Result) {});
+  }
+
+  wallet = GenerateLinks(std::move(wallet));
+  SetWallet(std::move(wallet));
+
+  if (!shutting_down) {
+    ledger_->ledger_client()->WalletDisconnected(Name());
+  }
+
+  ledger_->database()->SaveEventLog(log::kWalletDisconnected,
+                                    std::string(Name()) +
+                                        (!wallet_address.empty() ? "/" : "") +
+                                        wallet_address.substr(0, 5));
+}
+
+type::ExternalWalletPtr WalletProvider::ResetWallet(
+    type::ExternalWalletPtr wallet) {
   if (!wallet) {
     return nullptr;
   }
 
-  const auto status = wallet->status;
-  const auto wallet_type = wallet->type;
-  DCHECK(!wallet_type.empty());
+  const auto previous_status = wallet->status;
   wallet = type::ExternalWallet::New();
-  wallet->type = wallet_type;
+  wallet->type = Name();
 
-  if (wallet_type == constant::kWalletUphold) {
-    if (status == type::WalletStatus::VERIFIED) {
+  if (previous_status != type::WalletStatus::NOT_CONNECTED) {
+    if (previous_status == type::WalletStatus::VERIFIED) {
       wallet->status = type::WalletStatus::DISCONNECTED_VERIFIED;
-    }
-  } else {
-    if (status != type::WalletStatus::NOT_CONNECTED) {
-      if (status == type::WalletStatus::VERIFIED) {
-        wallet->status = type::WalletStatus::DISCONNECTED_VERIFIED;
-      } else {
-        wallet->status = type::WalletStatus::DISCONNECTED_NOT_VERIFIED;
-      }
+    } else {
+      wallet->status = type::WalletStatus::DISCONNECTED_NOT_VERIFIED;
     }
   }
 
@@ -205,10 +222,9 @@ bool one_of(T&& t, Ts&&... ts) {
   return match;
 }
 
-void OnWalletStatusChange(LedgerImpl* ledger,
-                          absl::optional<type::WalletStatus> from,
-                          type::WalletStatus to) {
-  DCHECK(ledger);
+void WalletProvider::LogWalletStatusChange(
+    absl::optional<type::WalletStatus> from,
+    type::WalletStatus to) const {
   DCHECK(!from ||
          one_of(*from, type::WalletStatus::NOT_CONNECTED,
                 type::WalletStatus::DISCONNECTED_VERIFIED,
@@ -223,8 +239,7 @@ void OnWalletStatusChange(LedgerImpl* ledger,
   }
   oss << "==> " << to;
 
-  ledger->database()->SaveEventLog(log::kWalletStatusChange, oss.str());
+  ledger_->database()->SaveEventLog(log::kWalletStatusChange, oss.str());
 }
 
-}  // namespace wallet
 }  // namespace ledger

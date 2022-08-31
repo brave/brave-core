@@ -20,10 +20,8 @@
 #include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/notifications/notification_keys.h"
 #include "bat/ledger/internal/state/state_keys.h"
-#include "bat/ledger/internal/wallet/wallet_util.h"
 #include "brave_base/random.h"
 
-using ledger::wallet::OnWalletStatusChange;
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
@@ -37,13 +35,22 @@ namespace ledger {
 namespace bitflyer {
 
 Bitflyer::Bitflyer(LedgerImpl* ledger)
-    : transfer_(std::make_unique<BitflyerTransfer>(ledger)),
+    : WalletProvider(ledger),
+      transfer_(std::make_unique<BitflyerTransfer>(ledger)),
       authorization_(std::make_unique<BitflyerAuthorization>(ledger)),
       wallet_(std::make_unique<BitflyerWallet>(ledger)),
       bitflyer_server_(std::make_unique<endpoint::BitflyerServer>(ledger)),
       ledger_(ledger) {}
 
 Bitflyer::~Bitflyer() = default;
+
+const char* Bitflyer::Name() const {
+  return constant::kWalletBitflyer;
+}
+
+type::ExternalWalletPtr Bitflyer::GenerateLinks(type::ExternalWalletPtr wallet) {
+  return bitflyer::GenerateLinks(std::move(wallet));
+}
 
 void Bitflyer::Initialize() {
   auto wallet = GetWallet();
@@ -126,7 +133,7 @@ void Bitflyer::OnFetchBalance(FetchBalanceCallback callback,
                               const double available) {
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
-    DisconnectWallet();
+    DisconnectWallet(ledger::notifications::kWalletDisconnected);
     std::move(callback).Run(type::Result::EXPIRED_TOKEN, 0.0);
     return;
   }
@@ -157,43 +164,6 @@ void Bitflyer::WalletAuthorization(
 
 void Bitflyer::GenerateWallet(ledger::ResultCallback callback) {
   wallet_->Generate(std::move(callback));
-}
-
-void Bitflyer::DisconnectWallet(const bool manual) {
-  auto wallet = GetWallet();
-  if (!wallet) {
-    return;
-  }
-
-  BLOG(1, "Disconnecting wallet");
-  const std::string wallet_address = wallet->address;
-
-  const auto from = wallet->status;
-  wallet = ledger::wallet::ResetWallet(std::move(wallet));
-  if (manual) {
-    wallet->status = type::WalletStatus::NOT_CONNECTED;
-  }
-  const auto to = wallet->status;
-
-  OnWalletStatusChange(ledger_, from, to);
-
-  const bool shutting_down = ledger_->IsShuttingDown();
-
-  if (!manual && !shutting_down) {
-    ledger_->ledger_client()->ShowNotification(
-        ledger::notifications::kWalletDisconnected, {}, [](type::Result) {});
-  }
-
-  SetWallet(std::move(wallet));
-
-  if (!shutting_down) {
-    ledger_->ledger_client()->WalletDisconnected(constant::kWalletBitflyer);
-  }
-
-  ledger_->database()->SaveEventLog(log::kWalletDisconnected,
-                                    std::string(constant::kWalletBitflyer) +
-                                        (!wallet_address.empty() ? "/" : "") +
-                                        wallet_address.substr(0, 5));
 }
 
 void Bitflyer::SaveTransferFee(const std::string& contribution_id,
@@ -271,15 +241,6 @@ void Bitflyer::OnTransferFeeTimerElapsed(const std::string& id,
       return;
     }
   }
-}
-
-type::ExternalWalletPtr Bitflyer::GetWallet() {
-  return ::ledger::wallet::GetWallet(ledger_, constant::kWalletBitflyer);
-}
-
-bool Bitflyer::SetWallet(type::ExternalWalletPtr wallet) {
-  return ::ledger::wallet::SetWallet(ledger_, std::move(wallet),
-                                     state::kWalletBitflyer);
 }
 
 void Bitflyer::RemoveTransferFee(const std::string& contribution_id) {

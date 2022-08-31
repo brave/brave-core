@@ -15,6 +15,7 @@
 #include "base/callback_forward.h"
 #include "base/containers/flat_map.h"
 #include "base/timer/timer.h"
+#include "bat/ledger/internal/wallet_provider/wallet_provider.h"
 #include "bat/ledger/ledger.h"
 
 namespace ledger {
@@ -38,11 +39,16 @@ class GeminiWallet;
 
 using FetchBalanceCallback = base::OnceCallback<void(type::Result, double)>;
 
-class Gemini {
+class Gemini : public WalletProvider {
  public:
   explicit Gemini(LedgerImpl* ledger);
 
-  ~Gemini();
+  ~Gemini() override;
+
+  const char* Name() const override;
+
+  type::ExternalWalletPtr GenerateLinks(
+      type::ExternalWalletPtr wallet) override;
 
   void Initialize();
 
@@ -62,12 +68,6 @@ class Gemini {
       ledger::ExternalWalletAuthorizationCallback callback);
 
   void GenerateWallet(ledger::ResultCallback callback);
-
-  void DisconnectWallet(const bool manual = false);
-
-  type::ExternalWalletPtr GetWallet();
-
-  bool SetWallet(type::ExternalWalletPtr wallet);
 
  private:
   void ContributionCompleted(type::Result result,

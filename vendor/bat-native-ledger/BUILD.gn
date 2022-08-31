@@ -576,8 +576,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/wallet/wallet_create.h",
     "src/bat/ledger/internal/wallet/wallet_recover.cc",
     "src/bat/ledger/internal/wallet/wallet_recover.h",
-    "src/bat/ledger/internal/wallet/wallet_util.cc",
-    "src/bat/ledger/internal/wallet/wallet_util.h",
+    "src/bat/ledger/internal/wallet_provider/wallet_provider.cc",
+    "src/bat/ledger/internal/wallet_provider/wallet_provider.h",
     "src/bat/ledger/ledger.cc",
   ]
 

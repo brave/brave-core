@@ -15,10 +15,8 @@
 #include "bat/ledger/internal/logging/event_log_util.h"
 #include "bat/ledger/internal/notifications/notification_keys.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
-#include "bat/ledger/internal/wallet/wallet_util.h"
 
 using ledger::uphold::Capabilities;
-using ledger::wallet::OnWalletStatusChange;
 
 namespace ledger {
 namespace uphold {
@@ -39,8 +37,6 @@ void UpholdWallet::Generate(ledger::ResultCallback callback) const {
       BLOG(0, "Unable to set the Uphold wallet!");
       return std::move(callback).Run(type::Result::LEDGER_ERROR);
     }
-
-    OnWalletStatusChange(ledger_, {}, uphold_wallet->status);
   }
 
   if (uphold_wallet->one_time_string.empty()) {
@@ -250,16 +246,13 @@ void UpholdWallet::OnClaimWallet(ledger::ResultCallback callback,
       }
   }
 
-  const auto from = uphold_wallet->status;
-  const auto to = uphold_wallet->status = type::WalletStatus::VERIFIED;
+  uphold_wallet->status = type::WalletStatus::VERIFIED;
   uphold_wallet->address = id;
   uphold_wallet = GenerateLinks(std::move(uphold_wallet));
   if (!ledger_->uphold()->SetWallet(std::move(uphold_wallet))) {
     BLOG(0, "Unable to set the Uphold wallet!");
     return std::move(callback).Run(type::Result::LEDGER_ERROR);
   }
-
-  OnWalletStatusChange(ledger_, from, to);
 
   ledger_->database()->SaveEventLog(
       log::kWalletVerified,

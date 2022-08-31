@@ -12,7 +12,7 @@
 #include "bat/ledger/internal/gemini/gemini_transfer.h"
 #include "bat/ledger/internal/gemini/gemini_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/wallet/wallet_util.h"
+#include "bat/ledger/internal/notifications/notification_keys.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -47,7 +47,8 @@ void GeminiTransfer::OnCreateTransaction(const type::Result result,
                                          const std::string& id,
                                          client::TransactionCallback callback) {
   if (result == type::Result::EXPIRED_TOKEN) {
-    ledger_->gemini()->DisconnectWallet();
+    ledger_->gemini()->DisconnectWallet(
+        ledger::notifications::kWalletDisconnected);
     callback(type::Result::EXPIRED_TOKEN, "");
     return;
   }

@@ -22,10 +22,7 @@
 #include "bat/ledger/internal/uphold/uphold_transfer.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "bat/ledger/internal/uphold/uphold_wallet.h"
-#include "bat/ledger/internal/wallet/wallet_util.h"
 #include "brave_base/random.h"
-
-using ledger::wallet::OnWalletStatusChange;
 
 namespace {
 const char kFeeMessage[] =
@@ -35,7 +32,8 @@ const char kFeeMessage[] =
 namespace ledger::uphold {
 
 Uphold::Uphold(LedgerImpl* ledger)
-    : transfer_(std::make_unique<UpholdTransfer>(ledger)),
+    : WalletProvider(ledger),
+      transfer_(std::make_unique<UpholdTransfer>(ledger)),
       card_(std::make_unique<UpholdCard>(ledger)),
       user_(std::make_unique<UpholdUser>(ledger)),
       authorization_(std::make_unique<UpholdAuthorization>(ledger)),
@@ -44,6 +42,31 @@ Uphold::Uphold(LedgerImpl* ledger)
       ledger_(ledger) {}
 
 Uphold::~Uphold() = default;
+
+const char* Uphold::Name() const {
+  return constant::kWalletUphold;
+}
+
+type::ExternalWalletPtr Uphold::GenerateLinks(type::ExternalWalletPtr wallet) {
+  return uphold::GenerateLinks(std::move(wallet));
+}
+
+type::ExternalWalletPtr Uphold::ResetWallet(
+    type::ExternalWalletPtr wallet) {
+  if (!wallet) {
+    return nullptr;
+  }
+
+  const auto previous_status = wallet->status;
+  wallet = type::ExternalWallet::New();
+  wallet->type = Name();
+
+  if (previous_status == type::WalletStatus::VERIFIED) {
+    wallet->status = type::WalletStatus::DISCONNECTED_VERIFIED;
+  }
+
+  return wallet;
+}
 
 void Uphold::Initialize() {
   auto wallet = GetWallet();
@@ -215,46 +238,6 @@ void Uphold::CreateCard(CreateCardCallback callback) {
   card_->CreateBATCardIfNecessary(std::move(callback));
 }
 
-void Uphold::DisconnectWallet(const absl::optional<std::string>& notification) {
-  auto wallet = GetWallet();
-  if (!wallet) {
-    return;
-  }
-
-  BLOG(1, "Disconnecting wallet");
-  const std::string wallet_address = wallet->address;
-
-  const bool manual = !notification.has_value();
-
-  const auto from = wallet->status;
-  wallet = ledger::wallet::ResetWallet(std::move(wallet));
-  if (manual) {
-    wallet->status = type::WalletStatus::NOT_CONNECTED;
-  }
-  const auto to = wallet->status;
-
-  OnWalletStatusChange(ledger_, from, to);
-
-  const bool shutting_down = ledger_->IsShuttingDown();
-
-  if (!manual && !shutting_down && !notification->empty()) {
-    ledger_->ledger_client()->ShowNotification(*notification, {"Uphold"},
-                                               [](type::Result) {});
-  }
-
-  wallet = GenerateLinks(std::move(wallet));
-  SetWallet(std::move(wallet));
-
-  if (!shutting_down) {
-    ledger_->ledger_client()->WalletDisconnected(constant::kWalletUphold);
-  }
-
-  ledger_->database()->SaveEventLog(log::kWalletDisconnected,
-                                    std::string(constant::kWalletUphold) +
-                                        (!wallet_address.empty() ? "/" : "") +
-                                        wallet_address.substr(0, 5));
-}
-
 void Uphold::GetUser(GetUserCallback callback) {
   user_->Get(std::move(callback));
 }
@@ -354,15 +337,6 @@ void Uphold::OnTransferFeeTimerElapsed(const std::string& id, int attempts) {
       return;
     }
   }
-}
-
-type::ExternalWalletPtr Uphold::GetWallet() {
-  return ::ledger::wallet::GetWallet(ledger_, constant::kWalletUphold);
-}
-
-bool Uphold::SetWallet(type::ExternalWalletPtr wallet) {
-  return ::ledger::wallet::SetWallet(ledger_, std::move(wallet),
-                                     state::kWalletUphold);
 }
 
 void Uphold::RemoveTransferFee(const std::string& contribution_id) {

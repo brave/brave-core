@@ -10,6 +10,7 @@
 #include "bat/ledger/internal/bitflyer/bitflyer_util.h"
 #include "bat/ledger/internal/endpoint/bitflyer/bitflyer_server.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/notifications/notification_keys.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -46,7 +47,8 @@ void BitflyerTransfer::OnCreateTransaction(
     client::TransactionCallback callback) {
   if (result == type::Result::EXPIRED_TOKEN) {
     callback(type::Result::EXPIRED_TOKEN, "");
-    ledger_->bitflyer()->DisconnectWallet();
+    ledger_->bitflyer()->DisconnectWallet(
+        ledger::notifications::kWalletDisconnected);
     return;
   }
 
