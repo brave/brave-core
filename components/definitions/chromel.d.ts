@@ -171,7 +171,8 @@ declare namespace chrome.braveRewards {
 
   const shouldShowOnboarding: (callback: (showOnboarding: boolean) => void) => {}
 
-  function enableRewards (): void
+  const enableRewards: () => void
+  const enableAds: () => void
 
   interface RewardsPrefs {
     adsEnabled: boolean

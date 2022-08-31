@@ -350,12 +350,6 @@
         "parameters": []
       },
       {
-        "name": "showRewardsTour",
-        "type": "function",
-        "description": "Displays the Rewards tour in the Rewards panel.",
-        "parameters": []
-      },
-      {
         "name": "showGrantCaptcha",
         "type": "function",
         "description": "Displays a grant captcha in the Rewards panel.",
@@ -1422,6 +1416,12 @@
         "name": "enableRewards",
         "type": "function",
         "description": "Enables rewards for the current profile.",
+        "parameters": []
+      },
+      {
+        "name": "enableAds",
+        "type": "function",
+        "description": "Enables Brave Private Ads for the current profile.",
         "parameters": []
       },
       {

@@ -101,16 +101,6 @@ ExtensionFunction::ResponseAction BraveRewardsOpenRewardsPanelFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-BraveRewardsShowRewardsTourFunction::~BraveRewardsShowRewardsTourFunction() =
-    default;
-
-ExtensionFunction::ResponseAction BraveRewardsShowRewardsTourFunction::Run() {
-  if (auto* coordinator = GetPanelCoordinator(this)) {
-    coordinator->ShowRewardsTour();
-  }
-  return RespondNow(NoArguments());
-}
-
 BraveRewardsShowGrantCaptchaFunction::~BraveRewardsShowGrantCaptchaFunction() =
     default;
 
@@ -1358,6 +1348,18 @@ ExtensionFunction::ResponseAction BraveRewardsEnableRewardsFunction::Run() {
     return RespondNow(Error("Rewards service is not initialized"));
 
   rewards_service->EnableRewards();
+  return RespondNow(NoArguments());
+}
+
+BraveRewardsEnableAdsFunction::~BraveRewardsEnableAdsFunction() = default;
+
+ExtensionFunction::ResponseAction BraveRewardsEnableAdsFunction::Run() {
+  auto* profile = Profile::FromBrowserContext(browser_context());
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service)
+    return RespondNow(Error("Rewards service is not initialized"));
+
+  rewards_service->SetAdsEnabled(true);
   return RespondNow(NoArguments());
 }
 

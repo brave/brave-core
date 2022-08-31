@@ -13,7 +13,6 @@ import { BatIcon } from '../icons/bat_icon'
 import { SettingsIcon } from '../icons/settings_icon'
 import { InfoIcon } from './icons/info_icon'
 import { TermsOfService } from '../terms_of_service'
-import { AsyncButton } from './async_button'
 import { TokenAmount } from '../token_amount'
 import { ExchangeAmount } from '../exchange_amount'
 import { NewTabLink } from '../new_tab_link'
@@ -192,9 +191,9 @@ export function RewardsCard (props: Props) {
           {getString('rewardsOptInText')}
         </style.rewardsOptIn>
         <style.primaryAction>
-          <AsyncButton onClick={props.onEnableRewards}>
+          <button onClick={props.onEnableRewards}>
             {getString('rewardsStartUsingRewards')}
-          </AsyncButton>
+          </button>
         </style.primaryAction>
         <style.terms>
           <TermsOfService text={getString('rewardsOptInTerms')} />
@@ -214,9 +213,9 @@ export function RewardsCard (props: Props) {
           {getString('rewardsOptInText')}
         </style.adsOptIn>
         <style.primaryAction>
-          <AsyncButton onClick={props.onEnableAds}>
+          <button onClick={props.onEnableAds}>
             {getString('rewardsStartUsingRewards')}
-          </AsyncButton>
+          </button>
         </style.primaryAction>
       </>
     )

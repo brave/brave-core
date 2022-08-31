@@ -37,16 +37,6 @@ class BraveRewardsOpenRewardsPanelFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsShowRewardsTourFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.showRewardsTour", UNKNOWN)
-
- protected:
-  ~BraveRewardsShowRewardsTourFunction() override;
-
-  ResponseAction Run() override;
-};
-
 class BraveRewardsShowGrantCaptchaFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.showGrantCaptcha", UNKNOWN)
@@ -557,6 +547,16 @@ class BraveRewardsEnableRewardsFunction : public ExtensionFunction {
 
  protected:
   ~BraveRewardsEnableRewardsFunction() override;
+
+  ResponseAction Run() override;
+};
+
+class BraveRewardsEnableAdsFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.enableAds", UNKNOWN)
+
+ protected:
+  ~BraveRewardsEnableAdsFunction() override;
 
   ResponseAction Run() override;
 };
