@@ -404,14 +404,6 @@ public class BytecodeTest {
                 "createViewProvider", true, ViewProvider.class, Context.class,
                 MVCListAdapter.ModelList.class));
 
-        Assert.assertTrue(methodExists(
-                "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder",
-                "getVisibleSuggestionsCount", true, int.class, AutocompleteResult.class));
-        Assert.assertTrue(methodExists(
-                "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder",
-                "getProcessorForSuggestion", true, SuggestionProcessor.class,
-                AutocompleteMatch.class, int.class));
-
         // Check for method type declaration changes here
         Assert.assertTrue(methodExists(
                 "org/chromium/components/browser_ui/site_settings/BraveContentSettingsResources",
@@ -776,13 +768,6 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/ntp/NewTabPageLayout", "mMvTilesContainerLayout"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/dom_distiller/ReaderModeManager", "mTab"));
-
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder",
-                "mDropdownHeight"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder",
-                "mPriorityOrderedSuggestionProcessors"));
 
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
