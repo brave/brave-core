@@ -18,8 +18,6 @@ static_library("brave_search_conversion") {
 
   deps = [
     "//base",
-    "//brave/components/l10n/browser",
-    "//brave/components/l10n/common",
     "//brave/components/search_engines",
     "//components/prefs",
     "//components/search_engines",
@@ -39,12 +37,10 @@ source_set("unit_tests") {
     ":brave_search_conversion",
     "//base",
     "//base/test:test_support",
-    "//brave/components/l10n/browser",
     "//brave/components/search_engines",
     "//components/prefs",
     "//components/prefs:test_support",
     "//components/search_engines",
-    "//testing/gmock",
     "//testing/gtest",
   ]
 }
