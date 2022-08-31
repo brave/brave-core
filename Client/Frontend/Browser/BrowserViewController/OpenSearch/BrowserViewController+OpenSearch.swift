@@ -105,7 +105,7 @@ extension BrowserViewController {
       let valueKeyNextItem = argumentNextItem.compactMap { $0 as? String }.joined()
       let valueKeyView = argumentView.compactMap { $0 as? String }.joined()
 
-      guard let input = webContentView.perform(#selector(getter:UIResponder.inputAccessoryView)),
+      guard let input = webContentView.perform(#selector(getter: UIResponder.inputAccessoryView)),
         let inputView = input.takeUnretainedValue() as? UIInputView,
         let nextButton = inputView.value(forKey: valueKeyNextItem) as? UIBarButtonItem,
         let nextButtonView = nextButton.value(forKey: valueKeyView) as? UIView
