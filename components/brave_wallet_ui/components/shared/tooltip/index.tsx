@@ -25,6 +25,7 @@ export interface Props {
   text: React.ReactNode
   verticalPosition?: 'above' | 'below'
   pointerPosition?: 'left' | 'right' | 'center'
+  maxWidth?: React.CSSProperties['maxWidth']
 }
 
 export const Tooltip: React.FC<Props> = ({
@@ -37,7 +38,8 @@ export const Tooltip: React.FC<Props> = ({
   pointerPosition,
   position,
   text,
-  verticalPosition = 'below'
+  verticalPosition = 'below',
+  maxWidth
 }) => {
   // state
   const [active, setActive] = React.useState(!!disableHoverEvents)
@@ -72,7 +74,7 @@ export const Tooltip: React.FC<Props> = ({
             {actionText}
           </ActionNotification>
 
-        : <Tip isAddress={isAddress}>
+        : <Tip maxWidth={maxWidth} isAddress={isAddress}>
             {text}
           </Tip>
       }

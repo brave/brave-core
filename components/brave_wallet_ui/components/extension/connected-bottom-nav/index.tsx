@@ -1,9 +1,20 @@
-import * as React from 'react'
-import { getLocale } from '../../../../common/locale'
-import PanelTooltip from '../panel-tooltip'
-import { reduceNetworkDisplayName } from '../../../utils/network-utils'
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
-// Styled Components
+import * as React from 'react'
+
+// types
+import { BraveWallet, PanelTypes } from '../../../constants/types'
+
+// utils
+import { getLocale } from '../../../../common/locale'
+
+// components
+import { Tooltip } from '../../shared'
+
+// style
 import {
   StyledWrapper,
   TransactionsIcon,
@@ -13,8 +24,6 @@ import {
   NavOutline,
   TransactionsButton
 } from './style'
-
-import { BraveWallet, PanelTypes } from '../../../constants/types'
 
 export interface Props {
   onNavigate: (path: PanelTypes) => void
@@ -33,33 +42,45 @@ function ConnectedBottomNav (props: Props) {
   return (
     <StyledWrapper>
       <NavOutline>
-        <PanelTooltip
+        <Tooltip
+          isVisible={isBuyDisabled}
           position='right'
-          isDisabled={isBuyDisabled}
-          text={getLocale('braveWalletBuyNotSupportedTooltip').replace('$1', reduceNetworkDisplayName(selectedNetwork.chainName))}
+          verticalPosition='above'
+          maxWidth='150px'
+          text={getLocale('braveWalletBuyNotSupportedTooltip').replace('$1', selectedNetwork.chainName)}
         >
           <NavButton disabled={isBuyDisabled} onClick={navigate('buy')}>
             <NavButtonText disabled={isBuyDisabled}>{getLocale('braveWalletBuy')}</NavButtonText>
           </NavButton>
-        </PanelTooltip>
+        </Tooltip>
+
         <NavDivider />
+
         <NavButton onClick={navigate('send')}>
+
           <NavButtonText>{getLocale('braveWalletSend')}</NavButtonText>
         </NavButton>
+
         <NavDivider />
-        <PanelTooltip
+
+        <Tooltip
+          isVisible={isSwapDisabled}
           position='left'
-          isDisabled={isSwapDisabled}
-          text={getLocale('braveWalletSwapNotSupportedTooltip').replace('$1', reduceNetworkDisplayName(selectedNetwork.chainName))}
+          verticalPosition='above'
+          text={getLocale('braveWalletSwapNotSupportedTooltip').replace('$1', selectedNetwork.chainName)}
+          maxWidth='150px'
         >
           <NavButton disabled={isSwapDisabled} onClick={navigate('swap')}>
             <NavButtonText disabled={isSwapDisabled}>{getLocale('braveWalletSwap')}</NavButtonText>
           </NavButton>
-        </PanelTooltip>
+        </Tooltip>
+
         <NavDivider />
+
         <TransactionsButton onClick={navigate('transactions')}>
           <TransactionsIcon />
         </TransactionsButton>
+
       </NavOutline>
     </StyledWrapper>
   )

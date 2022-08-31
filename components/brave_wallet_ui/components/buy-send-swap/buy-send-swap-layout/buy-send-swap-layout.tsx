@@ -15,7 +15,7 @@ import { BuySendSwapOptions } from '../../../options/buy-send-swap-options'
 import { getLocale } from '../../../../common/locale'
 
 // components
-import Tooltip from '../buy-send-swap-tooltip'
+import { BuySendSwapTooltip } from '../buy-send-swap-tooltip/buy-send-swap-tooltip'
 
 // style
 import {
@@ -69,7 +69,7 @@ export const BuySendSwapLayout = ({
             isSwapDisabled && option.id === 'swap'
 
           return (
-            <Tooltip
+            <BuySendSwapTooltip
               maxTextWidth={'94px'}
               isDisabled={isDisabled}
               key={option.id}
@@ -96,7 +96,7 @@ export const BuySendSwapLayout = ({
                   {option.name}
                 </TabButtonText>
               </TabButton>
-            </Tooltip>
+            </BuySendSwapTooltip>
           )
         })}
       </ButtonRow>
