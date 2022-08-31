@@ -572,7 +572,7 @@ public class BytecodeTest {
                 ObservableSupplier.class, BooleanSupplier.class, boolean.class, boolean.class,
                 boolean.class, boolean.class, boolean.class, HistoryDelegate.class,
                 BooleanSupplier.class, OfflineDownloader.class, boolean.class,
-                ObservableSupplier.class, Callback.class, boolean.class));
+                ObservableSupplier.class, Callback.class, boolean.class, ObservableSupplier.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
                 "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator",
@@ -758,6 +758,8 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabCreatorManager"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mSnackbarManager"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mConstraintsProxy"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
                         "mTabSwitcherModeCoordinator"));

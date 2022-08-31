@@ -113,6 +113,7 @@ public class BraveToolbarManager extends ToolbarManager {
     private TabContentManager mTabContentManager;
     private TabCreatorManager mTabCreatorManager;
     private SnackbarManager mSnackbarManager;
+    private ObservableSupplier<Integer> mConstraintsProxy;
 
     // Own members.
     private boolean mIsBottomToolbarVisible;
@@ -236,7 +237,7 @@ public class BraveToolbarManager extends ToolbarManager {
                     mActivity, mWindowAndroid, mLayoutManager,
                     mCompositorViewHolder.getResourceManager(), mBrowserControlsSizer,
                     mFullscreenManager, mBottomControls, mTabGroupUi,
-                    mOverlayPanelVisibilitySupplier));
+                    mOverlayPanelVisibilitySupplier, mConstraintsProxy));
             mBottomControls.setBottomControlsCoordinatorSupplier(
                     mBottomControlsCoordinatorSupplier);
             updateBottomToolbarVisibility();

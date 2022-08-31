@@ -141,6 +141,7 @@
     *** mTabContentManager;
     *** mTabCreatorManager;
     *** mSnackbarManager;
+    *** mConstraintsProxy;
     *** onOrientationChange(...);
     *** updateBookmarkButtonStatus(...);
     *** updateReloadState(...);
