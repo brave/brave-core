@@ -144,16 +144,17 @@ TEST(BraveFontWhitelistTest, KnownFonts) {
     std::make_tuple<>("sans-serif-black", true),
     std::make_tuple<>("Source Sans Pro", true),
 #else
-    std::make_tuple<>("-apple-system", false),
-    std::make_tuple<>("system-ui", false),
-    std::make_tuple<>("BlinkMacSystemFont", false),
-    std::make_tuple<>("Arial Unicode MS", false),
-    std::make_tuple<>("Calibri", false),
-    std::make_tuple<>("Gill Sans", false),
-    std::make_tuple<>("Helvetica", false),
-    std::make_tuple<>("Helvetica Neue", false),
-    std::make_tuple<>("Menlo", false),
-    std::make_tuple<>("Franklin Gothic Medium", false),
+    // All fonts are allowed because there is no font whitelisting.
+    std::make_tuple<>("-apple-system", true),
+    std::make_tuple<>("system-ui", true),
+    std::make_tuple<>("BlinkMacSystemFont", true),
+    std::make_tuple<>("Arial Unicode MS", true),
+    std::make_tuple<>("Calibri", true),
+    std::make_tuple<>("Gill Sans", true),
+    std::make_tuple<>("Helvetica", true),
+    std::make_tuple<>("Helvetica Neue", true),
+    std::make_tuple<>("Menlo", true),
+    std::make_tuple<>("Franklin Gothic Medium", true),
 #endif
   };
   for (const auto& c : test_cases) {
@@ -188,13 +189,14 @@ TEST(BraveFontWhitelistTest, CaseInsensitivity) {
     std::make_tuple<>("helvetica neue", false),  // not a recognized alias
     std::make_tuple<>("sans-serif-black", true),
 #else
-    std::make_tuple<>("Arial Unicode MS", false),
-    std::make_tuple<>("Calibri", false),
-    std::make_tuple<>("Gill Sans", false),
-    std::make_tuple<>("Helvetica", false),
-    std::make_tuple<>("Helvetica Neue", false),
-    std::make_tuple<>("Menlo", false),
-    std::make_tuple<>("Franklin Gothic Medium", false),
+    // All fonts are allowed because there is no font whitelisting.
+    std::make_tuple<>("Arial Unicode MS", true),
+    std::make_tuple<>("Calibri", true),
+    std::make_tuple<>("Gill Sans", true),
+    std::make_tuple<>("Helvetica", true),
+    std::make_tuple<>("Helvetica Neue", true),
+    std::make_tuple<>("Menlo", true),
+    std::make_tuple<>("Franklin Gothic Medium", true),
 #endif
   };
   for (const auto& c : test_cases) {
