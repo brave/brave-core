@@ -12,6 +12,7 @@ import { AllAssetsFilterOption } from '../../options/asset-filter-options'
 
 // mocks
 import { mockNetwork } from '../../common/constants/mocks'
+import { mockedErc20ApprovalTransaction } from './mock-transaction-info'
 
 const mockAccount: WalletAccountType = {
   accountType: 'Primary',
@@ -279,7 +280,7 @@ export const mockWalletState: WalletState = {
   portfolioPriceHistory: [],
   selectedAccount: mockAccount,
   selectedNetwork: mockNetworkList[0],
-  selectedPendingTransaction: undefined,
+  selectedPendingTransaction: mockedErc20ApprovalTransaction,
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe.OneDay,
   transactions: {},
   transactionSpotPrices: [

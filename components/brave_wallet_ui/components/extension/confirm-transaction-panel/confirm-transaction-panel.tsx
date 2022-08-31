@@ -10,7 +10,6 @@ import { WalletState } from '../../../constants/types'
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
-import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
 
@@ -23,7 +22,7 @@ import Tooltip from '../../shared/tooltip/index'
 import withPlaceholderIcon from '../../shared/create-placeholder-icon'
 
 // Components
-import { PanelTab, TransactionDetailBox } from '../'
+import { PanelTab, TransactionDetailBox } from '..'
 import EditAllowance from '../edit-allowance'
 import AdvancedTransactionSettingsButton from '../advanced-transaction-settings/button'
 import AdvancedTransactionSettings from '../advanced-transaction-settings'
@@ -79,16 +78,22 @@ export interface Props {
 
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 0 })
 
-function ConfirmTransactionPanel ({
+const onClickLearnMore = () => {
+  chrome.tabs.create({ url: 'https://support.brave.com/hc/en-us/articles/5546517853325' }, () => {
+    if (chrome.runtime.lastError) {
+      console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+    }
+  })
+}
+
+export const ConfirmTransactionPanel = ({
   onConfirm,
   onReject
-}: Props) {
+}: Props) => {
   // redux
-  const {
-    activeOrigin,
-    defaultCurrencies,
-    selectedPendingTransaction: transactionInfo
-  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+  const activeOrigin = useSelector(({ wallet }: { wallet: WalletState }) => wallet.activeOrigin)
+  const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
+  const transactionInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedPendingTransaction)
 
   const originInfo = transactionInfo?.originInfo ?? activeOrigin
 
@@ -118,22 +123,15 @@ function ConfirmTransactionPanel ({
   const [isEditingAllowance, setIsEditingAllowance] = React.useState<boolean>(false)
   const [showAdvancedTransactionSettings, setShowAdvancedTransactionSettings] = React.useState<boolean>(false)
 
+  // methods
   const onSelectTab = (tab: confirmPanelTabs) => () => setSelectedTab(tab)
 
-  const onToggleEditGas = () => setIsEditing(!isEditing)
+  const onToggleEditGas = () => setIsEditing(prev => !prev)
 
-  const onToggleEditAllowance = () => setIsEditingAllowance(!isEditingAllowance)
+  const onToggleEditAllowance = () => setIsEditingAllowance(prev => !prev)
 
   const onToggleAdvancedTransactionSettings = () => {
-    setShowAdvancedTransactionSettings(!showAdvancedTransactionSettings)
-  }
-
-  const onClickLearnMore = () => {
-    chrome.tabs.create({ url: 'https://support.brave.com/hc/en-us/articles/5546517853325' }, () => {
-      if (chrome.runtime.lastError) {
-        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
-      }
-    })
+    setShowAdvancedTransactionSettings(prev => !prev)
   }
 
   // render
@@ -176,7 +174,7 @@ function ConfirmTransactionPanel ({
   return (
     <StyledWrapper>
       <TopRow>
-        <NetworkText>{reduceNetworkDisplayName(transactionsNetwork.chainName)}</NetworkText>
+        <NetworkText>{transactionsNetwork.chainName}</NetworkText>
         {isERC20Approve &&
           <AddressAndOrb>
             <Tooltip
