@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { CSSProperties } from 'styled-components'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -7,7 +7,9 @@ export const StyledWrapper = styled.div`
   height: 100%;
 `
 
-export const Tip = styled.div`
+export const Tip = styled.div<{
+  maxWidth?: CSSProperties['maxWidth']
+}>`
   position: absolute;
   border-radius: 4px;
   left: 50%;
@@ -16,11 +18,14 @@ export const Tip = styled.div`
   color: ${(p) => p.theme.palette.white};
   background: ${(p) => p.theme.palette.black};
   z-index: 120;
-  white-space: nowrap;
   font-family: Poppins;
   font-size: 12px;
   letter-spacing: 0.01em;
   top: 40px;
+  width: ${(p) => p?.maxWidth || '100%'};
+  max-width: ${(p) => p?.maxWidth || '100%'};
+  word-break: keep-all;
+  word-wrap: break-word;
 `
 
 export const Pointer = styled.div`
