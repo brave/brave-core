@@ -217,7 +217,7 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
 
   // Assert
   const IssuersInfo expected_issuers =
-      BuildIssuers(7200000,
+      BuildIssuers(7'200'000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
                    {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
@@ -352,7 +352,7 @@ TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
 
   // Assert
   const IssuersInfo expected_issuers =
-      BuildIssuers(7200000,
+      BuildIssuers(7'200'000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
                    {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
@@ -399,7 +399,7 @@ TEST_F(BatAdsAccountTest, DoNotGetMissingPaymentIssuers) {
 
   // Assert
   const IssuersInfo expected_issuers =
-      BuildIssuers(7200000,
+      BuildIssuers(7'200'000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
                    {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},

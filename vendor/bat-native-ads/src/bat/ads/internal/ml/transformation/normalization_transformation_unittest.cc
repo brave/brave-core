@@ -63,7 +63,7 @@ TEST_F(BatAdsNormalizationTest, NormalizationTest) {
 
 TEST_F(BatAdsNormalizationTest, ChainingTest) {
   // Arrange
-  const int kDefaultBucketCount = 10000;
+  const int kDefaultBucketCount = 10'000;
   const size_t kExpectedElementCount = 10;
   const std::string kTestString = "TINY";
 

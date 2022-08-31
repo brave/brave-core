@@ -23,7 +23,7 @@ class BatAdsHashedNGramsTest : public UnitTestBase {
 
 TEST_F(BatAdsHashedNGramsTest, HashingTest) {
   // Arrange
-  const int kDefaultBucketCount = 10000;
+  const int kDefaultBucketCount = 10'000;
   const size_t kExpectedElementCount = 10;
   const std::string kTestString = "tiny";
   const std::unique_ptr<Data> text_data =
