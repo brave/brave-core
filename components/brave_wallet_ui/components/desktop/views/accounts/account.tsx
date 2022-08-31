@@ -52,6 +52,7 @@ import { useBalance } from '../../../../common/hooks/balance'
 
 // Actions
 import { WalletPageActions } from '../../../../page/actions'
+import { getFilecoinKeyringIdFromNetwork } from '../../../../utils/network-utils'
 
 export interface Props {
   toggleNav: () => void
@@ -114,11 +115,12 @@ export const Account = ({
     const coinName = CoinTypesMap[selectedAccount?.coin ?? 0]
     const localHostCoins = userVisibleTokensInfo.filter((token) => token.chainId === BraveWallet.LOCALHOST_CHAIN_ID)
     const accountsLocalHost = localHostCoins.find((token) => token.symbol.toUpperCase() === coinName)
-    const chainList = networkList.filter((network) => network.coin === selectedAccount?.coin).map((network) => network.chainId) ?? []
+    const chainList = networkList.filter((network) => network.coin === selectedAccount?.coin &&
+        (network.coin !== BraveWallet.CoinType.FIL || getFilecoinKeyringIdFromNetwork(network) === selectedAccount?.keyringId)).map((network) => network.chainId) ?? []
     const list =
       userVisibleTokensInfo.filter((token) => chainList.includes(token?.chainId ?? '') &&
         token.chainId !== BraveWallet.LOCALHOST_CHAIN_ID) ?? []
-    if (accountsLocalHost) {
+    if (accountsLocalHost && (selectedAccount.keyringId !== BraveWallet.FILECOIN_KEYRING_ID)) {
       return [...list, accountsLocalHost]
     }
     return list

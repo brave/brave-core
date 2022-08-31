@@ -410,7 +410,7 @@ const mojom::NetworkInfo* GetFilTestnet() {
        {"https://calibration.filscan.io/tipset/message-detail"},
        {},
        0,
-       {GURL("https://calibration.node.glif.io/rpc/v0")},
+       {GURL("https://api.calibration.node.glif.io/rpc/v0")},
        "FIL",
        "Filecoin",
        18,
