@@ -2,6 +2,12 @@ use std::error::Error;
 
 use crate::ffi;
 
+impl From<skus::errors::InternalError> for ffi::SkusResult {
+    fn from(e: skus::errors::InternalError) -> Self {
+        ffi::SkusResult::from(&e)
+    }
+}
+
 impl From<&skus::errors::InternalError> for ffi::SkusResult {
     fn from(e: &skus::errors::InternalError) -> Self {
         match e {
@@ -57,15 +63,30 @@ impl From<ffi::SkusResult> for skus::errors::InternalError {
     fn from(e: ffi::SkusResult) -> Self {
         match e {
             ffi::SkusResult::RequestFailed => skus::errors::InternalError::RequestFailed,
-            ffi::SkusResult::InternalServer => skus::errors::InternalError::InternalServer(
-                skus::http::http::status::StatusCode::from_u16(599).expect("100 < 599 < 1000"),
-            ),
-            ffi::SkusResult::BadRequest => skus::errors::InternalError::BadRequest(
-                skus::http::http::StatusCode::from_u16(499).expect("100 < 499 < 1000"),
-            ),
-            ffi::SkusResult::UnhandledStatus => skus::errors::InternalError::UnhandledStatus(
-                skus::http::http::StatusCode::from_u16(699).expect("100 < 699 < 1000"),
-            ),
+            ffi::SkusResult::InternalServer => {
+                skus::errors::InternalError::InternalServer(skus::models::APIError {
+                    code: 599,
+                    message: "internal server error".to_string(),
+                    error_code: "unknown".to_string(),
+                    data: serde_json::Value::Null,
+                })
+            }
+            ffi::SkusResult::BadRequest => {
+                skus::errors::InternalError::BadRequest(skus::models::APIError {
+                    code: 499,
+                    message: "bad request error".to_string(),
+                    error_code: "unknown".to_string(),
+                    data: serde_json::Value::Null,
+                })
+            }
+            ffi::SkusResult::UnhandledStatus => {
+                skus::errors::InternalError::UnhandledStatus(skus::models::APIError {
+                    code: 699,
+                    message: "unhandled error".to_string(),
+                    error_code: "unknown".to_string(),
+                    data: serde_json::Value::Null,
+                })
+            }
             ffi::SkusResult::RetryLater => skus::errors::InternalError::RetryLater(None),
             ffi::SkusResult::NotFound => skus::errors::InternalError::NotFound,
             ffi::SkusResult::SerializationFailed => {

@@ -11,21 +11,32 @@ pub use http;
 use http::{Request, Response};
 
 use crate::errors::*;
+use crate::models::APIError;
 use crate::sdk::SDK;
 
 static BASE_DELAY_MS: u64 = 1000;
 static MAX_DELAY_MS: u64 = 10000;
 
 /// Default mapping of server response codes to be used after explicitly handling known response codes
-impl<T> From<http::Response<T>> for InternalError {
-    fn from(resp: http::Response<T>) -> Self {
+impl From<http::Response<Vec<u8>>> for InternalError {
+    fn from(resp: http::Response<Vec<u8>>) -> Self {
+        event!(Level::DEBUG, "coming from response to internal error");
+        let body = resp.body();
+
+        let app_err: APIError = serde_json::from_slice(&body).unwrap_or(APIError {
+            code: 0,
+            message: "unknown".to_string(),
+            error_code: "".to_string(),
+            data: Value::Null,
+        });
+
         match resp.status() {
             http::StatusCode::TOO_MANY_REQUESTS => {
                 InternalError::RetryLater(delay_from_response(&resp))
             }
-            status if status.is_client_error() => InternalError::BadRequest(status),
-            status if status.is_server_error() => InternalError::InternalServer(status),
-            status => InternalError::UnhandledStatus(status),
+            status if status.is_client_error() => InternalError::BadRequest(app_err),
+            status if status.is_server_error() => InternalError::InternalServer(app_err),
+            _ => InternalError::UnhandledStatus(app_err),
         }
     }
 }
@@ -172,7 +183,6 @@ impl<U> SDK<U> {
             resp.body = %to_string_pretty(&v).unwrap(),
             "recieved response",
         );
-
         Ok(Response::from_parts(parts, body))
     }
 }

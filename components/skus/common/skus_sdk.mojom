@@ -10,4 +10,5 @@ interface SkusService {
   FetchOrderCredentials(string domain, string order_id) => (string response);
   PrepareCredentialsPresentation(string domain, string path) => (string response);
   CredentialSummary(string domain) => (string response);
+  SubmitReceipt(string domain, string order_id, string receipt) => (string response);
 };
