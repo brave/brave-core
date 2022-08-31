@@ -1493,6 +1493,12 @@ TEST_F(KeyringServiceUnitTest, CreateAndRestoreWallet) {
   std::vector<mojom::AccountInfoPtr> account_infos =
       service.GetAccountInfosForKeyring(mojom::kDefaultKeyringId);
   EXPECT_EQ(account_infos.size(), 1u);
+  EXPECT_EQ(account_infos[0]->address,
+            service.GetSelectedAccount(mojom::CoinType::ETH).value());
+  EXPECT_FALSE(service.GetSelectedAccount(mojom::CoinType::SOL));
+  EXPECT_FALSE(service.GetFilecoinSelectedAccount(mojom::kFilecoinMainnet));
+  EXPECT_FALSE(service.GetFilecoinSelectedAccount(mojom::kFilecoinTestnet));
+
   EXPECT_FALSE(account_infos[0]->address.empty());
   const std::string address0 = account_infos[0]->address;
   EXPECT_EQ(account_infos[0]->name, "Account 1");
@@ -1503,11 +1509,39 @@ TEST_F(KeyringServiceUnitTest, CreateAndRestoreWallet) {
       [&mnemonic_to_be_restored, &service, &address0]() {
         EXPECT_TRUE(
             RestoreWallet(&service, *mnemonic_to_be_restored, "brave1", false));
-        std::vector<mojom::AccountInfoPtr> account_infos =
-            service.GetAccountInfosForKeyring(mojom::kDefaultKeyringId);
-        EXPECT_EQ(account_infos.size(), 1u);
-        EXPECT_EQ(account_infos[0]->address, address0);
-        EXPECT_EQ(account_infos[0]->name, "Account 1");
+        {
+          std::vector<mojom::AccountInfoPtr> account_infos =
+              service.GetAccountInfosForKeyring(mojom::kDefaultKeyringId);
+          EXPECT_EQ(account_infos.size(), 1u);
+          EXPECT_EQ(account_infos[0]->address,
+                    service.GetSelectedAccount(mojom::CoinType::ETH).value());
+          EXPECT_EQ(account_infos[0]->address, address0);
+          EXPECT_EQ(account_infos[0]->name, "Account 1");
+        }
+
+        {
+          std::vector<mojom::AccountInfoPtr> account_infos =
+              service.GetAccountInfosForKeyring(
+                  mojom::kFilecoinTestnetKeyringId);
+          EXPECT_EQ(account_infos.size(), 0u);
+          EXPECT_FALSE(
+              service.GetFilecoinSelectedAccount(mojom::kFilecoinTestnet));
+        }
+
+        {
+          std::vector<mojom::AccountInfoPtr> account_infos =
+              service.GetAccountInfosForKeyring(mojom::kFilecoinKeyringId);
+          EXPECT_EQ(account_infos.size(), 0u);
+          EXPECT_FALSE(
+              service.GetFilecoinSelectedAccount(mojom::kFilecoinMainnet));
+        }
+
+        {
+          std::vector<mojom::AccountInfoPtr> account_infos =
+              service.GetAccountInfosForKeyring(mojom::kSolanaKeyringId);
+          EXPECT_EQ(account_infos.size(), 0u);
+          EXPECT_FALSE(service.GetSelectedAccount(mojom::CoinType::SOL));
+        }
       });
   verify_restore_wallet.Run();
 
