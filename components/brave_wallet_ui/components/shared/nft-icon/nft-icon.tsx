@@ -16,14 +16,16 @@ import {
   NftImageIframe,
   NftImageResponsiveIframe
 } from './nft-icon-styles'
+import { CSSProperties } from 'react'
 
 interface Props {
   icon?: string
   responsive?: boolean
+  iconStyles?: CSSProperties
 }
 
 export const NftIcon = (props: Props) => {
-  const { icon, responsive } = props
+  const { icon, responsive, iconStyles } = props
   const [loaded, setLoaded] = React.useState<boolean>()
   const nftImageIframeRef = React.useRef<HTMLIFrameElement>(null)
 
@@ -46,12 +48,14 @@ export const NftIcon = (props: Props) => {
   return (
     responsive
       ? <NftImageResponsiveIframe
+        style={iconStyles}
         onLoad={() => setLoaded(true)}
         ref={nftImageIframeRef}
         src="chrome-untrusted://nft-display"
         sandbox="allow-scripts allow-same-origin"
       />
       : <NftImageIframe
+        style={iconStyles}
         onLoad={() => setLoaded(true)}
         ref={nftImageIframeRef}
         src="chrome-untrusted://nft-display"

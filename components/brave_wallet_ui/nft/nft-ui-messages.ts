@@ -17,7 +17,8 @@ export const enum NftUiCommand {
   UpdateSelectedAsset = 'update-selected-asset',
   UpdateNFTMetadata = 'update-nft-metadata',
   UpdateTokenNetwork = 'update-token-network',
-  UpdateNFTImageUrl = 'update-nft-image-url'
+  UpdateNFTImageUrl = 'update-nft-image-url',
+  ToggleNftModal = 'toggle-nft-modal'
 }
 
 export type CommandMessage = {
@@ -44,8 +45,18 @@ export type UpdateNftImageUrl = CommandMessage & {
   payload: string
 }
 
+export type ToggleNftModal = CommandMessage & {
+  payload: boolean
+}
+
 export const sendMessageToNftUiFrame = (targetWindow: Window | null, message: CommandMessage) => {
   if (targetWindow) {
     targetWindow.postMessage(message, braveNftDisplayOrigin)
+  }
+}
+
+export const sendMessageToWalletUi = (targetWindow: Window | null, message: CommandMessage) => {
+  if (targetWindow) {
+    targetWindow.postMessage(message, braveWalletOrigin)
   }
 }

@@ -40,7 +40,7 @@ const PopupModal = (props: Props) => {
       <Modal width={width}>
         <Header>
           <Title>{title}</Title>
-          <CloseButton onClick={onClose} />
+          <CloseButton onClick={onClose}/>
         </Header>
         {children}
       </Modal>
