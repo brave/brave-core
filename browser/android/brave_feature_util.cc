@@ -7,7 +7,7 @@
 
 #include "base/android/jni_string.h"
 #include "base/feature_list.h"
-#include "brave/build/android/jni_headers/BraveFeatureList_jni.h"
+#include "brave/build/android/jni_headers/BraveFeatureUtil_jni.h"
 #include "chrome/browser/about_flags.h"
 #include "chrome/browser/browser_process.h"
 #include "components/flags_ui/feature_entry.h"
@@ -31,7 +31,7 @@ int GetNumberOfOptions(const std::string& internal_name) {
   return entry->NumOptions();
 }
 
-static void JNI_BraveFeatureList_EnableFeature(
+static void JNI_BraveFeatureUtil_EnableFeature(
     JNIEnv* env,
     const base::android::JavaParamRef<jstring>& featureName,
     jboolean enabled,

@@ -17,6 +17,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveAppHooks.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveApplicationImplBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveBadge.java",
+  "../../brave/android/java/org/chromium/chrome/browser/BraveFeatureUtil.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveIntentHandler.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveLaunchIntentDispatcher.java",
