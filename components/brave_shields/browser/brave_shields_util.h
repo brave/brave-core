@@ -27,14 +27,7 @@ class PrefService;
 
 namespace brave_shields {
 
-enum ControlType {
-  ALLOW = 0,
-  BLOCK,
-  BLOCK_THIRD_PARTY,
-  DEFAULT,
-  INVALID,
-  AGGRESSIVE
-};
+enum ControlType { ALLOW = 0, BLOCK, BLOCK_THIRD_PARTY, DEFAULT, INVALID };
 
 // List of possible blocking modes when accessing blocked websites.
 enum class DomainBlockingType {
