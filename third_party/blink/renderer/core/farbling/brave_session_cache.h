@@ -94,6 +94,7 @@ class CORE_EXPORT BraveSessionCache final
   uint64_t session_key_;
   uint8_t domain_key_[32];
   std::map<FarbleKey, int> farbled_integers_;
+  WTF::String default_language_;
 
   void PerturbPixelsInternal(const unsigned char* data, size_t size);
 };

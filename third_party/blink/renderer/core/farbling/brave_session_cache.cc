@@ -176,6 +176,7 @@ int FarbledPointerScreenCoordinate(const DOMWindow* view,
 
 BraveSessionCache::BraveSessionCache(ExecutionContext& context)
     : Supplement<ExecutionContext>(context) {
+  default_language_ = blink::DefaultLanguage().GetString().Left(2);
   farbling_enabled_ = false;
   scoped_refptr<const blink::SecurityOrigin> origin;
   if (auto* window = blink::DynamicTo<blink::LocalDOMWindow>(context)) {
@@ -361,21 +362,15 @@ int BraveSessionCache::FarbledInteger(FarbleKey key,
 bool BraveSessionCache::AllowFontFamily(
     blink::WebContentSettingsClient* settings,
     const AtomicString& family_name) {
-  if (!CanRestrictFontFamiliesOnThisPlatform() || !farbling_enabled_ ||
-      !settings || !settings->IsReduceLanguageEnabled())
+  if (!farbling_enabled_ || !settings || !settings->IsReduceLanguageEnabled())
     return true;
   switch (settings->GetBraveFarblingLevel()) {
     case BraveFarblingLevel::OFF:
       break;
     case BraveFarblingLevel::BALANCED:
     case BraveFarblingLevel::MAXIMUM: {
-      if (AllowFontByFamilyName(family_name))
+      if (AllowFontByFamilyName(family_name, default_language_))
         return true;
-#if BUILDFLAG(IS_WIN)
-      WTF::String locale = blink::DefaultLanguage().GetString().Left(2);
-      if (AllowFontByFamilyNameAndLocale(family_name, locale))
-        return true;
-#endif
       FarblingPRNG prng = MakePseudoRandomGenerator();
       prng.discard(family_name.Impl()->GetHash() % 16);
       return ((prng() % 2) == 0);

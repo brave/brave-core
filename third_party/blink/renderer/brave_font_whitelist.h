@@ -16,23 +16,23 @@
 
 namespace brave {
 
-BLINK_EXPORT bool CanRestrictFontFamiliesOnThisPlatform();
-BLINK_EXPORT const base::flat_set<base::StringPiece>& GetAllowedFontFamilies();
+BLINK_EXPORT bool AllowFontByFamilyName(const AtomicString& family_name,
+                                        WTF::String default_language);
 
-BLINK_EXPORT bool AllowFontByFamilyName(const AtomicString& family_name);
-
-// This takes a 2-character language code.
+// Public for testing but other callers should call
+// AllowFontByFamilyName instead.
 BLINK_EXPORT const base::flat_set<base::StringPiece>&
-GetAdditionalAllowedFontFamiliesByLocale(WTF::String locale);
+GetAdditionalFontWhitelistByLocale(WTF::String default_language);
 
-// This takes a 2-character language code.
-BLINK_EXPORT bool AllowFontByFamilyNameAndLocale(
-    const AtomicString& family_name,
-    WTF::String locale);
-
-BLINK_EXPORT void set_allowed_font_families_for_testing(
+// Testing-only functions
+BLINK_EXPORT void set_font_whitelist_for_testing(
     bool can_restrict_fonts,
-    const base::flat_set<base::StringPiece>& allowed_font_families);
+    const base::flat_set<base::StringPiece>& font_whitelist);
+
+BLINK_EXPORT bool get_can_restrict_fonts_for_testing();
+
+BLINK_EXPORT const base::flat_set<base::StringPiece>&
+get_font_whitelist_for_testing();
 
 }  // namespace brave
 
