@@ -238,7 +238,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, IssuersPublicKeyMismatch) {
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   const IssuersInfo issuers =
-      BuildIssuers(7200000,
+      BuildIssuers(7'200'000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"hKjGQd7WAXs0lcdf+SCHCTKsBLWtKaEubwlK4YA1NkA=", 0.0}},
                    {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},

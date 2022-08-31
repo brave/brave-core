@@ -227,8 +227,8 @@ class BatAdsCatalogTest : public UnitTestBase {
 
     CatalogDaypartInfo catalog_daypart_2;
     catalog_daypart_2.dow = "345";
-    catalog_daypart_2.start_minute = 1000;
-    catalog_daypart_2.end_minute = 1200;
+    catalog_daypart_2.start_minute = 1'000;
+    catalog_daypart_2.end_minute = 1'200;
     catalog_dayparts.push_back(catalog_daypart_2);
 
     // Geo Targets
@@ -321,8 +321,8 @@ class BatAdsCatalogTest : public UnitTestBase {
     CatalogNewTabPageAdWallpaperInfo wallpaper_1;
     wallpaper_1.image_url = GURL("https://brave.com/2/test2.jpg");
     CatalogNewTabPageAdWallpaperFocalPointInfo focal_point_1;
-    focal_point_1.x = 1000;
-    focal_point_1.y = 1200;
+    focal_point_1.x = 1'000;
+    focal_point_1.y = 1'200;
     wallpaper_1.focal_point = focal_point_1;
     catalog_creative_new_tab_page_ad.payload.wallpapers.push_back(wallpaper_1);
     CatalogNewTabPageAdWallpaperInfo wallpaper_2;
@@ -405,7 +405,7 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_creative_set.per_day = 10;
     catalog_creative_set.per_week = 11;
     catalog_creative_set.per_month = 12;
-    catalog_creative_set.total_max = 1000;
+    catalog_creative_set.total_max = 1'000;
     catalog_creative_set.value = 0.1;
     catalog_creative_set.segments = catalog_segments;
     catalog_creative_set.oses = catalog_oses;
@@ -468,7 +468,7 @@ TEST_F(BatAdsCatalogTest, ParseCatalogWithSingleCampaign) {
   CatalogInfo expected_catalog;
   expected_catalog.id = "29e5c8bc0ba319069980bb390d8e8f9b58c05a20";
   expected_catalog.version = 9;
-  expected_catalog.ping = base::Milliseconds(7200000);
+  expected_catalog.ping = base::Milliseconds(7'200'000);
   expected_catalog.campaigns.push_back(BuildCatalogCampaign1());
 
   EXPECT_EQ(expected_catalog, *catalog);
@@ -488,7 +488,7 @@ TEST_F(BatAdsCatalogTest, ParseCatalogWithMultipleCampaigns) {
   CatalogInfo expected_catalog;
   expected_catalog.id = "29e5c8bc0ba319069980bb390d8e8f9b58c05a20";
   expected_catalog.version = 9;
-  expected_catalog.ping = base::Milliseconds(7200000);
+  expected_catalog.ping = base::Milliseconds(7'200'000);
   expected_catalog.campaigns.push_back(BuildCatalogCampaign1());
   expected_catalog.campaigns.push_back(BuildCatalogCampaign2());
 
@@ -509,7 +509,7 @@ TEST_F(BatAdsCatalogTest, ParseEmptyCatalog) {
   CatalogInfo expected_catalog;
   expected_catalog.id = "29e5c8bc0ba319069980bb390d8e8f9b58c05a20";
   expected_catalog.version = 9;
-  expected_catalog.ping = base::Milliseconds(7200000);
+  expected_catalog.ping = base::Milliseconds(7'200'000);
 
   EXPECT_EQ(expected_catalog, *catalog);
 }
