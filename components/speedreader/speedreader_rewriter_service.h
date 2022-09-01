@@ -9,10 +9,11 @@
 #include <memory>
 #include <string>
 
+#include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
 
 namespace base {
-class FilePath;
+class FilePathWatcher;
 }
 
 namespace speedreader {
@@ -40,7 +41,15 @@ class SpeedreaderRewriterService {
   const std::string& GetContentStylesheet();
 
  private:
+  void OnFileChanged(const base::FilePath& path, bool error);
+  void OnWatcherStarted(base::FilePathWatcher* file_watcher);
+  void OnLoadStylesheet(std::string stylesheet);
+
+  scoped_refptr<base::SequencedTaskRunner> watch_task_runner_;
+  base::FilePathWatcher* file_watcher_ = nullptr;
+
   std::string content_stylesheet_;
+  base::FilePath stylesheet_override_path_;
   std::unique_ptr<speedreader::SpeedReader> speedreader_;
   base::WeakPtrFactory<SpeedreaderRewriterService> weak_factory_{this};
 };
