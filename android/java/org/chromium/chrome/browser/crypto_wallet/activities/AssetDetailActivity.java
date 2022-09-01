@@ -8,50 +8,49 @@ package org.chromium.chrome.browser.crypto_wallet.activities;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.MenuItem;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.method.LinkMovementMethod;
+import android.text.style.BulletSpan;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import org.chromium.base.Callback;
-import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
-import org.chromium.brave_wallet.mojom.AssetRatioService;
-import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
-import org.chromium.brave_wallet.mojom.BraveWalletConstants;
-import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
-import org.chromium.brave_wallet.mojom.KeyringInfo;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
-import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
-import org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivity;
-import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
-import org.chromium.chrome.browser.crypto_wallet.util.AssetsPricesHelper;
-import org.chromium.chrome.browser.crypto_wallet.util.BalanceHelper;
+import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
+import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.util.TabUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,8 +78,10 @@ public class AssetDetailActivity
     private WalletCoinAdapter mWalletTxCoinAdapter;
     private Button mBtnBuy;
     private Button mBtnSwap;
+    private Button mBtnBridgeToAurora;
     private boolean mHasNewTx;
     private boolean mNativeInitialized;
+    private boolean mShouldShowDialog;
 
     @Override
     protected void triggerLayoutInflation() {
@@ -138,21 +139,85 @@ public class AssetDetailActivity
             }
         });
         Button btnSend = findViewById(R.id.btn_send);
-        btnSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utils.openBuySendSwapActivity(AssetDetailActivity.this,
-                        BuySendSwapActivity.ActivityType.SEND, mAssetSymbol);
-            }
-        });
+        btnSend.setOnClickListener(v
+                -> Utils.openBuySendSwapActivity(AssetDetailActivity.this,
+                        BuySendSwapActivity.ActivityType.SEND, mAssetSymbol));
+
         mBtnSwap = findViewById(R.id.btn_swap);
-        mBtnSwap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utils.openBuySendSwapActivity(AssetDetailActivity.this,
-                        BuySendSwapActivity.ActivityType.SWAP, mAssetSymbol);
-            }
-        });
+
+        if (AssetUtils.isAuroraAddress(mContractAddress, mChainId)) {
+            mBtnSwap.setVisibility(View.GONE);
+            mBtnBridgeToAurora = findViewById(R.id.btn_aurora_bridge);
+            mBtnBridgeToAurora.setVisibility(View.VISIBLE);
+            SpannableString rainBowLearnMore = Utils.createSpanForSurroundedPhrase(
+                    this, R.string.brave_wallet_rainbow_bridge_learn_more, (v) -> {
+                        TabUtils.openLinkWithFocus(
+                                this, WalletConstants.URL_RAINBOW_BRIDGE_OVERVIEW);
+                    });
+            rainBowLearnMore.setSpan(
+                    new BulletSpan(15, getResources().getColor(android.R.color.black)), 0,
+                    rainBowLearnMore.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            SpannableString rainBowRisksLearnMore = Utils.createSpanForSurroundedPhrase(
+                    this, R.string.brave_wallet_rainbow_bridge_risks_learn_more, (v) -> {
+                        TabUtils.openLinkWithFocus(this, WalletConstants.URL_RAINBOW_BRIDGE_RISKS);
+                    });
+            rainBowRisksLearnMore.setSpan(
+                    new BulletSpan(15, getResources().getColor(android.R.color.black)), 0,
+                    rainBowRisksLearnMore.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            SpannableStringBuilder spannableStringBuilder =
+                    new SpannableStringBuilder(rainBowLearnMore);
+            spannableStringBuilder.append(System.getProperty(WalletConstants.LINE_SEPARATOR));
+            spannableStringBuilder.append(rainBowRisksLearnMore);
+
+            MaterialAlertDialogBuilder auroraDialogBuilder =
+                    new MaterialAlertDialogBuilder(this, R.style.BraveWalletAlertDialogTheme);
+
+            View dialogView = getLayoutInflater().inflate(R.layout.dialog_aurora_bridge, null);
+            auroraDialogBuilder.setView(dialogView);
+            AlertDialog auroraDialog = auroraDialogBuilder.create();
+
+            SharedPreferencesManager preferencesManager = SharedPreferencesManager.getInstance();
+            mShouldShowDialog = preferencesManager.readBoolean(
+                    WalletConstants.PREF_SHOW_BRIDGE_INFO_DIALOG, true);
+
+            TextView message = dialogView.findViewById(R.id.dialog_aurora_desc);
+            TextView title = dialogView.findViewById(R.id.dialog_aurora_tv_title);
+            TextView learnMore = dialogView.findViewById(R.id.dialog_aurora_tv_learn_more);
+            Button btnOpenRainBow = dialogView.findViewById(R.id.btn_open_rainbow_app);
+
+            title.setText(getString(R.string.brave_wallet_aurora_modal_title,
+                    getString(R.string.brave_wallet_rainbow_bridge)));
+            learnMore.setMovementMethod(LinkMovementMethod.getInstance());
+            learnMore.setText(spannableStringBuilder);
+            btnOpenRainBow.setText(getString(R.string.brave_wallet_aurora_modal_open_button_text,
+                    getString(R.string.brave_wallet_rainbow_bridge)));
+            CheckBox checkBox = dialogView.findViewById(R.id.dialog_aurora_cb_dont_show);
+            checkBox.setChecked(!mShouldShowDialog);
+            checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                preferencesManager.writeBoolean(
+                        WalletConstants.PREF_SHOW_BRIDGE_INFO_DIALOG, !isChecked);
+                mShouldShowDialog = !isChecked;
+            });
+
+            message.setMovementMethod(LinkMovementMethod.getInstance());
+            message.setText(getString(R.string.brave_wallet_aurora_modal_description,
+                    getString(R.string.brave_wallet_rainbow_bridge)));
+            btnOpenRainBow.setOnClickListener(
+                    v -> { TabUtils.openLinkWithFocus(this, WalletConstants.URL_RAINBOW_AURORA); });
+
+            mBtnBridgeToAurora.setOnClickListener(v -> {
+                if (mShouldShowDialog) {
+                    auroraDialog.show();
+                } else {
+                    TabUtils.openLinkWithFocus(this, WalletConstants.URL_RAINBOW_AURORA);
+                }
+            });
+        } else {
+            mBtnSwap.setOnClickListener(v
+                    -> Utils.openBuySendSwapActivity(AssetDetailActivity.this,
+                            BuySendSwapActivity.ActivityType.SWAP, mAssetSymbol));
+        }
+
         adjustButtonsVisibilities();
 
         RadioGroup radioGroup = findViewById(R.id.asset_duration_radio_group);
@@ -378,7 +443,9 @@ public class AssetDetailActivity
     private void adjustButtonsVisibilities() {
         if (Utils.allowBuyAndSwap(mChainId)) {
             mBtnBuy.setVisibility(View.VISIBLE);
-            mBtnSwap.setVisibility(View.VISIBLE);
+            if (!AssetUtils.isAuroraAddress(mContractAddress, mChainId)) {
+                mBtnSwap.setVisibility(View.VISIBLE);
+            }
         } else {
             mBtnBuy.setVisibility(View.GONE);
             mBtnSwap.setVisibility(View.GONE);
