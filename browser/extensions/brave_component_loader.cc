@@ -16,6 +16,7 @@
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_extension/grit/brave_extension.h"
 #include "brave/components/brave_rewards/common/features.h"
+#include "brave/components/brave_rewards/common/policy_util.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
@@ -141,6 +142,7 @@ void BraveComponentLoader::AddRewardsExtension() {
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
   if (!command_line.HasSwitch(switches::kDisableBraveRewardsExtension) &&
+      !brave_rewards::IsDisabledByPolicy(profile_prefs_) &&
       !Exists(brave_rewards_extension_id) &&
       !base::FeatureList::IsEnabled(
           brave_rewards::features::kWebUIPanelFeature)) {
