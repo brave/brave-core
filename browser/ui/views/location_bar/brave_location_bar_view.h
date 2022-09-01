@@ -8,6 +8,7 @@
 
 #include <vector>
 
+#include "base/gtest_prod_util.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
@@ -24,6 +25,10 @@ class OnionLocationView;
 #if BUILDFLAG(ENABLE_IPFS)
 class IPFSLocationView;
 #endif
+
+namespace policy {
+FORWARD_DECLARE_TEST(BraveRewardsPolicyTest, RewardsIconIsHidden);
+}
 
 // The purposes of this subclass are to:
 // - Add the BraveActionsContainer to the location bar
@@ -66,6 +71,7 @@ class BraveLocationBarView : public LocationBarView {
   }
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(policy::BraveRewardsPolicyTest, RewardsIconIsHidden);
   friend class ::BraveActionsContainerTest;
   friend class ::RewardsBrowserTest;
   BraveActionsContainer* brave_actions_ = nullptr;
