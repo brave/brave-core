@@ -279,7 +279,6 @@ class TopToolbarView: UIView, ToolbarProtocol {
   }
 
   private let mainStackView = UIStackView().then {
-    $0.alignment = .center
     $0.spacing = 8
     $0.isLayoutMarginsRelativeArrangement = true
     $0.insetsLayoutMarginsFromSafeArea = false
@@ -293,7 +292,6 @@ class TopToolbarView: UIView, ToolbarProtocol {
   
   private let trailingItemsStackView = UIStackView().then {
     $0.distribution = .fillEqually
-    $0.alignment = .center
     $0.spacing = 8
   }
 

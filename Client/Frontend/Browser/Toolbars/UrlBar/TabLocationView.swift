@@ -263,8 +263,6 @@ class TabLocationView: UIView {
 
     let subviews = [lockImageView, urlTextField, tabOptionsStackView]
     contentView = UIStackView(arrangedSubviews: subviews)
-    contentView.distribution = .fill
-    contentView.alignment = .center
     contentView.layoutMargins = UIEdgeInsets(top: 2, left: TabLocationViewUX.spacing, bottom: 2, right: 0)
     contentView.isLayoutMarginsRelativeArrangement = true
     contentView.insetsLayoutMarginsFromSafeArea = false
