@@ -86,7 +86,7 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
     Browser* popup = ui_test_utils::WaitForBrowserToOpen();
     EXPECT_NE(popup, browser());
     auto* popup_contents = popup->tab_strip_model()->GetActiveWebContents();
-    EXPECT_TRUE(WaitForRenderFrameReady(popup_contents->GetMainFrame()));
+    EXPECT_TRUE(WaitForRenderFrameReady(popup_contents->GetPrimaryMainFrame()));
     return popup;
   }
 
