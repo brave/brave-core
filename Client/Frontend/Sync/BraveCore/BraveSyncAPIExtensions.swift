@@ -65,8 +65,16 @@ extension BraveSyncAPI {
     // Remove all observers before leaving the sync chain
     removeAllObservers()
 
-    resetSync()
+    resetSyncChain()
     Preferences.Chromium.syncEnabled.value = false
+  }
+  
+  func resetSyncChain() {
+    Preferences.Chromium.syncHistoryEnabled.value = false
+    Preferences.Chromium.syncPasswordsEnabled.value = false
+    Preferences.Chromium.syncOpenTabsEnabled.value = false
+    
+    resetSync()
   }
 
   func enableSyncTypes(syncProfileService: BraveSyncProfileServiceIOS) {

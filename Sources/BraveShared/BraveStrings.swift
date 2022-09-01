@@ -2969,7 +2969,7 @@ extension Strings {
         "openTabs.sendWebpageScreenTitle",
         tableName: "BraveShared",
         bundle: .strings,
-        value: "Send Webpage",
+        value: "Send Web Page",
         comment: "The title displayed on send-webpage screen")
     public static let sendDeviceButtonTitle =
       NSLocalizedString(
@@ -3046,7 +3046,7 @@ extension Strings {
         "opentabs.tabTrayOpenSearchBarTitle",
         tableName: "BraveShared",
         bundle: .strings,
-        value: "Search Open Tabs",
+        value: "Search Tabs from Other Devices",
         comment: "The placeholder written in seach bar while tab-tray is showing open tabs.")
     public static let sendWebsiteShareActionTitle =
       NSLocalizedString(
@@ -3060,15 +3060,43 @@ extension Strings {
         "opentabs.noSyncSessionPlaceHolderViewTitle",
         tableName: "BraveShared",
         bundle: .strings,
-        value: "Tabs From other devices will appear here",
+        value: "This space shows Brave tabs open in other devices",
         comment: "The title of the view showing no synced sessions")
+    public static let noSyncChainPlaceHolderViewDescription =
+      NSLocalizedString(
+        "opentabs.noSyncChainPlaceHolderViewDescription",
+        tableName: "BraveShared",
+        bundle: .strings,
+        value: "To get started, set up a sync chain and toggle \"Open Tabs\" in Sync Settings.",
+        comment: "The description of the view explaining user should join a sync chain.")
     public static let noSyncSessionPlaceHolderViewDescription =
       NSLocalizedString(
         "opentabs.noSyncSessionPlaceHolderViewDescription",
         tableName: "BraveShared",
         bundle: .strings,
-        value: "To see your tabs from other devices, join a sync chain and enable Open Tabs",
-        comment: "The description of the view showing no synced sessions")
+        value: "Enable tab syncing to see tabs from your other devices.",
+        comment: "The description of the view describing tab syncing should be enabled.")
+    public static let syncChainStartButtonTitle =
+      NSLocalizedString(
+        "opentabs.startASyncChainButtonTitle",
+        tableName: "BraveShared",
+        bundle: .strings,
+        value: "Start a sync chain",
+        comment: "The button which navigates to screen starting a new sync chain")
+    public static let tabSyncEnableButtonTitle =
+      NSLocalizedString(
+        "opentabs.tabSyncEnableButtonTitle",
+        tableName: "BraveShared",
+        bundle: .strings,
+        value: "Enable tab syncing",
+        comment: "The button which navigates to screen where Tab Sync functionality toggle can be adjusted")
+    public static let noSyncSessionPlaceHolderViewAdditionalDescription =
+      NSLocalizedString(
+        "opentabs.noSyncSessionPlaceHolderViewAdditionalDescription",
+        tableName: "BraveShared",
+        bundle: .strings,
+        value: "Manage what Brave syncs in Settings.",
+        comment: "The additional description of the view describing tab syncing should be enabled.")
     public static let noDevicesSyncChainPlaceholderViewTitle =
       NSLocalizedString(
         "opentabs.noDevicesSyncChainPlaceholderViewTitle",

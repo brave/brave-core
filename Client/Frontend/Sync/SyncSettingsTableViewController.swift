@@ -135,14 +135,14 @@ class SyncSettingsTableViewController: UIViewController, UITableViewDelegate, UI
 
   private lazy var noSyncedDevicesOverlayView = EmptyStateOverlayView(
     title: Strings.OpenTabs.noDevicesSyncChainPlaceholderViewTitle,
-    description: Strings.OpenTabs.noSyncSessionPlaceHolderViewDescription,
+    description: Strings.OpenTabs.noDevicesSyncChainPlaceholderViewDescription,
     icon: UIImage(systemName: "exclamationmark.arrow.triangle.2.circlepath"))
 
   // MARK: Actions
 
   @objc
   private func doneTapped() {
-    navigationController?.popToRootViewController(animated: true)
+    navigationController?.dismiss(animated: true)
   }
 
   @objc
