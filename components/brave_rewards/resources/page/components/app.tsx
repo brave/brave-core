@@ -17,15 +17,17 @@ export function App () {
   }))
 
   React.useEffect(() => {
-    actions.isInitialized()
+    if (rewardsData.initializing) {
+      actions.isInitialized()
 
-    if (!rewardsData.enabledAdsMigrated) {
-      const { adsEnabled, adsIsSupported } = rewardsData.adsData
-      if (adsIsSupported) {
-        actions.onAdsSettingSave('adsEnabledMigrated', adsEnabled)
+      if (!rewardsData.enabledAdsMigrated) {
+        const { adsEnabled, adsIsSupported } = rewardsData.adsData
+        if (adsIsSupported) {
+          actions.onAdsSettingSave('adsEnabledMigrated', adsEnabled)
+        }
       }
     }
-  }, [])
+  }, [rewardsData.initializing])
 
   return (
     <LayoutManager>
