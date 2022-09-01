@@ -19,7 +19,10 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
+#include "net/test/embedded_test_server/default_handlers.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
+
+namespace {
 
 constexpr base::TimeDelta k4YearsInDays = base::Days(1461);
 // There might be a gap of a few milliseconds between setting the cookie and it
@@ -28,18 +31,24 @@ constexpr base::TimeDelta k4YearsInDays = base::Days(1461);
 // See: net/cookies/canonical_cookie_unittest.cc
 constexpr base::TimeDelta kMarginForTesting = base::Seconds(5);
 
+}  // namespace
+
 class CookieExpirationTest : public InProcessBrowserTest {
  public:
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
-    https_server_.reset(new net::EmbeddedTestServer(
-        net::test_server::EmbeddedTestServer::TYPE_HTTPS));
+    https_server_ = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
+    RegisterDefaultHandlers(https_server_.get());
+
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     https_server_->ServeFilesFromDirectory(test_data_dir);
+
+    ASSERT_TRUE(https_server_->Start());
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -59,10 +68,10 @@ class CookieExpirationTest : public InProcessBrowserTest {
 
   // Set a cookie with JavaScript.
   void JSDocumentCookieWriteCookie(Browser* browser, std::string age) {
-    bool rv = content::ExecuteScript(
-        browser->tab_strip_model()->GetActiveWebContents(),
-        base::StringPrintf("document.cookie = 'name=Test; %s'", age.c_str()));
-    ASSERT_TRUE(rv);
+    std::string cookie_string =
+        base::StringPrintf("document.cookie = 'name=Test; %s'", age.c_str());
+    ASSERT_TRUE(content::ExecJs(
+        browser->tab_strip_model()->GetActiveWebContents(), cookie_string));
   }
 
   void JSCookieStoreWriteCookie(Browser* browser, std::string expires_in_ms) {
@@ -80,6 +89,7 @@ class CookieExpirationTest : public InProcessBrowserTest {
 
   std::vector<net::CanonicalCookie> GetAllCookiesDirect(Browser* browser) {
     base::RunLoop run_loop;
+
     std::vector<net::CanonicalCookie> cookies_out;
     browser->tab_strip_model()
         ->GetActiveWebContents()
@@ -105,7 +115,6 @@ class CookieExpirationTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
                        CheckExpiryForDocumentCookieLessThanMax) {
-  ASSERT_TRUE(https_server_->Start());
   auto less_than_max = base::Days(2);
 
   GURL url = https_server_->GetURL("a.com", "/simple.html");
@@ -116,16 +125,13 @@ IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
       GetAllCookiesDirect(browser());
   EXPECT_EQ(1u, all_cookies.size());
   for (const net::CanonicalCookie& cookie : all_cookies) {
-    EXPECT_LE(
-        (base::Time::Now() + less_than_max - cookie.ExpiryDate()).magnitude(),
-        kMarginForTesting);
+    EXPECT_LE((base::Time::Now() + less_than_max - cookie.ExpiryDate()),
+              kMarginForTesting);
   }
 }
 
 IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
                        CheckExpiryForDocumentCookieMoreThanMax) {
-  ASSERT_TRUE(https_server_->Start());
-
   GURL url = https_server_->GetURL("a.com", "/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   JSDocumentCookieWriteCookie(
@@ -140,7 +146,6 @@ IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
 
 IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
                        CheckExpiryForCookieStoreLessThanMax) {
-  ASSERT_TRUE(https_server_->Start());
   auto less_than_max = base::Days(2);
   GURL url = https_server_->GetURL("a.com", "/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -151,16 +156,13 @@ IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
       GetAllCookiesDirect(browser());
   EXPECT_EQ(1u, all_cookies.size());
   for (const net::CanonicalCookie& cookie : all_cookies) {
-    EXPECT_LE(
-        (base::Time::Now() + less_than_max - cookie.ExpiryDate()).magnitude(),
-        kMarginForTesting);
+    EXPECT_LE((base::Time::Now() + less_than_max - cookie.ExpiryDate()),
+              kMarginForTesting);
   }
 }
 
 IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
                        CheckExpiryForCookieStoreMoreThanMax) {
-  ASSERT_TRUE(https_server_->Start());
-
   GURL url = https_server_->GetURL("a.com", "/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   JSCookieStoreWriteCookie(browser(),
@@ -177,18 +179,10 @@ IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
 IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
                        CheckExpiryForHttpCookiesLessThanMax) {
   auto less_than_max = base::Days(30);
-  std::string cookie_string =
-      "test=http;max-age=" + std::to_string(less_than_max.InSeconds());
-  https_server_->RegisterRequestHandler(base::BindLambdaForTesting(
-      [&](const net::test_server::HttpRequest& request)
-          -> std::unique_ptr<net::test_server::HttpResponse> {
-        auto response = std::make_unique<net::test_server::BasicHttpResponse>();
-        response->AddCustomHeader("Set-Cookie", cookie_string);
-        return std::move(response);
-      }));
-  ASSERT_TRUE(https_server_->Start());
+  std::string cookie_string = "/set-cookie?test=http;max-age=" +
+                              std::to_string(less_than_max.InSeconds());
 
-  GURL url = https_server_->GetURL("a.com", "/simple.html");
+  GURL url = https_server_->GetURL("a.com", cookie_string);
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
@@ -196,9 +190,8 @@ IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
       GetAllCookiesDirect(browser());
   EXPECT_EQ(1u, all_cookies.size());
   for (const net::CanonicalCookie& cookie : all_cookies) {
-    EXPECT_LE(
-        (base::Time::Now() + less_than_max - cookie.ExpiryDate()).magnitude(),
-        kMarginForTesting);
+    EXPECT_LE((base::Time::Now() + less_than_max - cookie.ExpiryDate()),
+              kMarginForTesting);
   }
 }
 
@@ -206,16 +199,7 @@ IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
                        CheckExpiryForHttpCookiesMoreThanMax) {
   std::string cookie_string =
       "test=http;max-age=" + std::to_string(k4YearsInDays.InSeconds());
-  https_server_->RegisterRequestHandler(base::BindLambdaForTesting(
-      [&](const net::test_server::HttpRequest& request)
-          -> std::unique_ptr<net::test_server::HttpResponse> {
-        auto response = std::make_unique<net::test_server::BasicHttpResponse>();
-        response->AddCustomHeader("Set-Cookie", cookie_string);
-        return std::move(response);
-      }));
-  ASSERT_TRUE(https_server_->Start());
-
-  GURL url = https_server_->GetURL("a.com", "/simple.html");
+  GURL url = https_server_->GetURL("a.com", "/set-cookie?" + cookie_string);
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
