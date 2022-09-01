@@ -36,7 +36,7 @@ std::string GetDesktopName(base::Environment* env) {
     default:
       return "brave-browser.desktop";
   }
-#endif  // defined(OFFICIAL_BUILD)
+#else  // defined(OFFICIAL_BUILD)
   // Allow $CHROME_DESKTOP to override the built-in value, so that development
   // versions can set themselves as the default without interfering with
   // non-official, packaged versions using the built-in value.
@@ -44,6 +44,7 @@ std::string GetDesktopName(base::Environment* env) {
   if (env->GetVar("CHROME_DESKTOP", &name) && !name.empty())
     return name;
   return "brave-browser.desktop";
+#endif
 }
 #endif  // BUILDFLAG(IS_LINUX)
 
