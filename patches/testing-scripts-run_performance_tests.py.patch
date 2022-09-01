@@ -1,24 +1,12 @@
 diff --git a/testing/scripts/run_performance_tests.py b/testing/scripts/run_performance_tests.py
-index a46efbe54aa53b297dd8f9cbe13ec388efae3f2b..df02c9b382278c4ac5b277ca4cb799fae15cf773 100755
+index a46efbe54aa53b297dd8f9cbe13ec388efae3f2b..6116045acf7b63befaf39b460899e18ae422ed33 100755
 --- a/testing/scripts/run_performance_tests.py
 +++ b/testing/scripts/run_performance_tests.py
-@@ -39,6 +39,7 @@ from __future__ import print_function
- 
- import argparse
- import json
-+import logging
- import os
- import requests
- import shutil
-@@ -700,6 +701,11 @@ def main(sys_args):
+@@ -700,6 +700,7 @@ def main(sys_args):
        benchmarks = options.benchmarks.split(',')
        for benchmark in benchmarks:
          output_paths = OutputFilePaths(isolated_out_dir, benchmark).SetUp()
-+
-+        # .reference suffix is used only for dashboard reporting.
-+        # see perf_test_runner.py for details.
-+        benchmark = benchmark.replace('.reference', '')
-+
++        benchmark = benchmark.replace('.reference', '') # .reference suffix is used only for dashboard reporting.  see perf_test_runner.py for details.
          command_generator = TelemetryCommandGenerator(
              benchmark, options)
          print('\n### {folder} ###'.format(folder=benchmark))

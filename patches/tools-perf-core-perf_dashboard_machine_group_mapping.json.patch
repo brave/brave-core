@@ -8,8 +8,3 @@ index cd94667a582bb0fb3f1beba888cf356460f80ef6..0f875f716319802d47c3aa4f971f6de6
    "chromium": "Chromium",
    "chromium.android": "ChromiumAndroid",
    "chromium.android.fyi": "ChromiumAndroidFyi",
-@@ -74,4 +75,3 @@
-   "tryserver.nacl": "NativeClientTryServer",
-   "tryserver.webrtc": "WebRTCTryServer"
- }
--
