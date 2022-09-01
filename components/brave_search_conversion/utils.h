@@ -26,7 +26,6 @@ void RegisterPrefs(PrefRegistrySimple* registry);
 void SetDismissed(PrefService* prefs);
 GURL GetPromoURL(const std::u16string& search_term);
 GURL GetPromoURL(const std::string& search_term);
-bool IsPromotionEnabledCountry(const std::string& country_code);
 bool IsBraveSearchConversionFetureEnabled();
 
 }  // namespace brave_search_conversion

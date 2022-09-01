@@ -15,8 +15,6 @@
 #include "brave/components/brave_search_conversion/features.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
 #include "brave/components/brave_search_conversion/types.h"
-#include "brave/components/l10n/browser/locale_helper.h"
-#include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -25,12 +23,6 @@
 #include "url/gurl.h"
 
 namespace brave_search_conversion {
-
-bool IsPromotionEnabledCountry(const std::string& country_code) {
-  constexpr base::StringPiece kSupportedCountries[] = {"US", "CA", "DE", "FR",
-                                                       "GB"};
-  return base::Contains(kSupportedCountries, country_code);
-}
 
 bool IsNTPPromotionEnabled(PrefService* prefs, TemplateURLService* service) {
   DCHECK(prefs);
@@ -46,12 +38,6 @@ bool IsNTPPromotionEnabled(PrefService* prefs, TemplateURLService* service) {
       id == TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE_TOR) {
     return false;
   }
-
-  const std::string locale =
-      brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-  const std::string country_code = brave_l10n::GetCountryCode(locale);
-  if (!IsPromotionEnabledCountry(country_code))
-    return false;
 
   return base::FeatureList::IsEnabled(features::kNTP);
 }
@@ -70,12 +56,6 @@ ConversionType GetConversionType(PrefService* prefs,
       id == TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE_TOR) {
     return ConversionType::kNone;
   }
-
-  const std::string locale =
-      brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-  const std::string country_code = brave_l10n::GetCountryCode(locale);
-  if (!IsPromotionEnabledCountry(country_code))
-    return ConversionType::kNone;
 
   if (base::FeatureList::IsEnabled(features::kOmniboxButton))
     return ConversionType::kButton;
