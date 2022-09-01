@@ -10,14 +10,12 @@ interface StyleProps {
 }
 
 export const StyledWrapper = styled.div`
-  position: relative;
   display: flex;
   height: 100%;
   width: 100%;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 36px;
 `
 
 export const MainContainerWrapper = styled.div<Partial<StyleProps>>`
@@ -52,8 +50,8 @@ export const ButtonRow = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  position: absolute;
-  top: 0px;
+  position: relative;
+  top: 2px;
 `
 
 export const TabButton = styled(WalletButton) <Partial<StyleProps>>`
@@ -84,6 +82,7 @@ export const TabButtonText = styled.span<Partial<StyleProps>>`
   letter-spacing: 0.01em;
   background: ${(p) =>
     p.isDisabled ? p.theme.color.interactive08 : p.isSelected ? p.theme.color.text01 : p.theme.color.text02};
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `

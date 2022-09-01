@@ -1,10 +1,15 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import styled from 'styled-components'
-import HistoryIcon from '../../../assets/svg-icons/history-icon.svg'
+
+// styles
 import { WalletButton } from '../../shared/style'
 
-interface StyleProps {
-  disabled?: boolean
-}
+// icons
+import HistoryIcon from '../../../assets/svg-icons/history-icon.svg'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -35,8 +40,11 @@ export const NavDivider = styled.div`
   background-color: rgba(255,255,255,0.5);
 `
 
-export const NavButton = styled(WalletButton) <StyleProps>`
+export const NavButton = styled(WalletButton)<{
+  disabled?: boolean
+}>`
   flex: 1;
+  min-width: 80px;
   display: flex;
   height: 100%;
   align-items: center;
@@ -48,7 +56,9 @@ export const NavButton = styled(WalletButton) <StyleProps>`
   pointer-events: ${(p) => p.disabled ? 'none' : 'auto'};
 `
 
-export const NavButtonText = styled.span<StyleProps>`
+export const NavButtonText = styled.span<{
+  disabled?: boolean
+}>`
   font-family: Poppins;
   font-size: 14px;
   line-height: 20px;
@@ -58,7 +68,7 @@ export const NavButtonText = styled.span<StyleProps>`
   opacity: ${(p) => p.disabled ? '0.6' : '1'};
 `
 
-export const TransactionsButton = styled(WalletButton) <StyleProps>`
+export const TransactionsButton = styled(WalletButton)`
   display: flex;
   height: 100%;
   width: 50px;
