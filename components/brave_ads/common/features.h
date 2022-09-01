@@ -39,9 +39,6 @@ int NotificationAdInsetY();
 extern const base::Feature kAllowedToFallbackToCustomNotificationAds;
 bool IsAllowedToFallbackToCustomNotificationAdsEnabled();
 
-extern const base::Feature kRequestAdsEnabledApi;
-bool IsRequestAdsEnabledApiEnabled();
-
 extern const base::Feature kSupportBraveSearchResultAdConfirmationEvents;
 
 }  // namespace features

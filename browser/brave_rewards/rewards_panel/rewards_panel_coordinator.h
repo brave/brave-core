@@ -44,9 +44,6 @@ class RewardsPanelCoordinator
   // adaptive captcha for the user.
   bool ShowAdaptiveCaptcha();
 
-  // Opens the Rewards panel in order to display the Brave Talk Rewards opt-in.
-  bool ShowBraveTalkOptIn();
-
   class Observer : public base::CheckedObserver {
    public:
     // Called when an application component requests that the Rewards panel be

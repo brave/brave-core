@@ -21,9 +21,6 @@ const base::Feature kAllowedToFallbackToCustomNotificationAds{
     "AllowedToFallbackToCustomAdNotifications",
     base::FEATURE_ENABLED_BY_DEFAULT};
 
-const base::Feature kRequestAdsEnabledApi{"RequestAdsEnabledApi",
-                                          base::FEATURE_DISABLED_BY_DEFAULT};
-
 const base::Feature kSupportBraveSearchResultAdConfirmationEvents{
     "SupportBraveSearchResultAdConfirmationEvents",
     base::FEATURE_DISABLED_BY_DEFAULT};
@@ -207,10 +204,6 @@ int NotificationAdInsetY() {
 bool IsAllowedToFallbackToCustomNotificationAdsEnabled() {
   return base::FeatureList::IsEnabled(
       kAllowedToFallbackToCustomNotificationAds);
-}
-
-bool IsRequestAdsEnabledApiEnabled() {
-  return base::FeatureList::IsEnabled(kRequestAdsEnabledApi);
 }
 
 }  // namespace features
