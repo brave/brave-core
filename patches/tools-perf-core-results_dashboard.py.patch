@@ -1,33 +1,9 @@
 diff --git a/tools/perf/core/results_dashboard.py b/tools/perf/core/results_dashboard.py
-index 47cce40c50a0ebafd6503761e8ec3a1dedb4bc5b..55c74c74a7d332d43066f21c7e910c78ee8040a9 100755
+index 47cce40c50a0ebafd6503761e8ec3a1dedb4bc5b..909f2b72ff2bfd4a332d5b8e8e3cfb7bf6d88e69 100755
 --- a/tools/perf/core/results_dashboard.py
 +++ b/tools/perf/core/results_dashboard.py
-@@ -59,8 +59,14 @@ class SendResultsFatalException(SendResultException):
- 
- 
- def LuciAuthTokenGeneratorCallback():
--  args = ['luci-auth', 'token']
--  p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-+  args = [os.path.join(path_util.GetChromiumSrcDir(), 'brave', 'vendor', 'depot_tools', 'vpython3.bat' if sys.platform == 'win32' else 'vpython3'), os.path.join(path_util.GetChromiumSrcDir(), 'brave', 'tools', 'perf', 'dashboard_auth.py')]
-+
-+  # Backport universal_newlines=True from the upstream.
-+  # Revert when cr107 is merged.
-+  p = subprocess.Popen(args,
-+                       stdout=subprocess.PIPE,
-+                       stderr=subprocess.PIPE,
-+                       universal_newlines=True)
-   if p.wait() == 0:
-     return p.stdout.read().strip()
-   raise RuntimeError(
-@@ -301,6 +307,11 @@ def MakeDashboardJsonV1(chart_json, revision_dict, test_name, bot, project,
- 
- 
- def _MakeBuildStatusUrl(project, buildbucket, buildername, buildnumber):
-+  import re
-+  m = re.match('brave/refs/tags/(.+)', buildername)
-+  if m:
-+    return 'https://github.com/brave/brave-browser/releases/tag/%s' % m.group(1)
-+
-   if not (buildername and buildnumber):
-     return None
-   if not project:
+@@ -497,3 +497,4 @@ def _SendHistogramJson(url, histogramset_json, token_generator_callback):
+       logging.info('Upload completion token created. Token id: %s' % token)
+   except Exception as e:  # pylint: disable=broad-except
+     logging.warning('Error fetching upload completion token: %s' % e)
++from lib.import_inline import inline_file_from_src; inline_file_from_src("brave/chromium_src/tools/perf/core/results_dashboard.py", globals(), locals())
