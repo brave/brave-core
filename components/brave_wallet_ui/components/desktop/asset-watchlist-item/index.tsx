@@ -45,17 +45,17 @@ const AssetWatchlistItem = (props: Props) => {
     networkList
   } = props
 
-  const onCheck = (key: string, selected: boolean) => {
+  const onCheck = React.useCallback((key: string, selected: boolean) => {
     onSelectAsset(key, selected, token, isCustom)
-  }
+  }, [onSelectAsset, token, isCustom])
 
-  const onClickAsset = () => {
+  const onClickAsset = React.useCallback(() => {
     onSelectAsset(token.contractAddress, !isSelected, token, isCustom)
-  }
+  }, [onSelectAsset, token, isSelected, isCustom])
 
-  const onClickRemoveAsset = () => {
+  const onClickRemoveAsset = React.useCallback(() => {
     onRemoveAsset(token)
-  }
+  }, [token, onRemoveAsset])
 
   const AssetIconWithPlaceholder = React.useMemo(() => {
     return withPlaceholderIcon(token.isErc721 ? NftIcon : AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
