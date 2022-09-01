@@ -220,45 +220,45 @@ TEST_F(BatAdsIssuersUtilTest, DoNotGetIssuersForMissingType) {
   EXPECT_FALSE(issuer);
 }
 
-TEST_F(BatAdsIssuersUtilTest, IsIssuerValid) {
+TEST_F(BatAdsIssuersUtilTest, IsIssuersValid) {
   // Arrange
-  const IssuersInfo issuers =
-      BuildIssuers(7'200'000,
-                   {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
-                    {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
-                   {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
-                    {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1},
-                    {"XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=", 0.1}});
-
-  const absl::optional<IssuerInfo> issuer =
-      GetIssuerForType(issuers, IssuerType::kPayments);
-  ASSERT_TRUE(issuer);
+  const IssuersInfo issuers = BuildIssuers(
+      7'200'000,
+      {{R"~(JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=)~", 0.0},
+       {R"~(crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=)~", 0.0}},
+      {{R"~(JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=)~", 0.0},
+       {R"~(bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=)~", 0.1},
+       {R"~(XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=)~", 0.1},
+       {R"~(wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=)~", 0.1},
+       {R"~(ZvzeYOT1geUQXfOsYXBxZj/H26IfiBUVodHl51j68xI=)~", 0.1},
+       {R"~(JlOezORiqLkFkvapoNRGWcMH3/g09/7M2UPEwMjRpFE=)~", 0.1},
+       {R"~(hJP1nDjTdHcVDw347oH0XO+XBPPh5wZA2xWZE8QUSSA=)~", 0.1}});
 
   // Act
-  const bool is_valid = IsIssuerValid(*issuer);
+  const bool is_valid = IsIssuersValid(issuers);
 
   // Assert
   EXPECT_TRUE(is_valid);
 }
 
-TEST_F(BatAdsIssuersUtilTest, IsIssuerInvalid) {
+TEST_F(BatAdsIssuersUtilTest, IsIssuersInvalid) {
   // Arrange
-  const IssuersInfo issuers =
-      BuildIssuers(7'200'000,
-                   {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
-                    {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
-                   {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
-                    {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1},
-                    {"XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=", 0.1},
-                    {"wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=", 0.1},
-                    {"ZvzeYOT1geUQXfOsYXBxZj/H26IfiBUVodHl51j68xI=", 0.1}});
-
-  const absl::optional<IssuerInfo> issuer =
-      GetIssuerForType(issuers, IssuerType::kPayments);
-  ASSERT_TRUE(issuer);
+  const IssuersInfo issuers = BuildIssuers(
+      7'200'000,
+      {{R"~(JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=)~", 0.0},
+       {R"~(crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=)~", 0.0}},
+      {{R"~(JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=)~", 0.0},
+       {R"~(bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=)~", 0.1},
+       {R"~(XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=)~", 0.1},
+       {R"~(wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=)~", 0.1},
+       {R"~(ZvzeYOT1geUQXfOsYXBxZj/H26IfiBUVodHl51j68xI=)~", 0.1},
+       {R"~(JlOezORiqLkFkvapoNRGWcMH3/g09/7M2UPEwMjRpFE=)~", 0.1},
+       {R"~(hJP1nDjTdHcVDw347oH0XO+XBPPh5wZA2xWZE8QUSSA=)~", 0.1},
+       {R"~(+iyhYDv7W6cuFAD1tzsJIEQKEStTX9B/Tt62tqt+tG0=)~", 0.1},
+       {R"~(oMx8hW6w8w/AUGoJMAMbrdeV1FoqrRkoR3BVa+5lDDk=)~", 0.1}});
 
   // Act
-  const bool is_valid = IsIssuerValid(*issuer);
+  const bool is_valid = IsIssuersValid(issuers);
 
   // Assert
   EXPECT_FALSE(is_valid);

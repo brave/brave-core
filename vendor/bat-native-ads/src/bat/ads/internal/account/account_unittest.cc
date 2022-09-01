@@ -200,6 +200,18 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
                 {
                   "publicKey": "wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=",
                   "associatedValue": "0.1"
+                },
+                {
+                  "publicKey": "ZvzeYOT1geUQXfOsYXBxZj/H26IfiBUVodHl51j68xI=",
+                  "associatedValue": "0.1"
+                },
+                {
+                  "publicKey": "JlOezORiqLkFkvapoNRGWcMH3/g09/7M2UPEwMjRpFE=",
+                  "associatedValue": "0.1"
+                },
+                {
+                  "publicKey": "hJP1nDjTdHcVDw347oH0XO+XBPPh5wZA2xWZE8QUSSA=",
+                  "associatedValue": "0.1"
                 }
               ]
             }
@@ -215,14 +227,19 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
   ASSERT_TRUE(issuers);
 
   // Assert
-  const IssuersInfo expected_issuers =
-      BuildIssuers(7'200'000,
-                   {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
-                    {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
-                   {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
-                    {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1},
-                    {"XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=", 0.1},
-                    {"wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=", 0.1}});
+  const IssuersInfo expected_issuers = BuildIssuers(
+      /*ping*/ 7'200'000,
+      /*confirmation_public_keys*/
+      {{R"~(JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=)~", 0.0},
+       {R"~(crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=)~", 0.0}},
+      /*payments_public_keys*/
+      {{R"~(JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=)~", 0.0},
+       {R"~(bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=)~", 0.1},
+       {R"~(XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=)~", 0.1},
+       {R"~(wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=)~", 0.1},
+       {R"~(ZvzeYOT1geUQXfOsYXBxZj/H26IfiBUVodHl51j68xI=)~", 0.1},
+       {R"~(JlOezORiqLkFkvapoNRGWcMH3/g09/7M2UPEwMjRpFE=)~", 0.1},
+       {R"~(hJP1nDjTdHcVDw347oH0XO+XBPPh5wZA2xWZE8QUSSA=)~", 0.1}});
 
   EXPECT_EQ(expected_issuers, *issuers);
 }
@@ -268,6 +285,18 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
                 {
                   "publicKey": "wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=",
                   "associatedValue": "0.1"
+                },
+                {
+                  "publicKey": "ZvzeYOT1geUQXfOsYXBxZj/H26IfiBUVodHl51j68xI=",
+                  "associatedValue": "0.1"
+                },
+                {
+                  "publicKey": "JlOezORiqLkFkvapoNRGWcMH3/g09/7M2UPEwMjRpFE=",
+                  "associatedValue": "0.1"
+                },
+                {
+                  "publicKey": "hJP1nDjTdHcVDw347oH0XO+XBPPh5wZA2xWZE8QUSSA=",
+                  "associatedValue": "0.1"
                 }
               ]
             }
@@ -292,8 +321,6 @@ TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
-  BuildAndSetIssuers();
-
   const URLResponseMap url_responses = {{// Get issuers request
                                          R"(/v1/issuers/)",
                                          {{net::HTTP_OK, R"(
@@ -309,6 +336,26 @@ TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
                 },
                 {
                   "publicKey": "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=",
+                  "associatedValue": ""
+                },
+                {
+                  "publicKey": "6Orbju/jPQQGldu/MVyBi2wXKz8ynHIcdsbCWc9gGHQ=",
+                  "associatedValue": ""
+                },
+                {
+                  "publicKey": "ECEKAGeRCNmAWimTs7fo0tTMcg8Kcmoy8w+ccOSYXT8=",
+                  "associatedValue": ""
+                },
+                {
+                  "publicKey": "xp9WArE+RkSt579RCm6EhdmcW4RfS71kZHMgXpwgZyI=",
+                  "associatedValue": ""
+                },
+                {
+                  "publicKey": "AE7e4Rh38yFmnyLyPYcyWKT//zLOsEEX+WdLZqvJxH0=",
+                  "associatedValue": ""
+                },
+                {
+                  "publicKey": "HjID7G6LRrcRu5ezW0nLZtEARIBnjpaQFKTHChBuJm8=",
                   "associatedValue": ""
                 }
               ]
@@ -335,6 +382,18 @@ TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
                 {
                   "publicKey": "ZvzeYOT1geUQXfOsYXBxZj/H26IfiBUVodHl51j68xI=",
                   "associatedValue": "0.1"
+                },
+                {
+                  "publicKey": "JlOezORiqLkFkvapoNRGWcMH3/g09/7M2UPEwMjRpFE=",
+                  "associatedValue": "0.1"
+                },
+                {
+                  "publicKey": "hJP1nDjTdHcVDw347oH0XO+XBPPh5wZA2xWZE8QUSSA=",
+                  "associatedValue": "0.1"
+                },
+                {
+                  "publicKey": "+iyhYDv7W6cuFAD1tzsJIEQKEStTX9B/Tt62tqt+tG0=",
+                  "associatedValue": "0.1"
                 }
               ]
             }
@@ -350,42 +409,21 @@ TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
   ASSERT_TRUE(issuers);
 
   // Assert
-  const IssuersInfo expected_issuers =
-      BuildIssuers(7'200'000,
-                   {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
-                    {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
-                   {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
-                    {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
+  const IssuersInfo expected_issuers;
 
   EXPECT_EQ(expected_issuers, *issuers);
 }
 
-TEST_F(BatAdsAccountTest, DoNotGetMissingPaymentIssuers) {
+TEST_F(BatAdsAccountTest, DoNotGetMissingIssuers) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
-
-  BuildAndSetIssuers();
 
   const URLResponseMap url_responses = {{// Get issuers request
                                          R"(/v1/issuers/)",
                                          {{net::HTTP_OK, R"(
         {
           "ping": 7200000,
-          "issuers": [
-            {
-              "name": "confirmations",
-              "publicKeys": [
-                {
-                  "publicKey": "JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=",
-                  "associatedValue": ""
-                },
-                {
-                  "publicKey": "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=",
-                  "associatedValue": ""
-                }
-              ]
-            }
-          ]
+          "issuers": []
         }
         )"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
@@ -397,12 +435,28 @@ TEST_F(BatAdsAccountTest, DoNotGetMissingPaymentIssuers) {
   ASSERT_TRUE(issuers);
 
   // Assert
-  const IssuersInfo expected_issuers =
-      BuildIssuers(7'200'000,
-                   {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
-                    {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
-                   {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
-                    {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
+  const IssuersInfo expected_issuers;
+
+  EXPECT_EQ(expected_issuers, *issuers);
+}
+
+TEST_F(BatAdsAccountTest, DoNotGetIssuersFromInvalidResponse) {
+  // Arrange
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
+
+  const URLResponseMap url_responses = {{// Get issuers request
+                                         R"(/v1/issuers/)",
+                                         {{net::HTTP_OK, "INVALID"}}}};
+  MockUrlResponses(ads_client_mock_, url_responses);
+
+  account_->Process();
+
+  // Act
+  const absl::optional<IssuersInfo> issuers = GetIssuers();
+  ASSERT_TRUE(issuers);
+
+  // Assert
+  const IssuersInfo expected_issuers;
 
   EXPECT_EQ(expected_issuers, *issuers);
 }
