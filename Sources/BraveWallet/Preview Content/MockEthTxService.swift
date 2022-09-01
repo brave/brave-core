@@ -19,7 +19,7 @@ class MockTxService: BraveWalletTxService {
     completion(txs.first(where: { $0.id == txMetaId }))
   }
 
-  func addUnapprovedTransaction(_ txDataUnion: BraveWallet.TxDataUnion, from: String, origin: URLOrigin?, completion: @escaping (Bool, String, String) -> Void) {
+  func addUnapprovedTransaction(_ txDataUnion: BraveWallet.TxDataUnion, from: String, origin: URLOrigin?, groupId: String?, completion: @escaping (Bool, String, String) -> Void) {
     completion(true, "txMetaId", "")
   }
 

@@ -8,8 +8,9 @@ import BraveCore
 import BraveShared
 import Combine
 import DeviceCheck
+import Shared
 
-class BraveRewards: NSObject {
+public class BraveRewards: NSObject {
 
   /// Whether or not Brave Rewards is available/can be enabled
   public static var isAvailable: Bool {
@@ -26,20 +27,12 @@ class BraveRewards: NSObject {
 
   private let configuration: Configuration
 
-  init(configuration: Configuration, buildChannel: Ads.BuildChannel?) {
+  init(configuration: Configuration, buildChannel: Ads.BuildChannelInfo?) {
     self.configuration = configuration
 
-    BraveAds.isDebug = configuration.ledgerEnvironment != .production
-    BraveAds.environment = configuration.adsEnvironment
     if let channel = buildChannel {
-      BraveAds.buildChannel = channel
+      BraveAds.buildChannelInfo = channel
     }
-
-    BraveLedger.isDebug = configuration.ledgerEnvironment != .production
-    BraveLedger.environment = configuration.ledgerEnvironment
-    BraveLedger.isTesting = configuration.isTesting
-    BraveLedger.retryInterval = Int32(configuration.retryInterval)
-    BraveLedger.reconcileInterval = Int32(configuration.overridenNumberOfSecondsBetweenReconcile)
 
     ads = BraveAds(stateStoragePath: configuration.storageURL.appendingPathComponent("ads").path)
 
@@ -175,17 +168,18 @@ class BraveRewards: NSObject {
 
   /// Report that a tab with a given id was updated
   func reportTabUpdated(
-    _ tabId: Int,
+    tab: Tab,
     url: URL,
     faviconURL: URL?,
     isSelected: Bool,
     isPrivate: Bool
   ) {
+    let tabId = Int(tab.rewardsId)
     if isSelected {
       ledger?.selectedTabId = UInt32(tabId)
       tabRetrieved(tabId, url: url, faviconURL: faviconURL, html: nil)
     }
-    ads.reportTabUpdated(tabId, url: url, isSelected: isSelected, isPrivate: isPrivate)
+    ads.reportTabUpdated(tabId, url: url, redirectedFrom: tab.redirectURLs, isSelected: isSelected, isPrivate: isPrivate)
   }
 
   /// Report that a page has loaded in the current browser tab, and the HTML is available for analysis
@@ -262,43 +256,96 @@ class BraveRewards: NSObject {
 
 extension BraveRewards {
 
-  struct Configuration {
-    var storageURL: URL
-    var ledgerEnvironment: Ledger.Environment
-    var adsEnvironment: Ads.Environment
-    var adsBuildChannel: Ads.BuildChannel = .init()
-    var isTesting: Bool = false
-    var overridenNumberOfSecondsBetweenReconcile: Int = 0
-    var retryInterval: Int = 0
+  public struct Configuration {
+    public enum Environment {
+      case development
+      case production
+      case staging
+    }
 
+    var storageURL: URL
+    public var environment: Environment
+    public var adsBuildChannel: Ads.BuildChannelInfo = .init()
+    public var isDebug: Bool?
+    public var overridenNumberOfSecondsBetweenReconcile: Int?
+    public var retryInterval: Int?
+
+    public static func current(
+      buildChannel: AppBuildChannel = AppConstants.buildChannel,
+      isDebugFlag: Bool? = Preferences.Rewards.debugFlagIsDebug.value,
+      retryInterval: Int? = Preferences.Rewards.debugFlagRetryInterval.value,
+      reconcileInterval: Int? = Preferences.Rewards.debugFlagReconcileInterval.value
+    ) -> Self {
+      var configuration: BraveRewards.Configuration
+      if !buildChannel.isPublic {
+        if let override = Preferences.Rewards.EnvironmentOverride(rawValue: Preferences.Rewards.environmentOverride.value), override != .none {
+          switch override {
+          case .dev:
+            configuration = .default
+          case .staging:
+            configuration = .staging
+          case .prod:
+            configuration = .production
+          default:
+            configuration = .staging
+          }
+        } else {
+          configuration = AppConstants.buildChannel == .debug ? .staging : .production
+        }
+        configuration.isDebug = isDebugFlag
+        configuration.retryInterval = retryInterval
+        configuration.overridenNumberOfSecondsBetweenReconcile = reconcileInterval
+      } else {
+        configuration = .production
+      }
+      return configuration
+    }
+    
     static var `default`: Configuration {
       .init(
         storageURL: FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!,
-        ledgerEnvironment: .development,
-        adsEnvironment: .staging
+        environment: .development
       )
     }
     static var staging: Configuration {
       var config = Configuration.default
-      config.ledgerEnvironment = .staging
-      config.adsEnvironment = .staging
+      config.environment = .staging
       return config
     }
     static var production: Configuration {
       var config = Configuration.default
-      config.ledgerEnvironment = .production
-      config.adsEnvironment = .production
+      config.environment = .production
       return config
     }
     static var testing: Configuration {
       .init(
         storageURL: URL(fileURLWithPath: NSTemporaryDirectory()),
-        ledgerEnvironment: .development,
-        adsEnvironment: .staging,
-        isTesting: true,
+        environment: .development,
         overridenNumberOfSecondsBetweenReconcile: 30,
         retryInterval: 30
       )
+    }
+    
+    public var flags: String {
+      var flags: [String: String] = [:]
+      switch environment {
+      case .production:
+        flags["staging"] = "false"
+      case .staging:
+        flags["staging"] = "true"
+      case .development:
+        flags["development"] = "true"
+      }
+      if let debug = isDebug {
+        flags["debug"] = String(debug)
+      }
+      if let reconcileInterval = overridenNumberOfSecondsBetweenReconcile {
+        flags["reconcile-interval"] = "\(reconcileInterval)"
+      }
+      if let retryInterval = retryInterval {
+        flags["retry-interval"] = "\(retryInterval)"
+      }
+      return flags.map({ "\($0.key)=\($0.value)" }).joined(separator: ",")
     }
   }
 }

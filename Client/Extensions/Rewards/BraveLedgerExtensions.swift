@@ -160,7 +160,7 @@ extension BraveLedger {
     guard let paymentId = self.paymentId else {
       return false
     }
-    let deviceCheck = DeviceCheckClient(environment: BraveLedger.environment)
+    let deviceCheck = DeviceCheckClient()
     if !DeviceCheckClient.isDeviceEnrolled() {
       let didEnroll: Bool = await withCheckedContinuation { c in
         setupDeviceCheckEnrollment(deviceCheck) {
@@ -205,7 +205,7 @@ extension BraveLedger {
   }
   
   func solveAdaptiveCaptcha(paymentId: String, captchaId: String) async throws {
-    let deviceCheck = DeviceCheckClient(environment: BraveLedger.environment)
+    let deviceCheck = DeviceCheckClient()
     if !DeviceCheckClient.isDeviceEnrolled() {
       let didEnroll: Bool = await withCheckedContinuation { c in
         setupDeviceCheckEnrollment(deviceCheck) {

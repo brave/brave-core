@@ -211,8 +211,8 @@ class CustomNetworkModel: ObservableObject, Identifiable {
     self.networkSymbolName.input = network.symbolName
     self.networkSymbol.input = network.symbol
     self.networkDecimals.input = String(network.decimals)
-    if !network.rpcUrls.isEmpty {
-      self.rpcUrls = network.rpcUrls.compactMap({ NetworkInputItem(input: $0) })
+    if !network.rpcEndpoints.isEmpty {
+      self.rpcUrls = network.rpcEndpoints.compactMap { NetworkInputItem(input: $0.absoluteString) }
     } else if mode.isViewMode {
       self.rpcUrls = []
     }
@@ -489,9 +489,9 @@ struct CustomNetworkDetailsView: View {
         return nil
       }
     })
-    let rpcUrls: [String] = model.rpcUrls.compactMap({
+    let rpcEndpoints: [URL] = model.rpcUrls.compactMap({
       if !$0.input.isEmpty && $0.error == nil {
-        return $0.input
+        return URL(string: $0.input)
       } else {
         return nil
       }
@@ -501,12 +501,13 @@ struct CustomNetworkDetailsView: View {
       chainName: model.networkName.input,
       blockExplorerUrls: blockExplorerUrls,
       iconUrls: iconUrls,
-      rpcUrls: rpcUrls,
+      activeRpcEndpointIndex: 0,
+      rpcEndpoints: rpcEndpoints,
       symbol: model.networkSymbol.input,
       symbolName: model.networkSymbol.input,
       decimals: Int32(model.networkDecimals.input) ?? 18,
       coin: .eth,
-      data: .init(ethData: .init(isEip1559: false))
+      isEip1559: false
     )
     networkStore.addCustomNetwork(network) { accepted, errMsg in
       guard accepted else {

@@ -54,4 +54,8 @@ class MockBlockchainRegistry: BraveWalletBlockchainRegistry {
   func prepopulatedNetworks(_ completion: @escaping ([BraveWallet.NetworkInfo]) -> Void) {
     completion([])
   }
+  
+  func onRampCurrencies(_ completion: @escaping ([BraveWallet.OnRampCurrency]) -> Void) {
+    completion([])
+  }
 }

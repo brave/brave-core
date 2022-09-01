@@ -224,27 +224,9 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
     self.crashedLastSession = crashedLastSession
     self.safeBrowsing = safeBrowsingManager
 
-    let configuration: BraveRewards.Configuration
-    if AppConstants.buildChannel.isPublic {
-      configuration = .production
-    } else {
-      if let override = Preferences.Rewards.EnvironmentOverride(rawValue: Preferences.Rewards.environmentOverride.value), override != .none {
-        switch override {
-        case .dev:
-          configuration = .default
-        case .staging:
-          configuration = .staging
-        case .prod:
-          configuration = .production
-        default:
-          configuration = .staging
-        }
-      } else {
-        configuration = AppConstants.buildChannel == .debug ? .staging : .production
-      }
-    }
+    let configuration: BraveRewards.Configuration = .current()
 
-    let buildChannel = Ads.BuildChannel().then {
+    let buildChannel = Ads.BuildChannelInfo().then {
       $0.name = AppConstants.buildChannel.rawValue
       $0.isRelease = AppConstants.buildChannel == .release
     }
@@ -290,7 +272,7 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
       }
     }
 
-    self.deviceCheckClient = DeviceCheckClient(environment: configuration.ledgerEnvironment)
+    self.deviceCheckClient = DeviceCheckClient(environment: configuration.environment)
 
     if Locale.current.regionCode == "JP" {
       benchmarkBlockingDataSource = BlockingSummaryDataSource()
@@ -344,7 +326,6 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
 
     // Check if we've already migrated the users wallet to the `legacy_rewards` folder
     if fm.fileExists(atPath: legacyLedger.path) {
-      BraveLedger.environment = config.ledgerEnvironment
       return BraveLedger(stateStoragePath: legacyLedger.path)
     }
 
@@ -375,7 +356,6 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
       }
 
       Preferences.Rewards.migratedLegacyWallet.value = true
-      BraveLedger.environment = config.ledgerEnvironment
       return BraveLedger(stateStoragePath: legacyLedger.path)
     } catch {
       log.error("Failed to migrate legacy wallet into a new folder: \(error)")
@@ -432,10 +412,11 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
     tabManager.addNavigationDelegate(self)
     tabManager.makeWalletEthProvider = { [weak self] tab in
       guard let self = self,
-            let provider = self.braveCore.ethereumProvider(with: tab, isPrivateBrowsing: tab.isPrivate) else {
+            let provider = self.braveCore.braveWalletAPI.ethereumProvider(with: tab, isPrivateBrowsing: tab.isPrivate),
+            let js = self.braveCore.braveWalletAPI.providerScripts(for: .eth)[.ethereum] else {
         return nil
       }
-      return (provider, js: self.braveCore.providerScript(for: .eth))
+      return (provider, js: js)
     }
     downloadQueue.delegate = self
 

@@ -356,14 +356,14 @@ class TabManager: NSObject {
         rewardsLog.warning("No favicon found in \(previousTab) to report to rewards panel")
       }
       rewards?.reportTabUpdated(
-        Int(previousTab.rewardsId), url: previousTabUrl, faviconURL: previousFaviconURL, isSelected: false,
+        tab: previousTab, url: previousTabUrl, faviconURL: previousFaviconURL, isSelected: false,
         isPrivate: previousTab.isPrivate)
       let faviconURL = URL(string: newSelectedTab.displayFavicon?.url ?? "")
       if faviconURL == nil && !newTabUrl.isLocal {
         rewardsLog.warning("No favicon found in \(newSelectedTab) to report to rewards panel")
       }
       rewards?.reportTabUpdated(
-        Int(newSelectedTab.rewardsId), url: newTabUrl, faviconURL: faviconURL, isSelected: true,
+        tab: newSelectedTab, url: newTabUrl, faviconURL: faviconURL, isSelected: true,
         isPrivate: newSelectedTab.isPrivate)
     }
   }

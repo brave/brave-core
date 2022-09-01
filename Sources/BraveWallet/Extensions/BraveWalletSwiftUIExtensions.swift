@@ -63,14 +63,6 @@ extension BraveWallet.NetworkInfo: Identifiable {
       return iconUrls.first
     }
   }
-  
-  // Only Eth Mainnet or EVM has eip 1559
-  var isEip1559: Bool {
-    if coin == .eth, let ethData = data?.ethData {
-      return ethData.isEip1559
-    }
-    return false
-  }
 }
 
 extension BraveWallet.SignMessageRequest {

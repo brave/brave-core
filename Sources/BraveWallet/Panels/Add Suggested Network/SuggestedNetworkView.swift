@@ -175,11 +175,11 @@ struct SuggestedNetworkView: View {
             }
             .padding(.vertical, 6)
             .accessibilityElement(children: .combine)
-            if let networkURL = chain.rpcUrls.first {
+            if let networkURL = chain.rpcEndpoints.first {
               VStack(alignment: .leading) {
                 Text(Strings.Wallet.networkURLTitle)
                   .fontWeight(.semibold)
-                Text(URL(string: networkURL)?.absoluteDisplayString ?? networkURL)
+                Text(networkURL.absoluteDisplayString)
               }
               .padding(.vertical, 6)
             }

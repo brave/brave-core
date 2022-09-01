@@ -262,7 +262,7 @@ import BraveCore
       .store(in: &cancellables)
     store.$currentAllowance
       .dropFirst()
-      .collect(3)
+      .collect(5)
       .sink { values in
         XCTAssertNotNil(values.last)
         XCTAssertEqual(values.last!, "0.1000")

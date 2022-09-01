@@ -123,7 +123,8 @@ extension BraveWallet.TransactionInfo {
       createdTime: Date(timeIntervalSince1970: 1636399671),
       submittedTime: Date(timeIntervalSince1970: 1636399673),
       confirmedTime: Date(timeIntervalSince1970: 1636402508),
-      originInfo: .init()
+      originInfo: .init(),
+      groupId: nil
     )
   }
   static var previewConfirmedSwap: BraveWallet.TransactionInfo {
@@ -157,7 +158,8 @@ extension BraveWallet.TransactionInfo {
       createdTime: Date(timeIntervalSince1970: 1636399671),
       submittedTime: Date(timeIntervalSince1970: 1636399673),
       confirmedTime: Date(timeIntervalSince1970: 1636402508),
-      originInfo: .init()
+      originInfo: .init(),
+      groupId: nil
     )
   }
   /// Approved Unlimited DAI
@@ -189,7 +191,8 @@ extension BraveWallet.TransactionInfo {
       createdTime: Date(timeIntervalSince1970: 1636399671),
       submittedTime: Date(timeIntervalSince1970: 1636399673),
       confirmedTime: Date(timeIntervalSince1970: 1636402508),
-      originInfo: .init()
+      originInfo: .init(),
+      groupId: nil
     )
   }
   /// Solana System Transfer
@@ -220,7 +223,8 @@ extension BraveWallet.TransactionInfo {
       createdTime: Date(timeIntervalSince1970: 1636399671),
       submittedTime: Date(timeIntervalSince1970: 1636399673),
       confirmedTime: Date(timeIntervalSince1970: 1636402508),
-      originInfo: .init()
+      originInfo: .init(),
+      groupId: nil
     )
   }
   /// Solana Token Transfer
@@ -251,7 +255,8 @@ extension BraveWallet.TransactionInfo {
       createdTime: Date(timeIntervalSince1970: 1636399671),
       submittedTime: Date(timeIntervalSince1970: 1636399673),
       confirmedTime: Date(timeIntervalSince1970: 1636402508),
-      originInfo: .init()
+      originInfo: .init(),
+      groupId: nil
     )
   }
   static private func _transactionBase64ToData(_ base64String: String) -> [NSNumber] {

@@ -53,7 +53,21 @@ extension NetworkStore {
   
   static var previewStoreWithCustomNetworkAdded: NetworkStore {
     let store = NetworkStore.previewStore
-    store.addCustomNetwork(.init(chainId: "0x100", chainName: "MockChain", blockExplorerUrls: ["https://mockchainscan.com"], iconUrls: [], rpcUrls: ["https://rpc.mockchain.com"], symbol: "MOCK", symbolName: "MOCK", decimals: 18, coin: .eth, data: nil)) { _, _ in }
+    store.addCustomNetwork(
+      .init(
+        chainId: "0x100",
+        chainName: "MockChain",
+        blockExplorerUrls: ["https://mockchainscan.com"],
+        iconUrls: [],
+        activeRpcEndpointIndex: 0,
+        rpcEndpoints: [URL(string: "https://rpc.mockchain.com")!],
+        symbol: "MOCK",
+        symbolName: "MOCK",
+        decimals: 18,
+        coin: .eth,
+        isEip1559: false
+      )
+    ) { _, _ in }
     return store
   }
 }

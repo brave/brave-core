@@ -159,72 +159,78 @@ extension BraveWallet.NetworkInfo {
     chainName: "Mainnet",
     blockExplorerUrls: ["https://etherscan.io"],
     iconUrls: [],
-    rpcUrls: [],
+    activeRpcEndpointIndex: 0,
+    rpcEndpoints: [URL(string: "https://rpc.mockchain.com")!],
     symbol: "ETH",
     symbolName: "Ethereum",
     decimals: 18,
     coin: .eth,
-    data: .init(ethData: .init(isEip1559: true))
+    isEip1559: true
   )
   static let mockRinkeby: BraveWallet.NetworkInfo = .init(
     chainId: BraveWallet.RinkebyChainId,
     chainName: "Rinkeby",
     blockExplorerUrls: ["https://rinkeby.etherscan.io"],
     iconUrls: [],
-    rpcUrls: [],
+    activeRpcEndpointIndex: 0,
+    rpcEndpoints: [URL(string: "https://rpc.mockchain.com")!],
     symbol: "ETH",
     symbolName: "Ethereum",
     decimals: 18,
     coin: .eth,
-    data: .init(ethData: .init(isEip1559: true))
+    isEip1559: true
   )
   static let mockRopsten: BraveWallet.NetworkInfo = .init(
     chainId: BraveWallet.RopstenChainId,
     chainName: "Ropsten",
     blockExplorerUrls: ["https://ropsten.etherscan.io"],
     iconUrls: [],
-    rpcUrls: [],
+    activeRpcEndpointIndex: 0,
+    rpcEndpoints: [URL(string: "https://rpc.mockchain.com")!],
     symbol: "ETH",
     symbolName: "Ethereum",
     decimals: 18,
     coin: .eth,
-    data: .init(ethData: .init(isEip1559: true))
+    isEip1559: true
   )
   static let mockPolygon: BraveWallet.NetworkInfo = .init(
     chainId: BraveWallet.PolygonMainnetChainId,
     chainName: "Polygon Mainnet",
     blockExplorerUrls: [""],
     iconUrls: [],
-    rpcUrls: [],
+    activeRpcEndpointIndex: 0,
+    rpcEndpoints: [URL(string: "https://rpc.mockchain.com")!],
     symbol: "MATIC",
     symbolName: "MATIC",
     decimals: 18,
     coin: .eth,
-    data: .init(ethData: .init(isEip1559: true))
+    isEip1559: true
   )
   static let mockSolana: BraveWallet.NetworkInfo = .init(
     chainId: BraveWallet.SolanaMainnet,
     chainName: "Solana Mainnet",
     blockExplorerUrls: [""],
     iconUrls: [],
-    rpcUrls: [],
+    activeRpcEndpointIndex: 0,
+    rpcEndpoints: [URL(string: "https://rpc.mockchain.com")!],
     symbol: "SOL",
     symbolName: "Solana",
     decimals: 9,
     coin: .sol,
-    data: nil
+    isEip1559: false
   )
   static let mockSolanaTestnet: BraveWallet.NetworkInfo = .init(
     chainId: BraveWallet.SolanaTestnet,
     chainName: "Solana Testnet",
     blockExplorerUrls: [""],
     iconUrls: [],
-    rpcUrls: [],
+    activeRpcEndpointIndex: 0,
+    rpcEndpoints: [URL(string: "https://rpc.mockchain.com")!],
     symbol: "SOL",
     symbolName: "Solana",
     decimals: 18,
     coin: .sol,
-    data: nil
+    isEip1559: false
   )
 }
 

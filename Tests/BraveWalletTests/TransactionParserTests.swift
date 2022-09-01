@@ -79,7 +79,8 @@ class TransactionParserTests: XCTestCase {
       createdTime: Date(),
       submittedTime: Date(),
       confirmedTime: Date(),
-      originInfo: nil
+      originInfo: nil,
+      groupId: nil
     )
     
     let expectedParsedTransaction = ParsedTransaction(
@@ -169,7 +170,8 @@ class TransactionParserTests: XCTestCase {
       createdTime: Date(),
       submittedTime: Date(),
       confirmedTime: Date(),
-      originInfo: nil
+      originInfo: nil,
+      groupId: nil
     )
     
     let expectedParsedTransaction = ParsedTransaction(
@@ -250,7 +252,8 @@ class TransactionParserTests: XCTestCase {
       createdTime: Date(),
       submittedTime: Date(),
       confirmedTime: Date(),
-      originInfo: nil
+      originInfo: nil,
+      groupId: nil
     )
     
     let expectedParsedTransaction = ParsedTransaction(
@@ -335,7 +338,8 @@ class TransactionParserTests: XCTestCase {
       createdTime: Date(),
       submittedTime: Date(),
       confirmedTime: Date(),
-      originInfo: nil
+      originInfo: nil,
+      groupId: nil
     )
     
     let expectedParsedTransaction = ParsedTransaction(
@@ -416,7 +420,8 @@ class TransactionParserTests: XCTestCase {
       createdTime: Date(),
       submittedTime: Date(),
       confirmedTime: Date(),
-      originInfo: nil
+      originInfo: nil,
+      groupId: nil
     )
     
     let expectedParsedTransaction = ParsedTransaction(
@@ -494,7 +499,8 @@ class TransactionParserTests: XCTestCase {
       createdTime: Date(),
       submittedTime: Date(),
       confirmedTime: Date(),
-      originInfo: nil
+      originInfo: nil,
+      groupId: nil
     )
     
     let expectedParsedTransaction = ParsedTransaction(
@@ -576,7 +582,8 @@ class TransactionParserTests: XCTestCase {
       createdTime: Date(),
       submittedTime: Date(),
       confirmedTime: Date(),
-      originInfo: nil
+      originInfo: nil,
+      groupId: nil
     )
     
     let expectedParsedTransaction = ParsedTransaction(
@@ -647,7 +654,8 @@ class TransactionParserTests: XCTestCase {
       createdTime: Date(),
       submittedTime: Date(),
       confirmedTime: Date(),
-      originInfo: nil
+      originInfo: nil,
+      groupId: nil
     )
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
@@ -734,7 +742,8 @@ class TransactionParserTests: XCTestCase {
       createdTime: Date(),
       submittedTime: Date(),
       confirmedTime: Date(),
-      originInfo: nil
+      originInfo: nil,
+      groupId: nil
     )
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,

@@ -714,8 +714,8 @@ public class FeedDataSource {
         DispatchQueue.main.async {
           ads.inlineContentAds(
             dimensions: "900x750",
-            completion: { success, dimensions, ad in
-              if success {
+            completion: { dimensions, ad in
+              if let ad = ad {
                 contentAd = ad
               } else {
                 contentAdsQueryFailed = true

@@ -45,12 +45,16 @@ struct CustomNetworkListView: View {
               if sizeCategory.isAccessibilityCategory {
                 VStack(alignment: .leading) {
                   Text(network.id)
-                  Text(network.rpcUrls.first ?? "")
+                  if let rpcEndpoint = network.rpcEndpoints.first?.absoluteString {
+                    Text(rpcEndpoint)
+                  }
                 }
               } else {
                 HStack {
                   Text(network.id)
-                  Text(network.rpcUrls.first ?? "")
+                  if let rpcEndpoint = network.rpcEndpoints.first?.absoluteString {
+                    Text(rpcEndpoint)
+                  }
                 }
               }
             }
