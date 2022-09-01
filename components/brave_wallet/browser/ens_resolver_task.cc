@@ -48,6 +48,18 @@ absl::optional<std::vector<uint8_t>> ExtractGatewayResult(
 
 }  // namespace
 
+std::vector<uint8_t> MakeAddrCall(const std::string& domain) {
+  return eth_abi::TupleEncoder()
+      .AddFixedBytes(Namehash(domain))
+      .EncodeWithSelector(base::make_span(kAddrBytes32Selector));
+}
+
+std::vector<uint8_t> MakeContentHashCall(const std::string& domain) {
+  return eth_abi::TupleEncoder()
+      .AddFixedBytes(Namehash(domain))
+      .EncodeWithSelector(base::make_span(kContentHashBytes32Selector));
+}
+
 OffchainLookupData::OffchainLookupData() = default;
 OffchainLookupData::OffchainLookupData(const OffchainLookupData&) = default;
 OffchainLookupData::OffchainLookupData(OffchainLookupData&&) = default;
@@ -133,6 +145,12 @@ EnsResolverTask::EnsResolverTask(
 }
 
 EnsResolverTask::~EnsResolverTask() = default;
+
+void EnsResolverTask::Start() {
+  base::SequencedTaskRunnerHandle::Get()->PostTask(
+      FROM_HERE, base::BindOnce(&EnsResolverTask::WorkOnTask,
+                                weak_ptr_factory_.GetWeakPtr()));
+}
 
 void EnsResolverTask::WorkOnTask() {
   if (resolve_result_) {
