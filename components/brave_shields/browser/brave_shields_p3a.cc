@@ -102,24 +102,44 @@ void UpdateDomainSettingCount(PrefService* profile_prefs,
   profile_prefs->SetInteger(pref_name, new_count);
 }
 
+// Returns count of domains with settings that are "below" (more permissive) or
+// "above" (more restrictive), depending on the count_above parameter.
 int DomainCountRelativeToGlobalSetting(PrefService* profile_prefs,
                                        bool is_fingerprint,
                                        ControlType global_setting,
                                        bool count_above) {
   const ControlType* setting_order =
       is_fingerprint ? kFPSettingOrder : kAdsSettingOrder;
-  const ControlType* global_setting_order_it =
+  // Initialized in order to start iteration near the current global_setting
+  const ControlType* setting_order_it =
       std::find(setting_order, setting_order + kSettingCount, global_setting);
-  if (global_setting_order_it == setting_order + kSettingCount) {
+
+  bool setting_order_in_range =
+      setting_order_it < setting_order + kSettingCount;
+  DCHECK(setting_order_in_range)
+      << "Shields global setting must be in setting_order";
+  if (!setting_order_in_range) {
+    // If the global_setting is unexpectedly not part of the setting_order,
+    // return a zero count.
     return 0;
   }
+
   int total = 0;
+  // Should start iterating from the setting directly below or above the
+  // current global_setting, depending on the count_above parameter.
   int sum_index_start =
-      global_setting_order_it - setting_order + (count_above ? 1 : -1);
+      setting_order_it - setting_order + (count_above ? 1 : -1);
+  // Iterate until end or start of setting_order, depending on count_above.
+  // Will add all domain setting counts below or above the global_setting.
   for (int i = sum_index_start; count_above ? i < kSettingCount : i >= 0;
        count_above ? i++ : i--) {
     total +=
         GetDomainSettingCount(profile_prefs, is_fingerprint, setting_order[i]);
+  }
+  DCHECK_GE(total, 0)
+      << "DomainCountRelativeToGlobalSetting must return a positive value";
+  if (total < 0) {
+    return 0;
   }
   return total;
 }
@@ -152,16 +172,26 @@ void RecordShieldsDomainSettingCounts(PrefService* profile_prefs,
   const char* below_hg_name = is_fingerprint
                                   ? kDomainFPSettingsBelowHistogramName
                                   : kDomainAdsSettingsBelowHistogramName;
+  // Retrieve a count of domains with a setting above the global setting.
   int above_total = DomainCountRelativeToGlobalSetting(
       profile_prefs, is_fingerprint, global_setting, true);
+  // Retrieve a count of domains with a setting below the global setting.
   int below_total = DomainCountRelativeToGlobalSetting(
       profile_prefs, is_fingerprint, global_setting, false);
   VLOG(1) << "BraveShieldsP3A: Recording counts: is_fp=" << is_fingerprint
           << " above=" << above_total << " below=" << below_total;
-  p3a_utils::RecordToHistogramBucket(above_hg_name, kDomainCountBuckets,
-                                     above_total);
-  p3a_utils::RecordToHistogramBucket(below_hg_name, kDomainCountBuckets,
-                                     below_total);
+  DCHECK_GE(above_total, 0)
+      << "\"domains above global setting\" count must be positive";
+  if (above_total >= 0) {
+    p3a_utils::RecordToHistogramBucket(above_hg_name, kDomainCountBuckets,
+                                       above_total);
+  }
+  DCHECK_GE(below_total, 0)
+      << "\"domains below global setting\" count must be positive";
+  if (below_total >= 0) {
+    p3a_utils::RecordToHistogramBucket(below_hg_name, kDomainCountBuckets,
+                                       below_total);
+  }
 }
 
 void RecordShieldsDomainSettingCountsWithChange(PrefService* profile_prefs,
@@ -199,6 +229,8 @@ void MaybeRecordInitialShieldsSettings(PrefService* profile_prefs,
   RecordShieldsAdsSetting(global_ads_setting);
   RecordShieldsFingerprintSetting(global_fp_setting);
 
+  // Since internal setting counts don't exist, we will
+  // count ads & fp settings for all domains by processing the content settings.
   ShieldsSettingCounts fp_counts = GetFPSettingCount(map);
   ShieldsSettingCounts ads_counts = GetAdsSettingCount(map);
 
@@ -209,6 +241,13 @@ void MaybeRecordInitialShieldsSettings(PrefService* profile_prefs,
           << " standard=" << ads_counts.standard
           << " agg=" << ads_counts.aggressive;
 
+  // Once the domain setting have been counted via content settings,
+  // update each domain setting count pref with count results.
+  //
+  // These count prefs will be used to keep track of setting counts, and will
+  // be updated via RecordShieldsDomainSettingCountsWithChange whenever a
+  // domain setting is changed. This is more efficient than processing
+  // the content settings upon every change.
   UpdateDomainSettingCount(profile_prefs, true, ControlType::ALLOW,
                            fp_counts.allow);
   UpdateDomainSettingCount(profile_prefs, true, ControlType::DEFAULT,
