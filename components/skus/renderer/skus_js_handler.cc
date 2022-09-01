@@ -44,7 +44,7 @@ bool SkusJSHandler::EnsureConnected() {
         skus_service_.BindNewPipeAndPassReceiver());
   }
   bool result = skus_service_.is_bound();
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (!vpn_service_.is_bound()) {
     render_frame_->GetBrowserInterfaceBroker()->GetInterface(
         vpn_service_.BindNewPipeAndPassReceiver());
@@ -55,12 +55,13 @@ bool SkusJSHandler::EnsureConnected() {
   return result;
 }
 
-void SkusJSHandler::AddJavaScriptObjectToFrame(v8::Local<v8::Context> context) {
+void SkusJSHandler::Install(content::RenderFrame* render_frame) {
   v8::Isolate* isolate = blink::MainThreadIsolate();
   v8::HandleScope handle_scope(isolate);
+  v8::Local<v8::Context> context =
+      render_frame->GetWebFrame()->MainWorldScriptContext();
   if (context.IsEmpty())
     return;
-
   v8::Context::Scope context_scope(context);
 
   v8::Local<v8::Object> global = context->Global();
@@ -79,7 +80,8 @@ void SkusJSHandler::AddJavaScriptObjectToFrame(v8::Local<v8::Context> context) {
   }
 
   // window.chrome.braveSkus
-  gin::Handle<SkusJSHandler> handler = gin::CreateHandle(isolate, this);
+  gin::Handle<SkusJSHandler> handler =
+      gin::CreateHandle(isolate, new SkusJSHandler(render_frame));
   CHECK(!handler.IsEmpty());
   v8::PropertyDescriptor skus_desc(handler.ToV8(), false);
   skus_desc.set_configurable(false);
@@ -88,13 +90,6 @@ void SkusJSHandler::AddJavaScriptObjectToFrame(v8::Local<v8::Context> context) {
       ->DefineProperty(isolate->GetCurrentContext(),
                        gin::StringToV8(isolate, "braveSkus"), skus_desc)
       .Check();
-}
-
-void SkusJSHandler::ResetRemote(content::RenderFrame* render_frame) {
-  render_frame_ = render_frame;
-  skus_service_.reset();
-  vpn_service_.reset();
-  DCHECK(EnsureConnected());
 }
 
 // window.chrome.braveSkus.refresh_order
@@ -313,7 +308,7 @@ void SkusJSHandler::OnCredentialSummary(
     std::ignore = resolver->Reject(context, result);
     return;
   }
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
   vpn_service_->LoadPurchasedState(domain);
 #endif
   v8::Local<v8::Value> local_result =

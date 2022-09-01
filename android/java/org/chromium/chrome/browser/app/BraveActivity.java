@@ -338,13 +338,22 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                     BraveVpnProfileUtils.getInstance().stopVpn(BraveActivity.this);
                     BraveVpnUtils.dismissProgressDialog();
                 } else {
-                    BraveVpnUtils.showProgressDialog(BraveActivity.this,
-                            getResources().getString(R.string.vpn_connect_text));
-                    if (BraveVpnPrefUtils.isSubscriptionPurchase()) {
-                        verifySubscription();
+                    if (BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
+                        BraveVpnPrefUtils.setSubscriptionPurchase(true);
+                        if (WireguardConfigUtils.isConfigExist(BraveActivity.this)) {
+                            BraveVpnProfileUtils.getInstance().startVpn(BraveActivity.this);
+                        } else {
+                            BraveVpnUtils.openBraveVpnProfileActivity(BraveActivity.this);
+                        }
                     } else {
-                        BraveVpnUtils.dismissProgressDialog();
-                        BraveVpnUtils.openBraveVpnPlansActivity(BraveActivity.this);
+                        BraveVpnUtils.showProgressDialog(BraveActivity.this,
+                                getResources().getString(R.string.vpn_connect_text));
+                        if (BraveVpnPrefUtils.isSubscriptionPurchase()) {
+                            verifySubscription();
+                        } else {
+                            BraveVpnUtils.dismissProgressDialog();
+                            BraveVpnUtils.openBraveVpnPlansActivity(BraveActivity.this);
+                        }
                     }
                 }
             }
@@ -748,6 +757,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
+
+        BraveVpnNativeWorker.getInstance().reloadPurchasedState();
 
         BraveHelper.maybeMigrateSettings();
 

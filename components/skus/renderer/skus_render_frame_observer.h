@@ -25,25 +25,19 @@ namespace skus {
 // See `browser/brave_content_browser_client.cc` for more information.
 class SkusRenderFrameObserver : public content::RenderFrameObserver {
  public:
-  explicit SkusRenderFrameObserver(content::RenderFrame* render_frame,
-                                   int32_t world_id);
+  explicit SkusRenderFrameObserver(content::RenderFrame* render_frame);
   SkusRenderFrameObserver(const SkusRenderFrameObserver&) = delete;
   SkusRenderFrameObserver& operator=(const SkusRenderFrameObserver&) = delete;
   ~SkusRenderFrameObserver() override;
 
   // RenderFrameObserver implementation.
-  void DidCreateScriptContext(v8::Local<v8::Context> context,
-                              int32_t world_id) override;
+  void DidClearWindowObject() override;
 
  private:
   // RenderFrameObserver implementation.
   void OnDestruct() override;
 
   bool IsAllowed();
-
-  // Handle to "handler" JavaScript object functionality.
-  std::unique_ptr<SkusJSHandler> native_javascript_handle_;
-  int32_t world_id_;
 };
 
 }  // namespace skus
