@@ -113,7 +113,6 @@ public class BraveToolbarManager extends ToolbarManager {
     private TabContentManager mTabContentManager;
     private TabCreatorManager mTabCreatorManager;
     private SnackbarManager mSnackbarManager;
-    private ObservableSupplier<Integer> mConstraintsProxy;
 
     // Own members.
     private boolean mIsBottomToolbarVisible;
@@ -237,7 +236,7 @@ public class BraveToolbarManager extends ToolbarManager {
                     mActivity, mWindowAndroid, mLayoutManager,
                     mCompositorViewHolder.getResourceManager(), mBrowserControlsSizer,
                     mFullscreenManager, mBottomControls, mTabGroupUi,
-                    mOverlayPanelVisibilitySupplier, mConstraintsProxy));
+                    mOverlayPanelVisibilitySupplier, getConstraintsProxy()));
             mBottomControls.setBottomControlsCoordinatorSupplier(
                     mBottomControlsCoordinatorSupplier);
             updateBottomToolbarVisibility();
@@ -345,5 +344,14 @@ public class BraveToolbarManager extends ToolbarManager {
         assert (mToolbar instanceof BraveTopToolbarCoordinator);
         return mToolbar instanceof BraveTopToolbarCoordinator
                 && ((BraveTopToolbarCoordinator) mToolbar).isToolbarPhone();
+    }
+
+    private ObservableSupplier<Integer> getConstraintsProxy() {
+        if (mToolbar instanceof BraveTopToolbarCoordinator) {
+            return ((BraveTopToolbarCoordinator) mToolbar).getConstraintsProxy();
+        }
+
+        assert false : "Wrong top toolbar type!";
+        return null;
     }
 }

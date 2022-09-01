@@ -42,6 +42,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     private ToolbarLayout mBraveToolbarLayout;
     private MenuButtonCoordinator mBraveMenuButtonCoordinator;
     private boolean mIsBottomToolbarVisible;
+    private ObservableSupplier<Integer> mConstraintsProxy;
 
     public BraveTopToolbarCoordinator(ToolbarControlContainer controlContainer,
             ViewStub toolbarStub, ViewStub fullscreenToolbarStub, ToolbarLayout toolbarLayout,
@@ -84,6 +85,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
 
         mBraveToolbarLayout = toolbarLayout;
         mBraveMenuButtonCoordinator = browsingModeMenuButtonCoordinator;
+        mConstraintsProxy = constraintsSupplier;
 
         if (isToolbarPhone()) {
             if (!isStartSurfaceEnabled) {
@@ -117,5 +119,9 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     public MenuButton getMenuButtonWrapper() {
         // We consider that there is no top toolbar menu button, if bottom toolbar is visible.
         return mIsBottomToolbarVisible ? null : mBraveMenuButtonCoordinator.getMenuButton();
+    }
+
+    public ObservableSupplier<Integer> getConstraintsProxy() {
+        return mConstraintsProxy;
     }
 }
