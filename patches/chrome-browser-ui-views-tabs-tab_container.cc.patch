@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_container.cc b/chrome/browser/ui/views/tabs/tab_container.cc
-index 0cabdf4e4608153e3e01a4f06e8c989ba5de98e6..2b9fd26241f8d1d6ec453c0d81215cd204eaa6ee 100644
+index 2cbcaf4f997ef78d3024acc4c8c08f3bc6f694cd..cb37e87af9f0e6e5ed5c93c5e9da3b5d1e1384be 100644
 --- a/chrome/browser/ui/views/tabs/tab_container.cc
 +++ b/chrome/browser/ui/views/tabs/tab_container.cc
-@@ -1119,6 +1119,7 @@ void TabContainer::StartRemoveTabAnimation(Tab* tab, int former_model_index) {
+@@ -1015,6 +1015,7 @@ gfx::Rect TabContainer::GetTargetBoundsForClosingTab(
    // Compute the target bounds for animating this tab closed.  The tab's left
    // edge should stay joined to the right edge of the previous tab, if any.
    gfx::Rect target_bounds = tab->bounds();
