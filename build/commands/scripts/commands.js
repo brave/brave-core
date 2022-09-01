@@ -68,6 +68,32 @@ program
   .action(applyPatches)
 
 program
+  .command('update_symlink')
+  .option('--symlink_dir <symlink_dir>', 'symlink that points to the actual build directory')
+  .option('--target_os <target_os_type>', 'target OS type', /^(host_os|ios|android)$/i)
+  .option('--target_arch <target_arch>', 'target architecture', /^(host_cpu|x64|arm64|x86)$/i)
+  .arguments('[build_config]')
+  .action((buildConfig = config.defaultBuildConfig, options) => {
+    config.buildConfig = buildConfig
+    if (options.target_os == 'host_os')
+      delete options.target_os
+
+    if (options.target_arch == 'host_cpu')
+      delete options.target_arch
+
+    config.update(options)
+    const current_link = options.symlink_dir
+    if (!path.isAbsolute(current_link) && !path.relative(current_link, config.srcDir).startsWith('..')) {
+      console.error('Symlink must be an absolute path in src')
+      process.exit(1)
+    }
+
+    fs.removeSync(current_link)
+    fs.symlinkSync(config.outputDir, current_link, 'junction')
+    util.generateNinjaFiles()
+  })
+
+program
   .command('build')
   .option('-C <build_dir>', 'build config (out/Debug, out/Release')
   .option('--target_os <target_os>', 'target OS')
@@ -108,6 +134,7 @@ program
   .option('--force_gn_gen', 'always run gn gen')
   .option('--target <target>', 'Custom target to build, instead of the default browser target')
   .option('--build_sparkle', 'Build the Sparkle macOS update framework from source')
+  .option('--no_gn_gen', 'Build without running gn gen')
   .arguments('[build_config]')
   .action(build)
 
