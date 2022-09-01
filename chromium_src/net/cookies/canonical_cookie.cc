@@ -9,21 +9,21 @@
 
 namespace {
 
-// Javascript max expiration is handled by blink::CookieStore
 constexpr base::TimeDelta kMaxCookieExpiration =
     base::Days(30 * 6);  // 6 months
 
-base::Time BraveCanonExpiration(const base::Time& cookie_expires,
-                                const base::Time& creation_time) {
-  const base::Time max_expiration = creation_time + kMaxCookieExpiration;
+base::Time BraveCanonExpiration(const base::Time& expiry_date,
+                                const base::Time& creation_date) {
+  const base::Time max_expiration = creation_date + kMaxCookieExpiration;
 
-  return std::min(cookie_expires, max_expiration);
+  return std::min(expiry_date, max_expiration);
 }
 
 }  // namespace
 
-#define BRAVE_CREATE \
-  cookie_expires = BraveCanonExpiration(cookie_expires, creation_time);
+#define BRAVE_CANONICAL_COOKIE_VALIDATE_AND_ADJUST_EXPIRY_DATE \
+  if ((true))                                                  \
+    return BraveCanonExpiration(expiry_date, fixed_creation_date);
 
 #include "src/net/cookies/canonical_cookie.cc"
-#undef BRAVE_CREATE
+#undef BRAVE_CANONICAL_COOKIE_VALIDATE_AND_ADJUST_EXPIRY_DATE
