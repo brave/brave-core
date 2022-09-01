@@ -1100,9 +1100,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         startActivity(braveWalletIntent);
     }
 
-    public void viewOnBlockExplorer(String address) {
-        // TODO(sergz): We will need to correct that while doing Solana DApps
-        Utils.openAddress("/address/" + address, mJsonRpcService, this, CoinType.ETH);
+    public void viewOnBlockExplorer(String address, @CoinType.EnumType int coinType) {
+        Utils.openAddress("/address/" + address, mJsonRpcService, this, coinType);
     }
 
     // should only be called if the wallet is setup and unlocked
