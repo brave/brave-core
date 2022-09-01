@@ -33,7 +33,7 @@ extension BrowserViewController: TopToolbarDelegate {
 
     isTabTrayActive = true
 
-    let tabTrayController = TabTrayController(tabManager: tabManager, openTabsAPI: braveCore.openTabsAPI).then {
+    let tabTrayController = TabTrayController(tabManager: tabManager, braveCore: braveCore).then {
       $0.delegate = self
       $0.toolbarUrlActionsDelegate = self
     }

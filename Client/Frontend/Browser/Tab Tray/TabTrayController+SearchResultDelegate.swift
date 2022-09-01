@@ -30,12 +30,7 @@ extension TabTrayController: UISearchResultsUpdating {
     
     tabTraySearchQuery = query
     
-    switch tabTrayMode {
-    case .local:
-      applySnapshot(for: tabTraySearchQuery)
-    case .sync:
-      reloadOpenTabsSession(for: tabTraySearchQuery)
-    }
+    refreshDataSource()
   }
 
   private func invalidateSearchTimer() {

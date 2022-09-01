@@ -34,7 +34,7 @@ class TabTrayController: LoadingViewController {
   }
 
   let tabManager: TabManager
-  private let openTabsAPI: BraveOpenTabsAPI  
+  private let braveCore: BraveCoreMain
   private var openTabsSessionServiceListener: OpenTabsSessionStateListener?
   
   weak var delegate: TabTrayDelegate?
@@ -148,9 +148,9 @@ class TabTrayController: LoadingViewController {
 
   // MARK: Lifecycle
   
-  init(tabManager: TabManager, openTabsAPI: BraveOpenTabsAPI) {
+  init(tabManager: TabManager, braveCore: BraveCoreMain) {
     self.tabManager = tabManager
-    self.openTabsAPI = openTabsAPI
+    self.braveCore = braveCore
     super.init(nibName: nil, bundle: nil)
 
     if !UIAccessibility.isReduceMotionEnabled {
@@ -159,7 +159,7 @@ class TabTrayController: LoadingViewController {
     }
     
     // Adding the Open Tabs session observer in constructor to watch synced sessions updating
-    openTabsSessionServiceListener = openTabsAPI.add(
+    openTabsSessionServiceListener = braveCore.openTabsAPI.add(
       OpenTabsStateObserver { [weak self] stateChange in
         guard let self = self else { return }
         
@@ -179,7 +179,7 @@ class TabTrayController: LoadingViewController {
     
     // Remove the open tabs service observer
     if let observer = openTabsSessionServiceListener {
-      openTabsAPI.removeObserver(observer)
+      braveCore.openTabsAPI.removeObserver(observer)
     }
   }
 
@@ -221,6 +221,10 @@ class TabTrayController: LoadingViewController {
     tabSyncView.tableView.do {
       $0.dataSource = self
       $0.delegate = self
+    }
+    
+    tabSyncView.actionHandler = { [weak self] status in
+      self?.presentSyncSettings(status: status)
     }
 
     privateMode = tabManager.selectedTab?.isPrivate == true
@@ -291,18 +295,28 @@ class TabTrayController: LoadingViewController {
   }
   
   private func createTypeSelectorItems() {
-    tabTypeSelectorItems = [UIImage(systemName: "square.on.square")!.template,
-                            UIImage(systemName: "laptopcomputer.and.iphone")!.template]
+    tabTypeSelectorItems = [UIImage(braveSystemNamed: "brave.rectangle.on.rectangle")!.template,
+                            UIImage(braveSystemNamed: "brave.laptop.and.phone")!.template]
   }
   
   @objc func typeSelectionDidChange(_ sender: UISegmentedControl) {
-    tabTraySearchController.isActive = false
     tabTrayMode = sender.selectedSegmentIndex == 0 ? .local : .sync
 
     tabTrayView.isHidden = tabTrayMode == .sync
     tabSyncView.isHidden = tabTrayMode == .local
     
     searchBarView?.searchBar.placeholder = tabTrayMode == .local ? Strings.tabTraySearchBarTitle : Strings.OpenTabs.tabTrayOpenTabSearchBarTitle
+    
+    refreshDataSource()
+  }
+  
+  func refreshDataSource() {
+    switch tabTrayMode {
+    case .local:
+      applySnapshot(for: tabTraySearchQuery)
+    case .sync:
+      reloadOpenTabsSession(for: tabTraySearchQuery)
+    }
   }
   
   private func updateColors(_ isPrivateBrowsing: Bool) {
@@ -404,7 +418,7 @@ class TabTrayController: LoadingViewController {
   }
   
   private func fetchSyncedSessions(for query: String? = nil) -> [OpenDistantSession] {
-    let allSessions = openTabsAPI.getSyncedSessions()
+    let allSessions = braveCore.openTabsAPI.getSyncedSessions()
     var queriedSessions = [OpenDistantSession]()
     
     if let query = query, !query.isEmpty {
@@ -514,6 +528,55 @@ class TabTrayController: LoadingViewController {
   func removeAllTabs() {
     tabManager.removeTabsWithUndoToast(tabManager.tabsForCurrentMode)
     applySnapshot()
+  }
+  
+  private func presentSyncSettings(status: TabSyncContainerView.SyncActionType) {
+    switch status {
+      case .noSyncChain:
+        openInsideSettingsNavigation(
+          with: SyncWelcomeViewController(
+            syncAPI: braveCore.syncAPI,
+            syncProfileServices: braveCore.syncProfileService,
+            tabManager: tabManager))
+      case .openTabsDisabled:
+        if !DeviceInfo.hasConnectivity() {
+          present(SyncAlerts.noConnection, animated: true)
+          return
+        }
+      
+        openInsideSettingsNavigation(with:
+          SyncSettingsTableViewController(
+            syncAPI: braveCore.syncAPI,
+            syncProfileService: braveCore.syncProfileService,
+            tabManager: tabManager))
+    }
+  }
+  
+  func openInsideSettingsNavigation(with viewController: UIViewController) {
+    let settingsNavigationController = SettingsNavigationController(rootViewController: viewController).then {
+      $0.popoverDelegate = self
+      $0.isModalInPresentation = true
+      $0.modalPresentationStyle =
+        UIDevice.current.userInterfaceIdiom == .phone ? .pageSheet : .formSheet
+    }
+
+    settingsNavigationController.navigationBar.topItem?.leftBarButtonItem =
+      UIBarButtonItem(barButtonSystemItem: .done, target: settingsNavigationController, action: #selector(settingsNavigationController.done))
+    
+    UIDevice.current.forcePortraitIfIphone(for: UIApplication.shared)
+
+    present(settingsNavigationController, animated: true)
+  }
+}
+
+// MARK: PresentingModalViewControllerDelegate
+
+extension TabTrayController: PresentingModalViewControllerDelegate {
+  
+  func dismissPresentedModalViewController(_ modalViewController: UIViewController, animated: Bool) {
+    modalViewController.dismiss(animated: true) { [weak self] in
+      self?.reloadOpenTabsSession()
+    }
   }
 }
 

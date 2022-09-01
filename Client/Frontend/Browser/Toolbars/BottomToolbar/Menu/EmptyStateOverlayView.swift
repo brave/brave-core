@@ -8,6 +8,12 @@ import Shared
 import UIKit
 
 class EmptyStateOverlayView: UIView {
+  
+  private struct UX {
+    static let titleEdgeInsets = UIEdgeInsets(top: -10.0, left: -35.0, bottom: -10.0, right: -35.0)
+    static let contentEdgeInsets = UIEdgeInsets(top: 10.0, left: 35.0, bottom: 10.0, right: 35.0)
+    static let buttonHeight = 40.0
+  }
 
   private let iconImageView = UIImageView().then {
     $0.contentMode = .scaleAspectFit
@@ -26,12 +32,37 @@ class EmptyStateOverlayView: UIView {
     $0.numberOfLines = 0
   }
   
-  private let containerView = UIView().then {
+  private let actionButton = UIButton().then {
+    $0.setTitleColor(.white, for: .normal)
+    $0.layer.cornerCurve = .continuous
+    $0.layer.cornerRadius = UX.buttonHeight / 2.0
+    $0.titleEdgeInsets = UX.titleEdgeInsets
+    $0.contentEdgeInsets = UX.contentEdgeInsets
+    $0.backgroundColor = .braveBlurple
+  }
+  
+  private let actionDescriptionLabel = UILabel().then {
+    $0.textAlignment = .center
+    $0.textColor = .braveLabel
+    $0.numberOfLines = 0
+  }
+  
+  private let containerView = UIStackView().then {
+    $0.axis = .vertical
+    $0.alignment = .center
     $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
     $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
   }
+  
+  private var actionHandler: (() -> Void)?
 
-  required init(title: String? = nil, description: String? = nil, icon: UIImage? = nil) {
+  required init(
+    title: String? = nil,
+    description: String? = nil,
+    icon: UIImage? = nil,
+    buttonText: String? = nil,
+    action: (() -> Void)? = nil,
+    actionDescription: String? = nil) {
     super.init(frame: .zero)
 
     backgroundColor = .secondaryBraveBackground
@@ -44,24 +75,46 @@ class EmptyStateOverlayView: UIView {
       $0.size.lessThanOrEqualToSuperview()
     }
     
-    containerView.addSubview(iconImageView)
-    containerView.addSubview(informationLabel)
-    containerView.addSubview(descriptionLabel)
-    
-    updateFont()
-    updateLayoutConstraints()
-
     if let icon = icon {
-      iconImageView.image = icon.template
+      iconImageView.image = icon
+      containerView.addArrangedSubview(iconImageView)
+      
+      iconImageView.snp.makeConstraints {
+        $0.size.equalTo(60)
+       }
+      
+      containerView.setCustomSpacing(35, after: iconImageView)
     }
-
+    
     if let title = title {
       informationLabel.text = title
+      containerView.addArrangedSubview(informationLabel)
+      containerView.setCustomSpacing(25, after: informationLabel)
     }
     
     if let description = description {
       descriptionLabel.text = description
+      containerView.addArrangedSubview(descriptionLabel)
+      containerView.setCustomSpacing(45, after: descriptionLabel)
     }
+    
+    if let buttonText = buttonText {
+      actionButton.setTitle(buttonText, for: .normal)
+      actionButton.addTarget(self, action: #selector(tappedActionButton), for: .touchUpInside)
+      containerView.addArrangedSubview(actionButton)
+      containerView.setCustomSpacing(25, after: actionButton)
+    }
+    
+    if let actionDescription = actionDescription {
+      actionDescriptionLabel.text = actionDescription
+      containerView.addArrangedSubview(actionDescriptionLabel)
+    }
+    
+    if let action = action {
+      actionHandler = action
+    }
+    
+    updateFont()
   }
 
   @available(*, unavailable)
@@ -73,7 +126,6 @@ class EmptyStateOverlayView: UIView {
     super.traitCollectionDidChange(previousTraitCollection)
     
     updateFont()
-    updateLayoutConstraints()
   }
   
   private func updateFont() {
@@ -81,29 +133,13 @@ class EmptyStateOverlayView: UIView {
     
     let informationFont = UIFont.preferredFont(forTextStyle: .title3, compatibleWith: clampedTraitCollection)
     let descriptionFont = UIFont.preferredFont(forTextStyle: .subheadline, compatibleWith: clampedTraitCollection)
+    let buttonFont = UIFont.preferredFont(forTextStyle: .headline, compatibleWith: clampedTraitCollection)
 
     informationLabel.font = .systemFont(ofSize: informationFont.pointSize, weight: .medium)
     descriptionLabel.font = descriptionFont
+    actionButton.titleLabel?.font = .systemFont(ofSize: buttonFont.pointSize)
+    actionDescriptionLabel.font = descriptionFont
   }
-    
-  private func updateLayoutConstraints() {
-    iconImageView.snp.makeConstraints {
-      $0.centerX.equalToSuperview()
-      $0.size.equalTo(60)
-      $0.top.equalToSuperview().offset(5)
-    }
-
-    informationLabel.snp.makeConstraints {
-      $0.leading.trailing.equalToSuperview()
-      $0.top.equalTo(iconImageView.snp.bottom).offset(15)
-    }
-        
-    descriptionLabel.snp.makeConstraints {
-      $0.leading.trailing.equalToSuperview()
-      $0.top.equalTo(informationLabel.snp.bottom).offset(15)
-      $0.bottom.equalToSuperview().offset(-5)
-    }
-   }
 
   func updateInfoLabel(with text: String) {
     informationLabel.text = text
@@ -111,5 +147,9 @@ class EmptyStateOverlayView: UIView {
   
   func updateDescriptionLabel(with text: String) {
     descriptionLabel.text = text
+  }
+  
+  @objc private func tappedActionButton() {
+    actionHandler?()
   }
 }
