@@ -80,10 +80,10 @@ export const CreateAccountTab = ({
       return setShowUnlock(true)
     }
 
-    if (selectedNetwork.coin === BraveWallet.CoinType.FIL) {
+    if (accountNetwork.coin === BraveWallet.CoinType.FIL) {
       dispatch(WalletActions.addFilecoinAccount({
         accountName: suggestedAccountName,
-        network: accountNetwork.chainId
+        network: 'f'
       }))
     } else {
       dispatch(WalletActions.addAccount({
@@ -95,15 +95,18 @@ export const CreateAccountTab = ({
     if (isPanel) {
       dispatch(PanelActions.navigateTo('main'))
     }
-  }, [accountNetwork, suggestedAccountName, isPanel, isWalletLocked, showUnlock])
+  }, [
+    isWalletLocked,
+    showUnlock,
+    accountNetwork.coin,
+    suggestedAccountName,
+    isPanel
+  ])
 
   const handleUnlockAttempt = React.useCallback((password: string): void => {
     dispatch(WalletActions.unlockWallet({ password }))
-    dispatch(WalletActions.addAccount({
-      accountName: suggestedAccountName,
-      coin: accountNetwork.coin
-    }))
-  }, [suggestedAccountName, accountNetwork])
+    onCreateAccount()
+  }, [onCreateAccount])
 
   // effects
   React.useEffect(() => {
