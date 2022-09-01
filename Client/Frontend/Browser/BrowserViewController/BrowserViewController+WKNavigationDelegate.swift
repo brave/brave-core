@@ -555,7 +555,7 @@ extension BrowserViewController: WKNavigationDelegate {
       if let url = tab.url, tab.shouldClassifyLoadsForAds {
         let faviconURL = URL(string: tab.displayFavicon?.url ?? "")
         rewards.reportTabUpdated(
-          Int(tab.rewardsId),
+          tab: tab,
           url: url,
           faviconURL: faviconURL,
           isSelected: tabManager.selectedTab == tab,

@@ -136,7 +136,7 @@ public class DeviceCheckClient {
   private static let privateKeyId = "com.brave.device.check.private.key"
 
   // The current build environment
-  private let environment: Ledger.Environment
+  private let environment: BraveRewards.Configuration.Environment
 
   // A structure representing an error returned by the server
   public struct DeviceCheckError: Error, Codable {
@@ -147,7 +147,7 @@ public class DeviceCheckClient {
     let code: Int
   }
 
-  public init(environment: Ledger.Environment) {
+  public init(environment: BraveRewards.Configuration.Environment = BraveRewards.Configuration.current().environment) {
     self.environment = environment
   }
 
@@ -273,8 +273,6 @@ private extension DeviceCheckClient {
       return URL(string: "https://grant.rewards.bravesoftware.com")
     case .production:
       return URL(string: "https://grant.rewards.brave.com")
-    @unknown default:
-      fatalError("Unknown Environment for Device Check")
     }
   }
 

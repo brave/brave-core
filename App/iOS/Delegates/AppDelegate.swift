@@ -52,6 +52,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
       }
     }
+    switches[.rewardsFlags] = BraveRewards.Configuration.current().flags
     return BraveCoreMain(userAgent: UserAgent.mobile, additionalSwitches: switches)
   }()
   

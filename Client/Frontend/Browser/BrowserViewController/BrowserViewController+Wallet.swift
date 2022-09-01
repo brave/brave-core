@@ -37,7 +37,7 @@ extension WalletStore {
       walletService: walletService,
       assetRatioService: assetRatioService,
       swapService: swapService,
-      blockchainRegistry: BraveCoreMain.blockchainRegistry,
+      blockchainRegistry: BraveWalletAPI.blockchainRegistry,
       txService: txService,
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy
@@ -67,7 +67,7 @@ extension CryptoStore {
       walletService: walletService,
       assetRatioService: assetRatioService,
       swapService: swapService,
-      blockchainRegistry: BraveCoreMain.blockchainRegistry,
+      blockchainRegistry: BraveWalletAPI.blockchainRegistry,
       txService: txService,
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy
@@ -270,6 +270,16 @@ extension Tab: BraveWalletProviderDelegate {
   }
   
   func showAccountCreation(_ type: BraveWallet.CoinType) {
+  }
+  
+  func isSolanaAccountConnected(_ account: String) -> Bool {
+    return false
+  }
+  
+  func addSolanaConnectedAccount(_ account: String) {
+  }
+  
+  func removeSolanaConnectedAccount(_ account: String) {
   }
 }
 

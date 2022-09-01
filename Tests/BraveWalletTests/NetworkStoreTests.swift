@@ -153,11 +153,12 @@ private extension BraveWallet.NetworkInfo {
     chainName: "Custom Test Network",
     blockExplorerUrls: [],
     iconUrls: [],
-    rpcUrls: [],
+    activeRpcEndpointIndex: 0,
+    rpcEndpoints: [],
     symbol: "TEST",
     symbolName: "TEST",
     decimals: 18,
     coin: .eth,
-    data: nil
+    isEip1559: false
   )
 }

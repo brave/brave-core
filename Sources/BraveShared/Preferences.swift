@@ -157,6 +157,10 @@ extension Preferences {
     public static let environmentOverride = Option<Int>(
       key: "rewards.environment-override",
       default: EnvironmentOverride.none.rawValue)
+    
+    public static let debugFlagIsDebug = Option<Bool?>(key: "rewards.flag.is-debug", default: nil)
+    public static let debugFlagRetryInterval = Option<Int?>(key: "rewards.flag.retry-interval", default: nil)
+    public static let debugFlagReconcileInterval = Option<Int?>(key: "rewards.flag.reconcile-interval", default: nil)
 
     /// In debut/beta, the number of seconds before an ad should automatically dismiss
     public static let adsDurationOverride = Option<Int?>(key: "rewards.ads.dismissal-override", default: nil)

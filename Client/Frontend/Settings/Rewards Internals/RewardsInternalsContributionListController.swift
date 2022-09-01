@@ -60,7 +60,6 @@ extension Ledger.ContributionProcessor {
     let s = Strings.RewardsInternals.self
     switch self {
     case .braveTokens: return s.contributionProcessorBraveTokens
-    case .braveUserFunds: return s.contributionProcessorUserFunds
     case .uphold: return s.contributionProcessorUphold
     case .none: return s.contributionProcessorNone
     case .bitflyer, .gemini: fallthrough

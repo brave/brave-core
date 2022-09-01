@@ -56,7 +56,7 @@ class RewardsDebugSettingsViewController: TableViewController {
     $0.returnKeyType = .done
     $0.textAlignment = .right
     $0.keyboardType = .numberPad
-    $0.text = "\(BraveLedger.reconcileInterval)"
+    $0.text = "\(Preferences.Rewards.debugFlagReconcileInterval.value ?? 0)"
     $0.placeholder = "0"
   }
 
@@ -70,15 +70,15 @@ class RewardsDebugSettingsViewController: TableViewController {
   }
 
   @objc private func reconcileTimeEditingEnded() {
-    guard let value = Int32(reconcileTimeTextField.text ?? "") else {
+    guard let value = Int(reconcileTimeTextField.text ?? "") else {
       let alert = UIAlertController(title: "Invalid value", message: "Time has been reset to 0 (no override)", preferredStyle: .alert)
       alert.addAction(.init(title: "OK", style: .default, handler: nil))
       self.present(alert, animated: true)
       reconcileTimeTextField.text = "0"
-      BraveLedger.reconcileInterval = 0
+      Preferences.Rewards.debugFlagReconcileInterval.reset()
       return
     }
-    BraveLedger.reconcileInterval = value
+    Preferences.Rewards.debugFlagReconcileInterval.value = value
   }
 
   private let adsDismissalTextField = UITextField().then {
@@ -285,14 +285,13 @@ class RewardsDebugSettingsViewController: TableViewController {
         rows: [
           Row(
             text: "Is Debug",
-            accessory: .switchToggle(value: BraveLedger.isDebug, { value in
-              BraveLedger.isDebug = value
-              BraveAds.isDebug = value
+            accessory: .switchToggle(value: Preferences.Rewards.debugFlagIsDebug.value ?? false, { value in
+              Preferences.Rewards.debugFlagIsDebug.value = value
             })),
           Row(
             text: "Use Short Retries",
-            accessory: .switchToggle(value: BraveLedger.retryInterval != 0, { value in
-              BraveLedger.retryInterval = value ? 30 : 0
+            accessory: .switchToggle(value: Preferences.Rewards.debugFlagRetryInterval.value != 0, { value in
+              Preferences.Rewards.debugFlagRetryInterval.value = value ? 30 : 0
             })),
           Row(text: "Reconcile Time", detailText: "Number of minutes between reconciles. 0 = No Override", accessory: .view(reconcileTimeTextField), cellClass: MultilineSubtitleCell.self),
           Row(text: "Custom User Agent", detailText: "Non-persistant. Empty = default", accessory: .view(customUserAgentTextField), cellClass: MultilineSubtitleCell.self),
