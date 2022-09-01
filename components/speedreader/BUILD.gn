@@ -29,7 +29,6 @@ static_library("speedreader") {
 
   deps = [
     "//brave/components/body_sniffer",
-    "//brave/components/brave_component_updater/browser",
     "//brave/components/resources",
     "//brave/components/resources:static_resources_grit",
     "//brave/components/time_period_storage",
