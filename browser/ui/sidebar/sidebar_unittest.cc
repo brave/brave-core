@@ -72,8 +72,10 @@ TEST_F(SidebarModelTest, ItemsChangedTest) {
   EXPECT_EQ(-1, model()->active_index());
 
   // Add one more item to test with 5 items.
-  SidebarItem new_item;
-  new_item.url = GURL("https://brave.com");
+  SidebarItem new_item = SidebarItem::Create(
+      GURL("https://www.brave.com/"), u"brave software",
+      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone, false);
+
   service()->AddItem(new_item);
   EXPECT_EQ(built_in_items_size + 1, service()->items().size());
 

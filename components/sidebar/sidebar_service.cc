@@ -300,6 +300,7 @@ void SidebarService::MigratePrefSidebarBuiltInItemsToHidden() {
 }
 
 void SidebarService::AddItem(const SidebarItem& item) {
+  DCHECK(IsValidItem(item));
   items_.push_back(item);
 
   for (Observer& obs : observers_) {

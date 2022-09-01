@@ -214,6 +214,9 @@ void SidebarModel::FetchFavicon(const sidebar::SidebarItem& item) {
   // Use favicon as a web type icon's image.
   auto* favicon_service = FaviconServiceFactory::GetForProfile(
       profile_, ServiceAccessType::EXPLICIT_ACCESS);
+  // nullptr in unit test.
+  if (!favicon_service)
+    return;
   favicon_service->GetRawFaviconForPageURL(
       item.url, {favicon_base::IconType::kFavicon}, 0 /*largest*/, false,
       base::BindRepeating(&SidebarModel::OnGetLocalFaviconImage,

@@ -109,8 +109,8 @@ TEST_F(SidebarServiceTest, AddRemoveItems) {
   ClearState();
 
   const SidebarItem item2 = SidebarItem::Create(
-      GURL("https://www.brave.com/"), std::u16string(),
-      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone, true);
+      GURL("https://www.brave.com/"), u"brave software",
+      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone, false);
   EXPECT_TRUE(IsWebType(item2));
   service_->AddItem(item2);
   EXPECT_EQ(4, item_index_on_called_);
@@ -123,9 +123,10 @@ TEST_F(SidebarServiceTest, MoveItem) {
   SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::DEV);
   InitService();
 
-  // Add one more item to test with 4 items.
-  SidebarItem new_item;
-  new_item.url = GURL("https://brave.com");
+  // Add one more item to test with 5 items.
+  SidebarItem new_item = SidebarItem::Create(
+      GURL("https://www.brave.com/"), u"brave software",
+      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone, false);
   service_->AddItem(new_item);
   EXPECT_EQ(5UL, service_->items().size());
 
@@ -151,13 +152,43 @@ TEST_F(SidebarServiceTest, MoveItem) {
   EXPECT_EQ(item.url, service_->items()[1].url);
 }
 
+TEST(SidebarItemTest, SidebarItemValidation) {
+  SidebarItem builtin_item;
+  EXPECT_FALSE(IsValidItem(builtin_item));
+
+  builtin_item.type = SidebarItem::Type::kTypeBuiltIn;
+  builtin_item.title = u"title";
+  builtin_item.built_in_item_type = SidebarItem::BuiltInItemType::kNone;
+
+  // builtin item should have have specific builtin item type.
+  EXPECT_FALSE(IsValidItem(builtin_item));
+  builtin_item.built_in_item_type = SidebarItem::BuiltInItemType::kBookmarks;
+  EXPECT_TRUE(IsValidItem(builtin_item));
+
+  // Invalid if title is empty.
+  builtin_item.title = u"";
+  EXPECT_FALSE(IsValidItem(builtin_item));
+  builtin_item.title = u"title";
+  EXPECT_TRUE(IsValidItem(builtin_item));
+
+  SidebarItem web_item;
+  web_item.type = SidebarItem::Type::kTypeWeb;
+  web_item.built_in_item_type = SidebarItem::BuiltInItemType::kNone;
+  web_item.url = GURL("https://abcd.com/");
+  web_item.title = u"title";
+  EXPECT_TRUE(IsValidItem(web_item));
+  web_item.built_in_item_type = SidebarItem::BuiltInItemType::kBookmarks;
+  EXPECT_FALSE(IsValidItem(web_item));
+}
+
 TEST_F(SidebarServiceTest, MoveItemSavedToPrefs) {
   SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::DEV);
   InitService();
 
   // Add one more item to test with 4 items.
-  SidebarItem new_item;
-  new_item.url = GURL("https://brave.com");
+  SidebarItem new_item = SidebarItem::Create(
+      GURL("https://www.brave.com/"), u"brave software",
+      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone, false);
   service_->AddItem(new_item);
   EXPECT_EQ(5UL, service_->items().size());
 

@@ -49,6 +49,7 @@ struct SidebarItem {
 
 bool IsBuiltInType(const SidebarItem& item);
 bool IsWebType(const SidebarItem& item);
+bool IsValidItem(const SidebarItem& item);
 
 }  // namespace sidebar
 
