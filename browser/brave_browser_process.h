@@ -22,6 +22,7 @@ namespace brave {
 class BraveReferralsService;
 class BraveP3AService;
 class BraveFarblingService;
+class URLSanitizerComponentInstaller;
 }  // namespace brave
 
 namespace brave_component_updater {
@@ -87,6 +88,8 @@ class BraveBrowserProcess {
 #endif
   virtual debounce::DebounceComponentInstaller*
   debounce_component_installer() = 0;
+  virtual brave::URLSanitizerComponentInstaller*
+  URLSanitizerComponentInstaller() = 0;
   virtual brave_shields::HTTPSEverywhereService* https_everywhere_service() = 0;
   virtual brave_component_updater::LocalDataFilesService*
   local_data_files_service() = 0;
