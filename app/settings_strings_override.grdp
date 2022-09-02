@@ -50,7 +50,7 @@
     </if>
   <if expr="chromeos_ash">
     </if>
-  <if expr="is_win">
+  <if expr="is_win or is_macosx">
     </if>
 
   <if expr="not is_chromeos">
