@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "absl/types/optional.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/history_filter_types.h"
 #include "bat/ads/history_sort_types.h"
@@ -20,7 +21,6 @@
 #include "bat/ads/internal/transfer/transfer_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom-forward.h"
 #include "bat/ads/public/interfaces/ads.mojom-shared.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 

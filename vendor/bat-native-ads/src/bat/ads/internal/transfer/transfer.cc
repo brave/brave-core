@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/transfer/transfer.h"
 
+#include "absl/types/optional.h"
 #include "base/bind.h"
 #include "base/check.h"
 #include "base/time/time.h"
@@ -15,7 +16,6 @@
 #include "bat/ads/internal/base/url/url_util.h"
 #include "bat/ads/internal/tabs/tab_info.h"
 #include "bat/ads/internal/tabs/tab_manager.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace ads {

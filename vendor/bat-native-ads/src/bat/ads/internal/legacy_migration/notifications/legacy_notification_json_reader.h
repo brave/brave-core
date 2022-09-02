@@ -8,8 +8,8 @@
 
 #include <string>
 
+#include "absl/types/optional.h"
 #include "base/containers/circular_deque.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

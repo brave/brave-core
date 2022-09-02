@@ -5,12 +5,12 @@
 
 #include "bat/ads/internal/ads/ad_events/notification_ads/notification_ad_event_handler.h"
 
+#include "absl/types/optional.h"
 #include "base/check.h"
 #include "bat/ads/internal/ads/ad_events/notification_ads/notification_ad_event_factory.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "bat/ads/notification_ad_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace notification_ads {

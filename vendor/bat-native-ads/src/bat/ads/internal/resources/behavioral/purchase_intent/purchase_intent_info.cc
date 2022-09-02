@@ -5,9 +5,9 @@
 
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_info.h"
 
+#include "absl/types/optional.h"
 #include "base/values.h"
 #include "bat/ads/internal/features/purchase_intent_features.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace ads {

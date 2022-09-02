@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "absl/types/optional.h"
 #include "base/bind.h"
 #include "base/check.h"
 #include "base/time/time.h"
@@ -26,7 +27,6 @@
 #include "bat/ads/internal/flags/flag_manager_util.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "net/http/http_status_code.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

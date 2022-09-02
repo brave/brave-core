@@ -5,8 +5,8 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/pacing/pacing_random_util.h"
 
+#include "absl/types/optional.h"
 #include "base/rand_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace {
 absl::optional<double> g_pacing_random_number;

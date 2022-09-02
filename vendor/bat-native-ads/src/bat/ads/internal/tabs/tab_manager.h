@@ -11,9 +11,9 @@
 #include <string>
 #include <vector>
 
+#include "absl/types/optional.h"
 #include "base/observer_list.h"
 #include "bat/ads/internal/tabs/tab_manager_observer.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 

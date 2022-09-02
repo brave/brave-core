@@ -8,12 +8,12 @@
 
 #include <string>
 
+#include "absl/types/optional.h"
 #include "bat/ads/internal/base/timer/backoff_timer.h"
 #include "bat/ads/internal/base/timer/timer.h"
 #include "bat/ads/internal/locale/locale_manager_observer.h"
 #include "bat/ads/internal/prefs/pref_manager_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom-forward.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace geographic {

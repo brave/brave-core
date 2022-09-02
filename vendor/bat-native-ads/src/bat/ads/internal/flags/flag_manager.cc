@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/flags/flag_manager.h"
 
+#include "absl/types/optional.h"
 #include "base/check_op.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/flags/debug/debug_command_line_switch_parser_util.h"
@@ -13,7 +14,6 @@
 #include "bat/ads/internal/flags/environment/environment_command_line_switch_parser_util.h"
 #include "bat/ads/internal/flags/flag_manager_constants.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

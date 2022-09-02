@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <utility>
 
+#include "absl/types/optional.h"
 #include "base/check.h"
 #include "base/values.h"
 #include "bat/ads/internal/base/strings/string_strip_util.h"
@@ -15,7 +16,6 @@
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_info.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace ml {

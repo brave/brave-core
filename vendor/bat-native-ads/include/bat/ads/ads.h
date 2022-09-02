@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "absl/types/optional.h"
 #include "bat/ads/ad_content_action_types.h"
 #include "bat/ads/ads_callback.h"
 #include "bat/ads/category_content_action_types.h"
@@ -17,7 +18,6 @@
 #include "bat/ads/history_filter_types.h"
 #include "bat/ads/history_sort_types.h"
 #include "bat/ads/public/interfaces/ads.mojom-forward.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 

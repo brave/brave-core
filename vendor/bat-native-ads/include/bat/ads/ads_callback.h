@@ -9,11 +9,11 @@
 #include <functional>
 #include <string>
 
+#include "absl/types/optional.h"
 #include "base/values.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/public/interfaces/ads.mojom-forward.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

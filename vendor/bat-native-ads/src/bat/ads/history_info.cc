@@ -5,11 +5,11 @@
 
 #include "bat/ads/history_info.h"
 
+#include "absl/types/optional.h"
 #include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "bat/ads/history_item_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

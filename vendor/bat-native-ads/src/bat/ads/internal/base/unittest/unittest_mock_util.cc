@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "absl/types/optional.h"
 #include "base/check.h"
 #include "base/containers/flat_map.h"
 #include "base/files/file.h"
@@ -29,7 +30,6 @@
 #include "bat/ads/internal/base/unittest/unittest_test_suite_util.h"
 #include "bat/ads/internal/base/unittest/unittest_url_response_util.h"
 #include "bat/ads/notification_ad_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace ads {

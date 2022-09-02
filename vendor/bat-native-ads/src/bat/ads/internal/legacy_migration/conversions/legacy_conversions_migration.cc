@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "absl/types/optional.h"
 #include "base/bind.h"
 #include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
@@ -16,7 +17,6 @@
 #include "bat/ads/internal/conversions/conversion_queue_database_table.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/pref_names.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace conversions {

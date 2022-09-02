@@ -5,9 +5,9 @@
 
 #include "bat/ads/internal/account/deposits/cash_deposit.h"
 
+#include "absl/types/optional.h"
 #include "bat/ads/internal/account/deposits/deposit_info.h"
 #include "bat/ads/internal/account/deposits/deposits_database_table.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
