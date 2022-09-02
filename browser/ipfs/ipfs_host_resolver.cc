@@ -74,9 +74,10 @@ void IPFSHostResolver::Resolve(const net::HostPortPair& host,
   resolving_host_ = host.host();
   net::HostPortPair local_host_port(prefix_ + resolving_host_, host.port());
 
-  network_context_->ResolveHost(local_host_port, isolation_key,
-                                std::move(parameters),
-                                receiver_.BindNewPipeAndPassRemote());
+  network_context_->ResolveHost(
+      network::mojom::HostResolverHost::NewHostPortPair(local_host_port),
+      isolation_key, std::move(parameters),
+      receiver_.BindNewPipeAndPassRemote());
 }
 
 void IPFSHostResolver::OnComplete(

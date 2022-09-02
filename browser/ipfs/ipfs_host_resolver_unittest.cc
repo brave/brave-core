@@ -41,12 +41,14 @@ class FakeHostResolver : public network::mojom::HostResolver {
   ~FakeHostResolver() override = default;
 
   // network::mojom::HostResolver
-  void ResolveHost(const net::HostPortPair& host,
+  void ResolveHost(network::mojom::HostResolverHostPtr host,
                    const net::NetworkIsolationKey& network_isolation_key,
                    network::mojom::ResolveHostParametersPtr parameters,
                    mojo::PendingRemote<network::mojom::ResolveHostClient>
                        pending_response_client) override {
-    EXPECT_EQ(expected_host_, host.host());
+    EXPECT_EQ(expected_host_, host->is_host_port_pair()
+                                  ? host->get_host_port_pair().host()
+                                  : host->get_scheme_host_port().host());
     EXPECT_EQ(parameters->dns_query_type, net::DnsQueryType::TXT);
     mojo::Remote<network::mojom::ResolveHostClient> response_client;
     response_client.Bind(std::move(pending_response_client));
@@ -85,7 +87,7 @@ class FakeHostResolverFail : public FakeHostResolver {
   ~FakeHostResolverFail() override = default;
 
   // network::mojom::HostResolver
-  void ResolveHost(const net::HostPortPair& host,
+  void ResolveHost(network::mojom::HostResolverHostPtr host,
                    const net::NetworkIsolationKey& network_isolation_key,
                    network::mojom::ResolveHostParametersPtr parameters,
                    mojo::PendingRemote<network::mojom::ResolveHostClient>
@@ -103,13 +105,13 @@ class FakeNetworkContext : public network::TestNetworkContext {
   ~FakeNetworkContext() override = default;
 
   // network::mojom::HostResolver
-  void ResolveHost(const net::HostPortPair& host,
+  void ResolveHost(network::mojom::HostResolverHostPtr host,
                    const net::NetworkIsolationKey& network_isolation_key,
                    network::mojom::ResolveHostParametersPtr parameters,
                    mojo::PendingRemote<network::mojom::ResolveHostClient>
                        pending_response_client) override {
     DCHECK(host_resolver_);
-    host_resolver_->ResolveHost(host, network_isolation_key,
+    host_resolver_->ResolveHost(std::move(host), network_isolation_key,
                                 std::move(parameters),
                                 std::move(pending_response_client));
   }
