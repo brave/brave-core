@@ -3,5 +3,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 """A inline part of desktop_browser_finder.py"""
+import shutil
 
-import lib.override_utils as override_utils
+def MaybeUpdateSourceProfile(browser_options, profile_directory):
+  if '--update-source-profile' in browser_options.extra_browser_args:
+      # Override the source profile by the result profile.
+      shutil.rmtree(browser_options.profile_dir)
+      shutil.copytree(profile_directory,
+                      browser_options.profile_dir)
