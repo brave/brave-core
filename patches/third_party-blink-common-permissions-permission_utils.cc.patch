@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/common/permissions/permission_utils.cc b/third_party/blink/common/permissions/permission_utils.cc
+index 9ac093d9e708b71984e7afdc7dc8e1b3cbb7be04..5f5551d10c92d05815c0208d2270df482fe461cc 100644
+--- a/third_party/blink/common/permissions/permission_utils.cc
++++ b/third_party/blink/common/permissions/permission_utils.cc
+@@ -102,7 +102,7 @@ absl::optional<PermissionType> PermissionDescriptorInfoToPermissionType(
+       if (clipboard_allow_without_sanitization) {
+         return PermissionType::CLIPBOARD_READ_WRITE;
+       } else {
+-        return PermissionType::CLIPBOARD_SANITIZED_WRITE;
++        return PermissionType::CLIPBOARD_READ_WRITE;
+       }
+     }
+     case PermissionName::PAYMENT_HANDLER:

@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/clipboard/clipboard_promise.cc b/third_party/blink/renderer/modules/clipboard/clipboard_promise.cc
-index 232be5f18146d7e54aa41c34fb2f1d4da97c261a..5d678d5c4d57faedf507543939b958bd5ca4c6b4 100644
+index 232be5f18146d7e54aa41c34fb2f1d4da97c261a..fc7dc01b89d3099f2a9d5905be89c01316ea9649 100644
 --- a/third_party/blink/renderer/modules/clipboard/clipboard_promise.cc
 +++ b/third_party/blink/renderer/modules/clipboard/clipboard_promise.cc
 @@ -550,6 +550,7 @@ void ClipboardPromise::RequestPermission(
@@ -10,3 +10,15 @@ index 232be5f18146d7e54aa41c34fb2f1d4da97c261a..5d678d5c4d57faedf507543939b958bd
        RuntimeEnabledFeatures::ClipboardCustomFormatsEnabled() &&
        !has_transient_user_activation) {
      script_promise_resolver_->Reject(MakeGarbageCollected<DOMException>(
+@@ -571,8 +572,9 @@ void ClipboardPromise::RequestPermission(
+       !allow_without_sanitization) {
+     // Check permission (but do not query the user).
+     // See crbug.com/795929 for moving this check into the Browser process.
+-    permission_service_->HasPermission(std::move(permission_descriptor),
+-                                       std::move(callback));
++    permission_service_->RequestPermission(std::move(permission_descriptor),
++                                         /*user_gesture*/ false,
++                                         std::move(callback));
+     return;
+   }
+   // Check permission, and query if necessary.
