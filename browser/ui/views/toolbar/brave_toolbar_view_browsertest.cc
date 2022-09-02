@@ -16,6 +16,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/profiles/profile_test_util.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
@@ -40,15 +41,6 @@
 #include "brave/components/brave_vpn/features.h"
 #include "brave/components/brave_vpn/pref_names.h"
 #endif
-
-// An observer that returns back to test code after a new profile is
-// initialized.
-void OnUnblockOnProfileCreation(base::RunLoop* run_loop,
-                                Profile* profile,
-                                Profile::CreateStatus status) {
-  if (status == Profile::CREATE_STATUS_INITIALIZED)
-    run_loop->Quit();
-}
 
 class BraveToolbarViewTest : public InProcessBrowserTest {
  public:
@@ -155,12 +147,10 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
       profile_manager->GetProfileAttributesStorage();
   base::FilePath current_profile_path = browser()->profile()->GetPath();
   base::FilePath new_path = profile_manager->GenerateNextProfileDirectoryPath();
-  base::RunLoop run_loop;
-  profile_manager->CreateProfileAsync(
-      new_path, base::BindRepeating(&OnUnblockOnProfileCreation, &run_loop));
-  run_loop.Run();
+  Profile* new_profile =
+      profiles::testing::CreateProfileSync(profile_manager, new_path);
+  EXPECT_TRUE(new_profile);
   ASSERT_EQ(2u, storage.GetNumberOfProfiles());
-  Profile* new_profile = profile_manager->GetProfileByPath(new_path);
 
   // check it's now shown in first profile
   EXPECT_EQ(true, is_avatar_button_shown());
