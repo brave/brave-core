@@ -528,6 +528,9 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not use_titlecase">
         </if>
 
+      <if expr="not is_android">
+        </if>
+
       <if expr="is_chromeos">
         <then>
           </then>
@@ -899,7 +902,7 @@ are declared in tools/grit/grit_rule.gni.
         </if>
 
       <if expr="toolkit_views">
-        <if expr="not use_titlecase">
+      <if expr="not use_titlecase">
           </if>
         <if expr="use_titlecase">
           </if>
