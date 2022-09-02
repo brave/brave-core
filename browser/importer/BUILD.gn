@@ -11,3 +11,23 @@ source_set("importer") {
     "//chrome/common/importer",
   ]
 }
+if (!is_android) {
+  source_set("unit_tests") {
+    testonly = true
+    sources = [
+      "brave_external_process_importer_host_unittest.cc",
+      "extensions_import_helpers_unittest.cc",
+      "test_storage_utils.cc",
+      "test_storage_utils.h",
+    ]
+
+    deps = [
+      "//base",
+      "//base/test:test_support",
+      "//chrome/browser",
+      "//chrome/test:test_support",
+      "//components/value_store:test_support",
+      "//testing/gtest",
+    ]
+  }
+}
