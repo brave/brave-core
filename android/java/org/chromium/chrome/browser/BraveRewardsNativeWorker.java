@@ -287,7 +287,7 @@ public class BraveRewardsNativeWorker {
         }
     }
 
-    public void Donate(String publisher_key, int amount, boolean recurring) {
+    public void Donate(String publisher_key, double amount, boolean recurring) {
         synchronized(lock) {
             BraveRewardsNativeWorkerJni.get().donate(
                     mNativeBraveRewardsNativeWorker, publisher_key, amount, recurring);
@@ -414,6 +414,13 @@ public class BraveRewardsNativeWorker {
     public void GetExternalWallet() {
         synchronized (lock) {
             BraveRewardsNativeWorkerJni.get().getExternalWallet(mNativeBraveRewardsNativeWorker);
+        }
+    }
+
+    public void GetPublisherBanner(String publisher_key) {
+        synchronized (lock) {
+            BraveRewardsNativeWorkerJni.get().GetPublisherBanner(
+                    mNativeBraveRewardsNativeWorker, publisher_key);
         }
     }
 
@@ -661,12 +668,20 @@ public class BraveRewardsNativeWorker {
         }
     }
 
+    @CalledByNative
+    public void onPublisherBanner(String jsonBannerInfo) {
+        for (BraveRewardsObserver observer : mObservers) {
+            observer.onPublisherBanner(jsonBannerInfo);
+        }
+    }
+
     @NativeMethods
     interface Natives {
         void init(BraveRewardsNativeWorker caller);
         void destroy(long nativeBraveRewardsNativeWorker);
         String getWalletBalance(long nativeBraveRewardsNativeWorker);
         String getExternalWalletType(long nativeBraveRewardsNativeWorker);
+        void GetPublisherBanner(long nativeBraveRewardsNativeWorker, String publisher_key);
         double getWalletRate(long nativeBraveRewardsNativeWorker);
         void getPublisherInfo(long nativeBraveRewardsNativeWorker, int tabId, String host);
         String getPublisherURL(long nativeBraveRewardsNativeWorker, int tabId);
@@ -682,7 +697,7 @@ public class BraveRewardsNativeWorker {
                 long nativeBraveRewardsNativeWorker, int tabId, boolean exclude);
         void removePublisherFromMap(long nativeBraveRewardsNativeWorker, int tabId);
         void getCurrentBalanceReport(long nativeBraveRewardsNativeWorker);
-        void donate(long nativeBraveRewardsNativeWorker, String publisher_key, int amount,
+        void donate(long nativeBraveRewardsNativeWorker, String publisher_key, double amount,
                 boolean recurring);
         void getAllNotifications(long nativeBraveRewardsNativeWorker);
         void deleteNotification(long nativeBraveRewardsNativeWorker, String notification_id);

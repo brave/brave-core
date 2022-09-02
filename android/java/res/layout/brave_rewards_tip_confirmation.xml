@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context=".BraveRewardsTipConfirmationFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/id_thanks_for_support"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:text="@string/thanks_for_support"
+        android:textStyle="bold"
+        android:textColor="#212529"
+        android:textSize="20sp"
+        android:layout_marginTop="64dp"
+        app:layout_constraintBottom_toTopOf="@+id/divider_line"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <View
+        android:id="@+id/divider_line"
+        android:layout_width="0dp"
+        android:layout_height="1.19dp"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="9.85dp"
+        android:layout_marginEnd="84dp"
+        android:background="#80AEB1C2"
+        app:layout_constraintBottom_toTopOf="@+id/your_tip_amount_sent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_thanks_for_support" />
+
+    <TextView
+        android:id="@+id/your_tip_amount_sent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/poppins_regular"
+        android:letterSpacing="0.03"
+        android:text="@string/your_one_time_tip_has_been_sent"
+        android:textColor="#212529"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/amount_sent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider_line" />
+
+    <TextView
+        android:id="@+id/amount_sent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:fontFamily="@font/poppins_regular"
+        android:textStyle="bold"
+        android:letterSpacing="-0.01"
+        android:textColor="#212529"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/textview_tweet_your_support"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/your_tip_amount_sent" />
+
+    <TextView
+        android:id="@+id/textview_tweet_your_support"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:fontFamily="@font/poppins_regular"
+        android:text="@string/tweet_about_your_support"
+        android:textColor="#339AF0"
+        app:layout_constraintBottom_toTopOf="@+id/twitter_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/amount_sent" />
+
+    <ImageView
+        android:id="@+id/twitter_button"
+        android:layout_width="51dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="23dp"
+        android:contentDescription="@null"
+        android:src="@drawable/icn_tweet"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview_tweet_your_support"
+        android:layout_marginBottom="64dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
