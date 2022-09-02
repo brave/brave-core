@@ -1,29 +1,9 @@
 diff --git a/tools/perf/benchmarks/loading.py b/tools/perf/benchmarks/loading.py
-index 21f705aad5da85863e5bb61aec58b869abb50bd0..74e4fc8e2120a308e048be51d43d40f8389439ba 100644
+index 21f705aad5da85863e5bb61aec58b869abb50bd0..c702414160bb72f4957e297ae805515192b85004 100644
 --- a/tools/perf/benchmarks/loading.py
 +++ b/tools/perf/benchmarks/loading.py
-@@ -103,3 +103,24 @@ class LoadingMBI(_LoadingBase):
+@@ -103,3 +103,4 @@ class LoadingMBI(_LoadingBase):
    @classmethod
    def Name(cls):
      return 'UNSCHEDULED_loading.mbi'
-+
-+@benchmark.Info(emails=['matuchin@brave.com', 'iefremov@brave.com'],
-+               component='Blink>Loader',
-+               documentation_url='https://bit.ly/loading-benchmarks')
-+class LoadingDesktopBrave(LoadingDesktop):
-+  """ A benchmark measuring loading performance of desktop sites. """
-+  SUPPORTED_PLATFORM_TAGS = [platforms.DESKTOP]
-+  SUPPORTED_PLATFORMS = [story.expectations.ALL_DESKTOP]
-+
-+  def CreateStorySet(self, options):
-+    import os
-+    from core import path_util
-+    with path_util.SysPath(os.path.join(os.path.dirname(__file__), '..', '..',
-+                           '..', 'brave', 'tools', 'perf', 'brave_page_sets')):
-+      import brave_loading_desktop
-+    return brave_loading_desktop.BraveLoadingDesktopStorySet(
-+        cache_temperatures=[cache_temperature.COLD, cache_temperature.WARM])
-+
-+  @classmethod
-+  def Name(cls):
-+    return 'loading.desktop.brave'
++import sys; import os; sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'brave', 'script', 'lib')); from import_inline import inline_file_from_src; inline_file_from_src("brave/chromium_src/tools/perf/benchmarks/loading.py", globals(), locals())
