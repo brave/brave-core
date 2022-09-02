@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/autocomplete_controller.cc b/components/omnibox/browser/autocomplete_controller.cc
-index cfedc49bcff6d6b625f0d96936befbdf5a517004..1c422943809eb5ba6c4391b64e5ef45e20574045 100644
+index 614657adf5070b99eb3b834281900f0597e777ae..8deb47b9f66a47aa3e517c062b5d232f8203054f 100644
 --- a/components/omnibox/browser/autocomplete_controller.cc
 +++ b/components/omnibox/browser/autocomplete_controller.cc
 @@ -378,6 +378,7 @@ AutocompleteController::AutocompleteController(
@@ -10,7 +10,7 @@ index cfedc49bcff6d6b625f0d96936befbdf5a517004..1c422943809eb5ba6c4391b64e5ef45e
      }
      // Providers run in the order they're added.  Add `HistoryURLProvider` after
      // `SearchProvider` because:
-@@ -957,6 +958,8 @@ void AutocompleteController::UpdateResult(
+@@ -959,6 +960,8 @@ void AutocompleteController::UpdateResult(
    metrics_.OnUpdateResult(last_result_for_logging,
                            result_.GetMatchDedupComparators());
  

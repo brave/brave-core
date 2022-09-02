@@ -1,5 +1,5 @@
 diff --git a/PRESUBMIT.py b/PRESUBMIT.py
-index 22a6de9ec138e8ce2257aaadcffc4aa03e89b7de..7ebb8654da0989a5af20063c1f28ac451f4de0ac 100644
+index d034f82606ff7970d78576052115cbb78a9ed3a0..27b79413070fa0693a906e9d04f02bba0efbbc01 100644
 --- a/PRESUBMIT.py
 +++ b/PRESUBMIT.py
 @@ -6169,3 +6169,4 @@ Robolectric tests do not need a @Batch or @DoNotBatch annotations.

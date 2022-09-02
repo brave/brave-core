@@ -1,8 +1,8 @@
 diff --git a/services/network/cookie_settings.cc b/services/network/cookie_settings.cc
-index bc8267ddd131cd6c3b0472975970467524f5d64c..26decc18c44056f7dfb0e4cb9797dc7764d7be0c 100644
+index 53c2e735d3c7d223a2b2f3347861ca907a16ac84..3cbce34d23d2148873774b55253155be1c2a14c4 100644
 --- a/services/network/cookie_settings.cc
 +++ b/services/network/cookie_settings.cc
-@@ -260,6 +260,7 @@ CookieSettings::GetCookieSettingWithMetadata(const GURL& url,
+@@ -261,6 +261,7 @@ CookieSettings::GetCookieSettingWithMetadata(const GURL& url,
        match) {
      cookie_setting = match->GetContentSetting();
      found_explicit_setting = IsExplicitSetting(*match);

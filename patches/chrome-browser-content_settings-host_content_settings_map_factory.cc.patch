@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/content_settings/host_content_settings_map_factory.cc b/chrome/browser/content_settings/host_content_settings_map_factory.cc
-index 242f244a6d3b5a6152703c34d260435c4b50eddc..941caa07261667b26187778579b635fa6d645940 100644
+index d5cab7562cbdfc58ea973cb15a1b77bad2ce7e7f..86d887216cbf8b9768bd01b3f53148ac5705428b 100644
 --- a/chrome/browser/content_settings/host_content_settings_map_factory.cc
 +++ b/chrome/browser/content_settings/host_content_settings_map_factory.cc
-@@ -98,6 +98,7 @@ scoped_refptr<RefcountedKeyedService>
+@@ -97,6 +97,7 @@ scoped_refptr<RefcountedKeyedService>
  
    scoped_refptr<HostContentSettingsMap> settings_map(new HostContentSettingsMap(
        profile->GetPrefs(),
