@@ -59,6 +59,7 @@ include_rules = [
   "+services/proxy_resolver/public/mojom",
   "+services/resource_coordinator/public/cpp",
   "+services/resource_coordinator/public/mojom",
+  "+services/service_manager/public/cpp",
   "+services/strings",
   "+third_party/boringssl/src/include",
   "+third_party/crashpad",
