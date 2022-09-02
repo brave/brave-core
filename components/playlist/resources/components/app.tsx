@@ -51,11 +51,11 @@ export class PlaylistPage extends React.Component<Props, State> {
   }
 
   getImgSrc = (itemId: string) => {
-    return 'chrome://playlist-data/' + itemId + '/thumbnail/'
+    return 'chrome-untrusted://playlist-data/' + itemId + '/thumbnail/'
   }
 
   getMediaSrc = (itemId: string) => {
-    return 'chrome://playlist-data/' + itemId + '/media'
+    return 'chrome-untrusted://playlist-data/' + itemId + '/media'
   }
 
   get lazyButtonStyle () {

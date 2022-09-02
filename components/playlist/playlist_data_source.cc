@@ -45,7 +45,7 @@ PlaylistDataSource::PlaylistDataSource(PlaylistService* service)
 PlaylistDataSource::~PlaylistDataSource() = default;
 
 std::string PlaylistDataSource::GetSource() {
-  return "playlist-data";
+  return "chrome-untrusted://playlist-data/";
 }
 
 void PlaylistDataSource::StartDataRequest(

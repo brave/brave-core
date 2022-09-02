@@ -103,10 +103,6 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kWalletPanelHost) {
     return new WalletPanelUI(web_ui);
 #endif  // BUILDFLAG(OS_ANDROID)
-#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-  } else if (host == kPlaylistHost) {
-    return new playlist::PlaylistUI(web_ui, url.host());
-#endif  // BUILDFLAG(PLAYLIST_ENABLED)
   } else if (host == kRewardsPageHost) {
     return new BraveRewardsPageUI(web_ui, url.host());
   } else if (host == kRewardsInternalsHost) {
@@ -176,9 +172,6 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui, const GURL& url) {
 #endif
 #if BUILDFLAG(ENABLE_TOR)
       url.host_piece() == kTorInternalsHost ||
-#endif
-#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-      url.host_piece() == kPlaylistHost ||
 #endif
       url.host_piece() == kWelcomeHost ||
       url.host_piece() == chrome::kChromeUIWelcomeURL ||

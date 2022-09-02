@@ -10,7 +10,8 @@
 #include <string>
 
 #include "brave/components/playlist/mojom/playlist.mojom.h"
-#include "ui/webui/mojo_web_ui_controller.h"
+#include "content/public/browser/webui_config.h"
+#include "ui/webui/untrusted_web_ui_controller.h"
 
 namespace content {
 class BrowserContext;
@@ -21,7 +22,7 @@ class PlaylistPageHandler;
 
 namespace playlist {
 
-class PlaylistUI : public ui::MojoWebUIController,
+class PlaylistUI : public ui::UntrustedWebUIController,
                    public playlist::mojom::PageHandlerFactory {
  public:
   static bool ShouldBlockPlaylistWebUI(content::BrowserContext* browser_context,
@@ -48,6 +49,17 @@ class PlaylistUI : public ui::MojoWebUIController,
       this};
 
   WEB_UI_CONTROLLER_TYPE_DECL();
+};
+
+class UntrustedPlaylistUIConfig : public content::WebUIConfig {
+ public:
+  UntrustedPlaylistUIConfig();
+  ~UntrustedPlaylistUIConfig() override = default;
+
+  std::unique_ptr<content::WebUIController> CreateWebUIController(
+      content::WebUI* web_ui) override;
+
+  bool IsWebUIEnabled(content::BrowserContext* browser_context) override;
 };
 
 }  // namespace playlist

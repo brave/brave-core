@@ -8,13 +8,19 @@
 
 #include <utility>
 
+#include "base/feature_list.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/playlist_page_handler.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/playlist/features.h"
 #include "brave/components/playlist/resources/grit/playlist_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
+#include "content/public/browser/web_ui.h"
+#include "content/public/browser/web_ui_data_source.h"
+#include "content/public/common/bindings_policy.h"
+#include "content/public/common/url_constants.h"
 #include "url/gurl.h"
 
 namespace playlist {
@@ -30,9 +36,35 @@ bool PlaylistUI::ShouldBlockPlaylistWebUI(
 }
 
 PlaylistUI::PlaylistUI(content::WebUI* web_ui, const std::string& name)
-    : MojoWebUIController(web_ui) {
-  CreateAndAddWebUIDataSource(web_ui, name, kPlaylistGenerated,
-                              kPlaylistGeneratedSize, IDR_PLAYLIST_HTML);
+    : UntrustedWebUIController(web_ui) {
+  // From MojoWebUIController
+  web_ui->SetBindings(content::BINDINGS_POLICY_MOJO_WEB_UI);
+
+  auto* source =
+      CreateAndAddWebUIDataSource(web_ui, name, kPlaylistGenerated,
+                                  kPlaylistGeneratedSize, IDR_PLAYLIST_HTML);
+
+  // Allow to load untrusted resources.
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::StyleSrc,
+      std::string("style-src chrome-untrusted://resources "
+                  "chrome-untrusted://brave-resources 'unsafe-inline';"));
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::FontSrc,
+      std::string("font-src chrome-untrusted://brave-resources "
+                  "chrome-untrusted://resources;"));
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ScriptSrc,
+      std::string("script-src chrome-untrusted://brave-resources "
+                  "chrome-untrusted://resources "
+                  "chrome-untrusted://playlist;"));
+
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ImgSrc,
+      std::string("img-src 'self' chrome-untrusted://playlist-data;"));
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::MediaSrc,
+      std::string("media-src 'self' chrome-untrusted://playlist-data;"));
 }
 
 PlaylistUI::~PlaylistUI() = default;
@@ -56,5 +88,18 @@ void PlaylistUI::CreatePageHandler(
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(PlaylistUI)
+
+std::unique_ptr<content::WebUIController>
+UntrustedPlaylistUIConfig::CreateWebUIController(content::WebUI* web_ui) {
+  return std::make_unique<PlaylistUI>(web_ui, kPlaylistURL);
+}
+
+bool UntrustedPlaylistUIConfig::IsWebUIEnabled(
+    content::BrowserContext* browser_context) {
+  return base::FeatureList::IsEnabled(playlist::features::kPlaylist);
+}
+
+UntrustedPlaylistUIConfig::UntrustedPlaylistUIConfig()
+    : WebUIConfig(content::kChromeUIUntrustedScheme, kPlaylistHost) {}
 
 }  // namespace playlist

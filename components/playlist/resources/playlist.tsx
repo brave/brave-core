@@ -19,23 +19,17 @@ import wireApiEventsToStore from './apiEventsToStore'
 import store from './store'
 
 function initialize () {
-  new Promise(resolve => chrome.braveTheme.getBraveThemeType(resolve))
-    .then((themeType: chrome.braveTheme.ThemeType) => {
-      render(
-        <Provider store={store}>
-          <BraveCoreThemeProvider
-            initialThemeType={themeType}
-            dark={DarkTheme}
-            light={Theme}
-          >
-            <App />
-          </BraveCoreThemeProvider>
-        </Provider>,
-        document.getElementById('root'))
-    })
-    .catch((error) => {
-      console.error('Problem mounting playlist', error)
-    })
+  render(
+    <Provider store={store}>
+      <BraveCoreThemeProvider
+        initialThemeType={'System'}
+        dark={DarkTheme}
+        light={Theme}
+      >
+        <App />
+      </BraveCoreThemeProvider>
+    </Provider>,
+    document.getElementById('root'))
 }
 
 wireApiEventsToStore()
