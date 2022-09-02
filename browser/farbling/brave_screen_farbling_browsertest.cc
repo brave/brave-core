@@ -28,8 +28,8 @@ using brave_shields::ControlType;
 namespace {
 
 const gfx::Rect kTestWindowBounds[] = {
-    gfx::Rect(200, 100, 200, 100), gfx::Rect(50, 50, 100, 100),
-    gfx::Rect(50, 50, 100, 0), gfx::Rect(0, 0, 0, 0)};
+    gfx::Rect(200, 100, 300, 200), gfx::Rect(50, 50, 200, 200),
+    gfx::Rect(50, 50, 555, 444), gfx::Rect(0, 0, 200, 200)};
 
 }  // namespace
 
@@ -94,8 +94,9 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
 
   const GURL& FarblingUrl() { return farbling_url_; }
 
-  void SetBounds(const gfx::Rect& bounds) {
+  gfx::Rect SetBounds(const gfx::Rect& bounds) {
     browser()->window()->SetBounds(bounds);
+    return browser()->window()->GetBounds();
   }
 
   void FarbleScreenSize() {
@@ -168,10 +169,12 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
                   Contents(), PREPARE_TEST_EVENT
                   "testEvent.screenY - devicePixelRatio * testEvent.clientY"));
         } else {
-          EXPECT_LE(kTestWindowBounds[i].x(),
-                    EvalJs(Contents(), "window.screenX"));
-          EXPECT_LE(kTestWindowBounds[i].y(),
-                    EvalJs(Contents(), "window.screenY"));
+          if (kTestWindowBounds[i].x() > 8) {
+            EXPECT_LT(8, EvalJs(Contents(), "window.screenX"));
+          }
+          if (kTestWindowBounds[i].y() > 8) {
+            EXPECT_LT(8, EvalJs(Contents(), "window.screenY"));
+          }
         }
       }
     }
@@ -198,19 +201,23 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
   }
 
   void FarbleScreenPopupPosition(int j) {
-    SetBounds(kTestWindowBounds[j]);
+    gfx::Rect parent_bounds;
+    // Make sure parent_bounds dimensions aren't unexpectedly large.
+    do {
+      parent_bounds = SetBounds(kTestWindowBounds[j]);
+    } while (parent_bounds.width() > 600 || parent_bounds.height() > 600);
     for (bool allow_fingerprinting : {false, true}) {
       SetFingerprintingSetting(allow_fingerprinting);
       NavigateToURLUntilLoadStop(FarblingUrl());
-      gfx::Rect parent_bounds = browser()->window()->GetBounds();
       const char* script =
           "open('http://d.test/', '', `"
-          "left=${screen.availLeft + 10},"
-          "top=${screen.availTop + 10},"
+          "left=10,"
+          "top=10,"
           "width=${outerWidth + 200},"
           "height=${outerHeight + 200}"
           "`);";
       Browser* popup = OpenPopup(script);
+      base::RunLoop().RunUntilIdle();
       gfx::Rect child_bounds = popup->window()->GetBounds();
       auto* parent_contents = Contents();
       auto* popup_contents = popup->tab_strip_model()->GetActiveWebContents();
