@@ -15,6 +15,7 @@ const base::Feature kBraveVerticalTabs{"BraveVerticalTabs",
 
 bool ShouldShowVerticalTabs() {
   // TODO(sangwoo.ko) This should consider pref too.
+  // https://github.com/brave/brave-browser/issues/23467
   return base::FeatureList::IsEnabled(features::kBraveVerticalTabs);
 }
 

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/frame/vertical_tab_strip_container.h"
+#include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 
 #include <memory>
 #include <utility>
@@ -121,7 +121,7 @@ class ScrollContentsView : public views::View {
  public:
   METADATA_HEADER(ScrollContentsView);
 
-  explicit ScrollContentsView(VerticalTabStripContainer* container)
+  explicit ScrollContentsView(VerticalTabStripRegionView* container)
       : container_(container) {}
   ~ScrollContentsView() override = default;
 
@@ -135,7 +135,7 @@ class ScrollContentsView : public views::View {
   }
 
  private:
-  raw_ptr<VerticalTabStripContainer> container_ = nullptr;
+  raw_ptr<VerticalTabStripRegionView> container_ = nullptr;
 };
 
 BEGIN_METADATA(ScrollContentsView, views::View)
@@ -143,19 +143,19 @@ END_METADATA
 
 }  // namespace
 
-VerticalTabStripContainer::VerticalTabStripContainer(
+VerticalTabStripRegionView::VerticalTabStripRegionView(
     TabStripRegionView* region_view)
     : region_view_(region_view) {
   scroll_view_ = AddChildView(std::make_unique<CustomScrollView>());
   scroll_view_header_ =
       scroll_view_->SetHeader(std::make_unique<ScrollHeaderView>(
           base::BindRepeating(
-              [](VerticalTabStripContainer* container, const ui::Event& event) {
+              [](VerticalTabStripRegionView* container, const ui::Event& event) {
                 container->SetState(
                     container->state_ ==
-                            VerticalTabStripContainer::State::kCollapsed
-                        ? VerticalTabStripContainer::State::kExpanded
-                        : VerticalTabStripContainer::State::kCollapsed);
+                            VerticalTabStripRegionView::State::kCollapsed
+                        ? VerticalTabStripRegionView::State::kExpanded
+                        : VerticalTabStripRegionView::State::kCollapsed);
               },
               this),
           region_view_->tab_strip_));
@@ -178,9 +178,9 @@ VerticalTabStripContainer::VerticalTabStripContainer(
   UpdateLayout();
 }
 
-VerticalTabStripContainer::~VerticalTabStripContainer() {}
+VerticalTabStripRegionView::~VerticalTabStripRegionView() {}
 
-void VerticalTabStripContainer::SetState(State state) {
+void VerticalTabStripRegionView::SetState(State state) {
   if (state_ == state)
     return;
 
@@ -188,7 +188,7 @@ void VerticalTabStripContainer::SetState(State state) {
   InvalidateLayout();
 }
 
-gfx::Size VerticalTabStripContainer::CalculatePreferredSize() const {
+gfx::Size VerticalTabStripRegionView::CalculatePreferredSize() const {
   if (!tabs::features::ShouldShowVerticalTabs())
     return {};
 
@@ -205,7 +205,7 @@ gfx::Size VerticalTabStripContainer::CalculatePreferredSize() const {
           View::CalculatePreferredSize().height()};
 }
 
-void VerticalTabStripContainer::Layout() {
+void VerticalTabStripRegionView::Layout() {
   // As we have to update ScrollView's viewport size and its contents size,
   // layouting children manually will be more handy.
 
@@ -236,7 +236,7 @@ void VerticalTabStripContainer::Layout() {
   UpdateTabSearchButtonVisibility();
 }
 
-void VerticalTabStripContainer::UpdateLayout() {
+void VerticalTabStripRegionView::UpdateLayout() {
   if (tabs::features::ShouldShowVerticalTabs()) {
     if (!Contains(region_view_)) {
       original_parent_of_region_view_ = region_view_->parent();
@@ -256,7 +256,7 @@ void VerticalTabStripContainer::UpdateLayout() {
   Layout();
 }
 
-void VerticalTabStripContainer::OnThemeChanged() {
+void VerticalTabStripRegionView::OnThemeChanged() {
   View::OnThemeChanged();
 
   auto background_color =
@@ -267,18 +267,18 @@ void VerticalTabStripContainer::OnThemeChanged() {
   new_tab_button_->FrameColorsChanged();
 }
 
-void VerticalTabStripContainer::UpdateNewTabButtonVisibility() {
+void VerticalTabStripRegionView::UpdateNewTabButtonVisibility() {
   bool overflowed =
       scroll_view_->GetMaxHeight() < scroll_view_->contents()->height();
   region_view_->new_tab_button()->SetVisible(!overflowed);
   new_tab_button_->SetVisible(overflowed);
 }
 
-void VerticalTabStripContainer::UpdateTabSearchButtonVisibility() {
+void VerticalTabStripRegionView::UpdateTabSearchButtonVisibility() {
   const bool is_vertical_tabs = tabs::features::ShouldShowVerticalTabs();
   if (auto* tab_search_button = region_view_->tab_search_button())
     tab_search_button->SetVisible(!is_vertical_tabs);
 }
 
-BEGIN_METADATA(VerticalTabStripContainer, views::View)
+BEGIN_METADATA(VerticalTabStripRegionView, views::View)
 END_METADATA
