@@ -7,6 +7,7 @@
 
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/strings/string_util.h"
 #include "brave/components/speedreader/speedreader_result_delegate.h"
@@ -24,8 +25,8 @@
 
 namespace {
 void SetSpeedreaderCSP(const GURL& url,
-                            network::mojom::URLResponseHead* response_head,
-                            const std::string& hash) {
+                       network::mojom::URLResponseHead* response_head,
+                       const std::string& hash) {
   std::string value;
   if (response_head->headers->GetNormalizedHeader("Content-Security-Policy",
                                                   &value)) {
