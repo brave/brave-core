@@ -1,7 +1,14 @@
 import * as React from 'react'
+import {
+  useDispatch,
+  useSelector
+} from 'react-redux'
+
+// Actions
+import { PanelActions } from '../../../panel/actions'
 
 // Types
-import { BraveWallet, WalletAccountType } from '../../../constants/types'
+import { BraveWallet, WalletAccountType, PanelState, WalletState } from '../../../constants/types'
 
 // Components
 import {
@@ -33,44 +40,104 @@ import { getLocale } from '../../../../common/locale'
 
 export interface Props {
   originInfo: BraveWallet.OriginInfo
-  accounts: WalletAccountType[]
-  primaryAction: () => void
-  secondaryAction: () => void
-  selectAccount: (account: WalletAccountType) => void
-  removeAccount: (account: WalletAccountType) => void
-  selectedAccounts: WalletAccountType[]
-  isReady: boolean
+  accountsToConnect: WalletAccountType[]
 }
-function ConnectWithSite (props: Props) {
+export const ConnectWithSite = (props: Props) => {
   const {
-    primaryAction,
-    secondaryAction,
-    removeAccount,
-    selectAccount,
     originInfo,
-    accounts,
-    isReady,
-    selectedAccounts
+    accountsToConnect
   } = props
-  const checkIsSelected = (account: WalletAccountType) => {
-    return selectedAccounts.some((a) => a.id === account.id)
-  }
 
-  const createAccountList = () => {
-    const list = selectedAccounts.map((a) => {
+  // Redux
+  const dispatch = useDispatch()
+
+  // Wallet State
+  const defaultAccounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultAccounts)
+  const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
+
+  // Panel State
+  const connectingAccounts = useSelector(({ panel }: { panel: PanelState }) => panel.connectingAccounts)
+
+  // State
+  const [selectedAccounts, setSelectedAccounts] = React.useState<
+    WalletAccountType[] | undefined
+  >(undefined)
+  const [readyToConnect, setReadyToConnect] = React.useState<boolean>(false)
+
+  // Methods
+  const onNext = React.useCallback(() => {
+    if (!readyToConnect) {
+      setReadyToConnect(true)
+      return
+    }
+    if (selectedAccounts) {
+      dispatch(PanelActions.connectToSite({ selectedAccounts }))
+      setSelectedAccounts([])
+      setReadyToConnect(false)
+    }
+  }, [readyToConnect, selectedAccounts, dispatch])
+
+  const onBack = React.useCallback(() => {
+    if (readyToConnect) {
+      setReadyToConnect(false)
+      return
+    }
+    if (selectedAccounts) {
+      dispatch(PanelActions.cancelConnectToSite({ selectedAccounts }))
+      setSelectedAccounts([])
+      setReadyToConnect(false)
+    }
+  }, [readyToConnect, selectedAccounts, dispatch])
+
+  const checkIsSelected = React.useCallback((account: WalletAccountType) => {
+    return selectedAccounts?.some((a) => a.id === account.id) ?? false
+  }, [selectedAccounts])
+
+  const toggleSelected = React.useCallback((account: WalletAccountType) => () => {
+    if (checkIsSelected(account)) {
+      const removedList = selectedAccounts?.filter(
+        (accounts) => accounts.id !== account.id
+      )
+      setSelectedAccounts(removedList)
+      return
+    }
+    if (selectedAccounts) {
+      const addedList = [...selectedAccounts, account]
+      setSelectedAccounts(addedList)
+    }
+  }, [selectedAccounts, checkIsSelected])
+
+  // Memos
+  const accountsToConnectList: string | undefined = React.useMemo(() => {
+    const list = selectedAccounts?.map((a) => {
       return reduceAddress(a.address)
     })
-    return list.join(', ')
+    return list?.join(', ')
+  }, [selectedAccounts])
+
+  const defaultAccount: WalletAccountType | undefined = React.useMemo(() => {
+    const foundDefaultAccountInfo = defaultAccounts.find((account) =>
+      connectingAccounts.includes(account.address.toLowerCase())
+    )
+    return accounts.find(
+      (account) =>
+        account.address.toLowerCase() ===
+        foundDefaultAccountInfo?.address?.toLowerCase() ?? ''
+    )
+  }, [defaultAccounts, connectingAccounts, accounts])
+
+  // Update on render
+  let ignore = false
+  if (
+    selectedAccounts === undefined &&
+    defaultAccount !== undefined &&
+    !ignore
+  ) {
+    setSelectedAccounts([defaultAccount])
+    ignore = true
   }
 
-  const toggleSelected = (account: WalletAccountType) => () => {
-    if (checkIsSelected(account)) {
-      removeAccount(account)
-    } else {
-      selectAccount(account)
-    }
-  }
-
+  // Effects
   const refs = React.useRef<Array<HTMLDivElement | null>>([])
   React.useEffect(() => {
     // Scroll to the first element that was selected
@@ -91,19 +158,19 @@ function ConnectWithSite (props: Props) {
     <StyledWrapper>
       <ConnectHeader originInfo={originInfo} />
       <MiddleWrapper>
-        {isReady ? (
+        {readyToConnect ? (
           <AccountListWrapper>
-            <Details>{createAccountList()}</Details>
+            <Details>{accountsToConnectList}</Details>
           </AccountListWrapper>
         ) : (
           <Details>{getLocale('braveWalletConnectWithSiteTitle')}</Details>
         )}
-        {!isReady ? (
+        {!readyToConnect ? (
           <SelectAddressContainer>
             <NewAccountTitle>{getLocale('braveWalletAccounts')}</NewAccountTitle>
             <DividerLine />
             <SelectAddressScrollContainer>
-              {accounts.map((account, index) => (
+              {accountsToConnect.map((account, index) => (
                 <SelectAddressInnerContainer
                   key={account.id}
                   ref={(ref) => refs.current[index] = (checkIsSelected(account) ? ref : null)}
@@ -128,11 +195,11 @@ function ConnectWithSite (props: Props) {
         )}
       </MiddleWrapper>
       <ConnectBottomNav
-        primaryText={isReady ? getLocale('braveWalletAddAccountConnect') : getLocale('braveWalletConnectWithSiteNext')}
-        secondaryText={isReady ? getLocale('braveWalletBack') : getLocale('braveWalletButtonCancel')}
-        primaryAction={primaryAction}
-        secondaryAction={secondaryAction}
-        disabled={selectedAccounts.length === 0}
+        primaryText={readyToConnect ? getLocale('braveWalletAddAccountConnect') : getLocale('braveWalletConnectWithSiteNext')}
+        secondaryText={readyToConnect ? getLocale('braveWalletBack') : getLocale('braveWalletButtonCancel')}
+        primaryAction={onNext}
+        secondaryAction={onBack}
+        disabled={selectedAccounts?.length === 0}
       />
     </StyledWrapper>
   )
