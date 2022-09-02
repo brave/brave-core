@@ -5,7 +5,7 @@
 
 #include "third_party/blink/renderer/core/css/local_font_face_source.h"
 
-#include "third_party/blink/renderer/core/execution_context/execution_context.h"
+#include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 
 #define IsLocalFontAvailable IsLocalFontAvailable_ChromiumImpl
 

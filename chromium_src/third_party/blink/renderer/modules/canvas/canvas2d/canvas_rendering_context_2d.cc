@@ -5,7 +5,7 @@
 
 #include "third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.h"
 
-#include "third_party/blink/renderer/core/execution_context/execution_context.h"
+#include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 
 #define BRAVE_CANVAS_RENDERING_CONTEXT_2D_MEASURE_TEXT    \
   if (!brave::AllowFingerprinting(GetExecutionContext())) \
