@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/extensions/extension_action_view_controller.h b/chrome/browser/ui/extensions/extension_action_view_controller.h
-index 00aec3dbade1b321f5ea0cec2552d199da2f62b4..9195758012ae7dd6732ebfcc5370d57c4d888c49 100644
+index 6b2f040c2e7fd4df5e17d5d11fd2322e461fb8b8..5e82d57a652e0feda0be2569c90a3c89f6362294 100644
 --- a/chrome/browser/ui/extensions/extension_action_view_controller.h
 +++ b/chrome/browser/ui/extensions/extension_action_view_controller.h
-@@ -18,6 +18,7 @@
+@@ -19,6 +19,7 @@
  #include "extensions/common/extension_id.h"
  #include "ui/gfx/image/image.h"
  
@@ -10,7 +10,7 @@ index 00aec3dbade1b321f5ea0cec2552d199da2f62b4..9195758012ae7dd6732ebfcc5370d57c
  class Browser;
  class ExtensionActionPlatformDelegate;
  class IconWithBadgeImageSource;
-@@ -44,6 +45,7 @@ class ExtensionActionViewController
+@@ -45,6 +46,7 @@ class ExtensionActionViewController
        public extensions::ExtensionContextMenuModel::PopupDelegate,
        public extensions::ExtensionHostObserver {
   public:
@@ -18,7 +18,7 @@ index 00aec3dbade1b321f5ea0cec2552d199da2f62b4..9195758012ae7dd6732ebfcc5370d57c
    static std::unique_ptr<ExtensionActionViewController> Create(
        const extensions::ExtensionId& extension_id,
        Browser* browser,
-@@ -139,6 +141,7 @@ class ExtensionActionViewController
+@@ -142,6 +144,7 @@ class ExtensionActionViewController
    // In some cases (such as when an action is shown in a menu), a substitute
    // ToolbarActionViewController should be used for showing popups. This
    // returns the preferred controller.
@@ -26,7 +26,7 @@ index 00aec3dbade1b321f5ea0cec2552d199da2f62b4..9195758012ae7dd6732ebfcc5370d57c
    ExtensionActionViewController* GetPreferredPopupViewController();
  
    // Begins the process of showing the popup for the extension action on the
-@@ -146,6 +149,7 @@ class ExtensionActionViewController
+@@ -149,6 +152,7 @@ class ExtensionActionViewController
    // user action.
    // The popup may not be shown synchronously if the extension is hidden and
    // first needs to slide itself out.
@@ -34,7 +34,7 @@ index 00aec3dbade1b321f5ea0cec2552d199da2f62b4..9195758012ae7dd6732ebfcc5370d57c
    void TriggerPopup(PopupShowAction show_action,
                      bool by_user,
                      ShowPopupCallback callback);
-@@ -157,6 +161,7 @@ class ExtensionActionViewController
+@@ -160,6 +164,7 @@ class ExtensionActionViewController
                   ShowPopupCallback callback);
  
    // Handles cleanup after the popup closes.

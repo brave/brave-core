@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 929b1f5742d52294fb0dfa03601662744911d036..b6dbf051424fae3541b5a17b977d293fef3f6df5 100644
+index b97c8e7fadae93556dbbaae20dda7da070eb08b8..8beae07e8f70de79d0c12562bdf2e31f4de2781a 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -207,6 +207,7 @@ android_resources("chrome_base_module_resources") {
@@ -34,7 +34,7 @@ index 929b1f5742d52294fb0dfa03601662744911d036..b6dbf051424fae3541b5a17b977d293f
  
    # From java_sources.gni.
    sources = chrome_java_sources + [ app_hooks_impl ]
-@@ -841,6 +845,7 @@ java_group("chrome_all_java") {
+@@ -842,6 +846,7 @@ java_group("chrome_all_java") {
        "//chrome/android/features/tab_ui:module_desc_java",
      ]
    }
@@ -42,7 +42,7 @@ index 929b1f5742d52294fb0dfa03601662744911d036..b6dbf051424fae3541b5a17b977d293f
  }
  
  # This is a list of all base module jni headers. New features should add their
-@@ -890,6 +895,7 @@ group("jni_headers") {
+@@ -892,6 +897,7 @@ group("jni_headers") {
      "//components/ukm/android:jni_headers",
      "//components/webauthn/android:jni_headers",
    ]
@@ -50,7 +50,7 @@ index 929b1f5742d52294fb0dfa03601662744911d036..b6dbf051424fae3541b5a17b977d293f
  }
  
  action_with_pydeps("chrome_android_java_google_api_keys_srcjar") {
-@@ -2090,6 +2096,7 @@ android_resources("chrome_public_apk_base_module_resources") {
+@@ -2095,6 +2101,7 @@ android_resources("chrome_public_apk_base_module_resources") {
      "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
      "java/res_chromium_base/values/channel_constants.xml",
    ]
@@ -58,7 +58,7 @@ index 929b1f5742d52294fb0dfa03601662744911d036..b6dbf051424fae3541b5a17b977d293f
  
    # Dep needed to ensure override works properly.
    deps = [ ":chrome_base_module_resources" ]
-@@ -2410,6 +2417,7 @@ if (current_toolchain == default_toolchain) {
+@@ -2415,6 +2422,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]
@@ -66,7 +66,7 @@ index 929b1f5742d52294fb0dfa03601662744911d036..b6dbf051424fae3541b5a17b977d293f
        if (_is_monochrome) {
          deps += [ "//android_webview:locale_pak_assets" ]
          if (webview_includes_weblayer && !_is_bundle_module) {
-@@ -2685,6 +2693,7 @@ template("chrome_public_apk_or_module_tmpl") {
+@@ -2690,6 +2698,7 @@ template("chrome_public_apk_or_module_tmpl") {
      load_library_from_apk = chromium_linker_supported
  
      version_name = chrome_version_name
@@ -74,7 +74,7 @@ index 929b1f5742d52294fb0dfa03601662744911d036..b6dbf051424fae3541b5a17b977d293f
    }
  }
  
-@@ -2828,6 +2837,7 @@ android_library("base_module_java") {
+@@ -2833,6 +2842,7 @@ android_library("base_module_java") {
      "//components/payments/content/android:service_java",
      "//third_party/androidx:androidx_browser_browser_java",
    ]
@@ -82,7 +82,7 @@ index 929b1f5742d52294fb0dfa03601662744911d036..b6dbf051424fae3541b5a17b977d293f
  
    # More deps for DFMs.
    if (dfmify_dev_ui) {
-@@ -2984,6 +2994,7 @@ template("monochrome_public_apk_or_module_tmpl") {
+@@ -2989,6 +2999,7 @@ template("monochrome_public_apk_or_module_tmpl") {
          deps += [ "//weblayer/browser/java:upstream_java" ]
        }
      }
