@@ -15,16 +15,16 @@
 #include "ui/base/window_open_disposition.h"
 #include "url/gurl.h"
 
-#define RenderViewHostChanged                                             \
-  SetWebContentsAddNewContentsDelegate(                                   \
-      base::WeakPtr<content::WebContentsDelegate> browser_delegate);      \
-  void AddNewContents(content::WebContents* source,                       \
-                      std::unique_ptr<content::WebContents> new_contents, \
-                      const GURL& target_url,                             \
-                      WindowOpenDisposition disposition,                  \
-                      const gfx::Rect& initial_rect, bool user_gesture,   \
-                      bool* was_blocked) override;                        \
-  std::vector<int32_t>& GetPopupIds() { return popup_ids_; }              \
+#define RenderViewHostChanged                                              \
+  SetWebContentsAddNewContentsDelegate(                                    \
+      base::WeakPtr<content::WebContentsDelegate> browser_delegate);       \
+  void AddNewContents(content::WebContents* source,                        \
+                      std::unique_ptr<content::WebContents> new_contents,  \
+                      const GURL& target_url,                              \
+                      WindowOpenDisposition disposition,                   \
+                      const blink::mojom::WindowFeatures& window_features, \
+                      bool user_gesture, bool* was_blocked) override;      \
+  std::vector<int32_t>& GetPopupIds() { return popup_ids_; }               \
   void RenderViewHostChanged
 
 #define webui_resizes_host_        \
