@@ -101,6 +101,9 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
         deleteField(sBraveToolbarManagerClassName, "mSnackbarManager");
         makeProtectedField(sToolbarManagerClassName, "mSnackbarManager");
 
+        deleteField(sBraveToolbarManagerClassName, "mTabObscuringHandler");
+        makeProtectedField(sToolbarManagerClassName, "mTabObscuringHandler");
+
         makePublicMethod(sToolbarManagerClassName, "onOrientationChange");
         addMethodAnnotation(
                 sBraveToolbarManagerClassName, "onOrientationChange", "Ljava/lang/Override;");

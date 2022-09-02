@@ -71,6 +71,7 @@ import org.chromium.chrome.browser.share.ShareDelegateImpl;
 import org.chromium.chrome.browser.share.crow.CrowButtonDelegate;
 import org.chromium.chrome.browser.suggestions.tile.TileRenderer;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.tabmodel.AsyncTabParamsManager;
 import org.chromium.chrome.browser.tabmodel.ChromeTabCreator;
 import org.chromium.chrome.browser.tabmodel.ChromeTabCreator.OverviewNTPCreator;
@@ -88,7 +89,6 @@ import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
 import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
 import org.chromium.chrome.browser.toolbar.top.ToolbarTablet.OfflineDownloader;
-import org.chromium.chrome.browser.ui.TabObscuringHandler;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
@@ -517,7 +517,8 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
                 "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator",
                 WindowAndroid.class, PropertyModel.class, BrowserControlsSizer.class,
-                FullscreenManager.class, int.class, ObservableSupplier.class));
+                FullscreenManager.class, TabObscuringHandler.class, int.class,
+                ObservableSupplier.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl",
                 "org/chromium/chrome/browser/app/appmenu/BraveAppMenuPropertiesDelegateImpl",
@@ -761,6 +762,8 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabCreatorManager"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mSnackbarManager"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabObscuringHandler"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
                         "mTabSwitcherModeCoordinator"));
