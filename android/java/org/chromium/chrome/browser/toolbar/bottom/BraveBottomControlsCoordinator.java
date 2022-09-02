@@ -27,6 +27,7 @@ import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
+import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.HomeButton;
@@ -61,12 +62,12 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
             Activity activity, WindowAndroid windowAndroid, LayoutManager layoutManager,
             ResourceManager resourceManager, BrowserControlsSizer controlsSizer,
             FullscreenManager fullscreenManager, ScrollingBottomViewResourceFrameLayout root,
-            BottomControlsContentDelegate contentDelegate,
+            BottomControlsContentDelegate contentDelegate, TabObscuringHandler tabObscuringHandler,
             ObservableSupplier<Boolean> overlayPanelVisibilitySupplier,
             ObservableSupplier<Integer> constraintsSupplier) {
         super(activity, windowAndroid, layoutManager, resourceManager, controlsSizer,
-                fullscreenManager, root, contentDelegate, overlayPanelVisibilitySupplier,
-                constraintsSupplier);
+                fullscreenManager, root, contentDelegate, tabObscuringHandler,
+                overlayPanelVisibilitySupplier, constraintsSupplier);
 
         mTabSwitcherLongclickListener = tabSwitcherLongclickListener;
         mTabProvider = tabProvider;

@@ -49,6 +49,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.SadTab;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -70,7 +71,6 @@ import org.chromium.chrome.browser.toolbar.top.BraveTopToolbarCoordinator;
 import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
 import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
 import org.chromium.chrome.browser.toolbar.top.TopToolbarCoordinator;
-import org.chromium.chrome.browser.ui.TabObscuringHandler;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
@@ -113,6 +113,7 @@ public class BraveToolbarManager extends ToolbarManager {
     private TabContentManager mTabContentManager;
     private TabCreatorManager mTabCreatorManager;
     private SnackbarManager mSnackbarManager;
+    private TabObscuringHandler mTabObscuringHandler;
 
     // Own members.
     private boolean mIsBottomToolbarVisible;
@@ -235,7 +236,7 @@ public class BraveToolbarManager extends ToolbarManager {
                     /* Below are parameters for BottomControlsCoordinator */
                     mActivity, mWindowAndroid, mLayoutManager,
                     mCompositorViewHolder.getResourceManager(), mBrowserControlsSizer,
-                    mFullscreenManager, mBottomControls, mTabGroupUi,
+                    mFullscreenManager, mBottomControls, mTabGroupUi, mTabObscuringHandler,
                     mOverlayPanelVisibilitySupplier, getConstraintsProxy()));
             mBottomControls.setBottomControlsCoordinatorSupplier(
                     mBottomControlsCoordinatorSupplier);

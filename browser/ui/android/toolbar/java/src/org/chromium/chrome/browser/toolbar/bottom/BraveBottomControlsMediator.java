@@ -9,6 +9,7 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
+import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modelutil.PropertyModel;
 
@@ -28,9 +29,10 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
 
     BraveBottomControlsMediator(WindowAndroid windowAndroid, PropertyModel model,
             BrowserControlsSizer controlsSizer, FullscreenManager fullscreenManager,
-            int bottomControlsHeight, ObservableSupplier<Boolean> overlayPanelVisibilitySupplier) {
-        super(windowAndroid, model, controlsSizer, fullscreenManager, bottomControlsHeight,
-                overlayPanelVisibilitySupplier);
+            TabObscuringHandler tabObscuringHandler, int bottomControlsHeight,
+            ObservableSupplier<Boolean> overlayPanelVisibilitySupplier) {
+        super(windowAndroid, model, controlsSizer, fullscreenManager, tabObscuringHandler,
+                bottomControlsHeight, overlayPanelVisibilitySupplier);
 
         mTabGroupUiVisibleSupplier.set(false);
         mBottomToolbarVisibleSupplier.set(false);
