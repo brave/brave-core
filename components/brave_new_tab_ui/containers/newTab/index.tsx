@@ -27,7 +27,7 @@ import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo
 import { brandedWallpaperLogoClicked } from '../../api/wallpaper'
 import BraveTodayHint from '../../components/default/braveToday/hint'
 import BraveToday, { GetDisplayAdContent } from '../../components/default/braveToday'
-import { SponsoredImageTooltip, showRewardsOnboarding } from '../../components/default/rewards'
+import { SponsoredImageTooltip } from '../../components/default/rewards'
 import { addNewTopSite, editTopSite } from '../../api/topSites'
 import getNTPBrowserAPI from '../../api/background'
 
@@ -471,8 +471,12 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   startRewards = () => {
-    chrome.braveRewards.enableRewards()
-    showRewardsOnboarding()
+    const { rewardsState } = this.props.newTabData
+    if (!rewardsState.rewardsEnabled) {
+      chrome.braveRewards.openRewardsPanel()
+    } else {
+      chrome.braveRewards.enableAds()
+    }
   }
 
   dismissBrandedWallpaperNotification = (isUserAction: boolean) => {
@@ -927,13 +931,12 @@ class NewTabPage extends React.Component<Props, State> {
     }
 
     const onClose = () => { this.dismissBrandedWallpaperNotification(true) }
-    const onEnableAds = () => { this.startRewards() }
 
     return (
       <Page.BrandedWallpaperNotification>
         <SponsoredImageTooltip
           adsEnabled={rewardsState.enabledAds}
-          onEnableAds={onEnableAds}
+          onEnableAds={this.startRewards}
           onClose={onClose}
         />
       </Page.BrandedWallpaperNotification>
@@ -962,7 +965,8 @@ class NewTabPage extends React.Component<Props, State> {
         hideWidget={this.toggleShowRewards}
         showContent={showContent}
         onShowContent={this.setForegroundStackWidget.bind(this, 'rewards')}
-        onStartRewards={this.startRewards}
+        onEnableRewards={this.startRewards}
+        onEnableAds={this.startRewards}
         onDismissNotification={this.dismissNotification}
       />
     )
