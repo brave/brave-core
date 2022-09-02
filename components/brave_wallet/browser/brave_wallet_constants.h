@@ -734,6 +734,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_AURORA_MODAL_DONT_SHOW_AGAIN},
     {"braveWalletAuroraModalOPenButtonText",
      IDS_BRAVE_WALLET_AURORA_MODAL_OPEN_BUTTON_TEXT},
+    {"braveWalletBridgeToAuroraButton",
+     IDS_BRAVE_WALLET_BRIDGE_TO_AURORA_BUTTON},
     {"braveWalletPasswordStrengthTooltipHeading",
      IDS_BRAVE_WALLET_PASSWORD_STRENGTH_TOOLTIP_HEADING},
     {"braveWalletPasswordStrengthTooltipIsLongEnough",

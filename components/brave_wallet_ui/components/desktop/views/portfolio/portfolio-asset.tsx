@@ -316,10 +316,10 @@ export const PortfolioAsset = (props: Props) => {
 
   const fullAssetFiatBalance = React.useMemo(() => fullAssetBalances?.assetBalance
     ? computeFiatAmount(
-        fullAssetBalances.assetBalance,
-        fullAssetBalances.asset.symbol,
-        fullAssetBalances.asset.decimals
-      )
+      fullAssetBalances.assetBalance,
+      fullAssetBalances.asset.symbol,
+      fullAssetBalances.asset.decimals
+    )
     : Amount.empty(),
     [fullAssetBalances]
   )
@@ -547,7 +547,7 @@ export const PortfolioAsset = (props: Props) => {
             onClick={onToggleHideBalances}
           />
           {selectedAsset?.contractAddress && !selectedAsset?.isErc721 &&
-            <MoreButton onClick={onShowMore}/>
+            <MoreButton onClick={onShowMore} />
           }
           {showMore && selectedAsset &&
             <AssetMorePopup
@@ -567,7 +567,7 @@ export const PortfolioAsset = (props: Props) => {
             <AssetIconWithPlaceholder asset={selectedAsset} network={selectedAssetsNetwork} />
             <AssetColumn>
               <AssetNameText>{selectedAssetFromParams.name}</AssetNameText>
-              <NetworkDescription>{selectedAssetFromParams.symbol} { selectedAssetsNetwork?.chainName && `on ${selectedAssetsNetwork?.chainName}`}</NetworkDescription>
+              <NetworkDescription>{selectedAssetFromParams.symbol} {selectedAssetsNetwork?.chainName && `on ${selectedAssetsNetwork?.chainName}`}</NetworkDescription>
             </AssetColumn>
           </AssetRow>
 
@@ -610,7 +610,7 @@ export const PortfolioAsset = (props: Props) => {
         <BridgeToAuroraButton
           onClick={onBridgeToAuroraButton}
         >
-          Bridge to Aurora
+          {getLocale('braveWalletBridgeToAuroraButton')}
         </BridgeToAuroraButton>
       }
 
@@ -657,14 +657,14 @@ export const PortfolioAsset = (props: Props) => {
 
       {isTokenSupported
         ? <AccountsAndTransactionsList
-            formattedFullAssetBalance={formattedFullAssetBalance}
-            fullAssetFiatBalance={fullAssetFiatBalance}
-            selectedAsset={selectedAsset}
-            selectedAssetTransactions={selectedAssetTransactions}
-            onClickAddAccount={onClickAddAccount}
-            hideBalances={hideBalances}
-            networkList={networkList}
-          />
+          formattedFullAssetBalance={formattedFullAssetBalance}
+          fullAssetFiatBalance={fullAssetFiatBalance}
+          selectedAsset={selectedAsset}
+          selectedAssetTransactions={selectedAssetTransactions}
+          onClickAddAccount={onClickAddAccount}
+          hideBalances={hideBalances}
+          networkList={networkList}
+        />
         : <>
           <SubDivider />
           <NotSupportedText>{getLocale('braveWalletMarketDataCoinNotSupported')}</NotSupportedText>
