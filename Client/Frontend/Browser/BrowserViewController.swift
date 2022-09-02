@@ -2864,7 +2864,7 @@ extension BrowserViewController: TabManagerDelegate {
           let cancelAction = UIAlertAction(title: Strings.CancelString, style: .cancel)
           let closedTabsTitle = String(format: Strings.closeAllTabsTitle, tabManager.tabsForCurrentMode.count)
           let closeAllAction = UIAlertAction(title: closedTabsTitle, style: .destructive) { _ in
-            tabManager.removeAll()
+            tabManager.removeAllForCurrentMode()
           }
           alert.addAction(closeAllAction)
           alert.addAction(cancelAction)
