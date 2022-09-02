@@ -27,28 +27,27 @@ void SetSpeedreaderCSP(const GURL& url,
                             network::mojom::URLResponseHead* response_head,
                             const std::string& hash) {
   std::string value;
-  if (!response_head->headers->GetNormalizedHeader("Content-Security-Policy",
-                                                   &value)) {
-    return;
-  }
-
-  {  // style-src
-    constexpr const char kStyleSrc[] = "style-src ";
-    const auto pos = value.find(kStyleSrc);
-    if (pos != std::string::npos) {
-      value.insert(pos + sizeof(kStyleSrc) - 1, " '" + hash + "' ");
+  if (response_head->headers->GetNormalizedHeader("Content-Security-Policy",
+                                                  &value)) {
+    {  // style-src
+      constexpr const char kStyleSrc[] = "style-src ";
+      const auto pos = value.find(kStyleSrc);
+      if (pos != std::string::npos) {
+        value.insert(pos + sizeof(kStyleSrc) - 1, " '" + hash + "' ");
+      }
     }
-  }
-  {  // scripts
-    constexpr const char kSandbox[] = "sandbox ";
-    const auto pos = value.find(kSandbox);
-    if (pos != std::string::npos) {
-      value.insert(pos + sizeof(kSandbox) - 1, " allow-scripts ");
+    {  // scripts
+      constexpr const char kSandbox[] = "sandbox ";
+      const auto pos = value.find(kSandbox);
+      if (pos != std::string::npos) {
+        value.insert(pos + sizeof(kSandbox) - 1, " allow-scripts ");
+      }
     }
+
+    response_head->headers->SetHeader("Content-Security-Policy", value);
   }
 
-  response_head->headers->SetHeader("Content-Security-Policy", value);
-
+  response_head->headers->RemoveHeader("Content-Security-Policy-Report-Only");
   if (!response_head->parsed_headers)
     return;
 
