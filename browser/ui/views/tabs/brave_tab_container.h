@@ -24,6 +24,8 @@ class BraveTabContainer : public TabContainer {
   // TabContainer:
   gfx::Size CalculatePreferredSize() const override;
   void UpdateClosingModeOnRemovedTab(int model_index, bool was_active) override;
+  gfx::Rect GetTargetBoundsForClosingTab(Tab* tab,
+                                         int former_model_index) const override;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_CONTAINER_H_

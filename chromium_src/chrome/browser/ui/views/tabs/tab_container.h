@@ -12,9 +12,11 @@
   void ExitTabClosingMode
 
 #define UpdateClosingModeOnRemovedTab virtual UpdateClosingModeOnRemovedTab
+#define GetTargetBoundsForClosingTab virtual GetTargetBoundsForClosingTab
 
 #include "src/chrome/browser/ui/views/tabs/tab_container.h"
 
+#undef GetTargetBoundsForClosingTab
 #undef UpdateClosingModeOnRemovedTab
 #undef ExitTabClosingMode
 
