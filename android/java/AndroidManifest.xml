@@ -7,7 +7,9 @@
     android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize" />
 
 <activity android:name="org.chromium.chrome.browser.BraveRewardsSiteBannerActivity"
-    android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+    android:theme="@android:style/Theme.Translucent.NoTitleBar"
+    android:screenOrientation="sensorPortrait"
+    tools:ignore="LockedOrientationActivity" />
 
 <activity
     android:name="org.chromium.chrome.browser.BraveRewardsVerifyWalletActivity"

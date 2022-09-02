@@ -149,6 +149,31 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_SWITCH" desc="Switch for HTTPS Everywhere.">
         Upgrade connections to HTTPS
       </message>
+
+
+
+      
+
+    <message name="IDS_OTHER_AMOUNTS" desc="Custom tip that allow other amounts">Other amounts</message>
+    <message name="IDS_THANKS_FOR_SUPPORT" desc="Text for Thanks for the support">Thanks for the support!</message>
+    <message name="IDS_YOUR_ONE_TIME_TIP_HAS_BEEN_SENT"  desc="Text for Your one time tip has been sent">Your one time tip has been sent</message>
+    <message name="IDS_YOUR_MONTHLY_TIP_HAS_BEEN_SENT"  desc="Text for Your monthly tip has been sent">Your monthly contribution has been sent</message>
+    <message name="IDS_TWEET_ABOUT_YOUR_SUPPORT"  desc="Text for Tweet about your support">Tweet about your support!</message>
+    <message name="IDS_MONTHLY_CONTRIBUTION"  desc="Text for Monthly">Monthly</message>
+    <message name="IDS_BAT_FUNDS"  desc="Text for BAT Funds">BAT Funds</message>
+    <message name="IDS_PROCESSING_FEE"  desc="Text for Brave collects 5% of the tip amount as a processing fee">Brave collects 5% of the tip amount as a processing fee.</message>
+    <message name="IDS_CUSTOM_AMOUNT" desc="Text for Custom Amount">Custom Amount</message>
+    <message name="IDS_BAT" desc="Text for BAT">BAT</message>
+    <message name="IDS_USD" desc="Text for USD">USD</message>
+    <message name="IDS_E_G_12_75_BAT" desc="Text for example text">e.g. 12.75 BAT</message>
+    <message name="IDS_BACK_BUTTON" desc="Text for back">back</message>
+    <message name="IDS_EXCHANGE_BUTTON" desc="Text for exchange">exchange</message>
+    <message name="IDS_ABOUT_TO_TIP" desc="Text for You are about to tip">You are about to tip</message>
+    <message name="IDS_MINIMUM_TIP_AMOUNT">Minimum tip amount is 0.25 BAT</message>
+    <message name="IDS_NOT_ENOUGH_FUND" desc="Text for Not Enough Fund">Not Enough Fund</message>
+    <message name="IDS_CONTINUE_TIP" desc="Text for continue">Continue</message>
+
+
       <message name="IDS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_SWITCH_SUMMARY" desc="Summary for HTTPS Everywhere.">
         Opens some sites using a secure HTTPS connection instead of plain HTTP.
       </message>
@@ -542,15 +567,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Welcome!
       </message>
       <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT1" desc="Tipping page description">
-        You can support this site by sending a tip. It's a way of thanking them for making great content. Verified content creators get paid for their tips during the first week of each calendar month.
+        You can support this site by sending a tip. It's a way of thanking them for making great content. Verified content creators get paid for their tips during the first week of each calendar month.\nIf you like, you can schedule monthly tips to support this site on a continuous basis.
       </message>
-      <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT2" desc="Tipping page description 2">
-        If you like, you can schedule monthly tips to support this site on a continuous basis.
-      </message>
-      <message name="IDS_BRAVE_UI_DONATION_AMOUNT" desc="Tipping amount screen title">
+      <!-- <message name="IDS_BRAVE_UI_DONATION_AMOUNT" desc="Tipping amount screen title">
         Tip amount
-      </message>
-      <message name="IDS_BRAVE_UI_WALLET_BALANCE" desc="Wallet balance on tipping screen">
+      </message> -->
+      <!-- <message name="IDS_BRAVE_UI_WALLET_BALANCE" desc="Wallet balance on tipping screen">
         Rewards balance:
       </message>
       <message name="IDS_BRAVE_UI_SEND_TIP" desc="Send my tip button text">
@@ -558,7 +580,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_BRAVE_UI_MAKE_MONTHLY" desc="A button to make monthly tipping">
         Make this monthly
-      </message>
+      </message> -->
       <message name="IDS_BRAVE_CANCEL" desc="Set default browser modal button text">
         Cancel
       </message>
@@ -682,15 +704,15 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_UI_NOT_ENOUGH_TOKENS" desc="Message if not enough tokens to make a tip">
         not enough <ph name="TOKEN">%1$s<ex>token</ex></ph>s
       </message>
-      <message name="IDS_BRAVE_UI_PLEASE" desc="Part of a message about not enough tokens to pay">
+      <!-- <message name="IDS_BRAVE_UI_PLEASE" desc="Part of a message about not enough tokens to pay">
         please
-      </message>
-      <message name="IDS_BRAVE_UI_ADD_FUNDS" desc="Part of a message about not enough tokens to pay">
+      </message> -->
+      <!-- <message name="IDS_BRAVE_UI_ADD_FUNDS" desc="Part of a message about not enough tokens to pay">
         add funds
-      </message>
-      <message name="IDS_BRAVE_UI_DO_MONTHLY" desc="Set monthly tip button text">
+      </message> -->
+      <!-- <message name="IDS_BRAVE_UI_DO_MONTHLY" desc="Set monthly tip button text">
         set monthly tip
-      </message>
+      </message> -->
       <message name="IDS_BRAVE_ADS_EXISTING_USER_OFFER_TITLE" desc="Title for Brave Ads offer.">
         Brave Ads are here!
       </message>
@@ -1528,7 +1550,7 @@ Are you sure you want to do this?
       <message name="IDS_VALUE_5_BAT" desc="value for 5 BAT">
         5 BAT
       </message>
-      <message name="IDS_VALUE_10_BAT" desc="value for 10 BAT">
+      <!-- <message name="IDS_VALUE_10_BAT" desc="value for 10 BAT">
         10 BAT
       </message>
       <message name="IDS_VALUE_0_BAT" desc="value for 0 BAT">
@@ -1536,7 +1558,7 @@ Are you sure you want to do this?
       </message>
       <message name="IDS_VALUE_0_USD" desc="value for 0 USD">
         0.00 USD
-      </message>
+      </message> -->
       <message name="IDS_SETTINGS_WEBRTC_POLICY_LABEL" desc="WebRTC policy setting label">
         WebRTC IP handling policy
       </message>

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/creator_background"
+    android:paddingStart="36dp"
+    android:paddingTop="36dp"
+    android:paddingEnd="36dp"
+    tools:context=".BraveRewardsCreatorPanelFragment">
+
+    <ProgressBar
+        android:id="@+id/publisher_favicon_update"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:indeterminateDrawable="@drawable/progress_indeterminate"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Publisher's icon-->
+    <ImageView
+        android:id="@+id/publisher_favicon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/publisher_favicon_background"
+        android:baselineAlignBottom="true"
+        android:contentDescription="@null"
+        android:cropToPadding="true"
+        android:scaleType="center"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/publisher_favicon_verified"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_gravity="top|end"
+        android:contentDescription="@null"
+        android:src="@drawable/verified_creator_large"
+        app:layout_constraintLeft_toLeftOf="@id/publisher_favicon"
+        app:layout_constraintTop_toTopOf="@id/publisher_favicon"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/publisher_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="top"
+        android:layout_marginStart="12dp"
+        android:background="@android:color/transparent"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="#F8F9FA"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/publisher_favicon"
+        app:layout_constraintLeft_toRightOf="@id/publisher_favicon"
+        app:layout_constraintTop_toTopOf="@id/publisher_favicon" />
+
+    <ScrollView
+        android:id="@+id/header_scrollView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fadeScrollbars="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/publisher_favicon"
+        app:layout_constraintTop_toBottomOf="@+id/publisher_favicon">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                android:id="@+id/not_verified_warning_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:letterSpacing="0.02"
+                android:paddingStart="15.03dp"
+                android:paddingEnd="17.98dp"
+                android:text="@string/brave_ui_site_banner_unverified_notice_text"
+                android:textColor="#686978"
+                android:textSize="14sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone" />
+
+
+            <TextView
+                android:id="@+id/banner_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14.71dp"
+                android:fontFamily="@font/poppins_regular"
+                android:text="@string/brave_ui_site_banner_welcome"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/not_verified_warning_text" />
+
+            <ImageView
+                android:id="@+id/chat_button"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_tipping_chat"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@+id/reddit_button"
+                app:layout_constraintTop_toTopOf="@id/banner_title" />
+
+            <ImageView
+                android:id="@+id/reddit_button"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_tipping_reddit"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@+id/twitter_button"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintTop_toTopOf="@id/banner_title" />
+
+            <ImageView
+                android:id="@+id/twitter_button"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_tipping_twitter"
+                android:visibility="gone"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintEnd_toStartOf="@+id/twitch_button"
+                app:layout_constraintTop_toTopOf="@id/banner_title" />
+
+
+            <ImageView
+                android:id="@+id/twitch_button"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_tipping_chat"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@+id/youtube_button"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintTop_toTopOf="@id/banner_title" />
+
+            <ImageView
+                android:id="@+id/youtube_button"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="8dp"
+                android:layout_toStartOf="@id/chat_button"
+                android:contentDescription="@null"
+                android:src="@drawable/icn_youtube"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintTop_toTopOf="@id/banner_title" />
+
+            <TextView
+                android:id="@+id/rewards_banner_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_regular"
+                android:text="@string/brave_ui_rewards_banner_text1"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:layout_marginBottom="76dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/banner_title"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <!-- <TextView
+                android:id="@+id/rewards_banner_text2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16sp"
+                android:layout_marginBottom="76dp"
+                android:fontFamily="@font/poppins_regular"
+                android:text="@string/brave_ui_rewards_banner_text2"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rewards_banner_text1" /> -->
+        </androidx.constraintlayout.widget.ConstraintLayout> <!--Welcome-->
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout> <!--Welcome-->

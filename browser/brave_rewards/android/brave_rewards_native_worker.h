@@ -87,7 +87,7 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
 
     void Donate(JNIEnv* env,
                 const base::android::JavaParamRef<jstring>& publisher_key,
-                int amount,
+                double amount,
                 bool recurring);
 
     void GetAllNotifications(JNIEnv* env);
@@ -134,6 +134,10 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
     void GetAutoContributionAmount(JNIEnv* env);
 
     void GetExternalWallet(JNIEnv* env);
+
+    void GetPublisherBanner(
+        JNIEnv* env,
+        const base::android::JavaParamRef<jstring>& publisher_key);
 
     void DisconnectWallet(JNIEnv* env);
 
@@ -208,9 +212,12 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
     void OnGetExternalWallet(const ledger::mojom::Result result,
                              ledger::mojom::ExternalWalletPtr wallet);
 
-    void OnDisconnectWallet(brave_rewards::RewardsService* rewards_service,
-                            const ledger::mojom::Result result,
-                            const std::string& wallet_type) override;
+    void onPublisherBanner(ledger::type::PublisherBannerPtr wallet);
+
+    void OnDisconnectWallet(
+      brave_rewards::RewardsService* rewards_service,
+      const ledger::type::Result result,
+      const std::string& wallet_type) override;
 
     void OnRecoverWallet(brave_rewards::RewardsService* rewards_service,
                          const ledger::mojom::Result result) override;
