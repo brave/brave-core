@@ -68,6 +68,13 @@ public class BraveRewardsCreatorPanelFragment extends Fragment
     private boolean mTippingInProgress; // flag preventing multiple tipping processes
     private BraveRewardsBannerInfo mBannerInfo;
 
+    private final String TWITTER = "twitter";
+    private final String YOUTUBE = "youtube";
+    private final String TWITCH  = "twitch";
+    private final String GITHUB  = "github";
+    private final String REDDIT  = "reddit";
+    private final String VIMEO   = "vimeo";
+
     public static BraveRewardsCreatorPanelFragment newInstance(
             int tabId, boolean isMonthlyContribution, BraveRewardsBannerInfo bannerInfo) {
         BraveRewardsCreatorPanelFragment fragment = new BraveRewardsCreatorPanelFragment();
@@ -141,25 +148,33 @@ public class BraveRewardsCreatorPanelFragment extends Fragment
 
     private void showSocialLinkIcon(View view, String name, String url) {
         switch (name) {
-            case "youtube":
-                ImageView youtubeIcon = view.findViewById(R.id.youtube_button);
-                showAndSetListener(youtubeIcon, url);
-                break;
-            case "twitter":
-                ImageView twitterIcon = view.findViewById(R.id.twitter_button);
+            case TWITTER:
+                ImageView twitterIcon = view.findViewById(R.id.twitterButton);
                 showAndSetListener(twitterIcon, url);
                 break;
-            case "twitch":
-                ImageView twitchIcon = view.findViewById(R.id.twitch_button);
+
+            case YOUTUBE:
+                ImageView youtubeIcon = view.findViewById(R.id.youtubeButton);
+                showAndSetListener(youtubeIcon, url);
+                break;
+
+            case TWITCH:
+                ImageView twitchIcon = view.findViewById(R.id.twitchButton);
                 showAndSetListener(twitchIcon, url);
                 break;
-            case "reddit":
-                ImageView redditIcon = view.findViewById(R.id.reddit_button);
+            case GITHUB:
+                ImageView githubIcon = view.findViewById(R.id.githubButton);
+                showAndSetListener(githubIcon, url);
+                break;
+
+            case REDDIT:
+                ImageView redditIcon = view.findViewById(R.id.redditButton);
                 showAndSetListener(redditIcon, url);
                 break;
-            default:
-                ImageView chatIcon = view.findViewById(R.id.chat_button);
-                showAndSetListener(chatIcon, url);
+
+            case VIMEO:
+                ImageView vimeoIcon = view.findViewById(R.id.vimeoButton);
+                showAndSetListener(vimeoIcon, url);
                 break;
         }
     }
