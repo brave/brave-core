@@ -653,10 +653,11 @@ export const StyledCustomBackgroundOptionImage = styled('div')<SelectionProps & 
   background-repeat: no-repeat;
   background-clip: padding-box;
   background-position: center;
+  background-size: cover;
   ${p => p.selected
     ? css`border-radius: 8px;`
     : css`border-radius: 10px;`}
-  background-image: url(${p => p.image})
+  background-image: url(${p => p.image});
 `
 
 export const StyledCustomBackgroundOptionColor = styled('div')<SelectionProps & ColoredBackgroundProps>`

@@ -64,16 +64,9 @@ function DefaultPage (props: Props) {
       saveBrandedWallpaperOptIn={PreferencesAPI.saveBrandedWallpaperOptIn}
       saveSetAllStackWidgets={PreferencesAPI.saveSetAllStackWidgets}
       getBraveNewsDisplayAd={getBraveNewsDisplayAd}
-      useCustomBackgroundImage={(useCustom: boolean) => {
-        if (useCustom) {
-          getNTPBrowserAPI().pageHandler.chooseLocalCustomBackground()
-        } else {
-          getNTPBrowserAPI().pageHandler.useBraveBackground()
-        }
-      }}
-      setColorBackground={(color: string, useRandomColor: boolean) =>
-        getNTPBrowserAPI().pageHandler.useColorBackground(color, useRandomColor)
-      }
+      useCustomBackgroundImage={() => getNTPBrowserAPI().pageHandler.chooseLocalCustomBackground() }
+      setBraveBackground={selectedBackground => getNTPBrowserAPI().pageHandler.useBraveBackground(selectedBackground)}
+      setColorBackground={(color, useRandomColor) => getNTPBrowserAPI().pageHandler.useColorBackground(color, useRandomColor) }
     />
   )
 }

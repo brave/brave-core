@@ -140,11 +140,11 @@ def write_license_file(directory, contents):
 def list_ntp_backgrounds(metadata_file):
     json_metadata = ''
     with open(metadata_file, mode='rt', encoding='utf-8') as file_handle:
-        # Strip out copyright header
-        metadata = file_handle.readlines()[3:]
+        # Extract only the background images.
+        metadata = file_handle.readlines()[3:12]
         # Hack to turn this TypeScript file into valid JSON
         json_metadata = "".join(metadata) \
-            .replace("export const images: NewTab.BackgroundWallpaper[] = [",
+            .replace("export const images: NewTab.BraveBackground[] = [",
                      "[") \
             .replace('"', '"').replace("'", '"')
 

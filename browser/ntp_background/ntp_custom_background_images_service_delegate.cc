@@ -5,10 +5,14 @@
 
 #include "brave/browser/ntp_background/ntp_custom_background_images_service_delegate.h"
 
+#include "base/check_is_test.h"
 #include "base/files/file_path.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ntp_background/constants.h"
 #include "brave/browser/ntp_background/ntp_background_prefs.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
+#include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/url_constants.h"
@@ -48,7 +52,7 @@ std::string NTPCustomBackgroundImagesServiceDelegate::GetColor() const {
   if (!IsColorBackgroundEnabled())
     return {};
 
-  auto selected_value =
+  const auto selected_value =
       NTPBackgroundPrefs(profile_->GetPrefs()).GetSelectedValue();
   DCHECK(absl::holds_alternative<std::string>(selected_value));
   return absl::get<std::string>(selected_value);
@@ -56,4 +60,48 @@ std::string NTPCustomBackgroundImagesServiceDelegate::GetColor() const {
 
 bool NTPCustomBackgroundImagesServiceDelegate::ShouldUseRandomValue() const {
   return NTPBackgroundPrefs(profile_->GetPrefs()).ShouldUseRandomValue();
+}
+
+bool NTPCustomBackgroundImagesServiceDelegate::HasPreferredBraveBackground()
+    const {
+  const auto pref = NTPBackgroundPrefs(profile_->GetPrefs());
+  return pref.IsBraveType() && !pref.ShouldUseRandomValue() &&
+         absl::holds_alternative<GURL>(pref.GetSelectedValue());
+}
+
+base::Value::Dict
+NTPCustomBackgroundImagesServiceDelegate::GetPreferredBraveBackground() const {
+  DCHECK(HasPreferredBraveBackground());
+
+  auto pref = NTPBackgroundPrefs(profile_->GetPrefs());
+  const auto selected_value = pref.GetSelectedValue();
+  const auto image_url = absl::get<GURL>(selected_value);
+
+  const auto* service =
+      g_brave_browser_process->ntp_background_images_service();
+  DCHECK(service);
+
+  auto* image_data = service->GetBackgroundImagesData();
+  if (!image_data) {
+    CHECK_IS_TEST();
+    return {};
+  }
+
+  auto iter = base::ranges::find_if(
+      image_data->backgrounds, [image_data, &image_url](const auto& data) {
+        return image_data->url_prefix +
+                   data.image_file.BaseName().AsUTF8Unsafe() ==
+               image_url.spec();
+      });
+
+  if (iter == image_data->backgrounds.end()) {
+    // Due to version update, the data could have been invalidated.
+    // Try fixing up the data and return empty value.
+    pref.SetShouldUseRandomValue(true);
+    pref.SetSelectedValue(base::EmptyString());
+    return {};
+  }
+
+  return image_data->GetBackgroundAt(
+      std::distance(image_data->backgrounds.begin(), iter));
 }

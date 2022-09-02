@@ -9,6 +9,7 @@ describe('new tab background api tests', () => {
   describe('randomBackgroundImage', () => {
     it('grabs a random image included in the background image object', () => {
       const assertion = backgroundAPI.randomBackgroundImage()
+      delete assertion.random
       expect(backgrounds).toContainEqual(assertion)
     })
   })

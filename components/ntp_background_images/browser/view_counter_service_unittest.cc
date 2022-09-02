@@ -128,6 +128,8 @@ class TestDelegate : public NTPCustomBackgroundImagesService::Delegate {
   bool IsColorBackgroundEnabled() const override { return color_enabled_; }
   std::string GetColor() const override { return "#ff0000"; }
   bool ShouldUseRandomValue() const override { return false; }
+  bool HasPreferredBraveBackground() const override { return false; }
+  base::Value::Dict GetPreferredBraveBackground() const override { return {}; }
 
   bool image_enabled_ = false;
   bool color_enabled_ = false;

@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/bind.h"
+#include "base/check_is_test.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
@@ -159,12 +160,24 @@ absl::optional<base::Value::Dict> ViewCounterService::GetCurrentWallpaper()
     return absl::nullopt;
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
-  if (ShouldShowCustomBackground())
-    return custom_bi_service_->GetBackground();
+  if (ShouldShowCustomBackground()) {
+    if (auto background = custom_bi_service_->GetBackground();
+        !background.empty()) {
+      return background;
+    }
+  }
 #endif
 
-  return GetCurrentWallpaperData()->GetBackgroundAt(
-      model_.current_wallpaper_image_index());
+  auto* data = GetCurrentWallpaperData();
+  if (!data) {
+    CHECK_IS_TEST();
+    return absl::nullopt;
+  }
+
+  auto background =
+      data->GetBackgroundAt(model_.current_wallpaper_image_index());
+  background.Set(kWallpaperRandomKey, true);
+  return background;
 }
 
 absl::optional<base::Value::Dict>

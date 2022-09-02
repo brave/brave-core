@@ -11,22 +11,22 @@ import {
   StyledCustomBackgroundSettings
 } from '../../../components/default'
 import NavigateBack from '../../../components/default/settings/navigateBack'
-import ColorBackgroundOption from './colorBackgroundOption'
+import BackgroundOption from './backgroundOption'
 import { Toggle } from '../../../components/toggle'
 
 import { getLocale } from '../../../../common/locale'
 
 interface Props {
   title: string
-  values: string[]
+  backgrounds: NewTab.BackgroundWallpaper[]
   currentValue?: string
   usingRandomColor: boolean
-  onSelectValue: (value: string, useRandomColor: boolean) => void
+  onSelectValue: (background: string, useRandomColor: boolean) => void
   onBack: () => void
   onToggleRandomColor: (on: boolean) => void
 }
 
-function ColorChooser ({ title, values, onBack, onSelectValue, currentValue, usingRandomColor, onToggleRandomColor }: Props) {
+function BackgroundChooser ({ title, backgrounds, onBack, onSelectValue, currentValue, usingRandomColor, onToggleRandomColor }: Props) {
   const containerEl = React.useRef<HTMLDivElement>(null)
   React.useEffect(() => {
     containerEl.current?.scrollIntoView(true)
@@ -43,10 +43,13 @@ function ColorChooser ({ title, values, onBack, onSelectValue, currentValue, usi
           />
         </SettingsRow>
         <StyledCustomBackgroundSettings>
-          {values.map(value => <ColorBackgroundOption key={value} color={value} onSelectValue={color => onSelectValue(color, /* useRandomColor= */false)} selected={!usingRandomColor && currentValue === value} />)}
+          {backgrounds.map((background) => {
+            const value = background.type === 'color' ? background.wallpaperColor : background.wallpaperImageUrl
+            return <BackgroundOption key={value} background={background} onSelectValue={color => onSelectValue(value, /* useRandomColor= */false)} selected={!usingRandomColor && currentValue === value} />
+          })}
         </StyledCustomBackgroundSettings>
       </div>
   )
 }
 
-export default ColorChooser
+export default BackgroundChooser

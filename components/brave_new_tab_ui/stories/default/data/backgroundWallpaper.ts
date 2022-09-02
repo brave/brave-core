@@ -6,18 +6,17 @@
 import { CHANGE } from '@storybook/addon-knobs'
 import { addons } from '@storybook/addons'
 
-import { images } from '../../../data/backgrounds'
-import { solidColorsForBackground, gradientColorsForBackground } from '../../../data/colors'
+import { images, solidColorsForBackground, gradientColorsForBackground } from '../../../data/backgrounds'
 
 const addonsChannel = addons.getChannel()
 
 export const backgroundWallpapers = (function (images: NewTab.BackgroundWallpaper[],
-                                               solidColors: string[],
-                                               gradientColors: string[]) {
+                                               solidColors: NewTab.ColorBackground[],
+                                               gradientColors: NewTab.ColorBackground[]) {
   let staticImages = { defaultImage: undefined }
   for (const image of images) {
     // author is optional field.
-    if (image.type !== 'image' || !image.author) {
+    if (image.type !== 'brave' || !image.author) {
       continue
     }
 
@@ -33,13 +32,10 @@ export const backgroundWallpapers = (function (images: NewTab.BackgroundWallpape
     }
   }
 
-  const reducer = (prev: any, color: string) => {
+  const reducer = (prev: any, colorBackground: NewTab.ColorBackground) => {
     return {
       ...prev,
-      [color]: {
-        type: 'color',
-        wallpaperColor: color
-      }
+      [colorBackground.wallpaperColor]: colorBackground
     }
   }
 
@@ -66,14 +62,10 @@ export const onChangeColoredBackground = (value: string, useRandomValue: boolean
 
 /**
  * Mock handler for Brave background. Emits a change event to knobs.
- * @param {boolean} useCustom - When it's false, uses images provide by Brave
+ * @param {string} selectedBackground - selected background URL
  * in storybook, we have only one preset image.
  */
-export const onUseCustomBackground = (useCustom: boolean) => {
-  if (useCustom) {
-    return
-  }
-
+export const onUseBraveBackground = (selectedBackground: string) => {
   addonsChannel.emit(CHANGE, {
     name: 'Background',
     value: backgroundWallpapers.defaultImage

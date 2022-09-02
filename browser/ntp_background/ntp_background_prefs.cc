@@ -102,7 +102,7 @@ bool NTPBackgroundPrefs::IsColorType() const {
 bool NTPBackgroundPrefs::ShouldUseRandomValue() const {
   const auto* value = GetPrefValue();
   auto optional_bool = value->FindBool(kRandomKey);
-  return optional_bool.value_or(false);
+  return optional_bool.value_or(IsBraveType());
 }
 
 void NTPBackgroundPrefs::SetShouldUseRandomValue(bool random) {
