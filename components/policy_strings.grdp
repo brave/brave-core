@@ -194,6 +194,15 @@
   <message name="IDS_POLICY_INVALID_EXTENSION_ERROR" desc="The text displayed in the status column when the extension doesn't match the expected format.">
     Invalid Extension: Expected the value to be of one of the following forms: &lt;extension_id&gt; or &lt;extension_id&gt;;&lt;update_url&gt;.
   </message>
+  <message name="IDS_POLICY_URL_PATH_SPECIFIED_ERROR" desc="The text displayed in the status column when a path is specified for an URL, which is not supported">
+    The URL pattern "<ph name="URL_PATTERN">$1<ex>*://example.com/</ex></ph>" has a path specified. Paths are not supported for this key, please remove the path and try again. e.g. *://example.com/ =&gt; *://example.com",
+  </message>
+  <message name="IDS_POLICY_MISSING_VENDOR_ID_ERROR" desc="The text displayed in the status column for the policy WebUsbAllowDevicesForUrls when an entry has specified a 'product_id' without a the 'vendor_id'">
+    The attribute "vendor_id" must also be specified.
+  </message>
+  <message name="IDS_POLICY_INVALID_NUMBER_OF_URLS_ERROR" desc="The text displayed in the status column for the policy WebUsbAllowDevicesForUrls when an entry has either 0 or more than 2 URLs">
+    Each urls string entry must contain between 1 to 2 URLs.
+  </message>
   <message name="IDS_POLICY_CLOUD_SOURCE_ONLY_ERROR" desc="The text displayed in the status column when a policy that should only be set in the cloud is set from another source.">
     Ignored because the policy is not set by a cloud source.
   </message>
@@ -215,16 +224,10 @@
   <message name="IDS_POLICY_URL_ALLOW_BLOCK_LIST_MAX_FILTERS_LIMIT_WARNING" desc="The text displayed in the status column of the URLAllowlist and URLBlocklist policies when the max number of filters is exceeded.">
     This field should not have more than <ph name="MAX_ITEMS_LIMIT">$1<ex>1000</ex></ph> entries. All further entries will be ignored.
   </message>
-  <message name="IDS_POLICY_SUBKEY_ERROR" desc="The text displayed in the status column for errors in a subkey of a policy.">
-    Key "<ph name="SUBKEY">$1<ex>ProxyMode</ex></ph>": <ph name="ERROR">$2<ex>Must be specified.</ex></ph>
-  </message>
-  <message name="IDS_POLICY_LIST_ENTRY_ERROR" desc="The text displayed in the status column for errors in list entry in a policy.">
-    List entry "<ph name="ENTRY_INDEX">$1<ex>3</ex></ph>": <ph name="ERROR">$2<ex>Value is out of range.</ex></ph>
+  <message name="IDS_POLICY_ERROR_WITH_PATH" desc="The text displayed in the status column when a policy error message contains an error path.">
+    Error at <ph name="ERROR_PATH">$1<ex>AC.Delays.ScreenOff</ex></ph>: <ph name="ERROR_MESSAGE">$2<ex>Value is out of range.</ex></ph>
   </message>
   <message name="IDS_POLICY_SCHEMA_VALIDATION_ERROR" desc="The text displayed in the status column when the policy value doesn't conform to the policy schema.">
-    Schema validation error at "<ph name="ERROR_PATH">$1<ex>AC.Delays.ScreenOff</ex></ph>": <ph name="ERROR">$2<ex>Value is out of range.</ex></ph>
-  </message>
-  <message name="IDS_POLICY_SCHEMA_VALIDATION_ERROR_WITHOUT_PATH" desc="The text displayed in the status column when the policy value doesn't conform to the policy schema.">
     Schema validation error: <ph name="ERROR">$1<ex>Value is out of range.</ex></ph>
   </message>
   <message name="IDS_POLICY_INVALID_JSON_ERROR" desc="The text displayed in the status column when the policy value should be a valid JSON string, but it cannot be parsed as JSON.">
@@ -713,9 +716,6 @@ Additional details:
   <message name="IDS_POLICY_DLP_CLIPBOARD_WARN_PROCEED_BUTTON" desc="Proceed dialog button label for warning before paste.">
     Paste anyway
   </message>
-  <message name="IDS_POLICY_DLP_CLIPBOARD_WARN_DISMISS_BUTTON" desc="Dismiss dialog button label for warning before paste.">
-    Cancel
-  </message>
   <message name="IDS_POLICY_DLP_CLIPBOARD_WARN_ON_COPY_VM" desc="A toast informing the user that pasting the clipboard data to VMs is not recommended.">
     Copying and pasting this content to <ph name="VM_NAME">$1<ex>Linux</ex></ph> is not recommended by administrator policy
   </message>
@@ -733,9 +733,6 @@ Additional details:
   </message>
   <message name="IDS_POLICY_DLP_PRINTING_WARN_CONTINUE_BUTTON" desc="Continue dialog button label for warning before printing.">
     Print anyway
-  </message>
-  <message name="IDS_POLICY_DLP_PRINTING_WARN_CANCEL_BUTTON" desc="Cancel dialog button label for warning before printing.">
-    Cancel
   </message>
   <message name="IDS_POLICY_DLP_SCREEN_SHARE_BLOCKED_TITLE" desc="The title for notification informing the user that screen share is blocked.">
     Can’t share confidential content
@@ -776,9 +773,6 @@ Additional details:
   <message name="IDS_POLICY_DLP_SCREEN_SHARE_WARN_CONTINUE_BUTTON" desc="Continue dialog button label for warning before screen sharing.">
     Share anyway
   </message>
-  <message name="IDS_POLICY_DLP_SCREEN_SHARE_WARN_CANCEL_BUTTON" desc="Cancel dialog button label for warning before screen sharing.">
-    Cancel
-  </message>
   <message name="IDS_POLICY_DLP_SCREEN_CAPTURE_WARN_TITLE" desc="The title for notification informing the user that screen capture is not recommended.">
     Capture confidential content?
   </message>
@@ -787,9 +781,6 @@ Additional details:
   </message>
   <message name="IDS_POLICY_DLP_SCREEN_CAPTURE_WARN_CONTINUE_BUTTON" desc="Continue dialog button label for warning before screen capture.">
     Capture anyway
-  </message>
-  <message name="IDS_POLICY_DLP_SCREEN_CAPTURE_WARN_CANCEL_BUTTON" desc="Cancel dialog button label for warning before screen capture.">
-    Cancel
   </message>
   <message name="IDS_POLICY_DLP_VIDEO_CAPTURE_WARN_TITLE" desc="The title for notification informing the user that there was confidential information revealed during screen recording.">
     Capture confidential content?
@@ -802,6 +793,35 @@ Additional details:
   </message>
   <message name="IDS_POLICY_DLP_VIDEO_CAPTURE_WARN_CANCEL_BUTTON" desc="Cancel dialog button label for warning before saving a screen recording.">
     Delete recording
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_DOWNLOAD_WARN_TITLE" desc="The title for notification informing the user that action on selected files is not recommended.">
+        {0, plural,
+          =1 {Download confidential file?}
+          other {Download confidential files?}}
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_TRANSFER_WARN_TITLE" desc="The title for notification informing the user that action on selected files is not recommended.">
+        {0, plural,
+          =1 {Transfer confidential file?}
+          other {Transfer confidential files?}}
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_DOWNLOAD_WARN_MESSAGE" desc="The message for notification informing the user that action on files is not recommended.">
+        {0, plural,
+                =1 {Administrator policy doesn’t recommend downloading this file to <ph name="DESTINATION_NAME">$1<ex>External storage</ex></ph>}
+                other {Administrator policy doesn’t recommend downloading these files to <ph name="DESTINATION_NAME">$1<ex>External storage</ex></ph>}}
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_TRANSFER_WARN_MESSAGE" desc="The message for notification informing the user that action on files is not recommended.">
+        {0, plural,
+                =1 {Administrator policy doesn’t recommend transferring this file to <ph name="DESTINATION_NAME">$1<ex>External storage</ex></ph>}
+                other {Administrator policy doesn’t recommend transferring these files to <ph name="DESTINATION_NAME">$1<ex>External storage</ex></ph>}}
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_DOWNLOAD_WARN_CONTINUE_BUTTON" desc="Continue dialog button label for warning before action on files.">
+    Download anyway
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_TRANSFER_WARN_CONTINUE_BUTTON" desc="Continue dialog button label for warning before action on files.">
+    Transfer anyway
+  </message>
+  <message name="IDS_POLICY_DLP_WARN_CANCEL_BUTTON" desc="Cancel dialog button label for warning.">
+    Cancel
   </message>
   <message name="IDS_POLICY_DLP_CLIPBOARD_BUBBLE_MESSAGE" desc="Text for a bubble that informs the user that their copy and paste action has been blocked/warned with a link to a help center article about Data Leak Prevention.">
     <ph name="BUBBLE_MESSAGE">$1<ex>Pasting from corp.google.com to this location is blocked by administrator policy</ex></ph>. <ph name="LEARN_MORE_TEXT">$2<ex>Learn more</ex></ph>
