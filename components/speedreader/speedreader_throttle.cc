@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 
+#include "base/strings/string_util.h"
 #include "brave/components/speedreader/speedreader_result_delegate.h"
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_url_loader.h"
@@ -17,8 +18,47 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/system/data_pipe.h"
+#include "services/network/public/cpp/content_security_policy/content_security_policy.h"
 #include "services/network/public/mojom/url_loader.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
+
+namespace {
+void SetSpeedreaderCSP(const GURL& url,
+                            network::mojom::URLResponseHead* response_head,
+                            const std::string& hash) {
+  std::string value;
+  if (!response_head->headers->GetNormalizedHeader("Content-Security-Policy",
+                                                   &value)) {
+    return;
+  }
+
+  {  // style-src
+    constexpr const char kStyleSrc[] = "style-src ";
+    const auto pos = value.find(kStyleSrc);
+    if (pos != std::string::npos) {
+      value.insert(pos + sizeof(kStyleSrc) - 1, " '" + hash + "' ");
+    }
+  }
+  {  // scripts
+    constexpr const char kSandbox[] = "sandbox ";
+    const auto pos = value.find(kSandbox);
+    if (pos != std::string::npos) {
+      value.insert(pos + sizeof(kSandbox) - 1, " allow-scripts ");
+    }
+  }
+
+  response_head->headers->SetHeader("Content-Security-Policy", value);
+
+  if (!response_head->parsed_headers)
+    return;
+
+  std::vector<network::mojom::ContentSecurityPolicyPtr> new_csp;
+  network::AddContentSecurityPolicyFromHeaders(*response_head->headers, url,
+                                               &new_csp);
+  response_head->parsed_headers->content_security_policy.swap(new_csp);
+}
+
+}  // namespace
 
 namespace speedreader {
 
@@ -61,6 +101,12 @@ void SpeedReaderThrottle::WillProcessResponse(
     // Skip all non-html documents.
     return;
   }
+
+  if (response_head) {
+    SetSpeedreaderCSP(response_url, response_head,
+                      rewriter_service_->GetStylesheetCSPHash());
+  }
+
   VLOG(2) << "Speedreader throttling: " << response_url;
   *defer = true;
 

@@ -1,0 +1,3 @@
+HTTP/1.1 200 OK
+Content-Type: text/html
+Content-Security-Policy: default-src 'none';img-src 'self';style-src 'sha256-C8KrD1q0gpPKWAp0RKlpJmUxpfVBvMuBQQsubv0kcJs=';frame-ancestors 'none';base-uri 'none';form-action https://seirdy.one/webmentions/receive https://seirdy.one/search/;manifest-src 'self';upgrade-insecure-requests;sandbox allow-same-origin allow-forms

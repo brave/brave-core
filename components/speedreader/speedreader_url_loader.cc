@@ -45,7 +45,6 @@ void MaybeSaveDistilledDataForDebug(const GURL& url,
   base::WriteFile(dir.AppendASCII("page.url"), url.spec());
   base::WriteFile(dir.AppendASCII("original.html"), data);
   base::WriteFile(dir.AppendASCII("distilled.html"), transformed);
-  base::WriteFile(dir.AppendASCII("result.html"), stylesheet + transformed);
 #endif
 }
 

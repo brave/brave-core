@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-us" xml:lang="en-us" prefix="og: https://ogp.me/ns# article: https://ogp.me/ns/article# cc: http://creativecommons.org/ns#">
+<head>
+<meta charset="UTF-8" />
+<meta name="disabled-adaptations" content="watch" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<link href="https://seirdy.one/posts/2022/07/09/stylometric-fingerprinting-redux/" rel="canonical" />
+<style>html{font:100%/1.5 sans-serif;overflow-y:scroll;-webkit-text-size-adjust:none;text-size-adjust:none}@media screen{body{font-size:109.375%;margin:auto;max-width:40em;padding:0 14px}.e-content,[itemprop=dataFeedElement],.narrow{margin:auto;max-width:34em}body>:not(main),main>:not(article),li article,article>:not(h2):not(h3){contain:inline-size layout paint;padding:0 .5em}main>h1{padding-left:.25em}article>hr,body>hr,main>hr{margin:0 .5em}li .p-name+p,header hr{margin-bottom:0}h1{margin:0 0 .25em}dt,footer,h2,h3,li article,summary,[role=doc-backlink],[role=doc-endnotes]{content-visibility:auto;contain-intrinsic-size:auto 3em}dt,h3{contain-intrinsic-size:1.5em}footer,li article{contain-intrinsic-size:auto 16em}li article[itemtype="https://schema.org/SocialMediaPosting"]{contain-intrinsic-size:auto 36em}.tall,[role=doc-endnotes]{contain-intrinsic-size:auto 50em}article,body,dt,dd,h1,h2,h3,html,main,pre,summary,dl>div,:not(nav)>ol,[role=doc-endnotes],[role=doc-preface]{contain:inline-size layout paint}figure,:not(li)>p{contain:inline-size layout}article>h2{margin:.25em 0;padding:.25em 0}details,form{contain:inline-size layout;margin:.5em 0}input,summary,aside>a,dt>a,li>a,.u-comment dd>a,[itemprop=breadcrumb] a,[itemprop=breadcrumb]>span{padding:.75em .25em}dt{padding:1em .5em;margin:-.25em 0 -.25em -.5em}dd{margin:0;padding:.25em .25em .5em 1.75em;contain:inline-size layout paint}aside>a,dt>a{contain:content;margin:-.75em -.25em}h2+aside[role=none]{contain:strict;content-visibility:auto;height:1.75em;margin:-1em -.5em;padding:1em .5em}header>nav,a[href="#h1"],.u-comment dd>a,footer>nav,li>a,aside>a,nav ol a{display:inline-block;margin-left:-.25em}h2>a{contain:content;display:inline-block;margin:0 .125em;padding:.25em}h3>a{contain:content;display:inline-block;padding:.5em .25em}article>h3{padding:.25em;margin:0 0 0 -.5em}[role=doc-backlink],section article p{margin-left:-.5em}header>nav{padding:.75em 0 .25em}dt+dt{padding-top:.75em;margin-top:-.75em}dt+dt>a{padding-top:0}:not(nav)>ul li>a,nav:not([itemprop=breadcrumb]) li,ol li>a{margin:.25em}[role=doc-backlink]{contain:content;display:inline-block;padding:.75em .5em;margin-top:-1em}a[href="#h1"]{contain:content;content-visibility:auto;padding:0 .25em;position:absolute;top:-2em}a[href="#h1"]:focus{top:0}}sup>a{margin-left:.25em;padding-bottom:.5em}sup{font-size:.85em;line-height:0}ol,ul{margin:0;padding-left:1.75em}blockquote,ol ol,ul ul{-webkit-hyphens:auto;hyphens:auto;margin:0;padding-left:1.25em}nav ul{padding:0}[itemprop=breadcrumb] ol,[itemprop=breadcrumb] li,[itemprop=breadcrumb]>span,nav ul li,dt>a{display:inline-block}[itemprop=breadcrumb] ol{margin:-.25em;padding:0}[itemprop=breadcrumb] li:not(:last-of-type)::after{content:"→"}blockquote{border-left:3px solid}h1{-webkit-hyphens:auto;hyphens:auto}@media(max-width:272px){body{font-size:100%;-webkit-hyphens:auto;hyphens:auto;padding:0 8px}li>a,[itemprop=breadcrumb] a,[itemprop=breadcrumb]>span{padding:.25em}dd{padding-left:1em}hr{margin:.25em 0}h2+aside[role=none]{contain:inline-size layout paint}}dt,kbd{font-weight:700}ins,[role=note],[role=doc-tip]{contain:content;font-style:italic;text-decoration:none}figure,section[itemprop=mentions]{margin:1.5em 0}section[itemprop=mentions]>figure{margin:0}code,kbd,pre,samp{font-family:monospace,monospace}[hidden],[type=hidden]{display:none}.h-feed>ol{list-style-type:none;padding:0}.u-comment,:not(pre)>code,:not(pre)>samp,span[itemtype="https://schema.org/Person"]{overflow-wrap:break-word}pre{overflow:auto;padding:.5em}input,img,mark,pre,summary{border:1px solid}:not(pre)>code,:not(pre)>samp{border:1px solid #999;padding:0 .25em}.e-content img{display:block;height:auto;margin:auto;max-width:100%}.h-card .u-photo{height:1em;width:1em;vertical-align:-.1em}.p-author a.u-uid{text-decoration:none}a .u-photo+.p-name{text-decoration:underline}audio{width:100%}.pix{image-rendering:pixelated}legend,form>div{display:table;width:100%}input{appearance:none;font-family:sans-serif;font-size:inherit}input:not([type=submit]){display:table-cell;width:98%}form>div>div{display:table-cell;vertical-align:top;width:1%}a:focus,summary:focus,[tabindex="0"]:focus,form :focus{outline:3px solid}@supports selector(:focus-visible){a:focus:not(:focus-visible),[tabindex="0"]:focus:not(:focus-visible){outline:none}}@media(prefers-color-scheme:dark){button,html,input{background-color:#191919;color:#e6e6e6}mark{color:#000;background-color:#eee7b2}a:link{color:#eee8a7}a:visited{color:#ffdaff}@media(prefers-contrast:less){html,input{background-color:#444}}@media not (prefers-contrast:less){sup a:link:not(:active){color:#feb}sup a:visited:not(:active){color:#ffe6ff}}@media(prefers-contrast:more){html,input{background-color:#0d0d0d;color:#eee}a:link{color:#feb}a:visited{color:#ffe6ff}}a:active{color:#f83}}@media print{summary{list-style:none}[href="#h1"],[role=doc-backlink],aside:not([role=note]),article summary,section[aria-labelledby=webmentions],footer,body>hr,main[itemprop]>article+hr,nav:not([itemprop=breadcrumb]) a:not([rel=home]){display:none}[role=note] p,[role=doc-tip] p{margin:.25em 0}}figure,blockquote,section[itemprop=mentions],li{break-inside:avoid}</style>
+<link href="https://seirdy.one/webmentions/receive" rel="webmention" />
+<link href="/manifest.min.aaf54df27e8014d0d9914ba0240b3570.webmanifest" rel="manifest" />
+<link rel="alternate" type="application/atom+xml" href="https://seirdy.one/posts/atom.xml" title="Articles" />
+<link rel="alternate" type="application/atom+xml" href="https://seirdy.one/atom.xml" title="All content" />
+<link rel="alternate" type="application/atom+xml" href="https://seirdy.one/notes/atom.xml" title="Notes" />
+<link rel="authorization_endpoint" href="https://indielogin.com/auth" />
+<title>Stylometric fingerprinting redux - Seirdy</title>
+<meta name="description" content="Avoid de-anonymization through analysis of your writing style. Defend against machine- and human-driven stylometric identification." />
+<meta name="author" content="Rohan Kumar" />
+<meta property="article:author" content="Rohan Kumar" />
+<meta property="article:published_time" content="2022-07-09T21:49:06-07:00" />
+<meta property="article:modified_time" content="2022-08-06T16:18:08-07:00" />
+<meta name="color-scheme" content="light dark" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="theme-color" content="#191919" media="(prefers-color-scheme:dark)" />
+<meta name="theme-color" content="#fff" media="(prefers-color-scheme:light)" />
+<meta property="og:title" content="Stylometric fingerprinting redux" />
+<meta property="og:site_name" content="Seirdy's Home" />
+<meta property="og:type" content="article" />
+<meta property="og:image" content="https://seirdy.one/favicon512.63ee1da7ff5f42b764febf0cf7a793b5.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:height" content="512" />
+<meta property="og:image:width" content="512" />
+<meta property="og:url" content="https://seirdy.one/posts/2022/07/09/stylometric-fingerprinting-redux/" />
+<meta property="og:description" content="Avoid de-anonymization through analysis of your writing style. Defend against machine- and human-driven stylometric identification." />
+</head>
+<body itemscope="" itemtype="https://schema.org/WebPage">
+<header>
+	<a href="#h1">Skip to content</a>
+	<nav aria-label="Global">
+		<ul>
+			<li itemprop="isPartOf" itemscope="" itemtype="https://schema.org/Blog https://schema.org/WebSite" itemid="https://seirdy.one/">
+				<a rel="home" itemprop="url" href="https://seirdy.one/">
+					<span itemprop="name">Seirdy's Home</span>
+				</a>
+			</li>
+			<li itemprop="hasPart" itemscope="" itemtype="https://schema.org/SiteNavigationElement">
+				<a href="https://seirdy.one/posts/" itemprop="url" rel="feed">
+					<strong itemprop="name">Articles</strong>
+				</a>
+			</li>
+			<li itemprop="hasPart" itemscope="" itemtype="https://schema.org/SiteNavigationElement">
+				<a href="https://seirdy.one/notes/" itemprop="url" rel="feed">
+					<span itemprop="name">Notes</span>
+				</a>
+			</li>
+			<li itemprop="hasPart" itemscope="" itemtype="https://schema.org/SiteNavigationElement">
+				<a href="https://seirdy.one/bookmarks/" itemprop="url" rel="feed">
+					<span itemprop="name">Bookmarks</span>
+				</a>
+			</li>
+			<li itemprop="hasPart" itemscope="" itemtype="https://schema.org/SiteNavigationElement">
+				<a href="https://seirdy.one/about/" itemprop="url">
+					<span itemprop="name">About</span>
+				</a>
+			</li>
+			<li itemprop="hasPart" itemscope="" itemtype="https://schema.org/SiteNavigationElement">
+				<a href="https://seirdy.one/meta/" itemprop="url">
+					<span itemprop="name">Meta</span>
+				</a>
+			</li>
+			<li itemprop="hasPart" itemscope="" itemtype="https://schema.org/SiteNavigationElement">
+				<a href="https://seirdy.one/resume/" itemprop="url">
+					<span itemprop="name">Resume</span>
+				</a>
+			</li>
+		</ul>
+	</nav>
+	<hr />
+	<nav aria-labelledby="bc-label" itemscope="" itemprop="breadcrumb" itemtype="https://schema.org/BreadcrumbList">
+		<span id="bc-label">You are here: </span>
+		<ol>
+			<li itemscope="" itemprop="itemListElement" itemtype="https://schema.org/ListItem">
+				<a itemprop="item" href="https://seirdy.one/posts/">
+					<span itemprop="name">Articles</span>
+				</a>
+				<meta itemprop="position" content="1" />
+			</li>
+			<li itemscope="" itemprop="itemListElement" itemtype="https://schema.org/ListItem">
+				<a aria-current="page" itemprop="item" href="https://seirdy.one/posts/2022/07/09/stylometric-fingerprinting-redux/">
+					<span itemprop="name">Stylometric fingerprinting redux</span>
+				</a>
+				<meta itemprop="position" content="2" />
+			</li>
+		</ol>
+	</nav>
+</header>
+<main itemprop="mainEntity" itemscope="" itemtype="https://schema.org/BlogPosting https://schema.org/TechArticle" itemid="https://seirdy.one/posts/2022/07/09/stylometric-fingerprinting-redux/">
+	<link itemprop="isPartOf" href="https://seirdy.one/" />
+	<article class="h-entry hentry">
+		<header>
+			<h1 itemprop="name headline" class="p-name entry-title" id="h1" tabindex="-1">Stylometric fingerprinting redux</h1>
+			<p>Posted <time itemprop="dateCreated datePublished" class="dt-published published" datetime="2022-07-09T21:49:06-07:00">2022-07-09</time> by <span itemprop="author copyrightHolder" itemscope="" itemtype="https://schema.org/Person" itemid="https://seirdy.one/#seirdy" class="h-card p-author author vcard"><a itemprop="url" href="https://seirdy.one/" rel="author me home cc:attributionURL" class="u-url u-uid url" property="cc:attributionName"><img itemprop="image" width="16" height="16" alt="" src="https://seirdy.one/favicon.9360495f037d095b8e1c8a0c015898d3.svg" class="u-photo photo" /> <span itemprop="name" class="p-name fn n"><span itemprop="givenName" class="p-given-name given-name">Rohan</span> <span itemprop="familyName" class="p-family-name family-name">Kumar</span></span></a></span>
+on his <a rel="canonical" itemprop="url" class="u-url url" href="https://seirdy.one/posts/2022/07/09/stylometric-fingerprinting-redux/">Website</a> and <a rel="syndication" class="u-syndication" href="gemini://seirdy.one/posts/2022/07/09/stylometric-fingerprinting-redux/index.gmi">Gemini capsule</a>.<br />
+	Last updated <time itemprop="dateModified" class="dt-updated updated" datetime="2022-08-06T16:18:08-07:00">2022-08-06</time>. <a href="https://git.sr.ht/~seirdy/seirdy.one/log/master/item/content/posts/stylometric-fingerprinting-redux.gmi">Changelog</a>.<br />
+	<data itemprop="wordCount" value="1456">1456</data> words; a short <time itemprop="timeRequired" datetime="PT7M">7 minute</time> read</p>
+		</header>
+		<hr />
+		<div class="e-content entry-content" itemprop="articleBody">
+			<meta itemprop="author" content="Rohan Kumar" />
+			<p role="note">
+This is an expanded version of a microblog entry: <span class="h-cite" itemprop="mentions" itemscope="" itemtype="https://schema.org/SocialMediaPosting"><cite itemprop="name" class="p-name"><a class="u-url" itemprop="url" href="../../../../../notes/2022/06/24/stylometric-fingerprinting-resistance/">Stylometric fingerprinting resistance</a></cite></span>. It contains everything in that entry and more.
+I am open to feedback, especially from anybody with a more thorough background in the subject; <a href="/about/">here’s my contact information</a>.
+</p>
+			<section role="doc-introduction">
+				<h2 id="introduction" tabindex="-1">Intro­duction</h2>
+				<aside role="none">
+					<a href="#introduction" aria-labelledby="introduction-prefix introduction">
+						<span id="introduction-prefix">Permalink to section</span>
+					</a>
+				</aside>
+				<p>Following a recent landmark <abbr title="Supreme Court of the United States">SCOTUS</abbr> ruling, many have been trying to publish resources to help people find reproductive healthcare. They often wish to publish anonymously, to avoid being harassed or doxxed by overzealous religious fundamentalists. Some people asked me for help.</p>
+				<p>There’s no shortage of guides on how to stay anonymous online. I recommend using the Tor Browser in a disposable Whonix VM. <a href="https://www.whonix.org/wiki/Surfing_Posting_Blogging">The Whonix Wiki has a good guide to anonymous publishing</a>. Few guides cover <a href="https://en.wikipedia.org/wiki/Stylometry">stylometric fingerprinting</a>.</p>
+				<p><dfn>Stylometric fingerprinting</dfn> analyzes unique writing style (i.e., it uses <em>stylometry</em>) to identify the author of a work. It’s one of the most common techniques for de-anonymization, used by adversaries ranging from trolls to law enforcement.</p>
+				<p>For a <abbr title="Too Long; Didn't Read">TL;DR</abbr>, skip to <a href="#conclusion">the “Conclusion” section</a>.</p>
+			</section>
+			<h2 id="how-stylometric-fingerprinting-works" tabindex="-1">How stylometric fingerprinting works</h2>
+			<aside role="none">
+				<a href="#how-stylometric-fingerprinting-works" aria-labelledby="how-stylometric-fingerprinting-works-prefix how-stylometric-fingerprinting-works">
+					<span id="how-stylometric-fingerprinting-works-prefix">Permalink to section</span>
+				</a>
+			</aside>
+			<p>To paint with a broad brush, we can divide most stylometric fingerprinting into machine- and human-driven techniques.</p>
+			<dl>
+				<dt>Machine-driven techniques</dt>
+				<dd>These techniques involve analysis of reading level metrics, unusual words, machine-identifiable grammatical and spelling errors, and statistical analysis of writing style. A great amount of recent research studies statistical analysis of writing style; it’s a rapidly-evolving field.</dd>
+				<dt>Human-driven techniques</dt>
+				<dd>There are some areas in which manual analysis still beats computers. Someone you know may recognize your writing style.</dd>
+			</dl>
+			<h2 id="defense-against-machine-driven-techniques" tabindex="-1">Defense against machine-driven techniques</h2>
+			<aside role="none">
+				<a href="#defense-against-machine-driven-techniques" aria-labelledby="defense-against-machine-driven-techniques-prefix defense-against-machine-driven-techniques">
+					<span id="defense-against-machine-driven-techniques-prefix">Permalink to section</span>
+				</a>
+			</aside>
+			<p>Common advice is to use offline machine translation to translate works to and from another language. <a href="https://www.argosopentech.com/">Argos Translate</a> and <a href="https://marian-nmt.github.io/">Marian</a> are two options that come to mind.</p>
+			<h3 id="obfuscation-and-imitation" tabindex="-1">Obfuscation and imitation</h3>
+			<p><span class="h-cite" itemprop="citation" role="doc-credit" itemscope="" itemtype="https://schema.org/ScholarlyArticle"><cite itemprop="name headline" class="p-name"><a class="u-url" itemprop="url" href="https://doi.org/10.1145/2382448.2382450">Adversarial stylometry: Circumventing authorship recognition to preserve privacy and anonymity</a></cite></span> shows that machine translation alone isn’t nearly as strong a method as manual approaches: obfuscation (hiding your writing style) or imitation (mimicking another author). These approaches have excellent success rates, even among amateur writers. The aforementioned Whonix wiki page lists common stylometric fingerprinting vectors for manual approaches to address.</p>
+			<p>Limiting unusual vocabulary and sentence structure make for a good start. Using a comprehensive and highly-opinionated style-guide should also help. <cite>The Economist</cite> has a good one that was specifically written to make all authors sound the same: <span class="h-cite" itemprop="mentions" itemscope="" itemtype="https://schema.org/Book"><cite itemprop="name" class="p-name"><a class="u-url" itemprop="url" href="https://cdn.static-economist.com/sites/default/files/pdfs/style_guide_12.pdf">The Economist Style Guide</a></cite>, <span itemprop="bookEdition">12th edition</span> (<span itemprop="encodingFormat">application/<wbr />pdf</span>)</span>.</p>
+			<p>Nearly every respected newspaper has a style guide. Tech companies typically publish or use a style guide for technical writing. I’m a fan of Red Hat’s style guide: <span class="h-cite" itemprop="mentions" itemscope="" itemtype="https://schema.org/Book"><cite itemprop="name" class="p-name"><a class="u-url" itemprop="url" href="https://stylepedia.net/style/5.1/">Red Hat Technical Writing Style Guide</a></cite>, <span itemprop="bookEdition">Edition 5.1</span></span>.</p>
+			<p>Good style guides are long, and learning one is tough. Read a large amount of conforming content to help yourself internalize a guide’s rules.</p>
+			<h3 id="reading-levels" tabindex="-1">Reading levels</h3>
+			<p>The reading difficulty of a piece is a coarse but extremely simple measure. If the anonymous author of a piece writes at a tenth-grade level, their other writings are likely near a tenth-grade level too.</p>
+			<p>Check your content’s reading level using common readability metrics. The <a href="https://en.wikipedia.org/wiki/Flesch%E2%80%93Kincaid_readability_tests">Flesch-Kincaid Grade Level</a> is one of the most popular. If you write at a given grade level, publish anonymously at a lower grade level. I recommend using a lower grade level rather than a higher one for two reasons:</p>
+			<ol>
+				<li>Artificially inflating the reading level generally produces cringeworthy writing.</li>
+				<li>Writing at a lower level carries less risk of introducing uncommon fingerprintable words.</li>
+			</ol>
+			<h3 id="other-tips" tabindex="-1">Other tips</h3>
+			<p>For any inexperienced writers: opinionated offline grammar checkers such as <a href="https://github.com/languagetool-org/languagetool">LanguageTool</a> and <a href="https://github.com/redpen-cc/redpen">RedPen</a> may supplement a manual approach by normalizing any distinguishing “errors” in your language. That being said, nothing beats a human editor. Find someone you trust to review your work.</p>
+			<p>Here are some resources for further reading:</p>
+			<ul>
+				<li>
+					<p><span class="h-cite" itemprop="mentions" itemscope="" itemtype="https://schema.org/Article"><cite itemprop="name headline" class="p-name"><a class="u-url" itemprop="url" href="https://www.orphanalytics.com/en/method">How we authenticate a document</a></cite> by <span itemscope="" itemprop="publisher" itemtype="https://schema.org/Organization">OrphAnalytics SA</span></span>.</p>
+				</li>
+				<li>
+					<p><span class="h-cite" itemprop="mentions" itemscope="" itemtype="https://schema.org/Article"><cite itemprop="name headline" class="p-name"><a class="u-url" itemprop="url" href="https://serhack.me/articles/unveiling-anonymous-author-stylometry-techniques/">Unveiling the Anonymous Author: Stylometry Techniques</a></cite> by <span itemprop="author" itemscope="" itemtype="https://schema.org/Person" class="h-card vcard p-author"><a itemprop="url" href="https://serhack.me/" class="u-url url"><span itemprop="name" class="p-name fn n">
+SerHack</span></a></span></span>.</p>
+				</li>
+			</ul>
+			<h2 id="defense-against-human-driven-techniques" tabindex="-1">Defense against human-driven techniques</h2>
+			<aside role="none">
+				<a href="#defense-against-human-driven-techniques" aria-labelledby="defense-against-human-driven-techniques-prefix defense-against-human-driven-techniques">
+					<span id="defense-against-human-driven-techniques-prefix">Permalink to section</span>
+				</a>
+			</aside>
+			<p>Human-driven techniques were behind the most high-profile successful cases of stylometric fingerprinting by law enforcement. When the Unabomber published his manifesto, his brother recognized some signature phrases in his manifesto and went to the FBI. One of the largest Australian CSA cases involved <a href="https://www.nowtolove.com.au/news/real-life/the-online-child-sex-abuse-epidemic-9139">recognizing someone’s distinctive greeting of “Hiya”</a>.</p>
+			<p>While the research I cited seems to indicate that machine translation is a poor way to thwart machine-driven techniques, I’m not convinced that it’s useless. Machine translation may be ineffective at thwarting machine-driven stylometric fingerprinting, but it should be able to highlight or remove uniqueness a human could notice. Let’s look at some examples.</p>
+			<h3 id="example-unabomber-manifesto" tabindex="-1">Example: Unabomber manifesto</h3>
+			<p>Here’s a sentence from the Unabomber manifesto:</p>
+			<blockquote>
+				<p>But it is obvious that modern leftist philosophers are not simply <mark>cool-headed logicians</mark> systematically analyzing the foundations of knowledge.</p>
+			</blockquote>
+			<p>David Kaczynski noticed the phrase “cool-headed logicians” as a potential signature identifying his brother. After further analysis, the author was clear.</p>
+			<figure itemprop="mentions" itemscope="" itemtype="https://schema.org/Quotation">
+				<blockquote itemprop="text">
+					<p>After I read the first few pages, my jaw literally dropped. One particular phrase disturbed me. It said modern philosophers were not “cool-headed logicians.” Ted had once said I was not a “cool-headed logician,” and I had never heard anyone else use that phrase…We had Linda’s childhood friend Susan Swanson, a private investigator, take two of Ted’s letters to a linguistics expert, who analyzed them and found there was an 80 percent chance the same person had written the letters and the manifesto.</p>
+				</blockquote>
+				<figcaption>
+—<span class="h-cite" itemprop="citation" role="doc-credit"><span itemprop="isPartOf" itemscope="" itemtype="https://schema.org/NewsArticle"><span itemprop="author" itemscope="" itemtype="https://schema.org/Person" class="h-card vcard p-author"><a itemprop="url" href="https://web.archive.org/web/20100316051613/http://blog.timesunion.com/kaczynski/" class="u-url url"><span itemprop="name" class="p-name fn n"><span itemprop="givenName" class="p-given-name given-name">David</span> <span itemprop="familyName" class="p-family-name family-name">Kaczynski</span></span></a></span>,
+<cite itemprop="name headline" class="p-name"><a class="u-url" itemprop="url" href="https://people.com/archive/blood-bond-vol-50-no-4/">Blood Bond</a></cite></span></span>
+</figcaption>
+			</figure>
+			<p>Let’s run it through Argos Open Translate’s English-Esperanto filter,<sup><a href="#fn:1" id="fnref:1" role="doc-noteref">note 1</a></sup> and then translate it back to English:</p>
+			<blockquote>
+				<p>But it is evident that modern left-wing philosophers are not simply <mark>dehydrated logicians</mark> systematically analyzing the foundations of knowledge.</p>
+			</blockquote>
+			<p>“Dehydrated logicians” obviously isn’t the correct term to use. The fact that the translation algorithm mistook “cool-headed” for “dehydrated” indicates that “cool-headed” was an unusual choice of words to use in this context, and therefore a fingerprinting vector. A more common phrase like “detached” would be safer.</p>
+			<h3 id="extreme-example-mario" tabindex="-1">Extreme example: Mario</h3>
+			<p>Let’s look at another phrase:</p>
+			<blockquote>
+				<p>Whoohoo! It’s a-me, Mario!</p>
+			</blockquote>
+			<p>“Mario” is a common name, but I have a feeling you know that <a href="https://en.wikipedia.org/wiki/Mario">this “Mario” is the Nintendo character</a>. Running this line through an English-Esperanto and Esperanto-English filter gives us:</p>
+			<blockquote>
+				<p>Who! It’s me, Mary!</p>
+			</blockquote>
+			<p>Our findings:</p>
+			<ul>
+				<li>“Whoohoo” is uncommon enough to be unrecognized by the translation algorithm. Replace or remove it.</li>
+				<li>Saying “a-me” is less common than saying “me”.</li>
+				<li>“Mario” is less common than “Mary” in an English-speaking context.</li>
+			</ul>
+			<p>Additionally, inflection (e.g., using an exclamation point) can make your writing voice recognizable. Use it with care.</p>
+			<p>Let’s re-phrase Mario’s line to be less identifiable:</p>
+			<blockquote>
+				<p>Hey, it’s me. Mario.</p>
+			</blockquote>
+			<p>That’s a little better.</p>
+			<h2 id="example-my-fingerprint" tabindex="-1">Example: my fingerprint</h2>
+			<aside role="none">
+				<a href="#example-my-fingerprint" aria-labelledby="example-my-fingerprint-prefix example-my-fingerprint">
+					<span id="example-my-fingerprint-prefix">Permalink to section</span>
+				</a>
+			</aside>
+			<p>I have my share of fingerprintable stylistic and formatting quirks. A non-exhaustive list:</p>
+			<ul>
+				<li>
+					<p>Qualifying lists with words like “non-exhaustive” or “incomplete”.</p>
+				</li>
+				<li>
+					<p>Putting punctuation outside quotations or hyperlinks whenever acceptable.</p>
+				</li>
+				<li>
+					<p>Using many colons, semicolons and conjunctive adverbs; for example, this sentence uses the latter two.</p>
+				</li>
+				<li>
+					<p>Obsessively distinguishing between concepts and implementations of those concepts, resulting in a statistically high use of the word “implementation”.</p>
+				</li>
+				<li>
+					<p>Introducing some articles with HTML description lists before elaborating on each entry in that list.</p>
+				</li>
+				<li>
+					<p>Using soft-hyphens so text can wrap to narrow widths.</p>
+				</li>
+			</ul>
+			<h2 id="writing-is-a-skill" tabindex="-1">Writing is a skill</h2>
+			<aside role="none">
+				<a href="#writing-is-a-skill" aria-labelledby="writing-is-a-skill-prefix writing-is-a-skill">
+					<span id="writing-is-a-skill-prefix">Permalink to section</span>
+				</a>
+			</aside>
+			<p>Developing a high-quality writing style is hard. Developing and switching between multiple different styles is even harder. It takes time to master multiple style guides, cultivate a different “voice” free of your usual idiosyncrasies, and keep your different voices from influencing one another. “Getting into character” won’t happen overnight if you don’t have experience.</p>
+			<p>Translation tools are <span data-literal="temporary learning aids">training-wheels</span> to help you learn to identify idiosyncrasies. As you get better, you might be able to filter out problematic language without their help.</p>
+			<p>Don’t feel pressured to start soon! If you want to publish under a truly anonymous pseudonym, you should first hone your craft. Alternatively, find a good editor.<sup><a href="#fn:2" id="fnref:2" role="doc-noteref">note 2</a></sup></p>
+			<section role="doc-conclusion">
+				<h2 id="conclusion" tabindex="-1">Conclusion</h2>
+				<aside role="none">
+					<a href="#conclusion" aria-labelledby="conclusion-prefix conclusion">
+						<span id="conclusion-prefix">Permalink to section</span>
+					</a>
+				</aside>
+				<p>If you wish to write anonymously, I recommend the following:</p>
+				<ol>
+					<li>
+						<p>Analyze your non-anonymous writing, looking for patterns. Write these patterns down. When you review your anonymous publications, refer to your list of identifiable patterns and remove them. Consider asking someone else for help, since your own bias might cause you to overlook some patterns.</p>
+					</li>
+					<li>
+						<p>Translate your work to and from another language with an offline machine translator. Don’t actually publish the translator’s output; instead, read the output to identify potentially-fingerprintable language you missed in the previous step.</p>
+					</li>
+					<li>
+						<p>Correct any grammatical or spelling errors; mistakes you make might be unique.</p>
+					</li>
+					<li>
+						<p>Conform to an opinionated style-guide that you don’t normally use in your other writing.</p>
+					</li>
+					<li>
+						<p>If, after doing the prior steps, your anonymous work still has a reading level too similar to your non-anonymous writing: reduce the reading level by choosing simpler words.</p>
+					</li>
+				</ol>
+				<p>More information on stylometric fingerprinting resistance is on <span class="h-cite" itemprop="citation" itemscope="" itemtype="https://schema.org/TechArticle"><cite itemprop="name headline" class="p-name"><a class="u-url" itemprop="url" href="https://anonymousplanet-ng.org/guide.html#appendix-a4-counteracting-forensic-linguistics">The Hitchiker's Guide to Online Anonymity</a></cite></span>.</p>
+				<p>Stay safe, everyone.</p>
+			</section>
+			<hr />
+			<section role="doc-endnotes" aria-labelledby="note-hd">
+				<h2 id="note-hd">Footnotes</h2>
+				<ol>
+					<li id="fn:1" tabindex="-1">
+						<p>I didn’t pick Esperanto for any particular reason. </p>
+						<a href="#fnref:1" aria-labelledby="bl1-1 bl2-1" role="doc-backlink">
+							<span id="bl1-1">Back</span>
+							<span id="bl2-1" hidden=""> to reference 1</span>
+						</a>
+					</li>
+					<li id="fn:2" tabindex="-1">
+						<p>I am not the best person for this job, sorry. </p>
+						<a href="#fnref:2" aria-labelledby="bl1-2 bl2-2" role="doc-backlink">
+							<span id="bl1-2">Back</span>
+							<span id="bl2-2" hidden=""> to reference 2</span>
+						</a>
+					</li>
+				</ol>
+			</section>
+		</div>
+	</article>
+	<hr />
+	<section aria-labelledby="webmentions">
+		<h2 id="webmentions" tabindex="-1">Web­mentions</h2>
+		<p>This site supports <a href="https://indieweb.org/webmention">Webmentions</a>, a backlink-based alternative to traditional comment forms.</p>
+		<fieldset>
+			<legend>Publish a response on your own website and share the link here to send me a webmention! Include a link to this page's canonical location for it to be accepted.</legend>
+			<form itemprop="potentialAction" itemscope="" itemtype="https://schema.org/CommentAction" action="https://seirdy.one/webmentions/receive" method="post">
+				<meta itemprop="actionStatus" content="PotentialActionStatus" />
+				<input type="hidden" name="target" value="https://seirdy.one/posts/2022/07/09/stylometric-fingerprinting-redux/" />
+				<label for="menchie">URL of page linking here</label>
+				<div>
+					<input id="menchie" type="url" autocomplete="on" required="" name="source" />
+					<div>
+						<input type="submit" value="submit" />
+					</div>
+				</div>
+			</form>
+		</fieldset>
+		<p>Webmentions received for this post appear in the following list after I approve them. I sometimes send Webmentions to myself on behalf of linking sites that don't support them. I replace broken links with <a href="https://web.archive.org/">Wayback Machine</a> snapshots, if they exist.</p>
+		<details>
+			<summary>Toggle Webmentions</summary>
+			<dl>
+				<div itemprop="comment" itemscope="" itemtype="https://schema.org/Comment" class="u-comment h-cite">
+					<dt>
+						<time class="dt-published" itemprop="datePublished" datetime="2022-07-10 20:20:08Z">
+						2022-07-10
+					</time>
+					</dt>
+					<dd><a class="u-url" itemprop="url" href="https://lobste.rs/s/jxarhj" rel="nofollow ugc"><span itemprop="name" class="p-name">
+								Stylometric fingerprinting redux | Lobsters</span></a>
+						by <span itemprop="author" itemscope="" itemtype="https://schema.org/Person" class="h-card p-author vcard"><span itemprop="name" class="p-name fn n">Seirdy</span></span>
+				</dd>
+				</div>
+				<div itemprop="comment" itemscope="" itemtype="https://schema.org/Comment" class="u-comment h-cite">
+					<dt>
+						<time class="dt-published" itemprop="datePublished" datetime="2022-07-10 22:22:46Z">
+						2022-07-10
+					</time>
+					</dt>
+					<dd><a class="u-url" itemprop="url" href="https://floss.social/@alcinnz/108624757581373530" rel="nofollow ugc"><span itemprop="name" class="p-name">
+								Adrian Cochrane: "Stylometric fingerprinting redux - Seirdy: https:…" - FLOSS.social</span></a>
+						by <span itemprop="author" itemscope="" itemtype="https://schema.org/Person" class="h-card p-author vcard"><span itemprop="name" class="p-name fn n">Adrian Cochrane</span></span><p><q itemprop="text" class="p-content">Stylometric fingerprinting redux - Seirdy: https://seirdy.one/posts/2022/07/09/stylometric-fingerprinting-redux/</q></p>
+				</dd>
+				</div>
+				<div itemprop="comment" itemscope="" itemtype="https://schema.org/Comment" class="u-comment h-cite">
+					<dt>
+						<time class="dt-published" itemprop="datePublished" datetime="2022-08-07 01:06:21Z">
+						2022-08-07
+					</time>
+					</dt>
+					<dd>
+						<a class="u-url" itemprop="url" href="https://anonymousplanet-ng.org/guide.html#appendix-a4-counteracting-forensic-linguistics" rel="nofollow ugc">
+							<span itemprop="name" class="p-name">
+								The Hitchhiker’s Guide to Online Anonymity | The Hitchhiker’s Guide to Online Anonymity</span>
+						</a>
+					</dd>
+				</div>
+				<div itemprop="comment" itemscope="" itemtype="https://schema.org/Comment" class="u-comment h-cite">
+					<dt>
+						<time class="dt-published" itemprop="datePublished" datetime="2022-08-16 20:46:05Z">
+						2022-08-16
+					</time>
+					</dt>
+					<dd><a class="u-url" itemprop="url" href="https://brid.gy/comment/twitter/seirdy/1558103205875273730/1558103205875273730" rel="nofollow ugc"><span itemprop="name" class="p-name">
+								2/3
+
+Also check out this excellent guide for anyone who wants to publish anonymously or who has an pseudoanonymous profile and …</span></a>
+						by <span itemprop="author" itemscope="" itemtype="https://schema.org/Person" class="h-card p-author vcard"><span itemprop="name" class="p-name fn n">CIA Officer</span></span><p><q itemprop="text" class="p-content">2/3
+
+Also check out this excellent guide for anyone who wants to publish anonymously or who has an pseudoanonymous profile and does not want it connected to their personal account.
+
+seirdy.one/posts/2022/07/…</q></p>
+				</dd>
+				</div>
+			</dl>
+		</details>
+		<p>Feel free to contact me directly with feedback; <a href="https://seirdy.one/about/#location-seirdy-online">here’s my contact info</a></p>
+	</section>
+</main>
+<hr />
+<aside aria-labelledby="continue-hd">
+	<nav aria-labelledby="continue-hd">
+		<h2 id="continue-hd">Continue reading</h2>
+		<ul>
+			<li>Previous post: <a href="https://seirdy.one/posts/2022/07/01/experiment-copilot-legality/" rel="prev">An experiment to test GitHub Copilot's legality</a></li>
+		</ul>
+	</nav>
+	<p role="separator">That's all, folks.</p>
+</aside>
+<hr />
+<footer>
+	<p>
+Copyright <time itemprop="copyrightYear" datetime="2022">2022</time> <span itemprop="author copyrightHolder" itemscope="" itemtype="https://schema.org/Person" itemid="https://seirdy.one/#seirdy" class="h-card p-author author vcard"><a itemprop="url" href="https://seirdy.one/" rel="author me home cc:attributionURL" class="u-url u-uid url" property="cc:attributionName"><img itemprop="image" width="16" height="16" alt="" src="https://seirdy.one/favicon.9360495f037d095b8e1c8a0c015898d3.svg" class="u-photo photo" /> <span itemprop="name" class="p-name fn n"><span itemprop="givenName" class="p-given-name given-name">Rohan</span> <span itemprop="familyName" class="p-family-name family-name">Kumar</span></span></a></span>
+</p>
+	<form itemprop="potentialAction" itemscope="" itemtype="https://schema.org/SearchAction" action="https://seirdy.one/search/" method="get" role="search">
+		<label for="search" itemscope="" itemprop="target" itemtype="https://schema.org/EntryPoint">
+Search this site (powered by the <a rel="nofollow" href="https://searchmysite.net/">Search My Site</a> API):
+<meta itemprop="urlTemplate" content="https://seirdy.one/search/?q={q}" />
+</label>
+		<div>
+			<input itemprop="query-input" id="search" type="search" name="q" required="" spellcheck="true" autocomplete="on" />
+			<div>
+				<input type="submit" value="search" />
+			</div>
+		</div>
+	</form>
+	<nav aria-label="site info">
+		<ul>
+			<li itemprop="license" itemscope="" itemtype="https://schema.org/CreativeWork">
+				<a rel="license" itemprop="url" href="https://creativecommons.org/licenses/by-sa/4.0/">
+					<span itemprop="name">CC BY-SA 4.0</span>
+				</a>
+			</li>
+			<li>
+				<a rel="source" href="https://sr.ht/~seirdy/seirdy.one/">Source code</a>
+			</li>
+			<li>
+				<a rel="alternate" href="http://wgq3bd2kqoybhstp77i3wrzbfnsyd27wt34psaja4grqiezqircorkyd.onion/posts/2022/07/09/stylometric-fingerprinting-redux/">Tor mirror</a>
+			</li>
+			<li>
+				<a href="https://seirdy.one/meta/privacy/">Privacy</a>
+			</li>
+			<li>
+				<a href="https://seirdy.one/meta/site-design/">Site design standards</a>
+			</li>
+			<li>
+				<a href="https://seirdy.one/about/#location-seirdy-online">Contact</a>
+			</li>
+		</ul>
+	</nav>
+</footer>
+</body>
+</html>

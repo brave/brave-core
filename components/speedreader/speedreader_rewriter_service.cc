@@ -34,14 +34,17 @@ namespace {
 
 constexpr const char kSpeedreaderStylesheet[] = "speedreader-stylesheet";
 
-std::string WrapStylesheetWithCSP(const std::string& stylesheet) {
+std::string ComputeStylesheetCSPHash(const std::string& stylesheet) {
   const std::string style_hash = crypto::SHA256HashString(stylesheet);
-  const std::string style_hash_b64 =
-      base::Base64Encode(base::as_bytes(base::make_span(style_hash)));
+  return "sha256-" +
+         base::Base64Encode(base::as_bytes(base::make_span(style_hash)));
+}
 
+std::string WrapStylesheetWithCSP(const std::string& stylesheet,
+                                  const std::string& csp_hash) {
   return "<meta http-equiv=\"Content-Security-Policy\" content=\""
-         "script-src 'none'; style-src 'sha256-" +
-         style_hash_b64 +
+         "script-src 'none'; style-src '" +
+         csp_hash +
          "'\">\n"
          "<style id=\"brave_speedreader_style\">" +
          stylesheet + "</style>";
@@ -54,13 +57,12 @@ std::string GetDistilledPageStylesheet(const base::FilePath& stylesheet_path) {
   if (!success || stylesheet.empty()) {
     VLOG(1) << "Failed to read speedreader override stylesheet from "
             << stylesheet_path;
-    stylesheet = ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
-        IDR_SPEEDREADER_STYLE_DESKTOP);
+    return {};
   }
 
   base::ReplaceChars(stylesheet, "\r\n", "\n", &stylesheet);
 
-  return WrapStylesheetWithCSP(stylesheet);
+  return stylesheet;
 }
 
 base::FilePathWatcher* CreateAndStartFilePathWatcher(
@@ -80,7 +82,7 @@ base::FilePathWatcher* CreateAndStartFilePathWatcher(
 SpeedreaderRewriterService::SpeedreaderRewriterService()
     : speedreader_(new speedreader::SpeedReader) {
   // Load the built-in stylesheet as the default
-  content_stylesheet_ = WrapStylesheetWithCSP(
+  OnLoadStylesheet(
       ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
           IDR_SPEEDREADER_STYLE_DESKTOP));
 
@@ -133,7 +135,12 @@ void SpeedreaderRewriterService::OnWatcherStarted(
 
 void SpeedreaderRewriterService::OnLoadStylesheet(std::string stylesheet) {
   VLOG(2) << "Speedreader stylesheet loaded";
-  content_stylesheet_ = stylesheet;
+  if (stylesheet.empty())
+    return;
+
+  content_stylesheet_csp_hash_ = ComputeStylesheetCSPHash(stylesheet);
+  content_stylesheet_ =
+      WrapStylesheetWithCSP(stylesheet, content_stylesheet_csp_hash_);
 }
 
 bool SpeedreaderRewriterService::URLLooksReadable(const GURL& url) {
@@ -161,6 +168,10 @@ std::unique_ptr<Rewriter> SpeedreaderRewriterService::MakeRewriter(
 
 const std::string& SpeedreaderRewriterService::GetContentStylesheet() {
   return content_stylesheet_;
+}
+
+const std::string& SpeedreaderRewriterService::GetStylesheetCSPHash() {
+  return content_stylesheet_csp_hash_;
 }
 
 }  // namespace speedreader

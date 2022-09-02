@@ -355,9 +355,8 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
         // Add 'show original'
         {
             let show_original_link =
-                dom::create_element_simple(dom, "a", "metadata show_original", None);
+                dom::create_element_simple(dom, "div", "metadata show_original", None);
             dom::set_attr("id", "c93e2206-2f31-4ddc-9828-2bb8e8ed940e", show_original_link.clone(), true);
-            dom::set_attr("href", "", show_original_link.clone(), true);
             dom.append(&metadata_parent, NodeOrText::AppendNode(show_original_link));
         }
 
