@@ -412,7 +412,7 @@ void SidebarContainerView::OnEntryShown(SidePanelEntry* entry) {
     if (!item.open_in_panel) {
       continue;
     }
-    if (entry->id() == sidebar::SidePanelIdFromSideBarItem(item)) {
+    if (entry->key().id() == sidebar::SidePanelIdFromSideBarItem(item)) {
       auto side_bar_index = sidebar_model_->GetIndexOf(item);
       auto* controller = browser_->sidebar_controller();
       controller->ActivateItemAt(side_bar_index);
@@ -429,7 +429,7 @@ void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
     if (!item.open_in_panel) {
       continue;
     }
-    if (entry->id() == sidebar::SidePanelIdFromSideBarItem(item)) {
+    if (entry->key().id() == sidebar::SidePanelIdFromSideBarItem(item)) {
       auto side_bar_index = sidebar_model_->GetIndexOf(item);
       auto* controller = browser_->sidebar_controller();
       if (controller->IsActiveIndex(side_bar_index)) {
