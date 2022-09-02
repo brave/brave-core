@@ -21,7 +21,6 @@
 #include "components/omnibox/browser/shortcuts_provider.h"
 #include "components/omnibox/browser/test_scheme_classifier.h"
 #include "components/prefs/pref_service.h"
-#include "components/search_engines/omnibox_focus_type.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/page_transition_types.h"
@@ -39,7 +38,7 @@ class BraveShortcutsProviderTest : public testing::Test {
   AutocompleteInput CreateAutocompleteInput(base::StringPiece text) {
     AutocompleteInput input(base::UTF8ToUTF16(text),
                             metrics::OmniboxEventProto::OTHER, classifier_);
-    input.set_focus_type(OmniboxFocusType::DEFAULT);
+    input.set_focus_type(metrics::OmniboxFocusType::INTERACTION_DEFAULT);
     return input;
   }
 

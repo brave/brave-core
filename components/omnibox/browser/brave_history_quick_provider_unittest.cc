@@ -29,7 +29,6 @@
 #include "components/omnibox/browser/history_test_util.h"
 #include "components/omnibox/browser/in_memory_url_index_test_util.h"
 #include "components/prefs/testing_pref_service.h"
-#include "components/search_engines/omnibox_focus_type.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace {

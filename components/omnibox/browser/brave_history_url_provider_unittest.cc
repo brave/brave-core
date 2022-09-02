@@ -47,7 +47,7 @@ class BraveHistoryURLProviderTest : public testing::Test,
     AutocompleteInput input(base::UTF8ToUTF16(text),
                             metrics::OmniboxEventProto::OTHER,
                             TestSchemeClassifier());
-    input.set_focus_type(OmniboxFocusType::DEFAULT);
+    input.set_focus_type(metrics::OmniboxFocusType::INTERACTION_DEFAULT);
     return input;
   }
 
