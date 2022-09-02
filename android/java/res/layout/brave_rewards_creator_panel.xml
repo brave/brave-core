@@ -60,11 +60,90 @@
         app:layout_constraintLeft_toRightOf="@id/publisher_favicon"
         app:layout_constraintTop_toTopOf="@id/publisher_favicon" />
 
+    <ImageView
+        android:id="@+id/twitterButton"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_twitter"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/youtubeButton"
+        app:layout_constraintTop_toBottomOf="@id/publisher_name" />
+
+    <ImageView
+        android:id="@+id/youtubeButton"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_youtube"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/twitchButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@id/publisher_name" />
+
+    <ImageView
+        android:id="@+id/twitchButton"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_twitch"
+        android:visibility="gone"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toStartOf="@+id/githubButton"
+        app:layout_constraintTop_toBottomOf="@id/publisher_name" />
+
+
+    <ImageView
+        android:id="@+id/githubButton"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_github"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/redditButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@id/publisher_name" />
+
+    <ImageView
+        android:id="@+id/redditButton"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_reddit"
+        android:visibility="gone"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toStartOf="@+id/vimeoButton"
+        app:layout_constraintTop_toBottomOf="@id/publisher_name" />
+
+    <ImageView
+        android:id="@+id/vimeoButton"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_vimeo"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@id/publisher_name" />
+
     <ScrollView
         android:id="@+id/header_scrollView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="32dp"
         android:fadeScrollbars="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/publisher_favicon"
@@ -104,68 +183,6 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/not_verified_warning_text" />
 
-            <ImageView
-                android:id="@+id/chat_button"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="8dp"
-                android:contentDescription="@null"
-                android:src="@drawable/ic_tipping_chat"
-                android:visibility="gone"
-                app:layout_constraintEnd_toStartOf="@+id/reddit_button"
-                app:layout_constraintTop_toTopOf="@id/banner_title" />
-
-            <ImageView
-                android:id="@+id/reddit_button"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginEnd="8dp"
-                android:contentDescription="@null"
-                android:src="@drawable/ic_tipping_reddit"
-                android:visibility="gone"
-                app:layout_constraintEnd_toStartOf="@+id/twitter_button"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintTop_toTopOf="@id/banner_title" />
-
-            <ImageView
-                android:id="@+id/twitter_button"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginEnd="8dp"
-                android:contentDescription="@null"
-                android:src="@drawable/ic_tipping_twitter"
-                android:visibility="gone"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintEnd_toStartOf="@+id/twitch_button"
-                app:layout_constraintTop_toTopOf="@id/banner_title" />
-
-
-            <ImageView
-                android:id="@+id/twitch_button"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginEnd="8dp"
-                android:contentDescription="@null"
-                android:src="@drawable/ic_tipping_chat"
-                android:visibility="gone"
-                app:layout_constraintEnd_toStartOf="@+id/youtube_button"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintTop_toTopOf="@id/banner_title" />
-
-            <ImageView
-                android:id="@+id/youtube_button"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginEnd="8dp"
-                android:layout_toStartOf="@id/chat_button"
-                android:contentDescription="@null"
-                android:src="@drawable/icn_youtube"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintTop_toTopOf="@id/banner_title" />
-
             <TextView
                 android:id="@+id/rewards_banner_description"
                 android:layout_width="match_parent"
@@ -174,24 +191,11 @@
                 android:text="@string/brave_ui_rewards_banner_text1"
                 android:textColor="#FFFFFF"
                 android:textSize="14sp"
-                android:layout_marginBottom="76dp"
+                android:layout_marginBottom="108dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/banner_title"
                 app:layout_constraintBottom_toBottomOf="parent" />
 
-            <!-- <TextView
-                android:id="@+id/rewards_banner_text2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16sp"
-                android:layout_marginBottom="76dp"
-                android:fontFamily="@font/poppins_regular"
-                android:text="@string/brave_ui_rewards_banner_text2"
-                android:textColor="#FFFFFF"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rewards_banner_text1" /> -->
         </androidx.constraintlayout.widget.ConstraintLayout> <!--Welcome-->
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout> <!--Welcome-->
