@@ -19,11 +19,18 @@ import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.mojo.bindings.Callbacks;
+import org.chromium.mojo.system.Pair;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class DappsModel {
     private JsonRpcService mJsonRpcService;
+    private KeyringService mKeyringService;
     private BraveWalletService mBraveWalletService;
-    private CryptoModel mCryptoModel;
     private PendingTxHelper mPendingTxHelper;
     private final MutableLiveData<Boolean> _mWalletIconNotificationVisible =
             new MutableLiveData<>(false);
@@ -31,10 +38,37 @@ public class DappsModel {
     private final Object mLock = new Object();
 
     public DappsModel(JsonRpcService jsonRpcService, BraveWalletService braveWalletService,
-            PendingTxHelper pendingTxHelper) {
+            KeyringService keyringService, PendingTxHelper pendingTxHelper) {
         mBraveWalletService = braveWalletService;
         mJsonRpcService = jsonRpcService;
+        mKeyringService = keyringService;
         mPendingTxHelper = pendingTxHelper;
+    }
+
+    public void fetchAccountsForConnectionReq(@CoinType.EnumType int coinType,
+            Callbacks.Callback1<Pair<String, List<AccountInfo>>> callback) {
+        if (coinType == CoinType.ETH || coinType == CoinType.SOL) {
+            mKeyringService.getKeyringInfo(Utils.getKeyringForCoinType(coinType), keyringInfo -> {
+                mKeyringService.getSelectedAccount(coinType, accountAddress -> {
+                    if (coinType == CoinType.SOL) {
+                        // only the selected account is used for solana dapps
+                        for (AccountInfo accountInfo : keyringInfo.accountInfos) {
+                            if (accountAddress.equals(accountInfo.address)) {
+                                List<AccountInfo> accountInfos = new ArrayList<>();
+                                accountInfos.add(accountInfo);
+                                callback.call(new Pair<>(accountAddress, accountInfos));
+                                return;
+                            }
+                        }
+                    } else {
+                        callback.call(new Pair<>(
+                                accountAddress, Arrays.asList(keyringInfo.accountInfos)));
+                    }
+                });
+            });
+        } else {
+            callback.call(new Pair<>(null, Collections.emptyList()));
+        }
     }
 
     public void resetServices(JsonRpcService jsonRpcService,

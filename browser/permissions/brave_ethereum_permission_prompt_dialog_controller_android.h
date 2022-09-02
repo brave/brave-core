@@ -12,6 +12,7 @@
 
 #include "base/android/scoped_java_ref.h"
 #include "base/memory/raw_ptr.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace content {
 class WebContents;
@@ -29,7 +30,8 @@ class BraveEthereumPermissionPromptDialogController {
   // Both the `delegate` and `web_contents` should outlive `this`.
   BraveEthereumPermissionPromptDialogController(
       Delegate* delegate,
-      content::WebContents* web_contents_);
+      content::WebContents* web_contents_,
+      brave_wallet::mojom::CoinType coin_type_);
   ~BraveEthereumPermissionPromptDialogController();
 
   void ShowDialog();
@@ -46,6 +48,7 @@ class BraveEthereumPermissionPromptDialogController {
 
   raw_ptr<Delegate> delegate_ = nullptr;
   raw_ptr<content::WebContents> web_contents_ = nullptr;
+  brave_wallet::mojom::CoinType coin_type_;
 
   // The corresponding java object.
   base::android::ScopedJavaGlobalRef<jobject> java_object_;

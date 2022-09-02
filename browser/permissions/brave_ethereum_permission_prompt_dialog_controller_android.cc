@@ -33,8 +33,9 @@ GURL GetFavIconURL(const std::vector<blink::mojom::FaviconURLPtr>& candidates) {
 BraveEthereumPermissionPromptDialogController::
     BraveEthereumPermissionPromptDialogController(
         Delegate* delegate,
-        content::WebContents* web_contents)
-    : delegate_(delegate), web_contents_(web_contents) {}
+        content::WebContents* web_contents,
+        brave_wallet::mojom::CoinType coin_type)
+    : delegate_(delegate), web_contents_(web_contents), coin_type_(coin_type) {}
 
 BraveEthereumPermissionPromptDialogController::
     ~BraveEthereumPermissionPromptDialogController() {
@@ -93,5 +94,6 @@ BraveEthereumPermissionPromptDialogController::GetOrCreateJavaObject() {
              view_android->GetWindowAndroid()->GetJavaObject(),
              web_contents_->GetJavaWebContents(),
              base::android::ConvertUTF8ToJavaString(
-                 env, fav_icon_url.is_valid() ? fav_icon_url.spec() : ""));
+                 env, fav_icon_url.is_valid() ? fav_icon_url.spec() : ""),
+             static_cast<int32_t>(coin_type_));
 }

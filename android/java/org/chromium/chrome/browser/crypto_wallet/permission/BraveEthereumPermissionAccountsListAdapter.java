@@ -90,6 +90,13 @@ public class BraveEthereumPermissionAccountsListAdapter
 
     public void setSelectedAccount(String selectedAccount) {
         mSelectedAccount = selectedAccount;
+        if (mAccountInfo == null || !mCheckBoxStyle) return;
+        for (int i = 0; i < mAccountInfo.length; i++) {
+            if (mSelectedAccount.equals(mAccountInfo[i].address)) {
+                mCheckedPositions.add(i);
+                break;
+            }
+        }
     }
 
     @Override
@@ -100,6 +107,10 @@ public class BraveEthereumPermissionAccountsListAdapter
         setBlockiesBitmapResource(holder.iconImg, mAccountInfo[arrayPosition].address);
         if (mCheckBoxStyle) {
             holder.accountCheck.setVisibility(View.VISIBLE);
+            if (mSelectedAccount != null
+                    && mSelectedAccount.equals(mAccountInfo[arrayPosition].address)) {
+                holder.accountCheck.setChecked(true);
+            }
             holder.accountCheck.setOnCheckedChangeListener(
                     new CompoundButton.OnCheckedChangeListener() {
                         @Override
