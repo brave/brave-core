@@ -254,6 +254,10 @@
       <message name="IDS_BRAVE_NEW_TAB_SHOW_BINANCE" desc="Text for show binance option">Show Binance</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_CARDS" desc="Text for cards option">Cards</message>
       <message name="IDS_BRAVE_NEW_TAB_BRANDED_WALLPAPER_OPT_IN" desc="Text for setting to opt-in to Branded Wallpapers on New Tab Page">Show Sponsored Images</message>
+      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ON" desc="Description about turning on sponsored image">You can earn for seeing sponsored sites.</message>
+      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_OFF" desc="Description about turning off sponsored image">You're earning for seeing sponsored images.</message>
+      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ON_DESCRIPTION" desc="Description about sponsored image">Sponsored images support Brave. With Brave Rewards, you can earn part of the revenue from sponsored images and support content creators too!</message>
+      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_OFF_DESCRIPTION" desc="Description about sponsored image">Turning off sponsored sites will decrease how many tokens you earn and the support given to content creators each month.</message>
       <message name="IDS_BRAVE_NEW_TAB_TOP_SITES" desc="Top Sites title">top sites</message>
       <message name="IDS_BRAVE_NEW_TAB_STATS" desc="Brave Stats title">Brave Stats</message>
       <message name="IDS_BRAVE_NEW_TAB_CLOCK" desc="Clock title">clock</message>

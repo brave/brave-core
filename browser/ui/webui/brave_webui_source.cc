@@ -166,6 +166,10 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "showBinance", IDS_BRAVE_NEW_TAB_SHOW_BINANCE },
         { "cards", IDS_BRAVE_NEW_TAB_SHOW_CARDS },
         { "brandedWallpaperOptIn", IDS_BRAVE_NEW_TAB_BRANDED_WALLPAPER_OPT_IN },
+        { "sponsoredImageOn", IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ON},
+        { "sponsoredImageOff", IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_OFF},
+        { "sponsoredImageOnDescription", IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ON_DESCRIPTION},  // NOLINT
+        { "sponsoredImageOffDescription", IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_OFF_DESCRIPTION},  // NOLINT
         { "topSitesTitle", IDS_BRAVE_NEW_TAB_TOP_SITES },
         { "statsTitle", IDS_BRAVE_NEW_TAB_STATS },
         { "clockTitle", IDS_BRAVE_NEW_TAB_CLOCK },

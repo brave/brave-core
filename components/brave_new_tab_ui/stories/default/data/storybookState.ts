@@ -67,6 +67,7 @@ export const useNewTabData = (state: NewTab.State = defaultState) => {
     brandedWallpaper: shouldShowBrandedWallpaperData(
       boolean('Show branded background image?', true)
     ),
+    brandedWallpaperOptIn: boolean('Show branded background image?', true),
     backgroundWallpaper: select(
       'Background',
       backgroundWallpapers,

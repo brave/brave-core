@@ -25,6 +25,7 @@ import { getLocale } from '../../../../common/locale'
 
 import BackgroundChooser from './backgroundChooser'
 import { images, defaultSolidBackgroundColor, solidColorsForBackground, gradientColorsForBackground, defaultGradientColor } from '../../../data/backgrounds'
+import SponsoredImageToggle from './sponsoredImagesToggle'
 
 interface Props {
   newTabData: NewTab.State
@@ -36,6 +37,7 @@ interface Props {
   brandedWallpaperOptIn: boolean
   showBackgroundImage: boolean
   featureCustomBackgroundEnabled: boolean
+  onEnableRewards: () => void
 }
 
 enum Location {
@@ -84,7 +86,8 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
       toggleBrandedWallpaperOptIn,
       brandedWallpaperOptIn,
       showBackgroundImage,
-      featureCustomBackgroundEnabled
+      featureCustomBackgroundEnabled,
+      onEnableRewards
     } = this.props
 
     const usingCustomImageBackground = newTabData.backgroundWallpaper?.type === 'image'
@@ -107,17 +110,6 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
                 onChange={toggleShowBackgroundImage}
                 checked={showBackgroundImage}
                 size='large'
-              />
-            </SettingsRow>
-            <SettingsRow isChildSetting={true}>
-              <SettingsText>{getLocale('brandedWallpaperOptIn')}</SettingsText>
-              <Toggle
-                onChange={toggleBrandedWallpaperOptIn}
-                // This option can only be enabled if
-                // users opt in for background images
-                checked={showBackgroundImage && brandedWallpaperOptIn}
-                disabled={!showBackgroundImage}
-                size='small'
               />
             </SettingsRow>
             {showBackgroundImage && featureCustomBackgroundEnabled && (
@@ -175,6 +167,17 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
                 </StyledCustomBackgroundOption>
               </StyledCustomBackgroundSettings>
             )}
+            <div style={{ height: '16px' }}/>
+            <SettingsRow>
+              <SponsoredImageToggle
+                onChange={toggleBrandedWallpaperOptIn}
+                onEnableRewards={onEnableRewards}
+                checked={showBackgroundImage && brandedWallpaperOptIn}
+                disabled={!showBackgroundImage /* This option can only be enabled if users opt in for background images */}
+                rewardEnabled={this.props.newTabData.rewardsState.rewardsEnabled}
+                adsEnabled={this.props.newTabData.rewardsState.enabledAds}
+                canSupportAds={!!this.props.newTabData.rewardsState.adsSupported}/>
+            </SettingsRow>
           </div>
         )}
         {this.state.location === Location.BRAVE_BACKGROUNDS &&
