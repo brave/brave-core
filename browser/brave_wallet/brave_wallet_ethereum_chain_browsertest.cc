@@ -228,8 +228,8 @@ class BraveWalletEthereumChainTest : public InProcessBrowserTest {
   }
 
   std::vector<brave_wallet::mojom::NetworkInfoPtr> GetAllEthCustomChains() {
-    return brave_wallet::GetAllEthCustomChains(
-        browser()->profile()->GetPrefs());
+    return brave_wallet::GetAllCustomChains(browser()->profile()->GetPrefs(),
+                                            brave_wallet::mojom::CoinType::ETH);
   }
 
   void CallAndWaitForEthereumChainRequestCompleted(

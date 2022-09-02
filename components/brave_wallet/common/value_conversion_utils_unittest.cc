@@ -135,10 +135,10 @@ TEST(ValueConversionUtilsUnitTest, ParseEip3085Payload) {
   }
 }
 
-TEST(ValueConversionUtilsUnitTest, ValueToEthNetworkInfoTest) {
+TEST(ValueConversionUtilsUnitTest, ValueToNetworkInfoTest) {
   {
     auto value = base::JSONReader::Read(kNetworkDataValue).value();
-    mojom::NetworkInfoPtr chain = ValueToEthNetworkInfo(value);
+    mojom::NetworkInfoPtr chain = ValueToNetworkInfo(value);
     ASSERT_TRUE(chain);
     EXPECT_EQ("0x5", chain->chain_id);
     EXPECT_EQ("Goerli", chain->chain_name);
@@ -168,11 +168,8 @@ TEST(ValueConversionUtilsUnitTest, ValueToEthNetworkInfoTest) {
     EXPECT_TRUE(chain->is_eip1559);
   }
   {
-    mojom::NetworkInfoPtr chain =
-        ValueToEthNetworkInfo(base::JSONReader::Read(R"({
-      "chainId": "0x5"
-    })")
-                                  .value());
+    mojom::NetworkInfoPtr chain = ValueToNetworkInfo(
+        base::JSONReader::Read(R"({"chainId": "0x5" })").value());
     ASSERT_TRUE(chain);
     EXPECT_EQ("0x5", chain->chain_id);
     ASSERT_TRUE(chain->chain_name.empty());
@@ -189,19 +186,19 @@ TEST(ValueConversionUtilsUnitTest, ValueToEthNetworkInfoTest) {
 
   {
     mojom::NetworkInfoPtr chain =
-        ValueToEthNetworkInfo(base::JSONReader::Read(R"({})").value());
+        ValueToNetworkInfo(base::JSONReader::Read(R"({})").value());
     ASSERT_FALSE(chain);
   }
   {
     mojom::NetworkInfoPtr chain =
-        ValueToEthNetworkInfo(base::JSONReader::Read(R"([])").value());
+        ValueToNetworkInfo(base::JSONReader::Read(R"([])").value());
     ASSERT_FALSE(chain);
   }
 }
 
-TEST(ValueConversionUtilsUnitTest, EthNetworkInfoToValueTest) {
+TEST(ValueConversionUtilsUnitTest, NetworkInfoToValueTest) {
   mojom::NetworkInfo chain = GetTestNetworkInfo1();
-  base::Value::Dict value = EthNetworkInfoToValue(chain);
+  base::Value::Dict value = NetworkInfoToValue(chain);
   EXPECT_EQ(*value.FindString("chainId"), chain.chain_id);
   EXPECT_EQ(*value.FindString("chainName"), chain.chain_name);
   EXPECT_EQ(*value.FindStringByDottedPath("nativeCurrency.name"),
@@ -228,8 +225,44 @@ TEST(ValueConversionUtilsUnitTest, EthNetworkInfoToValueTest) {
               chain.block_explorer_urls.end());
   }
 
-  auto result = ValueToEthNetworkInfo(base::Value(value.Clone()));
+  auto result = ValueToNetworkInfo(base::Value(value.Clone()));
   ASSERT_TRUE(result->Equals(chain));
+
+  {
+    mojom::NetworkInfo test_chain = GetTestNetworkInfo1();
+
+    test_chain.coin = mojom::CoinType::ETH;
+    auto eth_value = NetworkInfoToValue(test_chain);
+    EXPECT_EQ(eth_value.FindInt("coin"),
+              static_cast<int>(mojom::CoinType::ETH));
+    EXPECT_TRUE(eth_value.FindBool("is_eip1559"));
+
+    test_chain.coin = mojom::CoinType::FIL;
+    auto fil_value = NetworkInfoToValue(test_chain);
+    EXPECT_EQ(fil_value.FindInt("coin"),
+              static_cast<int>(mojom::CoinType::FIL));
+    EXPECT_FALSE(fil_value.FindBool("is_eip1559"));
+
+    test_chain.coin = mojom::CoinType::SOL;
+    auto sol_value = NetworkInfoToValue(test_chain);
+    EXPECT_EQ(sol_value.FindInt("coin"),
+              static_cast<int>(mojom::CoinType::SOL));
+    EXPECT_FALSE(sol_value.FindBool("is_eip1559"));
+  }
+
+  {
+    auto data_value = *base::JSONReader::Read(kNetworkDataValue);
+    EXPECT_EQ(ValueToNetworkInfo(data_value)->coin, mojom::CoinType::ETH);
+
+    data_value.SetIntKey("coin", static_cast<int>(mojom::CoinType::ETH));
+    EXPECT_EQ(ValueToNetworkInfo(data_value)->coin, mojom::CoinType::ETH);
+
+    data_value.SetIntKey("coin", static_cast<int>(mojom::CoinType::SOL));
+    EXPECT_EQ(ValueToNetworkInfo(data_value)->coin, mojom::CoinType::SOL);
+
+    data_value.SetIntKey("coin", static_cast<int>(mojom::CoinType::FIL));
+    EXPECT_EQ(ValueToNetworkInfo(data_value)->coin, mojom::CoinType::FIL);
+  }
 }
 
 TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {

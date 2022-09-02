@@ -796,7 +796,7 @@ TEST_F(BraveWalletServiceUnitTest, DefaultAssets) {
   mojom::BlockchainTokenPtr eth_token = GetEthToken();
   mojom::BlockchainTokenPtr bat_token = GetBatToken();
 
-  for (const auto& chain : GetAllKnownEthChains(nullptr)) {
+  for (const auto& chain : GetAllKnownChains(nullptr, mojom::CoinType::ETH)) {
     auto native_asset = mojom::BlockchainToken::New(
         "", chain->symbol_name, "", false, false, chain->symbol,
         chain->decimals, true, "", "", chain->chain_id, mojom::CoinType::ETH);
@@ -814,7 +814,7 @@ TEST_F(BraveWalletServiceUnitTest, DefaultAssets) {
   }
 
   mojom::BlockchainTokenPtr sol_token = sol_token_->Clone();
-  for (const auto& chain : GetAllKnownSolChains()) {
+  for (const auto& chain : GetAllKnownChains(nullptr, mojom::CoinType::SOL)) {
     SCOPED_TRACE(testing::PrintToString(chain->chain_id));
     std::vector<mojom::BlockchainTokenPtr> tokens;
     sol_token->chain_id = chain->chain_id;
@@ -824,7 +824,7 @@ TEST_F(BraveWalletServiceUnitTest, DefaultAssets) {
   }
 
   mojom::BlockchainTokenPtr fil_token = fil_token_->Clone();
-  for (const auto& chain : GetAllKnownFilChains()) {
+  for (const auto& chain : GetAllKnownChains(nullptr, mojom::CoinType::FIL)) {
     SCOPED_TRACE(testing::PrintToString(chain->chain_id));
     std::vector<mojom::BlockchainTokenPtr> tokens;
     fil_token->chain_id = chain->chain_id;
@@ -1601,7 +1601,7 @@ TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetsAddPreloadingNetworks) {
       "0x6a31Aca4d2f7398F04d9B6ffae2D898d9A8e7938", "WTRTL",
       "https://brave.com/logo.jpg", true, false, "WTRTL", 18, true, "", "",
       mojom::kFantomMainnetChainId, mojom::CoinType::ETH);
-  for (const auto& chain : GetAllKnownEthChains(nullptr)) {
+  for (const auto& chain : GetAllKnownChains(nullptr, mojom::CoinType::ETH)) {
     auto native_asset = mojom::BlockchainToken::New(
         "", chain->symbol_name, "", false, false, chain->symbol,
         chain->decimals, true, "", "", chain->chain_id, mojom::CoinType::ETH);
