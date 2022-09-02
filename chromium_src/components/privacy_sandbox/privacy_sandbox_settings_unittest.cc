@@ -106,10 +106,10 @@ TEST_F(PrivacySandboxSettingsTest, PreferenceOverridesDefaultContentSetting) {
   EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowedForContext(
       GURL("https://embedded.com"),
       url::Origin::Create(GURL("https://test.com"))));
-  EXPECT_FALSE(privacy_sandbox_settings()->IsConversionMeasurementAllowed(
+  EXPECT_FALSE(privacy_sandbox_settings()->IsAttributionReportingAllowed(
       url::Origin::Create(GURL("https://test.com")),
       url::Origin::Create(GURL("https://embedded.com"))));
-  EXPECT_FALSE(privacy_sandbox_settings()->ShouldSendConversionReport(
+  EXPECT_FALSE(privacy_sandbox_settings()->MaySendAttributionReport(
       url::Origin::Create(GURL("https://test.com")),
       url::Origin::Create(GURL("https://another-test.com")),
       url::Origin::Create(GURL("https://embedded.com"))));
@@ -142,10 +142,10 @@ TEST_F(PrivacySandboxSettingsTest, PreferenceOverridesDefaultContentSetting) {
       GURL("https://embedded.com"),
       url::Origin::Create(GURL("https://test.com"))));
 
-  EXPECT_FALSE(privacy_sandbox_settings()->IsConversionMeasurementAllowed(
+  EXPECT_FALSE(privacy_sandbox_settings()->IsAttributionReportingAllowed(
       url::Origin::Create(GURL("https://test.com")),
       url::Origin::Create(GURL("https://embedded.com"))));
-  EXPECT_FALSE(privacy_sandbox_settings()->ShouldSendConversionReport(
+  EXPECT_FALSE(privacy_sandbox_settings()->MaySendAttributionReport(
       url::Origin::Create(GURL("https://test.com")),
       url::Origin::Create(GURL("https://another-test.com")),
       url::Origin::Create(GURL("https://embedded.com"))));
@@ -180,10 +180,10 @@ TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
       GURL("https://embedded.com"),
       url::Origin::Create(GURL("https://test.com"))));
 
-  EXPECT_FALSE(privacy_sandbox_settings()->IsConversionMeasurementAllowed(
+  EXPECT_FALSE(privacy_sandbox_settings()->IsAttributionReportingAllowed(
       url::Origin::Create(GURL("https://test.com")),
       url::Origin::Create(GURL("https://embedded.com"))));
-  EXPECT_FALSE(privacy_sandbox_settings()->ShouldSendConversionReport(
+  EXPECT_FALSE(privacy_sandbox_settings()->MaySendAttributionReport(
       url::Origin::Create(GURL("https://test.com")),
       url::Origin::Create(GURL("https://another-test.com")),
       url::Origin::Create(GURL("https://embedded.com"))));
@@ -220,10 +220,10 @@ TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
   EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowedForContext(
       GURL("https://embedded.com"),
       url::Origin::Create(GURL("https://test.com"))));
-  EXPECT_FALSE(privacy_sandbox_settings()->IsConversionMeasurementAllowed(
+  EXPECT_FALSE(privacy_sandbox_settings()->IsAttributionReportingAllowed(
       url::Origin::Create(GURL("https://test.com")),
       url::Origin::Create(GURL("https://embedded.com"))));
-  EXPECT_FALSE(privacy_sandbox_settings()->ShouldSendConversionReport(
+  EXPECT_FALSE(privacy_sandbox_settings()->MaySendAttributionReport(
       url::Origin::Create(GURL("https://test.com")),
       url::Origin::Create(GURL("https://another-test.com")),
       url::Origin::Create(GURL("https://embedded.com"))));
@@ -261,17 +261,17 @@ TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
       GURL("https://unrelated.com"),
       url::Origin::Create(GURL("https://unrelated.com"))));
 
-  EXPECT_FALSE(privacy_sandbox_settings()->IsConversionMeasurementAllowed(
+  EXPECT_FALSE(privacy_sandbox_settings()->IsAttributionReportingAllowed(
       url::Origin::Create(GURL("https://test.com")),
       url::Origin::Create(GURL("https://embedded.com"))));
-  EXPECT_FALSE(privacy_sandbox_settings()->ShouldSendConversionReport(
+  EXPECT_FALSE(privacy_sandbox_settings()->MaySendAttributionReport(
       url::Origin::Create(GURL("https://test.com")),
       url::Origin::Create(GURL("https://another-test.com")),
       url::Origin::Create(GURL("https://embedded.com"))));
-  EXPECT_FALSE(privacy_sandbox_settings()->IsConversionMeasurementAllowed(
+  EXPECT_FALSE(privacy_sandbox_settings()->IsAttributionReportingAllowed(
       url::Origin::Create(GURL("https://unrelated-a.com")),
       url::Origin::Create(GURL("https://unrelated-b.com"))));
-  EXPECT_FALSE(privacy_sandbox_settings()->ShouldSendConversionReport(
+  EXPECT_FALSE(privacy_sandbox_settings()->MaySendAttributionReport(
       url::Origin::Create(GURL("https://unrelated-c.com")),
       url::Origin::Create(GURL("https://unrelated-d.com")),
       url::Origin::Create(GURL("https://unrelated-e.com"))));
@@ -330,10 +330,10 @@ TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
   EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowedForContext(
       GURL("https://embedded.com"), absl::nullopt));
 
-  EXPECT_FALSE(privacy_sandbox_settings()->IsConversionMeasurementAllowed(
+  EXPECT_FALSE(privacy_sandbox_settings()->IsAttributionReportingAllowed(
       url::Origin::Create(GURL("https://another-test.com")),
       url::Origin::Create(GURL("https://embedded.com"))));
-  EXPECT_FALSE(privacy_sandbox_settings()->ShouldSendConversionReport(
+  EXPECT_FALSE(privacy_sandbox_settings()->MaySendAttributionReport(
       url::Origin::Create(GURL("https://another-test.com")),
       url::Origin::Create(GURL("https://yet-another-test.com")),
       url::Origin::Create(GURL("https://embedded.com"))));
@@ -365,10 +365,10 @@ TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
       GURL("https://embedded.com"),
       url::Origin::Create(GURL("https://test.com"))));
 
-  EXPECT_FALSE(privacy_sandbox_settings()->IsConversionMeasurementAllowed(
+  EXPECT_FALSE(privacy_sandbox_settings()->IsAttributionReportingAllowed(
       url::Origin::Create(GURL("https://test.com")),
       url::Origin::Create(GURL("https://embedded.com"))));
-  EXPECT_FALSE(privacy_sandbox_settings()->ShouldSendConversionReport(
+  EXPECT_FALSE(privacy_sandbox_settings()->MaySendAttributionReport(
       url::Origin::Create(GURL("https://test.com")),
       url::Origin::Create(GURL("https://another-test.com")),
       url::Origin::Create(GURL("https://embedded.com"))));
