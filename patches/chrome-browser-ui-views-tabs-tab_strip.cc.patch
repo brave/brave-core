@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_strip.cc b/chrome/browser/ui/views/tabs/tab_strip.cc
-index fd53f6db1ed7308b542b91ec6ffdc0a78bac6188..b6a378aee41fa01095dbd0935bb817a9e954516d 100644
+index fd53f6db1ed7308b542b91ec6ffdc0a78bac6188..edfd0ad4621b38da43cdfa302d99aba16661f96f 100644
 --- a/chrome/browser/ui/views/tabs/tab_strip.cc
 +++ b/chrome/browser/ui/views/tabs/tab_strip.cc
 @@ -473,6 +473,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
  
    std::vector<gfx::Rect> CalculateBoundsForDraggedViews(
        const std::vector<TabSlotView*>& views) override {
-+    TAB_DRAG_CONTEXT_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS_VERTICAL_TABS
++    BRAVE_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS
      DCHECK(!views.empty());
  
      std::vector<gfx::Rect> bounds;
@@ -14,7 +14,7 @@ index fd53f6db1ed7308b542b91ec6ffdc0a78bac6188..b6a378aee41fa01095dbd0935bb817a9
          continue;
        }
  
-+      TAB_DRAG_CONTEXT_CALCULATE_INSERTION_INDEX_FOR_VERTICAL_TABS
++      BRAVE_CALCULATE_INSERTION_INDEX
        // If there's a group header here, and we're dragging a group, we might
        // end up on either side of that header. Check both cases to find the
        // best option.
