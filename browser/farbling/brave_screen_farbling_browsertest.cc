@@ -99,28 +99,39 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
   }
 
   void FarbleScreenSize() {
-    const char* test_screen_size_scripts[] = {
-        "window.outerWidth - window.innerWidth",
-        "window.outerHeight - window.innerHeight",
-        "window.screen.availWidth - window.innerWidth",
-        "window.screen.availHeight - window.innerHeight",
-        "window.screen.width - window.innerWidth",
-        "window.screen.height - window.innerHeight",
-    };
     for (int j = 0; j < static_cast<int>(std::size(kTestWindowBounds)); ++j) {
       SetBounds(kTestWindowBounds[j]);
       for (bool allow_fingerprinting : {false, true}) {
         SetFingerprintingSetting(allow_fingerprinting);
         NavigateToURLUntilLoadStop(FarblingUrl());
-        for (int i = 0;
-             i < static_cast<int>(std::size(test_screen_size_scripts)); ++i) {
-          std::string test_screen_size_scripts_abs =
-              std::string("Math.abs(") + test_screen_size_scripts[i] + ")";
-          if (!allow_fingerprinting && !IsFlagDisabled()) {
-            EXPECT_GE(8, EvalJs(Contents(), test_screen_size_scripts_abs));
-          } else {
-            EXPECT_LE(8, EvalJs(Contents(), test_screen_size_scripts_abs));
-          }
+        if (!allow_fingerprinting && !IsFlagDisabled()) {
+          EXPECT_GE(
+              8, EvalJs(Contents(), "window.outerWidth - window.innerWidth"));
+          EXPECT_GE(
+              8, EvalJs(Contents(), "window.outerHeight - window.innerHeight"));
+          EXPECT_GE(8, EvalJs(Contents(),
+                              "window.screen.availWidth - window.innerWidth"));
+          EXPECT_GE(8,
+                    EvalJs(Contents(),
+                           "window.screen.availHeight - window.innerHeight"));
+          EXPECT_GE(
+              8, EvalJs(Contents(), "window.screen.width - window.innerWidth"));
+          EXPECT_GE(8, EvalJs(Contents(),
+                              "window.screen.height - window.innerHeight"));
+        } else {
+          EXPECT_LE(
+              0, EvalJs(Contents(), "window.outerWidth - window.innerWidth"));
+          EXPECT_LT(
+              8, EvalJs(Contents(), "window.outerHeight - window.innerHeight"));
+          EXPECT_LT(8, EvalJs(Contents(),
+                              "window.screen.availWidth - window.innerWidth"));
+          EXPECT_LT(8,
+                    EvalJs(Contents(),
+                           "window.screen.availHeight - window.innerHeight"));
+          EXPECT_LT(
+              8, EvalJs(Contents(), "window.screen.width - window.innerWidth"));
+          EXPECT_LT(8, EvalJs(Contents(),
+                              "window.screen.height - window.innerHeight"));
         }
       }
     }
