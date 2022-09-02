@@ -109,7 +109,7 @@ export const mockSolanaMainnetNetwork: BraveWallet.NetworkInfo = {
 export const mockSolanaTestnetNetwork: BraveWallet.NetworkInfo = {
   chainId: '0x66',
   chainName: 'Solana Testnet',
-  rpcUrls: ['https://testnet-solana.brave.com/rpc'],
+  rpcUrls: ['https://api.testnet.solana.com'],
   blockExplorerUrls: ['https://explorer.solana.com?cluster=testnet'],
   symbol: 'SOL',
   symbolName: 'Solana',

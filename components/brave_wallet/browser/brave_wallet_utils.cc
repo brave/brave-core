@@ -228,7 +228,7 @@ const brave_wallet::mojom::NetworkInfo kKnownSolNetworks[] = {
      "Solana Testnet",
      {"https://explorer.solana.com/?cluster=testnet"},
      {},
-     {"https://testnet-solana.brave.com/rpc"},
+     {"https://api.testnet.solana.com"},
      "SOL",
      "Solana",
      9,
