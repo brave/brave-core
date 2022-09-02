@@ -289,19 +289,18 @@ void SwapService::GetPriceQuote(mojom::SwapParamsPtr swap_params,
       "", "", true, std::move(internal_callback));
 }
 
-void SwapService::OnGetPriceQuote(
-    GetPriceQuoteCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
-    std::move(callback).Run(false, nullptr, body);
+void SwapService::OnGetPriceQuote(GetPriceQuoteCallback callback,
+                                  APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run(false, nullptr, api_request_result.body());
     return;
   }
-  mojom::SwapResponsePtr swap_response = ParseSwapResponse(body, false);
+  mojom::SwapResponsePtr swap_response =
+      ParseSwapResponse(api_request_result.body(), false);
   if (!swap_response) {
-    std::move(callback).Run(false, nullptr,
-                            "Could not parse response body: " + body);
+    std::move(callback).Run(
+        false, nullptr,
+        "Could not parse response body: " + api_request_result.body());
     return;
   }
 
@@ -331,17 +330,17 @@ void SwapService::GetTransactionPayload(
 
 void SwapService::OnGetTransactionPayload(
     GetTransactionPayloadCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
-    std::move(callback).Run(false, nullptr, body);
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run(false, nullptr, api_request_result.body());
     return;
   }
-  mojom::SwapResponsePtr swap_response = ParseSwapResponse(body, true);
+  mojom::SwapResponsePtr swap_response =
+      ParseSwapResponse(api_request_result.body(), true);
   if (!swap_response) {
-    std::move(callback).Run(false, nullptr,
-                            "Could not parse response body: " + body);
+    std::move(callback).Run(
+        false, nullptr,
+        "Could not parse response body: " + api_request_result.body());
     return;
   }
 
@@ -373,20 +372,19 @@ void SwapService::GetJupiterQuote(mojom::JupiterQuoteParamsPtr params,
       std::move(conversion_callback));
 }
 
-void SwapService::OnGetJupiterQuote(
-    GetJupiterQuoteCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
-    std::move(callback).Run(false, nullptr, body);
+void SwapService::OnGetJupiterQuote(GetJupiterQuoteCallback callback,
+                                    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run(false, nullptr, api_request_result.body());
     return;
   }
-  mojom::JupiterQuotePtr swap_quote = ParseJupiterQuote(body);
+  mojom::JupiterQuotePtr swap_quote =
+      ParseJupiterQuote(api_request_result.body());
 
   if (!swap_quote) {
-    std::move(callback).Run(false, nullptr,
-                            "Could not parse response body: " + body);
+    std::move(callback).Run(
+        false, nullptr,
+        "Could not parse response body: " + api_request_result.body());
     return;
   }
 
@@ -424,19 +422,18 @@ void SwapService::GetJupiterSwapTransactions(
 
 void SwapService::OnGetJupiterSwapTransactions(
     GetJupiterSwapTransactionsCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
-    std::move(callback).Run(false, nullptr, body);
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run(false, nullptr, api_request_result.body());
     return;
   }
   mojom::JupiterSwapTransactionsPtr swap_transactions =
-      ParseJupiterSwapTransactions(body);
+      ParseJupiterSwapTransactions(api_request_result.body());
 
   if (!swap_transactions) {
-    std::move(callback).Run(false, nullptr,
-                            "Could not parse response body: " + body);
+    std::move(callback).Run(
+        false, nullptr,
+        "Could not parse response body: " + api_request_result.body());
     return;
   }
 
