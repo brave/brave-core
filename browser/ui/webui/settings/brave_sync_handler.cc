@@ -303,24 +303,23 @@ void BraveSyncHandler::OnResetDone(base::Value callback_id) {
   ResolveJavascriptCallback(callback_id, base::Value(true));
 }
 
-base::Value BraveSyncHandler::GetSyncDeviceList() {
+base::Value::List BraveSyncHandler::GetSyncDeviceList() {
   AllowJavascript();
   syncer::DeviceInfoTracker* tracker = GetDeviceInfoTracker();
   DCHECK(tracker);
   const syncer::DeviceInfo* local_device_info =
       GetLocalDeviceInfoProvider()->GetLocalDeviceInfo();
 
-  base::Value device_list(base::Value::Type::LIST);
+  base::Value::List device_list;
 
   for (const auto& device : tracker->GetAllBraveDeviceInfo()) {
-    auto device_value = base::Value::FromUniquePtrValue(device->ToValue());
+    auto device_value = device->ToValue();
     bool is_current_device =
         local_device_info ? local_device_info->guid() == device->guid() : false;
-    device_value.SetBoolKey("isCurrentDevice", is_current_device);
-    device_value.SetStringKey("guid", device->guid());
-    device_value.SetBoolKey(
-        "supportsSelfDelete",
-        !is_current_device && device->is_self_delete_supported());
+    device_value.Set("isCurrentDevice", is_current_device);
+    device_value.Set("guid", device->guid());
+    device_value.Set("supportsSelfDelete",
+                     !is_current_device && device->is_self_delete_supported());
 
     device_list.Append(std::move(device_value));
   }
