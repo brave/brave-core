@@ -150,7 +150,8 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
   scroll_view_header_ =
       scroll_view_->SetHeader(std::make_unique<ScrollHeaderView>(
           base::BindRepeating(
-              [](VerticalTabStripRegionView* container, const ui::Event& event) {
+              [](VerticalTabStripRegionView* container,
+                 const ui::Event& event) {
                 container->SetState(
                     container->state_ ==
                             VerticalTabStripRegionView::State::kCollapsed

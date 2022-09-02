@@ -48,14 +48,14 @@ void BraveTabContainer::UpdateClosingModeOnRemovedTab(int model_index,
 gfx::Rect BraveTabContainer::GetTargetBoundsForClosingTab(
     Tab* tab,
     int former_model_index) const {
-  if (!tabs::features::ShouldShowVerticalTabs())  
+  if (!tabs::features::ShouldShowVerticalTabs())
     return TabContainer::GetTargetBoundsForClosingTab(tab, former_model_index);
 
   gfx::Rect target_bounds = tab->bounds();
-  target_bounds.set_y(                                                     
-      (former_model_index > 0)                                             
-          ? tabs_view_model_.ideal_bounds(former_model_index - 1).bottom() 
-          : 0);                                                            
+  target_bounds.set_y(
+      (former_model_index > 0)
+          ? tabs_view_model_.ideal_bounds(former_model_index - 1).bottom()
+          : 0);
   return target_bounds;
 }
 
