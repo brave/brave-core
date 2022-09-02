@@ -116,8 +116,10 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
 
     if (g_testing_host_resolver) {
       g_testing_host_resolver->ResolveHost(
-          net::HostPortPair::FromURL(ctx->request_url), network_isolation_key,
-          std::move(optional_parameters), receiver_.BindNewPipeAndPassRemote());
+          network::mojom::HostResolverHost::NewHostPortPair(
+              net::HostPortPair::FromURL(ctx->request_url)),
+          network_isolation_key, std::move(optional_parameters),
+          receiver_.BindNewPipeAndPassRemote());
     } else {
       auto* web_contents =
           content::WebContents::FromFrameTreeNodeId(ctx->frame_tree_node_id);
@@ -134,8 +136,10 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
               ->GetNetworkContext();
 
       network_context->ResolveHost(
-          net::HostPortPair::FromURL(ctx->request_url), network_isolation_key,
-          std::move(optional_parameters), receiver_.BindNewPipeAndPassRemote());
+          network::mojom::HostResolverHost::NewHostPortPair(
+              net::HostPortPair::FromURL(ctx->request_url)),
+          network_isolation_key, std::move(optional_parameters),
+          receiver_.BindNewPipeAndPassRemote());
     }
 
     receiver_.set_disconnect_handler(
