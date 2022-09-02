@@ -160,6 +160,9 @@ class BraveActionsContainer : public views::View,
       std::unique_ptr<ToolbarActionsBarBubbleDelegate> bubble) override;
   void ToggleExtensionsMenu() override;
   bool HasAnyExtensions() const override;
+  void UpdateToolbarActionHoverCard(
+      ToolbarActionView* action_view,
+      ToolbarActionHoverCardUpdateType update_type) override;
 
   // Actions operations
   bool ShouldShowAction(const std::string& id) const;
