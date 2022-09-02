@@ -77,7 +77,8 @@ class SecurityIndicatorTest
     mojo::CreateDataPipe(nullptr, producer_handle, consumer_handle);
 
     params->client->OnReceiveResponse(std::move(resource_response),
-                                      std::move(consumer_handle));
+                                      std::move(consumer_handle),
+                                      absl::nullopt);
 
     network::URLLoaderCompletionStatus completion_status;
     completion_status.ssl_info = ssl_info;

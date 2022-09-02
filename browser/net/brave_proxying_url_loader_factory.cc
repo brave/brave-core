@@ -221,9 +221,11 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveEarlyHints(
 
 void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveResponse(
     network::mojom::URLResponseHeadPtr head,
-    mojo::ScopedDataPipeConsumerHandle body) {
+    mojo::ScopedDataPipeConsumerHandle body,
+    absl::optional<mojo_base::BigBuffer> cached_metadata) {
   current_response_head_ = std::move(head);
   current_response_body_ = std::move(body);
+  cached_metadata_ = std::move(cached_metadata);
   ctx_->internal_redirect = false;
   HandleResponseOrRedirectHeaders(
       base::BindRepeating(&InProgressRequest::ContinueToResponseStarted,
@@ -247,11 +249,6 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::OnUploadProgress(
     OnUploadProgressCallback callback) {
   target_client_->OnUploadProgress(current_position, total_size,
                                    std::move(callback));
-}
-
-void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveCachedMetadata(
-    mojo_base::BigBuffer data) {
-  target_client_->OnReceiveCachedMetadata(std::move(data));
 }
 
 void BraveProxyingURLLoaderFactory::InProgressRequest::OnTransferSizeUpdated(
@@ -367,7 +364,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     }
 
     // Craft the response.
-    target_client_->OnReceiveResponse(std::move(response), std::move(consumer));
+    target_client_->OnReceiveResponse(std::move(response), std::move(consumer),
+                                      std::move(cached_metadata_));
 
     auto write_data = std::make_unique<WriteData>();
     write_data->client = weak_factory_.GetWeakPtr();
@@ -527,7 +525,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
 
   proxied_client_receiver_.Resume();
   target_client_->OnReceiveResponse(std::move(current_response_head_),
-                                    std::move(current_response_body_));
+                                    std::move(current_response_body_),
+                                    std::move(cached_metadata_));
 }
 
 void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToBeforeRedirect(

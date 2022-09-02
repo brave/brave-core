@@ -66,7 +66,8 @@ void BodySnifferURLLoader::OnReceiveEarlyHints(
 
 void BodySnifferURLLoader::OnReceiveResponse(
     network::mojom::URLResponseHeadPtr response_head,
-    mojo::ScopedDataPipeConsumerHandle body) {
+    mojo::ScopedDataPipeConsumerHandle body,
+    absl::optional<mojo_base::BigBuffer> cached_metadata) {
   // OnReceiveResponse() shouldn't be called because BodySnifferURLLoader is
   // created by WillProcessResponse(), which is equivalent
   // to OnReceiveResponse().
@@ -88,10 +89,6 @@ void BodySnifferURLLoader::OnUploadProgress(
     OnUploadProgressCallback ack_callback) {
   destination_url_loader_client_->OnUploadProgress(current_position, total_size,
                                                    std::move(ack_callback));
-}
-
-void BodySnifferURLLoader::OnReceiveCachedMetadata(mojo_base::BigBuffer data) {
-  destination_url_loader_client_->OnReceiveCachedMetadata(std::move(data));
 }
 
 void BodySnifferURLLoader::OnTransferSizeUpdated(int32_t transfer_size_diff) {
