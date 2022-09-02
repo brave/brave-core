@@ -226,22 +226,10 @@ export const ConnectedPanel = (props: Props) => {
         onClickViewOnBlockExplorer={onClickViewOnBlockExplorer('address', selectedAccount.address)}
         showMore={showMore}
       />
+
       <CenterColumn>
+
         <StatusRow>
-          {showConnectButton ? (
-            <OvalButton onClick={onShowSitePermissions}>
-              {selectedCoin === BraveWallet.CoinType.SOL ? (
-                <ConnectedStatusBubble isConnected={isConnected} />
-              ) : (
-                <>
-                  {isConnected && <BigCheckMark />}
-                </>
-              )}
-              <OvalButtonText>{connectedStatusText}</OvalButtonText>
-            </OvalButton>
-          ) : (
-            <div />
-          )}
           <Tooltip
             text={selectedNetwork.chainName}
             position='right'
@@ -253,6 +241,26 @@ export const ConnectedPanel = (props: Props) => {
             />
           </Tooltip>
         </StatusRow>
+
+        {showConnectButton ? (
+          <StatusRow>
+            <OvalButton onClick={onShowSitePermissions}>
+              {selectedCoin === BraveWallet.CoinType.SOL ? (
+                <ConnectedStatusBubble isConnected={isConnected} />
+              ) : (
+                <>
+                  {isConnected && <BigCheckMark />}
+                </>
+              )}
+              <OvalButtonText>{connectedStatusText}</OvalButtonText>
+            </OvalButton>
+          </StatusRow>
+        ) : (
+          <div />
+        )}
+
+        <VerticalSpacer space='8px' />
+
         <BalanceColumn>
           <AccountCircle orb={orb} onClick={navigate('accounts')}>
             <SwitchIcon />

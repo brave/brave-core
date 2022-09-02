@@ -8,7 +8,7 @@ import SelectNetwork from './select-network'
 import SelectAccount from './select-account'
 import withPlaceholderIcon from './create-placeholder-icon'
 import CreateNetworkIcon from './create-network-icon'
-import SelectNetworkButton from './select-network-button'
+import { SelectNetworkButton } from './select-network-button/select-network-button'
 import LoadingSkeleton from './loading-skeleton'
 import CreateSiteOrigin from './create-site-origin'
 

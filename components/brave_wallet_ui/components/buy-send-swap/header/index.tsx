@@ -15,11 +15,12 @@ import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 
 // components
-import Tooltip from '../../shared/tooltip/index'
-import SelectNetworkButton from '../../shared/select-network-button/index'
+import { Tooltip } from '../../shared/tooltip/index'
+import { SelectNetworkButton } from '../../shared/select-network-button/select-network-button'
 import { CopyTooltip } from '../../shared/copy-tooltip/copy-tooltip'
 
 // Styled Components
+import { VerticalSpace } from '../../shared/style'
 import {
   StyledWrapper,
   AccountAddress,
@@ -56,6 +57,16 @@ export const SwapHeader = ({ onChangeSwapView }: Props) => {
   // render
   return (
     <StyledWrapper>
+
+       <Tooltip text={selectedNetwork.chainName}>
+        <SelectNetworkButton
+          selectedNetwork={selectedNetwork}
+          onClick={onShowNetworks}
+        />
+      </Tooltip>
+
+      <VerticalSpace space='8px' />
+
       <NameAndIcon>
         <AccountCircle onClick={onShowAccounts} orb={orb}>
           <SwitchIcon />
@@ -67,12 +78,7 @@ export const SwapHeader = ({ onChangeSwapView }: Props) => {
           </AccountAndAddress>
         </CopyTooltip>
       </NameAndIcon>
-      <Tooltip text={selectedNetwork.chainName}>
-        <SelectNetworkButton
-          selectedNetwork={selectedNetwork}
-          onClick={onShowNetworks}
-        />
-      </Tooltip>
+
     </StyledWrapper >
   )
 }
