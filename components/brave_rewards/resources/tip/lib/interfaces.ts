@@ -51,8 +51,6 @@ export type TipKind = 'one-time' | 'monthly'
 
 export type PaymentKind = 'bat'
 
-export type OnboardingResult = 'opted-in' | 'dismissed'
-
 export enum PublisherStatus {
   NOT_VERIFIED = 0,
   CONNECTED = 1,
@@ -95,7 +93,6 @@ export interface RewardsParameters {
   rate: number
   tipChoices: number[]
   monthlyTipChoices: number[]
-  autoContributeChoices: number[]
 }
 
 export interface HostError {
@@ -110,10 +107,7 @@ export interface HostState {
   rewardsParameters?: RewardsParameters
   hostError?: HostError
   nextReconcileDate?: Date
-  adsPerHour?: number
-  autoContributeAmount?: number
   currentMonthlyTip?: number
-  showOnboarding?: boolean
   tipProcessed?: boolean
   tipAmount?: number
   tipPending?: boolean
@@ -126,9 +120,6 @@ export interface Host {
   getString: (key: string) => string
   getDialogArgs: () => DialogArgs
   closeDialog: () => void
-  setAutoContributeAmount: (autoContributeAmount: number) => void
-  setAdsPerHour: (adsPerHour: number) => void
-  saveOnboardingResult: (result: OnboardingResult) => void
   processTip: (amount: number, kind: TipKind) => void
   shareTip: (target: ShareTarget) => void
   addListener: (callback: HostListener) => () => void

@@ -10,10 +10,8 @@ import { TipKind, MediaMetaData } from '../lib/interfaces'
 import { HostContext } from '../lib/host_context'
 import { Locale, LocaleContext } from '../../shared/lib/locale_context'
 
-import { RewardsTour } from '../../shared/components/onboarding'
 import { SliderSwitch, SliderSwitchOption } from './slider_switch'
 import { TipComplete } from './tip_complete'
-import { OptInForm } from './opt_in_form'
 import { OneTimeTipForm } from './one_time_tip_form'
 import { MonthlyTipForm } from './monthly_tip_form'
 
@@ -68,15 +66,8 @@ export function TipForm () {
     host.state.publisherInfo)
   const [rewardsParameters, setRewardsParameters] = React.useState(
     host.state.rewardsParameters)
-  const [showOnboarding, setShowOnboarding] = React.useState(
-    host.state.showOnboarding)
-  const [showTour, setShowTour] = React.useState(false)
   const [currentMonthlyTip, setCurrentMonthlyTip] = React.useState(
     host.state.currentMonthlyTip || 0)
-  const [autoContributeAmount, setAutoContributeAmount] = React.useState(
-    host.state.autoContributeAmount || 0)
-  const [adsPerHour, setAdsPerHour] = React.useState(
-    host.state.adsPerHour || 0)
   const [walletInfo, setWalletInfo] = React.useState(
     host.state.externalWalletInfo)
 
@@ -98,10 +89,7 @@ export function TipForm () {
       setRewardsParameters(state.rewardsParameters)
       setPublisherInfo(state.publisherInfo)
       setBalanceInfo(state.balanceInfo)
-      setShowOnboarding(state.showOnboarding)
       setCurrentMonthlyTip(state.currentMonthlyTip || 0)
-      setAutoContributeAmount(state.autoContributeAmount || 0)
-      setAdsPerHour(state.adsPerHour || 0)
       setWalletInfo(state.externalWalletInfo)
     })
   }, [host])
@@ -116,62 +104,6 @@ export function TipForm () {
         tipKind={tipKind}
         tipAmount={tipAmount}
         tipPending={tipPending}
-      />
-    )
-  }
-
-  if (showTour) {
-    const externalWalletType = walletInfo ? walletInfo.type : ''
-
-    // Hide AC options in rewards onboarding for bitFlyer-associated regions.
-    let { autoContributeChoices } = rewardsParameters
-    if (externalWalletType === 'bitflyer') {
-      autoContributeChoices = []
-    }
-
-    const onTourDone = () => setShowTour(false)
-
-    const onVerifyClick = () => {
-      window.open('chrome://rewards/#verify', '_blank')
-      setShowTour(false)
-    }
-
-    return (
-      <style.tour>
-        <RewardsTour
-          firstTimeSetup={!showOnboarding}
-          adsPerHour={adsPerHour}
-          externalWalletProvider={externalWalletType}
-          autoContributeAmount={autoContributeAmount}
-          autoContributeAmountOptions={autoContributeChoices}
-          onAdsPerHourChanged={host.setAdsPerHour}
-          onAutoContributeAmountChanged={host.setAutoContributeAmount}
-          onVerifyWalletClick={onVerifyClick}
-          onDone={onTourDone}
-        />
-      </style.tour>
-    )
-  }
-
-  if (showOnboarding) {
-    const onTakeTour = () => {
-      setShowTour(true)
-    }
-
-    const onEnable = () => {
-      host.saveOnboardingResult('opted-in')
-      onTakeTour()
-    }
-
-    const onDismiss = () => {
-      host.saveOnboardingResult('dismissed')
-    }
-
-    return (
-      <OptInForm
-        onTakeTour={onTakeTour}
-        onEnable={onEnable}
-        onDismiss={onDismiss}
       />
     )
   }
