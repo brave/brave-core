@@ -14,18 +14,19 @@
 #include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/logging/event_log_util.h"
 #include "bat/ledger/internal/notifications/notification_keys.h"
+#include "bat/ledger/internal/request/post_connect/uphold/post_connect_uphold.h"
+#include "bat/ledger/internal/request/request_for.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "bat/ledger/internal/wallet/wallet_util.h"
 
+using ledger::request::RequestFor;
+using ledger::request::connect::PostConnectUphold;
 using ledger::uphold::Capabilities;
 using ledger::wallet::OnWalletStatusChange;
 
-namespace ledger {
-namespace uphold {
+namespace ledger::uphold {
 
-UpholdWallet::UpholdWallet(LedgerImpl* ledger)
-    : ledger_{ledger},
-      promotion_server_{std::make_unique<endpoint::PromotionServer>(ledger)} {}
+UpholdWallet::UpholdWallet(LedgerImpl* ledger) : ledger_{ledger} {}
 
 UpholdWallet::~UpholdWallet() = default;
 
@@ -178,7 +179,7 @@ void UpholdWallet::OnGetCapabilities(ledger::ResultCallback callback,
 
 void UpholdWallet::OnCreateCard(ledger::ResultCallback callback,
                                 type::Result result,
-                                const std::string& id) const {
+                                std::string&& id) const {
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");
@@ -208,14 +209,20 @@ void UpholdWallet::OnCreateCard(ledger::ResultCallback callback,
     return std::move(callback).Run(type::Result::CONTINUE);
   }
 
-  promotion_server_->post_claim_uphold()->Request(
-      id, base::BindOnce(&UpholdWallet::OnClaimWallet, base::Unretained(this),
-                         std::move(callback), id));
+  auto on_connect =
+      base::BindOnce(&UpholdWallet::OnConnectWallet, base::Unretained(this),
+                     std::move(callback), id);
+
+  if (RequestFor<PostConnectUphold> request{ledger_, std::move(id)}) {
+    std::move(request).Send(std::move(on_connect));
+  } else {
+    std::move(on_connect).Run(type::Result::LEDGER_ERROR);
+  }
 }
 
-void UpholdWallet::OnClaimWallet(ledger::ResultCallback callback,
-                                 const std::string& id,
-                                 type::Result result) const {
+void UpholdWallet::OnConnectWallet(ledger::ResultCallback callback,
+                                   std::string&& id,
+                                   type::Result result) const {
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");
@@ -228,6 +235,7 @@ void UpholdWallet::OnClaimWallet(ledger::ResultCallback callback,
 
   CheckWalletState(uphold_wallet.get());
   DCHECK(!id.empty());
+  const std::string abbreviated_address = id.substr(0, 5);
 
   switch (result) {
     case type::Result::DEVICE_LIMIT_REACHED:
@@ -241,7 +249,7 @@ void UpholdWallet::OnClaimWallet(ledger::ResultCallback callback,
       ledger_->uphold()->DisconnectWallet("");
       ledger_->database()->SaveEventLog(
           log::GetEventLogKeyForLinkingResult(result),
-          constant::kWalletUphold + std::string("/") + id.substr(0, 5));
+          constant::kWalletUphold + std::string("/") + abbreviated_address);
       return std::move(callback).Run(result);
     default:
       if (result != type::Result::LEDGER_OK) {
@@ -252,7 +260,7 @@ void UpholdWallet::OnClaimWallet(ledger::ResultCallback callback,
 
   const auto from = uphold_wallet->status;
   const auto to = uphold_wallet->status = type::WalletStatus::VERIFIED;
-  uphold_wallet->address = id;
+  uphold_wallet->address = std::move(id);
   uphold_wallet = GenerateLinks(std::move(uphold_wallet));
   if (!ledger_->uphold()->SetWallet(std::move(uphold_wallet))) {
     BLOG(0, "Unable to set the Uphold wallet!");
@@ -263,7 +271,7 @@ void UpholdWallet::OnClaimWallet(ledger::ResultCallback callback,
 
   ledger_->database()->SaveEventLog(
       log::kWalletVerified,
-      constant::kWalletUphold + std::string("/") + id.substr(0, 5));
+      constant::kWalletUphold + std::string("/") + abbreviated_address);
 
   ledger_->promotion()->TransferTokens(
       base::BindOnce(&UpholdWallet::OnTransferTokens, base::Unretained(this),
@@ -294,5 +302,4 @@ void UpholdWallet::OnTransferTokens(ledger::ResultCallback callback,
   std::move(callback).Run(type::Result::LEDGER_OK);
 }
 
-}  // namespace uphold
-}  // namespace ledger
+}  // namespace ledger::uphold

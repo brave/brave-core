@@ -74,37 +74,31 @@
 namespace ledger {
 class LedgerImpl;
 
-namespace endpoint {
-namespace uphold {
+namespace endpoint::uphold {
 
 using GetCardsCallback =
-    base::OnceCallback<void(type::Result result, const std::string& id)>;
+    base::OnceCallback<void(type::Result, std::string&& id)>;
 
 class GetCards {
  public:
-  explicit GetCards(LedgerImpl* ledger);
+  explicit GetCards(LedgerImpl*);
   ~GetCards();
 
-  void Request(
-      const std::string& token,
-      GetCardsCallback callback);
+  void Request(const std::string& token, GetCardsCallback);
 
  private:
   std::string GetUrl();
 
-  type::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(int status_code);
 
-  type::Result ParseBody(
-      const std::string& body,
-      std::string* id);
+  type::Result ParseBody(const std::string& body, std::string* id);
 
-  void OnRequest(GetCardsCallback callback, const type::UrlResponse& response);
+  void OnRequest(GetCardsCallback, const type::UrlResponse&);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
 
-}  // namespace uphold
-}  // namespace endpoint
+}  // namespace endpoint::uphold
 }  // namespace ledger
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_UPHOLD_GET_CARDS_GET_CARDS_H_

@@ -14,12 +14,9 @@
 #include "bat/ledger/internal/uphold/uphold_card.h"
 #include "net/http/http_status_code.h"
 
-namespace ledger {
-namespace endpoint {
-namespace uphold {
+namespace ledger::endpoint::uphold {
 
-PostCards::PostCards(LedgerImpl* ledger):
-    ledger_(ledger) {
+PostCards::PostCards(LedgerImpl* ledger) : ledger_(ledger) {
   DCHECK(ledger_);
 }
 
@@ -39,7 +36,7 @@ std::string PostCards::GeneratePayload() {
   return json;
 }
 
-type::Result PostCards::CheckStatusCode(const int status_code) {
+type::Result PostCards::CheckStatusCode(int status_code) {
   if (status_code == net::HTTP_UNAUTHORIZED) {
     BLOG(0, "Unauthorized access");
     return type::Result::EXPIRED_TOKEN;
@@ -53,9 +50,7 @@ type::Result PostCards::CheckStatusCode(const int status_code) {
   return type::Result::LEDGER_OK;
 }
 
-type::Result PostCards::ParseBody(
-    const std::string& body,
-    std::string* id) {
+type::Result PostCards::ParseBody(const std::string& body, std::string* id) {
   DCHECK(id);
 
   absl::optional<base::Value> value = base::JSONReader::Read(body);
@@ -76,19 +71,17 @@ type::Result PostCards::ParseBody(
   return type::Result::LEDGER_OK;
 }
 
-void PostCards::Request(
-    const std::string& token,
-    PostCardsCallback callback) {
-  auto url_callback = base::BindOnce(
-      &PostCards::OnRequest, base::Unretained(this), std::move(callback));
-
+void PostCards::Request(const std::string& token, PostCardsCallback callback) {
   auto request = type::UrlRequest::New();
   request->url = GetUrl();
   request->content = GeneratePayload();
   request->headers = RequestAuthorization(token);
   request->content_type = "application/json; charset=utf-8";
   request->method = type::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+
+  ledger_->LoadURL(std::move(request),
+                   base::BindOnce(&PostCards::OnRequest, base::Unretained(this),
+                                  std::move(callback)));
 }
 
 void PostCards::OnRequest(PostCardsCallback callback,
@@ -96,17 +89,13 @@ void PostCards::OnRequest(PostCardsCallback callback,
   ledger::LogUrlResponse(__func__, response, true);
 
   type::Result result = CheckStatusCode(response.status_code);
-
   if (result != type::Result::LEDGER_OK) {
-    std::move(callback).Run(result, "");
-    return;
+    return std::move(callback).Run(result, "");
   }
 
   std::string id;
   result = ParseBody(response.body, &id);
-  std::move(callback).Run(result, id);
+  std::move(callback).Run(result, std::move(id));
 }
 
-}  // namespace uphold
-}  // namespace endpoint
-}  // namespace ledger
+}  // namespace ledger::endpoint::uphold

@@ -60,10 +60,11 @@ TEST_F(GeminiPostOauthTest, ServerOK) {
 
   oauth_->Request(
       "46553A9E3D57D70F960EA26D95183D8CBB026283D92CBC7C54665408DA7DF398",
-      "1234567890", [](const type::Result result, const std::string& token) {
+      "1234567890",
+      base::BindOnce([](type::Result result, std::string&& token) {
         EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(token, "aaaaa");
-      });
+      }));
 }
 
 TEST_F(GeminiPostOauthTest, ServerError401) {
@@ -79,10 +80,11 @@ TEST_F(GeminiPostOauthTest, ServerError401) {
 
   oauth_->Request(
       "46553A9E3D57D70F960EA26D95183D8CBB026283D92CBC7C54665408DA7DF398",
-      "1234567890", [](const type::Result result, const std::string& token) {
+      "1234567890",
+      base::BindOnce([](type::Result result, std::string&& token) {
         EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
         EXPECT_EQ(token, "");
-      });
+      }));
 }
 
 TEST_F(GeminiPostOauthTest, ServerError403) {
@@ -98,10 +100,11 @@ TEST_F(GeminiPostOauthTest, ServerError403) {
 
   oauth_->Request(
       "46553A9E3D57D70F960EA26D95183D8CBB026283D92CBC7C54665408DA7DF398",
-      "1234567890", [](const type::Result result, const std::string& token) {
+      "1234567890",
+      base::BindOnce([](type::Result result, std::string&& token) {
         EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
         EXPECT_EQ(token, "");
-      });
+      }));
 }
 
 TEST_F(GeminiPostOauthTest, ServerError404) {
@@ -117,10 +120,11 @@ TEST_F(GeminiPostOauthTest, ServerError404) {
 
   oauth_->Request(
       "46553A9E3D57D70F960EA26D95183D8CBB026283D92CBC7C54665408DA7DF398",
-      "1234567890", [](const type::Result result, const std::string& token) {
+      "1234567890",
+      base::BindOnce([](type::Result result, std::string&& token) {
         EXPECT_EQ(result, type::Result::NOT_FOUND);
         EXPECT_EQ(token, "");
-      });
+      }));
 }
 
 TEST_F(GeminiPostOauthTest, ServerErrorRandom) {
@@ -136,10 +140,11 @@ TEST_F(GeminiPostOauthTest, ServerErrorRandom) {
 
   oauth_->Request(
       "46553A9E3D57D70F960EA26D95183D8CBB026283D92CBC7C54665408DA7DF398",
-      "1234567890", [](const type::Result result, const std::string& token) {
+      "1234567890",
+      base::BindOnce([](type::Result result, std::string&& token) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_EQ(token, "");
-      });
+      }));
 }
 
 }  // namespace gemini

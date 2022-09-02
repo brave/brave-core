@@ -39,13 +39,13 @@ void UpholdCard::GetBATCardId(
 
 void UpholdCard::OnGetBATCardId(CreateCardCallback callback,
                                 type::Result result,
-                                const std::string& id) const {
+                                std::string&& id) const {
   if (result == type::Result::EXPIRED_TOKEN) {
     return std::move(callback).Run(type::Result::EXPIRED_TOKEN, "");
   }
 
   if (result == type::Result::LEDGER_OK && !id.empty()) {
-    return std::move(callback).Run(type::Result::LEDGER_OK, id);
+    return std::move(callback).Run(type::Result::LEDGER_OK, std::move(id));
   }
 
   BLOG(1, "Couldn't get BAT card ID!");
@@ -68,7 +68,7 @@ void UpholdCard::CreateBATCard(
 
 void UpholdCard::OnCreateBATCard(CreateCardCallback callback,
                                  type::Result result,
-                                 const std::string& id) const {
+                                 std::string&& id) const {
   if (result == type::Result::EXPIRED_TOKEN) {
     return std::move(callback).Run(type::Result::EXPIRED_TOKEN, "");
   }
@@ -103,7 +103,7 @@ void UpholdCard::UpdateBATCardSettings(
 }
 
 void UpholdCard::OnUpdateBATCardSettings(CreateCardCallback callback,
-                                         const std::string& id,
+                                         std::string&& id,
                                          type::Result result) const {
   if (result == type::Result::EXPIRED_TOKEN) {
     return std::move(callback).Run(type::Result::EXPIRED_TOKEN, "");
@@ -115,7 +115,7 @@ void UpholdCard::OnUpdateBATCardSettings(CreateCardCallback callback,
   }
 
   DCHECK(!id.empty());
-  std::move(callback).Run(type::Result::LEDGER_OK, id);
+  std::move(callback).Run(type::Result::LEDGER_OK, std::move(id));
 }
 
 }  // namespace uphold

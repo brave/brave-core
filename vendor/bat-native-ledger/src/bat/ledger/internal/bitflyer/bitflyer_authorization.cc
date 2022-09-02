@@ -9,28 +9,25 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "bat/ledger/global_constants.h"
-#include "bat/ledger/internal/bitflyer/bitflyer_util.h"
 #include "bat/ledger/internal/common/random_util.h"
+#include "bat/ledger/internal/endpoint/bitflyer/bitflyer_server.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/logging/event_log_util.h"
-#include "bat/ledger/internal/notifications/notification_keys.h"
+#include "bat/ledger/internal/request/post_connect/bitflyer/post_connect_bitflyer.h"
+#include "bat/ledger/internal/request/request_for.h"
 #include "bat/ledger/internal/wallet/wallet_util.h"
 #include "crypto/sha2.h"
 
+using ledger::request::RequestFor;
+using ledger::request::connect::PostConnectBitflyer;
 using ledger::wallet::OnWalletStatusChange;
-using std::placeholders::_1;
-using std::placeholders::_2;
-using std::placeholders::_3;
-using std::placeholders::_4;
 
-namespace ledger {
-namespace bitflyer {
+namespace ledger::bitflyer {
 
 BitflyerAuthorization::BitflyerAuthorization(LedgerImpl* ledger)
     : ledger_(ledger),
-      bitflyer_server_(std::make_unique<endpoint::BitflyerServer>(ledger)),
-      promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)) {}
+      bitflyer_server_(std::make_unique<endpoint::BitflyerServer>(ledger)) {}
 
 BitflyerAuthorization::~BitflyerAuthorization() = default;
 
@@ -126,19 +123,18 @@ void BitflyerAuthorization::Authorize(
   const std::string external_account_id =
       base::HexEncode(hashed_payment_id.data(), hashed_payment_id.size());
 
-  auto url_callback = std::bind(&BitflyerAuthorization::OnAuthorize, this, _1,
-                                _2, _3, _4, callback);
-
-  bitflyer_server_->post_oauth()->Request(external_account_id, code,
-                                          current_code_verifier, url_callback);
+  bitflyer_server_->post_oauth()->Request(
+      external_account_id, code, current_code_verifier,
+      base::BindOnce(&BitflyerAuthorization::OnAuthorize,
+                     base::Unretained(this), std::move(callback)));
 }
 
 void BitflyerAuthorization::OnAuthorize(
-    const type::Result result,
-    const std::string& token,
-    const std::string& address,
-    const std::string& linking_info,
-    ledger::ExternalWalletAuthorizationCallback callback) {
+    ledger::ExternalWalletAuthorizationCallback callback,
+    type::Result result,
+    std::string&& token,
+    std::string&& address,
+    std::string&& linking_info) {
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
     callback(type::Result::EXPIRED_TOKEN, {});
@@ -170,25 +166,32 @@ void BitflyerAuthorization::OnAuthorize(
     return;
   }
 
-  auto url_callback = std::bind(&BitflyerAuthorization::OnClaimWallet, this, _1,
-                                token, address, linking_info, callback);
+  auto on_connect = base::BindOnce(&BitflyerAuthorization::OnConnectWallet,
+                                   base::Unretained(this), std::move(callback),
+                                   std::move(token), std::move(address));
 
-  promotion_server_->post_claim_bitflyer()->Request(linking_info, url_callback);
+  if (RequestFor<PostConnectBitflyer> request{ledger_,
+                                              std::move(linking_info)}) {
+    std::move(request).Send(std::move(on_connect));
+  } else {
+    std::move(on_connect).Run(type::Result::LEDGER_ERROR);
+  }
 }
 
-void BitflyerAuthorization::OnClaimWallet(
-    const type::Result result,
-    const std::string& token,
-    const std::string& address,
-    const std::string& linking_info,
-    ledger::ExternalWalletAuthorizationCallback callback) {
+void BitflyerAuthorization::OnConnectWallet(
+    ledger::ExternalWalletAuthorizationCallback callback,
+    std::string&& token,
+    std::string&& address,
+    type::Result result) {
   auto wallet_ptr = ledger_->bitflyer()->GetWallet();
   if (!wallet_ptr) {
     BLOG(0, "bitFlyer wallet is null!");
     return callback(type::Result::LEDGER_ERROR, {});
   }
 
+  DCHECK(!token.empty());
   DCHECK(!address.empty());
+  const std::string abbreviated_address = address.substr(0, 5);
 
   switch (result) {
     case type::Result::DEVICE_LIMIT_REACHED:
@@ -199,7 +202,7 @@ void BitflyerAuthorization::OnClaimWallet(
     case type::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS:
       ledger_->database()->SaveEventLog(
           log::GetEventLogKeyForLinkingResult(result),
-          constant::kWalletBitflyer + std::string("/") + address.substr(0, 5));
+          constant::kWalletBitflyer + std::string("/") + abbreviated_address);
       return callback(result, {});
     default:
       if (result != type::Result::LEDGER_OK) {
@@ -210,8 +213,8 @@ void BitflyerAuthorization::OnClaimWallet(
 
   const auto from = wallet_ptr->status;
   const auto to = wallet_ptr->status = type::WalletStatus::VERIFIED;
-  wallet_ptr->token = token;
-  wallet_ptr->address = address;
+  wallet_ptr->token = std::move(token);
+  wallet_ptr->address = std::move(address);
 
   if (!ledger_->bitflyer()->SetWallet(std::move(wallet_ptr))) {
     BLOG(0, "Unable to set bitFlyer wallet!");
@@ -221,9 +224,8 @@ void BitflyerAuthorization::OnClaimWallet(
   OnWalletStatusChange(ledger_, from, to);
   ledger_->database()->SaveEventLog(
       log::kWalletVerified,
-      constant::kWalletBitflyer + std::string("/") + address.substr(0, 5));
+      constant::kWalletBitflyer + std::string("/") + abbreviated_address);
   callback(type::Result::LEDGER_OK, {});
 }
 
-}  // namespace bitflyer
-}  // namespace ledger
+}  // namespace ledger::bitflyer

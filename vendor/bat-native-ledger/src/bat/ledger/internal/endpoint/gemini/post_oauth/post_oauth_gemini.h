@@ -40,20 +40,19 @@
 namespace ledger {
 class LedgerImpl;
 
-namespace endpoint {
-namespace gemini {
+namespace endpoint::gemini {
 
 using PostOauthCallback =
-    std::function<void(const type::Result result, const std::string& token)>;
+    base::OnceCallback<void(type::Result, std::string&& token)>;
 
 class PostOauth {
  public:
-  explicit PostOauth(LedgerImpl* ledger);
+  explicit PostOauth(LedgerImpl*);
   ~PostOauth();
 
   void Request(const std::string& external_account_id,
                const std::string& code,
-               PostOauthCallback callback);
+               PostOauthCallback);
 
  private:
   std::string GetUrl();
@@ -63,13 +62,12 @@ class PostOauth {
 
   type::Result ParseBody(const std::string& body, std::string* token);
 
-  void OnRequest(const type::UrlResponse& response, PostOauthCallback callback);
+  void OnRequest(PostOauthCallback, const type::UrlResponse&);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
 
-}  // namespace gemini
-}  // namespace endpoint
+}  // namespace endpoint::gemini
 }  // namespace ledger
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_GEMINI_POST_OAUTH_POST_OAUTH_GEMINI_H_
