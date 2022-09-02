@@ -21,8 +21,8 @@ constexpr char kCreativeSetId[] = "654f10df-fbc4-4a92-8d43-2edf73734a60";
 scoped_refptr<base::FieldTrial> CreateFieldTrial(
     const std::string& trial_name) {
   return base::FieldTrialList::FactoryGetFieldTrial(
-      trial_name, 100, "default", base::FieldTrial::ONE_TIME_RANDOMIZED,
-      nullptr);
+      trial_name, 100, "default",
+      base::FieldTrialList::GetEntropyProviderForOneTimeRandomization());
 }
 
 }  // namespace
