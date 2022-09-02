@@ -240,15 +240,12 @@ void JsonRpcService::Request(const std::string& json_payload,
                      std::move(callback), std::move(id)));
 }
 
-void JsonRpcService::OnRequestResult(
-    RequestCallback callback,
-    base::Value id,
-    const int code,
-    const std::string& message,
-    const base::flat_map<std::string, std::string>& headers) {
+void JsonRpcService::OnRequestResult(RequestCallback callback,
+                                     base::Value id,
+                                     APIRequestResult api_request_result) {
   bool reject;
-  base::Value formed_response =
-      GetProviderRequestReturnFromEthJsonResponse(code, message, &reject);
+  base::Value formed_response = GetProviderRequestReturnFromEthJsonResponse(
+      api_request_result.response_code(), api_request_result.body(), &reject);
   std::move(callback).Run(std::move(id), std::move(formed_response), reject, "",
                           false);
 }
@@ -323,10 +320,8 @@ void JsonRpcService::OnEthChainIdValidated(
     mojom::NetworkInfoPtr chain,
     const GURL& rpc_url,
     AddChainCallback callback,
-    const int http_code,
-    const std::string& response,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (brave_wallet::ParseSingleStringResult(response) != chain->chain_id) {
+    APIRequestResult api_request_result) {
+  if (ParseSingleStringResult(api_request_result.body()) != chain->chain_id) {
     std::move(callback).Run(
         chain->chain_id, mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
@@ -396,14 +391,12 @@ void JsonRpcService::AddEthereumChainRequestCompleted(
 void JsonRpcService::OnEthChainIdValidatedForOrigin(
     const std::string& chain_id,
     const GURL& rpc_url,
-    const int http_code,
-    const std::string& response,
-    const base::flat_map<std::string, std::string>& headers) {
+    APIRequestResult api_request_result) {
   if (!add_chain_pending_requests_.contains(chain_id))
     return;
 
   const auto& chain = *add_chain_pending_requests_.at(chain_id)->network_info;
-  if (brave_wallet::ParseSingleStringResult(response) != chain_id) {
+  if (ParseSingleStringResult(api_request_result.body()) != chain_id) {
     FirePendingRequestCompleted(
         chain_id,
         l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
@@ -598,21 +591,20 @@ void JsonRpcService::GetBlockNumber(GetBlockNumberCallback callback) {
 void JsonRpcService::OnGetFilStateSearchMsgLimited(
     GetFilStateSearchMsgLimitedCallback callback,
     const std::string& cid,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
+    APIRequestResult api_request_result) {
   int64_t exit_code = -1;
-  if (status < 200 || status > 299) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         exit_code, mojom::FilecoinProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
-  if (!ParseFilStateSearchMsgLimited(body, cid, &exit_code)) {
+  if (!ParseFilStateSearchMsgLimited(api_request_result.body(), cid,
+                                     &exit_code)) {
     mojom::FilecoinProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::FilecoinProviderError>(body, &error,
-                                                   &error_message);
+    ParseErrorResult<mojom::FilecoinProviderError>(api_request_result.body(),
+                                                   &error, &error_message);
     std::move(callback).Run(exit_code, error, error_message);
     return;
   }
@@ -621,22 +613,20 @@ void JsonRpcService::OnGetFilStateSearchMsgLimited(
                           "");
 }
 
-void JsonRpcService::OnGetBlockNumber(
-    GetBlockNumberCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+void JsonRpcService::OnGetBlockNumber(GetBlockNumberCallback callback,
+                                      APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         0, mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
   uint256_t block_number;
-  if (!eth::ParseEthGetBlockNumber(body, &block_number)) {
+  if (!eth::ParseEthGetBlockNumber(api_request_result.body(), &block_number)) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(body, &error, &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
+                                           &error_message);
     std::move(callback).Run(0, error, error_message);
     return;
   }
@@ -655,12 +645,9 @@ void JsonRpcService::GetFeeHistory(GetFeeHistoryCallback callback) {
       true, network_urls_[mojom::CoinType::ETH], std::move(internal_callback));
 }
 
-void JsonRpcService::OnGetFeeHistory(
-    GetFeeHistoryCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+void JsonRpcService::OnGetFeeHistory(GetFeeHistoryCallback callback,
+                                     APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         std::vector<std::string>(), std::vector<double>(), "",
         std::vector<std::vector<std::string>>(),
@@ -673,11 +660,11 @@ void JsonRpcService::OnGetFeeHistory(
   std::vector<double> gas_used_ratio;
   std::string oldest_block;
   std::vector<std::vector<std::string>> reward;
-  if (!eth::ParseEthGetFeeHistory(body, &base_fee_per_gas, &gas_used_ratio,
-                                  &oldest_block, &reward)) {
+  if (!eth::ParseEthGetFeeHistory(api_request_result.body(), &base_fee_per_gas,
+                                  &gas_used_ratio, &oldest_block, &reward)) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult(body, &error, &error_message);
+    ParseErrorResult(api_request_result.body(), &error, &error_message);
     std::move(callback).Run(std::vector<std::string>(), std::vector<double>(),
                             "", std::vector<std::vector<std::string>>(), error,
                             error_message);
@@ -718,22 +705,20 @@ void JsonRpcService::GetBalance(const std::string& address,
                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
-void JsonRpcService::OnEthGetBalance(
-    GetBalanceCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+void JsonRpcService::OnEthGetBalance(GetBalanceCallback callback,
+                                     APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
   std::string balance;
-  if (!eth::ParseEthGetBalance(body, &balance)) {
+  if (!eth::ParseEthGetBalance(api_request_result.body(), &balance)) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(body, &error, &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
+                                           &error_message);
     std::move(callback).Run("", error, error_message);
     return;
   }
@@ -741,22 +726,20 @@ void JsonRpcService::OnEthGetBalance(
   std::move(callback).Run(balance, mojom::ProviderError::kSuccess, "");
 }
 
-void JsonRpcService::OnFilGetBalance(
-    GetBalanceCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+void JsonRpcService::OnFilGetBalance(GetBalanceCallback callback,
+                                     APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
   std::string balance;
-  if (!ParseFilGetBalance(body, &balance)) {
+  if (!ParseFilGetBalance(api_request_result.body(), &balance)) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(body, &error, &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
+                                           &error_message);
     std::move(callback).Run("", error, error_message);
     return;
   }
@@ -801,23 +784,20 @@ void JsonRpcService::GetFilBlockHeight(GetFilBlockHeightCallback callback) {
                   base::BindOnce(&ConvertUint64ToString, "/result/Height"));
 }
 
-void JsonRpcService::OnGetFilBlockHeight(
-    GetFilBlockHeightCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+void JsonRpcService::OnGetFilBlockHeight(GetFilBlockHeightCallback callback,
+                                         APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         0, mojom::FilecoinProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
   uint64_t height = 0;
-  if (!ParseFilGetChainHead(body, &height)) {
+  if (!ParseFilGetChainHead(api_request_result.body(), &height)) {
     mojom::FilecoinProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::FilecoinProviderError>(body, &error,
-                                                   &error_message);
+    ParseErrorResult<mojom::FilecoinProviderError>(api_request_result.body(),
+                                                   &error, &error_message);
     std::move(callback).Run(height, error, error_message);
     return;
   }
@@ -862,21 +842,19 @@ void JsonRpcService::GetEthTransactionCount(const std::string& address,
 
 void JsonRpcService::OnFilGetTransactionCount(
     GetFilTxCountCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         0, mojom::FilecoinProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
   uint64_t count = 0;
-  if (!ParseFilGetTransactionCount(body, &count)) {
+  if (!ParseFilGetTransactionCount(api_request_result.body(), &count)) {
     mojom::FilecoinProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::FilecoinProviderError>(body, &error,
-                                                   &error_message);
+    ParseErrorResult<mojom::FilecoinProviderError>(api_request_result.body(),
+                                                   &error, &error_message);
     std::move(callback).Run(0u, error, error_message);
     return;
   }
@@ -887,20 +865,19 @@ void JsonRpcService::OnFilGetTransactionCount(
 
 void JsonRpcService::OnEthGetTransactionCount(
     GetTxCountCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         0, mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
   uint256_t count;
-  if (!eth::ParseEthGetTransactionCount(body, &count)) {
+  if (!eth::ParseEthGetTransactionCount(api_request_result.body(), &count)) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(body, &error, &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
+                                           &error_message);
     std::move(callback).Run(0, error, error_message);
     return;
   }
@@ -920,20 +897,20 @@ void JsonRpcService::GetTransactionReceipt(const std::string& tx_hash,
 
 void JsonRpcService::OnGetTransactionReceipt(
     GetTxReceiptCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
+    APIRequestResult api_request_result) {
   TransactionReceipt receipt;
-  if (status < 200 || status > 299) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         receipt, mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
-  if (!eth::ParseEthGetTransactionReceipt(body, &receipt)) {
+  if (!eth::ParseEthGetTransactionReceipt(api_request_result.body(),
+                                          &receipt)) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(body, &error, &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
+                                           &error_message);
     std::move(callback).Run(receipt, error, error_message);
     return;
   }
@@ -951,22 +928,20 @@ void JsonRpcService::SendRawTransaction(const std::string& signed_tx,
                   std::move(internal_callback));
 }
 
-void JsonRpcService::OnSendRawTransaction(
-    SendRawTxCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+void JsonRpcService::OnSendRawTransaction(SendRawTxCallback callback,
+                                          APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
   std::string tx_hash;
-  if (!eth::ParseEthSendRawTransaction(body, &tx_hash)) {
+  if (!eth::ParseEthSendRawTransaction(api_request_result.body(), &tx_hash)) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(body, &error, &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
+                                           &error_message);
     std::move(callback).Run("", error, error_message);
     return;
   }
@@ -997,20 +972,19 @@ void JsonRpcService::GetERC20TokenBalance(
 
 void JsonRpcService::OnGetERC20TokenBalance(
     GetERC20TokenBalanceCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
   std::string result;
-  if (!eth::ParseEthCall(body, &result)) {
+  if (!eth::ParseEthCall(api_request_result.body(), &result)) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(body, &error, &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
+                                           &error_message);
     std::move(callback).Run("", error, error_message);
     return;
   }
@@ -1049,20 +1023,19 @@ void JsonRpcService::GetERC20TokenAllowance(
 
 void JsonRpcService::OnGetERC20TokenAllowance(
     GetERC20TokenAllowanceCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
   std::string result;
-  if (!eth::ParseEthCall(body, &result)) {
+  if (!eth::ParseEthCall(api_request_result.body(), &result)) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(body, &error, &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
+                                           &error_message);
     std::move(callback).Run("", error, error_message);
     return;
   }
@@ -1110,11 +1083,9 @@ void JsonRpcService::EnsRegistryGetResolver(const std::string& domain,
 
 void JsonRpcService::OnEnsRegistryGetResolver(
     StringResultCallback callback,
-    int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
+    APIRequestResult api_request_result) {
   DCHECK(callback);
-  if (status < 200 || status > 299) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -1122,11 +1093,12 @@ void JsonRpcService::OnEnsRegistryGetResolver(
   }
 
   std::string resolver_address;
-  if (!eth::ParseAddressResult(body, &resolver_address) ||
+  if (!eth::ParseAddressResult(api_request_result.body(), &resolver_address) ||
       resolver_address.empty()) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(body, &error, &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
+                                           &error_message);
     std::move(callback).Run("", error, error_message);
     return;
   }
@@ -1180,11 +1152,9 @@ void JsonRpcService::ContinueEnsResolverGetContentHash(
 
 void JsonRpcService::OnEnsResolverGetContentHash(
     StringResultCallback callback,
-    int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
+    APIRequestResult api_request_result) {
   DCHECK(callback);
-  if (status < 200 || status > 299) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -1192,11 +1162,13 @@ void JsonRpcService::OnEnsResolverGetContentHash(
   }
 
   std::string content_hash;
-  if (!eth::ParseEnsResolverContentHash(body, &content_hash) ||
+  if (!eth::ParseEnsResolverContentHash(api_request_result.body(),
+                                        &content_hash) ||
       content_hash.empty()) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(body, &error, &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
+                                           &error_message);
     std::move(callback).Run("", error, error_message);
     return;
   }
@@ -1310,13 +1282,10 @@ void JsonRpcService::ContinueEnsGetEthAddr(const std::string& domain,
       network_urls_[mojom::CoinType::ETH], std::move(internal_callback));
 }
 
-void JsonRpcService::OnEnsGetEthAddr(
-    StringResultCallback callback,
-    int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
+void JsonRpcService::OnEnsGetEthAddr(StringResultCallback callback,
+                                     APIRequestResult api_request_result) {
   DCHECK(callback);
-  if (status < 200 || status > 299) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -1324,10 +1293,12 @@ void JsonRpcService::OnEnsGetEthAddr(
   }
 
   std::string address;
-  if (!eth::ParseAddressResult(body, &address) || address.empty()) {
+  if (!eth::ParseAddressResult(api_request_result.body(), &address) ||
+      address.empty()) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(body, &error, &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
+                                           &error_message);
     std::move(callback).Run("", error, error_message);
     return;
   }
@@ -1376,21 +1347,21 @@ void JsonRpcService::UnstoppableDomainsResolveDns(
 void JsonRpcService::OnUnstoppableDomainsResolveDns(
     const std::string& domain,
     const std::string& chain_id,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     ud_resolve_dns_calls_->SetError(
         domain, chain_id, mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
-  auto values = eth::ParseUnstoppableDomainsProxyReaderGetMany(body);
+  auto values =
+      eth::ParseUnstoppableDomainsProxyReaderGetMany(api_request_result.body());
   if (!values) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(body, &error, &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
+                                           &error_message);
     ud_resolve_dns_calls_->SetError(domain, chain_id, error, error_message);
     return;
   }
@@ -1444,21 +1415,21 @@ void JsonRpcService::UnstoppableDomainsGetEthAddr(
 void JsonRpcService::OnUnstoppableDomainsGetEthAddr(
     const std::string& domain,
     const std::string& chain_id,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     ud_get_eth_addr_calls_->SetError(
         domain, chain_id, mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
-  auto address = eth::ParseUnstoppableDomainsProxyReaderGet(body);
+  auto address =
+      eth::ParseUnstoppableDomainsProxyReaderGet(api_request_result.body());
   if (!address) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(body, &error, &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
+                                           &error_message);
 
     ud_get_eth_addr_calls_->SetError(domain, chain_id, error, error_message);
     return;
@@ -1507,12 +1478,9 @@ void JsonRpcService::GetFilEstimateGas(const std::string& from_address,
                   base::BindOnce(&ConvertInt64ToString, "/result/GasLimit"));
 }
 
-void JsonRpcService::OnGetFilEstimateGas(
-    GetFilEstimateGasCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+void JsonRpcService::OnGetFilEstimateGas(GetFilEstimateGasCallback callback,
+                                         APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         "", "", 0, mojom::FilecoinProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -1522,11 +1490,12 @@ void JsonRpcService::OnGetFilEstimateGas(
   std::string gas_fee_cap;
   int64_t gas_limit = 0;
   std::string gas_premium;
-  if (!ParseFilEstimateGas(body, &gas_premium, &gas_fee_cap, &gas_limit)) {
+  if (!ParseFilEstimateGas(api_request_result.body(), &gas_premium,
+                           &gas_fee_cap, &gas_limit)) {
     mojom::FilecoinProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::FilecoinProviderError>(body, &error,
-                                                   &error_message);
+    ParseErrorResult<mojom::FilecoinProviderError>(api_request_result.body(),
+                                                   &error, &error_message);
     std::move(callback).Run("", "", 0, error, error_message);
     return;
   }
@@ -1551,12 +1520,9 @@ void JsonRpcService::GetEstimateGas(const std::string& from_address,
                   std::move(internal_callback));
 }
 
-void JsonRpcService::OnGetEstimateGas(
-    GetEstimateGasCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+void JsonRpcService::OnGetEstimateGas(GetEstimateGasCallback callback,
+                                      APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -1564,10 +1530,11 @@ void JsonRpcService::OnGetEstimateGas(
   }
 
   std::string result;
-  if (!eth::ParseEthEstimateGas(body, &result)) {
+  if (!eth::ParseEthEstimateGas(api_request_result.body(), &result)) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(body, &error, &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
+                                           &error_message);
     std::move(callback).Run("", error, error_message);
     return;
   }
@@ -1584,12 +1551,9 @@ void JsonRpcService::GetGasPrice(GetGasPriceCallback callback) {
                   std::move(internal_callback));
 }
 
-void JsonRpcService::OnGetGasPrice(
-    GetGasPriceCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+void JsonRpcService::OnGetGasPrice(GetGasPriceCallback callback,
+                                   APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -1597,10 +1561,11 @@ void JsonRpcService::OnGetGasPrice(
   }
 
   std::string result;
-  if (!eth::ParseEthGasPrice(body, &result)) {
+  if (!eth::ParseEthGasPrice(api_request_result.body(), &result)) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(body, &error, &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
+                                           &error_message);
     std::move(callback).Run("", error, error_message);
     return;
   }
@@ -1617,23 +1582,21 @@ void JsonRpcService::GetIsEip1559(GetIsEip1559Callback callback) {
                   std::move(internal_callback));
 }
 
-void JsonRpcService::OnGetIsEip1559(
-    GetIsEip1559Callback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+void JsonRpcService::OnGetIsEip1559(GetIsEip1559Callback callback,
+                                    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         false, mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
-  auto result = ParseResultDict(body);
+  auto result = ParseResultDict(api_request_result.body());
   if (!result) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(body, &error, &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
+                                           &error_message);
     std::move(callback).Run(false, error, error_message);
     return;
   }
@@ -1690,12 +1653,9 @@ void JsonRpcService::GetERC721OwnerOf(const std::string& contract,
                   network_url, std::move(internal_callback));
 }
 
-void JsonRpcService::OnGetERC721OwnerOf(
-    GetERC721OwnerOfCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+void JsonRpcService::OnGetERC721OwnerOf(GetERC721OwnerOfCallback callback,
+                                        APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -1703,10 +1663,12 @@ void JsonRpcService::OnGetERC721OwnerOf(
   }
 
   std::string address;
-  if (!eth::ParseAddressResult(body, &address) || address.empty()) {
+  if (!eth::ParseAddressResult(api_request_result.body(), &address) ||
+      address.empty()) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(body, &error, &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
+                                           &error_message);
     std::move(callback).Run("", error, error_message);
     return;
   }
@@ -1859,12 +1821,9 @@ void JsonRpcService::OnGetSupportsInterfaceTokenMetadata(
                   true, network_url, std::move(internal_callback));
 }
 
-void JsonRpcService::OnGetTokenUri(
-    GetTokenMetadataCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+void JsonRpcService::OnGetTokenUri(GetTokenMetadataCallback callback,
+                                   APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -1873,10 +1832,11 @@ void JsonRpcService::OnGetTokenUri(
 
   // Parse response JSON that wraps the result
   GURL url;
-  if (!eth::ParseTokenUri(body, &url)) {
+  if (!eth::ParseTokenUri(api_request_result.body(), &url)) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(body, &error, &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
+                                           &error_message);
     std::move(callback).Run("", error, error_message);
     return;
   }
@@ -1945,10 +1905,8 @@ void JsonRpcService::OnSanitizeTokenMetadata(
 
 void JsonRpcService::OnGetTokenMetadataPayload(
     GetTokenMetadataCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -1956,13 +1914,14 @@ void JsonRpcService::OnGetTokenMetadataPayload(
   }
 
   // Invalid JSON becomes an empty string after sanitization
-  if (body.empty()) {
+  if (api_request_result.body().empty()) {
     std::move(callback).Run("", mojom::ProviderError::kParsingError,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
     return;
   }
 
-  std::move(callback).Run(body, mojom::ProviderError::kSuccess, "");
+  std::move(callback).Run(api_request_result.body(),
+                          mojom::ProviderError::kSuccess, "");
 }
 
 void JsonRpcService::GetERC1155TokenBalance(
@@ -2044,10 +2003,8 @@ void JsonRpcService::GetSupportsInterface(
 
 void JsonRpcService::OnGetSupportsInterface(
     GetSupportsInterfaceCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         false, mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -2055,10 +2012,11 @@ void JsonRpcService::OnGetSupportsInterface(
   }
 
   bool is_supported = false;
-  if (!ParseBoolResult(body, &is_supported)) {
+  if (!ParseBoolResult(api_request_result.body(), &is_supported)) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(body, &error, &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
+                                           &error_message);
     std::move(callback).Run(false, error, error_message);
     return;
   }
@@ -2220,12 +2178,9 @@ void JsonRpcService::GetSPLTokenAccountBalance(
                   true, network_url, std::move(internal_callback));
 }
 
-void JsonRpcService::OnGetSolanaBalance(
-    GetSolanaBalanceCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+void JsonRpcService::OnGetSolanaBalance(GetSolanaBalanceCallback callback,
+                                        APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         0u, mojom::SolanaProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -2233,10 +2188,11 @@ void JsonRpcService::OnGetSolanaBalance(
   }
 
   uint64_t balance = 0;
-  if (!solana::ParseGetBalance(body, &balance)) {
+  if (!solana::ParseGetBalance(api_request_result.body(), &balance)) {
     mojom::SolanaProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::SolanaProviderError>(body, &error, &error_message);
+    ParseErrorResult<mojom::SolanaProviderError>(api_request_result.body(),
+                                                 &error, &error_message);
     std::move(callback).Run(0u, error, error_message);
     return;
   }
@@ -2246,10 +2202,8 @@ void JsonRpcService::OnGetSolanaBalance(
 
 void JsonRpcService::OnGetSPLTokenAccountBalance(
     GetSPLTokenAccountBalanceCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         "", 0u, "", mojom::SolanaProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -2258,11 +2212,12 @@ void JsonRpcService::OnGetSPLTokenAccountBalance(
 
   std::string amount, ui_amount_string;
   uint8_t decimals = 0;
-  if (!solana::ParseGetTokenAccountBalance(body, &amount, &decimals,
-                                           &ui_amount_string)) {
+  if (!solana::ParseGetTokenAccountBalance(api_request_result.body(), &amount,
+                                           &decimals, &ui_amount_string)) {
     mojom::SolanaProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::SolanaProviderError>(body, &error, &error_message);
+    ParseErrorResult<mojom::SolanaProviderError>(api_request_result.body(),
+                                                 &error, &error_message);
 
     // Treat balance as 0 if the associated token account is not created yet.
     if (error == mojom::SolanaProviderError::kInvalidParams &&
@@ -2305,10 +2260,8 @@ void JsonRpcService::SendFilecoinTransaction(
 
 void JsonRpcService::OnSendFilecoinTransaction(
     SendFilecoinTransactionCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         "", mojom::FilecoinProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -2316,11 +2269,11 @@ void JsonRpcService::OnSendFilecoinTransaction(
   }
 
   std::string cid;
-  if (!ParseSendFilecoinTransaction(body, &cid)) {
+  if (!ParseSendFilecoinTransaction(api_request_result.body(), &cid)) {
     mojom::FilecoinProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::FilecoinProviderError>(body, &error,
-                                                   &error_message);
+    ParseErrorResult<mojom::FilecoinProviderError>(api_request_result.body(),
+                                                   &error, &error_message);
     std::move(callback).Run("", error, error_message);
     return;
   }
@@ -2349,10 +2302,8 @@ void JsonRpcService::SendSolanaTransaction(
 
 void JsonRpcService::OnSendSolanaTransaction(
     SendSolanaTransactionCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         "", mojom::SolanaProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -2360,10 +2311,12 @@ void JsonRpcService::OnSendSolanaTransaction(
   }
 
   std::string transaction_id;
-  if (!solana::ParseSendTransaction(body, &transaction_id)) {
+  if (!solana::ParseSendTransaction(api_request_result.body(),
+                                    &transaction_id)) {
     mojom::SolanaProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::SolanaProviderError>(body, &error, &error_message);
+    ParseErrorResult<mojom::SolanaProviderError>(api_request_result.body(),
+                                                 &error, &error_message);
     std::move(callback).Run("", error, error_message);
     return;
   }
@@ -2386,10 +2339,8 @@ void JsonRpcService::GetSolanaLatestBlockhash(
 
 void JsonRpcService::OnGetSolanaLatestBlockhash(
     GetSolanaLatestBlockhashCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         "", 0, mojom::SolanaProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -2398,11 +2349,12 @@ void JsonRpcService::OnGetSolanaLatestBlockhash(
 
   std::string blockhash;
   uint64_t last_valid_block_height = 0;
-  if (!solana::ParseGetLatestBlockhash(body, &blockhash,
+  if (!solana::ParseGetLatestBlockhash(api_request_result.body(), &blockhash,
                                        &last_valid_block_height)) {
     mojom::SolanaProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::SolanaProviderError>(body, &error, &error_message);
+    ParseErrorResult<mojom::SolanaProviderError>(api_request_result.body(),
+                                                 &error, &error_message);
     std::move(callback).Run("", 0, error, error_message);
     return;
   }
@@ -2426,10 +2378,8 @@ void JsonRpcService::GetSolanaSignatureStatuses(
 
 void JsonRpcService::OnGetSolanaSignatureStatuses(
     GetSolanaSignatureStatusesCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         std::vector<absl::optional<SolanaSignatureStatus>>(),
         mojom::SolanaProviderError::kInternalError,
@@ -2438,10 +2388,12 @@ void JsonRpcService::OnGetSolanaSignatureStatuses(
   }
 
   std::vector<absl::optional<SolanaSignatureStatus>> statuses;
-  if (!solana::ParseGetSignatureStatuses(body, &statuses)) {
+  if (!solana::ParseGetSignatureStatuses(api_request_result.body(),
+                                         &statuses)) {
     mojom::SolanaProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::SolanaProviderError>(body, &error, &error_message);
+    ParseErrorResult<mojom::SolanaProviderError>(api_request_result.body(),
+                                                 &error, &error_message);
     std::move(callback).Run(
         std::vector<absl::optional<SolanaSignatureStatus>>(), error,
         error_message);
@@ -2467,10 +2419,8 @@ void JsonRpcService::GetSolanaAccountInfo(
 
 void JsonRpcService::OnGetSolanaAccountInfo(
     GetSolanaAccountInfoCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         absl::nullopt, mojom::SolanaProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -2478,10 +2428,11 @@ void JsonRpcService::OnGetSolanaAccountInfo(
   }
 
   absl::optional<SolanaAccountInfo> account_info;
-  if (!solana::ParseGetAccountInfo(body, &account_info)) {
+  if (!solana::ParseGetAccountInfo(api_request_result.body(), &account_info)) {
     mojom::SolanaProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::SolanaProviderError>(body, &error, &error_message);
+    ParseErrorResult<mojom::SolanaProviderError>(api_request_result.body(),
+                                                 &error, &error_message);
     std::move(callback).Run(absl::nullopt, error, error_message);
     return;
   }
@@ -2511,10 +2462,8 @@ void JsonRpcService::GetSolanaFeeForMessage(
 
 void JsonRpcService::OnGetSolanaFeeForMessage(
     GetSolanaFeeForMessageCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         0, mojom::SolanaProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -2522,10 +2471,11 @@ void JsonRpcService::OnGetSolanaFeeForMessage(
   }
 
   uint64_t fee;
-  if (!solana::ParseGetFeeForMessage(body, &fee)) {
+  if (!solana::ParseGetFeeForMessage(api_request_result.body(), &fee)) {
     mojom::SolanaProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::SolanaProviderError>(body, &error, &error_message);
+    ParseErrorResult<mojom::SolanaProviderError>(api_request_result.body(),
+                                                 &error, &error_message);
     std::move(callback).Run(0, error, error_message);
     return;
   }
@@ -2546,10 +2496,8 @@ void JsonRpcService::GetSolanaBlockHeight(
 
 void JsonRpcService::OnGetSolanaBlockHeight(
     GetSolanaBlockHeightCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         0, mojom::SolanaProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -2557,10 +2505,11 @@ void JsonRpcService::OnGetSolanaBlockHeight(
   }
 
   uint64_t block_height = 0;
-  if (!solana::ParseGetBlockHeight(body, &block_height)) {
+  if (!solana::ParseGetBlockHeight(api_request_result.body(), &block_height)) {
     mojom::SolanaProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::SolanaProviderError>(body, &error, &error_message);
+    ParseErrorResult<mojom::SolanaProviderError>(api_request_result.body(),
+                                                 &error, &error_message);
     std::move(callback).Run(0, error, error_message);
     return;
   }

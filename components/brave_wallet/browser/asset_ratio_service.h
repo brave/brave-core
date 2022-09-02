@@ -33,11 +33,13 @@ namespace brave_wallet {
 
 class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
  public:
-  AssetRatioService(
+  explicit AssetRatioService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~AssetRatioService() override;
   AssetRatioService(const AssetRatioService&) = delete;
   AssetRatioService& operator=(const AssetRatioService&) = delete;
+
+  using APIRequestResult = api_request_helper::APIRequestResult;
 
   mojo::PendingRemote<mojom::AssetRatioService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::AssetRatioService> receiver);
@@ -90,39 +92,26 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
  private:
-  void OnGetSardineAuthToken(
-      const std::string& network,
-      const std::string& address,
-      const std::string& symbol,
-      const std::string& amount,
-      const std::string& currency_code,
-      GetBuyUrlV1Callback callback,
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
+  void OnGetSardineAuthToken(const std::string& network,
+                             const std::string& address,
+                             const std::string& symbol,
+                             const std::string& amount,
+                             const std::string& currency_code,
+                             GetBuyUrlV1Callback callback,
+                             APIRequestResult api_request_result);
 
   void OnGetPrice(std::vector<std::string> from_assets,
                   std::vector<std::string> to_assets,
                   GetPriceCallback callback,
-                  const int status,
-                  const std::string& body,
-                  const base::flat_map<std::string, std::string>& headers);
-  void OnGetPriceHistory(
-      GetPriceHistoryCallback callback,
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
+                  APIRequestResult api_request_result);
+  void OnGetPriceHistory(GetPriceHistoryCallback callback,
+                         APIRequestResult api_request_result);
 
   void OnGetTokenInfo(GetTokenInfoCallback callback,
-                      const int status,
-                      const std::string& body,
-                      const base::flat_map<std::string, std::string>& headers);
+                      APIRequestResult api_request_result);
 
-  void OnGetCoinMarkets(
-      GetCoinMarketsCallback callback,
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
+  void OnGetCoinMarkets(GetCoinMarketsCallback callback,
+                        APIRequestResult api_request_result);
 
   mojo::ReceiverSet<mojom::AssetRatioService> receivers_;
 

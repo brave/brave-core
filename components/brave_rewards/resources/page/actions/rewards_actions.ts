@@ -312,9 +312,7 @@ export const onOnboardingStatus = (showOnboarding: boolean) => action(types.ON_O
   showOnboarding
 })
 
-export const saveOnboardingResult = (result: 'opted-in' | 'dismissed') => action(types.SAVE_ONBOARDING_RESULT, {
-  result
-})
+export const enableRewards = () => action(types.ENABLE_REWARDS)
 
 export const getEnabledInlineTippingPlatforms = () => action(types.GET_ENABLED_INLINE_TIPPING_PLATFORMS)
 

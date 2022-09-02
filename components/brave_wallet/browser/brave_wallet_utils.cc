@@ -333,7 +333,7 @@ const mojom::NetworkInfo* GetSolTestnet() {
        {"https://explorer.solana.com/?cluster=testnet"},
        {},
        0,
-       {GURL("https://testnet-solana.brave.com/rpc")},
+       {GURL("https://api.testnet.solana.com")},
        "SOL",
        "Solana",
        9,

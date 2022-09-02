@@ -14,6 +14,8 @@
 
 #define RemoveChangeListener                                             \
   NotUsed() const {}                                                     \
+  base::Time ModifyExpiration(const base::Time& expiry_date,             \
+                              const base::Time& creation_date) const;    \
   net::CookieOptions MakeOptionsForSet(                                  \
       mojom::RestrictedCookieManagerRole role, const GURL& url,          \
       const net::SiteForCookies& site_for_cookies,                       \

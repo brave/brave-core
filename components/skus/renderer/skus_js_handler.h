@@ -35,15 +35,14 @@ namespace skus {
 // establishing a connection to our partner providing the VPN service.
 class SkusJSHandler : public gin::Wrappable<SkusJSHandler> {
  public:
-  static gin::WrapperInfo kWrapperInfo;
-
   explicit SkusJSHandler(content::RenderFrame* render_frame);
   SkusJSHandler(const SkusJSHandler&) = delete;
   SkusJSHandler& operator=(const SkusJSHandler&) = delete;
   ~SkusJSHandler() override;
 
-  void AddJavaScriptObjectToFrame(v8::Local<v8::Context> context);
-  void ResetRemote(content::RenderFrame* render_frame);
+  static gin::WrapperInfo kWrapperInfo;
+
+  static void Install(content::RenderFrame* render_frame);
 
  private:
   bool EnsureConnected();

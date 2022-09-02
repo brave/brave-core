@@ -9,16 +9,19 @@
 
 #include "base/base64.h"
 #include "base/bind.h"
+#include "base/command_line.h"
 #include "base/containers/span.h"
-#include "base/feature_list.h"
+#include "base/files/file_path_watcher.h"
 #include "base/files/file_util.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"
+#include "base/task/bind_post_task.h"
+#include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
+#include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/common/url_readable_hints.h"
 #include "brave/components/speedreader/rust/ffi/speedreader.h"
-#include "brave/components/speedreader/speedreader_component.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "components/grit/brave_components_resources.h"
 #include "crypto/sha2.h"
@@ -28,6 +31,8 @@
 namespace speedreader {
 
 namespace {
+
+constexpr const char kSpeedreaderStylesheet[] = "speedreader-stylesheet";
 
 std::string WrapStylesheetWithCSP(const std::string& stylesheet) {
   const std::string style_hash = crypto::SHA256HashString(stylesheet);
@@ -47,7 +52,8 @@ std::string GetDistilledPageStylesheet(const base::FilePath& stylesheet_path) {
   const bool success = base::ReadFileToString(stylesheet_path, &stylesheet);
 
   if (!success || stylesheet.empty()) {
-    VLOG(1) << "Failed to read stylesheet from component: " << stylesheet_path;
+    VLOG(1) << "Failed to read speedreader override stylesheet from "
+            << stylesheet_path;
     stylesheet = ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
         IDR_SPEEDREADER_STYLE_DESKTOP);
   }
@@ -57,36 +63,77 @@ std::string GetDistilledPageStylesheet(const base::FilePath& stylesheet_path) {
   return WrapStylesheetWithCSP(stylesheet);
 }
 
+base::FilePathWatcher* CreateAndStartFilePathWatcher(
+    const base::FilePath& watch_path,
+    const base::FilePathWatcher::Callback& callback) {
+  auto watcher = std::make_unique<base::FilePathWatcher>();
+  if (!watcher->Watch(watch_path, base::FilePathWatcher::Type::kNonRecursive,
+                      callback)) {
+    return nullptr;
+  }
+
+  return watcher.release();
+}
+
 }  // namespace
 
-SpeedreaderRewriterService::SpeedreaderRewriterService(
-    brave_component_updater::BraveComponent::Delegate* delegate)
-    : component_(new speedreader::SpeedreaderComponent(delegate)),
-      speedreader_(new speedreader::SpeedReader) {
+SpeedreaderRewriterService::SpeedreaderRewriterService()
+    : speedreader_(new speedreader::SpeedReader) {
   // Load the built-in stylesheet as the default
   content_stylesheet_ = WrapStylesheetWithCSP(
       ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
           IDR_SPEEDREADER_STYLE_DESKTOP));
 
-  // Check the paths from the component as observer may register
-  // later than the paths were available in the component.
-  const auto stylesheet_path = component_->GetStylesheetPath();
-  if (!stylesheet_path.empty())
-    OnStylesheetReady(stylesheet_path);
+  if (base::CommandLine::ForCurrentProcess()->HasSwitch(
+          kSpeedreaderStylesheet)) {
+    stylesheet_override_path_ =
+        base::CommandLine::ForCurrentProcess()->GetSwitchValuePath(
+            kSpeedreaderStylesheet);
+    watch_task_runner_ =
+        base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()});
 
-  component_->AddObserver(this);
+    // Manually trigger the initial stylesheet load
+    OnFileChanged(stylesheet_override_path_, false);
+
+    base::PostTaskAndReplyWithResult(
+        watch_task_runner_.get(), FROM_HERE,
+        base::BindOnce(
+            &CreateAndStartFilePathWatcher, stylesheet_override_path_,
+            base::BindPostTask(
+                base::SequencedTaskRunnerHandle::Get(),
+                base::BindRepeating(&SpeedreaderRewriterService::OnFileChanged,
+                                    weak_factory_.GetWeakPtr()))),
+        base::BindOnce(&SpeedreaderRewriterService::OnWatcherStarted,
+                       weak_factory_.GetWeakPtr()));
+  }
 }
 
 SpeedreaderRewriterService::~SpeedreaderRewriterService() {
-  component_->RemoveObserver(this);
+  if (file_watcher_) {
+    watch_task_runner_->DeleteSoon(FROM_HERE, file_watcher_);
+  }
 }
 
-void SpeedreaderRewriterService::OnStylesheetReady(const base::FilePath& path) {
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&GetDistilledPageStylesheet, path),
-      base::BindOnce(&SpeedreaderRewriterService::OnLoadStylesheet,
-                     weak_factory_.GetWeakPtr()));
+void SpeedreaderRewriterService::OnFileChanged(const base::FilePath& path,
+                                               bool error) {
+  DCHECK_EQ(path, stylesheet_override_path_);
+  if (!error) {
+    base::ThreadPool::PostTaskAndReplyWithResult(
+        FROM_HERE, {base::MayBlock()},
+        base::BindOnce(&GetDistilledPageStylesheet, path),
+        base::BindOnce(&SpeedreaderRewriterService::OnLoadStylesheet,
+                       weak_factory_.GetWeakPtr()));
+  }
+}
+
+void SpeedreaderRewriterService::OnWatcherStarted(
+    base::FilePathWatcher* file_watcher) {
+  file_watcher_ = file_watcher;
+}
+
+void SpeedreaderRewriterService::OnLoadStylesheet(std::string stylesheet) {
+  VLOG(2) << "Speedreader stylesheet loaded";
+  content_stylesheet_ = stylesheet;
 }
 
 bool SpeedreaderRewriterService::URLLooksReadable(const GURL& url) {
@@ -109,11 +156,6 @@ std::unique_ptr<Rewriter> SpeedreaderRewriterService::MakeRewriter(
 
 const std::string& SpeedreaderRewriterService::GetContentStylesheet() {
   return content_stylesheet_;
-}
-
-void SpeedreaderRewriterService::OnLoadStylesheet(std::string stylesheet) {
-  VLOG(2) << "Speedreader stylesheet loaded";
-  content_stylesheet_ = stylesheet;
 }
 
 }  // namespace speedreader

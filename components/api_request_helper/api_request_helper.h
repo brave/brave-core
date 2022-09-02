@@ -25,6 +25,32 @@ class SimpleURLLoader;
 
 namespace api_request_helper {
 
+class APIRequestResult {
+ public:
+  APIRequestResult();
+  APIRequestResult(int response_code,
+                   std::string body,
+                   base::flat_map<std::string, std::string> headers);
+  APIRequestResult(const APIRequestResult&);
+  APIRequestResult& operator=(const APIRequestResult&);
+  APIRequestResult(APIRequestResult&&);
+  APIRequestResult& operator=(APIRequestResult&&);
+  ~APIRequestResult();
+
+  bool Is2XXResponseCode() const;
+
+  int response_code() const { return response_code_; }
+  const std::string& body() const { return body_; }
+  const base::flat_map<std::string, std::string>& headers() const {
+    return headers_;
+  }
+
+ private:
+  int response_code_ = -1;
+  std::string body_;
+  base::flat_map<std::string, std::string> headers_;
+};
+
 // Anyone is welcome to use APIRequestHelper to reduce boilerplate
 class APIRequestHelper {
  public:
@@ -35,10 +61,7 @@ class APIRequestHelper {
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~APIRequestHelper();
 
-  using ResultCallback =
-      base::OnceCallback<void(const int,
-                              const std::string&,
-                              const base::flat_map<std::string, std::string>&)>;
+  using ResultCallback = base::OnceCallback<void(APIRequestResult)>;
   using ResponseConversionCallback =
       base::OnceCallback<absl::optional<std::string>(
           const std::string& raw_response)>;

@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import styled, { css } from 'styled-components'
+import styled, { css, CSSProperties } from 'styled-components'
 
 interface PositionProps {
   position: 'left' | 'right' | 'center'
@@ -43,20 +43,22 @@ export const TipWrapper = styled.div<PositionProps>`
     z-index: 100;
 `
 
-export const Tip = styled.div<{ isAddress?: boolean }>`
+export const Tip = styled.div<{ isAddress?: boolean, maxWidth?: CSSProperties['maxWidth'] }>`
   border-radius: 4px;
   padding: 6px;
+
   font-family: Poppins;
   font-size: 12px;
   letter-spacing: 0.01em;
-
-  color: ${(p) => p.theme.palette.white};
   
-  white-space: ${(p) => p.isAddress ? 'pre-line' : 'nowrap'};
   width: ${(p) => p.isAddress ? '180px' : 'unset'};
-  word-break: ${(p) => p.isAddress ? 'break-all' : 'unset'};
+  max-width: ${(p) => p?.maxWidth || '100%'};
   
-
+  word-wrap: break-word;
+  white-space: ${(p) => p.isAddress || p?.maxWidth ? 'pre-line' : 'nowrap'};
+  word-break: ${(p) => p.isAddress ? 'break-all' : 'keep-all'};
+  
+  color: ${(p) => p.theme.palette.white};
   background-color: ${(p) => p.theme.palette.black};
   
   @media (prefers-color-scheme: dark) {

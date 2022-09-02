@@ -28,7 +28,6 @@ export function Settings () {
   const rewardsData = useRewardsData((data) => data)
 
   const [showRewardsTour, setShowRewardsTour] = React.useState(false)
-  const [firstTimeSetup, setFirstTimeSetup] = React.useState(false)
 
   const handleURL = () => {
     // Used by Android to disconnect the user's external wallet.
@@ -41,9 +40,7 @@ export function Settings () {
 
     // Used to enable Rewards directly from the Welcome UI.
     if (pathname === '/enable') {
-      actions.saveOnboardingResult('opted-in')
-      setShowRewardsTour(true)
-      setFirstTimeSetup(true)
+      actions.enableRewards()
       return true
     }
 
@@ -110,7 +107,6 @@ export function Settings () {
 
     const onDone = () => {
       setShowRewardsTour(false)
-      setFirstTimeSetup(false)
     }
 
     const onAdsPerHourChanged = (adsPerHour: number) => {
@@ -130,7 +126,7 @@ export function Settings () {
     return (
       <RewardsTourModal
         layout={layoutKind}
-        firstTimeSetup={firstTimeSetup}
+        firstTimeSetup={false}
         adsPerHour={adsData.adsPerHour}
         autoContributeAmount={contributionMonthly}
         autoContributeAmountOptions={parameters.autoContributeChoices}
@@ -146,9 +142,7 @@ export function Settings () {
 
   const renderOnboarding = () => {
     const onEnable = () => {
-      actions.saveOnboardingResult('opted-in')
-      setShowRewardsTour(true)
-      setFirstTimeSetup(true)
+      actions.enableRewards()
     }
 
     return (

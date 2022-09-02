@@ -173,6 +173,7 @@ const Config = function () {
   this.sign_widevine_passwd = process.env.SIGN_WIDEVINE_PASSPHRASE || ''
   this.signature_generator = path.join(this.srcDir, 'third_party', 'widevine', 'scripts', 'signature_generator.py') || ''
   this.extraGnArgs = {}
+  this.extraGnGenOpts = getNPMConfig(['brave_extra_gn_gen_opts']) || ''
   this.extraNinjaOpts = []
   this.braveSafetyNetApiKey = getNPMConfig(['brave_safetynet_api_key']) || ''
   this.braveAndroidDeveloperOptionsCode = getNPMConfig(['brave_android_developer_options_code']) || ''
@@ -993,8 +994,13 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
 Object.defineProperty(Config.prototype, 'outputDir', {
   get: function () {
     const baseDir = path.join(this.srcDir, 'out')
-    if (this.__outputDir)
+    if (this.__outputDir) {
+      if (path.isAbsolute(this.__outputDir)) {
+        return this.__outputDir;
+      }
       return path.join(baseDir, this.__outputDir)
+    }
+
     let buildConfigDir = this.buildConfig
     if (this.targetArch && this.targetArch != 'x64') {
       buildConfigDir = buildConfigDir + '_' + this.targetArch

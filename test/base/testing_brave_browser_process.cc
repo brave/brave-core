@@ -71,6 +71,12 @@ TestingBraveBrowserProcess::debounce_component_installer() {
   return nullptr;
 }
 
+brave::URLSanitizerComponentInstaller*
+TestingBraveBrowserProcess::URLSanitizerComponentInstaller() {
+  NOTREACHED();
+  return nullptr;
+}
+
 brave_shields::HTTPSEverywhereService*
 TestingBraveBrowserProcess::https_everywhere_service() {
   NOTREACHED();

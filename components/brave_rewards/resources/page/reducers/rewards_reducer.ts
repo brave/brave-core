@@ -4,11 +4,8 @@
 
 import { Reducer } from 'redux'
 
-import { OnboardingCompletedStore } from '../../shared/lib/onboarding_completed_store'
 import { types } from '../actions/rewards_types'
 import { defaultState } from './default_state'
-
-const onboardingCompletedStore = new OnboardingCompletedStore()
 
 const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   if (!state) {
@@ -457,7 +454,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     }
     case types.ON_COMPLETE_RESET: {
       if (action.payload.success) {
-        onboardingCompletedStore.clear()
         chrome.send('brave_rewards.getOnboardingStatus')
         return undefined
       }
@@ -480,26 +476,14 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     }
     case types.ON_ONBOARDING_STATUS: {
       let { showOnboarding } = action.payload
-      // Once the user has been onboarded (perhaps through another rewards
-      // UI entry point) and has viewed the settings page, do not hide the
-      // settings page with onboarding again.
-      if (!showOnboarding) {
-        onboardingCompletedStore.save()
-      }
       state = {
         ...state,
-        showOnboarding: showOnboarding && !onboardingCompletedStore.load()
+        showOnboarding
       }
       break
     }
-    case types.SAVE_ONBOARDING_RESULT: {
-      chrome.send('brave_rewards.saveOnboardingResult', [action.payload.result])
-      chrome.send('brave_rewards.getAutoContributeProperties')
-      onboardingCompletedStore.save()
-      state = {
-        ...state,
-        showOnboarding: false
-      }
+    case types.ENABLE_REWARDS: {
+      chrome.send('brave_rewards.enableRewards')
       break
     }
     case types.RESTART_BROWSER: {

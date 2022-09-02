@@ -28,32 +28,29 @@ const char kCardName[] = "Brave Browser";
 
 class UpholdCard {
  public:
-  explicit UpholdCard(LedgerImpl* ledger);
+  explicit UpholdCard(LedgerImpl*);
 
   ~UpholdCard();
 
-  void CreateBATCardIfNecessary(CreateCardCallback callback) const;
+  void CreateBATCardIfNecessary(CreateCardCallback) const;
 
  private:
-  void GetBATCardId(endpoint::uphold::GetCardsCallback callback) const;
+  void GetBATCardId(endpoint::uphold::GetCardsCallback) const;
 
-  void OnGetBATCardId(CreateCardCallback callback,
-                      type::Result result,
-                      const std::string& id) const;
+  void OnGetBATCardId(CreateCardCallback, type::Result, std::string&& id) const;
 
-  void CreateBATCard(endpoint::uphold::PostCardsCallback callback) const;
+  void CreateBATCard(endpoint::uphold::PostCardsCallback) const;
 
-  void OnCreateBATCard(CreateCardCallback callback,
-                       type::Result result,
-                       const std::string& id) const;
+  void OnCreateBATCard(CreateCardCallback,
+                       type::Result,
+                       std::string&& id) const;
 
-  void UpdateBATCardSettings(
-      const std::string& id,
-      endpoint::uphold::PatchCardCallback callback) const;
+  void UpdateBATCardSettings(const std::string& id,
+                             endpoint::uphold::PatchCardCallback) const;
 
-  void OnUpdateBATCardSettings(CreateCardCallback callback,
-                               const std::string& id,
-                               type::Result result) const;
+  void OnUpdateBATCardSettings(CreateCardCallback,
+                               std::string&& id,
+                               type::Result) const;
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::UpholdServer> uphold_server_;

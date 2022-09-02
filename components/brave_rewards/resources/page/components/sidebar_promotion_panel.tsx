@@ -43,7 +43,6 @@ export function SidebarPromotionPanel (props: Props) {
 
     const onClose = () => {
       actions.dismissPromoPrompt(promoKey)
-      actions.saveOnboardingResult('dismissed')
     }
 
     return (

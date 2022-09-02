@@ -5,12 +5,12 @@
 
 package org.chromium.chrome.browser.vpn.wireguard;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.wireguard.android.backend.Tunnel;
 import com.wireguard.config.Config;
+
+import org.chromium.base.Log;
 
 public class TunnelModel implements Tunnel {
     public static final String TUNNEL_NAME = "Brave";

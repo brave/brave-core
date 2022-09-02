@@ -15,11 +15,7 @@
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-using std::placeholders::_1;
-
-namespace ledger {
-namespace endpoint {
-namespace gemini {
+namespace ledger::endpoint::gemini {
 
 PostAccount::PostAccount(LedgerImpl* ledger) : ledger_(ledger) {
   DCHECK(ledger_);
@@ -81,32 +77,30 @@ type::Result PostAccount::ParseBody(const std::string& body,
 
 void PostAccount::Request(const std::string& token,
                           PostAccountCallback callback) {
-  auto url_callback = std::bind(&PostAccount::OnRequest, this, _1, callback);
   auto request = type::UrlRequest::New();
   request->url = GetUrl();
   request->headers = RequestAuthorization(token);
   request->method = type::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), url_callback);
+
+  ledger_->LoadURL(std::move(request),
+                   base::BindOnce(&PostAccount::OnRequest,
+                                  base::Unretained(this), std::move(callback)));
 }
 
-void PostAccount::OnRequest(const type::UrlResponse& response,
-                            PostAccountCallback callback) {
+void PostAccount::OnRequest(PostAccountCallback callback,
+                            const type::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
 
   type::Result result = CheckStatusCode(response.status_code);
-
   if (result != type::Result::LEDGER_OK) {
-    callback(result, "", "");
-    return;
+    return std::move(callback).Run(result, "", "");
   }
 
   std::string linking_info;
   std::string user_name;
-
   result = ParseBody(response.body, &linking_info, &user_name);
-  callback(result, linking_info, user_name);
+  std::move(callback).Run(result, std::move(linking_info),
+                          std::move(user_name));
 }
 
-}  // namespace gemini
-}  // namespace endpoint
-}  // namespace ledger
+}  // namespace ledger::endpoint::gemini

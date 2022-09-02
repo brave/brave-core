@@ -13,9 +13,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-namespace ledger {
-namespace endpoint {
-namespace uphold {
+namespace ledger::endpoint::uphold {
 
 PatchCard::PatchCard(LedgerImpl* ledger) : ledger_(ledger) {
   DCHECK(ledger_);
@@ -40,7 +38,7 @@ std::string PatchCard::GeneratePayload() {
   return json;
 }
 
-type::Result PatchCard::CheckStatusCode(const int status_code) {
+type::Result PatchCard::CheckStatusCode(int status_code) {
   if (status_code == net::HTTP_UNAUTHORIZED) {
     BLOG(0, "Unauthorized access");
     return type::Result::EXPIRED_TOKEN;
@@ -57,16 +55,16 @@ type::Result PatchCard::CheckStatusCode(const int status_code) {
 void PatchCard::Request(const std::string& token,
                         const std::string& address,
                         PatchCardCallback callback) {
-  auto url_callback = base::BindOnce(
-      &PatchCard::OnRequest, base::Unretained(this), std::move(callback));
-
   auto request = type::UrlRequest::New();
   request->url = GetUrl(address);
   request->content = GeneratePayload();
   request->headers = RequestAuthorization(token);
   request->content_type = "application/json; charset=utf-8";
   request->method = type::UrlMethod::PATCH;
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+
+  ledger_->LoadURL(std::move(request),
+                   base::BindOnce(&PatchCard::OnRequest, base::Unretained(this),
+                                  std::move(callback)));
 }
 
 void PatchCard::OnRequest(PatchCardCallback callback,
@@ -75,6 +73,4 @@ void PatchCard::OnRequest(PatchCardCallback callback,
   std::move(callback).Run(CheckStatusCode(response.status_code));
 }
 
-}  // namespace uphold
-}  // namespace endpoint
-}  // namespace ledger
+}  // namespace ledger::endpoint::uphold

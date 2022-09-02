@@ -42,9 +42,9 @@ version_info::Channel GetChromeChannel() {
   if (channel_name == L"nightly")
     return version_info::Channel::CANARY;
   return GetChromeChannel_ChromiumImpl();
-#endif
-
+#else
   return version_info::Channel::UNKNOWN;
+#endif
 }
 
 }  // namespace install_static

@@ -78,6 +78,8 @@ class BraveVpnService :
   BraveVpnService(const BraveVpnService&) = delete;
   BraveVpnService& operator=(const BraveVpnService&) = delete;
 
+  using APIRequestResult = api_request_helper::APIRequestResult;
+
   std::string GetCurrentEnvironment() const;
   bool is_purchased_user() const {
     return purchased_state_ == mojom::PurchasedState::PURCHASED;
@@ -159,9 +161,7 @@ class BraveVpnService :
                            const std::string& product_id,
                            const std::string& product_type,
                            const std::string& bundle_id);
-  void GetSubscriberCredentialV12(ResponseCallback callback,
-                                  const std::string& payments_environment,
-                                  const std::string& monthly_pass);
+  void GetSubscriberCredentialV12(ResponseCallback callback);
 
   // new_usage should be set to true if a new VPN connection was just
   // established.
@@ -225,19 +225,13 @@ class BraveVpnService :
                                     bool success);
   void OnGetProfileCredentials(const std::string& profile_credential,
                                bool success);
-  void OnCreateSupportTicket(
-      CreateSupportTicketCallback callback,
-      int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
+  void OnCreateSupportTicket(CreateSupportTicketCallback callback,
+                             APIRequestResult api_request_result);
 
   BraveVPNOSConnectionAPI* GetBraveVPNConnectionAPI();
 #endif  // !BUILDFLAG(IS_ANDROID)
 
-  using URLRequestCallback =
-      base::OnceCallback<void(int,
-                              const std::string&,
-                              const base::flat_map<std::string, std::string>&)>;
+  using URLRequestCallback = base::OnceCallback<void(APIRequestResult)>;
 
   // KeyedService overrides:
   void Shutdown() override;
@@ -249,16 +243,10 @@ class BraveVpnService :
       URLRequestCallback callback,
       const base::flat_map<std::string, std::string>& headers = {});
 
-  void OnGetResponse(ResponseCallback callback,
-                     int status,
-                     const std::string& body,
-                     const base::flat_map<std::string, std::string>& headers);
+  void OnGetResponse(ResponseCallback callback, APIRequestResult request);
 
-  void OnGetSubscriberCredential(
-      ResponseCallback callback,
-      int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
+  void OnGetSubscriberCredential(ResponseCallback callback,
+                                 APIRequestResult request);
   mojom::PurchasedState GetPurchasedStateSync() const;
   void SetPurchasedState(const std::string& env, mojom::PurchasedState state);
   void SetCurrentEnvironment(const std::string& env);

@@ -9,12 +9,11 @@
 #include <memory>
 #include <string>
 
+#include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_component_updater/browser/brave_component.h"
-#include "brave/components/speedreader/speedreader_component.h"
 
 namespace base {
-class FilePath;
+class FilePathWatcher;
 }
 
 namespace speedreader {
@@ -26,14 +25,10 @@ class GURL;
 
 namespace speedreader {
 
-class SpeedreaderRewriterService : public SpeedreaderComponent::Observer {
+class SpeedreaderRewriterService {
  public:
-  // SpeedreaderComponent::Observer
-  void OnStylesheetReady(const base::FilePath& path) override;
-
-  explicit SpeedreaderRewriterService(
-      brave_component_updater::BraveComponent::Delegate* delegate);
-  ~SpeedreaderRewriterService() override;
+  SpeedreaderRewriterService();
+  ~SpeedreaderRewriterService();
 
   SpeedreaderRewriterService(const SpeedreaderRewriterService&) = delete;
   SpeedreaderRewriterService& operator=(const SpeedreaderRewriterService&) =
@@ -46,10 +41,15 @@ class SpeedreaderRewriterService : public SpeedreaderComponent::Observer {
   const std::string& GetContentStylesheet();
 
  private:
+  void OnFileChanged(const base::FilePath& path, bool error);
+  void OnWatcherStarted(base::FilePathWatcher* file_watcher);
   void OnLoadStylesheet(std::string stylesheet);
 
+  scoped_refptr<base::SequencedTaskRunner> watch_task_runner_;
+  base::FilePathWatcher* file_watcher_ = nullptr;
+
   std::string content_stylesheet_;
-  std::unique_ptr<speedreader::SpeedreaderComponent> component_;
+  base::FilePath stylesheet_override_path_;
   std::unique_ptr<speedreader::SpeedReader> speedreader_;
   base::WeakPtrFactory<SpeedreaderRewriterService> weak_factory_{this};
 };

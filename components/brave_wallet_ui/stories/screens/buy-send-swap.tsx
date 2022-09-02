@@ -1,19 +1,28 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 import { useSelector } from 'react-redux'
+
+// types
 import {
   BuySendSwapTypes,
   UserAccountType,
   BuySupportedChains,
   WalletState
 } from '../../constants/types'
+
+// hooks
+import { useSwap, useHasAccount, usePrevNetwork } from '../../common/hooks'
+
+// components
 import SwapTab from '../../components/buy-send-swap/tabs/swap-tab'
 import SendTab from '../../components/buy-send-swap/tabs/send-tab'
 import Buy from '../../components/buy-send-swap/tabs/buy-tab'
-import {
-  Layout,
-  CreateAccountTab
-} from '../../components/buy-send-swap'
-import { useSwap, useHasAccount, usePrevNetwork } from '../../common/hooks'
+import { CreateAccountTab } from '../../components/buy-send-swap/create-account/index'
+import { BuySendSwapLayout } from '../../components/buy-send-swap/buy-send-swap-layout/buy-send-swap-layout'
 
 export interface Props {
   selectedTab: BuySendSwapTypes
@@ -21,19 +30,16 @@ export interface Props {
   onSelectTab: (tab: BuySendSwapTypes) => void
 }
 
-function BuySendSwap (props: Props) {
-  const {
-    selectedTab,
-    onSelectAccount,
-    onSelectTab
-  } = props
-
+export const BuySendSwap = ({
+  selectedTab,
+  onSelectAccount,
+  onSelectTab
+}: Props) => {
   // redux
-  const {
-    selectedNetwork,
-    defaultCurrencies
-  } = useSelector((state: { wallet: WalletState }) => state.wallet)
+  const selectedNetwork = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetwork)
+  const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
 
+  // custom hooks
   const { isSwapSupported } = useSwap({})
   const { needsAccount } = useHasAccount()
   const { prevNetwork } = usePrevNetwork()
@@ -48,18 +54,23 @@ function BuySendSwap (props: Props) {
     if (selectedTab === 'swap' && !isSwapSupported) {
       onSelectTab('send')
     }
-  }, [selectedNetwork, selectedTab, BuySupportedChains, isSwapSupported])
+  }, [
+    selectedNetwork.chainId,
+    selectedTab,
+    isSwapSupported,
+    onSelectTab
+  ])
 
   const isBuyDisabled = React.useMemo(() => {
     return !BuySupportedChains.includes(selectedNetwork.chainId)
-  }, [BuySupportedChains, selectedNetwork])
+  }, [BuySupportedChains, selectedNetwork.chainId])
 
   const changeTab = (tab: BuySendSwapTypes) => () => {
     onSelectTab(tab)
   }
 
   return (
-    <Layout
+    <BuySendSwapLayout
       selectedNetwork={selectedNetwork}
       isBuyDisabled={isBuyDisabled}
       isSwapDisabled={!isSwapSupported}
@@ -89,7 +100,7 @@ function BuySendSwap (props: Props) {
           }
         </>
       )}
-    </Layout>
+    </BuySendSwapLayout>
   )
 }
 

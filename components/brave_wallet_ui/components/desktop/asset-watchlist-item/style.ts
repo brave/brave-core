@@ -2,6 +2,8 @@ import styled from 'styled-components'
 import TrashIcon from '../../../assets/svg-icons/trash-icon.svg'
 import { AssetIconProps, AssetIconFactory, WalletButton } from '../../shared/style'
 
+export const assetWatchListItemHeight = 58
+
 export const StyledWrapper = styled.div`
   display: flex;
   align-items: center;

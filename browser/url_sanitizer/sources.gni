@@ -1,0 +1,10 @@
+brave_browser_url_sanitizer_sources = [
+  "//brave/browser/url_sanitizer/url_sanitizer_service_factory.cc",
+  "//brave/browser/url_sanitizer/url_sanitizer_service_factory.h",
+]
+
+brave_browser_url_sanitizer_deps = [
+  "//base",
+  "//brave/components/url_sanitizer/browser",
+  "//components/keyed_service/content",
+]

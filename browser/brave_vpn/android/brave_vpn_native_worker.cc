@@ -208,6 +208,15 @@ void BraveVpnNativeWorker::GetSubscriberCredential(
   }
 }
 
+void BraveVpnNativeWorker::GetSubscriberCredentialV12(JNIEnv* env) {
+  BraveVpnService* brave_vpn_service = GetBraveVpnService();
+  if (brave_vpn_service) {
+    brave_vpn_service->GetSubscriberCredentialV12(
+        base::BindOnce(&BraveVpnNativeWorker::OnGetSubscriberCredential,
+                       weak_factory_.GetWeakPtr()));
+  }
+}
+
 void BraveVpnNativeWorker::OnGetSubscriberCredential(
     const std::string& subscriber_credential,
     bool success) {
@@ -243,6 +252,22 @@ void BraveVpnNativeWorker::OnVerifyPurchaseToken(
   Java_BraveVpnNativeWorker_onVerifyPurchaseToken(
       env, weak_java_brave_vpn_native_worker_.get(env),
       base::android::ConvertUTF8ToJavaString(env, json_response), success);
+}
+
+jboolean BraveVpnNativeWorker::IsPurchasedUser(JNIEnv* env) {
+  BraveVpnService* brave_vpn_service = GetBraveVpnService();
+  if (brave_vpn_service) {
+    return brave_vpn_service->is_purchased_user();
+  }
+
+  return false;
+}
+
+void BraveVpnNativeWorker::ReloadPurchasedState(JNIEnv* env) {
+  BraveVpnService* brave_vpn_service = GetBraveVpnService();
+  if (brave_vpn_service) {
+    brave_vpn_service->ReloadPurchasedState();
+  }
 }
 
 void BraveVpnNativeWorker::ReportForegroundP3A(JNIEnv* env) {

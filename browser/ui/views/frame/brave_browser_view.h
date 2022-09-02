@@ -96,14 +96,7 @@ class BraveBrowserView : public BrowserView {
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
   sidebar::Sidebar* InitSidebar() override;
-  ContentsLayoutManager* GetContentsLayoutManager() const override;
 
-  // If sidebar is enabled, |BrowserView::contents_container_| points to
-  // |brave_contents_container_| that includes sidebar and contents container.
-  // |original_contents_container_| points to original contents container that
-  // includes contents & devtools webview. It's used by
-  // GetContentsLayoutManager().
-  raw_ptr<views::View> original_contents_container_ = nullptr;
   raw_ptr<SidebarContainerView> sidebar_container_view_ = nullptr;
   raw_ptr<views::View> sidebar_host_view_ = nullptr;
 #endif

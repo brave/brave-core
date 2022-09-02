@@ -65,9 +65,9 @@ const char kNextTokenRedemptionAt[] =
 
 // Stores migration status
 const char kHasMigratedClientState[] =
-    "brave.brave_ads.has_migrated.client_state";
+    "brave.brave_ads.state.has_migrated.client.v4";
 const char kHasMigratedConfirmationState[] =
-    "brave.brave_ads.has_migrated.confirmation_state";
+    "brave.brave_ads.state.has_migrated.confirmations.v4";
 const char kHasMigratedConversionState[] =
     "brave.brave_ads.migrated.conversion_state";
 const char kHasMigratedNotificationState[] =
@@ -75,8 +75,8 @@ const char kHasMigratedNotificationState[] =
 const char kHasMigratedRewardsState[] =
     "brave.brave_ads.migrated.rewards_state";
 
-const char kConfirmationsHash[] = "brave.brave_ads.confirmations.hash.v3";
-const char kClientHash[] = "brave.brave_ads.client.hash.v3";
+const char kConfirmationsHash[] = "brave.brave_ads.confirmations.hash";
+const char kClientHash[] = "brave.brave_ads.client.hash";
 
 // Browser version
 const char kBrowserVersionNumber[] = "brave.brave_ads.browser_version_number";

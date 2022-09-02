@@ -14,12 +14,9 @@
 #include "bat/ledger/internal/uphold/uphold_card.h"
 #include "net/http/http_status_code.h"
 
-namespace ledger {
-namespace endpoint {
-namespace uphold {
+namespace ledger::endpoint::uphold {
 
-GetCards::GetCards(LedgerImpl* ledger):
-    ledger_(ledger) {
+GetCards::GetCards(LedgerImpl* ledger) : ledger_(ledger) {
   DCHECK(ledger_);
 }
 
@@ -29,7 +26,7 @@ std::string GetCards::GetUrl() {
   return GetServerUrl("/v0/me/cards?q=currency:BAT");
 }
 
-type::Result GetCards::CheckStatusCode(const int status_code) {
+type::Result GetCards::CheckStatusCode(int status_code) {
   if (status_code == net::HTTP_UNAUTHORIZED) {
     BLOG(0, "Unauthorized access");
     return type::Result::EXPIRED_TOKEN;
@@ -43,9 +40,7 @@ type::Result GetCards::CheckStatusCode(const int status_code) {
   return type::Result::LEDGER_OK;
 }
 
-type::Result GetCards::ParseBody(
-    const std::string& body,
-    std::string* id) {
+type::Result GetCards::ParseBody(const std::string& body, std::string* id) {
   DCHECK(id);
 
   absl::optional<base::Value> value = base::JSONReader::Read(body);
@@ -77,16 +72,14 @@ type::Result GetCards::ParseBody(
   return type::Result::LEDGER_ERROR;
 }
 
-void GetCards::Request(
-    const std::string& token,
-    GetCardsCallback callback) {
-  auto url_callback = base::BindOnce(
-      &GetCards::OnRequest, base::Unretained(this), std::move(callback));
-
+void GetCards::Request(const std::string& token, GetCardsCallback callback) {
   auto request = type::UrlRequest::New();
   request->url = GetUrl();
   request->headers = RequestAuthorization(token);
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+
+  ledger_->LoadURL(std::move(request),
+                   base::BindOnce(&GetCards::OnRequest, base::Unretained(this),
+                                  std::move(callback)));
 }
 
 void GetCards::OnRequest(GetCardsCallback callback,
@@ -94,17 +87,13 @@ void GetCards::OnRequest(GetCardsCallback callback,
   ledger::LogUrlResponse(__func__, response);
 
   type::Result result = CheckStatusCode(response.status_code);
-
   if (result != type::Result::LEDGER_OK) {
-    std::move(callback).Run(result, "");
-    return;
+    return std::move(callback).Run(result, "");
   }
 
   std::string id;
   result = ParseBody(response.body, &id);
-  std::move(callback).Run(result, id);
+  std::move(callback).Run(result, std::move(id));
 }
 
-}  // namespace uphold
-}  // namespace endpoint
-}  // namespace ledger
+}  // namespace ledger::endpoint::uphold

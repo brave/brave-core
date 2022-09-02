@@ -123,12 +123,11 @@ void PublishersController::EnsurePublishersIsUpdating() {
   GURL sources_url("https://" + brave_today::GetHostname() + "/sources." +
                    brave_today::GetRegionUrlPart() + "json");
   auto onRequest = base::BindOnce(
-      [](PublishersController* controller, const int status,
-         const std::string& body,
-         const base::flat_map<std::string, std::string>& headers) {
+      [](PublishersController* controller,
+         api_request_helper::APIRequestResult api_request_result) {
         // TODO(petemill): handle bad status or response
         Publishers publisher_list;
-        ParseCombinedPublisherList(body, &publisher_list);
+        ParseCombinedPublisherList(api_request_result.body(), &publisher_list);
         // Add user enabled statuses
         const base::Value* publisher_prefs =
             controller->prefs_->GetDictionary(prefs::kBraveTodaySources);

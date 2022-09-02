@@ -188,6 +188,7 @@ void BraveBrowserProcessImpl::StartBraveServices() {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader_rewriter_service();
 #endif
+  URLSanitizerComponentInstaller();
   // Now start the local data files service, which calls all observers.
   local_data_files_service()->Start();
 
@@ -257,6 +258,16 @@ BraveBrowserProcessImpl::debounce_component_installer() {
             local_data_files_service());
   }
   return debounce_component_installer_.get();
+}
+
+brave::URLSanitizerComponentInstaller*
+BraveBrowserProcessImpl::URLSanitizerComponentInstaller() {
+  if (!url_sanitizer_component_installer_) {
+    url_sanitizer_component_installer_ =
+        std::make_unique<brave::URLSanitizerComponentInstaller>(
+            local_data_files_service());
+  }
+  return url_sanitizer_component_installer_.get();
 }
 
 brave_shields::HTTPSEverywhereService*
@@ -378,8 +389,7 @@ speedreader::SpeedreaderRewriterService*
 BraveBrowserProcessImpl::speedreader_rewriter_service() {
   if (!speedreader_rewriter_service_) {
     speedreader_rewriter_service_ =
-        std::make_unique<speedreader::SpeedreaderRewriterService>(
-            brave_component_updater_delegate());
+        std::make_unique<speedreader::SpeedreaderRewriterService>();
   }
   return speedreader_rewriter_service_.get();
 }

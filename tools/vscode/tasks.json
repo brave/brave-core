@@ -1,0 +1,402 @@
+{
+  // Note!
+  // Set the value used for ${config:chrome.outputDir} in your settings.json
+  // file with a line like:
+  //   "chrome.outputDir": "/path/to/chromium/src/out/current_link",
+  // Then run "0-set_chrome_output_directory" to set the `current_link`
+  // symbolic link (see below).
+  "version": "2.0.0",
+  "runner": "terminal",
+  // The default problem matcher matches build output, which is useful for most tasks.
+  "problemMatcher": [
+    {
+      "owner": "cpp",
+      "fileLocation": [
+        "relative",
+        "${config:chrome.outputDir}"
+      ],
+      "pattern": {
+        "regexp": "^(gen/.*):(\\d+):(\\d+):\\s+(warning|\\w*\\s?error):\\s+(.*)$",
+        "file": 1,
+        "line": 2,
+        "column": 3,
+        "severity": 4,
+        "message": 5
+      }
+    },
+    {
+      "owner": "cpp",
+      "fileLocation": [
+        "relative",
+        "${workspaceRoot}"
+      ],
+      "pattern": {
+        "regexp": "^../../(.*):(\\d+):(\\d+):\\s+(warning|\\w*\\s?error):\\s+(.*)$",
+        "file": 1,
+        "line": 2,
+        "column": 3,
+        "severity": 4,
+        "message": 5
+      }
+    },
+    {
+      "owner": "cpp",
+      "fileLocation": [
+        "relative",
+        "${config:chrome.outputDir}"
+      ],
+      "pattern": {
+        "regexp": "^(gen/.*?):(.*):\\s+(warning|\\w*\\s?error):\\s+(.*)$",
+        "file": 1,
+        "severity": 3,
+        "message": 4
+      }
+    },
+    {
+      "owner": "cpp",
+      "fileLocation": [
+        "relative",
+        "${workspaceRoot}"
+      ],
+      "pattern": {
+        "regexp": "^../../(.*?):(.*):\\s+(warning|\\w*\\s?error):\\s+(.*)$",
+        "file": 1,
+        "severity": 3,
+        "message": 4
+      }
+    }
+  ],
+  "options": {
+    "cwd": "${workspaceFolder}/brave",
+    "env": {
+      "PATH": "${workspaceFolder}/brave/vendor/depot_tools:${env:PATH}"
+    }
+  },
+  "windows": {
+    "options": {
+      "env": {
+        "PATH": "${workspaceFolder}/brave/vendor/depot_tools;${env:PATH}"
+      }
+    }
+  },
+  "inputs": [
+    {
+      "type": "pickString",
+      "id": "chromeOutputDir",
+      "description": "Brave build config:",
+      "options": [
+        "Component",
+        "Static",
+        "Debug",
+        "Release"
+      ]
+    },
+    {
+      "type": "pickString",
+      "id": "targetOS",
+      "description": "Target OS:",
+      "options": [
+        "host_os",
+        "ios",
+        "android"
+      ]
+    },
+    {
+      "type": "pickString",
+      "id": "targetCPU",
+      "description": "Target CPU:",
+      "options": [
+        "host_cpu",
+        "x64",
+        "arm64",
+        "x86"
+      ]
+    },
+    {
+      "type": "promptString",
+      "id": "gtestFilter",
+      "description": "Filter for 4-test_current_file_with_filter",
+      "default": "*"
+    }
+  ],
+  "tasks": [
+    {
+      "label": "switch_build_type",
+      "detail": "update symlink and gn gen",
+      "type": "shell",
+      "command": "npm run update_symlink -- ${input:chromeOutputDir} --symlink_dir ${config:chrome.outputDir} --target_os=${input:targetOS} --target_arch=${input:targetCPU}",
+      "presentation": {
+        "group": "build"
+      }
+    },
+    {
+      "label": "build",
+      "type": "shell",
+      "command": "npm run build -- -C ${config:chrome.outputDir} --no_gn_gen",
+      "presentation": {
+        "group": "build"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "sync",
+      "type": "npm",
+      "script": "sync",
+      "presentation": {
+        "group": "sync"
+      },
+      "problemMatcher": [
+        {
+          "owner": "sync",
+          "fileLocation": [
+            "absolute"
+          ],
+          "pattern": [
+            {
+              "regexp": "^Brave\\sBrowser\\sSync\\sERROR"
+            },
+            {
+              "regexp": "^(.*)$",
+              "message": 1
+            },
+            {
+              "regexp": "^\\s+at\\s.*\\s\\((\\/.*):(.*):(.*)\\)$",
+              "file": 1,
+              "line": 2,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "owner": "sync",
+          "severity": "warning",
+          "fileLocation": [
+            "relative",
+            "${workspaceFolder}/.."
+          ],
+          "pattern": [
+            {
+              "regexp": "^WARNING:\\s'(.*)'\\s(.*)$",
+              "kind": "file",
+              "file": 1,
+              "message": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "generate_compile_commands",
+      "type": "shell",
+      "detail": "generate_compdb.py",
+      "command": "${workspaceFolder}/tools/clang/scripts/generate_compdb.py",
+      "args": [
+        "-p",
+        "${config:chrome.outputDir}",
+        "-o",
+        "compile_commands.json"
+      ],
+      "presentation": {
+        "reveal": "never",
+        "close": true
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "sync_and_generate",
+      "detail": "npm run sync && generate_compile_commands",
+      "dependsOn": [
+        "sync",
+        "generate_compile_commands"
+      ],
+      "presentation": {
+        "showReuseMessage": false
+      },
+      "dependsOrder": "sequence"
+    },
+    //   {
+    //     "label": "3-test_current_file",
+    //     "type": "shell",
+    //     "command": "${workspaceFolder}/tools/autotest.py -C ${config:chrome.outputDir} --run-all ${file}"
+    //   },
+    //   {
+    //     "label": "4-test_current_file_with_filter",
+    //     "type": "shell",
+    //     "command": "${workspaceFolder}/tools/autotest.py -C ${config:chrome.outputDir} --gtest_filter ${input:gtestFilter} ${file}"
+    //   },
+    //   {
+    //     "label": "5-test_current_line",
+    //     "type": "shell",
+    //     "command": "${workspaceFolder}/tools/autotest.py -C ${config:chrome.outputDir} --line ${lineNumber} ${file}"
+    //   },
+    //   {
+    //     "label": "6-test_current_directory",
+    //     "type": "shell",
+    //     "command": "${workspaceFolder}/tools/autotest.py -C ${config:chrome.outputDir} --run-all ${fileDirname}"
+    //   },
+    {
+      "label": "brave_unit_tests",
+      "type": "shell",
+      "group": "test",
+      "command": "npm run test -- brave_unit_tests -C ${config:chrome.outputDir}",
+      "presentation": {
+        "group": "test",
+        "reveal": "never"
+      },
+      "detail": "npm run test -- brave_unit_tests",
+      "problemMatcher": [
+        {
+          "owner": "brave_unit_tests",
+          "fileLocation": [
+            "relative",
+            "${config:chrome.outputDir}"
+          ],
+          "pattern": [
+            {
+              "regexp": "^\\d+\\s(test\\sfailed)\\:",
+              "message": 1
+            },
+            {
+              "regexp": "^\\s+.*\\..*\\((.*)\\:(.*)\\)$",
+              "file": 1,
+              "line": 2,
+              "loop": true
+            }
+          ]
+        },
+        {
+          "owner": "brave_unit_tests",
+          "fileLocation": [
+            "relative",
+            "${config:chrome.outputDir}"
+          ],
+          "pattern": [
+            {
+              "kind": "file",
+              "regexp": "^\\d+\\s(test\\scrashed)\\:",
+              "message": 1
+            },
+            {
+              "regexp": "^\\s+.*\\..*\\((.*)\\:(.*)\\)$",
+              "file": 1,
+              "line": 2,
+              "loop": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "brave_browser_tests",
+      "type": "shell",
+      "group": "test",
+      "command": "npm run test -- brave_browser_tests -C ${config:chrome.outputDir}",
+      "presentation": {
+        "group": "test",
+        "reveal": "never"
+      },
+      "detail": "npm run test -- brave_browser_tests",
+      "problemMatcher": [
+        {
+          "owner": "brave_browser_tests",
+          "fileLocation": [
+            "relative",
+            "${config:chrome.outputDir}"
+          ],
+          "pattern": [
+            {
+              "regexp": "^\\d+\\s(test\\sfailed)\\:",
+              "message": 1
+            },
+            {
+              "regexp": "^\\s+.*\\..*\\((.*)\\:(.*)\\)$",
+              "file": 1,
+              "line": 2,
+              "loop": true
+            }
+          ]
+        },
+        {
+          "owner": "brave_browser_tests",
+          "fileLocation": [
+            "relative",
+            "${config:chrome.outputDir}"
+          ],
+          "pattern": [
+            {
+              "kind": "file",
+              "regexp": "^\\d+\\s(test\\scrashed)\\:",
+              "message": 1
+            },
+            {
+              "regexp": "^\\s+.*\\..*\\((.*)\\:(.*)\\)$",
+              "file": 1,
+              "line": 2,
+              "loop": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "gn_check",
+      "type": "shell",
+      "command": "npm run gn_check -- -C ${config:chrome.outputDir}",
+      "detail": "gn check",
+      "problemMatcher": [
+        {
+          "owner": "gn_check",
+          "fileLocation": [
+            "relative",
+            "${workspaceFolder}"
+          ],
+          "pattern": [
+            {
+              "regexp": "^ERROR\\sat\\s\\/\\/(.*):(.*):(.*):\\s(.*)$",
+              "file": 1,
+              "line": 2,
+              "column": 3,
+              "message": 4,
+              "loop": true
+            }
+          ]
+        },
+        {
+          "owner": "gn_check",
+          "fileLocation": [
+            "relative",
+            "${workspaceFolder}"
+          ],
+          "pattern": [
+            {
+              "kind": "file",
+              "regexp": "^ERROR\\s(.*):",
+              "message": 1
+            },
+            {
+              "kind": "file",
+              "regexp": "\\/\\/(.*):",
+              "file": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "update_patches",
+      "type": "npm",
+      "script": "update_patches",
+      "problemMatcher": [],
+      "presentation": {
+        "group": "patches",
+        "reveal": "never",
+        "close": true
+      }
+    }
+  ]
+}
