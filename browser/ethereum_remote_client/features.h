@@ -6,9 +6,7 @@
 #ifndef BRAVE_BROWSER_ETHEREUM_REMOTE_CLIENT_FEATURES_H_
 #define BRAVE_BROWSER_ETHEREUM_REMOTE_CLIENT_FEATURES_H_
 
-namespace base {
-struct Feature;
-}  // namespace base
+#include "base/feature_list.h"
 
 namespace ethereum_remote_client {
 namespace features {

@@ -6,18 +6,14 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_FEATURES_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_FEATURES_H_
 
-namespace base {
-struct Feature;
-}  // namespace base
+#include "base/feature_list.h"
 
 namespace brave_vpn {
-
 namespace features {
 
 extern const base::Feature kBraveVPN;
 
 }  // namespace features
-
 }  // namespace brave_vpn
 
 #endif  // BRAVE_COMPONENTS_BRAVE_VPN_FEATURES_H_
