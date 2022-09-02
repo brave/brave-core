@@ -43,4 +43,17 @@ bool IsWebType(const SidebarItem& item) {
   return item.type == SidebarItem::Type::kTypeWeb;
 }
 
+bool IsValidItem(const SidebarItem& item) {
+  // Any type should have valid title.
+  if (item.title.empty())
+    return false;
+
+  if (item.type == SidebarItem::Type::kTypeBuiltIn)
+    return item.built_in_item_type != SidebarItem::BuiltInItemType::kNone;
+
+  // WebType
+  return item.url.is_valid() &&
+         item.built_in_item_type == SidebarItem::BuiltInItemType::kNone;
+}
+
 }  // namespace sidebar
