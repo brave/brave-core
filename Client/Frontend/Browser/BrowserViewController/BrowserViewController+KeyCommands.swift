@@ -110,7 +110,7 @@ extension BrowserViewController {
   }
 
   @objc private func closeAllTabsKeyCommand() {
-    tabManager.removeAll()
+    tabManager.removeAllForCurrentMode()
   }
 
   @objc private func addBookmarkCommand() {

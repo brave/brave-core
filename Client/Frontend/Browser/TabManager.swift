@@ -818,6 +818,10 @@ class TabManager: NSObject {
   func removeAll() {
     removeTabs(self.allTabs)
   }
+  
+  func removeAllForCurrentMode() {
+    removeTabs(tabsForCurrentMode)
+  }
 
   func getIndex(_ tab: Tab) -> Int? {
     assert(Thread.isMainThread)
