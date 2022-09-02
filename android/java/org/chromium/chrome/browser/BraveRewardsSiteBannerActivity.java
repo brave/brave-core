@@ -4,66 +4,43 @@
 
 package org.chromium.chrome.browser;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.text.Spanned;
-import android.text.TextUtils;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.view.WindowManager;
-import android.view.animation.TranslateAnimation;
-import android.widget.CheckBox;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import androidx.fragment.app.FragmentActivity;
+
 import org.json.JSONException;
+
+
 
 import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveRewardsBalance;
-import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
-import org.chromium.chrome.browser.BraveRewardsObserver;
-import org.chromium.chrome.browser.BraveRewardsPublisher.PublisherStatus;
-import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.rewards.BraveRewardsAmountChangeListener;
+import org.chromium.chrome.browser.rewards.BraveRewardsBannerInfo;
+import org.chromium.chrome.browser.rewards.BraveRewardsCreatorPanelFragment;
+import org.chromium.chrome.browser.rewards.BraveRewardsTipConfirmationFragment;
+import org.chromium.chrome.browser.rewards.BraveRewardsTipConfirmationListener;
+import org.chromium.chrome.browser.rewards.BraveRewardsTippingPanelFragment;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.util.Locale;
 
-public class BraveRewardsSiteBannerActivity extends Activity implements
-        BraveRewardsHelper.LargeIconReadyCallback, BraveRewardsObserver {
-    private  ToggleButton radio_tip_amount[] = new ToggleButton [3];
-    private final int TIP_SENT_REQUEST_CODE = 2;
-    private final int FADE_OUT_DURATION = 500;
-    private final float LANDSCAPE_HEADER_WEIGHT = 2.0f;
+public class BraveRewardsSiteBannerActivity extends FragmentActivity
+        implements BraveRewardsTipConfirmationListener, BraveRewardsAmountChangeListener, BraveRewardsObserver {
+    private ToggleButton radio_tip_amount[] = new ToggleButton[3];
     public static final String TAB_ID_EXTRA = "currentTabId";
     public static final String IS_MONTHLY_CONTRIBUTION = "is_monthly_contribution";
     public static final String TIP_AMOUNT_EXTRA="tipAmount";
     public static final String TIP_MONTHLY_EXTRA="tipMonthly";
+    public static final String AMOUNTS_ARGS = "amounts_args";
+    public static final String AMOUNT_EXTRA = "amount";
+    public static final String BANNER_INFO_ARGS = "banner_info_args";
+    private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
+
 
     private int currentTabId_ = -1;
     private boolean mIsMonthlyContribution;
-    private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
-    private final int PUBLISHER_ICON_SIDE_LEN= 70; //dp
-    private final int TOUCH_PADDING_MONTHLY= 32; //dp
-    private final int ACTIVITY_HEADER_PADDING = 10; //dp
-    private final int ACTIVITY_HEADER_CONTENT_SIDE_MARGIN = 22; //dp
-    private BraveRewardsHelper mIconFetcher;
-    private boolean mTippingInProgress; //flag preventing multiple tipping processes
-
-    private LinearLayout sendDonationLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +48,6 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
         //inflate
         super.onCreate(savedInstanceState);
         setContentView(R.layout.brave_rewards_site_banner);
-
         mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
         mBraveRewardsNativeWorker.AddObserver(this);
 
@@ -79,472 +55,104 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
         mIsMonthlyContribution =
                 IntentUtils.safeGetBooleanExtra(getIntent(), IS_MONTHLY_CONTRIBUTION, false);
 
-        sendDonationLayout = findViewById(R.id.send_donation_button);
+        Log.d("SujitSujit",
+                "currentTabId_ " + currentTabId_ + " mIsMonthlyContribution "
+                        + mIsMonthlyContribution);
 
-        //change weight of the footer in landscape mode
-        int orientation = this.getResources().getConfiguration().orientation;
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0,
-                    LANDSCAPE_HEADER_WEIGHT
-            );
-            findViewById(R.id.site_banner_header).setLayoutParams(param);
-        }
-
-        int recurrentAmount = (int) mBraveRewardsNativeWorker.GetPublisherRecurrentDonationAmount(
-                mBraveRewardsNativeWorker.GetPublisherId(currentTabId_));
-
-        //bind tip amount custom radio buttons
-        radio_tip_amount[0] = findViewById(R.id.one_bat_option);
-        radio_tip_amount[0].setTextOff(BraveRewardsHelper.ONE_BAT_TEXT);
-        radio_tip_amount[0].setTextOn(BraveRewardsHelper.ONE_BAT_TEXT);
-        radio_tip_amount[0].setChecked(false);
-
-        radio_tip_amount[1] = findViewById(R.id.five_bat_option);
-        radio_tip_amount[1].setTextOff(BraveRewardsHelper.FIVE_BAT_TEXT);
-        radio_tip_amount[1].setTextOn(BraveRewardsHelper.FIVE_BAT_TEXT);
-        radio_tip_amount[1].setChecked(false);
-
-        radio_tip_amount[2] = findViewById(R.id.ten_bat_option);
-        radio_tip_amount[2].setTextOff(BraveRewardsHelper.TEN_BAT_TEXT);
-        radio_tip_amount[2].setTextOn(BraveRewardsHelper.TEN_BAT_TEXT);
-        radio_tip_amount[2].setChecked(false);
-
-        switch (recurrentAmount) {
-            case 1:
-                radio_tip_amount[0].setChecked(true);
-                break;
-            case 5:
-                radio_tip_amount[1].setChecked(true);
-                break;
-            case 10:
-                radio_tip_amount[2].setChecked(true);
-                break;
-            default:
-                radio_tip_amount[0].setChecked(true);
-                break;
-        }
-
-        //radio buttons behaviour
-        View.OnClickListener radio_clicker = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ToggleButton tb_pressed = (ToggleButton)view;
-                if ( tb_pressed.isChecked() == false){
-                    tb_pressed.setChecked(true);
-                    return;
-                }
-
-                int id = view.getId();
-                for (ToggleButton tb : radio_tip_amount){
-                    if (tb.getId() == id){
-                        continue;
-                    }
-                    tb.setChecked(false);
-                }
-            }
-        };
-
-        for (ToggleButton tb : radio_tip_amount){
-            tb.setOnClickListener(radio_clicker);
-        }
-
-        String publisherName = mBraveRewardsNativeWorker.GetPublisherName(currentTabId_);
-        TextView publisher = (TextView)findViewById(R.id.publisher_name);
-        publisher.setText(publisherName);
-
-        String publisherFavIconURL = mBraveRewardsNativeWorker.GetPublisherFavIconURL(currentTabId_);
-        Tab currentActiveTab = BraveRewardsHelper.currentActiveChromeTabbedActivityTab();
-        String url = currentActiveTab.getUrl().getSpec();
-        String favicon_url = (publisherFavIconURL.isEmpty()) ? url : publisherFavIconURL;
-        mIconFetcher = new BraveRewardsHelper(currentActiveTab);
-        mIconFetcher.retrieveLargeIcon(favicon_url, this);
-
-        double balance = .0;
-        BraveRewardsBalance rewards_balance = mBraveRewardsNativeWorker.GetWalletBalance();
-        if (rewards_balance != null){
-            balance = rewards_balance.getTotal();
-        }
-
-        DecimalFormat df = new DecimalFormat("#.###");
-        df.setRoundingMode(RoundingMode.FLOOR);
-        df.setMinimumFractionDigits(3);
-        String walletAmount = df.format(balance) + " " + BraveRewardsHelper.BAT_TEXT;
-
-        ((TextView)findViewById(R.id.wallet_amount_text)).setText(walletAmount);
-
-        double usdValue = mBraveRewardsNativeWorker.GetWalletRate();
-        double fiveBat = 5 * usdValue;
-        double tenBat = 10 * usdValue;
-        String oneBatRate = String.format(Locale.getDefault(), "%.2f", usdValue) + " USD";
-        String fiveBatRate = String.format(Locale.getDefault(), "%.2f", fiveBat) + " USD";
-        String tenBatRate = String.format(Locale.getDefault(), "%.2f", tenBat) + " USD";
-        ((TextView)findViewById(R.id.one_bat_rate)).setText(oneBatRate);
-        ((TextView)findViewById(R.id.five_bat_rate)).setText(fiveBatRate);
-        ((TextView)findViewById(R.id.ten_bat_rate)).setText(tenBatRate);
-
-        // set checkbox callback
-        CheckBox monthly = (CheckBox) findViewById(R.id.make_monthly_checkbox);
-        monthly.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onMonthlyCheckboxClicked(v);
-            }
-        });
-        if (mIsMonthlyContribution) {
-            monthly.performClick();
-        }
-
-        // set tip button onClick
-        View.OnClickListener send_tip_clicker = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                double balance = .0;
-                BraveRewardsBalance rewards_balance = mBraveRewardsNativeWorker.GetWalletBalance();
-                if (rewards_balance != null){
-                    balance = rewards_balance.getTotal();
-                }
-                int amount = 0;
-                for (ToggleButton tb : radio_tip_amount){
-                    if (tb.isChecked()) {
-                        int id = tb.getId();
-                        if (id == R.id.one_bat_option) {
-                            amount = 1;
-                        } else if (id == R.id.five_bat_option) {
-                            amount = 5;
-                        } else if (id == R.id.ten_bat_option) {
-                            amount = 10;
-                        }
-
-                        break;
-                    }
-                }
-                boolean enough_funds = ((balance - amount) >= 0);
-
-                //proceed to tipping
-                if (true == enough_funds) {
-                    if (mTippingInProgress){
-                        return;
-                    }
-                    mTippingInProgress = true;
-
-                    boolean monthly_bool = monthly.isChecked();
-                    mBraveRewardsNativeWorker.Donate(mBraveRewardsNativeWorker.GetPublisherId(currentTabId_),
-                        amount, monthly_bool);
-                    Intent intent = new Intent(getApplicationContext(), BraveRewardsDonationSentActivity.class);
-                    intent.putExtra(BraveRewardsSiteBannerActivity.TAB_ID_EXTRA, currentTabId_);
-                    intent.putExtra(BraveRewardsSiteBannerActivity.TIP_AMOUNT_EXTRA, amount);
-                    intent.putExtra(BraveRewardsSiteBannerActivity.TIP_MONTHLY_EXTRA, monthly_bool);
-                    startActivityForResult(intent,TIP_SENT_REQUEST_CODE);
-                }
-                //not enough funds
-                else {
-                    sendDonationLayout.setVisibility(View.INVISIBLE);
-                    View animatedView = findViewById(R.id.not_enough_funds_button);
-                    int fromY = sendDonationLayout.getHeight();
-
-                    TranslateAnimation animate = new TranslateAnimation(0,0,fromY,0);
-                    animate.setDuration(FADE_OUT_DURATION);
-                    animatedView.startAnimation(animate);
-                    animatedView.setVisibility(View.VISIBLE);
-                }
-            }
-        };
-
-        sendDonationLayout.setOnClickListener(send_tip_clicker);
-
-        //set 'add funds' button onClick
-         View.OnClickListener add_funds_clicker = new View.OnClickListener() {
-             @Override
-             public void onClick(View view) {
-                 /*
-                 //Temporary disable Add Funds functionality and add return to `Send Tip` button
-                 Intent returnIntent = new Intent();
-                 setResult(ChromeTabbedActivity.SITE_BANNER_ADD_FUNDS_RESULT_CODE, returnIntent);
-                 finish();
-                 */
-
-                 View add_funds_btn = findViewById(R.id.not_enough_funds_button);
-                 add_funds_btn.setVisibility(View.INVISIBLE);
-
-                 int fromY = sendDonationLayout.getHeight();
-                 TranslateAnimation animate = new TranslateAnimation(0,0,fromY,0);
-                 animate.setDuration(FADE_OUT_DURATION);
-                 sendDonationLayout.startAnimation(animate);
-                 sendDonationLayout.setVisibility(View.VISIBLE);
-             }
-         };
-
-        View not_enough_funds_btn = findViewById(R.id.not_enough_funds_button);
-        not_enough_funds_btn.setOnClickListener (add_funds_clicker);
-
-        String part1 = String.format(getResources().getString(R.string.brave_ui_not_enough_tokens),
-                getResources().getString(R.string.token));
-        String part2 = getResources().getString(R.string.brave_ui_please);
-        String part3 = getResources().getString(R.string.brave_ui_add_funds);
-
-        part1 = part1.substring(0,1).toUpperCase(Locale.getDefault()) + part1.substring(1);
-        part2 = part2.substring(0,1).toUpperCase(Locale.getDefault()) + part2.substring(1);
-
-        //Temporary disabled
-        /*
-        StringBuilder sb = new StringBuilder();
-        sb.append(part1);
-        sb.append(". ");
-        sb.append(part2);
-        sb.append(" <u>");
-        sb.append(part3);
-        sb.append("</u>.");
-        Spanned toInsert = BraveRewardsHelper.spannedFromHtmlString(sb.toString());
-        TextView tv = (TextView)findViewById(R.id.not_enough_funds_text);
-        tv.setText(toInsert);
-        */
-
-        //Once Add Funds is enabled: uncomment above block and delete next 2 lines
-        TextView tv = (TextView)findViewById(R.id.not_enough_funds_text);
-        tv.setText(part1);
-
-        ///////////////////////////////////////////////////////////////////////////////////////
-        mBraveRewardsNativeWorker.GetExternalWallet();
-        @PublisherStatus
-        int pubStatus = mBraveRewardsNativeWorker.GetPublisherStatus(currentTabId_);
-
-        if (pubStatus == BraveRewardsPublisher.CONNECTED
-                || pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED
-                || pubStatus == BraveRewardsPublisher.BITFLYER_VERIFIED
-                || pubStatus == BraveRewardsPublisher.GEMINI_VERIFIED) {
-            findViewById(R.id.publisher_favicon_verified).setVisibility(View.VISIBLE);
-        }
-
-        RelativeLayout monthly_layout = ((RelativeLayout)findViewById(R.id.monthly_contribution));
-        if (mBraveRewardsNativeWorker.IsCurrentPublisherInRecurrentDonations(mBraveRewardsNativeWorker.GetPublisherId(currentTabId_))) {
-            monthly_layout.setVisibility(View.INVISIBLE);
-        } else {
-            // `monthly_contribution` is VISIBLE by default
-            CheckBox monthly_chk = (CheckBox) findViewById(R.id.make_monthly_checkbox);
-            BraveRewardsHelper.expandTouchArea (monthly_layout, monthly_chk, TOUCH_PADDING_MONTHLY);
-        }
-
-
-        //put icon `publisher_favicon_holder` at the middle of the position of `header_scrollView`
-        final View layout = (View) findViewById(R.id.header_scrollView);
-        ViewTreeObserver vto = layout.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener (new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                layout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-
-                int top = layout.getTop();
-                int newY = top - BraveRewardsHelper.dp2px( PUBLISHER_ICON_SIDE_LEN / 2 + ACTIVITY_HEADER_PADDING);
-                int minTopPosition = BraveRewardsHelper.dp2px(ACTIVITY_HEADER_CONTENT_SIDE_MARGIN);
-
-                if (newY < minTopPosition){
-                    newY = minTopPosition;
-                }
-
-                RelativeLayout icon_layout  = (RelativeLayout)findViewById(R.id.publisher_favicon_layout);
-                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)icon_layout.getLayoutParams();
-                params.setMargins(params.leftMargin, newY, params.rightMargin, params.bottomMargin);
-                icon_layout.setLayoutParams(params);
-                icon_layout.requestLayout();
-            }
-        });
-    }
-
-    @Override
-    public void OnGetExternalWallet(int errorCode, String externalWallet) {
-        int walletStatus = BraveRewardsExternalWallet.NOT_CONNECTED;
-        if (!TextUtils.isEmpty(externalWallet)) {
-            try {
-                BraveRewardsExternalWallet mExternalWallet =
-                        new BraveRewardsExternalWallet(externalWallet);
-                walletStatus = mExternalWallet.getStatus();
-            } catch (JSONException e) {
-                Log.e("BraveRewards", e.getMessage());
-            }
-        }
-        @PublisherStatus
-        int pubStatus = mBraveRewardsNativeWorker.GetPublisherStatus(currentTabId_);
-        setPublisherNoteText(pubStatus, walletStatus);
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    private void setPublisherNoteText(@PublisherStatus int pubStatus, int walletStatus) {
-        String notePart1 = "";
-        String walletType = BraveRewardsNativeWorker.getInstance().getExternalWalletType();
-        if (walletStatus == BraveRewardsExternalWallet.NOT_CONNECTED) {
-            if (pubStatus == BraveRewardsPublisher.CONNECTED
-                    || pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED
-                    || pubStatus == BraveRewardsPublisher.BITFLYER_VERIFIED
-                    || pubStatus == BraveRewardsPublisher.GEMINI_VERIFIED) {
-                Log.e("BraveRewards", "User is unverified and publisher is verified");
-            } else {
-                notePart1 = getResources().getString(
-                        R.string.brave_ui_site_banner_unverified_notice_text);
-                Log.e("BraveRewards", "User is unverified and publisher is unverified");
-            }
-        } else {
-            if (pubStatus == BraveRewardsPublisher.NOT_VERIFIED) {
-                notePart1 = getResources().getString(
-                        R.string.brave_ui_site_banner_unverified_notice_text);
-                Log.e("BraveRewards", "User is verified and publisher is unverified");
-            } else if (pubStatus == BraveRewardsPublisher.CONNECTED
-                    || (pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED
-                            && !walletType.equals(BraveWalletProvider.UPHOLD))
-                    || (pubStatus == BraveRewardsPublisher.BITFLYER_VERIFIED
-                            && !walletType.equals(BraveWalletProvider.BITFLYER))
-                    || (pubStatus == BraveRewardsPublisher.GEMINI_VERIFIED
-                            && !walletType.equals(BraveWalletProvider.GEMINI))) {
-                notePart1 = getResources().getString(
-                        R.string.brave_ui_site_banner_different_verified_notice_text);
-                Log.e("BraveRewards",
-                        "User is verified and publisher is verified but not with the same provider");
-            }
-        }
-
-        if (!TextUtils.isEmpty(notePart1)) {
-            findViewById(R.id.not_verified_warning_layout ).setVisibility(View.VISIBLE);
-            String notePart2 = getResources().getString(R.string.learn_more);
-            final StringBuilder sb1 = new StringBuilder();
-            sb1.append(notePart1);
-            sb1.append(" <br><font color=#00afff>");
-            sb1.append(notePart2);
-            sb1.append("</font></br>");
-            Spanned toInsert = BraveRewardsHelper.spannedFromHtmlString(sb1.toString());
-            TextView not_verified_warning_text = (TextView )findViewById(R.id.not_verified_warning_text );
-            not_verified_warning_text.setText(toInsert);
-            String full_note_str = toInsert.toString();
-
-            not_verified_warning_text.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    boolean event_consumed = false;
-                    if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                        int offset = not_verified_warning_text.getOffsetForPosition(
-                                motionEvent.getX(), motionEvent.getY());
-
-                        if (BraveRewardsHelper.subtextAtOffset(full_note_str, notePart2, offset)) {
-                            event_consumed = true;
-                            Intent intent = new Intent();
-                            intent.putExtra(BraveActivity.OPEN_URL, BraveActivity.REWARDS_LEARN_MORE_URL);
-                            setResult(RESULT_OK, intent);
-                            finish();
-                        }
-                    }
-                    return event_consumed;
-                }
-            });
+        if (savedInstanceState == null) {
+            mBraveRewardsNativeWorker.GetPublisherBanner(mBraveRewardsNativeWorker.GetPublisherId(currentTabId_));
         }
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(TIP_SENT_REQUEST_CODE == requestCode)
-        {
-            //disable the activity while fading it out
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-            setResult(RESULT_OK);
-            finish();
-            overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
-            mTippingInProgress = false;
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (isFinishing()){
-            overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
-        }
-    }
-
-    @Override
-    protected void onDestroy(){
-        super.onDestroy();
-
-        if (mIconFetcher != null) {
-            mIconFetcher.detach();
-        }
-
-        if (null != mBraveRewardsNativeWorker){
-            mBraveRewardsNativeWorker.RemoveObserver(this);
-        }
-    }
-
-
-    private void SetFavIcon(Bitmap bmp) {
-        if (bmp != null){
-            runOnUiThread(
-                new Runnable(){
+    public void onPublisherBanner(String jsonBannerInfo) {
+        Log.e("SujitSujit", "activity onPublisherBanner jsonBannerInfo "+jsonBannerInfo);
+        runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ImageView iv = (ImageView) findViewById(R.id.publisher_favicon);
-                        int nPx = BraveRewardsHelper.dp2px(PUBLISHER_ICON_SIDE_LEN);
-                        Bitmap resized = Bitmap.createScaledBitmap(bmp, nPx, nPx, true);
+                        BraveRewardsBannerInfo bannerInfo = null;
+                        double[] amounts = null;
+                       
+                        try {
+                             bannerInfo = new BraveRewardsBannerInfo(jsonBannerInfo);
+                             amounts = bannerInfo.getAmounts();
+                            Log.e("SujitSujit", "activity onPublisherBanner getName "+bannerInfo.getName());
+                        } catch (JSONException e) {
 
-                        View fadeout  = findViewById(R.id.publisher_favicon_update);
-                        BraveRewardsHelper.crossfade(fadeout, iv, View.GONE, 1f, BraveRewardsHelper.CROSS_FADE_DURATION);
-                        iv.setImageBitmap(BraveRewardsHelper.getCircularBitmap(resized));
-                    }
-                });
+                        }
+                       
+
+                        View progressBar =  findViewById(R.id.progressBar);
+                        progressBar.setVisibility(View.GONE);
+
+                        BraveRewardsCreatorPanelFragment creatorPanelFragment =
+                        BraveRewardsCreatorPanelFragment.newInstance(
+                            currentTabId_, mIsMonthlyContribution, bannerInfo);
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.creatorPanelFragment, creatorPanelFragment)
+                                .commit();
+
+                        BraveRewardsTippingPanelFragment tippingPanelFragment =
+                                BraveRewardsTippingPanelFragment.newInstance(
+                                        currentTabId_, mIsMonthlyContribution, amounts);
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.tippingPanelFragment, tippingPanelFragment,
+                                        "tipping_panel_fragment")
+                                .commit();
+                                }
+                    });
+        
+    }
+
+    @Override
+    public void onTipConfirmation(double amount, boolean isMonthly) {
+        BraveRewardsTipConfirmationFragment tipConfirmationFragment =
+                BraveRewardsTipConfirmationFragment.newInstance(amount, isMonthly);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.tippingPanelFragment, tipConfirmationFragment)
+                .commit();
+    }
+
+    @Override
+    public void onAmountChange(double batValue, double usdValue) {
+        BraveRewardsTippingPanelFragment tippingPanelFragment =
+                (BraveRewardsTippingPanelFragment) getSupportFragmentManager().findFragmentById(
+                        R.id.tippingPanelFragment);
+        tippingPanelFragment.updateAmount(batValue, usdValue);
+    }
+
+    @Override
+    public void onBackPressed() {
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
+            super.onBackPressed();
+        } else {
+            Log.i("SujitSujit", "onBackPressed ");
+
+            resetUpdateLayout();
+            getSupportFragmentManager().popBackStack();
+        }
+    }
+
+    public void resetUpdateLayout() {
+        BraveRewardsTippingPanelFragment tippingPanelFragment =
+                (BraveRewardsTippingPanelFragment) getSupportFragmentManager().findFragmentByTag(
+                        "tipping_panel_fragment");
+
+        if (tippingPanelFragment != null) {
+            tippingPanelFragment.resetSendLayoutText();
         }
     }
 
     @Override
-    public void onLargeIconReady(Bitmap icon){
-        SetFavIcon(icon);
-    }
-
-    //`make_monthly_checkbox` checkbox click handler
-    public void onMonthlyCheckboxClicked(View view) {
-        boolean checked = ((CheckBox) view).isChecked();
-        TextView send_btn = (TextView) findViewById(R.id.send_donation_text);
-
-        int string_id = (checked)? R.string.brave_ui_do_monthly : R.string.brave_ui_send_tip;
-        String btn_text = getResources().getString(string_id);
-        send_btn.setText(btn_text);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-
-        boolean monthly = ((CheckBox)findViewById(R.id.make_monthly_checkbox)).isChecked();
-        savedInstanceState.putBoolean(TIP_MONTHLY_EXTRA, monthly);
-    }
-
-
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        boolean myBoolean = savedInstanceState.getBoolean(TIP_MONTHLY_EXTRA);
-        CheckBox cb = (CheckBox)findViewById(R.id.make_monthly_checkbox);
-        cb.setChecked(myBoolean);
-
-        //run init logic in onMonthlyCheckboxClicked
-        onMonthlyCheckboxClicked(cb);
-    }
-
-    @Override
-    public void OnRewardsParameters(int errorCode) {
-        if (errorCode == 0) {
-            if (mBraveRewardsNativeWorker != null) {
-                double balance = .0;
-                BraveRewardsBalance rewardsBalance = mBraveRewardsNativeWorker.GetWalletBalance();
-                if (rewardsBalance != null) {
-                    balance = rewardsBalance.getTotal();
-                }
-                DecimalFormat df = new DecimalFormat("#.###");
-                df.setRoundingMode(RoundingMode.FLOOR);
-                df.setMinimumFractionDigits(3);
-                String walletAmount = df.format(balance) + " " + BraveRewardsHelper.BAT_TEXT;
-                ((TextView) findViewById(R.id.wallet_amount_text)).setText(walletAmount);
-            }
+    protected void onDestroy() {
+        super.onDestroy();
+        if (null != mBraveRewardsNativeWorker){
+            mBraveRewardsNativeWorker.RemoveObserver(this);
         }
     }
 }

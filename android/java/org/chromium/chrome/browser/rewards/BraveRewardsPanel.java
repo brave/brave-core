@@ -1410,6 +1410,7 @@ public class BraveRewardsPanel
     }
 
     private void openBannerActivity() {
+        Log.i("SujitSujit", "openBannerActivity");
         Intent intent = new Intent(
                 ContextUtils.getApplicationContext(), BraveRewardsSiteBannerActivity.class);
         intent.putExtra(BraveRewardsSiteBannerActivity.TAB_ID_EXTRA, mCurrentTabId);
