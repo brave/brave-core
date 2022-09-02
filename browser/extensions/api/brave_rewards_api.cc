@@ -1420,21 +1420,21 @@ ExtensionFunction::ResponseAction BraveRewardsUpdatePrefsFunction::Run() {
   auto* ads_service = AdsServiceFactory::GetForProfile(profile);
 
   if (rewards_service) {
-    bool* ac_enabled = params->prefs.auto_contribute_enabled.get();
+    auto& ac_enabled = params->prefs.auto_contribute_enabled;
     if (ac_enabled)
       rewards_service->SetAutoContributeEnabled(*ac_enabled);
 
-    double* ac_amount = params->prefs.auto_contribute_amount.get();
+    auto& ac_amount = params->prefs.auto_contribute_amount;
     if (ac_amount)
       rewards_service->SetAutoContributionAmount(*ac_amount);
   }
 
   if (ads_service) {
-    bool* ads_enabled = params->prefs.ads_enabled.get();
+    auto& ads_enabled = params->prefs.ads_enabled;
     if (ads_enabled)
       ads_service->SetEnabled(*ads_enabled);
 
-    int* ads_per_hour = params->prefs.ads_per_hour.get();
+    auto& ads_per_hour = params->prefs.ads_per_hour;
     if (ads_per_hour)
       ads_service->SetMaximumNotificationAdsPerHour(*ads_per_hour);
   }
