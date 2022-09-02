@@ -356,6 +356,7 @@ source_set("ui") {
     "//components/gcm_driver:gcm_buildflags",
     "//components/prefs",
     "//components/sessions",
+    "//components/strings:components_strings",
     "//content/public/browser",
     "//content/public/common",
     "//mojo/public/cpp/bindings",
