@@ -141,6 +141,7 @@
     *** mTabContentManager;
     *** mTabCreatorManager;
     *** mSnackbarManager;
+    *** mTabObscuringHandler;
     *** onOrientationChange(...);
     *** updateBookmarkButtonStatus(...);
     *** updateReloadState(...);
