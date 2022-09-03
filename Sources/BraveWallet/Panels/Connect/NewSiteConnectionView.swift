@@ -39,7 +39,14 @@ public struct NewSiteConnectionView: View {
   @State private var isConfirmationViewVisible: Bool = false
   
   private var accountInfos: [BraveWallet.AccountInfo] {
-    keyringStore.allKeyrings.first(where: { $0.coin == coin })?.accountInfos ?? []
+    if coin == .sol {
+      if let solanaDefaultAccount = keyringStore.defaultAccounts.first(where: { $0.coin == .sol }) {
+        return [solanaDefaultAccount]
+      } else {
+        return []
+      }
+    }
+    return keyringStore.allKeyrings.first(where: { $0.coin == coin })?.accountInfos ?? []
   }
   
   @ViewBuilder private func originAndFavicon(urlOrigin: URLOrigin) -> some View {

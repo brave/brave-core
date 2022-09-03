@@ -97,6 +97,9 @@ public class KeyringStore: ObservableObject {
   var allAccounts: [BraveWallet.AccountInfo] {
     allKeyrings.flatMap(\.accountInfos)
   }
+  
+  /// A list of default account with all support coin types
+  @Published var defaultAccounts: [BraveWallet.AccountInfo] = []
 
   private let keyringService: BraveWalletKeyringService
   private let walletService: BraveWalletBraveWalletService
@@ -148,6 +151,7 @@ public class KeyringStore: ObservableObject {
       let selectedCoin = await walletService.selectedCoin()
       let selectedAccountAddress = await keyringService.selectedAccount(selectedCoin)
       self.allKeyrings = await keyringService.keyrings(for: WalletConstants.supportedCoinTypes)
+      self.defaultAccounts = await keyringService.defaultAccounts(for: WalletConstants.supportedCoinTypes)
       if let defaultKeyring = allKeyrings.first(where: { $0.id == BraveWallet.DefaultKeyringId }) {
         self.defaultKeyring = defaultKeyring
       }
