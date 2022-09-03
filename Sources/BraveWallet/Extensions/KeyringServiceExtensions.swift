@@ -33,4 +33,28 @@ extension BraveWalletKeyringService {
     )
     return allKeyrings
   }
+  
+  // Fetches all default accounts for each of the given coin types
+  func defaultAccounts(
+    for coins: OrderedSet<BraveWallet.CoinType>
+  ) async -> [BraveWallet.AccountInfo] {
+    return await withTaskGroup(
+      of: BraveWallet.AccountInfo?.self,
+      body: { @MainActor group in
+        for coin in coins {
+          group.addTask { @MainActor in
+            let accounts = await self.keyringInfo(coin.keyringId).accountInfos
+            let selectedAccountAddress = await self.selectedAccount(coin)
+            return accounts.first(where: { $0.address.caseInsensitiveCompare(selectedAccountAddress ?? "") == .orderedSame })
+          }
+        }
+        var defaultAccounts: [BraveWallet.AccountInfo] = []
+        for await account in group {
+          if let account = account {
+            defaultAccounts.append(account)
+          }
+        }
+        return defaultAccounts
+      })
+  }
 }
