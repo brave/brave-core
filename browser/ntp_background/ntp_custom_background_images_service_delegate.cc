@@ -5,7 +5,6 @@
 
 #include "brave/browser/ntp_background/ntp_custom_background_images_service_delegate.h"
 
-#include "base/check_is_test.h"
 #include "base/files/file_path.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ntp_background/constants.h"
@@ -65,8 +64,14 @@ bool NTPCustomBackgroundImagesServiceDelegate::ShouldUseRandomValue() const {
 bool NTPCustomBackgroundImagesServiceDelegate::HasPreferredBraveBackground()
     const {
   const auto pref = NTPBackgroundPrefs(profile_->GetPrefs());
-  return pref.IsBraveType() && !pref.ShouldUseRandomValue() &&
-         absl::holds_alternative<GURL>(pref.GetSelectedValue());
+  if (!pref.IsBraveType() || pref.ShouldUseRandomValue())
+    return false;
+
+  auto selected_value = pref.GetSelectedValue();
+  if (auto* selected_url = absl::get_if<GURL>(&selected_value))
+    return selected_url->is_valid();
+
+  return false;
 }
 
 base::Value::Dict
@@ -83,7 +88,7 @@ NTPCustomBackgroundImagesServiceDelegate::GetPreferredBraveBackground() const {
 
   auto* image_data = service->GetBackgroundImagesData();
   if (!image_data) {
-    CHECK_IS_TEST();
+    // This can happen when the image data is not downloaded yet.
     return {};
   }
 
