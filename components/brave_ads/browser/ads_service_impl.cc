@@ -744,7 +744,9 @@ void AdsServiceImpl::OnEnabledPrefChanged() {
 
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
     adaptive_captcha_service_->ClearScheduledCaptcha();
+#if !BUILDFLAG(IS_ANDROID)
     ads_tooltips_delegate_->CloseCaptchaTooltip();
+#endif
 #endif
   }
 
@@ -1681,6 +1683,9 @@ void AdsServiceImpl::ShowScheduledCaptchaNotification(
       return;
     }
 
+// TODO(sergz): made a guard to prevent a potential crash, but need to
+// check as we could have the guard in the higher level for Android
+#if !BUILDFLAG(IS_ANDROID)
     const int snooze_count = pref_service->GetInteger(
         brave_adaptive_captcha::prefs::kScheduledCaptchaSnoozeCount);
 
@@ -1690,6 +1695,7 @@ void AdsServiceImpl::ShowScheduledCaptchaNotification(
         payment_id, captcha_id, snooze_count == 0,
         base::BindOnce(&AdsServiceImpl::ShowScheduledCaptcha, AsWeakPtr()),
         base::BindOnce(&AdsServiceImpl::SnoozeScheduledCaptcha, AsWeakPtr()));
+#endif
   } else {
     ShowScheduledCaptcha(payment_id, captcha_id);
   }
