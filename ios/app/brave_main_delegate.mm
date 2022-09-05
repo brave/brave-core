@@ -20,7 +20,7 @@
 #include "components/component_updater/component_updater_switches.h"
 #include "components/sync/base/command_line_switches.h"
 #include "components/sync/base/model_type.h"
-#include "ios/chrome/browser/chrome_switches.h"
+#include "ios/chrome/browser/flags/chrome_switches.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
