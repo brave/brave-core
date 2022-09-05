@@ -164,3 +164,9 @@ export const getAssetIdKey = (asset: BraveWallet.BlockchainToken) => {
     ? `${asset.contractAddress}-${asset.symbol}-${asset.tokenId}-${asset.chainId}`
     : `${asset.contractAddress}-${asset.symbol}-${asset.chainId}`
 }
+
+/**
+ * Evaluates support for sardine
+ * @returns Boolean indicating sardine support
+ */
+export const isSardineSupported = () => navigator.language.toLowerCase() === 'en-us'

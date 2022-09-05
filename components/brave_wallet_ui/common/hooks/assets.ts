@@ -7,7 +7,7 @@ import * as React from 'react'
 import { useSelector } from 'react-redux'
 
 // utils
-import { addLogoToToken } from '../../utils/asset-utils'
+import { addLogoToToken, isSardineSupported } from '../../utils/asset-utils'
 
 // Constants
 import {
@@ -21,7 +21,6 @@ import usePricing from './pricing'
 import useBalance from './balance'
 import { useIsMounted } from './useIsMounted'
 import { useLib } from './useLib'
-import { isSardineSupported } from '../../options/buy-with-options'
 
 export function useAssets () {
   // redux
