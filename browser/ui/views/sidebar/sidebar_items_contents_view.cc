@@ -52,6 +52,8 @@ std::string GetFirstCharFromURL(const GURL& url) {
   DCHECK(url.is_valid());
 
   std::string target = url.host();
+  if (target.empty())
+    target = url.spec();
   size_t pos = target.find("www.");
   if (pos != std::string::npos && pos == 0) {
     target = target.substr(4, 1);
