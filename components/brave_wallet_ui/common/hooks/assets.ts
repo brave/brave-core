@@ -21,6 +21,7 @@ import usePricing from './pricing'
 import useBalance from './balance'
 import { useIsMounted } from './useIsMounted'
 import { useLib } from './useLib'
+import { isSardineSupported } from '../../options/buy-with-options'
 
 export function useAssets () {
   // redux
@@ -77,7 +78,11 @@ export function useAssets () {
   }, [selectedAccount, assetsByNetwork, getBalance, computeFiatAmount])
 
   const buyAssetOptions = React.useMemo(() => {
-    return [...rampAssetOptions, ...wyreAssetOptions, ...sardineAssetOptions]
+    const assetOptions = isSardineSupported()
+      ? [...rampAssetOptions, ...wyreAssetOptions, ...sardineAssetOptions]
+      : [...rampAssetOptions, ...wyreAssetOptions]
+
+    return assetOptions
       .filter(asset => asset.chainId === selectedNetwork.chainId)
   }, [rampAssetOptions, wyreAssetOptions, sardineAssetOptions, selectedNetwork])
 
