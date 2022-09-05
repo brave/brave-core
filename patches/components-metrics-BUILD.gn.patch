@@ -1,12 +1,11 @@
 diff --git a/components/metrics/BUILD.gn b/components/metrics/BUILD.gn
-index 2006302e4bebb7382d63537714751d1701edc10e..28b5d19cb4264f0c3209cfc9a5babb39e3dded5a 100644
+index 2006302e4bebb7382d63537714751d1701edc10e..b0bf88b6bfd8d640eaee2bfb56ff1c01b1023f67 100644
 --- a/components/metrics/BUILD.gn
 +++ b/components/metrics/BUILD.gn
-@@ -200,6 +200,8 @@ static_library("metrics") {
+@@ -200,6 +200,7 @@ static_library("metrics") {
        "motherboard_metrics_provider.h",
      ]
    }
-+
 +  import("//brave/components/metrics/sources.gni") deps += brave_components_metrics_deps
  }
  
