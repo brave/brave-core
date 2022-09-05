@@ -69,7 +69,7 @@ void RedeemUnblindedToken::Redeem(const ConfirmationInfo& confirmation) {
 void RedeemUnblindedToken::CreateConfirmation(
     const ConfirmationInfo& confirmation) {
   BLOG(1, "CreateConfirmation");
-  BLOG(2, "POST /v2/confirmation/{confirmation_id}/{credential}");
+  BLOG(2, "POST /v2/confirmation/{transactionId}/{credential}");
 
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -115,7 +115,7 @@ void RedeemUnblindedToken::OnCreateConfirmation(
 void RedeemUnblindedToken::FetchPaymentToken(
     const ConfirmationInfo& confirmation) {
   BLOG(1, "FetchPaymentToken");
-  BLOG(2, "GET /v2/confirmation/{confirmation_id}/paymentToken");
+  BLOG(2, "GET /v2/confirmation/{transactionId}/paymentToken");
 
   FetchPaymentTokenUrlRequestBuilder url_request_builder(confirmation);
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -189,11 +189,12 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   }
 
   // Validate id
-  if (*id != confirmation.id) {
-    BLOG(0, "Response id " << *id << " does not match confirmation id "
-                           << confirmation.id);
-    OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ false,
-                                   /* should_backoff */ false);
+  if (*id != confirmation.transaction_id) {
+    BLOG(0, "Response id " << *id
+                           << " does not match confirmation transaction id "
+                           << confirmation.transaction_id);
+    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ false,
+                                   /*should_backoff*/ false);
     return;
   }
 
@@ -317,12 +318,11 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
 
 void RedeemUnblindedToken::OnDidSendConfirmation(
     const ConfirmationInfo& confirmation) {
-  BLOG(1, "Successfully sent " << confirmation.type << " confirmation for "
-                               << confirmation.ad_type << " with id "
-                               << confirmation.id << ", transaction id "
-                               << confirmation.transaction_id
-                               << " and creative instance id "
-                               << confirmation.creative_instance_id);
+  BLOG(1, "Successfully sent "
+              << confirmation.type << " confirmation for "
+              << confirmation.ad_type << " with transaction id "
+              << confirmation.transaction_id << " and creative instance id "
+              << confirmation.creative_instance_id);
 
   if (delegate_) {
     delegate_->OnDidSendConfirmation(confirmation);
@@ -333,8 +333,7 @@ void RedeemUnblindedToken::OnFailedToSendConfirmation(
     const ConfirmationInfo& confirmation,
     const bool should_retry) {
   BLOG(1, "Failed to send " << confirmation.type << " confirmation for "
-                            << confirmation.ad_type << " with id "
-                            << confirmation.id << ", transaction id "
+                            << confirmation.ad_type << " with transaction id "
                             << confirmation.transaction_id
                             << " and creative instance id "
                             << confirmation.creative_instance_id);
@@ -347,12 +346,11 @@ void RedeemUnblindedToken::OnFailedToSendConfirmation(
 void RedeemUnblindedToken::OnDidRedeemUnblindedToken(
     const ConfirmationInfo& confirmation,
     const privacy::UnblindedPaymentTokenInfo& unblinded_payment_token) {
-  BLOG(1, "Successfully redeemed unblinded token for "
-              << confirmation.ad_type << " with confirmation id "
-              << confirmation.id << ", transaction id "
-              << confirmation.transaction_id << ", creative instance id "
-              << confirmation.creative_instance_id << " and "
-              << confirmation.type);
+  BLOG(1, "Successfully redeemed unblinded token "
+              << confirmation.type << " confirmation for "
+              << confirmation.ad_type << " with transaction id "
+              << confirmation.transaction_id << " and creative instance id "
+              << confirmation.creative_instance_id);
 
   if (delegate_) {
     delegate_->OnDidRedeemUnblindedToken(confirmation, unblinded_payment_token);
@@ -363,12 +361,11 @@ void RedeemUnblindedToken::OnFailedToRedeemUnblindedToken(
     const ConfirmationInfo& confirmation,
     const bool should_retry,
     const bool should_backoff) {
-  BLOG(1, "Failed to redeem unblinded token for "
-              << confirmation.ad_type << " with confirmation id "
-              << confirmation.id << ", transaction id "
-              << confirmation.transaction_id << ", creative instance id "
-              << confirmation.creative_instance_id << " and "
-              << confirmation.type);
+  BLOG(1, "Failed to redeem unblinded token "
+              << confirmation.type << " confirmation for "
+              << confirmation.ad_type << " with transaction id "
+              << confirmation.transaction_id << " and creative instance id "
+              << confirmation.creative_instance_id);
 
   if (delegate_) {
     delegate_->OnFailedToRedeemUnblindedToken(confirmation, should_retry,

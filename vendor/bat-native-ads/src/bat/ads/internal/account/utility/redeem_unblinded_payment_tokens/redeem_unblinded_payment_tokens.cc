@@ -83,7 +83,7 @@ void RedeemUnblindedPaymentTokens::Redeem() {
     return;
   }
 
-  BLOG(2, "PUT /v2/confirmation/payment/{payment_id}");
+  BLOG(2, "PUT /v2/confirmation/payment/{paymentId}");
 
   is_processing_ = true;
 
