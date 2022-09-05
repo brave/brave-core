@@ -531,6 +531,7 @@
   <message name="IDS_BRAVE_WALLET_AURORA_MODAL_LEARN_MORE_ABOUT_RISK" desc="Bridge to Aurora modal learn more about risk mitigation">Learn more about mitigating risk on Rainbow Bridge</message>
   <message name="IDS_BRAVE_WALLET_AURORA_MODAL_DONT_SHOW_AGAIN" desc="Bridge to Aurora modal don't show again checkbox label">Don't show again</message>
   <message name="IDS_BRAVE_WALLET_AURORA_MODAL_OPEN_BUTTON_TEXT" desc="Bridge to Aurora modal action button text">Open Rainbow Bridge app</message>
+  <message name="IDS_BRAVE_WALLET_BRIDGE_TO_AURORA_BUTTON" desc="Bridge to Aurora asset button text">Bridge to Aurora</message>
   <message name="IDS_BRAVE_WALLET_LEARN_MORE_ABOUT_BRAVE_WALLET" desc="Link to article explaining crypto wallets">Learn more about Brave Wallet</message>
   <message name="IDS_BRAVE_WALLET_PASSWORD_STRENGTH_TOOLTIP_HEADING" desc="Heading of password strength tooltip">At least:</message>
   <message name="IDS_BRAVE_WALLET_PASSWORD_STRENGTH_TOOLTIP_IS_LONG_ENOUGH" desc="Password strength length requirements">8 characters</message>

@@ -711,6 +711,7 @@ provideStrings({
   braveWalletAuroraModalLearnMoreAboutRisk: 'Learn more about mitigating risk on Rainbow Bridge',
   braveWalletAuroraModalDontShowAgain: 'Don\'t show again',
   braveWalletAuroraModalOPenButtonText: 'Open the Rainbow Bridge app',
+  braveWalletBridgeToAuroraButton: 'Bridge to Aurora',
 
   // Input field labels
   braveWalletInputLabelPassword: 'Password',
