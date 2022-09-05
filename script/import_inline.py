@@ -9,7 +9,11 @@ import os.path
 
 def _find_src_dir():
     """Searches for src/ dir which includes brave/ dir."""
-    path = os.getcwd()
+    current_file = globals().get('__file__')
+    if current_file and os.path.isabs(current_file):
+        path = os.path.dirname(current_file)
+    else:
+        path = os.getcwd()
     while True:
         if os.path.basename(path) == 'src' and os.path.isdir(
                 os.path.join(path, 'brave')):
