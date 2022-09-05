@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "absl/types/optional.h"
 #include "base/check.h"
 #include "base/json/json_writer.h"
 #include "base/notreached.h"
@@ -17,7 +18,6 @@
 #include "bat/ads/internal/server/headers/via_header_util.h"
 #include "bat/ads/internal/server/url/hosts/server_host_util.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace ads {

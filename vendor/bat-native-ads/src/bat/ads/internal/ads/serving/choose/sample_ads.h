@@ -8,11 +8,11 @@
 
 #include <ostream>
 
+#include "absl/types/optional.h"
 #include "base/notreached.h"
 #include "base/rand_util.h"
 #include "bat/ads/internal/ads/serving/choose/ad_predictor_info.h"
 #include "bat/ads/internal/base/numbers/number_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

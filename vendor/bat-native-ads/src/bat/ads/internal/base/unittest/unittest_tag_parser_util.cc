@@ -7,6 +7,7 @@
 
 #include <vector>
 
+#include "absl/types/optional.h"
 #include "base/check.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
@@ -16,7 +17,6 @@
 #include "base/time/time.h"
 #include "base/time/time_to_iso8601.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/re2/src/re2/re2.h"
 
 namespace ads {

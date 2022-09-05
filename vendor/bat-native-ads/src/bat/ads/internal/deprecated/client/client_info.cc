@@ -8,12 +8,12 @@
 #include <utility>
 #include <vector>
 
+#include "absl/types/optional.h"
 #include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "build/build_config.h"  // IWYU pragma: keep
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

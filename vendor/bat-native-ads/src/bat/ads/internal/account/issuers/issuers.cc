@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "absl/types/optional.h"
 #include "base/bind.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/account/issuers/issuers_info.h"
@@ -22,7 +23,6 @@
 #include "bat/ads/pref_names.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "net/http/http_status_code.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

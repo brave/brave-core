@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "absl/types/optional.h"
 #include "base/bind.h"
 #include "base/containers/circular_deque.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -15,7 +16,6 @@
 #include "bat/ads/internal/legacy_migration/notifications/legacy_notification_json_reader.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/pref_names.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace notifications {

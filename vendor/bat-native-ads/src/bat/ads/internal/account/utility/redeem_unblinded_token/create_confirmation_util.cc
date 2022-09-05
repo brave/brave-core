@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "absl/types/optional.h"
 #include "base/base64url.h"
 #include "base/check.h"
 #include "base/json/json_reader.h"
@@ -18,7 +19,6 @@
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/verification_key.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/verification_signature.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

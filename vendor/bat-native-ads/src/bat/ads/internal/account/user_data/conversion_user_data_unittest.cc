@@ -5,12 +5,12 @@
 
 #include "bat/ads/internal/account/user_data/conversion_user_data.h"
 
+#include "absl/types/optional.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_unittest_util.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_envelope_info.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_envelope_unittest_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

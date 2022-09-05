@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "absl/types/optional.h"
 #include "bat/ads/internal/account/issuers/issuers_delegate_mock.h"
 #include "bat/ads/internal/account/issuers/issuers_info.h"
 #include "bat/ads/internal/account/issuers/issuers_unittest_util.h"
@@ -14,7 +15,6 @@
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "net/http/http_status_code.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

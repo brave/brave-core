@@ -9,12 +9,12 @@
 #include <string>
 #include <utility>
 
+#include "absl/types/optional.h"
 #include "base/check_op.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "bat/ads/internal/account/issuers/issuer_types.h"
 #include "bat/ads/internal/account/issuers/public_key_alias.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

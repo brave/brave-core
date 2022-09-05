@@ -8,8 +8,8 @@
 #include <string>
 #include <utility>
 
+#include "absl/types/optional.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace targeting {

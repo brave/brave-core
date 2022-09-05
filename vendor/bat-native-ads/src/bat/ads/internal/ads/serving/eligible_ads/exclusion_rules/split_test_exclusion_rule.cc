@@ -5,10 +5,10 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/split_test_exclusion_rule.h"
 
+#include "absl/types/optional.h"
 #include "base/metrics/field_trial.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

@@ -10,8 +10,8 @@
 #include <string>
 #include <vector>
 
+#include "absl/types/optional.h"
 #include "base/check.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "wrapper.hpp"
 
 namespace ads {

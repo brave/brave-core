@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ads/new_tab_page_ad.h"
 
+#include "absl/types/optional.h"
 #include "base/check.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/history_item_info.h"
@@ -18,7 +19,6 @@
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/transfer/transfer.h"
 #include "bat/ads/new_tab_page_ad_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

@@ -7,6 +7,7 @@
 
 #include <algorithm>
 
+#include "absl/types/optional.h"
 #include "base/check.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -25,7 +26,6 @@
 #include "bat/ads/internal/resources/resource_manager.h"
 #include "bat/ads/internal/tabs/tab_info.h"
 #include "bat/ads/internal/tabs/tab_manager.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace ads {

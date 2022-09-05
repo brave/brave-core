@@ -12,13 +12,13 @@
 #include <string>
 #include <utility>
 
+#include "absl/types/optional.h"
 #include "base/bind.h"
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
 class File;

@@ -1160,6 +1160,7 @@ source_set("ads") {
     "//crypto",
     "//net",
     "//sql",
+    "//third_party/abseil-cpp:absl",
     "//third_party/boringssl",
     "//third_party/re2",
     "//third_party/sqlite",

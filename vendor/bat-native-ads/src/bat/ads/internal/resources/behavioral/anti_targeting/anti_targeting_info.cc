@@ -7,9 +7,9 @@
 
 #include <set>
 
+#include "absl/types/optional.h"
 #include "base/values.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_features.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace ads {

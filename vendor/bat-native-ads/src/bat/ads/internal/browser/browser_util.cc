@@ -5,10 +5,10 @@
 
 #include "bat/ads/internal/browser/browser_util.h"
 
+#include "absl/types/optional.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/pref_names.h"
 #include "brave/components/version_info/version_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

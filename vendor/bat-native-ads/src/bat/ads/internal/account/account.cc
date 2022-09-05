@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "absl/types/optional.h"
 #include "base/bind.h"
 #include "base/check_op.h"
 #include "bat/ads/internal/account/account_util.h"
@@ -31,7 +32,6 @@
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"  // IWYU pragma: keep
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
