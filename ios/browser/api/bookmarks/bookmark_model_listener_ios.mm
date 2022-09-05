@@ -80,7 +80,8 @@ void BookmarkModelListener::BookmarkNodeMoved(
 void BookmarkModelListener::BookmarkNodeAdded(
     bookmarks::BookmarkModel* model,
     const bookmarks::BookmarkNode* parent,
-    size_t index) {
+    size_t index,
+    bool added_by_user) {
   if ([observer_ respondsToSelector:@selector(bookmarkNodeChildrenChanged:)]) {
     IOSBookmarkNode* ios_parent = [[IOSBookmarkNode alloc] initWithNode:parent
                                                                   model:model];
