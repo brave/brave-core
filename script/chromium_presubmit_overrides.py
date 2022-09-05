@@ -10,7 +10,7 @@
 import copy
 
 import lib.chromium_presubmit_utils as chromium_presubmit_utils
-import lib.override_utils as override_utils
+import override_utils
 
 _BRAVE_DEFAULT_FILES_TO_SKIP = (r'win_build_output[\\/].*', )
 
