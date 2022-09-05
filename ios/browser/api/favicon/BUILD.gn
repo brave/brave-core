@@ -19,7 +19,7 @@ source_set("favicon") {
     "//components/favicon/core",
     "//components/favicon_base",
     "//components/keyed_service/core",
-    "//ios/chrome/browser:application_context",
+    "//ios/chrome/browser/application_context",
     "//ios/chrome/browser/browser_state",
     "//ios/chrome/browser/favicon",
     "//ios/chrome/common/ui/favicon",
