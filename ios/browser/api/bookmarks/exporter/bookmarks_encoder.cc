@@ -19,12 +19,13 @@ base::Value::Dict Encode(const bookmarks::BookmarkNode* bookmark_bar_node,
                          const bookmarks::BookmarkNode* other_folder_node,
                          const bookmarks::BookmarkNode* mobile_folder_node) {
   auto encoder = std::make_unique<bookmarks::BookmarkCodec>();
-  return std::move(encoder
-                       ->Encode(bookmark_bar_node, other_folder_node,
-                                mobile_folder_node,
-                                /*model_meta_info_map*/ nullptr,
-                                /*sync_metadata_str*/ std::string())
-                       .GetDict());
+  return std::move(
+      encoder
+          ->Encode(bookmark_bar_node, other_folder_node, mobile_folder_node,
+                   /*model_meta_info_map*/ nullptr,
+                   /*model_mmodel_unsynced_meta_info_mapeta_info_map*/ nullptr,
+                   /*sync_metadata_str*/ std::string())
+          .GetDict());
 }
 }  // namespace bookmarks_encoder
 }  // namespace ios
