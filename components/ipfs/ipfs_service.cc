@@ -162,6 +162,7 @@ void IpfsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kIPFSPublicNFTGatewayAddress,
                                kDefaultIPFSNFTGateway);
   registry->RegisterFilePathPref(kIPFSBinaryPath, base::FilePath());
+  registry->RegisterDictionaryPref(kIPFSPinnedCids);
 }
 
 base::FilePath IpfsService::GetIpfsExecutablePath() const {
@@ -369,6 +370,253 @@ void IpfsService::NotifyIpnsKeysLoaded(bool result) {
   for (auto& observer : observers_) {
     observer.OnIpnsKeysLoaded(result);
   }
+}
+
+// remote pinning services
+void IpfsService::AddRemotePinService(const std::string& name,
+                                      const std::string& endpoint,
+                                      const std::string& key,
+                                      AddRemotePinServiceCallback callback) {
+  LOG(ERROR) << "XXXZZZ AddRemotePinService";
+  if (!IsDaemonLaunched()) {
+    LOG(ERROR) << "XXXZZZ !IsDaemonLaunched ";
+    std::move(callback).Run(false);
+    return;
+  }
+
+  // http://127.0.0.1:5001/api/v0/pin/remote/service/add?arg=<service>&arg=<endpoint>&arg=<key>"
+  GURL gurl = net::AppendQueryParameter(
+      server_endpoint_.Resolve(kAddRemotePinServicePath), "arg", name);
+  gurl = net::AppendQueryParameter(gurl, "arg", endpoint);
+  gurl = net::AppendQueryParameter(gurl, "arg", key);
+
+  LOG(ERROR) << "XXXZZZ AddRemotePinService url " << gurl.spec();
+  auto url_loader = std::make_unique<api_request_helper::APIRequestHelper>(
+      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
+
+  auto iter =
+      requests_list_.insert(requests_list_.begin(), std::move(url_loader));
+  iter->get()->Request(
+      "POST", gurl, std::string(), std::string(), false,
+      base::BindOnce(&IpfsService::OnRemotePiningServiceAddResult,
+                     base::Unretained(this), iter, std::move(callback)),
+      {{net::HttpRequestHeaders::kOrigin,
+        url::Origin::Create(gurl).Serialize()}});
+}
+
+void IpfsService::RemoveRemotePinService(
+    const std::string& name,
+    RemoveRemotePinServiceCallback callback) {
+  if (!IsDaemonLaunched()) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  GURL gurl = server_endpoint_.Resolve(kRemoveRemotePinServicePath);
+
+  auto url_loader = std::make_unique<api_request_helper::APIRequestHelper>(
+      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
+
+  auto iter =
+      requests_list_.insert(requests_list_.begin(), std::move(url_loader));
+  iter->get()->Request(
+      "POST", gurl, std::string(), std::string(), false,
+      base::BindOnce(&IpfsService::OnRemotePiningServiceRemoveResult,
+                     base::Unretained(this), iter, std::move(callback)),
+      {{net::HttpRequestHeaders::kOrigin,
+        url::Origin::Create(gurl).Serialize()}});
+
+  //  auto url_loader = CreateURLLoader(gurl, "POST");
+  //  auto iter = url_loaders_.insert(url_loaders_.begin(),
+  //  std::move(url_loader));
+
+  //  iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+  //      url_loader_factory_.get(),
+  //      base::BindOnce(&IpfsService::OnRemotePiningServiceRemoveResult,
+  //                     base::Unretained(this), iter, std::move(callback)));
+}
+
+void IpfsService::GetRemotePinServices(bool stat,
+                                       GetRemotePinServicesCallback callback) {
+  LOG(ERROR) << "XXXZZZ GetRemotePinServices";
+  if (!IsDaemonLaunched()) {
+    LOG(ERROR) << "XXXZZZ IsDaemonLaunched";
+    std::move(callback).Run(absl::nullopt);
+    return;
+  }
+
+  GURL gurl = server_endpoint_.Resolve(kGetRemotePinServicesPath);
+  auto url_loader = std::make_unique<api_request_helper::APIRequestHelper>(
+      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
+
+  auto iter =
+      requests_list_.insert(requests_list_.begin(), std::move(url_loader));
+
+  iter->get()->Request(
+      "POST", gurl, std::string(), std::string(), false,
+      base::BindOnce(&IpfsService::OnRemotePiningServicesGetResult,
+                     base::Unretained(this), iter, std::move(callback)),
+      {{net::HttpRequestHeaders::kOrigin,
+        url::Origin::Create(gurl).Serialize()}});
+
+  //  auto url_loader = CreateURLLoader(gurl, "POST");
+  //  auto iter = url_loaders_.insert(url_loaders_.begin(),
+  //  std::move(url_loader));
+
+  //  iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+  //      url_loader_factory_.get(),
+  //      base::BindOnce(&IpfsService::OnRemotePiningServicesGetResult,
+  //                     base::Unretained(this), iter, std::move(callback)));
+}
+
+// Local pinning
+void IpfsService::AddPin(const std::vector<std::string>& cids,
+                         bool recursive,
+                         AddPinCallback callback) {
+  if (!IsDaemonLaunched()) {
+    std::move(callback).Run(false, absl::nullopt);
+    return;
+  }
+
+  GURL gurl =
+      net::AppendQueryParameter(server_endpoint_.Resolve(kAddPinPath),
+                                kArgQueryParam, base::JoinString(cids, ","));
+
+  auto url_loader = std::make_unique<api_request_helper::APIRequestHelper>(
+      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
+  auto iter =
+      requests_list_.insert(requests_list_.begin(), std::move(url_loader));
+
+  iter->get()->Request(
+      "POST", gurl, std::string(), std::string(), false,
+      base::BindOnce(&IpfsService::OnPinAddResult, base::Unretained(this), iter,
+                     std::move(callback)),
+      {{net::HttpRequestHeaders::kOrigin,
+        url::Origin::Create(gurl).Serialize()}});
+}
+
+void IpfsService::RemovePin(const std::vector<std::string>& cids,
+                            RemovePinCallback callback) {
+  if (!IsDaemonLaunched()) {
+    std::move(callback).Run(false, absl::nullopt);
+    return;
+  }
+
+  GURL gurl =
+      net::AppendQueryParameter(server_endpoint_.Resolve(kRemovePinPath),
+                                kArgQueryParam, base::JoinString(cids, ","));
+
+  auto url_loader = std::make_unique<api_request_helper::APIRequestHelper>(
+      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
+  auto iter =
+      requests_list_.insert(requests_list_.begin(), std::move(url_loader));
+
+  iter->get()->Request(
+      "POST", gurl, std::string(), std::string(), false,
+      base::BindOnce(&IpfsService::OnPinRemoveResult, base::Unretained(this),
+                     iter, std::move(callback)),
+      {{net::HttpRequestHeaders::kOrigin,
+        url::Origin::Create(gurl).Serialize()}});
+}
+
+void IpfsService::GetPins(const std::vector<std::string>& cid,
+                          const std::string& type,
+                          bool quiet,
+                          GetPinsCallback callback) {
+  if (!IsDaemonLaunched()) {
+    std::move(callback).Run(false, absl::nullopt);
+    return;
+  }
+
+  GURL gurl =
+      net::AppendQueryParameter(server_endpoint_.Resolve(kGetPinsPath),
+                                kArgQueryParam, base::JoinString(cid, ","));
+  gurl = net::AppendQueryParameter(gurl, "type", type);
+  gurl = net::AppendQueryParameter(gurl, "quiet", quiet ? "true" : "false");
+
+  auto url_loader = std::make_unique<api_request_helper::APIRequestHelper>(
+      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
+  auto iter =
+      requests_list_.insert(requests_list_.begin(), std::move(url_loader));
+
+  iter->get()->Request(
+      "POST", gurl, std::string(), std::string(), false,
+      base::BindOnce(&IpfsService::OnGetPinsResult, base::Unretained(this),
+                     iter, std::move(callback)),
+      {{net::HttpRequestHeaders::kOrigin,
+        url::Origin::Create(gurl).Serialize()}});
+}
+
+void IpfsService::AddRemotePin(const std::string& path,
+                               const std::string& service,
+                               const std::string& name,
+                               bool background,
+                               AddRemotePinCallback callback) {
+  LOG(ERROR) << "XXXZZZ AddRemotePin " << path << " " << service << " " << name;
+  if (!IsDaemonLaunched()) {
+    LOG(ERROR) << "XXXZZZ !IsDaemonLaunched ";
+
+    std::move(callback).Run(false);
+    return;
+  }
+
+  GURL gurl = server_endpoint_.Resolve(kAddRemotePinPath);
+  gurl = net::AppendQueryParameter(gurl, "arg", path);
+  gurl = net::AppendQueryParameter(gurl, "service", service);
+  gurl = net::AppendQueryParameter(gurl, "name", name);
+  gurl = net::AppendQueryParameter(gurl, "background",
+                                   background ? "true" : "false");
+
+  LOG(ERROR) << "XXXZZZ add remote pin url " << gurl.spec();
+  auto url_loader = std::make_unique<api_request_helper::APIRequestHelper>(
+      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
+
+  auto iter =
+      requests_list_.insert(requests_list_.begin(), std::move(url_loader));
+  iter->get()->Request(
+      "POST", gurl, std::string(), std::string(), false,
+      base::BindOnce(&IpfsService::OnAddRemotePinResult, base::Unretained(this),
+                     iter, std::move(callback)),
+      {{net::HttpRequestHeaders::kOrigin,
+        url::Origin::Create(gurl).Serialize()}});
+}
+
+void IpfsService::GetRemotePins(
+    const std::string& service,
+    const absl::optional<std::string>& name,
+    const absl::optional<std::vector<std::string>>& cids,
+    const absl::optional<std::vector<std::string>>& statuses,
+    GetRemotePinsCallback callback) {
+  if (!IsDaemonLaunched()) {
+    std::move(callback).Run(absl::nullopt);
+    return;
+  }
+
+  GURL gurl = server_endpoint_.Resolve(kAddRemotePinPath);
+  gurl = net::AppendQueryParameter(gurl, "service", service);
+  if (name.has_value()) {
+    gurl = net::AppendQueryParameter(gurl, "name", name.value());
+  }
+  if (cids.has_value()) {
+    gurl = net::AppendQueryParameter(gurl, "cid",
+                                     base::JoinString(cids.value(), ","));
+  }
+  if (statuses.has_value()) {
+    gurl = net::AppendQueryParameter(gurl, "status",
+                                     base::JoinString(statuses.value(), ","));
+  }
+
+  auto url_loader = std::make_unique<api_request_helper::APIRequestHelper>(
+      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
+
+  auto iter =
+      requests_list_.insert(requests_list_.begin(), std::move(url_loader));
+  iter->get()->Request(
+      "POST", gurl, std::string(), std::string(), false,
+      base::BindOnce(&IpfsService::OnGetRemotePinResult, base::Unretained(this),
+                     iter, std::move(callback)),
+      {{net::HttpRequestHeaders::kOrigin,
+        url::Origin::Create(gurl).Serialize()}});
 }
 
 void IpfsService::ImportFileToIpfs(const base::FilePath& path,
@@ -881,6 +1129,111 @@ void IpfsService::OnPreWarmComplete(
     std::move(prewarm_callback_for_testing_).Run();
 }
 
+//{
+//  "PinLsList": {
+//    "Keys": {
+//      "<string>": {
+//        "Type": "<string>"
+//      }
+//    }
+//  },
+//  "PinLsObject": {
+//    "Cid": "<string>",
+//    "Type": "<string>"
+//  }
+//}
+void IpfsService::OnGetPinsResult(
+    APIRequestList::iterator iter,
+    GetPinsCallback callback,
+    api_request_helper::APIRequestResult response) {
+  int response_code = response.response_code();
+  requests_list_.erase(iter);
+
+  bool success = response.Is2XXResponseCode();
+  LOG(ERROR) << "XXXZZZ OnGetPinsResult " << success << " " << response_code
+             << " " << response.body();
+
+  if (!success) {
+    LOG(ERROR) << "XXXZZZ fail";
+    VLOG(1) << "Fail to get pins, response_code = " << response_code;
+    std::move(callback).Run(false, absl::nullopt);
+    return;
+  }
+
+  ipfs::GetPinsResult result;
+  bool parse_result =
+      IPFSJSONParser::GetGetPinsResultFromJSON(response.body(), &result);
+  if (!parse_result) {
+    VLOG(1) << "Fail to get pins, response_code = " << response_code;
+    std::move(callback).Run(false, absl::nullopt);
+    return;
+  }
+
+  std::move(callback).Run(true, result);
+}
+
+void IpfsService::OnPinAddResult(
+    APIRequestList::iterator iter,
+    AddPinCallback callback,
+    api_request_helper::APIRequestResult response) {
+  int response_code = response.response_code();
+  requests_list_.erase(iter);
+
+  bool success = response.Is2XXResponseCode();
+  LOG(ERROR) << "XXXZZZ OnPinAddResult " << success << " " << response_code
+             << " " << response.body();
+
+  if (!success) {
+    VLOG(1) << "Fail to add remote pin service, response_code = "
+            << response_code;
+    std::move(callback).Run(false, absl::nullopt);
+    return;
+  }
+
+  ipfs::AddPinResult result;
+  bool parse_result =
+      IPFSJSONParser::GetAddPinsResultFromJSON(response.body(), &result);
+  if (!parse_result) {
+    VLOG(1) << "Fail to add remote pin service, response_code = "
+            << response_code;
+    std::move(callback).Run(false, absl::nullopt);
+    return;
+  }
+
+  std::move(callback).Run(true, result);
+}
+
+void IpfsService::OnPinRemoveResult(
+    APIRequestList::iterator iter,
+    RemovePinCallback callback,
+    api_request_helper::APIRequestResult response) {
+  int response_code = response.response_code();
+  requests_list_.erase(iter);
+
+  bool success = response.Is2XXResponseCode();
+  LOG(ERROR) << "XXXZZZ OnPinRemoveResult " << success << " " << response_code
+             << " " << response.body();
+
+  if (!success) {
+    VLOG(1) << "Fail to remove remote pin service, response_code = "
+            << response_code;
+    std::move(callback).Run(false, absl::nullopt);
+    return;
+  }
+
+  ipfs::RemovePinResult result;
+  bool parse_result =
+      IPFSJSONParser::GetRemovePinsResultFromJSON(response.body(), &result);
+  if (!parse_result) {
+    VLOG(1) << "Fail to add remote pin service, response_code = "
+            << response_code;
+    std::move(callback).Run(false, absl::nullopt);
+    return;
+  }
+
+  std::move(callback).Run(true, result);
+}
+
 void IpfsService::ValidateGateway(const GURL& url, BoolCallback callback) {
   GURL::Replacements replacements;
   std::string path = "/ipfs/";
@@ -893,6 +1246,141 @@ void IpfsService::ValidateGateway(const GURL& url, BoolCallback callback) {
       url_loader_factory_.get(),
       base::BindOnce(&IpfsService::OnGatewayValidationComplete,
                      base::Unretained(this), iter, std::move(callback), url));
+}
+
+// Remote pins result
+void IpfsService::OnAddRemotePinResult(
+    APIRequestList::iterator iter,
+    AddRemotePinCallback callback,
+    api_request_helper::APIRequestResult response) {
+  int response_code = response.response_code();
+  requests_list_.erase(iter);
+
+  bool success = response.Is2XXResponseCode();
+  LOG(ERROR) << "XXXZZZ OnAddRemotePinResult " << success << " "
+             << response_code << " " << response.body();
+
+  if (!success) {
+    VLOG(1) << "Fail to add remote pin service, response_code = "
+            << response_code;
+  }
+
+  ipfs::AddRemotePinResult result;
+  bool parse_result =
+      IPFSJSONParser::GetAddRemotePinResultFromJson(response.body(), &result);
+  if (!parse_result) {
+    VLOG(1) << "Fail to add remote pin service, response_code = "
+            << response_code;
+  }
+
+  std::move(callback).Run(result.status == "pinned");
+}
+
+void IpfsService::OnRemoveRemotePinResult(
+    APIRequestList::iterator iter,
+    RemoveRemotePinCallback callback,
+    api_request_helper::APIRequestResult response) {
+  int response_code = response.response_code();
+  requests_list_.erase(iter);
+
+  bool success = response.Is2XXResponseCode();
+  if (!success) {
+    VLOG(1) << "Fail to add remote pin service, response_code = "
+            << response_code;
+  }
+
+  std::move(callback).Run(success);
+}
+
+void IpfsService::OnGetRemotePinResult(
+    APIRequestList::iterator iter,
+    GetRemotePinsCallback callback,
+    api_request_helper::APIRequestResult response) {
+  int response_code = response.response_code();
+  requests_list_.erase(iter);
+
+  bool success = response.Is2XXResponseCode();
+  if (!success) {
+    VLOG(1) << "Fail to get remote pins, response_code = " << response_code;
+  }
+
+  ipfs::GetRemotePinResult result;
+  bool parse_result =
+      IPFSJSONParser::GetGetRemotePinsResultFromJson(response.body(), &result);
+  if (!parse_result) {
+    VLOG(1) << "Fail to parse remote pin service, response_code = "
+            << response_code;
+  }
+
+  std::move(callback).Run(result);
+}
+
+//  Remote pin services result
+
+void IpfsService::OnRemotePiningServiceAddResult(
+    APIRequestList::iterator iter,
+    AddRemotePinServiceCallback callback,
+    api_request_helper::APIRequestResult response) {
+  int response_code = response.response_code();
+  requests_list_.erase(iter);
+
+  bool success = response.Is2XXResponseCode();
+  LOG(ERROR) << "XXXZZZ OnRemotePiningServiceAddResult " << success << " "
+             << response_code << " " << response.body();
+
+  if (!success) {
+    VLOG(1) << "Fail to add remote pin service, response_code = "
+            << response_code;
+  }
+
+  std::move(callback).Run(success);
+}
+
+void IpfsService::OnRemotePiningServiceRemoveResult(
+    APIRequestList::iterator iter,
+    RemoveRemotePinServiceCallback callback,
+    api_request_helper::APIRequestResult response) {
+  int response_code = response.response_code();
+  requests_list_.erase(iter);
+
+  bool success = response.Is2XXResponseCode();
+  if (!success) {
+    VLOG(1) << "Fail to remove remote pin service, response_code = "
+            << response_code;
+  }
+
+  std::move(callback).Run(success);
+}
+
+void IpfsService::OnRemotePiningServicesGetResult(
+    APIRequestList::iterator iter,
+    GetRemotePinServicesCallback callback,
+    api_request_helper::APIRequestResult response) {
+  int response_code = response.response_code();
+  requests_list_.erase(iter);
+
+  bool success = response.Is2XXResponseCode();
+  LOG(ERROR) << "XXXZZZ OnRemotePiningServicesGetResult  " << success << " "
+             << response.error_code() << " " << response.body();
+
+  if (!success) {
+    VLOG(1) << "Fail to remove remote pin service, response_code = "
+            << response_code;
+    std::move(callback).Run(absl::nullopt);
+    return;
+  }
+
+  ipfs::GetRemotePinServicesResult result;
+  bool parse_result =
+      IPFSJSONParser::GetGetRemotePinServicesResult(response.body(), &result);
+  if (!parse_result) {
+    VLOG(1) << "Fail to parse remote pin service, response_code = "
+            << response_code;
+    std::move(callback).Run(absl::nullopt);
+    return;
+  }
+
+  std::move(callback).Run(result);
 }
 
 void IpfsService::OnGatewayValidationComplete(

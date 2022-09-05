@@ -286,6 +286,7 @@ export interface PageState {
   isFetchingNFTMetadata: boolean
   nftMetadata: NFTMetadataReturnType | undefined
   nftMetadataError: string | undefined
+  pinStatusOverview: BraveWallet.TokenPinOverview | undefined
   selectedAssetFiatPrice: BraveWallet.AssetPrice | undefined
   selectedAssetCryptoPrice: BraveWallet.AssetPrice | undefined
   selectedAssetPriceHistory: GetPriceHistoryReturnInfo[]
@@ -675,7 +676,7 @@ export enum WalletRoutes {
 
   // wallet mangement
   Restore = '/crypto/restore-wallet',
-  Unlock = '/crypto/unlock',
+  Unlock = '/crAddAccountModalypto/unlock',
 
   // portfolio
   Portfolio = '/crypto/portfolio',
@@ -684,6 +685,8 @@ export enum WalletRoutes {
 
   // portfolio asset modals
   AddAssetModal = '/crypto/portfolio/add-asset',
+
+  ManagePinModal = '/crypto/portfolio/manage-pin-account',
 
   // swap
   Swap = '/swap',

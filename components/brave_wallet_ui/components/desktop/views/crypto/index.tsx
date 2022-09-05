@@ -38,6 +38,7 @@ import { AddAccountModal } from '../../popup-modals/add-account-modal/add-accoun
 import { NftView } from '../nfts/nft-view'
 import { ConfirmPasswordModal } from '../../popup-modals/confirm-password-modal/confirm-password-modal'
 import { AccountSettingsModal } from '../../popup-modals/account-settings-modal/account-settings-modal'
+// import { ManagePinModalView } from "../../popup-modals/manage-pin-modal"
 
 interface ParamsType {
   category?: TopTabNavTypes
@@ -259,6 +260,11 @@ const CryptoView = (props: Props) => {
         <Route path={WalletRoutes.AddAccountModal}>
           <AddAccountModal />
         </Route>
+
+        <Route path={WalletRoutes.ManagePinModal}>
+        <AddAccountModal />
+      </Route>
+
       </Switch>
 
       {accountToRemove !== undefined &&

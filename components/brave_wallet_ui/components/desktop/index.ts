@@ -32,6 +32,7 @@ import { CryptoView, PortfolioAsset, PortfolioOverview } from './views'
 import { AssetFilterSelector } from './asset-filter-selector/asset-filter-selector'
 import AssetsFilterDropdown from './assets-filter-dropdown'
 import { AccountFilterSelector } from './account-filter-selector/account-filter-selector'
+import { ManagePinModalView } from "./popup-modals/manage-pin-modal"
 
 export {
   SideNavButton,
@@ -64,5 +65,6 @@ export {
   AssetsFilterDropdown,
   NetworkFilterSelector,
   AssetFilterSelector,
-  AccountFilterSelector
+  AccountFilterSelector,
+  ManagePinModalView,
 }

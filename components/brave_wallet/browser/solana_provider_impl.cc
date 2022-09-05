@@ -500,6 +500,7 @@ void SolanaProviderImpl::Request(base::Value::Dict arg,
                                  RequestCallback callback) {
   const std::string* method = arg.FindString("method");
   if (!method) {
+    LOG(ERROR) << "XXXZZZ parsing error";
     std::move(callback).Run(mojom::SolanaProviderError::kParsingError,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR),
                             base::Value::Dict());
@@ -512,6 +513,7 @@ void SolanaProviderImpl::Request(base::Value::Dict arg,
                   *method == solana::kSignAndSendTransaction ||
                   *method == solana::kSignAllTransactions ||
                   *method == solana::kSignMessage)) {
+    LOG(ERROR) << "XXXZZZ parsing error";
     std::move(callback).Run(mojom::SolanaProviderError::kParsingError,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR),
                             base::Value::Dict());

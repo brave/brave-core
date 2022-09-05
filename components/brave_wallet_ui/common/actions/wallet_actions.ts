@@ -97,5 +97,10 @@
   unlocked,
   updateUnapprovedTransactionGasFields,
   updateUnapprovedTransactionNonce,
-  updateUnapprovedTransactionSpendAllowance
+  updateUnapprovedTransactionSpendAllowance,
+  pinTokenRemotely,
+  pinTokenLocaly,
+  removeLocalPin,
+  removeRemotePin,
+  updateTokenPinStatus,
  } = WalletActions

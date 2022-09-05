@@ -698,4 +698,25 @@ handler.on(WalletActions.getOnRampCurrencies.type, async (store: Store) => {
   await store.dispatch(WalletActions.setOnRampCurrencies(currencies))
 })
 
+handler.on(WalletActions.pinTokenRemotely.type, async(store: Store, payload: BraveWallet.BlockchainToken) => {
+  const apiProxy = getAPIProxy()
+  await apiProxy.braveWalletPinService.addPin(payload, BraveWallet.NFT_STORAGE_SERVICE_NAME)
+})
+
+handler.on(WalletActions.pinTokenLocaly.type, async(store: Store, payload: BraveWallet.BlockchainToken) => {
+  const apiProxy = getAPIProxy()
+  await apiProxy.braveWalletPinService.addPin(payload, null)
+})
+
+handler.on(WalletActions.removeLocalPin.type, async(store: Store, payload: BraveWallet.BlockchainToken) => {
+  const apiProxy = getAPIProxy()
+  await apiProxy.braveWalletPinService.removePin(payload, null)
+})
+
+handler.on(WalletActions.removeRemotePin.type, async(store: Store, payload: BraveWallet.BlockchainToken) => {
+  const apiProxy = getAPIProxy()
+  await apiProxy.braveWalletPinService.removePin(payload, BraveWallet.NFT_STORAGE_SERVICE_NAME)
+})
+
+
 export default handler.middleware

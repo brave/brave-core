@@ -57,5 +57,8 @@ extern const char kBraveWalletCurrentChainId[];
 extern const char kBraveWalletUserAssetsDeprecated[];
 extern const char
     kBraveWalletUserAssetsAddPreloadingNetworksMigratedDeprecated[];
+extern const char kPinnedErc721Assets[];
+extern const char kSelectedPinServices[];
+extern const char kAutoPinEnabled[];
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PREF_NAMES_H_

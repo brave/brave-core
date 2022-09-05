@@ -33,6 +33,8 @@ extern const char kLocalhostIP[];
 extern const char kLocalhostDomain[];
 extern const char kGarbageCollectionPath[];
 extern const char kImportAddPath[];
+extern const char kImportRemovePath[];
+extern const char kListPath[];
 extern const char kImportMakeDirectoryPath[];
 extern const char kImportCopyPath[];
 extern const char kImportDirectory[];
@@ -42,6 +44,22 @@ extern const char kFileValueName[];
 extern const char kFileMimeType[];
 extern const char kDirectoryMimeType[];
 extern const char kIPFSImportTextMimeType[];
+extern const char kNodeInfoPath[];
+
+// Local pins
+extern const char kAddPinPath[];
+extern const char kRemovePinPath[];
+extern const char kGetPinsPath[];
+
+// Remote pins
+extern const char kAddRemotePinPath[];
+extern const char kRemoveRemotePinPath[];
+extern const char kGetRemotePinsPath[];
+
+// Remote pin services
+extern const char kAddRemotePinServicePath[];
+extern const char kGetRemotePinServicesPath[];
+extern const char kRemoveRemotePinServicePath[];
 
 // Keep it synced with IPFSResolveMethodTypes in
 // browser/resources/settings/brave_ipfs_page/brave_ipfs_page.js

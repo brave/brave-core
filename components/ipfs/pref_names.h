@@ -17,5 +17,6 @@ extern const char kIPFSPublicGatewayAddress[];
 extern const char kIPFSPublicNFTGatewayAddress[];
 extern const char kIPFSResolveMethod[];
 extern const char kIpfsStorageMax[];
+extern const char kIPFSPinnedCids[];
 
 #endif  // BRAVE_COMPONENTS_IPFS_PREF_NAMES_H_

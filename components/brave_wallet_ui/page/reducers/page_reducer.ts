@@ -41,6 +41,7 @@ const defaultState: PageState = {
   isFetchingNFTMetadata: true,
   nftMetadata: undefined,
   nftMetadataError: undefined,
+  pinStatusOverview: undefined,
   selectedAssetFiatPrice: undefined,
   selectedAssetCryptoPrice: undefined,
   selectedAssetPriceHistory: [],
@@ -71,7 +72,9 @@ export const WalletPageAsyncActions = {
   removeImportedAccount: createAction<RemoveImportedAccountPayloadType>('removeImportedAccount'),
   restoreWallet: createAction<RestoreWalletPayloadType>('restoreWallet'),
   selectAsset: createAction<UpdateSelectedAssetType>('selectAsset'),
-  updateAccountName: createAction<UpdateAccountNamePayloadType>('updateAccountName')
+  updateAccountName: createAction<UpdateAccountNamePayloadType>('updateAccountName'),
+  updateNFTPinStatus: createAction<BraveWallet.TokenPinOverview | undefined>('updateNFTPinStatus'),
+  getPinStatus: createAction<BraveWallet.BlockchainToken>('getPinStatus')
 }
 
 export const createPageSlice = (initialState: PageState = defaultState) => {

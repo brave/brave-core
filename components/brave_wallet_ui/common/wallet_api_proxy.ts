@@ -23,6 +23,8 @@ export class WalletApiProxy {
   filTxManagerProxy = new BraveWallet.FilTxManagerProxyRemote()
   braveWalletService = new BraveWallet.BraveWalletServiceRemote()
   braveWalletP3A = new BraveWallet.BraveWalletP3ARemote()
+  braveWalletPinService = new BraveWallet.WalletPinServiceRemote()
+  braveWalletAutoPinService = new BraveWallet.WalletAutoPinServiceRemote()
 
   addJsonRpcServiceObserver (store: Store) {
     const jsonRpcServiceObserverReceiver = new BraveWallet.JsonRpcServiceObserverReceiver({
@@ -117,6 +119,15 @@ export class WalletApiProxy {
       }
     })
     this.braveWalletService.addObserver(braveWalletServiceObserverReceiver.$.bindNewPipeAndPassRemote())
+  }
+
+  addBraveWalletPinServiceObserver (store: Store) {
+    const braveWalletServiceObserverReceiver = new BraveWallet.BraveWalletPinServiceObserverReceiver({
+      onTokenStatusChanged: function(service, token, status) {
+       // store.dispatch(WalletActions.getPinStatus)
+      }
+    })
+    this.braveWalletPinService.addObserver(braveWalletServiceObserverReceiver.$.bindNewPipeAndPassRemote())
   }
 }
 

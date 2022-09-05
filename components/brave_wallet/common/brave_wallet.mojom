@@ -207,6 +207,75 @@ interface SolanaProvider {
         mojo_base.mojom.DictionaryValue result);
 
 };
+enum WalletPinServiceErrorCode {
+  ERR_WRONG_TOKEN = 1,
+  ERR_NON_IPFS_TOKEN_URL = 2,
+  ERR_FETCH_METADATA_FAILED = 3,
+  ERR_WRONG_METADATA_FORMAT = 4,
+  ERR_ALREADY_PINNED = 5,
+  ERR_NOT_PINNED = 6,
+  ERR_PINNING_FAILED = 7
+};
+
+enum TokenPinStatusCode {
+  STATUS_NOT_PINNED = 1,
+  STATUS_PINNED = 2,
+  STATUS_PINNING_IN_PROGRESS = 3,
+  STATUS_PINNING_FAILED = 4,
+  STATUS_UNPINNING_IN_PROGRESS = 5,
+  STATUS_UNPINNING_FAILED = 6,
+  STATUS_PINNING_PENDING = 7,
+  STATUS_UNPINNING_PENDING = 8
+};
+
+struct TokenPinStatus {
+  TokenPinStatusCode code;
+  WalletPinServiceErrorCode error;
+  mojo_base.mojom.Time? validate_time;
+};
+
+struct PinError {
+  WalletPinServiceErrorCode error_code;
+  string message;
+};
+
+struct RemotePinService {
+  string endpoint;
+  string name;
+  string key;
+};
+
+struct TokenPinOverview {
+  TokenPinStatusCode local;
+  map<string, TokenPinStatusCode> remotes;
+};
+
+interface BraveWalletPinServiceObserver {
+  OnTokenStatusChanged(string? service, BlockchainToken token, TokenPinStatusCode status);
+};
+
+interface WalletPinService {
+  AddObserver(pending_remote<BraveWalletPinServiceObserver> observer);
+
+  AddRemotePinService(RemotePinService remote_service) => (bool result, PinError? error);
+  RemoveRemotePinService(string name) => (bool result, PinError? error);
+  GetRemotePinServices() => (array<RemotePinService> result, PinError? error);
+
+  AddPin(BlockchainToken token, string? service) => (bool result, PinError? error);
+  RemovePin(BlockchainToken token, string? service) => (bool result, PinError? response);
+
+  GetTokenStatus(BlockchainToken token) => (TokenPinOverview? status, PinError? error);
+  Validate(BlockchainToken token, string? service) => (bool result, PinError? error);
+};
+
+interface WalletAutoPinService {
+  SetAutoPinEnabled(bool enabled);
+  IsAutoPinEnabled() => (bool enabled);
+  SetServices(array<string?> services);
+  GetServices() => (array<string?> services);
+  PostPinToken(BlockchainToken token) => (bool result);
+  PostUnpinToken(BlockchainToken token) => (bool result);
+};
 
 // Used by the WebUI page to bootstrap bidirectional communication.
 interface PanelHandlerFactory {
@@ -242,8 +311,9 @@ interface PageHandlerFactory {
                     pending_receiver<SolanaTxManagerProxy> solana_tx_manager_proxy,
                     pending_receiver<FilTxManagerProxy> fil_tx_manager_proxy,
                     pending_receiver<BraveWalletService> brave_wallet_service,
-                    pending_receiver<BraveWalletP3A> brave_wallet_p3a);
-
+                    pending_receiver<BraveWalletP3A> brave_wallet_p3a,
+                    pending_receiver<WalletPinService> brave_wallet_pin_service,
+                    pending_receiver<WalletAutoPinService> brave_wallet_auto_pin_service);
 };
 
 // Browser-side handler for requests from WebUI page.
@@ -787,6 +857,9 @@ const string kSolanaDevnet = "0x67";
 const string kFilecoinTestnet = "t";
 const string kFilecoinMainnet = "f";
 
+// Default remote pin service name
+const string kNftStorageServiceName = "nft.storage2";
+
 enum CoinType {
   ETH = 60,
   FIL = 461,
@@ -897,10 +970,10 @@ interface JsonRpcService {
                          string owner_address, string spender_address) => (string allowance, ProviderError error, string error_message);
 
   // Obtains the metadata JSON for a token ID of an ERC721 contract
-  GetERC721Metadata(string contract, string token_id, string chain_id) => (string response, ProviderError error, string error_message);
+  GetERC721Metadata(string contract, string token_id, string chain_id) => (string token_url, string response, ProviderError error, string error_message);
 
   // Obtains the metadata JSON for a token ID of an ERC1155 contract
-  GetERC1155Metadata(string contract, string token_id, string chain_id) => (string response, ProviderError error, string error_message);
+  GetERC1155Metadata(string contract, string token_id, string chain_id) => (string token_url, string response, ProviderError error, string error_message);
 
   // ENS lookups
   EnsGetEthAddr(string domain, EnsOffchainLookupOptions? options) => (string address, bool require_offchain_consent, ProviderError error, string error_message);
@@ -1137,6 +1210,11 @@ interface BraveWalletServiceObserver {
   OnNetworkListChanged();
 };
 
+interface BraveWalletServiceTokenObserver {
+  OnTokenAdded(BlockchainToken token);
+  OnTokenRemoved(BlockchainToken token);
+};
+
 struct SignMessageRequest {
   OriginInfo origin_info;
   int32 id;
@@ -1192,6 +1270,8 @@ union ByteArrayStringUnion {
 interface BraveWalletService {
   // Adds an observer for BraveWalletService
   AddObserver(pending_remote<BraveWalletServiceObserver> observer);
+
+  AddTokenObserver(pending_remote<BraveWalletServiceTokenObserver> observer);
 
   // Obtains the user assets for the specified chain ID and coin type.
   GetUserAssets(string chain_id, CoinType coin) => (array<BlockchainToken> tokens);

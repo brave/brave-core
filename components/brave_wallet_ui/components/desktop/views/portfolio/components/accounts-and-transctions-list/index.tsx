@@ -73,6 +73,10 @@ export const AccountsAndTransactionsList = ({
   // state
   const [hideBalances, setHideBalances] = React.useState<boolean>(false)
 
+  // const {
+  //   pinStatusOverview,
+  // } = useSelector(({ page }: { page: PageState }) => page)
+
   const selectedAssetsNetwork = React.useMemo(() => {
     if (!selectedAsset) {
       return selectedNetwork
@@ -142,7 +146,7 @@ export const AccountsAndTransactionsList = ({
             <AddButton
               buttonType='secondary'
               onSubmit={onClickAddAccount('create')}
-              text={getLocale('braveWalletAddAccount')}
+              text={"textx"}
             />
           </ButtonRow>
           <DividerText>{getLocale('braveWalletTransactions')}</DividerText>

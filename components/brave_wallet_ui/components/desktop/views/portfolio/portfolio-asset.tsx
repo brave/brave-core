@@ -6,6 +6,7 @@
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
 import { Redirect, useHistory, useParams } from 'react-router'
+import Button from '$web-components/button'
 
 // types
 import {
@@ -149,6 +150,7 @@ export const PortfolioAsset = (props: Props) => {
   const nftMetadata = useUnsafePageSelector(PageSelectors.nftMetadata)
   const selectedCoinMarket = useUnsafePageSelector(PageSelectors.selectedCoinMarket)
   const nftMetadataError = useSafePageSelector(PageSelectors.nftMetadataError)
+  const pinStatusOverview = useUnsafePageSelector(PageSelectors.pinStatusOverview)
 
   // custom hooks
   const { allAssetOptions, isReduxSelectedAssetBuySupported, getAllBuyOptionsAllChains } = useMultiChainBuyAssets()
@@ -360,6 +362,11 @@ export const PortfolioAsset = (props: Props) => {
   // methods
   const onClickAddAccount = React.useCallback((tabId: AddAccountNavTypes) => () => {
     history.push(WalletRoutes.AddAccountModal)
+  }, [])
+
+  const onClickPinButton = React.useCallback(() => {
+    console.error('XXXZZZ manage pin modal');
+    history.push(WalletRoutes.ManagePinModal)
   }, [])
 
   const onChangeTimeline = React.useCallback((timeline: BraveWallet.AssetPriceTimeframe) => {
@@ -712,6 +719,16 @@ export const PortfolioAsset = (props: Props) => {
 
       {showNftModal && nftMetadata?.imageURL &&
         <NftModal nftImageUrl={nftMetadata.imageURL} onClose={onCloseNftModal} />
+      }
+
+      {isNftAsset && pinStatusOverview &&
+        <>
+          <Button
+            onClick={onClickPinButton}>
+            {"Check pin status"}
+          </Button>
+        </>
+
       }
 
       {isTokenSupported

@@ -39,10 +39,28 @@ const char kGarbageCollectionPath[] = "/api/v0/repo/gc";
 const char kImportAddPath[] = "/api/v0/add";
 const char kImportMakeDirectoryPath[] = "/api/v0/files/mkdir";
 const char kImportCopyPath[] = "/api/v0/files/cp";
+const char kImportRemovePath[] = "/api/v0/files/rm";
+const char kListPath[] = "api/v0/files/ls";
 const char kImportDirectory[] = "/brave-imports/";
 const char kIPFSImportMultipartContentType[] = "multipart/form-data;";
 const char kFileValueName[] = "file";
 const char kFileMimeType[] = "application/octet-stream";
 const char kDirectoryMimeType[] = "application/x-directory";
 const char kIPFSImportTextMimeType[] = "application/octet-stream";
+
+// Local pins
+const char kAddPinPath[] = "api/v0/pin/add";
+const char kRemovePinPath[] = "api/v0/pin/rm";
+const char kGetPinsPath[] = "api/v0/pin/ls";
+
+// Remote pins
+const char kAddRemotePinPath[] = "api/v0/pin/remote/add";
+const char kRemoveRemotePinPath[] = "api/v0/pin/remote/rm";
+const char kGetRemotePinsPath[] = "api/v0/pin/remote/ls";
+
+// Remote pin services
+const char kAddRemotePinServicePath[] = "api/v0/pin/remote/service/add";
+const char kGetRemotePinServicesPath[] = "api/v0/pin/remote/service/ls";
+const char kRemoveRemotePinServicePath[] = "api/v0/pin/remote/service/rm";
+
 }  // namespace ipfs

@@ -86,6 +86,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                        kBraveWalletP3ALastUnlockTime,
                                        kBraveWalletP3AUsedSecondDay, nullptr);
   registry->RegisterDictionaryPref(kBraveWalletLastTransactionSentTimeDict);
+  registry->RegisterDictionaryPref(kPinnedErc721Assets);
+  registry->RegisterBooleanPref(kAutoPinEnabled, true);
+  registry->RegisterListPref(kSelectedPinServices, base::Value::List());
 }
 
 void RegisterProfilePrefsForMigration(

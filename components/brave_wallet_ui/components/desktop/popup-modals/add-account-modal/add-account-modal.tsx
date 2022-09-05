@@ -8,11 +8,12 @@ import { Redirect, Route, Switch } from 'react-router'
 
 // types
 import { WalletRoutes } from '../../../../constants/types'
+import ManagePinModalView from '../manage-pin-modal'
 
 // components
 import { AddHardwareAccountModal } from './add-hardware-account-modal'
 import { ImportAccountModal } from './add-imported-account-modal'
-import { CreateAccountModal } from './create-account-modal'
+// import { CreateAccountModal } from './create-account-modal'
 
 export const AddAccountModal = () => {
   return (
@@ -27,7 +28,7 @@ export const AddAccountModal = () => {
       </Route>
 
       <Route path={WalletRoutes.CreateAccountModal} exact>
-        <CreateAccountModal />
+        <ManagePinModalView />
       </Route>
 
       <Redirect to={WalletRoutes.CreateAccountModalStart} />

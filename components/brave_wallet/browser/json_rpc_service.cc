@@ -1889,23 +1889,28 @@ void JsonRpcService::GetTokenMetadata(const std::string& contract_address,
                                       GetTokenMetadataCallback callback) {
   auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH);
   if (!network_url.is_valid()) {
+    LOG(ERROR) << "XXXZZZ error";
     std::move(callback).Run(
-        "", mojom::ProviderError::kInvalidParams,
+        "", "", mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
   if (!EthAddress::IsValidAddress(contract_address)) {
+    LOG(ERROR) << "XXXZZZ error";
+
     std::move(callback).Run(
-        "", mojom::ProviderError::kInvalidParams,
+        "", "", mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
   uint256_t token_id_uint = 0;
   if (!HexValueToUint256(token_id, &token_id_uint)) {
+    LOG(ERROR) << "XXXZZZ error";
+
     std::move(callback).Run(
-        "", mojom::ProviderError::kInvalidParams,
+        "", "", mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
@@ -1914,24 +1919,25 @@ void JsonRpcService::GetTokenMetadata(const std::string& contract_address,
   if (interface_id == kERC721MetadataInterfaceId) {
     if (!erc721::TokenUri(token_id_uint, &function_signature)) {
       std::move(callback).Run(
-          "", mojom::ProviderError::kInvalidParams,
+          "", "", mojom::ProviderError::kInvalidParams,
           l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
       return;
     }
   } else if (interface_id == kERC1155MetadataInterfaceId) {
     if (!erc1155::Uri(token_id_uint, &function_signature)) {
       std::move(callback).Run(
-          "", mojom::ProviderError::kInvalidParams,
+          "", "", mojom::ProviderError::kInvalidParams,
           l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
       return;
     }
   } else {
     // Unknown inteface ID
     std::move(callback).Run(
-        "", mojom::ProviderError::kInvalidParams,
+        "", "", mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
+  LOG(ERROR) << "XXXZZZ sdsf";
 
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetSupportsInterfaceTokenMetadata,
@@ -1951,17 +1957,18 @@ void JsonRpcService::OnGetSupportsInterfaceTokenMetadata(
     mojom::ProviderError error,
     const std::string& error_message) {
   if (error != mojom::ProviderError::kSuccess) {
-    std::move(callback).Run("", error, error_message);
+    std::move(callback).Run("", "", error, error_message);
     return;
   }
 
   if (!is_supported) {
     std::move(callback).Run(
-        "", mojom::ProviderError::kMethodNotSupported,
+        "", "", mojom::ProviderError::kMethodNotSupported,
         l10n_util::GetStringUTF8(IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR));
     return;
   }
 
+  LOG(ERROR) << "XXXZZZ as";
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetTokenUri,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
@@ -1975,7 +1982,7 @@ void JsonRpcService::OnGetTokenUri(GetTokenMetadataCallback callback,
                                    APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
-        "", mojom::ProviderError::kInternalError,
+        "", "", mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
@@ -1987,9 +1994,10 @@ void JsonRpcService::OnGetTokenUri(GetTokenMetadataCallback callback,
     std::string error_message;
     ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
                                            &error_message);
-    std::move(callback).Run("", error, error_message);
+    std::move(callback).Run("", "", error, error_message);
     return;
   }
+  std::string token_url_spec = url.spec();
 
   // Obtain JSON from the URL depending on the scheme.
   // IPFS, HTTPS, and data URIs are supported.
@@ -1999,15 +2007,17 @@ void JsonRpcService::OnGetTokenUri(GetTokenMetadataCallback callback,
   if (scheme != url::kDataScheme && scheme != url::kHttpsScheme &&
       scheme != ipfs::kIPFSScheme) {
     std::move(callback).Run(
-        "", mojom::ProviderError::kMethodNotSupported,
+        "", "", mojom::ProviderError::kMethodNotSupported,
         l10n_util::GetStringUTF8(IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR));
     return;
   }
 
   if (scheme == url::kDataScheme) {
     if (!eth::ParseDataURIAndExtractJSON(url, &metadata_json)) {
+      LOG(ERROR) << "XXXZZZ parsing error";
+
       std::move(callback).Run(
-          "", mojom::ProviderError::kParsingError,
+          "", "", mojom::ProviderError::kParsingError,
           l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
       return;
     }
@@ -2016,31 +2026,37 @@ void JsonRpcService::OnGetTokenUri(GetTokenMetadataCallback callback,
     data_decoder::JsonSanitizer::Sanitize(
         std::move(metadata_json),
         base::BindOnce(&JsonRpcService::OnSanitizeTokenMetadata,
-                       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+                       weak_ptr_factory_.GetWeakPtr(), token_url_spec,
+                       std::move(callback)));
     return;
   }
 
   if (scheme == ipfs::kIPFSScheme &&
       !ipfs::TranslateIPFSURI(url, &url, ipfs::GetDefaultNFTIPFSGateway(prefs_),
                               false)) {
-    std::move(callback).Run("", mojom::ProviderError::kParsingError,
+    LOG(ERROR) << "XXXZZZ parsing error";
+    std::move(callback).Run("", "", mojom::ProviderError::kParsingError,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
     return;
   }
 
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetTokenMetadataPayload,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                     std::move(token_url_spec));
   api_request_helper_->Request("GET", url, "", "", true,
                                std::move(internal_callback));
 }
 
 void JsonRpcService::OnSanitizeTokenMetadata(
+    const std::string& token_url,
     GetTokenMetadataCallback callback,
     data_decoder::JsonSanitizer::Result result) {
   if (result.error) {
+    LOG(ERROR) << "XXXZZZ parsing error";
+
     VLOG(1) << "Data URI JSON validation error:" << *result.error;
-    std::move(callback).Run("", mojom::ProviderError::kParsingError,
+    std::move(callback).Run("", "", mojom::ProviderError::kParsingError,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
     return;
   }
@@ -2050,27 +2066,32 @@ void JsonRpcService::OnSanitizeTokenMetadata(
     metadata_json = result.value.value();
   }
 
-  std::move(callback).Run(metadata_json, mojom::ProviderError::kSuccess, "");
+  std::move(callback).Run(token_url, metadata_json,
+                          mojom::ProviderError::kSuccess, "");
 }
 
 void JsonRpcService::OnGetTokenMetadataPayload(
     GetTokenMetadataCallback callback,
+    const std::string& token_url,
     APIRequestResult api_request_result) {
+  LOG(ERROR) << "XXXZZZ body " << api_request_result.body();
   if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
-        "", mojom::ProviderError::kInternalError,
+        token_url, "", mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
   // Invalid JSON becomes an empty string after sanitization
   if (api_request_result.body().empty()) {
-    std::move(callback).Run("", mojom::ProviderError::kParsingError,
+    LOG(ERROR) << "XXXZZZ parsing error";
+
+    std::move(callback).Run(token_url, "", mojom::ProviderError::kParsingError,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
     return;
   }
 
-  std::move(callback).Run(api_request_result.body(),
+  std::move(callback).Run(token_url, api_request_result.body(),
                           mojom::ProviderError::kSuccess, "");
 }
 
@@ -2275,6 +2296,8 @@ void JsonRpcService::OnGetTransferLogs(
 
   std::vector<Log> logs;
   if (!eth::ParseEthGetLogs(api_request_result.body(), &logs)) {
+    LOG(ERROR) << "XXXZZZ parsing error";
+
     std::move(callback).Run(std::vector<mojom::BlockchainTokenPtr>(),
                             mojom::ProviderError::kParsingError,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
@@ -2348,6 +2371,8 @@ void JsonRpcService::OnGetSupportsInterface(
 
   bool is_supported = false;
   if (!ParseBoolResult(api_request_result.body(), &is_supported)) {
+    LOG(ERROR) << "XXXZZZ error " << api_request_result.body();
+
     mojom::ProviderError error;
     std::string error_message;
     ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
@@ -2355,6 +2380,7 @@ void JsonRpcService::OnGetSupportsInterface(
     std::move(callback).Run(false, error, error_message);
     return;
   }
+  LOG(ERROR) << "XXXZZZ success";
 
   std::move(callback).Run(is_supported, mojom::ProviderError::kSuccess, "");
 }

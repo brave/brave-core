@@ -13,10 +13,16 @@
 #include "brave/components/ipfs/addresses_config.h"
 #include "brave/components/ipfs/import/imported_data.h"
 #include "brave/components/ipfs/node_info.h"
+#include "brave/components/ipfs/pin/ipfs_pin_rpc_types.h"
 #include "brave/components/ipfs/repo_stats.h"
 
 class IPFSJSONParser {
  public:
+  static bool GetRemovePinsResultFromJSON(
+      const std::string& json,
+      ipfs::RemovePinResult* add_pin_result);
+  static bool GetPinsResultFromJSON(const std::string& json,
+                                    ipfs::GetPinsResult* add_pin_result);
   static bool GetPeersFromJSON(const std::string& json,
                                std::vector<std::string>* peers);
   static bool GetAddressesConfigFromJSON(const std::string& json,
@@ -42,6 +48,23 @@ class IPFSJSONParser {
   static std::string RemovePeerFromConfigJSON(const std::string& json,
                                               const std::string& peer_id,
                                               const std::string& address);
+
+  // Remote pin services
+  static bool GetGetRemotePinServicesResult(
+      const std::string& json,
+      ipfs::GetRemotePinServicesResult* result);
+
+  // Local pins
+  static bool GetAddPinsResultFromJSON(const std::string& json,
+                                       ipfs::AddPinResult* add_pin_result);
+  static bool GetGetPinsResultFromJSON(const std::string& json,
+                                       ipfs::GetPinsResult* result);
+
+  // Remote pins
+  static bool GetAddRemotePinResultFromJson(const std::string& json,
+                                            ipfs::AddRemotePinResult* result);
+  static bool GetGetRemotePinsResultFromJson(const std::string& json,
+                                             ipfs::GetRemotePinResult* result);
 };
 
 #endif  // BRAVE_COMPONENTS_IPFS_IPFS_JSON_PARSER_H_
