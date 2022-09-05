@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
 #include "bat/ads/internal/catalog/catalog_info.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
@@ -114,18 +115,18 @@ bool ShouldFilterSegment(const std::string& segment) {
     return false;
   }
 
-  const auto iter =
-      std::find_if(filtered_segments.cbegin(), filtered_segments.cend(),
-                   [&segment](const FilteredCategoryInfo& filtered_segment) {
-                     if (HasChildSegment(filtered_segment.name)) {
-                       // Filter against child, i.e. "technology &
-                       // computing-linux"
-                       return segment == filtered_segment.name;
-                     }
+  const auto iter = base::ranges::find_if(
+      filtered_segments,
+      [&segment](const FilteredCategoryInfo& filtered_segment) {
+        if (HasChildSegment(filtered_segment.name)) {
+          // Filter against child, i.e. "technology &
+          // computing-linux"
+          return segment == filtered_segment.name;
+        }
 
-                     // Filter against parent, i.e. "technology & computing"
-                     return MatchParentSegments(segment, filtered_segment.name);
-                   });
+        // Filter against parent, i.e. "technology & computing"
+        return MatchParentSegments(segment, filtered_segment.name);
+      });
 
   return iter != filtered_segments.cend();
 }

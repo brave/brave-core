@@ -11,6 +11,7 @@
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/notreached.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/new_tab_page_ad_info.h"
@@ -442,9 +443,8 @@ bool NTPSponsoredImagesData::AdInfoMatchesSponsoredImage(
     return false;
   }
 
-  const auto it = std::find_if(
-      ad_info.wallpapers.begin(), ad_info.wallpapers.end(),
-      [&background](const auto& wallpaper_info) {
+  const auto it = base::ranges::find_if(
+      ad_info.wallpapers, [&background](const auto& wallpaper_info) {
         const std::string wallpaper_image_filename =
             wallpaper_info.image_url.ExtractFileName();
         if (wallpaper_image_filename.empty()) {

@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
 
-#include <algorithm>
 #include <limits>
 #include <utility>
 
+#include "base/containers/contains.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/json/values_util.h"
@@ -54,10 +54,7 @@ void RewardsNotificationServiceImpl::AddNotification(
   if (id.empty()) {
     id = GenerateRewardsNotificationID();
   } else if (only_once) {
-    if (std::find(
-        rewards_notifications_displayed_.begin(),
-        rewards_notifications_displayed_.end(),
-        id) != rewards_notifications_displayed_.end()) {
+    if (base::Contains(rewards_notifications_displayed_, id)) {
       return;
     }
   }

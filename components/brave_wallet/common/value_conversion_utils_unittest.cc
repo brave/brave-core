@@ -214,15 +214,11 @@ TEST(ValueConversionUtilsUnitTest, NetworkInfoToValueTest) {
   }
 
   for (const auto& entry : *value.FindList("iconUrls")) {
-    ASSERT_NE(std::find(chain.icon_urls.begin(), chain.icon_urls.end(),
-                        entry.GetString()),
-              chain.icon_urls.end());
+    ASSERT_TRUE(base::Contains(chain.icon_urls, entry.GetString()));
   }
   auto* blocked_urls = value.FindList("blockExplorerUrls");
   for (const auto& entry : *blocked_urls) {
-    ASSERT_NE(std::find(chain.block_explorer_urls.begin(),
-                        chain.block_explorer_urls.end(), entry.GetString()),
-              chain.block_explorer_urls.end());
+    ASSERT_TRUE(base::Contains(chain.block_explorer_urls, entry.GetString()));
   }
 
   auto result = ValueToNetworkInfo(base::Value(value.Clone()));

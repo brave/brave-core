@@ -8,6 +8,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
+#include "base/ranges/algorithm.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "bat/ledger/global_constants.h"
@@ -273,7 +274,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
     // Should not attempt to call /v2/wallet/UUID/claim endpoint
     // since by default the wallet should contain 0 `user_funds`
     auto wallet_claim_call =
-        std::find_if(requests.begin(), requests.end(), [](const Request& req) {
+        base::ranges::find_if(requests, [](const Request& req) {
           return req.url.find("/v2/wallet") != std::string::npos &&
                  req.url.find("/claim") != std::string::npos;
         });
@@ -304,7 +305,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
     // Should not attempt to call /v2/wallet/UUID/claim endpoint
     // since by default the wallet should contain 0 `user_funds`
     auto wallet_claim_call =
-        std::find_if(requests.begin(), requests.end(), [](const Request& req) {
+        base::ranges::find_if(requests, [](const Request& req) {
           return req.url.find("/v2/wallet") != std::string::npos &&
                  req.url.find("/claim") != std::string::npos;
         });

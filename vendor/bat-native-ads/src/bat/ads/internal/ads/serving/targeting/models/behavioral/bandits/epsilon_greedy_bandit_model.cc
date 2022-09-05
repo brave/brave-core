@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/rand_util.h"
 #include "bat/ads/internal/base/logging_util.h"
@@ -77,8 +78,7 @@ EpsilonGreedyBanditArmMap GetEligibleArms(
   EpsilonGreedyBanditArmMap eligible_arms;
 
   for (const auto& arm : arms) {
-    if (std::find(segments.cbegin(), segments.cend(), arm.first) ==
-        segments.cend()) {
+    if (!base::Contains(segments, arm.first)) {
       continue;
     }
 

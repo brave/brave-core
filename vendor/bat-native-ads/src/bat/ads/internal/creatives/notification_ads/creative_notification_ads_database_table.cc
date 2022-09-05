@@ -5,11 +5,11 @@
 
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 
-#include <algorithm>
 #include <map>
 #include <utility>
 
 #include "base/bind.h"
+#include "base/containers/contains.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -123,10 +123,7 @@ CreativeNotificationAdMap GroupCreativeAdsFromResponse(
     }
 
     for (const auto& daypart : creative_ad.dayparts) {
-      const auto daypart_iter =
-          std::find(iter->second.dayparts.cbegin(),
-                    iter->second.dayparts.cend(), daypart);
-      if (daypart_iter == iter->second.dayparts.cend()) {
+      if (!base::Contains(iter->second.dayparts, daypart)) {
         iter->second.dayparts.push_back(daypart);
       }
     }

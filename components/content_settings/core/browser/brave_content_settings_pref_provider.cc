@@ -686,8 +686,8 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   // get the list of changes
   std::vector<Rule> brave_cookie_updates;
   for (const auto& new_rule : brave_cookie_rules_[incognito]) {
-    auto match = std::find_if(
-        old_rules.begin(), old_rules.end(), [&new_rule](const auto& old_rule) {
+    auto match =
+        base::ranges::find_if(old_rules, [&new_rule](const auto& old_rule) {
           // we want an exact match here because any change to the rule
           // is an update
           return new_rule.primary_pattern == old_rule.primary_pattern &&
@@ -702,10 +702,8 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
 
   // find any removed rules
   for (const auto& old_rule : old_rules) {
-    auto match = std::find_if(
-        brave_cookie_rules_[incognito].begin(),
-        brave_cookie_rules_[incognito].end(),
-        [&old_rule](const auto& new_rule) {
+    auto match = base::ranges::find_if(
+        brave_cookie_rules_[incognito], [&old_rule](const auto& new_rule) {
           // we only care about the patterns here because we're looking
           // for deleted rules, not changed rules
           return new_rule.primary_pattern == old_rule.primary_pattern &&

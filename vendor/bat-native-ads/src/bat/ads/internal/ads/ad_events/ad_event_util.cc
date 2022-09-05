@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/ads/ad_events/ad_event_util.h"
 
-#include <algorithm>
-
+#include "base/ranges/algorithm.h"
 #include "base/time/time.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/confirmation_type.h"
@@ -19,12 +18,11 @@ namespace ads {
 bool HasFiredAdEvent(const AdInfo& ad,
                      const AdEventList& ad_events,
                      const ConfirmationType& confirmation_type) {
-  const auto iter =
-      std::find_if(ad_events.cbegin(), ad_events.cend(),
-                   [&ad, &confirmation_type](const AdEventInfo& ad_event) {
-                     return ad_event.placement_id == ad.placement_id &&
-                            ad_event.confirmation_type == confirmation_type;
-                   });
+  const auto iter = base::ranges::find_if(
+      ad_events, [&ad, &confirmation_type](const AdEventInfo& ad_event) {
+        return ad_event.placement_id == ad.placement_id &&
+               ad_event.confirmation_type == confirmation_type;
+      });
 
   return iter != ad_events.cend();
 }
@@ -32,9 +30,8 @@ bool HasFiredAdEvent(const AdInfo& ad,
 absl::optional<base::Time> GetLastSeenAdTime(
     const AdEventList& ad_events,
     const CreativeAdInfo& creative_ad) {
-  const auto iter = std::find_if(
-      ad_events.cbegin(), ad_events.cend(),
-      [&creative_ad](const AdEventInfo& ad_event) -> bool {
+  const auto iter = base::ranges::find_if(
+      ad_events, [&creative_ad](const AdEventInfo& ad_event) -> bool {
         return ad_event.creative_instance_id ==
                    creative_ad.creative_instance_id &&
                ad_event.confirmation_type == ConfirmationType::kViewed;
@@ -50,9 +47,8 @@ absl::optional<base::Time> GetLastSeenAdTime(
 absl::optional<base::Time> GetLastSeenAdvertiserTime(
     const AdEventList& ad_events,
     const CreativeAdInfo& creative_ad) {
-  const auto iter = std::find_if(
-      ad_events.cbegin(), ad_events.cend(),
-      [&creative_ad](const AdEventInfo& ad_event) -> bool {
+  const auto iter = base::ranges::find_if(
+      ad_events, [&creative_ad](const AdEventInfo& ad_event) -> bool {
         return ad_event.advertiser_id == creative_ad.advertiser_id &&
                ad_event.confirmation_type == ConfirmationType::kViewed;
       });

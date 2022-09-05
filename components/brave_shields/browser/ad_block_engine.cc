@@ -5,16 +5,17 @@
 
 #include "brave/components/brave_shields/browser/ad_block_engine.h"
 
-#include <algorithm>
 #include <set>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "base/bind.h"
+#include "base/containers/contains.h"
 #include "base/files/file_path.h"
 #include "base/json/json_reader.h"
 #include "base/memory/ptr_util.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
@@ -157,11 +158,7 @@ void AdBlockEngine::EnableTag(const std::string& tag, bool enabled) {
     }
   } else {
     ad_block_client_->removeTag(tag);
-    std::set<std::string>::iterator it =
-        std::find(tags_.begin(), tags_.end(), tag);
-    if (it != tags_.end()) {
-      tags_.erase(it);
-    }
+    tags_.erase(tag);
   }
 }
 
@@ -170,7 +167,7 @@ void AdBlockEngine::AddResources(const std::string& resources) {
 }
 
 bool AdBlockEngine::TagExists(const std::string& tag) {
-  return std::find(tags_.begin(), tags_.end(), tag) != tags_.end();
+  return base::Contains(tags_, tag);
 }
 
 absl::optional<base::Value> AdBlockEngine::UrlCosmeticResources(

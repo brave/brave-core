@@ -15,12 +15,14 @@
 #include "base/bind.h"
 #include "base/callback_helpers.h"
 #include "base/command_line.h"
+#include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/json/json_file_value_serializer.h"
 #include "base/one_shot_event.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/task_runner_util.h"
@@ -254,8 +256,7 @@ void GreaselionServiceImpl::Shutdown() {
 }
 
 bool GreaselionServiceImpl::IsGreaselionExtension(const std::string& id) {
-  return std::find(greaselion_extensions_.begin(), greaselion_extensions_.end(),
-                   id) != greaselion_extensions_.end();
+  return base::Contains(greaselion_extensions_, id);
 }
 
 std::vector<extensions::ExtensionId>
@@ -357,9 +358,7 @@ void GreaselionServiceImpl::Install(
 void GreaselionServiceImpl::OnExtensionReady(
     content::BrowserContext* browser_context,
     const extensions::Extension* extension) {
-  auto index = std::find(greaselion_extensions_.begin(),
-                         greaselion_extensions_.end(), extension->id());
-  if (index == greaselion_extensions_.end()) {
+  if (!base::Contains(greaselion_extensions_, extension->id())) {
     // not one of ours
     return;
   }
@@ -372,8 +371,7 @@ void GreaselionServiceImpl::OnExtensionUnloaded(
     content::BrowserContext* browser_context,
     const extensions::Extension* extension,
     extensions::UnloadedExtensionReason reason) {
-  auto index = std::find(greaselion_extensions_.begin(),
-                         greaselion_extensions_.end(), extension->id());
+  auto index = base::ranges::find(greaselion_extensions_, extension->id());
   if (index == greaselion_extensions_.end()) {
     // not one of ours
     return;
