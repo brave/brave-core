@@ -40,7 +40,7 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
   ASSERT_TRUE(json);
 
   const absl::optional<CatalogInfo> catalog_info =
-      JSONReader::ReadCatalog(*json);
+      json::reader::ReadCatalog(*json);
   ASSERT_TRUE(catalog_info);
 
   // Act

@@ -64,7 +64,7 @@ TEST(BatAdsTokenTest, FailToDecodeEmptyBase64) {
   // Arrange
 
   // Act
-  const Token token = Token::DecodeBase64("");
+  const Token token = Token::DecodeBase64({});
 
   // Assert
   const bool has_value = token.has_value();

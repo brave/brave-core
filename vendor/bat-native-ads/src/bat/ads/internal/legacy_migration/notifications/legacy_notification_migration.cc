@@ -61,7 +61,7 @@ void Migrate(InitializeCallback callback) {
             }
 
             const absl::optional<base::circular_deque<NotificationAdInfo>> ads =
-                JSONReader::ReadNotificationAds(json);
+                json::reader::ReadNotificationAds(json);
             if (!ads) {
               BLOG(0, "Failed to load notification state");
               FailedToMigrate(callback);

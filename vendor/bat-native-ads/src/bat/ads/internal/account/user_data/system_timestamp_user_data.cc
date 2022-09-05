@@ -17,6 +17,7 @@ constexpr char kSystemTimestampKey[] = "systemTimestamp";
 
 base::Value::Dict GetSystemTimestamp() {
   base::Value::Dict user_data;
+
   user_data.Set(kSystemTimestampKey,
                 TimeToPrivacyPreservingISO8601(base::Time::Now()));
 

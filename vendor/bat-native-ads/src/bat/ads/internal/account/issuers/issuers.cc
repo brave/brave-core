@@ -76,7 +76,7 @@ void Issuers::OnFetch(const mojom::UrlResponseInfo& url_response) {
   }
 
   const absl::optional<IssuersInfo> issuers =
-      JSONReader::ReadIssuers(url_response.body);
+      json::reader::ReadIssuers(url_response.body);
   if (!issuers) {
     BLOG(3, "Failed to parse response: " << url_response.body);
     FailedToFetchIssuers(/*should_retry*/ true);

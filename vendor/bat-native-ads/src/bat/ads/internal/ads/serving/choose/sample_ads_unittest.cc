@@ -14,20 +14,20 @@
 
 namespace ads {
 
-TEST(BatAdsSampleAdsTest, CalculateNormalisingConstantWithEmptyAds) {
+TEST(BatAdsSampleAdsTest, CalculateNormalizingConstantWithEmptyAds) {
   // Arrange
   const CreativeAdPredictorMap<CreativeNotificationAdInfo>
       creative_ad_predictors;
 
   // Act
-  const double normalising_constant =
-      CalculateNormalisingConstant(creative_ad_predictors);
+  const double normalizing_constant =
+      CalculateNormalizingConstant(creative_ad_predictors);
 
   // Assert
-  EXPECT_DOUBLE_EQ(0.0, normalising_constant);
+  EXPECT_DOUBLE_EQ(0.0, normalizing_constant);
 }
 
-TEST(BatAdsSampleAdsTest, CalculateNormalisingConstant) {
+TEST(BatAdsSampleAdsTest, CalculateNormalizingConstant) {
   // Arrange
   CreativeAdPredictorMap<CreativeNotificationAdInfo> creative_ad_predictors;
 
@@ -47,11 +47,11 @@ TEST(BatAdsSampleAdsTest, CalculateNormalisingConstant) {
       ad_predictor_3;
 
   // Act
-  const double normalising_constant =
-      CalculateNormalisingConstant(creative_ad_predictors);
+  const double normalizing_constant =
+      CalculateNormalizingConstant(creative_ad_predictors);
 
   // Assert
-  EXPECT_DOUBLE_EQ(6.6, normalising_constant);
+  EXPECT_DOUBLE_EQ(6.6, normalizing_constant);
 }
 
 TEST(BatAdsSampleAdsTest, SampleAdFromPredictorsWithZeroScores) {

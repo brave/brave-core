@@ -65,7 +65,7 @@ TEST(BatAdsTokenPreimageTest, FailToDecodeEmptyBase64) {
   // Arrange
 
   // Act
-  const TokenPreimage token_preimage = TokenPreimage::DecodeBase64("");
+  const TokenPreimage token_preimage = TokenPreimage::DecodeBase64({});
 
   // Assert
   const bool has_value = token_preimage.has_value();

@@ -13,13 +13,12 @@
 
 #include "absl/types/optional.h"
 #include "base/observer_list.h"
+#include "bat/ads/internal/tabs/tab_info.h"
 #include "bat/ads/internal/tabs/tab_manager_observer.h"
 
 class GURL;
 
 namespace ads {
-
-struct TabInfo;
 
 class TabManager final {
  public:

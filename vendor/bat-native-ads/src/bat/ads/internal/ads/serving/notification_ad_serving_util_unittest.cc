@@ -6,7 +6,6 @@
 #include "bat/ads/internal/ads/serving/notification_ad_serving_util.h"
 
 #include "base/time/time.h"
-#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"

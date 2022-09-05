@@ -66,7 +66,7 @@ TEST(BatAdsVerificationSignatureTest, FailToDecodeEmptyBase64) {
 
   // Act
   const VerificationSignature verification_signature =
-      VerificationSignature::DecodeBase64("");
+      VerificationSignature::DecodeBase64({});
 
   // Assert
   const bool has_value = verification_signature.has_value();

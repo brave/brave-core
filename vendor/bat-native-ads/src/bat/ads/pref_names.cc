@@ -67,7 +67,7 @@ const char kNextTokenRedemptionAt[] =
 const char kHasMigratedClientState[] =
     "brave.brave_ads.state.has_migrated.client.v4";
 const char kHasMigratedConfirmationState[] =
-    "brave.brave_ads.state.has_migrated.confirmations.v4";
+    "brave.brave_ads.state.has_migrated.confirmations.v5";
 const char kHasMigratedConversionState[] =
     "brave.brave_ads.migrated.conversion_state";
 const char kHasMigratedNotificationState[] =

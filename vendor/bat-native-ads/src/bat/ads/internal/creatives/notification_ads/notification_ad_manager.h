@@ -10,10 +10,9 @@
 
 #include "absl/types/optional.h"
 #include "base/containers/circular_deque.h"
+#include "bat/ads/notification_ad_info.h"
 
 namespace ads {
-
-struct NotificationAdInfo;
 
 class NotificationAdManager final {
  public:

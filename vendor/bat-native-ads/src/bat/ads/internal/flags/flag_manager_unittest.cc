@@ -60,7 +60,7 @@ struct ParamInfo final {
     // Do not override variations command-line switches
     {/*should_force_staging_environment*/ false,
      /*command_line_switches*/
-     {{variations::switches::kFakeVariationsChannel, ""}},
+     {{variations::switches::kFakeVariationsChannel, {}}},
      /*expected_should_debug*/ false,
      /*expected_did_override_command_line_switches*/ false,
      kDefaultEnvironmentType},

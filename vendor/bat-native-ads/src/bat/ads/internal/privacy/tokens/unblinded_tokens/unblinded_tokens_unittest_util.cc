@@ -5,17 +5,11 @@
 
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 
-#include <utility>
-
-#include "absl/types/optional.h"
 #include "base/check.h"
-#include "base/notreached.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/public_key.h"
-#include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
-#include "bat/ads/internal/privacy/tokens/token_generator.h"
-#include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
 
 namespace ads {
@@ -36,9 +30,11 @@ UnblindedTokenInfo CreateUnblindedToken(
   UnblindedTokenInfo unblinded_token;
 
   unblinded_token.value = cbr::UnblindedToken(unblinded_token_base64);
+
   unblinded_token.public_key =
       cbr::PublicKey("RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=");
-  DCHECK(unblinded_token.is_valid());
+
+  CHECK(IsValid(unblinded_token));
 
   return unblinded_token;
 }
@@ -86,49 +82,10 @@ UnblindedTokenList GetUnblindedTokens(const int count) {
   return unblinded_tokens;
 }
 
-UnblindedTokenList GetRandomUnblindedTokens(const int count) {
-  UnblindedTokenList unblinded_tokens;
-
-  TokenGenerator token_generator;
-  const std::vector<cbr::Token> tokens = token_generator.Generate(count);
-  for (const auto& token : tokens) {
-    const absl::optional<std::string> token_base64 = token.EncodeBase64();
-    if (!token_base64) {
-      NOTREACHED();
-      continue;
-    }
-
-    const UnblindedTokenInfo unblinded_token =
-        CreateUnblindedToken(*token_base64);
-
-    unblinded_tokens.push_back(unblinded_token);
-  }
-
-  return unblinded_tokens;
-}
-
-base::Value::List GetUnblindedTokensAsList(int count) {
-  base::Value::List list;
-
-  const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(count);
-
-  for (const auto& unblinded_token : unblinded_tokens) {
-    base::Value::Dict dict;
-
-    const absl::optional<std::string> unblinded_token_base64 =
-        unblinded_token.value.EncodeBase64();
-    DCHECK(unblinded_token_base64);
-    dict.Set("unblinded_token", *unblinded_token_base64);
-
-    const absl::optional<std::string> public_key_base64 =
-        unblinded_token.public_key.EncodeBase64();
-    DCHECK(public_key_base64);
-    dict.Set("public_key", *public_key_base64);
-
-    list.Append(std::move(dict));
-  }
-
-  return list;
+UnblindedTokenInfo GetUnblindedToken() {
+  const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(/*count*/ 1);
+  CHECK(!unblinded_tokens.empty());
+  return unblinded_tokens.front();
 }
 
 }  // namespace privacy

@@ -7,7 +7,6 @@
 
 #include "absl/types/optional.h"
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rule_features.h"
-#include "bat/ads/internal/tabs/tab_info.h"
 #include "bat/ads/internal/tabs/tab_manager.h"
 
 namespace ads {

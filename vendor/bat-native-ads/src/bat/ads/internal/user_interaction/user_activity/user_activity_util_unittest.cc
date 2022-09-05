@@ -254,7 +254,7 @@ TEST_F(BatAdsUserActivityUtilTest, ToUserActivityTriggersForEmptyTrigger) {
   // Arrange
 
   // Act
-  const UserActivityTriggerList triggers = ToUserActivityTriggers("");
+  const UserActivityTriggerList triggers = ToUserActivityTriggers({});
 
   // Assert
   const UserActivityTriggerList expected_triggers;

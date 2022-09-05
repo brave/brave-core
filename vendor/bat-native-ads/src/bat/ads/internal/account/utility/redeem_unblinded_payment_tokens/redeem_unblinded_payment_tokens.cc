@@ -20,6 +20,7 @@
 #include "bat/ads/internal/base/url/url_response_string_util.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/internal/flags/flag_manager_util.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
@@ -75,11 +76,8 @@ void RedeemUnblindedPaymentTokens::Redeem() {
 
   BLOG(1, "RedeemUnblindedPaymentTokens");
 
-  if (ConfirmationStateManager::GetInstance()
-          ->GetUnblindedPaymentTokens()
-          ->IsEmpty()) {
+  if (privacy::UnblindedPaymentTokensIsEmpty()) {
     BLOG(1, "No unblinded payment tokens to redeem");
-
     ScheduleNextTokenRedemption();
     return;
   }
@@ -89,9 +87,7 @@ void RedeemUnblindedPaymentTokens::Redeem() {
   is_processing_ = true;
 
   const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
-      ConfirmationStateManager::GetInstance()
-          ->GetUnblindedPaymentTokens()
-          ->GetAllTokens();
+      privacy::GetAllUnblindedPaymentTokens();
 
   RedeemUnblindedPaymentTokensUserDataBuilder user_data_builder(
       unblinded_payment_tokens);
@@ -133,10 +129,7 @@ void RedeemUnblindedPaymentTokens::SuccessfullyRedeemedUnblindedPaymentTokens(
 
   retry_timer_.Stop();
 
-  ConfirmationStateManager::GetInstance()
-      ->GetUnblindedPaymentTokens()
-      ->RemoveTokens(unblinded_payment_tokens);
-  ConfirmationStateManager::GetInstance()->Save();
+  privacy::RemoveUnblindedPaymentTokens(unblinded_payment_tokens);
 
   if (delegate_) {
     delegate_->OnDidRedeemUnblindedPaymentTokens(unblinded_payment_tokens);

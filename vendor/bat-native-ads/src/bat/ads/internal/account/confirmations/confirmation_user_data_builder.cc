@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/account/confirmations/confirmations_user_data_builder.h"
+#include "bat/ads/internal/account/confirmations/confirmation_user_data_builder.h"
 
 #include "base/check_op.h"
 #include "base/values.h"
@@ -22,7 +22,7 @@
 
 namespace ads {
 
-ConfirmationsUserDataBuilder::ConfirmationsUserDataBuilder(
+ConfirmationUserDataBuilder::ConfirmationUserDataBuilder(
     const base::Time created_at,
     const std::string& creative_instance_id,
     const ConfirmationType& confirmation_type)
@@ -33,9 +33,9 @@ ConfirmationsUserDataBuilder::ConfirmationsUserDataBuilder(
   DCHECK_NE(ConfirmationType::kUndefined, confirmation_type_.value());
 }
 
-ConfirmationsUserDataBuilder::~ConfirmationsUserDataBuilder() = default;
+ConfirmationUserDataBuilder::~ConfirmationUserDataBuilder() = default;
 
-void ConfirmationsUserDataBuilder::Build(
+void ConfirmationUserDataBuilder::Build(
     UserDataBuilderCallback callback) const {
   user_data::GetConversion(
       creative_instance_id_, confirmation_type_,

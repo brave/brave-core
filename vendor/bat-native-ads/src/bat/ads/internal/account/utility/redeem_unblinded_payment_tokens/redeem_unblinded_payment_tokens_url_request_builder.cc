@@ -87,8 +87,7 @@ std::string RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildBody(
   dict.Merge(user_data_.Clone());
 
   std::string json;
-  base::JSONWriter::Write(dict, &json);
-
+  CHECK(base::JSONWriter::Write(dict, &json));
   return json;
 }
 
@@ -98,8 +97,7 @@ std::string RedeemUnblindedPaymentTokensUrlRequestBuilder::CreatePayload()
   payload.Set("paymentId", wallet_.id);
 
   std::string json;
-  base::JSONWriter::Write(payload, &json);
-
+  CHECK(base::JSONWriter::Write(payload, &json));
   return json;
 }
 

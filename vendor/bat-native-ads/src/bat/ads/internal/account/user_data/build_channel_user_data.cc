@@ -21,6 +21,7 @@ base::Value::Dict GetBuildChannel() {
 
   DCHECK(!BuildChannel().name.empty());
   user_data.Set(kBuildChannelKey, BuildChannel().name);
+
   return user_data;
 }
 

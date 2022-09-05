@@ -11,9 +11,7 @@
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/public_key.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 
-namespace ads {
-namespace rewards {
-namespace JSONReader {
+namespace ads::rewards::json::reader {
 
 namespace {
 
@@ -94,6 +92,4 @@ absl::optional<privacy::UnblindedPaymentTokenList> ParseUnblindedPaymentTokens(
   return *unblinded_payment_tokens;
 }
 
-}  // namespace JSONReader
-}  // namespace rewards
-}  // namespace ads
+}  // namespace ads::rewards::json::reader

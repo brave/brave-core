@@ -9,7 +9,6 @@
 #include <string>
 #include <vector>
 
-#include "base/values.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 
 namespace ads {
@@ -23,15 +22,11 @@ UnblindedTokenList SetUnblindedTokens(int count);
 
 UnblindedTokenInfo CreateUnblindedToken(
     const std::string& unblinded_token_base64);
-
 UnblindedTokenList CreateUnblindedTokens(
     const std::vector<std::string>& unblinded_tokens_base64);
 
 UnblindedTokenList GetUnblindedTokens(int count);
-
-UnblindedTokenList GetRandomUnblindedTokens(int count);
-
-base::Value::List GetUnblindedTokensAsList(int count);
+UnblindedTokenInfo GetUnblindedToken();
 
 }  // namespace privacy
 }  // namespace ads

@@ -191,7 +191,7 @@ TEST_F(BatAdsUserActivityScoringTest,
 TEST_F(BatAdsUserActivityScoringTest,
        GetUserActivityScoreForEmptyEventSequence) {
   // Arrange
-  const UserActivityTriggerList triggers = ToUserActivityTriggers("");
+  const UserActivityTriggerList triggers = ToUserActivityTriggers({});
 
   UserActivityManager::GetInstance()->RecordEvent(
       UserActivityEventType::kClickedLink);

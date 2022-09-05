@@ -11,32 +11,28 @@ namespace ads {
 
 ConfirmationInfo::ConfirmationInfo() = default;
 
-ConfirmationInfo::ConfirmationInfo(const ConfirmationInfo& info) = default;
+ConfirmationInfo::ConfirmationInfo(const ConfirmationInfo& other) = default;
 
-ConfirmationInfo& ConfirmationInfo::operator=(const ConfirmationInfo& info) =
+ConfirmationInfo& ConfirmationInfo::operator=(const ConfirmationInfo& other) =
     default;
+
+ConfirmationInfo::ConfirmationInfo(ConfirmationInfo&& other) noexcept = default;
+
+ConfirmationInfo& ConfirmationInfo::operator=(
+    ConfirmationInfo&& other) noexcept = default;
 
 ConfirmationInfo::~ConfirmationInfo() = default;
 
-bool ConfirmationInfo::operator==(const ConfirmationInfo& rhs) const {
-  return transaction_id == rhs.transaction_id &&
-         creative_instance_id == rhs.creative_instance_id && type == rhs.type &&
-         ad_type == rhs.ad_type && unblinded_token == rhs.unblinded_token &&
-         payment_token == rhs.payment_token &&
-         blinded_payment_token == rhs.blinded_payment_token &&
-         credential == rhs.credential && user_data == rhs.user_data &&
-         DoubleEquals(created_at.ToDoubleT(), rhs.created_at.ToDoubleT()) &&
-         was_created == rhs.was_created;
+bool operator==(const ConfirmationInfo& lhs, const ConfirmationInfo& rhs) {
+  return lhs.transaction_id == rhs.transaction_id &&
+         lhs.creative_instance_id == rhs.creative_instance_id &&
+         lhs.type == rhs.type && lhs.ad_type == rhs.ad_type &&
+         DoubleEquals(lhs.created_at.ToDoubleT(), rhs.created_at.ToDoubleT()) &&
+         lhs.was_created == rhs.was_created && lhs.opted_in == rhs.opted_in;
 }
 
-bool ConfirmationInfo::operator!=(const ConfirmationInfo& rhs) const {
-  return !(*this == rhs);
-}
-
-bool ConfirmationInfo::IsValid() const {
-  return !(transaction_id.empty() || creative_instance_id.empty() ||
-           type == ConfirmationType::kUndefined ||
-           ad_type == AdType::kUndefined || created_at.is_null());
+bool operator!=(const ConfirmationInfo& lhs, const ConfirmationInfo& rhs) {
+  return !(lhs == rhs);
 }
 
 }  // namespace ads

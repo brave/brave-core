@@ -56,7 +56,7 @@ class BatAdsRequestSignedTokensUrlRequestBuilderTest : public UnitTestBase {
     for (int i = 0; i < count; i++) {
       const std::string& token_base64 = tokens_base64.at(i % modulo);
       const privacy::cbr::Token token = privacy::cbr::Token(token_base64);
-      DCHECK(token.has_value());
+      CHECK(token.has_value());
 
       tokens.push_back(token);
     }
