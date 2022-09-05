@@ -7,7 +7,7 @@
 
 #include "base/callback.h"
 #include "components/component_updater/component_updater_service.h"
-#include "ios/chrome/browser/application_context.h"
+#include "ios/chrome/browser/application_context/application_context.h"
 
 namespace component_updater {
 

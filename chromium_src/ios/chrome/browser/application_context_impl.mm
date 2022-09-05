@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "ios/chrome/browser/application_context_impl.h"
+#include "ios/chrome/browser/application_context/application_context_impl.h"
 
 #include <vector>
 
@@ -30,7 +30,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/sessions/core/session_id_generator.h"
 #include "components/ukm/ukm_service.h"
-#include "ios/chrome/browser/application_context.h"
+#include "ios/chrome/browser/application_context/application_context.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager_impl.h"
 #include "ios/chrome/browser/component_updater/ios_component_updater_configurator.h"

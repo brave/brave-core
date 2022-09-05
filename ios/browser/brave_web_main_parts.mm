@@ -15,7 +15,7 @@
 #include "components/variations/service/variations_service.h"
 #include "components/variations/variations_ids_provider.h"
 #include "components/variations/variations_switches.h"
-#include "ios/chrome/browser/application_context_impl.h"
+#include "ios/chrome/browser/application_context/application_context_impl.h"
 #include "ios/chrome/browser/browser_state/browser_state_keyed_service_factories.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
