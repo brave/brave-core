@@ -6,16 +6,16 @@
 #include <algorithm>
 #include <cmath>
 #include <utility>
-#include <vector>
 
+#include "base/containers/fixed_flat_set.h"
 #include "base/json/json_reader.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
+#include "bat/ledger/internal/constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/legacy/bat_helper.h"
 #include "bat/ledger/internal/legacy/media/vimeo.h"
 #include "bat/ledger/internal/legacy/static_values.h"
-#include "bat/ledger/internal/constants.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -136,16 +136,11 @@ bool Vimeo::AllowedEvent(const std::string& event) {
     return false;
   }
 
-  const std::vector<std::string> allowed = {
-    "video-start-time",
-    "video-minute-watched",
-    "video-paused",
-    "video-played",
-    "video-seek",
-    "video-seeked"};
+  static constexpr auto kAllowList = base::MakeFixedFlatSet<base::StringPiece>(
+      {"video-start-time", "video-minute-watched", "video-paused",
+       "video-played", "video-seek", "video-seeked"});
 
-  auto it = std::find(allowed.begin(), allowed.end(), event);
-  return it != allowed.end();
+  return kAllowList.contains(event);
 }
 
 // static
@@ -189,53 +184,42 @@ bool Vimeo::IsExcludedPath(const std::string& path) {
     return true;
   }
 
-  const std::vector<std::string> paths({
-      "/",
-      "/log_in",
-      "/upgrade",
-      "/live",
-      "/watch",
-      "/videoschool",
-      "/upload",
-      "/ondemand",
-      "/ott",
-      "/site_map",
-      "/blog",
-      "/help",
-      "/about",
-      "/jobs",
-      "/stats",
-      "/watchlater",
-      "/purchases",
-      "/settings",
-      "/stock",
-    });
+  static constexpr auto kExcludedPaths =
+      base::MakeFixedFlatSet<base::StringPiece>({
+          "/",          "/log_in",      "/upgrade", "/live",
+          "/watch",     "/videoschool", "/upload",  "/ondemand",
+          "/ott",       "/site_map",    "/blog",    "/help",
+          "/about",     "/jobs",        "/stats",   "/watchlater",
+          "/purchases", "/settings",    "/stock",
+      });
 
-  for (std::string str_path : paths) {
-    if (str_path == path || str_path + "/" == path) {
-      return true;
-    }
-  }
+  // Removing the trailing forward-slash for searching excluded paths.
+  base::StringPiece path_piece =
+      (path.length() > 1 && path.back() == '/')
+          ? base::StringPiece(path.data(), path.length() - 1)
+          : base::StringPiece(path);
 
-  const std::vector<std::string> patterns({
-    "/features/",
-    "/categories/",
-    "/blog/",
-    "/ott/",
-    "/help/",
-    "/manage/",
-    "/settings/",
-    "/stock/",
-  });
+  if (kExcludedPaths.contains(path_piece))
+    return true;
 
-  for (std::string str_path : patterns) {
-    if (base::StartsWith(path,
-                         str_path,
+  static constexpr auto kExcludedPatterns =
+      base::MakeFixedFlatSet<base::StringPiece>({
+          "/features/",
+          "/categories/",
+          "/blog/",
+          "/ott/",
+          "/help/",
+          "/manage/",
+          "/settings/",
+          "/stock/",
+      });
+
+  for (const auto& excluded_pattern : kExcludedPatterns) {
+    if (base::StartsWith(path, excluded_pattern,
                          base::CompareCase::INSENSITIVE_ASCII)) {
       return true;
     }
   }
-
 
   return false;
 }

@@ -8,13 +8,14 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/containers/contains.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
+#include "bat/ledger/internal/constants.h"
 #include "bat/ledger/internal/credentials/credentials_sku.h"
 #include "bat/ledger/internal/credentials/credentials_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/constants.h"
 
 using std::placeholders::_1;
 
@@ -47,9 +48,7 @@ bool IsPublicKeyValid(const std::string& public_key) {
     };
   }
 
-  auto it = std::find(keys.begin(), keys.end(), public_key);
-
-  return it != keys.end();
+  return base::Contains(keys, public_key);
 }
 
 std::string ConvertItemTypeToString(const std::string& type) {

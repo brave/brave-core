@@ -5,10 +5,10 @@
 
 #include "brave/browser/extensions/brave_extension_provider.h"
 
-#include <algorithm>
 #include <string>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_component_updater/browser/extension_whitelist_service.h"
@@ -29,8 +29,7 @@ bool IsBlacklisted(const extensions::Extension* extension) {
        "mlklomjnahgiddgfdgjhibinlfibfffc",
      });
 
-  if (std::find(blacklisted_extensions.begin(), blacklisted_extensions.end(),
-                extension->id()) != blacklisted_extensions.end())
+  if (base::Contains(blacklisted_extensions, extension->id()))
     return true;
 
   return g_brave_browser_process->extension_whitelist_service()->IsBlacklisted(

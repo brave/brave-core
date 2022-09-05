@@ -6,7 +6,7 @@
 #include "bat/ads/ads.h"
 
 #include "base/check.h"
-#include "base/ranges/algorithm.h"
+#include "base/containers/contains.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/geographic/country/supported_country_codes.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -18,9 +18,7 @@ bool IsSupportedLocale(const std::string& locale) {
 
   return base::ranges::any_of(
       geographic::kSupportedCountryCodes, [&country_code](const auto& schema) {
-        const geographic::SupportedCountryCodeSet country_codes = schema.second;
-        const auto iter = base::ranges::find(schema.second, country_code);
-        return iter != schema.second.cend();
+        return base::Contains(schema.second, country_code);
       });
 }
 

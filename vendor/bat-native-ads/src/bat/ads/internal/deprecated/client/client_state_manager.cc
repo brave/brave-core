@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 
-#include <algorithm>
 #include <cstdint>
 #include <functional>
 #include <memory>
@@ -14,6 +13,7 @@
 #include "base/bind.h"
 #include "base/check_op.h"
 #include "base/hash/hash.h"
+#include "base/ranges/algorithm.h"
 #include "base/time/time.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/ad_type.h"
@@ -41,11 +41,8 @@ FilteredAdvertiserList::iterator FindFilteredAdvertiser(
   DCHECK(!advertiser_id.empty());
   DCHECK(filtered_advertisers);
 
-  return std::find_if(
-      filtered_advertisers->begin(), filtered_advertisers->end(),
-      [&advertiser_id](const FilteredAdvertiserInfo& filtered_advertiser) {
-        return filtered_advertiser.id == advertiser_id;
-      });
+  return base::ranges::find(*filtered_advertisers, advertiser_id,
+                            &FilteredAdvertiserInfo::id);
 }
 
 FilteredCategoryList::iterator FindFilteredCategory(
@@ -53,11 +50,8 @@ FilteredCategoryList::iterator FindFilteredCategory(
     FilteredCategoryList* filtered_categories) {
   DCHECK(filtered_categories);
 
-  return std::find_if(
-      filtered_categories->begin(), filtered_categories->end(),
-      [&category](const FilteredCategoryInfo& filtered_category) {
-        return filtered_category.name == category;
-      });
+  return base::ranges::find(*filtered_categories, category,
+                            &FilteredCategoryInfo::name);
 }
 
 CategoryContentOptActionType ToggleOptInActionType(
@@ -345,12 +339,9 @@ bool ClientStateManager::ToggleSavedAd(const AdContentInfo& ad_content) {
     saved_ad.creative_instance_id = ad_content.creative_instance_id;
     client_->ad_preferences.saved_ads.push_back(saved_ad);
   } else {
-    const auto iter = std::find_if(client_->ad_preferences.saved_ads.cbegin(),
-                                   client_->ad_preferences.saved_ads.cend(),
-                                   [&ad_content](const SavedAdInfo& saved_ad) {
-                                     return saved_ad.creative_instance_id ==
-                                            ad_content.creative_instance_id;
-                                   });
+    const auto iter = base::ranges::find(client_->ad_preferences.saved_ads,
+                                         ad_content.creative_instance_id,
+                                         &SavedAdInfo::creative_instance_id);
 
     if (iter != client_->ad_preferences.saved_ads.cend()) {
       client_->ad_preferences.saved_ads.erase(iter);
@@ -378,22 +369,19 @@ bool ClientStateManager::ToggleFlaggedAd(const AdContentInfo& ad_content) {
     flagged_ad.creative_set_id = ad_content.creative_set_id;
     client_->ad_preferences.flagged_ads.push_back(flagged_ad);
   } else {
-    const auto iter = std::find_if(
-        client_->ad_preferences.flagged_ads.cbegin(),
-        client_->ad_preferences.flagged_ads.cend(),
-        [&ad_content](const FlaggedAdInfo& flagged_ad) {
-          return flagged_ad.creative_set_id == ad_content.creative_set_id;
-        });
-
-    if (iter != client_->ad_preferences.flagged_ads.cend()) {
-      client_->ad_preferences.flagged_ads.erase(iter);
-    }
+    client_->ad_preferences.flagged_ads.erase(
+        base::ranges::remove(client_->ad_preferences.flagged_ads,
+                             ad_content.creative_set_id,
+                             &FlaggedAdInfo::creative_set_id),
+        client_->ad_preferences.flagged_ads.end());
   }
 
-  for (auto& item : client_->history) {
-    if (item.ad_content.creative_set_id == ad_content.creative_set_id) {
-      item.ad_content.is_flagged = is_flagged;
-    }
+  auto item = base::ranges::find_if(
+      client_->history, [&ad_content](const HistoryItemInfo& item) {
+        return item.ad_content.creative_set_id == ad_content.creative_set_id;
+      });
+  if (item != client_->history.end()) {
+    item->ad_content.is_flagged = is_flagged;
   }
 
   Save();

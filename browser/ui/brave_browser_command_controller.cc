@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/notreached.h"
 #include "brave/app/brave_command_ids.h"
@@ -54,8 +55,7 @@ bool IsBraveOverrideCommands(int id) {
       IDC_NEW_WINDOW,
       IDC_NEW_INCOGNITO_WINDOW,
   });
-  return std::find(override_commands.begin(), override_commands.end(), id) !=
-         override_commands.end();
+  return base::Contains(override_commands, id);
 }
 
 }  // namespace

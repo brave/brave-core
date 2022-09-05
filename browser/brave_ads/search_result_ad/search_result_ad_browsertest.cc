@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "base/path_service.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/scoped_feature_list.h"
@@ -126,9 +127,8 @@ class SentViewedEventsWaiter final {
         brave_ads::GetViewedSearchResultAdCreativeInstanceId(
             params->url_request);
     if (!creative_instance_id.empty()) {
-      auto it = std::find(sent_viewed_creative_instance_ids_.begin(),
-                          sent_viewed_creative_instance_ids_.end(),
-                          creative_instance_id);
+      auto it = base::ranges::find(sent_viewed_creative_instance_ids_,
+                                   creative_instance_id);
       EXPECT_TRUE(it != sent_viewed_creative_instance_ids_.end())
           << "Not expected creative instance id: " << creative_instance_id;
       if (it != sent_viewed_creative_instance_ids_.end()) {

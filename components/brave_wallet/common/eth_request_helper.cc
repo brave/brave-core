@@ -12,6 +12,7 @@
 #include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
@@ -155,11 +156,10 @@ bool ShouldCreate1559Tx(brave_wallet::mojom::TxData1559Ptr tx_data_1559,
                         const std::vector<mojom::AccountInfoPtr>& account_infos,
                         const std::string& address) {
   bool keyring_supports_eip1559 = true;
-  auto account_it = std::find_if(account_infos.begin(), account_infos.end(),
-                                 [&](const mojom::AccountInfoPtr& account) {
-                                   return base::EqualsCaseInsensitiveASCII(
-                                       account->address, address);
-                                 });
+  auto account_it = base::ranges::find_if(
+      account_infos, [&](const mojom::AccountInfoPtr& account) {
+        return base::EqualsCaseInsensitiveASCII(account->address, address);
+      });
 
   // Only ledger and trezor hardware keyrings support EIP-1559 at the moment.
   if (account_it != account_infos.end() && (*account_it)->hardware &&

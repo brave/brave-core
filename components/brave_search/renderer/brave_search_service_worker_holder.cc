@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/no_destructor.h"
+#include "base/ranges/algorithm.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search/renderer/brave_search_fallback_js_handler.h"
 #include "url/gurl.h"
@@ -29,7 +30,7 @@ JSHandlersVector::iterator FindContext(JSHandlersVector* contexts,
         return context->Context() == v8_context;
       };
 
-  return std::find_if(contexts->begin(), contexts->end(), context_matches);
+  return base::ranges::find_if(*contexts, context_matches);
 }
 
 BraveSearchServiceWorkerHolder::BraveSearchServiceWorkerHolder()

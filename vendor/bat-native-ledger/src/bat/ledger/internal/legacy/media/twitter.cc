@@ -7,15 +7,16 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
+#include "bat/ledger/internal/constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/legacy/media/helper.h"
 #include "bat/ledger/internal/legacy/media/twitter.h"
 #include "bat/ledger/internal/legacy/static_values.h"
-#include "bat/ledger/internal/constants.h"
 #include "net/base/url_util.h"
 #include "net/http/http_status_code.h"
 #include "url/gurl.h"
@@ -112,8 +113,7 @@ bool IsExcludedScreenName(const std::string& path) {
 
   for (net::QueryIterator it(url); !it.IsAtEnd(); it.Advance()) {
     if (it.GetKey() == "screen_name") {
-      if (std::find(screen_names.begin(), screen_names.end(),
-                    it.GetUnescapedValue()) != screen_names.end()) {
+      if (base::Contains(screen_names, it.GetUnescapedValue())) {
         return true;
       }
       break;

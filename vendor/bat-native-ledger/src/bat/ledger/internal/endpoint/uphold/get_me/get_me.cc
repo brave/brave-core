@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/containers/contains.h"
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/endpoint/uphold/uphold_utils.h"
@@ -65,9 +66,7 @@ mojom::Result GetMe::ParseBody(const std::string& body,
   const auto* currencies = dict.FindList("currencies");
   if (currencies) {
     const std::string currency = "BAT";
-    auto bat_in_list = std::find(currencies->begin(), currencies->end(),
-                                 base::Value(currency));
-    user->bat_not_allowed = bat_in_list == currencies->end();
+    user->bat_not_allowed = !base::Contains(*currencies, base::Value(currency));
   }
 
   return mojom::Result::LEDGER_OK;

@@ -7,6 +7,7 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/containers/contains.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
@@ -323,12 +324,7 @@ std::vector<double> State::GetAutoContributeChoices() {
   std::vector<double> amounts = StringToVectorDouble(amounts_string);
 
   const double current_amount = GetAutoContributionAmount();
-  auto contains_amount = std::find(
-      amounts.begin(),
-      amounts.end(),
-      current_amount);
-
-  if (contains_amount == amounts.end()) {
+  if (!base::Contains(amounts, current_amount)) {
     amounts.push_back(current_amount);
     std::sort(amounts.begin(), amounts.end());
 

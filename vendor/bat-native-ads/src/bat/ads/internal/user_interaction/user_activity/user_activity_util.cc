@@ -33,10 +33,8 @@ int GetNumberOfUserActivityEvents(const UserActivityEventList& events,
 
 int64_t GetTimeSinceLastUserActivityEvent(const UserActivityEventList& events,
                                           UserActivityEventType event_type) {
-  const auto iter = base::ranges::find_if(
-      base::Reversed(events), [event_type](const UserActivityEventInfo& event) {
-        return event.type == event_type;
-      });
+  const auto iter = base::ranges::find(base::Reversed(events), event_type,
+                                       &UserActivityEventInfo::type);
 
   if (iter == events.crend()) {
     return kUserActivityMissingValue;
