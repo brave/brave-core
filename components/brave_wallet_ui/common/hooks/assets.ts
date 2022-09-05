@@ -7,7 +7,7 @@ import * as React from 'react'
 import { useSelector } from 'react-redux'
 
 // utils
-import { addLogoToToken } from '../../utils/asset-utils'
+import { addLogoToToken, isSardineSupported } from '../../utils/asset-utils'
 
 // Constants
 import {
@@ -77,7 +77,11 @@ export function useAssets () {
   }, [selectedAccount, assetsByNetwork, getBalance, computeFiatAmount])
 
   const buyAssetOptions = React.useMemo(() => {
-    return [...rampAssetOptions, ...wyreAssetOptions, ...sardineAssetOptions]
+    const assetOptions = isSardineSupported()
+      ? [...rampAssetOptions, ...wyreAssetOptions, ...sardineAssetOptions]
+      : [...rampAssetOptions, ...wyreAssetOptions]
+
+    return assetOptions
       .filter(asset => asset.chainId === selectedNetwork.chainId)
   }, [rampAssetOptions, wyreAssetOptions, sardineAssetOptions, selectedNetwork])
 
