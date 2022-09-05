@@ -11,6 +11,8 @@ import WyreIcon from '../assets/svg-icons/wyre-icon.svg'
 import SardineIconLight from '../assets/svg-icons/sardine-logo-light.svg'
 import SardineIconDark from '../assets/svg-icons/sardine-logo-dark.svg'
 
+export const isSardineSupported = () => navigator.language.toLowerCase() === 'en-us'
+
 function getBuyOptions (): BuyOption[] {
   const buyOptions = [{
     id: BraveWallet.OnRampProvider.kRamp,
@@ -27,7 +29,7 @@ function getBuyOptions (): BuyOption[] {
     description: getLocale('braveWalletBuyWyreDescription')
   }]
 
-  if (navigator.language.toLowerCase() === 'en-us') {
+  if (isSardineSupported()) {
     buyOptions.push({
       id: BraveWallet.OnRampProvider.kSardine,
       actionText: getLocale('braveWalletBuyWithSardine'),
