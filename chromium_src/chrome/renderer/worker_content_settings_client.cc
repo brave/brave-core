@@ -14,10 +14,8 @@ BraveFarblingLevel WorkerContentSettingsClient::GetBraveFarblingLevel() {
   ContentSetting setting = CONTENT_SETTING_DEFAULT;
   if (content_setting_rules_) {
     const GURL& primary_url = top_frame_origin_.GetURL();
-    const GURL& secondary_url = document_origin_.GetURL();
     for (const auto& rule : content_setting_rules_->brave_shields_rules) {
-      if (rule.primary_pattern.Matches(primary_url) &&
-          rule.secondary_pattern.Matches(secondary_url)) {
+      if (rule.primary_pattern.Matches(primary_url)) {
         setting = rule.GetContentSetting();
         break;
       }

@@ -45,6 +45,8 @@ namespace {
 
 constexpr char kObsoleteShieldCookies[] =
     "profile.content_settings.exceptions.shieldsCookies";
+constexpr char kBraveShieldsFPSettingsMigration[] =
+    "brave.shields_fp_settings_migration";
 
 constexpr char kGoogleAuthPattern[] = "https://accounts.google.com/*";
 constexpr char kFirebasePattern[] = "https://[*.]firebaseapp.com/*";
@@ -148,7 +150,7 @@ void BravePrefProvider::RegisterProfilePrefs(
         "profile.content_settings.exceptions.plugins");
   }
 #endif
-
+  registry->RegisterBooleanPref(kBraveShieldsFPSettingsMigration, false);
   registry->RegisterDictionaryPref(kObsoleteShieldCookies);
 }
 
@@ -206,6 +208,8 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
   MigrateShieldsSettingsV2ToV3();
 
   MigrateShieldsSettingsV3ToV4(version);
+
+  MigrateFPShieldsSettings();
 }
 
 void BravePrefProvider::EnsureNoWildcardEntries(
@@ -453,6 +457,50 @@ void BravePrefProvider::MigrateShieldsSettingsV1ToV2ForOneType(
         ContentSettingToValue(ValueToContentSetting(new_rules[i].value)),
         {new_rules[i].expiration, new_rules[i].session_model});
   }
+}
+
+void BravePrefProvider::MigrateFPShieldsSettings() {
+  if (prefs_->GetBoolean(kBraveShieldsFPSettingsMigration))
+    return;
+
+  // Find rules that can be migrated and create replacement rules for them.
+  std::vector<Rule> rules;
+  auto rule_iterator = PrefProvider::GetRuleIterator(
+      ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+      /*off_the_record*/ false);
+  while (rule_iterator && rule_iterator->HasNext()) {
+    auto rule = rule_iterator->Next();
+    rules.emplace_back(CloneRule(rule));
+  }
+  rule_iterator.reset();
+
+  // Migrate.
+  for (const auto& fp_rule : rules) {
+    if (fp_rule.secondary_pattern == ContentSettingsPattern::Wildcard() &&
+        fp_rule.value == CONTENT_SETTING_BLOCK) {
+#if BUILDFLAG(IS_ANDROID)
+      SetWebsiteSettingInternal(fp_rule.primary_pattern,
+                                fp_rule.secondary_pattern,
+                                ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+                                ContentSettingToValue(CONTENT_SETTING_ASK),
+                                {fp_rule.expiration, fp_rule.session_model});
+#endif
+    } else if (fp_rule.secondary_pattern ==
+               ContentSettingsPattern::FromString("https://balanced/*")) {
+      // delete the "balanced" override
+      SetWebsiteSettingInternal(
+          fp_rule.primary_pattern, fp_rule.secondary_pattern,
+          ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+          ContentSettingToValue(CONTENT_SETTING_DEFAULT), {});
+      // replace with ask
+      SetWebsiteSettingInternal(fp_rule.primary_pattern,
+                                ContentSettingsPattern::Wildcard(),
+                                ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+                                ContentSettingToValue(CONTENT_SETTING_ASK), {});
+    }
+  }
+
+  prefs_->SetBoolean(kBraveShieldsFPSettingsMigration, true);
 }
 
 bool BravePrefProvider::SetWebsiteSetting(
