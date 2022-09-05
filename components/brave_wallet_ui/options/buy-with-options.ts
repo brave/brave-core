@@ -10,8 +10,7 @@ import RampIcon from '../assets/svg-icons/ramp-icon.svg'
 import WyreIcon from '../assets/svg-icons/wyre-icon.svg'
 import SardineIconLight from '../assets/svg-icons/sardine-logo-light.svg'
 import SardineIconDark from '../assets/svg-icons/sardine-logo-dark.svg'
-
-export const isSardineSupported = () => navigator.language.toLowerCase() === 'en-us'
+import { isSardineSupported } from '../utils/asset-utils'
 
 function getBuyOptions (): BuyOption[] {
   const buyOptions = [{
