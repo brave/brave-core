@@ -9,7 +9,7 @@ import styled from 'styled-components'
 import { CaratCircleODownIcon } from 'brave-ui/components/icons'
 
 // style
-import { WalletButton } from '../../shared/style'
+import { WalletButton } from '../style'
 
 interface IsPanelProps {
   isPanel?: boolean

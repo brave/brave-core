@@ -244,10 +244,10 @@ export const ShowBalanceButton = styled(WalletButton) <{ hideBalances?: boolean}
 
 export const FilterTokenRow = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
   flex-direction: row;
+  flex-wrap: wrap;
   width: 100%;
+  gap: 14px;
 `
 
 export const NftDetails = styled.iframe<{ visible?: boolean }>`

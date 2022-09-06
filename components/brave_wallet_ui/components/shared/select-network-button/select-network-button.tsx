@@ -8,9 +8,6 @@ import * as React from 'react'
 // Types
 import { BraveWallet } from '../../../constants/types'
 
-// Utils
-import { reduceNetworkDisplayName } from '../../../utils/network-utils'
-
 // Components
 import { CreateNetworkIcon } from '../create-network-icon/index'
 
@@ -19,7 +16,7 @@ import {
   OvalButton,
   OvalButtonText,
   CaratDownIcon
-} from './style'
+} from './select-network-button.style'
 
 export interface Props {
   onClick?: () => void
@@ -35,7 +32,7 @@ export const SelectNetworkButton = ({
   return (
     <OvalButton isPanel={isPanel} onClick={onClick} data-test-id='select-network-button'>
       <CreateNetworkIcon network={selectedNetwork} marginRight={4} />
-      <OvalButtonText isPanel={isPanel}>{reduceNetworkDisplayName(selectedNetwork.chainName)}</OvalButtonText>
+      <OvalButtonText isPanel={isPanel}>{selectedNetwork.chainName}</OvalButtonText>
       {onClick && <CaratDownIcon isPanel={isPanel} />}
     </OvalButton>
   )
