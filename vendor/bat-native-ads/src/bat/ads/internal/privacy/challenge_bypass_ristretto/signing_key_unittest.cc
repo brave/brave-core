@@ -60,7 +60,7 @@ TEST(BatAdsSigningKeyTest, FailToDecodeEmptyBase64) {
   // Arrange
 
   // Act
-  const SigningKey signing_key = SigningKey::DecodeBase64("");
+  const SigningKey signing_key = SigningKey::DecodeBase64({});
 
   // Assert
   const bool has_value = signing_key.has_value();

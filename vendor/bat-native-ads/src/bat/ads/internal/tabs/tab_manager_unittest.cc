@@ -6,8 +6,6 @@
 #include "bat/ads/internal/tabs/tab_manager.h"
 
 #include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/tabs/tab_info.h"
-#include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -86,8 +84,10 @@ TEST_F(BatAdsTabManagerTest, IsTabVisible) {
   // Arrange
 
   // Act
-  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com")}, true,
-                                          false);
+  TabManager::GetInstance()->OnTabUpdated(
+      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*is_active*/ true,
+      /*is_incognito*/ false);
 
   // Assert
   EXPECT_TRUE(TabManager::GetInstance()->IsTabVisible(1));
@@ -97,8 +97,9 @@ TEST_F(BatAdsTabManagerTest, IsTabOccluded) {
   // Arrange
 
   // Act
-  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com")}, false,
-                                          false);
+  TabManager::GetInstance()->OnTabUpdated(
+      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*is_visible*/ false, /*is_incognito*/ false);
 
   // Assert
   EXPECT_FALSE(TabManager::GetInstance()->IsTabVisible(1));
@@ -108,8 +109,10 @@ TEST_F(BatAdsTabManagerTest, OpenNewTab) {
   // Arrange
 
   // Act
-  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com")}, true,
-                                          false);
+  TabManager::GetInstance()->OnTabUpdated(
+      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*is_active*/ true,
+      /*is_incognito*/ false);
 
   // Assert
   absl::optional<TabInfo> tab = TabManager::GetInstance()->GetTabForId(1);
@@ -130,13 +133,16 @@ TEST_F(BatAdsTabManagerTest, OpenNewTab) {
 
 TEST_F(BatAdsTabManagerTest, ChangeTabFocus) {
   // Arrange
-  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com")}, false,
-                                          false);
+  TabManager::GetInstance()->OnTabUpdated(
+      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*is_visible*/ false, /*is_incognito*/ false);
   ResetObserver();
 
   // Act
-  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com")}, true,
-                                          false);
+  TabManager::GetInstance()->OnTabUpdated(
+      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*is_active*/ true,
+      /*is_incognito*/ false);
 
   // Assert
   EXPECT_TRUE(tab_did_change_focus_);
@@ -151,8 +157,10 @@ TEST_F(BatAdsTabManagerTest, DoNotUpdateIncognitoTab) {
   // Arrange
 
   // Act
-  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com")}, true,
-                                          true);
+  TabManager::GetInstance()->OnTabUpdated(
+      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*is_active*/ true,
+      /*is_incognito*/ true);
 
   // Assert
   EXPECT_FALSE(TabManager::GetInstance()->GetTabForId(1));
@@ -167,13 +175,15 @@ TEST_F(BatAdsTabManagerTest, DoNotUpdateIncognitoTab) {
 
 TEST_F(BatAdsTabManagerTest, DoNotUpdateExistingOccludedTabWithSameUrl) {
   // Arrange
-  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com")}, false,
-                                          false);
+  TabManager::GetInstance()->OnTabUpdated(
+      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*is_visible*/ false, /*is_incognito*/ false);
   ResetObserver();
 
   // Act
-  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com")}, false,
-                                          false);
+  TabManager::GetInstance()->OnTabUpdated(
+      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*is_visible*/ false, /*is_incognito*/ false);
 
   // Assert
   const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetTabForId(1);
@@ -194,13 +204,15 @@ TEST_F(BatAdsTabManagerTest, DoNotUpdateExistingOccludedTabWithSameUrl) {
 
 TEST_F(BatAdsTabManagerTest, UpdateExistingOccludedTabWithDifferentUrl) {
   // Arrange
-  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com")}, false,
-                                          false);
+  TabManager::GetInstance()->OnTabUpdated(
+      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*is_visible*/ false, /*is_incognito*/ false);
   ResetObserver();
 
   // Act
-  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com/about")},
-                                          false, false);
+  TabManager::GetInstance()->OnTabUpdated(
+      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com/about")},
+      /*is_visible*/ false, /*is_incognito*/ false);
 
   // Assert
   const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetTabForId(1);
@@ -221,13 +233,17 @@ TEST_F(BatAdsTabManagerTest, UpdateExistingOccludedTabWithDifferentUrl) {
 
 TEST_F(BatAdsTabManagerTest, DoNotUpdateExistingTabWithSameUrl) {
   // Arrange
-  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com")}, true,
-                                          false);
+  TabManager::GetInstance()->OnTabUpdated(
+      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*is_active*/ true,
+      /*is_incognito*/ false);
   ResetObserver();
 
   // Act
-  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com")}, true,
-                                          false);
+  TabManager::GetInstance()->OnTabUpdated(
+      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*is_active*/ true,
+      /*is_incognito*/ false);
 
   // Assert
   const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetTabForId(1);
@@ -248,13 +264,16 @@ TEST_F(BatAdsTabManagerTest, DoNotUpdateExistingTabWithSameUrl) {
 
 TEST_F(BatAdsTabManagerTest, UpdatedExistingTabWithDifferentUrl) {
   // Arrange
-  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com")}, true,
-                                          false);
+  TabManager::GetInstance()->OnTabUpdated(
+      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*is_active*/ true,
+      /*is_incognito*/ false);
   ResetObserver();
 
   // Act
-  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com/about")},
-                                          true, false);
+  TabManager::GetInstance()->OnTabUpdated(
+      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com/about")},
+      /*is_visible*/ true, /*is_incognito*/ false);
 
   // Assert
   const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetTabForId(1);
@@ -275,8 +294,10 @@ TEST_F(BatAdsTabManagerTest, UpdatedExistingTabWithDifferentUrl) {
 
 TEST_F(BatAdsTabManagerTest, CloseTab) {
   // Arrange
-  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com")}, true,
-                                          false);
+  TabManager::GetInstance()->OnTabUpdated(
+      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*is_active*/ true,
+      /*is_incognito*/ false);
   ResetObserver();
 
   // Act
@@ -295,8 +316,10 @@ TEST_F(BatAdsTabManagerTest, CloseTab) {
 
 TEST_F(BatAdsTabManagerTest, PlayMedia) {
   // Arrange
-  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://foobar.com")}, true,
-                                          false);
+  TabManager::GetInstance()->OnTabUpdated(
+      /*id*/ 1, /*redirect_chain*/ {GURL("https://foobar.com")},
+      /*is_visible*/ true,
+      /*is_incognito*/ false);
   ResetObserver();
 
   // Act
@@ -315,8 +338,10 @@ TEST_F(BatAdsTabManagerTest, PlayMedia) {
 
 TEST_F(BatAdsTabManagerTest, AlreadyPlayingMedia) {
   // Arrange
-  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://foobar.com")}, true,
-                                          false);
+  TabManager::GetInstance()->OnTabUpdated(
+      /*id*/ 1, /*redirect_chain*/ {GURL("https://foobar.com")},
+      /*is_visible*/ true,
+      /*is_incognito*/ false);
   TabManager::GetInstance()->OnMediaPlaying(1);
   ResetObserver();
 
@@ -336,8 +361,10 @@ TEST_F(BatAdsTabManagerTest, AlreadyPlayingMedia) {
 
 TEST_F(BatAdsTabManagerTest, StopPlayingMedia) {
   // Arrange
-  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com")}, true,
-                                          false);
+  TabManager::GetInstance()->OnTabUpdated(
+      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*is_active*/ true,
+      /*is_incognito*/ false);
   TabManager::GetInstance()->OnMediaPlaying(1);
   ResetObserver();
 
@@ -357,10 +384,14 @@ TEST_F(BatAdsTabManagerTest, StopPlayingMedia) {
 
 TEST_F(BatAdsTabManagerTest, GetVisibleTab) {
   // Arrange
-  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://foobar.com")}, true,
-                                          false);
-  TabManager::GetInstance()->OnTabUpdated(2, {GURL("https://brave.com")}, true,
-                                          false);
+  TabManager::GetInstance()->OnTabUpdated(
+      /*id*/ 1, /*redirect_chain*/ {GURL("https://foobar.com")},
+      /*is_visible*/ true,
+      /*is_incognito*/ false);
+  TabManager::GetInstance()->OnTabUpdated(
+      /*id*/ 2, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*is_active*/ true,
+      /*is_incognito*/ false);
   ResetObserver();
 
   // Act
@@ -378,10 +409,14 @@ TEST_F(BatAdsTabManagerTest, GetVisibleTab) {
 
 TEST_F(BatAdsTabManagerTest, GetLastVisibleTab) {
   // Arrange
-  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://foobar.com")}, true,
-                                          false);
-  TabManager::GetInstance()->OnTabUpdated(2, {GURL("https://brave.com")}, true,
-                                          false);
+  TabManager::GetInstance()->OnTabUpdated(
+      /*id*/ 1, /*redirect_chain*/ {GURL("https://foobar.com")},
+      /*is_visible*/ true,
+      /*is_incognito*/ false);
+  TabManager::GetInstance()->OnTabUpdated(
+      /*id*/ 2, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*is_active*/ true,
+      /*is_incognito*/ false);
   ResetObserver();
 
   // Act
@@ -399,8 +434,10 @@ TEST_F(BatAdsTabManagerTest, GetLastVisibleTab) {
 
 TEST_F(BatAdsTabManagerTest, GetTabForId) {
   // Arrange
-  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com")}, true,
-                                          false);
+  TabManager::GetInstance()->OnTabUpdated(
+      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*is_active*/ true,
+      /*is_incognito*/ false);
   ResetObserver();
 
   // Act
@@ -417,8 +454,10 @@ TEST_F(BatAdsTabManagerTest, GetTabForId) {
 
 TEST_F(BatAdsTabManagerTest, DoNotGetTabForMissingId) {
   // Arrange
-  TabManager::GetInstance()->OnTabUpdated(1, {GURL("https://brave.com")}, true,
-                                          false);
+  TabManager::GetInstance()->OnTabUpdated(
+      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*is_active*/ true,
+      /*is_incognito*/ false);
   ResetObserver();
 
   // Act

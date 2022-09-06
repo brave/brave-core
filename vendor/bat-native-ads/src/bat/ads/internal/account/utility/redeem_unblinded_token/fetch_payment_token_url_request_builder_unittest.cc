@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/fetch_payment_token_url_request_builder.h"
 
-#include "bat/ads/internal/account/confirmations/confirmations_unittest_util.h"
+#include "bat/ads/internal/account/confirmations/confirmation_unittest_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/flags/flag_manager_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
@@ -27,13 +27,10 @@ TEST_F(BatAdsFetchPaymentTokenUrlRequestBuilderTest, BuildUrl) {
   SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
 
   privacy::SetUnblindedTokens(1);
+  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  CHECK(confirmation);
 
-  const ConfirmationInfo confirmation = BuildConfirmation(
-      /* transaction_id */ "8b742869-6e4a-490c-ac31-31b49130098a",
-      /* creative_instance_id */ "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-      ConfirmationType::kViewed, AdType::kNotificationAd);
-
-  FetchPaymentTokenUrlRequestBuilder url_request_builder(confirmation);
+  FetchPaymentTokenUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();

@@ -12,6 +12,7 @@
 #include "base/check_op.h"
 #include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
+#include "bat/ads/internal/account/confirmations/confirmation_util.h"
 #include "bat/ads/internal/account/confirmations/confirmations.h"
 #include "bat/ads/internal/account/deposits/deposits_factory.h"
 #include "bat/ads/internal/account/issuers/issuer_types.h"
@@ -273,13 +274,13 @@ void Account::OnPrefChanged(const std::string& path) {
 }
 
 void Account::OnDidConfirm(const ConfirmationInfo& confirmation) {
-  DCHECK(confirmation.IsValid());
+  DCHECK(IsValid(confirmation));
 
   TopUpUnblindedTokens();
 }
 
 void Account::OnFailedToConfirm(const ConfirmationInfo& confirmation) {
-  DCHECK(confirmation.IsValid());
+  DCHECK(IsValid(confirmation));
 
   TopUpUnblindedTokens();
 }

@@ -9,9 +9,7 @@
 #include "base/values.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_transaction_history_json_reader_util.h"
 
-namespace ads {
-namespace rewards {
-namespace JSONReader {
+namespace ads::rewards::json::reader {
 
 absl::optional<TransactionList> ReadTransactionHistory(
     const std::string& json) {
@@ -29,6 +27,4 @@ absl::optional<TransactionList> ReadTransactionHistory(
   return *transaction_history;
 }
 
-}  // namespace JSONReader
-}  // namespace rewards
-}  // namespace ads
+}  // namespace ads::rewards::json::reader

@@ -9,9 +9,7 @@
 #include "base/values.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_payments_json_reader_util.h"
 
-namespace ads {
-namespace rewards {
-namespace JSONReader {
+namespace ads::rewards::json::reader {
 
 absl::optional<PaymentList> ReadPayments(const std::string& json) {
   const absl::optional<base::Value> root = base::JSONReader::Read(json);
@@ -27,6 +25,4 @@ absl::optional<PaymentList> ReadPayments(const std::string& json) {
   return *payments;
 }
 
-}  // namespace JSONReader
-}  // namespace rewards
-}  // namespace ads
+}  // namespace ads::rewards::json::reader

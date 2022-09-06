@@ -16,7 +16,7 @@ namespace p2a {
 
 namespace {
 
-constexpr char kQuestionsAsJosn[] = R"(["question_1","question_2"])";
+constexpr char kQuestionsAsJson[] = R"(["question_1","question_2"])";
 constexpr char kNoQuestionsAsJson[] = "[]";
 
 }  // namespace
@@ -28,7 +28,7 @@ TEST(BatAdsP2AValuesUtilTest, QuestionsToValue) {
   const base::Value::List list = QuestionsToValue({"question_1", "question_2"});
 
   // Assert
-  const base::Value value = base::test::ParseJson(kQuestionsAsJosn);
+  const base::Value value = base::test::ParseJson(kQuestionsAsJson);
   const base::Value::List* expected_list = value.GetIfList();
   ASSERT_TRUE(expected_list);
 

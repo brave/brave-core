@@ -15,12 +15,12 @@ namespace ads {
 
 struct NotificationAdInfo;
 
-namespace JSONReader {
+namespace json::reader {
 
 absl::optional<base::circular_deque<NotificationAdInfo>> ReadNotificationAds(
     const std::string& json);
 
-}  // namespace JSONReader
+}  // namespace json::reader
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_LEGACY_MIGRATION_NOTIFICATIONS_LEGACY_NOTIFICATION_JSON_READER_H_

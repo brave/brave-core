@@ -1,0 +1,124 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "bat/ads/internal/account/confirmations/confirmation_util.h"
+
+#include <memory>
+
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
+#include "bat/ads/internal/privacy/tokens/token_generator_mock.h"
+#include "bat/ads/internal/privacy/tokens/token_generator_unittest_util.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
+#include "bat/ads/pref_names.h"
+
+// npm run test -- brave_unit_tests --filter=BatAds*
+
+namespace ads {
+
+using ::testing::_;
+using ::testing::NiceMock;
+using ::testing::Return;
+
+namespace {
+
+constexpr char kTransactionId[] = "8b742869-6e4a-490c-ac31-31b49130098a";
+constexpr char kCreativeInstanceId[] = "546fe7b0-5047-4f28-a11c-81f14edcf0f6";
+
+}  // namespace
+
+class BatAdsConfirmationUtilTest : public UnitTestBase {
+ protected:
+  BatAdsConfirmationUtilTest() = default;
+
+  ~BatAdsConfirmationUtilTest() override = default;
+
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    token_generator_mock_ =
+        std::make_unique<NiceMock<privacy::TokenGeneratorMock>>();
+  }
+
+  std::unique_ptr<privacy::TokenGeneratorMock> token_generator_mock_;
+};
+
+TEST_F(BatAdsConfirmationUtilTest, CreateConfirmationForNonOptedInUser) {
+  // Arrange
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
+
+  privacy::SetUnblindedTokens(/*count*/ 1);
+
+  ON_CALL(*token_generator_mock_, Generate(_))
+      .WillByDefault(Return(privacy::GetTokens(1)));
+
+  // Act
+  const absl::optional<ConfirmationInfo> confirmation = CreateConfirmation(
+      token_generator_mock_.get(), /*created_at*/ Now(), kTransactionId,
+      kCreativeInstanceId, ConfirmationType::kViewed, AdType::kNotificationAd,
+      base::Value::Dict());
+  ASSERT_TRUE(confirmation);
+
+  // Assert
+  EXPECT_FALSE(confirmation->opted_in);
+  EXPECT_TRUE(IsValid(*confirmation));
+}
+
+TEST_F(BatAdsConfirmationUtilTest, IsNotValidForNonOptedInUser) {
+  // Arrange
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
+
+  // Act
+  const ConfirmationInfo confirmation;
+
+  // Assert
+  EXPECT_FALSE(IsValid(confirmation));
+}
+
+TEST_F(BatAdsConfirmationUtilTest, CreateConfirmationForOptedInUser) {
+  // Arrange
+  privacy::SetUnblindedTokens(/*count*/ 1);
+
+  ON_CALL(*token_generator_mock_, Generate(_))
+      .WillByDefault(Return(privacy::GetTokens(1)));
+
+  // Act
+  const absl::optional<ConfirmationInfo> confirmation = CreateConfirmation(
+      token_generator_mock_.get(), /*created_at*/ Now(), kTransactionId,
+      kCreativeInstanceId, ConfirmationType::kViewed, AdType::kNotificationAd,
+      base::Value::Dict());
+  ASSERT_TRUE(confirmation);
+
+  // Assert
+  EXPECT_TRUE(confirmation->opted_in);
+  EXPECT_TRUE(IsValid(*confirmation));
+}
+
+TEST_F(BatAdsConfirmationUtilTest, FailToCreateConfirmationForOptedInUser) {
+  // Arrange
+  ON_CALL(*token_generator_mock_, Generate(_))
+      .WillByDefault(Return(privacy::GetTokens(1)));
+
+  // Act
+  const absl::optional<ConfirmationInfo> confirmation = CreateConfirmation(
+      token_generator_mock_.get(), /*created_at*/ Now(), kTransactionId,
+      kCreativeInstanceId, ConfirmationType::kViewed, AdType::kNotificationAd,
+      base::Value::Dict());
+
+  // Assert
+  EXPECT_FALSE(confirmation);
+}
+
+TEST_F(BatAdsConfirmationUtilTest, IsNotValidForOptedInUser) {
+  // Arrange
+
+  // Act
+  const ConfirmationInfo confirmation;
+
+  // Assert
+  EXPECT_FALSE(IsValid(confirmation));
+}
+
+}  // namespace ads

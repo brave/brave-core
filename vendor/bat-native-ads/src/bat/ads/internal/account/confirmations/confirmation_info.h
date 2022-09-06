@@ -9,38 +9,36 @@
 #include <string>
 #include <vector>
 
+#include "absl/types/optional.h"
 #include "base/time/time.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
-#include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
-#include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
-#include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
+#include "bat/ads/internal/account/confirmations/opted_in_info.h"
 
 namespace ads {
 
 struct ConfirmationInfo final {
   ConfirmationInfo();
-  ConfirmationInfo(const ConfirmationInfo& info);
-  ConfirmationInfo& operator=(const ConfirmationInfo& info);
+
+  ConfirmationInfo(const ConfirmationInfo& other);
+  ConfirmationInfo& operator=(const ConfirmationInfo& other);
+
+  ConfirmationInfo(ConfirmationInfo&& other) noexcept;
+  ConfirmationInfo& operator=(ConfirmationInfo&& other) noexcept;
+
   ~ConfirmationInfo();
-
-  bool operator==(const ConfirmationInfo& rhs) const;
-  bool operator!=(const ConfirmationInfo& rhs) const;
-
-  bool IsValid() const;
 
   std::string transaction_id;
   std::string creative_instance_id;
   ConfirmationType type = ConfirmationType::kUndefined;
   AdType ad_type = AdType::kUndefined;
-  privacy::UnblindedTokenInfo unblinded_token;
-  privacy::cbr::Token payment_token;
-  privacy::cbr::BlindedToken blinded_payment_token;
-  std::string credential;
-  std::string user_data;
   base::Time created_at;
   bool was_created = false;
+  absl::optional<OptedInInfo> opted_in;
 };
+
+bool operator==(const ConfirmationInfo& lhs, const ConfirmationInfo& rhs);
+bool operator!=(const ConfirmationInfo& lhs, const ConfirmationInfo& rhs);
 
 using ConfirmationList = std::vector<ConfirmationInfo>;
 

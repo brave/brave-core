@@ -10,9 +10,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 
-namespace ads {
-namespace rewards {
-namespace JSONReader {
+namespace ads::rewards::json::reader {
 
 namespace {
 
@@ -100,6 +98,4 @@ absl::optional<PaymentList> ParsePayments(const base::Value& value) {
   return *payments;
 }
 
-}  // namespace JSONReader
-}  // namespace rewards
-}  // namespace ads
+}  // namespace ads::rewards::json::reader

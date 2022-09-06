@@ -5,8 +5,9 @@
 
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/create_confirmation_url_request_builder.h"
 
-#include "bat/ads/internal/account/confirmations/confirmations_unittest_util.h"
+#include "bat/ads/internal/account/confirmations/confirmation_unittest_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_build_channel_types.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/flags/flag_manager_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
@@ -30,13 +31,6 @@ class BatAdsCreateConfirmationUrlRequestBuilderTest : public UnitTestBase {
   BatAdsCreateConfirmationUrlRequestBuilderTest() = default;
 
   ~BatAdsCreateConfirmationUrlRequestBuilderTest() override = default;
-
-  ConfirmationInfo BuildConfirmation() {
-    return ::ads::BuildConfirmation(
-        /* transaction_id */ "8b742869-6e4a-490c-ac31-31b49130098a",
-        /* creative_instance_id */ "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-        ConfirmationType::kViewed, AdType::kNotificationAd);
-  }
 };
 
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
@@ -52,7 +46,9 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockLocaleHelper(locale_helper_mock_, "en-US");
 
-  CreateConfirmationUrlRequestBuilder url_request_builder(BuildConfirmation());
+  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  CHECK(confirmation);
+  CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -83,7 +79,9 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockLocaleHelper(locale_helper_mock_, "en-AS");
 
-  CreateConfirmationUrlRequestBuilder url_request_builder(BuildConfirmation());
+  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  CHECK(confirmation);
+  CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -114,7 +112,9 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockLocaleHelper(locale_helper_mock_, "en-KY");
 
-  CreateConfirmationUrlRequestBuilder url_request_builder(BuildConfirmation());
+  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  CHECK(confirmation);
+  CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -145,7 +145,9 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockLocaleHelper(locale_helper_mock_, "en-US");
 
-  CreateConfirmationUrlRequestBuilder url_request_builder(BuildConfirmation());
+  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  CHECK(confirmation);
+  CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -176,7 +178,9 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockLocaleHelper(locale_helper_mock_, "en-AS");
 
-  CreateConfirmationUrlRequestBuilder url_request_builder(BuildConfirmation());
+  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  CHECK(confirmation);
+  CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -207,7 +211,9 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockLocaleHelper(locale_helper_mock_, "en-KY");
 
-  CreateConfirmationUrlRequestBuilder url_request_builder(BuildConfirmation());
+  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  CHECK(confirmation);
+  CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -238,7 +244,9 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockLocaleHelper(locale_helper_mock_, "en-US");
 
-  CreateConfirmationUrlRequestBuilder url_request_builder(BuildConfirmation());
+  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  CHECK(confirmation);
+  CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -269,7 +277,9 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockLocaleHelper(locale_helper_mock_, "en-AS");
 
-  CreateConfirmationUrlRequestBuilder url_request_builder(BuildConfirmation());
+  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  CHECK(confirmation);
+  CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -300,7 +310,9 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockLocaleHelper(locale_helper_mock_, "en-KY");
 
-  CreateConfirmationUrlRequestBuilder url_request_builder(BuildConfirmation());
+  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  CHECK(confirmation);
+  CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -331,7 +343,9 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockLocaleHelper(locale_helper_mock_, "en-US");
 
-  CreateConfirmationUrlRequestBuilder url_request_builder(BuildConfirmation());
+  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  CHECK(confirmation);
+  CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -362,7 +376,9 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockLocaleHelper(locale_helper_mock_, "en-AS");
 
-  CreateConfirmationUrlRequestBuilder url_request_builder(BuildConfirmation());
+  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  CHECK(confirmation);
+  CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -393,7 +409,9 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   MockLocaleHelper(locale_helper_mock_, "en-KY");
 
-  CreateConfirmationUrlRequestBuilder url_request_builder(BuildConfirmation());
+  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  CHECK(confirmation);
+  CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();

@@ -11,15 +11,11 @@
 #include "absl/types/optional.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 
-namespace ads {
-namespace rewards {
-namespace JSONReader {
+namespace ads::rewards::json::reader {
 
 absl::optional<privacy::UnblindedPaymentTokenList> ReadUnblindedPaymentTokens(
     const std::string& json);
 
-}  // namespace JSONReader
-}  // namespace rewards
-}  // namespace ads
+}  // namespace ads::rewards::json::reader
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_LEGACY_MIGRATION_REWARDS_LEGACY_REWARDS_MIGRATION_UNBLINDED_PAYMENT_TOKENS_JSON_READER_H_

@@ -23,8 +23,6 @@ struct UnblindedTokenInfo final {
   bool operator==(const UnblindedTokenInfo& rhs) const;
   bool operator!=(const UnblindedTokenInfo& rhs) const;
 
-  bool is_valid() const;
-
   cbr::UnblindedToken value;
   cbr::PublicKey public_key;
 };

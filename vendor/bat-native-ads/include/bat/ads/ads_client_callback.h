@@ -10,13 +10,9 @@
 #include <vector>
 
 #include "base/callback.h"  // IWYU pragma: keep
+#include "base/files/file.h"
 #include "bat/ads/public/interfaces/ads.mojom-forward.h"
-
-class GURL;
-
-namespace base {
-class File;
-}  // namespace base
+#include "url/gurl.h"
 
 namespace ads {
 

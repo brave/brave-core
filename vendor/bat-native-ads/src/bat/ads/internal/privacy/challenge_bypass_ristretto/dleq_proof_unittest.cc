@@ -113,7 +113,7 @@ TEST(BatAdsDLEQProofTest, FailToDecodeEmptyBase64) {
   // Arrange
 
   // Act
-  const DLEQProof dleq_proof = DLEQProof::DecodeBase64("");
+  const DLEQProof dleq_proof = DLEQProof::DecodeBase64({});
 
   // Assert
   const bool has_value = dleq_proof.has_value();

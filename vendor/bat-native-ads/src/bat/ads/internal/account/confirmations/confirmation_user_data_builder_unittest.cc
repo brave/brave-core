@@ -3,12 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/account/confirmations/confirmations_user_data_builder.h"
-
 #include <string>
 
 #include "base/json/json_writer.h"
 #include "base/values.h"
+#include "bat/ads/internal/account/confirmations/confirmation_user_data_builder.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
@@ -60,11 +59,11 @@ TEST_F(BatAdsConfirmationUserDataTest, BuildForNonConversionConfirmationType) {
   BuildAndSaveConversionQueueItem(kConversionId, kAdvertiserPublicKey);
 
   // Assert
-  ConfirmationsUserDataBuilder user_data_builder(Now(), kCreativeInstanceId,
-                                                 ConfirmationType::kViewed);
+  ConfirmationUserDataBuilder user_data_builder(Now(), kCreativeInstanceId,
+                                                ConfirmationType::kViewed);
   user_data_builder.Build([](const base::Value::Dict& user_data) {
     std::string json;
-    base::JSONWriter::Write(user_data, &json);
+    CHECK(base::JSONWriter::Write(user_data, &json));
 
     const std::string pattern =
         R"~({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","mutated":true,"odyssey":"host","platform":"windows","rotating_hash":"p3QDOuQ3HakWNXLBZCP8dktH\+zyu7FsHpKONKhWliJE=","studies":\[],"systemTimestamp":"2020-11-18T12:00:00.000Z","versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})~";
@@ -93,11 +92,11 @@ TEST_F(BatAdsConfirmationUserDataTest, BuildForConversionConfirmationType) {
   BuildAndSaveConversionQueueItem(kConversionId, kAdvertiserPublicKey);
 
   // Assert
-  ConfirmationsUserDataBuilder user_data_builder(Now(), kCreativeInstanceId,
-                                                 ConfirmationType::kConversion);
+  ConfirmationUserDataBuilder user_data_builder(Now(), kCreativeInstanceId,
+                                                ConfirmationType::kConversion);
   user_data_builder.Build([](const base::Value::Dict& user_data) {
     std::string json;
-    base::JSONWriter::Write(user_data, &json);
+    CHECK(base::JSONWriter::Write(user_data, &json));
 
     const std::string pattern =
         R"~({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"conversionEnvelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":"(.{64})","epk":"(.{44})","nonce":"(.{32})"},"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","mutated":true,"odyssey":"host","platform":"windows","rotating_hash":"p3QDOuQ3HakWNXLBZCP8dktH\+zyu7FsHpKONKhWliJE=","studies":\[],"systemTimestamp":"2020-11-18T12:00:00.000Z","versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})~";

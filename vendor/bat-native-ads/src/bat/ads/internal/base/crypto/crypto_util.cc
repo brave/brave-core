@@ -77,7 +77,7 @@ std::string Sign(const base::flat_map<std::string, std::string>& headers,
                  const std::string& key_id,
                  const std::string& secret_key) {
   if (headers.empty() || key_id.empty() || secret_key.empty()) {
-    return "";
+    return {};
   }
 
   std::string concatenated_header;
@@ -101,7 +101,7 @@ std::string Sign(const base::flat_map<std::string, std::string>& headers,
 
   std::vector<uint8_t> raw_secret_key;
   if (!base::HexStringToBytes(secret_key, &raw_secret_key)) {
-    return "";
+    return {};
   }
 
   // Resolving the following linter error breaks the build on Windows

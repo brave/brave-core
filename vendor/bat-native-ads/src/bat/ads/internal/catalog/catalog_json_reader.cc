@@ -20,8 +20,7 @@
 #include "bat/ads/internal/deprecated/json/json_helper.h"
 #include "url/gurl.h"
 
-namespace ads {
-namespace JSONReader {
+namespace ads::json::reader {
 
 absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
   rapidjson::Document document;
@@ -294,5 +293,4 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
   return catalog;
 }
 
-}  // namespace JSONReader
-}  // namespace ads
+}  // namespace ads::json::reader

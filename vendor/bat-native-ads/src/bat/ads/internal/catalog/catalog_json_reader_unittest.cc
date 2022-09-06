@@ -391,7 +391,7 @@ class BatAdsCatalogTest : public UnitTestBase {
     conversion.type = "postclick";
     conversion.url_pattern = "https://www.brave.com/2/*";
     conversion.observation_window = 7;
-    conversion.advertiser_public_key = "";
+    conversion.advertiser_public_key = {};
     conversion.expire_at =
         DistantFuture() + base::Days(conversion.observation_window);
     conversions.push_back(conversion);
@@ -461,7 +461,7 @@ TEST_F(BatAdsCatalogTest, ParseCatalogWithSingleCampaign) {
   ASSERT_TRUE(json);
 
   // Act
-  const absl::optional<CatalogInfo> catalog = JSONReader::ReadCatalog(*json);
+  const absl::optional<CatalogInfo> catalog = json::reader::ReadCatalog(*json);
   ASSERT_TRUE(catalog);
 
   // Assert
@@ -481,7 +481,7 @@ TEST_F(BatAdsCatalogTest, ParseCatalogWithMultipleCampaigns) {
   ASSERT_TRUE(json);
 
   // Act
-  const absl::optional<CatalogInfo> catalog = JSONReader::ReadCatalog(*json);
+  const absl::optional<CatalogInfo> catalog = json::reader::ReadCatalog(*json);
   ASSERT_TRUE(catalog);
 
   // Assert
@@ -502,7 +502,7 @@ TEST_F(BatAdsCatalogTest, ParseEmptyCatalog) {
   ASSERT_TRUE(json);
 
   // Act
-  const absl::optional<CatalogInfo> catalog = JSONReader::ReadCatalog(*json);
+  const absl::optional<CatalogInfo> catalog = json::reader::ReadCatalog(*json);
   ASSERT_TRUE(catalog);
 
   // Assert
@@ -519,7 +519,7 @@ TEST_F(BatAdsCatalogTest, InvalidCatalog) {
 
   // Act
   const absl::optional<CatalogInfo> catalog =
-      JSONReader::ReadCatalog(kInvalidCatalog);
+      json::reader::ReadCatalog(kInvalidCatalog);
 
   // Assert
   EXPECT_FALSE(catalog);

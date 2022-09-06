@@ -66,7 +66,7 @@ TEST(BatAdsUnblindedTokenTest, FailToDecodeEmptyBase64) {
   // Arrange
 
   // Act
-  const UnblindedToken unblinded_token = UnblindedToken::DecodeBase64("");
+  const UnblindedToken unblinded_token = UnblindedToken::DecodeBase64({});
 
   // Assert
   const bool has_value = unblinded_token.has_value();

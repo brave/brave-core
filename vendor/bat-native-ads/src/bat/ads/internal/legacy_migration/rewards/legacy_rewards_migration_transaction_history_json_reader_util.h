@@ -10,15 +10,11 @@
 #include "base/values.h"
 #include "bat/ads/internal/account/transactions/transaction_info.h"
 
-namespace ads {
-namespace rewards {
-namespace JSONReader {
+namespace ads::rewards::json::reader {
 
 absl::optional<TransactionList> ParseTransactionHistory(
     const base::Value::Dict& value);
 
-}  // namespace JSONReader
-}  // namespace rewards
-}  // namespace ads
+}  // namespace ads::rewards::json::reader
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_LEGACY_MIGRATION_REWARDS_LEGACY_REWARDS_MIGRATION_TRANSACTION_HISTORY_JSON_READER_UTIL_H_

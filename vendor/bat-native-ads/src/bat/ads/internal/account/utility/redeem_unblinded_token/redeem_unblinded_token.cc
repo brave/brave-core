@@ -12,12 +12,13 @@
 
 #include "absl/types/optional.h"
 #include "base/bind.h"
+#include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/notreached.h"
 #include "base/values.h"
 #include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
-#include "bat/ads/internal/account/confirmations/confirmations_util.h"
+#include "bat/ads/internal/account/confirmations/confirmation_util.h"
 #include "bat/ads/internal/account/issuers/issuer_types.h"
 #include "bat/ads/internal/account/issuers/issuers_util.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/create_confirmation_url_request_builder.h"
@@ -46,7 +47,7 @@ RedeemUnblindedToken::~RedeemUnblindedToken() {
 }
 
 void RedeemUnblindedToken::Redeem(const ConfirmationInfo& confirmation) {
-  DCHECK(confirmation.IsValid());
+  DCHECK(IsValid(confirmation));
 
   BLOG(1, "Redeem unblinded token");
 
@@ -91,23 +92,16 @@ void RedeemUnblindedToken::OnCreateConfirmation(
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 
-  if (confirmation.credential.empty()) {
+  if (!confirmation.opted_in) {
     if (url_response.status_code == net::kHttpImATeapot) {
       OnDidSendConfirmation(confirmation);
       return;
     }
 
-    if (url_response.status_code == net::HTTP_CONFLICT) {
-      OnFailedToSendConfirmation(confirmation, /*should_retry*/ false);
-      return;
-    }
-
-    if (url_response.status_code == net::HTTP_BAD_REQUEST) {
-      OnFailedToSendConfirmation(confirmation, /*should_retry*/ false);
-      return;
-    }
-
-    OnFailedToSendConfirmation(confirmation, /*should_retry*/ true);
+    const bool should_retry =
+        !(url_response.status_code == net::HTTP_CONFLICT ||
+          url_response.status_code == net::HTTP_BAD_REQUEST);
+    OnFailedToSendConfirmation(confirmation, should_retry);
     return;
   }
 
@@ -119,6 +113,9 @@ void RedeemUnblindedToken::OnCreateConfirmation(
 
 void RedeemUnblindedToken::FetchPaymentToken(
     const ConfirmationInfo& confirmation) {
+  DCHECK(IsValid(confirmation));
+  DCHECK(confirmation.opted_in);
+
   BLOG(1, "FetchPaymentToken");
   BLOG(2, "GET /v2/confirmation/{transactionId}/paymentToken");
 
@@ -170,13 +167,6 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
     BLOG(1, "Failed to fetch payment token");
     OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
                                    /*should_backoff*/ true);
-    return;
-  }
-
-  if (!VerifyConfirmation(confirmation)) {
-    BLOG(1, "Failed to verify confirmation");
-    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ false,
-                                   /*should_backoff*/ false);
     return;
   }
 
@@ -276,13 +266,6 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
     return;
   }
 
-  if (signed_tokens_list->GetList().size() != 1) {
-    BLOG(0, "Response has too many signedTokens");
-    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
-                                   /*should_backoff*/ true);
-    return;
-  }
-
   std::vector<privacy::cbr::SignedToken> signed_tokens;
   for (const auto& item : signed_tokens_list->GetList()) {
     DCHECK(item.is_string());
@@ -299,10 +282,11 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   }
 
   // Verify and unblind tokens
-  const std::vector<privacy::cbr::Token> tokens = {confirmation.payment_token};
+  const std::vector<privacy::cbr::Token> tokens = {
+      confirmation.opted_in->token};
 
   const std::vector<privacy::cbr::BlindedToken> blinded_tokens = {
-      confirmation.blinded_payment_token};
+      confirmation.opted_in->blinded_token};
 
   const absl::optional<std::vector<privacy::cbr::UnblindedToken>>
       batch_dleq_proof_unblinded_tokens = batch_dleq_proof.VerifyAndUnblind(

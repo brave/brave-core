@@ -10,8 +10,7 @@
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_manager_values_util.h"
 #include "bat/ads/notification_ad_info.h"
 
-namespace ads {
-namespace JSONReader {
+namespace ads::json::reader {
 
 constexpr char kNotificationListKey[] = "notifications";
 
@@ -31,5 +30,4 @@ absl::optional<base::circular_deque<NotificationAdInfo>> ReadNotificationAds(
   return NotificationAdsFromValue(*value);
 }
 
-}  // namespace JSONReader
-}  // namespace ads
+}  // namespace ads::json::reader
