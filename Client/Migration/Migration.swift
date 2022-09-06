@@ -126,12 +126,12 @@ public class Migration {
             options: [.skipsHiddenFiles])
           assets.forEach({
             if let item = PlaylistItem.cachedItem(cacheURL: $0),
-              let pageSrc = item.pageSrc {
+              let itemId = item.uuid {
               let destination = playlistDirectory.appendingPathComponent($0.lastPathComponent)
 
               do {
                 try FileManager.default.moveItem(at: $0, to: destination)
-                try PlaylistItem.updateCache(pageSrc: pageSrc, cachedData: destination.bookmarkData())
+                try PlaylistItem.updateCache(uuid: itemId, cachedData: destination.bookmarkData())
               } catch {
                 log.error("Moving Playlist Item for \(errorPath) failed: \(error)")
               }
@@ -175,6 +175,20 @@ public class Migration {
       }
     }
   }
+  
+  private static func playlistFolderSharingIdentifierV2Migration() {
+    let itemIDs = PlaylistItem.all().map({ $0.objectID })
+    DataController.performOnMainContext(save: true) { context in
+      let items = itemIDs.compactMap({ context.object(with: $0) as? PlaylistItem })
+      items.forEach({
+        if $0.uuid == nil {
+          $0.uuid = UUID().uuidString
+        }
+      })
+      
+      Preferences.Migration.playlistV2SharedFoldersInitialMigrationCompleted.value = true
+    }
+  }
 
   public static func postCoreDataInitMigrations() {
     if !Preferences.Migration.removeLargeFaviconsMigrationCompleted.value {
@@ -184,6 +198,10 @@ public class Migration {
 
     if !Preferences.Migration.playlistV2FoldersInitialMigrationCompleted.value {
       movePlaylistV2Items()
+    }
+    
+    if !Preferences.Migration.playlistV2SharedFoldersInitialMigrationCompleted.value {
+      playlistFolderSharingIdentifierV2Migration()
     }
 
     if Preferences.Migration.coreDataCompleted.value { return }
@@ -216,6 +234,8 @@ fileprivate extension Preferences {
       Option<Bool>(key: "migration.playlistv1-file-settings-location-completed", default: false)
     static let playlistV2FoldersInitialMigrationCompleted =
       Option<Bool>(key: "migration.playlistv2-folders-initial-migration-2-completed", default: false)
+    static let playlistV2SharedFoldersInitialMigrationCompleted =
+      Option<Bool>(key: "migration.playlistv2-sharedfolders-initial-migration-2-completed", default: false)
     static let removeLargeFaviconsMigrationCompleted =
       Option<Bool>(key: "migration.remove-large-favicons", default: false)
     // This is new preference introduced in iOS 1.32.3, tracks whether we should perform database migration.

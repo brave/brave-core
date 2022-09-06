@@ -17,6 +17,10 @@ extension PlaylistListViewController: UITableViewDragDelegate, UITableViewDropDe
   }
 
   func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+    guard PlaylistManager.shared.currentFolder?.sharedFolderId == nil else {
+      return []
+    }
+    
     let item = PlaylistManager.shared.itemAtIndex(indexPath.row)
     let dragItem = UIDragItem(itemProvider: NSItemProvider())
     dragItem.localObject = item

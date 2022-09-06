@@ -246,7 +246,7 @@ class SettingsViewController: TableViewController {
 
     section.rows.append(
       Row(
-        text: Strings.PlayList.playListSectionTitle,
+        text: Strings.PlayList.playListTitle,
         selection: { [unowned self] in
           let playlistSettings = PlaylistSettingsViewController()
           self.navigationController?.pushViewController(playlistSettings, animated: true)

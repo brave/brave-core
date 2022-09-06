@@ -33,7 +33,7 @@ private extension PlaylistListViewController {
   func cacheItem(_ item: PlaylistInfo, indexPath: IndexPath, cacheState: PlaylistDownloadManager.DownloadState) {
     switch cacheState {
     case .inProgress:
-      PlaylistManager.shared.cancelDownload(item: item)
+      PlaylistManager.shared.cancelDownload(itemId: item.tagId)
       tableView.reloadRows(at: [indexPath], with: .automatic)
     case .invalid:
       if PlaylistManager.shared.isDiskSpaceEncumbered() {
@@ -64,7 +64,7 @@ private extension PlaylistListViewController {
         UIAlertAction(
           title: Strings.PlayList.removeActionButtonTitle, style: .destructive,
           handler: { [unowned self] _ in
-            _ = PlaylistManager.shared.deleteCache(item: item)
+            _ = PlaylistManager.shared.deleteCache(itemId: item.tagId)
             self.tableView.reloadRows(at: [indexPath], with: .automatic)
           }))
 
@@ -73,7 +73,7 @@ private extension PlaylistListViewController {
     }
   }
 
-  func deleteItem(_ item: PlaylistInfo, indexPath: IndexPath) {
+  func deleteItem(itemId: String, indexPath: IndexPath) {
     let style: UIAlertController.Style = UIDevice.current.userInterfaceIdiom == .pad ? .alert : .actionSheet
     let alert = UIAlertController(
       title: Strings.PlayList.removePlaylistVideoAlertTitle, message: Strings.PlayList.removePlaylistVideoAlertMessage, preferredStyle: style)
@@ -84,7 +84,7 @@ private extension PlaylistListViewController {
         handler: { [weak self] _ in
           guard let self = self else { return }
 
-          self.delegate?.deleteItem(item: item, at: indexPath.row)
+          self.delegate?.deleteItem(itemId: itemId, at: indexPath.row)
 
           if self.delegate?.currentPlaylistItem == nil {
             self.updateTableBackgroundView()
@@ -123,11 +123,13 @@ extension PlaylistListViewController: UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 
-    guard let currentItem = PlaylistManager.shared.itemAtIndex(indexPath.row) else {
+    guard PlaylistManager.shared.currentFolder?.isPersistent == true,
+          let currentItem = PlaylistManager.shared.itemAtIndex(indexPath.row) else {
       return nil
     }
-
-    let cacheState = PlaylistManager.shared.state(for: currentItem.pageSrc)
+    
+    let isSharedFolder = PlaylistManager.shared.currentFolder?.sharedFolderId != nil
+    let cacheState = PlaylistManager.shared.state(for: currentItem.tagId)
 
     let cacheAction = UIContextualAction(
       style: .normal, title: nil,
@@ -139,7 +141,7 @@ extension PlaylistListViewController: UITableViewDelegate {
     let deleteAction = UIContextualAction(
       style: .normal, title: nil,
       handler: { [weak self] (action, view, completionHandler) in
-        self?.deleteItem(currentItem, indexPath: indexPath)
+        self?.deleteItem(itemId: currentItem.tagId, indexPath: indexPath)
         completionHandler(true)
       })
 
@@ -175,12 +177,14 @@ extension PlaylistListViewController: UITableViewDelegate {
               self?.openInNewTab(currentItem, isPrivate: true)
             }))
 
-        alert.addAction(
-          UIAlertAction(
-            title: Strings.PlayList.sharePlaylistMoveActionMenuTitle, style: .default,
-            handler: { [weak self] _ in
-              self?.moveItems(indexPaths: [indexPath])
-            }))
+        if !isSharedFolder {
+          alert.addAction(
+            UIAlertAction(
+              title: Strings.PlayList.sharePlaylistMoveActionMenuTitle, style: .default,
+              handler: { [weak self] _ in
+                self?.moveItems(indexPaths: [indexPath])
+              }))
+        }
 
         alert.addAction(
           UIAlertAction(
@@ -195,30 +199,35 @@ extension PlaylistListViewController: UITableViewDelegate {
         completionHandler(true)
       })
 
-    cacheAction.image = cacheState == .invalid ? UIImage(named: "playlist_download", in: .current, compatibleWith: nil)! : UIImage(named: "playlist_delete_download", in: .current, compatibleWith: nil)!
+    cacheAction.image = cacheState == .invalid ? UIImage(braveSystemNamed: "brave.cloud.and.arrow.down")! : UIImage(braveSystemNamed: "brave.cloud.slash")!
     cacheAction.backgroundColor = UIColor.braveDarkerBlurple
 
-    deleteAction.image = UIImage(named: "playlist_delete_item", in: .current, compatibleWith: nil)!
+    deleteAction.image = UIImage(braveSystemNamed: "brave.trash")!
     deleteAction.backgroundColor = UIColor.braveErrorLabel
 
     shareAction.image = UIImage(systemName: "square.and.arrow.up")
     shareAction.backgroundColor = UIColor.braveInfoLabel
 
+    if isSharedFolder {
+      return UISwipeActionsConfiguration(actions: [shareAction, cacheAction])
+    }
     return UISwipeActionsConfiguration(actions: [deleteAction, shareAction, cacheAction])
   }
 
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-
-    guard let currentItem = PlaylistManager.shared.itemAtIndex(indexPath.row) else {
+    guard PlaylistManager.shared.currentFolder?.isPersistent == true,
+          let currentItem = PlaylistManager.shared.itemAtIndex(indexPath.row) else {
       return nil
     }
+    
+    let isSharedFolder = PlaylistManager.shared.currentFolder?.sharedFolderId != nil
 
     let actionProvider: UIContextMenuActionProvider = { _ in
-      let cacheState = PlaylistManager.shared.state(for: currentItem.pageSrc)
+      let cacheState = PlaylistManager.shared.state(for: currentItem.tagId)
       let cacheTitle = cacheState == .invalid ? Strings.PlayList.playlistSaveForOfflineButtonTitle : Strings.PlayList.playlistDeleteForOfflineButtonTitle
-      let cacheIcon = cacheState == .invalid ? UIImage(systemName: "icloud.and.arrow.down") : UIImage(systemName: "icloud.slash")
-
-      return UIMenu(children: [
+      let cacheIcon = cacheState == .invalid ? UIImage(braveSystemNamed: "brave.cloud.and.arrow.down") : UIImage(braveSystemNamed: "brave.cloud.slash")
+      
+      var menuItems: [UIMenuElement] = [
         UIMenu(
           options: .displayInline,
           children: [
@@ -254,41 +263,47 @@ extension PlaylistListViewController: UITableViewDelegate {
                 }))
 
             return actions
-          }()),
+          }())
+      ]
+      
+      if !isSharedFolder {
+        menuItems += [
+          UIMenu(
+            options: .displayInline,
+            children: {
+              var actions = [UIMenuElement]()
+              if PlaylistFolder.getOtherFoldersCount() > 0 {
+                actions.append(
+                  UIAction(
+                    title: Strings.PlayList.sharePlaylistMoveActionMenuTitle, image: UIImage(braveSystemNamed: "brave.folder"),
+                    handler: { [weak self] _ in
+                      self?.moveItems(indexPaths: [indexPath])
+                    }))
+              }
 
-        UIMenu(
-          options: .displayInline,
-          children: {
-            var actions = [UIMenuElement]()
-            if PlaylistFolder.getOtherFoldersCount() > 0 {
               actions.append(
                 UIAction(
-                  title: Strings.PlayList.sharePlaylistMoveActionMenuTitle, image: UIImage(systemName: "folder"),
+                  title: Strings.PlayList.sharePlaylistShareActionMenuTitle, image: UIImage(systemName: "square.and.arrow.up"),
                   handler: { [weak self] _ in
-                    self?.moveItems(indexPaths: [indexPath])
+                    self?.shareItem(currentItem, anchorView: tableView.cellForRow(at: indexPath))
                   }))
-            }
 
-            actions.append(
-              UIAction(
-                title: Strings.PlayList.sharePlaylistShareActionMenuTitle, image: UIImage(systemName: "square.and.arrow.up"),
-                handler: { [weak self] _ in
-                  self?.shareItem(currentItem, anchorView: tableView.cellForRow(at: indexPath))
-                }))
+              return actions
+            }()),
 
-            return actions
-          }()),
+          UIAction(
+            title: Strings.delete, image: UIImage(braveSystemNamed: "brave.trash"), attributes: .destructive,
+            handler: { [weak self] _ in
+              self?.deleteItem(itemId: currentItem.tagId, indexPath: indexPath)
+            })
+        ]
+      }
 
-        UIAction(
-          title: Strings.delete, image: UIImage(systemName: "trash"), attributes: .destructive,
-          handler: { [weak self] _ in
-            self?.deleteItem(currentItem, indexPath: indexPath)
-          }),
-      ])
+      return UIMenu(children: menuItems)
     }
 
     let identifier = NSDictionary(dictionary: [
-      "itemID": currentItem.pageSrc,
+      "itemID": currentItem.tagId,
       "row": indexPath.row,
     ])
     return UIContextMenuConfiguration(identifier: identifier, previewProvider: nil, actionProvider: actionProvider)
@@ -307,7 +322,7 @@ extension PlaylistListViewController: UITableViewDelegate {
 
     guard row >= 0 || row < PlaylistManager.shared.numberOfAssets,
       let currentItem = PlaylistManager.shared.itemAtIndex(row),
-      currentItem.pageSrc == itemID
+      currentItem.tagId == itemID
     else {
       return nil
     }
@@ -332,6 +347,8 @@ extension PlaylistListViewController: UITableViewDelegate {
       updateToolbar(editing: true)
       return
     }
+    
+    delegate?.showStaticImage(image: nil)
 
     prepareToPlayItem(at: indexPath) { [weak self] item in
       guard let item = item else {

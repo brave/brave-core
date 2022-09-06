@@ -9,7 +9,7 @@ import Shared
 
 private let log = Logger.browserLogger
 
-public struct PlaylistInfo: Codable {
+public struct PlaylistInfo: Codable, Identifiable, Hashable, Equatable {
   public let name: String
   public let src: String
   public let pageSrc: String
@@ -19,6 +19,24 @@ public struct PlaylistInfo: Codable {
   public let detected: Bool
   public let dateAdded: Date
   public let tagId: String
+  public let order: Int32
+  
+  public var id: String {
+    tagId
+  }
+  
+  public init(pageSrc: String) {
+    self.name = ""
+    self.src = ""
+    self.pageSrc = pageSrc
+    self.pageTitle = ""
+    self.mimeType = ""
+    self.duration = 0.0
+    self.dateAdded = Date()
+    self.detected = false
+    self.tagId = UUID().uuidString
+    self.order = Int32.min
+  }
 
   public init(item: PlaylistItem) {
     self.name = item.name ?? ""
@@ -29,10 +47,11 @@ public struct PlaylistInfo: Codable {
     self.duration = item.duration
     self.dateAdded = item.dateAdded ?? Date()
     self.detected = false
-    self.tagId = ""
+    self.tagId = item.uuid ?? UUID().uuidString
+    self.order = item.order
   }
 
-  public init(name: String, src: String, pageSrc: String, pageTitle: String, mimeType: String, duration: TimeInterval, detected: Bool, dateAdded: Date, tagId: String) {
+  public init(name: String, src: String, pageSrc: String, pageTitle: String, mimeType: String, duration: TimeInterval, detected: Bool, dateAdded: Date, tagId: String, order: Int32) {
     self.name = name
     self.src = src
     self.pageSrc = pageSrc
@@ -41,7 +60,8 @@ public struct PlaylistInfo: Codable {
     self.duration = duration
     self.detected = detected
     self.dateAdded = dateAdded
-    self.tagId = tagId
+    self.tagId = tagId.isEmpty ? UUID().uuidString : tagId
+    self.order = order
   }
 
   public init(from decoder: Decoder) throws {
@@ -53,9 +73,10 @@ public struct PlaylistInfo: Codable {
     self.mimeType = try container.decodeIfPresent(String.self, forKey: .mimeType) ?? ""
     self.duration = try container.decodeIfPresent(TimeInterval.self, forKey: .duration) ?? 0.0
     self.detected = try container.decodeIfPresent(Bool.self, forKey: .detected) ?? false
-    self.tagId = try container.decodeIfPresent(String.self, forKey: .tagId) ?? ""
+    self.tagId = try container.decodeIfPresent(String.self, forKey: .tagId) ?? UUID().uuidString
     self.dateAdded = Date()
     self.src = PlaylistInfo.fixSchemelessURLs(src: src, pageSrc: pageSrc)
+    self.order = try container.decodeIfPresent(Int32.self, forKey: .order) ?? Int32.min
   }
 
   public static func from(message: WKScriptMessage) -> PlaylistInfo? {
@@ -71,6 +92,18 @@ public struct PlaylistInfo: Codable {
     }
 
     return nil
+  }
+  
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(pageSrc.asURL?.normalizedHostAndPath ?? pageSrc)
+    hasher.combine(tagId)
+  }
+  
+  public static func == (lhs: Self, rhs: Self) -> Bool {
+    if let lhsPageSrc = lhs.pageSrc.asURL?.normalizedHostAndPath, let rhsPageSrc = rhs.pageSrc.asURL?.normalizedHostAndPath {
+      return lhsPageSrc == rhsPageSrc && lhs.tagId == rhs.tagId
+    }
+    return lhs.pageSrc == rhs.pageSrc && lhs.tagId == rhs.tagId
   }
 
   public static func fixSchemelessURLs(src: String, pageSrc: String) -> String {
@@ -92,5 +125,6 @@ public struct PlaylistInfo: Codable {
     case detected
     case tagId
     case dateAdded
+    case order
   }
 }

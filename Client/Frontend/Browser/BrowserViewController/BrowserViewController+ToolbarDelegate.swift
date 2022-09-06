@@ -577,7 +577,7 @@ extension BrowserViewController: ToolbarDelegate {
       activities = makeShareActivities(for: url, tab: tab, sourceView: view, sourceRect: self.view.convert(self.topToolbar.menuButton.frame, from: self.topToolbar.menuButton.superview), arrowDirection: .up)
     }
     let initialHeight: CGFloat = selectedTabURL != nil ? 470 : 500
-    let menuController = MenuViewController(
+    let menuController =  MenuViewController(
       initialHeight: initialHeight,
       content: { menuController in
         let isShownOnWebPage = selectedTabURL != nil

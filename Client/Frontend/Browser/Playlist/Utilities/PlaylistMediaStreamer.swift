@@ -26,16 +26,15 @@ class PlaylistMediaStreamer {
     case other(Error)
   }
 
-  init(playerView: UIView, certStore: CertStore?) {
+  init(playerView: UIView) {
     self.playerView = playerView
-    self.certStore = certStore
   }
 
   func loadMediaStreamingAsset(_ item: PlaylistInfo) -> AnyPublisher<Void, PlaybackError> {
     // We need to check if the item is cached locally.
     // If the item is cached (downloaded)
     // then we can play it directly without having to stream it.
-    let cacheState = PlaylistManager.shared.state(for: item.pageSrc)
+    let cacheState = PlaylistManager.shared.state(for: item.tagId)
     if cacheState != .invalid {
       return Future { resolver in
         resolver(.success(Void()))
@@ -75,9 +74,7 @@ class PlaylistMediaStreamer {
           return
         }
 
-        self.webLoader = PlaylistWebLoader(
-          certStore: self.certStore,
-          handler: { [weak self] newItem in
+        self.webLoader = PlaylistWebLoader(handler: { [weak self] newItem in
             guard let self = self else { return }
             defer {
               // Destroy the web loader when the callback is complete.
@@ -99,7 +96,7 @@ class PlaylistMediaStreamer {
           // If we don't do this, youtube shows ads 100% of the time.
           // It's some weird race-condition in WKWebView where the content blockers may not load until
           // The WebView is visible!
-          self.playerView?.window?.insertSubview($0, at: 0)
+          self.playerView?.insertSubview($0, at: 0)
         }
 
         if let url = URL(string: item.pageSrc) {

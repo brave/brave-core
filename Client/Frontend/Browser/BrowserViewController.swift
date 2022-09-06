@@ -433,6 +433,7 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
     Preferences.Rewards.rewardsToggledOnce.observe(from: self)
     Preferences.Playlist.enablePlaylistMenuBadge.observe(from: self)
     Preferences.Playlist.enablePlaylistURLBarButton.observe(from: self)
+    Preferences.Playlist.syncSharedFoldersAutomatically.observe(from: self)
     
     pageZoomListener = NotificationCenter.default.addObserver(forName: PageZoomView.notificationName, object: nil, queue: .main) { [weak self] _ in
       self?.tabManager.allTabs.forEach({
@@ -871,6 +872,8 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
         }
       }
       .store(in: &cancellables)
+    
+    syncPlaylistFolders()
   }
 
   public static let defaultBrowserNotificationId = "defaultBrowserNotification"
@@ -1626,7 +1629,7 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
 
     DispatchQueue.main.async {
       if let item = tab.playlistItem {
-        if PlaylistItem.itemExists(item) {
+        if PlaylistItem.itemExists(uuid: item.tagId) || PlaylistItem.itemExists(pageSrc: item.pageSrc) {
           self.updatePlaylistURLBar(tab: tab, state: .existingItem, item: item)
         } else {
           self.updatePlaylistURLBar(tab: tab, state: .newItem, item: item)
@@ -2345,6 +2348,10 @@ extension BrowserViewController: TabDelegate {
     let playlistHelper = PlaylistHelper(tab: tab)
     playlistHelper.delegate = self
     tab.addContentScript(playlistHelper, name: PlaylistHelper.name(), contentWorld: .page)
+    
+    let playlistFolderSharingHelper = PlaylistFolderSharingHelper(tab: tab)
+    playlistFolderSharingHelper.delegate = self
+    tab.addContentScript(playlistFolderSharingHelper, name: PlaylistFolderSharingHelper.name(), contentWorld: .page)
 
     tab.addContentScript(RewardsReporting(rewards: rewards, tab: tab), name: RewardsReporting.name(), contentWorld: .page)
     tab.addContentScript(AdsMediaReporting(rewards: rewards, tab: tab), name: AdsMediaReporting.name(), contentWorld: .defaultClient)
@@ -3521,6 +3528,8 @@ extension BrowserViewController: PreferencesObserver {
         cryptoStore.rejectAllPendingWebpageRequests()
       }
       updateURLBarWalletButton()
+    case Preferences.Playlist.syncSharedFoldersAutomatically.key:
+      syncPlaylistFolders()
     default:
       log.debug("Received a preference change for an unknown key: \(key) on \(type(of: self))")
       break

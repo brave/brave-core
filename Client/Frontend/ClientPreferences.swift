@@ -310,6 +310,12 @@ extension Preferences {
     /// The option to enable or disable the continue where left-off playback in CarPlay
     static let enableCarPlayRestartPlayback =
       Option<Bool>(key: "playlist.enableCarPlayRestartPlayback", default: false)
+    /// The last time all playlist folders were synced
+    static let lastPlaylistFoldersSyncTime =
+      Option<Date?>(key: "playlist.lastPlaylistFoldersSyncTime", default: nil)
+    /// Sync shared folders automatically preference
+    static let syncSharedFoldersAutomatically =
+      Option<Bool>(key: "playlist.syncSharedFoldersAutomatically", default: false)
   }
     
   final public class PrivacyReports {

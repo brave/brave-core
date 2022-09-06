@@ -31,6 +31,8 @@ enum UserScriptType: Hashable {
         return .braveSearchHelper
       case .braveTalkHelper:
         return .braveTalkHelper
+      case .bravePlaylistFolderSharingHelper:
+        return .bravePlaylistFolderSharingHelper
       }
     case .nacl:
       return .nacl

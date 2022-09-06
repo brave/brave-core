@@ -1362,7 +1362,17 @@ extension Strings {
   public struct PlayList {
     public static let playListSectionTitle =
       NSLocalizedString("playList.playListSectionTitle", tableName: "BraveShared", bundle: .strings,
+        value: "Playlists",
+        comment: "Title For the Section that videos are listed")
+    
+    public static let playListTitle =
+      NSLocalizedString("playList.playListSettingTitle", tableName: "BraveShared", bundle: .strings,
         value: "Playlist",
+        comment: "Title Playlist (used for back button, and playlist settings)")
+    
+    public static let playListSharedFolderSectionTitle =
+      NSLocalizedString("playList.playListSharedFolderSectionTitle", tableName: "BraveShared", bundle: .strings,
+        value: "Shared with you",
         comment: "Title For the Section that videos are listed")
 
     public static let removeActionButtonTitle =
@@ -1884,6 +1894,11 @@ extension Strings {
                       value: "Rename",
                       comment: "Menu Title for renaming a folder")
     
+    public static let saveOfflineDataMenuTitle =
+    NSLocalizedString("playlistFolderSharing.saveOfflineDataMenuTitle", tableName: "BraveShared", bundle: .strings,
+                      value: "Save Offline Data",
+                      comment: "Menu Title for saving offline data/cache")
+    
     public static let deleteOfflineDataMenuTitle =
     NSLocalizedString("playlistFolderSharing.deleteOfflineDataMenuTitle", tableName: "BraveShared", bundle: .strings,
                       value: "Remove Offline Data",
@@ -1901,13 +1916,7 @@ extension Strings {
     
     public static let offlineManagementViewDescription =
     NSLocalizedString("playlistFolderSharing.offlineManagementViewDescription", tableName: "BraveShared", bundle: .strings,
-                      value: "Auto-save for offline use is on, meaning new additions to playlists, including shared playlists are saved to your device for viewing offline and could use your cellular data.",
-                      comment: "Description of the playlist offline data management view")
-    
-    public static let offlineManagementViewSubDescription =
-    NSLocalizedString("playlistFolderSharing.offlineManagementViewSubDescription",
-                      tableName: "BraveShared", bundle: .strings,
-                      value: "Auto-save for offline use can be managed in Playlist settings.",
+                      value: "Auto-save for offline use is on, meaning new additions to playlists, including shared playlists are saved to your device for viewing offline and could use your cellular data.\n\nAuto-save for offline use can be managed in Playlist settings.",
                       comment: "Description of the playlist offline data management view")
     
     public static let offlineManagementViewAddButtonTitle =
@@ -1922,10 +1931,30 @@ extension Strings {
                       value: "Settings",
                       comment: "Button that takes the user to the settings menu")
     
-    public static let playListSharedFolderSectionTitle =
-    NSLocalizedString("playList.playListSharedFolderSectionTitle", tableName: "BraveShared", bundle: .strings,
+    public static let playlistSharedFolderSectionTitle =
+    NSLocalizedString("playList.playlistSharedFolderSectionTitle", tableName: "BraveShared", bundle: .strings,
                       value: "Shared with you",
-                      comment: "Title For the Section that videos are listed")
+                      comment: "Title for the Section that videos are listed")
+    
+    public static let playlistSharedFolderAlreadyExistsTitle =
+    NSLocalizedString("playList.playlistSharedFolderAlreadyExistsTitle", tableName: "BraveShared", bundle: .strings,
+                      value: "Sorry",
+                      comment: "Title for the error message that shows when a playlist folder already exists")
+    
+    public static let playlistSharedFolderAlreadyExistsBody =
+    NSLocalizedString("playList.playlistSharedFolderAlreadyExistsBody", tableName: "BraveShared", bundle: .strings,
+                      value: "This folder already exists in your Brave Playlist",
+                      comment: "Body for the error message that shows when a playlist folder already exists")
+    
+    public static let sharedFolderSyncAutomaticallyTitle =
+    NSLocalizedString("playList.sharedFolderSyncAutomaticallyTitle", tableName: "BraveShared", bundle: .strings,
+                      value: "Sync playlist folders automatically",
+                      comment: "Title of the settings option to sync folders with the server automatically, every 4 hours.")
+    
+    public static let sharedFolderSyncAutomaticallyDescription =
+    NSLocalizedString("playList.sharedFolderSyncAutomaticallyDescription", tableName: "BraveShared", bundle: .strings,
+                      value: "Syncs all your playlist folders automatically",
+                      comment: "Description of the settings option to sync folders with the server automatically, every 4 hours.")
   }
     
 }

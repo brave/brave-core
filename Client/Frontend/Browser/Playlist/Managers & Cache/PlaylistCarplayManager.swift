@@ -38,7 +38,7 @@ public class PlaylistCarplayManager: NSObject {
       // After all, we can't play media simultaneously.
       if let selectedTab = browserController?.tabManager.selectedTab,
         let playlistItem = selectedTab.playlistItem,
-        PlaylistManager.shared.index(of: playlistItem.pageSrc) == nil {
+        PlaylistManager.shared.index(of: playlistItem.tagId) == nil {
 
         browserController?.updatePlaylistURLBar(
           tab: selectedTab,
@@ -89,9 +89,7 @@ public class PlaylistCarplayManager: NSObject {
     // If there is no media player, create one,
     // pass it to the car-play controller
     let mediaPlayer = self.mediaPlayer ?? MediaPlayer()
-    let mediaStreamer = PlaylistMediaStreamer(
-      playerView: currentWindow ?? UIView(),
-      certStore: browserController?.profile.certStore)
+    let mediaStreamer = PlaylistMediaStreamer(playerView: currentWindow ?? UIView())
 
     // Construct the CarPlay UI
     let carPlayController = PlaylistCarplayController(
@@ -119,6 +117,7 @@ public class PlaylistCarplayManager: NSObject {
       self.playlistController
       ?? PlaylistViewController(
         openInNewTab: browserController?.openURLInNewTab,
+        openPlaylistSettingsMenu: browserController?.openPlaylistSettingsMenu,
         profile: browserController?.profile,
         mediaPlayer: mediaPlayer,
         initialItem: initialItem,

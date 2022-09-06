@@ -167,6 +167,7 @@ let package = Package(
         .copy("Frontend/UserContent/UserScripts/Playlist.js"),
         .copy("Frontend/UserContent/UserScripts/PlaylistDetector.js"),
         .copy("Frontend/UserContent/UserScripts/PlaylistSwizzler.js"),
+        .copy("Frontend/UserContent/UserScripts/PlaylistFolderSharing.js"),
         .copy("Frontend/UserContent/UserScripts/ReadyState.js"),
         .copy("Frontend/UserContent/UserScripts/ResourceDownloader.js"),
         .copy("Frontend/UserContent/UserScripts/WalletEthereumProvider.js"),

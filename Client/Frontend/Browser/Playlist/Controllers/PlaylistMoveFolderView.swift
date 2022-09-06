@@ -56,7 +56,7 @@ private struct PlaylistFolderView: View {
   var body: some View {
     HStack {
       HStack(spacing: 10.0) {
-        Image(systemName: "folder")
+        Image(braveSystemName: "brave.folder")
           .foregroundColor(isSourceFolder ? Color(.braveDisabled.resolvedColor(with: .init(userInterfaceStyle: .light))) : Color(.braveOrange))
           .frame(width: imageSize)
 

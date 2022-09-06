@@ -29,7 +29,7 @@ class PlaylistCarplayController: NSObject {
   private var assetLoadingStateObservers = Set<AnyCancellable>()
   private var playlistObservers = Set<AnyCancellable>()
   private let savedFolder = PlaylistFolder.getFolder(uuid: PlaylistFolder.savedFolderUUID)
-  private let frc = PlaylistFolder.frc(savedFolderContentsOnly: false)
+  private let frc = PlaylistFolder.frc(savedFolder: false, sharedFolders: false)
 
   // For now, I have absolutely ZERO idea why the API says:
   // CPAllowedTemplates = CPAlertTemplate, invalid object CPActionSheetTemplate
@@ -146,7 +146,7 @@ class PlaylistCarplayController: NSObject {
 
             $0.accessoryType = PlaylistManager.shared.state(for: itemId) != .downloaded ? .cloud : .none
 
-            if PlaylistCarplayManager.shared.currentPlaylistItem?.pageSrc == itemId {
+            if PlaylistCarplayManager.shared.currentPlaylistItem?.tagId == itemId {
               $0.isPlaying = true
 
               PlaylistMediaStreamer.setNowPlayingMediaArtwork(image: userInfo["icon"] as? UIImage)
@@ -270,8 +270,8 @@ class PlaylistCarplayController: NSObject {
     // interfaceController.pop(to: tabBarTemplate, animated: true)
 
     // Update Currently Playing Index before layout (so we can show the playing indicator)
-    if let pageSrc = PlaylistCarplayManager.shared.currentPlaylistItem?.pageSrc {
-      PlaylistCarplayManager.shared.currentlyPlayingItemIndex = PlaylistManager.shared.index(of: pageSrc) ?? -1
+    if let itemId = PlaylistCarplayManager.shared.currentPlaylistItem?.tagId {
+      PlaylistCarplayManager.shared.currentlyPlayingItemIndex = PlaylistManager.shared.index(of: itemId) ?? -1
     }
 
     do {
@@ -362,7 +362,7 @@ class PlaylistCarplayController: NSObject {
 
   private func generatePlaylistListTemplate() -> CPTemplate {
     // Map all items to their IDs
-    let playlistItemIds = PlaylistManager.shared.allItems.map { $0.pageSrc }
+    let playlistItemIds = PlaylistManager.shared.allItems.map { $0.tagId }
 
     // Fetch all Playlist Items
     var listItems = [CPListItem]()
@@ -584,7 +584,7 @@ extension PlaylistCarplayController {
     if !Preferences.Playlist.enableCarPlayRestartPlayback.value {
       // Item is already playing.
       // Show now-playing screen and don't restart playback.
-      if PlaylistCarplayManager.shared.currentPlaylistItem?.pageSrc == itemId {
+      if PlaylistCarplayManager.shared.currentPlaylistItem?.tagId == itemId {
         // If the player is currently paused, un-pause it and play the item.
         // If the player is currently stopped, do nothing.
         if !player.isPlaying, player.currentItem != nil {
@@ -828,9 +828,9 @@ extension PlaylistCarplayController {
     assetStateObservers.removeAll()
 
     // If the item is cached, load it from the cache and play it.
-    let cacheState = PlaylistManager.shared.state(for: item.pageSrc)
+    let cacheState = PlaylistManager.shared.state(for: item.tagId)
     if cacheState != .invalid {
-      if let index = PlaylistManager.shared.index(of: item.pageSrc),
+      if let index = PlaylistManager.shared.index(of: item.tagId),
         let asset = PlaylistManager.shared.assetAtIndex(index) {
         load(asset: asset, autoPlayEnabled: true)
           .handleEvents(receiveCancel: {
@@ -907,7 +907,7 @@ extension PlaylistCarplayController {
           }
 
           // Item can be streamed, so let's retrieve its URL from our DB
-          guard let index = PlaylistManager.shared.index(of: item.pageSrc),
+          guard let index = PlaylistManager.shared.index(of: item.tagId),
             let item = PlaylistManager.shared.itemAtIndex(index)
           else {
             if !isPlaying {

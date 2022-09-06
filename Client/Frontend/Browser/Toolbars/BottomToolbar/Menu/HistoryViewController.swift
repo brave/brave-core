@@ -10,6 +10,7 @@ import Data
 import CoreData
 import BraveCore
 import UIKit
+import DesignSystem
 
 class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol {
 
@@ -69,7 +70,7 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
         $0.searchController = searchController
         $0.hidesSearchBarWhenScrolling = false
         $0.rightBarButtonItem =
-          UIBarButtonItem(image: UIImage(named: "playlist_delete_item", in: .current, compatibleWith: nil)!.template, style: .done, target: self, action: #selector(performDeleteAll))
+          UIBarButtonItem(image: UIImage(braveSystemNamed: "brave.trash")!.template, style: .done, target: self, action: #selector(performDeleteAll))
       }
     }
 

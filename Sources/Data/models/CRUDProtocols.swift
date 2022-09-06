@@ -15,6 +15,7 @@ typealias CRUD = Readable & Deletable
 protocol Deletable where Self: NSManagedObject {
   func delete(context: WriteContext)
   static func deleteAll(predicate: NSPredicate?, context: WriteContext, includesPropertyValues: Bool)
+  static func deleteAll(predicate: NSPredicate?, context: WriteContext, includesPropertyValues: Bool, completion: (() -> Void)?)
 }
 
 protocol Readable where Self: NSManagedObject {
@@ -32,14 +33,24 @@ extension Deletable {
       context.delete(objectOnContext)
     }
   }
-
+  
   static func deleteAll(
     predicate: NSPredicate? = nil,
     context: WriteContext = .new(inMemory: false),
     includesPropertyValues: Bool = true
   ) {
+    deleteAll(predicate: predicate, context: context, includesPropertyValues: includesPropertyValues, completion: nil)
+  }
+
+  static func deleteAll(
+    predicate: NSPredicate? = nil,
+    context: WriteContext = .new(inMemory: false),
+    includesPropertyValues: Bool = true,
+    completion: (() -> Void)?
+  ) {
 
     DataController.perform(context: context) { context in
+      defer { DispatchQueue.main.async { completion?() } }
       guard let request = getFetchRequest() as? NSFetchRequest<NSFetchRequestResult> else { return }
       request.predicate = predicate
       request.includesPropertyValues = includesPropertyValues

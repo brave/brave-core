@@ -129,13 +129,13 @@ public class PlaylistManager: NSObject {
 
   func assetAtIndex(_ index: Int) -> AVURLAsset? {
     if let item = itemAtIndex(index) {
-      return asset(for: item.pageSrc, mediaSrc: item.src)
+      return asset(for: item.tagId, mediaSrc: item.src)
     }
     return nil
   }
 
-  func index(of pageSrc: String) -> Int? {
-    frc.fetchedObjects?.firstIndex(where: { $0.pageSrc == pageSrc })
+  func index(of itemId: String) -> Int? {
+    frc.fetchedObjects?.firstIndex(where: { $0.uuid == itemId })
   }
 
   func reorderItems(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath, completion: (() -> Void)?) {
@@ -171,12 +171,12 @@ public class PlaylistManager: NSObject {
     }
   }
 
-  func state(for pageSrc: String) -> PlaylistDownloadManager.DownloadState {
-    if downloadManager.downloadTask(for: pageSrc) != nil {
+  func state(for itemId: String) -> PlaylistDownloadManager.DownloadState {
+    if downloadManager.downloadTask(for: itemId) != nil {
       return .inProgress
     }
 
-    if let assetUrl = downloadManager.localAsset(for: pageSrc)?.url {
+    if let assetUrl = downloadManager.localAsset(for: itemId)?.url {
       if FileManager.default.fileExists(atPath: assetUrl.path) {
         return .downloaded
       }
@@ -185,9 +185,9 @@ public class PlaylistManager: NSObject {
     return .invalid
   }
 
-  func sizeOfDownloadedItem(for pageSrc: String) -> String? {
+  func sizeOfDownloadedItem(for itemId: String) -> String? {
     var isDirectory: ObjCBool = false
-    if let asset = downloadManager.localAsset(for: pageSrc),
+    if let asset = downloadManager.localAsset(for: itemId),
       FileManager.default.fileExists(atPath: asset.url.path, isDirectory: &isDirectory) {
 
       let formatter = ByteCountFormatter().then {
@@ -244,7 +244,7 @@ public class PlaylistManager: NSObject {
   }
 
   func download(item: PlaylistInfo) {
-    guard downloadManager.downloadTask(for: item.pageSrc) == nil, let assetUrl = URL(string: item.src) else { return }
+    guard downloadManager.downloadTask(for: item.tagId) == nil, let assetUrl = URL(string: item.src) else { return }
 
     PlaylistMediaStreamer.getMimeType(assetUrl) { [weak self] mimeType in
       guard let self = self, let mimeType = mimeType?.lowercased() else { return }
@@ -261,87 +261,99 @@ public class PlaylistManager: NSObject {
     }
   }
 
-  func cancelDownload(item: PlaylistInfo) {
-    downloadManager.cancelDownload(item: item)
+  func cancelDownload(itemId: String) {
+    downloadManager.cancelDownload(itemId: itemId)
   }
 
-  @discardableResult
-  func delete(folder: PlaylistFolder) -> Bool {
+  func delete(folder: PlaylistFolder, _ completion: ((_ success: Bool) -> Void)? = nil) {
     var success = true
     var itemsToDelete = [PlaylistInfo]()
 
     folder.playlistItems?.forEach({
       let item = PlaylistInfo(item: $0)
-      cancelDownload(item: item)
+      cancelDownload(itemId: item.tagId)
 
-      if let index = assetInformation.firstIndex(where: { $0.itemId == item.pageSrc }) {
+      if let index = assetInformation.firstIndex(where: { $0.itemId == item.tagId }) {
         let assetFetcher = self.assetInformation.remove(at: index)
         assetFetcher.cancelLoading()
       }
 
-      if let cacheItem = PlaylistItem.getItem(pageSrc: item.pageSrc),
-        cacheItem.cachedData != nil {
-        if !deleteCache(item: item) {
-          // If we cannot delete an item's cache for any given reason,
-          // Do NOT delete the folder containing the item.
-          // Delete all other items.
-          success = false
-        } else {
-          itemsToDelete.append(item)
-        }
+      if !deleteCache(itemId: item.tagId) {
+        // If we cannot delete an item's cache for any given reason,
+        // Do NOT delete the folder containing the item.
+        // Delete all other items.
+        success = false
+      } else {
+        itemsToDelete.append(item)
       }
     })
 
     if success, currentFolder?.objectID == folder.objectID {
       currentFolder = nil
     }
+    
+    // Delete items from the folder
+    PlaylistItem.removeItems(itemsToDelete) {
+      // Attempt to delete the folder if we can
+      if success, folder.uuid != PlaylistFolder.savedFolderUUID {
+        PlaylistFolder.removeFolder(folder.uuid ?? "") { [weak self] in
+          guard let self = self else {
+            completion?(success)
+            return
+          }
+          
+          if self.currentFolder?.isDeleted == true {
+            self.currentFolder = nil
+          }
 
-    if success, folder.uuid != PlaylistFolder.savedFolderUUID {
-      PlaylistFolder.removeFolder(folder)
-    } else {
-      PlaylistItem.removeItems(itemsToDelete)
+          self.onFolderDeleted.send()
+          self.reloadData()
+          
+          completion?(success)
+        }
+      } else {
+        if self.currentFolder?.isDeleted == true {
+          self.currentFolder = nil
+        }
+
+        self.onFolderDeleted.send()
+        self.reloadData()
+        completion?(success)
+      }
     }
-
-    if currentFolder?.isDeleted == true {
-      currentFolder = nil
-    }
-
-    onFolderDeleted.send()
-    reloadData()
-    return success
   }
 
   @discardableResult
-  func delete(item: PlaylistInfo) -> Bool {
-    cancelDownload(item: item)
+  func delete(itemId: String) -> Bool {
+    cancelDownload(itemId: itemId)
 
-    if let index = assetInformation.firstIndex(where: { $0.itemId == item.pageSrc }) {
+    if let index = assetInformation.firstIndex(where: { $0.itemId == itemId }) {
       let assetFetcher = self.assetInformation.remove(at: index)
       assetFetcher.cancelLoading()
     }
 
-    if let cacheItem = PlaylistItem.getItem(pageSrc: item.pageSrc),
+    if let cacheItem = PlaylistItem.getItem(uuid: itemId),
       cacheItem.cachedData != nil {
       // Do NOT delete the item if we can't delete it's local cache.
       // That will cause zombie items.
-      if deleteCache(item: item) {
-        PlaylistItem.removeItem(item)
-        onDownloadStateChanged(id: item.pageSrc, state: .invalid, displayName: nil, error: nil)
+      if deleteCache(itemId: itemId) {
+        PlaylistItem.removeItem(uuid: itemId)
+        onDownloadStateChanged(id: itemId, state: .invalid, displayName: nil, error: nil)
         return true
       }
       return false
     } else {
-      PlaylistItem.removeItem(item)
-      onDownloadStateChanged(id: item.pageSrc, state: .invalid, displayName: nil, error: nil)
+      PlaylistItem.removeItem(uuid: itemId)
+      onDownloadStateChanged(id: itemId, state: .invalid, displayName: nil, error: nil)
       return true
     }
   }
 
   @discardableResult
-  func deleteCache(item: PlaylistInfo) -> Bool {
-    cancelDownload(item: item)
+  func deleteCache(itemId: String) -> Bool {
+    cancelDownload(itemId: itemId)
 
-    if let cacheItem = PlaylistItem.getItem(pageSrc: item.pageSrc),
+    if let cacheItem = PlaylistItem.getItem(uuid: itemId),
       let cachedData = cacheItem.cachedData,
       !cachedData.isEmpty {
       var isStale = false
@@ -350,12 +362,12 @@ public class PlaylistManager: NSObject {
         let url = try URL(resolvingBookmarkData: cachedData, bookmarkDataIsStale: &isStale)
         if FileManager.default.fileExists(atPath: url.path) {
           try FileManager.default.removeItem(atPath: url.path)
-          PlaylistItem.updateCache(pageSrc: item.pageSrc, cachedData: nil)
-          onDownloadStateChanged(id: item.pageSrc, state: .invalid, displayName: nil, error: nil)
+          PlaylistItem.updateCache(uuid: itemId, cachedData: nil)
+          onDownloadStateChanged(id: itemId, state: .invalid, displayName: nil, error: nil)
         }
         return true
       } catch {
-        log.error("An error occured deleting Playlist Cached Item \(item.name): \(error)")
+        log.error("An error occured deleting Playlist Cached Item \(cacheItem.name ?? itemId): \(error)")
         return false
       }
     }
@@ -371,20 +383,18 @@ public class PlaylistManager: NSObject {
     // At least this way, we deallocate both AND pip is stopped in the destructor of `PlaylistViewController->ListController`
     PlaylistCarplayManager.shared.playlistController = nil
 
-    guard let playlistItems = frc.fetchedObjects else {
+    guard let playlistItemIds = frc.fetchedObjects?.compactMap({ $0.uuid }) else {
       log.error("An error occured while fetching Playlist Objects")
       return
     }
 
-    for playlistItem in playlistItems {
-      let item = PlaylistInfo(item: playlistItem)
-
-      if !deleteCache(item: item) {
+    for itemId in playlistItemIds {
+      if !deleteCache(itemId: itemId) {
         continue
       }
 
       if !cacheOnly {
-        PlaylistItem.removeItem(item)
+        PlaylistItem.removeItem(uuid: itemId)
       }
     }
 
@@ -423,9 +433,9 @@ public class PlaylistManager: NSObject {
               options: [.skipsHiddenFiles])
             assets.forEach({
               if let item = PlaylistItem.cachedItem(cacheURL: $0),
-                let pageSrc = item.pageSrc {
-                self.cancelDownload(item: PlaylistInfo(item: item))
-                PlaylistItem.updateCache(pageSrc: pageSrc, cachedData: nil)
+                 let itemId = item.uuid {
+                self.cancelDownload(itemId: itemId)
+                PlaylistItem.updateCache(uuid: itemId, cachedData: nil)
               }
             })
           } catch {
@@ -492,12 +502,12 @@ public class PlaylistManager: NSObject {
 }
 
 extension PlaylistManager {
-  private func asset(for pageSrc: String, mediaSrc: String) -> AVURLAsset {
-    if let task = downloadManager.downloadTask(for: pageSrc) {
+  private func asset(for itemId: String, mediaSrc: String) -> AVURLAsset {
+    if let task = downloadManager.downloadTask(for: itemId) {
       return task.asset
     }
 
-    if let asset = downloadManager.localAsset(for: pageSrc) {
+    if let asset = downloadManager.localAsset(for: itemId) {
       return asset
     }
 
@@ -532,14 +542,14 @@ extension PlaylistManager: NSFetchedResultsControllerDelegate {
 
 extension PlaylistManager {
   func getAssetDuration(item: PlaylistInfo, _ completion: @escaping (TimeInterval?) -> Void) {
-    if assetInformation.contains(where: { $0.itemId == item.pageSrc }) {
+    if assetInformation.contains(where: { $0.itemId == item.tagId }) {
       return
     }
 
     fetchAssetDuration(item: item) { [weak self] duration in
       guard let self = self else { return }
 
-      if let index = self.assetInformation.firstIndex(where: { $0.itemId == item.pageSrc }) {
+      if let index = self.assetInformation.firstIndex(where: { $0.itemId == item.tagId }) {
         let assetFetcher = self.assetInformation.remove(at: index)
         assetFetcher.cancelLoading()
       }
@@ -565,15 +575,18 @@ extension PlaylistManager {
       return
     }
 
-    guard let index = index(of: item.pageSrc) else {
-      completion(item.duration)  // Return the database duration
-      return
-    }
-
     // Attempt to retrieve the duration from the Asset file
-    guard let asset = assetAtIndex(index) else {
-      completion(item.duration)  // Return the database duration
-      return
+    let asset: AVURLAsset
+    if item.src.isEmpty || item.pageSrc.isEmpty {
+      if let index = index(of: item.tagId), let urlAsset = assetAtIndex(index) {
+        asset = urlAsset
+      } else {
+        // Return the database duration
+        completion(item.duration)
+        return
+      }
+    } else {
+      asset = self.asset(for: item.tagId, mediaSrc: item.src)
     }
 
     // Accessing tracks blocks the main-thread if not already loaded
@@ -696,9 +709,14 @@ extension PlaylistManager {
               duration: duration.seconds,
               detected: item.detected,
               dateAdded: item.dateAdded,
-              tagId: item.tagId)
+              tagId: item.tagId,
+              order: item.order)
 
-            PlaylistItem.updateItem(newItem) {
+            if PlaylistItem.itemExists(uuid: item.tagId) || PlaylistItem.itemExists(pageSrc: item.pageSrc) {
+              PlaylistItem.updateItem(newItem) {
+                completion(duration.seconds)
+              }
+            } else {
               completion(duration.seconds)
             }
           } else {
@@ -708,7 +726,45 @@ extension PlaylistManager {
       }
     }
 
-    assetInformation.append(PlaylistAssetFetcher(itemId: item.pageSrc, asset: asset))
+    assetInformation.append(PlaylistAssetFetcher(itemId: item.tagId, asset: asset))
+  }
+}
+
+extension PlaylistManager {
+  @MainActor
+  static func syncSharedFolder(sharedFolderUrl: String) async throws {
+    guard let folder = PlaylistFolder.getSharedFolder(sharedFolderUrl: sharedFolderUrl),
+          let folderId = folder.sharedFolderId else {
+      return
+    }
+    
+    let model = try await PlaylistSharedFolderNetwork.fetchPlaylist(folderUrl: sharedFolderUrl)
+    var oldItems = Set(folder.playlistItems?.map({ PlaylistInfo(item: $0) }) ?? [])
+    let deletedItems = oldItems.subtracting(model.mediaItems)
+    let newItems = Set(model.mediaItems).subtracting(oldItems)
+    oldItems = []
+    
+    deletedItems.forEach({ PlaylistManager.shared.delete(itemId: $0.tagId) })
+    
+    if !newItems.isEmpty {
+      await withCheckedContinuation { continuation in
+        PlaylistItem.updateItems(Array(newItems), folderUUID: folderId) {
+          continuation.resume()
+        }
+      }
+    }
+  }
+  
+  @MainActor
+  static func syncSharedFolders() async throws {
+    let folderURLs = PlaylistFolder.getSharedFolders().compactMap({ $0.sharedFolderUrl })
+    await withTaskGroup(of: Void.self) { group in
+      folderURLs.forEach { url in
+        group.addTask {
+          try? await syncSharedFolder(sharedFolderUrl: url)
+        }
+      }
+    }
   }
 }
 

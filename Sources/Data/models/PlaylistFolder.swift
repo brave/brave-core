@@ -15,6 +15,11 @@ final public class PlaylistFolder: NSManagedObject, CRUD, Identifiable {
   @NSManaged public var title: String?
   @NSManaged public var order: Int32
   @NSManaged public var dateAdded: Date?
+  @NSManaged public var sharedFolderId: String?
+  @NSManaged public var sharedFolderUrl: String?
+  @NSManaged public var sharedFolderETag: String?
+  @NSManaged public var creatorName: String?
+  @NSManaged public var creatorLink: String?
   @NSManaged public var playlistItems: Set<PlaylistItem>?
   public static let savedFolderUUID = "7B6CC019-8946-4182-ACE8-42FE7B704C43"
 
@@ -22,7 +27,7 @@ final public class PlaylistFolder: NSManagedObject, CRUD, Identifiable {
     uuid ?? UUID().uuidString
   }
 
-  public class func frc(savedFolderContentsOnly: Bool) -> NSFetchedResultsController<PlaylistFolder> {
+  public class func frc(savedFolder: Bool, sharedFolders: Bool) -> NSFetchedResultsController<PlaylistFolder> {
     let context = DataController.viewContext
     let fetchRequest = NSFetchRequest<PlaylistFolder>()
     fetchRequest.entity = PlaylistFolder.entity(context)
@@ -32,10 +37,13 @@ final public class PlaylistFolder: NSManagedObject, CRUD, Identifiable {
     let createdSort = NSSortDescriptor(key: "dateAdded", ascending: false)
     fetchRequest.sortDescriptors = [orderSort, createdSort]
 
-    if savedFolderContentsOnly {
+    if savedFolder {
       fetchRequest.predicate = NSPredicate(format: "uuid == %@", savedFolderUUID)
     } else {
-      fetchRequest.predicate = NSPredicate(format: "uuid != %@", savedFolderUUID)
+      fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+        NSPredicate(format: "uuid != %@", savedFolderUUID),
+        NSPredicate(format: sharedFolders ? "sharedFolderId != nil" : "sharedFolderId == nil")
+      ])
     }
 
     return NSFetchedResultsController(
@@ -57,10 +65,62 @@ final public class PlaylistFolder: NSManagedObject, CRUD, Identifiable {
       playlistFolder.dateAdded = Date()
       playlistFolder.order = Int32.min
       playlistFolder.uuid = folderId
+      playlistFolder.sharedFolderId = nil
+      playlistFolder.sharedFolderUrl = nil
+      playlistFolder.sharedFolderETag = nil
 
       PlaylistFolder.reorderItems(context: context)
       PlaylistFolder.saveContext(context)
-
+      
+      DispatchQueue.main.async {
+        completion?(folderId)
+      }
+    }
+  }
+  
+  public static func addInMemoryFolder(title: String, creatorName: String, creatorLink: String?, sharedFolderId: String, sharedFolderUrl: String?, sharedFolderETag: String?, completion: ((_ folder: PlaylistFolder, _ uuid: String) -> Void)? = nil) {
+    DataController.perform(context: .existing(DataController.viewContextInMemory), save: false) { context in
+      context.perform {
+        let folderId = UUID().uuidString
+        let playlistFolder = PlaylistFolder(context: context)
+        playlistFolder.title = title
+        playlistFolder.creatorName = creatorName
+        playlistFolder.creatorLink = creatorLink
+        playlistFolder.dateAdded = Date()
+        playlistFolder.order = Int32.min
+        playlistFolder.uuid = folderId
+        playlistFolder.sharedFolderId = sharedFolderId
+        playlistFolder.sharedFolderUrl = sharedFolderUrl
+        playlistFolder.sharedFolderETag = sharedFolderETag
+        
+        PlaylistFolder.reorderItems(context: context)
+        PlaylistFolder.saveContext(context)
+        
+        DispatchQueue.main.async {
+          completion?(playlistFolder, folderId)
+        }
+      }
+    }
+  }
+  
+  public static func saveInMemoryFolderToDisk(folder: PlaylistFolder, completion: ((_ uuid: String) -> Void)? = nil) {
+    DataController.perform(context: .existing(DataController.viewContext), save: false) { context in
+      
+      let folderId = folder.uuid ?? UUID().uuidString
+      let playlistFolder = PlaylistFolder(context: context)
+      playlistFolder.uuid = folder.uuid
+      playlistFolder.title = folder.title
+      playlistFolder.order = Int32.min
+      playlistFolder.dateAdded = folder.dateAdded
+      playlistFolder.sharedFolderId = folder.sharedFolderId
+      playlistFolder.sharedFolderUrl = folder.sharedFolderUrl
+      playlistFolder.sharedFolderETag = folder.sharedFolderETag
+      playlistFolder.creatorName = folder.creatorName
+      playlistFolder.creatorLink = folder.creatorLink
+      
+      PlaylistFolder.reorderItems(context: context)
+      PlaylistFolder.saveContext(context)
+      
       DispatchQueue.main.async {
         completion?(folderId)
       }
@@ -74,15 +134,20 @@ final public class PlaylistFolder: NSManagedObject, CRUD, Identifiable {
   public static func getFolder(uuid: String, context: NSManagedObjectContext? = nil) -> PlaylistFolder? {
     PlaylistFolder.first(where: NSPredicate(format: "uuid == %@", uuid), context: context ?? DataController.viewContext)
   }
-
-  public static func removeFolder(_ uuid: String) {
-    PlaylistFolder.deleteAll(
-      predicate: NSPredicate(format: "uuid == %@", uuid),
-      includesPropertyValues: false)
+  
+  public static func getSharedFolder(sharedFolderUrl: String, context: NSManagedObjectContext? = nil) -> PlaylistFolder? {
+    PlaylistFolder.first(where: NSPredicate(format: "sharedFolderUrl == %@", sharedFolderUrl), context: context ?? DataController.viewContext)
+  }
+  
+  public static func getSharedFolders(context: NSManagedObjectContext? = nil) -> [PlaylistFolder] {
+    PlaylistFolder.all(where: NSPredicate(format: "sharedFolderUrl != nil"), context: context ?? DataController.viewContext) ?? []
   }
 
-  public static func removeFolder(_ folder: PlaylistFolder) {
-    folder.delete()
+  public static func removeFolder(_ uuid: String, completion: (() -> Void)? = nil) {
+    PlaylistFolder.deleteAll(
+      predicate: NSPredicate(format: "uuid == %@", uuid),
+      includesPropertyValues: false,
+      completion: completion)
   }
 
   public static func updateFolder(folderID: NSManagedObjectID, _ update: @escaping (Result<PlaylistFolder, Error>) -> Void) {
