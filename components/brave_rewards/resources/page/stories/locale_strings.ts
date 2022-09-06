@@ -7,6 +7,7 @@ import { localeStrings as onboardingStrings } from '../../shared/components/onbo
 export const localeStrings = {
   ...onboardingStrings,
 
+  appErrorTitle: 'Something went wrong',
   claim: 'Claim',
   connectWalletChooseHeader: 'Choose a wallet service',
   connectWalletChooseText: 'Select a custodial wallet partner. If you already have an account, you will be asked to log in to connect.',

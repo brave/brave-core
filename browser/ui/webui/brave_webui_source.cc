@@ -484,6 +484,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "adsSubdivisionTargetingDisable",  IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_DISABLE },  // NOLINT
         { "adsSubdivisionTargetingDisabled",  IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_DISABLED },  // NOLINT
         { "adsTitle",  IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE },
+        { "appErrorTitle", IDS_REWARDS_APP_ERROR_TITLE },
 
         { "bat", IDS_BRAVE_UI_BAT_REWARDS_TEXT },
         { "contributionTitle",  IDS_BRAVE_REWARDS_LOCAL_CONTR_TITLE },
