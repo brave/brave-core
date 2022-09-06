@@ -286,6 +286,13 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
     this.browserProxy_.setTorEnabled(e.target.checked)
   }
 
+  onUseBridgesChange_(e) {
+    e.stopPropagation()
+    setTimeout(() => {
+      this.$.bridgesGroup.scrollIntoView({ behavior: 'smooth' })
+    })
+  }
+
   setBridgesConfig_(e) {
     e.stopPropagation()
     this.loadedConfig_ = this.getCurrentConfig_()
