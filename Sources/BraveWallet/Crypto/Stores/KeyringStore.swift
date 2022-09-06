@@ -366,7 +366,7 @@ extension KeyringStore: BraveWalletKeyringServiceObserver {
     Task { @MainActor in
       let previouslySelectedCoin = await walletService.selectedCoin()
       walletService.setSelectedCoin(coinType)
-      if previouslySelectedCoin != coinType {
+      if previouslySelectedCoin != coinType || selectedAccount.coin != coinType {
         // update network here in case NetworkStore is closed.
         let network = await rpcService.network(coinType)
         await rpcService.setNetwork(network.chainId, coin: coinType)
@@ -377,21 +377,8 @@ extension KeyringStore: BraveWalletKeyringServiceObserver {
 
   public func keyringCreated(_ keyringId: String) {
     Task { @MainActor in
-      var coin: BraveWallet.CoinType = .eth
-      switch keyringId {
-      case BraveWallet.DefaultKeyringId:
-        coin = .eth
-      case BraveWallet.SolanaKeyringId:
-        coin = .sol
-      case BraveWallet.FilecoinKeyringId:
-        coin = .fil
-      default:
-        break
-      }
-      
       let newKeyring = await keyringService.keyringInfo(keyringId)
       if let newAccount = newKeyring.accountInfos.first {
-        walletService.setSelectedCoin(coin)
         await keyringService.setSelectedAccount(newAccount.address, coin: newAccount.coin)
       }
       updateKeyringInfo()
