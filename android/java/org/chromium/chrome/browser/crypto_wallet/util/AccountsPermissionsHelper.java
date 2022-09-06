@@ -47,7 +47,7 @@ public class AccountsPermissionsHelper {
             accountsPermissionsContexts.add(accountPermissionContext);
 
             mBraveWalletService.hasPermission(
-                    CoinType.ETH, mOrigin, account.address, accountPermissionContext);
+                    account.coin, mOrigin, account.address, accountPermissionContext);
         }
 
         accountsPermissionsMultiResponse.setWhenAllCompletedAction(() -> {

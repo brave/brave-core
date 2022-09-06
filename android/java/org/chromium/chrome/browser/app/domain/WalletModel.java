@@ -56,8 +56,8 @@ public class WalletModel {
         mCryptoModel = new CryptoModel(mContext, mTxService, mKeyringService, mBlockchainRegistry,
                 mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy, mBraveWalletService,
                 mAssetRatioService, mCryptoActions, mSwapService);
-        mDappsModel = new DappsModel(
-                mJsonRpcService, mBraveWalletService, mCryptoModel.getPendingTxHelper());
+        mDappsModel = new DappsModel(mJsonRpcService, mBraveWalletService, mKeyringService,
+                mCryptoModel.getPendingTxHelper());
         mKeyringModel = new KeyringModel(
                 mKeyringService, mCryptoModel.getSharedData(), mBraveWalletService, mCryptoActions);
         // be careful with dependencies, must avoid cycles
