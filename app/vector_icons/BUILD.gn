@@ -31,6 +31,7 @@ aggregate_vector_icons("brave_vector_icons") {
       "sidebar_bookmarks.icon",
       "sidebar_brave_talk.icon",
       "sidebar_crypto_wallet.icon",
+      "sidebar_edit.icon",
       "sidebar_history.icon",
       "sidebar_item_added_check.icon",
       "sidebar_items_down_arrow.icon",

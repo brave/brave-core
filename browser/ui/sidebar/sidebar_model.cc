@@ -129,6 +129,16 @@ void SidebarModel::OnItemMoved(const SidebarItem& item, int from, int to) {
   UpdateActiveIndexAndNotify(new_active_index);
 }
 
+void SidebarModel::OnItemUpdated(const SidebarItem& item,
+                                 const SidebarItemUpdate& update) {
+  // New url needs its favicon.
+  if (update.url_updated) {
+    for (Observer& obs : observers_)
+      obs.OnWillUpdateFavicon(item, update.index);
+    FetchFavicon(item);
+  }
+}
+
 void SidebarModel::OnWillRemoveItem(const SidebarItem& item, int index) {
   if (index == active_index_)
     UpdateActiveIndexAndNotify(-1);

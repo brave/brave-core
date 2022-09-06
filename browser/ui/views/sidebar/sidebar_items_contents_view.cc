@@ -17,6 +17,7 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
+#include "brave/browser/ui/views/sidebar/sidebar_edit_item_bubble_delegate_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_added_feedback_bubble.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -163,6 +164,11 @@ void SidebarItemsContentsView::ShowContextMenuForViewImpl(
     icon_color = color_provider->GetColor(kColorSidebarButtonBase);
   }
   context_menu_model_->AddItemWithIcon(
+      kItemEdit,
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_SIDEBAR_ITEM_CONTEXT_MENU_EDIT),
+      ui::ImageModel::FromVectorIcon(kSidebarEditIcon, icon_color, 14));
+  context_menu_model_->AddItemWithIcon(
       kItemRemove,
       brave_l10n::GetLocalizedResourceUTF16String(
           IDS_SIDEBAR_ITEM_CONTEXT_MENU_REMOVE),
@@ -176,6 +182,19 @@ void SidebarItemsContentsView::ShowContextMenuForViewImpl(
       views::MenuAnchorPosition::kTopLeft, source_type);
 }
 
+void SidebarItemsContentsView::LaunchEditItemDialog() {
+  DCHECK(!observation_.IsObserving());
+  DCHECK(view_for_context_menu_);
+  int index = GetIndexOf(view_for_context_menu_);
+  const auto& items = sidebar_model_->GetAllSidebarItems();
+
+  auto* bubble = views::BubbleDialogDelegateView::CreateBubble(
+      new SidebarEditItemBubbleDelegateView(browser_, items[index],
+                                            view_for_context_menu_));
+  observation_.Observe(bubble);
+  bubble->Show();
+}
+
 void SidebarItemsContentsView::ExecuteCommand(int command_id, int event_flags) {
   int index = GetIndexOf(view_for_context_menu_);
   DCHECK_GE(index, 0);
@@ -187,6 +206,32 @@ void SidebarItemsContentsView::ExecuteCommand(int command_id, int event_flags) {
     GetSidebarService(browser_)->RemoveItemAt(index);
     return;
   }
+
+  if (command_id == kItemEdit) {
+    LaunchEditItemDialog();
+    return;
+  }
+
+  NOTREACHED();
+}
+
+bool SidebarItemsContentsView::IsCommandIdVisible(int command_id) const {
+  int index = GetIndexOf(view_for_context_menu_);
+  const auto& items = sidebar_model_->GetAllSidebarItems();
+  DCHECK(0 <= index && index < static_cast<int>(items.size()));
+
+  if (index == -1)
+    return false;
+
+  // Available for all items.
+  if (command_id == kItemRemove)
+    return true;
+
+  if (command_id == kItemEdit)
+    return GetSidebarService(browser_)->IsEditableItemAt(index);
+
+  NOTREACHED();
+  return false;
 }
 
 void SidebarItemsContentsView::OnContextMenuClosed() {

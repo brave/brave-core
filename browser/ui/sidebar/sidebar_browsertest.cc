@@ -26,8 +26,7 @@
 
 namespace sidebar {
 
-class SidebarBrowserTest : public InProcessBrowserTest,
-                           public SidebarModel::Observer {
+class SidebarBrowserTest : public InProcessBrowserTest {
  public:
   SidebarBrowserTest() = default;
   ~SidebarBrowserTest() override = default;
