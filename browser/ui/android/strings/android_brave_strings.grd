@@ -1351,95 +1351,20 @@ Are you sure you want to do this?
       <message name="IDS_MENU_LEARN_MORE" desc="NTP widget menu item">
         Learn More
       </message>
-      <message name="IDS_USD_BALANCE" desc="Binance widget USD balance text">
-        ≈ $<ph name="USD_BALANCE">%1$s<ex>0.0</ex></ph>
-      </message>
-      <message name="IDS_AVAILABLE_BALANCE_TEXT" desc="Binance convert available balance text">
-        Available <ph name="COIN_BALANCE">%1$s</ph> <ph name="COIN_NAME">%2$s</ph>
-      </message>
-      <message name="IDS_BUY_CRYPTO_BUTTON_TEXT" desc="Binance buy crypto button text">
-        Buy <ph name="COIN_NAME">%1$s</ph>
-      </message>
-      <message name="IDS_CURRENCY_ADDRESS_TEXT" desc="Binance deposit coin address text">
-        <ph name="COIN_ADDRESS">%1$s</ph> Deposit Address
-      </message>
-      <message name="IDS_CURRENCY_MEMO_TEXT" desc="Binance deposit coin memo text">
-        <ph name="COIN_MEMO">%1$s</ph> Deposit Memo
-      </message>
-      <message name="IDS_PREVIEW_CONVERSION" desc="Binance preview conversion text.">
-        Preview Conversion
-      </message>
-      <message name="IDS_BUY_CRYPTO" desc="Binance buy section text.">
-        Buy Crypto
-      </message>
-      <message name="IDS_COM_TEXT" desc="Binance buy section .com text.">
-        .com
-      </message>
-      <message name="IDS_US_TEXT" desc="Binance buy section .us text.">
-        .us
-      </message>
       <message name="IDS_TEXT_HAS_BEEN_COPIED" desc="Copy to clipboard toast text.">
         Your text has been copied to the clipboard.
       </message>
       <message name="IDS_ADDRESS_HAS_BEEN_COPIED" desc="Copy to clipboard toast text.">
         Public address has been copied to the clipboard.
       </message>
-      <message name="IDS_RETRY" desc="Retry button text.">
-        Retry
-      </message>
       <message name="IDS_PRIVACY_STATS" desc="Private stats title text.">
         Privacy Stats
       </message>
-      <message name="IDS_SUMMARY" desc="Binance detail section title.">
-        Summary
-      </message>
-      <message name="IDS_DEPOSIT" desc="Binance detail section title.">
-        Deposit
-      </message>
-      <message name="IDS_CONVERT" desc="Binance detail section title.">
-        Convert
-      </message>
-      <message name="IDS_BUY" desc="Binance detail section title.">
+      <message name="IDS_BUY" desc="Buy section text.">
         Buy
       </message>
-      <message name="IDS_I_WANT_TO_CONVERT" desc="Binance convert text hint.">
-        I want to convert...
-      </message>
-      <message name="IDS_I_WANT_TO_SPEND" desc="Binance buy text hint.">
-        I want to spend...
-      </message>
-      <message name="IDS_NOT_ENOUGH_BALANCE" desc="Error text for Binance deposit">
-        Not enough balance for conversion
-      </message>
-      <message name="IDS_MINIMUM_AMOUNT_TO_CONVERT" desc="Warning text for Binance deposit">
-        Minimum amount to convert is : <ph name="COIN_BALANCE">%1$s</ph> <ph name="COIN_NAME">%2$s</ph>
-      </message>
-      <message name="IDS_UNABLE_TO_CONNECT" desc="Error title for Binance convert">
-        Unable to connect
-      </message>
-      <message name="IDS_FEE" desc="Binance text">
-        Fee
-      </message>
-      <message name="IDS_YOU_WILL_RECEIVE" desc="Binance text">
-        You will receive
-      </message>
-      <message name="IDS_CONFIRM_CONVERSION" desc="Binance text">
-        Confirm Conversion
-      </message>
-      <message name="IDS_PRICE" desc="Binance convert item text">
-        Price
-      </message>
-      <message name="IDS_CONFIRM_CONVERT_BINANCE" desc="Button text for Binance convert">
-        Confirm (<ph name="REMAINING_TIME">%1$s</ph>s)
-      </message>
-      <message name="IDS_CONVERSION_FAILED" desc="Binance convesion failed text">
-        Conversion Failed. Please try again.
-      </message>
-      <message name="IDS_SEARCH_COIN" desc="Binance deposit search text">
-        Search
-      </message>
-      <message name="IDS_CONVERT_STAT_TEXT" desc="Convert stat text">
-        <ph name="COUNT">%1$s</ph> <ph name="COUNT_TEXT">%2$s</ph>
+      <message name="IDS_SUMMARY" desc="Summary section text">
+        Summary
       </message>
       <message name="IDS_START_USING_BRAVE_REWARDS" desc="Brave rewards enable ads text">
         Start using Brave Rewards
@@ -1563,12 +1488,6 @@ Are you sure you want to do this?
       </message>
       <message name="IDS_BRAVE_TALK_WANT_LEARN_MORE_TEXT" desc="Brave talk learn more popup text">
         Want to learn more about Brave Rewards? <ph name="TAKE_QUICK_TOUR">%1$s</ph>.
-      </message>
-      <message name="IDS_CONVERT_SUCCESS" desc="Binance convert success text">
-        You converted <ph name="FROM_VALUE">%1$s</ph> <ph name="FROM_CURRENCY">%2$s</ph> to <ph name="TO_VALUE">%3$s</ph> <ph name="TO_CURRENCY">%4$s</ph>!
-      </message>
-      <message name="IDS_PLEASE_CHECK_THE_CONNECTION" desc="Connection error string">
-        Please check your network connection.
       </message>
       <message name="IDS_AUTOMATICALLY_OPEN_WHEN_POSSIBLE_TITLE" desc="Title for preference that allows the user to open downloads automatically.">
         Automatically open when possible
@@ -1861,15 +1780,9 @@ Are you sure you want to do this?
     <message name="IDS_MAINNET" desc="Brave Wallet network selection button text(network name)" translateable="false">
       Ethereum Mainnet
     </message>
-    <message name="IDS_BINANCE" desc="Brave Wallet network selection button text(network name)" translateable="false">
-      Binance Smart Chain Mainnet
-    </message>
     <message name="IDS_MARKET_PRICE_IN" desc="Brave Wallet buy-send-swap section text">
       Market Price in <ph name="ASSET">%1$s<ex>ETH</ex></ph>
     </message>
-    <!-- <message name="IDS_PRICE_IN" desc="Brave Wallet buy-send-swap section text">
-      Price in ETH
-    </message> -->
     <message name="IDS_FROM" desc="Brave Wallet buy-send-swap section text">
       From
     </message>
