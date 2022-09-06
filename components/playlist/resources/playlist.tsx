@@ -22,7 +22,6 @@ function initialize () {
   render(
     <Provider store={store}>
       <BraveCoreThemeProvider
-        initialThemeType={'System'}
         dark={DarkTheme}
         light={Theme}
       >
