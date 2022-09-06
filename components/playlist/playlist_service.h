@@ -105,7 +105,10 @@ class PlaylistService : public KeyedService,
 
   void RemoveItemFromPlaylist(const std::string& playlist_id,
                               const std::string& item_id);
-  void DeletePlaylistItem(const std::string& id);
+  // Removes Item value from prefs and related cached data.
+  void DeletePlaylistItemData(const std::string& id);
+  // Removes only cached data.
+  void DeletePlaylistLocalData(const std::string& id);
   void DeleteAllPlaylistItems();
 
   void AddObserver(PlaylistServiceObserver* observer);
@@ -122,6 +125,7 @@ class PlaylistService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, CreatePlaylistItem);
   FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, MediaDownloadFailed);
   FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, ThumbnailFailed);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, RemoveAndRestoreLocalData);
 
   // KeyedService overrides:
   void Shutdown() override;

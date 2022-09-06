@@ -227,9 +227,13 @@ void PlaylistDownloadRequestManager::ProcessFoundMedia(
 
     PlaylistItemInfo info;
     info.id = base::Token::CreateRandom().ToString();
+    info.page_src = *page_source;
     info.title = *name;
-    if (thumbnail)
+    if (thumbnail) {
+      info.thumbnail_src = *thumbnail;
       info.thumbnail_path = *thumbnail;
+    }
+    info.media_src = *src;
     info.media_file_path = *src;
     items.push_back(std::move(info));
   }

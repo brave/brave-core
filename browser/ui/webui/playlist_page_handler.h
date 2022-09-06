@@ -40,6 +40,9 @@ class PlaylistPageHandler : public playlist::mojom::PageHandler,
       const std::string& playlist_id) override;
   void RemoveItemFromPlaylist(const std::string& playlist_id,
                               const std::string& item_id) override;
+  void RecoverLocalDataForItem(const std::string& playlist_id) override;
+  void RemoveLocalDataForItem(const std::string& playlist_id) override;
+
   void CreatePlaylist(playlist::mojom::PlaylistPtr playlist) override;
   void RemovePlaylist(const std::string& playlist_id) override;
 

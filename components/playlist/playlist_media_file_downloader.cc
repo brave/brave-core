@@ -89,13 +89,13 @@ void PlaylistMediaFileDownloader::DownloadMediaFileForPlaylistItem(
   in_progress_ = true;
   current_item_ = std::make_unique<PlaylistItemInfo>(item);
 
-  if (GURL media_url(current_item_->media_file_path); media_url.is_valid()) {
-    if (media_url.SchemeIsFile()) {
-      VLOG(2) << __func__ << ": media file is already downloaded";
-      NotifySucceed(current_item_->id, current_item_->media_file_path);
-      return;
-    }
+  if (item.media_file_cached) {
+    VLOG(2) << __func__ << ": media file is already downloaded";
+    NotifySucceed(current_item_->id, current_item_->media_file_path);
+    return;
+  }
 
+  if (GURL media_url(current_item_->media_src); media_url.is_valid()) {
     playlist_dir_path_ = base_dir.AppendASCII(current_item_->id);
     DownloadMediaFile(media_url, 0);
   } else {

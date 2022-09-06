@@ -16,12 +16,13 @@ namespace playlist {
 struct PlaylistChangeParams {
   enum class Type {
     kNone,
-    kItemAdded,            // a new playlist item added but not ready state
-    kItemThumbnailReady,   // Thumbnail ready to use for playlist
-    kItemThumbnailFailed,  // Failed to fetch thumbnail
-    kItemPlayReady,        // Playlist ready to play
-    kItemDeleted,          // A playlist deleted
-    kItemAborted,          // Aborted during the creation process
+    kItemAdded,             // a new playlist item added but not ready state
+    kItemThumbnailReady,    // Thumbnail ready to use for playlist
+    kItemThumbnailFailed,   // Failed to fetch thumbnail
+    kItemCached,            // The item is cached in local storage
+    kItemDeleted,           // A playlist deleted
+    kItemAborted,           // Aborted during the creation process
+    kItemLocalDataRemoved,  // Local data removed
 
     kListCreated,  // A list is created
     kListRemoved,  // A list is removed
@@ -54,9 +55,16 @@ struct PlaylistItemInfo {
 
   std::string id;
   std::string title;
+
+  // These are origin urls from web page.
+  std::string page_src;
+  std::string thumbnail_src;
+  std::string media_src;
+
+  // These are either local path or web url.
   std::string thumbnail_path;
   std::string media_file_path;
-  bool ready{false};
+  bool media_file_cached{false};
 
   friend std::ostream& operator<<(std::ostream& os,
                                   const PlaylistItemInfo& item) {

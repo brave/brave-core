@@ -16,9 +16,12 @@ base::Value::Dict GetValueFromPlaylistItemInfo(const PlaylistItemInfo& info) {
   base::Value::Dict playlist_value;
   playlist_value.Set(kPlaylistItemIDKey, info.id);
   playlist_value.Set(kPlaylistItemTitleKey, info.title);
+  playlist_value.Set(kPlaylistItemPageSrcKey, info.page_src);
+  playlist_value.Set(kPlaylistItemMediaSrcKey, info.media_src);
+  playlist_value.Set(kPlaylistItemThumbnailSrcKey, info.thumbnail_src);
   playlist_value.Set(kPlaylistItemThumbnailPathKey, info.thumbnail_path);
   playlist_value.Set(kPlaylistItemMediaFilePathKey, info.media_file_path);
-  playlist_value.Set(kPlaylistItemReadyKey, info.ready);
+  playlist_value.Set(kPlaylistItemMediaFileCachedKey, info.media_file_cached);
   return playlist_value;
 }
 
