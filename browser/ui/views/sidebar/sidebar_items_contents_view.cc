@@ -10,6 +10,7 @@
 #include "base/bind.h"
 #include "base/i18n/case_conversion.h"
 #include "base/notreached.h"
+#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/brave_browser.h"
@@ -54,8 +55,7 @@ std::string GetFirstCharFromURL(const GURL& url) {
   std::string target = url.host();
   if (target.empty())
     target = url.spec();
-  size_t pos = target.find("www.");
-  if (pos != std::string::npos && pos == 0) {
+  if (base::StartsWith(target, "www.")) {
     target = target.substr(4, 1);
   } else {
     target = target.substr(0, 1);
