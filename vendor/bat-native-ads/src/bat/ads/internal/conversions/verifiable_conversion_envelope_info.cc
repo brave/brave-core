@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/conversions/verifiable_conversion_envelope_info.h"
 
-namespace ads {
-namespace security {
+namespace ads::security {
 
 VerifiableConversionEnvelopeInfo::VerifiableConversionEnvelopeInfo() = default;
 
@@ -34,5 +33,4 @@ bool VerifiableConversionEnvelopeInfo::IsValid() const {
            ephemeral_public_key.empty() || nonce.empty());
 }
 
-}  // namespace security
-}  // namespace ads
+}  // namespace ads::security

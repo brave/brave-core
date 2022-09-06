@@ -9,15 +9,11 @@
 #include <string>
 #include <vector>
 
-namespace ads {
-namespace privacy {
-namespace p2a {
+namespace ads::privacy::p2a {
 
 void RecordEvent(const std::string& name,
                  const std::vector<std::string>& questions);
 
-}  // namespace p2a
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::p2a
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_P2A_P2A_H_

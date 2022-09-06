@@ -31,9 +31,7 @@
 #include "bat/ads/internal/segments/segment_util.h"
 #include "url/gurl.h"
 
-namespace ads {
-namespace database {
-namespace table {
+namespace ads::database::table {
 
 using CreativeNotificationAdMap =
     std::map<std::string, CreativeNotificationAdInfo>;
@@ -502,6 +500,4 @@ void CreativeNotificationAds::MigrateToV24(
   transaction->commands.push_back(std::move(command));
 }
 
-}  // namespace table
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database::table

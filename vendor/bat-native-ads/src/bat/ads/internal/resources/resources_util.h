@@ -11,8 +11,7 @@
 #include "base/callback.h"  // IWYU pragma: keep
 #include "bat/ads/internal/resources/parsing_result.h"
 
-namespace ads {
-namespace resource {
+namespace ads::resource {
 
 template <typename T>
 using LoadAndParseResourceCallback =
@@ -23,7 +22,6 @@ void LoadAndParseResource(const std::string& id,
                           int version,
                           LoadAndParseResourceCallback<T> callback);
 
-}  // namespace resource
-}  // namespace ads
+}  // namespace ads::resource
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_RESOURCES_UTIL_H_

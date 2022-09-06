@@ -10,8 +10,7 @@
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpapers_database_table.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 
-namespace ads {
-namespace database {
+namespace ads::database {
 
 void DeleteCreativeNewTabPageAds() {
   table::CreativeNewTabPageAds database_table;
@@ -50,5 +49,4 @@ void SaveCreativeNewTabPageAds(const CreativeNewTabPageAdList& creative_ads) {
                       }));
 }
 
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database

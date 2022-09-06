@@ -12,8 +12,7 @@
 #include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource_util.h"
 #include "bat/ads/internal/segments/segment_util.h"
 
-namespace ads {
-namespace resource {
+namespace ads::resource {
 
 EpsilonGreedyBandit::EpsilonGreedyBandit(Catalog* catalog) : catalog_(catalog) {
   DCHECK(catalog_);
@@ -53,5 +52,4 @@ void EpsilonGreedyBandit::OnDidUpdateCatalog(const CatalogInfo& catalog) {
   LoadFromCatalog(catalog);
 }
 
-}  // namespace resource
-}  // namespace ads
+}  // namespace ads::resource

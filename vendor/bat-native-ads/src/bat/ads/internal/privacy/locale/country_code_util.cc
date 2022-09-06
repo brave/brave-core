@@ -9,9 +9,7 @@
 #include "bat/ads/internal/privacy/locale/other_country_codes.h"
 #include "brave/components/l10n/common/locale_util.h"
 
-namespace ads {
-namespace privacy {
-namespace locale {
+namespace ads::privacy::locale {
 
 bool IsMemberOfAnonymitySet(const std::string& locale) {
   const std::string country_code = brave_l10n::GetCountryCode(locale);
@@ -27,6 +25,4 @@ bool ShouldClassifyAsOther(const std::string& locale) {
   return iter != kOtherCountryCodes.cend();
 }
 
-}  // namespace locale
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::locale

@@ -33,9 +33,7 @@
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "url/gurl.h"
 
-namespace ads {
-namespace database {
-namespace table {
+namespace ads::database::table {
 
 using CreativeInlineContentAdMap =
     std::map<std::string, CreativeInlineContentAdInfo>;
@@ -766,6 +764,4 @@ void CreativeInlineContentAds::MigrateToV24(
   transaction->commands.push_back(std::move(command));
 }
 
-}  // namespace table
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database::table

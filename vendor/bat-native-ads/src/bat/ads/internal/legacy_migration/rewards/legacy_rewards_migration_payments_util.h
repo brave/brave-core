@@ -9,13 +9,11 @@
 #include "absl/types/optional.h"
 #include "bat/ads/internal/legacy_migration/rewards/payment_info.h"
 
-namespace ads {
-namespace rewards {
+namespace ads::rewards {
 
 absl::optional<PaymentInfo> GetPaymentForThisMonth(const PaymentList& payments);
 absl::optional<PaymentInfo> GetPaymentForLastMonth(const PaymentList& payments);
 
-}  // namespace rewards
-}  // namespace ads
+}  // namespace ads::rewards
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_LEGACY_MIGRATION_REWARDS_LEGACY_REWARDS_MIGRATION_PAYMENTS_UTIL_H_

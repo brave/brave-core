@@ -11,8 +11,7 @@
 
 #include "bat/ads/public/interfaces/ads.mojom-forward.h"
 
-namespace ads {
-namespace database {
+namespace ads::database {
 
 void CreateTableIndex(mojom::DBTransactionInfo* transaction,
                       const std::string& table_name,
@@ -43,7 +42,6 @@ void RenameTable(mojom::DBTransactionInfo* transaction,
                  const std::string& from,
                  const std::string& to);
 
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BASE_DATABASE_DATABASE_TABLE_UTIL_H_

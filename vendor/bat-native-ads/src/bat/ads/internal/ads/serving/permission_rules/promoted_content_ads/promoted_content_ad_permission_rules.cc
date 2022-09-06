@@ -10,8 +10,7 @@
 #include "bat/ads/internal/ads/serving/permission_rules/promoted_content_ads/promoted_content_ads_per_day_permission_rule.h"
 #include "bat/ads/internal/ads/serving/permission_rules/promoted_content_ads/promoted_content_ads_per_hour_permission_rule.h"
 
-namespace ads {
-namespace promoted_content_ads {
+namespace ads::promoted_content_ads {
 
 PermissionRules::PermissionRules() = default;
 
@@ -36,5 +35,4 @@ bool PermissionRules::HasPermission() const {
   return ShouldAllow(&ads_per_hour_permission_rule);
 }
 
-}  // namespace promoted_content_ads
-}  // namespace ads
+}  // namespace ads::promoted_content_ads

@@ -11,8 +11,7 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/pref_names.h"
 
-namespace ads {
-namespace client {
+namespace ads::client {
 
 bool HasMigrated() {
   return AdsClientHelper::GetInstance()->GetBooleanPref(
@@ -25,5 +24,4 @@ void SetHashForJson(const std::string& json) {
   AdsClientHelper::GetInstance()->SetUint64Pref(prefs::kClientHash, hash);
 }
 
-}  // namespace client
-}  // namespace ads
+}  // namespace ads::client

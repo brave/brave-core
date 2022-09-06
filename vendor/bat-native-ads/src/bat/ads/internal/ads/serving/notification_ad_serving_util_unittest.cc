@@ -13,8 +13,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace notification_ads {
+namespace ads::notification_ads {
 
 class BatAdsNotificationAdServingUtilTest : public UnitTestBase {
  protected:
@@ -86,5 +85,4 @@ TEST_F(BatAdsNotificationAdServingUtilTest, CalculateDelayBeforeServingAnAd) {
   EXPECT_EQ(DistantFuture() - Now(), CalculateDelayBeforeServingAnAd());
 }
 
-}  // namespace notification_ads
-}  // namespace ads
+}  // namespace ads::notification_ads

@@ -12,9 +12,7 @@
 #include "bat/ads/internal/privacy/p2a/opportunities/p2a_opportunity_questions.h"
 #include "bat/ads/internal/privacy/p2a/p2a.h"
 
-namespace ads {
-namespace privacy {
-namespace p2a {
+namespace ads::privacy::p2a {
 
 std::string GetAdOpportunityNameForAdType(const AdType& ad_type) {
   return base::StringPrintf("%s_opportunity", ad_type.ToString().c_str());
@@ -30,6 +28,4 @@ void RecordAdOpportunityForSegments(const AdType& ad_type,
   RecordEvent(name, questions);
 }
 
-}  // namespace p2a
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::p2a

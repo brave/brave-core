@@ -9,8 +9,7 @@
 #include <cmath>
 #include <limits>
 
-namespace ads {
-namespace ml {
+namespace ads::ml {
 
 PredictionMap Softmax(const PredictionMap& predictions) {
   double maximum = -std::numeric_limits<double>::infinity();
@@ -30,5 +29,4 @@ PredictionMap Softmax(const PredictionMap& predictions) {
   return softmax_predictions;
 }
 
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml

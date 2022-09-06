@@ -9,9 +9,7 @@
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/token_preimage.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/verification_key.h"
 
-namespace ads {
-namespace privacy {
-namespace cbr {
+namespace ads::privacy::cbr {
 
 namespace {
 
@@ -109,6 +107,4 @@ std::ostream& operator<<(std::ostream& os,
   return os;
 }
 
-}  // namespace cbr
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::cbr

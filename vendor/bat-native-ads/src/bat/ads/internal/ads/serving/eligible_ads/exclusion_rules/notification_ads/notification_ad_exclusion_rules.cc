@@ -10,8 +10,7 @@
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
-namespace ads {
-namespace notification_ads {
+namespace ads::notification_ads {
 
 ExclusionRules::ExclusionRules(
     const AdEventList& ad_events,
@@ -32,5 +31,4 @@ ExclusionRules::ExclusionRules(
 
 ExclusionRules::~ExclusionRules() = default;
 
-}  // namespace notification_ads
-}  // namespace ads
+}  // namespace ads::notification_ads

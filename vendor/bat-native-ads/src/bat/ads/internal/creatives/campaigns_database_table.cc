@@ -17,9 +17,7 @@
 #include "bat/ads/internal/base/database/database_transaction_util.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
-namespace ads {
-namespace database {
-namespace table {
+namespace ads::database::table {
 
 namespace {
 
@@ -142,6 +140,4 @@ void Campaigns::MigrateToV24(mojom::DBTransactionInfo* transaction) {
   transaction->commands.push_back(std::move(command));
 }
 
-}  // namespace table
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database::table

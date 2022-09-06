@@ -13,8 +13,7 @@
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/l10n/common/locale_util.h"
 
-namespace ads {
-namespace user_data {
+namespace ads::user_data {
 
 namespace {
 
@@ -44,5 +43,4 @@ base::Value::Dict GetLocale() {
   return user_data;
 }
 
-}  // namespace user_data
-}  // namespace ads
+}  // namespace ads::user_data

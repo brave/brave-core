@@ -8,8 +8,7 @@
 
 #include "bat/ads/internal/segments/segment_alias.h"
 
-namespace ads {
-namespace targeting {
+namespace ads::targeting {
 
 struct UserModelInfo;
 
@@ -21,7 +20,6 @@ SegmentList GetTopSegments(const UserModelInfo& user_model,
                            int max_count,
                            bool parent_only);
 
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SERVING_TARGETING_TOP_SEGMENTS_UTIL_H_

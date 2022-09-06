@@ -8,8 +8,7 @@
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
-namespace ads {
-namespace inline_content_ads {
+namespace ads::inline_content_ads {
 
 EligibleAdsBase::EligibleAdsBase(
     geographic::SubdivisionTargeting* subdivision_targeting,
@@ -22,5 +21,4 @@ EligibleAdsBase::EligibleAdsBase(
 
 EligibleAdsBase::~EligibleAdsBase() = default;
 
-}  // namespace inline_content_ads
-}  // namespace ads
+}  // namespace ads::inline_content_ads

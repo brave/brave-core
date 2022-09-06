@@ -12,8 +12,7 @@
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
 
-namespace ads {
-namespace privacy {
+namespace ads::privacy {
 
 UnblindedTokens* GetUnblindedTokens() {
   return ConfirmationStateManager::GetInstance()->GetUnblindedTokens();
@@ -88,5 +87,4 @@ UnblindedTokenInfo GetUnblindedToken() {
   return unblinded_tokens.front();
 }
 
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy

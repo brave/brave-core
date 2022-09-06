@@ -9,8 +9,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace features {
+namespace ads::features {
 
 TEST(BatAdsConversionsFeaturesTest, ConversionsEnabled) {
   // Arrange
@@ -41,5 +40,4 @@ TEST(BatAdsConversionsFeaturesTest, DefaultConversionIdPattern) {
   EXPECT_EQ(expected_pattern, GetDefaultConversionIdPattern());
 }
 
-}  // namespace features
-}  // namespace ads
+}  // namespace ads::features

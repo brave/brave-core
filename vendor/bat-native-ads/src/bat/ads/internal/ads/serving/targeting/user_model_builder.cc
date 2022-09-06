@@ -13,8 +13,7 @@
 #include "bat/ads/internal/features/purchase_intent_features.h"
 #include "bat/ads/internal/features/text_classification_features.h"
 
-namespace ads {
-namespace targeting {
+namespace ads::targeting {
 
 UserModelInfo BuildUserModel() {
   UserModelInfo user_model;
@@ -38,5 +37,4 @@ UserModelInfo BuildUserModel() {
   return user_model;
 }
 
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting

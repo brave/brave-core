@@ -14,9 +14,7 @@
 #include "bat/ads/internal/database/database_table_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom-forward.h"
 
-namespace ads {
-namespace database {
-namespace table {
+namespace ads::database::table {
 
 using GetAdEventsCallback = std::function<void(const bool, const AdEventList&)>;
 
@@ -59,8 +57,6 @@ class AdEvents final : public TableInterface {
   void MigrateToV17(mojom::DBTransactionInfo* transaction);
 };
 
-}  // namespace table
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database::table
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_AD_EVENTS_AD_EVENTS_DATABASE_TABLE_H_

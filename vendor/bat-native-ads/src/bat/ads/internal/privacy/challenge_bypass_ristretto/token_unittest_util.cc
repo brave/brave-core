@@ -8,9 +8,7 @@
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
 
-namespace ads {
-namespace privacy {
-namespace cbr {
+namespace ads::privacy::cbr {
 
 Token GetToken() {
   return Token(kTokenBase64);
@@ -34,6 +32,4 @@ std::vector<Token> GetInvalidTokens() {
   return tokens;
 }
 
-}  // namespace cbr
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::cbr

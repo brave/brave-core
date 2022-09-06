@@ -13,8 +13,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace ml {
+namespace ads::ml {
 
 class BatAdsMLPredictionUtilTest : public UnitTestBase {
  protected:
@@ -74,5 +73,4 @@ TEST_F(BatAdsMLPredictionUtilTest, ExtendedSoftmaxTest) {
               std::fabs(predictions_1.at("c3") - 0.66524095) < kTolerance);
 }
 
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml

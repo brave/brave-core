@@ -9,8 +9,7 @@
 
 #include "bat/ads/internal/catalog/catalog_util.h"
 
-namespace ads {
-namespace user_data {
+namespace ads::user_data {
 
 namespace {
 
@@ -32,5 +31,4 @@ base::Value::Dict GetCatalog() {
   return user_data;
 }
 
-}  // namespace user_data
-}  // namespace ads
+}  // namespace ads::user_data

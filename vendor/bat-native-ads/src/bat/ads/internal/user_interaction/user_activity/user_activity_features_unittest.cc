@@ -12,9 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace user_activity {
-namespace features {
+namespace ads::user_activity::features {
 
 TEST(BatAdsUserActivityFeaturesTest, Enabled) {
   // Arrange
@@ -410,6 +408,4 @@ TEST(BatAdsUserActivityFeaturesTest, ShouldDetectWasLockedWhenDisabled) {
   EXPECT_EQ(expected_should_detect_was_locked, should_detect_was_locked);
 }
 
-}  // namespace features
-}  // namespace user_activity
-}  // namespace ads
+}  // namespace ads::user_activity::features

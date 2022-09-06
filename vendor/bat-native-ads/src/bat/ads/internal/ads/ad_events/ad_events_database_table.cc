@@ -18,9 +18,7 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
-namespace ads {
-namespace database {
-namespace table {
+namespace ads::database::table {
 
 namespace {
 
@@ -381,6 +379,4 @@ void AdEvents::MigrateToV17(mojom::DBTransactionInfo* transaction) {
   CreateTableIndex(transaction, "ad_events", "timestamp");
 }
 
-}  // namespace table
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database::table

@@ -8,12 +8,10 @@
 
 #include "bat/ads/ads_callback.h"
 
-namespace ads {
-namespace rewards {
+namespace ads::rewards {
 
 void Migrate(InitializeCallback callback);
 
-}  // namespace rewards
-}  // namespace ads
+}  // namespace ads::rewards
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_LEGACY_MIGRATION_REWARDS_LEGACY_REWARDS_MIGRATION_H_

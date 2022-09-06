@@ -10,12 +10,10 @@
 
 #include "base/values.h"
 
-namespace ads {
-namespace user_data {
+namespace ads::user_data {
 
 base::Value::Dict GetRotatingHash(const std::string& creative_instance_id);
 
-}  // namespace user_data
-}  // namespace ads
+}  // namespace ads::user_data
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_USER_DATA_ROTATING_HASH_USER_DATA_H_

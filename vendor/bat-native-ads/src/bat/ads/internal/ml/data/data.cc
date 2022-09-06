@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/ml/data/data.h"
 
-namespace ads {
-namespace ml {
+namespace ads::ml {
 
 Data::Data(const DataType& type) : type_(type) {}
 
@@ -16,5 +15,4 @@ DataType Data::GetType() const {
   return type_;
 }
 
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml

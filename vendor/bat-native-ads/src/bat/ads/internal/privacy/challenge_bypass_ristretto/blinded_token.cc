@@ -7,9 +7,7 @@
 
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/challenge_bypass_ristretto_util.h"
 
-namespace ads {
-namespace privacy {
-namespace cbr {
+namespace ads::privacy::cbr {
 
 namespace {
 
@@ -77,6 +75,4 @@ std::ostream& operator<<(std::ostream& os, const BlindedToken& blinded_token) {
   return os;
 }
 
-}  // namespace cbr
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::cbr

@@ -5,9 +5,7 @@
 
 #include "bat/ads/internal/privacy/p2a/p2a_values_util.h"
 
-namespace ads {
-namespace privacy {
-namespace p2a {
+namespace ads::privacy::p2a {
 
 base::Value::List QuestionsToValue(const std::vector<std::string>& questions) {
   base::Value::List list;
@@ -21,6 +19,4 @@ base::Value::List QuestionsToValue(const std::vector<std::string>& questions) {
   return list;
 }
 
-}  // namespace p2a
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::p2a

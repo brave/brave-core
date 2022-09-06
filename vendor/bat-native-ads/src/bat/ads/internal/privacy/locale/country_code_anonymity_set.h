@@ -10,9 +10,7 @@
 
 #include "base/containers/flat_set.h"
 
-namespace ads {
-namespace privacy {
-namespace locale {
+namespace ads::privacy::locale {
 
 const base::flat_set<std::string> kCountryCodeAnonymitySet = {
     "US",  // United States of America
@@ -147,8 +145,6 @@ const base::flat_set<std::string> kCountryCodeAnonymitySet = {
     "ZW"   // Zimbabwe
 };
 
-}  // namespace locale
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::locale
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_LOCALE_COUNTRY_CODE_ANONYMITY_SET_H_

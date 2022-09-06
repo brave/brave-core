@@ -5,12 +5,8 @@
 
 #include "bat/ads/ads_constants.h"  // IWYU pragma: keep
 
-namespace ads {
-namespace data {
-namespace resource {
+namespace ads::data::resource {
 
 const char kCatalogJsonSchemaName[] = "catalog-schema.json";
 
-}  // namespace resource
-}  // namespace data
-}  // namespace ads
+}  // namespace ads::data::resource

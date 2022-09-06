@@ -8,8 +8,7 @@
 
 #include "bat/ads/internal/segments/segment_alias.h"
 
-namespace ads {
-namespace targeting {
+namespace ads::targeting {
 
 const SegmentList kSegments = {"architecture",
                                "arts & entertainment",
@@ -42,7 +41,6 @@ const SegmentList kSegments = {"architecture",
                                "weather",
                                "crypto"};
 
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PROCESSORS_BEHAVIORAL_BANDITS_EPSILON_GREEDY_BANDIT_CONSTANTS_H_

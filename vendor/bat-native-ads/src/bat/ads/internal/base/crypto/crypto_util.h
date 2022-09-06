@@ -12,8 +12,7 @@
 
 #include "base/containers/flat_map.h"
 
-namespace ads {
-namespace security {
+namespace ads::security {
 
 struct KeyPairInfo;
 
@@ -34,7 +33,6 @@ std::vector<uint8_t> Encrypt(const std::vector<uint8_t>& plaintext,
                              const std::vector<uint8_t>& public_key,
                              const std::vector<uint8_t>& ephemeral_secret_key);
 
-}  // namespace security
-}  // namespace ads
+}  // namespace ads::security
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BASE_CRYPTO_CRYPTO_UTIL_H_

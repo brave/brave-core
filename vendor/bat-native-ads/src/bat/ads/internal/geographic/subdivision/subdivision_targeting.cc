@@ -28,8 +28,7 @@
 #include "brave/components/l10n/common/locale_util.h"
 #include "net/http/http_status_code.h"
 
-namespace ads {
-namespace geographic {
+namespace ads::geographic {
 
 namespace {
 
@@ -275,5 +274,4 @@ void SubdivisionTargeting::OnPrefChanged(const std::string& path) {
   }
 }
 
-}  // namespace geographic
-}  // namespace ads
+}  // namespace ads::geographic

@@ -7,9 +7,7 @@
 
 #include <utility>
 
-namespace ads {
-namespace ml {
-namespace pipeline {
+namespace ads::ml::pipeline {
 
 PipelineInfo::PipelineInfo() = default;
 
@@ -31,6 +29,4 @@ PipelineInfo::PipelineInfo(const int version,
   transformations = std::move(new_transformations);
 }
 
-}  // namespace pipeline
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml::pipeline

@@ -10,9 +10,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace targeting {
-namespace features {
+namespace ads::targeting::features {
 
 TEST(BatAdsPurchaseIntentFeaturesTest, PurchaseIntentEnabled) {
   // Arrange
@@ -50,6 +48,4 @@ TEST(BatAdsPurchaseIntentFeaturesTest, PurchaseIntentResource) {
   EXPECT_EQ(1, GetPurchaseIntentResourceVersion());
 }
 
-}  // namespace features
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting::features

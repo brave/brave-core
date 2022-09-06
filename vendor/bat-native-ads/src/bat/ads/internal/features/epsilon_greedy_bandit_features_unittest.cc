@@ -9,9 +9,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace targeting {
-namespace features {
+namespace ads::targeting::features {
 
 TEST(BatAdsEpsilonGreedyBanditFeaturesTest, EpsilonGreedyBanditEnabled) {
   // Arrange
@@ -31,6 +29,4 @@ TEST(BatAdsEpsilonGreedyBanditFeaturesTest, EpsilonGreedyBanditEpsilon) {
   EXPECT_EQ(0.25, GetEpsilonGreedyBanditEpsilonValue());
 }
 
-}  // namespace features
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting::features

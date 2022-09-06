@@ -12,8 +12,7 @@
 #include "bat/ads/internal/privacy/tokens/token_generator.h"
 #include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
 
-namespace ads {
-namespace privacy {
+namespace ads::privacy {
 
 class TokenGeneratorMock : public TokenGenerator {
  public:
@@ -23,7 +22,6 @@ class TokenGeneratorMock : public TokenGenerator {
   MOCK_METHOD(std::vector<cbr::Token>, Generate, (const int count), (const));
 };
 
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_TOKENS_TOKEN_GENERATOR_MOCK_H_

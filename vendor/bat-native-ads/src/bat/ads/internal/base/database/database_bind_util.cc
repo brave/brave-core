@@ -13,8 +13,7 @@
 #include "base/strings/stringprintf.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
-namespace ads {
-namespace database {
+namespace ads::database {
 
 std::string BuildBindingParameterPlaceholder(const size_t parameters_count) {
   DCHECK_NE(0UL, parameters_count);
@@ -146,5 +145,4 @@ void BindString(mojom::DBCommandInfo* command,
   command->bindings.push_back(std::move(binding));
 }
 
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database

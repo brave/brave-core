@@ -8,15 +8,13 @@
 
 #include <cstdint>
 
-namespace ads {
-namespace client {
+namespace ads::client {
 
 void Migrate(bool should_migrate);
 
 uint64_t GetHash();
 void SetHash(uint64_t hash);
 
-}  // namespace client
-}  // namespace ads
+}  // namespace ads::client
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_LEGACY_MIGRATION_CLIENT_LEGACY_CLIENT_MIGRATION_UNITTEST_UTIL_H_

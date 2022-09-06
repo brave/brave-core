@@ -13,8 +13,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace ml {
+namespace ads::ml {
 
 namespace {
 constexpr char kHashCheck[] = "ml/hash_vectorizer/hashing_validation.json";
@@ -118,5 +117,4 @@ TEST_F(BatAdsHashVectorizerTest, JapaneseText) {
   RunHashingExtractorTestCase("japanese");
 }
 
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml

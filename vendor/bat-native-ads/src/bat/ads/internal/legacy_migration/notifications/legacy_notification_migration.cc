@@ -17,8 +17,7 @@
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/pref_names.h"
 
-namespace ads {
-namespace notifications {
+namespace ads::notifications {
 
 namespace {
 
@@ -81,5 +80,4 @@ void Migrate(InitializeCallback callback) {
           callback));
 }
 
-}  // namespace notifications
-}  // namespace ads
+}  // namespace ads::notifications

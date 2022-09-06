@@ -12,9 +12,7 @@ namespace base {
 class TimeDelta;
 }  // namespace base
 
-namespace ads {
-namespace exclusion_rules {
-namespace features {
+namespace ads::exclusion_rules::features {
 
 extern const base::Feature kFeature;
 
@@ -26,8 +24,6 @@ base::TimeDelta ExcludeAdIfDismissedWithinTimeWindow();
 
 base::TimeDelta ExcludeAdIfTransferredWithinTimeWindow();
 
-}  // namespace features
-}  // namespace exclusion_rules
-}  // namespace ads
+}  // namespace ads::exclusion_rules::features
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_EXCLUSION_RULES_EXCLUSION_RULE_FEATURES_H_

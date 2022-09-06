@@ -17,8 +17,7 @@
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_util.h"
 #include "bat/ads/pref_names.h"
 
-namespace ads {
-namespace rewards {
+namespace ads::rewards {
 
 namespace {
 
@@ -88,5 +87,4 @@ void Migrate(InitializeCallback callback) {
                                        base::BindOnce(&OnMigrate, callback));
 }
 
-}  // namespace rewards
-}  // namespace ads
+}  // namespace ads::rewards

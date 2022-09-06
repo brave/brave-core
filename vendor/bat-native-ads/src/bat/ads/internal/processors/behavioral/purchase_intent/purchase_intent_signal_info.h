@@ -11,8 +11,7 @@
 #include "base/time/time.h"
 #include "bat/ads/internal/segments/segment_alias.h"
 
-namespace ads {
-namespace targeting {
+namespace ads::targeting {
 
 struct PurchaseIntentSignalInfo final {
   PurchaseIntentSignalInfo();
@@ -25,7 +24,6 @@ struct PurchaseIntentSignalInfo final {
   uint16_t weight = 0;
 };
 
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PROCESSORS_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_SIGNAL_INFO_H_

@@ -8,14 +8,12 @@
 
 #include <string>
 
-namespace ads {
-namespace locale {
+namespace ads::locale {
 
 std::string GetCountryCode(const std::string& code);
 
 std::string GetSubdivisionCode(const std::string& code);
 
-}  // namespace locale
-}  // namespace ads
+}  // namespace ads::locale
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BASE_LOCALE_SUBDIVISION_CODE_UTIL_H_

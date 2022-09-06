@@ -11,8 +11,7 @@
 #include "absl/types/optional.h"
 #include "bat/ads/internal/base/logging_util.h"
 
-namespace ads {
-namespace targeting {
+namespace ads::targeting {
 
 namespace {
 
@@ -87,5 +86,4 @@ EpsilonGreedyBanditArmMap EpsilonGreedyBanditArmsFromValue(
   return arms;
 }
 
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting

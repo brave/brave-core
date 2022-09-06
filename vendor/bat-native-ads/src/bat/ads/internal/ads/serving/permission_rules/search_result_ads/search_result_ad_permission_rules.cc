@@ -9,8 +9,7 @@
 #include "bat/ads/internal/ads/serving/permission_rules/search_result_ads/search_result_ads_per_day_permission_rule.h"
 #include "bat/ads/internal/ads/serving/permission_rules/search_result_ads/search_result_ads_per_hour_permission_rule.h"
 
-namespace ads {
-namespace search_result_ads {
+namespace ads::search_result_ads {
 
 PermissionRules::PermissionRules() = default;
 
@@ -30,5 +29,4 @@ bool PermissionRules::HasPermission() const {
   return ShouldAllow(&ads_per_hour_permission_rule);
 }
 
-}  // namespace search_result_ads
-}  // namespace ads
+}  // namespace ads::search_result_ads

@@ -8,16 +8,10 @@
 
 #include "bat/ads/ads_client_callback.h"
 
-namespace ads {
-namespace database {
-namespace table {
-namespace ad_events {
+namespace ads::database::table::ad_events {
 
 void Reset(ResultCallback callback);
 
-}  // namespace ad_events
-}  // namespace table
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database::table::ad_events
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_AD_EVENTS_AD_EVENTS_DATABASE_TABLE_UNITTEST_UTIL_H_

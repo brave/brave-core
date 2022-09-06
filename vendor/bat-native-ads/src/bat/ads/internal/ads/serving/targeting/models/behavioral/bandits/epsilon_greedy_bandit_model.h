@@ -8,9 +8,7 @@
 
 #include "bat/ads/internal/ads/serving/targeting/models/model_interface.h"
 
-namespace ads {
-namespace targeting {
-namespace model {
+namespace ads::targeting::model {
 
 class EpsilonGreedyBandit final : public ModelInterface {
  public:
@@ -22,8 +20,6 @@ class EpsilonGreedyBandit final : public ModelInterface {
   SegmentList GetSegments() const override;
 };
 
-}  // namespace model
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting::model
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SERVING_TARGETING_MODELS_BEHAVIORAL_BANDITS_EPSILON_GREEDY_BANDIT_MODEL_H_

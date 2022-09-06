@@ -13,8 +13,7 @@
 #include "base/time/time.h"
 #include "bat/ads/internal/base/time/time_util.h"
 
-namespace ads {
-namespace rewards {
+namespace ads::rewards {
 
 namespace {
 
@@ -57,5 +56,4 @@ absl::optional<PaymentInfo> GetPaymentForLastMonth(
   return GetPaymentForMonth(payments, time);
 }
 
-}  // namespace rewards
-}  // namespace ads
+}  // namespace ads::rewards

@@ -15,8 +15,7 @@
 #include "bat/ads/internal/resources/resource_manager.h"
 #include "bat/ads/internal/resources/resources_util_impl.h"
 
-namespace ads {
-namespace resource {
+namespace ads::resource {
 
 namespace {
 constexpr char kResourceId[] = "mkdhnfmjhklfnamlheoliekgeohamoig";
@@ -84,5 +83,4 @@ void AntiTargeting::OnResourceDidUpdate(const std::string& id) {
   }
 }
 
-}  // namespace resource
-}  // namespace ads
+}  // namespace ads::resource

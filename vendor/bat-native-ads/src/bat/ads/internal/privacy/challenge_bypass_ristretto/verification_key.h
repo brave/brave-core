@@ -11,9 +11,7 @@
 #include "absl/types/optional.h"
 #include "wrapper.hpp"
 
-namespace ads {
-namespace privacy {
-namespace cbr {
+namespace ads::privacy::cbr {
 
 class VerificationSignature;
 
@@ -45,8 +43,6 @@ class VerificationKey {
   challenge_bypass_ristretto::VerificationKey verification_key_;
 };
 
-}  // namespace cbr
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::cbr
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_CHALLENGE_BYPASS_RISTRETTO_VERIFICATION_KEY_H_

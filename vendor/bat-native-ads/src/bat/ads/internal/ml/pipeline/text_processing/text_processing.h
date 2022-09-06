@@ -17,9 +17,7 @@ namespace base {
 class Value;
 }  // namespace base
 
-namespace ads {
-namespace ml {
-namespace pipeline {
+namespace ads::ml::pipeline {
 
 struct PipelineInfo;
 
@@ -57,8 +55,6 @@ class TextProcessing final {
   model::Linear linear_model_;
 };
 
-}  // namespace pipeline
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml::pipeline
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_PIPELINE_TEXT_PROCESSING_TEXT_PROCESSING_H_

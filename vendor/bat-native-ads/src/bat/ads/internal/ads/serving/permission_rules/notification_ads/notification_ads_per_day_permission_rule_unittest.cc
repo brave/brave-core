@@ -14,8 +14,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace notification_ads {
+namespace ads::notification_ads {
 
 class BatAdsAdsPerDayPermissionRuleTest : public UnitTestBase {
  protected:
@@ -91,5 +90,4 @@ TEST_F(BatAdsAdsPerDayPermissionRuleTest, DoNotAllowAdIfExceedsCapWithin1Day) {
   EXPECT_FALSE(is_allowed);
 }
 
-}  // namespace notification_ads
-}  // namespace ads
+}  // namespace ads::notification_ads

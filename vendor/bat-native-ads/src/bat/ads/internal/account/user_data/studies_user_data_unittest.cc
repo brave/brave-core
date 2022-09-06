@@ -13,8 +13,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace user_data {
+namespace ads::user_data {
 
 TEST(BatAdsStudiesUserDataTest, GetStudiesForNoFieldTrials) {
   // Arrange
@@ -63,5 +62,4 @@ TEST(BatAdsStudiesUserDataTest, GetStudies) {
   EXPECT_EQ(expected_user_data, user_data);
 }
 
-}  // namespace user_data
-}  // namespace ads
+}  // namespace ads::user_data

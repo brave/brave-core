@@ -17,9 +17,7 @@
 #include "bat/ads/internal/ml/pipeline/pipeline_info.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_util.h"
 
-namespace ads {
-namespace ml {
-namespace pipeline {
+namespace ads::ml::pipeline {
 
 // static
 std::unique_ptr<TextProcessing> TextProcessing::CreateFromValue(
@@ -116,6 +114,4 @@ PredictionMap TextProcessing::ClassifyPage(const std::string& content) const {
   return GetTopPredictions(content);
 }
 
-}  // namespace pipeline
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml::pipeline

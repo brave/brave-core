@@ -13,9 +13,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace user_data {
-namespace builder {
+namespace ads::user_data::builder {
 
 namespace {
 
@@ -95,6 +93,4 @@ TEST_F(BatAdsConversionUserDataBuilderTest,
   // Assert
 }
 
-}  // namespace builder
-}  // namespace user_data
-}  // namespace ads
+}  // namespace ads::user_data::builder

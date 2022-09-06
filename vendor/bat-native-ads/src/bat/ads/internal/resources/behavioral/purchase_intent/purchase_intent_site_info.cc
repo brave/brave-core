@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_site_info.h"
 
-namespace ads {
-namespace targeting {
+namespace ads::targeting {
 
 PurchaseIntentSiteInfo::PurchaseIntentSiteInfo() = default;
 
@@ -34,5 +33,4 @@ bool PurchaseIntentSiteInfo::operator!=(
   return !(*this == rhs);
 }
 
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting

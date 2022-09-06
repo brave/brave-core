@@ -7,9 +7,7 @@
 
 #include "base/metrics/field_trial_params.h"
 
-namespace ads {
-namespace resource {
-namespace features {
+namespace ads::resource::features {
 
 namespace {
 
@@ -33,6 +31,4 @@ int GetAntiTargetingResourceVersion() {
                                           kDefaultResourceVersion);
 }
 
-}  // namespace features
-}  // namespace resource
-}  // namespace ads
+}  // namespace ads::resource::features

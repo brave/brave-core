@@ -19,8 +19,7 @@
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
-namespace ads {
-namespace new_tab_page_ads {
+namespace ads::new_tab_page_ads {
 
 EligibleAdsV2::EligibleAdsV2(
     geographic::SubdivisionTargeting* subdivision_targeting,
@@ -118,5 +117,4 @@ CreativeNewTabPageAdList EligibleAdsV2::FilterCreativeAds(
   return ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
 }
 
-}  // namespace new_tab_page_ads
-}  // namespace ads
+}  // namespace ads::new_tab_page_ads

@@ -8,9 +8,7 @@
 
 #include "base/feature_list.h"  // IWYU pragma: keep
 
-namespace ads {
-namespace targeting {
-namespace features {
+namespace ads::targeting::features {
 
 extern const base::Feature kEpsilonGreedyBandit;
 
@@ -18,8 +16,6 @@ bool IsEpsilonGreedyBanditEnabled();
 
 double GetEpsilonGreedyBanditEpsilonValue();
 
-}  // namespace features
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting::features
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FEATURES_EPSILON_GREEDY_BANDIT_FEATURES_H_

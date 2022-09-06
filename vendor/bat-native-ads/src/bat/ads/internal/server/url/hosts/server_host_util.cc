@@ -11,8 +11,7 @@
 #include "bat/ads/internal/server/url/hosts/server_host_types.h"
 #include "bat/ads/internal/server/url/hosts/server_hosts_factory.h"
 
-namespace ads {
-namespace server {
+namespace ads::server {
 
 namespace {
 
@@ -42,5 +41,4 @@ std::string GetAnonymousHost() {
   return GetHost(ServerHostType::kAnonymous);
 }
 
-}  // namespace server
-}  // namespace ads
+}  // namespace ads::server

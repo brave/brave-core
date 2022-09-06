@@ -10,8 +10,7 @@
 #include "bat/ads/internal/legacy_migration/client/legacy_client_migration.h"
 #include "bat/ads/pref_names.h"
 
-namespace ads {
-namespace client {
+namespace ads::client {
 
 void Migrate(const bool should_migrate) {
   Migrate([should_migrate](const bool success) {
@@ -27,5 +26,4 @@ void SetHash(const uint64_t hash) {
   AdsClientHelper::GetInstance()->SetUint64Pref(prefs::kClientHash, hash);
 }
 
-}  // namespace client
-}  // namespace ads
+}  // namespace ads::client

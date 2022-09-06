@@ -12,8 +12,7 @@
 #include "bat/ads/internal/ads/serving/serving_features.h"
 #include "bat/ads/internal/base/time/time_constraint_util.h"
 
-namespace ads {
-namespace new_tab_page_ads {
+namespace ads::new_tab_page_ads {
 
 namespace {
 constexpr int kMinimumWaitTimeCap = 1;
@@ -47,5 +46,4 @@ bool MinimumWaitTimePermissionRule::DoesRespectCap(
       kMinimumWaitTimeCap);
 }
 
-}  // namespace new_tab_page_ads
-}  // namespace ads
+}  // namespace ads::new_tab_page_ads

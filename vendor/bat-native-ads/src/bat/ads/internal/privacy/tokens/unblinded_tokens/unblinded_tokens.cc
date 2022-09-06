@@ -10,8 +10,7 @@
 
 #include "base/check_op.h"
 
-namespace ads {
-namespace privacy {
+namespace ads::privacy {
 
 UnblindedTokens::UnblindedTokens() = default;
 
@@ -88,5 +87,4 @@ bool UnblindedTokens::IsEmpty() const {
   return unblinded_tokens_.empty();
 }
 
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy

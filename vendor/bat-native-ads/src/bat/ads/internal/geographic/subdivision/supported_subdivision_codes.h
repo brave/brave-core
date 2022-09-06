@@ -11,8 +11,7 @@
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 
-namespace ads {
-namespace geographic {
+namespace ads::geographic {
 
 using SupportedSubdivisionCodesSet = base::flat_set<std::string>;
 using SupportedSubdivisionCodesMap =
@@ -77,7 +76,6 @@ const SupportedSubdivisionCodesMap kSupportedSubdivisionCodes = {
          "US-WY",  // Wyoming
      }}};
 
-}  // namespace geographic
-}  // namespace ads
+}  // namespace ads::geographic
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_GEOGRAPHIC_SUBDIVISION_SUPPORTED_SUBDIVISION_CODES_H_

@@ -8,16 +8,12 @@
 
 #include "base/feature_list.h"  // IWYU pragma: keep
 
-namespace ads {
-namespace inline_content_ads {
-namespace features {
+namespace ads::inline_content_ads::features {
 
 extern const base::Feature kFeature;
 
 bool IsEnabled();
 
-}  // namespace features
-}  // namespace inline_content_ads
-}  // namespace ads
+}  // namespace ads::inline_content_ads::features
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CREATIVES_INLINE_CONTENT_ADS_INLINE_CONTENT_ADS_FEATURES_H_

@@ -14,9 +14,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace targeting {
-namespace model {
+namespace ads::targeting::model {
 
 class BatAdsTextClassificationModelTest : public UnitTestBase {
  protected:
@@ -269,6 +267,4 @@ TEST_F(BatAdsTextClassificationModelTest, DoNotGetSegmentsIfNeverProcessed) {
   EXPECT_EQ(expected_segments, segments);
 }
 
-}  // namespace model
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting::model

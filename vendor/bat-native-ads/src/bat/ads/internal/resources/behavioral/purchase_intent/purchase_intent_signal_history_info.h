@@ -14,8 +14,7 @@
 #include "base/time/time.h"
 #include "base/values.h"
 
-namespace ads {
-namespace targeting {
+namespace ads::targeting {
 
 struct PurchaseIntentSignalHistoryInfo final {
   PurchaseIntentSignalHistoryInfo() = default;
@@ -49,7 +48,6 @@ using PurchaseIntentSignalHistoryList =
 using PurchaseIntentSignalHistoryMap =
     std::map<std::string, PurchaseIntentSignalHistoryList>;
 
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_SIGNAL_HISTORY_INFO_H_
