@@ -61,7 +61,7 @@
   <message name="IDS_BRAVE_WALLET_TOP_NAV_PORTFOLIO" desc="Portfolio top nav button">Portfolio</message>
   <message name="IDS_BRAVE_WALLET_TOP_TAB_PRICES" desc="Prices top nav button">Prices</message>
   <message name="IDS_BRAVE_WALLET_TOP_TAB_APPS" desc="Apps top nave button">Apps</message>
-  <message name="IDS_BRAVE_WALLET_TOP_NAV_N_F_T_S" desc="NFTs top nave button">NFTs</message>
+  <message name="IDS_BRAVE_WALLET_TOP_NAV_N_F_T_S" desc="NFTs top nav button">NFTs</message>
   <message name="IDS_BRAVE_WALLET_TOP_NAV_ACCOUNTS" desc="Accounts top nav button">Accounts</message>
   <message name="IDS_BRAVE_WALLET_TOP_NAV_MARKET" desc="Accounts top nav button">Market</message>
   <message name="IDS_BRAVE_WALLET_CHART_LIVE" desc="Chart control bar 1H button">1H</message>
@@ -635,4 +635,6 @@
   <message name="IDS_BRAVE_WALLET_REMOVE_ACCOUNT_MODAL_TITLE" desc="Title prompt to confirm removal of a wallet account">Are you sure you want to remove "<ph name="ACCOUNT_NAME">$1<ex>Eth Account 1</ex></ph>"?</message>
   <message name="IDS_BRAVE_WALLET_REQUEST_FEATURE_BUTTON_TEXT" desc="Text displayed in request feature button">Request feature</message>
   <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_LENGTH_ERROR" desc="Error message for when a supplied recovery phrase has an invalid number of words">Recovery phrase must be 12, 15, 18, 21, or 24 words long</message>
+  <message name="IDS_BRAVE_WALLET_NFTS_EMPTY_STATE" desc="Message displayed when user has no NFTs">No NFTs found in your wallet. You can add NFTs by clicking the "+ Visible assets" button at the bottom of the "Portfolio" tab</message>
+  <message name="IDS_BRAVE_WALLET_NFTS_EMPTY_STATE_SEARCH_FILTER" desc="Message displayed no NFTs match search criteria">No NFTs matching search or filter found</message>
 </grit-part>
