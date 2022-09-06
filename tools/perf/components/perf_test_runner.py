@@ -175,7 +175,7 @@ class RunableConfiguration:
       # to run_benchmark.
       if config.browser_type.ReportAsReference():
         benchmark_report_name += '.reference'
-      args.append(f'--benchmarks={benchmark_name}')
+      args.append(f'--benchmarks={benchmark_report_name}')
       if out_dir:
         args.append('--isolated-script-test-output=' +
                     os.path.join(out_dir, benchmark_name, 'output.json'))
