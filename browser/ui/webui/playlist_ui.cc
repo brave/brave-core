@@ -51,9 +51,8 @@ PlaylistUI::PlaylistUI(content::WebUI* web_ui, const std::string& name)
                   "chrome-untrusted://brave-resources 'unsafe-inline';"));
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
-      std::string("script-src chrome-untrusted://brave-resources "
-                  "chrome-untrusted://resources "
-                  "chrome-untrusted://playlist;"));
+      std::string("script-src 'self' chrome-untrusted://brave-resources "
+                  "chrome-untrusted://resources;"));
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
