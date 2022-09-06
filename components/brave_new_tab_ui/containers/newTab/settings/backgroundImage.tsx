@@ -174,7 +174,7 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
                 onEnableRewards={onEnableRewards}
                 checked={showBackgroundImage && brandedWallpaperOptIn}
                 disabled={!showBackgroundImage /* This option can only be enabled if users opt in for background images */}
-                rewardEnabled={this.props.newTabData.rewardsState.rewardsEnabled}
+                rewardsEnabled={this.props.newTabData.rewardsState.rewardsEnabled}
                 adsEnabled={this.props.newTabData.rewardsState.enabledAds}
                 canSupportAds={!!this.props.newTabData.rewardsState.adsSupported}/>
             </SettingsRow>

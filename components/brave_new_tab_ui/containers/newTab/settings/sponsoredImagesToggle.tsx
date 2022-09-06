@@ -4,7 +4,9 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
+
+import '$web-components/app.global.scss'
 
 // Common components
 import { SettingsText } from '../../../components/default'
@@ -16,22 +18,18 @@ import InfoIcon from '../../../components/default/settings/assets/info-icon.svg'
 // Utilities
 import { getLocale } from '../../../../common/locale'
 
-const isDarkTheme = (p: any) => {
-  return p.theme.name === 'Brave Dark'
-}
-
 interface Props {
   onChange: () => void
   onEnableRewards: () => void
 
   checked: boolean
   disabled: boolean
-  rewardEnabled: boolean
+  rewardsEnabled: boolean
   adsEnabled: boolean
   canSupportAds: boolean
 }
 
-const Container = styled('div')<{}>`
+const Container = styled.div`
   background-color: rgba(93, 181, 252, 0.2);
   border-radius: 8px;
   padding: 8px;
@@ -41,17 +39,17 @@ const Container = styled('div')<{}>`
   gap: 10px;
 `
 
-const ToggleRow = styled('div')<{}>`
+const ToggleRow = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 12px 14px;
   border-radius: 10px;
-  background-color: ${p => isDarkTheme(p) ? css`#1E2029` : css`white`};
+  background-color: var(--background1);
 `
 
-const DescriptionRow = styled('div')<{}>`
+const DescriptionRow = styled.div`
   width: 100%;
   display: grid; 
   grid-template-rows: 16px 1fr;
@@ -59,32 +57,32 @@ const DescriptionRow = styled('div')<{}>`
   padding: 0 8px;
   gap: 8px;
   color: #339AF0;
-  font-family: 'Poppins';
+  font-family: var(--brave-font-family-non-sherif);
   letter-spacing: 0.01em;
   margin-bottom: 7px;
 `
 
-const DescriptionIcon = styled('div')<{}>`
+const DescriptionIcon = styled.div`
   background: url(${InfoIcon}) no-repeat;
 `
 
-const DescriptionTitle = styled('div')<{}>`
+const DescriptionTitle = styled.div`
   font-weight: 600;
   font-size: 12px;
   line-height: 18px;
 `
 
-const DescriptionBody = styled('div')<{}>`
+const DescriptionBody = styled.div`
   grid-column: 2;
   font-weight: 500;
   font-size: 11px;
   line-height: 17px;
 `
 
-const EnableRewardsButton = styled('button')<{}>`
+const EnableRewardsButton = styled.button`
   width: 236px;
   height: 40px;
-  background: #4C54D2;
+  background: var(--interactive5);
   border-radius: 48px;
   border-width: 0;
   color: white;
@@ -92,7 +90,7 @@ const EnableRewardsButton = styled('button')<{}>`
   margin-bottom: 8px;
 `
 
-export default function SponsoredImageToggle ({ onChange, onEnableRewards, checked, disabled, rewardEnabled, adsEnabled, canSupportAds }: Props) {
+export default function SponsoredImageToggle ({ onChange, onEnableRewards, checked, disabled, rewardsEnabled: rewardEnabled, adsEnabled, canSupportAds }: Props) {
   const showRewardButton = checked && !disabled && (!rewardEnabled || (!adsEnabled && canSupportAds))
   return (
     <Container>
