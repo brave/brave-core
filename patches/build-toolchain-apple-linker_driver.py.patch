@@ -1,0 +1,17 @@
+diff --git a/build/toolchain/apple/linker_driver.py b/build/toolchain/apple/linker_driver.py
+index ad1e12c28d3a24e455b4778e8208e751de012fd9..0ab19004aa52e71356698511371df7bbe5342981 100755
+--- a/build/toolchain/apple/linker_driver.py
++++ b/build/toolchain/apple/linker_driver.py
+@@ -136,8 +136,12 @@ class LinkerDriver(object):
+             # https://crbug.com/330262.
+             env = os.environ.copy()
+             env['ZERO_AR_DATE'] = '1'
++            if self._object_path_lto:
++                env['LLD_REPRODUCE'] = f'{self._get_linker_output()}.tar'
+             # Run the linker by invoking the compiler driver.
+             subprocess.check_call(compiler_driver_args, env=env)
++            if 'LLD_REPRODUCE' in env:
++                _remove_path(env['LLD_REPRODUCE'])
+ 
+             # Run the linker driver actions, in the order specified by the
+             # actions list.
