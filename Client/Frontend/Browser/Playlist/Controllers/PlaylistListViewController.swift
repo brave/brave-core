@@ -23,12 +23,23 @@ private let log = Logger.browserLogger
 // MARK: - PlaylistListViewController
 
 class PlaylistListViewController: UIViewController {
+  // MARK: Loading State
+  enum LoadingState {
+    case partial
+    case loading
+    case fullyLoaded
+  }
+  
   // MARK: Constants
 
   struct Constants {
+    static let playListMenuHeaderRedactedIdentifier = "playListMenuHeaderRedactedIdentifier"
+    static let playListMenuHeaderIdentifier = "playlistMenuHeaderIdentifier"
+    static let playlistCellRedactedIdentifier = "playlistCellRedactedIdentifier"
     static let playListCellIdentifier = "playlistCellIdentifier"
     static let tableRowHeight: CGFloat = 80
     static let tableHeaderHeight: CGFloat = 11
+    static let tableRedactedCellCount = 5
   }
 
   // MARK: Properties
@@ -41,6 +52,11 @@ class PlaylistListViewController: UIViewController {
   private var folderObserver: AnyCancellable?
   private(set) var autoPlayEnabled = Preferences.Playlist.firstLoadAutoPlay.value
   var playerController: AVPlayerViewController?
+  var loadingState: LoadingState = .fullyLoaded {
+    didSet {
+      tableView.reloadData()
+    }
+  }
 
   let activityIndicator = UIActivityIndicatorView(style: .medium).then {
     $0.color = .white
@@ -115,7 +131,7 @@ class PlaylistListViewController: UIViewController {
       }.store(in: &observers)
 
     // Theme
-    title = Strings.PlayList.playListSectionTitle
+    title = Strings.PlayList.playListTitle
     view.backgroundColor = .braveBackground
     navigationController?.do {
       let appearance = UINavigationBarAppearance()
@@ -130,6 +146,9 @@ class PlaylistListViewController: UIViewController {
 
     // Layout
     tableView.do {
+      $0.register(PlaylistRedactedHeader.self, forHeaderFooterViewReuseIdentifier: Constants.playListMenuHeaderRedactedIdentifier)
+      $0.register(PlaylistMenuHeader.self, forHeaderFooterViewReuseIdentifier: Constants.playListMenuHeaderIdentifier)
+      $0.register(PlaylistCellRedacted.self, forCellReuseIdentifier: Constants.playlistCellRedactedIdentifier)
       $0.register(PlaylistCell.self, forCellReuseIdentifier: Constants.playListCellIdentifier)
       $0.dataSource = self
       $0.delegate = self
@@ -139,16 +158,14 @@ class PlaylistListViewController: UIViewController {
       $0.allowsMultipleSelectionDuringEditing = true
     }
 
-    toolbarItems = [
-      UIBarButtonItem(title: Strings.PlaylistFolders.playlistFolderEditButtonTitle, style: .plain, target: self, action: #selector(onEditItems)),
-      UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-    ]
+    updateToolbar(editing: false)
   }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
-    title = PlaylistManager.shared.currentFolder?.title
+    title = PlaylistManager.shared.numberOfAssets == 0 ? PlaylistManager.shared.currentFolder?.title : nil
+    navigationController?.setToolbarHidden(true, animated: true)
 
     // Update
     DispatchQueue.main.async {
@@ -163,7 +180,7 @@ class PlaylistListViewController: UIViewController {
       .receive(on: DispatchQueue.main)
       .sink { [weak self] in
         guard let self = self else { return }
-        self.title = PlaylistManager.shared.currentFolder?.title
+        self.title = PlaylistManager.shared.numberOfAssets == 0 ? PlaylistManager.shared.currentFolder?.title : nil
         self.tableView.reloadData()
       }
   }
@@ -197,7 +214,7 @@ class PlaylistListViewController: UIViewController {
     playerView.setControlsEnabled(false)
 
     if let initialItem = initialItem,
-      let item = PlaylistItem.getItem(pageSrc: initialItem.pageSrc) {
+      let item = PlaylistItem.getItem(uuid: initialItem.tagId) {
       PlaylistManager.shared.currentFolder = item.playlistFolder
     }
 
@@ -228,6 +245,12 @@ class PlaylistListViewController: UIViewController {
       autoPlayEnabled = true
       return
     }
+    
+    // Shared folders are loading
+    if PlaylistManager.shared.currentFolder == nil {
+      autoPlayEnabled = true
+      return
+    }
 
     // Setup initial playback item and time-offset
     let lastPlayedItemUrl = initialItem?.pageSrc ?? Preferences.Playlist.lastPlayedItemUrl.value
@@ -239,15 +262,14 @@ class PlaylistListViewController: UIViewController {
     guard let lastPlayedItemUrl = lastPlayedItemUrl,
       let index = PlaylistManager.shared.index(of: lastPlayedItemUrl)
     else {
-
       tableView.delegate?.tableView?(tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
       autoPlayEnabled = true
       return
     }
 
     // If the current item is already playing, do nothing.
-    if let currentItemSrc = PlaylistCarplayManager.shared.currentPlaylistItem?.pageSrc,
-      PlaylistManager.shared.index(of: currentItemSrc) != nil {
+    if let currentItemId = PlaylistCarplayManager.shared.currentPlaylistItem?.tagId,
+      PlaylistManager.shared.index(of: currentItemId) != nil {
       return
     }
 
@@ -331,6 +353,8 @@ class PlaylistListViewController: UIViewController {
   // MARK: Actions
 
   func updateToolbar(editing: Bool) {
+    (tableView.headerView(forSection: 0) as? PlaylistMenuHeader)?.setMenuEnabled(enabled: !editing)
+    
     if editing {
       if PlaylistFolder.getOtherFoldersCount() == 0 {
         toolbarItems = [
@@ -350,11 +374,10 @@ class PlaylistListViewController: UIViewController {
         ]
       }
     } else {
-      toolbarItems = [
-        UIBarButtonItem(title: Strings.PlaylistFolders.playlistFolderEditButtonTitle, style: .plain, target: self, action: #selector(onEditItems)),
-        UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-      ]
+      toolbarItems = nil
     }
+    
+    navigationController?.setToolbarHidden(!editing, animated: true)
   }
 
   func moveItems(indexPaths: [IndexPath]) {
@@ -364,7 +387,7 @@ class PlaylistListViewController: UIViewController {
       PlaylistManager.shared.fetchedObjects[safe: $0.row]
     })
 
-    if selectedItems.contains(where: { $0.pageSrc == PlaylistCarplayManager.shared.currentPlaylistItem?.pageSrc }) {
+    if selectedItems.contains(where: { $0.uuid == PlaylistCarplayManager.shared.currentPlaylistItem?.tagId }) {
       delegate?.stopPlaying()
     } else {
       delegate?.pausePlaying()
@@ -380,7 +403,7 @@ class PlaylistListViewController: UIViewController {
       self.presentedViewController?.dismiss(animated: true, completion: nil)
 
       // We moved an item that was playing
-      if items.firstIndex(where: { PlaylistInfo(item: $0).pageSrc == PlaylistCarplayManager.shared.currentPlaylistItem?.pageSrc }) != nil {
+      if items.firstIndex(where: { PlaylistInfo(item: $0).tagId == PlaylistCarplayManager.shared.currentPlaylistItem?.tagId }) != nil {
         self.delegate?.stopPlaying()
       }
 
@@ -405,7 +428,7 @@ class PlaylistListViewController: UIViewController {
   }
 
   @objc
-  private func onEditItems() {
+  func onEditItems() {
     if tableView.isEditing {
       // If already editing, such as when swiping on a cell,
       // dismiss the trailing swipe and show the selections instead.
@@ -419,7 +442,7 @@ class PlaylistListViewController: UIViewController {
   }
 
   @objc
-  private func onCancelEditingItems() {
+  func onCancelEditingItems() {
     tableView.setEditing(false, animated: true)
     updateToolbar(editing: false)
   }
@@ -440,7 +463,7 @@ class PlaylistListViewController: UIViewController {
 
     for row in rows {
       if let item = row.item {
-        delegate?.deleteItem(item: item, at: row.index)
+        delegate?.deleteItem(itemId: item.tagId, at: row.index)
       }
     }
   }
@@ -463,7 +486,7 @@ class PlaylistListViewController: UIViewController {
       playerView.addSubview(activityIndicator)
 
       if !playerView.isFullscreen {
-        if UIDevice.current.orientation.isLandscape && UIDevice.isPhone {
+        if view.window?.windowScene?.interfaceOrientation.isLandscape ?? UIDevice.current.orientation.isLandscape && UIDevice.isPhone {
           playerView.setExitButtonHidden(false)
           playerView.setFullscreenButtonHidden(true)
           playerView.snp.remakeConstraints {
@@ -478,13 +501,6 @@ class PlaylistListViewController: UIViewController {
           playerView.setExitButtonHidden(true)
           let videoPlayerHeight = (1.0 / 3.0) * (UIScreen.main.bounds.width > UIScreen.main.bounds.height ? UIScreen.main.bounds.width : UIScreen.main.bounds.height)
 
-          tableView.do {
-            $0.contentInset = UIEdgeInsets(top: videoPlayerHeight, left: 0.0, bottom: view.safeAreaInsets.bottom, right: 0.0)
-            $0.scrollIndicatorInsets = $0.contentInset
-            $0.contentOffset = CGPoint(x: 0.0, y: -videoPlayerHeight)
-            $0.isHidden = false
-          }
-
           playerView.snp.remakeConstraints {
             $0.top.equalTo(view.safeArea.top)
             $0.leading.trailing.equalToSuperview()
@@ -496,7 +512,9 @@ class PlaylistListViewController: UIViewController {
           }
 
           tableView.snp.remakeConstraints {
-            $0.edges.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+            $0.top.equalTo(playerView.snp.bottom)
+            $0.bottom.equalTo(view.safeArea.bottom)
           }
         }
       } else {
@@ -521,12 +539,6 @@ class PlaylistListViewController: UIViewController {
 
       view.addSubview(tableView)
       playerView.addSubview(activityIndicator)
-
-      tableView.do {
-        $0.contentInset = .zero
-        $0.scrollIndicatorInsets = $0.contentInset
-        $0.contentOffset = .zero
-      }
 
       activityIndicator.snp.remakeConstraints {
         $0.center.equalToSuperview()
@@ -553,17 +565,9 @@ class PlaylistListViewController: UIViewController {
 
 extension PlaylistListViewController {
   func updateTableBackgroundView() {
-    if PlaylistManager.shared.numberOfAssets > 0 {
+    if PlaylistManager.shared.numberOfAssets > 0 || loadingState != .fullyLoaded {
       tableView.backgroundView = nil
       tableView.separatorStyle = .singleLine
-      
-      if !playerView.isFullscreen {
-        if UIDevice.current.orientation.isLandscape && UIDevice.isPhone {
-          navigationController?.setToolbarHidden(true, animated: true)
-        } else {
-          navigationController?.setToolbarHidden(false, animated: true)
-        }
-      }
     } else {
       let messageLabel = UILabel(frame: view.bounds).then {
         $0.text = Strings.PlayList.noItemLabelTitle
@@ -603,7 +607,7 @@ extension PlaylistListViewController {
 
     let selectedCell = tableView.cellForRow(at: indexPath) as? PlaylistCell
     playerView.setVideoInfo(videoDomain: item.pageSrc, videoTitle: item.pageTitle)
-    PlaylistMediaStreamer.setNowPlayingMediaArtwork(image: selectedCell?.thumbnailView.image)
+    PlaylistMediaStreamer.setNowPlayingMediaArtwork(image: selectedCell?.iconView.image)
     completion?(item)
   }
 
@@ -613,6 +617,7 @@ extension PlaylistListViewController {
       selectedCell?.detailLabel.text = Strings.PlayList.expiredLabelTitle
     }
 
+    playerView.setControlsEnabled(!isExpired)
     activityIndicator.stopAnimating()
   }
 }
@@ -740,7 +745,7 @@ extension PlaylistListViewController {
       }
 
     case .downloaded:
-      if let itemSize = PlaylistManager.shared.sizeOfDownloadedItem(for: item.pageSrc) {
+      if let itemSize = PlaylistManager.shared.sizeOfDownloadedItem(for: item.tagId) {
         getAssetDurationFormatted(item: item) { [weak cell] in
           cell?.detailLabel.text = "\($0) - \(itemSize)"
         }
@@ -827,37 +832,17 @@ extension PlaylistListViewController {
   }
 
   func controllerDidChange(_ anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-
     if tableView.hasActiveDrag || tableView.hasActiveDrop { return }
-
-    switch type {
-    case .insert:
-      guard let newIndexPath = newIndexPath else { break }
-      tableView.insertRows(at: [newIndexPath], with: .fade)
-    case .delete:
-      guard let indexPath = indexPath else { break }
-      tableView.deleteRows(at: [indexPath], with: .fade)
-    case .update:
-      guard let indexPath = indexPath else { break }
-      tableView.reloadRows(at: [indexPath], with: .fade)
-    case .move:
-      guard let indexPath = indexPath,
-        let newIndexPath = newIndexPath
-      else { break }
-      tableView.deleteRows(at: [indexPath], with: .fade)
-      tableView.insertRows(at: [newIndexPath], with: .fade)
-    default:
-      break
-    }
+    tableView.reloadData()
   }
 
   func controllerDidChangeContent() {
     if tableView.hasActiveDrag || tableView.hasActiveDrop { return }
-    tableView.endUpdates()
+    tableView.reloadData()
   }
 
   func controllerWillChangeContent() {
     if tableView.hasActiveDrag || tableView.hasActiveDrop { return }
-    tableView.beginUpdates()
+    tableView.reloadData()
   }
 }

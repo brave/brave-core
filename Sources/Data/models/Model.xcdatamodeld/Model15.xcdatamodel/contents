@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21G72" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="BlockedResource" representedClassName="Data.BlockedResource" syncable="YES">
         <attribute name="domain" optional="YES" attributeType="String"/>
         <attribute name="faviconUrl" optional="YES" attributeType="String"/>
@@ -133,8 +133,13 @@
         <relationship name="domain" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Domain" inverseName="historyItems" inverseEntity="Domain"/>
     </entity>
     <entity name="PlaylistFolder" representedClassName="Data.PlaylistFolder" syncable="YES">
+        <attribute name="creatorLink" optional="YES" attributeType="String"/>
+        <attribute name="creatorName" optional="YES" attributeType="String"/>
         <attribute name="dateAdded" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="order" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="sharedFolderETag" optional="YES" attributeType="String"/>
+        <attribute name="sharedFolderId" optional="YES" attributeType="String"/>
+        <attribute name="sharedFolderUrl" optional="YES" attributeType="String"/>
         <attribute name="title" attributeType="String"/>
         <attribute name="uuid" attributeType="String"/>
         <relationship name="playlistItems" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PlaylistItem" inverseName="playlistFolder" inverseEntity="PlaylistItem"/>
@@ -149,6 +154,7 @@
         <attribute name="order" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="pageSrc" attributeType="String"/>
         <attribute name="pageTitle" optional="YES" attributeType="String"/>
+        <attribute name="uuid" optional="YES" attributeType="String"/>
         <relationship name="playlistFolder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PlaylistFolder" inverseName="playlistItems" inverseEntity="PlaylistFolder"/>
     </entity>
     <entity name="RecentSearch" representedClassName="Data.RecentSearch" syncable="YES">
@@ -191,8 +197,8 @@
         <element name="Favicon" positionX="439" positionY="-414" width="128" height="104"/>
         <element name="FeedSourceOverride" positionX="-530.2741088867188" positionY="-324.5160522460938" width="128" height="59"/>
         <element name="History" positionX="493" positionY="-150" width="128" height="119"/>
-        <element name="PlaylistFolder" positionX="-207.20556640625" positionY="-430.9707641601562" width="128" height="104"/>
-        <element name="PlaylistItem" positionX="-146.2350463867188" positionY="-301.473388671875" width="128" height="179"/>
+        <element name="PlaylistFolder" positionX="-207.20556640625" positionY="-430.9707641601562" width="128" height="179"/>
+        <element name="PlaylistItem" positionX="-146.2350463867188" positionY="-301.473388671875" width="128" height="194"/>
         <element name="RecentSearch" positionX="-573.386474609375" positionY="-432.0953826904297" width="128" height="89"/>
         <element name="RSSFeedSource" positionX="-413.9057006835938" positionY="-436.2492065429688" width="128" height="59"/>
         <element name="TabMO" positionX="-488" positionY="-229" width="128" height="224"/>

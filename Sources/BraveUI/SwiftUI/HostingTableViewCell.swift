@@ -15,7 +15,7 @@ import SwiftUI
 /// is restricted to simply displaying data. Any actions should be handled by the controller handling
 /// the `UITableView`. Anything that may adjust the size of the cell from within the `View` will not
 /// adjust the containing `HostingTableViewCell`.
-public class HostingTableViewCell<Content: View>: UITableViewCell {
+open class HostingTableViewCell<Content: View>: UITableViewCell {
   public let hostingController = UIHostingController<Content?>(rootView: nil)
 
   public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

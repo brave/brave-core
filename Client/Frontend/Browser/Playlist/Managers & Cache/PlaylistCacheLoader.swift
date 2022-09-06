@@ -378,8 +378,7 @@ class PlaylistWebLoader: UIView {
   private weak var certStore: CertStore?
   private var handler: (PlaylistInfo?) -> Void
 
-  init(certStore: CertStore?, handler: @escaping (PlaylistInfo?) -> Void) {
-    self.certStore = certStore
+  init(handler: @escaping (PlaylistInfo?) -> Void) {
     self.handler = handler
     super.init(frame: .zero)
 
@@ -392,18 +391,31 @@ class PlaylistWebLoader: UIView {
     webView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
+  }
 
-    // TODO: REFACTOR to support multiple windows better
-    if let browserController = webView.currentScene?.browserViewController {
-      let KVOs: [KVOConstants] = [
-        .estimatedProgress, .loading, .canGoBack,
-        .canGoForward, .URL, .title,
-        .hasOnlySecureContent, .serverTrust,
-      ]
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 
-      browserController.tab(tab, didCreateWebView: webView)
-      KVOs.forEach { webView.removeObserver(browserController, forKeyPath: $0.rawValue) }
+  deinit {
+    self.removeFromSuperview()
+  }
+
+  func load(url: URL) {
+    guard let webView = tab.webView,
+          let browserViewController = self.currentScene?.browserViewController else {
+      return
     }
+    
+    self.certStore = browserViewController.profile.certStore
+    let KVOs: [KVOConstants] = [
+      .estimatedProgress, .loading, .canGoBack,
+      .canGoForward, .URL, .title,
+      .hasOnlySecureContent, .serverTrust,
+    ]
+
+    browserViewController.tab(tab, didCreateWebView: webView)
+    KVOs.forEach { webView.removeObserver(browserViewController, forKeyPath: $0.rawValue) }
 
     // When creating a tab, TabManager automatically adds a uiDelegate
     // This webView is invisible and we don't want any UI being handled.
@@ -422,19 +434,8 @@ class PlaylistWebLoader: UIView {
         $0.addUserScript(script)
       }
     }
-  }
-
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
-  deinit {
-    self.removeFromSuperview()
-  }
-
-  func load(url: URL) {
-    guard let webView = tab.webView else { return }
-    webView.frame = self.window?.bounds ?? .zero
+    
+    webView.frame = superview?.bounds ?? self.bounds
     webView.load(URLRequest(url: url, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 60.0))
   }
 

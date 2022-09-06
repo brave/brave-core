@@ -59,6 +59,12 @@ class VideoView: UIView, VideoTrackerBarDelegate {
     $0.isUserInteractionEnabled = true
     $0.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.4024561216)
   }
+  
+  private let staticImageView = UIImageView().then {
+    $0.contentMode = .scaleAspectFit
+    $0.isUserInteractionEnabled = true
+    $0.backgroundColor = .black
+  }
 
   let infoView = VideoPlayerInfoBar().then {
     $0.layer.cornerRadius = 18.0
@@ -122,6 +128,7 @@ class VideoView: UIView, VideoTrackerBarDelegate {
     addSubview(overlayView)
     addSubview(infoView)
     addSubview(controlsView)
+    addSubview(staticImageView)
 
     particleView.snp.makeConstraints {
       $0.edges.equalToSuperview()
@@ -192,6 +199,7 @@ class VideoView: UIView, VideoTrackerBarDelegate {
     super.layoutSubviews()
 
     playerLayer?.frame = self.bounds
+    staticImageView.layer.frame = self.bounds
   }
 
   @objc
@@ -550,7 +558,7 @@ class VideoView: UIView, VideoTrackerBarDelegate {
       withDuration: 1.0, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 1.0, options: [.curveEaseInOut, .allowUserInteraction],
       animations: {
         self.subviews.forEach({
-          if $0 == self.particleView {
+          if $0 == self.particleView || $0 == self.staticImageView {
             return
           }
           
@@ -563,6 +571,13 @@ class VideoView: UIView, VideoTrackerBarDelegate {
           }
         })
       })
+  }
+  
+  func setStaticImage(image: UIImage?) {
+    staticImageView.image = image
+    staticImageView.isHidden = image == nil
+    staticImageView.backgroundColor = .black
+    staticImageView.contentMode = .scaleAspectFit
   }
 
   func setVideoInfo(videoDomain: String, videoTitle: String?) {
@@ -632,6 +647,7 @@ class VideoView: UIView, VideoTrackerBarDelegate {
     playerLayer = player.attachLayer() as? AVPlayerLayer
     if let playerLayer = playerLayer {
       layer.insertSublayer(playerLayer, at: 0)
+      layer.insertSublayer(staticImageView.layer, at: 1)
       
       if let player = playerLayer.player {
         playerStatusObserver = player.observe(
@@ -654,7 +670,8 @@ class VideoView: UIView, VideoTrackerBarDelegate {
 
   func detachLayer() {
     playerStatusObserver = nil
-    
+
+    staticImageView.layer.removeFromSuperlayer()
     playerLayer?.removeFromSuperlayer()
     playerLayer?.player = nil
   }

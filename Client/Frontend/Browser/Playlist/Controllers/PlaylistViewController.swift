@@ -26,14 +26,16 @@ protocol PlaylistViewControllerDelegate: AnyObject {
   func onSidePanelStateChanged()
   func onFullscreen()
   func onExitFullscreen()
+  func showStaticImage(image: UIImage?)
   func playItem(item: PlaylistInfo, completion: ((PlaylistMediaStreamer.PlaybackError) -> Void)?)
   func pausePlaying()
   func stopPlaying()
-  func deleteItem(item: PlaylistInfo, at index: Int)
+  func deleteItem(itemId: String, at index: Int)
   func updateLastPlayedItem(item: PlaylistInfo)
   func displayLoadingResourceError()
   func displayExpiredResourceError(item: PlaylistInfo)
   func openURLInNewTab(_ url: URL?, isPrivate: Bool, isPrivileged: Bool)
+  func openPlaylistSettings()
 
   var isPlaying: Bool { get }
   var currentPlaylistItem: AVPlayerItem? { get }
@@ -61,9 +63,12 @@ class PlaylistViewController: UIViewController {
   private var assetLoadingStateObservers = Set<AnyCancellable>()
 
   private var openInNewTab: ((_ url: URL?, _ isPrivate: Bool, _ isPrivileged: Bool) -> Void)?
+  private var openPlaylistSettingsMenu: (() -> Void)?
+  private var folderSharingUrl: String?
 
   init(
     openInNewTab: ((URL?, Bool, Bool) -> Void)?,
+    openPlaylistSettingsMenu: (() -> Void)?,
     profile: Profile?,
     mediaPlayer: MediaPlayer,
     initialItem: PlaylistInfo?,
@@ -71,10 +76,10 @@ class PlaylistViewController: UIViewController {
   ) {
 
     self.openInNewTab = openInNewTab
+    self.openPlaylistSettingsMenu = openPlaylistSettingsMenu
     self.player = mediaPlayer
-    self.mediaStreamer = PlaylistMediaStreamer(
-      playerView: playerView,
-      certStore: profile?.certStore)
+    self.mediaStreamer = PlaylistMediaStreamer(playerView: playerView)
+    self.folderSharingUrl = nil
     super.init(nibName: nil, bundle: nil)
 
     listController.initialItem = initialItem
@@ -151,12 +156,22 @@ class PlaylistViewController: UIViewController {
       $0.maximumPrimaryColumnWidth = 400
       $0.minimumPrimaryColumnWidth = 400
     }
-
-    if let initialItem = listController.initialItem,
-      let item = PlaylistItem.getItem(pageSrc: initialItem.pageSrc) {
+    
+    if let folderSharingUrl = folderSharingUrl {
+      if let navigationController = folderController.navigationController {
+        navigationController.popToRootViewController(animated: false)
+        splitController.preferredDisplayMode = .oneOverSecondary
+        listController.loadingState = .loading
+        PlaylistManager.shared.currentFolder = nil
+        navigationController.pushViewController(listController, animated: false)
+      }
+      
+      setFolderSharingUrl(folderSharingUrl)
+    } else if let initialItem = listController.initialItem,
+      let item = PlaylistItem.getItem(uuid: initialItem.tagId) {
       PlaylistManager.shared.currentFolder = item.playlistFolder
     } else if let url = Preferences.Playlist.lastPlayedItemUrl.value,
-      let item = PlaylistItem.getItem(pageSrc: url) {
+              let item = PlaylistItem.getItems(pageSrc: url).first {
       PlaylistManager.shared.currentFolder = item.playlistFolder
     } else {
       PlaylistManager.shared.currentFolder = nil
@@ -182,6 +197,72 @@ class PlaylistViewController: UIViewController {
 
     detailController.setVideoPlayer(playerView)
     updateLayoutForOrientationMode()
+  }
+  
+  func setFolderSharingUrl(_ folderSharingUrl: String) {
+    self.folderSharingUrl = folderSharingUrl
+    if presentingViewController != nil || navigationController != nil || parent != nil {
+      self.folderSharingUrl = nil
+
+      Task { @MainActor in
+        // Shared Folder already exists
+        if let existingFolder = PlaylistFolder.getSharedFolder(sharedFolderUrl: folderSharingUrl) {
+          PlaylistManager.shared.currentFolder = existingFolder
+          self.listController.loadingState = .fullyLoaded
+          return
+        }
+        
+        // Shared Folder doesn't exist
+        do {
+          self.playerView.setStaticImage(image: UIImage())
+          let model = try await PlaylistSharedFolderNetwork.fetchPlaylist(folderUrl: folderSharingUrl)
+          let folder = await PlaylistSharedFolderNetwork.createInMemoryStorage(for: model)
+          PlaylistManager.shared.currentFolder = folder
+          self.listController.loadingState = .partial
+          
+          if let folderImageUrl = model.folderImage {
+            Task { @MainActor in
+              let authManager = BasicAuthCredentialsManager(for: [folderImageUrl.absoluteString])
+              let session = URLSession(configuration: .ephemeral, delegate: authManager, delegateQueue: .main)
+              defer { session.finishTasksAndInvalidate() }
+              
+              let (data, response) = try await NetworkManager(session: session).dataRequest(with: folderImageUrl)
+              if let response = response as? HTTPURLResponse, response.statusCode != 200 {
+                return
+              }
+              
+              if let image = UIImage(data: data, scale: UIScreen.main.scale) {
+                self.playerView.setStaticImage(image: image)
+              }
+            }
+          }
+          
+          Task { @MainActor in
+            let items = await PlaylistSharedFolderNetwork.fetchMediaItemInfo(item: model, viewForInvisibleWebView: self.view)
+            folder.playlistItems?.forEach({ playlistItem in
+              if let item = items.first(where: { $0.tagId == playlistItem.uuid }) {
+                playlistItem.name = item.name
+                playlistItem.pageTitle = item.pageTitle
+                playlistItem.pageSrc = item.pageSrc
+                playlistItem.duration = item.duration
+                playlistItem.mimeType = item.mimeType
+                playlistItem.mediaSrc = item.src
+                playlistItem.uuid = item.tagId
+                playlistItem.order = item.order
+              }
+            })
+            
+            self.listController.loadingState = .fullyLoaded
+          }
+        } catch {
+          if let error = error as? PlaylistSharedFolderNetwork.Status {
+            log.error(error)
+          } else {
+            log.error("Failed Fetching Playlist Shared Folder: \(error)")
+          }
+        }
+      }
+    }
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -243,7 +324,7 @@ class PlaylistViewController: UIViewController {
       splitController.preferredDisplayMode = .secondaryOnly
     } else {
       if UIDevice.current.orientation.isLandscape {
-        splitController.preferredDisplayMode = .secondaryOnly
+        splitController.preferredDisplayMode = PlaylistManager.shared.currentFolder?.isPersistent == true ? .oneOverSecondary : .secondaryOnly
       } else {
         splitController.preferredDisplayMode = .oneOverSecondary
       }
@@ -507,6 +588,10 @@ extension PlaylistViewController: PlaylistViewControllerDelegate {
       }
     }
   }
+  
+  func showStaticImage(image: UIImage?) {
+    playerView.setStaticImage(image: image)
+  }
 
   func pausePlaying() {
     playerView.pause()
@@ -525,8 +610,8 @@ extension PlaylistViewController: PlaylistViewControllerDelegate {
     assetStateObservers.removeAll()
   }
 
-  func deleteItem(item: PlaylistInfo, at index: Int) {
-    PlaylistManager.shared.delete(item: item)
+  func deleteItem(itemId: String, at index: Int) {
+    PlaylistManager.shared.delete(itemId: itemId)
 
     if PlaylistCarplayManager.shared.currentlyPlayingItemIndex == index || PlaylistManager.shared.numberOfAssets == 0 {
       stopPlaying()
@@ -564,6 +649,15 @@ extension PlaylistViewController: PlaylistViewControllerDelegate {
 
   func openURLInNewTab(_ url: URL?, isPrivate: Bool, isPrivileged: Bool) {
     openInNewTab?(url, isPrivate, isPrivileged)
+  }
+  
+  func openPlaylistSettings() {
+    let openMenu = openPlaylistSettingsMenu
+    self.dismiss(animated: false) {
+      DispatchQueue.main.async {
+        openMenu?()
+      }
+    }
   }
 
   var currentPlaylistItem: AVPlayerItem? {
@@ -886,9 +980,9 @@ extension PlaylistViewController: VideoViewDelegate {
     }
 
     // If the item is cached, load it from the cache and play it.
-    let cacheState = PlaylistManager.shared.state(for: item.pageSrc)
+    let cacheState = PlaylistManager.shared.state(for: item.tagId)
     if cacheState != .invalid {
-      if let index = PlaylistManager.shared.index(of: item.pageSrc),
+      if let index = PlaylistManager.shared.index(of: item.tagId),
         let asset = PlaylistManager.shared.assetAtIndex(index) {
         load(playerView, asset: asset, autoPlayEnabled: listController.autoPlayEnabled)
           .handleEvents(receiveCancel: {
@@ -961,7 +1055,7 @@ extension PlaylistViewController: VideoViewDelegate {
           }
 
           // Item can be streamed, so let's retrieve its URL from our DB
-          guard let index = PlaylistManager.shared.index(of: item.pageSrc),
+          guard let index = PlaylistManager.shared.index(of: item.tagId),
             let item = PlaylistManager.shared.itemAtIndex(index)
           else {
             PlaylistMediaStreamer.clearNowPlayingInfo()
@@ -1039,5 +1133,17 @@ extension PlaylistViewController: VideoViewDelegate {
     // tracks may not always be available and the particle effect will show even on videos..
     // It's best to assume this type of media is a video stream.
     return true
+  }
+}
+
+extension PlaylistFolder {
+  var isPersistent: Bool {
+    managedObjectContext?.persistentStoreCoordinator?.persistentStores.first(where: {
+      if #available(iOS 15.0, *) {
+        return $0.type == NSPersistentStore.StoreType.inMemory.rawValue
+      } else {
+        return $0.type == "InMemory"
+      }
+    }) == nil
   }
 }

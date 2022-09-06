@@ -12,7 +12,7 @@ import UIKit
 
 private let log = Logger.browserLogger
 
-extension BrowserViewController: PlaylistHelperDelegate {
+extension BrowserViewController: PlaylistHelperDelegate, PlaylistFolderSharingHelperDelegate {
 
   private func createPlaylistPopover(tab: Tab?, state: PlaylistPopoverState) -> PopoverController {
     return PopoverController(
@@ -65,7 +65,7 @@ extension BrowserViewController: PlaylistHelperDelegate {
           self.dismiss(animated: true)
 
           DispatchQueue.main.async {
-            if PlaylistManager.shared.delete(item: item) {
+            if PlaylistManager.shared.delete(itemId: item.tagId) {
               self.updatePlaylistURLBar(tab: tab, state: .newItem, item: item)
             }
           }
@@ -306,16 +306,25 @@ extension BrowserViewController: PlaylistHelperDelegate {
     }
   }
 
-  func openPlaylist(tab: Tab?, item: PlaylistInfo?, playbackOffset: Double) {
-    let playlistController = PlaylistCarplayManager.shared.getPlaylistController(tab: tab, initialItem: item, initialItemPlaybackOffset: playbackOffset)
+  func openPlaylist(tab: Tab?, item: PlaylistInfo?, playbackOffset: Double, folderSharingPageUrl: String? = nil) {
+    let playlistController = PlaylistCarplayManager.shared.getPlaylistController(tab: tab,
+                                                                                 initialItem: item,
+                                                                                 initialItemPlaybackOffset: playbackOffset)
     playlistController.modalPresentationStyle = .fullScreen
+    if let folderSharingPageUrl = folderSharingPageUrl {
+      playlistController.setFolderSharingUrl(folderSharingPageUrl)
+    }
 
     /// Donate Open Playlist Activity for suggestions
     let openPlaylist = ActivityShortcutManager.shared.createShortcutActivity(type: .openPlayList)
     self.userActivity = openPlaylist
     openPlaylist.becomeCurrent()
 
-    present(playlistController, animated: true)
+    present(playlistController, animated: true) {
+      if let folderSharingPageUrl = folderSharingPageUrl {
+        playlistController.setFolderSharingUrl(folderSharingPageUrl)
+      }
+    }
   }
 
   func addToPlayListActivity(info: PlaylistInfo?, itemDetected: Bool) {
@@ -385,6 +394,37 @@ extension BrowserViewController: PlaylistHelperDelegate {
           item: item)
         completion?(true)
       }
+    }
+  }
+  
+  // MARK: - PlaylistFolderSharingHelperDelegate
+  func openPlaylistSharingFolder(with pageUrl: String) {
+    openPlaylist(tab: nil, item: nil, playbackOffset: 0.0, folderSharingPageUrl: pageUrl)
+  }
+}
+
+extension BrowserViewController {
+  private static var playlistSyncFoldersTimer: Timer?
+  
+  func openPlaylistSettingsMenu() {
+    let playlistSettings = PlaylistSettingsViewController()
+    let navigationController = UINavigationController(rootViewController: playlistSettings)
+    self.present(navigationController, animated: true)
+  }
+  
+  func syncPlaylistFolders() {
+    if Preferences.Playlist.syncSharedFoldersAutomatically.value {
+      BrowserViewController.playlistSyncFoldersTimer?.invalidate()
+      
+      let lastSyncDate = Preferences.Playlist.lastPlaylistFoldersSyncTime.value ?? Date()
+      
+      BrowserViewController.playlistSyncFoldersTimer = Timer(fire: lastSyncDate, interval: 4.hours, repeats: true, block: { _ in
+        Preferences.Playlist.lastPlaylistFoldersSyncTime.value = Date()
+        
+        Task {
+          try await PlaylistManager.syncSharedFolders()
+        }
+      })
     }
   }
 }

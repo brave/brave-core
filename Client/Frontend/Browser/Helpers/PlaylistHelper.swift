@@ -76,6 +76,7 @@ class PlaylistHelper: NSObject, TabContentScript {
 
   func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
     defer { replyHandler(nil, nil) }
+    
     PlaylistHelper.processPlaylistInfo(
       helper: self,
       item: PlaylistInfo.from(message: message))
@@ -110,7 +111,7 @@ class PlaylistHelper: NSObject, TabContentScript {
             return
           }
 
-          if PlaylistItem.itemExists(item) {
+          if PlaylistItem.itemExists(uuid: item.tagId) || PlaylistItem.itemExists(pageSrc: item.pageSrc) {
             // Item already exists, so just update the database with new token or URL.
             helper.updateItem(item, detected: item.detected)
           } else if item.detected {

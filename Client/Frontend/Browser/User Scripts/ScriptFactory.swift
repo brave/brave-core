@@ -108,6 +108,13 @@ class ScriptFactory {
         source = source
           .replacingOccurrences(of: "$<brave-talk-helper>", with: messageToken, options: .literal)
           .replacingOccurrences(of: "$<security_token>", with: securityToken)
+        
+      case .bravePlaylistFolderSharingHelper:
+        let securityToken = UserScriptManager.securityTokenString
+        
+        source = source
+          .replacingOccurrences(of: "$<handler>", with: "playlistFolderSharingHelper_\(UserScriptManager.messageHandlerTokenString)", options: .literal)
+          .replacingOccurrences(of: "$<security_token>", with: securityToken, options: .literal)
       }
     }
     
