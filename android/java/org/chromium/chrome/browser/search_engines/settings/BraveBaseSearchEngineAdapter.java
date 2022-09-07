@@ -12,13 +12,9 @@ import android.widget.BaseAdapter;
 
 import androidx.annotation.StringRes;
 
-import org.chromium.base.BraveReflectionUtil;
-import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter;
 import org.chromium.components.search_engines.TemplateUrl;
-import org.chromium.components.search_engines.TemplateUrlService;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -85,60 +81,5 @@ public class BraveBaseSearchEngineAdapter extends BaseAdapter {
         } else {
             return SearchEngineAdapter.TemplateUrlSourceType.RECENT;
         }
-    }
-
-    public boolean didSearchEnginesChange(List<TemplateUrl> templateUrls) {
-        boolean chromiumDidSearchEnginesChange =
-                (boolean) BraveReflectionUtil.InvokeMethod(SearchEngineAdapter.class, this,
-                        "didSearchEnginesChange", java.util.List.class, templateUrls);
-
-        if (chromiumDidSearchEnginesChange) {
-            return true;
-        }
-
-        // The original SearchEngineAdapter.didSearchEnginesChange method does
-        // not give true when the set of engines wasn't
-        // changed, but was changed the selected default search engine.
-        // This happens because Chromium does not sync the DSE.
-        // The code below is in fact part of SearchEngineAdapter.refreshData
-        // which detects new mSelectedSearchEnginePosition.
-        // We use it to detect the change of the selected DSE.
-
-        List<TemplateUrl> mPrepopulatedSearchEngines =
-                (List<TemplateUrl>) BraveReflectionUtil.getField(
-                        SearchEngineAdapter.class, "mPrepopulatedSearchEngines", this);
-        List<TemplateUrl> mRecentSearchEngines = (List<TemplateUrl>) BraveReflectionUtil.getField(
-                SearchEngineAdapter.class, "mRecentSearchEngines", this);
-        int mSelectedSearchEnginePosition = (int) BraveReflectionUtil.getField(
-                SearchEngineAdapter.class, "mSelectedSearchEnginePosition", this);
-
-        if (mSelectedSearchEnginePosition == -1) {
-            return false;
-        }
-
-        TemplateUrlService templateUrlService = TemplateUrlServiceFactory.get();
-        assert templateUrlService.isLoaded();
-        TemplateUrl defaultSearchEngineTemplateUrl =
-                templateUrlService.getDefaultSearchEngineTemplateUrl();
-
-        // Convert the TemplateUrl index into an index of mSearchEngines.
-        int selectedSearchEnginePosition = -1;
-        for (int i = 0; i < mPrepopulatedSearchEngines.size(); ++i) {
-            if (mPrepopulatedSearchEngines.get(i).equals(defaultSearchEngineTemplateUrl)) {
-                selectedSearchEnginePosition = i;
-            }
-        }
-
-        for (int i = 0; i < mRecentSearchEngines.size(); ++i) {
-            if (mRecentSearchEngines.get(i).equals(defaultSearchEngineTemplateUrl)) {
-                // Add one to offset the title for the recent search engine list.
-                int chromiumStartIndexForRecentSearchEngines =
-                        (int) BraveReflectionUtil.InvokeMethod(SearchEngineAdapter.class, this,
-                                "computeStartIndexForRecentSearchEngines");
-                selectedSearchEnginePosition = i + chromiumStartIndexForRecentSearchEngines;
-            }
-        }
-
-        return selectedSearchEnginePosition != mSelectedSearchEnginePosition;
     }
 }
