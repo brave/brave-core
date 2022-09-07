@@ -48,45 +48,48 @@ const maybeInstallDepotTools = (options = config.defaultOptions) => {
   }
 }
 
-function buildGClientConfig() {
-  function replacer(key, value) {
-    return value;
-  }
+function toGClientConfigItem(name, value, pretty = true) {
+  // Convert value to json and replace "%True%" -> True, "%False%" -> False,
+  // "%None%" -> None.
+  const pythonLikeValue =
+      JSON.stringify(value, null, pretty ? 2 : 0).replace(/"%(.*?)%"/gm, '$1')
+  return `${name} = ${pythonLikeValue}\n`
+}
 
-  const solutions = [
+function buildDefaultGClientConfig() {
+  let out = toGClientConfigItem('solutions', [
     {
-      managed: "%False%",
-      name: "src",
+      managed: '%False%',
+      name: 'src',
       url: config.chromiumRepo,
       custom_deps: {
-        "src/third_party/WebKit/LayoutTests": "%None%",
-        "src/chrome_frame/tools/test/reference_build/chrome": "%None%",
-        "src/chrome_frame/tools/test/reference_build/chrome_win": "%None%",
-        "src/chrome/tools/test/reference_build/chrome": "%None%",
-        "src/chrome/tools/test/reference_build/chrome_linux": "%None%",
-        "src/chrome/tools/test/reference_build/chrome_mac": "%None%",
-        "src/chrome/tools/test/reference_build/chrome_win": "%None%"
+        'src/third_party/WebKit/LayoutTests': '%None%',
+        'src/chrome_frame/tools/test/reference_build/chrome': '%None%',
+        'src/chrome_frame/tools/test/reference_build/chrome_win': '%None%',
+        'src/chrome/tools/test/reference_build/chrome': '%None%',
+        'src/chrome/tools/test/reference_build/chrome_linux': '%None%',
+        'src/chrome/tools/test/reference_build/chrome_mac': '%None%',
+        'src/chrome/tools/test/reference_build/chrome_win': '%None%'
       },
       custom_vars: {
-        "checkout_pgo_profiles": config.isBraveReleaseBuild() ? "%True%" : "%False%"
+        'checkout_pgo_profiles': config.isBraveReleaseBuild() ? '%True%' :
+                                                                '%False%'
       }
     },
     {
-      managed: "%False%",
-      name: "src/brave",
-      // We do not use gclient to manage brave-core, so this should
-      // not actually get used.
+      managed: '%False%',
+      name: 'src/brave',
+      // We do not use gclient to manage brave-core, so this should not
+      // actually get used.
       url: 'https://github.com/brave/brave-core.git'
     }
-  ]
+  ])
 
-  let cache_dir = process.env.GIT_CACHE_PATH ? ('\ncache_dir = "' + process.env.GIT_CACHE_PATH + '"\n') : '\n'
-
-  let out = 'solutions = ' + JSON.stringify(solutions, replacer, 2)
-    .replace(/"%None%"/g, "None").replace(/"%False%"/g, "False").replace(/"%True%"/g, "True") + cache_dir
-
+  if (process.env.GIT_CACHE_PATH) {
+    out += toGClientConfigItem('cache_dir', process.env.GIT_CACHE_PATH)
+  }
   if (config.targetOS) {
-    out = out + "target_os = [ '" + config.targetOS + "' ]"
+    out += toGClientConfigItem('target_os', [config.targetOS], false)
   }
 
   fs.writeFileSync(config.defaultGClientFile, out)
