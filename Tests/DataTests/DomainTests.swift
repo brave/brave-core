@@ -199,4 +199,29 @@ class DomainTests: CoreDataTestCase {
     }
     XCTAssertFalse(raydiumDomain.walletPermissions(for: .sol, account: walletSolAccount))
   }
+  
+  func testSafeBrowsing() {
+    Preferences.Shields.blockPhishingAndMalware.reset()
+    DataController.shared = DataController()
+    DataController.shared.initializeOnce()
+    
+    let urls = [
+      URL(string: "http://brave.com")!,
+      URL(string: "https://brave.com")!,
+      URL(string: "https://www.brave.com")!,
+      URL(string: "https://example.com")!
+    ]
+    
+    for url in urls {
+      let domain = Domain.getOrCreate(forUrl: url, persistent: false)
+      XCTAssertTrue(domain.isShieldExpected(.SafeBrowsing, considerAllShieldsOption: true))
+    }
+    
+    Preferences.Shields.blockPhishingAndMalware.value = false
+    
+    for url in urls {
+      let domain = Domain.getOrCreate(forUrl: url, persistent: false)
+      XCTAssertFalse(domain.isShieldExpected(.SafeBrowsing, considerAllShieldsOption: true))
+    }
+  }
 }

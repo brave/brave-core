@@ -160,10 +160,6 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
   fileprivate var contentBlockListCompiled: Bool = false
   private var cancellables: Set<AnyCancellable> = []
 
-  // Web filters
-
-  let safeBrowsing: SafeBrowsing?
-
   let rewards: BraveRewards
   var ledgerObserver: LedgerObserver?
   let legacyWallet: BraveLedger?
@@ -216,15 +212,13 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
     diskImageStore: DiskImageStore?,
     braveCore: BraveCoreMain,
     migration: Migration?,
-    crashedLastSession: Bool,
-    safeBrowsingManager: SafeBrowsing? = SafeBrowsing()
+    crashedLastSession: Bool
   ) {
     self.profile = profile
     self.braveCore = braveCore
     self.bookmarkManager = BookmarkManager(bookmarksAPI: braveCore.bookmarksAPI)
     self.migration = migration
     self.crashedLastSession = crashedLastSession
-    self.safeBrowsing = safeBrowsingManager
 
     let configuration: BraveRewards.Configuration = .current()
 

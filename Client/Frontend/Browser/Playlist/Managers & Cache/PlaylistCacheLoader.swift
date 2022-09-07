@@ -322,8 +322,6 @@ public class PlaylistMimeTypeDetector {
 
 class PlaylistWebLoader: UIView {
   fileprivate static var pageLoadTimeout = 10.0
-
-  private let safeBrowsing = SafeBrowsing()
   private var pendingHTTPUpgrades = [String: URLRequest]()
   private var pendingRequests = [String: URLRequest]()
 
@@ -603,8 +601,13 @@ extension PlaylistWebLoader: WKNavigationDelegate {
       decisionHandler(.cancel, preferences)
       return
     }
-
-    webView.configuration.preferences.isFraudulentWebsiteWarningEnabled = SafeBrowsing.isSafeBrowsingEnabledForURL(url)
+    
+    // Ad-blocking checks
+    if let mainDocumentURL = navigationAction.request.mainDocumentURL {
+      let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
+      let domainForMainFrame = Domain.getOrCreate(forUrl: mainDocumentURL, persistent: !isPrivateBrowsing)
+      webView.configuration.preferences.isFraudulentWebsiteWarningEnabled = domainForMainFrame.isShieldExpected(.SafeBrowsing, considerAllShieldsOption: true)
+    }
 
     // Universal links do not work if the request originates from the app, manual handling is required.
     if let mainDocURL = navigationAction.request.mainDocumentURL,

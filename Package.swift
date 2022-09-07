@@ -182,7 +182,6 @@ let package = Package(
         .copy("WebFilters/ContentBlocker/Lists/block-trackers.json"),
         .copy("WebFilters/ContentBlocker/Lists/upgrade-http.json"),
         .copy("WebFilters/ShieldStats/Adblock/Resources/ABPFilterParserData.dat"),
-        .copy("WebFilters/SafeBrowsing/SafeBrowsingError.html"),
         .copy("WebFilters/ShieldStats/Httpse/httpse.leveldb.tgz"),
       ],
       plugins: ["CurrentBundleGenPlugin"]

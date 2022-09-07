@@ -117,7 +117,7 @@ public final class Domain: NSManagedObject, CRUD {
       }
     }()
 
-    let isAllShieldsOff = Bool(truncating: shield_allOff ?? NSNumber(value: 0))
+    let isAllShieldsOff = self.shield_allOff?.boolValue ?? false
     let isSpecificShieldOn = isShieldOn
     return considerAllShieldsOption ? !isAllShieldsOff && isSpecificShieldOn : isSpecificShieldOn
   }
