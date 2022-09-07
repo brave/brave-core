@@ -467,6 +467,16 @@ extension BrowserViewController: WKNavigationDelegate {
     // If none of our helpers are responsible for handling this response,
     // just let the webview handle it as normal.
     decisionHandler(.allow)
+    
+    guard let url = responseURL, let tab = tab else {
+      return
+    }
+    
+    // Record the navigation visit type for the URL after navigation actions
+    // this is done in decidePolicyFor to handle all the cases like redirects etc.
+    if !url.isReaderModeURL, !url.isFileURL, url.isWebPage(), !tab.isPrivate {
+      recordNavigationInTab(url, visitType: lastEnteredURLVisitType)
+    }
   }
 
   public func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
