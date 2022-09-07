@@ -4,13 +4,10 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
 import { clearClipboard } from '../../../../utils/copy-to-clipboard'
-import { WalletPageActions } from '../../../actions'
 
 // style
 import { RecoveryTextDiv, RecoveryTextInput } from './restore-from-recovery-phrase.style'
@@ -18,10 +15,9 @@ import { PhraseCardBody, PhraseCardBottomRow, PhraseCardTopRow } from '../onboar
 import { ToggleVisibilityButton, WalletLink } from '../../../../components/shared/style'
 
 interface Props {
-  onChange: (value: string) => void
+  onChange: (results: { value: string, isValid: boolean, phraseLength: number }) => void
   onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => void
   onToggleShowPhrase: (isShown: boolean) => void
-  setHasMnemonicError?: (hasError: boolean) => void
 }
 
 interface State {
@@ -52,7 +48,7 @@ function replaceCaret (el: HTMLElement) {
 
 // Forked from: https://github.com/lovasoa/react-contenteditable
 // Using a class component due to this issue: https://github.com/lovasoa/react-contenteditable/issues/161
-class _RecoveryInput extends React.Component<Props, State> {
+export class RecoveryInput extends React.Component<Props, State> {
   state: State = {
     isPhraseShown: false,
     value: ''
@@ -83,14 +79,35 @@ class _RecoveryInput extends React.Component<Props, State> {
     // a double-space before it is removed and macOS automatically replaces double-spaces with a period.
     const removePeriod = removedDoubleSpaces.replace(/['/.']/g, '')
 
+    // max length
+    // the editable-content div input value is handled differently than the password input value for some reason
+    const maxLength = this.state.isPhraseShown ? 24 : 25
+
     // This prevents an extra space at the end of a 24 word phrase.
-    const cleanedInput = removedDoubleSpaces.split(' ').length === 24
+    const needsCleaning = removedDoubleSpaces.split(' ').length === maxLength
+
+    const cleanedInput = needsCleaning
       ? removePeriod.trimEnd()
       : removePeriod
 
-    this.props.onChange(cleanedInput)
-    const isInvalid = cleanedInput.trim().split(/\s+/g).length < 12
-    this.props.setHasMnemonicError?.(isInvalid)
+    const wordsInPhraseValue = cleanedInput.trim().split(/\s+/g).length
+
+    // valid lengths: 12, 15, 18, 21, or 24
+    const isInvalid =
+      wordsInPhraseValue < 12 ||
+      wordsInPhraseValue > 12 && wordsInPhraseValue < 15 ||
+      wordsInPhraseValue > 15 && wordsInPhraseValue < 18 ||
+      wordsInPhraseValue > 18 && wordsInPhraseValue < 21 ||
+      wordsInPhraseValue > 21 && wordsInPhraseValue < 24
+
+    // update parent
+    this.props.onChange({
+      value: cleanedInput,
+      isValid: !isInvalid,
+      phraseLength: wordsInPhraseValue
+    })
+
+    // update local state
     this.setState({ value: cleanedInput })
     if (this.el.current) {
       this.el.current.innerText = cleanedInput
@@ -163,12 +180,3 @@ class _RecoveryInput extends React.Component<Props, State> {
     </>
   }
 }
-
-export const RecoveryInput = connect(
-  () => ({}), // state
-  (dispatch) => ({
-    ...bindActionCreators({
-      setHasMnemonicError: WalletPageActions.hasMnemonicError
-    }, dispatch)
-  })
-)(_RecoveryInput) // Component to connect to redux

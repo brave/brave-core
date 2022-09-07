@@ -139,14 +139,15 @@ provideStrings({
   // onboarding import wallet screen
   braveWalletImportPasswordError: 'Password is not correct',
   braveWalletMetaMaskPasswordInputPlaceholder: 'Type MetaMask password',
-  braveWalletImportFromMetaMaskSeedInstructions: 'Type your MetaMask 12-word recovery phrase.',
+  braveWalletImportFromMetaMaskSeedInstructions: 'Type your MetaMask 12-24 word recovery phrase.',
   braveWalletMetaMaskExtensionDetected: 'We detected the MetaMask extension in your browser',
   braveWalletMetaMaskExtensionImportDescription: 'Enter your MetaMask wallet password to easily import to Brave Wallet.',
-  braveWalletRestoreMyBraveWalletInstructions: 'Type your Brave Wallet 12-word recovery phrase.',
+  braveWalletRestoreMyBraveWalletInstructions: 'Type your Brave Wallet 12-24 word recovery phrase.',
+  braveWalletRecoveryPhraseLengthError: 'Recovery phrase must be 12, 15, 18, 21, or 24 words long',
 
   // Onboarding - Backup Wallet - Intro
   braveWalletOnboardingRecoveryPhraseBackupIntroTitle: 'Before you start backing up wallet',
-  braveWalletOnboardingRecoveryPhraseBackupIntroDescription: 'The 12-word recovery phrase is a private key you can use to regain access to your wallet in case you lose a connected device(s). Store it someplace safe, and in the exact order it appears below.',
+  braveWalletOnboardingRecoveryPhraseBackupIntroDescription: 'The 12-24 word recovery phrase is a private key you can use to regain access to your wallet in case you lose a connected device(s). Store it someplace safe, and in the exact order it appears below.',
   braveWalletRecoveryPhraseBackupWarningImportant: '$1Important:$2 Never share your recovery phrase. Anyone with this phrase can take your assets forever.',
 
   // Onboarding - Backup Wallet - Recovery Phrase Backup
