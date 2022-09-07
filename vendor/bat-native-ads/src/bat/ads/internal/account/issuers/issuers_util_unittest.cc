@@ -8,6 +8,7 @@
 #include "bat/ads/internal/account/issuers/issuers_info.h"
 #include "bat/ads/internal/account/issuers/issuers_unittest_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -23,6 +24,24 @@ class BatAdsIssuersUtilTest : public UnitTestBase {
 TEST_F(BatAdsIssuersUtilTest, HasIssuersChanged) {
   // Arrange
   BuildAndSetIssuers();
+
+  // Act
+  const IssuersInfo issuers =
+      BuildIssuers(3'600'000,
+                   {{"Nj2NZ6nJUsK5MJ9ga9tfyctxzpT+GlvENF2TRHU4kBg=", 0.0},
+                    {"TFQCiRJocOh0A8+qHQvdu3V/lDpGsZHJOnZzqny6rFg=", 0.0}},
+                   {{"PmXS59VTEVIPZckOqGdpjisDidUbhLGbhAhN5tmfhhs=", 0.1},
+                    {"Bgk5gT+b96iSr3nD5nuTM/yGQ5klrIe6VC6DDdM6sFs=", 0.0}});
+
+  const bool has_changed = HasIssuersChanged(issuers);
+
+  // Assert
+  EXPECT_TRUE(has_changed);
+}
+
+TEST_F(BatAdsIssuersUtilTest, HasIssuersChangedOnInitialFetch) {
+  // Arrange
+  AdsClientHelper::GetInstance()->ClearPref(prefs::kIssuers);
 
   // Act
   const IssuersInfo issuers =
