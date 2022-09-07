@@ -5,6 +5,7 @@
 package org.chromium.chrome.browser;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ToggleButton;
 
@@ -34,10 +35,19 @@ public class BraveRewardsSiteBannerActivity
     public static final String AMOUNTS_ARGS = "amounts_args";
     public static final String AMOUNT_EXTRA = "amount";
     public static final String BANNER_INFO_ARGS = "banner_info_args";
+    public static final String STATUS_ARGS = "status_args";
+    public static final String NAME_ARGS = "name_args";
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
-
     private int currentTabId_ = -1;
     private boolean mIsMonthlyContribution;
+    private final int TIP_TIMEOUT = 3000; // 3 seconds
+    private Handler tipTimerHandler = new Handler();
+    private BraveRewardsBannerInfo bannerInfo;
+    private double mAmount;
+    private boolean mIsMonthly;
+    public static final int TIP_ERROR = 1;
+    public static final int TIP_SUCCESS = 2;
+    public static final int TIP_PENDING = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +61,7 @@ public class BraveRewardsSiteBannerActivity
         currentTabId_ = IntentUtils.safeGetIntExtra(getIntent(), TAB_ID_EXTRA, -1);
         mIsMonthlyContribution =
                 IntentUtils.safeGetBooleanExtra(getIntent(), IS_MONTHLY_CONTRIBUTION, false);
- 
+        bannerInfo = null;
         if (savedInstanceState == null) {
             mBraveRewardsNativeWorker.GetPublisherBanner(
                     mBraveRewardsNativeWorker.GetPublisherId(currentTabId_));
@@ -63,7 +73,6 @@ public class BraveRewardsSiteBannerActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                BraveRewardsBannerInfo bannerInfo = null;
                 double[] amounts = null;
 
                 try {
@@ -94,15 +103,67 @@ public class BraveRewardsSiteBannerActivity
         });
     }
 
+    /*----------TIP CHECK start >> ---------------*/
     @Override
     public void onTipConfirmation(double amount, boolean isMonthly) {
+        mAmount = amount;
+        mIsMonthly = isMonthly;
+        enableTimeout(); // wait for 3 seconds
+    }
+
+    private void tipConfirmation(int status, double amount, boolean isMonthly) {
+        String publisherName = "";
+        if (bannerInfo != null) publisherName = bannerInfo.getName();
         BraveRewardsTipConfirmationFragment tipConfirmationFragment =
-                BraveRewardsTipConfirmationFragment.newInstance(amount, isMonthly);
+                BraveRewardsTipConfirmationFragment.newInstance(
+                        status, publisherName, amount, isMonthly);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.tippingPanelFragment, tipConfirmationFragment)
                 .commit();
     }
+
+    @Override
+    public void OnOneTimeTip(int resultCode) {
+        if (resultCode == BraveRewardsNativeWorker.LEDGER_ERROR) {
+            // tip error
+            tipConfirmation(TIP_ERROR, mAmount, mIsMonthly);
+        }
+    }
+
+    @Override
+    public void onReconcileComplete(int resultCode, int rewardsType, double amount) {
+        if (resultCode == BraveRewardsNativeWorker.LEDGER_OK) {
+            // tip success
+            tipConfirmation(TIP_SUCCESS, mAmount, mIsMonthly);
+        }
+    }
+
+    @Override
+    public void OnPendingContributionSaved(int resultCode) {
+        if (resultCode == BraveRewardsNativeWorker.LEDGER_OK) {
+            // tip pending
+            tipConfirmation(TIP_PENDING, mAmount, mIsMonthly);
+        }
+    }
+
+    private Runnable tipRunnable = new Runnable() {
+        @Override
+        public void run() {
+            // if called means success
+            tipConfirmation(TIP_SUCCESS, mAmount, mIsMonthly);
+        }
+    };
+
+    public void removeTimeout() {
+        tipTimerHandler.removeCallbacks(tipRunnable);
+    }
+
+    public void enableTimeout() {
+        tipTimerHandler.postDelayed(tipRunnable, TIP_TIMEOUT);
+    }
+
+    /*----------TIP CHECK End >> ---------------*/
 
     @Override
     public void onAmountChange(double batValue, double usdValue) {

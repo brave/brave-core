@@ -36,6 +36,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsBalance;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
+import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsSiteBannerActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
@@ -44,7 +45,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.Locale;
 
-public class BraveRewardsTippingPanelFragment extends Fragment {
+public class BraveRewardsTippingPanelFragment extends Fragment implements BraveRewardsObserver {
     private int currentTabId_;
     private boolean monthlyContribution;
 
@@ -101,8 +102,18 @@ public class BraveRewardsTippingPanelFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (null != mBraveRewardsNativeWorker) {
+            mBraveRewardsNativeWorker.RemoveObserver(this);
+        }
+    }
+
     private void init(View view) {
         mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
+        mBraveRewardsNativeWorker.AddObserver(this);
+
         sendDonationLayout = view.findViewById(R.id.send_donation_button);
         monthlyRadioButton = view.findViewById(R.id.monthly_radio_button);
         monthlyRadioButton.setChecked(monthlyContribution);
@@ -123,25 +134,28 @@ public class BraveRewardsTippingPanelFragment extends Fragment {
             }
         });
     }
-
+    double[] mTipChoices;
     private void initRadioButtons(View view) {
+        mTipChoices = mBraveRewardsNativeWorker.GetTipChoices();
+        double rate = mBraveRewardsNativeWorker.GetWalletRate();
+
         int recurrentAmount = (int) mBraveRewardsNativeWorker.GetPublisherRecurrentDonationAmount(
                 mBraveRewardsNativeWorker.GetPublisherId(currentTabId_));
 
         // bind tip amount custom radio buttons
         radio_tip_amount[0] = view.findViewById(R.id.bat_option1);
-        radio_tip_amount[0].setTextOff(BraveRewardsHelper.ONE_BAT_TEXT);
-        radio_tip_amount[0].setTextOn(BraveRewardsHelper.ONE_BAT_TEXT);
+        radio_tip_amount[0].setTextOff(mTipChoices[0] + " " + BraveRewardsHelper.BAT_TEXT);
+        radio_tip_amount[0].setTextOn(mTipChoices[0] + " " + BraveRewardsHelper.BAT_TEXT);
         radio_tip_amount[0].setChecked(false);
 
         radio_tip_amount[1] = view.findViewById(R.id.bat_option2);
-        radio_tip_amount[1].setTextOff(BraveRewardsHelper.FIVE_BAT_TEXT);
-        radio_tip_amount[1].setTextOn(BraveRewardsHelper.FIVE_BAT_TEXT);
+        radio_tip_amount[1].setTextOff(mTipChoices[1] + " " + BraveRewardsHelper.BAT_TEXT);
+        radio_tip_amount[1].setTextOn(mTipChoices[1] + " " + BraveRewardsHelper.BAT_TEXT);
         radio_tip_amount[1].setChecked(false);
 
         radio_tip_amount[2] = view.findViewById(R.id.bat_option3);
-        radio_tip_amount[2].setTextOff(BraveRewardsHelper.TEN_BAT_TEXT);
-        radio_tip_amount[2].setTextOn(BraveRewardsHelper.TEN_BAT_TEXT);
+        radio_tip_amount[2].setTextOff(mTipChoices[2] + " " + BraveRewardsHelper.BAT_TEXT);
+        radio_tip_amount[2].setTextOn(mTipChoices[2] + " " + BraveRewardsHelper.BAT_TEXT);
         radio_tip_amount[2].setChecked(false);
 
         switch (recurrentAmount) {
@@ -162,9 +176,9 @@ public class BraveRewardsTippingPanelFragment extends Fragment {
             tb.setOnClickListener(radio_clicker);
         }
 
-        double usdValue = mBraveRewardsNativeWorker.GetWalletRate();
-        double fiveBat = 5 * usdValue;
-        double tenBat = 10 * usdValue;
+        double usdValue = mTipChoices[0] * rate;
+        double fiveBat = mTipChoices[1] * rate;
+        double tenBat = mTipChoices[2] * rate;
         String oneBatRate = String.format(Locale.getDefault(), "%.2f", usdValue) + " USD";
         String fiveBatRate = String.format(Locale.getDefault(), "%.2f", fiveBat) + " USD";
         String tenBatRate = String.format(Locale.getDefault(), "%.2f", tenBat) + " USD";
@@ -198,11 +212,11 @@ public class BraveRewardsTippingPanelFragment extends Fragment {
             if (tb.isChecked()) {
                 int id = tb.getId();
                 if (id == R.id.bat_option1) {
-                    amount = 1;
+                    amount = mTipChoices[0];
                 } else if (id == R.id.bat_option2) {
-                    amount = 5;
+                    amount = mTipChoices[1];
                 } else if (id == R.id.bat_option3) {
-                    amount = 10;
+                    amount = mTipChoices[2];
                 }
 
                 break;
@@ -227,7 +241,6 @@ public class BraveRewardsTippingPanelFragment extends Fragment {
     }
 
     private void showCustomTipConfirmationFrament() {
-
         if (getParentFragmentManager().getBackStackEntryCount() != 0) {
             getParentFragmentManager().popBackStack();
         }
@@ -243,7 +256,6 @@ public class BraveRewardsTippingPanelFragment extends Fragment {
     }
 
     private void donateAndShowConfirmationScreen(double amount) {
-
         if (mTippingInProgress) {
             return;
         }

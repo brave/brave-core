@@ -45,7 +45,6 @@
         android:layout_marginTop="15dp"
         android:fontFamily="@font/poppins_regular"
         android:letterSpacing="0.03"
-        android:text="@string/your_one_time_tip_has_been_sent"
         android:textColor="#212529"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/amount_sent"

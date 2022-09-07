@@ -124,6 +124,15 @@ void BraveRewardsNativeWorker::OnReconcileComplete(
       static_cast<int>(result), static_cast<int>(type), amount);
 }
 
+void BraveRewardsNativeWorker::OnPendingContributionSaved(
+    brave_rewards::RewardsService* rewards_service,
+    const ledger::type::Result result) {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_OnPendingContributionSaved(
+      env, weak_java_brave_rewards_native_worker_.get(env),
+      static_cast<int>(result));
+}
+
 base::android::ScopedJavaLocalRef<jstring>
 BraveRewardsNativeWorker::GetPublisherURL(JNIEnv* env, uint64_t tabId) {
   base::android::ScopedJavaLocalRef<jstring> res =
@@ -327,6 +336,11 @@ void BraveRewardsNativeWorker::OnGetAdsAccountStatement(
       statement->earnings_last_month);
 }
 
+base::android::ScopedJavaLocalRef<jdoubleArray>
+BraveRewardsNativeWorker::GetTipChoices(JNIEnv* env) {
+  return base::android::ToJavaDoubleArray(env, parameters_.tip_choices);
+}
+
 double BraveRewardsNativeWorker::GetWalletRate(JNIEnv* env) {
   return parameters_.rate;
 }
@@ -390,12 +404,21 @@ void BraveRewardsNativeWorker::Donate(
   if (brave_rewards_service_) {
     brave_rewards_service_->OnTip(
         base::android::ConvertJavaStringToUTF8(env, publisher_key), amount,
-        recurring, base::DoNothing());
-    if (!recurring) {
-      Java_BraveRewardsNativeWorker_OnOneTimeTip(env,
-        weak_java_brave_rewards_native_worker_.get(env));
-    }
+        recurring,
+        base::BindOnce(&BraveRewardsNativeWorker::OnOneTimeTip,
+                       weak_factory_.GetWeakPtr()));
+    // if (!recurring) {
+    //   Java_BraveRewardsNativeWorker_OnOneTimeTip(env,
+    //     weak_java_brave_rewards_native_worker_.get(env));
+    // }
   }
+}
+
+void BraveRewardsNativeWorker::OnOneTimeTip(ledger::type::Result result) {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_OnOneTimeTip(
+      env, weak_java_brave_rewards_native_worker_.get(env),
+      static_cast<int>(result));
 }
 
 void BraveRewardsNativeWorker::GetAllNotifications(JNIEnv* env) {

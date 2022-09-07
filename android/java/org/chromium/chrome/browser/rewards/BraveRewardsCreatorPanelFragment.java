@@ -70,10 +70,10 @@ public class BraveRewardsCreatorPanelFragment extends Fragment
 
     private final String TWITTER = "twitter";
     private final String YOUTUBE = "youtube";
-    private final String TWITCH  = "twitch";
-    private final String GITHUB  = "github";
-    private final String REDDIT  = "reddit";
-    private final String VIMEO   = "vimeo";
+    private final String TWITCH = "twitch";
+    private final String GITHUB = "github";
+    private final String REDDIT = "reddit";
+    private final String VIMEO = "vimeo";
 
     public static BraveRewardsCreatorPanelFragment newInstance(
             int tabId, boolean isMonthlyContribution, BraveRewardsBannerInfo bannerInfo) {
@@ -140,7 +140,6 @@ public class BraveRewardsCreatorPanelFragment extends Fragment
             for (Map.Entry<String, String> element : links.entrySet()) {
                 String name = element.getKey();
                 String url = element.getValue();
-                Log.e("SujitSujit", "onCreateView jsonBannerInfo links k " + name + " v " + url);
                 showSocialLinkIcon(view, name, url);
             }
         }
@@ -265,8 +264,6 @@ public class BraveRewardsCreatorPanelFragment extends Fragment
 
     @Override
     public void onLargeIconReady(Bitmap icon) {
-        Log.e("SujitSujit", "onLargeIconReady");
-
         SetFavIcon(icon);
     }
 

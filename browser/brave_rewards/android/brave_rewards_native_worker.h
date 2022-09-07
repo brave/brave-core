@@ -54,6 +54,8 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
 
     void GetAdsAccountStatement(JNIEnv* env);
 
+    base::android::ScopedJavaLocalRef<jdoubleArray> GetTipChoices(JNIEnv* env);
+
     double GetWalletRate(JNIEnv* env);
 
     base::android::ScopedJavaLocalRef<jstring> GetPublisherURL(JNIEnv* env,
@@ -185,6 +187,10 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
         const ledger::type::RewardsType type,
         const ledger::type::ContributionProcessor processor) override;
 
+    void OnPendingContributionSaved(
+        brave_rewards::RewardsService* rewards_service,
+        const ledger::type::Result result) override;
+
     void OnNotificationAdded(
       brave_rewards::RewardsNotificationService* rewards_notification_service,
       const brave_rewards::RewardsNotificationService::RewardsNotification&
@@ -217,6 +223,8 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
                              ledger::type::ExternalWalletPtr wallet);
 
     void onPublisherBanner(ledger::type::PublisherBannerPtr wallet);
+
+    void OnOneTimeTip(ledger::type::Result result);
 
     void OnDisconnectWallet(
       brave_rewards::RewardsService* rewards_service,

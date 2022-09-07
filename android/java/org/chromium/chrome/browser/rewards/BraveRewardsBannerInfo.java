@@ -185,7 +185,7 @@ public class BraveRewardsBannerInfo implements Parcelable {
                 + "mPublisherKey='" + mPublisherKey + '\'' + ", mTitle='" + mTitle + '\''
                 + ", mName='" + mName + '\'' + ", mDescription='" + mDescription + '\''
                 + ", mBackground='" + mBackground + '\'' + ", mLogo='" + mLogo + '\''
-                + ", mProvider='" + mProvider + '\''
-                + ", mLinks=" + mLinks + ", mStatus=" + mStatus + '}';
+                + ", mProvider='" + mProvider + '\'' + ", mLinks=" + mLinks + ", mStatus=" + mStatus
+                + '}';
     }
 }

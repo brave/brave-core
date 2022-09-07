@@ -197,6 +197,12 @@ public class BraveRewardsNativeWorker {
         }
     }
 
+    public double[] GetTipChoices() {
+        synchronized (lock) {
+            return BraveRewardsNativeWorkerJni.get().GetTipChoices(mNativeBraveRewardsNativeWorker);
+        }
+    }
+
     public double GetWalletRate() {
         synchronized(lock) {
             return BraveRewardsNativeWorkerJni.get().getWalletRate(mNativeBraveRewardsNativeWorker);
@@ -648,9 +654,16 @@ public class BraveRewardsNativeWorker {
     }
 
     @CalledByNative
-    public void OnOneTimeTip() {
+    public void OnOneTimeTip(int result) {
         for (BraveRewardsObserver observer : mObservers) {
-            observer.OnOneTimeTip();
+            observer.OnOneTimeTip(result);
+        }
+    }
+
+    @CalledByNative
+    public void OnPendingContributionSaved(int result) {
+        for (BraveRewardsObserver observer : mObservers) {
+            observer.OnPendingContributionSaved(result);
         }
     }
 
@@ -682,6 +695,7 @@ public class BraveRewardsNativeWorker {
         String getWalletBalance(long nativeBraveRewardsNativeWorker);
         String getExternalWalletType(long nativeBraveRewardsNativeWorker);
         void GetPublisherBanner(long nativeBraveRewardsNativeWorker, String publisher_key);
+        double[] GetTipChoices(long nativeBraveRewardsNativeWorker);
         double getWalletRate(long nativeBraveRewardsNativeWorker);
         void getPublisherInfo(long nativeBraveRewardsNativeWorker, int tabId, String host);
         String getPublisherURL(long nativeBraveRewardsNativeWorker, int tabId);
