@@ -8,11 +8,14 @@ from lib.util import scoped_cwd, make_zip, tempdir
 
 
 def GetLZMAExec():
+    root_src_dir = os.path.abspath(os.path.join(
+        os.path.dirname(__file__), *[os.pardir] * 2))
     if sys.platform == 'win32':
-        root_src_dir = os.path.abspath(os.path.join(
-            os.path.dirname(__file__), *[os.pardir] * 2))
         lzma_exec = os.path.join(root_src_dir, "third_party",
-                                 "lzma_sdk", "bin", "7za.exe")
+                                 "lzma_sdk", "bin", "win64", "7za.exe")
+    elif sys.platform == 'darwin':
+        lzma_exec = os.path.join(root_src_dir, "..", "..", "third_party",
+                                 "lzma_sdk", "bin", "mac64", "7zz")
     else:
         lzma_exec = '7zr'  # Use system 7zr.
     return lzma_exec
