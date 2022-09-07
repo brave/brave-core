@@ -14,8 +14,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace user_data {
+namespace ads::user_data {
 
 namespace {
 
@@ -67,5 +66,4 @@ TEST_F(BatAdsConversionUserDataTest, DoNotGetForNonConversionConfirmationType) {
   // Assert
 }
 
-}  // namespace user_data
-}  // namespace ads
+}  // namespace ads::user_data

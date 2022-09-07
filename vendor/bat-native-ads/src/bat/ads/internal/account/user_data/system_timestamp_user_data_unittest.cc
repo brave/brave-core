@@ -12,8 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace user_data {
+namespace ads::user_data {
 
 class BatAdsSystemTimestampUserDataTest : public UnitTestBase {
  protected:
@@ -39,5 +38,4 @@ TEST_F(BatAdsSystemTimestampUserDataTest, GetSystemTimestamp) {
   EXPECT_EQ(expected_user_data, user_data);
 }
 
-}  // namespace user_data
-}  // namespace ads
+}  // namespace ads::user_data

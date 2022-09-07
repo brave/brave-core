@@ -11,8 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace ml {
+namespace ads::ml {
 
 class BatAdsHashedNGramsTest : public UnitTestBase {
  protected:
@@ -73,5 +72,4 @@ TEST_F(BatAdsHashedNGramsTest, CustomHashingTest) {
             static_cast<int>(hashed_vect_data->GetValuesForTesting().size()));
 }
 
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml

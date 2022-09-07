@@ -11,8 +11,7 @@
 #include "absl/types/optional.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 
-namespace ads {
-namespace privacy {
+namespace ads::privacy {
 
 absl::optional<UnblindedTokenInfo> MaybeGetUnblindedToken();
 
@@ -32,7 +31,6 @@ int UnblindedTokenCount();
 
 bool IsValid(const UnblindedTokenInfo& unblinded_token);
 
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_TOKENS_UNBLINDED_TOKENS_UNBLINDED_TOKEN_UTIL_H_

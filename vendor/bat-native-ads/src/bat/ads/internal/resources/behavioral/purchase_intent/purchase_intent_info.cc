@@ -10,8 +10,7 @@
 #include "bat/ads/internal/features/purchase_intent_features.h"
 #include "url/gurl.h"
 
-namespace ads {
-namespace targeting {
+namespace ads::targeting {
 
 PurchaseIntentInfo::PurchaseIntentInfo() = default;
 
@@ -145,5 +144,4 @@ std::unique_ptr<PurchaseIntentInfo> PurchaseIntentInfo::CreateFromValue(
   return purchase_intent;
 }
 
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting

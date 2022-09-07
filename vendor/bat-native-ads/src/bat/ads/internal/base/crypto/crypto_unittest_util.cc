@@ -7,8 +7,7 @@
 
 #include "tweetnacl.h"  // NOLINT
 
-namespace ads {
-namespace security {
+namespace ads::security {
 
 std::vector<uint8_t> Decrypt(const std::vector<uint8_t>& ciphertext,
                              const std::vector<uint8_t>& nonce,
@@ -26,5 +25,4 @@ std::vector<uint8_t> Decrypt(const std::vector<uint8_t>& ciphertext,
   return plaintext;
 }
 
-}  // namespace security
-}  // namespace ads
+}  // namespace ads::security

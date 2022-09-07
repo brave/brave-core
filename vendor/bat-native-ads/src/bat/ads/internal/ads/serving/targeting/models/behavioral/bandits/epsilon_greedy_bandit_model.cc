@@ -18,9 +18,7 @@
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arms_alias.h"
 #include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource_util.h"
 
-namespace ads {
-namespace targeting {
-namespace model {
+namespace ads::targeting::model {
 
 namespace {
 
@@ -187,6 +185,4 @@ SegmentList EpsilonGreedyBandit::GetSegments() const {
   return GetSegmentsForArms(GetEpsilonGreedyBanditArms());
 }
 
-}  // namespace model
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting::model

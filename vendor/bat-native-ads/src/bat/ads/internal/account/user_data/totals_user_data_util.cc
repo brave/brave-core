@@ -7,8 +7,7 @@
 
 #include <string>
 
-namespace ads {
-namespace user_data {
+namespace ads::user_data {
 
 AdTypeBucketMap BuildBuckets(
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens) {
@@ -25,5 +24,4 @@ AdTypeBucketMap BuildBuckets(
   return buckets;
 }
 
-}  // namespace user_data
-}  // namespace ads
+}  // namespace ads::user_data

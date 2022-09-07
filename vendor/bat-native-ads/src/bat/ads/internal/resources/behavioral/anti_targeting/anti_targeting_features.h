@@ -8,9 +8,7 @@
 
 #include "base/feature_list.h"  // IWYU pragma: keep
 
-namespace ads {
-namespace resource {
-namespace features {
+namespace ads::resource::features {
 
 extern const base::Feature kAntiTargeting;
 
@@ -18,8 +16,6 @@ bool IsAntiTargetingEnabled();
 
 int GetAntiTargetingResourceVersion();
 
-}  // namespace features
-}  // namespace resource
-}  // namespace ads
+}  // namespace ads::resource::features
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_BEHAVIORAL_ANTI_TARGETING_ANTI_TARGETING_FEATURES_H_

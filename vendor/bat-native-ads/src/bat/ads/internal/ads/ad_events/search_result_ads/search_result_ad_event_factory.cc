@@ -11,8 +11,7 @@
 #include "bat/ads/internal/ads/ad_events/search_result_ads/search_result_ad_event_viewed.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_info.h"
 
-namespace ads {
-namespace search_result_ads {
+namespace ads::search_result_ads {
 
 std::unique_ptr<AdEventInterface<SearchResultAdInfo>> AdEventFactory::Build(
     const mojom::SearchResultAdEventType event_type) {
@@ -33,5 +32,4 @@ std::unique_ptr<AdEventInterface<SearchResultAdInfo>> AdEventFactory::Build(
   }
 }
 
-}  // namespace search_result_ads
-}  // namespace ads
+}  // namespace ads::search_result_ads

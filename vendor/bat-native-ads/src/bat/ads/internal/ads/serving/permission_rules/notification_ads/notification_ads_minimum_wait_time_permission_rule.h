@@ -15,8 +15,7 @@ namespace base {
 class Time;
 }  // namespace base
 
-namespace ads {
-namespace notification_ads {
+namespace ads::notification_ads {
 
 class MinimumWaitTimePermissionRule final : public PermissionRuleInterface {
  public:
@@ -36,7 +35,6 @@ class MinimumWaitTimePermissionRule final : public PermissionRuleInterface {
   std::string last_message_;
 };
 
-}  // namespace notification_ads
-}  // namespace ads
+}  // namespace ads::notification_ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SERVING_PERMISSION_RULES_NOTIFICATION_ADS_NOTIFICATION_ADS_MINIMUM_WAIT_TIME_PERMISSION_RULE_H_

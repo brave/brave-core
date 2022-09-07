@@ -27,8 +27,7 @@
 #include "bat/ads/internal/tabs/tab_manager.h"
 #include "url/gurl.h"
 
-namespace ads {
-namespace processor {
+namespace ads::processor {
 
 using KeywordList = std::vector<std::string>;
 
@@ -253,5 +252,4 @@ void PurchaseIntent::OnTextContentDidChange(
   Process(url);
 }
 
-}  // namespace processor
-}  // namespace ads
+}  // namespace ads::processor

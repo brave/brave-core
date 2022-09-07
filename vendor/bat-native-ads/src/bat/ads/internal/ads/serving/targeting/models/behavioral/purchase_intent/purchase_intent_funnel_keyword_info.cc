@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/ads/serving/targeting/models/behavioral/purchase_intent/purchase_intent_funnel_keyword_info.h"
 
-namespace ads {
-namespace targeting {
+namespace ads::targeting {
 
 PurchaseIntentFunnelKeywordInfo::PurchaseIntentFunnelKeywordInfo() = default;
 
@@ -23,5 +22,4 @@ PurchaseIntentFunnelKeywordInfo& PurchaseIntentFunnelKeywordInfo::operator=(
 
 PurchaseIntentFunnelKeywordInfo::~PurchaseIntentFunnelKeywordInfo() = default;
 
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting

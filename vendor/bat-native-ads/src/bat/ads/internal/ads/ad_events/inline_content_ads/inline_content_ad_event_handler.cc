@@ -16,8 +16,7 @@
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
 #include "bat/ads/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
 
-namespace ads {
-namespace inline_content_ads {
+namespace ads::inline_content_ads {
 
 namespace {
 
@@ -200,5 +199,4 @@ void EventHandler::NotifyInlineContentAdEventFailed(
   }
 }
 
-}  // namespace inline_content_ads
-}  // namespace ads
+}  // namespace ads::inline_content_ads

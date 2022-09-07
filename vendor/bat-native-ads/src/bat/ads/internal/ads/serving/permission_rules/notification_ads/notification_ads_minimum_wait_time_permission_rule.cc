@@ -13,8 +13,7 @@
 #include "bat/ads/internal/base/time/time_constraint_util.h"
 #include "bat/ads/internal/settings/settings.h"
 
-namespace ads {
-namespace notification_ads {
+namespace ads::notification_ads {
 
 namespace {
 constexpr int kMinimumWaitTimeCap = 1;
@@ -61,5 +60,4 @@ bool MinimumWaitTimePermissionRule::DoesRespectCap(
                                                  kMinimumWaitTimeCap);
 }
 
-}  // namespace notification_ads
-}  // namespace ads
+}  // namespace ads::notification_ads

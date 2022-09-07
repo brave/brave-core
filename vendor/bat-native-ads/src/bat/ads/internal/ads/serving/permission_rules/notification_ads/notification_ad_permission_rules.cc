@@ -18,8 +18,7 @@
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rule_util.h"
 #include "bat/ads/internal/ads/serving/permission_rules/user_activity_permission_rule.h"
 
-namespace ads {
-namespace notification_ads {
+namespace ads::notification_ads {
 
 PermissionRules::PermissionRules() = default;
 
@@ -84,5 +83,4 @@ bool PermissionRules::HasPermission() const {
   return ShouldAllow(&minimum_wait_time_permission_rule);
 }
 
-}  // namespace notification_ads
-}  // namespace ads
+}  // namespace ads::notification_ads

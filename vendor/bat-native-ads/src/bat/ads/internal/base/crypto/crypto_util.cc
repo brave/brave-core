@@ -16,8 +16,7 @@
 #include "bat/ads/internal/base/crypto/key_pair_info.h"
 #include "tweetnacl.h"  // NOLINT
 
-namespace ads {
-namespace security {
+namespace ads::security {
 
 namespace {
 
@@ -180,5 +179,4 @@ std::vector<uint8_t> Encrypt(const std::vector<uint8_t>& plaintext,
   return ciphertext;
 }
 
-}  // namespace security
-}  // namespace ads
+}  // namespace ads::security

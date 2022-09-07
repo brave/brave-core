@@ -20,8 +20,7 @@
 #include "bat/ads/internal/tabs/tab_manager.h"
 #include "url/gurl.h"
 
-namespace ads {
-namespace processor {
+namespace ads::processor {
 
 namespace {
 
@@ -120,5 +119,4 @@ void TextClassification::OnTextContentDidChange(
   Process(content);
 }
 
-}  // namespace processor
-}  // namespace ads
+}  // namespace ads::processor

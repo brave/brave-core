@@ -10,8 +10,7 @@
 
 #include "bat/ads/internal/ml/transformation/transformation.h"
 
-namespace ads {
-namespace ml {
+namespace ads::ml {
 
 class NormalizationTransformation final : public Transformation {
  public:
@@ -26,7 +25,6 @@ class NormalizationTransformation final : public Transformation {
       const std::unique_ptr<Data>& input_data) const override;
 };
 
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_TRANSFORMATION_NORMALIZATION_TRANSFORMATION_H_

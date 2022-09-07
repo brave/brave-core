@@ -21,9 +21,7 @@
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "url/gurl.h"
 
-namespace ads {
-namespace database {
-namespace table {
+namespace ads::database::table {
 
 using CreativeAdMap = std::map<std::string, CreativeAdInfo>;
 
@@ -301,6 +299,4 @@ void CreativeAds::MigrateToV24(mojom::DBTransactionInfo* transaction) {
   transaction->commands.push_back(std::move(command));
 }
 
-}  // namespace table
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database::table

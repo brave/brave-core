@@ -9,8 +9,7 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/user_data/conversion_user_data_builder.h"
 
-namespace ads {
-namespace user_data {
+namespace ads::user_data {
 
 void GetConversion(const std::string& creative_instance_id,
                    const ConfirmationType& confirmation_type,
@@ -29,5 +28,4 @@ void GetConversion(const std::string& creative_instance_id,
                            });
 }
 
-}  // namespace user_data
-}  // namespace ads
+}  // namespace ads::user_data

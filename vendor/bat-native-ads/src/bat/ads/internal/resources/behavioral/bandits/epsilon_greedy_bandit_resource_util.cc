@@ -11,8 +11,7 @@
 #include "bat/ads/internal/segments/segment_values_util.h"
 #include "bat/ads/pref_names.h"
 
-namespace ads {
-namespace resource {
+namespace ads::resource {
 
 void SetEpsilonGreedyBanditEligibleSegments(const SegmentList& segments) {
   AdsClientHelper::GetInstance()->SetListPref(
@@ -30,5 +29,4 @@ SegmentList GetEpsilonGreedyBanditEligibleSegments() {
   return SegmentsFromValue(*list);
 }
 
-}  // namespace resource
-}  // namespace ads
+}  // namespace ads::resource

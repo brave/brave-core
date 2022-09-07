@@ -8,8 +8,7 @@
 #include "base/metrics/field_trial_params.h"
 #include "bat/ads/internal/base/metrics/field_trial_params_util.h"
 
-namespace ads {
-namespace features {
+namespace ads::features {
 
 namespace {
 
@@ -45,5 +44,4 @@ std::string GetDefaultConversionIdPattern() {
       kDefaultConversionIdPattern);
 }
 
-}  // namespace features
-}  // namespace ads
+}  // namespace ads::features

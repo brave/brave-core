@@ -12,8 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace ml {
+namespace ads::ml {
 
 class BatAdsVectorDataTest : public UnitTestBase {
  protected:
@@ -171,5 +170,4 @@ TEST_F(BatAdsVectorDataTest, NormalizeSparseVector) {
             sparse_data_vector_5.GetValuesForTesting());
 }
 
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml

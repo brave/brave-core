@@ -11,13 +11,11 @@
 #include "base/containers/flat_map.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arm_info.h"
 
-namespace ads {
-namespace targeting {
+namespace ads::targeting {
 
 using EpsilonGreedyBanditArmMap =
     base::flat_map<std::string, EpsilonGreedyBanditArmInfo>;
 
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PROCESSORS_BEHAVIORAL_BANDITS_EPSILON_GREEDY_BANDIT_ARMS_ALIAS_H_

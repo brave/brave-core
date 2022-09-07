@@ -10,8 +10,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace resource {
+namespace ads::resource {
 
 namespace {
 const SegmentList kSegments = {"foo", "bar"};
@@ -45,5 +44,4 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceUtilTest, SetNoEligibleSegments) {
   EXPECT_TRUE(segments.empty());
 }
 
-}  // namespace resource
-}  // namespace ads
+}  // namespace ads::resource

@@ -9,8 +9,7 @@
 #include <cstdint>
 #include <string>
 
-namespace ads {
-namespace targeting {
+namespace ads::targeting {
 
 struct PurchaseIntentFunnelKeywordInfo final {
   PurchaseIntentFunnelKeywordInfo();
@@ -24,7 +23,6 @@ struct PurchaseIntentFunnelKeywordInfo final {
   uint16_t weight = 0;
 };
 
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SERVING_TARGETING_MODELS_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_FUNNEL_KEYWORD_INFO_H_

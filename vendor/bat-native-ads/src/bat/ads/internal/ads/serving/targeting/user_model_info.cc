@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/ads/serving/targeting/user_model_info.h"
 
-namespace ads {
-namespace targeting {
+namespace ads::targeting {
 
 UserModelInfo::UserModelInfo() = default;
 
@@ -16,5 +15,4 @@ UserModelInfo& UserModelInfo::operator=(const UserModelInfo& info) = default;
 
 UserModelInfo::~UserModelInfo() = default;
 
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting

@@ -14,9 +14,7 @@ namespace base {
 class TimeDelta;
 }  // namespace base
 
-namespace ads {
-namespace targeting {
-namespace features {
+namespace ads::targeting::features {
 
 extern const base::Feature kPurchaseIntent;
 
@@ -28,8 +26,6 @@ base::TimeDelta GetPurchaseIntentTimeWindow();
 
 int GetPurchaseIntentResourceVersion();
 
-}  // namespace features
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting::features
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FEATURES_PURCHASE_INTENT_FEATURES_H_

@@ -5,9 +5,7 @@
 
 #include "bat/ads/internal/creatives/new_tab_page_ads/new_tab_page_ads_features.h"
 
-namespace ads {
-namespace new_tab_page_ads {
-namespace features {
+namespace ads::new_tab_page_ads::features {
 
 namespace {
 constexpr char kFeatureName[] = "NewTabPageAds";
@@ -19,6 +17,4 @@ bool IsEnabled() {
   return base::FeatureList::IsEnabled(kFeature);
 }
 
-}  // namespace features
-}  // namespace new_tab_page_ads
-}  // namespace ads
+}  // namespace ads::new_tab_page_ads::features

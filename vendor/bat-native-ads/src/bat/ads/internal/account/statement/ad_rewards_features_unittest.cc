@@ -12,8 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace features {
+namespace ads::features {
 
 TEST(BatAdsAdRewardsFeaturesTest, AdRewardsEnabled) {
   // Arrange
@@ -104,5 +103,4 @@ TEST(BatAdsAdRewardsFeaturesTest, DisabledAdRewardsDefaultNextPaymentDay) {
   EXPECT_EQ(expected_next_payment_day, next_payment_day);
 }
 
-}  // namespace features
-}  // namespace ads
+}  // namespace ads::features

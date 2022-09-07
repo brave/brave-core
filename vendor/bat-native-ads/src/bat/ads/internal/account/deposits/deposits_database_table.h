@@ -16,9 +16,7 @@
 #include "bat/ads/internal/database/database_table_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom-forward.h"
 
-namespace ads {
-namespace database {
-namespace table {
+namespace ads::database::table {
 
 using GetDepositsCallback =
     std::function<void(const bool success,
@@ -61,8 +59,6 @@ class Deposits final : public TableInterface {
   void MigrateToV24(mojom::DBTransactionInfo* transaction);
 };
 
-}  // namespace table
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database::table
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_DEPOSITS_DEPOSITS_DATABASE_TABLE_H_

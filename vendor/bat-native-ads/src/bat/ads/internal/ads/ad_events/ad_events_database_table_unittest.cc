@@ -9,9 +9,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace database {
-namespace table {
+namespace ads::database::table {
 
 TEST(BatAdsAdEventsDatabaseTableTest, TableName) {
   // Arrange
@@ -25,6 +23,4 @@ TEST(BatAdsAdEventsDatabaseTableTest, TableName) {
   EXPECT_EQ(expected_table_name, table_name);
 }
 
-}  // namespace table
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database::table

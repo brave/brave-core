@@ -9,13 +9,11 @@
 #include "base/values.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 
-namespace ads {
-namespace user_data {
+namespace ads::user_data {
 
 base::Value::Dict GetTotals(
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens);
 
-}  // namespace user_data
-}  // namespace ads
+}  // namespace ads::user_data
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_USER_DATA_TOTALS_USER_DATA_H_

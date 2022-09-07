@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 
-namespace ads {
-namespace privacy {
+namespace ads::privacy {
 
 UnblindedPaymentTokenInfo::UnblindedPaymentTokenInfo() = default;
 
@@ -30,5 +29,4 @@ bool UnblindedPaymentTokenInfo::operator!=(
   return !(*this == rhs);
 }
 
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy

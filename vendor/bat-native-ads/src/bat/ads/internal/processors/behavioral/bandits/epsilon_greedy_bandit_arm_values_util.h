@@ -9,15 +9,13 @@
 #include "base/values.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arms_alias.h"
 
-namespace ads {
-namespace targeting {
+namespace ads::targeting {
 
 base::Value::Dict EpsilonGreedyBanditArmsToValue(
     const EpsilonGreedyBanditArmMap& arms);
 EpsilonGreedyBanditArmMap EpsilonGreedyBanditArmsFromValue(
     const base::Value::Dict& dict);
 
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PROCESSORS_BEHAVIORAL_BANDITS_EPSILON_GREEDY_BANDIT_ARM_VALUES_UTIL_H_

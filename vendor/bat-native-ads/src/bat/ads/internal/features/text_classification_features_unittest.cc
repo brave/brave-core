@@ -9,9 +9,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace targeting {
-namespace features {
+namespace ads::targeting::features {
 
 TEST(BatAdsTextClassificationFeaturesTest, TextClassificationEnabled) {
   // Arrange
@@ -41,6 +39,4 @@ TEST(BatAdsTextClassificationFeaturesTest, TextClassificationResource) {
   EXPECT_EQ(1, GetTextClassificationResourceVersion());
 }
 
-}  // namespace features
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting::features

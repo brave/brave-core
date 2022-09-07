@@ -9,8 +9,7 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/creatives/campaigns_database_table.h"
 
-namespace ads {
-namespace database {
+namespace ads::database {
 
 void DeleteCampaigns() {
   table::Campaigns database_table;
@@ -24,5 +23,4 @@ void DeleteCampaigns() {
   }));
 }
 
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database

@@ -10,13 +10,11 @@
 
 #include "base/containers/flat_map.h"
 
-namespace ads {
-namespace user_data {
+namespace ads::user_data {
 
 using ConfirmationTypeBucketMap = base::flat_map<std::string, int>;
 using AdTypeBucketMap = base::flat_map<std::string, ConfirmationTypeBucketMap>;
 
-}  // namespace user_data
-}  // namespace ads
+}  // namespace ads::user_data
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_USER_DATA_TOTALS_USER_DATA_ALIAS_H_

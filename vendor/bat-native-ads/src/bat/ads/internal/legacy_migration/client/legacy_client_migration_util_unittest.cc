@@ -10,8 +10,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace client {
+namespace ads::client {
 
 class BatAdsLegacyClientMigrationUtilTest : public UnitTestBase {
  protected:
@@ -42,5 +41,4 @@ TEST_F(BatAdsLegacyClientMigrationUtilTest, HasNotMigrated) {
   EXPECT_FALSE(HasMigrated());
 }
 
-}  // namespace client
-}  // namespace ads
+}  // namespace ads::client

@@ -10,8 +10,7 @@
 
 #include "bat/ads/internal/ml/transformation/transformation_types.h"
 
-namespace ads {
-namespace ml {
+namespace ads::ml {
 
 class Data;
 
@@ -30,7 +29,6 @@ class Transformation {
   const TransformationType type_;
 };
 
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_TRANSFORMATION_TRANSFORMATION_H_

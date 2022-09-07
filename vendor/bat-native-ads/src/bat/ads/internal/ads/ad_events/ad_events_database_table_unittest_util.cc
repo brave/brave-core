@@ -13,10 +13,7 @@
 #include "bat/ads/internal/base/database/database_table_util.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
-namespace ads {
-namespace database {
-namespace table {
-namespace ad_events {
+namespace ads::database::table::ad_events {
 
 void Reset(ResultCallback callback) {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
@@ -42,7 +39,4 @@ void Reset(ResultCallback callback) {
           std::move(callback)));
 }
 
-}  // namespace ad_events
-}  // namespace table
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database::table::ad_events

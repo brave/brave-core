@@ -7,8 +7,7 @@
 
 #include "bat/ads/internal/ads/serving/targeting/user_model_info.h"
 
-namespace ads {
-namespace targeting {
+namespace ads::targeting {
 
 UserModelInfo BuildUserModel(const SegmentList& interest_segments,
                              const SegmentList& latent_interest_segments,
@@ -20,5 +19,4 @@ UserModelInfo BuildUserModel(const SegmentList& interest_segments,
   return user_model;
 }
 
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting

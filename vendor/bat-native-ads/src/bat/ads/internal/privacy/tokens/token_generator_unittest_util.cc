@@ -10,8 +10,7 @@
 #include "base/check.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
 
-namespace ads {
-namespace privacy {
+namespace ads::privacy {
 
 std::vector<cbr::Token> GetTokens(const int count) {
   const std::vector<std::string> tokens_base64 = {
@@ -62,5 +61,4 @@ std::vector<cbr::Token> GetTokens(const int count) {
   return tokens;
 }
 
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy

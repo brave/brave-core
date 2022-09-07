@@ -11,8 +11,7 @@
 #include "bat/ads/internal/legacy_migration/rewards/payment_info.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 
-namespace ads {
-namespace rewards {
+namespace ads::rewards {
 
 TransactionList GetAllUnreconciledTransactions(
     const TransactionList& transactions,
@@ -25,7 +24,6 @@ BuildTransactionsForReconciledTransactionsThisMonth(
 absl::optional<TransactionInfo>
 BuildTransactionForReconciledTransactionsLastMonth(const PaymentList& payments);
 
-}  // namespace rewards
-}  // namespace ads
+}  // namespace ads::rewards
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_LEGACY_MIGRATION_REWARDS_LEGACY_REWARDS_MIGRATION_TRANSACTION_UTIL_H_

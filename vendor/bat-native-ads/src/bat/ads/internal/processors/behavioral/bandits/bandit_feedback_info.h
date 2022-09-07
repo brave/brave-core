@@ -10,15 +10,13 @@
 
 #include "bat/ads/public/interfaces/ads.mojom-shared.h"
 
-namespace ads {
-namespace processor {
+namespace ads::processor {
 
 struct BanditFeedbackInfo final {
   std::string segment;
   mojom::NotificationAdEventType ad_event_type;
 };
 
-}  // namespace processor
-}  // namespace ads
+}  // namespace ads::processor
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PROCESSORS_BEHAVIORAL_BANDITS_BANDIT_FEEDBACK_INFO_H_

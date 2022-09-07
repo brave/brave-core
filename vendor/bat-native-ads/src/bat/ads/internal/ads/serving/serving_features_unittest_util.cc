@@ -15,8 +15,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace features {
+namespace ads::features {
 
 void ForceServingVersion(const int version) {
   std::map<std::string, std::string> serving_parameters;
@@ -29,5 +28,4 @@ void ForceServingVersion(const int version) {
   CHECK_EQ(version, GetServingVersion());
 }
 
-}  // namespace features
-}  // namespace ads
+}  // namespace ads::features

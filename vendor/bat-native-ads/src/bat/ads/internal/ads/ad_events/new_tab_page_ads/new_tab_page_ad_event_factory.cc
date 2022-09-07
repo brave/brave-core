@@ -11,8 +11,7 @@
 #include "bat/ads/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_viewed.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 
-namespace ads {
-namespace new_tab_page_ads {
+namespace ads::new_tab_page_ads {
 
 std::unique_ptr<AdEventInterface<NewTabPageAdInfo>> AdEventFactory::Build(
     const mojom::NewTabPageAdEventType event_type) {
@@ -33,5 +32,4 @@ std::unique_ptr<AdEventInterface<NewTabPageAdInfo>> AdEventFactory::Build(
   }
 }
 
-}  // namespace new_tab_page_ads
-}  // namespace ads
+}  // namespace ads::new_tab_page_ads

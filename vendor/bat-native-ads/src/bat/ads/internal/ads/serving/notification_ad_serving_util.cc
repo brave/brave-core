@@ -10,8 +10,7 @@
 #include "bat/ads/internal/base/platform/platform_helper.h"
 #include "bat/ads/pref_names.h"
 
-namespace ads {
-namespace notification_ads {
+namespace ads::notification_ads {
 
 namespace {
 
@@ -57,5 +56,4 @@ base::TimeDelta CalculateDelayBeforeServingAnAd() {
   return delay;
 }
 
-}  // namespace notification_ads
-}  // namespace ads
+}  // namespace ads::notification_ads

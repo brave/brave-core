@@ -9,9 +9,7 @@
 #include "base/time/time.h"
 #include "bat/ads/internal/base/metrics/field_trial_params_util.h"
 
-namespace ads {
-namespace exclusion_rules {
-namespace features {
+namespace ads::exclusion_rules::features {
 
 namespace {
 
@@ -57,6 +55,4 @@ base::TimeDelta ExcludeAdIfTransferredWithinTimeWindow() {
       kDefaultExcludeAdIfTransferredWithinTimeWindow);
 }
 
-}  // namespace features
-}  // namespace exclusion_rules
-}  // namespace ads
+}  // namespace ads::exclusion_rules::features

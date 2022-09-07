@@ -10,8 +10,7 @@
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ads/sys_info.h"
 
-namespace ads {
-namespace user_data {
+namespace ads::user_data {
 
 namespace {
 
@@ -30,5 +29,4 @@ base::Value::Dict GetOdyssey() {
   return user_data;
 }
 
-}  // namespace user_data
-}  // namespace ads
+}  // namespace ads::user_data

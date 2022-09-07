@@ -19,8 +19,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace inline_content_ads {
+namespace ads::inline_content_ads {
 
 namespace {
 
@@ -219,5 +218,4 @@ TEST_F(BatAdsInlineContentAdEventHandlerTest,
       0, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kViewed));
 }
 
-}  // namespace inline_content_ads
-}  // namespace ads
+}  // namespace ads::inline_content_ads

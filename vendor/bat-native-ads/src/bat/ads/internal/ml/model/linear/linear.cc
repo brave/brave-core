@@ -13,9 +13,7 @@
 #include "base/ranges/algorithm.h"
 #include "bat/ads/internal/ml/ml_prediction_util.h"
 
-namespace ads {
-namespace ml {
-namespace model {
+namespace ads::ml::model {
 
 Linear::Linear() = default;
 
@@ -64,6 +62,4 @@ PredictionMap Linear::GetTopPredictions(const VectorData& x,
   return top_predictions;
 }
 
-}  // namespace model
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml::model

@@ -11,8 +11,7 @@
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rule_util.h"
 #include "bat/ads/internal/ads/serving/permission_rules/user_activity_permission_rule.h"
 
-namespace ads {
-namespace inline_content_ads {
+namespace ads::inline_content_ads {
 
 PermissionRules::PermissionRules() = default;
 
@@ -44,5 +43,4 @@ bool PermissionRules::HasPermission() const {
   return ShouldAllow(&ads_per_hour_permission_rule);
 }
 
-}  // namespace inline_content_ads
-}  // namespace ads
+}  // namespace ads::inline_content_ads

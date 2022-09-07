@@ -10,8 +10,7 @@
 
 #include "bat/ads/internal/segments/segment_alias.h"
 
-namespace ads {
-namespace targeting {
+namespace ads::targeting {
 
 struct PurchaseIntentSegmentKeywordInfo final {
   PurchaseIntentSegmentKeywordInfo();
@@ -27,7 +26,6 @@ struct PurchaseIntentSegmentKeywordInfo final {
   std::string keywords;
 };
 
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_SEGMENT_KEYWORD_INFO_H_

@@ -8,14 +8,12 @@
 
 #include "bat/ads/internal/conversions/conversion_info.h"
 
-namespace ads {
-namespace database {
+namespace ads::database {
 
 void PurgeExpiredConversions();
 
 void SaveConversions(const ConversionList& conversions);
 
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONVERSIONS_CONVERSIONS_DATABASE_UTIL_H_

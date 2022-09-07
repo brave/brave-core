@@ -8,9 +8,7 @@
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/signed_token.h"
 
-namespace ads {
-namespace privacy {
-namespace cbr {
+namespace ads::privacy::cbr {
 
 SignedToken GetSignedToken() {
   return SignedToken(kSignedTokenBase64);
@@ -34,6 +32,4 @@ std::vector<SignedToken> GetInvalidSignedTokens() {
   return signed_tokens;
 }
 
-}  // namespace cbr
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::cbr
