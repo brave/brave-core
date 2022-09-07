@@ -261,7 +261,7 @@ extension BrowserViewController {
 
     // Additional Commands which will have priority over system
     let additionalPriorityCommandKeys = [
-      UIKeyCommand(input: "\t", modifierFlags: .control, action: #selector(newTabKeyCommand))
+      UIKeyCommand(input: "\t", modifierFlags: .control, action: #selector(nextTabKeyCommand))
     ]
     
     var keyCommandList = navigationCommands + tabNavigationCommands + bookmarkEditingCommands + shareCommands + findTextCommands + additionalPriorityCommandKeys
