@@ -87,14 +87,10 @@ bool HasIssuers() {
 bool HasIssuersChanged(const IssuersInfo& issuers) {
   const absl::optional<IssuersInfo> last_issuers = GetIssuers();
   if (!last_issuers) {
-    return false;
+    return true;
   }
 
-  if (issuers == *last_issuers) {
-    return false;
-  }
-
-  return true;
+  return issuers != *last_issuers;
 }
 
 bool IssuerExistsForType(const IssuerType issuer_type) {
