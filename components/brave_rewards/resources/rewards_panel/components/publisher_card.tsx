@@ -13,6 +13,7 @@ import { ToggleButton } from './toggle_button'
 import { MonthlyTipView } from './monthly_tip_view'
 import { VerifiedIcon } from './icons/verified_icon'
 import { LoadingIcon } from '../../shared/components/icons/loading_icon'
+import { RefreshStatusIcon } from './icons/refresh_status_icon'
 
 import * as style from './publisher_card.style'
 
@@ -171,8 +172,9 @@ export function PublisherCard () {
                   : <button
                       data-test-id='refresh-publisher-button'
                       onClick={onRefreshClick}
+                      title={getString('refreshStatus')}
                     >
-                      {getString('refreshStatus')}
+                      <RefreshStatusIcon />
                     </button>
               }
             </style.refreshStatus>
