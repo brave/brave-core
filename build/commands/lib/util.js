@@ -791,6 +791,52 @@ const util = {
   writeJSON: (file, value) => {
     return fs.writeJSONSync(file, value, {spaces: 2})
   },
+
+  getGitDir: (repoDir) => {
+    // Returns the actual .git dir in case a worktree is used.
+    gitDir = util.runGit(repoDir, ['rev-parse', '--git-common-dir'], false)
+    if (!path.isAbsolute(gitDir)) {
+      return path.join(repoDir, gitDir)
+    }
+    return gitDir
+  },
+
+  getGitInfoExcludeFileName: (repoDir, create) => {
+    const gitInfoDir = path.join(util.getGitDir(repoDir), 'info')
+    const excludeFileName = path.join(gitInfoDir, 'exclude')
+    if (!fs.existsSync(excludeFileName)) {
+      if (!create) {
+        return null
+      }
+      if (!fs.existsSync(gitInfoDir)) {
+        fs.mkdirSync(gitInfoDir)
+      }
+      fs.writeFileSync(excludeFileName, '')
+    }
+    return excludeFileName
+  },
+
+  isGitExclusionExists: (repoDir, exclusion) => {
+    const excludeFileName = util.getGitInfoExcludeFileName(repoDir, false)
+    if (!excludeFileName) {
+      return false
+    }
+    const lines = fs.readFileSync(excludeFileName).toString().split(/\r?\n/)
+    for (const line of lines) {
+      if (line === exclusion) {
+        return true
+      }
+    }
+    return false
+  },
+
+  addGitExclusion: (repoDir, exclusion) => {
+    if (util.isGitExclusionExists(repoDir, exclusion)) {
+      return
+    }
+    const excludeFileName = util.getGitInfoExcludeFileName(repoDir, true)
+    fs.appendFileSync(excludeFileName, '\n' + exclusion)
+  },
 }
 
 module.exports = util

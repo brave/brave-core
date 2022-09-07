@@ -22,6 +22,7 @@ program
   .option('--force', 'force reset all projects to origin/ref')
   .option('--sync_chromium [arg]', 'force or skip chromium sync (true/false/1/0)', JSON.parse)
   .option('--ignore_chromium', 'do not update chromium version even if it is stale [deprecated, use --sync_chromium=false]')
+  .option('-D, --delete_unused_deps', 'delete from the working copy any dependencies that have been removed since the last sync')
   .option('--nohooks', 'Do not run hooks after updating')
 
 function maybeInstallDepotTools(options = config.defaultOptions) {
@@ -150,7 +151,23 @@ function syncChromium(program) {
       shouldUpdateChromium(latestSyncInfo, expectedSyncInfo)
   const shouldSyncChromium = chromiumNeedsUpdate || syncWithForce
   if (!shouldSyncChromium && !program.sync_chromium) {
+    if (program.delete_unused_deps) {
+      Log.warn(
+        '--delete_unused_deps is ignored for src/ dir because Chromium sync ' +
+        'is required. Pass --sync_chromium to force it.')
+    }
     return false
+  }
+
+  if (program.delete_unused_deps) {
+    if (util.isGitExclusionExists(config.srcDir, 'brave/')) {
+      args.push('-D')
+    } else {
+      Log.warn(
+          '--delete_unused_deps is ignored because sync has not yet added ' +
+          'the exclusion for the src/brave/ directory, likely because sync ' +
+          'has not previously successfully run before.')
+    }
   }
 
   if (program.sync_chromium !== undefined) {
@@ -166,6 +183,7 @@ function syncChromium(program) {
   }
 
   util.runGClient(args)
+  util.addGitExclusion(config.srcDir, 'brave/')
   util.writeJSON(latestSyncInfoFilePath, expectedSyncInfo)
 
   const postSyncChromiumRef = util.getGitReadableLocalRef(config.srcDir)
@@ -178,6 +196,10 @@ function syncBrave(program) {
   const syncWithForce = program.init || program.force
   if (syncWithForce) {
     args.push('--force')
+  }
+
+  if (program.delete_unused_deps) {
+    args.push('-D')
   }
 
   util.runGClient(
@@ -214,7 +236,7 @@ async function RunCommand() {
 
   Log.progress('Running gclient sync...')
   const didSyncChromium = syncChromium(program)
-  if (!didSyncChromium) {
+  if (!didSyncChromium || program.delete_unused_deps) {
     // If no Chromium sync was done, run sync inside `brave` to sync Brave DEPS.
     syncBrave(program)
   }
