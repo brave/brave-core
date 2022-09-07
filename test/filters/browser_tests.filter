@@ -130,6 +130,7 @@
 -BackgroundFetchBrowserTest.*
 -BackgroundTabLoadingBrowserTest.RestoreTab
 -BackgroundTabLoadingBrowserTest.RestoredTabsAreLoadedGradually
+-BookmarkBrowsertest.OpenAllBookmarks
 -BookmarkBubbleSignInDelegateTest.*
 -BookmarkBubbleViewBrowserTest.*
 -BookmarkPrerenderBrowsertest.*
