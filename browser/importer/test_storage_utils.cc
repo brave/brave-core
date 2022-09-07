@@ -15,14 +15,18 @@
 
 namespace brave {
 
-void CreateTestingStore(base::FilePath path, const std::string& id) {
+void CreateTestingStore(
+    base::FilePath path,
+    const std::string& id,
+    const base::flat_map<std::string, std::string>& values) {
   auto store_factory =
       base::MakeRefCounted<value_store::TestValueStoreFactory>(path);
   auto source_store0 = store_factory->CreateValueStore(
       base::FilePath(extensions::kLocalExtensionSettingsDirectoryName), id);
-  source_store0->Set(value_store::ValueStore::DEFAULTS, "a", base::Value("b"));
-  source_store0->Set(value_store::ValueStore::DEFAULTS, "c", base::Value("d"));
-  source_store0->Set(value_store::ValueStore::DEFAULTS, "id", base::Value(id));
+  for (const auto& kv : values) {
+    source_store0->Set(value_store::ValueStore::DEFAULTS, kv.first,
+                       base::Value(kv.second));
+  }
 }
 
 absl::optional<base::Value::Dict> ReadStore(base::FilePath path,

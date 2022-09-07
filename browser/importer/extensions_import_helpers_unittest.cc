@@ -56,9 +56,13 @@ class ExtensionsImportHelperstUnitTest : public testing::Test {
 };
 
 TEST_F(ExtensionsImportHelperstUnitTest, ImportStorages) {
-  CreateTestingStore(GetExtensionLocalSettingsPath("Chrome", "id0"), "id0");
-  CreateTestingStore(GetExtensionLocalSettingsPath("Chrome", "id1"), "id1");
-  CreateTestingStore(GetExtensionLocalSettingsPath("Chrome", "id2"), "id2");
+  for (auto i = 0; i < 3; i++) {
+    const std::string id = "id" + std::to_string(i);
+    brave::CreateTestingStore(GetExtensionLocalSettingsPath("Chrome", id), id,
+                              {{"a", "b"}, {"c", "d"}, {"id", id}});
+  }
+  brave::CreateTestingStore(GetExtensionLocalSettingsPath("Brave", "id0"),
+                            "id0", {{"a", "a"}, {"c", "c"}, {"id", "id0"}});
   {
     base::RunLoop loop;
     extensions::GetExtensionFileTaskRunner()->PostTaskAndReply(
@@ -73,8 +77,8 @@ TEST_F(ExtensionsImportHelperstUnitTest, ImportStorages) {
 
   EXPECT_EQ(ReadStore(GetExtensionLocalSettingsPath("Brave", "id0"), "id0"),
             base::JSONReader::Read(R"({
-    "a": "b",
-    "c": "d",
+    "a": "a",
+    "c": "c",
     "id": "id0"
   })"));
 

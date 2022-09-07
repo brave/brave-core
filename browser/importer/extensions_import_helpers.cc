@@ -6,8 +6,8 @@
 #include "brave/browser/importer/extensions_import_helpers.h"
 
 #include <memory>
-#include <unordered_map>
 
+#include "base/containers/flat_map.h"
 #include "base/files/file_util.h"
 #include "base/logging.h"
 #include "base/task/thread_pool.h"
@@ -22,7 +22,7 @@
 namespace brave {
 namespace {
 using ExtensionStorageMap =
-    std::unordered_map<std::string, std::unique_ptr<value_store::ValueStore>>;
+    base::flat_map<std::string, std::unique_ptr<value_store::ValueStore>>;
 
 std::vector<std::string> GetChromeExtensionsSettingsList(
     const base::FilePath& source_profile,
@@ -41,11 +41,17 @@ std::vector<std::string> GetChromeExtensionsSettingsList(
 }
 
 ExtensionStorageMap CreateStorages(
-    base::FilePath profile,
     std::vector<std::string> ids,
+    bool skip_if_exists,
     scoped_refptr<value_store::ValueStoreFactory> factory) {
   ExtensionStorageMap storages;
   for (const auto& id : ids) {
+    if (skip_if_exists &&
+        extensions::value_store_util::HasValueStore(
+            extensions::settings_namespace::LOCAL,
+            extensions::value_store_util::ModelType::EXTENSION, id, factory)) {
+      continue;
+    }
     storages[id] = extensions::value_store_util::CreateSettingsStore(
         extensions::settings_namespace::LOCAL,
         extensions::value_store_util::ModelType::EXTENSION, id, factory);
@@ -60,17 +66,14 @@ void ImportStorages(base::FilePath source_profile,
                     std::vector<std::string> extensions_ids) {
   DCHECK(
       extensions::GetExtensionFileTaskRunner()->RunsTasksInCurrentSequence());
-  auto ids_with_settings =
+  const auto ids_with_settings =
       GetChromeExtensionsSettingsList(source_profile, extensions_ids);
-
-  auto source_storages = CreateStorages(
-      source_profile, ids_with_settings,
+  const auto source_storages = CreateStorages(
+      ids_with_settings, false,
       base::MakeRefCounted<value_store::ValueStoreFactoryImpl>(source_profile));
-
   auto target_storages = CreateStorages(
-      target_profile, ids_with_settings,
+      ids_with_settings, true,
       base::MakeRefCounted<value_store::ValueStoreFactoryImpl>(target_profile));
-  DCHECK_EQ(source_storages.size(), target_storages.size());
   for (const auto& source_store : source_storages) {
     auto content = source_store.second->Get();
     if (!content.status().ok() || !target_storages.count(source_store.first))

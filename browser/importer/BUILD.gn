@@ -24,6 +24,7 @@ if (!is_android) {
     deps = [
       "//base",
       "//base/test:test_support",
+      "//brave/common/importer",
       "//chrome/browser",
       "//chrome/test:test_support",
       "//components/value_store:test_support",

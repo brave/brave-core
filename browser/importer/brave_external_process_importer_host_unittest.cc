@@ -77,14 +77,11 @@ class BraveExternalProcessImporterHostUnitTest : public testing::Test {
                        .AppendASCII("Secure Preferences"),
                    GetProductProfilePath("Chrome").AppendASCII(
                        kChromeExtensionsPreferencesFile));
-    brave::CreateTestingStore(GetExtensionLocalSettingsPath("Chrome", "id0"),
-                              "id0");
-    brave::CreateTestingStore(GetExtensionLocalSettingsPath("Chrome", "id1"),
-                              "id1");
-    brave::CreateTestingStore(GetExtensionLocalSettingsPath("Chrome", "id2"),
-                              "id2");
-    brave::CreateTestingStore(GetExtensionLocalSettingsPath("Chrome", "id3"),
-                              "id3");
+    for (auto i = 0; i < 4; i++) {
+      const std::string id = "id" + std::to_string(i);
+      brave::CreateTestingStore(GetExtensionLocalSettingsPath("Chrome", id), id,
+                                {{"a", "b"}, {"c", "d"}, {"id", id}});
+    }
 
     external_process_host_ = new BraveExternalProcessImporterHost();
     external_process_host()->SetInstallExtensionCallbackForTesting(
