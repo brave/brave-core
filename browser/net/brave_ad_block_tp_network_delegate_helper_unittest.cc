@@ -34,6 +34,50 @@
 using brave::ResponseCallback;
 using brave_shields::TestFiltersProvider;
 
+namespace {
+
+// Note: extract a common impl if needed for other tests, do not copy.
+
+// TODO(iefremov): This is only needed to provide a task runner to the adblock
+// service. We can drop this stub once the service doesn't need an
+// "external" runner.
+class TestingBraveComponentUpdaterDelegate : public BraveComponent::Delegate {
+ public:
+  explicit TestingBraveComponentUpdaterDelegate(PrefService* local_state)
+      : local_state_(local_state) {}
+  ~TestingBraveComponentUpdaterDelegate() override = default;
+
+  TestingBraveComponentUpdaterDelegate(TestingBraveComponentUpdaterDelegate&) =
+      delete;
+  TestingBraveComponentUpdaterDelegate& operator=(
+      TestingBraveComponentUpdaterDelegate&) = delete;
+
+  using ComponentObserver = update_client::UpdateClient::Observer;
+
+  // brave_component_updater::BraveComponent::Delegate implementation
+  void Register(const std::string& component_name,
+                const std::string& component_base64_public_key,
+                base::OnceClosure registered_callback,
+                BraveComponent::ReadyCallback ready_callback) override {}
+  bool Unregister(const std::string& component_id) override { return true; }
+  void OnDemandUpdate(const std::string& component_id) override {}
+
+  void AddObserver(ComponentObserver* observer) override {}
+  void RemoveObserver(ComponentObserver* observer) override {}
+
+  scoped_refptr<base::SequencedTaskRunner> GetTaskRunner() override {
+    return base::ThreadTaskRunnerHandle::Get();
+  }
+
+  const std::string locale() const override { return "en"; }
+  PrefService* local_state() override { return local_state_; }
+
+ private:
+  raw_ptr<PrefService> local_state_ = nullptr;
+};
+
+}  // namespace
+
 void FakeAdBlockSubscriptionDownloadManagerGetter(
     base::OnceCallback<
         void(brave_shields::AdBlockSubscriptionDownloadManager*)>) {
@@ -46,12 +90,19 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
     local_state_ = std::make_unique<ScopedTestingLocalState>(
         TestingBrowserProcess::GetGlobal());
 
+    brave_component_updater_delegate_ =
+        std::make_unique<TestingBraveComponentUpdaterDelegate>(
+            local_state_->Get());
+
     base::FilePath user_data_dir;
     DCHECK(base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir));
     auto adblock_service = std::make_unique<brave_shields::AdBlockService>(
-        local_state_->Get(), "en", nullptr, base::ThreadTaskRunnerHandle::Get(),
+        brave_component_updater_delegate_->local_state(),
+        brave_component_updater_delegate_->locale(), nullptr,
+        brave_component_updater_delegate_->GetTaskRunner(),
         std::make_unique<brave_shields::AdBlockSubscriptionServiceManager>(
-            local_state_->Get(), base::ThreadTaskRunnerHandle::Get(),
+            brave_component_updater_delegate_->local_state(),
+            brave_component_updater_delegate_->GetTaskRunner(),
             base::BindOnce(&FakeAdBlockSubscriptionDownloadManagerGetter),
             user_data_dir));
 
@@ -98,6 +149,9 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
   }
 
   std::unique_ptr<ScopedTestingLocalState> local_state_;
+
+  std::unique_ptr<TestingBraveComponentUpdaterDelegate>
+      brave_component_updater_delegate_;
 
   content::BrowserTaskEnvironment task_environment_;
 

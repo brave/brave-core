@@ -41,8 +41,5 @@ public class BraveSearchEngineAdapterClassAdapter extends BraveClassVisitor {
         makePublicMethod(sSearchEngineSettingsClassName, "createAdapterIfNecessary");
         addMethodAnnotation(sBraveSearchEnginePreferenceClassName, "createAdapterIfNecessary",
                 "Ljava/lang/Override;");
-
-        changeMethodOwner(sSearchEngineAdapterClassName, "didSearchEnginesChange",
-                sBraveSearchEngineAdapterBaseClassName);
     }
 }

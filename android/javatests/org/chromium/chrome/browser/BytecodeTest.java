@@ -445,12 +445,6 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists("org/chromium/components/browser_ui/site_settings/Website",
                 "setContentSetting", true, void.class, BrowserContextHandle.class, int.class,
                 int.class));
-        Assert.assertTrue(methodExists(
-                "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
-                "didSearchEnginesChange", true, boolean.class, List.class));
-        Assert.assertTrue(methodExists(
-                "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
-                "computeStartIndexForRecentSearchEngines", true, int.class));
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
         // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
         // section. Both test and regular apks should have the same exceptions.
@@ -768,16 +762,6 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/ntp/NewTabPageLayout", "mMvTilesContainerLayout"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/dom_distiller/ReaderModeManager", "mTab"));
-
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
-                "mPrepopulatedSearchEngines"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
-                "mRecentSearchEngines"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
-                "mSelectedSearchEnginePosition"));
     }
 
     @Test

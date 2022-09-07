@@ -12,12 +12,9 @@ import androidx.preference.Preference;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.privacy.settings.PrivacySettings;
-import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
-import org.chromium.components.search_engines.TemplateUrlService;
 
-public class BraveSearchEnginesPreferences
-        extends BravePreferenceFragment implements TemplateUrlService.TemplateUrlServiceObserver {
+public class BraveSearchEnginesPreferences extends BravePreferenceFragment {
     private static final String PREF_STANDARD_SEARCH_ENGINE = "standard_search_engine";
     private static final String PREF_PRIVATE_SEARCH_ENGINE = "private_search_engine";
 
@@ -26,13 +23,6 @@ public class BraveSearchEnginesPreferences
         super.onCreate(savedInstanceState);
         getActivity().setTitle(R.string.brave_search_engines);
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_search_engines_preferences);
-        TemplateUrlServiceFactory.get().addObserver(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        TemplateUrlServiceFactory.get().removeObserver(this);
     }
 
     @Override
@@ -49,10 +39,5 @@ public class BraveSearchEnginesPreferences
         searchEnginePreference = findPreference(PREF_PRIVATE_SEARCH_ENGINE);
         searchEnginePreference.setEnabled(true);
         searchEnginePreference.setSummary(BraveSearchEngineUtils.getDSEShortName(true));
-    }
-
-    @Override
-    public void onTemplateURLServiceChanged() {
-        new Handler().post(() -> updateSearchEnginePreference());
     }
 }
