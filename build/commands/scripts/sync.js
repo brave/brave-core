@@ -23,13 +23,20 @@ program
   .option('--ignore_chromium', 'do not update chromium version even if it is stale')
   .option('--nohooks', 'Do not run hooks after updating')
 
-const maybeInstallDepotTools = (options = config.defaultOptions) => {
+function maybeInstallDepotTools(options = config.defaultOptions) {
   options.cwd = config.braveCoreDir
 
   if (!fs.existsSync(config.depotToolsDir)) {
     Log.progress('Install Depot Tools...')
     fs.mkdirSync(config.depotToolsDir)
-    util.run('git', ['-C', config.depotToolsDir, 'clone', 'https://chromium.googlesource.com/chromium/tools/depot_tools.git', '.'], options)
+    util.run(
+        'git',
+        [
+          '-C', config.depotToolsDir, 'clone',
+          'https://chromium.googlesource.com/chromium/tools/depot_tools.git',
+          '.'
+        ],
+        options)
     Log.progress('Done Depot Tools...')
   }
 
@@ -42,7 +49,7 @@ const maybeInstallDepotTools = (options = config.defaultOptions) => {
       'is-googler': false,
       'version': 3,
       'countdown': 10,
-      'opt-in': false
+      'opt-in': false,
     };
     fs.writeFileSync(ninjaLogCfgPath, JSON.stringify(ninjaLogCfgConfig))
   }
