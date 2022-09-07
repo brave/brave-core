@@ -46,66 +46,6 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
           ]
         }
       },
-      adsSubdivisionTargetingCodes_: {
-        readOnly: true,
-        type: Array,
-        value() {
-          return [
-            { name: loadTimeData.getString('braveRewardsAutoDetectedItem'), value: 'AUTO' },
-            { name: loadTimeData.getString('braveRewardsDisabledItem'), value: 'DISABLED' },
-            { name: 'Alabama', value: 'US-AL' },
-            { name: 'Alaska', value: 'US-AK' },
-            { name: 'Arizona', value: 'US-AZ' },
-            { name: 'Arkansas', value: 'US-AR' },
-            { name: 'California', value: 'US-CA' },
-            { name: 'Colorado', value: 'US-CO' },
-            { name: 'Connecticut', value: 'US-CT' },
-            { name: 'Delaware', value: 'US-DE' },
-            { name: 'Florida', value: 'US-FL' },
-            { name: 'Georgia', value: 'US-GA' },
-            { name: 'Hawaii', value: 'US-HI' },
-            { name: 'Idaho', value: 'US-ID' },
-            { name: 'Illinois', value: 'US-IL' },
-            { name: 'Indiana', value: 'US-IN' },
-            { name: 'Iowa', value: 'US-IA' },
-            { name: 'Kansas', value: 'US-KS' },
-            { name: 'Kentucky', value: 'US-KY' },
-            { name: 'Louisiana', value: 'US-LA' },
-            { name: 'Maine', value: 'US-ME' },
-            { name: 'Maryland', value: 'US-MD' },
-            { name: 'Massachusetts', value: 'US-MA' },
-            { name: 'Michigan', value: 'US-MI' },
-            { name: 'Minnesota', value: 'US-MN' },
-            { name: 'Mississippi', value: 'US-MS' },
-            { name: 'Missouri', value: 'US-MO' },
-            { name: 'Montana', value: 'US-MT' },
-            { name: 'Nebraska', value: 'US-NE' },
-            { name: 'Nevada', value: 'US-NV' },
-            { name: 'New Hampshire', value: 'US-NH' },
-            { name: 'New Jersey', value: 'US-NJ' },
-            { name: 'New Mexico', value: 'US-NM' },
-            { name: 'New York', value: 'US-NY' },
-            { name: 'North Carolina', value: 'US-NC' },
-            { name: 'North Dakota', value: 'US-ND' },
-            { name: 'Ohio', value: 'US-OH' },
-            { name: 'Oklahoma', value: 'US-OK' },
-            { name: 'Oregon', value: 'US-OR' },
-            { name: 'Pennsylvania', value: 'US-PA' },
-            { name: 'Rhode Island', value: 'US-RI' },
-            { name: 'South Carolina', value: 'US-SC' },
-            { name: 'South Dakota', value: 'US-SD' },
-            { name: 'Tennessee', value: 'US-TN' },
-            { name: 'Texas', value: 'US-TX' },
-            { name: 'Utah', value: 'US-UT' },
-            { name: 'Vermont', value: 'US-VT' },
-            { name: 'Virginia', value: 'US-VA' },
-            { name: 'Washington', value: 'US-WA' },
-            { name: 'West Virginia', value: 'US-WV' },
-            { name: 'Wisconsin', value: 'US-WI' },
-            { name: 'Wyoming', value: 'US-WY' }
-          ]
-        }
-      },
       autoContributeMinVisitTimeOptions_: {
         readOnly: true,
         type: Array,
@@ -208,6 +148,7 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
   getAdsDataForSubdivisionTargeting_() {
     this.browserProxy_.getAdsData().then((adsData) => {
       this.shouldAllowAdsSubdivisionTargeting_ = adsData.shouldAllowAdsSubdivisionTargeting
+      this.countryCode_ = adsData.countryCode
     })
   }
 
@@ -253,6 +194,90 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
   restartBrowser_(e) {
     e.stopPropagation();
     window.open('chrome://restart', '_self');
+  }
+
+  adsSubdivisionTargetingCodes_() {
+    if (this.countryCode_ == 'US') {
+      return this.adsUSASubdivisionTargetingCodes_()
+    }
+
+    if (this.countryCode_ == 'CA') {
+      return this.adsCanadaSubdivisionTargetingCodes_()
+    }
+
+    return []
+  }
+
+  adsUSASubdivisionTargetingCodes_() {
+    return [
+      { name: loadTimeData.getString('braveRewardsAutoDetectedItem'), value: 'AUTO' },
+      { name: loadTimeData.getString('braveRewardsDisabledItem'), value: 'DISABLED' },
+      { name: 'Alabama', value: 'US-AL' },
+      { name: 'Alaska', value: 'US-AK' },
+      { name: 'Arizona', value: 'US-AZ' },
+      { name: 'Arkansas', value: 'US-AR' },
+      { name: 'California', value: 'US-CA' },
+      { name: 'Colorado', value: 'US-CO' },
+      { name: 'Connecticut', value: 'US-CT' },
+      { name: 'Delaware', value: 'US-DE' },
+      { name: 'Florida', value: 'US-FL' },
+      { name: 'Georgia', value: 'US-GA' },
+      { name: 'Hawaii', value: 'US-HI' },
+      { name: 'Idaho', value: 'US-ID' },
+      { name: 'Illinois', value: 'US-IL' },
+      { name: 'Indiana', value: 'US-IN' },
+      { name: 'Iowa', value: 'US-IA' },
+      { name: 'Kansas', value: 'US-KS' },
+      { name: 'Kentucky', value: 'US-KY' },
+      { name: 'Louisiana', value: 'US-LA' },
+      { name: 'Maine', value: 'US-ME' },
+      { name: 'Maryland', value: 'US-MD' },
+      { name: 'Massachusetts', value: 'US-MA' },
+      { name: 'Michigan', value: 'US-MI' },
+      { name: 'Minnesota', value: 'US-MN' },
+      { name: 'Mississippi', value: 'US-MS' },
+      { name: 'Missouri', value: 'US-MO' },
+      { name: 'Montana', value: 'US-MT' },
+      { name: 'Nebraska', value: 'US-NE' },
+      { name: 'Nevada', value: 'US-NV' },
+      { name: 'New Hampshire', value: 'US-NH' },
+      { name: 'New Jersey', value: 'US-NJ' },
+      { name: 'New Mexico', value: 'US-NM' },
+      { name: 'New York', value: 'US-NY' },
+      { name: 'North Carolina', value: 'US-NC' },
+      { name: 'North Dakota', value: 'US-ND' },
+      { name: 'Ohio', value: 'US-OH' },
+      { name: 'Oklahoma', value: 'US-OK' },
+      { name: 'Oregon', value: 'US-OR' },
+      { name: 'Pennsylvania', value: 'US-PA' },
+      { name: 'Rhode Island', value: 'US-RI' },
+      { name: 'South Carolina', value: 'US-SC' },
+      { name: 'South Dakota', value: 'US-SD' },
+      { name: 'Tennessee', value: 'US-TN' },
+      { name: 'Texas', value: 'US-TX' },
+      { name: 'Utah', value: 'US-UT' },
+      { name: 'Vermont', value: 'US-VT' },
+      { name: 'Virginia', value: 'US-VA' },
+      { name: 'Washington', value: 'US-WA' },
+      { name: 'West Virginia', value: 'US-WV' },
+      { name: 'Wisconsin', value: 'US-WI' },
+      { name: 'Wyoming', value: 'US-WY' }
+    ]
+  }
+
+  adsCanadaSubdivisionTargetingCodes_() {
+    return [
+      { name: loadTimeData.getString('braveRewardsAutoDetectedItem'), value: 'AUTO' },
+      { name: loadTimeData.getString('braveRewardsDisabledItem'), value: 'DISABLED' },
+      { name: 'Alberta', value: 'CA-AB' },
+      { name: 'British Columbia', value: 'CA-BC' },
+      { name: 'Manitoba', value: 'CA-MB' },
+      { name: 'New Brunswick', value: 'CA-NB' },
+      { name: 'Nova Scotia', value: 'CA-NS' },
+      { name: 'Ontario', value: 'CA-ON' },
+      { name: 'Quebec', value: 'CA-QC' },
+      { name: 'Saskatchewan', value: 'CA-SK' }
+    ]
   }
 }
 

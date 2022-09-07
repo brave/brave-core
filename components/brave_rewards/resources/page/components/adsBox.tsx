@@ -94,6 +94,37 @@ class AdsBox extends React.Component<Props, State> {
       automaticallyDetectedAdsSubdivisionTargeting
     } = this.props.rewardsData.adsData
 
+    const {
+      currentCountryCode
+    } = this.props.rewardsData
+
+    let subdivisions: Array<[string, string]> = []
+    if (currentCountryCode === 'US') {
+      subdivisions = this.getUnitedStatesSubdivisions()
+    } else if (currentCountryCode === 'CA') {
+      subdivisions = this.getCanadaSubdivisions()
+    } else {
+      return subdivisions
+    }
+
+    if (adsSubdivisionTargeting === 'DISABLED') {
+      subdivisions.unshift(['DISABLED', getLocale('adsSubdivisionTargetingDisabled')])
+    } else {
+      subdivisions.unshift(['DISABLED', getLocale('adsSubdivisionTargetingDisable')])
+    }
+
+    const subdivisionMap = new Map<string, string>(subdivisions)
+    const subdivision = subdivisionMap.get(automaticallyDetectedAdsSubdivisionTargeting)
+    if (subdivision && adsSubdivisionTargeting === 'AUTO') {
+      subdivisions.unshift(['AUTO', getLocale('adsSubdivisionTargetingAutoDetectedAs', { adsSubdivisionTarget: subdivision })])
+    } else {
+      subdivisions.unshift(['AUTO', getLocale('adsSubdivisionTargetingAutoDetect')])
+    }
+
+    return subdivisions
+  }
+
+  getUnitedStatesSubdivisions = () => {
     let subdivisions: Array<[string, string]> = [
       ['US-AL', 'Alabama'],
       ['US-AK', 'Alaska'],
@@ -147,19 +178,20 @@ class AdsBox extends React.Component<Props, State> {
       ['US-WY', 'Wyoming']
     ]
 
-    if (adsSubdivisionTargeting === 'DISABLED') {
-      subdivisions.unshift(['DISABLED', getLocale('adsSubdivisionTargetingDisabled')])
-    } else {
-      subdivisions.unshift(['DISABLED', getLocale('adsSubdivisionTargetingDisable')])
-    }
+    return subdivisions
+  }
 
-    const subdivisionMap = new Map<string, string>(subdivisions)
-    const subdivision = subdivisionMap.get(automaticallyDetectedAdsSubdivisionTargeting)
-    if (subdivision && adsSubdivisionTargeting === 'AUTO') {
-      subdivisions.unshift(['AUTO', getLocale('adsSubdivisionTargetingAutoDetectedAs', { adsSubdivisionTarget: subdivision })])
-    } else {
-      subdivisions.unshift(['AUTO', getLocale('adsSubdivisionTargetingAutoDetect')])
-    }
+  getCanadaSubdivisions = () => {
+    let subdivisions: Array<[string, string]> = [
+      ['CA-AB', 'Alberta'],
+      ['CA-BC', 'British Columbia'],
+      ['CA-MB', 'Manitoba'],
+      ['CA-NB', 'New Brunswick'],
+      ['CA-NS', 'Nova Scotia'],
+      ['CA-ON', 'Ontario'],
+      ['CA-QC', 'Quebec'],
+      ['CA-SK', 'Saskatchewan']
+    ]
 
     return subdivisions
   }

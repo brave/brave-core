@@ -20,8 +20,7 @@ using SupportedSubdivisionCodesMap =
 
 const SupportedSubdivisionCodesMap kSupportedSubdivisionCodes = {
     //  Format: { ISO Country Code, { ISO country subdivision codes as defined
-    //  in
-    //  ISO 3166-2 https://en.wikipedia.org/wiki/ISO_3166-2, ... } }
+    //  in ISO 3166-2 https://en.wikipedia.org/wiki/ISO_3166-2, ... } }
     {"US",
      {
          // United States of America
@@ -75,6 +74,18 @@ const SupportedSubdivisionCodesMap kSupportedSubdivisionCodes = {
          "US-WV",  // West Virginia
          "US-WI",  // Wisconsin
          "US-WY",  // Wyoming
+     }},
+    {"CA",
+     {
+         // Canada
+         "CA-AB",  // Alberta
+         "CA-BC",  // British Columbia
+         "CA-MB",  // Manitoba
+         "CA-NB",  // New Brunswick
+         "CA-NS",  // Nova Scotia
+         "CA-ON",  // Ontario
+         "CA-QC",  // Quebec
+         "CA-SK",  // Saskatchewan
      }}};
 
 }  // namespace geographic

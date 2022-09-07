@@ -989,6 +989,9 @@
                   },
                   "adsUIEnabled": {
                     "type": "boolean"
+                  },
+                  "countryCode": {
+                    "type": "string"
                   }
                 }
               }
