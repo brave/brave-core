@@ -6,8 +6,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
 
-import '$web-components/app.global.scss'
-
 // Common components
 import { SettingsText } from '../../../components/default'
 import { Toggle } from '../../../components/toggle'
@@ -30,7 +28,7 @@ interface Props {
 }
 
 const Container = styled.div`
-  background-color: rgba(93, 181, 252, 0.2);
+  background-color: var(--info-background);
   border-radius: 8px;
   padding: 8px;
   align-items: center;
@@ -57,7 +55,7 @@ const DescriptionRow = styled.div`
   padding: 0 8px;
   gap: 8px;
   color: #339AF0;
-  font-family: var(--brave-font-family-non-sherif);
+  font-family: var(--brave-font-family-non-serif);
   letter-spacing: 0.01em;
   margin-bottom: 7px;
 `
