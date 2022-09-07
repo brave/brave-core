@@ -114,7 +114,7 @@ RegisterPolymerComponentReplacement(
         lists_.shieldsBasic = [
           {
             route: routes.SITE_SETTINGS_SHIELDS_STATUS,
-            id: 'shields',
+            id: 'braveShields',
             label: 'siteSettingsShieldsStatus',
             icon: 'cr:extension',
             enabledLabel: 'siteSettingsShieldsUp',
@@ -122,7 +122,7 @@ RegisterPolymerComponentReplacement(
           },
           {
             route: routes.SITE_SETTINGS_HTTPS_EVERYWHERE,
-            id: 'shields_https',
+            id: 'httpUpgradableResources',
             label: 'siteSettingsShieldsUpgradeToHttps',
             icon: 'cr:extension',
             enabledLabel: 'siteSettingsHttpsEverywhereEnabled',

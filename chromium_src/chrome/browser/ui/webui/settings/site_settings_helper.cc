@@ -5,6 +5,8 @@
 
 #include "chrome/browser/ui/webui/settings/site_settings_helper.h"
 
+#include "brave/components/brave_shields/common/brave_shield_constants.h"
+
 #define HasRegisteredGroupName HasRegisteredGroupName_ChromiumImpl
 #define ContentSettingsTypeToGroupName \
   ContentSettingsTypeToGroupName_ChromiumImpl
@@ -33,9 +35,9 @@
     return ContentSettingsType::BRAVE_ETHEREUM;                          \
   if (name == "solana")                                                  \
     return ContentSettingsType::BRAVE_SOLANA;                            \
-  if (name == "shields")                                                 \
+  if (name == brave_shields::kBraveShields)                              \
     return ContentSettingsType::BRAVE_SHIELDS;                           \
-  if (name == "shields_https")                                           \
+  if (name == brave_shields::kHTTPUpgradableResources)                   \
     return ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES;
 
 #include "src/chrome/browser/ui/webui/settings/site_settings_helper.cc"
@@ -70,9 +72,9 @@ base::StringPiece ContentSettingsTypeToGroupName(ContentSettingsType type) {
   if (type == ContentSettingsType::BRAVE_SOLANA)
     return "solana";
   if (type == ContentSettingsType::BRAVE_SHIELDS)
-    return "shields";
+    return brave_shields::kBraveShields;
   if (type == ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES)
-    return "shields_https";
+    return brave_shields::kHTTPUpgradableResources;
   return ContentSettingsTypeToGroupName_ChromiumImpl(type);
 }
 

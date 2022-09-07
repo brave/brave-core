@@ -75,7 +75,7 @@ RegisterPolymerTemplateModifications({
         `)
       }
       pages.insertAdjacentHTML('beforeend', `
-        <template is="dom-if" route-path="/content/shields" no-search>
+        <template is="dom-if" route-path="/content/braveShields" no-search>
         <settings-subpage page-title="${I18nBehavior.i18n('siteSettingsShieldsStatus')}">
         <category-setting-exceptions
         category="[[contentSettingsTypesEnum_.SHIELDS]]"
@@ -86,7 +86,7 @@ RegisterPolymerTemplateModifications({
         </template>
       `)
       pages.insertAdjacentHTML('beforeend', `
-        <template is="dom-if" route-path="/content/shields_https" no-search>
+        <template is="dom-if" route-path="/content/httpUpgradableResources" no-search>
         <settings-subpage page-title="${I18nBehavior.i18n('siteSettingsShieldsUpgradeToHttps')}">
         <category-setting-exceptions
         category="[[contentSettingsTypesEnum_.HTTP_UPGRADABLE_RESOURCES]]"

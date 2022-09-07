@@ -6,7 +6,7 @@ index a9dee83d2102f73f88f47700011e0213c870abdc..92b07227a61f8186644594182eaafcb8
    // The following item is not in the C++ kContentSettingsTypeGroupNames, but it
    // is used everywhere where ContentSettingsTypes is used in JS.
    PDF_DOCUMENTS = 'pdfDocuments',
-+  AUTOPLAY = 'autoplay', ETHEREUM = 'ethereum', SOLANA = 'solana', SHIELDS = 'shields', HTTP_UPGRADABLE_RESOURCES = 'shields_https',
++  AUTOPLAY = 'autoplay', ETHEREUM = 'ethereum', SOLANA = 'solana', SHIELDS = 'braveShields', HTTP_UPGRADABLE_RESOURCES = 'httpUpgradableResources',
  }
  
  /**
