@@ -1161,7 +1161,10 @@ void EthereumProviderImpl::ContinueRequestEthereumPermissionsKeyringInfo(
     brave_wallet::mojom::KeyringInfoPtr keyring_info) {
   DCHECK_EQ(keyring_info->id, brave_wallet::mojom::kDefaultKeyringId);
   if (!keyring_info->is_keyring_created) {
-    delegate_->ShowWalletOnboarding();
+    if (!wallet_onboarding_shown_) {
+      delegate_->ShowWalletOnboarding();
+      wallet_onboarding_shown_ = true;
+    }
     OnRequestEthereumPermissions(std::move(callback), std::move(id), method,
                                  origin, RequestPermissionsError::kInternal,
                                  absl::nullopt);
