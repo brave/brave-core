@@ -936,7 +936,6 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
     env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'brave', 'vendor', 'requests'))
     env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'build'))
     env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'third_party', 'depot_tools'))
-    env.GCLIENT_FILE = this.gClientFile
     env.DEPOT_TOOLS_WIN_TOOLCHAIN = '0'
     env.PYTHONUNBUFFERED = '1'
     env.TARGET_ARCH = this.gypTargetArch // for brave scripts

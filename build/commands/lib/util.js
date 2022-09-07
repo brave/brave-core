@@ -7,14 +7,6 @@ const l10nUtil = require('./l10nUtil')
 const Log = require('./sync/logging')
 const assert = require('assert')
 
-const runGClient = (args, options = {}) => {
-  if (config.gClientVerbose) args.push('--verbose')
-  options.cwd = options.cwd || config.rootDir
-  options = mergeWithDefault(options)
-  options.env.GCLIENT_FILE = config.gClientFile
-  util.run('gclient', args, options)
-}
-
 const mergeWithDefault = (options) => {
   return Object.assign({}, config.defaultOptions, options)
 }
@@ -742,8 +734,14 @@ const util = {
     util.run('python3', [path.join(config.srcDir, 'tools', 'git', 'mass-rename.py')], cmd_options)
   },
 
-  runGClient: (args, options) => {
-    runGClient(args, options)
+  runGClient: (args, options = {}, gClientFile = config.gClientFile) => {
+    if (config.gClientVerbose) {
+      args.push('--verbose')
+    }
+    options.cwd = options.cwd || config.rootDir
+    options = mergeWithDefault(options)
+    options.env.GCLIENT_FILE = gClientFile
+    util.run('gclient', args, options)
   },
 
   applyPatches: () => {
