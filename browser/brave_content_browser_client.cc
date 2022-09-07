@@ -481,6 +481,13 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
         .Add<brave_vpn::mojom::PanelHandlerFactory>();
   }
 #endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+    registry.ForWebUI<playlist::PlaylistUI>()
+        .Add<playlist::mojom::PageHandlerFactory>();
+  }
+#endif
 }
 
 bool BraveContentBrowserClient::AllowWorkerFingerprinting(
@@ -594,13 +601,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   if (base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature)) {
     chrome::internal::RegisterWebUIControllerInterfaceBinder<
         brave_news::mojom::BraveNewsController, BraveNewTabUI>(map);
-  }
-#endif
-
-#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
-    chrome::internal::RegisterWebUIControllerInterfaceBinder<
-        playlist::mojom::PageHandlerFactory, playlist::PlaylistUI>(map);
   }
 #endif
 

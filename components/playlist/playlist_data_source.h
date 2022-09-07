@@ -22,9 +22,9 @@ namespace playlist {
 
 class PlaylistService;
 
-// A URL data source for chrome://playlist-data/<playlist-id>/{thumbnail,media}/
-// resources, for use in webui pages that want to display downloaded
-// playlist thumbnail images
+// A URL data source for
+// chrome-untrusted://playlist-data/<playlist-id>/{thumbnail,media}/ resources,
+// for use in webui pages that want to get thumbnails or media data.
 class PlaylistDataSource : public content::URLDataSource {
  public:
   explicit PlaylistDataSource(PlaylistService* service);
