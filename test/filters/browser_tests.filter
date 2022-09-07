@@ -242,6 +242,11 @@
 -DIPSBounceDetectorBrowserTest.Histograms_BounceCategory_Server
 -DIPSTabHelperBrowserTest.Histograms_ClickThenStorage
 -DIPSTabHelperBrowserTest.Histograms_StorageThenClick
+
+# Disabled as we've already implemented similar changes to prevent language
+# fingerprinting, regardless of the feature flag state
+-DisableFeatureReduceAcceptLanguageBrowserTest.NoAcceptLanguageHeader
+
 -DiskCachesizeExperiment.*
 -DistillablePageUtilsBrowserTestAllArticles.*
 -DNSErrorPageTest.*
