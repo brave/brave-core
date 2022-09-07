@@ -16,8 +16,6 @@
 #include "content/public/browser/browser_task_traits.h"
 
 #define DAT_FILE "rs-ABPFilterParserData.dat"
-#define REGIONAL_CATALOG "regional_catalog.json"
-const char kAdBlockResourcesFilename[] = "resources.json";
 
 namespace brave_shields {
 
@@ -45,22 +43,6 @@ void AdBlockDefaultFiltersProvider::OnComponentReady(
                      component_path_.AppendASCII(DAT_FILE)),
       base::BindOnce(&AdBlockDefaultFiltersProvider::OnDATLoaded,
                      weak_factory_.GetWeakPtr(), true));
-
-  // Load the resources (as a string)
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&brave_component_updater::GetDATFileAsString,
-                     component_path_.AppendASCII(kAdBlockResourcesFilename)),
-      base::BindOnce(&AdBlockDefaultFiltersProvider::OnResourcesLoaded,
-                     weak_factory_.GetWeakPtr()));
-
-  // Load the regional catalog (as a string)
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&brave_component_updater::GetDATFileAsString,
-                     component_path_.AppendASCII(REGIONAL_CATALOG)),
-      base::BindOnce(&AdBlockDefaultFiltersProvider::OnFilterListCatalogLoaded,
-                     weak_factory_.GetWeakPtr()));
 }
 
 void AdBlockDefaultFiltersProvider::LoadDATBuffer(
@@ -77,37 +59,6 @@ void AdBlockDefaultFiltersProvider::LoadDATBuffer(
       base::BindOnce(&brave_component_updater::ReadDATFileData,
                      component_path_.AppendASCII(DAT_FILE)),
       base::BindOnce(std::move(cb), true));
-}
-
-void AdBlockDefaultFiltersProvider::LoadResources(
-    base::OnceCallback<void(const std::string& resources_json)> cb) {
-  if (component_path_.empty()) {
-    // If the path is not ready yet, run the callback with empty resources to
-    // avoid blocking filter data loads.
-    std::move(cb).Run("[]");
-    return;
-  }
-
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&brave_component_updater::GetDATFileAsString,
-                     component_path_.AppendASCII(kAdBlockResourcesFilename)),
-      std::move(cb));
-}
-
-void AdBlockDefaultFiltersProvider::LoadFilterListCatalog(
-    base::OnceCallback<void(const std::string& catalog_json)> cb) {
-  if (component_path_.empty()) {
-    // If the path is not ready yet, don't run the callback. An update should be
-    // pushed soon.
-    return;
-  }
-
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&brave_component_updater::GetDATFileAsString,
-                     component_path_.AppendASCII(REGIONAL_CATALOG)),
-      std::move(cb));
 }
 
 }  // namespace brave_shields

@@ -46,6 +46,7 @@ namespace brave_shields {
 
 class AdBlockEngine;
 class AdBlockDefaultFiltersProvider;
+class AdBlockDefaultResourceProvider;
 class AdBlockRegionalServiceManager;
 class AdBlockCustomFiltersProvider;
 class AdBlockFilterListCatalogProvider;
@@ -157,10 +158,14 @@ class AdBlockService {
 
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
 
+  std::unique_ptr<brave_shields::AdBlockDefaultResourceProvider>
+      resource_provider_;
   std::unique_ptr<brave_shields::AdBlockCustomFiltersProvider>
       custom_filters_provider_;
   std::unique_ptr<brave_shields::AdBlockDefaultFiltersProvider>
       default_filters_provider_;
+  std::unique_ptr<brave_shields::AdBlockFilterListCatalogProvider>
+      filter_list_catalog_provider_;
 
   std::unique_ptr<brave_shields::AdBlockRegionalServiceManager>
       regional_service_manager_;

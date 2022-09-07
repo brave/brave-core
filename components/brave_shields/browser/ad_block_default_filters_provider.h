@@ -13,7 +13,6 @@
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/browser/ad_block_filter_list_catalog_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_filters_provider.h"
-#include "brave/components/brave_shields/browser/ad_block_resource_provider.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 using brave_component_updater::DATFileDataBuffer;
@@ -30,9 +29,7 @@ class AdBlockServiceTest;
 
 namespace brave_shields {
 
-class AdBlockDefaultFiltersProvider : public AdBlockFiltersProvider,
-                                      public AdBlockResourceProvider,
-                                      public AdBlockFilterListCatalogProvider {
+class AdBlockDefaultFiltersProvider : public AdBlockFiltersProvider {
  public:
   explicit AdBlockDefaultFiltersProvider(
       component_updater::ComponentUpdateService* cus);
@@ -44,12 +41,6 @@ class AdBlockDefaultFiltersProvider : public AdBlockFiltersProvider,
   void LoadDATBuffer(
       base::OnceCallback<void(bool deserialize,
                               const DATFileDataBuffer& dat_buf)>) override;
-
-  void LoadResources(
-      base::OnceCallback<void(const std::string& resources_json)>) override;
-
-  void LoadFilterListCatalog(
-      base::OnceCallback<void(const std::string& catalog_json)>) override;
 
  private:
   friend class ::AdBlockServiceTest;

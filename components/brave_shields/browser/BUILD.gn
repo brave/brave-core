@@ -5,6 +5,8 @@ if (!is_ios) {
       "ad_block_custom_filters_provider.h",
       "ad_block_default_filters_provider.cc",
       "ad_block_default_filters_provider.h",
+      "ad_block_default_resource_provider.cc",
+      "ad_block_default_resource_provider.h",
       "ad_block_engine.cc",
       "ad_block_engine.h",
       "ad_block_filter_list_catalog_provider.cc",
