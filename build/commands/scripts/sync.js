@@ -9,6 +9,7 @@ const path = require('path')
 const config = require('../lib/config')
 const util = require('../lib/util')
 const Log = require('../lib/sync/logging')
+const chalk = require('chalk')
 
 program
   .version(process.env.npm_package_version)
@@ -47,6 +48,110 @@ const maybeInstallDepotTools = (options = config.defaultOptions) => {
   }
 }
 
+function buildGClientConfig() {
+  function replacer(key, value) {
+    return value;
+  }
+
+  const solutions = [
+    {
+      managed: "%False%",
+      name: "src",
+      url: config.chromiumRepo,
+      custom_deps: {
+        "src/third_party/WebKit/LayoutTests": "%None%",
+        "src/chrome_frame/tools/test/reference_build/chrome": "%None%",
+        "src/chrome_frame/tools/test/reference_build/chrome_win": "%None%",
+        "src/chrome/tools/test/reference_build/chrome": "%None%",
+        "src/chrome/tools/test/reference_build/chrome_linux": "%None%",
+        "src/chrome/tools/test/reference_build/chrome_mac": "%None%",
+        "src/chrome/tools/test/reference_build/chrome_win": "%None%"
+      },
+      custom_vars: {
+        "checkout_pgo_profiles": config.isBraveReleaseBuild() ? "%True%" : "%False%"
+      }
+    },
+    {
+      managed: "%False%",
+      name: "src/brave",
+      // We do not use gclient to manage brave-core, so this should
+      // not actually get used.
+      url: 'https://github.com/brave/brave-core.git'
+    }
+  ]
+
+  let cache_dir = process.env.GIT_CACHE_PATH ? ('\ncache_dir = "' + process.env.GIT_CACHE_PATH + '"\n') : '\n'
+
+  let out = 'solutions = ' + JSON.stringify(solutions, replacer, 2)
+    .replace(/"%None%"/g, "None").replace(/"%False%"/g, "False").replace(/"%True%"/g, "True") + cache_dir
+
+  if (config.targetOS) {
+    out = out + "target_os = [ '" + config.targetOS + "' ]"
+  }
+
+  fs.writeFileSync(config.defaultGClientFile, out)
+}
+
+function shouldUpdateChromium(chromiumRef = config.getProjectRef('chrome')) {
+  const headSHA = util.runGit(config.srcDir, ['rev-parse', 'HEAD'], true)
+  const targetSHA = util.runGit(config.srcDir, ['rev-parse', chromiumRef], true)
+  const needsUpdate = ((targetSHA !== headSHA) || (!headSHA && !targetSHA))
+  if (needsUpdate) {
+    const currentRef = util.getGitReadableLocalRef(config.srcDir)
+    console.log(`Chromium repo ${chalk.blue.bold('needs update')}. Target is ${chalk.italic(chromiumRef)} at commit ${targetSHA || '[missing]'} but current commit is ${chalk.italic(currentRef || '[unknown]')} at commit ${chalk.inverse(headSHA || '[missing]')}.`)
+  } else {
+    console.log(chalk.green.bold(`Chromium repo does not need update as it is already ${chalk.italic(chromiumRef)} at commit ${targetSHA || '[missing]'}.`))
+  }
+  return needsUpdate
+}
+
+function gclientSync(forceReset = false, cleanup = false, shouldCheckChromiumVersion = true, options = {}) {
+  let reset = forceReset
+
+  // base args
+  const initialArgs = ['sync', '--nohooks']
+  const chromiumArgs = ['--revision', 'src@' + config.getProjectRef('chrome')]
+  const resetArgs = ['--reset', '--with_tags', '--with_branch_heads', '--upstream']
+
+  let args = [...initialArgs]
+  let didUpdateChromium = false
+
+  if (!shouldCheckChromiumVersion) {
+    const chromiumNeedsUpdate = shouldUpdateChromium()
+    if (chromiumNeedsUpdate) {
+      console.warn(chalk.yellow.bold('Chromium needed update but received the flag to skip performing the update. Working directory may not compile correctly.'))
+    }
+  } else if (forceReset || shouldUpdateChromium()) {
+    args = [...args, ...chromiumArgs]
+    reset = true
+    didUpdateChromium = true
+  }
+
+  if (forceReset) {
+    args = args.concat(['--force'])
+    if (cleanup) {
+      // temporarily ignored until we can figure out how not to delete src/brave in the process
+      // args = args.concat(['-D'])
+    }
+  }
+
+  if (reset) {
+    args = [...args, ...resetArgs]
+  }
+
+  util.runGClient(args, options)
+
+  return {
+    didUpdateChromium
+  }
+}
+
+function gclientRunhooks(options = {}) {
+  Log.progress('Running gclient hooks...')
+  util.runGClient(['runhooks'], options)
+  Log.progress('Done running gclient hooks.')
+}
+
 async function RunCommand () {
   program.parse(process.argv)
   config.update(program)
@@ -60,11 +165,11 @@ async function RunCommand () {
   }
 
   if (program.init) {
-    util.buildGClientConfig()
+    buildGClientConfig()
   }
 
   Log.progress('Running gclient sync...')
-  const result = util.gclientSync(program.init || program.force, program.init, !program.ignore_chromium)
+  const result = gclientSync(program.init || program.force, program.init, !program.ignore_chromium)
   if (result.didUpdateChromium) {
     const postSyncChromiumRef = util.getGitReadableLocalRef(config.srcDir)
     Log.status(`Chromium is now at ${postSyncChromiumRef || '[unknown]'}`)
@@ -74,7 +179,7 @@ async function RunCommand () {
   await util.applyPatches()
 
   if (!program.nohooks) {
-    util.gclientRunhooks()
+    gclientRunhooks()
   }
 }
 
