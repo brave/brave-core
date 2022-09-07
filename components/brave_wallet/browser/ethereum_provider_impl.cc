@@ -979,7 +979,7 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(base::ValueView input_value,
     return;
   }
 
-  if (method == kEthAccounts) {
+  if (method == kEthAccounts || method == kEthCoinbase) {
     GetAllowedAccounts(
         false,
         base::BindOnce(&EthereumProviderImpl::OnContinueGetAllowedAccounts,
@@ -1361,6 +1361,13 @@ void EthereumProviderImpl::OnContinueGetAllowedAccounts(
       list.Append(account);
     }
     formed_response = base::Value(std::move(list));
+    update_bindings = false;
+  } else if (method == kEthCoinbase) {
+    if (accounts.empty()) {
+      formed_response = base::Value();
+    } else {
+      formed_response = base::Value(accounts[0]);
+    }
     update_bindings = false;
   } else {
     formed_response =
