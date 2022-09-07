@@ -86,7 +86,7 @@ void WalletRecover::OnRecover(type::Result result,
     return;
   }
 
-  auto wallet = type::BraveWallet::New();
+  auto wallet = type::RewardsWallet::New();
   wallet->payment_id = payment_id;
   wallet->recovery_seed = new_seed;
   const bool success = ledger_->wallet()->SetWallet(std::move(wallet));

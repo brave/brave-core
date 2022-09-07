@@ -104,7 +104,7 @@ using PublisherInfoCallback =
 using GetPublisherInfoCallback =
     std::function<void(type::Result, type::PublisherInfoPtr)>;
 
-using GetBraveWalletCallback = std::function<void(type::BraveWalletPtr)>;
+using GetRewardsWalletCallback = std::function<void(type::RewardsWalletPtr)>;
 
 using PostSuggestionsClaimCallback =
     base::OnceCallback<void(type::Result result, std::string drain_id)>;
@@ -128,7 +128,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void Initialize(bool execute_create_script, LegacyResultCallback) = 0;
 
-  virtual void CreateWallet(ResultCallback callback) = 0;
+  virtual void CreateRewardsWallet(ResultCallback callback) = 0;
 
   virtual void OneTimeTip(const std::string& publisher_key,
                           double amount,
@@ -367,12 +367,12 @@ class LEDGER_EXPORT Ledger {
 
   virtual void GetEventLogs(GetEventLogsCallback callback) = 0;
 
-  virtual void GetBraveWallet(GetBraveWalletCallback callback) = 0;
+  virtual void GetRewardsWallet(GetRewardsWalletCallback callback) = 0;
 
-  virtual std::string GetWalletPassphrase() = 0;
+  virtual std::string GetRewardsWalletPassphrase() = 0;
 
-  virtual void LinkBraveWallet(const std::string& destination_payment_id,
-                               PostSuggestionsClaimCallback callback) = 0;
+  virtual void LinkRewardsWallet(const std::string& destination_payment_id,
+                                 PostSuggestionsClaimCallback callback) = 0;
 
   virtual void GetDrainStatus(const std::string& drain_id,
                               GetDrainCallback callback) = 0;

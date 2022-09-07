@@ -164,7 +164,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ActivateSettingsModal) {
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, SiteBannerDefaultTipChoices) {
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   rewards_browsertest_util::NavigateToPublisherPage(
       browser(),
       https_server_.get(),
@@ -185,7 +185,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, SiteBannerDefaultTipChoices) {
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, SiteBannerDefaultPublisherAmounts) {
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   rewards_browsertest_util::NavigateToPublisherPage(
       browser(),
       https_server_.get(),
@@ -203,7 +203,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, SiteBannerDefaultPublisherAmounts) {
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, NotVerifiedWallet) {
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   context_helper_->LoadRewardsPage();
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
   contribution_->IsBalanceCorrect();
@@ -232,7 +232,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, NotVerifiedWallet) {
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ShowACPercentInThePanel) {
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   rewards_service_->SetAutoContributeEnabled(true);
   context_helper_->LoadRewardsPage();
   context_helper_->VisitPublisher(
@@ -258,7 +258,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ShowACPercentInThePanel) {
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        ZeroBalanceWalletClaimNotCalled_Uphold) {
   response_->SetVerifiedWallet(true);
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   contribution_->SetUpUpholdWallet(rewards_service_, 50.0);
 
   response_->ClearRequests();
@@ -290,7 +290,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        ZeroBalanceWalletClaimNotCalled_Gemini) {
   response_->SetVerifiedWallet(true);
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   contribution_->SetUpGeminiWallet(rewards_service_, 50.0);
 
   response_->ClearRequests();
@@ -319,7 +319,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewards) {
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   context_helper_->LoadRewardsPage();
 
   rewards_browsertest_util::WaitForElementThenClick(
@@ -338,7 +338,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewards) {
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewardsWithBAT) {
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   context_helper_->LoadRewardsPage();
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
 
@@ -365,7 +365,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, EnableRewardsWithBalance) {
   prefs->SetBoolean(brave_rewards::prefs::kAutoContributeEnabled, false);
 
   // Load a balance into the user's wallet
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   rewards_service_->FetchPromotions();
   promotion_->WaitForPromotionInitialization();
   promotion_->ClaimPromotionViaCode();

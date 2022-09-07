@@ -435,14 +435,14 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 
 - (void)createWallet:(void (^)(NSError* _Nullable))completion {
   const auto __weak weakSelf = self;
-  // Results that can come from CreateWallet():
+  // Results that can come from CreateRewardsWallet():
   //   - WALLET_CREATED: Good to go
   //   - LEDGER_ERROR: Already initialized
   //   - BAD_REGISTRATION_RESPONSE: Request credentials call failure or
   //   malformed data
   //   - REGISTRATION_VERIFICATION_FAILED: Missing master user token
   self.initializingWallet = YES;
-  ledger->CreateWallet(base::BindOnce(^(ledger::type::Result result) {
+  ledger->CreateRewardsWallet(base::BindOnce(^(ledger::type::Result result) {
     const auto strongSelf = weakSelf;
     if (!strongSelf) {
       return;
@@ -487,14 +487,14 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 }
 
 - (void)currentWalletInfo:
-    (void (^)(LedgerBraveWallet* _Nullable wallet))completion {
-  ledger->GetBraveWallet(^(ledger::type::BraveWalletPtr wallet) {
+    (void (^)(LedgerRewardsWallet* _Nullable wallet))completion {
+  ledger->GetRewardsWallet(^(ledger::type::RewardsWalletPtr wallet) {
     if (wallet.get() == nullptr) {
       completion(nil);
       return;
     }
     const auto bridgedWallet =
-        [[LedgerBraveWallet alloc] initWithBraveWallet:*wallet];
+        [[LedgerRewardsWallet alloc] initWithRewardsWallet:*wallet];
     completion(bridgedWallet);
   });
 }
@@ -543,7 +543,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 - (void)recoverWalletUsingPassphrase:(NSString*)passphrase
                           completion:(void (^)(NSError* _Nullable))completion {
   const auto __weak weakSelf = self;
-  // Results that can come from CreateWallet():
+  // Results that can come from RecoverWallet():
   //   - LEDGER_OK: Good to go
   //   - LEDGER_ERROR: Recovery failed
   ledger->RecoverWallet(base::SysNSStringToUTF8(passphrase), ^(
@@ -586,21 +586,21 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 - (void)linkBraveWalletToPaymentId:(NSString*)paymentId
                         completion:(void (^)(LedgerResult result,
                                              NSString* drainID))completion {
-  ledger->LinkBraveWallet(base::SysNSStringToUTF8(paymentId),
-                          base::BindOnce(^(ledger::type::Result result,
-                                           std::string drain_id) {
-                            // The internal draining API now returns a success
-                            // code when there are no tokens to drain. Since
-                            // brave-ios expects a valid drain ID when the
-                            // result is LEDGER_OK, to maintain backward
-                            // compatibility convert the result to an error code
-                            // when the drain ID is empty.
-                            if (drain_id.empty()) {
-                              result = ledger::type::Result::LEDGER_ERROR;
-                            }
-                            completion(static_cast<LedgerResult>(result),
-                                       base::SysUTF8ToNSString(drain_id));
-                          }));
+  ledger->LinkRewardsWallet(
+      base::SysNSStringToUTF8(paymentId),
+      base::BindOnce(^(ledger::type::Result result, std::string drain_id) {
+        // The internal draining API now returns a success
+        // code when there are no tokens to drain. Since
+        // brave-ios expects a valid drain ID when the
+        // result is LEDGER_OK, to maintain backward
+        // compatibility convert the result to an error code
+        // when the drain ID is empty.
+        if (drain_id.empty()) {
+          result = ledger::type::Result::LEDGER_ERROR;
+        }
+        completion(static_cast<LedgerResult>(result),
+                   base::SysUTF8ToNSString(drain_id));
+      }));
 }
 
 - (void)drainStatusForDrainId:(NSString*)drainId

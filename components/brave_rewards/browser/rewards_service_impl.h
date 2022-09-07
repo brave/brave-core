@@ -125,7 +125,7 @@ class RewardsServiceImpl : public RewardsService,
       std::unique_ptr<RewardsServicePrivateObserver> private_observer,
       std::unique_ptr<RewardsNotificationServiceObserver>
           notification_observer);
-  void CreateWallet(CreateWalletCallback callback) override;
+  void CreateRewardsWallet(CreateRewardsWalletCallback callback) override;
   void GetRewardsParameters(GetRewardsParametersCallback callback) override;
   void FetchPromotions() override;
   void ClaimPromotion(
@@ -349,11 +349,12 @@ class RewardsServiceImpl : public RewardsService,
 
   absl::optional<std::string> DecryptString(const std::string& value) override;
 
-  void GetBraveWallet(GetBraveWalletCallback callback) override;
+  void GetRewardsWallet(GetRewardsWalletCallback callback) override;
 
   void StartProcess(base::OnceClosure callback) override;
 
-  void GetWalletPassphrase(GetWalletPassphraseCallback callback) override;
+  void GetRewardsWalletPassphrase(
+      GetRewardsWalletPassphraseCallback callback) override;
 
   void SetAdsEnabled(const bool is_enabled) override;
 
@@ -407,8 +408,8 @@ class RewardsServiceImpl : public RewardsService,
   void OnResult(ledger::LegacyResultCallback callback,
                 ledger::type::Result result);
 
-  void OnCreateWallet(CreateWalletCallback callback,
-                      ledger::type::Result result);
+  void OnCreateRewardsWallet(CreateRewardsWalletCallback callback,
+                             ledger::type::Result result);
   void OnLedgerStateLoaded(ledger::client::OnLoadCallback callback,
                               std::pair<std::string, base::Value> data);
   void OnPublisherStateLoaded(ledger::client::OnLoadCallback callback,
@@ -519,7 +520,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnStartProcessForSetAdsEnabled();
 
-  void OnWalletCreatedForSetAdsEnabled(const ledger::type::Result result);
+  void OnRewardsWalletCreatedForSetAdsEnabled(
+      const ledger::type::Result result);
 
   void OnStartProcessForEnableRewards();
 
@@ -680,7 +682,7 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& publisher_key,
       const std::string& publisher_name) override;
 
-  void OnGetBraveWalletForP3A(ledger::type::BraveWalletPtr wallet);
+  void OnGetRewardsWalletForP3A(ledger::type::RewardsWalletPtr wallet);
 
   bool Connected() const;
   void ConnectionClosed();
@@ -738,9 +740,8 @@ class RewardsServiceImpl : public RewardsService,
       GetEventLogsCallback callback,
       ledger::type::EventLogs logs);
 
-  void OnGetBraveWallet(
-      GetBraveWalletCallback callback,
-      ledger::type::BraveWalletPtr wallet);
+  void OnGetRewardsWallet(GetRewardsWalletCallback callback,
+                          ledger::type::RewardsWalletPtr wallet);
 
   bool IsBitFlyerRegion() const;
 

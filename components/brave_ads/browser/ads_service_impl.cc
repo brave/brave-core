@@ -722,11 +722,11 @@ void AdsServiceImpl::GetRewardsWallet() {
     return;
   }
 
-  rewards_service_->GetBraveWallet(
+  rewards_service_->GetRewardsWallet(
       base::BindOnce(&AdsServiceImpl::OnGetRewardsWallet, AsWeakPtr()));
 }
 
-void AdsServiceImpl::OnGetRewardsWallet(ledger::type::BraveWalletPtr wallet) {
+void AdsServiceImpl::OnGetRewardsWallet(ledger::type::RewardsWalletPtr wallet) {
   if (!IsBatAdsBound() || !wallet) {
     return;
   }

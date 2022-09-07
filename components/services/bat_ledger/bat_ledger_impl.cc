@@ -49,8 +49,8 @@ void BatLedgerImpl::Initialize(
       std::bind(BatLedgerImpl::OnInitialize, holder, _1));
 }
 
-void BatLedgerImpl::CreateWallet(CreateWalletCallback callback) {
-  ledger_->CreateWallet(std::move(callback));
+void BatLedgerImpl::CreateRewardsWallet(CreateRewardsWalletCallback callback) {
+  ledger_->CreateRewardsWallet(std::move(callback));
 }
 
 void BatLedgerImpl::GetRewardsParameters(
@@ -1008,9 +1008,9 @@ void BatLedgerImpl::GetEventLogs(GetEventLogsCallback callback) {
 }
 
 // static
-void BatLedgerImpl::OnGetBraveWallet(
-    CallbackHolder<GetBraveWalletCallback>* holder,
-    ledger::type::BraveWalletPtr wallet) {
+void BatLedgerImpl::OnGetRewardsWallet(
+    CallbackHolder<GetRewardsWalletCallback>* holder,
+    ledger::type::RewardsWalletPtr wallet) {
   DCHECK(holder);
   if (holder->is_valid()) {
     std::move(holder->get()).Run(std::move(wallet));
@@ -1019,18 +1019,17 @@ void BatLedgerImpl::OnGetBraveWallet(
   delete holder;
 }
 
-void BatLedgerImpl::GetBraveWallet(GetBraveWalletCallback callback) {
-  auto* holder = new CallbackHolder<GetBraveWalletCallback>(
+void BatLedgerImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {
+  auto* holder = new CallbackHolder<GetRewardsWalletCallback>(
       AsWeakPtr(), std::move(callback));
 
-  ledger_->GetBraveWallet(
-      std::bind(BatLedgerImpl::OnGetBraveWallet,
-          holder,
-          _1));
+  ledger_->GetRewardsWallet(
+      std::bind(BatLedgerImpl::OnGetRewardsWallet, holder, _1));
 }
 
-void BatLedgerImpl::GetWalletPassphrase(GetWalletPassphraseCallback callback) {
-  std::move(callback).Run(ledger_->GetWalletPassphrase());
+void BatLedgerImpl::GetRewardsWalletPassphrase(
+    GetRewardsWalletPassphraseCallback callback) {
+  std::move(callback).Run(ledger_->GetRewardsWalletPassphrase());
 }
 
 }  // namespace bat_ledger

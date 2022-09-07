@@ -269,7 +269,7 @@ void LedgerImpl::OnStateInitialized(type::Result result,
   callback(type::Result::LEDGER_OK);
 }
 
-void LedgerImpl::CreateWallet(ResultCallback callback) {
+void LedgerImpl::CreateRewardsWallet(ResultCallback callback) {
   WhenReady([this, callback = std::move(callback)]() mutable {
     wallet()->CreateWalletIfNecessary(std::move(callback));
   });
@@ -642,7 +642,7 @@ void LedgerImpl::GetRewardsInternalsInfo(
   WhenReady([this, callback]() {
     auto info = type::RewardsInternalsInfo::New();
 
-    type::BraveWalletPtr wallet = wallet_->GetWallet();
+    type::RewardsWalletPtr wallet = wallet_->GetWallet();
     if (!wallet) {
       BLOG(0, "Wallet is null");
       callback(std::move(info));
@@ -948,11 +948,11 @@ bool LedgerImpl::IsShuttingDown() const {
   return ready_state_ == ReadyState::kShuttingDown;
 }
 
-void LedgerImpl::GetBraveWallet(GetBraveWalletCallback callback) {
+void LedgerImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {
   WhenReady([this, callback]() { callback(wallet()->GetWallet()); });
 }
 
-std::string LedgerImpl::GetWalletPassphrase() {
+std::string LedgerImpl::GetRewardsWalletPassphrase() {
   if (!IsReady())
     return "";
 
@@ -964,12 +964,12 @@ std::string LedgerImpl::GetWalletPassphrase() {
   return wallet()->GetWalletPassphrase(std::move(brave_wallet));
 }
 
-void LedgerImpl::LinkBraveWallet(const std::string& destination_payment_id,
-                                 PostSuggestionsClaimCallback callback) {
-  WhenReady(
-      [this, destination_payment_id, callback = std::move(callback)]() mutable {
-        wallet()->LinkBraveWallet(destination_payment_id, std::move(callback));
-      });
+void LedgerImpl::LinkRewardsWallet(const std::string& destination_payment_id,
+                                   PostSuggestionsClaimCallback callback) {
+  WhenReady([this, destination_payment_id,
+             callback = std::move(callback)]() mutable {
+    wallet()->LinkRewardsWallet(destination_payment_id, std::move(callback));
+  });
 }
 
 void LedgerImpl::GetDrainStatus(const std::string& drain_id,

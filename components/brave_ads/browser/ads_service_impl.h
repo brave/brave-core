@@ -158,7 +158,7 @@ class AdsServiceImpl : public AdsService,
   void MaybeShowOnboardingNotification();
 
   void GetRewardsWallet();
-  void OnGetRewardsWallet(ledger::type::BraveWalletPtr wallet);
+  void OnGetRewardsWallet(ledger::type::RewardsWalletPtr wallet);
 
   void StartCheckIdleStateTimer();
   void CheckIdleState();

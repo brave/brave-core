@@ -84,7 +84,7 @@ using ProcessRewardsPageUrlCallback = base::OnceCallback<void(
     const std::string&,
     const std::string&,
     const base::flat_map<std::string, std::string>&)>;
-using CreateWalletCallback =
+using CreateRewardsWalletCallback =
     base::OnceCallback<void(const ledger::type::Result)>;
 using ClaimPromotionCallback = base::OnceCallback<void(
     const ledger::type::Result,
@@ -125,10 +125,10 @@ using SuccessCallback = base::OnceCallback<void(const bool success)>;
 using GetEventLogsCallback =
     base::OnceCallback<void(ledger::type::EventLogs logs)>;
 
-using GetBraveWalletCallback =
-    base::OnceCallback<void(ledger::type::BraveWalletPtr wallet)>;
+using GetRewardsWalletCallback =
+    base::OnceCallback<void(ledger::type::RewardsWalletPtr wallet)>;
 
-using GetWalletPassphraseCallback =
+using GetRewardsWalletPassphraseCallback =
     base::OnceCallback<void(const std::string&)>;
 
 using OnTipCallback = base::OnceCallback<void(ledger::type::Result)>;
@@ -142,7 +142,7 @@ class RewardsService : public KeyedService {
 
   virtual bool IsInitialized() = 0;
 
-  virtual void CreateWallet(CreateWalletCallback callback) = 0;
+  virtual void CreateRewardsWallet(CreateRewardsWalletCallback callback) = 0;
   virtual void GetRewardsParameters(GetRewardsParametersCallback callback) = 0;
   virtual void GetActivityInfoList(const uint32_t start,
                                    const uint32_t limit,
@@ -361,11 +361,12 @@ class RewardsService : public KeyedService {
 
   virtual void GetEventLogs(GetEventLogsCallback callback) = 0;
 
-  virtual void GetBraveWallet(GetBraveWalletCallback callback) = 0;
+  virtual void GetRewardsWallet(GetRewardsWalletCallback callback) = 0;
 
   virtual void StartProcess(base::OnceClosure callback) = 0;
 
-  virtual void GetWalletPassphrase(GetWalletPassphraseCallback callback) = 0;
+  virtual void GetRewardsWalletPassphrase(
+      GetRewardsWalletPassphraseCallback callback) = 0;
 
   virtual void SetAdsEnabled(const bool is_enabled) = 0;
 
