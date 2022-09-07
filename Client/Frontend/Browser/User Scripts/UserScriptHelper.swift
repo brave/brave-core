@@ -36,23 +36,10 @@ class UserScriptHelper {
   static func getUserScriptTypes(for navigationAction: WKNavigationAction, options: DomainScriptOptions) -> Set<UserScriptType> {
     var userScriptTypes: Set<UserScriptType> = []
 
-    // Handle dynamic domain level scripts on the request
-    if let url = navigationAction.request.url {
-      // Add the old domain user scripts
-      if let domainUserScript = DomainUserScript(for: url) {
-        if let shieldType = domainUserScript.shieldType {
-          // We need to check the shield settings for this domain.
-          let domain = Domain.getOrCreate(forUrl: url, persistent: options.contains(.persistShieldSettings))
-
-          if domain.isShieldExpected(shieldType, considerAllShieldsOption: true) {
-            // Add the shield only if its enabled
-            userScriptTypes.insert(.domainUserScript(domainUserScript))
-          }
-        } else {
-          // It means the script is always on. No shield setting is required.
-          userScriptTypes.insert(.domainUserScript(domainUserScript))
-        }
-      }
+    // Handle dynamic domain level scripts on the request that don't use shields
+    // This shield is always on and doesn't need sheild settings
+    if let url = navigationAction.request.url, let domainUserScript = DomainUserScript(for: url), domainUserScript.shieldType == nil {
+      userScriptTypes.insert(.domainUserScript(domainUserScript))
     }
 
     // Handle dynamic domain level scripts on the main document.
@@ -67,6 +54,14 @@ class UserScriptHelper {
       if let etldP1 = mainDocumentURL.baseDomain, isFPProtectionOn {
         userScriptTypes.insert(.nacl) // dependency for `farblingProtection`
         userScriptTypes.insert(.farblingProtection(etld: etldP1))
+      }
+      
+      // Handle dynamic domain level scripts on the request that do use shields (youtube)
+      if let url = navigationAction.request.url, let domainUserScript = DomainUserScript(for: url), let shieldType = domainUserScript.shieldType {
+        if domainForShields.isShieldExpected(shieldType, considerAllShieldsOption: true) {
+          // Add the shield only if its enabled
+          userScriptTypes.insert(.domainUserScript(domainUserScript))
+        }
       }
     }
 
