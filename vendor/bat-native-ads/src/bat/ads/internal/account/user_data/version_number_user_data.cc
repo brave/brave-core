@@ -16,6 +16,7 @@ constexpr char kVersionNumberKey[] = "versionNumber";
 
 base::Value::Dict GetVersionNumber() {
   base::Value::Dict user_data;
+
   user_data.Set(kVersionNumberKey, GetBrowserVersionNumber());
 
   return user_data;

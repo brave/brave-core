@@ -83,8 +83,6 @@ EpsilonGreedyBandit::EpsilonGreedyBandit() {
   InitializeArms();
 }
 
-EpsilonGreedyBandit::~EpsilonGreedyBandit() = default;
-
 void EpsilonGreedyBandit::Process(const BanditFeedbackInfo& feedback) {
   DCHECK(!feedback.segment.empty());
 

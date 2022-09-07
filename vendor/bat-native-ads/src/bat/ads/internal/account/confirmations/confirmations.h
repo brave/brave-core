@@ -7,17 +7,11 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATIONS_H_
 
 #include <memory>
-#include <string>
 
 #include "base/memory/raw_ptr.h"
-#include "base/values.h"
 #include "bat/ads/internal/account/confirmations/confirmations_delegate.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
 #include "bat/ads/internal/base/timer/backoff_timer.h"
-
-namespace base {
-class Time;
-}  // namespace base
 
 namespace ads {
 
@@ -26,8 +20,6 @@ class TokenGeneratorInterface;
 struct UnblindedPaymentTokenInfo;
 }  // namespace privacy
 
-class AdType;
-class ConfirmationType;
 class RedeemUnblindedToken;
 struct TransactionInfo;
 
@@ -49,13 +41,6 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
   void ProcessRetryQueue();
 
  private:
-  ConfirmationInfo CreateConfirmation(base::Time created_at,
-                                      const std::string& transaction_id,
-                                      const std::string& creative_instance_id,
-                                      const ConfirmationType& confirmation_type,
-                                      const AdType& ad_type,
-                                      const base::Value::Dict& user_data) const;
-
   void Retry();
   void OnRetry();
   void StopRetrying();

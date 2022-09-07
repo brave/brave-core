@@ -1,18 +1,9 @@
 diff --git a/PRESUBMIT.py b/PRESUBMIT.py
-index 8663125b048a4222f1a024ee0b50e4d6c059cfb0..bddf023a8fb18696e89b8d020298e104103364ae 100644
+index 8663125b048a4222f1a024ee0b50e4d6c059cfb0..4388ea7cd43614dc55a88feb3154ffcdb3113aef 100644
 --- a/PRESUBMIT.py
 +++ b/PRESUBMIT.py
-@@ -6032,7 +6032,6 @@ def CheckPythonShebang(input_api, output_api):
-                 file))
-     return result
- 
--
- def CheckBatchAnnotation(input_api, output_api):
-     """Checks that tests have either @Batch or @DoNotBatch annotation. If this
-     is not an instrumentation test, disregard."""
-@@ -6095,3 +6094,5 @@ Robolectric tests do not need a @Batch or @DoNotBatch annotations.
+@@ -6095,3 +6095,4 @@ Robolectric tests do not need a @Batch or @DoNotBatch annotations.
  """, extra_annotation_errors))
  
      return results
-+
-+if not globals().get('__name__'): from lib.import_inline import inline_module; inline_module('chromium_presubmit_overrides', globals(), locals())
++from import_inline import inline_module; inline_module('chromium_presubmit_overrides', globals(), locals())

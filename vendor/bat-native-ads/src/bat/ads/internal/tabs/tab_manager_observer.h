@@ -11,8 +11,7 @@
 #include <vector>
 
 #include "base/observer_list_types.h"
-
-class GURL;
+#include "url/gurl.h"
 
 namespace ads {
 

@@ -18,7 +18,7 @@ TEST(BatAdsCreativeNewTabPageAdWallpapersDatabaseTableTest, TableName) {
   CreativeNewTabPageAdWallpapers database_table;
 
   // Act
-  const std::string& table_name = database_table.GetTableName();
+  const std::string table_name = database_table.GetTableName();
 
   // Assert
   const std::string expected_table_name = "creative_new_tab_page_ad_wallpapers";

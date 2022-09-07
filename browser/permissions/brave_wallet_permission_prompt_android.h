@@ -12,6 +12,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/permissions/brave_ethereum_permission_prompt_dialog_controller_android.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/permissions/permissions_client.h"
 
 namespace content {
@@ -39,7 +40,8 @@ class BraveWalletPermissionPrompt
   };
 
   BraveWalletPermissionPrompt(content::WebContents* web_contents,
-                              std::unique_ptr<Delegate> delegate);
+                              std::unique_ptr<Delegate> delegate,
+                              brave_wallet::mojom::CoinType coin_type);
   ~BraveWalletPermissionPrompt() override;
 
  protected:

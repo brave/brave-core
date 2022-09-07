@@ -14,11 +14,11 @@ namespace ads {
 
 struct IssuersInfo;
 
-namespace JSONReader {
+namespace json::reader {
 
 absl::optional<IssuersInfo> ReadIssuers(const std::string& json);
 
-}  // namespace JSONReader
+}  // namespace json::reader
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_ISSUERS_ISSUERS_JSON_READER_H_

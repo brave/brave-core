@@ -27,11 +27,4 @@ if (binance_enabled) {
     "//content/public/browser",
     "//net",
   ]
-
-  if (is_android) {
-    brave_browser_binance_sources += [
-      "//brave/browser/binance/android/binance_native_worker.cc",
-      "//brave/browser/binance/android/binance_native_worker.h",
-    ]
-  }
 }

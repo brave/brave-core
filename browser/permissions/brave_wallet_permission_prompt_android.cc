@@ -15,11 +15,12 @@
 
 BraveWalletPermissionPrompt::BraveWalletPermissionPrompt(
     content::WebContents* web_contents,
-    std::unique_ptr<Delegate> delegate)
+    std::unique_ptr<Delegate> delegate,
+    brave_wallet::mojom::CoinType coin_type)
     : web_contents_(web_contents), delegate_(std::move(delegate)) {
   dialog_controller_ =
       std::make_unique<BraveEthereumPermissionPromptDialogController>(
-          this, web_contents_);
+          this, web_contents_, coin_type);
   dialog_controller_->ShowDialog();
 }
 

@@ -66,7 +66,7 @@ TEST(BatAdsBlindedTokenTest, FailToDecodeEmptyBase64) {
   // Arrange
 
   // Act
-  const BlindedToken blinded_token = BlindedToken::DecodeBase64("");
+  const BlindedToken blinded_token = BlindedToken::DecodeBase64({});
 
   // Assert
   const bool has_value = blinded_token.has_value();

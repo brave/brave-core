@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/bind.h"
-#include "base/check.h"
 #include "bat/ads/internal/ads/ad_events/ad_events.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/database/database_table_util.h"
@@ -32,7 +31,6 @@ void Reset(ResultCallback callback) {
             if (!command_response ||
                 command_response->status !=
                     mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
-              DCHECK(false);
               std::move(callback).Run(/*success*/ false);
               return;
             }

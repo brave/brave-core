@@ -10,13 +10,11 @@
 #include "base/values.h"
 #include "bat/ads/internal/account/issuers/issuer_info.h"
 
-namespace ads {
-namespace JSONReader {
+namespace ads::json::reader {
 
 absl::optional<int> ParsePing(const base::Value& value);
 absl::optional<IssuerList> ParseIssuers(const base::Value::Dict& value);
 
-}  // namespace JSONReader
-}  // namespace ads
+}  // namespace ads::json::reader
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_ISSUERS_ISSUERS_JSON_READER_UTIL_H_

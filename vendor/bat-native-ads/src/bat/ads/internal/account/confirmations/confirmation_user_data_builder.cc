@@ -1,0 +1,59 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "bat/ads/internal/account/confirmations/confirmation_user_data_builder.h"
+
+#include "base/check_op.h"
+#include "base/values.h"
+#include "bat/ads/internal/account/user_data/build_channel_user_data.h"
+#include "bat/ads/internal/account/user_data/catalog_user_data.h"
+#include "bat/ads/internal/account/user_data/conversion_user_data.h"
+#include "bat/ads/internal/account/user_data/created_at_timestamp_user_data.h"
+#include "bat/ads/internal/account/user_data/locale_user_data.h"
+#include "bat/ads/internal/account/user_data/mutated_user_data.h"
+#include "bat/ads/internal/account/user_data/odyssey_user_data.h"
+#include "bat/ads/internal/account/user_data/platform_user_data.h"
+#include "bat/ads/internal/account/user_data/rotating_hash_user_data.h"
+#include "bat/ads/internal/account/user_data/studies_user_data.h"
+#include "bat/ads/internal/account/user_data/system_timestamp_user_data.h"
+#include "bat/ads/internal/account/user_data/version_number_user_data.h"
+
+namespace ads {
+
+ConfirmationUserDataBuilder::ConfirmationUserDataBuilder(
+    const base::Time created_at,
+    const std::string& creative_instance_id,
+    const ConfirmationType& confirmation_type)
+    : created_at_(created_at),
+      creative_instance_id_(creative_instance_id),
+      confirmation_type_(confirmation_type) {
+  DCHECK(!creative_instance_id_.empty());
+  DCHECK_NE(ConfirmationType::kUndefined, confirmation_type_.value());
+}
+
+ConfirmationUserDataBuilder::~ConfirmationUserDataBuilder() = default;
+
+void ConfirmationUserDataBuilder::Build(
+    UserDataBuilderCallback callback) const {
+  user_data::GetConversion(
+      creative_instance_id_, confirmation_type_,
+      [=](base::Value::Dict user_data) {
+        user_data.Merge(user_data::GetBuildChannel());
+        user_data.Merge(user_data::GetCatalog());
+        user_data.Merge(user_data::GetCreatedAtTimestamp(created_at_));
+        user_data.Merge(user_data::GetLocale());
+        user_data.Merge(user_data::GetMutated());
+        user_data.Merge(user_data::GetOdyssey());
+        user_data.Merge(user_data::GetPlatform());
+        user_data.Merge(user_data::GetRotatingHash(creative_instance_id_));
+        user_data.Merge(user_data::GetStudies());
+        user_data.Merge(user_data::GetSystemTimestamp());
+        user_data.Merge(user_data::GetVersionNumber());
+
+        callback(user_data);
+      });
+}
+
+}  // namespace ads

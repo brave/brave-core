@@ -9,7 +9,6 @@
 #include <string>
 #include <vector>
 
-#include "base/values.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 
 namespace ads {
@@ -23,19 +22,14 @@ UnblindedPaymentTokenList SetUnblindedPaymentTokens(int count);
 
 UnblindedPaymentTokenInfo CreateUnblindedPaymentToken(
     const std::string& unblinded_payment_token_base64);
-
 UnblindedPaymentTokenInfo CreateUnblindedPaymentToken(
     const ConfirmationType& confirmation_type,
     const AdType& ad_type);
-
 UnblindedPaymentTokenList CreateUnblindedPaymentTokens(
     const std::vector<std::string>& unblinded_payment_tokens_base64);
 
 UnblindedPaymentTokenList GetUnblindedPaymentTokens(int count);
-
-UnblindedPaymentTokenList GetRandomUnblindedPaymentTokens(int count);
-
-base::Value::List GetUnblindedPaymentTokensAsList(int count);
+UnblindedPaymentTokenInfo GetUnblindedPaymentToken();
 
 }  // namespace privacy
 }  // namespace ads

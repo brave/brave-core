@@ -61,6 +61,7 @@ class SidebarItemsContentsView : public views::View,
 
   // ui::SimpleMenuModel::Delegate overrides:
   void ExecuteCommand(int command_id, int event_flags) override;
+  bool IsCommandIdVisible(int command_id) const override;
 
   void OnItemAdded(const sidebar::SidebarItem& item,
                    int index,
@@ -82,11 +83,13 @@ class SidebarItemsContentsView : public views::View,
 
   bool IsBubbleVisible() const;
   void Update();
+  void SetDefaultImageAt(int index, const sidebar::SidebarItem& item);
 
  private:
   friend class sidebar::SidebarBrowserTest;
 
   enum ContextMenuIDs {
+    kItemEdit,
     kItemRemove,
   };
 
@@ -94,7 +97,6 @@ class SidebarItemsContentsView : public views::View,
                    int index,
                    bool user_gesture);
   void UpdateItemViewStateAt(int index, bool active);
-  void SetDefaultImageAt(int index, const sidebar::SidebarItem& item);
   bool IsBuiltInTypeItemView(views::View* view) const;
 
   // Called when each item is pressed.
@@ -113,6 +115,7 @@ class SidebarItemsContentsView : public views::View,
   void DoDrawDragIndicator(int index);
   int CalculateTargetDragIndicatorIndex(const gfx::Point& screen_position);
   SidebarItemView* GetItemViewAt(int index);
+  void LaunchEditItemDialog();
 
   raw_ptr<BraveBrowser> browser_ = nullptr;
   raw_ptr<views::DragController> drag_controller_ = nullptr;

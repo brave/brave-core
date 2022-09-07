@@ -167,8 +167,6 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.browser.vpn.utils.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
-import org.chromium.chrome.browser.widget.crypto.binance.BinanceAccountBalance;
-import org.chromium.chrome.browser.widget.crypto.binance.BinanceWidgetManager;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.components.embedder_support.util.UrlUtilities;
@@ -879,14 +877,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DEFAULT_BROWSER_2);
             RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DEFAULT_BROWSER_3);
             OnboardingPrefManager.getInstance().setOneTimeNotificationStarted(true);
-        }
-        if (!TextUtils.isEmpty(BinanceWidgetManager.getInstance().getBinanceAccountBalance())) {
-            try {
-                BinanceWidgetManager.binanceAccountBalance = new BinanceAccountBalance(
-                        BinanceWidgetManager.getInstance().getBinanceAccountBalance());
-            } catch (JSONException e) {
-                Log.e("NTP", e.getMessage());
-            }
         }
 
         if (PackageUtils.isFirstInstall(this)

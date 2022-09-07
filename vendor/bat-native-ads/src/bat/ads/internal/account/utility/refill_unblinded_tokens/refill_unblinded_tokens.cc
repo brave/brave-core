@@ -10,6 +10,7 @@
 
 #include "absl/types/optional.h"
 #include "base/bind.h"
+#include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/notreached.h"
 #include "base/time/time.h"
@@ -32,7 +33,7 @@
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
-#include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_util.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"  // IWYU pragma: keep
 #include "net/http/http_status_code.h"
@@ -86,9 +87,7 @@ void RefillUnblindedTokens::MaybeRefill(const WalletInfo& wallet) {
 
   if (!ShouldRefillUnblindedTokens()) {
     BLOG(1, "No need to refill unblinded tokens as we already have "
-                << ConfirmationStateManager::GetInstance()
-                       ->GetUnblindedTokens()
-                       ->Count()
+                << privacy::UnblindedTokenCount()
                 << " unblinded tokens which is above the minimum threshold of "
                 << kMinimumUnblindedTokens);
     return;
@@ -324,21 +323,16 @@ void RefillUnblindedTokens::OnGetSignedTokens(
     privacy::UnblindedTokenInfo unblinded_token;
     unblinded_token.value = batch_dleq_proof_unblinded_token;
     unblinded_token.public_key = public_key;
+    DCHECK(IsValid(unblinded_token));
 
     unblinded_tokens.push_back(unblinded_token);
   }
 
-  ConfirmationStateManager::GetInstance()->GetUnblindedTokens()->AddTokens(
-      unblinded_tokens);
-  ConfirmationStateManager::GetInstance()->Save();
+  AddUnblindedTokens(unblinded_tokens);
 
   BLOG(1, "Added " << unblinded_tokens.size()
-                   << " unblinded tokens, you now "
-                      "have "
-                   << ConfirmationStateManager::GetInstance()
-                          ->GetUnblindedTokens()
-                          ->Count()
-                   << " unblinded tokens");
+                   << " unblinded tokens, you now have "
+                   << privacy::UnblindedTokenCount() << " unblinded tokens");
 
   OnDidRefillUnblindedTokens();
 }
@@ -401,14 +395,11 @@ void RefillUnblindedTokens::OnRetry() {
 }
 
 bool RefillUnblindedTokens::ShouldRefillUnblindedTokens() const {
-  return ConfirmationStateManager::GetInstance()
-             ->GetUnblindedTokens()
-             ->Count() < kMinimumUnblindedTokens;
+  return privacy::UnblindedTokenCount() < kMinimumUnblindedTokens;
 }
 
 int RefillUnblindedTokens::CalculateAmountOfTokensToRefill() const {
-  return kMaximumUnblindedTokens -
-         ConfirmationStateManager::GetInstance()->GetUnblindedTokens()->Count();
+  return kMaximumUnblindedTokens - privacy::UnblindedTokenCount();
 }
 
 }  // namespace ads

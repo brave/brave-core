@@ -35,6 +35,12 @@ SidebarItem::SidebarItem() = default;
 
 SidebarItem::~SidebarItem() = default;
 
+bool SidebarItem::operator==(const SidebarItem& item) const {
+  return url == item.url && title == item.title && type == item.type &&
+         built_in_item_type == item.built_in_item_type &&
+         open_in_panel == item.open_in_panel;
+}
+
 bool IsBuiltInType(const SidebarItem& item) {
   return item.type == SidebarItem::Type::kTypeBuiltIn;
 }

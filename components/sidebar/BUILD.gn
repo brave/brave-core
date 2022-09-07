@@ -41,6 +41,7 @@ source_set("unit_tests") {
       "//components/version_info",
       "//content/public/browser",
       "//content/test:test_support",
+      "//testing/gmock",
       "//testing/gtest",
     ]
   }

@@ -10,7 +10,6 @@ import { useSelector } from 'react-redux'
 import { BraveWallet, WalletState } from '../../../constants/types'
 
 // Utils
-import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
 
@@ -121,7 +120,7 @@ export const ConfirmSolanaTransactionPanel = ({
     <StyledWrapper>
 
       <TopRow>
-        <NetworkText>{reduceNetworkDisplayName(transactionsNetwork.chainName)}</NetworkText>
+        <NetworkText>{transactionsNetwork.chainName}</NetworkText>
         <TransactionQueueStep />
       </TopRow>
 

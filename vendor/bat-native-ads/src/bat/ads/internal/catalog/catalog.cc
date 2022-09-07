@@ -109,7 +109,7 @@ void Catalog::OnFetch(const mojom::UrlResponseInfo& url_response) {
 
   BLOG(1, "Parsing catalog");
   const absl::optional<CatalogInfo> catalog =
-      JSONReader::ReadCatalog(url_response.body);
+      json::reader::ReadCatalog(url_response.body);
   if (!catalog) {
     BLOG(1, "Failed to parse catalog");
     NotifyFailedToUpdateCatalog();

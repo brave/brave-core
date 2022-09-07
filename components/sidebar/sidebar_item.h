@@ -39,6 +39,8 @@ struct SidebarItem {
   SidebarItem();
   ~SidebarItem();
 
+  bool operator==(const SidebarItem& item) const;
+
   GURL url;
   Type type;
   BuiltInItemType built_in_item_type;

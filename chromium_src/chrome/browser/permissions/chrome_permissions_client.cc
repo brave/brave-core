@@ -53,12 +53,20 @@ ChromePermissionsClient::MaybeCreateMessageUI(
     base::WeakPtr<permissions::PermissionPromptAndroid> prompt) {
   std::vector<permissions::PermissionRequest*> requests =
       prompt->delegate()->Requests();
-  if (requests.size() != 0 &&
-      requests[0]->request_type() == permissions::RequestType::kBraveEthereum) {
-    auto delegate = std::make_unique<BraveWalletPermissionPrompt::Delegate>(
-        std::move(prompt));
-    return std::make_unique<BraveWalletPermissionPrompt>(web_contents,
-                                                         std::move(delegate));
+  if (requests.size() > 0) {
+    brave_wallet::mojom::CoinType coin_type =
+        brave_wallet::mojom::CoinType::ETH;
+    permissions::RequestType request_type = requests[0]->request_type();
+    if (request_type == permissions::RequestType::kBraveEthereum ||
+        request_type == permissions::RequestType::kBraveSolana) {
+      if (request_type == permissions::RequestType::kBraveSolana) {
+        coin_type = brave_wallet::mojom::CoinType::SOL;
+      }
+      auto delegate = std::make_unique<BraveWalletPermissionPrompt::Delegate>(
+          std::move(prompt));
+      return std::make_unique<BraveWalletPermissionPrompt>(
+          web_contents, std::move(delegate), coin_type);
+    }
   }
 
   return MaybeCreateMessageUI_ChromiumImpl(web_contents, type,

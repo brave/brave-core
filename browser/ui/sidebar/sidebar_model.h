@@ -57,6 +57,7 @@ class SidebarModel : public SidebarService::Observer,
     virtual void OnItemMoved(const SidebarItem& item, int from, int to) {}
     virtual void OnItemRemoved(int index) {}
     virtual void OnActiveIndexChanged(int old_index, int new_index) {}
+    virtual void OnWillUpdateFavicon(const SidebarItem& item, int index) {}
     virtual void OnFaviconUpdatedForItem(const SidebarItem& item,
                                          const gfx::ImageSkia& image) {}
 
@@ -90,6 +91,8 @@ class SidebarModel : public SidebarService::Observer,
   // SidebarService::Observer overrides:
   void OnItemAdded(const SidebarItem& item, int index) override;
   void OnItemMoved(const SidebarItem& item, int from, int to) override;
+  void OnItemUpdated(const SidebarItem& item,
+                     const SidebarItemUpdate& update) override;
   void OnWillRemoveItem(const SidebarItem& item, int index) override;
   void OnItemRemoved(const SidebarItem& item, int index) override;
 

@@ -197,7 +197,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, TableName) {
   Transactions database_table;
 
   // Act
-  const std::string& table_name = database_table.GetTableName();
+  const std::string table_name = database_table.GetTableName();
 
   // Assert
   const std::string expected_table_name = "transactions";

@@ -24,7 +24,6 @@
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_site_info.h"
 #include "bat/ads/internal/resources/country_components.h"
 #include "bat/ads/internal/resources/resource_manager.h"
-#include "bat/ads/internal/tabs/tab_info.h"
 #include "bat/ads/internal/tabs/tab_manager.h"
 #include "url/gurl.h"
 

@@ -207,7 +207,7 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
     arms["travel"] = arm_1;
 
     targeting::EpsilonGreedyBanditArmInfo arm_2;
-    arm_2.segment = "";
+    arm_2.segment = {};
     arm_2.pulls = 0;
     arm_2.value = 1.0;
     arms[""] = arm_2;

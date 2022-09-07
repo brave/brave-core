@@ -8,7 +8,6 @@
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/internal/account/statement/ad_rewards_features.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
-#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/pref_names.h"

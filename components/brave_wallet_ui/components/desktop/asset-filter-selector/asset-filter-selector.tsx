@@ -49,14 +49,15 @@ export const AssetFilterSelector = () => {
 
   return (
     <StyledWrapper>
+
       <DropDownButton
-        buttonSize='small'
         onClick={toggleShowAssetFilter}>
         <LeftSide>
           {selectedAssetFilter.name}
         </LeftSide>
         <DropDownIcon />
       </DropDownButton>
+
       {showAssetFilter &&
         <DropDown>
           {AssetFilterOptions.map((assetFilterItem: AssetFilterOption) =>

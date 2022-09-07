@@ -16,7 +16,7 @@ TEST(BatAdsEligibleAdsFeaturesUtilTest,
   // Arrange
 
   // Act
-  const AdPredictorWeightList weights = ToAdPredictorWeights("");
+  const AdPredictorWeightList weights = ToAdPredictorWeights({});
 
   // Assert
   const AdPredictorWeightList expected_weights;
