@@ -1,12 +1,12 @@
 diff --git a/tools/perf/page_sets/__init__.py b/tools/perf/page_sets/__init__.py
-index ebbcb6e921c8f80bfc044c5391bd74c5adef8616..e8a9e887b080f015c687e3b92212eaecb00c3b8b 100644
+index ebbcb6e921c8f80bfc044c5391bd74c5adef8616..85d87187d89b5e38ea2345a6e72d46c9f6d82e90 100644
 --- a/tools/perf/page_sets/__init__.py
 +++ b/tools/perf/page_sets/__init__.py
 @@ -14,6 +14,7 @@ from py_utils import discover
  start_dir = os.path.dirname(os.path.abspath(__file__))
  top_level_dir = os.path.dirname(start_dir)
  base_classes = [story.StorySet]
-+import sys; import os; sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'brave', 'script', 'lib')); from import_inline import inline_file_from_src; inline_file_from_src("brave/chromium_src/tools/perf/page_sets/__init__.py", globals(), locals())
++from import_inline import inline_file_from_src; inline_file_from_src("brave/chromium_src/tools/perf/page_sets/__init__.py", globals(), locals())
  
  for base_class in base_classes:
    for cls in discover.DiscoverClasses(

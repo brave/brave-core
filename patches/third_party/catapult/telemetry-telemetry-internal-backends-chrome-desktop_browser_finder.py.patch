@@ -1,12 +1,12 @@
 diff --git a/telemetry/telemetry/internal/backends/chrome/desktop_browser_finder.py b/telemetry/telemetry/internal/backends/chrome/desktop_browser_finder.py
-index e0f327ab20e9ec8a78924618f76037a2008d7008..24b8435901376b766ee7d50c968bc649978bab19 100644
+index e0f327ab20e9ec8a78924618f76037a2008d7008..ae1c086b297723b12b9b013017cc7d6f0be42b6d 100644
 --- a/telemetry/telemetry/internal/backends/chrome/desktop_browser_finder.py
 +++ b/telemetry/telemetry/internal/backends/chrome/desktop_browser_finder.py
 @@ -25,6 +25,7 @@ from telemetry.internal.util import binary_manager
  from telemetry.internal.util import local_first_binary_manager
  # This is a workaround for https://goo.gl/1tGNgd
  from telemetry.internal.util import path as path_module
-+from lib.import_inline import inline_file_from_src; inline_file_from_src("brave/chromium_src/third_party/catapult/telemetry/telemetry/internal/backends/chrome/desktop_browser_finder.py", globals(), locals())
++from import_inline import inline_file_from_src; inline_file_from_src("brave/chromium_src/third_party/catapult/telemetry/telemetry/internal/backends/chrome/desktop_browser_finder.py", globals(), locals())
  
  _BROWSER_STARTUP_TRIES = 3
  
