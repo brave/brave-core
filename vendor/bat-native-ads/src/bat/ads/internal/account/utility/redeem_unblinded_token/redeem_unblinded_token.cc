@@ -100,7 +100,8 @@ void RedeemUnblindedToken::OnCreateConfirmation(
 
     const bool should_retry =
         !(url_response.status_code == net::HTTP_CONFLICT ||
-          url_response.status_code == net::HTTP_BAD_REQUEST);
+          url_response.status_code == net::HTTP_BAD_REQUEST ||
+          url_response.status_code == net::HTTP_CREATED);
     OnFailedToSendConfirmation(confirmation, should_retry);
     return;
   }
