@@ -1,0 +1,23 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/buildflags/buildflags.gni")
+import("//brave/components/playlist/buildflags/buildflags.gni")
+
+brave_browser_ui_webui_configs_deps = [
+  "//base",
+  "//brave/browser/ui",
+  "//brave/components/brave_vpn/buildflags",
+  "//brave/components/playlist/buildflags",
+]
+
+if (enable_playlist_webui) {
+  brave_browser_ui_webui_configs_deps +=
+      [ "//brave/components/playlist:playlist_features" ]
+}
+
+if (enable_brave_vpn) {
+  brave_browser_ui_webui_configs_deps += [ "//brave/components/brave_vpn" ]
+}
