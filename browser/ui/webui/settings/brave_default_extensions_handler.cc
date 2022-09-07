@@ -147,6 +147,11 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       base::BindRepeating(
           &BraveDefaultExtensionsHandler::GetDecentralizedDnsResolveMethodList,
           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getEnsOffchainResolveMethodList",
+      base::BindRepeating(
+          &BraveDefaultExtensionsHandler::GetEnsOffchainResolveMethodList,
+          base::Unretained(this)));
 
   // Can't call this in ctor because it needs to access web_ui().
   InitializePrefCallbacks();
@@ -405,6 +410,16 @@ void BraveDefaultExtensionsHandler::GetDecentralizedDnsResolveMethodList(
 
   ResolveJavascriptCallback(
       args[0], base::Value(decentralized_dns::GetResolveMethodList()));
+}
+
+void BraveDefaultExtensionsHandler::GetEnsOffchainResolveMethodList(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  AllowJavascript();
+
+  ResolveJavascriptCallback(
+      args[0],
+      base::Value(decentralized_dns::GetEnsOffchainResolveMethodList()));
 }
 
 #if BUILDFLAG(ENABLE_IPFS)

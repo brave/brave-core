@@ -140,9 +140,9 @@ export async function isStrongPassword (value: string) {
   return (await apiProxy.keyringService.isStrongPassword(value)).result
 }
 
-export async function findENSAddress (address: string) {
+export async function findENSAddress (address: string, ensOffchainLookupOptions?: BraveWallet.EnsOffchainLookupOptions | undefined) {
   const apiProxy = getAPIProxy()
-  return apiProxy.jsonRpcService.ensGetEthAddr(address)
+  return apiProxy.jsonRpcService.ensGetEthAddr(address, ensOffchainLookupOptions || null)
 }
 
 export async function findUnstoppableDomainAddress (address: string) {

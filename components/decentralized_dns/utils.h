@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_DECENTRALIZED_DNS_UTILS_H_
 
 #include "base/values.h"
+#include "brave/components/decentralized_dns/constants.h"
 
 class GURL;
 class PrefService;
@@ -25,7 +26,11 @@ bool IsENSTLD(const GURL& url);
 bool IsENSResolveMethodAsk(PrefService* local_state);
 bool IsENSResolveMethodEthereum(PrefService* local_state);
 base::Value::List GetResolveMethodList();
+base::Value::List GetEnsOffchainResolveMethodList();
 
+void SetEnsOffchainResolveMethod(PrefService* local_state,
+                                 EnsOffchainResolveMethod method);
+EnsOffchainResolveMethod GetEnsOffchainResolveMethod(PrefService* local_state);
 }  // namespace decentralized_dns
 
 #endif  // BRAVE_COMPONENTS_DECENTRALIZED_DNS_UTILS_H_

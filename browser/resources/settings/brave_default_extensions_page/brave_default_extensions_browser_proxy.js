@@ -20,6 +20,8 @@ cr.define('settings', function () {
     wasSignInEnabledAtStartup () {}
     isMediaRouterEnabled () {}
     getDecentralizedDnsResolveMethodList() {}
+    getEnsOffchainResolveMethodList() {}
+    isENSL2Enabled() {}
   }
 
   /**
@@ -61,6 +63,14 @@ cr.define('settings', function () {
 
     getDecentralizedDnsResolveMethodList () {
       return cr.sendWithPromise('getDecentralizedDnsResolveMethodList')
+    }
+
+    getEnsOffchainResolveMethodList() {
+      return cr.sendWithPromise('getEnsOffchainResolveMethodList')
+    }
+
+    isENSL2Enabled() {
+      return loadTimeData.getBoolean('isENSL2Enabled')
     }
   }
 

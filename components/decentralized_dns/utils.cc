@@ -21,8 +21,8 @@ namespace decentralized_dns {
 
 namespace {
 
-base::Value::Dict MakeSelectValue(ResolveMethodTypes value,
-                                  const std::u16string& name) {
+template <typename T>
+base::Value::Dict MakeSelectValue(T value, const std::u16string& name) {
   base::Value::Dict item;
   item.Set("value", base::Value(static_cast<int>(value)));
   item.Set("name", base::Value(name));
@@ -36,6 +36,9 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
                                 static_cast<int>(ResolveMethodTypes::ASK));
   registry->RegisterIntegerPref(kENSResolveMethod,
                                 static_cast<int>(ResolveMethodTypes::ASK));
+  registry->RegisterIntegerPref(
+      kEnsOffchainResolveMethod,
+      static_cast<int>(EnsOffchainResolveMethod::kAsk));
 }
 
 void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
@@ -114,6 +117,34 @@ base::Value::List GetResolveMethodList() {
                           IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_ETHEREUM)));
 
   return list;
+}
+
+base::Value::List GetEnsOffchainResolveMethodList() {
+  base::Value::List list;
+  list.Append(MakeSelectValue(
+      EnsOffchainResolveMethod::kAsk,
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_DECENTRALIZED_DNS_ENS_OFFCHAIN_RESOLVE_OPTION_ASK)));
+  list.Append(MakeSelectValue(
+      EnsOffchainResolveMethod::kDisabled,
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_DECENTRALIZED_DNS_ENS_OFFCHAIN_RESOLVE_OPTION_DISABLED)));
+  list.Append(MakeSelectValue(
+      EnsOffchainResolveMethod::kEnabled,
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_DECENTRALIZED_DNS_ENS_OFFCHAIN_RESOLVE_OPTION_ENABLED)));
+
+  return list;
+}
+
+void SetEnsOffchainResolveMethod(PrefService* local_state,
+                                 EnsOffchainResolveMethod method) {
+  local_state->SetInteger(kEnsOffchainResolveMethod, static_cast<int>(method));
+}
+
+EnsOffchainResolveMethod GetEnsOffchainResolveMethod(PrefService* local_state) {
+  return static_cast<EnsOffchainResolveMethod>(
+      local_state->GetInteger(kEnsOffchainResolveMethod));
 }
 
 }  // namespace decentralized_dns

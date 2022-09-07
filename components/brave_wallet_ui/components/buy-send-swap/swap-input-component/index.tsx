@@ -43,11 +43,13 @@ import {
   AddressConfirmationText,
   ButtonLeftSide,
   LearnMoreButton,
+  EnsProceedButton,
   WarningRow,
   Spacer
 } from './style'
 
 import { BubbleContainer } from '../shared-styles'
+import { Checkbox } from '../../shared/checkbox/checkbox'
 
 export type BuySendSwapInputType =
   | 'toAmount'
@@ -68,6 +70,8 @@ export interface Props {
   addressWarning?: string
   toAddressOrUrl?: string
   toAddress?: string
+  showEnsOffchainLookupOptions?: boolean
+  ensOffchainLookupOptions?: BraveWallet.EnsOffchainLookupOptions | undefined
   inputName?: string
   orderType?: OrderTypes
   slippageTolerance?: SlippagePresetObjectType
@@ -86,6 +90,7 @@ export interface Props {
   onRefresh?: () => void
   onPaste?: () => void
   onShowCurrencySelection?: () => void
+  setEnsOffchainLookupOptions?: (options: BraveWallet.EnsOffchainLookupOptions) => void
 }
 
 function SwapInputComponent (props: Props) {
@@ -101,6 +106,8 @@ function SwapInputComponent (props: Props) {
     addressWarning,
     toAddressOrUrl,
     toAddress,
+    showEnsOffchainLookupOptions,
+    ensOffchainLookupOptions,
     orderType,
     slippageTolerance,
     orderExpiration,
@@ -115,11 +122,13 @@ function SwapInputComponent (props: Props) {
     onSelectSlippageTolerance,
     onSelectExpiration,
     onShowSelection,
-    onShowCurrencySelection
+    onShowCurrencySelection,
+    setEnsOffchainLookupOptions
   } = props
   const [spin, setSpin] = React.useState<number>(0)
   const [expandSelector, setExpandSelector] = React.useState<boolean>(false)
   const [showSlippageWarning, setShowSlippageWarning] = React.useState<boolean>(false)
+  const [ensOffchainOptionsRemember, setEnsOffchainOptionsRemember] = React.useState<boolean>(ensOffchainLookupOptions ? ensOffchainLookupOptions.remember : false)
 
   // redux
   const {
@@ -262,6 +271,26 @@ function SwapInputComponent (props: Props) {
         console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
       }
     })
+  }
+
+  const onClickEnsOffchainLearnMore = () => {
+    chrome.tabs.create({ url: 'https://github.com/brave/brave-browser/wiki/ENS-offchain-lookup' }, () => {
+      if (chrome.runtime.lastError) {
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+      }
+    })
+  }
+
+  const onClickProceedEnsOffchainYes = () => {
+    if (setEnsOffchainLookupOptions) {
+      setEnsOffchainLookupOptions({ remember: ensOffchainOptionsRemember, allow: true })
+    }
+  }
+
+  const onClickProceedEnsOffchainNo = () => {
+    if (setEnsOffchainLookupOptions) {
+      setEnsOffchainLookupOptions({ remember: ensOffchainOptionsRemember, allow: false })
+    }
   }
 
   const placeholderText = React.useMemo((): string => {
@@ -440,12 +469,37 @@ function SwapInputComponent (props: Props) {
         </WarningRow>
       }
       {componentType === 'toAddress' && toAddress !== toAddressOrUrl && !addressError &&
-        <Tooltip
-          text={toAddress ?? ''}
-          isAddress={true}
-        >
-          <AddressConfirmationText>{reduceAddress(toAddress ?? '')}</AddressConfirmationText>
-        </Tooltip>
+        <>
+          {showEnsOffchainLookupOptions
+            ? (
+              <>
+              <WarningRow>
+                  <WarningText>{getLocale('braveWalletEnsOffchainWarning')}</WarningText>
+              </WarningRow>
+              <span>
+                <EnsProceedButton onClick={onClickProceedEnsOffchainYes}>
+                  {getLocale('braveWalletEnsOffchainProceedWithYes')}
+                </EnsProceedButton>
+                <EnsProceedButton onClick={onClickProceedEnsOffchainNo}>
+                  {getLocale('braveWalletEnsOffchainProceedWithNo')}
+                </EnsProceedButton>
+                <LearnMoreButton onClick={onClickEnsOffchainLearnMore}>
+                  {getLocale('braveWalletAllowAddNetworkLearnMoreButton')}
+                </LearnMoreButton>
+              </span>
+              <Checkbox isChecked={ensOffchainOptionsRemember} onChange={setEnsOffchainOptionsRemember}>
+                {getLocale('braveWalletEnsOffchainDontShowAgain')}
+              </Checkbox>
+              </>
+            )
+            : (<Tooltip
+              text={toAddress ?? ''}
+              isAddress={true}
+            >
+              <AddressConfirmationText>{reduceAddress(toAddress ?? '')}</AddressConfirmationText>
+            </Tooltip>)
+          }
+        </>
       }
     </BubbleContainer >
   )

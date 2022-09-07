@@ -40,6 +40,7 @@
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/constants/brave_services_key.h"
+#include "brave/components/decentralized_dns/utils.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
@@ -364,11 +365,12 @@ class JsonRpcServiceUnitTest : public testing::Test {
               "0000\"}");
         }));
 
+    decentralized_dns::RegisterLocalStatePrefs(local_state_prefs_.registry());
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     brave_wallet::RegisterProfilePrefsForMigration(prefs_.registry());
     ipfs::IpfsService::RegisterProfilePrefs(prefs_.registry());
-    json_rpc_service_ =
-        std::make_unique<JsonRpcService>(shared_url_loader_factory_, &prefs_);
+    json_rpc_service_ = std::make_unique<JsonRpcService>(
+        shared_url_loader_factory_, &prefs_, &local_state_prefs_);
     SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH);
     SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::SOL);
     SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL);
@@ -381,6 +383,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
   }
 
   PrefService* prefs() { return &prefs_; }
+  PrefService* local_state_prefs() { return &local_state_prefs_; }
 
   GURL GetNetwork(const std::string& chain_id, mojom::CoinType coin) {
     return brave_wallet::GetNetworkURL(prefs(), chain_id, coin);
@@ -1008,6 +1011,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
  private:
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
+  sync_preferences::TestingPrefServiceSyncable local_state_prefs_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
@@ -1253,9 +1257,9 @@ TEST_F(JsonRpcServiceUnitTest, EnsGetEthAddr) {
   EXPECT_TRUE(SetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH));
 
   base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
-  EXPECT_CALL(callback, Run("0x983110309620D911731Ac0932219af06091b6744",
+  EXPECT_CALL(callback, Run("0x983110309620D911731Ac0932219af06091b6744", false,
                             mojom::ProviderError::kSuccess, ""));
-  json_rpc_service_->EnsGetEthAddr("brantly-test.eth", callback.Get());
+  json_rpc_service_->EnsGetEthAddr("brantly-test.eth", nullptr, callback.Get());
   base::RunLoop().RunUntilIdle();
 }
 
@@ -2571,25 +2575,26 @@ TEST_F(JsonRpcServiceUnitTest, GetEthAddrInvalidDomain) {
                                                     "brave-.eth", "b.eth"};
 
   for (const auto& domain : invalid_domains) {
-    bool callback_called = false;
-    json_rpc_service_->EnsGetEthAddr(
-        domain,
-        base::BindOnce(&OnStringResponse, &callback_called,
-                       mojom::ProviderError::kInvalidParams,
-                       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
-                       ""));
-    base::RunLoop().RunUntilIdle();
-    EXPECT_TRUE(callback_called);
+    {
+      base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
+      EXPECT_CALL(callback,
+                  Run("", false, mojom::ProviderError::kInvalidParams,
+                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
 
-    callback_called = false;
-    json_rpc_service_->UnstoppableDomainsGetEthAddr(
-        domain,
-        base::BindOnce(&OnStringResponse, &callback_called,
-                       mojom::ProviderError::kInvalidParams,
-                       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
-                       ""));
-    base::RunLoop().RunUntilIdle();
-    EXPECT_TRUE(callback_called);
+      json_rpc_service_->EnsGetEthAddr(domain, nullptr, callback.Get());
+      base::RunLoop().RunUntilIdle();
+    }
+
+    {
+      base::MockCallback<JsonRpcService::UnstoppableDomainsGetEthAddrCallback>
+          callback;
+      EXPECT_CALL(callback,
+                  Run("", mojom::ProviderError::kInvalidParams,
+                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
+
+      json_rpc_service_->UnstoppableDomainsGetEthAddr(domain, callback.Get());
+      base::RunLoop().RunUntilIdle();
+    }
   }
 }
 
@@ -4338,6 +4343,10 @@ class ENSL2JsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
 
   void SetUp() override {
     JsonRpcServiceUnitTest::SetUp();
+    decentralized_dns::SetEnsOffchainResolveMethod(
+        local_state_prefs(),
+        decentralized_dns::EnsOffchainResolveMethod::kEnabled);
+
     json_rpc_endpoint_handler_ = std::make_unique<JsonRpcEnpointHandler>(
         GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH));
 
@@ -4434,18 +4443,18 @@ class ENSL2JsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr) {
   base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
-  EXPECT_CALL(callback, Run(offchain_eth_addr().ToHex(),
+  EXPECT_CALL(callback, Run(offchain_eth_addr().ToHex(), false,
                             mojom::ProviderError::kSuccess, ""));
-  json_rpc_service_->EnsGetEthAddr(ens_host(), callback.Get());
+  json_rpc_service_->EnsGetEthAddr(ens_host(), nullptr, callback.Get());
   base::RunLoop().RunUntilIdle();
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_NoResolver) {
   base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
   EXPECT_CALL(callback,
-              Run("", mojom::ProviderError::kInternalError,
+              Run("", false, mojom::ProviderError::kInternalError,
                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
-  json_rpc_service_->EnsGetEthAddr("unknown-host.eth", callback.Get());
+  json_rpc_service_->EnsGetEthAddr("unknown-host.eth", nullptr, callback.Get());
   base::RunLoop().RunUntilIdle();
 }
 
@@ -4457,9 +4466,9 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_NoEnsip10Support) {
   ensip10_support_handler_->DisableSupport();
 
   base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
-  EXPECT_CALL(callback, Run(onchain_eth_addr().ToHex(),
+  EXPECT_CALL(callback, Run(onchain_eth_addr().ToHex(), false,
                             mojom::ProviderError::kSuccess, ""));
-  json_rpc_service_->EnsGetEthAddr(ens_host(), callback.Get());
+  json_rpc_service_->EnsGetEthAddr(ens_host(), nullptr, callback.Get());
   base::RunLoop().RunUntilIdle();
 }
 
@@ -4469,9 +4478,9 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_Gateway500Error) {
 
   base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
   EXPECT_CALL(callback,
-              Run("", mojom::ProviderError::kInternalError,
+              Run("", false, mojom::ProviderError::kInternalError,
                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
-  json_rpc_service_->EnsGetEthAddr(ens_host(), callback.Get());
+  json_rpc_service_->EnsGetEthAddr(ens_host(), nullptr, callback.Get());
   base::RunLoop().RunUntilIdle();
 }
 
@@ -4481,9 +4490,9 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_GatewayNoRecord) {
 
   base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
   EXPECT_CALL(callback,
-              Run("", mojom::ProviderError::kInvalidParams,
+              Run("", false, mojom::ProviderError::kInvalidParams,
                   l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
-  json_rpc_service_->EnsGetEthAddr(ens_host(), callback.Get());
+  json_rpc_service_->EnsGetEthAddr(ens_host(), nullptr, callback.Get());
   base::RunLoop().RunUntilIdle();
 }
 

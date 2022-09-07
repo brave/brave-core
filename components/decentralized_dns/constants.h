@@ -17,6 +17,8 @@ enum class ResolveMethodTypes {
   MAX_VALUE = ETHEREUM,
 };
 
+enum class EnsOffchainResolveMethod { kAsk, kDisabled, kEnabled };
+
 }  // namespace decentralized_dns
 
 #endif  // BRAVE_COMPONENTS_DECENTRALIZED_DNS_CONSTANTS_H_

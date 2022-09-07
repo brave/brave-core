@@ -11,6 +11,7 @@
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ipfs/ipfs_constants.h"
@@ -55,6 +56,8 @@ const char16_t kDNSLinkLearnMoreURL[] =
 const char16_t kUnstoppableDomainsLearnMoreURL[] =
     u"https://github.com/brave/brave-browser/wiki/"
     u"Resolve-Methods-for-Unstoppable-Domains";
+const char16_t kEnsOffchainLookupLearnMoreURL[] =
+    u"https://github.com/brave/brave-browser/wiki/ENS-offchain-lookup";
 const char16_t kBraveAdsLearnMoreURL[] =
     u"https://support.brave.com/hc/en-us/articles/360026361072-Brave-Ads-FAQ";
 const char16_t kBraveTermsOfUseURL[] = u"https://brave.com/terms-of-use/";
@@ -348,6 +351,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"resolveUnstoppableDomainsDesc",
      IDS_SETTINGS_RESOLVE_UNSTOPPABLE_DOMAINS_DESC},
     {"resolveENSDesc", IDS_SETTINGS_RESOLVE_ENS_DESC},
+    {"ensOffchainLookupTitle", IDS_SETTINGS_ENABLE_ENS_OFFCHAIN_LOOKUP_TITLE},
     {"resolveIPFSURLDesc", IDS_SETTINGS_RESOLVE_IPFS_URLS_DESC},
     {"ipfsPublicGatewayDesc", IDS_SETTINGS_IPFS_PUBLIC_GATEWAY_DESC},
     {"ipfsChangeGatewayButtonLabel",
@@ -592,6 +596,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                              kUnstoppableDomainsLearnMoreURL));
 
   html_source->AddString(
+      "ensOffchainLookupDesc",
+      l10n_util::GetStringFUTF16(IDS_SETTINGS_ENABLE_ENS_OFFCHAIN_LOOKUP_DESC,
+                                 kEnsOffchainLookupLearnMoreURL));
+
+  html_source->AddString(
       "braveRewardsStateLevelAdTargetingDescLabel",
       l10n_util::GetStringFUTF16(
           IDS_SETTINGS_BRAVE_REWARDS_STATE_LEVEL_AD_TARGETING_DESC_LABEL,
@@ -650,6 +659,10 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
 
   html_source->AddBoolean("isMediaRouterEnabled",
                           media_router::MediaRouterEnabled(profile));
+
+  html_source->AddBoolean(
+      "isENSL2Enabled", base::FeatureList::IsEnabled(
+                            brave_wallet::features::kBraveWalletENSL2Feature));
 
   if (base::FeatureList::IsEnabled(
           net::features::kBraveFirstPartyEphemeralStorage)) {

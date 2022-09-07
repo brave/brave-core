@@ -16,19 +16,11 @@ Polymer({
     WebUIListenerBehavior,
   ],
 
-  /**
-   * Keep it the same as Provider in
-   * brave/componentsdecentralized_dns/constants.h.
-   */
-  Provider: {
-    UNSTOPPABLE_DOMAINS: 0,
-    ENS: 1
-  },
-
   properties: {
     showRestartToast_: Boolean,
     unstoppableDomainsResolveMethod_: Array,
     ensResolveMethod_: Array,
+    ensOffchainResolveMethod_: Array,
     widevineEnabledPref_: {
       type: Object,
       value() {
@@ -68,6 +60,9 @@ Polymer({
     })
     this.browserProxy_.getDecentralizedDnsResolveMethodList().then(list => {
       this.ensResolveMethod_ = list
+    })
+    this.browserProxy_.getEnsOffchainResolveMethodList().then(list => {
+      this.ensOffchainResolveMethod_ = list
     })
 
     // PrefControlMixin checks for a pref being valid, so have to fake it,
@@ -121,6 +116,10 @@ Polymer({
 
   shouldShowRestartForMediaRouter_: function(value) {
     return this.browserProxy_.isMediaRouterEnabled() != value;
+  },
+
+  shouldShowENSOffchainToggle_: function () {
+    return this.browserProxy_.isENSL2Enabled();
   }
 
 });

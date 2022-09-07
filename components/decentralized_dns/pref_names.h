@@ -23,6 +23,9 @@ constexpr char kUnstoppableDomainsResolveMethod[] =
 // Ethereum: Resolve domain name using Ethereum JSON-RPC server.
 constexpr char kENSResolveMethod[] = "brave.ens.resolve_method";
 
+constexpr char kEnsOffchainResolveMethod[] =
+    "brave.ens.offchain_resolve_method";
+
 }  // namespace decentralized_dns
 
 #endif  // BRAVE_COMPONENTS_DECENTRALIZED_DNS_PREF_NAMES_H_
