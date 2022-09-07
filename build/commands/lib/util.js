@@ -779,7 +779,18 @@ const util = {
     if (process.platform === 'win32')
       input += '.exe'
     return input
-  }
+  },
+
+  readJSON: (file, default_value = undefined) => {
+    if (!fs.existsSync(file)) {
+      return default_value
+    }
+    return fs.readJSONSync(file)
+  },
+
+  writeJSON: (file, value) => {
+    return fs.writeJSONSync(file, value, {spaces: 2})
+  },
 }
 
 module.exports = util
