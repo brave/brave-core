@@ -10,6 +10,8 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:indeterminateDrawable="@drawable/progress_indeterminate"
+        android:indeterminateTint="@android:color/holo_blue_dark"
+        android:indeterminateTintMode="src_in"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

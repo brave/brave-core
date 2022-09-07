@@ -172,6 +172,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
     <message name="IDS_MINIMUM_TIP_AMOUNT">Minimum tip amount is 0.25 BAT</message>
     <message name="IDS_NOT_ENOUGH_FUND" desc="Text for Not Enough Fund">Not Enough Fund</message>
     <message name="IDS_CONTINUE_TIP" desc="Text for continue">Continue</message>
+    <message name="IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET_UNVERIFIED_PUBLISHER" desc="Text of a tweet after tipping an unverified creator.">
+        Love that #Brave lets me support creators! Just tipped <ph name="NAME">%1$s<ex>user</ex></ph> with #BAT. If they verify at https://creators.brave.com before <ph name="DATE">%2$s<ex>Jan 2, 2023</ex></ph>, the BAT is theirs!
+      </message>
+       <message name="IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET" desc="Text of a tweet after tipping an verified creator.">
+        I just tipped <ph name="NAME">%1$s<ex>user</ex></ph> using the Brave Browser. Check it out at https://brave.com/tips.
+      </message>
 
 
       <message name="IDS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_SWITCH_SUMMARY" desc="Summary for HTTPS Everywhere.">
