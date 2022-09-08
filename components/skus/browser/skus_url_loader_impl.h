@@ -9,10 +9,9 @@
 #include <memory>
 #include <string>
 
+#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
-#include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "services/network/public/cpp/simple_url_loader.h"
 #include "third_party/rust/cxx/v1/crate/include/cxx.h"
 
 namespace skus {
@@ -34,17 +33,26 @@ class SkusUrlLoaderImpl : public SkusUrlLoader {
                skus::HttpResponse)> callback,
       rust::cxxbridge1::Box<skus::HttpRoundtripContext> ctx) override;
 
- private:
-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  std::unique_ptr<network::SimpleURLLoader> simple_url_loader_;
+  void Request(const std::string& method,
+               const GURL& url,
+               const std::string& payload,
+               const std::string& payload_content_type,
+               bool auto_retry_on_network_change,
+               api_request_helper::APIRequestHelper::ResultCallback callback,
+               const base::flat_map<std::string, std::string>& headers,
+               size_t max_body_size /* = -1u */);
 
-  const net::NetworkTrafficAnnotationTag& GetNetworkTrafficAnnotationTag();
+ private:
+  friend class SkusUrlLoaderImplUnitTest;
+
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
 
   void OnFetchComplete(rust::cxxbridge1::Fn<void(
                            rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
                            skus::HttpResponse)> callback,
                        rust::cxxbridge1::Box<skus::HttpRoundtripContext> ctx,
-                       std::unique_ptr<std::string> response_body);
+                       api_request_helper::APIRequestResult api_request_result);
 };
 
 }  // namespace skus

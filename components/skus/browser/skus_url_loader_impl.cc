@@ -8,6 +8,8 @@
 #include <utility>
 #include <vector>
 
+#include "base/strings/string_split.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
 #include "net/base/load_flags.h"
 #include "net/http/http_status_code.h"
@@ -15,44 +17,8 @@
 #include "url/gurl.h"
 
 namespace skus {
-
-SkusUrlLoaderImpl::SkusUrlLoaderImpl(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : url_loader_factory_(url_loader_factory) {}
-
-SkusUrlLoaderImpl::~SkusUrlLoaderImpl() = default;
-
-void SkusUrlLoaderImpl::BeginFetch(
-    const skus::HttpRequest& req,
-    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
-                              skus::HttpResponse)> callback,
-    rust::cxxbridge1::Box<skus::HttpRoundtripContext> ctx) {
-  DCHECK(!simple_url_loader_);
-  auto resource_request = std::make_unique<network::ResourceRequest>();
-  resource_request->url = GURL(static_cast<std::string>(req.url));
-  resource_request->method = static_cast<std::string>(req.method);
-  resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
-  // No cache read, always download from the network.
-  resource_request->load_flags =
-      net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE;
-
-  for (const auto& header : req.headers) {
-    resource_request->headers.AddHeaderFromString(
-        static_cast<std::string>(header));
-  }
-
-  simple_url_loader_ = network::SimpleURLLoader::Create(
-      std::move(resource_request), GetNetworkTrafficAnnotationTag());
-
-  simple_url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory_.get(),
-      base::BindOnce(&SkusUrlLoaderImpl::OnFetchComplete,
-                     base::Unretained(this), std::move(callback),
-                     std::move(ctx)));
-}
-
-const net::NetworkTrafficAnnotationTag&
-SkusUrlLoaderImpl::GetNetworkTrafficAnnotationTag() {
+namespace {
+const net::NetworkTrafficAnnotationTag& GetNetworkTrafficAnnotationTag() {
   static const net::NetworkTrafficAnnotationTag network_traffic_annotation_tag =
       net::DefineNetworkTrafficAnnotation("sku_sdk_execute_request", R"(
       semantics {
@@ -72,24 +38,65 @@ SkusUrlLoaderImpl::GetNetworkTrafficAnnotationTag() {
   return network_traffic_annotation_tag;
 }
 
+}  // namespace
+
+SkusUrlLoaderImpl::SkusUrlLoaderImpl(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    : api_request_helper_(new api_request_helper::APIRequestHelper(
+          GetNetworkTrafficAnnotationTag(),
+          url_loader_factory)) {}
+
+SkusUrlLoaderImpl::~SkusUrlLoaderImpl() = default;
+
+void SkusUrlLoaderImpl::BeginFetch(
+    const skus::HttpRequest& req,
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
+                              skus::HttpResponse)> callback,
+    rust::cxxbridge1::Box<skus::HttpRoundtripContext> ctx) {
+  base::flat_map<std::string, std::string> headers;
+  for (const auto& header : req.headers) {
+    std::vector<std::string> lines =
+        base::SplitString(static_cast<std::string>(header), ": ",
+                          base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
+    if (lines.size() != 2)
+      continue;
+
+    headers[lines.front()] = lines.back();
+  }
+  Request(static_cast<std::string>(req.method),
+          GURL(static_cast<std::string>(req.url)), std::string(),
+          "application/json", true,
+          base::BindOnce(&SkusUrlLoaderImpl::OnFetchComplete,
+                         base::Unretained(this), std::move(callback),
+                         std::move(ctx)),
+          headers, -1u);
+}
+
+void SkusUrlLoaderImpl::Request(
+    const std::string& method,
+    const GURL& url,
+    const std::string& payload,
+    const std::string& payload_content_type,
+    bool auto_retry_on_network_change,
+    api_request_helper::APIRequestHelper::ResultCallback callback,
+    const base::flat_map<std::string, std::string>& headers,
+    size_t max_body_size /* = -1u */) {
+  api_request_helper_->Request(method, url, payload, payload_content_type,
+                               auto_retry_on_network_change,
+                               std::move(callback), headers, max_body_size);
+}
+
 void SkusUrlLoaderImpl::OnFetchComplete(
     rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
                               skus::HttpResponse)> callback,
     rust::cxxbridge1::Box<skus::HttpRoundtripContext> ctx,
-    std::unique_ptr<std::string> response_body) {
-  uint16_t error_code = simple_url_loader_->NetError();
-  uint16_t response_code = net::HTTP_BAD_REQUEST;
-  if (simple_url_loader_->ResponseInfo() &&
-      simple_url_loader_->ResponseInfo()->headers) {
-    response_code =
-        simple_url_loader_->ResponseInfo()->headers->response_code();
-  }
-
-  bool success = (error_code == net::OK && response_code == net::HTTP_OK);
-
+    api_request_helper::APIRequestResult api_request_result) {
+  uint16_t response_code = api_request_result.response_code();
+  bool success = api_request_result.Is2XXResponseCode();
   std::vector<uint8_t> body_bytes;
-  if (response_body && response_body->size()) {
-    body_bytes.assign(response_body->begin(), response_body->end());
+  if (!api_request_result.body().empty()) {
+    body_bytes.assign(api_request_result.body().begin(),
+                      api_request_result.body().end());
   }
 
   skus::HttpResponse resp = {
