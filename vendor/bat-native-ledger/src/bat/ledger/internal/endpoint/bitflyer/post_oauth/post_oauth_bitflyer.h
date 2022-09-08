@@ -47,7 +47,7 @@ class LedgerImpl;
 
 namespace endpoint::bitflyer {
 
-using PostOauthCallback = base::OnceCallback<void(type::Result,
+using PostOauthCallback = base::OnceCallback<void(mojom::Result,
                                                   std::string&& token,
                                                   std::string&& address,
                                                   std::string&& linking_info)>;
@@ -69,14 +69,14 @@ class PostOauth {
                               const std::string& code,
                               const std::string& code_verifier);
 
-  type::Result CheckStatusCode(int status_code);
+  mojom::Result CheckStatusCode(int status_code);
 
-  type::Result ParseBody(const std::string& body,
-                         std::string* token,
-                         std::string* address,
-                         std::string* linking_info);
+  mojom::Result ParseBody(const std::string& body,
+                          std::string* token,
+                          std::string* address,
+                          std::string* linking_info);
 
-  void OnRequest(PostOauthCallback, const type::UrlResponse&);
+  void OnRequest(PostOauthCallback, const mojom::UrlResponse&);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

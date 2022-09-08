@@ -34,7 +34,7 @@ class WalletTest : public BATLedgerTest {
     base::RunLoop run_loop;
     mojom::Result result;
     ledger->wallet()->CreateWalletIfNecessary(
-        base::BindLambdaForTesting([&result, &run_loop](type::Result r) {
+        base::BindLambdaForTesting([&result, &run_loop](mojom::Result r) {
           result = r;
           run_loop.Quit();
         }));

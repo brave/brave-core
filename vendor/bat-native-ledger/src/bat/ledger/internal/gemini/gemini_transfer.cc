@@ -33,7 +33,7 @@ void GeminiTransfer::Start(const Transaction& transaction,
   auto wallet = ledger_->gemini()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    callback(type::Result::LEDGER_ERROR, "");
+    callback(mojom::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -43,27 +43,27 @@ void GeminiTransfer::Start(const Transaction& transaction,
                                               url_callback);
 }
 
-void GeminiTransfer::OnCreateTransaction(const type::Result result,
+void GeminiTransfer::OnCreateTransaction(const mojom::Result result,
                                          const std::string& id,
                                          client::TransactionCallback callback) {
-  if (result == type::Result::EXPIRED_TOKEN) {
+  if (result == mojom::Result::EXPIRED_TOKEN) {
     ledger_->gemini()->DisconnectWallet();
-    callback(type::Result::EXPIRED_TOKEN, "");
+    callback(mojom::Result::EXPIRED_TOKEN, "");
     return;
   }
 
   BLOG(1, "Number of retries: " << ledger::gemini_retries);
-  if (result == type::Result::RETRY) {
+  if (result == mojom::Result::RETRY) {
     StartTransactionStatusTimer(id, 0, callback);
     return;
   }
 
-  if (result != type::Result::LEDGER_OK) {
-    callback(type::Result::LEDGER_ERROR, "");
+  if (result != mojom::Result::LEDGER_OK) {
+    callback(mojom::Result::LEDGER_ERROR, "");
     return;
   }
 
-  callback(type::Result::LEDGER_OK, id);
+  callback(mojom::Result::LEDGER_OK, id);
 }
 
 void GeminiTransfer::StartTransactionStatusTimer(
@@ -93,7 +93,7 @@ void GeminiTransfer::FetchTransactionStatus(
   auto wallet = ledger_->gemini()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    callback(type::Result::LEDGER_ERROR, "");
+    callback(mojom::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -102,24 +102,24 @@ void GeminiTransfer::FetchTransactionStatus(
   gemini_server_->get_transaction()->Request(wallet->token, id, url_callback);
 }
 
-void GeminiTransfer::OnTransactionStatus(const type::Result result,
+void GeminiTransfer::OnTransactionStatus(const mojom::Result result,
                                          const std::string& id,
                                          const int attempts,
                                          client::TransactionCallback callback) {
   retry_timer_.erase(id);
   BLOG(1, "Number of active retry timers: " << retry_timer_.size());
 
-  if (result == type::Result::LEDGER_OK) {
+  if (result == mojom::Result::LEDGER_OK) {
     callback(result, id);
     return;
   }
 
-  if (result == type::Result::LEDGER_ERROR) {
-    callback(type::Result::LEDGER_ERROR, "");
+  if (result == mojom::Result::LEDGER_ERROR) {
+    callback(mojom::Result::LEDGER_ERROR, "");
     return;
   }
 
-  if (result == type::Result::RETRY) {
+  if (result == mojom::Result::RETRY) {
     StartTransactionStatusTimer(id, attempts, callback);
     return;
   }
@@ -130,14 +130,14 @@ void GeminiTransfer::CancelTransaction(const std::string& id,
   auto wallet = ledger_->gemini()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    callback(type::Result::LEDGER_ERROR, "");
+    callback(mojom::Result::LEDGER_ERROR, "");
     return;
   }
 
   gemini_server_->post_cancel_transaction()->Request(
-      wallet->token, id, [id, callback](const type::Result result) {
+      wallet->token, id, [id, callback](const mojom::Result result) {
         BLOG(0, "Gemini transaction id: " << id << " cancelled");
-        callback(type::Result::LEDGER_ERROR, "");
+        callback(mojom::Result::LEDGER_ERROR, "");
       });
 }
 

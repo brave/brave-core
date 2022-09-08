@@ -45,8 +45,8 @@ class GetMeTest : public testing::Test {
 TEST_F(GetMeTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"({
@@ -142,22 +142,22 @@ TEST_F(GetMeTest, ServerOK) {
 
   ::ledger::uphold::User expected_user;
 
-  me_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-               base::BindOnce(
-                   [](type::Result result, const ::ledger::uphold::User& user) {
-                     EXPECT_EQ(result, type::Result::LEDGER_OK);
-                     EXPECT_EQ(user.name, "John");
-                     EXPECT_EQ(user.member_id,
-                               "b34060c9-5ca3-4bdb-bc32-1f826ecea36e");
-                     EXPECT_EQ(user.bat_not_allowed, false);
-                   }));
+  me_->Request(
+      "4c2b665ca060d912fec5c735c734859a06118cc8",
+      base::BindOnce(
+          [](mojom::Result result, const ::ledger::uphold::User& user) {
+            EXPECT_EQ(result, mojom::Result::LEDGER_OK);
+            EXPECT_EQ(user.name, "John");
+            EXPECT_EQ(user.member_id, "b34060c9-5ca3-4bdb-bc32-1f826ecea36e");
+            EXPECT_EQ(user.bat_not_allowed, false);
+          }));
 }
 
 TEST_F(GetMeTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
             response.body = "";
@@ -167,16 +167,16 @@ TEST_F(GetMeTest, ServerError401) {
   ::ledger::uphold::User expected_user;
   me_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      base::BindOnce([](type::Result result, const ::ledger::uphold::User&) {
-        EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
+      base::BindOnce([](mojom::Result result, const ::ledger::uphold::User&) {
+        EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
       }));
 }
 
 TEST_F(GetMeTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
@@ -186,8 +186,8 @@ TEST_F(GetMeTest, ServerErrorRandom) {
   ::ledger::uphold::User expected_user;
   me_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      base::BindOnce([](type::Result result, const ::ledger::uphold::User&) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+      base::BindOnce([](mojom::Result result, const ::ledger::uphold::User&) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
       }));
 }
 

@@ -23,24 +23,24 @@ namespace ledger {
 namespace bitflyer {
 
 std::string GetClientId() {
-  return ledger::_environment == type::Environment::PRODUCTION
+  return ledger::_environment == mojom::Environment::PRODUCTION
              ? BUILDFLAG(BITFLYER_CLIENT_ID)
              : BUILDFLAG(BITFLYER_STAGING_CLIENT_ID);
 }
 
 std::string GetClientSecret() {
-  return ledger::_environment == type::Environment::PRODUCTION
+  return ledger::_environment == mojom::Environment::PRODUCTION
              ? BUILDFLAG(BITFLYER_CLIENT_SECRET)
              : BUILDFLAG(BITFLYER_STAGING_CLIENT_SECRET);
 }
 
 std::string GetUrl() {
-  return ledger::_environment == type::Environment::PRODUCTION ? kUrlProduction
-                                                               : kUrlStaging;
+  return ledger::_environment == mojom::Environment::PRODUCTION ? kUrlProduction
+                                                                : kUrlStaging;
 }
 
 std::string GetFeeAddress() {
-  return ledger::_environment == type::Environment::PRODUCTION
+  return ledger::_environment == mojom::Environment::PRODUCTION
              ? kFeeAddressProduction
              : kFeeAddressStaging;
 }
@@ -85,22 +85,22 @@ std::string GetActivityUrl() {
   return base::StringPrintf("%s/ja-jp/ex/tradehistory", GetUrl().c_str());
 }
 
-type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet) {
+mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr wallet) {
   if (!wallet) {
     return nullptr;
   }
 
   switch (wallet->status) {
-    case type::WalletStatus::VERIFIED: {
+    case mojom::WalletStatus::VERIFIED: {
       wallet->add_url = GetAddUrl();
       wallet->withdraw_url = GetWithdrawUrl();
       break;
     }
-    case type::WalletStatus::CONNECTED:
-    case type::WalletStatus::PENDING:
-    case type::WalletStatus::NOT_CONNECTED:
-    case type::WalletStatus::DISCONNECTED_VERIFIED:
-    case type::WalletStatus::DISCONNECTED_NOT_VERIFIED: {
+    case mojom::WalletStatus::CONNECTED:
+    case mojom::WalletStatus::PENDING:
+    case mojom::WalletStatus::NOT_CONNECTED:
+    case mojom::WalletStatus::DISCONNECTED_VERIFIED:
+    case mojom::WalletStatus::DISCONNECTED_NOT_VERIFIED: {
       wallet->add_url = "";
       wallet->withdraw_url = "";
       break;

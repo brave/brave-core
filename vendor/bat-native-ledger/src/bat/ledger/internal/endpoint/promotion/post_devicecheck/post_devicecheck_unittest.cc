@@ -46,8 +46,8 @@ class PostDevicecheckTest : public testing::Test {
 TEST_F(PostDevicecheckTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"({
@@ -58,8 +58,8 @@ TEST_F(PostDevicecheckTest, ServerOK) {
 
   devicecheck_->Request(
       "ff50981d-47de-4210-848d-995e186901a1",
-      base::BindOnce([](type::Result result, const std::string& nonce) {
-        EXPECT_EQ(result, type::Result::LEDGER_OK);
+      base::BindOnce([](mojom::Result result, const std::string& nonce) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_OK);
         EXPECT_EQ(nonce, "c4645786-052f-402f-8593-56af2f7a21ce");
       }));
 }
@@ -67,8 +67,8 @@ TEST_F(PostDevicecheckTest, ServerOK) {
 TEST_F(PostDevicecheckTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
@@ -77,8 +77,8 @@ TEST_F(PostDevicecheckTest, ServerError400) {
 
   devicecheck_->Request(
       "ff50981d-47de-4210-848d-995e186901a1",
-      base::BindOnce([](type::Result result, const std::string& nonce) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+      base::BindOnce([](mojom::Result result, const std::string& nonce) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
         EXPECT_EQ(nonce, "");
       }));
 }
@@ -86,8 +86,8 @@ TEST_F(PostDevicecheckTest, ServerError400) {
 TEST_F(PostDevicecheckTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
             response.body = "";
@@ -96,8 +96,8 @@ TEST_F(PostDevicecheckTest, ServerError401) {
 
   devicecheck_->Request(
       "ff50981d-47de-4210-848d-995e186901a1",
-      base::BindOnce([](type::Result result, const std::string& nonce) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+      base::BindOnce([](mojom::Result result, const std::string& nonce) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
         EXPECT_EQ(nonce, "");
       }));
 }
@@ -105,8 +105,8 @@ TEST_F(PostDevicecheckTest, ServerError401) {
 TEST_F(PostDevicecheckTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
@@ -115,8 +115,8 @@ TEST_F(PostDevicecheckTest, ServerErrorRandom) {
 
   devicecheck_->Request(
       "ff50981d-47de-4210-848d-995e186901a1",
-      base::BindOnce([](type::Result result, const std::string& nonce) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+      base::BindOnce([](mojom::Result result, const std::string& nonce) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
         EXPECT_EQ(nonce, "");
       }));
 }

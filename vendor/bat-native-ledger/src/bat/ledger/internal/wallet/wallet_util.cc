@@ -36,8 +36,8 @@ std::string WalletTypeToState(const std::string& wallet_type) {
 
 }  // namespace
 
-type::ExternalWalletPtr ExternalWalletPtrFromJSON(std::string wallet_string,
-                                                  std::string wallet_type) {
+mojom::ExternalWalletPtr ExternalWalletPtrFromJSON(std::string wallet_string,
+                                                   std::string wallet_type) {
   absl::optional<base::Value> value = base::JSONReader::Read(wallet_string);
   if (!value || !value->is_dict()) {
     BLOG(0, "Parsing of " + wallet_type + " wallet failed");
@@ -45,7 +45,7 @@ type::ExternalWalletPtr ExternalWalletPtrFromJSON(std::string wallet_string,
   }
 
   const base::Value::Dict& dict = value->GetDict();
-  auto wallet = ledger::type::ExternalWallet::New();
+  auto wallet = ledger::mojom::ExternalWallet::New();
   wallet->type = wallet_type;
 
   const auto* token = dict.FindString("token");
@@ -70,7 +70,7 @@ type::ExternalWalletPtr ExternalWalletPtrFromJSON(std::string wallet_string,
 
   auto status = dict.FindInt("status");
   if (status) {
-    wallet->status = static_cast<ledger::type::WalletStatus>(*status);
+    wallet->status = static_cast<ledger::mojom::WalletStatus>(*status);
   }
 
   const auto* user_name = dict.FindString("user_name");
@@ -121,8 +121,8 @@ type::ExternalWalletPtr ExternalWalletPtrFromJSON(std::string wallet_string,
   return wallet;
 }
 
-type::ExternalWalletPtr GetWallet(LedgerImpl* ledger,
-                                  const std::string wallet_type) {
+mojom::ExternalWalletPtr GetWallet(LedgerImpl* ledger,
+                                   const std::string wallet_type) {
   DCHECK(ledger);
 
   auto json =
@@ -135,7 +135,7 @@ type::ExternalWalletPtr GetWallet(LedgerImpl* ledger,
 }
 
 bool SetWallet(LedgerImpl* ledger,
-               type::ExternalWalletPtr wallet,
+               mojom::ExternalWalletPtr wallet,
                const std::string state) {
   DCHECK(ledger);
   if (!wallet) {
@@ -167,7 +167,7 @@ bool SetWallet(LedgerImpl* ledger,
   return ledger->state()->SetEncryptedString(state, json);
 }
 
-type::ExternalWalletPtr ResetWallet(type::ExternalWalletPtr wallet) {
+mojom::ExternalWalletPtr ResetWallet(mojom::ExternalWalletPtr wallet) {
   if (!wallet) {
     return nullptr;
   }
@@ -175,19 +175,19 @@ type::ExternalWalletPtr ResetWallet(type::ExternalWalletPtr wallet) {
   const auto status = wallet->status;
   const auto wallet_type = wallet->type;
   DCHECK(!wallet_type.empty());
-  wallet = type::ExternalWallet::New();
+  wallet = mojom::ExternalWallet::New();
   wallet->type = wallet_type;
 
   if (wallet_type == constant::kWalletUphold) {
-    if (status == type::WalletStatus::VERIFIED) {
-      wallet->status = type::WalletStatus::DISCONNECTED_VERIFIED;
+    if (status == mojom::WalletStatus::VERIFIED) {
+      wallet->status = mojom::WalletStatus::DISCONNECTED_VERIFIED;
     }
   } else {
-    if (status != type::WalletStatus::NOT_CONNECTED) {
-      if (status == type::WalletStatus::VERIFIED) {
-        wallet->status = type::WalletStatus::DISCONNECTED_VERIFIED;
+    if (status != mojom::WalletStatus::NOT_CONNECTED) {
+      if (status == mojom::WalletStatus::VERIFIED) {
+        wallet->status = mojom::WalletStatus::DISCONNECTED_VERIFIED;
       } else {
-        wallet->status = type::WalletStatus::DISCONNECTED_NOT_VERIFIED;
+        wallet->status = mojom::WalletStatus::DISCONNECTED_NOT_VERIFIED;
       }
     }
   }
@@ -206,16 +206,16 @@ bool one_of(T&& t, Ts&&... ts) {
 }
 
 void OnWalletStatusChange(LedgerImpl* ledger,
-                          absl::optional<type::WalletStatus> from,
-                          type::WalletStatus to) {
+                          absl::optional<mojom::WalletStatus> from,
+                          mojom::WalletStatus to) {
   DCHECK(ledger);
   DCHECK(!from ||
-         one_of(*from, type::WalletStatus::NOT_CONNECTED,
-                type::WalletStatus::DISCONNECTED_VERIFIED,
-                type::WalletStatus::PENDING, type::WalletStatus::VERIFIED));
-  DCHECK(one_of(to, type::WalletStatus::NOT_CONNECTED,
-                type::WalletStatus::DISCONNECTED_VERIFIED,
-                type::WalletStatus::PENDING, type::WalletStatus::VERIFIED));
+         one_of(*from, mojom::WalletStatus::NOT_CONNECTED,
+                mojom::WalletStatus::DISCONNECTED_VERIFIED,
+                mojom::WalletStatus::PENDING, mojom::WalletStatus::VERIFIED));
+  DCHECK(one_of(to, mojom::WalletStatus::NOT_CONNECTED,
+                mojom::WalletStatus::DISCONNECTED_VERIFIED,
+                mojom::WalletStatus::PENDING, mojom::WalletStatus::VERIFIED));
 
   std::ostringstream oss{};
   if (from) {

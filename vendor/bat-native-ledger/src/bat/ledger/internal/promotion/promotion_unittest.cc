@@ -86,8 +86,8 @@ class PromotionTest : public testing::Test {
 
     ON_CALL(*mock_ledger_client_, LoadURL(_, _))
         .WillByDefault(Invoke(
-            [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-              type::UrlResponse response;
+            [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+              mojom::UrlResponse response;
               response.status_code = 200;
               response.url = request->url;
               response.body = GetResponse(request->url);
@@ -99,22 +99,22 @@ class PromotionTest : public testing::Test {
 TEST_F(PromotionTest, LegacyPromotionIsNotOverwritten) {
   bool inserted = false;
   ON_CALL(*mock_database_, GetAllPromotions(_))
-    .WillByDefault(
-        Invoke([&inserted](ledger::GetAllPromotionsCallback callback) {
-          auto promotion = type::Promotion::New();
-          type::PromotionMap map;
-          if (inserted) {
-            const std::string id = "36baa4c3-f92d-4121-b6d9-db44cb273a02";
-            promotion->id = id;
-            promotion->public_keys =
-                "[\"vNnt88kCh650dFFHt+48SS4d4skQ2FYSxmmlzmKDgkE=\"]";
-            promotion->legacy_claimed = true;
-            promotion->status = type::PromotionStatus::ATTESTED;
-            map.insert(std::make_pair(id, std::move(promotion)));
-          }
+      .WillByDefault(
+          Invoke([&inserted](ledger::GetAllPromotionsCallback callback) {
+            auto promotion = mojom::Promotion::New();
+            base::flat_map<std::string, mojom::PromotionPtr> map;
+            if (inserted) {
+              const std::string id = "36baa4c3-f92d-4121-b6d9-db44cb273a02";
+              promotion->id = id;
+              promotion->public_keys =
+                  "[\"vNnt88kCh650dFFHt+48SS4d4skQ2FYSxmmlzmKDgkE=\"]";
+              promotion->legacy_claimed = true;
+              promotion->status = mojom::PromotionStatus::ATTESTED;
+              map.insert(std::make_pair(id, std::move(promotion)));
+            }
 
-          callback(std::move(map));
-      }));
+            callback(std::move(map));
+          }));
 
   EXPECT_CALL(*mock_database_, SavePromotion(_, _)).Times(1);
 

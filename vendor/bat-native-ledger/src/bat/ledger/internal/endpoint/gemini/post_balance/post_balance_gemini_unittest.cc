@@ -44,8 +44,8 @@ class GeminiPostBalanceTest : public testing::Test {
 TEST_F(GeminiPostBalanceTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_OK;
             response.url = request->url;
             response.body = R"([
@@ -83,8 +83,8 @@ TEST_F(GeminiPostBalanceTest, ServerOK) {
 
   balance_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      base::BindOnce([](const type::Result result, const double available) {
-        EXPECT_EQ(result, type::Result::LEDGER_OK);
+      base::BindOnce([](const mojom::Result result, const double available) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_OK);
         EXPECT_EQ(available, 5000.0);
       }));
 }
@@ -92,8 +92,8 @@ TEST_F(GeminiPostBalanceTest, ServerOK) {
 TEST_F(GeminiPostBalanceTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_UNAUTHORIZED;
             response.url = request->url;
             response.body = "";
@@ -102,8 +102,8 @@ TEST_F(GeminiPostBalanceTest, ServerError401) {
 
   balance_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      base::BindOnce([](const type::Result result, const double available) {
-        EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
+      base::BindOnce([](const mojom::Result result, const double available) {
+        EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
         EXPECT_EQ(available, 0.0);
       }));
 }
@@ -111,8 +111,8 @@ TEST_F(GeminiPostBalanceTest, ServerError401) {
 TEST_F(GeminiPostBalanceTest, ServerError403) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_FORBIDDEN;
             response.url = request->url;
             response.body = "";
@@ -121,8 +121,8 @@ TEST_F(GeminiPostBalanceTest, ServerError403) {
 
   balance_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      base::BindOnce([](const type::Result result, const double available) {
-        EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
+      base::BindOnce([](const mojom::Result result, const double available) {
+        EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
         EXPECT_EQ(available, 0.0);
       }));
 }
@@ -130,8 +130,8 @@ TEST_F(GeminiPostBalanceTest, ServerError403) {
 TEST_F(GeminiPostBalanceTest, ServerError404) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_NOT_FOUND;
             response.url = request->url;
             response.body = "";
@@ -140,8 +140,8 @@ TEST_F(GeminiPostBalanceTest, ServerError404) {
 
   balance_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      base::BindOnce([](const type::Result result, const double available) {
-        EXPECT_EQ(result, type::Result::NOT_FOUND);
+      base::BindOnce([](const mojom::Result result, const double available) {
+        EXPECT_EQ(result, mojom::Result::NOT_FOUND);
         EXPECT_EQ(available, 0.0);
       }));
 }
@@ -149,8 +149,8 @@ TEST_F(GeminiPostBalanceTest, ServerError404) {
 TEST_F(GeminiPostBalanceTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 418;
             response.url = request->url;
             response.body = "";
@@ -159,8 +159,8 @@ TEST_F(GeminiPostBalanceTest, ServerErrorRandom) {
 
   balance_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      base::BindOnce([](const type::Result result, const double available) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+      base::BindOnce([](const mojom::Result result, const double available) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
         EXPECT_EQ(available, 0.0);
       }));
 }

@@ -23,20 +23,18 @@ SKUCommon::SKUCommon(LedgerImpl* ledger) :
 
 SKUCommon::~SKUCommon() = default;
 
-void SKUCommon::CreateOrder(
-    const std::vector<type::SKUOrderItem>& items,
-    ledger::SKUOrderCallback callback) {
+void SKUCommon::CreateOrder(const std::vector<mojom::SKUOrderItem>& items,
+                            ledger::SKUOrderCallback callback) {
   order_->Create(items, callback);
 }
 
-void SKUCommon::CreateTransaction(
-    type::SKUOrderPtr order,
-    const std::string& destination,
-    const std::string& wallet_type,
-    ledger::SKUOrderCallback callback) {
+void SKUCommon::CreateTransaction(mojom::SKUOrderPtr order,
+                                  const std::string& destination,
+                                  const std::string& wallet_type,
+                                  ledger::SKUOrderCallback callback) {
   if (!order) {
     BLOG(0, "Order not found");
-    callback(type::Result::LEDGER_ERROR, "");
+    callback(mojom::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -53,17 +51,16 @@ void SKUCommon::CreateTransaction(
       create_callback);
 }
 
-void SKUCommon::OnTransactionCompleted(
-    const type::Result result,
-    const std::string& order_id,
-    ledger::SKUOrderCallback callback) {
-  if (result != type::Result::LEDGER_OK) {
+void SKUCommon::OnTransactionCompleted(const mojom::Result result,
+                                       const std::string& order_id,
+                                       ledger::SKUOrderCallback callback) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Order status was not updated");
     callback(result, "");
     return;
   }
 
-  callback(type::Result::LEDGER_OK, order_id);
+  callback(mojom::Result::LEDGER_OK, order_id);
 }
 
 void SKUCommon::SendExternalTransaction(
@@ -71,7 +68,7 @@ void SKUCommon::SendExternalTransaction(
     ledger::SKUOrderCallback callback) {
   if (order_id.empty()) {
     BLOG(0, "Order id is empty");
-    callback(type::Result::LEDGER_ERROR, "");
+    callback(mojom::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -83,12 +80,11 @@ void SKUCommon::SendExternalTransaction(
   ledger_->database()->GetSKUTransactionByOrderId(order_id, get_callback);
 }
 
-void SKUCommon::GetSKUTransactionByOrderId(
-    type::SKUTransactionPtr transaction,
-    ledger::SKUOrderCallback callback) {
+void SKUCommon::GetSKUTransactionByOrderId(mojom::SKUTransactionPtr transaction,
+                                           ledger::SKUOrderCallback callback) {
   if (!transaction) {
     BLOG(0, "Transaction is null");
-    callback(type::Result::LEDGER_ERROR, "");
+    callback(mojom::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -98,10 +94,8 @@ void SKUCommon::GetSKUTransactionByOrderId(
     transaction->order_id,
     callback);
 
-  transaction_->SendExternalTransaction(
-      type::Result::LEDGER_OK,
-      *transaction,
-      create_callback);
+  transaction_->SendExternalTransaction(mojom::Result::LEDGER_OK, *transaction,
+                                        create_callback);
 }
 
 }  // namespace sku

@@ -44,8 +44,8 @@ class GeminiPostOauthTest : public testing::Test {
 TEST_F(GeminiPostOauthTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_OK;
             response.url = request->url;
             response.body = R"({
@@ -61,8 +61,8 @@ TEST_F(GeminiPostOauthTest, ServerOK) {
   oauth_->Request(
       "46553A9E3D57D70F960EA26D95183D8CBB026283D92CBC7C54665408DA7DF398",
       "1234567890",
-      base::BindOnce([](type::Result result, std::string&& token) {
-        EXPECT_EQ(result, type::Result::LEDGER_OK);
+      base::BindOnce([](mojom::Result result, std::string&& token) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_OK);
         EXPECT_EQ(token, "aaaaa");
       }));
 }
@@ -70,8 +70,8 @@ TEST_F(GeminiPostOauthTest, ServerOK) {
 TEST_F(GeminiPostOauthTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_UNAUTHORIZED;
             response.url = request->url;
             response.body = "";
@@ -81,8 +81,8 @@ TEST_F(GeminiPostOauthTest, ServerError401) {
   oauth_->Request(
       "46553A9E3D57D70F960EA26D95183D8CBB026283D92CBC7C54665408DA7DF398",
       "1234567890",
-      base::BindOnce([](type::Result result, std::string&& token) {
-        EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
+      base::BindOnce([](mojom::Result result, std::string&& token) {
+        EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
         EXPECT_EQ(token, "");
       }));
 }
@@ -90,8 +90,8 @@ TEST_F(GeminiPostOauthTest, ServerError401) {
 TEST_F(GeminiPostOauthTest, ServerError403) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_FORBIDDEN;
             response.url = request->url;
             response.body = "";
@@ -101,8 +101,8 @@ TEST_F(GeminiPostOauthTest, ServerError403) {
   oauth_->Request(
       "46553A9E3D57D70F960EA26D95183D8CBB026283D92CBC7C54665408DA7DF398",
       "1234567890",
-      base::BindOnce([](type::Result result, std::string&& token) {
-        EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
+      base::BindOnce([](mojom::Result result, std::string&& token) {
+        EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
         EXPECT_EQ(token, "");
       }));
 }
@@ -110,8 +110,8 @@ TEST_F(GeminiPostOauthTest, ServerError403) {
 TEST_F(GeminiPostOauthTest, ServerError404) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_NOT_FOUND;
             response.url = request->url;
             response.body = "";
@@ -121,8 +121,8 @@ TEST_F(GeminiPostOauthTest, ServerError404) {
   oauth_->Request(
       "46553A9E3D57D70F960EA26D95183D8CBB026283D92CBC7C54665408DA7DF398",
       "1234567890",
-      base::BindOnce([](type::Result result, std::string&& token) {
-        EXPECT_EQ(result, type::Result::NOT_FOUND);
+      base::BindOnce([](mojom::Result result, std::string&& token) {
+        EXPECT_EQ(result, mojom::Result::NOT_FOUND);
         EXPECT_EQ(token, "");
       }));
 }
@@ -130,8 +130,8 @@ TEST_F(GeminiPostOauthTest, ServerError404) {
 TEST_F(GeminiPostOauthTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 418;
             response.url = request->url;
             response.body = "";
@@ -141,8 +141,8 @@ TEST_F(GeminiPostOauthTest, ServerErrorRandom) {
   oauth_->Request(
       "46553A9E3D57D70F960EA26D95183D8CBB026283D92CBC7C54665408DA7DF398",
       "1234567890",
-      base::BindOnce([](type::Result result, std::string&& token) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+      base::BindOnce([](mojom::Result result, std::string&& token) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
         EXPECT_EQ(token, "");
       }));
 }

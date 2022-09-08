@@ -40,8 +40,8 @@ void ExtensionRewardsServiceObserver::OnRewardsInitialized(
 
 void ExtensionRewardsServiceObserver::OnPanelPublisherInfo(
     RewardsService* rewards_service,
-    const ledger::type::Result result,
-    const ledger::type::PublisherInfo* info,
+    const ledger::mojom::Result result,
+    const ledger::mojom::PublisherInfo* info,
     uint64_t windowId) {
   auto* event_router = extensions::EventRouter::Get(profile_);
   if (!event_router || !info) {
@@ -53,7 +53,7 @@ void ExtensionRewardsServiceObserver::OnPanelPublisherInfo(
   publisher.percentage = info->percent;
   publisher.status = static_cast<int>(info->status);
   publisher.excluded =
-      info->excluded == ledger::type::PublisherExclude::EXCLUDED;
+      info->excluded == ledger::mojom::PublisherExclude::EXCLUDED;
   publisher.name = info->name;
   publisher.url = info->url;
   publisher.provider = info->provider;
@@ -70,8 +70,8 @@ void ExtensionRewardsServiceObserver::OnPanelPublisherInfo(
 
 void ExtensionRewardsServiceObserver::OnFetchPromotions(
     RewardsService* rewards_service,
-    const ledger::type::Result result,
-    const ledger::type::PromotionList& list) {
+    const ledger::mojom::Result result,
+    const std::vector<ledger::mojom::PromotionPtr>& list) {
   auto* event_router = extensions::EventRouter::Get(profile_);
   if (!event_router) {
     return;
@@ -102,10 +102,10 @@ void ExtensionRewardsServiceObserver::OnFetchPromotions(
 
 void ExtensionRewardsServiceObserver::OnPromotionFinished(
     RewardsService* rewards_service,
-    const ledger::type::Result result,
-    ledger::type::PromotionPtr promotion) {
+    const ledger::mojom::Result result,
+    ledger::mojom::PromotionPtr promotion) {
   auto* event_router = extensions::EventRouter::Get(profile_);
-  if (!event_router || result != ledger::type::Result::LEDGER_OK) {
+  if (!event_router || result != ledger::mojom::Result::LEDGER_OK) {
     return;
   }
 
@@ -143,7 +143,7 @@ void ExtensionRewardsServiceObserver::OnAdsEnabled(
 
 void ExtensionRewardsServiceObserver::OnPendingContributionSaved(
     RewardsService* rewards_service,
-    const ledger::type::Result result) {
+    const ledger::mojom::Result result) {
   auto* event_router = extensions::EventRouter::Get(profile_);
   if (!event_router) {
     return;
@@ -159,7 +159,7 @@ void ExtensionRewardsServiceObserver::OnPendingContributionSaved(
 
 void ExtensionRewardsServiceObserver::OnPublisherListNormalized(
     RewardsService* rewards_service,
-    ledger::type::PublisherInfoList list) {
+    std::vector<ledger::mojom::PublisherInfoPtr> list) {
   auto* event_router = extensions::EventRouter::Get(profile_);
   if (!event_router) {
     return;
@@ -237,7 +237,7 @@ void ExtensionRewardsServiceObserver::OnRecurringTipRemoved(
 
 void ExtensionRewardsServiceObserver::OnPendingContributionRemoved(
     RewardsService* rewards_service,
-    const ledger::type::Result result) {
+    const ledger::mojom::Result result) {
   extensions::EventRouter* event_router =
       extensions::EventRouter::Get(profile_);
   if (!event_router) {
@@ -254,11 +254,11 @@ void ExtensionRewardsServiceObserver::OnPendingContributionRemoved(
 
 void ExtensionRewardsServiceObserver::OnReconcileComplete(
     RewardsService* rewards_service,
-    const ledger::type::Result result,
+    const ledger::mojom::Result result,
     const std::string& contribution_id,
     const double amount,
-    const ledger::type::RewardsType type,
-    const ledger::type::ContributionProcessor processor) {
+    const ledger::mojom::RewardsType type,
+    const ledger::mojom::ContributionProcessor processor) {
   auto* event_router = extensions::EventRouter::Get(profile_);
   if (!event_router) {
     return;
@@ -276,9 +276,9 @@ void ExtensionRewardsServiceObserver::OnReconcileComplete(
 }
 
 void ExtensionRewardsServiceObserver::OnDisconnectWallet(
-      brave_rewards::RewardsService* rewards_service,
-      const ledger::type::Result result,
-      const std::string& wallet_type) {
+    brave_rewards::RewardsService* rewards_service,
+    const ledger::mojom::Result result,
+    const std::string& wallet_type) {
   auto* event_router = extensions::EventRouter::Get(profile_);
   if (!event_router) {
     return;

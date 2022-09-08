@@ -40,7 +40,7 @@ void Wallet::CreateWalletIfNecessary(ledger::ResultCallback callback) {
   create_->Start(std::move(callback));
 }
 
-std::string Wallet::GetWalletPassphrase(type::RewardsWalletPtr wallet) {
+std::string Wallet::GetWalletPassphrase(mojom::RewardsWalletPtr wallet) {
   if (!wallet) {
     BLOG(0, "Wallet is null");
     return "";
@@ -70,9 +70,10 @@ std::string Wallet::GetWalletPassphrase(type::RewardsWalletPtr wallet) {
 
 void Wallet::RecoverWallet(const std::string& pass_phrase,
                            ledger::LegacyResultCallback callback) {
-  recover_->Start(pass_phrase, [this, callback](const type::Result result) {
-    if (result == type::Result::LEDGER_OK) {
-      ledger_->database()->DeleteAllBalanceReports([](const type::Result _) {});
+  recover_->Start(pass_phrase, [this, callback](const mojom::Result result) {
+    if (result == mojom::Result::LEDGER_OK) {
+      ledger_->database()->DeleteAllBalanceReports(
+          [](const mojom::Result _) {});
       DisconnectAllWallets(callback);
       return;
     }
@@ -97,10 +98,10 @@ void Wallet::OnCreateWalletIfNecessary(
     ledger::ExternalWalletAuthorizationCallback callback,
     const std::string& wallet_type,
     const base::flat_map<std::string, std::string>& args,
-    type::Result result) {
-  if (result != type::Result::WALLET_CREATED) {
+    mojom::Result result) {
+  if (result != mojom::Result::WALLET_CREATED) {
     BLOG(0, "Wallet couldn't be created");
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
@@ -127,7 +128,7 @@ void Wallet::AuthorizeWallet(
   }
 
   NOTREACHED();
-  callback(type::Result::LEDGER_ERROR, {});
+  callback(mojom::Result::LEDGER_ERROR, {});
 }
 
 void Wallet::DisconnectWallet(const std::string& wallet_type,
@@ -135,15 +136,15 @@ void Wallet::DisconnectWallet(const std::string& wallet_type,
   if (wallet_type == constant::kWalletUphold) {
     if (const auto uphold_wallet = ledger_->uphold()->GetWallet()) {
       switch (uphold_wallet->status) {
-        case type::WalletStatus::DISCONNECTED_VERIFIED:
+        case mojom::WalletStatus::DISCONNECTED_VERIFIED:
           DCHECK(uphold_wallet->token.empty());
           DCHECK(uphold_wallet->address.empty());
           break;
-        case type::WalletStatus::PENDING:
+        case mojom::WalletStatus::PENDING:
           DCHECK(!uphold_wallet->token.empty());
           DCHECK(uphold_wallet->address.empty());
           break;
-        case type::WalletStatus::VERIFIED:
+        case mojom::WalletStatus::VERIFIED:
           DCHECK(!uphold_wallet->token.empty());
           DCHECK(!uphold_wallet->address.empty());
           break;
@@ -157,18 +158,18 @@ void Wallet::DisconnectWallet(const std::string& wallet_type,
     }
 
     return promotion_server_->delete_claim()->Request(
-        constant::kWalletUphold, [this, callback](const type::Result result) {
-          if (result != type::Result::LEDGER_OK) {
+        constant::kWalletUphold, [this, callback](const mojom::Result result) {
+          if (result != mojom::Result::LEDGER_OK) {
             const auto uphold_wallet = ledger_->uphold()->GetWallet();
             if (!uphold_wallet) {
               BLOG(0, "Uphold wallet is null!");
               BLOG(0, "Wallet unlinking failed!");
-              return callback(type::Result::LEDGER_ERROR);
+              return callback(mojom::Result::LEDGER_ERROR);
             }
 
             if (uphold_wallet->status ==
-                    type::WalletStatus::DISCONNECTED_VERIFIED ||
-                uphold_wallet->status == type::WalletStatus::VERIFIED) {
+                    mojom::WalletStatus::DISCONNECTED_VERIFIED ||
+                uphold_wallet->status == mojom::WalletStatus::VERIFIED) {
               BLOG(0, "Wallet unlinking failed!");
               return callback(result);
             }
@@ -176,49 +177,50 @@ void Wallet::DisconnectWallet(const std::string& wallet_type,
 
           ledger_->uphold()->DisconnectWallet({});
           ledger_->state()->ResetWalletType();
-          callback(type::Result::LEDGER_OK);
+          callback(mojom::Result::LEDGER_OK);
         });
   }
 
   if (wallet_type == constant::kWalletBitflyer) {
     promotion_server_->delete_claim()->Request(
-        constant::kWalletBitflyer, [this, callback](const type::Result result) {
-          if (result != type::Result::LEDGER_OK) {
+        constant::kWalletBitflyer,
+        [this, callback](const mojom::Result result) {
+          if (result != mojom::Result::LEDGER_OK) {
             BLOG(0, "Wallet unlinking failed");
             callback(result);
             return;
           }
           ledger_->bitflyer()->DisconnectWallet(true);
           ledger_->state()->ResetWalletType();
-          callback(type::Result::LEDGER_OK);
+          callback(mojom::Result::LEDGER_OK);
         });
     return;
   }
 
   if (wallet_type == constant::kWalletGemini) {
     promotion_server_->delete_claim()->Request(
-        constant::kWalletGemini, [this, callback](const type::Result result) {
-          if (result != type::Result::LEDGER_OK) {
+        constant::kWalletGemini, [this, callback](const mojom::Result result) {
+          if (result != mojom::Result::LEDGER_OK) {
             BLOG(0, "Wallet unlinking failed");
             callback(result);
             return;
           }
           ledger_->gemini()->DisconnectWallet(true);
           ledger_->state()->ResetWalletType();
-          callback(type::Result::LEDGER_OK);
+          callback(mojom::Result::LEDGER_OK);
         });
     return;
   }
 
   NOTREACHED();
-  callback(type::Result::LEDGER_OK);
+  callback(mojom::Result::LEDGER_OK);
 }
 
 void Wallet::GetAnonWalletStatus(ledger::LegacyResultCallback callback) {
   const auto wallet = GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -226,27 +228,28 @@ void Wallet::GetAnonWalletStatus(ledger::LegacyResultCallback callback) {
   const uint64_t stamp = ledger_->state()->GetCreationStamp();
 
   if (!wallet->payment_id.empty() && stamp != 0) {
-    callback(type::Result::WALLET_CREATED);
+    callback(mojom::Result::WALLET_CREATED);
     return;
   }
 
   if (wallet->payment_id.empty() || passphrase.empty()) {
     BLOG(0, "Wallet is corrupted");
-    callback(type::Result::CORRUPTED_DATA);
+    callback(mojom::Result::CORRUPTED_DATA);
     return;
   }
 
-  callback(type::Result::LEDGER_OK);
+  callback(mojom::Result::LEDGER_OK);
 }
 
 void Wallet::DisconnectAllWallets(ledger::LegacyResultCallback callback) {
-  DisconnectWallet(constant::kWalletUphold, [](const type::Result result) {});
-  DisconnectWallet(constant::kWalletBitflyer, [](const type::Result result) {});
-  DisconnectWallet(constant::kWalletGemini, [](const type::Result result) {});
-  callback(type::Result::LEDGER_OK);
+  DisconnectWallet(constant::kWalletUphold, [](const mojom::Result result) {});
+  DisconnectWallet(constant::kWalletBitflyer,
+                   [](const mojom::Result result) {});
+  DisconnectWallet(constant::kWalletGemini, [](const mojom::Result result) {});
+  callback(mojom::Result::LEDGER_OK);
 }
 
-type::RewardsWalletPtr Wallet::GetWallet(bool* corrupted) {
+mojom::RewardsWalletPtr Wallet::GetWallet(bool* corrupted) {
   DCHECK(corrupted);
   *corrupted = false;
 
@@ -264,7 +267,7 @@ type::RewardsWalletPtr Wallet::GetWallet(bool* corrupted) {
     return nullptr;
   }
 
-  auto wallet = ledger::type::RewardsWallet::New();
+  auto wallet = ledger::mojom::RewardsWallet::New();
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* payment_id = dict.FindString("payment_id");
@@ -293,12 +296,12 @@ type::RewardsWalletPtr Wallet::GetWallet(bool* corrupted) {
   return wallet;
 }
 
-type::RewardsWalletPtr Wallet::GetWallet() {
+mojom::RewardsWalletPtr Wallet::GetWallet() {
   bool corrupted;
   return GetWallet(&corrupted);
 }
 
-bool Wallet::SetWallet(type::RewardsWalletPtr wallet) {
+bool Wallet::SetWallet(mojom::RewardsWalletPtr wallet) {
   if (!wallet) {
     BLOG(0, "Rewards wallet is null!");
     return false;
@@ -338,9 +341,9 @@ void Wallet::LinkRewardsWallet(const std::string& destination_payment_id,
 }
 
 void Wallet::OnClaimWallet(ledger::PostSuggestionsClaimCallback callback,
-                           type::Result result) {
-  if (result != type::Result::LEDGER_OK &&
-      result != type::Result::ALREADY_EXISTS) {
+                           mojom::Result result) {
+  if (result != mojom::Result::LEDGER_OK &&
+      result != mojom::Result::ALREADY_EXISTS) {
     std::move(callback).Run(result, "");
     return;
   }

@@ -30,24 +30,23 @@ class AttestationDesktop : public Attestation {
       ConfirmCallback callback) override;
 
  private:
-  type::Result ParseClaimSolution(
-      const std::string& response,
-      int* x,
-      int* y,
-      std::string* captcha_id);
+  mojom::Result ParseClaimSolution(const std::string& response,
+                                   int* x,
+                                   int* y,
+                                   std::string* captcha_id);
 
   void DownloadCaptchaImage(StartCallback callback,
-                            type::Result result,
+                            mojom::Result result,
                             const std::string& hint,
                             const std::string& captcha_id);
 
   void OnDownloadCaptchaImage(StartCallback callback,
                               const std::string& hint,
                               const std::string& captcha_id,
-                              type::Result result,
+                              mojom::Result result,
                               const std::string& image);
 
-  void OnConfirm(ConfirmCallback callback, type::Result result);
+  void OnConfirm(ConfirmCallback callback, mojom::Result result);
 
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;
 };

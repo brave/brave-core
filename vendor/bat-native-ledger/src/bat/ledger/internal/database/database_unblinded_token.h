@@ -15,20 +15,20 @@ namespace ledger {
 namespace database {
 
 using GetUnblindedTokenListCallback =
-    std::function<void(type::UnblindedTokenList)>;
+    std::function<void(std::vector<mojom::UnblindedTokenPtr>)>;
 
 class DatabaseUnblindedToken: public DatabaseTable {
  public:
   explicit DatabaseUnblindedToken(LedgerImpl* ledger);
   ~DatabaseUnblindedToken() override;
 
-  void InsertOrUpdateList(type::UnblindedTokenList list,
+  void InsertOrUpdateList(std::vector<mojom::UnblindedTokenPtr> list,
                           ledger::LegacyResultCallback callback);
 
   void GetSpendableRecords(GetUnblindedTokenListCallback callback);
 
   void MarkRecordListAsSpent(const std::vector<std::string>& ids,
-                             type::RewardsType redeem_type,
+                             mojom::RewardsType redeem_type,
                              const std::string& redeem_id,
                              ledger::LegacyResultCallback callback);
 
@@ -44,15 +44,14 @@ class DatabaseUnblindedToken: public DatabaseTable {
       GetUnblindedTokenListCallback callback);
 
   void GetSpendableRecordListByBatchTypes(
-      const std::vector<type::CredsBatchType>& batch_types,
+      const std::vector<mojom::CredsBatchType>& batch_types,
       GetUnblindedTokenListCallback callback);
 
  private:
-  void OnGetRecords(
-      type::DBCommandResponsePtr response,
-      GetUnblindedTokenListCallback callback);
+  void OnGetRecords(mojom::DBCommandResponsePtr response,
+                    GetUnblindedTokenListCallback callback);
 
-  void OnMarkRecordListAsReserved(type::DBCommandResponsePtr response,
+  void OnMarkRecordListAsReserved(mojom::DBCommandResponsePtr response,
                                   size_t expected_row_count,
                                   ledger::LegacyResultCallback callback);
 };

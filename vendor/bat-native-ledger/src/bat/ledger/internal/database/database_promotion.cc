@@ -33,15 +33,15 @@ DatabasePromotion::DatabasePromotion(
 
 DatabasePromotion::~DatabasePromotion() = default;
 
-void DatabasePromotion::InsertOrUpdate(type::PromotionPtr info,
+void DatabasePromotion::InsertOrUpdate(mojom::PromotionPtr info,
                                        ledger::LegacyResultCallback callback) {
   if (!info) {
     BLOG(1, "Info is null");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
@@ -51,8 +51,8 @@ void DatabasePromotion::InsertOrUpdate(type::PromotionPtr info,
       "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
   BindString(command.get(), 0, info->id);
@@ -85,7 +85,7 @@ void DatabasePromotion::GetRecord(
     return callback({});
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "SELECT promotion_id, version, type, public_keys, suggestions, "
@@ -94,25 +94,25 @@ void DatabasePromotion::GetRecord(
       "FROM %s WHERE promotion_id=?",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = query;
 
   BindString(command.get(), 0, id);
 
-  command->record_bindings = {type::DBCommand::RecordBindingType::STRING_TYPE,
-                              type::DBCommand::RecordBindingType::INT_TYPE,
-                              type::DBCommand::RecordBindingType::INT_TYPE,
-                              type::DBCommand::RecordBindingType::STRING_TYPE,
-                              type::DBCommand::RecordBindingType::INT64_TYPE,
-                              type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              type::DBCommand::RecordBindingType::INT_TYPE,
-                              type::DBCommand::RecordBindingType::INT64_TYPE,
-                              type::DBCommand::RecordBindingType::INT64_TYPE,
-                              type::DBCommand::RecordBindingType::INT64_TYPE,
-                              type::DBCommand::RecordBindingType::INT64_TYPE,
-                              type::DBCommand::RecordBindingType::STRING_TYPE,
-                              type::DBCommand::RecordBindingType::BOOL_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::BOOL_TYPE};
 
   transaction->commands.push_back(std::move(command));
 
@@ -125,11 +125,10 @@ void DatabasePromotion::GetRecord(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-void DatabasePromotion::OnGetRecord(
-    type::DBCommandResponsePtr response,
-    GetPromotionCallback callback) {
+void DatabasePromotion::OnGetRecord(mojom::DBCommandResponsePtr response,
+                                    GetPromotionCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback({});
     return;
@@ -143,14 +142,14 @@ void DatabasePromotion::OnGetRecord(
   }
 
   auto* record = response->result->get_records()[0].get();
-  auto info = type::Promotion::New();
+  auto info = mojom::Promotion::New();
   info->id = GetStringColumn(record, 0);
   info->version = GetIntColumn(record, 1);
-  info->type = static_cast<type::PromotionType>(GetIntColumn(record, 2));
+  info->type = static_cast<mojom::PromotionType>(GetIntColumn(record, 2));
   info->public_keys = GetStringColumn(record, 3);
   info->suggestions = GetInt64Column(record, 4);
   info->approximate_value = GetDoubleColumn(record, 5);
-  info->status = static_cast<type::PromotionStatus>(GetIntColumn(record, 6));
+  info->status = static_cast<mojom::PromotionStatus>(GetIntColumn(record, 6));
   info->created_at = GetInt64Column(record, 7);
   info->claimable_until = GetInt64Column(record, 8);
   info->expires_at = GetInt64Column(record, 9);
@@ -163,7 +162,7 @@ void DatabasePromotion::OnGetRecord(
 
 void DatabasePromotion::GetAllRecords(
     ledger::GetAllPromotionsCallback callback) {
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "SELECT "
@@ -173,23 +172,23 @@ void DatabasePromotion::GetAllRecords(
       "FROM %s",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = query;
 
-  command->record_bindings = {type::DBCommand::RecordBindingType::STRING_TYPE,
-                              type::DBCommand::RecordBindingType::INT_TYPE,
-                              type::DBCommand::RecordBindingType::INT_TYPE,
-                              type::DBCommand::RecordBindingType::STRING_TYPE,
-                              type::DBCommand::RecordBindingType::INT64_TYPE,
-                              type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              type::DBCommand::RecordBindingType::INT_TYPE,
-                              type::DBCommand::RecordBindingType::INT64_TYPE,
-                              type::DBCommand::RecordBindingType::INT64_TYPE,
-                              type::DBCommand::RecordBindingType::INT64_TYPE,
-                              type::DBCommand::RecordBindingType::INT64_TYPE,
-                              type::DBCommand::RecordBindingType::STRING_TYPE,
-                              type::DBCommand::RecordBindingType::BOOL_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::BOOL_TYPE};
 
   transaction->commands.push_back(std::move(command));
 
@@ -203,29 +202,29 @@ void DatabasePromotion::GetAllRecords(
 }
 
 void DatabasePromotion::OnGetAllRecords(
-    type::DBCommandResponsePtr response,
+    mojom::DBCommandResponsePtr response,
     ledger::GetAllPromotionsCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback({});
     return;
   }
 
-  type::PromotionMap map;
+  base::flat_map<std::string, mojom::PromotionPtr> map;
   for (auto const& record : response->result->get_records()) {
-    auto info = type::Promotion::New();
+    auto info = mojom::Promotion::New();
     auto* record_pointer = record.get();
 
     info->id = GetStringColumn(record_pointer, 0);
     info->version = GetIntColumn(record_pointer, 1);
     info->type =
-        static_cast<type::PromotionType>(GetIntColumn(record_pointer, 2));
+        static_cast<mojom::PromotionType>(GetIntColumn(record_pointer, 2));
     info->public_keys = GetStringColumn(record_pointer, 3);
     info->suggestions = GetInt64Column(record_pointer, 4);
     info->approximate_value = GetDoubleColumn(record_pointer, 5);
     info->status =
-        static_cast<type::PromotionStatus>(GetIntColumn(record_pointer, 6));
+        static_cast<mojom::PromotionStatus>(GetIntColumn(record_pointer, 6));
     info->created_at = GetInt64Column(record_pointer, 7);
     info->claimable_until = GetInt64Column(record_pointer, 8);
     info->expires_at = GetInt64Column(record_pointer, 9);
@@ -244,7 +243,7 @@ void DatabasePromotion::SaveClaimId(const std::string& promotion_id,
                                     ledger::LegacyResultCallback callback) {
   if (promotion_id.empty() || claim_id.empty()) {
     BLOG(1, "Data is empty " << promotion_id << "/" << claim_id);
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -252,9 +251,9 @@ void DatabasePromotion::SaveClaimId(const std::string& promotion_id,
       "UPDATE %s SET claim_id = ? WHERE promotion_id = ?",
       kTableName);
 
-  auto transaction = type::DBTransaction::New();
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto transaction = mojom::DBTransaction::New();
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
   BindString(command.get(), 0, claim_id);
@@ -270,11 +269,11 @@ void DatabasePromotion::SaveClaimId(const std::string& promotion_id,
 }
 
 void DatabasePromotion::UpdateStatus(const std::string& promotion_id,
-                                     type::PromotionStatus status,
+                                     mojom::PromotionStatus status,
                                      ledger::LegacyResultCallback callback) {
   if (promotion_id.empty()) {
     BLOG(0, "Promotion id is empty");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -282,9 +281,9 @@ void DatabasePromotion::UpdateStatus(const std::string& promotion_id,
       "UPDATE %s SET status = ? WHERE promotion_id = ?",
       kTableName);
 
-  auto transaction = type::DBTransaction::New();
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto transaction = mojom::DBTransaction::New();
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
   BindInt(command.get(), 0, static_cast<int>(status));
@@ -301,11 +300,11 @@ void DatabasePromotion::UpdateStatus(const std::string& promotion_id,
 
 void DatabasePromotion::UpdateRecordsStatus(
     const std::vector<std::string>& ids,
-    type::PromotionStatus status,
+    mojom::PromotionStatus status,
     ledger::LegacyResultCallback callback) {
   if (ids.empty()) {
     BLOG(1, "List of ids is empty");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -314,9 +313,9 @@ void DatabasePromotion::UpdateRecordsStatus(
       kTableName,
       GenerateStringInCase(ids).c_str());
 
-  auto transaction = type::DBTransaction::New();
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto transaction = mojom::DBTransaction::New();
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
   BindInt(command.get(), 0, static_cast<int>(status));
@@ -335,7 +334,7 @@ void DatabasePromotion::CredentialCompleted(
     ledger::LegacyResultCallback callback) {
   if (promotion_id.empty()) {
     BLOG(1, "Promotion id is empty");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -343,15 +342,14 @@ void DatabasePromotion::CredentialCompleted(
       "UPDATE %s SET status = ?, claimed_at = ? WHERE promotion_id = ?",
       kTableName);
 
-  auto transaction = type::DBTransaction::New();
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto transaction = mojom::DBTransaction::New();
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
   const uint64_t current_time = util::GetCurrentTimeStamp();
 
-  BindInt(command.get(), 0,
-      static_cast<int>(type::PromotionStatus::FINISHED));
+  BindInt(command.get(), 0, static_cast<int>(mojom::PromotionStatus::FINISHED));
   BindInt64(command.get(), 1, current_time);
   BindString(command.get(), 2, promotion_id);
 
@@ -373,7 +371,7 @@ void DatabasePromotion::GetRecords(
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "SELECT "
@@ -383,23 +381,23 @@ void DatabasePromotion::GetRecords(
       "FROM %s WHERE promotion_id IN (%s)",
       kTableName, GenerateStringInCase(ids).c_str());
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = query;
 
-  command->record_bindings = {type::DBCommand::RecordBindingType::STRING_TYPE,
-                              type::DBCommand::RecordBindingType::INT_TYPE,
-                              type::DBCommand::RecordBindingType::INT_TYPE,
-                              type::DBCommand::RecordBindingType::STRING_TYPE,
-                              type::DBCommand::RecordBindingType::INT64_TYPE,
-                              type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              type::DBCommand::RecordBindingType::INT_TYPE,
-                              type::DBCommand::RecordBindingType::INT64_TYPE,
-                              type::DBCommand::RecordBindingType::INT64_TYPE,
-                              type::DBCommand::RecordBindingType::INT64_TYPE,
-                              type::DBCommand::RecordBindingType::INT64_TYPE,
-                              type::DBCommand::RecordBindingType::STRING_TYPE,
-                              type::DBCommand::RecordBindingType::BOOL_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::BOOL_TYPE};
 
   transaction->commands.push_back(std::move(command));
 
@@ -413,30 +411,30 @@ void DatabasePromotion::GetRecords(
 }
 
 void DatabasePromotion::OnGetRecords(
-    type::DBCommandResponsePtr response,
+    mojom::DBCommandResponsePtr response,
     client::GetPromotionListCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback({});
     return;
   }
 
-  type::PromotionList list;
-  type::PromotionPtr info;
+  std::vector<mojom::PromotionPtr> list;
+  mojom::PromotionPtr info;
   for (auto const& record : response->result->get_records()) {
-    info = type::Promotion::New();
+    info = mojom::Promotion::New();
     auto* record_pointer = record.get();
 
     info->id = GetStringColumn(record_pointer, 0);
     info->version = GetIntColumn(record_pointer, 1);
     info->type =
-        static_cast<type::PromotionType>(GetIntColumn(record_pointer, 2));
+        static_cast<mojom::PromotionType>(GetIntColumn(record_pointer, 2));
     info->public_keys = GetStringColumn(record_pointer, 3);
     info->suggestions = GetInt64Column(record_pointer, 4);
     info->approximate_value = GetDoubleColumn(record_pointer, 5);
     info->status =
-        static_cast<type::PromotionStatus>(GetIntColumn(record_pointer, 6));
+        static_cast<mojom::PromotionStatus>(GetIntColumn(record_pointer, 6));
     info->created_at = GetInt64Column(record_pointer, 7);
     info->claimable_until = GetInt64Column(record_pointer, 8);
     info->expires_at = GetInt64Column(record_pointer, 9);
@@ -455,7 +453,7 @@ void DatabasePromotion::UpdateRecordsBlankPublicKey(
     ledger::LegacyResultCallback callback) {
   if (ids.empty()) {
     BLOG(1, "List of ids is empty");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -466,9 +464,9 @@ void DatabasePromotion::UpdateRecordsBlankPublicKey(
       kTableName,
       GenerateStringInCase(ids).c_str());
 
-  auto transaction = type::DBTransaction::New();
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::EXECUTE;
+  auto transaction = mojom::DBTransaction::New();
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::EXECUTE;
   command->command = query;
   transaction->commands.push_back(std::move(command));
 

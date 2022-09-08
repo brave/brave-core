@@ -89,8 +89,8 @@ std::string Twitch::GetMediaURL(const std::string& media_id) {
 
 // static
 std::string Twitch::GetTwitchStatus(
-    const ledger::type::MediaEventInfo& old_event,
-    const ledger::type::MediaEventInfo& new_event) {
+    const ledger::mojom::MediaEventInfo& old_event,
+    const ledger::mojom::MediaEventInfo& new_event) {
   std::string status = "playing";
 
   if (
@@ -123,8 +123,8 @@ std::string Twitch::GetTwitchStatus(
 
 // static
 uint64_t Twitch::GetTwitchDuration(
-    const ledger::type::MediaEventInfo& old_event,
-    const ledger::type::MediaEventInfo& new_event) {
+    const ledger::mojom::MediaEventInfo& old_event,
+    const ledger::mojom::MediaEventInfo& new_event) {
   // Remove duplicated events
   if (old_event.event == new_event.event &&
       old_event.time == new_event.time) {
@@ -272,28 +272,28 @@ std::string Twitch::GetPublisherKey(const std::string& key) {
   return (std::string)TWITCH_MEDIA_TYPE + "#author:" + key;
 }
 
-
-void Twitch::OnMediaActivityError(const ledger::type::VisitData& visit_data,
-                                       uint64_t window_id) {
+void Twitch::OnMediaActivityError(const ledger::mojom::VisitData& visit_data,
+                                  uint64_t window_id) {
   std::string url = TWITCH_TLD;
   std::string name = TWITCH_MEDIA_TYPE;
 
   if (!url.empty()) {
-    ledger::type::VisitData new_visit_data;
+    ledger::mojom::VisitData new_visit_data;
     new_visit_data.domain = url;
     new_visit_data.url = "https://" + url;
     new_visit_data.path = "/";
     new_visit_data.name = name;
 
     ledger_->publisher()->GetPublisherActivityFromUrl(
-        window_id, ledger::type::VisitData::New(new_visit_data), std::string());
+        window_id, ledger::mojom::VisitData::New(new_visit_data),
+        std::string());
   } else {
       BLOG(0, "Media activity error");
   }
 }
 
 void Twitch::ProcessMedia(const base::flat_map<std::string, std::string>& parts,
-                               const ledger::type::VisitData& visit_data) {
+                          const ledger::mojom::VisitData& visit_data) {
   std::pair<std::string, std::string> site_ids(GetMediaIdFromParts(parts));
   std::string media_id = site_ids.first;
   std::string user_id = site_ids.second;
@@ -304,7 +304,7 @@ void Twitch::ProcessMedia(const base::flat_map<std::string, std::string>& parts,
   std::string media_key = braveledger_media::GetMediaKey(media_id,
                                                          TWITCH_MEDIA_TYPE);
 
-  ledger::type::MediaEventInfo twitch_info;
+  ledger::mojom::MediaEventInfo twitch_info;
   base::flat_map<std::string, std::string>::const_iterator iter =
       parts.find("event");
   if (iter != parts.end()) {
@@ -329,10 +329,9 @@ void Twitch::ProcessMedia(const base::flat_map<std::string, std::string>& parts,
                 _2));
 }
 
-void Twitch::ProcessActivityFromUrl(
-    uint64_t window_id,
-    const ledger::type::VisitData& visit_data,
-    const std::string& publisher_blob) {
+void Twitch::ProcessActivityFromUrl(uint64_t window_id,
+                                    const ledger::mojom::VisitData& visit_data,
+                                    const std::string& publisher_blob) {
   if (publisher_blob.empty() ||
       publisher_blob == ledger::constant::kIgnorePublisherBlob) {
     OnMediaActivityError(visit_data, window_id);
@@ -366,27 +365,27 @@ void Twitch::ProcessActivityFromUrl(
 void Twitch::OnMediaPublisherInfo(
     const std::string& media_id,
     const std::string& media_key,
-    const ledger::type::MediaEventInfo& twitch_info,
-    const ledger::type::VisitData& visit_data,
+    const ledger::mojom::MediaEventInfo& twitch_info,
+    const ledger::mojom::VisitData& visit_data,
     const uint64_t window_id,
     const std::string& user_id,
-    ledger::type::Result result,
-    ledger::type::PublisherInfoPtr publisher_info) {
-  if (result != ledger::type::Result::LEDGER_OK &&
-      result != ledger::type::Result::NOT_FOUND) {
+    ledger::mojom::Result result,
+    ledger::mojom::PublisherInfoPtr publisher_info) {
+  if (result != ledger::mojom::Result::LEDGER_OK &&
+      result != ledger::mojom::Result::NOT_FOUND) {
     BLOG(0, "Failed to get publisher info");
     return;
   }
 
   if (publisher_info) {
-    ledger::type::MediaEventInfo old_event;
-    base::flat_map<std::string, ledger::type::MediaEventInfo>::const_iterator
+    ledger::mojom::MediaEventInfo old_event;
+    base::flat_map<std::string, ledger::mojom::MediaEventInfo>::const_iterator
         iter = twitch_events.find(media_key);
     if (iter != twitch_events.end()) {
       old_event = iter->second;
     }
 
-    ledger::type::MediaEventInfo new_event(twitch_info);
+    ledger::mojom::MediaEventInfo new_event(twitch_info);
     new_event.status = GetTwitchStatus(old_event, new_event);
 
     const uint64_t real_duration = GetTwitchDuration(old_event, new_event);
@@ -408,13 +407,13 @@ void Twitch::OnMediaPublisherInfo(
     return;
   }
 
-  ledger::type::MediaEventInfo old_event;
+  ledger::mojom::MediaEventInfo old_event;
   auto iter = twitch_events.find(media_key);
   if (iter != twitch_events.end()) {
     old_event = iter->second;
   }
 
-  ledger::type::MediaEventInfo new_event(twitch_info);
+  ledger::mojom::MediaEventInfo new_event(twitch_info);
   new_event.status = GetTwitchStatus(old_event, new_event);
 
   const uint64_t real_duration = GetTwitchDuration(old_event, new_event);
@@ -468,19 +467,18 @@ void Twitch::OnMediaPublisherInfo(
 
 void Twitch::FetchDataFromUrl(const std::string& url,
                               ledger::client::LegacyLoadURLCallback callback) {
-  auto request = ledger::type::UrlRequest::New();
+  auto request = ledger::mojom::UrlRequest::New();
   request->url = url;
   request->skip_log = true;
   ledger_->LoadURL(std::move(request), callback);
 }
 
-void Twitch::OnEmbedResponse(
-    const uint64_t duration,
-    const std::string& media_key,
-    const ledger::type::VisitData& visit_data,
-    const uint64_t window_id,
-    const std::string& user_id,
-    const ledger::type::UrlResponse& response) {
+void Twitch::OnEmbedResponse(const uint64_t duration,
+                             const std::string& media_key,
+                             const ledger::mojom::VisitData& visit_data,
+                             const uint64_t window_id,
+                             const std::string& user_id,
+                             const ledger::mojom::UrlResponse& response) {
   if (response.status_code != net::HTTP_OK) {
     // TODO(anyone): add error handler
     return;
@@ -509,19 +507,19 @@ void Twitch::OnEmbedResponse(
 
 void Twitch::OnMediaPublisherActivity(
     uint64_t window_id,
-    const ledger::type::VisitData& visit_data,
+    const ledger::mojom::VisitData& visit_data,
     const std::string& media_key,
     const std::string& media_id,
     const std::string& publisher_blob,
-    ledger::type::Result result,
-    ledger::type::PublisherInfoPtr info) {
-  if (result != ledger::type::Result::LEDGER_OK &&
-    result != ledger::type::Result::NOT_FOUND) {
+    ledger::mojom::Result result,
+    ledger::mojom::PublisherInfoPtr info) {
+  if (result != ledger::mojom::Result::LEDGER_OK &&
+      result != ledger::mojom::Result::NOT_FOUND) {
     OnMediaActivityError(visit_data, window_id);
     return;
   }
 
-  if (!info || result == ledger::type::Result::NOT_FOUND) {
+  if (!info || result == ledger::mojom::Result::NOT_FOUND) {
     // first see if we have the publisher a different way (VOD vs. live stream
     ledger_->database()->GetPublisherInfo(
         GetPublisherKey(media_id),
@@ -565,21 +563,20 @@ void Twitch::OnMediaPublisherActivity(
   }
 }
 
-void Twitch::OnPublisherInfo(
-    uint64_t window_id,
-    const ledger::type::VisitData& visit_data,
-    const std::string& media_key,
-    const std::string& media_id,
-    const std::string& publisher_blob,
-    ledger::type::Result result,
-    ledger::type::PublisherInfoPtr publisher_info) {
-  if (result != ledger::type::Result::LEDGER_OK  &&
-    result != ledger::type::Result::NOT_FOUND) {
+void Twitch::OnPublisherInfo(uint64_t window_id,
+                             const ledger::mojom::VisitData& visit_data,
+                             const std::string& media_key,
+                             const std::string& media_id,
+                             const std::string& publisher_blob,
+                             ledger::mojom::Result result,
+                             ledger::mojom::PublisherInfoPtr publisher_info) {
+  if (result != ledger::mojom::Result::LEDGER_OK &&
+      result != ledger::mojom::Result::NOT_FOUND) {
     OnMediaActivityError(visit_data, window_id);
     return;
   }
 
-  if (!publisher_info || result == ledger::type::Result::NOT_FOUND) {
+  if (!publisher_info || result == ledger::mojom::Result::NOT_FOUND) {
     std::string publisher_name;
     std::string publisher_favicon_url;
 
@@ -611,7 +608,7 @@ void Twitch::SavePublisherInfo(const uint64_t duration,
                                const std::string& media_key,
                                const std::string& publisher_url,
                                const std::string& publisher_name,
-                               const ledger::type::VisitData& visit_data,
+                               const ledger::mojom::VisitData& visit_data,
                                const uint64_t window_id,
                                const std::string& fav_icon,
                                const std::string& channel_id,
@@ -631,7 +628,7 @@ void Twitch::SavePublisherInfo(const uint64_t duration,
     return;
   }
 
-  ledger::type::VisitData new_visit_data;
+  ledger::mojom::VisitData new_visit_data;
   if (fav_icon.length() > 0) {
     new_visit_data.favicon_url = fav_icon;
   }
@@ -646,18 +643,12 @@ void Twitch::SavePublisherInfo(const uint64_t duration,
   new_visit_data.url = url;
 
   ledger_->publisher()->SaveVideoVisit(
-      key,
-      new_visit_data,
-      duration,
-      true,
-      window_id,
-      [](ledger::type::Result, ledger::type::PublisherInfoPtr) {});
+      key, new_visit_data, duration, true, window_id,
+      [](ledger::mojom::Result, ledger::mojom::PublisherInfoPtr) {});
 
   if (!media_key.empty()) {
     ledger_->database()->SaveMediaPublisherInfo(
-        media_key,
-        key,
-        [](const ledger::type::Result) {});
+        media_key, key, [](const ledger::mojom::Result) {});
   }
 }
 

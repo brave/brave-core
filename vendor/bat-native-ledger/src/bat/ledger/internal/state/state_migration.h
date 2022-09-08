@@ -39,7 +39,7 @@ class StateMigration {
  private:
   void FreshInstall(ledger::LegacyResultCallback callback);
 
-  void OnMigration(type::Result result,
+  void OnMigration(mojom::Result result,
                    int version,
                    ledger::LegacyResultCallback callback);
 

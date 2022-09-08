@@ -21,24 +21,24 @@ namespace ledger {
 namespace uphold {
 
 std::string GetClientId() {
-  return ledger::_environment == type::Environment::PRODUCTION
+  return ledger::_environment == mojom::Environment::PRODUCTION
              ? BUILDFLAG(UPHOLD_CLIENT_ID)
              : BUILDFLAG(UPHOLD_STAGING_CLIENT_ID);
 }
 
 std::string GetClientSecret() {
-  return ledger::_environment == type::Environment::PRODUCTION
+  return ledger::_environment == mojom::Environment::PRODUCTION
              ? BUILDFLAG(UPHOLD_CLIENT_SECRET)
              : BUILDFLAG(UPHOLD_STAGING_CLIENT_SECRET);
 }
 
 std::string GetUrl() {
-  return ledger::_environment == type::Environment::PRODUCTION ? kUrlProduction
-                                                               : kUrlStaging;
+  return ledger::_environment == mojom::Environment::PRODUCTION ? kUrlProduction
+                                                                : kUrlStaging;
 }
 
 std::string GetFeeAddress() {
-  return ledger::_environment == type::Environment::PRODUCTION
+  return ledger::_environment == mojom::Environment::PRODUCTION
              ? kFeeAddressProduction
              : kFeeAddressStaging;
 }
@@ -99,7 +99,7 @@ std::string GetActivityUrl(const std::string& address) {
   return url;
 }
 
-type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet) {
+mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr wallet) {
   if (!wallet) {
     return nullptr;
   }
@@ -107,14 +107,14 @@ type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet) {
   CheckWalletState(wallet.get());
 
   switch (wallet->status) {
-    case type::WalletStatus::VERIFIED: {
+    case mojom::WalletStatus::VERIFIED: {
       wallet->add_url = GetAddUrl(wallet->address);
       wallet->withdraw_url = GetWithdrawUrl(wallet->address);
       break;
     }
-    case type::WalletStatus::PENDING:
-    case type::WalletStatus::NOT_CONNECTED:
-    case type::WalletStatus::DISCONNECTED_VERIFIED: {
+    case mojom::WalletStatus::PENDING:
+    case mojom::WalletStatus::NOT_CONNECTED:
+    case mojom::WalletStatus::DISCONNECTED_VERIFIED: {
       wallet->add_url = "";
       wallet->withdraw_url = "";
       break;
@@ -130,23 +130,23 @@ type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet) {
   return wallet;
 }
 
-void CheckWalletState(const type::ExternalWallet* wallet) {
+void CheckWalletState(const mojom::ExternalWallet* wallet) {
   if (!wallet)
     return;
 
   switch (wallet->status) {
-    case type::WalletStatus::NOT_CONNECTED:
-    case type::WalletStatus::DISCONNECTED_VERIFIED: {
+    case mojom::WalletStatus::NOT_CONNECTED:
+    case mojom::WalletStatus::DISCONNECTED_VERIFIED: {
       DCHECK(wallet->token.empty());
       DCHECK(wallet->address.empty());
       break;
     }
-    case type::WalletStatus::PENDING: {
+    case mojom::WalletStatus::PENDING: {
       DCHECK(!wallet->token.empty());
       DCHECK(wallet->address.empty());
       break;
     }
-    case type::WalletStatus::VERIFIED: {
+    case mojom::WalletStatus::VERIFIED: {
       DCHECK(!wallet->token.empty());
       DCHECK(!wallet->address.empty());
       break;

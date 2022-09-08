@@ -3,10 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_RECOVERY_RECOVERY_EMPTY_BALANCE_H_
-#define BRAVELEDGER_RECOVERY_RECOVERY_EMPTY_BALANCE_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_RECOVERY_RECOVERY_EMPTY_BALANCE_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_RECOVERY_RECOVERY_EMPTY_BALANCE_H_
 
 #include <memory>
+#include <string>
+#include <vector>
 
 #include "bat/ledger/internal/endpoint/promotion/promotion_server.h"
 
@@ -23,30 +25,27 @@ class EmptyBalance {
   void Check();
 
  private:
-  void OnAllContributions(type::ContributionInfoList list);
+  void OnAllContributions(std::vector<mojom::ContributionInfoPtr> list);
 
   void GetPromotions(client::GetPromotionListCallback callback);
 
-  void OnPromotions(
-      type::PromotionMap promotions,
-      client::GetPromotionListCallback callback);
+  void OnPromotions(base::flat_map<std::string, mojom::PromotionPtr> promotions,
+                    client::GetPromotionListCallback callback);
 
-  void GetCredsByPromotions(type::PromotionList list);
+  void GetCredsByPromotions(std::vector<mojom::PromotionPtr> list);
 
-  void OnCreds(type::CredsBatchList list);
+  void OnCreds(std::vector<mojom::CredsBatchPtr> list);
 
-  void OnSaveUnblindedCreds(const type::Result result);
+  void OnSaveUnblindedCreds(const mojom::Result result);
 
-  void GetAllTokens(
-      type::PromotionList list,
-      const double contribution_sum);
+  void GetAllTokens(std::vector<mojom::PromotionPtr> list,
+                    const double contribution_sum);
 
-  void ReportResults(
-      type::UnblindedTokenList list,
-      const double contribution_sum,
-      const double promotion_sum);
+  void ReportResults(std::vector<mojom::UnblindedTokenPtr> list,
+                     const double contribution_sum,
+                     const double promotion_sum);
 
-  void Sent(const type::Result result);
+  void Sent(const mojom::Result result);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;
@@ -55,4 +54,4 @@ class EmptyBalance {
 }  // namespace recovery
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_RECOVERY_RECOVERY_EMPTY_BALANCE_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_RECOVERY_RECOVERY_EMPTY_BALANCE_H_

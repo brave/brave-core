@@ -369,7 +369,7 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
     ASSERT_TRUE(base::CopyFile(test_data_path, preferences_path));
   }
 
-  MOCK_METHOD1(OnGetEnvironment, void(ledger::type::Environment));
+  MOCK_METHOD1(OnGetEnvironment, void(ledger::mojom::Environment));
   MOCK_METHOD1(OnGetDebug, void(bool));
   MOCK_METHOD1(OnGetReconcileTime, void(int32_t));
   MOCK_METHOD1(OnGetRetryInterval, void(int32_t));

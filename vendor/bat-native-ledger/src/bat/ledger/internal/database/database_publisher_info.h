@@ -18,36 +18,32 @@ class DatabasePublisherInfo: public DatabaseTable {
   explicit DatabasePublisherInfo(LedgerImpl* ledger);
   ~DatabasePublisherInfo() override;
 
-  void InsertOrUpdate(type::PublisherInfoPtr info,
+  void InsertOrUpdate(mojom::PublisherInfoPtr info,
                       ledger::LegacyResultCallback callback);
 
   void GetRecord(
       const std::string& publisher_key,
       ledger::PublisherInfoCallback callback);
 
-  void GetPanelRecord(
-      type::ActivityInfoFilterPtr filter,
-      ledger::PublisherInfoCallback callback);
+  void GetPanelRecord(mojom::ActivityInfoFilterPtr filter,
+                      ledger::PublisherInfoCallback callback);
 
   void RestorePublishers(ledger::ResultCallback callback);
 
   void GetExcludedList(ledger::PublisherInfoListCallback callback);
 
  private:
-  void OnGetRecord(
-      type::DBCommandResponsePtr response,
-      ledger::PublisherInfoCallback callback);
+  void OnGetRecord(mojom::DBCommandResponsePtr response,
+                   ledger::PublisherInfoCallback callback);
 
-  void OnGetPanelRecord(
-      type::DBCommandResponsePtr response,
-      ledger::PublisherInfoCallback callback);
+  void OnGetPanelRecord(mojom::DBCommandResponsePtr response,
+                        ledger::PublisherInfoCallback callback);
 
   void OnRestorePublishers(ledger::ResultCallback callback,
-                           type::DBCommandResponsePtr response);
+                           mojom::DBCommandResponsePtr response);
 
-  void OnGetExcludedList(
-      type::DBCommandResponsePtr response,
-      ledger::PublisherInfoListCallback callback);
+  void OnGetExcludedList(mojom::DBCommandResponsePtr response,
+                         ledger::PublisherInfoListCallback callback);
 };
 
 }  // namespace database

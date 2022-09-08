@@ -25,9 +25,9 @@ using std::placeholders::_1;
 
 namespace {
 
-ledger::type::PublisherBannerPtr GetPublisherBannerFromMessage(
+ledger::mojom::PublisherBannerPtr GetPublisherBannerFromMessage(
     const publishers_pb::SiteBannerDetails& banner_details) {
-  auto banner = ledger::type::PublisherBanner::New();
+  auto banner = ledger::mojom::PublisherBanner::New();
 
   banner->title = banner_details.title();
   banner->description = banner_details.description();
@@ -59,15 +59,15 @@ ledger::type::PublisherBannerPtr GetPublisherBannerFromMessage(
 
 void GetPublisherStatusFromMessage(
     const publishers_pb::ChannelResponse& response,
-    ledger::type::ServerPublisherInfo* info) {
+    ledger::mojom::ServerPublisherInfo* info) {
   DCHECK(info);
-  info->status = ledger::type::PublisherStatus::CONNECTED;
+  info->status = ledger::mojom::PublisherStatus::CONNECTED;
   for (const auto& wallet : response.wallets()) {
     if (wallet.has_uphold_wallet()) {
       auto& uphold = wallet.uphold_wallet();
       if (uphold.wallet_state() == publishers_pb::UPHOLD_ACCOUNT_KYC &&
           !uphold.address().empty()) {
-        info->status = ledger::type::PublisherStatus::UPHOLD_VERIFIED;
+        info->status = ledger::mojom::PublisherStatus::UPHOLD_VERIFIED;
         info->address = uphold.address();
         return;
       }
@@ -76,7 +76,7 @@ void GetPublisherStatusFromMessage(
       auto& bitflyer = wallet.bitflyer_wallet();
       if (bitflyer.wallet_state() == publishers_pb::BITFLYER_ACCOUNT_KYC &&
           !bitflyer.address().empty()) {
-        info->status = ledger::type::PublisherStatus::BITFLYER_VERIFIED;
+        info->status = ledger::mojom::PublisherStatus::BITFLYER_VERIFIED;
         info->address = bitflyer.address();
         return;
       }
@@ -85,7 +85,7 @@ void GetPublisherStatusFromMessage(
       auto& gemini = wallet.gemini_wallet();
       if (gemini.wallet_state() == publishers_pb::GEMINI_ACCOUNT_KYC &&
           !gemini.address().empty()) {
-        info->status = ledger::type::PublisherStatus::GEMINI_VERIFIED;
+        info->status = ledger::mojom::PublisherStatus::GEMINI_VERIFIED;
         info->address = gemini.address();
         return;
       }
@@ -93,23 +93,22 @@ void GetPublisherStatusFromMessage(
   }
 }
 
-void GetServerInfoForEmptyResponse(
-    const std::string& publisher_key,
-    ledger::type::ServerPublisherInfo* info) {
+void GetServerInfoForEmptyResponse(const std::string& publisher_key,
+                                   ledger::mojom::ServerPublisherInfo* info) {
   DCHECK(info);
   info->publisher_key = publisher_key;
-  info->status = ledger::type::PublisherStatus::NOT_VERIFIED;
+  info->status = ledger::mojom::PublisherStatus::NOT_VERIFIED;
   info->updated_at = ledger::util::GetCurrentTimeStamp();
 }
 
-ledger::type::Result ServerPublisherInfoFromMessage(
+ledger::mojom::Result ServerPublisherInfoFromMessage(
     const publishers_pb::ChannelResponseList& message,
     const std::string& expected_key,
-    ledger::type::ServerPublisherInfo* info) {
+    ledger::mojom::ServerPublisherInfo* info) {
   DCHECK(info);
 
   if (expected_key.empty()) {
-    return ledger::type::Result::LEDGER_ERROR;
+    return ledger::mojom::Result::LEDGER_ERROR;
   }
 
   for (const auto& entry : message.channel_responses()) {
@@ -125,10 +124,10 @@ ledger::type::Result ServerPublisherInfoFromMessage(
       info->banner =
           GetPublisherBannerFromMessage(entry.site_banner_details());
     }
-    return ledger::type::Result::LEDGER_OK;;
+    return ledger::mojom::Result::LEDGER_OK;
   }
 
-  return ledger::type::Result::LEDGER_ERROR;
+  return ledger::mojom::Result::LEDGER_ERROR;
 }
 
 bool DecompressMessage(base::StringPiece payload, std::string* output) {
@@ -160,34 +159,33 @@ std::string GetPublisher::GetUrl(const std::string& hash_prefix) {
   return GetServerUrl(path);
 }
 
-type::Result GetPublisher::CheckStatusCode(const int status_code) {
+mojom::Result GetPublisher::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_NOT_FOUND) {
-    return type::Result::NOT_FOUND;
+    return mojom::Result::NOT_FOUND;
   }
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
-type::Result GetPublisher::ParseBody(
-    const std::string& body,
-    const std::string& publisher_key,
-    type::ServerPublisherInfo* info) {
+mojom::Result GetPublisher::ParseBody(const std::string& body,
+                                      const std::string& publisher_key,
+                                      mojom::ServerPublisherInfo* info) {
   DCHECK(info);
 
   if (body.empty()) {
     BLOG(0, "Publisher data empty");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   base::StringPiece body_payload(body.data(), body.size());
   if (!brave::PrivateCdnHelper::GetInstance()->RemovePadding(&body_payload)) {
     BLOG(0, "Publisher data response has invalid padding");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   std::string message_string;
@@ -201,15 +199,15 @@ type::Result GetPublisher::ParseBody(
   publishers_pb::ChannelResponseList message;
   if (!message.ParseFromString(message_string)) {
     BLOG(0, "Error parsing publisher data protobuf message");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   auto result = ServerPublisherInfoFromMessage(message, publisher_key, info);
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     GetServerInfoForEmptyResponse(publisher_key, info);
   }
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
 void GetPublisher::Request(
@@ -222,39 +220,38 @@ void GetPublisher::Request(
       publisher_key,
       callback);
 
-  auto request = type::UrlRequest::New();
+  auto request = mojom::UrlRequest::New();
   request->url = GetUrl(hash_prefix);
   request->load_flags = net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
-void GetPublisher::OnRequest(
-    const type::UrlResponse& response,
-    const std::string& publisher_key,
-    GetPublisherCallback callback) {
+void GetPublisher::OnRequest(const mojom::UrlResponse& response,
+                             const std::string& publisher_key,
+                             GetPublisherCallback callback) {
   ledger::LogUrlResponse(__func__, response);
   auto result = CheckStatusCode(response.status_code);
 
-  auto info = type::ServerPublisherInfo::New();
-  if (result == type::Result::NOT_FOUND) {
+  auto info = mojom::ServerPublisherInfo::New();
+  if (result == mojom::Result::NOT_FOUND) {
     GetServerInfoForEmptyResponse(publisher_key, info.get());
-    callback(type::Result::LEDGER_OK, std::move(info));
+    callback(mojom::Result::LEDGER_OK, std::move(info));
     return;
   }
 
-  if (result != type::Result::LEDGER_OK) {
-    callback(type::Result::LEDGER_ERROR, nullptr);
+  if (result != mojom::Result::LEDGER_OK) {
+    callback(mojom::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
   result = ParseBody(response.body, publisher_key, info.get());
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     callback(result, nullptr);
     return;
   }
 
-  callback(type::Result::LEDGER_OK, std::move(info));
+  callback(mojom::Result::LEDGER_OK, std::move(info));
 }
 
 }  // namespace private_cdn

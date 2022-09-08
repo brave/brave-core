@@ -37,7 +37,7 @@ namespace endpoint {
 namespace promotion {
 
 using GetRecoverWalletCallback =
-    std::function<void(type::Result result, const std::string& payment_id)>;
+    std::function<void(mojom::Result result, const std::string& payment_id)>;
 
 class GetRecoverWallet {
  public:
@@ -51,13 +51,12 @@ class GetRecoverWallet {
  private:
   std::string GetUrl(const std::string& public_key_hex);
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(const int status_code);
 
-  type::Result ParseBody(const std::string& body, std::string* payment_id);
+  mojom::Result ParseBody(const std::string& body, std::string* payment_id);
 
-  void OnRequest(
-      const type::UrlResponse& response,
-      GetRecoverWalletCallback callback);
+  void OnRequest(const mojom::UrlResponse& response,
+                 GetRecoverWalletCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

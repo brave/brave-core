@@ -32,25 +32,25 @@ void StateMigrationV1::Migrate(ledger::LegacyResultCallback callback) {
   legacy_publisher_->Load(load_callback);
 }
 
-void StateMigrationV1::OnLoadState(type::Result result,
+void StateMigrationV1::OnLoadState(mojom::Result result,
                                    ledger::LegacyResultCallback callback) {
-  if (result == type::Result::NO_PUBLISHER_STATE) {
+  if (result == mojom::Result::NO_PUBLISHER_STATE) {
     BLOG(1, "No publisher state");
     ledger_->publisher()->CalcScoreConsts(
         ledger_->ledger_client()->GetIntegerState(
             kMinVisitTime));
 
-    callback(type::Result::LEDGER_OK);
+    callback(mojom::Result::LEDGER_OK);
     return;
   }
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     ledger_->publisher()->CalcScoreConsts(
         ledger_->ledger_client()->GetIntegerState(
             kMinVisitTime));
 
     BLOG(0, "Failed to load publisher state file, setting default values");
-    callback(type::Result::LEDGER_OK);
+    callback(mojom::Result::LEDGER_OK);
     return;
   }
 
@@ -74,7 +74,7 @@ void StateMigrationV1::OnLoadState(type::Result result,
       kAllowVideoContribution,
       legacy_publisher_->GetPublisherAllowVideos());
 
-  type::BalanceReportInfoList reports;
+  std::vector<mojom::BalanceReportInfoPtr> reports;
   legacy_publisher_->GetAllBalanceReports(&reports);
   if (!reports.empty()) {
     auto save_callback = std::bind(&StateMigrationV1::BalanceReportsSaved,
@@ -92,9 +92,9 @@ void StateMigrationV1::OnLoadState(type::Result result,
 }
 
 void StateMigrationV1::BalanceReportsSaved(
-    type::Result result,
+    mojom::Result result,
     ledger::LegacyResultCallback callback) {
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Balance report save failed");
     callback(result);
     return;
@@ -116,15 +116,15 @@ void StateMigrationV1::SaveProcessedPublishers(
 }
 
 void StateMigrationV1::ProcessedPublisherSaved(
-    type::Result result,
+    mojom::Result result,
     ledger::LegacyResultCallback callback) {
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Processed publisher save failed");
     callback(result);
     return;
   }
 
-  callback(type::Result::LEDGER_OK);
+  callback(mojom::Result::LEDGER_OK);
 }
 
 }  // namespace state

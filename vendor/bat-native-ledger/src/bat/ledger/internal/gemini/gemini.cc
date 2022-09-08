@@ -58,12 +58,12 @@ void Gemini::Initialize() {
 }
 
 void Gemini::StartContribution(const std::string& contribution_id,
-                               type::ServerPublisherInfoPtr info,
+                               mojom::ServerPublisherInfoPtr info,
                                double amount,
                                LegacyResultCallback callback) {
   if (!info) {
     BLOG(0, "Publisher info is null");
-    ContributionCompleted(type::Result::LEDGER_ERROR, "", contribution_id,
+    ContributionCompleted(mojom::Result::LEDGER_ERROR, "", contribution_id,
                           amount, "", callback);
     return;
   }
@@ -82,13 +82,13 @@ void Gemini::StartContribution(const std::string& contribution_id,
   transfer_->Start(transaction, contribution_callback);
 }
 
-void Gemini::ContributionCompleted(type::Result result,
+void Gemini::ContributionCompleted(mojom::Result result,
                                    const std::string& transaction_id,
                                    const std::string& contribution_id,
                                    double fee,
                                    const std::string& publisher_key,
                                    LegacyResultCallback callback) {
-  if (result == type::Result::LEDGER_OK) {
+  if (result == mojom::Result::LEDGER_OK) {
     SaveTransferFee(contribution_id, fee);
 
     if (!publisher_key.empty()) {
@@ -105,13 +105,13 @@ void Gemini::FetchBalance(FetchBalanceCallback callback) {
   const auto wallet = GetWallet();
 
   if (!wallet || wallet->token.empty() || wallet->address.empty()) {
-    std::move(callback).Run(type::Result::LEDGER_OK, 0.0);
+    std::move(callback).Run(mojom::Result::LEDGER_OK, 0.0);
     return;
   }
 
-  if (wallet->status != type::WalletStatus::VERIFIED) {
+  if (wallet->status != mojom::WalletStatus::VERIFIED) {
     BLOG(1, "Wallet is not verified");
-    std::move(callback).Run(type::Result::LEDGER_OK, 0.0);
+    std::move(callback).Run(mojom::Result::LEDGER_OK, 0.0);
     return;
   }
 
@@ -123,22 +123,22 @@ void Gemini::FetchBalance(FetchBalanceCallback callback) {
 }
 
 void Gemini::OnFetchBalance(FetchBalanceCallback callback,
-                            const type::Result result,
+                            const mojom::Result result,
                             const double available) {
-  if (result == type::Result::EXPIRED_TOKEN) {
+  if (result == mojom::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
     DisconnectWallet();
-    std::move(callback).Run(type::Result::EXPIRED_TOKEN, 0.0);
+    std::move(callback).Run(mojom::Result::EXPIRED_TOKEN, 0.0);
     return;
   }
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Couldn't get balance");
-    std::move(callback).Run(type::Result::LEDGER_ERROR, 0.0);
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR, 0.0);
     return;
   }
 
-  std::move(callback).Run(type::Result::LEDGER_OK, available);
+  std::move(callback).Run(mojom::Result::LEDGER_OK, available);
 }
 
 void Gemini::TransferFunds(const double amount,
@@ -172,7 +172,7 @@ void Gemini::DisconnectWallet(const bool manual) {
   const auto from = wallet->status;
   wallet = ledger::wallet::ResetWallet(std::move(wallet));
   if (manual) {
-    wallet->status = type::WalletStatus::NOT_CONNECTED;
+    wallet->status = mojom::WalletStatus::NOT_CONNECTED;
   }
   const auto to = wallet->status;
 
@@ -182,7 +182,7 @@ void Gemini::DisconnectWallet(const bool manual) {
 
   if (!manual && !shutting_down) {
     ledger_->ledger_client()->ShowNotification(
-        ledger::notifications::kWalletDisconnected, {}, [](type::Result) {});
+        ledger::notifications::kWalletDisconnected, {}, [](mojom::Result) {});
   }
 
   SetWallet(std::move(wallet));
@@ -225,11 +225,11 @@ void Gemini::StartTransferFeeTimer(const std::string& fee_id,
                      fee_id, attempts));
 }
 
-void Gemini::OnTransferFeeCompleted(const type::Result result,
+void Gemini::OnTransferFeeCompleted(const mojom::Result result,
                                     const std::string& transaction_id,
                                     const std::string& contribution_id,
                                     const int attempts) {
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     if (attempts < 3) {
       BLOG(0, "Transaction fee failed, retrying");
       StartTransferFeeTimer(contribution_id, attempts + 1);
@@ -274,11 +274,11 @@ void Gemini::OnTransferFeeTimerElapsed(const std::string& id,
   }
 }
 
-type::ExternalWalletPtr Gemini::GetWallet() {
+mojom::ExternalWalletPtr Gemini::GetWallet() {
   return ::ledger::wallet::GetWallet(ledger_, constant::kWalletGemini);
 }
 
-bool Gemini::SetWallet(type::ExternalWalletPtr wallet) {
+bool Gemini::SetWallet(mojom::ExternalWalletPtr wallet) {
   return ::ledger::wallet::SetWallet(ledger_, std::move(wallet),
                                      state::kWalletGemini);
 }

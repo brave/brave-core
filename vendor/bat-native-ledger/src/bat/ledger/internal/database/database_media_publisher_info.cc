@@ -35,18 +35,18 @@ void DatabaseMediaPublisherInfo::InsertOrUpdate(
     ledger::LegacyResultCallback callback) {
   if (media_key.empty() || publisher_key.empty()) {
     BLOG(1, "Data is empty " << media_key << "/" << publisher_key);
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s (media_key, publisher_id) VALUES (?, ?)",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
   BindString(command.get(), 0, media_key);
@@ -66,10 +66,10 @@ void DatabaseMediaPublisherInfo::GetRecord(
     ledger::PublisherInfoCallback callback) {
   if (media_key.empty()) {
     BLOG(1, "Media key is empty");
-    return callback(type::Result::LEDGER_ERROR, {});
+    return callback(mojom::Result::LEDGER_ERROR, {});
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
@@ -81,22 +81,20 @@ void DatabaseMediaPublisherInfo::GetRecord(
       "WHERE mpi.media_key=?",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = query;
 
   BindString(command.get(), 0, media_key);
 
-  command->record_bindings = {
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::INT_TYPE,
-      type::DBCommand::RecordBindingType::INT64_TYPE,
-      type::DBCommand::RecordBindingType::INT_TYPE
-  };
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE};
 
   transaction->commands.push_back(std::move(command));
 
@@ -110,37 +108,36 @@ void DatabaseMediaPublisherInfo::GetRecord(
 }
 
 void DatabaseMediaPublisherInfo::OnGetRecord(
-    type::DBCommandResponsePtr response,
+    mojom::DBCommandResponsePtr response,
     ledger::PublisherInfoCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(1, "Response is wrong");
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
   if (response->result->get_records().size() != 1) {
     BLOG(1, "Record size is not correct: " <<
         response->result->get_records().size());
-    callback(type::Result::NOT_FOUND, {});
+    callback(mojom::Result::NOT_FOUND, {});
     return;
   }
 
   auto* record = response->result->get_records()[0].get();
-  auto info = type::PublisherInfo::New();
+  auto info = mojom::PublisherInfo::New();
 
   info->id = GetStringColumn(record, 0);
   info->name = GetStringColumn(record, 1);
   info->url = GetStringColumn(record, 2);
   info->favicon_url = GetStringColumn(record, 3);
   info->provider = GetStringColumn(record, 4);
-  info->status =
-      static_cast<type::PublisherStatus>(GetIntColumn(record, 5));
+  info->status = static_cast<mojom::PublisherStatus>(GetIntColumn(record, 5));
   info->status_updated_at = GetInt64Column(record, 6);
   info->excluded =
-      static_cast<type::PublisherExclude>(GetIntColumn(record, 7));
+      static_cast<mojom::PublisherExclude>(GetIntColumn(record, 7));
 
-  callback(type::Result::LEDGER_OK, std::move(info));
+  callback(mojom::Result::LEDGER_OK, std::move(info));
 }
 
 }  // namespace database

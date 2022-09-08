@@ -26,22 +26,22 @@ class UpholdWallet {
   void Generate(ledger::ResultCallback) const;
 
  private:
-  void OnGetUser(ledger::ResultCallback, type::Result, const User&) const;
+  void OnGetUser(ledger::ResultCallback, mojom::Result, const User&) const;
 
   void OnGetCapabilities(ledger::ResultCallback,
-                         type::Result,
+                         mojom::Result,
                          ledger::uphold::Capabilities) const;
 
   void OnCreateCard(ledger::ResultCallback,
-                    type::Result,
+                    mojom::Result,
                     std::string&& id) const;
 
   void OnConnectWallet(ledger::ResultCallback,
                        std::string&& id,
-                       type::Result) const;
+                       mojom::Result) const;
 
   void OnTransferTokens(ledger::ResultCallback,
-                        type::Result,
+                        mojom::Result,
                         std::string drain_id) const;
 
   LedgerImpl* ledger_;  // NOT OWNED

@@ -30,15 +30,15 @@ DatabaseSKUTransaction::DatabaseSKUTransaction(
 DatabaseSKUTransaction::~DatabaseSKUTransaction() = default;
 
 void DatabaseSKUTransaction::InsertOrUpdate(
-    type::SKUTransactionPtr transaction,
+    mojom::SKUTransactionPtr transaction,
     ledger::LegacyResultCallback callback) {
   if (!transaction) {
     BLOG(1, "Transcation is null");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  auto db_transaction = type::DBTransaction::New();
+  auto db_transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
@@ -47,8 +47,8 @@ void DatabaseSKUTransaction::InsertOrUpdate(
       "VALUES (?, ?, ?, ?, ?, ?)",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
   BindString(command.get(), 0, transaction->transaction_id);
@@ -74,7 +74,7 @@ void DatabaseSKUTransaction::SaveExternalTransaction(
   if (transaction_id.empty() || external_transaction_id.empty()) {
     BLOG(1, "Data is empty " <<
         transaction_id << "/" << external_transaction_id);
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -83,16 +83,16 @@ void DatabaseSKUTransaction::SaveExternalTransaction(
       "external_transaction_id = ?, status = ? WHERE transaction_id = ?",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
   BindString(command.get(), 0, external_transaction_id);
-  BindInt(command.get(), 1, static_cast<int>(
-      type::SKUTransactionStatus::COMPLETED));
+  BindInt(command.get(), 1,
+          static_cast<int>(mojom::SKUTransactionStatus::COMPLETED));
   BindString(command.get(), 2, transaction_id);
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
   auto transaction_callback = std::bind(&OnResultCallback,
@@ -110,25 +110,25 @@ void DatabaseSKUTransaction::GetRecordByOrderId(
     callback(nullptr);
     return;
   }
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
     "SELECT transaction_id, order_id, external_transaction_id, amount, type, "
     "status FROM %s WHERE order_id = ?",
     kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = query;
 
   BindString(command.get(), 0, order_id);
 
-  command->record_bindings = {type::DBCommand::RecordBindingType::STRING_TYPE,
-                              type::DBCommand::RecordBindingType::STRING_TYPE,
-                              type::DBCommand::RecordBindingType::STRING_TYPE,
-                              type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              type::DBCommand::RecordBindingType::INT_TYPE,
-                              type::DBCommand::RecordBindingType::INT_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE};
 
   transaction->commands.push_back(std::move(command));
 
@@ -140,11 +140,10 @@ void DatabaseSKUTransaction::GetRecordByOrderId(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-void DatabaseSKUTransaction::OnGetRecord(
-    type::DBCommandResponsePtr response,
-    GetSKUTransactionCallback callback) {
+void DatabaseSKUTransaction::OnGetRecord(mojom::DBCommandResponsePtr response,
+                                         GetSKUTransactionCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback(nullptr);
     return;
@@ -159,15 +158,14 @@ void DatabaseSKUTransaction::OnGetRecord(
 
   auto* record = response->result->get_records()[0].get();
 
-  auto info = type::SKUTransaction::New();
+  auto info = mojom::SKUTransaction::New();
   info->transaction_id = GetStringColumn(record, 0);
   info->order_id = GetStringColumn(record, 1);
   info->external_transaction_id = GetStringColumn(record, 2);
   info->amount = GetDoubleColumn(record, 3);
-  info->type =
-      static_cast<type::SKUTransactionType>(GetIntColumn(record, 4));
+  info->type = static_cast<mojom::SKUTransactionType>(GetIntColumn(record, 4));
   info->status =
-      static_cast<type::SKUTransactionStatus>(GetIntColumn(record, 5));
+      static_cast<mojom::SKUTransactionStatus>(GetIntColumn(record, 5));
 
   callback(std::move(info));
 }

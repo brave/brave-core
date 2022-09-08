@@ -80,10 +80,9 @@ absl::optional<base::Value::List> ParseStringToBaseList(
   return value->GetList().Clone();
 }
 
-bool UnBlindCreds(
-    const type::CredsBatch& creds_batch,
-    std::vector<std::string>* unblinded_encoded_creds,
-    std::string* error) {
+bool UnBlindCreds(const mojom::CredsBatch& creds_batch,
+                  std::vector<std::string>* unblinded_encoded_creds,
+                  std::string* error) {
   DCHECK(error && unblinded_encoded_creds);
 
   auto batch_proof = BatchDLEQProof::decode_base64(creds_batch.batch_proof);
@@ -167,9 +166,8 @@ bool UnBlindCreds(
   return true;
 }
 
-bool UnBlindCredsMock(
-    const type::CredsBatch& creds,
-    std::vector<std::string>* unblinded_encoded_creds) {
+bool UnBlindCredsMock(const mojom::CredsBatch& creds,
+                      std::vector<std::string>* unblinded_encoded_creds) {
   DCHECK(unblinded_encoded_creds);
 
   auto signed_creds_base64 = ParseStringToBaseList(creds.signed_creds);
@@ -182,28 +180,28 @@ bool UnBlindCredsMock(
   return true;
 }
 
-std::string ConvertRewardTypeToString(const type::RewardsType type) {
+std::string ConvertRewardTypeToString(const mojom::RewardsType type) {
   switch (type) {
-    case type::RewardsType::AUTO_CONTRIBUTE: {
+    case mojom::RewardsType::AUTO_CONTRIBUTE: {
       return "auto-contribute";
     }
-    case type::RewardsType::ONE_TIME_TIP: {
+    case mojom::RewardsType::ONE_TIME_TIP: {
       return "oneoff-tip";
     }
-    case type::RewardsType::RECURRING_TIP: {
+    case mojom::RewardsType::RECURRING_TIP: {
       return "recurring-tip";
     }
-    case type::RewardsType::PAYMENT: {
+    case mojom::RewardsType::PAYMENT: {
       return "payment";
     }
-    case type::RewardsType::TRANSFER: {
+    case mojom::RewardsType::TRANSFER: {
       return "";
     }
   }
 }
 
 base::Value::List GenerateCredentials(
-    const std::vector<type::UnblindedToken>& token_list,
+    const std::vector<mojom::UnblindedToken>& token_list,
     const std::string& body) {
   base::Value::List credentials;
   for (auto& item : token_list) {

@@ -37,7 +37,8 @@ void EmptyBalance::Check() {
   ledger_->database()->GetAllContributions(get_callback);
 }
 
-void EmptyBalance::OnAllContributions(type::ContributionInfoList list) {
+void EmptyBalance::OnAllContributions(
+    std::vector<mojom::ContributionInfoPtr> list) {
   // we can just restore all tokens if no contributions
   if (list.empty()) {
     auto get_callback = std::bind(
@@ -51,7 +52,7 @@ void EmptyBalance::OnAllContributions(type::ContributionInfoList list) {
 
   double contribution_sum = 0.0;
   for (const auto& contribution : list) {
-    if (contribution->step == type::ContributionStep::STEP_COMPLETED) {
+    if (contribution->step == mojom::ContributionStep::STEP_COMPLETED) {
       contribution_sum += contribution->amount;
     }
   }
@@ -76,17 +77,17 @@ void EmptyBalance::GetPromotions(client::GetPromotionListCallback callback) {
 }
 
 void EmptyBalance::OnPromotions(
-    type::PromotionMap promotions,
+    base::flat_map<std::string, mojom::PromotionPtr> promotions,
     client::GetPromotionListCallback callback) {
-  type::PromotionList list;
+  std::vector<mojom::PromotionPtr> list;
 
   for (auto& promotion : promotions) {
     if (!promotion.second) {
       continue;
     }
 
-    if (promotion.second->status == type::PromotionStatus::FINISHED &&
-        promotion.second->type == type::PromotionType::ADS) {
+    if (promotion.second->status == mojom::PromotionStatus::FINISHED &&
+        promotion.second->type == mojom::PromotionType::ADS) {
       list.push_back(std::move(promotion.second));
     }
   }
@@ -94,7 +95,7 @@ void EmptyBalance::OnPromotions(
   callback(std::move(list));
 }
 
-void EmptyBalance::GetCredsByPromotions(type::PromotionList list) {
+void EmptyBalance::GetCredsByPromotions(std::vector<mojom::PromotionPtr> list) {
   std::vector<std::string> promotion_ids;
   for (auto& promotion : list) {
     promotion_ids.push_back(promotion->id);
@@ -105,7 +106,7 @@ void EmptyBalance::GetCredsByPromotions(type::PromotionList list) {
   ledger_->database()->GetCredsBatchesByTriggers(promotion_ids, get_callback);
 }
 
-void EmptyBalance::OnCreds(type::CredsBatchList list) {
+void EmptyBalance::OnCreds(std::vector<mojom::CredsBatchPtr> list) {
   if (list.empty()) {
     BLOG(1, "Creds batch list is emtpy");
     ledger_->state()->SetEmptyBalanceChecked(true);
@@ -114,8 +115,8 @@ void EmptyBalance::OnCreds(type::CredsBatchList list) {
 
   std::string error;
   std::vector<std::string> unblinded_encoded_creds;
-  type::UnblindedTokenList token_list;
-  type::UnblindedTokenPtr unblinded;
+  std::vector<mojom::UnblindedTokenPtr> token_list;
+  mojom::UnblindedTokenPtr unblinded;
   const uint64_t expires_at = 0ul;
   for (auto& creds_batch : list) {
     unblinded_encoded_creds.clear();
@@ -131,7 +132,7 @@ void EmptyBalance::OnCreds(type::CredsBatchList list) {
     }
 
     for (auto& cred : unblinded_encoded_creds) {
-      unblinded = type::UnblindedToken::New();
+      unblinded = mojom::UnblindedToken::New();
       unblinded->token_value = cred;
       unblinded->public_key = creds_batch->public_key;
       unblinded->value = 0.25;
@@ -154,16 +155,15 @@ void EmptyBalance::OnCreds(type::CredsBatchList list) {
       save_callback);
 }
 
-void EmptyBalance::OnSaveUnblindedCreds(const type::Result result) {
+void EmptyBalance::OnSaveUnblindedCreds(const mojom::Result result) {
   BLOG(1, "Finished empty balance migration with result: " << result);
   ledger_->state()->SetEmptyBalanceChecked(true);
 }
 
-void EmptyBalance::GetAllTokens(
-    type::PromotionList list,
-    const double contribution_sum) {
-    // from all completed promotions get creds
-    // unblind them and save them
+void EmptyBalance::GetAllTokens(std::vector<mojom::PromotionPtr> list,
+                                const double contribution_sum) {
+  // from all completed promotions get creds
+  // unblind them and save them
   double promotion_sum = 0.0;
   for (auto& promotion : list) {
     promotion_sum += promotion->approximate_value;
@@ -178,14 +178,12 @@ void EmptyBalance::GetAllTokens(
       promotion_sum);
 
   ledger_->database()->GetSpendableUnblindedTokensByBatchTypes(
-      {type::CredsBatchType::PROMOTION},
-      tokens_callback);
+      {mojom::CredsBatchType::PROMOTION}, tokens_callback);
 }
 
-void EmptyBalance::ReportResults(
-    type::UnblindedTokenList list,
-    const double contribution_sum,
-    const double promotion_sum) {
+void EmptyBalance::ReportResults(std::vector<mojom::UnblindedTokenPtr> list,
+                                 const double contribution_sum,
+                                 const double promotion_sum) {
   double tokens_sum = 0.0;
   for (auto & item : list) {
     tokens_sum+=item->value;
@@ -210,8 +208,8 @@ void EmptyBalance::ReportResults(
       url_callback);
 }
 
-void EmptyBalance::Sent(const type::Result result) {
-  if (result != type::Result::LEDGER_OK) {
+void EmptyBalance::Sent(const mojom::Result result) {
+  if (result != mojom::Result::LEDGER_OK) {
     return;
   }
 

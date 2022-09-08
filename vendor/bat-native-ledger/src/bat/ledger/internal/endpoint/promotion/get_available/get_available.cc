@@ -49,51 +49,51 @@ std::string GetAvailable::GetUrl(const std::string& platform) {
   return GetServerUrl(path);
 }
 
-type::Result GetAvailable::CheckStatusCode(const int status_code) {
+mojom::Result GetAvailable::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid paymentId or platform in request");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   if (status_code == net::HTTP_NOT_FOUND) {
     BLOG(0, "Unrecognized paymentId/promotion combination");
-    return type::Result::NOT_FOUND;
+    return mojom::Result::NOT_FOUND;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Internal server error");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
-type::Result GetAvailable::ParseBody(
+mojom::Result GetAvailable::ParseBody(
     const std::string& body,
-    type::PromotionList* list,
+    std::vector<mojom::PromotionPtr>* list,
     std::vector<std::string>* corrupted_promotions) {
   DCHECK(list && corrupted_promotions);
 
   absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* promotions = dict.FindList("promotions");
   if (!promotions) {
-    return type::Result::LEDGER_OK;
+    return mojom::Result::LEDGER_OK;
   }
 
   const auto promotion_size = promotions->size();
   for (const auto& value : *promotions) {
-    type::PromotionPtr promotion = type::Promotion::New();
+    mojom::PromotionPtr promotion = mojom::Promotion::New();
 
     const auto* item = value.GetIfDict();
     if (!item) {
@@ -147,9 +147,9 @@ type::Result GetAvailable::ParseBody(
     }
 
     if (*available) {
-      promotion->status = type::PromotionStatus::ACTIVE;
+      promotion->status = mojom::PromotionStatus::ACTIVE;
     } else {
-      promotion->status = type::PromotionStatus::OVER;
+      promotion->status = mojom::PromotionStatus::OVER;
     }
 
     promotion->created_at = base::Time::Now().ToDoubleT();
@@ -197,10 +197,10 @@ type::Result GetAvailable::ParseBody(
   }
 
   if (promotion_size != list->size()) {
-    return type::Result::CORRUPTED_DATA;
+    return mojom::Result::CORRUPTED_DATA;
   }
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
 void GetAvailable::Request(
@@ -209,20 +209,20 @@ void GetAvailable::Request(
   auto url_callback = base::BindOnce(
       &GetAvailable::OnRequest, base::Unretained(this), std::move(callback));
 
-  auto request = type::UrlRequest::New();
+  auto request = mojom::UrlRequest::New();
   request->url = GetUrl(platform);
   ledger_->LoadURL(std::move(request), std::move(url_callback));
 }
 
 void GetAvailable::OnRequest(GetAvailableCallback callback,
-                             const type::UrlResponse& response) {
+                             const mojom::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
 
-  type::PromotionList list;
+  std::vector<mojom::PromotionPtr> list;
   std::vector<std::string> corrupted_promotions;
-  type::Result result = CheckStatusCode(response.status_code);
+  mojom::Result result = CheckStatusCode(response.status_code);
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     std::move(callback).Run(result, std::move(list), corrupted_promotions);
     return;
   }

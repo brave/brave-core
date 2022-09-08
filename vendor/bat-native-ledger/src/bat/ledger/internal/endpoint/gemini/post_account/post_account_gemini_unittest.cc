@@ -44,8 +44,8 @@ class GeminiPostAccountTest : public testing::Test {
 TEST_F(GeminiPostAccountTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_OK;
             response.url = request->url;
             response.body = R"({
@@ -70,9 +70,9 @@ TEST_F(GeminiPostAccountTest, ServerOK) {
 
   post_account_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      base::BindOnce([](type::Result result, std::string&& linking_info,
+      base::BindOnce([](mojom::Result result, std::string&& linking_info,
                         std::string&& user_name) {
-        EXPECT_EQ(result, type::Result::LEDGER_OK);
+        EXPECT_EQ(result, mojom::Result::LEDGER_OK);
         EXPECT_EQ(linking_info, "mocktoken");
         EXPECT_EQ(user_name, "Test");
       }));
@@ -81,8 +81,8 @@ TEST_F(GeminiPostAccountTest, ServerOK) {
 TEST_F(GeminiPostAccountTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_UNAUTHORIZED;
             response.url = request->url;
             response.body = "";
@@ -91,9 +91,9 @@ TEST_F(GeminiPostAccountTest, ServerError401) {
 
   post_account_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      base::BindOnce([](type::Result result, std::string&& linking_info,
+      base::BindOnce([](mojom::Result result, std::string&& linking_info,
                         std::string&& user_name) {
-        EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
+        EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
         EXPECT_EQ(linking_info, "");
         EXPECT_EQ(user_name, "");
       }));
@@ -102,8 +102,8 @@ TEST_F(GeminiPostAccountTest, ServerError401) {
 TEST_F(GeminiPostAccountTest, ServerError403) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_FORBIDDEN;
             response.url = request->url;
             response.body = "";
@@ -112,9 +112,9 @@ TEST_F(GeminiPostAccountTest, ServerError403) {
 
   post_account_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      base::BindOnce([](type::Result result, std::string&& linking_info,
+      base::BindOnce([](mojom::Result result, std::string&& linking_info,
                         std::string&& user_name) {
-        EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
+        EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
         EXPECT_EQ(linking_info, "");
         EXPECT_EQ(user_name, "");
       }));
@@ -123,8 +123,8 @@ TEST_F(GeminiPostAccountTest, ServerError403) {
 TEST_F(GeminiPostAccountTest, ServerError404) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_NOT_FOUND;
             response.url = request->url;
             response.body = "";
@@ -133,9 +133,9 @@ TEST_F(GeminiPostAccountTest, ServerError404) {
 
   post_account_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      base::BindOnce([](type::Result result, std::string&& linking_info,
+      base::BindOnce([](mojom::Result result, std::string&& linking_info,
                         std::string&& user_name) {
-        EXPECT_EQ(result, type::Result::NOT_FOUND);
+        EXPECT_EQ(result, mojom::Result::NOT_FOUND);
         EXPECT_EQ(linking_info, "");
         EXPECT_EQ(user_name, "");
       }));
@@ -144,8 +144,8 @@ TEST_F(GeminiPostAccountTest, ServerError404) {
 TEST_F(GeminiPostAccountTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 418;
             response.url = request->url;
             response.body = "";
@@ -154,9 +154,9 @@ TEST_F(GeminiPostAccountTest, ServerErrorRandom) {
 
   post_account_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      base::BindOnce([](type::Result result, std::string&& linking_info,
+      base::BindOnce([](mojom::Result result, std::string&& linking_info,
                         std::string&& user_name) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
         EXPECT_EQ(linking_info, "");
         EXPECT_EQ(user_name, "");
       }));

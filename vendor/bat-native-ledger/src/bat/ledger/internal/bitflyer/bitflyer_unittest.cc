@@ -49,12 +49,12 @@ class BitflyerTest : public Test {
         bitflyer_{std::make_unique<Bitflyer>(mock_ledger_impl_.get())} {}
 };
 
-absl::optional<type::WalletStatus> GetStatusFromJSON(
+absl::optional<mojom::WalletStatus> GetStatusFromJSON(
     const std::string& bitflyer_wallet) {
   auto value = base::JSONReader::Read(bitflyer_wallet);
   if (value && value->is_dict()) {
     if (auto status = value->GetDict().FindInt("status")) {
-      return static_cast<type::WalletStatus>(*status);
+      return static_cast<mojom::WalletStatus>(*status);
     }
   }
 
@@ -72,9 +72,9 @@ using DisconnectWalletParamType = std::tuple<
     std::string,                        // input bitFlyer wallet
     std::string,                        // input Rewards wallet
     // NOLINTNEXTLINE
-    type::UrlResponse,                  // Rewards UnLink (Claim) Wallet response
-    type::Result,                       // expected result
-    absl::optional<type::WalletStatus>  // expected status
+    mojom::UrlResponse,                  // Rewards UnLink (Claim) Wallet response
+    mojom::Result,                       // expected result
+    absl::optional<mojom::WalletStatus>  // expected status
 >;
 
 struct DisconnectBitflyerWallet : BitflyerTest,
@@ -89,90 +89,90 @@ INSTANTIATE_TEST_SUITE_P(
       "00_NOT_CONNECTED_unlink_wallet_succeeded",
       R"({ "status": 0 })",
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         {},
         {}
       },
-      type::Result::LEDGER_OK,
-      type::WalletStatus::NOT_CONNECTED
+      mojom::Result::LEDGER_OK,
+      mojom::WalletStatus::NOT_CONNECTED
     },
     // NOLINTNEXTLINE
     DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet failed. (NOT_CONNECTED)
       "01_NOT_CONNECTED_unlink_wallet_failed",
       R"({ "status": 0 })",
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR,
         {},
         {}
       },
-      type::Result::LEDGER_ERROR,
-      type::WalletStatus::NOT_CONNECTED
+      mojom::Result::LEDGER_ERROR,
+      mojom::WalletStatus::NOT_CONNECTED
     },
     // NOLINTNEXTLINE
     DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet succeeded. (VERIFIED)
       "02_VERIFIED_unlink_wallet_succeeded",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         {},
         {}
       },
-      type::Result::LEDGER_OK,
-      type::WalletStatus::NOT_CONNECTED
+      mojom::Result::LEDGER_OK,
+      mojom::WalletStatus::NOT_CONNECTED
     },
     // NOLINTNEXTLINE
     DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet failed. (VERIFIED)
       "03_VERIFIED_unlink_wallet_failed",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR,
         {},
         {}
       },
-      type::Result::LEDGER_ERROR,
-      type::WalletStatus::VERIFIED
+      mojom::Result::LEDGER_ERROR,
+      mojom::WalletStatus::VERIFIED
     },
     // NOLINTNEXTLINE
     DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet succeeded. (DISCONNECTED_VERIFIED)
       "04_DISCONNECTED_VERIFIED_unlink_wallet_succeeded",
       R"({ "status": 4 })",
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         {},
         {}
       },
-      type::Result::LEDGER_OK,
-      type::WalletStatus::NOT_CONNECTED
+      mojom::Result::LEDGER_OK,
+      mojom::WalletStatus::NOT_CONNECTED
     },
     // NOLINTNEXTLINE
     DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet failed. (DISCONNECTED_VERIFIED)
       "05_DISCONNECTED_VERIFIED_unlink_wallet_failed",
       R"({ "status": 4 })",
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR,
         {},
         {}
       },
-      type::Result::LEDGER_ERROR,
-      type::WalletStatus::DISCONNECTED_VERIFIED
+      mojom::Result::LEDGER_ERROR,
+      mojom::WalletStatus::DISCONNECTED_VERIFIED
     }),
   NameSuffixGenerator<DisconnectWalletParamType>
 );
@@ -201,7 +201,7 @@ TEST_P(DisconnectBitflyerWallet, Paths) {
 
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
-          [&](type::UrlRequestPtr, client::LoadURLCallback callback) {
+          [&](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
             std::move(callback).Run(rewards_unlink_wallet_response);
           });
 
@@ -211,7 +211,7 @@ TEST_P(DisconnectBitflyerWallet, Paths) {
       .WillByDefault(Return(mock_database_.get()));
 
   mock_ledger_impl_->DisconnectWallet(
-      constant::kWalletBitflyer, [&](type::Result result) {
+      constant::kWalletBitflyer, [&](mojom::Result result) {
         ASSERT_EQ(result, expected_result);
 
         const auto status = GetStatusFromJSON(bitflyer_wallet);

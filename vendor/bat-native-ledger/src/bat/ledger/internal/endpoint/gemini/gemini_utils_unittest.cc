@@ -23,48 +23,49 @@ namespace gemini {
 class GeminiUtilsTest : public BATLedgerTest {};
 
 TEST_F(GeminiUtilsTest, GetApiServerUrlDevelopment) {
-  ledger::_environment = type::Environment::DEVELOPMENT;
+  ledger::_environment = mojom::Environment::DEVELOPMENT;
   const std::string url = GetApiServerUrl("/test");
   ASSERT_EQ(url, base::StrCat({BUILDFLAG(GEMINI_API_STAGING_URL), "/test"}));
 }
 
 TEST_F(GeminiUtilsTest, GetApiServerUrlStaging) {
-  ledger::_environment = type::Environment::STAGING;
+  ledger::_environment = mojom::Environment::STAGING;
   const std::string url = GetApiServerUrl("/test");
   ASSERT_EQ(url, base::StrCat({BUILDFLAG(GEMINI_API_STAGING_URL), "/test"}));
 }
 
 TEST_F(GeminiUtilsTest, GetApiServerUrlProduction) {
-  ledger::_environment = type::Environment::PRODUCTION;
+  ledger::_environment = mojom::Environment::PRODUCTION;
   const std::string url = GetApiServerUrl("/test");
   ASSERT_EQ(url, base::StrCat({BUILDFLAG(GEMINI_API_URL), "/test"}));
 }
 
 TEST_F(GeminiUtilsTest, GetOauthServerUrlDevelopment) {
-  ledger::_environment = type::Environment::DEVELOPMENT;
+  ledger::_environment = mojom::Environment::DEVELOPMENT;
   const std::string url = GetOauthServerUrl("/test");
   ASSERT_EQ(url, base::StrCat({BUILDFLAG(GEMINI_OAUTH_STAGING_URL), "/test"}));
 }
 
 TEST_F(GeminiUtilsTest, GetOauthServerUrlStaging) {
-  ledger::_environment = type::Environment::STAGING;
+  ledger::_environment = mojom::Environment::STAGING;
   const std::string url = GetOauthServerUrl("/test");
   ASSERT_EQ(url, base::StrCat({BUILDFLAG(GEMINI_OAUTH_STAGING_URL), "/test"}));
 }
 
 TEST_F(GeminiUtilsTest, GetOauthServerUrlProduction) {
-  ledger::_environment = type::Environment::PRODUCTION;
+  ledger::_environment = mojom::Environment::PRODUCTION;
   const std::string url = GetOauthServerUrl("/test");
   ASSERT_EQ(url, base::StrCat({BUILDFLAG(GEMINI_OAUTH_URL), "/test"}));
 }
 
 TEST_F(GeminiUtilsTest, CheckStatusCodeTest) {
   ASSERT_EQ(CheckStatusCode(net::HTTP_UNAUTHORIZED),
-            type::Result::EXPIRED_TOKEN);
-  ASSERT_EQ(CheckStatusCode(net::HTTP_FORBIDDEN), type::Result::EXPIRED_TOKEN);
-  ASSERT_EQ(CheckStatusCode(net::HTTP_NOT_FOUND), type::Result::NOT_FOUND);
-  ASSERT_EQ(CheckStatusCode(net::HTTP_BAD_REQUEST), type::Result::LEDGER_ERROR);
-  ASSERT_EQ(CheckStatusCode(net::HTTP_OK), type::Result::LEDGER_OK);
+            mojom::Result::EXPIRED_TOKEN);
+  ASSERT_EQ(CheckStatusCode(net::HTTP_FORBIDDEN), mojom::Result::EXPIRED_TOKEN);
+  ASSERT_EQ(CheckStatusCode(net::HTTP_NOT_FOUND), mojom::Result::NOT_FOUND);
+  ASSERT_EQ(CheckStatusCode(net::HTTP_BAD_REQUEST),
+            mojom::Result::LEDGER_ERROR);
+  ASSERT_EQ(CheckStatusCode(net::HTTP_OK), mojom::Result::LEDGER_OK);
 }
 
 }  // namespace gemini

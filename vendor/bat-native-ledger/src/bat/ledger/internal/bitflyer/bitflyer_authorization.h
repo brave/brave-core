@@ -32,7 +32,7 @@ class BitflyerAuthorization {
 
  private:
   void OnAuthorize(ledger::ExternalWalletAuthorizationCallback,
-                   type::Result,
+                   mojom::Result,
                    std::string&& token,
                    std::string&& address,
                    std::string&& linking_info);
@@ -40,7 +40,7 @@ class BitflyerAuthorization {
   void OnConnectWallet(ledger::ExternalWalletAuthorizationCallback,
                        std::string&& token,
                        std::string&& address,
-                       type::Result);
+                       mojom::Result);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::BitflyerServer> bitflyer_server_;

@@ -25,7 +25,7 @@ class StateMigrationV10 {
   void Migrate(ledger::LegacyResultCallback callback);
 
  private:
-  void OnGetWallet(type::Result result,
+  void OnGetWallet(mojom::Result result,
                    const std::string& custodian,
                    bool linked,
                    ledger::LegacyResultCallback callback);

@@ -43,7 +43,7 @@ class LedgerImpl;
 namespace endpoint::gemini {
 
 using PostAccountCallback = base::OnceCallback<
-    void(type::Result, std::string&& linking_info, std::string&& user_name)>;
+    void(mojom::Result, std::string&& linking_info, std::string&& user_name)>;
 
 class PostAccount {
  public:
@@ -55,11 +55,11 @@ class PostAccount {
  private:
   std::string GetUrl();
 
-  type::Result ParseBody(const std::string& body,
-                         std::string* linking_info,
-                         std::string* user_name);
+  mojom::Result ParseBody(const std::string& body,
+                          std::string* linking_info,
+                          std::string* user_name);
 
-  void OnRequest(PostAccountCallback, const type::UrlResponse&);
+  void OnRequest(PostAccountCallback, const mojom::UrlResponse&);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

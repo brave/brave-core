@@ -13,14 +13,14 @@
 namespace ledger {
 namespace database {
 
-using GetSKUTransactionCallback = std::function<void(type::SKUTransactionPtr)>;
+using GetSKUTransactionCallback = std::function<void(mojom::SKUTransactionPtr)>;
 
 class DatabaseSKUTransaction: public DatabaseTable {
  public:
   explicit DatabaseSKUTransaction(LedgerImpl* ledger);
   ~DatabaseSKUTransaction() override;
 
-  void InsertOrUpdate(type::SKUTransactionPtr info,
+  void InsertOrUpdate(mojom::SKUTransactionPtr info,
                       ledger::LegacyResultCallback callback);
 
   void SaveExternalTransaction(const std::string& transaction_id,
@@ -32,9 +32,8 @@ class DatabaseSKUTransaction: public DatabaseTable {
       GetSKUTransactionCallback callback);
 
  private:
-  void OnGetRecord(
-      type::DBCommandResponsePtr response,
-      GetSKUTransactionCallback callback);
+  void OnGetRecord(mojom::DBCommandResponsePtr response,
+                   GetSKUTransactionCallback callback);
 };
 
 }  // namespace database

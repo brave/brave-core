@@ -18,27 +18,25 @@ namespace {
 
 const char kTableName[] = "balance_report_info";
 
-std::string GetBalanceReportId(
-    ledger::type::ActivityMonth month,
-    int year) {
+std::string GetBalanceReportId(ledger::mojom::ActivityMonth month, int year) {
   return base::StringPrintf("%u_%u", year, month);
 }
 
-std::string GetTypeColumn(ledger::type::ReportType type) {
+std::string GetTypeColumn(ledger::mojom::ReportType type) {
   switch (type) {
-    case ledger::type::ReportType::GRANT_UGP: {
+    case ledger::mojom::ReportType::GRANT_UGP: {
       return "grants_ugp";
     }
-    case ledger::type::ReportType::GRANT_AD: {
+    case ledger::mojom::ReportType::GRANT_AD: {
       return "grants_ads";
     }
-    case ledger::type::ReportType::AUTO_CONTRIBUTION: {
+    case ledger::mojom::ReportType::AUTO_CONTRIBUTION: {
       return "auto_contribute";
     }
-    case ledger::type::ReportType::TIP: {
+    case ledger::mojom::ReportType::TIP: {
       return "tip";
     }
-    case ledger::type::ReportType::TIP_RECURRING: {
+    case ledger::mojom::ReportType::TIP_RECURRING: {
       return "tip_recurring";
     }
   }
@@ -57,15 +55,15 @@ DatabaseBalanceReport::DatabaseBalanceReport(
 DatabaseBalanceReport::~DatabaseBalanceReport() = default;
 
 void DatabaseBalanceReport::InsertOrUpdate(
-    type::BalanceReportInfoPtr info,
+    mojom::BalanceReportInfoPtr info,
     ledger::LegacyResultCallback callback) {
   if (!info || info->id.empty()) {
     BLOG(1, "Id is empty");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
@@ -74,8 +72,8 @@ void DatabaseBalanceReport::InsertOrUpdate(
       "VALUES (?, ?, ?, ?, ?, ?)",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
   BindString(command.get(), 0, info->id);
@@ -95,15 +93,15 @@ void DatabaseBalanceReport::InsertOrUpdate(
 }
 
 void DatabaseBalanceReport::InsertOrUpdateList(
-    type::BalanceReportInfoList list,
+    std::vector<mojom::BalanceReportInfoPtr> list,
     ledger::LegacyResultCallback callback) {
   if (list.empty()) {
     BLOG(1, "List is empty");
-    callback(type::Result::LEDGER_OK);
+    callback(mojom::Result::LEDGER_OK);
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
@@ -113,8 +111,8 @@ void DatabaseBalanceReport::InsertOrUpdateList(
       kTableName);
 
   for (const auto& report : list) {
-    auto command = type::DBCommand::New();
-    command->type = type::DBCommand::Type::RUN;
+    auto command = mojom::DBCommand::New();
+    command->type = mojom::DBCommand::Type::RUN;
     command->command = query;
 
     BindString(command.get(), 0, report->id);
@@ -134,17 +132,17 @@ void DatabaseBalanceReport::InsertOrUpdateList(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-void DatabaseBalanceReport::SetAmount(type::ActivityMonth month,
+void DatabaseBalanceReport::SetAmount(mojom::ActivityMonth month,
                                       int year,
-                                      type::ReportType type,
+                                      mojom::ReportType type,
                                       double amount,
                                       ledger::LegacyResultCallback callback) {
-  if (month == type::ActivityMonth::ANY || year == 0) {
+  if (month == mojom::ActivityMonth::ANY || year == 0) {
     BLOG(1, "Record size is not correct " << month << "/" << year);
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string id = GetBalanceReportId(month, year);
 
@@ -155,8 +153,8 @@ void DatabaseBalanceReport::SetAmount(type::ActivityMonth month,
       "VALUES (?, 0, 0, 0, 0, 0) ",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = insert_query;
   BindString(command.get(), 0, id);
   transaction->commands.push_back(std::move(command));
@@ -167,8 +165,8 @@ void DatabaseBalanceReport::SetAmount(type::ActivityMonth month,
       GetTypeColumn(type).c_str(),
       GetTypeColumn(type).c_str());
 
-  command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = update_query;
   BindDouble(command.get(), 0, amount);
   BindString(command.get(), 1, id);
@@ -182,16 +180,16 @@ void DatabaseBalanceReport::SetAmount(type::ActivityMonth month,
 }
 
 void DatabaseBalanceReport::GetRecord(
-    type::ActivityMonth month,
+    mojom::ActivityMonth month,
     int year,
     ledger::GetBalanceReportCallback callback) {
-  if (month == type::ActivityMonth::ANY || year == 0) {
+  if (month == mojom::ActivityMonth::ANY || year == 0) {
     BLOG(1, "Record size is not correct " << month << "/" << year);
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   // when new month starts we need to insert blank values
   const std::string insert_query = base::StringPrintf(
@@ -201,8 +199,8 @@ void DatabaseBalanceReport::GetRecord(
       "VALUES (?, 0, 0, 0, 0, 0) ",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = insert_query;
   BindString(command.get(), 0, GetBalanceReportId(month, year));
   transaction->commands.push_back(std::move(command));
@@ -213,20 +211,18 @@ void DatabaseBalanceReport::GetRecord(
     "FROM %s WHERE balance_report_id = ?",
     kTableName);
 
-  command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = select_query;
 
   BindString(command.get(), 0, GetBalanceReportId(month, year));
 
-  command->record_bindings = {
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      type::DBCommand::RecordBindingType::DOUBLE_TYPE
-  };
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE};
 
   transaction->commands.push_back(std::move(command));
 
@@ -239,25 +235,25 @@ void DatabaseBalanceReport::GetRecord(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 void DatabaseBalanceReport::OnGetRecord(
-    type::DBCommandResponsePtr response,
+    mojom::DBCommandResponsePtr response,
     ledger::GetBalanceReportCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
   if (response->result->get_records().size() != 1) {
     BLOG(1, "Record size is not correct: " <<
         response->result->get_records().size());
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
   auto* record = response->result->get_records()[0].get();
 
-  auto info = type::BalanceReportInfo::New();
+  auto info = mojom::BalanceReportInfo::New();
   info->id = GetStringColumn(record, 0);
   info->grants = GetDoubleColumn(record, 1);
   info->earning_from_ads = GetDoubleColumn(record, 2);
@@ -265,12 +261,12 @@ void DatabaseBalanceReport::OnGetRecord(
   info->recurring_donation = GetDoubleColumn(record, 4);
   info->one_time_donation = GetDoubleColumn(record, 5);
 
-  callback(type::Result::LEDGER_OK, std::move(info));
+  callback(mojom::Result::LEDGER_OK, std::move(info));
 }
 
 void DatabaseBalanceReport::GetAllRecords(
     ledger::GetBalanceReportListCallback callback) {
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
     "SELECT balance_report_id, grants_ugp, grants_ads, "
@@ -278,18 +274,16 @@ void DatabaseBalanceReport::GetAllRecords(
     "FROM %s",
     kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = query;
 
-  command->record_bindings = {
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      type::DBCommand::RecordBindingType::DOUBLE_TYPE
-  };
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE};
 
   transaction->commands.push_back(std::move(command));
 
@@ -303,19 +297,19 @@ void DatabaseBalanceReport::GetAllRecords(
 }
 
 void DatabaseBalanceReport::OnGetAllRecords(
-    type::DBCommandResponsePtr response,
+    mojom::DBCommandResponsePtr response,
     ledger::GetBalanceReportListCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback({});
     return;
   }
 
-  type::BalanceReportInfoList list;
+  std::vector<mojom::BalanceReportInfoPtr> list;
   for (const auto& record : response->result->get_records()) {
     auto* record_pointer = record.get();
-    auto info = type::BalanceReportInfo::New();
+    auto info = mojom::BalanceReportInfo::New();
 
     info->id = GetStringColumn(record_pointer, 0);
     info->grants = GetDoubleColumn(record_pointer, 1);
@@ -332,12 +326,12 @@ void DatabaseBalanceReport::OnGetAllRecords(
 
 void DatabaseBalanceReport::DeleteAllRecords(
     ledger::LegacyResultCallback callback) {
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf("DELETE FROM %s", kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::EXECUTE;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::EXECUTE;
   command->command = query;
 
   transaction->commands.push_back(std::move(command));

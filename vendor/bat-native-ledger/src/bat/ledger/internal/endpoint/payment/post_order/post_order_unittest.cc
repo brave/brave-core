@@ -45,8 +45,8 @@ class PostOrderTest : public testing::Test {
 TEST_F(PostOrderTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 201;
             response.url = request->url;
             response.body = R"({
@@ -77,33 +77,32 @@ TEST_F(PostOrderTest, ServerOK) {
             std::move(callback).Run(response);
           }));
 
-  type::SKUOrderItem item;
+  mojom::SKUOrderItem item;
   item.quantity = 4;
   item.sku = "asdfasfasfdsdf";
-  item.type = type::SKUOrderItemType::SINGLE_USE;
-  std::vector<type::SKUOrderItem> items;
+  item.type = mojom::SKUOrderItemType::SINGLE_USE;
+  std::vector<mojom::SKUOrderItem> items;
   items.push_back(item);
 
   order_->Request(
-      items,
-      [](const type::Result result, type::SKUOrderPtr order) {
-        auto expected_order_item = type::SKUOrderItem::New();
+      items, [](const mojom::Result result, mojom::SKUOrderPtr order) {
+        auto expected_order_item = mojom::SKUOrderItem::New();
         expected_order_item->order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
         expected_order_item->sku = "asdfasfasfdsdf";
-        expected_order_item->type = type::SKUOrderItemType::SINGLE_USE;
+        expected_order_item->type = mojom::SKUOrderItemType::SINGLE_USE;
         expected_order_item->order_item_id =
             "9c9aed7f-b349-452e-80a8-95faf2b1600d";
         expected_order_item->quantity = 4;
         expected_order_item->price = 0.25;
 
-        type::SKUOrder expected_order;
+        mojom::SKUOrder expected_order;
         expected_order.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
         expected_order.total_amount = 1;
         expected_order.location = "brave.com";
-        expected_order.status = type::SKUOrderStatus::PENDING;
+        expected_order.status = mojom::SKUOrderStatus::PENDING;
         expected_order.items.push_back(std::move(expected_order_item));
 
-        EXPECT_EQ(result, type::Result::LEDGER_OK);
+        EXPECT_EQ(result, mojom::Result::LEDGER_OK);
         EXPECT_TRUE(expected_order.Equals(*order));
       });
 }
@@ -111,79 +110,76 @@ TEST_F(PostOrderTest, ServerOK) {
 TEST_F(PostOrderTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
             std::move(callback).Run(response);
           }));
 
-  type::SKUOrderItem item;
+  mojom::SKUOrderItem item;
   item.quantity = 4;
   item.sku = "asdfasfasfdsdf";
-  item.type = type::SKUOrderItemType::SINGLE_USE;
-  std::vector<type::SKUOrderItem> items;
+  item.type = mojom::SKUOrderItemType::SINGLE_USE;
+  std::vector<mojom::SKUOrderItem> items;
   items.push_back(item);
 
-  order_->Request(
-      items,
-      [](const type::Result result, type::SKUOrderPtr order) {
-        EXPECT_EQ(result, type::Result::RETRY_SHORT);
-        EXPECT_TRUE(!order);
-      });
+  order_->Request(items,
+                  [](const mojom::Result result, mojom::SKUOrderPtr order) {
+                    EXPECT_EQ(result, mojom::Result::RETRY_SHORT);
+                    EXPECT_TRUE(!order);
+                  });
 }
 
 TEST_F(PostOrderTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
             std::move(callback).Run(response);
           }));
 
-  type::SKUOrderItem item;
+  mojom::SKUOrderItem item;
   item.quantity = 4;
   item.sku = "asdfasfasfdsdf";
-  item.type = type::SKUOrderItemType::SINGLE_USE;
-  std::vector<type::SKUOrderItem> items;
+  item.type = mojom::SKUOrderItemType::SINGLE_USE;
+  std::vector<mojom::SKUOrderItem> items;
   items.push_back(item);
 
-  order_->Request(
-      items,
-      [](const type::Result result, type::SKUOrderPtr order) {
-        EXPECT_EQ(result, type::Result::RETRY_SHORT);
-        EXPECT_TRUE(!order);
-      });
+  order_->Request(items,
+                  [](const mojom::Result result, mojom::SKUOrderPtr order) {
+                    EXPECT_EQ(result, mojom::Result::RETRY_SHORT);
+                    EXPECT_TRUE(!order);
+                  });
 }
 
 TEST_F(PostOrderTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
             std::move(callback).Run(response);
           }));
 
-  type::SKUOrderItem item;
+  mojom::SKUOrderItem item;
   item.quantity = 4;
   item.sku = "asdfasfasfdsdf";
-  item.type = type::SKUOrderItemType::SINGLE_USE;
-  std::vector<type::SKUOrderItem> items;
+  item.type = mojom::SKUOrderItemType::SINGLE_USE;
+  std::vector<mojom::SKUOrderItem> items;
   items.push_back(item);
 
-  order_->Request(
-      items,
-      [](const type::Result result, type::SKUOrderPtr order) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-        EXPECT_TRUE(!order);
-      });
+  order_->Request(items,
+                  [](const mojom::Result result, mojom::SKUOrderPtr order) {
+                    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
+                    EXPECT_TRUE(!order);
+                  });
 }
 
 }  // namespace payment

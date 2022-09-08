@@ -16,24 +16,24 @@ namespace contribution {
 class ContributionUtilTest : public testing::Test {};
 
 TEST(ContributionUtilTest, GetReportTypeFromRewardsType) {
-  ASSERT_EQ(type::ReportType::AUTO_CONTRIBUTION,
-            GetReportTypeFromRewardsType(type::RewardsType::AUTO_CONTRIBUTE));
-  ASSERT_EQ(type::ReportType::TIP,
-            GetReportTypeFromRewardsType(type::RewardsType::ONE_TIME_TIP));
-  ASSERT_EQ(type::ReportType::TIP_RECURRING,
-            GetReportTypeFromRewardsType(type::RewardsType::RECURRING_TIP));
+  ASSERT_EQ(mojom::ReportType::AUTO_CONTRIBUTION,
+            GetReportTypeFromRewardsType(mojom::RewardsType::AUTO_CONTRIBUTE));
+  ASSERT_EQ(mojom::ReportType::TIP,
+            GetReportTypeFromRewardsType(mojom::RewardsType::ONE_TIME_TIP));
+  ASSERT_EQ(mojom::ReportType::TIP_RECURRING,
+            GetReportTypeFromRewardsType(mojom::RewardsType::RECURRING_TIP));
 }
 
 TEST(ContributionUtilTest, GetProcessor) {
-  ASSERT_EQ(type::ContributionProcessor::BRAVE_TOKENS,
+  ASSERT_EQ(mojom::ContributionProcessor::BRAVE_TOKENS,
             GetProcessor(constant::kWalletUnBlinded));
-  ASSERT_EQ(type::ContributionProcessor::UPHOLD,
+  ASSERT_EQ(mojom::ContributionProcessor::UPHOLD,
             GetProcessor(constant::kWalletUphold));
-  ASSERT_EQ(type::ContributionProcessor::BITFLYER,
+  ASSERT_EQ(mojom::ContributionProcessor::BITFLYER,
             GetProcessor(constant::kWalletBitflyer));
-  ASSERT_EQ(type::ContributionProcessor::GEMINI,
+  ASSERT_EQ(mojom::ContributionProcessor::GEMINI,
             GetProcessor(constant::kWalletGemini));
-  ASSERT_EQ(type::ContributionProcessor::NONE, GetProcessor("random-data"));
+  ASSERT_EQ(mojom::ContributionProcessor::NONE, GetProcessor("random-data"));
 }
 
 TEST(ContributionUtilTest, GetNextProcessor) {

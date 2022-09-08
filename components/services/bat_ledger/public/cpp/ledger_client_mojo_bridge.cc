@@ -24,7 +24,7 @@ LedgerClientMojoBridge::~LedgerClientMojoBridge() = default;
 // static
 void LedgerClientMojoBridge::OnLoadLedgerState(
     CallbackHolder<LoadLedgerStateCallback>* holder,
-    ledger::type::Result result,
+    ledger::mojom::Result result,
     const std::string& data) {
   DCHECK(holder);
   if (holder->is_valid())
@@ -43,7 +43,7 @@ void LedgerClientMojoBridge::LoadLedgerState(LoadLedgerStateCallback callback) {
 // static
 void LedgerClientMojoBridge::OnLoadPublisherState(
     CallbackHolder<LoadLedgerStateCallback>* holder,
-    ledger::type::Result result,
+    ledger::mojom::Result result,
     const std::string& data) {
   DCHECK(holder);
   if (holder->is_valid())
@@ -63,16 +63,16 @@ void LedgerClientMojoBridge::LoadPublisherState(
 }
 
 void LedgerClientMojoBridge::OnReconcileComplete(
-    const ledger::type::Result result,
-    ledger::type::ContributionInfoPtr contribution) {
+    const ledger::mojom::Result result,
+    ledger::mojom::ContributionInfoPtr contribution) {
   ledger_client_->OnReconcileComplete(
       result,
       std::move(contribution));
 }
 
 void LedgerClientMojoBridge::OnPanelPublisherInfo(
-    const ledger::type::Result result,
-    ledger::type::PublisherInfoPtr publisher_info,
+    const ledger::mojom::Result result,
+    ledger::mojom::PublisherInfoPtr publisher_info,
     uint64_t window_id) {
   ledger_client_->OnPanelPublisherInfo(
       result,
@@ -104,20 +104,20 @@ void LedgerClientMojoBridge::URIEncode(const std::string& value,
   std::move(callback).Run(ledger_client_->URIEncode(value));
 }
 
-void LedgerClientMojoBridge::LoadURL(ledger::type::UrlRequestPtr request,
+void LedgerClientMojoBridge::LoadURL(ledger::mojom::UrlRequestPtr request,
                                      LoadURLCallback callback) {
   ledger_client_->LoadURL(
       std::move(request),
       base::BindOnce(
           [](LoadURLCallback callback,
-             const ledger::type::UrlResponse& response) {
-            std::move(callback).Run(ledger::type::UrlResponse::New(response));
+             const ledger::mojom::UrlResponse& response) {
+            std::move(callback).Run(ledger::mojom::UrlResponse::New(response));
           },
           std::move(callback)));
 }
 
 void LedgerClientMojoBridge::PublisherListNormalized(
-    ledger::type::PublisherInfoList list) {
+    std::vector<ledger::mojom::PublisherInfoPtr> list) {
   ledger_client_->PublisherListNormalized(std::move(list));
 }
 
@@ -245,9 +245,9 @@ void LedgerClientMojoBridge::GetUint64Option(
 }
 
 void LedgerClientMojoBridge::OnContributeUnverifiedPublishers(
-      const ledger::type::Result result,
-      const std::string& publisher_key,
-      const std::string& publisher_name) {
+    const ledger::mojom::Result result,
+    const std::string& publisher_key,
+    const std::string& publisher_name) {
   ledger_client_->OnContributeUnverifiedPublishers(
       result,
       publisher_key,
@@ -262,7 +262,7 @@ void LedgerClientMojoBridge::GetLegacyWallet(
 // static
 void LedgerClientMojoBridge::OnShowNotification(
     CallbackHolder<ShowNotificationCallback>* holder,
-    const ledger::type::Result result) {
+    const ledger::mojom::Result result) {
   DCHECK(holder);
   if (holder->is_valid()) {
     std::move(holder->get()).Run(result);
@@ -299,7 +299,7 @@ void LedgerClientMojoBridge::ReconcileStampReset() {
 }
 
 void LedgerClientMojoBridge::RunDBTransaction(
-    ledger::type::DBTransactionPtr transaction,
+    ledger::mojom::DBTransactionPtr transaction,
     RunDBTransactionCallback callback) {
   ledger_client_->RunDBTransaction(std::move(transaction), std::move(callback));
 }
@@ -329,7 +329,7 @@ void LedgerClientMojoBridge::GetCreateScript(
 }
 
 void LedgerClientMojoBridge::PendingContributionSaved(
-    const ledger::type::Result result) {
+    const ledger::mojom::Result result) {
   ledger_client_->PendingContributionSaved(result);
 }
 
@@ -353,7 +353,7 @@ void LedgerClientMojoBridge::WalletDisconnected(
 // static
 void LedgerClientMojoBridge::OnDeleteLog(
     CallbackHolder<DeleteLogCallback>* holder,
-    const ledger::type::Result result) {
+    const ledger::mojom::Result result) {
   DCHECK(holder);
   if (holder->is_valid()) {
     std::move(holder->get()).Run(result);

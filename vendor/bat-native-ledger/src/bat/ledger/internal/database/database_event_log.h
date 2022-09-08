@@ -28,9 +28,8 @@ class DatabaseEventLog: public DatabaseTable {
   void GetLastRecords(ledger::GetEventLogsCallback callback);
 
  private:
-  void OnGetAllRecords(
-      type::DBCommandResponsePtr response,
-      ledger::GetEventLogsCallback callback);
+  void OnGetAllRecords(mojom::DBCommandResponsePtr response,
+                       ledger::GetEventLogsCallback callback);
 };
 
 }  // namespace database

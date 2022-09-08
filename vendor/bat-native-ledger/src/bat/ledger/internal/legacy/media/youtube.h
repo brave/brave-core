@@ -27,12 +27,12 @@ class YouTube {
   ~YouTube();
 
   void ProcessMedia(const base::flat_map<std::string, std::string>& parts,
-                    const ledger::type::VisitData& visit_data);
+                    const ledger::mojom::VisitData& visit_data);
 
   static std::string GetLinkType(const std::string& url);
 
   void ProcessActivityFromUrl(uint64_t window_id,
-                              const ledger::type::VisitData& visit_data);
+                              const ledger::mojom::VisitData& visit_data);
 
  private:
   static std::string GetMediaIdFromParts(
@@ -68,40 +68,37 @@ class YouTube {
 
   static std::string GetUserFromUrl(const std::string& path);
 
-  void OnMediaActivityError(const ledger::type::VisitData& visit_data,
+  void OnMediaActivityError(const ledger::mojom::VisitData& visit_data,
                             uint64_t window_id);
 
-  void OnMediaPublisherInfo(
-      const std::string& media_id,
-      const std::string& media_key,
-      const uint64_t duration,
-      const ledger::type::VisitData& visit_data,
-      uint64_t window_id,
-      ledger::type::Result result,
-      ledger::type::PublisherInfoPtr publisher_info);
+  void OnMediaPublisherInfo(const std::string& media_id,
+                            const std::string& media_key,
+                            const uint64_t duration,
+                            const ledger::mojom::VisitData& visit_data,
+                            uint64_t window_id,
+                            ledger::mojom::Result result,
+                            ledger::mojom::PublisherInfoPtr publisher_info);
 
-  void OnEmbedResponse(
-      const uint64_t duration,
-      const std::string& media_key,
-      const std::string& media_url,
-      const ledger::type::VisitData& visit_data,
-      const uint64_t window_id,
-      const ledger::type::UrlResponse& response);
+  void OnEmbedResponse(const uint64_t duration,
+                       const std::string& media_key,
+                       const std::string& media_url,
+                       const ledger::mojom::VisitData& visit_data,
+                       const uint64_t window_id,
+                       const ledger::mojom::UrlResponse& response);
 
-  void OnPublisherPage(
-      const uint64_t duration,
-      const std::string& media_key,
-      std::string publisher_url,
-      std::string publisher_name,
-      const ledger::type::VisitData& visit_data,
-      const uint64_t window_id,
-      const ledger::type::UrlResponse& response);
+  void OnPublisherPage(const uint64_t duration,
+                       const std::string& media_key,
+                       std::string publisher_url,
+                       std::string publisher_name,
+                       const ledger::mojom::VisitData& visit_data,
+                       const uint64_t window_id,
+                       const ledger::mojom::UrlResponse& response);
 
   void SavePublisherInfo(const uint64_t duration,
                          const std::string& media_key,
                          const std::string& publisher_url,
                          const std::string& publisher_name,
-                         const ledger::type::VisitData& visit_data,
+                         const ledger::mojom::VisitData& visit_data,
                          const uint64_t window_id,
                          const std::string& fav_icon,
                          const std::string& channel_id);
@@ -110,50 +107,47 @@ class YouTube {
                         ledger::client::LegacyLoadURLCallback callback);
 
   void WatchPath(uint64_t window_id,
-                 const ledger::type::VisitData& visit_data);
+                 const ledger::mojom::VisitData& visit_data);
 
-  void OnMediaPublisherActivity(ledger::type::Result result,
-                                ledger::type::PublisherInfoPtr info,
+  void OnMediaPublisherActivity(ledger::mojom::Result result,
+                                ledger::mojom::PublisherInfoPtr info,
                                 uint64_t window_id,
-                                const ledger::type::VisitData& visit_data,
+                                const ledger::mojom::VisitData& visit_data,
                                 const std::string& media_key,
                                 const std::string& media_id);
 
   void GetPublisherPanleInfo(uint64_t window_id,
-                             const ledger::type::VisitData& visit_data,
+                             const ledger::mojom::VisitData& visit_data,
                              const std::string& publisher_key,
                              bool is_custom_path);
 
   void OnPublisherPanleInfo(uint64_t window_id,
-                            const ledger::type::VisitData& visit_data,
+                            const ledger::mojom::VisitData& visit_data,
                             const std::string& publisher_key,
                             bool is_custom_path,
-                            ledger::type::Result result,
-                            ledger::type::PublisherInfoPtr info);
+                            ledger::mojom::Result result,
+                            ledger::mojom::PublisherInfoPtr info);
 
-  void GetChannelHeadlineVideo(
-      uint64_t window_id,
-      const ledger::type::VisitData& visit_data,
-      bool is_custom_path,
-      const ledger::type::UrlResponse& response);
+  void GetChannelHeadlineVideo(uint64_t window_id,
+                               const ledger::mojom::VisitData& visit_data,
+                               bool is_custom_path,
+                               const ledger::mojom::UrlResponse& response);
 
   void ChannelPath(uint64_t window_id,
-                   const ledger::type::VisitData& visit_data);
+                   const ledger::mojom::VisitData& visit_data);
 
-  void UserPath(uint64_t windowId,
-                const ledger::type::VisitData& visit_data);
+  void UserPath(uint64_t windowId, const ledger::mojom::VisitData& visit_data);
 
   void OnUserActivity(uint64_t window_id,
-                      const ledger::type::VisitData& visit_data,
+                      const ledger::mojom::VisitData& visit_data,
                       const std::string& media_key,
-                      ledger::type::Result result,
-                      ledger::type::PublisherInfoPtr info);
+                      ledger::mojom::Result result,
+                      ledger::mojom::PublisherInfoPtr info);
 
-  void OnChannelIdForUser(
-      uint64_t window_id,
-      const ledger::type::VisitData& visit_data,
-      const std::string& media_key,
-      const ledger::type::UrlResponse& response);
+  void OnChannelIdForUser(uint64_t window_id,
+                          const ledger::mojom::VisitData& visit_data,
+                          const std::string& media_key,
+                          const ledger::mojom::UrlResponse& response);
 
   ledger::LedgerImpl* ledger_;  // NOT OWNED
 

@@ -40,28 +40,28 @@ std::string PutSafetynet::GeneratePayload(const std::string& token) {
   return payload;
 }
 
-type::Result PutSafetynet::CheckStatusCode(const int status_code) {
+mojom::Result PutSafetynet::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return type::Result::CAPTCHA_FAILED;
+    return mojom::Result::CAPTCHA_FAILED;
   }
 
   if (status_code == net::HTTP_UNAUTHORIZED) {
     BLOG(0, "Invalid solution");
-    return type::Result::CAPTCHA_FAILED;
+    return mojom::Result::CAPTCHA_FAILED;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Failed to verify captcha solution");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
 void PutSafetynet::Request(
@@ -71,16 +71,16 @@ void PutSafetynet::Request(
   auto url_callback = base::BindOnce(
       &PutSafetynet::OnRequest, base::Unretained(this), std::move(callback));
 
-  auto request = type::UrlRequest::New();
+  auto request = mojom::UrlRequest::New();
   request->url = GetUrl(nonce);
   request->content = GeneratePayload(token);
   request->content_type = "application/json; charset=utf-8";
-  request->method = type::UrlMethod::PUT;
+  request->method = mojom::UrlMethod::PUT;
   ledger_->LoadURL(std::move(request), std::move(url_callback));
 }
 
 void PutSafetynet::OnRequest(PutSafetynetCallback callback,
-                             const type::UrlResponse& response) {
+                             const mojom::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
   std::move(callback).Run(CheckStatusCode(response.status_code));
 }

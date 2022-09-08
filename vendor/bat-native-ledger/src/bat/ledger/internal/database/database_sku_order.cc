@@ -29,15 +29,15 @@ DatabaseSKUOrder::DatabaseSKUOrder(
 
 DatabaseSKUOrder::~DatabaseSKUOrder() = default;
 
-void DatabaseSKUOrder::InsertOrUpdate(type::SKUOrderPtr order,
+void DatabaseSKUOrder::InsertOrUpdate(mojom::SKUOrderPtr order,
                                       ledger::LegacyResultCallback callback) {
   if (!order) {
     BLOG(1, "Order is null");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
@@ -46,8 +46,8 @@ void DatabaseSKUOrder::InsertOrUpdate(type::SKUOrderPtr order,
       "VALUES (?, ?, ?, ?, ?, ?)",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
   BindString(command.get(), 0, order->order_id);
@@ -69,22 +69,22 @@ void DatabaseSKUOrder::InsertOrUpdate(type::SKUOrderPtr order,
 }
 
 void DatabaseSKUOrder::UpdateStatus(const std::string& order_id,
-                                    type::SKUOrderStatus status,
+                                    mojom::SKUOrderStatus status,
                                     ledger::LegacyResultCallback callback) {
   if (order_id.empty()) {
     BLOG(1, "Order id is empty");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "UPDATE %s SET status = ? WHERE order_id = ?",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
   BindInt(command.get(), 0, static_cast<int>(status));
@@ -108,27 +108,25 @@ void DatabaseSKUOrder::GetRecord(
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "SELECT order_id, total_amount, merchant_id, location, status, "
       "created_at FROM %s WHERE order_id = ?",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = query;
 
   BindString(command.get(), 0, order_id);
 
-  command->record_bindings = {
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::INT_TYPE,
-      type::DBCommand::RecordBindingType::INT64_TYPE
-  };
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE};
 
   transaction->commands.push_back(std::move(command));
 
@@ -140,11 +138,10 @@ void DatabaseSKUOrder::GetRecord(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-void DatabaseSKUOrder::OnGetRecord(
-    type::DBCommandResponsePtr response,
-    GetSKUOrderCallback callback) {
+void DatabaseSKUOrder::OnGetRecord(mojom::DBCommandResponsePtr response,
+                                   GetSKUOrderCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback({});
     return;
@@ -158,25 +155,23 @@ void DatabaseSKUOrder::OnGetRecord(
   }
 
   auto* record = response->result->get_records()[0].get();
-  auto info = type::SKUOrder::New();
+  auto info = mojom::SKUOrder::New();
   info->order_id = GetStringColumn(record, 0);
   info->total_amount = GetDoubleColumn(record, 1);
   info->merchant_id = GetStringColumn(record, 2);
   info->location = GetStringColumn(record, 3);
-  info->status = static_cast<type::SKUOrderStatus>(GetIntColumn(record, 4));
+  info->status = static_cast<mojom::SKUOrderStatus>(GetIntColumn(record, 4));
   info->created_at = GetInt64Column(record, 5);
 
-  auto items_callback = std::bind(&DatabaseSKUOrder::OnGetRecordItems,
-      this,
-      _1,
-      std::make_shared<type::SKUOrderPtr>(info->Clone()),
-      callback);
+  auto items_callback =
+      std::bind(&DatabaseSKUOrder::OnGetRecordItems, this, _1,
+                std::make_shared<mojom::SKUOrderPtr>(info->Clone()), callback);
   items_->GetRecordsByOrderId(info->order_id, items_callback);
 }
 
 void DatabaseSKUOrder::OnGetRecordItems(
-    type::SKUOrderItemList list,
-    std::shared_ptr<type::SKUOrderPtr> shared_order,
+    std::vector<mojom::SKUOrderItemPtr> list,
+    std::shared_ptr<mojom::SKUOrderPtr> shared_order,
     GetSKUOrderCallback callback) {
   if (!shared_order) {
     BLOG(1, "Order is null");
@@ -196,27 +191,25 @@ void DatabaseSKUOrder::GetRecordByContributionId(
     callback({});
     return;
   }
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "SELECT order_id, total_amount, merchant_id, location, status, "
       "created_at FROM %s WHERE contribution_id = ?",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = query;
 
   BindString(command.get(), 0, contribution_id);
 
-  command->record_bindings = {
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::INT_TYPE,
-      type::DBCommand::RecordBindingType::INT64_TYPE
-  };
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE};
 
   transaction->commands.push_back(std::move(command));
 
@@ -235,18 +228,18 @@ void DatabaseSKUOrder::SaveContributionIdForSKUOrder(
   if (order_id.empty() || contribution_id.empty()) {
     BLOG(1, "Order/contribution id is empty " <<
         order_id << "/" << contribution_id);
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "UPDATE %s SET contribution_id = ? WHERE order_id = ?",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
   BindString(command.get(), 0, contribution_id);

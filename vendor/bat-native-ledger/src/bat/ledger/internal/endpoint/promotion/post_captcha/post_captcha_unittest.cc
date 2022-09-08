@@ -46,8 +46,8 @@ class PostCaptchaTest : public testing::Test {
 TEST_F(PostCaptchaTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"({
@@ -58,9 +58,9 @@ TEST_F(PostCaptchaTest, ServerOK) {
           }));
 
   captcha_->Request(
-      base::BindOnce([](type::Result result, const std::string& hint,
+      base::BindOnce([](mojom::Result result, const std::string& hint,
                         const std::string& captcha_id) {
-        EXPECT_EQ(result, type::Result::LEDGER_OK);
+        EXPECT_EQ(result, mojom::Result::LEDGER_OK);
         EXPECT_EQ(hint, "circle");
         EXPECT_EQ(captcha_id, "d155d2d2-2627-425b-9be8-44ae9f541762");
       }));
@@ -69,8 +69,8 @@ TEST_F(PostCaptchaTest, ServerOK) {
 TEST_F(PostCaptchaTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
@@ -78,17 +78,17 @@ TEST_F(PostCaptchaTest, ServerError400) {
           }));
 
   captcha_->Request(
-      base::BindOnce([](type::Result result, const std::string& hint,
+      base::BindOnce([](mojom::Result result, const std::string& hint,
                         const std::string& captcha_id) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
       }));
 }
 
 TEST_F(PostCaptchaTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
@@ -96,9 +96,9 @@ TEST_F(PostCaptchaTest, ServerErrorRandom) {
           }));
 
   captcha_->Request(
-      base::BindOnce([](type::Result result, const std::string& hint,
+      base::BindOnce([](mojom::Result result, const std::string& hint,
                         const std::string& captcha_id) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
       }));
 }
 

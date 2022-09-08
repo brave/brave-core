@@ -24,11 +24,10 @@ SKUBrave::SKUBrave(LedgerImpl* ledger) :
 
 SKUBrave::~SKUBrave() = default;
 
-void SKUBrave::Process(
-    const std::vector<type::SKUOrderItem>& items,
-    const std::string& wallet_type,
-    ledger::SKUOrderCallback callback,
-    const std::string& contribution_id) {
+void SKUBrave::Process(const std::vector<mojom::SKUOrderItem>& items,
+                       const std::string& wallet_type,
+                       ledger::SKUOrderCallback callback,
+                       const std::string& contribution_id) {
   auto create_callback = std::bind(&SKUBrave::OrderCreated,
       this,
       _1,
@@ -40,13 +39,12 @@ void SKUBrave::Process(
   common_->CreateOrder(items, create_callback);
 }
 
-void SKUBrave::OrderCreated(
-    const type::Result result,
-    const std::string& order_id,
-    const std::string& wallet_type,
-    const std::string& contribution_id,
-    ledger::SKUOrderCallback callback) {
-  if (result != type::Result::LEDGER_OK) {
+void SKUBrave::OrderCreated(const mojom::Result result,
+                            const std::string& order_id,
+                            const std::string& wallet_type,
+                            const std::string& contribution_id,
+                            ledger::SKUOrderCallback callback) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Order was not successful");
     callback(result, "");
     return;
@@ -65,12 +63,11 @@ void SKUBrave::OrderCreated(
       save_callback);
 }
 
-void SKUBrave::ContributionIdSaved(
-    const type::Result result,
-    const std::string& order_id,
-    const std::string& wallet_type,
-    ledger::SKUOrderCallback callback) {
-  if (result != type::Result::LEDGER_OK) {
+void SKUBrave::ContributionIdSaved(const mojom::Result result,
+                                   const std::string& order_id,
+                                   const std::string& wallet_type,
+                                   ledger::SKUOrderCallback callback) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Contribution id not saved");
     callback(result, "");
     return;
@@ -85,13 +82,12 @@ void SKUBrave::ContributionIdSaved(
   ledger_->database()->GetSKUOrder(order_id, get_callback);
 }
 
-void SKUBrave::CreateTransaction(
-    type::SKUOrderPtr order,
-    const std::string& wallet_type,
-    ledger::SKUOrderCallback callback) {
+void SKUBrave::CreateTransaction(mojom::SKUOrderPtr order,
+                                 const std::string& wallet_type,
+                                 ledger::SKUOrderCallback callback) {
   if (!order) {
     BLOG(0, "Order not found");
-    callback(type::Result::LEDGER_ERROR, "");
+    callback(mojom::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -110,7 +106,7 @@ void SKUBrave::Retry(
     ledger::SKUOrderCallback callback) {
   if (order_id.empty()) {
     BLOG(0, "Order id is empty");
-    callback(type::Result::LEDGER_ERROR, "");
+    callback(mojom::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -123,36 +119,32 @@ void SKUBrave::Retry(
   ledger_->database()->GetSKUOrder(order_id, get_callback);
 }
 
-void SKUBrave::OnOrder(
-    type::SKUOrderPtr order,
-    const std::string& wallet_type,
-    ledger::SKUOrderCallback callback) {
+void SKUBrave::OnOrder(mojom::SKUOrderPtr order,
+                       const std::string& wallet_type,
+                       ledger::SKUOrderCallback callback) {
   if (!order) {
     BLOG(0, "Order is null");
-    callback(type::Result::LEDGER_ERROR, "");
+    callback(mojom::Result::LEDGER_ERROR, "");
     return;
   }
 
   switch (order->status) {
-    case type::SKUOrderStatus::PENDING: {
-      ContributionIdSaved(
-          type::Result::LEDGER_OK,
-          order->order_id,
-          wallet_type,
-          callback);
+    case mojom::SKUOrderStatus::PENDING: {
+      ContributionIdSaved(mojom::Result::LEDGER_OK, order->order_id,
+                          wallet_type, callback);
       return;
     }
-    case type::SKUOrderStatus::PAID: {
+    case mojom::SKUOrderStatus::PAID: {
       common_->SendExternalTransaction(order->order_id, callback);
       return;
     }
-    case type::SKUOrderStatus::FULFILLED: {
-      callback(type::Result::LEDGER_OK, order->order_id);
+    case mojom::SKUOrderStatus::FULFILLED: {
+      callback(mojom::Result::LEDGER_OK, order->order_id);
       return;
     }
-    case type::SKUOrderStatus::CANCELED:
-    case type::SKUOrderStatus::NONE: {
-      callback(type::Result::LEDGER_ERROR, "");
+    case mojom::SKUOrderStatus::CANCELED:
+    case mojom::SKUOrderStatus::NONE: {
+      callback(mojom::Result::LEDGER_ERROR, "");
       return;
     }
   }

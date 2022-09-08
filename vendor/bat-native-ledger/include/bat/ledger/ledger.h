@@ -20,97 +20,101 @@
 
 namespace ledger {
 
-extern type::Environment _environment;
+extern mojom::Environment _environment;
 extern int gemini_retries;
 extern bool is_debug;
 extern bool is_testing;
 extern int reconcile_interval;  // minutes
 extern int retry_interval;      // seconds
 
-using PublisherBannerCallback = std::function<void(type::PublisherBannerPtr)>;
+using PublisherBannerCallback = std::function<void(mojom::PublisherBannerPtr)>;
 
 using GetRewardsParametersCallback =
-    base::OnceCallback<void(type::RewardsParametersPtr)>;
+    base::OnceCallback<void(mojom::RewardsParametersPtr)>;
 
-using OnRefreshPublisherCallback = std::function<void(type::PublisherStatus)>;
+using OnRefreshPublisherCallback = std::function<void(mojom::PublisherStatus)>;
 
 using HasSufficientBalanceToReconcileCallback = std::function<void(bool)>;
 
 using FetchBalanceCallback =
-    base::OnceCallback<void(type::Result, type::BalancePtr)>;
+    base::OnceCallback<void(mojom::Result, mojom::BalancePtr)>;
 
 using ExternalWalletCallback =
-    base::OnceCallback<void(type::Result, type::ExternalWalletPtr)>;
+    base::OnceCallback<void(mojom::Result, mojom::ExternalWalletPtr)>;
 
 using ExternalWalletAuthorizationCallback =
-    std::function<void(type::Result, base::flat_map<std::string, std::string>)>;
+    std::function<void(mojom::Result,
+                       base::flat_map<std::string, std::string>)>;
 
 using FetchPromotionCallback =
-    base::OnceCallback<void(type::Result, type::PromotionList)>;
+    base::OnceCallback<void(mojom::Result, std::vector<mojom::PromotionPtr>)>;
 
 using ClaimPromotionCallback =
-    base::OnceCallback<void(type::Result, const std::string&)>;
+    base::OnceCallback<void(mojom::Result, const std::string&)>;
 
 using RewardsInternalsInfoCallback =
-    std::function<void(type::RewardsInternalsInfoPtr)>;
+    std::function<void(mojom::RewardsInternalsInfoPtr)>;
 
 using AttestPromotionCallback =
-    base::OnceCallback<void(type::Result, type::PromotionPtr)>;
+    base::OnceCallback<void(mojom::Result, mojom::PromotionPtr)>;
 
 using GetBalanceReportCallback =
-    std::function<void(type::Result, type::BalanceReportInfoPtr)>;
+    std::function<void(mojom::Result, mojom::BalanceReportInfoPtr)>;
 
 using GetBalanceReportListCallback =
-    std::function<void(type::BalanceReportInfoList)>;
+    std::function<void(std::vector<mojom::BalanceReportInfoPtr>)>;
 
 using ContributionInfoListCallback =
-    std::function<void(type::ContributionInfoList)>;
+    std::function<void(std::vector<mojom::ContributionInfoPtr>)>;
 
 using GetMonthlyReportCallback =
-    std::function<void(type::Result, type::MonthlyReportInfoPtr)>;
+    std::function<void(mojom::Result, mojom::MonthlyReportInfoPtr)>;
 
 using GetAllMonthlyReportIdsCallback =
     std::function<void(const std::vector<std::string>&)>;
 
-using GetEventLogsCallback = std::function<void(type::EventLogs)>;
+using GetEventLogsCallback =
+    std::function<void(std::vector<mojom::EventLogPtr>)>;
 
-using SKUOrderCallback = std::function<void(type::Result, const std::string&)>;
+using SKUOrderCallback = std::function<void(mojom::Result, const std::string&)>;
 
 using GetContributionReportCallback =
-    std::function<void(type::ContributionReportInfoList)>;
+    std::function<void(std::vector<mojom::ContributionReportInfoPtr>)>;
 
 using GetTransactionReportCallback =
-    std::function<void(type::TransactionReportInfoList)>;
+    std::function<void(std::vector<mojom::TransactionReportInfoPtr>)>;
 
-using GetAllPromotionsCallback = std::function<void(type::PromotionMap)>;
+using GetAllPromotionsCallback =
+    std::function<void(base::flat_map<std::string, mojom::PromotionPtr>)>;
 
-using LegacyResultCallback = std::function<void(type::Result)>;
+using LegacyResultCallback = std::function<void(mojom::Result)>;
 
-using ResultCallback = base::OnceCallback<void(type::Result)>;
+using ResultCallback = base::OnceCallback<void(mojom::Result)>;
 
 using PendingContributionsTotalCallback = std::function<void(double)>;
 
 using PendingContributionInfoListCallback =
-    std::function<void(type::PendingContributionInfoList)>;
+    std::function<void(std::vector<mojom::PendingContributionInfoPtr>)>;
 
 using UnverifiedPublishersCallback =
     std::function<void(std::vector<std::string>&&)>;
 
-using PublisherInfoListCallback = std::function<void(type::PublisherInfoList)>;
+using PublisherInfoListCallback =
+    std::function<void(std::vector<mojom::PublisherInfoPtr>)>;
 
 using PublisherInfoCallback =
-    std::function<void(type::Result, type::PublisherInfoPtr)>;
+    std::function<void(mojom::Result, mojom::PublisherInfoPtr)>;
 
 using GetPublisherInfoCallback =
-    std::function<void(type::Result, type::PublisherInfoPtr)>;
+    std::function<void(mojom::Result, mojom::PublisherInfoPtr)>;
 
-using GetRewardsWalletCallback = std::function<void(type::RewardsWalletPtr)>;
+using GetRewardsWalletCallback = std::function<void(mojom::RewardsWalletPtr)>;
 
 using PostSuggestionsClaimCallback =
-    base::OnceCallback<void(type::Result result, std::string drain_id)>;
+    base::OnceCallback<void(mojom::Result result, std::string drain_id)>;
 
 using GetDrainCallback =
-    std::function<void(type::Result result, type::DrainStatus status)>;
+    std::function<void(mojom::Result result, mojom::DrainStatus status)>;
 
 class LEDGER_EXPORT Ledger {
  public:
@@ -134,7 +138,8 @@ class LEDGER_EXPORT Ledger {
                           double amount,
                           LegacyResultCallback callback) = 0;
 
-  virtual void OnLoad(type::VisitDataPtr visit_data, uint64_t current_time) = 0;
+  virtual void OnLoad(mojom::VisitDataPtr visit_data,
+                      uint64_t current_time) = 0;
 
   virtual void OnUnload(uint32_t tab_id, uint64_t current_time) = 0;
 
@@ -151,17 +156,17 @@ class LEDGER_EXPORT Ledger {
                          const base::flat_map<std::string, std::string>& parts,
                          const std::string& first_party_url,
                          const std::string& referrer,
-                         type::VisitDataPtr visit_data) = 0;
+                         mojom::VisitDataPtr visit_data) = 0;
 
   virtual void OnPostData(const std::string& url,
                           const std::string& first_party_url,
                           const std::string& referrer,
                           const std::string& post_data,
-                          type::VisitDataPtr visit_data) = 0;
+                          mojom::VisitDataPtr visit_data) = 0;
 
   virtual void GetActivityInfoList(uint32_t start,
                                    uint32_t limit,
-                                   type::ActivityInfoFilterPtr filter,
+                                   mojom::ActivityInfoFilterPtr filter,
                                    PublisherInfoListCallback callback) = 0;
 
   virtual void GetExcludedList(PublisherInfoListCallback callback) = 0;
@@ -229,26 +234,26 @@ class LEDGER_EXPORT Ledger {
                                const std::string& solution,
                                AttestPromotionCallback callback) = 0;
 
-  virtual void GetBalanceReport(type::ActivityMonth month,
+  virtual void GetBalanceReport(mojom::ActivityMonth month,
                                 int year,
                                 GetBalanceReportCallback callback) = 0;
 
   virtual void GetAllBalanceReports(GetBalanceReportListCallback callback) = 0;
 
-  virtual type::AutoContributePropertiesPtr GetAutoContributeProperties() = 0;
+  virtual mojom::AutoContributePropertiesPtr GetAutoContributeProperties() = 0;
 
   virtual void RecoverWallet(const std::string& pass_phrase,
                              LegacyResultCallback callback) = 0;
 
   virtual void SetPublisherExclude(const std::string& publisher_id,
-                                   type::PublisherExclude exclude,
+                                   mojom::PublisherExclude exclude,
                                    ResultCallback callback) = 0;
 
   virtual void RestorePublishers(ResultCallback callback) = 0;
 
   virtual void GetPublisherActivityFromUrl(
       uint64_t window_id,
-      type::VisitDataPtr visit_data,
+      mojom::VisitDataPtr visit_data,
       const std::string& publisher_blob) = 0;
 
   virtual void GetPublisherBanner(const std::string& publisher_id,
@@ -265,7 +270,7 @@ class LEDGER_EXPORT Ledger {
   virtual void GetRewardsInternalsInfo(
       RewardsInternalsInfoCallback callback) = 0;
 
-  virtual void SaveRecurringTip(type::RecurringTipPtr info,
+  virtual void SaveRecurringTip(mojom::RecurringTipPtr info,
                                 LegacyResultCallback callback) = 0;
 
   virtual void GetRecurringTips(PublisherInfoListCallback callback) = 0;
@@ -297,15 +302,15 @@ class LEDGER_EXPORT Ledger {
                                      GetPublisherInfoCallback callback) = 0;
 
   virtual void SavePublisherInfo(uint64_t window_id,
-                                 type::PublisherInfoPtr publisher_info,
+                                 mojom::PublisherInfoPtr publisher_info,
                                  LegacyResultCallback callback) = 0;
 
   virtual void SetInlineTippingPlatformEnabled(
-      type::InlineTipsPlatforms platform,
+      mojom::InlineTipsPlatforms platform,
       bool enabled) = 0;
 
   virtual bool GetInlineTippingPlatformEnabled(
-      type::InlineTipsPlatforms platform) = 0;
+      mojom::InlineTipsPlatforms platform) = 0;
 
   virtual std::string GetShareURL(
       const base::flat_map<std::string, std::string>& args) = 0;
@@ -338,28 +343,28 @@ class LEDGER_EXPORT Ledger {
 
   virtual void GetAnonWalletStatus(LegacyResultCallback callback) = 0;
 
-  virtual void GetTransactionReport(type::ActivityMonth month,
+  virtual void GetTransactionReport(mojom::ActivityMonth month,
                                     int year,
                                     GetTransactionReportCallback callback) = 0;
 
   virtual void GetContributionReport(
-      type::ActivityMonth month,
+      mojom::ActivityMonth month,
       int year,
       GetContributionReportCallback callback) = 0;
 
   virtual void GetAllContributions(ContributionInfoListCallback callback) = 0;
 
-  virtual void SavePublisherInfoForTip(type::PublisherInfoPtr info,
+  virtual void SavePublisherInfoForTip(mojom::PublisherInfoPtr info,
                                        LegacyResultCallback callback) = 0;
 
-  virtual void GetMonthlyReport(type::ActivityMonth month,
+  virtual void GetMonthlyReport(mojom::ActivityMonth month,
                                 int year,
                                 GetMonthlyReportCallback callback) = 0;
 
   virtual void GetAllMonthlyReportIds(
       GetAllMonthlyReportIdsCallback callback) = 0;
 
-  virtual void ProcessSKU(const std::vector<type::SKUOrderItem>& items,
+  virtual void ProcessSKU(const std::vector<mojom::SKUOrderItem>& items,
                           const std::string& wallet_type,
                           SKUOrderCallback callback) = 0;
 

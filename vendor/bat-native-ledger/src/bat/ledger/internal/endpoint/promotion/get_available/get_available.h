@@ -50,8 +50,8 @@ namespace endpoint {
 namespace promotion {
 
 using GetAvailableCallback = base::OnceCallback<void(
-    type::Result result,
-    type::PromotionList list,
+    mojom::Result result,
+    std::vector<mojom::PromotionPtr> list,
     const std::vector<std::string>& corrupted_promotions)>;
 
 class GetAvailable {
@@ -66,15 +66,14 @@ class GetAvailable {
  private:
   std::string GetUrl(const std::string& platform);
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(const int status_code);
 
-  type::Result ParseBody(
-      const std::string& body,
-      type::PromotionList* list,
-      std::vector<std::string>* corrupted_promotions);
+  mojom::Result ParseBody(const std::string& body,
+                          std::vector<mojom::PromotionPtr>* list,
+                          std::vector<std::string>* corrupted_promotions);
 
   void OnRequest(GetAvailableCallback callback,
-                 const type::UrlResponse& response);
+                 const mojom::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

@@ -36,18 +36,18 @@ std::string PostTransactionCommit::GetUrl(
   return GetServerUrl(path);
 }
 
-type::Result PostTransactionCommit::CheckStatusCode(const int status_code) {
+mojom::Result PostTransactionCommit::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_UNAUTHORIZED) {
     BLOG(0, "Unauthorized access");
-    return type::Result::EXPIRED_TOKEN;
+    return mojom::Result::EXPIRED_TOKEN;
   }
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
 void PostTransactionCommit::Request(
@@ -60,17 +60,16 @@ void PostTransactionCommit::Request(
       _1,
       callback);
 
-  auto request = type::UrlRequest::New();
+  auto request = mojom::UrlRequest::New();
   request->url = GetUrl(address, transaction_id);
   request->headers = RequestAuthorization(token);
   request->content_type = "application/json; charset=utf-8";
-  request->method = type::UrlMethod::POST;
+  request->method = mojom::UrlMethod::POST;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
-void PostTransactionCommit::OnRequest(
-    const type::UrlResponse& response,
-    PostTransactionCommitCallback callback) {
+void PostTransactionCommit::OnRequest(const mojom::UrlResponse& response,
+                                      PostTransactionCommitCallback callback) {
   ledger::LogUrlResponse(__func__, response);
   callback(CheckStatusCode(response.status_code));
 }

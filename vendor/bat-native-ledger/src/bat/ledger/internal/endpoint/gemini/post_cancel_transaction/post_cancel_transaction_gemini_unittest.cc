@@ -45,8 +45,8 @@ class GeminiPostCancelTransactionTest : public testing::Test {
 TEST_F(GeminiPostCancelTransactionTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_OK;
             response.url = request->url;
             response.body = "";
@@ -55,16 +55,16 @@ TEST_F(GeminiPostCancelTransactionTest, ServerOK) {
 
   post_cancel_transaction_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      "A5721BF3-530C-42AF-8DEE-005DCFF76970", [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_OK);
+      "A5721BF3-530C-42AF-8DEE-005DCFF76970", [](const mojom::Result result) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_OK);
       });
 }
 
 TEST_F(GeminiPostCancelTransactionTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_UNAUTHORIZED;
             response.url = request->url;
             response.body = "";
@@ -73,16 +73,16 @@ TEST_F(GeminiPostCancelTransactionTest, ServerError401) {
 
   post_cancel_transaction_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      "A5721BF3-530C-42AF-8DEE-005DCFF76970", [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
+      "A5721BF3-530C-42AF-8DEE-005DCFF76970", [](const mojom::Result result) {
+        EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
       });
 }
 
 TEST_F(GeminiPostCancelTransactionTest, ServerError403) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_FORBIDDEN;
             response.url = request->url;
             response.body = "";
@@ -91,16 +91,16 @@ TEST_F(GeminiPostCancelTransactionTest, ServerError403) {
 
   post_cancel_transaction_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      "A5721BF3-530C-42AF-8DEE-005DCFF76970", [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
+      "A5721BF3-530C-42AF-8DEE-005DCFF76970", [](const mojom::Result result) {
+        EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
       });
 }
 
 TEST_F(GeminiPostCancelTransactionTest, ServerError404) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_BAD_REQUEST;
             response.url = request->url;
             response.body = "";
@@ -109,16 +109,16 @@ TEST_F(GeminiPostCancelTransactionTest, ServerError404) {
 
   post_cancel_transaction_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      "A5721BF3-530C-42AF-8DEE-005DCFF76970", [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+      "A5721BF3-530C-42AF-8DEE-005DCFF76970", [](const mojom::Result result) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
       });
 }
 
 TEST_F(GeminiPostCancelTransactionTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 418;
             response.url = request->url;
             response.body = "";
@@ -127,8 +127,8 @@ TEST_F(GeminiPostCancelTransactionTest, ServerErrorRandom) {
 
   post_cancel_transaction_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      "A5721BF3-530C-42AF-8DEE-005DCFF76970", [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+      "A5721BF3-530C-42AF-8DEE-005DCFF76970", [](const mojom::Result result) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
       });
 }
 

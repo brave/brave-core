@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_DATABASE_DATABASE_TABLE_H_
-#define BRAVELEDGER_DATABASE_DATABASE_TABLE_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_TABLE_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_TABLE_H_
 
 #include <map>
 #include <string>
@@ -19,7 +19,7 @@ class LedgerImpl;
 namespace database {
 
 using ContributionPublisherInfoPair =
-    std::pair<std::string, type::PublisherInfoPtr>;
+    std::pair<std::string, mojom::PublisherInfoPtr>;
 
 using ServerPublisherLinksCallback =
     std::function<void(const std::map<std::string, std::string>& links)>;
@@ -28,10 +28,10 @@ using ServerPublisherAmountsCallback =
     std::function<void(const std::vector<double>& amounts)>;
 
 using ContributionQueuePublishersListCallback =
-    std::function<void(type::ContributionQueuePublisherList)>;
+    std::function<void(std::vector<mojom::ContributionQueuePublisherPtr>)>;
 
 using ContributionPublisherListCallback =
-    std::function<void(type::ContributionPublisherList)>;
+    std::function<void(std::vector<mojom::ContributionPublisherPtr>)>;
 
 using ContributionPublisherPairListCallback =
     std::function<void(std::vector<ContributionPublisherInfoPair>)>;
@@ -48,4 +48,4 @@ class DatabaseTable {
 }  // namespace database
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_DATABASE_DATABASE_TABLE_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_TABLE_H_

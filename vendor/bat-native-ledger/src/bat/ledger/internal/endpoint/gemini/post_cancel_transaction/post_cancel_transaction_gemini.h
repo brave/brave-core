@@ -25,7 +25,7 @@ namespace endpoint {
 namespace gemini {
 
 using PostCancelTransactionCallback =
-    std::function<void(const type::Result result)>;
+    std::function<void(const mojom::Result result)>;
 
 class PostCancelTransaction {
  public:
@@ -37,7 +37,7 @@ class PostCancelTransaction {
                PostCancelTransactionCallback callback);
 
  private:
-  void OnRequest(const type::UrlResponse& response,
+  void OnRequest(const mojom::UrlResponse& response,
                  PostCancelTransactionCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

@@ -45,120 +45,120 @@ class PostTransactionGeminiTest : public testing::Test {
 TEST_F(PostTransactionGeminiTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_CREATED;
             response.url = request->url;
             response.body = "";
             std::move(callback).Run(response);
           }));
 
-  type::SKUTransaction transaction;
+  mojom::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
   transaction.external_transaction_id = "d382d3ae-8462-4b2c-9b60-b669539f41b2";
 
-  order_->Request(transaction, [](const type::Result result) {
-    EXPECT_EQ(result, type::Result::LEDGER_OK);
+  order_->Request(transaction, [](const mojom::Result result) {
+    EXPECT_EQ(result, mojom::Result::LEDGER_OK);
   });
 }
 
 TEST_F(PostTransactionGeminiTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_BAD_REQUEST;
             response.url = request->url;
             response.body = "";
             std::move(callback).Run(response);
           }));
 
-  type::SKUTransaction transaction;
+  mojom::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
   transaction.external_transaction_id = "d382d3ae-8462-4b2c-9b60-b669539f41b2";
 
-  order_->Request(transaction, [](const type::Result result) {
-    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+  order_->Request(transaction, [](const mojom::Result result) {
+    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
   });
 }
 
 TEST_F(PostTransactionGeminiTest, ServerError404) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_NOT_FOUND;
             response.url = request->url;
             response.body = "";
             std::move(callback).Run(response);
           }));
 
-  type::SKUTransaction transaction;
+  mojom::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
   transaction.external_transaction_id = "d382d3ae-8462-4b2c-9b60-b669539f41b2";
 
-  order_->Request(transaction, [](const type::Result result) {
-    EXPECT_EQ(result, type::Result::NOT_FOUND);
+  order_->Request(transaction, [](const mojom::Result result) {
+    EXPECT_EQ(result, mojom::Result::NOT_FOUND);
   });
 }
 
 TEST_F(PostTransactionGeminiTest, ServerError409) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_CONFLICT;
             response.url = request->url;
             response.body = "";
             std::move(callback).Run(response);
           }));
 
-  type::SKUTransaction transaction;
+  mojom::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
   transaction.external_transaction_id = "d382d3ae-8462-4b2c-9b60-b669539f41b2";
 
-  order_->Request(transaction, [](const type::Result result) {
-    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+  order_->Request(transaction, [](const mojom::Result result) {
+    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
   });
 }
 
 TEST_F(PostTransactionGeminiTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_INTERNAL_SERVER_ERROR;
             response.url = request->url;
             response.body = "";
             std::move(callback).Run(response);
           }));
 
-  type::SKUTransaction transaction;
+  mojom::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
   transaction.external_transaction_id = "d382d3ae-8462-4b2c-9b60-b669539f41b2";
 
-  order_->Request(transaction, [](const type::Result result) {
-    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+  order_->Request(transaction, [](const mojom::Result result) {
+    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
   });
 }
 
 TEST_F(PostTransactionGeminiTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 418;
             response.url = request->url;
             response.body = "";
             std::move(callback).Run(response);
           }));
 
-  type::SKUTransaction transaction;
+  mojom::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
   transaction.external_transaction_id = "d382d3ae-8462-4b2c-9b60-b669539f41b2";
 
-  order_->Request(transaction, [](const type::Result result) {
-    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+  order_->Request(transaction, [](const mojom::Result result) {
+    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
   });
 }
 

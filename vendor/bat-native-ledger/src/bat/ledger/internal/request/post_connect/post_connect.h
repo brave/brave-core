@@ -21,8 +21,8 @@ namespace request {
 
 class PostConnect : public RequestBuilder {
  public:
-  using Callback = base::OnceCallback<void(type::Result)>;
-  static void OnResponse(Callback, const type::UrlResponse&);
+  using Callback = base::OnceCallback<void(mojom::Result)>;
+  static void OnResponse(Callback, const mojom::UrlResponse&);
 
   explicit PostConnect(LedgerImpl*);
   ~PostConnect() override;

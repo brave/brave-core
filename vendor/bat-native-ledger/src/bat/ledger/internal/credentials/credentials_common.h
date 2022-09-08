@@ -31,17 +31,17 @@ class CredentialsCommon {
   void SaveUnblindedCreds(
       uint64_t expires_at,
       double token_value,
-      const type::CredsBatch& creds,
+      const mojom::CredsBatch& creds,
       const std::vector<std::string>& unblinded_encoded_creds,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback);
 
  private:
-  void BlindedCredsSaved(ledger::ResultCallback callback, type::Result result);
+  void BlindedCredsSaved(ledger::ResultCallback callback, mojom::Result result);
 
   void OnSaveUnblindedCreds(ledger::ResultCallback callback,
                             const CredentialsTrigger& trigger,
-                            type::Result result);
+                            mojom::Result result);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

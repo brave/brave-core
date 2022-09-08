@@ -22,28 +22,24 @@ class DatabaseServerPublisherBanner: public DatabaseTable {
   explicit DatabaseServerPublisherBanner(LedgerImpl* ledger);
   ~DatabaseServerPublisherBanner() override;
 
-  void InsertOrUpdate(
-      type::DBTransaction* transaction,
-      const type::ServerPublisherInfo& server_info);
+  void InsertOrUpdate(mojom::DBTransaction* transaction,
+                      const mojom::ServerPublisherInfo& server_info);
 
-  void DeleteRecords(
-      type::DBTransaction* transaction,
-      const std::string& publisher_key_list);
+  void DeleteRecords(mojom::DBTransaction* transaction,
+                     const std::string& publisher_key_list);
 
   void GetRecord(
       const std::string& publisher_key,
       ledger::PublisherBannerCallback callback);
 
  private:
-  void OnGetRecord(
-      type::DBCommandResponsePtr response,
-      const std::string& publisher_key,
-      ledger::PublisherBannerCallback callback);
+  void OnGetRecord(mojom::DBCommandResponsePtr response,
+                   const std::string& publisher_key,
+                   ledger::PublisherBannerCallback callback);
 
-  void OnGetRecordLinks(
-      const std::map<std::string, std::string>& links,
-      const type::PublisherBanner& banner,
-      ledger::PublisherBannerCallback callback);
+  void OnGetRecordLinks(const std::map<std::string, std::string>& links,
+                        const mojom::PublisherBanner& banner,
+                        ledger::PublisherBannerCallback callback);
 
   std::unique_ptr<DatabaseServerPublisherLinks> links_;
 };

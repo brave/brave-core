@@ -29,7 +29,7 @@ class RewardsService;
 namespace chrome {
 namespace android {
 
-typedef std::map<uint64_t, ledger::type::PublisherInfoPtr> PublishersInfoMap;
+typedef std::map<uint64_t, ledger::mojom::PublisherInfoPtr> PublishersInfoMap;
 
 class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
     public brave_rewards::RewardsServicePrivateObserver,
@@ -149,37 +149,35 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
     void OnGetGetReconcileStamp(uint64_t timestamp);
 
     void OnGetAutoContributeProperties(
-        ledger::type::AutoContributePropertiesPtr properties);
+        ledger::mojom::AutoContributePropertiesPtr properties);
 
     void OnGetAutoContributionAmount(double auto_contribution_amount);
 
     void OnGetPendingContributionsTotal(double amount);
 
-    void OnPanelPublisherInfo(
-        brave_rewards::RewardsService* rewards_service,
-        const ledger::type::Result result,
-        const ledger::type::PublisherInfo* info,
-        uint64_t tabId) override;
+    void OnPanelPublisherInfo(brave_rewards::RewardsService* rewards_service,
+                              const ledger::mojom::Result result,
+                              const ledger::mojom::PublisherInfo* info,
+                              uint64_t tabId) override;
 
     void OnGetCurrentBalanceReport(
         brave_rewards::RewardsService* rewards_service,
-        const ledger::type::Result result,
-        ledger::type::BalanceReportInfoPtr report);
+        const ledger::mojom::Result result,
+        ledger::mojom::BalanceReportInfoPtr report);
 
-    void OnGetRewardsParameters(
-        brave_rewards::RewardsService* rewards_service,
-        ledger::type::RewardsParametersPtr parameters);
+    void OnGetRewardsParameters(brave_rewards::RewardsService* rewards_service,
+                                ledger::mojom::RewardsParametersPtr parameters);
 
     void OnUnblindedTokensReady(
         brave_rewards::RewardsService* rewards_service) override;
 
     void OnReconcileComplete(
         brave_rewards::RewardsService* rewards_service,
-        const ledger::type::Result result,
+        const ledger::mojom::Result result,
         const std::string& contribution_id,
         const double amount,
-        const ledger::type::RewardsType type,
-        const ledger::type::ContributionProcessor processor) override;
+        const ledger::mojom::RewardsType type,
+        const ledger::mojom::ContributionProcessor processor) override;
 
     void OnNotificationAdded(
       brave_rewards::RewardsNotificationService* rewards_notification_service,
@@ -196,34 +194,29 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
       const brave_rewards::RewardsNotificationService::RewardsNotification&
         notification) override;
 
-    void OnPromotionFinished(
-        brave_rewards::RewardsService* rewards_service,
-        const ledger::type::Result result,
-        ledger::type::PromotionPtr promotion) override;
+    void OnPromotionFinished(brave_rewards::RewardsService* rewards_service,
+                             const ledger::mojom::Result result,
+                             ledger::mojom::PromotionPtr promotion) override;
 
-    void OnGetRecurringTips(ledger::type::PublisherInfoList list);
+    void OnGetRecurringTips(std::vector<ledger::mojom::PublisherInfoPtr> list);
 
     bool IsRewardsEnabled(JNIEnv* env);
 
-    void OnClaimPromotion(
-        const ledger::type::Result result,
-        ledger::type::PromotionPtr promotion);
+    void OnClaimPromotion(const ledger::mojom::Result result,
+                          ledger::mojom::PromotionPtr promotion);
 
-    void OnGetExternalWallet(const ledger::type::Result result,
-                             ledger::type::ExternalWalletPtr wallet);
+    void OnGetExternalWallet(const ledger::mojom::Result result,
+                             ledger::mojom::ExternalWalletPtr wallet);
 
-    void OnDisconnectWallet(
-      brave_rewards::RewardsService* rewards_service,
-      const ledger::type::Result result,
-      const std::string& wallet_type) override;
+    void OnDisconnectWallet(brave_rewards::RewardsService* rewards_service,
+                            const ledger::mojom::Result result,
+                            const std::string& wallet_type) override;
 
-    void OnRecoverWallet(
-        brave_rewards::RewardsService* rewards_service,
-        const ledger::type::Result result) override;
+    void OnRecoverWallet(brave_rewards::RewardsService* rewards_service,
+                         const ledger::mojom::Result result) override;
 
-    void OnRefreshPublisher(
-        const ledger::type::PublisherStatus status,
-        const std::string& publisher_key);
+    void OnRefreshPublisher(const ledger::mojom::PublisherStatus status,
+                            const std::string& publisher_key);
     void SetAutoContributeEnabled(
         JNIEnv* env,
         bool isAutoContributeEnabled);
@@ -233,9 +226,8 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
     std::string StdStrStrMapToJsonString(
         const base::flat_map<std::string, std::string>& args);
 
-    void OnBalance(
-        const ledger::type::Result result,
-        ledger::type::BalancePtr balance);
+    void OnBalance(const ledger::mojom::Result result,
+                   ledger::mojom::BalancePtr balance);
 
     void OnStartProcess();
 
@@ -243,14 +235,14 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
 
     JavaObjectWeakGlobalRef weak_java_brave_rewards_native_worker_;
     raw_ptr<brave_rewards::RewardsService> brave_rewards_service_ = nullptr;
-    ledger::type::RewardsParameters parameters_;
-    ledger::type::Balance balance_;
-    ledger::type::AutoContributePropertiesPtr auto_contrib_properties_;
+    ledger::mojom::RewardsParameters parameters_;
+    ledger::mojom::Balance balance_;
+    ledger::mojom::AutoContributePropertiesPtr auto_contrib_properties_;
     PublishersInfoMap map_publishers_info_;
-    std::map<std::string, ledger::type::PublisherInfoPtr>
-      map_recurrent_publishers_;
+    std::map<std::string, ledger::mojom::PublisherInfoPtr>
+        map_recurrent_publishers_;
     std::map<std::string, std::string> addresses_;
-    ledger::type::PromotionList promotions_;
+    std::vector<ledger::mojom::PromotionPtr> promotions_;
     base::WeakPtrFactory<BraveRewardsNativeWorker> weak_factory_;
 };
 }  // namespace android

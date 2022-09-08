@@ -30,7 +30,7 @@ void StateMigrationV11::Migrate(LegacyResultCallback callback) {
                                              decrypted_wallet.value());
   }
 
-  callback(type::Result::LEDGER_OK);
+  callback(mojom::Result::LEDGER_OK);
 }
 
 }  // namespace state

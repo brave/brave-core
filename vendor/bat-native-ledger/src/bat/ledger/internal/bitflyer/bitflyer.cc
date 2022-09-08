@@ -57,12 +57,12 @@ void Bitflyer::Initialize() {
 }
 
 void Bitflyer::StartContribution(const std::string& contribution_id,
-                                 type::ServerPublisherInfoPtr info,
+                                 mojom::ServerPublisherInfoPtr info,
                                  double amount,
                                  ledger::LegacyResultCallback callback) {
   if (!info) {
     BLOG(0, "Publisher info is null");
-    ContributionCompleted(type::Result::LEDGER_ERROR, "", contribution_id,
+    ContributionCompleted(mojom::Result::LEDGER_ERROR, "", contribution_id,
                           amount, "", callback);
     return;
   }
@@ -81,13 +81,13 @@ void Bitflyer::StartContribution(const std::string& contribution_id,
   transfer_->Start(transaction, contribution_callback);
 }
 
-void Bitflyer::ContributionCompleted(type::Result result,
+void Bitflyer::ContributionCompleted(mojom::Result result,
                                      const std::string& transaction_id,
                                      const std::string& contribution_id,
                                      double fee,
                                      const std::string& publisher_key,
                                      ledger::LegacyResultCallback callback) {
-  if (result == type::Result::LEDGER_OK) {
+  if (result == mojom::Result::LEDGER_OK) {
     SaveTransferFee(contribution_id, fee);
 
     if (!publisher_key.empty()) {
@@ -104,13 +104,13 @@ void Bitflyer::FetchBalance(FetchBalanceCallback callback) {
   const auto wallet = GetWallet();
 
   if (!wallet || wallet->token.empty() || wallet->address.empty()) {
-    std::move(callback).Run(type::Result::LEDGER_OK, 0.0);
+    std::move(callback).Run(mojom::Result::LEDGER_OK, 0.0);
     return;
   }
 
-  if (wallet->status == type::WalletStatus::CONNECTED) {
+  if (wallet->status == mojom::WalletStatus::CONNECTED) {
     BLOG(1, "Wallet is connected");
-    std::move(callback).Run(type::Result::LEDGER_OK, 0.0);
+    std::move(callback).Run(mojom::Result::LEDGER_OK, 0.0);
     return;
   }
 
@@ -122,22 +122,22 @@ void Bitflyer::FetchBalance(FetchBalanceCallback callback) {
 }
 
 void Bitflyer::OnFetchBalance(FetchBalanceCallback callback,
-                              const type::Result result,
+                              const mojom::Result result,
                               const double available) {
-  if (result == type::Result::EXPIRED_TOKEN) {
+  if (result == mojom::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
     DisconnectWallet();
-    std::move(callback).Run(type::Result::EXPIRED_TOKEN, 0.0);
+    std::move(callback).Run(mojom::Result::EXPIRED_TOKEN, 0.0);
     return;
   }
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Couldn't get balance");
-    std::move(callback).Run(type::Result::LEDGER_ERROR, 0.0);
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR, 0.0);
     return;
   }
 
-  std::move(callback).Run(type::Result::LEDGER_OK, available);
+  std::move(callback).Run(mojom::Result::LEDGER_OK, available);
 }
 
 void Bitflyer::TransferFunds(const double amount,
@@ -171,7 +171,7 @@ void Bitflyer::DisconnectWallet(const bool manual) {
   const auto from = wallet->status;
   wallet = ledger::wallet::ResetWallet(std::move(wallet));
   if (manual) {
-    wallet->status = type::WalletStatus::NOT_CONNECTED;
+    wallet->status = mojom::WalletStatus::NOT_CONNECTED;
   }
   const auto to = wallet->status;
 
@@ -181,7 +181,7 @@ void Bitflyer::DisconnectWallet(const bool manual) {
 
   if (!manual && !shutting_down) {
     ledger_->ledger_client()->ShowNotification(
-        ledger::notifications::kWalletDisconnected, {}, [](type::Result) {});
+        ledger::notifications::kWalletDisconnected, {}, [](mojom::Result) {});
   }
 
   SetWallet(std::move(wallet));
@@ -224,11 +224,11 @@ void Bitflyer::StartTransferFeeTimer(const std::string& fee_id,
                      base::Unretained(this), fee_id, attempts));
 }
 
-void Bitflyer::OnTransferFeeCompleted(const type::Result result,
+void Bitflyer::OnTransferFeeCompleted(const mojom::Result result,
                                       const std::string& transaction_id,
                                       const std::string& contribution_id,
                                       const int attempts) {
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     if (attempts < 3) {
       BLOG(0, "Transaction fee failed, retrying");
       StartTransferFeeTimer(contribution_id, attempts + 1);
@@ -273,11 +273,11 @@ void Bitflyer::OnTransferFeeTimerElapsed(const std::string& id,
   }
 }
 
-type::ExternalWalletPtr Bitflyer::GetWallet() {
+mojom::ExternalWalletPtr Bitflyer::GetWallet() {
   return ::ledger::wallet::GetWallet(ledger_, constant::kWalletBitflyer);
 }
 
-bool Bitflyer::SetWallet(type::ExternalWalletPtr wallet) {
+bool Bitflyer::SetWallet(mojom::ExternalWalletPtr wallet) {
   return ::ledger::wallet::SetWallet(ledger_, std::move(wallet),
                                      state::kWalletBitflyer);
 }

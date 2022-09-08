@@ -42,7 +42,7 @@ class LedgerImpl;
 namespace endpoint {
 namespace payment {
 
-using PostCredentialsCallback = base::OnceCallback<void(type::Result)>;
+using PostCredentialsCallback = base::OnceCallback<void(mojom::Result)>;
 
 class PostCredentials {
  public:
@@ -62,10 +62,10 @@ class PostCredentials {
                               const std::string& type,
                               base::Value::List&& blinded_creds);
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(const int status_code);
 
   void OnRequest(PostCredentialsCallback callback,
-                 const type::UrlResponse& response);
+                 const mojom::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

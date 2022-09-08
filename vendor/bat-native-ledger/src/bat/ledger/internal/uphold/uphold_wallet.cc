@@ -33,12 +33,12 @@ UpholdWallet::~UpholdWallet() = default;
 void UpholdWallet::Generate(ledger::ResultCallback callback) const {
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
-    uphold_wallet = type::ExternalWallet::New();
+    uphold_wallet = mojom::ExternalWallet::New();
     uphold_wallet->type = constant::kWalletUphold;
-    uphold_wallet->status = type::WalletStatus::NOT_CONNECTED;
+    uphold_wallet->status = mojom::WalletStatus::NOT_CONNECTED;
     if (!ledger_->uphold()->SetWallet(uphold_wallet->Clone())) {
       BLOG(0, "Unable to set the Uphold wallet!");
-      return std::move(callback).Run(type::Result::LEDGER_ERROR);
+      return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
     }
 
     OnWalletStatusChange(ledger_, {}, uphold_wallet->status);
@@ -52,22 +52,22 @@ void UpholdWallet::Generate(ledger::ResultCallback callback) const {
   const auto status = uphold_wallet->status;
   if (!ledger_->uphold()->SetWallet(std::move(uphold_wallet))) {
     BLOG(0, "Unable to set the Uphold wallet!");
-    return std::move(callback).Run(type::Result::LEDGER_ERROR);
+    return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
   }
 
   // In VERIFIED state TransferTokens is done in OnGetUser after checking
   // certain user properties. In DISCONNECTED_VERIFIED state we do not call
   // GetUser (because the token and address are empty, so the user cannot be
   // retrieved), so call TransferTokens here instead.
-  if (status == type::WalletStatus::DISCONNECTED_VERIFIED) {
+  if (status == mojom::WalletStatus::DISCONNECTED_VERIFIED) {
     return ledger_->promotion()->TransferTokens(
         base::BindOnce(&UpholdWallet::OnTransferTokens, base::Unretained(this),
                        std::move(callback)));
   }
 
-  if (status != type::WalletStatus::PENDING &&
-      status != type::WalletStatus::VERIFIED) {
-    return std::move(callback).Run(type::Result::LEDGER_OK);
+  if (status != mojom::WalletStatus::PENDING &&
+      status != mojom::WalletStatus::VERIFIED) {
+    return std::move(callback).Run(mojom::Result::LEDGER_OK);
   }
 
   ledger_->uphold()->GetUser(base::BindOnce(
@@ -75,46 +75,46 @@ void UpholdWallet::Generate(ledger::ResultCallback callback) const {
 }
 
 void UpholdWallet::OnGetUser(ledger::ResultCallback callback,
-                             type::Result result,
+                             mojom::Result result,
                              const User& user) const {
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");
-    return std::move(callback).Run(type::Result::LEDGER_ERROR);
+    return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
   }
 
-  if (uphold_wallet->status != type::WalletStatus::PENDING &&
-      uphold_wallet->status != type::WalletStatus::VERIFIED) {
-    return std::move(callback).Run(type::Result::LEDGER_OK);
+  if (uphold_wallet->status != mojom::WalletStatus::PENDING &&
+      uphold_wallet->status != mojom::WalletStatus::VERIFIED) {
+    return std::move(callback).Run(mojom::Result::LEDGER_OK);
   }
 
   CheckWalletState(uphold_wallet.get());
 
-  if (result == type::Result::EXPIRED_TOKEN) {
+  if (result == mojom::Result::EXPIRED_TOKEN) {
     BLOG(0, "Access token expired!");
     // Entering NOT_CONNECTED or DISCONNECTED_VERIFIED.
     ledger_->uphold()->DisconnectWallet(
         ledger::notifications::kWalletDisconnected);
-    return std::move(callback).Run(type::Result::EXPIRED_TOKEN);
+    return std::move(callback).Run(mojom::Result::EXPIRED_TOKEN);
   }
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Couldn't get the user object from Uphold!");
-    return std::move(callback).Run(type::Result::CONTINUE);
+    return std::move(callback).Run(mojom::Result::CONTINUE);
   }
 
   if (user.bat_not_allowed) {
     BLOG(0, "BAT is not allowed for the user!");
     // Entering NOT_CONNECTED or DISCONNECTED_VERIFIED.
     ledger_->uphold()->DisconnectWallet("");
-    return std::move(callback).Run(type::Result::UPHOLD_BAT_NOT_ALLOWED);
+    return std::move(callback).Run(mojom::Result::UPHOLD_BAT_NOT_ALLOWED);
   }
 
   uphold_wallet->user_name = user.name;
   uphold_wallet->member_id = user.member_id;
   if (!ledger_->uphold()->SetWallet(uphold_wallet->Clone())) {
     BLOG(0, "Unable to set the Uphold wallet!");
-    return std::move(callback).Run(type::Result::LEDGER_ERROR);
+    return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
   }
 
   ledger_->uphold()->GetCapabilities(
@@ -123,39 +123,39 @@ void UpholdWallet::OnGetUser(ledger::ResultCallback callback,
 }
 
 void UpholdWallet::OnGetCapabilities(ledger::ResultCallback callback,
-                                     type::Result result,
+                                     mojom::Result result,
                                      Capabilities capabilities) const {
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");
-    return std::move(callback).Run(type::Result::LEDGER_ERROR);
+    return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
   }
 
-  if (uphold_wallet->status != type::WalletStatus::PENDING &&
-      uphold_wallet->status != type::WalletStatus::VERIFIED) {
-    return std::move(callback).Run(type::Result::LEDGER_OK);
+  if (uphold_wallet->status != mojom::WalletStatus::PENDING &&
+      uphold_wallet->status != mojom::WalletStatus::VERIFIED) {
+    return std::move(callback).Run(mojom::Result::LEDGER_OK);
   }
 
   CheckWalletState(uphold_wallet.get());
 
-  if (result == type::Result::EXPIRED_TOKEN) {
+  if (result == mojom::Result::EXPIRED_TOKEN) {
     BLOG(0, "Access token expired!");
     // Entering NOT_CONNECTED or DISCONNECTED_VERIFIED.
     ledger_->uphold()->DisconnectWallet(
         ledger::notifications::kWalletDisconnected);
-    return std::move(callback).Run(type::Result::EXPIRED_TOKEN);
+    return std::move(callback).Run(mojom::Result::EXPIRED_TOKEN);
   }
 
-  if (result != type::Result::LEDGER_OK || !capabilities.can_receive ||
+  if (result != mojom::Result::LEDGER_OK || !capabilities.can_receive ||
       !capabilities.can_send) {
     BLOG(0, "Couldn't get capabilities from Uphold!");
-    return std::move(callback).Run(type::Result::CONTINUE);
+    return std::move(callback).Run(mojom::Result::CONTINUE);
   }
 
   if (!*capabilities.can_receive || !*capabilities.can_send) {
     BLOG(0, "User doesn't have the required Uphold capabilities!");
     // Entering NOT_CONNECTED.
-    if (uphold_wallet->status == type::WalletStatus::VERIFIED) {
+    if (uphold_wallet->status == mojom::WalletStatus::VERIFIED) {
       ledger_->ledger_client()->ShowNotification(
           ledger::notifications::kWalletDisconnected, {"Uphold"}, [](auto) {});
       ledger_->wallet()->DisconnectWallet(constant::kWalletUphold, [](auto) {});
@@ -163,10 +163,10 @@ void UpholdWallet::OnGetCapabilities(ledger::ResultCallback callback,
       ledger_->uphold()->DisconnectWallet("");
     }
     return std::move(callback).Run(
-        type::Result::UPHOLD_INSUFFICIENT_CAPABILITIES);
+        mojom::Result::UPHOLD_INSUFFICIENT_CAPABILITIES);
   }
 
-  if (uphold_wallet->status == type::WalletStatus::VERIFIED) {
+  if (uphold_wallet->status == mojom::WalletStatus::VERIFIED) {
     return ledger_->promotion()->TransferTokens(
         base::BindOnce(&UpholdWallet::OnTransferTokens, base::Unretained(this),
                        std::move(callback)));
@@ -178,35 +178,35 @@ void UpholdWallet::OnGetCapabilities(ledger::ResultCallback callback,
 }
 
 void UpholdWallet::OnCreateCard(ledger::ResultCallback callback,
-                                type::Result result,
+                                mojom::Result result,
                                 std::string&& id) const {
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");
-    return std::move(callback).Run(type::Result::LEDGER_ERROR);
+    return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
   }
 
-  if (uphold_wallet->status != type::WalletStatus::PENDING) {
-    return std::move(callback).Run(type::Result::LEDGER_OK);
+  if (uphold_wallet->status != mojom::WalletStatus::PENDING) {
+    return std::move(callback).Run(mojom::Result::LEDGER_OK);
   }
 
   CheckWalletState(uphold_wallet.get());
 
-  if (result == type::Result::EXPIRED_TOKEN) {
+  if (result == mojom::Result::EXPIRED_TOKEN) {
     BLOG(0, "Access token expired!");
     // Entering NOT_CONNECTED.
     ledger_->uphold()->DisconnectWallet(
         ledger::notifications::kWalletDisconnected);
-    return std::move(callback).Run(type::Result::EXPIRED_TOKEN);
+    return std::move(callback).Run(mojom::Result::EXPIRED_TOKEN);
   }
 
-  if (result != type::Result::LEDGER_OK) {
-    return std::move(callback).Run(type::Result::CONTINUE);
+  if (result != mojom::Result::LEDGER_OK) {
+    return std::move(callback).Run(mojom::Result::CONTINUE);
   }
 
   if (id.empty()) {
     BLOG(0, "Card ID is empty!");
-    return std::move(callback).Run(type::Result::CONTINUE);
+    return std::move(callback).Run(mojom::Result::CONTINUE);
   }
 
   auto on_connect =
@@ -216,21 +216,21 @@ void UpholdWallet::OnCreateCard(ledger::ResultCallback callback,
   if (RequestFor<PostConnectUphold> request{ledger_, std::move(id)}) {
     std::move(request).Send(std::move(on_connect));
   } else {
-    std::move(on_connect).Run(type::Result::LEDGER_ERROR);
+    std::move(on_connect).Run(mojom::Result::LEDGER_ERROR);
   }
 }
 
 void UpholdWallet::OnConnectWallet(ledger::ResultCallback callback,
                                    std::string&& id,
-                                   type::Result result) const {
+                                   mojom::Result result) const {
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");
-    return std::move(callback).Run(type::Result::LEDGER_ERROR);
+    return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
   }
 
-  if (uphold_wallet->status != type::WalletStatus::PENDING) {
-    return std::move(callback).Run(type::Result::LEDGER_OK);
+  if (uphold_wallet->status != mojom::WalletStatus::PENDING) {
+    return std::move(callback).Run(mojom::Result::LEDGER_OK);
   }
 
   CheckWalletState(uphold_wallet.get());
@@ -238,13 +238,13 @@ void UpholdWallet::OnConnectWallet(ledger::ResultCallback callback,
   const std::string abbreviated_address = id.substr(0, 5);
 
   switch (result) {
-    case type::Result::DEVICE_LIMIT_REACHED:
-    case type::Result::MISMATCHED_PROVIDER_ACCOUNTS:
-    case type::Result::NOT_FOUND:  // KYC required
-    case type::Result::UPHOLD_TRANSACTION_VERIFICATION_FAILURE:
-    case type::Result::FLAGGED_WALLET:
-    case type::Result::REGION_NOT_SUPPORTED:
-    case type::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS:
+    case mojom::Result::DEVICE_LIMIT_REACHED:
+    case mojom::Result::MISMATCHED_PROVIDER_ACCOUNTS:
+    case mojom::Result::NOT_FOUND:  // KYC required
+    case mojom::Result::UPHOLD_TRANSACTION_VERIFICATION_FAILURE:
+    case mojom::Result::FLAGGED_WALLET:
+    case mojom::Result::REGION_NOT_SUPPORTED:
+    case mojom::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS:
       // Entering NOT_CONNECTED.
       ledger_->uphold()->DisconnectWallet("");
       ledger_->database()->SaveEventLog(
@@ -252,19 +252,19 @@ void UpholdWallet::OnConnectWallet(ledger::ResultCallback callback,
           constant::kWalletUphold + std::string("/") + abbreviated_address);
       return std::move(callback).Run(result);
     default:
-      if (result != type::Result::LEDGER_OK) {
+      if (result != mojom::Result::LEDGER_OK) {
         BLOG(0, "Couldn't claim wallet!");
-        return std::move(callback).Run(type::Result::CONTINUE);
+        return std::move(callback).Run(mojom::Result::CONTINUE);
       }
   }
 
   const auto from = uphold_wallet->status;
-  const auto to = uphold_wallet->status = type::WalletStatus::VERIFIED;
+  const auto to = uphold_wallet->status = mojom::WalletStatus::VERIFIED;
   uphold_wallet->address = std::move(id);
   uphold_wallet = GenerateLinks(std::move(uphold_wallet));
   if (!ledger_->uphold()->SetWallet(std::move(uphold_wallet))) {
     BLOG(0, "Unable to set the Uphold wallet!");
-    return std::move(callback).Run(type::Result::LEDGER_ERROR);
+    return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
   }
 
   OnWalletStatusChange(ledger_, from, to);
@@ -279,27 +279,27 @@ void UpholdWallet::OnConnectWallet(ledger::ResultCallback callback,
 }
 
 void UpholdWallet::OnTransferTokens(ledger::ResultCallback callback,
-                                    type::Result result,
+                                    mojom::Result result,
                                     std::string) const {
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");
-    return std::move(callback).Run(type::Result::LEDGER_ERROR);
+    return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
   }
 
-  if (uphold_wallet->status != type::WalletStatus::VERIFIED &&
-      uphold_wallet->status != type::WalletStatus::DISCONNECTED_VERIFIED) {
-    return std::move(callback).Run(type::Result::LEDGER_OK);
+  if (uphold_wallet->status != mojom::WalletStatus::VERIFIED &&
+      uphold_wallet->status != mojom::WalletStatus::DISCONNECTED_VERIFIED) {
+    return std::move(callback).Run(mojom::Result::LEDGER_OK);
   }
 
   CheckWalletState(uphold_wallet.get());
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Transferring tokens failed!");
-    return std::move(callback).Run(type::Result::CONTINUE);
+    return std::move(callback).Run(mojom::Result::CONTINUE);
   }
 
-  std::move(callback).Run(type::Result::LEDGER_OK);
+  std::move(callback).Run(mojom::Result::LEDGER_OK);
 }
 
 }  // namespace ledger::uphold

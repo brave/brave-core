@@ -32,16 +32,16 @@ class BatLedgerClientMojoBridge :
       const BatLedgerClientMojoBridge&) = delete;
 
   void OnReconcileComplete(
-      const ledger::type::Result result,
-      ledger::type::ContributionInfoPtr contribution) override;
+      const ledger::mojom::Result result,
+      ledger::mojom::ContributionInfoPtr contribution) override;
   void LoadLedgerState(ledger::client::OnLoadCallback callback) override;
   void LoadPublisherState(ledger::client::OnLoadCallback callback) override;
 
-  void LoadURL(ledger::type::UrlRequestPtr request,
+  void LoadURL(ledger::mojom::UrlRequestPtr request,
                ledger::client::LoadURLCallback callback) override;
 
-  void OnPanelPublisherInfo(ledger::type::Result result,
-                            ledger::type::PublisherInfoPtr info,
+  void OnPanelPublisherInfo(ledger::mojom::Result result,
+                            ledger::mojom::PublisherInfoPtr info,
                             uint64_t windowId) override;
   void FetchFavIcon(const std::string& url,
                     const std::string& favicon_key,
@@ -55,7 +55,8 @@ class BatLedgerClientMojoBridge :
 
   std::string URIEncode(const std::string& value) override;
 
-  void PublisherListNormalized(ledger::type::PublisherInfoList list) override;
+  void PublisherListNormalized(
+      std::vector<ledger::mojom::PublisherInfoPtr> list) override;
 
   void OnPublisherRegistryUpdated() override;
   void OnPublisherUpdated(const std::string& publisher_id) override;
@@ -83,7 +84,7 @@ class BatLedgerClientMojoBridge :
   uint64_t GetUint64Option(const std::string& name) const override;
 
   void OnContributeUnverifiedPublishers(
-      ledger::type::Result result,
+      ledger::mojom::Result result,
       const std::string& publisher_key,
       const std::string& publisher_name) override;
 
@@ -93,25 +94,27 @@ class BatLedgerClientMojoBridge :
                         const std::vector<std::string>& args,
                         ledger::client::LegacyResultCallback callback) override;
 
-  ledger::type::ClientInfoPtr GetClientInfo() override;
+  ledger::mojom::ClientInfoPtr GetClientInfo() override;
 
   void UnblindedTokensReady() override;
 
   void ReconcileStampReset() override;
 
   void RunDBTransaction(
-      ledger::type::DBTransactionPtr transaction,
+      ledger::mojom::DBTransactionPtr transaction,
       ledger::client::RunDBTransactionCallback callback) override;
 
   void GetCreateScript(
       ledger::client::GetCreateScriptCallback callback) override;
 
-  void PendingContributionSaved(const ledger::type::Result result) override;
+  void PendingContributionSaved(const ledger::mojom::Result result) override;
 
   void OnLoadLedgerState(ledger::client::OnLoadCallback callback,
-      const ledger::type::Result result, const std::string& data);
+                         const ledger::mojom::Result result,
+                         const std::string& data);
   void OnLoadPublisherState(ledger::client::OnLoadCallback callback,
-      const ledger::type::Result result, const std::string& data);
+                            const ledger::mojom::Result result,
+                            const std::string& data);
 
   void ClearAllNotifications() override;
 

@@ -8,23 +8,23 @@
 
 namespace ledger {
 namespace log {
-std::string GetEventLogKeyForLinkingResult(type::Result result) {
+std::string GetEventLogKeyForLinkingResult(mojom::Result result) {
   switch (result) {
-    case type::Result::DEVICE_LIMIT_REACHED:
+    case mojom::Result::DEVICE_LIMIT_REACHED:
       return log::kDeviceLimitReached;
-    case type::Result::FLAGGED_WALLET:
+    case mojom::Result::FLAGGED_WALLET:
       return log::kFlaggedWallet;
-    case type::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS:
+    case mojom::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS:
       return log::kMismatchedProviderAccountRegions;
-    case type::Result::MISMATCHED_PROVIDER_ACCOUNTS:
+    case mojom::Result::MISMATCHED_PROVIDER_ACCOUNTS:
       return log::kMismatchedProviderAccounts;
-    case type::Result::NOT_FOUND:
+    case mojom::Result::NOT_FOUND:
       return log::kKYCRequired;
-    case type::Result::REGION_NOT_SUPPORTED:
+    case mojom::Result::REGION_NOT_SUPPORTED:
       return log::kRegionNotSupported;
-    case type::Result::REQUEST_SIGNATURE_VERIFICATION_FAILURE:
+    case mojom::Result::REQUEST_SIGNATURE_VERIFICATION_FAILURE:
       return log::kRequestSignatureVerificationFailure;
-    case type::Result::UPHOLD_TRANSACTION_VERIFICATION_FAILURE:
+    case mojom::Result::UPHOLD_TRANSACTION_VERIFICATION_FAILURE:
       return log::kTransactionVerificationFailure;
     default:
       NOTREACHED();

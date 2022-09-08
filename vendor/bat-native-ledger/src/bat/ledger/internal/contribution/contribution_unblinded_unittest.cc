@@ -50,72 +50,68 @@ class UnblindedTest : public ::testing::Test {
       .WillByDefault(testing::Return(mock_database_.get()));
 
     ON_CALL(*mock_database_, GetContributionInfo(contribution_id, _))
-    .WillByDefault(
-      Invoke([](
-          const std::string& id,
-          database::GetContributionInfoCallback callback) {
-        auto info = type::ContributionInfo::New();
-        info->contribution_id = contribution_id;
-        info->amount = 5.0;
-        info->type = type::RewardsType::ONE_TIME_TIP;
-        info->step = type::ContributionStep::STEP_NO;
-        info->retry_count = 0;
+        .WillByDefault(
+            Invoke([](const std::string& id,
+                      database::GetContributionInfoCallback callback) {
+              auto info = mojom::ContributionInfo::New();
+              info->contribution_id = contribution_id;
+              info->amount = 5.0;
+              info->type = mojom::RewardsType::ONE_TIME_TIP;
+              info->step = mojom::ContributionStep::STEP_NO;
+              info->retry_count = 0;
 
-        callback(std::move(info));
-      }));
+              callback(std::move(info));
+            }));
   }
 };
 
 TEST_F(UnblindedTest, NotEnoughFunds) {
   ON_CALL(*mock_database_, GetReservedUnblindedTokens(_, _))
-    .WillByDefault(
-      Invoke([](
-          const std::string&,
-          database::GetUnblindedTokenListCallback callback) {
-        type::UnblindedTokenList list;
+      .WillByDefault(
+          Invoke([](const std::string&,
+                    database::GetUnblindedTokenListCallback callback) {
+            std::vector<mojom::UnblindedTokenPtr> list;
 
-        auto info = type::UnblindedToken::New();
-        info->id = 1;
-        info->token_value = "asdfasdfasdfsad=";
-        info->value = 2;
-        info->expires_at = 1574133178;
-        list.push_back(info->Clone());
+            auto info = mojom::UnblindedToken::New();
+            info->id = 1;
+            info->token_value = "asdfasdfasdfsad=";
+            info->value = 2;
+            info->expires_at = 1574133178;
+            list.push_back(info->Clone());
 
-        callback(std::move(list));
-      }));
+            callback(std::move(list));
+          }));
 
-  unblinded_->Start(
-      {type::CredsBatchType::PROMOTION},
-      contribution_id,
-      [](const type::Result result) {
-        ASSERT_EQ(result, type::Result::NOT_ENOUGH_FUNDS);
-      });
+  unblinded_->Start({mojom::CredsBatchType::PROMOTION}, contribution_id,
+                    [](const mojom::Result result) {
+                      ASSERT_EQ(result, mojom::Result::NOT_ENOUGH_FUNDS);
+                    });
 }
 
 TEST_F(UnblindedTest, GetStatisticalVotingWinner) {
-  ledger::type::ContributionPublisherList publisher_list;
+  std::vector<ledger::mojom::ContributionPublisherPtr> publisher_list;
 
-  auto publisher1 = type::ContributionPublisher::New();
+  auto publisher1 = mojom::ContributionPublisher::New();
   publisher1->publisher_key = "publisher1";
   publisher1->total_amount = 2.0;
   publisher_list.push_back(std::move(publisher1));
 
-  auto publisher2 = type::ContributionPublisher::New();
+  auto publisher2 = mojom::ContributionPublisher::New();
   publisher2->publisher_key = "publisher2";
   publisher2->total_amount = 13.0;
   publisher_list.push_back(std::move(publisher2));
 
-  auto publisher3 = type::ContributionPublisher::New();
+  auto publisher3 = mojom::ContributionPublisher::New();
   publisher3->publisher_key = "publisher3";
   publisher3->total_amount = 14.0;
   publisher_list.push_back(std::move(publisher3));
 
-  auto publisher4 = type::ContributionPublisher::New();
+  auto publisher4 = mojom::ContributionPublisher::New();
   publisher4->publisher_key = "publisher4";
   publisher4->total_amount = 23.0;
   publisher_list.push_back(std::move(publisher4));
 
-  auto publisher5 = type::ContributionPublisher::New();
+  auto publisher5 = mojom::ContributionPublisher::New();
   publisher5->publisher_key = "publisher5";
   publisher5->total_amount = 38.0;
   publisher_list.push_back(std::move(publisher5));
