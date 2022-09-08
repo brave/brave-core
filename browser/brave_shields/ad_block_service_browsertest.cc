@@ -494,31 +494,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
-// Upgrade from v3 to v4 format data file and make sure v4-specific ad
-// is blocked.
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
-                       AdsGetBlockedAfterDataFileVersionUpgrade) {
-  // Install AdBlock extension with a version 3 format data file and
-  // expect a new install
-  ASSERT_TRUE(InstallDefaultAdBlockExtension("adblock-v3", 1));
-
-  // Install AdBlock extension with a version 4 format data file and
-  // expect an upgrade install
-  ASSERT_TRUE(InstallDefaultAdBlockExtension("adblock-v4", 0));
-
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
-
-  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  content::WebContents* contents =
-      browser()->tab_strip_model()->GetActiveWebContents();
-
-  ASSERT_EQ(true, EvalJs(contents,
-                         "setExpectations(0, 1, 0, 0);"
-                         "addImage('v4_specific_banner.png')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
-}
-
 // Load a page with several of the same adblocked xhr requests, it should only
 // count 1.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TwoSameAdsGetCountedAsOne) {

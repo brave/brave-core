@@ -15,7 +15,7 @@
 #include "brave/components/brave_shields/browser/ad_block_component_installer.h"
 #include "content/public/browser/browser_task_traits.h"
 
-#define DAT_FILE "rs-ABPFilterParserData.dat"
+#define LIST_FILE "list.txt"
 
 namespace brave_shields {
 
@@ -36,13 +36,13 @@ void AdBlockDefaultFiltersProvider::OnComponentReady(
     const base::FilePath& path) {
   component_path_ = path;
 
-  // Load the DAT (as a buffer)
+  // Load the list as a string
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::ReadDATFileData,
-                     component_path_.AppendASCII(DAT_FILE)),
+                     component_path_.AppendASCII(LIST_FILE)),
       base::BindOnce(&AdBlockDefaultFiltersProvider::OnDATLoaded,
-                     weak_factory_.GetWeakPtr(), true));
+                     weak_factory_.GetWeakPtr(), false));
 }
 
 void AdBlockDefaultFiltersProvider::LoadDATBuffer(
@@ -57,8 +57,8 @@ void AdBlockDefaultFiltersProvider::LoadDATBuffer(
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::ReadDATFileData,
-                     component_path_.AppendASCII(DAT_FILE)),
-      base::BindOnce(std::move(cb), true));
+                     component_path_.AppendASCII(LIST_FILE)),
+      base::BindOnce(std::move(cb), false));
 }
 
 }  // namespace brave_shields
