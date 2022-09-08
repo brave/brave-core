@@ -27,7 +27,7 @@ struct ConfirmationInfo;
 
 absl::optional<ConfirmationInfo> CreateConfirmation(
     privacy::TokenGeneratorInterface* token_generator,
-    const base::Time created_at,
+    base::Time created_at,
     const std::string& transaction_id,
     const std::string& creative_instance_id,
     const ConfirmationType& confirmation_type,

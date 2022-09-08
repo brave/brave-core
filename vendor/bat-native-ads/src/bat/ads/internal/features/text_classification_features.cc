@@ -7,9 +7,7 @@
 
 #include "base/metrics/field_trial_params.h"
 
-namespace ads {
-namespace targeting {
-namespace features {
+namespace ads::targeting::features {
 
 namespace {
 
@@ -45,6 +43,4 @@ int GetTextClassificationResourceVersion() {
                                           kDefaultResourceVersion);
 }
 
-}  // namespace features
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting::features

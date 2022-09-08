@@ -18,8 +18,7 @@ namespace base {
 class Value;
 }  // namespace base
 
-namespace ads {
-namespace resource {
+namespace ads::resource {
 
 using AntiTargetingSiteList = std::set<GURL>;
 using AntiTargetingMap = std::map<std::string, AntiTargetingSiteList>;
@@ -38,7 +37,6 @@ struct AntiTargetingInfo final {
   AntiTargetingMap sites;
 };
 
-}  // namespace resource
-}  // namespace ads
+}  // namespace ads::resource
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_BEHAVIORAL_ANTI_TARGETING_ANTI_TARGETING_INFO_H_

@@ -10,8 +10,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace ml {
+namespace ads::ml {
 
 class BatAdsLinearModelTest : public UnitTestBase {
  protected:
@@ -134,5 +133,4 @@ TEST_F(BatAdsLinearModelTest, TopPredictionsTest) {
   EXPECT_EQ(kPredictionLimits[1], predictions_3.size());
 }
 
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml

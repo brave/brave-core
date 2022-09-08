@@ -8,15 +8,13 @@
 
 #include "bat/ads/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info.h"
 
-namespace ads {
-namespace database {
+namespace ads::database {
 
 void DeleteCreativePromotedContentAds();
 
 void SaveCreativePromotedContentAds(
     const CreativePromotedContentAdList& creative_ads);
 
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CREATIVES_PROMOTED_CONTENT_ADS_CREATIVE_PROMOTED_CONTENT_ADS_DATABASE_UTIL_H_

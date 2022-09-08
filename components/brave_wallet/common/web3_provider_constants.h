@@ -29,6 +29,7 @@ constexpr char kSignMessage[] = "signMessage";
 }  // namespace solana
 
 constexpr char kEthAccounts[] = "eth_accounts";
+constexpr char kEthCoinbase[] = "eth_coinbase";
 constexpr char kEthRequestAccounts[] = "eth_requestAccounts";
 constexpr char kEthSendTransaction[] = "eth_sendTransaction";
 constexpr char kEthGetBlockByNumber[] = "eth_getBlockByNumber";

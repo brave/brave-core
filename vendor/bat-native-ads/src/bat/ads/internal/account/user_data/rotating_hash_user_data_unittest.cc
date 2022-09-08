@@ -12,8 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace user_data {
+namespace ads::user_data {
 
 namespace {
 constexpr char kCreativeInstanceId[] = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
@@ -102,5 +101,4 @@ TEST_F(BatAdsRotatingHashUserDataTest,
   EXPECT_NE(user_data_before, user_data_after);
 }
 
-}  // namespace user_data
-}  // namespace ads
+}  // namespace ads::user_data

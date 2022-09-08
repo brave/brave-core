@@ -10,8 +10,7 @@
 #include "base/metrics/field_trial_params.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/eligible_ads_features_util.h"
 
-namespace ads {
-namespace features {
+namespace ads::features {
 
 namespace {
 
@@ -48,5 +47,4 @@ AdPredictorWeightList GetAdPredictorWeights() {
   return weights;
 }
 
-}  // namespace features
-}  // namespace ads
+}  // namespace ads::features

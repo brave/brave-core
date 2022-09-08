@@ -30,8 +30,7 @@
 #include "bat/ads/internal/legacy_migration/database/database_constants.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
-namespace ads {
-namespace database {
+namespace ads::database {
 
 namespace {
 
@@ -111,5 +110,4 @@ void MigrateFromVersion(const int from_version, ResultCallback callback) {
       base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database

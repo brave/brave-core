@@ -8,12 +8,10 @@
 
 #include <string>
 
-namespace ads {
-namespace server {
+namespace ads::server {
 
 std::string BuildViaHeader();
 
-}  // namespace server
-}  // namespace ads
+}  // namespace ads::server
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_SERVER_HEADERS_VIA_HEADER_UTIL_H_

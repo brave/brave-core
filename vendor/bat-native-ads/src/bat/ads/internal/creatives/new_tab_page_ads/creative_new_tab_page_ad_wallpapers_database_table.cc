@@ -18,9 +18,7 @@
 #include "bat/ads/internal/base/database/database_table_util.h"
 #include "bat/ads/internal/base/database/database_transaction_util.h"
 
-namespace ads {
-namespace database {
-namespace table {
+namespace ads::database::table {
 
 namespace {
 
@@ -151,6 +149,4 @@ void CreativeNewTabPageAdWallpapers::MigrateToV24(
   transaction->commands.push_back(std::move(command));
 }
 
-}  // namespace table
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database::table

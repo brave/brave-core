@@ -15,9 +15,7 @@
 
 using ::testing::Eq;
 
-namespace ads {
-namespace privacy {
-namespace p2a {
+namespace ads::privacy::p2a {
 
 namespace {
 
@@ -48,6 +46,4 @@ TEST_F(BatAdsP2ATest, RecordEvent) {
   RecordEvent(kEventName, {"question_1", "question_2"});
 }
 
-}  // namespace p2a
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::p2a

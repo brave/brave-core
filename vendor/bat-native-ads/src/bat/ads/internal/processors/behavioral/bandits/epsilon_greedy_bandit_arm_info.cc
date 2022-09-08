@@ -7,8 +7,7 @@
 
 #include "bat/ads/internal/base/numbers/number_util.h"
 
-namespace ads {
-namespace targeting {
+namespace ads::targeting {
 
 EpsilonGreedyBanditArmInfo::EpsilonGreedyBanditArmInfo() = default;
 
@@ -35,5 +34,4 @@ bool EpsilonGreedyBanditArmInfo::IsValid() const {
   return !(segment.empty() || value < 0.0 || value > 1.0 || pulls < 0);
 }
 
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting

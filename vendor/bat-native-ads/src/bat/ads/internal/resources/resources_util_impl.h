@@ -24,8 +24,7 @@ namespace base {
 class File;
 }  // namespace base
 
-namespace ads {
-namespace resource {
+namespace ads::resource {
 
 template <typename T>
 std::unique_ptr<ParsingResult<T>> ReadFileAndParseResourceOnBackgroundThread(
@@ -75,7 +74,6 @@ void LoadAndParseResource(const std::string& id,
       base::BindOnce(&ReadFileAndParseResource<T>, std::move(callback)));
 }
 
-}  // namespace resource
-}  // namespace ads
+}  // namespace ads::resource
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_RESOURCES_UTIL_IMPL_H_

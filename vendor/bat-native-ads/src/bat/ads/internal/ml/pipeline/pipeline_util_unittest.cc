@@ -15,8 +15,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace ml {
+namespace ads::ml {
 
 namespace {
 constexpr char kValidSpamClassificationPipeline[] =
@@ -46,5 +45,4 @@ TEST_F(BatAdsPipelineUtilTest, ParsePipelineValueTest) {
   EXPECT_TRUE(pipeline);
 }
 
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml

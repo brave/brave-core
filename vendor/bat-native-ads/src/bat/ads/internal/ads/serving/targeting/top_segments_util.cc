@@ -8,8 +8,7 @@
 #include "bat/ads/internal/ads/serving/targeting/user_model_info.h"
 #include "bat/ads/internal/segments/segment_util.h"
 
-namespace ads {
-namespace targeting {
+namespace ads::targeting {
 
 namespace {
 
@@ -69,5 +68,4 @@ SegmentList GetTopSegments(const UserModelInfo& user_model,
   return segments;
 }
 
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting

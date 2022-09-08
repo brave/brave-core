@@ -12,9 +12,7 @@
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/ml_alias.h"
 
-namespace ads {
-namespace ml {
-namespace model {
+namespace ads::ml::model {
 
 class Linear final {
  public:
@@ -36,8 +34,6 @@ class Linear final {
   std::map<std::string, double> biases_;
 };
 
-}  // namespace model
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml::model
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_MODEL_LINEAR_LINEAR_H_

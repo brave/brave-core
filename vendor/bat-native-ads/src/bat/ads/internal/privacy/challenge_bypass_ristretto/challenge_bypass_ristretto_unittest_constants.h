@@ -6,9 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_CHALLENGE_BYPASS_RISTRETTO_CHALLENGE_BYPASS_RISTRETTO_UNITTEST_CONSTANTS_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_CHALLENGE_BYPASS_RISTRETTO_CHALLENGE_BYPASS_RISTRETTO_UNITTEST_CONSTANTS_H_
 
-namespace ads {
-namespace privacy {
-namespace cbr {
+namespace ads::privacy::cbr {
 
 constexpr char kInvalidBase64[] = "FOOBAR";
 
@@ -36,8 +34,6 @@ constexpr char kVerificationSignatureBase64[] =
 constexpr char kTokenPreimageBase64[] =
     R"~(IXDCnZnVEJ0orkbZfr2ut2NQPQ0ofdervKBmQ2hyjcClGCjA3/ExbBumO0ua5cxwo//nN0uKQ60kknru8hRXxw==)~";
 
-}  // namespace cbr
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::cbr
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_CHALLENGE_BYPASS_RISTRETTO_CHALLENGE_BYPASS_RISTRETTO_UNITTEST_CONSTANTS_H_

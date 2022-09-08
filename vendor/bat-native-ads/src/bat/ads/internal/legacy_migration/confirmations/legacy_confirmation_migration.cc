@@ -15,8 +15,7 @@
 #include "bat/ads/internal/legacy_migration/confirmations/legacy_confirmation_migration_util.h"
 #include "bat/ads/pref_names.h"
 
-namespace ads {
-namespace confirmations {
+namespace ads::confirmations {
 
 namespace {
 
@@ -83,5 +82,4 @@ void Migrate(InitializeCallback callback) {
           callback));
 }
 
-}  // namespace confirmations
-}  // namespace ads
+}  // namespace ads::confirmations

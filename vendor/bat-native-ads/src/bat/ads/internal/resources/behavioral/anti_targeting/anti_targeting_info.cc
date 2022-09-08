@@ -12,8 +12,7 @@
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_features.h"
 #include "url/gurl.h"
 
-namespace ads {
-namespace resource {
+namespace ads::resource {
 
 AntiTargetingInfo::AntiTargetingInfo() = default;
 
@@ -69,5 +68,4 @@ std::unique_ptr<AntiTargetingInfo> AntiTargetingInfo::CreateFromValue(
   return anti_targeting;
 }
 
-}  // namespace resource
-}  // namespace ads
+}  // namespace ads::resource

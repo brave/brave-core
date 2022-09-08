@@ -8,8 +8,7 @@
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 
-namespace ads {
-namespace user_data {
+namespace ads::user_data {
 
 namespace {
 constexpr char kMutatedKey[] = "mutated";
@@ -26,5 +25,4 @@ base::Value::Dict GetMutated() {
   return user_data;
 }
 
-}  // namespace user_data
-}  // namespace ads
+}  // namespace ads::user_data

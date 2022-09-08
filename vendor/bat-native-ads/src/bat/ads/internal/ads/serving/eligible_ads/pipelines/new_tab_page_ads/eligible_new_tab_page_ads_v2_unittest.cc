@@ -16,8 +16,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace new_tab_page_ads {
+namespace ads::new_tab_page_ads {
 
 class BatAdsEligibleNewTabPageAdsV2Test : public UnitTestBase {
  protected:
@@ -105,5 +104,4 @@ TEST_F(BatAdsEligibleNewTabPageAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
       });
 }
 
-}  // namespace new_tab_page_ads
-}  // namespace ads
+}  // namespace ads::new_tab_page_ads

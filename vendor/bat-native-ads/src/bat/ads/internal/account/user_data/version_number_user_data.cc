@@ -7,8 +7,7 @@
 
 #include "bat/ads/internal/browser/browser_util.h"
 
-namespace ads {
-namespace user_data {
+namespace ads::user_data {
 
 namespace {
 constexpr char kVersionNumberKey[] = "versionNumber";
@@ -22,5 +21,4 @@ base::Value::Dict GetVersionNumber() {
   return user_data;
 }
 
-}  // namespace user_data
-}  // namespace ads
+}  // namespace ads::user_data

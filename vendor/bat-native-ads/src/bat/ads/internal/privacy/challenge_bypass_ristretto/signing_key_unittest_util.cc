@@ -8,9 +8,7 @@
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/signing_key.h"
 
-namespace ads {
-namespace privacy {
-namespace cbr {
+namespace ads::privacy::cbr {
 
 SigningKey GetSigningKey() {
   return SigningKey(kSigningKeyBase64);
@@ -20,6 +18,4 @@ SigningKey GetInvalidSigningKey() {
   return SigningKey(kInvalidBase64);
 }
 
-}  // namespace cbr
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::cbr

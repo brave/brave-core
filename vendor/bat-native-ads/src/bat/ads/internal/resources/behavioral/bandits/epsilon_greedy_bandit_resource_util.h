@@ -8,13 +8,11 @@
 
 #include "bat/ads/internal/segments/segment_alias.h"
 
-namespace ads {
-namespace resource {
+namespace ads::resource {
 
 void SetEpsilonGreedyBanditEligibleSegments(const SegmentList& segments);
 SegmentList GetEpsilonGreedyBanditEligibleSegments();
 
-}  // namespace resource
-}  // namespace ads
+}  // namespace ads::resource
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_BEHAVIORAL_BANDITS_EPSILON_GREEDY_BANDIT_RESOURCE_UTIL_H_

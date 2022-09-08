@@ -13,8 +13,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace security {
+namespace ads::security {
 
 namespace {
 
@@ -213,5 +212,4 @@ TEST(BatAdsSecurityCryptoUtilsTest, Encrypt) {
   EXPECT_EQ(plaintext, decrypted_plaintext);
 }
 
-}  // namespace security
-}  // namespace ads
+}  // namespace ads::security

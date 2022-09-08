@@ -88,11 +88,15 @@ export const TokenLists = ({
   }, [])
 
   // memos
+  const visibleTokens = React.useMemo(() => {
+    return userAssetList.filter((asset) => asset.asset.visible)
+  }, [userAssetList])
+
   const filteredAssetList = React.useMemo(() => {
     if (searchValue === '') {
-      return userAssetList
+      return visibleTokens.filter((asset) => asset.asset.visible)
     }
-    return userAssetList.filter((item) => {
+    return visibleTokens.filter((item) => {
       return (
         item.asset.name.toLowerCase() === searchValue.toLowerCase() ||
         item.asset.name.toLowerCase().startsWith(searchValue.toLowerCase()) ||
@@ -100,7 +104,7 @@ export const TokenLists = ({
         item.asset.symbol.toLowerCase().startsWith(searchValue.toLowerCase())
       )
     })
-  }, [searchValue, userAssetList])
+  }, [searchValue, visibleTokens])
 
   const [fungibleTokens, nonFungibleTokens] = React.useMemo(
     () => {

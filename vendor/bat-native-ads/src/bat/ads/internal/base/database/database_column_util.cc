@@ -8,8 +8,7 @@
 #include "base/check_op.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
-namespace ads {
-namespace database {
+namespace ads::database {
 
 int ColumnInt(mojom::DBRecordInfo* record, const size_t index) {
   DCHECK(record);
@@ -54,5 +53,4 @@ std::string ColumnString(mojom::DBRecordInfo* record, const size_t index) {
   return record->fields.at(index)->get_string_value();
 }
 
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database

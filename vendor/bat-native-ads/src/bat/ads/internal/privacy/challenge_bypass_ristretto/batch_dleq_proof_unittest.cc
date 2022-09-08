@@ -25,9 +25,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace privacy {
-namespace cbr {
+namespace ads::privacy::cbr {
 
 namespace {
 constexpr char kBatchDLEQProofBase64[] =
@@ -405,6 +403,4 @@ TEST(BatAdsBatchDLEQProofTest, OutputStreamWhenUninitialized) {
   EXPECT_TRUE(ss.str().empty());
 }
 
-}  // namespace cbr
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::cbr

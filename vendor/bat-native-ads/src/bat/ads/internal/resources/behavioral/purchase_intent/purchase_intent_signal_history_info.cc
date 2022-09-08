@@ -8,8 +8,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "bat/ads/internal/base/numbers/number_util.h"
 
-namespace ads {
-namespace targeting {
+namespace ads::targeting {
 
 PurchaseIntentSignalHistoryInfo::PurchaseIntentSignalHistoryInfo(
     const base::Time created_at,
@@ -51,5 +50,4 @@ void PurchaseIntentSignalHistoryInfo::FromValue(const base::Value::Dict& root) {
   }
 }
 
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting

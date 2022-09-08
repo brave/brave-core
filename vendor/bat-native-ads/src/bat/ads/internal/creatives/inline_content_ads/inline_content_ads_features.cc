@@ -5,9 +5,7 @@
 
 #include "bat/ads/internal/creatives/inline_content_ads/inline_content_ads_features.h"
 
-namespace ads {
-namespace inline_content_ads {
-namespace features {
+namespace ads::inline_content_ads::features {
 
 namespace {
 constexpr char kFeatureName[] = "InlineContentAds";
@@ -19,6 +17,4 @@ bool IsEnabled() {
   return base::FeatureList::IsEnabled(kFeature);
 }
 
-}  // namespace features
-}  // namespace inline_content_ads
-}  // namespace ads
+}  // namespace ads::inline_content_ads::features

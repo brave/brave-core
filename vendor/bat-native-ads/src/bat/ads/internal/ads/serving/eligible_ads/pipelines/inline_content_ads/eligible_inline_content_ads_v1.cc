@@ -26,8 +26,7 @@
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/public/interfaces/ads.mojom-shared.h"
 
-namespace ads {
-namespace inline_content_ads {
+namespace ads::inline_content_ads {
 
 EligibleAdsV1::EligibleAdsV1(
     geographic::SubdivisionTargeting* subdivision_targeting,
@@ -236,5 +235,4 @@ CreativeInlineContentAdList EligibleAdsV1::FilterCreativeAds(
   return eligible_creative_ads;
 }
 
-}  // namespace inline_content_ads
-}  // namespace ads
+}  // namespace ads::inline_content_ads

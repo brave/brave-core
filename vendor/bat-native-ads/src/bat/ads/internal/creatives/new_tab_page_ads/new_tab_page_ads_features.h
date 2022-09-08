@@ -8,16 +8,12 @@
 
 #include "base/feature_list.h"  // IWYU pragma: keep
 
-namespace ads {
-namespace new_tab_page_ads {
-namespace features {
+namespace ads::new_tab_page_ads::features {
 
 extern const base::Feature kFeature;
 
 bool IsEnabled();
 
-}  // namespace features
-}  // namespace new_tab_page_ads
-}  // namespace ads
+}  // namespace ads::new_tab_page_ads::features
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CREATIVES_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_ADS_FEATURES_H_

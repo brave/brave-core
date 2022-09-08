@@ -12,8 +12,7 @@
 #include "bat/ads/internal/ads/serving/serving_features.h"
 #include "bat/ads/internal/base/time/time_constraint_util.h"
 
-namespace ads {
-namespace notification_ads {
+namespace ads::notification_ads {
 
 namespace {
 constexpr base::TimeDelta kTimeConstraint = base::Days(1);
@@ -45,5 +44,4 @@ bool AdsPerDayPermissionRule::DoesRespectCap(
       history, kTimeConstraint, features::GetMaximumNotificationAdsPerDay());
 }
 
-}  // namespace notification_ads
-}  // namespace ads
+}  // namespace ads::notification_ads

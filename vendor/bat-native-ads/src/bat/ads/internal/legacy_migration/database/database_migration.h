@@ -8,12 +8,10 @@
 
 #include "bat/ads/ads_client_callback.h"
 
-namespace ads {
-namespace database {
+namespace ads::database {
 
 void MigrateFromVersion(int from_version, ResultCallback callback);
 
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_LEGACY_MIGRATION_DATABASE_DATABASE_MIGRATION_H_

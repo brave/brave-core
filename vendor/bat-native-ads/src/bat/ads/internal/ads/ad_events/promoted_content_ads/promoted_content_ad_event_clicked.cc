@@ -10,8 +10,7 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/promoted_content_ad_info.h"
 
-namespace ads {
-namespace promoted_content_ads {
+namespace ads::promoted_content_ads {
 
 AdEventClicked::AdEventClicked() = default;
 
@@ -32,5 +31,4 @@ void AdEventClicked::FireEvent(const PromotedContentAdInfo& ad) {
   });
 }
 
-}  // namespace promoted_content_ads
-}  // namespace ads
+}  // namespace ads::promoted_content_ads

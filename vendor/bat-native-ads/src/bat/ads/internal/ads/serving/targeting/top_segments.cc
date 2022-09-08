@@ -8,8 +8,7 @@
 #include "bat/ads/internal/ads/serving/targeting/top_segments_util.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_info.h"
 
-namespace ads {
-namespace targeting {
+namespace ads::targeting {
 
 namespace {
 
@@ -68,5 +67,4 @@ SegmentList GetTopParentPurchaseIntentSegments(
                         /*parent_only*/ true);
 }
 
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting

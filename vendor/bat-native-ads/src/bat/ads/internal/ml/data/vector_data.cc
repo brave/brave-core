@@ -11,8 +11,7 @@
 
 #include "base/check_op.h"
 
-namespace ads {
-namespace ml {
+namespace ads::ml {
 
 namespace {
 constexpr double kMinimumVectorLength = 1e-7;
@@ -158,5 +157,4 @@ const std::vector<float>& VectorData::GetValuesForTesting() const {
   return storage_->values();
 }
 
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml

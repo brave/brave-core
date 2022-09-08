@@ -17,8 +17,7 @@
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_constants.h"
 #include "bat/ads/internal/segments/segment_util.h"
 
-namespace ads {
-namespace processor {
+namespace ads::processor {
 
 namespace {
 
@@ -157,5 +156,4 @@ void EpsilonGreedyBandit::UpdateArm(const int reward,
        "Epsilon greedy bandit arm was updated for " << segment << " segment");
 }
 
-}  // namespace processor
-}  // namespace ads
+}  // namespace ads::processor

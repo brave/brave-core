@@ -12,8 +12,7 @@
 #include "bat/ads/internal/legacy_migration/rewards/payment_info.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 
-namespace ads {
-namespace rewards {
+namespace ads::rewards {
 
 absl::optional<TransactionList> BuildTransactionsFromJson(
     const std::string& json) {
@@ -57,5 +56,4 @@ absl::optional<TransactionList> BuildTransactionsFromJson(
   return transactions;
 }
 
-}  // namespace rewards
-}  // namespace ads
+}  // namespace ads::rewards

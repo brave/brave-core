@@ -19,9 +19,7 @@
 #include "bat/ads/internal/ml/transformation/lowercase_transformation.h"
 #include "bat/ads/internal/ml/transformation/normalization_transformation.h"
 
-namespace ads {
-namespace ml {
-namespace pipeline {
+namespace ads::ml::pipeline {
 
 namespace {
 
@@ -215,6 +213,4 @@ absl::optional<PipelineInfo> ParsePipelineValue(base::Value value) {
                       std::move(*transformations), std::move(*linear_model));
 }
 
-}  // namespace pipeline
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml::pipeline

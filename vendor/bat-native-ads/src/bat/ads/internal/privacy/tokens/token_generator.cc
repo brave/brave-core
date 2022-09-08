@@ -9,8 +9,7 @@
 
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
 
-namespace ads {
-namespace privacy {
+namespace ads::privacy {
 
 TokenGenerator::TokenGenerator() = default;
 
@@ -28,5 +27,4 @@ std::vector<cbr::Token> TokenGenerator::Generate(const int count) const {
   return tokens;
 }
 
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy

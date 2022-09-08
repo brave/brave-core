@@ -12,9 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace new_tab_page_ads {
-namespace features {
+namespace ads::new_tab_page_ads::features {
 
 TEST(BatAdsNewTabPageAdsFeaturesTest, NewTabPageAdsEnabled) {
   // Arrange
@@ -45,6 +43,4 @@ TEST(BatAdsNewTabPageAdsFeaturesTest, NewTabPageAdsDisabled) {
   EXPECT_FALSE(is_enabled);
 }
 
-}  // namespace features
-}  // namespace new_tab_page_ads
-}  // namespace ads
+}  // namespace ads::new_tab_page_ads::features

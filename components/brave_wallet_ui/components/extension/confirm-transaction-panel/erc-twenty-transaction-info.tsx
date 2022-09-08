@@ -23,12 +23,12 @@ interface Erc20TransactionInfoProps {
 
 export const Erc20ApproveTransactionInfo = ({ onToggleEditGas }: Erc20TransactionInfoProps) => {
   const {
-    currentTokenAllowance, transactionDetails
+    currentTokenAllowance, transactionDetails, transactionsNetwork
   } = usePendingTransactions()
 
   // redux
   const {
-    selectedNetwork, defaultCurrencies
+    defaultCurrencies
   } = useSelector((state: { wallet: WalletState }) => state.wallet)
 
   // exit early if no details
@@ -45,8 +45,8 @@ export const Erc20ApproveTransactionInfo = ({ onToggleEditGas }: Erc20Transactio
 
     <TransactionTypeText>
       {new Amount(transactionDetails.gasFee)
-        .divideByDecimals(selectedNetwork.decimals)
-        .formatAsAsset(6, selectedNetwork.symbol)}
+        .divideByDecimals(transactionsNetwork.decimals)
+        .formatAsAsset(6, transactionsNetwork.symbol)}
     </TransactionTypeText>
 
     <TransactionText hasError={false}>
@@ -62,9 +62,9 @@ export const Erc20ApproveTransactionInfo = ({ onToggleEditGas }: Erc20Transactio
 
     {transactionDetails.insufficientFundsForGasError === false &&
       transactionDetails.insufficientFundsError &&
-        <TransactionText hasError={true}>
-          {getLocale('braveWalletSwapInsufficientBalance')}
-        </TransactionText>
+      <TransactionText hasError={true}>
+        {getLocale('braveWalletSwapInsufficientBalance')}
+      </TransactionText>
     }
 
     <Divider />

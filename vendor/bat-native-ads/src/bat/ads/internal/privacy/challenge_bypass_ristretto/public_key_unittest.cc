@@ -12,9 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace privacy {
-namespace cbr {
+namespace ads::privacy::cbr {
 
 TEST(BatAdsPublicKeyTest, FailToInitialize) {
   // Arrange
@@ -180,6 +178,4 @@ TEST(BatAdsPublicKeyTest, OutputStreamWhenUninitialized) {
   EXPECT_TRUE(ss.str().empty());
 }
 
-}  // namespace cbr
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::cbr

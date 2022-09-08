@@ -10,8 +10,7 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_info.h"
 
-namespace ads {
-namespace search_result_ads {
+namespace ads::search_result_ads {
 
 AdEventServed::AdEventServed() = default;
 
@@ -32,5 +31,4 @@ void AdEventServed::FireEvent(const SearchResultAdInfo& ad) {
   });
 }
 
-}  // namespace search_result_ads
-}  // namespace ads
+}  // namespace ads::search_result_ads

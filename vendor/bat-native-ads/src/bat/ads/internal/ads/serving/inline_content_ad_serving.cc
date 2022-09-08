@@ -22,8 +22,7 @@
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
-namespace ads {
-namespace inline_content_ads {
+namespace ads::inline_content_ads {
 
 Serving::Serving(geographic::SubdivisionTargeting* subdivision_targeting,
                  resource::AntiTargeting* anti_targeting_resource) {
@@ -161,5 +160,4 @@ void Serving::NotifyFailedToServeInlineContentAd() const {
   }
 }
 
-}  // namespace inline_content_ads
-}  // namespace ads
+}  // namespace ads::inline_content_ads

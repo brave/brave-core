@@ -38,6 +38,7 @@ constexpr char kSardineClientTokensURL[] =
     "https://api.sardine.ai/v1/auth/client-tokens";
 
 constexpr webui::LocalizedString kLocalizedStrings[] = {
+    {"braveWalletInvalidMnemonicError", IDS_WALLET_INVALID_MNEMONIC_ERROR},
     {"braveWalletRecoveryPhraseLengthError",
      IDS_BRAVE_WALLET_RECOVERY_PHRASE_LENGTH_ERROR},
     {"braveWalletOrdinalTwentyFourth", IDS_BRAVE_WALLET_ORDINAL_TWENTY_FOURTH},

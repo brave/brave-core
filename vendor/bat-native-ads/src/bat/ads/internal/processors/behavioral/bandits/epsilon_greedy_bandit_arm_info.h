@@ -8,8 +8,7 @@
 
 #include <string>
 
-namespace ads {
-namespace targeting {
+namespace ads::targeting {
 
 struct EpsilonGreedyBanditArmInfo final {
   EpsilonGreedyBanditArmInfo();
@@ -27,7 +26,6 @@ struct EpsilonGreedyBanditArmInfo final {
   int pulls = 0;
 };
 
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PROCESSORS_BEHAVIORAL_BANDITS_EPSILON_GREEDY_BANDIT_ARM_INFO_H_

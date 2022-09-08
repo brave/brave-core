@@ -22,8 +22,7 @@
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 
-namespace ads {
-namespace new_tab_page_ads {
+namespace ads::new_tab_page_ads {
 
 Serving::Serving(geographic::SubdivisionTargeting* subdivision_targeting,
                  resource::AntiTargeting* anti_targeting_resource) {
@@ -165,5 +164,4 @@ void Serving::NotifyFailedToServeNewTabPageAd() const {
   }
 }
 
-}  // namespace new_tab_page_ads
-}  // namespace ads
+}  // namespace ads::new_tab_page_ads

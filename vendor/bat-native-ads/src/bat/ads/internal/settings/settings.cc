@@ -12,8 +12,7 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/pref_names.h"
 
-namespace ads {
-namespace settings {
+namespace ads::settings {
 
 int GetMaximumNotificationAdsPerHour() {
   int64_t ads_per_hour = AdsClientHelper::GetInstance()->GetInt64Pref(
@@ -31,5 +30,4 @@ int GetMaximumNotificationAdsPerHour() {
   return static_cast<int>(clamped_ads_per_hour);
 }
 
-}  // namespace settings
-}  // namespace ads
+}  // namespace ads::settings

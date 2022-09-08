@@ -11,8 +11,7 @@
 
 #include "bat/ads/public/interfaces/ads.mojom-forward.h"
 
-namespace ads {
-namespace database {
+namespace ads::database {
 
 int ColumnInt(mojom::DBRecordInfo* record, size_t index);
 int64_t ColumnInt64(mojom::DBRecordInfo* record, size_t index);
@@ -20,7 +19,6 @@ double ColumnDouble(mojom::DBRecordInfo* record, size_t index);
 bool ColumnBool(mojom::DBRecordInfo* record, size_t index);
 std::string ColumnString(mojom::DBRecordInfo* record, size_t index);
 
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BASE_DATABASE_DATABASE_COLUMN_UTIL_H_

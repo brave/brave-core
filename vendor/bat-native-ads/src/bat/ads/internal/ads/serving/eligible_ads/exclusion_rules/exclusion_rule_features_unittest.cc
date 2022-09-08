@@ -12,9 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace exclusion_rules {
-namespace features {
+namespace ads::exclusion_rules::features {
 
 TEST(BatAdsExclusionRuleFeaturesTest, IsEnabled) {
   // Arrange
@@ -233,6 +231,4 @@ TEST(BatAdsUserActivityFeaturesTest,
   EXPECT_EQ(expected_time_window, time_window);
 }
 
-}  // namespace features
-}  // namespace exclusion_rules
-}  // namespace ads
+}  // namespace ads::exclusion_rules::features

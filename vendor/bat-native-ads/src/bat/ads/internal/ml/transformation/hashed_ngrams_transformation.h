@@ -12,8 +12,7 @@
 
 #include "bat/ads/internal/ml/transformation/transformation.h"
 
-namespace ads {
-namespace ml {
+namespace ads::ml {
 
 class HashVectorizer;
 
@@ -37,7 +36,6 @@ class HashedNGramsTransformation final : public Transformation {
   std::unique_ptr<HashVectorizer> hash_vectorizer;
 };
 
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_TRANSFORMATION_HASHED_NGRAMS_TRANSFORMATION_H_

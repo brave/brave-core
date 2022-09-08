@@ -8,16 +8,12 @@
 
 #include <string>
 
-namespace ads {
-namespace privacy {
-namespace locale {
+namespace ads::privacy::locale {
 
 bool IsMemberOfAnonymitySet(const std::string& locale);
 
 bool ShouldClassifyAsOther(const std::string& locale);
 
-}  // namespace locale
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::locale
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_LOCALE_COUNTRY_CODE_UTIL_H_

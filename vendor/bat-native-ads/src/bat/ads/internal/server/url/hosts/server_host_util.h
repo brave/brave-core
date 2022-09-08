@@ -8,8 +8,7 @@
 
 #include <string>
 
-namespace ads {
-namespace server {
+namespace ads::server {
 
 // Use for requests that are not user-specific and do not process personal data
 std::string GetStaticHost();
@@ -25,7 +24,6 @@ std::string GetNonAnonymousHost();
 // the request to a wallet in any other way
 std::string GetAnonymousHost();
 
-}  // namespace server
-}  // namespace ads
+}  // namespace ads::server
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_SERVER_URL_HOSTS_SERVER_HOST_UTIL_H_

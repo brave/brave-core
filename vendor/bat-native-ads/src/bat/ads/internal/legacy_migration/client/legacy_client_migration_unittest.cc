@@ -11,8 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace client {
+namespace ads::client {
 
 namespace {
 
@@ -75,5 +74,4 @@ TEST_F(BatAdsLegacyClientMigrationTest, AlreadyMigrated) {
   EXPECT_EQ(kMigratedClientJsonHash, GetHash());
 }
 
-}  // namespace client
-}  // namespace ads
+}  // namespace ads::client

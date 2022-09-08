@@ -18,8 +18,7 @@
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/pref_names.h"
 
-namespace ads {
-namespace conversions {
+namespace ads::conversions {
 
 namespace {
 
@@ -168,5 +167,4 @@ void Migrate(InitializeCallback callback) {
                                        base::BindOnce(&OnMigrate, callback));
 }
 
-}  // namespace conversions
-}  // namespace ads
+}  // namespace ads::conversions

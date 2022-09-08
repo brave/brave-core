@@ -18,7 +18,6 @@ namespace ads::json::writer {
 
 namespace {
 
-constexpr char kPayloadKey[] = "payload";
 constexpr char kVerificationSignatureKey[] = "signature";
 constexpr char kTokenPreimageKey[] = "t";
 
@@ -61,7 +60,6 @@ absl::optional<std::string> WriteOptedInCredential(
   }
 
   base::Value::Dict dict;
-  dict.Set(kPayloadKey, payload);
   dict.Set(kVerificationSignatureKey, *verification_signature_base64);
   dict.Set(kTokenPreimageKey, *token_preimage_base64);
 

@@ -9,8 +9,7 @@
 #include "absl/types/optional.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 
-namespace ads {
-namespace privacy {
+namespace ads::privacy {
 
 absl::optional<UnblindedPaymentTokenInfo> MaybeGetUnblindedPaymentToken();
 
@@ -32,7 +31,6 @@ bool UnblindedPaymentTokensIsEmpty();
 
 int UnblindedPaymentTokenCount();
 
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_TOKENS_UNBLINDED_PAYMENT_TOKENS_UNBLINDED_PAYMENT_TOKEN_UTIL_H_

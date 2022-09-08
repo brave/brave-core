@@ -9,8 +9,7 @@
 
 #include "bat/ads/internal/base/platform/platform_helper.h"
 
-namespace ads {
-namespace user_data {
+namespace ads::user_data {
 
 namespace {
 constexpr char kPlatformKey[] = "platform";
@@ -27,5 +26,4 @@ base::Value::Dict GetPlatform() {
   return user_data;
 }
 
-}  // namespace user_data
-}  // namespace ads
+}  // namespace ads::user_data

@@ -19,9 +19,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace privacy {
-namespace cbr {
+namespace ads::privacy::cbr {
 
 TEST(BatAdsSigningKeyTest, FailToInitializeWithEmptyBase64) {
   // Arrange
@@ -206,6 +204,4 @@ TEST(BatAdsSigningKeyTest, OutputStream) {
   EXPECT_EQ(kSigningKeyBase64, ss.str());
 }
 
-}  // namespace cbr
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::cbr

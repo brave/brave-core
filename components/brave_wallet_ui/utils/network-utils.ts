@@ -80,3 +80,14 @@ export const getNetworkFromTXDataUnion = (txDataUnion: BraveWallet.TxDataUnion, 
   const coin = getCoinFromTxDataUnion(txDataUnion)
   return networks.find((network) => network.coin === coin) ?? selectedNetwork
 }
+
+export function getFilecoinKeyringIdFromNetwork (network: BraveWallet.NetworkInfo) {
+  if (network.coin !== BraveWallet.CoinType.FIL) {
+    return undefined
+  }
+  if (network.chainId === BraveWallet.FILECOIN_MAINNET) {
+    return BraveWallet.FILECOIN_KEYRING_ID
+  } else {
+    return BraveWallet.FILECOIN_TESTNET_KEYRING_ID
+  }
+}

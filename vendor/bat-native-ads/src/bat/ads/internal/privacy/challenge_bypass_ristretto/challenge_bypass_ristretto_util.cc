@@ -8,9 +8,7 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "wrapper.hpp"
 
-namespace ads {
-namespace privacy {
-namespace cbr {
+namespace ads::privacy::cbr {
 
 bool ExceptionOccurred() {
   const challenge_bypass_ristretto::TokenException e =
@@ -23,6 +21,4 @@ bool ExceptionOccurred() {
   return false;
 }
 
-}  // namespace cbr
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::cbr
