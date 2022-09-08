@@ -41,6 +41,8 @@ class FilterListCatalogEntry {
   std::string component_id;
   std::string base64_public_key;
   std::string desc;
+  std::string ios_component_id;
+  std::string ios_base64_public_key;
 
   static void RegisterJSONConverter(
       base::JSONValueConverter<FilterListCatalogEntry>*);

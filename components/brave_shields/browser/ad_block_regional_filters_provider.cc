@@ -17,13 +17,14 @@
 #include "components/component_updater/component_updater_service.h"
 #include "content/public/browser/browser_task_traits.h"
 
+constexpr char kListFile[] = "list.txt";
+
 namespace brave_shields {
 
 AdBlockRegionalFiltersProvider::AdBlockRegionalFiltersProvider(
     component_updater::ComponentUpdateService* cus,
     const FilterListCatalogEntry& catalog_entry)
-    : uuid_(catalog_entry.uuid),
-      component_id_(catalog_entry.component_id),
+    : component_id_(catalog_entry.component_id),
       component_updater_service_(cus) {
   // Can be nullptr in unit tests
   if (cus) {
@@ -41,34 +42,31 @@ void AdBlockRegionalFiltersProvider::OnComponentReady(
     const base::FilePath& path) {
   component_path_ = path;
 
-  base::FilePath dat_file_path =
-      component_path_.AppendASCII(std::string("rs-") + uuid_)
-          .AddExtension(FILE_PATH_LITERAL(".dat"));
+  base::FilePath list_file_path = component_path_.AppendASCII(kListFile);
 
+  // Load the list as a string
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&brave_component_updater::ReadDATFileData, dat_file_path),
+      base::BindOnce(&brave_component_updater::ReadDATFileData, list_file_path),
       base::BindOnce(&AdBlockRegionalFiltersProvider::OnDATLoaded,
-                     weak_factory_.GetWeakPtr(), true));
+                     weak_factory_.GetWeakPtr(), false));
 }
 
 void AdBlockRegionalFiltersProvider::LoadDATBuffer(
     base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
         cb) {
   if (component_path_.empty()) {
-    // If the path is not ready yet, do nothing. An update should be pushed
-    // soon.
+    // If the path is not ready yet, don't run the callback. An update should
+    // be pushed soon.
     return;
   }
 
-  base::FilePath dat_file_path =
-      component_path_.AppendASCII(std::string("rs-") + uuid_)
-          .AddExtension(FILE_PATH_LITERAL(".dat"));
+  base::FilePath list_file_path = component_path_.AppendASCII(kListFile);
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&brave_component_updater::ReadDATFileData, dat_file_path),
-      base::BindOnce(std::move(cb), true));
+      base::BindOnce(&brave_component_updater::ReadDATFileData, list_file_path),
+      base::BindOnce(std::move(cb), false));
 }
 
 bool AdBlockRegionalFiltersProvider::Delete() && {

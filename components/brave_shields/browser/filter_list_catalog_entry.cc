@@ -20,6 +20,36 @@
 
 namespace {
 
+bool GetComponentId(const base::Value* value, std::string* field) {
+  if (value == nullptr || !value->is_dict()) {
+    return false;
+  } else {
+    const base::Value::Dict& dict = value->GetDict();
+    const auto* component_id = dict.FindString("component_id");
+    if (component_id) {
+      *field = *component_id;
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+
+bool GetBase64PublicKey(const base::Value* value, std::string* field) {
+  if (value == nullptr || !value->is_dict()) {
+    return false;
+  } else {
+    const base::Value::Dict& dict = value->GetDict();
+    const auto* component_id = dict.FindString("base64_public_key");
+    if (component_id) {
+      *field = *component_id;
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+
 bool GetStringVector(const base::Value* value,
                      std::vector<std::string>* field) {
   DCHECK(field);
@@ -78,11 +108,17 @@ void FilterListCatalogEntry::RegisterJSONConverter(
       "langs", &FilterListCatalogEntry::langs, &GetStringVector);
   converter->RegisterStringField("support_url",
                                  &FilterListCatalogEntry::support_url);
-  converter->RegisterStringField("component_id",
-                                 &FilterListCatalogEntry::component_id);
-  converter->RegisterStringField("base64_public_key",
-                                 &FilterListCatalogEntry::base64_public_key);
+  converter->RegisterCustomValueField("list_text_component",
+                                      &FilterListCatalogEntry::component_id,
+                                      &GetComponentId);
+  converter->RegisterCustomValueField(
+      "list_text_component", &FilterListCatalogEntry::base64_public_key,
+      &GetBase64PublicKey);
   converter->RegisterStringField("desc", &FilterListCatalogEntry::desc);
+  converter->RegisterStringField("component_id",
+                                 &FilterListCatalogEntry::ios_component_id);
+  converter->RegisterStringField(
+      "base64_public_key", &FilterListCatalogEntry::ios_base64_public_key);
 }
 
 std::vector<FilterListCatalogEntry>::const_iterator FindAdBlockFilterListByUUID(

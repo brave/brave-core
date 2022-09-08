@@ -14,6 +14,8 @@
 #include "brave/components/brave_shields/browser/ad_block_filters_provider.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
+using brave_component_updater::DATFileDataBuffer;
+
 namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
@@ -39,9 +41,8 @@ class AdBlockRegionalFiltersProvider : public AdBlockFiltersProvider {
       const AdBlockRegionalFiltersProvider&) = delete;
 
   void LoadDATBuffer(
-      base::OnceCallback<void(
-          bool deserialize,
-          const brave_component_updater::DATFileDataBuffer& dat_buf)>) override;
+      base::OnceCallback<void(bool deserialize,
+                              const DATFileDataBuffer& dat_buf)>) override;
 
   bool Delete() && override;
 
@@ -51,7 +52,6 @@ class AdBlockRegionalFiltersProvider : public AdBlockFiltersProvider {
   void OnComponentReady(const base::FilePath&);
 
   base::FilePath component_path_;
-  std::string uuid_;
   std::string component_id_;
   component_updater::ComponentUpdateService* component_updater_service_;
 
