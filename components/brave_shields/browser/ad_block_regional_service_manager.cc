@@ -12,8 +12,8 @@
 #include "base/feature_list.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
-#include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_shields/browser/ad_block_engine.h"
+#include "brave/components/brave_shields/browser/ad_block_regional_catalog_entry.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -24,7 +24,6 @@
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 
-using adblock::FilterList;
 using brave_shields::features::kBraveAdblockCookieListDefault;
 
 namespace brave_shields {
@@ -332,12 +331,12 @@ base::Value::List AdBlockRegionalServiceManager::HiddenClassIdSelectors(
 }
 
 void AdBlockRegionalServiceManager::SetRegionalCatalog(
-    std::vector<adblock::FilterList> catalog) {
+    std::vector<RegionalCatalogEntry> catalog) {
   regional_catalog_ = std::move(catalog);
   StartRegionalServices();
 }
 
-const std::vector<adblock::FilterList>&
+const std::vector<RegionalCatalogEntry>&
 AdBlockRegionalServiceManager::GetRegionalCatalog() {
   return regional_catalog_;
 }

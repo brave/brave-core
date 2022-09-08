@@ -22,6 +22,7 @@
 #include "brave/components/brave_shields/browser/ad_block_component_installer.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_default_filters_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_regional_catalog_entry.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
@@ -255,8 +256,8 @@ bool AdBlockServiceTest::InstallRegionalAdBlockExtension(
 
   base::FilePath test_data_dir;
   GetTestDataDir(&test_data_dir);
-  std::vector<adblock::FilterList> regional_catalog;
-  regional_catalog.push_back(adblock::FilterList(
+  std::vector<brave_shields::RegionalCatalogEntry> regional_catalog;
+  regional_catalog.push_back(brave_shields::RegionalCatalogEntry(
       uuid, "https://easylist-downloads.adblockplus.org/liste_fr.txt",
       "EasyList Liste FR", {"fr"}, "https://forums.lanik.us/viewforum.php?f=91",
       kRegionalAdBlockComponentTestId, kRegionalAdBlockComponentTest64PublicKey,

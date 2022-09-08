@@ -10,7 +10,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ui/views/brave_shields/cookie_list_opt_in_bubble_host.h"
-#include "brave/components/adblock_rust_ffi/src/wrapper.h"
+#include "brave/components/brave_shields/browser/ad_block_regional_catalog_entry.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -97,7 +97,7 @@ class CookieListOptInBrowserTest : public InProcessBrowserTest {
 
  private:
   void InitializeFilterLists() {
-    std::vector regional_catalog = {adblock::FilterList(
+    std::vector regional_catalog = {RegionalCatalogEntry(
         kCookieListUuid,
         "https://secure.fanboy.co.nz/fanboy-cookiemonster_ubo.txt",
         "Easylist-Cookie List - Filter Obtrusive Cookie Notices", {},

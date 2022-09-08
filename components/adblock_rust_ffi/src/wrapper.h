@@ -42,33 +42,6 @@ typedef C_DomainResolverCallback DomainResolverCallback;
 
 bool ADBLOCK_EXPORT SetDomainResolver(DomainResolverCallback resolver);
 
-class ADBLOCK_EXPORT FilterList {
- public:
-  FilterList(const std::string& uuid,
-             const std::string& url,
-             const std::string& title,
-             const std::vector<std::string>& langs,
-             const std::string& support_url,
-             const std::string& component_id,
-             const std::string& base64_public_key,
-             const std::string& desc);
-  explicit FilterList(const FilterList& other);
-  ~FilterList();
-
-  const std::string uuid;
-  const std::string url;
-  const std::string title;
-  const std::vector<std::string> langs;
-  const std::string support_url;
-  const std::string component_id;
-  const std::string base64_public_key;
-  const std::string desc;
-
- private:
-  static std::vector<FilterList> default_list;
-  static std::vector<FilterList> regional_list;
-};
-
 typedef ADBLOCK_EXPORT struct FilterListMetadata {
   FilterListMetadata();
   explicit FilterListMetadata(C_FilterListMetadata* metadata);

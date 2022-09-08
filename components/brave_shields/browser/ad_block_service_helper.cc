@@ -15,20 +15,20 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
-
-using adblock::FilterList;
+#include "brave/components/brave_shields/browser/ad_block_regional_catalog_entry.h"
 
 namespace brave_shields {
 
-std::vector<FilterList>::const_iterator FindAdBlockFilterListByUUID(
-    const std::vector<FilterList>& region_lists,
+std::vector<RegionalCatalogEntry>::const_iterator FindAdBlockFilterListByUUID(
+    const std::vector<RegionalCatalogEntry>& region_lists,
     const std::string& uuid) {
   std::string uuid_uppercase = base::ToUpperASCII(uuid);
-  return base::ranges::find(region_lists, uuid_uppercase, &FilterList::uuid);
+  return base::ranges::find(region_lists, uuid_uppercase,
+                            &RegionalCatalogEntry::uuid);
 }
 
-std::vector<FilterList>::const_iterator FindAdBlockFilterListByLocale(
-    const std::vector<FilterList>& region_lists,
+std::vector<RegionalCatalogEntry>::const_iterator FindAdBlockFilterListByLocale(
+    const std::vector<RegionalCatalogEntry>& region_lists,
     const std::string& locale) {
   std::string adjusted_locale;
   std::string::size_type loc = locale.find("-");
@@ -39,14 +39,15 @@ std::vector<FilterList>::const_iterator FindAdBlockFilterListByLocale(
   }
   adjusted_locale = base::ToLowerASCII(adjusted_locale);
   return base::ranges::find_if(
-      region_lists, [&adjusted_locale](const FilterList& filter_list) {
-        return base::Contains(filter_list.langs, adjusted_locale);
+      region_lists, [&adjusted_locale](const RegionalCatalogEntry& entry) {
+        return base::Contains(entry.langs, adjusted_locale);
       });
 }
 
-std::vector<FilterList> RegionalCatalogFromJSON(
+std::vector<RegionalCatalogEntry> RegionalCatalogFromJSON(
     const std::string& catalog_json) {
-  std::vector<adblock::FilterList> catalog = std::vector<adblock::FilterList>();
+  std::vector<RegionalCatalogEntry> catalog =
+      std::vector<RegionalCatalogEntry>();
 
   absl::optional<base::Value> parsed_json =
       base::JSONReader::Read(catalog_json);

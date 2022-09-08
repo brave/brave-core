@@ -16,30 +16,6 @@ bool SetDomainResolver(DomainResolverCallback resolver) {
   return set_domain_resolver(resolver);
 }
 
-std::vector<FilterList> FilterList::default_list;
-std::vector<FilterList> FilterList::regional_list;
-
-FilterList::FilterList(const std::string& uuid,
-                       const std::string& url,
-                       const std::string& title,
-                       const std::vector<std::string>& langs,
-                       const std::string& support_url,
-                       const std::string& component_id,
-                       const std::string& base64_public_key,
-                       const std::string& desc)
-    : uuid(uuid),
-      url(url),
-      title(title),
-      langs(langs),
-      support_url(support_url),
-      component_id(component_id),
-      base64_public_key(base64_public_key),
-      desc(desc) {}
-
-FilterList::FilterList(const FilterList& other) = default;
-
-FilterList::~FilterList() = default;
-
 FilterListMetadata::FilterListMetadata() = default;
 
 FilterListMetadata::FilterListMetadata(C_FilterListMetadata* metadata) {

@@ -11,6 +11,8 @@ if (!is_ios) {
       "ad_block_filters_provider.h",
       "ad_block_pref_service.cc",
       "ad_block_pref_service.h",
+      "ad_block_regional_catalog_entry.cc",
+      "ad_block_regional_catalog_entry.h",
       "ad_block_regional_catalog_provider.cc",
       "ad_block_regional_catalog_provider.h",
       "ad_block_regional_filters_provider.cc",
@@ -95,6 +97,8 @@ source_set("component_installer") {
   sources = [
     "ad_block_component_installer.cc",
     "ad_block_component_installer.h",
+    "ad_block_regional_catalog_entry.cc",
+    "ad_block_regional_catalog_entry.h",
     "ad_block_service_helper.cc",
     "ad_block_service_helper.h",
   ]

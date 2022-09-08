@@ -16,7 +16,6 @@
 #include "base/synchronization/lock.h"
 #include "base/thread_annotations.h"
 #include "base/values.h"
-#include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_shields/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_catalog_provider.h"
@@ -34,6 +33,7 @@ using brave_component_updater::BraveComponent;
 namespace brave_shields {
 
 class AdBlockRegionalService;
+class RegionalCatalogEntry;
 
 // The AdBlock regional service manager, in charge of initializing and
 // managing regional AdBlock clients.
@@ -52,8 +52,8 @@ class AdBlockRegionalServiceManager
 
   base::Value::List GetRegionalLists();
 
-  void SetRegionalCatalog(std::vector<adblock::FilterList> catalog);
-  const std::vector<adblock::FilterList>& GetRegionalCatalog();
+  void SetRegionalCatalog(std::vector<RegionalCatalogEntry> catalog);
+  const std::vector<RegionalCatalogEntry>& GetRegionalCatalog();
 
   bool Start();
   void ShouldStartRequest(const GURL& url,
@@ -103,7 +103,7 @@ class AdBlockRegionalServiceManager
   std::map<std::string, std::unique_ptr<AdBlockService::SourceProviderObserver>>
       regional_source_observers_;
 
-  std::vector<adblock::FilterList> regional_catalog_;
+  std::vector<RegionalCatalogEntry> regional_catalog_;
 
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   raw_ptr<component_updater::ComponentUpdateService> component_update_service_;
