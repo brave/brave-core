@@ -16,12 +16,16 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_service.h"
+#include "components/strings/grit/components_strings.h"
 #include "content/public/browser/web_ui_data_source.h"
 
 BravePrivateNewTabUI::BravePrivateNewTabUI(content::WebUI* web_ui,
                                            const std::string& name)
     : ui::MojoWebUIController(web_ui, false) {
   Profile* profile = Profile::FromWebUI(web_ui);
+
+  web_ui->OverrideTitle(
+      brave_l10n::GetLocalizedResourceUTF16String(IDS_NEW_INCOGNITO_TAB_TITLE));
 
   content::WebUIDataSource* source = CreateAndAddWebUIDataSource(
       web_ui, name, kBravePrivateNewTabGenerated,
