@@ -18,6 +18,7 @@
 #include "brave/components/playlist/playlist_service.h"
 #include "brave/components/playlist/pref_names.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
@@ -69,6 +70,7 @@ PlaylistServiceFactory::PlaylistServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "PlaylistService",
           BrowserContextDependencyManager::GetInstance()) {
+  DependsOn(HostContentSettingsMapFactory::GetInstance());
   PlaylistDownloadRequestManager::SetPlaylistJavaScriptWorldId(
       ISOLATED_WORLD_ID_CHROME_INTERNAL);
 }
@@ -78,7 +80,9 @@ PlaylistServiceFactory::~PlaylistServiceFactory() = default;
 KeyedService* PlaylistServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   DCHECK(media_detector_component_manager_);
-  return new PlaylistService(context, media_detector_component_manager_.get());
+  return new PlaylistService(
+      context, HostContentSettingsMapFactory::GetForProfile(context),
+      media_detector_component_manager_.get());
 }
 
 void PlaylistServiceFactory::PrepareMediaDetectorComponentManager() {

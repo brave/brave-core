@@ -29,6 +29,9 @@ namespace content {
 class BrowserContext;
 }  // namespace content
 
+class HostContentSettingsMap;
+class PlaylistDownloadRequestManagerBrowserTest;
+
 namespace playlist {
 
 // This class finds media files and their thumbnails and title from a page
@@ -56,6 +59,7 @@ class PlaylistDownloadRequestManager
   static void SetPlaylistJavaScriptWorldId(const int32_t id);
 
   PlaylistDownloadRequestManager(content::BrowserContext* context,
+                                 HostContentSettingsMap* map,
                                  MediaDetectorComponentManager* manager);
   ~PlaylistDownloadRequestManager() override;
   PlaylistDownloadRequestManager(const PlaylistDownloadRequestManager&) =
@@ -67,6 +71,8 @@ class PlaylistDownloadRequestManager
   void GetMediaFilesFromPage(Request request);
 
  private:
+  friend class ::PlaylistDownloadRequestManagerBrowserTest;
+
   // Calling this will trigger loading |url| on a web contents,
   // and we'll inject javascript on the contents to get a list of
   // media files on the page.
@@ -110,9 +116,11 @@ class PlaylistDownloadRequestManager
   Request::Callback callback_for_current_request_ = base::NullCallback();
 
   std::string media_detector_script_;
-  raw_ptr<content::BrowserContext> context_;
+  raw_ptr<content::BrowserContext> context_ = nullptr;
+  raw_ptr<HostContentSettingsMap> map_ = nullptr;
 
-  raw_ptr<MediaDetectorComponentManager> media_detector_component_manager_;
+  raw_ptr<MediaDetectorComponentManager> media_detector_component_manager_ =
+      nullptr;
   base::ScopedObservation<MediaDetectorComponentManager,
                           MediaDetectorComponentManager::Observer>
       observed_{this};

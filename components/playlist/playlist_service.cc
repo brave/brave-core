@@ -53,6 +53,7 @@ std::vector<base::FilePath> GetOrphanedPaths(
 }  // namespace
 
 PlaylistService::PlaylistService(content::BrowserContext* context,
+                                 HostContentSettingsMap* map,
                                  MediaDetectorComponentManager* manager)
     : base_dir_(context->GetPath().Append(kBaseDirName)),
       prefs_(user_prefs::UserPrefs::Get(context)) {
@@ -64,7 +65,7 @@ PlaylistService::PlaylistService(content::BrowserContext* context,
   thumbnail_downloader_ =
       std::make_unique<PlaylistThumbnailDownloader>(context, this);
   download_request_manager_ =
-      std::make_unique<PlaylistDownloadRequestManager>(context, manager);
+      std::make_unique<PlaylistDownloadRequestManager>(context, map, manager);
 
   // This is for cleaning up malformed items during development. Once we
   // release Playlist feature officially, we should migrate items

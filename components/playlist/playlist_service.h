@@ -30,6 +30,7 @@ class BrowserContext;
 class WebContents;
 }  // namespace content
 
+class HostContentSettingsMap;
 class PrefService;
 
 namespace playlist {
@@ -66,6 +67,7 @@ class PlaylistService : public KeyedService,
                         public PlaylistThumbnailDownloader::Delegate {
  public:
   PlaylistService(content::BrowserContext* context,
+                  HostContentSettingsMap* map,
                   MediaDetectorComponentManager* manager);
   ~PlaylistService() override;
   PlaylistService(const PlaylistService&) = delete;

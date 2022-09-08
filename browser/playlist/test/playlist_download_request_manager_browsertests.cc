@@ -7,9 +7,11 @@
 
 #include "base/ranges/algorithm.h"
 #include "brave/components/playlist/media_detector_component_manager.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/test/base/chrome_test_utils.h"
+#include "components/content_settings/browser/page_specific_content_settings.h"
 #include "content/public/test/browser_test.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 
@@ -83,21 +85,27 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
         std::make_unique<playlist::MediaDetectorComponentManager>(nullptr);
     component_manager_->SetUseLocalScriptForTesting();
 
+    auto* profile = chrome_test_utils::GetProfile(this);
     request_manager_ =
         std::make_unique<playlist::PlaylistDownloadRequestManager>(
-            chrome_test_utils::GetProfile(this), component_manager_.get());
+            profile, HostContentSettingsMapFactory::GetForProfile(profile),
+            component_manager_.get());
   }
 
   void TearDownOnMainThread() override {
     request_manager_.reset();
     component_manager_.reset();
 
-    ASSERT_TRUE(embedded_test_server()->ShutdownAndWaitUntilComplete());
-
     PlatformBrowserTest::TearDownOnMainThread();
   }
 
- private:
+ protected:
+  void CreateBackgroundWebContents() { request_manager_->CreateWebContents(); }
+
+  content::WebContents* GetBackgroundWebContents() {
+    return request_manager_->web_contents_.get();
+  }
+
   std::unique_ptr<net::test_server::HttpResponse> Serve(
       const std::string& html,
       const net::test_server::HttpRequest& request) {
@@ -151,8 +159,17 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
   std::unique_ptr<base::RunLoop> run_loop_;
 };
 
+// Create background web contents and check PageSpecificContentSettings is
+// attached to it.
+IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
+                       BackgroundWebContents) {
+  CreateBackgroundWebContents();
+  EXPECT_TRUE(
+      content_settings::PageSpecificContentSettings::GetDelegateForWebContents(
+          GetBackgroundWebContents()));
+}
+
 IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest, NoMedia) {
-  using playlist::PlaylistItemInfo;
   LoadHTMLAndCheckResult(
       R"html(
         <html><body>

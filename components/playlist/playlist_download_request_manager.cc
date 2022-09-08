@@ -12,6 +12,9 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
+#include "components/content_settings/browser/page_specific_content_settings.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
@@ -24,6 +27,61 @@
 namespace playlist {
 
 namespace {
+
+// TODO(simonhong): Move this to separated file.
+class PageSpecificContentSettingsDelegate
+    : public content_settings::PageSpecificContentSettings::Delegate {
+ public:
+  PageSpecificContentSettingsDelegate(PrefService* prefs,
+                                      HostContentSettingsMap* map)
+      : prefs_(prefs), map_(map) {}
+  ~PageSpecificContentSettingsDelegate() override = default;
+  PageSpecificContentSettingsDelegate(
+      const PageSpecificContentSettingsDelegate&) = delete;
+  PageSpecificContentSettingsDelegate& operator=(
+      const PageSpecificContentSettingsDelegate&) = delete;
+
+ private:
+  // PageSpecificContentSettings::Delegate:
+  void UpdateLocationBar() override {}
+  PrefService* GetPrefs() override { return prefs_; }
+  HostContentSettingsMap* GetSettingsMap() override { return map_; }
+  void SetDefaultRendererContentSettingRules(
+      content::RenderFrameHost* rfh,
+      RendererContentSettingRules* rules) override {}
+  std::vector<storage::FileSystemType> GetAdditionalFileSystemTypes() override {
+    return {};
+  }
+  browsing_data::CookieHelper::IsDeletionDisabledCallback
+  GetIsDeletionDisabledCallback() override {
+    return base::NullCallback();
+  }
+  bool IsMicrophoneCameraStateChanged(
+      content_settings::PageSpecificContentSettings::MicrophoneCameraState
+          microphone_camera_state,
+      const std::string& media_stream_selected_audio_device,
+      const std::string& media_stream_selected_video_device) override {
+    return false;
+  }
+  content_settings::PageSpecificContentSettings::MicrophoneCameraState
+  GetMicrophoneCameraState() override {
+    return content_settings::PageSpecificContentSettings::
+        MICROPHONE_CAMERA_NOT_ACCESSED;
+  }
+  void OnContentAllowed(ContentSettingsType type) override {}
+  void OnContentBlocked(ContentSettingsType type) override {}
+  void OnStorageAccessAllowed(
+      content_settings::mojom::ContentSettingsManager::StorageType storage_type,
+      const url::Origin& origin,
+      content::Page& page) override {}
+  void OnCookieAccessAllowed(const net::CookieList& accessed_cookies,
+                             content::Page& page) override {}
+  void OnServiceWorkerAccessAllowed(const url::Origin& origin,
+                                    content::Page& page) override {}
+
+  raw_ptr<PrefService> prefs_ = nullptr;
+  raw_ptr<HostContentSettingsMap> map_ = nullptr;
+};
 
 constexpr base::TimeDelta kWebContentDestroyDelay = base::Minutes(5);
 
@@ -57,8 +115,9 @@ void PlaylistDownloadRequestManager::SetPlaylistJavaScriptWorldId(
 
 PlaylistDownloadRequestManager::PlaylistDownloadRequestManager(
     content::BrowserContext* context,
+    HostContentSettingsMap* map,
     MediaDetectorComponentManager* manager)
-    : context_(context), media_detector_component_manager_(manager) {
+    : context_(context), map_(map), media_detector_component_manager_(manager) {
   observed_.Observe(media_detector_component_manager_);
 
   media_detector_script_ = media_detector_component_manager_->script();
@@ -71,6 +130,11 @@ void PlaylistDownloadRequestManager::CreateWebContents() {
     // |web_contents_| is created on demand.
     content::WebContents::CreateParams create_params(context_, nullptr);
     web_contents_ = content::WebContents::Create(create_params);
+    content_settings::PageSpecificContentSettings::CreateForWebContents(
+        web_contents_.get(),
+        std::make_unique<PageSpecificContentSettingsDelegate>(
+            user_prefs::UserPrefs::Get(web_contents_->GetBrowserContext()),
+            map_));
   }
 
   Observe(web_contents_.get());
