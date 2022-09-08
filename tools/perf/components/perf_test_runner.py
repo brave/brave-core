@@ -59,6 +59,17 @@ class CommonOptions:
 def ReportToDashboardImpl(browser_type: BrowserType, dashboard_bot_name: str,
                           revision: str, output_dir: str
                           ) -> Tuple[bool, List[str], Optional[str]]:
+
+  if browser_type.ReportAsReference():
+    # .reference suffix for benchmark folder is used in process_perf_results.py
+    # to guess should the data be reported as reference or not.
+    # Find and rename all benchmark folders to .reference format.
+    for f in os.scandir(output_dir):
+      if f.is_dir():
+        for benchmark in os.scandir(f.path):
+          if benchmark.is_dir() and not benchmark.name.endswith('.reference'):
+            shutil.move(benchmark.path, benchmark.path + '.reference')
+
   args = [
       path_util.GetVpython3Path(),
       os.path.join(path_util.GetChromiumPerfDir(), 'process_perf_results.py')
@@ -168,14 +179,7 @@ class RunableConfiguration:
           os.path.join(path_util.GetSrcDir(), 'testing', 'scripts',
                        'run_performance_tests.py'))
 
-      benchmark_report_name = benchmark_name
-
-      # .reference suffix is used in run_performance_tests.py to generate report
-      # for _ref measurements. It will be omitted when it the name be passed
-      # to run_benchmark.
-      if config.browser_type.ReportAsReference():
-        benchmark_report_name += '.reference'
-      args.append(f'--benchmarks={benchmark_report_name}')
+      args.append(f'--benchmarks={benchmark_name}')
       if out_dir:
         args.append('--isolated-script-test-output=' +
                     os.path.join(out_dir, benchmark_name, 'output.json'))
