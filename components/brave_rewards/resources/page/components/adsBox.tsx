@@ -21,6 +21,7 @@ import { Grid, Column, Select, ControlWrapper } from 'brave-ui/components'
 import { AlertCircleIcon } from 'brave-ui/components/icons'
 
 import { LayoutKind } from '../lib/layout_context'
+import { getAdsSubdivisions } from '../../shared/lib/ads_subdivisions'
 import { externalWalletProviderFromString } from '../../shared/lib/external_wallet'
 import { getProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { PaymentStatusView } from '../../shared/components/payment_status_view'
@@ -88,114 +89,6 @@ class AdsBox extends React.Component<Props, State> {
     )
   }
 
-  getAdsSubdivisions = () => {
-    const {
-      adsSubdivisionTargeting,
-      automaticallyDetectedAdsSubdivisionTargeting
-    } = this.props.rewardsData.adsData
-
-    const {
-      currentCountryCode
-    } = this.props.rewardsData
-
-    let subdivisions: Array<[string, string]> = []
-    if (currentCountryCode === 'US') {
-      subdivisions = this.getUnitedStatesSubdivisions()
-    } else if (currentCountryCode === 'CA') {
-      subdivisions = this.getCanadaSubdivisions()
-    } else {
-      return subdivisions
-    }
-
-    if (adsSubdivisionTargeting === 'DISABLED') {
-      subdivisions.unshift(['DISABLED', getLocale('adsSubdivisionTargetingDisabled')])
-    } else {
-      subdivisions.unshift(['DISABLED', getLocale('adsSubdivisionTargetingDisable')])
-    }
-
-    const subdivisionMap = new Map<string, string>(subdivisions)
-    const subdivision = subdivisionMap.get(automaticallyDetectedAdsSubdivisionTargeting)
-    if (subdivision && adsSubdivisionTargeting === 'AUTO') {
-      subdivisions.unshift(['AUTO', getLocale('adsSubdivisionTargetingAutoDetectedAs', { adsSubdivisionTarget: subdivision })])
-    } else {
-      subdivisions.unshift(['AUTO', getLocale('adsSubdivisionTargetingAutoDetect')])
-    }
-
-    return subdivisions
-  }
-
-  getUnitedStatesSubdivisions = () => {
-    let subdivisions: Array<[string, string]> = [
-      ['US-AL', 'Alabama'],
-      ['US-AK', 'Alaska'],
-      ['US-AZ', 'Arizona'],
-      ['US-AR', 'Arkansas'],
-      ['US-CA', 'California'],
-      ['US-CO', 'Colorado'],
-      ['US-CT', 'Connecticut'],
-      ['US-DE', 'Delaware'],
-      ['US-FL', 'Florida'],
-      ['US-GA', 'Georgia'],
-      ['US-HI', 'Hawaii'],
-      ['US-ID', 'Idaho'],
-      ['US-IL', 'Illinois'],
-      ['US-IN', 'Indiana'],
-      ['US-IA', 'Iowa'],
-      ['US-KS', 'Kansas'],
-      ['US-KY', 'Kentucky'],
-      ['US-LA', 'Louisiana'],
-      ['US-ME', 'Maine'],
-      ['US-MD', 'Maryland'],
-      ['US-MA', 'Massachusetts'],
-      ['US-MI', 'Michigan'],
-      ['US-MN', 'Minnesota'],
-      ['US-MS', 'Mississippi'],
-      ['US-MO', 'Missouri'],
-      ['US-MT', 'Montana'],
-      ['US-NE', 'Nebraska'],
-      ['US-NV', 'Nevada'],
-      ['US-NH', 'New Hampshire'],
-      ['US-NJ', 'New Jersey'],
-      ['US-NM', 'New Mexico'],
-      ['US-NY', 'New York'],
-      ['US-NC', 'North Carolina'],
-      ['US-ND', 'North Dakota'],
-      ['US-OH', 'Ohio'],
-      ['US-OK', 'Oklahoma'],
-      ['US-OR', 'Oregon'],
-      ['US-PA', 'Pennsylvania'],
-      ['US-RI', 'Rhode Island'],
-      ['US-SC', 'South Carolina'],
-      ['US-SD', 'South Dakota'],
-      ['US-TN', 'Tennessee'],
-      ['US-TX', 'Texas'],
-      ['US-UT', 'Utah'],
-      ['US-VT', 'Vermont'],
-      ['US-VA', 'Virginia'],
-      ['US-WA', 'Washington'],
-      ['US-WV', 'West Virginia'],
-      ['US-WI', 'Wisconsin'],
-      ['US-WY', 'Wyoming']
-    ]
-
-    return subdivisions
-  }
-
-  getCanadaSubdivisions = () => {
-    let subdivisions: Array<[string, string]> = [
-      ['CA-AB', 'Alberta'],
-      ['CA-BC', 'British Columbia'],
-      ['CA-MB', 'Manitoba'],
-      ['CA-NB', 'New Brunswick'],
-      ['CA-NS', 'Nova Scotia'],
-      ['CA-ON', 'Ontario'],
-      ['CA-QC', 'Quebec'],
-      ['CA-SK', 'Saskatchewan']
-    ]
-
-    return subdivisions
-  }
-
   adsNotSupportedAlert = (supported: boolean) => {
     if (supported) {
       return null
@@ -256,7 +149,7 @@ class AdsBox extends React.Component<Props, State> {
                   onChange={this.onAdsSettingChange.bind(this, 'adsSubdivisionTargeting')}
                 >
                   {
-                    this.getAdsSubdivisions().map((subdivision) => {
+                    getAdsSubdivisions(this.props.rewardsData).map((subdivision) => {
                       return (
                         <div key={`${subdivision[0]}`} data-value={subdivision[0]}>
                           {`${subdivision[1]}`}

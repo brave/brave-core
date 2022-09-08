@@ -142,7 +142,7 @@ void SubdivisionTargeting::MaybeAllowForLocale(const std::string& locale) {
   if (subdivision_codes.find(subdivision_code) == subdivision_codes.cend()) {
     AdsClientHelper::GetInstance()->SetBooleanPref(
         prefs::kShouldAllowSubdivisionTargeting, false);
-    ResetSubdivisionCodeToAutoDetect();
+    MaybeResetSubdivisionCodeToAutoDetect();
     return;
   }
 
@@ -150,7 +150,7 @@ void SubdivisionTargeting::MaybeAllowForLocale(const std::string& locale) {
       prefs::kShouldAllowSubdivisionTargeting, true);
 }
 
-void SubdivisionTargeting::ResetSubdivisionCodeToAutoDetect() {
+void SubdivisionTargeting::MaybeResetSubdivisionCodeToAutoDetect() {
   if (ShouldAutoDetect()) {
     return;
   }
