@@ -202,7 +202,7 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
         {this.state.location === Location.GRADIENT_COLORS &&
           <BackgroundChooser
             title={getLocale('gradientColorTitle')}
-            backgrounds={solidColorsForBackground}
+            backgrounds={gradientColorsForBackground}
             currentValue={selectedBackgroundColor}
             usingRandomColor={usingGradientBackground && usingRandomColor}
             onToggleRandomColor={on => this.props.setColorBackground(on ? 'gradient' : (selectedBackgroundColor ?? defaultGradientColor), on)}
