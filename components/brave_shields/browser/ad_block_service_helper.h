@@ -12,20 +12,9 @@
 
 #include "base/files/file_path.h"
 #include "base/values.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_shields {
-
-class RegionalCatalogEntry;
-
-std::vector<RegionalCatalogEntry>::const_iterator FindAdBlockFilterListByUUID(
-    const std::vector<RegionalCatalogEntry>& region_lists,
-    const std::string& uuid);
-std::vector<RegionalCatalogEntry>::const_iterator FindAdBlockFilterListByLocale(
-    const std::vector<RegionalCatalogEntry>& region_lists,
-    const std::string& locale);
-
-std::vector<RegionalCatalogEntry> RegionalCatalogFromJSON(
-    const std::string& catalog_json);
 
 void MergeCspDirectiveInto(absl::optional<std::string> from,
                            absl::optional<std::string>* into);

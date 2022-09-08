@@ -34,6 +34,16 @@ class RegionalCatalogEntry {
   const std::string desc;
 };
 
+std::vector<RegionalCatalogEntry>::const_iterator FindAdBlockFilterListByUUID(
+    const std::vector<RegionalCatalogEntry>& region_lists,
+    const std::string& uuid);
+std::vector<RegionalCatalogEntry>::const_iterator FindAdBlockFilterListByLocale(
+    const std::vector<RegionalCatalogEntry>& region_lists,
+    const std::string& locale);
+
+std::vector<RegionalCatalogEntry> RegionalCatalogFromJSON(
+    const std::string& catalog_json);
+
 }  // namespace brave_shields
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_REGIONAL_CATALOG_ENTRY_H_
