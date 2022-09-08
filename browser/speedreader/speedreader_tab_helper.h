@@ -10,11 +10,10 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/ui/webui/speedreader/speedreader_panel_ui.h"
 #include "brave/components/speedreader/common/speedreader.mojom.h"
+#include "brave/components/speedreader/common/speedreader_panel.mojom.h"
 #include "brave/components/speedreader/speedreader_result_delegate.h"
 #include "brave/components/speedreader/speedreader_util.h"
-#include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
@@ -26,9 +25,8 @@ class NavigationHandle;
 class WebContents;
 }  // namespace content
 
-using speedreader::mojom::Theme;
-
 namespace speedreader {
+using mojom::Theme;
 
 namespace test {
 void SetShowOriginalLinkTitle(const std::u16string* title);
@@ -81,18 +79,11 @@ class SpeedreaderTabHelper
   // returns nullptr if no bubble currently shown
   SpeedreaderBubbleView* speedreader_bubble_view() const;
 
-  // returns nullptr if no bubble currently shown
-  views::BubbleDialogDelegateView* speedreader_webui_bubble_delegate_view()
-      const;
-
   // Displays speedreader information
   void ShowSpeedreaderBubble();
 
   // Displays reader mode information
   void ShowReaderModeBubble();
-
-  // Displays speedreader UI controls
-  void ShowSpeedreaderWebUIBubble();
 
   // Hides speedreader information
   void HideBubble();
@@ -167,8 +158,6 @@ class SpeedreaderTabHelper
 
   DistillState distill_state_ = DistillState::kNone;
   raw_ptr<SpeedreaderBubbleView> speedreader_bubble_ = nullptr;
-  std::unique_ptr<WebUIBubbleManagerT<SpeedreaderPanelUI>>
-      speedreader_webui_bubble_manager_;
   raw_ptr<HostContentSettingsMap> content_rules_ = nullptr;
 
   mojo::AssociatedReceiver<mojom::SpeedreaderHost> receiver_{this};
