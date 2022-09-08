@@ -22,3 +22,20 @@ extension UIAction {
     }
   }
 }
+
+extension UIAction.Identifier {
+  static var backportedPasteAndGo: UIAction.Identifier? {
+    if #available(iOS 15.0, *) {
+      return .pasteAndGo
+    } else {
+      return nil
+    }
+  }
+  static var backportedPaste: UIAction.Identifier? {
+    if #available(iOS 15.0, *) {
+      return .paste
+    } else {
+      return nil
+    }
+  }
+}
