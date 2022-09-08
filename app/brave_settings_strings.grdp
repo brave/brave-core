@@ -469,6 +469,22 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_SOLANA_BLOCK" desc="Label for solana site settings.">
     Block sites from accessing the Solana provider API
   </message>
+  <!-- Clipboard -->
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CLIPBOARD_OVERRIDE_DESCRIPTION" desc="Label for the enabled option of the clipboard content setting.">
+    Sites usually read your clipboard for features like keeping the formatting of text you copied, or for copying images and text to your clipboard
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CLIPBOARD_OVERRIDE_ALLOW" desc="Label for the enabled option of the clipboard content setting.">
+    Sites can ask to access the clipboard
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CLIPBOARD_OVERRIDE_BLOCK" desc="Label for the disabled option of the clipboard content setting.">
+    Block sites from accessing the clipboard
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CLIPBOARD_OVERRIDE_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the clipboard content setting.">
+    Allowed to access the clipboard
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CLIPBOARD_OVERRIDE_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the clipboard content setting.">
+    Not allowed to access the clipboard
+  </message>
 
   <!-- Settings / Privacy and security / Safety Check -->
   <message name="IDS_SETTINGS_BRAVE_SAFETY_CHECK_SAFE_BROWSING_ENABLED_STANDARD_AVAILABLE_ENHANCED" desc="This text points out that Safe Browsing is enabled as standard protection.">
