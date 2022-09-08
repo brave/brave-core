@@ -793,6 +793,13 @@ const util = {
   },
 
   getGitDir: (repoDir) => {
+    const dotGitPath = path.join(repoDir, '.git')
+    if (!fs.existsSync(dotGitPath)) {
+      return null
+    }
+    if (fs.statSync(dotGitPath).isDirectory()) {
+      return dotGitPath
+    }
     // Returns the actual .git dir in case a worktree is used.
     gitDir = util.runGit(repoDir, ['rev-parse', '--git-common-dir'], false)
     if (!path.isAbsolute(gitDir)) {
@@ -802,7 +809,12 @@ const util = {
   },
 
   getGitInfoExcludeFileName: (repoDir, create) => {
-    const gitInfoDir = path.join(util.getGitDir(repoDir), 'info')
+    const gitDir = util.getGitDir(repoDir)
+    if (!gitDir) {
+      assert(!create, `Can't create git exclude, .git not found in: ${repoDir}`)
+      return null
+    }
+    const gitInfoDir = path.join(gitDir, 'info')
     const excludeFileName = path.join(gitInfoDir, 'exclude')
     if (!fs.existsSync(excludeFileName)) {
       if (!create) {

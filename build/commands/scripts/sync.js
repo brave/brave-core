@@ -151,7 +151,7 @@ function syncChromium(program) {
       shouldUpdateChromium(latestSyncInfo, expectedSyncInfo)
   const shouldSyncChromium = chromiumNeedsUpdate || syncWithForce
   if (!shouldSyncChromium && !program.sync_chromium) {
-    if (program.delete_unused_deps) {
+    if (program.delete_unused_deps && !config.isCI) {
       Log.warn(
         '--delete_unused_deps is ignored for src/ dir because Chromium sync ' +
         'is required. Pass --sync_chromium to force it.')
@@ -162,7 +162,7 @@ function syncChromium(program) {
   if (program.delete_unused_deps) {
     if (util.isGitExclusionExists(config.srcDir, 'brave/')) {
       args.push('-D')
-    } else {
+    } else if (!config.isCI) {
       Log.warn(
           '--delete_unused_deps is ignored because sync has not yet added ' +
           'the exclusion for the src/brave/ directory, likely because sync ' +
@@ -232,6 +232,10 @@ async function RunCommand() {
         'up with the correct dependency projects. Specify new target_os ' +
         'values with --init, or edit .gclient manually before running sync ' +
         'again.')
+  }
+
+  if (config.isCI) {
+    program.delete_unused_deps = true
   }
 
   Log.progress('Running gclient sync...')
