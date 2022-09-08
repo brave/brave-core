@@ -47,8 +47,8 @@
     </div>
   </div>
   <div slot="button-container">
+    <cr-button class="cancel-button" id="cancel" on-click="cancelClicked_">$i18n{torCancelDialogButton}</cr-button>
     <cr-button class="action-button" id="submit" on-click="submitClicked_" disabled="[[submitDisabled_]]">
       $i18n{torSubmitDialogButton}</cr-button>
-    <cr-button class="cancel-button" id="cancel" on-click="cancelClicked_">$i18n{torCancelDialogButton}</cr-button>
   </div>
 </cr-dialog>
