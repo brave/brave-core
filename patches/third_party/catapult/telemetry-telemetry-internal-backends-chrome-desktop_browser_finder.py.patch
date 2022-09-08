@@ -1,20 +1,9 @@
 diff --git a/telemetry/telemetry/internal/backends/chrome/desktop_browser_finder.py b/telemetry/telemetry/internal/backends/chrome/desktop_browser_finder.py
-index e0f327ab20e9ec8a78924618f76037a2008d7008..ae1c086b297723b12b9b013017cc7d6f0be42b6d 100644
+index e0f327ab20e9ec8a78924618f76037a2008d7008..3010300e19c8765b01fe543824ae90231e0d15aa 100644
 --- a/telemetry/telemetry/internal/backends/chrome/desktop_browser_finder.py
 +++ b/telemetry/telemetry/internal/backends/chrome/desktop_browser_finder.py
-@@ -25,6 +25,7 @@ from telemetry.internal.util import binary_manager
- from telemetry.internal.util import local_first_binary_manager
- # This is a workaround for https://goo.gl/1tGNgd
- from telemetry.internal.util import path as path_module
+@@ -467,3 +467,4 @@ def FindAllAvailableBrowsers(finder_options, device):
+     return []
+ 
+   return browsers
 +from import_inline import inline_file_from_src; inline_file_from_src("brave/chromium_src/third_party/catapult/telemetry/telemetry/internal/backends/chrome/desktop_browser_finder.py", globals(), locals())
- 
- _BROWSER_STARTUP_TRIES = 3
- 
-@@ -145,6 +146,7 @@ class PossibleDesktopBrowser(possible_browser.PossibleBrowser):
-         file_util.CopyFileWithIntermediateDirectories(source, full_dest_path)
- 
-   def _TearDownEnvironment(self):
-+    MaybeUpdateSourceProfile(self._browser_options, self._profile_directory)
-     if self._profile_directory and os.path.exists(self._profile_directory):
-       # Remove the profile directory, which was hosted on a temp dir.
-       shutil.rmtree(self._profile_directory, ignore_errors=True)

@@ -41,6 +41,30 @@ def override_function(scope, name=None, condition=True):
 
     return decorator
 
+def override_method(scope, name=None, condition=True):
+    """Replaces an existing method in the class scope."""
+
+    def decorator(new_method):
+        assert(not isinstance(scope, dict))
+        method_name = name or new_method.__name__
+        original_method = getattr(scope, method_name, None)
+
+        if not callable(original_method):
+            raise NameError(f'Failed to override method: '
+                            f'{method_name} not found or not callable')
+
+        def wrapped_method(self, *args, **kwargs):
+            return new_method(self, original_method, *args, **kwargs)
+
+        if not condition:
+            wrapped_method = original_method
+
+        setattr(scope, method_name, wrapped_method)
+
+        return wrapped_method
+
+    return decorator
+
 
 @contextlib.contextmanager
 def override_scope_function(scope, new_function, name=None, condition=True):

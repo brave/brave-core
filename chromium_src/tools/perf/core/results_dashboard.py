@@ -5,7 +5,7 @@
 """A inline part of result_dashboard.py"""
 import re
 
-import override_utils as override_utils
+import override_utils
 
 """A substitution for LuciAuthTokenGeneratorCallback()"""
 def BraveAuthTokenGeneratorCallback():

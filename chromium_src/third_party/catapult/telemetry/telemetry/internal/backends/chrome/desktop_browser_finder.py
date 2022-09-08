@@ -5,9 +5,14 @@
 """A inline part of desktop_browser_finder.py"""
 import shutil
 
-def MaybeUpdateSourceProfile(browser_options, profile_directory):
-  if '--update-source-profile' in browser_options.extra_browser_args:
+import override_utils
+
+@override_utils.override_method(PossibleDesktopBrowser)
+#def MaybeUpdateSourceProfile(browser_options, profile_directory):
+def _TearDownEnvironment(self, original_method):
+  if '--update-source-profile' in self._browser_options.extra_browser_args:
       # Override the source profile by the result profile.
-      shutil.rmtree(browser_options.profile_dir)
-      shutil.copytree(profile_directory,
-                      browser_options.profile_dir)
+      shutil.rmtree(self._browser_options.profile_dir)
+      shutil.copytree(self._profile_directory,
+                      self._browser_options.profile_dir)
+  original_method(self)
