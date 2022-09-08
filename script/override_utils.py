@@ -49,9 +49,7 @@ def override_method(scope, name=None, condition=True):
         method_name = name or new_method.__name__
         original_method = getattr(scope, method_name, None)
 
-        if not callable(original_method):
-            raise NameError(f'Failed to override method: '
-                            f'{method_name} not found or not callable')
+        assert(inspect.ismethod(original_method))
 
         def wrapped_method(self, *args, **kwargs):
             return new_method(self, original_method, *args, **kwargs)
@@ -59,7 +57,7 @@ def override_method(scope, name=None, condition=True):
         if not condition:
             wrapped_method = original_method
 
-        setattr(scope, method_name, wrapped_method)
+        setattr(scope, method_name, types.MethodType(wrapped_method, scope))
 
         return wrapped_method
 
