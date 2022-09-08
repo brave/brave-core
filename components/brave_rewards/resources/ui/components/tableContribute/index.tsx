@@ -137,12 +137,12 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
 
       if (this.props.showRemove) {
         const actionTooltip = isExcluded
-          ? getLocale('restoreSite')
+          ? getLocale('removeFromExcluded')
           : getLocale('excludeSite')
 
         cell.content.push({
           content: (
-            <Tooltip content={actionTooltip}>
+            <Tooltip rightEdge={true} content={actionTooltip}>
               <StyledRemove onClick={row.onRemove}>
                 {
                   isExcluded
