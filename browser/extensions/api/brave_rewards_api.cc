@@ -26,6 +26,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/l10n/browser/locale_helper.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
@@ -1228,6 +1229,13 @@ ExtensionFunction::ResponseAction BraveRewardsGetAdsDataFunction::Run() {
   ads_data.Set(kShouldAllowAdsSubdivisionTargeting,
                ads_service->ShouldAllowSubdivisionTargeting());
   ads_data.Set("adsUIEnabled", true);
+
+  const std::string locale =
+      brave_l10n::LocaleHelper::GetInstance()->GetLocale();
+  const std::string country_code = brave_l10n::GetCountryCode(locale);
+
+  ads_data.Set("countryCode", country_code);
+
   return RespondNow(OneArgument(base::Value(std::move(ads_data))));
 }
 
