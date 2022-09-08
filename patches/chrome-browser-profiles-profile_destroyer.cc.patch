@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/profiles/profile_destroyer.cc b/chrome/browser/profiles/profile_destroyer.cc
-index a6e45761a439e9aef331b8703c49af8e691417bf..191788e27dd7df8c3f2771f694e5a02c7e1719b8 100644
+index 80047fddb2877428d072e55f5ec5631590328c30..b73e30ad3eb3e81c34299308a7072be92166fcbd 100644
 --- a/chrome/browser/profiles/profile_destroyer.cc
 +++ b/chrome/browser/profiles/profile_destroyer.cc
-@@ -96,6 +96,7 @@ void ProfileDestroyer::DestroyProfileWhenAppropriateWithTimeout(
+@@ -104,6 +104,7 @@ void ProfileDestroyer::DestroyProfileWhenAppropriateWithTimeout(
    // ignored during shutdown and by the System Profile do not either.
    HostSet profile_hosts;
    GetHostsForProfile(&profile_hosts, profile);
 +  BRAVE_PROFILE_DESTROYER_DESTROY_PROFILE_WHEN_APPROPRIATE
-   for (Profile* otr_profile : profile->GetAllOffTheRecordProfiles()) {
+   for (Profile* otr_profile : GetDependentProfiles(profile)) {
      GetHostsForProfile(&profile_hosts, otr_profile);
    }
