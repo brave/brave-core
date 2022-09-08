@@ -356,11 +356,7 @@ export const PortfolioAsset = (props: Props) => {
     dispatch(WalletPageActions.selectAsset({ asset: undefined, timeFrame: selectedTimeline }))
     dispatch(WalletPageActions.selectCoinMarket(undefined))
     setfilteredAssetList(userAssetList)
-    if (isShowingMarketData) {
-      history.push(WalletRoutes.Market)
-    } else {
-      history.push(WalletRoutes.Portfolio)
-    }
+    history.goBack()
   }, [
     userAssetList,
     selectedTimeline

@@ -125,6 +125,7 @@ export type NavTypes =
 export type TopTabNavTypes =
   | 'portfolio'
   | 'apps'
+  | 'nfts'
   | 'accounts'
   | 'market'
 
@@ -629,6 +630,9 @@ export enum WalletRoutes {
   // fund wallet page
   FundWalletPage = '/crypto/fund-wallet',
   DepositFundsPage = '/crypto/deposit-funds',
+
+  // NFTs
+  Nfts = '/crypto/nfts',
 
   // market
   Market = '/crypto/market',

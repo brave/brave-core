@@ -29,6 +29,7 @@ import { MarketView } from '../market'
 import { Accounts } from '../accounts/accounts'
 import { Account } from '../accounts/account'
 import { AddAccountModal } from '../../popup-modals/add-account-modal/add-account-modal'
+import { NftView } from '../nfts/nft-view'
 
 interface ParamsType {
   category?: TopTabNavTypes
@@ -229,6 +230,11 @@ const CryptoView = (props: Props) => {
           <PortfolioAsset
             isShowingMarketData={true}
           />
+        </Route>
+
+        <Route path={WalletRoutes.Nfts} exact={true}>
+          {nav}
+          <NftView />
         </Route>
 
         <Redirect to={sessionRoute || WalletRoutes.Portfolio} />
