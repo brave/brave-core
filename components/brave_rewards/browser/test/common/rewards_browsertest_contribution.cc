@@ -453,7 +453,7 @@ void RewardsBrowserTestContribution::SetUpGeminiWallet(
   browser_->profile()->GetPrefs()->SetString(
       brave_rewards::prefs::kExternalWalletType, "gemini");
   // we need brave wallet as well
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
 
   external_balance_ = balance;
 
@@ -485,7 +485,7 @@ void RewardsBrowserTestContribution::SetUpUpholdWallet(
   }
 #endif
   // we need brave wallet as well
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
 
   external_balance_ = balance;
 

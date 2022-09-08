@@ -38,7 +38,7 @@ void WalletCreate::Start(ledger::ResultCallback callback) {
   }
 
   if (!wallet) {
-    wallet = type::BraveWallet::New();
+    wallet = type::RewardsWallet::New();
     wallet->recovery_seed = util::Security::GenerateSeed();
     if (!ledger_->wallet()->SetWallet(wallet->Clone())) {
       std::move(callback).Run(type::Result::LEDGER_ERROR);

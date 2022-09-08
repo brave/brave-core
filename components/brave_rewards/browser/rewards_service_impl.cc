@@ -530,23 +530,23 @@ void RewardsServiceImpl::RemovePrivateObserver(
   private_observers_.RemoveObserver(observer);
 }
 
-void RewardsServiceImpl::OnCreateWallet(
-    CreateWalletCallback callback,
+void RewardsServiceImpl::OnCreateRewardsWallet(
+    CreateRewardsWalletCallback callback,
     ledger::type::Result result) {
   std::move(callback).Run(result);
 }
 
-void RewardsServiceImpl::CreateWallet(CreateWalletCallback callback) {
+void RewardsServiceImpl::CreateRewardsWallet(
+    CreateRewardsWalletCallback callback) {
   if (!Connected()) {
     std::move(callback).Run(ledger::type::Result::LEDGER_ERROR);
     return;
   }
 
-  auto on_create = base::BindOnce(&RewardsServiceImpl::OnCreateWallet,
-      AsWeakPtr(),
-      std::move(callback));
+  auto on_create = base::BindOnce(&RewardsServiceImpl::OnCreateRewardsWallet,
+                                  AsWeakPtr(), std::move(callback));
 
-  bat_ledger_->CreateWallet(std::move(on_create));
+  bat_ledger_->CreateRewardsWallet(std::move(on_create));
 }
 
 void RewardsServiceImpl::GetActivityInfoList(
@@ -787,16 +787,16 @@ void RewardsServiceImpl::OnLedgerInitialized(ledger::type::Result result) {
     p3a::RecordRewardsDisabledForSomeMetrics();
   }
 
-  GetBraveWallet(
-      base::BindOnce(&RewardsServiceImpl::OnGetBraveWalletForP3A, AsWeakPtr()));
+  GetRewardsWallet(base::BindOnce(&RewardsServiceImpl::OnGetRewardsWalletForP3A,
+                                  AsWeakPtr()));
 
   for (auto& observer : observers_) {
     observer.OnRewardsInitialized(this);
   }
 }
 
-void RewardsServiceImpl::OnGetBraveWalletForP3A(
-    ledger::type::BraveWalletPtr wallet) {
+void RewardsServiceImpl::OnGetRewardsWalletForP3A(
+    ledger::type::RewardsWalletPtr wallet) {
   if (!wallet) {
     p3a::RecordNoWalletCreatedForAllMetrics();
   }
@@ -3188,21 +3188,20 @@ absl::optional<std::string> RewardsServiceImpl::DecryptString(
   return {};
 }
 
-void RewardsServiceImpl::GetBraveWallet(GetBraveWalletCallback callback) {
+void RewardsServiceImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {
   if (!Connected()) {
     std::move(callback).Run(nullptr);
     return;
   }
 
-  bat_ledger_->GetBraveWallet(
-    base::BindOnce(&RewardsServiceImpl::OnGetBraveWallet,
-        AsWeakPtr(),
-        std::move(callback)));
+  bat_ledger_->GetRewardsWallet(
+      base::BindOnce(&RewardsServiceImpl::OnGetRewardsWallet, AsWeakPtr(),
+                     std::move(callback)));
 }
 
-void RewardsServiceImpl::OnGetBraveWallet(
-    GetBraveWalletCallback callback,
-    ledger::type::BraveWalletPtr wallet) {
+void RewardsServiceImpl::OnGetRewardsWallet(
+    GetRewardsWalletCallback callback,
+    ledger::type::RewardsWalletPtr wallet) {
   std::move(callback).Run(std::move(wallet));
 }
 
@@ -3211,14 +3210,14 @@ void RewardsServiceImpl::StartProcess(base::OnceClosure callback) {
   StartLedgerProcessIfNecessary();
 }
 
-void RewardsServiceImpl::GetWalletPassphrase(
-    GetWalletPassphraseCallback callback) {
+void RewardsServiceImpl::GetRewardsWalletPassphrase(
+    GetRewardsWalletPassphraseCallback callback) {
   if (!Connected()) {
     std::move(callback).Run("");
     return;
   }
 
-  bat_ledger_->GetWalletPassphrase(std::move(callback));
+  bat_ledger_->GetRewardsWalletPassphrase(std::move(callback));
 }
 
 void RewardsServiceImpl::SetAdsEnabled(const bool is_enabled) {
@@ -3236,8 +3235,8 @@ void RewardsServiceImpl::SetAdsEnabled(const bool is_enabled) {
     return;
   }
 
-  CreateWallet(base::BindOnce(
-      &RewardsServiceImpl::OnWalletCreatedForSetAdsEnabled,
+  CreateRewardsWallet(base::BindOnce(
+      &RewardsServiceImpl::OnRewardsWalletCreatedForSetAdsEnabled,
       AsWeakPtr()));
 }
 
@@ -3262,7 +3261,7 @@ void RewardsServiceImpl::OnStartProcessForSetAdsEnabled() {
   SetAdsEnabled(true);
 }
 
-void RewardsServiceImpl::OnWalletCreatedForSetAdsEnabled(
+void RewardsServiceImpl::OnRewardsWalletCreatedForSetAdsEnabled(
     const ledger::type::Result result) {
   if (result != ledger::type::Result::WALLET_CREATED) {
     BLOG(0,  "Failed to create a wallet");

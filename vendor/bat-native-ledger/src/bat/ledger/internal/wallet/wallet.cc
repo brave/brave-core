@@ -40,7 +40,7 @@ void Wallet::CreateWalletIfNecessary(ledger::ResultCallback callback) {
   create_->Start(std::move(callback));
 }
 
-std::string Wallet::GetWalletPassphrase(type::BraveWalletPtr wallet) {
+std::string Wallet::GetWalletPassphrase(type::RewardsWalletPtr wallet) {
   if (!wallet) {
     BLOG(0, "Wallet is null");
     return "";
@@ -246,7 +246,7 @@ void Wallet::DisconnectAllWallets(ledger::LegacyResultCallback callback) {
   callback(type::Result::LEDGER_OK);
 }
 
-type::BraveWalletPtr Wallet::GetWallet(bool* corrupted) {
+type::RewardsWalletPtr Wallet::GetWallet(bool* corrupted) {
   DCHECK(corrupted);
   *corrupted = false;
 
@@ -264,7 +264,7 @@ type::BraveWalletPtr Wallet::GetWallet(bool* corrupted) {
     return nullptr;
   }
 
-  auto wallet = ledger::type::BraveWallet::New();
+  auto wallet = ledger::type::RewardsWallet::New();
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* payment_id = dict.FindString("payment_id");
@@ -293,12 +293,12 @@ type::BraveWalletPtr Wallet::GetWallet(bool* corrupted) {
   return wallet;
 }
 
-type::BraveWalletPtr Wallet::GetWallet() {
+type::RewardsWalletPtr Wallet::GetWallet() {
   bool corrupted;
   return GetWallet(&corrupted);
 }
 
-bool Wallet::SetWallet(type::BraveWalletPtr wallet) {
+bool Wallet::SetWallet(type::RewardsWalletPtr wallet) {
   if (!wallet) {
     BLOG(0, "Rewards wallet is null!");
     return false;
@@ -329,8 +329,8 @@ bool Wallet::SetWallet(type::BraveWalletPtr wallet) {
   return true;
 }
 
-void Wallet::LinkBraveWallet(const std::string& destination_payment_id,
-                             ledger::PostSuggestionsClaimCallback callback) {
+void Wallet::LinkRewardsWallet(const std::string& destination_payment_id,
+                               ledger::PostSuggestionsClaimCallback callback) {
   promotion_server_->post_claim_brave()->Request(
       destination_payment_id,
       base::BindOnce(&Wallet::OnClaimWallet, base::Unretained(this),

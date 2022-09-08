@@ -37,7 +37,7 @@ class BatLedgerImpl :
   void Initialize(
     const bool execute_create_script,
     InitializeCallback callback) override;
-  void CreateWallet(CreateWalletCallback callback) override;
+  void CreateRewardsWallet(CreateRewardsWalletCallback callback) override;
   void GetRewardsParameters(GetRewardsParametersCallback callback) override;
 
   void GetAutoContributeProperties(
@@ -246,9 +246,10 @@ class BatLedgerImpl :
 
   void GetEventLogs(GetEventLogsCallback callback) override;
 
-  void GetBraveWallet(GetBraveWalletCallback callback) override;
+  void GetRewardsWallet(GetRewardsWalletCallback callback) override;
 
-  void GetWalletPassphrase(GetWalletPassphraseCallback callback) override;
+  void GetRewardsWalletPassphrase(
+      GetRewardsWalletPassphraseCallback callback) override;
 
  private:
   // workaround to pass base::OnceCallback into std::bind
@@ -411,9 +412,9 @@ class BatLedgerImpl :
       CallbackHolder<GetEventLogsCallback>* holder,
       ledger::type::EventLogs logs);
 
-  static void OnGetBraveWallet(
-      CallbackHolder<GetBraveWalletCallback>* holder,
-      ledger::type::BraveWalletPtr wallet);
+  static void OnGetRewardsWallet(
+      CallbackHolder<GetRewardsWalletCallback>* holder,
+      ledger::type::RewardsWalletPtr wallet);
 
   std::unique_ptr<BatLedgerClientMojoBridge> bat_ledger_client_mojo_bridge_;
   std::unique_ptr<ledger::Ledger> ledger_;

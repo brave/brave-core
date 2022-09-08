@@ -40,8 +40,8 @@ using BalanceReportInfoPtr = mojom::BalanceReportInfoPtr;
 using BalanceReportInfoList =
     std::vector<mojom::BalanceReportInfoPtr>;
 
-using BraveWallet = mojom::BraveWallet;
-using BraveWalletPtr = mojom::BraveWalletPtr;
+using RewardsWallet = mojom::RewardsWallet;
+using RewardsWalletPtr = mojom::RewardsWalletPtr;
 
 using ClientInfo = mojom::ClientInfo;
 using ClientInfoPtr = mojom::ClientInfoPtr;

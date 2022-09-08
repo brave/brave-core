@@ -105,7 +105,7 @@ void WaitForLedgerStop(brave_rewards::RewardsServiceImpl* rewards_service) {
   run_loop.Run();
 }
 
-void CreateWallet(brave_rewards::RewardsServiceImpl* rewards_service) {
+void CreateRewardsWallet(brave_rewards::RewardsServiceImpl* rewards_service) {
   DCHECK(rewards_service);
 
   // Ensure that the utility process is started before attempting to create a
@@ -114,7 +114,7 @@ void CreateWallet(brave_rewards::RewardsServiceImpl* rewards_service) {
 
   base::RunLoop run_loop;
   bool success = false;
-  rewards_service->CreateWallet(
+  rewards_service->CreateRewardsWallet(
       base::BindLambdaForTesting([&](const ledger::type::Result result) {
         success = result == ledger::type::Result::WALLET_CREATED;
         run_loop.Quit();

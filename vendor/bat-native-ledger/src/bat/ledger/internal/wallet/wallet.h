@@ -33,7 +33,7 @@ class Wallet {
   void RecoverWallet(const std::string& pass_phrase,
                      ledger::LegacyResultCallback callback);
 
-  std::string GetWalletPassphrase(type::BraveWalletPtr wallet);
+  std::string GetWalletPassphrase(type::RewardsWalletPtr wallet);
 
   void FetchBalance(ledger::FetchBalanceCallback callback);
 
@@ -49,13 +49,13 @@ class Wallet {
 
   void DisconnectAllWallets(ledger::LegacyResultCallback callback);
 
-  type::BraveWalletPtr GetWallet();
-  type::BraveWalletPtr GetWallet(bool* corrupted);
+  type::RewardsWalletPtr GetWallet();
+  type::RewardsWalletPtr GetWallet(bool* corrupted);
 
-  bool SetWallet(type::BraveWalletPtr wallet);
+  bool SetWallet(type::RewardsWalletPtr wallet);
 
-  void LinkBraveWallet(const std::string& destination_payment_id,
-                       ledger::PostSuggestionsClaimCallback callback);
+  void LinkRewardsWallet(const std::string& destination_payment_id,
+                         ledger::PostSuggestionsClaimCallback callback);
 
  private:
   void AuthorizeWallet(const std::string& wallet_type,

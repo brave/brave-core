@@ -195,11 +195,11 @@ class RewardsDOMHandler
 
   void OnWalletCreatedForPaymentId(ledger::type::Result result);
 
-  void OnGetPaymentId(ledger::type::BraveWalletPtr wallet);
+  void OnGetPaymentId(ledger::type::RewardsWalletPtr wallet);
 
   void GetWalletPassphrase(const base::Value::List& args);
 
-  void OnGetWalletPassphrase(const std::string& pass);
+  void OnGetRewardsWalletPassphrase(const std::string& pass);
 
   void GetOnboardingStatus(const base::Value::List& args);
   void EnableRewards(const base::Value::List& args);
@@ -1995,18 +1995,18 @@ void RewardsDOMHandler::GetPaymentId(const base::Value::List& args) {
 
   // Ensure that a wallet has been created for the user before attempting
   // to retrieve a payment ID.
-  rewards_service_->CreateWallet(
+  rewards_service_->CreateRewardsWallet(
       base::BindOnce(&RewardsDOMHandler::OnWalletCreatedForPaymentId,
                      weak_factory_.GetWeakPtr()));
 }
 
 void RewardsDOMHandler::OnWalletCreatedForPaymentId(
     ledger::type::Result result) {
-  rewards_service_->GetBraveWallet(base::BindOnce(
+  rewards_service_->GetRewardsWallet(base::BindOnce(
       &RewardsDOMHandler::OnGetPaymentId, weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnGetPaymentId(ledger::type::BraveWalletPtr wallet) {
+void RewardsDOMHandler::OnGetPaymentId(ledger::type::RewardsWalletPtr wallet) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -2025,11 +2025,13 @@ void RewardsDOMHandler::GetWalletPassphrase(const base::Value::List& args) {
   }
 
   AllowJavascript();
-  rewards_service_->GetWalletPassphrase(base::BindOnce(
-      &RewardsDOMHandler::OnGetWalletPassphrase, weak_factory_.GetWeakPtr()));
+  rewards_service_->GetRewardsWalletPassphrase(
+      base::BindOnce(&RewardsDOMHandler::OnGetRewardsWalletPassphrase,
+                     weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnGetWalletPassphrase(const std::string& passphrase) {
+void RewardsDOMHandler::OnGetRewardsWalletPassphrase(
+    const std::string& passphrase) {
   if (!IsJavascriptAllowed()) {
     return;
   }

@@ -96,7 +96,7 @@ class LedgerImpl : public Ledger {
   void Initialize(bool execute_create_script,
                   LegacyResultCallback callback) override;
 
-  void CreateWallet(ResultCallback callback) override;
+  void CreateRewardsWallet(ResultCallback callback) override;
 
   void OneTimeTip(const std::string& publisher_key,
                   double amount,
@@ -307,12 +307,12 @@ class LedgerImpl : public Ledger {
 
   void GetEventLogs(GetEventLogsCallback callback) override;
 
-  void GetBraveWallet(GetBraveWalletCallback callback) override;
+  void GetRewardsWallet(GetRewardsWalletCallback callback) override;
 
-  std::string GetWalletPassphrase() override;
+  std::string GetRewardsWalletPassphrase() override;
 
-  void LinkBraveWallet(const std::string& destination_payment_id,
-                       PostSuggestionsClaimCallback callback) override;
+  void LinkRewardsWallet(const std::string& destination_payment_id,
+                         PostSuggestionsClaimCallback callback) override;
 
   void GetDrainStatus(const std::string& drain_id,
                       GetDrainCallback callback) override;

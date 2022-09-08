@@ -193,7 +193,7 @@ IN_PROC_BROWSER_TEST_F(RequestAdsEnabledApiTestEnabled,
           browser()->profile()));
 
   rewards_browsertest_util::StartProcess(rewards_service);
-  rewards_browsertest_util::CreateWallet(rewards_service);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service);
   rewards_browsertest_util::SetOnboardingBypassed(browser(), true);
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
