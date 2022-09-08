@@ -65,7 +65,12 @@ PlaylistService::PlaylistService(content::BrowserContext* context,
       std::make_unique<PlaylistThumbnailDownloader>(context, this);
   download_request_manager_ =
       std::make_unique<PlaylistDownloadRequestManager>(context, manager);
-  CleanUp();
+  // This is for cleaning up malformed items during development. Once we
+  // release Playlist feature officially, we should migrate items
+  // instead of deleting them.
+  CleanUpMalformedPlaylistItems();
+
+  CleanUpOrphanedPlaylistItemDirs();
 }
 
 PlaylistService::~PlaylistService() = default;
@@ -120,7 +125,7 @@ void PlaylistService::RemoveItemFromPlaylist(const std::string& playlist_id,
     if (!playlists_update->GetDictionary(
             playlist_id.empty() ? kDefaultPlaylistID : playlist_id,
             &a_playlist_update)) {
-      LOG(ERROR) << __func__ << " Playlist " << playlist_id << " not found";
+      VLOG(2) << __func__ << " Playlist " << playlist_id << " not found";
       return;
     }
 
@@ -557,7 +562,7 @@ void PlaylistService::DeleteAllPlaylistItems() {
 
   NotifyPlaylistChanged({PlaylistChangeParams::Type::kAllDeleted, ""});
 
-  CleanUp();
+  CleanUpOrphanedPlaylistItemDirs();
 }
 
 void PlaylistService::AddObserver(PlaylistServiceObserver* observer) {
@@ -618,7 +623,53 @@ void PlaylistService::OnGetOrphanedPaths(
   }
 }
 
-void PlaylistService::CleanUp() {
+void PlaylistService::CleanUpMalformedPlaylistItems() {
+  std::vector<std::string> malformed_item_ids;
+  for (const auto it : prefs_->Get(kPlaylistItemsPref)->GetDict()) {
+    auto* dict = it.second.GetIfDict();
+    DCHECK(dict);
+
+    DCHECK(dict->contains(playlist::kPlaylistItemIDKey));
+
+    // As of 2022. Sep., properties of PlaylistItemInfo was updated.
+    if (!dict->contains(playlist::kPlaylistItemPageSrcKey) ||
+        !dict->contains(playlist::kPlaylistItemMediaSrcKey) ||
+        !dict->contains(playlist::kPlaylistItemThumbnailSrcKey) ||
+        !dict->contains(playlist::kPlaylistItemMediaFileCachedKey)) {
+      malformed_item_ids.push_back(
+          *dict->FindString(playlist::kPlaylistItemIDKey));
+    }
+  }
+
+  if (malformed_item_ids.empty())
+    return;
+
+  const auto& playlists = prefs_->Get(kPlaylistsPref)->GetDict();
+  for (const auto& malformed_item_id : malformed_item_ids) {
+    // Find playlists which contains the malformed item first, and remove
+    // the item from them.
+    std::vector<std::string> playlists_containing_malformed_item;
+    for (const auto id_and_playlist : playlists) {
+      const auto& [playlist_id, playlist_value] = id_and_playlist;
+      const auto& items =
+          *playlist_value.GetDict().FindList(playlist::kPlaylistItemsKey);
+      if (base::ranges::find_if(
+              items, [&malformed_item_id](const auto& id_value) {
+                return *id_value.GetIfString() == malformed_item_id;
+              }) != items.end()) {
+        playlists_containing_malformed_item.push_back(playlist_id);
+      }
+    }
+
+    for (const auto& playlist_id : playlists_containing_malformed_item)
+      RemoveItemFromPlaylist(playlist_id, malformed_item_id);
+
+    // Make it sure just in case an item was orphaned.
+    RemovePlaylistItemValue(malformed_item_id);
+  }
+}
+
+void PlaylistService::CleanUpOrphanedPlaylistItemDirs() {
   base::flat_set<std::string> ids;
   base::ranges::transform(GetAllPlaylistItems(), std::inserter(ids, ids.end()),
                           [](const auto& item) {

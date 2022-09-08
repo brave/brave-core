@@ -151,8 +151,10 @@ class PlaylistService : public KeyedService,
 
   base::SequencedTaskRunner* task_runner();
 
-  // Delete orphaned playlist item directories that are not included in db.
-  void CleanUp();
+  void CleanUpMalformedPlaylistItems();
+
+  // Delete orphaned playlist item directories that are not included in prefs.
+  void CleanUpOrphanedPlaylistItemDirs();
   void OnGetOrphanedPaths(const std::vector<base::FilePath> paths);
 
   void NotifyPlaylistChanged(const PlaylistChangeParams& params);

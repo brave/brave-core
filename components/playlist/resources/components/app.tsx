@@ -105,8 +105,8 @@ export class PlaylistPage extends React.Component<Props, State> {
             )
           },
           { content: (<span>{item.cached ? 'Cached' : 'Not cached'}</span>) },
-          { content: (<button style={this.lazyTextButtonStyle} onClick={this.onClickDataButton.bind(this, item.id)}>{item.cached ? 'Remove cache' : 'Cache'}</button>) },
-          { content: (<button style={this.lazyButtonStyle} onClick={this.onClickRemoveItemButton.bind(this, item.id)}><CloseCircleOIcon /></button>) }
+          { content: (<button style={this.lazyTextButtonStyle} onClick={() => this.onClickDataButton(item.id)}>{item.cached ? 'Remove cache' : 'Cache'}</button>) },
+          { content: (<button style={this.lazyButtonStyle} onClick={() => this.onClickRemoveItemButton(item.id)}><CloseCircleOIcon /></button>) }
         ]
       }
       return cell
@@ -130,7 +130,7 @@ export class PlaylistPage extends React.Component<Props, State> {
       return
     }
 
-    let item = currentList.items.find(item => item.id === playlistItemId)
+    const item = currentList.items.find(item => item.id === playlistItemId)
     if (!item) {
       console.error(`There's item with id: ${playlistItemId}`)
       return

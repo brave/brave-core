@@ -96,13 +96,13 @@ void PlaylistPageHandler::RemoveItemFromPlaylist(const std::string& playlist_id,
 }
 
 void PlaylistPageHandler::RecoverLocalDataForItem(
-    const std::string& playlist_id) {
-  GetPlaylistService(profile_)->RecoverPlaylistItem(playlist_id);
+    const std::string& item_id) {
+  GetPlaylistService(profile_)->RecoverPlaylistItem(item_id);
 }
 
 void PlaylistPageHandler::RemoveLocalDataForItem(
-    const std::string& playlist_id) {
-  GetPlaylistService(profile_)->DeletePlaylistLocalData(playlist_id);
+    const std::string& item_id) {
+  GetPlaylistService(profile_)->DeletePlaylistLocalData(item_id);
 }
 
 void PlaylistPageHandler::CreatePlaylist(
