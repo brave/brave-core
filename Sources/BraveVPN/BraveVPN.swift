@@ -254,7 +254,6 @@ public class BraveVPN {
   public static func reconfigureVPN(completion: ((Bool) -> Void)? = nil) {
     helper.forceDisconnectVPNIfNecessary()
     GRDVPNHelper.clearVpnConfiguration()
-    useAutomaticRegion()
 
     connectToVPN() { status in
       completion?(status)
