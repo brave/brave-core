@@ -47,6 +47,13 @@ class BravePrefProvider : public PrefProvider,
       ContentSettingsType content_type,
       bool incognito) const override;
 
+  // calls superclass directly
+  bool SetWebsiteSettingForTest(const ContentSettingsPattern& primary_pattern,
+                                const ContentSettingsPattern& secondary_pattern,
+                                ContentSettingsType content_type,
+                                base::Value&& value,
+                                const ContentSettingConstraints& constraints);
+
  private:
   friend class BravePrefProviderTest;
   FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest, TestShieldsSettingsMigration);
@@ -74,7 +81,8 @@ class BravePrefProvider : public PrefProvider,
   void MigrateShieldsSettingsV1ToV2ForOneType(ContentSettingsType content_type);
   void MigrateShieldsSettingsV2ToV3();
   void MigrateShieldsSettingsV3ToV4(int start_version);
-  void MigrateFPShieldsSettings();
+  void MigrateFingerprintingSettings();
+  void MigrateFingerprintingSetingsToOriginScoped();
   void UpdateCookieRules(ContentSettingsType content_type, bool incognito);
   void OnCookieSettingsChanged(ContentSettingsType content_type);
   void NotifyChanges(const std::vector<Rule>& rules, bool incognito);

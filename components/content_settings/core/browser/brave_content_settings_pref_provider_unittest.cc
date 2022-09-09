@@ -23,6 +23,7 @@
 #include "components/content_settings/core/test/content_settings_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_task_environment.h"
+#include "gtest/gtest.h"
 #include "services/preferences/public/cpp/dictionary_value_update.h"
 #include "services/preferences/public/cpp/scoped_pref_update.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -220,18 +221,20 @@ class ShieldsFingerprintingSetting : public ShieldsSetting {
 
   void SetPreMigrationSettings(const ContentSettingsPattern& pattern,
                                ContentSetting setting) override {
-    provider_->SetWebsiteSetting(pattern, ContentSettingsPattern::Wildcard(),
-                                 ContentSettingsType::BRAVE_FINGERPRINTING_V2,
-                                 ContentSettingToValue(setting), {});
+    provider_->SetWebsiteSettingForTest(
+        pattern, ContentSettingsPattern::Wildcard(),
+        ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+        ContentSettingToValue(setting), {});
   }
 
   void SetPreMigrationSettingsWithSecondary(
       const ContentSettingsPattern& pattern,
       const ContentSettingsPattern& secondary_pattern,
       ContentSetting setting) {
-    provider_->SetWebsiteSetting(pattern, secondary_pattern,
-                                 ContentSettingsType::BRAVE_FINGERPRINTING_V2,
-                                 ContentSettingToValue(setting), {});
+    provider_->SetWebsiteSettingForTest(
+        pattern, secondary_pattern,
+        ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+        ContentSettingToValue(setting), {});
   }
 };
 
@@ -462,6 +465,7 @@ TEST_F(BravePrefProviderTest, MigrateFPShieldsSettings) {
   BravePrefProvider provider(
       testing_profile()->GetPrefs(), false /* incognito */,
       true /* store_last_modified */, false /* restore_session */);
+
   ShieldsFingerprintingSetting fp_settings(&provider);
 
   GURL url("http://brave.com:8080/");
@@ -482,13 +486,37 @@ TEST_F(BravePrefProviderTest, MigrateFPShieldsSettings) {
   ContentSettingsPattern pattern4 = ContentSettingsPattern::FromURL(url4);
   fp_settings.SetPreMigrationSettings(pattern4, CONTENT_SETTING_ASK);
 
-  provider.MigrateFPShieldsSettings();
+  provider.MigrateFingerprintingSettings();
+  provider.MigrateFingerprintingSetingsToOriginScoped();
 #if BUILDFLAG(IS_ANDROID)
   fp_settings.CheckSettingsWouldAsk(url);
 #else
   fp_settings.CheckSettingsWouldBlock(url);
 #endif
   fp_settings.CheckSettingsWouldAsk(url2);
+
+  // ignore attempts to set balanced settings
+  provider.SetWebsiteSetting(
+      pattern2, ContentSettingsPattern::FromString("https://balanced/*"),
+      ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+      ContentSettingToValue(CONTENT_SETTING_BLOCK), {});
+  std::vector<Rule> rules;
+  auto rule_iterator = provider.GetRuleIterator(
+      ContentSettingsType::BRAVE_FINGERPRINTING_V2, false);
+  while (rule_iterator && rule_iterator->HasNext()) {
+    auto rule = rule_iterator->Next();
+    EXPECT_NE(
+        rule.secondary_pattern.ToString(),
+        ContentSettingsPattern::FromString("https://balanced/*").ToString());
+  }
+  rule_iterator.reset();
+
+  fp_settings.SetPreMigrationSettingsWithSecondary(
+      pattern2, ContentSettingsPattern::FromString("https://balanced/*"),
+      CONTENT_SETTING_BLOCK);
+  // should ignore any balanced setting set after the migration
+  fp_settings.CheckSettingsWouldAsk(url2);
+
   fp_settings.CheckSettingsWouldAllow(url3);
   fp_settings.CheckSettingsWouldAsk(url4);
 

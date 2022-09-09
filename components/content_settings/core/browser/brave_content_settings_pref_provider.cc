@@ -113,7 +113,9 @@ BravePrefProvider::BravePrefProvider(PrefService* prefs,
       base::BindRepeating(&BravePrefProvider::OnCookiePrefsChanged,
                           base::Unretained(this)));
 
-  MigrateShieldsSettings(off_the_record);
+  MigrateShieldsSettings(off_the_record_);
+  MigrateFingerprintingSettings();
+  MigrateFingerprintingSetingsToOriginScoped();
 
   OnCookieSettingsChanged(ContentSettingsType::BRAVE_COOKIES);
 
@@ -208,8 +210,6 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
   MigrateShieldsSettingsV2ToV3();
 
   MigrateShieldsSettingsV3ToV4(version);
-
-  MigrateFPShieldsSettings();
 }
 
 void BravePrefProvider::EnsureNoWildcardEntries(
@@ -459,15 +459,14 @@ void BravePrefProvider::MigrateShieldsSettingsV1ToV2ForOneType(
   }
 }
 
-void BravePrefProvider::MigrateFPShieldsSettings() {
-  if (prefs_->GetBoolean(kBraveShieldsFPSettingsMigration))
+void BravePrefProvider::MigrateFingerprintingSettings() {
+  if (prefs_->GetBoolean(kBraveShieldsFPSettingsMigration) || off_the_record_)
     return;
 
   // Find rules that can be migrated and create replacement rules for them.
   std::vector<Rule> rules;
   auto rule_iterator = PrefProvider::GetRuleIterator(
-      ContentSettingsType::BRAVE_FINGERPRINTING_V2,
-      /*off_the_record*/ false);
+      ContentSettingsType::BRAVE_FINGERPRINTING_V2, false);
   while (rule_iterator && rule_iterator->HasNext()) {
     auto rule = rule_iterator->Next();
     rules.emplace_back(CloneRule(rule));
@@ -485,8 +484,30 @@ void BravePrefProvider::MigrateFPShieldsSettings() {
                                 ContentSettingToValue(CONTENT_SETTING_ASK),
                                 {fp_rule.expiration, fp_rule.session_model});
 #endif
-    } else if (fp_rule.secondary_pattern ==
-               ContentSettingsPattern::FromString("https://balanced/*")) {
+    }
+  }
+
+  prefs_->SetBoolean(kBraveShieldsFPSettingsMigration, true);
+}
+
+void BravePrefProvider::MigrateFingerprintingSetingsToOriginScoped() {
+  if (off_the_record_)
+    return;
+
+  // Find rules that can be migrated and create replacement rules for them.
+  std::vector<Rule> rules;
+  auto rule_iterator = PrefProvider::GetRuleIterator(
+      ContentSettingsType::BRAVE_FINGERPRINTING_V2, false);
+  while (rule_iterator && rule_iterator->HasNext()) {
+    auto rule = rule_iterator->Next();
+    rules.emplace_back(CloneRule(rule));
+  }
+  rule_iterator.reset();
+
+  // Migrate.
+  for (const auto& fp_rule : rules) {
+    if (fp_rule.secondary_pattern ==
+        ContentSettingsPattern::FromString("https://balanced/*")) {
       // delete the "balanced" override
       SetWebsiteSettingInternal(
           fp_rule.primary_pattern, fp_rule.secondary_pattern,
@@ -499,8 +520,6 @@ void BravePrefProvider::MigrateFPShieldsSettings() {
                                 ContentSettingToValue(CONTENT_SETTING_ASK), {});
     }
   }
-
-  prefs_->SetBoolean(kBraveShieldsFPSettingsMigration, true);
 }
 
 bool BravePrefProvider::SetWebsiteSetting(
@@ -541,6 +560,17 @@ bool BravePrefProvider::SetWebsiteSetting(
                                    constraints);
 }
 
+bool BravePrefProvider::SetWebsiteSettingForTest(
+    const ContentSettingsPattern& primary_pattern,
+    const ContentSettingsPattern& secondary_pattern,
+    ContentSettingsType content_type,
+    base::Value&& value,
+    const ContentSettingConstraints& constraints) {
+  return PrefProvider::SetWebsiteSetting(primary_pattern, secondary_pattern,
+                                         content_type, std::move(value),
+                                         constraints);
+}
+
 bool BravePrefProvider::SetWebsiteSettingInternal(
     const ContentSettingsPattern& primary_pattern,
     const ContentSettingsPattern& secondary_pattern,
@@ -566,6 +596,13 @@ bool BravePrefProvider::SetWebsiteSettingInternal(
                             std::move(in_value), constraints);
     return true;
   }
+
+  if (content_type == ContentSettingsType::BRAVE_FINGERPRINTING_V2 &&
+      content_settings::ValueToContentSetting(in_value) !=
+          CONTENT_SETTING_DEFAULT &&
+      secondary_pattern ==
+          ContentSettingsPattern::FromString("https://balanced/*"))
+    return false;
 
   return PrefProvider::SetWebsiteSetting(primary_pattern, secondary_pattern,
                                          content_type, std::move(in_value),
