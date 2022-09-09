@@ -1,0 +1,15 @@
+diff --git a/ui/webui/resources/cr_elements/cr_shared_style.css b/ui/webui/resources/cr_elements/cr_shared_style.css
+index cf02488d0e7a852b7e757eebbc306a2739a9b382..b5dca33cc173d3f2dacced373da615b7aa106958 100644
+--- a/ui/webui/resources/cr_elements/cr_shared_style.css
++++ b/ui/webui/resources/cr_elements/cr_shared_style.css
+@@ -7,8 +7,9 @@
+  * #import=./cr_shared_vars.css.js
+  * #import=./cr_hidden_style.css.js
+  * #import=./cr_icons.css.js
++ * #import=//brave-resources/br_elements/shared_style_css.m.js
+  * #scheme=relative
+- * #include=cr-hidden-style cr-icons
++ * #include=cr-hidden-style br-shared-style cr-icons
+  * #css_wrapper_metadata_end */
+ 
+ html,
