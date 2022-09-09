@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/public/devtools_protocol/browser_protocol.pdl b/third_party/blink/public/devtools_protocol/browser_protocol.pdl
-index 45aa153a5d682a8499467f1497aa2e06849c572b..e1165fe3427608dde6e2bd6e639b30e65b498378 100644
+index 1b776447aa641e76ad2818ccea7c6b56599a730f..5309c335850e2ff916af5be8975d01dd3d7186e2 100644
 --- a/third_party/blink/public/devtools_protocol/browser_protocol.pdl
 +++ b/third_party/blink/public/devtools_protocol/browser_protocol.pdl
 @@ -7166,6 +7166,8 @@ domain Page
