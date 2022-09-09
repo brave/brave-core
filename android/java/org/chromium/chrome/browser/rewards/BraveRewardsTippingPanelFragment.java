@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -419,22 +420,65 @@ public class BraveRewardsTippingPanelFragment extends Fragment implements BraveR
             balance = rewards_balance.getTotal();
         }
         if (batValue >= 0.25 && batValue <= balance) {
-            ((TextView) sendDonationLayout.findViewById(R.id.send_donation_text))
-                    .setText(getResources().getString(R.string.continue_tip));
+            continueButtonLayout();
         } else if (batValue >= balance) {
-            ((TextView) sendDonationLayout.findViewById(R.id.send_donation_text))
-                    .setText(getResources().getString(R.string.not_enough_fund));
+            notEnoughFundLayout();
         } else if (batValue < 0.25) {
-            ((TextView) sendDonationLayout.findViewById(R.id.send_donation_text))
-                    .setText(getResources().getString(R.string.minimum_tip_amount));
+            minimumTipAmountLayout();
         } else {
-            ((TextView) sendDonationLayout.findViewById(R.id.send_donation_text))
-                    .setText(getResources().getString(R.string.send_tip));
+            resetSendLayoutText();
         }
     }
 
+    private void minimumTipAmountLayout() {
+        ImageView imageView = sendDonationLayout.findViewById(R.id.send_tip_image);
+        sendDonationLayout.setBackgroundColor(ContextCompat.getColor(
+                getContext(), R.color.rewards_send_tip_minimum_balance_background));
+        TextView sendDonationText = sendDonationLayout.findViewById(R.id.send_donation_text);
+        sendDonationText.setText(getResources().getString(R.string.minimum_tip_amount));
+        sendDonationText.setTextColor(ContextCompat.getColor(getContext(), android.R.color.black));
+        imageView.setImageResource(R.drawable.icn_frowning_face);
+        imageView.setColorFilter(ContextCompat.getColor(
+                getContext(), R.color.rewards_send_tip_icon_minimum_balance_tint));
+        imageView.setVisibility(View.VISIBLE);
+    }
+
+    private void notEnoughFundLayout() {
+        ImageView imageView = sendDonationLayout.findViewById(R.id.send_tip_image);
+        sendDonationLayout.setBackgroundColor(ContextCompat.getColor(
+                getContext(), R.color.rewards_send_tip_not_enough_fund_background));
+        TextView sendDonationText = sendDonationLayout.findViewById(R.id.send_donation_text);
+        sendDonationText.setText(getResources().getString(R.string.not_enough_fund));
+        sendDonationText.setTextColor(ContextCompat.getColor(getContext(), android.R.color.white));
+        imageView.setImageResource(R.drawable.icn_frowning_face);
+        imageView.setColorFilter(ContextCompat.getColor(
+                getContext(), R.color.rewards_send_tip_icon_not_enough_fund_tint));
+        imageView.setVisibility(View.VISIBLE);
+    }
+
+    private void continueButtonLayout() {
+        ImageView imageView = sendDonationLayout.findViewById(R.id.send_tip_image);
+        sendDonationLayout.setBackgroundColor(
+                ContextCompat.getColor(getContext(), R.color.rewards_send_tip_background));
+        TextView sendDonationText = sendDonationLayout.findViewById(R.id.send_donation_text);
+        sendDonationText.setText(getResources().getString(R.string.continue_tip));
+        sendDonationText.setTextColor(ContextCompat.getColor(getContext(), android.R.color.white));
+        imageView.setImageResource(R.drawable.ic_send_tip);
+        imageView.setColorFilter(
+                ContextCompat.getColor(getContext(), R.color.rewards_send_tip_icon_tint));
+        imageView.setVisibility(View.GONE);
+    }
+
     public void resetSendLayoutText() {
-        ((TextView) sendDonationLayout.findViewById(R.id.send_donation_text))
-                .setText(getResources().getString(R.string.send_tip));
+        ImageView imageView = sendDonationLayout.findViewById(R.id.send_tip_image);
+        sendDonationLayout.setBackgroundColor(
+                ContextCompat.getColor(getContext(), R.color.rewards_send_tip_background));
+        TextView sendDonationText = sendDonationLayout.findViewById(R.id.send_donation_text);
+        sendDonationText.setText(getResources().getString(R.string.send_tip));
+        sendDonationText.setTextColor(ContextCompat.getColor(getContext(), android.R.color.white));
+        imageView.setImageResource(R.drawable.ic_send_tip);
+        imageView.setColorFilter(
+                ContextCompat.getColor(getContext(), R.color.rewards_send_tip_icon_tint));
+        imageView.setVisibility(View.VISIBLE);
     }
 }

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ToggleButton;
 
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 
 import org.json.JSONException;
 
@@ -22,6 +23,7 @@ import org.chromium.chrome.browser.rewards.BraveRewardsBannerInfo;
 import org.chromium.chrome.browser.rewards.BraveRewardsCreatorPanelFragment;
 import org.chromium.chrome.browser.rewards.BraveRewardsTipConfirmationFragment;
 import org.chromium.chrome.browser.rewards.BraveRewardsTipConfirmationListener;
+import org.chromium.chrome.browser.rewards.BraveRewardsTipFailureFragment;
 import org.chromium.chrome.browser.rewards.BraveRewardsTippingPanelFragment;
 
 public class BraveRewardsSiteBannerActivity
@@ -45,6 +47,8 @@ public class BraveRewardsSiteBannerActivity
     private BraveRewardsBannerInfo bannerInfo;
     private double mAmount;
     private boolean mIsMonthly;
+    private boolean mTipUpdated;
+
     public static final int TIP_ERROR = 1;
     public static final int TIP_SUCCESS = 2;
     public static final int TIP_PENDING = 3;
@@ -104,45 +108,66 @@ public class BraveRewardsSiteBannerActivity
     }
 
     /*----------TIP CHECK start >> ---------------*/
+
     @Override
     public void onTipConfirmation(double amount, boolean isMonthly) {
         mAmount = amount;
         mIsMonthly = isMonthly;
+        mTipUpdated = false;
         enableTimeout(); // wait for 3 seconds
     }
 
     private void tipConfirmation(int status, double amount, boolean isMonthly) {
         String publisherName = "";
         if (bannerInfo != null) publisherName = bannerInfo.getName();
-        BraveRewardsTipConfirmationFragment tipConfirmationFragment =
-                BraveRewardsTipConfirmationFragment.newInstance(
-                        status, publisherName, amount, isMonthly);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.tippingPanelFragment, tipConfirmationFragment)
-                .commit();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        if (!fragmentManager.isDestroyed()) {
+            if (status == TIP_ERROR) {
+                BraveRewardsTipFailureFragment tipFailureFragment =
+                        new BraveRewardsTipFailureFragment();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.tippingPanelFragment, tipFailureFragment)
+                        .commit();
+            } else {
+                BraveRewardsTipConfirmationFragment tipConfirmationFragment =
+                        BraveRewardsTipConfirmationFragment.newInstance(
+                                status, publisherName, amount, isMonthly);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.tippingPanelFragment, tipConfirmationFragment)
+                        .commit();
+            }
+        }
     }
 
     @Override
     public void OnOneTimeTip(int resultCode) {
-        if (resultCode == BraveRewardsNativeWorker.LEDGER_ERROR) {
+        if (resultCode == BraveRewardsNativeWorker.LEDGER_ERROR && mTipUpdated == false) {
             // tip error
+            mTipUpdated = true;
+            removeTimeout();
             tipConfirmation(TIP_ERROR, mAmount, mIsMonthly);
         }
     }
 
     @Override
     public void onReconcileComplete(int resultCode, int rewardsType, double amount) {
-        if (resultCode == BraveRewardsNativeWorker.LEDGER_OK) {
+        if (resultCode == BraveRewardsNativeWorker.LEDGER_OK && mTipUpdated == false) {
             // tip success
+            mTipUpdated = true;
+            removeTimeout();
             tipConfirmation(TIP_SUCCESS, mAmount, mIsMonthly);
         }
     }
 
     @Override
     public void OnPendingContributionSaved(int resultCode) {
-        if (resultCode == BraveRewardsNativeWorker.LEDGER_OK) {
+        if (resultCode == BraveRewardsNativeWorker.LEDGER_OK && mTipUpdated == false) {
             // tip pending
+            mTipUpdated = true;
+            removeTimeout();
             tipConfirmation(TIP_PENDING, mAmount, mIsMonthly);
         }
     }

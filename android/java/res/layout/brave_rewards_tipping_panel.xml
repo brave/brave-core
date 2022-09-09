@@ -264,7 +264,7 @@
         android:id="@+id/send_donation_button"
         android:layout_width="match_parent"
         android:layout_height="58dp"
-        android:background="#5e45d0"
+        android:background="@color/rewards_send_tip_background"
         android:clickable="true"
         android:focusable="true"
         android:fontFamily="@font/poppins_regular"
