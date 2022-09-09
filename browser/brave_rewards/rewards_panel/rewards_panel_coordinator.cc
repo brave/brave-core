@@ -8,10 +8,7 @@
 #include <string>
 #include <utility>
 
-#include "base/feature_list.h"
-#include "brave/browser/brave_rewards/rewards_panel/rewards_panel_extension_handler.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -21,26 +18,12 @@ namespace brave_rewards {
 RewardsPanelCoordinator::RewardsPanelCoordinator(
     Browser* browser,
     RewardsService* rewards_service)
-    : BrowserUserData<RewardsPanelCoordinator>(*browser) {
-  // If we are using the Rewards extension to display the Rewards panel, then
-  // create an instance of `RewardsPanelExtensionHandler` to load the extension
-  // and dispatch panel requests to the extension.
-  if (!base::FeatureList::IsEnabled(features::kWebUIPanelFeature)) {
-    auto handler = std::make_unique<RewardsPanelExtensionHandler>(
-        &GetBrowser(), rewards_service);
-    AddObserver(handler.get());
-    extension_handler_ = std::move(handler);
-  }
-}
+    : BrowserUserData<RewardsPanelCoordinator>(*browser) {}
 
 RewardsPanelCoordinator::~RewardsPanelCoordinator() = default;
 
 bool RewardsPanelCoordinator::IsRewardsPanelURLForTesting(const GURL& url) {
-  if (base::FeatureList::IsEnabled(features::kWebUIPanelFeature)) {
-    return url.host() == kBraveRewardsPanelHost;
-  } else {
-    return RewardsPanelExtensionHandler::IsRewardsExtensionPanelURL(url);
-  }
+  return url.host() == kBraveRewardsPanelHost;
 }
 
 bool RewardsPanelCoordinator::OpenRewardsPanel() {

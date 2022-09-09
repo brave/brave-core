@@ -31,7 +31,6 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/navigation_handle_observer.h"
-#include "extensions/common/constants.h"
 #include "url/gurl.h"
 
 namespace policy {
@@ -134,18 +133,10 @@ IN_PROC_BROWSER_TEST_P(BraveRewardsPolicyTest, RewardsIconIsHidden) {
   const auto* brave_actions = brave_location_bar_view->brave_actions_;
   ASSERT_NE(brave_actions, nullptr);
   EXPECT_TRUE(prefs()->GetBoolean(brave_rewards::prefs::kShowButton));
-  if (brave_actions->rewards_action_btn_) {
-    if (IsBraveRewardsDisabledTest()) {
-      EXPECT_FALSE(brave_actions->rewards_action_btn_->GetVisible());
-    } else {
-      EXPECT_TRUE(brave_actions->rewards_action_btn_->GetVisible());
-    }
+  if (IsBraveRewardsDisabledTest()) {
+    EXPECT_FALSE(brave_actions->rewards_action_btn_->GetVisible());
   } else {
-    if (IsBraveRewardsDisabledTest()) {
-      EXPECT_FALSE(brave_actions->IsActionShown(brave_rewards_extension_id));
-    } else {
-      EXPECT_TRUE(brave_actions->IsActionShown(brave_rewards_extension_id));
-    }
+    EXPECT_TRUE(brave_actions->rewards_action_btn_->GetVisible());
   }
 }
 

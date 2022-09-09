@@ -9,9 +9,7 @@
 #include <string>
 #include <utility>
 
-#include "base/feature_list.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_rewards/common/features.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/test/base/browser_with_test_window_test.h"
 
@@ -43,8 +41,6 @@ auto MakePanelObserver(F&& f) {
 class RewardsPanelCoordinatorTest : public BrowserWithTestWindowTest {
  public:
   void SetUp() override {
-    base::test::ScopedFeatureList features;
-    features.InitWithFeatures({features::kWebUIPanelFeature}, {});
     BrowserWithTestWindowTest::SetUp();
 
     RewardsPanelCoordinator::CreateForBrowser(browser(), nullptr);
