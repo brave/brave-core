@@ -18,7 +18,6 @@
 #include "content/public/test/browser_task_environment.h"
 #include "extensions/browser/extension_file_task_runner.h"
 #include "extensions/common/constants.h"
-#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave {

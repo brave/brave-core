@@ -129,7 +129,10 @@ class BraveExternalProcessImporterHostUnitTest : public testing::Test {
     expected_extensions_ = expected_extensions;
   }
 
-  void LaunchExtensionsImportAndWait() {
+  void LaunchExtensionsImportAndWait(importer::SourceProfile source_profile) {
+    external_process_host()->DoNotLaunchImportForTesting();
+    external_process_host()->StartImportSettings(source_profile, GetProfile(),
+                                                 importer::EXTENSIONS, nullptr);
     base::RunLoop loop;
     ImportEndedObserver observer(loop.QuitClosure());
     external_process_host()->set_observer(&observer);
@@ -152,10 +155,7 @@ TEST_F(BraveExternalProcessImporterHostUnitTest, ImportExtensionsSettings) {
   source_profile.services_supported = importer::EXTENSIONS;
   SetInstallationResults(
       {{"id0", false}, {"id1", true}, {"id2", true}, {"id3", true}});
-  external_process_host()->DoNotLaunchImportForTesting();
-  external_process_host()->StartImportSettings(source_profile, GetProfile(),
-                                               importer::EXTENSIONS, nullptr);
-  LaunchExtensionsImportAndWait();
+  LaunchExtensionsImportAndWait(source_profile);
 
   base::FilePath targetLocalExtensionSettingsPath =
       GetProfile()->GetPath().Append(

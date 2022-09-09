@@ -26,8 +26,11 @@ if (!is_android) {
       "//base/test:test_support",
       "//brave/common/importer",
       "//chrome/browser",
+      "//chrome/common",
       "//chrome/test:test_support",
       "//components/value_store:test_support",
+      "//extensions/browser",
+      "//extensions/common:common_constants",
       "//testing/gtest",
     ]
   }

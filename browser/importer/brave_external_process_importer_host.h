@@ -25,9 +25,6 @@ class BraveExternalProcessImporterHost : public ExternalProcessImporterHost {
       const BraveExternalProcessImporterHost&) = delete;
   using MockedInstallCallback =
       base::RepeatingCallback<void(const std::string&)>;
-  void DoNotLaunchImportForTesting();
-  void SetInstallExtensionCallbackForTesting(MockedInstallCallback callback);
-  void SetSettingsRemovedCallbackForTesting(base::RepeatingClosure callback);
 
  private:
   friend class ExternalProcessImporterHost;
@@ -41,6 +38,11 @@ class BraveExternalProcessImporterHost : public ExternalProcessImporterHost {
   void ImportExtensions(std::vector<std::string> extensions_list);
   void InstallExtension(const std::string& id);
   void OnExtensionSettingsRemoved(const std::string& extension_id);
+
+  void DoNotLaunchImportForTesting();
+  void SetInstallExtensionCallbackForTesting(MockedInstallCallback callback);
+  void SetSettingsRemovedCallbackForTesting(base::RepeatingClosure callback);
+
   // ExternalProcessImporterHost overrides:
   void NotifyImportEnded() override;
   void LaunchImportIfReady() override;
