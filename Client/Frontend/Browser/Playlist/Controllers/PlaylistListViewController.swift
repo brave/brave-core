@@ -187,6 +187,14 @@ class PlaylistListViewController: UIViewController {
 
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
+    
+    // Store the last played item's time-offset
+    if let playTime = delegate?.currentPlaylistItem?.currentTime(),
+      Preferences.Playlist.playbackLeftOff.value {
+      Preferences.Playlist.lastPlayedItemTime.value = playTime.seconds
+    } else {
+      Preferences.Playlist.lastPlayedItemTime.value = 0.0
+    }
 
     onCancelEditingItems()
   }
@@ -247,20 +255,36 @@ class PlaylistListViewController: UIViewController {
     }
     
     // Shared folders are loading
-    if PlaylistManager.shared.currentFolder == nil {
+    if PlaylistManager.shared.currentFolder?.isPersistent == false {
       autoPlayEnabled = true
       return
     }
 
     // Setup initial playback item and time-offset
+    var lastPlayedItemTime: Double = 0.0
+    
     let lastPlayedItemUrl = initialItem?.pageSrc ?? Preferences.Playlist.lastPlayedItemUrl.value
-    let lastPlayedItemTime = initialItem != nil ? initialItemOffset : Preferences.Playlist.lastPlayedItemTime.value
+    let lastPlayedItemId = PlaylistManager.shared.allItems.first(where: { $0.pageSrc == lastPlayedItemUrl })?.tagId
+    
+    // If the user is current viewing the same video as the last played item
+    // then we choose whichever time offset is more recent
+    if let pageSrc = initialItem?.pageSrc,
+       let lastPlayedItem = Preferences.Playlist.lastPlayedItemUrl.value,
+       pageSrc == lastPlayedItem {
+      
+      // User is current on the same page as the last played item]
+      lastPlayedItemTime = max(initialItemOffset, Preferences.Playlist.lastPlayedItemTime.value)
+    } else {
+      // Otherwise we choose the last played item offset from the page and fallback to the preference if none exists
+      lastPlayedItemTime = initialItem != nil ? initialItemOffset : Preferences.Playlist.lastPlayedItemTime.value
+    }
+    
     autoPlayEnabled = initialItem != nil ? true : Preferences.Playlist.firstLoadAutoPlay.value
 
     // If there is no last played item, then just select the first item in the playlist
     // which will play it if auto-play is enabled.
-    guard let lastPlayedItemUrl = lastPlayedItemUrl,
-      let index = PlaylistManager.shared.index(of: lastPlayedItemUrl)
+    guard let lastPlayedItemId = lastPlayedItemId,
+      let index = PlaylistManager.shared.index(of: lastPlayedItemId)
     else {
       tableView.delegate?.tableView?(tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
       autoPlayEnabled = true
@@ -274,6 +298,7 @@ class PlaylistListViewController: UIViewController {
     }
 
     // Prepare the UI before playing the item
+    delegate?.showStaticImage(image: nil)
     let indexPath = IndexPath(row: index, section: 0)
     prepareToPlayItem(at: indexPath) { [weak self] item in
       guard let self = self,
@@ -324,7 +349,7 @@ class PlaylistListViewController: UIViewController {
           // Update the player position/time-offset of the last played item
           self.seekLastPlayedItem(
             at: indexPath,
-            lastPlayedItemUrl: lastPlayedItemUrl,
+            lastPlayedItemId: lastPlayedItemId,
             lastPlayedTime: lastPlayedItemTime)
 
           // Even if the item was NOT previously the last played item,
@@ -337,7 +362,7 @@ class PlaylistListViewController: UIViewController {
     autoPlayEnabled = true
   }
 
-  private func seekLastPlayedItem(at indexPath: IndexPath, lastPlayedItemUrl: String, lastPlayedTime: Double) {
+  private func seekLastPlayedItem(at indexPath: IndexPath, lastPlayedItemId: String, lastPlayedTime: Double) {
     // The item can be deleted at any time,
     // so we need to guard against it and make sure the index path matches up correctly
     // If it does, we check the last played time
@@ -345,7 +370,7 @@ class PlaylistListViewController: UIViewController {
     let item = PlaylistManager.shared.itemAtIndex(indexPath.row)
     guard let item = item else { return }
 
-    if item.pageSrc == lastPlayedItemUrl && lastPlayedTime > 0.0 && lastPlayedTime < delegate?.currentPlaylistAsset?.duration.seconds ?? 0.0 && Preferences.Playlist.playbackLeftOff.value {
+    if item.tagId == lastPlayedItemId && lastPlayedTime > 0.0 && lastPlayedTime < delegate?.currentPlaylistAsset?.duration.seconds ?? 0.0 && Preferences.Playlist.playbackLeftOff.value {
       self.playerView.seek(to: lastPlayedTime)
     }
   }
