@@ -28,6 +28,7 @@
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
+#include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_view.h"
 #include "brave/browser/ui/views/brave_rewards/tip_panel_bubble_host.h"
 #include "brave/browser/ui/views/brave_shields/cookie_list_opt_in_bubble_host.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
@@ -563,6 +564,7 @@ void BraveBrowserView::CloseWalletBubble() {
 
 void BraveBrowserView::AddedToWidget() {
   BrowserView::AddedToWidget();
+  // we must call all new views once BraveBrowserView is added to widget
 
   GetBrowserViewLayout()->set_contents_background(contents_background_view_);
   GetBrowserViewLayout()->set_sidebar_container(sidebar_container_view_);
@@ -585,6 +587,19 @@ void BraveBrowserView::AddedToWidget() {
 
     GetBrowserViewLayout()->set_vertical_tab_strip_host(
         vertical_tab_strip_host_view_.get());
+  }
+}
+
+void BraveBrowserView::ShowBraveHelpBubbleView(const std::u16string text) {
+  auto* shields_action_view =
+      static_cast<BraveLocationBarView*>(GetLocationBarView())
+          ->brave_actions_contatiner_view()
+          ->GetShieldsActionView();
+
+  if (shields_action_view && !brave_help_bubble_view_) {
+    brave_help_bubble_view_ =
+        BraveHelpBubbleView::Create(shields_action_view, text);
+    AddChildView(brave_help_bubble_view_.get());
   }
 }
 

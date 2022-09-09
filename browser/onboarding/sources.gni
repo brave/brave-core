@@ -1,0 +1,21 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+onboarding_sources = [
+  "//brave/browser/onboarding/domain_map.h",
+  "//brave/browser/onboarding/onboarding_tab_helper.cc",
+  "//brave/browser/onboarding/onboarding_tab_helper.h",
+  "//brave/browser/onboarding/pref_names.h",
+]
+
+onboarding_deps = [
+  "//base",
+  "//brave/browser:browser_process",
+  "//components/content_settings/core/browser",
+  "//components/content_settings/core/common",
+  "//components/pref_registry",
+  "//components/prefs",
+  "//content/public/browser",
+]

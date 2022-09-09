@@ -201,4 +201,16 @@
   <message name="IDS_BRAVE_SHIELDS_NOT_VALID_ADDRESS" desc="Label for link about invalid pattern for content setting page dialog to add a site">
     Wildcards are not allowed for Brave Shields.
   </message>
+
+  <message name="IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITH_COMPANIES" desc="Label for onboarding bubble UI">
+    Brave Shields blocked <ph name="COMPANY_LIST">$1</ph> and <ph name="BLOCKED_COUNT">$2</ph> other trackers on <ph name="SITE_URL">$3</ph>
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITHOUT_COMPANIES" desc="Label for onboarding bubble UI">
+    Brave Shields blocked <ph name="BLOCKED_COUNT">$1</ph> trackers on <ph name="SITE_URL">$2</ph>
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_ONBOARDING_CLICK_TO_VIEW_LABEL" desc="Label for the onboarding bubble to guide the user to the Shield icon">
+    Click the Brave icon to view Brave Shields.
+  </message>
 </grit-part>

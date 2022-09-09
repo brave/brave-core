@@ -27,6 +27,7 @@ import("//brave/browser/misc_metrics/sources.gni")
 import("//brave/browser/new_tab/sources.gni")
 import("//brave/browser/notifications/sources.gni")
 import("//brave/browser/ntp_background/sources.gni")
+import("//brave/browser/onboarding/sources.gni")
 import("//brave/browser/perf/sources.gni")
 import("//brave/browser/permissions/sources.gni")
 import("//brave/browser/playlist/sources.gni")
@@ -469,6 +470,7 @@ brave_chrome_browser_sources += brave_browser_themes_sources
 brave_chrome_browser_sources += brave_browser_web_discovery_sources
 brave_chrome_browser_sources += brave_browser_url_sanitizer_sources
 brave_chrome_browser_sources += brave_browser_brave_referrals_sources
+brave_chrome_browser_sources += onboarding_sources
 
 brave_chrome_browser_deps += brave_browser_autocomplete_deps
 brave_chrome_browser_deps += brave_browser_brave_adaptive_captcha_deps
@@ -505,5 +507,6 @@ brave_chrome_browser_deps += brave_chromium_src_chrome_browser_deps
 brave_chrome_browser_deps += brave_chromium_src_chrome_browser_prefs_deps
 brave_chrome_browser_deps += brave_browser_url_sanitizer_deps
 brave_chrome_browser_deps += brave_browser_brave_referrals_deps
+brave_chrome_browser_deps += onboarding_deps
 
 brave_chrome_browser_allow_circular_includes_from = [ "//brave/browser/ui" ]
