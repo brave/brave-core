@@ -47,14 +47,15 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
 
  private:
   void HandleGetRewardsInternalsInfo(const base::Value::List& args);
-  void OnGetRewardsInternalsInfo(ledger::type::RewardsInternalsInfoPtr info);
+  void OnGetRewardsInternalsInfo(ledger::mojom::RewardsInternalsInfoPtr info);
   void GetBalance(const base::Value::List& args);
-  void OnGetBalance(const ledger::type::Result result,
-                    ledger::type::BalancePtr balance);
+  void OnGetBalance(const ledger::mojom::Result result,
+                    ledger::mojom::BalancePtr balance);
   void GetContributions(const base::Value::List& args);
-  void OnGetContributions(ledger::type::ContributionInfoList contributions);
+  void OnGetContributions(
+      std::vector<ledger::mojom::ContributionInfoPtr> contributions);
   void GetPromotions(const base::Value::List& args);
-  void OnGetPromotions(ledger::type::PromotionList list);
+  void OnGetPromotions(std::vector<ledger::mojom::PromotionPtr> list);
   void GetPartialLog(const base::Value::List& args);
   void OnGetPartialLog(const std::string& log);
   void GetFulllLog(const base::Value::List& args);
@@ -62,10 +63,10 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
   void ClearLog(const base::Value::List& args);
   void OnClearLog(const bool success);
   void GetExternalWallet(const base::Value::List& args);
-  void OnGetExternalWallet(const ledger::type::Result result,
-                           ledger::type::ExternalWalletPtr wallet);
+  void OnGetExternalWallet(const ledger::mojom::Result result,
+                           ledger::mojom::ExternalWalletPtr wallet);
   void GetEventLogs(const base::Value::List& args);
-  void OnGetEventLogs(ledger::type::EventLogs logs);
+  void OnGetEventLogs(std::vector<ledger::mojom::EventLogPtr> logs);
   void GetAdDiagnostics(const base::Value::List& args);
   void OnGetAdDiagnostics(absl::optional<base::Value::List> diagnostics);
 
@@ -153,7 +154,7 @@ void RewardsInternalsDOMHandler::HandleGetRewardsInternalsInfo(
 }
 
 void RewardsInternalsDOMHandler::OnGetRewardsInternalsInfo(
-    ledger::type::RewardsInternalsInfoPtr info) {
+    ledger::mojom::RewardsInternalsInfoPtr info) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -181,15 +182,15 @@ void RewardsInternalsDOMHandler::GetBalance(const base::Value::List& args) {
 }
 
 void RewardsInternalsDOMHandler::OnGetBalance(
-    const ledger::type::Result result,
-    ledger::type::BalancePtr balance) {
+    const ledger::mojom::Result result,
+    ledger::mojom::BalancePtr balance) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
   base::Value::Dict balance_value;
 
-  if (result == ledger::type::Result::LEDGER_OK && balance) {
+  if (result == ledger::mojom::Result::LEDGER_OK && balance) {
     balance_value.Set("total", balance->total);
 
     base::Value::Dict wallets;
@@ -217,7 +218,7 @@ void RewardsInternalsDOMHandler::GetContributions(
 }
 
 void RewardsInternalsDOMHandler::OnGetContributions(
-    ledger::type::ContributionInfoList contributions) {
+    std::vector<ledger::mojom::ContributionInfoPtr> contributions) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -262,7 +263,7 @@ void RewardsInternalsDOMHandler::GetPromotions(const base::Value::List& args) {
 }
 
 void RewardsInternalsDOMHandler::OnGetPromotions(
-    ledger::type::PromotionList list) {
+    std::vector<ledger::mojom::PromotionPtr> list) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -365,8 +366,8 @@ void RewardsInternalsDOMHandler::GetExternalWallet(
 }
 
 void RewardsInternalsDOMHandler::OnGetExternalWallet(
-    const ledger::type::Result result,
-    ledger::type::ExternalWalletPtr wallet) {
+    const ledger::mojom::Result result,
+    ledger::mojom::ExternalWalletPtr wallet) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -400,7 +401,8 @@ void RewardsInternalsDOMHandler::GetEventLogs(const base::Value::List& args) {
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
-void RewardsInternalsDOMHandler::OnGetEventLogs(ledger::type::EventLogs logs) {
+void RewardsInternalsDOMHandler::OnGetEventLogs(
+    std::vector<ledger::mojom::EventLogPtr> logs) {
   if (!IsJavascriptAllowed()) {
     return;
   }

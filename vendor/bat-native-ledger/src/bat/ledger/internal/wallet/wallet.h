@@ -33,7 +33,7 @@ class Wallet {
   void RecoverWallet(const std::string& pass_phrase,
                      ledger::LegacyResultCallback callback);
 
-  std::string GetWalletPassphrase(type::RewardsWalletPtr wallet);
+  std::string GetWalletPassphrase(mojom::RewardsWalletPtr wallet);
 
   void FetchBalance(ledger::FetchBalanceCallback callback);
 
@@ -49,10 +49,10 @@ class Wallet {
 
   void DisconnectAllWallets(ledger::LegacyResultCallback callback);
 
-  type::RewardsWalletPtr GetWallet();
-  type::RewardsWalletPtr GetWallet(bool* corrupted);
+  mojom::RewardsWalletPtr GetWallet();
+  mojom::RewardsWalletPtr GetWallet(bool* corrupted);
 
-  bool SetWallet(type::RewardsWalletPtr wallet);
+  bool SetWallet(mojom::RewardsWalletPtr wallet);
 
   void LinkRewardsWallet(const std::string& destination_payment_id,
                          ledger::PostSuggestionsClaimCallback callback);
@@ -63,13 +63,13 @@ class Wallet {
                        ledger::ExternalWalletAuthorizationCallback callback);
 
   void OnClaimWallet(ledger::PostSuggestionsClaimCallback callback,
-                     type::Result result);
+                     mojom::Result result);
 
   void OnCreateWalletIfNecessary(
       ledger::ExternalWalletAuthorizationCallback callback,
       const std::string& wallet_type,
       const base::flat_map<std::string, std::string>& args,
-      type::Result result);
+      mojom::Result result);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<WalletCreate> create_;

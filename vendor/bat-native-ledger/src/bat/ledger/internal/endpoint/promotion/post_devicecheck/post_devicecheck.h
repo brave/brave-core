@@ -37,7 +37,7 @@ namespace endpoint {
 namespace promotion {
 
 using PostDevicecheckCallback =
-    base::OnceCallback<void(type::Result result, const std::string& nonce)>;
+    base::OnceCallback<void(mojom::Result result, const std::string& nonce)>;
 
 class PostDevicecheck {
  public:
@@ -51,14 +51,12 @@ class PostDevicecheck {
 
   std::string GeneratePayload(const std::string& key);
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(const int status_code);
 
-  type::Result ParseBody(
-      const std::string& body,
-      std::string* nonce);
+  mojom::Result ParseBody(const std::string& body, std::string* nonce);
 
   void OnRequest(PostDevicecheckCallback callback,
-                 const type::UrlResponse& response);
+                 const mojom::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

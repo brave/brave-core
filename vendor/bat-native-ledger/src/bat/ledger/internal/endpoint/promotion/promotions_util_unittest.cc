@@ -20,21 +20,21 @@ class PromotionsUtilTest : public testing::Test {
 };
 
 TEST(PromotionsUtilTest, GetServerUrlDevelopment) {
-  ledger::_environment = type::Environment::DEVELOPMENT;
+  ledger::_environment = mojom::Environment::DEVELOPMENT;
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url,
             base::StrCat({BUILDFLAG(REWARDS_GRANT_DEV_ENDPOINT), "/test"}));
 }
 
 TEST(PromotionsUtilTest, GetServerUrlStaging) {
-  ledger::_environment = type::Environment::STAGING;
+  ledger::_environment = mojom::Environment::STAGING;
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url,
             base::StrCat({BUILDFLAG(REWARDS_GRANT_STAGING_ENDPOINT), "/test"}));
 }
 
 TEST(PromotionsUtilTest, GetServerUrlProduction) {
-  ledger::_environment = type::Environment::PRODUCTION;
+  ledger::_environment = mojom::Environment::PRODUCTION;
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url,
             base::StrCat({BUILDFLAG(REWARDS_GRANT_PROD_ENDPOINT), "/test"}));

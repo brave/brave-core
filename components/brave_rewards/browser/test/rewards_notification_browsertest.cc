@@ -368,15 +368,11 @@ IN_PROC_BROWSER_TEST_F(RewardsNotificationBrowserTest,
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
 
   contribution_->TipViaCode("duckduckgo.com", 20.0,
-                            ledger::type::PublisherStatus::UPHOLD_VERIFIED, 0,
+                            ledger::mojom::PublisherStatus::UPHOLD_VERIFIED, 0,
                             true);
 
   contribution_->TipViaCode(
-      "brave.com",
-      50.0,
-      ledger::type::PublisherStatus::NOT_VERIFIED,
-      0,
-      true);
+      "brave.com", 50.0, ledger::mojom::PublisherStatus::NOT_VERIFIED, 0, true);
 
   CheckInsufficientFundsForTesting();
   WaitForInsufficientFundsNotification();
@@ -397,15 +393,11 @@ IN_PROC_BROWSER_TEST_F(RewardsNotificationBrowserTest,
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
 
   contribution_->TipViaCode("duckduckgo.com", 50.0,
-                            ledger::type::PublisherStatus::UPHOLD_VERIFIED, 0,
+                            ledger::mojom::PublisherStatus::UPHOLD_VERIFIED, 0,
                             true);
 
   contribution_->TipViaCode(
-      "brave.com",
-      50.0,
-      ledger::type::PublisherStatus::NOT_VERIFIED,
-      0,
-      true);
+      "brave.com", 50.0, ledger::mojom::PublisherStatus::NOT_VERIFIED, 0, true);
 
   CheckInsufficientFundsForTesting();
   WaitForInsufficientFundsNotification();

@@ -63,55 +63,55 @@ class GetDrainTest : public testing::Test {
 
 TEST_F(GetDrainTest, DrainComplete) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke([this](type::UrlRequestPtr request,
+      .WillByDefault(Invoke([this](mojom::UrlRequestPtr request,
                                    client::LoadURLCallback callback) {
-        type::UrlResponse response;
+        mojom::UrlResponse response;
         response.status_code = 200;
         response.url = request->url;
         response.body = MakeDrainBody(request->url, "complete");
         std::move(callback).Run(response);
       }));
 
-  drain_->Request(test_drain_id_, [](const type::Result result,
-                                     const type::DrainStatus status) {
-    EXPECT_EQ(result, type::Result::LEDGER_OK);
-    EXPECT_EQ(status, type::DrainStatus::COMPLETE);
+  drain_->Request(test_drain_id_, [](const mojom::Result result,
+                                     const mojom::DrainStatus status) {
+    EXPECT_EQ(result, mojom::Result::LEDGER_OK);
+    EXPECT_EQ(status, mojom::DrainStatus::COMPLETE);
   });
 }
 
 TEST_F(GetDrainTest, DrainPending) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke([this](type::UrlRequestPtr request,
+      .WillByDefault(Invoke([this](mojom::UrlRequestPtr request,
                                    client::LoadURLCallback callback) {
-        type::UrlResponse response;
+        mojom::UrlResponse response;
         response.status_code = 200;
         response.url = request->url;
         response.body = MakeDrainBody(request->url, "pending");
         std::move(callback).Run(response);
       }));
 
-  drain_->Request(test_drain_id_, [](const type::Result result,
-                                     const type::DrainStatus status) {
-    EXPECT_EQ(result, type::Result::LEDGER_OK);
-    EXPECT_EQ(status, type::DrainStatus::PENDING);
+  drain_->Request(test_drain_id_, [](const mojom::Result result,
+                                     const mojom::DrainStatus status) {
+    EXPECT_EQ(result, mojom::Result::LEDGER_OK);
+    EXPECT_EQ(status, mojom::DrainStatus::PENDING);
   });
 }
 
 TEST_F(GetDrainTest, DrainInvalidResponse) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke([this](type::UrlRequestPtr request,
+      .WillByDefault(Invoke([this](mojom::UrlRequestPtr request,
                                    client::LoadURLCallback callback) {
-        type::UrlResponse response;
+        mojom::UrlResponse response;
         response.status_code = 200;
         response.url = request->url;
         response.body = MakeDrainBody(request->url, "thisdoesnotexist");
         std::move(callback).Run(response);
       }));
 
-  drain_->Request(test_drain_id_, [](const type::Result result,
-                                     const type::DrainStatus status) {
-    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-    EXPECT_EQ(status, type::DrainStatus::INVALID);
+  drain_->Request(test_drain_id_, [](const mojom::Result result,
+                                     const mojom::DrainStatus status) {
+    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
+    EXPECT_EQ(status, mojom::DrainStatus::INVALID);
   });
 }
 

@@ -40,7 +40,7 @@ std::string PostSuggestions::GeneratePayload(
   }
   data.Set("channel", redeem.publisher_key);
 
-  const bool is_sku = redeem.processor == type::ContributionProcessor::UPHOLD;
+  const bool is_sku = redeem.processor == mojom::ContributionProcessor::UPHOLD;
 
   std::string data_json;
   base::JSONWriter::Write(data, &data_json);
@@ -60,23 +60,23 @@ std::string PostSuggestions::GeneratePayload(
   return json;
 }
 
-type::Result PostSuggestions::CheckStatusCode(const int status_code) {
+mojom::Result PostSuggestions::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   if (status_code == net::HTTP_SERVICE_UNAVAILABLE) {
     BLOG(0, "No conversion rate yet in ratios service");
-    return type::Result::BAD_REGISTRATION_RESPONSE;
+    return mojom::Result::BAD_REGISTRATION_RESPONSE;
   }
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
 void PostSuggestions::Request(
@@ -87,17 +87,16 @@ void PostSuggestions::Request(
       _1,
       callback);
 
-  auto request = type::UrlRequest::New();
+  auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
   request->content = GeneratePayload(redeem);
   request->content_type = "application/json; charset=utf-8";
-  request->method = type::UrlMethod::POST;
+  request->method = mojom::UrlMethod::POST;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
-void PostSuggestions::OnRequest(
-    const type::UrlResponse& response,
-    PostSuggestionsCallback callback) {
+void PostSuggestions::OnRequest(const mojom::UrlResponse& response,
+                                PostSuggestionsCallback callback) {
   ledger::LogUrlResponse(__func__, response);
   callback(CheckStatusCode(response.status_code));
 }

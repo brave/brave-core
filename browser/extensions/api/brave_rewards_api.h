@@ -9,6 +9,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/vendor/bat-native-ledger/include/bat/ledger/mojom_structs.h"
@@ -67,9 +68,8 @@ class BraveRewardsGetPublisherInfoFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnGetPublisherInfo(
-      const ledger::type::Result result,
-      ledger::type::PublisherInfoPtr info);
+  void OnGetPublisherInfo(const ledger::mojom::Result result,
+                          ledger::mojom::PublisherInfoPtr info);
 };
 
 class BraveRewardsSetPublisherIdForTabFunction : public ExtensionFunction {
@@ -91,8 +91,8 @@ class BraveRewardsGetPublisherInfoForTabFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnGetPublisherPanelInfo(ledger::type::Result result,
-                               ledger::type::PublisherInfoPtr info);
+  void OnGetPublisherPanelInfo(ledger::mojom::Result result,
+                               ledger::mojom::PublisherInfoPtr info);
 };
 
 class BraveRewardsGetPublisherPanelInfoFunction : public ExtensionFunction {
@@ -105,9 +105,8 @@ class BraveRewardsGetPublisherPanelInfoFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnGetPublisherPanelInfo(
-      const ledger::type::Result result,
-      ledger::type::PublisherInfoPtr info);
+  void OnGetPublisherPanelInfo(const ledger::mojom::Result result,
+                               ledger::mojom::PublisherInfoPtr info);
 };
 
 class BraveRewardsSavePublisherInfoFunction : public ExtensionFunction {
@@ -120,7 +119,7 @@ class BraveRewardsSavePublisherInfoFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnSavePublisherInfo(const ledger::type::Result result);
+  void OnSavePublisherInfo(const ledger::mojom::Result result);
 };
 
 class BraveRewardsTipSiteFunction : public ExtensionFunction {
@@ -144,10 +143,9 @@ class BraveRewardsTipUserFunction : public ExtensionFunction {
 
  private:
   void OnProcessStarted(const std::string& publisher_key);
-  void OnTipUserGetPublisherInfo(
-      const ledger::type::Result result,
-      ledger::type::PublisherInfoPtr info);
-  void OnTipUserSavePublisherInfo(const ledger::type::Result result);
+  void OnTipUserGetPublisherInfo(const ledger::mojom::Result result,
+                                 ledger::mojom::PublisherInfoPtr info);
+  void OnTipUserSavePublisherInfo(const ledger::mojom::Result result);
   void ShowTipDialog();
 };
 
@@ -171,7 +169,7 @@ class BraveRewardsGetRewardsParametersFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnGetRewardsParameters(ledger::type::RewardsParametersPtr parameters);
+  void OnGetRewardsParameters(ledger::mojom::RewardsParametersPtr parameters);
 };
 
 class BraveRewardsGetBalanceReportFunction : public ExtensionFunction {
@@ -184,9 +182,8 @@ class BraveRewardsGetBalanceReportFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnBalanceReport(
-      const ledger::type::Result result,
-      ledger::type::BalanceReportInfoPtr report);
+  void OnBalanceReport(const ledger::mojom::Result result,
+                       ledger::mojom::BalanceReportInfoPtr report);
 };
 
 class BraveRewardsIncludeInAutoContributionFunction : public ExtensionFunction {
@@ -219,12 +216,11 @@ class BraveRewardsClaimPromotionFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnClaimPromotion(
-      const std::string& promotion_id,
-      const ledger::type::Result result,
-      const std::string& captcha_image,
-      const std::string& hint,
-      const std::string& captcha_id);
+  void OnClaimPromotion(const std::string& promotion_id,
+                        const ledger::mojom::Result result,
+                        const std::string& captcha_image,
+                        const std::string& hint,
+                        const std::string& captcha_id);
 };
 
 class BraveRewardsAttestPromotionFunction : public ExtensionFunction {
@@ -237,10 +233,9 @@ class BraveRewardsAttestPromotionFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnAttestPromotion(
-      const std::string& promotion_id,
-      const ledger::type::Result result,
-      ledger::type::PromotionPtr promotion);
+  void OnAttestPromotion(const std::string& promotion_id,
+                         const ledger::mojom::Result result,
+                         ledger::mojom::PromotionPtr promotion);
 };
 
 class BraveRewardsGetPendingContributionsTotalFunction
@@ -301,7 +296,7 @@ class BraveRewardsSaveRecurringTipFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnSaveRecurringTip(ledger::type::Result result);
+  void OnSaveRecurringTip(ledger::mojom::Result result);
 };
 
 class BraveRewardsRemoveRecurringTipFunction :
@@ -325,7 +320,7 @@ class BraveRewardsGetRecurringTipsFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-    void OnGetRecurringTips(ledger::type::PublisherInfoList list);
+  void OnGetRecurringTips(std::vector<ledger::mojom::PublisherInfoPtr> list);
 };
 
 class BraveRewardsGetPublisherBannerFunction : public ExtensionFunction {
@@ -339,7 +334,7 @@ class BraveRewardsGetPublisherBannerFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnPublisherBanner(ledger::type::PublisherBannerPtr banner);
+  void OnPublisherBanner(ledger::mojom::PublisherBannerPtr banner);
 };
 
 class BraveRewardsRefreshPublisherFunction : public ExtensionFunction {
@@ -352,9 +347,8 @@ class BraveRewardsRefreshPublisherFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnRefreshPublisher(
-      const ledger::type::PublisherStatus status,
-      const std::string& publisher_key);
+  void OnRefreshPublisher(const ledger::mojom::PublisherStatus status,
+                          const std::string& publisher_key);
 };
 
 class BraveRewardsGetAllNotificationsFunction : public ExtensionFunction {
@@ -403,9 +397,8 @@ class BraveRewardsFetchBalanceFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnBalance(
-      const ledger::type::Result result,
-      ledger::type::BalancePtr balance);
+  void OnBalance(const ledger::mojom::Result result,
+                 ledger::mojom::BalancePtr balance);
 };
 
 class BraveRewardsGetExternalWalletFunction : public ExtensionFunction {
@@ -418,8 +411,8 @@ class BraveRewardsGetExternalWalletFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnGetExternalWallet(const ledger::type::Result result,
-                           ledger::type::ExternalWalletPtr wallet);
+  void OnGetExternalWallet(const ledger::mojom::Result result,
+                           ledger::mojom::ExternalWalletPtr wallet);
 };
 
 class BraveRewardsDisconnectWalletFunction : public ExtensionFunction {
@@ -496,7 +489,7 @@ class BraveRewardsGetAnonWalletStatusFunction
   ResponseAction Run() override;
 
  private:
-  void OnGetAnonWalletStatus(const ledger::type::Result result);
+  void OnGetAnonWalletStatus(const ledger::mojom::Result result);
 };
 
 class BraveRewardsIsInitializedFunction : public ExtensionFunction {
@@ -572,7 +565,7 @@ class BraveRewardsGetPrefsFunction : public ExtensionFunction {
 
  private:
   void GetAutoContributePropertiesCallback(
-      ledger::type::AutoContributePropertiesPtr properties);
+      ledger::mojom::AutoContributePropertiesPtr properties);
 };
 
 class BraveRewardsUpdatePrefsFunction : public ExtensionFunction {

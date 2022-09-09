@@ -120,7 +120,7 @@ class RewardsBrowserTest : public InProcessBrowserTest {
     double total = -1.0;
     base::RunLoop run_loop;
     rewards_service_->FetchBalance(base::BindLambdaForTesting(
-        [&](ledger::type::Result result, ledger::type::BalancePtr balance) {
+        [&](ledger::mojom::Result result, ledger::mojom::BalancePtr balance) {
           total = balance ? balance->total : -1.0;
           run_loop.Quit();
         }));
@@ -264,10 +264,10 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
   response_->ClearRequests();
 
   base::RunLoop run_loop;
-  auto test_callback = [&](const ledger::type::Result result,
-                           ledger::type::ExternalWalletPtr wallet) {
+  auto test_callback = [&](const ledger::mojom::Result result,
+                           ledger::mojom::ExternalWalletPtr wallet) {
     auto requests = response_->GetRequests();
-    EXPECT_EQ(result, ledger::type::Result::LEDGER_OK);
+    EXPECT_EQ(result, ledger::mojom::Result::LEDGER_OK);
     EXPECT_FALSE(requests.empty());
 
     // Should not attempt to call /v2/wallet/UUID/claim endpoint
@@ -296,10 +296,10 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
   response_->ClearRequests();
 
   base::RunLoop run_loop;
-  auto test_callback = [&](const ledger::type::Result result,
-                           ledger::type::ExternalWalletPtr wallet) {
+  auto test_callback = [&](const ledger::mojom::Result result,
+                           ledger::mojom::ExternalWalletPtr wallet) {
     auto requests = response_->GetRequests();
-    EXPECT_EQ(result, ledger::type::Result::LEDGER_OK);
+    EXPECT_EQ(result, ledger::mojom::Result::LEDGER_OK);
 
     // Should not attempt to call /v2/wallet/UUID/claim endpoint
     // since by default the wallet should contain 0 `user_funds`

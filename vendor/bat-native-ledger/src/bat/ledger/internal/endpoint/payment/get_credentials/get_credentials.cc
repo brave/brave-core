@@ -36,68 +36,67 @@ std::string GetCredentials::GetUrl(
   return GetServerUrl(path);
 }
 
-type::Result GetCredentials::CheckStatusCode(const int status_code) {
+mojom::Result GetCredentials::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_ACCEPTED) {
-    return type::Result::RETRY_SHORT;
+    return mojom::Result::RETRY_SHORT;
   }
 
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return type::Result::RETRY;
+    return mojom::Result::RETRY;
   }
 
   if (status_code == net::HTTP_NOT_FOUND) {
     BLOG(0, "Unrecognized claim id");
-    return type::Result::RETRY;
+    return mojom::Result::RETRY;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Internal server error");
-    return type::Result::RETRY;
+    return mojom::Result::RETRY;
   }
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return type::Result::RETRY;
+    return mojom::Result::RETRY;
   }
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
-type::Result GetCredentials::ParseBody(
-    const std::string& body,
-    type::CredsBatch* batch) {
+mojom::Result GetCredentials::ParseBody(const std::string& body,
+                                        mojom::CredsBatch* batch) {
   DCHECK(batch);
   absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return type::Result::RETRY;
+    return mojom::Result::RETRY;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   auto* batch_proof = dict.FindString("batchProof");
   if (!batch_proof) {
     BLOG(0, "Missing batch proof");
-    return type::Result::RETRY;
+    return mojom::Result::RETRY;
   }
 
   auto* signed_creds = dict.FindList("signedCreds");
   if (!signed_creds) {
     BLOG(0, "Missing signed creds");
-    return type::Result::RETRY;
+    return mojom::Result::RETRY;
   }
 
   auto* public_key = dict.FindString("publicKey");
   if (!public_key) {
     BLOG(0, "Missing public key");
-    return type::Result::RETRY;
+    return mojom::Result::RETRY;
   }
 
   batch->public_key = *public_key;
   batch->batch_proof = *batch_proof;
   base::JSONWriter::Write(*signed_creds, &batch->signed_creds);
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
 void GetCredentials::Request(
@@ -107,22 +106,22 @@ void GetCredentials::Request(
   auto url_callback = base::BindOnce(
       &GetCredentials::OnRequest, base::Unretained(this), std::move(callback));
 
-  auto request = type::UrlRequest::New();
+  auto request = mojom::UrlRequest::New();
   request->url = GetUrl(order_id, item_id);
   ledger_->LoadURL(std::move(request), std::move(url_callback));
 }
 
 void GetCredentials::OnRequest(GetCredentialsCallback callback,
-                               const type::UrlResponse& response) {
+                               const mojom::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
 
-  type::Result result = CheckStatusCode(response.status_code);
-  if (result != type::Result::LEDGER_OK) {
+  mojom::Result result = CheckStatusCode(response.status_code);
+  if (result != mojom::Result::LEDGER_OK) {
     std::move(callback).Run(result, nullptr);
     return;
   }
 
-  auto batch = type::CredsBatch::New();
+  auto batch = mojom::CredsBatch::New();
   result = ParseBody(response.body, batch.get());
   std::move(callback).Run(result, std::move(batch));
 }

@@ -14,35 +14,35 @@
 namespace ledger {
 namespace database {
 
-using GetCredsBatchCallback = std::function<void(type::CredsBatchPtr)>;
-using GetCredsBatchListCallback = std::function<void(type::CredsBatchList)>;
+using GetCredsBatchCallback = std::function<void(mojom::CredsBatchPtr)>;
+using GetCredsBatchListCallback =
+    std::function<void(std::vector<mojom::CredsBatchPtr>)>;
 
 class DatabaseCredsBatch: public DatabaseTable {
  public:
   explicit DatabaseCredsBatch(LedgerImpl* ledger);
   ~DatabaseCredsBatch() override;
 
-  void InsertOrUpdate(type::CredsBatchPtr creds,
+  void InsertOrUpdate(mojom::CredsBatchPtr creds,
                       ledger::LegacyResultCallback callback);
 
-  void GetRecordByTrigger(
-      const std::string& trigger_id,
-      const type::CredsBatchType trigger_type,
-      GetCredsBatchCallback callback);
+  void GetRecordByTrigger(const std::string& trigger_id,
+                          const mojom::CredsBatchType trigger_type,
+                          GetCredsBatchCallback callback);
 
-  void SaveSignedCreds(type::CredsBatchPtr creds,
+  void SaveSignedCreds(mojom::CredsBatchPtr creds,
                        ledger::LegacyResultCallback callback);
 
   void GetAllRecords(GetCredsBatchListCallback callback);
 
   void UpdateStatus(const std::string& trigger_id,
-                    type::CredsBatchType trigger_type,
-                    type::CredsBatchStatus status,
+                    mojom::CredsBatchType trigger_type,
+                    mojom::CredsBatchStatus status,
                     ledger::LegacyResultCallback callback);
 
   void UpdateRecordsStatus(const std::vector<std::string>& trigger_ids,
-                           type::CredsBatchType trigger_type,
-                           type::CredsBatchStatus status,
+                           mojom::CredsBatchType trigger_type,
+                           mojom::CredsBatchStatus status,
                            ledger::LegacyResultCallback callback);
 
   void GetRecordsByTriggers(
@@ -50,13 +50,11 @@ class DatabaseCredsBatch: public DatabaseTable {
       GetCredsBatchListCallback callback);
 
  private:
-  void OnGetRecordByTrigger(
-      type::DBCommandResponsePtr response,
-      GetCredsBatchCallback callback);
+  void OnGetRecordByTrigger(mojom::DBCommandResponsePtr response,
+                            GetCredsBatchCallback callback);
 
-  void OnGetRecords(
-      type::DBCommandResponsePtr response,
-      GetCredsBatchListCallback callback);
+  void OnGetRecords(mojom::DBCommandResponsePtr response,
+                    GetCredsBatchListCallback callback);
 };
 
 }  // namespace database

@@ -22,33 +22,34 @@ namespace client {
 
 using FetchIconCallback = std::function<void(bool, const std::string&)>;
 
-using LegacyLoadURLCallback = std::function<void(const type::UrlResponse&)>;
+using LegacyLoadURLCallback = std::function<void(const mojom::UrlResponse&)>;
 
-using LoadURLCallback = base::OnceCallback<void(const type::UrlResponse&)>;
+using LoadURLCallback = base::OnceCallback<void(const mojom::UrlResponse&)>;
 
 using OnLoadCallback =
-    std::function<void(const type::Result, const std::string&)>;
+    std::function<void(const mojom::Result, const std::string&)>;
 
 using LegacyRunDBTransactionCallback =
-    std::function<void(type::DBCommandResponsePtr)>;
+    std::function<void(mojom::DBCommandResponsePtr)>;
 
 using RunDBTransactionCallback =
-    base::OnceCallback<void(type::DBCommandResponsePtr)>;
+    base::OnceCallback<void(mojom::DBCommandResponsePtr)>;
 
 using GetCreateScriptCallback =
     std::function<void(const std::string&, const int)>;
 
-using LegacyResultCallback = std::function<void(type::Result)>;
+using LegacyResultCallback = std::function<void(mojom::Result)>;
 
-using ResultCallback = base::OnceCallback<void(type::Result)>;
+using ResultCallback = base::OnceCallback<void(mojom::Result)>;
 
-using GetPromotionListCallback = std::function<void(type::PromotionList)>;
+using GetPromotionListCallback =
+    std::function<void(std::vector<mojom::PromotionPtr>)>;
 
 using TransactionCallback =
-    std::function<void(const type::Result, const std::string&)>;
+    std::function<void(const mojom::Result, const std::string&)>;
 
 using GetServerPublisherInfoCallback =
-    std::function<void(type::ServerPublisherInfoPtr)>;
+    std::function<void(mojom::ServerPublisherInfoPtr)>;
 
 }  // namespace client
 
@@ -56,18 +57,16 @@ class LEDGER_EXPORT LedgerClient {
  public:
   virtual ~LedgerClient() = default;
 
-  virtual void OnReconcileComplete(
-      const type::Result result,
-      type::ContributionInfoPtr contribution) = 0;
+  virtual void OnReconcileComplete(const mojom::Result result,
+                                   mojom::ContributionInfoPtr contribution) = 0;
 
   virtual void LoadLedgerState(client::OnLoadCallback callback) = 0;
 
   virtual void LoadPublisherState(client::OnLoadCallback callback) = 0;
 
-  virtual void OnPanelPublisherInfo(
-      type::Result result,
-      type::PublisherInfoPtr publisher_info,
-      uint64_t windowId) = 0;
+  virtual void OnPanelPublisherInfo(mojom::Result result,
+                                    mojom::PublisherInfoPtr publisher_info,
+                                    uint64_t windowId) = 0;
 
   virtual void OnPublisherRegistryUpdated() = 0;
 
@@ -80,7 +79,7 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual std::string URIEncode(const std::string& value) = 0;
 
-  virtual void LoadURL(type::UrlRequestPtr request,
+  virtual void LoadURL(mojom::UrlRequestPtr request,
                        client::LoadURLCallback callback) = 0;
 
   virtual void Log(
@@ -89,7 +88,8 @@ class LEDGER_EXPORT LedgerClient {
       const int verbose_level,
       const std::string& message) = 0;
 
-  virtual void PublisherListNormalized(type::PublisherInfoList list) = 0;
+  virtual void PublisherListNormalized(
+      std::vector<mojom::PublisherInfoPtr> list) = 0;
 
   virtual void SetBooleanState(const std::string& name, bool value) = 0;
 
@@ -132,7 +132,7 @@ class LEDGER_EXPORT LedgerClient {
   virtual uint64_t GetUint64Option(const std::string& name) const = 0;
 
   virtual void OnContributeUnverifiedPublishers(
-      type::Result result,
+      mojom::Result result,
       const std::string& publisher_key,
       const std::string& publisher_name) = 0;
 
@@ -143,18 +143,18 @@ class LEDGER_EXPORT LedgerClient {
                                 const std::vector<std::string>& args,
                                 client::LegacyResultCallback callback) = 0;
 
-  virtual type::ClientInfoPtr GetClientInfo() = 0;
+  virtual mojom::ClientInfoPtr GetClientInfo() = 0;
 
   virtual void UnblindedTokensReady() = 0;
 
   virtual void ReconcileStampReset() = 0;
 
-  virtual void RunDBTransaction(type::DBTransactionPtr transaction,
+  virtual void RunDBTransaction(mojom::DBTransactionPtr transaction,
                                 client::RunDBTransactionCallback callback) = 0;
 
   virtual void GetCreateScript(client::GetCreateScriptCallback callback) = 0;
 
-  virtual void PendingContributionSaved(const type::Result result) = 0;
+  virtual void PendingContributionSaved(const mojom::Result result) = 0;
 
   virtual void ClearAllNotifications() = 0;
 

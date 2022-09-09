@@ -25,29 +25,26 @@ class ContributionExternalWallet {
   void Process(const std::string& contribution_id,
                ledger::LegacyResultCallback callback);
 
-  void Retry(type::ContributionInfoPtr contribution,
+  void Retry(mojom::ContributionInfoPtr contribution,
              ledger::LegacyResultCallback callback);
 
  private:
-  void ContributionInfo(type::ContributionInfoPtr contribution,
+  void ContributionInfo(mojom::ContributionInfoPtr contribution,
                         ledger::LegacyResultCallback callback);
 
-  void OnAC(
-      const type::Result result,
-      const std::string& contribution_id);
+  void OnAC(const mojom::Result result, const std::string& contribution_id);
 
-  void OnSavePendingContribution(
-      const type::Result result);
+  void OnSavePendingContribution(const mojom::Result result);
 
-  void OnServerPublisherInfo(type::ServerPublisherInfoPtr info,
+  void OnServerPublisherInfo(mojom::ServerPublisherInfoPtr info,
                              const std::string& contribution_id,
                              double amount,
-                             type::RewardsType type,
-                             type::ContributionProcessor processor,
+                             mojom::RewardsType type,
+                             mojom::ContributionProcessor processor,
                              bool single_publisher,
                              ledger::LegacyResultCallback callback);
 
-  void Completed(type::Result result,
+  void Completed(mojom::Result result,
                  bool single_publisher,
                  ledger::LegacyResultCallback callback);
 

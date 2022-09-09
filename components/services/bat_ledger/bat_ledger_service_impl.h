@@ -34,7 +34,7 @@ class BatLedgerServiceImpl : public mojom::BatLedgerService {
       mojo::PendingAssociatedReceiver<mojom::BatLedger> bat_ledger,
       CreateCallback callback) override;
 
-  void SetEnvironment(ledger::type::Environment environment) override;
+  void SetEnvironment(ledger::mojom::Environment environment) override;
   void SetDebug(bool isDebug) override;
   void SetReconcileInterval(const int32_t interval) override;
   void SetRetryInterval(int32_t interval) override;

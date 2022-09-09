@@ -32,12 +32,11 @@ class RewardsBrowserTestContribution
       Browser* browser,
       brave_rewards::RewardsServiceImpl* rewards_service);
 
-  void TipViaCode(
-      const std::string& publisher_key,
-      const double amount,
-      const ledger::type::PublisherStatus status,
-      const int32_t number_of_contributions = 0,
-      const bool recurring = false);
+  void TipViaCode(const std::string& publisher_key,
+                  const double amount,
+                  const ledger::mojom::PublisherStatus status,
+                  const int32_t number_of_contributions = 0,
+                  const bool recurring = false);
 
   void TipPublisher(const GURL& url,
                     rewards_browsertest_util::TipAction tip_action,
@@ -64,8 +63,8 @@ class RewardsBrowserTestContribution
   void UpdateContributionBalance(
       const double amount,
       const bool verified = false,
-      const ledger::type::ContributionProcessor processor =
-          ledger::type::ContributionProcessor::BRAVE_TOKENS);
+      const ledger::mojom::ContributionProcessor processor =
+          ledger::mojom::ContributionProcessor::BRAVE_TOKENS);
 
   void WaitForMultipleTipReconcileCompleted(const int32_t needed);
 
@@ -78,26 +77,25 @@ class RewardsBrowserTestContribution
   void WaitForMultipleACReconcileCompleted(
     const int32_t needed);
 
-  ledger::type::Result GetACStatus();
+  ledger::mojom::Result GetACStatus();
 
-  std::vector<ledger::type::Result> GetMultipleACStatus();
+  std::vector<ledger::mojom::Result> GetMultipleACStatus();
 
-  void SetUpUpholdWallet(
-      brave_rewards::RewardsServiceImpl* rewards_service,
-      const double balance,
-      const ledger::type::WalletStatus status =
-        ledger::type::WalletStatus::VERIFIED);
+  void SetUpUpholdWallet(brave_rewards::RewardsServiceImpl* rewards_service,
+                         const double balance,
+                         const ledger::mojom::WalletStatus status =
+                             ledger::mojom::WalletStatus::VERIFIED);
 
 #if BUILDFLAG(ENABLE_GEMINI_WALLET)
   void SetUpGeminiWallet(brave_rewards::RewardsServiceImpl* rewards_service,
                          const double balance,
-                         const ledger::type::WalletStatus status =
-                             ledger::type::WalletStatus::VERIFIED);
+                         const ledger::mojom::WalletStatus status =
+                             ledger::mojom::WalletStatus::VERIFIED);
 #endif
 
-  std::vector<ledger::type::Result> GetMultipleTipStatus();
+  std::vector<ledger::mojom::Result> GetMultipleTipStatus();
 
-  ledger::type::Result GetTipStatus();
+  ledger::mojom::Result GetTipStatus();
 
  private:
   content::WebContents* contents();
@@ -106,15 +104,15 @@ class RewardsBrowserTestContribution
 
   void OnPendingContributionSaved(
       brave_rewards::RewardsService* rewards_service,
-      const ledger::type::Result result) override;
+      const ledger::mojom::Result result) override;
 
   void OnReconcileComplete(
       brave_rewards::RewardsService* rewards_service,
-      const ledger::type::Result result,
+      const ledger::mojom::Result result,
       const std::string& contribution_id,
       const double amount,
-      const ledger::type::RewardsType type,
-      const ledger::type::ContributionProcessor processor) override;
+      const ledger::mojom::RewardsType type,
+      const ledger::mojom::ContributionProcessor processor) override;
 
   void WaitForRecurringTipToBeSaved();
 
@@ -133,8 +131,8 @@ class RewardsBrowserTestContribution
 
   bool tip_reconcile_completed_ = false;
   std::unique_ptr<base::RunLoop> wait_for_tip_completed_loop_;
-  ledger::type::Result tip_reconcile_status_ =
-      ledger::type::Result::LEDGER_ERROR;
+  ledger::mojom::Result tip_reconcile_status_ =
+      ledger::mojom::Result::LEDGER_ERROR;
   bool pending_tip_saved_ = false;
   std::unique_ptr<base::RunLoop> wait_for_pending_tip_saved_loop_;
   bool recurring_tip_saved_ = false;
@@ -143,16 +141,16 @@ class RewardsBrowserTestContribution
   std::unique_ptr<base::RunLoop> wait_for_multiple_tip_completed_loop_;
   int32_t multiple_tip_reconcile_count_ = 0;
   int32_t multiple_tip_reconcile_needed_ = 0;
-  std::vector<ledger::type::Result> multiple_tip_reconcile_status_ = {};
+  std::vector<ledger::mojom::Result> multiple_tip_reconcile_status_ = {};
   bool multiple_ac_reconcile_completed_ = false;
   std::unique_ptr<base::RunLoop> wait_for_multiple_ac_completed_loop_;
   int32_t multiple_ac_reconcile_count_ = 0;
   int32_t multiple_ac_reconcile_needed_ = 0;
-  std::vector<ledger::type::Result> multiple_ac_reconcile_status_ = {};
+  std::vector<ledger::mojom::Result> multiple_ac_reconcile_status_ = {};
   bool ac_reconcile_completed_ = false;
   std::unique_ptr<base::RunLoop> wait_for_ac_completed_loop_;
-  ledger::type::Result ac_reconcile_status_ =
-      ledger::type::Result::LEDGER_ERROR;
+  ledger::mojom::Result ac_reconcile_status_ =
+      ledger::mojom::Result::LEDGER_ERROR;
 
   raw_ptr<Browser> browser_ = nullptr;  // NOT OWNED
   raw_ptr<brave_rewards::RewardsServiceImpl> rewards_service_ =

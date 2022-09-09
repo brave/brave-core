@@ -36,8 +36,8 @@ std::string NameSuffixGenerator(const TestParamInfo<ParamType>& info) {
 // clang-format off
 using GetWalletParamType = std::tuple<
     std::string,        // test name suffix
-    type::UrlResponse,  // Rewards Get Wallet response
-    type::Result,       // expected result
+    mojom::UrlResponse,  // Rewards Get Wallet response
+    mojom::Result,       // expected result
     std::string,        // expected custodian
     bool                // expected linked
 >;
@@ -64,33 +64,33 @@ INSTANTIATE_TEST_SUITE_P(
   Values(
     GetWalletParamType{
       "ServerError400",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_BAD_REQUEST,
         {},
         {}
       },
-      type::Result::LEDGER_ERROR,
+      mojom::Result::LEDGER_ERROR,
       "",
       false
     },
     GetWalletParamType{
       "ServerError404",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_NOT_FOUND,
         {},
         {}
       },
-      type::Result::LEDGER_ERROR,
+      mojom::Result::LEDGER_ERROR,
       "",
       false
     },
     GetWalletParamType{
       "ServerOK_not_linked",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
@@ -107,13 +107,13 @@ INSTANTIATE_TEST_SUITE_P(
         )",
         {}
       },
-      type::Result::LEDGER_OK,
+      mojom::Result::LEDGER_OK,
       "",
       false
     },
     GetWalletParamType{
       "ServerOK_was_linked_but_currently_disconnected",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
@@ -135,13 +135,13 @@ INSTANTIATE_TEST_SUITE_P(
         )",
         {}
       },
-      type::Result::LEDGER_OK,
+      mojom::Result::LEDGER_OK,
       constant::kWalletUphold,
       false
     },
     GetWalletParamType{
       "ServerOK_fully_linked",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
@@ -163,7 +163,7 @@ INSTANTIATE_TEST_SUITE_P(
         )",
         {}
       },
-      type::Result::LEDGER_OK,
+      mojom::Result::LEDGER_OK,
       constant::kWalletUphold,
       true
     }),
@@ -180,12 +180,12 @@ TEST_P(GetWalletTest, Paths) {
 
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
-          [&](type::UrlRequestPtr, client::LoadURLCallback callback) {
+          [&](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
             std::move(callback).Run(rewards_services_get_wallet_response);
           });
 
   get_wallet_->Request(
-      [&](type::Result result, const std::string& custodian, bool linked) {
+      [&](mojom::Result result, const std::string& custodian, bool linked) {
         EXPECT_EQ(result, expected_result);
         EXPECT_EQ(custodian, expected_custodian);
         EXPECT_EQ(linked, expected_linked);

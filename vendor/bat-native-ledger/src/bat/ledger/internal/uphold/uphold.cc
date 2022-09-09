@@ -61,12 +61,12 @@ void Uphold::Initialize() {
 }
 
 void Uphold::StartContribution(const std::string& contribution_id,
-                               type::ServerPublisherInfoPtr info,
+                               mojom::ServerPublisherInfoPtr info,
                                double amount,
                                ledger::LegacyResultCallback callback) {
   if (!info) {
     BLOG(0, "Publisher info is null");
-    ContributionCompleted(type::Result::LEDGER_ERROR, "", contribution_id,
+    ContributionCompleted(mojom::Result::LEDGER_ERROR, "", contribution_id,
                           amount, "", callback);
     return;
   }
@@ -85,13 +85,13 @@ void Uphold::StartContribution(const std::string& contribution_id,
   transfer_->Start(transaction, contribution_callback);
 }
 
-void Uphold::ContributionCompleted(type::Result result,
+void Uphold::ContributionCompleted(mojom::Result result,
                                    const std::string& transaction_id,
                                    const std::string& contribution_id,
                                    double fee,
                                    const std::string& publisher_key,
                                    ledger::LegacyResultCallback callback) {
-  if (result == type::Result::LEDGER_OK) {
+  if (result == mojom::Result::LEDGER_OK) {
     SaveTransferFee(contribution_id, fee);
 
     if (!publisher_key.empty()) {
@@ -108,12 +108,12 @@ void Uphold::FetchBalance(FetchBalanceCallback callback) {
   auto uphold_wallet = GetWallet();
   if (!uphold_wallet) {
     BLOG(1, "Uphold wallet is null.");
-    return std::move(callback).Run(type::Result::LEDGER_OK, 0.0);
+    return std::move(callback).Run(mojom::Result::LEDGER_OK, 0.0);
   }
 
-  if (uphold_wallet->status != type::WalletStatus::VERIFIED) {
+  if (uphold_wallet->status != mojom::WalletStatus::VERIFIED) {
     BLOG(1, "Uphold wallet is not VERIFIED.");
-    return std::move(callback).Run(type::Result::LEDGER_OK, 0.0);
+    return std::move(callback).Run(mojom::Result::LEDGER_OK, 0.0);
   }
 
   CheckWalletState(uphold_wallet.get());
@@ -126,33 +126,33 @@ void Uphold::FetchBalance(FetchBalanceCallback callback) {
 }
 
 void Uphold::OnFetchBalance(FetchBalanceCallback callback,
-                            const type::Result result,
+                            const mojom::Result result,
                             const double available) {
   auto uphold_wallet = GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");
-    return std::move(callback).Run(type::Result::LEDGER_ERROR, 0.0);
+    return std::move(callback).Run(mojom::Result::LEDGER_ERROR, 0.0);
   }
 
-  if (uphold_wallet->status != type::WalletStatus::VERIFIED) {
+  if (uphold_wallet->status != mojom::WalletStatus::VERIFIED) {
     BLOG(0, "Wallet status should have been VERIFIED!");
-    return std::move(callback).Run(type::Result::LEDGER_ERROR, 0.0);
+    return std::move(callback).Run(mojom::Result::LEDGER_ERROR, 0.0);
   }
 
   CheckWalletState(uphold_wallet.get());
 
-  if (result == type::Result::EXPIRED_TOKEN) {
+  if (result == mojom::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
     DisconnectWallet(ledger::notifications::kWalletDisconnected);
-    return std::move(callback).Run(type::Result::EXPIRED_TOKEN, 0.0);
+    return std::move(callback).Run(mojom::Result::EXPIRED_TOKEN, 0.0);
   }
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Couldn't get balance");
-    return std::move(callback).Run(type::Result::LEDGER_ERROR, 0.0);
+    return std::move(callback).Run(mojom::Result::LEDGER_ERROR, 0.0);
   }
 
-  std::move(callback).Run(type::Result::LEDGER_OK, available);
+  std::move(callback).Run(mojom::Result::LEDGER_OK, available);
 }
 
 void Uphold::TransferFunds(const double amount,
@@ -192,7 +192,7 @@ void Uphold::DisconnectWallet(const absl::optional<std::string>& notification) {
   const auto from = wallet->status;
   wallet = ledger::wallet::ResetWallet(std::move(wallet));
   if (manual) {
-    wallet->status = type::WalletStatus::NOT_CONNECTED;
+    wallet->status = mojom::WalletStatus::NOT_CONNECTED;
   }
   const auto to = wallet->status;
 
@@ -202,7 +202,7 @@ void Uphold::DisconnectWallet(const absl::optional<std::string>& notification) {
 
   if (!manual && !shutting_down && !notification->empty()) {
     ledger_->ledger_client()->ShowNotification(*notification, {"Uphold"},
-                                               [](type::Result) {});
+                                               [](mojom::Result) {});
   }
 
   wallet = GenerateLinks(std::move(wallet));
@@ -226,13 +226,13 @@ void Uphold::GetCapabilities(GetCapabilitiesCallback callback) {
   auto uphold_wallet = GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");
-    return std::move(callback).Run(type::Result::LEDGER_ERROR, {});
+    return std::move(callback).Run(mojom::Result::LEDGER_ERROR, {});
   }
 
-  if (uphold_wallet->status != type::WalletStatus::PENDING &&
-      uphold_wallet->status != type::WalletStatus::VERIFIED) {
+  if (uphold_wallet->status != mojom::WalletStatus::PENDING &&
+      uphold_wallet->status != mojom::WalletStatus::VERIFIED) {
     BLOG(0, "Uphold wallet is neither in PENDING, nor in VERIFIED state!");
-    return std::move(callback).Run(type::Result::LEDGER_ERROR, {});
+    return std::move(callback).Run(mojom::Result::LEDGER_ERROR, {});
   }
 
   CheckWalletState(uphold_wallet.get());
@@ -268,11 +268,11 @@ void Uphold::StartTransferFeeTimer(const std::string& fee_id, int attempts) {
                      fee_id, attempts));
 }
 
-void Uphold::OnTransferFeeCompleted(const type::Result result,
+void Uphold::OnTransferFeeCompleted(const mojom::Result result,
                                     const std::string& transaction_id,
                                     const std::string& contribution_id,
                                     int attempts) {
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     if (attempts < 3) {
       BLOG(0, "Transaction fee failed, retrying");
       StartTransferFeeTimer(contribution_id, attempts + 1);
@@ -316,11 +316,11 @@ void Uphold::OnTransferFeeTimerElapsed(const std::string& id, int attempts) {
   }
 }
 
-type::ExternalWalletPtr Uphold::GetWallet() {
+mojom::ExternalWalletPtr Uphold::GetWallet() {
   return ::ledger::wallet::GetWallet(ledger_, constant::kWalletUphold);
 }
 
-bool Uphold::SetWallet(type::ExternalWalletPtr wallet) {
+bool Uphold::SetWallet(mojom::ExternalWalletPtr wallet) {
   return ::ledger::wallet::SetWallet(ledger_, std::move(wallet),
                                      state::kWalletUphold);
 }

@@ -54,7 +54,7 @@ class RequestFor {
 
  private:
   LedgerImpl* ledger_;  // NOT OWNED
-  absl::optional<type::UrlRequestPtr> request_;
+  absl::optional<mojom::UrlRequestPtr> request_;
 };
 
 }  // namespace ledger::request

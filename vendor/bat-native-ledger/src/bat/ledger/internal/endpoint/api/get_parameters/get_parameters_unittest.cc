@@ -47,8 +47,8 @@ class GetParametersTest : public testing::Test {
 TEST_F(GetParametersTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"({
@@ -83,10 +83,10 @@ TEST_F(GetParametersTest, ServerOK) {
             std::move(callback).Run(response);
           }));
 
-  parameters_->Request(base::BindOnce([](type::Result result,
-                                         const type::RewardsParameters&
+  parameters_->Request(base::BindOnce([](mojom::Result result,
+                                         const mojom::RewardsParameters&
                                              parameters) {
-    type::RewardsParameters expected_parameters;
+    mojom::RewardsParameters expected_parameters;
     expected_parameters.rate = 0.2476573499489187;
     expected_parameters.auto_contribute_choice = 20;
     expected_parameters.auto_contribute_choices = {5, 10, 15};
@@ -96,7 +96,7 @@ TEST_F(GetParametersTest, ServerOK) {
                                          {"uphold", "off"},
                                          {"gemini", "off"},
                                          {"bitflyer", "complete"}};
-    EXPECT_EQ(result, type::Result::LEDGER_OK);
+    EXPECT_EQ(result, mojom::Result::LEDGER_OK);
     EXPECT_TRUE(expected_parameters.Equals(parameters));
   }));
 }
@@ -104,8 +104,8 @@ TEST_F(GetParametersTest, ServerOK) {
 TEST_F(GetParametersTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
@@ -113,16 +113,16 @@ TEST_F(GetParametersTest, ServerError400) {
           }));
 
   parameters_->Request(base::BindOnce(
-      [](type::Result result, const type::RewardsParameters& parameters) {
-        EXPECT_EQ(result, type::Result::RETRY_SHORT);
+      [](mojom::Result result, const mojom::RewardsParameters& parameters) {
+        EXPECT_EQ(result, mojom::Result::RETRY_SHORT);
       }));
 }
 
 TEST_F(GetParametersTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
@@ -130,16 +130,16 @@ TEST_F(GetParametersTest, ServerError500) {
           }));
 
   parameters_->Request(base::BindOnce(
-      [](type::Result result, const type::RewardsParameters& parameters) {
-        EXPECT_EQ(result, type::Result::RETRY_SHORT);
+      [](mojom::Result result, const mojom::RewardsParameters& parameters) {
+        EXPECT_EQ(result, mojom::Result::RETRY_SHORT);
       }));
 }
 
 TEST_F(GetParametersTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
@@ -147,16 +147,16 @@ TEST_F(GetParametersTest, ServerErrorRandom) {
           }));
 
   parameters_->Request(base::BindOnce(
-      [](type::Result result, const type::RewardsParameters& parameters) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+      [](mojom::Result result, const mojom::RewardsParameters& parameters) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
       }));
 }
 
 TEST_F(GetParametersTest, WrongListValues) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"({
@@ -195,11 +195,11 @@ TEST_F(GetParametersTest, WrongListValues) {
             std::move(callback).Run(response);
           }));
 
-  parameters_->Request(base::BindOnce([](type::Result result,
-                                         const type::RewardsParameters&
+  parameters_->Request(base::BindOnce([](mojom::Result result,
+                                         const mojom::RewardsParameters&
                                              parameters) {
-    type::RewardsParameters expected_parameters;
-    EXPECT_EQ(result, type::Result::LEDGER_OK);
+    mojom::RewardsParameters expected_parameters;
+    EXPECT_EQ(result, mojom::Result::LEDGER_OK);
     expected_parameters.rate = 0.2476573499489187;
     expected_parameters.auto_contribute_choice = 20;
     expected_parameters.payout_status = {{"unverified", "off"},
@@ -213,8 +213,8 @@ TEST_F(GetParametersTest, WrongListValues) {
 TEST_F(GetParametersTest, DoubleListValues) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"({
@@ -249,10 +249,10 @@ TEST_F(GetParametersTest, DoubleListValues) {
             std::move(callback).Run(response);
           }));
 
-  parameters_->Request(base::BindOnce([](type::Result result,
-                                         const type::RewardsParameters&
+  parameters_->Request(base::BindOnce([](mojom::Result result,
+                                         const mojom::RewardsParameters&
                                              parameters) {
-    type::RewardsParameters expected_parameters;
+    mojom::RewardsParameters expected_parameters;
     expected_parameters.rate = 0.2476573499489187;
     expected_parameters.auto_contribute_choice = 20;
     expected_parameters.auto_contribute_choices = {5, 10.5, 15};
@@ -262,7 +262,7 @@ TEST_F(GetParametersTest, DoubleListValues) {
                                          {"uphold", "off"},
                                          {"gemini", "off"},
                                          {"bitflyer", "complete"}};
-    EXPECT_EQ(result, type::Result::LEDGER_OK);
+    EXPECT_EQ(result, mojom::Result::LEDGER_OK);
     EXPECT_TRUE(expected_parameters.Equals(parameters));
   }));
 }

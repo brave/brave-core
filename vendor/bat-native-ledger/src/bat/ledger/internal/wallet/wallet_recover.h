@@ -29,7 +29,7 @@ class WalletRecover {
              ledger::LegacyResultCallback callback);
 
  private:
-  void OnRecover(type::Result result,
+  void OnRecover(mojom::Result result,
                  const std::string& payment_id,
                  const std::vector<uint8_t>& new_seed,
                  ledger::LegacyResultCallback callback);

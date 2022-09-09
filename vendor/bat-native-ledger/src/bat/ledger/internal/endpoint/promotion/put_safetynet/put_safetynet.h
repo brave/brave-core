@@ -40,7 +40,7 @@ class LedgerImpl;
 namespace endpoint {
 namespace promotion {
 
-using PutSafetynetCallback = base::OnceCallback<void(type::Result)>;
+using PutSafetynetCallback = base::OnceCallback<void(mojom::Result)>;
 
 class PutSafetynet {
  public:
@@ -57,10 +57,10 @@ class PutSafetynet {
 
   std::string GeneratePayload(const std::string& token);
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(const int status_code);
 
   void OnRequest(PutSafetynetCallback callback,
-                 const type::UrlResponse& response);
+                 const mojom::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

@@ -98,10 +98,8 @@ void NavigateToPublisherPage(
 
 void WaitForLedgerStop(brave_rewards::RewardsServiceImpl* rewards_service) {
   base::RunLoop run_loop;
-  rewards_service->StopLedger(
-      base::BindLambdaForTesting([&](const ledger::type::Result) {
-        run_loop.Quit();
-      }));
+  rewards_service->StopLedger(base::BindLambdaForTesting(
+      [&](const ledger::mojom::Result) { run_loop.Quit(); }));
   run_loop.Run();
 }
 
@@ -115,8 +113,8 @@ void CreateRewardsWallet(brave_rewards::RewardsServiceImpl* rewards_service) {
   base::RunLoop run_loop;
   bool success = false;
   rewards_service->CreateRewardsWallet(
-      base::BindLambdaForTesting([&](const ledger::type::Result result) {
-        success = result == ledger::type::Result::WALLET_CREATED;
+      base::BindLambdaForTesting([&](const ledger::mojom::Result result) {
+        success = result == ledger::mojom::Result::WALLET_CREATED;
         run_loop.Quit();
       }));
 

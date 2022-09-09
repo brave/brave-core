@@ -152,7 +152,7 @@ class RewardsFlagBrowserTest : public InProcessBrowserTest {
     CallbackCalled();
   }
 
-  void OnGetEnvironmentWrapper(ledger::type::Environment environment) {
+  void OnGetEnvironmentWrapper(ledger::mojom::Environment environment) {
     OnGetEnvironment(environment);
     CallbackCalled();
   }
@@ -167,7 +167,7 @@ class RewardsFlagBrowserTest : public InProcessBrowserTest {
     CallbackCalled();
   }
 
-  MOCK_METHOD1(OnGetEnvironment, void(ledger::type::Environment));
+  MOCK_METHOD1(OnGetEnvironment, void(ledger::mojom::Environment));
   MOCK_METHOD1(OnGetDebug, void(bool));
   MOCK_METHOD1(OnGetReconcileInterval, void(int32_t));
   MOCK_METHOD1(OnGetRetryInterval, void(int32_t));
@@ -182,18 +182,18 @@ class RewardsFlagBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsStaging) {
   rewards_browsertest_util::StartProcess(rewards_service_);
-  EXPECT_CALL(*this, OnGetEnvironment(ledger::type::Environment::STAGING))
+  EXPECT_CALL(*this, OnGetEnvironment(ledger::mojom::Environment::STAGING))
       .Times(2);
-  EXPECT_CALL(*this, OnGetEnvironment(
-      ledger::type::Environment::PRODUCTION)).Times(3);
+  EXPECT_CALL(*this, OnGetEnvironment(ledger::mojom::Environment::PRODUCTION))
+      .Times(3);
 
   testing::InSequence s;
 
-  rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
+  rewards_service_->SetEnvironment(ledger::mojom::Environment::PRODUCTION);
   GetEnvironment();
 
   {
-    rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
+    rewards_service_->SetEnvironment(ledger::mojom::Environment::PRODUCTION);
     base::test::ScopedCommandLine scoped_command_line;
     base::CommandLine* command_line =
         scoped_command_line.GetProcessCommandLine();
@@ -204,7 +204,7 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsStaging) {
   }
 
   {
-    rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
+    rewards_service_->SetEnvironment(ledger::mojom::Environment::PRODUCTION);
     base::test::ScopedCommandLine scoped_command_line;
     base::CommandLine* command_line =
         scoped_command_line.GetProcessCommandLine();
@@ -215,7 +215,7 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsStaging) {
   }
 
   {
-    rewards_service_->SetEnvironment(ledger::type::Environment::STAGING);
+    rewards_service_->SetEnvironment(ledger::mojom::Environment::STAGING);
     base::test::ScopedCommandLine scoped_command_line;
     base::CommandLine* command_line =
         scoped_command_line.GetProcessCommandLine();
@@ -226,7 +226,7 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsStaging) {
   }
 
   {
-    rewards_service_->SetEnvironment(ledger::type::Environment::STAGING);
+    rewards_service_->SetEnvironment(ledger::mojom::Environment::STAGING);
     base::test::ScopedCommandLine scoped_command_line;
     base::CommandLine* command_line =
         scoped_command_line.GetProcessCommandLine();
@@ -294,18 +294,18 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsDebug) {
 
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsDevelopment) {
   rewards_browsertest_util::StartProcess(rewards_service_);
-  EXPECT_CALL(*this, OnGetEnvironment(ledger::type::Environment::DEVELOPMENT))
+  EXPECT_CALL(*this, OnGetEnvironment(ledger::mojom::Environment::DEVELOPMENT))
       .Times(2);
-  EXPECT_CALL(*this, OnGetEnvironment(ledger::type::Environment::PRODUCTION))
+  EXPECT_CALL(*this, OnGetEnvironment(ledger::mojom::Environment::PRODUCTION))
       .Times(3);
 
   testing::InSequence s;
 
-  rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
+  rewards_service_->SetEnvironment(ledger::mojom::Environment::PRODUCTION);
   GetEnvironment();
 
   {
-    rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
+    rewards_service_->SetEnvironment(ledger::mojom::Environment::PRODUCTION);
     base::test::ScopedCommandLine scoped_command_line;
     base::CommandLine* command_line =
         scoped_command_line.GetProcessCommandLine();
@@ -316,7 +316,7 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsDevelopment) {
   }
 
   {
-    rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
+    rewards_service_->SetEnvironment(ledger::mojom::Environment::PRODUCTION);
     base::test::ScopedCommandLine scoped_command_line;
     base::CommandLine* command_line =
         scoped_command_line.GetProcessCommandLine();
@@ -327,7 +327,7 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsDevelopment) {
   }
 
   {
-    rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
+    rewards_service_->SetEnvironment(ledger::mojom::Environment::PRODUCTION);
     base::test::ScopedCommandLine scoped_command_line;
     base::CommandLine* command_line =
         scoped_command_line.GetProcessCommandLine();
@@ -338,7 +338,7 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsDevelopment) {
   }
 
   {
-    rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
+    rewards_service_->SetEnvironment(ledger::mojom::Environment::PRODUCTION);
     base::test::ScopedCommandLine scoped_command_line;
     base::CommandLine* command_line =
         scoped_command_line.GetProcessCommandLine();
@@ -475,14 +475,14 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsGeminiRetries) {
 
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsMultipleFlags) {
   rewards_browsertest_util::StartProcess(rewards_service_);
-  EXPECT_CALL(*this, OnGetEnvironment(ledger::type::Environment::STAGING));
+  EXPECT_CALL(*this, OnGetEnvironment(ledger::mojom::Environment::STAGING));
   EXPECT_CALL(*this, OnGetDebug(true));
   EXPECT_CALL(*this, OnGetReconcileInterval(10));
   EXPECT_CALL(*this, OnGetRetryInterval(1));
   EXPECT_CALL(*this, OnGetGeminiRetries(2));
 
   testing::InSequence s;
-  rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
+  rewards_service_->SetEnvironment(ledger::mojom::Environment::PRODUCTION);
   rewards_service_->SetDebug(true);
   rewards_service_->SetReconcileInterval(0);
   rewards_service_->SetRetryInterval(0);
@@ -503,14 +503,14 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsMultipleFlags) {
 
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsWrongInput) {
   rewards_browsertest_util::StartProcess(rewards_service_);
-  EXPECT_CALL(*this, OnGetEnvironment(ledger::type::Environment::PRODUCTION));
+  EXPECT_CALL(*this, OnGetEnvironment(ledger::mojom::Environment::PRODUCTION));
   EXPECT_CALL(*this, OnGetDebug(false));
   EXPECT_CALL(*this, OnGetReconcileInterval(0));
   EXPECT_CALL(*this, OnGetRetryInterval(0));
   EXPECT_CALL(*this, OnGetGeminiRetries(3));
 
   testing::InSequence s;
-  rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
+  rewards_service_->SetEnvironment(ledger::mojom::Environment::PRODUCTION);
   rewards_service_->SetDebug(false);
   rewards_service_->SetReconcileInterval(0);
   rewards_service_->SetRetryInterval(0);

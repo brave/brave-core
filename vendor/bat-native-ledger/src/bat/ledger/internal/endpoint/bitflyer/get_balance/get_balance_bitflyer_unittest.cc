@@ -45,8 +45,8 @@ class GetBalanceTest : public testing::Test {
 TEST_F(GetBalanceTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"({
@@ -124,8 +124,8 @@ TEST_F(GetBalanceTest, ServerOK) {
 
   balance_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      base::BindOnce([](const type::Result result, const double available) {
-        EXPECT_EQ(result, type::Result::LEDGER_OK);
+      base::BindOnce([](const mojom::Result result, const double available) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_OK);
         EXPECT_EQ(available, 4.0);
       }));
 }
@@ -133,8 +133,8 @@ TEST_F(GetBalanceTest, ServerOK) {
 TEST_F(GetBalanceTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
             response.body = "";
@@ -143,8 +143,8 @@ TEST_F(GetBalanceTest, ServerError401) {
 
   balance_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      base::BindOnce([](const type::Result result, const double available) {
-        EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
+      base::BindOnce([](const mojom::Result result, const double available) {
+        EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
         EXPECT_EQ(available, 0.0);
       }));
 }
@@ -152,8 +152,8 @@ TEST_F(GetBalanceTest, ServerError401) {
 TEST_F(GetBalanceTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
@@ -162,8 +162,8 @@ TEST_F(GetBalanceTest, ServerErrorRandom) {
 
   balance_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      base::BindOnce([](const type::Result result, const double available) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+      base::BindOnce([](const mojom::Result result, const double available) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
         EXPECT_EQ(available, 0.0);
       }));
 }

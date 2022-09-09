@@ -34,7 +34,7 @@ void WalletRecover::Start(const std::string& pass_phrase,
                           ledger::LegacyResultCallback callback) {
   if (pass_phrase.empty()) {
     BLOG(0, "Pass phrase is empty");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -46,7 +46,7 @@ void WalletRecover::Start(const std::string& pass_phrase,
 
   if (phrase_split.size() == 16) {
     BLOG(0, "Pass phrase is niceware, update to bip39");
-    callback(type::Result::CORRUPTED_DATA);
+    callback(mojom::Result::CORRUPTED_DATA);
     return;
   }
 
@@ -62,7 +62,7 @@ void WalletRecover::Start(const std::string& pass_phrase,
 
   if (result != 0 || written == 0) {
     BLOG(0, "Result: " << result << " Size: " << written);
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -77,22 +77,22 @@ void WalletRecover::Start(const std::string& pass_phrase,
       url_callback);
 }
 
-void WalletRecover::OnRecover(type::Result result,
+void WalletRecover::OnRecover(mojom::Result result,
                               const std::string& payment_id,
                               const std::vector<uint8_t>& new_seed,
                               ledger::LegacyResultCallback callback) {
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     callback(result);
     return;
   }
 
-  auto wallet = type::RewardsWallet::New();
+  auto wallet = mojom::RewardsWallet::New();
   wallet->payment_id = payment_id;
   wallet->recovery_seed = new_seed;
   const bool success = ledger_->wallet()->SetWallet(std::move(wallet));
 
   if (!success) {
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -100,7 +100,7 @@ void WalletRecover::OnRecover(type::Result result,
   ledger_->state()->SetPromotionCorruptedMigrated(true);
   ledger_->state()->SetCreationStamp(util::GetCurrentTimeStamp());
   ledger_->database()->SaveEventLog(log::kWalletRecovered, payment_id);
-  callback(type::Result::LEDGER_OK);
+  callback(mojom::Result::LEDGER_OK);
 }
 
 }  // namespace wallet

@@ -11,6 +11,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "bat/ledger/internal/endpoint/promotion/promotion_server.h"
 #include "bat/ledger/ledger.h"
@@ -32,41 +33,38 @@ class WalletBalance {
       base::flat_map<std::string, double> wallets);
 
  private:
-  void GetUnblindedTokens(
-      type::BalancePtr balance,
-      ledger::FetchBalanceCallback callback);
-
-  void OnGetUnblindedTokens(
-      type::Balance info,
-      ledger::FetchBalanceCallback callback,
-      type::UnblindedTokenList list);
-
-  void ExternalWallets(
-      type::BalancePtr balance,
-      ledger::FetchBalanceCallback callback);
-
-  void FetchBalanceGemini(type::BalancePtr balance,
+  void GetUnblindedTokens(mojom::BalancePtr balance,
                           ledger::FetchBalanceCallback callback);
 
-  void OnFetchBalanceGemini(type::Balance info,
+  void OnGetUnblindedTokens(mojom::Balance info,
                             ledger::FetchBalanceCallback callback,
-                            const type::Result result,
-                            const double balance);
+                            std::vector<mojom::UnblindedTokenPtr> list);
 
-  void FetchBalanceUphold(type::BalancePtr balance,
+  void ExternalWallets(mojom::BalancePtr balance,
+                       ledger::FetchBalanceCallback callback);
+
+  void FetchBalanceGemini(mojom::BalancePtr balance,
                           ledger::FetchBalanceCallback callback);
 
-  void OnFetchBalanceUphold(type::Balance info,
+  void OnFetchBalanceGemini(mojom::Balance info,
                             ledger::FetchBalanceCallback callback,
-                            const type::Result result,
+                            const mojom::Result result,
                             const double balance);
 
-  void FetchBalanceBitflyer(type::BalancePtr balance,
+  void FetchBalanceUphold(mojom::BalancePtr balance,
+                          ledger::FetchBalanceCallback callback);
+
+  void OnFetchBalanceUphold(mojom::Balance info,
+                            ledger::FetchBalanceCallback callback,
+                            const mojom::Result result,
+                            const double balance);
+
+  void FetchBalanceBitflyer(mojom::BalancePtr balance,
                             ledger::FetchBalanceCallback callback);
 
-  void OnFetchBalanceBitflyer(type::Balance info,
+  void OnFetchBalanceBitflyer(mojom::Balance info,
                               ledger::FetchBalanceCallback callback,
-                              const type::Result result,
+                              const mojom::Result result,
                               const double balance);
 
   LedgerImpl* ledger_;  // NOT OWNED

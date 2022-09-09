@@ -38,7 +38,7 @@ namespace endpoint {
 namespace promotion {
 
 using PostSafetynetCallback =
-    base::OnceCallback<void(type::Result result, const std::string& nonce)>;
+    base::OnceCallback<void(mojom::Result result, const std::string& nonce)>;
 
 class PostSafetynet {
  public:
@@ -52,14 +52,12 @@ class PostSafetynet {
 
   std::string GeneratePayload();
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(const int status_code);
 
-  type::Result ParseBody(
-      const std::string& body,
-      std::string* nonce);
+  mojom::Result ParseBody(const std::string& body, std::string* nonce);
 
   void OnRequest(PostSafetynetCallback callback,
-                 const type::UrlResponse& response);
+                 const mojom::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

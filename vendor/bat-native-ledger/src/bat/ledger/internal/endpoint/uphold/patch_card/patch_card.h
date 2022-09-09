@@ -84,7 +84,7 @@ class LedgerImpl;
 
 namespace endpoint::uphold {
 
-using PatchCardCallback = base::OnceCallback<void(type::Result)>;
+using PatchCardCallback = base::OnceCallback<void(mojom::Result)>;
 
 class PatchCard {
  public:
@@ -100,9 +100,9 @@ class PatchCard {
 
   std::string GeneratePayload();
 
-  type::Result CheckStatusCode(int status_code);
+  mojom::Result CheckStatusCode(int status_code);
 
-  void OnRequest(PatchCardCallback, const type::UrlResponse&);
+  void OnRequest(PatchCardCallback, const mojom::UrlResponse&);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

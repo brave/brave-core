@@ -26,11 +26,11 @@ DatabaseInitialize::~DatabaseInitialize() = default;
 
 void DatabaseInitialize::Start(bool execute_create_script,
                                ledger::LegacyResultCallback callback) {
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
   transaction->version = GetCurrentVersion();
   transaction->compatible_version = GetCompatibleVersion();
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::INITIALIZE;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::INITIALIZE;
   transaction->commands.push_back(std::move(command));
 
   ledger_->RunDBTransaction(std::move(transaction),
@@ -38,13 +38,13 @@ void DatabaseInitialize::Start(bool execute_create_script,
                                       _1, execute_create_script, callback));
 }
 
-void DatabaseInitialize::OnInitialize(type::DBCommandResponsePtr response,
+void DatabaseInitialize::OnInitialize(mojom::DBCommandResponsePtr response,
                                       bool execute_create_script,
                                       ledger::LegacyResultCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
-    callback(type::Result::DATABASE_INIT_FAILED);
+    callback(mojom::Result::DATABASE_INIT_FAILED);
     return;
   }
 
@@ -55,7 +55,7 @@ void DatabaseInitialize::OnInitialize(type::DBCommandResponsePtr response,
 
   if (!response->result || !response->result->get_value()->is_int_value()) {
     BLOG(0, "DB init failed");
-    callback(type::Result::DATABASE_INIT_FAILED);
+    callback(mojom::Result::DATABASE_INIT_FAILED);
     return;
   }
 
@@ -80,7 +80,7 @@ void DatabaseInitialize::ExecuteCreateScript(
     ledger::LegacyResultCallback callback) {
   if (script.empty()) {
     BLOG(1, "Script is empty");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -92,9 +92,9 @@ void DatabaseInitialize::ExecuteCreateScript(
       table_version,
       callback);
 
-  auto transaction = type::DBTransaction::New();
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::EXECUTE;
+  auto transaction = mojom::DBTransaction::New();
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::EXECUTE;
   command->command = script;
   transaction->commands.push_back(std::move(command));
 
@@ -102,13 +102,13 @@ void DatabaseInitialize::ExecuteCreateScript(
 }
 
 void DatabaseInitialize::OnExecuteCreateScript(
-    type::DBCommandResponsePtr response,
+    mojom::DBCommandResponsePtr response,
     int table_version,
     ledger::LegacyResultCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
-    callback(type::Result::DATABASE_INIT_FAILED);
+    callback(mojom::Result::DATABASE_INIT_FAILED);
     return;
   }
 

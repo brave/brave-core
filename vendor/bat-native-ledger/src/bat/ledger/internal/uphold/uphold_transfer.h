@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_UPHOLD_UPHOLD_TRANSFER_H_
-#define BRAVELEDGER_UPHOLD_UPHOLD_TRANSFER_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_UPHOLD_UPHOLD_TRANSFER_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_UPHOLD_UPHOLD_TRANSFER_H_
 
 #include <map>
 #include <memory>
@@ -32,19 +32,17 @@ class UpholdTransfer {
       client::TransactionCallback callback);
 
  private:
-  void OnCreateTransaction(
-      const type::Result result,
-      const std::string& id,
-      client::TransactionCallback callback);
+  void OnCreateTransaction(const mojom::Result result,
+                           const std::string& id,
+                           client::TransactionCallback callback);
 
   void CommitTransaction(
       const std::string& transaction_id,
       client::TransactionCallback callback);
 
-  void OnCommitTransaction(
-      const type::Result result,
-      const std::string& transaction_id,
-      client::TransactionCallback callback);
+  void OnCommitTransaction(const mojom::Result result,
+                           const std::string& transaction_id,
+                           client::TransactionCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::UpholdServer> uphold_server_;
@@ -52,4 +50,5 @@ class UpholdTransfer {
 
 }  // namespace uphold
 }  // namespace ledger
-#endif  // BRAVELEDGER_UPHOLD_UPHOLD_TRANSFER_H_
+
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_UPHOLD_UPHOLD_TRANSFER_H_

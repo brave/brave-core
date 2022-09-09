@@ -37,41 +37,40 @@ std::string GetParameters::GetUrl(const std::string& currency) {
   return GetServerUrl(path);
 }
 
-type::Result GetParameters::CheckStatusCode(const int status_code) {
+mojom::Result GetParameters::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return type::Result::RETRY_SHORT;
+    return mojom::Result::RETRY_SHORT;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Internal server error");
-    return type::Result::RETRY_SHORT;
+    return mojom::Result::RETRY_SHORT;
   }
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
-type::Result GetParameters::ParseBody(
-    const std::string& body,
-    type::RewardsParameters* parameters) {
+mojom::Result GetParameters::ParseBody(const std::string& body,
+                                       mojom::RewardsParameters* parameters) {
   DCHECK(parameters);
 
   absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto rate = dict.FindDouble("batRate");
   if (!rate) {
     BLOG(0, "Missing BAT rate");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
   parameters->rate = *rate;
 
@@ -79,14 +78,14 @@ type::Result GetParameters::ParseBody(
       dict.FindDoubleByDottedPath("autocontribute.defaultChoice");
   if (!ac_choice) {
     BLOG(0, "Invalid auto-contribute default choice");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
   parameters->auto_contribute_choice = *ac_choice;
 
   auto* ac_choices = dict.FindListByDottedPath("autocontribute.choices");
   if (!ac_choices || ac_choices->empty()) {
     BLOG(0, "Missing auto-contribute choices");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   for (const auto& choice : *ac_choices) {
@@ -99,7 +98,7 @@ type::Result GetParameters::ParseBody(
   auto* tip_choices = dict.FindListByDottedPath("tips.defaultTipChoices");
   if (!tip_choices || tip_choices->empty()) {
     BLOG(0, "Missing default tip choices");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   for (const auto& choice : *tip_choices) {
@@ -113,7 +112,7 @@ type::Result GetParameters::ParseBody(
       dict.FindListByDottedPath("tips.defaultMonthlyChoices");
   if (!monthly_tip_choices || monthly_tip_choices->empty()) {
     BLOG(0, "Missing tips default monthly choices");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   for (const auto& choice : *monthly_tip_choices) {
@@ -126,7 +125,7 @@ type::Result GetParameters::ParseBody(
   const auto* payout_status_dict = dict.FindDict("payoutStatus");
   if (!payout_status_dict) {
     BLOG(0, "Missing payout status");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   for (auto&& [key, value] : *payout_status_dict) {
@@ -135,26 +134,26 @@ type::Result GetParameters::ParseBody(
     }
   }
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
 void GetParameters::Request(GetParametersCallback callback) {
   auto url_callback = base::BindOnce(
       &GetParameters::OnRequest, base::Unretained(this), std::move(callback));
 
-  auto request = type::UrlRequest::New();
+  auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
   ledger_->LoadURL(std::move(request), std::move(url_callback));
 }
 
 void GetParameters::OnRequest(GetParametersCallback callback,
-                              const type::UrlResponse& response) {
+                              const mojom::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
 
-  type::RewardsParameters parameters;
-  type::Result result = CheckStatusCode(response.status_code);
+  mojom::RewardsParameters parameters;
+  mojom::Result result = CheckStatusCode(response.status_code);
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     std::move(callback).Run(result, parameters);
     return;
   }

@@ -33,7 +33,7 @@ TEST_F(TestLedgerClientTest, LoadURLIsAsync) {
   client_.LoadURL(
       std::move(request),
       base::BindLambdaForTesting(
-          [&finished](const type::UrlResponse&) { finished = true; }));
+          [&finished](const mojom::UrlResponse&) { finished = true; }));
   ASSERT_FALSE(finished);
   task_environment_.RunUntilIdle();
   ASSERT_TRUE(finished);

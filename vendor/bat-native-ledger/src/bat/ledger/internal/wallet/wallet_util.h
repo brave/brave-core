@@ -17,21 +17,21 @@ class LedgerImpl;
 
 namespace wallet {
 
-type::ExternalWalletPtr ExternalWalletPtrFromJSON(std::string wallet_string,
-                                                  std::string wallet_type);
+mojom::ExternalWalletPtr ExternalWalletPtrFromJSON(std::string wallet_string,
+                                                   std::string wallet_type);
 
-type::ExternalWalletPtr GetWallet(LedgerImpl* ledger,
-                                  const std::string wallet_type);
+mojom::ExternalWalletPtr GetWallet(LedgerImpl* ledger,
+                                   const std::string wallet_type);
 
 bool SetWallet(LedgerImpl* ledger,
-               type::ExternalWalletPtr wallet,
+               mojom::ExternalWalletPtr wallet,
                const std::string wallet_type);
 
-type::ExternalWalletPtr ResetWallet(type::ExternalWalletPtr wallet);
+mojom::ExternalWalletPtr ResetWallet(mojom::ExternalWalletPtr wallet);
 
 void OnWalletStatusChange(LedgerImpl* ledger,
-                          absl::optional<type::WalletStatus> from,
-                          type::WalletStatus to);
+                          absl::optional<mojom::WalletStatus> from,
+                          mojom::WalletStatus to);
 
 }  // namespace wallet
 }  // namespace ledger

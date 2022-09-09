@@ -76,17 +76,17 @@ class LedgerImpl : public Ledger {
 
   virtual database::Database* database() const;
 
-  virtual void LoadURL(type::UrlRequestPtr request,
+  virtual void LoadURL(mojom::UrlRequestPtr request,
                        client::LegacyLoadURLCallback callback);
 
-  virtual void LoadURL(type::UrlRequestPtr request,
+  virtual void LoadURL(mojom::UrlRequestPtr request,
                        client::LoadURLCallback callback);
 
   virtual void RunDBTransaction(
-      type::DBTransactionPtr transaction,
+      mojom::DBTransactionPtr transaction,
       client::LegacyRunDBTransactionCallback callback);
 
-  virtual void RunDBTransaction(type::DBTransactionPtr transaction,
+  virtual void RunDBTransaction(mojom::DBTransactionPtr transaction,
                                 client::RunDBTransactionCallback callback);
 
   bool IsShuttingDown() const;
@@ -102,7 +102,7 @@ class LedgerImpl : public Ledger {
                   double amount,
                   LegacyResultCallback callback) override;
 
-  void OnLoad(type::VisitDataPtr visit_data, uint64_t current_time) override;
+  void OnLoad(mojom::VisitDataPtr visit_data, uint64_t current_time) override;
 
   void OnUnload(uint32_t tab_id, uint64_t current_time) override;
 
@@ -114,25 +114,22 @@ class LedgerImpl : public Ledger {
 
   void OnBackground(uint32_t tab_id, uint64_t current_time) override;
 
-  void OnXHRLoad(
-      uint32_t tab_id,
-      const std::string& url,
-      const base::flat_map<std::string, std::string>& parts,
-      const std::string& first_party_url,
-      const std::string& referrer,
-      type::VisitDataPtr visit_data) override;
+  void OnXHRLoad(uint32_t tab_id,
+                 const std::string& url,
+                 const base::flat_map<std::string, std::string>& parts,
+                 const std::string& first_party_url,
+                 const std::string& referrer,
+                 mojom::VisitDataPtr visit_data) override;
 
-
-  void OnPostData(
-      const std::string& url,
-      const std::string& first_party_url,
-      const std::string& referrer,
-      const std::string& post_data,
-      type::VisitDataPtr visit_data) override;
+  void OnPostData(const std::string& url,
+                  const std::string& first_party_url,
+                  const std::string& referrer,
+                  const std::string& post_data,
+                  mojom::VisitDataPtr visit_data) override;
 
   void GetActivityInfoList(uint32_t start,
                            uint32_t limit,
-                           type::ActivityInfoFilterPtr filter,
+                           mojom::ActivityInfoFilterPtr filter,
                            PublisherInfoListCallback callback) override;
 
   void GetExcludedList(PublisherInfoListCallback callback) override;
@@ -175,25 +172,25 @@ class LedgerImpl : public Ledger {
                        const std::string& solution,
                        AttestPromotionCallback callback) override;
 
-  void GetBalanceReport(type::ActivityMonth month,
+  void GetBalanceReport(mojom::ActivityMonth month,
                         int year,
                         GetBalanceReportCallback callback) override;
 
   void GetAllBalanceReports(GetBalanceReportListCallback callback) override;
 
-  type::AutoContributePropertiesPtr GetAutoContributeProperties() override;
+  mojom::AutoContributePropertiesPtr GetAutoContributeProperties() override;
 
   void RecoverWallet(const std::string& pass_phrase,
                      LegacyResultCallback callback) override;
 
   void SetPublisherExclude(const std::string& publisher_id,
-                           type::PublisherExclude exclude,
+                           mojom::PublisherExclude exclude,
                            ResultCallback callback) override;
 
   void RestorePublishers(ResultCallback callback) override;
 
   void GetPublisherActivityFromUrl(uint64_t window_id,
-                                   type::VisitDataPtr visit_data,
+                                   mojom::VisitDataPtr visit_data,
                                    const std::string& publisher_blob) override;
 
   void GetPublisherBanner(const std::string& publisher_id,
@@ -209,7 +206,7 @@ class LedgerImpl : public Ledger {
 
   void GetRewardsInternalsInfo(RewardsInternalsInfoCallback callback) override;
 
-  void SaveRecurringTip(type::RecurringTipPtr info,
+  void SaveRecurringTip(mojom::RecurringTipPtr info,
                         LegacyResultCallback callback) override;
 
   void GetRecurringTips(PublisherInfoListCallback callback) override;
@@ -240,14 +237,14 @@ class LedgerImpl : public Ledger {
                              PublisherInfoCallback callback) override;
 
   void SavePublisherInfo(uint64_t window_id,
-                         type::PublisherInfoPtr publisher_info,
+                         mojom::PublisherInfoPtr publisher_info,
                          LegacyResultCallback callback) override;
 
-  void SetInlineTippingPlatformEnabled(type::InlineTipsPlatforms platform,
+  void SetInlineTippingPlatformEnabled(mojom::InlineTipsPlatforms platform,
                                        bool enabled) override;
 
   bool GetInlineTippingPlatformEnabled(
-      type::InlineTipsPlatforms platform) override;
+      mojom::InlineTipsPlatforms platform) override;
 
   std::string GetShareURL(
       const base::flat_map<std::string, std::string>& args) override;
@@ -280,26 +277,26 @@ class LedgerImpl : public Ledger {
 
   void GetAnonWalletStatus(LegacyResultCallback callback) override;
 
-  void GetTransactionReport(type::ActivityMonth month,
+  void GetTransactionReport(mojom::ActivityMonth month,
                             int year,
                             GetTransactionReportCallback callback) override;
 
-  void GetContributionReport(type::ActivityMonth month,
+  void GetContributionReport(mojom::ActivityMonth month,
                              int year,
                              GetContributionReportCallback callback) override;
 
   void GetAllContributions(ContributionInfoListCallback callback) override;
 
-  void SavePublisherInfoForTip(type::PublisherInfoPtr info,
+  void SavePublisherInfoForTip(mojom::PublisherInfoPtr info,
                                LegacyResultCallback callback) override;
 
-  void GetMonthlyReport(type::ActivityMonth month,
+  void GetMonthlyReport(mojom::ActivityMonth month,
                         int year,
                         GetMonthlyReportCallback callback) override;
 
   void GetAllMonthlyReportIds(GetAllMonthlyReportIdsCallback callback) override;
 
-  void ProcessSKU(const std::vector<type::SKUOrderItem>& items,
+  void ProcessSKU(const std::vector<mojom::SKUOrderItem>& items,
                   const std::string& wallet_type,
                   SKUOrderCallback callback) override;
 
@@ -329,28 +326,28 @@ class LedgerImpl : public Ledger {
 
   bool IsReady() const;
 
-  void OnInitialized(type::Result result, LegacyResultCallback callback);
+  void OnInitialized(mojom::Result result, LegacyResultCallback callback);
 
   void StartServices();
 
-  void OnStateInitialized(type::Result result, LegacyResultCallback callback);
+  void OnStateInitialized(mojom::Result result, LegacyResultCallback callback);
 
   void InitializeDatabase(bool execute_create_script,
                           LegacyResultCallback callback);
 
-  void OnDatabaseInitialized(type::Result result,
+  void OnDatabaseInitialized(mojom::Result result,
                              LegacyResultCallback callback);
 
-  void OnAllDone(type::Result result, LegacyResultCallback callback);
+  void OnAllDone(mojom::Result result, LegacyResultCallback callback);
 
   template <typename T>
   void WhenReady(T callback);
 
   template <typename LoadURLCallback>
-  void LoadURLImpl(type::UrlRequestPtr request, LoadURLCallback callback);
+  void LoadURLImpl(mojom::UrlRequestPtr request, LoadURLCallback callback);
 
   template <typename RunDBTransactionCallback>
-  void RunDBTransactionImpl(type::DBTransactionPtr transaction,
+  void RunDBTransactionImpl(mojom::DBTransactionPtr transaction,
                             RunDBTransactionCallback callback);
 
   LedgerClient* ledger_client_;
@@ -370,7 +367,7 @@ class LedgerImpl : public Ledger {
   std::unique_ptr<gemini::Gemini> gemini_;
   std::unique_ptr<uphold::Uphold> uphold_;
 
-  std::map<uint32_t, type::VisitData> current_pages_;
+  std::map<uint32_t, mojom::VisitData> current_pages_;
   uint64_t last_tab_active_time_ = 0;
   uint32_t last_shown_tab_id_ = -1;
   std::queue<std::function<void()>> ready_callbacks_;

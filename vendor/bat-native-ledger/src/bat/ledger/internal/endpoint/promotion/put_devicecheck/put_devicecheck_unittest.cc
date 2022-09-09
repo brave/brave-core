@@ -46,8 +46,8 @@ class PutDevicecheckTest : public testing::Test {
 TEST_F(PutDevicecheckTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = "";
@@ -55,16 +55,16 @@ TEST_F(PutDevicecheckTest, ServerOK) {
           }));
 
   devicecheck_->Request("dsfqwf4f901a1", "asdfasdf", "fsadfasdfff4901a1",
-                        base::BindOnce([](type::Result result) {
-                          EXPECT_EQ(result, type::Result::LEDGER_OK);
+                        base::BindOnce([](mojom::Result result) {
+                          EXPECT_EQ(result, mojom::Result::LEDGER_OK);
                         }));
 }
 
 TEST_F(PutDevicecheckTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
@@ -72,16 +72,16 @@ TEST_F(PutDevicecheckTest, ServerError400) {
           }));
 
   devicecheck_->Request("dsfqwf4f901a1", "asdfasdf", "fsadfasdfff4901a1",
-                        base::BindOnce([](type::Result result) {
-                          EXPECT_EQ(result, type::Result::CAPTCHA_FAILED);
+                        base::BindOnce([](mojom::Result result) {
+                          EXPECT_EQ(result, mojom::Result::CAPTCHA_FAILED);
                         }));
 }
 
 TEST_F(PutDevicecheckTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
             response.body = "";
@@ -89,16 +89,16 @@ TEST_F(PutDevicecheckTest, ServerError401) {
           }));
 
   devicecheck_->Request("dsfqwf4f901a1", "asdfasdf", "fsadfasdfff4901a1",
-                        base::BindOnce([](type::Result result) {
-                          EXPECT_EQ(result, type::Result::CAPTCHA_FAILED);
+                        base::BindOnce([](mojom::Result result) {
+                          EXPECT_EQ(result, mojom::Result::CAPTCHA_FAILED);
                         }));
 }
 
 TEST_F(PutDevicecheckTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
@@ -106,8 +106,8 @@ TEST_F(PutDevicecheckTest, ServerError500) {
           }));
 
   devicecheck_->Request("dsfqwf4f901a1", "asdfasdf", "fsadfasdfff4901a1",
-                        base::BindOnce([](type::Result result) {
-                          EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                        base::BindOnce([](mojom::Result result) {
+                          EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
                         }));
 }
 

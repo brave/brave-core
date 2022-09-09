@@ -25,7 +25,7 @@ void StateMigrationV8::Migrate(ledger::LegacyResultCallback callback) {
     ledger_->ledger_client()->SetBooleanState(kAutoContributeEnabled, false);
   }
 
-  callback(type::Result::LEDGER_OK);
+  callback(mojom::Result::LEDGER_OK);
 }
 
 }  // namespace state

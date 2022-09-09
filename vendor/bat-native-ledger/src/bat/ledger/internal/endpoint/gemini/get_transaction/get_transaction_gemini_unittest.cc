@@ -45,8 +45,8 @@ class GeminiGetTransactionTest : public testing::Test {
 TEST_F(GeminiGetTransactionTest, ServerOK_Completed) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_OK;
             response.url = request->url;
             response.body = R"({
@@ -63,16 +63,16 @@ TEST_F(GeminiGetTransactionTest, ServerOK_Completed) {
 
   transaction_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
                         "A5721BF3-530C-42AF-8DEE-005DCFF76970",
-                        [](const type::Result result) {
-                          EXPECT_EQ(result, type::Result::LEDGER_OK);
+                        [](const mojom::Result result) {
+                          EXPECT_EQ(result, mojom::Result::LEDGER_OK);
                         });
 }
 
 TEST_F(GeminiGetTransactionTest, ServerOK_Pending) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_OK;
             response.url = request->url;
             response.body = R"({
@@ -89,16 +89,16 @@ TEST_F(GeminiGetTransactionTest, ServerOK_Pending) {
 
   transaction_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
                         "A5721BF3-530C-42AF-8DEE-005DCFF76970",
-                        [](const type::Result result) {
-                          EXPECT_EQ(result, type::Result::RETRY);
+                        [](const mojom::Result result) {
+                          EXPECT_EQ(result, mojom::Result::RETRY);
                         });
 }
 
 TEST_F(GeminiGetTransactionTest, ServerOK_Error) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_OK;
             response.url = request->url;
             response.body = R"({
@@ -115,16 +115,16 @@ TEST_F(GeminiGetTransactionTest, ServerOK_Error) {
 
   transaction_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
                         "A5721BF3-530C-42AF-8DEE-005DCFF76970",
-                        [](const type::Result result) {
-                          EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                        [](const mojom::Result result) {
+                          EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
                         });
 }
 
 TEST_F(GeminiGetTransactionTest, ServerOK_Processing) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_OK;
             response.url = request->url;
             response.body = R"({
@@ -141,16 +141,16 @@ TEST_F(GeminiGetTransactionTest, ServerOK_Processing) {
 
   transaction_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
                         "A5721BF3-530C-42AF-8DEE-005DCFF76970",
-                        [](const type::Result result) {
-                          EXPECT_EQ(result, type::Result::RETRY);
+                        [](const mojom::Result result) {
+                          EXPECT_EQ(result, mojom::Result::RETRY);
                         });
 }
 
 TEST_F(GeminiGetTransactionTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_UNAUTHORIZED;
             response.url = request->url;
             response.body = "";
@@ -159,16 +159,16 @@ TEST_F(GeminiGetTransactionTest, ServerError401) {
 
   transaction_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
                         "A5721BF3-530C-42AF-8DEE-005DCFF76970",
-                        [](const type::Result result) {
-                          EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
+                        [](const mojom::Result result) {
+                          EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
                         });
 }
 
 TEST_F(GeminiGetTransactionTest, ServerError403) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_FORBIDDEN;
             response.url = request->url;
             response.body = "";
@@ -177,16 +177,16 @@ TEST_F(GeminiGetTransactionTest, ServerError403) {
 
   transaction_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
                         "A5721BF3-530C-42AF-8DEE-005DCFF76970",
-                        [](const type::Result result) {
-                          EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
+                        [](const mojom::Result result) {
+                          EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
                         });
 }
 
 TEST_F(GeminiGetTransactionTest, ServerError404) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_NOT_FOUND;
             response.url = request->url;
             response.body = "";
@@ -195,16 +195,16 @@ TEST_F(GeminiGetTransactionTest, ServerError404) {
 
   transaction_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
                         "A5721BF3-530C-42AF-8DEE-005DCFF76970",
-                        [](const type::Result result) {
-                          EXPECT_EQ(result, type::Result::NOT_FOUND);
+                        [](const mojom::Result result) {
+                          EXPECT_EQ(result, mojom::Result::NOT_FOUND);
                         });
 }
 
 TEST_F(GeminiGetTransactionTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 418;
             response.url = request->url;
             response.body = "";
@@ -213,8 +213,8 @@ TEST_F(GeminiGetTransactionTest, ServerErrorRandom) {
 
   transaction_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
                         "A5721BF3-530C-42AF-8DEE-005DCFF76970",
-                        [](const type::Result result) {
-                          EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                        [](const mojom::Result result) {
+                          EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
                         });
 }
 

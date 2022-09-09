@@ -6,6 +6,8 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CONTRIBUTION_CONTRIBUTION_MONTHLY_H_
 #define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CONTRIBUTION_CONTRIBUTION_MONTHLY_H_
 
+#include <vector>
+
 #include "bat/ledger/ledger.h"
 
 namespace ledger {
@@ -25,22 +27,21 @@ class ContributionMonthly {
       ledger::HasSufficientBalanceToReconcileCallback callback);
 
  private:
-  void PrepareTipList(type::PublisherInfoList list,
+  void PrepareTipList(std::vector<mojom::PublisherInfoPtr> list,
                       ledger::LegacyResultCallback callback);
 
-  void GetVerifiedTipList(
-      const type::PublisherInfoList& list,
-      type::PublisherInfoList* verified_list);
+  void GetVerifiedTipList(const std::vector<mojom::PublisherInfoPtr>& list,
+                          std::vector<mojom::PublisherInfoPtr>* verified_list);
 
-  void OnSavePendingContribution(const type::Result result);
+  void OnSavePendingContribution(const mojom::Result result);
 
   void OnSufficientBalanceWallet(
       ledger::HasSufficientBalanceToReconcileCallback callback,
-      const type::Result result,
-      type::BalancePtr info);
+      const mojom::Result result,
+      mojom::BalancePtr info);
 
   void OnHasSufficientBalance(
-      const type::PublisherInfoList& publisher_list,
+      const std::vector<mojom::PublisherInfoPtr>& publisher_list,
       const double balance,
       ledger::HasSufficientBalanceToReconcileCallback callback);
 

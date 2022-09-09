@@ -26,18 +26,18 @@ class ContributionTip {
                ledger::LegacyResultCallback callback);
 
  private:
-  void ServerPublisher(type::ServerPublisherInfoPtr server_info,
+  void ServerPublisher(mojom::ServerPublisherInfoPtr server_info,
                        const std::string& publisher_key,
                        double amount,
                        ledger::LegacyResultCallback callback);
 
-  void QueueSaved(type::Result result, ledger::LegacyResultCallback callback);
+  void QueueSaved(mojom::Result result, ledger::LegacyResultCallback callback);
 
   void SavePending(const std::string& publisher_key,
                    double amount,
                    ledger::LegacyResultCallback callback);
 
-  void OnSavePending(type::Result result,
+  void OnSavePending(mojom::Result result,
                      ledger::LegacyResultCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

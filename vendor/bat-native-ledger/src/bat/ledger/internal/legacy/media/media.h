@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_BAT_GET_MEDIA_H_
-#define BRAVELEDGER_BAT_GET_MEDIA_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_LEGACY_MEDIA_MEDIA_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_LEGACY_MEDIA_MEDIA_H_
 
 #include <string>
 #include <memory>
@@ -35,10 +35,10 @@ class Media {
 
   void ProcessMedia(const base::flat_map<std::string, std::string>& parts,
                     const std::string& type,
-                    ledger::type::VisitDataPtr visit_data);
+                    ledger::mojom::VisitDataPtr visit_data);
 
   void GetMediaActivityFromUrl(uint64_t windowId,
-                               ledger::type::VisitDataPtr visit_data,
+                               ledger::mojom::VisitDataPtr visit_data,
                                const std::string& type,
                                const std::string& publisher_blob);
 
@@ -51,9 +51,9 @@ class Media {
       const base::flat_map<std::string, std::string>& args);
 
  private:
-  void OnMediaActivityError(ledger::type::VisitDataPtr visit_data,
-                          const std::string& type,
-                          uint64_t windowId);
+  void OnMediaActivityError(ledger::mojom::VisitDataPtr visit_data,
+                            const std::string& type,
+                            uint64_t windowId);
 
   ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<braveledger_media::YouTube> media_youtube_;
@@ -65,4 +65,4 @@ class Media {
 
 }  // namespace braveledger_media
 
-#endif  // BRAVELEDGER_BAT_GET_MEDIA_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_LEGACY_MEDIA_MEDIA_H_

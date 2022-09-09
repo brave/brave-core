@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_SKU_H_
-#define BRAVELEDGER_SKU_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_SKU_SKU_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_SKU_SKU_H_
 
 #include <map>
 #include <string>
@@ -24,14 +24,13 @@ class SKU {
       const std::string& wallet_type,
       ledger::SKUOrderCallback callback) = 0;
 
-  virtual void Process(
-      const std::vector<type::SKUOrderItem>& items,
-      const std::string& wallet_type,
-      ledger::SKUOrderCallback callback,
-      const std::string& contribution_id = "") = 0;
+  virtual void Process(const std::vector<mojom::SKUOrderItem>& items,
+                       const std::string& wallet_type,
+                       ledger::SKUOrderCallback callback,
+                       const std::string& contribution_id = "") = 0;
 };
 
 }  // namespace sku
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_SKU_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_SKU_SKU_H_

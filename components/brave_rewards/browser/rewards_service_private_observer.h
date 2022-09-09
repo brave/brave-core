@@ -17,11 +17,10 @@ class RewardsServicePrivateObserver : public base::CheckedObserver {
  public:
   ~RewardsServicePrivateObserver() override {}
 
-  virtual void OnPanelPublisherInfo(
-      RewardsService* rewards_service,
-      const ledger::type::Result result,
-      const ledger::type::PublisherInfo* info,
-      uint64_t windowId) {}
+  virtual void OnPanelPublisherInfo(RewardsService* rewards_service,
+                                    const ledger::mojom::Result result,
+                                    const ledger::mojom::PublisherInfo* info,
+                                    uint64_t windowId) {}
 };
 
 }  // namespace brave_rewards

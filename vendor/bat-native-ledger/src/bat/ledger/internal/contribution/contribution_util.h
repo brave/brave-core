@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_UTIL_H_
-#define BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_UTIL_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CONTRIBUTION_CONTRIBUTION_UTIL_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CONTRIBUTION_CONTRIBUTION_UTIL_H_
 
 #include <map>
 #include <string>
@@ -14,9 +14,9 @@
 namespace ledger {
 namespace contribution {
 
-type::ReportType GetReportTypeFromRewardsType(const type::RewardsType type);
+mojom::ReportType GetReportTypeFromRewardsType(const mojom::RewardsType type);
 
-type::ContributionProcessor GetProcessor(const std::string& wallet_type);
+mojom::ContributionProcessor GetProcessor(const std::string& wallet_type);
 
 std::string GetNextProcessor(const std::string& current_processor);
 
@@ -30,4 +30,4 @@ int32_t GetVotesFromAmount(const double amount);
 }  // namespace contribution
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_UTIL_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CONTRIBUTION_CONTRIBUTION_UTIL_H_

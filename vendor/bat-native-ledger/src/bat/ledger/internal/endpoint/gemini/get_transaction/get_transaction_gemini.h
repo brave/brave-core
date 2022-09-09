@@ -42,7 +42,7 @@ class LedgerImpl;
 namespace endpoint {
 namespace gemini {
 
-using GetTransactionCallback = std::function<void(const type::Result result)>;
+using GetTransactionCallback = std::function<void(const mojom::Result result)>;
 
 class GetTransaction {
  public:
@@ -56,9 +56,9 @@ class GetTransaction {
  private:
   std::string GetUrl(const std::string& tx_ref);
 
-  type::Result ParseBody(const std::string& body, std::string* status);
+  mojom::Result ParseBody(const std::string& body, std::string* status);
 
-  void OnRequest(const type::UrlResponse& response,
+  void OnRequest(const mojom::UrlResponse& response,
                  GetTransactionCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

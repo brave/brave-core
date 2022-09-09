@@ -85,7 +85,7 @@ TEST_F(DatabasePublisherPrefixListTest, Reset) {
   std::vector<std::string> commands;
 
   auto on_run_db_transaction =
-      [&](type::DBTransactionPtr transaction,
+      [&](mojom::DBTransactionPtr transaction,
           ledger::client::RunDBTransactionCallback callback) {
         ASSERT_TRUE(transaction);
         if (transaction) {
@@ -94,17 +94,16 @@ TEST_F(DatabasePublisherPrefixListTest, Reset) {
           }
         }
         commands.push_back("---");
-        auto response = type::DBCommandResponse::New();
-        response->status = type::DBCommandResponse::Status::RESPONSE_OK;
+        auto response = mojom::DBCommandResponse::New();
+        response->status = mojom::DBCommandResponse::Status::RESPONSE_OK;
         std::move(callback).Run(std::move(response));
       };
 
   ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(Invoke(on_run_db_transaction));
 
-  database_prefix_list_->Reset(
-      CreateReader(100'001),
-      [](const type::Result) {});
+  database_prefix_list_->Reset(CreateReader(100'001),
+                               [](const mojom::Result) {});
 
   ASSERT_EQ(commands.size(), 5u);
   EXPECT_EQ(commands[0], "DELETE FROM publisher_prefix_list");

@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "bat/ledger/internal/database/database_sku_order_items.h"
 #include "bat/ledger/internal/database/database_table.h"
@@ -15,18 +16,18 @@
 namespace ledger {
 namespace database {
 
-using GetSKUOrderCallback = std::function<void(type::SKUOrderPtr)>;
+using GetSKUOrderCallback = std::function<void(mojom::SKUOrderPtr)>;
 
 class DatabaseSKUOrder: public DatabaseTable {
  public:
   explicit DatabaseSKUOrder(LedgerImpl* ledger);
   ~DatabaseSKUOrder() override;
 
-  void InsertOrUpdate(type::SKUOrderPtr info,
+  void InsertOrUpdate(mojom::SKUOrderPtr info,
                       ledger::LegacyResultCallback callback);
 
   void UpdateStatus(const std::string& order_id,
-                    type::SKUOrderStatus status,
+                    mojom::SKUOrderStatus status,
                     ledger::LegacyResultCallback callback);
 
   void GetRecord(
@@ -42,14 +43,12 @@ class DatabaseSKUOrder: public DatabaseTable {
                                      ledger::LegacyResultCallback callback);
 
  private:
-  void OnGetRecord(
-      type::DBCommandResponsePtr response,
-      GetSKUOrderCallback callback);
+  void OnGetRecord(mojom::DBCommandResponsePtr response,
+                   GetSKUOrderCallback callback);
 
-  void OnGetRecordItems(
-      type::SKUOrderItemList list,
-      std::shared_ptr<type::SKUOrderPtr> shared_order,
-      GetSKUOrderCallback callback);
+  void OnGetRecordItems(std::vector<mojom::SKUOrderItemPtr> list,
+                        std::shared_ptr<mojom::SKUOrderPtr> shared_order,
+                        GetSKUOrderCallback callback);
 
   std::unique_ptr<DatabaseSKUOrderItems> items_;
 };

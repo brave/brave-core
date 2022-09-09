@@ -34,15 +34,15 @@ DatabaseUnblindedToken::DatabaseUnblindedToken(
 DatabaseUnblindedToken::~DatabaseUnblindedToken() = default;
 
 void DatabaseUnblindedToken::InsertOrUpdateList(
-    type::UnblindedTokenList list,
+    std::vector<mojom::UnblindedTokenPtr> list,
     ledger::LegacyResultCallback callback) {
   if (list.empty()) {
     BLOG(1, "List is empty");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "INSERT OR IGNORE INTO %s "
@@ -51,8 +51,8 @@ void DatabaseUnblindedToken::InsertOrUpdateList(
       kTableName);
 
   for (const auto& info : list) {
-    auto command = type::DBCommand::New();
-    command->type = type::DBCommand::Type::RUN;
+    auto command = mojom::DBCommand::New();
+    command->type = mojom::DBCommand::Type::RUN;
     command->command = query;
 
     if (info->id != 0) {
@@ -78,18 +78,18 @@ void DatabaseUnblindedToken::InsertOrUpdateList(
 }
 
 void DatabaseUnblindedToken::OnGetRecords(
-    type::DBCommandResponsePtr response,
+    mojom::DBCommandResponsePtr response,
     GetUnblindedTokenListCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback({});
     return;
   }
 
-  type::UnblindedTokenList list;
+  std::vector<mojom::UnblindedTokenPtr> list;
   for (auto const& record : response->result->get_records()) {
-    auto info = type::UnblindedToken::New();
+    auto info = mojom::UnblindedToken::New();
     auto* record_pointer = record.get();
 
     info->id = GetInt64Column(record_pointer, 0);
@@ -107,8 +107,8 @@ void DatabaseUnblindedToken::OnGetRecords(
 
 void DatabaseUnblindedToken::GetSpendableRecords(
     GetUnblindedTokenListCallback callback) {
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = base::StringPrintf(
       R"(
     SELECT
@@ -126,16 +126,14 @@ void DatabaseUnblindedToken::GetSpendableRecords(
       ut.redeemed_at = 0 AND cb.trigger_type = 1
       )",
       kTableName);
-  command->record_bindings = {
-      type::DBCommand::RecordBindingType::INT64_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::INT64_TYPE
-  };
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE};
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
   ledger_->RunDBTransaction(std::move(transaction),
@@ -145,16 +143,16 @@ void DatabaseUnblindedToken::GetSpendableRecords(
 
 void DatabaseUnblindedToken::MarkRecordListAsSpent(
     const std::vector<std::string>& ids,
-    type::RewardsType redeem_type,
+    mojom::RewardsType redeem_type,
     const std::string& redeem_id,
     ledger::LegacyResultCallback callback) {
   if (ids.empty()) {
     BLOG(1, "List of ids is empty");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "UPDATE %s SET redeemed_at = ?, redeem_id = ?, redeem_type = ? "
@@ -162,8 +160,8 @@ void DatabaseUnblindedToken::MarkRecordListAsSpent(
       kTableName,
       GenerateStringInCase(ids).c_str());
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
   BindInt64(command.get(), 0, util::GetCurrentTimeStamp());
@@ -185,11 +183,11 @@ void DatabaseUnblindedToken::MarkRecordListAsReserved(
     ledger::LegacyResultCallback callback) {
   if (ids.empty()) {
     BLOG(1, "List of ids is empty");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string id_values = GenerateStringInCase(ids);
 
@@ -204,8 +202,8 @@ void DatabaseUnblindedToken::MarkRecordListAsReserved(
       id_values.c_str(),
       id_values.c_str());
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
   BindString(command.get(), 0, redeem_id);
@@ -218,14 +216,12 @@ void DatabaseUnblindedToken::MarkRecordListAsReserved(
       "UPDATE contribution_info SET step=?, retry_count=0 "
       "WHERE contribution_id = ?";
 
-  command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
-  BindInt(
-      command.get(),
-      0,
-      static_cast<int>(type::ContributionStep::STEP_RESERVE));
+  BindInt(command.get(), 0,
+          static_cast<int>(mojom::ContributionStep::STEP_RESERVE));
   BindString(command.get(), 1, redeem_id);
 
   transaction->commands.push_back(std::move(command));
@@ -236,8 +232,8 @@ void DatabaseUnblindedToken::MarkRecordListAsReserved(
       kTableName,
       id_values.c_str());
 
-  command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = query;
 
   transaction->commands.push_back(std::move(command));
@@ -253,23 +249,23 @@ void DatabaseUnblindedToken::MarkRecordListAsReserved(
 }
 
 void DatabaseUnblindedToken::OnMarkRecordListAsReserved(
-    type::DBCommandResponsePtr response,
+    mojom::DBCommandResponsePtr response,
     size_t expected_row_count,
     ledger::LegacyResultCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
   if (response->result->get_records().size() != expected_row_count) {
     BLOG(0, "Records size doesn't match");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  callback(type::Result::LEDGER_OK);
+  callback(mojom::Result::LEDGER_OK);
 }
 
 void DatabaseUnblindedToken::MarkRecordListAsSpendable(
@@ -277,19 +273,19 @@ void DatabaseUnblindedToken::MarkRecordListAsSpendable(
     ledger::LegacyResultCallback callback) {
   if (redeem_id.empty()) {
     BLOG(1, "Redeem id is empty");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "UPDATE %s SET redeem_id = '', reserved_at = 0 "
       "WHERE redeem_id = ? AND redeemed_at = 0",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
   BindString(command.get(), 0, redeem_id);
@@ -312,7 +308,7 @@ void DatabaseUnblindedToken::GetReservedRecordList(
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "SELECT ut.token_id, ut.token_value, ut.public_key, ut.value, "
@@ -320,20 +316,18 @@ void DatabaseUnblindedToken::GetReservedRecordList(
       "WHERE ut.redeem_id = ? AND ut.redeemed_at = 0 AND ut.reserved_at != 0",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = query;
 
   BindString(command.get(), 0, redeem_id);
 
-  command->record_bindings = {
-      type::DBCommand::RecordBindingType::INT64_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::INT64_TYPE
-  };
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE};
 
   transaction->commands.push_back(std::move(command));
 
@@ -346,7 +340,7 @@ void DatabaseUnblindedToken::GetReservedRecordList(
 }
 
 void DatabaseUnblindedToken::GetSpendableRecordListByBatchTypes(
-    const std::vector<type::CredsBatchType>& batch_types,
+    const std::vector<mojom::CredsBatchType>& batch_types,
     GetUnblindedTokenListCallback callback) {
   if (batch_types.empty()) {
     BLOG(1, "Batch types is empty");
@@ -360,7 +354,7 @@ void DatabaseUnblindedToken::GetSpendableRecordListByBatchTypes(
     in_case.push_back(std::to_string(static_cast<int>(type)));
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "SELECT ut.token_id, ut.token_value, ut.public_key, ut.value, "
@@ -372,18 +366,16 @@ void DatabaseUnblindedToken::GetSpendableRecordListByBatchTypes(
       kTableName,
       base::JoinString(in_case, ",").c_str());
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = query;
 
-  command->record_bindings = {
-      type::DBCommand::RecordBindingType::INT64_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::INT64_TYPE
-  };
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE};
 
   transaction->commands.push_back(std::move(command));
 

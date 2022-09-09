@@ -157,7 +157,7 @@ void BraveAdaptiveCaptchaService::ClearScheduledCaptcha() {
 
 void BraveAdaptiveCaptchaService::OnRecoverWallet(
     brave_rewards::RewardsService* rewards_service,
-    const ledger::type::Result result) {
+    const ledger::mojom::Result result) {
   ClearScheduledCaptcha();
 }
 

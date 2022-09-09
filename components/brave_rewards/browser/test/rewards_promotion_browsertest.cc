@@ -129,7 +129,7 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
     EXPECT_STREQ(
         promotion->id.c_str(),
         promotion_->GetPromotionId().c_str());
-    EXPECT_EQ(promotion->type, ledger::type::PromotionType::UGP);
+    EXPECT_EQ(promotion->type, ledger::mojom::PromotionType::UGP);
     EXPECT_EQ(promotion->expires_at, 1740816427ull);
 
     // Check that promotion notification shows the appropriate amount

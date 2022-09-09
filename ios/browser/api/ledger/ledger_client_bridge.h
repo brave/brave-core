@@ -19,20 +19,21 @@
             callback:(ledger::client::FetchIconCallback)callback;
 - (void)loadLedgerState:(ledger::client::OnLoadCallback)callback;
 - (void)loadPublisherState:(ledger::client::OnLoadCallback)callback;
-- (void)loadURL:(ledger::type::UrlRequestPtr)request
+- (void)loadURL:(ledger::mojom::UrlRequestPtr)request
        callback:(ledger::client::LoadURLCallback)callback;
 - (void)log:(const char*)file
             line:(const int)line
     verboseLevel:(const int)verbose_level
          message:(const std::string&)message;
-- (void)onPanelPublisherInfo:(ledger::type::Result)result
-               publisherInfo:(ledger::type::PublisherInfoPtr)publisher_info
+- (void)onPanelPublisherInfo:(ledger::mojom::Result)result
+               publisherInfo:(ledger::mojom::PublisherInfoPtr)publisher_info
                     windowId:(uint64_t)windowId;
-- (void)onReconcileComplete:(ledger::type::Result)result
-               contribution:(ledger::type::ContributionInfoPtr)contribution;
-- (void)publisherListNormalized:(ledger::type::PublisherInfoList)list;
+- (void)onReconcileComplete:(ledger::mojom::Result)result
+               contribution:(ledger::mojom::ContributionInfoPtr)contribution;
+- (void)publisherListNormalized:
+    (std::vector<ledger::mojom::PublisherInfoPtr>)list;
 - (std::string)URIEncode:(const std::string&)value;
-- (void)onContributeUnverifiedPublishers:(ledger::type::Result)result
+- (void)onContributeUnverifiedPublishers:(ledger::mojom::Result)result
                             publisherKey:(const std::string&)publisher_key
                            publisherName:(const std::string&)publisher_name;
 - (void)setBooleanState:(const std::string&)name value:(bool)value;
@@ -58,13 +59,13 @@
 - (std::string)getStringOption:(const std::string&)name;
 - (int64_t)getInt64Option:(const std::string&)name;
 - (uint64_t)getUint64Option:(const std::string&)name;
-- (ledger::type::ClientInfoPtr)getClientInfo;
+- (ledger::mojom::ClientInfoPtr)getClientInfo;
 - (void)unblindedTokensReady;
 - (void)reconcileStampReset;
-- (void)runDBTransaction:(ledger::type::DBTransactionPtr)transaction
+- (void)runDBTransaction:(ledger::mojom::DBTransactionPtr)transaction
                 callback:(ledger::client::RunDBTransactionCallback)callback;
 - (void)getCreateScript:(ledger::client::GetCreateScriptCallback)callback;
-- (void)pendingContributionSaved:(const ledger::type::Result)result;
+- (void)pendingContributionSaved:(const ledger::mojom::Result)result;
 - (void)clearAllNotifications;
 - (void)walletDisconnected:(const std::string&)wallet_type;
 - (void)deleteLog:(ledger::client::LegacyResultCallback)callback;

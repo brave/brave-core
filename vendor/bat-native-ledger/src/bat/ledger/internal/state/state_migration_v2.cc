@@ -33,17 +33,17 @@ void StateMigrationV2::Migrate(ledger::LegacyResultCallback callback) {
   legacy_state_->Load(load_callback);
 }
 
-void StateMigrationV2::OnLoadState(type::Result result,
+void StateMigrationV2::OnLoadState(mojom::Result result,
                                    ledger::LegacyResultCallback callback) {
-  if (result == type::Result::NO_LEDGER_STATE) {
+  if (result == mojom::Result::NO_LEDGER_STATE) {
     BLOG(1, "No ledger state");
-    callback(type::Result::LEDGER_OK);
+    callback(mojom::Result::LEDGER_OK);
     return;
   }
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Failed to load ledger state file, setting default values");
-    callback(type::Result::LEDGER_OK);
+    callback(mojom::Result::LEDGER_OK);
     return;
   }
 
@@ -90,7 +90,7 @@ void StateMigrationV2::OnLoadState(type::Result result,
       kInlineTipGithubEnabled,
       legacy_state_->GetInlineTipSetting("github"));
 
-  callback(type::Result::LEDGER_OK);
+  callback(mojom::Result::LEDGER_OK);
 }
 
 }  // namespace state

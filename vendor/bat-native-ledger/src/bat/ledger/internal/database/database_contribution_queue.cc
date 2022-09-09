@@ -32,29 +32,29 @@ DatabaseContributionQueue::DatabaseContributionQueue(
 DatabaseContributionQueue::~DatabaseContributionQueue() = default;
 
 void DatabaseContributionQueue::InsertOrUpdate(
-    type::ContributionQueuePtr info,
+    mojom::ContributionQueuePtr info,
     ledger::LegacyResultCallback callback) {
   if (!info) {
     BLOG(0, "Queue is null");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
   if (info->id.empty()) {
     BLOG(0, "Queue id is empty");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
     "INSERT OR REPLACE INTO %s (contribution_queue_id, type, amount, partial) "
     "VALUES (?, ?, ?, ?)",
     kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
   BindString(command.get(), 0, info->id);
@@ -65,7 +65,7 @@ void DatabaseContributionQueue::InsertOrUpdate(
   transaction->commands.push_back(std::move(command));
 
   auto shared_info =
-      std::make_shared<type::ContributionQueuePtr>(std::move(info));
+      std::make_shared<mojom::ContributionQueuePtr>(std::move(info));
 
   auto transaction_callback =
       std::bind(&DatabaseContributionQueue::OnInsertOrUpdate,
@@ -78,19 +78,19 @@ void DatabaseContributionQueue::InsertOrUpdate(
 }
 
 void DatabaseContributionQueue::OnInsertOrUpdate(
-    type::DBCommandResponsePtr response,
-    std::shared_ptr<type::ContributionQueuePtr> shared_queue,
+    mojom::DBCommandResponsePtr response,
+    std::shared_ptr<mojom::ContributionQueuePtr> shared_queue,
     ledger::LegacyResultCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is not ok");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
   if (!shared_queue) {
     BLOG(0, "Queue is null");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -102,7 +102,7 @@ void DatabaseContributionQueue::OnInsertOrUpdate(
 
 void DatabaseContributionQueue::GetFirstRecord(
     GetFirstContributionQueueCallback callback) {
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "SELECT contribution_queue_id, type, amount, partial "
@@ -110,16 +110,14 @@ void DatabaseContributionQueue::GetFirstRecord(
       "ORDER BY created_at ASC LIMIT 1",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = query;
 
-  command->record_bindings = {
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::INT_TYPE,
-      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      type::DBCommand::RecordBindingType::INT_TYPE
-  };
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE};
 
   transaction->commands.push_back(std::move(command));
 
@@ -133,10 +131,10 @@ void DatabaseContributionQueue::GetFirstRecord(
 }
 
 void DatabaseContributionQueue::OnGetFirstRecord(
-    type::DBCommandResponsePtr response,
+    mojom::DBCommandResponsePtr response,
     GetFirstContributionQueueCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback(nullptr);
     return;
@@ -149,14 +147,14 @@ void DatabaseContributionQueue::OnGetFirstRecord(
 
   auto* record = response->result->get_records()[0].get();
 
-  auto info = type::ContributionQueue::New();
+  auto info = mojom::ContributionQueue::New();
   info->id = GetStringColumn(record, 0);
-  info->type = static_cast<type::RewardsType>(GetIntColumn(record, 1));
+  info->type = static_cast<mojom::RewardsType>(GetIntColumn(record, 1));
   info->amount = GetDoubleColumn(record, 2);
   info->partial = static_cast<bool>(GetIntColumn(record, 3));
 
   auto shared_info =
-      std::make_shared<type::ContributionQueuePtr>(info->Clone());
+      std::make_shared<mojom::ContributionQueuePtr>(info->Clone());
 
   auto publishers_callback =
       std::bind(&DatabaseContributionQueue::OnGetPublishers,
@@ -169,8 +167,8 @@ void DatabaseContributionQueue::OnGetFirstRecord(
 }
 
 void DatabaseContributionQueue::OnGetPublishers(
-    type::ContributionQueuePublisherList list,
-    std::shared_ptr<type::ContributionQueuePtr> shared_queue,
+    std::vector<mojom::ContributionQueuePublisherPtr> list,
+    std::shared_ptr<mojom::ContributionQueuePtr> shared_queue,
     GetFirstContributionQueueCallback callback) {
   if (!shared_queue) {
     BLOG(0, "Queue is null");
@@ -187,18 +185,18 @@ void DatabaseContributionQueue::MarkRecordAsComplete(
     ledger::LegacyResultCallback callback) {
   if (id.empty()) {
     BLOG(1, "Id is empty");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "UPDATE %s SET completed_at = ? WHERE contribution_queue_id = ?",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
   BindInt64(command.get(), 0, util::GetCurrentTimeStamp());

@@ -36,7 +36,7 @@ namespace endpoint {
 namespace promotion {
 
 using PostCaptchaCallback =
-    base::OnceCallback<void(type::Result result,
+    base::OnceCallback<void(mojom::Result result,
                             const std::string& hint,
                             const std::string& captcha_id)>;
 
@@ -52,15 +52,14 @@ class PostCaptcha {
 
   std::string GeneratePayload();
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(const int status_code);
 
-  type::Result ParseBody(
-      const std::string& body,
-      std::string* hint,
-      std::string* captcha_id);
+  mojom::Result ParseBody(const std::string& body,
+                          std::string* hint,
+                          std::string* captcha_id);
 
   void OnRequest(PostCaptchaCallback callback,
-                 const type::UrlResponse& response);
+                 const mojom::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

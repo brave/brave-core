@@ -36,10 +36,10 @@ class AttestationAndroid : public Attestation {
       std::string* nonce);
 
   void OnStart(StartCallback callback,
-               type::Result result,
+               mojom::Result result,
                const std::string& confirmation);
 
-  void OnConfirm(ConfirmCallback callback, type::Result result);
+  void OnConfirm(ConfirmCallback callback, mojom::Result result);
 
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;
 };

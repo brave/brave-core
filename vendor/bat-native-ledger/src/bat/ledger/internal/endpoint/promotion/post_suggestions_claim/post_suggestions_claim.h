@@ -54,10 +54,10 @@ class PostSuggestionsClaim {
 
   std::string GeneratePayload(const credential::CredentialsRedeem& redeem);
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(const int status_code);
 
   void OnRequest(PostSuggestionsClaimCallback callback,
-                 const type::UrlResponse& response);
+                 const mojom::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

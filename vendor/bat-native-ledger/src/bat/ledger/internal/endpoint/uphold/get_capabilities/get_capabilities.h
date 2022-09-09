@@ -172,7 +172,7 @@ namespace endpoint {
 namespace uphold {
 
 using GetCapabilitiesCallback =
-    base::OnceCallback<void(type::Result, ledger::uphold::Capabilities)>;
+    base::OnceCallback<void(mojom::Result, ledger::uphold::Capabilities)>;
 
 class GetCapabilities {
  public:
@@ -190,10 +190,10 @@ class GetCapabilities {
   using CapabilityMap = std::map<std::string, Capability>;
 
   void OnRequest(GetCapabilitiesCallback callback,
-                 const type::UrlResponse& response);
+                 const mojom::UrlResponse& response);
 
-  std::pair<type::Result, CapabilityMap> ProcessResponse(
-      const type::UrlResponse& response);
+  std::pair<mojom::Result, CapabilityMap> ProcessResponse(
+      const mojom::UrlResponse& response);
 
   CapabilityMap ParseBody(const std::string& body);
 

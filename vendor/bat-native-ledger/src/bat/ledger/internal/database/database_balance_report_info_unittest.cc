@@ -43,7 +43,7 @@ class DatabaseBalanceReportTest : public ::testing::Test {
 };
 
 TEST_F(DatabaseBalanceReportTest, InsertOrUpdateOk) {
-  auto info = type::BalanceReportInfo::New();
+  auto info = mojom::BalanceReportInfo::New();
   info->id = "2020_05";
   info->grants = 1.0;
   info->earning_from_ads = 1.0;
@@ -59,19 +59,17 @@ TEST_F(DatabaseBalanceReportTest, InsertOrUpdateOk) {
 
   ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(
-          Invoke([&](type::DBTransactionPtr transaction,
+          Invoke([&](mojom::DBTransactionPtr transaction,
                      ledger::client::RunDBTransactionCallback callback) {
             ASSERT_TRUE(transaction);
             ASSERT_EQ(transaction->commands.size(), 1u);
             ASSERT_EQ(transaction->commands[0]->type,
-                      type::DBCommand::Type::RUN);
+                      mojom::DBCommand::Type::RUN);
             ASSERT_EQ(transaction->commands[0]->command, query);
             ASSERT_EQ(transaction->commands[0]->bindings.size(), 6u);
           }));
 
-  balance_report_->InsertOrUpdate(
-      std::move(info),
-      [](const type::Result){});
+  balance_report_->InsertOrUpdate(std::move(info), [](const mojom::Result) {});
 }
 
 TEST_F(DatabaseBalanceReportTest, GetAllRecordsOk) {
@@ -84,18 +82,19 @@ TEST_F(DatabaseBalanceReportTest, GetAllRecordsOk) {
 
   ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(
-          Invoke([&](type::DBTransactionPtr transaction,
+          Invoke([&](mojom::DBTransactionPtr transaction,
                      ledger::client::RunDBTransactionCallback callback) {
             ASSERT_TRUE(transaction);
             ASSERT_EQ(transaction->commands.size(), 1u);
             ASSERT_EQ(transaction->commands[0]->type,
-                      type::DBCommand::Type::READ);
+                      mojom::DBCommand::Type::READ);
             ASSERT_EQ(transaction->commands[0]->command, query);
             ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 6u);
             ASSERT_EQ(transaction->commands[0]->bindings.size(), 0u);
           }));
 
-  balance_report_->GetAllRecords([](type::BalanceReportInfoList) {});
+  balance_report_->GetAllRecords(
+      [](std::vector<mojom::BalanceReportInfoPtr>) {});
 }
 
 TEST_F(DatabaseBalanceReportTest, GetRecordOk) {
@@ -109,21 +108,19 @@ TEST_F(DatabaseBalanceReportTest, GetRecordOk) {
 
   ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(
-          Invoke([&](type::DBTransactionPtr transaction,
+          Invoke([&](mojom::DBTransactionPtr transaction,
                      ledger::client::RunDBTransactionCallback callback) {
             ASSERT_TRUE(transaction);
             ASSERT_EQ(transaction->commands.size(), 2u);
             ASSERT_EQ(transaction->commands[1]->type,
-                      type::DBCommand::Type::READ);
+                      mojom::DBCommand::Type::READ);
             ASSERT_EQ(transaction->commands[1]->command, query);
             ASSERT_EQ(transaction->commands[1]->record_bindings.size(), 6u);
             ASSERT_EQ(transaction->commands[1]->bindings.size(), 1u);
           }));
 
-  balance_report_->GetRecord(
-      type::ActivityMonth::MAY,
-      2020,
-      [](type::Result, type::BalanceReportInfoPtr) {});
+  balance_report_->GetRecord(mojom::ActivityMonth::MAY, 2020,
+                             [](mojom::Result, mojom::BalanceReportInfoPtr) {});
 }
 
 TEST_F(DatabaseBalanceReportTest, DeleteAllRecordsOk) {
@@ -134,18 +131,18 @@ TEST_F(DatabaseBalanceReportTest, DeleteAllRecordsOk) {
 
   ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(
-          Invoke([&](type::DBTransactionPtr transaction,
+          Invoke([&](mojom::DBTransactionPtr transaction,
                      ledger::client::RunDBTransactionCallback callback) {
             ASSERT_TRUE(transaction);
             ASSERT_EQ(transaction->commands.size(), 1u);
             ASSERT_EQ(transaction->commands[0]->type,
-                      type::DBCommand::Type::EXECUTE);
+                      mojom::DBCommand::Type::EXECUTE);
             ASSERT_EQ(transaction->commands[0]->command, query);
             ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 0u);
             ASSERT_EQ(transaction->commands[0]->bindings.size(), 0u);
           }));
 
-  balance_report_->DeleteAllRecords([](type::Result) {});
+  balance_report_->DeleteAllRecords([](mojom::Result) {});
 }
 
 }  // namespace database

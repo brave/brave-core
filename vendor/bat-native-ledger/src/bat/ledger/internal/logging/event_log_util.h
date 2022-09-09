@@ -12,7 +12,7 @@
 
 namespace ledger {
 namespace log {
-std::string GetEventLogKeyForLinkingResult(type::Result result);
+std::string GetEventLogKeyForLinkingResult(mojom::Result result);
 }  // namespace log
 }  // namespace ledger
 

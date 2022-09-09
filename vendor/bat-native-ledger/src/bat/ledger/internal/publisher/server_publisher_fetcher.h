@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_PUBLISHER_SERVER_PUBLISHER_FETCHER_H_
-#define BRAVELEDGER_PUBLISHER_SERVER_PUBLISHER_FETCHER_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_PUBLISHER_SERVER_PUBLISHER_FETCHER_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_PUBLISHER_SERVER_PUBLISHER_FETCHER_H_
 
 #include <map>
 #include <memory>
@@ -35,7 +35,7 @@ class ServerPublisherFetcher {
 
   // Returns a value indicating whether a server info record with
   // the specified last update time is expired
-  bool IsExpired(type::ServerPublisherInfo* server_info);
+  bool IsExpired(mojom::ServerPublisherInfo* server_info);
 
   // Fetches server publisher info for the specified publisher key
   void Fetch(
@@ -46,16 +46,14 @@ class ServerPublisherFetcher {
   void PurgeExpiredRecords();
 
  private:
-  void OnFetchCompleted(
-      const type::Result result,
-      type::ServerPublisherInfoPtr info,
-      const std::string& publisher_key);
+  void OnFetchCompleted(const mojom::Result result,
+                        mojom::ServerPublisherInfoPtr info,
+                        const std::string& publisher_key);
 
   FetchCallbackVector GetCallbacks(const std::string& publisher_key);
 
-  void RunCallbacks(
-      const std::string& publisher_key,
-      type::ServerPublisherInfoPtr server_info);
+  void RunCallbacks(const std::string& publisher_key,
+                    mojom::ServerPublisherInfoPtr server_info);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::map<std::string, FetchCallbackVector> callback_map_;
@@ -65,4 +63,4 @@ class ServerPublisherFetcher {
 }  // namespace publisher
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_PUBLISHER_SERVER_PUBLISHER_FETCHER_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_PUBLISHER_SERVER_PUBLISHER_FETCHER_H_

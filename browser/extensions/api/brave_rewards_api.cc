@@ -164,8 +164,8 @@ ExtensionFunction::ResponseAction BraveRewardsGetPublisherInfoFunction::Run() {
 }
 
 void BraveRewardsGetPublisherInfoFunction::OnGetPublisherInfo(
-    const ledger::type::Result result,
-    ledger::type::PublisherInfoPtr info) {
+    const ledger::mojom::Result result,
+    ledger::mojom::PublisherInfoPtr info) {
   if (!info) {
     Respond(OneArgument(base::Value(static_cast<int>(result))));
     return;
@@ -177,7 +177,7 @@ void BraveRewardsGetPublisherInfoFunction::OnGetPublisherInfo(
   dict.Set("percentage", static_cast<int>(info->percent));
   dict.Set("status", static_cast<int>(info->status));
   dict.Set("excluded",
-           info->excluded == ledger::type::PublisherExclude::EXCLUDED);
+           info->excluded == ledger::mojom::PublisherExclude::EXCLUDED);
   dict.Set("url", info->url);
   dict.Set("provider", info->provider);
   dict.Set("favIconUrl", info->favicon_url);
@@ -239,8 +239,8 @@ BraveRewardsGetPublisherInfoForTabFunction::Run() {
 }
 
 void BraveRewardsGetPublisherInfoForTabFunction::OnGetPublisherPanelInfo(
-    ledger::type::Result result,
-    ledger::type::PublisherInfoPtr info) {
+    ledger::mojom::Result result,
+    ledger::mojom::PublisherInfoPtr info) {
   if (!info) {
     Respond(NoArguments());
     return;
@@ -252,7 +252,7 @@ void BraveRewardsGetPublisherInfoForTabFunction::OnGetPublisherPanelInfo(
   dict.Set("percentage", static_cast<int>(info->percent));
   dict.Set("status", static_cast<int>(info->status));
   dict.Set("excluded",
-           info->excluded == ledger::type::PublisherExclude::EXCLUDED);
+           info->excluded == ledger::mojom::PublisherExclude::EXCLUDED);
   dict.Set("url", info->url);
   dict.Set("provider", info->provider);
   dict.Set("favIconUrl", info->favicon_url);
@@ -287,8 +287,8 @@ BraveRewardsGetPublisherPanelInfoFunction::Run() {
 }
 
 void BraveRewardsGetPublisherPanelInfoFunction::OnGetPublisherPanelInfo(
-    const ledger::type::Result result,
-    ledger::type::PublisherInfoPtr info) {
+    const ledger::mojom::Result result,
+    ledger::mojom::PublisherInfoPtr info) {
   if (!info) {
     Respond(OneArgument(base::Value(static_cast<int>(result))));
     return;
@@ -300,7 +300,7 @@ void BraveRewardsGetPublisherPanelInfoFunction::OnGetPublisherPanelInfo(
   dict.Set("percentage", static_cast<int>(info->percent));
   dict.Set("status", static_cast<int>(info->status));
   dict.Set("excluded",
-           info->excluded == ledger::type::PublisherExclude::EXCLUDED);
+           info->excluded == ledger::mojom::PublisherExclude::EXCLUDED);
   dict.Set("url", info->url);
   dict.Set("provider", info->provider);
   dict.Set("favIconUrl", info->favicon_url);
@@ -325,7 +325,7 @@ ExtensionFunction::ResponseAction BraveRewardsSavePublisherInfoFunction::Run() {
     return RespondNow(NoArguments());
   }
 
-  auto publisher_info = ledger::type::PublisherInfo::New();
+  auto publisher_info = ledger::mojom::PublisherInfo::New();
   publisher_info->id = params->publisher_key;
   publisher_info->name = params->publisher_name;
   publisher_info->url = params->url;
@@ -341,7 +341,7 @@ ExtensionFunction::ResponseAction BraveRewardsSavePublisherInfoFunction::Run() {
 }
 
 void BraveRewardsSavePublisherInfoFunction::OnSavePublisherInfo(
-    const ledger::type::Result result) {
+    const ledger::mojom::Result result) {
   Respond(OneArgument(base::Value(static_cast<int>(result))));
 }
 
@@ -420,15 +420,15 @@ void BraveRewardsTipUserFunction::OnProcessStarted(
 }
 
 void BraveRewardsTipUserFunction::OnTipUserGetPublisherInfo(
-    const ledger::type::Result result,
-    ledger::type::PublisherInfoPtr info) {
-  if (result != ledger::type::Result::LEDGER_OK &&
-      result != ledger::type::Result::NOT_FOUND) {
+    const ledger::mojom::Result result,
+    ledger::mojom::PublisherInfoPtr info) {
+  if (result != ledger::mojom::Result::LEDGER_OK &&
+      result != ledger::mojom::Result::NOT_FOUND) {
     Release();
     return;
   }
 
-  if (result == ledger::type::Result::LEDGER_OK) {
+  if (result == ledger::mojom::Result::LEDGER_OK) {
     ShowTipDialog();
     Release();
     return;
@@ -437,7 +437,7 @@ void BraveRewardsTipUserFunction::OnTipUserGetPublisherInfo(
   std::unique_ptr<brave_rewards::TipUser::Params> params(
       brave_rewards::TipUser::Params::Create(args()));
 
-  auto publisher_info = ledger::type::PublisherInfo::New();
+  auto publisher_info = ledger::mojom::PublisherInfo::New();
   publisher_info->id = params->publisher_key;
   publisher_info->name = params->publisher_name;
   publisher_info->url = params->url;
@@ -458,8 +458,8 @@ void BraveRewardsTipUserFunction::OnTipUserGetPublisherInfo(
 }
 
 void BraveRewardsTipUserFunction::OnTipUserSavePublisherInfo(
-    const ledger::type::Result result) {
-  if (result != ledger::type::Result::LEDGER_OK) {
+    const ledger::mojom::Result result) {
+  if (result != ledger::mojom::Result::LEDGER_OK) {
     Release();
     return;
   }
@@ -554,7 +554,7 @@ BraveRewardsGetRewardsParametersFunction::Run() {
 }
 
 void BraveRewardsGetRewardsParametersFunction::OnGetRewardsParameters(
-    ledger::type::RewardsParametersPtr parameters) {
+    ledger::mojom::RewardsParametersPtr parameters) {
   base::Value::Dict data;
 
   if (!parameters) {
@@ -605,8 +605,8 @@ ExtensionFunction::ResponseAction BraveRewardsGetBalanceReportFunction::Run() {
 }
 
 void BraveRewardsGetBalanceReportFunction::OnBalanceReport(
-    const ledger::type::Result result,
-    ledger::type::BalanceReportInfoPtr report) {
+    const ledger::mojom::Result result,
+    ledger::mojom::BalanceReportInfoPtr report) {
   base::Value::Dict data;
   if (!report) {
     Respond(OneArgument(base::Value(std::move(data))));
@@ -657,7 +657,7 @@ ExtensionFunction::ResponseAction BraveRewardsClaimPromotionFunction::Run() {
 
 void BraveRewardsClaimPromotionFunction::OnClaimPromotion(
     const std::string& promotion_id,
-    const ledger::type::Result result,
+    const ledger::mojom::Result result,
     const std::string& captcha_image,
     const std::string& hint,
     const std::string& captcha_id) {
@@ -692,8 +692,8 @@ ExtensionFunction::ResponseAction BraveRewardsAttestPromotionFunction::Run() {
 
 void BraveRewardsAttestPromotionFunction::OnAttestPromotion(
     const std::string& promotion_id,
-    const ledger::type::Result result,
-    ledger::type::PromotionPtr promotion) {
+    const ledger::mojom::Result result,
+    ledger::mojom::PromotionPtr promotion) {
   base::Value::Dict data;
   data.Set("promotionId", promotion_id);
 
@@ -821,9 +821,9 @@ ExtensionFunction::ResponseAction BraveRewardsSaveRecurringTipFunction::Run() {
 }
 
 void BraveRewardsSaveRecurringTipFunction::OnSaveRecurringTip(
-    ledger::type::Result result) {
-  Respond(result == ledger::type::Result::LEDGER_OK ? NoArguments()
-                                                    : Error("Failed to save"));
+    ledger::mojom::Result result) {
+  Respond(result == ledger::mojom::Result::LEDGER_OK ? NoArguments()
+                                                     : Error("Failed to save"));
 }
 
 BraveRewardsRemoveRecurringTipFunction::
@@ -863,7 +863,7 @@ ExtensionFunction::ResponseAction BraveRewardsGetRecurringTipsFunction::Run() {
 }
 
 void BraveRewardsGetRecurringTipsFunction::OnGetRecurringTips(
-    ledger::type::PublisherInfoList list) {
+    std::vector<ledger::mojom::PublisherInfoPtr> list) {
   base::Value::Dict result;
   base::Value::List recurringTips;
 
@@ -904,7 +904,7 @@ BraveRewardsGetPublisherBannerFunction::Run() {
 }
 
 void BraveRewardsGetPublisherBannerFunction::OnPublisherBanner(
-    ledger::type::PublisherBannerPtr banner) {
+    ledger::mojom::PublisherBannerPtr banner) {
   base::Value::Dict result;
 
   if (banner) {
@@ -949,7 +949,7 @@ ExtensionFunction::ResponseAction BraveRewardsRefreshPublisherFunction::Run() {
 }
 
 void BraveRewardsRefreshPublisherFunction::OnRefreshPublisher(
-    const ledger::type::PublisherStatus status,
+    const ledger::mojom::PublisherStatus status,
     const std::string& publisher_key) {
   Respond(TwoArguments(base::Value(static_cast<int>(status)),
                        base::Value(publisher_key)));
@@ -1052,10 +1052,10 @@ ExtensionFunction::ResponseAction BraveRewardsFetchBalanceFunction::Run() {
 }
 
 void BraveRewardsFetchBalanceFunction::OnBalance(
-    const ledger::type::Result result,
-    ledger::type::BalancePtr balance) {
+    const ledger::mojom::Result result,
+    ledger::mojom::BalancePtr balance) {
   base::Value::Dict balance_value;
-  if (result == ledger::type::Result::LEDGER_OK && balance) {
+  if (result == ledger::mojom::Result::LEDGER_OK && balance) {
     balance_value.Set("total", balance->total);
 
     base::Value::Dict wallets;
@@ -1090,8 +1090,8 @@ ExtensionFunction::ResponseAction BraveRewardsGetExternalWalletFunction::Run() {
 }
 
 void BraveRewardsGetExternalWalletFunction::OnGetExternalWallet(
-    const ledger::type::Result result,
-    ledger::type::ExternalWalletPtr wallet) {
+    const ledger::mojom::Result result,
+    ledger::mojom::ExternalWalletPtr wallet) {
   if (!wallet) {
     Respond(OneArgument(base::Value(static_cast<int>(result))));
     return;
@@ -1258,7 +1258,7 @@ BraveRewardsGetAnonWalletStatusFunction::Run() {
 }
 
 void BraveRewardsGetAnonWalletStatusFunction::OnGetAnonWalletStatus(
-    const ledger::type::Result result) {
+    const ledger::mojom::Result result) {
   Respond(OneArgument(base::Value(static_cast<int>(result))));
 }
 
@@ -1388,7 +1388,7 @@ ExtensionFunction::ResponseAction BraveRewardsGetPrefsFunction::Run() {
 }
 
 void BraveRewardsGetPrefsFunction::GetAutoContributePropertiesCallback(
-    ledger::type::AutoContributePropertiesPtr properties) {
+    ledger::mojom::AutoContributePropertiesPtr properties) {
   base::Value::Dict prefs;
   prefs.Set("autoContributeEnabled", properties->enabled_contribute);
   prefs.Set("autoContributeAmount", properties->amount);

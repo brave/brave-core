@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_REPORT_REPORT_H_
-#define BRAVELEDGER_REPORT_REPORT_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_REPORT_REPORT_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_REPORT_REPORT_H_
 
 #include <string>
 #include <map>
@@ -22,36 +22,33 @@ class Report {
 
   ~Report();
 
-  void GetMonthly(
-      const type::ActivityMonth month,
-      const int year,
-      ledger::GetMonthlyReportCallback callback);
+  void GetMonthly(const mojom::ActivityMonth month,
+                  const int year,
+                  ledger::GetMonthlyReportCallback callback);
 
   void GetAllMonthlyIds(ledger::GetAllMonthlyReportIdsCallback callback);
 
  private:
-  void OnBalance(
-      const type::Result result,
-      type::BalanceReportInfoPtr balance_report,
-      const type::ActivityMonth month,
-      const uint32_t year,
-      ledger::GetMonthlyReportCallback callback);
+  void OnBalance(const mojom::Result result,
+                 mojom::BalanceReportInfoPtr balance_report,
+                 const mojom::ActivityMonth month,
+                 const uint32_t year,
+                 ledger::GetMonthlyReportCallback callback);
 
   void OnTransactions(
-      type::TransactionReportInfoList transaction_report,
-      const type::ActivityMonth month,
+      std::vector<mojom::TransactionReportInfoPtr> transaction_report,
+      const mojom::ActivityMonth month,
       const uint32_t year,
-      std::shared_ptr<type::MonthlyReportInfoPtr> shared_report,
+      std::shared_ptr<mojom::MonthlyReportInfoPtr> shared_report,
       ledger::GetMonthlyReportCallback callback);
 
   void OnContributions(
-      type::ContributionReportInfoList contribution_report,
-      std::shared_ptr<type::MonthlyReportInfoPtr> shared_report,
+      std::vector<mojom::ContributionReportInfoPtr> contribution_report,
+      std::shared_ptr<mojom::MonthlyReportInfoPtr> shared_report,
       ledger::GetMonthlyReportCallback callback);
 
-  void OnGetAllBalanceReports(
-      type::BalanceReportInfoList reports,
-      ledger::GetAllMonthlyReportIdsCallback callback);
+  void OnGetAllBalanceReports(std::vector<mojom::BalanceReportInfoPtr> reports,
+                              ledger::GetAllMonthlyReportIdsCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
@@ -59,4 +56,4 @@ class Report {
 }  // namespace report
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_REPORT_REPORT_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_REPORT_REPORT_H_

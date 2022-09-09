@@ -32,34 +32,30 @@ class Unverified {
   void Contribute();
 
  private:
-  void WasPublisherProcessed(
-      const type::Result result,
-      const std::string& publisher_key,
-      const std::string& name);
+  void WasPublisherProcessed(const mojom::Result result,
+                             const std::string& publisher_key,
+                             const std::string& name);
 
-  void ProcessedPublisherSaved(
-      const type::Result result,
-      const std::string& publisher_key,
-      const std::string& name);
+  void ProcessedPublisherSaved(const mojom::Result result,
+                               const std::string& publisher_key,
+                               const std::string& name);
 
   void FetchInfoForUnverifiedPublishers(
       std::vector<std::string>&& publisher_keys);
 
-  void OnRemovePendingContribution(type::Result result);
+  void OnRemovePendingContribution(mojom::Result result);
 
   void ProcessNext();
 
-  void OnContributeUnverifiedBalance(
-      type::Result result,
-      type::BalancePtr properties);
+  void OnContributeUnverifiedBalance(mojom::Result result,
+                                     mojom::BalancePtr properties);
 
   void OnContributeUnverifiedPublishers(
       double balance,
-      const type::PendingContributionInfoList& list);
+      const std::vector<mojom::PendingContributionInfoPtr>& list);
 
-  void QueueSaved(
-      const type::Result result,
-      const uint64_t pending_contribution_id);
+  void QueueSaved(const mojom::Result result,
+                  const uint64_t pending_contribution_id);
 
   void ProcessingCompleted();
 

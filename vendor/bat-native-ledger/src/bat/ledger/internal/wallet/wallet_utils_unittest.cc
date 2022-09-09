@@ -17,7 +17,7 @@ class WalletUtilTest : public BATLedgerTest {};
 
 TEST_F(WalletUtilTest, InvalidJSON) {
   const char data[] = "";
-  type::ExternalWalletPtr wallet = ExternalWalletPtrFromJSON(data, "uphold");
+  mojom::ExternalWalletPtr wallet = ExternalWalletPtrFromJSON(data, "uphold");
   EXPECT_EQ(nullptr, wallet.get());
 }
 
@@ -36,12 +36,12 @@ TEST_F(WalletUtilTest, ExternalWalletPtrFromJSON) {
       "  \"fees\": {\"brave\": 5.00}"
       "}\n";
 
-  type::ExternalWalletPtr wallet = ExternalWalletPtrFromJSON(data, "uphold");
+  mojom::ExternalWalletPtr wallet = ExternalWalletPtrFromJSON(data, "uphold");
   EXPECT_EQ(wallet->token, "sI5rKiy6ijzbbJgE2MMFzAbTc6udYYXEi3wzS9iknP6n");
   EXPECT_EQ(wallet->address, "6a752063-8958-44d5-b5db-71543f18567d");
   EXPECT_EQ(wallet->one_time_string,
             "eda4c873eac72e1ecc30e77b25bb623b8b5bf99f");
-  EXPECT_EQ(wallet->status, ledger::type::WalletStatus::VERIFIED);
+  EXPECT_EQ(wallet->status, ledger::mojom::WalletStatus::VERIFIED);
   EXPECT_EQ(wallet->user_name, "random_user");
   EXPECT_EQ(wallet->add_url, "https://random.domain/add");
   EXPECT_EQ(wallet->withdraw_url, "https://random.domain/withdraw");

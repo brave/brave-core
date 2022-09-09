@@ -28,7 +28,7 @@ class WalletCreate {
 
  private:
   void OnCreate(ledger::ResultCallback callback,
-                type::Result result,
+                mojom::Result result,
                 const std::string& payment_id);
 
   LedgerImpl* ledger_;  // NOT OWNED

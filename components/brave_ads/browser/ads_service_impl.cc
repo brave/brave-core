@@ -726,7 +726,8 @@ void AdsServiceImpl::GetRewardsWallet() {
       base::BindOnce(&AdsServiceImpl::OnGetRewardsWallet, AsWeakPtr()));
 }
 
-void AdsServiceImpl::OnGetRewardsWallet(ledger::type::RewardsWalletPtr wallet) {
+void AdsServiceImpl::OnGetRewardsWallet(
+    ledger::mojom::RewardsWalletPtr wallet) {
   if (!IsBatAdsBound() || !wallet) {
     return;
   }

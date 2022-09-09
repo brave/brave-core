@@ -4,6 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <utility>
+#include <vector>
 
 #include "base/guid.h"
 #include "bat/ledger/internal/contribution/contribution_tip.h"
@@ -27,7 +28,7 @@ void ContributionTip::Process(const std::string& publisher_key,
                               ledger::LegacyResultCallback callback) {
   if (publisher_key.empty()) {
     BLOG(0, "Failed to do tip due to missing publisher key");
-    callback(type::Result::NOT_FOUND);
+    callback(mojom::Result::NOT_FOUND);
     return;
   }
 
@@ -43,17 +44,17 @@ void ContributionTip::Process(const std::string& publisher_key,
       server_callback);
 }
 
-void ContributionTip::ServerPublisher(type::ServerPublisherInfoPtr server_info,
+void ContributionTip::ServerPublisher(mojom::ServerPublisherInfoPtr server_info,
                                       const std::string& publisher_key,
                                       double amount,
                                       ledger::LegacyResultCallback callback) {
-  auto status = type::PublisherStatus::NOT_VERIFIED;
+  auto status = mojom::PublisherStatus::NOT_VERIFIED;
   if (server_info) {
     status = server_info->status;
   }
 
   // Save to the pending list if not verified
-  if (status == type::PublisherStatus::NOT_VERIFIED) {
+  if (status == mojom::PublisherStatus::NOT_VERIFIED) {
     BLOG(1, "Saving pending publisher " << publisher_key);
     auto save_callback = std::bind(&ContributionTip::OnSavePending,
         this,
@@ -67,15 +68,15 @@ void ContributionTip::ServerPublisher(type::ServerPublisherInfoPtr server_info,
     return;
   }
 
-  type::ContributionQueuePublisherList queue_list;
-  auto publisher = type::ContributionQueuePublisher::New();
+  std::vector<mojom::ContributionQueuePublisherPtr> queue_list;
+  auto publisher = mojom::ContributionQueuePublisher::New();
   publisher->publisher_key = publisher_key;
   publisher->amount_percent = 100.0;
   queue_list.push_back(std::move(publisher));
 
-  auto queue = type::ContributionQueue::New();
+  auto queue = mojom::ContributionQueue::New();
   queue->id = base::GenerateGUID();
-  queue->type = type::RewardsType::ONE_TIME_TIP;
+  queue->type = mojom::RewardsType::ONE_TIME_TIP;
   queue->amount = amount;
   queue->partial = false;
   queue->publishers = std::move(queue_list);
@@ -88,34 +89,34 @@ void ContributionTip::ServerPublisher(type::ServerPublisherInfoPtr server_info,
   ledger_->database()->SaveContributionQueue(std::move(queue), save_callback);
 }
 
-void ContributionTip::QueueSaved(type::Result result,
+void ContributionTip::QueueSaved(mojom::Result result,
                                  ledger::LegacyResultCallback callback) {
-  if (result == type::Result::LEDGER_OK) {
+  if (result == mojom::Result::LEDGER_OK) {
     ledger_->contribution()->ProcessContributionQueue();
   } else {
     BLOG(0, "Queue was not saved");
   }
 
-  callback(type::Result::LEDGER_OK);
+  callback(mojom::Result::LEDGER_OK);
 }
 
 void ContributionTip::SavePending(const std::string& publisher_key,
                                   double amount,
                                   ledger::LegacyResultCallback callback) {
-  auto contribution = type::PendingContribution::New();
+  auto contribution = mojom::PendingContribution::New();
   contribution->publisher_key = publisher_key;
   contribution->amount = amount;
-  contribution->type = type::RewardsType::ONE_TIME_TIP;
+  contribution->type = mojom::RewardsType::ONE_TIME_TIP;
 
-  type::PendingContributionList list;
+  std::vector<mojom::PendingContributionPtr> list;
   list.push_back(std::move(contribution));
 
   ledger_->database()->SavePendingContribution(std::move(list), callback);
 }
 
-void ContributionTip::OnSavePending(type::Result result,
+void ContributionTip::OnSavePending(mojom::Result result,
                                     ledger::LegacyResultCallback callback) {
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Pending tip save failed");
   } else {
     ledger_->ledger_client()->PendingContributionSaved(result);

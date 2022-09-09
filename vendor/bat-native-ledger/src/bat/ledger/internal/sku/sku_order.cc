@@ -26,12 +26,11 @@ SKUOrder::SKUOrder(LedgerImpl* ledger) :
 
 SKUOrder::~SKUOrder() = default;
 
-void SKUOrder::Create(
-    const std::vector<type::SKUOrderItem>& items,
-    ledger::SKUOrderCallback callback) {
+void SKUOrder::Create(const std::vector<mojom::SKUOrderItem>& items,
+                      ledger::SKUOrderCallback callback) {
   if (items.empty()) {
     BLOG(0, "List is empty");
-    callback(type::Result::LEDGER_ERROR, "");
+    callback(mojom::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -44,13 +43,12 @@ void SKUOrder::Create(
   payment_server_->post_order()->Request(items, url_callback);
 }
 
-void SKUOrder::OnCreate(
-    const type::Result result,
-    type::SKUOrderPtr order,
-    ledger::SKUOrderCallback callback) {
-  if (result != type::Result::LEDGER_OK) {
+void SKUOrder::OnCreate(const mojom::Result result,
+                        mojom::SKUOrderPtr order,
+                        ledger::SKUOrderCallback callback) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Order response could not be parsed");
-    callback(type::Result::LEDGER_ERROR, "");
+    callback(mojom::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -63,17 +61,16 @@ void SKUOrder::OnCreate(
   ledger_->database()->SaveSKUOrder(order->Clone(), save_callback);
 }
 
-void SKUOrder::OnCreateSave(
-    const type::Result result,
-    const std::string& order_id,
-    ledger::SKUOrderCallback callback) {
-  if (result != type::Result::LEDGER_OK) {
+void SKUOrder::OnCreateSave(const mojom::Result result,
+                            const std::string& order_id,
+                            ledger::SKUOrderCallback callback) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Order couldn't be saved");
     callback(result, "");
     return;
   }
 
-  callback(type::Result::LEDGER_OK, order_id);
+  callback(mojom::Result::LEDGER_OK, order_id);
 }
 
 }  // namespace sku

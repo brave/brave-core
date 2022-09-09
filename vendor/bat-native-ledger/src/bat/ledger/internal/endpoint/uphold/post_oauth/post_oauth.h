@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_ENDPOINT_UPHOLD_POST_OAUTH_POST_OAUTH_H_
-#define BRAVELEDGER_ENDPOINT_UPHOLD_POST_OAUTH_POST_OAUTH_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_UPHOLD_POST_OAUTH_POST_OAUTH_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_UPHOLD_POST_OAUTH_POST_OAUTH_H_
 
 #include <string>
 
@@ -35,9 +35,8 @@ class LedgerImpl;
 namespace endpoint {
 namespace uphold {
 
-using PostOauthCallback = std::function<void(
-    const type::Result result,
-    const std::string& token)>;
+using PostOauthCallback =
+    std::function<void(const mojom::Result result, const std::string& token)>;
 
 class PostOauth {
  public:
@@ -53,15 +52,12 @@ class PostOauth {
 
   std::string GeneratePayload(const std::string& code);
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(const int status_code);
 
-  type::Result ParseBody(
-      const std::string& body,
-      std::string* token);
+  mojom::Result ParseBody(const std::string& body, std::string* token);
 
-  void OnRequest(
-      const type::UrlResponse& response,
-      PostOauthCallback callback);
+  void OnRequest(const mojom::UrlResponse& response,
+                 PostOauthCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
@@ -70,4 +66,4 @@ class PostOauth {
 }  // namespace endpoint
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_ENDPOINT_UPHOLD_POST_OAUTH_POST_OAUTH_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_UPHOLD_POST_OAUTH_POST_OAUTH_H_

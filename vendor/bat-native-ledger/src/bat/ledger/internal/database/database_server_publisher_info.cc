@@ -31,18 +31,18 @@ DatabaseServerPublisherInfo::DatabaseServerPublisherInfo(
 DatabaseServerPublisherInfo::~DatabaseServerPublisherInfo() = default;
 
 void DatabaseServerPublisherInfo::InsertOrUpdate(
-    const type::ServerPublisherInfo& server_info,
+    const mojom::ServerPublisherInfo& server_info,
     ledger::LegacyResultCallback callback) {
   if (server_info.publisher_key.empty()) {
     BLOG(0, "Publisher key is empty");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
       "(publisher_key, status, address, updated_at) "
@@ -82,31 +82,29 @@ void DatabaseServerPublisherInfo::GetRecord(
 }
 
 void DatabaseServerPublisherInfo::OnGetRecordBanner(
-    type::PublisherBannerPtr banner,
+    mojom::PublisherBannerPtr banner,
     const std::string& publisher_key,
     client::GetServerPublisherInfoCallback callback) {
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
   const std::string query = base::StringPrintf(
       "SELECT status, address, updated_at "
       "FROM %s WHERE publisher_key=?",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = query;
 
   BindString(command.get(), 0, publisher_key);
 
-  command->record_bindings = {
-      type::DBCommand::RecordBindingType::INT_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::INT64_TYPE
-  };
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE};
 
   transaction->commands.push_back(std::move(command));
 
   if (!banner) {
-    banner = type::PublisherBanner::New();
+    banner = mojom::PublisherBanner::New();
   }
 
   auto transaction_callback =
@@ -121,12 +119,12 @@ void DatabaseServerPublisherInfo::OnGetRecordBanner(
 }
 
 void DatabaseServerPublisherInfo::OnGetRecord(
-    type::DBCommandResponsePtr response,
+    mojom::DBCommandResponsePtr response,
     const std::string& publisher_key,
-    const type::PublisherBanner& banner,
+    const mojom::PublisherBanner& banner,
     client::GetServerPublisherInfoCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback(nullptr);
     return;
@@ -139,10 +137,9 @@ void DatabaseServerPublisherInfo::OnGetRecord(
 
   auto* record = response->result->get_records()[0].get();
 
-  auto info = type::ServerPublisherInfo::New();
+  auto info = mojom::ServerPublisherInfo::New();
   info->publisher_key = publisher_key;
-  info->status = static_cast<type::PublisherStatus>(
-      GetIntColumn(record, 0));
+  info->status = static_cast<mojom::PublisherStatus>(GetIntColumn(record, 0));
   info->address = GetStringColumn(record, 1);
   info->updated_at = GetInt64Column(record, 2);
   info->banner = banner.Clone();
@@ -156,19 +153,17 @@ void DatabaseServerPublisherInfo::DeleteExpiredRecords(
   int64_t cutoff =
       util::GetCurrentTimeStamp() - max_age_seconds;
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   // Get a list of publisher keys that are older than |max_age_seconds|.
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = base::StringPrintf(
       "SELECT publisher_key FROM %s WHERE updated_at < ?",
       kTableName);
   BindInt64(command.get(), 0, cutoff);
 
-  command->record_bindings = {
-      type::DBCommand::RecordBindingType::STRING_TYPE
-  };
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE};
 
   transaction->commands.push_back(std::move(command));
 
@@ -182,12 +177,12 @@ void DatabaseServerPublisherInfo::DeleteExpiredRecords(
 }
 
 void DatabaseServerPublisherInfo::OnExpiredRecordsSelected(
-    type::DBCommandResponsePtr response,
+    mojom::DBCommandResponsePtr response,
     ledger::LegacyResultCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Unable to query for expired records");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -198,20 +193,20 @@ void DatabaseServerPublisherInfo::OnExpiredRecordsSelected(
 
   // Exit if there are no records to delete.
   if (publisher_keys.empty()) {
-    callback(type::Result::LEDGER_OK);
+    callback(mojom::Result::LEDGER_OK);
     return;
   }
 
   std::string publisher_key_list = GenerateStringInCase(publisher_keys);
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   // Delete records in child tables.
   banner_->DeleteRecords(transaction.get(), publisher_key_list);
 
   // Delete records in this table.
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = base::StringPrintf(
       "DELETE FROM %s WHERE publisher_key IN (%s)",
       kTableName,

@@ -34,7 +34,7 @@ void UpholdUser::Get(GetUserCallback callback) {
   if (!wallet) {
     User user;
     BLOG(0, "Wallet is null");
-    std::move(callback).Run(type::Result::LEDGER_ERROR, user);
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR, user);
     return;
   }
 
@@ -45,21 +45,21 @@ void UpholdUser::Get(GetUserCallback callback) {
 }
 
 void UpholdUser::OnGet(GetUserCallback callback,
-                       type::Result result,
+                       mojom::Result result,
                        const User& user) {
-  if (result == type::Result::EXPIRED_TOKEN) {
+  if (result == mojom::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
-    std::move(callback).Run(type::Result::EXPIRED_TOKEN, user);
+    std::move(callback).Run(mojom::Result::EXPIRED_TOKEN, user);
     return;
   }
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Couldn't get user");
-    std::move(callback).Run(type::Result::LEDGER_ERROR, user);
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR, user);
     return;
   }
 
-  std::move(callback).Run(type::Result::LEDGER_OK, user);
+  std::move(callback).Run(mojom::Result::LEDGER_OK, user);
 }
 
 }  // namespace uphold

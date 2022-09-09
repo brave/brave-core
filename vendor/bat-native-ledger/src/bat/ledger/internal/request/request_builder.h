@@ -21,14 +21,14 @@ class RequestBuilder {
  public:
   virtual ~RequestBuilder();
 
-  absl::optional<type::UrlRequestPtr> Request() const;
+  absl::optional<mojom::UrlRequestPtr> Request() const;
 
  protected:
   explicit RequestBuilder(LedgerImpl*);
 
   virtual absl::optional<std::string> Url() const = 0;
 
-  virtual type::UrlMethod Method() const;
+  virtual mojom::UrlMethod Method() const;
 
   virtual absl::optional<std::vector<std::string>> Headers() const;
 

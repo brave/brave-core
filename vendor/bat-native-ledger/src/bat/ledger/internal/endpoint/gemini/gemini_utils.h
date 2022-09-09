@@ -24,7 +24,7 @@ std::vector<std::string> RequestAuthorization(const std::string& token = "");
 std::string GetApiServerUrl(const std::string& path);
 std::string GetOauthServerUrl(const std::string& path);
 
-type::Result CheckStatusCode(const int status_code);
+mojom::Result CheckStatusCode(const int status_code);
 
 }  // namespace gemini
 }  // namespace endpoint

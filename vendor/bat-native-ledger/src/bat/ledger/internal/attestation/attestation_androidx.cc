@@ -60,15 +60,15 @@ void AttestationAndroid::Start(
 }
 
 void AttestationAndroid::OnStart(StartCallback callback,
-                                 type::Result result,
+                                 mojom::Result result,
                                  const std::string& nonce) {
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Failed to start attestation");
-    std::move(callback).Run(type::Result::LEDGER_ERROR, "");
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR, "");
     return;
   }
 
-  std::move(callback).Run(type::Result::LEDGER_OK, nonce);
+  std::move(callback).Run(mojom::Result::LEDGER_OK, nonce);
 }
 
 void AttestationAndroid::Confirm(
@@ -87,14 +87,14 @@ void AttestationAndroid::Confirm(
 }
 
 void AttestationAndroid::OnConfirm(ConfirmCallback callback,
-                                   type::Result result) {
-  if (result != type::Result::LEDGER_OK) {
+                                   mojom::Result result) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Failed to confirm attestation");
     std::move(callback).Run(result);
     return;
   }
 
-  std::move(callback).Run(type::Result::LEDGER_OK);
+  std::move(callback).Run(mojom::Result::LEDGER_OK);
 }
 
 }  // namespace attestation

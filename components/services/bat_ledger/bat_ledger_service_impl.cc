@@ -38,7 +38,7 @@ void BatLedgerServiceImpl::Create(
 }
 
 void BatLedgerServiceImpl::SetEnvironment(
-    ledger::type::Environment environment) {
+    ledger::mojom::Environment environment) {
   DCHECK(!initialized_ || testing());
   ledger::_environment = environment;
 }

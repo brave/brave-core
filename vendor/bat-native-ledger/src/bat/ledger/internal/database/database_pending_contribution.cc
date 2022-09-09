@@ -34,15 +34,15 @@ DatabasePendingContribution::DatabasePendingContribution(
 DatabasePendingContribution::~DatabasePendingContribution() = default;
 
 void DatabasePendingContribution::InsertOrUpdateList(
-    type::PendingContributionList list,
+    std::vector<mojom::PendingContributionPtr> list,
     ledger::LegacyResultCallback callback) {
   if (list.empty()) {
     BLOG(1, "List is empty");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
   const uint64_t now = util::GetCurrentTimeStamp();
 
   const std::string query = base::StringPrintf(
@@ -52,8 +52,8 @@ void DatabasePendingContribution::InsertOrUpdateList(
       kTableName);
 
   for (const auto& item : list) {
-    auto command = type::DBCommand::New();
-    command->type = type::DBCommand::Type::RUN;
+    auto command = mojom::DBCommand::New();
+    command->type = mojom::DBCommand::Type::RUN;
     command->command = query;
 
     BindNull(command.get(), 0);
@@ -75,18 +75,16 @@ void DatabasePendingContribution::InsertOrUpdateList(
 
 void DatabasePendingContribution::GetReservedAmount(
     ledger::PendingContributionsTotalCallback callback) {
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
   const std::string query = base::StringPrintf(
     "SELECT SUM(amount) FROM %s",
     kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = query;
 
-  command->record_bindings = {
-      type::DBCommand::RecordBindingType::DOUBLE_TYPE
-  };
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::DOUBLE_TYPE};
 
   transaction->commands.push_back(std::move(command));
 
@@ -100,10 +98,10 @@ void DatabasePendingContribution::GetReservedAmount(
 }
 
 void DatabasePendingContribution::OnGetReservedAmount(
-    type::DBCommandResponsePtr response,
+    mojom::DBCommandResponsePtr response,
     ledger::PendingContributionsTotalCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback(0.0);
     return;
@@ -121,7 +119,7 @@ void DatabasePendingContribution::OnGetReservedAmount(
 
 void DatabasePendingContribution::GetAllRecords(
     ledger::PendingContributionInfoListCallback callback) {
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
   const std::string query = base::StringPrintf(
       "SELECT pc.pending_contribution_id, pi.publisher_id, pi.name, "
       "pi.url, pi.favIcon, spi.status, spi.updated_at, pi.provider, "
@@ -132,22 +130,22 @@ void DatabasePendingContribution::GetAllRecords(
       "ON spi.publisher_key = pi.publisher_id",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = query;
 
-  command->record_bindings = {type::DBCommand::RecordBindingType::INT64_TYPE,
-                              type::DBCommand::RecordBindingType::STRING_TYPE,
-                              type::DBCommand::RecordBindingType::STRING_TYPE,
-                              type::DBCommand::RecordBindingType::STRING_TYPE,
-                              type::DBCommand::RecordBindingType::STRING_TYPE,
-                              type::DBCommand::RecordBindingType::INT64_TYPE,
-                              type::DBCommand::RecordBindingType::INT64_TYPE,
-                              type::DBCommand::RecordBindingType::STRING_TYPE,
-                              type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              type::DBCommand::RecordBindingType::INT64_TYPE,
-                              type::DBCommand::RecordBindingType::STRING_TYPE,
-                              type::DBCommand::RecordBindingType::INT_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE};
 
   transaction->commands.push_back(std::move(command));
 
@@ -161,18 +159,18 @@ void DatabasePendingContribution::GetAllRecords(
 }
 
 void DatabasePendingContribution::OnGetAllRecords(
-    type::DBCommandResponsePtr response,
+    mojom::DBCommandResponsePtr response,
     ledger::PendingContributionInfoListCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback({});
     return;
   }
 
-  type::PendingContributionInfoList list;
+  std::vector<mojom::PendingContributionInfoPtr> list;
   for (auto const& record : response->result->get_records()) {
-    auto info = type::PendingContributionInfo::New();
+    auto info = mojom::PendingContributionInfo::New();
     auto* record_pointer = record.get();
 
     info->id = GetInt64Column(record_pointer, 0);
@@ -180,15 +178,15 @@ void DatabasePendingContribution::OnGetAllRecords(
     info->name = GetStringColumn(record_pointer, 2);
     info->url = GetStringColumn(record_pointer, 3);
     info->favicon_url = GetStringColumn(record_pointer, 4);
-    info->status = static_cast<type::PublisherStatus>(
-        GetInt64Column(record_pointer, 5));
+    info->status =
+        static_cast<mojom::PublisherStatus>(GetInt64Column(record_pointer, 5));
     info->status_updated_at = GetInt64Column(record_pointer, 6);
     info->provider = GetStringColumn(record_pointer, 7);
     info->amount = GetDoubleColumn(record_pointer, 8);
     info->added_date = GetInt64Column(record_pointer, 9);
     info->viewing_id = GetStringColumn(record_pointer, 10);
-    info->type = static_cast<type::RewardsType>(
-        GetIntColumn(record_pointer, 11));
+    info->type =
+        static_cast<mojom::RewardsType>(GetIntColumn(record_pointer, 11));
     info->expiration_date =
         info->added_date +
         constant::kPendingContributionExpirationInterval;
@@ -211,12 +209,12 @@ void DatabasePendingContribution::GetUnverifiedPublishers(
       "GROUP BY pi.publisher_id",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = std::move(query);
-  command->record_bindings = {type::DBCommand::RecordBindingType::STRING_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE};
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
   ledger_->RunDBTransaction(
@@ -226,10 +224,10 @@ void DatabasePendingContribution::GetUnverifiedPublishers(
 }
 
 void DatabasePendingContribution::OnGetUnverifiedPublishers(
-    type::DBCommandResponsePtr response,
+    mojom::DBCommandResponsePtr response,
     ledger::UnverifiedPublishersCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     return callback({});
   }
@@ -249,17 +247,17 @@ void DatabasePendingContribution::DeleteRecord(
     ledger::LegacyResultCallback callback) {
   if (id == 0) {
     BLOG(1, "Id is 0");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
   const std::string query = base::StringPrintf(
     "DELETE FROM %s WHERE pending_contribution_id = ?",
     kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
   BindInt64(command.get(), 0, id);
@@ -275,11 +273,11 @@ void DatabasePendingContribution::DeleteRecord(
 
 void DatabasePendingContribution::DeleteAllRecords(
     ledger::LegacyResultCallback callback) {
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
   const std::string query = base::StringPrintf("DELETE FROM %s", kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
   transaction->commands.push_back(std::move(command));

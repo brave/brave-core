@@ -17,7 +17,7 @@ void StateMigrationV9::Migrate(ledger::LegacyResultCallback callback) {
   // in Japan as part of bitFlyer feature support. Later, it was determined
   // that Android users in Japan *should* be allowed to AC and this migration
   // was removed.
-  callback(type::Result::LEDGER_OK);
+  callback(mojom::Result::LEDGER_OK);
 }
 
 }  // namespace state

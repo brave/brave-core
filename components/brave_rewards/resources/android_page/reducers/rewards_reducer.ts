@@ -436,7 +436,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     case types.ON_EXTERNAL_WALLET: {
       state = { ...state }
 
-      if (action.payload.result === 24) { // on ledger::type::Result::EXPIRED_TOKEN
+      if (action.payload.result === 24) { // on ledger::mojom::Result::EXPIRED_TOKEN
         chrome.send('brave_rewards.getExternalWallet')
         break
       }

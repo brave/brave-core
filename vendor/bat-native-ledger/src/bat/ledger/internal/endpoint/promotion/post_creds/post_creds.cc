@@ -50,61 +50,60 @@ std::string PostCreds::GeneratePayload(base::Value::List&& blinded_creds) {
   return json;
 }
 
-type::Result PostCreds::CheckStatusCode(const int status_code) {
+mojom::Result PostCreds::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   if (status_code == net::HTTP_FORBIDDEN) {
     BLOG(0, "Signature validation failed");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   if (status_code == net::HTTP_CONFLICT) {
     BLOG(0, "Incorrect blinded credentials");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   if (status_code == net::HTTP_GONE) {
     BLOG(0, "Promotion is gone");
-    return type::Result::NOT_FOUND;
+    return mojom::Result::NOT_FOUND;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Internal server error");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
-type::Result PostCreds::ParseBody(
-    const std::string& body,
-    std::string* claim_id) {
+mojom::Result PostCreds::ParseBody(const std::string& body,
+                                   std::string* claim_id) {
   DCHECK(claim_id);
 
   absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* id = dict.FindString("claimId");
   if (!id || id->empty()) {
     BLOG(0, "Claim id is missing");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   *claim_id = *id;
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
 void PostCreds::Request(const std::string& promotion_id,
@@ -113,7 +112,7 @@ void PostCreds::Request(const std::string& promotion_id,
   const auto wallet = ledger_->wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    std::move(callback).Run(type::Result::LEDGER_ERROR, "");
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -128,23 +127,23 @@ void PostCreds::Request(const std::string& promotion_id,
   auto url_callback = base::BindOnce(
       &PostCreds::OnRequest, base::Unretained(this), std::move(callback));
 
-  auto request = type::UrlRequest::New();
+  auto request = mojom::UrlRequest::New();
   request->url = GetUrl(promotion_id);
   request->content = payload;
   request->headers = headers;
   request->content_type = "application/json; charset=utf-8";
-  request->method = type::UrlMethod::POST;
+  request->method = mojom::UrlMethod::POST;
   ledger_->LoadURL(std::move(request), std::move(url_callback));
 }
 
 void PostCreds::OnRequest(PostCredsCallback callback,
-                          const type::UrlResponse& response) {
+                          const mojom::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
 
   std::string claim_id;
-  type::Result result = CheckStatusCode(response.status_code);
+  mojom::Result result = CheckStatusCode(response.status_code);
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     std::move(callback).Run(result, claim_id);
     return;
   }

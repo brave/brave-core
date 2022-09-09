@@ -75,23 +75,23 @@ void ServerPublisherFetcher::Fetch(
 }
 
 void ServerPublisherFetcher::OnFetchCompleted(
-    const type::Result result,
-    type::ServerPublisherInfoPtr info,
+    const mojom::Result result,
+    mojom::ServerPublisherInfoPtr info,
     const std::string& publisher_key) {
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     RunCallbacks(publisher_key, nullptr);
     return;
   }
 
   // Create a shared pointer to a mojo struct so that it can be copied
   // into a callback.
-  auto shared_info = std::make_shared<type::ServerPublisherInfoPtr>(
-      std::move(info));
+  auto shared_info =
+      std::make_shared<mojom::ServerPublisherInfoPtr>(std::move(info));
 
   // Store the result for subsequent lookups.
-  ledger_->database()->InsertServerPublisherInfo(**shared_info,
-      [this, publisher_key, shared_info](type::Result result) {
-        if (result != type::Result::LEDGER_OK) {
+  ledger_->database()->InsertServerPublisherInfo(
+      **shared_info, [this, publisher_key, shared_info](mojom::Result result) {
+        if (result != mojom::Result::LEDGER_OK) {
           BLOG(0, "Error saving server publisher info record");
         }
         RunCallbacks(publisher_key, std::move(*shared_info));
@@ -99,7 +99,7 @@ void ServerPublisherFetcher::OnFetchCompleted(
 }
 
 bool ServerPublisherFetcher::IsExpired(
-    type::ServerPublisherInfo* server_info) {
+    mojom::ServerPublisherInfo* server_info) {
   if (!server_info) {
     return true;
   }
@@ -140,7 +140,7 @@ FetchCallbackVector ServerPublisherFetcher::GetCallbacks(
 
 void ServerPublisherFetcher::RunCallbacks(
     const std::string& publisher_key,
-    type::ServerPublisherInfoPtr server_info) {
+    mojom::ServerPublisherInfoPtr server_info) {
   FetchCallbackVector callbacks = GetCallbacks(publisher_key);
   DCHECK(!callbacks.empty());
   for (auto& callback : callbacks) {

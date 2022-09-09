@@ -28,13 +28,13 @@ std::string GetPrefixList::GetUrl() {
   return GetServerUrl("/publishers/prefix-list");
 }
 
-type::Result GetPrefixList::CheckStatusCode(const int status_code) {
+mojom::Result GetPrefixList::CheckStatusCode(const int status_code) {
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
 void GetPrefixList::Request(GetPrefixListCallback callback) {
@@ -43,24 +43,23 @@ void GetPrefixList::Request(GetPrefixListCallback callback) {
       _1,
       callback);
 
-  auto request = type::UrlRequest::New();
+  auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
-void GetPrefixList::OnRequest(
-    const type::UrlResponse& response,
-    GetPrefixListCallback callback) {
+void GetPrefixList::OnRequest(const mojom::UrlResponse& response,
+                              GetPrefixListCallback callback) {
   ledger::LogUrlResponse(__func__, response, true);
 
-  if (CheckStatusCode(response.status_code) != type::Result::LEDGER_OK ||
+  if (CheckStatusCode(response.status_code) != mojom::Result::LEDGER_OK ||
       response.body.empty()) {
     BLOG(0, "Invalid server response for publisher prefix list");
-    callback(type::Result::LEDGER_ERROR, "");
+    callback(mojom::Result::LEDGER_ERROR, "");
     return;
   }
 
-  callback(type::Result::LEDGER_OK, response.body);
+  callback(mojom::Result::LEDGER_OK, response.body);
 }
 
 }  // namespace rewards

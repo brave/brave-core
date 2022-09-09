@@ -38,9 +38,9 @@ void RewardsBrowserTestPromotion::WaitForPromotionInitialization() {
 
 void RewardsBrowserTestPromotion::OnFetchPromotions(
     brave_rewards::RewardsService* rewards_service,
-    const ledger::type::Result result,
-    const ledger::type::PromotionList& list) {
-  ASSERT_EQ(result, ledger::type::Result::LEDGER_OK);
+    const ledger::mojom::Result result,
+    const std::vector<ledger::mojom::PromotionPtr>& list) {
+  ASSERT_EQ(result, ledger::mojom::Result::LEDGER_OK);
   initialized_ = true;
 
   if (wait_for_initialization_loop_) {
@@ -61,12 +61,11 @@ void RewardsBrowserTestPromotion::WaitForPromotionFinished(
 
 void RewardsBrowserTestPromotion::OnPromotionFinished(
     brave_rewards::RewardsService* rewards_service,
-    const ledger::type::Result result,
-    ledger::type::PromotionPtr promotion) {
+    const ledger::mojom::Result result,
+    ledger::mojom::PromotionPtr promotion) {
   if (should_succeed_) {
-    ASSERT_EQ(
-        static_cast<ledger::type::Result>(result),
-        ledger::type::Result::LEDGER_OK);
+    ASSERT_EQ(static_cast<ledger::mojom::Result>(result),
+              ledger::mojom::Result::LEDGER_OK);
   }
 
   finished_ = true;
@@ -94,7 +93,7 @@ void RewardsBrowserTestPromotion::OnUnblindedTokensReady(
   }
 }
 
-ledger::type::PromotionPtr RewardsBrowserTestPromotion::GetPromotion() {
+ledger::mojom::PromotionPtr RewardsBrowserTestPromotion::GetPromotion() {
   return promotion_->Clone();
 }
 

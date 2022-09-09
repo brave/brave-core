@@ -62,8 +62,8 @@ namespace endpoint {
 namespace api {
 
 using GetParametersCallback =
-    base::OnceCallback<void(type::Result result,
-                            const type::RewardsParameters&)>;
+    base::OnceCallback<void(mojom::Result result,
+                            const mojom::RewardsParameters&)>;
 
 class GetParameters {
  public:
@@ -75,14 +75,13 @@ class GetParameters {
  private:
   std::string GetUrl(const std::string& currency = "");
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(const int status_code);
 
-  type::Result ParseBody(
-      const std::string& body,
-      type::RewardsParameters* parameters);
+  mojom::Result ParseBody(const std::string& body,
+                          mojom::RewardsParameters* parameters);
 
   void OnRequest(GetParametersCallback callback,
-                 const type::UrlResponse& response);
+                 const mojom::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
