@@ -78,7 +78,7 @@ struct AccountDetailsView: View {
             .alert(isPresented: $isPresentingRemoveConfirmation) {
               Alert(
                 title: Text(Strings.Wallet.accountRemoveAlertConfirmation),
-                message: Text(Strings.Wallet.accountRemoveAlertConfirmationMessage),
+                message: Text(Strings.Wallet.warningAlertConfirmation),
                 primaryButton: .destructive(Text(Strings.yes), action: removeAccount),
                 secondaryButton: .cancel(Text(Strings.no))
               )

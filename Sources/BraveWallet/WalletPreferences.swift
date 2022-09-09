@@ -5,6 +5,7 @@
 
 import BraveShared
 import struct Shared.Strings
+import BraveCore
 
 extension Preferences {
   public final class Wallet {
@@ -29,9 +30,14 @@ extension Preferences {
     public static let defaultEthWallet = Option<Int>(key: "wallet.default-wallet", default: WalletType.brave.rawValue)
     /// The default wallet to use for Solana to be communicate with web3
     public static let defaultSolWallet = Option<Int>(key: "wallet.default-sol-wallet", default: WalletType.brave.rawValue)
-    /// Whether or not webpages can use the Ethereum/Solana Provider API to communicate with users Ethereum/Solana wallet
-    public static let allowDappProviderAccountRequests: Option<Bool> = .init(
-      key: "wallet.allow-eth-provider-account-requests",
+    /// Whether or not webpages can use the Ethereum Provider API to communicate with users Ethereum wallet
+    public static let allowEthProviderAccess: Option<Bool> = .init(
+      key: "wallet.allow-eth-provider-access",
+      default: true
+    )
+    /// Whether or not webpages can use the Solana Provider API to communicate with users Solana wallet
+    public static let allowSolProviderAccess: Option<Bool> = .init(
+      key: "wallet.allow-sol-provider-access",
       default: true
     )
     /// The option to display web3 notification
@@ -40,5 +46,22 @@ extension Preferences {
     public static let showTestNetworks = Option<Bool>(key: "wallet.show-test-networks", default: false)
     /// The option for users to turn off aurora popup
     public static let showAuroraPopup = Option<Bool>(key: "wallet.show-aurora-popup", default: true)
+    
+    /// Reset Wallet Preferences based on coin type
+    public static func reset(for coin: BraveWallet.CoinType) {
+      switch coin {
+      case .eth:
+        Preferences.Wallet.defaultEthWallet.reset()
+        Preferences.Wallet.allowEthProviderAccess.reset()
+      case .sol:
+        Preferences.Wallet.defaultSolWallet.reset()
+        Preferences.Wallet.allowSolProviderAccess.reset()
+      case .fil:
+        // not supported
+        fallthrough
+      @unknown default:
+        return
+      }
+    }
   }
 }

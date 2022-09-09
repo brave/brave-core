@@ -7,6 +7,7 @@ import Foundation
 import WebKit
 import BraveCore
 import struct Shared.Logger
+import BraveShared
 
 private let log = Logger.browserLogger
 
@@ -83,6 +84,11 @@ class EthereumProviderHelper: TabContentScript {
     if message.webView?.url?.isLocal == false,
         message.webView?.hasOnlySecureContent == false { // prevent communication in mixed-content scenarios
       log.error("Failed ethereum provider communication security test")
+      return
+    }
+    
+    if !Preferences.Wallet.allowEthProviderAccess.value {
+      log.error("Ethereum provider access is disabled")
       return
     }
     
