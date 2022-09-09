@@ -11,6 +11,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -42,10 +43,12 @@ class WaybackMachineURLFetcher final {
   void Fetch(const GURL& url);
 
  private:
-  void OnWaybackURLFetched(const GURL& orignal_url,
-                           std::unique_ptr<std::string> response_body);
+  void OnWaybackURLFetched(
+      const GURL& original_url,
+      api_request_helper::APIRequestResult api_request_result);
 
   raw_ptr<Client> client_ = nullptr;
+  std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<network::SimpleURLLoader> wayback_url_loader_;
 };

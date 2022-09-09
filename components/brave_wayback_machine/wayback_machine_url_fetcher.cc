@@ -50,37 +50,32 @@ WaybackMachineURLFetcher::WaybackMachineURLFetcher(
     Client* client,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : client_(client),
-      url_loader_factory_(std::move(url_loader_factory)) {
-}
+      api_request_helper_(new api_request_helper::APIRequestHelper(
+          GetNetworkTrafficAnnotationTag(),
+          url_loader_factory)) {}
 
 WaybackMachineURLFetcher::~WaybackMachineURLFetcher() = default;
 
 void WaybackMachineURLFetcher::Fetch(const GURL& url) {
-  auto request = std::make_unique<network::ResourceRequest>();
   const GURL wayback_fetch_url(std::string(kWaybackQueryURL) + url.spec());
-  request->url = FixupWaybackQueryURL(wayback_fetch_url);
-  request->credentials_mode = network::mojom::CredentialsMode::kOmit;
-  request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
-  wayback_url_loader_ = network::SimpleURLLoader::Create(
-      std::move(request), GetNetworkTrafficAnnotationTag());
-  wayback_url_loader_->DownloadToString(
-      url_loader_factory_.get(),
+  api_request_helper_->Request(
+      "GET", FixupWaybackQueryURL(wayback_fetch_url), std::string(),
+      "application/json", true,
       base::BindOnce(&WaybackMachineURLFetcher::OnWaybackURLFetched,
-                     base::Unretained(this),
-                     url),
-      kMaxBodySize);
+                     base::Unretained(this), url),
+      {}, kMaxBodySize);
 }
 
 void WaybackMachineURLFetcher::OnWaybackURLFetched(
     const GURL& original_url,
-    std::unique_ptr<std::string> response_body) {
-  if (!response_body) {
+    api_request_helper::APIRequestResult api_request_result) {
+  const auto& response_body = api_request_result.body();
+  if (response_body.empty()) {
     client_->OnWaybackURLFetched(GURL::EmptyGURL());
     return;
   }
 
-  std::string wayback_response_json = std::move(*response_body);
-  const auto result = base::JSONReader::Read(wayback_response_json);
+  const auto result = base::JSONReader::Read(response_body);
   if (!result || !result->FindPath("archived_snapshots.closest.url")) {
     client_->OnWaybackURLFetched(GURL::EmptyGURL());
     return;
