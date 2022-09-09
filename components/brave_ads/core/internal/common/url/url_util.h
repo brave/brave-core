@@ -15,12 +15,15 @@ namespace brave_ads {
 
 GURL GetUrlWithEmptyQuery(const GURL& url);
 
-bool SchemeIsSupported(const GURL& url);
+bool SchemeIsSupportedForUrl(const GURL& url);
 
 bool MatchUrlPattern(const GURL& url, const std::string& pattern);
 
-bool SameDomainOrHost(const GURL& lhs, const GURL& rhs);
-bool DomainOrHostExists(const std::vector<GURL>& urls, const GURL& url);
+bool SameHostForUrl(const GURL& lhs, const GURL& rhs);
+bool HostForUrlExists(const std::vector<GURL>& lhs, const GURL& rhs);
+
+bool SameDomainOrHostForUrl(const GURL& lhs, const GURL& rhs);
+bool DomainOrHostForUrlExists(const std::vector<GURL>& lhs, const GURL& rhs);
 
 }  // namespace brave_ads
 

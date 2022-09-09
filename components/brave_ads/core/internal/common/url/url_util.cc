@@ -27,7 +27,7 @@ constexpr char kWalletHostName[] = "wallet";
 constexpr char kSearchEnginesPath[] = "/searchEngines";
 constexpr char kSearchPath[] = "/search";
 
-GURL ReplaceUrlBraveHostWithChromeHost(const GURL& url) {
+GURL ReplaceBraveHostWithChromeHostForUrl(const GURL& url) {
   if (!url.SchemeIs(kBraveScheme)) {
     return url;
   }
@@ -44,14 +44,14 @@ GURL GetUrlWithEmptyQuery(const GURL& url) {
       {url.scheme(), url::kStandardSchemeSeparator, url.host(), url.path()}));
 }
 
-bool SchemeIsSupported(const GURL& url) {
+bool SchemeIsSupportedForUrl(const GURL& url) {
   if (url.SchemeIs(url::kHttpsScheme)) {
     return true;
   }
 
   // We must replace the brave:// host with chrome:// due to GURL not correctly
   // parsing brave:// hosts.
-  const GURL modified_url = ReplaceUrlBraveHostWithChromeHost(url);
+  const GURL modified_url = ReplaceBraveHostWithChromeHostForUrl(url);
 
   if (!modified_url.SchemeIs(kChromeScheme)) {
     return false;
@@ -84,14 +84,24 @@ bool MatchUrlPattern(const GURL& url, const std::string& pattern) {
   return base::MatchPattern(url.spec(), pattern);
 }
 
-bool SameDomainOrHost(const GURL& lhs, const GURL& rhs) {
+bool SameHostForUrl(const GURL& lhs, const GURL& rhs) {
+  return lhs.host() == rhs.host();
+}
+
+bool HostForUrlExists(const std::vector<GURL>& lhs, const GURL& rhs) {
+  return base::ranges::any_of(
+      lhs, [&rhs](const GURL& url) { return SameHostForUrl(rhs, url); });
+}
+
+bool SameDomainOrHostForUrl(const GURL& lhs, const GURL& rhs) {
   return net::registry_controlled_domains::SameDomainOrHost(
       lhs, rhs, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 }
 
-bool DomainOrHostExists(const std::vector<GURL>& urls, const GURL& url) {
-  return base::ranges::any_of(
-      urls, [&url](const GURL& item) { return SameDomainOrHost(item, url); });
+bool DomainOrHostForUrlExists(const std::vector<GURL>& lhs, const GURL& rhs) {
+  return base::ranges::any_of(lhs, [&rhs](const GURL& url) {
+    return SameDomainOrHostForUrl(rhs, url);
+  });
 }
 
 }  // namespace brave_ads

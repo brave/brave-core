@@ -21,7 +21,7 @@ bool HasVisitedSiteOnAntiTargetingList(
     const BrowsingHistoryList& browsing_history,
     const resource::AntiTargetingSiteList& anti_targeting_sites) {
   const auto iter = base::ranges::find_first_of(
-      anti_targeting_sites, browsing_history, SameDomainOrHost);
+      anti_targeting_sites, browsing_history, SameHostForUrl);
   return iter != anti_targeting_sites.cend();
 }
 

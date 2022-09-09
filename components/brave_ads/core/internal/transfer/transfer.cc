@@ -53,7 +53,7 @@ void Transfer::MaybeTransferAd(const int32_t tab_id,
     return;
   }
 
-  if (!DomainOrHostExists(redirect_chain, last_clicked_ad_.target_url)) {
+  if (!DomainOrHostForUrlExists(redirect_chain, last_clicked_ad_.target_url)) {
     BLOG(1, "Visited URL does not match the last clicked ad");
     return;
   }
@@ -110,7 +110,7 @@ void Transfer::OnTransferAd(const int32_t tab_id,
     return;
   }
 
-  if (!DomainOrHostExists(redirect_chain, tab->redirect_chain.back())) {
+  if (!DomainOrHostForUrlExists(redirect_chain, tab->redirect_chain.back())) {
     return FailedToTransferAd(ad);
   }
 

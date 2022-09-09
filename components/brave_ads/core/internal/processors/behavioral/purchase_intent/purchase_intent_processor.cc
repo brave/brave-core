@@ -145,7 +145,7 @@ targeting::PurchaseIntentSiteInfo PurchaseIntent::GetSite(
   DCHECK(purchase_intent);
 
   for (const auto& site : purchase_intent->sites) {
-    if (SameDomainOrHost(url, site.url_netloc)) {
+    if (SameDomainOrHostForUrl(url, site.url_netloc)) {
       info = site;
       break;
     }
@@ -234,7 +234,7 @@ void PurchaseIntent::OnTextContentDidChange(
     return;
   }
 
-  if (SameDomainOrHost(url, last_visible_tab->redirect_chain.back())) {
+  if (SameDomainOrHostForUrl(url, last_visible_tab->redirect_chain.back())) {
     return;
   }
 
