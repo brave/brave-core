@@ -406,10 +406,6 @@ void BraveRewardsNativeWorker::Donate(
         recurring,
         base::BindOnce(&BraveRewardsNativeWorker::OnOneTimeTip,
                        weak_factory_.GetWeakPtr()));
-    // if (!recurring) {
-    //   Java_BraveRewardsNativeWorker_OnOneTimeTip(env,
-    //     weak_java_brave_rewards_native_worker_.get(env));
-    // }
   }
 }
 

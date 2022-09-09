@@ -212,4 +212,12 @@
 
     <!--  Brave Wallet DApp  -->
     <color name="brave_wallet_dapp_text_color">#171919</color>
+
+     <!--  Tipping Banner color  -->
+    <color name="rewards_send_tip_background">#5e45d0</color>
+    <color name="rewards_send_tip_minimum_balance_background">#E0F4DB</color>
+    <color name="rewards_send_tip_not_enough_fund_background">#868E96</color>
+    <color name="rewards_send_tip_icon_tint">#A1A8F2</color>
+    <color name="rewards_send_tip_icon_minimum_balance_tint">#63A07A</color>
+    <color name="rewards_send_tip_icon_not_enough_fund_tint">@android:color/white</color>
 </resources>

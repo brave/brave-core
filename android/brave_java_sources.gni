@@ -263,6 +263,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/rewards/BraveRewardsPanel.java",
   "../../brave/android/java/org/chromium/chrome/browser/rewards/BraveRewardsTipConfirmationFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/rewards/BraveRewardsTipConfirmationListener.java",
+  "../../brave/android/java/org/chromium/chrome/browser/rewards/BraveRewardsTipFailureFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/rewards/BraveRewardsTippingPanelFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/safe_browsing/settings/BraveStandardProtectionSettingsFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/searchwidget/SearchWidgetProviderActivity.java",
