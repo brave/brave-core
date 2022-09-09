@@ -70,6 +70,7 @@ export function Settings () {
     actions.getAutoContributeProperties()
     actions.getBalance()
     actions.fetchPromotions()
+    actions.getExternalWallet()
     actions.getOnboardingStatus()
     actions.getEnabledInlineTippingPlatforms()
 
@@ -87,12 +88,6 @@ export function Settings () {
     actions.getContributeList()
     actions.getReconcileStamp()
   }, [rewardsData.enabledContribute])
-
-  React.useEffect(() => {
-    if (!rewardsData.externalWallet) {
-      actions.getExternalWallet()
-    }
-  }, [rewardsData.externalWallet])
 
   const onTakeTour = () => { setShowRewardsTour(true) }
 
