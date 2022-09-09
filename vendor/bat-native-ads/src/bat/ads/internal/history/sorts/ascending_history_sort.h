@@ -6,12 +6,9 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_HISTORY_SORTS_ASCENDING_HISTORY_SORT_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_HISTORY_SORTS_ASCENDING_HISTORY_SORT_H_
 
-#include "base/containers/circular_deque.h"
 #include "bat/ads/internal/history/sorts/history_sort_interface.h"
 
 namespace ads {
-
-struct HistoryItemInfo;
 
 class AscendingHistorySort final : public HistorySortInterface {
  public:
@@ -20,8 +17,7 @@ class AscendingHistorySort final : public HistorySortInterface {
   AscendingHistorySort(const AscendingHistorySort&) = delete;
   AscendingHistorySort& operator=(const AscendingHistorySort&) = delete;
 
-  base::circular_deque<HistoryItemInfo> Apply(
-      const base::circular_deque<HistoryItemInfo>& history) const override;
+  HistoryItemList Apply(const HistoryItemList& history) const override;
 };
 
 }  // namespace ads

@@ -27,15 +27,17 @@ CreativeNewTabPageAdList BuildCreativeNewTabPageAds(const int count) {
   CreativeNewTabPageAdList creative_ads;
 
   for (int i = 0; i < count; i++) {
-    const CreativeNewTabPageAdInfo creative_ad = BuildCreativeNewTabPageAd();
+    const CreativeNewTabPageAdInfo creative_ad =
+        BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
     creative_ads.push_back(creative_ad);
   }
 
   return creative_ads;
 }
 
-CreativeNewTabPageAdInfo BuildCreativeNewTabPageAd() {
-  const CreativeAdInfo creative_ad = BuildCreativeAd();
+CreativeNewTabPageAdInfo BuildCreativeNewTabPageAd(
+    const bool should_use_random_guids) {
+  const CreativeAdInfo creative_ad = BuildCreativeAd(should_use_random_guids);
   CreativeNewTabPageAdInfo creative_new_tab_page_ad(creative_ad);
 
   creative_new_tab_page_ad.company_name = "Test Ad Company Name";

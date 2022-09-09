@@ -9,7 +9,6 @@
 #include <map>
 #include <string>
 
-#include "base/containers/circular_deque.h"
 #include "base/containers/flat_map.h"
 #include "base/values.h"
 #include "bat/ads/history_item_info.h"
@@ -32,7 +31,7 @@ struct ClientInfo final {
   bool FromJson(const std::string& json);
 
   AdPreferencesInfo ad_preferences;
-  base::circular_deque<HistoryItemInfo> history;
+  HistoryItemList history_items;
   base::flat_map<std::string, std::map<std::string, bool>> seen_ads;
   base::flat_map<std::string, std::map<std::string, bool>> seen_advertisers;
   targeting::TextClassificationProbabilityList

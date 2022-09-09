@@ -8,28 +8,19 @@
 
 #include <string>
 
-#include "base/values.h"
 #include "bat/ads/category_content_action_types.h"
 #include "bat/ads/export.h"
 
 namespace ads {
 
 struct ADS_EXPORT CategoryContentInfo final {
-  CategoryContentInfo();
-  CategoryContentInfo(const CategoryContentInfo& info);
-  CategoryContentInfo& operator=(const CategoryContentInfo& info);
-  ~CategoryContentInfo();
-
-  bool operator==(const CategoryContentInfo& rhs) const;
-  bool operator!=(const CategoryContentInfo& rhs) const;
-
-  base::Value::Dict ToValue() const;
-  void FromValue(const base::Value::Dict& root);
-
   std::string category;
   CategoryContentOptActionType opt_action_type =
       CategoryContentOptActionType::kNone;
 };
+
+bool operator==(const CategoryContentInfo& lhs, const CategoryContentInfo& rhs);
+bool operator!=(const CategoryContentInfo& lhs, const CategoryContentInfo& rhs);
 
 }  // namespace ads
 

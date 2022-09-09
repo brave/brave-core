@@ -7,8 +7,6 @@
 
 #include <algorithm>
 
-#include "bat/ads/history_item_info.h"
-
 namespace ads {
 
 DateRangeHistoryFilter::DateRangeHistoryFilter(const base::Time from_time,
@@ -17,9 +15,9 @@ DateRangeHistoryFilter::DateRangeHistoryFilter(const base::Time from_time,
 
 DateRangeHistoryFilter::~DateRangeHistoryFilter() = default;
 
-base::circular_deque<HistoryItemInfo> DateRangeHistoryFilter::Apply(
-    const base::circular_deque<HistoryItemInfo>& history) const {
-  base::circular_deque<HistoryItemInfo> filtered_history = history;
+HistoryItemList DateRangeHistoryFilter::Apply(
+    const HistoryItemList& history) const {
+  HistoryItemList filtered_history = history;
 
   const auto iter =
       std::remove_if(filtered_history.begin(), filtered_history.end(),

@@ -121,9 +121,9 @@ class BatAdsImpl :
                   GetHistoryCallback callback) override;
   void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
 
-  void ToggleAdThumbUp(const std::string& json,
+  void ToggleAdThumbUp(base::Value::Dict value,
                        ToggleAdThumbUpCallback callback) override;
-  void ToggleAdThumbDown(const std::string& json,
+  void ToggleAdThumbDown(base::Value::Dict value,
                          ToggleAdThumbUpCallback callback) override;
   void ToggleAdOptIn(const std::string& category,
                      const int opt_action_type,
@@ -131,9 +131,9 @@ class BatAdsImpl :
   void ToggleAdOptOut(const std::string& category,
                       const int opt_action_type,
                       ToggleAdOptOutCallback callback) override;
-  void ToggleSavedAd(const std::string& json,
+  void ToggleSavedAd(base::Value::Dict value,
                      ToggleSavedAdCallback callback) override;
-  void ToggleFlaggedAd(const std::string& json,
+  void ToggleFlaggedAd(base::Value::Dict value,
                        ToggleFlaggedAdCallback callback) override;
 
  private:

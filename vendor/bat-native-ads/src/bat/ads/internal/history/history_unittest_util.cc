@@ -6,7 +6,6 @@
 #include "bat/ads/internal/history/history_unittest_util.h"
 
 #include "bat/ads/history_filter_types.h"
-#include "bat/ads/history_info.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/history_sort_types.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
@@ -15,11 +14,11 @@
 namespace ads {
 
 int GetHistoryItemCount() {
-  const HistoryInfo history = HistoryManager::GetInstance()->Get(
+  const HistoryItemList history_items = HistoryManager::GetInstance()->Get(
       HistoryFilterType::kNone, HistorySortType::kNone, DistantPast(),
       DistantFuture());
 
-  return history.items.size();
+  return history_items.size();
 }
 
 }  // namespace ads

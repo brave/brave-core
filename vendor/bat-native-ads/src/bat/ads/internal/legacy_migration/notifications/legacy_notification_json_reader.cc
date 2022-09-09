@@ -7,7 +7,7 @@
 
 #include "base/json/json_reader.h"
 #include "base/values.h"
-#include "bat/ads/internal/creatives/notification_ads/notification_ad_manager_values_util.h"
+#include "bat/ads/internal/creatives/notification_ads/notification_ad_manager_value_util.h"
 #include "bat/ads/notification_ad_info.h"
 
 namespace ads::json::reader {

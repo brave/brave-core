@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/values.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/export.h"
 #include "bat/ads/new_tab_page_ad_wallpaper_info.h"
@@ -18,16 +17,19 @@ namespace ads {
 
 struct ADS_EXPORT NewTabPageAdInfo final : AdInfo {
   NewTabPageAdInfo();
-  NewTabPageAdInfo(const NewTabPageAdInfo& info);
-  NewTabPageAdInfo& operator=(const NewTabPageAdInfo& info);
+
+  NewTabPageAdInfo(const NewTabPageAdInfo& other);
+  NewTabPageAdInfo& operator=(const NewTabPageAdInfo& other);
+
+  NewTabPageAdInfo(NewTabPageAdInfo&& other) noexcept;
+  NewTabPageAdInfo& operator=(NewTabPageAdInfo&& other) noexcept;
+
   ~NewTabPageAdInfo();
 
   bool operator==(const NewTabPageAdInfo& rhs) const;
+  bool operator!=(const NewTabPageAdInfo& rhs) const;
 
   bool IsValid() const;
-
-  base::Value::Dict ToValue() const;
-  void FromValue(const base::Value::Dict& root);
 
   std::string company_name;
   GURL image_url;

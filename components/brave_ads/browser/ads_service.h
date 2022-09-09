@@ -11,6 +11,7 @@
 
 #include "base/observer_list.h"
 #include "base/time/time.h"
+#include "base/values.h"
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_service_callback.h"
 #include "brave/components/brave_ads/browser/ads_service_observer.h"
@@ -178,7 +179,7 @@ class AdsService : public KeyedService {
   // Should be called to serve an inline content ad for the specified
   // |dimensions|. The callback takes three arguments - |bool| is set to |true|
   // if successful otherwise |false|, |std::string| containing the dimensions
-  // and |base::DictionaryValue| containing the ad.
+  // and |base::Value::Dict| containing the ad.
   virtual void MaybeServeInlineContentAd(
       const std::string& dimensions,
       MaybeServeInlineContentAdCallback callback) = 0;
@@ -242,7 +243,7 @@ class AdsService : public KeyedService {
       PurgeOrphanedAdEventsForTypeCallback callback) = 0;
 
   // Called to get history between |from_time| and |to_time| date range. The
-  // callback takes one argument - |base::ListValue| containing info of the
+  // callback takes one argument - |base::Value::List| containing info of the
   // obtained history.
   virtual void GetHistory(const base::Time from_time,
                           const base::Time to_time,
@@ -250,14 +251,14 @@ class AdsService : public KeyedService {
 
   // Called to like an advertiser. This is a toggle, so calling it again returns
   // the setting to the neutral state. The callback takes one argument -
-  // |std::string| containing the current state.
-  virtual void ToggleAdThumbUp(const std::string& json,
+  // |base::Value::Dict| containing the current state.
+  virtual void ToggleAdThumbUp(base::Value::Dict value,
                                ToggleAdThumbUpCallback callback) = 0;
 
   // Called to dislike an advertiser. This is a toggle, so calling it again
   // returns the setting to the neutral state. The callback takes one argument -
-  // |std::string| containing the current state.
-  virtual void ToggleAdThumbDown(const std::string& json,
+  // |base::Value::Dict| containing the current state.
+  virtual void ToggleAdThumbDown(base::Value::Dict value,
                                  ToggleAdThumbDownCallback callback) = 0;
 
   // Called to no longer receive ads for the specified category. This is a
@@ -278,14 +279,14 @@ class AdsService : public KeyedService {
 
   // Called to save an ad for later viewing. This is a toggle, so calling it
   // again removes the ad from the saved list. The callback takes one argument -
-  // |std::string| containing the current state.
-  virtual void ToggleSavedAd(const std::string& json,
+  // |base::Value::Dict| containing the current state.
+  virtual void ToggleSavedAd(base::Value::Dict value,
                              ToggleSavedAdCallback callback) = 0;
 
   // Called to mark an ad as inappropriate. This is a toggle, so calling it
-  // again unmarks the ad. The callback takes one argument - |std::string|
+  // again unmarks the ad. The callback takes one argument - |base::Value::Dict|
   // containing the current state.
-  virtual void ToggleFlaggedAd(const std::string& json,
+  virtual void ToggleFlaggedAd(base::Value::Dict value,
                                ToggleFlaggedAdCallback callback) = 0;
 
   // Called to wipe all state.
