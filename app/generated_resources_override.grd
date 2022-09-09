@@ -1102,6 +1102,11 @@ are declared in tools/grit/grit_rule.gni.
 
     <if expr="not is_android">
       </if>
+
+    <if expr="not is_android">
+      </if>
+    <if expr="not is_android">
+      </if>
   </messages>
 </release>
 </grit>

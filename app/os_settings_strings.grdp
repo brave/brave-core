@@ -3327,16 +3327,13 @@ Press an assigned switch or key to remove assignment.
     Connecting to your phone
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_SCREEN_LOCK_TITLE" desc="The title of the screen lock dialog containing the Phone Hub notification opt-in flow shown when the user has confirmed to enable the app stream that will stream phone to their Chromebook.">
-    Set a PIN or password
+    Use a password or PIN to unlock your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_SCREEN_LOCK_SUBTITLE" desc="The subtitle of the screen lock dialog containing the Phone Hub notification opt-in flow shown when the user has confirmed to enable the app stream that will stream phone to their Chromebook.">
-    This PIN or password protects your data on this <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>, including any information you access from your phone
-  </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_SCREEN_LOCK_INSTRUCTION" desc="The instruction message of the screen lock dialog.">
-    Choose either one each time you sign in
+    This password or PIN protects your data on this <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> and any information you access from your phone. You'll need to unlock each time your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> wakes from sleep.
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_SCREEN_LOCK_ICON_INSTRUCTION" desc="The icon instruction message of the screen lock dialog.">
-    If Smart Lock is turned on, you won't need to enter a PIN or password
+    If Smart Lock is turned on and your phone is unlocked, you don't need to enter a password or PIN
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_INSTRUCTIONS" desc="The second paragraph of text shown in the dialog containing the Phone Hub notification opt-in flow. Alerts the user that to enable notifications, they need to have their phone unlocked, nearby, and with Bluetooth/Wi-Fi on to complete setup.">
     Make sure your phone is nearby, unlocked, and has Bluetooth and Wi-Fi turned on
@@ -4444,7 +4441,7 @@ Press an assigned switch or key to remove assignment.
     If you move away from your device, your screen will lock automatically. When you're in front of your device, your screen will stay awake longer. If you aren't using a lock screen, your device will sleep instead of lock.
   </message>
   <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SNOOPING_TITLE" desc="Text in the smart privacy section which is the subheader for snooping protection options.">
-    Viewing protection
+    Viewing protection (Beta)
   </message>
   <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SNOOPING_SUBTEXT" desc="Sub-label elaborating on the meaning of snooping protection.">
     When someone else looks at your screen, show the Privacy eye icon on the bottom right of your screen
@@ -4466,6 +4463,9 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_OS_SETTINGS_PRIVACY_HUB_MICROPHONE_HARDWARE_TOGGLE_ACTIVE_SUBTEXT" desc="Sub-label on the privacy page that indicates that the hardware microphone toggle is active.">
     All microphones disabled by devices hardware switch
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_MICROPHONE_TOGGLE_NO_MICROPHONE_CONNECTED_SUBTEXT" desc="Sub-label to indicate that the microphone toggle in the privacy hub page is disabled as no microphone is connected to the device.">
+    No microphone connected
   </message>
   <message name="IDS_OS_SETTINGS_GEOLOCATION_TOGGLE_TITLE" desc="The title of the toggle to enable/disable geolocation from the privacy hub.">
     Geolocation
