@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/themes/theme_service_factory.cc b/chrome/browser/themes/theme_service_factory.cc
-index b89866b7e8b9474f73d3ceadaaa72d4e82d6c1f1..aa5745e298fe39c3dad2844221a7f1a61419cc12 100644
+index 447584339dc44b336b7314e23de1e6044194023c..3ce047c889b97b93f0220e3cc8a064696d9029b4 100644
 --- a/chrome/browser/themes/theme_service_factory.cc
 +++ b/chrome/browser/themes/theme_service_factory.cc
 @@ -81,6 +81,7 @@ ThemeServiceFactory::~ThemeServiceFactory() = default;

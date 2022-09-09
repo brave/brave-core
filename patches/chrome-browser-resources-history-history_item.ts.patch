@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/history/history_item.ts b/chrome/browser/resources/history/history_item.ts
-index e69fd497e3c2940e0e78406425c00e7e6f80a9cb..f2ad216f0704493160fd1338601c0d9b2d2f3735 100644
+index 9b643c931b0bcd3d1b62d623c65e68891950a64c..0a3bc83c83d9988dd0d0f0b40094b7914b34913b 100644
 --- a/chrome/browser/resources/history/history_item.ts
 +++ b/chrome/browser/resources/history/history_item.ts
-@@ -9,6 +9,7 @@ import 'chrome://resources/cr_elements/cr_icons_css.m.js';
+@@ -9,6 +9,7 @@ import 'chrome://resources/cr_elements/cr_icons.css.js';
  import 'chrome://resources/cr_elements/shared_vars_css.m.js';
  import 'chrome://resources/js/icon.js';
  import 'chrome://resources/polymer/v3_0/iron-icon/iron-icon.js';
