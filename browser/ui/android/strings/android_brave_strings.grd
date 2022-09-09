@@ -3086,6 +3086,30 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_ACCOUNT_CREATION_FEE" desc="Confirm transaction panel account creation fee warning">
       The associated token account does not exist yet. A small amount of SOL will be spent to create and fund it. <ph name="CLICK_START">%1$s</ph>Learn more<ph name="CLICK_END">%2$s</ph>
     </message>
+    <message name="IDS_BRAVE_WALLET_AURORA_MODAL_TITLE" desc="Bridge to Aurora modal title">
+      Open the <ph name="APP_NAME"><ex>Rainbow Bridge</ex>%1$s</ph> app?
+    </message>
+    <message name="IDS_BRAVE_WALLET_RAINBOW_BRIDGE" desc="Marketing name for Rainbow Bridge app" translateable="false">
+      Rainbow Bridge
+    </message>
+    <message name="IDS_BRAVE_WALLET_RAINBOW_BRIDGE_LEARN_MORE" desc="Rainbow Bridge walk through link description">
+      <ph name="CLICK_START">%1$s</ph>Learn more about using Rainbow Bridge<ph name="CLICK_END">%2$s</ph>
+    </message>
+    <message name="IDS_BRAVE_WALLET_RAINBOW_BRIDGE_RISKS_LEARN_MORE" desc="Rainbow Bridge security walk-through link description">
+      <ph name="CLICK_START">%1$s</ph>Learn how to reduce risk on Rainbow Bridge<ph name="CLICK_END">%2$s</ph> 
+    </message>
+    <message name="IDS_BRAVE_WALLET_AURORA_MODAL_DESCRIPTION" desc="Bridge to Aurora modal description">
+      <ph name="APP_NAME"><ex>Rainbow Bridge</ex>%1$s</ph> is an independent service that helps you bridge assets across networks, and use your crypto on other networks and DApp ecosystems. Bridging assets to other networks has some risks.
+    </message>
+    <message name="IDS_BRAVE_WALLET_AURORA_MODAL_OPEN_BUTTON_TEXT" desc="Bridge to Aurora modal action button text">
+      Open the <ph name="APP_NAME"><ex>Rainbow Bridge</ex>%1$s</ph> app
+    </message>
+    <message name="IDS_BRAVE_WALLET_AURORA_BUTTON_TEXT" desc="Bridge to Aurora button text" translateable="false">
+      Bridge to Aurora
+    </message>
+    <message name="IDS_DONT_SHOW_AGAIN" desc="Text for don't show again check ">
+      Don't show again
+    </message>
     <message name="IDS_UPDATING_VPN_PROFILE" desc="Message to indicate profile is being update after split tunnel update.">
       Updating VPN Profile ...
     </message>

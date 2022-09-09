@@ -1329,15 +1329,15 @@ public class Utils {
      * @param stringRes       The id of resource string
      * @param onClickListener The callback when clickable substring is clicked.
      */
-    public static Spannable createSpanForSurroundedPhrase(
+    public static SpannableString createSpanForSurroundedPhrase(
             Context context, @StringRes int stringRes, View.OnClickListener onClickListener) {
         String htmlString =
                 String.format(context.getResources().getString(stringRes), "<a href=\"\">", "</a>");
-        Spannable spannable = new SpannableString(AndroidUtils.formatHTML(htmlString));
+        SpannableString spannable = new SpannableString(AndroidUtils.formatHTML(htmlString));
         URLSpan[] spans = spannable.getSpans(0, spannable.length(), URLSpan.class);
         for (URLSpan urlSpan : spans) {
             NoUnderlineClickableSpan linkSpan = new NoUnderlineClickableSpan(
-                    context, (view) -> { onClickListener.onClick(view); });
+                    context, R.color.brave_link, (view) -> { onClickListener.onClick(view); });
             int spanStart = spannable.getSpanStart(urlSpan);
             int spanEnd = spannable.getSpanEnd(urlSpan);
             spannable.setSpan(linkSpan, spanStart, spanEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
