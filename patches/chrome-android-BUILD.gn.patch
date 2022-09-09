@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index b97c8e7fadae93556dbbaae20dda7da070eb08b8..8beae07e8f70de79d0c12562bdf2e31f4de2781a 100644
+index 5e7091a11a62226767b6f2cca6a941a119fadbb4..1ad6633c395bfa731ba4de740ee2c64fe4994abe 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -207,6 +207,7 @@ android_resources("chrome_base_module_resources") {
@@ -50,7 +50,7 @@ index b97c8e7fadae93556dbbaae20dda7da070eb08b8..8beae07e8f70de79d0c12562bdf2e31f
  }
  
  action_with_pydeps("chrome_android_java_google_api_keys_srcjar") {
-@@ -2095,6 +2101,7 @@ android_resources("chrome_public_apk_base_module_resources") {
+@@ -2094,6 +2100,7 @@ android_resources("chrome_public_apk_base_module_resources") {
      "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
      "java/res_chromium_base/values/channel_constants.xml",
    ]
@@ -58,7 +58,7 @@ index b97c8e7fadae93556dbbaae20dda7da070eb08b8..8beae07e8f70de79d0c12562bdf2e31f
  
    # Dep needed to ensure override works properly.
    deps = [ ":chrome_base_module_resources" ]
-@@ -2415,6 +2422,7 @@ if (current_toolchain == default_toolchain) {
+@@ -2414,6 +2421,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]
@@ -66,7 +66,7 @@ index b97c8e7fadae93556dbbaae20dda7da070eb08b8..8beae07e8f70de79d0c12562bdf2e31f
        if (_is_monochrome) {
          deps += [ "//android_webview:locale_pak_assets" ]
          if (webview_includes_weblayer && !_is_bundle_module) {
-@@ -2690,6 +2698,7 @@ template("chrome_public_apk_or_module_tmpl") {
+@@ -2689,6 +2697,7 @@ template("chrome_public_apk_or_module_tmpl") {
      load_library_from_apk = chromium_linker_supported
  
      version_name = chrome_version_name
@@ -74,7 +74,7 @@ index b97c8e7fadae93556dbbaae20dda7da070eb08b8..8beae07e8f70de79d0c12562bdf2e31f
    }
  }
  
-@@ -2833,6 +2842,7 @@ android_library("base_module_java") {
+@@ -2832,6 +2841,7 @@ android_library("base_module_java") {
      "//components/payments/content/android:service_java",
      "//third_party/androidx:androidx_browser_browser_java",
    ]
@@ -82,7 +82,7 @@ index b97c8e7fadae93556dbbaae20dda7da070eb08b8..8beae07e8f70de79d0c12562bdf2e31f
  
    # More deps for DFMs.
    if (dfmify_dev_ui) {
-@@ -2989,6 +2999,7 @@ template("monochrome_public_apk_or_module_tmpl") {
+@@ -2988,6 +2998,7 @@ template("monochrome_public_apk_or_module_tmpl") {
          deps += [ "//weblayer/browser/java:upstream_java" ]
        }
      }

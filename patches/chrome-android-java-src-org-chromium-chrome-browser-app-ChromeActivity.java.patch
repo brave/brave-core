@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-index c296c13a5dfb53ab6532dd5423d13217ede8ab06..dcac98bc9327ccb89091db07dd8395c0bd8b485e 100644
+index b89052e730b030c6b71ba6a25cb4e5199113c279..54aeefee150d1368c1aeffeb493341890cdb6433 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-@@ -403,7 +403,7 @@ public abstract class ChromeActivity<C extends ChromeActivityComponent>
+@@ -406,7 +406,7 @@ public abstract class ChromeActivity<C extends ChromeActivityComponent>
      private StylusWritingCoordinator mStylusWritingCoordinator;
  
      protected ChromeActivity() {
