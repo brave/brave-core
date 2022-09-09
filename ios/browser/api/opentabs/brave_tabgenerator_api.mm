@@ -17,6 +17,9 @@
 #include "ios/chrome/browser/web_state_list/web_state_list.h"
 #include "ios/chrome/browser/web_state_list/web_state_opener.h"
 
+#include "ios/web/common/user_agent.h"
+#include "ios/web/public/session/crw_navigation_item_storage.h"
+#include "ios/web/public/session/crw_session_storage.h"
 #include "ios/web/public/thread/web_thread.h"
 #include "ios/web/public/web_state_observer.h"
 #include "ios/web/web_state/ui/crw_web_view_navigation_proxy.h"
@@ -83,7 +86,7 @@
 }
 
 - (NSURL*)URL {
-  return nullptr;
+  return net::NSURLWithGURL(GURL(url::kAboutBlankURL));
 }
 
 - (WKBackForwardList*)backForwardList {
@@ -220,11 +223,22 @@ BraveNativeTab::BraveNativeTab(Browser* browser)
   session_id_ =
       SyncedWindowDelegateBrowserAgent::FromBrowser(browser_)->GetSessionId();
 
+  // Create session storage with an empty item storage
+  NSMutableArray<CRWNavigationItemStorage*>* item_storages =
+      [[NSMutableArray alloc] init];
+  CRWNavigationItemStorage* item = [[CRWNavigationItemStorage alloc] init];
+  [item_storages addObject:item];
+
+  CRWSessionStorage* session_storage = [[CRWSessionStorage alloc] init];
+  session_storage.stableIdentifier = [[NSUUID UUID] UUIDString];
+  session_storage.itemStorages = [item_storages copy];
+  session_storage.userAgentType = web::UserAgentType::MOBILE;
+
   // Create WebState with parameters
   web::WebState::CreateParams create_params(browser->GetBrowserState());
   create_params.last_active_time = base::Time::Now();
   auto web_state =
-      web::WebState::CreateWithStorageSession(create_params, nullptr);
+      web::WebState::CreateWithStorageSession(create_params, session_storage);
   web_state->ForceRealized();
 
   // Setup Observers of the WebState
