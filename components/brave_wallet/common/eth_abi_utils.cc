@@ -294,6 +294,17 @@ size_t AppendRow(std::vector<uint8_t>& destination, Span32 value) {
 }
 
 // NOLINTNEXTLINE(runtime/references)
+size_t AppendRows(std::vector<uint8_t>& destination, Span value) {
+  DCHECK_EQ(value.size() % kRowLength, 0u);
+  // Append bytes.
+  destination.resize(destination.size() + value.size(), 0);
+  // Pick last `value.size()` bytes and copy value to it.
+  base::ranges::copy(value,
+                     base::make_span(destination).last(value.size()).begin());
+  return value.size();
+}
+
+// NOLINTNEXTLINE(runtime/references)
 size_t AppendBytesWithPadding(std::vector<uint8_t>& destination, Span bytes) {
   auto padded_size = PaddedSize(bytes.size());
   destination.resize(destination.size() + padded_size);
@@ -355,9 +366,7 @@ std::vector<uint8_t> EncodeCall(Span function_selector, const Span32& arg_0) {
 TupleEncoder::TupleEncoder() = default;
 TupleEncoder::~TupleEncoder() = default;
 
-TupleEncoder::Element::Element() {
-  head.fill(0);
-}
+TupleEncoder::Element::Element() = default;
 TupleEncoder::Element::~Element() = default;
 TupleEncoder::Element::Element(Element&&) = default;
 TupleEncoder::Element& TupleEncoder::Element::operator=(Element&&) = default;
@@ -365,6 +374,8 @@ TupleEncoder::Element& TupleEncoder::Element::operator=(Element&&) = default;
 TupleEncoder& TupleEncoder::AddAddress(const EthAddress& address) {
   DCHECK(address.IsValid());
   auto& element = AppendElement();
+  element.head.resize(kRowLength);
+
   auto address_size = address.bytes().size();
   DCHECK_GE(element.head.size(), address_size);
   // Address is uint160 which should be right aligned in 32 bytes row.
@@ -373,8 +384,16 @@ TupleEncoder& TupleEncoder::AddAddress(const EthAddress& address) {
   return *this;
 }
 
+TupleEncoder& TupleEncoder::AddInt256(const int256_t& val) {
+  auto& element = AppendElement();
+  element.head.resize(kRowLength);
+  Uint256ToBytes(static_cast<uint256_t>(val), element.head);
+  return *this;
+}
+
 TupleEncoder& TupleEncoder::AddUint256(const uint256_t& val) {
   auto& element = AppendElement();
+  element.head.resize(kRowLength);
   Uint256ToBytes(val, element.head);
   return *this;
 }
@@ -383,6 +402,7 @@ TupleEncoder& TupleEncoder::AddFixedBytes(Span bytes) {
   DCHECK_GT(bytes.size(), 0u);
   DCHECK_LE(bytes.size(), kRowLength);
   auto& element = AppendElement();
+  element.head.resize(kRowLength);
   // Copy bytes at the beginning of head. Remaining bytes are padded with 0.
   base::ranges::copy(bytes.first(std::min(bytes.size(), kRowLength)),
                      element.head.begin());
@@ -401,17 +421,33 @@ TupleEncoder& TupleEncoder::AddString(const std::string& string) {
   return *this;
 }
 
-TupleEncoder& TupleEncoder::AddStringArray(
-    const std::vector<std::string>& string_array) {
+TupleEncoder& TupleEncoder::AddArray(const TupleEncoder& tuple) {
   auto& element = AppendElement();
   // Encoded as tuple size.
-  AppendRow(element.tail, uint256_t(string_array.size()));
-
+  AppendRow(element.tail, uint256_t(tuple.elements_.size()));
   // And then tuple itself.
+  tuple.EncodeTo(element.tail);
+
+  return *this;
+}
+
+TupleEncoder& TupleEncoder::AddTuple(const TupleEncoder& tuple) {
+  auto& element = AppendElement();
+  if (tuple.IsStatic()) {
+    tuple.EncodeTo(element.head);
+  } else {
+    tuple.EncodeTo(element.tail);
+  }
+  return *this;
+}
+
+TupleEncoder& TupleEncoder::AddStringArray(
+    const std::vector<std::string>& string_array) {
   TupleEncoder string_tuple;
   for (auto& str : string_array)
     string_tuple.AddString(str);
-  string_tuple.EncodeTo(element.tail);
+
+  AddArray(string_tuple);
   return *this;
 }
 
@@ -435,10 +471,20 @@ std::vector<uint8_t> TupleEncoder::EncodeWithSelector(Span4 selector) const {
 void TupleEncoder::EncodeTo(std::vector<uint8_t>& destination) const {
   size_t tuple_base = destination.size();
   size_t bytes_added = 0;
+
+  std::vector<size_t> head_offsets;
+  head_offsets.reserve(elements_.size());
   // Fills head rows with in-place values or with empty offset placeholders.
   for (auto& element : elements_) {
-    DCHECK_EQ(kRowLength, element.head.size());
-    bytes_added += AppendRow(destination, element.head);
+    head_offsets.push_back(bytes_added);
+    if (element.head.size() > 0) {
+      DCHECK(element.tail.empty());
+      DCHECK_EQ(element.head.size() % kRowLength, 0u);
+      bytes_added += AppendRows(destination, element.head);
+    } else {
+      DCHECK(!element.tail.empty());
+      bytes_added += AppendEmptyRow(destination);
+    }
   }
 
   for (auto i = 0u; i < elements_.size(); ++i) {
@@ -449,10 +495,21 @@ void TupleEncoder::EncodeTo(std::vector<uint8_t>& destination) const {
     Uint256ToBytes(uint256_t(bytes_added),
                    base::make_span(destination)
                        .subspan(tuple_base)
-                       .subspan(i * kRowLength, kRowLength));
+                       .subspan(head_offsets[i], kRowLength));
 
     bytes_added += AppendBytesWithPadding(destination, elements_[i].tail);
   }
+}
+
+bool TupleEncoder::IsDynamic() const {
+  for (auto& e : elements_)
+    if (!e.tail.empty())
+      return true;
+  return false;
+}
+
+bool TupleEncoder::IsStatic() const {
+  return !IsDynamic();
 }
 
 }  // namespace brave_wallet::eth_abi

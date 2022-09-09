@@ -133,11 +133,14 @@ source_set("unit_tests") {
   deps = [
     ":common",
     ":common_constants",
+    ":copy_eth_abi_test_files",
     ":mojom",
     ":solana_utils",
     ":test_support",
     "//base/test:test_support",
     "//testing/gtest",
+    "//third_party/re2",
+    "//third_party/zlib/google:compression_utils",
     "//url",
   ]
 }  # source_set("unit_tests")
@@ -151,3 +154,8 @@ source_set("test_support") {
 
   public_deps = [ ":mojom" ]
 }  # source_set("test_support")
+
+copy("copy_eth_abi_test_files") {
+  sources = [ "//brave/node_modules/@ethersproject/testcases/testcases/contract-interface-abi2.json.gz" ]
+  outputs = [ "$root_out_dir/eth_abi_test_files/{{source_file_part}}" ]
+}

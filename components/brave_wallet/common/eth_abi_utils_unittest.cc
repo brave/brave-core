@@ -6,13 +6,25 @@
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 
 #include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
+#include "base/files/file_util.h"
+#include "base/json/json_reader.h"
+#include "base/logging.h"
+#include "base/no_destructor.h"
+#include "base/notreached.h"
+#include "base/path_service.h"
 #include "base/ranges/algorithm.h"
+#include "base/strings/string_util.h"
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "brave/components/brave_wallet/common/string_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/re2/src/re2/re2.h"
+#include "third_party/zlib/google/compression_utils.h"
 
 using testing::ElementsAre;
 using testing::ElementsAreArray;
@@ -423,6 +435,355 @@ TEST(EthAbiTupleEncoderTest, EncodeCall) {
                 .AddFixedBytes(Span32(data.begin(), 32))
                 .EncodeWithSelector(selector))
           .substr(2));
+}
+
+// Typical test case looks like:
+//{
+// "result":
+// "0x000000000000000000000000d48ce0afbf820f01bf431d0978ec400af7dd39bc", "name":
+// "random-753", "types": "[\"address\"]", "values":
+// "[{\"type\":\"string\",\"value\":\"0xd48cE0Afbf820F01bF431d0978EC400AF7dD39Bc\"}]",
+//}
+
+class EthersProjectCasesUnitTest : public testing::Test {
+ public:
+ protected:
+  std::vector<std::string> ExtractTypes(const base::Value& test_case) {
+    auto* types_string = test_case.GetDict().FindString("types");
+    EXPECT_TRUE(types_string);
+    absl::optional<base::Value> types_value =
+        base::JSONReader::Read(*types_string);
+    EXPECT_TRUE(types_value);
+    EXPECT_TRUE(types_value->is_list());
+
+    std::vector<std::string> result;
+    for (auto& item : types_value->GetList()) {
+      result.push_back(item.GetString());
+    }
+    return result;
+  }
+
+  absl::optional<int> IsFixedBytesType(const std::string& type) {
+    static const base::NoDestructor<RE2> kPattern(R"(bytes(\d+))");
+    int sz = 0;
+    if (!RE2::FullMatch(type, *kPattern, &sz))
+      return absl::nullopt;
+
+    if (sz >= 1 && sz <= 32)
+      return sz;
+    return absl::nullopt;
+  }
+
+  absl::optional<int> IsIntType(const std::string& type) {
+    static const base::NoDestructor<RE2> kPattern(R"(int(\d+))");
+
+    if (type == "int") {
+      return 256;
+    }
+
+    int sz = 0;
+    if (!RE2::FullMatch(type, *kPattern, &sz))
+      return absl::nullopt;
+
+    if (sz >= 1 && sz <= 256 && (sz % 8 == 0))
+      return sz;
+    return absl::nullopt;
+  }
+
+  absl::optional<int> IsUintType(const std::string& type) {
+    static const base::NoDestructor<RE2> kPattern(R"(uint(\d+))");
+
+    if (type == "uint") {
+      return 256;
+    }
+
+    int sz = 0;
+    if (!RE2::FullMatch(type, *kPattern, &sz))
+      return absl::nullopt;
+
+    if (sz >= 1 && sz <= 256 && (sz % 8 == 0))
+      return sz;
+    return absl::nullopt;
+  }
+
+  absl::optional<std::string> IsDynamicSizeArrayType(const std::string& type) {
+    static const base::NoDestructor<RE2> kPattern(R"((.*)\[\])");
+
+    std::string array_type;
+    if (!RE2::FullMatch(type, *kPattern, &array_type))
+      return absl::nullopt;
+
+    if (TypeIsSupported(array_type))
+      return array_type;
+    return absl::nullopt;
+  }
+
+  absl::optional<std::string> IsFixedSizeArrayType(const std::string& type) {
+    static const base::NoDestructor<RE2> kPattern(R"((.*)\[(\d+)\])");
+
+    std::string array_type;
+    int sz = 0;
+    if (!RE2::FullMatch(type, *kPattern, &array_type, &sz))
+      return absl::nullopt;
+
+    if (sz >= 1 && TypeIsSupported(array_type))
+      return array_type;
+    return absl::nullopt;
+  }
+
+  absl::optional<std::vector<std::string>> IsTupleType(
+      const std::string& type) {
+    static const base::NoDestructor<RE2> kArgsPattern(R"(tuple\((.*)\))");
+
+    std::string tuple_args_string;
+    if (!RE2::FullMatch(type, *kArgsPattern, &tuple_args_string))
+      return absl::nullopt;
+
+    std::vector<std::string> tuple_args;
+
+    base::StringPiece input(tuple_args_string);
+    while (!input.empty()) {
+      size_t comma_search_pos = 0;
+      // Should skip all commas in type `tuple(arg1,arg2,...)`.
+      if (base::StartsWith(input, "tuple")) {
+        base::StringPiece tuple_parens_search = input.substr(5);
+        int count = 0;
+        while (!tuple_parens_search.empty()) {
+          if (tuple_parens_search.at(0) == '(')
+            count++;
+          if (tuple_parens_search.at(0) == ')')
+            count--;
+          tuple_parens_search.remove_prefix(1);
+          if (count == 0)
+            break;
+        }
+        EXPECT_EQ(0, count);
+        comma_search_pos = input.size() - tuple_parens_search.size();
+      }
+
+      auto comma_pos = input.find(',', comma_search_pos);
+      tuple_args.push_back(std::string(input.substr(0, comma_pos)));
+      if (comma_pos == base::StringPiece::npos)
+        break;
+      input.remove_prefix(comma_pos + 1);
+    }
+
+    return tuple_args;
+  }
+
+  bool TypeIsSupported(const std::string& type) {
+    if (type == "address" || type == "string" || type == "bytes")
+      return true;
+    if (IsFixedBytesType(type))
+      return true;
+    if (IsIntType(type))
+      return true;
+    if (IsUintType(type))
+      return true;
+    if (IsDynamicSizeArrayType(type))
+      return true;
+    if (IsFixedSizeArrayType(type))
+      return true;
+    if (IsTupleType(type))
+      return true;
+
+    return false;
+  }
+
+  bool CheckTestCaseIsSupported(const base::Value& test_case) {
+    EXPECT_TRUE(test_case.is_dict());
+    auto& dict = test_case.GetDict();
+    EXPECT_TRUE(dict.FindString("result"));
+    EXPECT_TRUE(dict.FindString("types"));
+    EXPECT_TRUE(dict.FindString("values"));
+    EXPECT_TRUE(dict.FindString("name"));
+
+    bool types_are_valid = true;
+    for (auto& type : ExtractTypes(test_case)) {
+      if (TypeIsSupported(type))
+        continue;
+
+      unsupported_types[type]++;
+      types_are_valid = false;
+    }
+    return types_are_valid;
+  }
+
+  base::Value ParseValues(const base::Value& test_case) {
+    auto* values_string = test_case.GetDict().FindString("values");
+    absl::optional<base::Value> result = base::JSONReader::Read(*values_string);
+    EXPECT_TRUE(result);
+    EXPECT_TRUE(result->is_list());
+    return std::move(*result);
+  }
+
+  EthAddress ExtractAddressFromValueObject(const base::Value& value) {
+    EXPECT_TRUE(value.is_dict());
+    EXPECT_EQ(*value.GetDict().FindString("type"), "string");
+    EXPECT_TRUE(value.GetDict().FindString("value"));
+    return EthAddress::FromHex(*value.GetDict().FindString("value"));
+  }
+
+  std::string ExtractStringFromValueObject(const base::Value& value) {
+    EXPECT_TRUE(value.is_dict());
+    EXPECT_EQ(*value.GetDict().FindString("type"), "string");
+    EXPECT_TRUE(value.GetDict().FindString("value"));
+    return *value.GetDict().FindString("value");
+  }
+
+  std::vector<uint8_t> ExtractBytesFromValueObject(const base::Value& value) {
+    EXPECT_TRUE(value.is_dict());
+    EXPECT_EQ(*value.GetDict().FindString("type"), "buffer");
+    EXPECT_TRUE(value.GetDict().FindString("value"));
+    return *PrefixedHexStringToBytes(*value.GetDict().FindString("value"));
+  }
+
+  int256_t ExtractIntFromValueObject(const base::Value& value) {
+    EXPECT_TRUE(value.is_dict());
+    EXPECT_EQ(*value.GetDict().FindString("type"), "number");
+    EXPECT_TRUE(value.GetDict().FindString("value"));
+    int256_t result = 0;
+    EXPECT_TRUE(
+        Base10ValueToInt256(*value.GetDict().FindString("value"), &result));
+    return result;
+  }
+
+  uint256_t ExtractUintFromValueObject(const base::Value& value) {
+    EXPECT_TRUE(value.is_dict());
+    EXPECT_EQ(*value.GetDict().FindString("type"), "number");
+    EXPECT_TRUE(value.GetDict().FindString("value"));
+    uint256_t result = 0;
+    EXPECT_TRUE(
+        Base10ValueToUint256(*value.GetDict().FindString("value"), &result));
+    return result;
+  }
+
+  std::vector<base::Value> ExtractTupleArgValuesFromValueObject(
+      const base::Value& value) {
+    EXPECT_TRUE(value.is_dict());
+    EXPECT_EQ(*value.GetDict().FindString("type"), "tuple");
+    EXPECT_TRUE(value.GetDict().FindList("value"));
+    std::vector<base::Value> result;
+    for (auto& arg : value.GetDict().Find("value")->GetList()) {
+      result.push_back(arg.Clone());
+    }
+    return result;
+  }
+
+  void EncodeValue(TupleEncoder& encoder,
+                   const std::string& type,
+                   base::Value& value) {
+    if (type == "address") {
+      encoder.AddAddress(ExtractAddressFromValueObject(value));
+    } else if (type == "string") {
+      encoder.AddString(ExtractStringFromValueObject(value));
+    } else if (type == "bytes") {
+      encoder.AddBytes(ExtractBytesFromValueObject(value));
+    } else if (IsFixedBytesType(type)) {
+      encoder.AddFixedBytes(ExtractBytesFromValueObject(value));
+    } else if (IsIntType(type)) {
+      encoder.AddInt256(ExtractIntFromValueObject(value));
+    } else if (IsUintType(type)) {
+      encoder.AddUint256(ExtractUintFromValueObject(value));
+    } else if (auto dynamic_size_array_arg_type =
+                   IsDynamicSizeArrayType(type)) {
+      TupleEncoder array_encoder;
+      for (auto& array_item : value.GetList()) {
+        ASSERT_NO_FATAL_FAILURE(EncodeValue(
+            array_encoder, *dynamic_size_array_arg_type, array_item));
+      }
+      encoder.AddArray(array_encoder);
+    } else if (auto fixed_size_array_arg_type = IsFixedSizeArrayType(type)) {
+      TupleEncoder array_encoder;
+      for (auto& array_item : value.GetList()) {
+        ASSERT_NO_FATAL_FAILURE(
+            EncodeValue(array_encoder, *fixed_size_array_arg_type, array_item));
+      }
+      encoder.AddTuple(array_encoder);
+    } else if (auto tuple_arg_types = IsTupleType(type)) {
+      auto tuple_arg_values = ExtractTupleArgValuesFromValueObject(value);
+      ASSERT_EQ(tuple_arg_types->size(), tuple_arg_values.size());
+      TupleEncoder tuple_encoder;
+
+      for (size_t i = 0u; i < tuple_arg_types->size(); ++i) {
+        auto& arg_type = tuple_arg_types->at(i);
+        auto& arg_value = tuple_arg_values.at(i);
+        ASSERT_NO_FATAL_FAILURE(
+            EncodeValue(tuple_encoder, arg_type, arg_value));
+      }
+
+      encoder.AddTuple(tuple_encoder);
+    } else {
+      FAIL() << "Unknown type: " << type;
+    }
+  }
+
+  void RunEncodeTest(const base::Value& test_case) {
+    auto types = ExtractTypes(test_case);
+    auto values = ParseValues(test_case);
+
+    EXPECT_EQ(types.size(), values.GetList().size());
+
+    TupleEncoder encoder;
+
+    for (size_t i = 0u; i < types.size(); ++i) {
+      auto& type = types[i];
+      auto& value = values.GetList()[i];
+
+      ASSERT_NO_FATAL_FAILURE(EncodeValue(encoder, type, value));
+    }
+
+    EXPECT_TRUE(test_case.GetDict().FindString("result"));
+    EXPECT_EQ(ToHex(encoder.Encode()),
+              *test_case.GetDict().FindString("result"));
+  }
+
+  base::Value ReadTestCasesFromFile() {
+    base::FilePath dir_exe;
+    EXPECT_TRUE(base::PathService::Get(base::DIR_EXE, &dir_exe));
+    base::FilePath test_archive_path = dir_exe.AppendASCII(
+        "eth_abi_test_files/contract-interface-abi2.json.gz");
+
+    std::string compressed_json_text;
+    EXPECT_TRUE(
+        base::ReadFileToString(test_archive_path, &compressed_json_text));
+
+    std::string decompressed_json_text;
+    EXPECT_TRUE(compression::GzipUncompress(compressed_json_text,
+                                            &decompressed_json_text));
+    absl::optional<base::Value> test_cases =
+        base::JSONReader::Read(decompressed_json_text);
+    EXPECT_TRUE(test_cases);
+    EXPECT_TRUE(test_cases->is_list());
+    return std::move(*test_cases);
+  }
+
+  std::map<std::string, int> unsupported_types;
+};
+
+TEST_F(EthersProjectCasesUnitTest, EncodeTest) {
+  auto test_cases = ReadTestCasesFromFile();
+  size_t supported_test_cases = 0;
+  for (auto& test_case : test_cases.GetList()) {
+    SCOPED_TRACE(testing::Message() << *test_case.GetDict().FindString("name"));
+    if (!CheckTestCaseIsSupported(test_case)) {
+      continue;
+    }
+    supported_test_cases++;
+    RunEncodeTest(test_case);
+  }
+  EXPECT_EQ(1880u, supported_test_cases);
+  EXPECT_EQ(1880u, test_cases.GetList().size());
+
+  std::vector<std::pair<std::string, int>> unsupported_types_vector;
+  for (auto& [type, count] : unsupported_types)
+    unsupported_types_vector.emplace_back(type, count);
+  std::sort(unsupported_types_vector.begin(), unsupported_types_vector.end(),
+            [](auto& i1, auto& i2) { return i1.second > i2.second; });
+
+  for (auto& [type, count] : base::make_span(unsupported_types_vector)) {
+    LOG(ERROR) << type << " " << count;
+  }
 }
 
 }  // namespace brave_wallet::eth_abi

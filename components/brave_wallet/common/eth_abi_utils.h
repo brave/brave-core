@@ -46,10 +46,14 @@ class TupleEncoder {
   TupleEncoder();
   ~TupleEncoder();
   TupleEncoder& AddAddress(const EthAddress& address);
+  TupleEncoder& AddInt256(const int256_t& val);
   TupleEncoder& AddUint256(const uint256_t& val);
   TupleEncoder& AddFixedBytes(Span bytes);
   TupleEncoder& AddBytes(Span bytes);
   TupleEncoder& AddString(const std::string& string);
+  TupleEncoder& AddArray(const TupleEncoder& tuple);
+  TupleEncoder& AddTuple(const TupleEncoder& tuple);
+
   TupleEncoder& AddStringArray(const std::vector<std::string>& string_array);
 
   std::vector<uint8_t> Encode() const;
@@ -57,19 +61,21 @@ class TupleEncoder {
   // NOLINTNEXTLINE(runtime/references)
   void EncodeTo(std::vector<uint8_t>& destination) const;
 
+  bool IsDynamic() const;
+  bool IsStatic() const;
+
  private:
   struct Element {
     Element();
     ~Element();
     Element(Element&&);
     Element& operator=(Element&&);
-    std::array<uint8_t, kRowLength> head;
+    std::vector<uint8_t> head;
     std::vector<uint8_t> tail;
   };
 
   Element& AppendElement();
 
-  std::vector<uint8_t> function_call_;
   std::vector<Element> elements_;
 };
 
