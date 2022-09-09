@@ -1,8 +1,8 @@
 diff --git a/components/metrics/BUILD.gn b/components/metrics/BUILD.gn
-index 0b29a9f7cf7e4e37cc8434f39ffabfcc8400f0a7..449cdf8822f2137a2d922e5b744c44abc2577c01 100644
+index 0b29a9f7cf7e4e37cc8434f39ffabfcc8400f0a7..b2f89365fe9f4663100c5547308578b6c1d57559 100644
 --- a/components/metrics/BUILD.gn
 +++ b/components/metrics/BUILD.gn
-@@ -202,6 +202,8 @@ static_library("metrics") {
+@@ -202,6 +202,7 @@ static_library("metrics") {
        "motherboard_metrics_provider.h",
      ]
    }
