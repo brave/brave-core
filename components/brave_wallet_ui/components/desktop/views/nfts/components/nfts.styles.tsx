@@ -10,6 +10,7 @@ export const FilterTokenRow = styled.div`
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
+  gap: 14px;
 `
 
 export const NftGrid = styled.div`

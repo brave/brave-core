@@ -59,7 +59,7 @@ export const DropDown = styled.div`
   }
   position: absolute;
   top: 38px;
-  z-index: 8;
+  z-index: 9;
   @media screen and (max-width: 800px) {
     right: 0px;
   }
@@ -99,6 +99,8 @@ export const LeftSide = styled.div`
   align-items: center;
   justify-content: flex-start;
   flex-direction: row;
+  white-space: nowrap;
+  margin-right: 4px;
 `
 
 export const NetworkName = styled.span`
@@ -137,7 +139,7 @@ export const SubDropDown = styled.div`
   position: absolute;
   top: -6px;
   left: 240px;
-  z-index: 9;
+  z-index: 10;
   overflow-y: hidden;
   overflow-x: hidden;
   @media screen and (max-width: 800px) {
