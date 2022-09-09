@@ -91,6 +91,24 @@
 /* The title which is displayed above a list of assets/tokens */
 "wallet.assetsTitle" = "Tillgångar";
 
+/* The description of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. This will displayed right below `auroraBridgeAlertTitle`. */
+"wallet.auroraBridgeAlertDescription" = "Rainbow Bridge är en oberoende tjänst som hjälper dig att överbrygga tillgångar mellan nätverk och använda din krypto på andra nätverk och DApp-ekosystem. Att överbrygga tillgångar till andra nätverk har vissa risker.";
+
+/* The title of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. */
+"wallet.auroraBridgeAlertTitle" = "Öppna Rainbow Bridge-appen?";
+
+/* The title for the button for users to click inside any asset details screen, whose asset is supported to redirect users to Aurora site. */
+"wallet.auroraBridgeButtonTitle" = "Överbrygga till Aurora";
+
+/* A text link for user to click inside the custom alert, It will redirect user to the website explaining using Rainbow Bridge. */
+"wallet.auroraBridgeLearnMore" = "Läs mer om hur man använder Rainbow Bridge";
+
+/* A text link for user to click inside the custom alert, It will redirect user to the website explaining the risk of using Rainbow Bridge. */
+"wallet.auroraBridgeRisk" = "Läs mer om hur du minskar riskerna på Rainbow Bridge";
+
+/* A text button for user to click so this pop up will not show again. */
+"wallet.auroraPopupDontShowAgain" = "Visa inte igen.";
+
 /* The footer beneath the auto-lock title and interval duration */
 "wallet.autoLockFooter" = "Väntetid i minuter innan Brave-plånboken låses automatiskt";
 
@@ -1117,8 +1135,11 @@
 /* The title for the entry displaying the preferred option to allow web3 sites to rquest account's permission. */
 "wallet.web3PreferencesAllowSiteToRequestAccounts" = "Tillåt webbplatser att begära konton";
 
-/* The title for the entry displaying the current preferred default wallet is. */
-"wallet.web3PreferencesDefaultWallet" = "Standardplånbok";
+/* The title for the entry displaying the current preferred default Ethereum wallet is. */
+"wallet.web3PreferencesDefaultEthWallet" = "Standardplånbok för Ethereum";
+
+/* The title for the entry displaying the current preferred default Solana wallet is. */
+"wallet.web3PreferencesDefaultSolWallet" = "Standardplånbok för Solana";
 
 /* The title for the entry displaying the preferred option to display web3 site notifications. */
 "wallet.web3PreferencesDisplayWeb3Notifications" = "Visa Web3-aviseringar";

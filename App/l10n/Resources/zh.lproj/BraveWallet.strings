@@ -91,6 +91,24 @@
 /* The title which is displayed above a list of assets/tokens */
 "wallet.assetsTitle" = "资产";
 
+/* The description of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. This will displayed right below `auroraBridgeAlertTitle`. */
+"wallet.auroraBridgeAlertDescription" = "彩虹桥是一项独立服务，可帮助您跨网络桥接资产，并在其他网络和 DApp 生态系统中使用您的加密货币。将资产桥接到其他网络存在一些风险。";
+
+/* The title of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. */
+"wallet.auroraBridgeAlertTitle" = "打开彩虹桥应用程序？";
+
+/* The title for the button for users to click inside any asset details screen, whose asset is supported to redirect users to Aurora site. */
+"wallet.auroraBridgeButtonTitle" = "通往 Aurora ";
+
+/* A text link for user to click inside the custom alert, It will redirect user to the website explaining using Rainbow Bridge. */
+"wallet.auroraBridgeLearnMore" = "了解有关如何使用彩虹桥的更多信息";
+
+/* A text link for user to click inside the custom alert, It will redirect user to the website explaining the risk of using Rainbow Bridge. */
+"wallet.auroraBridgeRisk" = "了解如何降低彩虹桥的风险";
+
+/* A text button for user to click so this pop up will not show again. */
+"wallet.auroraPopupDontShowAgain" = "不要再顯示";
+
 /* The footer beneath the auto-lock title and interval duration */
 "wallet.autoLockFooter" = "Brave 钱包自动锁定的等候分钟数";
 
@@ -1117,8 +1135,11 @@
 /* The title for the entry displaying the preferred option to allow web3 sites to rquest account's permission. */
 "wallet.web3PreferencesAllowSiteToRequestAccounts" = "允许站点请求帐户";
 
-/* The title for the entry displaying the current preferred default wallet is. */
-"wallet.web3PreferencesDefaultWallet" = "默认钱包";
+/* The title for the entry displaying the current preferred default Ethereum wallet is. */
+"wallet.web3PreferencesDefaultEthWallet" = "默认以太坊钱包";
+
+/* The title for the entry displaying the current preferred default Solana wallet is. */
+"wallet.web3PreferencesDefaultSolWallet" = "默认索拉纳钱包";
 
 /* The title for the entry displaying the preferred option to display web3 site notifications. */
 "wallet.web3PreferencesDisplayWeb3Notifications" = "显示 Web3 通知";

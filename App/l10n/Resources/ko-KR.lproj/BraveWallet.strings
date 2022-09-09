@@ -91,6 +91,24 @@
 /* The title which is displayed above a list of assets/tokens */
 "wallet.assetsTitle" = "자산";
 
+/* The description of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. This will displayed right below `auroraBridgeAlertTitle`. */
+"wallet.auroraBridgeAlertDescription" = "Rainbow Bridge는 자산을 여러 네트워크에 걸쳐 브리징하여 보유한 암호화폐를 다른 네트워크 및 DApp 생태계에서도 사용할 수 있게 해주는 독립적 서비스입니다. 자산을 다른 네트워크로 브리징하면 다소 위험이 따릅니다.";
+
+/* The title of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. */
+"wallet.auroraBridgeAlertTitle" = "Rainbow Bridge 앱을 여시겠습니까?";
+
+/* The title for the button for users to click inside any asset details screen, whose asset is supported to redirect users to Aurora site. */
+"wallet.auroraBridgeButtonTitle" = "Aurora로 브리징";
+
+/* A text link for user to click inside the custom alert, It will redirect user to the website explaining using Rainbow Bridge. */
+"wallet.auroraBridgeLearnMore" = "Rainbow Bridge 사용에 대해 자세히 알아보기";
+
+/* A text link for user to click inside the custom alert, It will redirect user to the website explaining the risk of using Rainbow Bridge. */
+"wallet.auroraBridgeRisk" = "Rainbow Bridge로 위험을 낮추는 방법 알아보기";
+
+/* A text button for user to click so this pop up will not show again. */
+"wallet.auroraPopupDontShowAgain" = "다시 표시하지 않음";
+
 /* The footer beneath the auto-lock title and interval duration */
 "wallet.autoLockFooter" = "Brave 지갑이 자동으로 잠길 때까지 대기 시간(분)";
 
@@ -1117,8 +1135,11 @@
 /* The title for the entry displaying the preferred option to allow web3 sites to rquest account's permission. */
 "wallet.web3PreferencesAllowSiteToRequestAccounts" = "사이트가 계정을 요청할 수 있도록 허용";
 
-/* The title for the entry displaying the current preferred default wallet is. */
-"wallet.web3PreferencesDefaultWallet" = "기본 월렛";
+/* The title for the entry displaying the current preferred default Ethereum wallet is. */
+"wallet.web3PreferencesDefaultEthWallet" = "기본 이더리움 월렛";
+
+/* The title for the entry displaying the current preferred default Solana wallet is. */
+"wallet.web3PreferencesDefaultSolWallet" = "기본 Solana 월렛";
 
 /* The title for the entry displaying the preferred option to display web3 site notifications. */
 "wallet.web3PreferencesDisplayWeb3Notifications" = "Web3 알림 표시";

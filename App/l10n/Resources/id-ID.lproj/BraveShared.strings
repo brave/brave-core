@@ -292,6 +292,9 @@
 /* Title for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutTitle" = "Privasi. Di mana pun.";
 
+/* Title for 'Tab Received' Callout, This is shown in the message when a Tab information is received from another sync device. */
+"callout.tabReceivedCalloutTitle" = "Tab Diterima";
+
 /* No comment provided by engineer. */
 "CancelButtonTitle" = "Batalkan";
 
@@ -1213,6 +1216,72 @@
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "Buka Pengaturan";
 
+/* The description indicating the device is active # of days ago. The parameter substituted for \"%ld\" is the number of days. E.g.: Active 123 Days Ago */
+"opentabs.activePeriodDeviceDaysAgoTitle" = "Aktif %ld Hari yang Lalu";
+
+/* The description indicating the device is active last time this month */
+"opentabs.activePeriodDeviceThisMonthTitle" = "Aktif Bulan Lalu";
+
+/* The description indicating the device is active last time this week */
+"opentabs.activePeriodDeviceThisWeekTitle" = "Aktif Minggu Lalu";
+
+/* The description indicating the device is active last time today */
+"opentabs.activePeriodDeviceTodayTitle" = "Aktif Hari Ini";
+
+/* The description indicating the device is active last time yesterday */
+"opentabs.activePeriodDeviceYesterdayTitle" = "Aktif Kemarin";
+
+/* The description of the view showing no devices inside sync chain */
+"opentabs.noDevicesSyncChainPlaceholderViewDescription" = "Untuk melihat perangkat Anda dan mengaktifkan jenis sinkronisasi, bergabunglah dengan rantai sinkronisasi";
+
+/* The title of the view showing no devices inside sync chain */
+"opentabs.noDevicesSyncChainPlaceholderViewTitle" = "Tidak Ada Perangkat pada rantai sinkronisasi ini";
+
+/* The description of the view explaining user should join a sync chain. */
+"opentabs.noSyncChainPlaceHolderViewDescription" = "Untuk memulai, siapkan rantai sinkronisasi dan alihkan ke \"Buka Tab\" pada Pengaturan Sinkronisasi.";
+
+/* The additional description of the view describing tab syncing should be enabled. */
+"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "Mengelola tab yang disinkronisasikan Brave pada Pengaturan.";
+
+/* The description of the view describing tab syncing should be enabled. */
+"opentabs.noSyncSessionPlaceHolderViewDescription" = "Mengaktifkan penyinkronan tab untuk melihat tab dari perangkat Anda yang lain.";
+
+/* The title of the view showing no synced sessions */
+"opentabs.noSyncSessionPlaceHolderViewTitle" = "Bidang ini menunjukkan tab Brave yang dibuka di perangkat lain";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time-date. E.g.: Last Synced: 14:00 PM 08-08-2022 */
+"opentabs.openTabsItemLastSyncedFullTitle" = "Terakhir disinkronisasi: %@";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Synced: Last Week Monday 12:00 PM */
+"opentabs.openTabsItemLastSyncedLastWeekTitle" = "Terakhir disinkronisasi: Minggu Lalu %@";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Last Synced: Today 12:00 PM */
+"opentabs.openTabsItemLastSyncedTodayTitle" = "Terakhir disinkronisasi: Hari ini %@";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Last Synced: Yesterday 12:00 PM */
+"opentabs.openTabsItemLastSyncedYesterdayTitle" = "Terakhir disinkronisasi: Kemarin %@";
+
+/* Title action button for sending webpage to selected other device */
+"opentabs.sendDeviceButtonTitle" = "Kirim Ke Perangkat Anda";
+
+/* The title displayed on send-webpage screen */
+"openTabs.sendWebpageScreenTitle" = "Kirim Halaman Web";
+
+/* Share action title for sending e url to another device */
+"opentabs.sendWebsiteShareActionTitle" = "Kirim Ke Perangkat Anda";
+
+/* The button which navigates to screen starting a new sync chain */
+"opentabs.startASyncChainButtonTitle" = "Mulai rantai sinkronisasi";
+
+/* The button which navigates to screen where Tab Sync functionality toggle can be adjusted */
+"opentabs.tabSyncEnableButtonTitle" = "Aktifkan penyinkronan tab";
+
+/* The placeholder written in seach bar while tab-tray is showing open tabs. */
+"opentabs.tabTrayOpenSearchBarTitle" = "Cari Tab dari Perangkat Lain";
+
+/* Title for open tabs menu item */
+"OpenTabsMenuItem" = "Tab Terbuka";
+
 /* Button title to that opens a website. */
 "OpenWebsite" = "Buka Situs Web";
 
@@ -1417,6 +1486,18 @@
 /* Title For the Section that videos are listed */
 "playList.playListSectionTitle" = "Daftar Putar";
 
+/* Title Playlist (used for back button, and playlist settings) */
+"playList.playListSettingTitle" = "Daftar Putar";
+
+/* Body for the error message that shows when a playlist folder already exists */
+"playList.playlistSharedFolderAlreadyExistsBody" = "Folder ini telah ada di Daftar Putar Brave Anda";
+
+/* Title for the error message that shows when a playlist folder already exists */
+"playList.playlistSharedFolderAlreadyExistsTitle" = "Maaf";
+
+/* Title for the Section that videos are listed */
+"playList.playlistSharedFolderSectionTitle" = "Dibagikan kepada Anda";
+
 /* Title For the Section that videos are listed */
 "playList.playListSharedFolderSectionTitle" = "Dibagikan kepada Anda";
 
@@ -1485,6 +1566,12 @@
 
 /* Text indicator on the table cell while saving a video for offline */
 "playList.savingForOfflineLabelTitle" = "Menyimpan untuk Luring...";
+
+/* Description of the settings option to sync folders with the server automatically, every 4 hours. */
+"playList.sharedFolderSyncAutomaticallyDescription" = "Sinkronisasikan semua folder daftar putar Anda secara otomatis";
+
+/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
+"playList.sharedFolderSyncAutomaticallyTitle" = "Sinkronisasikan folder daftar putar secara otomatis";
 
 /* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistActionDetailsTitle" = "Anda dapat membuka media saat ini di Tab Baru, atau membagikannya melalui Menu Pembagian Sistem";
@@ -1610,19 +1697,19 @@
 "playlistFolderSharing.offlineManagementViewAddButtonTitle" = "Tambahkan daftar putar sekarang";
 
 /* Description of the playlist offline data management view */
-"playlistFolderSharing.offlineManagementViewDescription" = "Simpan otomatis untuk penggunaan luring diaktifkan, artinya tambahan baru ke daftar putar, termasuk daftar putar yang dibagikan disimpan ke perangkat Anda untuk melihatnya luring dan dapat menggunakan data ponsel Anda.";
+"playlistFolderSharing.offlineManagementViewDescription" = "Simpan otomatis untuk penggunaan luring telah diaktifkan, artinya, tambahan baru ke daftar putar, termasuk daftar putar bersama akan disimpan ke perangkat Anda agar dapat dilihat secara luring dan dapat menggunakan data ponsel Anda.\n\nSimpan otomatis untuk penggunaan luring dapat dikelola di pengaturan Daftar Putar.";
 
 /* Button that takes the user to the settings menu */
 "playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "Pengaturan";
-
-/* Description of the playlist offline data management view */
-"playlistFolderSharing.offlineManagementViewSubDescription" = "Simpan otomatis untuk penggunaan luring dapat dikelola di pengaturan Daftar Putar.";
 
 /* Title of the playlist offline data management view */
 "playlistFolderSharing.offlineManagementViewTitle" = "Mengelola data Daftar Putar Anda";
 
 /* Menu Title for renaming a folder */
 "playlistFolderSharing.renameMenuTitle" = "Namakan ulang";
+
+/* Menu Title for saving offline data/cache */
+"playlistFolderSharing.saveOfflineDataMenuTitle" = "Simpan Data Luring";
 
 /* Menu Title for syncing playlist */
 "playlistFolderSharing.syncNowMenuTitle" = "Sinkronisasikan Sekarang";

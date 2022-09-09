@@ -91,6 +91,24 @@
 /* The title which is displayed above a list of assets/tokens */
 "wallet.assetsTitle" = "資產";
 
+/* The description of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. This will displayed right below `auroraBridgeAlertTitle`. */
+"wallet.auroraBridgeAlertDescription" = "Rainbow Bridge 是一項獨立服務，可幫助您跨網路橋接資產，並在其他網路和 DApp 生態系統上使用您的加密貨幣。將資產橋接到其他網路存在一些風險。";
+
+/* The title of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. */
+"wallet.auroraBridgeAlertTitle" = "要開啟 Rainbow Bridge 應用程式嗎？";
+
+/* The title for the button for users to click inside any asset details screen, whose asset is supported to redirect users to Aurora site. */
+"wallet.auroraBridgeButtonTitle" = "橋接至 Aurora";
+
+/* A text link for user to click inside the custom alert, It will redirect user to the website explaining using Rainbow Bridge. */
+"wallet.auroraBridgeLearnMore" = "了解更多使用  Rainbow Bridge 的相關資訊";
+
+/* A text link for user to click inside the custom alert, It will redirect user to the website explaining the risk of using Rainbow Bridge. */
+"wallet.auroraBridgeRisk" = "在 Rainbow Bridge 上了解如何降低風險";
+
+/* A text button for user to click so this pop up will not show again. */
+"wallet.auroraPopupDontShowAgain" = "不要再顯示";
+
 /* The footer beneath the auto-lock title and interval duration */
 "wallet.autoLockFooter" = "自動鎖定 Brave 錢包前的等候分鐘數";
 
@@ -1117,8 +1135,11 @@
 /* The title for the entry displaying the preferred option to allow web3 sites to rquest account's permission. */
 "wallet.web3PreferencesAllowSiteToRequestAccounts" = "允許網站要求取得帳戶權限";
 
-/* The title for the entry displaying the current preferred default wallet is. */
-"wallet.web3PreferencesDefaultWallet" = "預設錢包";
+/* The title for the entry displaying the current preferred default Ethereum wallet is. */
+"wallet.web3PreferencesDefaultEthWallet" = "預設以太坊錢包";
+
+/* The title for the entry displaying the current preferred default Solana wallet is. */
+"wallet.web3PreferencesDefaultSolWallet" = "預設 Solana 錢包";
 
 /* The title for the entry displaying the preferred option to display web3 site notifications. */
 "wallet.web3PreferencesDisplayWeb3Notifications" = "顯示 Web3 通知";

@@ -91,6 +91,24 @@
 /* The title which is displayed above a list of assets/tokens */
 "wallet.assetsTitle" = "Ativos";
 
+/* The description of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. This will displayed right below `auroraBridgeAlertTitle`. */
+"wallet.auroraBridgeAlertDescription" = "O Rainbow Bridge é um serviço independente que ajuda você a transferir ativos entre redes e utilizar suas criptomoedas em outras redes e outros ecossistemas de DApps. O bridging de ativos para outras redes tem alguns riscos.";
+
+/* The title of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. */
+"wallet.auroraBridgeAlertTitle" = "Abrir o app Rainbow Bridge?";
+
+/* The title for the button for users to click inside any asset details screen, whose asset is supported to redirect users to Aurora site. */
+"wallet.auroraBridgeButtonTitle" = "Criar bridging para o Aurora";
+
+/* A text link for user to click inside the custom alert, It will redirect user to the website explaining using Rainbow Bridge. */
+"wallet.auroraBridgeLearnMore" = "Saiba mais sobre como utilizar o Rainbow Bridge";
+
+/* A text link for user to click inside the custom alert, It will redirect user to the website explaining the risk of using Rainbow Bridge. */
+"wallet.auroraBridgeRisk" = "Saiba como reduzir os riscos no Rainbow Bridge";
+
+/* A text button for user to click so this pop up will not show again. */
+"wallet.auroraPopupDontShowAgain" = "Não exibir de novo";
+
 /* The footer beneath the auto-lock title and interval duration */
 "wallet.autoLockFooter" = "O número de minutos a aguardar até o bloqueio automático da Carteira Brave";
 
@@ -1117,8 +1135,11 @@
 /* The title for the entry displaying the preferred option to allow web3 sites to rquest account's permission. */
 "wallet.web3PreferencesAllowSiteToRequestAccounts" = "Permitir que sites solicitem contas";
 
-/* The title for the entry displaying the current preferred default wallet is. */
-"wallet.web3PreferencesDefaultWallet" = "Carteira padrão";
+/* The title for the entry displaying the current preferred default Ethereum wallet is. */
+"wallet.web3PreferencesDefaultEthWallet" = "Carteira Ethereum padrão";
+
+/* The title for the entry displaying the current preferred default Solana wallet is. */
+"wallet.web3PreferencesDefaultSolWallet" = "Carteira Solana padrão";
 
 /* The title for the entry displaying the preferred option to display web3 site notifications. */
 "wallet.web3PreferencesDisplayWeb3Notifications" = "Exibir notificações de web3";
