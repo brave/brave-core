@@ -292,6 +292,9 @@
 /* Title for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutTitle" = "Personvern. Over alt.";
 
+/* Title for 'Tab Received' Callout, This is shown in the message when a Tab information is received from another sync device. */
+"callout.tabReceivedCalloutTitle" = "Fane mottatt";
+
 /* No comment provided by engineer. */
 "CancelButtonTitle" = "Avbryt";
 
@@ -1213,6 +1216,72 @@
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "Åpne innstillinger";
 
+/* The description indicating the device is active # of days ago. The parameter substituted for \"%ld\" is the number of days. E.g.: Active 123 Days Ago */
+"opentabs.activePeriodDeviceDaysAgoTitle" = "Aktiv %ld dager siden";
+
+/* The description indicating the device is active last time this month */
+"opentabs.activePeriodDeviceThisMonthTitle" = "Aktiv siste måned";
+
+/* The description indicating the device is active last time this week */
+"opentabs.activePeriodDeviceThisWeekTitle" = "Aktiv siste uke";
+
+/* The description indicating the device is active last time today */
+"opentabs.activePeriodDeviceTodayTitle" = "Aktiv i dag";
+
+/* The description indicating the device is active last time yesterday */
+"opentabs.activePeriodDeviceYesterdayTitle" = "Aktiv i går";
+
+/* The description of the view showing no devices inside sync chain */
+"opentabs.noDevicesSyncChainPlaceholderViewDescription" = "For å se enhetene dine og aktiverte synkroniseringstyper kan du bli med i en synkroniseringskjede";
+
+/* The title of the view showing no devices inside sync chain */
+"opentabs.noDevicesSyncChainPlaceholderViewTitle" = "Ingen enheter i denne synkroniseringsskjeden";
+
+/* The description of the view explaining user should join a sync chain. */
+"opentabs.noSyncChainPlaceHolderViewDescription" = "For å komme i gang kan du sette opp en synkroniseringskjede og veksle mellom «Åpne faner» i synkroniseringsinnstillinger.";
+
+/* The additional description of the view describing tab syncing should be enabled. */
+"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "Administrer hva Brave synkroniserer i Innstillinger.";
+
+/* The description of the view describing tab syncing should be enabled. */
+"opentabs.noSyncSessionPlaceHolderViewDescription" = "Aktiver fanesynkronisering for å se faner fra de andre enhetene dine.";
+
+/* The title of the view showing no synced sessions */
+"opentabs.noSyncSessionPlaceHolderViewTitle" = "Dette området viser Brave-faner som er åpne på andre enheter";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time-date. E.g.: Last Synced: 14:00 PM 08-08-2022 */
+"opentabs.openTabsItemLastSyncedFullTitle" = "Sist synkronisert: %@";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Synced: Last Week Monday 12:00 PM */
+"opentabs.openTabsItemLastSyncedLastWeekTitle" = "Siste synkronisert: siste uke %@";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Last Synced: Today 12:00 PM */
+"opentabs.openTabsItemLastSyncedTodayTitle" = "Siste synkronisert: i dag %@";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Last Synced: Yesterday 12:00 PM */
+"opentabs.openTabsItemLastSyncedYesterdayTitle" = "Siste synkronisert: i går %@";
+
+/* Title action button for sending webpage to selected other device */
+"opentabs.sendDeviceButtonTitle" = "Send til enheten din";
+
+/* The title displayed on send-webpage screen */
+"openTabs.sendWebpageScreenTitle" = "Send nettside";
+
+/* Share action title for sending e url to another device */
+"opentabs.sendWebsiteShareActionTitle" = "Send til enhetene dine";
+
+/* The button which navigates to screen starting a new sync chain */
+"opentabs.startASyncChainButtonTitle" = "Start en synkroniseringsskjede";
+
+/* The button which navigates to screen where Tab Sync functionality toggle can be adjusted */
+"opentabs.tabSyncEnableButtonTitle" = "Aktiver fanesynkronisering";
+
+/* The placeholder written in seach bar while tab-tray is showing open tabs. */
+"opentabs.tabTrayOpenSearchBarTitle" = "Søk etter faner fra andre enheter";
+
+/* Title for open tabs menu item */
+"OpenTabsMenuItem" = "Åpne faner";
+
 /* Button title to that opens a website. */
 "OpenWebsite" = "Åpne nettsted";
 
@@ -1415,7 +1484,19 @@
 "playlist.playlistSaveForOfflineErrorTitle" = "Beklager, en feil har oppstått";
 
 /* Title For the Section that videos are listed */
-"playList.playListSectionTitle" = "Spilleliste";
+"playList.playListSectionTitle" = "Spillelister";
+
+/* Title Playlist (used for back button, and playlist settings) */
+"playList.playListSettingTitle" = "Spilleliste";
+
+/* Body for the error message that shows when a playlist folder already exists */
+"playList.playlistSharedFolderAlreadyExistsBody" = "Denne mappen er allerede i Brave-spillelisten din";
+
+/* Title for the error message that shows when a playlist folder already exists */
+"playList.playlistSharedFolderAlreadyExistsTitle" = "Beklager";
+
+/* Title for the Section that videos are listed */
+"playList.playlistSharedFolderSectionTitle" = "Delt med deg";
 
 /* Title For the Section that videos are listed */
 "playList.playListSharedFolderSectionTitle" = "Delt med deg";
@@ -1485,6 +1566,12 @@
 
 /* Text indicator on the table cell while saving a video for offline */
 "playList.savingForOfflineLabelTitle" = "Lagrer for frakoblet modus ...";
+
+/* Description of the settings option to sync folders with the server automatically, every 4 hours. */
+"playList.sharedFolderSyncAutomaticallyDescription" = "Synkroniserer alle spillelistemappene dine automatisk";
+
+/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
+"playList.sharedFolderSyncAutomaticallyTitle" = "Synkroniser spillelistemapper automatisk";
 
 /* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistActionDetailsTitle" = "Du kan åpne det gjeldende elementet i en ny fane, eller dele det via systemdelingsmenyen";
@@ -1610,19 +1697,19 @@
 "playlistFolderSharing.offlineManagementViewAddButtonTitle" = "Legg til spillelisten nå";
 
 /* Description of the playlist offline data management view */
-"playlistFolderSharing.offlineManagementViewDescription" = "Automatisk lagring for offline-bruk er på. Det betyr at nye ting som legges til i spillelister, også delte spillelister, lagres på enheten for å kunne vises offline. Det kan hende at mobildata brukes til dette.";
+"playlistFolderSharing.offlineManagementViewDescription" = "Automatisk lagring for frakoblet bruk er på. Det vil si at nye tillegg til spillelister, inkludert delte spillelister, lagres på enheten din for frakoblet visning og kan bruke mobildataene dine.\n\nAutomatisk lagring for frakoblet bruk kan administreres i spillelisteinnstillinger.";
 
 /* Button that takes the user to the settings menu */
 "playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "Innstillinger";
-
-/* Description of the playlist offline data management view */
-"playlistFolderSharing.offlineManagementViewSubDescription" = "Automatisk lagring for offline bruk kan administreres i Spilleliste-innstillingene.";
 
 /* Title of the playlist offline data management view */
 "playlistFolderSharing.offlineManagementViewTitle" = "Administrer Spilleliste-data";
 
 /* Menu Title for renaming a folder */
 "playlistFolderSharing.renameMenuTitle" = "Gi nytt navn";
+
+/* Menu Title for saving offline data/cache */
+"playlistFolderSharing.saveOfflineDataMenuTitle" = "Lagre data i frakoblet modus";
 
 /* Menu Title for syncing playlist */
 "playlistFolderSharing.syncNowMenuTitle" = "Synkroniser nå";

@@ -292,6 +292,9 @@
 /* Title for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutTitle" = "Datenschutz. Überall.";
 
+/* Title for 'Tab Received' Callout, This is shown in the message when a Tab information is received from another sync device. */
+"callout.tabReceivedCalloutTitle" = "Tab erhalten";
+
 /* No comment provided by engineer. */
 "CancelButtonTitle" = "Abbrechen";
 
@@ -1213,6 +1216,72 @@
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "Einstellungen öffnen";
 
+/* The description indicating the device is active # of days ago. The parameter substituted for \"%ld\" is the number of days. E.g.: Active 123 Days Ago */
+"opentabs.activePeriodDeviceDaysAgoTitle" = "Vor %ld Tagen aktiv";
+
+/* The description indicating the device is active last time this month */
+"opentabs.activePeriodDeviceThisMonthTitle" = "Letzten Monat aktiv";
+
+/* The description indicating the device is active last time this week */
+"opentabs.activePeriodDeviceThisWeekTitle" = "Letzte Woche aktiv";
+
+/* The description indicating the device is active last time today */
+"opentabs.activePeriodDeviceTodayTitle" = "Heute aktiv";
+
+/* The description indicating the device is active last time yesterday */
+"opentabs.activePeriodDeviceYesterdayTitle" = "Gestern aktiv";
+
+/* The description of the view showing no devices inside sync chain */
+"opentabs.noDevicesSyncChainPlaceholderViewDescription" = "Um Ihre Geräte und aktivierten Synchronisierungsarten zu sehen, müssen Sie sich mit einer Synchronisierungskette verbinden.";
+
+/* The title of the view showing no devices inside sync chain */
+"opentabs.noDevicesSyncChainPlaceholderViewTitle" = "Keine Geräte in dieser Synchronisierungskette";
+
+/* The description of the view explaining user should join a sync chain. */
+"opentabs.noSyncChainPlaceHolderViewDescription" = "Um loszulegen, richten Sie eine Synchronisierungskette ein und schalten Sie „Geöffnete Tabs“ in den Synchronisierungseinstellungen um.";
+
+/* The additional description of the view describing tab syncing should be enabled. */
+"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "Verwalten Sie in den Einstellungen, was Brave synchronisieren soll.";
+
+/* The description of the view describing tab syncing should be enabled. */
+"opentabs.noSyncSessionPlaceHolderViewDescription" = "Aktivieren Sie die Tab-Synchronisierung, um Tabs Ihrer anderen Geräte zu sehen.";
+
+/* The title of the view showing no synced sessions */
+"opentabs.noSyncSessionPlaceHolderViewTitle" = "In diesem Bereich wird angezeigt, welche Brave-Tabs auf anderen Geräten geöffnet sind";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time-date. E.g.: Last Synced: 14:00 PM 08-08-2022 */
+"opentabs.openTabsItemLastSyncedFullTitle" = "Letzte Synchronisierung: %@";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Synced: Last Week Monday 12:00 PM */
+"opentabs.openTabsItemLastSyncedLastWeekTitle" = "Letzte Synchronisierung: letzte Woche %@";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Last Synced: Today 12:00 PM */
+"opentabs.openTabsItemLastSyncedTodayTitle" = "Letzte Synchronisierung: heute %@";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Last Synced: Yesterday 12:00 PM */
+"opentabs.openTabsItemLastSyncedYesterdayTitle" = "Letzte Synchronisierung: gestern %@";
+
+/* Title action button for sending webpage to selected other device */
+"opentabs.sendDeviceButtonTitle" = "An mein Gerät senden";
+
+/* The title displayed on send-webpage screen */
+"openTabs.sendWebpageScreenTitle" = "Webseite senden";
+
+/* Share action title for sending e url to another device */
+"opentabs.sendWebsiteShareActionTitle" = "An meine Geräte senden";
+
+/* The button which navigates to screen starting a new sync chain */
+"opentabs.startASyncChainButtonTitle" = "Neue Synchronisierungskette beginnen";
+
+/* The button which navigates to screen where Tab Sync functionality toggle can be adjusted */
+"opentabs.tabSyncEnableButtonTitle" = "Tab-Synchronisierung aktivieren";
+
+/* The placeholder written in seach bar while tab-tray is showing open tabs. */
+"opentabs.tabTrayOpenSearchBarTitle" = "Tabs anderer Geräte durchsuchen";
+
+/* Title for open tabs menu item */
+"OpenTabsMenuItem" = "Geöffnete Tabs";
+
 /* Button title to that opens a website. */
 "OpenWebsite" = "Website öffnen";
 
@@ -1415,7 +1484,19 @@
 "playlist.playlistSaveForOfflineErrorTitle" = "Entschuldigen Sie, es ist ein Fehler aufgetreten.";
 
 /* Title For the Section that videos are listed */
-"playList.playListSectionTitle" = "Playlist";
+"playList.playListSectionTitle" = "Playlisten";
+
+/* Title Playlist (used for back button, and playlist settings) */
+"playList.playListSettingTitle" = "Playlist";
+
+/* Body for the error message that shows when a playlist folder already exists */
+"playList.playlistSharedFolderAlreadyExistsBody" = "Dieser Ordner befindet sich bereits in Ihrer Brave-Playlist.";
+
+/* Title for the error message that shows when a playlist folder already exists */
+"playList.playlistSharedFolderAlreadyExistsTitle" = "Es tut uns leid";
+
+/* Title for the Section that videos are listed */
+"playList.playlistSharedFolderSectionTitle" = "Für Sie freigegeben";
 
 /* Title For the Section that videos are listed */
 "playList.playListSharedFolderSectionTitle" = "Für Sie freigegeben";
@@ -1485,6 +1566,12 @@
 
 /* Text indicator on the table cell while saving a video for offline */
 "playList.savingForOfflineLabelTitle" = "Wird offline gespeichert…";
+
+/* Description of the settings option to sync folders with the server automatically, every 4 hours. */
+"playList.sharedFolderSyncAutomaticallyDescription" = "Synchronisiert automatisch all Ihre Playlist-Ordner";
+
+/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
+"playList.sharedFolderSyncAutomaticallyTitle" = "Synchronisiert automatisch Playlist-Ordner";
 
 /* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistActionDetailsTitle" = "Sie können das aktuelle Element in einem neuen Tab öffnen oder über das Systemmenü teilen.";
@@ -1610,19 +1697,19 @@
 "playlistFolderSharing.offlineManagementViewAddButtonTitle" = "Playlist jetzt hinzufügen";
 
 /* Description of the playlist offline data management view */
-"playlistFolderSharing.offlineManagementViewDescription" = "Die automatische Speicherung für die Offline-Nutzung ist aktiviert. Das bedeutet, dass neue Playlist-Elemente einschließlich freigegebener Playlists zur Offline-Ansicht auf Ihrem Gerät gespeichert werden und dass dadurch mobile Daten genutzt werden könnten.";
+"playlistFolderSharing.offlineManagementViewDescription" = "Die automatische Speicherung für die Offline-Nutzung ist aktiviert. Das bedeutet, dass neue Playlist-Elemente einschließlich freigegebener Playlists zur Offline-Ansicht auf Ihrem Gerät gespeichert werden und dass dadurch mobile Daten genutzt werden könnten.\n\nDie automatische Speicherung für die Offline-Nutzung kann über die Playlist-Einstellungen verwaltet werden.";
 
 /* Button that takes the user to the settings menu */
 "playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "Einstellungen";
-
-/* Description of the playlist offline data management view */
-"playlistFolderSharing.offlineManagementViewSubDescription" = "Die automatische Speicherung für die Offline-Nutzung kann über die Playlist-Einstellungen verwaltet werden.";
 
 /* Title of the playlist offline data management view */
 "playlistFolderSharing.offlineManagementViewTitle" = "Verwaltung Ihrer Playlist-Daten";
 
 /* Menu Title for renaming a folder */
 "playlistFolderSharing.renameMenuTitle" = "Umbenennen";
+
+/* Menu Title for saving offline data/cache */
+"playlistFolderSharing.saveOfflineDataMenuTitle" = "Offline-Daten speichern";
 
 /* Menu Title for syncing playlist */
 "playlistFolderSharing.syncNowMenuTitle" = "Jetzt synchronisieren";
