@@ -55,8 +55,9 @@ class CookiesAndCacheClearable: Clearable {
     UserDefaults.standard.synchronize()
     await BraveWebView.sharedNonPersistentStore().removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), modifiedSince: Date(timeIntervalSinceReferenceDate: 0))
     UserDefaults.standard.synchronize()
-    await Domain.clearAllWalletPermissions(for: .eth)
-    // TODO: will need to clear permission for `.sol` coin type once we support solana Dapps
+    for coin in [BraveWallet.CoinType.eth, BraveWallet.CoinType.sol] {
+      await Domain.clearAllWalletPermissions(for: coin)
+    }
   }
 }
 

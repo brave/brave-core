@@ -14,14 +14,17 @@ class ManageSiteConnectionsStoreTests: CoreDataTestCase {
 
   let compound = URL(string: "https://compound.finance")!
   let polygon = URL(string: "https://wallet.polygon.technology")!
+  let jupiter = URL(string: "https://jup.ag")!
   let walletAccount = "0x4D60d71F411AB671f614eD0ec5B71bEedB46287d"
   let walletAccount2 = "0x4d60d71f411ab671f614ed0ec5b71beedb46287d"
+  let solanaAccount = "8uMdzdJ6Mtsh2vFhJJGCfwo8PZrnZZ3qbT85wbo1o4cd"
   var cancellables: Set<AnyCancellable> = .init()
   
   override func setUp() {
     super.setUp()
     let compondDomain = Domain.getOrCreate(forUrl: compound, persistent: true)
     let polygonDomain = Domain.getOrCreate(forUrl: polygon, persistent: true)
+    let jupiterDomain = Domain.getOrCreate(forUrl: jupiter, persistent: true)
 
     // add permissions for `compound` Domain
     backgroundSaveAndWaitForExpectation {
@@ -33,6 +36,11 @@ class ManageSiteConnectionsStoreTests: CoreDataTestCase {
       Domain.setWalletPermissions(forUrl: polygon, coin: .eth, accounts: [walletAccount, walletAccount2], grant: true)
     }
     XCTAssertTrue(polygonDomain.walletPermissions(for: .eth, account: walletAccount))
+    // add permissions for `jupiter` Domain
+    backgroundSaveAndWaitForExpectation {
+      Domain.setWalletPermissions(forUrl: jupiter, coin: .sol, accounts: [solanaAccount], grant: true)
+    }
+    XCTAssertTrue(jupiterDomain.walletPermissions(for: .sol, account: solanaAccount))
   }
   
   func testFetchSiteConnections() {
@@ -47,8 +55,9 @@ class ManageSiteConnectionsStoreTests: CoreDataTestCase {
       .first()
       .sink { siteConnections in
         defer { siteConnectionsException.fulfill() }
-        XCTAssertEqual(siteConnections[0], .init(url: self.polygon.absoluteString, connectedAddresses: [self.walletAccount, self.walletAccount2]))
-        XCTAssertEqual(siteConnections[1], .init(url: self.compound.absoluteString, connectedAddresses: [self.walletAccount, self.walletAccount2]))
+        XCTAssertEqual(siteConnections[0], .init(url: self.polygon.absoluteString, connectedAddresses: [self.walletAccount, self.walletAccount2], coin: .eth))
+        XCTAssertEqual(siteConnections[1], .init(url: self.compound.absoluteString, connectedAddresses: [self.walletAccount, self.walletAccount2], coin: .eth))
+        XCTAssertEqual(siteConnections[2], .init(url: self.jupiter.absoluteString, connectedAddresses: [self.solanaAccount], coin: .sol))
       }.store(in: &cancellables)
     
     store.fetchSiteConnections()
@@ -63,7 +72,7 @@ class ManageSiteConnectionsStoreTests: CoreDataTestCase {
     // Domains added with Ethereum permissions in `setUp()`
     let store = ManageSiteConnectionsStore(keyringStore: .previewStore)
     store.fetchSiteConnections()
-    XCTAssertEqual(store.siteConnections.count, 2)
+    XCTAssertEqual(store.siteConnections.count, 3)
     
     // remove permissions
     let siteConnectionToRemove = store.siteConnections[0]
@@ -71,7 +80,7 @@ class ManageSiteConnectionsStoreTests: CoreDataTestCase {
       store.removeAllPermissions(from: [siteConnectionToRemove])
     }
     // verify `siteConnections` is updated
-    XCTAssertEqual(store.siteConnections.count, 1)
+    XCTAssertEqual(store.siteConnections.count, 2)
     XCTAssertNotEqual(store.siteConnections[0].url, siteConnectionToRemove.url)
     // verify `Domain` data is removed
     let domain = Domain.getOrCreate(forUrl: URL(string: siteConnectionToRemove.url)!, persistent: true)
@@ -84,17 +93,17 @@ class ManageSiteConnectionsStoreTests: CoreDataTestCase {
     // Domains added with Ethereum permissions in `setUp()`
     let store = ManageSiteConnectionsStore(keyringStore: .previewStore)
     store.fetchSiteConnections()
-    XCTAssertEqual(store.siteConnections.count, 2)
+    XCTAssertEqual(store.siteConnections.count, 3)
     
     // remove some account permissions but not all
     let siteConnectionToRemoveAccount = store.siteConnections[1]
     XCTAssertEqual(siteConnectionToRemoveAccount.connectedAddresses.count, 2)
     backgroundSaveAndWaitForExpectation {
-      store.removePermissions(from: [walletAccount], url: URL(string: siteConnectionToRemoveAccount.url)!)
+      store.removePermissions(for: .eth, from: [walletAccount], url: URL(string: siteConnectionToRemoveAccount.url)!)
     }
     
     // verify `siteConnections` is updated to remove specific accounts from the `SiteConnection`
-    XCTAssertEqual(store.siteConnections.count, 2)
+    XCTAssertEqual(store.siteConnections.count, 3)
     XCTAssertEqual(store.siteConnections[1].connectedAddresses.count, 1)
     XCTAssertFalse(store.siteConnections[1].connectedAddresses.contains(walletAccount))
     
@@ -108,22 +117,22 @@ class ManageSiteConnectionsStoreTests: CoreDataTestCase {
     // Domains added with Ethereum permissions in `setUp()`
     let store = ManageSiteConnectionsStore(keyringStore: .previewStore)
     store.fetchSiteConnections()
-    XCTAssertEqual(store.siteConnections.count, 2)
+    XCTAssertEqual(store.siteConnections.count, 3)
     
     // remove `walletAccount` permissions for this `SiteConnection`
     let siteConnectionToRemove = store.siteConnections[0]
     XCTAssertEqual(siteConnectionToRemove.connectedAddresses.count, 2)
     backgroundSaveAndWaitForExpectation {
-      store.removePermissions(from: [walletAccount], url: URL(string: siteConnectionToRemove.url)!)
+      store.removePermissions(for: .eth, from: [walletAccount], url: URL(string: siteConnectionToRemove.url)!)
     }
     // remove `walletAccount2` permissions for this `SiteConnection`
     XCTAssertEqual(store.siteConnections[0].connectedAddresses.count, 1)
     backgroundSaveAndWaitForExpectation {
-      store.removePermissions(from: [walletAccount2], url: URL(string: siteConnectionToRemove.url)!)
+      store.removePermissions(for: .eth, from: [walletAccount2], url: URL(string: siteConnectionToRemove.url)!)
     }
     
     // verify `siteConnections` is updated to remove the `SiteConnection` as all `connectedAddresses` are removed
-    XCTAssertEqual(store.siteConnections.count, 1)
+    XCTAssertEqual(store.siteConnections.count, 2)
     XCTAssertNotEqual(store.siteConnections[0].url, siteConnectionToRemove.url)
     
     // verify `Domain` data is removed

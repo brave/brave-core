@@ -177,7 +177,7 @@ extension Tab: BraveWalletProviderDelegate {
       // Check if eth permissions already exist for this origin and if they don't, ensure the user allows
       // ethereum/solana provider access
       let walletPermissions = origin.url.map { Domain.walletPermissions(forUrl: $0, coin: coinType) ?? [] } ?? []
-      if walletPermissions.isEmpty, !Preferences.Wallet.allowDappProviderAccountRequests.value {
+      if walletPermissions.isEmpty, !Preferences.Wallet.allowEthProviderAccess.value {
         completion(.internal, nil)
         return
       }

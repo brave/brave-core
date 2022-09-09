@@ -83,17 +83,32 @@ class SettingsStoreTests: XCTestCase {
 
     assert(
       Preferences.Wallet.WalletType.none.rawValue != Preferences.Wallet.defaultEthWallet.defaultValue,
-      "Test assumes default wallet value is not `none`") 
+      "Test assumes default wallet for eth value is not `none`")
     Preferences.Wallet.defaultEthWallet.value = Preferences.Wallet.WalletType.none.rawValue
     XCTAssertEqual(
       Preferences.Wallet.defaultEthWallet.value,
       Preferences.Wallet.WalletType.none.rawValue,
-      "Failed to update default wallet")
-    Preferences.Wallet.allowDappProviderAccountRequests.value = !Preferences.Wallet.allowDappProviderAccountRequests.defaultValue
+      "Failed to update default wallet for eth")
+    Preferences.Wallet.allowEthProviderAccess.value = !Preferences.Wallet.allowEthProviderAccess.defaultValue
     XCTAssertEqual(
-      Preferences.Wallet.allowDappProviderAccountRequests.value,
-      !Preferences.Wallet.allowDappProviderAccountRequests.defaultValue,
+      Preferences.Wallet.allowEthProviderAccess.value,
+      !Preferences.Wallet.allowEthProviderAccess.defaultValue,
       "Failed to update allow ethereum requests")
+    
+    assert(
+      Preferences.Wallet.WalletType.none.rawValue != Preferences.Wallet.defaultSolWallet.defaultValue,
+      "Test assumes default wallet for sol value is not `none`")
+    Preferences.Wallet.defaultSolWallet.value = Preferences.Wallet.WalletType.none.rawValue
+    XCTAssertEqual(
+      Preferences.Wallet.defaultSolWallet.value,
+      Preferences.Wallet.WalletType.none.rawValue,
+      "Failed to update default wallet for sol")
+    Preferences.Wallet.allowSolProviderAccess.value = !Preferences.Wallet.allowSolProviderAccess.defaultValue
+    XCTAssertEqual(
+      Preferences.Wallet.allowSolProviderAccess.value,
+      !Preferences.Wallet.allowSolProviderAccess.defaultValue,
+      "Failed to update allow solana requests")
+    
     Preferences.Wallet.displayWeb3Notifications.value = !Preferences.Wallet.displayWeb3Notifications.defaultValue
     XCTAssertEqual(
       Preferences.Wallet.displayWeb3Notifications.value,
@@ -129,11 +144,19 @@ class SettingsStoreTests: XCTestCase {
     XCTAssertEqual(
       Preferences.Wallet.defaultEthWallet.value,
       Preferences.Wallet.defaultEthWallet.defaultValue,
-      "Default Wallet was not reset to default")
+      "Default Wallet for eth was not reset to default")
     XCTAssertEqual(
-      Preferences.Wallet.allowDappProviderAccountRequests.value,
-      Preferences.Wallet.allowDappProviderAccountRequests.defaultValue,
+      Preferences.Wallet.allowEthProviderAccess.value,
+      Preferences.Wallet.allowEthProviderAccess.defaultValue,
       "Allow ethereum requests was not reset to default")
+    XCTAssertEqual(
+      Preferences.Wallet.defaultSolWallet.value,
+      Preferences.Wallet.defaultSolWallet.defaultValue,
+      "Default Wallet for sol was not reset to default")
+    XCTAssertEqual(
+      Preferences.Wallet.allowSolProviderAccess.value,
+      Preferences.Wallet.allowSolProviderAccess.defaultValue,
+      "Allow solana requests was not reset to default")
     XCTAssertEqual(
       Preferences.Wallet.displayWeb3Notifications.value,
       Preferences.Wallet.displayWeb3Notifications.defaultValue,

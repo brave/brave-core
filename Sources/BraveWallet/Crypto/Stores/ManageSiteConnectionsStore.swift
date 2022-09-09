@@ -10,17 +10,21 @@ import BraveCore
 struct SiteConnection: Equatable, Identifiable {
   let url: String
   let connectedAddresses: [String]
+  let coin: BraveWallet.CoinType
   
   var id: String { url }
 }
 
 extension Array where Element == SiteConnection {
-  /// Filters the array by checking if the given `text` exists in the `url` or `connectedAccountAddresses`
-  func filter(by text: String) -> [SiteConnection] {
+  /// Filters the array by checking if the given `text` exists in the `url` or `connectedAccountAddresses` and match the given
+  /// coin type `coin`
+  func filter(by coin: BraveWallet.CoinType, text: String) -> [SiteConnection] {
     filter { siteConnections in
-      guard !text.isEmpty else { return true }
+      guard !text.isEmpty else {
+        return siteConnections.coin == coin
+      }
       let filterText = text.lowercased()
-      return siteConnections.url.contains(filterText) || siteConnections.connectedAddresses.contains(where: { $0.caseInsensitiveCompare(filterText) == .orderedSame })
+      return (siteConnections.url.contains(filterText) || siteConnections.connectedAddresses.contains(where: { $0.caseInsensitiveCompare(filterText) == .orderedSame })) && siteConnections.coin == coin
     }
   }
 }
@@ -36,14 +40,22 @@ class ManageSiteConnectionsStore: ObservableObject {
   
   /// Fetch all site connections with 1+ accounts connected
   func fetchSiteConnections() {
-    let domains = Domain.allDomainsWithWalletPermissions(for: .eth)
-    let connections = domains.map {
-      SiteConnection(
-        url: $0.url ?? "",
-        connectedAddresses: ($0.wallet_permittedAccounts ?? "")
-          .split(separator: ",")
-          .map(String.init)
-      )
+    var connections = [SiteConnection]()
+    for coin in WalletConstants.supportedCoinTypes {
+      let domains = Domain.allDomainsWithWalletPermissions(for: coin)
+      connections.append(contentsOf: domains.map {
+        var connectedAddresses = [String]()
+        if let urlString = $0.url,
+           let url = URL(string: urlString),
+            let addresses = Domain.walletPermissions(forUrl: url, coin: coin) {
+          connectedAddresses = addresses
+        }
+        return SiteConnection(
+          url: $0.url ?? "",
+          connectedAddresses: connectedAddresses,
+          coin: coin
+        )
+      })
     }
     self.siteConnections = connections
   }
@@ -52,19 +64,23 @@ class ManageSiteConnectionsStore: ObservableObject {
   func removeAllPermissions(from siteConnectionsToRemove: [SiteConnection]) {
     siteConnectionsToRemove.forEach { siteConnection in
       guard let url = URL(string: siteConnection.url) else { return }
-      Domain.setWalletPermissions(forUrl: url, coin: .eth, accounts: siteConnection.connectedAddresses, grant: false)
-      if let index = self.siteConnections.firstIndex(where: { $0.id.caseInsensitiveCompare(siteConnection.id) == .orderedSame }) {
+      Domain.setWalletPermissions(forUrl: url, coin: siteConnection.coin, accounts: siteConnection.connectedAddresses, grant: false)
+      if let index = self.siteConnections.firstIndex(where: { $0.id.caseInsensitiveCompare(siteConnection.id) == .orderedSame && $0.coin == siteConnection.coin }) {
         self.siteConnections.remove(at: index)
       }
     }
   }
   
   /// Remove permissions from the given `accounts` for the given `url`
-  func removePermissions(from accounts: [String], url: URL) {
-    if let index = siteConnections.firstIndex(where: { $0.url == url.absoluteString }),
-        let siteConnection = siteConnections[safe: index] {
+  func removePermissions(for coin: BraveWallet.CoinType, from accounts: [String], url: URL) {
+    if let index = siteConnections.firstIndex(where: { $0.url == url.absoluteString && $0.coin == coin }),
+       let siteConnection = siteConnections[safe: index] {
       let updatedConnectedAddresses = siteConnection.connectedAddresses.filter { !accounts.contains($0) }
-      let updatedSiteConnection = SiteConnection(url: siteConnection.url, connectedAddresses: updatedConnectedAddresses)
+      let updatedSiteConnection = SiteConnection(
+        url: siteConnection.url,
+        connectedAddresses: updatedConnectedAddresses,
+        coin: coin
+      )
       
       var updatedSiteConnections = siteConnections
       updatedSiteConnections.remove(at: index)
@@ -73,7 +89,7 @@ class ManageSiteConnectionsStore: ObservableObject {
       }
       self.siteConnections = updatedSiteConnections
     }
-    Domain.setWalletPermissions(forUrl: url, coin: .eth, accounts: accounts, grant: false)
+    Domain.setWalletPermissions(forUrl: url, coin: coin, accounts: accounts, grant: false)
   }
   
   func accountInfo(for address: String) -> BraveWallet.AccountInfo? {

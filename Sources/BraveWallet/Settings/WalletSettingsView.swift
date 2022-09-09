@@ -12,9 +12,6 @@ public struct WalletSettingsView: View {
   @ObservedObject var settingsStore: SettingsStore
   @ObservedObject var networkStore: NetworkStore
   @ObservedObject var keyringStore: KeyringStore
-  @ObservedObject var defaultEthWallet = Preferences.Wallet.defaultEthWallet
-  @ObservedObject var defaultSolWallet = Preferences.Wallet.defaultSolWallet
-  @ObservedObject var allowDappsRequestAccounts = Preferences.Wallet.allowDappProviderAccountRequests
   @ObservedObject var displayDappsNotifications = Preferences.Wallet.displayWeb3Notifications
 
   @State private var isShowingResetWalletAlert = false
@@ -105,61 +102,26 @@ public struct WalletSettingsView: View {
           .foregroundColor(Color(.secondaryBraveLabel))
       ) {
         Group {
-          HStack {
-            Text(Strings.Wallet.web3PreferencesDefaultEthWallet)
-              .foregroundColor(Color(.braveLabel))
-            Spacer()
-            Menu {
-              Picker("", selection: $defaultEthWallet.value) {
-                ForEach(Preferences.Wallet.WalletType.allCases) { walletType in
-                  Text(walletType.name)
-                    .tag(walletType)
-                }
-              }
-              .pickerStyle(.inline)
-            } label: {
-              let wallet = Preferences.Wallet.WalletType(rawValue: defaultEthWallet.value) ?? .none
-              Text(wallet.name)
-                .foregroundColor(Color(.braveBlurpleTint))
-            }
-          }
-          if WalletDebugFlags.isSolanaDappsEnabled {
-            HStack {
-              Text(Strings.Wallet.web3PreferencesDefaultSolWallet)
-                .foregroundColor(Color(.braveLabel))
-              Spacer()
-              Menu {
-                Picker("", selection: $defaultSolWallet.value) {
-                  ForEach(Preferences.Wallet.WalletType.allCases) { walletType in
-                    Text(walletType.name)
-                      .tag(walletType)
+          ForEach(Array(WalletConstants.supportedCoinTypes)) { coin in
+            if coin != .sol || (coin == .sol && WalletDebugFlags.isSolanaDappsEnabled) {
+              NavigationLink(
+                destination:
+                  DappsSettings(
+                    coin: coin,
+                    siteConnectionStore: settingsStore.manageSiteConnectionsStore(keyringStore: keyringStore)
+                  )
+                  .onDisappear {
+                    settingsStore.closeManageSiteConnectionStore()
                   }
-                }
-                .pickerStyle(.inline)
-              } label: {
-                let wallet = Preferences.Wallet.WalletType(rawValue: defaultSolWallet.value) ?? .none
-                Text(wallet.name)
-                  .foregroundColor(Color(.braveBlurpleTint))
+              ) {
+                Text(coin.localizedTitle)
+                  .foregroundColor(Color(.braveLabel))
               }
             }
           }
-          Toggle(Strings.Wallet.web3PreferencesAllowSiteToRequestAccounts, isOn: $allowDappsRequestAccounts.value)
-            .foregroundColor(Color(.braveLabel))
-            .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
           Toggle(Strings.Wallet.web3PreferencesDisplayWeb3Notifications, isOn: $displayDappsNotifications.value)
             .foregroundColor(Color(.braveLabel))
             .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
-          NavigationLink(
-            destination: ManageSiteConnectionsView(
-              siteConnectionStore: settingsStore.manageSiteConnectionsStore(keyringStore: keyringStore)
-            )
-            .onDisappear {
-              settingsStore.closeManageSiteConnectionStore()
-            }
-          ) {
-            Text(Strings.Wallet.web3PreferencesManageSiteConnections)
-              .foregroundColor(Color(.braveLabel))
-          }
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
