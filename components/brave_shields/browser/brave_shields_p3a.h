@@ -15,7 +15,7 @@ class HostContentSettingsMap;
 namespace brave_shields {
 
 constexpr char kUsagePrefName[] = "brave_shields.p3a_usage";
-constexpr char kFirstReportedPrefName[] = "brave_shields.p3a_first_reported";
+constexpr char kFirstReportedPrefName[] = "brave_shields.p3a_first_reported_v2";
 
 constexpr char kAdsStrictCountPrefName[] =
     "brave_shields.p3a_ads_strict_domain_count";
