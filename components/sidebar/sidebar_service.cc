@@ -48,19 +48,20 @@ SidebarItem GetBuiltInItemForType(SidebarItem::BuiltInItemType type) {
                                      IDS_SIDEBAR_BRAVE_TALK_ITEM_TITLE),
                                  SidebarItem::Type::kTypeBuiltIn,
                                  SidebarItem::BuiltInItemType::kBraveTalk,
-                                 false);
+                                 /* open_in_panel = */ false);
     case SidebarItem::BuiltInItemType::kWallet:
       return SidebarItem::Create(GURL("chrome://wallet/"),
                                  brave_l10n::GetLocalizedResourceUTF16String(
                                      IDS_SIDEBAR_WALLET_ITEM_TITLE),
                                  SidebarItem::Type::kTypeBuiltIn,
-                                 SidebarItem::BuiltInItemType::kWallet, false);
+                                 SidebarItem::BuiltInItemType::kWallet,
+                                 /* open_in_panel = */ false);
     case SidebarItem::BuiltInItemType::kBookmarks:
       return SidebarItem::Create(brave_l10n::GetLocalizedResourceUTF16String(
                                      IDS_SIDEBAR_BOOKMARKS_ITEM_TITLE),
                                  SidebarItem::Type::kTypeBuiltIn,
                                  SidebarItem::BuiltInItemType::kBookmarks,
-                                 true);
+                                 /* open_in_panel = */ true);
     case SidebarItem::BuiltInItemType::kReadingList:
       return SidebarItem::Create(
           // TODO(petemill): Have these items created under brave/browser
@@ -68,15 +69,27 @@ SidebarItem GetBuiltInItemForType(SidebarItem::BuiltInItemType type) {
           brave_l10n::GetLocalizedResourceUTF16String(
               IDS_SIDEBAR_READING_LIST_ITEM_TITLE),
           SidebarItem::Type::kTypeBuiltIn,
-          SidebarItem::BuiltInItemType::kReadingList, true);
-    case SidebarItem::BuiltInItemType::kHistory:
-      return SidebarItem::Create(GURL("chrome://history/"),
-                                 brave_l10n::GetLocalizedResourceUTF16String(
-                                     IDS_SIDEBAR_HISTORY_ITEM_TITLE),
-                                 SidebarItem::Type::kTypeBuiltIn,
-                                 SidebarItem::BuiltInItemType::kHistory, true);
-    default:
+          SidebarItem::BuiltInItemType::kReadingList,
+          /* open_in_panel = */ true);
+    case SidebarItem::BuiltInItemType::kHistory: {
+      // TODO(sko) When should we show history item?
+      constexpr bool kShowHistoryButton = false;
+      if constexpr (kShowHistoryButton) {
+        return SidebarItem::Create(GURL("chrome://history/"),
+                                   brave_l10n::GetLocalizedResourceUTF16String(
+                                       IDS_SIDEBAR_HISTORY_ITEM_TITLE),
+                                   SidebarItem::Type::kTypeBuiltIn,
+                                   SidebarItem::BuiltInItemType::kHistory,
+                                   /* open_in_panel = */ true);
+      } else {
+        return SidebarItem();
+      }
+    }
+    case SidebarItem::BuiltInItemType::kPlaylist:
+      return SidebarItem();
+    case SidebarItem::BuiltInItemType::kNone:
       NOTREACHED();
+      break;
   }
   return SidebarItem();
 }
@@ -106,7 +119,10 @@ SidebarItem::BuiltInItemType GetBuiltInItemTypeForLegacyURL(
 std::vector<SidebarItem> GetDefaultSidebarItems() {
   std::vector<SidebarItem> items;
   for (const auto& item_type : SidebarService::kDefaultBuiltInItemTypes) {
-    items.push_back(GetBuiltInItemForType(item_type));
+    if (auto item = GetBuiltInItemForType(item_type);
+        item.built_in_item_type != SidebarItem::BuiltInItemType::kNone) {
+      items.push_back(item);
+    }
   }
   return items;
 }
