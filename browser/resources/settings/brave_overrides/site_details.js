@@ -55,11 +55,11 @@ RegisterPolymerTemplateModifications({
           <div class="list-frame">
             <site-details-permission
                 category="[[contentSettingsTypesEnum_.SHIELDS]]"
-                icon="cr:extension" label="${I18nBehavior.i18n('siteSettingsShieldsStatus')}">
+                icon="brave_settings:shields" label="${I18nBehavior.i18n('siteSettingsShieldsStatus')}">
             </site-details-permission>
             <site-details-permission
                 category="[[contentSettingsTypesEnum_.HTTP_UPGRADABLE_RESOURCES]]"
-                icon="cr:extension" label="${I18nBehavior.i18n('siteSettingsShieldsUpgradeToHttps')}">
+                icon="brave_settings:shields" label="${I18nBehavior.i18n('siteSettingsShieldsUpgradeToHttps')}">
             </site-details-permission>
           </div>
         </div>

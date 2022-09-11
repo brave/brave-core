@@ -116,7 +116,7 @@ RegisterPolymerComponentReplacement(
             route: routes.SITE_SETTINGS_SHIELDS_STATUS,
             id: 'braveShields',
             label: 'siteSettingsShieldsStatus',
-            icon: 'cr:extension',
+            icon: 'brave_settings:shields',
             enabledLabel: 'siteSettingsShieldsUp',
             disabledLabel: 'siteSettingsShieldsDown'
           },
@@ -124,7 +124,7 @@ RegisterPolymerComponentReplacement(
             route: routes.SITE_SETTINGS_HTTPS_EVERYWHERE,
             id: 'httpUpgradableResources',
             label: 'siteSettingsShieldsUpgradeToHttps',
-            icon: 'cr:extension',
+            icon: 'brave_settings:shields',
             enabledLabel: 'siteSettingsHttpsEverywhereEnabled',
             disabledLabel: 'siteSettingsHttpsEverywhereDisabled'
           }
