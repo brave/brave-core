@@ -181,6 +181,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private boolean mIsInitialNotificationPosted; // initial red circle notification
 
     private PopupWindowTooltip mShieldsPopupWindowTooltip;
+    private PopupWindowTooltip mCookieConsentTooltip;
 
     private boolean mIsBottomToolbarVisible;
 
@@ -407,7 +408,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
                     if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()
                             && mBraveShieldsHandler != null && !mBraveShieldsHandler.isShowing()) {
-                        checkForTooltip(tab);
+                        // checkForTooltip(tab);
+                        showCookieConsentTooltip();
                     }
                 }
 
@@ -473,14 +475,15 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void checkForTooltip(Tab tab) {
-        if (!BraveShieldsUtils.isTooltipShown) {
-            if (!BraveShieldsUtils.hasShieldsTooltipShown(BraveShieldsUtils.PREF_SHIELDS_TOOLTIP)
-                    && mBraveShieldsHandler.getTrackersBlockedCount(tab.getId())
-                                    + mBraveShieldsHandler.getAdsBlockedCount(tab.getId())
-                            > 0) {
-                showTooltip(BraveShieldsUtils.PREF_SHIELDS_TOOLTIP, tab.getId());
-            }
-        }
+        // if (!BraveShieldsUtils.isTooltipShown) {
+        //     if (!BraveShieldsUtils.hasShieldsTooltipShown(BraveShieldsUtils.PREF_SHIELDS_TOOLTIP)
+        //             && mBraveShieldsHandler.getTrackersBlockedCount(tab.getId())
+        //                             + mBraveShieldsHandler.getAdsBlockedCount(tab.getId())
+        //                     > 0) {
+        //         showTooltip(BraveShieldsUtils.PREF_SHIELDS_TOOLTIP, tab.getId());
+        //     }
+        // }
+        showTooltip(BraveShieldsUtils.PREF_SHIELDS_TOOLTIP, tab.getId());
     }
 
     private void showTooltip(String tooltipPref, int tabId) {
@@ -578,6 +581,50 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 BraveShieldsUtils.setShieldsTooltipShown(tooltipPref, true);
                 BraveShieldsUtils.isTooltipShown = true;
             }
+        }
+    }
+
+    private void showCookieConsentTooltip() {
+        ViewGroup viewGroup =
+                BraveActivity.getBraveActivity().getWindow().getDecorView().findViewById(
+                        android.R.id.content);
+        // float padding = (float) dpToPx(getContext(), 20);
+        mCookieConsentTooltip = new PopupWindowTooltip.Builder(getContext())
+                                        .anchorView(mBraveShieldsButton)
+                                        .arrowColor(ContextCompat.getColor(
+                                                getContext(), R.color.cookie_consent_tooltip_color))
+                                        .gravity(Gravity.BOTTOM)
+                                        .dismissOnOutsideTouch(false)
+                                        .dismissOnInsideTouch(false)
+                                        .backgroundDimDisabled(false)
+                                        // .padding(padding)
+                                        .parentPaddingHorizontal(dpToPx(getContext(), 10))
+                                        .modal(true)
+                                        .onDismissListener(tooltip
+                                                -> {
+
+                                                })
+                                        .contentView(R.layout.block_cookie_consent_notices_tooltip)
+                                        .build();
+
+        Button btnAction = mCookieConsentTooltip.findViewById(R.id.btn_action);
+        btnAction.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCookieConsentTooltip.dismiss();
+            }
+        }));
+
+        TextView txtNoThanks = mCookieConsentTooltip.findViewById(R.id.txt_no_thanks);
+        txtNoThanks.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCookieConsentTooltip.dismiss();
+            }
+        }));
+
+        if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()) {
+            mCookieConsentTooltip.show();
         }
     }
 

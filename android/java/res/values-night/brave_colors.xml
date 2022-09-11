@@ -120,4 +120,8 @@
 
     <!--  Brave Wallet DApp  -->
     <color name="brave_wallet_dapp_text_color">@android:color/white</color>
+
+    <color name="cookie_consent_action_color">@android:color/white</color>
+    <color name="cookie_consent_text_color">#F0F2FF</color>
+    <color name="cookie_consent_tooltip_color">#1E2029</color>
 </resources>

@@ -2947,6 +2947,15 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BACKUP_WALLET_PASSWORD" desc="Brave Wallet prompt to enter a password">
       Enter your Brave Wallet password
     </message>
+    <message name="IDS_BLOCK_COOKIE_NOTICES_ACTION_TEXT" desc="Block cookie consent notices action text">
+      Block cookie notices
+    </message>
+    <message name="IDS_BLOCK_COOKIE_NOTICES_TITLE" desc="Block cookie consent notices title">
+      Tired of cookie consent notices?
+    </message>
+    <message name="IDS_BLOCK_COOKIE_NOTICES_TEXT" desc="Block cookie consent notices text">
+      Brave already blocks third-party cookies. We can block cookie consent notices, too.
+    </message>
   </messages>
   </release>
 </grit>
