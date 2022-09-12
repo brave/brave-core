@@ -15,10 +15,6 @@ namespace content {
 class BrowserContext;
 }  // namespace content
 
-namespace ui {
-enum PageTransition;
-}  // namespace ui
-
 namespace url {
 class Origin;
 }  // namespace url
