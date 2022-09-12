@@ -1262,7 +1262,7 @@ void JsonRpcService::OnEnsGetEthAddrTaskDone(
   if (error == mojom::ProviderError::kSuccess) {
     EthAddress eth_address =
         eth_abi::ExtractAddressFromTuple(resolved_result, 0);
-    if (eth_address.IsValid()) {
+    if (eth_address.IsValid() && !eth_address.IsZeroAddress()) {
       address = eth_address.ToHex();
     } else {
       error = mojom::ProviderError::kInvalidParams;
@@ -1288,7 +1288,7 @@ void JsonRpcService::OnEnsGetContentHashTaskDone(
   absl::optional<std::vector<uint8_t>> content_hash;
   if (error == mojom::ProviderError::kSuccess) {
     content_hash = eth_abi::ExtractBytesFromTuple(resolved_result, 0);
-    if (!content_hash) {
+    if (!content_hash || content_hash->empty()) {
       error = mojom::ProviderError::kInvalidParams;
       error_message = l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS);
     }

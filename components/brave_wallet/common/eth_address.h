@@ -23,6 +23,7 @@ class EthAddress {
   // with 0x
   static EthAddress FromHex(const std::string& input);
   static EthAddress FromBytes(base::span<const uint8_t> bytes);
+  static EthAddress ZeroAddress();
   static bool IsValidAddress(const std::string& input);
 
   EthAddress();
@@ -31,8 +32,9 @@ class EthAddress {
   bool operator==(const EthAddress& other) const;
   bool operator!=(const EthAddress& other) const;
 
-  bool IsEmpty() const { return bytes_.empty(); }
-  bool IsValid() const { return !bytes_.empty(); }
+  bool IsEmpty() const;
+  bool IsValid() const;
+  bool IsZeroAddress() const;
   const std::vector<uint8_t>& bytes() const { return bytes_; }
 
   std::string ToHex() const;

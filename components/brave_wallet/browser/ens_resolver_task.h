@@ -81,10 +81,11 @@ class EnsResolverTask {
 
   const std::string& domain() const { return domain_; }
 
-  void Start();
-
  private:
+  template <typename T>
+  friend class EnsResolverTaskContainer;
   friend class ScopedWorkOnTask;
+  void ScheduleWorkOnTask();
   void WorkOnTask();
 
   void FetchEnsResolver();
@@ -118,7 +119,7 @@ class EnsResolverTask {
   absl::optional<mojom::ProviderError> error_;
   absl::optional<std::string> error_message_;
   std::vector<uint8_t> ens_resolve_call_;
-  absl::optional<std::string> resolver_;
+  EthAddress resolver_address_;
   absl::optional<bool> supports_ensip_10_;
   absl::optional<OffchainLookupData> offchain_lookup_data_;
 
@@ -141,7 +142,7 @@ class EnsResolverTaskContainer {
     callbacks.push_back(std::move(cb));
     tasks_.emplace(task_ptr,
                    std::make_pair(std::move(task), std::move(callbacks)));
-    task_ptr->Start();
+    task_ptr->ScheduleWorkOnTask();
   }
 
   bool ContainsTaskForDomain(const std::string& domain) {
