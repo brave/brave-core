@@ -59,4 +59,4 @@ uint32_t RequestBuilder::LoadFlags() const {
   return 0;
 }
 
-};  // namespace ledger::request
+}  // namespace ledger::request

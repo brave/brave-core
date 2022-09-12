@@ -15,7 +15,7 @@
 
 #define cursor_overridden_ \
   cursor_overridden_;      \
-  mutable display::ScreenInfos screen_infos_;
+  mutable display::ScreenInfos screen_infos_
 
 #include "src/third_party/blink/renderer/core/page/chrome_client_impl.h"
 

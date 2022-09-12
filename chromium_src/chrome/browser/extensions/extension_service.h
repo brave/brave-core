@@ -8,7 +8,7 @@
 
 #define BlocklistStatesInteractionUnitTest \
   BlocklistStatesInteractionUnitTest;      \
-  friend class BraveExtensionService;
+  friend class BraveExtensionService
 
 #include "src/chrome/browser/extensions/extension_service.h"
 #undef BlocklistStatesInteractionUnitTest

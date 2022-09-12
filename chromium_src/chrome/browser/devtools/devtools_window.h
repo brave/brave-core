@@ -8,7 +8,7 @@
 
 #define HatsNextWebDialogBrowserTest \
   HatsNextWebDialogBrowserTest;      \
-  friend class TorProfileManagerUnitTest;
+  friend class TorProfileManagerUnitTest
 
 #include "src/chrome/browser/devtools/devtools_window.h"
 

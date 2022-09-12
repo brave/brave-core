@@ -14,7 +14,7 @@
 #define devtools_global_overrides_origin_ \
   devtools_global_overrides_origin_;      \
   friend class BravePermissionManager;    \
-  GURL forced_requesting_origin_;
+  GURL forced_requesting_origin_
 
 #include "src/components/permissions/permission_manager.h"
 
