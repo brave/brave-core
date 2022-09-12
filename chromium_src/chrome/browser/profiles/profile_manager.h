@@ -13,7 +13,7 @@
 #define LoadProfileByPath virtual LoadProfileByPath
 #define TestingProfileManager \
   TestingProfileManager;      \
-  friend class BraveProfileManager;
+  friend class BraveProfileManager
 
 #include "src/chrome/browser/profiles/profile_manager.h"
 #undef TestingProfileManager

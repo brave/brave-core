@@ -37,19 +37,19 @@ class ImportEndedObserver : public importer::ImporterProgressObserver {
   ~ImportEndedObserver() override = default;
 
   // Invoked when the import begins.
-  void ImportStarted() override{};
+  void ImportStarted() override {}
 
   // Invoked when data for the specified item is about to be collected.
-  void ImportItemStarted(importer::ImportItem item) override{};
+  void ImportItemStarted(importer::ImportItem item) override {}
 
   // Invoked when data for the specified item has been collected from the
   // source profile and is now ready for further processing.
   void ImportItemEnded(importer::ImportItem item) override {
     std::move(callback_).Run();
-  };
+  }
 
   // Invoked when the source profile has been imported.
-  void ImportEnded() override{};
+  void ImportEnded() override {}
 
  protected:
   base::OnceClosure callback_;
