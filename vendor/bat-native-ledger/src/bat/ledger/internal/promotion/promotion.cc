@@ -291,15 +291,15 @@ void Promotion::OnClaimPromotion(ledger::ClaimPromotionCallback callback,
   }
 
   ledger_->wallet()->CreateWalletIfNecessary(
-      base::BindOnce(&Promotion::OnCreateWalletIfNecessary,
-                     base::Unretained(this), std::move(callback), payload));
+      "", base::BindOnce(&Promotion::OnCreateWalletIfNecessary,
+                         base::Unretained(this), std::move(callback), payload));
 }
 
 void Promotion::OnCreateWalletIfNecessary(
     ledger::ClaimPromotionCallback callback,
     const std::string& payload,
-    mojom::Result result) {
-  if (result != mojom::Result::WALLET_CREATED) {
+    mojom::RewardsWalletPtr rewards_wallet) {
+  if (!rewards_wallet) {
     BLOG(0, "Wallet couldn't be created");
     std::move(callback).Run(mojom::Result::LEDGER_ERROR, "");
     return;

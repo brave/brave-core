@@ -742,6 +742,61 @@
         ]
       },
       {
+        "name": "createRewardsWallet",
+        "type": "function",
+        "description": "Creates a Rewards wallet for the current profile",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "country"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "type": "object",
+                "name": "wallet",
+                "properties": {
+                  "paymentId": {
+                    "type": "string"
+                  },
+                  "country": {
+                    "type": "string"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getRewardsWallet",
+        "type": "function",
+        "description": "Returns the Rewards wallet information for the current profile",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "wallet",
+                "type": "object",
+                "optional": true,
+                "properties": {
+                  "paymentId": {
+                    "type": "string"
+                  },
+                  "country": {
+                    "type": "string"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "getBalanceReport",
         "type": "function",
         "description": "Get current month wallet report",
@@ -1363,23 +1418,6 @@
         ]
       },
       {
-        "name": "shouldShowOnboarding",
-        "type": "function",
-        "description": "Gets a value indicating whether rewards onboarding should be shown to the user.",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "showOnboarding",
-                "type": "boolean"
-              }
-            ]
-          }
-        ]
-      },
-      {
         "name": "getScheduledCaptchaInfo",
         "type": "function",
         "description": "Gets all info required to retrieve a scheduled captcha (if any) for the user.",
@@ -1412,17 +1450,6 @@
           {
             "name": "result",
             "type": "boolean"
-          }
-        ]
-      },
-      {
-        "name": "enableRewards",
-        "type": "function",
-        "description": "Enables rewards for the current profile.",
-        "parameters": [
-          {
-            "name": "country",
-            "type": "string"
           }
         ]
       },
@@ -1507,22 +1534,6 @@
                 "items": {
                   "type": "string"
                 }
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "getDeclaredCountry",
-        "type": "function",
-        "parameters": [
-          {
-            "name": "callback",
-            "type": "function",
-            "parameters": [
-              {
-                "name": "country",
-                "type": "string"
               }
             ]
           }

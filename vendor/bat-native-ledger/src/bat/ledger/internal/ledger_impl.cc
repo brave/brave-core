@@ -269,9 +269,10 @@ void LedgerImpl::OnStateInitialized(mojom::Result result,
   callback(mojom::Result::LEDGER_OK);
 }
 
-void LedgerImpl::CreateRewardsWallet(ResultCallback callback) {
-  WhenReady([this, callback = std::move(callback)]() mutable {
-    wallet()->CreateWalletIfNecessary(std::move(callback));
+void LedgerImpl::CreateRewardsWallet(const std::string& country,
+                                     CreateRewardsWalletCallback callback) {
+  WhenReady([this, country, callback = std::move(callback)]() mutable {
+    wallet()->CreateWalletIfNecessary(country, std::move(callback));
   });
 }
 

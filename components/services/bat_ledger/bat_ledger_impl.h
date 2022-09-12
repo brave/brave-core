@@ -37,7 +37,8 @@ class BatLedgerImpl :
   void Initialize(
     const bool execute_create_script,
     InitializeCallback callback) override;
-  void CreateRewardsWallet(CreateRewardsWalletCallback callback) override;
+  void CreateRewardsWallet(const std::string& country,
+                           CreateRewardsWalletCallback callback) override;
   void GetRewardsParameters(GetRewardsParametersCallback callback) override;
 
   void GetAutoContributeProperties(

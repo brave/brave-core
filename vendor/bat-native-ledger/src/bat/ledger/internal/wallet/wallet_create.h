@@ -24,10 +24,10 @@ class WalletCreate {
   explicit WalletCreate(LedgerImpl* ledger);
   ~WalletCreate();
 
-  void Start(ledger::ResultCallback callback);
+  void Start(const std::string& country, CreateRewardsWalletCallback callback);
 
  private:
-  void OnCreate(ledger::ResultCallback callback,
+  void OnCreate(CreateRewardsWalletCallback callback,
                 mojom::Result result,
                 const std::string& payment_id);
 

@@ -48,8 +48,9 @@ void BatLedgerImpl::Initialize(
       std::bind(BatLedgerImpl::OnInitialize, holder, _1));
 }
 
-void BatLedgerImpl::CreateRewardsWallet(CreateRewardsWalletCallback callback) {
-  ledger_->CreateRewardsWallet(std::move(callback));
+void BatLedgerImpl::CreateRewardsWallet(const std::string& country,
+                                        CreateRewardsWalletCallback callback) {
+  ledger_->CreateRewardsWallet(country, std::move(callback));
 }
 
 void BatLedgerImpl::GetRewardsParameters(

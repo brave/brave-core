@@ -193,8 +193,6 @@ class RewardsDOMHandler
 
   void GetPaymentId(const base::Value::List& args);
 
-  void OnWalletCreatedForPaymentId(ledger::mojom::Result result);
-
   void OnGetPaymentId(ledger::mojom::RewardsWalletPtr wallet);
 
   void GetWalletPassphrase(const base::Value::List& args);
@@ -1437,7 +1435,7 @@ void RewardsDOMHandler::SaveAdsSetting(const base::Value::List& args) {
   if (key == "adsEnabled") {
     const auto is_enabled =
         value == "true" && ads_service_->IsSupportedLocale();
-    rewards_service_->SetAdsEnabled(is_enabled);
+    ads_service_->SetEnabled(is_enabled);
   } else if (key == "adsPerHour") {
     int64_t int64_value;
     if (!base::StringToInt64(value, &int64_value)) {
@@ -1996,16 +1994,6 @@ void RewardsDOMHandler::GetPaymentId(const base::Value::List& args) {
   }
 
   AllowJavascript();
-
-  // Ensure that a wallet has been created for the user before attempting
-  // to retrieve a payment ID.
-  rewards_service_->CreateRewardsWallet(
-      base::BindOnce(&RewardsDOMHandler::OnWalletCreatedForPaymentId,
-                     weak_factory_.GetWeakPtr()));
-}
-
-void RewardsDOMHandler::OnWalletCreatedForPaymentId(
-    ledger::mojom::Result result) {
   rewards_service_->GetRewardsWallet(base::BindOnce(
       &RewardsDOMHandler::OnGetPaymentId, weak_factory_.GetWeakPtr()));
 }

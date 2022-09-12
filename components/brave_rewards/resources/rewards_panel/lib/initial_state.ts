@@ -9,7 +9,7 @@ export function getInitialState (): HostState {
     openTime: Date.now(),
     loading: true,
     requestedView: null,
-    rewardsEnabled: false,
+    rewardsWallet: null,
     balance: 0,
     settings: {
       adsPerHour: 0,
@@ -43,7 +43,6 @@ export function getInitialState (): HostState {
       pendingTips: 0
     },
     notifications: [],
-    declaredCountry: '',
     availableCountries: null
   }
 }

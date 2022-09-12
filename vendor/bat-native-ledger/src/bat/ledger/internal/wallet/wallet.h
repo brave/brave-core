@@ -28,7 +28,8 @@ class Wallet {
   explicit Wallet(LedgerImpl* ledger);
   ~Wallet();
 
-  void CreateWalletIfNecessary(ledger::ResultCallback callback);
+  void CreateWalletIfNecessary(const std::string& country,
+                               CreateRewardsWalletCallback callback);
 
   void RecoverWallet(const std::string& pass_phrase,
                      ledger::LegacyResultCallback callback);
@@ -69,7 +70,7 @@ class Wallet {
       ledger::ExternalWalletAuthorizationCallback callback,
       const std::string& wallet_type,
       const base::flat_map<std::string, std::string>& args,
-      mojom::Result result);
+      mojom::RewardsWalletPtr rewards_wallet);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<WalletCreate> create_;

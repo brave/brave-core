@@ -367,11 +367,8 @@ size_t BraveRewardsActionView::GetRewardsNotificationCount() {
     count += service->GetAllNotifications().size();
   }
 
-  auto* prefs = browser_->profile()->GetPrefs();
-  if (prefs->GetBoolean(brave_rewards::prefs::kEnabled) &&
-      prefs->GetString(brave_rewards::prefs::kDeclaredCountry).empty()) {
-    count += 1;
-  }
+  // TODO(zenparsing): Increment count if the user needs to declare their
+  // country.
 
   return count;
 }
@@ -383,7 +380,7 @@ bool BraveRewardsActionView::UpdatePublisherStatus() {
   }
 
   auto* rewards_service = GetRewardsService();
-  if (!rewards_service || !rewards_service->IsRewardsEnabled()) {
+  if (!rewards_service) {
     return false;
   }
 

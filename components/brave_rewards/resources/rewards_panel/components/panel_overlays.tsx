@@ -35,8 +35,8 @@ export function PanelOverlays () {
 
   const [requestedView, setRequestedView] =
     React.useState(host.state.requestedView)
-  const [rewardsEnabled, setRewardsEnabled] =
-    React.useState(host.state.rewardsEnabled)
+  const [rewardsWallet, setRewardsWallet] =
+    React.useState(host.state.rewardsWallet)
   const [settings, setSettings] = React.useState(host.state.settings)
   const [options, setOptions] = React.useState(host.state.options)
   const [externalWalletProviders, setExternalWalletProviders] =
@@ -47,8 +47,6 @@ export function PanelOverlays () {
     React.useState(host.state.notifications)
   const [adaptiveCaptchaInfo, setAdaptiveCaptchaInfo] =
     React.useState(host.state.adaptiveCaptchaInfo)
-  const [declaredCountry, setDeclaredCountry] =
-    React.useState(host.state.declaredCountry)
   const [availableCountries, setAvailableCountries] =
     React.useState(host.state.availableCountries)
 
@@ -57,14 +55,13 @@ export function PanelOverlays () {
 
   useHostListener(host, (state) => {
     setRequestedView(state.requestedView)
-    setRewardsEnabled(state.rewardsEnabled)
+    setRewardsWallet(state.rewardsWallet)
     setSettings(state.settings)
     setOptions(state.options)
     setExternalWalletProviders(state.externalWalletProviders)
     setGrantCaptchaInfo(state.grantCaptchaInfo)
     setNotifications(state.notifications)
     setAdaptiveCaptchaInfo(state.adaptiveCaptchaInfo)
-    setDeclaredCountry(state.declaredCountry)
     setAvailableCountries(state.availableCountries)
   })
 
@@ -76,10 +73,10 @@ export function PanelOverlays () {
 
   React.useEffect(() => {
     // Load the list of available countries if required by an onboarding modal.
-    if ((!rewardsEnabled || !declaredCountry) && !availableCountries) {
+    if ((!rewardsWallet || !rewardsWallet.country) && !availableCountries) {
       host.getAvailableCountries()
     }
-  }, [rewardsEnabled, declaredCountry])
+  }, [rewardsWallet])
 
   function toggleTour () {
     setShowTour(!showTour)
@@ -98,7 +95,7 @@ export function PanelOverlays () {
     return (
       <NamedOverlay name='rewards-tour'>
         <RewardsTourModal
-          firstTimeSetup={rewardsEnabled}
+          firstTimeSetup={Boolean(rewardsWallet)}
           adsPerHour={settings.adsPerHour}
           externalWalletProvider={externalWalletProviders[0]}
           autoContributeAmount={settings.autoContributeAmount}
@@ -113,7 +110,7 @@ export function PanelOverlays () {
     )
   }
 
-  if (!rewardsEnabled) {
+  if (!rewardsWallet) {
     return (
       <NamedOverlay name='opt-in'>
         <RewardsOptInModal
@@ -125,7 +122,7 @@ export function PanelOverlays () {
     )
   }
 
-  if (!declaredCountry) {
+  if (!rewardsWallet.country) {
     return (
       <SelectCountryModal
         availableCountries={availableCountries || []}

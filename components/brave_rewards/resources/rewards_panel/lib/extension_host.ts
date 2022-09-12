@@ -288,11 +288,13 @@ export function createHost (): Host {
 
     // Update user settings and other data after rewards has been enabled.
     apiAdapter.onRewardsEnabled(() => {
-      stateManager.update({ rewardsEnabled: true })
-
       apiAdapter.getSettings().then((settings) => {
         stateManager.update({ settings })
       }).catch(console.error)
+
+      apiAdapter.getRewardsWallet().then((rewardsWallet) => {
+        stateManager.update({ rewardsWallet })
+      })
 
       // After enabling rewards, we may be able to display additional data about
       // the current publisher.
@@ -321,9 +323,6 @@ export function createHost (): Host {
       apiAdapter.getGrants().then((list) => {
         updateGrants(list)
       }),
-      apiAdapter.getRewardsEnabled().then((rewardsEnabled) => {
-        stateManager.update({ rewardsEnabled })
-      }),
       apiAdapter.getRewardsBalance().then((balance) => {
         stateManager.update({ balance })
       }),
@@ -348,8 +347,8 @@ export function createHost (): Host {
       apiAdapter.getRewardsSummaryData().then((summaryData) => {
         stateManager.update({ summaryData })
       }),
-      apiAdapter.getDeclaredCountry().then((declaredCountry) => {
-        stateManager.update({ declaredCountry })
+      apiAdapter.getRewardsWallet().then((rewardsWallet) => {
+        stateManager.update({ rewardsWallet })
       }),
       updatePublisherInfo()
     ])
@@ -398,11 +397,11 @@ export function createHost (): Host {
     getString,
 
     enableRewards (country: string) {
-      chrome.braveRewards.enableRewards(country)
-
-      // TODO(zenparsing): We need to wait for this operation to complete
-      // successfully.
-      stateManager.update({ rewardsEnabled: true, declaredCountry: country })
+      apiAdapter.createRewardsWallet(country).then((rewardsWallet) => {
+        stateManager.update({ rewardsWallet })
+      }).catch((err) => {
+        // TODO(zenparsing): Show me some errorz
+      })
     },
 
     openAdaptiveCaptchaSupport () {

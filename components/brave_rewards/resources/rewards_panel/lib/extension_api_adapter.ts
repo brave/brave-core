@@ -19,6 +19,7 @@ import {
   ExchangeInfo,
   Options,
   PublisherInfo,
+  RewardsWallet,
   Settings
 } from './interfaces'
 
@@ -30,6 +31,26 @@ import {
 export function getRewardsBalance () {
   return new Promise<number>((resolve) => {
     chrome.braveRewards.fetchBalance((balance) => { resolve(balance.total) })
+  })
+}
+
+export function getRewardsWallet () {
+  return new Promise<RewardsWallet | null>((resolve, reject) => {
+    chrome.braveRewards.getRewardsWallet((wallet) => {
+      resolve(wallet || null)
+    })
+  })
+}
+
+export function createRewardsWallet (country: string) {
+  return new Promise<RewardsWallet>((resolve, reject) => {
+    chrome.braveRewards.createRewardsWallet(country, (wallet) => {
+      if (wallet) {
+        resolve(wallet)
+      } else {
+        reject(new Error('Wallet count not be created'))
+      }
+    })
   })
 }
 
@@ -48,12 +69,6 @@ export function getSettings () {
 export function getAvailableCountries () {
   return new Promise<string[]>((resolve) => {
     chrome.braveRewards.getAvailableCountries(resolve)
-  })
-}
-
-export function getDeclaredCountry () {
-  return new Promise<string>((resolve) => {
-    chrome.braveRewards.getDeclaredCountry(resolve)
   })
 }
 
@@ -205,16 +220,6 @@ export function getGrants () {
     chrome.braveRewards.fetchPromotions()
   }
   return grantPromise
-}
-
-export function getRewardsEnabled () {
-  return new Promise<boolean>((resolve) => {
-    // Currently, we must use the |showShowOnboarding| function to infer whether
-    // the user has enabled rewards.
-    chrome.braveRewards.shouldShowOnboarding((showOnboarding) => {
-      resolve(!showOnboarding)
-    })
-  })
 }
 
 export function onRewardsEnabled (callback: () => void) {

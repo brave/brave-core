@@ -28,7 +28,8 @@ WalletCreate::WalletCreate(LedgerImpl* ledger) :
 
 WalletCreate::~WalletCreate() = default;
 
-void WalletCreate::Start(ledger::ResultCallback callback) {
+void WalletCreate::Start(const std::string& country,
+                         CreateRewardsWalletCallback callback) {
   bool corrupted = false;
   auto wallet = ledger_->wallet()->GetWallet(&corrupted);
 
@@ -40,15 +41,17 @@ void WalletCreate::Start(ledger::ResultCallback callback) {
   if (!wallet) {
     wallet = mojom::RewardsWallet::New();
     wallet->recovery_seed = util::Security::GenerateSeed();
+    wallet->geo_country = country;
     if (!ledger_->wallet()->SetWallet(wallet->Clone())) {
-      std::move(callback).Run(mojom::Result::LEDGER_ERROR);
+      BLOG(0, "Unable to save Rewards wallet data");
+      std::move(callback).Run(nullptr);
       return;
     }
   }
 
   if (!wallet->payment_id.empty()) {
     BLOG(1, "Wallet already exists");
-    std::move(callback).Run(mojom::Result::WALLET_CREATED);
+    std::move(callback).Run(std::move(wallet));
     return;
   }
 
@@ -58,20 +61,21 @@ void WalletCreate::Start(ledger::ResultCallback callback) {
   promotion_server_->post_wallet_brave()->Request(std::move(url_callback));
 }
 
-void WalletCreate::OnCreate(ledger::ResultCallback callback,
+void WalletCreate::OnCreate(CreateRewardsWalletCallback callback,
                             mojom::Result result,
                             const std::string& payment_id) {
   if (result != mojom::Result::LEDGER_OK) {
-    std::move(callback).Run(result);
+    std::move(callback).Run(nullptr);
     return;
   }
 
   auto wallet = ledger_->wallet()->GetWallet();
   wallet->payment_id = payment_id;
-  const bool success = ledger_->wallet()->SetWallet(std::move(wallet));
+  const bool success = ledger_->wallet()->SetWallet(wallet->Clone());
 
   if (!success) {
-    std::move(callback).Run(mojom::Result::LEDGER_ERROR);
+    BLOG(0, "Unable to save Rewards wallet data")
+    std::move(callback).Run(nullptr);
     return;
   }
 
@@ -81,7 +85,7 @@ void WalletCreate::OnCreate(ledger::ResultCallback callback,
     ledger_->state()->SetPromotionCorruptedMigrated(true);
   }
   ledger_->state()->SetCreationStamp(util::GetCurrentTimeStamp());
-  std::move(callback).Run(mojom::Result::WALLET_CREATED);
+  std::move(callback).Run(std::move(wallet));
 }
 
 }  // namespace wallet

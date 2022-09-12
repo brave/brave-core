@@ -36,8 +36,9 @@ Wallet::Wallet(LedgerImpl* ledger)
 
 Wallet::~Wallet() = default;
 
-void Wallet::CreateWalletIfNecessary(ledger::ResultCallback callback) {
-  create_->Start(std::move(callback));
+void Wallet::CreateWalletIfNecessary(const std::string& country,
+                                     CreateRewardsWalletCallback callback) {
+  create_->Start(country, std::move(callback));
 }
 
 std::string Wallet::GetWalletPassphrase(mojom::RewardsWalletPtr wallet) {
@@ -90,6 +91,7 @@ void Wallet::ExternalWalletAuthorization(
     const base::flat_map<std::string, std::string>& args,
     ledger::ExternalWalletAuthorizationCallback callback) {
   CreateWalletIfNecessary(
+      "",
       base::BindOnce(&Wallet::OnCreateWalletIfNecessary, base::Unretained(this),
                      std::move(callback), wallet_type, args));
 }
@@ -98,8 +100,8 @@ void Wallet::OnCreateWalletIfNecessary(
     ledger::ExternalWalletAuthorizationCallback callback,
     const std::string& wallet_type,
     const base::flat_map<std::string, std::string>& args,
-    mojom::Result result) {
-  if (result != mojom::Result::WALLET_CREATED) {
+    mojom::RewardsWalletPtr rewards_wallet) {
+  if (!rewards_wallet) {
     BLOG(0, "Wallet couldn't be created");
     callback(mojom::Result::LEDGER_ERROR, {});
     return;
@@ -277,6 +279,10 @@ mojom::RewardsWalletPtr Wallet::GetWallet(bool* corrupted) {
   }
   wallet->payment_id = *payment_id;
 
+  if (const auto* geo_country = dict.FindString("geo_country")) {
+    wallet->geo_country = *geo_country;
+  }
+
   const auto* seed = dict.FindString("recovery_seed");
   if (!seed) {
     *corrupted = true;
@@ -315,6 +321,7 @@ bool Wallet::SetWallet(mojom::RewardsWalletPtr wallet) {
   }
 
   base::Value::Dict new_wallet;
+  new_wallet.Set("geo_country", wallet->geo_country);
   new_wallet.Set("payment_id", wallet->payment_id);
   new_wallet.Set("recovery_seed", seed_string);
 

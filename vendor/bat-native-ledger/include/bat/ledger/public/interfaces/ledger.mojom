@@ -559,5 +559,6 @@ struct EventLog {
 
 struct RewardsWallet {
   string payment_id;
+  string geo_country;
   array<uint8> recovery_seed;
 };

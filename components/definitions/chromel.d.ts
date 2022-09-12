@@ -68,7 +68,13 @@ declare namespace chrome.settingsPrivate {
 }
 
 declare namespace chrome.braveRewards {
-  const setExternalWalletType: (walletType: string) => {}
+  interface RewardsWallet {
+    paymentId: string
+    country: string
+  }
+
+  const createRewardsWallet: (country: string, callback: (wallet: RewardsWallet) => void) => void
+  const getRewardsWallet: (callback: (wallet?: RewardsWallet) => void) => void
   const getRewardsParameters: (callback: (properties: RewardsExtension.RewardsParameters) => void) => {}
   const updateMediaDuration: (tabId: number, publisherKey: string, duration: number, firstVisit: boolean) => {}
   const getPublisherInfo: (publisherKey: string, callback: (result: RewardsExtension.Result, properties: RewardsExtension.PublisherInfo) => void) => {}
@@ -153,8 +159,6 @@ declare namespace chrome.braveRewards {
     addListener: (callback: () => void) => void
   }
 
-  const getAnonWalletStatus: (callback: (result: RewardsExtension.Result) => void) => {}
-
   const onCompleteReset: {
     addListener: (callback: (properties: { success: boolean }) => void) => void
   }
@@ -169,9 +173,6 @@ declare namespace chrome.braveRewards {
 
   const updateScheduledCaptchaResult: (result: boolean) => void
 
-  const shouldShowOnboarding: (callback: (showOnboarding: boolean) => void) => {}
-
-  const enableRewards: (country: string) => void
   const enableAds: () => void
 
   interface RewardsPrefs {
@@ -183,9 +184,7 @@ declare namespace chrome.braveRewards {
 
   const getPrefs: (callback: (prefs: RewardsPrefs) => void) => void
   const updatePrefs: (prefs: Partial<RewardsPrefs>) => void
-  const requestAdsEnabledPopupClosed: (adsEnabled: boolean) => void
   const getAvailableCountries: (callback: (countries: string[]) => void) => void
-  const getDeclaredCountry: (callback: (country: string) => void) => void
 }
 
 declare namespace chrome.binance {

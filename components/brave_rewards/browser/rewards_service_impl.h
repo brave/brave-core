@@ -124,7 +124,10 @@ class RewardsServiceImpl : public RewardsService,
       std::unique_ptr<RewardsServicePrivateObserver> private_observer,
       std::unique_ptr<RewardsNotificationServiceObserver>
           notification_observer);
-  void CreateRewardsWallet(CreateRewardsWalletCallback callback) override;
+
+  void CreateRewardsWallet(const std::string& country,
+                           CreateRewardsWalletCallback callback) override;
+
   void GetRewardsParameters(GetRewardsParametersCallback callback) override;
   void FetchPromotions() override;
   void ClaimPromotion(
@@ -320,12 +323,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void SetAutoContributeEnabled(bool enabled) override;
 
-  bool ShouldShowOnboarding() const override;
-
   void GetAvailableCountries(
       base::OnceCallback<void(std::vector<std::string>)> callback) override;
-
-  void EnableRewards(const std::string& country) override;
 
   void GetMonthlyReport(
       const uint32_t month,
@@ -353,10 +352,6 @@ class RewardsServiceImpl : public RewardsService,
   void GetRewardsWalletPassphrase(
       GetRewardsWalletPassphraseCallback callback) override;
 
-  void SetAdsEnabled(const bool is_enabled) override;
-
-  bool IsRewardsEnabled() const override;
-
   // Testing methods
   void SetLedgerEnvForTesting();
   void PrepareLedgerEnvForTesting();
@@ -378,6 +373,8 @@ class RewardsServiceImpl : public RewardsService,
   // GreaselionService::Observer:
   void OnRulesReady(greaselion::GreaselionService* greaselion_service) override;
 #endif
+
+  bool IsAdsOrAutoContributeEnabled() const;
 
   void InitPrefChangeRegistrar();
 
@@ -403,8 +400,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnResult(ledger::LegacyResultCallback callback,
                 ledger::mojom::Result result);
 
-  void OnCreateRewardsWallet(CreateRewardsWalletCallback callback,
-                             ledger::mojom::Result result);
   void OnLedgerStateLoaded(ledger::client::OnLoadCallback callback,
                               std::pair<std::string, base::Value> data);
   void OnPublisherStateLoaded(ledger::client::OnLoadCallback callback,
@@ -511,11 +506,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnRewardsWalletCreatedForSetAdsEnabled(
       const ledger::mojom::Result result);
-
-  void OnStartProcessForEnableRewards();
-
-  void OnFetchBalanceForEnableRewards(ledger::mojom::Result result,
-                                      ledger::mojom::BalancePtr balance);
 
   // ledger::LedgerClient
   void OnReconcileComplete(
@@ -674,8 +664,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void RecordBackendP3AStats();
 
-  bool IsAdsEnabled() const;
-
   void OnRecordBackendP3AStatsRecurring(
       std::vector<ledger::mojom::PublisherInfoPtr> list);
 
@@ -720,9 +708,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnGetEventLogs(GetEventLogsCallback callback,
                       std::vector<ledger::mojom::EventLogPtr> logs);
-
-  void OnGetRewardsWallet(GetRewardsWalletCallback callback,
-                          ledger::mojom::RewardsWalletPtr wallet);
 
   bool IsBitFlyerRegion() const;
 

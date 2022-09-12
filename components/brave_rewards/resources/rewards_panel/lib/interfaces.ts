@@ -65,13 +65,18 @@ export interface Options {
   autoContributeAmounts: number[]
 }
 
+export interface RewardsWallet {
+  paymentId: string
+  country: string
+}
+
 type RequestedView = 'rewards-tour'
 
 export interface HostState {
   openTime: number
   loading: boolean
   requestedView: RequestedView | null
-  rewardsEnabled: boolean
+  rewardsWallet: RewardsWallet | null
   balance: number
   settings: Settings
   options: Options
@@ -86,7 +91,6 @@ export interface HostState {
   externalWallet: ExternalWallet | null
   summaryData: RewardsSummaryData
   notifications: Notification[]
-  declaredCountry: string
   availableCountries: string[] | null
 }
 

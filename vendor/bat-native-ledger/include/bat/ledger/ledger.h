@@ -108,6 +108,9 @@ using PublisherInfoCallback =
 using GetPublisherInfoCallback =
     std::function<void(mojom::Result, mojom::PublisherInfoPtr)>;
 
+using CreateRewardsWalletCallback =
+    base::OnceCallback<void(mojom::RewardsWalletPtr)>;
+
 using GetRewardsWalletCallback = std::function<void(mojom::RewardsWalletPtr)>;
 
 using PostSuggestionsClaimCallback =
@@ -132,7 +135,8 @@ class LEDGER_EXPORT Ledger {
 
   virtual void Initialize(bool execute_create_script, LegacyResultCallback) = 0;
 
-  virtual void CreateRewardsWallet(ResultCallback callback) = 0;
+  virtual void CreateRewardsWallet(const std::string& country,
+                                   CreateRewardsWalletCallback callback) = 0;
 
   virtual void OneTimeTip(const std::string& publisher_key,
                           double amount,
