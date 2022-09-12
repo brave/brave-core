@@ -510,7 +510,10 @@ void MockGetDictPref(const std::unique_ptr<AdsClientMock>& mock) {
             const std::string& json = Prefs()[uuid];
             const absl::optional<base::Value> root =
                 base::JSONReader::Read(json);
-            CHECK(root);
+            if (!root) {
+              return absl::nullopt;
+            }
+
             const base::Value::Dict* dict = root->GetIfDict();
             CHECK(dict);
             return dict->Clone();
@@ -536,7 +539,10 @@ void MockGetListPref(const std::unique_ptr<AdsClientMock>& mock) {
             const std::string& json = Prefs()[uuid];
             const absl::optional<base::Value> root =
                 base::JSONReader::Read(json);
-            DCHECK(root);
+            if (!root) {
+              return absl::nullopt;
+            }
+
             const base::Value::List* list = root->GetIfList();
             CHECK(list);
             return list->Clone();
