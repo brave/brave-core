@@ -143,6 +143,7 @@ void BraveToolbarView::Init() {
       kShowSidePanelButton, browser_->profile()->GetPrefs(),
       base::BindRepeating(&BraveToolbarView::OnShowSidePanelButtonChanged,
                           base::Unretained(this)));
+  UpdateSidePanelButtonVisibility();
 
   // track changes in wide locationbar setting
   location_bar_is_wide_.Init(
@@ -210,9 +211,6 @@ void BraveToolbarView::OnShowBookmarksButtonChanged() {
 }
 
 void BraveToolbarView::OnShowSidePanelButtonChanged() {
-  if (!side_panel_button_)
-    return;
-
   UpdateSidePanelButtonVisibility();
 }
 
@@ -257,9 +255,6 @@ void BraveToolbarView::Update(content::WebContents* tab) {
 
   // Decide whether to show the bookmark button
   UpdateBookmarkVisibility();
-
-  // Decide whether to show the side panel button.
-  UpdateSidePanelButtonVisibility();
 
   // Remove avatar menu if only a single user profile exists.
   // Always show if private / tor / guest window, as an indicator.
