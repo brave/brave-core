@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_SIDE_PANEL_TOOLBAR_BUTTON_H_
 
 #include <memory>
+
 #include "chrome/browser/ui/views/toolbar/side_panel_toolbar_button.h"
 #include "ui/base/models/simple_menu_model.h"
 

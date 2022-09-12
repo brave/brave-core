@@ -24,8 +24,8 @@ class SidePanelMenuModel : public ui::SimpleMenuModel,
  public:
   explicit SidePanelMenuModel(PrefService* prefs)
       : ui::SimpleMenuModel(this), prefs_(prefs) {
-        Build();
-      }
+    Build();
+  }
 
   ~SidePanelMenuModel() override = default;
   SidePanelMenuModel(const SidePanelMenuModel&) = delete;
@@ -50,7 +50,8 @@ class SidePanelMenuModel : public ui::SimpleMenuModel,
 
 BraveSidePanelToolbarButton::BraveSidePanelToolbarButton(Browser* browser)
     : SidePanelToolbarButton(browser) {
-    SetMenuModel(std::make_unique<SidePanelMenuModel>(browser->profile()->GetPrefs()));
+  SetMenuModel(
+      std::make_unique<SidePanelMenuModel>(browser->profile()->GetPrefs()));
 }
 
 BraveSidePanelToolbarButton::~BraveSidePanelToolbarButton() = default;
