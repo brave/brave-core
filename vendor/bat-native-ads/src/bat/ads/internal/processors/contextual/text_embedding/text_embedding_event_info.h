@@ -26,7 +26,7 @@ struct TextEmbeddingEventInfo final {
   std::string embedding;
 };
 
-using TextEmbeddingHtmlEventList = std::vector<TextEmbeddingEventInfo>;
+using TextEmbeddingEventList = std::vector<TextEmbeddingEventInfo>;
 
 }  // namespace ads
 

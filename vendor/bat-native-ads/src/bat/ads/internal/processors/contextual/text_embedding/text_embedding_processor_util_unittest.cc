@@ -34,16 +34,16 @@ TEST_F(BatAdsTextEmbeddingProcessorUtilTest, SanitizeHtml) {
        "test string string for unittest"},
       {R"(<meta property="og:title" content="Test string1, string2,... for unittest">)",
        "test for unittest"},
-      {R"(<meta property="og:tt" content=" testing   ">)", ""},
-      {R"(<meta property="og:title" cc=" testing   ">)", ""},
-      {R"(<meta property="og:title" content="test")", ""},
-      {R"(meta property="og:title" content="test">)", ""}};
+      {R"(<meta property="og:tt" content=" testing   ">)", {}},
+      {R"(<meta property="og:title" cc=" testing   ">)", {}},
+      {R"(<meta property="og:title" content="test")", {}},
+      {R"(meta property="og:title" content="test">)", {}}};
 
-  for (const auto& sample : samples) {
+  for (const auto& [key, value] : samples) {
     // Act
-    const std::string sanitized = SanitizeHtml(sample.first);
+    const std::string sanitized_html = SanitizeHtml(key);
     // Assert
-    ASSERT_EQ(sample.second, sanitized);
+    EXPECT_EQ(value, sanitized_html);
   }
 }
 
@@ -58,11 +58,11 @@ TEST_F(BatAdsTextEmbeddingProcessorUtilTest, SanitizeText) {
        "test string string for unittest"},
       {"Test string1, string2,... for unittest", "test for unittest"}};
 
-  for (const auto& sample : samples) {
+  for (const auto& [key, value] : samples) {
     // Act
-    const std::string sanitized = SanitizeText(sample.first);
+    const std::string sanitized_text = SanitizeText(key);
     // Assert
-    ASSERT_EQ(sample.second, sanitized);
+    EXPECT_EQ(value, sanitized_text);
   }
 }
 

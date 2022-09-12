@@ -19,7 +19,7 @@ constexpr char kFieldTrialParameterResourceVersion[] =
     "text_embedding_resource_version";
 constexpr int kDefaultResourceVersion = 1;
 
-constexpr char kFieldTrialParameterPageEmbeddingsHistorySize[] =
+constexpr char kFieldTrialParameterTextEmbeddingsHistorySize[] =
     "text_embeddings_history_size";
 const int kDefaultTextEmbeddingsHistorySize = 10;
 
@@ -28,9 +28,13 @@ const int kDefaultTextEmbeddingsHistorySize = 10;
 const base::Feature kTextEmbedding{kFeatureName,
                                    base::FEATURE_DISABLED_BY_DEFAULT};
 
+bool IsTextEmbeddingEnabled() {
+  return base::FeatureList::IsEnabled(kTextEmbedding);
+}
+
 int GetTextEmbeddingsHistorySize() {
   return GetFieldTrialParamByFeatureAsInt(
-      kTextEmbedding, kFieldTrialParameterPageEmbeddingsHistorySize,
+      kTextEmbedding, kFieldTrialParameterTextEmbeddingsHistorySize,
       kDefaultTextEmbeddingsHistorySize);
 }
 
@@ -38,10 +42,6 @@ int GetTextEmbeddingResourceVersion() {
   return GetFieldTrialParamByFeatureAsInt(kTextEmbedding,
                                           kFieldTrialParameterResourceVersion,
                                           kDefaultResourceVersion);
-}
-
-bool IsTextEmbeddingEnabled() {
-  return base::FeatureList::IsEnabled(kTextEmbedding);
 }
 
 }  // namespace features

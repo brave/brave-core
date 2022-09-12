@@ -24,9 +24,8 @@ namespace {
 
 constexpr char kTableName[] = "text_embedding_html_events";
 
-int BindParameters(
-    mojom::DBCommandInfo* command,
-    const TextEmbeddingHtmlEventList& text_embedding_html_events) {
+int BindParameters(mojom::DBCommandInfo* command,
+                   const TextEmbeddingEventList& text_embedding_html_events) {
   DCHECK(command);
 
   int count = 0;
@@ -164,7 +163,7 @@ void TextEmbeddingHtmlEvents::RunTransaction(
 
 void TextEmbeddingHtmlEvents::InsertOrUpdate(
     mojom::DBTransactionInfo* transaction,
-    const TextEmbeddingHtmlEventList& text_embedding_html_events) {
+    const TextEmbeddingEventList& text_embedding_html_events) {
   DCHECK(transaction);
 
   if (text_embedding_html_events.empty()) {
@@ -181,7 +180,7 @@ void TextEmbeddingHtmlEvents::InsertOrUpdate(
 
 std::string TextEmbeddingHtmlEvents::BuildInsertOrUpdateQuery(
     mojom::DBCommandInfo* command,
-    const TextEmbeddingHtmlEventList& text_embedding_html_events) {
+    const TextEmbeddingEventList& text_embedding_html_events) {
   DCHECK(command);
 
   const int count = BindParameters(command, text_embedding_html_events);
@@ -207,7 +206,7 @@ void TextEmbeddingHtmlEvents::OnGetTextEmbeddingHtmlEvents(
     return;
   }
 
-  TextEmbeddingHtmlEventList text_embedding_html_events;
+  TextEmbeddingEventList text_embedding_html_events;
 
   for (const auto& record : response->result->get_records()) {
     const TextEmbeddingEventInfo& text_embedding_html_event =

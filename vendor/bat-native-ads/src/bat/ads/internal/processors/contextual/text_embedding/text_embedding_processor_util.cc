@@ -8,24 +8,21 @@
 #include <algorithm>
 
 #include "base/strings/string_util.h"
-#include "bat/ads/internal/base/strings/string_html_parse_util.h"
+#include "bat/ads/internal/base/strings/string_html_parser_util.h"
 #include "bat/ads/internal/base/strings/string_strip_util.h"
 
 namespace ads {
 namespace processor {
 
 std::string SanitizeHtml(const std::string& html) {
-  std::string sanitized_html = html;
-  sanitized_html = ParseTagAttribute(sanitized_html, "og:title", "content");
-  sanitized_html = SanitizeText(sanitized_html);
-  return sanitized_html;
+  const std::string& sanitized_html = html;
+  return SanitizeText(
+      ParseHtmlTagAttribute(sanitized_html, "og:title", "content"));
 }
 
 std::string SanitizeText(const std::string& text) {
-  std::string sanitized_text = text;
-  sanitized_text = StripNonAlphaCharacters(sanitized_text);
-  sanitized_text = base::ToLowerASCII(sanitized_text);
-  return sanitized_text;
+  const std::string& sanitized_text = text;
+  return base::ToLowerASCII(StripNonAlphaCharacters(sanitized_text));
 }
 
 }  // namespace processor

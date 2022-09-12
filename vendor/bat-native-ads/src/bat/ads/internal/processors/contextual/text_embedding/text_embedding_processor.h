@@ -34,7 +34,7 @@ class TextEmbedding final : public LocaleManagerObserver,
   TextEmbedding(const TextEmbedding&) = delete;
   TextEmbedding& operator=(const TextEmbedding&) = delete;
 
-  bool IsEmbeddingEnabled();
+  bool IsEnabled();
 
   void Process(const std::string& text);
 

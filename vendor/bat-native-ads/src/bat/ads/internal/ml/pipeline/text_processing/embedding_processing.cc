@@ -54,8 +54,7 @@ bool EmbeddingProcessing::SetEmbeddingPipeline(base::Value resource_value) {
     return is_initialized_;
   }
 
-  const bool success = embedding_pipeline_.FromValue(*value);
-  is_initialized_ = success;
+  is_initialized_ = embedding_pipeline_.FromValue(*value);
 
   return is_initialized_;
 }
@@ -63,16 +62,16 @@ bool EmbeddingProcessing::SetEmbeddingPipeline(base::Value resource_value) {
 TextEmbeddingInfo EmbeddingProcessing::EmbedText(
     const std::string& text) const {
   std::vector<float> embedding_zeroed(embedding_pipeline_.dim, 0.0F);
-  VectorData embedding_vector = VectorData(embedding_zeroed);
-  TextEmbeddingInfo embedding_info;
-  embedding_info.embedding = embedding_vector;
+  VectorData embedding_vector_data = VectorData(embedding_zeroed);
+  TextEmbeddingInfo text_embedding;
+  text_embedding.embedding = embedding_vector_data;
 
   if (!IsInitialized()) {
-    return embedding_info;
+    return text_embedding;
   }
 
   if (text.empty()) {
-    return embedding_info;
+    return text_embedding;
   }
 
   const std::vector<std::string> tokens = base::SplitString(
@@ -83,27 +82,28 @@ TextEmbeddingInfo EmbeddingProcessing::EmbedText(
   for (const auto& token : tokens) {
     const auto iter = embedding_pipeline_.embeddings.find(token);
     if (iter != embedding_pipeline_.embeddings.end()) {
-      BLOG(9, token << " - text token found in vocabulary");
-      const VectorData& token_embedding = iter->second;
-      embedding_info.embedding.AddElementWise(token_embedding);
+      BLOG(9, token << " - text embedding token found in resource vocabulary");
+      const VectorData& token_embedding_vector_data = iter->second;
+      text_embedding.embedding.AddElementWise(token_embedding_vector_data);
       in_vocab_tokens.push_back(token);
       n_tokens++;
     } else {
-      BLOG(9, token << " - text token not found in vocabulary");
+      BLOG(9,
+           token << " - text embedding token not found in resource vocabulary");
     }
   }
 
   if (n_tokens == 0) {
-    return embedding_info;
+    return text_embedding;
   }
 
   const std::string in_vocab_text = base::JoinString(in_vocab_tokens, " ");
   const std::vector<uint8_t> sha256_hash = security::Sha256(in_vocab_text);
-  embedding_info.text_hashed = base::Base64Encode(sha256_hash);
+  text_embedding.text_hashed = base::Base64Encode(sha256_hash);
 
   const auto scalar = static_cast<float>(n_tokens);
-  embedding_info.embedding.DivideByScalar(scalar);
-  return embedding_info;
+  text_embedding.embedding.DivideByScalar(scalar);
+  return text_embedding;
 }
 
 }  // namespace pipeline

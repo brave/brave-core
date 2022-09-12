@@ -168,7 +168,7 @@ void VectorData::AddElementWise(const VectorData& v_add) {
   }
 }
 
-void VectorData::DivideByScalar(float scalar) {
+void VectorData::DivideByScalar(const float scalar) {
   if (!storage_->DimensionCount()) {
     return;
   }

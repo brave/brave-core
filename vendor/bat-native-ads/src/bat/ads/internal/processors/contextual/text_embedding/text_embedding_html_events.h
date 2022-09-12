@@ -21,7 +21,7 @@ void LogTextEmbeddingHtmlEvent(const std::string& embedding_formatted,
                                const std::string& hashed_key,
                                TextEmbeddingHtmlEventCallback callback);
 void PurgeStaleTextEmbeddingHtmlEvents(TextEmbeddingHtmlEventCallback callback);
-void GetTextEmbeddingEventsFromDatabase(
+void GetTextEmbeddingHtmlEventsFromDatabase(
     database::table::GetTextEmbeddingHtmlEventsCallback callback);
 
 }  // namespace ads

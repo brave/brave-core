@@ -18,10 +18,8 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace {
-
 constexpr char kSimpleResourceFile[] =
     "wtpwsrqtjxmfdwaymauprezkunxprysm_simple";
-
 }  // namespace
 
 namespace ads {

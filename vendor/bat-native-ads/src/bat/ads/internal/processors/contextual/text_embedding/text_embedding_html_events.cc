@@ -17,16 +17,16 @@ namespace ads {
 void LogTextEmbeddingHtmlEvent(const std::string& embedding_formatted,
                                const std::string& hashed_key,
                                TextEmbeddingHtmlEventCallback callback) {
-  TextEmbeddingEventInfo text_embedding_event_info;
-  text_embedding_event_info.created_at = base::Time::Now();
-  text_embedding_event_info.version = "";
-  text_embedding_event_info.locale = "";
-  text_embedding_event_info.hashed_key = hashed_key;
-  text_embedding_event_info.embedding = embedding_formatted;
+  TextEmbeddingEventInfo text_embedding_event;
+  text_embedding_event.created_at = base::Time::Now();
+  text_embedding_event.version = {};
+  text_embedding_event.locale = {};
+  text_embedding_event.hashed_key = hashed_key;
+  text_embedding_event.embedding = embedding_formatted;
 
   database::table::TextEmbeddingHtmlEvents database_table;
   database_table.LogEvent(
-      text_embedding_event_info,
+      text_embedding_event,
       base::BindOnce([](TextEmbeddingHtmlEventCallback callback,
                         const bool success) { callback(success); },
                      callback));
@@ -41,12 +41,12 @@ void PurgeStaleTextEmbeddingHtmlEvents(
                      callback));
 }
 
-void GetTextEmbeddingEventsFromDatabase(
+void GetTextEmbeddingHtmlEventsFromDatabase(
     database::table::GetTextEmbeddingHtmlEventsCallback callback) {
   database::table::TextEmbeddingHtmlEvents database_table;
   database_table.GetAll(
       [=](const bool success,
-          const TextEmbeddingHtmlEventList& text_embedding_html_events) {
+          const TextEmbeddingEventList& text_embedding_html_events) {
         if (!success) {
           BLOG(1, "Failed to get text embedding HTML events");
           callback(success, {});

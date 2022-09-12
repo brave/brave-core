@@ -14,11 +14,11 @@ namespace features {
 
 extern const base::Feature kTextEmbedding;
 
+bool IsTextEmbeddingEnabled();
+
 int GetTextEmbeddingsHistorySize();
 
 int GetTextEmbeddingResourceVersion();
-
-bool IsTextEmbeddingEnabled();
 
 }  // namespace features
 }  // namespace targeting

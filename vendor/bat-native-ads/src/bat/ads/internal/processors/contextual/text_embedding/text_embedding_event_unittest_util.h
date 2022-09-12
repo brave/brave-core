@@ -11,7 +11,7 @@
 
 namespace ads {
 
-ml::pipeline::TextEmbeddingInfo BuildTextEmbeddingInfo();
+ml::pipeline::TextEmbeddingInfo BuildTextEmbedding();
 TextEmbeddingEventInfo BuildTextEmbeddingEvent();
 
 }  // namespace ads

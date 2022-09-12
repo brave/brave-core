@@ -87,7 +87,7 @@ TEST_F(BatAdsNormalizationTest, ChainingTest) {
 
   // Assert
   ASSERT_TRUE(vector_data);
-  EXPECT_EQ(kDefaultBucketCount, vector_data->GetDimensionCount());
+  ASSERT_EQ(kDefaultBucketCount, vector_data->GetDimensionCount());
 
   // Hashes for [t, i, n, y, ti, in, ny, tin, iny, tiny] -- 10 in total
   EXPECT_EQ(kExpectedElementCount, vector_data->GetValuesForTesting().size());

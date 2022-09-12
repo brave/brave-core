@@ -19,7 +19,7 @@ namespace database {
 namespace table {
 
 using GetTextEmbeddingHtmlEventsCallback =
-    std::function<void(const bool, const TextEmbeddingHtmlEventList&)>;
+    std::function<void(const bool, const TextEmbeddingEventList&)>;
 
 class TextEmbeddingHtmlEvents final : public TableInterface {
  public:
@@ -43,13 +43,12 @@ class TextEmbeddingHtmlEvents final : public TableInterface {
   void RunTransaction(const std::string& query,
                       GetTextEmbeddingHtmlEventsCallback callback);
 
-  void InsertOrUpdate(
-      mojom::DBTransactionInfo* transaction,
-      const TextEmbeddingHtmlEventList& text_embedding_html_events);
+  void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
+                      const TextEmbeddingEventList& text_embedding_html_events);
 
   std::string BuildInsertOrUpdateQuery(
       mojom::DBCommandInfo* command,
-      const TextEmbeddingHtmlEventList& text_embedding_html_events);
+      const TextEmbeddingEventList& text_embedding_html_events);
 
   void OnGetTextEmbeddingHtmlEvents(GetTextEmbeddingHtmlEventsCallback callback,
                                     mojom::DBCommandResponseInfoPtr response);

@@ -14,6 +14,15 @@ namespace ads {
 namespace ml {
 namespace pipeline {
 
+namespace {
+
+constexpr char version_key[] = "version";
+constexpr char timestamp_key[] = "timestamp";
+constexpr char locale_key[] = "locale";
+constexpr char embeddings_key[] = "embeddings";
+
+}  // namespace
+
 EmbeddingPipelineInfo::EmbeddingPipelineInfo() = default;
 
 EmbeddingPipelineInfo::EmbeddingPipelineInfo(
@@ -25,36 +34,36 @@ EmbeddingPipelineInfo& EmbeddingPipelineInfo::operator=(
 EmbeddingPipelineInfo::~EmbeddingPipelineInfo() = default;
 
 bool EmbeddingPipelineInfo::FromValue(const base::Value::Dict& root) {
-  if (absl::optional<int> value = root.FindInt("version")) {
-    version = value.value();
+  if (absl::optional<int> value = root.FindInt(version_key)) {
+    version = *value;
   } else {
     return false;
   }
 
-  if (const auto* value = root.FindString("timestamp")) {
+  if (const auto* value = root.FindString(timestamp_key)) {
     if (!base::Time::FromUTCString((*value).c_str(), &time)) {
       return false;
     }
   }
 
-  if (const auto* value = root.FindString("locale")) {
+  if (const auto* value = root.FindString(locale_key)) {
     locale = *value;
   } else {
     return false;
   }
 
-  if (const auto* value = root.FindDict("embeddings")) {
+  if (const auto* value = root.FindDict(embeddings_key)) {
     dim = 1;
-    for (const auto item : *value) {
-      const auto& list = item.second.GetList();
+    for (const auto [key, value] : *value) {
+      const auto& list = value.GetList();
       std::vector<float> embedding;
       embedding.reserve(list.size());
       for (const base::Value& v_raw : list) {
         double v = v_raw.GetDouble();
         embedding.push_back(v);
       }
-      embeddings[item.first] = VectorData(std::move(embedding));
-      dim = embeddings[item.first].GetDimensionCount();
+      embeddings[key] = VectorData(std::move(embedding));
+      dim = embeddings[key].GetDimensionCount();
     }
 
     if (dim == 1) {

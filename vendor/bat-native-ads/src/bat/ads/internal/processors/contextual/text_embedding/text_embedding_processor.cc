@@ -39,7 +39,7 @@ TextEmbedding::~TextEmbedding() {
   TabManager::GetInstance()->RemoveObserver(this);
 }
 
-bool TextEmbedding::IsEmbeddingEnabled() {
+bool TextEmbedding::IsEnabled() {
   return targeting::features::IsTextEmbeddingEnabled();
 }
 
@@ -56,19 +56,18 @@ void TextEmbedding::Process(const std::string& text) {
   }
 
   ml::pipeline::EmbeddingProcessing* embedding_proc_pipeline = resource_->Get();
-  ml::pipeline::TextEmbeddingInfo text_embedding_info =
+  ml::pipeline::TextEmbeddingInfo text_embedding =
       embedding_proc_pipeline->EmbedText(sanitized_text);
-  if (text_embedding_info.embedding.GetNonZeroElementCount() == 0) {
+  if (text_embedding.embedding.GetNonZeroElementCount() == 0) {
     BLOG(1, "Failed to embed text");
     return;
   }
 
   const std::string embedding_formatted =
-      text_embedding_info.embedding.GetVectorAsString();
+      text_embedding.embedding.GetVectorAsString();
   BLOG(9, "Embedding: " << embedding_formatted);
   LogTextEmbeddingHtmlEvent(
-      embedding_formatted, text_embedding_info.text_hashed,
-      [](const bool success) {
+      embedding_formatted, text_embedding.text_hashed, [](const bool success) {
         if (!success) {
           BLOG(1, "Failed to log text embedding HTML event");
           return;
@@ -99,21 +98,27 @@ void TextEmbedding::OnHtmlContentDidChange(
     const int32_t /*tab_id*/,
     const std::vector<GURL>& redirect_chain,
     const std::string& html) {
+  if (redirect_chain.empty()) {
+    return;
+  }
+
   const GURL& url = redirect_chain.back();
-  DCHECK(!redirect_chain.empty());
 
   if (!url.SchemeIsHTTPOrHTTPS()) {
-    BLOG(1, url.scheme() << " scheme is not supported for processing HTML");
+    BLOG(
+        1,
+        url.scheme() << " scheme is not supported for processing HTML content");
     return;
   }
 
   if (IsSearchEngine(url) && !IsSearchEngineResultsPage(url)) {
     BLOG(1,
-         "Search engine landing pages are not supported for processing HTML");
+         "Search engine landing pages are not supported for processing HTML "
+         "content");
     return;
   }
 
-  if (TextEmbedding::IsEmbeddingEnabled()) {
+  if (TextEmbedding::IsEnabled()) {
     Process(html);
   }
 }

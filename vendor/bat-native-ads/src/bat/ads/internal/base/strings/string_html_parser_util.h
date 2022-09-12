@@ -10,9 +10,9 @@
 
 namespace ads {
 
-std::string ParseTagAttribute(const std::string& html,
-                              const std::string& tag_substr,
-                              const std::string& tag_attribute);
+std::string ParseHtmlTagAttribute(const std::string& html,
+                                  const std::string& tag_substr,
+                                  const std::string& tag_attribute);
 
 }  // namespace ads
 
