@@ -1,5 +1,6 @@
 import("//mojo/public/tools/bindings/mojom.gni")
 import("//testing/test.gni")
+import("//tools/json_schema_compiler/json_schema_api.gni")
 
 static_library("wallet_connect") {
   sources = [
@@ -9,6 +10,7 @@ static_library("wallet_connect") {
 
   deps = [
     ":mojom",
+    ":generated_payload_types",
     "//base",
     "//url",
   ]
@@ -20,12 +22,22 @@ mojom("mojom") {
   public_deps = [ "//url/mojom:url_mojom_gurl" ]
 }
 
+generated_types("generated_payload_types") {
+  sources = ["wallet_connect.idl"]
+  root_namespace = "wallet_connect::%(namespace)s"
+  deps = [
+    "//base",
+  ]
+  visibility = [ ":wallet_connect", ":unit_tests" ]
+}
+
 source_set("unit_tests") {
   testonly = true
   sources = [ "wallet_connect_utils_unittest.cc" ]
 
   deps = [
     ":wallet_connect",
+    ":generated_payload_types",
     "//testing/gtest",
   ]
 }
