@@ -10,7 +10,7 @@ namespace ads {
 
 struct CreativeAdInfo;
 
-CreativeAdInfo BuildCreativeAd();
+CreativeAdInfo BuildCreativeAd(bool should_use_random_guids = true);
 
 }  // namespace ads
 

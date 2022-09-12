@@ -9,15 +9,20 @@
 
 #include "base/check.h"
 #include "bat/ads/ad_content_info.h"
+#include "bat/ads/ad_content_value_util.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/category_content_info.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/history_filter_types.h"
-#include "bat/ads/history_info.h"
+#include "bat/ads/history_item_info.h"
+#include "bat/ads/history_item_value_util.h"
 #include "bat/ads/history_sort_types.h"
 #include "bat/ads/inline_content_ad_info.h"
+#include "bat/ads/inline_content_ad_value_util.h"
 #include "bat/ads/new_tab_page_ad_info.h"
+#include "bat/ads/new_tab_page_ad_value_util.h"
 #include "bat/ads/notification_ad_info.h"
+#include "bat/ads/notification_ad_value_util.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -25,7 +30,6 @@
 
 using std::placeholders::_1;
 using std::placeholders::_2;
-using std::placeholders::_3;
 
 namespace bat_ads {
 
@@ -133,11 +137,11 @@ void BatAdsImpl::MaybeGetNotificationAd(
   const absl::optional<ads::NotificationAdInfo> ad =
       ads_->MaybeGetNotificationAd(placement_id);
   if (!ad) {
-    std::move(callback).Run(/* ad */ absl::nullopt);
+    std::move(callback).Run(/*ad*/ absl::nullopt);
     return;
   }
 
-  absl::optional<base::Value::Dict> dict = ad->ToValue();
+  absl::optional<base::Value::Dict> dict = ads::NotificationAdToValue(*ad);
   std::move(callback).Run(std::move(dict));
 }
 
@@ -243,11 +247,11 @@ void BatAdsImpl::OnWalletUpdated(
 void BatAdsImpl::GetHistory(const base::Time from_time,
                             const base::Time to_time,
                             GetHistoryCallback callback) {
-  ads::HistoryInfo history = ads_->GetHistory(
+  const ads::HistoryItemList history_items = ads_->GetHistory(
       ads::HistoryFilterType::kConfirmationType,
       ads::HistorySortType::kDescendingOrder, from_time, to_time);
 
-  std::move(callback).Run(history.ToJson());
+  std::move(callback).Run(ads::HistoryItemsToUIValue(history_items));
 }
 
 void BatAdsImpl::GetStatementOfAccounts(
@@ -266,22 +270,18 @@ void BatAdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   ads_->GetDiagnostics(std::bind(BatAdsImpl::OnGetDiagnostics, holder, _1));
 }
 
-void BatAdsImpl::ToggleAdThumbUp(const std::string& json,
+void BatAdsImpl::ToggleAdThumbUp(base::Value::Dict value,
                                  ToggleAdThumbUpCallback callback) {
-  ads::AdContentInfo ad_content;
-  ad_content.FromJson(json);
-  ad_content.like_action_type = ads_->ToggleAdThumbUp(json);
-
-  std::move(callback).Run(ad_content.ToJson());
+  ads::AdContentInfo ad_content = ads::AdContentFromValue(value);
+  ad_content.like_action_type = ads_->ToggleAdThumbUp(std::move(value));
+  std::move(callback).Run(AdContentToValue(ad_content));
 }
 
-void BatAdsImpl::ToggleAdThumbDown(const std::string& json,
+void BatAdsImpl::ToggleAdThumbDown(base::Value::Dict value,
                                    ToggleAdThumbDownCallback callback) {
-  ads::AdContentInfo ad_content;
-  ad_content.FromJson(json);
-  ad_content.like_action_type = ads_->ToggleAdThumbDown(json);
-
-  std::move(callback).Run(ad_content.ToJson());
+  ads::AdContentInfo ad_content = ads::AdContentFromValue(value);
+  ad_content.like_action_type = ads_->ToggleAdThumbDown(std::move(value));
+  std::move(callback).Run(AdContentToValue(ad_content));
 }
 
 void BatAdsImpl::ToggleAdOptIn(const std::string& category,
@@ -302,22 +302,18 @@ void BatAdsImpl::ToggleAdOptOut(const std::string& category,
   std::move(callback).Run(category, static_cast<int>(toggled_opt_action_type));
 }
 
-void BatAdsImpl::ToggleSavedAd(const std::string& json,
+void BatAdsImpl::ToggleSavedAd(base::Value::Dict value,
                                ToggleSavedAdCallback callback) {
-  ads::AdContentInfo ad_content;
-  ad_content.FromJson(json);
-  ad_content.is_saved = ads_->ToggleSavedAd(json);
-
-  std::move(callback).Run(ad_content.ToJson());
+  ads::AdContentInfo ad_content = ads::AdContentFromValue(value);
+  ad_content.is_saved = ads_->ToggleSavedAd(std::move(value));
+  std::move(callback).Run(AdContentToValue(ad_content));
 }
 
-void BatAdsImpl::ToggleFlaggedAd(const std::string& json,
+void BatAdsImpl::ToggleFlaggedAd(base::Value::Dict value,
                                  ToggleFlaggedAdCallback callback) {
-  ads::AdContentInfo ad_content;
-  ad_content.FromJson(json);
-  ad_content.is_flagged = ads_->ToggleFlaggedAd(json);
-
-  std::move(callback).Run(ad_content.ToJson());
+  ads::AdContentInfo ad_content = ads::AdContentFromValue(value);
+  ad_content.is_flagged = ads_->ToggleFlaggedAd(std::move(value));
+  std::move(callback).Run(AdContentToValue(ad_content));
 }
 
 void BatAdsImpl::OnResourceComponentUpdated(const std::string& id) {
@@ -350,11 +346,12 @@ void BatAdsImpl::OnMaybeServeNewTabPageAd(
     const absl::optional<ads::NewTabPageAdInfo>& ad) {
   DCHECK(holder);
   if (holder->is_valid()) {
-    absl::optional<base::Value::Dict> dict;
-    if (ad) {
-      dict = ad->ToValue();
+    if (!ad) {
+      std::move(holder->get()).Run(/*ad*/ absl::nullopt);
+      return;
     }
 
+    absl::optional<base::Value::Dict> dict = ads::NewTabPageAdToValue(*ad);
     std::move(holder->get()).Run(std::move(dict));
   }
 
@@ -366,11 +363,12 @@ void BatAdsImpl::OnMaybeServeInlineContentAd(
     const std::string& dimensions,
     const absl::optional<ads::InlineContentAdInfo>& ad) {
   if (holder->is_valid()) {
-    absl::optional<base::Value::Dict> dict;
-    if (ad) {
-      dict = ad->ToValue();
+    if (!ad) {
+      std::move(holder->get()).Run(dimensions, /*ads*/ absl::nullopt);
+      return;
     }
 
+    absl::optional<base::Value::Dict> dict = ads::InlineContentAdToValue(*ad);
     std::move(holder->get()).Run(dimensions, std::move(dict));
   }
 

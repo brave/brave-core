@@ -20,7 +20,6 @@
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
 #include "base/hash/hash.h"
-#include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/metrics/field_trial_params.h"
 #include "base/no_destructor.h"
@@ -30,13 +29,13 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
+#include "bat/ads/ad_constants.h"
 #include "bat/ads/ads.h"
-#include "bat/ads/ads_constants.h"
 #include "bat/ads/database.h"
-#include "bat/ads/history_info.h"
-#include "bat/ads/history_item_info.h"
 #include "bat/ads/new_tab_page_ad_info.h"
+#include "bat/ads/new_tab_page_ad_value_util.h"
 #include "bat/ads/notification_ad_info.h"
+#include "bat/ads/notification_ad_value_util.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/resources/grit/bat_ads_resources.h"
 #include "brave/browser/brave_ads/notification_helper/notification_helper.h"
@@ -128,7 +127,7 @@ constexpr char kNotificationAdUrlPrefix[] = "https://www.brave.com/ads/?";
 const base::Feature kServing{"AdServing", base::FEATURE_ENABLED_BY_DEFAULT};
 
 int GetDataResourceId(const std::string& name) {
-  if (name == ads::data::resource::kCatalogJsonSchemaName) {
+  if (name == ads::data::resource::kCatalogJsonSchemaFilename) {
     return IDR_ADS_CATALOG_SCHEMA;
   }
 
@@ -290,7 +289,7 @@ void RegisterResourceComponentsForCurrentLocale() {
 }
 
 void OnURLResponseStarted(
-    const GURL& final_url,
+    const GURL& /*final_url*/,
     const network::mojom::URLResponseHead& response_head) {
   if (response_head.headers->response_code() == -1) {
     VLOG(6) << "Response headers are malformed!!";
@@ -440,7 +439,7 @@ void AdsServiceImpl::SetBuildChannel() {
   ads::mojom::BuildChannelInfoPtr build_channel =
       ads::mojom::BuildChannelInfo::New();
   build_channel->name = brave::GetChannelName();
-  build_channel->is_release = build_channel->name == "release" ? true : false;
+  build_channel->is_release = build_channel->name == "release";
 
   bat_ads_service_->SetBuildChannel(std::move(build_channel),
                                     base::NullCallback());
@@ -888,8 +887,8 @@ void AdsServiceImpl::OnGetNotificationAd(
     return;
   }
 
-  ads::NotificationAdInfo notification;
-  notification.FromValue(*dict);
+  const ads::NotificationAdInfo notification =
+      ads::NotificationAdFromValue(*dict);
 
   OpenNewTabWithUrl(notification.target_url);
 }
@@ -1119,8 +1118,7 @@ void AdsServiceImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
     return;
   }
 
-  bat_ads_->GetDiagnostics(base::BindOnce(&AdsServiceImpl::OnGetDiagnostics,
-                                          AsWeakPtr(), std::move(callback)));
+  bat_ads_->GetDiagnostics(std::move(callback));
 }
 
 void AdsServiceImpl::OnChangeLocale(const std::string& locale) {
@@ -1206,22 +1204,18 @@ void AdsServiceImpl::GetStatementOfAccounts(
     return;
   }
 
-  bat_ads_->GetStatementOfAccounts(
-      base::BindOnce(&AdsServiceImpl::OnGetStatementOfAccounts, AsWeakPtr(),
-                     std::move(callback)));
+  bat_ads_->GetStatementOfAccounts(std::move(callback));
 }
 
 void AdsServiceImpl::MaybeServeInlineContentAd(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {
   if (!IsBatAdsBound()) {
-    std::move(callback).Run(dimensions, absl::nullopt);
+    std::move(callback).Run(dimensions, /*inline_content_ad*/ absl::nullopt);
     return;
   }
 
-  bat_ads_->MaybeServeInlineContentAd(
-      dimensions, base::BindOnce(&AdsServiceImpl::OnMaybeServeInlineContentAd,
-                                 AsWeakPtr(), std::move(callback)));
+  bat_ads_->MaybeServeInlineContentAd(dimensions, std::move(callback));
 }
 
 void AdsServiceImpl::TriggerInlineContentAdEvent(
@@ -1254,8 +1248,8 @@ AdsServiceImpl::GetPrefetchedNewTabPageAd() {
 }
 
 void AdsServiceImpl::OnFailedToPrefetchNewTabPageAd(
-    const std::string& placement_id,
-    const std::string& creative_instance_id) {
+    const std::string& /*placement_id*/,
+    const std::string& /*creative_instance_id*/) {
   need_purge_orphaned_new_tab_page_ad_events_ = true;
 }
 
@@ -1314,81 +1308,53 @@ void AdsServiceImpl::PurgeOrphanedAdEventsForType(
 void AdsServiceImpl::GetHistory(const base::Time from_time,
                                 const base::Time to_time,
                                 GetHistoryCallback callback) {
-  if (!IsBatAdsBound()) {
-    return;
+  if (IsBatAdsBound()) {
+    bat_ads_->GetHistory(from_time, to_time, std::move(callback));
   }
-
-  bat_ads_->GetHistory(from_time, to_time,
-                       base::BindOnce(&AdsServiceImpl::OnGetHistory,
-                                      AsWeakPtr(), std::move(callback)));
 }
 
-void AdsServiceImpl::ToggleAdThumbUp(const std::string& json,
+void AdsServiceImpl::ToggleAdThumbUp(base::Value::Dict value,
                                      ToggleAdThumbUpCallback callback) {
-  if (!IsBatAdsBound()) {
-    return;
+  if (IsBatAdsBound()) {
+    bat_ads_->ToggleAdThumbUp(std::move(value), std::move(callback));
   }
-
-  bat_ads_->ToggleAdThumbUp(
-      json, base::BindOnce(&AdsServiceImpl::OnToggleAdThumbUp, AsWeakPtr(),
-                           std::move(callback)));
 }
 
-void AdsServiceImpl::ToggleAdThumbDown(const std::string& json,
+void AdsServiceImpl::ToggleAdThumbDown(base::Value::Dict value,
                                        ToggleAdThumbDownCallback callback) {
-  if (!IsBatAdsBound()) {
-    return;
+  if (IsBatAdsBound()) {
+    bat_ads_->ToggleAdThumbDown(std::move(value), std::move(callback));
   }
-
-  bat_ads_->ToggleAdThumbDown(
-      json, base::BindOnce(&AdsServiceImpl::OnToggleAdThumbDown, AsWeakPtr(),
-                           std::move(callback)));
 }
 
 void AdsServiceImpl::ToggleAdOptIn(const std::string& category,
                                    const int action,
                                    ToggleAdOptInCallback callback) {
-  if (!IsBatAdsBound()) {
-    return;
+  if (IsBatAdsBound()) {
+    bat_ads_->ToggleAdOptIn(category, action, std::move(callback));
   }
-
-  bat_ads_->ToggleAdOptIn(category, action,
-                          base::BindOnce(&AdsServiceImpl::OnToggleAdOptIn,
-                                         AsWeakPtr(), std::move(callback)));
 }
 
 void AdsServiceImpl::ToggleAdOptOut(const std::string& category,
                                     const int action,
                                     ToggleAdOptOutCallback callback) {
-  if (!IsBatAdsBound()) {
-    return;
+  if (IsBatAdsBound()) {
+    bat_ads_->ToggleAdOptOut(category, action, std::move(callback));
   }
-
-  bat_ads_->ToggleAdOptOut(category, action,
-                           base::BindOnce(&AdsServiceImpl::OnToggleAdOptOut,
-                                          AsWeakPtr(), std::move(callback)));
 }
 
-void AdsServiceImpl::ToggleSavedAd(const std::string& json,
+void AdsServiceImpl::ToggleSavedAd(base::Value::Dict value,
                                    ToggleSavedAdCallback callback) {
-  if (!IsBatAdsBound()) {
-    return;
+  if (IsBatAdsBound()) {
+    bat_ads_->ToggleSavedAd(std::move(value), std::move(callback));
   }
-
-  bat_ads_->ToggleSavedAd(
-      json, base::BindOnce(&AdsServiceImpl::OnToggleSavedAd, AsWeakPtr(),
-                           std::move(callback)));
 }
 
-void AdsServiceImpl::ToggleFlaggedAd(const std::string& json,
+void AdsServiceImpl::ToggleFlaggedAd(base::Value::Dict value,
                                      ToggleFlaggedAdCallback callback) {
-  if (!IsBatAdsBound()) {
-    return;
+  if (IsBatAdsBound()) {
+    bat_ads_->ToggleFlaggedAd(std::move(value), std::move(callback));
   }
-
-  bat_ads_->ToggleFlaggedAd(
-      json, base::BindOnce(&AdsServiceImpl::OnToggleFlaggedAd, AsWeakPtr(),
-                           std::move(callback)));
 }
 
 void AdsServiceImpl::WipeState(const bool should_shutdown) {
@@ -1606,8 +1572,7 @@ void AdsServiceImpl::Save(const std::string& name,
       file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&base::ImportantFileWriter::WriteFileAtomically,
                      base_path_.AppendASCII(name), value, base::StringPiece()),
-      base::BindOnce(&AdsServiceImpl::OnSave, AsWeakPtr(),
-                     std::move(callback)));
+      std::move(callback));
 }
 
 void AdsServiceImpl::Load(const std::string& name, ads::LoadCallback callback) {
@@ -1624,7 +1589,7 @@ void AdsServiceImpl::LoadFileResource(const std::string& id,
   const absl::optional<base::FilePath> file_path_optional =
       g_brave_browser_process->resource_component()->GetPath(id, version);
   if (!file_path_optional) {
-    std::move(callback).Run(base::File());
+    std::move(callback).Run({});
     return;
   }
   base::FilePath file_path = file_path_optional.value();
@@ -1717,11 +1682,10 @@ void AdsServiceImpl::RunDBTransaction(
       file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&RunDBTransactionOnFileTaskRunner, std::move(transaction),
                      database_.get()),
-      base::BindOnce(&AdsServiceImpl::OnRunDBTransaction, AsWeakPtr(),
-                     std::move(callback)));
+      std::move(callback));
 }
 
-void AdsServiceImpl::RecordP2AEvent(const std::string& name,
+void AdsServiceImpl::RecordP2AEvent(const std::string& /*name*/,
                                     base::Value::List value) {
   for (const auto& item : value) {
     DCHECK(item.is_string());
@@ -1923,11 +1887,8 @@ void AdsServiceImpl::OnPrefetchNewTabPageAd(
     return;
   }
 
-  ads::NewTabPageAdInfo ad;
-  ad.FromValue(*dict);
-
   DCHECK(!prefetched_new_tab_page_ad_);
-  prefetched_new_tab_page_ad_ = ad;
+  prefetched_new_tab_page_ad_ = ads::NewTabPageAdFromValue(*dict);
 }
 
 void AdsServiceImpl::OnURLRequest(
@@ -1977,13 +1938,6 @@ void AdsServiceImpl::OnURLRequest(
   std::move(callback).Run(url_response);
 }
 
-void AdsServiceImpl::OnMaybeServeInlineContentAd(
-    MaybeServeInlineContentAdCallback callback,
-    const std::string& dimensions,
-    absl::optional<base::Value::Dict> dict) {
-  std::move(callback).Run(dimensions, std::move(dict));
-}
-
 void AdsServiceImpl::OnPurgeOrphanedNewTabPageAdEvents(const bool success) {
   if (!success) {
     VLOG(0) << "Failed to purge orphaned ad events for new tab page ads";
@@ -1993,88 +1947,10 @@ void AdsServiceImpl::OnPurgeOrphanedNewTabPageAdEvents(const bool success) {
   PrefetchNewTabPageAd();
 }
 
-void AdsServiceImpl::OnGetHistory(GetHistoryCallback callback,
-                                  const std::string& json) {
-  ads::HistoryInfo history;
-  history.FromJson(json);
-
-  // Build the list structure required by the webUI
-  int uuid = 0;
-  base::Value::List list;
-
-  for (const auto& item : history.items) {
-    base::Value::Dict history_item_dict;
-    history_item_dict.Set("adContent", item.ad_content.ToValue());
-    history_item_dict.Set("categoryContent", item.category_content.ToValue());
-    base::Value::List history_item_list;
-    history_item_list.Append(std::move(history_item_dict));
-
-    base::Value::Dict dict;
-    dict.Set("uuid", base::NumberToString(uuid++));
-    const double js_time = item.created_at.ToJsTimeIgnoringNull();
-    dict.Set("timestampInMilliseconds", js_time);
-    dict.Set("adDetailRows", std::move(history_item_list));
-
-    list.Append(std::move(dict));
-  }
-
-  std::move(callback).Run(std::move(list));
-}
-
-void AdsServiceImpl::OnGetStatementOfAccounts(
-    GetStatementOfAccountsCallback callback,
-    ads::mojom::StatementInfoPtr statement) {
-  if (!statement) {
-    std::move(callback).Run(/* statement */ nullptr);
-    return;
-  }
-
-  std::move(callback).Run(std::move(statement));
-}
-
-void AdsServiceImpl::OnGetDiagnostics(GetDiagnosticsCallback callback,
-                                      absl::optional<base::Value::List> value) {
-  std::move(callback).Run(std::move(value));
-}
-
-void AdsServiceImpl::OnToggleAdThumbUp(ToggleAdThumbUpCallback callback,
-                                       const std::string& json) {
-  std::move(callback).Run(json);
-}
-
-void AdsServiceImpl::OnToggleAdThumbDown(ToggleAdThumbDownCallback callback,
-                                         const std::string& json) {
-  std::move(callback).Run(json);
-}
-
-void AdsServiceImpl::OnToggleAdOptIn(ToggleAdOptInCallback callback,
-                                     const std::string& category,
-                                     const int action) {
-  std::move(callback).Run(category, action);
-}
-
-void AdsServiceImpl::OnToggleAdOptOut(ToggleAdOptOutCallback callback,
-                                      const std::string& category,
-                                      const int action) {
-  std::move(callback).Run(category, action);
-}
-
-void AdsServiceImpl::OnToggleSavedAd(ToggleSavedAdCallback callback,
-                                     const std::string& json) {
-  std::move(callback).Run(json);
-}
-
-void AdsServiceImpl::OnToggleFlaggedAd(ToggleFlaggedAdCallback callback,
-                                       const std::string& json) {
-  std::move(callback).Run(json);
-}
-
 void AdsServiceImpl::OnLoad(ads::LoadCallback callback,
                             const std::string& value) {
-  if (value.empty())
-    std::move(callback).Run(/* success */ false, value);
-  else
-    std::move(callback).Run(/* success */ true, value);
+  const bool success = !value.empty();
+  std::move(callback).Run(success, value);
 }
 
 void AdsServiceImpl::OnLoadFileResource(
@@ -2082,10 +1958,6 @@ void AdsServiceImpl::OnLoadFileResource(
     std::unique_ptr<base::File, base::OnTaskRunnerDeleter> file) {
   DCHECK(file);
   std::move(callback).Run(std::move(*file));
-}
-
-void AdsServiceImpl::OnSave(ads::SaveCallback callback, const bool success) {
-  std::move(callback).Run(success);
 }
 
 void AdsServiceImpl::MigratePrefs() {
@@ -2391,12 +2263,12 @@ void AdsServiceImpl::MigratePrefsVersion11To12() {
 
   if (base::ReadFileToString(base_path_.AppendASCII("confirmations.json"),
                              &value)) {
-    const uint64_t hash = static_cast<uint64_t>(base::PersistentHash(value));
+    const auto hash = static_cast<uint64_t>(base::PersistentHash(value));
     SetUint64Pref(ads::prefs::kConfirmationsHash, hash);
   }
 
   if (base::ReadFileToString(base_path_.AppendASCII("client.json"), &value)) {
-    const uint64_t hash = static_cast<uint64_t>(base::PersistentHash(value));
+    const auto hash = static_cast<uint64_t>(base::PersistentHash(value));
     SetUint64Pref(ads::prefs::kClientHash, hash);
   }
 }
@@ -2480,12 +2352,6 @@ void AdsServiceImpl::OnLogTrainingInstance(bool success) {
   }
 
   VLOG(1) << "Successfully logged training covariates";
-}
-
-void AdsServiceImpl::OnRunDBTransaction(
-    ads::RunDBTransactionCallback callback,
-    ads::mojom::DBCommandResponseInfoPtr response) {
-  std::move(callback).Run(std::move(response));
 }
 
 void AdsServiceImpl::WriteDiagnosticLog(const std::string& file,

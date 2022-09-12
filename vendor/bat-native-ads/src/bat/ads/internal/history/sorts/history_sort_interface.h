@@ -6,18 +6,15 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_HISTORY_SORTS_HISTORY_SORT_INTERFACE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_HISTORY_SORTS_HISTORY_SORT_INTERFACE_H_
 
-#include "base/containers/circular_deque.h"
+#include "bat/ads/history_item_info.h"
 
 namespace ads {
-
-struct HistoryItemInfo;
 
 class HistorySortInterface {
  public:
   virtual ~HistorySortInterface() = default;
 
-  virtual base::circular_deque<HistoryItemInfo> Apply(
-      const base::circular_deque<HistoryItemInfo>& history) const = 0;
+  virtual HistoryItemList Apply(const HistoryItemList& history) const = 0;
 };
 
 }  // namespace ads

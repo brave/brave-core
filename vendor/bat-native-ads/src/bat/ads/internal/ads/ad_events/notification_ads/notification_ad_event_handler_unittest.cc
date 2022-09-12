@@ -79,7 +79,7 @@ class BatAdsNotificationAdEventHandlerTest : public EventHandlerObserver,
   NotificationAdInfo BuildAndSaveNotificationAd() {
     const CreativeNotificationAdInfo creative_ad =
         BuildCreativeNotificationAd();
-    const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
+    NotificationAdInfo ad = BuildNotificationAd(creative_ad);
     NotificationAdManager::GetInstance()->Add(ad);
     return ad;
   }

@@ -165,10 +165,6 @@ class AdsServiceImpl : public AdsService,
   void ProcessIdleState(const ui::IdleState idle_state,
                         const base::TimeDelta idle_time);
 
-  void OnMaybeServeInlineContentAd(MaybeServeInlineContentAdCallback callback,
-                                   const std::string& dimensions,
-                                   absl::optional<base::Value::Dict> dict);
-
   absl::optional<ads::NewTabPageAdInfo> GetPrefetchedNewTabPageAd() override;
   void OnFailedToPrefetchNewTabPageAd(
       const std::string& placement_id,
@@ -216,28 +212,6 @@ class AdsServiceImpl : public AdsService,
                           const int verbose_level,
                           const std::string& message);
 
-  void OnGetDiagnostics(GetDiagnosticsCallback callback,
-                        absl::optional<base::Value::List> value);
-
-  void OnGetStatementOfAccounts(GetStatementOfAccountsCallback callback,
-                                ads::mojom::StatementInfoPtr statement);
-
-  void OnGetHistory(GetHistoryCallback callback, const std::string& json);
-
-  void OnToggleAdThumbUp(ToggleAdThumbUpCallback callback,
-                         const std::string& json);
-  void OnToggleAdThumbDown(const ToggleAdThumbDownCallback callback,
-                           const std::string& json);
-  void OnToggleAdOptIn(ToggleAdOptInCallback callback,
-                       const std::string& category,
-                       const int action);
-  void OnToggleAdOptOut(ToggleAdOptOutCallback callback,
-                        const std::string& category,
-                        const int action);
-  void OnToggleSavedAd(ToggleSavedAdCallback callback, const std::string& json);
-  void OnToggleFlaggedAd(ToggleFlaggedAdCallback callback,
-                         const std::string& json);
-
   void OnBrowsingHistorySearchComplete(ads::GetBrowsingHistoryCallback callback,
                                        history::QueryResults results);
 
@@ -245,14 +219,10 @@ class AdsServiceImpl : public AdsService,
                     ads::UrlRequestCallback callback,
                     const std::unique_ptr<std::string> response_body);
 
-  void OnSave(ads::SaveCallback callback, const bool success);
   void OnLoad(ads::LoadCallback callback, const std::string& value);
   void OnLoadFileResource(
       ads::LoadFileCallback callback,
       std::unique_ptr<base::File, base::OnTaskRunnerDeleter> file);
-
-  void OnRunDBTransaction(ads::RunDBTransactionCallback callback,
-                          ads::mojom::DBCommandResponseInfoPtr response);
 
   void OnLogTrainingInstance(bool success);
 
@@ -345,9 +315,9 @@ class AdsServiceImpl : public AdsService,
                   const base::Time to_time,
                   GetHistoryCallback callback) override;
 
-  void ToggleAdThumbUp(const std::string& json,
+  void ToggleAdThumbUp(base::Value::Dict value,
                        ToggleAdThumbUpCallback callback) override;
-  void ToggleAdThumbDown(const std::string& json,
+  void ToggleAdThumbDown(base::Value::Dict value,
                          ToggleAdThumbDownCallback callback) override;
   void ToggleAdOptIn(const std::string& category,
                      const int action,
@@ -355,9 +325,9 @@ class AdsServiceImpl : public AdsService,
   void ToggleAdOptOut(const std::string& category,
                       const int action,
                       ToggleAdOptOutCallback callback) override;
-  void ToggleSavedAd(const std::string& json,
+  void ToggleSavedAd(base::Value::Dict value,
                      ToggleSavedAdCallback callback) override;
-  void ToggleFlaggedAd(const std::string& json,
+  void ToggleFlaggedAd(base::Value::Dict value,
                        ToggleFlaggedAdCallback callback) override;
 
   void WipeState(const bool should_shutdown) override;

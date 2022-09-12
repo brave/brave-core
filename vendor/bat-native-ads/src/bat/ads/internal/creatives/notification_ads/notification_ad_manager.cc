@@ -10,7 +10,7 @@
 #include "base/values.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/creatives/notification_ads/notification_ad_manager_values_util.h"
+#include "bat/ads/internal/creatives/notification_ads/notification_ad_manager_value_util.h"
 #include "bat/ads/pref_names.h"
 #include "build/build_config.h"  // IWYU pragma: keep
 
