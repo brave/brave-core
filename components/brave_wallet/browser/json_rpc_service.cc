@@ -173,25 +173,23 @@ JsonRpcService::~JsonRpcService() = default;
 void JsonRpcService::MigrateMultichainNetworks(PrefService* prefs) {
   // custom networks
   if (prefs->HasPrefPath(kBraveWalletCustomNetworksDeprecated)) {
-    const base::Value* custom_networks =
-        prefs->GetList(kBraveWalletCustomNetworksDeprecated);
-    if (custom_networks) {
-      base::Value::Dict new_custom_networks;
-      new_custom_networks.Set(kEthereumPrefKey, custom_networks->Clone());
+    const base::Value::List& custom_networks =
+        prefs->GetValueList(kBraveWalletCustomNetworksDeprecated);
 
-      prefs->Set(kBraveWalletCustomNetworks,
-                 base::Value(std::move(new_custom_networks)));
+    base::Value::Dict new_custom_networks;
+    new_custom_networks.Set(kEthereumPrefKey, custom_networks.Clone());
 
-      prefs->ClearPref(kBraveWalletCustomNetworksDeprecated);
-    }
+    prefs->SetDict(kBraveWalletCustomNetworks, std::move(new_custom_networks));
+
+    prefs->ClearPref(kBraveWalletCustomNetworksDeprecated);
   }
   // selected networks
   if (prefs->HasPrefPath(kBraveWalletCurrentChainId)) {
     const std::string chain_id = prefs->GetString(kBraveWalletCurrentChainId);
     DictionaryPrefUpdate update(prefs, kBraveWalletSelectedNetworks);
-    base::Value* selected_networks = update.Get();
+    base::Value::Dict* selected_networks = update.Get()->GetIfDict();
     if (selected_networks) {
-      selected_networks->SetStringKey(kEthereumPrefKey, chain_id);
+      selected_networks->Set(kEthereumPrefKey, chain_id);
       prefs->ClearPref(kBraveWalletCurrentChainId);
     }
   }
@@ -484,18 +482,19 @@ void JsonRpcService::UpdateIsEip1559(const std::string& chain_id,
     // TODO(apaymyshev): move all work with kBraveWalletCustomNetworks into one
     // file.
     DictionaryPrefUpdate update(prefs_, kBraveWalletCustomNetworks);
-    for (base::Value& custom_network :
-         update.Get()->FindKey(kEthereumPrefKey)->GetList()) {
-      if (!custom_network.is_dict())
+    for (base::Value& item :
+         *update.Get()->GetDict().FindList(kEthereumPrefKey)) {
+      base::Value::Dict* custom_network = item.GetIfDict();
+      if (!custom_network)
         continue;
 
-      const std::string* id = custom_network.FindStringKey("chainId");
+      const std::string* id = custom_network->FindString("chainId");
       if (!id || *id != chain_id)
         continue;
 
-      changed = custom_network.FindBoolKey("is_eip1559").value_or(false) !=
-                is_eip1559;
-      custom_network.SetBoolKey("is_eip1559", is_eip1559);
+      changed =
+          custom_network->FindBool("is_eip1559").value_or(false) != is_eip1559;
+      custom_network->Set("is_eip1559", is_eip1559);
       // Break the loop cuz we don't expect multiple entries with the same
       // chainId in the list.
       break;
