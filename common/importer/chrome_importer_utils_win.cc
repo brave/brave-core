@@ -32,6 +32,18 @@ base::FilePath GetChromeBetaUserDataFolder() {
   return result;
 }
 
+base::FilePath GetChromeDevUserDataFolder() {
+  base::FilePath result;
+  if (!base::PathService::Get(base::DIR_LOCAL_APP_DATA, &result))
+    return base::FilePath();
+
+  result = result.AppendASCII("Google");
+  result = result.AppendASCII("Chrome Dev");
+  result = result.AppendASCII("User Data");
+
+  return result;
+}
+
 base::FilePath GetCanaryUserDataFolder() {
   base::FilePath result;
   if (!base::PathService::Get(base::DIR_LOCAL_APP_DATA, &result))

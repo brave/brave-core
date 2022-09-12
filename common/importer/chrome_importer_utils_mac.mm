@@ -20,6 +20,11 @@ base::FilePath GetChromeBetaUserDataFolder() {
   return result.Append("Application Support/Google/Chrome Beta");
 }
 
+base::FilePath GetChromeDevUserDataFolder() {
+  base::FilePath result = base::mac::GetUserLibraryPath();
+  return result.Append("Application Support/Google/Chrome Dev");
+}
+
 base::FilePath GetCanaryUserDataFolder() {
   base::FilePath result = base::mac::GetUserLibraryPath();
   return result.Append("Application Support/Google/Chrome Canary");

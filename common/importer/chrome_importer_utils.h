@@ -22,6 +22,7 @@ class FilePath;
 // https://chromium.googlesource.com/chromium/src/+/HEAD/docs/user_data_dir.md
 base::FilePath GetChromeUserDataFolder();
 base::FilePath GetChromeBetaUserDataFolder();
+base::FilePath GetChromeDevUserDataFolder();
 #if !BUILDFLAG(IS_LINUX)
 // Canary is not available on Linux
 base::FilePath GetCanaryUserDataFolder();

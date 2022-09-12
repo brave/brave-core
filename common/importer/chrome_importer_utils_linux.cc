@@ -32,6 +32,17 @@ base::FilePath GetChromeBetaUserDataFolder() {
   return result;
 }
 
+base::FilePath GetChromeDevUserDataFolder() {
+  base::FilePath result;
+  if (!base::PathService::Get(base::DIR_HOME, &result))
+    return base::FilePath();
+
+  result = result.Append(".config");
+  result = result.Append("google-chrome-unstable");
+
+  return result;
+}
+
 base::FilePath GetVivaldiUserDataFolder() {
   base::FilePath result;
   if (!base::PathService::Get(base::DIR_HOME, &result))
