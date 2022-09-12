@@ -58,16 +58,21 @@ class ApiRequestHelperUnitTest : public testing::Test {
 
   void OnRequestResponse(bool* callback_called,
                          const std::string& expected_response,
+                         const GURL expected_url,
                          const int expected_http_code,
+                         const int expected_error_code,
                          APIRequestResult api_request_result) {
     *callback_called = true;
     EXPECT_EQ(expected_http_code, api_request_result.response_code());
     EXPECT_EQ(expected_response, api_request_result.body());
+    EXPECT_EQ(expected_error_code, api_request_result.error_code());
+    EXPECT_EQ(expected_url, api_request_result.final_url());
   }
 
   void SendRequest(const std::string& server_raw_response,
                    const std::string& expected_sanitized_response,
                    const int expected_http_code = 200,
+                   const int expected_error_code = net::OK,
                    APIRequestHelper::ResponseConversionCallback
                        conversion_callback = base::NullCallback()) {
     bool callback_called = false;
@@ -77,7 +82,8 @@ class ApiRequestHelperUnitTest : public testing::Test {
         "POST", network_url, "", "application/json", false,
         base::BindOnce(&ApiRequestHelperUnitTest::OnRequestResponse,
                        base::Unretained(this), &callback_called,
-                       expected_sanitized_response, expected_http_code),
+                       expected_sanitized_response, network_url,
+                       expected_http_code, expected_error_code),
         {}, -1u, std::move(conversion_callback));
     base::RunLoop().RunUntilIdle();
     EXPECT_TRUE(callback_called);
@@ -119,40 +125,50 @@ TEST_F(ApiRequestHelperUnitTest, RequestWithConversion) {
       "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"18446744073709551615\"}";
   std::string server_raw_response =
       "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":18446744073709551615}";
-  SendRequest(server_raw_response, expected_sanitized_response, 200,
+  SendRequest(server_raw_response, expected_sanitized_response, 200, net::OK,
               base::BindOnce(&ConversionCallback, server_raw_response,
                              expected_sanitized_response));
 
   // Broken json after conversion
   // expecting empty response body after sanitization
   SendRequest(
-      server_raw_response, "", 200,
+      server_raw_response, "", 200, net::OK,
       base::BindOnce(&ConversionCallback, server_raw_response, "broken json"));
   // Empty json after conversion
   // expecting empty response body after sanitization
-  SendRequest(server_raw_response, "", 200,
+  SendRequest(server_raw_response, "", 200, net::OK,
               base::BindOnce(&ConversionCallback, server_raw_response, ""));
 
   // Returning absl::nullopt in conversion callback doesn't override the
   // response
   server_raw_response = "{}";
   SendRequest(
-      server_raw_response, server_raw_response, 422,
+      server_raw_response, server_raw_response, 422, net::OK,
       base::BindOnce(&ConversionCallback, server_raw_response, absl::nullopt));
 }
 
 TEST_F(ApiRequestHelperUnitTest, Is2XXResponseCode) {
-  EXPECT_TRUE(APIRequestResult(200, {}, {}).Is2XXResponseCode());
-  EXPECT_TRUE(APIRequestResult(201, {}, {}).Is2XXResponseCode());
-  EXPECT_TRUE(APIRequestResult(250, {}, {}).Is2XXResponseCode());
-  EXPECT_TRUE(APIRequestResult(299, {}, {}).Is2XXResponseCode());
+  EXPECT_TRUE(
+      APIRequestResult(200, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+  EXPECT_TRUE(
+      APIRequestResult(201, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+  EXPECT_TRUE(
+      APIRequestResult(250, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+  EXPECT_TRUE(
+      APIRequestResult(299, {}, {}, net::OK, GURL()).Is2XXResponseCode());
 
-  EXPECT_FALSE(APIRequestResult(0, {}, {}).Is2XXResponseCode());
-  EXPECT_FALSE(APIRequestResult(1, {}, {}).Is2XXResponseCode());
-  EXPECT_FALSE(APIRequestResult(-1, {}, {}).Is2XXResponseCode());
-  EXPECT_FALSE(APIRequestResult(199, {}, {}).Is2XXResponseCode());
-  EXPECT_FALSE(APIRequestResult(300, {}, {}).Is2XXResponseCode());
-  EXPECT_FALSE(APIRequestResult(500, {}, {}).Is2XXResponseCode());
+  EXPECT_FALSE(
+      APIRequestResult(0, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+  EXPECT_FALSE(
+      APIRequestResult(1, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+  EXPECT_FALSE(
+      APIRequestResult(-1, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+  EXPECT_FALSE(
+      APIRequestResult(199, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+  EXPECT_FALSE(
+      APIRequestResult(300, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+  EXPECT_FALSE(
+      APIRequestResult(500, {}, {}, net::OK, GURL()).Is2XXResponseCode());
 }
 
 }  // namespace api_request_helper

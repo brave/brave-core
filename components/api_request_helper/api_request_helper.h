@@ -30,7 +30,9 @@ class APIRequestResult {
   APIRequestResult();
   APIRequestResult(int response_code,
                    std::string body,
-                   base::flat_map<std::string, std::string> headers);
+                   base::flat_map<std::string, std::string> headers,
+                   int error_code,
+                   GURL final_url);
   APIRequestResult(const APIRequestResult&);
   APIRequestResult& operator=(const APIRequestResult&);
   APIRequestResult(APIRequestResult&&);
@@ -40,12 +42,16 @@ class APIRequestResult {
   bool Is2XXResponseCode() const;
 
   int response_code() const { return response_code_; }
+  int error_code() const { return error_code_; }
+  GURL final_url() const { return final_url_; }
   const std::string& body() const { return body_; }
   const base::flat_map<std::string, std::string>& headers() const {
     return headers_;
   }
 
  private:
+  GURL final_url_;
+  int error_code_ = -1;
   int response_code_ = -1;
   std::string body_;
   base::flat_map<std::string, std::string> headers_;

@@ -17,15 +17,16 @@
 #include "base/files/file_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/ipfs/blob_context_getter_factory.h"
 #include "brave/components/ipfs/import/imported_data.h"
 #include "brave/components/ipfs/ipfs_network_utils.h"
 #include "components/version_info/channel.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "url/gurl.h"
 
 namespace network {
 class SharedURLLoaderFactory;
-class SimpleURLLoader;
 struct ResourceRequest;
 }  // namespace network
 
@@ -45,11 +46,12 @@ namespace ipfs {
 //   5. Publishes objects under passed IPNS key(/api/v0/name/publish)
 class IpfsImportWorkerBase {
  public:
-  IpfsImportWorkerBase(BlobContextGetterFactory* blob_context_getter_factory,
-                       network::mojom::URLLoaderFactory* url_loader_factory,
-                       const GURL& endpoint,
-                       ImportCompletedCallback callback,
-                       const std::string& key = std::string());
+  IpfsImportWorkerBase(
+      BlobContextGetterFactory* blob_context_getter_factory,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      const GURL& endpoint,
+      ImportCompletedCallback callback,
+      const std::string& key = std::string());
   virtual ~IpfsImportWorkerBase();
 
   IpfsImportWorkerBase(const IpfsImportWorkerBase&) = delete;
@@ -63,7 +65,7 @@ class IpfsImportWorkerBase {
   void ImportFolder(const base::FilePath folder_path);
 
  protected:
-  network::mojom::URLLoaderFactory* GetUrlLoaderFactory();
+  scoped_refptr<network::SharedURLLoaderFactory> GetUrlLoaderFactory();
 
   virtual void NotifyImportCompleted(ipfs::ImportState state);
 
@@ -74,19 +76,21 @@ class IpfsImportWorkerBase {
 
   void CreateBraveDirectory();
   void OnImportDirectoryCreated(const std::string& directory,
-                                std::unique_ptr<std::string> response_body);
+                                api_request_helper::APIRequestResult response);
   void CopyFilesToBraveDirectory();
-  void OnImportFilesMoved(std::unique_ptr<std::string> response_body);
+  void OnImportFilesMoved(api_request_helper::APIRequestResult response);
   bool ParseResponseBody(const std::string& response_body,
                          ipfs::ImportedData* data);
   void PublishContent();
-  void OnContentPublished(std::unique_ptr<std::string> response_body);
+  void OnContentPublished(api_request_helper::APIRequestResult response);
+
   ImportCompletedCallback callback_;
   std::unique_ptr<ipfs::ImportedData> data_;
 
   BlobContextGetterFactory* blob_context_getter_factory_ = nullptr;
-  raw_ptr<network::mojom::URLLoaderFactory> url_loader_factory_ = nullptr;
-  std::unique_ptr<network::SimpleURLLoader> url_loader_;
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  std::unique_ptr<api_request_helper::APIRequestHelper> url_loader_;
+  std::unique_ptr<network::SimpleURLLoader> simple_url_loader_;
   GURL server_endpoint_;
   std::string key_to_publish_;
   base::WeakPtrFactory<IpfsImportWorkerBase> weak_factory_;

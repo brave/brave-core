@@ -25,7 +25,7 @@ namespace ipfs {
 class IpfsLinkImportWorker : public IpfsImportWorkerBase {
  public:
   IpfsLinkImportWorker(BlobContextGetterFactory* blob_context_getter_factory,
-                       network::mojom::URLLoaderFactory* url_loader_factory,
+                       network::SharedURLLoaderFactory* url_loader_factory,
                        const GURL& endpoint,
                        ImportCompletedCallback callback,
                        const GURL& url);

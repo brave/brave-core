@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "net/base/load_flags.h"
+#include "net/http/http_status_code.h"
 #include "services/data_decoder/public/cpp/json_sanitizer.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -20,13 +21,16 @@ namespace {
 
 void OnSanitize(const int http_code,
                 const base::flat_map<std::string, std::string>& headers,
+                int error_code,
+                GURL final_url,
                 APIRequestHelper::ResultCallback result_callback,
                 data_decoder::JsonSanitizer::Result result) {
   std::string response_body;
   if (result.error) {
     VLOG(1) << "Response validation error:" << *result.error;
     std::move(result_callback)
-        .Run(APIRequestResult(http_code, "", std::move(headers)));
+        .Run(APIRequestResult(http_code, "", std::move(headers), error_code,
+                              final_url));
     return;
   }
 
@@ -36,7 +40,7 @@ void OnSanitize(const int http_code,
 
   std::move(result_callback)
       .Run(APIRequestResult(http_code, std::move(response_body),
-                            std::move(headers)));
+                            std::move(headers), error_code, final_url));
 }
 
 const unsigned int kRetriesCountOnNetworkChange = 1;
@@ -47,8 +51,14 @@ APIRequestResult::APIRequestResult() = default;
 APIRequestResult::APIRequestResult(
     int response_code,
     std::string body,
-    base::flat_map<std::string, std::string> headers)
-    : response_code_(response_code), body_(body), headers_(headers) {}
+    base::flat_map<std::string, std::string> headers,
+    int error_code,
+    GURL final_url)
+    : final_url_(final_url),
+      error_code_(error_code),
+      response_code_(response_code),
+      body_(body),
+      headers_(headers) {}
 APIRequestResult::APIRequestResult(const APIRequestResult&) = default;
 APIRequestResult& APIRequestResult::operator=(const APIRequestResult&) =
     default;
@@ -169,6 +179,8 @@ void APIRequestHelper::OnResponse(
     const std::unique_ptr<std::string> response_body) {
   auto* loader = iter->get();
   auto response_code = -1;
+  auto error_code = loader->NetError();
+  auto final_url = loader->GetFinalURL();
   base::flat_map<std::string, std::string> headers;
   if (loader->ResponseInfo()) {
     auto headers_list = loader->ResponseInfo()->headers;
@@ -186,16 +198,16 @@ void APIRequestHelper::OnResponse(
 
   url_loaders_.erase(iter);
   if (!response_body) {
-    std::move(callback).Run(
-        APIRequestResult(response_code, "", std::move(headers)));
+    std::move(callback).Run(APIRequestResult(
+        response_code, "", std::move(headers), error_code, final_url));
     return;
   }
   auto& raw_body = *response_body;
   if (conversion_callback) {
     auto converted_body = std::move(conversion_callback).Run(raw_body);
     if (!converted_body) {
-      std::move(callback).Run(
-          APIRequestResult(422, std::move(raw_body), std::move(headers)));
+      std::move(callback).Run(APIRequestResult(
+          422, std::move(raw_body), std::move(headers), error_code, final_url));
       return;
     }
     raw_body = converted_body.value();
@@ -203,8 +215,8 @@ void APIRequestHelper::OnResponse(
 
   data_decoder::JsonSanitizer::Sanitize(
       std::move(raw_body),
-      base::BindOnce(&OnSanitize, response_code, std::move(headers),
-                     std::move(callback)));
+      base::BindOnce(&OnSanitize, response_code, std::move(headers), error_code,
+                     final_url, std::move(callback)));
 }
 
 void APIRequestHelper::OnDownload(SimpleURLLoaderList::iterator iter,

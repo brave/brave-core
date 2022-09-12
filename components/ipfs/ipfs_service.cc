@@ -127,8 +127,7 @@ IpfsService::IpfsService(
   }
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   ipns_keys_manager_ = std::make_unique<IpnsKeysManager>(
-      blob_context_getter_factory_.get(), url_loader_factory.get(),
-      server_endpoint_);
+      blob_context_getter_factory_.get(), url_loader_factory, server_endpoint_);
   AddObserver(ipns_keys_manager_.get());
 #endif
 
@@ -504,15 +503,18 @@ void IpfsService::GetConnectedPeers(GetConnectedPeersCallback callback,
     connected_peers_function_called_ = true;
     return;
   }
+  auto gurl = server_endpoint_.Resolve(kSwarmPeersPath);
+  auto url_loader = std::make_unique<api_request_helper::APIRequestHelper>(
+      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
 
-  auto url_loader =
-      CreateURLLoader(server_endpoint_.Resolve(kSwarmPeersPath), "POST");
-  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
-
-  iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory_.get(),
+  auto iter =
+      requests_list_.insert(requests_list_.begin(), std::move(url_loader));
+  iter->get()->Request(
+      "POST", gurl, std::string(), std::string(), false,
       base::BindOnce(&IpfsService::OnGetConnectedPeers, base::Unretained(this),
-                     iter, std::move(callback), retries));
+                     iter, std::move(callback), retries),
+      {{net::HttpRequestHeaders::kOrigin,
+        url::Origin::Create(gurl).Serialize()}});
 }
 
 base::TimeDelta IpfsService::CalculatePeersRetryTime() {
@@ -524,18 +526,16 @@ base::TimeDelta IpfsService::CalculatePeersRetryTime() {
 }
 
 void IpfsService::OnGetConnectedPeers(
-    SimpleURLLoaderList::iterator iter,
+    APIRequestList::iterator iter,
     GetConnectedPeersCallback callback,
     int retry_number,
-    std::unique_ptr<std::string> response_body) {
-  auto* url_loader = iter->get();
-  int error_code = url_loader->NetError();
-  int response_code = -1;
-  if (url_loader->ResponseInfo() && url_loader->ResponseInfo()->headers)
-    response_code = url_loader->ResponseInfo()->headers->response_code();
-  url_loaders_.erase(iter);
+    api_request_helper::APIRequestResult response) {
+  int response_code = response.response_code();
+  requests_list_.erase(iter);
+
+  bool success = response.Is2XXResponseCode();
   last_peers_retry_value_for_test_ = retry_number;
-  if (error_code == net::ERR_CONNECTION_REFUSED && retry_number) {
+  if (response.error_code() == net::ERR_CONNECTION_REFUSED && retry_number) {
     base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
         FROM_HERE,
         base::BindOnce(&IpfsService::GetConnectedPeers,
@@ -546,14 +546,12 @@ void IpfsService::OnGetConnectedPeers(
   }
 
   std::vector<std::string> peers;
-  bool success = (error_code == net::OK && response_code == net::HTTP_OK);
   if (!success) {
-    VLOG(1) << "Fail to get connected peers, error_code = " << error_code
-            << " response_code = " << response_code;
+    VLOG(1) << "Fail to get connected peers, response_code = " << response_code;
   }
 
   if (success)
-    success = IPFSJSONParser::GetPeersFromJSON(*response_body, &peers);
+    success = IPFSJSONParser::GetPeersFromJSON(response.body(), &peers);
 
   if (callback)
     std::move(callback).Run(success, peers);
@@ -571,36 +569,38 @@ void IpfsService::GetAddressesConfig(GetAddressesConfigCallback callback) {
 
   GURL gurl = net::AppendQueryParameter(server_endpoint_.Resolve(kConfigPath),
                                         kArgQueryParam, kAddressesField);
-  auto url_loader = CreateURLLoader(gurl, "POST");
-  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
 
-  iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory_.get(),
+  auto url_loader = std::make_unique<api_request_helper::APIRequestHelper>(
+      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
+
+  auto iter =
+      requests_list_.insert(requests_list_.begin(), std::move(url_loader));
+  iter->get()->Request(
+      "POST", gurl, std::string(), std::string(), false,
       base::BindOnce(&IpfsService::OnGetAddressesConfig, base::Unretained(this),
-                     iter, std::move(callback)));
+                     iter, std::move(callback)),
+      {{net::HttpRequestHeaders::kOrigin,
+        url::Origin::Create(gurl).Serialize()}});
 }
 
 void IpfsService::OnGetAddressesConfig(
-    SimpleURLLoaderList::iterator iter,
+    APIRequestList::iterator iter,
     GetAddressesConfigCallback callback,
-    std::unique_ptr<std::string> response_body) {
-  auto* url_loader = iter->get();
-  int error_code = url_loader->NetError();
-  int response_code = -1;
-  if (url_loader->ResponseInfo() && url_loader->ResponseInfo()->headers)
-    response_code = url_loader->ResponseInfo()->headers->response_code();
-  url_loaders_.erase(iter);
+    api_request_helper::APIRequestResult response) {
+  int response_code = response.response_code();
+  bool success = response.Is2XXResponseCode();
+  requests_list_.erase(iter);
 
   ipfs::AddressesConfig addresses_config;
-  if (error_code != net::OK || response_code != net::HTTP_OK) {
-    VLOG(1) << "Fail to get addresses config, error_code = " << error_code
-            << " response_code = " << response_code;
+  if (!success) {
+    VLOG(1) << "Fail to get addresses config, response_code = "
+            << response_code;
     std::move(callback).Run(false, addresses_config);
     return;
   }
 
-  bool success = IPFSJSONParser::GetAddressesConfigFromJSON(*response_body,
-                                                            &addresses_config);
+  success = IPFSJSONParser::GetAddressesConfigFromJSON(response.body(),
+                                                       &addresses_config);
   std::move(callback).Run(success, addresses_config);
 }
 
@@ -743,35 +743,35 @@ void IpfsService::GetRepoStats(GetRepoStatsCallback callback) {
       net::AppendQueryParameter(server_endpoint_.Resolve(ipfs::kRepoStatsPath),
                                 ipfs::kRepoStatsHumanReadableParamName,
                                 ipfs::kRepoStatsHumanReadableParamValue);
-  auto url_loader = CreateURLLoader(gurl, "POST");
-  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
+  auto url_loader = std::make_unique<api_request_helper::APIRequestHelper>(
+      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
 
-  iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory_.get(),
+  auto iter =
+      requests_list_.insert(requests_list_.begin(), std::move(url_loader));
+  iter->get()->Request(
+      "POST", gurl, std::string(), std::string(), false,
       base::BindOnce(&IpfsService::OnRepoStats, base::Unretained(this), iter,
-                     std::move(callback)));
+                     std::move(callback)),
+      {{net::HttpRequestHeaders::kOrigin,
+        url::Origin::Create(gurl).Serialize()}});
 }
 
-void IpfsService::OnRepoStats(SimpleURLLoaderList::iterator iter,
+void IpfsService::OnRepoStats(APIRequestList::iterator iter,
                               GetRepoStatsCallback callback,
-                              std::unique_ptr<std::string> response_body) {
-  auto* url_loader = iter->get();
-  int error_code = url_loader->NetError();
-  int response_code = -1;
-  if (url_loader->ResponseInfo() && url_loader->ResponseInfo()->headers)
-    response_code = url_loader->ResponseInfo()->headers->response_code();
-  url_loaders_.erase(iter);
+                              api_request_helper::APIRequestResult response) {
+  int response_code = response.response_code();
+  requests_list_.erase(iter);
+
+  bool success = response.Is2XXResponseCode();
 
   ipfs::RepoStats repo_stats;
-  if (error_code != net::OK || response_code != net::HTTP_OK) {
-    VLOG(1) << "Fail to get repro stats, error_code = " << error_code
-            << " response_code = " << response_code;
+  if (!success) {
+    VLOG(1) << "Fail to get repro stats, response_code = " << response_code;
     std::move(callback).Run(false, repo_stats);
     return;
   }
 
-  bool success =
-      IPFSJSONParser::GetRepoStatsFromJSON(*response_body, &repo_stats);
+  success = IPFSJSONParser::GetRepoStatsFromJSON(response.body(), &repo_stats);
   std::move(callback).Run(success, repo_stats);
 }
 
@@ -782,35 +782,36 @@ void IpfsService::GetNodeInfo(GetNodeInfoCallback callback) {
   }
 
   GURL gurl = server_endpoint_.Resolve(ipfs::kNodeInfoPath);
-  auto url_loader = CreateURLLoader(gurl, "POST");
-  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
 
-  iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory_.get(),
+  auto url_loader = std::make_unique<api_request_helper::APIRequestHelper>(
+      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
+
+  auto iter =
+      requests_list_.insert(requests_list_.begin(), std::move(url_loader));
+  iter->get()->Request(
+      "POST", gurl, std::string(), std::string(), false,
       base::BindOnce(&IpfsService::OnNodeInfo, base::Unretained(this), iter,
-                     std::move(callback)));
+                     std::move(callback)),
+      {{net::HttpRequestHeaders::kOrigin,
+        url::Origin::Create(gurl).Serialize()}});
 }
 
-void IpfsService::OnNodeInfo(SimpleURLLoaderList::iterator iter,
+void IpfsService::OnNodeInfo(APIRequestList::iterator iter,
                              GetNodeInfoCallback callback,
-                             std::unique_ptr<std::string> response_body) {
-  auto* url_loader = iter->get();
-  int error_code = url_loader->NetError();
-  int response_code = -1;
-  if (url_loader->ResponseInfo() && url_loader->ResponseInfo()->headers)
-    response_code = url_loader->ResponseInfo()->headers->response_code();
-  url_loaders_.erase(iter);
+                             api_request_helper::APIRequestResult response) {
+  int response_code = response.response_code();
+  requests_list_.erase(iter);
+
+  bool success = response.Is2XXResponseCode();
 
   ipfs::NodeInfo node_info;
-  if (error_code != net::OK || response_code != net::HTTP_OK) {
-    VLOG(1) << "Fail to get node info, error_code = " << error_code
-            << " response_code = " << response_code;
+  if (!success) {
+    VLOG(1) << "Fail to get node info, response_code = " << response_code;
     std::move(callback).Run(false, node_info);
     return;
   }
 
-  bool success =
-      IPFSJSONParser::GetNodeInfoFromJSON(*response_body, &node_info);
+  success = IPFSJSONParser::GetNodeInfoFromJSON(response.body(), &node_info);
   std::move(callback).Run(success, node_info);
 }
 
@@ -822,35 +823,35 @@ void IpfsService::RunGarbageCollection(GarbageCollectionCallback callback) {
 
   GURL gurl = server_endpoint_.Resolve(ipfs::kGarbageCollectionPath);
 
-  auto url_loader = CreateURLLoader(gurl, "POST");
-  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
+  auto url_loader = std::make_unique<api_request_helper::APIRequestHelper>(
+      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
 
-  iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory_.get(),
+  auto iter =
+      requests_list_.insert(requests_list_.begin(), std::move(url_loader));
+  iter->get()->Request(
+      "POST", gurl, std::string(), std::string(), false,
       base::BindOnce(&IpfsService::OnGarbageCollection, base::Unretained(this),
-                     iter, std::move(callback)));
+                     iter, std::move(callback)),
+      {{net::HttpRequestHeaders::kOrigin,
+        url::Origin::Create(gurl).Serialize()}});
 }
 
 void IpfsService::OnGarbageCollection(
-    SimpleURLLoaderList::iterator iter,
+    APIRequestList::iterator iter,
     GarbageCollectionCallback callback,
-    std::unique_ptr<std::string> response_body) {
-  auto* url_loader = iter->get();
-  int error_code = url_loader->NetError();
-  int response_code = -1;
-  if (url_loader->ResponseInfo() && url_loader->ResponseInfo()->headers)
-    response_code = url_loader->ResponseInfo()->headers->response_code();
-  url_loaders_.erase(iter);
+    api_request_helper::APIRequestResult response) {
+  int response_code = response.response_code();
+  requests_list_.erase(iter);
 
-  bool success = (error_code == net::OK && response_code == net::HTTP_OK);
+  bool success = response.Is2XXResponseCode();
   if (!success) {
-    VLOG(1) << "Fail to run garbage collection, error_code = " << error_code
-            << " response_code = " << response_code;
+    VLOG(1) << "Fail to run garbage collection, response_code = "
+            << response_code;
   }
 
   std::string error;
   if (success) {
-    const std::string& body = *response_body;
+    const std::string& body = response.body();
     if (!body.empty())
       IPFSJSONParser::GetGarbageCollectionFromJSON(body, &error);
   }
@@ -858,17 +859,22 @@ void IpfsService::OnGarbageCollection(
 }
 
 void IpfsService::PreWarmShareableLink(const GURL& url) {
-  auto url_loader = CreateURLLoader(url, "HEAD");
-  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
-  iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory_.get(), base::BindOnce(&IpfsService::OnPreWarmComplete,
-                                                base::Unretained(this), iter));
+  auto url_loader = std::make_unique<api_request_helper::APIRequestHelper>(
+      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
+
+  auto iter =
+      requests_list_.insert(requests_list_.begin(), std::move(url_loader));
+  iter->get()->Request("HEAD", url, std::string(), std::string(), false,
+                       base::BindOnce(&IpfsService::OnPreWarmComplete,
+                                      base::Unretained(this), iter),
+                       {{net::HttpRequestHeaders::kOrigin,
+                         url::Origin::Create(url).Serialize()}});
 }
 
 void IpfsService::OnPreWarmComplete(
-    SimpleURLLoaderList::iterator iter,
-    std::unique_ptr<std::string> response_body) {
-  url_loaders_.erase(iter);
+    APIRequestList::iterator iter,
+    api_request_helper::APIRequestResult response) {
+  requests_list_.erase(iter);
   if (prewarm_callback_for_testing_)
     std::move(prewarm_callback_for_testing_).Run();
 }
