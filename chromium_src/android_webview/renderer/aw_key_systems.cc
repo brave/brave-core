@@ -6,7 +6,7 @@
 #include <memory>
 #include <vector>
 
-#include "media/base/key_system_properties.h"
+#include "media/base/key_system_info.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
 // In components/cdm/renderer/android_key_systems.h the declaration of

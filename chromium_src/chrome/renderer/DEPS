@@ -2,6 +2,6 @@ include_rules = [
   "+brave/components/brave_shields/common",
   "+brave/components/content_settings/renderer",
   "+brave/renderer",
-  "+media/base/key_system_properties.h",
+  "+media/base/key_system_info.h",
   "+third_party/widevine/cdm/buildflags.h",
 ]

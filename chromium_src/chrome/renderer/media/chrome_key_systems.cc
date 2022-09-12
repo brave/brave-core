@@ -6,7 +6,7 @@
 #include <memory>
 
 #include "build/build_config.h"
-#include "media/base/key_system_properties.h"
+#include "media/base/key_system_info.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
 #if BUILDFLAG(IS_ANDROID) && !BUILDFLAG(ENABLE_WIDEVINE)
