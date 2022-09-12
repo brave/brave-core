@@ -219,9 +219,6 @@ export function createHost (): Host {
       case mojom.RewardsPanelView.kAdaptiveCaptcha:
         loadAdaptiveCaptcha()
         return true
-      case mojom.RewardsPanelView.kBraveTalkOptIn:
-        stateManager.update({ requestedView: 'brave-talk-opt-in' })
-        return true
       default:
         return false
     }
@@ -264,13 +261,6 @@ export function createHost (): Host {
     }).catch(console.error)
   }
 
-  function maybeNotifyRequestAdsEnabled (enabling: boolean) {
-    if (stateManager.getState().requestedView === 'brave-talk-opt-in') {
-      chrome.braveRewards.requestAdsEnabledPopupClosed(enabling)
-      stateManager.update({ requestedView: null })
-    }
-  }
-
   async function requestPublisherInfoForExtension () {
     const tabInfo = await getCurrentTabInfo()
     if (tabInfo) {
@@ -294,15 +284,6 @@ export function createHost (): Host {
 
     apiAdapter.onPublisherDataUpdated(() => {
       updatePublisherInfo().catch(console.error)
-    })
-
-    window.addEventListener('visibilitychange', () => {
-      // If we are hiding the panel and we are currently displaying the Brave
-      // Talk opt-in, notify initators that panel is being closed without
-      // opt-in.
-      if (document.visibilityState === 'hidden') {
-        maybeNotifyRequestAdsEnabled(false)
-      }
     })
 
     // Update user settings and other data after rewards has been enabled.
@@ -416,12 +397,6 @@ export function createHost (): Host {
     enableRewards () {
       chrome.braveRewards.enableRewards()
       stateManager.update({ rewardsEnabled: true })
-
-      // The communication protocol for the Brave Talk opt-in flow requires that
-      // we call `requestAdsEnabledPopupClosed` when then user enables Rewards.
-      // This will indicate to the initiator that Rewards is in the process of
-      // starting up and it should expect to see Ads enabled soon.
-      maybeNotifyRequestAdsEnabled(true)
     },
 
     openAdaptiveCaptchaSupport () {

@@ -1486,17 +1486,6 @@
             }
           }
         ]
-      },
-      {
-        "name": "requestAdsEnabledPopupClosed",
-        "type": "function",
-        "description": "",
-        "parameters": [
-          {
-            "name": "ads_enabled",
-            "type": "boolean"
-          }
-        ]
       }
     ]
   }
