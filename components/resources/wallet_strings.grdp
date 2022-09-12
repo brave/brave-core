@@ -489,6 +489,27 @@
   <message name="IDS_BRAVE_WALLET_ASSET_FILTER_NFTS" desc="Aseet Filter Selector NFTs">NFTs</message>
   <message name="IDS_BRAVE_WALLET_ASSET_FILTER_LOW_TO_HIGH" desc="Aseet Filter Selector Low to High">Balance ↑</message>
   <message name="IDS_BRAVE_WALLET_ASSET_FILTER_HIGHT_TO_LOW" desc="Aseet Filter Selector High to Low">Balance ↓</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_SUBMITTED_TITLE" desc="Transaction submitted title">Transaction submitted</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_SUBMITTED_DESCRIPTION" desc="Transaction submitted description">Transaction has been successfully sent to the network and awaits confirmation.</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_HEADER_TITLE" desc="Transaction failed header title"><ph name="VALUE">$1<ex>1 ETH</ex></ph> was returned to your wallet</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_TITLE" desc="Transaction failed title">Transaction failed</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_DESCRIPTION" desc="Transaction failed description">Transaction was failed due to a large price movement. Increase slippage tolerance to succeed at a larger price movement.</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_SWAP_NEXT_CTA" desc="Transaction failed CTA text for swap">New trade</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_NEXT_CTA" desc="Transaction failed CTA text">New transaction</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_VIEW_ERROR_CTA" desc="Transaction failed view error CTA text">View Error</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_RECEIPT_CTA" desc="Transaction failed receipt">Receipt</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_MODAL_TITLE" desc="Transaction failed modal title">Error message</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_MODAL_SUBTITLE" desc="Transaction failed modal subtitle">Please save the error message for future reference.</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_COMPLETE_SWAP_HEADER_TITLE" desc="Transaction complete swap header title">Swapped <ph name="MAKER">$1<ex>1000 USDC</ex></ph> to <ph name="TAKER">$2<ex>1 ETH</ex></ph></message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_COMPLETE_TITLE" desc="Transaction complete title">Transaction complete!</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_COMPLETE_DESCRIPTION" desc="Transaction complete description">Transaction was successfully included in a block. To avoid the risk of double spending, we recommend waiting for block confirmations.</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_COMPLETE_RECEIPT_CTA" desc="Transaction complete receipt">Receipt</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_CONFIRMING_TITLE" desc="Transaction confirming title">Transaction is processing</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_CONFIRMING_DESCRIPTION" desc="Transaction confirming description">Transaction was successfully included in a block. To avoid the risk of double spending, we recommend waiting for block confirmations.</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_CONFIRMING_TEXT" desc="Transaction confirming text">Confirming</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_INTENT_DAPP_INTERACTION" desc="Transaction intent for dapp interactions">Dapp interaction</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_INTENT_SEND" desc="Transaction intent for transfers">Send <ph name="VALUE">$1<ex>1000 USDC</ex></ph></message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_INTENT_SWAP" desc="Transaction intent for swaps">Swap <ph name="MAKER">$1<ex>1000 USDC</ex></ph> to <ph name="TAKER">$2<ex>990 USDT</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_SECONDARY" desc="Network Filter Selector Secondary Networks">Secondary Networks</message>
   <message name="IDS_BRAVE_WALLET_EDIT_GAS_LIMIT_ERROR" desc="An eroor regarding an incorrect gas limit value">
     Gas limit must be an integer greater than 0

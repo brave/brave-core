@@ -14,7 +14,7 @@ export const HeaderTitle = styled.span`
   font-weight: 500;
   letter-spacing: 0.01em;
   color: ${p => p.theme.color.text03};
-  margin-left: auto;
+  position: absolute;
 `
 
 export const HeaderWrapper = styled.div`
@@ -24,7 +24,6 @@ export const HeaderWrapper = styled.div`
   align-items: center;
   justify-content: center;
   border-bottom: ${(p) => `1px solid ${p.theme.color.divider01}`};
-  padding: 0 12px;
   margin-bottom: 8px;
 `
 
@@ -42,7 +41,8 @@ export const CloseButton = styled(WalletButton)`
   cursor: pointer;
   width: 16px;
   height: 16px;
-  background: url(${CloseIcon});
+  background: url(${CloseIcon}) no-repeat;
   outline: none;
   border: none;
+  margin-right: 12px;
 `

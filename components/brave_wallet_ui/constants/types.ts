@@ -95,7 +95,6 @@ export type PanelTypes =
   | 'approveTransaction'
   | 'apps'
   | 'assets'
-  | 'assets'
   | 'buy'
   | 'connectHardwareWallet'
   | 'connectWithSite'
@@ -116,6 +115,7 @@ export type PanelTypes =
   | 'transactionDetails'
   | 'transactions'
   | 'currencies'
+  | 'transactionStatus'
 
 export type NavTypes =
   | 'crypto'
@@ -252,6 +252,7 @@ export interface PanelState {
   hasInitialized: boolean
   connectToSiteOrigin: BraveWallet.OriginInfo
   selectedPanel: PanelTypes
+  lastSelectedPanel?: PanelTypes
   panelTitle: string
   connectingAccounts: string[]
   addChainRequest: BraveWallet.AddChainRequest

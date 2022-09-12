@@ -6,7 +6,7 @@ import * as React from 'react'
 import { useSelector } from 'react-redux'
 
 // Constants
-import { WalletState } from '../../../../constants/types'
+import { WalletState, BraveWallet } from '../../../../constants/types'
 
 // Hooks
 import { useExplorer } from '../../../../common/hooks'
@@ -16,10 +16,7 @@ import { getLocale } from '$web-common/locale'
 
 // Styled components
 import { Panel } from '../..'
-import {
-  SubmittedIcon,
-  Title
-} from './submitted.style'
+import { SubmittedIcon, Title } from './submitted.style'
 import {
   ButtonRow,
   DetailButton,
@@ -29,35 +26,28 @@ import {
 
 interface Props {
   headerTitle: string
+  transaction: BraveWallet.TransactionInfo
   onClose: () => void
 }
 
 export const TransactionSubmitted = (props: Props) => {
-  const {
-    headerTitle,
-    onClose
-  } = props
+  const { headerTitle, transaction, onClose } = props
 
   // redux
-  const selectedNetwork = useSelector((state: { wallet: WalletState }) =>
-    state.wallet.selectedNetwork)
+  const selectedNetwork = useSelector(
+    (state: { wallet: WalletState }) => state.wallet.selectedNetwork
+  )
   const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
 
   return (
-    <Panel
-      navAction={onClose}
-      title={headerTitle}
-      headerStyle='slim'
-    >
+    <Panel navAction={onClose} title={headerTitle} headerStyle='slim'>
       <SubmittedIcon />
       <Title>{getLocale('braveWalletTransactionSubmittedTitle')}</Title>
       <TransactionStatusDescription>
         {getLocale('braveWalletTransactionSubmittedDescription')}
       </TransactionStatusDescription>
       <ButtonRow>
-        <DetailButton
-          onSubmit={onClickViewOnBlockExplorer('tx', '0x1')}
-        >
+        <DetailButton onClick={onClickViewOnBlockExplorer('tx', transaction.txHash)}>
           {getLocale('braveWalletTransactionExplorer')}
         </DetailButton>
         <LinkIcon />

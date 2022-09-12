@@ -4,6 +4,4 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 import { TransactionFailed } from './failed'
 
-export {
-  TransactionFailed
-}
+export { TransactionFailed }

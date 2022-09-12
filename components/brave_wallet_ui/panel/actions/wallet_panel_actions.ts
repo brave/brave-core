@@ -17,7 +17,7 @@ import {
   SignAllTransactionsProcessedPayload,
   SwitchEthereumChainProcessedPayload
 } from '../constants/action_types'
-import { BraveWallet } from '../../constants/types'
+import { BraveWallet, PanelTypes } from '../../constants/types'
 import { HardwareWalletResponseCodeType } from '../../common/hardware/types'
 
 export const connectToSite = createAction<AccountPayloadType>('connectToSite')
@@ -37,8 +37,9 @@ export const openWalletApps = createAction('openWalletApps')
 export const expandRestoreWallet = createAction('expandRestoreWallet')
 export const expandWalletAccounts = createAction('expandWalletAccounts')
 export const expandWalletAddAsset = createAction('expandWalletAddAsset')
-export const navigateTo = createAction<string>('navigateTo')
+export const navigateTo = createAction<PanelTypes>('navigateTo')
 export const navigateToMain = createAction('navigateToMain')
+export const navigateBack = createAction('navigateBack')
 export const signMessage = createAction<SignMessagePayload[]>('signMessage')
 export const signMessageProcessed = createAction<SignMessageProcessedPayload>('signMessageProcessed')
 export const signMessageHardware = createAction<BraveWallet.SignMessageRequest>('signMessageHardware')

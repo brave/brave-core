@@ -32,6 +32,7 @@ import useBalance from './balance'
 // Options
 import { makeNetworkAsset } from '../../options/asset-options'
 import { useSelector } from 'react-redux'
+import { toProperCase } from '../../utils/string-utils'
 
 type SolanaParamsWithLamports = Solana.CreateAccountParams | Solana.CreateAccountWithSeedParams | Solana.TransferParams | Solana.TransferWithSeedParams | Solana.WithdrawNonceParams
 
@@ -72,6 +73,7 @@ export interface ParsedTransaction extends ParsedTransactionFees {
   erc721BlockchainToken?: BraveWallet.BlockchainToken
   erc721TokenId?: string
   isSwap?: boolean
+  intent: string
 
   // Token approvals
   approvalTarget?: string
@@ -374,6 +376,9 @@ export function useTransactionParser (
             : undefined,
           isSwap: txType === BraveWallet.TransactionType.SolanaSwap,
           instructions,
+          intent: txType === BraveWallet.TransactionType.SolanaSwap
+            ? getLocale('braveWalletSwap')
+            : getLocale('braveWalletTransactionIntentDappInteraction'),
           ...feeDetails
         }
 
@@ -398,6 +403,9 @@ export function useTransactionParser (
           ? new Amount(amount).gt(accountTokenBalance)
           : undefined
 
+        const valueWrapped = new Amount(amount)
+          .divideByDecimals(token?.decimals ?? 18)
+
         return {
           hash: transactionInfo.txHash,
           nonce,
@@ -412,18 +420,16 @@ export function useTransactionParser (
           formattedNativeCurrencyTotal: sendAmountFiat
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork.symbol),
-          value: new Amount(amount)
-            .divideByDecimals(token?.decimals ?? 18)
-            .format(6),
-          valueExact: new Amount(amount)
-            .divideByDecimals(token?.decimals ?? 18)
-            .format(),
+          value: valueWrapped.format(6),
+          valueExact: valueWrapped.format(),
           symbol: token?.symbol ?? '',
           decimals: token?.decimals ?? 18,
           insufficientFundsError: insufficientTokenFunds,
           insufficientFundsForGasError: insufficientNativeFunds,
           contractAddressError: checkForContractAddressError(address),
           sameAddressError: checkForSameAddressError(address, fromAddress),
+          intent: getLocale('braveWalletTransactionIntentSend')
+            .replace('$1', valueWrapped.formatAsAsset(6, token?.symbol)),
           ...feeDetails
         } as ParsedTransaction
       }
@@ -442,6 +448,8 @@ export function useTransactionParser (
         const insufficientNativeFunds = accountNativeBalance !== ''
           ? new Amount(gasFee).gt(accountNativeBalance)
           : undefined
+
+        const erc721TokenId = tokenID && `#${Amount.normalize(tokenID)}`
 
         return {
           hash: transactionInfo.txHash,
@@ -464,9 +472,11 @@ export function useTransactionParser (
           insufficientFundsForGasError: insufficientNativeFunds,
           insufficientFundsError: false,
           erc721BlockchainToken: token,
-          erc721TokenId: tokenID && `#${Amount.normalize(tokenID)}`,
+          erc721TokenId,
           contractAddressError: checkForContractAddressError(toAddress),
           sameAddressError: checkForSameAddressError(toAddress, owner),
+          intent: getLocale('braveWalletTransactionIntentSend')
+            .replace('$1', `${token?.symbol ?? ''} ${erc721TokenId}`),
           ...feeDetails
         } as ParsedTransaction
       }
@@ -508,6 +518,7 @@ export function useTransactionParser (
           insufficientFundsForGasError: insufficientNativeFunds,
           insufficientFundsError: false,
           sameAddressError: checkForSameAddressError(address, fromAddress),
+          intent: toProperCase(getLocale('braveWalletApprovalTransactionIntent')) + ' ' + token?.symbol ?? '',
           ...feeDetails
         } as ParsedTransaction
       }
@@ -529,6 +540,9 @@ export function useTransactionParser (
           ? new Amount(value).gt(accountTokenBalance)
           : undefined
 
+        const valueWrapped = new Amount(value)
+          .divideByDecimals(token?.decimals ?? 9)
+
         return {
           hash: transactionInfo.txHash,
           nonce,
@@ -543,18 +557,16 @@ export function useTransactionParser (
           formattedNativeCurrencyTotal: sendAmountFiat
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork.symbol),
-          value: new Amount(value)
-            .divideByDecimals(token?.decimals ?? 9)
-            .format(6),
-          valueExact: new Amount(value)
-            .divideByDecimals(token?.decimals ?? 9)
-            .format(),
+          value: valueWrapped.format(6),
+          valueExact: valueWrapped.format(),
           symbol: token?.symbol ?? '',
           decimals: token?.decimals ?? 9,
           insufficientFundsError: insufficientTokenFunds,
           insufficientFundsForGasError: insufficientNativeFunds,
           contractAddressError: checkForContractAddressError(solTxData?.toWalletAddress ?? ''),
           sameAddressError: checkForSameAddressError(solTxData?.toWalletAddress ?? '', fromAddress),
+          intent: getLocale('braveWalletTransactionIntentSend')
+            .replace('$1', valueWrapped.formatAsAsset(6, token?.symbol)),
           ...feeDetails
         } as ParsedTransaction
       }
@@ -565,7 +577,7 @@ export function useTransactionParser (
         const fillContracts = fillPath
           .slice(2)
           .match(/.{1,40}/g)
-        const fillTokens = (fillContracts || [])
+        const fillTokens: BraveWallet.BlockchainToken[] = (fillContracts || [])
           .map(path => '0x' + path)
           .map(address =>
             address === NATIVE_ASSET_CONTRACT_ADDRESS_0X
@@ -626,6 +638,9 @@ export function useTransactionParser (
           sellAmount: sellAmountBN,
           buyToken,
           minBuyAmount: buyAmount,
+          intent: getLocale('braveWalletTransactionIntentSwap')
+            .replace('$1', sellAmountBN.formatAsAsset(6, sellToken.symbol))
+            .replace('$2', buyAmount.formatAsAsset(6, buyToken.symbol)),
           ...feeDetails
         } as ParsedTransaction
       }
@@ -639,6 +654,9 @@ export function useTransactionParser (
 
         const totalAmountFiat = new Amount(gasFeeFiat)
           .plus(sendAmountFiat)
+
+        const valueWrapped = new Amount(value)
+          .divideByDecimals(selectedNetwork.decimals)
 
         return {
           hash: transactionInfo.txHash,
@@ -654,12 +672,8 @@ export function useTransactionParser (
           formattedNativeCurrencyTotal: sendAmountFiat
             .div(networkSpotPrice)
             .formatAsAsset(6, selectedNetwork.symbol),
-          value: new Amount(value)
-            .divideByDecimals(selectedNetwork.decimals)
-            .format(6),
-          valueExact: new Amount(value)
-            .divideByDecimals(selectedNetwork.decimals)
-            .format(),
+          value: valueWrapped.format(6),
+          valueExact: valueWrapped.format(),
           symbol: selectedNetwork.symbol,
           decimals: selectedNetwork?.decimals ?? 18,
           insufficientFundsError: accountNativeBalance !== ''
@@ -671,6 +685,8 @@ export function useTransactionParser (
             ? new Amount(gasFee).gt(accountNativeBalance)
             : undefined,
           isSwap: to.toLowerCase() === SwapExchangeProxy,
+          intent: getLocale('braveWalletTransactionIntentSend')
+            .replace('$1', valueWrapped.formatAsAsset(6, selectedNetwork.symbol)),
           ...feeDetails
         } as ParsedTransaction
       }
