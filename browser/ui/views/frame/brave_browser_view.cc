@@ -179,12 +179,12 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
   }
 
   // Wrap chromium side panel with our sidebar container
-  auto original_side_panel = RemoveChildViewT(right_aligned_side_panel_.get());
+  auto original_side_panel = RemoveChildViewT(unified_side_panel_.get());
   sidebar_container_view_ =
       contents_container_->AddChildView(std::make_unique<SidebarContainerView>(
           GetBraveBrowser(), side_panel_coordinator(),
           std::move(original_side_panel)));
-  right_aligned_side_panel_ = sidebar_container_view_->side_panel();
+  unified_side_panel_ = sidebar_container_view_->side_panel();
   contents_container_->SetLayoutManager(
       std::make_unique<BraveContentsLayoutManager>(
           devtools_web_view_, contents_web_view_, sidebar_container_view_));
