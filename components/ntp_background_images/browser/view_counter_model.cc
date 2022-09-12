@@ -21,10 +21,17 @@ void ViewCounterModel::SetCampaignsTotalBrandedImageCount(
     const std::vector<size_t>& campaigns_total_image_count) {
   campaigns_total_branded_image_count_ = campaigns_total_image_count;
   total_campaign_count_ = campaigns_total_branded_image_count_.size();
+
+  // Pick the first image index for each campaign randomly for SI
   for (size_t i = 0; i < total_campaign_count_; ++i) {
-    campaigns_current_branded_image_index_.push_back(0);
+    const int index =
+        always_show_branded_wallpaper_
+            ? 0
+            : base::RandInt(0, campaigns_total_branded_image_count_[i] - 1);
+    campaigns_current_branded_image_index_.push_back(index);
   }
-  // Pick the first campaign randomly.
+
+  // Pick the first campaign index randomly.
   current_campaign_index_ = base::RandInt(0, total_campaign_count_ - 1);
 }
 
@@ -75,16 +82,29 @@ void ViewCounterModel::RegisterPageViewForBrandedImages() {
   // view of the branded wallpaper.
   count_to_branded_wallpaper_--;
   if (count_to_branded_wallpaper_ < 0) {
-    // Reset count and increase image index for next time.
+    // Reset count and randomize image index for next time.
     count_to_branded_wallpaper_ = kRegularCountToBrandedWallpaper;
-    campaigns_current_branded_image_index_[current_campaign_index_]++;
-    campaigns_current_branded_image_index_[current_campaign_index_] %=
-        campaigns_total_branded_image_count_[current_campaign_index_];
 
-    // Increase campaign index for next time.
-    current_campaign_index_++;
-    current_campaign_index_ %= total_campaign_count_;
-    return;
+    if (always_show_branded_wallpaper_) {
+      // Reset count and increse image index for next time.
+      count_to_branded_wallpaper_ = kRegularCountToBrandedWallpaper;
+      campaigns_current_branded_image_index_[current_campaign_index_]++;
+      campaigns_current_branded_image_index_[current_campaign_index_] %=
+          campaigns_total_branded_image_count_[current_campaign_index_];
+
+      // Increse campaign index for next time.
+      current_campaign_index_++;
+      current_campaign_index_ %= total_campaign_count_;
+    } else {
+      // Randomize SI campaign branded image index for next time.
+      campaigns_current_branded_image_index_[current_campaign_index_] =
+          base::RandInt(
+              0, campaigns_total_branded_image_count_[current_campaign_index_] -
+                     1);
+
+      // Randomize campaign index for next time.
+      current_campaign_index_ = base::RandInt(0, total_campaign_count_ - 1);
+    }
   }
 }
 

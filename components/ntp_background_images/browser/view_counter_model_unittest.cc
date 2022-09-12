@@ -33,104 +33,28 @@ TEST(ViewCounterModelTest, NTPSponsoredImagesTest) {
     model.RegisterPageView();
   }
 
-  // (campaign index, image index)
-  // Image at index (1, 0) should be displayed now after loading initial count.
-  EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
-  auto current_index = model.GetCurrentBrandedImageIndex();
-  EXPECT_EQ(1UL, std::get<0>(current_index));
-  EXPECT_EQ(0UL, std::get<1>(current_index));
-  model.RegisterPageView();
+  for (int i = 0; i < 30; i++) {
+    // Random image should be displayed now after loading initial count.
+    EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
 
-  // Loading regular-count times.
-  for (int i = 0; i < ViewCounterModel::kRegularCountToBrandedWallpaper; ++i) {
-    EXPECT_FALSE(model.ShouldShowBrandedWallpaper());
+    const std::tuple</*campaign index*/ size_t, /*image index*/ size_t>
+        current_index = model.GetCurrentBrandedImageIndex();
+    const size_t campaign_index = std::get<0>(current_index);
+    const size_t image_index = std::get<1>(current_index);
+
+    EXPECT_TRUE(campaign_index >= 0 &&
+                campaign_index < kTestCampaignsTotalImageCount.size());
+    EXPECT_TRUE(image_index >= 0 &&
+                image_index < kTestCampaignsTotalImageCount.at(campaign_index));
     model.RegisterPageView();
+
+    // Loading regular-count times.
+    for (int i = 0; i < ViewCounterModel::kRegularCountToBrandedWallpaper;
+         ++i) {
+      EXPECT_FALSE(model.ShouldShowBrandedWallpaper());
+      model.RegisterPageView();
+    }
   }
-
-  // Image at index (2, 0) should be displayed now because
-  EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
-  current_index = model.GetCurrentBrandedImageIndex();
-  EXPECT_EQ(2UL, std::get<0>(current_index));
-  EXPECT_EQ(0UL, std::get<1>(current_index));
-  model.RegisterPageView();
-
-  // Loading regular-count times again.
-  for (int i = 0; i < ViewCounterModel::kRegularCountToBrandedWallpaper; ++i) {
-    EXPECT_FALSE(model.ShouldShowBrandedWallpaper());
-    model.RegisterPageView();
-  }
-
-  // Image at index (0, 0) should be displayed now.
-  EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
-  current_index = model.GetCurrentBrandedImageIndex();
-  EXPECT_EQ(0UL, std::get<0>(current_index));
-  EXPECT_EQ(0UL, std::get<1>(current_index));
-  model.RegisterPageView();
-
-  // Loading regular-count times again.
-  for (int i = 0; i < ViewCounterModel::kRegularCountToBrandedWallpaper; ++i) {
-    EXPECT_FALSE(model.ShouldShowBrandedWallpaper());
-    model.RegisterPageView();
-  }
-
-  // Image at index (1, 1) should be displayed now.
-  EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
-  current_index = model.GetCurrentBrandedImageIndex();
-  EXPECT_EQ(1UL, std::get<0>(current_index));
-  EXPECT_EQ(1UL, std::get<1>(current_index));
-  model.RegisterPageView();
-
-  // Loading regular-count times again.
-  for (int i = 0; i < ViewCounterModel::kRegularCountToBrandedWallpaper; ++i) {
-    EXPECT_FALSE(model.ShouldShowBrandedWallpaper());
-    model.RegisterPageView();
-  }
-
-  // Image at index (2, 1) should be displayed now.
-  EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
-  current_index = model.GetCurrentBrandedImageIndex();
-  EXPECT_EQ(2UL, std::get<0>(current_index));
-  EXPECT_EQ(1UL, std::get<1>(current_index));
-  model.RegisterPageView();
-
-  // Loading regular-count times again.
-  for (int i = 0; i < ViewCounterModel::kRegularCountToBrandedWallpaper; ++i) {
-    EXPECT_FALSE(model.ShouldShowBrandedWallpaper());
-    model.RegisterPageView();
-  }
-
-  // Image at index (0, 1) should be displayed now.
-  EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
-  current_index = model.GetCurrentBrandedImageIndex();
-  EXPECT_EQ(0UL, std::get<0>(current_index));
-  EXPECT_EQ(1UL, std::get<1>(current_index));
-  model.RegisterPageView();
-
-  // Loading regular-count times again.
-  for (int i = 0; i < ViewCounterModel::kRegularCountToBrandedWallpaper; ++i) {
-    EXPECT_FALSE(model.ShouldShowBrandedWallpaper());
-    model.RegisterPageView();
-  }
-
-  // Image at index (1, 0) should be displayed now.
-  EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
-  current_index = model.GetCurrentBrandedImageIndex();
-  EXPECT_EQ(1UL, std::get<0>(current_index));
-  EXPECT_EQ(0UL, std::get<1>(current_index));
-  model.RegisterPageView();
-
-  // Loading regular-count times again.
-  for (int i = 0; i < ViewCounterModel::kRegularCountToBrandedWallpaper; ++i) {
-    EXPECT_FALSE(model.ShouldShowBrandedWallpaper());
-    model.RegisterPageView();
-  }
-
-  // Image at index (2, 2) should be displayed now.
-  EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
-  current_index = model.GetCurrentBrandedImageIndex();
-  EXPECT_EQ(2UL, std::get<0>(current_index));
-  EXPECT_EQ(2UL, std::get<1>(current_index));
-  model.RegisterPageView();
 }
 
 TEST(ViewCounterModelTest, NTPBackgroundImagesTest) {
