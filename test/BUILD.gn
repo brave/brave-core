@@ -474,6 +474,7 @@ test("brave_unit_tests") {
 
     deps += [
       "//brave/browser/extensions",
+      "//brave/browser/importer:unit_tests",
       "//brave/common/importer",
       "//chrome/browser/extensions",
       "//components/crx_file",

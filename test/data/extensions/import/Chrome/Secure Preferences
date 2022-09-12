@@ -1,0 +1,62 @@
+{
+	"extensions": {
+		"settings" : {
+            "id0": {
+            	"was_installed_by_default":  false,
+            	"state":  1,
+            	"from_webstore": true,
+            	"manifest": {
+            		"key": "0"
+            	}
+            },
+            "id1": {
+            	"was_installed_by_default":  false,
+            	"state":  1,
+            	"from_webstore": true,
+            	"manifest": {
+            		"key": "1"
+            	}
+            },
+            "id2": {
+            	"was_installed_by_default":  false,
+            	"state":  1,
+            	"from_webstore": true,
+            	"manifest": {
+            		"key": "2"
+            	}
+            },
+            "id3": {
+            	"was_installed_by_default":  false,
+            	"state":  1,
+            	"from_webstore": true,
+            	"manifest": {
+            	  "key": "3"
+            	}
+            },
+            "id4": {
+            	"was_installed_by_default":  true,
+            	"state":  1,
+            	"from_webstore": true,
+            	"manifest": {
+            	  "key": "4"
+            	}
+            },
+            "id5": {
+            	"was_installed_by_default":  false,
+            	"state":  0,
+            	"from_webstore": true,
+            	"manifest": {
+            	  "key": "5"
+            	}
+            },
+            "id6": {
+            	"was_installed_by_default":  false,
+            	"state":  0,
+            	"from_webstore": false,
+            	"manifest": {
+            	  "key": "6"
+            	}
+            }
+		}
+	}
+}

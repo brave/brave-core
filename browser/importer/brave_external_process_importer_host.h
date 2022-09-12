@@ -6,9 +6,13 @@
 #ifndef BRAVE_BROWSER_IMPORTER_BRAVE_EXTERNAL_PROCESS_IMPORTER_HOST_H_
 #define BRAVE_BROWSER_IMPORTER_BRAVE_EXTERNAL_PROCESS_IMPORTER_HOST_H_
 
+#include <string>
+#include <vector>
+
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "chrome/browser/importer/external_process_importer_host.h"
+#include "chrome/common/extensions/webstore_install_result.h"
 #include "extensions/buildflags/buildflags.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -19,21 +23,37 @@ class BraveExternalProcessImporterHost : public ExternalProcessImporterHost {
       delete;
   BraveExternalProcessImporterHost& operator=(
       const BraveExternalProcessImporterHost&) = delete;
+  using MockedInstallCallback =
+      base::RepeatingCallback<void(const std::string&)>;
 
  private:
   friend class ExternalProcessImporterHost;
+  friend class BraveExternalProcessImporterHostUnitTest;
 
   ~BraveExternalProcessImporterHost() override;
+  void OnExtensionInstalled(const std::string& extension_id,
+                            bool success,
+                            const std::string& error,
+                            extensions::webstore_install::Result result);
+  void ImportExtensions(std::vector<std::string> extensions_list);
+  void InstallExtension(const std::string& id);
+  void OnExtensionSettingsRemoved(const std::string& extension_id);
+
+  void DoNotLaunchImportForTesting();
+  void SetInstallExtensionCallbackForTesting(MockedInstallCallback callback);
+  void SetSettingsRemovedCallbackForTesting(base::RepeatingClosure callback);
 
   // ExternalProcessImporterHost overrides:
   void NotifyImportEnded() override;
-
+  void LaunchImportIfReady() override;
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   void LaunchExtensionsImport();
   void OnGetChromeExtensionsList(
       absl::optional<base::Value::Dict> extensions_list);
 #endif
-
+  bool do_not_launch_import_for_testing_ = false;
+  MockedInstallCallback install_extension_callback_for_testing_;
+  base::RepeatingClosure settings_removed_callback_for_testing_;
   // Vends weak pointers for the importer to call us back.
   base::WeakPtrFactory<BraveExternalProcessImporterHost> weak_ptr_factory_;
 };
