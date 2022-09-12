@@ -73,14 +73,14 @@ void DatabaseMigration::Start(uint32_t table_version,
   const uint32_t start_version = table_version + 1;
   DCHECK_GT(start_version, 0u);
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
   int migrated_version = table_version;
   const uint32_t target_version = ledger::is_testing && test_target_version_
                                       ? test_target_version_
                                       : database::GetCurrentVersion();
 
   if (target_version == table_version) {
-    callback(type::Result::LEDGER_OK);
+    callback(mojom::Result::LEDGER_OK);
     return;
   }
 
@@ -144,16 +144,16 @@ void DatabaseMigration::Start(uint32_t table_version,
     migrated_version = i;
   }
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::MIGRATE;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::MIGRATE;
 
   transaction->version = migrated_version;
   transaction->compatible_version =
       database::GetCompatibleVersion();
   transaction->commands.push_back(std::move(command));
 
-  command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::VACUUM;
+  command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::VACUUM;
   transaction->commands.push_back(std::move(command));
 
   const std::string message = base::StringPrintf(
@@ -163,18 +163,17 @@ void DatabaseMigration::Start(uint32_t table_version,
 
   ledger_->RunDBTransaction(
       std::move(transaction),
-      [this, callback, message](type::DBCommandResponsePtr response) {
+      [this, callback, message](mojom::DBCommandResponsePtr response) {
         if (response &&
-            response->status ==
-              type::DBCommandResponse::Status::RESPONSE_OK) {
+            response->status == mojom::DBCommandResponse::Status::RESPONSE_OK) {
           ledger_->database()->SaveEventLog(
               log::kDatabaseMigrated,
               message);
-          callback(type::Result::LEDGER_OK);
+          callback(mojom::Result::LEDGER_OK);
           return;
         }
 
-        callback(type::Result::LEDGER_ERROR);
+        callback(mojom::Result::LEDGER_ERROR);
       });
 }
 
@@ -182,17 +181,16 @@ void DatabaseMigration::SetTargetVersionForTesting(uint32_t version) {
   test_target_version_ = version;
 }
 
-void DatabaseMigration::GenerateCommand(
-    type::DBTransaction* transaction,
-    const std::string& query) {
+void DatabaseMigration::GenerateCommand(mojom::DBTransaction* transaction,
+                                        const std::string& query) {
   DCHECK(transaction);
 
   std::string optimized_query = query;
   // remove all unnecessary spaces and new lines
   re2::RE2::GlobalReplace(&optimized_query, "\\s\\s+", " ");
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::EXECUTE;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::EXECUTE;
   command->command = optimized_query;
   transaction->commands.push_back(std::move(command));
 }

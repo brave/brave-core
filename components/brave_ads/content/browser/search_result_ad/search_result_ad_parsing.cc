@@ -5,12 +5,12 @@
 
 #include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_parsing.h"
 
-#include <algorithm>
 #include <utility>
 #include <vector>
 
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/flat_set.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -208,9 +208,8 @@ absl::optional<SearchResultAdMap> ParseSearchResultAdMapEntityProperties(
       base::flat_set<base::StringPiece> found_attributes;
       for (const auto& ad_property : ad_entity->properties) {
         // Wrong attribute name
-        const auto* it = std::find(kSearchResultAdAttributes.begin(),
-                                   kSearchResultAdAttributes.end(),
-                                   base::StringPiece(ad_property->name));
+        const auto* it = base::ranges::find(
+            kSearchResultAdAttributes, base::StringPiece(ad_property->name));
 
         if (it == kSearchResultAdAttributes.end()) {
           LOG(ERROR) << "Wrong search result ad attribute specified: "

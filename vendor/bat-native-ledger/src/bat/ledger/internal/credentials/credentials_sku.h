@@ -31,51 +31,51 @@ class CredentialsSKU : public Credentials {
  private:
   void OnStart(ledger::ResultCallback callback,
                const CredentialsTrigger& trigger,
-               type::CredsBatchPtr creds);
+               mojom::CredsBatchPtr creds);
 
   void Blind(ledger::ResultCallback callback,
              const CredentialsTrigger& trigger) override;
 
   void OnBlind(ledger::ResultCallback callback,
                const CredentialsTrigger& trigger,
-               type::Result result);
+               mojom::Result result);
 
   void RetryPreviousStepSaved(ledger::ResultCallback callback,
-                              type::Result result);
+                              mojom::Result result);
 
   void Claim(ledger::ResultCallback callback,
              const CredentialsTrigger& trigger,
-             type::CredsBatchPtr creds) override;
+             mojom::CredsBatchPtr creds) override;
 
   void OnClaim(ledger::ResultCallback callback,
                const CredentialsTrigger& trigger,
-               type::Result result);
+               mojom::Result result);
 
   void ClaimStatusSaved(ledger::ResultCallback callback,
                         const CredentialsTrigger& trigger,
-                        type::Result result);
+                        mojom::Result result);
 
   void FetchSignedCreds(ledger::ResultCallback callback,
                         const CredentialsTrigger& trigger);
 
   void OnFetchSignedCreds(ledger::ResultCallback callback,
                           const CredentialsTrigger& trigger,
-                          type::Result result,
-                          type::CredsBatchPtr batch);
+                          mojom::Result result,
+                          mojom::CredsBatchPtr batch);
 
   void SignedCredsSaved(ledger::ResultCallback callback,
                         const CredentialsTrigger& trigger,
-                        type::Result result);
+                        mojom::Result result);
 
   void Unblind(ledger::ResultCallback callback,
                const CredentialsTrigger& trigger,
-               type::CredsBatchPtr creds) override;
+               mojom::CredsBatchPtr creds) override;
 
   void Completed(ledger::ResultCallback callback,
                  const CredentialsTrigger& trigger,
-                 type::Result result) override;
+                 mojom::Result result) override;
 
-  void OnRedeemTokens(type::Result result,
+  void OnRedeemTokens(mojom::Result result,
                       const std::vector<std::string>& token_id_list,
                       const CredentialsRedeem& redeem,
                       ledger::LegacyResultCallback callback);

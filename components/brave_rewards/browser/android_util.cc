@@ -8,10 +8,10 @@
 
 namespace android_util {
 
-ledger::type::ClientInfoPtr GetAndroidClientInfo() {
-  auto info = ledger::type::ClientInfo::New();
-  info->platform = ledger::type::Platform::ANDROID_R;
-  info->os = ledger::type::OperatingSystem::UNDEFINED;
+ledger::mojom::ClientInfoPtr GetAndroidClientInfo() {
+  auto info = ledger::mojom::ClientInfo::New();
+  info->platform = ledger::mojom::Platform::ANDROID_R;
+  info->os = ledger::mojom::OperatingSystem::UNDEFINED;
   return info;
 }
 

@@ -1459,36 +1459,6 @@ Are you sure you want to do this?
       <message name="IDS_REWARDS_PAYOUT" desc="Brave rewards welcome layout button text">
         Your 1st rewards payout will arrive by:
       </message>
-      <message name="IDS_BRAVE_TALK_TURN_ON_REWARDS_TEXT" desc="Turn on brave rewards">
-        To start a free call, turn on Brave Rewards
-      </message>
-      <message name="IDS_BRAVE_TALK_REWARDS_DESCRIPTION_TEXT" desc="Brave rewards description">
-        With Brave Rewards, you earn tokens for viewing private ads (your data is safe). Turn those tokens into cash, gift cards…or even tip the websites you love. No tracking. No slow downs.
-      </message>
-      <message name="IDS_BRAVE_TALK_TURN_ON_REWARDS_BUTTON_TEXT" desc="Turn on brave rewards button">
-        Turn on Rewards
-      </message>
-      <message name="IDS_BRAVE_TALK_REWARDS_TOS_PRIVACY_POLICY_TEXT" desc="Brave rewards terms of service and privacy policy">
-        By enabling, you agree to the <ph name="TERMS_OF_SERVICE">%1$s</ph> and <ph name="PRIVACY_POLICY">%2$s</ph>.
-      </message>
-      <message name="IDS_BRAVE_TALK_TURN_ON_PRIVATE_ADS_TEXT" desc="Turn on brave private ads">
-        To start a free call, enable Brave Private Ads
-      </message>
-      <message name="IDS_BRAVE_TALK_PRIVATE_ADS_DESCRIPTION_TEXT" desc="Brave private ads description">
-        With Brave Private Ads, you earn tokens for viewing private ads (your data is safe). Turn those tokens into cash, gift cards…or even tip the websites you love. No tracking. No slow downs.
-      </message>
-      <message name="IDS_BRAVE_TALK_TURN_ON_PRIVATE_ADS_BUTTON_TEXT" desc="Turn on brave private ads button">
-        Turn on Brave Private Ads
-      </message>
-      <message name="IDS_BRAVE_TALK_START_FREE_CALL_TEXT" desc="Brave talk start call popup header">
-        You can now start a free call
-      </message>
-      <message name="IDS_BRAVE_TALK_TAP_ANYWHERE_TEXT" desc="Brave talk continue popup text">
-        Click or tap anywhere on the screen to continue to Brave Talk.
-      </message>
-      <message name="IDS_BRAVE_TALK_WANT_LEARN_MORE_TEXT" desc="Brave talk learn more popup text">
-        Want to learn more about Brave Rewards? <ph name="TAKE_QUICK_TOUR">%1$s</ph>.
-      </message>
       <message name="IDS_AUTOMATICALLY_OPEN_WHEN_POSSIBLE_TITLE" desc="Title for preference that allows the user to open downloads automatically.">
         Automatically open when possible
       </message>
@@ -2795,7 +2765,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Allow this site to add a network?
     </message>
     <message name="IDS_BRAVE_WALLET_READ_ENCRYPTED_MESSAGE_TITLE" desc="Read encrypted message panel title">
-      This DApp would like to read this message to complete your request.      
+      This DApp would like to read this message to complete your request.
     </message>
     <message name="IDS_BRAVE_WALLET_READ_ENCRYPTED_MESSAGE_DECRYPT_BUTTON" desc="Read encrypted message panel decrypt button">
       Decrypt message
@@ -2948,7 +2918,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       <ph name="CLICK_START">%1$s</ph>Learn more about using Rainbow Bridge<ph name="CLICK_END">%2$s</ph>
     </message>
     <message name="IDS_BRAVE_WALLET_RAINBOW_BRIDGE_RISKS_LEARN_MORE" desc="Rainbow Bridge security walk-through link description">
-      <ph name="CLICK_START">%1$s</ph>Learn how to reduce risk on Rainbow Bridge<ph name="CLICK_END">%2$s</ph> 
+      <ph name="CLICK_START">%1$s</ph>Learn how to reduce risk on Rainbow Bridge<ph name="CLICK_END">%2$s</ph>
     </message>
     <message name="IDS_BRAVE_WALLET_AURORA_MODAL_DESCRIPTION" desc="Bridge to Aurora modal description">
       <ph name="APP_NAME"><ex>Rainbow Bridge</ex>%1$s</ph> is an independent service that helps you bridge assets across networks, and use your crypto on other networks and DApp ecosystems. Bridging assets to other networks has some risks.

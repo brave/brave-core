@@ -30,47 +30,47 @@ std::string GetDrain::GetUrl(const std::string& drain_id) {
   return GetServerUrl("/v1/promotions/drain/" + drain_id);
 }
 
-type::Result GetDrain::CheckStatusCode(const int status_code) {
+mojom::Result GetDrain::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   if (status_code == net::HTTP_NOT_FOUND) {
     BLOG(0, "Drain ID URL param not found");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
 void GetDrain::Request(const std::string& drain_id, GetDrainCallback callback) {
   auto url_callback = std::bind(&GetDrain::OnRequest, this, _1, callback);
 
-  auto request = type::UrlRequest::New();
+  auto request = mojom::UrlRequest::New();
   request->url = GetUrl(drain_id);
-  request->method = type::UrlMethod::GET;
+  request->method = mojom::UrlMethod::GET;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
-void GetDrain::OnRequest(const type::UrlResponse& response,
+void GetDrain::OnRequest(const mojom::UrlResponse& response,
                          GetDrainCallback callback) {
   ledger::LogUrlResponse(__func__, response);
   auto result = CheckStatusCode(response.status_code);
-  if (result != type::Result::LEDGER_OK) {
-    callback(type::Result::LEDGER_ERROR, type::DrainStatus::INVALID);
+  if (result != mojom::Result::LEDGER_OK) {
+    callback(mojom::Result::LEDGER_ERROR, mojom::DrainStatus::INVALID);
     return;
   }
 
   absl::optional<base::Value> value = base::JSONReader::Read(response.body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    callback(type::Result::LEDGER_ERROR, type::DrainStatus::INVALID);
+    callback(mojom::Result::LEDGER_ERROR, mojom::DrainStatus::INVALID);
     return;
   }
 
@@ -78,29 +78,29 @@ void GetDrain::OnRequest(const type::UrlResponse& response,
   const auto* drain_id = dict.FindString("drainId");
   if (!drain_id) {
     BLOG(0, "Missing key drain id");
-    callback(type::Result::LEDGER_ERROR, type::DrainStatus::INVALID);
+    callback(mojom::Result::LEDGER_ERROR, mojom::DrainStatus::INVALID);
     return;
   }
 
   auto* status = dict.FindString("status");
   if (!status) {
     BLOG(0, "Missing key status");
-    callback(type::Result::LEDGER_ERROR, type::DrainStatus::INVALID);
+    callback(mojom::Result::LEDGER_ERROR, mojom::DrainStatus::INVALID);
     return;
   }
 
-  auto drain_status = type::DrainStatus::INVALID;
+  auto drain_status = mojom::DrainStatus::INVALID;
   if (*status == "complete") {
-    drain_status = type::DrainStatus::COMPLETE;
+    drain_status = mojom::DrainStatus::COMPLETE;
   } else if (*status == "pending") {
-    drain_status = type::DrainStatus::PENDING;
+    drain_status = mojom::DrainStatus::PENDING;
   } else if (*status == "delayed") {
-    drain_status = type::DrainStatus::DELAYED;
+    drain_status = mojom::DrainStatus::DELAYED;
   } else if (*status == "in-progress") {
-    drain_status = type::DrainStatus::IN_PROGRESS;
+    drain_status = mojom::DrainStatus::IN_PROGRESS;
   } else {
     BLOG(0, "Invalid drain status.");
-    callback(type::Result::LEDGER_ERROR, drain_status);
+    callback(mojom::Result::LEDGER_ERROR, drain_status);
     return;
   }
 

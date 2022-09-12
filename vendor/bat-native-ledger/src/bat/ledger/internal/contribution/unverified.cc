@@ -40,7 +40,7 @@ void Unverified::FetchInfoForUnverifiedPublishers(
     const auto publisher_key = std::move(publisher_keys.back());
     ledger_->publisher()->FetchServerPublisherInfo(
         publisher_key, [this, publisher_keys = std::move(publisher_keys)](
-                           type::ServerPublisherInfoPtr) mutable {
+                           mojom::ServerPublisherInfoPtr) mutable {
           publisher_keys.pop_back();
           FetchInfoForUnverifiedPublishers(std::move(publisher_keys));
         });
@@ -55,10 +55,9 @@ void Unverified::ProcessNext() {
       &Unverified::OnContributeUnverifiedBalance, base::Unretained(this)));
 }
 
-void Unverified::OnContributeUnverifiedBalance(
-    type::Result result,
-    type::BalancePtr properties) {
-  if (result != type::Result::LEDGER_OK || !properties) {
+void Unverified::OnContributeUnverifiedBalance(mojom::Result result,
+                                               mojom::BalancePtr properties) {
+  if (result != mojom::Result::LEDGER_OK || !properties) {
     BLOG(0, "Balance is null");
     return ProcessingCompleted();
   }
@@ -72,7 +71,7 @@ void Unverified::OnContributeUnverifiedBalance(
 
 void Unverified::OnContributeUnverifiedPublishers(
     double balance,
-    const type::PendingContributionInfoList& list) {
+    const std::vector<mojom::PendingContributionInfoPtr>& list) {
   if (list.empty()) {
     BLOG(1, "List is empty");
     return ProcessingCompleted();
@@ -81,9 +80,7 @@ void Unverified::OnContributeUnverifiedPublishers(
   if (balance == 0) {
     BLOG(0, "Not enough funds");
     ledger_->ledger_client()->OnContributeUnverifiedPublishers(
-        type::Result::PENDING_NOT_ENOUGH_FUNDS,
-        "",
-        "");
+        mojom::Result::PENDING_NOT_ENOUGH_FUNDS, "", "");
     return ProcessingCompleted();
   }
 
@@ -96,7 +93,7 @@ void Unverified::OnContributeUnverifiedPublishers(
 
   const auto now = util::GetCurrentTimeStamp();
 
-  type::PendingContributionInfoPtr current;
+  mojom::PendingContributionInfoPtr current;
 
   for (const auto& item : list) {
     // remove pending contribution if it's over expiration date
@@ -116,8 +113,8 @@ void Unverified::OnContributeUnverifiedPublishers(
 
     // If the publisher is still not verified,
     // leave the contribution in the pending table.
-    if (item->status == type::PublisherStatus::NOT_VERIFIED ||
-        item->status == type::PublisherStatus::CONNECTED) {
+    if (item->status == mojom::PublisherStatus::NOT_VERIFIED ||
+        item->status == mojom::PublisherStatus::CONNECTED) {
       continue;
     }
 
@@ -144,21 +141,19 @@ void Unverified::OnContributeUnverifiedPublishers(
   if (balance < current->amount) {
     BLOG(0, "Not enough funds");
     ledger_->ledger_client()->OnContributeUnverifiedPublishers(
-        type::Result::PENDING_NOT_ENOUGH_FUNDS,
-        "",
-        "");
+        mojom::Result::PENDING_NOT_ENOUGH_FUNDS, "", "");
     return ProcessingCompleted();
   }
 
-  type::ContributionQueuePublisherList queue_list;
-  auto publisher = type::ContributionQueuePublisher::New();
+  std::vector<mojom::ContributionQueuePublisherPtr> queue_list;
+  auto publisher = mojom::ContributionQueuePublisher::New();
   publisher->publisher_key = current->publisher_key;
   publisher->amount_percent = 100.0;
   queue_list.push_back(std::move(publisher));
 
-  auto queue = type::ContributionQueue::New();
+  auto queue = mojom::ContributionQueue::New();
   queue->id = base::GenerateGUID();
-  queue->type = type::RewardsType::ONE_TIME_TIP;
+  queue->type = mojom::RewardsType::ONE_TIME_TIP;
   queue->amount = current->amount;
   queue->partial = false;
   queue->publishers = std::move(queue_list);
@@ -171,10 +166,9 @@ void Unverified::OnContributeUnverifiedPublishers(
   ledger_->database()->SaveContributionQueue(std::move(queue), save_callback);
 }
 
-void Unverified::QueueSaved(
-    const type::Result result,
-    const uint64_t pending_contribution_id) {
-  if (result == type::Result::LEDGER_OK) {
+void Unverified::QueueSaved(const mojom::Result result,
+                            const uint64_t pending_contribution_id) {
+  if (result == mojom::Result::LEDGER_OK) {
     ledger_->database()->RemovePendingContribution(
       pending_contribution_id,
       std::bind(&Unverified::OnRemovePendingContribution,
@@ -197,16 +191,15 @@ void Unverified::QueueSaved(
       base::BindOnce(&Unverified::ProcessNext, base::Unretained(this)));
 }
 
-void Unverified::WasPublisherProcessed(
-    const type::Result result,
-    const std::string& publisher_key,
-    const std::string& name) {
-  if (result == type::Result::LEDGER_ERROR) {
+void Unverified::WasPublisherProcessed(const mojom::Result result,
+                                       const std::string& publisher_key,
+                                       const std::string& name) {
+  if (result == mojom::Result::LEDGER_ERROR) {
     BLOG(0, "Couldn't get processed data");
     return;
   }
 
-  if (result == type::Result::LEDGER_OK) {
+  if (result == mojom::Result::LEDGER_OK) {
     BLOG(1, "Publisher already processed");
     // Nothing to do here as publisher was already processed
     return;
@@ -222,27 +215,21 @@ void Unverified::WasPublisherProcessed(
       save_callback);
 }
 
-void Unverified::ProcessedPublisherSaved(
-    const type::Result result,
-    const std::string& publisher_key,
-    const std::string& name) {
+void Unverified::ProcessedPublisherSaved(const mojom::Result result,
+                                         const std::string& publisher_key,
+                                         const std::string& name) {
   ledger_->ledger_client()->OnContributeUnverifiedPublishers(
-      type::Result::VERIFIED_PUBLISHER,
-      publisher_key,
-      name);
+      mojom::Result::VERIFIED_PUBLISHER, publisher_key, name);
 }
 
-void Unverified::OnRemovePendingContribution(
-    type::Result result) {
-  if (result != type::Result::LEDGER_OK) {
+void Unverified::OnRemovePendingContribution(mojom::Result result) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Problem removing pending contribution");
     return ProcessingCompleted();
   }
 
   ledger_->ledger_client()->OnContributeUnverifiedPublishers(
-      type::Result::PENDING_PUBLISHER_REMOVED,
-      "",
-      "");
+      mojom::Result::PENDING_PUBLISHER_REMOVED, "", "");
 }
 
 void Unverified::ProcessingCompleted() {

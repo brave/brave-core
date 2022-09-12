@@ -30,14 +30,14 @@ std::string PostBalance::GetUrl() {
   return GetApiServerUrl("/v1/balances");
 }
 
-type::Result PostBalance::ParseBody(const std::string& body,
-                                    double* available) {
+mojom::Result PostBalance::ParseBody(const std::string& body,
+                                     double* available) {
   DCHECK(available);
 
   absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_list()) {
     BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   auto& balances = value->GetList();
@@ -52,42 +52,42 @@ type::Result PostBalance::ParseBody(const std::string& body,
     const auto* available_value = balance.FindString("available");
     if (!available_value) {
       BLOG(0, "Missing available");
-      return type::Result::LEDGER_ERROR;
+      return mojom::Result::LEDGER_ERROR;
     }
 
     const bool result =
         base::StringToDouble(base::StringPiece(*available_value), available);
     if (!result) {
       BLOG(0, "Invalid balance");
-      return type::Result::LEDGER_ERROR;
+      return mojom::Result::LEDGER_ERROR;
     }
 
-    return type::Result::LEDGER_OK;
+    return mojom::Result::LEDGER_OK;
   }
 
   // If BAT is not found in the list, BAT balance for gemini is 0
   *available = 0;
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
 void PostBalance::Request(const std::string& token,
                           PostBalanceCallback callback) {
   auto url_callback = base::BindOnce(
       &PostBalance::OnRequest, base::Unretained(this), std::move(callback));
-  auto request = type::UrlRequest::New();
+  auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
-  request->method = type::UrlMethod::POST;
+  request->method = mojom::UrlMethod::POST;
   request->headers = RequestAuthorization(token);
   ledger_->LoadURL(std::move(request), std::move(url_callback));
 }
 
 void PostBalance::OnRequest(PostBalanceCallback callback,
-                            const type::UrlResponse& response) {
+                            const mojom::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
 
-  type::Result result = CheckStatusCode(response.status_code);
+  mojom::Result result = CheckStatusCode(response.status_code);
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     std::move(callback).Run(result, 0.0);
     return;
   }

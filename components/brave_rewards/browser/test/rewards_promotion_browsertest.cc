@@ -129,7 +129,7 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
     EXPECT_STREQ(
         promotion->id.c_str(),
         promotion_->GetPromotionId().c_str());
-    EXPECT_EQ(promotion->type, ledger::type::PromotionType::UGP);
+    EXPECT_EQ(promotion->type, ledger::mojom::PromotionType::UGP);
     EXPECT_EQ(promotion->expires_at, 1740816427ull);
 
     // Check that promotion notification shows the appropriate amount
@@ -171,7 +171,7 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, ClaimViaPanel) {
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   double balance = ClaimPromotion();
   ASSERT_EQ(balance, 30.0);
 }
@@ -179,7 +179,7 @@ IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, ClaimViaPanel) {
 IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest,
                        PromotionHasEmptyPublicKey) {
   response_->SetPromotionEmptyKey(true);
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
 
   base::WeakPtr<content::WebContents> popup =
       context_helper_->OpenRewardsPopup();
@@ -191,14 +191,14 @@ IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, PromotionGone) {
   gone_ = true;
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   ClaimPromotion(false);
   CheckPromotionStatus("Over");
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest,
                        PromotionRemovedFromEndpoint) {
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   context_helper_->LoadRewardsPage();
   promotion_->WaitForPromotionInitialization();
   removed_ = true;
@@ -212,7 +212,7 @@ IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, PromotionNotQuiteOver) {
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   rewards_service_->FetchPromotions();
   promotion_->WaitForPromotionInitialization();
 

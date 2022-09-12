@@ -1415,6 +1415,28 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoWallet) {
       base::Value(), "", GetOrigin());
   run_loop.Run();
   EXPECT_TRUE(new_setup_callback_called);
+
+  // Setup is called at most once
+  new_setup_callback_called = false;
+  SetCallbackForNewSetupNeededForTesting(
+      base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
+  base::RunLoop run_loop2;
+  provider()->RequestEthereumPermissions(
+      base::BindLambdaForTesting(
+          [&](base::Value id, base::Value formed_response, const bool reject,
+              const std::string& first_allowed_account,
+              const bool update_bind_js_properties) {
+            mojom::ProviderError error = mojom::ProviderError::kUnknown;
+            std::string error_message;
+            GetErrorCodeMessage(std::move(formed_response), &error,
+                                &error_message);
+            EXPECT_NE(error, mojom::ProviderError::kSuccess);
+            EXPECT_FALSE(error_message.empty());
+            run_loop2.Quit();
+          }),
+      base::Value(), "", GetOrigin());
+  run_loop2.Run();
+  EXPECT_FALSE(new_setup_callback_called);
 }
 
 TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsWithAccounts) {

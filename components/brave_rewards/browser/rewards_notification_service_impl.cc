@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
 
-#include <algorithm>
 #include <limits>
 #include <utility>
 
+#include "base/containers/contains.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/json/values_util.h"
@@ -54,10 +54,7 @@ void RewardsNotificationServiceImpl::AddNotification(
   if (id.empty()) {
     id = GenerateRewardsNotificationID();
   } else if (only_once) {
-    if (std::find(
-        rewards_notifications_displayed_.begin(),
-        rewards_notifications_displayed_.end(),
-        id) != rewards_notifications_displayed_.end()) {
+    if (base::Contains(rewards_notifications_displayed_, id)) {
       return;
     }
   }
@@ -316,12 +313,12 @@ void RewardsNotificationServiceImpl::OnGetAllNotifications(
 }
 
 bool RewardsNotificationServiceImpl::IsAds(
-    const ledger::type::PromotionType promotion_type) {
-  return promotion_type == ledger::type::PromotionType::ADS;
+    const ledger::mojom::PromotionType promotion_type) {
+  return promotion_type == ledger::mojom::PromotionType::ADS;
 }
 
 std::string RewardsNotificationServiceImpl::GetPromotionIdPrefix(
-    const ledger::type::PromotionType promotion_type) {
+    const ledger::mojom::PromotionType promotion_type) {
   return IsAds(promotion_type)
       ? "rewards_notification_grant_ads_"
       : "rewards_notification_grant_";
@@ -329,15 +326,15 @@ std::string RewardsNotificationServiceImpl::GetPromotionIdPrefix(
 
 void RewardsNotificationServiceImpl::OnFetchPromotions(
     RewardsService* rewards_service,
-    const ledger::type::Result result,
-    const ledger::type::PromotionList& list) {
-  if (static_cast<ledger::type::Result>(result) !=
-      ledger::type::Result::LEDGER_OK) {
+    const ledger::mojom::Result result,
+    const std::vector<ledger::mojom::PromotionPtr>& list) {
+  if (static_cast<ledger::mojom::Result>(result) !=
+      ledger::mojom::Result::LEDGER_OK) {
     return;
   }
 
   for (const auto& item : list) {
-    if (item->status == ledger::type::PromotionStatus::FINISHED) {
+    if (item->status == ledger::mojom::PromotionStatus::FINISHED) {
       continue;
     }
 
@@ -366,8 +363,8 @@ void RewardsNotificationServiceImpl::OnFetchPromotions(
 
 void RewardsNotificationServiceImpl::OnPromotionFinished(
     RewardsService* rewards_service,
-    const ledger::type::Result result,
-    ledger::type::PromotionPtr promotion) {
+    const ledger::mojom::Result result,
+    ledger::mojom::PromotionPtr promotion) {
   std::string prefix = GetPromotionIdPrefix(promotion->type);
   DeleteNotification(prefix + promotion->id);
 
@@ -379,23 +376,23 @@ void RewardsNotificationServiceImpl::OnPromotionFinished(
 
 void RewardsNotificationServiceImpl::OnReconcileComplete(
     RewardsService* rewards_service,
-    const ledger::type::Result result,
+    const ledger::mojom::Result result,
     const std::string& contribution_id,
     const double amount,
-    const ledger::type::RewardsType type,
-    const ledger::type::ContributionProcessor processor) {
-  if (type == ledger::type::RewardsType::ONE_TIME_TIP) {
+    const ledger::mojom::RewardsType type,
+    const ledger::mojom::ContributionProcessor processor) {
+  if (type == ledger::mojom::RewardsType::ONE_TIME_TIP) {
     return;
   }
 
   const bool completed_auto_contribute =
-      result == ledger::type::Result::LEDGER_OK &&
-      type == ledger::type::RewardsType::AUTO_CONTRIBUTE;
+      result == ledger::mojom::Result::LEDGER_OK &&
+      type == ledger::mojom::RewardsType::AUTO_CONTRIBUTE;
 
   if (completed_auto_contribute ||
-      result == ledger::type::Result::NOT_ENOUGH_FUNDS ||
-      result == ledger::type::Result::LEDGER_ERROR ||
-      result == ledger::type::Result::TIP_ERROR) {
+      result == ledger::mojom::Result::NOT_ENOUGH_FUNDS ||
+      result == ledger::mojom::Result::LEDGER_ERROR ||
+      result == ledger::mojom::Result::TIP_ERROR) {
     RewardsNotificationService::RewardsNotificationArgs args;
     args.push_back(contribution_id);
     args.push_back(base::NumberToString(static_cast<int>(result)));

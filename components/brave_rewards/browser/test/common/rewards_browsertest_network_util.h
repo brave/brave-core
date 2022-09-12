@@ -25,7 +25,7 @@ std::string GetUpholdCard(
     const std::string& balance,
     const std::string& address);
 
-std::string GetOrderCreateResponse(ledger::type::SKUOrderPtr sku_order);
+std::string GetOrderCreateResponse(ledger::mojom::SKUOrderPtr sku_order);
 
 }  // namespace rewards_browsertest_util
 

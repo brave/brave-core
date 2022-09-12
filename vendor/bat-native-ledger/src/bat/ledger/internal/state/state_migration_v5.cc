@@ -25,7 +25,7 @@ void StateMigrationV5::Migrate(ledger::LegacyResultCallback callback) {
   const auto seed = ledger_->ledger_client()->GetStringState(
       kRecoverySeed);
   if (seed.empty()) {
-    callback(type::Result::LEDGER_OK);
+    callback(mojom::Result::LEDGER_OK);
     return;
   }
 

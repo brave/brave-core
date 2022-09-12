@@ -19,9 +19,8 @@ class DatabaseContributionInfoPublishers: public DatabaseTable {
   explicit DatabaseContributionInfoPublishers(LedgerImpl* ledger);
   ~DatabaseContributionInfoPublishers() override;
 
-  void InsertOrUpdate(
-      type::DBTransaction* transaction,
-      type::ContributionInfoPtr info);
+  void InsertOrUpdate(mojom::DBTransaction* transaction,
+                      mojom::ContributionInfoPtr info);
 
   void GetRecordByContributionList(
       const std::vector<std::string>& contribution_ids,
@@ -37,11 +36,11 @@ class DatabaseContributionInfoPublishers: public DatabaseTable {
 
  private:
   void OnGetRecordByContributionList(
-      type::DBCommandResponsePtr response,
+      mojom::DBCommandResponsePtr response,
       ContributionPublisherListCallback callback);
 
   void OnGetContributionPublisherInfoMap(
-      type::DBCommandResponsePtr response,
+      mojom::DBCommandResponsePtr response,
       ContributionPublisherPairListCallback callback);
 };
 

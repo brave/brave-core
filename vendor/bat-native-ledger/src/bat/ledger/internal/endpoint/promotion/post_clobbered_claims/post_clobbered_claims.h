@@ -34,8 +34,8 @@ class LedgerImpl;
 namespace endpoint {
 namespace promotion {
 
-using PostClobberedClaimsCallback = std::function<void(
-    const type::Result result)>;
+using PostClobberedClaimsCallback =
+    std::function<void(const mojom::Result result)>;
 
 class PostClobberedClaims {
  public:
@@ -50,11 +50,10 @@ class PostClobberedClaims {
 
   std::string GeneratePayload(base::Value::List corrupted_claims);
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(
-      const type::UrlResponse& response,
-      PostClobberedClaimsCallback callback);
+  void OnRequest(const mojom::UrlResponse& response,
+                 PostClobberedClaimsCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

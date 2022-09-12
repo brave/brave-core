@@ -29,8 +29,8 @@ DatabaseSKUOrderItems::DatabaseSKUOrderItems(LedgerImpl* ledger) :
 DatabaseSKUOrderItems::~DatabaseSKUOrderItems() = default;
 
 void DatabaseSKUOrderItems::InsertOrUpdateList(
-    type::DBTransaction* transaction,
-    type::SKUOrderItemList list) {
+    mojom::DBTransaction* transaction,
+    std::vector<mojom::SKUOrderItemPtr> list) {
   DCHECK(transaction);
   if (list.empty()) {
     BLOG(1, "List is empty");
@@ -45,8 +45,8 @@ void DatabaseSKUOrderItems::InsertOrUpdateList(
       kTableName);
 
   for (auto& item : list) {
-    auto command = type::DBCommand::New();
-    command->type = type::DBCommand::Type::RUN;
+    auto command = mojom::DBCommand::New();
+    command->type = mojom::DBCommand::Type::RUN;
     command->command = query;
 
     BindString(command.get(), 0, item->order_item_id);
@@ -72,30 +72,28 @@ void DatabaseSKUOrderItems::GetRecordsByOrderId(
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "SELECT order_item_id, order_id, sku, quantity, price, name, "
       "description, type, expires_at FROM %s WHERE order_id = ?",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = query;
 
   BindString(command.get(), 0, order_id);
 
-  command->record_bindings = {
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::INT_TYPE,
-      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::INT_TYPE,
-      type::DBCommand::RecordBindingType::INT64_TYPE
-  };
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE};
 
   transaction->commands.push_back(std::move(command));
 
@@ -109,20 +107,20 @@ void DatabaseSKUOrderItems::GetRecordsByOrderId(
 }
 
 void DatabaseSKUOrderItems::OnGetRecordsByOrderId(
-    type::DBCommandResponsePtr response,
+    mojom::DBCommandResponsePtr response,
     GetSKUOrderItemsCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback({});
     return;
   }
 
-  type::SKUOrderItemList list;
-  type::SKUOrderItemPtr info = nullptr;
+  std::vector<mojom::SKUOrderItemPtr> list;
+  mojom::SKUOrderItemPtr info = nullptr;
   for (auto const& record : response->result->get_records()) {
     auto* record_pointer = record.get();
-    info = type::SKUOrderItem::New();
+    info = mojom::SKUOrderItem::New();
 
     info->order_item_id = GetStringColumn(record_pointer, 0);
     info->order_id = GetStringColumn(record_pointer, 1);
@@ -132,7 +130,7 @@ void DatabaseSKUOrderItems::OnGetRecordsByOrderId(
     info->name = GetStringColumn(record_pointer, 5);
     info->description = GetStringColumn(record_pointer, 6);
     info->type =
-        static_cast<type::SKUOrderItemType>(GetIntColumn(record_pointer, 7));
+        static_cast<mojom::SKUOrderItemType>(GetIntColumn(record_pointer, 7));
     info->expires_at = GetInt64Column(record_pointer, 8);
 
     list.push_back(std::move(info));

@@ -5,12 +5,13 @@
 
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 
-#include <algorithm>
 #include <utility>
 
+#include "base/containers/contains.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/path_service.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
@@ -23,10 +24,7 @@ std::vector<FilterList>::const_iterator FindAdBlockFilterListByUUID(
     const std::vector<FilterList>& region_lists,
     const std::string& uuid) {
   std::string uuid_uppercase = base::ToUpperASCII(uuid);
-  return std::find_if(region_lists.begin(), region_lists.end(),
-                      [&uuid_uppercase](const FilterList& filter_list) {
-                        return filter_list.uuid == uuid_uppercase;
-                      });
+  return base::ranges::find(region_lists, uuid_uppercase, &FilterList::uuid);
 }
 
 std::vector<FilterList>::const_iterator FindAdBlockFilterListByLocale(
@@ -40,13 +38,9 @@ std::vector<FilterList>::const_iterator FindAdBlockFilterListByLocale(
     adjusted_locale = locale.substr(0, loc);
   }
   adjusted_locale = base::ToLowerASCII(adjusted_locale);
-  return std::find_if(
-      region_lists.begin(), region_lists.end(),
-      [&adjusted_locale](const FilterList& filter_list) {
-        return std::find_if(filter_list.langs.begin(), filter_list.langs.end(),
-                            [adjusted_locale](const std::string& lang) {
-                              return lang == adjusted_locale;
-                            }) != filter_list.langs.end();
+  return base::ranges::find_if(
+      region_lists, [&adjusted_locale](const FilterList& filter_list) {
+        return base::Contains(filter_list.langs, adjusted_locale);
       });
 }
 

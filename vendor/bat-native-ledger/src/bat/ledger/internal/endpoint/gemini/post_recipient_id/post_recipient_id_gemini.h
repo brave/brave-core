@@ -43,7 +43,7 @@ class LedgerImpl;
 namespace endpoint::gemini {
 
 using PostRecipientIdCallback =
-    base::OnceCallback<void(type::Result, std::string&& recipient_id)>;
+    base::OnceCallback<void(mojom::Result, std::string&& recipient_id)>;
 
 class PostRecipientId {
  public:
@@ -55,9 +55,9 @@ class PostRecipientId {
  private:
   std::string GetUrl();
 
-  type::Result ParseBody(const std::string& body, std::string* recipient_id);
+  mojom::Result ParseBody(const std::string& body, std::string* recipient_id);
 
-  void OnRequest(PostRecipientIdCallback, const type::UrlResponse&);
+  void OnRequest(PostRecipientIdCallback, const mojom::UrlResponse&);
   std::string GeneratePayload();
 
   LedgerImpl* ledger_;  // NOT OWNED

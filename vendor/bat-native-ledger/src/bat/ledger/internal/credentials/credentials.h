@@ -32,15 +32,15 @@ class Credentials {
 
   virtual void Claim(ledger::ResultCallback callback,
                      const CredentialsTrigger& trigger,
-                     type::CredsBatchPtr creds) = 0;
+                     mojom::CredsBatchPtr creds) = 0;
 
   virtual void Unblind(ledger::ResultCallback callback,
                        const CredentialsTrigger& trigger,
-                       type::CredsBatchPtr creds) = 0;
+                       mojom::CredsBatchPtr creds) = 0;
 
   virtual void Completed(ledger::ResultCallback callback,
                          const CredentialsTrigger& trigger,
-                         type::Result result) = 0;
+                         mojom::Result result) = 0;
 };
 
 }  // namespace credential

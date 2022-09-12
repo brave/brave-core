@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_COMMON_TIME_UTIL_H_
-#define BRAVELEDGER_COMMON_TIME_UTIL_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_COMMON_TIME_UTIL_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_COMMON_TIME_UTIL_H_
 
 #include <stdint.h>
 
@@ -16,9 +16,9 @@
 namespace ledger {
 namespace util {
 
-type::ActivityMonth GetCurrentMonth();
+mojom::ActivityMonth GetCurrentMonth();
 
-type::ActivityMonth GetMonth(const base::Time& time);
+mojom::ActivityMonth GetMonth(const base::Time& time);
 
 uint32_t GetCurrentYear();
 
@@ -36,4 +36,4 @@ base::TimeDelta GetRandomizedDelayWithBackoff(
 }  // namespace util
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_COMMON_TIME_UTIL_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_COMMON_TIME_UTIL_H_

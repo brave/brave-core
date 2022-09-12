@@ -33,55 +33,55 @@ std::string GetRecoverWallet::GetUrl(const std::string& public_key_hex) {
   return GetServerUrl(path);
 }
 
-type::Result GetRecoverWallet::CheckStatusCode(const int status_code) {
+mojom::Result GetRecoverWallet::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   if (status_code == net::HTTP_NOT_FOUND) {
     BLOG(0, "Not found");
-    return type::Result::NOT_FOUND;
+    return mojom::Result::NOT_FOUND;
   }
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
-type::Result GetRecoverWallet::ParseBody(const std::string& body,
-                                         std::string* payment_id) {
+mojom::Result GetRecoverWallet::ParseBody(const std::string& body,
+                                          std::string* payment_id) {
   DCHECK(payment_id);
 
   absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* payment_id_string = dict.FindString("paymentId");
   if (!payment_id_string || payment_id_string->empty()) {
     BLOG(0, "Payment id is missing");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   const auto* wallet_name = dict.FindStringByDottedPath("walletProvider.name");
   if (!wallet_name) {
     BLOG(0, "Wallet name is missing");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   if (*wallet_name == "uphold") {
     BLOG(0, "We don't support anonymous Uphold wallets anymore!");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   *payment_id = *payment_id_string;
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
 void GetRecoverWallet::Request(
@@ -92,20 +92,19 @@ void GetRecoverWallet::Request(
       _1,
       callback);
 
-  auto request = type::UrlRequest::New();
+  auto request = mojom::UrlRequest::New();
   request->url = GetUrl(public_key_hex);
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
-void GetRecoverWallet::OnRequest(
-    const type::UrlResponse& response,
-    GetRecoverWalletCallback callback) {
+void GetRecoverWallet::OnRequest(const mojom::UrlResponse& response,
+                                 GetRecoverWalletCallback callback) {
   ledger::LogUrlResponse(__func__, response);
 
   std::string payment_id;
-  type::Result result = CheckStatusCode(response.status_code);
+  mojom::Result result = CheckStatusCode(response.status_code);
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     callback(result, payment_id);
     return;
   }

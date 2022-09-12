@@ -26,7 +26,7 @@ class DatabaseProcessedPublisher : public DatabaseTable {
                     ledger::LegacyResultCallback callback);
 
  private:
-  void OnWasProcessed(type::DBCommandResponsePtr response,
+  void OnWasProcessed(mojom::DBCommandResponsePtr response,
                       ledger::LegacyResultCallback callback);
 };
 

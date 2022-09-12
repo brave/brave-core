@@ -53,7 +53,7 @@ std::string GetServerUrl(const std::string& path) {
   DCHECK(!path.empty());
 
   std::string url;
-  if (ledger::_environment == type::Environment::PRODUCTION) {
+  if (ledger::_environment == mojom::Environment::PRODUCTION) {
     url = kProduction;
   } else {
     url = kStaging;

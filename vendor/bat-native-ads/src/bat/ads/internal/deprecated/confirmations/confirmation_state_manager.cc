@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 
-#include <algorithm>
 #include <cstdint>
 #include <utility>
 
@@ -16,6 +15,7 @@
 #include "base/hash/hash.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "bat/ads/internal/account/confirmations/confirmation_util.h"
 #include "bat/ads/internal/account/confirmations/opted_in_info.h"
@@ -224,12 +224,9 @@ bool ConfirmationStateManager::RemoveFailedConfirmation(
 
   DCHECK(is_initialized_);
 
-  const auto iter = std::find_if(
-      failed_confirmations_.cbegin(), failed_confirmations_.cend(),
-      [&confirmation](const ConfirmationInfo& failed_confirmation) {
-        return failed_confirmation.transaction_id ==
-               confirmation.transaction_id;
-      });
+  const auto iter =
+      base::ranges::find(failed_confirmations_, confirmation.transaction_id,
+                         &ConfirmationInfo::transaction_id);
 
   if (iter == failed_confirmations_.cend()) {
     return false;

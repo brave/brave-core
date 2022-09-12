@@ -29,7 +29,7 @@ void CredentialsCommon::GetBlindedCreds(const CredentialsTrigger& trigger,
 
   if (creds.empty()) {
     BLOG(0, "Creds are empty");
-    std::move(callback).Run(type::Result::LEDGER_ERROR);
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -38,20 +38,20 @@ void CredentialsCommon::GetBlindedCreds(const CredentialsTrigger& trigger,
 
   if (blinded_creds.empty()) {
     BLOG(0, "Blinded creds are empty");
-    std::move(callback).Run(type::Result::LEDGER_ERROR);
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR);
     return;
   }
 
   const std::string blinded_creds_json = GetBlindedCredsJSON(blinded_creds);
 
-  auto creds_batch = type::CredsBatch::New();
+  auto creds_batch = mojom::CredsBatch::New();
   creds_batch->creds_id = base::GenerateGUID();
   creds_batch->size = trigger.size;
   creds_batch->creds = creds_json;
   creds_batch->blinded_creds = blinded_creds_json;
   creds_batch->trigger_id = trigger.id;
   creds_batch->trigger_type = trigger.type;
-  creds_batch->status = type::CredsBatchStatus::BLINDED;
+  creds_batch->status = mojom::CredsBatchStatus::BLINDED;
 
   auto save_callback =
       base::BindOnce(&CredentialsCommon::BlindedCredsSaved,
@@ -61,31 +61,31 @@ void CredentialsCommon::GetBlindedCreds(const CredentialsTrigger& trigger,
       std::move(creds_batch),
       [callback =
            std::make_shared<decltype(save_callback)>(std::move(save_callback))](
-          type::Result result) { std::move(*callback).Run(result); });
+          mojom::Result result) { std::move(*callback).Run(result); });
 }
 
 void CredentialsCommon::BlindedCredsSaved(ledger::ResultCallback callback,
-                                          type::Result result) {
-  if (result != type::Result::LEDGER_OK) {
+                                          mojom::Result result) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Creds batch save failed");
-    std::move(callback).Run(type::Result::RETRY);
+    std::move(callback).Run(mojom::Result::RETRY);
     return;
   }
 
-  std::move(callback).Run(type::Result::LEDGER_OK);
+  std::move(callback).Run(mojom::Result::LEDGER_OK);
 }
 
 void CredentialsCommon::SaveUnblindedCreds(
     uint64_t expires_at,
     double token_value,
-    const type::CredsBatch& creds,
+    const mojom::CredsBatch& creds,
     const std::vector<std::string>& unblinded_encoded_creds,
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
-  type::UnblindedTokenList list;
-  type::UnblindedTokenPtr unblinded;
+  std::vector<mojom::UnblindedTokenPtr> list;
+  mojom::UnblindedTokenPtr unblinded;
   for (auto & cred : unblinded_encoded_creds) {
-    unblinded = type::UnblindedToken::New();
+    unblinded = mojom::UnblindedToken::New();
     unblinded->token_value = cred;
     unblinded->public_key = creds.public_key;
     unblinded->value = token_value;
@@ -100,24 +100,24 @@ void CredentialsCommon::SaveUnblindedCreds(
 
   ledger_->database()->SaveUnblindedTokenList(
       std::move(list), [callback = std::make_shared<decltype(save_callback)>(
-                            std::move(save_callback))](type::Result result) {
+                            std::move(save_callback))](mojom::Result result) {
         std::move(*callback).Run(result);
       });
 }
 
 void CredentialsCommon::OnSaveUnblindedCreds(ledger::ResultCallback callback,
                                              const CredentialsTrigger& trigger,
-                                             type::Result result) {
-  if (result != type::Result::LEDGER_OK) {
+                                             mojom::Result result) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Token list not saved");
-    std::move(callback).Run(type::Result::RETRY);
+    std::move(callback).Run(mojom::Result::RETRY);
     return;
   }
 
   ledger_->database()->UpdateCredsBatchStatus(
-      trigger.id, trigger.type, type::CredsBatchStatus::FINISHED,
+      trigger.id, trigger.type, mojom::CredsBatchStatus::FINISHED,
       [callback = std::make_shared<decltype(callback)>(std::move(callback))](
-          type::Result result) { std::move(*callback).Run(result); });
+          mojom::Result result) { std::move(*callback).Run(result); });
 }
 
 }  // namespace credential

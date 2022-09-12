@@ -15,7 +15,7 @@ class HostContentSettingsMap;
 namespace brave_shields {
 
 constexpr char kUsagePrefName[] = "brave_shields.p3a_usage";
-constexpr char kFirstReportedPrefName[] = "brave_shields.p3a_first_reported";
+constexpr char kFirstReportedPrefName[] = "brave_shields.p3a_first_reported_v2";
 
 constexpr char kAdsStrictCountPrefName[] =
     "brave_shields.p3a_ads_strict_domain_count";
@@ -60,14 +60,20 @@ enum ShieldsIconUsage {
 void MaybeRecordShieldsUsageP3A(ShieldsIconUsage usage,
                                 PrefService* local_state);
 
+// Records to global ads setting histogram: Brave.Shields.AdBlockSetting
 void RecordShieldsAdsSetting(ControlType setting);
 
+// Records to global FP setting histogram: Brave.Shields.FingerprintBlockSetting
 void RecordShieldsFingerprintSetting(ControlType setting);
 
+// To be called when the global setting changes.
+// Will update domain setting count histograms.
 void RecordShieldsDomainSettingCounts(PrefService* profile_prefs,
                                       bool is_fingerprint,
                                       ControlType global_setting);
 
+// To be called when a domain setting changes.
+// Will update internal pref counts and update domain setting count histograms.
 void RecordShieldsDomainSettingCountsWithChange(PrefService* profile_prefs,
                                                 bool is_fingerprint,
                                                 ControlType global_setting,
@@ -78,6 +84,8 @@ void RegisterShieldsP3ALocalPrefs(PrefRegistrySimple* local_state);
 
 void RegisterShieldsP3AProfilePrefs(PrefRegistrySimple* local_state);
 
+// To be called at initialization. Will count all domain settings and
+// record to all histograms, if executed for the first time.
 void MaybeRecordInitialShieldsSettings(PrefService* profile_prefs,
                                        HostContentSettingsMap* map);
 

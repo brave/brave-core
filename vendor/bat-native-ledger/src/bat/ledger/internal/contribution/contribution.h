@@ -44,9 +44,8 @@ class Contribution {
 
   // Does final stage in contribution
   // Sets reports and contribution info
-  void ContributionCompleted(
-      const type::Result result,
-      type::ContributionInfoPtr contribution);
+  void ContributionCompleted(const mojom::Result result,
+                             mojom::ContributionInfoPtr contribution);
 
   void HasSufficientBalance(
     ledger::HasSufficientBalanceToReconcileCallback callback);
@@ -67,21 +66,20 @@ class Contribution {
 
   void CheckContributionQueue();
 
-  void TransferFunds(
-      const type::SKUTransaction& transaction,
-      const std::string& destination,
-      const std::string& wallet_type,
-      client::TransactionCallback callback);
+  void TransferFunds(const mojom::SKUTransaction& transaction,
+                     const std::string& destination,
+                     const std::string& wallet_type,
+                     client::TransactionCallback callback);
 
   void SKUAutoContribution(const std::string& contribution_id,
                            const std::string& wallet_type,
                            ledger::LegacyResultCallback callback);
 
-  void StartUnblinded(const std::vector<type::CredsBatchType>& types,
+  void StartUnblinded(const std::vector<mojom::CredsBatchType>& types,
                       const std::string& contribution_id,
                       ledger::LegacyResultCallback callback);
 
-  void RetryUnblinded(const std::vector<type::CredsBatchType>& types,
+  void RetryUnblinded(const std::vector<mojom::CredsBatchType>& types,
                       const std::string& contribution_id,
                       ledger::LegacyResultCallback callback);
 
@@ -90,64 +88,54 @@ class Contribution {
  private:
   // Start point for contribution
   // In this step we get balance from the server
-  void Start(type::ContributionQueuePtr info);
+  void Start(mojom::ContributionQueuePtr info);
 
-  void StartAutoContribute(
-      const type::Result result,
-      const uint64_t reconcile_stamp);
+  void StartAutoContribute(const mojom::Result result,
+                           const uint64_t reconcile_stamp);
 
-  void ContributionCompletedSaved(
-      const type::Result result,
-      const std::string& contribution_id);
+  void ContributionCompletedSaved(const mojom::Result result,
+                                  const std::string& contribution_id);
 
-  void OnProcessContributionQueue(type::ContributionQueuePtr info);
+  void OnProcessContributionQueue(mojom::ContributionQueuePtr info);
 
   void CheckNotCompletedContributions();
 
-  void NotCompletedContributions(type::ContributionInfoList list);
+  void NotCompletedContributions(std::vector<mojom::ContributionInfoPtr> list);
 
-  void OnBalance(type::ContributionQueuePtr queue,
-                 const type::Result result,
-                 type::BalancePtr info);
+  void OnBalance(mojom::ContributionQueuePtr queue,
+                 const mojom::Result result,
+                 mojom::BalancePtr info);
 
-  void CreateNewEntry(
-      const std::string& wallet_type,
-      type::BalancePtr balance,
-      type::ContributionQueuePtr queue);
+  void CreateNewEntry(const std::string& wallet_type,
+                      mojom::BalancePtr balance,
+                      mojom::ContributionQueuePtr queue);
 
-  void OnEntrySaved(
-      const type::Result result,
-      const std::string& contribution_id,
-      const std::string& wallet_type,
-      const type::Balance& balance,
-      std::shared_ptr<type::ContributionQueuePtr> shared_queue);
+  void OnEntrySaved(const mojom::Result result,
+                    const std::string& contribution_id,
+                    const std::string& wallet_type,
+                    const mojom::Balance& balance,
+                    std::shared_ptr<mojom::ContributionQueuePtr> shared_queue);
 
-  void OnQueueSaved(
-      const type::Result result,
-      const std::string& wallet_type,
-      const type::Balance& balance,
-      std::shared_ptr<type::ContributionQueuePtr> shared_queue);
+  void OnQueueSaved(const mojom::Result result,
+                    const std::string& wallet_type,
+                    const mojom::Balance& balance,
+                    std::shared_ptr<mojom::ContributionQueuePtr> shared_queue);
 
-  void Process(
-      type::ContributionQueuePtr queue,
-      type::BalancePtr balance);
+  void Process(mojom::ContributionQueuePtr queue, mojom::BalancePtr balance);
 
   void MarkContributionQueueAsComplete(const std::string& id);
 
-  void OnMarkContributionQueueAsComplete(const type::Result result);
+  void OnMarkContributionQueueAsComplete(const mojom::Result result);
 
   void RetryUnblindedContribution(
-      type::ContributionInfoPtr contribution,
-      const std::vector<type::CredsBatchType>& types,
+      mojom::ContributionInfoPtr contribution,
+      const std::vector<mojom::CredsBatchType>& types,
       ledger::LegacyResultCallback callback);
 
-  void Result(
-      const type::Result result,
-      const std::string& contribution_id);
+  void Result(const mojom::Result result, const std::string& contribution_id);
 
-  void OnResult(
-      type::ContributionInfoPtr contribution,
-      const type::Result result);
+  void OnResult(mojom::ContributionInfoPtr contribution,
+                const mojom::Result result);
 
   void SetRetryTimer(
       const std::string& contribution_id,
@@ -155,15 +143,13 @@ class Contribution {
 
   void OnRetryTimerElapsed(const std::string& contribution_id);
 
-  void SetRetryCounter(type::ContributionInfoPtr contribution);
+  void SetRetryCounter(mojom::ContributionInfoPtr contribution);
 
-  void Retry(
-      const type::Result result,
-      std::shared_ptr<type::ContributionInfoPtr> shared_contribution);
+  void Retry(const mojom::Result result,
+             std::shared_ptr<mojom::ContributionInfoPtr> shared_contribution);
 
-  void OnMarkUnblindedTokensAsSpendable(
-      const type::Result result,
-      const std::string& contribution_id);
+  void OnMarkUnblindedTokensAsSpendable(const mojom::Result result,
+                                        const std::string& contribution_id);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<Unverified> unverified_;

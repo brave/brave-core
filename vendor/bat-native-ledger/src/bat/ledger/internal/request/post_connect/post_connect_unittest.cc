@@ -43,7 +43,7 @@ using PostConnectParamType = std::tuple<
     std::string,          // test name suffix
     net::HttpStatusCode,  // connect endpoint response status code
     std::string,          // connect endpoint response body
-    type::Result          // expected result
+    mojom::Result          // expected result
 >;
 // clang-format on
 
@@ -85,8 +85,8 @@ TEST_P(PostConnect, Paths) {
   ON_CALL(mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
           [status_code = status_code, body = body](
-              type::UrlRequestPtr, client::LoadURLCallback callback) mutable {
-            type::UrlResponse response;
+              mojom::UrlRequestPtr, client::LoadURLCallback callback) mutable {
+            mojom::UrlResponse response;
             response.status_code = status_code;
             response.body = std::move(body);
             std::move(callback).Run(response);
@@ -96,7 +96,7 @@ TEST_P(PostConnect, Paths) {
   EXPECT_TRUE(request);
 
   std::move(request).Send(base::BindLambdaForTesting(
-      [expected_result = expected_result](type::Result result) {
+      [expected_result = expected_result](mojom::Result result) {
         EXPECT_EQ(result, expected_result);
       }));
 }
@@ -110,7 +110,7 @@ INSTANTIATE_TEST_SUITE_P(
       "00_HTTP_200",
       net::HTTP_OK,
       "",
-      type::Result::LEDGER_OK
+      mojom::Result::LEDGER_OK
     },
     PostConnectParamType{
       "01_HTTP_400_flagged_wallet",
@@ -121,7 +121,7 @@ INSTANTIATE_TEST_SUITE_P(
           "code": 400
         }
       )",
-      type::Result::FLAGGED_WALLET
+      mojom::Result::FLAGGED_WALLET
     },
     PostConnectParamType{
       "02_HTTP_400_mismatched_provider_account_regions",
@@ -132,7 +132,7 @@ INSTANTIATE_TEST_SUITE_P(
           "code": 400
         }
       )",
-      type::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS
+      mojom::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS
     },
     PostConnectParamType{
       "03_HTTP_400_region_not_supported",
@@ -143,7 +143,7 @@ INSTANTIATE_TEST_SUITE_P(
           "code": 400
         }
       )",
-      type::Result::REGION_NOT_SUPPORTED
+      mojom::Result::REGION_NOT_SUPPORTED
     },
     PostConnectParamType{
       "04_HTTP_400_unknown_message",
@@ -154,7 +154,7 @@ INSTANTIATE_TEST_SUITE_P(
           "code": 400
         }
       )",
-      type::Result::LEDGER_ERROR
+      mojom::Result::LEDGER_ERROR
     },
     PostConnectParamType{
       "05_HTTP_403_kyc_required",
@@ -165,7 +165,7 @@ INSTANTIATE_TEST_SUITE_P(
           "code": 403
         }
       )",
-      type::Result::NOT_FOUND
+      mojom::Result::NOT_FOUND
     },
     PostConnectParamType{
       "06_HTTP_403_mismatched_provider_accounts",
@@ -176,7 +176,7 @@ INSTANTIATE_TEST_SUITE_P(
           "code": 403
         }
       )",
-      type::Result::MISMATCHED_PROVIDER_ACCOUNTS
+      mojom::Result::MISMATCHED_PROVIDER_ACCOUNTS
     },
     PostConnectParamType{
       "07_HTTP_403_request_signature_verification_failure",
@@ -187,7 +187,7 @@ INSTANTIATE_TEST_SUITE_P(
           "code": 403
         }
       )",
-      type::Result::REQUEST_SIGNATURE_VERIFICATION_FAILURE
+      mojom::Result::REQUEST_SIGNATURE_VERIFICATION_FAILURE
     },
     PostConnectParamType{
       "08_HTTP_403_transaction_verification_failure",
@@ -198,7 +198,7 @@ INSTANTIATE_TEST_SUITE_P(
           "code": 403
         }
       )",
-      type::Result::UPHOLD_TRANSACTION_VERIFICATION_FAILURE
+      mojom::Result::UPHOLD_TRANSACTION_VERIFICATION_FAILURE
     },
     PostConnectParamType{
       "09_HTTP_403_unknown_message",
@@ -209,31 +209,31 @@ INSTANTIATE_TEST_SUITE_P(
           "code": 403
         }
       )",
-      type::Result::LEDGER_ERROR
+      mojom::Result::LEDGER_ERROR
     },
     PostConnectParamType{
       "10_HTTP_404_kyc_required",
       net::HTTP_NOT_FOUND,
       "",
-      type::Result::NOT_FOUND
+      mojom::Result::NOT_FOUND
     },
     PostConnectParamType{
       "11_HTTP_409_device_limit_reached",
       net::HTTP_CONFLICT,
       "",
-      type::Result::DEVICE_LIMIT_REACHED
+      mojom::Result::DEVICE_LIMIT_REACHED
     },
     PostConnectParamType{
       "12_HTTP_500_http_internal_server_error",
       net::HTTP_INTERNAL_SERVER_ERROR,
       "",
-      type::Result::LEDGER_ERROR
+      mojom::Result::LEDGER_ERROR
     },
     PostConnectParamType{
       "13_HTTP_504_random_server_error",
       net::HTTP_GATEWAY_TIMEOUT,
       "",
-      type::Result::LEDGER_ERROR
+      mojom::Result::LEDGER_ERROR
     }),
   [](const TestParamInfo<PostConnectParamType>& info) {
     return std::get<0>(info.param);

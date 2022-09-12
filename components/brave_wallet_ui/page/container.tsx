@@ -140,7 +140,8 @@ export const Container = () => {
     (
       walletLocation.includes(WalletRoutes.Portfolio) ||
       walletLocation.includes(WalletRoutes.Accounts) ||
-      walletLocation.includes(WalletRoutes.Market)
+      walletLocation.includes(WalletRoutes.Market) ||
+      walletLocation.includes(WalletRoutes.Nfts)
     )
 
   // effects
@@ -159,7 +160,9 @@ export const Container = () => {
       walletLocation.includes(WalletRoutes.Backup) ||
       walletLocation.includes(WalletRoutes.DepositFundsPage) ||
       walletLocation.includes(WalletRoutes.FundWalletPage) ||
-      walletLocation.includes(WalletRoutes.Portfolio)
+      walletLocation.includes(WalletRoutes.Portfolio) ||
+      walletLocation.includes(WalletRoutes.Market) ||
+      walletLocation.includes(WalletRoutes.Nfts)
     ) {
       setSessionRoute(walletLocation)
     }

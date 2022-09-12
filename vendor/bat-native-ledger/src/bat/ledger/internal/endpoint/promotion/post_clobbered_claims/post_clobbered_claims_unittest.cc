@@ -45,8 +45,8 @@ class PostClobberedClaimsTest : public testing::Test {
 TEST_F(PostClobberedClaimsTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = "";
@@ -56,18 +56,16 @@ TEST_F(PostClobberedClaimsTest, ServerOK) {
   base::Value::List corrupted_claims;
   corrupted_claims.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
-  claims_->Request(
-      std::move(corrupted_claims),
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_OK);
-      });
+  claims_->Request(std::move(corrupted_claims), [](const mojom::Result result) {
+    EXPECT_EQ(result, mojom::Result::LEDGER_OK);
+  });
 }
 
 TEST_F(PostClobberedClaimsTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
@@ -77,18 +75,16 @@ TEST_F(PostClobberedClaimsTest, ServerError400) {
   base::Value::List corrupted_claims;
   corrupted_claims.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
-  claims_->Request(
-      std::move(corrupted_claims),
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      });
+  claims_->Request(std::move(corrupted_claims), [](const mojom::Result result) {
+    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
+  });
 }
 
 TEST_F(PostClobberedClaimsTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
@@ -98,18 +94,16 @@ TEST_F(PostClobberedClaimsTest, ServerError500) {
   base::Value::List corrupted_claims;
   corrupted_claims.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
-  claims_->Request(
-      std::move(corrupted_claims),
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      });
+  claims_->Request(std::move(corrupted_claims), [](const mojom::Result result) {
+    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
+  });
 }
 
 TEST_F(PostClobberedClaimsTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
@@ -119,11 +113,9 @@ TEST_F(PostClobberedClaimsTest, ServerErrorRandom) {
   base::Value::List corrupted_claims;
   corrupted_claims.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
-  claims_->Request(
-      std::move(corrupted_claims),
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      });
+  claims_->Request(std::move(corrupted_claims), [](const mojom::Result result) {
+    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
+  });
 }
 
 }  // namespace promotion

@@ -45,8 +45,8 @@ class BitflyerPostTransactionTest : public testing::Test {
 TEST_F(BitflyerPostTransactionTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"({
@@ -66,8 +66,8 @@ TEST_F(BitflyerPostTransactionTest, ServerOK) {
 
   transaction_->Request("4c2b665ca060d912fec5c735c734859a06118cc8", transaction,
                         false,
-                        [](const type::Result result, const std::string& id) {
-                          EXPECT_EQ(result, type::Result::LEDGER_OK);
+                        [](const mojom::Result result, const std::string& id) {
+                          EXPECT_EQ(result, mojom::Result::LEDGER_OK);
                           EXPECT_EQ(id, "d382d3ae-8462-4b2c-9b60-b669539f41b2");
                         });
 }
@@ -75,8 +75,8 @@ TEST_F(BitflyerPostTransactionTest, ServerOK) {
 TEST_F(BitflyerPostTransactionTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
             response.body = "";
@@ -89,8 +89,8 @@ TEST_F(BitflyerPostTransactionTest, ServerError401) {
 
   transaction_->Request("4c2b665ca060d912fec5c735c734859a06118cc8", transaction,
                         false,
-                        [](const type::Result result, const std::string& id) {
-                          EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
+                        [](const mojom::Result result, const std::string& id) {
+                          EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
                           EXPECT_EQ(id, "");
                         });
 }
@@ -98,8 +98,8 @@ TEST_F(BitflyerPostTransactionTest, ServerError401) {
 TEST_F(BitflyerPostTransactionTest, ServerError409_SESSION_TIME_OUT) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 409;
             response.url = request->url;
             response.body = R"({
@@ -119,8 +119,8 @@ TEST_F(BitflyerPostTransactionTest, ServerError409_SESSION_TIME_OUT) {
 
   transaction_->Request("4c2b665ca060d912fec5c735c734859a06118cc8", transaction,
                         false,
-                        [](const type::Result result, const std::string& id) {
-                          EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
+                        [](const mojom::Result result, const std::string& id) {
+                          EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
                           EXPECT_EQ(id, "");
                         });
 }
@@ -128,8 +128,8 @@ TEST_F(BitflyerPostTransactionTest, ServerError409_SESSION_TIME_OUT) {
 TEST_F(BitflyerPostTransactionTest, ServerError409_RandomStatusEnum) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 409;
             response.url = request->url;
             response.body = R"({
@@ -149,8 +149,8 @@ TEST_F(BitflyerPostTransactionTest, ServerError409_RandomStatusEnum) {
 
   transaction_->Request("4c2b665ca060d912fec5c735c734859a06118cc8", transaction,
                         false,
-                        [](const type::Result result, const std::string& id) {
-                          EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                        [](const mojom::Result result, const std::string& id) {
+                          EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
                           EXPECT_EQ(id, "");
                         });
 }
@@ -158,8 +158,8 @@ TEST_F(BitflyerPostTransactionTest, ServerError409_RandomStatusEnum) {
 TEST_F(BitflyerPostTransactionTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
@@ -172,8 +172,8 @@ TEST_F(BitflyerPostTransactionTest, ServerErrorRandom) {
 
   transaction_->Request("4c2b665ca060d912fec5c735c734859a06118cc8", transaction,
                         false,
-                        [](const type::Result result, const std::string& id) {
-                          EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                        [](const mojom::Result result, const std::string& id) {
+                          EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
                           EXPECT_EQ(id, "");
                         });
 }

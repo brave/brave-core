@@ -41,8 +41,7 @@ void StateMigrationV6::Migrate(ledger::LegacyResultCallback callback) {
       kWalletBrave,
       brave_json);
 
-
-  callback(type::Result::LEDGER_OK);
+  callback(mojom::Result::LEDGER_OK);
 }
 
 }  // namespace state

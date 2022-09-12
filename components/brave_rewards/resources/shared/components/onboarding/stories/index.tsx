@@ -11,7 +11,6 @@ import { RewardsTourModal } from '../rewards_tour_modal'
 import { RewardsOptInModal } from '../rewards_opt_in_modal'
 import { SettingsOptInForm } from '../settings_opt_in_form'
 import { RewardsTourPromo } from '../rewards_tour_promo'
-import { BraveTalkOptInForm } from '../brave_talk_opt_in_form'
 
 import { localeStrings } from './locale_strings'
 
@@ -115,18 +114,6 @@ export function TourPromo () {
     <StoryWrapper style={{ width: '373px' }}>
       <RewardsTourPromo
         onClose={actionLogger('onClose')}
-        onTakeTour={actionLogger('onTakeTour')}
-      />
-    </StoryWrapper>
-  )
-}
-
-export function BraveTalkOptIn () {
-  return (
-    <StoryWrapper style={{ width: '373px' }}>
-      <BraveTalkOptInForm
-        showRewardsOnboarding={true}
-        onEnable={actionLogger('onEnable')}
         onTakeTour={actionLogger('onTakeTour')}
       />
     </StoryWrapper>

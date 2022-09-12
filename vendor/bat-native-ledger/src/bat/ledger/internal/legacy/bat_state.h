@@ -49,7 +49,7 @@ class LegacyBatState {
   bool GetInlineTipSetting(const std::string& key) const;
 
  private:
-  void OnLoad(ledger::type::Result result,
+  void OnLoad(ledger::mojom::Result result,
               const std::string& data,
               ledger::LegacyResultCallback callback);
 

@@ -4,6 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <utility>
+#include <vector>
 
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/bitflyer/bitflyer_util.h"
@@ -29,7 +30,7 @@ void ContributionExternalWallet::Process(
     ledger::LegacyResultCallback callback) {
   if (contribution_id.empty()) {
     BLOG(0, "Contribution id is empty");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -41,23 +42,23 @@ void ContributionExternalWallet::Process(
 }
 
 void ContributionExternalWallet::ContributionInfo(
-    type::ContributionInfoPtr contribution,
+    mojom::ContributionInfoPtr contribution,
     ledger::LegacyResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution is null");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  type::ExternalWalletPtr wallet;
+  mojom::ExternalWalletPtr wallet;
   switch (contribution->processor) {
-    case type::ContributionProcessor::UPHOLD:
+    case mojom::ContributionProcessor::UPHOLD:
       wallet = ledger_->uphold()->GetWallet();
       break;
-    case type::ContributionProcessor::BITFLYER:
+    case mojom::ContributionProcessor::BITFLYER:
       wallet = ledger_->bitflyer()->GetWallet();
       break;
-    case type::ContributionProcessor::GEMINI:
+    case mojom::ContributionProcessor::GEMINI:
       wallet = ledger_->gemini()->GetWallet();
       break;
     default:
@@ -66,19 +67,19 @@ void ContributionExternalWallet::ContributionInfo(
 
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
   if (wallet->token.empty() ||
-      wallet->status != type::WalletStatus::VERIFIED) {
+      wallet->status != mojom::WalletStatus::VERIFIED) {
     BLOG(0, "Wallet token is empty/wallet is not verified. Wallet status: "
         << wallet->status);
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  if (contribution->type == type::RewardsType::AUTO_CONTRIBUTE) {
+  if (contribution->type == mojom::RewardsType::AUTO_CONTRIBUTE) {
     ledger_->contribution()->SKUAutoContribution(contribution->contribution_id,
                                                  wallet->type, callback);
     return;
@@ -104,41 +105,41 @@ void ContributionExternalWallet::ContributionInfo(
   }
 
   // we processed all publishers
-  callback(type::Result::LEDGER_OK);
+  callback(mojom::Result::LEDGER_OK);
 }
 
 void ContributionExternalWallet::OnSavePendingContribution(
-    const type::Result result) {
-  if (result != type::Result::LEDGER_OK) {
+    const mojom::Result result) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Problem saving pending");
   }
   ledger_->ledger_client()->PendingContributionSaved(result);
 }
 
 void ContributionExternalWallet::OnServerPublisherInfo(
-    type::ServerPublisherInfoPtr info,
+    mojom::ServerPublisherInfoPtr info,
     const std::string& contribution_id,
     double amount,
-    type::RewardsType type,
-    type::ContributionProcessor processor,
+    mojom::RewardsType type,
+    mojom::ContributionProcessor processor,
     bool single_publisher,
     ledger::LegacyResultCallback callback) {
   if (!info) {
     BLOG(0, "Publisher not found");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
   bool publisher_verified = false;
   switch (info->status) {
-    case type::PublisherStatus::UPHOLD_VERIFIED:
-      publisher_verified = processor == type::ContributionProcessor::UPHOLD;
+    case mojom::PublisherStatus::UPHOLD_VERIFIED:
+      publisher_verified = processor == mojom::ContributionProcessor::UPHOLD;
       break;
-    case type::PublisherStatus::BITFLYER_VERIFIED:
-      publisher_verified = processor == type::ContributionProcessor::BITFLYER;
+    case mojom::PublisherStatus::BITFLYER_VERIFIED:
+      publisher_verified = processor == mojom::ContributionProcessor::BITFLYER;
       break;
-    case type::PublisherStatus::GEMINI_VERIFIED:
-      publisher_verified = processor == type::ContributionProcessor::GEMINI;
+    case mojom::PublisherStatus::GEMINI_VERIFIED:
+      publisher_verified = processor == mojom::ContributionProcessor::GEMINI;
       break;
     default:
       break;
@@ -159,18 +160,18 @@ void ContributionExternalWallet::OnServerPublisherInfo(
             this,
             _1);
 
-    auto contribution = type::PendingContribution::New();
+    auto contribution = mojom::PendingContribution::New();
     contribution->publisher_key = info->publisher_key;
     contribution->amount = amount;
     contribution->type = type;
 
-    type::PendingContributionList list;
+    std::vector<mojom::PendingContributionPtr> list;
     list.push_back(std::move(contribution));
 
     ledger_->database()->SavePendingContribution(std::move(list),
                                                  save_callback);
 
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -178,15 +179,15 @@ void ContributionExternalWallet::OnServerPublisherInfo(
                                   _1, single_publisher, callback);
 
   switch (processor) {
-    case type::ContributionProcessor::UPHOLD:
+    case mojom::ContributionProcessor::UPHOLD:
       ledger_->uphold()->StartContribution(contribution_id, std::move(info),
                                            amount, start_callback);
       break;
-    case type::ContributionProcessor::BITFLYER:
+    case mojom::ContributionProcessor::BITFLYER:
       ledger_->bitflyer()->StartContribution(contribution_id, std::move(info),
                                              amount, start_callback);
       break;
-    case type::ContributionProcessor::GEMINI:
+    case mojom::ContributionProcessor::GEMINI:
       ledger_->gemini()->StartContribution(contribution_id, std::move(info),
                                            amount, start_callback);
       break;
@@ -198,7 +199,7 @@ void ContributionExternalWallet::OnServerPublisherInfo(
 }
 
 void ContributionExternalWallet::Completed(
-    type::Result result,
+    mojom::Result result,
     bool single_publisher,
     ledger::LegacyResultCallback callback) {
   if (single_publisher) {
@@ -206,10 +207,10 @@ void ContributionExternalWallet::Completed(
     return;
   }
 
-  callback(type::Result::RETRY);
+  callback(mojom::Result::RETRY);
 }
 
-void ContributionExternalWallet::Retry(type::ContributionInfoPtr contribution,
+void ContributionExternalWallet::Retry(mojom::ContributionInfoPtr contribution,
                                        ledger::LegacyResultCallback callback) {
   Process(contribution->contribution_id, callback);
 }

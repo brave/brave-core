@@ -11,7 +11,7 @@
 
 namespace ledger {
 
-type::Environment _environment = type::Environment::PRODUCTION;
+mojom::Environment _environment = mojom::Environment::PRODUCTION;
 
 int gemini_retries = 3;
 bool is_debug = false;

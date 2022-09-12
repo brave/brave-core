@@ -33,7 +33,7 @@ class Vimeo {
   static std::string GetLinkType(const std::string& url);
 
   void ProcessActivityFromUrl(uint64_t window_id,
-                              const ledger::type::VisitData& visit_data);
+                              const ledger::mojom::VisitData& visit_data);
 
  private:
   static std::string GetVideoUrl(const std::string& video_id);
@@ -53,8 +53,8 @@ class Vimeo {
 
   static bool AllowedEvent(const std::string& event);
 
-  static uint64_t GetDuration(const ledger::type::MediaEventInfo& old_event,
-                              const ledger::type::MediaEventInfo& new_event);
+  static uint64_t GetDuration(const ledger::mojom::MediaEventInfo& old_event,
+                              const ledger::mojom::MediaEventInfo& new_event);
 
   static bool IsExcludedPath(const std::string& path);
 
@@ -69,32 +69,28 @@ class Vimeo {
 
   void OnMediaActivityError(uint64_t window_id = 0);
 
-  void OnEmbedResponse(
-    const ledger::type::VisitData& visit_data,
-    const uint64_t window_id,
-    const ledger::type::UrlResponse& response);
+  void OnEmbedResponse(const ledger::mojom::VisitData& visit_data,
+                       const uint64_t window_id,
+                       const ledger::mojom::UrlResponse& response);
 
-  void OnPublisherPage(
-    const std::string& media_key,
-    const std::string& publisher_url,
-    const std::string& publisher_name,
-    const ledger::type::VisitData& visit_data,
-    const uint64_t window_id,
-    const ledger::type::UrlResponse& response);
+  void OnPublisherPage(const std::string& media_key,
+                       const std::string& publisher_url,
+                       const std::string& publisher_name,
+                       const ledger::mojom::VisitData& visit_data,
+                       const uint64_t window_id,
+                       const ledger::mojom::UrlResponse& response);
 
-  void OnUnknownPage(
-    const ledger::type::VisitData& visit_data,
-    const uint64_t window_id,
-    const ledger::type::UrlResponse& response);
+  void OnUnknownPage(const ledger::mojom::VisitData& visit_data,
+                     const uint64_t window_id,
+                     const ledger::mojom::UrlResponse& response);
 
-  void OnPublisherPanleInfo(
-    const std::string& media_key,
-    uint64_t window_id,
-    const std::string& publisher_url,
-    const std::string& publisher_name,
-    const std::string& user_id,
-    ledger::type::Result result,
-    ledger::type::PublisherInfoPtr info);
+  void OnPublisherPanleInfo(const std::string& media_key,
+                            uint64_t window_id,
+                            const std::string& publisher_url,
+                            const std::string& publisher_name,
+                            const std::string& user_id,
+                            ledger::mojom::Result result,
+                            ledger::mojom::PublisherInfoPtr info);
 
   void GetPublisherPanleInfo(
     const std::string& media_key,
@@ -104,17 +100,15 @@ class Vimeo {
     const std::string& publisher_name,
     const std::string& user_id);
 
-  void OnMediaPublisherInfo(
-    const std::string& media_id,
-    const std::string& media_key,
-    const ledger::type::MediaEventInfo& event_info,
-    ledger::type::Result result,
-    ledger::type::PublisherInfoPtr publisher_info);
+  void OnMediaPublisherInfo(const std::string& media_id,
+                            const std::string& media_key,
+                            const ledger::mojom::MediaEventInfo& event_info,
+                            ledger::mojom::Result result,
+                            ledger::mojom::PublisherInfoPtr publisher_info);
 
-  void OnPublisherVideoPage(
-    const std::string& media_key,
-    ledger::type::MediaEventInfo event_info,
-    const ledger::type::UrlResponse& response);
+  void OnPublisherVideoPage(const std::string& media_key,
+                            ledger::mojom::MediaEventInfo event_info,
+                            const ledger::mojom::UrlResponse& response);
 
   void SavePublisherInfo(
     const std::string& media_key,
@@ -127,7 +121,7 @@ class Vimeo {
     const std::string& publisher_favicon = "");
 
   ledger::LedgerImpl* ledger_;  // NOT OWNED
-  base::flat_map<std::string, ledger::type::MediaEventInfo> events;
+  base::flat_map<std::string, ledger::mojom::MediaEventInfo> events;
 
   // For testing purposes
   friend class VimeoTest;

@@ -37,25 +37,25 @@ void CredentialsPromotion::Start(const CredentialsTrigger& trigger,
   ledger_->database()->GetCredsBatchByTrigger(
       trigger.id, trigger.type,
       [callback = std::make_shared<decltype(get_callback)>(
-           std::move(get_callback))](type::CredsBatchPtr creds_batch) {
+           std::move(get_callback))](mojom::CredsBatchPtr creds_batch) {
         std::move(*callback).Run(std::move(creds_batch));
       });
 }
 
 void CredentialsPromotion::OnStart(ledger::ResultCallback callback,
                                    const CredentialsTrigger& trigger,
-                                   type::CredsBatchPtr creds) {
-  type::CredsBatchStatus status = type::CredsBatchStatus::NONE;
+                                   mojom::CredsBatchPtr creds) {
+  mojom::CredsBatchStatus status = mojom::CredsBatchStatus::NONE;
   if (creds) {
     status = creds->status;
   }
 
   switch (status) {
-    case type::CredsBatchStatus::NONE: {
+    case mojom::CredsBatchStatus::NONE: {
       Blind(std::move(callback), trigger);
       break;
     }
-    case type::CredsBatchStatus::BLINDED: {
+    case mojom::CredsBatchStatus::BLINDED: {
       auto get_callback =
           base::BindOnce(&CredentialsPromotion::Claim, base::Unretained(this),
                          std::move(callback), trigger);
@@ -63,12 +63,12 @@ void CredentialsPromotion::OnStart(ledger::ResultCallback callback,
       ledger_->database()->GetCredsBatchByTrigger(
           trigger.id, trigger.type,
           [callback = std::make_shared<decltype(get_callback)>(
-               std::move(get_callback))](type::CredsBatchPtr creds_batch) {
+               std::move(get_callback))](mojom::CredsBatchPtr creds_batch) {
             std::move(*callback).Run(std::move(creds_batch));
           });
       break;
     }
-    case type::CredsBatchStatus::CLAIMED: {
+    case mojom::CredsBatchStatus::CLAIMED: {
       auto get_callback =
           base::BindOnce(&CredentialsPromotion::FetchSignedCreds,
                          base::Unretained(this), std::move(callback), trigger);
@@ -76,12 +76,12 @@ void CredentialsPromotion::OnStart(ledger::ResultCallback callback,
       ledger_->database()->GetPromotion(
           trigger.id,
           [callback = std::make_shared<decltype(get_callback)>(
-               std::move(get_callback))](type::PromotionPtr promotion) {
+               std::move(get_callback))](mojom::PromotionPtr promotion) {
             std::move(*callback).Run(std::move(promotion));
           });
       break;
     }
-    case type::CredsBatchStatus::SIGNED: {
+    case mojom::CredsBatchStatus::SIGNED: {
       auto get_callback =
           base::BindOnce(&CredentialsPromotion::Unblind, base::Unretained(this),
                          std::move(callback), trigger);
@@ -89,17 +89,17 @@ void CredentialsPromotion::OnStart(ledger::ResultCallback callback,
       ledger_->database()->GetCredsBatchByTrigger(
           trigger.id, trigger.type,
           [callback = std::make_shared<decltype(get_callback)>(
-               std::move(get_callback))](type::CredsBatchPtr creds_batch) {
+               std::move(get_callback))](mojom::CredsBatchPtr creds_batch) {
             std::move(*callback).Run(std::move(creds_batch));
           });
       break;
     }
-    case type::CredsBatchStatus::FINISHED: {
-      std::move(callback).Run(type::Result::LEDGER_OK);
+    case mojom::CredsBatchStatus::FINISHED: {
+      std::move(callback).Run(mojom::Result::LEDGER_OK);
       break;
     }
-    case type::CredsBatchStatus::CORRUPTED: {
-      std::move(callback).Run(type::Result::LEDGER_ERROR);
+    case mojom::CredsBatchStatus::CORRUPTED: {
+      std::move(callback).Run(mojom::Result::LEDGER_ERROR);
       break;
     }
   }
@@ -115,8 +115,8 @@ void CredentialsPromotion::Blind(ledger::ResultCallback callback,
 
 void CredentialsPromotion::OnBlind(ledger::ResultCallback callback,
                                    const CredentialsTrigger& trigger,
-                                   type::Result result) {
-  if (result != type::Result::LEDGER_OK) {
+                                   mojom::Result result) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Blinding failed");
     std::move(callback).Run(result);
     return;
@@ -129,17 +129,17 @@ void CredentialsPromotion::OnBlind(ledger::ResultCallback callback,
   ledger_->database()->GetCredsBatchByTrigger(
       trigger.id, trigger.type,
       [callback = std::make_shared<decltype(get_callback)>(
-           std::move(get_callback))](type::CredsBatchPtr creds_batch) {
+           std::move(get_callback))](mojom::CredsBatchPtr creds_batch) {
         std::move(*callback).Run(std::move(creds_batch));
       });
 }
 
 void CredentialsPromotion::Claim(ledger::ResultCallback callback,
                                  const CredentialsTrigger& trigger,
-                                 type::CredsBatchPtr creds) {
+                                 mojom::CredsBatchPtr creds) {
   if (!creds) {
     BLOG(0, "Creds not found");
-    std::move(callback).Run(type::Result::LEDGER_ERROR);
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -152,9 +152,9 @@ void CredentialsPromotion::Claim(ledger::ResultCallback callback,
                        base::Unretained(this), std::move(callback));
 
     ledger_->database()->UpdateCredsBatchStatus(
-        trigger.id, trigger.type, type::CredsBatchStatus::NONE,
+        trigger.id, trigger.type, mojom::CredsBatchStatus::NONE,
         [callback = std::make_shared<decltype(save_callback)>(
-             std::move(save_callback))](type::Result result) {
+             std::move(save_callback))](mojom::Result result) {
           std::move(*callback).Run(result);
         });
     return;
@@ -171,9 +171,9 @@ void CredentialsPromotion::Claim(ledger::ResultCallback callback,
 
 void CredentialsPromotion::OnClaim(ledger::ResultCallback callback,
                                    const CredentialsTrigger& trigger,
-                                   type::Result result,
+                                   mojom::Result result,
                                    const std::string& claim_id) {
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     std::move(callback).Run(result);
     return;
   }
@@ -186,15 +186,15 @@ void CredentialsPromotion::OnClaim(ledger::ResultCallback callback,
       trigger.id, claim_id,
       [callback =
            std::make_shared<decltype(save_callback)>(std::move(save_callback))](
-          type::Result result) { std::move(*callback).Run(result); });
+          mojom::Result result) { std::move(*callback).Run(result); });
 }
 
 void CredentialsPromotion::ClaimedSaved(ledger::ResultCallback callback,
                                         const CredentialsTrigger& trigger,
-                                        type::Result result) {
-  if (result != type::Result::LEDGER_OK) {
+                                        mojom::Result result) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Claim id was not saved");
-    std::move(callback).Run(type::Result::LEDGER_ERROR);
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -203,18 +203,18 @@ void CredentialsPromotion::ClaimedSaved(ledger::ResultCallback callback,
                      base::Unretained(this), std::move(callback), trigger);
 
   ledger_->database()->UpdateCredsBatchStatus(
-      trigger.id, trigger.type, type::CredsBatchStatus::CLAIMED,
+      trigger.id, trigger.type, mojom::CredsBatchStatus::CLAIMED,
       [callback =
            std::make_shared<decltype(save_callback)>(std::move(save_callback))](
-          type::Result result) { std::move(*callback).Run(result); });
+          mojom::Result result) { std::move(*callback).Run(result); });
 }
 
 void CredentialsPromotion::ClaimStatusSaved(ledger::ResultCallback callback,
                                             const CredentialsTrigger& trigger,
-                                            type::Result result) {
-  if (result != type::Result::LEDGER_OK) {
+                                            mojom::Result result) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Claim status not saved");
-    std::move(callback).Run(type::Result::LEDGER_ERROR);
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -223,30 +223,31 @@ void CredentialsPromotion::ClaimStatusSaved(ledger::ResultCallback callback,
                      base::Unretained(this), std::move(callback), trigger);
 
   ledger_->database()->GetPromotion(
-      trigger.id, [callback = std::make_shared<decltype(get_callback)>(
-                       std::move(get_callback))](type::PromotionPtr promotion) {
+      trigger.id,
+      [callback = std::make_shared<decltype(get_callback)>(
+           std::move(get_callback))](mojom::PromotionPtr promotion) {
         std::move(*callback).Run(std::move(promotion));
       });
 }
 
 void CredentialsPromotion::RetryPreviousStepSaved(
     ledger::ResultCallback callback,
-    type::Result result) {
-  if (result != type::Result::LEDGER_OK) {
+    mojom::Result result) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Previous step not saved");
-    std::move(callback).Run(type::Result::LEDGER_ERROR);
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  std::move(callback).Run(type::Result::RETRY);
+  std::move(callback).Run(mojom::Result::RETRY);
 }
 
 void CredentialsPromotion::FetchSignedCreds(ledger::ResultCallback callback,
                                             const CredentialsTrigger& trigger,
-                                            type::PromotionPtr promotion) {
+                                            mojom::PromotionPtr promotion) {
   if (!promotion) {
     BLOG(0, "Corrupted data");
-    std::move(callback).Run(type::Result::LEDGER_ERROR);
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -258,9 +259,9 @@ void CredentialsPromotion::FetchSignedCreds(ledger::ResultCallback callback,
                        base::Unretained(this), std::move(callback));
 
     ledger_->database()->UpdateCredsBatchStatus(
-        trigger.id, trigger.type, type::CredsBatchStatus::BLINDED,
+        trigger.id, trigger.type, mojom::CredsBatchStatus::BLINDED,
         [callback = std::make_shared<decltype(save_callback)>(
-             std::move(save_callback))](type::Result result) {
+             std::move(save_callback))](mojom::Result result) {
           std::move(*callback).Run(result);
         });
     return;
@@ -276,19 +277,19 @@ void CredentialsPromotion::FetchSignedCreds(ledger::ResultCallback callback,
 
 void CredentialsPromotion::OnFetchSignedCreds(ledger::ResultCallback callback,
                                               const CredentialsTrigger& trigger,
-                                              type::Result result,
-                                              type::CredsBatchPtr batch) {
-  // Note: Translate type::Result::RETRY_SHORT into
-  // type::Result::RETRY, as promotion only supports the standard
+                                              mojom::Result result,
+                                              mojom::CredsBatchPtr batch) {
+  // Note: Translate mojom::Result::RETRY_SHORT into
+  // mojom::Result::RETRY, as promotion only supports the standard
   // retry
-  if (result == type::Result::RETRY_SHORT) {
-    std::move(callback).Run(type::Result::RETRY);
+  if (result == mojom::Result::RETRY_SHORT) {
+    std::move(callback).Run(mojom::Result::RETRY);
     return;
   }
 
-  if (result != type::Result::LEDGER_OK || !batch) {
+  if (result != mojom::Result::LEDGER_OK || !batch) {
     BLOG(0, "Problem parsing response");
-    std::move(callback).Run(type::Result::LEDGER_ERROR);
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -301,17 +302,17 @@ void CredentialsPromotion::OnFetchSignedCreds(ledger::ResultCallback callback,
 
   ledger_->database()->SaveSignedCreds(
       std::move(batch), [callback = std::make_shared<decltype(save_callback)>(
-                             std::move(save_callback))](type::Result result) {
+                             std::move(save_callback))](mojom::Result result) {
         std::move(*callback).Run(result);
       });
 }
 
 void CredentialsPromotion::SignedCredsSaved(ledger::ResultCallback callback,
                                             const CredentialsTrigger& trigger,
-                                            type::Result result) {
-  if (result != type::Result::LEDGER_OK) {
+                                            mojom::Result result) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Signed creds were not saved");
-    std::move(callback).Run(type::Result::LEDGER_ERROR);
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -322,17 +323,17 @@ void CredentialsPromotion::SignedCredsSaved(ledger::ResultCallback callback,
   ledger_->database()->GetCredsBatchByTrigger(
       trigger.id, trigger.type,
       [callback = std::make_shared<decltype(get_callback)>(
-           std::move(get_callback))](type::CredsBatchPtr creds_batch) {
+           std::move(get_callback))](mojom::CredsBatchPtr creds_batch) {
         std::move(*callback).Run(std::move(creds_batch));
       });
 }
 
 void CredentialsPromotion::Unblind(ledger::ResultCallback callback,
                                    const CredentialsTrigger& trigger,
-                                   type::CredsBatchPtr creds) {
+                                   mojom::CredsBatchPtr creds) {
   if (!creds) {
     BLOG(0, "Corrupted data");
-    std::move(callback).Run(type::Result::LEDGER_ERROR);
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -341,19 +342,20 @@ void CredentialsPromotion::Unblind(ledger::ResultCallback callback,
                                      std::move(callback), trigger, *creds);
 
   ledger_->database()->GetPromotion(
-      trigger.id, [callback = std::make_shared<decltype(get_callback)>(
-                       std::move(get_callback))](type::PromotionPtr promotion) {
+      trigger.id,
+      [callback = std::make_shared<decltype(get_callback)>(
+           std::move(get_callback))](mojom::PromotionPtr promotion) {
         std::move(*callback).Run(std::move(promotion));
       });
 }
 
 void CredentialsPromotion::VerifyPublicKey(ledger::ResultCallback callback,
                                            const CredentialsTrigger& trigger,
-                                           const type::CredsBatch& creds,
-                                           type::PromotionPtr promotion) {
+                                           const mojom::CredsBatch& creds,
+                                           mojom::PromotionPtr promotion) {
   if (!promotion) {
     BLOG(0, "Corrupted data");
-    std::move(callback).Run(type::Result::LEDGER_ERROR);
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -361,7 +363,7 @@ void CredentialsPromotion::VerifyPublicKey(ledger::ResultCallback callback,
 
   if (!promotion_keys || promotion_keys->empty()) {
     BLOG(0, "Public key is missing");
-    std::move(callback).Run(type::Result::LEDGER_ERROR);
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -374,7 +376,7 @@ void CredentialsPromotion::VerifyPublicKey(ledger::ResultCallback callback,
 
   if (!valid) {
     BLOG(0, "Public key is not valid");
-    std::move(callback).Run(type::Result::LEDGER_ERROR);
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -389,7 +391,7 @@ void CredentialsPromotion::VerifyPublicKey(ledger::ResultCallback callback,
 
   if (!result) {
     BLOG(0, "UnBlindTokens: " << error);
-    std::move(callback).Run(type::Result::LEDGER_ERROR);
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -401,7 +403,7 @@ void CredentialsPromotion::VerifyPublicKey(ledger::ResultCallback callback,
                      std::move(callback), trigger);
 
   uint64_t expires_at = 0ul;
-  if (promotion->type != type::PromotionType::ADS) {
+  if (promotion->type != mojom::PromotionType::ADS) {
     expires_at = promotion->expires_at;
   }
 
@@ -412,8 +414,8 @@ void CredentialsPromotion::VerifyPublicKey(ledger::ResultCallback callback,
 
 void CredentialsPromotion::Completed(ledger::ResultCallback callback,
                                      const CredentialsTrigger& trigger,
-                                     type::Result result) {
-  if (result != type::Result::LEDGER_OK) {
+                                     mojom::Result result) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Unblinded token save failed");
     std::move(callback).Run(result);
     return;
@@ -422,17 +424,17 @@ void CredentialsPromotion::Completed(ledger::ResultCallback callback,
   ledger_->database()->PromotionCredentialCompleted(
       trigger.id,
       [callback = std::make_shared<decltype(callback)>(std::move(callback))](
-          type::Result result) { std::move(*callback).Run(result); });
+          mojom::Result result) { std::move(*callback).Run(result); });
   ledger_->ledger_client()->UnblindedTokensReady();
 }
 
 void CredentialsPromotion::RedeemTokens(const CredentialsRedeem& redeem,
                                         ledger::LegacyResultCallback callback) {
-  DCHECK(redeem.type != type::RewardsType::TRANSFER);
+  DCHECK(redeem.type != mojom::RewardsType::TRANSFER);
 
   if (redeem.token_list.empty()) {
     BLOG(0, "Token list empty");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -446,7 +448,7 @@ void CredentialsPromotion::RedeemTokens(const CredentialsRedeem& redeem,
 
   if (redeem.publisher_key.empty()) {
     BLOG(0, "Publisher key is empty");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -454,13 +456,13 @@ void CredentialsPromotion::RedeemTokens(const CredentialsRedeem& redeem,
 }
 
 void CredentialsPromotion::OnRedeemTokens(
-    type::Result result,
+    mojom::Result result,
     const std::vector<std::string>& token_id_list,
     const CredentialsRedeem& redeem,
     ledger::LegacyResultCallback callback) {
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Failed to parse redeem tokens response");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -476,11 +478,11 @@ void CredentialsPromotion::OnRedeemTokens(
 void CredentialsPromotion::DrainTokens(
     const CredentialsRedeem& redeem,
     ledger::PostSuggestionsClaimCallback callback) {
-  DCHECK(redeem.type == type::RewardsType::TRANSFER);
+  DCHECK(redeem.type == mojom::RewardsType::TRANSFER);
 
   if (redeem.token_list.empty()) {
     BLOG(0, "Token list empty");
-    std::move(callback).Run(type::Result::LEDGER_ERROR, "");
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -501,11 +503,11 @@ void CredentialsPromotion::OnDrainTokens(
     ledger::PostSuggestionsClaimCallback callback,
     const std::vector<std::string>& token_id_list,
     const CredentialsRedeem& redeem,
-    type::Result result,
+    mojom::Result result,
     std::string drain_id) {
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Failed to parse drain tokens response");
-    std::move(callback).Run(type::Result::LEDGER_ERROR, "");
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -514,24 +516,25 @@ void CredentialsPromotion::OnDrainTokens(
     id = redeem.contribution_id;
   }
 
-  DCHECK(redeem.type == type::RewardsType::TRANSFER);
+  DCHECK(redeem.type == mojom::RewardsType::TRANSFER);
 
   auto mark_tokens_callback = base::BindOnce(
       [](ledger::PostSuggestionsClaimCallback callback, std::string drain_id,
-         type::Result result) {
-        if (result != type::Result::LEDGER_OK) {
+         mojom::Result result) {
+        if (result != mojom::Result::LEDGER_OK) {
           BLOG(0, "Failed to mark tokens as spent");
-          std::move(callback).Run(type::Result::LEDGER_ERROR, "");
+          std::move(callback).Run(mojom::Result::LEDGER_ERROR, "");
         } else {
-          std::move(callback).Run(type::Result::LEDGER_OK, std::move(drain_id));
+          std::move(callback).Run(mojom::Result::LEDGER_OK,
+                                  std::move(drain_id));
         }
       },
       std::move(callback), std::move(drain_id));
 
   ledger_->database()->MarkUnblindedTokensAsSpent(
-      token_id_list, type::RewardsType::TRANSFER, id,
+      token_id_list, mojom::RewardsType::TRANSFER, id,
       [callback = std::make_shared<decltype(mark_tokens_callback)>(
-           std::move(mark_tokens_callback))](type::Result result) {
+           std::move(mark_tokens_callback))](mojom::Result result) {
         std::move(*callback).Run(result);
       });
 }

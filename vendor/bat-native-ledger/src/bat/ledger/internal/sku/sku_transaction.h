@@ -23,32 +23,32 @@ class SKUTransaction {
   explicit SKUTransaction(LedgerImpl* ledger);
   ~SKUTransaction();
 
-  void Create(type::SKUOrderPtr order,
+  void Create(mojom::SKUOrderPtr order,
               const std::string& destination,
               const std::string& wallet_type,
               ledger::LegacyResultCallback callback);
 
-  void SendExternalTransaction(type::Result result,
-                               const type::SKUTransaction& transaction,
+  void SendExternalTransaction(mojom::Result result,
+                               const mojom::SKUTransaction& transaction,
                                ledger::LegacyResultCallback callback);
 
  private:
-  void OnTransactionSaved(type::Result result,
-                          const type::SKUTransaction& transaction,
+  void OnTransactionSaved(mojom::Result result,
+                          const mojom::SKUTransaction& transaction,
                           const std::string& destination,
                           const std::string& wallet_type,
                           ledger::LegacyResultCallback callback);
 
-  void OnTransfer(type::Result result,
+  void OnTransfer(mojom::Result result,
                   const std::string& external_transaction_id,
-                  const type::SKUTransaction& transaction,
+                  const mojom::SKUTransaction& transaction,
                   ledger::LegacyResultCallback callback);
 
-  void OnSaveSKUExternalTransaction(type::Result result,
-                                    const type::SKUTransaction& transaction,
+  void OnSaveSKUExternalTransaction(mojom::Result result,
+                                    const mojom::SKUTransaction& transaction,
                                     ledger::LegacyResultCallback callback);
 
-  void OnSendExternalTransaction(type::Result result,
+  void OnSendExternalTransaction(mojom::Result result,
                                  ledger::LegacyResultCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

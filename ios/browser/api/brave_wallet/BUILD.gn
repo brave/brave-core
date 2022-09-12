@@ -27,6 +27,8 @@ source_set("brave_wallet") {
     "brave_wallet_provider_delegate_ios+private.h",
     "brave_wallet_provider_delegate_ios.h",
     "brave_wallet_provider_delegate_ios.mm",
+    "brave_wallet_solana_utils.h",
+    "brave_wallet_solana_utils.mm",
     "token_registry_utils.h",
     "token_registry_utils.mm",
   ]
@@ -36,6 +38,7 @@ source_set("brave_wallet") {
     "//brave/base/mac",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:constants",
+    "//brave/components/brave_wallet/common:solana_utils",
     "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
     "//brave/ios/browser/api/url",
     "//brave/ios/browser/brave_wallet",

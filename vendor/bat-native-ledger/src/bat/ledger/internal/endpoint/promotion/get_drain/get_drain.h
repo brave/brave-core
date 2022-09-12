@@ -46,9 +46,9 @@ class GetDrain {
  private:
   std::string GetUrl(const std::string& drain_id);
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(const type::UrlResponse& response, GetDrainCallback callback);
+  void OnRequest(const mojom::UrlResponse& response, GetDrainCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

@@ -55,58 +55,49 @@ class PostBatLossTest : public testing::Test {
 TEST_F(PostBatLossTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = "";
             std::move(callback).Run(response);
           }));
 
-  loss_->Request(
-      30.0,
-      1,
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_OK);
-      });
+  loss_->Request(30.0, 1, [](const mojom::Result result) {
+    EXPECT_EQ(result, mojom::Result::LEDGER_OK);
+  });
 }
 
 TEST_F(PostBatLossTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
             std::move(callback).Run(response);
           }));
 
-  loss_->Request(
-      30.0,
-      1,
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      });
+  loss_->Request(30.0, 1, [](const mojom::Result result) {
+    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
+  });
 }
 
 TEST_F(PostBatLossTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
             std::move(callback).Run(response);
           }));
 
-  loss_->Request(
-      30.0,
-      1,
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      });
+  loss_->Request(30.0, 1, [](const mojom::Result result) {
+    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
+  });
 }
 
 }  // namespace promotion

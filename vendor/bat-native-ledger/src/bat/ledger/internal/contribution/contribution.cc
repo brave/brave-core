@@ -28,9 +28,9 @@ using std::placeholders::_3;
 
 namespace {
 
-bool IsRevivedAC(const ledger::type::ContributionInfo& contribution) {
-  using ledger::type::ContributionProcessor;
-  using ledger::type::RewardsType;
+bool IsRevivedAC(const ledger::mojom::ContributionInfo& contribution) {
+  using ledger::mojom::ContributionProcessor;
+  using ledger::mojom::RewardsType;
 
   if (contribution.type != RewardsType::AUTO_CONTRIBUTE) {
     return false;
@@ -52,29 +52,29 @@ bool IsRevivedAC(const ledger::type::ContributionInfo& contribution) {
   return base::Time::Now() - created_at > base::Days(20);
 }
 
-ledger::type::ContributionStep ConvertResultIntoContributionStep(
-    const ledger::type::Result result) {
+ledger::mojom::ContributionStep ConvertResultIntoContributionStep(
+    const ledger::mojom::Result result) {
   switch (result) {
-    case ledger::type::Result::LEDGER_OK: {
-      return ledger::type::ContributionStep::STEP_COMPLETED;
+    case ledger::mojom::Result::LEDGER_OK: {
+      return ledger::mojom::ContributionStep::STEP_COMPLETED;
     }
-    case ledger::type::Result::AC_TABLE_EMPTY: {
-      return ledger::type::ContributionStep::STEP_AC_TABLE_EMPTY;
+    case ledger::mojom::Result::AC_TABLE_EMPTY: {
+      return ledger::mojom::ContributionStep::STEP_AC_TABLE_EMPTY;
     }
-    case ledger::type::Result::NOT_ENOUGH_FUNDS: {
-      return ledger::type::ContributionStep::STEP_NOT_ENOUGH_FUNDS;
+    case ledger::mojom::Result::NOT_ENOUGH_FUNDS: {
+      return ledger::mojom::ContributionStep::STEP_NOT_ENOUGH_FUNDS;
     }
-    case ledger::type::Result::REWARDS_OFF: {
-      return ledger::type::ContributionStep::STEP_REWARDS_OFF;
+    case ledger::mojom::Result::REWARDS_OFF: {
+      return ledger::mojom::ContributionStep::STEP_REWARDS_OFF;
     }
-    case ledger::type::Result::AC_OFF: {
-      return ledger::type::ContributionStep::STEP_AC_OFF;
+    case ledger::mojom::Result::AC_OFF: {
+      return ledger::mojom::ContributionStep::STEP_AC_OFF;
     }
-    case ledger::type::Result::TOO_MANY_RESULTS: {
-      return ledger::type::ContributionStep::STEP_RETRY_COUNT;
+    case ledger::mojom::Result::TOO_MANY_RESULTS: {
+      return ledger::mojom::ContributionStep::STEP_RETRY_COUNT;
     }
     default: {
-      return ledger::type::ContributionStep::STEP_FAILED;
+      return ledger::mojom::ContributionStep::STEP_FAILED;
     }
   }
 }
@@ -131,7 +131,7 @@ void Contribution::ProcessContributionQueue() {
 }
 
 void Contribution::OnProcessContributionQueue(
-    type::ContributionQueuePtr info) {
+    mojom::ContributionQueuePtr info) {
   if (!info) {
     queue_in_progress_ = false;
     return;
@@ -150,7 +150,7 @@ void Contribution::CheckNotCompletedContributions() {
 }
 
 void Contribution::NotCompletedContributions(
-    type::ContributionInfoList list) {
+    std::vector<mojom::ContributionInfoPtr> list) {
   if (list.empty()) {
     return;
   }
@@ -188,20 +188,19 @@ void Contribution::StartMonthlyContribution() {
   monthly_->Process(callback);
 }
 
-void Contribution::StartAutoContribute(
-    const type::Result result,
-    const uint64_t reconcile_stamp) {
-  if (result != type::Result::LEDGER_OK) {
+void Contribution::StartAutoContribute(const mojom::Result result,
+                                       const uint64_t reconcile_stamp) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Monthly contribution failed");
   }
 
   ac_->Process(reconcile_stamp);
 }
 
-void Contribution::OnBalance(type::ContributionQueuePtr queue,
-                             const type::Result result,
-                             type::BalancePtr info) {
-  if (result != type::Result::LEDGER_OK) {
+void Contribution::OnBalance(mojom::ContributionQueuePtr queue,
+                             const mojom::Result result,
+                             mojom::BalancePtr info) {
+  if (result != mojom::Result::LEDGER_OK) {
     queue_in_progress_ = false;
     BLOG(0, "We couldn't get balance from the server.");
     return;
@@ -210,7 +209,7 @@ void Contribution::OnBalance(type::ContributionQueuePtr queue,
   Process(std::move(queue), std::move(info));
 }
 
-void Contribution::Start(type::ContributionQueuePtr info) {
+void Contribution::Start(mojom::ContributionQueuePtr info) {
   auto fetch_callback = base::BindOnce(&Contribution::OnBalance,
                                        base::Unretained(this), std::move(info));
   ledger_->wallet()->FetchBalance(std::move(fetch_callback));
@@ -237,8 +236,8 @@ void Contribution::SetReconcileTimer() {
 }
 
 void Contribution::ContributionCompleted(
-    const type::Result result,
-    type::ContributionInfoPtr contribution) {
+    const mojom::Result result,
+    mojom::ContributionInfoPtr contribution) {
   if (!contribution) {
     BLOG(0, "Contribution is null");
     return;
@@ -251,11 +250,11 @@ void Contribution::ContributionCompleted(
     ledger_->ledger_client()->OnReconcileComplete(result,
                                                   contribution->Clone());
 
-    if (result == type::Result::LEDGER_OK) {
+    if (result == mojom::Result::LEDGER_OK) {
       ledger_->database()->SaveBalanceReportInfoItem(
           util::GetCurrentMonth(), util::GetCurrentYear(),
           GetReportTypeFromRewardsType(contribution->type),
-          contribution->amount, [](const type::Result) {});
+          contribution->amount, [](const mojom::Result) {});
     }
   }
 
@@ -272,9 +271,9 @@ void Contribution::ContributionCompleted(
 }
 
 void Contribution::ContributionCompletedSaved(
-    const type::Result result,
+    const mojom::Result result,
     const std::string& contribution_id) {
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Contribution step and count failed");
   }
 
@@ -298,7 +297,7 @@ void Contribution::OneTimeTip(const std::string& publisher_key,
 }
 
 void Contribution::OnMarkContributionQueueAsComplete(
-    const type::Result result) {
+    const mojom::Result result) {
   queue_in_progress_ = false;
   CheckContributionQueue();
 }
@@ -316,10 +315,9 @@ void Contribution::MarkContributionQueueAsComplete(const std::string& id) {
   ledger_->database()->MarkContributionQueueAsComplete(id, callback);
 }
 
-void Contribution::CreateNewEntry(
-    const std::string& wallet_type,
-    type::BalancePtr balance,
-    type::ContributionQueuePtr queue) {
+void Contribution::CreateNewEntry(const std::string& wallet_type,
+                                  mojom::BalancePtr balance,
+                                  mojom::ContributionQueuePtr queue) {
   if (!queue) {
     BLOG(1, "Queue is null");
     return;
@@ -345,7 +343,7 @@ void Contribution::CreateNewEntry(
   }
 
   if (wallet_type == constant::kWalletBitflyer &&
-      queue->type == type::RewardsType::AUTO_CONTRIBUTE) {
+      queue->type == mojom::RewardsType::AUTO_CONTRIBUTE) {
     BLOG(1, "AC is not supported for bitFlyer wallets");
     CreateNewEntry(GetNextProcessor(wallet_type), std::move(balance),
                    std::move(queue));
@@ -354,17 +352,17 @@ void Contribution::CreateNewEntry(
 
   const std::string contribution_id = base::GenerateGUID();
 
-  auto contribution = type::ContributionInfo::New();
+  auto contribution = mojom::ContributionInfo::New();
   const uint64_t now = util::GetCurrentTimeStamp();
   contribution->contribution_id = contribution_id;
   contribution->amount = queue->amount;
   contribution->type = queue->type;
-  contribution->step = type::ContributionStep::STEP_START;
+  contribution->step = mojom::ContributionStep::STEP_START;
   contribution->retry_count = 0;
   contribution->created_at = now;
   contribution->processor = GetProcessor(wallet_type);
 
-  type::ContributionQueuePublisherList queue_publishers;
+  std::vector<mojom::ContributionQueuePublisherPtr> queue_publishers;
   for (auto& item : queue->publishers) {
     queue_publishers.push_back(item->Clone());
   }
@@ -380,9 +378,9 @@ void Contribution::CreateNewEntry(
               << wallet_type << " (amount: " << contribution->amount
               << ", type: " << queue->type << ")");
 
-  type::ContributionPublisherList publisher_list;
+  std::vector<mojom::ContributionPublisherPtr> publisher_list;
   for (const auto& item : queue_publishers) {
-    auto publisher = type::ContributionPublisher::New();
+    auto publisher = mojom::ContributionPublisher::New();
     publisher->contribution_id = contribution_id;
     publisher->publisher_key = item->publisher_key;
     publisher->total_amount =
@@ -394,7 +392,7 @@ void Contribution::CreateNewEntry(
   contribution->publishers = std::move(publisher_list);
 
   auto shared_queue =
-      std::make_shared<type::ContributionQueuePtr>(std::move(queue));
+      std::make_shared<mojom::ContributionQueuePtr>(std::move(queue));
 
   auto save_callback = std::bind(&Contribution::OnEntrySaved,
       this,
@@ -410,12 +408,12 @@ void Contribution::CreateNewEntry(
 }
 
 void Contribution::OnEntrySaved(
-    const type::Result result,
+    const mojom::Result result,
     const std::string& contribution_id,
     const std::string& wallet_type,
-    const type::Balance& balance,
-    std::shared_ptr<type::ContributionQueuePtr> shared_queue) {
-  if (result != type::Result::LEDGER_OK) {
+    const mojom::Balance& balance,
+    std::shared_ptr<mojom::ContributionQueuePtr> shared_queue) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Contribution was not saved correctly");
     return;
   }
@@ -431,7 +429,7 @@ void Contribution::OnEntrySaved(
       _1,
       contribution_id);
 
-    StartUnblinded({type::CredsBatchType::PROMOTION}, contribution_id,
+    StartUnblinded({mojom::CredsBatchType::PROMOTION}, contribution_id,
                    result_callback);
   } else if (wallet_type == constant::kWalletUphold ||
              wallet_type == constant::kWalletBitflyer ||
@@ -461,11 +459,11 @@ void Contribution::OnEntrySaved(
 }
 
 void Contribution::OnQueueSaved(
-    const type::Result result,
+    const mojom::Result result,
     const std::string& wallet_type,
-    const type::Balance& balance,
-    std::shared_ptr<type::ContributionQueuePtr> shared_queue) {
-  if (result != type::Result::LEDGER_OK) {
+    const mojom::Balance& balance,
+    std::shared_ptr<mojom::ContributionQueuePtr> shared_queue) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Queue was not saved successfully");
     return;
   }
@@ -475,15 +473,12 @@ void Contribution::OnQueueSaved(
     return;
   }
 
-  CreateNewEntry(
-      GetNextProcessor(wallet_type),
-      type::Balance::New(balance),
-      std::move(*shared_queue));
+  CreateNewEntry(GetNextProcessor(wallet_type), mojom::Balance::New(balance),
+                 std::move(*shared_queue));
 }
 
-void Contribution::Process(
-    type::ContributionQueuePtr queue,
-    type::BalancePtr balance) {
+void Contribution::Process(mojom::ContributionQueuePtr queue,
+                           mojom::BalancePtr balance) {
   if (!queue) {
     BLOG(0, "Queue is null");
     return;
@@ -523,11 +518,10 @@ void Contribution::Process(
       queue->Clone());
 }
 
-void Contribution::TransferFunds(
-    const type::SKUTransaction& transaction,
-    const std::string& destination,
-    const std::string& wallet_type,
-    client::TransactionCallback callback) {
+void Contribution::TransferFunds(const mojom::SKUTransaction& transaction,
+                                 const std::string& destination,
+                                 const std::string& wallet_type,
+                                 client::TransactionCallback callback) {
   if (wallet_type == constant::kWalletUphold) {
     ledger_->uphold()->TransferFunds(
         transaction.amount,
@@ -563,14 +557,14 @@ void Contribution::SKUAutoContribution(const std::string& contribution_id,
 }
 
 void Contribution::StartUnblinded(
-    const std::vector<type::CredsBatchType>& types,
+    const std::vector<mojom::CredsBatchType>& types,
     const std::string& contribution_id,
     ledger::LegacyResultCallback callback) {
   unblinded_->Start(types, contribution_id, callback);
 }
 
 void Contribution::RetryUnblinded(
-    const std::vector<type::CredsBatchType>& types,
+    const std::vector<mojom::CredsBatchType>& types,
     const std::string& contribution_id,
     ledger::LegacyResultCallback callback) {
   auto get_callback = std::bind(&Contribution::RetryUnblindedContribution,
@@ -583,21 +577,20 @@ void Contribution::RetryUnblinded(
 }
 
 void Contribution::RetryUnblindedContribution(
-    type::ContributionInfoPtr contribution,
-    const std::vector<type::CredsBatchType>& types,
+    mojom::ContributionInfoPtr contribution,
+    const std::vector<mojom::CredsBatchType>& types,
     ledger::LegacyResultCallback callback) {
   unblinded_->Retry(types, std::move(contribution), callback);
 }
 
-void Contribution::Result(
-    const type::Result result,
-    const std::string& contribution_id) {
-  if (result == type::Result::RETRY_SHORT) {
+void Contribution::Result(const mojom::Result result,
+                          const std::string& contribution_id) {
+  if (result == mojom::Result::RETRY_SHORT) {
     SetRetryTimer(contribution_id, base::Seconds(5));
     return;
   }
 
-  if (result == type::Result::RETRY) {
+  if (result == mojom::Result::RETRY) {
     SetRetryTimer(contribution_id, util::GetRandomizedDelay(base::Seconds(45)));
     return;
   }
@@ -610,17 +603,15 @@ void Contribution::Result(
   ledger_->database()->GetContributionInfo(contribution_id, get_callback);
 }
 
-void Contribution::OnResult(
-    type::ContributionInfoPtr contribution,
-    const type::Result result) {
+void Contribution::OnResult(mojom::ContributionInfoPtr contribution,
+                            const mojom::Result result) {
   if (!contribution) {
     BLOG(0, "Contribution is null");
     return;
   }
 
-  if (result == type::Result::RETRY_LONG) {
-    if (contribution->processor ==
-        type::ContributionProcessor::BRAVE_TOKENS) {
+  if (result == mojom::Result::RETRY_LONG) {
+    if (contribution->processor == mojom::ContributionProcessor::BRAVE_TOKENS) {
       SetRetryTimer(contribution->contribution_id,
                     util::GetRandomizedDelay(base::Seconds(45)));
     } else {
@@ -665,24 +656,23 @@ void Contribution::OnRetryTimerElapsed(const std::string& contribution_id) {
   ledger_->database()->GetContributionInfo(contribution_id, callback);
 }
 
-void Contribution::SetRetryCounter(type::ContributionInfoPtr contribution) {
+void Contribution::SetRetryCounter(mojom::ContributionInfoPtr contribution) {
   if (!contribution) {
     BLOG(0, "Contribution is null");
     return;
   }
 
   if (contribution->retry_count == 3 &&
-      contribution->step != type::ContributionStep::STEP_PREPARE) {
+      contribution->step != mojom::ContributionStep::STEP_PREPARE) {
     BLOG(0, "Contribution failed after 3 retries");
-    ContributionCompleted(type::Result::TOO_MANY_RESULTS,
+    ContributionCompleted(mojom::Result::TOO_MANY_RESULTS,
                           std::move(contribution));
     return;
   }
 
-  auto save_callback = std::bind(&Contribution::Retry,
-      this,
-      _1,
-      std::make_shared<type::ContributionInfoPtr>(contribution->Clone()));
+  auto save_callback = std::bind(
+      &Contribution::Retry, this, _1,
+      std::make_shared<mojom::ContributionInfoPtr>(contribution->Clone()));
 
   ledger_->database()->UpdateContributionInfoStepAndCount(
       contribution->contribution_id,
@@ -692,19 +682,17 @@ void Contribution::SetRetryCounter(type::ContributionInfoPtr contribution) {
 }
 
 void Contribution::OnMarkUnblindedTokensAsSpendable(
-    const type::Result result,
+    const mojom::Result result,
     const std::string& contribution_id) {
-  BLOG_IF(
-      1,
-      result != type::Result::LEDGER_OK,
-      "Failed to mark unblinded tokens as unreserved for contribution "
-          << contribution_id);
+  BLOG_IF(1, result != mojom::Result::LEDGER_OK,
+          "Failed to mark unblinded tokens as unreserved for contribution "
+              << contribution_id);
 }
 
 void Contribution::Retry(
-    const type::Result result,
-    std::shared_ptr<type::ContributionInfoPtr> shared_contribution) {
-  if (result != type::Result::LEDGER_OK) {
+    const mojom::Result result,
+    std::shared_ptr<mojom::ContributionInfoPtr> shared_contribution) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Retry count update failed");
     return;
   }
@@ -719,10 +707,10 @@ void Contribution::Retry(
     return;
   }
 
-  if ((*shared_contribution)->type == type::RewardsType::AUTO_CONTRIBUTE &&
+  if ((*shared_contribution)->type == mojom::RewardsType::AUTO_CONTRIBUTE &&
       !ledger_->state()->GetAutoContributeEnabled()) {
     BLOG(1, "AC is disabled, completing contribution");
-    ContributionCompleted(type::Result::AC_OFF,
+    ContributionCompleted(mojom::Result::AC_OFF,
                           std::move(*shared_contribution));
     return;
   }
@@ -736,18 +724,16 @@ void Contribution::Retry(
     (*shared_contribution)->contribution_id);
 
   switch ((*shared_contribution)->processor) {
-    case type::ContributionProcessor::BRAVE_TOKENS: {
-      RetryUnblindedContribution(
-          (*shared_contribution)->Clone(),
-          {type::CredsBatchType::PROMOTION},
-          result_callback);
+    case mojom::ContributionProcessor::BRAVE_TOKENS: {
+      RetryUnblindedContribution((*shared_contribution)->Clone(),
+                                 {mojom::CredsBatchType::PROMOTION},
+                                 result_callback);
       return;
     }
-    case type::ContributionProcessor::UPHOLD:
-    case type::ContributionProcessor::BITFLYER:
-    case type::ContributionProcessor::GEMINI: {
-      if ((*shared_contribution)->type ==
-          type::RewardsType::AUTO_CONTRIBUTE) {
+    case mojom::ContributionProcessor::UPHOLD:
+    case mojom::ContributionProcessor::BITFLYER:
+    case mojom::ContributionProcessor::GEMINI: {
+      if ((*shared_contribution)->type == mojom::RewardsType::AUTO_CONTRIBUTE) {
         sku_->Retry((*shared_contribution)->Clone(), result_callback);
         return;
       }
@@ -755,10 +741,9 @@ void Contribution::Retry(
       external_wallet_->Retry((*shared_contribution)->Clone(), result_callback);
       return;
     }
-    case type::ContributionProcessor::NONE: {
-      Result(
-          type::Result::LEDGER_ERROR,
-          (*shared_contribution)->contribution_id);
+    case mojom::ContributionProcessor::NONE: {
+      Result(mojom::Result::LEDGER_ERROR,
+             (*shared_contribution)->contribution_id);
       return;
     }
   }
@@ -766,15 +751,12 @@ void Contribution::Retry(
 
 void Contribution::GetRecurringTips(
     ledger::PublisherInfoListCallback callback) {
-  ledger_->database()->GetRecurringTips([this, callback](
-      type::PublisherInfoList list) {
-    // The publisher status field may be expired. Attempt to refresh
-    // expired publisher status values before executing callback.
-    publisher::RefreshPublisherStatus(
-        ledger_,
-        std::move(list),
-        callback);
-  });
+  ledger_->database()->GetRecurringTips(
+      [this, callback](std::vector<mojom::PublisherInfoPtr> list) {
+        // The publisher status field may be expired. Attempt to refresh
+        // expired publisher status values before executing callback.
+        publisher::RefreshPublisherStatus(ledger_, std::move(list), callback);
+      });
 }
 
 }  // namespace contribution

@@ -365,6 +365,7 @@ class EthereumProviderImpl final
   std::vector<std::string> known_allowed_accounts;
   bool first_known_accounts_check = true;
   PrefService* prefs_ = nullptr;
+  bool wallet_onboarding_shown_ = false;
   base::WeakPtrFactory<EthereumProviderImpl> weak_factory_;
 };
 

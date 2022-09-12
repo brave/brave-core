@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_SKU_ORDER_H_
-#define BRAVELEDGER_SKU_ORDER_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_SKU_SKU_ORDER_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_SKU_SKU_ORDER_H_
 
 #include <map>
 #include <memory>
@@ -24,20 +24,17 @@ class SKUOrder {
   explicit SKUOrder(LedgerImpl* ledger);
   ~SKUOrder();
 
-  void Create(
-      const std::vector<type::SKUOrderItem>& items,
-      ledger::SKUOrderCallback callback);
+  void Create(const std::vector<mojom::SKUOrderItem>& items,
+              ledger::SKUOrderCallback callback);
 
  private:
-  void OnCreate(
-      const type::Result result,
-      type::SKUOrderPtr order,
-      ledger::SKUOrderCallback callback);
+  void OnCreate(const mojom::Result result,
+                mojom::SKUOrderPtr order,
+                ledger::SKUOrderCallback callback);
 
-  void OnCreateSave(
-      const type::Result result,
-      const std::string& order_id,
-      ledger::SKUOrderCallback callback);
+  void OnCreateSave(const mojom::Result result,
+                    const std::string& order_id,
+                    ledger::SKUOrderCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::PaymentServer> payment_server_;
@@ -46,4 +43,4 @@ class SKUOrder {
 }  // namespace sku
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_SKU_ORDER_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_SKU_SKU_ORDER_H_

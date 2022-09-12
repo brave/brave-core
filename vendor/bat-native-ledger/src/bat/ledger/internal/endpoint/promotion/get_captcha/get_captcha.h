@@ -30,7 +30,7 @@ namespace endpoint {
 namespace promotion {
 
 using GetCaptchaCallback =
-    base::OnceCallback<void(type::Result result, const std::string& image)>;
+    base::OnceCallback<void(mojom::Result result, const std::string& image)>;
 
 class GetCaptcha {
  public:
@@ -44,14 +44,12 @@ class GetCaptcha {
  private:
   std::string GetUrl(const std::string& captcha_id);
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(const int status_code);
 
-  type::Result ParseBody(
-      const std::string& body,
-      std::string* image);
+  mojom::Result ParseBody(const std::string& body, std::string* image);
 
   void OnRequest(GetCaptchaCallback callback,
-                 const type::UrlResponse& response);
+                 const mojom::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

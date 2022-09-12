@@ -5,6 +5,7 @@
 
 #include <memory>
 
+#include "base/containers/contains.h"
 #include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "brave/browser/brave_content_browser_client.h"
@@ -120,8 +121,7 @@ class BraveFaviconDatabaseBrowserTest : public InProcessBrowserTest {
 
   bool WasRequested(const GURL& url) {
     base::AutoLock auto_lock(save_request_lock_);
-    return std::find(requests_.begin(), requests_.end(), url.spec()) !=
-           requests_.end();
+    return base::Contains(requests_, url.spec());
   }
 
   void TearDown() override {

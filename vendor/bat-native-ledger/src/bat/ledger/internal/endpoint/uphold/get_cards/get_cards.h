@@ -77,7 +77,7 @@ class LedgerImpl;
 namespace endpoint::uphold {
 
 using GetCardsCallback =
-    base::OnceCallback<void(type::Result, std::string&& id)>;
+    base::OnceCallback<void(mojom::Result, std::string&& id)>;
 
 class GetCards {
  public:
@@ -89,11 +89,11 @@ class GetCards {
  private:
   std::string GetUrl();
 
-  type::Result CheckStatusCode(int status_code);
+  mojom::Result CheckStatusCode(int status_code);
 
-  type::Result ParseBody(const std::string& body, std::string* id);
+  mojom::Result ParseBody(const std::string& body, std::string* id);
 
-  void OnRequest(GetCardsCallback, const type::UrlResponse&);
+  void OnRequest(GetCardsCallback, const mojom::UrlResponse&);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

@@ -32,12 +32,12 @@ void UpholdTransfer::Start(const Transaction& transaction,
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");
-    return callback(type::Result::LEDGER_ERROR, "");
+    return callback(mojom::Result::LEDGER_ERROR, "");
   }
 
-  if (uphold_wallet->status != type::WalletStatus::VERIFIED) {
+  if (uphold_wallet->status != mojom::WalletStatus::VERIFIED) {
     BLOG(0, "Wallet status should have been VERIFIED!");
-    return callback(type::Result::LEDGER_ERROR, "");
+    return callback(mojom::Result::LEDGER_ERROR, "");
   }
 
   CheckWalletState(uphold_wallet.get());
@@ -49,31 +49,31 @@ void UpholdTransfer::Start(const Transaction& transaction,
       uphold_wallet->token, uphold_wallet->address, transaction, url_callback);
 }
 
-void UpholdTransfer::OnCreateTransaction(const type::Result result,
+void UpholdTransfer::OnCreateTransaction(const mojom::Result result,
                                          const std::string& id,
                                          client::TransactionCallback callback) {
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");
-    return callback(type::Result::LEDGER_ERROR, "");
+    return callback(mojom::Result::LEDGER_ERROR, "");
   }
 
-  if (uphold_wallet->status != type::WalletStatus::VERIFIED) {
+  if (uphold_wallet->status != mojom::WalletStatus::VERIFIED) {
     BLOG(0, "Wallet status should have been VERIFIED!");
-    return callback(type::Result::LEDGER_ERROR, "");
+    return callback(mojom::Result::LEDGER_ERROR, "");
   }
 
   CheckWalletState(uphold_wallet.get());
 
-  if (result == type::Result::EXPIRED_TOKEN) {
+  if (result == mojom::Result::EXPIRED_TOKEN) {
     ledger_->uphold()->DisconnectWallet(
         ledger::notifications::kWalletDisconnected);
-    return callback(type::Result::EXPIRED_TOKEN, "");
+    return callback(mojom::Result::EXPIRED_TOKEN, "");
   }
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     // TODO(nejczdovc): add retry logic to all errors in this function
-    return callback(type::Result::LEDGER_ERROR, "");
+    return callback(mojom::Result::LEDGER_ERROR, "");
   }
 
   CommitTransaction(id, callback);
@@ -84,12 +84,12 @@ void UpholdTransfer::CommitTransaction(const std::string& transaction_id,
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");
-    return callback(type::Result::LEDGER_ERROR, "");
+    return callback(mojom::Result::LEDGER_ERROR, "");
   }
 
   if (transaction_id.empty()) {
     BLOG(0, "Transaction id not found");
-    return callback(type::Result::LEDGER_ERROR, "");
+    return callback(mojom::Result::LEDGER_ERROR, "");
   }
 
   auto url_callback = std::bind(&UpholdTransfer::OnCommitTransaction, this, _1,
@@ -100,33 +100,33 @@ void UpholdTransfer::CommitTransaction(const std::string& transaction_id,
       url_callback);
 }
 
-void UpholdTransfer::OnCommitTransaction(const type::Result result,
+void UpholdTransfer::OnCommitTransaction(const mojom::Result result,
                                          const std::string& transaction_id,
                                          client::TransactionCallback callback) {
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");
-    return callback(type::Result::LEDGER_ERROR, "");
+    return callback(mojom::Result::LEDGER_ERROR, "");
   }
 
-  if (uphold_wallet->status != type::WalletStatus::VERIFIED) {
+  if (uphold_wallet->status != mojom::WalletStatus::VERIFIED) {
     BLOG(0, "Wallet status should have been VERIFIED!");
-    return callback(type::Result::LEDGER_ERROR, "");
+    return callback(mojom::Result::LEDGER_ERROR, "");
   }
 
   CheckWalletState(uphold_wallet.get());
 
-  if (result == type::Result::EXPIRED_TOKEN) {
+  if (result == mojom::Result::EXPIRED_TOKEN) {
     ledger_->uphold()->DisconnectWallet(
         ledger::notifications::kWalletDisconnected);
-    return callback(type::Result::EXPIRED_TOKEN, "");
+    return callback(mojom::Result::EXPIRED_TOKEN, "");
   }
 
-  if (result != type::Result::LEDGER_OK) {
-    return callback(type::Result::LEDGER_ERROR, "");
+  if (result != mojom::Result::LEDGER_OK) {
+    return callback(mojom::Result::LEDGER_ERROR, "");
   }
 
-  callback(type::Result::LEDGER_OK, transaction_id);
+  callback(mojom::Result::LEDGER_OK, transaction_id);
 }
 
 }  // namespace uphold

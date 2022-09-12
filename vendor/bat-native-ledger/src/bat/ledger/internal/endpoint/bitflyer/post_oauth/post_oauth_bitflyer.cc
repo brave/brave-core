@@ -52,24 +52,24 @@ std::string PostOauth::GeneratePayload(const std::string& external_account_id,
   return payload;
 }
 
-type::Result PostOauth::CheckStatusCode(int status_code) {
+mojom::Result PostOauth::CheckStatusCode(int status_code) {
   if (status_code == net::HTTP_UNAUTHORIZED) {
     BLOG(0, "Unauthorized access");
-    return type::Result::EXPIRED_TOKEN;
+    return mojom::Result::EXPIRED_TOKEN;
   }
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
-type::Result PostOauth::ParseBody(const std::string& body,
-                                  std::string* token,
-                                  std::string* address,
-                                  std::string* linking_info) {
+mojom::Result PostOauth::ParseBody(const std::string& body,
+                                   std::string* token,
+                                   std::string* address,
+                                   std::string* linking_info) {
   DCHECK(token);
   DCHECK(address);
   DCHECK(linking_info);
@@ -77,45 +77,45 @@ type::Result PostOauth::ParseBody(const std::string& body,
   absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* access_token = dict.FindString("access_token");
   if (!access_token) {
     BLOG(0, "Missing access token");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   const auto* deposit_id = dict.FindString("deposit_id");
   if (!deposit_id) {
     BLOG(0, "Missing deposit id");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   const auto* linking_information = dict.FindString("linking_info");
   if (!linking_information) {
     BLOG(0, "Missing linking info");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   *token = *access_token;
   *address = *deposit_id;
   *linking_info = *linking_information;
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
 void PostOauth::Request(const std::string& external_account_id,
                         const std::string& code,
                         const std::string& code_verifier,
                         PostOauthCallback callback) {
-  auto request = type::UrlRequest::New();
+  auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
   request->content = GeneratePayload(external_account_id, code, code_verifier);
   request->headers = RequestAuthorization();
   request->content_type = "application/json";
-  request->method = type::UrlMethod::POST;
+  request->method = mojom::UrlMethod::POST;
   request->skip_log = true;
 
   ledger_->LoadURL(std::move(request),
@@ -124,11 +124,11 @@ void PostOauth::Request(const std::string& external_account_id,
 }
 
 void PostOauth::OnRequest(PostOauthCallback callback,
-                          const type::UrlResponse& response) {
+                          const mojom::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response, true);
 
-  type::Result result = CheckStatusCode(response.status_code);
-  if (result != type::Result::LEDGER_OK) {
+  mojom::Result result = CheckStatusCode(response.status_code);
+  if (result != mojom::Result::LEDGER_OK) {
     return std::move(callback).Run(result, "", "", "");
   }
 

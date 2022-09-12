@@ -989,6 +989,9 @@
                   },
                   "adsUIEnabled": {
                     "type": "boolean"
+                  },
+                  "countryCode": {
+                    "type": "string"
                   }
                 }
               }
@@ -1481,17 +1484,6 @@
                 "optional": true
               }
             }
-          }
-        ]
-      },
-      {
-        "name": "requestAdsEnabledPopupClosed",
-        "type": "function",
-        "description": "",
-        "parameters": [
-          {
-            "name": "ads_enabled",
-            "type": "boolean"
           }
         ]
       }

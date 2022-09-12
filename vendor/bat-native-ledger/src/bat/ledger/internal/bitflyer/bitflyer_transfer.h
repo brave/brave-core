@@ -32,7 +32,7 @@ class BitflyerTransfer {
              client::TransactionCallback callback);
 
  private:
-  void OnCreateTransaction(const type::Result result,
+  void OnCreateTransaction(const mojom::Result result,
                            const std::string& id,
                            client::TransactionCallback callback);
 

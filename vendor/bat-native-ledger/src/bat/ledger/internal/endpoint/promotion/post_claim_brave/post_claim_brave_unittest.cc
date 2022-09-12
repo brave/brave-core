@@ -55,8 +55,8 @@ class PostClaimBraveTest : public testing::Test {
 TEST_F(PostClaimBraveTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = "";
@@ -64,16 +64,16 @@ TEST_F(PostClaimBraveTest, ServerOK) {
           }));
 
   claim_->Request("83b3b77b-e7c3-455b-adda-e476fa0656d2",
-                  base::BindOnce([](type::Result result) {
-                    EXPECT_EQ(result, type::Result::LEDGER_OK);
+                  base::BindOnce([](mojom::Result result) {
+                    EXPECT_EQ(result, mojom::Result::LEDGER_OK);
                   }));
 }
 
 TEST_F(PostClaimBraveTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
@@ -81,16 +81,16 @@ TEST_F(PostClaimBraveTest, ServerError400) {
           }));
 
   claim_->Request("83b3b77b-e7c3-455b-adda-e476fa0656d2",
-                  base::BindOnce([](type::Result result) {
-                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                  base::BindOnce([](mojom::Result result) {
+                    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
                   }));
 }
 
 TEST_F(PostClaimBraveTest, ServerError404) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 404;
             response.url = request->url;
             response.body = "";
@@ -98,16 +98,16 @@ TEST_F(PostClaimBraveTest, ServerError404) {
           }));
 
   claim_->Request("83b3b77b-e7c3-455b-adda-e476fa0656d2",
-                  base::BindOnce([](type::Result result) {
-                    EXPECT_EQ(result, type::Result::NOT_FOUND);
+                  base::BindOnce([](mojom::Result result) {
+                    EXPECT_EQ(result, mojom::Result::NOT_FOUND);
                   }));
 }
 
 TEST_F(PostClaimBraveTest, ServerError409) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 409;
             response.url = request->url;
             response.body = "";
@@ -115,16 +115,16 @@ TEST_F(PostClaimBraveTest, ServerError409) {
           }));
 
   claim_->Request("83b3b77b-e7c3-455b-adda-e476fa0656d2",
-                  base::BindOnce([](type::Result result) {
-                    EXPECT_EQ(result, type::Result::ALREADY_EXISTS);
+                  base::BindOnce([](mojom::Result result) {
+                    EXPECT_EQ(result, mojom::Result::ALREADY_EXISTS);
                   }));
 }
 
 TEST_F(PostClaimBraveTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
@@ -132,16 +132,16 @@ TEST_F(PostClaimBraveTest, ServerError500) {
           }));
 
   claim_->Request("83b3b77b-e7c3-455b-adda-e476fa0656d2",
-                  base::BindOnce([](type::Result result) {
-                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                  base::BindOnce([](mojom::Result result) {
+                    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
                   }));
 }
 
 TEST_F(PostClaimBraveTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
@@ -149,8 +149,8 @@ TEST_F(PostClaimBraveTest, ServerErrorRandom) {
           }));
 
   claim_->Request("83b3b77b-e7c3-455b-adda-e476fa0656d2",
-                  base::BindOnce([](type::Result result) {
-                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                  base::BindOnce([](mojom::Result result) {
+                    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
                   }));
 }
 

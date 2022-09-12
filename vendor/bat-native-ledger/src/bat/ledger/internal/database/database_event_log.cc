@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <utility>
+#include <vector>
 
 #include "base/guid.h"
 #include "base/strings/stringprintf.h"
@@ -38,15 +39,15 @@ void DatabaseEventLog::Insert(
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "INSERT INTO %s (event_log_id, key, value, created_at) "
       "VALUES (?, ?, ?, ?)",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
   BindString(command.get(), 0, base::GenerateGUID());
@@ -57,7 +58,7 @@ void DatabaseEventLog::Insert(
   transaction->commands.push_back(std::move(command));
 
   ledger_->RunDBTransaction(std::move(transaction),
-                            [](type::DBCommandResponsePtr response) {});
+                            [](mojom::DBCommandResponsePtr response) {});
 }
 
 void DatabaseEventLog::InsertRecords(
@@ -65,11 +66,11 @@ void DatabaseEventLog::InsertRecords(
     ledger::LegacyResultCallback callback) {
   if (records.empty()) {
     BLOG(0, "No records");
-    callback(type::Result::NOT_FOUND);
+    callback(mojom::Result::NOT_FOUND);
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
   auto time = util::GetCurrentTimeStamp();
   const std::string base_query = base::StringPrintf(
       "INSERT INTO %s (event_log_id, key, value, created_at) VALUES ",
@@ -84,8 +85,8 @@ void DatabaseEventLog::InsertRecords(
   }
 
   query.pop_back();
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::EXECUTE;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::EXECUTE;
   command->command = query;
 
   transaction->commands.push_back(std::move(command));
@@ -98,22 +99,22 @@ void DatabaseEventLog::InsertRecords(
 }
 
 void DatabaseEventLog::GetLastRecords(ledger::GetEventLogsCallback callback) {
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "SELECT event_log_id, key, value, created_at "
       "FROM %s ORDER BY created_at DESC, ROWID DESC LIMIT 2000",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = query;
 
   command->record_bindings = {
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::INT64_TYPE,
+      mojom::DBCommand::RecordBindingType::STRING_TYPE,
+      mojom::DBCommand::RecordBindingType::STRING_TYPE,
+      mojom::DBCommand::RecordBindingType::STRING_TYPE,
+      mojom::DBCommand::RecordBindingType::INT64_TYPE,
   };
 
   transaction->commands.push_back(std::move(command));
@@ -126,19 +127,18 @@ void DatabaseEventLog::GetLastRecords(ledger::GetEventLogsCallback callback) {
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-void DatabaseEventLog::OnGetAllRecords(
-    type::DBCommandResponsePtr response,
-    ledger::GetEventLogsCallback callback) {
+void DatabaseEventLog::OnGetAllRecords(mojom::DBCommandResponsePtr response,
+                                       ledger::GetEventLogsCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback({});
     return;
   }
 
-  type::EventLogs list;
+  std::vector<mojom::EventLogPtr> list;
   for (auto const& record : response->result->get_records()) {
-    auto info = type::EventLog::New();
+    auto info = mojom::EventLog::New();
     auto* record_pointer = record.get();
 
     info->event_log_id = GetStringColumn(record_pointer, 0);

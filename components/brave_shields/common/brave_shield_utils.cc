@@ -20,6 +20,9 @@ ContentSetting GetBraveFPContentSettingFromRules(
     const GURL& primary_url) {
   ContentSettingPatternSource fp_rule;
   for (const auto& rule : fp_rules) {
+    if (rule.secondary_pattern ==
+        ContentSettingsPattern::FromString("https://balanced"))
+      continue;
     if (rule.primary_pattern.Matches(primary_url)) {
       return rule.GetContentSetting();
     }

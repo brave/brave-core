@@ -45,16 +45,13 @@ void StateMigration::Start(ledger::LegacyResultCallback callback) {
 void StateMigration::FreshInstall(ledger::LegacyResultCallback callback) {
   BLOG(1, "Fresh install, state version set to " << kCurrentVersionNumber);
   ledger_->state()->SetInlineTippingPlatformEnabled(
-      type::InlineTipsPlatforms::REDDIT,
-      true);
+      mojom::InlineTipsPlatforms::REDDIT, true);
   ledger_->state()->SetInlineTippingPlatformEnabled(
-      type::InlineTipsPlatforms::TWITTER,
-      true);
+      mojom::InlineTipsPlatforms::TWITTER, true);
   ledger_->state()->SetInlineTippingPlatformEnabled(
-      type::InlineTipsPlatforms::GITHUB,
-      true);
+      mojom::InlineTipsPlatforms::GITHUB, true);
   ledger_->state()->SetVersion(kCurrentVersionNumber);
-  callback(type::Result::LEDGER_OK);
+  callback(mojom::Result::LEDGER_OK);
 }
 
 void StateMigration::Migrate(ledger::LegacyResultCallback callback) {
@@ -66,7 +63,7 @@ void StateMigration::Migrate(ledger::LegacyResultCallback callback) {
   }
 
   if (current_version == kCurrentVersionNumber) {
-    callback(type::Result::LEDGER_OK);
+    callback(mojom::Result::LEDGER_OK);
     return;
   }
 
@@ -129,13 +126,13 @@ void StateMigration::Migrate(ledger::LegacyResultCallback callback) {
   NOTREACHED();
 }
 
-void StateMigration::OnMigration(type::Result result,
+void StateMigration::OnMigration(mojom::Result result,
                                  int version,
                                  ledger::LegacyResultCallback callback) {
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "State: Error with migration from " << (version - 1) <<
         " to " << version);
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 

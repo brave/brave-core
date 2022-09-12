@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 
+#include "base/containers/contains.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
@@ -1102,8 +1103,7 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(base::ValueView input_value,
                          std::move(id));
       return;
     }
-    if (std::find(restricted_methods.begin(), restricted_methods.end(),
-                  "eth_accounts") == restricted_methods.end()) {
+    if (!base::Contains(restricted_methods, "eth_accounts")) {
       SendErrorOnRequest(error, error_message, std::move(callback),
                          std::move(id));
       return;
@@ -1161,7 +1161,10 @@ void EthereumProviderImpl::ContinueRequestEthereumPermissionsKeyringInfo(
     brave_wallet::mojom::KeyringInfoPtr keyring_info) {
   DCHECK_EQ(keyring_info->id, brave_wallet::mojom::kDefaultKeyringId);
   if (!keyring_info->is_keyring_created) {
-    delegate_->ShowWalletOnboarding();
+    if (!wallet_onboarding_shown_) {
+      delegate_->ShowWalletOnboarding();
+      wallet_onboarding_shown_ = true;
+    }
     OnRequestEthereumPermissions(std::move(callback), std::move(id), method,
                                  origin, RequestPermissionsError::kInternal,
                                  absl::nullopt);

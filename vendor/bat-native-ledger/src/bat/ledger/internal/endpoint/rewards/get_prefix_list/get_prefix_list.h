@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_ENDPOINT_REWARDS_GET_PREFIX_LIST_GET_PREFIX_LIST_H_
-#define BRAVELEDGER_ENDPOINT_REWARDS_GET_PREFIX_LIST_GET_PREFIX_LIST_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_REWARDS_GET_PREFIX_LIST_GET_PREFIX_LIST_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_REWARDS_GET_PREFIX_LIST_GET_PREFIX_LIST_H_
 
 #include <string>
 
@@ -24,9 +24,8 @@ class LedgerImpl;
 namespace endpoint {
 namespace rewards {
 
-using GetPrefixListCallback = std::function<void(
-    const type::Result result,
-    const std::string& body)>;
+using GetPrefixListCallback =
+    std::function<void(const mojom::Result result, const std::string& body)>;
 
 class GetPrefixList {
  public:
@@ -38,11 +37,10 @@ class GetPrefixList {
  private:
   std::string GetUrl();
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(
-      const type::UrlResponse& response,
-      GetPrefixListCallback callback);
+  void OnRequest(const mojom::UrlResponse& response,
+                 GetPrefixListCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
@@ -51,4 +49,4 @@ class GetPrefixList {
 }  // namespace endpoint
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_ENDPOINT_REWARDS_GET_PREFIX_LIST_GET_PREFIX_LIST_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_REWARDS_GET_PREFIX_LIST_GET_PREFIX_LIST_H_

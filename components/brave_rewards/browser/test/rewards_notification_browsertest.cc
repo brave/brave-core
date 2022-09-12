@@ -317,7 +317,7 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(
     RewardsNotificationBrowserTest,
     InsufficientNotificationForZeroAmountZeroPublishers) {
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   CheckInsufficientFundsForTesting();
   WaitForInsufficientFundsNotification();
   const auto& notifications = rewards_service_->GetAllNotifications();
@@ -333,7 +333,7 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(
     RewardsNotificationBrowserTest,
     InsufficientNotificationForACNotEnoughFunds) {
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   rewards_service_->SetAutoContributeEnabled(true);
   context_helper_->LoadRewardsPage();
   // Visit publishers
@@ -363,20 +363,16 @@ IN_PROC_BROWSER_TEST_F(
 
 IN_PROC_BROWSER_TEST_F(RewardsNotificationBrowserTest,
                        InsufficientNotificationForInsufficientAmount) {
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   context_helper_->LoadRewardsPage();
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
 
   contribution_->TipViaCode("duckduckgo.com", 20.0,
-                            ledger::type::PublisherStatus::UPHOLD_VERIFIED, 0,
+                            ledger::mojom::PublisherStatus::UPHOLD_VERIFIED, 0,
                             true);
 
   contribution_->TipViaCode(
-      "brave.com",
-      50.0,
-      ledger::type::PublisherStatus::NOT_VERIFIED,
-      0,
-      true);
+      "brave.com", 50.0, ledger::mojom::PublisherStatus::NOT_VERIFIED, 0, true);
 
   CheckInsufficientFundsForTesting();
   WaitForInsufficientFundsNotification();
@@ -392,20 +388,16 @@ IN_PROC_BROWSER_TEST_F(RewardsNotificationBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(RewardsNotificationBrowserTest,
                        InsufficientNotificationForVerifiedInsufficientAmount) {
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   context_helper_->LoadRewardsPage();
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
 
   contribution_->TipViaCode("duckduckgo.com", 50.0,
-                            ledger::type::PublisherStatus::UPHOLD_VERIFIED, 0,
+                            ledger::mojom::PublisherStatus::UPHOLD_VERIFIED, 0,
                             true);
 
   contribution_->TipViaCode(
-      "brave.com",
-      50.0,
-      ledger::type::PublisherStatus::NOT_VERIFIED,
-      0,
-      true);
+      "brave.com", 50.0, ledger::mojom::PublisherStatus::NOT_VERIFIED, 0, true);
 
   CheckInsufficientFundsForTesting();
   WaitForInsufficientFundsNotification();

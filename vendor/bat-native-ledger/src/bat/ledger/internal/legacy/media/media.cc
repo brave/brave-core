@@ -71,10 +71,9 @@ std::string Media::GetLinkType(
   return type;
 }
 
-void Media::ProcessMedia(
-    const base::flat_map<std::string, std::string>& parts,
-    const std::string& type,
-    ledger::type::VisitDataPtr visit_data) {
+void Media::ProcessMedia(const base::flat_map<std::string, std::string>& parts,
+                         const std::string& type,
+                         ledger::mojom::VisitDataPtr visit_data) {
   if (parts.empty() || !visit_data) {
     return;
   }
@@ -104,11 +103,10 @@ void Media::ProcessMedia(
   }
 }
 
-void Media::GetMediaActivityFromUrl(
-    uint64_t window_id,
-    ledger::type::VisitDataPtr visit_data,
-    const std::string& type,
-    const std::string& publisher_blob) {
+void Media::GetMediaActivityFromUrl(uint64_t window_id,
+                                    ledger::mojom::VisitDataPtr visit_data,
+                                    const std::string& type,
+                                    const std::string& publisher_blob) {
   if (HandledByGreaselion(type)) {
     return;
   }
@@ -130,9 +128,9 @@ void Media::GetMediaActivityFromUrl(
   }
 }
 
-void Media::OnMediaActivityError(ledger::type::VisitDataPtr visit_data,
-                                       const std::string& type,
-                                       uint64_t window_id) {
+void Media::OnMediaActivityError(ledger::mojom::VisitDataPtr visit_data,
+                                 const std::string& type,
+                                 uint64_t window_id) {
   if (HandledByGreaselion(type)) {
     return;
   }

@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/anti_targeting_exclusion_rule.h"
 
-#include <algorithm>
-
+#include "base/ranges/algorithm.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/base/url/url_util.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
@@ -19,9 +18,8 @@ namespace {
 bool HasVisitedSiteOnAntiTargetingList(
     const BrowsingHistoryList& browsing_history,
     const resource::AntiTargetingSiteList& anti_targeting_sites) {
-  const auto iter = std::find_first_of(
-      anti_targeting_sites.cbegin(), anti_targeting_sites.cend(),
-      browsing_history.cbegin(), browsing_history.cend(), SameDomainOrHost);
+  const auto iter = base::ranges::find_first_of(
+      anti_targeting_sites, browsing_history, SameDomainOrHost);
   return iter != anti_targeting_sites.cend();
 }
 
