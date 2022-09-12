@@ -17,7 +17,6 @@ namespace base {
 class FilePath;
 }  // namespace base
 
-
 // Chrome / Chromium paths
 // https://chromium.googlesource.com/chromium/src/+/HEAD/docs/user_data_dir.md
 base::FilePath GetChromeUserDataFolder();
