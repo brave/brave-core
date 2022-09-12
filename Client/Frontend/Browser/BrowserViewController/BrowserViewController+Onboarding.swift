@@ -78,7 +78,7 @@ extension BrowserViewController {
             
     let frame = view.convert(
       topToolbar.locationView.urlTextField.frame,
-      from: topToolbar.locationView).insetBy(dx: -7.0, dy: -6.0)
+      from: topToolbar.locationView).insetBy(dx: -7.0, dy: -1.0)
     
     // Present the popover
     let controller = WelcomeOmniBoxOnboardingController()

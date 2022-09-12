@@ -93,7 +93,7 @@ extension BrowserViewController: TopToolbarDelegate {
         let certificateViewController = CertificateViewController(certificate: certificate, evaluationError: errorDescription)
         let popover = PopoverController(contentController: certificateViewController, contentSizeBehavior: .preferredContentSize)
         popover.addsConvenientDismissalMargins = true
-        popover.present(from: self.topToolbar.locationView.lockImageView, on: self)
+        popover.present(from: self.topToolbar.locationView.lockImageView.imageView!, on: self)
       }
     }
   }
