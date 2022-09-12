@@ -30,6 +30,7 @@ const char kWeekOfInstallation[] = "brave.stats.week_of_installation";
 const char kWidevineOptedIn[] = "brave.widevine_opted_in";
 const char kAskWidevineInstall[] = "brave.ask_widevine_install";
 const char kShowBookmarksButton[] = "brave.show_bookmarks_button";
+const char kShowSidePanelButton[] = "brave.show_side_panel_button";
 const char kLocationBarIsWide[] = "brave.location_bar_is_wide";
 const char kReferralDownloadID[] = "brave.referral.download_id";
 const char kReferralTimestamp[] = "brave.referral.timestamp";
