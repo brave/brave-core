@@ -375,6 +375,9 @@
         <message name="IDS_SIDEBAR_READING_LIST_ITEM_TITLE" desc="Title for Reading List item in sidebar">
           Reading List
         </message>
+        <message name="IDS_SIDEBAR_PLAYLIST_ITEM_TITLE" desc="Title for plyalist item in sidebar">
+          Playlist
+        </message>
       </if>
 
       <!-- WebUI private tab resources -->

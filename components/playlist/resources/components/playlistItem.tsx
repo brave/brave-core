@@ -20,7 +20,7 @@ export default class PlaylistItem extends React.PureComponent<Props, {}> {
             <h3>{name}</h3>
             <a href='#' onClick={() => { onClick(id) }}>
             <img
-                style={{ maxWidth: '200px' }}
+                style={{ maxWidth: '100px' }}
                 data-id={id}
                 src={thumbnailUrl}
             />
