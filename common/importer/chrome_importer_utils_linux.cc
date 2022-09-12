@@ -21,6 +21,17 @@ base::FilePath GetChromeUserDataFolder() {
   return result;
 }
 
+base::FilePath GetChromeBetaUserDataFolder() {
+  base::FilePath result;
+  if (!base::PathService::Get(base::DIR_HOME, &result))
+    return base::FilePath();
+
+  result = result.Append(".config");
+  result = result.Append("google-chrome-beta");
+
+  return result;
+}
+
 base::FilePath GetVivaldiUserDataFolder() {
   base::FilePath result;
   if (!base::PathService::Get(base::DIR_HOME, &result))

@@ -20,12 +20,13 @@ base::FilePath GetChromeUserDataFolder() {
   return result;
 }
 
-base::FilePath GetVivaldiUserDataFolder() {
+base::FilePath GetChromeBetaUserDataFolder() {
   base::FilePath result;
   if (!base::PathService::Get(base::DIR_LOCAL_APP_DATA, &result))
     return base::FilePath();
 
-  result = result.AppendASCII("Vivaldi");
+  result = result.AppendASCII("Google");
+  result = result.AppendASCII("Chrome Beta");
   result = result.AppendASCII("User Data");
 
   return result;
@@ -38,6 +39,17 @@ base::FilePath GetCanaryUserDataFolder() {
 
   result = result.AppendASCII("Google");
   result = result.AppendASCII("Chrome SxS");
+  result = result.AppendASCII("User Data");
+
+  return result;
+}
+
+base::FilePath GetVivaldiUserDataFolder() {
+  base::FilePath result;
+  if (!base::PathService::Get(base::DIR_LOCAL_APP_DATA, &result))
+    return base::FilePath();
+
+  result = result.AppendASCII("Vivaldi");
   result = result.AppendASCII("User Data");
 
   return result;

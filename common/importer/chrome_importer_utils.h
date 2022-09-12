@@ -17,8 +17,13 @@ namespace base {
 class FilePath;
 }  // namespace base
 
+
+// Chrome / Chromium paths
+// https://chromium.googlesource.com/chromium/src/+/HEAD/docs/user_data_dir.md
 base::FilePath GetChromeUserDataFolder();
+base::FilePath GetChromeBetaUserDataFolder();
 #if !BUILDFLAG(IS_LINUX)
+// Canary is not available on Linux
 base::FilePath GetCanaryUserDataFolder();
 #endif
 base::FilePath GetChromiumUserDataFolder();
