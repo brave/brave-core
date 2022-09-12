@@ -17,7 +17,6 @@
 #include "ios/chrome/browser/web_state_list/web_state_list.h"
 #include "ios/chrome/browser/web_state_list/web_state_opener.h"
 
-#include "ios/web/common/user_agent.h"
 #include "ios/web/public/session/crw_navigation_item_storage.h"
 #include "ios/web/public/session/crw_session_storage.h"
 #include "ios/web/public/thread/web_thread.h"
