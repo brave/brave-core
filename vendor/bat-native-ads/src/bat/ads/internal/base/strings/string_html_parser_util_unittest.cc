@@ -23,9 +23,8 @@ class BatAdsStringHtmlUtilTest : public UnitTestBase {
 
 TEST_F(BatAdsStringHtmlUtilTest, ParseHtmlTagAttributeSimple) {
   // Arrange
-  const std::string html_1 = {
-      R"(<meta property="og:title" description="a detailed summary" content="this is info ">)",
-      "test"};
+  const std::string html_1 =
+      R"(<meta property="og:title" description="a detailed summary" content="this is info ">)";
   const std::string html_2 =
       R"(<div href="brave.com" description="this is12 34 info">)";
   const std::vector<std::vector<std::string>> samples = {
