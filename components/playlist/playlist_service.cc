@@ -195,9 +195,8 @@ void PlaylistService::NotifyPlaylistChanged(
 }
 
 bool PlaylistService::HasPrefStorePlaylistItem(const std::string& id) const {
-  auto* items = prefs_->Get(kPlaylistItemsPref);
-  DCHECK(items);
-  const base::Value* playlist_info = items->FindDictKey(id);
+  const base::Value::Dict& items = prefs_->GetValueDict(kPlaylistItemsPref);
+  const base::Value::Dict* playlist_info = items.FindDict(id);
   return !!playlist_info;
 }
 
@@ -341,23 +340,22 @@ void PlaylistService::RemovePlaylist(const std::string& playlist_id) {
 
 std::vector<PlaylistItemInfo> PlaylistService::GetAllPlaylistItems() {
   std::vector<PlaylistItemInfo> items;
-  for (const auto it : prefs_->Get(kPlaylistItemsPref)->GetDict()) {
-    auto* dict = it.second.GetIfDict();
-    DCHECK(dict);
-    DCHECK(dict->contains(playlist::kPlaylistItemIDKey));
-    DCHECK(dict->contains(playlist::kPlaylistItemTitleKey));
-    DCHECK(dict->contains(playlist::kPlaylistItemMediaFilePathKey));
-    DCHECK(dict->contains(playlist::kPlaylistItemThumbnailPathKey));
-    DCHECK(dict->contains(playlist::kPlaylistItemReadyKey));
+  for (const auto it : prefs_->GetValueDict(kPlaylistItemsPref)) {
+    const base::Value::Dict& dict = it.second.GetDict();
+    DCHECK(dict.contains(playlist::kPlaylistItemIDKey));
+    DCHECK(dict.contains(playlist::kPlaylistItemTitleKey));
+    DCHECK(dict.contains(playlist::kPlaylistItemMediaFilePathKey));
+    DCHECK(dict.contains(playlist::kPlaylistItemThumbnailPathKey));
+    DCHECK(dict.contains(playlist::kPlaylistItemReadyKey));
 
     PlaylistItemInfo item;
-    item.id = *dict->FindString(playlist::kPlaylistItemIDKey);
-    item.title = *dict->FindString(playlist::kPlaylistItemTitleKey);
+    item.id = *dict.FindString(playlist::kPlaylistItemIDKey);
+    item.title = *dict.FindString(playlist::kPlaylistItemTitleKey);
     item.thumbnail_path =
-        *dict->FindString(playlist::kPlaylistItemThumbnailPathKey);
+        *dict.FindString(playlist::kPlaylistItemThumbnailPathKey);
     item.media_file_path =
-        *dict->FindString(playlist::kPlaylistItemMediaFilePathKey);
-    item.ready = *dict->FindBool(playlist::kPlaylistItemReadyKey);
+        *dict.FindString(playlist::kPlaylistItemMediaFilePathKey);
+    item.ready = *dict.FindBool(playlist::kPlaylistItemReadyKey);
     items.push_back(std::move(item));
   }
 
@@ -366,7 +364,7 @@ std::vector<PlaylistItemInfo> PlaylistService::GetAllPlaylistItems() {
 
 PlaylistItemInfo PlaylistService::GetPlaylistItem(const std::string& id) {
   DCHECK(!id.empty());
-  auto* item_value = prefs_->Get(kPlaylistItemsPref)->GetDict().FindDict(id);
+  auto* item_value = prefs_->GetValueDict(kPlaylistItemsPref).FindDict(id);
   DCHECK(item_value);
   if (!item_value)
     return {};
@@ -391,32 +389,35 @@ PlaylistItemInfo PlaylistService::GetPlaylistItem(const std::string& id) {
 
 absl::optional<PlaylistInfo> PlaylistService::GetPlaylist(
     const std::string& id) {
-  const auto& playlists = prefs_->Get(kPlaylistsPref)->GetDict();
+  const base::Value::Dict& playlists = prefs_->GetValueDict(kPlaylistsPref);
   if (!playlists.contains(id)) {
     LOG(ERROR) << __func__ << " playlist with id<" << id << "> not found";
     return {};
   }
   auto* playlist = playlists.FindDict(id);
+  DCHECK(playlist);
 
   PlaylistInfo info;
   info.id = *playlist->FindString(kPlaylistIDKey);
   info.name = *playlist->FindString(kPlaylistNameKey);
   for (const auto& item_id_value : *playlist->FindList(kPlaylistItemsKey))
-    info.items.push_back(GetPlaylistItem(*item_id_value.GetIfString()));
+    info.items.push_back(GetPlaylistItem(item_id_value.GetString()));
 
   return info;
 }
 
 std::vector<PlaylistInfo> PlaylistService::GetAllPlaylists() {
   std::vector<PlaylistInfo> result;
-  const auto& playlists = prefs_->Get(kPlaylistsPref)->GetDict();
+  const base::Value::Dict& playlists = prefs_->GetValueDict(kPlaylistsPref);
   for (const auto [id, playlist_value] : playlists) {
+    DCHECK(playlist_value.is_dict());
+    const auto& playlist = playlist_value.GetDict();
+
     PlaylistInfo info;
-    info.id = *playlist_value.FindStringKey(kPlaylistIDKey);
-    info.name = *playlist_value.FindStringKey(kPlaylistNameKey);
-    for (const auto& item_id_value :
-         playlist_value.FindListKey(kPlaylistItemsKey)->GetList()) {
-      info.items.push_back(GetPlaylistItem(*item_id_value.GetIfString()));
+    info.id = *playlist.FindString(kPlaylistIDKey);
+    info.name = *playlist.FindString(kPlaylistNameKey);
+    for (const auto& item_id_value : *playlist.FindList(kPlaylistItemsKey)) {
+      info.items.push_back(GetPlaylistItem(item_id_value.GetString()));
     }
     result.push_back(std::move(info));
   }
@@ -435,16 +436,15 @@ void PlaylistService::FindMediaFilesFromContents(
 }
 
 void PlaylistService::RecoverPlaylistItem(const std::string& id) {
-  const base::Value* playlist_value =
-      prefs_->Get(kPlaylistItemsPref)->FindDictKey(id);
+  const base::Value::Dict* playlist_value =
+      prefs_->GetValueDict(kPlaylistItemsPref).FindDict(id);
   if (!playlist_value) {
     LOG(ERROR) << __func__ << ": Invalid playlist id for recover: " << id;
     return;
   }
 
-  absl::optional<bool> ready =
-      playlist_value->FindBoolPath(kPlaylistItemReadyKey);
-  if (*ready) {
+  bool ready = playlist_value->FindBool(kPlaylistItemReadyKey).value_or(true);
+  if (ready) {
     VLOG(2) << __func__ << ": This is ready to play(" << id << ")";
     return;
   }
@@ -452,16 +452,16 @@ void PlaylistService::RecoverPlaylistItem(const std::string& id) {
   VLOG(2) << __func__ << ": This is in recovering playlist item(" << id << ")";
 
   PlaylistItemInfo info;
-  info.id = *playlist_value->FindStringKey(kPlaylistItemIDKey);
-  info.title = *playlist_value->FindStringKey(kPlaylistItemTitleKey);
+  info.id = *playlist_value->FindString(kPlaylistItemIDKey);
+  info.title = *playlist_value->FindString(kPlaylistItemTitleKey);
 
   const std::string* thumbnail_path_str =
-      playlist_value->FindStringPath(kPlaylistItemThumbnailPathKey);
+      playlist_value->FindString(kPlaylistItemThumbnailPathKey);
   if (thumbnail_path_str)
     info.thumbnail_path = *thumbnail_path_str;
 
   const std::string* media_file_path =
-      playlist_value->FindStringPath(kPlaylistItemMediaFilePathKey);
+      playlist_value->FindString(kPlaylistItemMediaFilePathKey);
   if (media_file_path)
     info.media_file_path = *media_file_path;
 

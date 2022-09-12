@@ -660,8 +660,9 @@ TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
   EXPECT_TRUE(service_->mapping_table_requested_);
   EXPECT_FALSE(service_->marked_this_install_is_not_super_referral_forever_);
 
-  EXPECT_FALSE(service_->IsValidSuperReferralComponentInfo(*pref_service_.Get(
-      prefs::kNewTabPageCachedSuperReferralComponentInfo)));
+  EXPECT_FALSE(
+      service_->IsValidSuperReferralComponentInfo(pref_service_.GetValueDict(
+          prefs::kNewTabPageCachedSuperReferralComponentInfo)));
   service_->OnGetMappingTableData(kTestMappingTable);
   EXPECT_TRUE(pref_service_.GetBoolean(
       prefs::kNewTabPageGetInitialSRComponentInProgress));
@@ -679,8 +680,9 @@ TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
   EXPECT_FALSE(pref_service_.GetBoolean(
       prefs::kNewTabPageGetInitialSRComponentInProgress));
   auto* data = service_->GetBrandedImagesData(true);
-  EXPECT_TRUE(service_->IsValidSuperReferralComponentInfo(*pref_service_.Get(
-      prefs::kNewTabPageCachedSuperReferralComponentInfo)));
+  EXPECT_TRUE(
+      service_->IsValidSuperReferralComponentInfo(pref_service_.GetValueDict(
+          prefs::kNewTabPageCachedSuperReferralComponentInfo)));
   EXPECT_TRUE(data->IsSuperReferral());
   EXPECT_FALSE(pref_service_.GetString(
                    prefs::kNewTabPageCachedSuperReferralComponentData).empty());
@@ -690,8 +692,9 @@ TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
   EXPECT_TRUE(observer.on_super_referral_ended_);
   EXPECT_TRUE(pref_service_.GetString(
       prefs::kNewTabPageCachedSuperReferralCode).empty());
-  EXPECT_FALSE(service_->IsValidSuperReferralComponentInfo(*pref_service_.Get(
-      prefs::kNewTabPageCachedSuperReferralComponentInfo)));
+  EXPECT_FALSE(
+      service_->IsValidSuperReferralComponentInfo(pref_service_.GetValueDict(
+          prefs::kNewTabPageCachedSuperReferralComponentInfo)));
   EXPECT_TRUE(pref_service_.GetString(
                   prefs::kNewTabPageCachedSuperReferralComponentData).empty());
   EXPECT_TRUE(service_->marked_this_install_is_not_super_referral_forever_);
