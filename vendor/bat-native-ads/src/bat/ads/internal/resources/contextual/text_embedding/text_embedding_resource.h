@@ -13,11 +13,9 @@
 
 namespace ads {
 
-namespace ml {
-namespace pipeline {
+namespace ml::pipeline {
 class EmbeddingProcessing;
-}  // namespace pipeline
-}  // namespace ml
+}  // namespace ml::pipeline
 
 namespace resource {
 

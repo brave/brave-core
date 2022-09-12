@@ -8,8 +8,8 @@
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/features/text_embedding_features.h"
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_info.h"
-#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_event_info.h"
-#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_event_unittest_util.h"
+#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
+#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_event_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -30,18 +30,19 @@ TEST_F(BatAdsTextEmbeddingHtmlEventsTest, LogEvent) {
 
   // Act
   LogTextEmbeddingHtmlEvent(
-      embedding_as_string, text_embedding.text_hashed, [=](const bool success) {
+      embedding_as_string, text_embedding.hashed_text_base64,
+      [=](const bool success) {
         ASSERT_TRUE(success) << "Failed to log text embedding html event";
         if (success) {
           GetTextEmbeddingHtmlEventsFromDatabase(
-              [=](const bool success,
-                  const TextEmbeddingEventList& text_embedding_html_events) {
+              [=](const bool success, const TextEmbeddingHtmlEventList&
+                                          text_embedding_html_events) {
                 ASSERT_TRUE(success)
                     << "Failed to get text embedding html events";
                 if (success) {
                   // Assert
-                  EXPECT_EQ(text_embedding.text_hashed,
-                            text_embedding_html_events[0].hashed_key);
+                  EXPECT_EQ(text_embedding.hashed_text_base64,
+                            text_embedding_html_events[0].hashed_text_base64);
                 }
               });
         }
@@ -61,7 +62,7 @@ TEST_F(BatAdsTextEmbeddingHtmlEventsTest, PurgeEvents) {
 
     // Act
     LogTextEmbeddingHtmlEvent(
-        embedding_as_string, text_embedding.text_hashed,
+        embedding_as_string, text_embedding.hashed_text_base64,
         [&](const bool success) {
           ASSERT_TRUE(success) << "Failed to log text embedding html event";
           if (success) {
@@ -72,7 +73,7 @@ TEST_F(BatAdsTextEmbeddingHtmlEventsTest, PurgeEvents) {
                     << "Failed to purge text embedding html events";
                 if (success) {
                   GetTextEmbeddingHtmlEventsFromDatabase(
-                      [=](const bool success, const TextEmbeddingEventList&
+                      [=](const bool success, const TextEmbeddingHtmlEventList&
                                                   text_embedding_html_events) {
                         ASSERT_TRUE(success)
                             << "Failed to get text embedding html events";

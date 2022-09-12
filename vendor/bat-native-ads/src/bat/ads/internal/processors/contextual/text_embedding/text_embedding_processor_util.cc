@@ -11,8 +11,7 @@
 #include "bat/ads/internal/base/strings/string_html_parser_util.h"
 #include "bat/ads/internal/base/strings/string_strip_util.h"
 
-namespace ads {
-namespace processor {
+namespace ads::processor {
 
 std::string SanitizeHtml(const std::string& html) {
   const std::string& sanitized_html = html;
@@ -25,5 +24,4 @@ std::string SanitizeText(const std::string& text) {
   return base::ToLowerASCII(StripNonAlphaCharacters(sanitized_text));
 }
 
-}  // namespace processor
-}  // namespace ads
+}  // namespace ads::processor

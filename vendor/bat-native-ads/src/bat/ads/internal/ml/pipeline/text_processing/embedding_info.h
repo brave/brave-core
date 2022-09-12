@@ -10,9 +10,7 @@
 
 #include "bat/ads/internal/ml/data/vector_data.h"
 
-namespace ads {
-namespace ml {
-namespace pipeline {
+namespace ads::ml::pipeline {
 
 struct TextEmbeddingInfo final {
   TextEmbeddingInfo();
@@ -21,12 +19,10 @@ struct TextEmbeddingInfo final {
   ~TextEmbeddingInfo();
 
   std::string text;
-  std::string text_hashed;
+  std::string hashed_text_base64;
   VectorData embedding;
 };
 
-}  // namespace pipeline
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml::pipeline
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_PIPELINE_TEXT_PROCESSING_EMBEDDING_INFO_H_

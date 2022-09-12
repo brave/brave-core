@@ -10,9 +10,7 @@
 
 #include "base/time/time.h"
 
-namespace ads {
-namespace ml {
-namespace pipeline {
+namespace ads::ml::pipeline {
 
 namespace {
 
@@ -52,30 +50,29 @@ bool EmbeddingPipelineInfo::FromValue(const base::Value::Dict& root) {
     return false;
   }
 
-  if (const auto* value = root.FindDict(embeddings_key)) {
-    dim = 1;
-    for (const auto [key, value] : *value) {
-      const auto& list = value.GetList();
-      std::vector<float> embedding;
-      embedding.reserve(list.size());
-      for (const base::Value& v_raw : list) {
-        double v = v_raw.GetDouble();
-        embedding.push_back(v);
-      }
-      embeddings[key] = VectorData(std::move(embedding));
-      dim = embeddings[key].GetDimensionCount();
-    }
-
-    if (dim == 1) {
-      return false;
-    }
-  } else {
+  const auto* value = root.FindDict(embeddings_key);
+  if (!value) {
     return false;
   }
 
-  return true;
+  dim = 1;
+  for (const auto [key, value] : *value) {
+    const auto* list = value.GetIfList();
+    if (!list) {
+      continue;
+    }
+
+    std::vector<float> embedding;
+    embedding.reserve(list->size());
+    for (const base::Value& v_raw : *list) {
+      double v = v_raw.GetDouble();
+      embedding.push_back(v);
+    }
+    embeddings[key] = VectorData(std::move(embedding));
+    dim = embeddings[key].GetDimensionCount();
+  }
+
+  return dim != 1;
 }
 
-}  // namespace pipeline
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml::pipeline

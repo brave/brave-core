@@ -13,8 +13,7 @@
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_processing.h"
 #include "bat/ads/internal/resources/resources_util_impl.h"
 
-namespace ads {
-namespace resource {
+namespace ads::resource {
 
 namespace {
 constexpr char kResourceId[] = "wtpwsrqtjxmfdwaymauprezkunxprysm";
@@ -62,5 +61,4 @@ ml::pipeline::EmbeddingProcessing* TextEmbedding::Get() const {
   return embedding_processing_.get();
 }
 
-}  // namespace resource
-}  // namespace ads
+}  // namespace ads::resource

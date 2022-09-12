@@ -9,24 +9,24 @@
 
 #include "base/time/time.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_event_info.h"
+#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events_database_table.h"
 
 namespace ads {
 
-void LogTextEmbeddingHtmlEvent(const std::string& embedding_formatted,
-                               const std::string& hashed_key,
+void LogTextEmbeddingHtmlEvent(const std::string& embedding_as_string,
+                               const std::string& hashed_text_base64,
                                TextEmbeddingHtmlEventCallback callback) {
-  TextEmbeddingEventInfo text_embedding_event;
-  text_embedding_event.created_at = base::Time::Now();
-  text_embedding_event.version = {};
-  text_embedding_event.locale = {};
-  text_embedding_event.hashed_key = hashed_key;
-  text_embedding_event.embedding = embedding_formatted;
+  TextEmbeddingHtmlEventInfo text_embedding_html_event;
+  text_embedding_html_event.created_at = base::Time::Now();
+  text_embedding_html_event.version = {};
+  text_embedding_html_event.locale = {};
+  text_embedding_html_event.hashed_text_base64 = hashed_text_base64;
+  text_embedding_html_event.embedding = embedding_as_string;
 
   database::table::TextEmbeddingHtmlEvents database_table;
   database_table.LogEvent(
-      text_embedding_event,
+      text_embedding_html_event,
       base::BindOnce([](TextEmbeddingHtmlEventCallback callback,
                         const bool success) { callback(success); },
                      callback));
@@ -46,7 +46,7 @@ void GetTextEmbeddingHtmlEventsFromDatabase(
   database::table::TextEmbeddingHtmlEvents database_table;
   database_table.GetAll(
       [=](const bool success,
-          const TextEmbeddingEventList& text_embedding_html_events) {
+          const TextEmbeddingHtmlEventList& text_embedding_html_events) {
         if (!success) {
           BLOG(1, "Failed to get text embedding HTML events");
           callback(success, {});

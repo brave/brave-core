@@ -51,7 +51,7 @@ TEST_F(BatAdsEmbeddingProcessingPipelineTest, EmbedTextSimple) {
   resource.Load();
   task_environment_.RunUntilIdle();
 
-  EXPECT_TRUE(resource.IsInitialized());
+  ASSERT_TRUE(resource.IsInitialized());
   ml::pipeline::EmbeddingProcessing* embedding_processing = resource.Get();
 
   const std::map<std::string, ml::VectorData> samples = {
@@ -63,11 +63,11 @@ TEST_F(BatAdsEmbeddingProcessingPipelineTest, EmbedTextSimple) {
 
   for (const auto& sample : samples) {
     // Act
-    ml::pipeline::TextEmbeddingInfo embedding_info =
+    ml::pipeline::TextEmbeddingInfo text_embedding =
         embedding_processing->EmbedText(sample.first);
     // Assert
     EXPECT_EQ(sample.second.GetValuesForTesting(),
-              embedding_info.embedding.GetValuesForTesting());
+              text_embedding.embedding.GetValuesForTesting());
   }
 }
 

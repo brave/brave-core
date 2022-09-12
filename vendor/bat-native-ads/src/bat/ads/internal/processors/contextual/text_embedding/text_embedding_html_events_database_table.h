@@ -11,15 +11,13 @@
 
 #include "bat/ads/ads_client_callback.h"
 #include "bat/ads/internal/database/database_table_interface.h"
-#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_event_info.h"
+#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
-namespace ads {
-namespace database {
-namespace table {
+namespace ads::database::table {
 
 using GetTextEmbeddingHtmlEventsCallback =
-    std::function<void(const bool, const TextEmbeddingEventList&)>;
+    std::function<void(const bool, const TextEmbeddingHtmlEventList&)>;
 
 class TextEmbeddingHtmlEvents final : public TableInterface {
  public:
@@ -28,12 +26,12 @@ class TextEmbeddingHtmlEvents final : public TableInterface {
   TextEmbeddingHtmlEvents(const TextEmbeddingHtmlEvents&) = delete;
   TextEmbeddingHtmlEvents& operator=(const TextEmbeddingHtmlEvents&) = delete;
 
-  void LogEvent(const TextEmbeddingEventInfo& text_embedding_html_event,
+  void LogEvent(const TextEmbeddingHtmlEventInfo& text_embedding_html_event,
                 ResultCallback callback);
 
   void GetAll(GetTextEmbeddingHtmlEventsCallback callback);
 
-  void PurgeStale(ResultCallback callback);
+  void PurgeStale(ResultCallback callback) const;
 
   std::string GetTableName() const override;
 
@@ -43,12 +41,13 @@ class TextEmbeddingHtmlEvents final : public TableInterface {
   void RunTransaction(const std::string& query,
                       GetTextEmbeddingHtmlEventsCallback callback);
 
-  void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
-                      const TextEmbeddingEventList& text_embedding_html_events);
+  void InsertOrUpdate(
+      mojom::DBTransactionInfo* transaction,
+      const TextEmbeddingHtmlEventList& text_embedding_html_events);
 
   std::string BuildInsertOrUpdateQuery(
       mojom::DBCommandInfo* command,
-      const TextEmbeddingEventList& text_embedding_html_events);
+      const TextEmbeddingHtmlEventList& text_embedding_html_events) const;
 
   void OnGetTextEmbeddingHtmlEvents(GetTextEmbeddingHtmlEventsCallback callback,
                                     mojom::DBCommandResponseInfoPtr response);
@@ -56,8 +55,6 @@ class TextEmbeddingHtmlEvents final : public TableInterface {
   void MigrateToV25(mojom::DBTransactionInfo* transaction);
 };
 
-}  // namespace table
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database::table
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PROCESSORS_CONTEXTUAL_TEXT_EMBEDDING_TEXT_EMBEDDING_HTML_EVENTS_DATABASE_TABLE_H_

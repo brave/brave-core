@@ -21,8 +21,7 @@
 #include "bat/ads/internal/tabs/tab_manager.h"
 #include "url/gurl.h"
 
-namespace ads {
-namespace processor {
+namespace ads::processor {
 
 TextEmbedding::TextEmbedding(resource::TextEmbedding* resource)
     : resource_(resource) {
@@ -63,21 +62,26 @@ void TextEmbedding::Process(const std::string& text) {
     return;
   }
 
-  const std::string embedding_formatted =
+  const std::string embedding_as_string =
       text_embedding.embedding.GetVectorAsString();
-  BLOG(9, "Embedding: " << embedding_formatted);
+  BLOG(9, "Embedding: " << embedding_as_string);
   LogTextEmbeddingHtmlEvent(
-      embedding_formatted, text_embedding.text_hashed, [](const bool success) {
+      embedding_as_string, text_embedding.hashed_text_base64,
+      [](const bool success) {
         if (!success) {
           BLOG(1, "Failed to log text embedding HTML event");
           return;
         }
+
+        BLOG(3, "Successfully logged text embedding HTML event");
 
         PurgeStaleTextEmbeddingHtmlEvents([](const bool success) {
           if (!success) {
             BLOG(1, "Failed to purge stale text embedding HTML events");
             return;
           }
+
+          BLOG(3, "Successfully purged stale text embedding HTML events");
         });
       });
 }
@@ -123,5 +127,4 @@ void TextEmbedding::OnHtmlContentDidChange(
   }
 }
 
-}  // namespace processor
-}  // namespace ads
+}  // namespace ads::processor

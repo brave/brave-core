@@ -11,8 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace processor {
+namespace ads::processor {
 
 class BatAdsTextEmbeddingProcessorUtilTest : public UnitTestBase {
  protected:
@@ -37,7 +36,11 @@ TEST_F(BatAdsTextEmbeddingProcessorUtilTest, SanitizeHtml) {
       {R"(<meta property="og:tt" content=" testing   ">)", {}},
       {R"(<meta property="og:title" cc=" testing   ">)", {}},
       {R"(<meta property="og:title" content="test")", {}},
-      {R"(meta property="og:title" content="test">)", {}}};
+      {R"(meta property="og:title" content="test">)", {}},
+      {R"(<div>)", {}},
+      {R"(<>)", {}},
+      {R"( )", {}},
+      {R"()", {}}};
 
   for (const auto& [key, value] : samples) {
     // Act
@@ -56,7 +59,11 @@ TEST_F(BatAdsTextEmbeddingProcessorUtilTest, SanitizeText) {
       {"Test this,string - for UNiTTeST", "test this string for unittest"},
       {"Test string, string,... for unittest",
        "test string string for unittest"},
-      {"Test string1, string2,... for unittest", "test for unittest"}};
+      {"Test string1, string2,... for unittest", "test for unittest"},
+      {"321", {}},
+      {"<>", {}},
+      {" ", {}},
+      {"", {}}};
 
   for (const auto& [key, value] : samples) {
     // Act
@@ -66,5 +73,4 @@ TEST_F(BatAdsTextEmbeddingProcessorUtilTest, SanitizeText) {
   }
 }
 
-}  // namespace processor
-}  // namespace ads
+}  // namespace ads::processor

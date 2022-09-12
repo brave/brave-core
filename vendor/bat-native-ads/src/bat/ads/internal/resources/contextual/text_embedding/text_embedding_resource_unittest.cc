@@ -23,8 +23,7 @@ constexpr char kNotExistantResourceFile[] =
 
 }  // namespace
 
-namespace ads {
-namespace resource {
+namespace ads::resource {
 
 using testing::_;
 using testing::Invoke;
@@ -109,5 +108,4 @@ TEST_F(BatAdsTextEmbeddingResourceTest, LoadNotInitializedFile) {
   EXPECT_FALSE(resource.IsInitialized());
 }
 
-}  // namespace resource
-}  // namespace ads
+}  // namespace ads::resource

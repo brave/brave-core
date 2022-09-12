@@ -13,9 +13,7 @@
 #include "base/values.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 
-namespace ads {
-namespace ml {
-namespace pipeline {
+namespace ads::ml::pipeline {
 
 struct EmbeddingPipelineInfo final {
   EmbeddingPipelineInfo();
@@ -32,8 +30,6 @@ struct EmbeddingPipelineInfo final {
   std::map<std::string, VectorData> embeddings;
 };
 
-}  // namespace pipeline
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml::pipeline
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_PIPELINE_PIPELINE_EMBEDDING_INFO_H_

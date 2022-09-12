@@ -13,12 +13,12 @@
 
 namespace ads {
 
-struct TextEmbeddingEventInfo;
+struct TextEmbeddingHtmlEventInfo;
 
 using TextEmbeddingHtmlEventCallback = std::function<void(const bool)>;
 
-void LogTextEmbeddingHtmlEvent(const std::string& embedding_formatted,
-                               const std::string& hashed_key,
+void LogTextEmbeddingHtmlEvent(const std::string& embedding_as_string,
+                               const std::string& hashed_text_base64,
                                TextEmbeddingHtmlEventCallback callback);
 void PurgeStaleTextEmbeddingHtmlEvents(TextEmbeddingHtmlEventCallback callback);
 void GetTextEmbeddingHtmlEventsFromDatabase(

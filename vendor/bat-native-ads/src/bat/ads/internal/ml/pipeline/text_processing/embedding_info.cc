@@ -5,9 +5,7 @@
 
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_info.h"
 
-namespace ads {
-namespace ml {
-namespace pipeline {
+namespace ads::ml::pipeline {
 
 TextEmbeddingInfo::TextEmbeddingInfo() = default;
 TextEmbeddingInfo::TextEmbeddingInfo(const TextEmbeddingInfo& info) = default;
@@ -15,6 +13,4 @@ TextEmbeddingInfo& TextEmbeddingInfo::operator=(const TextEmbeddingInfo& info) =
     default;
 TextEmbeddingInfo::~TextEmbeddingInfo() = default;
 
-}  // namespace pipeline
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml::pipeline
