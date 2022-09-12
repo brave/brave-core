@@ -677,7 +677,7 @@
     Use Bridges
   </message>
   <message name="IDS_SETTINGS_TOR_USE_BRIDGES_DESC" desc="">
-    Bridges help you access the Tor Network in places where Tor is blocked. Depending on where you are, one bridge may work better than another.
+    Bridges help you access the Tor Network in places where Tor is blocked. Depending on where you are located, one bridge may work better than others.
   </message>
   <message name="IDS_SETTINGS_TOR_CONNECTION_SETTINGS_TITLE" desc="">
     Tor connection settings
