@@ -1,9 +1,9 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_shields/browser/ad_block_regional_filters_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_component_filters_provider.h"
 
 #include <memory>
 #include <string>
@@ -21,24 +21,32 @@ constexpr char kListFile[] = "list.txt";
 
 namespace brave_shields {
 
-AdBlockRegionalFiltersProvider::AdBlockRegionalFiltersProvider(
+AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
     component_updater::ComponentUpdateService* cus,
-    const FilterListCatalogEntry& catalog_entry)
-    : component_id_(catalog_entry.component_id),
-      component_updater_service_(cus) {
+    std::string component_id,
+    std::string base64_public_key,
+    std::string title)
+    : component_id_(component_id), component_updater_service_(cus) {
   // Can be nullptr in unit tests
   if (cus) {
-    RegisterAdBlockRegionalComponent(
-        component_updater_service_, catalog_entry.base64_public_key,
-        component_id_, catalog_entry.title,
-        base::BindRepeating(&AdBlockRegionalFiltersProvider::OnComponentReady,
+    RegisterAdBlockFiltersComponent(
+        cus, base64_public_key, component_id_, title,
+        base::BindRepeating(&AdBlockComponentFiltersProvider::OnComponentReady,
                             weak_factory_.GetWeakPtr()));
   }
 }
 
-AdBlockRegionalFiltersProvider::~AdBlockRegionalFiltersProvider() = default;
+AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
+    component_updater::ComponentUpdateService* cus,
+    const FilterListCatalogEntry& catalog_entry)
+    : AdBlockComponentFiltersProvider(cus,
+                                      catalog_entry.component_id,
+                                      catalog_entry.base64_public_key,
+                                      catalog_entry.title) {}
 
-void AdBlockRegionalFiltersProvider::OnComponentReady(
+AdBlockComponentFiltersProvider::~AdBlockComponentFiltersProvider() = default;
+
+void AdBlockComponentFiltersProvider::OnComponentReady(
     const base::FilePath& path) {
   component_path_ = path;
 
@@ -48,11 +56,11 @@ void AdBlockRegionalFiltersProvider::OnComponentReady(
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::ReadDATFileData, list_file_path),
-      base::BindOnce(&AdBlockRegionalFiltersProvider::OnDATLoaded,
+      base::BindOnce(&AdBlockComponentFiltersProvider::OnDATLoaded,
                      weak_factory_.GetWeakPtr(), false));
 }
 
-void AdBlockRegionalFiltersProvider::LoadDATBuffer(
+void AdBlockComponentFiltersProvider::LoadDATBuffer(
     base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
         cb) {
   if (component_path_.empty()) {
@@ -69,7 +77,7 @@ void AdBlockRegionalFiltersProvider::LoadDATBuffer(
       base::BindOnce(std::move(cb), false));
 }
 
-bool AdBlockRegionalFiltersProvider::Delete() && {
+bool AdBlockComponentFiltersProvider::Delete() && {
   return component_updater_service_->UnregisterComponent(component_id_);
 }
 

@@ -1,10 +1,10 @@
 if (!is_ios) {
   static_library("browser") {
     sources = [
+      "ad_block_component_filters_provider.cc",
+      "ad_block_component_filters_provider.h",
       "ad_block_custom_filters_provider.cc",
       "ad_block_custom_filters_provider.h",
-      "ad_block_default_filters_provider.cc",
-      "ad_block_default_filters_provider.h",
       "ad_block_default_resource_provider.cc",
       "ad_block_default_resource_provider.h",
       "ad_block_engine.cc",
@@ -15,8 +15,6 @@ if (!is_ios) {
       "ad_block_filters_provider.h",
       "ad_block_pref_service.cc",
       "ad_block_pref_service.h",
-      "ad_block_regional_filters_provider.cc",
-      "ad_block_regional_filters_provider.h",
       "ad_block_regional_service_manager.cc",
       "ad_block_regional_service_manager.h",
       "ad_block_resource_provider.cc",

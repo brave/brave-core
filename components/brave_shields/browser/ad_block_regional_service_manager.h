@@ -17,9 +17,9 @@
 #include "base/thread_annotations.h"
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
+#include "brave/components/brave_shields/browser/ad_block_component_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/browser/ad_block_filter_list_catalog_provider.h"
-#include "brave/components/brave_shields/browser/ad_block_regional_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_resource_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -98,7 +98,7 @@ class AdBlockRegionalServiceManager
   std::map<std::string,
            std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>>
       regional_services_ GUARDED_BY(regional_services_lock_);
-  std::map<std::string, std::unique_ptr<AdBlockRegionalFiltersProvider>>
+  std::map<std::string, std::unique_ptr<AdBlockComponentFiltersProvider>>
       regional_filters_providers_;
   std::map<std::string, std::unique_ptr<AdBlockService::SourceProviderObserver>>
       regional_source_observers_;

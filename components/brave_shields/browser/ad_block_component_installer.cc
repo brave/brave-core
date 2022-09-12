@@ -24,21 +24,6 @@ namespace brave_shields {
 namespace {
 
 constexpr size_t kHashSize = 32;
-const char kAdBlockComponentName[] = "Brave Ad Block Updater";
-const char kAdBlockComponentId[] = "iodkpdagapdfkphljnddpjlldadblomo";
-const char kAdBlockComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsD/B/MGdz0gh7WkcFARn"
-    "ZTBX9KAw2fuGeogijoI+fET38IK0L+P/trCT2NshqhRNmrDpLzV2+Dmes6PvkA+O"
-    "dQkUV6VbChJG+baTfr3Oo5PdE0WxmP9Xh8XD7p85DQrk0jJilKuElxpK7Yq0JhcT"
-    "Sc3XNHeTwBVqCnHwWZZ+XysYQfjuDQ0MgQpS/s7U04OZ63NIPe/iCQm32stvS/pE"
-    "ya7KdBZXgRBQ59U6M1n1Ikkp3vfECShbBld6VrrmNrl59yKWlEPepJ9oqUc2Wf2M"
-    "q+SDNXROG554RnU4BnDJaNETTkDTZ0Pn+rmLmp1qY5Si0yGsfHkrv3FS3vdxVozO"
-    "PQIDAQAB";
-
-std::string g_ad_block_component_id_(kAdBlockComponentId);
-std::string g_ad_block_component_base64_public_key_(
-    kAdBlockComponentBase64PublicKey);
-
 const char kAdBlockResourceComponentName[] = "Brave Ad Block Resources Library";
 const char kAdBlockResourceComponentId[] = "mfddibmblmbccpadfndgakiopmmhebop";
 const char kAdBlockResourceComponentBase64PublicKey[] =
@@ -173,20 +158,6 @@ void OnRegistered(const std::string& component_id) {
 
 }  // namespace
 
-void RegisterAdBlockDefaultComponent(
-    component_updater::ComponentUpdateService* cus,
-    OnComponentReadyCallback callback) {
-  // In test, |cus| could be nullptr.
-  if (!cus)
-    return;
-
-  auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
-      std::make_unique<AdBlockComponentInstallerPolicy>(
-          g_ad_block_component_base64_public_key_, g_ad_block_component_id_,
-          kAdBlockComponentName, callback));
-  installer->Register(cus, base::BindOnce(&OnRegistered, kAdBlockComponentId));
-}
-
 void RegisterAdBlockDefaultResourceComponent(
     component_updater::ComponentUpdateService* cus,
     OnComponentReadyCallback callback) {
@@ -218,7 +189,7 @@ void RegisterAdBlockFilterListCatalogComponent(
       cus, base::BindOnce(&OnRegistered, kAdBlockFilterListCatalogComponentId));
 }
 
-void RegisterAdBlockRegionalComponent(
+void RegisterAdBlockFiltersComponent(
     component_updater::ComponentUpdateService* cus,
     const std::string& component_public_key,
     const std::string& component_id,
@@ -232,14 +203,6 @@ void RegisterAdBlockRegionalComponent(
       std::make_unique<AdBlockComponentInstallerPolicy>(
           component_public_key, component_id, component_name, callback));
   installer->Register(cus, base::BindOnce(&OnRegistered, component_id));
-}
-
-// static
-void SetDefaultAdBlockComponentIdAndBase64PublicKeyForTest(
-    const std::string& component_id,
-    const std::string& component_base64_public_key) {
-  g_ad_block_component_id_ = component_id;
-  g_ad_block_component_base64_public_key_ = component_base64_public_key;
 }
 
 }  // namespace brave_shields

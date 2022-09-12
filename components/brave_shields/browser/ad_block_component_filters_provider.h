@@ -1,10 +1,10 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_REGIONAL_FILTERS_PROVIDER_H_
-#define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_REGIONAL_FILTERS_PROVIDER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_COMPONENT_FILTERS_PROVIDER_H_
+#define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_COMPONENT_FILTERS_PROVIDER_H_
 
 #include <string>
 
@@ -30,15 +30,23 @@ namespace brave_shields {
 
 class FilterListCatalogEntry;
 
-class AdBlockRegionalFiltersProvider : public AdBlockFiltersProvider {
+class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
  public:
-  AdBlockRegionalFiltersProvider(component_updater::ComponentUpdateService* cus,
-                                 const FilterListCatalogEntry& catalog_entry);
-  ~AdBlockRegionalFiltersProvider() override;
-  AdBlockRegionalFiltersProvider(const AdBlockRegionalFiltersProvider&) =
+  // Build an adblock filters component with given component info
+  AdBlockComponentFiltersProvider(
+      component_updater::ComponentUpdateService* cus,
+      std::string component_id,
+      std::string base64_public_key,
+      std::string title);
+  // Helper to build a particular adblock component from a catalog entry
+  AdBlockComponentFiltersProvider(
+      component_updater::ComponentUpdateService* cus,
+      const FilterListCatalogEntry& catalog_entry);
+  ~AdBlockComponentFiltersProvider() override;
+  AdBlockComponentFiltersProvider(const AdBlockComponentFiltersProvider&) =
       delete;
-  AdBlockRegionalFiltersProvider& operator=(
-      const AdBlockRegionalFiltersProvider&) = delete;
+  AdBlockComponentFiltersProvider& operator=(
+      const AdBlockComponentFiltersProvider&) = delete;
 
   void LoadDATBuffer(
       base::OnceCallback<void(bool deserialize,
@@ -55,9 +63,9 @@ class AdBlockRegionalFiltersProvider : public AdBlockFiltersProvider {
   std::string component_id_;
   component_updater::ComponentUpdateService* component_updater_service_;
 
-  base::WeakPtrFactory<AdBlockRegionalFiltersProvider> weak_factory_{this};
+  base::WeakPtrFactory<AdBlockComponentFiltersProvider> weak_factory_{this};
 };
 
 }  // namespace brave_shields
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_REGIONAL_FILTERS_PROVIDER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_COMPONENT_FILTERS_PROVIDER_H_

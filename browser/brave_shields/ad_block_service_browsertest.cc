@@ -21,7 +21,6 @@
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/ad_block_component_installer.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_provider.h"
-#include "brave/components/brave_shields/browser/ad_block_default_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"

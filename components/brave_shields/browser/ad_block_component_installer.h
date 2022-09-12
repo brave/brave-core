@@ -17,17 +17,8 @@ class ComponentUpdateService;
 
 namespace brave_shields {
 
-// static
-void SetDefaultAdBlockComponentIdAndBase64PublicKeyForTest(
-    const std::string& component_id,
-    const std::string& component_base64_public_key);
-
 using OnComponentReadyCallback =
     base::RepeatingCallback<void(const base::FilePath& install_path)>;
-
-void RegisterAdBlockDefaultComponent(
-    component_updater::ComponentUpdateService* cus,
-    OnComponentReadyCallback callback);
 
 void RegisterAdBlockDefaultResourceComponent(
     component_updater::ComponentUpdateService* cus,
@@ -37,7 +28,7 @@ void RegisterAdBlockFilterListCatalogComponent(
     component_updater::ComponentUpdateService* cus,
     OnComponentReadyCallback callback);
 
-void RegisterAdBlockRegionalComponent(
+void RegisterAdBlockFiltersComponent(
     component_updater::ComponentUpdateService* cus,
     const std::string& component_public_key,
     const std::string& component_id,

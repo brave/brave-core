@@ -45,7 +45,7 @@ struct FilterListMetadata;
 namespace brave_shields {
 
 class AdBlockEngine;
-class AdBlockDefaultFiltersProvider;
+class AdBlockComponentFiltersProvider;
 class AdBlockDefaultResourceProvider;
 class AdBlockRegionalServiceManager;
 class AdBlockCustomFiltersProvider;
@@ -162,7 +162,7 @@ class AdBlockService {
       resource_provider_;
   std::unique_ptr<brave_shields::AdBlockCustomFiltersProvider>
       custom_filters_provider_;
-  std::unique_ptr<brave_shields::AdBlockDefaultFiltersProvider>
+  std::unique_ptr<brave_shields::AdBlockComponentFiltersProvider>
       default_filters_provider_;
   std::unique_ptr<brave_shields::AdBlockFilterListCatalogProvider>
       filter_list_catalog_provider_;
@@ -186,6 +186,11 @@ class AdBlockService {
 
 // Registers the local_state preferences used by Adblock
 void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry);
+
+// static
+void SetDefaultAdBlockComponentIdAndBase64PublicKeyForTest(
+    const std::string& component_id,
+    const std::string& component_base64_public_key);
 
 }  // namespace brave_shields
 
