@@ -101,8 +101,6 @@ const char kXhrPromiseTemplate[] = R"(
 class BraveTranslateBrowserTest : public InProcessBrowserTest {
  public:
   BraveTranslateBrowserTest() {
-    scoped_feature_list_.InitAndEnableFeature(features::kUseBraveTranslateGo);
-
     https_server_ = std::make_unique<net::EmbeddedTestServer>(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS);
 
@@ -248,7 +246,6 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
 
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
-  base::test::ScopedFeatureList scoped_feature_list_;
   std::unique_ptr<TranslateWaiter> language_determined_waiter_;
   std::string script_;
 };
@@ -392,8 +389,9 @@ class BraveTranslateBrowserMigrationTest : public InProcessBrowserTest {
   BraveTranslateBrowserMigrationTest() {
     const char* test_name =
         ::testing::UnitTest::GetInstance()->current_test_info()->name();
-    if (!base::StartsWith(test_name, "PRE_PRE_")) {
-      scoped_feature_list_.InitAndEnableFeature(features::kUseBraveTranslateGo);
+    if (base::StartsWith(test_name, "PRE_PRE_")) {
+      scoped_feature_list_.InitAndDisableFeature(
+          features::kUseBraveTranslateGo);
     }
   }
 
