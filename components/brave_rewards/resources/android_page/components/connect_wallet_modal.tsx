@@ -12,14 +12,6 @@ import { UpholdIcon } from '../../shared/components/icons/uphold_icon'
 import { BitflyerIcon } from '../../shared/components/icons/bitflyer_icon'
 
 import * as style from './connect_wallet_modal.style'
-
-export function getMinimumBalance (provider: string) {
-  switch (provider) {
-    case 'uphold': return 2
-    default: return 0
-  }
-}
-
 function renderProviderIcon (provider: string) {
   switch (provider) {
     case 'bitflyer': return <BitflyerIcon />
@@ -49,8 +41,6 @@ export function ConnectWalletModal (props: Props) {
   const [modalState, setModalState] = React.useState<ModalState>('info')
   const [selectedProvider, setSelectedProvider] =
     React.useState<ExternalWalletProvider | null>(null)
-  const [showMinimumBalanceWarning, setShowMinimumBalanceWarning] =
-    React.useState(false)
 
   if (props.providers.length === 0) {
     return null
@@ -99,51 +89,16 @@ export function ConnectWalletModal (props: Props) {
     }
   }
 
-  function renderMinimumBalanceWarning () {
-    const onLoginLinkClicked = (evt: React.MouseEvent) => {
-      evt.preventDefault()
-      if (selectedProvider) {
-        props.onContinue(selectedProvider.type)
-      }
-    }
-
-    if (!selectedProvider) {
-      return null
-    }
-
-    return (
-      <style.minimumBalanceWarning>
-        {
-          formatMessage(getString('minimumBalanceWarning'), [
-            selectedProvider.name,
-            getMinimumBalance(selectedProvider.type)
-          ])
-        }
-        <div className='login'>
-          <a href='#' onClick={onLoginLinkClicked}>
-            {getString('continueToLogin')}
-          </a>
-        </div>
-      </style.minimumBalanceWarning>
-    )
-  }
-
   function renderSelectWallet () {
     return {
       left: null,
       right: (
         <style.providerButtons>
-          { showMinimumBalanceWarning && renderMinimumBalanceWarning() }
           {
             props.providers.map((provider) => {
               const onClick = () => {
                 setSelectedProvider(provider)
-                if (props.rewardsBalance < getMinimumBalance(provider.type)) {
-                  setShowMinimumBalanceWarning(true)
-                } else {
-                  setShowMinimumBalanceWarning(false)
-                  props.onContinue(provider.type)
-                }
+                props.onContinue(provider.type)
               }
 
               const selected =

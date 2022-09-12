@@ -355,26 +355,6 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewardsWithBAT) {
       "Your 30 BAT and other Rewards");
 }
 
-IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, UpholdLimitNoBAT) {
-  rewards_browsertest_util::CreateWallet(rewards_service_);
-  context_helper_->LoadRewardsPage();
-
-  rewards_browsertest_util::WaitForElementThenClick(
-      contents(), "[data-test-id=verify-rewards-button]");
-
-  rewards_browsertest_util::WaitForElementThenClick(
-      contents(), "[data-test-id=connect-continue-button]");
-
-  rewards_browsertest_util::WaitForElementThenClick(
-      contents(), "[data-test-id=connect-provider-button]");
-
-  rewards_browsertest_util::WaitForElementThenClick(
-      contents(), "[data-test-id=connect-login-button]");
-
-  // Check if we are redirected to uphold
-  WaitForNavigation("intention=login");
-}
-
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, EnableRewardsWithBalance) {
   // Make sure rewards, ads, and AC prefs are off
   auto* prefs = browser()->profile()->GetPrefs();

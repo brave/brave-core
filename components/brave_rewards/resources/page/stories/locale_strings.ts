@@ -18,8 +18,6 @@ export const localeStrings = {
   connectWalletInfoListItem1: 'Freely withdraw and deposit funds',
   connectWalletInfoListItem2: 'Receive your Rewards directly to your account',
   continue: 'Continue',
-  continueToLogin: 'Continue to login',
-  minimumBalanceWarning: '$1 requires a minimum balance of $2 BAT to create an account. If you connected an account previously,',
   rewardsAdGrantTitle: 'Your $1 Ad Rewards are here!',
   rewardsGrantDaysRemaining: 'You have $1 left to claim',
   rewardsTokenGrantTitle: 'A token grant is available!',
