@@ -41,11 +41,12 @@ source_set("opentabs") {
     "//ios/chrome/browser/tabs",
     "//ios/chrome/browser/ui/recent_tabs:synced_sessions",
     "//ios/chrome/browser/web_state_list",
+    "//ios/web/common:user_agent",
+    "//ios/web/public/session:session",
     "//ios/web/public/thread",
     "//ios/web/web_state",
     "//ios/web/web_state:web_state_impl_header",
     "//ios/web/web_state/ui:crw_web_view_navigation_proxy",
-    "//net",
     "//ui/base",
     "//url",
   ]
