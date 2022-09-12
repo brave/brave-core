@@ -128,8 +128,6 @@ class SearchSettingsTableViewController: UITableViewController {
         UIBarButtonItem(title: Strings.settingsSearchDoneButton, style: .done, target: self, action: #selector(dismissAnimated))
     }
 
-    self.navigationItem.rightBarButtonItem = editButtonItem
-
     let footer = SettingsTableSectionHeaderFooterView(frame: CGRect(width: tableView.bounds.width, height: UX.headerHeight))
     tableView.tableFooterView = footer
   }
@@ -137,6 +135,7 @@ class SearchSettingsTableViewController: UITableViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
+    updateTableEditModeVisibility()
     tableView.reloadData()
   }
 
@@ -175,6 +174,16 @@ class SearchSettingsTableViewController: UITableViewController {
     }
 
     return cell
+  }
+  
+  private func updateTableEditModeVisibility() {
+    tableView.endEditing(true)
+    
+    if customSearchEngines.isEmpty {
+      navigationItem.rightBarButtonItem = nil
+    } else {
+      navigationItem.rightBarButtonItem = editButtonItem
+    }
   }
 
   // MARK: TableViewDataSource - TableViewDelegate
@@ -318,6 +327,7 @@ class SearchSettingsTableViewController: UITableViewController {
           try searchEngines.deleteCustomEngine(engine)
           tableView.deleteRows(at: [indexPath], with: .right)
           tableView.reloadData()
+          updateTableEditModeVisibility()
         } catch {
           log.error("Search Engine Error while deleting")
         }
