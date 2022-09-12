@@ -9,11 +9,17 @@ namespace ads {
 
 InlineContentAdInfo::InlineContentAdInfo() = default;
 
-InlineContentAdInfo::InlineContentAdInfo(const InlineContentAdInfo& info) =
+InlineContentAdInfo::InlineContentAdInfo(const InlineContentAdInfo& other) =
     default;
 
 InlineContentAdInfo& InlineContentAdInfo::operator=(
-    const InlineContentAdInfo& info) = default;
+    const InlineContentAdInfo& other) = default;
+
+InlineContentAdInfo::InlineContentAdInfo(InlineContentAdInfo&& other) noexcept =
+    default;
+
+InlineContentAdInfo& InlineContentAdInfo::operator=(
+    InlineContentAdInfo&& other) noexcept = default;
 
 InlineContentAdInfo::~InlineContentAdInfo() = default;
 
@@ -38,80 +44,6 @@ bool InlineContentAdInfo::IsValid() const {
   }
 
   return true;
-}
-
-base::Value::Dict InlineContentAdInfo::ToValue() const {
-  base::Value::Dict dict;
-
-  dict.Set("type", int{type.value()});
-  dict.Set("uuid", placement_id);
-  dict.Set("creativeInstanceId", creative_instance_id);
-  dict.Set("creativeSetId", creative_set_id);
-  dict.Set("campaignId", campaign_id);
-  dict.Set("advertiserId", advertiser_id);
-  dict.Set("segment", segment);
-  dict.Set("title", title);
-  dict.Set("description", description);
-  dict.Set("imageUrl", image_url.spec());
-  dict.Set("dimensions", dimensions);
-  dict.Set("ctaText", cta_text);
-  dict.Set("targetUrl", target_url.spec());
-
-  return dict;
-}
-
-void InlineContentAdInfo::FromValue(const base::Value::Dict& root) {
-  if (const auto* value = root.FindString("type")) {
-    type = AdType(*value);
-  }
-
-  if (const auto* value = root.FindString("uuid")) {
-    placement_id = *value;
-  }
-
-  if (const auto* value = root.FindString("creativeInstanceId")) {
-    creative_instance_id = *value;
-  }
-
-  if (const auto* value = root.FindString("creativeSetId")) {
-    creative_set_id = *value;
-  }
-
-  if (const auto* value = root.FindString("campaignId")) {
-    campaign_id = *value;
-  }
-
-  if (const auto* value = root.FindString("advertiserId")) {
-    advertiser_id = *value;
-  }
-
-  if (const auto* value = root.FindString("segment")) {
-    segment = *value;
-  }
-
-  if (const auto* value = root.FindString("title")) {
-    title = *value;
-  }
-
-  if (const auto* value = root.FindString("description")) {
-    description = *value;
-  }
-
-  if (const auto* value = root.FindString("imageUrl")) {
-    image_url = GURL(*value);
-  }
-
-  if (const auto* value = root.FindString("dimensions")) {
-    dimensions = *value;
-  }
-
-  if (const auto* value = root.FindString("ctaText")) {
-    cta_text = *value;
-  }
-
-  if (const auto* value = root.FindString("targetUrl")) {
-    target_url = GURL(*value);
-  }
 }
 
 }  // namespace ads

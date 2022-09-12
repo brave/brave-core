@@ -10,10 +10,10 @@
 #include <memory>
 #include <string>
 
-#include "base/containers/circular_deque.h"
 #include "bat/ads/ad_content_action_types.h"
 #include "bat/ads/ads_callback.h"
 #include "bat/ads/category_content_action_types.h"
+#include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/ads/serving/targeting/models/contextual/text_classification/text_classification_alias.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/deprecated/client/preferences/filtered_advertiser_info.h"
@@ -27,7 +27,6 @@ class AdType;
 struct AdContentInfo;
 struct AdInfo;
 struct ClientInfo;
-struct HistoryItemInfo;
 
 class ClientStateManager final {
  public:
@@ -47,7 +46,7 @@ class ClientStateManager final {
   const FlaggedAdList& GetFlaggedAds() const;
 
   void AppendHistory(const HistoryItemInfo& history_item);
-  const base::circular_deque<HistoryItemInfo>& GetHistory() const;
+  const HistoryItemList& GetHistory() const;
 
   void AppendToPurchaseIntentSignalHistoryForSegment(
       const std::string& segment,

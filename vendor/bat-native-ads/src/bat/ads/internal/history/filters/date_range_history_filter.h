@@ -6,13 +6,11 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_HISTORY_FILTERS_DATE_RANGE_HISTORY_FILTER_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_HISTORY_FILTERS_DATE_RANGE_HISTORY_FILTER_H_
 
-#include "base/containers/circular_deque.h"
 #include "base/time/time.h"
+#include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/history/filters/history_filter_interface.h"
 
 namespace ads {
-
-struct HistoryItemInfo;
 
 class DateRangeHistoryFilter final : public HistoryFilterInterface {
  public:
@@ -21,8 +19,7 @@ class DateRangeHistoryFilter final : public HistoryFilterInterface {
   DateRangeHistoryFilter(const DateRangeHistoryFilter&) = delete;
   DateRangeHistoryFilter& operator=(const DateRangeHistoryFilter&) = delete;
 
-  base::circular_deque<HistoryItemInfo> Apply(
-      const base::circular_deque<HistoryItemInfo>& history) const override;
+  HistoryItemList Apply(const HistoryItemList& history) const override;
 
  private:
   base::Time from_time_;

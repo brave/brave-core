@@ -12,6 +12,7 @@
 #include "base/logging.h"
 #include "base/time/time.h"
 #include "bat/ads/notification_ad_info.h"
+#include "bat/ads/notification_ad_value_util.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
 #include "url/gurl.h"
 
@@ -89,10 +90,7 @@ void AdsClientMojoBridge::CanShowNotificationAdsWhileBrowserIsBackgrounded(
 }
 
 void AdsClientMojoBridge::ShowNotificationAd(base::Value::Dict dict) {
-  ads::NotificationAdInfo notification_ad;
-  notification_ad.FromValue(dict);
-
-  ads_client_->ShowNotificationAd(notification_ad);
+  ads_client_->ShowNotificationAd(ads::NotificationAdFromValue(dict));
 }
 
 void AdsClientMojoBridge::CloseNotificationAd(const std::string& placement_id) {

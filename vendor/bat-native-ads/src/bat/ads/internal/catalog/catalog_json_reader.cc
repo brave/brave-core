@@ -11,7 +11,7 @@
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
-#include "bat/ads/ads_constants.h"
+#include "bat/ads/ad_constants.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/base/url/url_util.h"
@@ -28,7 +28,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
 
   const std::string json_schema =
       AdsClientHelper::GetInstance()->LoadDataResource(
-          data::resource::kCatalogJsonSchemaName);
+          data::resource::kCatalogJsonSchemaFilename);
 
   if (!helper::JSON::Validate(&document, json_schema)) {
     BLOG(1, helper::JSON::GetLastError(&document));

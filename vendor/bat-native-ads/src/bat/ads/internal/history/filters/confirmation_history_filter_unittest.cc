@@ -58,15 +58,14 @@ TEST(BatAdsConfirmationHistoryFilterTest, FilterActions) {
   ad7.ad_content.creative_instance_id = "dc540882-6927-4e22-8597-aa80f339f0fd";
   ad7.ad_content.confirmation_type = ConfirmationType::kViewed;
 
-  base::circular_deque<HistoryItemInfo> history = {ad1, ad2, ad3, ad4,
-                                                   ad5, ad6, ad7};
+  HistoryItemList history = {ad1, ad2, ad3, ad4, ad5, ad6, ad7};
 
   // Act
   ConfirmationHistoryFilter filter;
   history = filter.Apply(history);
 
   // Assert
-  const base::circular_deque<HistoryItemInfo> expected_history = {
+  const HistoryItemList expected_history = {
       ad2,  // Ad 2
       ad3,  // Ad 1 (Click) which should supersede Ad 1 (View)
       ad4,  // Ad 3 (Dismiss) which should supersede Ad 3 (View)
@@ -127,15 +126,14 @@ TEST(BatAdsConfirmationHistoryFilterTest, FilterUnsupportedActions) {
   ad8.ad_content.creative_instance_id = "e00ccc4a-3186-4b56-9725-aeaf19095f96";
   ad8.ad_content.confirmation_type = ConfirmationType::kClicked;
 
-  base::circular_deque<HistoryItemInfo> history = {ad1, ad2, ad3, ad4,
-                                                   ad5, ad6, ad7, ad8};
+  HistoryItemList history = {ad1, ad2, ad3, ad4, ad5, ad6, ad7, ad8};
 
   // Act
   ConfirmationHistoryFilter filter;
   history = filter.Apply(history);
 
   // Assert
-  const base::circular_deque<HistoryItemInfo> expected_history = {
+  const HistoryItemList expected_history = {
       ad6,  // View
       ad7,  // Dismiss
       ad8   // Click

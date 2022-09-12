@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/values.h"
 #include "bat/ads/ad_content_action_types.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
@@ -19,21 +18,17 @@ namespace ads {
 
 struct ADS_EXPORT AdContentInfo final {
   AdContentInfo();
+
   AdContentInfo(const AdContentInfo& info);
   AdContentInfo& operator=(const AdContentInfo& info);
-  ~AdContentInfo();
 
-  bool operator==(const AdContentInfo& rhs) const;
-  bool operator!=(const AdContentInfo& rhs) const;
+  AdContentInfo(AdContentInfo&& other) noexcept;
+  AdContentInfo& operator=(AdContentInfo&& other) noexcept;
+
+  ~AdContentInfo();
 
   AdContentLikeActionType ToggleThumbUpActionType() const;
   AdContentLikeActionType ToggleThumbDownActionType() const;
-
-  base::Value::Dict ToValue() const;
-  void FromValue(const base::Value::Dict& root);
-
-  std::string ToJson() const;
-  bool FromJson(const std::string& json);
 
   AdType type = AdType::kUndefined;
   std::string placement_id;
@@ -50,6 +45,9 @@ struct ADS_EXPORT AdContentInfo final {
   bool is_saved = false;
   bool is_flagged = false;
 };
+
+bool operator==(const AdContentInfo& lhs, const AdContentInfo& rhs);
+bool operator!=(const AdContentInfo& lhs, const AdContentInfo& rhs);
 
 }  // namespace ads
 

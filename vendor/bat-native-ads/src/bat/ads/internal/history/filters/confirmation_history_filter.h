@@ -6,12 +6,10 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_HISTORY_FILTERS_CONFIRMATION_HISTORY_FILTER_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_HISTORY_FILTERS_CONFIRMATION_HISTORY_FILTER_H_
 
-#include "base/containers/circular_deque.h"
+#include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/history/filters/history_filter_interface.h"
 
 namespace ads {
-
-struct HistoryItemInfo;
 
 class ConfirmationHistoryFilter final : public HistoryFilterInterface {
  public:
@@ -21,8 +19,7 @@ class ConfirmationHistoryFilter final : public HistoryFilterInterface {
   ConfirmationHistoryFilter& operator=(const ConfirmationHistoryFilter&) =
       delete;
 
-  base::circular_deque<HistoryItemInfo> Apply(
-      const base::circular_deque<HistoryItemInfo>& history) const override;
+  HistoryItemList Apply(const HistoryItemList& history_items) const override;
 };
 
 }  // namespace ads
