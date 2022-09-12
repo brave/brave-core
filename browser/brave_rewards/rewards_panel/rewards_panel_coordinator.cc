@@ -63,11 +63,6 @@ bool RewardsPanelCoordinator::ShowAdaptiveCaptcha() {
       mojom::RewardsPanelArgs(mojom::RewardsPanelView::kAdaptiveCaptcha, ""));
 }
 
-bool RewardsPanelCoordinator::ShowBraveTalkOptIn() {
-  return OpenWithArgs(
-      mojom::RewardsPanelArgs(mojom::RewardsPanelView::kBraveTalkOptIn, ""));
-}
-
 void RewardsPanelCoordinator::AddObserver(Observer* observer) {
   observers_.AddObserver(observer);
 }

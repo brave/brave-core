@@ -49,8 +49,6 @@ class RewardsServiceObserver : public base::CheckedObserver {
       const ledger::mojom::RewardsType type,
       const ledger::mojom::ContributionProcessor processor) {}
 
-  virtual void OnRequestAdsEnabledPopupClosed(bool ads_enabled) {}
-
   virtual void OnAdsEnabled(
       brave_rewards::RewardsService* rewards_service,
       bool ads_enabled) {}

@@ -65,7 +65,7 @@ export interface Options {
   autoContributeAmounts: number[]
 }
 
-type RequestedView = 'rewards-tour' | 'brave-talk-opt-in'
+type RequestedView = 'rewards-tour'
 
 export interface HostState {
   openTime: number
