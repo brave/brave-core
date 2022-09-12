@@ -75,6 +75,9 @@ public class PortfolioFragment
     private TransactionInfo mCurrentPendingTx;
 
     PortfolioHelper mPortfolioHelper;
+    private RecyclerView mRvCoins;
+    private WalletCoinAdapter mWalletCoinAdapter;
+    private NetworkInfo mNetworkInfo;
 
     public static PortfolioFragment newInstance() {
         return new PortfolioFragment();
@@ -113,6 +116,7 @@ public class PortfolioFragment
             mWalletModel = activity.getWalletModel();
         }
         View view = inflater.inflate(R.layout.fragment_portfolio, container, false);
+        mRvCoins = view.findViewById(R.id.rvCoins);
 
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -162,6 +166,12 @@ public class PortfolioFragment
         mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.observe(
                 getViewLifecycleOwner(), networkInfo -> {
                     if (networkInfo == null) return;
+                    if (mNetworkInfo != null && !mNetworkInfo.chainId.equals(networkInfo.chainId)) {
+                        // clean up list to avoid user clicking on an asset of the previously
+                        // selected network after the network has been changed
+                        clearCoinList();
+                    }
+                    mNetworkInfo = networkInfo;
                     mBtnChangeNetwork.setText(Utils.getShortNameOfNetwork(networkInfo.chainName));
                     updatePortfolioGetPendingTx();
                 });
@@ -269,18 +279,19 @@ public class PortfolioFragment
 
     private void setUpCoinList(BlockchainToken[] userAssets,
             HashMap<String, Double> perTokenCryptoSum, HashMap<String, Double> perTokenFiatSum) {
-        View view = getView();
-        assert view != null;
-
-        RecyclerView rvCoins = view.findViewById(R.id.rvCoins);
-
         String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
 
-        WalletCoinAdapter walletCoinAdapter = Utils.setupVisibleAssetList(
+        mWalletCoinAdapter = Utils.setupVisibleAssetList(
                 userAssets, perTokenCryptoSum, perTokenFiatSum, tokensPath);
-        walletCoinAdapter.setOnWalletListItemClick(PortfolioFragment.this);
-        rvCoins.setAdapter(walletCoinAdapter);
-        rvCoins.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mWalletCoinAdapter.setOnWalletListItemClick(PortfolioFragment.this);
+        mRvCoins.setAdapter(mWalletCoinAdapter);
+        mRvCoins.setLayoutManager(new LinearLayoutManager(getActivity()));
+    }
+
+    private void clearCoinList() {
+        if (mWalletCoinAdapter != null) {
+            mWalletCoinAdapter.clear();
+        }
     }
 
     @Override

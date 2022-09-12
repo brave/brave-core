@@ -320,38 +320,6 @@
     Dismiss
   </message>
 
-  <!-- Rewards opt-in for Brave Talk -->
-  <message name="IDS_REWARDS_BRAVE_TALK_TURN_ON_REWARDS_TO_START_CALL" desc="">
-    To start a free call, turn on Brave Rewards
-  </message>
-  <message name="IDS_REWARDS_BRAVE_TALK_BRAVE_REWARDS_DESCRIPTION" desc="">
-    With Brave Rewards, you earn tokens for viewing private ads (your data is safe). Turn those tokens into cash, gift cards…or even tip the websites you love. No tracking. No slow downs.
-  </message>
-  <message name="IDS_REWARDS_BRAVE_TALK_TURN_ON_REWARDS" desc="">
-    Turn on Rewards
-  </message>
-  <message name="IDS_REWARDS_BRAVE_TALK_OPT_IN_REWARDS_TERMS" desc="">
-    By enabling, you agree to the <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Service<ph name="TOS_LINK_END">$2</ph> and <ph name="PP_LINK_BEGIN">$3</ph>Privacy Policy<ph name="PP_LINK_END">$4</ph>.
-  </message>
-  <message name="IDS_REWARDS_BRAVE_TALK_TURN_ON_PRIVATE_ADS_TO_START_CALL" desc="">
-    To start a free call, enable Brave Private Ads
-  </message>
-  <message name="IDS_REWARDS_BRAVE_TALK_PRIVATE_ADS_DESCRIPTION" desc="">
-    With Brave Private Ads, you earn tokens for viewing private ads (your data is safe). Turn those tokens into cash, gift cards…or even tip the websites you love. No tracking. No slow downs.
-  </message>
-  <message name="IDS_REWARDS_BRAVE_TALK_TURN_ON_PRIVATE_ADS" desc="">
-    Turn on Brave Private Ads
-  </message>
-  <message name="IDS_REWARDS_BRAVE_TALK_CAN_START_FREE_CALL" desc="">
-    You can now start a free call
-  </message>
-  <message name="IDS_REWARDS_BRAVE_TALK_CLICK_ANYWHERE_TO_BRAVE_TALK" desc="">
-    Click or tap anywhere on the screen to continue to Brave Talk.
-  </message>
-  <message name="IDS_REWARDS_BRAVE_TALK_WANT_LEARN_MORE" desc="">
-    Want to learn more about Brave Rewards? <ph name="TOUR_LINK_BEGIN">$1</ph>Take a quick tour<ph name="TOUR_LINK_END">$2</ph>.
-  </message>
-
   <!-- Rewards onboarding tour -->
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_BRAVE_REWARDS" desc="">
     Brave Rewards

@@ -2765,17 +2765,6 @@ void RewardsServiceImpl::ProcessRewardsPageUrl(
                           action, {});
 }
 
-void RewardsServiceImpl::RequestAdsEnabledPopupClosed(bool ads_enabled) {
-  if (ads_enabled) {
-    // If Rewards were previously enabled, this call will only turn on Ads.
-    EnableRewards();
-  }
-
-  for (auto& observer : observers_) {
-    observer.OnRequestAdsEnabledPopupClosed(ads_enabled);
-  }
-}
-
 void RewardsServiceImpl::OnDisconnectWallet(
     const std::string& wallet_type,
     const ledger::mojom::Result result) {

@@ -21,7 +21,6 @@ namespace brave_rewards {
 namespace {
 
 constexpr char kRewardsPanelUrl[] = "/brave_rewards_panel.html";
-constexpr char kAdsEnableRelativeUrl[] = "/request_ads_enabled_panel.html";
 
 std::string GetExtensionPath(const mojom::RewardsPanelArgs& args) {
   switch (args.view) {
@@ -33,8 +32,6 @@ std::string GetExtensionPath(const mojom::RewardsPanelArgs& args) {
       return base::StrCat({kRewardsPanelUrl, "#grant_", args.data});
     case mojom::RewardsPanelView::kAdaptiveCaptcha:
       return base::StrCat({kRewardsPanelUrl, "#load_adaptive_captcha"});
-    case mojom::RewardsPanelView::kBraveTalkOptIn:
-      return kAdsEnableRelativeUrl;
   }
 }
 
@@ -53,8 +50,7 @@ RewardsPanelExtensionHandler::~RewardsPanelExtensionHandler() = default;
 bool RewardsPanelExtensionHandler::IsRewardsExtensionPanelURL(const GURL& url) {
   return url.SchemeIs("chrome-extension") &&
          url.host() == brave_rewards_extension_id &&
-         (url.path() == kRewardsPanelUrl ||
-          url.path() == kAdsEnableRelativeUrl);
+         url.path() == kRewardsPanelUrl;
 }
 
 void RewardsPanelExtensionHandler::OnRewardsPanelRequested(
