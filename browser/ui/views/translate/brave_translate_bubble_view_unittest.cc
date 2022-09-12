@@ -33,7 +33,7 @@ class MockTranslateBubbleModel : public TranslateBubbleModel {
     current_view_state_ = view_state;
   }
 
-  void ShowError(translate::TranslateErrors::Type error_type) override {
+  void ShowError(translate::TranslateErrors error_type) override {
     error_type_ = error_type;
   }
 
@@ -127,8 +127,7 @@ class MockTranslateBubbleModel : public TranslateBubbleModel {
   void ReportUIChange(bool is_ui_shown) override {}
 
   ViewState current_view_state_;
-  translate::TranslateErrors::Type error_type_ =
-      translate::TranslateErrors::NONE;
+  translate::TranslateErrors error_type_ = translate::TranslateErrors::NONE;
   int original_language_index_ = 0;
   int target_language_index_ = 1;
   bool never_translate_language_ = false;
@@ -148,7 +147,7 @@ class MockBraveTranslateBubbleView : public BraveTranslateBubbleView {
  public:
   MockBraveTranslateBubbleView(views::View* anchor_view,
                                std::unique_ptr<TranslateBubbleModel> model,
-                               translate::TranslateErrors::Type error_type,
+                               translate::TranslateErrors error_type,
                                content::WebContents* web_contents,
                                base::OnceClosure on_closing)
       : BraveTranslateBubbleView(anchor_view,
