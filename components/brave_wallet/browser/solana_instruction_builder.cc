@@ -117,7 +117,7 @@ absl::optional<SolanaInstruction> Transfer(
       SolanaAccountMeta(authority_pubkey, signer_pubkeys.empty(), false)};
 
   for (const auto& signer_pubkey : signer_pubkeys)
-    account_metas.push_back(SolanaAccountMeta(signer_pubkey, true, false));
+    account_metas.emplace_back(signer_pubkey, true, false);
 
   return SolanaInstruction(token_program_id, std::move(account_metas),
                            instruction_data);

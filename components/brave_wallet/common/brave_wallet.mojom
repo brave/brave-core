@@ -837,10 +837,10 @@ struct SolanaSendTransactionOptions {
 // network.
 interface JsonRpcService {
   // Checks the chain ID for an ethereum chain that should be added
-  AddEthereumChain(NetworkInfo chain) => (string chain_id, ProviderError error, string error_message);
+  AddChain(NetworkInfo chain) => (string chain_id, ProviderError error, string error_message);
   AddEthereumChainForOrigin(NetworkInfo chain, url.mojom.Origin origin) => (string chain_id, ProviderError error, string error_message);
   AddEthereumChainRequestCompleted(string chain_id, bool approved);
-  RemoveEthereumChain(string chain_id) => (bool success);
+  RemoveChain(string chain_id, CoinType coin) => (bool success);
   GetPendingAddChainRequests() => (array<AddChainRequest> requests);
 
   // This is used for UI notifying native when the user approves or

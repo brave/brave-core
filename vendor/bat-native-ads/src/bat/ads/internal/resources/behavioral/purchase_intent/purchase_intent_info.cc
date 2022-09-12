@@ -5,13 +5,12 @@
 
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_info.h"
 
+#include "absl/types/optional.h"
 #include "base/values.h"
 #include "bat/ads/internal/features/purchase_intent_features.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
-namespace ads {
-namespace targeting {
+namespace ads::targeting {
 
 PurchaseIntentInfo::PurchaseIntentInfo() = default;
 
@@ -145,5 +144,4 @@ std::unique_ptr<PurchaseIntentInfo> PurchaseIntentInfo::CreateFromValue(
   return purchase_intent;
 }
 
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting

@@ -208,8 +208,6 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
                            std::vector<std::string>(),
                            std::vector<std::string>());
   }
-
-  return absl::nullopt;
 }
 
 }  // namespace brave_wallet

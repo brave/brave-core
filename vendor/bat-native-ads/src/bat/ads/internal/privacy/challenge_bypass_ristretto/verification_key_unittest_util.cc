@@ -7,14 +7,12 @@
 
 #include "base/check.h"
 
+#include "absl/types/optional.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token_unittest_util.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/verification_key.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
-namespace privacy {
-namespace cbr {
+namespace ads::privacy::cbr {
 
 VerificationKey GetVerificationKey() {
   const UnblindedToken unblinded_token = GetUnblindedToken();
@@ -24,6 +22,4 @@ VerificationKey GetVerificationKey() {
   return *verification_key;
 }
 
-}  // namespace cbr
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::cbr

@@ -19,22 +19,22 @@ using std::placeholders::_3;
 
 namespace {
 
-ledger::type::SKUTransactionType GetTransactionTypeFromWalletType(
+ledger::mojom::SKUTransactionType GetTransactionTypeFromWalletType(
     const std::string& wallet_type) {
   if (wallet_type == ledger::constant::kWalletUphold) {
-    return ledger::type::SKUTransactionType::UPHOLD;
+    return ledger::mojom::SKUTransactionType::UPHOLD;
   }
 
   if (wallet_type == ledger::constant::kWalletGemini) {
-    return ledger::type::SKUTransactionType::GEMINI;
+    return ledger::mojom::SKUTransactionType::GEMINI;
   }
 
   if (wallet_type == ledger::constant::kWalletUnBlinded) {
-    return ledger::type::SKUTransactionType::TOKENS;
+    return ledger::mojom::SKUTransactionType::TOKENS;
   }
 
   NOTREACHED();
-  return ledger::type::SKUTransactionType::TOKENS;
+  return ledger::mojom::SKUTransactionType::TOKENS;
 }
 
 }  // namespace
@@ -50,22 +50,22 @@ SKUTransaction::SKUTransaction(LedgerImpl* ledger) :
 
 SKUTransaction::~SKUTransaction() = default;
 
-void SKUTransaction::Create(type::SKUOrderPtr order,
+void SKUTransaction::Create(mojom::SKUOrderPtr order,
                             const std::string& destination,
                             const std::string& wallet_type,
                             ledger::LegacyResultCallback callback) {
   if (!order) {
     BLOG(0, "Order is null");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = type::SKUTransaction::New();
+  auto transaction = mojom::SKUTransaction::New();
   transaction->transaction_id = base::GenerateGUID();
   transaction->order_id = order->order_id;
   transaction->type = GetTransactionTypeFromWalletType(wallet_type);
   transaction->amount = order->total_amount;
-  transaction->status = type::SKUTransactionStatus::CREATED;
+  transaction->status = mojom::SKUTransactionStatus::CREATED;
 
   auto save_callback = std::bind(&SKUTransaction::OnTransactionSaved,
       this,
@@ -78,12 +78,13 @@ void SKUTransaction::Create(type::SKUOrderPtr order,
   ledger_->database()->SaveSKUTransaction(transaction->Clone(), save_callback);
 }
 
-void SKUTransaction::OnTransactionSaved(type::Result result,
-                                        const type::SKUTransaction& transaction,
-                                        const std::string& destination,
-                                        const std::string& wallet_type,
-                                        ledger::LegacyResultCallback callback) {
-  if (result != type::Result::LEDGER_OK) {
+void SKUTransaction::OnTransactionSaved(
+    mojom::Result result,
+    const mojom::SKUTransaction& transaction,
+    const std::string& destination,
+    const std::string& wallet_type,
+    ledger::LegacyResultCallback callback) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Transaction was not saved");
     callback(result);
     return;
@@ -103,18 +104,18 @@ void SKUTransaction::OnTransactionSaved(type::Result result,
       transfer_callback);
 }
 
-void SKUTransaction::OnTransfer(type::Result result,
+void SKUTransaction::OnTransfer(mojom::Result result,
                                 const std::string& external_transaction_id,
-                                const type::SKUTransaction& transaction,
+                                const mojom::SKUTransaction& transaction,
                                 ledger::LegacyResultCallback callback) {
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Transaction for order failed " << transaction.order_id);
     callback(result);
     return;
   }
 
   if (external_transaction_id.empty()) {
-    callback(type::Result::LEDGER_OK);
+    callback(mojom::Result::LEDGER_OK);
     return;
   }
 
@@ -135,10 +136,10 @@ void SKUTransaction::OnTransfer(type::Result result,
 }
 
 void SKUTransaction::OnSaveSKUExternalTransaction(
-    type::Result result,
-    const type::SKUTransaction& transaction,
+    mojom::Result result,
+    const mojom::SKUTransaction& transaction,
     ledger::LegacyResultCallback callback) {
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "External transaction was not saved");
     callback(result);
     return;
@@ -151,18 +152,16 @@ void SKUTransaction::OnSaveSKUExternalTransaction(
       callback);
 
   ledger_->database()->UpdateSKUOrderStatus(
-      transaction.order_id,
-      type::SKUOrderStatus::PAID,
-      save_callback);
+      transaction.order_id, mojom::SKUOrderStatus::PAID, save_callback);
 }
 
 void SKUTransaction::SendExternalTransaction(
-    type::Result result,
-    const type::SKUTransaction& transaction,
+    mojom::Result result,
+    const mojom::SKUTransaction& transaction,
     ledger::LegacyResultCallback callback) {
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Order status not updated");
-    callback(type::Result::RETRY);
+    callback(mojom::Result::RETRY);
     return;
   }
 
@@ -171,7 +170,7 @@ void SKUTransaction::SendExternalTransaction(
   if (transaction.external_transaction_id.empty()) {
     BLOG(0, "External transaction id is empty for transaction id "
         << transaction.transaction_id);
-    callback(type::Result::LEDGER_OK);
+    callback(mojom::Result::LEDGER_OK);
     return;
   }
 
@@ -181,18 +180,18 @@ void SKUTransaction::SendExternalTransaction(
       callback);
 
   switch (transaction.type) {
-    case type::SKUTransactionType::NONE:
-    case type::SKUTransactionType::TOKENS: {
+    case mojom::SKUTransactionType::NONE:
+    case mojom::SKUTransactionType::TOKENS: {
       NOTREACHED();
       return;
     }
-    case type::SKUTransactionType::UPHOLD: {
+    case mojom::SKUTransactionType::UPHOLD: {
       payment_server_->post_transaction_uphold()->Request(
           transaction,
           url_callback);
       return;
     }
-    case type::SKUTransactionType::GEMINI: {
+    case mojom::SKUTransactionType::GEMINI: {
       payment_server_->post_transaction_gemini()->Request(transaction,
                                                           url_callback);
       return;
@@ -201,15 +200,15 @@ void SKUTransaction::SendExternalTransaction(
 }
 
 void SKUTransaction::OnSendExternalTransaction(
-    type::Result result,
+    mojom::Result result,
     ledger::LegacyResultCallback callback) {
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "External transaction not sent");
-    callback(type::Result::RETRY);
+    callback(mojom::Result::RETRY);
     return;
   }
 
-  callback(type::Result::LEDGER_OK);
+  callback(mojom::Result::LEDGER_OK);
 }
 
 }  // namespace sku

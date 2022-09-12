@@ -5,12 +5,12 @@
 
 #include "bat/ads/internal/conversions/conversions.h"
 
-#include <algorithm>
 #include <set>
 
 #include "base/bind.h"
 #include "base/check.h"
 #include "base/notreached.h"
+#include "base/ranges/algorithm.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_info.h"
@@ -105,11 +105,10 @@ std::string ExtractConversionIdFromText(
   if (iter != conversion_id_patterns.cend()) {
     const ConversionIdPatternInfo conversion_id_pattern_info = iter->second;
     if (conversion_id_pattern_info.search_in == kSearchInUrl) {
-      const auto url_iter =
-          std::find_if(redirect_chain.cbegin(), redirect_chain.cend(),
-                       [&conversion_url_pattern](const GURL& url) {
-                         return MatchUrlPattern(url, conversion_url_pattern);
-                       });
+      const auto url_iter = base::ranges::find_if(
+          redirect_chain, [&conversion_url_pattern](const GURL& url) {
+            return MatchUrlPattern(url, conversion_url_pattern);
+          });
 
       if (url_iter == redirect_chain.cend()) {
         return conversion_id;
@@ -351,9 +350,8 @@ ConversionList Conversions::FilterConversions(
   std::copy_if(conversions.cbegin(), conversions.cend(),
                std::back_inserter(filtered_conversions),
                [&redirect_chain](const ConversionInfo& conversion) {
-                 const auto iter = std::find_if(
-                     redirect_chain.cbegin(), redirect_chain.cend(),
-                     [&conversion](const GURL& url) {
+                 const auto iter = base::ranges::find_if(
+                     redirect_chain, [&conversion](const GURL& url) {
                        return MatchUrlPattern(url, conversion.url_pattern);
                      });
 

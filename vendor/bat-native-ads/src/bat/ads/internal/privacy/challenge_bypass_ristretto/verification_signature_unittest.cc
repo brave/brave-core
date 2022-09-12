@@ -12,9 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace privacy {
-namespace cbr {
+namespace ads::privacy::cbr {
 
 TEST(BatAdsVerificationSignatureTest, FailToInitialize) {
   // Arrange
@@ -66,7 +64,7 @@ TEST(BatAdsVerificationSignatureTest, FailToDecodeEmptyBase64) {
 
   // Act
   const VerificationSignature verification_signature =
-      VerificationSignature::DecodeBase64("");
+      VerificationSignature::DecodeBase64({});
 
   // Assert
   const bool has_value = verification_signature.has_value();
@@ -185,6 +183,4 @@ TEST(BatAdsVerificationSignatureTest, OutputStreamWhenUninitialized) {
   EXPECT_TRUE(ss.str().empty());
 }
 
-}  // namespace cbr
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::cbr

@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/bind.h"
 #include "base/files/file_util.h"
@@ -16,10 +17,15 @@
 #include "brave/browser/importer/brave_importer_p3a.h"
 #include "brave/common/importer/chrome_importer_utils.h"
 #include "brave/common/importer/importer_constants.h"
+#include "chrome/browser/profiles/profile.h"
+#include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/browser_thread.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "brave/browser/importer/extensions_import_helpers.h"
 #include "chrome/browser/extensions/webstore_install_with_prompt.h"
 #include "chrome/common/extensions/webstore_install_result.h"
+#include "extensions/browser/extension_file_task_runner.h"
 #endif
 
 namespace {
@@ -65,8 +71,7 @@ class WebstoreInstallerForImporting
 }  // namespace
 
 BraveExternalProcessImporterHost::BraveExternalProcessImporterHost()
-    : ExternalProcessImporterHost(),
-      weak_ptr_factory_(this) {}
+    : weak_ptr_factory_(this) {}
 BraveExternalProcessImporterHost::~BraveExternalProcessImporterHost() = default;
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
@@ -85,30 +90,80 @@ void BraveExternalProcessImporterHost::LaunchExtensionsImport() {
           weak_ptr_factory_.GetWeakPtr()));
 }
 
-void BraveExternalProcessImporterHost::OnGetChromeExtensionsList(
-    absl::optional<base::Value::Dict> extensions_list) {
-  if (!extensions_list) {
-    ExternalProcessImporterHost::NotifyImportEnded();
+void BraveExternalProcessImporterHost::OnExtensionInstalled(
+    const std::string& extension_id,
+    bool success,
+    const std::string& error,
+    extensions::webstore_install::Result result) {
+  if (success) {
+    return;
+  }
+  VLOG(1) << "Extension " << extension_id << " import failed";
+  extensions::GetExtensionFileTaskRunner()->PostTaskAndReply(
+      FROM_HERE,
+      base::BindOnce(&brave::RemoveExtensionsSettings, profile_->GetPath(),
+                     extension_id),
+      base::BindOnce(
+          &BraveExternalProcessImporterHost::OnExtensionSettingsRemoved,
+          weak_ptr_factory_.GetWeakPtr(), extension_id));
+}
+
+void BraveExternalProcessImporterHost::OnExtensionSettingsRemoved(
+    const std::string& extension_id) {
+  if (settings_removed_callback_for_testing_)
+    settings_removed_callback_for_testing_.Run();
+}
+
+void BraveExternalProcessImporterHost::SetSettingsRemovedCallbackForTesting(
+    base::RepeatingClosure callback) {
+  settings_removed_callback_for_testing_ = std::move(callback);
+}
+
+void BraveExternalProcessImporterHost::InstallExtension(const std::string& id) {
+  if (install_extension_callback_for_testing_) {
+    install_extension_callback_for_testing_.Run(id);
     return;
   }
 
-  const auto ids =
-      GetImportableListFromChromeExtensionsList(extensions_list.value());
+  scoped_refptr<WebstoreInstallerForImporting> installer =
+      new WebstoreInstallerForImporting(
+          id, profile_,
+          base::BindOnce(
+              &BraveExternalProcessImporterHost::OnExtensionInstalled,
+              weak_ptr_factory_.GetWeakPtr(), id));
+  installer->BeginInstall();
+}
+
+void BraveExternalProcessImporterHost::ImportExtensions(
+    std::vector<std::string> ids) {
   for (const auto& id : ids) {
-    scoped_refptr<WebstoreInstallerForImporting> installer =
-        // Ignore installation result.
-        // TODO(simonhong): Should we check install failure and retry?
-        new WebstoreInstallerForImporting(
-            id, profile_,
-            base::BindOnce([] (bool, const std::string&,
-                               extensions::webstore_install::Result) {}));
-    installer->BeginInstall();
+    InstallExtension(id);
   }
 
   if (!ids.empty() && observer_)
     observer_->ImportItemEnded(importer::EXTENSIONS);
 
   ExternalProcessImporterHost::NotifyImportEnded();
+}
+
+void BraveExternalProcessImporterHost::OnGetChromeExtensionsList(
+    absl::optional<base::Value::Dict> extensions_list) {
+  if (!extensions_list) {
+    ExternalProcessImporterHost::NotifyImportEnded();
+    return;
+  }
+  const auto ids =
+      GetImportableListFromChromeExtensionsList(extensions_list.value());
+  if (ids.empty()) {
+    ExternalProcessImporterHost::NotifyImportEnded();
+    return;
+  }
+  extensions::GetExtensionFileTaskRunner()->PostTaskAndReply(
+      FROM_HERE,
+      base::BindOnce(&brave::ImportStorages, source_profile_.source_path,
+                     profile_->GetPath(), ids),
+      base::BindOnce(&BraveExternalProcessImporterHost::ImportExtensions,
+                     weak_ptr_factory_.GetWeakPtr(), ids));
 }
 
 void BraveExternalProcessImporterHost::NotifyImportEnded() {
@@ -128,4 +183,20 @@ void BraveExternalProcessImporterHost::NotifyImportEnded() {
   // Otherwise, notifying here and importing is finished.
   ExternalProcessImporterHost::NotifyImportEnded();
 }
+
+void BraveExternalProcessImporterHost::LaunchImportIfReady() {
+  if (do_not_launch_import_for_testing_)
+    return;
+  ExternalProcessImporterHost::LaunchImportIfReady();
+}
+
+void BraveExternalProcessImporterHost::DoNotLaunchImportForTesting() {
+  do_not_launch_import_for_testing_ = true;
+}
+
+void BraveExternalProcessImporterHost::SetInstallExtensionCallbackForTesting(
+    MockedInstallCallback callback) {
+  install_extension_callback_for_testing_ = std::move(callback);
+}
+
 #endif

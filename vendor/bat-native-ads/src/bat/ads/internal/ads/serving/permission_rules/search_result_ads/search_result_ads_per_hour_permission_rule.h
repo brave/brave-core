@@ -15,8 +15,7 @@ namespace base {
 class Time;
 }  // namespace base
 
-namespace ads {
-namespace search_result_ads {
+namespace ads::search_result_ads {
 
 class AdsPerHourPermissionRule final : public PermissionRuleInterface {
  public:
@@ -35,7 +34,6 @@ class AdsPerHourPermissionRule final : public PermissionRuleInterface {
   std::string last_message_;
 };
 
-}  // namespace search_result_ads
-}  // namespace ads
+}  // namespace ads::search_result_ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SERVING_PERMISSION_RULES_SEARCH_RESULT_ADS_SEARCH_RESULT_ADS_PER_HOUR_PERMISSION_RULE_H_

@@ -18,9 +18,7 @@
 #include "bat/ads/internal/segments/segment_alias.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
-namespace ads {
-namespace database {
-namespace table {
+namespace ads::database::table {
 
 class Campaigns;
 class CreativeAds;
@@ -88,8 +86,6 @@ class CreativeNotificationAds final : public TableInterface {
   std::unique_ptr<Segments> segments_database_table_;
 };
 
-}  // namespace table
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database::table
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CREATIVES_NOTIFICATION_ADS_CREATIVE_NOTIFICATION_ADS_DATABASE_TABLE_H_

@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "absl/types/optional.h"
 #include "base/check.h"
 #include "base/containers/flat_map.h"
 #include "base/files/file.h"
@@ -29,7 +30,6 @@
 #include "bat/ads/internal/base/unittest/unittest_test_suite_util.h"
 #include "bat/ads/internal/base/unittest/unittest_url_response_util.h"
 #include "bat/ads/notification_ad_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace ads {
@@ -509,7 +509,10 @@ void MockGetDictPref(const std::unique_ptr<AdsClientMock>& mock) {
             const std::string& json = Prefs()[uuid];
             const absl::optional<base::Value> root =
                 base::JSONReader::Read(json);
-            CHECK(root);
+            if (!root) {
+              return absl::nullopt;
+            }
+
             const base::Value::Dict* dict = root->GetIfDict();
             CHECK(dict);
             return dict->Clone();
@@ -535,7 +538,10 @@ void MockGetListPref(const std::unique_ptr<AdsClientMock>& mock) {
             const std::string& json = Prefs()[uuid];
             const absl::optional<base::Value> root =
                 base::JSONReader::Read(json);
-            DCHECK(root);
+            if (!root) {
+              return absl::nullopt;
+            }
+
             const base::Value::List* list = root->GetIfList();
             CHECK(list);
             return list->Clone();

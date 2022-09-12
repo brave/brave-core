@@ -191,8 +191,8 @@ TEST(VimeoTest, AllowedEvent) {
 }
 
 TEST(VimeoTest, GetDuration) {
-  ledger::type::MediaEventInfo old_event;
-  ledger::type::MediaEventInfo new_event;
+  ledger::mojom::MediaEventInfo old_event;
+  ledger::mojom::MediaEventInfo new_event;
 
   // empty events
   uint64_t result = Vimeo::GetDuration(old_event, new_event);

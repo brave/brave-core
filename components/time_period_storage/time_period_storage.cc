@@ -77,7 +77,7 @@ void TimePeriodStorage::ReplaceIfGreaterForDate(const base::Time& date,
   FilterToPeriod();
   base::Time date_mn = date.LocalMidnight();
   std::list<DailyValue>::iterator day_insert_it = base::ranges::find_if(
-      daily_values_.begin(), daily_values_.end(),
+      daily_values_,
       [date_mn](const DailyValue& val) { return val.day <= date_mn; });
   if (day_insert_it != daily_values_.end() && day_insert_it->day == date_mn) {
     // update daily value if it exists for date

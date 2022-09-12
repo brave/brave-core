@@ -262,6 +262,7 @@
       <message name="IDS_BRAVE_NEW_TAB_SETTINGS_BACK" desc="Navigate back to the previous settings section">
         Back
       </message>
+      <message name="IDS_BRAVE_NEW_TAB_BRAVE_BACKGROUND" desc="Brave background colors title">Bave backgrounds</message>
       <message name="IDS_BRAVE_NEW_TAB_SOLID_COLOR" desc="Solid background colors title">Solid colors</message>
       <message name="IDS_BRAVE_NEW_TAB_GRADIENT_COLOR" desc="Gradient background colors title">Gradients</message>
       <message name="IDS_BRAVE_NEW_TAB_REFRESH_BACKGROUND_ON_NEW_TAB" desc="Label for random toggle button">Refresh on every new tab</message>
@@ -561,8 +562,9 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNT_REGIONS_TITLE" desc="">Error: Different account region</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNTS_TEXT" desc="">Hmm, it looks like your Brave Rewards has already been verified with another <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account. Please try verifying again using your previous account.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNTS_TITLE" desc="">Error: Different account</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TEXT" desc="">Unfortunately, your Brave Rewards cannot be verified because your region is not supported for Brave Rewards verification at this time.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TITLE" desc="">Error: Region not supported</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TEXT_1" desc="">Your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account can't be connected to your Brave Rewards profile at this time. Your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account is registered in a country that's not currently supported for connecting to Brave Rewards.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TEXT_2" desc="">See the <ph name="LINK_BEGIN">$2</ph>current list of supported regions and learn more<ph name="END_LINK">$3</ph> about connecting a custodial account to Brave Rewards.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TITLE" desc="">Error: Region currently not supported</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_BAT_NOT_ALLOWED_TEXT" desc="">BAT is not yet supported in your region on Uphold.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_BAT_NOT_ALLOWED_TITLE" desc="">Error: BAT unavailable</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_INSUFFICIENT_CAPABILITIES_TEXT" desc="">According to Uphold, there are currently some limitations on your Uphold account. Please log in to your Uphold account and check whether there are any notices or remaining account requirements to complete, then try again. For example, you may need to submit more information to Uphold.</message>
@@ -583,14 +585,13 @@
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_LIST_ITEM_2" desc="">Receive your Rewards directly to your account</message>
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_TERMS_LABEL" desc="">I have read and agree to Brave’s <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Service<ph name="TOS_LINK_END">$2</ph> &amp; <ph name="PP_LINK_BEGIN">$3</ph>Privacy Policy<ph name="PP_LINK_END">$4</ph>.</message>
       <message name="IDS_BRAVE_REWARDS_CONTINUE" desc="">Continue</message>
-      <message name="IDS_BRAVE_REWARDS_CONTINUE_TO_LOGIN" desc="">Continue to login</message>
-      <message name="IDS_BRAVE_REWARDS_MINIMUM_BALANCE_WARNING" desc=""><ph name="PROVIDER">$1</ph> requires a minimum balance of <ph name="AMOUNT">$2</ph> BAT to create an account. If you connected an account previously,</message>
       <message name="IDS_BRAVE_REWARDS_CONTRIBUTION_PENDING_UNTIL" desc="A label on Pending Contributions modal showing the date until which the contribution will be pending">
         Pending until <ph name="DATE">$1</ph>
       </message>
 
       <message name="IDS_REWARDS_BROWSER_CANNOT_RECEIVE_ADS" desc="">Oops! Your browser cannot receive Brave Private Ads.</message>
       <message name="IDS_REWARDS_BROWSER_NEEDS_UPDATE_TO_SEE_ADS" desc="">Your browser needs to be updated to continue seeing ads.</message>
+      <message name="IDS_REWARDS_APP_ERROR_TITLE" desc="">Something went wrong</message>
 
       <!-- WebUI rewards internals resources -->
       <message name="IDS_BRAVE_REWARDS_INTERNALS_ADS_NOT_INITIALIZED" desc="Ads not initialized">Ads not initialized, please refresh the page.</message>
@@ -706,7 +707,6 @@
       <message name="IDS_BRAVE_REWARDS_TIPPING_FEE_NOTE" desc="">Brave collects 5% of the tip amount as a processing fee.</message>
       <message name="IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP" desc="">One-Time Tip</message>
       <message name="IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP_AMOUNT" desc="">One-time tip amount:</message>
-      <message name="IDS_BRAVE_REWARDS_TIP_OPT_IN_REQUIRED" desc="">Hold on, you can’t tip yet</message>
       <message name="IDS_BRAVE_REWARDS_TIP_POST_HEADER" desc=""><ph name="USER">$1</ph>’s post</message>
       <message name="IDS_BRAVE_REWARDS_TIP_POST_HEADER_TWITTER" desc=""><ph name="USER">$1</ph>’s tweet</message>
       <message name="IDS_BRAVE_REWARDS_TIP_SORRY_TO_SEE_YOU_GO" desc="">Sorry to see you go…</message>
@@ -806,7 +806,7 @@
       <message name="IDS_BRAVE_UI_RESERVED_MORE_LINK" desc="Text for the link that explains more about reserved amount">Learn more.</message>
       <message name="IDS_BRAVE_UI_RESET" desc="">Reset</message>
       <message name="IDS_BRAVE_UI_RESTORE" desc="">Restore</message>
-      <message name="IDS_BRAVE_UI_RESTORE_ALL" desc="">Restore All</message>
+      <message name="IDS_BRAVE_UI_CLEAR_EXCLUDE_LIST" desc="">Clear exclude list</message>
       <message name="IDS_BRAVE_UI_REVIEW_SITE_MSG" desc="">Your pinned sites have been moved to</message>
       <message name="IDS_BRAVE_UI_REWARDS_BACKUP_NOTICE_TEXT1" desc="">If your Brave Rewards is not verified, your BAT balance is stored in local files on your device.</message>
       <message name="IDS_BRAVE_UI_REWARDS_BACKUP_NOTICE_TEXT2" desc="">If you'd like to secure your BAT in case you need to do a clean reinstall of the browser or reformat your device, and would like to enjoy other benefits such as adding or withdrawing your BAT, we recommend <ph name="LINK_BEGIN">$1</ph>verifying<ph name="LINK_END">$2</ph>.</message>
@@ -860,7 +860,7 @@
       <message name="IDS_BRAVE_UI_PENDING_CONTRIBUTION_REMOVE_ALL" desc="Text for remove all button">Remove All</message>
 
       <message name="IDS_BRAVE_UI_EXCLUDED_SITES_TEXT" desc="">Sites Excluded</message>
-      <message name="IDS_BRAVE_UI_RESTORE_SITE" desc="">Restore this site</message>
+      <message name="IDS_BRAVE_UI_REMOVE_FROM_EXCLUDED" desc="">Remove from excluded</message>
       <message name="IDS_BRAVE_UI_REWARDS_EXCLUDED_TEXT_1" desc="">You've excluded</message>
       <message name="IDS_BRAVE_UI_REWARDS_EXCLUDED_TEXT_2" desc="">sites from Auto-Contribute.</message>
       <message name="IDS_BRAVE_UI_SHOW_ALL" desc="">Show All</message>

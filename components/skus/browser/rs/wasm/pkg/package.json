@@ -3,7 +3,7 @@
   "collaborators": [
     "eV <ev@7pr.xyz>"
   ],
-  "version": "0.1.1",
+  "version": "0.1.2",
   "files": [
     "index.js",
     "skus_sdk_bg.wasm",

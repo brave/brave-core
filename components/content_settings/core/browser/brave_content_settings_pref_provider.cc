@@ -45,6 +45,8 @@ namespace {
 
 constexpr char kObsoleteShieldCookies[] =
     "profile.content_settings.exceptions.shieldsCookies";
+constexpr char kBraveShieldsFPSettingsMigration[] =
+    "brave.shields_fp_settings_migration";
 
 constexpr char kGoogleAuthPattern[] = "https://accounts.google.com/*";
 constexpr char kFirebasePattern[] = "https://[*.]firebaseapp.com/*";
@@ -111,7 +113,9 @@ BravePrefProvider::BravePrefProvider(PrefService* prefs,
       base::BindRepeating(&BravePrefProvider::OnCookiePrefsChanged,
                           base::Unretained(this)));
 
-  MigrateShieldsSettings(off_the_record);
+  MigrateShieldsSettings(off_the_record_);
+  MigrateFingerprintingSettings();
+  MigrateFingerprintingSetingsToOriginScoped();
 
   OnCookieSettingsChanged(ContentSettingsType::BRAVE_COOKIES);
 
@@ -148,7 +152,7 @@ void BravePrefProvider::RegisterProfilePrefs(
         "profile.content_settings.exceptions.plugins");
   }
 #endif
-
+  registry->RegisterBooleanPref(kBraveShieldsFPSettingsMigration, false);
   registry->RegisterDictionaryPref(kObsoleteShieldCookies);
 }
 
@@ -455,6 +459,69 @@ void BravePrefProvider::MigrateShieldsSettingsV1ToV2ForOneType(
   }
 }
 
+void BravePrefProvider::MigrateFingerprintingSettings() {
+  if (prefs_->GetBoolean(kBraveShieldsFPSettingsMigration) || off_the_record_)
+    return;
+
+  // Find rules that can be migrated and create replacement rules for them.
+  std::vector<Rule> rules;
+  auto rule_iterator = PrefProvider::GetRuleIterator(
+      ContentSettingsType::BRAVE_FINGERPRINTING_V2, false);
+  while (rule_iterator && rule_iterator->HasNext()) {
+    auto rule = rule_iterator->Next();
+    rules.emplace_back(CloneRule(rule));
+  }
+  rule_iterator.reset();
+
+  // Migrate.
+  for (const auto& fp_rule : rules) {
+    if (fp_rule.secondary_pattern == ContentSettingsPattern::Wildcard() &&
+        fp_rule.value == CONTENT_SETTING_BLOCK) {
+#if BUILDFLAG(IS_ANDROID)
+      SetWebsiteSettingInternal(fp_rule.primary_pattern,
+                                fp_rule.secondary_pattern,
+                                ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+                                ContentSettingToValue(CONTENT_SETTING_ASK),
+                                {fp_rule.expiration, fp_rule.session_model});
+#endif
+    }
+  }
+
+  prefs_->SetBoolean(kBraveShieldsFPSettingsMigration, true);
+}
+
+void BravePrefProvider::MigrateFingerprintingSetingsToOriginScoped() {
+  if (off_the_record_)
+    return;
+
+  // Find rules that can be migrated and create replacement rules for them.
+  std::vector<Rule> rules;
+  auto rule_iterator = PrefProvider::GetRuleIterator(
+      ContentSettingsType::BRAVE_FINGERPRINTING_V2, false);
+  while (rule_iterator && rule_iterator->HasNext()) {
+    auto rule = rule_iterator->Next();
+    rules.emplace_back(CloneRule(rule));
+  }
+  rule_iterator.reset();
+
+  // Migrate.
+  for (const auto& fp_rule : rules) {
+    if (fp_rule.secondary_pattern ==
+        ContentSettingsPattern::FromString("https://balanced/*")) {
+      // delete the "balanced" override
+      SetWebsiteSettingInternal(
+          fp_rule.primary_pattern, fp_rule.secondary_pattern,
+          ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+          ContentSettingToValue(CONTENT_SETTING_DEFAULT), {});
+      // replace with ask
+      SetWebsiteSettingInternal(fp_rule.primary_pattern,
+                                ContentSettingsPattern::Wildcard(),
+                                ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+                                ContentSettingToValue(CONTENT_SETTING_ASK), {});
+    }
+  }
+}
+
 bool BravePrefProvider::SetWebsiteSetting(
     const ContentSettingsPattern& primary_pattern,
     const ContentSettingsPattern& secondary_pattern,
@@ -493,6 +560,17 @@ bool BravePrefProvider::SetWebsiteSetting(
                                    constraints);
 }
 
+bool BravePrefProvider::SetWebsiteSettingForTest(
+    const ContentSettingsPattern& primary_pattern,
+    const ContentSettingsPattern& secondary_pattern,
+    ContentSettingsType content_type,
+    base::Value&& value,
+    const ContentSettingConstraints& constraints) {
+  return PrefProvider::SetWebsiteSetting(primary_pattern, secondary_pattern,
+                                         content_type, std::move(value),
+                                         constraints);
+}
+
 bool BravePrefProvider::SetWebsiteSettingInternal(
     const ContentSettingsPattern& primary_pattern,
     const ContentSettingsPattern& secondary_pattern,
@@ -518,6 +596,13 @@ bool BravePrefProvider::SetWebsiteSettingInternal(
                             std::move(in_value), constraints);
     return true;
   }
+
+  if (content_type == ContentSettingsType::BRAVE_FINGERPRINTING_V2 &&
+      content_settings::ValueToContentSetting(in_value) !=
+          CONTENT_SETTING_DEFAULT &&
+      secondary_pattern ==
+          ContentSettingsPattern::FromString("https://balanced/*"))
+    return false;
 
   return PrefProvider::SetWebsiteSetting(primary_pattern, secondary_pattern,
                                          content_type, std::move(in_value),
@@ -620,10 +705,10 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
 
     // Shields down.
     if (ValueToContentSetting(shield_rule.value) == CONTENT_SETTING_BLOCK) {
-      rules.emplace_back(Rule(ContentSettingsPattern::Wildcard(),
-                              shield_rule.primary_pattern,
-                              ContentSettingToValue(CONTENT_SETTING_ALLOW),
-                              base::Time(), SessionModel::Durable));
+      rules.emplace_back(ContentSettingsPattern::Wildcard(),
+                         shield_rule.primary_pattern,
+                         ContentSettingToValue(CONTENT_SETTING_ALLOW),
+                         base::Time(), SessionModel::Durable);
       brave_shield_down_rules_[incognito].emplace_back(
           Rule(ContentSettingsPattern::Wildcard(), shield_rule.primary_pattern,
                ContentSettingToValue(CONTENT_SETTING_ALLOW), base::Time(),
@@ -638,8 +723,8 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   // get the list of changes
   std::vector<Rule> brave_cookie_updates;
   for (const auto& new_rule : brave_cookie_rules_[incognito]) {
-    auto match = std::find_if(
-        old_rules.begin(), old_rules.end(), [&new_rule](const auto& old_rule) {
+    auto match =
+        base::ranges::find_if(old_rules, [&new_rule](const auto& old_rule) {
           // we want an exact match here because any change to the rule
           // is an update
           return new_rule.primary_pattern == old_rule.primary_pattern &&
@@ -654,10 +739,8 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
 
   // find any removed rules
   for (const auto& old_rule : old_rules) {
-    auto match = std::find_if(
-        brave_cookie_rules_[incognito].begin(),
-        brave_cookie_rules_[incognito].end(),
-        [&old_rule](const auto& new_rule) {
+    auto match = base::ranges::find_if(
+        brave_cookie_rules_[incognito], [&old_rule](const auto& new_rule) {
           // we only care about the patterns here because we're looking
           // for deleted rules, not changed rules
           return new_rule.primary_pattern == old_rule.primary_pattern &&
@@ -665,8 +748,8 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
         });
     if (match == brave_cookie_rules_[incognito].end()) {
       brave_cookie_updates.emplace_back(
-          Rule(old_rule.primary_pattern, old_rule.secondary_pattern,
-               base::Value(), old_rule.expiration, old_rule.session_model));
+          old_rule.primary_pattern, old_rule.secondary_pattern, base::Value(),
+          old_rule.expiration, old_rule.session_model);
     }
   }
   {

@@ -48,35 +48,35 @@ std::string PostTransaction::GeneratePayload(
   return base64;
 }
 
-type::Result PostTransaction::ParseBody(const std::string& body,
-                                        std::string* transfer_id,
-                                        std::string* transfer_status) {
+mojom::Result PostTransaction::ParseBody(const std::string& body,
+                                         std::string* transfer_id,
+                                         std::string* transfer_status) {
   DCHECK(transfer_id);
   DCHECK(transfer_status);
 
   absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* transfer_id_str = dict.FindString("tx_ref");
   if (!transfer_id_str || transfer_id_str->empty()) {
     BLOG(0, "Missing transfer id");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   const auto* transfer_status_str = dict.FindString("status");
   if (!transfer_status_str) {
     BLOG(0, "Missing transfer status");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   *transfer_id = *transfer_id_str;
   *transfer_status = *transfer_status_str;
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
 void PostTransaction::Request(const std::string& token,
@@ -85,13 +85,13 @@ void PostTransaction::Request(const std::string& token,
   auto url_callback =
       std::bind(&PostTransaction::OnRequest, this, _1, callback);
 
-  auto request = type::UrlRequest::New();
+  auto request = mojom::UrlRequest::New();
   auto payload = GeneratePayload(transaction);
 
   request->url = GetUrl();
   request->headers = RequestAuthorization(token);
   request->content_type = "application/json; charset=utf-8";
-  request->method = type::UrlMethod::POST;
+  request->method = mojom::UrlMethod::POST;
   request->headers.push_back("X-GEMINI-PAYLOAD: " + payload);
 
   BLOG(0, "Initiating gemini transaction to: " << transaction.address << "for "
@@ -100,17 +100,17 @@ void PostTransaction::Request(const std::string& token,
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
-void PostTransaction::OnRequest(const type::UrlResponse& response,
+void PostTransaction::OnRequest(const mojom::UrlResponse& response,
                                 PostTransactionCallback callback) {
   ledger::LogUrlResponse(__func__, response);
 
-  type::Result result = CheckStatusCode(response.status_code);
+  mojom::Result result = CheckStatusCode(response.status_code);
 
-  BLOG_IF(0, result != type::Result::LEDGER_OK, "Gemini transaction failed");
-  BLOG_IF(0, result == type::Result::LEDGER_OK,
+  BLOG_IF(0, result != mojom::Result::LEDGER_OK, "Gemini transaction failed");
+  BLOG_IF(0, result == mojom::Result::LEDGER_OK,
           "Gemini transaction successful");
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     callback(result, "");
     return;
   }
@@ -119,16 +119,16 @@ void PostTransaction::OnRequest(const type::UrlResponse& response,
   std::string transfer_status;
   result = ParseBody(response.body, &id, &transfer_status);
 
-  if (result == type::Result::LEDGER_OK) {
+  if (result == mojom::Result::LEDGER_OK) {
     if (transfer_status == "Error") {
       BLOG(0, "Transfer error");
-      callback(type::Result::LEDGER_ERROR, "");
+      callback(mojom::Result::LEDGER_ERROR, "");
       return;
     }
 
     if (transfer_status != "Completed") {
       BLOG(1, "Transfer not yet completed (status: " << transfer_status << ")");
-      callback(type::Result::RETRY, id);
+      callback(mojom::Result::RETRY, id);
       return;
     }
   }

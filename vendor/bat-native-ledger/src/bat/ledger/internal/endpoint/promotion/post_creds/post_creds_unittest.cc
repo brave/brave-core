@@ -55,8 +55,8 @@ class PostCredsTest : public testing::Test {
 TEST_F(PostCredsTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"({
@@ -70,8 +70,8 @@ TEST_F(PostCredsTest, ServerOK) {
 
   creds_->Request(
       "ff50981d-47de-4210-848d-995e186901a1", std::move(creds),
-      base::BindOnce([](type::Result result, const std::string& claim_id) {
-        EXPECT_EQ(result, type::Result::LEDGER_OK);
+      base::BindOnce([](mojom::Result result, const std::string& claim_id) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_OK);
         EXPECT_EQ(claim_id, "53714048-9675-419e-baa3-369d85a2facb");
       }));
 }
@@ -79,8 +79,8 @@ TEST_F(PostCredsTest, ServerOK) {
 TEST_F(PostCredsTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
@@ -92,16 +92,16 @@ TEST_F(PostCredsTest, ServerError400) {
 
   creds_->Request(
       "ff50981d-47de-4210-848d-995e186901a1", std::move(creds),
-      base::BindOnce([](type::Result result, const std::string& claim_id) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+      base::BindOnce([](mojom::Result result, const std::string& claim_id) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
       }));
 }
 
 TEST_F(PostCredsTest, ServerError403) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 403;
             response.url = request->url;
             response.body = "";
@@ -113,16 +113,16 @@ TEST_F(PostCredsTest, ServerError403) {
 
   creds_->Request(
       "ff50981d-47de-4210-848d-995e186901a1", std::move(creds),
-      base::BindOnce([](type::Result result, const std::string& claim_id) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+      base::BindOnce([](mojom::Result result, const std::string& claim_id) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
       }));
 }
 
 TEST_F(PostCredsTest, ServerError409) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 409;
             response.url = request->url;
             response.body = "";
@@ -134,16 +134,16 @@ TEST_F(PostCredsTest, ServerError409) {
 
   creds_->Request(
       "ff50981d-47de-4210-848d-995e186901a1", std::move(creds),
-      base::BindOnce([](type::Result result, const std::string& claim_id) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+      base::BindOnce([](mojom::Result result, const std::string& claim_id) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
       }));
 }
 
 TEST_F(PostCredsTest, ServerError410) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 410;
             response.url = request->url;
             response.body = "";
@@ -155,16 +155,16 @@ TEST_F(PostCredsTest, ServerError410) {
 
   creds_->Request(
       "ff50981d-47de-4210-848d-995e186901a1", std::move(creds),
-      base::BindOnce([](type::Result result, const std::string& claim_id) {
-        EXPECT_EQ(result, type::Result::NOT_FOUND);
+      base::BindOnce([](mojom::Result result, const std::string& claim_id) {
+        EXPECT_EQ(result, mojom::Result::NOT_FOUND);
       }));
 }
 
 TEST_F(PostCredsTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
@@ -176,16 +176,16 @@ TEST_F(PostCredsTest, ServerError500) {
 
   creds_->Request(
       "ff50981d-47de-4210-848d-995e186901a1", std::move(creds),
-      base::BindOnce([](type::Result result, const std::string& claim_id) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+      base::BindOnce([](mojom::Result result, const std::string& claim_id) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
       }));
 }
 
 TEST_F(PostCredsTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
@@ -197,8 +197,8 @@ TEST_F(PostCredsTest, ServerErrorRandom) {
 
   creds_->Request(
       "ff50981d-47de-4210-848d-995e186901a1", std::move(creds),
-      base::BindOnce([](type::Result result, const std::string& claim_id) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+      base::BindOnce([](mojom::Result result, const std::string& claim_id) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
       }));
 }
 

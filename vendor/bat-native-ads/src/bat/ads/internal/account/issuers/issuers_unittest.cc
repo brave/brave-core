@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "absl/types/optional.h"
 #include "bat/ads/internal/account/issuers/issuers_delegate_mock.h"
 #include "bat/ads/internal/account/issuers/issuers_info.h"
 #include "bat/ads/internal/account/issuers/issuers_unittest_util.h"
@@ -14,7 +15,6 @@
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "net/http/http_status_code.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -81,7 +81,7 @@ TEST_F(BatAdsIssuersTest, FetchIssuers) {
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const IssuersInfo expected_issuers =
-      BuildIssuers(7200000,
+      BuildIssuers(7'200'000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
                    {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},

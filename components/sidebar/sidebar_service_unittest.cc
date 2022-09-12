@@ -3,10 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <algorithm>
 #include <memory>
 #include <utility>
 
+#include "base/containers/contains.h"
+#include "base/ranges/algorithm.h"
 #include "brave/components/sidebar/constants.h"
 #include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
@@ -14,63 +15,60 @@
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/version_info/channel.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using version_info::Channel;
 
 namespace sidebar {
 
-class SidebarServiceTest : public testing::Test,
-                           public SidebarService::Observer {
+class MockSidebarServiceObserver : public SidebarService::Observer {
+ public:
+  MockSidebarServiceObserver() = default;
+  ~MockSidebarServiceObserver() override = default;
+
+  MOCK_METHOD(void,
+              OnItemAdded,
+              (const SidebarItem& item, int index),
+              (override));
+  MOCK_METHOD(void,
+              OnWillRemoveItem,
+              (const SidebarItem& item, int index),
+              (override));
+  MOCK_METHOD(void,
+              OnItemRemoved,
+              (const SidebarItem& item, int index),
+              (override));
+  MOCK_METHOD(void,
+              OnItemUpdated,
+              (const SidebarItem& item, const SidebarItemUpdate& update),
+              (override));
+  MOCK_METHOD(void,
+              OnItemMoved,
+              (const SidebarItem& item, int from, int to),
+              (override));
+};
+
+class SidebarServiceTest : public testing::Test {
  public:
   SidebarServiceTest() = default;
 
   ~SidebarServiceTest() override = default;
 
-  void TearDown() override { service_->RemoveObserver(this); }
+  void TearDown() override { ResetService(); }
 
   void InitService() {
-    service_.reset(new SidebarService(&prefs_));
-    service_->AddObserver(this);
+    service_ = std::make_unique<SidebarService>(&prefs_);
+    service_->AddObserver(&observer_);
   }
 
-  // SidebarServiceObserver overrides:
-  void OnItemAdded(const SidebarItem& item, int index) override {
-    item_index_on_called_ = index;
-    on_item_added_called_ = true;
+  void ResetService() {
+    service_->RemoveObserver(&observer_);
+    service_.reset();
   }
-
-  void OnWillRemoveItem(const SidebarItem& item, int index) override {
-    item_index_on_called_ = index;
-    on_will_remove_item_called_ = true;
-  }
-
-  void OnItemRemoved(const SidebarItem& item, int index) override {
-    // Make sure OnWillRemoveItem() must be called before this.
-    EXPECT_TRUE(on_will_remove_item_called_);
-    item_index_on_called_ = index;
-    on_item_removed_called_ = true;
-  }
-
-  void OnItemMoved(const SidebarItem& item, int from, int to) override {
-    on_item_moved_called_ = true;
-  }
-
-  void ClearState() {
-    item_index_on_called_ = -1;
-    on_item_added_called_ = false;
-    on_will_remove_item_called_ = false;
-    on_item_removed_called_ = false;
-    on_item_moved_called_ = false;
-  }
-
-  int item_index_on_called_ = -1;
-  bool on_item_added_called_ = false;
-  bool on_will_remove_item_called_ = false;
-  bool on_item_removed_called_ = false;
-  bool on_item_moved_called_ = false;
 
   TestingPrefServiceSimple prefs_;
+  MockSidebarServiceObserver observer_;
   std::unique_ptr<SidebarService> service_;
 };
 
@@ -86,34 +84,28 @@ TEST_F(SidebarServiceTest, AddRemoveItems) {
   const SidebarItem item = service_->items()[0];
   EXPECT_TRUE(IsBuiltInType(item));
 
-  EXPECT_FALSE(on_will_remove_item_called_);
-  EXPECT_FALSE(on_item_removed_called_);
-  EXPECT_EQ(-1, item_index_on_called_);
-
+  EXPECT_CALL(observer_, OnWillRemoveItem(item, 0)).Times(1);
+  EXPECT_CALL(observer_, OnItemRemoved(item, 0)).Times(1);
   service_->RemoveItemAt(0);
+  testing::Mock::VerifyAndClearExpectations(&observer_);
   EXPECT_EQ(3UL, service_->items().size());
   EXPECT_EQ(1UL, service_->GetHiddenDefaultSidebarItems().size());
-  EXPECT_EQ(0, item_index_on_called_);
-  EXPECT_TRUE(on_will_remove_item_called_);
-  EXPECT_TRUE(on_item_removed_called_);
-  ClearState();
 
   // Add again.
-  EXPECT_FALSE(on_item_added_called_);
-  service_->AddItem(item);
   // New item will be added at last.
-  EXPECT_EQ(3, item_index_on_called_);
+  EXPECT_CALL(observer_, OnItemAdded(item, 3)).Times(1);
+  service_->AddItem(item);
+  testing::Mock::VerifyAndClearExpectations(&observer_);
   EXPECT_EQ(4UL, service_->items().size());
   EXPECT_EQ(0UL, service_->GetHiddenDefaultSidebarItems().size());
-  EXPECT_TRUE(on_item_added_called_);
-  ClearState();
 
   const SidebarItem item2 = SidebarItem::Create(
-      GURL("https://www.brave.com/"), std::u16string(),
-      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone, true);
+      GURL("https://www.brave.com/"), u"brave software",
+      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone, false);
   EXPECT_TRUE(IsWebType(item2));
+  EXPECT_CALL(observer_, OnItemAdded(item2, 4)).Times(1);
   service_->AddItem(item2);
-  EXPECT_EQ(4, item_index_on_called_);
+  testing::Mock::VerifyAndClearExpectations(&observer_);
   EXPECT_EQ(5UL, service_->items().size());
   // Default item count is not changed.
   EXPECT_EQ(4UL, service_->GetCurrentlyPresentBuiltInTypes().size());
@@ -123,17 +115,19 @@ TEST_F(SidebarServiceTest, MoveItem) {
   SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::DEV);
   InitService();
 
-  // Add one more item to test with 4 items.
-  SidebarItem new_item;
-  new_item.url = GURL("https://brave.com");
+  // Add one more item to test with 5 items.
+  SidebarItem new_item = SidebarItem::Create(
+      GURL("https://www.brave.com/"), u"brave software",
+      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone, false);
   service_->AddItem(new_item);
   EXPECT_EQ(5UL, service_->items().size());
 
   // Move item at 0 to index 2.
   SidebarItem item = service_->items()[0];
+  EXPECT_CALL(observer_, OnItemMoved(item, 0, 2)).Times(1);
   service_->MoveItem(0, 2);
+  testing::Mock::VerifyAndClearExpectations(&observer_);
   EXPECT_EQ(item.url, service_->items()[2].url);
-  EXPECT_TRUE(on_item_moved_called_);
 
   // Move item at 0 to index 3.
   item = service_->items()[0];
@@ -151,22 +145,107 @@ TEST_F(SidebarServiceTest, MoveItem) {
   EXPECT_EQ(item.url, service_->items()[1].url);
 }
 
+TEST(SidebarItemTest, SidebarItemValidation) {
+  SidebarItem builtin_item;
+  EXPECT_FALSE(IsValidItem(builtin_item));
+
+  builtin_item.type = SidebarItem::Type::kTypeBuiltIn;
+  builtin_item.title = u"title";
+  builtin_item.built_in_item_type = SidebarItem::BuiltInItemType::kNone;
+
+  // builtin item should have have specific builtin item type.
+  EXPECT_FALSE(IsValidItem(builtin_item));
+  builtin_item.built_in_item_type = SidebarItem::BuiltInItemType::kBookmarks;
+  EXPECT_TRUE(IsValidItem(builtin_item));
+
+  // Invalid if title is empty.
+  builtin_item.title = u"";
+  EXPECT_FALSE(IsValidItem(builtin_item));
+  builtin_item.title = u"title";
+  EXPECT_TRUE(IsValidItem(builtin_item));
+
+  SidebarItem web_item;
+  web_item.type = SidebarItem::Type::kTypeWeb;
+  web_item.built_in_item_type = SidebarItem::BuiltInItemType::kNone;
+  web_item.url = GURL("https://abcd.com/");
+  web_item.title = u"title";
+  EXPECT_TRUE(IsValidItem(web_item));
+  web_item.built_in_item_type = SidebarItem::BuiltInItemType::kBookmarks;
+  EXPECT_FALSE(IsValidItem(web_item));
+}
+
+TEST_F(SidebarServiceTest, UpdateItem) {
+  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::DEV);
+  InitService();
+
+  // Added webtype item at last.
+  int last_item_index = service_->items().size() - 1;
+  // Builtin type is not editable.
+  EXPECT_TRUE(IsBuiltInType(service_->items()[last_item_index]));
+  EXPECT_FALSE(service_->IsEditableItemAt(last_item_index));
+
+  SidebarItem brave_item;
+  const GURL brave_url("https://brave.com/");
+  const std::u16string brave_title(u"Brave software");
+  brave_item.url = brave_url;
+  brave_item.title = brave_title;
+  brave_item.type = SidebarItem::Type::kTypeWeb;
+  brave_item.built_in_item_type = SidebarItem::BuiltInItemType::kNone;
+  service_->AddItem(brave_item);
+  last_item_index++;
+  EXPECT_EQ(brave_url, service_->items()[last_item_index].url);
+  EXPECT_TRUE(service_->IsEditableItemAt(last_item_index));
+
+  SidebarItemUpdate update;
+  update.index = last_item_index;
+  // Update title only.
+  update.title_updated = true;
+  update.url_updated = false;
+  EXPECT_CALL(observer_, OnItemUpdated(testing::_, update)).Times(1);
+  service_->UpdateItem(brave_url, brave_url, brave_title, u"Brave");
+  testing::Mock::VerifyAndClearExpectations(&observer_);
+  EXPECT_EQ(u"Brave", service_->items()[last_item_index].title);
+
+  // Update title & url.
+  update.title_updated = true;
+  update.url_updated = true;
+  EXPECT_CALL(observer_, OnItemUpdated(testing::_, update)).Times(1);
+  service_->UpdateItem(brave_url, GURL("https://a.com/"), u"Brave", u"a");
+  testing::Mock::VerifyAndClearExpectations(&observer_);
+  EXPECT_EQ(u"a", service_->items()[last_item_index].title);
+  EXPECT_EQ(GURL("https://a.com/"), service_->items()[last_item_index].url);
+
+  // Added one more webtype item.
+  service_->AddItem(brave_item);
+  last_item_index++;
+
+  // Trying to update the url that another item already uses and
+  // check item is not updated and it still has brave url.
+  EXPECT_CALL(observer_, OnItemUpdated(testing::_, testing::_)).Times(0);
+  service_->UpdateItem(brave_url, GURL("https://a.com/"), u"a", u"ab");
+  testing::Mock::VerifyAndClearExpectations(&observer_);
+  EXPECT_EQ(brave_url, service_->items()[last_item_index].url);
+}
+
 TEST_F(SidebarServiceTest, MoveItemSavedToPrefs) {
   SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::DEV);
   InitService();
 
   // Add one more item to test with 4 items.
-  SidebarItem new_item;
-  new_item.url = GURL("https://brave.com");
+  SidebarItem new_item = SidebarItem::Create(
+      GURL("https://www.brave.com/"), u"brave software",
+      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone, false);
   service_->AddItem(new_item);
   EXPECT_EQ(5UL, service_->items().size());
 
   // Move item at 0 to index 2.
   SidebarItem item = service_->items()[0];
   GURL url = item.url;
+  EXPECT_CALL(observer_, OnItemMoved(item, 0, 2)).Times(1);
   service_->MoveItem(0, 2);
-  EXPECT_TRUE(on_item_moved_called_);
-  service_.reset();
+  testing::Mock::VerifyAndClearExpectations(&observer_);
+
+  ResetService();
   InitService();
   EXPECT_EQ(5UL, service_->items().size());
   EXPECT_EQ(url, service_->items()[2].url);
@@ -194,22 +273,14 @@ TEST_F(SidebarServiceTest, HideBuiltInItem) {
   InitService();
   // None of the items should be the hidden one
   auto items = service_->items();
-  auto bookmark_iter =
-      std::find_if(items.begin(), items.end(), [](const auto& item) {
-        return (item.built_in_item_type ==
-                SidebarItem::BuiltInItemType::kBookmarks);
-      });
-  EXPECT_EQ(bookmark_iter, items.end());
+  EXPECT_FALSE(base::Contains(items, SidebarItem::BuiltInItemType::kBookmarks,
+                              &SidebarItem::built_in_item_type));
   // Check serialization also perists that
-  service_.reset();
+  ResetService();
   InitService();
   items = service_->items();
-  bookmark_iter =
-      std::find_if(items.begin(), items.end(), [](const auto& item) {
-        return (item.built_in_item_type ==
-                SidebarItem::BuiltInItemType::kBookmarks);
-      });
-  EXPECT_EQ(bookmark_iter, items.end());
+  EXPECT_FALSE(base::Contains(items, SidebarItem::BuiltInItemType::kBookmarks,
+                              &SidebarItem::built_in_item_type));
 }
 
 TEST_F(SidebarServiceTest, NewDefaultItemAdded) {
@@ -236,12 +307,8 @@ TEST_F(SidebarServiceTest, NewDefaultItemAdded) {
   // since kSidebarItems was not default value and did not contain them.
   // None of the items should be the hidden one
   auto items = service_->items();
-  auto bookmark_iter =
-      std::find_if(items.begin(), items.end(), [](const auto& item) {
-        return (item.built_in_item_type ==
-                SidebarItem::BuiltInItemType::kBookmarks);
-      });
-  EXPECT_EQ(bookmark_iter, items.end());
+  EXPECT_FALSE(base::Contains(items, SidebarItem::BuiltInItemType::kBookmarks,
+                              &SidebarItem::built_in_item_type));
   // All other default items should be present even though not present
   // in kSidebarItems pref.
   std::vector<SidebarItem::BuiltInItemType> remaining_default_items{
@@ -255,10 +322,8 @@ TEST_F(SidebarServiceTest, NewDefaultItemAdded) {
   // There should also be the custom item we added
   EXPECT_EQ(remaining_default_items.size() + 1, service_->items().size());
   for (auto built_in_type : remaining_default_items) {
-    auto iter = std::find_if(
-        items.begin(), items.end(), [built_in_type](const auto& item) {
-          return (item.built_in_item_type == built_in_type);
-        });
+    auto iter = base::ranges::find(items, built_in_type,
+                                   &SidebarItem::built_in_item_type);
     EXPECT_NE(iter, items.end());
     auto expected_index =
         base::ranges::find(all_default_item_types, built_in_type) -
@@ -305,17 +370,11 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsSomeHidden) {
   EXPECT_EQ(2UL, service_->items().size());
   auto items = service_->items();
   auto talk_iter =
-      std::find_if(items.begin(), items.end(), [](const auto& item) {
-        return (item.built_in_item_type ==
-                SidebarItem::BuiltInItemType::kBraveTalk);
-      });
-  auto reading_iter =
-      std::find_if(items.begin(), items.end(), [](const auto& item) {
-        return (item.built_in_item_type ==
-                SidebarItem::BuiltInItemType::kReadingList);
-      });
+      base::ranges::find(items, SidebarItem::BuiltInItemType::kBraveTalk,
+                         &SidebarItem::built_in_item_type);
   EXPECT_NE(talk_iter, items.end());
-  EXPECT_NE(reading_iter, items.end());
+  EXPECT_TRUE(base::Contains(items, SidebarItem::BuiltInItemType::kReadingList,
+                             &SidebarItem::built_in_item_type));
   // Check service has updated built-in item. Previously url was incorrect. This
   // check is to make sure that we don't re-introduce code which stores the URL
   // for built-in items.
@@ -381,7 +440,7 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoneHidden) {
   // Simulate re-launch and check service has still updated items.
   // This tests re-migration doesn't occur and hide all the hideable built-in
   // items.
-  service_.reset();
+  ResetService();
   InitService();
   // Prefs still haven't been re-serialized, so don't contain new items
   EXPECT_EQ(4UL, preference->GetValue()->GetList().size());
@@ -394,7 +453,7 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoneHidden) {
   // a move operation (and move it back).
   service_->MoveItem(0, 1);
   service_->MoveItem(0, 1);
-  service_.reset();
+  ResetService();
   InitService();
   // Pref now includes new default items added after migration (ReadingList),
   // so size has increased by 1.
@@ -406,10 +465,9 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoneHidden) {
   // Verify that new a new item not contained in prefs was added at correct
   // index.
   auto items = service_->items();
-  auto iter = std::find_if(items.begin(), items.end(), [](const auto& item) {
-    return item.built_in_item_type ==
-           SidebarItem::BuiltInItemType::kReadingList;
-  });
+  auto iter =
+      base::ranges::find(items, SidebarItem::BuiltInItemType::kReadingList,
+                         &SidebarItem::built_in_item_type);
   auto index = iter - items.begin();
   EXPECT_EQ(3, index);
 }
@@ -477,12 +535,8 @@ TEST_F(SidebarServiceTest, HidesBuiltInItemsViaPref) {
   // Verify default state
   InitService();
   auto items = service_->items();
-  auto bookmarks_iter =
-      std::find_if(items.begin(), items.end(), [](const auto& item) {
-        return (item.built_in_item_type ==
-                SidebarItem::BuiltInItemType::kBookmarks);
-      });
-  EXPECT_NE(bookmarks_iter, items.end());
+  EXPECT_TRUE(base::Contains(items, SidebarItem::BuiltInItemType::kBookmarks,
+                             &SidebarItem::built_in_item_type));
 
   // Update pref to hide bookmarks item
   // Make prefs already have old-style builtin items before service
@@ -496,12 +550,8 @@ TEST_F(SidebarServiceTest, HidesBuiltInItemsViaPref) {
   // Verify new state doesn't include bookmarks item
   InitService();
   items = service_->items();
-  auto bookmarks_iter_removed =
-      std::find_if(items.begin(), items.end(), [](const auto& item) {
-        return (item.built_in_item_type ==
-                SidebarItem::BuiltInItemType::kBookmarks);
-      });
-  EXPECT_EQ(bookmarks_iter_removed, items.end());
+  EXPECT_FALSE(base::Contains(items, SidebarItem::BuiltInItemType::kBookmarks,
+                              &SidebarItem::built_in_item_type));
 }
 
 TEST_F(SidebarServiceTest, HidesBuiltInItemsViaService) {
@@ -524,15 +574,11 @@ TEST_F(SidebarServiceTest, HidesBuiltInItemsViaService) {
   service_->RemoveItemAt(bookmark_item_index);
 
   // Verify new state doesn't include bookmarks item
-  service_.reset();
+  ResetService();
   InitService();
   items = service_->items();
-  auto bookmarks_iter_removed =
-      std::find_if(items.begin(), items.end(), [](const auto& item) {
-        return (item.built_in_item_type ==
-                SidebarItem::BuiltInItemType::kBookmarks);
-      });
-  EXPECT_EQ(bookmarks_iter_removed, items.end());
+  EXPECT_FALSE(base::Contains(items, SidebarItem::BuiltInItemType::kBookmarks,
+                              &SidebarItem::built_in_item_type));
 }
 
 TEST_F(SidebarServiceTest, BuiltInItemUpdateTestWithBuiltInItemTypeKey) {
@@ -561,8 +607,7 @@ TEST_F(SidebarServiceTest, BuiltInItemUpdateTestWithBuiltInItemTypeKey) {
   EXPECT_EQ(GURL(kBraveTalkURL), service_->items()[0].url);
 
   // Simulate re-launch and check service has still updated items.
-  service_->RemoveObserver(this);
-  service_.reset();
+  ResetService();
 
   InitService();
 

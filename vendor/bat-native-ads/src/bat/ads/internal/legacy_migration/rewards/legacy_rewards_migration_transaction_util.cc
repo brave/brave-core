@@ -14,8 +14,7 @@
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_payments_util.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_transaction_constants.h"
 
-namespace ads {
-namespace rewards {
+namespace ads::rewards {
 
 namespace {
 
@@ -116,5 +115,4 @@ BuildTransactionForReconciledTransactionsLastMonth(
   return BuildTransaction(time, payment->balance);
 }
 
-}  // namespace rewards
-}  // namespace ads
+}  // namespace ads::rewards

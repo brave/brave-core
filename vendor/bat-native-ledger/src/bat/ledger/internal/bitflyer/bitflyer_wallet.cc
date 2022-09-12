@@ -25,12 +25,12 @@ BitflyerWallet::~BitflyerWallet() = default;
 void BitflyerWallet::Generate(ledger::ResultCallback callback) {
   auto wallet = ledger_->bitflyer()->GetWallet();
   if (!wallet) {
-    wallet = type::ExternalWallet::New();
+    wallet = mojom::ExternalWallet::New();
     wallet->type = constant::kWalletBitflyer;
-    wallet->status = type::WalletStatus::NOT_CONNECTED;
+    wallet->status = mojom::WalletStatus::NOT_CONNECTED;
     if (!ledger_->bitflyer()->SetWallet(wallet->Clone())) {
       BLOG(0, "Unable to set bitFlyer wallet!");
-      return std::move(callback).Run(type::Result::LEDGER_ERROR);
+      return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
     }
 
     OnWalletStatusChange(ledger_, {}, wallet->status);
@@ -44,26 +44,26 @@ void BitflyerWallet::Generate(ledger::ResultCallback callback) {
     wallet->code_verifier = util::GeneratePKCECodeVerifier();
   }
 
-  absl::optional<type::WalletStatus> from;
+  absl::optional<mojom::WalletStatus> from;
   if (wallet->token.empty() &&
-      (wallet->status == type::WalletStatus::PENDING ||
-       wallet->status == type::WalletStatus::CONNECTED)) {
+      (wallet->status == mojom::WalletStatus::PENDING ||
+       wallet->status == mojom::WalletStatus::CONNECTED)) {
     from = wallet->status;
-    wallet->status = type::WalletStatus::NOT_CONNECTED;
+    wallet->status = mojom::WalletStatus::NOT_CONNECTED;
   }
 
   wallet = GenerateLinks(std::move(wallet));
   if (!ledger_->bitflyer()->SetWallet(wallet->Clone())) {
     BLOG(0, "Unable to set bitFlyer wallet!");
-    return std::move(callback).Run(type::Result::LEDGER_ERROR);
+    return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
   }
 
   if (from) {
     OnWalletStatusChange(ledger_, from, wallet->status);
   }
 
-  if (wallet->status == type::WalletStatus::VERIFIED ||
-      wallet->status == type::WalletStatus::DISCONNECTED_VERIFIED) {
+  if (wallet->status == mojom::WalletStatus::VERIFIED ||
+      wallet->status == mojom::WalletStatus::DISCONNECTED_VERIFIED) {
     // If the wallet is verified, attempt to transfer any applicable grants to
     // the user's external wallet.
     //
@@ -74,17 +74,17 @@ void BitflyerWallet::Generate(ledger::ResultCallback callback) {
     // authorization, so bypass ClaimFunds and call promotion()->TransferTokens
     // directly.
     return ledger_->promotion()->TransferTokens(base::BindOnce(
-        [](ledger::ResultCallback callback, type::Result result, std::string) {
-          if (result != type::Result::LEDGER_OK) {
+        [](ledger::ResultCallback callback, mojom::Result result, std::string) {
+          if (result != mojom::Result::LEDGER_OK) {
             BLOG(0, "Claiming tokens failed");
-            return std::move(callback).Run(type::Result::CONTINUE);
+            return std::move(callback).Run(mojom::Result::CONTINUE);
           }
-          std::move(callback).Run(type::Result::LEDGER_OK);
+          std::move(callback).Run(mojom::Result::LEDGER_OK);
         },
         std::move(callback)));
   }
 
-  std::move(callback).Run(type::Result::LEDGER_OK);
+  std::move(callback).Run(mojom::Result::LEDGER_OK);
 }
 
 }  // namespace bitflyer

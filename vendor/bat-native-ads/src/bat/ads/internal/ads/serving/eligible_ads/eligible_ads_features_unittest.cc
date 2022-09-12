@@ -9,8 +9,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace features {
+namespace ads::features {
 
 namespace {
 constexpr unsigned int kNumberOfServingFeatures = 7U;
@@ -47,5 +46,4 @@ TEST(BatAdsEligibleAdsFeaturesTest, DefaultAdFeatureWeights) {
   EXPECT_EQ(expected_weights, weights);
 }
 
-}  // namespace features
-}  // namespace ads
+}  // namespace ads::features

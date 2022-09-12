@@ -7,6 +7,7 @@ use chrono::NaiveDate;
 use futures_retry::FutureRetry;
 use rand::rngs::OsRng;
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 use sha2::Sha512;
 use tracing::instrument;
 
@@ -101,12 +102,20 @@ where
                                 ))
                                 .body(body)
                                 .unwrap();
+
                             let resp = self.fetch(req).await?;
+                            let app_err: APIError =
+                                serde_json::from_slice(&resp.body()).unwrap_or(APIError {
+                                    code: 0,
+                                    message: "unknown".to_string(),
+                                    error_code: "".to_string(),
+                                    data: Value::Null,
+                                });
 
                             match resp.status() {
                                 http::StatusCode::OK => Ok(()),
                                 http::StatusCode::CONFLICT => {
-                                    Err(InternalError::BadRequest(http::StatusCode::CONFLICT))
+                                    Err(InternalError::BadRequest(app_err))
                                 }
                                 http::StatusCode::NOT_FOUND => Err(InternalError::NotFound),
                                 _ => Err(resp.into()),

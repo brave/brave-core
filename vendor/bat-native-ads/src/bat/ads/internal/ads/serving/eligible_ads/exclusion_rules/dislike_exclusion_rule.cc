@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/dislike_exclusion_rule.h"
 
-#include <algorithm>
-
+#include "base/containers/contains.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
@@ -46,13 +45,8 @@ bool DislikeExclusionRule::DoesRespectCap(const CreativeAdInfo& creative_ad) {
     return true;
   }
 
-  const auto iter = std::find_if(
-      filtered_advertisers.cbegin(), filtered_advertisers.cend(),
-      [&creative_ad](const FilteredAdvertiserInfo& filtered_advertiser) {
-        return filtered_advertiser.id == creative_ad.advertiser_id;
-      });
-
-  return iter == filtered_advertisers.cend();
+  return !base::Contains(filtered_advertisers, creative_ad.advertiser_id,
+                         &FilteredAdvertiserInfo::id);
 }
 
 }  // namespace ads

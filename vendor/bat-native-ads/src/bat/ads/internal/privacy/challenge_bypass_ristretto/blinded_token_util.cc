@@ -5,13 +5,11 @@
 
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token_util.h"
 
+#include "absl/types/optional.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
-namespace privacy {
-namespace cbr {
+namespace ads::privacy::cbr {
 
 std::vector<BlindedToken> BlindTokens(const std::vector<Token>& tokens) {
   std::vector<BlindedToken> blinded_tokens;
@@ -45,6 +43,4 @@ std::vector<challenge_bypass_ristretto::BlindedToken> ToRawBlindedTokens(
   return raw_tokens;
 }
 
-}  // namespace cbr
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::cbr

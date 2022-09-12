@@ -43,8 +43,7 @@
 #include "brave/components/playlist/renderer/playlist_render_frame_observer.h"
 #endif
 
-BraveContentRendererClient::BraveContentRendererClient()
-    : ChromeContentRendererClient() {}
+BraveContentRendererClient::BraveContentRendererClient() = default;
 
 void BraveContentRendererClient::
     SetRuntimeFeaturesDefaultsBeforeBlinkInitialization() {
@@ -113,8 +112,7 @@ void BraveContentRendererClient::RenderFrameCreated(
   }
 
   if (base::FeatureList::IsEnabled(skus::features::kSkusFeature)) {
-    new skus::SkusRenderFrameObserver(render_frame,
-                                      content::ISOLATED_WORLD_ID_GLOBAL);
+    new skus::SkusRenderFrameObserver(render_frame);
   }
 
 #if BUILDFLAG(IS_ANDROID)

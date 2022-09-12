@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <string>
 
+#include "absl/types/optional.h"
 #include "base/check_op.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
@@ -21,7 +22,6 @@
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_scoring.h"
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_trigger_info.h"
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

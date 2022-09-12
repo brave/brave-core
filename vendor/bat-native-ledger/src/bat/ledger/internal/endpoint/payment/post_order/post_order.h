@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_ENDPOINT_PAYMENT_POST_ORDER_POST_ORDER_H_
-#define BRAVELEDGER_ENDPOINT_PAYMENT_POST_ORDER_POST_ORDER_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PAYMENT_POST_ORDER_POST_ORDER_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PAYMENT_POST_ORDER_POST_ORDER_H_
 
 #include <string>
 #include <vector>
@@ -62,35 +62,31 @@ class LedgerImpl;
 namespace endpoint {
 namespace payment {
 
-using PostOrderCallback = std::function<void(
-    const type::Result result,
-    type::SKUOrderPtr order)>;
+using PostOrderCallback =
+    std::function<void(const mojom::Result result, mojom::SKUOrderPtr order)>;
 
 class PostOrder {
  public:
   explicit PostOrder(LedgerImpl* ledger);
   ~PostOrder();
 
-  void Request(
-      const std::vector<type::SKUOrderItem>& items,
-      PostOrderCallback callback);
+  void Request(const std::vector<mojom::SKUOrderItem>& items,
+               PostOrderCallback callback);
 
  private:
   std::string GetUrl();
 
-  std::string GeneratePayload(const std::vector<type::SKUOrderItem>& items);
+  std::string GeneratePayload(const std::vector<mojom::SKUOrderItem>& items);
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(const int status_code);
 
-  type::Result ParseBody(
-      const std::string& body,
-      const std::vector<type::SKUOrderItem>& order_items,
-      type::SKUOrder* order);
+  mojom::Result ParseBody(const std::string& body,
+                          const std::vector<mojom::SKUOrderItem>& order_items,
+                          mojom::SKUOrder* order);
 
-  void OnRequest(
-      const type::UrlResponse& response,
-      const std::vector<type::SKUOrderItem>& items,
-      PostOrderCallback callback);
+  void OnRequest(const mojom::UrlResponse& response,
+                 const std::vector<mojom::SKUOrderItem>& items,
+                 PostOrderCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
@@ -99,4 +95,4 @@ class PostOrder {
 }  // namespace endpoint
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_ENDPOINT_PAYMENT_POST_ORDER_POST_ORDER_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PAYMENT_POST_ORDER_POST_ORDER_H_

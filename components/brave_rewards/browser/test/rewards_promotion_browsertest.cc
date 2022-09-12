@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
@@ -38,8 +40,8 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
         std::make_unique<RewardsBrowserTestContextHelper>(browser());
 
     // HTTP resolver
-    https_server_.reset(new net::EmbeddedTestServer(
-        net::test_server::EmbeddedTestServer::TYPE_HTTPS));
+    https_server_ = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
     https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
     https_server_->RegisterRequestHandler(
         base::BindRepeating(&rewards_browsertest_util::HandleRequest));
@@ -127,7 +129,7 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
     EXPECT_STREQ(
         promotion->id.c_str(),
         promotion_->GetPromotionId().c_str());
-    EXPECT_EQ(promotion->type, ledger::type::PromotionType::UGP);
+    EXPECT_EQ(promotion->type, ledger::mojom::PromotionType::UGP);
     EXPECT_EQ(promotion->expires_at, 1740816427ull);
 
     // Check that promotion notification shows the appropriate amount
@@ -169,7 +171,7 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, ClaimViaPanel) {
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   double balance = ClaimPromotion();
   ASSERT_EQ(balance, 30.0);
 }
@@ -177,7 +179,7 @@ IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, ClaimViaPanel) {
 IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest,
                        PromotionHasEmptyPublicKey) {
   response_->SetPromotionEmptyKey(true);
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
 
   base::WeakPtr<content::WebContents> popup =
       context_helper_->OpenRewardsPopup();
@@ -189,14 +191,14 @@ IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, PromotionGone) {
   gone_ = true;
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   ClaimPromotion(false);
   CheckPromotionStatus("Over");
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest,
                        PromotionRemovedFromEndpoint) {
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   context_helper_->LoadRewardsPage();
   promotion_->WaitForPromotionInitialization();
   removed_ = true;
@@ -210,7 +212,7 @@ IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, PromotionNotQuiteOver) {
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   rewards_service_->FetchPromotions();
   promotion_->WaitForPromotionInitialization();
 

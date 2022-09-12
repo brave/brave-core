@@ -69,20 +69,20 @@ TEST_F(UpholdTest, FetchBalanceConnectedWallet) {
   EXPECT_CALL(*mock_ledger_client_, LoadURL(_, _)).Times(0);
 
   FetchBalanceCallback callback =
-      base::BindOnce([](type::Result result, double balance) {
-        ASSERT_EQ(result, type::Result::LEDGER_OK);
+      base::BindOnce([](mojom::Result result, double balance) {
+        ASSERT_EQ(result, mojom::Result::LEDGER_OK);
         ASSERT_EQ(balance, 0.0);
       });
 
   uphold_->FetchBalance(std::move(callback));
 }
 
-absl::optional<type::WalletStatus> GetStatusFromJSON(
+absl::optional<mojom::WalletStatus> GetStatusFromJSON(
     const std::string& uphold_wallet) {
   auto value = base::JSONReader::Read(uphold_wallet);
   if (value && value->is_dict()) {
     if (auto status = value->GetDict().FindInt("status")) {
-      return static_cast<type::WalletStatus>(*status);
+      return static_cast<mojom::WalletStatus>(*status);
     }
   }
 
@@ -99,10 +99,10 @@ using AuthorizeParamType = std::tuple<
     std::string,                               // test name suffix
     std::string,                               // input Uphold wallet
     base::flat_map<std::string, std::string>,  // input args
-    type::UrlResponse,                         // Uphold OAuth response
-    type::Result,                              // expected result
+    mojom::UrlResponse,                         // Uphold OAuth response
+    mojom::Result,                              // expected result
     base::flat_map<std::string, std::string>,  // expected args
-    absl::optional<type::WalletStatus>         // expected status
+    absl::optional<mojom::WalletStatus>         // expected status
 >;
 
 struct Authorize : UpholdTest,
@@ -117,7 +117,7 @@ INSTANTIATE_TEST_SUITE_P(
       {},
       {},
       {},
-      type::Result::LEDGER_ERROR,
+      mojom::Result::LEDGER_ERROR,
       {},
       {}
     },
@@ -126,9 +126,9 @@ INSTANTIATE_TEST_SUITE_P(
       R"({ "status": 2 })",
       {},
       {},
-      type::Result::LEDGER_ERROR,
+      mojom::Result::LEDGER_ERROR,
       {},
-      type::WalletStatus::VERIFIED
+      mojom::WalletStatus::VERIFIED
     },
     // NOLINTNEXTLINE
     AuthorizeParamType{  // Uphold returned with an error - the user is not KYC'd. (NOT_CONNECTED)
@@ -137,9 +137,9 @@ INSTANTIATE_TEST_SUITE_P(
       R"({ "status": 0 })",
       { { "error_description", "User does not meet minimum requirements" } },
       {},
-      type::Result::NOT_FOUND,
+      mojom::Result::NOT_FOUND,
       {},
-      type::WalletStatus::NOT_CONNECTED
+      mojom::WalletStatus::NOT_CONNECTED
     },
     // NOLINTNEXTLINE
     AuthorizeParamType{  // Uphold returned with an error - user's region is not supported. (NOT_CONNECTED)
@@ -148,9 +148,9 @@ INSTANTIATE_TEST_SUITE_P(
       R"({ "status": 0 })",
       { { "error_description", "Application not available for user geolocation" } },  // NOLINT
       {},
-      type::Result::REGION_NOT_SUPPORTED,
+      mojom::Result::REGION_NOT_SUPPORTED,
       {},
-      type::WalletStatus::NOT_CONNECTED
+      mojom::WalletStatus::NOT_CONNECTED
     },
     // NOLINTNEXTLINE
     AuthorizeParamType{  // Uphold returned with an error - theoretically not possible. (NOT_CONNECTED)
@@ -158,91 +158,91 @@ INSTANTIATE_TEST_SUITE_P(
       R"({ "status": 0 })",
       { { "error_description", "some other reason" } },
       {},
-      type::Result::LEDGER_ERROR,
+      mojom::Result::LEDGER_ERROR,
       {},
-      type::WalletStatus::NOT_CONNECTED
+      mojom::WalletStatus::NOT_CONNECTED
     },
     AuthorizeParamType{  // Arguments are empty! (NOT_CONNECTED)
       "05_NOT_CONNECTED_arguments_are_empty",
       R"({ "status": 0 })",
       {},
       {},
-      type::Result::LEDGER_ERROR,
+      mojom::Result::LEDGER_ERROR,
       {},
-      type::WalletStatus::NOT_CONNECTED
+      mojom::WalletStatus::NOT_CONNECTED
     },
     AuthorizeParamType{  // code is empty! (NOT_CONNECTED)
       "06_NOT_CONNECTED_code_is_empty",
       R"({ "status": 0 })",
       { { "code", "" } },
       {},
-      type::Result::LEDGER_ERROR,
+      mojom::Result::LEDGER_ERROR,
       {},
-      type::WalletStatus::NOT_CONNECTED
+      mojom::WalletStatus::NOT_CONNECTED
     },
     AuthorizeParamType{  // state is empty! (NOT_CONNECTED)
       "07_NOT_CONNECTED_state_is_empty",
       R"({ "status": 0 })",
       { { "code", "code" }, { "state", "" } },
       {},
-      type::Result::LEDGER_ERROR,
+      mojom::Result::LEDGER_ERROR,
       {},
-      type::WalletStatus::NOT_CONNECTED
+      mojom::WalletStatus::NOT_CONNECTED
     },
     AuthorizeParamType{  // One-time string mismatch! (NOT_CONNECTED)
       "08_NOT_CONNECTED_one_time_string_mismatch",
       R"({ "status": 0, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "mismatch" } },
       {},
-      type::Result::LEDGER_ERROR,
+      mojom::Result::LEDGER_ERROR,
       {},
-      type::WalletStatus::NOT_CONNECTED
+      mojom::WalletStatus::NOT_CONNECTED
     },
     // NOLINTNEXTLINE
     AuthorizeParamType{  // Couldn't exchange code for the access token! (NOT_CONNECTED)
       "09_NOT_CONNECTED_couldn_t_exchange_code_for_the_access_token",
       R"({ "status": 0, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "one_time_string" } },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR,
         {},
         {}
       },
-      type::Result::LEDGER_ERROR,
+      mojom::Result::LEDGER_ERROR,
       {},
-      type::WalletStatus::NOT_CONNECTED
+      mojom::WalletStatus::NOT_CONNECTED
     },
     AuthorizeParamType{  // Access token is empty! (NOT_CONNECTED)
       "10_NOT_CONNECTED_access_token_is_empty",
       R"({ "status": 0, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "one_time_string" } },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "access_token": "" })",
         {}
       },
-      type::Result::LEDGER_ERROR,
+      mojom::Result::LEDGER_ERROR,
       {},
-      type::WalletStatus::NOT_CONNECTED
+      mojom::WalletStatus::NOT_CONNECTED
     },
     AuthorizeParamType{  // Happy path. (NOT_CONNECTED)
       "11_NOT_CONNECTED_happy_path",
       R"({ "status": 0, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "one_time_string" } },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "access_token": "access_token" })",
         {}
       },
-      type::Result::LEDGER_OK,
+      mojom::Result::LEDGER_OK,
       {},
-      type::WalletStatus::PENDING
+      mojom::WalletStatus::PENDING
     },
     // NOLINTNEXTLINE
     AuthorizeParamType{  // Uphold returned with an error - the user is not KYC'd. (DISCONNECTED_VERIFIED)
@@ -251,9 +251,9 @@ INSTANTIATE_TEST_SUITE_P(
       R"({ "status": 4 })",
       { { "error_description", "User does not meet minimum requirements" } },
       {},
-      type::Result::NOT_FOUND,
+      mojom::Result::NOT_FOUND,
       {},
-      type::WalletStatus::DISCONNECTED_VERIFIED
+      mojom::WalletStatus::DISCONNECTED_VERIFIED
     },
     // NOLINTNEXTLINE
     AuthorizeParamType{  // Uphold returned with an error - theoretically not possible. (DISCONNECTED_VERIFIED)
@@ -261,91 +261,91 @@ INSTANTIATE_TEST_SUITE_P(
       R"({ "status": 4 })",
       { { "error_description", "some other reason" } },
       {},
-      type::Result::LEDGER_ERROR,
+      mojom::Result::LEDGER_ERROR,
       {},
-      type::WalletStatus::DISCONNECTED_VERIFIED
+      mojom::WalletStatus::DISCONNECTED_VERIFIED
     },
     AuthorizeParamType{  // Arguments are empty! (DISCONNECTED_VERIFIED)
       "14_DISCONNECTED_VERIFIED_arguments_are_empty",
       R"({ "status": 4 })",
       {},
       {},
-      type::Result::LEDGER_ERROR,
+      mojom::Result::LEDGER_ERROR,
       {},
-      type::WalletStatus::DISCONNECTED_VERIFIED
+      mojom::WalletStatus::DISCONNECTED_VERIFIED
     },
     AuthorizeParamType{  // code is empty! (DISCONNECTED_VERIFIED)
       "15_DISCONNECTED_VERIFIED_code_is_empty",
       R"({ "status": 4 })",
       { { "code", "" } },
       {},
-      type::Result::LEDGER_ERROR,
+      mojom::Result::LEDGER_ERROR,
       {},
-      type::WalletStatus::DISCONNECTED_VERIFIED
+      mojom::WalletStatus::DISCONNECTED_VERIFIED
     },
     AuthorizeParamType{  // state is empty! (DISCONNECTED_VERIFIED)
       "16_DISCONNECTED_VERIFIED_state_is_empty",
       R"({ "status": 4 })",
       { { "code", "code" }, { "state", "" } },
       {},
-      type::Result::LEDGER_ERROR,
+      mojom::Result::LEDGER_ERROR,
       {},
-      type::WalletStatus::DISCONNECTED_VERIFIED
+      mojom::WalletStatus::DISCONNECTED_VERIFIED
     },
     AuthorizeParamType{  // One-time string mismatch! (DISCONNECTED_VERIFIED)
       "17_DISCONNECTED_VERIFIED_one_time_string_mismatch",
       R"({ "status": 4, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "mismatch" } },
       {},
-      type::Result::LEDGER_ERROR,
+      mojom::Result::LEDGER_ERROR,
       {},
-      type::WalletStatus::DISCONNECTED_VERIFIED
+      mojom::WalletStatus::DISCONNECTED_VERIFIED
     },
     // NOLINTNEXTLINE
     AuthorizeParamType{  // Couldn't exchange code for the access token! (DISCONNECTED_VERIFIED)
       "18_DISCONNECTED_VERIFIED_couldn_t_exchange_code_for_the_access_token",
       R"({ "status": 4, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "one_time_string" } },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR,
         {},
         {}
       },
-      type::Result::LEDGER_ERROR,
+      mojom::Result::LEDGER_ERROR,
       {},
-      type::WalletStatus::DISCONNECTED_VERIFIED
+      mojom::WalletStatus::DISCONNECTED_VERIFIED
     },
     AuthorizeParamType{  // Access token is empty! (DISCONNECTED_VERIFIED)
       "19_DISCONNECTED_VERIFIED_access_token_is_empty",
       R"({ "status": 4, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "one_time_string" } },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "access_token": "" })",
         {}
       },
-      type::Result::LEDGER_ERROR,
+      mojom::Result::LEDGER_ERROR,
       {},
-      type::WalletStatus::DISCONNECTED_VERIFIED
+      mojom::WalletStatus::DISCONNECTED_VERIFIED
     },
     AuthorizeParamType{  // Happy path. (DISCONNECTED_VERIFIED)
       "20_DISCONNECTED_VERIFIED_happy_path",
       R"({ "status": 4, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "one_time_string" } },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "access_token": "access_token" })",
         {}
       },
-      type::Result::LEDGER_OK,
+      mojom::Result::LEDGER_OK,
       {},
-      type::WalletStatus::PENDING
+      mojom::WalletStatus::PENDING
     }),
   NameSuffixGenerator<AuthorizeParamType>
 );
@@ -372,7 +372,7 @@ TEST_P(Authorize, Paths) {
 
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
-          [&](type::UrlRequestPtr, client::LoadURLCallback callback) {
+          [&](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
             std::move(callback).Run(uphold_oauth_response);
           });
 
@@ -381,7 +381,7 @@ TEST_P(Authorize, Paths) {
 
   uphold_->WalletAuthorization(
       input_args,
-      [&](type::Result result, base::flat_map<std::string, std::string> args) {
+      [&](mojom::Result result, base::flat_map<std::string, std::string> args) {
         ASSERT_EQ(result, expected_result);
         ASSERT_EQ(args, expected_args);
 
@@ -398,8 +398,8 @@ TEST_P(Authorize, Paths) {
 using GenerateParamType = std::tuple<
     std::string,                         // test name suffix
     std::string,                         // input Uphold wallet
-    type::Result,                        // expected result
-    absl::optional<type::WalletStatus>,  // expected status
+    mojom::Result,                        // expected result
+    absl::optional<mojom::WalletStatus>,  // expected status
     bool                                 // expected to call TransferTokens
 >;
 
@@ -413,22 +413,22 @@ INSTANTIATE_TEST_SUITE_P(
     GenerateParamType{  // Happy path (no wallet).
       "00_happy_path_no_wallet",
       {},
-      type::Result::LEDGER_OK,
-      type::WalletStatus::NOT_CONNECTED,
+      mojom::Result::LEDGER_OK,
+      mojom::WalletStatus::NOT_CONNECTED,
       false
     },
     GenerateParamType{  // Happy path (NOT_CONNECTED).
       "01_happy_path_NOT_CONNECTED",
       R"({ "status": 0 })",
-      type::Result::LEDGER_OK,
-      type::WalletStatus::NOT_CONNECTED,
+      mojom::Result::LEDGER_OK,
+      mojom::WalletStatus::NOT_CONNECTED,
       false
     },
     GenerateParamType{  // Happy path (DISCONNECTED_VERIFIED).
       "02_happy_path_DISCONNECTED_VERIFIED",
       R"({ "status": 4 })",
-      type::Result::LEDGER_OK,
-      type::WalletStatus::DISCONNECTED_VERIFIED,
+      mojom::Result::LEDGER_OK,
+      mojom::WalletStatus::DISCONNECTED_VERIFIED,
       true
     }),
   NameSuffixGenerator<GenerateParamType>
@@ -461,7 +461,7 @@ TEST_P(Generate, Paths) {
   EXPECT_CALL(*mock_promotion_, TransferTokens(_))
       .Times(expected_to_call_transfer_tokens ? 1 : 0);
 
-  uphold_->GenerateWallet(base::BindLambdaForTesting([&](type::Result result) {
+  uphold_->GenerateWallet(base::BindLambdaForTesting([&](mojom::Result result) {
     ASSERT_EQ(result, expected_result);
 
     const auto status = GetStatusFromJSON(uphold_wallet);
@@ -477,9 +477,9 @@ TEST_P(Generate, Paths) {
 using GetUserParamType = std::tuple<
     std::string,                        // test name suffix
     std::string,                        // input Uphold wallet
-    type::UrlResponse,                  // Uphold Get User response
-    type::Result,                       // expected result
-    absl::optional<type::WalletStatus>  // expected status
+    mojom::UrlResponse,                  // Uphold Get User response
+    mojom::Result,                       // expected result
+    absl::optional<mojom::WalletStatus>  // expected status
 >;
 
 struct GetUser : UpholdTest,
@@ -492,80 +492,80 @@ INSTANTIATE_TEST_SUITE_P(
     GetUserParamType{  // Access token expired! (PENDING)
       "00_PENDING_access_token_expired",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_UNAUTHORIZED,
         {},
         {}
       },
-      type::Result::EXPIRED_TOKEN,
-      type::WalletStatus::NOT_CONNECTED
+      mojom::Result::EXPIRED_TOKEN,
+      mojom::WalletStatus::NOT_CONNECTED
     },
     GetUserParamType{  // Couldn't get the user object from Uphold! (PENDING)
       "01_PENDING_couldn_t_get_the_user_object_from_uphold",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR,
         {},
         {}
       },
-      type::Result::CONTINUE,
-      type::WalletStatus::PENDING
+      mojom::Result::CONTINUE,
+      mojom::WalletStatus::PENDING
     },
     GetUserParamType{  // BAT is not allowed for the user! (PENDING)
       "02_PENDING_bat_is_not_allowed_for_the_user",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [] })",
         {}
       },
-      type::Result::UPHOLD_BAT_NOT_ALLOWED,
-      type::WalletStatus::NOT_CONNECTED
+      mojom::Result::UPHOLD_BAT_NOT_ALLOWED,
+      mojom::WalletStatus::NOT_CONNECTED
     },
     GetUserParamType{  // Access token expired! (VERIFIED)
       "03_VERIFIED_access_token_expired",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_UNAUTHORIZED,
         {},
         {}
       },
-      type::Result::EXPIRED_TOKEN,
-      type::WalletStatus::DISCONNECTED_VERIFIED
+      mojom::Result::EXPIRED_TOKEN,
+      mojom::WalletStatus::DISCONNECTED_VERIFIED
     },
     GetUserParamType{  // Couldn't get the user object from Uphold! (VERIFIED)
       "04_VERIFIED_couldn_t_get_the_user_object_from_uphold",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR,
         {},
         {}
       },
-      type::Result::CONTINUE,
-      type::WalletStatus::VERIFIED
+      mojom::Result::CONTINUE,
+      mojom::WalletStatus::VERIFIED
     },
     GetUserParamType{  // BAT is not allowed for the user! (VERIFIED)
       "05_VERIFIED_bat_is_not_allowed_for_the_user",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [] })",
         {}
       },
-      type::Result::UPHOLD_BAT_NOT_ALLOWED,
-      type::WalletStatus::DISCONNECTED_VERIFIED
+      mojom::Result::UPHOLD_BAT_NOT_ALLOWED,
+      mojom::WalletStatus::DISCONNECTED_VERIFIED
     }),
   NameSuffixGenerator<GetUserParamType>
 );
@@ -590,7 +590,7 @@ TEST_P(GetUser, Paths) {
 
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
-          [&](type::UrlRequestPtr, client::LoadURLCallback callback) {
+          [&](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
             std::move(callback).Run(uphold_get_user_response);
           });
 
@@ -598,7 +598,7 @@ TEST_P(GetUser, Paths) {
       .WillByDefault(Return(mock_database_.get()));
 
   uphold_->GenerateWallet(base::BindLambdaForTesting(
-      [&](type::Result result) { ASSERT_EQ(result, expected_result); }));
+      [&](mojom::Result result) { ASSERT_EQ(result, expected_result); }));
 
   const auto status = GetStatusFromJSON(uphold_wallet);
   if (status && expected_status) {
@@ -612,11 +612,11 @@ TEST_P(GetUser, Paths) {
 using GetCapabilitiesParamType = std::tuple<
     std::string,                        // test name suffix
     std::string,                        // input Uphold wallet
-    type::UrlResponse,                  // Uphold Get User response
-    type::UrlResponse,                  // Uphold Get Capabilities response
-    type::UrlResponse,                  // Rewards Delete Claim response
-    type::Result,                       // expected result
-    absl::optional<type::WalletStatus>  // expected status
+    mojom::UrlResponse,                  // Uphold Get User response
+    mojom::UrlResponse,                  // Uphold Get Capabilities response
+    mojom::UrlResponse,                  // Rewards Delete Claim response
+    mojom::Result,                       // expected result
+    absl::optional<mojom::WalletStatus>  // expected status
 >;
 
 struct GetCapabilities : UpholdTest,
@@ -629,291 +629,291 @@ INSTANTIATE_TEST_SUITE_P(
     GetCapabilitiesParamType{  // Access token expired! (PENDING)
       "00_PENDING_access_token_expired",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [ "BAT" ] })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_UNAUTHORIZED,
         {},
         {}
       },
-      type::UrlResponse{},
-      type::Result::EXPIRED_TOKEN,
-      type::WalletStatus::NOT_CONNECTED
+      mojom::UrlResponse{},
+      mojom::Result::EXPIRED_TOKEN,
+      mojom::WalletStatus::NOT_CONNECTED
     },
     // NOLINTNEXTLINE
     GetCapabilitiesParamType{  // Couldn't get capabilities from Uphold! (PENDING)
       "01_PENDING_couldn_t_get_capabilities_from_uphold",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [ "BAT" ] })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR,
         {},
         {}
       },
-      type::UrlResponse{},
-      type::Result::CONTINUE,
-      type::WalletStatus::PENDING
+      mojom::UrlResponse{},
+      mojom::Result::CONTINUE,
+      mojom::WalletStatus::PENDING
     },
     // NOLINTNEXTLINE
     GetCapabilitiesParamType{  // Couldn't get capabilities from Uphold! (PENDING)
       "02_PENDING_couldn_t_get_capabilities_from_uphold",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [ "BAT" ] })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         {},
         {}
       },
-      type::UrlResponse{},
-      type::Result::CONTINUE,
-      type::WalletStatus::PENDING
+      mojom::UrlResponse{},
+      mojom::Result::CONTINUE,
+      mojom::WalletStatus::PENDING
     },
     // NOLINTNEXTLINE
     GetCapabilitiesParamType{  // Couldn't get capabilities from Uphold! (PENDING)
       "03_PENDING_couldn_t_get_capabilities_from_uphold",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [ "BAT" ] })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "key": "sends", "enabled": true } ])",
         {}
       },
-      type::UrlResponse{},
-      type::Result::CONTINUE,
-      type::WalletStatus::PENDING
+      mojom::UrlResponse{},
+      mojom::Result::CONTINUE,
+      mojom::WalletStatus::PENDING
     },
     // NOLINTNEXTLINE
     GetCapabilitiesParamType{  // Couldn't get capabilities from Uphold! (PENDING)
       "04_PENDING_couldn_t_get_capabilities_from_uphold",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [ "BAT" ] })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "key": "receives", "enabled": true } ])",
         {}
       },
-      type::UrlResponse{},
-      type::Result::CONTINUE,
-      type::WalletStatus::PENDING
+      mojom::UrlResponse{},
+      mojom::Result::CONTINUE,
+      mojom::WalletStatus::PENDING
     },
     // NOLINTNEXTLINE
     GetCapabilitiesParamType{  // User doesn't have the required Uphold capabilities! (PENDING)
       "05_PENDING_user_doesnt_have_the_required_uphold_capabilities",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [ "BAT" ] })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "key": "receives", "enabled": true, "requirements": [] }, { "key": "sends", "enabled": false, "requirements": [] } ])",
         {}
       },
-      type::UrlResponse{},
-      type::Result::UPHOLD_INSUFFICIENT_CAPABILITIES,
-      type::WalletStatus::NOT_CONNECTED
+      mojom::UrlResponse{},
+      mojom::Result::UPHOLD_INSUFFICIENT_CAPABILITIES,
+      mojom::WalletStatus::NOT_CONNECTED
     },
     GetCapabilitiesParamType{  // Access token expired! (VERIFIED)
       "06_VERIFIED_access_token_expired",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [ "BAT" ] })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_UNAUTHORIZED,
         {},
         {}
       },
-      type::UrlResponse{},
-      type::Result::EXPIRED_TOKEN,
-      type::WalletStatus::DISCONNECTED_VERIFIED
+      mojom::UrlResponse{},
+      mojom::Result::EXPIRED_TOKEN,
+      mojom::WalletStatus::DISCONNECTED_VERIFIED
     },
     // NOLINTNEXTLINE
     GetCapabilitiesParamType{  // Couldn't get capabilities from Uphold! (VERIFIED)
       "07_VERIFIED_couldn_t_get_capabilities_from_uphold",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [ "BAT" ] })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR,
         {},
         {}
       },
-      type::UrlResponse{},
-      type::Result::CONTINUE,
-      type::WalletStatus::VERIFIED
+      mojom::UrlResponse{},
+      mojom::Result::CONTINUE,
+      mojom::WalletStatus::VERIFIED
     },
     // NOLINTNEXTLINE
     GetCapabilitiesParamType{  // Couldn't get capabilities from Uphold! (VERIFIED)
       "08_VERIFIED_couldn_t_get_capabilities_from_uphold",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [ "BAT" ] })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         {},
         {}
       },
-      type::UrlResponse{},
-      type::Result::CONTINUE,
-      type::WalletStatus::VERIFIED
+      mojom::UrlResponse{},
+      mojom::Result::CONTINUE,
+      mojom::WalletStatus::VERIFIED
     },
     // NOLINTNEXTLINE
     GetCapabilitiesParamType{  // Couldn't get capabilities from Uphold! (VERIFIED)
       "09_VERIFIED_couldn_t_get_capabilities_from_uphold",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [ "BAT" ] })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "key": "sends", "enabled": true } ])",
         {}
       },
-      type::UrlResponse{},
-      type::Result::CONTINUE,
-      type::WalletStatus::VERIFIED
+      mojom::UrlResponse{},
+      mojom::Result::CONTINUE,
+      mojom::WalletStatus::VERIFIED
     },
     // NOLINTNEXTLINE
     GetCapabilitiesParamType{  // Couldn't get capabilities from Uphold! (VERIFIED)
       "10_VERIFIED_couldn_t_get_capabilities_from_uphold",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [ "BAT" ] })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "key": "receives", "enabled": true } ])",
         {}
       },
-      type::UrlResponse{},
-      type::Result::CONTINUE,
-      type::WalletStatus::VERIFIED
+      mojom::UrlResponse{},
+      mojom::Result::CONTINUE,
+      mojom::WalletStatus::VERIFIED
     },
     // NOLINTNEXTLINE
     GetCapabilitiesParamType{  // User doesn't have the required Uphold capabilities! (VERIFIED)
       "11_VERIFIED_user_doesnt_have_the_required_uphold_capabilities",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [ "BAT" ] })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "key": "receives", "enabled": true, "requirements": [] }, { "key": "sends", "enabled": false, "requirements": [] } ])",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         {},
         {}
       },
-      type::Result::UPHOLD_INSUFFICIENT_CAPABILITIES,
-      type::WalletStatus::NOT_CONNECTED
+      mojom::Result::UPHOLD_INSUFFICIENT_CAPABILITIES,
+      mojom::WalletStatus::NOT_CONNECTED
     },
     GetCapabilitiesParamType{  // Happy path. (VERIFIED)
       "12_VERIFIED_happy_path",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [ "BAT" ] })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "key": "receives", "enabled": true, "requirements": [] }, { "key": "sends", "enabled": true, "requirements": [] } ])",
         {}
       },
-      type::UrlResponse{},
-      type::Result::LEDGER_OK,
-      type::WalletStatus::VERIFIED
+      mojom::UrlResponse{},
+      mojom::Result::LEDGER_OK,
+      mojom::WalletStatus::VERIFIED
     }),
   NameSuffixGenerator<GetCapabilitiesParamType>
 );
@@ -940,13 +940,13 @@ TEST_P(GetCapabilities, Paths) {
 
   EXPECT_CALL(*mock_ledger_client_, LoadURL(_, _))
       .Times(AtMost(3))
-      .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
+      .WillOnce([&](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
         std::move(callback).Run(uphold_get_user_response);
       })
-      .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
+      .WillOnce([&](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
         std::move(callback).Run(uphold_get_capabilities_response);
       })
-      .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
+      .WillOnce([&](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
         std::move(callback).Run(rewards_services_delete_claim_response);
       });
 
@@ -967,7 +967,7 @@ TEST_P(GetCapabilities, Paths) {
       });
 
   uphold_->GenerateWallet(base::BindLambdaForTesting(
-      [&](type::Result result) { ASSERT_EQ(result, expected_result); }));
+      [&](mojom::Result result) { ASSERT_EQ(result, expected_result); }));
 
   const auto status = GetStatusFromJSON(uphold_wallet);
   if (status && expected_status) {
@@ -981,13 +981,13 @@ TEST_P(GetCapabilities, Paths) {
 using GetCardIDParamType = std::tuple<
     std::string,                        // test name suffix
     std::string,                        // input Uphold wallet
-    type::UrlResponse,                  // Uphold Get User response
-    type::UrlResponse,                  // Uphold Get Capabilities response
-    type::UrlResponse,                  // Uphold List Cards response
-    type::UrlResponse,                  // Uphold Create Card response
-    type::UrlResponse,                  // Uphold Update Card response
-    type::Result,                       // expected result
-    absl::optional<type::WalletStatus>  // expected status
+    mojom::UrlResponse,                  // Uphold Get User response
+    mojom::UrlResponse,                  // Uphold Get Capabilities response
+    mojom::UrlResponse,                  // Uphold List Cards response
+    mojom::UrlResponse,                  // Uphold Create Card response
+    mojom::UrlResponse,                  // Uphold Update Card response
+    mojom::Result,                       // expected result
+    absl::optional<mojom::WalletStatus>  // expected status
 >;
 
 struct GetCardID : UpholdTest,
@@ -1000,21 +1000,21 @@ INSTANTIATE_TEST_SUITE_P(
     GetCardIDParamType{  // Access token expired! (List Cards)
       "00_list_cards_access_token_expired",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [ "BAT" ] })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "key": "receives", "enabled": true, "requirements": [] }, { "key": "sends", "enabled": true, "requirements": [] } ])",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_UNAUTHORIZED,
@@ -1023,35 +1023,35 @@ INSTANTIATE_TEST_SUITE_P(
       },
       {},
       {},
-      type::Result::EXPIRED_TOKEN,
-      type::WalletStatus::NOT_CONNECTED
+      mojom::Result::EXPIRED_TOKEN,
+      mojom::WalletStatus::NOT_CONNECTED
     },
     // NOLINTNEXTLINE
     GetCardIDParamType{  // List Cards failed && Access token expired! (Create Card)
       "01_create_card_access_token_expired",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [ "BAT" ] })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "key": "receives", "enabled": true, "requirements": [] }, { "key": "sends", "enabled": true, "requirements": [] } ])",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR,
         {},
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_UNAUTHORIZED,
@@ -1059,34 +1059,34 @@ INSTANTIATE_TEST_SUITE_P(
         {}
       },
       {},
-      type::Result::EXPIRED_TOKEN,
-      type::WalletStatus::NOT_CONNECTED
+      mojom::Result::EXPIRED_TOKEN,
+      mojom::WalletStatus::NOT_CONNECTED
     },
     GetCardIDParamType{  // Create Card failed.
       "02_create_card_failed",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [ "BAT" ] })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR,
         {},
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR,
@@ -1094,34 +1094,34 @@ INSTANTIATE_TEST_SUITE_P(
         {}
       },
       {},
-      type::Result::CONTINUE,
-      type::WalletStatus::PENDING
+      mojom::Result::CONTINUE,
+      mojom::WalletStatus::PENDING
     },
     GetCardIDParamType{  // Create Card succeeded && id is empty.
       "03_create_card_succeeded_but_id_is_empty",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [ "BAT" ] })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR,
         {},
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
@@ -1129,91 +1129,91 @@ INSTANTIATE_TEST_SUITE_P(
         {}
       },
       {},
-      type::Result::CONTINUE,
-      type::WalletStatus::PENDING
+      mojom::Result::CONTINUE,
+      mojom::WalletStatus::PENDING
     },
     // NOLINTNEXTLINE
     GetCardIDParamType{  // Create Card succeeded && Access token expired! (Update Card)
       "04_update_card_access_token_expired",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [ "BAT" ] })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "key": "receives", "enabled": true, "requirements": [] }, { "key": "sends", "enabled": true, "requirements": [] } ])",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR,
         {},
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "id": "962ef3b8-bc12-4619-a349-c8083931b795" })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_UNAUTHORIZED,
         {},
         {}
       },
-      type::Result::EXPIRED_TOKEN,
-      type::WalletStatus::NOT_CONNECTED
+      mojom::Result::EXPIRED_TOKEN,
+      mojom::WalletStatus::NOT_CONNECTED
     },
     GetCardIDParamType{  // Update Card failed.
       "05_update_card_failed",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [ "BAT" ] })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR,
         {},
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "id": "962ef3b8-bc12-4619-a349-c8083931b795" })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR,
         {},
         {}
       },
-      type::Result::CONTINUE,
-      type::WalletStatus::PENDING
+      mojom::Result::CONTINUE,
+      mojom::WalletStatus::PENDING
     }),
   NameSuffixGenerator<GetCardIDParamType>
 );
@@ -1242,26 +1242,26 @@ TEST_P(GetCardID, Paths) {
 
   EXPECT_CALL(*mock_ledger_client_, LoadURL(_, _))
       .Times(AtMost(5))
-      .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
+      .WillOnce([&](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
         std::move(callback).Run(uphold_get_user_response);
       })
-      .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
+      .WillOnce([&](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
         std::move(callback).Run(uphold_get_capabilities_response);
       })
-      .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
+      .WillOnce([&](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
         std::move(callback).Run(uphold_list_cards_response);
       })
-      .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
+      .WillOnce([&](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
         std::move(callback).Run(uphold_create_card_response);
       })
-      .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
+      .WillOnce([&](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
         std::move(callback).Run(uphold_update_card_response);
       });
 
   ON_CALL(*mock_ledger_impl_, database())
       .WillByDefault(Return(mock_database_.get()));
 
-  uphold_->GenerateWallet(base::BindLambdaForTesting([&](type::Result result) {
+  uphold_->GenerateWallet(base::BindLambdaForTesting([&](mojom::Result result) {
     ASSERT_EQ(result, expected_result);
 
     const auto status = GetStatusFromJSON(uphold_wallet);
@@ -1277,12 +1277,13 @@ TEST_P(GetCardID, Paths) {
 using ClaimWalletParamType = std::tuple<
     std::string,                        // test name suffix
     std::string,                        // input Uphold wallet
-    type::UrlResponse,                  // Uphold Get User response
-    type::UrlResponse,                  // Uphold Get Capabilities response
-    type::UrlResponse,                  // Uphold List Cards response
-    type::UrlResponse,                  // Rewards Link (Claim) Wallet response
-    type::Result,                       // expected result
-    absl::optional<type::WalletStatus>  // expected status
+    std::string,                        // input Rewards wallet
+    mojom::UrlResponse,                  // Uphold Get User response
+    mojom::UrlResponse,                  // Uphold Get Capabilities response
+    mojom::UrlResponse,                  // Uphold List Cards response
+    mojom::UrlResponse,                  // Rewards Link (Claim) Wallet response
+    mojom::Result,                       // expected result
+    absl::optional<mojom::WalletStatus>  // expected status
 >;
 
 struct ClaimWallet : UpholdTest,
@@ -1295,62 +1296,64 @@ INSTANTIATE_TEST_SUITE_P(
     ClaimWalletParamType{  // Device limit reached.
       "00_device_limit_reached",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
-      type::UrlResponse{
+      R"({ "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4", "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=" })",
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [ "BAT" ] })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "key": "receives", "enabled": true, "requirements": [] }, { "key": "sends", "enabled": true, "requirements": [] } ])",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "id": "962ef3b8-bc12-4619-a349-c8083931b795", "label": "Brave Browser" } ])",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_CONFLICT,
         {},
         {}
       },
-      type::Result::DEVICE_LIMIT_REACHED,
-      type::WalletStatus::NOT_CONNECTED
+      mojom::Result::DEVICE_LIMIT_REACHED,
+      mojom::WalletStatus::NOT_CONNECTED
     },
     ClaimWalletParamType{  // KYC required.
       "01_kyc_required",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
-      type::UrlResponse{
+      R"({ "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4", "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=" })",
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [ "BAT" ] })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "key": "receives", "enabled": true, "requirements": [] }, { "key": "sends", "enabled": true, "requirements": [] } ])",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "id": "962ef3b8-bc12-4619-a349-c8083931b795", "label": "Brave Browser" } ])",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_FORBIDDEN,
@@ -1362,34 +1365,35 @@ INSTANTIATE_TEST_SUITE_P(
         )",
         {}
       },
-      type::Result::NOT_FOUND,
-      type::WalletStatus::NOT_CONNECTED
+      mojom::Result::NOT_FOUND,
+      mojom::WalletStatus::NOT_CONNECTED
     },
     ClaimWalletParamType{  // Mismatched provider accounts.
       "02_mismatched_provider_accounts",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
-      type::UrlResponse{
+      R"({ "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4", "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=" })",
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [ "BAT" ] })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "key": "receives", "enabled": true, "requirements": [] }, { "key": "sends", "enabled": true, "requirements": [] } ])",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "id": "962ef3b8-bc12-4619-a349-c8083931b795", "label": "Brave Browser" } ])",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_FORBIDDEN,
@@ -1401,34 +1405,35 @@ INSTANTIATE_TEST_SUITE_P(
         )",
         {}
       },
-      type::Result::MISMATCHED_PROVIDER_ACCOUNTS,
-      type::WalletStatus::NOT_CONNECTED
+      mojom::Result::MISMATCHED_PROVIDER_ACCOUNTS,
+      mojom::WalletStatus::NOT_CONNECTED
     },
     ClaimWalletParamType{  // Transaction verification failure.
       "03_transaction_verification_failure",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
-      type::UrlResponse{
+      R"({ "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4", "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=" })",
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [ "BAT" ] })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "key": "receives", "enabled": true, "requirements": [] }, { "key": "sends", "enabled": true, "requirements": [] } ])",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "id": "962ef3b8-bc12-4619-a349-c8083931b795", "label": "Brave Browser" } ])",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_FORBIDDEN,
@@ -1440,34 +1445,35 @@ INSTANTIATE_TEST_SUITE_P(
         )",
         {}
       },
-      type::Result::UPHOLD_TRANSACTION_VERIFICATION_FAILURE,
-      type::WalletStatus::NOT_CONNECTED
+      mojom::Result::UPHOLD_TRANSACTION_VERIFICATION_FAILURE,
+      mojom::WalletStatus::NOT_CONNECTED
     },
     ClaimWalletParamType{  // Flagged wallet.
       "04_flagged_wallet",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
-      type::UrlResponse{
+      R"({ "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4", "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=" })",
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [ "BAT" ] })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "key": "receives", "enabled": true, "requirements": [] }, { "key": "sends", "enabled": true, "requirements": [] } ])",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "id": "962ef3b8-bc12-4619-a349-c8083931b795", "label": "Brave Browser" } ])",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_BAD_REQUEST,
@@ -1479,34 +1485,35 @@ INSTANTIATE_TEST_SUITE_P(
         )",
         {}
       },
-      type::Result::FLAGGED_WALLET,
-      type::WalletStatus::NOT_CONNECTED
+      mojom::Result::FLAGGED_WALLET,
+      mojom::WalletStatus::NOT_CONNECTED
     },
     ClaimWalletParamType{  // Region not supported.
       "05_region_not_supported",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
-      type::UrlResponse{
+      R"({ "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4", "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=" })",
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [ "BAT" ] })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "key": "receives", "enabled": true, "requirements": [] }, { "key": "sends", "enabled": true, "requirements": [] } ])",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "id": "962ef3b8-bc12-4619-a349-c8083931b795", "label": "Brave Browser" } ])",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_BAD_REQUEST,
@@ -1518,34 +1525,35 @@ INSTANTIATE_TEST_SUITE_P(
         )",
         {}
       },
-      type::Result::REGION_NOT_SUPPORTED,
-      type::WalletStatus::NOT_CONNECTED
+      mojom::Result::REGION_NOT_SUPPORTED,
+      mojom::WalletStatus::NOT_CONNECTED
     },
     ClaimWalletParamType{  // Mismatched provider account regions.
       "06_mismatched_provider_account_regions",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
-      type::UrlResponse{
+      R"({ "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4", "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=" })",
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [ "BAT" ] })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "key": "receives", "enabled": true, "requirements": [] }, { "key": "sends", "enabled": true, "requirements": [] } ])",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "id": "962ef3b8-bc12-4619-a349-c8083931b795", "label": "Brave Browser" } ])",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_BAD_REQUEST,
@@ -1557,76 +1565,78 @@ INSTANTIATE_TEST_SUITE_P(
         )",
         {}
       },
-      type::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS,
-      type::WalletStatus::NOT_CONNECTED
+      mojom::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS,
+      mojom::WalletStatus::NOT_CONNECTED
     },
     ClaimWalletParamType{  // Rewards Link (Claim) Wallet failed.
       "07_link_wallet_failed",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
-      type::UrlResponse{
+      R"({ "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4", "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=" })",
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [ "BAT" ] })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "id": "962ef3b8-bc12-4619-a349-c8083931b795", "label": "Brave Browser" } ])",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR,
         {},
         {}
       },
-      type::Result::CONTINUE,
-      type::WalletStatus::PENDING
+      mojom::Result::CONTINUE,
+      mojom::WalletStatus::PENDING
     },
     ClaimWalletParamType{  // Happy path.
       "08_happy_path",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
-      type::UrlResponse{
+      R"({ "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4", "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=" })",
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"({ "currencies": [ "BAT" ] })",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "key": "receives", "enabled": true, "requirements": [] }, { "key": "sends", "enabled": true, "requirements": [] } ])",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         R"([ { "id": "962ef3b8-bc12-4619-a349-c8083931b795", "label": "Brave Browser" } ])",
         {}
       },
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         {},
         {}
       },
-      type::Result::LEDGER_OK,
-      type::WalletStatus::VERIFIED
+      mojom::Result::LEDGER_OK,
+      mojom::WalletStatus::VERIFIED
     }),
   NameSuffixGenerator<ClaimWalletParamType>
 );
@@ -1635,12 +1645,16 @@ INSTANTIATE_TEST_SUITE_P(
 TEST_P(ClaimWallet, Paths) {
   const auto& params = GetParam();
   std::string uphold_wallet = std::get<1>(params);
-  const auto& uphold_get_user_response = std::get<2>(params);
-  const auto& uphold_get_capabilities_response = std::get<3>(params);
-  const auto& uphold_list_cards_response = std::get<4>(params);
-  const auto& rewards_link_wallet_response = std::get<5>(params);
-  const auto expected_result = std::get<6>(params);
-  const auto expected_status = std::get<7>(params);
+  const auto& rewards_wallet = std::get<2>(params);
+  const auto& uphold_get_user_response = std::get<3>(params);
+  const auto& uphold_get_capabilities_response = std::get<4>(params);
+  const auto& uphold_list_cards_response = std::get<5>(params);
+  const auto& rewards_link_wallet_response = std::get<6>(params);
+  const auto expected_result = std::get<7>(params);
+  const auto expected_status = std::get<8>(params);
+
+  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletBrave))
+      .WillByDefault(Return(rewards_wallet));
 
   ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
       .WillByDefault(
@@ -1654,16 +1668,16 @@ TEST_P(ClaimWallet, Paths) {
 
   EXPECT_CALL(*mock_ledger_client_, LoadURL(_, _))
       .Times(AtMost(4))
-      .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
+      .WillOnce([&](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
         std::move(callback).Run(uphold_get_user_response);
       })
-      .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
+      .WillOnce([&](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
         std::move(callback).Run(uphold_get_capabilities_response);
       })
-      .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
+      .WillOnce([&](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
         std::move(callback).Run(uphold_list_cards_response);
       })
-      .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
+      .WillOnce([&](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
         std::move(callback).Run(rewards_link_wallet_response);
       });
 
@@ -1674,7 +1688,7 @@ TEST_P(ClaimWallet, Paths) {
       .WillByDefault(Return(mock_promotion_.get()));
 
   uphold_->GenerateWallet(base::BindLambdaForTesting(
-      [&](type::Result result) { ASSERT_EQ(result, expected_result); }));
+      [&](mojom::Result result) { ASSERT_EQ(result, expected_result); }));
 
   const auto status = GetStatusFromJSON(uphold_wallet);
   if (status && expected_status) {
@@ -1690,9 +1704,9 @@ using DisconnectWalletParamType = std::tuple<
     std::string,                        // input Uphold wallet
     std::string,                        // input Rewards wallet
     // NOLINTNEXTLINE
-    type::UrlResponse,                  // Rewards UnLink (Claim) Wallet response
-    type::Result,                       // expected result
-    absl::optional<type::WalletStatus>  // expected status
+    mojom::UrlResponse,                  // Rewards UnLink (Claim) Wallet response
+    mojom::Result,                       // expected result
+    absl::optional<mojom::WalletStatus>  // expected status
 >;
 
 struct DisconnectUpholdWallet : UpholdTest,
@@ -1707,120 +1721,120 @@ INSTANTIATE_TEST_SUITE_P(
       "00_NOT_CONNECTED_unlink_wallet_succeeded",
       R"({ "status": 0 })",
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         {},
         {}
       },
-      type::Result::LEDGER_OK,
-      type::WalletStatus::NOT_CONNECTED
+      mojom::Result::LEDGER_OK,
+      mojom::WalletStatus::NOT_CONNECTED
     },
     // NOLINTNEXTLINE
     DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet failed. (NOT_CONNECTED)
       "01_NOT_CONNECTED_unlink_wallet_failed",
       R"({ "status": 0 })",
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR,
         {},
         {}
       },
-      type::Result::LEDGER_OK,
-      type::WalletStatus::NOT_CONNECTED
+      mojom::Result::LEDGER_OK,
+      mojom::WalletStatus::NOT_CONNECTED
     },
     // NOLINTNEXTLINE
     DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet succeeded. (VERIFIED)
       "02_VERIFIED_unlink_wallet_succeeded",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         {},
         {}
       },
-      type::Result::LEDGER_OK,
-      type::WalletStatus::NOT_CONNECTED
+      mojom::Result::LEDGER_OK,
+      mojom::WalletStatus::NOT_CONNECTED
     },
     // NOLINTNEXTLINE
     DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet failed. (VERIFIED)
       "03_VERIFIED_unlink_wallet_failed",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR,
         {},
         {}
       },
-      type::Result::LEDGER_ERROR,
-      type::WalletStatus::VERIFIED
+      mojom::Result::LEDGER_ERROR,
+      mojom::WalletStatus::VERIFIED
     },
     // NOLINTNEXTLINE
     DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet succeeded. (DISCONNECTED_VERIFIED)
       "04_DISCONNECTED_VERIFIED_unlink_wallet_succeeded",
       R"({ "status": 4 })",
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         {},
         {}
       },
-      type::Result::LEDGER_OK,
-      type::WalletStatus::NOT_CONNECTED
+      mojom::Result::LEDGER_OK,
+      mojom::WalletStatus::NOT_CONNECTED
     },
     // NOLINTNEXTLINE
     DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet failed. (DISCONNECTED_VERIFIED)
       "05_DISCONNECTED_VERIFIED_unlink_wallet_failed",
       R"({ "status": 4 })",
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR,
         {},
         {}
       },
-      type::Result::LEDGER_ERROR,
-      type::WalletStatus::DISCONNECTED_VERIFIED
+      mojom::Result::LEDGER_ERROR,
+      mojom::WalletStatus::DISCONNECTED_VERIFIED
     },
     // NOLINTNEXTLINE
     DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet succeeded. (PENDING)
       "06_PENDING_unlink_wallet_succeeded",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
         {},
         {}
       },
-      type::Result::LEDGER_OK,
-      type::WalletStatus::NOT_CONNECTED
+      mojom::Result::LEDGER_OK,
+      mojom::WalletStatus::NOT_CONNECTED
     },
     // NOLINTNEXTLINE
     DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet failed. (PENDING)
       "07_PENDING_unlink_wallet_failed",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
-      type::UrlResponse{
+      mojom::UrlResponse{
         {},
         {},
         net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR,
         {},
         {}
       },
-      type::Result::LEDGER_OK,
-      type::WalletStatus::NOT_CONNECTED
+      mojom::Result::LEDGER_OK,
+      mojom::WalletStatus::NOT_CONNECTED
     }),
   NameSuffixGenerator<DisconnectWalletParamType>
 );
@@ -1849,7 +1863,7 @@ TEST_P(DisconnectUpholdWallet, Paths) {
 
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
-          [&](type::UrlRequestPtr, client::LoadURLCallback callback) {
+          [&](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
             std::move(callback).Run(rewards_unlink_wallet_response);
           });
 
@@ -1859,7 +1873,7 @@ TEST_P(DisconnectUpholdWallet, Paths) {
       .WillByDefault(Return(mock_database_.get()));
 
   mock_ledger_impl_->DisconnectWallet(
-      constant::kWalletUphold, [&](type::Result result) {
+      constant::kWalletUphold, [&](mojom::Result result) {
         ASSERT_EQ(result, expected_result);
 
         const auto status = GetStatusFromJSON(uphold_wallet);

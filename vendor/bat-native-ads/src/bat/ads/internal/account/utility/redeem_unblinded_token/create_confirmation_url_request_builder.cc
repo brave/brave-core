@@ -6,8 +6,10 @@
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/create_confirmation_url_request_builder.h"
 
 #include "base/check.h"
+#include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/account/utility/redeem_unblinded_token/create_confirmation_util.h"
+#include "bat/ads/internal/account/confirmations/confirmation_payload_json_writer.h"
+#include "bat/ads/internal/account/confirmations/confirmation_util.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token_util.h"
 #include "bat/ads/internal/server/headers/via_header_util.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
@@ -18,7 +20,7 @@ namespace ads {
 CreateConfirmationUrlRequestBuilder::CreateConfirmationUrlRequestBuilder(
     const ConfirmationInfo& confirmation)
     : confirmation_(confirmation) {
-  DCHECK(confirmation_.IsValid());
+  DCHECK(IsValid(confirmation_));
 }
 
 CreateConfirmationUrlRequestBuilder::~CreateConfirmationUrlRequestBuilder() =
@@ -40,14 +42,18 @@ mojom::UrlRequestInfoPtr CreateConfirmationUrlRequestBuilder::Build() {
 ///////////////////////////////////////////////////////////////////////////////
 
 GURL CreateConfirmationUrlRequestBuilder::BuildUrl() const {
-  std::string spec = base::StringPrintf(
-      "%s/v2/confirmation/%s", GetAnonymousHost(confirmation_.ad_type).c_str(),
-      confirmation_.transaction_id.c_str());
+  std::string credential_base64_url;
+  if (confirmation_.opted_in) {
+    DCHECK(confirmation_.opted_in->credential_base64url);
 
-  if (!confirmation_.credential.empty()) {
-    spec += "/";
-    spec += confirmation_.credential;
+    credential_base64_url =
+        base::StrCat({"/", *confirmation_.opted_in->credential_base64url});
   }
+
+  const std::string spec = base::StringPrintf(
+      "%s/v2/confirmation/%s%s",
+      GetAnonymousHost(confirmation_.ad_type).c_str(),
+      confirmation_.transaction_id.c_str(), credential_base64_url.c_str());
 
   return GURL(spec);
 }
@@ -66,7 +72,7 @@ std::vector<std::string> CreateConfirmationUrlRequestBuilder::BuildHeaders()
 }
 
 std::string CreateConfirmationUrlRequestBuilder::BuildBody() const {
-  return CreateConfirmationRequestDTO(confirmation_);
+  return json::writer::WriteConfirmationPayload(confirmation_);
 }
 
 }  // namespace ads

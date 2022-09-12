@@ -23,7 +23,6 @@ bool ShouldUseBraveImporter(importer::ImporterType type) {
     default:
       return false;
   }
-  return false;
 }
 }  // namespace
 

@@ -13,8 +13,9 @@ bool IsDefaultSearchProviderByExtension(PrefService* pref_service) {
   // |kDefaultSearchProviderByExtension| is only used by desktop.
 #if BUILDFLAG(IS_ANDROID)
   return false;
-#endif
+#else
   return pref_service->GetBoolean(prefs::kDefaultSearchProviderByExtension);
+#endif
 }
 
 }  // namespace

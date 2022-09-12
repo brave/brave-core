@@ -9,9 +9,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace resource {
-namespace features {
+namespace ads::resource::features {
 
 TEST(BatAdsAntiTargetingFeaturesTest, IsAntiTargetingEnabled) {
   // Arrange
@@ -31,6 +29,4 @@ TEST(BatAdsAntiTargetingFeaturesTest, GetAntiTargetingResourceVersion) {
   EXPECT_EQ(1, GetAntiTargetingResourceVersion());
 }
 
-}  // namespace features
-}  // namespace resource
-}  // namespace ads
+}  // namespace ads::resource::features

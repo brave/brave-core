@@ -12,9 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace privacy {
-namespace cbr {
+namespace ads::privacy::cbr {
 
 TEST(BatAdsPublicKeyTest, FailToInitialize) {
   // Arrange
@@ -64,7 +62,7 @@ TEST(BatAdsPublicKeyTest, FailToDecodeEmptyBase64) {
   // Arrange
 
   // Act
-  const PublicKey public_key = PublicKey::DecodeBase64("");
+  const PublicKey public_key = PublicKey::DecodeBase64({});
 
   // Assert
   const bool has_value = public_key.has_value();
@@ -180,6 +178,4 @@ TEST(BatAdsPublicKeyTest, OutputStreamWhenUninitialized) {
   EXPECT_TRUE(ss.str().empty());
 }
 
-}  // namespace cbr
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::cbr

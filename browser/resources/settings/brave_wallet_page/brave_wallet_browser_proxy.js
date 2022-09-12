@@ -7,23 +7,20 @@ import {addSingletonGetter, sendWithPromise} from 'chrome://resources/js/cr.m.js
 
 /** @interface */
 export class BraveWalletBrowserProxy {
-  /**
-   * @param {boolean} value name.
-   */
-   setBraveWalletEnabled (value) {}
-   getWeb3ProviderList () {}
-   getSolanaProviderList () {}
-   isNativeWalletEnabled () {}
-   getAutoLockMinutes () {}
-   getNetworksList () {}
-   getPrepopulatedNetworksList() {}
-   removeEthereumChain (chainId) {}
-   resetEthereumChain (chainId) {}
-   addEthereumChain (value) {}
-   addHiddenNetwork (payload) {}
-   removeHiddenNetwork (payload) {}
-   setActiveNetwork (chainId) {}
-   resetTransactionInfo () {}
+  setBraveWalletEnabled (value) {}
+  getWeb3ProviderList () {}
+  getSolanaProviderList () {}
+  isNativeWalletEnabled () {}
+  getAutoLockMinutes () {}
+  getNetworksList (coin) {}
+  getPrepopulatedNetworksList () {}
+  removeChain (chainId, coin) {}
+  resetChain (chainId, coin) {}
+  addChain (value) {}
+  addHiddenNetwork (chainId, coin) {}
+  removeHiddenNetwork (chainId, coin) {}
+  setActiveNetwork (chainId, coin) {}
+  resetTransactionInfo () {}
 }
 
 /**
@@ -44,43 +41,43 @@ export class BraveWalletBrowserProxyImpl {
   }
 
   /** @override */
-  getNetworksList() {
-    return sendWithPromise('getNetworksList')
+  getNetworksList (coin) {
+    return sendWithPromise('getNetworksList', coin)
   }
 
   /** @override */
-  getPrepopulatedNetworksList() {
+  getPrepopulatedNetworksList () {
     return sendWithPromise('getPrepopulatedNetworksList')
   }
 
   /** @override */
-  setActiveNetwork (chainId) {
-    return sendWithPromise('setActiveNetwork', chainId)
+  setActiveNetwork (chainId, coin) {
+    return sendWithPromise('setActiveNetwork', chainId, coin)
   }
 
   /** @override */
-  removeEthereumChain (chainId) {
-    return sendWithPromise('removeEthereumChain', chainId)
+  removeChain (chainId, coin) {
+    return sendWithPromise('removeChain', chainId, coin)
   }
 
   /** @override */
-  resetEthereumChain (chainId) {
-    return sendWithPromise('resetEthereumChain', chainId)
+  resetChain (chainId, coin) {
+    return sendWithPromise('resetChain', chainId, coin)
   }
 
   /** @override */
-  addEthereumChain (payload) {
-    return sendWithPromise('addEthereumChain', payload)
+  addChain (payload) {
+    return sendWithPromise('addChain', payload)
   }
 
   /** @override */
-  addHiddenNetwork (payload) {
-    return sendWithPromise('addHiddenNetwork', payload)
+  addHiddenNetwork (chainId, coin) {
+    return sendWithPromise('addHiddenNetwork', chainId, coin)
   }
 
   /** @override */
-  removeHiddenNetwork (payload) {
-    return sendWithPromise('removeHiddenNetwork', payload)
+  removeHiddenNetwork (chainId, coin) {
+    return sendWithPromise('removeHiddenNetwork', chainId, coin)
   }
 
   /** @override */

@@ -53,14 +53,13 @@ namespace views {
 
 SkColor FocusRing::GetPaintColor(FocusRing* focus_ring, bool valid) {
   // To avoid unused GetColor() in anonymous ns error.
-  if (true) {
-    if (auto color_id = focus_ring->GetColorId(); color_id.has_value()) {
-      return focus_ring->GetColorProvider()->GetColor(color_id.value());
-    }
-    return GetFocusRingTheme().GetSystemColor(ColorIdForValidity(valid));
-  } else {
+  if ((false))
     return ::views::GetPaintColor(focus_ring, valid);
+
+  if (auto color_id = focus_ring->GetColorId(); color_id.has_value()) {
+    return focus_ring->GetColorProvider()->GetColor(color_id.value());
   }
+  return GetFocusRingTheme().GetSystemColor(ColorIdForValidity(valid));
 }
 
 }  // namespace views

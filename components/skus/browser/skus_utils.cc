@@ -23,9 +23,9 @@ constexpr char kProductVPN[] = "vpn";
 
 std::string GetDefaultEnvironment() {
 #if defined(OFFICIAL_BUILD)
-    return kEnvProduction;
+  return kEnvProduction;
 #else
-    return kEnvDevelopment;
+  return kEnvDevelopment;
 #endif
 }
 

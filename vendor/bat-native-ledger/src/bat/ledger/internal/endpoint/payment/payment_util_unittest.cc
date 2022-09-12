@@ -18,20 +18,20 @@ class PaymentUtilTest : public testing::Test {
 };
 
 TEST(PaymentUtilTest, GetServerUrlDevelopment) {
-  ledger::_environment = type::Environment::DEVELOPMENT;
+  ledger::_environment = mojom::Environment::DEVELOPMENT;
   const std::string url = GetServerUrl("/test");
   const std::string expected_url = "";
   ASSERT_EQ(url, "https://payment.rewards.brave.software/test");
 }
 
 TEST(PaymentUtilTest, GetServerUrlStaging) {
-  ledger::_environment = type::Environment::STAGING;
+  ledger::_environment = mojom::Environment::STAGING;
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, "https://payment.rewards.bravesoftware.com/test");
 }
 
 TEST(PaymentUtilTest, GetServerUrlProduction) {
-  ledger::_environment = type::Environment::PRODUCTION;
+  ledger::_environment = mojom::Environment::PRODUCTION;
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, "https://payment.rewards.brave.com/test");
 }

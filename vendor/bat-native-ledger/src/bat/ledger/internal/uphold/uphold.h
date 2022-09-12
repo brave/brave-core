@@ -39,9 +39,9 @@ class UpholdCard;
 class UpholdAuthorization;
 class UpholdWallet;
 
-using FetchBalanceCallback = base::OnceCallback<void(type::Result, double)>;
+using FetchBalanceCallback = base::OnceCallback<void(mojom::Result, double)>;
 using CreateCardCallback =
-    base::OnceCallback<void(type::Result, const std::string&)>;
+    base::OnceCallback<void(mojom::Result, std::string&& id)>;
 using endpoint::uphold::GetCapabilitiesCallback;
 
 class Uphold {
@@ -53,7 +53,7 @@ class Uphold {
   void Initialize();
 
   void StartContribution(const std::string& contribution_id,
-                         type::ServerPublisherInfoPtr info,
+                         mojom::ServerPublisherInfoPtr info,
                          double amount,
                          ledger::LegacyResultCallback callback);
 
@@ -77,12 +77,12 @@ class Uphold {
 
   void GetCapabilities(GetCapabilitiesCallback callback);
 
-  type::ExternalWalletPtr GetWallet();
+  mojom::ExternalWalletPtr GetWallet();
 
-  bool SetWallet(type::ExternalWalletPtr wallet);
+  bool SetWallet(mojom::ExternalWalletPtr wallet);
 
  private:
-  void ContributionCompleted(type::Result result,
+  void ContributionCompleted(mojom::Result result,
                              const std::string& transaction_id,
                              const std::string& contribution_id,
                              double fee,
@@ -90,14 +90,14 @@ class Uphold {
                              ledger::LegacyResultCallback callback);
 
   void OnFetchBalance(FetchBalanceCallback callback,
-                      const type::Result result,
+                      const mojom::Result result,
                       const double available);
 
   void SaveTransferFee(const std::string& contribution_id, const double amount);
 
   void StartTransferFeeTimer(const std::string& fee_id, int attempts);
 
-  void OnTransferFeeCompleted(const type::Result result,
+  void OnTransferFeeCompleted(const mojom::Result result,
                               const std::string& transaction_id,
                               const std::string& contribution_id,
                               int attempts);

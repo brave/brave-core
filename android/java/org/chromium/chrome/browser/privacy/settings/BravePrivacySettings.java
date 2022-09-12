@@ -243,6 +243,7 @@ public class BravePrivacySettings extends PrivacySettings {
         removePreferenceIfPresent(PREF_SYNC_AND_SERVICES_LINK);
         removePreferenceIfPresent(PREF_NETWORK_PREDICTIONS);
         removePreferenceIfPresent(PREF_PRIVACY_SANDBOX);
+        removePreferenceIfPresent(PREF_SAFE_BROWSING);
 
         updateBravePreferences();
     }

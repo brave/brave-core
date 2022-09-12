@@ -17,31 +17,37 @@ import { useExplorer } from '../../../common/hooks'
 // Utils
 import Amount from '../../../utils/amount'
 import { getLocale } from '$web-common/locale'
+import {
+  NftUiCommand,
+  sendMessageToWalletUi,
+  ToggleNftModal
+} from '../../nft-ui-messages'
 
 // Styled Components
 import {
-  StyledWrapper,
   DetailColumn,
-  TokenName,
-  DetailSectionRow,
   DetailSectionColumn,
+  DetailSectionRow,
   DetailSectionTitle,
   DetailSectionValue,
-  ProjectDetailRow,
-  ProjectDetailName,
-  ProjectDetailDescription,
-  ProjectDetailButtonRow,
-  ProjectDetailButton,
-  ProjectDetailButtonSeperator,
-  ProjectWebsiteIcon,
-  ProjectTwitterIcon,
-  ProjectFacebookIcon,
-  ProjectDetailIDRow,
-  ExplorerIcon,
   ExplorerButton,
-  NTFImage,
+  ExplorerIcon,
+  MagnifyButton,
+  NFTImageSkeletonWrapper,
   NftImageWrapper,
-  NFTImageSkeletonWrapper
+  NTFImage,
+  ProjectDetailButton,
+  ProjectDetailButtonRow,
+  ProjectDetailButtonSeperator,
+  ProjectDetailDescription,
+  ProjectDetailIDRow,
+  ProjectDetailName,
+  ProjectDetailRow,
+  ProjectFacebookIcon,
+  ProjectTwitterIcon,
+  ProjectWebsiteIcon,
+  StyledWrapper,
+  TokenName
 } from './nft-details-styles'
 import { LoadingSkeleton } from '../../../components/shared'
 import { isValidateUrl } from '../../../utils/string-utils'
@@ -54,9 +60,13 @@ interface Props {
 }
 
 export const NftDetails = ({ selectedAsset, nftMetadata, tokenNetwork }: Props) => {
+  // state
   const [isImageLoaded, setIsImageLoaded] = React.useState<boolean>()
+
+  // custom hooks
   const onClickViewOnBlockExplorer = useExplorer(tokenNetwork || new BraveWallet.NetworkInfo())
 
+  // methods
   const onClickLink = React.useCallback((url?: string) => {
     if (url && isValidateUrl(url)) {
       chrome.tabs.create({ url }, () => {
@@ -79,12 +89,23 @@ export const NftDetails = ({ selectedAsset, nftMetadata, tokenNetwork }: Props) 
     onClickLink(nftMetadata?.contractInformation?.facebook)
   }
 
+  const onClickMagnify = React.useCallback(() => {
+    const message: ToggleNftModal = {
+      command: NftUiCommand.ToggleNftModal,
+      payload: true
+    }
+    sendMessageToWalletUi(parent, message)
+    // return focus to parent window
+    parent.focus()
+  }, [])
+
   return (
     <StyledWrapper>
       {nftMetadata &&
         <>
           <NftImageWrapper isLoading={!isImageLoaded}>
             <NTFImage src={nftMetadata.imageURL} onLoad={() => setIsImageLoaded(true)} />
+            <MagnifyButton onClick={onClickMagnify} />
           </NftImageWrapper>
           {!isImageLoaded &&
             <LoadingSkeleton wrapper={NFTImageSkeletonWrapper} />

@@ -9,6 +9,7 @@
 #include <stdint.h>
 
 #include <string>
+#include <vector>
 
 #include "bat/ledger/internal/database/database_table.h"
 
@@ -20,7 +21,7 @@ class DatabasePendingContribution: public DatabaseTable {
   explicit DatabasePendingContribution(LedgerImpl* ledger);
   ~DatabasePendingContribution() override;
 
-  void InsertOrUpdateList(type::PendingContributionList list,
+  void InsertOrUpdateList(std::vector<mojom::PendingContributionPtr> list,
                           ledger::LegacyResultCallback callback);
 
   void GetReservedAmount(ledger::PendingContributionsTotalCallback callback);
@@ -34,15 +35,13 @@ class DatabasePendingContribution: public DatabaseTable {
   void DeleteAllRecords(ledger::LegacyResultCallback callback);
 
  private:
-  void OnGetReservedAmount(
-      type::DBCommandResponsePtr response,
-      ledger::PendingContributionsTotalCallback callback);
+  void OnGetReservedAmount(mojom::DBCommandResponsePtr response,
+                           ledger::PendingContributionsTotalCallback callback);
 
-  void OnGetAllRecords(
-      type::DBCommandResponsePtr response,
-      ledger::PendingContributionInfoListCallback callback);
+  void OnGetAllRecords(mojom::DBCommandResponsePtr response,
+                       ledger::PendingContributionInfoListCallback callback);
 
-  void OnGetUnverifiedPublishers(type::DBCommandResponsePtr response,
+  void OnGetUnverifiedPublishers(mojom::DBCommandResponsePtr response,
                                  ledger::UnverifiedPublishersCallback callback);
 };
 

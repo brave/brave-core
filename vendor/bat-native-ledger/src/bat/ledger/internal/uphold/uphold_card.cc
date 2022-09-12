@@ -30,7 +30,7 @@ void UpholdCard::GetBATCardId(
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");
-    return std::move(callback).Run(type::Result::LEDGER_ERROR, "");
+    return std::move(callback).Run(mojom::Result::LEDGER_ERROR, "");
   }
 
   uphold_server_->get_cards()->Request(uphold_wallet->token,
@@ -38,14 +38,14 @@ void UpholdCard::GetBATCardId(
 }
 
 void UpholdCard::OnGetBATCardId(CreateCardCallback callback,
-                                type::Result result,
-                                const std::string& id) const {
-  if (result == type::Result::EXPIRED_TOKEN) {
-    return std::move(callback).Run(type::Result::EXPIRED_TOKEN, "");
+                                mojom::Result result,
+                                std::string&& id) const {
+  if (result == mojom::Result::EXPIRED_TOKEN) {
+    return std::move(callback).Run(mojom::Result::EXPIRED_TOKEN, "");
   }
 
-  if (result == type::Result::LEDGER_OK && !id.empty()) {
-    return std::move(callback).Run(type::Result::LEDGER_OK, id);
+  if (result == mojom::Result::LEDGER_OK && !id.empty()) {
+    return std::move(callback).Run(mojom::Result::LEDGER_OK, std::move(id));
   }
 
   BLOG(1, "Couldn't get BAT card ID!");
@@ -59,7 +59,7 @@ void UpholdCard::CreateBATCard(
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");
-    return std::move(callback).Run(type::Result::LEDGER_ERROR, "");
+    return std::move(callback).Run(mojom::Result::LEDGER_ERROR, "");
   }
 
   uphold_server_->post_cards()->Request(uphold_wallet->token,
@@ -67,20 +67,20 @@ void UpholdCard::CreateBATCard(
 }
 
 void UpholdCard::OnCreateBATCard(CreateCardCallback callback,
-                                 type::Result result,
-                                 const std::string& id) const {
-  if (result == type::Result::EXPIRED_TOKEN) {
-    return std::move(callback).Run(type::Result::EXPIRED_TOKEN, "");
+                                 mojom::Result result,
+                                 std::string&& id) const {
+  if (result == mojom::Result::EXPIRED_TOKEN) {
+    return std::move(callback).Run(mojom::Result::EXPIRED_TOKEN, "");
   }
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Couldn't create BAT card!");
     return std::move(callback).Run(result, "");
   }
 
   if (id.empty()) {
     BLOG(0, "BAT card ID is empty!");
-    return std::move(callback).Run(type::Result::LEDGER_ERROR, "");
+    return std::move(callback).Run(mojom::Result::LEDGER_ERROR, "");
   }
 
   UpdateBATCardSettings(
@@ -94,7 +94,7 @@ void UpholdCard::UpdateBATCardSettings(
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");
-    return std::move(callback).Run(type::Result::LEDGER_ERROR);
+    return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
   }
 
   DCHECK(!id.empty());
@@ -103,19 +103,19 @@ void UpholdCard::UpdateBATCardSettings(
 }
 
 void UpholdCard::OnUpdateBATCardSettings(CreateCardCallback callback,
-                                         const std::string& id,
-                                         type::Result result) const {
-  if (result == type::Result::EXPIRED_TOKEN) {
-    return std::move(callback).Run(type::Result::EXPIRED_TOKEN, "");
+                                         std::string&& id,
+                                         mojom::Result result) const {
+  if (result == mojom::Result::EXPIRED_TOKEN) {
+    return std::move(callback).Run(mojom::Result::EXPIRED_TOKEN, "");
   }
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Couldn't update BAT card settings!");
     return std::move(callback).Run(result, "");
   }
 
   DCHECK(!id.empty());
-  std::move(callback).Run(type::Result::LEDGER_OK, id);
+  std::move(callback).Run(mojom::Result::LEDGER_OK, std::move(id));
 }
 
 }  // namespace uphold

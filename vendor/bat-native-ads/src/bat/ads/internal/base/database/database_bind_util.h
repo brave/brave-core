@@ -12,8 +12,7 @@
 #include "bat/ads/public/interfaces/ads.mojom-forward.h"
 #include "sql/statement.h"
 
-namespace ads {
-namespace database {
+namespace ads::database {
 
 std::string BuildBindingParameterPlaceholder(size_t parameters_count);
 std::string BuildBindingParameterPlaceholders(size_t parameters_count,
@@ -30,7 +29,6 @@ void BindString(mojom::DBCommandInfo* command,
                 int index,
                 const std::string& value);
 
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BASE_DATABASE_DATABASE_BIND_UTIL_H_

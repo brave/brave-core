@@ -28,8 +28,7 @@
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/pref_names.h"
 
-namespace ads {
-namespace notification_ads {
+namespace ads::notification_ads {
 
 namespace {
 constexpr base::TimeDelta kRetryServingAdAfterDelay = base::Minutes(2);
@@ -252,5 +251,4 @@ void Serving::OnAdsPerHourPrefChanged() {
   MaybeServeAdAtNextRegularInterval();
 }
 
-}  // namespace notification_ads
-}  // namespace ads
+}  // namespace ads::notification_ads

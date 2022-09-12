@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_search/renderer/brave_search_render_frame_observer.h"
 
+#include <memory>
+
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search/renderer/brave_search_default_js_handler.h"
 #include "content/public/renderer/render_frame.h"
@@ -42,8 +44,8 @@ void BraveSearchRenderFrameObserver::DidCreateScriptContext(
   }
 
   if (!native_javascript_handle_) {
-    native_javascript_handle_.reset(new BraveSearchDefaultJSHandler(
-        render_frame(), can_always_set_default));
+    native_javascript_handle_ = std::make_unique<BraveSearchDefaultJSHandler>(
+        render_frame(), can_always_set_default);
   } else {
     native_javascript_handle_->ResetRemote(render_frame());
   }

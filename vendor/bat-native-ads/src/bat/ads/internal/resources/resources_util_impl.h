@@ -12,20 +12,19 @@
 #include <string>
 #include <utility>
 
+#include "absl/types/optional.h"
 #include "base/bind.h"
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
 class File;
 }  // namespace base
 
-namespace ads {
-namespace resource {
+namespace ads::resource {
 
 template <typename T>
 std::unique_ptr<ParsingResult<T>> ReadFileAndParseResourceOnBackgroundThread(
@@ -75,7 +74,6 @@ void LoadAndParseResource(const std::string& id,
       base::BindOnce(&ReadFileAndParseResource<T>, std::move(callback)));
 }
 
-}  // namespace resource
-}  // namespace ads
+}  // namespace ads::resource
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_RESOURCES_UTIL_IMPL_H_

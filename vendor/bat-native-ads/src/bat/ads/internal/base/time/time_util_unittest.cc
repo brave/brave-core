@@ -13,8 +13,8 @@
 #include "build/build_config.h"  // IWYU pragma: keep
 
 #if BUILDFLAG(IS_LINUX)
+#include "absl/types/optional.h"
 #include "base/environment.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #endif  // BUILDFLAG(IS_LINUX)
 
 // npm run test -- brave_unit_tests --filter=BatAds*

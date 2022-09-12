@@ -22,7 +22,7 @@ import { setMostVisitedSettings } from '../api/topSites'
 // Utils
 import { handleWidgetPrefsChange } from './stack_widget_reducer'
 import { NewTabAdsData } from '../api/newTabAdsData'
-import { CustomBackground } from '../api/background'
+import { Background } from '../api/background'
 
 let sideEffectState: NewTab.State = storage.load()
 
@@ -116,26 +116,40 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
       break
 
-    case types.CUSTOM_BACKGROUND_UPDATED:
+    case types.BACKGROUND_UPDATED:
       // While customizing background, background has
       // custom or brave default background. Branded wallpaper will
       // be visible after reloading or new NTP after changing custom
       // background option.
       state = {
         ...state,
-        brandedWallpaper: undefined
+        brandedWallpaper: undefined,
+        backgroundWallpaper: undefined
       }
 
-      // Empty custom bg url means using brave background.
-      const customBackground = payload.customBackground as CustomBackground
-      const url = customBackground.url.url
-      const color = customBackground.color
-      const random = customBackground.useRandomItem
-      if (url) {
-        state.backgroundWallpaper = { type: 'image', wallpaperImageUrl: url }
-      } else if (color) {
-        state.backgroundWallpaper = random ? backgroundAPI.randomColorBackground(color) : { type: 'color', wallpaperColor: color, random }
-      } else {
+      const background = payload.background as Background
+      if (background?.custom) {
+        const url = background.custom.url.url
+        const color = background.custom.color
+        const random = background.custom.useRandomItem
+        if (url) {
+          state.backgroundWallpaper = { type: 'image', wallpaperImageUrl: url }
+        } else if (color) {
+          state.backgroundWallpaper = random ? backgroundAPI.randomColorBackground(color) : { type: 'color', wallpaperColor: color, random }
+        }
+      }
+
+      if (!state.backgroundWallpaper && background?.brave) {
+        state.backgroundWallpaper = {
+          type: 'brave',
+          author: background.brave.author,
+          link: background.brave.link.url,
+          wallpaperImageUrl: background.brave.imageUrl.url,
+          random: false
+        }
+      }
+
+      if (!state.backgroundWallpaper) {
         state.backgroundWallpaper = backgroundAPI.randomBackgroundImage()
       }
       break

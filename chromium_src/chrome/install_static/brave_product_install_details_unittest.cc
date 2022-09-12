@@ -200,13 +200,14 @@ TEST_P(MakeProductDetailsTest, DefaultChannel) {
   EXPECT_THAT(details->channel(), StrEq(test_data().channel));
 }
 
-// Test that the "ap" value is cached during initialization.
-TEST_P(MakeProductDetailsTest, UpdateAp) {
-  // This test is only valid for brands that integrate with Google Update.
+// This test is only valid for brands that integrate with Google Update.
 #if !defined(OFFICIAL_BUILD)
-    return;
+#define MAYBE_UpdateAp DISABLED_UpdateAp
+#else
+#define MAYBE_UpdateAp UpdateAp
 #endif
-
+// Test that the "ap" value is cached during initialization.
+TEST_P(MakeProductDetailsTest, MAYBE_UpdateAp) {
   // With no value in the registry, the ap value should be empty.
   {
     std::unique_ptr<PrimaryInstallDetails> details(
@@ -224,13 +225,15 @@ TEST_P(MakeProductDetailsTest, UpdateAp) {
   }
 }
 
-// Test that the cohort name is cached during initialization.
-TEST_P(MakeProductDetailsTest, UpdateCohortName) {
-  // This test is only valid for brands that integrate with Google Update.
+// Disable this test on development mode, as this test is only valid for
+// branches that integrate Google Update.
 #if !defined(OFFICIAL_BUILD)
-  return;
+#define MAYBE_UpdateCohortName DISABLED_UpdateCohortName
+#else
+#define MAYBE_UpdateCohortName UpdateCohortName
 #endif
-
+// Test that the cohort name is cached during initialization.
+TEST_P(MakeProductDetailsTest, MAYBE_UpdateCohortName) {
   // With no value in the registry, the cohort name should be empty.
   {
     std::unique_ptr<PrimaryInstallDetails> details(

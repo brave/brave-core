@@ -8,8 +8,8 @@
 
 #include <string>
 
+#include "absl/types/optional.h"
 #include "bat/ads/internal/account/issuers/issuer_types.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

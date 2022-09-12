@@ -8,17 +8,17 @@
 
 #include <string>
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "absl/types/optional.h"
 
 namespace ads {
 
 struct CatalogInfo;
 
-namespace JSONReader {
+namespace json::reader {
 
 absl::optional<CatalogInfo> ReadCatalog(const std::string& json);
 
-}  // namespace JSONReader
+}  // namespace json::reader
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CATALOG_JSON_READER_H_

@@ -168,4 +168,9 @@ def CheckBraveMissingLicense(target_os, path, error):
         else:
             if path in ANDROID_ONLY_PATHS:
                 return  # Android failures are not relevant on desktop.
+        print('\nERROR: missing license information in %s\n'
+              "If this is code you added, then you'll have to add the required "
+              "metadata.\nIf the path that's mentioned isn't something you "
+              "added, then you probably just need to remove that obsolete path "
+              "from your local checkout.\n" % path)
         raise error

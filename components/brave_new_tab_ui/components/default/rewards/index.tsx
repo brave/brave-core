@@ -12,7 +12,6 @@ import { LocaleContext } from '../../../../brave_rewards/resources/shared/lib/lo
 import { getProviderPayoutStatus } from '../../../../brave_rewards/resources/shared/lib/provider_payout_status'
 import { WithThemeVariables } from '../../../../brave_rewards/resources/shared/components/with_theme_variables'
 import { GrantInfo } from '../../../../brave_rewards/resources/shared/lib/grant_info'
-import { OnboardingCompletedStore } from '../../../../brave_rewards/resources/shared/lib/onboarding_completed_store'
 import { externalWalletFromExtensionData } from '../../../../brave_rewards/resources/shared/lib/external_wallet'
 
 import {
@@ -24,14 +23,6 @@ import {
 export { SponsoredImageTooltip }
 
 const locale = { getString: (key: string) => getLocale(key) }
-const onboardingCompleted = new OnboardingCompletedStore()
-
-export function showRewardsOnboarding () {
-  if (!onboardingCompleted.load()) {
-    onboardingCompleted.save()
-    chrome.braveRewards.showRewardsTour()
-  }
-}
 
 export function RewardsContextAdapter (props: { children: React.ReactNode }) {
   return (
@@ -58,7 +49,8 @@ export interface RewardsProps {
   showContent: boolean
   stackPosition: number
   onShowContent: () => void
-  onStartRewards: () => void
+  onEnableRewards: () => void
+  onEnableAds: () => void
   onDismissNotification: (id: string) => void
 }
 
@@ -120,8 +112,8 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
       earningsThisMonth={adsInfo ? adsInfo.earningsThisMonth : 0}
       earningsLastMonth={adsInfo ? adsInfo.earningsLastMonth : 0}
       contributionsThisMonth={props.totalContribution}
-      onEnableRewards={props.onStartRewards}
-      onEnableAds={props.onStartRewards}
+      onEnableRewards={props.onEnableRewards}
+      onEnableAds={props.onEnableAds}
       onClaimGrant={onClaimGrant}
     />
   )

@@ -20,9 +20,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace privacy {
-namespace cbr {
+namespace ads::privacy::cbr {
 
 namespace {
 constexpr char kDLEQProofBase64[] =
@@ -113,7 +111,7 @@ TEST(BatAdsDLEQProofTest, FailToDecodeEmptyBase64) {
   // Arrange
 
   // Act
-  const DLEQProof dleq_proof = DLEQProof::DecodeBase64("");
+  const DLEQProof dleq_proof = DLEQProof::DecodeBase64({});
 
   // Assert
   const bool has_value = dleq_proof.has_value();
@@ -301,6 +299,4 @@ TEST(BatAdsDLEQProofTest, OutputStreamWhenUninitialized) {
   EXPECT_TRUE(ss.str().empty());
 }
 
-}  // namespace cbr
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::cbr

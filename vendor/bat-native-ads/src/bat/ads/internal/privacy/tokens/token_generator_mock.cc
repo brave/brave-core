@@ -5,12 +5,10 @@
 
 #include "bat/ads/internal/privacy/tokens/token_generator_mock.h"
 
-namespace ads {
-namespace privacy {
+namespace ads::privacy {
 
 TokenGeneratorMock::TokenGeneratorMock() = default;
 
 TokenGeneratorMock::~TokenGeneratorMock() = default;
 
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy

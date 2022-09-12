@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
 #include <utility>
 
 #include "base/strings/stringprintf.h"
@@ -43,7 +44,7 @@ content::WebContents* RewardsBrowserTestContribution::contents() {
 void RewardsBrowserTestContribution::TipViaCode(
     const std::string& publisher_key,
     const double amount,
-    const ledger::type::PublisherStatus status,
+    const ledger::mojom::PublisherStatus status,
     const int32_t number_of_contributions,
     const bool recurring) {
   pending_tip_saved_ = false;
@@ -51,7 +52,7 @@ void RewardsBrowserTestContribution::TipViaCode(
   multiple_tip_reconcile_count_ = 0;
 
   bool should_contribute = number_of_contributions > 0;
-  auto publisher = ledger::type::PublisherInfo::New();
+  auto publisher = ledger::mojom::PublisherInfo::New();
   publisher->id = publisher_key;
   publisher->name = publisher_key;
   publisher->url = publisher_key;
@@ -161,8 +162,8 @@ void RewardsBrowserTestContribution::TipPublisher(
     if (should_contribute) {
       WaitForTipReconcileCompleted();
       const auto result = should_contribute
-          ? ledger::type::Result::LEDGER_OK
-          : ledger::type::Result::RECURRING_TABLE_EMPTY;
+                              ? ledger::mojom::Result::LEDGER_OK
+                              : ledger::mojom::Result::RECURRING_TABLE_EMPTY;
       ASSERT_EQ(tip_reconcile_status_, result);
     }
 
@@ -179,7 +180,7 @@ void RewardsBrowserTestContribution::TipPublisher(
         static_cast<int32_t>(multiple_tip_reconcile_status_.size()),
         number_of_contributions);
     for (const auto status : multiple_tip_reconcile_status_) {
-      ASSERT_EQ(status, ledger::type::Result::LEDGER_OK);
+      ASSERT_EQ(status, ledger::mojom::Result::LEDGER_OK);
     }
   }
 
@@ -265,14 +266,14 @@ void RewardsBrowserTestContribution::WaitForPendingTipToBeSaved() {
     return;
   }
 
-  wait_for_pending_tip_saved_loop_.reset(new base::RunLoop);
+  wait_for_pending_tip_saved_loop_ = std::make_unique<base::RunLoop>();
   wait_for_pending_tip_saved_loop_->Run();
 }
 
 void RewardsBrowserTestContribution::OnPendingContributionSaved(
     brave_rewards::RewardsService* rewards_service,
-    const ledger::type::Result result) {
-  if (result != ledger::type::Result::LEDGER_OK) {
+    const ledger::mojom::Result result) {
+  if (result != ledger::mojom::Result::LEDGER_OK) {
     return;
   }
 
@@ -287,25 +288,25 @@ void RewardsBrowserTestContribution::WaitForTipReconcileCompleted() {
     return;
   }
 
-  wait_for_tip_completed_loop_.reset(new base::RunLoop);
+  wait_for_tip_completed_loop_ = std::make_unique<base::RunLoop>();
   wait_for_tip_completed_loop_->Run();
 }
 
 void RewardsBrowserTestContribution::OnReconcileComplete(
     brave_rewards::RewardsService* rewards_service,
-    const ledger::type::Result result,
+    const ledger::mojom::Result result,
     const std::string& contribution_id,
     const double amount,
-    const ledger::type::RewardsType type,
-    const ledger::type::ContributionProcessor processor) {
-  if (result == ledger::type::Result::LEDGER_OK) {
+    const ledger::mojom::RewardsType type,
+    const ledger::mojom::ContributionProcessor processor) {
+  if (result == ledger::mojom::Result::LEDGER_OK) {
     UpdateContributionBalance(
         amount,
         true,
         processor);
   }
 
-  if (type == ledger::type::RewardsType::AUTO_CONTRIBUTE) {
+  if (type == ledger::mojom::RewardsType::AUTO_CONTRIBUTE) {
     ac_reconcile_completed_ = true;
     ac_reconcile_status_ = result;
     if (wait_for_ac_completed_loop_) {
@@ -324,9 +325,9 @@ void RewardsBrowserTestContribution::OnReconcileComplete(
     }
   }
 
-  if (type == ledger::type::RewardsType::ONE_TIME_TIP ||
-      type == ledger::type::RewardsType::RECURRING_TIP) {
-    if (result == ledger::type::Result::LEDGER_OK) {
+  if (type == ledger::mojom::RewardsType::ONE_TIME_TIP ||
+      type == ledger::mojom::RewardsType::RECURRING_TIP) {
+    if (result == ledger::mojom::Result::LEDGER_OK) {
       reconciled_tip_total_ += amount;
     }
 
@@ -353,14 +354,14 @@ void RewardsBrowserTestContribution::OnReconcileComplete(
 void RewardsBrowserTestContribution::UpdateContributionBalance(
     const double amount,
     const bool verified,
-    const ledger::type::ContributionProcessor processor) {
+    const ledger::mojom::ContributionProcessor processor) {
   if (verified) {
-    if (processor == ledger::type::ContributionProcessor::BRAVE_TOKENS) {
+    if (processor == ledger::mojom::ContributionProcessor::BRAVE_TOKENS) {
       balance_ -= amount;
       return;
     }
 
-    if (processor == ledger::type::ContributionProcessor::UPHOLD) {
+    if (processor == ledger::mojom::ContributionProcessor::UPHOLD) {
       external_balance_ -= amount;
       return;
     }
@@ -376,7 +377,7 @@ void RewardsBrowserTestContribution::WaitForRecurringTipToBeSaved() {
     return;
   }
 
-  wait_for_recurring_tip_saved_loop_.reset(new base::RunLoop);
+  wait_for_recurring_tip_saved_loop_ = std::make_unique<base::RunLoop>();
   wait_for_recurring_tip_saved_loop_->Run();
 }
 
@@ -401,7 +402,7 @@ void RewardsBrowserTestContribution::WaitForMultipleTipReconcileCompleted(
     return;
   }
 
-  wait_for_multiple_tip_completed_loop_.reset(new base::RunLoop);
+  wait_for_multiple_tip_completed_loop_ = std::make_unique<base::RunLoop>();
   wait_for_multiple_tip_completed_loop_->Run();
 }
 
@@ -413,7 +414,7 @@ void RewardsBrowserTestContribution::WaitForMultipleACReconcileCompleted(
     return;
   }
 
-  wait_for_multiple_ac_completed_loop_.reset(new base::RunLoop);
+  wait_for_multiple_ac_completed_loop_ = std::make_unique<base::RunLoop>();
   wait_for_multiple_ac_completed_loop_->Run();
 }
 
@@ -422,7 +423,7 @@ void RewardsBrowserTestContribution::WaitForACReconcileCompleted() {
     return;
   }
 
-  wait_for_ac_completed_loop_.reset(new base::RunLoop);
+  wait_for_ac_completed_loop_ = std::make_unique<base::RunLoop>();
   wait_for_ac_completed_loop_->Run();
 }
 
@@ -436,7 +437,7 @@ std::string RewardsBrowserTestContribution::GetStringPendingBalance() {
   return base::StringPrintf("%.2f BAT", pending_balance_);
 }
 
-ledger::type::Result RewardsBrowserTestContribution::GetACStatus() {
+ledger::mojom::Result RewardsBrowserTestContribution::GetACStatus() {
   return ac_reconcile_status_;
 }
 
@@ -444,7 +445,7 @@ ledger::type::Result RewardsBrowserTestContribution::GetACStatus() {
 void RewardsBrowserTestContribution::SetUpGeminiWallet(
     brave_rewards::RewardsServiceImpl* rewards_service,
     const double balance,
-    const ledger::type::WalletStatus status) {
+    const ledger::mojom::WalletStatus status) {
   if (!base::FeatureList::IsEnabled(brave_rewards::features::kGeminiFeature)) {
     return;
   }
@@ -452,7 +453,7 @@ void RewardsBrowserTestContribution::SetUpGeminiWallet(
   browser_->profile()->GetPrefs()->SetString(
       brave_rewards::prefs::kExternalWalletType, "gemini");
   // we need brave wallet as well
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
 
   external_balance_ = balance;
 
@@ -475,7 +476,7 @@ void RewardsBrowserTestContribution::SetUpGeminiWallet(
 void RewardsBrowserTestContribution::SetUpUpholdWallet(
     brave_rewards::RewardsServiceImpl* rewards_service,
     const double balance,
-    const ledger::type::WalletStatus status) {
+    const ledger::mojom::WalletStatus status) {
   DCHECK(rewards_service);
 #if BUILDFLAG(ENABLE_GEMINI_WALLET)
   if (base::FeatureList::IsEnabled(brave_rewards::features::kGeminiFeature)) {
@@ -484,7 +485,7 @@ void RewardsBrowserTestContribution::SetUpUpholdWallet(
   }
 #endif
   // we need brave wallet as well
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
 
   external_balance_ = balance;
 
@@ -508,16 +509,16 @@ double RewardsBrowserTestContribution::GetReconcileTipTotal() {
   return reconciled_tip_total_;
 }
 
-std::vector<ledger::type::Result>
+std::vector<ledger::mojom::Result>
 RewardsBrowserTestContribution::GetMultipleTipStatus() {
   return multiple_tip_reconcile_status_;
 }
 
-ledger::type::Result RewardsBrowserTestContribution::GetTipStatus() {
+ledger::mojom::Result RewardsBrowserTestContribution::GetTipStatus() {
   return tip_reconcile_status_;
 }
 
-std::vector<ledger::type::Result>
+std::vector<ledger::mojom::Result>
 RewardsBrowserTestContribution::GetMultipleACStatus() {
   return multiple_ac_reconcile_status_;
 }

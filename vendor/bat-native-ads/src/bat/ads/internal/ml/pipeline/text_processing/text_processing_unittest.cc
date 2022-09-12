@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "absl/types/optional.h"
 #include "base/test/values_test_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_file_util.h"
@@ -18,12 +19,10 @@
 #include "bat/ads/internal/ml/model/linear/linear.h"
 #include "bat/ads/internal/ml/transformation/hashed_ngrams_transformation.h"
 #include "bat/ads/internal/ml/transformation/lowercase_transformation.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace ml {
+namespace ads::ml {
 
 namespace {
 
@@ -241,5 +240,4 @@ TEST_F(BatAdsTextProcessingPipelineTest, TextCMCCrashTest) {
   }
 }
 
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml

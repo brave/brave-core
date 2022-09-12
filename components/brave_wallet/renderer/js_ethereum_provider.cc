@@ -186,7 +186,7 @@ void JSEthereumProvider::CreateEthereumObject(
                             gin::StringToSymbol(isolate, kIsBraveWallet),
                             v8::True(isolate), v8::ReadOnly)
         .Check();
-    // isMetaMask shuld be writable because of
+    // isMetaMask should be writable because of
     // https://github.com/brave/brave-browser/issues/22213
     ethereum_obj
         ->DefineOwnProperty(context, gin::StringToSymbol(isolate, "isMetaMask"),
@@ -198,8 +198,10 @@ void JSEthereumProvider::CreateEthereumObject(
         .Check();
     BindFunctionsToObject(isolate, context, ethereum_obj, metamask_obj);
     UpdateAndBindJSProperties(isolate, context, ethereum_obj);
+    // send should be writable because of
+    // https://github.com/brave/brave-browser/issues/25078
     for (const std::string& method :
-         {"request", "isConnected", "enable", "sendAsync", "send"}) {
+         {"request", "isConnected", "enable", "sendAsync"}) {
       SetOwnPropertyNonWritable(context, ethereum_obj,
                                 gin::StringToV8(isolate, method));
     }

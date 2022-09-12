@@ -206,9 +206,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   brave_vpn::RegisterProfilePrefs(registry);
 #endif
 
-  if (base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature)) {
-    brave_news::BraveNewsController::RegisterProfilePrefs(registry);
-  }
+  brave_news::BraveNewsController::RegisterProfilePrefs(registry);
 
   // TODO(shong): Migrate this to local state also and guard in ENABLE_WIDEVINE.
   // We don't need to display "don't ask widevine prompt option" in settings

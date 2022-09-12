@@ -6,10 +6,9 @@ export const StyledWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
-  width: 100%;
   height: 36px;
+  width: 100%;
   border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
-  box-sizing: border-box;
   border-radius: 4px;
   background-color: ${(p) => p.theme.color.background02};
   margin-bottom: 10px;

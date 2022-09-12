@@ -38,10 +38,10 @@ class RewardsServiceObserver;
 class RewardsServicePrivateObserver;
 
 using GetPublisherInfoListCallback =
-    base::OnceCallback<void(ledger::type::PublisherInfoList list)>;
+    base::OnceCallback<void(std::vector<ledger::mojom::PublisherInfoPtr> list)>;
 using GetAutoContributionAmountCallback = base::OnceCallback<void(double)>;
 using GetAutoContributePropertiesCallback =
-    base::OnceCallback<void(ledger::type::AutoContributePropertiesPtr)>;
+    base::OnceCallback<void(ledger::mojom::AutoContributePropertiesPtr)>;
 using GetPublisherMinVisitTimeCallback = base::OnceCallback<void(int)>;
 using GetPublisherMinVisitsCallback = base::OnceCallback<void(int)>;
 using GetPublisherAllowNonVerifiedCallback = base::OnceCallback<void(bool)>;
@@ -50,71 +50,70 @@ using GetAutoContributeEnabledCallback = base::OnceCallback<void(bool)>;
 using GetReconcileStampCallback = base::OnceCallback<void(uint64_t)>;
 using GetPendingContributionsTotalCallback = base::OnceCallback<void(double)>;
 using GetRewardsInternalsInfoCallback =
-    base::OnceCallback<void(ledger::type::RewardsInternalsInfoPtr info)>;
+    base::OnceCallback<void(ledger::mojom::RewardsInternalsInfoPtr info)>;
 using GetRecurringTipsCallback =
-    base::OnceCallback<void(ledger::type::PublisherInfoList list)>;
+    base::OnceCallback<void(std::vector<ledger::mojom::PublisherInfoPtr> list)>;
 using GetOneTimeTipsCallback =
-    base::OnceCallback<void(ledger::type::PublisherInfoList list)>;
+    base::OnceCallback<void(std::vector<ledger::mojom::PublisherInfoPtr> list)>;
 using GetPublisherBannerCallback =
-    base::OnceCallback<void(ledger::type::PublisherBannerPtr banner)>;
+    base::OnceCallback<void(ledger::mojom::PublisherBannerPtr banner)>;
 using RefreshPublisherCallback =
-    base::OnceCallback<void(
-        const ledger::type::PublisherStatus,
-        const std::string&)>;
-using GetPublisherInfoCallback = base::OnceCallback<void(
-    const ledger::type::Result,
-    ledger::type::PublisherInfoPtr)>;
+    base::OnceCallback<void(const ledger::mojom::PublisherStatus,
+                            const std::string&)>;
+using GetPublisherInfoCallback =
+    base::OnceCallback<void(const ledger::mojom::Result,
+                            ledger::mojom::PublisherInfoPtr)>;
 using SavePublisherInfoCallback =
-    base::OnceCallback<void(const ledger::type::Result)>;
+    base::OnceCallback<void(const ledger::mojom::Result)>;
 using SaveMediaInfoCallback =
-    base::OnceCallback<void(ledger::type::PublisherInfoPtr publisher)>;
+    base::OnceCallback<void(ledger::mojom::PublisherInfoPtr publisher)>;
 using GetInlineTippingPlatformEnabledCallback = base::OnceCallback<void(bool)>;
 using GetShareURLCallback = base::OnceCallback<void(const std::string&)>;
-using GetPendingContributionsCallback =
-    base::OnceCallback<void(ledger::type::PendingContributionInfoList list)>;
+using GetPendingContributionsCallback = base::OnceCallback<void(
+    std::vector<ledger::mojom::PendingContributionInfoPtr> list)>;
 using GetCurrentCountryCallback = base::OnceCallback<void(const std::string&)>;
-using FetchBalanceCallback = base::OnceCallback<void(
-    const ledger::type::Result,
-    ledger::type::BalancePtr)>;
+using FetchBalanceCallback =
+    base::OnceCallback<void(const ledger::mojom::Result,
+                            ledger::mojom::BalancePtr)>;
 using GetExternalWalletCallback =
-    base::OnceCallback<void(const ledger::type::Result result,
-                            ledger::type::ExternalWalletPtr wallet)>;
-using ProcessRewardsPageUrlCallback = base::OnceCallback<void(
-    const ledger::type::Result result,
-    const std::string&,
-    const std::string&,
-    const base::flat_map<std::string, std::string>&)>;
-using CreateWalletCallback =
-    base::OnceCallback<void(const ledger::type::Result)>;
-using ClaimPromotionCallback = base::OnceCallback<void(
-    const ledger::type::Result,
-    const std::string&,
-    const std::string&,
-    const std::string&)>;
-using AttestPromotionCallback = base::OnceCallback<void(
-    const ledger::type::Result result,
-    ledger::type::PromotionPtr promotion)>;
+    base::OnceCallback<void(const ledger::mojom::Result result,
+                            ledger::mojom::ExternalWalletPtr wallet)>;
+using ProcessRewardsPageUrlCallback =
+    base::OnceCallback<void(const ledger::mojom::Result result,
+                            const std::string&,
+                            const std::string&,
+                            const base::flat_map<std::string, std::string>&)>;
+using CreateRewardsWalletCallback =
+    base::OnceCallback<void(const ledger::mojom::Result)>;
+using ClaimPromotionCallback =
+    base::OnceCallback<void(const ledger::mojom::Result,
+                            const std::string&,
+                            const std::string&,
+                            const std::string&)>;
+using AttestPromotionCallback =
+    base::OnceCallback<void(const ledger::mojom::Result result,
+                            ledger::mojom::PromotionPtr promotion)>;
 using GetAnonWalletStatusCallback =
-    base::OnceCallback<void(const ledger::type::Result)>;
+    base::OnceCallback<void(const ledger::mojom::Result)>;
 
-using GetBalanceReportCallback = base::OnceCallback<void(
-    const ledger::type::Result,
-    ledger::type::BalanceReportInfoPtr report)>;
+using GetBalanceReportCallback =
+    base::OnceCallback<void(const ledger::mojom::Result,
+                            ledger::mojom::BalanceReportInfoPtr report)>;
 
 using GetMonthlyReportCallback =
-    base::OnceCallback<void(ledger::type::MonthlyReportInfoPtr report)>;
+    base::OnceCallback<void(ledger::mojom::MonthlyReportInfoPtr report)>;
 
 using GetAllMonthlyReportIdsCallback =
     base::OnceCallback<void(const std::vector<std::string>&)>;
 
-using GetAllContributionsCallback =
-    base::OnceCallback<void(ledger::type::ContributionInfoList contributions)>;
+using GetAllContributionsCallback = base::OnceCallback<void(
+    std::vector<ledger::mojom::ContributionInfoPtr> contributions)>;
 
 using GetAllPromotionsCallback =
-    base::OnceCallback<void(ledger::type::PromotionList list)>;
+    base::OnceCallback<void(std::vector<ledger::mojom::PromotionPtr> list)>;
 
 using GetRewardsParametersCallback =
-    base::OnceCallback<void(ledger::type::RewardsParametersPtr)>;
+    base::OnceCallback<void(ledger::mojom::RewardsParametersPtr)>;
 
 using LoadDiagnosticLogCallback = base::OnceCallback<void(const std::string&)>;
 
@@ -123,15 +122,15 @@ using ClearDiagnosticLogCallback = base::OnceCallback<void(const bool success)>;
 using SuccessCallback = base::OnceCallback<void(const bool success)>;
 
 using GetEventLogsCallback =
-    base::OnceCallback<void(ledger::type::EventLogs logs)>;
+    base::OnceCallback<void(std::vector<ledger::mojom::EventLogPtr> logs)>;
 
-using GetBraveWalletCallback =
-    base::OnceCallback<void(ledger::type::BraveWalletPtr wallet)>;
+using GetRewardsWalletCallback =
+    base::OnceCallback<void(ledger::mojom::RewardsWalletPtr wallet)>;
 
-using GetWalletPassphraseCallback =
+using GetRewardsWalletPassphraseCallback =
     base::OnceCallback<void(const std::string&)>;
 
-using OnTipCallback = base::OnceCallback<void(ledger::type::Result)>;
+using OnTipCallback = base::OnceCallback<void(ledger::mojom::Result)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -142,11 +141,11 @@ class RewardsService : public KeyedService {
 
   virtual bool IsInitialized() = 0;
 
-  virtual void CreateWallet(CreateWalletCallback callback) = 0;
+  virtual void CreateRewardsWallet(CreateRewardsWalletCallback callback) = 0;
   virtual void GetRewardsParameters(GetRewardsParametersCallback callback) = 0;
   virtual void GetActivityInfoList(const uint32_t start,
                                    const uint32_t limit,
-                                   ledger::type::ActivityInfoFilterPtr filter,
+                                   ledger::mojom::ActivityInfoFilterPtr filter,
                                    GetPublisherInfoListCallback callback) = 0;
   virtual void GetExcludedList(GetPublisherInfoListCallback callback) = 0;
   virtual void FetchPromotions() = 0;
@@ -223,11 +222,10 @@ class RewardsService : public KeyedService {
                      OnTipCallback callback) = 0;
 
   // Used in importer from muon days
-  virtual void OnTip(
-      const std::string& publisher_key,
-      double amount,
-      const bool recurring,
-      ledger::type::PublisherInfoPtr publisher) = 0;
+  virtual void OnTip(const std::string& publisher_key,
+                     double amount,
+                     const bool recurring,
+                     ledger::mojom::PublisherInfoPtr publisher) = 0;
 
   virtual void RemoveRecurringTip(const std::string& publisher_key) = 0;
   virtual void GetRecurringTips(GetRecurringTipsCallback callback) = 0;
@@ -293,10 +291,9 @@ class RewardsService : public KeyedService {
       const std::string& publisher_key,
       GetPublisherInfoCallback callback) = 0;
 
-  virtual void SavePublisherInfo(
-      const uint64_t window_id,
-      ledger::type::PublisherInfoPtr publisher_info,
-      SavePublisherInfoCallback callback) = 0;
+  virtual void SavePublisherInfo(const uint64_t window_id,
+                                 ledger::mojom::PublisherInfoPtr publisher_info,
+                                 SavePublisherInfoCallback callback) = 0;
 
   virtual void SetInlineTippingPlatformEnabled(
       const std::string& key,
@@ -361,11 +358,12 @@ class RewardsService : public KeyedService {
 
   virtual void GetEventLogs(GetEventLogsCallback callback) = 0;
 
-  virtual void GetBraveWallet(GetBraveWalletCallback callback) = 0;
+  virtual void GetRewardsWallet(GetRewardsWalletCallback callback) = 0;
 
   virtual void StartProcess(base::OnceClosure callback) = 0;
 
-  virtual void GetWalletPassphrase(GetWalletPassphraseCallback callback) = 0;
+  virtual void GetRewardsWalletPassphrase(
+      GetRewardsWalletPassphraseCallback callback) = 0;
 
   virtual void SetAdsEnabled(const bool is_enabled) = 0;
 

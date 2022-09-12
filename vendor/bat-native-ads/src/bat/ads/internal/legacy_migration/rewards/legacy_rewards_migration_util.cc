@@ -12,24 +12,23 @@
 #include "bat/ads/internal/legacy_migration/rewards/payment_info.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 
-namespace ads {
-namespace rewards {
+namespace ads::rewards {
 
 absl::optional<TransactionList> BuildTransactionsFromJson(
     const std::string& json) {
-  const absl::optional<PaymentList> payments = JSONReader::ReadPayments(json);
+  const absl::optional<PaymentList> payments = json::reader::ReadPayments(json);
   if (!payments) {
     return absl::nullopt;
   }
 
   const absl::optional<TransactionList> transaction_history =
-      JSONReader::ReadTransactionHistory(json);
+      json::reader::ReadTransactionHistory(json);
   if (!transaction_history) {
     return absl::nullopt;
   }
 
   const absl::optional<privacy::UnblindedPaymentTokenList>
-      unblinded_payment_tokens = JSONReader::ReadUnblindedPaymentTokens(json);
+      unblinded_payment_tokens = json::reader::ReadUnblindedPaymentTokens(json);
   if (!unblinded_payment_tokens) {
     return absl::nullopt;
   }
@@ -57,5 +56,4 @@ absl::optional<TransactionList> BuildTransactionsFromJson(
   return transactions;
 }
 
-}  // namespace rewards
-}  // namespace ads
+}  // namespace ads::rewards

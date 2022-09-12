@@ -61,3 +61,29 @@ export const isValidateUrl = (url: string) => {
   const re = /^\s*https?:\/\//
   return re.test(url)
 }
+
+export function hasUnicode (str: string) {
+  for (let i = 0; i < str.length; i++) {
+    if (str.charCodeAt(i) > 127) {
+      return true
+    }
+  }
+  return false
+}
+
+export function padWithLeadingZeros (string: string) {
+  return new Array(5 - string.length).join('0') + string
+}
+
+export function unicodeCharEscape (charCode: number) {
+  return '\\u' + padWithLeadingZeros(charCode.toString(16))
+}
+
+export function unicodeEscape (string: string) {
+  return string.split('')
+    .map(function (char: string) {
+      const charCode = char.charCodeAt(0)
+      return charCode > 127 ? unicodeCharEscape(charCode) : char
+    })
+    .join('')
+}

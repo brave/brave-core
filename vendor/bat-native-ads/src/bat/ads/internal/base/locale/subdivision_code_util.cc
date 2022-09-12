@@ -10,8 +10,7 @@
 #include "base/check_op.h"
 #include "base/strings/string_split.h"
 
-namespace ads {
-namespace locale {
+namespace ads::locale {
 
 std::string GetCountryCode(const std::string& code) {
   const std::vector<std::string> components =
@@ -31,5 +30,4 @@ std::string GetSubdivisionCode(const std::string& code) {
   return components.back();
 }
 
-}  // namespace locale
-}  // namespace ads
+}  // namespace ads::locale

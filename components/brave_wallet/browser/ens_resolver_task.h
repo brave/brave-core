@@ -49,15 +49,14 @@ struct OffchainLookupData {
 class EnsResolverTask {
  public:
   using APIRequestHelper = api_request_helper::APIRequestHelper;
+  using APIRequestResult = api_request_helper::APIRequestResult;
   using DoneCallback =
       base::OnceCallback<void(EnsResolverTask* task,
                               std::vector<uint8_t> resolved_result,
                               mojom::ProviderError error,
                               std::string error_message)>;
-  using RequestIntermediateCallback = base::OnceCallback<void(
-      int http_code,
-      const std::string& response,
-      const base::flat_map<std::string, std::string>& headers)>;
+  using RequestIntermediateCallback =
+      base::OnceCallback<void(APIRequestResult api_request_result)>;
 
   EnsResolverTask(DoneCallback done_callback,
                   APIRequestHelper* api_request_helper,
@@ -75,33 +74,18 @@ class EnsResolverTask {
 
  private:
   void FetchEnsResolver();
-  void OnFetchEnsResolverDone(
-      int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
+  void OnFetchEnsResolverDone(APIRequestResult api_request_result);
   void FetchEnsip10Support();
-  void OnFetchEnsip10SupportDone(
-      int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
+  void OnFetchEnsip10SupportDone(APIRequestResult api_request_result);
 
   void FetchEnsRecord();
-  void OnFetchEnsRecordDone(
-      int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
+  void OnFetchEnsRecordDone(APIRequestResult api_request_result);
 
   void FetchWithEnsip10Resolve();
-  void OnFetchWithEnsip10ResolveDone(
-      int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
+  void OnFetchWithEnsip10ResolveDone(APIRequestResult api_request_result);
 
   void FetchOffchainData();
-  void OnFetchOffchainDone(
-      int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
+  void OnFetchOffchainDone(APIRequestResult api_request_result);
 
   void RequestInternal(const std::string& json_payload,
                        RequestIntermediateCallback callback);

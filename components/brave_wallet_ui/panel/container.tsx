@@ -93,7 +93,6 @@ function Container () {
     defaultCurrencies,
     transactions,
     userVisibleTokensInfo,
-    defaultAccounts,
     defaultNetworks
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
   const {
@@ -115,7 +114,6 @@ function Container () {
   // consider rendering a "loading" indicator when `hasInitialized === false`, and
   // also using `React.lazy` to put all the main UI in a separate JS bundle and display
   // that loading indicator ASAP.
-  const [selectedAccounts, setSelectedAccounts] = React.useState<WalletAccountType[]>([])
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
 
@@ -143,19 +141,6 @@ function Container () {
   const { needsAccount } = useHasAccount()
 
   const { prevNetwork } = usePrevNetwork()
-
-  React.useEffect(() => {
-    // Checking selectedAccounts length here to ensure that
-    // we only update this once on mount.
-    if (selectedPanel === 'connectWithSite' && selectedAccounts.length === 0) {
-      const foundDefaultAccountInfo = defaultAccounts.find(account => connectingAccounts.includes(account.address.toLowerCase()))
-      const foundDefaultAccount = accounts.find((account) => account.address.toLowerCase() === foundDefaultAccountInfo?.address?.toLowerCase() ?? '')
-
-      if (foundDefaultAccount) {
-        setSelectedAccounts([foundDefaultAccount])
-      }
-    }
-  }, [selectedPanel, defaultAccounts, connectingAccounts, accounts])
 
   const onChangeSendView = (view: BuySendSwapViewTypes) => {
     if (view === 'assets') {
@@ -187,39 +172,6 @@ function Container () {
     }
 
     setShowSelectAsset(false)
-  }
-
-  const [readyToConnect, setReadyToConnect] = React.useState<boolean>(false)
-  const selectAccount = (account: WalletAccountType) => {
-    const newList = [...selectedAccounts, account]
-    setSelectedAccounts(newList)
-  }
-  const removeAccount = (account: WalletAccountType) => {
-    const newList = selectedAccounts.filter(
-      (accounts) => accounts.id !== account.id
-    )
-    setSelectedAccounts(newList)
-  }
-  const onSubmit = () => {
-    dispatch(WalletPanelActions.connectToSite({ selectedAccounts }))
-  }
-  const primaryAction = () => {
-    if (!readyToConnect) {
-      setReadyToConnect(true)
-    } else {
-      onSubmit()
-      setSelectedAccounts([])
-      setReadyToConnect(false)
-    }
-  }
-  const secondaryAction = () => {
-    if (readyToConnect) {
-      setReadyToConnect(false)
-    } else {
-      dispatch(WalletPanelActions.cancelConnectToSite({ selectedAccounts }))
-      setSelectedAccounts([])
-      setReadyToConnect(false)
-    }
   }
 
   const unlockWallet = (password: string) => {
@@ -716,13 +668,7 @@ function Container () {
         <ConnectWithSiteWrapper>
           <ConnectWithSite
             originInfo={connectToSiteOrigin}
-            isReady={readyToConnect}
-            accounts={accountsToConnect}
-            primaryAction={primaryAction}
-            secondaryAction={secondaryAction}
-            selectAccount={selectAccount}
-            removeAccount={removeAccount}
-            selectedAccounts={selectedAccounts}
+            accountsToConnect={accountsToConnect}
           />
         </ConnectWithSiteWrapper>
       </PanelWrapper>

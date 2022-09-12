@@ -24,6 +24,7 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/url_util.h"
 
+#include "brave/components/brave_vpn/brave_vpn_service_helper.h"
 #if !BUILDFLAG(IS_ANDROID)
 #include "base/bind.h"
 #include "base/command_line.h"
@@ -33,7 +34,6 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_vpn/brave_vpn_constants.h"
-#include "brave/components/brave_vpn/brave_vpn_service_helper.h"
 #include "brave/components/brave_vpn/switches.h"
 #include "brave/components/version_info/version_info.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -782,10 +782,8 @@ void BraveVpnService::ParseAndCacheHostnames(
   // OS VPN entry.
   VLOG(2) << __func__ << " : request subscriber credential:"
           << GetBraveVPNPaymentsEnv(GetCurrentEnvironment());
-  GetSubscriberCredentialV12(
-      base::BindOnce(&BraveVpnService::OnGetSubscriberCredentialV12,
-                     base::Unretained(this)),
-      GetBraveVPNPaymentsEnv(GetCurrentEnvironment()), skus_credential_);
+  GetSubscriberCredentialV12(base::BindOnce(
+      &BraveVpnService::OnGetSubscriberCredentialV12, base::Unretained(this)));
 }
 
 void BraveVpnService::OnGetSubscriberCredentialV12(
@@ -866,13 +864,11 @@ BraveVPNOSConnectionAPI* BraveVpnService::GetBraveVPNConnectionAPI() {
 // Android and iOS directly send an email.
 void BraveVpnService::OnCreateSupportTicket(
     CreateSupportTicketCallback callback,
-    int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  bool success = status == 200;
+    APIRequestResult api_request_result) {
+  bool success = api_request_result.response_code() == 200;
   VLOG(2) << "OnCreateSupportTicket success=" << success
-          << "\nresponse_code=" << status;
-  std::move(callback).Run(success, body);
+          << "\nresponse_code=" << api_request_result.response_code();
+  std::move(callback).Run(success, api_request_result.body());
 }
 void BraveVpnService::OnSuspend() {
   // Set reconnection state in case if computer/laptop is going to sleep.
@@ -994,6 +990,7 @@ void BraveVpnService::OnCredentialSummary(const std::string& domain,
 
   absl::optional<base::Value> records_v = base::JSONReader::Read(
       summary_string, base::JSONParserOptions::JSON_PARSE_RFC);
+
   if (records_v && records_v->is_dict()) {
     auto active = records_v->GetDict().FindBool("active").value_or(false);
     if (active) {
@@ -1303,14 +1300,12 @@ void BraveVpnService::VerifyPurchaseToken(ResponseCallback callback,
 
 void BraveVpnService::OnGetResponse(
     ResponseCallback callback,
-    int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
+    api_request_helper::APIRequestResult result) {
   // NOTE: |api_request_helper_| uses JsonSanitizer to sanitize input made with
   // requests. |body| will be empty when the response from service is invalid
   // json.
-  const bool success = status == 200;
-  std::move(callback).Run(body, success);
+  const bool success = result.response_code() == 200;
+  std::move(callback).Run(result.body(), success);
 }
 
 void BraveVpnService::GetSubscriberCredential(
@@ -1336,24 +1331,20 @@ void BraveVpnService::GetSubscriberCredential(
 
 void BraveVpnService::OnGetSubscriberCredential(
     ResponseCallback callback,
-    int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
+    APIRequestResult api_request_result) {
   std::string subscriber_credential;
-  bool success = status == 200;
+  bool success = api_request_result.response_code() == 200;
   if (success) {
-    subscriber_credential = GetSubscriberCredentialFromJson(body);
+    subscriber_credential =
+        GetSubscriberCredentialFromJson(api_request_result.body());
   } else {
     VLOG(1) << __func__ << " Response from API was not HTTP 200 (Received "
-            << status << ")";
+            << api_request_result.response_code() << ")";
   }
   std::move(callback).Run(subscriber_credential, success);
 }
 
-void BraveVpnService::GetSubscriberCredentialV12(
-    ResponseCallback callback,
-    const std::string& payments_environment,
-    const std::string& monthly_pass) {
+void BraveVpnService::GetSubscriberCredentialV12(ResponseCallback callback) {
   auto internal_callback =
       base::BindOnce(&BraveVpnService::OnGetSubscriberCredential,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
@@ -1362,10 +1353,11 @@ void BraveVpnService::GetSubscriberCredentialV12(
       GetURLWithPath(kVpnHost, kCreateSubscriberCredentialV12);
   base::Value::Dict dict;
   dict.Set("validation-method", "brave-premium");
-  dict.Set("brave-vpn-premium-monthly-pass", monthly_pass);
+  dict.Set("brave-vpn-premium-monthly-pass", skus_credential_);
   std::string request_body = CreateJSONRequestBody(dict);
   OAuthRequest(base_url, "POST", request_body, std::move(internal_callback),
-               {{"Brave-Payments-Environment", payments_environment}});
+               {{"Brave-Payments-Environment",
+                 GetBraveVPNPaymentsEnv(GetCurrentEnvironment())}});
 }
 
 }  // namespace brave_vpn

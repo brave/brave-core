@@ -12,29 +12,45 @@ import {
   Description,
   GlobeIcon,
   LearnMoreLink,
-  modalWidth,
   OpenRainbowAppButton,
   StyledWrapper,
-  Title
+  Title,
+  CheckboxWrapper
 } from './bridge-to-aurora-modal-styles'
+import { Checkbox } from '../../../shared/checkbox/checkbox'
 
 interface Props {
+  dontShowWarningAgain: boolean
   onClose: () => void
   onOpenRainbowAppClick: () => void
+  onDontShowAgain: (selected: boolean) => void
 }
 
-const learnMoreLink = 'https://ethereum.org/en/bridges/#bridge-risk'
+const learnMoreLink = 'https://doc.aurora.dev/bridge/bridge-overview/'
+const learnMoreRiskMitigation = 'https://rainbowbridge.app/approvals'
 
-export const BridgeToAuroraModal = ({ onClose, onOpenRainbowAppClick }: Props) => {
+export const BridgeToAuroraModal = ({ dontShowWarningAgain, onClose, onOpenRainbowAppClick, onDontShowAgain }: Props) => {
   return (
     <PopupModal
       title=''
       onClose={onClose}
-      width={modalWidth}
     >
       <StyledWrapper>
         <Title>{getLocale('braveWalletAuroraModalTitle')}</Title>
-        <Description>{getLocale('braveWalletAuroraModalDescription')}</Description>
+        <Description>
+          {getLocale('braveWalletAuroraModalDescription')}
+        </Description>
+        <CheckboxWrapper>
+          <Checkbox isChecked={dontShowWarningAgain} onChange={onDontShowAgain}>
+            {getLocale('braveWalletAuroraModalDontShowAgain')}
+          </Checkbox>
+        </CheckboxWrapper>
+        <OpenRainbowAppButton
+          onClick={onOpenRainbowAppClick}
+        >
+          <GlobeIcon />
+          <ButtonText>{getLocale('braveWalletAuroraModalOPenButtonText')}</ButtonText>
+        </OpenRainbowAppButton>
         <LearnMoreLink
           rel='noopener noreferrer'
           target='_blank'
@@ -42,12 +58,13 @@ export const BridgeToAuroraModal = ({ onClose, onOpenRainbowAppClick }: Props) =
         >
           {getLocale('braveWalletAuroraModalLearnMore')}
         </LearnMoreLink>
-        <OpenRainbowAppButton
-          onClick={onOpenRainbowAppClick}
+        <LearnMoreLink
+          rel='noopener noreferrer'
+          target='_blank'
+          href={learnMoreRiskMitigation}
         >
-          <GlobeIcon />
-          <ButtonText>{getLocale('braveWalletAuroraModalOPenButtonText')}</ButtonText>
-        </OpenRainbowAppButton>
+          {getLocale('braveWalletAuroraModalLearnMoreAboutRisk')}
+        </LearnMoreLink>
       </StyledWrapper>
     </PopupModal>
   )

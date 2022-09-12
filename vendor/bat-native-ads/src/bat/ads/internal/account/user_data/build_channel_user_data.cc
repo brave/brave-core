@@ -9,8 +9,7 @@
 #include "bat/ads/build_channel.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
-namespace ads {
-namespace user_data {
+namespace ads::user_data {
 
 namespace {
 constexpr char kBuildChannelKey[] = "buildChannel";
@@ -21,8 +20,8 @@ base::Value::Dict GetBuildChannel() {
 
   DCHECK(!BuildChannel().name.empty());
   user_data.Set(kBuildChannelKey, BuildChannel().name);
+
   return user_data;
 }
 
-}  // namespace user_data
-}  // namespace ads
+}  // namespace ads::user_data

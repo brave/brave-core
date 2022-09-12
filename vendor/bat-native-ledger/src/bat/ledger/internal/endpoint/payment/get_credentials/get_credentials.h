@@ -50,7 +50,7 @@ namespace endpoint {
 namespace payment {
 
 using GetCredentialsCallback =
-    base::OnceCallback<void(type::Result, type::CredsBatchPtr)>;
+    base::OnceCallback<void(mojom::Result, mojom::CredsBatchPtr)>;
 
 class GetCredentials {
  public:
@@ -67,14 +67,12 @@ class GetCredentials {
       const std::string& order_id,
       const std::string& item_id);
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(const int status_code);
 
-  type::Result ParseBody(
-      const std::string& body,
-      type::CredsBatch* batch);
+  mojom::Result ParseBody(const std::string& body, mojom::CredsBatch* batch);
 
   void OnRequest(GetCredentialsCallback callback,
-                 const type::UrlResponse& response);
+                 const mojom::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

@@ -139,14 +139,16 @@ provideStrings({
   // onboarding import wallet screen
   braveWalletImportPasswordError: 'Password is not correct',
   braveWalletMetaMaskPasswordInputPlaceholder: 'Type MetaMask password',
-  braveWalletImportFromMetaMaskSeedInstructions: 'Type your MetaMask 12-word recovery phrase.',
+  braveWalletImportFromMetaMaskSeedInstructions: 'Type your MetaMask 12-24 word recovery phrase.',
   braveWalletMetaMaskExtensionDetected: 'We detected the MetaMask extension in your browser',
   braveWalletMetaMaskExtensionImportDescription: 'Enter your MetaMask wallet password to easily import to Brave Wallet.',
-  braveWalletRestoreMyBraveWalletInstructions: 'Type your Brave Wallet 12-word recovery phrase.',
+  braveWalletRestoreMyBraveWalletInstructions: 'Type your Brave Wallet 12-24 word recovery phrase.',
+  braveWalletRecoveryPhraseLengthError: 'Recovery phrase must be 12, 15, 18, 21, or 24 words long',
+  braveWalletInvalidMnemonicError: 'The mnemonic being imported is not valid for Brave Wallet',
 
   // Onboarding - Backup Wallet - Intro
   braveWalletOnboardingRecoveryPhraseBackupIntroTitle: 'Before you start backing up wallet',
-  braveWalletOnboardingRecoveryPhraseBackupIntroDescription: 'The 12-word recovery phrase is a private key you can use to regain access to your wallet in case you lose a connected device(s). Store it someplace safe, and in the exact order it appears below.',
+  braveWalletOnboardingRecoveryPhraseBackupIntroDescription: 'The 12-24 word recovery phrase is a private key you can use to regain access to your wallet in case you lose a connected device(s). Store it someplace safe, and in the exact order it appears below.',
   braveWalletRecoveryPhraseBackupWarningImportant: '$1Important:$2 Never share your recovery phrase. Anyone with this phrase can take your assets forever.',
 
   // Onboarding - Backup Wallet - Recovery Phrase Backup
@@ -704,11 +706,13 @@ provideStrings({
   braveWalletRemoveAccountModalTitle: 'Are you sure you want to remove "$1"?',
 
   // Bridge to Aurora
-  braveWalletAuroraModalTitle: 'Open rainbowbridge.app',
-  braveWalletAuroraModalDescription: 'Bridging assets across networks allows you to use your crypto on other networks and other DApp' +
-    ' ecosystems. Bridging assets to other networks has some risks',
-  braveWalletAuroraModalLearnMore: 'Learn more',
-  braveWalletAuroraModalOPenButtonText: 'Open rainbowbridge.app',
+  braveWalletAuroraModalTitle: 'Open the Rainbow Bridge app?',
+  braveWalletAuroraModalDescription: 'Rainbow Bridge is an independent service that helps you bridge assets across networks, and use your crypto on other networks and DApp ecosystems. Bridging assets to other networks has some risks.',
+  braveWalletAuroraModalLearnMore: 'Learn more about using Rainbow Bridge',
+  braveWalletAuroraModalLearnMoreAboutRisk: 'Learn more about mitigating risk on Rainbow Bridge',
+  braveWalletAuroraModalDontShowAgain: 'Don\'t show again',
+  braveWalletAuroraModalOPenButtonText: 'Open the Rainbow Bridge app',
+  braveWalletBridgeToAuroraButton: 'Bridge to Aurora',
 
   // Input field labels
   braveWalletInputLabelPassword: 'Password',
@@ -730,5 +734,17 @@ provideStrings({
   braveWalletCancelHidingToken: 'Cancel',
 
   // Request feature button
-  braveWalletRequestFeatureButtonText: 'Request feature'
+  braveWalletRequestFeatureButtonText: 'Request feature',
+
+  // Warnings
+  braveWalletNonAsciiCharactersInMessageWarning: 'Non-ASCII characters detected!',
+
+  // ASCII toggles
+  braveWalletViewEncodedMessage: 'View original message',
+  braveWalletViewDecodedMessage: 'View message in ASCII encoding',
+
+  // NFTs Tab
+  braveWalletNftsEmptyState: 'No NFTs found in your wallet. You can add NFTs by clicking the "+ Visible assets" button at the bottom of' +
+    ' the "Portfolio" tab',
+  braveWalletNftsEmptyStateSearch: 'No NFTs matching search or filter found'
 })

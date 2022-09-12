@@ -32,25 +32,24 @@ void WalletBalance::Fetch(ledger::FetchBalanceCallback callback) {
   const auto wallet = ledger_->wallet()->GetWallet();
   if (!wallet) {
     BLOG(1, "Wallet is not created");
-    std::move(callback).Run(type::Result::LEDGER_OK, type::Balance::New());
+    std::move(callback).Run(mojom::Result::LEDGER_OK, mojom::Balance::New());
     return;
   }
 
   if (wallet->payment_id.empty()) {
     BLOG(0, "Payment ID is empty");
-    std::move(callback).Run(type::Result::LEDGER_ERROR, nullptr);
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
-  GetUnblindedTokens(type::Balance::New(), std::move(callback));
+  GetUnblindedTokens(mojom::Balance::New(), std::move(callback));
 }
 
-void WalletBalance::GetUnblindedTokens(
-    type::BalancePtr balance,
-    ledger::FetchBalanceCallback callback) {
+void WalletBalance::GetUnblindedTokens(mojom::BalancePtr balance,
+                                       ledger::FetchBalanceCallback callback) {
   if (!balance) {
     BLOG(0, "Balance is null");
-    std::move(callback).Run(type::Result::LEDGER_ERROR, std::move(balance));
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR, std::move(balance));
     return;
   }
 
@@ -58,18 +57,18 @@ void WalletBalance::GetUnblindedTokens(
       base::BindOnce(&WalletBalance::OnGetUnblindedTokens,
                      base::Unretained(this), *balance, std::move(callback));
   ledger_->database()->GetSpendableUnblindedTokensByBatchTypes(
-      {type::CredsBatchType::PROMOTION},
-      [callback = std::make_shared<decltype(tokens_callback)>(
-           std::move(tokens_callback))](type::UnblindedTokenList list) {
+      {mojom::CredsBatchType::PROMOTION},
+      [callback = std::make_shared<decltype(tokens_callback)>(std::move(
+           tokens_callback))](std::vector<mojom::UnblindedTokenPtr> list) {
         std::move(*callback).Run(std::move(list));
       });
 }
 
 void WalletBalance::OnGetUnblindedTokens(
-    type::Balance info,
+    mojom::Balance info,
     ledger::FetchBalanceCallback callback,
-    type::UnblindedTokenList list) {
-  auto info_ptr = type::Balance::New(info);
+    std::vector<mojom::UnblindedTokenPtr> list) {
+  auto info_ptr = mojom::Balance::New(info);
   double total = 0.0;
   for (auto & item : list) {
     total+=item->value;
@@ -79,17 +78,16 @@ void WalletBalance::OnGetUnblindedTokens(
   ExternalWallets(std::move(info_ptr), std::move(callback));
 }
 
-void WalletBalance::ExternalWallets(
-    type::BalancePtr balance,
-    ledger::FetchBalanceCallback callback) {
+void WalletBalance::ExternalWallets(mojom::BalancePtr balance,
+                                    ledger::FetchBalanceCallback callback) {
   FetchBalanceUphold(std::move(balance), std::move(callback));
 }
 
-void WalletBalance::FetchBalanceUphold(type::BalancePtr balance,
+void WalletBalance::FetchBalanceUphold(mojom::BalancePtr balance,
                                        ledger::FetchBalanceCallback callback) {
   if (!balance) {
     BLOG(0, "Balance is null");
-    std::move(callback).Run(type::Result::LEDGER_ERROR, std::move(balance));
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR, std::move(balance));
     return;
   }
 
@@ -99,20 +97,20 @@ void WalletBalance::FetchBalanceUphold(type::BalancePtr balance,
 
   auto wallet = ledger_->uphold()->GetWallet();
   if (!wallet) {
-    std::move(balance_callback).Run(type::Result::LEDGER_OK, 0);
+    std::move(balance_callback).Run(mojom::Result::LEDGER_OK, 0);
     return;
   }
 
   ledger_->uphold()->FetchBalance(std::move(balance_callback));
 }
 
-void WalletBalance::OnFetchBalanceUphold(type::Balance info,
+void WalletBalance::OnFetchBalanceUphold(mojom::Balance info,
                                          ledger::FetchBalanceCallback callback,
-                                         type::Result result,
+                                         mojom::Result result,
                                          double balance) {
-  type::BalancePtr info_ptr = type::Balance::New(info);
+  mojom::BalancePtr info_ptr = mojom::Balance::New(info);
 
-  if (result == type::Result::LEDGER_OK) {
+  if (result == mojom::Result::LEDGER_OK) {
     info_ptr->wallets.insert(std::make_pair(constant::kWalletUphold, balance));
     info_ptr->total += balance;
   } else {
@@ -123,11 +121,11 @@ void WalletBalance::OnFetchBalanceUphold(type::Balance info,
 }
 
 void WalletBalance::FetchBalanceBitflyer(
-    type::BalancePtr balance,
+    mojom::BalancePtr balance,
     ledger::FetchBalanceCallback callback) {
   if (!balance) {
     BLOG(0, "Balance is null");
-    std::move(callback).Run(type::Result::LEDGER_ERROR, std::move(balance));
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR, std::move(balance));
     return;
   }
 
@@ -137,7 +135,7 @@ void WalletBalance::FetchBalanceBitflyer(
 
   auto wallet = ledger_->bitflyer()->GetWallet();
   if (!wallet) {
-    std::move(balance_callback).Run(type::Result::LEDGER_OK, 0);
+    std::move(balance_callback).Run(mojom::Result::LEDGER_OK, 0);
     return;
   }
 
@@ -145,13 +143,13 @@ void WalletBalance::FetchBalanceBitflyer(
 }
 
 void WalletBalance::OnFetchBalanceBitflyer(
-    type::Balance info,
+    mojom::Balance info,
     ledger::FetchBalanceCallback callback,
-    type::Result result,
+    mojom::Result result,
     double balance) {
-  type::BalancePtr info_ptr = type::Balance::New(info);
+  mojom::BalancePtr info_ptr = mojom::Balance::New(info);
 
-  if (result == type::Result::LEDGER_OK) {
+  if (result == mojom::Result::LEDGER_OK) {
     info_ptr->wallets.insert(
         std::make_pair(constant::kWalletBitflyer, balance));
     info_ptr->total += balance;
@@ -162,11 +160,11 @@ void WalletBalance::OnFetchBalanceBitflyer(
   FetchBalanceGemini(std::move(info_ptr), std::move(callback));
 }
 
-void WalletBalance::FetchBalanceGemini(type::BalancePtr balance,
+void WalletBalance::FetchBalanceGemini(mojom::BalancePtr balance,
                                        ledger::FetchBalanceCallback callback) {
   if (!balance) {
     BLOG(0, "Balance is null");
-    std::move(callback).Run(type::Result::LEDGER_ERROR, std::move(balance));
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR, std::move(balance));
     return;
   }
 
@@ -176,20 +174,20 @@ void WalletBalance::FetchBalanceGemini(type::BalancePtr balance,
 
   auto wallet = ledger_->gemini()->GetWallet();
   if (!wallet) {
-    std::move(balance_callback).Run(type::Result::LEDGER_OK, 0);
+    std::move(balance_callback).Run(mojom::Result::LEDGER_OK, 0);
     return;
   }
 
   ledger_->gemini()->FetchBalance(std::move(balance_callback));
 }
 
-void WalletBalance::OnFetchBalanceGemini(type::Balance info,
+void WalletBalance::OnFetchBalanceGemini(mojom::Balance info,
                                          ledger::FetchBalanceCallback callback,
-                                         type::Result result,
+                                         mojom::Result result,
                                          double balance) {
-  type::BalancePtr info_ptr = type::Balance::New(info);
+  mojom::BalancePtr info_ptr = mojom::Balance::New(info);
 
-  if (result == type::Result::LEDGER_OK) {
+  if (result == mojom::Result::LEDGER_OK) {
     info_ptr->wallets.insert(std::make_pair(constant::kWalletGemini, balance));
     info_ptr->total += balance;
   } else {

@@ -15,11 +15,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-using std::placeholders::_1;
-
-namespace ledger {
-namespace endpoint {
-namespace gemini {
+namespace ledger::endpoint::gemini {
 
 PostRecipientId::PostRecipientId(LedgerImpl* ledger) : ledger_(ledger) {
   DCHECK(ledger_);
@@ -31,31 +27,31 @@ std::string PostRecipientId::GetUrl() {
   return GetApiServerUrl("/v1/payments/recipientIds");
 }
 
-type::Result PostRecipientId::ParseBody(const std::string& body,
-                                        std::string* recipient_id) {
+mojom::Result PostRecipientId::ParseBody(const std::string& body,
+                                         std::string* recipient_id) {
   DCHECK(recipient_id);
 
   absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* result = dict.FindString("result");
   if (!result || *result != "OK") {
     BLOG(0, "Failed creating recipient_id");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   const auto* id = dict.FindString("recipient_id");
   if (!id) {
     BLOG(0, "Response missing a recipient_id");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   *recipient_id = *id;
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
 std::string PostRecipientId::GeneratePayload() {
@@ -72,45 +68,37 @@ std::string PostRecipientId::GeneratePayload() {
 
 void PostRecipientId::Request(const std::string& token,
                               PostRecipientIdCallback callback) {
-  auto url_callback =
-      std::bind(&PostRecipientId::OnRequest, this, _1, callback);
-
-  auto request = type::UrlRequest::New();
-  auto payload = GeneratePayload();
-
+  auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
-  request->method = type::UrlMethod::POST;
+  request->method = mojom::UrlMethod::POST;
   request->headers = RequestAuthorization(token);
-  request->headers.push_back("X-GEMINI-PAYLOAD: " + payload);
+  request->headers.push_back("X-GEMINI-PAYLOAD: " + GeneratePayload());
 
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger_->LoadURL(std::move(request),
+                   base::BindOnce(&PostRecipientId::OnRequest,
+                                  base::Unretained(this), std::move(callback)));
 }
 
-void PostRecipientId::OnRequest(const type::UrlResponse& response,
-                                PostRecipientIdCallback callback) {
+void PostRecipientId::OnRequest(PostRecipientIdCallback callback,
+                                const mojom::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
 
   auto header = response.headers.find("www-authenticate");
   if (header != response.headers.end()) {
     std::string auth_header = header->second;
     if (auth_header.find("unverified_account") != std::string::npos) {
-      callback(type::Result::NOT_FOUND, "");
-      return;
+      return std::move(callback).Run(mojom::Result::NOT_FOUND, "");
     }
   }
 
-  type::Result result = CheckStatusCode(response.status_code);
-
-  if (result != type::Result::LEDGER_OK) {
-    callback(result, "");
-    return;
+  mojom::Result result = CheckStatusCode(response.status_code);
+  if (result != mojom::Result::LEDGER_OK) {
+    return std::move(callback).Run(result, "");
   }
 
   std::string recipient_id;
   result = ParseBody(response.body, &recipient_id);
-  callback(result, recipient_id);
+  std::move(callback).Run(result, std::move(recipient_id));
 }
 
-}  // namespace gemini
-}  // namespace endpoint
-}  // namespace ledger
+}  // namespace ledger::endpoint::gemini

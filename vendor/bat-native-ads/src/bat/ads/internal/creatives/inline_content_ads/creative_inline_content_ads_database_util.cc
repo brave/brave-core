@@ -9,8 +9,7 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
 
-namespace ads {
-namespace database {
+namespace ads::database {
 
 void DeleteCreativeInlineContentAds() {
   table::CreativeInlineContentAds database_table;
@@ -38,5 +37,4 @@ void SaveCreativeInlineContentAds(
                       }));
 }
 
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database

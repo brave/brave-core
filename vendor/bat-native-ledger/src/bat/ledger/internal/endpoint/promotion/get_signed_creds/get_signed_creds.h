@@ -49,7 +49,7 @@ namespace endpoint {
 namespace promotion {
 
 using GetSignedCredsCallback =
-    base::OnceCallback<void(type::Result, type::CredsBatchPtr)>;
+    base::OnceCallback<void(mojom::Result, mojom::CredsBatchPtr)>;
 
 class GetSignedCreds {
  public:
@@ -66,14 +66,12 @@ class GetSignedCreds {
     const std::string& promotion_id,
     const std::string& claim_id);
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(const int status_code);
 
-  type::Result ParseBody(
-      const std::string& body,
-      type::CredsBatch* batch);
+  mojom::Result ParseBody(const std::string& body, mojom::CredsBatch* batch);
 
   void OnRequest(GetSignedCredsCallback callback,
-                 const type::UrlResponse& response);
+                 const mojom::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

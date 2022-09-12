@@ -7,10 +7,12 @@
 
 #include <utility>
 
+#include "absl/types/optional.h"
 #include "base/bind.h"
 #include "base/check_op.h"
 #include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
+#include "bat/ads/internal/account/confirmations/confirmation_util.h"
 #include "bat/ads/internal/account/confirmations/confirmations.h"
 #include "bat/ads/internal/account/deposits/deposits_factory.h"
 #include "bat/ads/internal/account/issuers/issuer_types.h"
@@ -31,7 +33,6 @@
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"  // IWYU pragma: keep
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
@@ -273,13 +274,13 @@ void Account::OnPrefChanged(const std::string& path) {
 }
 
 void Account::OnDidConfirm(const ConfirmationInfo& confirmation) {
-  DCHECK(confirmation.IsValid());
+  DCHECK(IsValid(confirmation));
 
   TopUpUnblindedTokens();
 }
 
 void Account::OnFailedToConfirm(const ConfirmationInfo& confirmation) {
-  DCHECK(confirmation.IsValid());
+  DCHECK(IsValid(confirmation));
 
   TopUpUnblindedTokens();
 }

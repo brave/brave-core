@@ -27,9 +27,8 @@ class DatabaseMediaPublisherInfo: public DatabaseTable {
       ledger::PublisherInfoCallback callback);
 
  private:
-  void OnGetRecord(
-      type::DBCommandResponsePtr response,
-      ledger::PublisherInfoCallback callback);
+  void OnGetRecord(mojom::DBCommandResponsePtr response,
+                   ledger::PublisherInfoCallback callback);
 };
 
 }  // namespace database

@@ -5,9 +5,7 @@
      You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
-
     <dimen name="omnibox_brave_search_banner_height">150dp</dimen>
-    <dimen name="omnibox_brave_search_banner_offset">18dp</dimen>
     <dimen name="omnibox_brave_search_banner_text_desc_right_margin">30dp</dimen>
     <dimen name="omnibox_brave_search_banner_text_desc_top_margin">4dp</dimen>
 </resources>

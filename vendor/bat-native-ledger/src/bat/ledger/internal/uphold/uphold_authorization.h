@@ -28,7 +28,7 @@ class UpholdAuthorization {
                  ledger::ExternalWalletAuthorizationCallback callback) const;
 
  private:
-  void OnAuthorize(const type::Result result,
+  void OnAuthorize(const mojom::Result result,
                    const std::string& token,
                    ledger::ExternalWalletAuthorizationCallback callback) const;
 

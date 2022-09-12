@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "absl/types/optional.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/batch_dleq_proof.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/dleq_proof.h"
@@ -15,13 +16,10 @@
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/verification_key.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/verification_signature.h"
 #include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace privacy {
-namespace cbr {
+namespace ads::privacy::cbr {
 
 namespace {
 constexpr char kMessage[] = "The quick brown fox jumps over the lazy dog";
@@ -104,6 +102,4 @@ TEST(BatAdsChallengeBypassRistrettoTest, ProveAndVerifyUnblindedToken) {
   }
 }
 
-}  // namespace cbr
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::cbr

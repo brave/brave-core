@@ -289,7 +289,7 @@ void UnitTestBase::SetDefaultPrefs() {
 
   ads_client_mock_->SetStringPref(prefs::kCatalogId, "");
   ads_client_mock_->SetIntegerPref(prefs::kCatalogVersion, 1);
-  ads_client_mock_->SetInt64Pref(prefs::kCatalogPing, 7200000);
+  ads_client_mock_->SetInt64Pref(prefs::kCatalogPing, 7'200'000);
   ads_client_mock_->SetTimePref(prefs::kCatalogLastUpdated, DistantPast());
 
   ads_client_mock_->SetInt64Pref(prefs::kIssuerPing, 0);

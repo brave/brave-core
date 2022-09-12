@@ -7,22 +7,12 @@
 
 namespace ads {
 
-CatalogSegmentInfo::CatalogSegmentInfo() = default;
-
-CatalogSegmentInfo::CatalogSegmentInfo(const CatalogSegmentInfo& info) =
-    default;
-
-CatalogSegmentInfo& CatalogSegmentInfo::operator=(
-    const CatalogSegmentInfo& info) = default;
-
-CatalogSegmentInfo::~CatalogSegmentInfo() = default;
-
-bool CatalogSegmentInfo::operator==(const CatalogSegmentInfo& rhs) const {
-  return code == rhs.code && name == rhs.name;
+bool operator==(const CatalogSegmentInfo& lhs, const CatalogSegmentInfo& rhs) {
+  return lhs.code == rhs.code && lhs.name == rhs.name;
 }
 
-bool CatalogSegmentInfo::operator!=(const CatalogSegmentInfo& rhs) const {
-  return !(*this == rhs);
+bool operator!=(const CatalogSegmentInfo& lhs, const CatalogSegmentInfo& rhs) {
+  return !(lhs == rhs);
 }
 
 }  // namespace ads

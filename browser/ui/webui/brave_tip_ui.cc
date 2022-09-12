@@ -61,15 +61,15 @@ class TipMessageHandler : public WebUIMessageHandler,
                              bool success) override;
 
   void OnPendingContributionSaved(RewardsService* rewards_service,
-                                  ledger::type::Result result) override;
+                                  ledger::mojom::Result result) override;
 
   void OnReconcileComplete(
       RewardsService* rewards_service,
-      const ledger::type::Result result,
+      const ledger::mojom::Result result,
       const std::string& contribution_id,
       const double amount,
-      const ledger::type::RewardsType type,
-      const ledger::type::ContributionProcessor processor) override;
+      const ledger::mojom::RewardsType type,
+      const ledger::mojom::ContributionProcessor processor) override;
 
   void OnUnblindedTokensReady(RewardsService* rewards_service) override;
 
@@ -78,40 +78,33 @@ class TipMessageHandler : public WebUIMessageHandler,
   void DialogReady(const base::Value::List& args);
   void GetPublisherBanner(const base::Value::List& args);
   void GetRewardsParameters(const base::Value::List& args);
-  void GetOnboardingStatus(const base::Value::List& args);
-  void SaveOnboardingResult(const base::Value::List& args);
   void OnTip(const base::Value::List& args);
   void GetRecurringTips(const base::Value::List& args);
   void GetReconcileStamp(const base::Value::List& args);
-  void GetAutoContributeAmount(const base::Value::List& args);
-  void SetAutoContributeAmount(const base::Value::List& args);
-  void GetAdsPerHour(const base::Value::List& args);
-  void SetAdsPerHour(const base::Value::List& args);
   void TweetTip(const base::Value::List& args);
   void GetExternalWallet(const base::Value::List& args);
   void FetchBalance(const base::Value::List& args);
 
   // Rewards service callbacks
-  void OnTipCallback(double amount, ledger::type::Result result);
+  void OnTipCallback(double amount, ledger::mojom::Result result);
 
   void GetReconcileStampCallback(uint64_t reconcile_stamp);
 
-  void GetAutoContributeAmountCallback(double amount);
+  void GetRecurringTipsCallback(
+      std::vector<ledger::mojom::PublisherInfoPtr> list);
 
-  void GetRecurringTipsCallback(ledger::type::PublisherInfoList list);
+  void GetExternalWalletCallback(const ledger::mojom::Result result,
+                                 ledger::mojom::ExternalWalletPtr wallet);
 
-  void GetExternalWalletCallback(const ledger::type::Result result,
-                                 ledger::type::ExternalWalletPtr wallet);
-
-  void GetPublisherBannerCallback(ledger::type::PublisherBannerPtr banner);
+  void GetPublisherBannerCallback(ledger::mojom::PublisherBannerPtr banner);
 
   void GetShareURLCallback(const std::string& url);
 
-  void FetchBalanceCallback(const ledger::type::Result result,
-                            ledger::type::BalancePtr balance);
+  void FetchBalanceCallback(const ledger::mojom::Result result,
+                            ledger::mojom::BalancePtr balance);
 
   void GetRewardsParametersCallback(
-      ledger::type::RewardsParametersPtr parameters);
+      ledger::mojom::RewardsParametersPtr parameters);
 
   RewardsService* rewards_service_ = nullptr;     // NOT OWNED
   brave_ads::AdsService* ads_service_ = nullptr;  // NOT OWNED
@@ -142,16 +135,6 @@ void TipMessageHandler::RegisterMessages() {
                           base::Unretained(this)));
 
   web_ui()->RegisterMessageCallback(
-      "getOnboardingStatus",
-      base::BindRepeating(&TipMessageHandler::GetOnboardingStatus,
-                          base::Unretained(this)));
-
-  web_ui()->RegisterMessageCallback(
-      "saveOnboardingResult",
-      base::BindRepeating(&TipMessageHandler::SaveOnboardingResult,
-                          base::Unretained(this)));
-
-  web_ui()->RegisterMessageCallback(
       "onTip",
       base::BindRepeating(&TipMessageHandler::OnTip, base::Unretained(this)));
 
@@ -164,24 +147,6 @@ void TipMessageHandler::RegisterMessages() {
       "getReconcileStamp",
       base::BindRepeating(&TipMessageHandler::GetReconcileStamp,
                           base::Unretained(this)));
-
-  web_ui()->RegisterMessageCallback(
-      "getAutoContributeAmount",
-      base::BindRepeating(&TipMessageHandler::GetAutoContributeAmount,
-                          base::Unretained(this)));
-
-  web_ui()->RegisterMessageCallback(
-      "setAutoContributeAmount",
-      base::BindRepeating(&TipMessageHandler::SetAutoContributeAmount,
-                          base::Unretained(this)));
-
-  web_ui()->RegisterMessageCallback(
-      "getAdsPerHour", base::BindRepeating(&TipMessageHandler::GetAdsPerHour,
-                                           base::Unretained(this)));
-
-  web_ui()->RegisterMessageCallback(
-      "setAdsPerHour", base::BindRepeating(&TipMessageHandler::SetAdsPerHour,
-                                           base::Unretained(this)));
 
   web_ui()->RegisterMessageCallback(
       "tweetTip", base::BindRepeating(&TipMessageHandler::TweetTip,
@@ -217,18 +182,18 @@ void TipMessageHandler::OnRecurringTipSaved(RewardsService* rewards_service,
 
 void TipMessageHandler::OnPendingContributionSaved(
     RewardsService* rewards_service,
-    ledger::type::Result result) {
+    ledger::mojom::Result result) {
   FireWebUIListener("pendingContributionSaved",
                     base::Value(static_cast<int>(result)));
 }
 
 void TipMessageHandler::OnReconcileComplete(
     RewardsService* rewards_service,
-    const ledger::type::Result result,
+    const ledger::mojom::Result result,
     const std::string& contribution_id,
     const double amount,
-    const ledger::type::RewardsType type,
-    const ledger::type::ContributionProcessor processor) {
+    const ledger::mojom::RewardsType type,
+    const ledger::mojom::ContributionProcessor processor) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -293,25 +258,6 @@ void TipMessageHandler::GetRewardsParameters(const base::Value::List& args) {
                      weak_factory_.GetWeakPtr()));
 }
 
-void TipMessageHandler::GetOnboardingStatus(const base::Value::List& args) {
-  if (!rewards_service_) {
-    return;
-  }
-  AllowJavascript();
-  base::Value::Dict data;
-  data.Set("showOnboarding", rewards_service_->ShouldShowOnboarding());
-  FireWebUIListener("onboardingStatusUpdated", base::Value(std::move(data)));
-}
-
-void TipMessageHandler::SaveOnboardingResult(const base::Value::List& args) {
-  CHECK_EQ(1U, args.size());
-  if (!rewards_service_)
-    return;
-
-  if (args[0].GetString() == "opted-in")
-    rewards_service_->EnableRewards();
-}
-
 void TipMessageHandler::OnTip(const base::Value::List& args) {
   CHECK_EQ(3U, args.size());
   const std::string publisher_key = args[0].GetString();
@@ -324,7 +270,7 @@ void TipMessageHandler::OnTip(const base::Value::List& args) {
 
   if (recurring && amount <= 0) {
     rewards_service_->RemoveRecurringTip(publisher_key);
-    OnTipCallback(0, ledger::type::Result::LEDGER_OK);
+    OnTipCallback(0, ledger::mojom::Result::LEDGER_OK);
   } else if (amount > 0) {
     rewards_service_->OnTip(publisher_key, amount, recurring,
                             base::BindOnce(&TipMessageHandler::OnTipCallback,
@@ -340,48 +286,6 @@ void TipMessageHandler::GetReconcileStamp(const base::Value::List& args) {
   rewards_service_->GetReconcileStamp(
       base::BindOnce(&TipMessageHandler::GetReconcileStampCallback,
                      weak_factory_.GetWeakPtr()));
-}
-
-void TipMessageHandler::GetAutoContributeAmount(const base::Value::List& args) {
-  if (!rewards_service_) {
-    return;
-  }
-
-  rewards_service_->GetAutoContributionAmount(
-      base::BindOnce(&TipMessageHandler::GetAutoContributeAmountCallback,
-                     weak_factory_.GetWeakPtr()));
-}
-
-void TipMessageHandler::SetAutoContributeAmount(const base::Value::List& args) {
-  CHECK_EQ(args.size(), 1U);
-  double amount = args[0].GetDouble();
-  if (!rewards_service_ || amount < 0) {
-    return;
-  }
-  AllowJavascript();
-  rewards_service_->SetAutoContributionAmount(amount);
-  FireWebUIListener("autoContributeAmountUpdated", base::Value(amount));
-}
-
-void TipMessageHandler::GetAdsPerHour(const base::Value::List& args) {
-  if (!ads_service_) {
-    return;
-  }
-  AllowJavascript();
-  double ads_per_hour =
-      static_cast<double>(ads_service_->GetMaximumNotificationAdsPerHour());
-  FireWebUIListener("adsPerHourUpdated", base::Value(ads_per_hour));
-}
-
-void TipMessageHandler::SetAdsPerHour(const base::Value::List& args) {
-  CHECK_EQ(args.size(), 1U);
-  const double ads_per_hour = args[0].GetDouble();
-  if (!ads_service_ || ads_per_hour < 0) {
-    return;
-  }
-  AllowJavascript();
-  ads_service_->SetMaximumNotificationAdsPerHour(ads_per_hour);
-  FireWebUIListener("adsPerHourUpdated", base::Value(ads_per_hour));
 }
 
 void TipMessageHandler::TweetTip(const base::Value::List& args) {
@@ -449,7 +353,7 @@ void TipMessageHandler::GetRecurringTips(const base::Value::List& args) {
 }
 
 void TipMessageHandler::GetRewardsParametersCallback(
-    ledger::type::RewardsParametersPtr parameters) {
+    ledger::mojom::RewardsParametersPtr parameters) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -479,7 +383,6 @@ void TipMessageHandler::GetRewardsParametersCallback(
     data.Set("rate", parameters->rate);
     data.Set("tipChoices", std::move(tip_choices));
     data.Set("monthlyTipChoices", std::move(monthly_choices));
-    data.Set("autoContributeChoices", std::move(ac_choices));
     data.Set("payoutStatus", std::move(payout_status));
   }
 
@@ -487,7 +390,7 @@ void TipMessageHandler::GetRewardsParametersCallback(
 }
 
 void TipMessageHandler::GetRecurringTipsCallback(
-    ledger::type::PublisherInfoList list) {
+    std::vector<ledger::mojom::PublisherInfoPtr> list) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -504,7 +407,7 @@ void TipMessageHandler::GetRecurringTipsCallback(
 }
 
 void TipMessageHandler::GetPublisherBannerCallback(
-    ledger::type::PublisherBannerPtr banner) {
+    ledger::mojom::PublisherBannerPtr banner) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -532,9 +435,9 @@ void TipMessageHandler::GetPublisherBannerCallback(
 }
 
 void TipMessageHandler::OnTipCallback(double amount,
-                                      ledger::type::Result result) {
+                                      ledger::mojom::Result result) {
   if (IsJavascriptAllowed()) {
-    result == ledger::type::Result::LEDGER_OK
+    result == ledger::mojom::Result::LEDGER_OK
         ? FireWebUIListener("tipProcessed", base::Value(amount))
         : FireWebUIListener("tipFailed");
   }
@@ -547,13 +450,6 @@ void TipMessageHandler::GetReconcileStampCallback(uint64_t reconcile_stamp) {
 
   const std::string stamp = base::NumberToString(reconcile_stamp);
   FireWebUIListener("reconcileStampUpdated", base::Value(stamp));
-}
-
-void TipMessageHandler::GetAutoContributeAmountCallback(double amount) {
-  if (!IsJavascriptAllowed()) {
-    return;
-  }
-  FireWebUIListener("autoContributeAmountUpdated", base::Value(amount));
 }
 
 void TipMessageHandler::GetShareURLCallback(const std::string& url) {
@@ -571,8 +467,9 @@ void TipMessageHandler::GetShareURLCallback(const std::string& url) {
       ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false));
 }
 
-void TipMessageHandler::FetchBalanceCallback(const ledger::type::Result result,
-                                             ledger::type::BalancePtr balance) {
+void TipMessageHandler::FetchBalanceCallback(
+    const ledger::mojom::Result result,
+    ledger::mojom::BalancePtr balance) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -580,7 +477,7 @@ void TipMessageHandler::FetchBalanceCallback(const ledger::type::Result result,
   base::Value::Dict data;
   data.Set("status", static_cast<int>(result));
 
-  if (result == ledger::type::Result::LEDGER_OK && balance) {
+  if (result == ledger::mojom::Result::LEDGER_OK && balance) {
     base::Value::Dict wallets;
     for (const auto& wallet : balance->wallets) {
       wallets.Set(wallet.first, wallet.second);
@@ -597,8 +494,8 @@ void TipMessageHandler::FetchBalanceCallback(const ledger::type::Result result,
 }
 
 void TipMessageHandler::GetExternalWalletCallback(
-    const ledger::type::Result result,
-    ledger::type::ExternalWalletPtr wallet) {
+    const ledger::mojom::Result result,
+    ledger::mojom::ExternalWalletPtr wallet) {
   if (!IsJavascriptAllowed()) {
     return;
   }

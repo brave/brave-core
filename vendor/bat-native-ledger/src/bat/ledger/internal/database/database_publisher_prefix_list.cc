@@ -63,25 +63,22 @@ void DatabasePublisherPrefixList::Search(
       publisher_key,
       kHashPrefixSize);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = base::StringPrintf(
       "SELECT EXISTS(SELECT hash_prefix FROM %s WHERE hash_prefix = x'%s')",
       kTableName,
       hex.c_str());
 
-  command->record_bindings = {
-    type::DBCommand::RecordBindingType::BOOL_TYPE
-  };
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::BOOL_TYPE};
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
   ledger_->RunDBTransaction(
-      std::move(transaction), [callback](type::DBCommandResponsePtr response) {
+      std::move(transaction), [callback](mojom::DBCommandResponsePtr response) {
         if (!response || !response->result ||
-            response->status !=
-              type::DBCommandResponse::Status::RESPONSE_OK ||
+            response->status != mojom::DBCommandResponse::Status::RESPONSE_OK ||
             response->result->get_records().empty()) {
           BLOG(0, "Unexpected database result while searching "
               "publisher prefix list.");
@@ -97,12 +94,12 @@ void DatabasePublisherPrefixList::Reset(
     ledger::LegacyResultCallback callback) {
   if (reader_) {
     BLOG(1, "Publisher prefix list batch insert in progress");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
   if (reader->empty()) {
     BLOG(0, "Cannot reset with an empty publisher prefix list");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
   reader_ = std::move(reader);
@@ -114,12 +111,12 @@ void DatabasePublisherPrefixList::InsertNext(
     ledger::LegacyResultCallback callback) {
   DCHECK(reader_ && begin != reader_->end());
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   if (begin == reader_->begin()) {
     BLOG(1, "Clearing publisher prefixes table");
-    auto command = type::DBCommand::New();
-    command->type = type::DBCommand::Type::RUN;
+    auto command = mojom::DBCommand::New();
+    command->type = mojom::DBCommand::Type::RUN;
     command->command = base::StringPrintf("DELETE FROM %s", kTableName);
     transaction->commands.push_back(std::move(command));
   }
@@ -129,8 +126,8 @@ void DatabasePublisherPrefixList::InsertNext(
   BLOG(1, "Inserting " << std::get<size_t>(insert_tuple)
       << " records into publisher prefix table");
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = base::StringPrintf(
       "INSERT OR REPLACE INTO %s (hash_prefix) VALUES %s",
       kTableName,
@@ -142,18 +139,17 @@ void DatabasePublisherPrefixList::InsertNext(
 
   ledger_->RunDBTransaction(
       std::move(transaction),
-      [this, iter, callback](type::DBCommandResponsePtr response) {
+      [this, iter, callback](mojom::DBCommandResponsePtr response) {
         if (!response ||
-            response->status !=
-              type::DBCommandResponse::Status::RESPONSE_OK) {
+            response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
           reader_ = nullptr;
-          callback(type::Result::LEDGER_ERROR);
+          callback(mojom::Result::LEDGER_ERROR);
           return;
         }
 
         if (iter == reader_->end()) {
           reader_ = nullptr;
-          callback(type::Result::LEDGER_OK);
+          callback(mojom::Result::LEDGER_OK);
           return;
         }
 

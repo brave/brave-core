@@ -25,8 +25,7 @@
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
-namespace ads {
-namespace notification_ads {
+namespace ads::notification_ads {
 
 EligibleAdsV1::EligibleAdsV1(
     geographic::SubdivisionTargeting* subdivision_targeting,
@@ -225,5 +224,4 @@ CreativeNotificationAdList EligibleAdsV1::FilterCreativeAds(
   return eligible_creative_ads;
 }
 
-}  // namespace notification_ads
-}  // namespace ads
+}  // namespace ads::notification_ads

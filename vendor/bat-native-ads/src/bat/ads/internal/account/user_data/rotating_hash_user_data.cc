@@ -15,8 +15,7 @@
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ads/sys_info.h"
 
-namespace ads {
-namespace user_data {
+namespace ads::user_data {
 
 namespace {
 constexpr char kRotatingHashKey[] = "rotating_hash";
@@ -42,5 +41,4 @@ base::Value::Dict GetRotatingHash(const std::string& creative_instance_id) {
   return user_data;
 }
 
-}  // namespace user_data
-}  // namespace ads
+}  // namespace ads::user_data

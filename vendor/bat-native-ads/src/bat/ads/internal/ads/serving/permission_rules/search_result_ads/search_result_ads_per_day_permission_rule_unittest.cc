@@ -14,8 +14,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace search_result_ads {
+namespace ads::search_result_ads {
 
 class BatAdsSearchResultAdsPerDayPermissionRuleTest : public UnitTestBase {
  protected:
@@ -95,5 +94,4 @@ TEST_F(BatAdsSearchResultAdsPerDayPermissionRuleTest,
   EXPECT_FALSE(is_allowed);
 }
 
-}  // namespace search_result_ads
-}  // namespace ads
+}  // namespace ads::search_result_ads

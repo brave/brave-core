@@ -10,13 +10,11 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace privacy {
-namespace p2a {
+namespace ads::privacy::p2a {
 
 namespace {
 
-constexpr char kQuestionsAsJosn[] = R"(["question_1","question_2"])";
+constexpr char kQuestionsAsJson[] = R"(["question_1","question_2"])";
 constexpr char kNoQuestionsAsJson[] = "[]";
 
 }  // namespace
@@ -28,7 +26,7 @@ TEST(BatAdsP2AValuesUtilTest, QuestionsToValue) {
   const base::Value::List list = QuestionsToValue({"question_1", "question_2"});
 
   // Assert
-  const base::Value value = base::test::ParseJson(kQuestionsAsJosn);
+  const base::Value value = base::test::ParseJson(kQuestionsAsJson);
   const base::Value::List* expected_list = value.GetIfList();
   ASSERT_TRUE(expected_list);
 
@@ -49,6 +47,4 @@ TEST(BatAdsP2AValuesUtilTest, NoQuestionsToValue) {
   EXPECT_EQ(*expected_list, list);
 }
 
-}  // namespace p2a
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::p2a

@@ -11,8 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace user_data {
+namespace ads::user_data {
 
 namespace {
 constexpr char kCatalogId[] = "04a13086-8fd8-4dce-a44f-afe86f14a662";
@@ -40,5 +39,4 @@ TEST_F(BatAdsConfirmationCatalogDtoUserDataTest, GetCatalog) {
   EXPECT_EQ(expected_user_data, user_data);
 }
 
-}  // namespace user_data
-}  // namespace ads
+}  // namespace ads::user_data

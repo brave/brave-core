@@ -8,6 +8,7 @@ import { WalletButton } from '../../../components/shared/style'
 import WebsiteIcon from '../../../assets/svg-icons/website-icon.svg'
 import TwitterIcon from '../../../assets/svg-icons/twitter-icon.svg'
 import FacebookIcon from '../../../assets/svg-icons/facebook-icon.svg'
+import MagnifyIcon from '../../../assets/svg-icons/magnify-icon.svg'
 import { OpenNewIcon } from 'brave-ui/components/icons'
 
 export const nftImageDimension = '440px'
@@ -23,6 +24,7 @@ export const StyledWrapper = styled.div`
 `
 
 export const NftImageWrapper = styled.div<{ isLoading: boolean }>`
+  position: relative;
   display: flex;
   width: ${p => p.isLoading ? 0 : nftImageDimension};
   height: ${p => p.isLoading ? 0 : nftImageDimension};
@@ -231,4 +233,21 @@ export const ExplorerIcon = styled(OpenNewIcon)`
   width: 14px;
   height: 14px;
   color: ${(p) => p.theme.color.interactive05};
+`
+
+export const MagnifyButton = styled(WalletButton)`
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  right: 17px;
+  bottom: 17px;
+  width: 36px;
+  height: 36px;
+  background-image: url(${MagnifyIcon});
+  background-size: contain;
+  background-color: transparent;
+  cursor: pointer;
+  border-radius: 50%;
+  border-width: 0;
 `

@@ -277,7 +277,8 @@ void BraveToolbarView::ShowBookmarkBubble(
     anchor_view = bookmark_;
 
   std::unique_ptr<BubbleSyncPromoDelegate> delegate;
-  delegate.reset(new BookmarkBubbleSignInDelegate(browser()->profile()));
+  delegate =
+      std::make_unique<BookmarkBubbleSignInDelegate>(browser()->profile());
   BookmarkBubbleView::ShowBubble(anchor_view, bookmark_, observer,
                                  std::move(delegate), browser_->profile(), url,
                                  already_bookmarked);
@@ -324,6 +325,5 @@ void BraveToolbarView::ResetButtonBounds() {
     const int bookmark_x =
         location_bar_->x() - bookmark_width - button_right_margin;
     bookmark_->SetX(bookmark_x);
-    button_right_margin = bookmark_x;
   }
 }

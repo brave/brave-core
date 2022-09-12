@@ -33,17 +33,16 @@ class AttestationIOS : public Attestation {
   std::string ParseStartPayload(
       const std::string& response);
 
-  type::Result ParseClaimSolution(
-      const std::string& response,
-      std::string* nonce,
-      std::string* blob,
-      std::string* signature);
+  mojom::Result ParseClaimSolution(const std::string& response,
+                                   std::string* nonce,
+                                   std::string* blob,
+                                   std::string* signature);
 
   void OnStart(StartCallback callback,
-               type::Result result,
+               mojom::Result result,
                const std::string& nonce);
 
-  void OnConfirm(ConfirmCallback callback, type::Result result);
+  void OnConfirm(ConfirmCallback callback, mojom::Result result);
 
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;
 };

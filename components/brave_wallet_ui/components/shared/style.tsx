@@ -23,7 +23,7 @@ import EyeOnIcon from '../../assets/svg-icons/eye-on-icon.svg'
 import EyeOffIcon from '../../assets/svg-icons/eye-off-icon.svg'
 import CheckmarkSvg from '../../assets/svg-icons/big-checkmark.svg'
 import CloseSvg from '../../assets/svg-icons/close.svg'
-import ClipboardSvg from '../../assets/svg-icons/clipboard-icon.svg'
+import ClipboardSvg from '../../assets/svg-icons/copy-to-clipboard-icon.svg'
 import DownloadSvg from '../../assets/svg-icons/download-icon.svg'
 import CheckIconSvg from '../../assets/svg-icons/checkbox-check.svg'
 import SwitchDown from '../../assets/svg-icons/switch-icon.svg'
@@ -62,11 +62,12 @@ export const ErrorText = styled.span`
   margin-bottom: 10px;
 `
 
-interface FlexProps {
-  alignItems?: CSSProperties['alignItems']
-  justifyContent?: CSSProperties['justifyContent']
-  gap?: CSSProperties['gap']
-}
+type FlexProps = Partial<Pick<CSSProperties,
+  | 'flex'
+  | 'alignItems'
+  | 'justifyContent'
+  | 'gap'
+>>
 
 // Mixins
 export const walletButtonFocusMixin = css`
@@ -83,6 +84,7 @@ export const Row = styled.div<FlexProps & {
 }>`
   display: flex;
   flex-direction: row;
+  flex: ${(p) => p.flex ?? 'unset'};
   align-items: ${(p) => p.alignItems ?? 'center'};
   justify-content: ${(p) => p.justifyContent ?? 'center'};
   gap: ${(p) => p.gap ?? 'unset'};
@@ -90,8 +92,13 @@ export const Row = styled.div<FlexProps & {
   max-width: ${(p) => p.maxWidth ?? 'unset'};
 `
 
-export const Column = styled.div<FlexProps & { fullWidth?: boolean }>`
+export const Column = styled.div<FlexProps & {
+  fullWidth?: boolean
+  fullHeight?: boolean
+}>`
+  height: ${(p) => p.fullHeight ? '100%' : 'unset'};
   width: ${(p) => p.fullWidth ? '100%' : 'unset'};
+  flex: ${(p) => p.flex ?? 'unset'};
   display: flex;
   flex-direction: column;
   align-items: ${(p) => p.alignItems ?? 'center'};

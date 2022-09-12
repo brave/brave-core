@@ -199,12 +199,11 @@ void FeedController::UpdateIfRemoteChanged() {
   api_request_helper_->Request(
       "HEAD", GetFeedUrl(), "", "", true,
       base::BindOnce(
-          [](FeedController* controller, const int status,
-             const std::string& body,
-             const base::flat_map<std::string, std::string>& headers) {
+          [](FeedController* controller,
+             api_request_helper::APIRequestResult api_request_result) {
             std::string etag;
-            if (headers.contains(kEtagHeaderKey)) {
-              etag = headers.at(kEtagHeaderKey);
+            if (api_request_result.headers().contains(kEtagHeaderKey)) {
+              etag = api_request_result.headers().at(kEtagHeaderKey);
             }
             // Empty etag means perhaps server isn't supporting
             // the header right now, so we assume we should
@@ -243,18 +242,19 @@ void FeedController::OnPublishersUpdated(PublishersController* controller) {
 void FeedController::FetchCombinedFeed(GetFeedItemsCallback callback) {
   // Handle the response
   auto response_handler = base::BindOnce(
-      [](FeedController* controller, GetFeedItemsCallback callback, int status,
-         const std::string& body,
-         const base::flat_map<std::string, std::string>& headers) {
+      [](FeedController* controller, GetFeedItemsCallback callback,
+         api_request_helper::APIRequestResult api_request_result) {
         std::string etag;
-        if (headers.contains(kEtagHeaderKey)) {
-          etag = headers.at(kEtagHeaderKey);
+        if (api_request_result.headers().contains(kEtagHeaderKey)) {
+          etag = api_request_result.headers().at(kEtagHeaderKey);
         }
-        VLOG(1) << "Downloaded feed, status: " << status << " etag: " << etag;
+        VLOG(1) << "Downloaded feed, status: "
+                << api_request_result.response_code() << " etag: " << etag;
         // Handle bad response
-        if (status != 200 || body.empty()) {
+        if (api_request_result.response_code() != 200 ||
+            api_request_result.body().empty()) {
           LOG(ERROR) << "Bad response from brave news feed.json. Status: "
-                     << status;
+                     << api_request_result.response_code();
           std::move(callback).Run({});
           return;
         }
@@ -262,7 +262,7 @@ void FeedController::FetchCombinedFeed(GetFeedItemsCallback callback) {
         // parsing was successful
         controller->current_feed_etag_ = etag;
         FeedItems feed_items;
-        ParseFeedItems(body, &feed_items);
+        ParseFeedItems(api_request_result.body(), &feed_items);
         std::move(callback).Run(std::move(feed_items));
       },
       base::Unretained(this), std::move(callback));

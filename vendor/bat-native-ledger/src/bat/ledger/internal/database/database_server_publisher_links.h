@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_DATABASE_DATABASE_SERVER_PUBLISHER_LINKS_H_
-#define BRAVELEDGER_DATABASE_DATABASE_SERVER_PUBLISHER_LINKS_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_SERVER_PUBLISHER_LINKS_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_SERVER_PUBLISHER_LINKS_H_
 
 #include <map>
 #include <string>
@@ -20,25 +20,22 @@ class DatabaseServerPublisherLinks: public DatabaseTable {
   explicit DatabaseServerPublisherLinks(LedgerImpl* ledger);
   ~DatabaseServerPublisherLinks() override;
 
-  void InsertOrUpdate(
-      type::DBTransaction* transaction,
-      const type::ServerPublisherInfo& server_info);
+  void InsertOrUpdate(mojom::DBTransaction* transaction,
+                      const mojom::ServerPublisherInfo& server_info);
 
-  void DeleteRecords(
-      type::DBTransaction* transaction,
-      const std::string& publisher_key_list);
+  void DeleteRecords(mojom::DBTransaction* transaction,
+                     const std::string& publisher_key_list);
 
   void GetRecord(
       const std::string& publisher_key,
       ServerPublisherLinksCallback callback);
 
  private:
-  void OnGetRecord(
-      type::DBCommandResponsePtr response,
-      ServerPublisherLinksCallback callback);
+  void OnGetRecord(mojom::DBCommandResponsePtr response,
+                   ServerPublisherLinksCallback callback);
 };
 
 }  // namespace database
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_DATABASE_DATABASE_SERVER_PUBLISHER_LINKS_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_SERVER_PUBLISHER_LINKS_H_

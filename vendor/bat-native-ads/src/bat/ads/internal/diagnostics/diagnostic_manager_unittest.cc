@@ -7,9 +7,9 @@
 
 #include <string>
 
+#include "absl/types/optional.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
-#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
@@ -17,7 +17,6 @@
 #include "bat/ads/internal/diagnostics/entries/last_unidle_time_diagnostic_util.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/sys_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds.*
 

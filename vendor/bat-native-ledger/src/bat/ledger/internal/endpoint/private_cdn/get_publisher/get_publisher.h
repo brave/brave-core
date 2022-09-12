@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_ENDPOINT_PRIVATE_CDN_GET_PUBLISHER_GET_PUBLISHER_H_
-#define BRAVELEDGER_ENDPOINT_PRIVATE_CDN_GET_PUBLISHER_GET_PUBLISHER_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PRIVATE_CDN_GET_PUBLISHER_GET_PUBLISHER_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PRIVATE_CDN_GET_PUBLISHER_GET_PUBLISHER_H_
 
 #include <string>
 
@@ -27,9 +27,9 @@ class LedgerImpl;
 namespace endpoint {
 namespace private_cdn {
 
-using GetPublisherCallback = std::function<void(
-    const type::Result result,
-    type::ServerPublisherInfoPtr info)>;
+using GetPublisherCallback =
+    std::function<void(const mojom::Result result,
+                       mojom::ServerPublisherInfoPtr info)>;
 
 class GetPublisher {
  public:
@@ -44,17 +44,15 @@ class GetPublisher {
  private:
   std::string GetUrl(const std::string& hash_prefix);
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(const int status_code);
 
-  type::Result ParseBody(
-      const std::string& body,
-      const std::string& publisher_key,
-      type::ServerPublisherInfo* info);
+  mojom::Result ParseBody(const std::string& body,
+                          const std::string& publisher_key,
+                          mojom::ServerPublisherInfo* info);
 
-  void OnRequest(
-      const type::UrlResponse& response,
-      const std::string& publisher_key,
-      GetPublisherCallback callback);
+  void OnRequest(const mojom::UrlResponse& response,
+                 const std::string& publisher_key,
+                 GetPublisherCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
@@ -63,4 +61,4 @@ class GetPublisher {
 }  // namespace endpoint
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_ENDPOINT_PRIVATE_CDN_GET_PUBLISHER_GET_PUBLISHER_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PRIVATE_CDN_GET_PUBLISHER_GET_PUBLISHER_H_

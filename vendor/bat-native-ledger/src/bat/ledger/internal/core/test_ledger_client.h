@@ -162,7 +162,7 @@ class TestLedgerClient : public LedgerClient {
 
   // Test environment setup methods:
 
-  void SetOptionForTesting(const std::string& name, base::Value&& value);
+  void SetOptionForTesting(const std::string& name, base::Value value);
 
   void AddNetworkResultForTesting(const std::string& url,
                                   mojom::UrlMethod method,
@@ -181,8 +181,8 @@ class TestLedgerClient : public LedgerClient {
                                   client::RunDBTransactionCallback callback);
 
   LedgerDatabase ledger_database_;
-  base::Value state_store_;
-  base::Value option_store_;
+  base::Value::Dict state_store_;
+  base::Value::Dict option_store_;
   std::list<TestNetworkResult> network_results_;
   LogCallback log_callback_;
   base::WeakPtrFactory<TestLedgerClient> weak_factory_{this};

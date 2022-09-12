@@ -10,29 +10,16 @@ package org.chromium.chrome.browser.omnibox.suggestions.brave_search;
 import android.content.res.Configuration;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.chromium.chrome.browser.omnibox.OmniboxPrefManager;
 import org.chromium.chrome.browser.omnibox.R;
-import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.ui.modelutil.PropertyKey;
 import org.chromium.ui.modelutil.PropertyModel;
 
 public class BraveSearchBannerViewBinder {
     public static void bind(PropertyModel model, View contentView, PropertyKey propertyKey) {
-        if (!DeviceFormFactor.isNonMultiDisplayContextOnTablet(contentView.getContext())) {
-            final LinearLayout linearLayout = contentView.findViewById(R.id.linear_layout);
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-            final int padding = contentView.getResources().getDimensionPixelSize(
-                    R.dimen.omnibox_brave_search_banner_offset);
-            params.leftMargin = padding;
-            params.rightMargin = padding;
-            linearLayout.setLayoutParams(params);
-        }
-
         int orientation = contentView.getContext().getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             final TextView textViewDesc = contentView.findViewById(R.id.textview_desc);

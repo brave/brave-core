@@ -11,6 +11,7 @@
 
 #include "base/base64.h"
 #include "base/check.h"
+#include "base/ranges/algorithm.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 
@@ -24,9 +25,8 @@ absl::optional<uint8_t> GetAccountIndex(
   if (accounts.size() > std::numeric_limits<uint8_t>::max())
     return absl::nullopt;
 
-  auto it = std::find_if(
-      accounts.begin(), accounts.end(),
-      [&](const auto& account) { return account.pubkey == target_account; });
+  auto it =
+      base::ranges::find(accounts, target_account, &SolanaAccountMeta::pubkey);
 
   if (it == accounts.end())
     return absl::nullopt;
@@ -114,8 +114,7 @@ absl::optional<SolanaInstruction> SolanaInstruction::Deserialize(
     uint8_t account_index = bytes[(*bytes_index)++];
     if (account_index >= message_account_metas.size())
       return absl::nullopt;
-    account_metas.push_back(
-        SolanaAccountMeta(message_account_metas[account_index]));
+    account_metas.emplace_back(message_account_metas[account_index]);
   }
 
   ret = CompactU16Decode(bytes, *bytes_index);

@@ -30,12 +30,11 @@ bool ShouldLogHeader(const std::string& header) {
   return false;
 }
 
-std::string UrlRequestToString(
-    const std::string& url,
-    const std::vector<std::string>& headers,
-    const std::string& content,
-    const std::string& content_type,
-    const type::UrlMethod method) {
+std::string UrlRequestToString(const std::string& url,
+                               const std::vector<std::string>& headers,
+                               const std::string& content,
+                               const std::string& content_type,
+                               const mojom::UrlMethod method) {
   std::string log = "\n[ REQUEST ]";
   log += base::StringPrintf("\n> URL: %s", url.c_str());
 
@@ -62,9 +61,8 @@ std::string UrlRequestToString(
   return log;
 }
 
-std::string UrlResponseToString(
-    const char* func,
-    const type::UrlResponse& response) {
+std::string UrlResponseToString(const char* func,
+                                const mojom::UrlResponse& response) {
   std::string result;
   if (!response.error.empty()) {
     result = "Error (" + response.error + ")";
@@ -95,10 +93,9 @@ std::string UrlResponseToString(
       formatted_headers.c_str());
 }
 
-void LogUrlResponse(
-    const char* func,
-    const type::UrlResponse& response,
-    const bool long_response) {
+void LogUrlResponse(const char* func,
+                    const mojom::UrlResponse& response,
+                    const bool long_response) {
   std::string result;
   if (!response.error.empty()) {
     result = "Error";

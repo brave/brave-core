@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_v2.h"
 
+#include "absl/types/optional.h"
 #include "base/bind.h"
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
 #include "bat/ads/internal/ads/serving/choose/predict_ad.h"
@@ -17,10 +18,8 @@
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
-namespace new_tab_page_ads {
+namespace ads::new_tab_page_ads {
 
 EligibleAdsV2::EligibleAdsV2(
     geographic::SubdivisionTargeting* subdivision_targeting,
@@ -118,5 +117,4 @@ CreativeNewTabPageAdList EligibleAdsV2::FilterCreativeAds(
   return ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
 }
 
-}  // namespace new_tab_page_ads
-}  // namespace ads
+}  // namespace ads::new_tab_page_ads

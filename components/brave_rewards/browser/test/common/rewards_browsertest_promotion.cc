@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
 #include <utility>
 
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
@@ -31,15 +32,15 @@ void RewardsBrowserTestPromotion::WaitForPromotionInitialization() {
     return;
   }
 
-  wait_for_initialization_loop_.reset(new base::RunLoop);
+  wait_for_initialization_loop_ = std::make_unique<base::RunLoop>();
   wait_for_initialization_loop_->Run();
 }
 
 void RewardsBrowserTestPromotion::OnFetchPromotions(
     brave_rewards::RewardsService* rewards_service,
-    const ledger::type::Result result,
-    const ledger::type::PromotionList& list) {
-  ASSERT_EQ(result, ledger::type::Result::LEDGER_OK);
+    const ledger::mojom::Result result,
+    const std::vector<ledger::mojom::PromotionPtr>& list) {
+  ASSERT_EQ(result, ledger::mojom::Result::LEDGER_OK);
   initialized_ = true;
 
   if (wait_for_initialization_loop_) {
@@ -54,18 +55,17 @@ void RewardsBrowserTestPromotion::WaitForPromotionFinished(
     return;
   }
 
-  wait_for_finished_loop_.reset(new base::RunLoop);
+  wait_for_finished_loop_ = std::make_unique<base::RunLoop>();
   wait_for_finished_loop_->Run();
 }
 
 void RewardsBrowserTestPromotion::OnPromotionFinished(
     brave_rewards::RewardsService* rewards_service,
-    const ledger::type::Result result,
-    ledger::type::PromotionPtr promotion) {
+    const ledger::mojom::Result result,
+    ledger::mojom::PromotionPtr promotion) {
   if (should_succeed_) {
-    ASSERT_EQ(
-        static_cast<ledger::type::Result>(result),
-        ledger::type::Result::LEDGER_OK);
+    ASSERT_EQ(static_cast<ledger::mojom::Result>(result),
+              ledger::mojom::Result::LEDGER_OK);
   }
 
   finished_ = true;
@@ -81,7 +81,7 @@ void RewardsBrowserTestPromotion::WaitForUnblindedTokensReady() {
     return;
   }
 
-  wait_for_unblinded_tokens_loop_.reset(new base::RunLoop);
+  wait_for_unblinded_tokens_loop_ = std::make_unique<base::RunLoop>();
   wait_for_unblinded_tokens_loop_->Run();
 }
 
@@ -93,7 +93,7 @@ void RewardsBrowserTestPromotion::OnUnblindedTokensReady(
   }
 }
 
-ledger::type::PromotionPtr RewardsBrowserTestPromotion::GetPromotion() {
+ledger::mojom::PromotionPtr RewardsBrowserTestPromotion::GetPromotion() {
   return promotion_->Clone();
 }
 

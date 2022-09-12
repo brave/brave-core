@@ -35,25 +35,27 @@
 <cr-dialog show-close-button show-on-attach>
   <div slot="title">$i18n{walletAddNetworkDialogTitle}</div>
   <div slot="body">
-    <div class="search-separator">
-      <cr-searchable-drop-down items="[[searchItems_]]"
-                               id="searchDropDown"
-                               label="$i18n{walletAddNetworkDialogSearchForNetworkLabel}"
-                               value="{{searchValue_}}"
-                               update-value-on-input
-                               placeholder="$i18n{walletAddNetworkDialogSearchForNetworkPlaceholder}">
-      </cr-searchable-drop-down>
-    </div>
+    <template is="dom-if" if="[[addNewAllowed]]">
+      <div class="search-separator">
+        <cr-searchable-drop-down items="[[searchItems_]]"
+                                id="searchDropDown"
+                                label="$i18n{walletAddNetworkDialogSearchForNetworkLabel}"
+                                value="{{searchValue_}}"
+                                update-value-on-input
+                                placeholder="$i18n{walletAddNetworkDialogSearchForNetworkPlaceholder}">
+        </cr-searchable-drop-down>
+      </div>
+    </template>
     <cr-input id="chainId"
               label="$i18n{walletAddNetworkDialogChainIdTitle}"
-              type="number"
-              min="1"
+              type="text"
               placeholder="$i18n{walletAddNetworkDialogChainIdPlaceholder}"
               spellcheck="false"
               error-message="{{invalidChainIdMessage_}}"
               invalid="{{chainIdInvalid_}}"
               class="mandatory"
               on-input=chainIdChanged_
+              readonly="[[!addNewAllowed]]"
               value="{{chainIdValue_}}">
     </cr-input>
     <cr-input id="chainName"

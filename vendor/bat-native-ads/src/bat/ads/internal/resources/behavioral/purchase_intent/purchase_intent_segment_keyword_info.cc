@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_segment_keyword_info.h"
 
-namespace ads {
-namespace targeting {
+namespace ads::targeting {
 
 PurchaseIntentSegmentKeywordInfo::PurchaseIntentSegmentKeywordInfo() = default;
 
@@ -23,5 +22,4 @@ PurchaseIntentSegmentKeywordInfo& PurchaseIntentSegmentKeywordInfo::operator=(
 
 PurchaseIntentSegmentKeywordInfo::~PurchaseIntentSegmentKeywordInfo() = default;
 
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting

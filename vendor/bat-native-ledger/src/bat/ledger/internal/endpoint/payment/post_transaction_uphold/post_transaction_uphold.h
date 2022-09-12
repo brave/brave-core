@@ -3,10 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_ENDPOINT_PAYMENT_POST_TRANSACTION_UPHOLD_\
-POST_TRANSACTION_UPHOLD_H_
-#define BRAVELEDGER_ENDPOINT_PAYMENT_POST_TRANSACTION_UPHOLD_\
-POST_TRANSACTION_UPHOLD_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PAYMENT_POST_TRANSACTION_UPHOLD_POST_TRANSACTION_UPHOLD_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PAYMENT_POST_TRANSACTION_UPHOLD_POST_TRANSACTION_UPHOLD_H_
 
 #include <string>
 
@@ -48,28 +46,26 @@ class LedgerImpl;
 namespace endpoint {
 namespace payment {
 
-using PostTransactionUpholdCallback = std::function<void(
-    const type::Result result)>;
+using PostTransactionUpholdCallback =
+    std::function<void(const mojom::Result result)>;
 
 class PostTransactionUphold {
  public:
   explicit PostTransactionUphold(LedgerImpl* ledger);
   ~PostTransactionUphold();
 
-  void Request(
-      const type::SKUTransaction& transaction,
-      PostTransactionUpholdCallback callback);
+  void Request(const mojom::SKUTransaction& transaction,
+               PostTransactionUpholdCallback callback);
 
  private:
   std::string GetUrl(const std::string& order_id);
 
-  std::string GeneratePayload(const type::SKUTransaction& transaction);
+  std::string GeneratePayload(const mojom::SKUTransaction& transaction);
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(
-      const type::UrlResponse& response,
-      PostTransactionUpholdCallback callback);
+  void OnRequest(const mojom::UrlResponse& response,
+                 PostTransactionUpholdCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
@@ -78,5 +74,4 @@ class PostTransactionUphold {
 }  // namespace endpoint
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_ENDPOINT_PAYMENT_POST_TRANSACTION_UPHOLD_\
-// POST_TRANSACTION_UPHOLD_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PAYMENT_POST_TRANSACTION_UPHOLD_POST_TRANSACTION_UPHOLD_H_

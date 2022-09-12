@@ -54,7 +54,7 @@ std::string StringToSessionStorageId(const std::string& string,
 class BraveTLDEphemeralLifetimeDelegate
     : public content::TLDEphemeralLifetime::Delegate {
  public:
-  BraveTLDEphemeralLifetimeDelegate(
+  explicit BraveTLDEphemeralLifetimeDelegate(
       scoped_refptr<content_settings::CookieSettings> cookie_settings)
       : cookie_settings_(std::move(cookie_settings)) {}
 

@@ -34,7 +34,7 @@ namespace endpoint {
 namespace promotion {
 
 using PostWalletBraveCallback =
-    base::OnceCallback<void(type::Result result,
+    base::OnceCallback<void(mojom::Result result,
                             const std::string& payment_id)>;
 
 class PostWalletBrave {
@@ -47,14 +47,12 @@ class PostWalletBrave {
  private:
   std::string GetUrl();
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(const int status_code);
 
-  type::Result ParseBody(
-      const std::string& body,
-      std::string* payment_id);
+  mojom::Result ParseBody(const std::string& body, std::string* payment_id);
 
   void OnRequest(PostWalletBraveCallback callback,
-                 const type::UrlResponse& response);
+                 const mojom::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

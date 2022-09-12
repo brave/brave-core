@@ -28,21 +28,21 @@ DatabaseServerPublisherBanner::DatabaseServerPublisherBanner(LedgerImpl* ledger)
 DatabaseServerPublisherBanner::~DatabaseServerPublisherBanner() = default;
 
 void DatabaseServerPublisherBanner::InsertOrUpdate(
-    type::DBTransaction* transaction,
-    const type::ServerPublisherInfo& server_info) {
+    mojom::DBTransaction* transaction,
+    const mojom::ServerPublisherInfo& server_info) {
   DCHECK(transaction);
   DCHECK(!server_info.publisher_key.empty());
 
   // Do not insert a record if there is no banner data
   // or if banner data is empty.
-  type::PublisherBanner default_banner;
+  mojom::PublisherBanner default_banner;
   if (!server_info.banner || server_info.banner->Equals(default_banner)) {
     BLOG(1, "Empty publisher banner data, skipping insert");
     return;
   }
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
       "(publisher_key, title, description, background, logo) "
@@ -61,15 +61,15 @@ void DatabaseServerPublisherBanner::InsertOrUpdate(
 }
 
 void DatabaseServerPublisherBanner::DeleteRecords(
-    type::DBTransaction* transaction,
+    mojom::DBTransaction* transaction,
     const std::string& publisher_key_list) {
   DCHECK(transaction);
   if (publisher_key_list.empty()) {
     return;
   }
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = base::StringPrintf(
       "DELETE FROM %s WHERE publisher_key IN (%s)",
       kTableName,
@@ -88,25 +88,23 @@ void DatabaseServerPublisherBanner::GetRecord(
     callback(nullptr);
     return;
   }
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
   const std::string query = base::StringPrintf(
       "SELECT title, description, background, logo "
       "FROM %s "
       "WHERE publisher_key=?",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = query;
 
   BindString(command.get(), 0, publisher_key);
 
-  command->record_bindings = {
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE
-  };
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE};
 
   transaction->commands.push_back(std::move(command));
 
@@ -121,11 +119,11 @@ void DatabaseServerPublisherBanner::GetRecord(
 }
 
 void DatabaseServerPublisherBanner::OnGetRecord(
-    type::DBCommandResponsePtr response,
+    mojom::DBCommandResponsePtr response,
     const std::string& publisher_key,
     ledger::PublisherBannerCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback(nullptr);
     return;
@@ -144,7 +142,7 @@ void DatabaseServerPublisherBanner::OnGetRecord(
 
   auto* record = response->result->get_records()[0].get();
 
-  type::PublisherBanner banner;
+  mojom::PublisherBanner banner;
   banner.publisher_key = publisher_key;
   banner.title = GetStringColumn(record, 0);
   banner.description = GetStringColumn(record, 1);
@@ -163,9 +161,9 @@ void DatabaseServerPublisherBanner::OnGetRecord(
 
 void DatabaseServerPublisherBanner::OnGetRecordLinks(
     const std::map<std::string, std::string>& links,
-    const type::PublisherBanner& banner,
+    const mojom::PublisherBanner& banner,
     ledger::PublisherBannerCallback callback) {
-  auto banner_pointer = type::PublisherBanner::New(banner);
+  auto banner_pointer = mojom::PublisherBanner::New(banner);
 
   for (const auto& link : links) {
     banner_pointer->links.insert(link);

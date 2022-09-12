@@ -102,7 +102,7 @@ void ValidateErrorCode(EthereumProviderImpl* provider,
               base::Value id, base::Value formed_response, const bool reject,
               const std::string& first_allowed_account,
               const bool update_bind_js_properties) {
-            mojom::ProviderError error;
+            mojom::ProviderError error = mojom::ProviderError::kUnknown;
             std::string error_message;
             GetErrorCodeMessage(std::move(formed_response), &error,
                                 &error_message);
@@ -217,7 +217,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
             web_contents(), web_contents()->GetPrimaryMainFrame()),
         prefs());
 
-    observer_.reset(new TestEventsListener());
+    observer_ = std::make_unique<TestEventsListener>();
     provider_->Init(observer_->GetReceiver());
   }
 
@@ -324,6 +324,23 @@ class EthereumProviderImplUnitTest : public testing::Test {
         }));
     run_loop.Run();
     return allowed_accounts;
+  }
+
+  std::pair<bool, base::Value> CommonRequestOrSendAsync(
+      base::ValueView input_value) {
+    base::RunLoop run_loop;
+    std::pair<bool, base::Value> response;
+    provider()->CommonRequestOrSendAsync(
+        input_value,
+        base::BindLambdaForTesting(
+            [&](base::Value id, base::Value formed_response, const bool reject,
+                const std::string& first_allowed_account,
+                const bool update_bind_js_properties) {
+              response = std::make_pair(reject, std::move(formed_response));
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+    return response;
   }
 
   std::vector<std::string> RequestEthereumPermissions() {
@@ -722,7 +739,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
           if (formed_response.type() == base::Value::Type::STRING) {
             *key_out = formed_response.GetString();
           }
-          mojom::ProviderError error;
+          mojom::ProviderError error = mojom::ProviderError::kUnknown;
           std::string error_message;
           GetErrorCodeMessage(std::move(formed_response), &error,
                               &error_message);
@@ -763,7 +780,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
           if (formed_response.type() == base::Value::Type::STRING) {
             *unsafe_message = formed_response.GetString();
           }
-          mojom::ProviderError error;
+          mojom::ProviderError error = mojom::ProviderError::kUnknown;
           std::string error_message;
           GetErrorCodeMessage(std::move(formed_response), &error,
                               &error_message);
@@ -910,7 +927,7 @@ TEST_F(EthereumProviderImplUnitTest, OnAddEthereumChain) {
                       const bool reject,
                       const std::string& first_allowed_account,
                       const bool update_bind_js_properties) {
-            mojom::ProviderError error;
+            mojom::ProviderError error = mojom::ProviderError::kUnknown;
             std::string error_message;
             GetErrorCodeMessage(std::move(formed_response), &error,
                                 &error_message);
@@ -936,7 +953,7 @@ TEST_F(EthereumProviderImplUnitTest, OnAddEthereumChain) {
                        const bool reject,
                        const std::string& first_allowed_account,
                        const bool update_bind_js_properties) {
-            mojom::ProviderError error;
+            mojom::ProviderError error = mojom::ProviderError::kUnknown;
             std::string error_message;
             GetErrorCodeMessage(std::move(formed_response), &error,
                                 &error_message);
@@ -963,7 +980,7 @@ TEST_F(EthereumProviderImplUnitTest, OnAddEthereumChainRequestCompletedError) {
           [&](base::Value id, base::Value formed_response, const bool reject,
               const std::string& first_allowed_account,
               const bool update_bind_js_properties) {
-            mojom::ProviderError error;
+            mojom::ProviderError error = mojom::ProviderError::kUnknown;
             std::string error_message;
             GetErrorCodeMessage(std::move(formed_response), &error,
                                 &error_message);
@@ -1006,7 +1023,7 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApproveTransaction) {
             if (formed_response.type() == base::Value::Type::STRING) {
               tx_hash = formed_response.GetString();
             }
-            mojom::ProviderError error;
+            mojom::ProviderError error = mojom::ProviderError::kUnknown;
             std::string error_message;
             GetErrorCodeMessage(std::move(formed_response), &error,
                                 &error_message);
@@ -1076,7 +1093,7 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApproveTransactionError) {
             if (formed_response.type() == base::Value::Type::STRING) {
               hash = formed_response.GetString();
             }
-            mojom::ProviderError error;
+            mojom::ProviderError error = mojom::ProviderError::kUnknown;
             std::string error_message;
             GetErrorCodeMessage(std::move(formed_response), &error,
                                 &error_message);
@@ -1113,7 +1130,7 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApproveTransactionNoPermission) {
             if (formed_response.type() == base::Value::Type::STRING) {
               hash = formed_response.GetString();
             }
-            mojom::ProviderError error;
+            mojom::ProviderError error = mojom::ProviderError::kUnknown;
             std::string error_message;
             GetErrorCodeMessage(std::move(formed_response), &error,
                                 &error_message);
@@ -1153,7 +1170,7 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559Transaction) {
             if (formed_response.type() == base::Value::Type::STRING) {
               tx_hash = formed_response.GetString();
             }
-            mojom::ProviderError error;
+            mojom::ProviderError error = mojom::ProviderError::kUnknown;
             std::string error_message;
             GetErrorCodeMessage(std::move(formed_response), &error,
                                 &error_message);
@@ -1220,7 +1237,7 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559TransactionNoChainId) {
             if (formed_response.type() == base::Value::Type::STRING) {
               tx_hash = formed_response.GetString();
             }
-            mojom::ProviderError error;
+            mojom::ProviderError error = mojom::ProviderError::kUnknown;
             std::string error_message;
             GetErrorCodeMessage(std::move(formed_response), &error,
                                 &error_message);
@@ -1239,7 +1256,7 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559TransactionNoChainId) {
             if (formed_response.type() == base::Value::Type::STRING) {
               tx_hash = formed_response.GetString();
             }
-            mojom::ProviderError error;
+            mojom::ProviderError error = mojom::ProviderError::kUnknown;
             std::string error_message;
             GetErrorCodeMessage(std::move(formed_response), &error,
                                 &error_message);
@@ -1286,7 +1303,7 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559TransactionError) {
             if (formed_response.type() == base::Value::Type::STRING) {
               tx_hash = formed_response.GetString();
             }
-            mojom::ProviderError error;
+            mojom::ProviderError error = mojom::ProviderError::kUnknown;
             std::string error_message;
             GetErrorCodeMessage(std::move(formed_response), &error,
                                 &error_message);
@@ -1322,7 +1339,7 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559TransactionNoPermission) {
             if (formed_response.type() == base::Value::Type::STRING) {
               tx_hash = formed_response.GetString();
             }
-            mojom::ProviderError error;
+            mojom::ProviderError error = mojom::ProviderError::kUnknown;
             std::string error_message;
             GetErrorCodeMessage(std::move(formed_response), &error,
                                 &error_message);
@@ -1363,7 +1380,7 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoPermission) {
           [&](base::Value id, base::Value formed_response, const bool reject,
               const std::string& first_allowed_account,
               const bool update_bind_js_properties) {
-            mojom::ProviderError error;
+            mojom::ProviderError error = mojom::ProviderError::kUnknown;
             std::string error_message;
             GetErrorCodeMessage(std::move(formed_response), &error,
                                 &error_message);
@@ -1387,7 +1404,7 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoWallet) {
           [&](base::Value id, base::Value formed_response, const bool reject,
               const std::string& first_allowed_account,
               const bool update_bind_js_properties) {
-            mojom::ProviderError error;
+            mojom::ProviderError error = mojom::ProviderError::kUnknown;
             std::string error_message;
             GetErrorCodeMessage(std::move(formed_response), &error,
                                 &error_message);
@@ -1398,6 +1415,28 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoWallet) {
       base::Value(), "", GetOrigin());
   run_loop.Run();
   EXPECT_TRUE(new_setup_callback_called);
+
+  // Setup is called at most once
+  new_setup_callback_called = false;
+  SetCallbackForNewSetupNeededForTesting(
+      base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
+  base::RunLoop run_loop2;
+  provider()->RequestEthereumPermissions(
+      base::BindLambdaForTesting(
+          [&](base::Value id, base::Value formed_response, const bool reject,
+              const std::string& first_allowed_account,
+              const bool update_bind_js_properties) {
+            mojom::ProviderError error = mojom::ProviderError::kUnknown;
+            std::string error_message;
+            GetErrorCodeMessage(std::move(formed_response), &error,
+                                &error_message);
+            EXPECT_NE(error, mojom::ProviderError::kSuccess);
+            EXPECT_FALSE(error_message.empty());
+            run_loop2.Quit();
+          }),
+      base::Value(), "", GetOrigin());
+  run_loop2.Run();
+  EXPECT_FALSE(new_setup_callback_called);
 }
 
 TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsWithAccounts) {
@@ -1440,7 +1479,7 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsWithAccounts) {
                                      const bool reject,
                                      const std::string& first_allowed_account,
                                      const bool update_bind_js_properties) {
-        mojom::ProviderError error;
+        mojom::ProviderError error = mojom::ProviderError::kUnknown;
         std::string error_message;
         GetErrorCodeMessage(std::move(formed_response), &error, &error_message);
         EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
@@ -1469,7 +1508,7 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsLocked) {
   // Allowing 1 account should return that account for allowed accounts
   AddEthereumPermission(GetOrigin(), 0);
   Lock();
-  // Allowed accounts is empty when locked
+  // Allowed accounts are empty when locked
   EXPECT_EQ(GetAllowedAccounts(false), std::vector<std::string>());
   EXPECT_EQ(GetAllowedAccounts(true), std::vector<std::string>{account0});
   std::vector<std::string> allowed_accounts;
@@ -1493,7 +1532,7 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsLocked) {
   base::RunLoop().RunUntilIdle();
 
   EXPECT_TRUE(keyring_service()->HasPendingUnlockRequest());
-  // Allowed accounts is still empty when locked
+  // Allowed accounts are still empty when locked
   EXPECT_EQ(GetAllowedAccounts(false), std::vector<std::string>());
   EXPECT_EQ(GetAllowedAccounts(true), std::vector<std::string>{account0});
   Unlock();
@@ -1507,7 +1546,7 @@ TEST_F(EthereumProviderImplUnitTest, SignMessage) {
   CreateWallet();
   AddAccount();
   std::string signature;
-  mojom::ProviderError error;
+  mojom::ProviderError error = mojom::ProviderError::kUnknown;
   std::string error_message;
   SignMessage(absl::nullopt, "1234", "0x1234", &signature, &error,
               &error_message);
@@ -1577,7 +1616,7 @@ TEST_F(EthereumProviderImplUnitTest, RecoverAddress) {
   AddAccount();
 
   std::string signature;
-  mojom::ProviderError error;
+  mojom::ProviderError error = mojom::ProviderError::kUnknown;
   std::string error_message;
   const std::vector<std::string> addresses = GetAddresses();
 
@@ -1631,7 +1670,7 @@ TEST_F(EthereumProviderImplUnitTest, SignTypedMessage) {
   CreateWallet();
   AddAccount();
   std::string signature;
-  mojom::ProviderError error;
+  mojom::ProviderError error = mojom::ProviderError::kUnknown;
   std::string error_message;
   base::Value::Dict domain;
   std::vector<uint8_t> domain_hash = DecodeHexHash(
@@ -1900,7 +1939,7 @@ TEST_F(EthereumProviderImplUnitTest, Web3ClientVersion) {
   std::string expected_version = base::StringPrintf(
       "BraveWallet/v%s", version_info::GetBraveChromiumVersionNumber().c_str());
   std::string version;
-  mojom::ProviderError error;
+  mojom::ProviderError error = mojom::ProviderError::kUnknown;
   std::string error_message;
   Web3ClientVersion(&version, &error, &error_message);
   EXPECT_EQ(version, expected_version);
@@ -2023,7 +2062,7 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageHardware) {
   AddHardwareAccount(address);
   std::string signature;
   std::string expected_signature = "0xExpectedSignature";
-  mojom::ProviderError error;
+  mojom::ProviderError error = mojom::ProviderError::kUnknown;
   std::string error_message;
   GURL url("https://brave.com");
   Navigate(url);
@@ -2161,7 +2200,7 @@ TEST_F(EthereumProviderImplUnitTest, AddSuggestToken) {
       "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "BAT", "", true, false,
       "BAT", 18, true, "", "", "0x1", mojom::CoinType::ETH);
   bool approved = false;
-  mojom::ProviderError error;
+  mojom::ProviderError error = mojom::ProviderError::kUnknown;
   std::string error_message;
   AddSuggestToken(token.Clone(), true, &approved, &error, &error_message);
   EXPECT_TRUE(approved);
@@ -2189,7 +2228,7 @@ TEST_F(EthereumProviderImplUnitTest, GetEncryptionPublicKey) {
 
   // Happy path
   std::string key;
-  mojom::ProviderError error;
+  mojom::ProviderError error = mojom::ProviderError::kUnknown;
   std::string error_message;
   GetEncryptionPublicKey(from(), true, &key, &error, &error_message);
   EXPECT_EQ(key, "GeiNTGIpEKEVFeMBpd3aVs/S2EjoF8FOoichRuqjBg0=");
@@ -2241,7 +2280,7 @@ TEST_F(EthereumProviderImplUnitTest, Decrypt) {
 
   // Happy path w/ key GeiNTGIpEKEVFeMBpd3aVs/S2EjoF8FOoichRuqjBg0=
   std::string unsafe_message;
-  mojom::ProviderError error;
+  mojom::ProviderError error = mojom::ProviderError::kUnknown;
   std::string error_message;
   Decrypt(valid_pi_json, from(), true, &unsafe_message, &error, &error_message);
   EXPECT_EQ(unsafe_message,
@@ -2331,6 +2370,74 @@ TEST_F(EthereumProviderImplUnitTest, Decrypt) {
   EXPECT_TRUE(unsafe_message.empty());
   EXPECT_EQ(mojom::ProviderError::kInvalidParams, error);
   EXPECT_FALSE(error_message.empty());
+}
+
+TEST_F(EthereumProviderImplUnitTest, RequestEthCoinbase) {
+  // Wallet that is not created should return empty base::Value for eth_coinbase
+  std::string request_payload_json =
+      R"({"id":1,"jsonrpc:": "2.0","method":"eth_coinbase"})";
+  absl::optional<base::Value> request_payload = base::JSONReader::Read(
+      request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                base::JSONParserOptions::JSON_PARSE_RFC);
+  auto response = CommonRequestOrSendAsync(request_payload.value());
+  EXPECT_EQ(response.first, false);
+  EXPECT_EQ(response.second, base::Value());
+
+  CreateWallet();
+  AddAccount();
+  std::string account0 = from(0);
+  GURL url("https://brave.com");
+  Navigate(url);
+
+  // Fresh wallet should return empty base::Value for eth_coinbase
+  response = CommonRequestOrSendAsync(request_payload.value());
+  EXPECT_EQ(response.first, false);
+  EXPECT_EQ(response.second, base::Value());
+
+  // Allow 1 account
+  AddEthereumPermission(GetOrigin(), 0);
+  Lock();
+
+  // eth_coinbase account is empty when locked
+  response = CommonRequestOrSendAsync(request_payload.value());
+  EXPECT_EQ(response.first, false);
+  EXPECT_EQ(response.second, base::Value());
+
+  std::vector<std::string> allowed_accounts;
+  base::RunLoop run_loop;
+  provider()->RequestEthereumPermissions(
+      base::BindLambdaForTesting(
+          [&](base::Value id, base::Value formed_response, const bool reject,
+              const std::string& first_allowed_account,
+              const bool update_bind_js_properties) {
+            if (formed_response.GetList().size() != 0) {
+              std::string stylesheet = "";
+              for (auto& account : formed_response.GetList()) {
+                allowed_accounts.push_back(account.GetString());
+              }
+            }
+            run_loop.Quit();
+          }),
+      base::Value(), "", GetOrigin());
+  // Wait for KeyringService::GetSelectedAccount called by
+  // BraveWalletProviderDelegateImpl::GetAllowedAccounts
+  base::RunLoop().RunUntilIdle();
+
+  EXPECT_TRUE(keyring_service()->HasPendingUnlockRequest());
+  // eth_coinbase account is still empty when locked
+  response = CommonRequestOrSendAsync(request_payload.value());
+  EXPECT_EQ(response.first, false);
+  EXPECT_EQ(response.second, base::Value());
+
+  Unlock();
+  run_loop.Run();
+
+  // eth_coinbase should now return the account since the account is
+  // allowed and the wallet is unlocked
+  response = CommonRequestOrSendAsync(request_payload.value());
+  EXPECT_FALSE(keyring_service()->HasPendingUnlockRequest());
+  EXPECT_EQ(response.first, false);
+  EXPECT_EQ(response.second, base::Value(account0));
 }
 
 }  // namespace brave_wallet

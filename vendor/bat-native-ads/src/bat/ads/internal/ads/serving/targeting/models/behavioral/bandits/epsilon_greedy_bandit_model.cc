@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/rand_util.h"
 #include "bat/ads/internal/base/logging_util.h"
@@ -18,9 +19,7 @@
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arms_alias.h"
 #include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource_util.h"
 
-namespace ads {
-namespace targeting {
-namespace model {
+namespace ads::targeting::model {
 
 namespace {
 
@@ -79,8 +78,7 @@ EpsilonGreedyBanditArmMap GetEligibleArms(
   EpsilonGreedyBanditArmMap eligible_arms;
 
   for (const auto& arm : arms) {
-    if (std::find(segments.cbegin(), segments.cend(), arm.first) ==
-        segments.cend()) {
+    if (!base::Contains(segments, arm.first)) {
       continue;
     }
 
@@ -187,6 +185,4 @@ SegmentList EpsilonGreedyBandit::GetSegments() const {
   return GetSegmentsForArms(GetEpsilonGreedyBanditArms());
 }
 
-}  // namespace model
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting::model

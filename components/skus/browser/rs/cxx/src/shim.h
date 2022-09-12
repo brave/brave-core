@@ -53,6 +53,13 @@ class RefreshOrderCallbackState {
   base::OnceCallback<void(const std::string&)> cb;
 };
 
+class SubmitReceiptCallbackState {
+ public:
+  SubmitReceiptCallbackState();
+  ~SubmitReceiptCallbackState();
+  base::OnceCallback<void(const std::string&)> cb;
+};
+
 class SkusUrlLoader {
  public:
   virtual ~SkusUrlLoader() = default;
@@ -76,7 +83,6 @@ class SkusContext {
 using RefreshOrderCallback = void (*)(RefreshOrderCallbackState* callback_state,
                                       SkusResult result,
                                       rust::cxxbridge1::Str order);
-
 using FetchOrderCredentialsCallback =
     void (*)(FetchOrderCredentialsCallbackState* callback_state,
              SkusResult result);
@@ -88,6 +94,8 @@ using CredentialSummaryCallback =
     void (*)(CredentialSummaryCallbackState* callback_state,
              SkusResult result,
              rust::cxxbridge1::Str summary);
+using SubmitReceiptCallback =
+    void (*)(SubmitReceiptCallbackState* callback_state, SkusResult result);
 
 void shim_logMessage(rust::cxxbridge1::Str file,
                      uint32_t line,

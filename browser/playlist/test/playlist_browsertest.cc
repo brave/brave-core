@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "base/bind.h"
+#include "base/containers/contains.h"
 #include "base/memory/weak_ptr.h"
 #include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"
@@ -368,9 +369,8 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, CreateAndRemovePlaylist) {
   EXPECT_EQ(1, on_playlist_changed_called_count_);
   CheckIsPlaylistChangeTypeCalled(PlaylistChangeParams::Type::kListCreated);
 
-  auto iter = base::ranges::find_if(playlists, [&](const auto& playlist) {
-    return playlist.name == new_playlist.name;
-  });
+  auto iter =
+      base::ranges::find(playlists, new_playlist.name, &PlaylistInfo::name);
   EXPECT_NE(iter, playlists.end());
 
   // Remove the new playlist
@@ -379,11 +379,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, CreateAndRemovePlaylist) {
   service->RemovePlaylist(new_playlist.id);
   playlists = service->GetAllPlaylists();
   EXPECT_EQ(1UL, playlists.size());
-  iter =
-      base::ranges::find_if(playlists, [&new_playlist](const auto& playlist) {
-        return playlist.id == new_playlist.id;
-      });
-  EXPECT_EQ(iter, playlists.end());
+  EXPECT_FALSE(base::Contains(playlists, new_playlist.id, &PlaylistInfo::id));
   EXPECT_EQ(1, on_playlist_changed_called_count_);
   CheckIsPlaylistChangeTypeCalled(PlaylistChangeParams::Type::kListRemoved);
 }

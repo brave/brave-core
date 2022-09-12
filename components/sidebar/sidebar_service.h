@@ -23,6 +23,14 @@ class PrefService;
 
 namespace sidebar {
 
+struct SidebarItemUpdate {
+  int index = -1;
+  bool title_updated = false;
+  bool url_updated = false;
+
+  bool operator==(const SidebarItemUpdate& update) const;
+};
+
 // This manages per-context persisted sidebar items list.
 class SidebarService : public KeyedService {
  public:
@@ -46,6 +54,8 @@ class SidebarService : public KeyedService {
     virtual void OnItemMoved(const SidebarItem& item, int from, int to) {}
     virtual void OnWillRemoveItem(const SidebarItem& item, int index) {}
     virtual void OnItemRemoved(const SidebarItem& item, int index) {}
+    virtual void OnItemUpdated(const SidebarItem& item,
+                               const SidebarItemUpdate& update) {}
     virtual void OnShowSidebarOptionChanged(ShowSidebarOption option) {}
 
    protected:
@@ -64,6 +74,13 @@ class SidebarService : public KeyedService {
   void RemoveItemAt(int index);
   void MoveItem(int from, int to);
 
+  // Only non-builtin type is editable.
+  // URL acts like an id for each item.
+  void UpdateItem(const GURL& old_url,
+                  const GURL& new_url,
+                  const std::u16string& old_title,
+                  const std::u16string& new_title);
+
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
@@ -72,6 +89,7 @@ class SidebarService : public KeyedService {
   void SetSidebarShowOption(ShowSidebarOption show_options);
 
   absl::optional<SidebarItem> GetDefaultPanelItem() const;
+  bool IsEditableItemAt(int index) const;
 
   SidebarService(const SidebarService&) = delete;
   SidebarService& operator=(const SidebarService&) = delete;

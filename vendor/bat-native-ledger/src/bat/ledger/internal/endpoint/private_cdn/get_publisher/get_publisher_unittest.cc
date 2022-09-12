@@ -69,7 +69,7 @@ TEST_F(GetPublisherTest, ServerError404) {
   EXPECT_EQ(result, mojom::Result::LEDGER_OK);
   ASSERT_TRUE(info);
   EXPECT_EQ(info->publisher_key, "brave.com");
-  EXPECT_EQ(info->status, type::PublisherStatus::NOT_VERIFIED);
+  EXPECT_EQ(info->status, mojom::PublisherStatus::NOT_VERIFIED);
 }
 
 TEST_F(GetPublisherTest, UpholdVerified) {
@@ -95,7 +95,7 @@ TEST_F(GetPublisherTest, UpholdVerified) {
   EXPECT_EQ(result, mojom::Result::LEDGER_OK);
   ASSERT_TRUE(info);
   EXPECT_EQ(info->publisher_key, "brave.com");
-  EXPECT_EQ(info->status, type::PublisherStatus::UPHOLD_VERIFIED);
+  EXPECT_EQ(info->status, mojom::PublisherStatus::UPHOLD_VERIFIED);
   EXPECT_EQ(info->address, "abcd");
 }
 
@@ -122,7 +122,7 @@ TEST_F(GetPublisherTest, EmptyWalletAddress) {
   EXPECT_EQ(result, mojom::Result::LEDGER_OK);
   ASSERT_TRUE(info);
   EXPECT_EQ(info->publisher_key, "brave.com");
-  EXPECT_EQ(info->status, type::PublisherStatus::CONNECTED);
+  EXPECT_EQ(info->status, mojom::PublisherStatus::CONNECTED);
   EXPECT_EQ(info->address, "");
 }
 

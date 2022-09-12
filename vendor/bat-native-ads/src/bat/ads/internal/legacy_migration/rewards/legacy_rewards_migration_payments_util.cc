@@ -5,16 +5,15 @@
 
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_payments_util.h"
 
-#include <algorithm>
 #include <string>
 
 #include "base/check.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/base/time/time_util.h"
 
-namespace ads {
-namespace rewards {
+namespace ads::rewards {
 
 namespace {
 
@@ -30,17 +29,13 @@ absl::optional<PaymentInfo> GetPaymentForMonth(const PaymentList& payments,
                                                const base::Time time) {
   const std::string formatted_date = GetFormattedBalanceDate(time);
 
-  const auto iter = std::find_if(payments.cbegin(), payments.cend(),
-                                 [&formatted_date](const PaymentInfo& payment) {
-                                   return payment.month == formatted_date;
-                                 });
+  const auto iter =
+      base::ranges::find(payments, formatted_date, &PaymentInfo::month);
   if (iter == payments.cend()) {
     return absl::nullopt;
   }
 
-  const PaymentInfo& payment = *iter;
-
-  return payment;
+  return *iter;
 }
 
 }  // namespace
@@ -57,5 +52,4 @@ absl::optional<PaymentInfo> GetPaymentForLastMonth(
   return GetPaymentForMonth(payments, time);
 }
 
-}  // namespace rewards
-}  // namespace ads
+}  // namespace ads::rewards

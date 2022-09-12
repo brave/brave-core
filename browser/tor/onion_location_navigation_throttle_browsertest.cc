@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/browser/ui/browser_commands.h"
@@ -61,15 +63,15 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
  public:
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
-    test_https_server_.reset(new net::EmbeddedTestServer(
-        net::test_server::EmbeddedTestServer::TYPE_HTTPS));
+    test_https_server_ = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
     test_https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
     test_https_server_->RegisterRequestHandler(
         base::BindRepeating(&HandleOnionLocation));
     ASSERT_TRUE(test_https_server_->Start());
 
-    test_http_server_.reset(new net::EmbeddedTestServer(
-        net::test_server::EmbeddedTestServer::TYPE_HTTP));
+    test_http_server_ = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTP);
     test_http_server_->RegisterRequestHandler(
         base::BindRepeating(&HandleOnionLocation));
     ASSERT_TRUE(test_http_server_->Start());

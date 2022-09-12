@@ -11,9 +11,7 @@
 #include "bat/ads/internal/base/strings/string_strip_util.h"
 #include "bat/ads/internal/segments/segment_util.h"
 
-namespace ads {
-namespace privacy {
-namespace p2a {
+namespace ads::privacy::p2a {
 
 namespace {
 constexpr char kQuestionPrefix[] = "Brave.P2A.AdOpportunitiesPerSegment.";
@@ -44,6 +42,4 @@ std::vector<std::string> CreateAdOpportunityQuestions(
   return questions;
 }
 
-}  // namespace p2a
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::p2a

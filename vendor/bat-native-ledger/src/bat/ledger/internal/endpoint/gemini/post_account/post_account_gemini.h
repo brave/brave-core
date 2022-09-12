@@ -40,35 +40,31 @@
 namespace ledger {
 class LedgerImpl;
 
-namespace endpoint {
-namespace gemini {
+namespace endpoint::gemini {
 
-using PostAccountCallback = std::function<void(const type::Result result,
-                                               const std::string& linking_info,
-                                               const std::string& user_name)>;
+using PostAccountCallback = base::OnceCallback<
+    void(mojom::Result, std::string&& linking_info, std::string&& user_name)>;
 
 class PostAccount {
  public:
-  explicit PostAccount(LedgerImpl* ledger);
+  explicit PostAccount(LedgerImpl*);
   ~PostAccount();
 
-  void Request(const std::string& token, PostAccountCallback callback);
+  void Request(const std::string& token, PostAccountCallback);
 
  private:
   std::string GetUrl();
 
-  type::Result ParseBody(const std::string& body,
-                         std::string* linking_info,
-                         std::string* user_name);
+  mojom::Result ParseBody(const std::string& body,
+                          std::string* linking_info,
+                          std::string* user_name);
 
-  void OnRequest(const type::UrlResponse& response,
-                 PostAccountCallback callback);
+  void OnRequest(PostAccountCallback, const mojom::UrlResponse&);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
 
-}  // namespace gemini
-}  // namespace endpoint
+}  // namespace endpoint::gemini
 }  // namespace ledger
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_GEMINI_POST_ACCOUNT_POST_ACCOUNT_GEMINI_H_

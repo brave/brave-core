@@ -12,7 +12,7 @@ namespace decentralized_dns {
 // domains, between:
 // Disabled: Disable all unstoppable domains resolution.
 // Ask: Ask users if they want to enable support of unstoppable domains.
-// DNS Over HTTPS: Resolve domain name using a public DNS over HTTPS server.
+// Ethereum: Resolve domain name using Ethereum JSON-RPC server.
 constexpr char kUnstoppableDomainsResolveMethod[] =
     "brave.unstoppable_domains.resolve_method";
 
@@ -20,7 +20,7 @@ constexpr char kUnstoppableDomainsResolveMethod[] =
 // between:
 // Disabled: Disable all ENS domains resolution.
 // Ask: Ask users if they want to enable support of ENS.
-// DNS Over HTTPS: Resolve domain name using a public DNS over HTTPS server.
+// Ethereum: Resolve domain name using Ethereum JSON-RPC server.
 constexpr char kENSResolveMethod[] = "brave.ens.resolve_method";
 
 }  // namespace decentralized_dns

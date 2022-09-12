@@ -58,9 +58,7 @@ void BraveActionsContainer::BraveActionInfo::Reset() {
 }
 
 BraveActionsContainer::BraveActionsContainer(Browser* browser, Profile* profile)
-    : views::View(),
-      extensions::BraveActionAPI::Observer(),
-      browser_(browser),
+    : browser_(browser),
       extension_system_(extensions::ExtensionSystem::Get(profile)),
       extension_action_api_(extensions::ExtensionActionAPI::Get(profile)),
       extension_registry_(extensions::ExtensionRegistry::Get(profile)),

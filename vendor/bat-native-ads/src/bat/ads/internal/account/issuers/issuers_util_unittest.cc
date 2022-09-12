@@ -8,6 +8,7 @@
 #include "bat/ads/internal/account/issuers/issuers_info.h"
 #include "bat/ads/internal/account/issuers/issuers_unittest_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -26,7 +27,25 @@ TEST_F(BatAdsIssuersUtilTest, HasIssuersChanged) {
 
   // Act
   const IssuersInfo issuers =
-      BuildIssuers(3600000,
+      BuildIssuers(3'600'000,
+                   {{"Nj2NZ6nJUsK5MJ9ga9tfyctxzpT+GlvENF2TRHU4kBg=", 0.0},
+                    {"TFQCiRJocOh0A8+qHQvdu3V/lDpGsZHJOnZzqny6rFg=", 0.0}},
+                   {{"PmXS59VTEVIPZckOqGdpjisDidUbhLGbhAhN5tmfhhs=", 0.1},
+                    {"Bgk5gT+b96iSr3nD5nuTM/yGQ5klrIe6VC6DDdM6sFs=", 0.0}});
+
+  const bool has_changed = HasIssuersChanged(issuers);
+
+  // Assert
+  EXPECT_TRUE(has_changed);
+}
+
+TEST_F(BatAdsIssuersUtilTest, HasIssuersChangedOnInitialFetch) {
+  // Arrange
+  AdsClientHelper::GetInstance()->ClearPref(prefs::kIssuers);
+
+  // Act
+  const IssuersInfo issuers =
+      BuildIssuers(3'600'000,
                    {{"Nj2NZ6nJUsK5MJ9ga9tfyctxzpT+GlvENF2TRHU4kBg=", 0.0},
                     {"TFQCiRJocOh0A8+qHQvdu3V/lDpGsZHJOnZzqny6rFg=", 0.0}},
                    {{"PmXS59VTEVIPZckOqGdpjisDidUbhLGbhAhN5tmfhhs=", 0.1},
@@ -44,7 +63,7 @@ TEST_F(BatAdsIssuersUtilTest, HasIssuersNotChanged) {
 
   // Act
   const IssuersInfo issuers =
-      BuildIssuers(7200000,
+      BuildIssuers(7'200'000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
                    {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
@@ -70,7 +89,7 @@ TEST_F(BatAdsIssuersUtilTest, IssuerDoesExistForConfirmationsType) {
 TEST_F(BatAdsIssuersUtilTest, IssuerDoesNotExistForConfirmationsType) {
   // Arrange
   const IssuersInfo issuers =
-      BuildIssuers(7200000, {},
+      BuildIssuers(7'200'000, {},
                    {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
                     {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
 
@@ -97,7 +116,7 @@ TEST_F(BatAdsIssuersUtilTest, IssuerDoesExistForPaymentsType) {
 TEST_F(BatAdsIssuersUtilTest, IssuerDoesNotExistForPaymentsType) {
   // Arrange
   const IssuersInfo issuers =
-      BuildIssuers(7200000,
+      BuildIssuers(7'200'000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"cKo0rk1iS8Obgyni0X3RRoydDIGHsivTkfX/TM1Xl24=", 0.0}},
                    {});
@@ -164,7 +183,7 @@ TEST_F(BatAdsIssuersUtilTest, PublicKeyDoesNotExistForPaymentsType) {
 TEST_F(BatAdsIssuersUtilTest, GetIssuersForType) {
   // Arrange
   const IssuersInfo issuers =
-      BuildIssuers(7200000,
+      BuildIssuers(7'200'000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
                    {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
@@ -188,7 +207,7 @@ TEST_F(BatAdsIssuersUtilTest, GetIssuersForType) {
 TEST_F(BatAdsIssuersUtilTest, DoNotGetIssuersForMissingType) {
   // Arrange
   const IssuersInfo issuers =
-      BuildIssuers(7200000,
+      BuildIssuers(7'200'000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
                    {});
@@ -204,7 +223,7 @@ TEST_F(BatAdsIssuersUtilTest, DoNotGetIssuersForMissingType) {
 TEST_F(BatAdsIssuersUtilTest, IsIssuerValid) {
   // Arrange
   const IssuersInfo issuers =
-      BuildIssuers(7200000,
+      BuildIssuers(7'200'000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
                    {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
@@ -225,7 +244,7 @@ TEST_F(BatAdsIssuersUtilTest, IsIssuerValid) {
 TEST_F(BatAdsIssuersUtilTest, IsIssuerInvalid) {
   // Arrange
   const IssuersInfo issuers =
-      BuildIssuers(7200000,
+      BuildIssuers(7'200'000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
                    {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},

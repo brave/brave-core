@@ -101,7 +101,7 @@ void MonitorChild(base::ProcessHandle p_handle,
 #if BUILDFLAG(IS_POSIX)
   char buf[PIPE_BUF];
 
-  while (1) {
+  while (true) {
     if (read(pipehack[0], buf, sizeof(buf)) > 0) {
       pid_t pid;
       int status;

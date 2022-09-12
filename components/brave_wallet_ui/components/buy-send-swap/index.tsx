@@ -1,4 +1,3 @@
-import Layout from './buy-send-swap-layout'
 import AccountsAssetsNetworks from './accounts-assets-networks'
 import SelectAccount from './select-account-with-header'
 import SelectNetworkWithHeader from './select-network-with-header'
@@ -15,7 +14,6 @@ export {
   SelectNetworkWithHeader,
   SelectAsset,
   Header,
-  Layout,
   Swap,
   Send,
   Buy,

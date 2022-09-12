@@ -13,19 +13,15 @@ export const StyledWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-left: 14px;
   position: relative;
 `
 
-export const DropDownButton = styled(WalletButton) <{
-  buttonSize: 'big' | 'small'
-}>`
+export const DropDownButton = styled(WalletButton)`
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
   background-color: ${(p) => p.theme.color.background02};
-  width: ${(p) => p.buttonSize === 'big' ? '175px' : '125px'};
   cursor: pointer;
   outline: none;
   background: none;
@@ -51,7 +47,7 @@ export const DropDown = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-conent: flex-start;
+  justify-content: flex-start;
   width: 250px;
   padding: 5px;
   background-color: ${(p) => p.theme.color.background02};
@@ -63,7 +59,7 @@ export const DropDown = styled.div`
   }
   position: absolute;
   top: 38px;
-  z-index: 8;
+  z-index: 9;
   @media screen and (max-width: 800px) {
     right: 0px;
   }
@@ -103,6 +99,8 @@ export const LeftSide = styled.div`
   align-items: center;
   justify-content: flex-start;
   flex-direction: row;
+  white-space: nowrap;
+  margin-right: 4px;
 `
 
 export const NetworkName = styled.span`
@@ -127,7 +125,7 @@ export const SubDropDown = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-conent: flex-start;
+  justify-content: flex-start;
   width: 250px;
   max-height: 262px;
   padding: 5px;
@@ -141,7 +139,7 @@ export const SubDropDown = styled.div`
   position: absolute;
   top: -6px;
   left: 240px;
-  z-index: 9;
+  z-index: 10;
   overflow-y: hidden;
   overflow-x: hidden;
   @media screen and (max-width: 800px) {

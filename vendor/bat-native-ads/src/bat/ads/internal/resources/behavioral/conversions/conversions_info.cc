@@ -5,12 +5,11 @@
 
 #include "bat/ads/internal/resources/behavioral/conversions/conversions_info.h"
 
+#include "absl/types/optional.h"
 #include "base/values.h"
 #include "bat/ads/internal/conversions/conversions_features.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
-namespace resource {
+namespace ads::resource {
 
 ConversionsInfo::ConversionsInfo() = default;
 
@@ -72,5 +71,4 @@ std::unique_ptr<ConversionsInfo> ConversionsInfo::CreateFromValue(
   return conversion;
 }
 
-}  // namespace resource
-}  // namespace ads
+}  // namespace ads::resource

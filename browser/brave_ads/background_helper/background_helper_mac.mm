@@ -59,7 +59,7 @@ namespace brave_ads {
 
 class BackgroundHelperMac::BackgroundHelperDelegate {
  public:
-  BackgroundHelperDelegate(BackgroundHelper* background_helper) {
+  explicit BackgroundHelperDelegate(BackgroundHelper* background_helper) {
     delegate_.reset(
         [[BackgroundHelperDelegateMac alloc] initWithHelper:background_helper]);
   }

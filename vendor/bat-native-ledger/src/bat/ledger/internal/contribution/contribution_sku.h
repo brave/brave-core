@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/internal/credentials/credentials_factory.h"
@@ -27,62 +28,58 @@ class ContributionSKU {
                         const std::string& wallet_type,
                         ledger::LegacyResultCallback callback);
 
-  void Merchant(
-      const type::SKUTransaction& transaction,
-      client::TransactionCallback callback);
+  void Merchant(const mojom::SKUTransaction& transaction,
+                client::TransactionCallback callback);
 
-  void Retry(type::ContributionInfoPtr contribution,
+  void Retry(mojom::ContributionInfoPtr contribution,
              ledger::LegacyResultCallback callback);
 
  private:
   void Start(const std::string& contribution_id,
-             const type::SKUOrderItem& item,
+             const mojom::SKUOrderItem& item,
              const std::string& wallet_type,
              ledger::LegacyResultCallback callback);
 
-  void GetContributionInfo(type::ContributionInfoPtr contribution,
-                           const type::SKUOrderItem& item,
+  void GetContributionInfo(mojom::ContributionInfoPtr contribution,
+                           const mojom::SKUOrderItem& item,
                            const std::string& wallet_type,
                            ledger::LegacyResultCallback callback);
 
-  void GetOrder(type::Result result,
+  void GetOrder(mojom::Result result,
                 const std::string& order_id,
                 const std::string& contribution_id,
                 ledger::LegacyResultCallback callback);
 
-  void OnGetOrder(type::SKUOrderPtr order,
+  void OnGetOrder(mojom::SKUOrderPtr order,
                   const std::string& contribution_id,
                   ledger::LegacyResultCallback callback);
 
-  void Completed(type::Result result,
+  void Completed(mojom::Result result,
                  const std::string& contribution_id,
-                 type::RewardsType type,
+                 mojom::RewardsType type,
                  ledger::LegacyResultCallback callback);
 
-  void CredsStepSaved(type::Result result,
+  void CredsStepSaved(mojom::Result result,
                       const std::string& contribution_id,
                       ledger::LegacyResultCallback callback);
 
-  void GetUnblindedTokens(
-      type::UnblindedTokenList list,
-      const type::SKUTransaction& transaction,
-      client::TransactionCallback callback);
+  void GetUnblindedTokens(std::vector<mojom::UnblindedTokenPtr> list,
+                          const mojom::SKUTransaction& transaction,
+                          client::TransactionCallback callback);
 
-  void GetOrderMerchant(
-      type::SKUOrderPtr order,
-      const credential::CredentialsRedeem& redeem,
-      client::TransactionCallback callback);
+  void GetOrderMerchant(mojom::SKUOrderPtr order,
+                        const credential::CredentialsRedeem& redeem,
+                        client::TransactionCallback callback);
 
-  void OnRedeemTokens(
-      const type::Result result,
-      client::TransactionCallback callback);
+  void OnRedeemTokens(const mojom::Result result,
+                      client::TransactionCallback callback);
 
-  void OnOrder(type::SKUOrderPtr order,
-               std::shared_ptr<type::ContributionInfoPtr> shared_contribution,
+  void OnOrder(mojom::SKUOrderPtr order,
+               std::shared_ptr<mojom::ContributionInfoPtr> shared_contribution,
                ledger::LegacyResultCallback callback);
 
-  void RetryStartStep(type::ContributionInfoPtr contribution,
-                      type::SKUOrderPtr order,
+  void RetryStartStep(mojom::ContributionInfoPtr contribution,
+                      mojom::SKUOrderPtr order,
                       ledger::LegacyResultCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

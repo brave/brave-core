@@ -38,17 +38,17 @@ void WalletCreate::Start(ledger::ResultCallback callback) {
   }
 
   if (!wallet) {
-    wallet = type::BraveWallet::New();
+    wallet = mojom::RewardsWallet::New();
     wallet->recovery_seed = util::Security::GenerateSeed();
     if (!ledger_->wallet()->SetWallet(wallet->Clone())) {
-      std::move(callback).Run(type::Result::LEDGER_ERROR);
+      std::move(callback).Run(mojom::Result::LEDGER_ERROR);
       return;
     }
   }
 
   if (!wallet->payment_id.empty()) {
     BLOG(1, "Wallet already exists");
-    std::move(callback).Run(type::Result::WALLET_CREATED);
+    std::move(callback).Run(mojom::Result::WALLET_CREATED);
     return;
   }
 
@@ -59,9 +59,9 @@ void WalletCreate::Start(ledger::ResultCallback callback) {
 }
 
 void WalletCreate::OnCreate(ledger::ResultCallback callback,
-                            type::Result result,
+                            mojom::Result result,
                             const std::string& payment_id) {
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     std::move(callback).Run(result);
     return;
   }
@@ -71,7 +71,7 @@ void WalletCreate::OnCreate(ledger::ResultCallback callback,
   const bool success = ledger_->wallet()->SetWallet(std::move(wallet));
 
   if (!success) {
-    std::move(callback).Run(type::Result::LEDGER_ERROR);
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -81,7 +81,7 @@ void WalletCreate::OnCreate(ledger::ResultCallback callback,
     ledger_->state()->SetPromotionCorruptedMigrated(true);
   }
   ledger_->state()->SetCreationStamp(util::GetCurrentTimeStamp());
-  std::move(callback).Run(type::Result::WALLET_CREATED);
+  std::move(callback).Run(mojom::Result::WALLET_CREATED);
 }
 
 }  // namespace wallet

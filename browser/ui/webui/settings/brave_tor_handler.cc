@@ -47,7 +47,7 @@ constexpr const char kTorBridgesUrl[] =
 constexpr const char16_t kGetCaptchaScript[] =
     uR"js(
   (function() {
-    const captchaBox = document.getElementById('captcha-box')
+    const captchaBox = document.getElementById('bridgedb-captcha')
     if (!captchaBox) return null
 
     const captchaImages = captchaBox.getElementsByTagName('img')
@@ -62,12 +62,12 @@ constexpr const char16_t kGetCaptchaScript[] =
 constexpr const char16_t kSendCaptchaScript[] =
     uR"js(
   (function(captcha) {
-    const responseField = document.getElementById('captcha_response_field')
+    const responseField = document.getElementById('bridgedb-captcha-input')
     if (!responseField) return null
 
     responseField.value = captcha
 
-    const submit = document.getElementById('captcha-submit-button')
+    const submit = document.getElementById('bridgedb-captcha-submit')
     if (!submit) return null
 
     submit.click()
@@ -82,7 +82,8 @@ constexpr const char16_t kParseBridgesScript[] =
     if (!bridgeLines) return null
 
     const bridges = bridgeLines.textContent.split('\n').filter(
-       (bridge) => { return bridge.trim().length != 0 })
+       (bridge) => { return bridge.trim().length != 0 }).
+       map((brigde) => { return brigde.trim(); })
     return {bridges : bridges}
   })();
 )js";

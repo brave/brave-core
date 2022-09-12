@@ -98,6 +98,7 @@ source_set("unit_tests") {
       "//components/prefs",
       "//components/sync_preferences:test_support",
       "//content/test:test_support",
+      "//testing/gmock",
       "//testing/gtest",
     ]
   }

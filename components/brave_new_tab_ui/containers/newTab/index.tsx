@@ -27,7 +27,7 @@ import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo
 import { brandedWallpaperLogoClicked } from '../../api/wallpaper'
 import BraveTodayHint from '../../components/default/braveToday/hint'
 import BraveToday, { GetDisplayAdContent } from '../../components/default/braveToday'
-import { SponsoredImageTooltip, showRewardsOnboarding } from '../../components/default/rewards'
+import { SponsoredImageTooltip } from '../../components/default/rewards'
 import { addNewTopSite, editTopSite } from '../../api/topSites'
 import getNTPBrowserAPI from '../../api/background'
 
@@ -73,7 +73,8 @@ interface Props {
   saveShowFTX: (value: boolean) => void
   saveBrandedWallpaperOptIn: (value: boolean) => void
   saveSetAllStackWidgets: (value: boolean) => void
-  useCustomBackgroundImage: (useCustom: boolean) => void
+  useCustomBackgroundImage: () => void
+  setBraveBackground: (selectedBackground: string) => void
   setColorBackground: (color: string, useRandomColor: boolean) => void
 }
 
@@ -100,7 +101,8 @@ function GetBackgroundImageSrc (props: Props) {
     }
   }
 
-  if (props.newTabData.backgroundWallpaper?.type === 'image') {
+  if (props.newTabData.backgroundWallpaper?.type === 'image' ||
+      props.newTabData.backgroundWallpaper?.type === 'brave') {
     return props.newTabData.backgroundWallpaper.wallpaperImageUrl
   }
 
@@ -469,8 +471,12 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   startRewards = () => {
-    chrome.braveRewards.enableRewards()
-    showRewardsOnboarding()
+    const { rewardsState } = this.props.newTabData
+    if (!rewardsState.rewardsEnabled) {
+      chrome.braveRewards.openRewardsPanel()
+    } else {
+      chrome.braveRewards.enableAds()
+    }
   }
 
   dismissBrandedWallpaperNotification = (isUserAction: boolean) => {
@@ -925,13 +931,12 @@ class NewTabPage extends React.Component<Props, State> {
     }
 
     const onClose = () => { this.dismissBrandedWallpaperNotification(true) }
-    const onEnableAds = () => { this.startRewards() }
 
     return (
       <Page.BrandedWallpaperNotification>
         <SponsoredImageTooltip
           adsEnabled={rewardsState.enabledAds}
-          onEnableAds={onEnableAds}
+          onEnableAds={this.startRewards}
           onClose={onClose}
         />
       </Page.BrandedWallpaperNotification>
@@ -960,7 +965,8 @@ class NewTabPage extends React.Component<Props, State> {
         hideWidget={this.toggleShowRewards}
         showContent={showContent}
         onShowContent={this.setForegroundStackWidget.bind(this, 'rewards')}
-        onStartRewards={this.startRewards}
+        onEnableRewards={this.startRewards}
+        onEnableAds={this.startRewards}
         onDismissNotification={this.dismissNotification}
       />
     )
@@ -1150,8 +1156,8 @@ class NewTabPage extends React.Component<Props, State> {
 
     const hasImage = this.imageSource !== undefined
     const isShowingBrandedWallpaper = !!newTabData.brandedWallpaper
-    // Custom background that user uploaded doesn't display its info in footer.
-    const hasWallpaperInfo = newTabData.backgroundWallpaper?.type === 'image' && !!newTabData.backgroundWallpaper.author && !!newTabData.backgroundWallpaper.link
+
+    const hasWallpaperInfo = newTabData.backgroundWallpaper?.type === 'brave'
     const colorForBackground = newTabData.backgroundWallpaper?.type === 'color' ? newTabData.backgroundWallpaper.wallpaperColor : undefined
 
     let cryptoContent = this.renderCryptoContent()
@@ -1324,6 +1330,7 @@ class NewTabPage extends React.Component<Props, State> {
           setMostVisitedSettings={this.setMostVisitedSettings}
           toggleBrandedWallpaperOptIn={this.toggleShowBrandedWallpaper}
           useCustomBackgroundImage={this.props.useCustomBackgroundImage}
+          setBraveBackground={this.props.setBraveBackground}
           setColorBackground={this.props.setColorBackground}
           showBackgroundImage={newTabData.showBackgroundImage}
           showClock={newTabData.showClock}

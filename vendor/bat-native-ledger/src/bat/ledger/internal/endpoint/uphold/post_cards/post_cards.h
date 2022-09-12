@@ -79,39 +79,33 @@
 namespace ledger {
 class LedgerImpl;
 
-namespace endpoint {
-namespace uphold {
+namespace endpoint::uphold {
 
 using PostCardsCallback =
-    base::OnceCallback<void(type::Result result, const std::string& id)>;
+    base::OnceCallback<void(mojom::Result, std::string&& id)>;
 
 class PostCards {
  public:
-  explicit PostCards(LedgerImpl* ledger);
+  explicit PostCards(LedgerImpl*);
   ~PostCards();
 
-  void Request(
-      const std::string& token,
-      PostCardsCallback callback);
+  void Request(const std::string& token, PostCardsCallback);
 
  private:
   std::string GetUrl();
 
   std::string GeneratePayload();
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(int status_code);
 
-  type::Result ParseBody(
-      const std::string& body,
-      std::string* id);
+  mojom::Result ParseBody(const std::string& body, std::string* id);
 
-  void OnRequest(PostCardsCallback callback, const type::UrlResponse& response);
+  void OnRequest(PostCardsCallback, const mojom::UrlResponse&);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
 
-}  // namespace uphold
-}  // namespace endpoint
+}  // namespace endpoint::uphold
 }  // namespace ledger
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_UPHOLD_POST_CARDS_POST_CARDS_H_

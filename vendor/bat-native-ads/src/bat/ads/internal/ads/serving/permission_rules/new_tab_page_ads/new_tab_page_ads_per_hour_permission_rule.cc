@@ -12,8 +12,7 @@
 #include "bat/ads/internal/ads/serving/serving_features.h"
 #include "bat/ads/internal/base/time/time_constraint_util.h"
 
-namespace ads {
-namespace new_tab_page_ads {
+namespace ads::new_tab_page_ads {
 
 namespace {
 constexpr base::TimeDelta kTimeConstraint = base::Hours(1);
@@ -45,5 +44,4 @@ bool AdsPerHourPermissionRule::DoesRespectCap(
       history, kTimeConstraint, features::GetMaximumNewTabPageAdsPerHour());
 }
 
-}  // namespace new_tab_page_ads
-}  // namespace ads
+}  // namespace ads::new_tab_page_ads

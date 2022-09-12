@@ -7,6 +7,7 @@ import * as React from 'react'
 import { LayoutManager } from './layout_manager'
 import { useActions, useRewardsData } from '../lib/redux_hooks'
 import { Settings } from './settings'
+import { AppErrorBoundary } from './app_error_boundary'
 
 export function App () {
   const actions = useActions()
@@ -17,20 +18,24 @@ export function App () {
   }))
 
   React.useEffect(() => {
-    actions.isInitialized()
+    if (rewardsData.initializing) {
+      actions.isInitialized()
 
-    if (!rewardsData.enabledAdsMigrated) {
-      const { adsEnabled, adsIsSupported } = rewardsData.adsData
-      if (adsIsSupported) {
-        actions.onAdsSettingSave('adsEnabledMigrated', adsEnabled)
+      if (!rewardsData.enabledAdsMigrated) {
+        const { adsEnabled, adsIsSupported } = rewardsData.adsData
+        if (adsIsSupported) {
+          actions.onAdsSettingSave('adsEnabledMigrated', adsEnabled)
+        }
       }
     }
-  }, [])
+  }, [rewardsData.initializing])
 
   return (
     <LayoutManager>
       <div id='rewardsPage'>
-        {!rewardsData.initializing && <Settings />}
+        <AppErrorBoundary>
+          {!rewardsData.initializing && <Settings />}
+        </AppErrorBoundary>
       </div>
     </LayoutManager>
   )

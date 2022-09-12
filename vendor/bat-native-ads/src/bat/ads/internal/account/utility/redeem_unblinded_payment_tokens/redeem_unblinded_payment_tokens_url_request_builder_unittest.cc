@@ -45,11 +45,11 @@ privacy::UnblindedPaymentTokenList GetUnblindedPaymentTokens(const int count) {
         unblinded_payment_tokens_base64.at(i % modulo);
     unblinded_payment_token.value =
         privacy::cbr::UnblindedToken(unblinded_payment_token_base64);
-    DCHECK(unblinded_payment_token.value.has_value());
+    CHECK(unblinded_payment_token.value.has_value());
 
     unblinded_payment_token.public_key =
         privacy::cbr::PublicKey("RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=");
-    DCHECK(unblinded_payment_token.public_key.has_value());
+    CHECK(unblinded_payment_token.public_key.has_value());
 
     unblinded_payment_token.confirmation_type = ConfirmationType::kViewed;
 

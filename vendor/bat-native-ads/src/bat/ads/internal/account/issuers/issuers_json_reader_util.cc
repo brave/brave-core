@@ -7,8 +7,7 @@
 
 #include "bat/ads/internal/account/issuers/issuers_value_util.h"
 
-namespace ads {
-namespace JSONReader {
+namespace ads::json::reader {
 
 namespace {
 
@@ -30,5 +29,4 @@ absl::optional<IssuerList> ParseIssuers(const base::Value::Dict& value) {
   return ValueToIssuers(*list);
 }
 
-}  // namespace JSONReader
-}  // namespace ads
+}  // namespace ads::json::reader

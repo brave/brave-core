@@ -33,17 +33,17 @@ std::string PostOrder::GetUrl() {
 }
 
 std::string PostOrder::GeneratePayload(
-    const std::vector<type::SKUOrderItem>& items) {
-  base::Value order_items(base::Value::Type::LIST);
+    const std::vector<mojom::SKUOrderItem>& items) {
+  base::Value::List order_items;
   for (const auto& item : items) {
-    base::Value order_item(base::Value::Type::DICTIONARY);
-    order_item.SetStringKey("sku", item.sku);
-    order_item.SetIntKey("quantity", item.quantity);
+    base::Value::Dict order_item;
+    order_item.Set("sku", item.sku);
+    order_item.Set("quantity", item.quantity);
     order_items.Append(std::move(order_item));
   }
 
-  base::Value body(base::Value::Type::DICTIONARY);
-  body.SetKey("items", std::move(order_items));
+  base::Value::Dict body;
+  body.Set("items", std::move(order_items));
 
   std::string json;
   base::JSONWriter::Write(body, &json);
@@ -51,35 +51,35 @@ std::string PostOrder::GeneratePayload(
   return json;
 }
 
-type::Result PostOrder::CheckStatusCode(const int status_code) {
+mojom::Result PostOrder::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return type::Result::RETRY_SHORT;
+    return mojom::Result::RETRY_SHORT;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Internal server error");
-    return type::Result::RETRY_SHORT;
+    return mojom::Result::RETRY_SHORT;
   }
 
   if (status_code != net::HTTP_CREATED) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
-type::Result PostOrder::ParseBody(
+mojom::Result PostOrder::ParseBody(
     const std::string& body,
-    const std::vector<type::SKUOrderItem>& order_items,
-    type::SKUOrder* order) {
+    const std::vector<mojom::SKUOrderItem>& order_items,
+    mojom::SKUOrder* order) {
   DCHECK(order);
 
   absl::optional<base::Value> dictionary = base::JSONReader::Read(body);
   if (!dictionary || !dictionary->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   const auto* id = dictionary->FindStringKey("id");
@@ -89,7 +89,7 @@ type::Result PostOrder::ParseBody(
 
   if (order->order_id.empty()) {
     BLOG(0, "Order id empty");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   const auto* total_amount = dictionary->FindStringKey("totalPrice");
@@ -111,21 +111,21 @@ type::Result PostOrder::ParseBody(
     order->location = *location;
   }
 
-  order->status = type::SKUOrderStatus::PENDING;
+  order->status = mojom::SKUOrderStatus::PENDING;
 
   auto* items = dictionary->FindListKey("items");
   if (!items) {
-    return type::Result::LEDGER_OK;
+    return mojom::Result::LEDGER_OK;
   }
 
   if (items->GetList().size() != order_items.size()) {
     BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   int count = 0;
   for (auto& item : items->GetList()) {
-    auto order_item = type::SKUOrderItem::New();
+    auto order_item = mojom::SKUOrderItem::New();
     order_item->order_id = order->order_id;
     order_item->sku = order_items[count].sku;
     order_item->type = order_items[count].type;
@@ -163,40 +163,38 @@ type::Result PostOrder::ParseBody(
     count++;
   }
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
-void PostOrder::Request(
-    const std::vector<type::SKUOrderItem>& items,
-    PostOrderCallback callback) {
+void PostOrder::Request(const std::vector<mojom::SKUOrderItem>& items,
+                        PostOrderCallback callback) {
   auto url_callback = std::bind(&PostOrder::OnRequest,
       this,
       _1,
       items,
       callback);
 
-  auto request = type::UrlRequest::New();
+  auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
   request->content = GeneratePayload(items);
   request->content_type = "application/json; charset=utf-8";
-  request->method = type::UrlMethod::POST;
+  request->method = mojom::UrlMethod::POST;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
-void PostOrder::OnRequest(
-    const type::UrlResponse& response,
-    const std::vector<type::SKUOrderItem>& items,
-    PostOrderCallback callback) {
+void PostOrder::OnRequest(const mojom::UrlResponse& response,
+                          const std::vector<mojom::SKUOrderItem>& items,
+                          PostOrderCallback callback) {
   ledger::LogUrlResponse(__func__, response);
 
-  type::Result result = CheckStatusCode(response.status_code);
+  mojom::Result result = CheckStatusCode(response.status_code);
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     callback(result, nullptr);
     return;
   }
 
-  auto order = type::SKUOrder::New();
+  auto order = mojom::SKUOrder::New();
   result = ParseBody(response.body, items, order.get());
   callback(result, std::move(order));
 }

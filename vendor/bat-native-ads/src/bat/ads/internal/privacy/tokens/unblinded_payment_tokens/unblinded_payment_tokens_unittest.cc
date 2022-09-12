@@ -5,16 +5,13 @@
 
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
 
-#include <string>
-#include <vector>
-
 #include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace privacy {
+namespace ads::privacy {
 
 class BatAdsUnblindedPaymentTokensTest : public UnitTestBase {
  protected:
@@ -25,414 +22,209 @@ class BatAdsUnblindedPaymentTokensTest : public UnitTestBase {
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, GetToken) {
   // Arrange
-  SetUnblindedPaymentTokens(10);
+  // Arrange
+  const UnblindedPaymentTokenList tokens =
+      GetUnblindedPaymentTokens(/*count*/ 2);
+  ASSERT_EQ(2U, tokens.size());
+
+  UnblindedPaymentTokens unblinded_payment_tokens;
+  unblinded_payment_tokens.SetTokens(tokens);
 
   // Act
-  const UnblindedPaymentTokenInfo& unblinded_payment_token =
-      GetUnblindedPaymentTokens()->GetToken();
 
   // Assert
-  const std::string expected_unblinded_payment_token_base64 =
-      "PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuY"
-      "L5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY";
-  UnblindedPaymentTokenInfo expected_unblinded_payment_token =
-      CreateUnblindedPaymentToken(expected_unblinded_payment_token_base64);
-
-  EXPECT_EQ(expected_unblinded_payment_token, unblinded_payment_token);
+  const UnblindedPaymentTokenInfo& expected_token = tokens.at(0);
+  EXPECT_EQ(expected_token, unblinded_payment_tokens.GetToken());
 }
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, GetAllTokens) {
   // Arrange
-  SetUnblindedPaymentTokens(8);
+  UnblindedPaymentTokens unblinded_payment_tokens;
+  unblinded_payment_tokens.SetTokens(GetUnblindedPaymentTokens(/*count*/ 2));
 
   // Act
-  const UnblindedPaymentTokenList& unblinded_payment_tokens =
-      GetUnblindedPaymentTokens()->GetAllTokens();
 
   // Assert
-  const std::vector<std::string> expected_unblinded_payment_tokens_base64 = {
-      R"~(PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY)~",
-      R"~(hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K)~",
-      R"~(bbpQ1DcxfDA+ycNg9WZvIwinjO0GKnCon1UFxDLoDOLZVnKG3ufruNZi/n8dO+G2AkTiWkUKbi78xCyKsqsXnGYUlA/6MMEOzmR67rZhMwdJHr14Fu+TCI9JscDlWepa)~",
-      R"~(OlDIXpWRR1/B+1pjPbLyc5sx0V+d7QzQb4NDGUI6F676jy8tL++u57SF4DQhvdEpBrKID+j27RLrbjsecXSjR5oieuH4Bx5mHqTb/rAPI6RpaAXtfXYrCYbf7EPwHTMU)~",
-      R"~(Y579V5BUcCzAFj6qNX7YnIr+DvH0mugb/nnY5UINdjxziyDJlejJwi0kPaRGmqbVT3+B51lpErt8e66z0jTbAxBfhtXKARFKtGH8WccB6NfCa85XHBmlcuv1+zcFPDJi)~",
-      R"~(+MPQfSo6UcaZNWtfmbd5je9UIr+FVrCWHl6I5C1ZFD7y7bjP/yz7flTjV+l5mKulbCvsRna7++MhbBz6iC0FvVZGYXLeLn2HSAM7cDgqyW6SEuPzlDeZT6kkTNI7JcQm)~",
-      R"~(CRXUzo7S0X//u0RGsO534vCoIbrsXgbzLfWw8CLML0CkgMltEGxM6XwBTICl4dqqfhIcLhD0f1WFod7JpuEkj5pW/rg7nl48EX6nmekgd3D2Hz8JgJnSarzP/8+3l+MW)~",
-      R"~(hQ+6+jh5DUUBFhhGn7bPLDjqrUIKNi/T8QDt1x01bcW9PLADg6aS73dzrVBsHav44+4q1QhFE/93u0KHVtZ1RPKMqkt8MIiC6RG575102nGRTJDA2kSOgUM75hjDsI8z)~"};
-  UnblindedPaymentTokenList expected_unblinded_payment_tokens =
-      CreateUnblindedPaymentTokens(expected_unblinded_payment_tokens_base64);
-
-  EXPECT_EQ(expected_unblinded_payment_tokens, unblinded_payment_tokens);
-}
-
-TEST_F(BatAdsUnblindedPaymentTokensTest, GetTokensAsList) {
-  // Arrange
-  SetUnblindedPaymentTokens(8);
-
-  // Act
-  const base::Value::List list = GetUnblindedPaymentTokens()->GetTokensAsList();
-
-  for (const auto& item : list) {
-    const base::Value::Dict* dict = item.GetIfDict();
-    ASSERT_TRUE(dict);
-
-    UnblindedPaymentTokenInfo unblinded_payment_token;
-
-    unblinded_payment_token.transaction_id =
-        "0d9de7ce-b3f9-4158-8726-23d52b9457c6";
-
-    const std::string* unblinded_payment_token_base64 =
-        dict->FindString("unblinded_token");
-    ASSERT_TRUE(unblinded_payment_token_base64);
-    unblinded_payment_token.value =
-        cbr::UnblindedToken(*unblinded_payment_token_base64);
-    ASSERT_TRUE(unblinded_payment_token.value.has_value());
-
-    const std::string* public_key_base64 = dict->FindString("public_key");
-    ASSERT_TRUE(public_key_base64);
-    unblinded_payment_token.public_key = cbr::PublicKey(*public_key_base64);
-    ASSERT_TRUE(unblinded_payment_token.public_key.has_value());
-
-    unblinded_payment_token.confirmation_type = ConfirmationType::kViewed;
-
-    unblinded_payment_token.ad_type = AdType::kNotificationAd;
-
-    EXPECT_TRUE(
-        GetUnblindedPaymentTokens()->TokenExists(unblinded_payment_token));
-  }
-}
-
-TEST_F(BatAdsUnblindedPaymentTokensTest, GetTokensAsListWithEmptyList) {
-  // Arrange
-
-  // Act
-  const base::Value::List list = GetUnblindedPaymentTokens()->GetTokensAsList();
-
-  // Assert
-  EXPECT_TRUE(list.empty());
+  EXPECT_EQ(GetUnblindedPaymentTokens(/*count*/ 2),
+            unblinded_payment_tokens.GetAllTokens());
 }
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, SetTokens) {
   // Arrange
-  const UnblindedPaymentTokenList unblinded_payment_tokens =
-      GetUnblindedPaymentTokens(10);
+  UnblindedPaymentTokens unblinded_payment_tokens;
 
   // Act
-  GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
+  unblinded_payment_tokens.SetTokens(GetUnblindedPaymentTokens(/*count*/ 2));
 
   // Assert
-  const UnblindedPaymentTokenList& expected_unblinded_payment_tokens =
-      GetUnblindedPaymentTokens()->GetAllTokens();
-
-  EXPECT_EQ(expected_unblinded_payment_tokens, unblinded_payment_tokens);
+  EXPECT_EQ(GetUnblindedPaymentTokens(/*count*/ 2),
+            unblinded_payment_tokens.GetAllTokens());
 }
 
-TEST_F(BatAdsUnblindedPaymentTokensTest, SetTokensWithEmptyList) {
+TEST_F(BatAdsUnblindedPaymentTokensTest, SetEmptyTokens) {
   // Arrange
-  const UnblindedPaymentTokenList unblinded_payment_tokens;
+  UnblindedPaymentTokens unblinded_payment_tokens;
 
   // Act
-  GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
+  unblinded_payment_tokens.SetTokens({});
 
   // Assert
-  EXPECT_TRUE(privacy::GetUnblindedPaymentTokens()->IsEmpty());
-}
-
-TEST_F(BatAdsUnblindedPaymentTokensTest, SetTokensFromList) {
-  // Arrange
-  const base::Value::List list = GetUnblindedPaymentTokensAsList(5);
-
-  // Act
-  GetUnblindedPaymentTokens()->SetTokensFromList(list);
-
-  // Assert
-  const UnblindedPaymentTokenList& unblinded_payment_tokens =
-      GetUnblindedPaymentTokens()->GetAllTokens();
-
-  const std::vector<std::string> expected_unblinded_payment_tokens_base64 = {
-      R"~(PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY)~",
-      R"~(hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K)~",
-      R"~(bbpQ1DcxfDA+ycNg9WZvIwinjO0GKnCon1UFxDLoDOLZVnKG3ufruNZi/n8dO+G2AkTiWkUKbi78xCyKsqsXnGYUlA/6MMEOzmR67rZhMwdJHr14Fu+TCI9JscDlWepa)~",
-      R"~(OlDIXpWRR1/B+1pjPbLyc5sx0V+d7QzQb4NDGUI6F676jy8tL++u57SF4DQhvdEpBrKID+j27RLrbjsecXSjR5oieuH4Bx5mHqTb/rAPI6RpaAXtfXYrCYbf7EPwHTMU)~",
-      R"~(Y579V5BUcCzAFj6qNX7YnIr+DvH0mugb/nnY5UINdjxziyDJlejJwi0kPaRGmqbVT3+B51lpErt8e66z0jTbAxBfhtXKARFKtGH8WccB6NfCa85XHBmlcuv1+zcFPDJi)~"};
-
-  UnblindedPaymentTokenList expected_unblinded_payment_tokens;
-  for (const auto& unblinded_payment_token_base64 :
-       expected_unblinded_payment_tokens_base64) {
-    UnblindedPaymentTokenInfo unblinded_payment_token;
-
-    unblinded_payment_token.transaction_id =
-        "0d9de7ce-b3f9-4158-8726-23d52b9457c6";
-    unblinded_payment_token.value =
-        cbr::UnblindedToken(unblinded_payment_token_base64);
-    ASSERT_TRUE(unblinded_payment_token.value.has_value());
-    unblinded_payment_token.public_key =
-        cbr::PublicKey("RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=");
-    ASSERT_TRUE(unblinded_payment_token.public_key.has_value());
-    unblinded_payment_token.confirmation_type = ConfirmationType::kViewed;
-    unblinded_payment_token.ad_type = AdType::kNotificationAd;
-
-    expected_unblinded_payment_tokens.push_back(unblinded_payment_token);
-  }
-
-  EXPECT_EQ(expected_unblinded_payment_tokens, unblinded_payment_tokens);
-}
-
-TEST_F(BatAdsUnblindedPaymentTokensTest, SetTokensFromListWithEmptyList) {
-  // Arrange
-  const base::Value::List list = GetUnblindedPaymentTokensAsList(0);
-
-  // Act
-  GetUnblindedPaymentTokens()->SetTokensFromList(list);
-
-  // Assert
-  EXPECT_TRUE(privacy::GetUnblindedPaymentTokens()->IsEmpty());
+  EXPECT_TRUE(unblinded_payment_tokens.IsEmpty());
 }
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, AddTokens) {
   // Arrange
-  SetUnblindedPaymentTokens(3);
+  const UnblindedPaymentTokenList tokens =
+      GetUnblindedPaymentTokens(/*count*/ 2);
+  ASSERT_EQ(2U, tokens.size());
+
+  UnblindedPaymentTokens unblinded_payment_tokens;
+  unblinded_payment_tokens.SetTokens({tokens.at(0)});
 
   // Act
-  const UnblindedPaymentTokenList unblinded_payment_tokens =
-      GetRandomUnblindedPaymentTokens(5);
-  GetUnblindedPaymentTokens()->AddTokens(unblinded_payment_tokens);
+  unblinded_payment_tokens.AddTokens({tokens.at(1)});
 
   // Assert
-  for (const auto& unblinded_payment_token : unblinded_payment_tokens) {
-    EXPECT_TRUE(
-        GetUnblindedPaymentTokens()->TokenExists(unblinded_payment_token));
-  }
+  EXPECT_EQ(2, unblinded_payment_tokens.Count());
+}
+
+TEST_F(BatAdsUnblindedPaymentTokensTest, AddEmptyTokens) {
+  // Arrange
+  UnblindedPaymentTokens unblinded_payment_tokens;
+
+  // Act
+  unblinded_payment_tokens.AddTokens({});
+
+  // Assert
+  EXPECT_TRUE(unblinded_payment_tokens.IsEmpty());
 }
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, DoNotAddDuplicateTokens) {
   // Arrange
-  SetUnblindedPaymentTokens(3);
-
-  // Act
-  const UnblindedPaymentTokenList duplicate_unblinded_payment_tokens =
-      GetUnblindedPaymentTokens(1);
-  GetUnblindedPaymentTokens()->AddTokens(duplicate_unblinded_payment_tokens);
-
-  // Assert
-  const int count = GetUnblindedPaymentTokens()->Count();
-  EXPECT_EQ(3, count);
-}
-
-TEST_F(BatAdsUnblindedPaymentTokensTest, AddTokensCount) {
-  // Arrange
-  SetUnblindedPaymentTokens(5);
-
-  // Act
-  const UnblindedPaymentTokenList random_unblinded_payment_tokens =
-      GetRandomUnblindedPaymentTokens(3);
-  GetUnblindedPaymentTokens()->AddTokens(random_unblinded_payment_tokens);
-
-  // Assert
-  const int count = GetUnblindedPaymentTokens()->Count();
-  EXPECT_EQ(8, count);
-}
-
-TEST_F(BatAdsUnblindedPaymentTokensTest, AddTokensWithEmptyList) {
-  // Arrange
-  SetUnblindedPaymentTokens(3);
-
-  // Act
-  GetUnblindedPaymentTokens()->AddTokens({});
-
-  // Assert
-  const int count = GetUnblindedPaymentTokens()->Count();
-  EXPECT_EQ(3, count);
-}
-
-TEST_F(BatAdsUnblindedPaymentTokensTest, RemoveTokenCount) {
-  // Arrange
-  SetUnblindedPaymentTokens(3);
-
-  // Act
-  const std::string unblinded_payment_token_base64 =
-      "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6"
-      "NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K";
-
   const UnblindedPaymentTokenInfo unblinded_payment_token =
-      CreateUnblindedPaymentToken(unblinded_payment_token_base64);
+      GetUnblindedPaymentToken();
 
-  GetUnblindedPaymentTokens()->RemoveToken(unblinded_payment_token);
+  UnblindedPaymentTokens unblinded_payment_tokens;
+  unblinded_payment_tokens.AddTokens({unblinded_payment_token});
+
+  // Act
+  unblinded_payment_tokens.AddTokens({unblinded_payment_token});
 
   // Assert
-  const int count = GetUnblindedPaymentTokens()->Count();
-  EXPECT_EQ(2, count);
+  EXPECT_EQ(1, unblinded_payment_tokens.Count());
 }
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, RemoveToken) {
   // Arrange
-  SetUnblindedPaymentTokens(3);
+  const UnblindedPaymentTokenList tokens =
+      GetUnblindedPaymentTokens(/*count*/ 2);
+  ASSERT_EQ(2U, tokens.size());
+
+  UnblindedPaymentTokens unblinded_payment_tokens;
+  unblinded_payment_tokens.SetTokens(tokens);
+
+  const UnblindedPaymentTokenInfo& token_1 = tokens.at(0);
+  const UnblindedPaymentTokenInfo& token_2 = tokens.at(1);
 
   // Act
-  std::string unblinded_payment_token_base64 =
-      "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6"
-      "NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K";
-
-  const UnblindedPaymentTokenInfo unblinded_payment_token =
-      CreateUnblindedPaymentToken(unblinded_payment_token_base64);
-
-  GetUnblindedPaymentTokens()->RemoveToken(unblinded_payment_token);
+  unblinded_payment_tokens.RemoveToken(token_2);
 
   // Assert
-  EXPECT_FALSE(
-      GetUnblindedPaymentTokens()->TokenExists(unblinded_payment_token));
+  const UnblindedPaymentTokenList expected_tokens = {token_1};
+  EXPECT_EQ(expected_tokens, unblinded_payment_tokens.GetAllTokens());
 }
 
-TEST_F(BatAdsUnblindedPaymentTokensTest, DoNotRemoveTokensThatDoNotExist) {
+TEST_F(BatAdsUnblindedPaymentTokensTest, RemoveTokens) {
   // Arrange
-  SetUnblindedPaymentTokens(3);
+  const UnblindedPaymentTokenList tokens =
+      GetUnblindedPaymentTokens(/*count*/ 3);
+  ASSERT_EQ(3U, tokens.size());
+
+  UnblindedPaymentTokens unblinded_payment_tokens;
+  unblinded_payment_tokens.SetTokens(tokens);
+
+  const UnblindedPaymentTokenInfo& token_1 = tokens.at(0);
+  const UnblindedPaymentTokenInfo& token_2 = tokens.at(1);
+  const UnblindedPaymentTokenInfo& token_3 = tokens.at(2);
 
   // Act
-  std::string unblinded_payment_token_base64 =
-      "DEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEF"
-      "DEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEF";
-  UnblindedPaymentTokenInfo unblinded_payment_token =
-      CreateUnblindedPaymentToken(unblinded_payment_token_base64);
-
-  GetUnblindedPaymentTokens()->RemoveToken(unblinded_payment_token);
+  unblinded_payment_tokens.RemoveTokens({token_1, token_3});
 
   // Assert
-  const int count = GetUnblindedPaymentTokens()->Count();
-  EXPECT_EQ(3, count);
-}
-
-TEST_F(BatAdsUnblindedPaymentTokensTest, DoNotRemoveTheSameTokenTwice) {
-  // Arrange
-  SetUnblindedPaymentTokens(3);
-
-  // Act
-  std::string unblinded_payment_token_base64 =
-      "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6"
-      "NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K";
-
-  const UnblindedPaymentTokenInfo unblinded_payment_token =
-      CreateUnblindedPaymentToken(unblinded_payment_token_base64);
-
-  GetUnblindedPaymentTokens()->RemoveToken(unblinded_payment_token);
-  GetUnblindedPaymentTokens()->RemoveToken(unblinded_payment_token);
-
-  // Assert
-  const int count = GetUnblindedPaymentTokens()->Count();
-  EXPECT_EQ(2, count);
-}
-
-TEST_F(BatAdsUnblindedPaymentTokensTest, RemoveMatchingTokens) {
-  // Arrange
-  UnblindedPaymentTokenList unblinded_payment_tokens =
-      SetUnblindedPaymentTokens(3);
-  UnblindedPaymentTokenInfo unblinded_payment_token =
-      unblinded_payment_tokens.back();
-  unblinded_payment_tokens.pop_back();
-
-  // Act
-  GetUnblindedPaymentTokens()->RemoveTokens(unblinded_payment_tokens);
-
-  // Assert
-  const std::vector<std::string> expected_unblinded_payment_tokens_base64 = {
-      "bbpQ1DcxfDA+ycNg9WZvIwinjO0GKnCon1UFxDLoDOLZVnKG3ufruNZi/n8dO+G2"
-      "AkTiWkUKbi78xCyKsqsXnGYUlA/6MMEOzmR67rZhMwdJHr14Fu+TCI9JscDlWepa"};
-  const UnblindedPaymentTokenList expected_unblinded_payment_tokens =
-      CreateUnblindedPaymentTokens(expected_unblinded_payment_tokens_base64);
-
-  unblinded_payment_tokens = GetUnblindedPaymentTokens()->GetAllTokens();
-
-  EXPECT_EQ(expected_unblinded_payment_tokens, unblinded_payment_tokens);
+  const UnblindedPaymentTokenList expected_tokens = {token_2};
+  EXPECT_EQ(expected_tokens, unblinded_payment_tokens.GetAllTokens());
 }
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, RemoveAllTokens) {
   // Arrange
-  SetUnblindedPaymentTokens(7);
+  UnblindedPaymentTokens unblinded_payment_tokens;
+  unblinded_payment_tokens.SetTokens(GetUnblindedPaymentTokens(/*count*/ 2));
 
   // Act
-  GetUnblindedPaymentTokens()->RemoveAllTokens();
+  unblinded_payment_tokens.RemoveAllTokens();
 
   // Assert
-  EXPECT_TRUE(privacy::GetUnblindedPaymentTokens()->IsEmpty());
+  EXPECT_TRUE(unblinded_payment_tokens.IsEmpty());
 }
 
-TEST_F(BatAdsUnblindedPaymentTokensTest, RemoveAllTokensWithEmptyList) {
+TEST_F(BatAdsUnblindedPaymentTokensTest, TokenDoesExist) {
   // Arrange
-
-  // Act
-  GetUnblindedPaymentTokens()->RemoveAllTokens();
-
-  // Assert
-  EXPECT_TRUE(privacy::GetUnblindedPaymentTokens()->IsEmpty());
-}
-
-TEST_F(BatAdsUnblindedPaymentTokensTest, TokenExists) {
-  // Arrange
-  SetUnblindedPaymentTokens(3);
-
-  // Act
-  std::string unblinded_payment_token_base64 =
-      "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6"
-      "NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K";
-
   const UnblindedPaymentTokenInfo unblinded_payment_token =
-      CreateUnblindedPaymentToken(unblinded_payment_token_base64);
+      GetUnblindedPaymentToken();
+
+  UnblindedPaymentTokens unblinded_payment_tokens;
+  unblinded_payment_tokens.SetTokens({unblinded_payment_token});
+
+  // Act
 
   // Assert
-  const bool exists =
-      GetUnblindedPaymentTokens()->TokenExists(unblinded_payment_token);
-
-  EXPECT_TRUE(exists);
+  EXPECT_TRUE(unblinded_payment_tokens.TokenExists(unblinded_payment_token));
 }
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, TokenDoesNotExist) {
   // Arrange
-  SetUnblindedPaymentTokens(3);
+  UnblindedPaymentTokens unblinded_payment_tokens;
 
   // Act
-  std::string unblinded_payment_token_base64 =
-      "DEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEF"
-      "DEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEF";
-  UnblindedPaymentTokenInfo unblinded_payment_token =
-      CreateUnblindedPaymentToken(unblinded_payment_token_base64);
 
   // Assert
-  const bool exists =
-      GetUnblindedPaymentTokens()->TokenExists(unblinded_payment_token);
-
-  EXPECT_FALSE(exists);
+  EXPECT_FALSE(
+      unblinded_payment_tokens.TokenExists(GetUnblindedPaymentToken()));
 }
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, Count) {
   // Arrange
-  SetUnblindedPaymentTokens(6);
+  UnblindedPaymentTokens unblinded_payment_tokens;
+  unblinded_payment_tokens.SetTokens(GetUnblindedPaymentTokens(/*count*/ 3));
 
   // Act
-  const int count = GetUnblindedPaymentTokens()->Count();
 
   // Assert
-  EXPECT_EQ(6, count);
+  EXPECT_EQ(3, unblinded_payment_tokens.Count());
 }
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, IsEmpty) {
   // Arrange
+  UnblindedPaymentTokens unblinded_payment_tokens;
 
   // Act
-  const bool is_empty = GetUnblindedPaymentTokens()->IsEmpty();
 
   // Assert
-  EXPECT_TRUE(is_empty);
+  EXPECT_TRUE(unblinded_payment_tokens.IsEmpty());
 }
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, IsNotEmpty) {
   // Arrange
-  SetUnblindedPaymentTokens(9);
+  const UnblindedPaymentTokenInfo unblinded_payment_token =
+      GetUnblindedPaymentToken();
+
+  UnblindedPaymentTokens unblinded_payment_tokens;
+  unblinded_payment_tokens.SetTokens({unblinded_payment_token});
 
   // Act
-  const bool is_empty = GetUnblindedPaymentTokens()->IsEmpty();
 
   // Assert
-  EXPECT_FALSE(is_empty);
+  EXPECT_FALSE(unblinded_payment_tokens.IsEmpty());
 }
 
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy

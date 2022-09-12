@@ -671,7 +671,10 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             if (settingOption.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
                 mBlockShieldsOption1.setChecked(true);
             } else if (settingOption.equals(
-                               BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE)) {
+                               layout.equals(BraveShieldsContentSettings
+                                                     .RESOURCE_IDENTIFIER_FINGERPRINTING)
+                                       ? BraveShieldsContentSettings.DEFAULT
+                                       : BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE)) {
                 mBlockShieldsOption2.setChecked(true);
             } else if (settingOption.equals(BraveShieldsContentSettings.ALLOW_RESOURCE)) {
                 mBlockShieldsOption3.setChecked(true);
@@ -694,7 +697,12 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                                 } else if (checkedId == R.id.option2) {
                                     BraveShieldsContentSettings.setShieldsValue(mProfile, mHost,
                                             layout,
-                                            BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE,
+                                            layout.equals(
+                                                    BraveShieldsContentSettings
+                                                            .RESOURCE_IDENTIFIER_FINGERPRINTING)
+                                                    ? BraveShieldsContentSettings.DEFAULT
+                                                    : BraveShieldsContentSettings
+                                                              .BLOCK_THIRDPARTY_RESOURCE,
                                             false);
                                 } else if (checkedId == R.id.option3) {
                                     BraveShieldsContentSettings.setShieldsValue(mProfile, mHost,

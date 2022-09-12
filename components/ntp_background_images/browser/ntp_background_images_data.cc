@@ -118,7 +118,7 @@ base::Value::Dict NTPBackgroundImagesData::GetBackgroundAt(size_t index) {
   data.Set(kIsBackgroundKey, true);
   data.Set(kImageAuthorKey, backgrounds[index].author);
   data.Set(kImageLinkKey, backgrounds[index].link);
-  data.Set(kWallpaperTypeKey, "image");
+  data.Set(kWallpaperTypeKey, "brave");
   return data;
 }
 

@@ -1,3 +1,4 @@
+.cache/clangd
 /vendor/*
 !/vendor/bat-native-ledger
 !/vendor/bat-native-ads

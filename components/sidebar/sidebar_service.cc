@@ -113,6 +113,11 @@ std::vector<SidebarItem> GetDefaultSidebarItems() {
 
 }  // namespace
 
+bool SidebarItemUpdate::operator==(const SidebarItemUpdate& update) const {
+  return index == update.index && title_updated == update.title_updated &&
+         url_updated == update.url_updated;
+}
+
 // static
 void SidebarService::RegisterProfilePrefs(PrefRegistrySimple* registry,
                                           version_info::Channel channel) {
@@ -148,7 +153,6 @@ void SidebarService::MigrateSidebarShowOptions() {
       static_cast<ShowSidebarOption>(prefs_->GetInteger(kSidebarShowOption));
   // Show on click is deprecated. Treat it as show on mouse over.
   if (option == ShowSidebarOption::kShowOnClick) {
-    option = ShowSidebarOption::kShowOnMouseOver;
     prefs_->SetInteger(kSidebarShowOption,
                        static_cast<int>(ShowSidebarOption::kShowOnMouseOver));
   }
@@ -252,11 +256,10 @@ void SidebarService::MigratePrefSidebarBuiltInItemsToHidden() {
       item_id = item_id_parsed;
     }
     // Remember not to hide this item
-    auto iter = base::ranges::find_if(
-        built_in_items_to_hide, [&item_id](const auto& default_item) {
-          return default_item.built_in_item_type ==
-                 static_cast<SidebarItem::BuiltInItemType>(*item_id);
-        });
+    auto iter =
+        base::ranges::find(built_in_items_to_hide,
+                           static_cast<SidebarItem::BuiltInItemType>(*item_id),
+                           &SidebarItem::built_in_item_type);
     // It might be an item which is no longer is offered
     if (iter != built_in_items_to_hide.end()) {
       built_in_items_to_hide.erase(iter);
@@ -300,6 +303,7 @@ void SidebarService::MigratePrefSidebarBuiltInItemsToHidden() {
 }
 
 void SidebarService::AddItem(const SidebarItem& item) {
+  DCHECK(IsValidItem(item));
   items_.push_back(item);
 
   for (Observer& obs : observers_) {
@@ -338,6 +342,38 @@ void SidebarService::MoveItem(int from, int to) {
     obs.OnItemMoved(item, from, to);
 
   UpdateSidebarItemsToPrefStore();
+}
+
+void SidebarService::UpdateItem(const GURL& old_url,
+                                const GURL& new_url,
+                                const std::u16string& old_title,
+                                const std::u16string& new_title) {
+  DCHECK(old_url.is_valid() && new_url.is_valid());
+  DCHECK(!old_title.empty() && !new_title.empty());
+
+  if (old_url == new_url && old_title == new_title)
+    return;
+
+  // Check any existing items doen't use |new_url| if |old_url| and |new_url|
+  // is different. If both are same, only title will be updated.
+  // Sidebar can't have two items with same url.
+  if (old_url != new_url &&
+      base::Contains(items_, new_url, &SidebarItem::url)) {
+    return;
+  }
+
+  auto item_iter = base::ranges::find(items_, old_url, &SidebarItem::url);
+  if (item_iter != items_.end()) {
+    const int index = std::distance(items_.begin(), item_iter);
+    DCHECK(IsEditableItemAt(index));
+    item_iter->url = new_url;
+    item_iter->title = new_title;
+    for (Observer& obs : observers_) {
+      obs.OnItemUpdated(*item_iter,
+                        {index, old_title != new_title, old_url != new_url});
+    }
+    UpdateSidebarItemsToPrefStore();
+  }
 }
 
 void SidebarService::UpdateSidebarItemsToPrefStore() {
@@ -421,9 +457,8 @@ SidebarService::ShowSidebarOption SidebarService::GetSidebarShowOption() const {
 absl::optional<SidebarItem> SidebarService::GetDefaultPanelItem() const {
   absl::optional<SidebarItem> default_item;
   for (const auto& type : kPreferredPanelOrder) {
-    auto found_item_iter = base::ranges::find_if(
-        items_,
-        [type](SidebarItem item) { return (item.built_in_item_type == type); });
+    auto found_item_iter =
+        base::ranges::find(items_, type, &SidebarItem::built_in_item_type);
     if (found_item_iter != items_.end()) {
       default_item = *found_item_iter;
       DCHECK_EQ(default_item->open_in_panel, true);
@@ -431,6 +466,11 @@ absl::optional<SidebarItem> SidebarService::GetDefaultPanelItem() const {
     }
   }
   return default_item;
+}
+
+bool SidebarService::IsEditableItemAt(int index) const {
+  DCHECK(0 <= index && index < static_cast<int>(items_.size()));
+  return sidebar::IsWebType(items_[index]);
 }
 
 void SidebarService::SetSidebarShowOption(ShowSidebarOption show_options) {
@@ -464,10 +504,8 @@ void SidebarService::LoadSidebarItems() {
         }
         auto id =
             static_cast<SidebarItem::BuiltInItemType>(*built_in_type_value);
-        auto iter = base::ranges::find_if(
-            default_items_to_add, [id](const auto& default_item) {
-              return default_item.built_in_item_type == id;
-            });
+        auto iter = base::ranges::find(default_items_to_add, id,
+                                       &SidebarItem::built_in_item_type);
         // It might be an item which is no longer is offered as built-in
         if (iter == default_items_to_add.end()) {
           VLOG(1) << "item not found: " << item.DebugString();
@@ -508,12 +546,9 @@ void SidebarService::LoadSidebarItems() {
       // Don't show this built-in item
       const auto id = static_cast<SidebarItem::BuiltInItemType>(item.GetInt());
       DVLOG(2) << "hide built-in item with id: " << item.GetInt();
-      auto iter =
-          std::find_if(default_items_to_add.begin(), default_items_to_add.end(),
-                       [id](const auto& default_item) {
-                         return default_item.built_in_item_type ==
-                                static_cast<SidebarItem::BuiltInItemType>(id);
-                       });
+      auto iter = base::ranges::find(
+          default_items_to_add, static_cast<SidebarItem::BuiltInItemType>(id),
+          &SidebarItem::built_in_item_type);
       if (iter != default_items_to_add.end()) {
         default_items_to_add.erase(iter);
       } else {

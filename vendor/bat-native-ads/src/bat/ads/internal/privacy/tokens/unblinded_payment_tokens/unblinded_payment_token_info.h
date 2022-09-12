@@ -14,8 +14,7 @@
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/public_key.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 
-namespace ads {
-namespace privacy {
+namespace ads::privacy {
 
 struct UnblindedPaymentTokenInfo final {
   UnblindedPaymentTokenInfo();
@@ -35,7 +34,6 @@ struct UnblindedPaymentTokenInfo final {
 
 using UnblindedPaymentTokenList = std::vector<UnblindedPaymentTokenInfo>;
 
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_TOKENS_UNBLINDED_PAYMENT_TOKENS_UNBLINDED_PAYMENT_TOKEN_INFO_H_

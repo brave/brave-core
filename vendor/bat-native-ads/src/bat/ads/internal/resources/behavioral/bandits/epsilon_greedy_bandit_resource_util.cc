@@ -5,14 +5,13 @@
 
 #include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource_util.h"
 
+#include "absl/types/optional.h"
 #include "base/values.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/segments/segment_values_util.h"
 #include "bat/ads/pref_names.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
-namespace resource {
+namespace ads::resource {
 
 void SetEpsilonGreedyBanditEligibleSegments(const SegmentList& segments) {
   AdsClientHelper::GetInstance()->SetListPref(
@@ -30,5 +29,4 @@ SegmentList GetEpsilonGreedyBanditEligibleSegments() {
   return SegmentsFromValue(*list);
 }
 
-}  // namespace resource
-}  // namespace ads
+}  // namespace ads::resource

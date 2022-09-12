@@ -8,19 +8,19 @@
 
 #include <string>
 
+#include "absl/types/optional.h"
 #include "base/containers/circular_deque.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
 struct NotificationAdInfo;
 
-namespace JSONReader {
+namespace json::reader {
 
 absl::optional<base::circular_deque<NotificationAdInfo>> ReadNotificationAds(
     const std::string& json);
 
-}  // namespace JSONReader
+}  // namespace json::reader
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_LEGACY_MIGRATION_NOTIFICATIONS_LEGACY_NOTIFICATION_JSON_READER_H_

@@ -5,14 +5,15 @@
 
 #include "bat/ads/internal/account/account_util.h"
 
-#include "bat/ads/internal/account/confirmations/confirmations_unittest_util.h"
+#include "bat/ads/internal/account/confirmations/confirmation_unittest_util.h"
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
-#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "bat/ads/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -56,16 +57,14 @@ TEST_F(BatAdsAccountUtilTest, ResetRewards) {
   transactions.push_back(transaction);
   SaveTransactions(transactions);
 
-  const ConfirmationInfo confirmation = BuildConfirmation(
-      /* transaction_id */ "8b742869-6e4a-490c-ac31-31b49130098a",
-      /* creative_instance_id */ "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-      ConfirmationType::kViewed, AdType::kNotificationAd);
-
+  privacy::SetUnblindedTokens(1);
+  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  CHECK(confirmation);
   ConfirmationStateManager::GetInstance()->AppendFailedConfirmation(
-      confirmation);
+      *confirmation);
 
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
-      privacy::GetRandomUnblindedPaymentTokens(1);
+      privacy::GetUnblindedPaymentTokens(1);
   privacy::GetUnblindedPaymentTokens()->AddTokens(unblinded_payment_tokens);
 
   // Act
@@ -83,9 +82,7 @@ TEST_F(BatAdsAccountUtilTest, ResetRewards) {
         ConfirmationStateManager::GetInstance()->GetFailedConfirmations();
     EXPECT_TRUE(failed_confirmations.empty());
 
-    const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
-        privacy::GetUnblindedPaymentTokens()->GetAllTokens();
-    EXPECT_TRUE(unblinded_payment_tokens.empty());
+    EXPECT_TRUE(privacy::UnblindedPaymentTokensIsEmpty());
   });
 
   // Assert
@@ -109,9 +106,7 @@ TEST_F(BatAdsAccountUtilTest, ResetRewardsWithNoState) {
         ConfirmationStateManager::GetInstance()->GetFailedConfirmations();
     EXPECT_TRUE(failed_confirmations.empty());
 
-    const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
-        privacy::GetUnblindedPaymentTokens()->GetAllTokens();
-    EXPECT_TRUE(unblinded_payment_tokens.empty());
+    EXPECT_TRUE(privacy::UnblindedPaymentTokensIsEmpty());
   });
 
   // Assert

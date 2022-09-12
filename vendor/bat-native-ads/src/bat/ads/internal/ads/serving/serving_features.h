@@ -12,8 +12,7 @@ namespace base {
 class TimeDelta;
 }  // namespace base
 
-namespace ads {
-namespace features {
+namespace ads::features {
 
 extern const base::Feature kServing;
 
@@ -40,7 +39,6 @@ int GetMaximumSearchResultAdsPerDay();
 int GetBrowsingHistoryMaxCount();
 int GetBrowsingHistoryDaysAgo();
 
-}  // namespace features
-}  // namespace ads
+}  // namespace ads::features
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SERVING_SERVING_FEATURES_H_

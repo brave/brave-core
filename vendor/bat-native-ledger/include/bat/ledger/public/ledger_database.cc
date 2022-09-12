@@ -5,6 +5,7 @@
 
 #include "bat/ledger/public/ledger_database.h"
 
+#include <memory>
 #include <utility>
 #include <vector>
 
@@ -224,9 +225,9 @@ mojom::DBCommandResponse::Status LedgerDatabase::Initialize(
     }
 
     initialized_ = true;
-    memory_pressure_listener_.reset(new base::MemoryPressureListener(
+    memory_pressure_listener_ = std::make_unique<base::MemoryPressureListener>(
         FROM_HERE, base::BindRepeating(&LedgerDatabase::OnMemoryPressure,
-                                       base::Unretained(this))));
+                                       base::Unretained(this)));
   } else {
     table_version = meta_table_.GetVersionNumber();
   }

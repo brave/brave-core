@@ -13,6 +13,7 @@
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
 #include "bat/ads/pref_names.h"
@@ -98,7 +99,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, RedeemUnblindedPaymentTokens) {
   FastForwardClockToNextPendingTask();
 
   // Assert
-  EXPECT_TRUE(privacy::GetUnblindedPaymentTokens()->IsEmpty());
+  EXPECT_TRUE(privacy::UnblindedPaymentTokensIsEmpty());
 }
 
 TEST_F(BatAdsRedeemUnblindedPaymentTokensTest,
@@ -224,7 +225,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
   FastForwardClockToNextPendingTask();
 
   // Assert
-  EXPECT_TRUE(privacy::GetUnblindedPaymentTokens()->IsEmpty());
+  EXPECT_TRUE(privacy::UnblindedPaymentTokensIsEmpty());
 }
 
 TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
@@ -332,7 +333,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
   FastForwardClockToNextPendingTask();
 
   // Assert
-  EXPECT_TRUE(privacy::GetUnblindedPaymentTokens()->IsEmpty());
+  EXPECT_TRUE(privacy::UnblindedPaymentTokensIsEmpty());
 }
 
 TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, Retry) {
@@ -387,7 +388,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, Retry) {
   FastForwardClockToNextPendingTask();
 
   // Assert
-  EXPECT_TRUE(privacy::GetUnblindedPaymentTokens()->IsEmpty());
+  EXPECT_TRUE(privacy::UnblindedPaymentTokensIsEmpty());
 }
 
 }  // namespace ads

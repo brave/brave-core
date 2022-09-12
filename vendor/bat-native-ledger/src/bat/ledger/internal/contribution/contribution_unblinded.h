@@ -22,8 +22,8 @@ class LedgerImpl;
 namespace contribution {
 
 using GetContributionInfoAndUnblindedTokensCallback = std::function<void(
-    type::ContributionInfoPtr contribution,
-    const std::vector<type::UnblindedToken>& unblinded_tokens)>;
+    mojom::ContributionInfoPtr contribution,
+    const std::vector<mojom::UnblindedToken>& unblinded_tokens)>;
 
 using StatisticalVotingWinners = std::map<std::string, uint32_t>;
 
@@ -32,24 +32,24 @@ class Unblinded {
   explicit Unblinded(LedgerImpl* ledger);
   ~Unblinded();
 
-  void Start(const std::vector<type::CredsBatchType>& types,
+  void Start(const std::vector<mojom::CredsBatchType>& types,
              const std::string& contribution_id,
              ledger::LegacyResultCallback callback);
 
-  void Retry(const std::vector<type::CredsBatchType>& types,
-             type::ContributionInfoPtr contribution,
+  void Retry(const std::vector<mojom::CredsBatchType>& types,
+             mojom::ContributionInfoPtr contribution,
              ledger::LegacyResultCallback callback);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(UnblindedTest, GetStatisticalVotingWinner);
 
   void GetContributionInfoAndUnblindedTokens(
-      const std::vector<type::CredsBatchType>& types,
+      const std::vector<mojom::CredsBatchType>& types,
       const std::string& contribution_id,
       GetContributionInfoAndUnblindedTokensCallback callback);
 
   void OnUnblindedTokens(
-      type::UnblindedTokenList unblinded_tokens,
+      std::vector<mojom::UnblindedTokenPtr> unblinded_tokens,
       const std::string& contribution_id,
       GetContributionInfoAndUnblindedTokensCallback callback);
 
@@ -58,77 +58,79 @@ class Unblinded {
       GetContributionInfoAndUnblindedTokensCallback callback);
 
   void OnReservedUnblindedTokens(
-      type::UnblindedTokenList unblinded_tokens,
+      std::vector<mojom::UnblindedTokenPtr> unblinded_tokens,
       const std::string& contribution_id,
       GetContributionInfoAndUnblindedTokensCallback callback);
 
   void OnGetContributionInfo(
-      type::ContributionInfoPtr contribution,
-      const std::vector<type::UnblindedToken>& unblinded_tokens,
+      mojom::ContributionInfoPtr contribution,
+      const std::vector<mojom::UnblindedToken>& unblinded_tokens,
       GetContributionInfoAndUnblindedTokensCallback callback);
 
-  void PrepareTokens(type::ContributionInfoPtr contribution,
-                     const std::vector<type::UnblindedToken>& unblinded_tokens,
-                     const std::vector<type::CredsBatchType>& types,
+  void PrepareTokens(mojom::ContributionInfoPtr contribution,
+                     const std::vector<mojom::UnblindedToken>& unblinded_tokens,
+                     const std::vector<mojom::CredsBatchType>& types,
                      ledger::LegacyResultCallback callback);
 
   void PreparePublishers(
-      const std::vector<type::UnblindedToken>& unblinded_tokens,
-      type::ContributionInfoPtr contribution,
-      const std::vector<type::CredsBatchType>& types,
+      const std::vector<mojom::UnblindedToken>& unblinded_tokens,
+      mojom::ContributionInfoPtr contribution,
+      const std::vector<mojom::CredsBatchType>& types,
       ledger::LegacyResultCallback callback);
 
-  type::ContributionPublisherList PrepareAutoContribution(
-      const std::vector<type::UnblindedToken>& unblinded_tokens,
-      type::ContributionInfoPtr contribution);
+  std::vector<mojom::ContributionPublisherPtr> PrepareAutoContribution(
+      const std::vector<mojom::UnblindedToken>& unblinded_tokens,
+      mojom::ContributionInfoPtr contribution);
 
-  void OnPrepareAutoContribution(type::Result result,
-                                 const std::vector<type::CredsBatchType>& types,
-                                 const std::string& contribution_id,
-                                 ledger::LegacyResultCallback callback);
+  void OnPrepareAutoContribution(
+      mojom::Result result,
+      const std::vector<mojom::CredsBatchType>& types,
+      const std::string& contribution_id,
+      ledger::LegacyResultCallback callback);
 
-  void PrepareStepSaved(type::Result result,
-                        const std::vector<type::CredsBatchType>& types,
+  void PrepareStepSaved(mojom::Result result,
+                        const std::vector<mojom::CredsBatchType>& types,
                         const std::string& contribution_id,
                         ledger::LegacyResultCallback callback);
 
-  void ProcessTokens(const std::vector<type::CredsBatchType>& types,
+  void ProcessTokens(const std::vector<mojom::CredsBatchType>& types,
                      const std::string& contribution_id,
                      ledger::LegacyResultCallback callback);
 
   void OnProcessTokens(
-      type::ContributionInfoPtr contribution,
-      const std::vector<type::UnblindedToken>& unblinded_tokens,
+      mojom::ContributionInfoPtr contribution,
+      const std::vector<mojom::UnblindedToken>& unblinded_tokens,
       ledger::LegacyResultCallback callback);
 
-  void TokenProcessed(type::Result result,
+  void TokenProcessed(mojom::Result result,
                       const std::string& contribution_id,
                       const std::string& publisher_key,
                       bool final_publisher,
                       ledger::LegacyResultCallback callback);
 
-  void ContributionAmountSaved(type::Result result,
+  void ContributionAmountSaved(mojom::Result result,
                                const std::string& contribution_id,
                                bool final_publisher,
                                ledger::LegacyResultCallback callback);
 
   void OnMarkUnblindedTokensAsReserved(
-      type::Result result,
-      const std::vector<type::UnblindedToken>& unblinded_tokens,
-      std::shared_ptr<type::ContributionInfoPtr> shared_contribution,
-      const std::vector<type::CredsBatchType>& types,
+      mojom::Result result,
+      const std::vector<mojom::UnblindedToken>& unblinded_tokens,
+      std::shared_ptr<mojom::ContributionInfoPtr> shared_contribution,
+      const std::vector<mojom::CredsBatchType>& types,
       ledger::LegacyResultCallback callback);
 
   void OnReservedUnblindedTokensForRetryAttempt(
-      const type::UnblindedTokenList& unblinded_tokens,
-      const std::vector<type::CredsBatchType>& types,
-      std::shared_ptr<type::ContributionInfoPtr> shared_contribution,
+      const std::vector<mojom::UnblindedTokenPtr>& unblinded_tokens,
+      const std::vector<mojom::CredsBatchType>& types,
+      std::shared_ptr<mojom::ContributionInfoPtr> shared_contribution,
       ledger::LegacyResultCallback callback);
 
   std::string GetStatisticalVotingWinnerForTesting(
       double dart,
       double amount,
-      const ledger::type::ContributionPublisherList& publisher_list);
+      const std::vector<ledger::mojom::ContributionPublisherPtr>&
+          publisher_list);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<credential::Credentials> credentials_promotion_;

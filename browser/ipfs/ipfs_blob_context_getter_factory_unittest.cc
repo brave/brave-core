@@ -36,7 +36,7 @@ class IpfsBlobContextGetterFactoryUnitTest : public testing::Test {
 
   void SetUp() override {
     TestingBrowserProcess* browser_process = TestingBrowserProcess::GetGlobal();
-    profile_manager_.reset(new TestingProfileManager(browser_process));
+    profile_manager_ = std::make_unique<TestingProfileManager>(browser_process);
     ASSERT_TRUE(profile_manager_->SetUp());
     profile_ = profile_manager_->CreateTestingProfile(kTestProfileName);
   }
@@ -71,7 +71,7 @@ TEST_F(IpfsBlobContextGetterFactoryUnitTest, GetStorageContext) {
                      base::Unretained(this), &factory,
                      run_loop->QuitClosure()));
   run_loop->Run();
-  run_loop.reset(new base::RunLoop());
+  run_loop = std::make_unique<base::RunLoop>();
   content::GetIOThreadTaskRunner({})->PostTask(
       FROM_HERE,
       base::BindOnce(&IpfsBlobContextGetterFactoryUnitTest::RetrieveStorageIO,

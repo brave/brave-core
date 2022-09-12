@@ -8,8 +8,7 @@
 #include "base/time/time.h"
 #include "bat/ads/internal/base/time/time_util.h"
 
-namespace ads {
-namespace user_data {
+namespace ads::user_data {
 
 namespace {
 constexpr char kSystemTimestampKey[] = "systemTimestamp";
@@ -17,11 +16,11 @@ constexpr char kSystemTimestampKey[] = "systemTimestamp";
 
 base::Value::Dict GetSystemTimestamp() {
   base::Value::Dict user_data;
+
   user_data.Set(kSystemTimestampKey,
                 TimeToPrivacyPreservingISO8601(base::Time::Now()));
 
   return user_data;
 }
 
-}  // namespace user_data
-}  // namespace ads
+}  // namespace ads::user_data

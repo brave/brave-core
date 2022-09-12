@@ -5,12 +5,12 @@
 
 #include "bat/ads/internal/segments/segment_util.h"
 
+#include "absl/types/optional.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_file_util.h"
 #include "bat/ads/internal/catalog/catalog_info.h"
 #include "bat/ads/internal/catalog/catalog_json_reader.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -34,7 +34,7 @@ TEST_F(BatAdsTargetingSegmentUtilTest, GetSegmentsFromCatalog) {
   ASSERT_TRUE(json);
 
   const absl::optional<CatalogInfo> catalog_info =
-      JSONReader::ReadCatalog(*json);
+      json::reader::ReadCatalog(*json);
   ASSERT_TRUE(catalog_info);
 
   // Act

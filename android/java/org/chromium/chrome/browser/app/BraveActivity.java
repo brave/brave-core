@@ -167,8 +167,6 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.browser.vpn.utils.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
-import org.chromium.chrome.browser.widget.crypto.binance.BinanceAccountBalance;
-import org.chromium.chrome.browser.widget.crypto.binance.BinanceWidgetManager;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.components.embedder_support.util.UrlUtilities;
@@ -338,13 +336,22 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                     BraveVpnProfileUtils.getInstance().stopVpn(BraveActivity.this);
                     BraveVpnUtils.dismissProgressDialog();
                 } else {
-                    BraveVpnUtils.showProgressDialog(BraveActivity.this,
-                            getResources().getString(R.string.vpn_connect_text));
-                    if (BraveVpnPrefUtils.isSubscriptionPurchase()) {
-                        verifySubscription();
+                    if (BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
+                        BraveVpnPrefUtils.setSubscriptionPurchase(true);
+                        if (WireguardConfigUtils.isConfigExist(BraveActivity.this)) {
+                            BraveVpnProfileUtils.getInstance().startVpn(BraveActivity.this);
+                        } else {
+                            BraveVpnUtils.openBraveVpnProfileActivity(BraveActivity.this);
+                        }
                     } else {
-                        BraveVpnUtils.dismissProgressDialog();
-                        BraveVpnUtils.openBraveVpnPlansActivity(BraveActivity.this);
+                        BraveVpnUtils.showProgressDialog(BraveActivity.this,
+                                getResources().getString(R.string.vpn_connect_text));
+                        if (BraveVpnPrefUtils.isSubscriptionPurchase()) {
+                            verifySubscription();
+                        } else {
+                            BraveVpnUtils.dismissProgressDialog();
+                            BraveVpnUtils.openBraveVpnPlansActivity(BraveActivity.this);
+                        }
                     }
                 }
             }
@@ -749,6 +756,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
 
+        BraveVpnNativeWorker.getInstance().reloadPurchasedState();
+
         BraveHelper.maybeMigrateSettings();
 
         PrefChangeRegistrar mPrefChangeRegistrar = new PrefChangeRegistrar();
@@ -868,14 +877,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DEFAULT_BROWSER_2);
             RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DEFAULT_BROWSER_3);
             OnboardingPrefManager.getInstance().setOneTimeNotificationStarted(true);
-        }
-        if (!TextUtils.isEmpty(BinanceWidgetManager.getInstance().getBinanceAccountBalance())) {
-            try {
-                BinanceWidgetManager.binanceAccountBalance = new BinanceAccountBalance(
-                        BinanceWidgetManager.getInstance().getBinanceAccountBalance());
-            } catch (JSONException e) {
-                Log.e("NTP", e.getMessage());
-            }
         }
 
         if (PackageUtils.isFirstInstall(this)
@@ -1100,9 +1101,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         startActivity(braveWalletIntent);
     }
 
-    public void viewOnBlockExplorer(String address) {
-        // TODO(sergz): We will need to correct that while doing Solana DApps
-        Utils.openAddress("/address/" + address, mJsonRpcService, this, CoinType.ETH);
+    public void viewOnBlockExplorer(String address, @CoinType.EnumType int coinType) {
+        Utils.openAddress("/address/" + address, mJsonRpcService, this, coinType);
     }
 
     // should only be called if the wallet is setup and unlocked

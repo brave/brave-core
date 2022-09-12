@@ -60,7 +60,12 @@ function NetworkFilterItem (props: Props) {
           {network.chainId !== AllNetworksOption.chainId &&
             <CreateNetworkIcon network={network} marginRight={14} size='big' />
           }
-          <NetworkName>{isSubItem ? network.chainName : reduceNetworkDisplayName(network.chainName)}</NetworkName>
+          <NetworkName>
+            {isSubItem
+              ? network.chainName
+              : reduceNetworkDisplayName(network.chainName)
+            }
+          </NetworkName>
         </LeftSide>
         {network.chainId === selectedNetwork.chainId &&
           network.symbol.toLowerCase() === selectedNetwork.symbol.toLowerCase() &&

@@ -7,10 +7,9 @@
 
 #include <memory>
 
-#include "bat/ads/internal/account/confirmations/confirmations_unittest_util.h"
+#include "bat/ads/internal/account/confirmations/confirmation_unittest_util.h"
 #include "bat/ads/internal/account/issuers/issuers_unittest_util.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token_delegate_mock.h"
-#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/net/http/http_status_code.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
@@ -39,13 +38,6 @@ class BatAdsRedeemUnblindedTokenTest : public UnitTestBase {
         std::make_unique<NiceMock<RedeemUnblindedTokenDelegateMock>>();
     redeem_unblinded_token_->SetDelegate(
         redeem_unblinded_token_delegate_mock_.get());
-  }
-
-  ConfirmationInfo BuildConfirmation() {
-    return ::ads::BuildConfirmation(
-        /* transaction_id */ "8b742869-6e4a-490c-ac31-31b49130098a",
-        /* creative_instance_id */ "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-        ConfirmationType::kViewed, AdType::kNotificationAd);
   }
 
   std::unique_ptr<RedeemUnblindedToken> redeem_unblinded_token_;
@@ -93,11 +85,11 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, RedeemUnblindedTokenIfAdsAreEnabled) {
   BuildAndSetIssuers();
 
   privacy::SetUnblindedTokens(1);
-
-  const ConfirmationInfo confirmation = BuildConfirmation();
+  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  CHECK(confirmation);
 
   // Act
-  ConfirmationInfo expected_confirmation = confirmation;
+  ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_, OnDidSendConfirmation(_))
@@ -114,7 +106,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, RedeemUnblindedTokenIfAdsAreEnabled) {
               OnFailedToRedeemUnblindedToken(_, _, _))
       .Times(0);
 
-  redeem_unblinded_token_->Redeem(confirmation);
+  redeem_unblinded_token_->Redeem(*confirmation);
 
   // Assert
 }
@@ -125,8 +117,8 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   privacy::SetUnblindedTokens(1);
-
-  const ConfirmationInfo confirmation = BuildConfirmation();
+  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  CHECK(confirmation);
 
   // Act
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_, OnDidSendConfirmation(_))
@@ -141,11 +133,11 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
-              OnFailedToRedeemUnblindedToken(confirmation,
+              OnFailedToRedeemUnblindedToken(*confirmation,
                                              /*should_retry*/ true,
                                              /*should_backoff*/ true));
 
-  redeem_unblinded_token_->Redeem(confirmation);
+  redeem_unblinded_token_->Redeem(*confirmation);
 
   // Assert
 }
@@ -179,11 +171,11 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
   BuildAndSetIssuers();
 
   privacy::SetUnblindedTokens(1);
-
-  const ConfirmationInfo confirmation = BuildConfirmation();
+  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  CHECK(confirmation);
 
   // Act
-  ConfirmationInfo expected_confirmation = confirmation;
+  ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
   // Act
@@ -201,7 +193,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
               OnFailedToRedeemUnblindedToken(_, _, _))
       .Times(0);
 
-  redeem_unblinded_token_->Redeem(confirmation);
+  redeem_unblinded_token_->Redeem(*confirmation);
 
   // Assert
 }
@@ -224,8 +216,8 @@ TEST_F(
   BuildAndSetIssuers();
 
   privacy::SetUnblindedTokens(1);
-
-  const ConfirmationInfo confirmation = BuildConfirmation();
+  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  CHECK(confirmation);
 
   // Act
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_, OnDidSendConfirmation(_))
@@ -240,11 +232,11 @@ TEST_F(
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
-              OnFailedToRedeemUnblindedToken(confirmation,
+              OnFailedToRedeemUnblindedToken(*confirmation,
                                              /*should_retry*/ true,
                                              /*should_backoff*/ false));
 
-  redeem_unblinded_token_->Redeem(confirmation);
+  redeem_unblinded_token_->Redeem(*confirmation);
 
   // Assert
 }
@@ -267,11 +259,11 @@ TEST_F(
   BuildAndSetIssuers();
 
   privacy::SetUnblindedTokens(1);
-
-  const ConfirmationInfo confirmation = BuildConfirmation();
+  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  CHECK(confirmation);
 
   // Act
-  ConfirmationInfo expected_confirmation = confirmation;
+  ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_, OnDidSendConfirmation(_))
@@ -290,7 +282,7 @@ TEST_F(
                                              /*should_retry*/ true,
                                              /*should_backoff*/ false));
 
-  redeem_unblinded_token_->Redeem(confirmation);
+  redeem_unblinded_token_->Redeem(*confirmation);
 
   // Assert
 }
@@ -313,11 +305,11 @@ TEST_F(
   BuildAndSetIssuers();
 
   privacy::SetUnblindedTokens(1);
-
-  const ConfirmationInfo confirmation = BuildConfirmation();
+  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  CHECK(confirmation);
 
   // Act
-  ConfirmationInfo expected_confirmation = confirmation;
+  ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_, OnDidSendConfirmation(_))
@@ -336,7 +328,7 @@ TEST_F(
                                              /*should_retry*/ true,
                                              /*should_backoff*/ true));
 
-  redeem_unblinded_token_->Redeem(confirmation);
+  redeem_unblinded_token_->Redeem(*confirmation);
 
   // Assert
 }
@@ -360,11 +352,12 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, SendConfirmationIfAdsIsDisabled) {
           )"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  const ConfirmationInfo confirmation = BuildConfirmation();
+  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  CHECK(confirmation);
 
   // Act
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
-              OnDidSendConfirmation(confirmation));
+              OnDidSendConfirmation(*confirmation));
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
               OnFailedToSendConfirmation(_, _))
@@ -378,7 +371,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, SendConfirmationIfAdsIsDisabled) {
               OnFailedToRedeemUnblindedToken(_, _, _))
       .Times(0);
 
-  redeem_unblinded_token_->Redeem(confirmation);
+  redeem_unblinded_token_->Redeem(*confirmation);
 
   // Assert
 }
@@ -394,14 +387,16 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
        {{net::HTTP_BAD_REQUEST, {}}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  const ConfirmationInfo confirmation = BuildConfirmation();
+  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  CHECK(confirmation);
 
   // Act
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_, OnDidSendConfirmation(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
-              OnFailedToSendConfirmation(confirmation, false));
+  EXPECT_CALL(
+      *redeem_unblinded_token_delegate_mock_,
+      OnFailedToSendConfirmation(*confirmation, /*should_retry*/ false));
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
               OnDidRedeemUnblindedToken(_, _))
@@ -411,7 +406,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
               OnFailedToRedeemUnblindedToken(_, _, _))
       .Times(0);
 
-  redeem_unblinded_token_->Redeem(confirmation);
+  redeem_unblinded_token_->Redeem(*confirmation);
 
   // Assert
 }
@@ -427,14 +422,16 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
        {{net::HTTP_CONFLICT, {}}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  const ConfirmationInfo confirmation = BuildConfirmation();
+  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  CHECK(confirmation);
 
   // Act
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_, OnDidSendConfirmation(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
-              OnFailedToSendConfirmation(confirmation, false));
+  EXPECT_CALL(
+      *redeem_unblinded_token_delegate_mock_,
+      OnFailedToSendConfirmation(*confirmation, /*should_retry*/ false));
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
               OnDidRedeemUnblindedToken(_, _))
@@ -444,7 +441,42 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
               OnFailedToRedeemUnblindedToken(_, _, _))
       .Times(0);
 
-  redeem_unblinded_token_->Redeem(confirmation);
+  redeem_unblinded_token_->Redeem(*confirmation);
+
+  // Assert
+}
+
+TEST_F(BatAdsRedeemUnblindedTokenTest,
+       DoNotRetrySendingConfirmationForHttpCreatedResponseIfAdsIsDisabled) {
+  // Arrange
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
+
+  const URLResponseMap url_responses = {
+      {// Create confirmation request
+       "/v2/confirmation/8b742869-6e4a-490c-ac31-31b49130098a",
+       {{net::HTTP_CREATED, {}}}}};
+  MockUrlResponses(ads_client_mock_, url_responses);
+
+  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  CHECK(confirmation);
+
+  // Act
+  EXPECT_CALL(*redeem_unblinded_token_delegate_mock_, OnDidSendConfirmation(_))
+      .Times(0);
+
+  EXPECT_CALL(
+      *redeem_unblinded_token_delegate_mock_,
+      OnFailedToSendConfirmation(*confirmation, /*should_retry*/ false));
+
+  EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
+              OnDidRedeemUnblindedToken(_, _))
+      .Times(0);
+
+  EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
+              OnFailedToRedeemUnblindedToken(_, _, _))
+      .Times(0);
+
+  redeem_unblinded_token_->Redeem(*confirmation);
 
   // Assert
 }
@@ -460,14 +492,15 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
        {{net::HTTP_INTERNAL_SERVER_ERROR, {}}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  const ConfirmationInfo confirmation = BuildConfirmation();
+  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  CHECK(confirmation);
 
   // Act
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_, OnDidSendConfirmation(_))
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
-              OnFailedToSendConfirmation(confirmation, true));
+              OnFailedToSendConfirmation(*confirmation, /*should_retry*/ true));
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
               OnDidRedeemUnblindedToken(_, _))
@@ -477,7 +510,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
               OnFailedToRedeemUnblindedToken(_, _, _))
       .Times(0);
 
-  redeem_unblinded_token_->Redeem(confirmation);
+  redeem_unblinded_token_->Redeem(*confirmation);
 
   // Assert
 }

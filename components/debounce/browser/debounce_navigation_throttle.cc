@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/bind.h"
+#include "base/containers/contains.h"
 #include "base/memory/weak_ptr.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/debounce/browser/debounce_service.h"
@@ -49,8 +50,7 @@ class DebounceTabHelper
   void AddToRedirectChain(const GURL& url) { redirects_.push_back(url.host()); }
   void ClearRedirectChain() { redirects_.clear(); }
   bool IsInRedirectChain(const GURL& url) {
-    auto iter = std::find(redirects_.begin(), redirects_.end(), url.host());
-    return iter != redirects_.end();
+    return base::Contains(redirects_, url.host());
   }
 
  private:

@@ -10,8 +10,7 @@
 #include "base/check.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 
-namespace ads {
-namespace ml {
+namespace ads::ml {
 
 NormalizationTransformation::NormalizationTransformation()
     : Transformation(TransformationType::kNormalization) {}
@@ -32,5 +31,4 @@ std::unique_ptr<Data> NormalizationTransformation::Apply(
   return std::make_unique<VectorData>(std::move(vector_data_copy));
 }
 
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml

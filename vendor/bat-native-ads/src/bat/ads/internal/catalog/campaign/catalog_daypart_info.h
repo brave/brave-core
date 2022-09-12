@@ -14,18 +14,13 @@
 namespace ads {
 
 struct CatalogDaypartInfo final {
-  CatalogDaypartInfo();
-  CatalogDaypartInfo(const CatalogDaypartInfo& info);
-  CatalogDaypartInfo& operator=(const CatalogDaypartInfo& info);
-  ~CatalogDaypartInfo();
-
-  bool operator==(const CatalogDaypartInfo& rhs) const;
-  bool operator!=(const CatalogDaypartInfo& rhs) const;
-
   std::string dow = "0123456";
   int start_minute = 0;
   int end_minute = (base::Time::kMinutesPerHour * base::Time::kHoursPerDay) - 1;
 };
+
+bool operator==(const CatalogDaypartInfo& lhs, const CatalogDaypartInfo& rhs);
+bool operator!=(const CatalogDaypartInfo& lhs, const CatalogDaypartInfo& rhs);
 
 using CatalogDaypartList = std::vector<CatalogDaypartInfo>;
 

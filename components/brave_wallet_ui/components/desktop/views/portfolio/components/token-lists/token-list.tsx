@@ -31,7 +31,7 @@ import { NFTGridView } from '../nft-grid-view/nft-grid-view'
 import usePricing from '../../../../../../common/hooks/pricing'
 
 // Styled Components
-import { ScrollableColumn } from '../../../../../shared/style'
+import { Column, ScrollableColumn } from '../../../../../shared/style'
 import {
   ButtonRow,
   DividerText,
@@ -88,11 +88,15 @@ export const TokenLists = ({
   }, [])
 
   // memos
+  const visibleTokens = React.useMemo(() => {
+    return userAssetList.filter((asset) => asset.asset.visible)
+  }, [userAssetList])
+
   const filteredAssetList = React.useMemo(() => {
     if (searchValue === '') {
-      return userAssetList
+      return visibleTokens.filter((asset) => asset.asset.visible)
     }
-    return userAssetList.filter((item) => {
+    return visibleTokens.filter((item) => {
       return (
         item.asset.name.toLowerCase() === searchValue.toLowerCase() ||
         item.asset.name.toLowerCase().startsWith(searchValue.toLowerCase()) ||
@@ -100,7 +104,7 @@ export const TokenLists = ({
         item.asset.symbol.toLowerCase().startsWith(searchValue.toLowerCase())
       )
     })
-  }, [searchValue, userAssetList])
+  }, [searchValue, visibleTokens])
 
   const [fungibleTokens, nonFungibleTokens] = React.useMemo(
     () => {
@@ -199,13 +203,21 @@ export const TokenLists = ({
   return (
     <>
       <FilterTokenRow>
-        <SearchBar
-          placeholder={getLocale('braveWalletSearchText')}
-          action={onSearchValueChange}
-          value={searchValue}
-        />
+
+        <Column flex={1} style={{ minWidth: '25%' }} alignItems='flex-start'>
+          <SearchBar
+            placeholder={getLocale('braveWalletSearchText')}
+            action={onSearchValueChange}
+            value={searchValue}
+          />
+        </Column>
+
         <NetworkFilterSelector networkListSubset={networks} />
-        {!hideAssetFilter && <AssetFilterSelector />}
+
+        {!hideAssetFilter &&
+          <AssetFilterSelector />
+        }
+
       </FilterTokenRow>
 
       {enableScroll

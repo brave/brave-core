@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "absl/types/optional.h"
 #include "base/bind.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/account/issuers/issuers_info.h"
@@ -22,7 +23,6 @@
 #include "bat/ads/pref_names.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "net/http/http_status_code.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
@@ -76,7 +76,7 @@ void Issuers::OnFetch(const mojom::UrlResponseInfo& url_response) {
   }
 
   const absl::optional<IssuersInfo> issuers =
-      JSONReader::ReadIssuers(url_response.body);
+      json::reader::ReadIssuers(url_response.body);
   if (!issuers) {
     BLOG(3, "Failed to parse response: " << url_response.body);
     FailedToFetchIssuers(/*should_retry*/ true);

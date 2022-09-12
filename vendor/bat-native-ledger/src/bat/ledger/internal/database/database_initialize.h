@@ -25,7 +25,7 @@ class DatabaseInitialize {
   void Start(bool execute_create_script, ledger::LegacyResultCallback callback);
 
  private:
-  void OnInitialize(type::DBCommandResponsePtr response,
+  void OnInitialize(mojom::DBCommandResponsePtr response,
                     bool execute_create_script,
                     ledger::LegacyResultCallback callback);
 
@@ -35,7 +35,7 @@ class DatabaseInitialize {
                            int table_version,
                            ledger::LegacyResultCallback callback);
 
-  void OnExecuteCreateScript(type::DBCommandResponsePtr response,
+  void OnExecuteCreateScript(mojom::DBCommandResponsePtr response,
                              int table_version,
                              ledger::LegacyResultCallback callback);
 

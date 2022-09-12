@@ -9,8 +9,7 @@
 
 #include "base/check.h"
 
-namespace ads {
-namespace database {
+namespace ads::database {
 
 mojom::DBRecordInfoPtr CreateRecord(
     sql::Statement* statement,
@@ -59,5 +58,4 @@ mojom::DBRecordInfoPtr CreateRecord(
   return record;
 }
 
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database

@@ -14,9 +14,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace database {
-namespace table {
+namespace ads::database::table {
 
 class BatAdsConversionQueueDatabaseTableTest : public UnitTestBase {
  protected:
@@ -486,13 +484,11 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest, TableName) {
   // Arrange
 
   // Act
-  const std::string& table_name = database_table_->GetTableName();
+  const std::string table_name = database_table_->GetTableName();
 
   // Assert
   const std::string expected_table_name = "conversion_queue";
   EXPECT_EQ(expected_table_name, table_name);
 }
 
-}  // namespace table
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database::table

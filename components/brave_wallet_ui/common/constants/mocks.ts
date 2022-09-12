@@ -8,6 +8,7 @@ import {
   BraveWallet,
   WalletAccountType
 } from '../../constants/types'
+import { mockBasicAttentionToken } from '../../stories/mock-data/mock-asset-options'
 
 export const getMockedTransactionInfo = (): BraveWallet.TransactionInfo => {
   return {
@@ -101,7 +102,7 @@ export const mockSolanaMainnetNetwork: BraveWallet.NetworkInfo = {
   chainId: '0x65',
   chainName: 'Solana Mainnet Beta',
   activeRpcEndpointIndex: 0,
-  rpcEndpoints: [{ url: 'https://testnet-solana.brave.com/rpc' }],
+  rpcEndpoints: [{ url: 'https://api.testnet.solana.com' }],
   blockExplorerUrls: ['https://explorer.solana.com'],
   symbol: 'SOL',
   symbolName: 'Solana',
@@ -115,7 +116,7 @@ export const mockSolanaTestnetNetwork: BraveWallet.NetworkInfo = {
   chainId: '0x66',
   chainName: 'Solana Testnet',
   activeRpcEndpointIndex: 0,
-  rpcEndpoints: [{ url: 'https://testnet-solana.brave.com/rpc' }],
+  rpcEndpoints: [{ url: 'https://api.testnet.solana.com' }],
   blockExplorerUrls: ['https://explorer.solana.com?cluster=testnet'],
   symbol: 'SOL',
   symbolName: 'Solana',
@@ -191,6 +192,12 @@ export const mockAssetPrices: BraveWallet.AssetPrice[] = [
   {
     fromAsset: 'DOG',
     price: '100',
+    toAsset: 'mockValue',
+    assetTimeframeChange: 'mockValue'
+  },
+  {
+    fromAsset: mockBasicAttentionToken.symbol,
+    price: '0.88',
     toAsset: 'mockValue',
     assetTimeframeChange: 'mockValue'
   }

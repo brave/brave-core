@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "absl/types/optional.h"
 #include "base/bind.h"
 #include "base/containers/circular_deque.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -15,10 +16,8 @@
 #include "bat/ads/internal/legacy_migration/notifications/legacy_notification_json_reader.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/pref_names.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
-namespace notifications {
+namespace ads::notifications {
 
 namespace {
 
@@ -61,7 +60,7 @@ void Migrate(InitializeCallback callback) {
             }
 
             const absl::optional<base::circular_deque<NotificationAdInfo>> ads =
-                JSONReader::ReadNotificationAds(json);
+                json::reader::ReadNotificationAds(json);
             if (!ads) {
               BLOG(0, "Failed to load notification state");
               FailedToMigrate(callback);
@@ -81,5 +80,4 @@ void Migrate(InitializeCallback callback) {
           callback));
 }
 
-}  // namespace notifications
-}  // namespace ads
+}  // namespace ads::notifications

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_API_API_PARAMETERS_H_
-#define BRAVELEDGER_API_API_PARAMETERS_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_API_API_PARAMETERS_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_API_API_PARAMETERS_H_
 
 #include <memory>
 #include <vector>
@@ -28,9 +28,8 @@ class APIParameters {
   void Fetch(ledger::GetRewardsParametersCallback callback);
 
  private:
-  void OnFetch(
-      const type::Result result,
-      const type::RewardsParameters& parameters);
+  void OnFetch(const mojom::Result result,
+               const mojom::RewardsParameters& parameters);
 
   void RunCallbacks();
 
@@ -47,4 +46,4 @@ class APIParameters {
 }  // namespace api
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_API_API_PARAMETERS_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_API_API_PARAMETERS_H_

@@ -25,7 +25,7 @@ GetCapabilities::~GetCapabilities() = default;
 
 void GetCapabilities::Request(const std::string& token,
                               GetCapabilitiesCallback callback) {
-  auto request = type::UrlRequest::New();
+  auto request = mojom::UrlRequest::New();
   request->url = GetServerUrl("/v0/me/capabilities");
   request->headers = RequestAuthorization(token);
   ledger_->LoadURL(std::move(request),
@@ -34,7 +34,7 @@ void GetCapabilities::Request(const std::string& token,
 }
 
 void GetCapabilities::OnRequest(GetCapabilitiesCallback callback,
-                                const type::UrlResponse& response) {
+                                const mojom::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
 
   auto [result, capability_map] = ProcessResponse(response);
@@ -51,23 +51,23 @@ void GetCapabilities::OnRequest(GetCapabilitiesCallback callback,
   std::move(callback).Run(result, std::move(capabilities));
 }
 
-std::pair<type::Result, GetCapabilities::CapabilityMap>
-GetCapabilities::ProcessResponse(const type::UrlResponse& response) {
+std::pair<mojom::Result, GetCapabilities::CapabilityMap>
+GetCapabilities::ProcessResponse(const mojom::UrlResponse& response) {
   const auto status_code = response.status_code;
 
   if (status_code == net::HTTP_UNAUTHORIZED) {
     BLOG(1, "Unauthorized access, HTTP status: " << status_code);
-    return {type::Result::EXPIRED_TOKEN, {}};
+    return {mojom::Result::EXPIRED_TOKEN, {}};
   }
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return {type::Result::LEDGER_ERROR, {}};
+    return {mojom::Result::LEDGER_ERROR, {}};
   }
 
   auto capability_map = ParseBody(response.body);
-  return {!capability_map.empty() ? type::Result::LEDGER_OK
-                                  : type::Result::LEDGER_ERROR,
+  return {!capability_map.empty() ? mojom::Result::LEDGER_OK
+                                  : mojom::Result::LEDGER_ERROR,
           std::move(capability_map)};
 }
 

@@ -7,15 +7,13 @@
 
 #include <sstream>
 
+#include "absl/types/optional.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace privacy {
-namespace cbr {
+namespace ads::privacy::cbr {
 
 TEST(BatAdsBlindedTokenTest, FailToInitialize) {
   // Arrange
@@ -66,7 +64,7 @@ TEST(BatAdsBlindedTokenTest, FailToDecodeEmptyBase64) {
   // Arrange
 
   // Act
-  const BlindedToken blinded_token = BlindedToken::DecodeBase64("");
+  const BlindedToken blinded_token = BlindedToken::DecodeBase64({});
 
   // Assert
   const bool has_value = blinded_token.has_value();
@@ -184,6 +182,4 @@ TEST(BatAdsBlindedTokenTest, OutputStreamWhenUninitialized) {
   EXPECT_TRUE(ss.str().empty());
 }
 
-}  // namespace cbr
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::cbr

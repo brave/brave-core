@@ -37,8 +37,8 @@ namespace {
 constexpr char kSomeEndpoint[] = "https://some.endpoint.com/";
 
 std::string SelectInNetworkList(const std::string& selector) {
-  return base::StringPrintf("window.testing.walletNetworks.querySelector(`%s`)",
-                            selector.c_str());
+  return base::StringPrintf(
+      "window.testing.walletNetworks60.querySelector(`%s`)", selector.c_str());
 }
 
 std::string SelectInAddNetworkDialog(const std::string& selector) {
@@ -139,7 +139,8 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
 
     SetEthChainIdInterceptor(
         {GURL(kSomeEndpoint),
-         GetKnownEthChain(profile->GetPrefs(), mojom::kCeloMainnetChainId)
+         GetKnownChain(profile->GetPrefs(), mojom::kCeloMainnetChainId,
+                       mojom::CoinType::ETH)
              ->rpc_endpoints.front()},
         mojom::kCeloMainnetChainId);
 
@@ -311,8 +312,9 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, SelectRpcEndpoint) {
   CreateSettingsTab();
   auto* prefs = browser()->profile()->GetPrefs();
 
-  auto known_celo_rpc = GetKnownEthChain(prefs, mojom::kCeloMainnetChainId)
-                            ->rpc_endpoints.front();
+  auto known_celo_rpc =
+      GetKnownChain(prefs, mojom::kCeloMainnetChainId, mojom::CoinType::ETH)
+          ->rpc_endpoints.front();
   // Celo rpc is from known info.
   WaitForCeloNetworkUrl(known_celo_rpc);
 

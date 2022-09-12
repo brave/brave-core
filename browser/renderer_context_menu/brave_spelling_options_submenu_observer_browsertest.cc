@@ -74,12 +74,12 @@ class BraveSpellingOptionsSubMenuObserverTest : public InProcessBrowserTest {
                                    enable_spellcheck);
     menu()->GetPrefs()->SetString(language::prefs::kAcceptLanguages,
                                   accept_languages);
-    base::Value dictionaries_value(base::Value::Type::LIST);
+    base::Value::List list;
     for (auto dictionary : dictionaries) {
-      dictionaries_value.Append(dictionary);
+      list.Append(dictionary);
     }
-    menu()->GetPrefs()->Set(spellcheck::prefs::kSpellCheckDictionaries,
-                            dictionaries_value);
+    menu()->GetPrefs()->SetList(spellcheck::prefs::kSpellCheckDictionaries,
+                                std::move(list));
     observer()->InitMenu(content::ContextMenuParams());
   }
 

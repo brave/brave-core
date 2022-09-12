@@ -26,7 +26,7 @@ class ChromeMetadataSourceTest : public testing::Test {
                 &test_url_loader_factory_)) {
     mojo::core::Init();
   }
-  virtual ~ChromeMetadataSourceTest() {}
+  ~ChromeMetadataSourceTest() override = default;
 
   void Get() {
     ChromeMetadataSource impl(std::string(), test_shared_loader_factory_);

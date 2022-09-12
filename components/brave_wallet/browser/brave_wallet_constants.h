@@ -38,6 +38,9 @@ constexpr char kSardineClientTokensURL[] =
     "https://api.sardine.ai/v1/auth/client-tokens";
 
 constexpr webui::LocalizedString kLocalizedStrings[] = {
+    {"braveWalletInvalidMnemonicError", IDS_WALLET_INVALID_MNEMONIC_ERROR},
+    {"braveWalletRecoveryPhraseLengthError",
+     IDS_BRAVE_WALLET_RECOVERY_PHRASE_LENGTH_ERROR},
     {"braveWalletOrdinalTwentyFourth", IDS_BRAVE_WALLET_ORDINAL_TWENTY_FOURTH},
     {"braveWalletOrdinalTwentyThird", IDS_BRAVE_WALLET_ORDINAL_TWENTY_THIRD},
     {"braveWalletOrdinalTwentySecond", IDS_BRAVE_WALLET_ORDINAL_TWENTY_SECOND},
@@ -66,6 +69,10 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletOrdinalSecond", IDS_BRAVE_WALLET_ORDINAL_SECOND},
     {"braveWalletRemoveAccountModalTitle",
      IDS_BRAVE_WALLET_REMOVE_ACCOUNT_MODAL_TITLE},
+    {"braveWalletViewDecodedMessage", IDS_BRAVE_WALLET_VIEW_DECODED_MESSAGE},
+    {"braveWalletViewEncodedMessage", IDS_BRAVE_WALLET_VIEW_ENCODED_MESSAGE},
+    {"braveWalletNonAsciiCharactersInMessageWarning",
+     IDS_BRAVE_WALLET_NON_ASCII_CHARACTERS_IN_MESSAGE_WARNING},
     {"braveWalletEnterYourPassword", IDS_BRAVE_WALLET_ENTER_YOUR_PASSWORD},
     {"braveWalletClickToSwitch", IDS_BRAVE_WALLET_CLICK_TO_SWITCH},
     {"braveWalletUnlockNeededToCreateAccount",
@@ -722,8 +729,14 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_AURORA_MODAL_DESCRIPTION},
     {"braveWalletAuroraModalLearnMore",
      IDS_BRAVE_WALLET_AURORA_MODAL_LEARN_MORE},
+    {"braveWalletAuroraModalLearnMoreAboutRisk",
+     IDS_BRAVE_WALLET_AURORA_MODAL_LEARN_MORE_ABOUT_RISK},
+    {"braveWalletAuroraModalDontShowAgain",
+     IDS_BRAVE_WALLET_AURORA_MODAL_DONT_SHOW_AGAIN},
     {"braveWalletAuroraModalOPenButtonText",
      IDS_BRAVE_WALLET_AURORA_MODAL_OPEN_BUTTON_TEXT},
+    {"braveWalletBridgeToAuroraButton",
+     IDS_BRAVE_WALLET_BRIDGE_TO_AURORA_BUTTON},
     {"braveWalletPasswordStrengthTooltipHeading",
      IDS_BRAVE_WALLET_PASSWORD_STRENGTH_TOOLTIP_HEADING},
     {"braveWalletPasswordStrengthTooltipIsLongEnough",
@@ -866,7 +879,10 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletConfirmHidingToken", IDS_BRAVE_WALLET_CONFIRM_HIDING_TOKEN},
     {"braveWalletCancelHidingToken", IDS_BRAVE_WALLET_CANCEL_HIDING_TOKEN},
     {"braveWalletRequestFeatureButtonText",
-     IDS_BRAVE_WALLET_REQUEST_FEATURE_BUTTON_TEXT}};
+     IDS_BRAVE_WALLET_REQUEST_FEATURE_BUTTON_TEXT},
+    {"braveWalletNftsEmptyState", IDS_BRAVE_WALLET_NFTS_EMPTY_STATE},
+    {"braveWalletNftsEmptyStateSearch",
+     IDS_BRAVE_WALLET_NFTS_EMPTY_STATE_SEARCH_FILTER}};
 
 // 0x swap constants
 constexpr char kRopstenSwapBaseAPIURL[] = "https://ropsten.api.0x.org/";

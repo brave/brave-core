@@ -22,21 +22,21 @@ namespace {
 const char kTableName[] = "contribution_info";
 const char kChildTableName[] = "contribution_info_publishers";
 
-type::ReportType ConvertRewardsTypeToReportType(
-    const type::RewardsType type) {
+mojom::ReportType ConvertRewardsTypeToReportType(
+    const mojom::RewardsType type) {
   switch (type) {
-    case type::RewardsType::AUTO_CONTRIBUTE: {
-      return type::ReportType::AUTO_CONTRIBUTION;
+    case mojom::RewardsType::AUTO_CONTRIBUTE: {
+      return mojom::ReportType::AUTO_CONTRIBUTION;
     }
-    case type::RewardsType::ONE_TIME_TIP: {
-      return type::ReportType::TIP;
+    case mojom::RewardsType::ONE_TIME_TIP: {
+      return mojom::ReportType::TIP;
     }
-    case type::RewardsType::RECURRING_TIP: {
-      return type::ReportType::TIP_RECURRING;
+    case mojom::RewardsType::RECURRING_TIP: {
+      return mojom::ReportType::TIP_RECURRING;
     }
     default: {
       NOTREACHED();
-      return type::ReportType::TIP;
+      return mojom::ReportType::TIP;
     }
   }
 }
@@ -52,11 +52,11 @@ DatabaseContributionInfo::DatabaseContributionInfo(
 DatabaseContributionInfo::~DatabaseContributionInfo() = default;
 
 void DatabaseContributionInfo::InsertOrUpdate(
-    type::ContributionInfoPtr info,
+    mojom::ContributionInfoPtr info,
     ledger::LegacyResultCallback callback) {
   if (!info) {
     BLOG(1, "Info is null");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -65,7 +65,7 @@ void DatabaseContributionInfo::InsertOrUpdate(
     created_at = util::GetCurrentTimeStamp();
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
@@ -74,8 +74,8 @@ void DatabaseContributionInfo::InsertOrUpdate(
       "VALUES (?, ?, ?, ?, ?, ?, ?)",
     kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
   BindString(command.get(), 0, info->contribution_id);
@@ -100,7 +100,7 @@ void DatabaseContributionInfo::InsertOrUpdate(
 void DatabaseContributionInfo::GetRecord(
     const std::string& contribution_id,
     GetContributionInfoCallback callback) {
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "SELECT ci.contribution_id, ci.amount, ci.type, ci.step, ci.retry_count, "
@@ -109,19 +109,19 @@ void DatabaseContributionInfo::GetRecord(
       "WHERE ci.contribution_id = ?",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = query;
 
   BindString(command.get(), 0, contribution_id);
 
-  command->record_bindings = {type::DBCommand::RecordBindingType::STRING_TYPE,
-                              type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              type::DBCommand::RecordBindingType::INT64_TYPE,
-                              type::DBCommand::RecordBindingType::INT_TYPE,
-                              type::DBCommand::RecordBindingType::INT_TYPE,
-                              type::DBCommand::RecordBindingType::INT_TYPE,
-                              type::DBCommand::RecordBindingType::INT64_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE};
 
   transaction->commands.push_back(std::move(command));
 
@@ -135,10 +135,10 @@ void DatabaseContributionInfo::GetRecord(
 }
 
 void DatabaseContributionInfo::OnGetRecord(
-    type::DBCommandResponsePtr response,
+    mojom::DBCommandResponsePtr response,
     GetContributionInfoCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is not ok");
     callback(nullptr);
     return;
@@ -153,22 +153,19 @@ void DatabaseContributionInfo::OnGetRecord(
 
   auto* record = response->result->get_records()[0].get();
 
-  auto info = type::ContributionInfo::New();
+  auto info = mojom::ContributionInfo::New();
   info->contribution_id = GetStringColumn(record, 0);
   info->amount = GetDoubleColumn(record, 1);
-  info->type = static_cast<type::RewardsType>(GetInt64Column(record, 2));
-  info->step = static_cast<type::ContributionStep>(GetIntColumn(record, 3));
+  info->type = static_cast<mojom::RewardsType>(GetInt64Column(record, 2));
+  info->step = static_cast<mojom::ContributionStep>(GetIntColumn(record, 3));
   info->retry_count = GetIntColumn(record, 4);
   info->processor =
-      static_cast<type::ContributionProcessor>(GetIntColumn(record, 5));
+      static_cast<mojom::ContributionProcessor>(GetIntColumn(record, 5));
   info->created_at = GetInt64Column(record, 6);
 
-  auto publishers_callback =
-    std::bind(&DatabaseContributionInfo::OnGetPublishers,
-        this,
-        _1,
-        std::make_shared<type::ContributionInfoPtr>(info->Clone()),
-        callback);
+  auto publishers_callback = std::bind(
+      &DatabaseContributionInfo::OnGetPublishers, this, _1,
+      std::make_shared<mojom::ContributionInfoPtr>(info->Clone()), callback);
 
   publishers_->GetRecordByContributionList(
       {info->contribution_id},
@@ -176,8 +173,8 @@ void DatabaseContributionInfo::OnGetRecord(
 }
 
 void DatabaseContributionInfo::OnGetPublishers(
-    type::ContributionPublisherList list,
-    std::shared_ptr<type::ContributionInfoPtr> shared_contribution,
+    std::vector<mojom::ContributionPublisherPtr> list,
+    std::shared_ptr<mojom::ContributionInfoPtr> shared_contribution,
     GetContributionInfoCallback callback) {
   auto contribution = std::move(*shared_contribution);
   if (!contribution) {
@@ -192,7 +189,7 @@ void DatabaseContributionInfo::OnGetPublishers(
 
 void DatabaseContributionInfo::GetAllRecords(
     ledger::ContributionInfoListCallback callback) {
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
     "SELECT ci.contribution_id, ci.amount, ci.type, ci.step, ci.retry_count,"
@@ -200,19 +197,17 @@ void DatabaseContributionInfo::GetAllRecords(
     "FROM %s as ci ",
     kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = query;
 
-  command->record_bindings = {
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      type::DBCommand::RecordBindingType::INT64_TYPE,
-      type::DBCommand::RecordBindingType::INT_TYPE,
-      type::DBCommand::RecordBindingType::INT_TYPE,
-      type::DBCommand::RecordBindingType::INT_TYPE,
-      type::DBCommand::RecordBindingType::INT64_TYPE
-  };
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE};
 
   transaction->commands.push_back(std::move(command));
 
@@ -226,7 +221,7 @@ void DatabaseContributionInfo::GetAllRecords(
 }
 
 void DatabaseContributionInfo::GetOneTimeTips(
-    const type::ActivityMonth month,
+    const mojom::ActivityMonth month,
     const int year,
     ledger::PublisherInfoListCallback callback) {
   if (year == 0) {
@@ -235,7 +230,7 @@ void DatabaseContributionInfo::GetOneTimeTips(
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
@@ -252,30 +247,27 @@ void DatabaseContributionInfo::GetOneTimeTips(
       kTableName,
       kChildTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = query;
 
   const std::string formatted_month = base::StringPrintf("%02d", month);
 
   BindString(command.get(), 0, formatted_month);
   BindString(command.get(), 1, std::to_string(year));
-  BindInt(command.get(), 2,
-      static_cast<int>(type::RewardsType::ONE_TIME_TIP));
+  BindInt(command.get(), 2, static_cast<int>(mojom::RewardsType::ONE_TIME_TIP));
   BindInt(command.get(), 3,
-      static_cast<int>(type::ContributionStep::STEP_COMPLETED));
+          static_cast<int>(mojom::ContributionStep::STEP_COMPLETED));
 
-  command->record_bindings = {
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      type::DBCommand::RecordBindingType::INT64_TYPE,
-      type::DBCommand::RecordBindingType::INT64_TYPE,
-      type::DBCommand::RecordBindingType::INT64_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE
-  };
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE};
 
   transaction->commands.push_back(std::move(command));
 
@@ -289,18 +281,18 @@ void DatabaseContributionInfo::GetOneTimeTips(
 }
 
 void DatabaseContributionInfo::OnGetOneTimeTips(
-    type::DBCommandResponsePtr response,
+    mojom::DBCommandResponsePtr response,
     ledger::PublisherInfoListCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is not ok");
     callback({});
     return;
   }
 
-  type::PublisherInfoList list;
+  std::vector<mojom::PublisherInfoPtr> list;
   for (auto const& record : response->result->get_records()) {
-    auto info = type::PublisherInfo::New();
+    auto info = mojom::PublisherInfo::New();
     auto* record_pointer = record.get();
 
     info->id = GetStringColumn(record_pointer, 0);
@@ -309,8 +301,8 @@ void DatabaseContributionInfo::OnGetOneTimeTips(
     info->favicon_url = GetStringColumn(record_pointer, 3);
     info->weight = GetDoubleColumn(record_pointer, 4);
     info->reconcile_stamp = GetInt64Column(record_pointer, 5);
-    info->status = static_cast<type::PublisherStatus>(
-        GetInt64Column(record_pointer, 6));
+    info->status =
+        static_cast<mojom::PublisherStatus>(GetInt64Column(record_pointer, 6));
     info->status_updated_at = GetInt64Column(record_pointer, 7);
     info->provider = GetStringColumn(record_pointer, 8);
 
@@ -321,7 +313,7 @@ void DatabaseContributionInfo::OnGetOneTimeTips(
 }
 
 void DatabaseContributionInfo::GetContributionReport(
-    const type::ActivityMonth month,
+    const mojom::ActivityMonth month,
     const int year,
     ledger::GetContributionReportCallback callback) {
   if (year == 0) {
@@ -330,7 +322,7 @@ void DatabaseContributionInfo::GetContributionReport(
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "SELECT ci.contribution_id, ci.amount, ci.type, ci.created_at, "
@@ -339,8 +331,8 @@ void DatabaseContributionInfo::GetContributionReport(
       "strftime('%%Y', datetime(ci.created_at, 'unixepoch')) = ? AND step = ?",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = query;
 
   const std::string formatted_month = base::StringPrintf("%02d", month);
@@ -348,15 +340,13 @@ void DatabaseContributionInfo::GetContributionReport(
   BindString(command.get(), 0, formatted_month);
   BindString(command.get(), 1, std::to_string(year));
   BindInt(command.get(), 2,
-      static_cast<int>(type::ContributionStep::STEP_COMPLETED));
+          static_cast<int>(mojom::ContributionStep::STEP_COMPLETED));
 
-  command->record_bindings = {
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      type::DBCommand::RecordBindingType::INT64_TYPE,
-      type::DBCommand::RecordBindingType::INT64_TYPE,
-      type::DBCommand::RecordBindingType::INT_TYPE
-  };
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE};
 
   transaction->commands.push_back(std::move(command));
 
@@ -370,40 +360,38 @@ void DatabaseContributionInfo::GetContributionReport(
 }
 
 void DatabaseContributionInfo::OnGetContributionReport(
-    type::DBCommandResponsePtr response,
+    mojom::DBCommandResponsePtr response,
     ledger::GetContributionReportCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is not ok");
     callback({});
     return;
   }
 
-  type::ContributionInfoList list;
+  std::vector<mojom::ContributionInfoPtr> list;
   std::vector<std::string> contribution_ids;
   for (auto const& record : response->result->get_records()) {
-    auto info = type::ContributionInfo::New();
+    auto info = mojom::ContributionInfo::New();
     auto* record_pointer = record.get();
 
     info->contribution_id = GetStringColumn(record_pointer, 0);
     info->amount = GetDoubleColumn(record_pointer, 1);
-    info->type = static_cast<type::RewardsType>(
-        GetInt64Column(record_pointer, 2));
+    info->type =
+        static_cast<mojom::RewardsType>(GetInt64Column(record_pointer, 2));
     info->created_at = GetInt64Column(record_pointer, 3);
-    info->processor = static_cast<type::ContributionProcessor>(
+    info->processor = static_cast<mojom::ContributionProcessor>(
         GetIntColumn(record_pointer, 4));
 
     contribution_ids.push_back(info->contribution_id);
     list.push_back(std::move(info));
   }
 
-  auto publisher_callback =
-      std::bind(&DatabaseContributionInfo::OnGetContributionReportPublishers,
-          this,
-          _1,
-          std::make_shared<type::ContributionInfoList>(
-              std::move(list)),
-          callback);
+  auto publisher_callback = std::bind(
+      &DatabaseContributionInfo::OnGetContributionReportPublishers, this, _1,
+      std::make_shared<std::vector<mojom::ContributionInfoPtr>>(
+          std::move(list)),
+      callback);
 
   publishers_->GetContributionPublisherPairList(
       contribution_ids,
@@ -412,11 +400,12 @@ void DatabaseContributionInfo::OnGetContributionReport(
 
 void DatabaseContributionInfo::OnGetContributionReportPublishers(
     std::vector<ContributionPublisherInfoPair> publisher_pair_list,
-    std::shared_ptr<type::ContributionInfoList> shared_contributions,
+    std::shared_ptr<std::vector<mojom::ContributionInfoPtr>>
+        shared_contributions,
     ledger::GetContributionReportCallback callback) {
-  type::ContributionReportInfoList report_list;
+  std::vector<mojom::ContributionReportInfoPtr> report_list;
   for (const auto& contribution : *shared_contributions) {
-    auto report = type::ContributionReportInfo::New();
+    auto report = mojom::ContributionReportInfo::New();
     report->contribution_id = contribution->contribution_id;
     report->amount = contribution->amount;
     report->type = ConvertRewardsTypeToReportType(contribution->type);
@@ -441,15 +430,15 @@ void DatabaseContributionInfo::OnGetContributionReportPublishers(
 
 void DatabaseContributionInfo::GetNotCompletedRecords(
     ledger::ContributionInfoListCallback callback) {
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   // It is possible for externally-funded (SKU-based) ACs to be stalled after
   // hitting the max number of retries. Attempt to revive these ACs if an
   // external transaction has already been submitted for their SKU order.
   // TODO(zenparsing): Remove this query once we support unlimited retries with
   // backoff for ACs.
-  auto revive_command = type::DBCommand::New();
-  revive_command->type = type::DBCommand::Type::RUN;
+  auto revive_command = mojom::DBCommand::New();
+  revive_command->type = mojom::DBCommand::Type::RUN;
   revive_command->command = R"sql(
       UPDATE contribution_info SET step = 1, retry_count = 0
       WHERE contribution_id IN (
@@ -472,19 +461,17 @@ void DatabaseContributionInfo::GetNotCompletedRecords(
       "FROM %s as ci WHERE ci.step > 0",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = query;
 
-  command->record_bindings = {
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      type::DBCommand::RecordBindingType::INT64_TYPE,
-      type::DBCommand::RecordBindingType::INT_TYPE,
-      type::DBCommand::RecordBindingType::INT_TYPE,
-      type::DBCommand::RecordBindingType::INT_TYPE,
-      type::DBCommand::RecordBindingType::INT64_TYPE
-  };
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE};
 
   transaction->commands.push_back(std::move(command));
 
@@ -498,10 +485,10 @@ void DatabaseContributionInfo::GetNotCompletedRecords(
 }
 
 void DatabaseContributionInfo::OnGetList(
-    type::DBCommandResponsePtr response,
+    mojom::DBCommandResponsePtr response,
     ledger::ContributionInfoListCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is not ok");
     callback({});
     return;
@@ -512,20 +499,20 @@ void DatabaseContributionInfo::OnGetList(
     return;
   }
 
-  type::ContributionInfoList list;
+  std::vector<mojom::ContributionInfoPtr> list;
   std::vector<std::string> contribution_ids;
   for (const auto& record : response->result->get_records()) {
-    auto info = type::ContributionInfo::New();
+    auto info = mojom::ContributionInfo::New();
     auto* record_pointer = record.get();
 
     info->contribution_id = GetStringColumn(record_pointer, 0);
     info->amount = GetDoubleColumn(record_pointer, 1);
-    info->type = static_cast<type::RewardsType>(
-        GetInt64Column(record_pointer, 2));
-    info->step = static_cast<type::ContributionStep>(
-        GetIntColumn(record_pointer, 3));
+    info->type =
+        static_cast<mojom::RewardsType>(GetInt64Column(record_pointer, 2));
+    info->step =
+        static_cast<mojom::ContributionStep>(GetIntColumn(record_pointer, 3));
     info->retry_count = GetIntColumn(record_pointer, 4);
-    info->processor = static_cast<type::ContributionProcessor>(
+    info->processor = static_cast<mojom::ContributionProcessor>(
         GetIntColumn(record_pointer, 5));
     info->created_at = GetInt64Column(record_pointer, 6);
 
@@ -534,12 +521,10 @@ void DatabaseContributionInfo::OnGetList(
   }
 
   auto publisher_callback =
-      std::bind(&DatabaseContributionInfo::OnGetListPublishers,
-          this,
-          _1,
-          std::make_shared<type::ContributionInfoList>(
-              std::move(list)),
-          callback);
+      std::bind(&DatabaseContributionInfo::OnGetListPublishers, this, _1,
+                std::make_shared<std::vector<mojom::ContributionInfoPtr>>(
+                    std::move(list)),
+                callback);
 
   publishers_->GetRecordByContributionList(
       contribution_ids,
@@ -547,8 +532,9 @@ void DatabaseContributionInfo::OnGetList(
 }
 
 void DatabaseContributionInfo::OnGetListPublishers(
-    type::ContributionPublisherList list,
-    std::shared_ptr<type::ContributionInfoList> shared_contributions,
+    std::vector<mojom::ContributionPublisherPtr> list,
+    std::shared_ptr<std::vector<mojom::ContributionInfoPtr>>
+        shared_contributions,
     ledger::ContributionInfoListCallback callback) {
   for (const auto& contribution : *shared_contributions) {
     for (const auto& item : list) {
@@ -565,22 +551,22 @@ void DatabaseContributionInfo::OnGetListPublishers(
 
 void DatabaseContributionInfo::UpdateStep(
     const std::string& contribution_id,
-    type::ContributionStep step,
+    mojom::ContributionStep step,
     ledger::LegacyResultCallback callback) {
   if (contribution_id.empty()) {
     BLOG(1, "Contribution id is empty");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
     "UPDATE %s SET step=?, retry_count=0 WHERE contribution_id = ?",
     kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
   BindInt(command.get(), 0, static_cast<int>(step));
@@ -597,23 +583,23 @@ void DatabaseContributionInfo::UpdateStep(
 
 void DatabaseContributionInfo::UpdateStepAndCount(
     const std::string& contribution_id,
-    type::ContributionStep step,
+    mojom::ContributionStep step,
     int32_t retry_count,
     ledger::LegacyResultCallback callback) {
   if (contribution_id.empty()) {
     BLOG(1, "Contribution id is empty");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
     "UPDATE %s SET step=?, retry_count=? WHERE contribution_id = ?;",
     kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
   BindInt(command.get(), 0, static_cast<int>(step));
@@ -641,19 +627,17 @@ void DatabaseContributionInfo::UpdateContributedAmount(
 
 void DatabaseContributionInfo::FinishAllInProgressRecords(
     ledger::LegacyResultCallback callback) {
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
   const std::string query = base::StringPrintf(
     "UPDATE %s SET step = ?, retry_count = 0 WHERE step >= 0",
     kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
-  BindInt(
-      command.get(),
-      0,
-      static_cast<int>(type::ContributionStep::STEP_REWARDS_OFF));
+  BindInt(command.get(), 0,
+          static_cast<int>(mojom::ContributionStep::STEP_REWARDS_OFF));
 
   transaction->commands.push_back(std::move(command));
 

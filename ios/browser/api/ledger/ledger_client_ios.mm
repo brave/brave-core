@@ -29,7 +29,7 @@ void LedgerClientIOS::LoadPublisherState(
     ledger::client::OnLoadCallback callback) {
   [bridge_ loadPublisherState:callback];
 }
-void LedgerClientIOS::LoadURL(ledger::type::UrlRequestPtr request,
+void LedgerClientIOS::LoadURL(ledger::mojom::UrlRequestPtr request,
                               ledger::client::LoadURLCallback callback) {
   [bridge_ loadURL:std::move(request) callback:std::move(callback)];
 }
@@ -40,8 +40,8 @@ void LedgerClientIOS::Log(const char* file,
   [bridge_ log:file line:line verboseLevel:verbose_level message:message];
 }
 void LedgerClientIOS::OnPanelPublisherInfo(
-    ledger::type::Result result,
-    ledger::type::PublisherInfoPtr publisher_info,
+    ledger::mojom::Result result,
+    ledger::mojom::PublisherInfoPtr publisher_info,
     uint64_t windowId) {
   [bridge_ onPanelPublisherInfo:result
                   publisherInfo:std::move(publisher_info)
@@ -50,19 +50,19 @@ void LedgerClientIOS::OnPanelPublisherInfo(
 void LedgerClientIOS::OnPublisherRegistryUpdated() {}
 void LedgerClientIOS::OnPublisherUpdated(const std::string& publisher_id) {}
 void LedgerClientIOS::OnReconcileComplete(
-    ledger::type::Result result,
-    ledger::type::ContributionInfoPtr contribution) {
+    ledger::mojom::Result result,
+    ledger::mojom::ContributionInfoPtr contribution) {
   [bridge_ onReconcileComplete:result contribution:std::move(contribution)];
 }
 void LedgerClientIOS::PublisherListNormalized(
-    ledger::type::PublisherInfoList list) {
+    std::vector<ledger::mojom::PublisherInfoPtr> list) {
   [bridge_ publisherListNormalized:std::move(list)];
 }
 std::string LedgerClientIOS::URIEncode(const std::string& value) {
   return [bridge_ URIEncode:value];
 }
 void LedgerClientIOS::OnContributeUnverifiedPublishers(
-    ledger::type::Result result,
+    ledger::mojom::Result result,
     const std::string& publisher_key,
     const std::string& publisher_name) {
   return [bridge_ onContributeUnverifiedPublishers:result
@@ -136,7 +136,7 @@ int64_t LedgerClientIOS::GetInt64Option(const std::string& name) const {
 uint64_t LedgerClientIOS::GetUint64Option(const std::string& name) const {
   return [bridge_ getUint64Option:name];
 }
-ledger::type::ClientInfoPtr LedgerClientIOS::GetClientInfo() {
+ledger::mojom::ClientInfoPtr LedgerClientIOS::GetClientInfo() {
   return [bridge_ getClientInfo];
 }
 void LedgerClientIOS::UnblindedTokensReady() {
@@ -146,7 +146,7 @@ void LedgerClientIOS::ReconcileStampReset() {
   [bridge_ reconcileStampReset];
 }
 void LedgerClientIOS::RunDBTransaction(
-    ledger::type::DBTransactionPtr transaction,
+    ledger::mojom::DBTransactionPtr transaction,
     ledger::client::RunDBTransactionCallback callback) {
   [bridge_ runDBTransaction:std::move(transaction)
                    callback:std::move(callback)];
@@ -156,7 +156,7 @@ void LedgerClientIOS::GetCreateScript(
   [bridge_ getCreateScript:callback];
 }
 void LedgerClientIOS::PendingContributionSaved(
-    const ledger::type::Result result) {
+    const ledger::mojom::Result result) {
   [bridge_ pendingContributionSaved:result];
 }
 void LedgerClientIOS::ClearAllNotifications() {

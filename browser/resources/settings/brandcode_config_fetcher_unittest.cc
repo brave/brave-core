@@ -40,7 +40,7 @@ TEST_F(BrandcodeConfigFetcherTest, NoFetch) {
       base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
         network_access_occurred = true;
       }));
-  BrandcodeConfigFetcher* uploader = new BrandcodeConfigFetcher(
+  auto uploader = std::make_unique<BrandcodeConfigFetcher>(
       test_url_loader_factory(),
       base::BindLambdaForTesting([&]() { callback_called = true; }),
       GURL("https://www.brave.com/"), "BRAV");

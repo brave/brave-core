@@ -19,7 +19,7 @@ std::string Strip(const std::string& value, const std::string& pattern) {
   DCHECK(!pattern.empty());
 
   if (value.empty()) {
-    return "";
+    return {};
   }
 
   std::string stripped_value = value;
@@ -28,8 +28,8 @@ std::string Strip(const std::string& value, const std::string& pattern) {
 
   std::u16string stripped_value_string16 = base::UTF8ToUTF16(stripped_value);
 
-  stripped_value_string16 =
-      base::CollapseWhitespace(stripped_value_string16, true);
+  stripped_value_string16 = base::CollapseWhitespace(
+      stripped_value_string16, /*trim_sequences_with_line_breaks*/ true);
 
   return base::UTF16ToUTF8(stripped_value_string16);
 }

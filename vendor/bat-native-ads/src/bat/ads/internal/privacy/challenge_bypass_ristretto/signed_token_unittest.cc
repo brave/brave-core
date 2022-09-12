@@ -12,9 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace privacy {
-namespace cbr {
+namespace ads::privacy::cbr {
 
 TEST(BatAdsSignedTokenTest, FailToInitialize) {
   // Arrange
@@ -65,7 +63,7 @@ TEST(BatAdsSignedTokenTest, FailToDecodeEmptyBase64) {
   // Arrange
 
   // Act
-  const SignedToken signed_token = SignedToken::DecodeBase64("");
+  const SignedToken signed_token = SignedToken::DecodeBase64({});
 
   // Assert
   const bool has_value = signed_token.has_value();
@@ -183,6 +181,4 @@ TEST(BatAdsSignedTokenTest, OutputStreamWhenUninitialized) {
   EXPECT_TRUE(ss.str().empty());
 }
 
-}  // namespace cbr
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::cbr

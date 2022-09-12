@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 
-#include <algorithm>
 #include <utility>
 
+#include "base/ranges/algorithm.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -58,11 +58,10 @@ mojom::BlockchainTokenPtr BlockchainRegistry::GetTokenByAddress(
     return nullptr;
 
   const auto& tokens = token_list_map_[key];
-  auto token_it =
-      std::find_if(tokens.begin(), tokens.end(),
-                   [&](const mojom::BlockchainTokenPtr& current_token) {
-                     return current_token->contract_address == address;
-                   });
+  auto token_it = base::ranges::find_if(
+      tokens, [&](const mojom::BlockchainTokenPtr& current_token) {
+        return current_token->contract_address == address;
+      });
   return token_it == tokens.end() ? nullptr : token_it->Clone();
 }
 
@@ -76,11 +75,10 @@ void BlockchainRegistry::GetTokenBySymbol(const std::string& chain_id,
     return;
   }
   const auto& tokens = token_list_map_[key];
-  auto token_it =
-      std::find_if(tokens.begin(), tokens.end(),
-                   [&](const mojom::BlockchainTokenPtr& current_token) {
-                     return current_token->symbol == symbol;
-                   });
+  auto token_it = base::ranges::find_if(
+      tokens, [&](const mojom::BlockchainTokenPtr& current_token) {
+        return current_token->symbol == symbol;
+      });
 
   if (token_it == tokens.end()) {
     std::move(callback).Run(nullptr);
@@ -186,7 +184,8 @@ std::vector<mojom::NetworkInfoPtr>
 BlockchainRegistry::GetPrepopulatedNetworks() {
   std::vector<mojom::NetworkInfoPtr> result;
   for (auto& chain : chain_list_) {
-    if (auto known_chain = GetKnownEthChain(nullptr, chain->chain_id)) {
+    if (auto known_chain =
+            GetKnownChain(nullptr, chain->chain_id, mojom::CoinType::ETH)) {
       result.push_back(known_chain.Clone());
     } else {
       result.push_back(chain.Clone());

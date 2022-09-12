@@ -268,9 +268,9 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
       keys_command_index += AddIpfsImportMenuItem(
           IDC_APP_MENU_IPFS_PUBLISH_LOCAL_FILE,
           IDS_APP_MENU_IPFS_PUBLISH_LOCAL_FILE, keys_command_index);
-      keys_command_index += AddIpfsImportMenuItem(
-          IDC_APP_MENU_IPFS_PUBLISH_LOCAL_FOLDER,
-          IDS_APP_MENU_IPFS_PUBLISH_LOCAL_FOLDER, keys_command_index);
+      AddIpfsImportMenuItem(IDC_APP_MENU_IPFS_PUBLISH_LOCAL_FOLDER,
+                            IDS_APP_MENU_IPFS_PUBLISH_LOCAL_FOLDER,
+                            keys_command_index);
     }
     int index = IsCommandIdEnabled(IDC_SHOW_BRAVE_SYNC)
                     ? GetIndexOfBraveSyncItem() + 1

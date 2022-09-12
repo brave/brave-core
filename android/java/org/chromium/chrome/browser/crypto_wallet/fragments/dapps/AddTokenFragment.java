@@ -64,7 +64,6 @@ public class AddTokenFragment extends BaseDAppsFragment {
 
     private void initComponents(boolean init) {
         fillAddSuggestTokenRequest(init);
-        updateNetwork();
     }
 
     private void notifyAddSuggestTokenRequestProcessed(boolean approved) {
@@ -90,16 +89,16 @@ public class AddTokenFragment extends BaseDAppsFragment {
                 mTokenAddress.setOnClickListener(v -> {
                     Activity activity = getActivity();
                     if (activity instanceof BraveWalletBaseActivity) {
-                        // TODO(sergz): We will need to correct that while doing Solana DApps
                         Utils.openAddress(
                                 "/token/" + mCurrentAddSuggestTokenRequest.token.contractAddress,
                                 getJsonRpcService(), (BraveWalletBaseActivity) activity,
-                                CoinType.ETH);
+                                mCurrentAddSuggestTokenRequest.token.coin);
                     }
                 });
             }
             fillOriginInfo(mCurrentAddSuggestTokenRequest.origin);
             initToken();
+            updateNetwork(mCurrentAddSuggestTokenRequest.token.coin);
         });
     }
 
@@ -110,9 +109,9 @@ public class AddTokenFragment extends BaseDAppsFragment {
         }
     }
 
-    private void updateNetwork() {
-        getJsonRpcService().getNetwork(CoinType.ETH,
-                selectedNetwork -> { mNetworkName.setText(selectedNetwork.chainName); });
+    private void updateNetwork(@CoinType.EnumType int coin) {
+        getJsonRpcService().getNetwork(
+                coin, selectedNetwork -> { mNetworkName.setText(selectedNetwork.chainName); });
     }
 
     private void initToken() {

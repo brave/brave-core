@@ -64,6 +64,7 @@ import { LibContext } from '../common/context/lib.context'
 import { createSendCryptoReducer } from '../common/reducers/send_crypto_reducer'
 import { createWalletReducer } from '../common/reducers/wallet_reducer'
 import { createPageReducer } from '../page/reducers/page_reducer'
+import { createPanelReducer } from '../panel/reducers/panel_reducer'
 
 // mocks
 import * as MockedLib from '../common/async/__mocks__/lib'
@@ -74,6 +75,7 @@ import { mockAccounts, mockedTransactionAccounts } from './mock-data/mock-wallet
 import { mockEncryptionKeyRequest, mockDecryptRequest } from './mock-data/mock-encryption-key-payload'
 import { mockOriginInfo } from './mock-data/mock-origin-info'
 import { mockAccountAssetOptions, mockBasicAttentionToken, mockEthToken, mockNewAssetOptions } from './mock-data/mock-asset-options'
+import { mockPanelState } from './mock-data/mock-panel-state'
 import { mockPageState } from './mock-data/mock-page-state'
 import { mockWalletState } from './mock-data/mock-wallet-state'
 import { mockSendCryptoState } from './mock-data/send-crypto-state'
@@ -332,6 +334,7 @@ const originInfo = mockOriginInfo
 const store = createStore(combineReducers({
   wallet: createWalletReducer(mockWalletState),
   page: createPageReducer(mockPageState),
+  panel: createPanelReducer(mockPanelState),
   sendCrypto: createSendCryptoReducer(mockSendCryptoState)
 }))
 
@@ -546,50 +549,15 @@ _ReadEncryptedMessage.story = {
 }
 
 export const _ConnectWithSite = () => {
-  const [selectedAccounts, setSelectedAccounts] = React.useState<WalletAccountType[]>([
-    mockAccounts[0]
-  ])
-  const [readyToConnect, setReadyToConnect] = React.useState<boolean>(false)
-  const selectAccount = (account: WalletAccountType) => {
-    const newList = [...selectedAccounts, account]
-    setSelectedAccounts(newList)
-  }
-  const removeAccount = (account: WalletAccountType) => {
-    const newList = selectedAccounts.filter(
-      (accounts) => accounts.id !== account.id
-    )
-    setSelectedAccounts(newList)
-  }
-  const onSubmit = () => {
-    alert(`Connecting to ${originInfo.originSpec} using: ${JSON.stringify(selectedAccounts)}`)
-  }
-  const primaryAction = () => {
-    if (!readyToConnect) {
-      setReadyToConnect(true)
-    } else {
-      onSubmit()
-    }
-  }
-  const secondaryAction = () => {
-    if (readyToConnect) {
-      setReadyToConnect(false)
-    } else {
-      alert('You Clicked The Cancel Button!')
-    }
-  }
   return (
-    <StyledExtensionWrapperLonger>
-      <ConnectWithSite
-        originInfo={originInfo}
-        isReady={readyToConnect}
-        accounts={mockAccounts}
-        primaryAction={primaryAction}
-        secondaryAction={secondaryAction}
-        selectAccount={selectAccount}
-        removeAccount={removeAccount}
-        selectedAccounts={selectedAccounts}
-      />
-    </StyledExtensionWrapperLonger>
+    <Provider store={store}>
+      <StyledExtensionWrapperLonger>
+        <ConnectWithSite
+          originInfo={originInfo}
+          accountsToConnect={mockAccounts}
+        />
+      </StyledExtensionWrapperLonger>
+    </Provider>
   )
 }
 

@@ -4,7 +4,6 @@
 
 import styled from 'styled-components'
 
-import warningCircleImage from '../../shared/assets/warning_circle.svg'
 import greenCheckIcon from '../assets/green_check.svg'
 
 export const root = styled.div`
@@ -121,25 +120,6 @@ export const connectGraphic = styled.div`
   text-align: center;
   margin: 86px auto 0;
   width: 250px;
-`
-
-export const minimumBalanceWarning = styled.div`
-  margin-top: 16px;
-  background: var(--brave-palette-neutral000);
-  border-radius: 8px;
-  padding: 16px 17px 26px 41px;
-  font-size: 14px;
-  line-height: 22px;
-
-  background-repeat: no-repeat;
-  background-position: 17px 21px;
-  background-size: 16px 16px;
-  background-image: url('${warningCircleImage}');
-
-  .login {
-    margin-top: 8px;
-    font-weight: 600;
-  }
 `
 
 export const selectWalletLeftPanel = styled.div`

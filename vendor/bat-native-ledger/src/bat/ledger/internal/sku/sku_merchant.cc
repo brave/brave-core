@@ -24,11 +24,10 @@ SKUMerchant::SKUMerchant(LedgerImpl* ledger) :
 
 SKUMerchant::~SKUMerchant() = default;
 
-void SKUMerchant::Process(
-    const std::vector<type::SKUOrderItem>& items,
-    const std::string& wallet_type,
-    ledger::SKUOrderCallback callback,
-    const std::string& contribution_id) {
+void SKUMerchant::Process(const std::vector<mojom::SKUOrderItem>& items,
+                          const std::string& wallet_type,
+                          ledger::SKUOrderCallback callback,
+                          const std::string& contribution_id) {
   auto create_callback = std::bind(&SKUMerchant::OrderCreated,
       this,
       _1,
@@ -39,12 +38,11 @@ void SKUMerchant::Process(
   common_->CreateOrder(items, create_callback);
 }
 
-void SKUMerchant::OrderCreated(
-    const type::Result result,
-    const std::string& order_id,
-    const std::string& wallet_type,
-    ledger::SKUOrderCallback callback) {
-  if (result != type::Result::LEDGER_OK) {
+void SKUMerchant::OrderCreated(const mojom::Result result,
+                               const std::string& order_id,
+                               const std::string& wallet_type,
+                               ledger::SKUOrderCallback callback) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Order was not successful");
     callback(result, "");
     return;
@@ -59,24 +57,20 @@ void SKUMerchant::OrderCreated(
   ledger_->database()->GetSKUOrder(order_id, get_callback);
 }
 
-void SKUMerchant::OnOrder(
-    type::SKUOrderPtr order,
-    const std::string& wallet_type,
-    ledger::SKUOrderCallback callback) {
+void SKUMerchant::OnOrder(mojom::SKUOrderPtr order,
+                          const std::string& wallet_type,
+                          ledger::SKUOrderCallback callback) {
   if (!order) {
     BLOG(0, "Order is null");
-    callback(type::Result::LEDGER_ERROR, "");
+    callback(mojom::Result::LEDGER_ERROR, "");
     return;
   }
 
   if (wallet_type == constant::kWalletUphold) {
     auto publisher_callback =
-        std::bind(&SKUMerchant::OnServerPublisherInfo,
-          this,
-          _1,
-          std::make_shared<type::SKUOrderPtr>(order->Clone()),
-          wallet_type,
-          callback);
+        std::bind(&SKUMerchant::OnServerPublisherInfo, this, _1,
+                  std::make_shared<mojom::SKUOrderPtr>(order->Clone()),
+                  wallet_type, callback);
 
     ledger_->publisher()->GetServerPublisherInfo(
         order->merchant_id,
@@ -88,19 +82,19 @@ void SKUMerchant::OnOrder(
 }
 
 void SKUMerchant::OnServerPublisherInfo(
-    type::ServerPublisherInfoPtr info,
-    std::shared_ptr<type::SKUOrderPtr> shared_order,
+    mojom::ServerPublisherInfoPtr info,
+    std::shared_ptr<mojom::SKUOrderPtr> shared_order,
     const std::string& wallet_type,
     ledger::SKUOrderCallback callback) {
   if (!shared_order || !info) {
     BLOG(0, "Order/Publisher not found");
-    callback(type::Result::LEDGER_ERROR, "");
+    callback(mojom::Result::LEDGER_ERROR, "");
     return;
   }
 
   if (info->address.empty()) {
     BLOG(0, "Publisher address is empty");
-    callback(type::Result::LEDGER_ERROR, "");
+    callback(mojom::Result::LEDGER_ERROR, "");
     return;
   }
 

@@ -55,112 +55,112 @@ class DeleteClaimTest : public testing::Test {
 TEST_F(DeleteClaimTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = "";
             std::move(callback).Run(response);
           }));
 
-  disconnect_->Request("test-custodian", [](const type::Result result) {
-    EXPECT_EQ(result, type::Result::LEDGER_OK);
+  disconnect_->Request("test-custodian", [](const mojom::Result result) {
+    EXPECT_EQ(result, mojom::Result::LEDGER_OK);
   });
 }
 
 TEST_F(DeleteClaimTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
             std::move(callback).Run(response);
           }));
 
-  disconnect_->Request("test-custodian", [](const type::Result result) {
-    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+  disconnect_->Request("test-custodian", [](const mojom::Result result) {
+    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
   });
 }
 
 TEST_F(DeleteClaimTest, ServerError403) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 403;
             response.url = request->url;
             response.body = "";
             std::move(callback).Run(response);
           }));
 
-  disconnect_->Request("test-custodian", [](const type::Result result) {
-    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+  disconnect_->Request("test-custodian", [](const mojom::Result result) {
+    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
   });
 }
 
 TEST_F(DeleteClaimTest, ServerError404) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 404;
             response.url = request->url;
             response.body = "";
             std::move(callback).Run(response);
           }));
 
-  disconnect_->Request("test-custodian", [](const type::Result result) {
-    EXPECT_EQ(result, type::Result::NOT_FOUND);
+  disconnect_->Request("test-custodian", [](const mojom::Result result) {
+    EXPECT_EQ(result, mojom::Result::NOT_FOUND);
   });
 }
 
 TEST_F(DeleteClaimTest, ServerError409) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 409;
             response.url = request->url;
             response.body = "";
             std::move(callback).Run(response);
           }));
 
-  disconnect_->Request("test-custodian", [](const type::Result result) {
-    EXPECT_EQ(result, type::Result::ALREADY_EXISTS);
+  disconnect_->Request("test-custodian", [](const mojom::Result result) {
+    EXPECT_EQ(result, mojom::Result::ALREADY_EXISTS);
   });
 }
 
 TEST_F(DeleteClaimTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
             std::move(callback).Run(response);
           }));
 
-  disconnect_->Request("test-custodian", [](const type::Result result) {
-    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+  disconnect_->Request("test-custodian", [](const mojom::Result result) {
+    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
   });
 }
 
 TEST_F(DeleteClaimTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
             std::move(callback).Run(response);
           }));
 
-  disconnect_->Request("test-custodian", [](const type::Result result) {
-    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+  disconnect_->Request("test-custodian", [](const mojom::Result result) {
+    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
   });
 }
 

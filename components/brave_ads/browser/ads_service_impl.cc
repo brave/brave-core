@@ -12,6 +12,7 @@
 #include "base/bind.h"
 #include "base/callback_helpers.h"
 #include "base/check.h"
+#include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/cxx17_backports.h"
 #include "base/debug/dump_without_crashing.h"
@@ -722,11 +723,12 @@ void AdsServiceImpl::GetRewardsWallet() {
     return;
   }
 
-  rewards_service_->GetBraveWallet(
+  rewards_service_->GetRewardsWallet(
       base::BindOnce(&AdsServiceImpl::OnGetRewardsWallet, AsWeakPtr()));
 }
 
-void AdsServiceImpl::OnGetRewardsWallet(ledger::type::BraveWalletPtr wallet) {
+void AdsServiceImpl::OnGetRewardsWallet(
+    ledger::mojom::RewardsWalletPtr wallet) {
   if (!IsBatAdsBound() || !wallet) {
     return;
   }
@@ -744,7 +746,9 @@ void AdsServiceImpl::OnEnabledPrefChanged() {
 
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
     adaptive_captcha_service_->ClearScheduledCaptcha();
+#if !BUILDFLAG(IS_ANDROID)
     ads_tooltips_delegate_->CloseCaptchaTooltip();
+#endif
 #endif
   }
 
@@ -1681,6 +1685,9 @@ void AdsServiceImpl::ShowScheduledCaptchaNotification(
       return;
     }
 
+// TODO(sergz): made a guard to prevent a potential crash, but need to
+// check as we could have the guard in the higher level for Android
+#if !BUILDFLAG(IS_ANDROID)
     const int snooze_count = pref_service->GetInteger(
         brave_adaptive_captcha::prefs::kScheduledCaptchaSnoozeCount);
 
@@ -1690,6 +1697,7 @@ void AdsServiceImpl::ShowScheduledCaptchaNotification(
         payment_id, captcha_id, snooze_count == 0,
         base::BindOnce(&AdsServiceImpl::ShowScheduledCaptcha, AsWeakPtr()),
         base::BindOnce(&AdsServiceImpl::SnoozeScheduledCaptcha, AsWeakPtr()));
+#endif
   } else {
     ShowScheduledCaptcha(payment_id, captcha_id);
   }
@@ -2316,8 +2324,7 @@ void AdsServiceImpl::MigratePrefsVersion6To7() {
   };
 
   const bool is_a_legacy_country_code =
-      std::find(legacy_country_codes.begin(), legacy_country_codes.end(),
-                country_code) != legacy_country_codes.end();
+      base::Contains(legacy_country_codes, country_code);
 
   if (is_a_legacy_country_code) {
     // Do not disable Brave Ads for legacy country codes introduced before
@@ -2426,8 +2433,7 @@ void AdsServiceImpl::DisableAdsIfUpgradingFromPreBraveAdsBuild() {
 void AdsServiceImpl::DisableAdsForUnsupportedCountryCodes(
     const std::string& country_code,
     const std::vector<std::string>& supported_country_codes) {
-  if (std::find(supported_country_codes.begin(), supported_country_codes.end(),
-                country_code) != supported_country_codes.end()) {
+  if (base::Contains(supported_country_codes, country_code)) {
     return;
   }
 

@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/notreached.h"
 #include "brave/app/brave_command_ids.h"
@@ -54,8 +55,7 @@ bool IsBraveOverrideCommands(int id) {
       IDC_NEW_WINDOW,
       IDC_NEW_INCOGNITO_WINDOW,
   });
-  return std::find(override_commands.begin(), override_commands.end(), id) !=
-         override_commands.end();
+  return base::Contains(override_commands, id);
 }
 
 }  // namespace
@@ -154,6 +154,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   }
   UpdateCommandEnabled(IDC_ADD_NEW_PROFILE, add_new_profile_enabled);
   UpdateCommandEnabled(IDC_OPEN_GUEST_PROFILE, open_guest_profile_enabled);
+  UpdateCommandEnabled(IDC_COPY_CLEAN_LINK, true);
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
@@ -300,6 +301,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_ABOUT_BRAVE_VPN:
     case IDC_MANAGE_BRAVE_VPN_PLAN:
       brave::OpenBraveVPNUrls(browser_, id);
+      break;
+    case IDC_COPY_CLEAN_LINK:
+      brave::CopyCleanLink(browser_);
       break;
     case IDC_APP_MENU_IPFS_OPEN_FILES:
       brave::OpenIpfsFilesWebUI(browser_);

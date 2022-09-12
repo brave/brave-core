@@ -23,6 +23,7 @@ import {
   StyledNeedsBrowserUpdateContentBody
 } from './style'
 
+import { getAdsSubdivisions } from '../../shared/lib/ads_subdivisions'
 import { externalWalletProviderFromString } from '../../shared/lib/external_wallet'
 import { getProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { PaymentStatusView } from '../../shared/components/payment_status_view'
@@ -43,82 +44,6 @@ interface Props extends Rewards.ComponentProps {
 class AdsBox extends React.Component<Props, {}> {
   constructor (props: Props) {
     super(props)
-  }
-
-  getAdsSubdivisions = () => {
-    const {
-      adsSubdivisionTargeting,
-      automaticallyDetectedAdsSubdivisionTargeting
-    } = this.props.rewardsData.adsData
-
-    let subdivisions: any = [
-      ['US-AL', 'Alabama'],
-      ['US-AK', 'Alaska'],
-      ['US-AZ', 'Arizona'],
-      ['US-AR', 'Arkansas'],
-      ['US-CA', 'California'],
-      ['US-CO', 'Colorado'],
-      ['US-CT', 'Connecticut'],
-      ['US-DE', 'Delaware'],
-      ['US-FL', 'Florida'],
-      ['US-GA', 'Georgia'],
-      ['US-HI', 'Hawaii'],
-      ['US-ID', 'Idaho'],
-      ['US-IL', 'Illinois'],
-      ['US-IN', 'Indiana'],
-      ['US-IA', 'Iowa'],
-      ['US-KS', 'Kansas'],
-      ['US-KY', 'Kentucky'],
-      ['US-LA', 'Louisiana'],
-      ['US-ME', 'Maine'],
-      ['US-MD', 'Maryland'],
-      ['US-MA', 'Massachusetts'],
-      ['US-MI', 'Michigan'],
-      ['US-MN', 'Minnesota'],
-      ['US-MS', 'Mississippi'],
-      ['US-MO', 'Missouri'],
-      ['US-MT', 'Montana'],
-      ['US-NE', 'Nebraska'],
-      ['US-NV', 'Nevada'],
-      ['US-NH', 'New Hampshire'],
-      ['US-NJ', 'New Jersey'],
-      ['US-NM', 'New Mexico'],
-      ['US-NY', 'New York'],
-      ['US-NC', 'North Carolina'],
-      ['US-ND', 'North Dakota'],
-      ['US-OH', 'Ohio'],
-      ['US-OK', 'Oklahoma'],
-      ['US-OR', 'Oregon'],
-      ['US-PA', 'Pennsylvania'],
-      ['US-RI', 'Rhode Island'],
-      ['US-SC', 'South Carolina'],
-      ['US-SD', 'South Dakota'],
-      ['US-TN', 'Tennessee'],
-      ['US-TX', 'Texas'],
-      ['US-UT', 'Utah'],
-      ['US-VT', 'Vermont'],
-      ['US-VA', 'Virginia'],
-      ['US-WA', 'Washington'],
-      ['US-WV', 'West Virginia'],
-      ['US-WI', 'Wisconsin'],
-      ['US-WY', 'Wyoming']
-    ]
-
-    if (adsSubdivisionTargeting === 'DISABLED') {
-      subdivisions.unshift(['DISABLED', getLocale('adsSubdivisionTargetingDisabled')])
-    } else {
-      subdivisions.unshift(['DISABLED', getLocale('adsSubdivisionTargetingDisable')])
-    }
-
-    const subdivisionMap = new Map(subdivisions)
-    const subdivision = subdivisionMap.get(automaticallyDetectedAdsSubdivisionTargeting) as string
-    if (subdivision !== '' && adsSubdivisionTargeting === 'AUTO') {
-      subdivisions.unshift(['AUTO', getLocale('adsSubdivisionTargetingAutoDetectedAs', { adsSubdivisionTarget: subdivision })])
-    } else {
-      subdivisions.unshift(['AUTO', getLocale('adsSubdivisionTargetingAutoDetect')])
-    }
-
-    return subdivisions
   }
 
   onAdsSettingChange = (key: string, value: boolean) => {
@@ -171,7 +96,7 @@ class AdsBox extends React.Component<Props, {}> {
                   onChange={this.onAdsSettingChange.bind(this, 'adsSubdivisionTargeting')}
                 >
                   {
-                    this.getAdsSubdivisions().map((subdivision: String[]) => {
+                    getAdsSubdivisions(this.props.rewardsData).map((subdivision: String[]) => {
                       return (
                         <div key={`${subdivision[0]}`} data-value={subdivision[0]}>
                           {`${subdivision[1]}`}

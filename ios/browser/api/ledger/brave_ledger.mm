@@ -210,13 +210,13 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   if (flags.environment) {
     switch (*flags.environment) {
       case brave_rewards::RewardsFlags::Environment::kDevelopment:
-        ledger::_environment = ledger::type::Environment::DEVELOPMENT;
+        ledger::_environment = ledger::mojom::Environment::DEVELOPMENT;
         break;
       case brave_rewards::RewardsFlags::Environment::kStaging:
-        ledger::_environment = ledger::type::Environment::STAGING;
+        ledger::_environment = ledger::mojom::Environment::STAGING;
         break;
       case brave_rewards::RewardsFlags::Environment::kProduction:
-        ledger::_environment = ledger::type::Environment::PRODUCTION;
+        ledger::_environment = ledger::mojom::Environment::PRODUCTION;
         break;
     }
   }
@@ -253,10 +253,10 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 
   BLOG(3, @"DB: Migrate from CoreData? %@",
        (executeMigrateScript ? @"YES" : @"NO"));
-  ledger->Initialize(executeMigrateScript, ^(ledger::type::Result result) {
-    self.initialized = (result == ledger::type::Result::LEDGER_OK ||
-                        result == ledger::type::Result::NO_LEDGER_STATE ||
-                        result == ledger::type::Result::NO_PUBLISHER_STATE);
+  ledger->Initialize(executeMigrateScript, ^(ledger::mojom::Result result) {
+    self.initialized = (result == ledger::mojom::Result::LEDGER_OK ||
+                        result == ledger::mojom::Result::NO_LEDGER_STATE ||
+                        result == ledger::mojom::Result::NO_PUBLISHER_STATE);
     self.initializing = NO;
     if (self.initialized) {
       self.prefs[kMigrationSucceeded] = @(YES);
@@ -269,7 +269,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
       [self readNotificationsFromDisk];
     } else {
       BLOG(0, @"Ledger Initialization Failed with error: %d", result);
-      if (result == ledger::type::Result::DATABASE_INIT_FAILED) {
+      if (result == ledger::mojom::Result::DATABASE_INIT_FAILED) {
         // Failed to migrate data...
         switch (self.migrationType) {
           case BATLedgerDatabaseMigrationTypeDefault:
@@ -326,22 +326,22 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   }
   // Check integrity of the new DB. Safe to assume if `publisher_info` table
   // exists, then all the others do as well.
-  auto transaction = ledger::type::DBTransaction::New();
-  const auto command = ledger::type::DBCommand::New();
-  command->type = ledger::type::DBCommand::Type::READ;
+  auto transaction = ledger::mojom::DBTransaction::New();
+  const auto command = ledger::mojom::DBCommand::New();
+  command->type = ledger::mojom::DBCommand::Type::READ;
   command->command = "SELECT name FROM sqlite_master WHERE type = 'table' AND "
                      "name = 'publisher_info';";
   command->record_bindings = {
-      ledger::type::DBCommand::RecordBindingType::STRING_TYPE};
+      ledger::mojom::DBCommand::RecordBindingType::STRING_TYPE};
   transaction->commands.push_back(command->Clone());
 
   [self runDBTransaction:std::move(transaction)
                 callback:base::BindOnce(^(
-                             ledger::type::DBCommandResponsePtr response) {
+                             ledger::mojom::DBCommandResponsePtr response) {
                   // Failed to even run the check, tables probably don't exist,
                   // restart from scratch
                   if (response->status !=
-                      ledger::type::DBCommandResponse::Status::RESPONSE_OK) {
+                      ledger::mojom::DBCommandResponse::Status::RESPONSE_OK) {
                     [self resetRewardsDatabase];
                     BLOG(3, @"DB: Failed to run transaction with status: %d",
                          response->status);
@@ -435,31 +435,31 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 
 - (void)createWallet:(void (^)(NSError* _Nullable))completion {
   const auto __weak weakSelf = self;
-  // Results that can come from CreateWallet():
+  // Results that can come from CreateRewardsWallet():
   //   - WALLET_CREATED: Good to go
   //   - LEDGER_ERROR: Already initialized
   //   - BAD_REGISTRATION_RESPONSE: Request credentials call failure or
   //   malformed data
   //   - REGISTRATION_VERIFICATION_FAILED: Missing master user token
   self.initializingWallet = YES;
-  ledger->CreateWallet(base::BindOnce(^(ledger::type::Result result) {
+  ledger->CreateRewardsWallet(base::BindOnce(^(ledger::mojom::Result result) {
     const auto strongSelf = weakSelf;
     if (!strongSelf) {
       return;
     }
     NSError* error = nil;
-    if (result != ledger::type::Result::WALLET_CREATED) {
-      std::map<ledger::type::Result, std::string> errorDescriptions{
-          {ledger::type::Result::LEDGER_ERROR,
+    if (result != ledger::mojom::Result::WALLET_CREATED) {
+      std::map<ledger::mojom::Result, std::string> errorDescriptions{
+          {ledger::mojom::Result::LEDGER_ERROR,
            "The wallet was already initialized"},
-          {ledger::type::Result::BAD_REGISTRATION_RESPONSE,
+          {ledger::mojom::Result::BAD_REGISTRATION_RESPONSE,
            "Request credentials call failure or malformed data"},
-          {ledger::type::Result::REGISTRATION_VERIFICATION_FAILED,
+          {ledger::mojom::Result::REGISTRATION_VERIFICATION_FAILED,
            "Missing master user token from registered persona"},
       };
       NSDictionary* userInfo = @{};
       const auto description =
-          errorDescriptions[static_cast<ledger::type::Result>(result)];
+          errorDescriptions[static_cast<ledger::mojom::Result>(result)];
       if (description.length() > 0) {
         userInfo =
             @{NSLocalizedDescriptionKey : base::SysUTF8ToNSString(description)};
@@ -487,14 +487,14 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 }
 
 - (void)currentWalletInfo:
-    (void (^)(LedgerBraveWallet* _Nullable wallet))completion {
-  ledger->GetBraveWallet(^(ledger::type::BraveWalletPtr wallet) {
+    (void (^)(LedgerRewardsWallet* _Nullable wallet))completion {
+  ledger->GetRewardsWallet(^(ledger::mojom::RewardsWalletPtr wallet) {
     if (wallet.get() == nullptr) {
       completion(nil);
       return;
     }
     const auto bridgedWallet =
-        [[LedgerBraveWallet alloc] initWithBraveWallet:*wallet];
+        [[LedgerRewardsWallet alloc] initWithRewardsWallet:*wallet];
     completion(bridgedWallet);
   });
 }
@@ -502,7 +502,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 - (void)getRewardsParameters:
     (void (^)(LedgerRewardsParameters* _Nullable))completion {
   ledger->GetRewardsParameters(base::BindOnce(^(
-      ledger::type::RewardsParametersPtr info) {
+      ledger::mojom::RewardsParametersPtr info) {
     if (info) {
       self.rewardsParameters = [[LedgerRewardsParameters alloc]
           initWithRewardsParametersPtr:std::move(info)];
@@ -521,9 +521,9 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 - (void)fetchBalance:(void (^)(LedgerBalance* _Nullable))completion {
   const auto __weak weakSelf = self;
   ledger->FetchBalance(base::BindOnce(
-      ^(ledger::type::Result result, ledger::type::BalancePtr balance) {
+      ^(ledger::mojom::Result result, ledger::mojom::BalancePtr balance) {
         const auto strongSelf = weakSelf;
-        if (result == ledger::type::Result::LEDGER_OK) {
+        if (result == ledger::mojom::Result::LEDGER_OK) {
           strongSelf.balance =
               [[LedgerBalance alloc] initWithBalancePtr:std::move(balance)];
         }
@@ -543,19 +543,19 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 - (void)recoverWalletUsingPassphrase:(NSString*)passphrase
                           completion:(void (^)(NSError* _Nullable))completion {
   const auto __weak weakSelf = self;
-  // Results that can come from CreateWallet():
+  // Results that can come from RecoverWallet():
   //   - LEDGER_OK: Good to go
   //   - LEDGER_ERROR: Recovery failed
   ledger->RecoverWallet(base::SysNSStringToUTF8(passphrase), ^(
-                            const ledger::type::Result result) {
+                            const ledger::mojom::Result result) {
     const auto strongSelf = weakSelf;
     if (!strongSelf) {
       return;
     }
     NSError* error = nil;
-    if (result != ledger::type::Result::LEDGER_OK) {
-      std::map<ledger::type::Result, std::string> errorDescriptions{
-          {ledger::type::Result::LEDGER_ERROR, "The recovery failed"},
+    if (result != ledger::mojom::Result::LEDGER_OK) {
+      std::map<ledger::mojom::Result, std::string> errorDescriptions{
+          {ledger::mojom::Result::LEDGER_ERROR, "The recovery failed"},
       };
       NSDictionary* userInfo = @{};
       const auto description = errorDescriptions[result];
@@ -586,21 +586,21 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 - (void)linkBraveWalletToPaymentId:(NSString*)paymentId
                         completion:(void (^)(LedgerResult result,
                                              NSString* drainID))completion {
-  ledger->LinkBraveWallet(base::SysNSStringToUTF8(paymentId),
-                          base::BindOnce(^(ledger::type::Result result,
-                                           std::string drain_id) {
-                            // The internal draining API now returns a success
-                            // code when there are no tokens to drain. Since
-                            // brave-ios expects a valid drain ID when the
-                            // result is LEDGER_OK, to maintain backward
-                            // compatibility convert the result to an error code
-                            // when the drain ID is empty.
-                            if (drain_id.empty()) {
-                              result = ledger::type::Result::LEDGER_ERROR;
-                            }
-                            completion(static_cast<LedgerResult>(result),
-                                       base::SysUTF8ToNSString(drain_id));
-                          }));
+  ledger->LinkRewardsWallet(
+      base::SysNSStringToUTF8(paymentId),
+      base::BindOnce(^(ledger::mojom::Result result, std::string drain_id) {
+        // The internal draining API now returns a success
+        // code when there are no tokens to drain. Since
+        // brave-ios expects a valid drain ID when the
+        // result is LEDGER_OK, to maintain backward
+        // compatibility convert the result to an error code
+        // when the drain ID is empty.
+        if (drain_id.empty()) {
+          result = ledger::mojom::Result::LEDGER_ERROR;
+        }
+        completion(static_cast<LedgerResult>(result),
+                   base::SysUTF8ToNSString(drain_id));
+      }));
 }
 
 - (void)drainStatusForDrainId:(NSString*)drainId
@@ -608,7 +608,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
                                         LedgerDrainStatus status))completion {
   ledger->GetDrainStatus(
       base::SysNSStringToUTF8(drainId),
-      ^(ledger::type::Result result, ledger::type::DrainStatus status) {
+      ^(ledger::mojom::Result result, ledger::mojom::DrainStatus status) {
         completion(static_cast<LedgerResult>(result),
                    static_cast<LedgerDrainStatus>(status));
       });
@@ -621,9 +621,9 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   const auto __weak weakSelf = self;
   ledger->GetExternalWallet(
       ledger::constant::kWalletUphold,
-      base::BindOnce(^(ledger::type::Result result,
-                       ledger::type::ExternalWalletPtr walletPtr) {
-        if (result == ledger::type::Result::LEDGER_OK &&
+      base::BindOnce(^(ledger::mojom::Result result,
+                       ledger::mojom::ExternalWalletPtr walletPtr) {
+        if (result == ledger::mojom::Result::LEDGER_OK &&
             walletPtr.get() != nullptr) {
           const auto bridgedWallet =
               [[LedgerExternalWallet alloc] initWithExternalWallet:*walletPtr];
@@ -643,7 +643,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
                     completion:
                         (nullable void (^)(LedgerResult result))completion {
   ledger->DisconnectWallet(
-      base::SysNSStringToUTF8(walletType), ^(ledger::type::Result result) {
+      base::SysNSStringToUTF8(walletType), ^(ledger::mojom::Result result) {
         if (completion) {
           completion(static_cast<LedgerResult>(result));
         }
@@ -664,7 +664,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
                                           completion {
   ledger->ExternalWalletAuthorization(
       base::SysNSStringToUTF8(walletType), MapFromNSDictionary(queryItems),
-      ^(ledger::type::Result result,
+      ^(ledger::mojom::Result result,
         base::flat_map<std::string, std::string> args) {
         const auto it = args.find("redirect_url");
         std::string redirect;
@@ -677,7 +677,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
                 : [NSURL URLWithString:base::SysUTF8ToNSString(redirect)];
         completion(static_cast<LedgerResult>(result), url);
 
-        if (result == ledger::type::Result::LEDGER_OK) {
+        if (result == ledger::mojom::Result::LEDGER_OK) {
           for (BraveLedgerObserver* observer in self.observers) {
             if (observer.externalWalletAuthorized) {
               observer.externalWalletAuthorized(walletType);
@@ -712,12 +712,13 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
                        completion:(void (^)(NSArray<LedgerPublisherInfo*>*))
                                       completion {
   auto cppFilter =
-      filter ? filter.cppObjPtr : ledger::type::ActivityInfoFilter::New();
+      filter ? filter.cppObjPtr : ledger::mojom::ActivityInfoFilter::New();
   if (filter.excluded == LedgerExcludeFilterFilterExcluded) {
-    ledger->GetExcludedList(^(ledger::type::PublisherInfoList list) {
+    ledger->GetExcludedList(^(
+        std::vector<ledger::mojom::PublisherInfoPtr> list) {
       const auto publishers = NSArrayFromVector(
           &list,
-          ^LedgerPublisherInfo*(const ledger::type::PublisherInfoPtr& info) {
+          ^LedgerPublisherInfo*(const ledger::mojom::PublisherInfoPtr& info) {
             return [[LedgerPublisherInfo alloc] initWithPublisherInfo:*info];
           });
       completion(publishers);
@@ -725,10 +726,10 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   } else {
     ledger->GetActivityInfoList(
         start, limit, std::move(cppFilter),
-        ^(ledger::type::PublisherInfoList list) {
+        ^(std::vector<ledger::mojom::PublisherInfoPtr> list) {
           const auto publishers = NSArrayFromVector(
               &list, ^LedgerPublisherInfo*(
-                  const ledger::type::PublisherInfoPtr& info) {
+                  const ledger::mojom::PublisherInfoPtr& info) {
                 return
                     [[LedgerPublisherInfo alloc] initWithPublisherInfo:*info];
               });
@@ -760,7 +761,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     return;
   }
 
-  ledger::type::VisitDataPtr visitData = ledger::type::VisitData::New();
+  ledger::mojom::VisitDataPtr visitData = ledger::mojom::VisitData::New();
   visitData->domain = visitData->name = baseDomain;
   visitData->path = parsedUrl.PathForRequest();
   visitData->url = origin.Serialize();
@@ -781,9 +782,9 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
                                 state:(LedgerPublisherExclude)state {
   ledger->SetPublisherExclude(
       base::SysNSStringToUTF8(publisherId),
-      (ledger::type::PublisherExclude)state,
-      base::BindOnce(^(ledger::type::Result result) {
-        if (result != ledger::type::Result::LEDGER_OK) {
+      (ledger::mojom::PublisherExclude)state,
+      base::BindOnce(^(ledger::mojom::Result result) {
+        if (result != ledger::mojom::Result::LEDGER_OK) {
           return;
         }
         for (BraveLedgerObserver* observer in [self.observers copy]) {
@@ -795,16 +796,16 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 }
 
 - (void)restoreAllExcludedPublishers {
-  ledger->RestorePublishers(base::BindOnce(^(ledger::type::Result result) {
-    if (result != ledger::type::Result::LEDGER_OK) {
+  ledger->RestorePublishers(base::BindOnce(^(ledger::mojom::Result result) {
+    if (result != ledger::mojom::Result::LEDGER_OK) {
       return;
     }
 
     for (BraveLedgerObserver* observer in [self.observers copy]) {
       if (observer.excludedSitesChanged) {
-        observer.excludedSitesChanged(@"-1",
-                                      static_cast<LedgerPublisherExclude>(
-                                          ledger::type::PublisherExclude::ALL));
+        observer.excludedSitesChanged(
+            @"-1", static_cast<LedgerPublisherExclude>(
+                       ledger::mojom::PublisherExclude::ALL));
       }
     }
   }));
@@ -814,7 +815,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
                   completion:(void (^)(LedgerPublisherBanner* _Nullable banner))
                                  completion {
   ledger->GetPublisherBanner(base::SysNSStringToUTF8(publisherId), ^(
-                                 ledger::type::PublisherBannerPtr banner) {
+                                 ledger::mojom::PublisherBannerPtr banner) {
     auto bridgedBanner =
         banner.get() != nullptr
             ? [[LedgerPublisherBanner alloc] initWithPublisherBanner:*banner]
@@ -839,7 +840,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     return;
   }
   ledger->RefreshPublisher(base::SysNSStringToUTF8(publisherId), ^(
-                               ledger::type::PublisherStatus status) {
+                               ledger::mojom::PublisherStatus status) {
     completion(static_cast<LedgerPublisherStatus>(status));
   });
 }
@@ -851,11 +852,11 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
                  (void (^)(LedgerResult result, NSString* orderID))completion {
   ledger->ProcessSKU(
       VectorFromNSArray(items,
-                        ^ledger::type::SKUOrderItem(LedgerSKUOrderItem* item) {
+                        ^ledger::mojom::SKUOrderItem(LedgerSKUOrderItem* item) {
                           return *item.cppObjPtr;
                         }),
       ledger::constant::kWalletUnBlinded,
-      ^(const ledger::type::Result result, const std::string& order_id) {
+      ^(const ledger::mojom::Result result, const std::string& order_id) {
         completion(static_cast<LedgerResult>(result),
                    base::SysUTF8ToNSString(order_id));
       });
@@ -864,25 +865,26 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 #pragma mark - Tips
 
 - (void)listRecurringTips:(void (^)(NSArray<LedgerPublisherInfo*>*))completion {
-  ledger->GetRecurringTips(^(ledger::type::PublisherInfoList list) {
-    const auto publishers = NSArrayFromVector(
-        &list,
-        ^LedgerPublisherInfo*(const ledger::type::PublisherInfoPtr& info) {
-          return [[LedgerPublisherInfo alloc] initWithPublisherInfo:*info];
-        });
-    completion(publishers);
-  });
+  ledger->GetRecurringTips(
+      ^(std::vector<ledger::mojom::PublisherInfoPtr> list) {
+        const auto publishers = NSArrayFromVector(
+            &list,
+            ^LedgerPublisherInfo*(const ledger::mojom::PublisherInfoPtr& info) {
+              return [[LedgerPublisherInfo alloc] initWithPublisherInfo:*info];
+            });
+        completion(publishers);
+      });
 }
 
 - (void)addRecurringTipToPublisherWithId:(NSString*)publisherId
                                   amount:(double)amount
                               completion:(void (^)(BOOL success))completion {
-  ledger::type::RecurringTipPtr info = ledger::type::RecurringTip::New();
+  ledger::mojom::RecurringTipPtr info = ledger::mojom::RecurringTip::New();
   info->publisher_key = base::SysNSStringToUTF8(publisherId);
   info->amount = amount;
   info->created_at = [[NSDate date] timeIntervalSince1970];
-  ledger->SaveRecurringTip(std::move(info), ^(ledger::type::Result result) {
-    const auto success = (result == ledger::type::Result::LEDGER_OK);
+  ledger->SaveRecurringTip(std::move(info), ^(ledger::mojom::Result result) {
+    const auto success = (result == ledger::mojom::Result::LEDGER_OK);
     if (success) {
       for (BraveLedgerObserver* observer in [self.observers copy]) {
         if (observer.recurringTipAdded) {
@@ -896,8 +898,8 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 
 - (void)removeRecurringTipForPublisherWithId:(NSString*)publisherId {
   ledger->RemoveRecurringTip(
-      base::SysNSStringToUTF8(publisherId), ^(ledger::type::Result result) {
-        if (result == ledger::type::Result::LEDGER_OK) {
+      base::SysNSStringToUTF8(publisherId), ^(ledger::mojom::Result result) {
+        if (result == ledger::mojom::Result::LEDGER_OK) {
           for (BraveLedgerObserver* observer in [self.observers copy]) {
             if (observer.recurringTipRemoved) {
               observer.recurringTipRemoved(publisherId);
@@ -908,10 +910,10 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 }
 
 - (void)listOneTimeTips:(void (^)(NSArray<LedgerPublisherInfo*>*))completion {
-  ledger->GetOneTimeTips(^(ledger::type::PublisherInfoList list) {
+  ledger->GetOneTimeTips(^(std::vector<ledger::mojom::PublisherInfoPtr> list) {
     const auto publishers = NSArrayFromVector(
         &list,
-        ^LedgerPublisherInfo*(const ledger::type::PublisherInfoPtr& info) {
+        ^LedgerPublisherInfo*(const ledger::mojom::PublisherInfoPtr& info) {
           return [[LedgerPublisherInfo alloc] initWithPublisherInfo:*info];
         });
     completion(publishers);
@@ -923,7 +925,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
                     currency:(NSString*)currency
                   completion:(void (^)(LedgerResult result))completion {
   ledger->OneTimeTip(base::SysNSStringToUTF8(publisher.id), amount,
-                     ^(ledger::type::Result result) {
+                     ^(ledger::mojom::Result result) {
                        completion(static_cast<LedgerResult>(result));
                      });
 }
@@ -938,15 +940,16 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   return [self.mFinishedPromotions copy];
 }
 
-- (NSString*)notificationIDForPromo:(const ledger::type::PromotionPtr)promo {
-  bool isUGP = promo->type == ledger::type::PromotionType::UGP;
+- (NSString*)notificationIDForPromo:(const ledger::mojom::PromotionPtr)promo {
+  bool isUGP = promo->type == ledger::mojom::PromotionType::UGP;
   const auto prefix = isUGP ? @"rewards_grant_" : @"rewards_grant_ads_";
   const auto promotionId = base::SysUTF8ToNSString(promo->id);
   return [NSString stringWithFormat:@"%@%@", prefix, promotionId];
 }
 
 - (void)updatePendingAndFinishedPromotions:(void (^)())completion {
-  ledger->GetAllPromotions(^(ledger::type::PromotionMap map) {
+  ledger->GetAllPromotions(^(
+      base::flat_map<std::string, ledger::mojom::PromotionPtr> map) {
     NSMutableArray* promos = [[NSMutableArray alloc] init];
     for (auto it = map.begin(); it != map.end(); ++it) {
       if (it->second.get() != nullptr) {
@@ -995,9 +998,9 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 - (void)fetchPromotions:
     (nullable void (^)(NSArray<LedgerPromotion*>* grants))completion {
   ledger->FetchPromotions(
-      base::BindOnce(^(ledger::type::Result result,
-                       std::vector<ledger::type::PromotionPtr> promotions) {
-        if (result != ledger::type::Result::LEDGER_OK) {
+      base::BindOnce(^(ledger::mojom::Result result,
+                       std::vector<ledger::mojom::PromotionPtr> promotions) {
+        if (result != ledger::mojom::Result::LEDGER_OK) {
           return;
         }
         [self updatePendingAndFinishedPromotions:^{
@@ -1025,7 +1028,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
                                                 encoding:NSUTF8StringEncoding];
   ledger->ClaimPromotion(
       base::SysNSStringToUTF8(promotionId), base::SysNSStringToUTF8(jsonString),
-      base::BindOnce(^(ledger::type::Result result, const std::string& nonce) {
+      base::BindOnce(^(ledger::mojom::Result result, const std::string& nonce) {
         const auto bridgedNonce = base::SysUTF8ToNSString(nonce);
         dispatch_async(dispatch_get_main_queue(), ^{
           completion(static_cast<LedgerResult>(result), bridgedNonce);
@@ -1041,8 +1044,8 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   ledger->AttestPromotion(
       base::SysNSStringToUTF8(promotionId),
       base::SysNSStringToUTF8(solution.JSONPayload),
-      base::BindOnce(^(ledger::type::Result result,
-                       ledger::type::PromotionPtr promotion) {
+      base::BindOnce(^(ledger::mojom::Result result,
+                       ledger::mojom::PromotionPtr promotion) {
         if (promotion.get() == nullptr) {
           if (completion) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -1054,7 +1057,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 
         const auto bridgedPromotion =
             [[LedgerPromotion alloc] initWithPromotion:*promotion];
-        if (result == ledger::type::Result::LEDGER_OK) {
+        if (result == ledger::mojom::Result::LEDGER_OK) {
           [self fetchBalance:nil];
           [self clearNotificationWithID:
                     [self notificationIDForPromo:std::move(promotion)]];
@@ -1064,7 +1067,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
           if (completion) {
             completion(static_cast<LedgerResult>(result), bridgedPromotion);
           }
-          if (result == ledger::type::Result::LEDGER_OK) {
+          if (result == ledger::mojom::Result::LEDGER_OK) {
             for (BraveLedgerObserver* observer in [self.observers copy]) {
               if (observer.promotionClaimed) {
                 observer.promotionClaimed(bridgedPromotion);
@@ -1083,20 +1086,20 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
                        (void (^)(LedgerBalanceReportInfo* _Nullable info))
                            completion {
   ledger->GetBalanceReport(
-      (ledger::type::ActivityMonth)month, year,
-      ^(const ledger::type::Result result,
-        ledger::type::BalanceReportInfoPtr info) {
+      (ledger::mojom::ActivityMonth)month, year,
+      ^(const ledger::mojom::Result result,
+        ledger::mojom::BalanceReportInfoPtr info) {
         auto bridgedInfo = info.get() != nullptr
                                ? [[LedgerBalanceReportInfo alloc]
                                      initWithBalanceReportInfo:*info.get()]
                                : nil;
-        completion(result == ledger::type::Result::LEDGER_OK ? bridgedInfo
-                                                             : nil);
+        completion(result == ledger::mojom::Result::LEDGER_OK ? bridgedInfo
+                                                              : nil);
       });
 }
 
 - (nullable LedgerAutoContributeProperties*)autoContributeProperties {
-  ledger::type::AutoContributePropertiesPtr props =
+  ledger::mojom::AutoContributePropertiesPtr props =
       ledger->GetAutoContributeProperties();
   if (!props) {
     return nil;
@@ -1110,10 +1113,10 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 - (void)pendingContributions:
     (void (^)(NSArray<LedgerPendingContributionInfo*>* publishers))completion {
   ledger->GetPendingContributions(
-      ^(ledger::type::PendingContributionInfoList list) {
+      ^(std::vector<ledger::mojom::PendingContributionInfoPtr> list) {
         const auto convetedList = NSArrayFromVector(
             &list, ^LedgerPendingContributionInfo*(
-                const ledger::type::PendingContributionInfoPtr& info) {
+                const ledger::mojom::PendingContributionInfoPtr& info) {
               return [[LedgerPendingContributionInfo alloc]
                   initWithPendingContributionInfo:*info];
             });
@@ -1124,35 +1127,35 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 - (void)removePendingContribution:(LedgerPendingContributionInfo*)info
                        completion:(void (^)(LedgerResult result))completion {
   ledger->RemovePendingContribution(
-      info.id, ^(const ledger::type::Result result) {
+      info.id, ^(const ledger::mojom::Result result) {
         completion(static_cast<LedgerResult>(result));
       });
 }
 
 - (void)removeAllPendingContributions:
     (void (^)(LedgerResult result))completion {
-  ledger->RemoveAllPendingContributions(^(const ledger::type::Result result) {
+  ledger->RemoveAllPendingContributions(^(const ledger::mojom::Result result) {
     completion(static_cast<LedgerResult>(result));
   });
 }
 
 #pragma mark - Reconcile
 
-- (void)onReconcileComplete:(ledger::type::Result)result
-               contribution:(ledger::type::ContributionInfoPtr)contribution {
+- (void)onReconcileComplete:(ledger::mojom::Result)result
+               contribution:(ledger::mojom::ContributionInfoPtr)contribution {
   // TODO we changed from probi to amount, so from string to double
-  if (result == ledger::type::Result::LEDGER_OK) {
-    if (contribution->type == ledger::type::RewardsType::RECURRING_TIP) {
+  if (result == ledger::mojom::Result::LEDGER_OK) {
+    if (contribution->type == ledger::mojom::RewardsType::RECURRING_TIP) {
       [self showTipsProcessedNotificationIfNeccessary];
     }
     [self fetchBalance:nil];
   }
 
-  if ((result == ledger::type::Result::LEDGER_OK &&
-       contribution->type == ledger::type::RewardsType::AUTO_CONTRIBUTE) ||
-      result == ledger::type::Result::LEDGER_ERROR ||
-      result == ledger::type::Result::NOT_ENOUGH_FUNDS ||
-      result == ledger::type::Result::TIP_ERROR) {
+  if ((result == ledger::mojom::Result::LEDGER_OK &&
+       contribution->type == ledger::mojom::RewardsType::AUTO_CONTRIBUTE) ||
+      result == ledger::mojom::Result::LEDGER_ERROR ||
+      result == ledger::mojom::Result::NOT_ENOUGH_FUNDS ||
+      result == ledger::mojom::Result::TIP_ERROR) {
     const auto contributionId =
         base::SysUTF8ToNSString(contribution->contribution_id);
     const auto info = @{
@@ -1198,7 +1201,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 - (void)rewardsInternalInfo:
     (void (^)(LedgerRewardsInternalsInfo* _Nullable info))completion {
   ledger->GetRewardsInternalsInfo(
-      ^(ledger::type::RewardsInternalsInfoPtr info) {
+      ^(ledger::mojom::RewardsInternalsInfoPtr info) {
         auto bridgedInfo = info.get() != nullptr
                                ? [[LedgerRewardsInternalsInfo alloc]
                                      initWithRewardsInternalsInfo:*info.get()]
@@ -1209,10 +1212,11 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 
 - (void)allContributions:
     (void (^)(NSArray<LedgerContributionInfo*>* contributions))completion {
-  ledger->GetAllContributions(^(ledger::type::ContributionInfoList list) {
+  ledger->GetAllContributions(^(
+      std::vector<ledger::mojom::ContributionInfoPtr> list) {
     const auto convetedList =
         NSArrayFromVector(&list, ^LedgerContributionInfo*(
-                              const ledger::type::ContributionInfoPtr& info) {
+                              const ledger::mojom::ContributionInfoPtr& info) {
           return
               [[LedgerContributionInfo alloc] initWithContributionInfo:*info];
         });
@@ -1276,7 +1280,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 
   const std::string publisher_url = origin.scheme() + "://" + baseDomain + "/";
 
-  ledger::type::VisitDataPtr data = ledger::type::VisitData::New();
+  ledger::mojom::VisitDataPtr data = ledger::mojom::VisitData::New();
   data->tld = data->name = baseDomain;
   data->domain = origin.host();
   data->path = parsedUrl.path();
@@ -1303,7 +1307,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     partsMap[base::SysNSStringToUTF8(item.name)] = value;
   }
 
-  auto visit = ledger::type::VisitData::New();
+  auto visit = ledger::mojom::VisitData::New();
   visit->path = base::SysNSStringToUTF8(url.absoluteString);
   visit->tab_id = tabId;
 
@@ -1336,7 +1340,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
       initWithData:postData
           encoding:NSUTF8StringEncoding] stringByRemovingPercentEncoding];
 
-  auto visit = ledger::type::VisitData::New();
+  auto visit = ledger::mojom::VisitData::New();
   visit->path = parsedUrl.spec();
   visit->tab_id = tabId;
 
@@ -1749,9 +1753,9 @@ BATLedgerBridge(BOOL,
   const auto contents =
       [self.commonOps loadContentsFromFileWithName:"ledger_state.json"];
   if (contents.length() > 0) {
-    callback(ledger::type::Result::LEDGER_OK, contents);
+    callback(ledger::mojom::Result::LEDGER_OK, contents);
   } else {
-    callback(ledger::type::Result::NO_LEDGER_STATE, contents);
+    callback(ledger::mojom::Result::NO_LEDGER_STATE, contents);
   }
   [self startNotificationTimers];
 }
@@ -1760,9 +1764,9 @@ BATLedgerBridge(BOOL,
   const auto contents =
       [self.commonOps loadContentsFromFileWithName:"publisher_state.json"];
   if (contents.length() > 0) {
-    callback(ledger::type::Result::LEDGER_OK, contents);
+    callback(ledger::mojom::Result::LEDGER_OK, contents);
   } else {
-    callback(ledger::type::Result::NO_PUBLISHER_STATE, contents);
+    callback(ledger::mojom::Result::NO_PUBLISHER_STATE, contents);
   }
 }
 
@@ -1777,16 +1781,16 @@ BATLedgerBridge(BOOL,
       stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 }
 
-- (void)loadURL:(ledger::type::UrlRequestPtr)request
+- (void)loadURL:(ledger::mojom::UrlRequestPtr)request
        callback:(ledger::client::LoadURLCallback)callback {
-  std::map<ledger::type::UrlMethod, std::string> methodMap{
-      {ledger::type::UrlMethod::GET, "GET"},
-      {ledger::type::UrlMethod::POST, "POST"},
-      {ledger::type::UrlMethod::PUT, "PUT"},
-      {ledger::type::UrlMethod::DEL, "DELETE"}};
+  std::map<ledger::mojom::UrlMethod, std::string> methodMap{
+      {ledger::mojom::UrlMethod::GET, "GET"},
+      {ledger::mojom::UrlMethod::POST, "POST"},
+      {ledger::mojom::UrlMethod::PUT, "PUT"},
+      {ledger::mojom::UrlMethod::DEL, "DELETE"}};
 
   if (!request) {
-    request = ledger::type::UrlRequest::New();
+    request = ledger::mojom::UrlRequest::New();
   }
 
   const auto copiedURL = base::SysUTF8ToNSString(request->url);
@@ -1802,7 +1806,7 @@ BATLedgerBridge(BOOL,
                 const std::string& errorDescription, int statusCode,
                 const std::string& response,
                 const base::flat_map<std::string, std::string>& headers) {
-              ledger::type::UrlResponse url_response;
+              ledger::mojom::UrlResponse url_response;
               url_response.url = base::SysNSStringToUTF8(copiedURL);
               url_response.error = errorDescription;
               url_response.status_code = statusCode;
@@ -1862,13 +1866,15 @@ BATLedgerBridge(BOOL,
                          limit:(uint32_t)limit
                       callback:(ledger::PublisherInfoListCallback)callback {
   callback(VectorFromNSArray(
-      publishers, ^ledger::type::PublisherInfoPtr(LedgerPublisherInfo* info) {
+      publishers, ^ledger::mojom::PublisherInfoPtr(LedgerPublisherInfo* info) {
         return info.cppObjPtr;
       }));
 }
-- (void)publisherListNormalized:(ledger::type::PublisherInfoList)list {
+- (void)publisherListNormalized:
+    (std::vector<ledger::mojom::PublisherInfoPtr>)list {
   const auto list_converted = NSArrayFromVector(
-      &list, ^LedgerPublisherInfo*(const ledger::type::PublisherInfoPtr& info) {
+      &list,
+      ^LedgerPublisherInfo*(const ledger::mojom::PublisherInfoPtr& info) {
         return [[LedgerPublisherInfo alloc] initWithPublisherInfo:*info];
       });
 
@@ -1879,11 +1885,11 @@ BATLedgerBridge(BOOL,
   }
 }
 
-- (void)onPanelPublisherInfo:(ledger::type::Result)result
-               publisherInfo:(ledger::type::PublisherInfoPtr)publisher_info
+- (void)onPanelPublisherInfo:(ledger::mojom::Result)result
+               publisherInfo:(ledger::mojom::PublisherInfoPtr)publisher_info
                     windowId:(uint64_t)windowId {
   if (publisher_info.get() == nullptr ||
-      result != ledger::type::Result::LEDGER_OK) {
+      result != ledger::mojom::Result::LEDGER_OK) {
     return;
   }
   auto info =
@@ -1895,16 +1901,16 @@ BATLedgerBridge(BOOL,
   }
 }
 
-- (void)onContributeUnverifiedPublishers:(ledger::type::Result)result
+- (void)onContributeUnverifiedPublishers:(ledger::mojom::Result)result
                             publisherKey:(const std::string&)publisher_key
                            publisherName:(const std::string&)publisher_name {
   switch (result) {
-    case ledger::type::Result::PENDING_NOT_ENOUGH_FUNDS:
+    case ledger::mojom::Result::PENDING_NOT_ENOUGH_FUNDS:
       [self addNotificationOfKind:RewardsNotificationKindPendingNotEnoughFunds
                          userInfo:nil
                    notificationID:@"not_enough_funds_for_pending"];
       break;
-    case ledger::type::Result::PENDING_PUBLISHER_REMOVED: {
+    case ledger::mojom::Result::PENDING_PUBLISHER_REMOVED: {
       const auto publisherID = base::SysUTF8ToNSString(publisher_key);
       for (BraveLedgerObserver* observer in [self.observers copy]) {
         if (observer.pendingContributionsRemoved) {
@@ -1913,7 +1919,7 @@ BATLedgerBridge(BOOL,
       }
       break;
     }
-    case ledger::type::Result::VERIFIED_PUBLISHER: {
+    case ledger::mojom::Result::VERIFIED_PUBLISHER: {
       const auto notificationID =
           [NSString stringWithFormat:@"verified_publisher_%@",
                                      base::SysUTF8ToNSString(publisher_key)];
@@ -1941,10 +1947,10 @@ BATLedgerBridge(BOOL,
                notificationID:notificationID
                      onlyOnce:NO];
 }
-- (ledger::type::ClientInfoPtr)getClientInfo {
-  auto info = ledger::type::ClientInfo::New();
-  info->os = ledger::type::OperatingSystem::UNDEFINED;
-  info->platform = ledger::type::Platform::IOS;
+- (ledger::mojom::ClientInfoPtr)getClientInfo {
+  auto info = ledger::mojom::ClientInfo::New();
+  info->os = ledger::mojom::OperatingSystem::UNDEFINED;
+  info->platform = ledger::mojom::Platform::IOS;
   return info;
 }
 
@@ -1965,7 +1971,7 @@ BATLedgerBridge(BOOL,
   }
 }
 
-- (void)runDBTransaction:(ledger::type::DBTransactionPtr)transaction
+- (void)runDBTransaction:(ledger::mojom::DBTransactionPtr)transaction
                 callback:(ledger::client::RunDBTransactionCallback)callback {
   __weak BraveLedger* weakSelf = self;
   DCHECK(rewardsDatabase);
@@ -1973,14 +1979,14 @@ BATLedgerBridge(BOOL,
       .WithArgs(std::move(transaction))
       .Then(base::BindOnce(
           ^(ledger::client::RunDBTransactionCallback callback,
-            ledger::type::DBCommandResponsePtr response) {
+            ledger::mojom::DBCommandResponsePtr response) {
             if (weakSelf)
               std::move(callback).Run(std::move(response));
           },
           std::move(callback)));
 }
 
-- (void)pendingContributionSaved:(const ledger::type::Result)result {
+- (void)pendingContributionSaved:(const ledger::mojom::Result)result {
   for (BraveLedgerObserver* observer in [self.observers copy]) {
     if (observer.pendingContributionAdded) {
       observer.pendingContributionAdded();
@@ -1999,7 +2005,7 @@ BATLedgerBridge(BOOL,
 }
 
 - (void)deleteLog:(ledger::LegacyResultCallback)callback {
-  callback(ledger::type::Result::LEDGER_OK);
+  callback(ledger::mojom::Result::LEDGER_OK);
 }
 
 - (absl::optional<std::string>)encryptString:(const std::string&)value {

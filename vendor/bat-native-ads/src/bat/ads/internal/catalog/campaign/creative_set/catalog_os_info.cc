@@ -7,20 +7,12 @@
 
 namespace ads {
 
-CatalogOsInfo::CatalogOsInfo() = default;
-
-CatalogOsInfo::CatalogOsInfo(const CatalogOsInfo& info) = default;
-
-CatalogOsInfo& CatalogOsInfo::operator=(const CatalogOsInfo& info) = default;
-
-CatalogOsInfo::~CatalogOsInfo() = default;
-
-bool CatalogOsInfo::operator==(const CatalogOsInfo& rhs) const {
-  return code == rhs.code && name == rhs.name;
+bool operator==(const CatalogOsInfo& lhs, const CatalogOsInfo& rhs) {
+  return lhs.code == rhs.code && lhs.name == rhs.name;
 }
 
-bool CatalogOsInfo::operator!=(const CatalogOsInfo& rhs) const {
-  return !(*this == rhs);
+bool operator!=(const CatalogOsInfo& lhs, const CatalogOsInfo& rhs) {
+  return !(lhs == rhs);
 }
 
 }  // namespace ads

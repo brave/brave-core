@@ -46,43 +46,43 @@ class UpholdUtilTest : public testing::Test {
 
 TEST_F(UpholdUtilTest, GetClientId) {
   // production
-  ledger::_environment = type::Environment::PRODUCTION;
+  ledger::_environment = mojom::Environment::PRODUCTION;
   std::string result = uphold::GetClientId();
   ASSERT_EQ(result, BUILDFLAG(UPHOLD_CLIENT_ID));
 
   // staging
-  ledger::_environment = type::Environment::STAGING;
+  ledger::_environment = mojom::Environment::STAGING;
   result = uphold::GetClientId();
   ASSERT_EQ(result, BUILDFLAG(UPHOLD_STAGING_CLIENT_ID));
 }
 
 TEST_F(UpholdUtilTest, GetClientSecret) {
   // production
-  ledger::_environment = type::Environment::PRODUCTION;
+  ledger::_environment = mojom::Environment::PRODUCTION;
   std::string result = uphold::GetClientSecret();
   ASSERT_EQ(result, BUILDFLAG(UPHOLD_CLIENT_SECRET));
 
   // staging
-  ledger::_environment = type::Environment::STAGING;
+  ledger::_environment = mojom::Environment::STAGING;
   result = uphold::GetClientSecret();
   ASSERT_EQ(result, BUILDFLAG(UPHOLD_STAGING_CLIENT_SECRET));
 }
 
 TEST_F(UpholdUtilTest, GetFeeAddress) {
   // production
-  ledger::_environment = type::Environment::PRODUCTION;
+  ledger::_environment = mojom::Environment::PRODUCTION;
   std::string result = uphold::GetFeeAddress();
   ASSERT_EQ(result, kFeeAddressProduction);
 
   // staging
-  ledger::_environment = type::Environment::STAGING;
+  ledger::_environment = mojom::Environment::STAGING;
   result = uphold::GetFeeAddress();
   ASSERT_EQ(result, kFeeAddressStaging);
 }
 
 TEST_F(UpholdUtilTest, GetLoginUrl) {
   // production
-  ledger::_environment = type::Environment::PRODUCTION;
+  ledger::_environment = mojom::Environment::PRODUCTION;
   std::string result = uphold::GetLoginUrl("rdfdsfsdfsdf");
   ASSERT_EQ(
       result,
@@ -93,7 +93,7 @@ TEST_F(UpholdUtilTest, GetLoginUrl) {
            "transactions:transfer:others&intention=login&state=rdfdsfsdfsdf"}));
 
   // staging
-  ledger::_environment = type::Environment::STAGING;
+  ledger::_environment = mojom::Environment::STAGING;
   result = uphold::GetLoginUrl("rdfdsfsdfsdf");
   ASSERT_EQ(
       result,
@@ -111,12 +111,12 @@ TEST_F(UpholdUtilTest, GetAddUrl) {
   ASSERT_EQ(result, "");
 
   // production
-  ledger::_environment = type::Environment::PRODUCTION;
+  ledger::_environment = mojom::Environment::PRODUCTION;
   result = uphold::GetAddUrl("9324i5i32459i");
   ASSERT_EQ(result, "https://uphold.com/dashboard/cards/9324i5i32459i/add");
 
   // staging
-  ledger::_environment = type::Environment::STAGING;
+  ledger::_environment = mojom::Environment::STAGING;
   result = uphold::GetAddUrl("9324i5i32459i");
   ASSERT_EQ(
       result,
@@ -129,12 +129,12 @@ TEST_F(UpholdUtilTest, GetWithdrawUrl) {
   ASSERT_EQ(result, "");
 
   // production
-  ledger::_environment = type::Environment::PRODUCTION;
+  ledger::_environment = mojom::Environment::PRODUCTION;
   result = uphold::GetWithdrawUrl("9324i5i32459i");
   ASSERT_EQ(result, "https://uphold.com/dashboard/cards/9324i5i32459i/use");
 
   // staging
-  ledger::_environment = type::Environment::STAGING;
+  ledger::_environment = mojom::Environment::STAGING;
   result = uphold::GetWithdrawUrl("9324i5i32459i");
   ASSERT_EQ(
       result,
@@ -147,13 +147,13 @@ TEST_F(UpholdUtilTest, GetActivityUrl) {
   ASSERT_EQ(result, "");
 
   // production
-  ledger::_environment = type::Environment::PRODUCTION;
+  ledger::_environment = mojom::Environment::PRODUCTION;
   result = uphold::GetActivityUrl("9324i5i32459i");
   ASSERT_EQ(result,
             "https://uphold.com/dashboard/cards/9324i5i32459i/activity");
 
   // staging
-  ledger::_environment = type::Environment::STAGING;
+  ledger::_environment = mojom::Environment::STAGING;
   result = uphold::GetActivityUrl("9324i5i32459i");
   ASSERT_EQ(result,
             "https://wallet-sandbox.uphold.com/dashboard/cards/9324i5i32459i/"
@@ -190,7 +190,7 @@ TEST_F(UpholdUtilTest, GetWallet) {
   ASSERT_EQ(result->address, "2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af");
   ASSERT_EQ(result->user_name, "test");
   ASSERT_EQ(result->token, "4c80232r219c30cdf112208890a32c7e00");
-  ASSERT_EQ(result->status, type::WalletStatus::VERIFIED);
+  ASSERT_EQ(result->status, mojom::WalletStatus::VERIFIED);
 }
 
 TEST_F(UpholdUtilTest, GenerateRandomHexString) {
@@ -201,18 +201,18 @@ TEST_F(UpholdUtilTest, GenerateRandomHexString) {
 
   // random string
   ledger::is_testing = false;
-  ledger::_environment = type::Environment::STAGING;
+  ledger::_environment = mojom::Environment::STAGING;
   result = ledger::util::GenerateRandomHexString();
   ASSERT_EQ(result.length(), 64u);
 }
 
 TEST_F(UpholdUtilTest, GenerateLinks) {
-  ledger::_environment = type::Environment::STAGING;
+  ledger::_environment = mojom::Environment::STAGING;
 
-  auto wallet = type::ExternalWallet::New();
+  auto wallet = mojom::ExternalWallet::New();
 
   // Not connected
-  wallet->status = type::WalletStatus::NOT_CONNECTED;
+  wallet->status = mojom::WalletStatus::NOT_CONNECTED;
   wallet->token = "";    // must be empty
   wallet->address = "";  // must be empty
   auto result = uphold::GenerateLinks(wallet->Clone());
@@ -228,7 +228,7 @@ TEST_F(UpholdUtilTest, GenerateLinks) {
   ASSERT_EQ(result->account_url, "https://wallet-sandbox.uphold.com/dashboard");
 
   // Verified
-  wallet->status = type::WalletStatus::VERIFIED;
+  wallet->status = mojom::WalletStatus::VERIFIED;
   wallet->token = "must be non-empty";
   wallet->address = "123123123124234234234";  // must be non-empty
   result = uphold::GenerateLinks(wallet->Clone());
@@ -248,7 +248,7 @@ TEST_F(UpholdUtilTest, GenerateLinks) {
   ASSERT_EQ(result->account_url, "https://wallet-sandbox.uphold.com/dashboard");
 
   // Disconnected Verified
-  wallet->status = type::WalletStatus::DISCONNECTED_VERIFIED;
+  wallet->status = mojom::WalletStatus::DISCONNECTED_VERIFIED;
   wallet->token = "";    // must be empty
   wallet->address = "";  // must be empty
   result = uphold::GenerateLinks(wallet->Clone());
@@ -264,7 +264,7 @@ TEST_F(UpholdUtilTest, GenerateLinks) {
   ASSERT_EQ(result->account_url, "https://wallet-sandbox.uphold.com/dashboard");
 
   // Pending
-  wallet->status = type::WalletStatus::PENDING;
+  wallet->status = mojom::WalletStatus::PENDING;
   wallet->token = "must be non-empty";
   wallet->address = "";  // must be empty
   result = uphold::GenerateLinks(wallet->Clone());

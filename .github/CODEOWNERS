@@ -76,10 +76,8 @@ components/brave_wallet/browser/brave_wallet_provider_delegate.h @brave/crypto-w
 components/brave_referrals/browser/brave_referrals_service* @simonhong
 
 # Brave Sync
-browser/sync/ @brave/sync-reviewers
 components/brave_sync/ @brave/sync-reviewers
 components/sync/driver/ @brave/sync-reviewers
-chromium_src/chrome/browser/sync/ @brave/sync-reviewers
 chromium_src/components/sync/ @brave/sync-reviewers
 chromium_src/components/sync_device_info/device_info_sync_bridge.cc @brave/sync-reviewers
 

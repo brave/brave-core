@@ -10,8 +10,7 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 
-namespace ads {
-namespace new_tab_page_ads {
+namespace ads::new_tab_page_ads {
 
 AdEventViewed::AdEventViewed() = default;
 
@@ -32,5 +31,4 @@ void AdEventViewed::FireEvent(const NewTabPageAdInfo& ad) {
   });
 }
 
-}  // namespace new_tab_page_ads
-}  // namespace ads
+}  // namespace ads::new_tab_page_ads

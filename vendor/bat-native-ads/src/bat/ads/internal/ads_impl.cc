@@ -554,6 +554,8 @@ void AdsImpl::Start() {
 
   conversions_->Process();
 
+  subdivision_targeting_->MaybeAllow();
+
   subdivision_targeting_->MaybeFetch();
 
   catalog_->MaybeFetch();

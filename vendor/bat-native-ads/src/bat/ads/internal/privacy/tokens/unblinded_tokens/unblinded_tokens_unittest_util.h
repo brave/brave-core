@@ -11,12 +11,7 @@
 
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 
-namespace base {
-class Value;
-}  // namespace base
-
-namespace ads {
-namespace privacy {
+namespace ads::privacy {
 
 class UnblindedTokens;
 
@@ -26,17 +21,12 @@ UnblindedTokenList SetUnblindedTokens(int count);
 
 UnblindedTokenInfo CreateUnblindedToken(
     const std::string& unblinded_token_base64);
-
 UnblindedTokenList CreateUnblindedTokens(
     const std::vector<std::string>& unblinded_tokens_base64);
 
 UnblindedTokenList GetUnblindedTokens(int count);
+UnblindedTokenInfo GetUnblindedToken();
 
-UnblindedTokenList GetRandomUnblindedTokens(int count);
-
-base::Value GetUnblindedTokensAsList(int count);
-
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_TOKENS_UNBLINDED_TOKENS_UNBLINDED_TOKENS_UNITTEST_UTIL_H_

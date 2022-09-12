@@ -21,15 +21,7 @@
 #include "bat/ads/internal/deprecated/client/preferences/flagged_ad_info.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 
-namespace base {
-class Time;
-}  // namespace base
-
 namespace ads {
-
-namespace targeting {
-struct PurchaseIntentSignalHistoryInfo;
-}  // namespace targeting
 
 class AdType;
 struct AdContentInfo;

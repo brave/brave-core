@@ -8,14 +8,10 @@
 
 #include "bat/ads/export.h"
 
-namespace ads {
-namespace data {
-namespace resource {
+namespace ads::data::resource {
 
 ADS_EXPORT extern const char kCatalogJsonSchemaName[];
 
-}  // namespace resource
-}  // namespace data
-}  // namespace ads
+}  // namespace ads::data::resource
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_CONSTANTS_H_

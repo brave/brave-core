@@ -11,8 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace new_tab_page_ads {
+namespace ads::new_tab_page_ads {
 
 class BatAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest
     : public UnitTestBase {
@@ -65,5 +64,4 @@ TEST_F(BatAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
   EXPECT_FALSE(is_allowed);
 }
 
-}  // namespace new_tab_page_ads
-}  // namespace ads
+}  // namespace ads::new_tab_page_ads

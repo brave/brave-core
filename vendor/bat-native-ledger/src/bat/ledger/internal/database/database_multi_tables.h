@@ -3,10 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_DATABASE_DATABASE_MULTI_TABLES_H_
-#define BRAVELEDGER_DATABASE_DATABASE_MULTI_TABLES_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_MULTI_TABLES_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_MULTI_TABLES_H_
 
 #include <string>
+#include <vector>
 
 #include "bat/ledger/ledger.h"
 
@@ -20,15 +21,14 @@ class DatabaseMultiTables {
   explicit DatabaseMultiTables(LedgerImpl* ledger);
   ~DatabaseMultiTables();
 
-  void GetTransactionReport(
-      const type::ActivityMonth month,
-      const int year,
-      ledger::GetTransactionReportCallback callback);
+  void GetTransactionReport(const mojom::ActivityMonth month,
+                            const int year,
+                            ledger::GetTransactionReportCallback callback);
 
  private:
   void OnGetTransactionReportPromotion(
-      type::PromotionMap promotions,
-      const type::ActivityMonth month,
+      base::flat_map<std::string, mojom::PromotionPtr> promotions,
+      const mojom::ActivityMonth month,
       const int year,
       ledger::GetTransactionReportCallback callback);
 
@@ -38,4 +38,4 @@ class DatabaseMultiTables {
 }  // namespace database
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_DATABASE_DATABASE_MULTI_TABLES_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_MULTI_TABLES_H_

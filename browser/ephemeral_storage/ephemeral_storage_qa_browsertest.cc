@@ -34,8 +34,7 @@ namespace {
 // TabActivationWaiter instance.
 class TabActivationWaiter : public TabStripModelObserver {
  public:
-  explicit TabActivationWaiter(TabStripModel* tab_strip_model)
-      : number_of_unconsumed_active_tab_changes_(0) {
+  explicit TabActivationWaiter(TabStripModel* tab_strip_model) {
     tab_strip_model->AddObserver(this);
   }
 
@@ -70,7 +69,7 @@ class TabActivationWaiter : public TabStripModelObserver {
 
  private:
   scoped_refptr<content::MessageLoopRunner> message_loop_runner_;
-  int number_of_unconsumed_active_tab_changes_;
+  int number_of_unconsumed_active_tab_changes_ = 0;
 };
 
 }  // namespace

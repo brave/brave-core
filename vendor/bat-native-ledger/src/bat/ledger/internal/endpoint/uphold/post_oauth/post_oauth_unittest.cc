@@ -45,8 +45,8 @@ class PostOauthTest : public testing::Test {
 TEST_F(PostOauthTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"({
@@ -58,50 +58,48 @@ TEST_F(PostOauthTest, ServerOK) {
             std::move(callback).Run(response);
           }));
 
-  oauth_->Request(
-      "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result, const std::string& token) {
-        EXPECT_EQ(result, type::Result::LEDGER_OK);
-        EXPECT_EQ(token, "edc8b465fe2e2a26ce553d937ccc6c7195e9f909");
-      });
+  oauth_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
+                  [](const mojom::Result result, const std::string& token) {
+                    EXPECT_EQ(result, mojom::Result::LEDGER_OK);
+                    EXPECT_EQ(token,
+                              "edc8b465fe2e2a26ce553d937ccc6c7195e9f909");
+                  });
 }
 
 TEST_F(PostOauthTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
             response.body = "";
             std::move(callback).Run(response);
           }));
 
-  oauth_->Request(
-      "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result, const std::string& token) {
-        EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
-        EXPECT_EQ(token, "");
-      });
+  oauth_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
+                  [](const mojom::Result result, const std::string& token) {
+                    EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
+                    EXPECT_EQ(token, "");
+                  });
 }
 
 TEST_F(PostOauthTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
             std::move(callback).Run(response);
           }));
 
-  oauth_->Request(
-      "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result, const std::string& token) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-        EXPECT_EQ(token, "");
-      });
+  oauth_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
+                  [](const mojom::Result result, const std::string& token) {
+                    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
+                    EXPECT_EQ(token, "");
+                  });
 }
 
 }  // namespace uphold

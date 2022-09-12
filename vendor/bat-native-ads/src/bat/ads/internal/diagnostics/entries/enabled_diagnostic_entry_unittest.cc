@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/diagnostics/entries/enabled_diagnostic_entry.h"
 
-#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/diagnostics/diagnostic_entry_types.h"
 #include "bat/ads/pref_names.h"

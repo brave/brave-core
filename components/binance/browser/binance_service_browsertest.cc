@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "base/path_service.h"
 #include "brave/browser/binance/binance_service_factory.h"
 #include "brave/components/binance/browser/binance_service.h"
@@ -206,9 +208,7 @@ const char kBinanceAPIExistsScript[] =
 
 class BinanceAPIBrowserTest : public InProcessBrowserTest {
  public:
-  BinanceAPIBrowserTest() :
-      expected_success_(false) {
-  }
+  BinanceAPIBrowserTest() = default;
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -229,8 +229,8 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
 
   void ResetHTTPSServer(
       const net::EmbeddedTestServer::HandleRequestCallback& callback) {
-    https_server_.reset(new net::EmbeddedTestServer(
-        net::test_server::EmbeddedTestServer::TYPE_HTTPS));
+    https_server_ = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
     https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
     https_server_->RegisterRequestHandler(callback);
     ASSERT_TRUE(https_server_->Start());
@@ -259,7 +259,7 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
       return;
     }
     expected_success_ = expected_success;
-    wait_for_request_.reset(new base::RunLoop);
+    wait_for_request_ = std::make_unique<base::RunLoop>();
     wait_for_request_->Run();
   }
 
@@ -288,7 +288,7 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
     expected_total_fee_ = expected_total_fee;
     expected_total_amount_ = expected_total_amount;
 
-    wait_for_request_.reset(new base::RunLoop);
+    wait_for_request_ = std::make_unique<base::RunLoop>();
     wait_for_request_->Run();
   }
 
@@ -309,7 +309,7 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
     }
     expected_balances_ = expected_balances;
     expected_success_ = expected_success;
-    wait_for_request_.reset(new base::RunLoop);
+    wait_for_request_ = std::make_unique<base::RunLoop>();
     wait_for_request_->Run();
   }
 
@@ -332,7 +332,7 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
     expected_address_ = expected_address;
     expected_tag_ = expected_tag;
     expected_success_ = expected_success;
-    wait_for_request_.reset(new base::RunLoop);
+    wait_for_request_ = std::make_unique<base::RunLoop>();
     wait_for_request_->Run();
   }
 
@@ -351,7 +351,7 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
     }
     expected_success_ = expected_success;
     expected_error_message_ = expected_error_message;
-    wait_for_request_.reset(new base::RunLoop);
+    wait_for_request_ = std::make_unique<base::RunLoop>();
     wait_for_request_->Run();
   }
 
@@ -369,7 +369,7 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
       return;
     }
     expected_assets_with_sub_ = expected_assets;
-    wait_for_request_.reset(new base::RunLoop);
+    wait_for_request_ = std::make_unique<base::RunLoop>();
     wait_for_request_->Run();
   }
 
@@ -391,7 +391,7 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
       return;
     }
     expected_success_ = success;
-    wait_for_request_.reset(new base::RunLoop);
+    wait_for_request_ = std::make_unique<base::RunLoop>();
     wait_for_request_->Run();
   }
 
@@ -408,7 +408,7 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
       return;
     }
     expected_networks_ = expected_networks;
-    wait_for_request_.reset(new base::RunLoop);
+    wait_for_request_ = std::make_unique<base::RunLoop>();
     wait_for_request_->Run();
   }
 
@@ -438,7 +438,7 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
  private:
   net::EmbeddedTestServer* https_server() { return https_server_.get(); }
 
-  bool expected_success_;
+  bool expected_success_ = false;
   std::string expected_quote_id_;
   std::string expected_quote_price_;
   std::string expected_total_fee_;

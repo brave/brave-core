@@ -8,8 +8,7 @@
 
 #include "base/feature_list.h"  // IWYU pragma: keep
 
-namespace ads {
-namespace features {
+namespace ads::features {
 
 extern const base::Feature kAdRewards;
 
@@ -17,7 +16,6 @@ bool IsAdRewardsEnabled();
 
 int GetAdRewardsNextPaymentDay();
 
-}  // namespace features
-}  // namespace ads
+}  // namespace ads::features
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_STATEMENT_AD_REWARDS_FEATURES_H_

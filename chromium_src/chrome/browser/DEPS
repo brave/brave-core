@@ -33,6 +33,7 @@ include_rules = [
   "+brave/components/sync",
   "+brave/components/tor",
   "+brave/components/translate",
+  "+brave/components/url_sanitizer",
   "+brave/components/vector_icons",
   "+brave/components/version_info",
   "+brave/net",

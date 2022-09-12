@@ -9,9 +9,7 @@
 #include "base/time/time.h"
 #include "bat/ads/internal/base/metrics/field_trial_params_util.h"
 
-namespace ads {
-namespace user_activity {
-namespace features {
+namespace ads::user_activity::features {
 
 namespace {
 
@@ -73,6 +71,4 @@ bool ShouldDetectWasLocked() {
       kDefaultShouldDetectWasLocked);
 }
 
-}  // namespace features
-}  // namespace user_activity
-}  // namespace ads
+}  // namespace ads::user_activity::features

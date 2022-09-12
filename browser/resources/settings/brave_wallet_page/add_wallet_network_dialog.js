@@ -23,6 +23,14 @@ Polymer({
   ],
 
   properties: {
+    addNewAllowed: {
+      type: Boolean,
+      value: false
+    },
+    coin: {
+      type: Number,
+      value: 0
+    },
     networks: {
       type: Array,
       value() {
@@ -68,7 +76,7 @@ Polymer({
       value: false,
     },
 
-    chainIdValue_: Number,
+    chainIdValue_: String,
     invalidChainIdMessage_: String,
     chainIdInvalid_: {
       type: Boolean,
@@ -126,7 +134,7 @@ Polymer({
 
     if (Object.keys(this.selected).length === 0)
       return
-    this.chainIdValue_ = parseInt(this.selected.chainId, 16) | 0
+    this.chainIdValue_ = this.selected.chainId
     this.chainNameValue_ = this.selected.chainName
     this.currencyNameValue_ = this.selected.nativeCurrency.name
     this.currencySymbolValue_ = this.selected.nativeCurrency.symbol
@@ -160,12 +168,14 @@ Polymer({
   },
 
   updatePrepopulatedNetworks() {
+    if (!this.addNewAllowed)
+      return
     this.browserProxy_.getPrepopulatedNetworksList().then(payload => {
       if (!payload)
         return
 
       this.prepopulatedNetworks_ = payload
-      this.prepopulatedNetworks_.forEach(item => item.searchString = BigInt(item.chainId).toString() + ' ' + item.chainName)
+      this.prepopulatedNetworks_.forEach(item => item.searchString = `${item.chainId}(${BigInt(item.chainId)}) ${item.chainName}`)
       this.searchItems_ = this.prepopulatedNetworks_.map(item => item.searchString)
     })
   },
@@ -187,7 +197,7 @@ Polymer({
   /** @private */
   chainIdChanged_: function (event) {
     const value = event.target.value
-    this.chainIdInvalid_ = value <= 0
+    this.chainIdInvalid_ = value.length === 0
     if (this.chainIdInvalid_) {
       this.invalidChainIdMessage_ = this.i18n('walletAddNetworkInvalidChainId')
     }
@@ -239,7 +249,7 @@ Polymer({
         return;
       }
     }
-    if (this.chainIdValue_ <= 0) {
+    if (this.chainIdValue_.length === 0) {
       this.isSubmitButtonEnabled_ = false
       return;
     }
@@ -321,7 +331,7 @@ Polymer({
     }
   },
   addNewNetwork: function (payload) {
-    this.browserProxy_.addEthereumChain(payload)
+    this.browserProxy_.addChain(payload)
       .then(([success, errorMessage]) => {
         this.setSubmissionResult(success, errorMessage)
         if (success) {
@@ -331,11 +341,13 @@ Polymer({
       })
   },
   getHexNumber: function (value) {
-    return '0x' + Number(this.chainIdValue_).toString(16)
+    if (Number.isInteger(value))
+      return '0x' + Number(value).toString(16)
+    return value
   },
   onAddNetworkTap_: function (item) {
     let payload = Object({
-      chainId: this.getHexNumber(),
+      chainId: this.getHexNumber(this.chainIdValue_),
       chainName: this.chainNameValue_,
     })
     const nativeCurrency = Object({
@@ -350,6 +362,7 @@ Polymer({
       }
       payload.nativeCurrency = nativeCurrency;
     }
+    payload.coin = this.coin
     payload.rpcUrls = this.transformListForSerializaion_(this.rpcUrls)
     payload.activeRpcEndpointIndex = payload.rpcUrls.findIndex(it => it === this.selectedRpcUrl)
     if (payload.activeRpcEndpointIndex < 0)
@@ -360,7 +373,7 @@ Polymer({
       if (!window.confirm(this.i18n('walletAddNetworkDialogReplaceNetwork'))) {
         return
       }
-      this.browserProxy_.removeEthereumChain(payload.chainId).then((success) => {
+      this.browserProxy_.removeChain(payload.chainId, this.coin).then((success) => {
         if (!success)
           return;
         this.addNewNetwork(payload)
@@ -374,7 +387,7 @@ Polymer({
       return
     const found = this.prepopulatedNetworks_.find(item => item.searchString === newValue)
     if (found) {
-      this.chainIdValue_ = parseInt(found.chainId, 16) | 0
+      this.chainIdValue_ = found.chainId
       this.invalidChainIdMessage_ = ''
       this.chainIdInvalid_ = false
       this.chainNameValue_ = found.chainName

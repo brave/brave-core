@@ -5,10 +5,11 @@
 
 #include "third_party/abseil-cpp/absl/random/random.h"
 
+#include "base/ranges/algorithm.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
+#include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 #include "third_party/blink/public/common/device_memory/approximated_device_memory.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
-#include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/core/frame/navigator_device_memory.h"
 
 namespace brave {
@@ -35,8 +36,7 @@ float FarbleDeviceMemory(blink::ExecutionContext* context) {
     // If anti-fingerprinting is at default level, select a pseudo-random valid
     // value between 0.5 and the true value (unless the true value is 0.25 in
     // which case just return that).
-    auto true_it =
-        std::find(valid_values.begin(), valid_values.end(), true_value);
+    auto true_it = base::ranges::find(valid_values, true_value);
     size_t true_index;
     // Get index into |valid_values| of the true value. If it's not found,
     // assume the last index. (This should not happen, but it allows us to

@@ -39,7 +39,7 @@ class TorProfileManagerUnitTest : public testing::Test {
 
   void SetUp() override {
     TestingBrowserProcess* browser_process = TestingBrowserProcess::GetGlobal();
-    profile_manager_.reset(new TestingProfileManager(browser_process));
+    profile_manager_ = std::make_unique<TestingProfileManager>(browser_process);
     ASSERT_TRUE(profile_manager_->SetUp());
     profile_ = profile_manager_->CreateTestingProfile(kTestProfileName);
   }

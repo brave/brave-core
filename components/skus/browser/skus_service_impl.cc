@@ -57,6 +57,14 @@ void OnCredentialSummary(skus::CredentialSummaryCallbackState* callback_state,
   delete callback_state;
 }
 
+void OnSubmitReceipt(skus::SubmitReceiptCallbackState* callback_state,
+                     skus::SkusResult result) {
+  if (callback_state->cb) {
+    std::move(callback_state->cb).Run("");
+  }
+  delete callback_state;
+}
+
 }  // namespace
 
 namespace skus {
@@ -147,6 +155,18 @@ void SkusServiceImpl::OnCredentialSummary(
   if (callback) {
     std::move(callback).Run(summary_string);
   }
+}
+
+void SkusServiceImpl::SubmitReceipt(
+    const std::string& domain,
+    const std::string& order_id,
+    const std::string& receipt,
+    skus::mojom::SkusService::SubmitReceiptCallback callback) {
+  std::unique_ptr<skus::SubmitReceiptCallbackState> cbs(
+      new skus::SubmitReceiptCallbackState);
+  cbs->cb = std::move(callback);
+  GetOrCreateSDK(domain)->submit_receipt(OnSubmitReceipt, std::move(cbs),
+                                         order_id, receipt);
 }
 
 }  // namespace skus

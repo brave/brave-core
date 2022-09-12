@@ -47,8 +47,8 @@ class LedgerImpl;
 namespace endpoint {
 namespace gemini {
 
-using PostBalanceCallback =
-    base::OnceCallback<void(const type::Result result, const double available)>;
+using PostBalanceCallback = base::OnceCallback<void(const mojom::Result result,
+                                                    const double available)>;
 
 class PostBalance {
  public:
@@ -60,10 +60,10 @@ class PostBalance {
  private:
   std::string GetUrl();
 
-  type::Result ParseBody(const std::string& body, double* available);
+  mojom::Result ParseBody(const std::string& body, double* available);
 
   void OnRequest(PostBalanceCallback callback,
-                 const type::UrlResponse& response);
+                 const mojom::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

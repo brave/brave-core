@@ -10,8 +10,7 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/notification_ad_info.h"
 
-namespace ads {
-namespace notification_ads {
+namespace ads::notification_ads {
 
 AdEventClicked::AdEventClicked() = default;
 
@@ -31,5 +30,4 @@ void AdEventClicked::FireEvent(const NotificationAdInfo& ad) {
   });
 }
 
-}  // namespace notification_ads
-}  // namespace ads
+}  // namespace ads::notification_ads

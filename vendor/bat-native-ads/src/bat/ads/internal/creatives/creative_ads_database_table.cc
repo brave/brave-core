@@ -5,12 +5,12 @@
 
 #include "bat/ads/internal/creatives/creative_ads_database_table.h"
 
-#include <algorithm>
 #include <map>
 #include <utility>
 
 #include "base/bind.h"
 #include "base/check.h"
+#include "base/containers/contains.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/database/database_bind_util.h"
@@ -21,9 +21,7 @@
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "url/gurl.h"
 
-namespace ads {
-namespace database {
-namespace table {
+namespace ads::database::table {
 
 using CreativeAdMap = std::map<std::string, CreativeAdInfo>;
 
@@ -97,10 +95,7 @@ CreativeAdMap GroupCreativeAdsFromResponse(
     }
 
     for (const auto& daypart : creative_ad.dayparts) {
-      const auto daypart_iter =
-          std::find(iter->second.dayparts.cbegin(),
-                    iter->second.dayparts.cend(), daypart);
-      if (daypart_iter == iter->second.dayparts.cend()) {
+      if (!base::Contains(iter->second.dayparts, daypart)) {
         iter->second.dayparts.push_back(daypart);
       }
     }
@@ -301,6 +296,4 @@ void CreativeAds::MigrateToV24(mojom::DBTransactionInfo* transaction) {
   transaction->commands.push_back(std::move(command));
 }
 
-}  // namespace table
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database::table

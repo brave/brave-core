@@ -43,7 +43,7 @@ public abstract class BraveVpnParentActivity
         extends AsyncInitializationActivity implements BraveVpnObserver {
     private static final String TAG = "BraveVPN";
     public boolean mIsVerification;
-    private BraveVpnPrefModel mBraveVpnPrefModel;
+    protected BraveVpnPrefModel mBraveVpnPrefModel;
 
     abstract void showRestoreMenu(boolean shouldShowRestore);
     abstract void updateProfileView();

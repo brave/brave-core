@@ -8,11 +8,10 @@
 
 #include <string>
 
+#include "absl/types/optional.h"
 #include "base/values.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
-namespace security {
+namespace ads::security {
 
 struct VerifiableConversionEnvelopeInfo;
 
@@ -27,7 +26,6 @@ absl::optional<std::string> OpenEvenlopeForUserDataAndAdvertiserSecretKey(
     const base::Value::Dict& user_data,
     const std::string& advertiser_secret_key);
 
-}  // namespace security
-}  // namespace ads
+}  // namespace ads::security
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONVERSIONS_VERIFIABLE_CONVERSION_ENVELOPE_UNITTEST_UTIL_H_

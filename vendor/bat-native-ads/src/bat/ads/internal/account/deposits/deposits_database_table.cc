@@ -10,7 +10,6 @@
 #include "base/bind.h"
 #include "base/check.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/account/deposits/deposit_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/database/database_bind_util.h"
 #include "bat/ads/internal/base/database/database_column_util.h"
@@ -18,9 +17,7 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
-namespace ads {
-namespace database {
-namespace table {
+namespace ads::database::table {
 
 namespace {
 
@@ -262,6 +259,4 @@ void Deposits::MigrateToV24(mojom::DBTransactionInfo* transaction) {
   transaction->commands.push_back(std::move(command));
 }
 
-}  // namespace table
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database::table

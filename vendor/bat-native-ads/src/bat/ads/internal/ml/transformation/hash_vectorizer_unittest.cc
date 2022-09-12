@@ -5,16 +5,15 @@
 
 #include "bat/ads/internal/ml/transformation/hash_vectorizer.h"
 
+#include "absl/types/optional.h"
 #include "base/json/json_reader.h"
 #include "base/values.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_file_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace ml {
+namespace ads::ml {
 
 namespace {
 constexpr char kHashCheck[] = "ml/hash_vectorizer/hashing_validation.json";
@@ -118,5 +117,4 @@ TEST_F(BatAdsHashVectorizerTest, JapaneseText) {
   RunHashingExtractorTestCase("japanese");
 }
 
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml

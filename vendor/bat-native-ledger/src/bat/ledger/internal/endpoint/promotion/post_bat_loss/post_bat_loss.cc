@@ -44,18 +44,18 @@ std::string PostBatLoss::GeneratePayload(const double amount) {
   return base::StringPrintf(R"({"amount": %f})", amount);
 }
 
-type::Result PostBatLoss::CheckStatusCode(const int status_code) {
+mojom::Result PostBatLoss::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Internal server error");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
 void PostBatLoss::Request(
@@ -64,7 +64,7 @@ void PostBatLoss::Request(
     PostBatLossCallback callback) {
   const auto wallet = ledger_->wallet()->GetWallet();
   if (!wallet) {
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -86,18 +86,17 @@ void PostBatLoss::Request(
       _1,
       callback);
 
-  auto request = type::UrlRequest::New();
+  auto request = mojom::UrlRequest::New();
   request->url = GetUrl(version);
   request->content = payload;
   request->headers = headers;
   request->content_type = "application/json; charset=utf-8";
-  request->method = type::UrlMethod::POST;
+  request->method = mojom::UrlMethod::POST;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
-void PostBatLoss::OnRequest(
-    const type::UrlResponse& response,
-    PostBatLossCallback callback) {
+void PostBatLoss::OnRequest(const mojom::UrlResponse& response,
+                            PostBatLossCallback callback) {
   ledger::LogUrlResponse(__func__, response);
   callback(CheckStatusCode(response.status_code));
 }

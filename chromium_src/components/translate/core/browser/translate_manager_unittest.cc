@@ -5,6 +5,7 @@
 
 #include "components/translate/core/browser/translate_manager.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/memory/raw_ptr.h"
@@ -173,10 +174,8 @@ TEST_F(TranslateManagerTest, CanManuallyTranslate_WithoutAPIKey) {
   EXPECT_FALSE(::google_apis::HasAPIKeyConfigured());
 
   TranslateManager::SetIgnoreMissingKeyForTesting(false);
-  translate_manager_.reset(new translate::TranslateManager(
-        &mock_translate_client_,
-        &mock_translate_ranker_,
-        &mock_language_model_));
+  translate_manager_ = std::make_unique<translate::TranslateManager>(
+      &mock_translate_client_, &mock_translate_ranker_, &mock_language_model_);
 
   prefs_.SetBoolean(translate::prefs::kOfferTranslateEnabled, true);
   ON_CALL(mock_translate_client_, IsTranslatableURL(GURL::EmptyGURL()))
@@ -195,10 +194,8 @@ TEST_F(TranslateManagerTest, CanManuallyTranslate_WithAPIKey) {
   EXPECT_TRUE(::google_apis::HasAPIKeyConfigured());
 
   TranslateManager::SetIgnoreMissingKeyForTesting(false);
-  translate_manager_.reset(new translate::TranslateManager(
-        &mock_translate_client_,
-        &mock_translate_ranker_,
-        &mock_language_model_));
+  translate_manager_ = std::make_unique<translate::TranslateManager>(
+      &mock_translate_client_, &mock_translate_ranker_, &mock_language_model_);
 
   prefs_.SetBoolean(translate::prefs::kOfferTranslateEnabled, true);
   ON_CALL(mock_translate_client_, IsTranslatableURL(GURL::EmptyGURL()))

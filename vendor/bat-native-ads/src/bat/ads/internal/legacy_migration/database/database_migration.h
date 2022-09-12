@@ -7,23 +7,11 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_LEGACY_MIGRATION_DATABASE_DATABASE_MIGRATION_H_
 
 #include "bat/ads/ads_client_callback.h"
-#include "bat/ads/public/interfaces/ads.mojom-forward.h"
 
-namespace ads {
-namespace database {
+namespace ads::database {
 
-class Migration final {
- public:
-  Migration();
-  ~Migration();
+void MigrateFromVersion(int from_version, ResultCallback callback);
 
-  void FromVersion(int from_version, ResultCallback callback);
-
- private:
-  void ToVersion(mojom::DBTransactionInfo* transaction, int to_version);
-};
-
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_LEGACY_MIGRATION_DATABASE_DATABASE_MIGRATION_H_

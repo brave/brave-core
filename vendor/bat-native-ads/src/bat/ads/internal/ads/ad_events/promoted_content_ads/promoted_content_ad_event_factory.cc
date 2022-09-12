@@ -11,8 +11,7 @@
 #include "bat/ads/internal/ads/ad_events/promoted_content_ads/promoted_content_ad_event_viewed.h"
 #include "bat/ads/promoted_content_ad_info.h"
 
-namespace ads {
-namespace promoted_content_ads {
+namespace ads::promoted_content_ads {
 
 std::unique_ptr<AdEventInterface<PromotedContentAdInfo>> AdEventFactory::Build(
     const mojom::PromotedContentAdEventType event_type) {
@@ -33,5 +32,4 @@ std::unique_ptr<AdEventInterface<PromotedContentAdInfo>> AdEventFactory::Build(
   }
 }
 
-}  // namespace promoted_content_ads
-}  // namespace ads
+}  // namespace ads::promoted_content_ads

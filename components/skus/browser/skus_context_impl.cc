@@ -61,6 +61,9 @@ CredentialSummaryCallbackState::~CredentialSummaryCallbackState() = default;
 RefreshOrderCallbackState::RefreshOrderCallbackState() = default;
 RefreshOrderCallbackState::~RefreshOrderCallbackState() = default;
 
+SubmitReceiptCallbackState::SubmitReceiptCallbackState() {}
+SubmitReceiptCallbackState::~SubmitReceiptCallbackState() {}
+
 void shim_logMessage(rust::cxxbridge1::Str file,
                      uint32_t line,
                      skus::TracingLevel level,

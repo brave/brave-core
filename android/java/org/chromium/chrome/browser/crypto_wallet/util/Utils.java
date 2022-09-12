@@ -886,11 +886,11 @@ public class Utils {
         return defaultValue;
     }
 
-    public static <T> void removeIf(ArrayList<T> arrayList, Predicate<T> filter) {
+    public static <T> void removeIf(List<T> list, Predicate<T> filter) {
         // Can't use java.util.ArrayList#removeIf with API level 21
-        ArrayList<Integer> indexesToRemove = new ArrayList<Integer>();
-        for (int i = 0; i < arrayList.size(); ++i) {
-            if (filter.test(arrayList.get(i))) {
+        List<Integer> indexesToRemove = new ArrayList<Integer>();
+        for (int i = 0; i < list.size(); ++i) {
+            if (filter.test(list.get(i))) {
                 indexesToRemove.add(i);
             }
         }
@@ -899,7 +899,7 @@ public class Utils {
         }
         Collections.sort(indexesToRemove, Collections.reverseOrder());
         for (int i : indexesToRemove) {
-            arrayList.remove(i);
+            list.remove(i);
         }
     }
 

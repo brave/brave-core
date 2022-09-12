@@ -24,13 +24,10 @@ int GetStringIdForConnectionState(ConnectionState state) {
   switch (state) {
     case ConnectionState::CONNECTING:
       return IDS_BRAVE_VPN_STATUS_LABEL_CONNECTING;
-      break;
     case ConnectionState::CONNECTED:
       return IDS_BRAVE_VPN_STATUS_LABEL_CONNECTED;
-      break;
     case ConnectionState::DISCONNECTING:
       return IDS_BRAVE_VPN_STATUS_LABEL_DISCONNECTING;
-      break;
     default:
       break;
   }

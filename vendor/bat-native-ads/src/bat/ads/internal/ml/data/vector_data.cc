@@ -13,8 +13,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 
-namespace ads {
-namespace ml {
+namespace ads::ml {
 
 namespace {
 constexpr double kMinimumVectorLength = 1e-7;
@@ -237,5 +236,4 @@ std::string VectorData::GetVectorAsString() const {
   return base::JoinString(vector_as_string, " ");
 }
 
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml

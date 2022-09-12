@@ -5,6 +5,7 @@
 
 #include "brave/components/api_request_helper/api_request_helper.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/callback.h"
@@ -35,9 +36,9 @@ class ApiRequestHelperUnitTest : public testing::Test {
       : shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &url_loader_factory_)) {
-    api_request_helper_.reset(new APIRequestHelper(
+    api_request_helper_ = std::make_unique<APIRequestHelper>(
         net::NetworkTrafficAnnotationTag(TRAFFIC_ANNOTATION_FOR_TESTS),
-        shared_url_loader_factory_));
+        shared_url_loader_factory_);
   }
   ~ApiRequestHelperUnitTest() override = default;
 
@@ -55,16 +56,13 @@ class ApiRequestHelperUnitTest : public testing::Test {
         }));
   }
 
-  void OnRequestResponse(
-      bool* callback_called,
-      const std::string& expected_response,
-      const int expected_http_code,
-      const int http_code,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers) {
+  void OnRequestResponse(bool* callback_called,
+                         const std::string& expected_response,
+                         const int expected_http_code,
+                         APIRequestResult api_request_result) {
     *callback_called = true;
-    EXPECT_EQ(expected_http_code, http_code);
-    EXPECT_EQ(expected_response, body);
+    EXPECT_EQ(expected_http_code, api_request_result.response_code());
+    EXPECT_EQ(expected_response, api_request_result.body());
   }
 
   void SendRequest(const std::string& server_raw_response,
@@ -141,6 +139,20 @@ TEST_F(ApiRequestHelperUnitTest, RequestWithConversion) {
   SendRequest(
       server_raw_response, server_raw_response, 422,
       base::BindOnce(&ConversionCallback, server_raw_response, absl::nullopt));
+}
+
+TEST_F(ApiRequestHelperUnitTest, Is2XXResponseCode) {
+  EXPECT_TRUE(APIRequestResult(200, {}, {}).Is2XXResponseCode());
+  EXPECT_TRUE(APIRequestResult(201, {}, {}).Is2XXResponseCode());
+  EXPECT_TRUE(APIRequestResult(250, {}, {}).Is2XXResponseCode());
+  EXPECT_TRUE(APIRequestResult(299, {}, {}).Is2XXResponseCode());
+
+  EXPECT_FALSE(APIRequestResult(0, {}, {}).Is2XXResponseCode());
+  EXPECT_FALSE(APIRequestResult(1, {}, {}).Is2XXResponseCode());
+  EXPECT_FALSE(APIRequestResult(-1, {}, {}).Is2XXResponseCode());
+  EXPECT_FALSE(APIRequestResult(199, {}, {}).Is2XXResponseCode());
+  EXPECT_FALSE(APIRequestResult(300, {}, {}).Is2XXResponseCode());
+  EXPECT_FALSE(APIRequestResult(500, {}, {}).Is2XXResponseCode());
 }
 
 }  // namespace api_request_helper

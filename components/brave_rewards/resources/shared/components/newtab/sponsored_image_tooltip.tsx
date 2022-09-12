@@ -9,7 +9,6 @@ import { NewTabLink } from '../new_tab_link'
 import { BatIcon } from '../icons/bat_icon'
 import { CloseIcon } from '../icons/close_icon'
 import { TermsOfService } from '../terms_of_service'
-import { AsyncButton } from './async_button'
 
 import * as style from './sponsored_image_tooltip.style'
 
@@ -48,9 +47,9 @@ export function SponsoredImageTooltip (props: Props) {
             : <div>
                 {getString('rewardsSponsoredImageOptInText')}
                 <style.action>
-                  <AsyncButton onClick={props.onEnableAds}>
+                  <button onClick={props.onEnableAds}>
                     {getString('rewardsStartUsingRewards')}
-                  </AsyncButton>
+                  </button>
                 </style.action>
                 <div>
                   <TermsOfService text={getString('rewardsOptInTerms')} />&nbsp;

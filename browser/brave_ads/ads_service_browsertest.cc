@@ -345,8 +345,6 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
   }
 
   base::FilePath GetTestDataPath() const {
-    // TODO(tmancey): We should be able to use |GetTestDataDir| however the path
-    // was invalid during setup, therefore investigate further
     base::FilePath path;
     base::PathService::Get(base::DIR_SOURCE_ROOT, &path);
     path = path.Append(FILE_PATH_LITERAL("brave"));
@@ -362,8 +360,6 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
     const auto preferences_path =
         user_data_path.Append(chrome::kPreferencesFilename);
 
-    // TODO(tmancey): We should be able to use |GetTestDataDir| however the path
-    // was invalid during setup, therefore investigate further
     auto test_data_path = GetTestDataPath();
     test_data_path = test_data_path.AppendASCII("rewards-data");
     test_data_path = test_data_path.AppendASCII("migration");
@@ -373,7 +369,7 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
     ASSERT_TRUE(base::CopyFile(test_data_path, preferences_path));
   }
 
-  MOCK_METHOD1(OnGetEnvironment, void(ledger::type::Environment));
+  MOCK_METHOD1(OnGetEnvironment, void(ledger::mojom::Environment));
   MOCK_METHOD1(OnGetDebug, void(bool));
   MOCK_METHOD1(OnGetReconcileTime, void(int32_t));
   MOCK_METHOD1(OnGetRetryInterval, void(int32_t));
@@ -592,16 +588,6 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
         true,  /* rewards_enabled */
         false  /* ads_enabled */
     },
-    // TODO(tmancey): The following test failed due to the ads_enabled flag
-    // being
-    // incorrectly set to false
-    // {
-    //   "PreferencesForVersion063WithRewardsAndAdsEnabled",
-    //   true,  /* supported_locale */
-    //   false, /* newly_supported_locale */
-    //   true,  /* rewards_enabled */
-    //   true  /* ads_enabled */
-    // },
     {
         "PreferencesForVersion063WithRewardsAndAdsDisabled",
         true,  /* supported_locale */

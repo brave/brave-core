@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
 #include <utility>
 
 #include "base/test/bind.h"
@@ -39,7 +40,7 @@ class TorNavigationThrottleUnitTest : public testing::Test {
 
   void SetUp() override {
     TestingBrowserProcess* browser_process = TestingBrowserProcess::GetGlobal();
-    profile_manager_.reset(new TestingProfileManager(browser_process));
+    profile_manager_ = std::make_unique<TestingProfileManager>(browser_process);
     ASSERT_TRUE(profile_manager_->SetUp());
     Profile* profile = profile_manager_->CreateTestingProfile(kTestProfileName);
     Profile* tor_profile =

@@ -9,8 +9,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace ml {
+namespace ads::ml {
 
 class BatAdsTextDataTest : public UnitTestBase {
  protected:
@@ -31,5 +30,4 @@ TEST_F(BatAdsTextDataTest, TextDataInitialization) {
   EXPECT_EQ(expected_text, text);
 }
 
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml

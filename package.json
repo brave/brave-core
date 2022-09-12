@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.45.12",
+  "version": "1.45.41",
   "description": "Brave Core is a set of changes, APIs and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
@@ -41,7 +41,8 @@
     "storybook": "start-storybook",
     "test-unit": "jest -t",
     "test-unit:wallet": "jest --coverage=false components/brave_wallet_ui",
-    "test-python-scripts": "npm run pep8 && PYTHONPATH=./script python -m unittest discover -s ./script/test"
+    "test-python-scripts": "npm run pep8 && PYTHONPATH=./script python -m unittest discover -s ./script/test",
+    "update_symlink": "node ./build/commands/scripts/commands.js update_symlink"
   },
   "repository": {
     "type": "git",
@@ -257,7 +258,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "105.0.5195.68",
+        "tag": "105.0.5195.102",
         "repository": {
           "url": "https://github.com/chromium/chromium"
         }

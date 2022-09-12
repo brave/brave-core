@@ -178,9 +178,8 @@ export const refreshStatus = styled.div`
   padding-top: 4px;
 
   .icon {
-    height: 13px;
-    width: auto;
-    margin-left: 14px;
+    height: 14px;
+    width: 16px;
     margin-top: 2px;
     color: var(--brave-color-brandBat);
   }

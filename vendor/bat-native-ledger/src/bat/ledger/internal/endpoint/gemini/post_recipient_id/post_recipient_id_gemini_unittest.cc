@@ -45,8 +45,8 @@ class GeminiPostRecipientIdTest : public testing::Test {
 TEST_F(GeminiPostRecipientIdTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_OK;
             response.url = request->url;
             response.body = R"({
@@ -59,17 +59,17 @@ TEST_F(GeminiPostRecipientIdTest, ServerOK) {
 
   post_recipient_id_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result, const std::string& recipient_id) {
-        EXPECT_EQ(result, type::Result::LEDGER_OK);
+      base::BindOnce([](mojom::Result result, std::string&& recipient_id) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_OK);
         EXPECT_EQ(recipient_id, "60f9be89-ada7-486d-9cef-f6d3a10886d7");
-      });
+      }));
 }
 
 TEST_F(GeminiPostRecipientIdTest, ServerOK_Unverified) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_OK;
             response.url = request->url;
             response.body = R"({
@@ -84,17 +84,17 @@ TEST_F(GeminiPostRecipientIdTest, ServerOK_Unverified) {
 
   post_recipient_id_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result, const std::string& recipient_id) {
-        EXPECT_EQ(result, type::Result::NOT_FOUND);
+      base::BindOnce([](mojom::Result result, std::string&& recipient_id) {
+        EXPECT_EQ(result, mojom::Result::NOT_FOUND);
         EXPECT_EQ(recipient_id, "");
-      });
+      }));
 }
 
 TEST_F(GeminiPostRecipientIdTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_UNAUTHORIZED;
             response.url = request->url;
             response.body = "";
@@ -103,17 +103,17 @@ TEST_F(GeminiPostRecipientIdTest, ServerError401) {
 
   post_recipient_id_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result, const std::string& recipient_id) {
-        EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
+      base::BindOnce([](mojom::Result result, std::string&& recipient_id) {
+        EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
         EXPECT_EQ(recipient_id, "");
-      });
+      }));
 }
 
 TEST_F(GeminiPostRecipientIdTest, ServerError403) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_FORBIDDEN;
             response.url = request->url;
             response.body = "";
@@ -122,17 +122,17 @@ TEST_F(GeminiPostRecipientIdTest, ServerError403) {
 
   post_recipient_id_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result, const std::string recipient_id) {
-        EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
+      base::BindOnce([](mojom::Result result, std::string&& recipient_id) {
+        EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
         EXPECT_EQ(recipient_id, "");
-      });
+      }));
 }
 
 TEST_F(GeminiPostRecipientIdTest, ServerError404) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = net::HTTP_NOT_FOUND;
             response.url = request->url;
             response.body = "";
@@ -141,17 +141,17 @@ TEST_F(GeminiPostRecipientIdTest, ServerError404) {
 
   post_recipient_id_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result, const std::string recipient_id) {
-        EXPECT_EQ(result, type::Result::NOT_FOUND);
+      base::BindOnce([](mojom::Result result, std::string&& recipient_id) {
+        EXPECT_EQ(result, mojom::Result::NOT_FOUND);
         EXPECT_EQ(recipient_id, "");
-      });
+      }));
 }
 
 TEST_F(GeminiPostRecipientIdTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 418;
             response.url = request->url;
             response.body = "";
@@ -160,10 +160,10 @@ TEST_F(GeminiPostRecipientIdTest, ServerErrorRandom) {
 
   post_recipient_id_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result, const std::string& recipient_id) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+      base::BindOnce([](mojom::Result result, std::string&& recipient_id) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
         EXPECT_EQ(recipient_id, "");
-      });
+      }));
 }
 
 }  // namespace gemini

@@ -207,7 +207,7 @@ SafeBuiltins::SafeBuiltins(const v8::Local<v8::Context>& context)
     : context_(context->GetIsolate(), context),
       isolate_(context->GetIsolate()) {}
 
-SafeBuiltins::~SafeBuiltins() {}
+SafeBuiltins::~SafeBuiltins() = default;
 
 v8::Local<v8::Object> SafeBuiltins::GetObjekt() const {
   return Load("Object", v8::Local<v8::Context>::New(isolate_, context_));

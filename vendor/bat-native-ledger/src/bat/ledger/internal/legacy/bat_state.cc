@@ -4,6 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <algorithm>
+#include <memory>
 #include <utility>
 
 #include "bat/ledger/internal/common/time_util.h"
@@ -33,10 +34,10 @@ void LegacyBatState::Load(ledger::LegacyResultCallback callback) {
   ledger_->ledger_client()->LoadLedgerState(load_callback);
 }
 
-void LegacyBatState::OnLoad(ledger::type::Result result,
+void LegacyBatState::OnLoad(ledger::mojom::Result result,
                             const std::string& data,
                             ledger::LegacyResultCallback callback) {
-  if (result != ledger::type::Result::LEDGER_OK) {
+  if (result != ledger::mojom::Result::LEDGER_OK) {
     callback(result);
     return;
   }
@@ -45,11 +46,11 @@ void LegacyBatState::OnLoad(ledger::type::Result result,
   if (!state.FromJson(data)) {
     BLOG(0, "Failed to load client state");
     BLOG(6, "Client state contents: " << data);
-    callback(ledger::type::Result::LEDGER_ERROR);
+    callback(ledger::mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  state_.reset(new ledger::ClientProperties(state));
+  state_ = std::make_unique<ledger::ClientProperties>(state);
 
   // fix timestamp ms to s conversion
   if (std::to_string(state_->reconcile_timestamp).length() > 10) {
@@ -61,7 +62,7 @@ void LegacyBatState::OnLoad(ledger::type::Result result,
     state_->boot_timestamp = state_->boot_timestamp / 1000;
   }
 
-  callback(ledger::type::Result::LEDGER_OK);
+  callback(ledger::mojom::Result::LEDGER_OK);
 }
 
 bool LegacyBatState::GetRewardsMainEnabled() const {

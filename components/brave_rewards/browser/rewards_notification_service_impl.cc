@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
 
-#include <algorithm>
 #include <limits>
 #include <utility>
 
+#include "base/containers/contains.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/json/values_util.h"
@@ -54,10 +54,7 @@ void RewardsNotificationServiceImpl::AddNotification(
   if (id.empty()) {
     id = GenerateRewardsNotificationID();
   } else if (only_once) {
-    if (std::find(
-        rewards_notifications_displayed_.begin(),
-        rewards_notifications_displayed_.end(),
-        id) != rewards_notifications_displayed_.end()) {
+    if (base::Contains(rewards_notifications_displayed_, id)) {
       return;
     }
   }
@@ -148,31 +145,30 @@ void RewardsNotificationServiceImpl::ReadRewardsNotificationsJSON() {
       profile_->GetPrefs()->GetString(prefs::kNotifications);
   if (json.empty())
     return;
-  absl::optional<base::Value> dictionary = base::JSONReader::Read(json);
+  absl::optional<base::Value> parsed = base::JSONReader::Read(json);
 
   // legacy read
-  if (!dictionary || !dictionary->is_dict()) {
-    absl::optional<base::Value> list = base::JSONReader::Read(json);
-    if (!list || !list->is_list()) {
-      LOG(ERROR) << "Failed to deserialize rewards notifications on startup";
-      return;
-    }
-
-    ReadRewardsNotifications(list->GetList());
+  if (!parsed || (!parsed->is_dict() && !parsed->is_list())) {
+    LOG(ERROR) << "Failed to deserialize rewards notifications on startup";
+    return;
+  }
+  if (parsed->is_list()) {
+    ReadRewardsNotifications(parsed->GetList());
     return;
   }
 
-  base::Value* notifications =
-      dictionary->FindKeyOfType("notifications", base::Value::Type::LIST);
+  const base::Value::Dict& dict = parsed->GetDict();
+
+  const base::Value::List* notifications = dict.FindList("notifications");
   if (notifications) {
-    ReadRewardsNotifications(notifications->GetList());
+    ReadRewardsNotifications(*notifications);
   }
 
-  base::Value* displayed =
-      dictionary->FindKeyOfType("displayed", base::Value::Type::LIST);
+  const base::Value::List* displayed = dict.FindList("displayed");
   if (displayed) {
-    for (const auto& it : displayed->GetList()) {
-      rewards_notifications_displayed_.push_back(it.GetString());
+    for (const auto& item : *displayed) {
+      DCHECK(item.is_string());
+      rewards_notifications_displayed_.push_back(item.GetString());
     }
   }
 }
@@ -182,19 +178,20 @@ void RewardsNotificationServiceImpl::ReadRewardsNotifications(
   for (const auto& item : root) {
     if (!item.is_dict())
       continue;
+    const base::Value::Dict& dict = item.GetDict();
     std::string notification_id;
-    const std::string* notification_id_opt = item.FindStringKey("id");
+    const std::string* notification_id_opt = dict.FindString("id");
     if (notification_id_opt)
       notification_id = *notification_id_opt;
-    int notification_type = item.FindIntKey("type").value_or(0);
-    int notification_timestamp = item.FindIntKey("timestamp").value_or(0);
+    int notification_type = dict.FindInt("type").value_or(0);
+    int notification_timestamp = dict.FindInt("timestamp").value_or(0);
     RewardsNotificationArgs notification_args;
 
     // The notification ID was originally an integer, but now it's a
     // string. For backwards compatibility, we need to handle the
     // case where the ID contains an invalid string or integer
     if (notification_id.empty()) {
-      int old_id = item.FindIntKey("id").value_or(0);
+      int old_id = dict.FindInt("id").value_or(0);
       if (old_id == 0 && notification_type == 2)
         notification_id = "rewards_notification_grant";
       else
@@ -203,10 +200,9 @@ void RewardsNotificationServiceImpl::ReadRewardsNotifications(
       notification_id = "rewards_notification_grant";
     }
 
-    const base::Value* args =
-        item.FindKeyOfType("args", base::Value::Type::LIST);
+    const base::Value::List* args = dict.FindList("args");
     if (args) {
-      for (auto& arg : args->GetList()) {
+      for (auto& arg : *args) {
         std::string arg_string = arg.GetString();
         notification_args.push_back(arg_string);
       }
@@ -317,12 +313,12 @@ void RewardsNotificationServiceImpl::OnGetAllNotifications(
 }
 
 bool RewardsNotificationServiceImpl::IsAds(
-    const ledger::type::PromotionType promotion_type) {
-  return promotion_type == ledger::type::PromotionType::ADS;
+    const ledger::mojom::PromotionType promotion_type) {
+  return promotion_type == ledger::mojom::PromotionType::ADS;
 }
 
 std::string RewardsNotificationServiceImpl::GetPromotionIdPrefix(
-    const ledger::type::PromotionType promotion_type) {
+    const ledger::mojom::PromotionType promotion_type) {
   return IsAds(promotion_type)
       ? "rewards_notification_grant_ads_"
       : "rewards_notification_grant_";
@@ -330,15 +326,15 @@ std::string RewardsNotificationServiceImpl::GetPromotionIdPrefix(
 
 void RewardsNotificationServiceImpl::OnFetchPromotions(
     RewardsService* rewards_service,
-    const ledger::type::Result result,
-    const ledger::type::PromotionList& list) {
-  if (static_cast<ledger::type::Result>(result) !=
-      ledger::type::Result::LEDGER_OK) {
+    const ledger::mojom::Result result,
+    const std::vector<ledger::mojom::PromotionPtr>& list) {
+  if (static_cast<ledger::mojom::Result>(result) !=
+      ledger::mojom::Result::LEDGER_OK) {
     return;
   }
 
   for (const auto& item : list) {
-    if (item->status == ledger::type::PromotionStatus::FINISHED) {
+    if (item->status == ledger::mojom::PromotionStatus::FINISHED) {
       continue;
     }
 
@@ -367,8 +363,8 @@ void RewardsNotificationServiceImpl::OnFetchPromotions(
 
 void RewardsNotificationServiceImpl::OnPromotionFinished(
     RewardsService* rewards_service,
-    const ledger::type::Result result,
-    ledger::type::PromotionPtr promotion) {
+    const ledger::mojom::Result result,
+    ledger::mojom::PromotionPtr promotion) {
   std::string prefix = GetPromotionIdPrefix(promotion->type);
   DeleteNotification(prefix + promotion->id);
 
@@ -380,23 +376,23 @@ void RewardsNotificationServiceImpl::OnPromotionFinished(
 
 void RewardsNotificationServiceImpl::OnReconcileComplete(
     RewardsService* rewards_service,
-    const ledger::type::Result result,
+    const ledger::mojom::Result result,
     const std::string& contribution_id,
     const double amount,
-    const ledger::type::RewardsType type,
-    const ledger::type::ContributionProcessor processor) {
-  if (type == ledger::type::RewardsType::ONE_TIME_TIP) {
+    const ledger::mojom::RewardsType type,
+    const ledger::mojom::ContributionProcessor processor) {
+  if (type == ledger::mojom::RewardsType::ONE_TIME_TIP) {
     return;
   }
 
   const bool completed_auto_contribute =
-      result == ledger::type::Result::LEDGER_OK &&
-      type == ledger::type::RewardsType::AUTO_CONTRIBUTE;
+      result == ledger::mojom::Result::LEDGER_OK &&
+      type == ledger::mojom::RewardsType::AUTO_CONTRIBUTE;
 
   if (completed_auto_contribute ||
-      result == ledger::type::Result::NOT_ENOUGH_FUNDS ||
-      result == ledger::type::Result::LEDGER_ERROR ||
-      result == ledger::type::Result::TIP_ERROR) {
+      result == ledger::mojom::Result::NOT_ENOUGH_FUNDS ||
+      result == ledger::mojom::Result::LEDGER_ERROR ||
+      result == ledger::mojom::Result::TIP_ERROR) {
     RewardsNotificationService::RewardsNotificationArgs args;
     args.push_back(contribution_id);
     args.push_back(base::NumberToString(static_cast<int>(result)));

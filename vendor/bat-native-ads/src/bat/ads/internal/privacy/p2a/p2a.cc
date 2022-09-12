@@ -8,9 +8,7 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/privacy/p2a/p2a_values_util.h"
 
-namespace ads {
-namespace privacy {
-namespace p2a {
+namespace ads::privacy::p2a {
 
 void RecordEvent(const std::string& name,
                  const std::vector<std::string>& questions) {
@@ -21,6 +19,4 @@ void RecordEvent(const std::string& name,
                                                  QuestionsToValue(questions));
 }
 
-}  // namespace p2a
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::p2a

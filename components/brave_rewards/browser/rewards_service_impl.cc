@@ -101,17 +101,17 @@ constexpr int kDiagnosticLogKeepNumLines = 20000;
 constexpr int kDiagnosticLogMaxFileSize = 10 * (1024 * 1024);
 constexpr char pref_prefix[] = "brave.rewards";
 
-std::string URLMethodToRequestType(ledger::type::UrlMethod method) {
+std::string URLMethodToRequestType(ledger::mojom::UrlMethod method) {
   switch (method) {
-    case ledger::type::UrlMethod::GET:
+    case ledger::mojom::UrlMethod::GET:
       return "GET";
-    case ledger::type::UrlMethod::POST:
+    case ledger::mojom::UrlMethod::POST:
       return "POST";
-    case ledger::type::UrlMethod::PUT:
+    case ledger::mojom::UrlMethod::PUT:
       return "PUT";
-    case ledger::type::UrlMethod::PATCH:
+    case ledger::mojom::UrlMethod::PATCH:
       return "PATCH";
-    case ledger::type::UrlMethod::DEL:
+    case ledger::mojom::UrlMethod::DEL:
       return "DELETE";
     default:
       NOTREACHED();
@@ -232,27 +232,27 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTagForURLLoad() {
       })");
 }
 
-ledger::type::InlineTipsPlatforms ConvertInlineTipStringToPlatform(
+ledger::mojom::InlineTipsPlatforms ConvertInlineTipStringToPlatform(
     const std::string& key) {
   if (key == "reddit") {
-    return ledger::type::InlineTipsPlatforms::REDDIT;
+    return ledger::mojom::InlineTipsPlatforms::REDDIT;
   }
   if (key == "twitter") {
-    return ledger::type::InlineTipsPlatforms::TWITTER;
+    return ledger::mojom::InlineTipsPlatforms::TWITTER;
   }
   if (key == "github") {
-    return ledger::type::InlineTipsPlatforms::GITHUB;
+    return ledger::mojom::InlineTipsPlatforms::GITHUB;
   }
 
   NOTREACHED();
-  return ledger::type::InlineTipsPlatforms::TWITTER;
+  return ledger::mojom::InlineTipsPlatforms::TWITTER;
 }
 
 bool ProcessPublisher(const GURL& url) {
-  // we should always process publisher on desktop
 #if !BUILDFLAG(IS_ANDROID)
+  // we should always process publisher on desktop
   return true;
-#endif
+#else
 
   const std::vector<GURL> excluded = {
       GURL("https://twitter.com")
@@ -268,6 +268,7 @@ bool ProcessPublisher(const GURL& url) {
   }
 
   return true;
+#endif
 }
 
 std::string GetPrefPath(const std::string& name) {
@@ -469,12 +470,12 @@ void RewardsServiceImpl::StartLedgerProcessIfNecessary() {
         base::BindOnce(&RewardsServiceImpl::ConnectionClosed, AsWeakPtr()));
   }
 
-  ledger::type::Environment environment = ledger::type::Environment::STAGING;
+  ledger::mojom::Environment environment = ledger::mojom::Environment::STAGING;
   // Environment
 #if defined(OFFICIAL_BUILD) && BUILDFLAG(IS_ANDROID)
   environment = GetServerEnvironmentForAndroid();
 #elif defined(OFFICIAL_BUILD)
-  environment = ledger::type::Environment::PRODUCTION;
+  environment = ledger::mojom::Environment::PRODUCTION;
 #endif
   SetEnvironment(environment);
 
@@ -502,7 +503,7 @@ void RewardsServiceImpl::OnLedgerCreated() {
 }
 
 void RewardsServiceImpl::OnResult(ledger::LegacyResultCallback callback,
-                                  ledger::type::Result result) {
+                                  ledger::mojom::Result result) {
   callback(result);
 }
 
@@ -529,29 +530,29 @@ void RewardsServiceImpl::RemovePrivateObserver(
   private_observers_.RemoveObserver(observer);
 }
 
-void RewardsServiceImpl::OnCreateWallet(
-    CreateWalletCallback callback,
-    ledger::type::Result result) {
+void RewardsServiceImpl::OnCreateRewardsWallet(
+    CreateRewardsWalletCallback callback,
+    ledger::mojom::Result result) {
   std::move(callback).Run(result);
 }
 
-void RewardsServiceImpl::CreateWallet(CreateWalletCallback callback) {
+void RewardsServiceImpl::CreateRewardsWallet(
+    CreateRewardsWalletCallback callback) {
   if (!Connected()) {
-    std::move(callback).Run(ledger::type::Result::LEDGER_ERROR);
+    std::move(callback).Run(ledger::mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  auto on_create = base::BindOnce(&RewardsServiceImpl::OnCreateWallet,
-      AsWeakPtr(),
-      std::move(callback));
+  auto on_create = base::BindOnce(&RewardsServiceImpl::OnCreateRewardsWallet,
+                                  AsWeakPtr(), std::move(callback));
 
-  bat_ledger_->CreateWallet(std::move(on_create));
+  bat_ledger_->CreateRewardsWallet(std::move(on_create));
 }
 
 void RewardsServiceImpl::GetActivityInfoList(
     uint32_t start,
     uint32_t limit,
-    ledger::type::ActivityInfoFilterPtr filter,
+    ledger::mojom::ActivityInfoFilterPtr filter,
     GetPublisherInfoListCallback callback) {
   if (!Connected()) {
     return;
@@ -576,7 +577,7 @@ void RewardsServiceImpl::GetExcludedList(
 
 void RewardsServiceImpl::OnGetPublisherInfoList(
     GetPublisherInfoListCallback callback,
-    ledger::type::PublisherInfoList list) {
+    std::vector<ledger::mojom::PublisherInfoPtr> list) {
   std::move(callback).Run(std::move(list));
 }
 
@@ -605,7 +606,7 @@ void RewardsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
 
   const std::string publisher_url = url.scheme() + "://" + baseDomain + "/";
 
-  ledger::type::VisitDataPtr data = ledger::type::VisitData::New();
+  ledger::mojom::VisitDataPtr data = ledger::mojom::VisitData::New();
   data->tld = data->name = baseDomain;
   data->domain = origin;
   data->path = url.path();
@@ -679,7 +680,7 @@ void RewardsServiceImpl::OnPostData(SessionID tab_id,
   if (output.empty())
     return;
 
-  ledger::type::VisitDataPtr data = ledger::type::VisitData::New();
+  ledger::mojom::VisitDataPtr data = ledger::mojom::VisitData::New();
   data->path = url.spec(),
   data->tab_id = tab_id.id();
 
@@ -708,7 +709,7 @@ void RewardsServiceImpl::OnXHRLoad(SessionID tab_id,
     parts[std::string(it.GetKey())] = it.GetUnescapedValue();
   }
 
-  ledger::type::VisitDataPtr data = ledger::type::VisitData::New();
+  ledger::mojom::VisitDataPtr data = ledger::mojom::VisitData::New();
   data->path = url.spec();
   data->tab_id = tab_id.id();
 
@@ -721,14 +722,14 @@ void RewardsServiceImpl::OnXHRLoad(SessionID tab_id,
 }
 
 void RewardsServiceImpl::OnRestorePublishers(
-    const ledger::type::Result result) {
-  if (result != ledger::type::Result::LEDGER_OK) {
+    const ledger::mojom::Result result) {
+  if (result != ledger::mojom::Result::LEDGER_OK) {
     return;
   }
 
   for (auto& observer : observers_) {
     observer.OnExcludedSitesChanged(
-      this, "-1", static_cast<int>(ledger::type::PublisherExclude::ALL));
+        this, "-1", static_cast<int>(ledger::mojom::PublisherExclude::ALL));
   }
 }
 
@@ -771,8 +772,8 @@ void RewardsServiceImpl::Shutdown() {
   RewardsService::Shutdown();
 }
 
-void RewardsServiceImpl::OnLedgerInitialized(ledger::type::Result result) {
-  if (result == ledger::type::Result::LEDGER_OK) {
+void RewardsServiceImpl::OnLedgerInitialized(ledger::mojom::Result result) {
+  if (result == ledger::mojom::Result::LEDGER_OK) {
     StartNotificationTimers();
   }
 
@@ -786,16 +787,16 @@ void RewardsServiceImpl::OnLedgerInitialized(ledger::type::Result result) {
     p3a::RecordRewardsDisabledForSomeMetrics();
   }
 
-  GetBraveWallet(
-      base::BindOnce(&RewardsServiceImpl::OnGetBraveWalletForP3A, AsWeakPtr()));
+  GetRewardsWallet(base::BindOnce(&RewardsServiceImpl::OnGetRewardsWalletForP3A,
+                                  AsWeakPtr()));
 
   for (auto& observer : observers_) {
     observer.OnRewardsInitialized(this);
   }
 }
 
-void RewardsServiceImpl::OnGetBraveWalletForP3A(
-    ledger::type::BraveWalletPtr wallet) {
+void RewardsServiceImpl::OnGetRewardsWalletForP3A(
+    ledger::mojom::RewardsWalletPtr wallet) {
   if (!wallet) {
     p3a::RecordNoWalletCreatedForAllMetrics();
   }
@@ -803,7 +804,7 @@ void RewardsServiceImpl::OnGetBraveWalletForP3A(
 
 void RewardsServiceImpl::OnGetAutoContributeProperties(
     GetAutoContributePropertiesCallback callback,
-    ledger::type::AutoContributePropertiesPtr properties) {
+    ledger::mojom::AutoContributePropertiesPtr properties) {
   if (!properties) {
     std::move(callback).Run(nullptr);
     return;
@@ -814,7 +815,7 @@ void RewardsServiceImpl::OnGetAutoContributeProperties(
 
 void RewardsServiceImpl::OnGetRewardsInternalsInfo(
     GetRewardsInternalsInfoCallback callback,
-    ledger::type::RewardsInternalsInfoPtr info) {
+    ledger::mojom::RewardsInternalsInfoPtr info) {
   std::move(callback).Run(std::move(info));
 }
 
@@ -830,14 +831,14 @@ void RewardsServiceImpl::GetAutoContributeProperties(
 }
 
 void RewardsServiceImpl::OnReconcileComplete(
-    const ledger::type::Result result,
-    ledger::type::ContributionInfoPtr contribution) {
-  if (result == ledger::type::Result::LEDGER_OK &&
-      contribution->type == ledger::type::RewardsType::RECURRING_TIP) {
+    const ledger::mojom::Result result,
+    ledger::mojom::ContributionInfoPtr contribution) {
+  if (result == ledger::mojom::Result::LEDGER_OK &&
+      contribution->type == ledger::mojom::RewardsType::RECURRING_TIP) {
     MaybeShowNotificationTipsPaid();
   }
 
-  if (result == ledger::type::Result::LEDGER_OK) {
+  if (result == ledger::mojom::Result::LEDGER_OK) {
     RecordBackendP3AStats();
   }
 
@@ -879,9 +880,9 @@ void RewardsServiceImpl::OnLedgerStateLoaded(
 
   // Run callbacks.
   const std::string& data = state.first;
-  callback(data.empty() ? ledger::type::Result::NO_LEDGER_STATE
-                        : ledger::type::Result::LEDGER_OK,
-                        data);
+  callback(data.empty() ? ledger::mojom::Result::NO_LEDGER_STATE
+                        : ledger::mojom::Result::LEDGER_OK,
+           data);
 }
 
 void RewardsServiceImpl::LoadPublisherState(
@@ -901,16 +902,15 @@ void RewardsServiceImpl::OnPublisherStateLoaded(
     return;
   }
 
-  callback(
-      data.empty() ? ledger::type::Result::NO_PUBLISHER_STATE
-                   : ledger::type::Result::LEDGER_OK,
-      data);
+  callback(data.empty() ? ledger::mojom::Result::NO_PUBLISHER_STATE
+                        : ledger::mojom::Result::LEDGER_OK,
+           data);
 }
 
-void RewardsServiceImpl::LoadURL(ledger::type::UrlRequestPtr request,
+void RewardsServiceImpl::LoadURL(ledger::mojom::UrlRequestPtr request,
                                  ledger::client::LoadURLCallback callback) {
   if (!request || request->url.empty()) {
-    ledger::type::UrlResponse response;
+    ledger::mojom::UrlResponse response;
     response.status_code = net::HTTP_BAD_REQUEST;
     std::move(callback).Run(response);
     return;
@@ -918,7 +918,7 @@ void RewardsServiceImpl::LoadURL(ledger::type::UrlRequestPtr request,
 
   GURL parsed_url(request->url);
   if (!parsed_url.is_valid()) {
-    ledger::type::UrlResponse response;
+    ledger::mojom::UrlResponse response;
     response.url = request->url;
     response.status_code = net::HTTP_BAD_REQUEST;
     std::move(callback).Run(response);
@@ -936,7 +936,7 @@ void RewardsServiceImpl::LoadURL(ledger::type::UrlRequestPtr request,
         &test_response,
         &test_headers);
 
-    ledger::type::UrlResponse response;
+    ledger::mojom::UrlResponse response;
     response.url = request->url;
     response.status_code = response_status_code;
     response.body = test_response;
@@ -999,7 +999,7 @@ void RewardsServiceImpl::OnURLLoaderComplete(
     return;
   }
 
-  ledger::type::UrlResponse response;
+  ledger::mojom::UrlResponse response;
   response.body = response_body ? *response_body : "";
 
   if (loader->NetError() != net::OK) {
@@ -1035,7 +1035,7 @@ void RewardsServiceImpl::OnURLLoaderComplete(
 
 void RewardsServiceImpl::OnGetRewardsParameters(
     GetRewardsParametersCallback callback,
-    ledger::type::RewardsParametersPtr parameters) {
+    ledger::mojom::RewardsParametersPtr parameters) {
   std::move(callback).Run(std::move(parameters));
 }
 
@@ -1052,10 +1052,10 @@ void RewardsServiceImpl::GetRewardsParameters(
 }
 
 void RewardsServiceImpl::OnFetchPromotions(
-    ledger::type::Result result,
-    ledger::type::PromotionList promotions) {
+    ledger::mojom::Result result,
+    std::vector<ledger::mojom::PromotionPtr> promotions) {
   for (auto& observer : observers_) {
-    ledger::type::PromotionList promotions_clone;
+    std::vector<ledger::mojom::PromotionPtr> promotions_clone;
     for (auto& promotion : promotions) {
       promotions_clone.push_back(promotion->Clone());
     }
@@ -1096,15 +1096,14 @@ void ParseCaptchaResponse(
   *id = *captcha_id;
 }
 
-void RewardsServiceImpl::OnClaimPromotion(
-    ClaimPromotionCallback callback,
-    const ledger::type::Result result,
-    const std::string& response) {
+void RewardsServiceImpl::OnClaimPromotion(ClaimPromotionCallback callback,
+                                          const ledger::mojom::Result result,
+                                          const std::string& response) {
   std::string image;
   std::string hint;
   std::string id;
 
-  if (result != ledger::type::Result::LEDGER_OK) {
+  if (result != ledger::mojom::Result::LEDGER_OK) {
     std::move(callback).Run(result, image, hint, id);
     return;
   }
@@ -1119,18 +1118,17 @@ void RewardsServiceImpl::OnClaimPromotion(
   std::move(callback).Run(result, image, hint, id);
 }
 
-void RewardsServiceImpl::AttestationAndroid(
-    const std::string& promotion_id,
-    AttestPromotionCallback callback,
-    const ledger::type::Result result,
-    const std::string& nonce) {
-  if (result != ledger::type::Result::LEDGER_OK) {
+void RewardsServiceImpl::AttestationAndroid(const std::string& promotion_id,
+                                            AttestPromotionCallback callback,
+                                            const ledger::mojom::Result result,
+                                            const std::string& nonce) {
+  if (result != ledger::mojom::Result::LEDGER_OK) {
     std::move(callback).Run(result, nullptr);
     return;
   }
 
   if (nonce.empty()) {
-    std::move(callback).Run(ledger::type::Result::LEDGER_ERROR, nullptr);
+    std::move(callback).Run(ledger::mojom::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
@@ -1155,7 +1153,7 @@ void RewardsServiceImpl::OnAttestationAndroid(
   }
 
   if (!token_received) {
-    std::move(callback).Run(ledger::type::Result::LEDGER_ERROR, nullptr);
+    std::move(callback).Run(ledger::mojom::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
@@ -1178,7 +1176,7 @@ void RewardsServiceImpl::ClaimPromotion(
     const std::string& promotion_id,
     ClaimPromotionCallback callback) {
   if (!Connected()) {
-    std::move(callback).Run(ledger::type::Result::LEDGER_ERROR, "", "", "");
+    std::move(callback).Run(ledger::mojom::Result::LEDGER_ERROR, "", "", "");
     return;
   }
 
@@ -1193,7 +1191,7 @@ void RewardsServiceImpl::ClaimPromotion(
     const std::string& promotion_id,
     AttestPromotionCallback callback) {
   if (!Connected()) {
-    std::move(callback).Run(ledger::type::Result::LEDGER_ERROR, nullptr);
+    std::move(callback).Run(ledger::mojom::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
@@ -1215,7 +1213,7 @@ void RewardsServiceImpl::RecoverWallet(const std::string& passPhrase) {
       AsWeakPtr()));
 }
 
-void RewardsServiceImpl::OnRecoverWallet(const ledger::type::Result result) {
+void RewardsServiceImpl::OnRecoverWallet(const ledger::mojom::Result result) {
   // Fetch balance after recovering wallet in order to initiate P3A
   // stats collection
   FetchBalance(base::DoNothing());
@@ -1262,9 +1260,9 @@ void RewardsServiceImpl::AttestPromotion(
 
 void RewardsServiceImpl::OnAttestPromotion(
     AttestPromotionCallback callback,
-    const ledger::type::Result result,
-    ledger::type::PromotionPtr promotion) {
-  if (result != ledger::type::Result::LEDGER_OK) {
+    const ledger::mojom::Result result,
+    ledger::mojom::PromotionPtr promotion) {
+  if (result != ledger::mojom::Result::LEDGER_OK) {
     std::move(callback).Run(result, nullptr);
     return;
   }
@@ -1322,7 +1320,7 @@ void RewardsServiceImpl::StopLedger(StopLedgerCallback callback) {
   BLOG(1, "Shutting down ledger process");
   if (!Connected()) {
     BLOG(1, "Ledger process not running");
-    OnStopLedger(std::move(callback), ledger::type::Result::LEDGER_OK);
+    OnStopLedger(std::move(callback), ledger::mojom::Result::LEDGER_OK);
     return;
   }
 
@@ -1332,13 +1330,10 @@ void RewardsServiceImpl::StopLedger(StopLedgerCallback callback) {
       std::move(callback)));
 }
 
-void RewardsServiceImpl::OnStopLedger(
-    StopLedgerCallback callback,
-    const ledger::type::Result result) {
-  BLOG_IF(
-      1,
-      result != ledger::type::Result::LEDGER_OK,
-      "Ledger process was not shut down successfully");
+void RewardsServiceImpl::OnStopLedger(StopLedgerCallback callback,
+                                      const ledger::mojom::Result result) {
+  BLOG_IF(1, result != ledger::mojom::Result::LEDGER_OK,
+          "Ledger process was not shut down successfully");
   Reset();
   BLOG(1, "Successfully shutdown ledger");
   std::move(callback).Run(result);
@@ -1346,7 +1341,7 @@ void RewardsServiceImpl::OnStopLedger(
 
 void RewardsServiceImpl::OnStopLedgerForCompleteReset(
     SuccessCallback callback,
-    const ledger::type::Result result) {
+    const ledger::mojom::Result result) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   profile_->GetPrefs()->ClearPrefsWithPrefixSilently(pref_prefix);
   diagnostic_log_->Delete(base::BindOnce(
@@ -1634,8 +1629,8 @@ void RewardsServiceImpl::OnStartProcessForEnableRewards() {
 }
 
 void RewardsServiceImpl::OnFetchBalanceForEnableRewards(
-    ledger::type::Result result,
-    ledger::type::BalancePtr balance) {
+    ledger::mojom::Result result,
+    ledger::mojom::BalancePtr balance) {
   // Do not enable AC on Rewards opt-in if the user has a non-zero balance, as
   // this could result in unintentional BAT transfers.
   if (balance && balance->total == 0)
@@ -1658,8 +1653,8 @@ void RewardsServiceImpl::OnAdsEnabled(bool ads_enabled) {
 
 void RewardsServiceImpl::OnGetBalanceReport(
     GetBalanceReportCallback callback,
-    const ledger::type::Result result,
-    ledger::type::BalanceReportInfoPtr report) {
+    const ledger::mojom::Result result,
+    ledger::mojom::BalanceReportInfoPtr report) {
   std::move(callback).Run(result, std::move(report));
 }
 
@@ -1668,16 +1663,14 @@ void RewardsServiceImpl::GetBalanceReport(
     const uint32_t year,
     GetBalanceReportCallback callback) {
   if (!Connected()) {
-    std::move(callback).Run(ledger::type::Result::LEDGER_OK, nullptr);
+    std::move(callback).Run(ledger::mojom::Result::LEDGER_OK, nullptr);
     return;
   }
 
   bat_ledger_->GetBalanceReport(
-      static_cast<ledger::type::ActivityMonth>(month),
-      year,
-      base::BindOnce(&RewardsServiceImpl::OnGetBalanceReport,
-        AsWeakPtr(),
-        std::move(callback)));
+      static_cast<ledger::mojom::ActivityMonth>(month), year,
+      base::BindOnce(&RewardsServiceImpl::OnGetBalanceReport, AsWeakPtr(),
+                     std::move(callback)));
 }
 
 void RewardsServiceImpl::GetPublisherActivityFromUrl(
@@ -1704,11 +1697,9 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
   }
 #endif
   if (baseDomain == "") {
-    ledger::type::PublisherInfoPtr info;
-    OnPanelPublisherInfo(
-        ledger::type::Result::NOT_FOUND,
-        std::move(info),
-        windowId);
+    ledger::mojom::PublisherInfoPtr info;
+    OnPanelPublisherInfo(ledger::mojom::Result::NOT_FOUND, std::move(info),
+                         windowId);
     return;
   }
 
@@ -1716,7 +1707,7 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
     return;
   }
 
-  ledger::type::VisitDataPtr visit_data = ledger::type::VisitData::New();
+  ledger::mojom::VisitDataPtr visit_data = ledger::mojom::VisitData::New();
   visit_data->domain = visit_data->name = baseDomain;
   visit_data->path = path;
   visit_data->url = origin;
@@ -1729,11 +1720,11 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
 }
 
 void RewardsServiceImpl::OnPanelPublisherInfo(
-    const ledger::type::Result result,
-    ledger::type::PublisherInfoPtr info,
+    const ledger::mojom::Result result,
+    ledger::mojom::PublisherInfoPtr info,
     uint64_t windowId) {
-  if (result != ledger::type::Result::LEDGER_OK &&
-      result != ledger::type::Result::NOT_FOUND) {
+  if (result != ledger::mojom::Result::LEDGER_OK &&
+      result != ledger::mojom::Result::NOT_FOUND) {
     return;
   }
 
@@ -1830,15 +1821,15 @@ void RewardsServiceImpl::GetPublisherBanner(
 
 void RewardsServiceImpl::OnPublisherBanner(
     GetPublisherBannerCallback callback,
-    ledger::type::PublisherBannerPtr banner) {
+    ledger::mojom::PublisherBannerPtr banner) {
   std::move(callback).Run(std::move(banner));
 }
 
 void RewardsServiceImpl::OnSaveRecurringTip(OnTipCallback callback,
-                                            ledger::type::Result result) {
+                                            ledger::mojom::Result result) {
   for (auto& observer : observers_) {
     observer.OnRecurringTipSaved(this,
-                                 result == ledger::type::Result::LEDGER_OK);
+                                 result == ledger::mojom::Result::LEDGER_OK);
   }
 
   std::move(callback).Run(result);
@@ -1851,7 +1842,7 @@ void RewardsServiceImpl::SaveRecurringTip(const std::string& publisher_key,
     return;
   }
 
-  ledger::type::RecurringTipPtr info = ledger::type::RecurringTip::New();
+  ledger::mojom::RecurringTipPtr info = ledger::mojom::RecurringTip::New();
   info->publisher_key = publisher_key;
   info->amount = amount;
   info->created_at = GetCurrentTimestamp();
@@ -1863,8 +1854,8 @@ void RewardsServiceImpl::SaveRecurringTip(const std::string& publisher_key,
 
 void RewardsServiceImpl::OnMediaInlineInfoSaved(
     SaveMediaInfoCallback callback,
-    const ledger::type::Result result,
-    ledger::type::PublisherInfoPtr publisher) {
+    const ledger::mojom::Result result,
+    ledger::mojom::PublisherInfoPtr publisher) {
   std::move(callback).Run(std::move(publisher));
 }
 
@@ -1917,7 +1908,7 @@ void RewardsServiceImpl::GetPublisherInfo(
     GetPublisherInfoCallback callback) {
   if (!Connected()) {
     if (!IsRewardsEnabled()) {
-      std::move(callback).Run(ledger::type::Result::LEDGER_ERROR, nullptr);
+      std::move(callback).Run(ledger::mojom::Result::LEDGER_ERROR, nullptr);
       return;
     }
 
@@ -1940,10 +1931,9 @@ void RewardsServiceImpl::OnStartProcessForGetPublisherInfo(
   GetPublisherInfo(publisher_key, std::move(callback));
 }
 
-void RewardsServiceImpl::OnPublisherInfo(
-    GetPublisherInfoCallback callback,
-    const ledger::type::Result result,
-    ledger::type::PublisherInfoPtr info) {
+void RewardsServiceImpl::OnPublisherInfo(GetPublisherInfoCallback callback,
+                                         const ledger::mojom::Result result,
+                                         ledger::mojom::PublisherInfoPtr info) {
   std::move(callback).Run(result, std::move(info));
 }
 
@@ -1951,7 +1941,7 @@ void RewardsServiceImpl::GetPublisherPanelInfo(
     const std::string& publisher_key,
     GetPublisherInfoCallback callback) {
   if (!Connected()) {
-    std::move(callback).Run(ledger::type::Result::LEDGER_ERROR, nullptr);
+    std::move(callback).Run(ledger::mojom::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
@@ -1964,18 +1954,18 @@ void RewardsServiceImpl::GetPublisherPanelInfo(
 
 void RewardsServiceImpl::OnPublisherPanelInfo(
     GetPublisherInfoCallback callback,
-    const ledger::type::Result result,
-    ledger::type::PublisherInfoPtr info) {
+    const ledger::mojom::Result result,
+    ledger::mojom::PublisherInfoPtr info) {
   std::move(callback).Run(result, std::move(info));
 }
 
 void RewardsServiceImpl::SavePublisherInfo(
     const uint64_t window_id,
-    ledger::type::PublisherInfoPtr publisher_info,
+    ledger::mojom::PublisherInfoPtr publisher_info,
     SavePublisherInfoCallback callback) {
   if (!Connected()) {
     if (!IsRewardsEnabled()) {
-      std::move(callback).Run(ledger::type::Result::LEDGER_ERROR);
+      std::move(callback).Run(ledger::mojom::Result::LEDGER_ERROR);
       return;
     }
 
@@ -1995,20 +1985,20 @@ void RewardsServiceImpl::SavePublisherInfo(
 
 void RewardsServiceImpl::OnStartProcessForSavePublisherInfo(
     uint64_t window_id,
-    ledger::type::PublisherInfoPtr publisher_info,
+    ledger::mojom::PublisherInfoPtr publisher_info,
     SavePublisherInfoCallback callback) {
   SavePublisherInfo(window_id, std::move(publisher_info), std::move(callback));
 }
 
 void RewardsServiceImpl::OnSavePublisherInfo(
     SavePublisherInfoCallback callback,
-    const ledger::type::Result result) {
+    const ledger::mojom::Result result) {
   std::move(callback).Run(result);
 }
 
 void RewardsServiceImpl::OnGetRecurringTips(
     GetRecurringTipsCallback callback,
-    ledger::type::PublisherInfoList list) {
+    std::vector<ledger::mojom::PublisherInfoPtr> list) {
   std::move(callback).Run(std::move(list));
 }
 
@@ -2026,7 +2016,7 @@ void RewardsServiceImpl::GetRecurringTips(
 
 void RewardsServiceImpl::OnGetOneTimeTips(
     GetRecurringTipsCallback callback,
-    ledger::type::PublisherInfoList list) {
+    std::vector<ledger::mojom::PublisherInfoPtr> list) {
   std::move(callback).Run(std::move(list));
 }
 
@@ -2041,8 +2031,8 @@ void RewardsServiceImpl::GetOneTimeTips(GetOneTimeTipsCallback callback) {
                      std::move(callback)));
 }
 
-void RewardsServiceImpl::OnRecurringTip(const ledger::type::Result result) {
-  bool success = result == ledger::type::Result::LEDGER_OK;
+void RewardsServiceImpl::OnRecurringTip(const ledger::mojom::Result result) {
+  bool success = result == ledger::mojom::Result::LEDGER_OK;
   for (auto& observer : observers_) {
     observer.OnRecurringTipRemoved(this, success);
   }
@@ -2062,8 +2052,8 @@ void RewardsServiceImpl::RemoveRecurringTip(
 void RewardsServiceImpl::OnSetPublisherExclude(
     const std::string& publisher_key,
     const bool exclude,
-    const ledger::type::Result result) {
-  if (result != ledger::type::Result::LEDGER_OK) {
+    const ledger::mojom::Result result) {
+  if (result != ledger::mojom::Result::LEDGER_OK) {
     return;
   }
 
@@ -2079,10 +2069,9 @@ void RewardsServiceImpl::SetPublisherExclude(
     return;
   }
 
-  ledger::type::PublisherExclude status =
-      exclude
-      ? ledger::type::PublisherExclude::EXCLUDED
-      : ledger::type::PublisherExclude::INCLUDED;
+  ledger::mojom::PublisherExclude status =
+      exclude ? ledger::mojom::PublisherExclude::EXCLUDED
+              : ledger::mojom::PublisherExclude::INCLUDED;
 
   bat_ledger_->SetPublisherExclude(
     publisher_key,
@@ -2266,13 +2255,13 @@ void RewardsServiceImpl::HandleFlags(const RewardsFlags& flags) {
   if (flags.environment) {
     switch (*flags.environment) {
       case RewardsFlags::Environment::kDevelopment:
-        SetEnvironment(ledger::type::Environment::DEVELOPMENT);
+        SetEnvironment(ledger::mojom::Environment::DEVELOPMENT);
         break;
       case RewardsFlags::Environment::kStaging:
-        SetEnvironment(ledger::type::Environment::STAGING);
+        SetEnvironment(ledger::mojom::Environment::STAGING);
         break;
       case RewardsFlags::Environment::kProduction:
-        SetEnvironment(ledger::type::Environment::PRODUCTION);
+        SetEnvironment(ledger::mojom::Environment::PRODUCTION);
         break;
     }
   }
@@ -2316,11 +2305,10 @@ void RewardsServiceImpl::GetRewardsInternalsInfo(
                      AsWeakPtr(), std::move(callback)));
 }
 
-void RewardsServiceImpl::OnTip(
-    const std::string& publisher_key,
-    const double amount,
-    const bool recurring,
-    ledger::type::PublisherInfoPtr publisher) {
+void RewardsServiceImpl::OnTip(const std::string& publisher_key,
+                               const double amount,
+                               const bool recurring,
+                               ledger::mojom::PublisherInfoPtr publisher) {
   if (!Connected() || !publisher) {
     return;
   }
@@ -2339,8 +2327,8 @@ void RewardsServiceImpl::OnTipPublisherSaved(
     const std::string& publisher_key,
     const double amount,
     const bool recurring,
-    const ledger::type::Result result) {
-  if (result != ledger::type::Result::LEDGER_OK) {
+    const ledger::mojom::Result result) {
+  if (result != ledger::mojom::Result::LEDGER_OK) {
     return;
   }
 
@@ -2383,10 +2371,10 @@ void RewardsServiceImpl::PrepareLedgerEnvForTesting() {
   // this is needed because we are using braveledger_request_util::buildURL
   // directly in RewardsBrowserTest
   #if defined(OFFICIAL_BUILD)
-  ledger::_environment = ledger::type::Environment::PRODUCTION;
-  #else
-  ledger::_environment = ledger::type::Environment::STAGING;
-  #endif
+  ledger::_environment = ledger::mojom::Environment::PRODUCTION;
+#else
+  ledger::_environment = ledger::mojom::Environment::STAGING;
+#endif
 }
 
 void RewardsServiceImpl::StartMonthlyContributionForTest() {
@@ -2422,7 +2410,8 @@ void RewardsServiceImpl::GetGeminiRetries(GetGeminiRetriesCallback callback) {
   bat_ledger_service_->GetGeminiRetries(std::move(callback));
 }
 
-void RewardsServiceImpl::SetEnvironment(ledger::type::Environment environment) {
+void RewardsServiceImpl::SetEnvironment(
+    ledger::mojom::Environment environment) {
   bat_ledger_service_->SetEnvironment(environment);
 }
 
@@ -2452,9 +2441,9 @@ void RewardsServiceImpl::GetPendingContributionsTotal(
 }
 
 void RewardsServiceImpl::PublisherListNormalized(
-    ledger::type::PublisherInfoList list) {
+    std::vector<ledger::mojom::PublisherInfoPtr> list) {
   for (auto& observer : observers_) {
-    ledger::type::PublisherInfoList new_list;
+    std::vector<ledger::mojom::PublisherInfoPtr> new_list;
     for (const auto& publisher : list) {
       if (publisher->percent >= 1) {
         new_list.push_back(publisher->Clone());
@@ -2480,7 +2469,7 @@ void RewardsServiceImpl::RefreshPublisher(
     const std::string& publisher_key,
     RefreshPublisherCallback callback) {
   if (!Connected()) {
-    std::move(callback).Run(ledger::type::PublisherStatus::NOT_VERIFIED, "");
+    std::move(callback).Run(ledger::mojom::PublisherStatus::NOT_VERIFIED, "");
     return;
   }
   bat_ledger_->RefreshPublisher(
@@ -2494,7 +2483,7 @@ void RewardsServiceImpl::RefreshPublisher(
 void RewardsServiceImpl::OnRefreshPublisher(
     RefreshPublisherCallback callback,
     const std::string& publisher_key,
-    ledger::type::PublisherStatus status) {
+    ledger::mojom::PublisherStatus status) {
   std::move(callback).Run(status, publisher_key);
 }
 
@@ -2557,7 +2546,7 @@ void RewardsServiceImpl::OnShareURL(
 
 void RewardsServiceImpl::OnGetPendingContributions(
     GetPendingContributionsCallback callback,
-    ledger::type::PendingContributionInfoList list) {
+    std::vector<ledger::mojom::PendingContributionInfoPtr> list) {
   std::move(callback).Run(std::move(list));
 }
 
@@ -2574,7 +2563,7 @@ void RewardsServiceImpl::GetPendingContributions(
 }
 
 void RewardsServiceImpl::OnPendingContributionRemoved(
-  const ledger::type::Result result) {
+    const ledger::mojom::Result result) {
   for (auto& observer : observers_) {
     observer.OnPendingContributionRemoved(this, result);
   }
@@ -2592,7 +2581,7 @@ void RewardsServiceImpl::RemovePendingContribution(const uint64_t id) {
 }
 
 void RewardsServiceImpl::OnRemoveAllPendingContributions(
-  const ledger::type::Result result) {
+    const ledger::mojom::Result result) {
   for (auto& observer : observers_) {
     observer.OnPendingContributionRemoved(this, result);
   }
@@ -2608,14 +2597,12 @@ void RewardsServiceImpl::RemoveAllPendingContributions() {
                      AsWeakPtr()));
 }
 
-
 void RewardsServiceImpl::OnContributeUnverifiedPublishers(
-      ledger::type::Result result,
-      const std::string& publisher_key,
-      const std::string& publisher_name) {
+    ledger::mojom::Result result,
+    const std::string& publisher_key,
+    const std::string& publisher_name) {
   switch (result) {
-    case ledger::type::Result::PENDING_NOT_ENOUGH_FUNDS:
-    {
+    case ledger::mojom::Result::PENDING_NOT_ENOUGH_FUNDS: {
       RewardsNotificationService::RewardsNotificationArgs args;
       notification_service_->AddNotification(
           RewardsNotificationService::
@@ -2624,17 +2611,14 @@ void RewardsServiceImpl::OnContributeUnverifiedPublishers(
           "rewards_notification_not_enough_funds");
       break;
     }
-    case ledger::type::Result::PENDING_PUBLISHER_REMOVED:
-    {
+    case ledger::mojom::Result::PENDING_PUBLISHER_REMOVED: {
       for (auto& observer : observers_) {
-        observer.OnPendingContributionRemoved(
-            this,
-            ledger::type::Result::LEDGER_OK);
+        observer.OnPendingContributionRemoved(this,
+                                              ledger::mojom::Result::LEDGER_OK);
       }
       break;
     }
-    case ledger::type::Result::VERIFIED_PUBLISHER:
-    {
+    case ledger::mojom::Result::VERIFIED_PUBLISHER: {
       RewardsNotificationService::RewardsNotificationArgs args;
       args.push_back(publisher_name);
       notification_service_->AddNotification(
@@ -2649,14 +2633,14 @@ void RewardsServiceImpl::OnContributeUnverifiedPublishers(
 }
 
 void RewardsServiceImpl::OnFetchBalance(FetchBalanceCallback callback,
-                                        const ledger::type::Result result,
-                                        ledger::type::BalancePtr balance) {
+                                        const ledger::mojom::Result result,
+                                        ledger::mojom::BalancePtr balance) {
   std::move(callback).Run(result, std::move(balance));
 }
 
 void RewardsServiceImpl::FetchBalance(FetchBalanceCallback callback) {
   if (!Connected()) {
-    std::move(callback).Run(ledger::type::Result::LEDGER_ERROR, nullptr);
+    std::move(callback).Run(ledger::mojom::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
@@ -2684,14 +2668,14 @@ std::string RewardsServiceImpl::GetLegacyWallet() {
 
 void RewardsServiceImpl::OnGetExternalWallet(
     GetExternalWalletCallback callback,
-    const ledger::type::Result result,
-    ledger::type::ExternalWalletPtr wallet) {
+    const ledger::mojom::Result result,
+    ledger::mojom::ExternalWalletPtr wallet) {
   std::move(callback).Run(result, std::move(wallet));
 }
 
 void RewardsServiceImpl::GetExternalWallet(GetExternalWalletCallback callback) {
   if (!Connected()) {
-    std::move(callback).Run(ledger::type::Result::LEDGER_OK, nullptr);
+    std::move(callback).Run(ledger::mojom::Result::LEDGER_OK, nullptr);
     return;
   }
 
@@ -2704,7 +2688,7 @@ void RewardsServiceImpl::GetExternalWallet(GetExternalWalletCallback callback) {
 void RewardsServiceImpl::OnExternalWalletAuthorization(
     const std::string& wallet_type,
     ExternalWalletAuthorizationCallback callback,
-    const ledger::type::Result result,
+    const ledger::mojom::Result result,
     const base::flat_map<std::string, std::string>& args) {
   std::move(callback).Run(result, args);
 }
@@ -2730,7 +2714,7 @@ void RewardsServiceImpl::OnProcessExternalWalletAuthorization(
     const std::string& wallet_type,
     const std::string& action,
     ProcessRewardsPageUrlCallback callback,
-    const ledger::type::Result result,
+    const ledger::mojom::Result result,
     const base::flat_map<std::string, std::string>& args) {
   std::move(callback).Run(result, wallet_type, action, args);
 }
@@ -2746,7 +2730,7 @@ void RewardsServiceImpl::ProcessRewardsPageUrl(
       base::SPLIT_WANT_NONEMPTY);
 
   if (path_items.size() < 2) {
-    std::move(callback).Run(ledger::type::Result::LEDGER_ERROR, "", "", {});
+    std::move(callback).Run(ledger::mojom::Result::LEDGER_ERROR, "", "", {});
     return;
   }
 
@@ -2777,11 +2761,8 @@ void RewardsServiceImpl::ProcessRewardsPageUrl(
     }
   }
 
-  std::move(callback).Run(
-      ledger::type::Result::LEDGER_ERROR,
-      wallet_type,
-      action,
-      {});
+  std::move(callback).Run(ledger::mojom::Result::LEDGER_ERROR, wallet_type,
+                          action, {});
 }
 
 void RewardsServiceImpl::RequestAdsEnabledPopupClosed(bool ads_enabled) {
@@ -2797,7 +2778,7 @@ void RewardsServiceImpl::RequestAdsEnabledPopupClosed(bool ads_enabled) {
 
 void RewardsServiceImpl::OnDisconnectWallet(
     const std::string& wallet_type,
-    const ledger::type::Result result) {
+    const ledger::mojom::Result result) {
   for (auto& observer : observers_) {
     observer.OnDisconnectWallet(this, result, wallet_type);
   }
@@ -2819,7 +2800,7 @@ void RewardsServiceImpl::ShowNotification(
     const std::vector<std::string>& args,
     ledger::LegacyResultCallback callback) {
   if (type.empty()) {
-    callback(ledger::type::Result::LEDGER_ERROR);
+    callback(ledger::mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -2830,7 +2811,7 @@ void RewardsServiceImpl::ShowNotification(
       RewardsNotificationService::REWARDS_NOTIFICATION_GENERAL_LEDGER,
       notification_args,
       "rewards_notification_general_ledger_" + type);
-    callback(ledger::type::Result::LEDGER_OK);
+  callback(ledger::mojom::Result::LEDGER_OK);
 }
 
 void RewardsServiceImpl::RecordBackendP3AStats() {
@@ -2844,7 +2825,7 @@ void RewardsServiceImpl::RecordBackendP3AStats() {
 }
 
 void RewardsServiceImpl::OnRecordBackendP3AStatsRecurring(
-    ledger::type::PublisherInfoList list) {
+    std::vector<ledger::mojom::PublisherInfoPtr> list) {
   if (!Connected()) {
     return;
   }
@@ -2857,25 +2838,25 @@ void RewardsServiceImpl::OnRecordBackendP3AStatsRecurring(
 
 void RewardsServiceImpl::OnRecordBackendP3AStatsContributions(
     const uint32_t recurring_donation_size,
-    ledger::type::ContributionInfoList list) {
+    std::vector<ledger::mojom::ContributionInfoPtr> list) {
   int auto_contributions = 0;
   int tips = 0;
   int queued_recurring = 0;
 
   for (const auto& contribution : list) {
     switch (contribution->type) {
-    case ledger::type::RewardsType::AUTO_CONTRIBUTE: {
-      auto_contributions += 1;
-      break;
-    }
-    case ledger::type::RewardsType::ONE_TIME_TIP: {
-      tips += 1;
-      break;
-    }
-    case ledger::type::RewardsType::RECURRING_TIP: {
-      queued_recurring += 1;
-      break;
-    }
+      case ledger::mojom::RewardsType::AUTO_CONTRIBUTE: {
+        auto_contributions += 1;
+        break;
+      }
+      case ledger::mojom::RewardsType::ONE_TIME_TIP: {
+        tips += 1;
+        break;
+      }
+      case ledger::mojom::RewardsType::RECURRING_TIP: {
+        queued_recurring += 1;
+        break;
+      }
     default:
       NOTREACHED();
     }
@@ -2904,8 +2885,9 @@ void RewardsServiceImpl::OnRecordBackendP3AStatsAC(
 }
 
 #if BUILDFLAG(IS_ANDROID)
-ledger::type::Environment RewardsServiceImpl::GetServerEnvironmentForAndroid() {
-  auto result = ledger::type::Environment::PRODUCTION;
+ledger::mojom::Environment
+RewardsServiceImpl::GetServerEnvironmentForAndroid() {
+  auto result = ledger::mojom::Environment::PRODUCTION;
   bool use_staging = false;
   if (profile_ && profile_->GetPrefs()) {
     use_staging =
@@ -2913,30 +2895,30 @@ ledger::type::Environment RewardsServiceImpl::GetServerEnvironmentForAndroid() {
   }
 
   if (use_staging) {
-    result = ledger::type::Environment::STAGING;
+    result = ledger::mojom::Environment::STAGING;
   }
 
   return result;
 }
 #endif
 
-ledger::type::ClientInfoPtr GetDesktopClientInfo() {
-  auto info = ledger::type::ClientInfo::New();
-  info->platform = ledger::type::Platform::DESKTOP;
+ledger::mojom::ClientInfoPtr GetDesktopClientInfo() {
+  auto info = ledger::mojom::ClientInfo::New();
+  info->platform = ledger::mojom::Platform::DESKTOP;
 #if BUILDFLAG(IS_MAC)
-  info->os = ledger::type::OperatingSystem::MACOS;
+  info->os = ledger::mojom::OperatingSystem::MACOS;
 #elif BUILDFLAG(IS_WIN)
-  info->os = ledger::type::OperatingSystem::WINDOWS;
+  info->os = ledger::mojom::OperatingSystem::WINDOWS;
 #elif BUILDFLAG(IS_LINUX)
-  info->os = ledger::type::OperatingSystem::LINUX;
+  info->os = ledger::mojom::OperatingSystem::LINUX;
 #else
-  info->os = ledger::type::OperatingSystem::UNDEFINED;
+  info->os = ledger::mojom::OperatingSystem::UNDEFINED;
 #endif
 
   return info;
 }
 
-ledger::type::ClientInfoPtr RewardsServiceImpl::GetClientInfo() {
+ledger::mojom::ClientInfoPtr RewardsServiceImpl::GetClientInfo() {
 #if BUILDFLAG(IS_ANDROID)
   return android_util::GetAndroidClientInfo();
 #else
@@ -2964,7 +2946,7 @@ void RewardsServiceImpl::GetAnonWalletStatus(
 
 void RewardsServiceImpl::OnGetAnonWalletStatus(
     GetAnonWalletStatusCallback callback,
-    const ledger::type::Result result) {
+    const ledger::mojom::Result result) {
   std::move(callback).Run(result);
 }
 
@@ -2977,17 +2959,15 @@ void RewardsServiceImpl::GetMonthlyReport(
   }
 
   bat_ledger_->GetMonthlyReport(
-      static_cast<ledger::type::ActivityMonth>(month),
-      year,
-      base::BindOnce(&RewardsServiceImpl::OnGetMonthlyReport,
-          AsWeakPtr(),
-          std::move(callback)));
+      static_cast<ledger::mojom::ActivityMonth>(month), year,
+      base::BindOnce(&RewardsServiceImpl::OnGetMonthlyReport, AsWeakPtr(),
+                     std::move(callback)));
 }
 
 void RewardsServiceImpl::OnGetMonthlyReport(
     GetMonthlyReportCallback callback,
-    const ledger::type::Result result,
-    ledger::type::MonthlyReportInfoPtr report) {
+    const ledger::mojom::Result result,
+    ledger::mojom::MonthlyReportInfoPtr report) {
   std::move(callback).Run(std::move(report));
 }
 
@@ -2998,7 +2978,7 @@ void RewardsServiceImpl::ReconcileStampReset() {
 }
 
 void RewardsServiceImpl::RunDBTransaction(
-    ledger::type::DBTransactionPtr transaction,
+    ledger::mojom::DBTransactionPtr transaction,
     ledger::client::RunDBTransactionCallback callback) {
   DCHECK(ledger_database_);
   ledger_database_.AsyncCall(&ledger::LedgerDatabase::RunTransaction)
@@ -3009,7 +2989,7 @@ void RewardsServiceImpl::RunDBTransaction(
 
 void RewardsServiceImpl::OnRunDBTransaction(
     ledger::client::RunDBTransactionCallback callback,
-    ledger::type::DBCommandResponsePtr response) {
+    ledger::mojom::DBCommandResponsePtr response) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   std::move(callback).Run(std::move(response));
 }
@@ -3020,7 +3000,7 @@ void RewardsServiceImpl::GetCreateScript(
 }
 
 void RewardsServiceImpl::PendingContributionSaved(
-    const ledger::type::Result result) {
+    const ledger::mojom::Result result) {
   for (auto& observer : observers_) {
     observer.OnPendingContributionSaved(this, result);
   }
@@ -3063,7 +3043,7 @@ void RewardsServiceImpl::GetAllContributions(
 
 void RewardsServiceImpl::OnGetAllContributions(
     GetAllContributionsCallback callback,
-    ledger::type::ContributionInfoList contributions) {
+    std::vector<ledger::mojom::ContributionInfoPtr> contributions) {
   std::move(callback).Run(std::move(contributions));
 }
 
@@ -3080,8 +3060,8 @@ void RewardsServiceImpl::GetAllPromotions(GetAllPromotionsCallback callback) {
 
 void RewardsServiceImpl::OnGetAllPromotions(
     GetAllPromotionsCallback callback,
-    base::flat_map<std::string, ledger::type::PromotionPtr> promotions) {
-  ledger::type::PromotionList list;
+    base::flat_map<std::string, ledger::mojom::PromotionPtr> promotions) {
+  std::vector<ledger::mojom::PromotionPtr> list;
   for (const auto& promotion : promotions) {
     if (!promotion.second) {
       continue;
@@ -3134,7 +3114,7 @@ void RewardsServiceImpl::OnStartProcessForCompleteReset(
 }
 
 void RewardsServiceImpl::WalletDisconnected(const std::string& wallet_type) {
-  OnDisconnectWallet(wallet_type, ledger::type::Result::LEDGER_OK);
+  OnDisconnectWallet(wallet_type, ledger::mojom::Result::LEDGER_OK);
 }
 
 void RewardsServiceImpl::DeleteLog(ledger::LegacyResultCallback callback) {
@@ -3146,9 +3126,8 @@ void RewardsServiceImpl::DeleteLog(ledger::LegacyResultCallback callback) {
 void RewardsServiceImpl::OnDiagnosticLogDeleted(
     ledger::LegacyResultCallback callback,
     bool success) {
-  const auto result = success
-      ? ledger::type::Result::LEDGER_OK
-      : ledger::type::Result::LEDGER_ERROR;
+  const auto result = success ? ledger::mojom::Result::LEDGER_OK
+                              : ledger::mojom::Result::LEDGER_ERROR;
   callback(result);
 }
 
@@ -3165,7 +3144,7 @@ void RewardsServiceImpl::GetEventLogs(GetEventLogsCallback callback) {
 
 void RewardsServiceImpl::OnGetEventLogs(
     GetEventLogsCallback callback,
-    ledger::type::EventLogs logs) {
+    std::vector<ledger::mojom::EventLogPtr> logs) {
   std::move(callback).Run(std::move(logs));
 }
 
@@ -3187,21 +3166,20 @@ absl::optional<std::string> RewardsServiceImpl::DecryptString(
   return {};
 }
 
-void RewardsServiceImpl::GetBraveWallet(GetBraveWalletCallback callback) {
+void RewardsServiceImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {
   if (!Connected()) {
     std::move(callback).Run(nullptr);
     return;
   }
 
-  bat_ledger_->GetBraveWallet(
-    base::BindOnce(&RewardsServiceImpl::OnGetBraveWallet,
-        AsWeakPtr(),
-        std::move(callback)));
+  bat_ledger_->GetRewardsWallet(
+      base::BindOnce(&RewardsServiceImpl::OnGetRewardsWallet, AsWeakPtr(),
+                     std::move(callback)));
 }
 
-void RewardsServiceImpl::OnGetBraveWallet(
-    GetBraveWalletCallback callback,
-    ledger::type::BraveWalletPtr wallet) {
+void RewardsServiceImpl::OnGetRewardsWallet(
+    GetRewardsWalletCallback callback,
+    ledger::mojom::RewardsWalletPtr wallet) {
   std::move(callback).Run(std::move(wallet));
 }
 
@@ -3210,14 +3188,14 @@ void RewardsServiceImpl::StartProcess(base::OnceClosure callback) {
   StartLedgerProcessIfNecessary();
 }
 
-void RewardsServiceImpl::GetWalletPassphrase(
-    GetWalletPassphraseCallback callback) {
+void RewardsServiceImpl::GetRewardsWalletPassphrase(
+    GetRewardsWalletPassphraseCallback callback) {
   if (!Connected()) {
     std::move(callback).Run("");
     return;
   }
 
-  bat_ledger_->GetWalletPassphrase(std::move(callback));
+  bat_ledger_->GetRewardsWalletPassphrase(std::move(callback));
 }
 
 void RewardsServiceImpl::SetAdsEnabled(const bool is_enabled) {
@@ -3235,8 +3213,8 @@ void RewardsServiceImpl::SetAdsEnabled(const bool is_enabled) {
     return;
   }
 
-  CreateWallet(base::BindOnce(
-      &RewardsServiceImpl::OnWalletCreatedForSetAdsEnabled,
+  CreateRewardsWallet(base::BindOnce(
+      &RewardsServiceImpl::OnRewardsWalletCreatedForSetAdsEnabled,
       AsWeakPtr()));
 }
 
@@ -3261,9 +3239,9 @@ void RewardsServiceImpl::OnStartProcessForSetAdsEnabled() {
   SetAdsEnabled(true);
 }
 
-void RewardsServiceImpl::OnWalletCreatedForSetAdsEnabled(
-    const ledger::type::Result result) {
-  if (result != ledger::type::Result::WALLET_CREATED) {
+void RewardsServiceImpl::OnRewardsWalletCreatedForSetAdsEnabled(
+    const ledger::mojom::Result result) {
+  if (result != ledger::mojom::Result::WALLET_CREATED) {
     BLOG(0,  "Failed to create a wallet");
     return;
   }

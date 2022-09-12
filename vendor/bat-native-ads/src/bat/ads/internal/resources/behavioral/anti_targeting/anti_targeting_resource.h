@@ -15,8 +15,7 @@
 #include "bat/ads/internal/resources/parsing_result.h"
 #include "bat/ads/internal/resources/resource_manager_observer.h"
 
-namespace ads {
-namespace resource {
+namespace ads::resource {
 
 class AntiTargeting final : public LocaleManagerObserver,
                             public ResourceManagerObserver {
@@ -49,7 +48,6 @@ class AntiTargeting final : public LocaleManagerObserver,
   base::WeakPtrFactory<AntiTargeting> weak_ptr_factory_{this};
 };
 
-}  // namespace resource
-}  // namespace ads
+}  // namespace ads::resource
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_BEHAVIORAL_ANTI_TARGETING_ANTI_TARGETING_RESOURCE_H_

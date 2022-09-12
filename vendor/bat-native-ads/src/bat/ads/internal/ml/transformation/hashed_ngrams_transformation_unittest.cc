@@ -11,8 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace ml {
+namespace ads::ml {
 
 class BatAdsHashedNGramsTest : public UnitTestBase {
  protected:
@@ -23,7 +22,7 @@ class BatAdsHashedNGramsTest : public UnitTestBase {
 
 TEST_F(BatAdsHashedNGramsTest, HashingTest) {
   // Arrange
-  const int kDefaultBucketCount = 10000;
+  const int kDefaultBucketCount = 10'000;
   const size_t kExpectedElementCount = 10;
   const std::string kTestString = "tiny";
   const std::unique_ptr<Data> text_data =
@@ -72,5 +71,4 @@ TEST_F(BatAdsHashedNGramsTest, CustomHashingTest) {
             static_cast<int>(hashed_vector_data->GetValuesForTesting().size()));
 }
 
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml

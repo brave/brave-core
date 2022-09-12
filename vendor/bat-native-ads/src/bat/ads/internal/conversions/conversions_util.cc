@@ -18,8 +18,7 @@
 #include "third_party/re2/src/re2/re2.h"
 #include "tweetnacl.h"  // NOLINT
 
-namespace ads {
-namespace security {
+namespace ads::security {
 
 namespace {
 
@@ -95,5 +94,4 @@ absl::optional<VerifiableConversionEnvelopeInfo> SealEnvelope(
   return envelope;
 }
 
-}  // namespace security
-}  // namespace ads
+}  // namespace ads::security

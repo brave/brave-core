@@ -35,7 +35,7 @@ class LedgerImpl;
 namespace endpoint {
 namespace promotion {
 
-using PostClaimBraveCallback = base::OnceCallback<void(type::Result result)>;
+using PostClaimBraveCallback = base::OnceCallback<void(mojom::Result result)>;
 
 class PostClaimBrave {
  public:
@@ -51,10 +51,10 @@ class PostClaimBrave {
 
   std::string GeneratePayload(const std::string& destination_payment_id);
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(const int status_code);
 
   void OnRequest(PostClaimBraveCallback callback,
-                 const type::UrlResponse& response);
+                 const mojom::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

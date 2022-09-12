@@ -5,11 +5,11 @@
 
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 
-#include <algorithm>
 #include <map>
 #include <utility>
 
 #include "base/bind.h"
+#include "base/containers/contains.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -32,9 +32,7 @@
 #include "bat/ads/internal/segments/segment_util.h"
 #include "url/gurl.h"
 
-namespace ads {
-namespace database {
-namespace table {
+namespace ads::database::table {
 
 using CreativeNewTabPageAdMap = std::map<std::string, CreativeNewTabPageAdInfo>;
 
@@ -132,19 +130,13 @@ CreativeNewTabPageAdMap GroupCreativeAdsFromResponse(
     }
 
     for (const auto& daypart : creative_ad.dayparts) {
-      const auto daypart_iter =
-          std::find(iter->second.dayparts.cbegin(),
-                    iter->second.dayparts.cend(), daypart);
-      if (daypart_iter == iter->second.dayparts.cend()) {
+      if (!base::Contains(iter->second.dayparts, daypart)) {
         iter->second.dayparts.push_back(daypart);
       }
     }
 
     for (const auto& wallpaper : creative_ad.wallpapers) {
-      const auto wallpaper_iter =
-          std::find(iter->second.wallpapers.cbegin(),
-                    iter->second.wallpapers.cend(), wallpaper);
-      if (wallpaper_iter == iter->second.wallpapers.cend()) {
+      if (!base::Contains(iter->second.wallpapers, wallpaper)) {
         iter->second.wallpapers.push_back(wallpaper);
       }
     }
@@ -672,6 +664,4 @@ void CreativeNewTabPageAds::MigrateToV24(
   transaction->commands.push_back(std::move(command));
 }
 
-}  // namespace table
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database::table

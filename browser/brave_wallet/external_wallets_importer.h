@@ -60,7 +60,7 @@ class ExternalWalletsImporter {
   void OnCryptoWalletsLoaded(InitCallback);
   bool IsCryptoWalletsInstalledInternal() const;
 
-  void GetLocalStorage(const extensions::Extension*, InitCallback);
+  void GetLocalStorage(const extensions::Extension&, InitCallback);
   void OnGetLocalStorage(InitCallback, base::Value::Dict);
 
   void GetMnemonic(bool is_legacy_crypto_wallets,

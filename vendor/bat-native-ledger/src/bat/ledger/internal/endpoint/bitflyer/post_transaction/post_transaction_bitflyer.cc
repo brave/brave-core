@@ -53,34 +53,34 @@ std::string PostTransaction::GeneratePayload(
   return json;
 }
 
-type::Result PostTransaction::CheckStatusCode(const int status_code) {
+mojom::Result PostTransaction::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_UNAUTHORIZED) {
     BLOG(0, "Unauthorized access");
-    return type::Result::EXPIRED_TOKEN;
+    return mojom::Result::EXPIRED_TOKEN;
   }
 
   if (status_code == net::HTTP_NOT_FOUND) {
     BLOG(0, "Account not found");
-    return type::Result::NOT_FOUND;
+    return mojom::Result::NOT_FOUND;
   }
 
   if (status_code == net::HTTP_CONFLICT) {
     BLOG(0, "Conflict");
-    return type::Result::IN_PROGRESS;
+    return mojom::Result::IN_PROGRESS;
   }
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
-type::Result PostTransaction::ParseBody(const std::string& body,
-                                        std::string* transfer_id,
-                                        std::string* transfer_status,
-                                        std::string* message) {
+mojom::Result PostTransaction::ParseBody(const std::string& body,
+                                         std::string* transfer_id,
+                                         std::string* transfer_status,
+                                         std::string* message) {
   DCHECK(transfer_id);
   DCHECK(transfer_status);
   DCHECK(message);
@@ -88,20 +88,20 @@ type::Result PostTransaction::ParseBody(const std::string& body,
   absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* transfer_id_str = dict.FindString("transfer_id");
   if (!transfer_id_str) {
     BLOG(0, "Missing transfer id");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   const auto* transfer_status_str = dict.FindString("transfer_status");
   if (!transfer_status_str) {
     BLOG(0, "Missing transfer status");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   const auto* message_str = dict.FindString("message");
@@ -110,7 +110,7 @@ type::Result PostTransaction::ParseBody(const std::string& body,
   *transfer_status = *transfer_status_str;
   *message = message_str ? *message_str : "";
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
 void PostTransaction::Request(
@@ -121,23 +121,23 @@ void PostTransaction::Request(
   auto url_callback =
       std::bind(&PostTransaction::OnRequest, this, _1, callback);
 
-  auto request = type::UrlRequest::New();
+  auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
   request->content = GeneratePayload(transaction, dry_run);
   request->headers = RequestAuthorization(token);
   request->content_type = "application/json; charset=utf-8";
-  request->method = type::UrlMethod::POST;
+  request->method = mojom::UrlMethod::POST;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
-void PostTransaction::OnRequest(const type::UrlResponse& response,
+void PostTransaction::OnRequest(const mojom::UrlResponse& response,
                                 PostTransactionCallback callback) {
   ledger::LogUrlResponse(__func__, response);
 
-  type::Result result = CheckStatusCode(response.status_code);
+  mojom::Result result = CheckStatusCode(response.status_code);
 
-  if (result != type::Result::LEDGER_OK &&
-      result != type::Result::IN_PROGRESS) {
+  if (result != mojom::Result::LEDGER_OK &&
+      result != mojom::Result::IN_PROGRESS) {
     return callback(result, "");
   }
 
@@ -145,13 +145,13 @@ void PostTransaction::OnRequest(const type::UrlResponse& response,
   std::string transfer_status;
   std::string message;
   result = ParseBody(response.body, &id, &transfer_status, &message);
-  if (result == type::Result::LEDGER_OK && transfer_status != "SUCCESS") {
+  if (result == mojom::Result::LEDGER_OK && transfer_status != "SUCCESS") {
     BLOG(0, "Transfer failed (status: " << transfer_status << ")");
     BLOG_IF(0, !message.empty(), message);
 
     return callback(transfer_status == "SESSION_TIME_OUT"
-                        ? type::Result::EXPIRED_TOKEN
-                        : type::Result::LEDGER_ERROR,
+                        ? mojom::Result::EXPIRED_TOKEN
+                        : mojom::Result::LEDGER_ERROR,
                     "");
   }
 

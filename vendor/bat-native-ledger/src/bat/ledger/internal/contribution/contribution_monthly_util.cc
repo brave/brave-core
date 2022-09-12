@@ -9,15 +9,15 @@ namespace ledger {
 namespace contribution {
 
 double GetTotalFromVerifiedTips(
-    const type::PublisherInfoList& publisher_list) {
+    const std::vector<mojom::PublisherInfoPtr>& publisher_list) {
   double total_amount = 0.0;
   for (const auto& publisher : publisher_list) {
     if (!publisher || publisher->id.empty()) {
       continue;
     }
 
-    if (publisher->status == type::PublisherStatus::UPHOLD_VERIFIED ||
-        publisher->status == type::PublisherStatus::BITFLYER_VERIFIED) {
+    if (publisher->status == mojom::PublisherStatus::UPHOLD_VERIFIED ||
+        publisher->status == mojom::PublisherStatus::BITFLYER_VERIFIED) {
       total_amount += publisher->weight;
     }
   }

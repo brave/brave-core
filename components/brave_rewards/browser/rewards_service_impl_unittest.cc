@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <map>
+#include <memory>
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/memory/raw_ptr.h"
@@ -34,28 +35,31 @@ using ::testing::Return;
 
 class MockRewardsServiceObserver : public RewardsServiceObserver {
  public:
-  MOCK_METHOD3(OnFetchPromotions, void(RewardsService*,
-      const ledger::type::Result result,
-      const ledger::type::PromotionList& list));
+  MOCK_METHOD3(OnFetchPromotions,
+               void(RewardsService*,
+                    const ledger::mojom::Result result,
+                    const std::vector<ledger::mojom::PromotionPtr>& list));
   MOCK_METHOD2(OnRecoverWallet,
-      void(RewardsService*, const ledger::type::Result));
-  MOCK_METHOD3(OnPromotionFinished, void(
-      RewardsService*,
-      const ledger::type::Result,
-      ledger::type::PromotionPtr));
-  MOCK_METHOD6(OnReconcileComplete, void(
-      RewardsService*,
-      const ledger::type::Result,
-      const std::string&,
-      const double,
-      const ledger::type::RewardsType,
-      const ledger::type::ContributionProcessor));
+               void(RewardsService*, const ledger::mojom::Result));
+  MOCK_METHOD3(OnPromotionFinished,
+               void(RewardsService*,
+                    const ledger::mojom::Result,
+                    ledger::mojom::PromotionPtr));
+  MOCK_METHOD6(OnReconcileComplete,
+               void(RewardsService*,
+                    const ledger::mojom::Result,
+                    const std::string&,
+                    const double,
+                    const ledger::mojom::RewardsType,
+                    const ledger::mojom::ContributionProcessor));
   MOCK_METHOD2(OnGetRecurringTips,
-      void(RewardsService*, ledger::type::PublisherInfoList list));
+               void(RewardsService*,
+                    std::vector<ledger::mojom::PublisherInfoPtr> list));
   MOCK_METHOD2(OnPublisherBanner,
-      void(RewardsService*, ledger::type::PublisherBannerPtr banner));
-  MOCK_METHOD4(OnPanelPublisherInfo,
-      void(RewardsService*, int, ledger::type::PublisherInfoPtr, uint64_t));
+               void(RewardsService*, ledger::mojom::PublisherBannerPtr banner));
+  MOCK_METHOD4(
+      OnPanelPublisherInfo,
+      void(RewardsService*, int, ledger::mojom::PublisherInfoPtr, uint64_t));
   MOCK_METHOD2(OnAdsEnabled, void(RewardsService*, bool));
 };
 
@@ -86,7 +90,7 @@ class RewardsServiceTest : public testing::Test {
         RewardsServiceFactory::GetForProfile(profile()));
     ASSERT_TRUE(RewardsServiceFactory::GetInstance());
     ASSERT_TRUE(rewards_service());
-    observer_.reset(new MockRewardsServiceObserver);
+    observer_ = std::make_unique<MockRewardsServiceObserver>();
     rewards_service_->AddObserver(observer_.get());
   }
 

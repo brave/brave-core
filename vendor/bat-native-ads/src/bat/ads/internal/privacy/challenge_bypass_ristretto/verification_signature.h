@@ -9,13 +9,11 @@
 #include <ostream>
 #include <string>
 
+#include "absl/types/optional.h"
 #include "base/check.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "wrapper.hpp"
 
-namespace ads {
-namespace privacy {
-namespace cbr {
+namespace ads::privacy::cbr {
 
 // A |VerificationSignature| which can be verified given the |VerificationKey|
 // and message.
@@ -59,8 +57,6 @@ class VerificationSignature {
 std::ostream& operator<<(std::ostream& os,
                          const VerificationSignature& verification_signature);
 
-}  // namespace cbr
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::cbr
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_CHALLENGE_BYPASS_RISTRETTO_VERIFICATION_SIGNATURE_H_

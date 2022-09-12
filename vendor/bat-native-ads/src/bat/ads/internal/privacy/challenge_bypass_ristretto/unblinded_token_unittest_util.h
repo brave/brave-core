@@ -8,17 +8,13 @@
 
 #include <vector>
 
-namespace ads {
-namespace privacy {
-namespace cbr {
+namespace ads::privacy::cbr {
 
 class UnblindedToken;
 
 UnblindedToken GetUnblindedToken();
 std::vector<UnblindedToken> GetUnblindedTokens();
 
-}  // namespace cbr
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::cbr
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_CHALLENGE_BYPASS_RISTRETTO_UNBLINDED_TOKEN_UNITTEST_UTIL_H_

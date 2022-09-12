@@ -31,27 +31,27 @@ void PromotionTransfer::Start(
                      base::Unretained(this), std::move(callback));
 
   ledger_->database()->GetSpendableUnblindedTokens(
-      [callback = std::make_shared<decltype(tokens_callback)>(
-           std::move(tokens_callback))](type::UnblindedTokenList tokens) {
+      [callback = std::make_shared<decltype(tokens_callback)>(std::move(
+           tokens_callback))](std::vector<mojom::UnblindedTokenPtr> tokens) {
         std::move(*callback).Run(std::move(tokens));
       });
 }
 
 void PromotionTransfer::OnGetSpendableUnblindedTokens(
     ledger::PostSuggestionsClaimCallback callback,
-    type::UnblindedTokenList tokens) const {
-  std::vector<type::UnblindedToken> token_list;
+    std::vector<mojom::UnblindedTokenPtr> tokens) const {
+  std::vector<mojom::UnblindedToken> token_list;
   for (auto& token : tokens) {
     token_list.push_back(*token);
   }
 
   if (token_list.empty()) {
-    return std::move(callback).Run(type::Result::LEDGER_OK, "");
+    return std::move(callback).Run(mojom::Result::LEDGER_OK, "");
   }
 
   credential::CredentialsRedeem redeem;
-  redeem.type = type::RewardsType::TRANSFER;
-  redeem.processor = type::ContributionProcessor::BRAVE_TOKENS;
+  redeem.type = mojom::RewardsType::TRANSFER;
+  redeem.processor = mojom::ContributionProcessor::BRAVE_TOKENS;
   redeem.token_list = std::move(token_list);
 
   credentials_->DrainTokens(
@@ -63,9 +63,9 @@ void PromotionTransfer::OnGetSpendableUnblindedTokens(
 void PromotionTransfer::OnDrainTokens(
     ledger::PostSuggestionsClaimCallback callback,
     double transfer_amount,
-    type::Result result,
+    mojom::Result result,
     std::string drain_id) const {
-  if (result == type::Result::LEDGER_OK) {
+  if (result == mojom::Result::LEDGER_OK) {
     ledger_->database()->SaveEventLog(log::kPromotionVBATDrained,
                                       base::NumberToString(transfer_amount));
   }

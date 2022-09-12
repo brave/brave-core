@@ -45,23 +45,22 @@
 namespace ledger {
 class LedgerImpl;
 
-namespace endpoint {
-namespace bitflyer {
+namespace endpoint::bitflyer {
 
-using PostOauthCallback = std::function<void(const type::Result result,
-                                             const std::string& token,
-                                             const std::string& address,
-                                             const std::string& linking_info)>;
+using PostOauthCallback = base::OnceCallback<void(mojom::Result,
+                                                  std::string&& token,
+                                                  std::string&& address,
+                                                  std::string&& linking_info)>;
 
 class PostOauth {
  public:
-  explicit PostOauth(LedgerImpl* ledger);
+  explicit PostOauth(LedgerImpl*);
   ~PostOauth();
 
   void Request(const std::string& external_account_id,
                const std::string& code,
                const std::string& code_verifier,
-               PostOauthCallback callback);
+               PostOauthCallback);
 
  private:
   std::string GetUrl();
@@ -70,20 +69,19 @@ class PostOauth {
                               const std::string& code,
                               const std::string& code_verifier);
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(int status_code);
 
-  type::Result ParseBody(const std::string& body,
-                         std::string* token,
-                         std::string* address,
-                         std::string* linking_info);
+  mojom::Result ParseBody(const std::string& body,
+                          std::string* token,
+                          std::string* address,
+                          std::string* linking_info);
 
-  void OnRequest(const type::UrlResponse& response, PostOauthCallback callback);
+  void OnRequest(PostOauthCallback, const mojom::UrlResponse&);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
 
-}  // namespace bitflyer
-}  // namespace endpoint
+}  // namespace endpoint::bitflyer
 }  // namespace ledger
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_BITFLYER_POST_OAUTH_POST_OAUTH_BITFLYER_H_

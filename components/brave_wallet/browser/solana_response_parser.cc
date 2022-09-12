@@ -164,9 +164,7 @@ bool ParseGetSignatureStatuses(
         (!confirmation_status_value->is_string() &&
          !confirmation_status_value->is_none())) {
       statuses->push_back(absl::nullopt);
-    }
-
-    if (confirmation_status_value->is_none()) {
+    } else if (confirmation_status_value->is_none()) {
       status.confirmation_status = "";
     } else {  // is_string
       const std::string* confirmation_status =

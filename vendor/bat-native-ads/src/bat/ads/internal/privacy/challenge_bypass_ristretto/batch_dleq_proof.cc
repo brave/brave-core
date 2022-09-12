@@ -15,11 +15,8 @@
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/token_util.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
-#include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token_util.h"
 
-namespace ads {
-namespace privacy {
-namespace cbr {
+namespace ads::privacy::cbr {
 
 namespace {
 
@@ -56,6 +53,21 @@ absl::optional<challenge_bypass_ristretto::BatchDLEQProof> Create(
   }
 
   return raw_batch_dleq_proof;
+}
+
+std::vector<UnblindedToken> ToUnblindedTokens(
+    const std::vector<challenge_bypass_ristretto::UnblindedToken>& raw_tokens) {
+  std::vector<UnblindedToken> unblinded_tokens;
+  for (const auto& raw_token : raw_tokens) {
+    UnblindedToken unblinded_token(raw_token);
+    if (!unblinded_token.has_value()) {
+      return {};
+    }
+
+    unblinded_tokens.push_back(unblinded_token);
+  }
+
+  return unblinded_tokens;
 }
 
 }  // namespace
@@ -149,6 +161,4 @@ std::ostream& operator<<(std::ostream& os,
   return os;
 }
 
-}  // namespace cbr
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::cbr

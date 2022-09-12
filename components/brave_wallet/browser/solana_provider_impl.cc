@@ -733,7 +733,7 @@ void SolanaProviderImpl::OnRequestSignAllTransactions(
     const std::vector<std::vector<uint8_t>>& serialized_txs) {
   base::Value::Dict result;
   if (error == mojom::SolanaProviderError::kSuccess) {
-    base::Value signatures(base::Value::Type::LIST);
+    base::Value::List signatures;
     for (const auto& serialized_tx : serialized_txs) {
       auto tx = SolanaTransaction::FromSignedTransactionBytes(serialized_tx);
       DCHECK(tx);

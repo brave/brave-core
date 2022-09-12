@@ -8,12 +8,10 @@
 
 #include "base/values.h"
 
-namespace ads {
-namespace user_data {
+namespace ads::user_data {
 
 base::Value::Dict GetBuildChannel();
 
-}  // namespace user_data
-}  // namespace ads
+}  // namespace ads::user_data
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_USER_DATA_BUILD_CHANNEL_USER_DATA_H_

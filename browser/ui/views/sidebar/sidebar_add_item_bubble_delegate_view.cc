@@ -168,9 +168,15 @@ void SidebarAddItemBubbleDelegateView::AddChildViews() {
   if (sidebar::CanAddCurrentActiveTabToSidebar(browser_)) {
     auto* button = site_part->AddChildView(
         std::make_unique<SidebarAddItemButton>(true, color_provider));
-    const GURL active_tab_url =
-        browser_->tab_strip_model()->GetActiveWebContents()->GetVisibleURL();
-    button->SetText(base::UTF8ToUTF16(active_tab_url.host()));
+    const GURL active_tab_url = browser_->tab_strip_model()
+                                    ->GetActiveWebContents()
+                                    ->GetLastCommittedURL();
+    DCHECK(active_tab_url.is_valid());
+    auto button_label = active_tab_url.host();
+    if (button_label.empty()) {
+      button_label = active_tab_url.spec();
+    }
+    button->SetText(base::UTF8ToUTF16(button_label));
     button->SetCallback(base::BindRepeating(
         &SidebarAddItemBubbleDelegateView::OnCurrentItemButtonPressed,
         base::Unretained(this)));

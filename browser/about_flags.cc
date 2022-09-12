@@ -29,6 +29,7 @@
 #include "brave/components/speedreader/common/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
 #include "brave/components/translate/core/common/buildflags.h"
+#include "components/content_settings/core/common/features.h"
 #include "components/translate/core/browser/translate_prefs.h"
 #include "net/base/features.h"
 #include "third_party/blink/public/common/features.h"
@@ -178,6 +179,12 @@ constexpr char kBraveNTPBrandedWallpaperDemoDescription[] =
     "View rate and user opt-in conditionals will still be followed to decide "
     "when to display the Branded Wallpaper.";
 
+constexpr char kBraveBlockScreenFingerprintingName[] =
+    "Block screen fingerprinting";
+constexpr char kBraveBlockScreenFingerprintingDescription[] =
+    "Prevents JavaScript and CSS from learning the user's screen dimensions "
+    "or window position.";
+
 constexpr char kBraveSpeedreaderName[] = "Enable SpeedReader";
 constexpr char kBraveSpeedreaderDescription[] =
     "Enables faster loading of simplified article-style web pages.";
@@ -326,6 +333,13 @@ constexpr char kBraveFederatedDescription[] =
     "Starts local collection for notification ad timing data. This data "
     "is stored locally and automatically erased after one month. No data "
     "leaves the client.";
+
+constexpr char kAllowIncognitoPermissionInheritanceName[] =
+    "Allow permission inheritance in incognito profiles";
+constexpr char kAllowIncognitoPermissionInheritanceDescription[] =
+    "When enabled, most permissions set in a normal profile will be inherited "
+    "in incognito profile if they are less permissive, for ex. Geolocation "
+    "BLOCK will be automatically set to BLOCK in incognito.";
 
 // Blink features.
 constexpr char kFileSystemAccessAPIName[] = "File System Access API";
@@ -636,6 +650,16 @@ constexpr char kAllowCertainClientHintsDescription[] =
       flag_descriptions::kRestrictWebSocketsPoolName,                       \
       flag_descriptions::kRestrictWebSocketsPoolDescription, kOsAll,        \
       FEATURE_VALUE_TYPE(blink::features::kRestrictWebSocketsPool)},        \
+    {"allow-incognito-permission-inheritance",                              \
+      flag_descriptions::kAllowIncognitoPermissionInheritanceName,          \
+      flag_descriptions::kAllowIncognitoPermissionInheritanceDescription,   \
+      kOsAll, FEATURE_VALUE_TYPE(                                           \
+          content_settings::kAllowIncognitoPermissionInheritance)},         \
+    {"brave-block-screen-fingerprinting",                                   \
+      flag_descriptions::kBraveBlockScreenFingerprintingName,               \
+      flag_descriptions::kBraveBlockScreenFingerprintingDescription,        \
+      kOsAll, FEATURE_VALUE_TYPE(                                           \
+          blink::features::kBraveBlockScreenFingerprinting)},               \
     BRAVE_IPFS_FEATURE_ENTRIES                                              \
     BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                     \
     BRAVE_NEWS_FEATURE_ENTRIES                                              \

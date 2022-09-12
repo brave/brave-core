@@ -9,7 +9,7 @@
                     bugprone-copy-constructor-init,
                     bugprone-dangling-handle,
                     bugprone-dynamic-static-initializers,
-                    # bugprone-easily-swappable-parameters, (Intentionally disabled)
+                    # bugprone-easily-swappable-parameters,
                     bugprone-exception-escape,
                     bugprone-fold-init-type,
                     bugprone-forward-declaration-namespace,
@@ -27,7 +27,7 @@
                     bugprone-misplaced-widening-cast,
                     bugprone-move-forwarding-reference,
                     bugprone-multiple-statement-macro,
-                    # bugprone-narrowing-conversions, (https://github.com/brave/brave-browser/issues/24943)
+                    # bugprone-narrowing-conversions,
                     bugprone-no-escape,
                     bugprone-not-null-terminated-result,
                     bugprone-parent-virtual-call,
@@ -123,7 +123,7 @@
                     misc-new-delete-overloads,
                     misc-no-recursion,
                     misc-non-copyable-objects,
-                    # misc-non-private-member-variables-in-classes, (Intentionally disabled because this rule raises an issue when a class or struct contains protected member variables)
+                    # misc-non-private-member-variables-in-classes,
                     misc-redundant-expression,
                     misc-static-assert,
                     misc-throw-by-value-catch-by-reference,
@@ -133,15 +133,15 @@
                     misc-unused-parameters,
                     misc-unused-using-decls,
                     modernize-avoid-bind,
-                    # modernize-avoid-c-arrays, (https://github.com/brave/brave-browser/issues/25035)
-                    # modernize-concat-nested-namespaces, (https://github.com/brave/brave-browser/issues/23835)
+                    # modernize-avoid-c-arrays,
+                    modernize-concat-nested-namespaces,
                     modernize-deprecated-headers,
                     modernize-deprecated-ios-base-aliases,
                     modernize-loop-convert,
                     modernize-macro-to-enum,
                     modernize-make-shared,
                     modernize-make-unique,
-                    # modernize-pass-by-value, (https://github.com/brave/brave-browser/issues/25081)
+                    # modernize-pass-by-value,
                     modernize-raw-string-literal,
                     modernize-redundant-void-arg,
                     modernize-replace-auto-ptr,
@@ -156,11 +156,11 @@
                     modernize-use-emplace,
                     modernize-use-equals-default,
                     modernize-use-equals-delete,
-                    # modernize-use-nodiscard, (https://github.com/brave/brave-browser/issues/25036)
+                    # modernize-use-nodiscard,
                     modernize-use-noexcept,
                     modernize-use-nullptr,
                     modernize-use-override,
-                    # modernize-use-trailing-return-type, (Intentionally disabled)
+                    # modernize-use-trailing-return-type,
                     modernize-use-transparent-functors,
                     modernize-use-uncaught-exceptions,
                     modernize-use-using,
@@ -184,28 +184,28 @@
                     performance-no-automatic-move,
                     performance-no-int-to-ptr,
                     performance-noexcept-move-constructor,
-                    # performance-trivially-destructible, (https://github.com/brave/brave-browser/issues/25037)
+                    performance-trivially-destructible,
                     performance-type-promotion-in-math-fn,
                     performance-unnecessary-copy-initialization,
-                    # performance-unnecessary-value-param, (https://github.com/brave/brave-browser/issues/25080)
+                    # performance-unnecessary-value-param,
                     readability-avoid-const-params-in-decls,
                     readability-braces-around-statements,
                     readability-const-return-type,
                     readability-container-contains,
                     readability-container-data-pointer,
                     readability-container-size-empty,
-                    # readability-convert-member-functions-to-static, (https://github.com/brave/brave-browser/issues/25038)
+                    # readability-convert-member-functions-to-static,
                     readability-delete-null-pointer,
                     readability-duplicate-include,
                     readability-else-after-return,
-                    # readability-function-cognitive-complexity, (https://github.com/brave/brave-browser/issues/24934, 24935, 24936, 24937, 24938, 24939, 24940, 24941 and 24942)
+                    # readability-function-cognitive-complexity,
                     readability-function-size,
-                    # readability-identifier-length, (Intentionally disabled)
+                    # readability-identifier-length,
                     readability-identifier-naming,
-                    # readability-implicit-bool-conversion, (Intentionally disabled)
+                    # readability-implicit-bool-conversion,
                     readability-inconsistent-declaration-parameter-name,
                     readability-isolate-declaration,
-                    # readability-magic-numbers, (https://github.com/brave/brave-browser/issues/25021)
+                    # readability-magic-numbers,
                     readability-make-member-function-const,
                     readability-misleading-indentation,
                     readability-misplaced-array-index,
@@ -217,7 +217,7 @@
                     readability-redundant-declaration,
                     readability-redundant-function-ptr-dereference,
                     readability-redundant-member-init,
-                    readability-redundant-preprocessor, 
+                    readability-redundant-preprocessor,
                     readability-redundant-smartptr-get,
                     readability-redundant-string-cstr,
                     readability-redundant-string-init,

@@ -8,8 +8,7 @@
 
 #include "bat/ads/internal/segments/segment_alias.h"
 
-namespace ads {
-namespace targeting {
+namespace ads::targeting {
 
 struct UserModelInfo;
 
@@ -17,7 +16,6 @@ UserModelInfo BuildUserModel(const SegmentList& interest_segments,
                              const SegmentList& latent_interest_segments,
                              const SegmentList& purchase_intent_segments);
 
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SERVING_TARGETING_USER_MODEL_BUILDER_UNITTEST_UTIL_H_

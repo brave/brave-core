@@ -5,27 +5,16 @@
 
 #include "bat/ads/new_tab_page_ad_wallpaper_info.h"
 
-#include <tuple>
-
 namespace ads {
 
-NewTabPageAdWallpaperInfo::NewTabPageAdWallpaperInfo() = default;
+bool operator==(const NewTabPageAdWallpaperInfo& lhs,
+                const NewTabPageAdWallpaperInfo& rhs) {
+  return lhs.image_url == rhs.image_url && lhs.focal_point == rhs.focal_point;
+}
 
-NewTabPageAdWallpaperInfo::NewTabPageAdWallpaperInfo(
-    const NewTabPageAdWallpaperInfo& info) = default;
-
-NewTabPageAdWallpaperInfo& NewTabPageAdWallpaperInfo::operator=(
-    const NewTabPageAdWallpaperInfo& info) = default;
-
-NewTabPageAdWallpaperInfo::~NewTabPageAdWallpaperInfo() = default;
-
-bool NewTabPageAdWallpaperInfo::operator==(
-    const NewTabPageAdWallpaperInfo& rhs) const {
-  auto tie = [](const NewTabPageAdWallpaperInfo& info) {
-    return std::tie(info.image_url, info.focal_point);
-  };
-
-  return tie(*this) == tie(rhs);
+bool operator!=(const NewTabPageAdWallpaperInfo& lhs,
+                const NewTabPageAdWallpaperInfo& rhs) {
+  return !(lhs == rhs);
 }
 
 }  // namespace ads

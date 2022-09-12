@@ -6,14 +6,12 @@
 #include "bat/ads/internal/ads/serving/permission_rules/notification_ads/notification_ads_minimum_wait_time_permission_rule.h"
 
 #include "bat/ads/internal/ads/ad_events/ad_event_unittest_util.h"
-#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace notification_ads {
+namespace ads::notification_ads {
 
 class BatAdsNotificationAdsMinimumWaitTimePermissionRuleTest
     : public UnitTestBase {
@@ -71,5 +69,4 @@ TEST_F(BatAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
   EXPECT_FALSE(is_allowed);
 }
 
-}  // namespace notification_ads
-}  // namespace ads
+}  // namespace ads::notification_ads

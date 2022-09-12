@@ -24,7 +24,7 @@ import {
 import * as WalletActions from '../actions/wallet_actions'
 
 // Utils
-import { getNetworkInfo, getNetworksByCoinType, getTokensCoinType } from '../../utils/network-utils'
+import { getFilecoinKeyringIdFromNetwork, getNetworkInfo, getNetworksByCoinType, getTokensCoinType } from '../../utils/network-utils'
 import { getTokenParam, getFlattenedAccountBalances } from '../../utils/api-utils'
 import Amount from '../../utils/amount'
 import { sortTransactionByDate } from '../../utils/tx-utils'
@@ -341,7 +341,7 @@ export function refreshVisibleTokenInfo (currentNetwork: BraveWallet.NetworkInfo
 export function refreshBalances () {
   return async (dispatch: Dispatch, getState: () => State) => {
     const { jsonRpcService } = getAPIProxy()
-    const { wallet: { accounts, userVisibleTokensInfo, networkList, defaultNetworks } } = getState()
+    const { wallet: { accounts, userVisibleTokensInfo, networkList } } = getState()
 
     const emptyBalance = {
       balance: '0x0',
@@ -369,9 +369,9 @@ export function refreshBalances () {
 
         // Get CoinType FIL balances
         if (account.coin === BraveWallet.CoinType.FIL) {
-          if (defaultNetworks.some(n => n.chainId === network.chainId)) {
+          if (networkList.some(n => n.chainId === network.chainId)) {
             // Get CoinType FIL balances
-            if (network.coin === BraveWallet.CoinType.FIL) {
+            if (network.coin === BraveWallet.CoinType.FIL && account.keyringId === getFilecoinKeyringIdFromNetwork(network)) {
               const balanceInfo = await jsonRpcService.getBalance(account.address, account.coin, network.chainId)
               return {
                 ...balanceInfo,

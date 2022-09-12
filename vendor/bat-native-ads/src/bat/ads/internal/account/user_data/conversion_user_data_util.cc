@@ -10,8 +10,7 @@
 #include "bat/ads/internal/conversions/verifiable_conversion_envelope_info.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_info.h"
 
-namespace ads {
-namespace user_data {
+namespace ads::user_data {
 
 absl::optional<security::VerifiableConversionEnvelopeInfo> GetEnvelope(
     const ConversionQueueItemInfo& conversion_queue_item) {
@@ -27,5 +26,4 @@ absl::optional<security::VerifiableConversionEnvelopeInfo> GetEnvelope(
   return security::SealEnvelope(verifiable_conversion);
 }
 
-}  // namespace user_data
-}  // namespace ads
+}  // namespace ads::user_data

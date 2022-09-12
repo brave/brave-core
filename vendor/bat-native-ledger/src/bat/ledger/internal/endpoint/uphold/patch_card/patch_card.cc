@@ -13,9 +13,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-namespace ledger {
-namespace endpoint {
-namespace uphold {
+namespace ledger::endpoint::uphold {
 
 PatchCard::PatchCard(LedgerImpl* ledger) : ledger_(ledger) {
   DCHECK(ledger_);
@@ -28,53 +26,51 @@ std::string PatchCard::GetUrl(const std::string& address) {
 }
 
 std::string PatchCard::GeneratePayload() {
-  base::Value settings(base::Value::Type::DICTIONARY);
-  settings.SetIntKey("position", 1);
-  settings.SetBoolKey("starred", true);
+  base::Value::Dict settings;
+  settings.Set("position", 1);
+  settings.Set("starred", true);
 
-  base::Value payload(base::Value::Type::DICTIONARY);
-  payload.SetKey("settings", std::move(settings));
+  base::Value::Dict payload;
+  payload.Set("settings", std::move(settings));
 
   std::string json;
   base::JSONWriter::Write(payload, &json);
   return json;
 }
 
-type::Result PatchCard::CheckStatusCode(const int status_code) {
+mojom::Result PatchCard::CheckStatusCode(int status_code) {
   if (status_code == net::HTTP_UNAUTHORIZED) {
     BLOG(0, "Unauthorized access");
-    return type::Result::EXPIRED_TOKEN;
+    return mojom::Result::EXPIRED_TOKEN;
   }
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
 void PatchCard::Request(const std::string& token,
                         const std::string& address,
                         PatchCardCallback callback) {
-  auto url_callback = base::BindOnce(
-      &PatchCard::OnRequest, base::Unretained(this), std::move(callback));
-
-  auto request = type::UrlRequest::New();
+  auto request = mojom::UrlRequest::New();
   request->url = GetUrl(address);
   request->content = GeneratePayload();
   request->headers = RequestAuthorization(token);
   request->content_type = "application/json; charset=utf-8";
-  request->method = type::UrlMethod::PATCH;
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  request->method = mojom::UrlMethod::PATCH;
+
+  ledger_->LoadURL(std::move(request),
+                   base::BindOnce(&PatchCard::OnRequest, base::Unretained(this),
+                                  std::move(callback)));
 }
 
 void PatchCard::OnRequest(PatchCardCallback callback,
-                          const type::UrlResponse& response) {
+                          const mojom::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
   std::move(callback).Run(CheckStatusCode(response.status_code));
 }
 
-}  // namespace uphold
-}  // namespace endpoint
-}  // namespace ledger
+}  // namespace ledger::endpoint::uphold

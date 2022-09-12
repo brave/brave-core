@@ -5,10 +5,10 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/subdivision_targeting_exclusion_rule.h"
 
-#include <algorithm>
 #include <vector>
 
 #include "base/check.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/base/locale/subdivision_code_util.h"
@@ -32,9 +32,8 @@ bool DoesAdSupportSubdivisionTargetingCode(
 }
 
 bool DoesAdTargetSubdivision(const CreativeAdInfo& creative_ad) {
-  const auto iter = std::find_if(
-      creative_ad.geo_targets.cbegin(), creative_ad.geo_targets.cend(),
-      [](const std::string& geo_target) {
+  const auto iter = base::ranges::find_if(
+      creative_ad.geo_targets, [](const std::string& geo_target) {
         const std::vector<std::string> components = base::SplitString(
             geo_target, "-", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
 

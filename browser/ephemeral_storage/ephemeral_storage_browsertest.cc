@@ -1056,8 +1056,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 class EphemeralStorageKeepAliveDisabledBrowserTest
     : public EphemeralStorageBrowserTest {
  public:
-  EphemeralStorageKeepAliveDisabledBrowserTest()
-      : EphemeralStorageBrowserTest() {
+  EphemeralStorageKeepAliveDisabledBrowserTest() {
     scoped_feature_list_.InitAndDisableFeature(
         net::features::kBraveEphemeralStorageKeepAlive);
   }

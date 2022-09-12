@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
@@ -49,8 +51,8 @@ class RewardsNotificationBrowserTest
 
     // HTTP resolver
     host_resolver()->AddRule("*", "127.0.0.1");
-    https_server_.reset(new net::EmbeddedTestServer(
-        net::test_server::EmbeddedTestServer::TYPE_HTTPS));
+    https_server_ = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
     https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
     https_server_->RegisterRequestHandler(
         base::BindRepeating(&rewards_browsertest_util::HandleRequest));
@@ -156,7 +158,7 @@ class RewardsNotificationBrowserTest
       return;
     }
 
-    wait_for_add_notification_loop_.reset(new base::RunLoop);
+    wait_for_add_notification_loop_ = std::make_unique<base::RunLoop>();
     wait_for_add_notification_loop_->Run();
   }
 
@@ -165,7 +167,7 @@ class RewardsNotificationBrowserTest
       return;
     }
 
-    wait_for_delete_notification_loop_.reset(new base::RunLoop);
+    wait_for_delete_notification_loop_ = std::make_unique<base::RunLoop>();
     wait_for_delete_notification_loop_->Run();
   }
 
@@ -174,7 +176,8 @@ class RewardsNotificationBrowserTest
       return;
     }
 
-    wait_for_insufficient_notification_loop_.reset(new base::RunLoop);
+    wait_for_insufficient_notification_loop_ =
+        std::make_unique<base::RunLoop>();
     wait_for_insufficient_notification_loop_->Run();
   }
 
@@ -314,7 +317,7 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(
     RewardsNotificationBrowserTest,
     InsufficientNotificationForZeroAmountZeroPublishers) {
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   CheckInsufficientFundsForTesting();
   WaitForInsufficientFundsNotification();
   const auto& notifications = rewards_service_->GetAllNotifications();
@@ -330,7 +333,7 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(
     RewardsNotificationBrowserTest,
     InsufficientNotificationForACNotEnoughFunds) {
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   rewards_service_->SetAutoContributeEnabled(true);
   context_helper_->LoadRewardsPage();
   // Visit publishers
@@ -360,20 +363,16 @@ IN_PROC_BROWSER_TEST_F(
 
 IN_PROC_BROWSER_TEST_F(RewardsNotificationBrowserTest,
                        InsufficientNotificationForInsufficientAmount) {
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   context_helper_->LoadRewardsPage();
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
 
   contribution_->TipViaCode("duckduckgo.com", 20.0,
-                            ledger::type::PublisherStatus::UPHOLD_VERIFIED, 0,
+                            ledger::mojom::PublisherStatus::UPHOLD_VERIFIED, 0,
                             true);
 
   contribution_->TipViaCode(
-      "brave.com",
-      50.0,
-      ledger::type::PublisherStatus::NOT_VERIFIED,
-      0,
-      true);
+      "brave.com", 50.0, ledger::mojom::PublisherStatus::NOT_VERIFIED, 0, true);
 
   CheckInsufficientFundsForTesting();
   WaitForInsufficientFundsNotification();
@@ -389,20 +388,16 @@ IN_PROC_BROWSER_TEST_F(RewardsNotificationBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(RewardsNotificationBrowserTest,
                        InsufficientNotificationForVerifiedInsufficientAmount) {
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   context_helper_->LoadRewardsPage();
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
 
   contribution_->TipViaCode("duckduckgo.com", 50.0,
-                            ledger::type::PublisherStatus::UPHOLD_VERIFIED, 0,
+                            ledger::mojom::PublisherStatus::UPHOLD_VERIFIED, 0,
                             true);
 
   contribution_->TipViaCode(
-      "brave.com",
-      50.0,
-      ledger::type::PublisherStatus::NOT_VERIFIED,
-      0,
-      true);
+      "brave.com", 50.0, ledger::mojom::PublisherStatus::NOT_VERIFIED, 0, true);
 
   CheckInsufficientFundsForTesting();
   WaitForInsufficientFundsNotification();

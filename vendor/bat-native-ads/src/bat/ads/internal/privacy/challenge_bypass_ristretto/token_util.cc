@@ -7,9 +7,7 @@
 
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
 
-namespace ads {
-namespace privacy {
-namespace cbr {
+namespace ads::privacy::cbr {
 
 std::vector<challenge_bypass_ristretto::Token> ToRawTokens(
     const std::vector<Token>& tokens) {
@@ -25,6 +23,4 @@ std::vector<challenge_bypass_ristretto::Token> ToRawTokens(
   return raw_tokens;
 }
 
-}  // namespace cbr
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::cbr

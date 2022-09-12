@@ -43,7 +43,7 @@ class LedgerImpl;
 namespace endpoint {
 namespace promotion {
 
-using PutCaptchaCallback = base::OnceCallback<void(type::Result)>;
+using PutCaptchaCallback = base::OnceCallback<void(mojom::Result)>;
 
 class PutCaptcha {
  public:
@@ -61,10 +61,10 @@ class PutCaptcha {
 
   std::string GeneratePayload(const int x, const int y);
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(const int status_code);
 
   void OnRequest(PutCaptchaCallback callback,
-                 const type::UrlResponse& response);
+                 const mojom::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

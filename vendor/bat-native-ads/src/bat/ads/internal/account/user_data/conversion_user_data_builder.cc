@@ -7,16 +7,14 @@
 
 #include <utility>
 
+#include "absl/types/optional.h"
 #include "base/check.h"
 #include "bat/ads/internal/account/user_data/conversion_user_data_util.h"
 #include "bat/ads/internal/conversions/conversion_queue_database_table.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_envelope_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
-namespace user_data {
-namespace builder {
+namespace ads::user_data::builder {
 
 namespace {
 
@@ -79,6 +77,4 @@ void BuildConversion(const std::string& creative_instance_id,
       });
 }
 
-}  // namespace builder
-}  // namespace user_data
-}  // namespace ads
+}  // namespace ads::user_data::builder

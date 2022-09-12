@@ -41,7 +41,7 @@ class LedgerImpl;
 namespace endpoint {
 namespace promotion {
 
-using PutDevicecheckCallback = base::OnceCallback<void(type::Result)>;
+using PutDevicecheckCallback = base::OnceCallback<void(mojom::Result)>;
 
 class PutDevicecheck {
  public:
@@ -61,10 +61,10 @@ class PutDevicecheck {
       const std::string& blob,
       const std::string& signature);
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(const int status_code);
 
   void OnRequest(PutDevicecheckCallback callback,
-                 const type::UrlResponse& response);
+                 const mojom::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

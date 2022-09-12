@@ -33,30 +33,27 @@ class GitHub {
       ledger::PublisherInfoCallback callback);
 
   void ProcessActivityFromUrl(uint64_t window_id,
-                              const ledger::type::VisitData& visit_data);
+                              const ledger::mojom::VisitData& visit_data);
 
-  void ProcessMedia(
-      const base::flat_map<std::string, std::string> parts,
-      const ledger::type::VisitData& visit_data);
+  void ProcessMedia(const base::flat_map<std::string, std::string> parts,
+                    const ledger::mojom::VisitData& visit_data);
 
   ~GitHub();
 
  private:
-  void OnMediaPublisherActivity(
-      ledger::type::Result result,
-      ledger::type::PublisherInfoPtr info,
-      uint64_t window_id,
-      const ledger::type::VisitData& visit_data,
-      const std::string& media_key);
+  void OnMediaPublisherActivity(ledger::mojom::Result result,
+                                ledger::mojom::PublisherInfoPtr info,
+                                uint64_t window_id,
+                                const ledger::mojom::VisitData& visit_data,
+                                const std::string& media_key);
 
   void FetchDataFromUrl(const std::string& url,
                         ledger::client::LegacyLoadURLCallback callback);
 
-  void OnUserPage(
-      const uint64_t duration,
-      uint64_t window_id,
-      const ledger::type::VisitData& visit_data,
-      const ledger::type::UrlResponse& response);
+  void OnUserPage(const uint64_t duration,
+                  uint64_t window_id,
+                  const ledger::mojom::VisitData& visit_data,
+                  const ledger::mojom::UrlResponse& response);
 
   void SavePublisherInfo(
       const uint64_t duration,
@@ -67,34 +64,30 @@ class GitHub {
       const uint64_t window_id,
       ledger::PublisherInfoCallback callback);
 
-  void GetPublisherPanelInfo(
-      uint64_t window_id,
-      const ledger::type::VisitData& visit_data,
-      const std::string& publisher_key);
+  void GetPublisherPanelInfo(uint64_t window_id,
+                             const ledger::mojom::VisitData& visit_data,
+                             const std::string& publisher_key);
 
-  void OnPublisherPanelInfo(
-      uint64_t window_id,
-      const ledger::type::VisitData& visit_data,
-      const std::string& publisher_key,
-      ledger::type::Result result,
-      ledger::type::PublisherInfoPtr info);
+  void OnPublisherPanelInfo(uint64_t window_id,
+                            const ledger::mojom::VisitData& visit_data,
+                            const std::string& publisher_key,
+                            ledger::mojom::Result result,
+                            ledger::mojom::PublisherInfoPtr info);
 
   void OnMediaActivityError(
       uint64_t window_id);
 
-void OnMetaDataGet(
-      ledger::PublisherInfoCallback callback,
-      const ledger::type::UrlResponse& response);
+  void OnMetaDataGet(ledger::PublisherInfoCallback callback,
+                     const ledger::mojom::UrlResponse& response);
 
-void OnMediaPublisherInfo(
-    uint64_t window_id,
-    const std::string& user_id,
-    const std::string& screen_name,
-    const std::string& publisher_name,
-    const std::string& profile_picture,
-    ledger::PublisherInfoCallback callback,
-    ledger::type::Result result,
-    ledger::type::PublisherInfoPtr publisher_info);
+  void OnMediaPublisherInfo(uint64_t window_id,
+                            const std::string& user_id,
+                            const std::string& screen_name,
+                            const std::string& publisher_name,
+                            const std::string& profile_picture,
+                            ledger::PublisherInfoCallback callback,
+                            ledger::mojom::Result result,
+                            ledger::mojom::PublisherInfoPtr publisher_info);
 
   static std::string GetUserNameFromURL(const std::string& path);
 

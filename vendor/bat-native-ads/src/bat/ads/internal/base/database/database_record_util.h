@@ -11,14 +11,12 @@
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "sql/statement.h"
 
-namespace ads {
-namespace database {
+namespace ads::database {
 
 mojom::DBRecordInfoPtr CreateRecord(
     sql::Statement* statement,
     const std::vector<mojom::DBCommandInfo::RecordBindingType>& bindings);
 
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BASE_DATABASE_DATABASE_RECORD_UTIL_H_

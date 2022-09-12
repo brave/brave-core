@@ -25,10 +25,15 @@ import { sortTransactionByDate } from '../../../../utils/tx-utils'
 import { getTokensCoinType, getTokensNetwork } from '../../../../utils/network-utils'
 import useExplorer from '../../../../common/hooks/explorer'
 import {
+  CommandMessage,
   NftUiCommand,
   sendMessageToNftUiFrame,
-  UpdateLoadingMessage, UpdateNFtMetadataMessage,
-  UpdateSelectedAssetMessage, UpdateTokenNetworkMessage
+  ToggleNftModal,
+  UpdateLoadingMessage,
+  UpdateNFtMetadataMessage,
+  UpdateSelectedAssetMessage,
+  UpdateTokenNetworkMessage,
+  braveNftDisplayOrigin
 } from '../../../../nft/nft-ui-messages'
 import { auroraSupportedContractAddresses } from '../../../../utils/asset-utils'
 import { getLocale } from '../../../../../common/locale'
@@ -79,10 +84,11 @@ import { AssetMorePopup } from './components/asset-more-popup/asset-more-popup'
 import { TokenDetailsModal } from './components/token-details-modal/token-details-modal'
 import { WalletActions } from '../../../../common/actions'
 import { HideTokenModal } from './components/hide-token-modal/hide-token-modal'
+import { NftModal } from './components/nft-modal/nft-modal'
 
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 12 })
 const rainbowbridgeLink = 'https://rainbowbridge.app'
-const bridgeToAuroraWarningShownKey = 'bridgeToAuroraWarningShown'
+const bridgeToAuroraDontShowAgainKey = 'bridgeToAuroraDontShowAgain'
 
 interface Props {
   isShowingMarketData?: boolean
@@ -92,11 +98,13 @@ export const PortfolioAsset = (props: Props) => {
   const { isShowingMarketData } = props
   // state
   const [showBridgeToAuroraModal, setShowBridgeToAuroraModal] = React.useState<boolean>(false)
-  const [bridgeToAuroraWarningShown, setBridgeToAuroraWarningShown] = React.useState<boolean>()
+  const [dontShowAuroraWarning, setDontShowAuroraWarning] = React.useState<boolean>(false)
   const [isTokenSupported, setIsTokenSupported] = React.useState<boolean>()
   const [showMore, setShowMore] = React.useState<boolean>(false)
   const [showTokenDetailsModal, setShowTokenDetailsModal] = React.useState<boolean>(false)
   const [showHideTokenModel, setShowHideTokenModal] = React.useState<boolean>(false)
+  const [showNftModal, setshowNftModal] = React.useState<boolean>(false)
+
   // routing
   const history = useHistory()
   const { id: assetId, tokenId } = useParams<{ id?: string, tokenId?: string }>()
@@ -308,10 +316,10 @@ export const PortfolioAsset = (props: Props) => {
 
   const fullAssetFiatBalance = React.useMemo(() => fullAssetBalances?.assetBalance
     ? computeFiatAmount(
-        fullAssetBalances.assetBalance,
-        fullAssetBalances.asset.symbol,
-        fullAssetBalances.asset.decimals
-      )
+      fullAssetBalances.assetBalance,
+      fullAssetBalances.asset.symbol,
+      fullAssetBalances.asset.decimals
+    )
     : Amount.empty(),
     [fullAssetBalances]
   )
@@ -348,11 +356,7 @@ export const PortfolioAsset = (props: Props) => {
     dispatch(WalletPageActions.selectAsset({ asset: undefined, timeFrame: selectedTimeline }))
     dispatch(WalletPageActions.selectCoinMarket(undefined))
     setfilteredAssetList(userAssetList)
-    if (isShowingMarketData) {
-      history.push(WalletRoutes.Market)
-    } else {
-      history.push(WalletRoutes.Portfolio)
-    }
+    history.goBack()
   }, [
     userAssetList,
     selectedTimeline
@@ -378,13 +382,17 @@ export const PortfolioAsset = (props: Props) => {
   }, [])
 
   const onBridgeToAuroraButton = React.useCallback(() => {
-    if (bridgeToAuroraWarningShown) {
+    if (dontShowAuroraWarning) {
       onOpenRainbowAppClick()
     } else {
-      localStorage.setItem(bridgeToAuroraWarningShownKey, 'true')
       setShowBridgeToAuroraModal(true)
     }
-  }, [bridgeToAuroraWarningShown, onOpenRainbowAppClick])
+  }, [dontShowAuroraWarning, onOpenRainbowAppClick])
+
+  const onDontShowAgain = React.useCallback((selected: boolean) => {
+    setDontShowAuroraWarning(selected)
+    localStorage.setItem(bridgeToAuroraDontShowAgainKey, JSON.stringify(selected))
+  }, [])
 
   const onCloseAuroraModal = React.useCallback(() => {
     setShowBridgeToAuroraModal(false)
@@ -426,6 +434,21 @@ export const PortfolioAsset = (props: Props) => {
       openExplorer('token', selectedAsset.contractAddress)()
     }
   }, [selectedAsset])
+
+  const onCloseNftModal = React.useCallback(() => {
+    setshowNftModal(false)
+  }, [])
+
+  const onMessageEventListener = React.useCallback((event: MessageEvent<CommandMessage>) => {
+    // validate message origin
+    if (event.origin !== braveNftDisplayOrigin) return
+
+    const message = event.data
+    if (message.command === NftUiCommand.ToggleNftModal) {
+      const { payload } = message as ToggleNftModal
+      setshowNftModal(payload)
+    }
+  }, [])
 
   // effects
   React.useEffect(() => {
@@ -481,8 +504,14 @@ export const PortfolioAsset = (props: Props) => {
   }, [nftIframeLoaded, nftDetailsRef, selectedAsset, nftMetadata, networkList])
 
   React.useEffect(() => {
-    setBridgeToAuroraWarningShown(localStorage.getItem(bridgeToAuroraWarningShownKey) === 'true')
+    setDontShowAuroraWarning(JSON.parse(localStorage.getItem(bridgeToAuroraDontShowAgainKey) || 'false'))
   })
+
+  // Receive postMessage from chrome-untrusted://nft-display
+  React.useEffect(() => {
+    window.addEventListener('message', onMessageEventListener)
+    return () => window.removeEventListener('message', onMessageEventListener)
+  }, [onMessageEventListener])
 
   // token list needs to load before we can find an asset to select from the url params
   if (userVisibleTokensInfo.length === 0) {
@@ -514,7 +543,7 @@ export const PortfolioAsset = (props: Props) => {
             onClick={onToggleHideBalances}
           />
           {selectedAsset?.contractAddress && !selectedAsset?.isErc721 &&
-            <MoreButton onClick={onShowMore}/>
+            <MoreButton onClick={onShowMore} />
           }
           {showMore && selectedAsset &&
             <AssetMorePopup
@@ -534,7 +563,7 @@ export const PortfolioAsset = (props: Props) => {
             <AssetIconWithPlaceholder asset={selectedAsset} network={selectedAssetsNetwork} />
             <AssetColumn>
               <AssetNameText>{selectedAssetFromParams.name}</AssetNameText>
-              <NetworkDescription>{selectedAssetFromParams.symbol} { selectedAssetsNetwork?.chainName && `on ${selectedAssetsNetwork?.chainName}`}</NetworkDescription>
+              <NetworkDescription>{selectedAssetFromParams.symbol} {selectedAssetsNetwork?.chainName && `on ${selectedAssetsNetwork?.chainName}`}</NetworkDescription>
             </AssetColumn>
           </AssetRow>
 
@@ -577,14 +606,16 @@ export const PortfolioAsset = (props: Props) => {
         <BridgeToAuroraButton
           onClick={onBridgeToAuroraButton}
         >
-          Bridge to Aurora
+          {getLocale('braveWalletBridgeToAuroraButton')}
         </BridgeToAuroraButton>
       }
 
       {showBridgeToAuroraModal &&
         <BridgeToAuroraModal
+          dontShowWarningAgain={dontShowAuroraWarning}
           onClose={onCloseAuroraModal}
           onOpenRainbowAppClick={onOpenRainbowAppClick}
+          onDontShowAgain={onDontShowAgain}
         />
       }
 
@@ -616,16 +647,20 @@ export const PortfolioAsset = (props: Props) => {
         src='chrome-untrusted://nft-display'
       />
 
+      {showNftModal && nftMetadata &&
+        <NftModal nftImageUrl={nftMetadata.imageURL} onClose={onCloseNftModal} />
+      }
+
       {isTokenSupported
         ? <AccountsAndTransactionsList
-            formattedFullAssetBalance={formattedFullAssetBalance}
-            fullAssetFiatBalance={fullAssetFiatBalance}
-            selectedAsset={selectedAsset}
-            selectedAssetTransactions={selectedAssetTransactions}
-            onClickAddAccount={onClickAddAccount}
-            hideBalances={hideBalances}
-            networkList={networkList}
-          />
+          formattedFullAssetBalance={formattedFullAssetBalance}
+          fullAssetFiatBalance={fullAssetFiatBalance}
+          selectedAsset={selectedAsset}
+          selectedAssetTransactions={selectedAssetTransactions}
+          onClickAddAccount={onClickAddAccount}
+          hideBalances={hideBalances}
+          networkList={networkList}
+        />
         : <>
           <SubDivider />
           <NotSupportedText>{getLocale('braveWalletMarketDataCoinNotSupported')}</NotSupportedText>

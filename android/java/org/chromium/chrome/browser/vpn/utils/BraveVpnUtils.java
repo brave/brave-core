@@ -42,6 +42,7 @@ import org.chromium.chrome.browser.vpn.utils.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -50,6 +51,7 @@ public class BraveVpnUtils {
     public static final String SUBSCRIPTION_PARAM_TEXT = "subscription";
     public static final String IAP_ANDROID_PARAM_TEXT = "iap-android";
     public static final String VERIFY_CREDENTIALS_FAILED = "verify_credentials_failed";
+    public static final String DESKTOP_CREDENTIAL = "desktop_credential";
 
     public static boolean mIsServerLocationChanged;
     public static boolean mUpdateProfileAfterSplitTunnel;
@@ -225,6 +227,7 @@ public class BraveVpnUtils {
         BraveVpnPrefUtils.setHostnameDisplay("");
         BraveVpnPrefUtils.setServerRegion(BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC);
         BraveVpnPrefUtils.setResetConfiguration(true);
+        BraveVpnPrefUtils.setExcludedPackages(Collections.emptySet());
         dismissProgressDialog();
     }
 

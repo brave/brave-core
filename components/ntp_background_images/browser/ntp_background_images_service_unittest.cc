@@ -234,7 +234,8 @@ class NTPBackgroundImagesServiceTest : public testing::Test {
   }
 
   void Init() {
-    service_.reset(new TestNTPBackgroundImagesService(nullptr, &pref_service_));
+    service_ = std::make_unique<TestNTPBackgroundImagesService>(nullptr,
+                                                                &pref_service_);
     service_->Init();
   }
 
@@ -586,8 +587,8 @@ TEST_F(NTPBackgroundImagesServiceTest, WithDefaultReferralCodeTest1) {
 // Sponsored Images component will be run after getting mapping table.
 TEST_F(NTPBackgroundImagesServiceTest, WithDefaultReferralCodeTest2) {
   pref_service_.SetString(kReferralPromoCode, "BRV001");
-  pref_service_.Set(prefs::kNewTabPageCachedSuperReferralComponentInfo,
-                    base::Value(base::Value::Type::DICTIONARY));
+  pref_service_.SetDict(prefs::kNewTabPageCachedSuperReferralComponentInfo,
+                        base::Value::Dict());
   Init();
 
   // Initially, SI is started and SR checking is done.

@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
@@ -73,9 +74,8 @@ void SolanaMessage::GetUniqueAccountMetas(
 
   // Get program ID from each instruction and put at the end.
   for (const auto& instruction : instructions_) {
-    account_metas.push_back(SolanaAccountMeta(instruction.GetProgramId(),
-                                              false /* is_signer */,
-                                              false /* is_writable */));
+    account_metas.emplace_back(instruction.GetProgramId(),
+                               false /* is_signer */, false /* is_writable */);
   }
 
   // Fee payer will always be placed at first.
@@ -85,11 +85,8 @@ void SolanaMessage::GetUniqueAccountMetas(
   // Remove duplicate accounts. is_writable is updated if later account meta
   // with the same pubkey is writable.
   for (const auto& account_meta : account_metas) {
-    auto it =
-        std::find_if(unique_account_metas->begin(), unique_account_metas->end(),
-                     [&](const SolanaAccountMeta& unique_account_meta) {
-                       return unique_account_meta.pubkey == account_meta.pubkey;
-                     });
+    auto it = base::ranges::find(*unique_account_metas, account_meta.pubkey,
+                                 &SolanaAccountMeta::pubkey);
 
     if (it == unique_account_metas->end())
       unique_account_metas->push_back(account_meta);
@@ -233,8 +230,7 @@ absl::optional<SolanaMessage> SolanaMessage::Deserialize(
         (i >= num_required_signatures &&
          i < num_of_accounts - num_readonly_unsigned_accounts);
 
-    accounts.push_back(
-        SolanaAccountMeta(Base58Encode(address_bytes), is_signer, is_writable));
+    accounts.emplace_back(Base58Encode(address_bytes), is_signer, is_writable);
     bytes_index += kSolanaPubkeySize;
   }
 

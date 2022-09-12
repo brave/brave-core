@@ -1,3 +1,8 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -9,7 +14,6 @@ import NetworkFilterItem from './network-filter-item'
 import { CreateNetworkIcon } from '../../shared'
 
 // Utils
-import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 import { WalletActions } from '../../../common/actions'
 import { getLocale } from '../../../../common/locale'
 import {
@@ -38,13 +42,10 @@ export const NetworkFilterSelector = ({ networkListSubset }: Props) => {
   const [showNetworkFilter, setShowNetworkFilter] = React.useState<boolean>(false)
 
   // redux
-  const {
-    selectedNetworkFilter,
-    networkList: reduxNetworkList,
-    isTestNetworksEnabled
-  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
-
   const dispatch = useDispatch()
+  const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
+  const reduxNetworkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
+  const isTestNetworksEnabled = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isTestNetworksEnabled)
 
   // memos
   const networkList = React.useMemo(() => {
@@ -85,16 +86,16 @@ export const NetworkFilterSelector = ({ networkListSubset }: Props) => {
   return (
     <StyledWrapper>
       <DropDownButton
-        buttonSize='big'
         onClick={toggleShowNetworkFilter}>
         <LeftSide>
           {selectedNetworkFilter.chainId !== AllNetworksOption.chainId &&
             <CreateNetworkIcon network={selectedNetworkFilter} marginRight={14} size='big' />
           }
-          {selectedNetworkFilter.chainId !== AllNetworksOption.chainId ? reduceNetworkDisplayName(selectedNetworkFilter.chainName) : selectedNetworkFilter.chainName}
+          {selectedNetworkFilter.chainName}
         </LeftSide>
         <DropDownIcon />
       </DropDownButton>
+
       {showNetworkFilter &&
         <DropDown>
           {primaryNetworks.map((network: BraveWallet.NetworkInfo) =>
@@ -126,6 +127,7 @@ export const NetworkFilterSelector = ({ networkListSubset }: Props) => {
               }
             </NetworkFilterItem>
           )}
+
           {secondaryNetworks.length > 0 &&
             <>
               <SecondaryNetworkText>{getLocale('braveWalletNetworkFilterSecondary')}</SecondaryNetworkText>

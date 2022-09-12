@@ -70,11 +70,8 @@ void SyncV2MigrateInfoBarDelegate::Create(
 
 // Start class impl
 SyncV2MigrateInfoBarDelegate::SyncV2MigrateInfoBarDelegate(Browser* browser,
-    Profile* profile)
-          : ConfirmInfoBarDelegate(),
-            profile_(profile),
-            browser_(browser) {
-}
+                                                           Profile* profile)
+    : profile_(profile), browser_(browser) {}
 
 SyncV2MigrateInfoBarDelegate::~SyncV2MigrateInfoBarDelegate() = default;
 

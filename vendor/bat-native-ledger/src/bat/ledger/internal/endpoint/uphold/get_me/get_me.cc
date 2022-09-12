@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/containers/contains.h"
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/endpoint/uphold/uphold_utils.h"
@@ -28,29 +29,28 @@ std::string GetMe::GetUrl() {
   return GetServerUrl("/v0/me");
 }
 
-type::Result GetMe::CheckStatusCode(const int status_code) {
+mojom::Result GetMe::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_UNAUTHORIZED) {
     BLOG(0, "Unauthorized access");
-    return type::Result::EXPIRED_TOKEN;
+    return mojom::Result::EXPIRED_TOKEN;
   }
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
-type::Result GetMe::ParseBody(
-    const std::string& body,
-    ::ledger::uphold::User* user) {
+mojom::Result GetMe::ParseBody(const std::string& body,
+                               ::ledger::uphold::User* user) {
   DCHECK(user);
 
   absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   const base::Value::Dict& dict = value->GetDict();
@@ -66,31 +66,29 @@ type::Result GetMe::ParseBody(
   const auto* currencies = dict.FindList("currencies");
   if (currencies) {
     const std::string currency = "BAT";
-    auto bat_in_list = std::find(currencies->begin(), currencies->end(),
-                                 base::Value(currency));
-    user->bat_not_allowed = bat_in_list == currencies->end();
+    user->bat_not_allowed = !base::Contains(*currencies, base::Value(currency));
   }
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
 void GetMe::Request(const std::string& token, GetMeCallback callback) {
   auto url_callback = base::BindOnce(&GetMe::OnRequest, base::Unretained(this),
                                      std::move(callback));
 
-  auto request = type::UrlRequest::New();
+  auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
   request->headers = RequestAuthorization(token);
   ledger_->LoadURL(std::move(request), std::move(url_callback));
 }
 
 void GetMe::OnRequest(GetMeCallback callback,
-                      const type::UrlResponse& response) {
+                      const mojom::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response, true);
 
   ::ledger::uphold::User user;
-  type::Result result = CheckStatusCode(response.status_code);
-  if (result != type::Result::LEDGER_OK) {
+  mojom::Result result = CheckStatusCode(response.status_code);
+  if (result != mojom::Result::LEDGER_OK) {
     std::move(callback).Run(result, user);
     return;
   }

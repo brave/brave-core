@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
 #include <utility>
 
 #include "bat/ledger/internal/ledger_impl.h"
@@ -47,22 +48,22 @@ void LegacyPublisherState::Load(ledger::LegacyResultCallback callback) {
   ledger_->ledger_client()->LoadPublisherState(load_callback);
 }
 
-void LegacyPublisherState::OnLoad(ledger::type::Result result,
+void LegacyPublisherState::OnLoad(ledger::mojom::Result result,
                                   const std::string& data,
                                   ledger::LegacyResultCallback callback) {
-  if (result != ledger::type::Result::LEDGER_OK) {
+  if (result != ledger::mojom::Result::LEDGER_OK) {
     callback(result);
     return;
   }
 
   ledger::PublisherSettingsProperties state;
   if (!state.FromJson(data)) {
-    callback(ledger::type::Result::LEDGER_ERROR);
+    callback(ledger::mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  state_.reset(new ledger::PublisherSettingsProperties(state));
-  callback(ledger::type::Result::LEDGER_OK);
+  state_ = std::make_unique<ledger::PublisherSettingsProperties>(state);
+  callback(ledger::mojom::Result::LEDGER_OK);
 }
 
 std::vector<std::string>
@@ -71,11 +72,11 @@ LegacyPublisherState::GetAlreadyProcessedPublishers() const {
 }
 
 void LegacyPublisherState::GetAllBalanceReports(
-    ledger::type::BalanceReportInfoList* reports) {
+    std::vector<ledger::mojom::BalanceReportInfoPtr>* reports) {
   DCHECK(reports);
 
   for (auto const& report : state_->monthly_balances) {
-    auto report_ptr = ledger::type::BalanceReportInfo::New();
+    auto report_ptr = ledger::mojom::BalanceReportInfo::New();
     report_ptr->id = report.first;
     report_ptr->grants = report.second.grants;
     report_ptr->earning_from_ads = report.second.ad_earnings;

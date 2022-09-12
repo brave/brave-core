@@ -280,7 +280,7 @@ std::vector<ImportFileInfo> EnumerateDirectoryFiles(base::FilePath dir_path) {
     // Skip symlinks.
     if (base::IsLink(enum_path))
       continue;
-    files.push_back(ImportFileInfo(enum_path, file_enum.GetInfo()));
+    files.emplace_back(enum_path, file_enum.GetInfo());
   }
 
   return files;

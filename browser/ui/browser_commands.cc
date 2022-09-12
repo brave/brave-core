@@ -9,11 +9,13 @@
 
 #include "base/files/file_path.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -27,6 +29,8 @@
 #include "chrome/common/pref_names.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/clipboard/clipboard_buffer.h"
+#include "ui/base/clipboard/scoped_clipboard_writer.h"
 
 #if defined(TOOLKIT_VIEWS)
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
@@ -179,6 +183,17 @@ void CloseWalletBubble(Browser* browser) {
 #if defined(TOOLKIT_VIEWS)
   static_cast<BraveBrowserView*>(browser->window())->CloseWalletBubble();
 #endif
+}
+
+void CopyCleanLink(Browser* browser) {
+  GURL sanitized_url = brave::URLSanitizerServiceFactory::GetForBrowserContext(
+                           browser->profile())
+                           ->SanitizeURL(browser->tab_strip_model()
+                                             ->GetActiveWebContents()
+                                             ->GetVisibleURL());
+
+  ui::ScopedClipboardWriter scw(ui::ClipboardBuffer::kCopyPaste);
+  scw.WriteText(base::UTF8ToUTF16(sanitized_url.spec()));
 }
 
 }  // namespace brave

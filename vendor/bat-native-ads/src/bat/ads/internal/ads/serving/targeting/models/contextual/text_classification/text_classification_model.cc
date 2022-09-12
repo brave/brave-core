@@ -13,9 +13,7 @@
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/locale/locale_manager.h"
 
-namespace ads {
-namespace targeting {
-namespace model {
+namespace ads::targeting::model {
 
 namespace {
 
@@ -99,6 +97,4 @@ SegmentList TextClassification::GetSegments() const {
   return ToSegmentList(sorted_segment_probabilities);
 }
 
-}  // namespace model
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting::model

@@ -7,8 +7,7 @@
 
 #include <utility>
 
-namespace ads {
-namespace ml {
+namespace ads::ml {
 
 TextData::TextData() : Data(DataType::kText) {}
 
@@ -21,5 +20,4 @@ const std::string& TextData::GetText() const {
 
 TextData::~TextData() = default;
 
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml

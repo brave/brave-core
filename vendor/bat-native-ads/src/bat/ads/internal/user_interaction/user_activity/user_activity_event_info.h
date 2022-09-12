@@ -12,20 +12,15 @@
 
 namespace ads {
 
-struct UserActivityEventInfo;
-
 struct UserActivityEventInfo final {
-  UserActivityEventInfo();
-  UserActivityEventInfo(const UserActivityEventInfo& info);
-  UserActivityEventInfo& operator=(const UserActivityEventInfo& info);
-  ~UserActivityEventInfo();
-
-  bool operator==(const UserActivityEventInfo& rhs) const;
-  bool operator!=(const UserActivityEventInfo& rhs) const;
-
   UserActivityEventType type;
   base::Time created_at;
 };
+
+bool operator==(const UserActivityEventInfo& lhs,
+                const UserActivityEventInfo& rhs);
+bool operator!=(const UserActivityEventInfo& lhs,
+                const UserActivityEventInfo& rhs);
 
 using UserActivityEventList = base::circular_deque<UserActivityEventInfo>;
 

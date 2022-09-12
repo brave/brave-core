@@ -149,6 +149,13 @@ mod ffi {
             callback_state: UniquePtr<CredentialSummaryCallbackState>,
             domain: String,
         );
+        fn submit_receipt(
+            self: &CppSDK,
+            callback: SubmitReceiptCallback,
+            callback_state: UniquePtr<SubmitReceiptCallbackState>,
+            order_id: String,
+            receipt: String,
+        );
     }
 
     unsafe extern "C++" {
@@ -184,6 +191,8 @@ mod ffi {
         type PrepareCredentialsPresentationCallback = crate::PrepareCredentialsPresentationCallback;
         type CredentialSummaryCallbackState;
         type CredentialSummaryCallback = crate::CredentialSummaryCallback;
+        type SubmitReceiptCallbackState;
+        type SubmitReceiptCallback = crate::SubmitReceiptCallback;
     }
 }
 
@@ -201,9 +210,7 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusContext>, env: String) -> Box<CppSDK> 
         Err(_) => println!("tracing_subscriber - maybe already initialized"),
     };
 
-    let env = env
-        .parse::<skus::Environment>()
-        .unwrap_or(skus::Environment::Local);
+    let env = env.parse::<skus::Environment>().unwrap_or(skus::Environment::Local);
 
     let pool = LocalPool::new();
     let spawner = pool.spawner();
@@ -212,10 +219,7 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusContext>, env: String) -> Box<CppSDK> 
             is_shutdown: Rc::new(RefCell::new(false)),
             pool: Rc::new(RefCell::new(pool)),
             spawner: spawner.clone(),
-            ctx: Rc::new(RefCell::new(NativeClientContext {
-                environment: env.clone(),
-                ctx,
-            })),
+            ctx: Rc::new(RefCell::new(NativeClientContext { environment: env.clone(), ctx })),
         },
         env,
         None,
@@ -251,12 +255,7 @@ impl CppSDK {
     ) {
         let spawner = self.sdk.client.spawner.clone();
         if spawner
-            .spawn_local(refresh_order_task(
-                self.sdk.clone(),
-                callback,
-                callback_state,
-                order_id,
-            ))
+            .spawn_local(refresh_order_task(self.sdk.clone(), callback, callback_state, order_id))
             .is_err()
         {
             debug!("pool is shutdown");
@@ -332,6 +331,30 @@ impl CppSDK {
 
         self.sdk.client.try_run_until_stalled();
     }
+
+    fn submit_receipt(
+        self: &CppSDK,
+        callback: SubmitReceiptCallback,
+        callback_state: UniquePtr<ffi::SubmitReceiptCallbackState>,
+        order_id: String,
+        receipt: String,
+    ) {
+        let spawner = self.sdk.client.spawner.clone();
+        if spawner
+            .spawn_local(submit_receipt_task(
+                self.sdk.clone(),
+                callback,
+                callback_state,
+                order_id,
+                receipt,
+            ))
+            .is_err()
+        {
+            debug!("pool is shutdown");
+        }
+
+        self.sdk.client.try_run_until_stalled();
+    }
 }
 
 #[repr(transparent)]
@@ -384,11 +407,7 @@ async fn fetch_order_credentials_task(
     callback_state: UniquePtr<ffi::FetchOrderCredentialsCallbackState>,
     order_id: String,
 ) {
-    match sdk
-        .fetch_order_credentials(&order_id)
-        .await
-        .map_err(|e| e.into())
-    {
+    match sdk.fetch_order_credentials(&order_id).await.map_err(|e| e.into()) {
         Ok(_) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok),
         Err(e) => callback.0(callback_state.into_raw(), e),
     }
@@ -415,16 +434,10 @@ async fn prepare_credentials_presentation_task(
     domain: String,
     path: String,
 ) {
-    match sdk
-        .prepare_credentials_presentation(&domain, &path)
-        .await
-        .map_err(|e| e.into())
-    {
-        Ok(Some(presentation)) => callback.0(
-            callback_state.into_raw(),
-            ffi::SkusResult::Ok,
-            &presentation,
-        ),
+    match sdk.prepare_credentials_presentation(&domain, &path).await.map_err(|e| e.into()) {
+        Ok(Some(presentation)) => {
+            callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, &presentation)
+        }
         Ok(None) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, ""),
         Err(e) => callback.0(callback_state.into_raw(), e, ""),
     }
@@ -454,14 +467,35 @@ async fn credential_summary_task(
         .matching_credential_summary(&domain)
         .await
         .and_then(|summary| {
-            summary
-                .map(|summary| serde_json::to_string(&summary).map_err(|e| e.into()))
-                .transpose()
+            summary.map(|summary| serde_json::to_string(&summary).map_err(|e| e.into())).transpose()
         })
         .map_err(|e| e.into())
     {
         Ok(Some(summary)) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, &summary),
         Ok(None) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, ""),
         Err(e) => callback.0(callback_state.into_raw(), e, ""),
+    }
+}
+
+#[repr(transparent)]
+pub struct SubmitReceiptCallback(
+    pub extern "C" fn(callback_state: *mut ffi::SubmitReceiptCallbackState, result: ffi::SkusResult),
+);
+
+unsafe impl ExternType for SubmitReceiptCallback {
+    type Id = type_id!("skus::SubmitReceiptCallback");
+    type Kind = cxx::kind::Trivial;
+}
+
+async fn submit_receipt_task(
+    sdk: Rc<skus::sdk::SDK<NativeClient>>,
+    callback: SubmitReceiptCallback,
+    callback_state: UniquePtr<ffi::SubmitReceiptCallbackState>,
+    order_id: String,
+    receipt: String,
+) {
+    match sdk.submit_receipt(&order_id, &receipt).await.map_err(|e| e.into()) {
+        Ok(_) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok),
+        Err(e) => callback.0(callback_state.into_raw(), e),
     }
 }

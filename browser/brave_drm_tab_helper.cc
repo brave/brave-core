@@ -5,10 +5,10 @@
 
 #include "brave/browser/brave_drm_tab_helper.h"
 
-#include <algorithm>
 #include <utility>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "brave/browser/widevine/constants.h"
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/components/constants/pref_names.h"
@@ -26,10 +26,7 @@ using component_updater::ComponentUpdateService;
 
 namespace {
 bool IsAlreadyRegistered(ComponentUpdateService* cus) {
-  std::vector<std::string> component_ids;
-  component_ids = cus->GetComponentIDs();
-  return std::find(component_ids.begin(), component_ids.end(),
-                   kWidevineComponentId) != component_ids.end();
+  return base::Contains(cus->GetComponentIDs(), kWidevineComponentId);
 }
 #if !BUILDFLAG(IS_LINUX)
 content::WebContents* GetActiveWebContents() {

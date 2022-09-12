@@ -12,8 +12,7 @@
 #include "base/strings/stringprintf.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
-namespace ads {
-namespace database {
+namespace ads::database {
 
 namespace {
 
@@ -162,5 +161,4 @@ void RenameTable(mojom::DBTransactionInfo* transaction,
   transaction->commands.push_back(std::move(command));
 }
 
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database

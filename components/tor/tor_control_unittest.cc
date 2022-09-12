@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "brave/components/tor/tor_control.h"
 
 #include "base/callback_helpers.h"
@@ -123,7 +125,7 @@ TEST(TorControlTest, ReadLine) {
                                },
                                std::move(control)));
 
-  control.reset(new TorControl(delegate.AsWeakPtr(), io_task_runner));
+  control = std::make_unique<TorControl>(delegate.AsWeakPtr(), io_task_runner);
   EXPECT_CALL(delegate, OnTorRawMid("250", "SOCKSPORT=9050")).Times(1);
   EXPECT_CALL(delegate, OnTorRawEnd("250", "OK")).Times(1);
   io_task_runner->PostTask(
@@ -135,7 +137,7 @@ TEST(TorControlTest, ReadLine) {
                      std::move(control)));
 
   // Test Async:
-  control.reset(new TorControl(delegate.AsWeakPtr(), io_task_runner));
+  control = std::make_unique<TorControl>(delegate.AsWeakPtr(), io_task_runner);
   using tor::TorControlEvent;
   EXPECT_CALL(delegate, OnTorRawAsync("650", "FAKEVENT WHAT")).Times(1);
   EXPECT_CALL(delegate, OnTorRawAsync("650", "NETWORK_LIVENESS UP")).Times(1);
@@ -212,7 +214,7 @@ TEST(TorControlTest, GetCircuitEstablishedDone) {
                        EXPECT_TRUE(is_called);
 
                        is_called = false;
-                       established.reset(new std::string("1"));
+                       established = std::make_unique<std::string>("1");
                        control->GetCircuitEstablishedDone(
                            std::move(established),
                            base::BindOnce(
@@ -227,7 +229,7 @@ TEST(TorControlTest, GetCircuitEstablishedDone) {
 
                        // --- Error cases ---
                        is_called = false;
-                       established.reset(new std::string("iambrave"));
+                       established = std::make_unique<std::string>("iambrave");
                        control->GetCircuitEstablishedDone(
                            std::move(established),
                            base::BindOnce(
@@ -241,7 +243,7 @@ TEST(TorControlTest, GetCircuitEstablishedDone) {
                        EXPECT_TRUE(is_called);
 
                        is_called = false;
-                       established.reset(new std::string(""));
+                       established = std::make_unique<std::string>("");
                        control->GetCircuitEstablishedDone(
                            std::move(established),
                            base::BindOnce(
@@ -255,7 +257,7 @@ TEST(TorControlTest, GetCircuitEstablishedDone) {
                        EXPECT_TRUE(is_called);
 
                        is_called = false;
-                       established.reset(new std::string("1"));
+                       established = std::make_unique<std::string>("1");
                        control->GetCircuitEstablishedDone(
                            std::move(established),
                            base::BindOnce(
@@ -269,7 +271,7 @@ TEST(TorControlTest, GetCircuitEstablishedDone) {
                        EXPECT_TRUE(is_called);
 
                        is_called = false;
-                       established.reset(new std::string("1"));
+                       established = std::make_unique<std::string>("1");
                        control->GetCircuitEstablishedDone(
                            std::move(established),
                            base::BindOnce(
@@ -283,7 +285,7 @@ TEST(TorControlTest, GetCircuitEstablishedDone) {
                        EXPECT_TRUE(is_called);
 
                        is_called = false;
-                       established.reset(new std::string("1"));
+                       established = std::make_unique<std::string>("1");
                        control->GetCircuitEstablishedDone(
                            std::move(established),
                            base::BindOnce(

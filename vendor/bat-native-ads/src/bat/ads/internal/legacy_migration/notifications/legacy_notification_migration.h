@@ -8,12 +8,10 @@
 
 #include "bat/ads/ads_callback.h"
 
-namespace ads {
-namespace notifications {
+namespace ads::notifications {
 
 void Migrate(InitializeCallback callback);
 
-}  // namespace notifications
-}  // namespace ads
+}  // namespace ads::notifications
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_LEGACY_MIGRATION_NOTIFICATIONS_LEGACY_NOTIFICATION_MIGRATION_H_

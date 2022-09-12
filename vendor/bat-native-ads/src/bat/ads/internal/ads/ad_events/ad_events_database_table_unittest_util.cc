@@ -8,16 +8,12 @@
 #include <utility>
 
 #include "base/bind.h"
-#include "base/check.h"
 #include "bat/ads/internal/ads/ad_events/ad_events.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/database/database_table_util.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
-namespace ads {
-namespace database {
-namespace table {
-namespace ad_events {
+namespace ads::database::table::ad_events {
 
 void Reset(ResultCallback callback) {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
@@ -32,7 +28,6 @@ void Reset(ResultCallback callback) {
             if (!command_response ||
                 command_response->status !=
                     mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
-              DCHECK(false);
               std::move(callback).Run(/*success*/ false);
               return;
             }
@@ -44,7 +39,4 @@ void Reset(ResultCallback callback) {
           std::move(callback)));
 }
 
-}  // namespace ad_events
-}  // namespace table
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database::table::ad_events

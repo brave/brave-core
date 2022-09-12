@@ -16,12 +16,11 @@ namespace {
 base::Value RLPTestStringToValue(const std::string& s, std::string* remaining) {
   const char* start = s.c_str();
   const char* p = start;
-  enum State { Start, InString, InNumber, InList };
+  enum State { Start, InString, InList };
   size_t list_depth = 0;
   State state = Start;
   while (*p != '\0') {
     if (isdigit(*p) && state == Start) {
-      state = InNumber;
       start = p;
       while (isdigit(*(p + 1))) {
         ++p;

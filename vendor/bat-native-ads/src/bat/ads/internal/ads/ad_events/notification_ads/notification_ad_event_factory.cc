@@ -13,8 +13,7 @@
 #include "bat/ads/internal/ads/ad_events/notification_ads/notification_ad_event_viewed.h"
 #include "bat/ads/notification_ad_info.h"
 
-namespace ads {
-namespace notification_ads {
+namespace ads::notification_ads {
 
 std::unique_ptr<AdEventInterface<NotificationAdInfo>> AdEventFactory::Build(
     const mojom::NotificationAdEventType event_type) {
@@ -43,5 +42,4 @@ std::unique_ptr<AdEventInterface<NotificationAdInfo>> AdEventFactory::Build(
   }
 }
 
-}  // namespace notification_ads
-}  // namespace ads
+}  // namespace ads::notification_ads

@@ -12,9 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace privacy {
-namespace cbr {
+namespace ads::privacy::cbr {
 
 TEST(BatAdsTokenPreimageTest, FailToInitialize) {
   // Arrange
@@ -65,7 +63,7 @@ TEST(BatAdsTokenPreimageTest, FailToDecodeEmptyBase64) {
   // Arrange
 
   // Act
-  const TokenPreimage token_preimage = TokenPreimage::DecodeBase64("");
+  const TokenPreimage token_preimage = TokenPreimage::DecodeBase64({});
 
   // Assert
   const bool has_value = token_preimage.has_value();
@@ -184,6 +182,4 @@ TEST(BatAdsTokenPreimageTest, OutputStreamWhenUninitialized) {
   EXPECT_TRUE(ss.str().empty());
 }
 
-}  // namespace cbr
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::cbr

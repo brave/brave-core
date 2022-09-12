@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "absl/types/optional.h"
 #include "bat/ads/internal/ads/serving/new_tab_page_ad_serving_observer.h"
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "bat/ads/internal/ads/serving/serving_features_unittest_util.h"
@@ -16,12 +17,10 @@
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/segments/segment_alias.h"
 #include "bat/ads/new_tab_page_ad_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace new_tab_page_ads {
+namespace ads::new_tab_page_ads {
 
 class BatAdsNewTabPageAdServingTest : public ServingObserver,
                                       public UnitTestBase {
@@ -157,5 +156,4 @@ TEST_F(BatAdsNewTabPageAdServingTest,
   });
 }
 
-}  // namespace new_tab_page_ads
-}  // namespace ads
+}  // namespace ads::new_tab_page_ads

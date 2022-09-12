@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 
-namespace ads {
-namespace privacy {
+namespace ads::privacy {
 
 UnblindedTokenInfo::UnblindedTokenInfo() = default;
 
@@ -26,9 +25,4 @@ bool UnblindedTokenInfo::operator!=(const UnblindedTokenInfo& rhs) const {
   return !(*this == rhs);
 }
 
-bool UnblindedTokenInfo::is_valid() const {
-  return public_key.has_value() && value.has_value();
-}
-
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy

@@ -30,25 +30,26 @@ void StateMigrationV10::Migrate(ledger::LegacyResultCallback callback) {
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(1, "Uphold wallet is null.");
-    return callback(type::Result::LEDGER_OK);
+    return callback(mojom::Result::LEDGER_OK);
   }
 
   switch (uphold_wallet->status) {
-    case type::WalletStatus::NOT_CONNECTED:
+    case mojom::WalletStatus::NOT_CONNECTED:
       uphold_wallet->token = "";
       uphold_wallet->address = "";
       break;
-    case type::WalletStatus::CONNECTED:
+    case mojom::WalletStatus::CONNECTED:
       uphold_wallet->status = !uphold_wallet->token.empty()
-                                  ? type::WalletStatus::PENDING
-                                  : type::WalletStatus::NOT_CONNECTED;
+                                  ? mojom::WalletStatus::PENDING
+                                  : mojom::WalletStatus::NOT_CONNECTED;
       uphold_wallet->address = "";
       break;
-    case type::WalletStatus::VERIFIED: {
+    case mojom::WalletStatus::VERIFIED: {
       if (uphold_wallet->token.empty() || uphold_wallet->address.empty()) {
-        uphold_wallet->status = !uphold_wallet->token.empty()
-                                    ? type::WalletStatus::PENDING
-                                    : type::WalletStatus::DISCONNECTED_VERIFIED;
+        uphold_wallet->status =
+            !uphold_wallet->token.empty()
+                ? mojom::WalletStatus::PENDING
+                : mojom::WalletStatus::DISCONNECTED_VERIFIED;
         uphold_wallet->address = "";
         break;
       }
@@ -57,25 +58,25 @@ void StateMigrationV10::Migrate(ledger::LegacyResultCallback callback) {
           &StateMigrationV10::OnGetWallet, this, _1, _2, _3, callback);
 
       if (ledger::is_testing) {
-        return wallet_info_endpoint_callback(type::Result::LEDGER_ERROR,
+        return wallet_info_endpoint_callback(mojom::Result::LEDGER_ERROR,
                                              std::string{}, false);
       } else {
         return get_wallet_->Request(std::move(wallet_info_endpoint_callback));
       }
     }
-    case type::WalletStatus::DISCONNECTED_NOT_VERIFIED:
-      uphold_wallet->status = type::WalletStatus::DISCONNECTED_VERIFIED;
+    case mojom::WalletStatus::DISCONNECTED_NOT_VERIFIED:
+      uphold_wallet->status = mojom::WalletStatus::DISCONNECTED_VERIFIED;
       uphold_wallet->token = "";
       uphold_wallet->address = "";
       break;
-    case type::WalletStatus::DISCONNECTED_VERIFIED:
+    case mojom::WalletStatus::DISCONNECTED_VERIFIED:
       uphold_wallet->token = "";
       uphold_wallet->address = "";
       break;
-    case type::WalletStatus::PENDING:
+    case mojom::WalletStatus::PENDING:
       uphold_wallet->status = !uphold_wallet->token.empty()
-                                  ? type::WalletStatus::PENDING
-                                  : type::WalletStatus::NOT_CONNECTED;
+                                  ? mojom::WalletStatus::PENDING
+                                  : mojom::WalletStatus::NOT_CONNECTED;
       uphold_wallet->address = "";
       break;
     default:
@@ -84,35 +85,35 @@ void StateMigrationV10::Migrate(ledger::LegacyResultCallback callback) {
 
   uphold_wallet = ledger::uphold::GenerateLinks(std::move(uphold_wallet));
   callback(ledger_->uphold()->SetWallet(std::move(uphold_wallet))
-               ? type::Result::LEDGER_OK
-               : type::Result::LEDGER_ERROR);
+               ? mojom::Result::LEDGER_OK
+               : mojom::Result::LEDGER_ERROR);
 }
 
-void StateMigrationV10::OnGetWallet(type::Result result,
+void StateMigrationV10::OnGetWallet(mojom::Result result,
                                     const std::string& custodian,
                                     bool linked,
                                     ledger::LegacyResultCallback callback) {
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");
-    return callback(type::Result::LEDGER_ERROR);
+    return callback(mojom::Result::LEDGER_ERROR);
   }
 
-  DCHECK(uphold_wallet->status == type::WalletStatus::VERIFIED);
+  DCHECK(uphold_wallet->status == mojom::WalletStatus::VERIFIED);
   DCHECK(!uphold_wallet->token.empty());
   DCHECK(!uphold_wallet->address.empty());
 
-  if (result != type::Result::LEDGER_OK ||
+  if (result != mojom::Result::LEDGER_OK ||
       custodian != constant::kWalletUphold ||
       !linked) {  // deemed semi-VERIFIED || semi-VERIFIED
-    uphold_wallet->status = type::WalletStatus::PENDING;
+    uphold_wallet->status = mojom::WalletStatus::PENDING;
     uphold_wallet->address = "";
   }
 
   uphold_wallet = ledger::uphold::GenerateLinks(std::move(uphold_wallet));
   callback(ledger_->uphold()->SetWallet(std::move(uphold_wallet))
-               ? type::Result::LEDGER_OK
-               : type::Result::LEDGER_ERROR);
+               ? mojom::Result::LEDGER_OK
+               : mojom::Result::LEDGER_ERROR);
 }
 
 }  // namespace state

@@ -11,8 +11,7 @@
 #include "bat/ads/internal/segments/segment_alias.h"
 #include "url/gurl.h"
 
-namespace ads {
-namespace targeting {
+namespace ads::targeting {
 
 struct PurchaseIntentSiteInfo final {
   PurchaseIntentSiteInfo();
@@ -31,7 +30,6 @@ struct PurchaseIntentSiteInfo final {
   uint16_t weight = 0;
 };
 
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_SITE_INFO_H_

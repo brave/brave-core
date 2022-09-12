@@ -8,8 +8,7 @@
 
 #include "bat/ads/internal/segments/segment_alias.h"
 
-namespace ads {
-namespace targeting {
+namespace ads::targeting {
 
 struct UserModelInfo;
 
@@ -25,7 +24,6 @@ SegmentList GetTopParentLatentInterestSegments(const UserModelInfo& user_model);
 SegmentList GetTopChildPurchaseIntentSegments(const UserModelInfo& user_model);
 SegmentList GetTopParentPurchaseIntentSegments(const UserModelInfo& user_model);
 
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SERVING_TARGETING_TOP_SEGMENTS_H_

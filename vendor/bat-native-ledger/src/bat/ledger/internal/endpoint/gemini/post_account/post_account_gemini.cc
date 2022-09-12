@@ -15,11 +15,7 @@
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-using std::placeholders::_1;
-
-namespace ledger {
-namespace endpoint {
-namespace gemini {
+namespace ledger::endpoint::gemini {
 
 PostAccount::PostAccount(LedgerImpl* ledger) : ledger_(ledger) {
   DCHECK(ledger_);
@@ -31,82 +27,80 @@ std::string PostAccount::GetUrl() {
   return GetApiServerUrl("/v1/account");
 }
 
-type::Result PostAccount::ParseBody(const std::string& body,
-                                    std::string* linking_info,
-                                    std::string* user_name) {
+mojom::Result PostAccount::ParseBody(const std::string& body,
+                                     std::string* linking_info,
+                                     std::string* user_name) {
   DCHECK(linking_info);
   DCHECK(user_name);
 
   absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const base::Value::Dict* account = dict.FindDict("account");
   if (!account) {
     BLOG(0, "Missing account info");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   const auto* linking_information = account->FindString("verificationToken");
   if (!linking_info) {
     BLOG(0, "Missing linking info");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   const auto* users = dict.FindList("users");
   if (!users) {
     BLOG(0, "Missing users");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   if (users->size() == 0) {
     BLOG(0, "No users associated with this token");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   const auto* name = (*users)[0].GetDict().FindString("name");
   if (!name) {
     BLOG(0, "Missing user name");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   *linking_info = *linking_information;
   *user_name = *name;
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
 void PostAccount::Request(const std::string& token,
                           PostAccountCallback callback) {
-  auto url_callback = std::bind(&PostAccount::OnRequest, this, _1, callback);
-  auto request = type::UrlRequest::New();
+  auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
   request->headers = RequestAuthorization(token);
-  request->method = type::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), url_callback);
+  request->method = mojom::UrlMethod::POST;
+
+  ledger_->LoadURL(std::move(request),
+                   base::BindOnce(&PostAccount::OnRequest,
+                                  base::Unretained(this), std::move(callback)));
 }
 
-void PostAccount::OnRequest(const type::UrlResponse& response,
-                            PostAccountCallback callback) {
+void PostAccount::OnRequest(PostAccountCallback callback,
+                            const mojom::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
 
-  type::Result result = CheckStatusCode(response.status_code);
-
-  if (result != type::Result::LEDGER_OK) {
-    callback(result, "", "");
-    return;
+  mojom::Result result = CheckStatusCode(response.status_code);
+  if (result != mojom::Result::LEDGER_OK) {
+    return std::move(callback).Run(result, "", "");
   }
 
   std::string linking_info;
   std::string user_name;
-
   result = ParseBody(response.body, &linking_info, &user_name);
-  callback(result, linking_info, user_name);
+  std::move(callback).Run(result, std::move(linking_info),
+                          std::move(user_name));
 }
 
-}  // namespace gemini
-}  // namespace endpoint
-}  // namespace ledger
+}  // namespace ledger::endpoint::gemini

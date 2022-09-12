@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_BALANCE_REPORT_H_
 
 #include <string>
+#include <vector>
 
 #include "bat/ledger/internal/database/database_table.h"
 
@@ -18,22 +19,21 @@ class DatabaseBalanceReport : public DatabaseTable {
   explicit DatabaseBalanceReport(LedgerImpl* ledger);
   ~DatabaseBalanceReport() override;
 
-  void InsertOrUpdate(type::BalanceReportInfoPtr info,
+  void InsertOrUpdate(mojom::BalanceReportInfoPtr info,
                       ledger::LegacyResultCallback callback);
 
-  void InsertOrUpdateList(type::BalanceReportInfoList list,
+  void InsertOrUpdateList(std::vector<mojom::BalanceReportInfoPtr> list,
                           ledger::LegacyResultCallback callback);
 
-  void SetAmount(type::ActivityMonth month,
+  void SetAmount(mojom::ActivityMonth month,
                  int year,
-                 type::ReportType type,
+                 mojom::ReportType type,
                  double amount,
                  ledger::LegacyResultCallback callback);
 
-  void GetRecord(
-      type::ActivityMonth month,
-      int year,
-      ledger::GetBalanceReportCallback callback);
+  void GetRecord(mojom::ActivityMonth month,
+                 int year,
+                 ledger::GetBalanceReportCallback callback);
 
   void GetAllRecords(
       ledger::GetBalanceReportListCallback callback);
@@ -41,13 +41,11 @@ class DatabaseBalanceReport : public DatabaseTable {
   void DeleteAllRecords(ledger::LegacyResultCallback callback);
 
  private:
-  void OnGetRecord(
-      type::DBCommandResponsePtr response,
-      ledger::GetBalanceReportCallback callback);
+  void OnGetRecord(mojom::DBCommandResponsePtr response,
+                   ledger::GetBalanceReportCallback callback);
 
-  void OnGetAllRecords(
-      type::DBCommandResponsePtr response,
-      ledger::GetBalanceReportListCallback callback);
+  void OnGetAllRecords(mojom::DBCommandResponsePtr response,
+                       ledger::GetBalanceReportListCallback callback);
 };
 
 }  // namespace database

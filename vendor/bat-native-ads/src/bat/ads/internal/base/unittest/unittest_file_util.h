@@ -8,8 +8,8 @@
 
 #include <string>
 
+#include "absl/types/optional.h"
 #include "base/files/file_path.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

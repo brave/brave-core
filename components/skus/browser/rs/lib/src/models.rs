@@ -4,6 +4,7 @@ use std::str::FromStr;
 use challenge_bypass_ristretto::voprf::*;
 use chrono::prelude::*;
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 
 use crate::errors::*;
 
@@ -145,6 +146,12 @@ pub struct Order {
     pub last_paid_at: Option<NaiveDateTime>,
 }
 
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct SubmitReceipt {
+    pub external_id: String,
+    pub vendor: String,
+}
+
 impl Order {
     pub fn location_matches(&self, environment: &Environment, domain: &str) -> bool {
         if *environment != Environment::Local && *environment != Environment::Testing {
@@ -191,4 +198,13 @@ pub struct TimeLimitedCredential {
 pub struct TimeLimitedCredentials {
     pub item_id: String,
     pub creds: Vec<TimeLimitedCredential>,
+}
+
+#[derive(Deserialize, Eq, Clone, PartialEq, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct APIError {
+    pub code: u16,          // the response status code
+    pub message: String,    // the cause of the error
+    pub error_code: String, // the application error code
+    pub data: Value,        // contains details about the errors
 }

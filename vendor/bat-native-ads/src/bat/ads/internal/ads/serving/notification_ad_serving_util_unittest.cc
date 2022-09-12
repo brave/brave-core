@@ -6,7 +6,6 @@
 #include "bat/ads/internal/ads/serving/notification_ad_serving_util.h"
 
 #include "base/time/time.h"
-#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
@@ -14,8 +13,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace notification_ads {
+namespace ads::notification_ads {
 
 class BatAdsNotificationAdServingUtilTest : public UnitTestBase {
  protected:
@@ -87,5 +85,4 @@ TEST_F(BatAdsNotificationAdServingUtilTest, CalculateDelayBeforeServingAnAd) {
   EXPECT_EQ(DistantFuture() - Now(), CalculateDelayBeforeServingAnAd());
 }
 
-}  // namespace notification_ads
-}  // namespace ads
+}  // namespace ads::notification_ads

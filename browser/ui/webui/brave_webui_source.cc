@@ -171,6 +171,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "clockTitle", IDS_BRAVE_NEW_TAB_CLOCK },
         { "backgroundImageTitle", IDS_BRAVE_NEW_TAB_BACKGROUND_IMAGE },
         { "settingsNavigateBack", IDS_BRAVE_NEW_TAB_SETTINGS_BACK },
+        { "braveBackgroundsTitle", IDS_BRAVE_NEW_TAB_BRAVE_BACKGROUND},
         { "solidColorTitle", IDS_BRAVE_NEW_TAB_SOLID_COLOR},
         { "gradientColorTitle", IDS_BRAVE_NEW_TAB_GRADIENT_COLOR},
         { "refreshBackgroundOnNewTab", IDS_BRAVE_NEW_TAB_REFRESH_BACKGROUND_ON_NEW_TAB},  // NOLINT
@@ -483,6 +484,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "adsSubdivisionTargetingDisable",  IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_DISABLE },  // NOLINT
         { "adsSubdivisionTargetingDisabled",  IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_DISABLED },  // NOLINT
         { "adsTitle",  IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE },
+        { "appErrorTitle", IDS_REWARDS_APP_ERROR_TITLE },
 
         { "bat", IDS_BRAVE_UI_BAT_REWARDS_TEXT },
         { "contributionTitle",  IDS_BRAVE_REWARDS_LOCAL_CONTR_TITLE },
@@ -538,7 +540,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "redirectModalMismatchedProviderAccountRegionsTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNT_REGIONS_TITLE},     // NOLINT
         { "redirectModalMismatchedProviderAccountsText", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNTS_TEXT},     // NOLINT
         { "redirectModalMismatchedProviderAccountsTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNTS_TITLE},     // NOLINT
-        { "redirectModalRegionNotSupportedText", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TEXT},     // NOLINT
+        { "redirectModalRegionNotSupportedText1", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TEXT_1},     // NOLINT
+        { "redirectModalRegionNotSupportedText2", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TEXT_2},     // NOLINT
         { "redirectModalRegionNotSupportedTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TITLE},     // NOLINT
         { "redirectModalUpholdBATNotAllowedText", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_BAT_NOT_ALLOWED_TEXT},     // NOLINT
         { "redirectModalUpholdBATNotAllowedTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_BAT_NOT_ALLOWED_TITLE},     // NOLINT
@@ -685,7 +688,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "reservedAllLink", IDS_BRAVE_UI_RESERVED_ALL_LINK },
         { "reset", IDS_BRAVE_UI_RESET },
         { "restore", IDS_BRAVE_UI_RESTORE },
-        { "restoreAll", IDS_BRAVE_UI_RESTORE_ALL },
+        { "clearExcludeList", IDS_BRAVE_UI_CLEAR_EXCLUDE_LIST },
         { "reviewSitesMsg", IDS_BRAVE_UI_REVIEW_SITE_MSG },
         { "rewardsAdGrantAmount", IDS_REWARDS_WIDGET_AD_GRANT_AMOUNT },
         { "rewardsAdGrantTitle", IDS_REWARDS_WIDGET_AD_GRANT_TITLE },
@@ -734,7 +737,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "yourWallet", IDS_BRAVE_UI_YOUR_WALLET },
 
         { "excludedSites", IDS_BRAVE_UI_EXCLUDED_SITES_TEXT },
-        { "restoreSite", IDS_BRAVE_UI_RESTORE_SITE },
+        { "removeFromExcluded", IDS_BRAVE_UI_REMOVE_FROM_EXCLUDED },
         { "rewardsExcludedText1", IDS_BRAVE_UI_REWARDS_EXCLUDED_TEXT_1 },
         { "rewardsExcludedText2", IDS_BRAVE_UI_REWARDS_EXCLUDED_TEXT_2 },
         { "showAll", IDS_BRAVE_UI_SHOW_ALL },
@@ -768,8 +771,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "connectWalletInfoListItem1", IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_LIST_ITEM_1 },  // NOLINT
         { "connectWalletInfoListItem2", IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_LIST_ITEM_2 },  // NOLINT
         { "continue", IDS_BRAVE_REWARDS_CONTINUE },
-        { "continueToLogin", IDS_BRAVE_REWARDS_CONTINUE_TO_LOGIN },
-        { "minimumBalanceWarning", IDS_BRAVE_REWARDS_MINIMUM_BALANCE_WARNING },
         { "contributionPendingUntil", IDS_BRAVE_REWARDS_CONTRIBUTION_PENDING_UNTIL },  // NOLINT
 
         { "walletAccountLink", IDS_REWARDS_WALLET_ACCOUNT_LINK },
@@ -885,8 +886,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "onboardingStartUsingRewards", IDS_BRAVE_REWARDS_ONBOARDING_START_USING_REWARDS },  // NOLINT
         { "onboardingTakeTour", IDS_BRAVE_REWARDS_ONBOARDING_TAKE_TOUR },
         { "onboardingTerms", IDS_BRAVE_REWARDS_ONBOARDING_TERMS },
-        { "onboardingTipHeader", IDS_BRAVE_REWARDS_ONBOARDING_TIP_HEADER },
-        { "onboardingTipText", IDS_BRAVE_REWARDS_ONBOARDING_TIP_TEXT },
         { "onboardingTourBack", IDS_BRAVE_REWARDS_ONBOARDING_TOUR_BACK },
         { "onboardingTourBegin", IDS_BRAVE_REWARDS_ONBOARDING_TOUR_BEGIN },
         { "onboardingTourContinue", IDS_BRAVE_REWARDS_ONBOARDING_TOUR_CONTINUE },  // NOLINT
@@ -918,7 +917,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "onboardingPanelBitflyerLearnMore", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_LEARN_MORE },  // NOLINT
         { "oneTimeTip", IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP },
         { "oneTimeTipAmount", IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP_AMOUNT },
-        { "optInRequired", IDS_BRAVE_REWARDS_TIP_OPT_IN_REQUIRED },
         { "postHeader", IDS_BRAVE_REWARDS_TIP_POST_HEADER },
         { "postHeaderTwitter", IDS_BRAVE_REWARDS_TIP_POST_HEADER_TWITTER },
         { "rewardsBannerText1", IDS_BRAVE_UI_REWARDS_BANNER_TEXT1 },

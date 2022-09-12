@@ -42,16 +42,15 @@ void APIParameters::Fetch(ledger::GetRewardsParametersCallback callback) {
   api_server_->get_parameters()->Request(std::move(url_callback));
 }
 
-void APIParameters::OnFetch(
-    const type::Result result,
-    const type::RewardsParameters& parameters) {
-  if (result == type::Result::RETRY_SHORT) {
+void APIParameters::OnFetch(const mojom::Result result,
+                            const mojom::RewardsParameters& parameters) {
+  if (result == mojom::Result::RETRY_SHORT) {
     RunCallbacks();
     SetRefreshTimer(base::Seconds(90));
     return;
   }
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(1, "Couldn't parse response");
     RunCallbacks();
     SetRefreshTimer(base::Minutes(10));

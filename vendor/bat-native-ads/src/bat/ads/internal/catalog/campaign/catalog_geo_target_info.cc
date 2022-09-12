@@ -7,22 +7,14 @@
 
 namespace ads {
 
-CatalogGeoTargetInfo::CatalogGeoTargetInfo() = default;
-
-CatalogGeoTargetInfo::CatalogGeoTargetInfo(const CatalogGeoTargetInfo& info) =
-    default;
-
-CatalogGeoTargetInfo& CatalogGeoTargetInfo::operator=(
-    const CatalogGeoTargetInfo& info) = default;
-
-CatalogGeoTargetInfo::~CatalogGeoTargetInfo() = default;
-
-bool CatalogGeoTargetInfo::operator==(const CatalogGeoTargetInfo& rhs) const {
-  return code == rhs.code && name == rhs.name;
+bool operator==(const CatalogGeoTargetInfo& lhs,
+                const CatalogGeoTargetInfo& rhs) {
+  return lhs.code == rhs.code && lhs.name == rhs.name;
 }
 
-bool CatalogGeoTargetInfo::operator!=(const CatalogGeoTargetInfo& rhs) const {
-  return !(*this == rhs);
+bool operator!=(const CatalogGeoTargetInfo& lhs,
+                const CatalogGeoTargetInfo& rhs) {
+  return !(lhs == rhs);
 }
 
 }  // namespace ads

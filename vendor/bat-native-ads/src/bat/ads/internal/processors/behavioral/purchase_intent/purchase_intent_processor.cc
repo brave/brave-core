@@ -7,6 +7,7 @@
 
 #include <algorithm>
 
+#include "absl/types/optional.h"
 #include "base/check.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -23,13 +24,10 @@
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_site_info.h"
 #include "bat/ads/internal/resources/country_components.h"
 #include "bat/ads/internal/resources/resource_manager.h"
-#include "bat/ads/internal/tabs/tab_info.h"
 #include "bat/ads/internal/tabs/tab_manager.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
-namespace ads {
-namespace processor {
+namespace ads::processor {
 
 using KeywordList = std::vector<std::string>;
 
@@ -254,5 +252,4 @@ void PurchaseIntent::OnTextContentDidChange(
   Process(url);
 }
 
-}  // namespace processor
-}  // namespace ads
+}  // namespace ads::processor

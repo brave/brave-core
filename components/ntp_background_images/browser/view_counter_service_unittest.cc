@@ -128,6 +128,8 @@ class TestDelegate : public NTPCustomBackgroundImagesService::Delegate {
   bool IsColorBackgroundEnabled() const override { return color_enabled_; }
   std::string GetColor() const override { return "#ff0000"; }
   bool ShouldUseRandomValue() const override { return false; }
+  bool HasPreferredBraveBackground() const override { return false; }
+  base::Value::Dict GetPreferredBraveBackground() const override { return {}; }
 
   bool image_enabled_ = false;
   bool color_enabled_ = false;
@@ -165,8 +167,8 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
 
     // Set referral service is properly initialized sr component is set.
     local_pref_.SetBoolean(kReferralCheckedForPromoCodeFile, true);
-    local_pref_.Set(prefs::kNewTabPageCachedSuperReferralComponentInfo,
-                    base::Value(base::Value::Type::DICTIONARY));
+    local_pref_.SetDict(prefs::kNewTabPageCachedSuperReferralComponentInfo,
+                        base::Value::Dict());
   }
 
   void EnableSIPref(bool enable) {
@@ -264,14 +266,14 @@ TEST_F(NTPBackgroundImagesViewCounterTest, BINotActiveInitially) {
 
 TEST_F(NTPBackgroundImagesViewCounterTest, SINotActiveWithBadData) {
   // Set some bad data explicitly.
-  service_->si_images_data_.reset(new NTPSponsoredImagesData);
-  service_->sr_images_data_.reset(new NTPSponsoredImagesData);
+  service_->si_images_data_ = std::make_unique<NTPSponsoredImagesData>();
+  service_->sr_images_data_ = std::make_unique<NTPSponsoredImagesData>();
   EXPECT_FALSE(view_counter_->IsBrandedWallpaperActive());
 }
 
 TEST_F(NTPBackgroundImagesViewCounterTest, BINotActiveWithBadData) {
   // Set some bad data explicitly.
-  service_->bi_images_data_.reset(new NTPBackgroundImagesData);
+  service_->bi_images_data_ = std::make_unique<NTPBackgroundImagesData>();
   EXPECT_FALSE(view_counter_->IsBackgroundWallpaperActive());
 }
 
@@ -382,7 +384,7 @@ TEST_F(NTPBackgroundImagesViewCounterTest, ModelTest) {
   view_counter_->RegisterPageView();
   EXPECT_EQ(expected_count, view_counter_->model_.count_to_branded_wallpaper_);
 
-  service_->sr_images_data_.reset(new NTPSponsoredImagesData);
+  service_->sr_images_data_ = std::make_unique<NTPSponsoredImagesData>();
   view_counter_->OnSuperReferralEnded();
   EXPECT_FALSE(view_counter_->model_.always_show_branded_wallpaper_);
   EXPECT_EQ(expected_count, view_counter_->model_.count_to_branded_wallpaper_);

@@ -8,9 +8,7 @@
 
 #include "bat/ads/internal/segments/segment_alias.h"
 
-namespace ads {
-namespace targeting {
-namespace model {
+namespace ads::targeting::model {
 
 class ModelInterface {
  public:
@@ -19,8 +17,6 @@ class ModelInterface {
   virtual SegmentList GetSegments() const = 0;
 };
 
-}  // namespace model
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting::model
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SERVING_TARGETING_MODELS_MODEL_INTERFACE_H_

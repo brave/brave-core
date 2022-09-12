@@ -38,20 +38,20 @@ void PostCancelTransaction::Request(const std::string& token,
                                     PostCancelTransactionCallback callback) {
   auto url_callback =
       std::bind(&PostCancelTransaction::OnRequest, this, _1, callback);
-  auto request = type::UrlRequest::New();
+  auto request = mojom::UrlRequest::New();
   request->url = GetUrl(tx_ref);
-  request->method = type::UrlMethod::POST;
+  request->method = mojom::UrlMethod::POST;
   request->headers = RequestAuthorization(token);
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
-void PostCancelTransaction::OnRequest(const type::UrlResponse& response,
+void PostCancelTransaction::OnRequest(const mojom::UrlResponse& response,
                                       PostCancelTransactionCallback callback) {
   ledger::LogUrlResponse(__func__, response);
 
-  type::Result result = CheckStatusCode(response.status_code);
+  mojom::Result result = CheckStatusCode(response.status_code);
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     callback(result);
     return;
   }

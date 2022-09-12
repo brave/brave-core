@@ -21,7 +21,7 @@ const char kTableName[] = "activity_info";
 std::string GenerateActivityFilterQuery(
     const int start,
     const int limit,
-    ledger::type::ActivityInfoFilterPtr filter) {
+    ledger::mojom::ActivityInfoFilterPtr filter) {
   std::string query = "";
   if (!filter) {
     return query;
@@ -39,14 +39,14 @@ std::string GenerateActivityFilterQuery(
     query += " AND ai.duration >= ?";
   }
 
-  if (filter->excluded != ledger::type::ExcludeFilter::FILTER_ALL &&
+  if (filter->excluded != ledger::mojom::ExcludeFilter::FILTER_ALL &&
       filter->excluded !=
-        ledger::type::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
+          ledger::mojom::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
     query += " AND pi.excluded = ?";
   }
 
   if (filter->excluded ==
-    ledger::type::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
+      ledger::mojom::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
     query += " AND pi.excluded != ?";
   }
 
@@ -60,8 +60,7 @@ std::string GenerateActivityFilterQuery(
 
   if (!filter->non_verified) {
     const std::string status = base::StringPrintf(
-        " AND spi.status != %1d",
-        ledger::type::PublisherStatus::NOT_VERIFIED);
+        " AND spi.status != %1d", ledger::mojom::PublisherStatus::NOT_VERIFIED);
     query += status;
   }
 
@@ -81,9 +80,8 @@ std::string GenerateActivityFilterQuery(
   return query;
 }
 
-void GenerateActivityFilterBind(
-    ledger::type::DBCommand* command,
-    ledger::type::ActivityInfoFilterPtr filter) {
+void GenerateActivityFilterBind(ledger::mojom::DBCommand* command,
+                                ledger::mojom::ActivityInfoFilterPtr filter) {
   if (!command || !filter) {
     return;
   }
@@ -101,9 +99,9 @@ void GenerateActivityFilterBind(
     ledger::database::BindInt(command, column++, filter->min_duration);
   }
 
-  if (filter->excluded != ledger::type::ExcludeFilter::FILTER_ALL &&
+  if (filter->excluded != ledger::mojom::ExcludeFilter::FILTER_ALL &&
       filter->excluded !=
-      ledger::type::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
+          ledger::mojom::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
     ledger::database::BindInt(
         command,
         column++,
@@ -111,11 +109,10 @@ void GenerateActivityFilterBind(
   }
 
   if (filter->excluded ==
-      ledger::type::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
+      ledger::mojom::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
     ledger::database::BindInt(
-        command,
-        column++,
-        static_cast<int>(ledger::type::PublisherExclude::EXCLUDED));
+        command, column++,
+        static_cast<int>(ledger::mojom::PublisherExclude::EXCLUDED));
   }
 
   if (filter->percent > 0) {
@@ -140,10 +137,10 @@ DatabaseActivityInfo::DatabaseActivityInfo(
 DatabaseActivityInfo::~DatabaseActivityInfo() = default;
 
 void DatabaseActivityInfo::NormalizeList(
-    type::PublisherInfoList list,
+    std::vector<mojom::PublisherInfoPtr> list,
     ledger::LegacyResultCallback callback) {
   if (list.empty()) {
-    callback(type::Result::LEDGER_OK);
+    callback(mojom::Result::LEDGER_OK);
     return;
   }
   std::string main_query;
@@ -154,45 +151,45 @@ void DatabaseActivityInfo::NormalizeList(
   }
 
   if (main_query.empty()) {
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::EXECUTE;
+  auto transaction = mojom::DBTransaction::New();
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::EXECUTE;
   command->command = main_query;
 
   transaction->commands.push_back(std::move(command));
 
-  auto shared_list = std::make_shared<type::PublisherInfoList>(
-      std::move(list));
+  auto shared_list =
+      std::make_shared<std::vector<mojom::PublisherInfoPtr>>(std::move(list));
 
   ledger_->RunDBTransaction(
       std::move(transaction),
-      [this, shared_list, callback](type::DBCommandResponsePtr response) {
-        if (!response || response->status !=
-              type::DBCommandResponse::Status::RESPONSE_OK) {
-          callback(type::Result::LEDGER_ERROR);
+      [this, shared_list, callback](mojom::DBCommandResponsePtr response) {
+        if (!response ||
+            response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+          callback(mojom::Result::LEDGER_ERROR);
           return;
         }
 
         ledger_->ledger_client()->PublisherListNormalized(
             std::move(*shared_list));
 
-        callback(type::Result::LEDGER_OK);
+        callback(mojom::Result::LEDGER_OK);
       });
 }
 
 void DatabaseActivityInfo::InsertOrUpdate(
-    type::PublisherInfoPtr info,
+    mojom::PublisherInfoPtr info,
     ledger::LegacyResultCallback callback) {
   if (!info) {
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
   const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
       "(publisher_id, duration, score, percent, "
@@ -200,8 +197,8 @@ void DatabaseActivityInfo::InsertOrUpdate(
       "VALUES (?, ?, ?, ?, ?, ?, ?)",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
   BindString(command.get(), 0, info->id);
@@ -224,14 +221,14 @@ void DatabaseActivityInfo::InsertOrUpdate(
 void DatabaseActivityInfo::GetRecordsList(
     const int start,
     const int limit,
-    type::ActivityInfoFilterPtr filter,
+    mojom::ActivityInfoFilterPtr filter,
     ledger::PublisherInfoListCallback callback) {
   if (!filter) {
     callback({});
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   std::string query = base::StringPrintf(
     "SELECT ai.publisher_id, ai.duration, ai.score, "
@@ -248,28 +245,26 @@ void DatabaseActivityInfo::GetRecordsList(
 
   query += GenerateActivityFilterQuery(start, limit, filter->Clone());
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = query;
 
   GenerateActivityFilterBind(command.get(), filter->Clone());
 
-  command->record_bindings = {
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::INT64_TYPE,
-      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      type::DBCommand::RecordBindingType::INT64_TYPE,
-      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      type::DBCommand::RecordBindingType::INT_TYPE,
-      type::DBCommand::RecordBindingType::INT64_TYPE,
-      type::DBCommand::RecordBindingType::INT_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::INT64_TYPE,
-      type::DBCommand::RecordBindingType::INT_TYPE
-  };
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
+                              mojom::DBCommand::RecordBindingType::INT_TYPE};
 
   transaction->commands.push_back(std::move(command));
 
@@ -282,17 +277,17 @@ void DatabaseActivityInfo::GetRecordsList(
 }
 
 void DatabaseActivityInfo::OnGetRecordsList(
-    type::DBCommandResponsePtr response,
+    mojom::DBCommandResponsePtr response,
     ledger::PublisherInfoListCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     callback({});
     return;
   }
 
-  type::PublisherInfoList list;
+  std::vector<mojom::PublisherInfoPtr> list;
   for (auto const& record : response->result->get_records()) {
-    auto info = type::PublisherInfo::New();
+    auto info = mojom::PublisherInfo::New();
     auto* record_pointer = record.get();
 
     info->id = GetStringColumn(record_pointer, 0);
@@ -300,11 +295,11 @@ void DatabaseActivityInfo::OnGetRecordsList(
     info->score = GetDoubleColumn(record_pointer, 2);
     info->percent = GetInt64Column(record_pointer, 3);
     info->weight = GetDoubleColumn(record_pointer, 4);
-    info->status = static_cast<type::PublisherStatus>(
-        GetIntColumn(record_pointer, 5));
+    info->status =
+        static_cast<mojom::PublisherStatus>(GetIntColumn(record_pointer, 5));
     info->status_updated_at = GetInt64Column(record_pointer, 6);
-    info->excluded = static_cast<type::PublisherExclude>(
-        GetIntColumn(record_pointer, 7));
+    info->excluded =
+        static_cast<mojom::PublisherExclude>(GetIntColumn(record_pointer, 7));
     info->name = GetStringColumn(record_pointer, 8);
     info->url = GetStringColumn(record_pointer, 9);
     info->provider = GetStringColumn(record_pointer, 10);
@@ -321,18 +316,18 @@ void DatabaseActivityInfo::OnGetRecordsList(
 void DatabaseActivityInfo::DeleteRecord(const std::string& publisher_key,
                                         ledger::LegacyResultCallback callback) {
   if (publisher_key.empty()) {
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "DELETE FROM %s WHERE publisher_id = ? AND reconcile_stamp = ?",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
   BindString(command.get(), 0, publisher_key);

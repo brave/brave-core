@@ -48,7 +48,7 @@ std::string GetApiServerUrl(const std::string& path) {
   DCHECK(!path.empty());
 
   std::string url;
-  if (ledger::_environment == type::Environment::PRODUCTION) {
+  if (ledger::_environment == mojom::Environment::PRODUCTION) {
     url = BUILDFLAG(GEMINI_API_URL);
   } else {
     url = BUILDFLAG(GEMINI_API_STAGING_URL);
@@ -61,7 +61,7 @@ std::string GetOauthServerUrl(const std::string& path) {
   DCHECK(!path.empty());
 
   std::string url;
-  if (ledger::_environment == type::Environment::PRODUCTION) {
+  if (ledger::_environment == mojom::Environment::PRODUCTION) {
     url = BUILDFLAG(GEMINI_OAUTH_URL);
   } else {
     url = BUILDFLAG(GEMINI_OAUTH_STAGING_URL);
@@ -70,22 +70,22 @@ std::string GetOauthServerUrl(const std::string& path) {
   return url + path;
 }
 
-type::Result CheckStatusCode(const int status_code) {
+mojom::Result CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_UNAUTHORIZED ||
       status_code == net::HTTP_FORBIDDEN) {
-    return type::Result::EXPIRED_TOKEN;
+    return mojom::Result::EXPIRED_TOKEN;
   }
 
   if (status_code == net::HTTP_NOT_FOUND) {
     BLOG(0, "Account not found");
-    return type::Result::NOT_FOUND;
+    return mojom::Result::NOT_FOUND;
   }
 
   if (status_code != net::HTTP_OK) {
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
 }  // namespace gemini

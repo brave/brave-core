@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { WalletButton } from '../shared/style'
 import WaringTriangle from '../../assets/svg-icons/warning-triangle.svg'
+import IThemeProps from 'brave-ui/src/theme/theme-interface'
 
 interface StyleProps {
   orb: string
@@ -186,9 +187,14 @@ export const WarningText = styled.span`
   color: ${(p) => p.theme.color.errorText};
 `
 
-export const WarningBoxIcon = styled.div`
+export const WarningBoxIcon = styled.div<{
+  color?: keyof IThemeProps['color']
+}>`
   mask-size: 100%;
-  background-color: ${(p) => p.theme.color.errorIcon};
+  background-color: ${(p) => p?.color
+    ? p.theme.color[p.color]
+    : p.theme.color.errorIcon
+  };
   -webkit-mask-image: url(${WaringTriangle});
   mask-image: url(${WaringTriangle});
 `

@@ -136,7 +136,7 @@ void BraveP3AService::Init(
   InitMessageMeta();
 
   // Init log store.
-  log_store_.reset(new BraveP3ALogStore(this, local_state_));
+  log_store_ = std::make_unique<BraveP3ALogStore>(this, local_state_);
   log_store_->LoadPersistedUnsentLogs();
   // Store values that were recorded between calling constructor and |Init()|.
   for (const auto& entry : histogram_values_) {

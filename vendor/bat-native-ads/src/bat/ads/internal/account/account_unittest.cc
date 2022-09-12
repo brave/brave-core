@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/account/account.h"
 
+#include "absl/types/optional.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/issuers/issuers_info.h"
@@ -14,7 +15,6 @@
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
-#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
@@ -25,7 +25,6 @@
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "bat/ads/pref_names.h"
 #include "net/http/http_status_code.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -217,7 +216,7 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
 
   // Assert
   const IssuersInfo expected_issuers =
-      BuildIssuers(7200000,
+      BuildIssuers(7'200'000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
                    {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
@@ -352,7 +351,7 @@ TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
 
   // Assert
   const IssuersInfo expected_issuers =
-      BuildIssuers(7200000,
+      BuildIssuers(7'200'000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
                    {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
@@ -399,7 +398,7 @@ TEST_F(BatAdsAccountTest, DoNotGetMissingPaymentIssuers) {
 
   // Assert
   const IssuersInfo expected_issuers =
-      BuildIssuers(7200000,
+      BuildIssuers(7'200'000,
                    {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
                    {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},

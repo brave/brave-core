@@ -17,9 +17,9 @@ bool ParseCertificatesFile(base::StringPiece certs_input,
                            Pinsets* pinsets,
                            base::Time* timestamp) {
   base::StringPiece brave_certs = R"brave_certs(
-# Last updated: Thu 04 Aug 2022 03:28:41 PM PDT
+# Last updated: Fri Sep  2 18:32:22 UTC 2022
 PinsListTimestamp
-1659652121
+1662143542
 
 # =====BEGIN BRAVE ROOTS ASC=====
 #From https://www.amazontrust.com/repository/
@@ -453,7 +453,6 @@ bool ParseJSON(base::StringPiece json,
       { "name": "rinkeby-infura.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "ropsten-infura.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "mainnet-beta-solana.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "testnet-solana.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "mainnet-polygon.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
 
       // Rewards

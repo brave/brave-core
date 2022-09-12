@@ -5,7 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.permission;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
@@ -22,11 +22,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -54,6 +55,7 @@ public class BraveEthereumPermissionPromptDialog
     static final int MAX_BITMAP_SIZE_FOR_DOWNLOAD = 2048;
 
     private final ModalDialogManager mModalDialogManager;
+    private int mCoinType;
     private final Context mContext;
     private long mNativeDialogController;
     private PropertyModel mPropertyModel;
@@ -67,23 +69,31 @@ public class BraveEthereumPermissionPromptDialog
     private boolean mMojoServicesClosed;
     private BraveWalletService mBraveWalletService;
     private View mPermissionDialogPositiveButton;
+    private WalletModel mWalletModel;
 
     @CalledByNative
     private static BraveEthereumPermissionPromptDialog create(long nativeDialogController,
-            @NonNull WindowAndroid windowAndroid, WebContents webContents, String favIconURL) {
+            @NonNull WindowAndroid windowAndroid, WebContents webContents, String favIconURL,
+            @CoinType.EnumType int coinType) {
         return new BraveEthereumPermissionPromptDialog(
-                nativeDialogController, windowAndroid, webContents, favIconURL);
+                nativeDialogController, windowAndroid, webContents, favIconURL, coinType);
     }
 
     public BraveEthereumPermissionPromptDialog(long nativeDialogController,
-            WindowAndroid windowAndroid, WebContents webContents, String favIconURL) {
+            WindowAndroid windowAndroid, WebContents webContents, String favIconURL,
+            @CoinType.EnumType int coinType) {
         mNativeDialogController = nativeDialogController;
         mWebContents = webContents;
         mFavIconURL = favIconURL;
         mContext = windowAndroid.getActivity().get();
 
         mModalDialogManager = windowAndroid.getModalDialogManager();
+        mCoinType = coinType;
         mMojoServicesClosed = false;
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity != null) {
+            mWalletModel = activity.getWalletModel();
+        }
     }
 
     @CalledByNative
@@ -114,7 +124,6 @@ public class BraveEthereumPermissionPromptDialog
                         .build();
         mModalDialogManager.showDialog(mPropertyModel, ModalDialogType.APP);
         InitKeyringService();
-        initAccounts();
         BraveActivity activity = BraveActivity.getBraveActivity();
         if (activity != null) {
             activity.dismissWalletPanelOrDialog();
@@ -127,6 +136,7 @@ public class BraveEthereumPermissionPromptDialog
         if (mPermissionDialogPositiveButton != null) {
             mPermissionDialogPositiveButton.setEnabled(false);
         }
+        initAccounts();
     }
 
     @NonNull
@@ -148,29 +158,35 @@ public class BraveEthereumPermissionPromptDialog
         mBraveWalletService = BraveWalletServiceFactory.getInstance().getBraveWalletService(this);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void initAccounts() {
         assert mKeyringService != null;
-        mKeyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
-            if (keyringInfo == null) {
-                return;
-            }
-            mAccountsListAdapter =
-                    new BraveEthereumPermissionAccountsListAdapter(keyringInfo.accountInfos, true,
-                            new BraveEthereumPermissionAccountsListAdapter
-                                    .BraveEthereumPermissionDelegate() {
-                                        @Override
-                                        public void onAccountCheckChanged(
-                                                AccountInfo account, boolean isChecked) {
-                                            if (mPermissionDialogPositiveButton != null) {
-                                                mPermissionDialogPositiveButton.setEnabled(
-                                                        getSelectedAccounts().length > 0);
-                                            }
-                                        }
-                                    });
-            mRecyclerView.setAdapter(mAccountsListAdapter);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
-            mRecyclerView.setLayoutManager(layoutManager);
-        });
+        assert mWalletModel != null;
+        mAccountsListAdapter = new BraveEthereumPermissionAccountsListAdapter(new AccountInfo[0],
+                true,
+                new BraveEthereumPermissionAccountsListAdapter.BraveEthereumPermissionDelegate() {
+                    @Override
+                    public void onAccountCheckChanged(AccountInfo account, boolean isChecked) {
+                        if (mPermissionDialogPositiveButton != null) {
+                            mPermissionDialogPositiveButton.setEnabled(
+                                    getSelectedAccounts().length > 0);
+                        }
+                    }
+                });
+        mRecyclerView.setAdapter(mAccountsListAdapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mWalletModel.getDappsModel().fetchAccountsForConnectionReq(
+                mCoinType, selectedAccountAllAccounts -> {
+                    String selectedAccount = selectedAccountAllAccounts.first;
+                    List<AccountInfo> accounts = selectedAccountAllAccounts.second;
+                    mAccountsListAdapter.setAccounts(accounts.toArray(new AccountInfo[0]));
+                    if (accounts.size() > 0) {
+                        mAccountsListAdapter.setSelectedAccount(selectedAccount);
+                        mPermissionDialogPositiveButton.setEnabled(true);
+                    }
+                    mAccountsListAdapter.notifyDataSetChanged();
+                });
     }
 
     private void setFavIcon() {

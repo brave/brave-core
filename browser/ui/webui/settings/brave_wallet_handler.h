@@ -22,6 +22,8 @@ class BraveWalletHandler : public settings::SettingsPageUIHandler {
  public:
   BraveWalletHandler();
   ~BraveWalletHandler() override;
+  BraveWalletHandler(const BraveWalletHandler&) = delete;
+  BraveWalletHandler& operator=(const BraveWalletHandler&) = delete;
 
   void SetChainCallbackForTesting(base::OnceClosure callback) {
     chain_callback_for_testing_ = std::move(callback);
@@ -33,26 +35,25 @@ class BraveWalletHandler : public settings::SettingsPageUIHandler {
   void RegisterMessages() override;
   void OnJavascriptAllowed() override {}
   void OnJavascriptDisallowed() override {}
+
   void GetAutoLockMinutes(const base::Value::List& args);
   void GetSolanaProviderOptions(const base::Value::List& args);
-  void RemoveEthereumChain(const base::Value::List& args);
-  void ResetEthereumChain(const base::Value::List& args);
+  void RemoveChain(const base::Value::List& args);
+  void ResetChain(const base::Value::List& args);
   void GetNetworksList(const base::Value::List& args);
   void GetPrepopulatedNetworksList(const base::Value::List& args);
-  void AddEthereumChain(const base::Value::List& args);
+  void AddChain(const base::Value::List& args);
   void SetActiveNetwork(const base::Value::List& args);
   void AddHiddenNetwork(const base::Value::List& args);
   void RemoveHiddenNetwork(const base::Value::List& args);
 
   PrefService* GetPrefs();
 
-  BraveWalletHandler(const BraveWalletHandler&) = delete;
-  BraveWalletHandler& operator=(const BraveWalletHandler&) = delete;
+  void OnAddChain(base::Value javascript_callback,
+                  const std::string& chain_id,
+                  brave_wallet::mojom::ProviderError error,
+                  const std::string& error_message);
 
-  void OnAddEthereumChain(base::Value javascript_callback,
-                          const std::string& chain_id,
-                          brave_wallet::mojom::ProviderError error,
-                          const std::string& error_message);
   base::OnceClosure chain_callback_for_testing_;
   base::WeakPtrFactory<BraveWalletHandler> weak_ptr_factory_{this};
 };

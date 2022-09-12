@@ -39,3 +39,12 @@ export const RecoveryTextInput = styled.input`
   ${RecoveryBaseCss}
   font-weight: 800;
 `
+
+export const CheckboxText = styled.div`
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+  color: ${(p) => p.theme.color.text01};
+`

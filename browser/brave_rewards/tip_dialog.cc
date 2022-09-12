@@ -15,7 +15,9 @@
 #include "base/json/json_writer.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -137,8 +139,20 @@ bool TipDialogDelegate::ShouldShowDialogTitle() const {
 namespace brave_rewards {
 
 void OpenTipDialog(WebContents* initiator, base::Value::Dict params) {
-  auto* rewards_service = RewardsServiceFactory::GetForProfile(
-      Profile::FromBrowserContext(initiator->GetBrowserContext()));
+  auto* profile = Profile::FromBrowserContext(initiator->GetBrowserContext());
+
+  // If the user has not enabled rewards, redirect the user to the Rewards
+  // panel to complete onboarding.
+  if (!profile->GetPrefs()->GetBoolean(prefs::kEnabled)) {
+    if (auto* browser = chrome::FindBrowserWithWebContents(initiator)) {
+      if (auto* coordinator = RewardsPanelCoordinator::FromBrowser(browser)) {
+        coordinator->OpenRewardsPanel();
+        return;
+      }
+    }
+  }
+
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
   if (rewards_service) {
     rewards_service->StartProcess(base::DoNothing());
   }

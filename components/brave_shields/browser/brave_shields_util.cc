@@ -147,8 +147,6 @@ std::string ControlTypeToString(ControlType type) {
       return "allow";
     case ControlType::BLOCK:
       return "block";
-    case ControlType::AGGRESSIVE:
-      return "aggressive";
     case ControlType::BLOCK_THIRD_PARTY:
       return "block_third_party";
     case ControlType::DEFAULT:
@@ -164,8 +162,6 @@ ControlType ControlTypeFromString(const std::string& string) {
     return ControlType::ALLOW;
   } else if (string == "block") {
     return ControlType::BLOCK;
-  } else if (string == "aggressive") {
-    return ControlType::AGGRESSIVE;
   } else if (string == "block_third_party") {
     return ControlType::BLOCK_THIRD_PARTY;
   } else if (string == "default") {
@@ -525,32 +521,21 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
   ControlType prev_setting = GetFingerprintingControlType(map, url);
   content_settings::SettingInfo setting_info;
   base::Value web_setting = map->GetWebsiteSetting(
-      url, GURL("https://balanced/*"),
-      ContentSettingsType::BRAVE_FINGERPRINTING_V2, &setting_info);
+      url, GURL(), ContentSettingsType::BRAVE_FINGERPRINTING_V2, &setting_info);
   bool was_default =
       web_setting.is_none() || setting_info.primary_pattern.MatchesAllHosts();
 
-  // Clear previous value to have only one rule for one pattern.
-  map->SetContentSettingCustomScope(
-      primary_pattern, ContentSettingsPattern::FromString("https://balanced/*"),
-      ContentSettingsType::BRAVE_FINGERPRINTING_V2, CONTENT_SETTING_DEFAULT);
-  map->SetContentSettingCustomScope(
-      primary_pattern, ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::BRAVE_FINGERPRINTING_V2, CONTENT_SETTING_DEFAULT);
-
-  auto content_setting = CONTENT_SETTING_BLOCK;
-  auto secondary_pattern =
-      ContentSettingsPattern::FromString("https://balanced/*");
-
-  if (type != ControlType::DEFAULT) {
+  ContentSetting content_setting;
+  if (type == ControlType::DEFAULT || type == ControlType::BLOCK_THIRD_PARTY) {
+    type = ControlType::DEFAULT;
+    content_setting = CONTENT_SETTING_ASK;
+  } else {
     content_setting = GetDefaultBlockFromControlType(type);
-    secondary_pattern = ContentSettingsPattern::Wildcard();
   }
 
   map->SetContentSettingCustomScope(
-      primary_pattern, secondary_pattern,
+      primary_pattern, ContentSettingsPattern::Wildcard(),
       ContentSettingsType::BRAVE_FINGERPRINTING_V2, content_setting);
-
   if (!map->IsOffTheRecord()) {
     // Only report to P3A if not a guest/incognito profile
     RecordShieldsSettingChanged(local_state);
@@ -577,8 +562,12 @@ ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
 
   ContentSetting fp_setting =
       GetBraveFPContentSettingFromRules(fingerprinting_rules, url);
-  if (fp_setting == CONTENT_SETTING_DEFAULT)
+
+  if (fp_setting == CONTENT_SETTING_ASK ||
+      fp_setting == CONTENT_SETTING_DEFAULT) {
     return ControlType::DEFAULT;
+  }
+
   return fp_setting == CONTENT_SETTING_ALLOW ? ControlType::ALLOW
                                              : ControlType::BLOCK;
 }

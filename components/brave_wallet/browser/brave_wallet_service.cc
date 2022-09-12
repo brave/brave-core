@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/metrics/histogram_macros.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
@@ -112,9 +113,8 @@ decltype(std::declval<T>().begin()) FindAsset(
   static_assert(std::is_same<std::decay_t<T>, base::Value::List>::value,
                 "Only call with base::Value::List");
 
-  auto iter = std::find_if(
-      user_assets_list->begin(), user_assets_list->end(),
-      [&](const base::Value& value) {
+  auto iter =
+      base::ranges::find_if(*user_assets_list, [&](const base::Value& value) {
         const auto* dict = value.GetIfDict();
         if (!dict) {
           return false;
@@ -752,7 +752,7 @@ void BraveWalletService::MigrateUserAssetsAddPreloadingNetworks(
   // For each user asset list in ethereum known chains, check if it has the
   // native token (address is empty) in the list already, if not, insert a
   // native asset at the beginning based on the network info.
-  for (const auto& chain : GetAllKnownEthChains(nullptr)) {
+  for (const auto& chain : GetAllKnownChains(nullptr, mojom::CoinType::ETH)) {
     const std::string network_id = GetKnownEthNetworkId(chain->chain_id);
     DCHECK(!network_id.empty());
     const auto path = base::StrCat({kEthereumPrefKey, ".", network_id});
@@ -791,8 +791,7 @@ base::Value::Dict BraveWalletService::GetDefaultEthereumAssets() {
 
   // Show ETH and BAT by default for mainnet, and the native token for other
   // known networks.
-  std::vector<mojom::NetworkInfoPtr> chains = GetAllKnownEthChains(nullptr);
-  for (const auto& chain : chains) {
+  for (const auto& chain : GetAllKnownChains(nullptr, mojom::CoinType::ETH)) {
     const std::string network_id = GetKnownEthNetworkId(chain->chain_id);
     DCHECK(!network_id.empty());
     base::Value::List user_assets_list;
