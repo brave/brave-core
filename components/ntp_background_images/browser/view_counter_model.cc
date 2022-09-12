@@ -75,13 +75,13 @@ void ViewCounterModel::RegisterPageViewForBrandedImages() {
   // view of the branded wallpaper.
   count_to_branded_wallpaper_--;
   if (count_to_branded_wallpaper_ < 0) {
-    // Reset count and increse image index for next time.
+    // Reset count and increase image index for next time.
     count_to_branded_wallpaper_ = kRegularCountToBrandedWallpaper;
     campaigns_current_branded_image_index_[current_campaign_index_]++;
     campaigns_current_branded_image_index_[current_campaign_index_] %=
         campaigns_total_branded_image_count_[current_campaign_index_];
 
-    // Increse campaign index for next time.
+    // Increase campaign index for next time.
     current_campaign_index_++;
     current_campaign_index_ %= total_campaign_count_;
     return;
