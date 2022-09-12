@@ -87,7 +87,7 @@ public class PopoverController: UIViewController {
   public var convenientDismissalMargin: CGFloat = 80.0
 
   /// The distance from the popover arrow to the origin view
-  public var arrowDistance: CGFloat = -5.0
+  public var arrowDistance: CGFloat = 0
 
   /// The arrow direction behavior for this popover
   public var arrowDirectionBehavior: ArrowDirectionBehavior = .automatic
