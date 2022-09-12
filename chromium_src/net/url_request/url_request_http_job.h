@@ -9,7 +9,7 @@
 #include "net/base/isolation_info.h"
 #include "net/base/request_priority.h"
 #include "net/cookies/cookie_options.h"
-#include "net/cookies/same_party_context.h"
+#include "net/first_party_sets/same_party_context.h"
 
 #define NotifyBeforeStartTransactionCallback                  \
   NotUsed() const {}                                          \
