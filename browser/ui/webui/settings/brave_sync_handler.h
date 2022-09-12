@@ -53,6 +53,8 @@ class BraveSyncHandler : public settings::SettingsPageUIHandler,
   void OnAccountPermanentlyDeleted(base::Value callback_id,
                                    const syncer::SyncProtocolError& spe);
 
+  void OnJoinChainResult(base::Value callback_id, const bool& result);
+
   base::Value::List GetSyncDeviceList();
   syncer::BraveSyncServiceImpl* GetSyncService() const;
   syncer::DeviceInfoTracker* GetDeviceInfoTracker() const;

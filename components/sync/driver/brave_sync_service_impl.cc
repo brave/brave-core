@@ -99,10 +99,14 @@ bool BraveSyncServiceImpl::SetSyncCode(const std::string& sync_code) {
     return false;
 
   initiated_delete_account_ = false;
+  initiated_self_device_info_deleted_ = false;
+  initiated_join_chain_ = true;
+
   return true;
 }
 
 void BraveSyncServiceImpl::OnSelfDeviceInfoDeleted(base::OnceClosure cb) {
+  initiated_self_device_info_deleted_ = true;
   // This function will follow normal reset process and set SyncRequested to
   // false
   StopAndClear();
@@ -238,14 +242,43 @@ void BraveSyncServiceImpl::PermanentlyDeleteAccount(
 void BraveSyncServiceImpl::ResetEngine(ShutdownReason shutdown_reason,
                                        ResetEngineReason reset_reason) {
   SyncServiceImpl::ResetEngine(shutdown_reason, reset_reason);
+
+  if (initiated_self_device_info_deleted_) {
+    return;
+  }
+
   if (shutdown_reason == ShutdownReason::DISABLE_SYNC_AND_CLEAR_DATA &&
       reset_reason == ResetEngineReason::kDisabledAccount &&
-      sync_disabled_by_admin_ && !initiated_delete_account_) {
+      sync_disabled_by_admin_ && !initiated_delete_account_ &&
+      !initiated_join_chain_) {
     brave_sync_prefs_.SetSyncAccountDeletedNoticePending(true);
-
     // Forcing stop and clear, because sync account was deleted
     BraveSyncServiceImpl::StopAndClear();
+  } else if (shutdown_reason == ShutdownReason::DISABLE_SYNC_AND_CLEAR_DATA &&
+             reset_reason == ResetEngineReason::kDisabledAccount &&
+             sync_disabled_by_admin_ && initiated_join_chain_) {
+    // Forcing stop and clear, because we are trying to join the sync chain, but
+    // sync account was deleted
+    BraveSyncServiceImpl::StopAndClear();
+    DCHECK(join_chain_result_callback_);
+    std::move(join_chain_result_callback_).Run(false);
   }
+}
+
+void BraveSyncServiceImpl::SetJoinChainResultCallback(
+    base::OnceCallback<void(const bool&)> callback) {
+  join_chain_result_callback_ = std::move(callback);
+
+  sync_service_impl_delegate_->SetLocalDeviceAppearedCallback(
+      base::BindOnce(&BraveSyncServiceImpl::LocalDeviceAppeared,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
+void BraveSyncServiceImpl::LocalDeviceAppeared() {
+  initiated_join_chain_ = false;
+  DCHECK(join_chain_result_callback_);
+  std::move(join_chain_result_callback_).Run(true);
+  SyncServiceImpl::NotifyObservers();
 }
 
 }  // namespace syncer

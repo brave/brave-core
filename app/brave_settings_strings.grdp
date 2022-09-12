@@ -696,6 +696,9 @@
   <message name="IDS_BRAVE_SYNC_PERMANENTLY_DELETE_ACCOUNT_IN_PROGRESS" desc="The string which indicates that Sync account deletion happens now">
     Account deletion is in progress...
   </message>
+  <message name="IDS_BRAVE_SYNC_JOINING_DELETED_ACCOUNT" desc="The error text for the case when trying to connect to the permanently deleted chain">
+    Could not join this sync chain. Account was deleted.
+  </message>
 
   <!-- Settings / Search engine -->
   <message name="IDS_SETTINGS_BRAVE_OTHER_SEARCH_ENGINES_LABEL" desc="The label for the settings switch controlling the addition of custom search engines">

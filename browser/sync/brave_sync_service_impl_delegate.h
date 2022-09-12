@@ -17,6 +17,7 @@ class Profile;
 
 namespace syncer {
 
+class BraveSyncServiceImpl;
 class DeviceInfoSyncService;
 class DeviceInfoTracker;
 class LocalDeviceInfoProvider;
@@ -34,6 +35,9 @@ class BraveSyncServiceImplDelegate
   void SuspendDeviceObserverForOwnReset() override;
   void ResumeDeviceObserver() override;
 
+  void SetLocalDeviceAppearedCallback(
+      base::OnceCallback<void()> local_device_appeared_callback) override;
+
  private:
   // syncer::DeviceInfoTracker::Observer:
   void OnDeviceInfoChange() override;
@@ -50,6 +54,10 @@ class BraveSyncServiceImplDelegate
       device_info_observer_{this};
 
   raw_ptr<DeviceInfoSyncService> device_info_sync_service_ = nullptr;
+
+  // This is triggereded once after SetLocalDeviceAppearedCallback
+  // when the local device first appears in the changed synced devices list
+  base::OnceCallback<void()> local_device_appeared_callback_;
 
   base::WeakPtrFactory<BraveSyncServiceImplDelegate> weak_ptr_factory_;
 
