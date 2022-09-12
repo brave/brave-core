@@ -536,7 +536,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "redirectModalMismatchedProviderAccountRegionsTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNT_REGIONS_TITLE},     // NOLINT
         { "redirectModalMismatchedProviderAccountsText", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNTS_TEXT},     // NOLINT
         { "redirectModalMismatchedProviderAccountsTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNTS_TITLE},     // NOLINT
-        { "redirectModalRegionNotSupportedText", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TEXT},     // NOLINT
+        { "redirectModalRegionNotSupportedText1", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TEXT_1},     // NOLINT
+        { "redirectModalRegionNotSupportedText2", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TEXT_2},     // NOLINT
         { "redirectModalRegionNotSupportedTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TITLE},     // NOLINT
         { "redirectModalUpholdBATNotAllowedText", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_BAT_NOT_ALLOWED_TEXT},     // NOLINT
         { "redirectModalUpholdBATNotAllowedTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_BAT_NOT_ALLOWED_TITLE},     // NOLINT
