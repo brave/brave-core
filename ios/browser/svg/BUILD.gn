@@ -6,6 +6,8 @@
 import("//third_party/skia/modules/svg/svg.gni")
 
 source_set("svg") {
+  cflags_cc = [ "-Wno-extra-semi" ]
+
   configs += [ "//build/config/compiler:enable_arc" ]
 
   sources = [

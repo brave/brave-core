@@ -8,7 +8,7 @@
 
 #define ExtensionManagementServiceTest \
   ExtensionManagementServiceTest;      \
-  friend class BraveExtensionManagement;
+  friend class BraveExtensionManagement
 
 #include "src/chrome/browser/extensions/extension_management.h"
 #undef ExtensionManagementServiceTest
