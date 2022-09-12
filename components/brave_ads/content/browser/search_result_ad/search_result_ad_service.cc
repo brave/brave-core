@@ -10,23 +10,25 @@
 #include "base/callback.h"
 #include "base/check.h"
 #include "base/containers/contains.h"
-#include "base/feature_list.h"
+#include "base/feature_list.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_parsing.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
+#include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom-shared.h"
 #include "content/public/browser/render_frame_host.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
+#include "third_party/blink/public/mojom/document_metadata/document_metadata.mojom.h"
 
 namespace brave_ads {
 
 SearchResultAdService::AdViewedEventCallbackInfo::AdViewedEventCallbackInfo() =
     default;
 SearchResultAdService::AdViewedEventCallbackInfo::AdViewedEventCallbackInfo(
-    AdViewedEventCallbackInfo&& info) = default;
+    AdViewedEventCallbackInfo&& info) noexcept = default;
 SearchResultAdService::AdViewedEventCallbackInfo&
 SearchResultAdService::AdViewedEventCallbackInfo::operator=(
-    AdViewedEventCallbackInfo&& info) = default;
+    AdViewedEventCallbackInfo&& info) noexcept = default;
 SearchResultAdService::AdViewedEventCallbackInfo::~AdViewedEventCallbackInfo() =
     default;
 
@@ -141,7 +143,7 @@ void SearchResultAdService::ResetState(SessionID tab_id) {
 }
 
 void SearchResultAdService::OnRetrieveSearchResultAdEntities(
-    mojo::Remote<blink::mojom::DocumentMetadata> document_metadata,
+    mojo::Remote<blink::mojom::DocumentMetadata> /*document_metadata*/,
     SessionID tab_id,
     blink::mojom::WebPagePtr web_page) {
   if (metadata_request_finished_callback_for_testing_) {

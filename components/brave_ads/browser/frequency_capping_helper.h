@@ -20,12 +20,15 @@ namespace brave_ads {
 
 class FrequencyCappingHelper {
  public:
+  FrequencyCappingHelper(const FrequencyCappingHelper&) = delete;
+  FrequencyCappingHelper& operator=(const FrequencyCappingHelper&) = delete;
+
   static FrequencyCappingHelper* GetInstance();
 
   void RecordAdEventForId(const std::string& id,
                           const std::string& ad_type,
                           const std::string& confirmation_type,
-                          const base::Time time);
+                          base::Time time);
 
   std::vector<base::Time> GetAdEventHistory(
       const std::string& ad_type,
@@ -40,9 +43,6 @@ class FrequencyCappingHelper {
   ~FrequencyCappingHelper();
 
   ads::AdEventHistory history_;
-
-  FrequencyCappingHelper(const FrequencyCappingHelper&) = delete;
-  FrequencyCappingHelper& operator=(const FrequencyCappingHelper&) = delete;
 };
 
 }  // namespace brave_ads

@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/common/search_result_ad_util.h"
 #include "base/strings/string_piece.h"
 #include "services/network/public/cpp/resource_request.h"
-#include "testing/gtest/include/gtest/gtest.h"
+#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 #include "url/gurl.h"
 
 namespace brave_ads {

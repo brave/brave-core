@@ -16,7 +16,7 @@ class Profile;
 
 namespace content {
 class WebContents;
-}
+}  // namespace content
 
 namespace brave_ads {
 

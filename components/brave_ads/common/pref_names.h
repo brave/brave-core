@@ -6,9 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_COMMON_PREF_NAMES_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_COMMON_PREF_NAMES_H_
 
-namespace brave_ads {
-
-namespace prefs {
+namespace brave_ads::prefs {
 
 extern const char kAdsWereDisabled[];
 extern const char kHasAdsP3AState[];
@@ -28,8 +26,6 @@ extern const char kNotificationAdDidFallbackToCustom[];
 extern const char kVersion[];
 extern const int kCurrentVersionNumber;
 
-}  // namespace prefs
-
-}  // namespace brave_ads
+}  // namespace brave_ads::prefs
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_COMMON_PREF_NAMES_H_

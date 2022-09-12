@@ -15,7 +15,7 @@ class PrefRegistrySimple;
 
 namespace brave_ads {
 
-void RegisterP2APrefs(PrefRegistrySimple* prefs);
+void RegisterP2APrefs(PrefRegistrySimple* registry);
 
 void RecordInWeeklyStorageAndEmitP2AHistogramAnswer(PrefService* prefs,
                                                     const std::string& name);

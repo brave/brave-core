@@ -12,7 +12,6 @@
 #include "base/values.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "url/gurl.h"
-#include "url/third_party/mozilla/url_parse.h"
 
 namespace brave_ads {
 

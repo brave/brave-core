@@ -7,6 +7,8 @@
 
 #include <utility>
 
+#include "base/callback.h"
+
 namespace brave_ads {
 
 // static

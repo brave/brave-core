@@ -37,6 +37,10 @@ class PassThroughDelegate : public NotificationAdDelegate {
   PassThroughDelegate(Profile* profile, const NotificationAd& notification_ad)
       : profile_(profile), notification_ad_(notification_ad) {}
 
+  PassThroughDelegate(const PassThroughDelegate&) = delete;
+
+  PassThroughDelegate& operator=(const PassThroughDelegate&) = delete;
+
   void OnShow() override {
     AdsService* ads_service = AdsServiceFactory::GetForProfile(profile_);
     DCHECK(ads_service);
@@ -65,9 +69,6 @@ class PassThroughDelegate : public NotificationAdDelegate {
   Profile* profile_ = nullptr;  // NOT OWNED
 
   NotificationAd notification_ad_;
-
-  PassThroughDelegate(const PassThroughDelegate&) = delete;
-  PassThroughDelegate& operator=(const PassThroughDelegate&) = delete;
 };
 
 }  // namespace

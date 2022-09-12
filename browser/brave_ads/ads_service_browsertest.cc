@@ -124,9 +124,8 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
     MaybeMockLocaleHelper();
   }
 
-  ~BraveAdsBrowserTest() override {
-    // You can do clean-up work that doesn't throw exceptions here
-  }
+  // You can do clean-up work that doesn't throw exceptions here
+  ~BraveAdsBrowserTest() override = default;
 
   void SetUpOnMainThread() override {
     // Code here will be called immediately after the constructor (right before
