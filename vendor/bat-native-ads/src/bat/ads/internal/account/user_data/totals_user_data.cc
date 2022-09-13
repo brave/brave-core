@@ -11,8 +11,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "bat/ads/internal/account/user_data/totals_user_data_util.h"
 
-namespace ads {
-namespace user_data {
+namespace ads::user_data {
 
 namespace {
 
@@ -48,5 +47,4 @@ base::Value::Dict GetTotals(
   return user_data;
 }
 
-}  // namespace user_data
-}  // namespace ads
+}  // namespace ads::user_data

@@ -29,7 +29,7 @@ struct User {
   ~User();
 };
 
-using GetUserCallback = base::OnceCallback<void(type::Result, const User&)>;
+using GetUserCallback = base::OnceCallback<void(mojom::Result, const User&)>;
 
 class UpholdUser {
  public:
@@ -40,7 +40,7 @@ class UpholdUser {
   void Get(GetUserCallback callback);
 
  private:
-  void OnGet(GetUserCallback callback, type::Result result, const User& user);
+  void OnGet(GetUserCallback callback, mojom::Result result, const User& user);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::UpholdServer> uphold_server_;

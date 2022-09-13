@@ -135,7 +135,7 @@ class NTPBackgroundImagesService {
 
   std::string GetReferralPromoCode() const;
   bool IsValidSuperReferralComponentInfo(
-      const base::Value& component_info) const;
+      const base::Value::Dict& component_info) const;
 
   void CheckImagesComponentUpdate(const std::string& component_id);
 
@@ -175,7 +175,7 @@ class NTPBackgroundImagesService {
   // is done is important for super referral. If this is SR install, we should
   // not show SI images until user chooses Brave default images. So, we should
   // know the exact timing whether SR assets is ready to use or not.
-  base::Value initial_sr_component_info_;
+  absl::optional<base::Value::Dict> initial_sr_component_info_;
   base::WeakPtrFactory<NTPBackgroundImagesService> weak_factory_;
 };
 

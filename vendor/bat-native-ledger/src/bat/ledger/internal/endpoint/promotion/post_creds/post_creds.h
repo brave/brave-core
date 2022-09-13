@@ -45,7 +45,7 @@ namespace endpoint {
 namespace promotion {
 
 using PostCredsCallback =
-    base::OnceCallback<void(type::Result result, const std::string& claim_id)>;
+    base::OnceCallback<void(mojom::Result result, const std::string& claim_id)>;
 
 class PostCreds {
  public:
@@ -61,13 +61,12 @@ class PostCreds {
 
   std::string GeneratePayload(base::Value::List&& blinded_creds);
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(const int status_code);
 
-  type::Result ParseBody(
-      const std::string& body,
-      std::string* claim_id);
+  mojom::Result ParseBody(const std::string& body, std::string* claim_id);
 
-  void OnRequest(PostCredsCallback callback, const type::UrlResponse& response);
+  void OnRequest(PostCredsCallback callback,
+                 const mojom::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

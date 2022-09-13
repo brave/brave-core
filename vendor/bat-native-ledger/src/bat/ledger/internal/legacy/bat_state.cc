@@ -34,10 +34,10 @@ void LegacyBatState::Load(ledger::LegacyResultCallback callback) {
   ledger_->ledger_client()->LoadLedgerState(load_callback);
 }
 
-void LegacyBatState::OnLoad(ledger::type::Result result,
+void LegacyBatState::OnLoad(ledger::mojom::Result result,
                             const std::string& data,
                             ledger::LegacyResultCallback callback) {
-  if (result != ledger::type::Result::LEDGER_OK) {
+  if (result != ledger::mojom::Result::LEDGER_OK) {
     callback(result);
     return;
   }
@@ -46,7 +46,7 @@ void LegacyBatState::OnLoad(ledger::type::Result result,
   if (!state.FromJson(data)) {
     BLOG(0, "Failed to load client state");
     BLOG(6, "Client state contents: " << data);
-    callback(ledger::type::Result::LEDGER_ERROR);
+    callback(ledger::mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -62,7 +62,7 @@ void LegacyBatState::OnLoad(ledger::type::Result result,
     state_->boot_timestamp = state_->boot_timestamp / 1000;
   }
 
-  callback(ledger::type::Result::LEDGER_OK);
+  callback(ledger::mojom::Result::LEDGER_OK);
 }
 
 bool LegacyBatState::GetRewardsMainEnabled() const {

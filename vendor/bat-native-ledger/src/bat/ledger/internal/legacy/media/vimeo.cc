@@ -6,16 +6,16 @@
 #include <algorithm>
 #include <cmath>
 #include <utility>
-#include <vector>
 
+#include "base/containers/fixed_flat_set.h"
 #include "base/json/json_reader.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
+#include "bat/ledger/internal/constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/legacy/bat_helper.h"
 #include "bat/ledger/internal/legacy/media/vimeo.h"
 #include "bat/ledger/internal/legacy/static_values.h"
-#include "bat/ledger/internal/constants.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -136,22 +136,16 @@ bool Vimeo::AllowedEvent(const std::string& event) {
     return false;
   }
 
-  const std::vector<std::string> allowed = {
-    "video-start-time",
-    "video-minute-watched",
-    "video-paused",
-    "video-played",
-    "video-seek",
-    "video-seeked"};
+  static constexpr auto kAllowList = base::MakeFixedFlatSet<base::StringPiece>(
+      {"video-start-time", "video-minute-watched", "video-paused",
+       "video-played", "video-seek", "video-seeked"});
 
-  auto it = std::find(allowed.begin(), allowed.end(), event);
-  return it != allowed.end();
+  return kAllowList.contains(event);
 }
 
 // static
-uint64_t Vimeo::GetDuration(
-    const ledger::type::MediaEventInfo& old_event,
-    const ledger::type::MediaEventInfo& new_event) {
+uint64_t Vimeo::GetDuration(const ledger::mojom::MediaEventInfo& old_event,
+                            const ledger::mojom::MediaEventInfo& new_event) {
   // Remove duplicated events
   if (old_event.event == new_event.event &&
       old_event.time == new_event.time) {
@@ -190,53 +184,42 @@ bool Vimeo::IsExcludedPath(const std::string& path) {
     return true;
   }
 
-  const std::vector<std::string> paths({
-      "/",
-      "/log_in",
-      "/upgrade",
-      "/live",
-      "/watch",
-      "/videoschool",
-      "/upload",
-      "/ondemand",
-      "/ott",
-      "/site_map",
-      "/blog",
-      "/help",
-      "/about",
-      "/jobs",
-      "/stats",
-      "/watchlater",
-      "/purchases",
-      "/settings",
-      "/stock",
-    });
+  static constexpr auto kExcludedPaths =
+      base::MakeFixedFlatSet<base::StringPiece>({
+          "/",          "/log_in",      "/upgrade", "/live",
+          "/watch",     "/videoschool", "/upload",  "/ondemand",
+          "/ott",       "/site_map",    "/blog",    "/help",
+          "/about",     "/jobs",        "/stats",   "/watchlater",
+          "/purchases", "/settings",    "/stock",
+      });
 
-  for (std::string str_path : paths) {
-    if (str_path == path || str_path + "/" == path) {
-      return true;
-    }
-  }
+  // Removing the trailing forward-slash for searching excluded paths.
+  base::StringPiece path_piece =
+      (path.length() > 1 && path.back() == '/')
+          ? base::StringPiece(path.data(), path.length() - 1)
+          : base::StringPiece(path);
 
-  const std::vector<std::string> patterns({
-    "/features/",
-    "/categories/",
-    "/blog/",
-    "/ott/",
-    "/help/",
-    "/manage/",
-    "/settings/",
-    "/stock/",
-  });
+  if (kExcludedPaths.contains(path_piece))
+    return true;
 
-  for (std::string str_path : patterns) {
-    if (base::StartsWith(path,
-                         str_path,
+  static constexpr auto kExcludedPatterns =
+      base::MakeFixedFlatSet<base::StringPiece>({
+          "/features/",
+          "/categories/",
+          "/blog/",
+          "/ott/",
+          "/help/",
+          "/manage/",
+          "/settings/",
+          "/stock/",
+      });
+
+  for (const auto& excluded_pattern : kExcludedPatterns) {
+    if (base::StartsWith(path, excluded_pattern,
                          base::CompareCase::INSENSITIVE_ASCII)) {
       return true;
     }
   }
-
 
   return false;
 }
@@ -280,7 +263,7 @@ std::string Vimeo::GetVideoIdFromVideoPage(const std::string& data) {
 
 void Vimeo::FetchDataFromUrl(const std::string& url,
                              ledger::client::LegacyLoadURLCallback callback) {
-  auto request = ledger::type::UrlRequest::New();
+  auto request = ledger::mojom::UrlRequest::New();
   request->url = url;
   request->skip_log = true;
   ledger_->LoadURL(std::move(request), callback);
@@ -292,15 +275,14 @@ void Vimeo::OnMediaActivityError(uint64_t window_id) {
 
   DCHECK(!url.empty());
 
-  ledger::type::VisitData new_data;
+  ledger::mojom::VisitData new_data;
   new_data.domain = url;
   new_data.url = "https://" + url;
   new_data.path = "/";
   new_data.name = name;
 
-  ledger_->publisher()->GetPublisherActivityFromUrl(window_id,
-                                       ledger::type::VisitData::New(new_data),
-                                       "");
+  ledger_->publisher()->GetPublisherActivityFromUrl(
+      window_id, ledger::mojom::VisitData::New(new_data), "");
 }
 
 void Vimeo::ProcessMedia(
@@ -323,7 +305,7 @@ void Vimeo::ProcessMedia(
 
   const std::string media_key = GetMediaKey(media_id, type);
 
-  ledger::type::MediaEventInfo event_info;
+  ledger::mojom::MediaEventInfo event_info;
   iter = parts.find("event");
   if (iter != parts.end()) {
     event_info.event = iter->second;
@@ -349,9 +331,8 @@ void Vimeo::ProcessMedia(
                 _2));
 }
 
-void Vimeo::ProcessActivityFromUrl(
-    uint64_t window_id,
-    const ledger::type::VisitData& visit_data) {
+void Vimeo::ProcessActivityFromUrl(uint64_t window_id,
+                                   const ledger::mojom::VisitData& visit_data) {
   // not all url's are publisher specific
   if (IsExcludedPath(visit_data.path)) {
     OnMediaActivityError(window_id);
@@ -371,10 +352,9 @@ void Vimeo::ProcessActivityFromUrl(
   FetchDataFromUrl(url, callback);
 }
 
-void Vimeo::OnEmbedResponse(
-    const ledger::type::VisitData& visit_data,
-    const uint64_t window_id,
-    const ledger::type::UrlResponse& response) {
+void Vimeo::OnEmbedResponse(const ledger::mojom::VisitData& visit_data,
+                            const uint64_t window_id,
+                            const ledger::mojom::UrlResponse& response) {
   if (response.status_code != net::HTTP_OK) {
     auto callback = std::bind(&Vimeo::OnUnknownPage,
                               this,
@@ -439,13 +419,12 @@ void Vimeo::OnEmbedResponse(
   FetchDataFromUrl(publisher_url, callback);
 }
 
-void Vimeo::OnPublisherPage(
-    const std::string& media_key,
-    const std::string& publisher_url,
-    const std::string& publisher_name,
-    const ledger::type::VisitData& visit_data,
-    const uint64_t window_id,
-    const ledger::type::UrlResponse& response) {
+void Vimeo::OnPublisherPage(const std::string& media_key,
+                            const std::string& publisher_url,
+                            const std::string& publisher_name,
+                            const ledger::mojom::VisitData& visit_data,
+                            const uint64_t window_id,
+                            const ledger::mojom::UrlResponse& response) {
   if (response.status_code != net::HTTP_OK) {
     OnMediaActivityError(window_id);
     return;
@@ -462,10 +441,9 @@ void Vimeo::OnPublisherPage(
                         user_id);
 }
 
-void Vimeo::OnUnknownPage(
-    const ledger::type::VisitData& visit_data,
-    const uint64_t window_id,
-    const ledger::type::UrlResponse& response) {
+void Vimeo::OnUnknownPage(const ledger::mojom::VisitData& visit_data,
+                          const uint64_t window_id,
+                          const ledger::mojom::UrlResponse& response) {
   if (response.status_code != net::HTTP_OK) {
     OnMediaActivityError(window_id);
     return;
@@ -505,15 +483,14 @@ void Vimeo::OnUnknownPage(
                         user_id);
 }
 
-void Vimeo::OnPublisherPanleInfo(
-    const std::string& media_key,
-    uint64_t window_id,
-    const std::string& publisher_url,
-    const std::string& publisher_name,
-    const std::string& user_id,
-    ledger::type::Result result,
-    ledger::type::PublisherInfoPtr info) {
-  if (!info || result == ledger::type::Result::NOT_FOUND) {
+void Vimeo::OnPublisherPanleInfo(const std::string& media_key,
+                                 uint64_t window_id,
+                                 const std::string& publisher_url,
+                                 const std::string& publisher_name,
+                                 const std::string& user_id,
+                                 ledger::mojom::Result result,
+                                 ledger::mojom::PublisherInfoPtr info) {
+  if (!info || result == ledger::mojom::Result::NOT_FOUND) {
     SavePublisherInfo(media_key,
                       0,
                       user_id,
@@ -536,12 +513,8 @@ void Vimeo::GetPublisherPanleInfo(
     const std::string& publisher_name,
     const std::string& user_id) {
   auto filter = ledger_->publisher()->CreateActivityFilter(
-    publisher_key,
-    ledger::type::ExcludeFilter::FILTER_ALL,
-    false,
-    ledger_->state()->GetReconcileStamp(),
-    true,
-    false);
+      publisher_key, ledger::mojom::ExcludeFilter::FILTER_ALL, false,
+      ledger_->state()->GetReconcileStamp(), true, false);
   ledger_->database()->GetPanelPublisherInfo(std::move(filter),
     std::bind(&Vimeo::OnPublisherPanleInfo,
               this,
@@ -557,11 +530,11 @@ void Vimeo::GetPublisherPanleInfo(
 void Vimeo::OnMediaPublisherInfo(
     const std::string& media_id,
     const std::string& media_key,
-    const ledger::type::MediaEventInfo& event_info,
-    ledger::type::Result result,
-    ledger::type::PublisherInfoPtr publisher_info) {
-  if (result != ledger::type::Result::LEDGER_OK &&
-      result != ledger::type::Result::NOT_FOUND) {
+    const ledger::mojom::MediaEventInfo& event_info,
+    ledger::mojom::Result result,
+    ledger::mojom::PublisherInfoPtr publisher_info) {
+  if (result != ledger::mojom::Result::LEDGER_OK &&
+      result != ledger::mojom::Result::NOT_FOUND) {
     OnMediaActivityError();
     BLOG(0, "Failed to get publisher info");
     return;
@@ -578,7 +551,7 @@ void Vimeo::OnMediaPublisherInfo(
     return;
   }
 
-  ledger::type::MediaEventInfo old_event;
+  ledger::mojom::MediaEventInfo old_event;
   auto iter = events.find(media_key);
   if (iter != events.end()) {
     old_event = iter->second;
@@ -597,10 +570,9 @@ void Vimeo::OnMediaPublisherInfo(
                     publisher_info->favicon_url);
 }
 
-void Vimeo::OnPublisherVideoPage(
-    const std::string& media_key,
-    ledger::type::MediaEventInfo event_info,
-    const ledger::type::UrlResponse& response) {
+void Vimeo::OnPublisherVideoPage(const std::string& media_key,
+                                 ledger::mojom::MediaEventInfo event_info,
+                                 const ledger::mojom::UrlResponse& response) {
   if (response.status_code != net::HTTP_OK) {
     OnMediaActivityError();
     return;
@@ -613,7 +585,7 @@ void Vimeo::OnPublisherVideoPage(
     return;
   }
 
-  ledger::type::MediaEventInfo old_event;
+  ledger::mojom::MediaEventInfo old_event;
   auto iter = events.find(media_key);
   if (iter != events.end()) {
     old_event = iter->second;
@@ -661,25 +633,19 @@ void Vimeo::SavePublisherInfo(
     icon = GenerateFaviconUrl(user_id);
   }
 
-  ledger::type::VisitData visit_data;
+  ledger::mojom::VisitData visit_data;
   visit_data.provider = VIMEO_MEDIA_TYPE;
   visit_data.url = publisher_url;
   visit_data.favicon_url = icon;
   visit_data.name = publisher_name;
 
   ledger_->publisher()->SaveVideoVisit(
-      key,
-      visit_data,
-      duration,
-      true,
-      window_id,
-      [](ledger::type::Result, ledger::type::PublisherInfoPtr) {});
+      key, visit_data, duration, true, window_id,
+      [](ledger::mojom::Result, ledger::mojom::PublisherInfoPtr) {});
 
   if (!media_key.empty()) {
     ledger_->database()->SaveMediaPublisherInfo(
-        media_key,
-        key,
-        [](const ledger::type::Result) {});
+        media_key, key, [](const ledger::mojom::Result) {});
   }
 }
 

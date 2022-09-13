@@ -5,8 +5,7 @@
 
 #include "bat/ads/pref_names.h"  // IWYU pragma: keep
 
-namespace ads {
-namespace prefs {
+namespace ads::prefs {
 
 // Stores whether Brave ads is enabled or disabled
 const char kEnabled[] = "brave.brave_ads.enabled";
@@ -65,7 +64,7 @@ const char kNextTokenRedemptionAt[] =
 
 // Stores migration status
 const char kHasMigratedClientState[] =
-    "brave.brave_ads.state.has_migrated.client.v4";
+    "brave.brave_ads.state.has_migrated.client.v5";
 const char kHasMigratedConfirmationState[] =
     "brave.brave_ads.state.has_migrated.confirmations.v5";
 const char kHasMigratedConversionState[] =
@@ -81,5 +80,4 @@ const char kClientHash[] = "brave.brave_ads.client.hash";
 // Browser version
 const char kBrowserVersionNumber[] = "brave.brave_ads.browser_version_number";
 
-}  // namespace prefs
-}  // namespace ads
+}  // namespace ads::prefs

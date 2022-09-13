@@ -31,25 +31,25 @@ std::string GetTransaction::GetUrl(const std::string& tx_ref) {
       "/v1/payment/%s/%s", GetClientId().c_str(), tx_ref.c_str()));
 }
 
-type::Result GetTransaction::ParseBody(const std::string& body,
-                                       std::string* status) {
+mojom::Result GetTransaction::ParseBody(const std::string& body,
+                                        std::string* status) {
   DCHECK(status);
 
   absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* tx_status = dict.FindString("status");
   if (!tx_status || tx_status->empty()) {
     BLOG(0, "Missing transfer status");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   *status = *tx_status;
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
 void GetTransaction::Request(const std::string& token,
@@ -57,23 +57,23 @@ void GetTransaction::Request(const std::string& token,
                              GetTransactionCallback callback) {
   auto url_callback = std::bind(&GetTransaction::OnRequest, this, _1, callback);
 
-  auto request = type::UrlRequest::New();
+  auto request = mojom::UrlRequest::New();
 
   request->url = GetUrl(tx_ref);
   request->headers = RequestAuthorization(token);
   request->content_type = "application/json; charset=utf-8";
-  request->method = type::UrlMethod::GET;
+  request->method = mojom::UrlMethod::GET;
 
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
-void GetTransaction::OnRequest(const type::UrlResponse& response,
+void GetTransaction::OnRequest(const mojom::UrlResponse& response,
                                GetTransactionCallback callback) {
   ledger::LogUrlResponse(__func__, response);
 
-  type::Result result = CheckStatusCode(response.status_code);
+  mojom::Result result = CheckStatusCode(response.status_code);
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     callback(result);
     return;
   }
@@ -81,16 +81,16 @@ void GetTransaction::OnRequest(const type::UrlResponse& response,
   std::string status;
   result = ParseBody(response.body, &status);
 
-  if (result == type::Result::LEDGER_OK) {
+  if (result == mojom::Result::LEDGER_OK) {
     if (status == "Error") {
       BLOG(0, "Transfer error");
-      callback(type::Result::LEDGER_ERROR);
+      callback(mojom::Result::LEDGER_ERROR);
       return;
     }
 
     if (status != "Completed") {
       BLOG(1, "Transfer not yet completed (status: " << status << ")");
-      callback(type::Result::RETRY);
+      callback(mojom::Result::RETRY);
       return;
     }
   }

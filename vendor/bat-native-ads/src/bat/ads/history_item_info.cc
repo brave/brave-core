@@ -9,54 +9,14 @@
 
 namespace ads {
 
-HistoryItemInfo::HistoryItemInfo() = default;
-
-HistoryItemInfo::HistoryItemInfo(const HistoryItemInfo& info) = default;
-
-HistoryItemInfo& HistoryItemInfo::operator=(const HistoryItemInfo& info) =
-    default;
-
-HistoryItemInfo::~HistoryItemInfo() = default;
-
-bool HistoryItemInfo::operator==(const HistoryItemInfo& rhs) const {
-  return DoubleEquals(created_at.ToDoubleT(), rhs.created_at.ToDoubleT()) &&
-         ad_content == rhs.ad_content &&
-         category_content == rhs.category_content;
+bool operator==(const HistoryItemInfo& lhs, const HistoryItemInfo& rhs) {
+  return DoubleEquals(lhs.created_at.ToDoubleT(), rhs.created_at.ToDoubleT()) &&
+         lhs.ad_content == rhs.ad_content &&
+         lhs.category_content == rhs.category_content;
 }
 
-bool HistoryItemInfo::operator!=(const HistoryItemInfo& rhs) const {
-  return !(*this == rhs);
-}
-
-base::Value::Dict HistoryItemInfo::ToValue() const {
-  base::Value::Dict dict;
-
-  dict.Set("timestamp_in_seconds",
-           base::NumberToString(created_at.ToDoubleT()));
-  dict.Set("ad_content", ad_content.ToValue());
-  dict.Set("category_content", category_content.ToValue());
-
-  return dict;
-}
-
-void HistoryItemInfo::FromValue(const base::Value::Dict& root) {
-  if (const auto value = root.FindDouble("timestamp_in_seconds")) {
-    // Migrate legacy timestamp
-    created_at = base::Time::FromDoubleT(*value);
-  } else if (const auto* value = root.FindString("timestamp_in_seconds")) {
-    double timestamp = 0.0;
-    if (base::StringToDouble(*value, &timestamp)) {
-      created_at = base::Time::FromDoubleT(timestamp);
-    }
-  }
-
-  if (const auto* value = root.FindDict("ad_content")) {
-    ad_content.FromValue(*value);
-  }
-
-  if (const auto* value = root.FindDict("category_content")) {
-    category_content.FromValue(*value);
-  }
+bool operator!=(const HistoryItemInfo& lhs, const HistoryItemInfo& rhs) {
+  return !(lhs == rhs);
 }
 
 }  // namespace ads

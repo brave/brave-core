@@ -5,13 +5,12 @@
 
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_manager.h"
 
-#include <algorithm>
-
 #include "base/check_op.h"
+#include "base/ranges/algorithm.h"
 #include "base/values.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/creatives/notification_ads/notification_ad_manager_values_util.h"
+#include "bat/ads/internal/creatives/notification_ads/notification_ad_manager_value_util.h"
 #include "bat/ads/pref_names.h"
 #include "build/build_config.h"  // IWYU pragma: keep
 
@@ -61,10 +60,8 @@ NotificationAdManager::MaybeGetForPlacementId(
     const std::string& placement_id) const {
   DCHECK(!placement_id.empty());
 
-  const auto iter = std::find_if(ads_.cbegin(), ads_.cend(),
-                                 [&placement_id](const NotificationAdInfo& ad) {
-                                   return ad.placement_id == placement_id;
-                                 });
+  const auto iter =
+      base::ranges::find(ads_, placement_id, &NotificationAdInfo::placement_id);
   if (iter == ads_.cend()) {
     return absl::nullopt;
   }
@@ -93,10 +90,8 @@ void NotificationAdManager::Add(const NotificationAdInfo& ad) {
 bool NotificationAdManager::Remove(const std::string& placement_id) {
   DCHECK(!placement_id.empty());
 
-  const auto iter = std::find_if(ads_.cbegin(), ads_.cend(),
-                                 [&placement_id](const NotificationAdInfo& ad) {
-                                   return ad.placement_id == placement_id;
-                                 });
+  const auto iter =
+      base::ranges::find(ads_, placement_id, &NotificationAdInfo::placement_id);
   if (iter == ads_.cend()) {
     return false;
   }
@@ -120,10 +115,8 @@ void NotificationAdManager::CloseAll() {
 bool NotificationAdManager::Exists(const std::string& placement_id) const {
   DCHECK(!placement_id.empty());
 
-  const auto iter = std::find_if(ads_.cbegin(), ads_.cend(),
-                                 [&placement_id](const NotificationAdInfo& ad) {
-                                   return ad.placement_id == placement_id;
-                                 });
+  const auto iter =
+      base::ranges::find(ads_, placement_id, &NotificationAdInfo::placement_id);
 
   return iter != ads_.cend();
 }

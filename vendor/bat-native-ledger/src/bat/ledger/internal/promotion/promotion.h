@@ -53,85 +53,84 @@ class Promotion {
 
  private:
   void OnFetch(ledger::FetchPromotionCallback callback,
-               type::Result result,
-               type::PromotionList list,
+               mojom::Result result,
+               std::vector<mojom::PromotionPtr> list,
                const std::vector<std::string>& corrupted_promotions);
 
-  void OnGetAllPromotions(ledger::FetchPromotionCallback callback,
-                          type::PromotionList list,
-                          type::PromotionMap promotions);
+  void OnGetAllPromotions(
+      ledger::FetchPromotionCallback callback,
+      std::vector<mojom::PromotionPtr> list,
+      base::flat_map<std::string, mojom::PromotionPtr> promotions);
 
-  void OnGetAllPromotionsFromDatabase(ledger::FetchPromotionCallback callback,
-                                      type::PromotionMap promotions);
+  void OnGetAllPromotionsFromDatabase(
+      ledger::FetchPromotionCallback callback,
+      base::flat_map<std::string, mojom::PromotionPtr> promotions);
 
   void LegacyClaimedSaved(
-      const type::Result result,
-      std::shared_ptr<type::PromotionPtr> shared_promotion);
+      const mojom::Result result,
+      std::shared_ptr<mojom::PromotionPtr> shared_promotion);
 
   void OnClaimPromotion(ledger::ClaimPromotionCallback callback,
                         const std::string& payload,
-                        type::PromotionPtr promotion);
+                        mojom::PromotionPtr promotion);
 
   void OnCreateWalletIfNecessary(ledger::ClaimPromotionCallback callback,
                                  const std::string& payload,
-                                 type::Result result);
+                                 mojom::Result result);
 
   void OnAttestPromotion(ledger::AttestPromotionCallback callback,
                          const std::string& solution,
-                         type::PromotionPtr promotion);
+                         mojom::PromotionPtr promotion);
 
   void OnAttestedPromotion(ledger::AttestPromotionCallback callback,
                            const std::string& promotion_id,
-                           type::Result result);
+                           mojom::Result result);
 
   void OnCompletedAttestation(ledger::AttestPromotionCallback callback,
-                              type::PromotionPtr promotion);
+                              mojom::PromotionPtr promotion);
 
   void AttestedSaved(ledger::AttestPromotionCallback callback,
-                     type::PromotionPtr promotion,
-                     type::Result result);
+                     mojom::PromotionPtr promotion,
+                     mojom::Result result);
 
   void Complete(ledger::AttestPromotionCallback callback,
                 const std::string& promotion_string,
-                type::Result result);
+                mojom::Result result);
 
   void OnComplete(ledger::AttestPromotionCallback callback,
-                  type::Result result,
-                  type::PromotionPtr promotion);
+                  mojom::Result result,
+                  mojom::PromotionPtr promotion);
 
-  void ProcessFetchedPromotions(
-      const type::Result result,
-      type::PromotionList promotions,
-      ledger::FetchPromotionCallback callback);
+  void ProcessFetchedPromotions(const mojom::Result result,
+                                std::vector<mojom::PromotionPtr> promotions,
+                                ledger::FetchPromotionCallback callback);
 
   void GetCredentials(ledger::ResultCallback callback,
-                      type::PromotionPtr promotion);
+                      mojom::PromotionPtr promotion);
 
   void CredentialsProcessed(ledger::ResultCallback callback,
                             const std::string& promotion_id,
-                            type::Result result);
+                            mojom::Result result);
 
-  void Retry(type::PromotionMap promotions);
+  void Retry(base::flat_map<std::string, mojom::PromotionPtr> promotions);
 
-  void CheckForCorrupted(const type::PromotionMap& promotions);
+  void CheckForCorrupted(
+      const base::flat_map<std::string, mojom::PromotionPtr>& promotions);
 
-  void CorruptedPromotionFixed(const type::Result result);
+  void CorruptedPromotionFixed(const mojom::Result result);
 
-  void CheckForCorruptedCreds(type::CredsBatchList list);
+  void CheckForCorruptedCreds(std::vector<mojom::CredsBatchPtr> list);
 
-  void CorruptedPromotions(
-      type::PromotionList promotions,
-      const std::vector<std::string>& ids);
+  void CorruptedPromotions(std::vector<mojom::PromotionPtr> promotions,
+                           const std::vector<std::string>& ids);
 
-  void OnCheckForCorrupted(
-      const type::Result result,
-      const std::vector<std::string>& promotion_id_list);
+  void OnCheckForCorrupted(const mojom::Result result,
+                           const std::vector<std::string>& promotion_id_list);
 
-  void ErrorStatusSaved(
-      const type::Result result,
-      const std::vector<std::string>& promotion_id_list);
+  void ErrorStatusSaved(const mojom::Result result,
+                        const std::vector<std::string>& promotion_id_list);
 
-  void ErrorCredsStatusSaved(const type::Result result);
+  void ErrorCredsStatusSaved(const mojom::Result result);
 
   void OnRetryTimerElapsed();
 

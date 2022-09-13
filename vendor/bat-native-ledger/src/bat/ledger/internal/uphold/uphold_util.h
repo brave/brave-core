@@ -39,9 +39,9 @@ std::string GetAccountUrl();
 
 std::string GetActivityUrl(const std::string& address);
 
-type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet);
+mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr wallet);
 
-void CheckWalletState(const type::ExternalWallet* wallet);
+void CheckWalletState(const mojom::ExternalWallet* wallet);
 
 }  // namespace uphold
 }  // namespace ledger

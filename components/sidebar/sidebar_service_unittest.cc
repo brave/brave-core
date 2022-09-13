@@ -3,10 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <algorithm>
 #include <memory>
 #include <utility>
 
+#include "base/containers/contains.h"
+#include "base/ranges/algorithm.h"
 #include "brave/components/sidebar/constants.h"
 #include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
@@ -272,22 +273,14 @@ TEST_F(SidebarServiceTest, HideBuiltInItem) {
   InitService();
   // None of the items should be the hidden one
   auto items = service_->items();
-  auto bookmark_iter =
-      std::find_if(items.begin(), items.end(), [](const auto& item) {
-        return (item.built_in_item_type ==
-                SidebarItem::BuiltInItemType::kBookmarks);
-      });
-  EXPECT_EQ(bookmark_iter, items.end());
+  EXPECT_FALSE(base::Contains(items, SidebarItem::BuiltInItemType::kBookmarks,
+                              &SidebarItem::built_in_item_type));
   // Check serialization also perists that
   ResetService();
   InitService();
   items = service_->items();
-  bookmark_iter =
-      std::find_if(items.begin(), items.end(), [](const auto& item) {
-        return (item.built_in_item_type ==
-                SidebarItem::BuiltInItemType::kBookmarks);
-      });
-  EXPECT_EQ(bookmark_iter, items.end());
+  EXPECT_FALSE(base::Contains(items, SidebarItem::BuiltInItemType::kBookmarks,
+                              &SidebarItem::built_in_item_type));
 }
 
 TEST_F(SidebarServiceTest, NewDefaultItemAdded) {
@@ -314,12 +307,8 @@ TEST_F(SidebarServiceTest, NewDefaultItemAdded) {
   // since kSidebarItems was not default value and did not contain them.
   // None of the items should be the hidden one
   auto items = service_->items();
-  auto bookmark_iter =
-      std::find_if(items.begin(), items.end(), [](const auto& item) {
-        return (item.built_in_item_type ==
-                SidebarItem::BuiltInItemType::kBookmarks);
-      });
-  EXPECT_EQ(bookmark_iter, items.end());
+  EXPECT_FALSE(base::Contains(items, SidebarItem::BuiltInItemType::kBookmarks,
+                              &SidebarItem::built_in_item_type));
   // All other default items should be present even though not present
   // in kSidebarItems pref.
   std::vector<SidebarItem::BuiltInItemType> remaining_default_items{
@@ -333,10 +322,8 @@ TEST_F(SidebarServiceTest, NewDefaultItemAdded) {
   // There should also be the custom item we added
   EXPECT_EQ(remaining_default_items.size() + 1, service_->items().size());
   for (auto built_in_type : remaining_default_items) {
-    auto iter = std::find_if(
-        items.begin(), items.end(), [built_in_type](const auto& item) {
-          return (item.built_in_item_type == built_in_type);
-        });
+    auto iter = base::ranges::find(items, built_in_type,
+                                   &SidebarItem::built_in_item_type);
     EXPECT_NE(iter, items.end());
     auto expected_index =
         base::ranges::find(all_default_item_types, built_in_type) -
@@ -383,17 +370,11 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsSomeHidden) {
   EXPECT_EQ(2UL, service_->items().size());
   auto items = service_->items();
   auto talk_iter =
-      std::find_if(items.begin(), items.end(), [](const auto& item) {
-        return (item.built_in_item_type ==
-                SidebarItem::BuiltInItemType::kBraveTalk);
-      });
-  auto reading_iter =
-      std::find_if(items.begin(), items.end(), [](const auto& item) {
-        return (item.built_in_item_type ==
-                SidebarItem::BuiltInItemType::kReadingList);
-      });
+      base::ranges::find(items, SidebarItem::BuiltInItemType::kBraveTalk,
+                         &SidebarItem::built_in_item_type);
   EXPECT_NE(talk_iter, items.end());
-  EXPECT_NE(reading_iter, items.end());
+  EXPECT_TRUE(base::Contains(items, SidebarItem::BuiltInItemType::kReadingList,
+                             &SidebarItem::built_in_item_type));
   // Check service has updated built-in item. Previously url was incorrect. This
   // check is to make sure that we don't re-introduce code which stores the URL
   // for built-in items.
@@ -484,10 +465,9 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoneHidden) {
   // Verify that new a new item not contained in prefs was added at correct
   // index.
   auto items = service_->items();
-  auto iter = std::find_if(items.begin(), items.end(), [](const auto& item) {
-    return item.built_in_item_type ==
-           SidebarItem::BuiltInItemType::kReadingList;
-  });
+  auto iter =
+      base::ranges::find(items, SidebarItem::BuiltInItemType::kReadingList,
+                         &SidebarItem::built_in_item_type);
   auto index = iter - items.begin();
   EXPECT_EQ(3, index);
 }
@@ -547,7 +527,9 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoType) {
   // included in the pref, above), minus the obsolete items (history), plus any
   // new default items, plus the custom item.
   EXPECT_EQ(service_->items().size(),
-            std::size(SidebarService::kDefaultBuiltInItemTypes) + 1);
+            std::size(SidebarService::kDefaultBuiltInItemTypes) -
+                2 /* for history and playlist: invisible built-in itmes */
+                + 1 /*for custom item added above*/);
 }
 
 TEST_F(SidebarServiceTest, HidesBuiltInItemsViaPref) {
@@ -555,12 +537,8 @@ TEST_F(SidebarServiceTest, HidesBuiltInItemsViaPref) {
   // Verify default state
   InitService();
   auto items = service_->items();
-  auto bookmarks_iter =
-      std::find_if(items.begin(), items.end(), [](const auto& item) {
-        return (item.built_in_item_type ==
-                SidebarItem::BuiltInItemType::kBookmarks);
-      });
-  EXPECT_NE(bookmarks_iter, items.end());
+  EXPECT_TRUE(base::Contains(items, SidebarItem::BuiltInItemType::kBookmarks,
+                             &SidebarItem::built_in_item_type));
 
   // Update pref to hide bookmarks item
   // Make prefs already have old-style builtin items before service
@@ -574,12 +552,8 @@ TEST_F(SidebarServiceTest, HidesBuiltInItemsViaPref) {
   // Verify new state doesn't include bookmarks item
   InitService();
   items = service_->items();
-  auto bookmarks_iter_removed =
-      std::find_if(items.begin(), items.end(), [](const auto& item) {
-        return (item.built_in_item_type ==
-                SidebarItem::BuiltInItemType::kBookmarks);
-      });
-  EXPECT_EQ(bookmarks_iter_removed, items.end());
+  EXPECT_FALSE(base::Contains(items, SidebarItem::BuiltInItemType::kBookmarks,
+                              &SidebarItem::built_in_item_type));
 }
 
 TEST_F(SidebarServiceTest, HidesBuiltInItemsViaService) {
@@ -605,12 +579,8 @@ TEST_F(SidebarServiceTest, HidesBuiltInItemsViaService) {
   ResetService();
   InitService();
   items = service_->items();
-  auto bookmarks_iter_removed =
-      std::find_if(items.begin(), items.end(), [](const auto& item) {
-        return (item.built_in_item_type ==
-                SidebarItem::BuiltInItemType::kBookmarks);
-      });
-  EXPECT_EQ(bookmarks_iter_removed, items.end());
+  EXPECT_FALSE(base::Contains(items, SidebarItem::BuiltInItemType::kBookmarks,
+                              &SidebarItem::built_in_item_type));
 }
 
 TEST_F(SidebarServiceTest, BuiltInItemUpdateTestWithBuiltInItemTypeKey) {

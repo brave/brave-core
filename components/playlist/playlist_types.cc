@@ -23,8 +23,8 @@ std::string PlaylistChangeParams::GetPlaylistChangeTypeAsString(
       return "item: thumbnail_ready";
     case PlaylistChangeParams::Type::kItemThumbnailFailed:
       return "item: thumbnail_failed";
-    case PlaylistChangeParams::Type::kItemPlayReady:
-      return "item: play_ready";
+    case PlaylistChangeParams::Type::kItemCached:
+      return "item: cached";
     case PlaylistChangeParams::Type::kListCreated:
       return "list: created";
     case PlaylistChangeParams::Type::kAllDeleted:

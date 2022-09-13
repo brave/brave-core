@@ -5,9 +5,8 @@
 
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
 
-#include <algorithm>
-
 #include "base/check_op.h"
+#include "base/containers/contains.h"
 #include "base/notreached.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/processors/behavioral/bandits/bandit_feedback_info.h"
@@ -17,8 +16,7 @@
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_constants.h"
 #include "bat/ads/internal/segments/segment_util.h"
 
-namespace ads {
-namespace processor {
+namespace ads::processor {
 
 namespace {
 
@@ -60,10 +58,7 @@ targeting::EpsilonGreedyBanditArmMap MaybeDeleteArms(
 
   for (auto arm_iter = updated_arms.cbegin();
        arm_iter != updated_arms.cend();) {
-    const auto segment_iter =
-        std::find(targeting::kSegments.cbegin(), targeting::kSegments.cend(),
-                  arm_iter->first);
-    if (segment_iter != targeting::kSegments.cend()) {
+    if (base::Contains(targeting::kSegments, arm_iter->first)) {
       ++arm_iter;
       continue;
     }
@@ -157,5 +152,4 @@ void EpsilonGreedyBandit::UpdateArm(const int reward,
        "Epsilon greedy bandit arm was updated for " << segment << " segment");
 }
 
-}  // namespace processor
-}  // namespace ads
+}  // namespace ads::processor

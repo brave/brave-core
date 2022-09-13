@@ -29,8 +29,8 @@ DatabaseServerPublisherLinks::DatabaseServerPublisherLinks(
 DatabaseServerPublisherLinks::~DatabaseServerPublisherLinks() = default;
 
 void DatabaseServerPublisherLinks::InsertOrUpdate(
-    type::DBTransaction* transaction,
-    const type::ServerPublisherInfo& server_info) {
+    mojom::DBTransaction* transaction,
+    const mojom::ServerPublisherInfo& server_info) {
   DCHECK(transaction && !server_info.publisher_key.empty());
 
   if (!server_info.banner || server_info.banner->links.empty()) {
@@ -41,8 +41,8 @@ void DatabaseServerPublisherLinks::InsertOrUpdate(
     if (link.first.empty() || link.second.empty())
       continue;
 
-    auto command = type::DBCommand::New();
-    command->type = type::DBCommand::Type::RUN;
+    auto command = mojom::DBCommand::New();
+    command->type = mojom::DBCommand::Type::RUN;
     command->command = base::StringPrintf(
         "INSERT OR REPLACE INTO %s (publisher_key, provider, link) "
         "VALUES (?, ?, ?)",
@@ -57,15 +57,15 @@ void DatabaseServerPublisherLinks::InsertOrUpdate(
 }
 
 void DatabaseServerPublisherLinks::DeleteRecords(
-    type::DBTransaction* transaction,
+    mojom::DBTransaction* transaction,
     const std::string& publisher_key_list) {
   DCHECK(transaction);
   if (publisher_key_list.empty()) {
     return;
   }
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = base::StringPrintf(
       "DELETE FROM %s WHERE publisher_key IN (%s)",
       kTableName,
@@ -83,21 +83,19 @@ void DatabaseServerPublisherLinks::GetRecord(
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
   const std::string query = base::StringPrintf(
       "SELECT provider, link FROM %s WHERE publisher_key=?",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = query;
 
   BindString(command.get(), 0, publisher_key);
 
-  command->record_bindings = {
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE
-  };
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE};
 
   transaction->commands.push_back(std::move(command));
 
@@ -111,10 +109,10 @@ void DatabaseServerPublisherLinks::GetRecord(
 }
 
 void DatabaseServerPublisherLinks::OnGetRecord(
-    type::DBCommandResponsePtr response,
+    mojom::DBCommandResponsePtr response,
     ServerPublisherLinksCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback({});
     return;

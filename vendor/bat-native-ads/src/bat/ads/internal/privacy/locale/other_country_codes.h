@@ -10,9 +10,7 @@
 
 #include "base/containers/flat_set.h"
 
-namespace ads {
-namespace privacy {
-namespace locale {
+namespace ads::privacy::locale {
 
 const base::flat_set<std::string> kOtherCountryCodes = {
     "AS",  // American Samoa
@@ -73,8 +71,6 @@ const base::flat_set<std::string> kOtherCountryCodes = {
     "EH"   // Western Sahara
 };
 
-}  // namespace locale
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::locale
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_LOCALE_OTHER_COUNTRY_CODES_H_

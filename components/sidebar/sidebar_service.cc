@@ -48,19 +48,20 @@ SidebarItem GetBuiltInItemForType(SidebarItem::BuiltInItemType type) {
                                      IDS_SIDEBAR_BRAVE_TALK_ITEM_TITLE),
                                  SidebarItem::Type::kTypeBuiltIn,
                                  SidebarItem::BuiltInItemType::kBraveTalk,
-                                 false);
+                                 /* open_in_panel = */ false);
     case SidebarItem::BuiltInItemType::kWallet:
       return SidebarItem::Create(GURL("chrome://wallet/"),
                                  brave_l10n::GetLocalizedResourceUTF16String(
                                      IDS_SIDEBAR_WALLET_ITEM_TITLE),
                                  SidebarItem::Type::kTypeBuiltIn,
-                                 SidebarItem::BuiltInItemType::kWallet, false);
+                                 SidebarItem::BuiltInItemType::kWallet,
+                                 /* open_in_panel = */ false);
     case SidebarItem::BuiltInItemType::kBookmarks:
       return SidebarItem::Create(brave_l10n::GetLocalizedResourceUTF16String(
                                      IDS_SIDEBAR_BOOKMARKS_ITEM_TITLE),
                                  SidebarItem::Type::kTypeBuiltIn,
                                  SidebarItem::BuiltInItemType::kBookmarks,
-                                 true);
+                                 /* open_in_panel = */ true);
     case SidebarItem::BuiltInItemType::kReadingList:
       return SidebarItem::Create(
           // TODO(petemill): Have these items created under brave/browser
@@ -68,15 +69,27 @@ SidebarItem GetBuiltInItemForType(SidebarItem::BuiltInItemType type) {
           brave_l10n::GetLocalizedResourceUTF16String(
               IDS_SIDEBAR_READING_LIST_ITEM_TITLE),
           SidebarItem::Type::kTypeBuiltIn,
-          SidebarItem::BuiltInItemType::kReadingList, true);
-    case SidebarItem::BuiltInItemType::kHistory:
-      return SidebarItem::Create(GURL("chrome://history/"),
-                                 brave_l10n::GetLocalizedResourceUTF16String(
-                                     IDS_SIDEBAR_HISTORY_ITEM_TITLE),
-                                 SidebarItem::Type::kTypeBuiltIn,
-                                 SidebarItem::BuiltInItemType::kHistory, true);
-    default:
+          SidebarItem::BuiltInItemType::kReadingList,
+          /* open_in_panel = */ true);
+    case SidebarItem::BuiltInItemType::kHistory: {
+      // TODO(sko) When should we show history item?
+      constexpr bool kShowHistoryButton = false;
+      if constexpr (kShowHistoryButton) {
+        return SidebarItem::Create(GURL("chrome://history/"),
+                                   brave_l10n::GetLocalizedResourceUTF16String(
+                                       IDS_SIDEBAR_HISTORY_ITEM_TITLE),
+                                   SidebarItem::Type::kTypeBuiltIn,
+                                   SidebarItem::BuiltInItemType::kHistory,
+                                   /* open_in_panel = */ true);
+      } else {
+        return SidebarItem();
+      }
+    }
+    case SidebarItem::BuiltInItemType::kPlaylist:
+      return SidebarItem();
+    case SidebarItem::BuiltInItemType::kNone:
       NOTREACHED();
+      break;
   }
   return SidebarItem();
 }
@@ -106,7 +119,10 @@ SidebarItem::BuiltInItemType GetBuiltInItemTypeForLegacyURL(
 std::vector<SidebarItem> GetDefaultSidebarItems() {
   std::vector<SidebarItem> items;
   for (const auto& item_type : SidebarService::kDefaultBuiltInItemTypes) {
-    items.push_back(GetBuiltInItemForType(item_type));
+    if (auto item = GetBuiltInItemForType(item_type);
+        item.built_in_item_type != SidebarItem::BuiltInItemType::kNone) {
+      items.push_back(item);
+    }
   }
   return items;
 }
@@ -256,11 +272,10 @@ void SidebarService::MigratePrefSidebarBuiltInItemsToHidden() {
       item_id = item_id_parsed;
     }
     // Remember not to hide this item
-    auto iter = base::ranges::find_if(
-        built_in_items_to_hide, [&item_id](const auto& default_item) {
-          return default_item.built_in_item_type ==
-                 static_cast<SidebarItem::BuiltInItemType>(*item_id);
-        });
+    auto iter =
+        base::ranges::find(built_in_items_to_hide,
+                           static_cast<SidebarItem::BuiltInItemType>(*item_id),
+                           &SidebarItem::built_in_item_type);
     // It might be an item which is no longer is offered
     if (iter != built_in_items_to_hide.end()) {
       built_in_items_to_hide.erase(iter);
@@ -359,14 +374,11 @@ void SidebarService::UpdateItem(const GURL& old_url,
   // is different. If both are same, only title will be updated.
   // Sidebar can't have two items with same url.
   if (old_url != new_url &&
-      base::ranges::any_of(items_, [&new_url](const auto& item) {
-        return new_url == item.url;
-      })) {
+      base::Contains(items_, new_url, &SidebarItem::url)) {
     return;
   }
 
-  auto item_iter = base::ranges::find_if(
-      items_, [&old_url](const auto& item) { return (item.url == old_url); });
+  auto item_iter = base::ranges::find(items_, old_url, &SidebarItem::url);
   if (item_iter != items_.end()) {
     const int index = std::distance(items_.begin(), item_iter);
     DCHECK(IsEditableItemAt(index));
@@ -461,9 +473,8 @@ SidebarService::ShowSidebarOption SidebarService::GetSidebarShowOption() const {
 absl::optional<SidebarItem> SidebarService::GetDefaultPanelItem() const {
   absl::optional<SidebarItem> default_item;
   for (const auto& type : kPreferredPanelOrder) {
-    auto found_item_iter = base::ranges::find_if(
-        items_,
-        [type](SidebarItem item) { return (item.built_in_item_type == type); });
+    auto found_item_iter =
+        base::ranges::find(items_, type, &SidebarItem::built_in_item_type);
     if (found_item_iter != items_.end()) {
       default_item = *found_item_iter;
       DCHECK_EQ(default_item->open_in_panel, true);
@@ -509,10 +520,8 @@ void SidebarService::LoadSidebarItems() {
         }
         auto id =
             static_cast<SidebarItem::BuiltInItemType>(*built_in_type_value);
-        auto iter = base::ranges::find_if(
-            default_items_to_add, [id](const auto& default_item) {
-              return default_item.built_in_item_type == id;
-            });
+        auto iter = base::ranges::find(default_items_to_add, id,
+                                       &SidebarItem::built_in_item_type);
         // It might be an item which is no longer is offered as built-in
         if (iter == default_items_to_add.end()) {
           VLOG(1) << "item not found: " << item.DebugString();
@@ -553,12 +562,9 @@ void SidebarService::LoadSidebarItems() {
       // Don't show this built-in item
       const auto id = static_cast<SidebarItem::BuiltInItemType>(item.GetInt());
       DVLOG(2) << "hide built-in item with id: " << item.GetInt();
-      auto iter =
-          std::find_if(default_items_to_add.begin(), default_items_to_add.end(),
-                       [id](const auto& default_item) {
-                         return default_item.built_in_item_type ==
-                                static_cast<SidebarItem::BuiltInItemType>(id);
-                       });
+      auto iter = base::ranges::find(
+          default_items_to_add, static_cast<SidebarItem::BuiltInItemType>(id),
+          &SidebarItem::built_in_item_type);
       if (iter != default_items_to_add.end()) {
         default_items_to_add.erase(iter);
       } else {

@@ -9,8 +9,7 @@
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ads/sys_info.h"
 
-namespace ads {
-namespace server {
+namespace ads::server {
 
 namespace {
 constexpr int kVersion = 1;
@@ -22,5 +21,4 @@ std::string BuildViaHeader() {
       SysInfo().is_uncertain_future ? 1 : 0, kVersion);
 }
 
-}  // namespace server
-}  // namespace ads
+}  // namespace ads::server

@@ -14,9 +14,7 @@ namespace base {
 class TimeDelta;
 }  // namespace base
 
-namespace ads {
-namespace user_activity {
-namespace features {
+namespace ads::user_activity::features {
 
 extern const base::Feature kFeature;
 
@@ -31,8 +29,6 @@ base::TimeDelta GetMaximumIdleTime();
 
 bool ShouldDetectWasLocked();
 
-}  // namespace features
-}  // namespace user_activity
-}  // namespace ads
+}  // namespace ads::user_activity::features
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_USER_INTERACTION_USER_ACTIVITY_USER_ACTIVITY_FEATURES_H_

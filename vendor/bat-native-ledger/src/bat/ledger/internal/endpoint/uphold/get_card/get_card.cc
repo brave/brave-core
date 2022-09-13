@@ -32,38 +32,36 @@ std::string GetCard::GetUrl(const std::string& address) {
   return GetServerUrl("/v0/me/cards/" + address);
 }
 
-type::Result GetCard::CheckStatusCode(const int status_code) {
+mojom::Result GetCard::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_UNAUTHORIZED ||
       status_code == net::HTTP_NOT_FOUND ||
       status_code == net::HTTP_FORBIDDEN) {
     BLOG(0, "Unauthorized access HTTP status: " << status_code);
-    return type::Result::EXPIRED_TOKEN;
+    return mojom::Result::EXPIRED_TOKEN;
   }
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
-type::Result GetCard::ParseBody(
-    const std::string& body,
-    double* available) {
+mojom::Result GetCard::ParseBody(const std::string& body, double* available) {
   DCHECK(available);
 
   absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* available_str = dict.FindString("available");
   if (!available_str) {
     BLOG(0, "Missing available");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   const bool success = base::StringToDouble(*available_str, available);
@@ -71,7 +69,7 @@ type::Result GetCard::ParseBody(
     *available = 0.0;
   }
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
 void GetCard::Request(
@@ -80,19 +78,19 @@ void GetCard::Request(
     GetCardCallback callback) {
   auto url_callback = base::BindOnce(
       &GetCard::OnRequest, base::Unretained(this), std::move(callback));
-  auto request = type::UrlRequest::New();
+  auto request = mojom::UrlRequest::New();
   request->url = GetUrl(address);
   request->headers = RequestAuthorization(token);
   ledger_->LoadURL(std::move(request), std::move(url_callback));
 }
 
 void GetCard::OnRequest(GetCardCallback callback,
-                        const type::UrlResponse& response) {
+                        const mojom::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
 
-  type::Result result = CheckStatusCode(response.status_code);
+  mojom::Result result = CheckStatusCode(response.status_code);
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     std::move(callback).Run(result, 0.0);
     return;
   }

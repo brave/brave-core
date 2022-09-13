@@ -15,8 +15,7 @@
 #include "bat/ads/internal/prefs/pref_manager_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom-forward.h"
 
-namespace ads {
-namespace geographic {
+namespace ads::geographic {
 
 class SubdivisionTargeting final : public LocaleManagerObserver,
                                    public PrefManagerObserver {
@@ -30,6 +29,8 @@ class SubdivisionTargeting final : public LocaleManagerObserver,
 
   bool IsDisabled() const;
 
+  void MaybeAllow();
+
   void MaybeFetch();
 
   const std::string& GetSubdivisionCode() const;
@@ -42,7 +43,8 @@ class SubdivisionTargeting final : public LocaleManagerObserver,
   const std::string& GetLazySubdivisionCode() const;
 
   bool IsSupportedLocale(const std::string& locale) const;
-  void MaybeAllowForLocale(const std::string& locale) const;
+  void MaybeAllowForLocale(const std::string& locale);
+  void MaybeResetSubdivisionCodeToAutoDetect();
 
   bool ShouldAutoDetect() const;
 
@@ -66,7 +68,6 @@ class SubdivisionTargeting final : public LocaleManagerObserver,
   mutable absl::optional<std::string> subdivision_code_;
 };
 
-}  // namespace geographic
-}  // namespace ads
+}  // namespace ads::geographic
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_GEOGRAPHIC_SUBDIVISION_SUBDIVISION_TARGETING_H_

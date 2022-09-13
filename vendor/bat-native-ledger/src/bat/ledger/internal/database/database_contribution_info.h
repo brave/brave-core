@@ -17,14 +17,14 @@ namespace ledger {
 namespace database {
 
 using GetContributionInfoCallback =
-    std::function<void(type::ContributionInfoPtr)>;
+    std::function<void(mojom::ContributionInfoPtr)>;
 
 class DatabaseContributionInfo: public DatabaseTable {
  public:
   explicit DatabaseContributionInfo(LedgerImpl* ledger);
   ~DatabaseContributionInfo() override;
 
-  void InsertOrUpdate(type::ContributionInfoPtr info,
+  void InsertOrUpdate(mojom::ContributionInfoPtr info,
                       ledger::LegacyResultCallback callback);
 
   void GetRecord(
@@ -33,24 +33,22 @@ class DatabaseContributionInfo: public DatabaseTable {
 
   void GetAllRecords(ledger::ContributionInfoListCallback callback);
 
-  void GetOneTimeTips(
-      const type::ActivityMonth month,
-      const int year,
-      ledger::PublisherInfoListCallback callback);
+  void GetOneTimeTips(const mojom::ActivityMonth month,
+                      const int year,
+                      ledger::PublisherInfoListCallback callback);
 
-  void GetContributionReport(
-      const type::ActivityMonth month,
-      const int year,
-      ledger::GetContributionReportCallback callback);
+  void GetContributionReport(const mojom::ActivityMonth month,
+                             const int year,
+                             ledger::GetContributionReportCallback callback);
 
   void GetNotCompletedRecords(ledger::ContributionInfoListCallback callback);
 
   void UpdateStep(const std::string& contribution_id,
-                  type::ContributionStep step,
+                  mojom::ContributionStep step,
                   ledger::LegacyResultCallback callback);
 
   void UpdateStepAndCount(const std::string& contribution_id,
-                          type::ContributionStep step,
+                          mojom::ContributionStep step,
                           int32_t retry_count,
                           ledger::LegacyResultCallback callback);
 
@@ -61,35 +59,33 @@ class DatabaseContributionInfo: public DatabaseTable {
   void FinishAllInProgressRecords(ledger::LegacyResultCallback callback);
 
  private:
-  void OnGetRecord(
-      type::DBCommandResponsePtr response,
-      GetContributionInfoCallback callback);
+  void OnGetRecord(mojom::DBCommandResponsePtr response,
+                   GetContributionInfoCallback callback);
 
   void OnGetPublishers(
-      type::ContributionPublisherList list,
-      std::shared_ptr<type::ContributionInfoPtr> shared_contribution,
+      std::vector<mojom::ContributionPublisherPtr> list,
+      std::shared_ptr<mojom::ContributionInfoPtr> shared_contribution,
       GetContributionInfoCallback callback);
 
-  void OnGetOneTimeTips(
-      type::DBCommandResponsePtr response,
-      ledger::PublisherInfoListCallback callback);
+  void OnGetOneTimeTips(mojom::DBCommandResponsePtr response,
+                        ledger::PublisherInfoListCallback callback);
 
-  void OnGetContributionReport(
-      type::DBCommandResponsePtr response,
-      ledger::GetContributionReportCallback callback);
+  void OnGetContributionReport(mojom::DBCommandResponsePtr response,
+                               ledger::GetContributionReportCallback callback);
 
   void OnGetContributionReportPublishers(
       std::vector<ContributionPublisherInfoPair> publisher_pair_list,
-      std::shared_ptr<type::ContributionInfoList> shared_contributions,
+      std::shared_ptr<std::vector<mojom::ContributionInfoPtr>>
+          shared_contributions,
       ledger::GetContributionReportCallback callback);
 
-  void OnGetList(
-      type::DBCommandResponsePtr response,
-      ledger::ContributionInfoListCallback callback);
+  void OnGetList(mojom::DBCommandResponsePtr response,
+                 ledger::ContributionInfoListCallback callback);
 
   void OnGetListPublishers(
-      type::ContributionPublisherList list,
-      std::shared_ptr<type::ContributionInfoList> shared_contributions,
+      std::vector<mojom::ContributionPublisherPtr> list,
+      std::shared_ptr<std::vector<mojom::ContributionInfoPtr>>
+          shared_contributions,
       ledger::ContributionInfoListCallback callback);
 
   std::unique_ptr<DatabaseContributionInfoPublishers> publishers_;

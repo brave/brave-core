@@ -45,8 +45,8 @@ class GetSignedCredsTest : public testing::Test {
 TEST_F(GetSignedCredsTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"({
@@ -66,15 +66,15 @@ TEST_F(GetSignedCredsTest, ServerOK) {
 
   creds_->Request(
       "ff50981d-47de-4210-848d-995e186901a1", "848d-995e186901a1",
-      base::BindOnce([](type::Result result, type::CredsBatchPtr batch) {
-        type::CredsBatch expected_batch;
+      base::BindOnce([](mojom::Result result, mojom::CredsBatchPtr batch) {
+        mojom::CredsBatch expected_batch;
         expected_batch.batch_proof = "zx0cdJhaB/OdYcUtnyXdi+lsoniN2KNgFU";
         expected_batch.public_key =
             "dvpysTSiJdZUPihius7pvGOfngRWfDiIbrowykgMi1I=";
         expected_batch.signed_creds =
             R"(["ijSZoLLG+EnRN916RUQcjiV6c4Wb6ItbnxXBFhz81EQ=","dj6glCJ2roHYcTFcXF21IrKx1uT/ptM7SJEdiEE1fG8=","nCF9a4KuASICVC0zrx2wGnllgIUxBMnylpu5SA+oBjI="])"; // NOLINT
 
-        EXPECT_EQ(result, type::Result::LEDGER_OK);
+        EXPECT_EQ(result, mojom::Result::LEDGER_OK);
         EXPECT_TRUE(expected_batch.Equals(*batch));
       }));
 }
@@ -82,8 +82,8 @@ TEST_F(GetSignedCredsTest, ServerOK) {
 TEST_F(GetSignedCredsTest, ServerError202) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 202;
             response.url = request->url;
             response.body = "";
@@ -92,8 +92,8 @@ TEST_F(GetSignedCredsTest, ServerError202) {
 
   creds_->Request(
       "ff50981d-47de-4210-848d-995e186901a1", "848d-995e186901a1",
-      base::BindOnce([](type::Result result, type::CredsBatchPtr batch) {
-        EXPECT_EQ(result, type::Result::RETRY_SHORT);
+      base::BindOnce([](mojom::Result result, mojom::CredsBatchPtr batch) {
+        EXPECT_EQ(result, mojom::Result::RETRY_SHORT);
         EXPECT_TRUE(!batch);
       }));
 }
@@ -101,8 +101,8 @@ TEST_F(GetSignedCredsTest, ServerError202) {
 TEST_F(GetSignedCredsTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
@@ -111,8 +111,8 @@ TEST_F(GetSignedCredsTest, ServerError400) {
 
   creds_->Request(
       "ff50981d-47de-4210-848d-995e186901a1", "848d-995e186901a1",
-      base::BindOnce([](type::Result result, type::CredsBatchPtr batch) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+      base::BindOnce([](mojom::Result result, mojom::CredsBatchPtr batch) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
         EXPECT_TRUE(!batch);
       }));
 }
@@ -120,8 +120,8 @@ TEST_F(GetSignedCredsTest, ServerError400) {
 TEST_F(GetSignedCredsTest, ServerError404) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 404;
             response.url = request->url;
             response.body = "";
@@ -130,8 +130,8 @@ TEST_F(GetSignedCredsTest, ServerError404) {
 
   creds_->Request(
       "ff50981d-47de-4210-848d-995e186901a1", "848d-995e186901a1",
-      base::BindOnce([](type::Result result, type::CredsBatchPtr batch) {
-        EXPECT_EQ(result, type::Result::NOT_FOUND);
+      base::BindOnce([](mojom::Result result, mojom::CredsBatchPtr batch) {
+        EXPECT_EQ(result, mojom::Result::NOT_FOUND);
         EXPECT_TRUE(!batch);
       }));
 }
@@ -139,8 +139,8 @@ TEST_F(GetSignedCredsTest, ServerError404) {
 TEST_F(GetSignedCredsTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
@@ -149,8 +149,8 @@ TEST_F(GetSignedCredsTest, ServerError500) {
 
   creds_->Request(
       "ff50981d-47de-4210-848d-995e186901a1", "848d-995e186901a1",
-      base::BindOnce([](type::Result result, type::CredsBatchPtr batch) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+      base::BindOnce([](mojom::Result result, mojom::CredsBatchPtr batch) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
         EXPECT_TRUE(!batch);
       }));
 }
@@ -158,8 +158,8 @@ TEST_F(GetSignedCredsTest, ServerError500) {
 TEST_F(GetSignedCredsTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
@@ -168,8 +168,8 @@ TEST_F(GetSignedCredsTest, ServerErrorRandom) {
 
   creds_->Request(
       "ff50981d-47de-4210-848d-995e186901a1", "848d-995e186901a1",
-      base::BindOnce([](type::Result result, type::CredsBatchPtr batch) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+      base::BindOnce([](mojom::Result result, mojom::CredsBatchPtr batch) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
         EXPECT_TRUE(!batch);
       }));
 }

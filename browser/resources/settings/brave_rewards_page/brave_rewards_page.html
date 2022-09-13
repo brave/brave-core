@@ -54,7 +54,7 @@
       <settings-dropdown-menu
         label="$i18n{braveRewardsStateLevelAdTargetingLabel}"
         pref="{{prefs.brave.brave_ads.ads_subdivision_targeting_code}}"
-        menu-options="[[adsSubdivisionTargetingCodes_]]"
+        menu-options="[[adsSubdivisionTargetingCodes_()]]"
         disabled="[[!prefs.brave.brave_ads.enabled.value]]">
       </settings-dropdown-menu>
     </div>
@@ -122,7 +122,7 @@
   <settings-toggle-button
     label="$i18n{braveRewardsInlineTipRedditLabel}"
     pref="{{prefs.brave.rewards.inline_tip.reddit}}">
-    <template is="dom-if" if="[[shouldShowRestartButtonForReddit_(prefs.brave.rewards.inline_tip.reddit.value)]]">
+    <template is="dom-if" if="[[shouldShowRestartButtonForReddit_(prefs.brave.rewards.inline_tip.reddit.value)]]" restamp>
       <cr-button on-click="restartBrowser_" slot="more-actions">
         $i18n{restart}
       </cr-button>
@@ -131,7 +131,7 @@
   <settings-toggle-button
     label="$i18n{braveRewardsInlineTipTwitterLabel}"
     pref="{{prefs.brave.rewards.inline_tip.twitter}}">
-    <template is="dom-if" if="[[shouldShowRestartButtonForTwitter_(prefs.brave.rewards.inline_tip.twitter.value)]]">
+    <template is="dom-if" if="[[shouldShowRestartButtonForTwitter_(prefs.brave.rewards.inline_tip.twitter.value)]]" restamp>
       <cr-button on-click="restartBrowser_" slot="more-actions">
         $i18n{restart}
       </cr-button>
@@ -140,7 +140,7 @@
   <settings-toggle-button
     label="$i18n{braveRewardsInlineTipGithubLabel}"
     pref="{{prefs.brave.rewards.inline_tip.github}}">
-    <template is="dom-if" if="[[shouldShowRestartButtonForGithub_(prefs.brave.rewards.inline_tip.github.value)]]">
+    <template is="dom-if" if="[[shouldShowRestartButtonForGithub_(prefs.brave.rewards.inline_tip.github.value)]]" restamp>
       <cr-button on-click="restartBrowser_" slot="more-actions">
         $i18n{restart}
       </cr-button>

@@ -30,7 +30,7 @@ void BitflyerTransfer::Start(const Transaction& transaction,
   auto wallet = ledger_->bitflyer()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    callback(type::Result::LEDGER_ERROR, "");
+    callback(mojom::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -41,21 +41,21 @@ void BitflyerTransfer::Start(const Transaction& transaction,
 }
 
 void BitflyerTransfer::OnCreateTransaction(
-    const type::Result result,
+    const mojom::Result result,
     const std::string& id,
     client::TransactionCallback callback) {
-  if (result == type::Result::EXPIRED_TOKEN) {
-    callback(type::Result::EXPIRED_TOKEN, "");
+  if (result == mojom::Result::EXPIRED_TOKEN) {
+    callback(mojom::Result::EXPIRED_TOKEN, "");
     ledger_->bitflyer()->DisconnectWallet();
     return;
   }
 
-  if (result != type::Result::LEDGER_OK) {
-    callback(type::Result::LEDGER_ERROR, "");
+  if (result != mojom::Result::LEDGER_OK) {
+    callback(mojom::Result::LEDGER_ERROR, "");
     return;
   }
 
-  callback(type::Result::LEDGER_OK, id);
+  callback(mojom::Result::LEDGER_OK, id);
 }
 
 }  // namespace bitflyer

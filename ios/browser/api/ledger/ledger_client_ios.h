@@ -26,24 +26,25 @@ class LedgerClientIOS : public ledger::LedgerClient {
                     ledger::client::FetchIconCallback callback) override;
   void LoadLedgerState(ledger::client::OnLoadCallback callback) override;
   void LoadPublisherState(ledger::client::OnLoadCallback callback) override;
-  void LoadURL(ledger::type::UrlRequestPtr request,
+  void LoadURL(ledger::mojom::UrlRequestPtr request,
                ledger::client::LoadURLCallback callback) override;
   void Log(const char* file,
            const int line,
            const int verbose_level,
            const std::string& message) override;
-  void OnPanelPublisherInfo(ledger::type::Result result,
-                            ledger::type::PublisherInfoPtr publisher_info,
+  void OnPanelPublisherInfo(ledger::mojom::Result result,
+                            ledger::mojom::PublisherInfoPtr publisher_info,
                             uint64_t windowId) override;
   void OnPublisherRegistryUpdated() override;
   void OnPublisherUpdated(const std::string& publisher_id) override;
   void OnReconcileComplete(
-      ledger::type::Result result,
-      ledger::type::ContributionInfoPtr contribution) override;
-  void PublisherListNormalized(ledger::type::PublisherInfoList list) override;
+      ledger::mojom::Result result,
+      ledger::mojom::ContributionInfoPtr contribution) override;
+  void PublisherListNormalized(
+      std::vector<ledger::mojom::PublisherInfoPtr> list) override;
   std::string URIEncode(const std::string& value) override;
   void OnContributeUnverifiedPublishers(
-      ledger::type::Result result,
+      ledger::mojom::Result result,
       const std::string& publisher_key,
       const std::string& publisher_name) override;
   void SetBooleanState(const std::string& name, bool value) override;
@@ -70,15 +71,15 @@ class LedgerClientIOS : public ledger::LedgerClient {
   std::string GetStringOption(const std::string& name) const override;
   int64_t GetInt64Option(const std::string& name) const override;
   uint64_t GetUint64Option(const std::string& name) const override;
-  ledger::type::ClientInfoPtr GetClientInfo() override;
+  ledger::mojom::ClientInfoPtr GetClientInfo() override;
   void UnblindedTokensReady() override;
   void ReconcileStampReset() override;
   void RunDBTransaction(
-      ledger::type::DBTransactionPtr transaction,
+      ledger::mojom::DBTransactionPtr transaction,
       ledger::client::RunDBTransactionCallback callback) override;
   void GetCreateScript(
       ledger::client::GetCreateScriptCallback callback) override;
-  void PendingContributionSaved(const ledger::type::Result result) override;
+  void PendingContributionSaved(const ledger::mojom::Result result) override;
   void ClearAllNotifications() override;
   void WalletDisconnected(const std::string& wallet_type) override;
   void DeleteLog(ledger::client::LegacyResultCallback callback) override;

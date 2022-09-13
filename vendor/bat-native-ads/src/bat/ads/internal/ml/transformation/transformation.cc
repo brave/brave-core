@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/ml/transformation/transformation.h"
 
-namespace ads {
-namespace ml {
+namespace ads::ml {
 
 Transformation::Transformation(const TransformationType& type) : type_(type) {}
 
@@ -16,5 +15,4 @@ TransformationType Transformation::GetType() const {
   return type_;
 }
 
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml

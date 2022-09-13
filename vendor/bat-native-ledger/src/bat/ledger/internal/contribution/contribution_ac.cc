@@ -32,12 +32,8 @@ void ContributionAC::Process(const uint64_t reconcile_stamp) {
   BLOG(1, "Starting auto contribution");
 
   auto filter = ledger_->publisher()->CreateActivityFilter(
-      "",
-      type::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED,
-      true,
-      reconcile_stamp,
-      false,
-      ledger_->state()->GetPublisherMinVisits());
+      "", mojom::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED, true,
+      reconcile_stamp, false, ledger_->state()->GetPublisherMinVisits());
 
   auto get_callback = std::bind(&ContributionAC::PreparePublisherList,
       this,
@@ -50,8 +46,9 @@ void ContributionAC::Process(const uint64_t reconcile_stamp) {
       get_callback);
 }
 
-void ContributionAC::PreparePublisherList(type::PublisherInfoList list) {
-  type::PublisherInfoList normalized_list;
+void ContributionAC::PreparePublisherList(
+    std::vector<mojom::PublisherInfoPtr> list) {
+  std::vector<mojom::PublisherInfoPtr> normalized_list;
 
   ledger_->publisher()->NormalizeContributeWinners(&normalized_list, &list, 0);
 
@@ -60,14 +57,14 @@ void ContributionAC::PreparePublisherList(type::PublisherInfoList list) {
     return;
   }
 
-  type::ContributionQueuePublisherList queue_list;
-  type::ContributionQueuePublisherPtr publisher;
+  std::vector<mojom::ContributionQueuePublisherPtr> queue_list;
+  mojom::ContributionQueuePublisherPtr publisher;
   for (const auto &item : normalized_list) {
     if (!item || item->percent == 0) {
       continue;
     }
 
-    publisher = type::ContributionQueuePublisher::New();
+    publisher = mojom::ContributionQueuePublisher::New();
     publisher->publisher_key = item->id;
     publisher->amount_percent =  item->weight;
     queue_list.push_back(std::move(publisher));
@@ -78,9 +75,9 @@ void ContributionAC::PreparePublisherList(type::PublisherInfoList list) {
     return;
   }
 
-  auto queue = type::ContributionQueue::New();
+  auto queue = mojom::ContributionQueue::New();
   queue->id = base::GenerateGUID();
-  queue->type = type::RewardsType::AUTO_CONTRIBUTE;
+  queue->type = mojom::RewardsType::AUTO_CONTRIBUTE;
   queue->amount = ledger_->state()->GetAutoContributionAmount();
   queue->partial = true;
   queue->publishers = std::move(queue_list);
@@ -96,8 +93,8 @@ void ContributionAC::PreparePublisherList(type::PublisherInfoList list) {
   ledger_->database()->SaveContributionQueue(std::move(queue), save_callback);
 }
 
-void ContributionAC::QueueSaved(const type::Result result) {
-  if (result != type::Result::LEDGER_OK) {
+void ContributionAC::QueueSaved(const mojom::Result result) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Queue was not saved");
     return;
   }

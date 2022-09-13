@@ -19,86 +19,75 @@ const int kCompatibleVersionNumber = 1;
 namespace ledger {
 namespace database {
 
-void BindNull(
-    type::DBCommand* command,
-    const int index) {
+void BindNull(mojom::DBCommand* command, const int index) {
   if (!command) {
     return;
   }
 
-  auto binding = type::DBCommandBinding::New();
+  auto binding = mojom::DBCommandBinding::New();
   binding->index = index;
-  binding->value = type::DBValue::NewNullValue(0);
+  binding->value = mojom::DBValue::NewNullValue(0);
   command->bindings.push_back(std::move(binding));
 }
 
-void BindInt(
-    type::DBCommand* command,
-    const int index,
-    const int32_t value) {
+void BindInt(mojom::DBCommand* command, const int index, const int32_t value) {
   if (!command) {
     return;
   }
 
-  auto binding = type::DBCommandBinding::New();
+  auto binding = mojom::DBCommandBinding::New();
   binding->index = index;
-  binding->value = type::DBValue::NewIntValue(value);
+  binding->value = mojom::DBValue::NewIntValue(value);
   command->bindings.push_back(std::move(binding));
 }
 
-void BindInt64(
-    type::DBCommand* command,
-    const int index,
-    const int64_t value) {
+void BindInt64(mojom::DBCommand* command,
+               const int index,
+               const int64_t value) {
   if (!command) {
     return;
   }
 
-  auto binding = type::DBCommandBinding::New();
+  auto binding = mojom::DBCommandBinding::New();
   binding->index = index;
-  binding->value = type::DBValue::NewInt64Value(value);
+  binding->value = mojom::DBValue::NewInt64Value(value);
   command->bindings.push_back(std::move(binding));
 }
 
-void BindDouble(
-    type::DBCommand* command,
-    const int index,
-    const double value) {
+void BindDouble(mojom::DBCommand* command,
+                const int index,
+                const double value) {
   if (!command) {
     return;
   }
 
-  auto binding = type::DBCommandBinding::New();
+  auto binding = mojom::DBCommandBinding::New();
   binding->index = index;
-  binding->value = type::DBValue::NewDoubleValue(value);
+  binding->value = mojom::DBValue::NewDoubleValue(value);
   command->bindings.push_back(std::move(binding));
 }
 
-void BindBool(
-    type::DBCommand* command,
-    const int index,
-    const bool value) {
+void BindBool(mojom::DBCommand* command, const int index, const bool value) {
   if (!command) {
     return;
   }
 
-  auto binding = type::DBCommandBinding::New();
+  auto binding = mojom::DBCommandBinding::New();
   binding->index = index;
-  binding->value = type::DBValue::NewBoolValue(value);
+  binding->value = mojom::DBValue::NewBoolValue(value);
   command->bindings.push_back(std::move(binding));
 }
 
-void BindString(
-    type::DBCommand* command,
-    const int index,
-    const std::string& value) {
+void BindString(mojom::DBCommand* command,
+                const int index,
+                const std::string& value) {
   if (!command) {
     return;
   }
 
-  auto binding = type::DBCommandBinding::New();
+  auto binding = mojom::DBCommandBinding::New();
   binding->index = index;
-  binding->value = type::DBValue::NewStringValue(value);
+  binding->value = mojom::DBValue::NewStringValue(value);
   command->bindings.push_back(std::move(binding));
 }
 
@@ -110,18 +99,18 @@ int32_t GetCompatibleVersion() {
   return kCompatibleVersionNumber;
 }
 
-void OnResultCallback(type::DBCommandResponsePtr response,
+void OnResultCallback(mojom::DBCommandResponsePtr response,
                       ledger::LegacyResultCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
-    callback(type::Result::LEDGER_ERROR);
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  callback(type::Result::LEDGER_OK);
+  callback(mojom::Result::LEDGER_OK);
 }
 
-int GetIntColumn(type::DBRecord* record, const int index) {
+int GetIntColumn(mojom::DBRecord* record, const int index) {
   if (!record || static_cast<int>(record->fields.size()) < index) {
     return 0;
   }
@@ -134,7 +123,7 @@ int GetIntColumn(type::DBRecord* record, const int index) {
   return record->fields.at(index)->get_int_value();
 }
 
-int64_t GetInt64Column(type::DBRecord* record, const int index) {
+int64_t GetInt64Column(mojom::DBRecord* record, const int index) {
   if (!record || static_cast<int>(record->fields.size()) < index) {
     return 0;
   }
@@ -147,7 +136,7 @@ int64_t GetInt64Column(type::DBRecord* record, const int index) {
   return record->fields.at(index)->get_int64_value();
 }
 
-double GetDoubleColumn(type::DBRecord* record, const int index) {
+double GetDoubleColumn(mojom::DBRecord* record, const int index) {
   if (!record || static_cast<int>(record->fields.size()) < index) {
     return 0.0;
   }
@@ -160,7 +149,7 @@ double GetDoubleColumn(type::DBRecord* record, const int index) {
   return record->fields.at(index)->get_double_value();
 }
 
-bool GetBoolColumn(type::DBRecord* record, const int index) {
+bool GetBoolColumn(mojom::DBRecord* record, const int index) {
   if (!record || static_cast<int>(record->fields.size()) < index) {
     return false;
   }
@@ -173,7 +162,7 @@ bool GetBoolColumn(type::DBRecord* record, const int index) {
   return record->fields.at(index)->get_bool_value();
 }
 
-std::string GetStringColumn(type::DBRecord* record, const int index) {
+std::string GetStringColumn(mojom::DBRecord* record, const int index) {
   if (!record || static_cast<int>(record->fields.size()) < index) {
     return "";
   }

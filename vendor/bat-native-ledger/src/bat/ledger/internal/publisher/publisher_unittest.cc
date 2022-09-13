@@ -29,10 +29,10 @@ class PublisherTest : public testing::Test {
   base::test::TaskEnvironment scoped_task_environment_;
 
  protected:
-  void CreatePublisherInfoList(type::PublisherInfoList* list) {
+  void CreatePublisherInfoList(std::vector<mojom::PublisherInfoPtr>* list) {
     double prev_score;
     for (int ix = 0; ix < 50; ix++) {
-      type::PublisherInfoPtr info = type::PublisherInfo::New();
+      mojom::PublisherInfoPtr info = mojom::PublisherInfo::New();
       info->id = "example" + std::to_string(ix) + ".com";
       info->duration = 50;
       if (ix == 0) {
@@ -150,27 +150,27 @@ TEST_F(PublisherTest, concaveScore) {
 
 TEST_F(PublisherTest, synopsisNormalizerInternal) {
   // create test PublisherInfo list
-  type::PublisherInfoList new_list;
-  type::PublisherInfoList list;
+  std::vector<mojom::PublisherInfoPtr> new_list;
+  std::vector<mojom::PublisherInfoPtr> list;
   CreatePublisherInfoList(&list);
   publisher_->synopsisNormalizerInternal(
       &new_list, &list, 0);
 
   // simulate exclude and re-normalize
   new_list.erase(new_list.begin() + 3);
-  type::PublisherInfoList new_list2;
+  std::vector<mojom::PublisherInfoPtr> new_list2;
   publisher_->synopsisNormalizerInternal(
       &new_list2, &new_list, 0);
   new_list2.erase(new_list2.begin() + 4);
-  type::PublisherInfoList new_list3;
+  std::vector<mojom::PublisherInfoPtr> new_list3;
   publisher_->synopsisNormalizerInternal(
       &new_list3, &new_list2, 0);
   new_list3.erase(new_list3.begin() + 5);
-  type::PublisherInfoList new_list4;
+  std::vector<mojom::PublisherInfoPtr> new_list4;
   publisher_->synopsisNormalizerInternal(
       &new_list4, &new_list3, 0);
   new_list4.erase(new_list4.begin() + 6);
-  type::PublisherInfoList new_list5;
+  std::vector<mojom::PublisherInfoPtr> new_list5;
   publisher_->synopsisNormalizerInternal(
       &new_list5, &new_list4, 0);
   for (const auto& element : new_list5) {

@@ -15,9 +15,7 @@
 #include "bat/ads/internal/features/purchase_intent_features.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 
-namespace ads {
-namespace targeting {
-namespace model {
+namespace ads::targeting::model {
 
 namespace {
 
@@ -79,6 +77,4 @@ SegmentList PurchaseIntent::GetSegments() const {
   return segments;
 }
 
-}  // namespace model
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting::model

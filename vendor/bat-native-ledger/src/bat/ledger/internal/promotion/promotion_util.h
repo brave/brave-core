@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_PROMOTION_PROMOTION_UTIL_H_
-#define BRAVELEDGER_PROMOTION_PROMOTION_UTIL_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_PROMOTION_PROMOTION_UTIL_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_PROMOTION_PROMOTION_UTIL_H_
 
 #include <memory>
 #include <string>
@@ -15,16 +15,16 @@
 namespace ledger {
 namespace promotion {
 
-std::string ParseOSToString(type::OperatingSystem os);
+std::string ParseOSToString(mojom::OperatingSystem os);
 
-std::string ParseClientInfoToString(type::ClientInfoPtr info);
+std::string ParseClientInfoToString(mojom::ClientInfoPtr info);
 
-type::PromotionType ConvertStringToPromotionType(const std::string& type);
+mojom::PromotionType ConvertStringToPromotionType(const std::string& type);
 
-type::ReportType ConvertPromotionTypeToReportType(
-    const type::PromotionType type);
+mojom::ReportType ConvertPromotionTypeToReportType(
+    const mojom::PromotionType type);
 
 }  // namespace promotion
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_PROMOTION_PROMOTION_UTIL_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_PROMOTION_PROMOTION_UTIL_H_

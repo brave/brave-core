@@ -33,23 +33,23 @@ DatabaseContributionQueuePublishers::
 
 void DatabaseContributionQueuePublishers::InsertOrUpdate(
     const std::string& id,
-    type::ContributionQueuePublisherList list,
+    std::vector<mojom::ContributionQueuePublisherPtr> list,
     ledger::LegacyResultCallback callback) {
   if (id.empty() || list.empty()) {
     BLOG(1, "Empty data");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
       "(contribution_queue_id, publisher_key, amount_percent) VALUES (?, ?, ?)",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
   for (const auto& publisher : list) {
@@ -76,23 +76,21 @@ void DatabaseContributionQueuePublishers::GetRecordsByQueueId(
     return;
   }
 
-  auto transaction = type::DBTransaction::New();
+  auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "SELECT publisher_key, amount_percent "
       "FROM %s WHERE contribution_queue_id = ?",
       kTableName);
 
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
   command->command = query;
 
   BindString(command.get(), 0, queue_id);
 
-  command->record_bindings = {
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::DOUBLE_TYPE
-  };
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE};
 
   transaction->commands.push_back(std::move(command));
 
@@ -106,18 +104,18 @@ void DatabaseContributionQueuePublishers::GetRecordsByQueueId(
 }
 
 void DatabaseContributionQueuePublishers::OnGetRecordsByQueueId(
-    type::DBCommandResponsePtr response,
+    mojom::DBCommandResponsePtr response,
     ContributionQueuePublishersListCallback callback) {
   if (!response ||
-      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback({});
     return;
   }
 
-  type::ContributionQueuePublisherList list;
+  std::vector<mojom::ContributionQueuePublisherPtr> list;
   for (auto const& record : response->result->get_records()) {
-    auto info = type::ContributionQueuePublisher::New();
+    auto info = mojom::ContributionQueuePublisher::New();
     auto* record_pointer = record.get();
 
     info->publisher_key = GetStringColumn(record_pointer, 0);

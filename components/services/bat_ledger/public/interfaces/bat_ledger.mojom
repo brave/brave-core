@@ -26,7 +26,7 @@ interface BatLedgerService {
 
 interface BatLedger {
   Initialize(bool execute_create_script) => (ledger.mojom.Result result);
-  CreateWallet() => (ledger.mojom.Result result);
+  CreateRewardsWallet() => (ledger.mojom.Result result);
   GetRewardsParameters() => (ledger.mojom.RewardsParameters properties);
 
   GetAutoContributeProperties() => (ledger.mojom.AutoContributeProperties props);
@@ -159,9 +159,9 @@ interface BatLedger {
 
   GetEventLogs() => (array<ledger.mojom.EventLog> logs);
 
-  GetBraveWallet() => (ledger.mojom.BraveWallet? wallet);
+  GetRewardsWallet() => (ledger.mojom.RewardsWallet? wallet);
 
-  GetWalletPassphrase() => (string passphrase);
+  GetRewardsWalletPassphrase() => (string passphrase);
 };
 
 interface BatLedgerClient {

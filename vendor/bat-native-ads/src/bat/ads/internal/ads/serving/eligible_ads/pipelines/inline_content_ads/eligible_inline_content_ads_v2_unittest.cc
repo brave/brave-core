@@ -16,8 +16,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace inline_content_ads {
+namespace ads::inline_content_ads {
 
 class BatAdsEligibleInlineContentAdsV2Test : public UnitTestBase {
  protected:
@@ -124,5 +123,4 @@ TEST_F(BatAdsEligibleInlineContentAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
       });
 }
 
-}  // namespace inline_content_ads
-}  // namespace ads
+}  // namespace ads::inline_content_ads

@@ -3,10 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_ENDPOINT_UPHOLD_POST_TRANSACTION_COMMIT_\
-POST_TRANSACTION_COMMIT_H_
-#define BRAVELEDGER_ENDPOINT_UPHOLD_POST_TRANSACTION_COMMIT_\
-POST_TRANSACTION_COMMIT_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_UPHOLD_POST_TRANSACTION_COMMIT_POST_TRANSACTION_COMMIT_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_UPHOLD_POST_TRANSACTION_COMMIT_POST_TRANSACTION_COMMIT_H_
 
 #include <string>
 
@@ -112,8 +110,8 @@ class LedgerImpl;
 namespace endpoint {
 namespace uphold {
 
-using PostTransactionCommitCallback = std::function<void(
-    const type::Result result)>;
+using PostTransactionCommitCallback =
+    std::function<void(const mojom::Result result)>;
 
 class PostTransactionCommit {
  public:
@@ -131,11 +129,10 @@ class PostTransactionCommit {
     const std::string& address,
     const std::string& transaction_id);
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(
-      const type::UrlResponse& response,
-      PostTransactionCommitCallback callback);
+  void OnRequest(const mojom::UrlResponse& response,
+                 PostTransactionCommitCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
@@ -144,5 +141,4 @@ class PostTransactionCommit {
 }  // namespace endpoint
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_ENDPOINT_UPHOLD_POST_TRANSACTION_COMMIT_\
-// POST_TRANSACTION_COMMIT_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_UPHOLD_POST_TRANSACTION_COMMIT_POST_TRANSACTION_COMMIT_H_

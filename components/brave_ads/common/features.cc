@@ -5,11 +5,10 @@
 
 #include "brave/components/brave_ads/common/features.h"
 
-#include "base/feature_list.h"
+#include "base/feature_list.h"  // IWYU pragma: keep
 #include "base/metrics/field_trial_params.h"
 
-namespace brave_ads {
-namespace features {
+namespace brave_ads::features {
 
 const base::Feature kNotificationAds{"AdNotifications",
                                      base::FEATURE_ENABLED_BY_DEFAULT};
@@ -20,9 +19,6 @@ const base::Feature kCustomNotificationAds{"CustomAdNotifications",
 const base::Feature kAllowedToFallbackToCustomNotificationAds{
     "AllowedToFallbackToCustomAdNotifications",
     base::FEATURE_ENABLED_BY_DEFAULT};
-
-const base::Feature kRequestAdsEnabledApi{"RequestAdsEnabledApi",
-                                          base::FEATURE_DISABLED_BY_DEFAULT};
 
 const base::Feature kSupportBraveSearchResultAdConfirmationEvents{
     "SupportBraveSearchResultAdConfirmationEvents",
@@ -158,7 +154,7 @@ int NotificationAdFadeDuration() {
 }
 
 std::string NotificationAdDarkModeBackgroundColor() {
-  const std::string param_value = GetFieldTrialParamValueByFeature(
+  std::string param_value = GetFieldTrialParamValueByFeature(
       kCustomNotificationAds,
       kFieldTrialParameterNotificationAdDarkModeBackgroundColor);
 
@@ -209,9 +205,4 @@ bool IsAllowedToFallbackToCustomNotificationAdsEnabled() {
       kAllowedToFallbackToCustomNotificationAds);
 }
 
-bool IsRequestAdsEnabledApiEnabled() {
-  return base::FeatureList::IsEnabled(kRequestAdsEnabledApi);
-}
-
-}  // namespace features
-}  // namespace brave_ads
+}  // namespace brave_ads::features

@@ -13,9 +13,7 @@
 #include "bat/ads/internal/database/database_table_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
-namespace ads {
-namespace database {
-namespace table {
+namespace ads::database::table {
 
 class Segments final : public TableInterface {
  public:
@@ -41,8 +39,6 @@ class Segments final : public TableInterface {
   void MigrateToV24(mojom::DBTransactionInfo* transaction);
 };
 
-}  // namespace table
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database::table
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CREATIVES_SEGMENTS_DATABASE_TABLE_H_

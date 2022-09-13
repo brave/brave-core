@@ -13,8 +13,7 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
 
-namespace ads {
-namespace transactions {
+namespace ads::transactions {
 
 TransactionInfo Add(const std::string& creative_instance_id,
                     const double value,
@@ -80,5 +79,4 @@ void RemoveAll(RemoveAllCallback callback) {
       callback));
 }
 
-}  // namespace transactions
-}  // namespace ads
+}  // namespace ads::transactions

@@ -10,8 +10,7 @@
 
 #include "base/feature_list.h"  // IWYU pragma: keep
 
-namespace ads {
-namespace features {
+namespace ads::features {
 
 extern const base::Feature kConversions;
 
@@ -21,7 +20,6 @@ int GetConversionsResourceVersion();
 
 std::string GetDefaultConversionIdPattern();
 
-}  // namespace features
-}  // namespace ads
+}  // namespace ads::features
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONVERSIONS_CONVERSIONS_FEATURES_H_

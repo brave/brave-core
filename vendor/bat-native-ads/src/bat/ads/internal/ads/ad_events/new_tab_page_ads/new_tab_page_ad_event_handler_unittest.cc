@@ -24,8 +24,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace new_tab_page_ads {
+namespace ads::new_tab_page_ads {
 
 namespace {
 
@@ -250,5 +249,4 @@ TEST_F(BatAdsNewTabPageAdEventHandlerTest,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
-}  // namespace new_tab_page_ads
-}  // namespace ads
+}  // namespace ads::new_tab_page_ads

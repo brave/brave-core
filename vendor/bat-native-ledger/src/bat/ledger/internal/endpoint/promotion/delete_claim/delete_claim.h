@@ -34,7 +34,7 @@ class LedgerImpl;
 namespace endpoint {
 namespace promotion {
 
-using DeleteClaimCallback = std::function<void(const type::Result result)>;
+using DeleteClaimCallback = std::function<void(const mojom::Result result)>;
 
 class DeleteClaim {
  public:
@@ -46,9 +46,9 @@ class DeleteClaim {
  private:
   std::string GetUrl(const std::string& custodian);
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(const type::UrlResponse& response,
+  void OnRequest(const mojom::UrlResponse& response,
                  DeleteClaimCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

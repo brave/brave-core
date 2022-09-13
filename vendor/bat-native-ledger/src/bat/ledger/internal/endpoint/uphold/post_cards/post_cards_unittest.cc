@@ -45,8 +45,8 @@ class PostCardsTest : public testing::Test {
 TEST_F(PostCardsTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"({
@@ -103,8 +103,8 @@ TEST_F(PostCardsTest, ServerOK) {
           }));
 
   card_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                 base::BindOnce([](type::Result result, std::string&& id) {
-                   EXPECT_EQ(result, type::Result::LEDGER_OK);
+                 base::BindOnce([](mojom::Result result, std::string&& id) {
+                   EXPECT_EQ(result, mojom::Result::LEDGER_OK);
                    EXPECT_EQ(id, "bd91a720-f3f9-42f8-b2f5-19548004f6a7");
                  }));
 }
@@ -112,8 +112,8 @@ TEST_F(PostCardsTest, ServerOK) {
 TEST_F(PostCardsTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
             response.body = "";
@@ -121,8 +121,8 @@ TEST_F(PostCardsTest, ServerError401) {
           }));
 
   card_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                 base::BindOnce([](type::Result result, std::string&& id) {
-                   EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
+                 base::BindOnce([](mojom::Result result, std::string&& id) {
+                   EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
                    EXPECT_EQ(id, "");
                  }));
 }
@@ -130,8 +130,8 @@ TEST_F(PostCardsTest, ServerError401) {
 TEST_F(PostCardsTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
@@ -139,8 +139,8 @@ TEST_F(PostCardsTest, ServerErrorRandom) {
           }));
 
   card_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                 base::BindOnce([](type::Result result, std::string&& id) {
-                   EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                 base::BindOnce([](mojom::Result result, std::string&& id) {
+                   EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
                    EXPECT_EQ(id, "");
                  }));
 }

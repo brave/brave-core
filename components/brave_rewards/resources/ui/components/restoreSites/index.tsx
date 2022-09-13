@@ -18,7 +18,7 @@ export interface Props {
 
 export default class RestoreSites extends React.PureComponent<Props, {}> {
   getRestoreText () {
-    return `(${getLocale('restoreAll')})`
+    return `(${getLocale('clearExcludeList')})`
   }
 
   getExclusionText (numSites: number) {

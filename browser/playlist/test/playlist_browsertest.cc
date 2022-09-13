@@ -6,9 +6,14 @@
 #include <memory>
 
 #include "base/bind.h"
+#include "base/containers/contains.h"
+#include "base/files/file_util.h"
 #include "base/memory/weak_ptr.h"
 #include "base/run_loop.h"
+#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/threading/thread_restrictions.h"
+#include "base/time/time.h"
 #include "base/token.h"
 #include "base/values.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
@@ -144,6 +149,19 @@ class PlaylistBrowserTest : public PlatformBrowserTest,
       Run();
   }
 
+  void WaitUntil(base::RepeatingCallback<bool()> condition) {
+    if (condition.Run())
+      return;
+
+    base::RepeatingTimer scheduler;
+    scheduler.Start(FROM_HERE, base::Milliseconds(100),
+                    base::BindLambdaForTesting([this, &condition]() {
+                      if (condition.Run())
+                        run_loop_->Quit();
+                    }));
+    Run();
+  }
+
   void Run() {
     run_loop_ = std::make_unique<base::RunLoop>();
     run_loop()->Run();
@@ -153,9 +171,10 @@ class PlaylistBrowserTest : public PlatformBrowserTest,
     PlaylistItemInfo params;
     params.id = base::Token::CreateRandom().ToString();
     params.title = "Valid playlist creation params";
-    params.thumbnail_path =
+    params.page_src = "https://example.com/";
+    params.thumbnail_src = params.thumbnail_path =
         https_server()->GetURL("thumbnail.com", "/valid_thumbnail").spec();
-    params.media_file_path =
+    params.media_src = params.media_file_path =
         https_server()->GetURL("song.com", "/valid_media_file_1").spec();
     return params;
   }
@@ -164,9 +183,10 @@ class PlaylistBrowserTest : public PlatformBrowserTest,
     PlaylistItemInfo params;
     params.id = base::Token::CreateRandom().ToString();
     params.title = "Valid playlist creation params";
-    params.thumbnail_path =
+    params.page_src = "https://example.com/";
+    params.thumbnail_src = params.thumbnail_path =
         https_server()->GetURL("thumbnail.com", "/valid_thumbnail").spec();
-    params.media_file_path =
+    params.media_src = params.media_file_path =
         https_server()
             ->GetURL("not_existing_song.com", "/invalid_media_file")
             .spec();
@@ -177,11 +197,12 @@ class PlaylistBrowserTest : public PlatformBrowserTest,
     PlaylistItemInfo params;
     params.id = base::Token::CreateRandom().ToString();
     params.title = "Valid playlist creation params";
-    params.thumbnail_path =
+    params.page_src = "https://example.com/";
+    params.thumbnail_src = params.thumbnail_path =
         https_server()
             ->GetURL("not_existing_thumbnail.com", "/invalid_thumbnail")
             .spec();
-    params.media_file_path =
+    params.media_src = params.media_file_path =
         https_server()
             ->GetURL("not_existing_song.com", "/invalid_media_file")
             .spec();
@@ -233,7 +254,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, CreatePlaylistItem) {
   CheckIsPlaylistChangeTypeCalled(PlaylistChangeParams::Type::kItemAdded);
   CheckIsPlaylistChangeTypeCalled(
       PlaylistChangeParams::Type::kItemThumbnailReady);
-  CheckIsPlaylistChangeTypeCalled(PlaylistChangeParams::Type::kItemPlayReady);
+  CheckIsPlaylistChangeTypeCalled(PlaylistChangeParams::Type::kItemCached);
 }
 
 IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, ThumbnailFailed) {
@@ -243,12 +264,13 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, ThumbnailFailed) {
   // receive 3 notifications: added, thumbnail failed and ready.
   auto param = GetInvalidCreateParams();
   param.media_file_path = GetValidCreateParams().media_file_path;
+  param.media_src = param.media_file_path;
   service->CreatePlaylistItem(param);
   WaitForEvents(3);
   CheckIsPlaylistChangeTypeCalled(PlaylistChangeParams::Type::kItemAdded);
   CheckIsPlaylistChangeTypeCalled(
       PlaylistChangeParams::Type::kItemThumbnailFailed);
-  CheckIsPlaylistChangeTypeCalled(PlaylistChangeParams::Type::kItemPlayReady);
+  CheckIsPlaylistChangeTypeCalled(PlaylistChangeParams::Type::kItemCached);
 }
 
 IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, MediaDownloadFailed) {
@@ -304,14 +326,12 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, ApiFunctions) {
   ResetStatus();
 
   VLOG(2) << "recover item and should succeed";
-  base::Value::Dict item_value;
-  item_value.Set(kPlaylistItemIDKey, item.id);
-  item_value.Set(kPlaylistItemTitleKey, item.title);
-  item_value.Set(
-      kPlaylistItemMediaFilePathKey,
-      https_server()->GetURL("song.com", "/valid_media_file_1").spec());
-  item_value.Set(kPlaylistItemThumbnailPathKey, item.thumbnail_path);
-  item_value.Set(kPlaylistItemReadyKey, item.ready);
+  item = service->GetPlaylistItem(lastly_added_playlist_id_);
+  auto item_value = GetValueFromPlaylistItemInfo(item);
+  auto media_src =
+      https_server()->GetURL("song.com", "/valid_media_file_1").spec();
+  item_value.Set(kPlaylistItemMediaSrcKey, media_src);
+  item_value.Set(kPlaylistItemMediaFilePathKey, media_src);
   GURL thumbnail_url(item.thumbnail_path);
 
   service->UpdatePlaylistItemValue(lastly_added_playlist_id_,
@@ -326,12 +346,12 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, ApiFunctions) {
         PlaylistChangeParams::Type::kItemThumbnailReady);
   }
 
-  CheckIsPlaylistChangeTypeCalled(PlaylistChangeParams::Type::kItemPlayReady);
+  CheckIsPlaylistChangeTypeCalled(PlaylistChangeParams::Type::kItemCached);
 
   VLOG(2) << "delete item";
   // When a playlist is deleted, we should get 1 notification: deleted.
   ResetStatus();
-  service->DeletePlaylistItem(lastly_added_playlist_id_);
+  service->DeletePlaylistItemData(lastly_added_playlist_id_);
   EXPECT_EQ(1, on_playlist_changed_called_count_);
   CheckIsPlaylistChangeTypeCalled(PlaylistChangeParams::Type::kItemDeleted);
 
@@ -368,9 +388,8 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, CreateAndRemovePlaylist) {
   EXPECT_EQ(1, on_playlist_changed_called_count_);
   CheckIsPlaylistChangeTypeCalled(PlaylistChangeParams::Type::kListCreated);
 
-  auto iter = base::ranges::find_if(playlists, [&](const auto& playlist) {
-    return playlist.name == new_playlist.name;
-  });
+  auto iter =
+      base::ranges::find(playlists, new_playlist.name, &PlaylistInfo::name);
   EXPECT_NE(iter, playlists.end());
 
   // Remove the new playlist
@@ -379,13 +398,70 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, CreateAndRemovePlaylist) {
   service->RemovePlaylist(new_playlist.id);
   playlists = service->GetAllPlaylists();
   EXPECT_EQ(1UL, playlists.size());
-  iter =
-      base::ranges::find_if(playlists, [&new_playlist](const auto& playlist) {
-        return playlist.id == new_playlist.id;
-      });
-  EXPECT_EQ(iter, playlists.end());
+  EXPECT_FALSE(base::Contains(playlists, new_playlist.id, &PlaylistInfo::id));
   EXPECT_EQ(1, on_playlist_changed_called_count_);
   CheckIsPlaylistChangeTypeCalled(PlaylistChangeParams::Type::kListRemoved);
+}
+
+IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, RemoveAndRestoreLocalData) {
+  auto* service = GetPlaylistService();
+
+  VLOG(2) << "create playlist 1";
+  ResetStatus();
+  service->CreatePlaylistItem(GetValidCreateParams());
+  WaitForEvents(3);
+
+  // pre condition: there's an already downloaded playlist item.
+  auto items = service->GetAllPlaylistItems();
+  ASSERT_EQ(1UL, items.size());
+
+  auto item = items.front();
+  ASSERT_TRUE(item.media_file_cached);
+  ASSERT_NE(item.media_src, item.media_file_path);
+  ASSERT_NE(item.thumbnail_src, item.thumbnail_path);
+  {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    ASSERT_TRUE(
+        base::DirectoryExists(service->GetPlaylistItemDirPath(item.id)));
+  }
+
+  // Remove local data for the item.
+  service->DeletePlaylistLocalData(items.front().id);
+  items = service->GetAllPlaylistItems();
+  EXPECT_EQ(1UL, items.size());
+
+  item = items.front();
+  EXPECT_FALSE(item.media_file_cached);
+  EXPECT_EQ(item.media_src, item.media_file_path);
+  EXPECT_EQ(item.thumbnail_src, item.thumbnail_path);
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    return !base::DirectoryExists(service->GetPlaylistItemDirPath(item.id));
+  }));
+
+  // Restore local data for the item.
+  service->RecoverPlaylistItem(item.id);
+  items = service->GetAllPlaylistItems();
+  EXPECT_EQ(1UL, items.size());
+
+  item = items.front();
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    return base::DirectoryExists(service->GetPlaylistItemDirPath(item.id));
+  }));
+
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    auto items = service->GetAllPlaylistItems();
+    return items.size() && items.front().media_file_cached;
+  }));
+  item = service->GetAllPlaylistItems().front();
+  EXPECT_NE(item.media_src, item.media_file_path);
+
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    auto items = service->GetAllPlaylistItems();
+    return items.size() &&
+           items.front().thumbnail_path != items.front().thumbnail_src;
+  }));
 }
 
 }  // namespace playlist

@@ -26,9 +26,8 @@ class DatabaseMigration {
   static void SetTargetVersionForTesting(uint32_t version);
 
  private:
-  void GenerateCommand(
-      type::DBTransaction* transaction,
-      const std::string& query);
+  void GenerateCommand(mojom::DBTransaction* transaction,
+                       const std::string& query);
 
   LedgerImpl* ledger_;  // NOT OWNED
   static uint32_t test_target_version_;

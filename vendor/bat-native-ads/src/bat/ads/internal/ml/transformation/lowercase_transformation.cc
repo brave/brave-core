@@ -13,8 +13,7 @@
 #include "bat/ads/internal/ml/data/data.h"
 #include "bat/ads/internal/ml/data/text_data.h"
 
-namespace ads {
-namespace ml {
+namespace ads::ml {
 
 LowercaseTransformation::LowercaseTransformation()
     : Transformation(TransformationType::kLowercase) {}
@@ -35,5 +34,4 @@ std::unique_ptr<Data> LowercaseTransformation::Apply(
   return std::make_unique<TextData>(std::move(lowercase_text));
 }
 
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml

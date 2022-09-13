@@ -13,14 +13,12 @@
 
 #include "bat/ads/internal/ml/transformation/transformation.h"
 
-namespace ads {
-namespace ml {
+namespace ads::ml {
 
 using PredictionMap = std::map<std::string, double>;
 using TransformationPtr = std::unique_ptr<Transformation>;
 using TransformationVector = std::vector<TransformationPtr>;
 
-}  // namespace ml
-}  // namespace ads
+}  // namespace ads::ml
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_ML_ALIAS_H_

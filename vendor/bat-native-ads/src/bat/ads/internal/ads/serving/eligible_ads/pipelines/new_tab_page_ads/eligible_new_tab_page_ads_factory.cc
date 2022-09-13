@@ -11,8 +11,7 @@
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
-namespace ads {
-namespace new_tab_page_ads {
+namespace ads::new_tab_page_ads {
 
 std::unique_ptr<EligibleAdsBase> EligibleAdsFactory::Build(
     const int version,
@@ -35,5 +34,4 @@ std::unique_ptr<EligibleAdsBase> EligibleAdsFactory::Build(
   }
 }
 
-}  // namespace new_tab_page_ads
-}  // namespace ads
+}  // namespace ads::new_tab_page_ads

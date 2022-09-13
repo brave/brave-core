@@ -10,8 +10,7 @@
 #include "bat/ads/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
 #include "bat/ads/pref_names.h"
 
-namespace ads {
-namespace confirmations {
+namespace ads::confirmations {
 
 void Migrate(const bool should_migrate) {
   Migrate([should_migrate](const bool success) {
@@ -29,5 +28,4 @@ void SetHash(const uint64_t hash) {
                                                 hash);
 }
 
-}  // namespace confirmations
-}  // namespace ads
+}  // namespace ads::confirmations

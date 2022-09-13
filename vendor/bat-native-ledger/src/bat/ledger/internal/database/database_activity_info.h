@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_ACTIVITY_INFO_H_
 
 #include <string>
+#include <vector>
 
 #include "bat/ledger/internal/database/database_table.h"
 
@@ -18,29 +19,26 @@ class DatabaseActivityInfo: public DatabaseTable {
   explicit DatabaseActivityInfo(LedgerImpl* ledger);
   ~DatabaseActivityInfo() override;
 
-  void InsertOrUpdate(type::PublisherInfoPtr info,
+  void InsertOrUpdate(mojom::PublisherInfoPtr info,
                       ledger::LegacyResultCallback callback);
 
-  void NormalizeList(type::PublisherInfoList list,
+  void NormalizeList(std::vector<mojom::PublisherInfoPtr> list,
                      ledger::LegacyResultCallback callback);
 
-  void GetRecordsList(
-      const int start,
-      const int limit,
-      type::ActivityInfoFilterPtr filter,
-      ledger::PublisherInfoListCallback callback);
+  void GetRecordsList(const int start,
+                      const int limit,
+                      mojom::ActivityInfoFilterPtr filter,
+                      ledger::PublisherInfoListCallback callback);
 
   void DeleteRecord(const std::string& publisher_key,
                     ledger::LegacyResultCallback callback);
 
  private:
-  void CreateInsertOrUpdate(
-      type::DBTransaction* transaction,
-      type::PublisherInfoPtr info);
+  void CreateInsertOrUpdate(mojom::DBTransaction* transaction,
+                            mojom::PublisherInfoPtr info);
 
-  void OnGetRecordsList(
-      type::DBCommandResponsePtr response,
-      ledger::PublisherInfoListCallback callback);
+  void OnGetRecordsList(mojom::DBCommandResponsePtr response,
+                        ledger::PublisherInfoListCallback callback);
 };
 
 }  // namespace database

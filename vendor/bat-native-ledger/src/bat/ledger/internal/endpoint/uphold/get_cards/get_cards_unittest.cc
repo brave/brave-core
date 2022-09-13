@@ -45,8 +45,8 @@ class GetCardsTest : public testing::Test {
 TEST_F(GetCardsTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"([
@@ -104,8 +104,8 @@ TEST_F(GetCardsTest, ServerOK) {
           }));
 
   card_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                 base::BindOnce([](type::Result result, std::string&& id) {
-                   EXPECT_EQ(result, type::Result::LEDGER_OK);
+                 base::BindOnce([](mojom::Result result, std::string&& id) {
+                   EXPECT_EQ(result, mojom::Result::LEDGER_OK);
                    EXPECT_EQ(id, "3ed3b2c4-a715-4c01-b302-fa2681a971ea");
                  }));
 }
@@ -113,8 +113,8 @@ TEST_F(GetCardsTest, ServerOK) {
 TEST_F(GetCardsTest, CardNotFound) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"([
@@ -172,8 +172,8 @@ TEST_F(GetCardsTest, CardNotFound) {
           }));
 
   card_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                 base::BindOnce([](type::Result result, std::string&& id) {
-                   EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                 base::BindOnce([](mojom::Result result, std::string&& id) {
+                   EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
                    EXPECT_EQ(id, "");
                  }));
 }
@@ -181,8 +181,8 @@ TEST_F(GetCardsTest, CardNotFound) {
 TEST_F(GetCardsTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
             response.body = "";
@@ -190,8 +190,8 @@ TEST_F(GetCardsTest, ServerError401) {
           }));
 
   card_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                 base::BindOnce([](type::Result result, std::string&& id) {
-                   EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
+                 base::BindOnce([](mojom::Result result, std::string&& id) {
+                   EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
                    EXPECT_EQ(id, "");
                  }));
 }
@@ -199,8 +199,8 @@ TEST_F(GetCardsTest, ServerError401) {
 TEST_F(GetCardsTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
@@ -208,8 +208,8 @@ TEST_F(GetCardsTest, ServerErrorRandom) {
           }));
 
   card_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                 base::BindOnce([](type::Result result, std::string&& id) {
-                   EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                 base::BindOnce([](mojom::Result result, std::string&& id) {
+                   EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
                    EXPECT_EQ(id, "");
                  }));
 }

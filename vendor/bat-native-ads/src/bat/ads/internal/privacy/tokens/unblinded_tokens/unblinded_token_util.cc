@@ -8,8 +8,7 @@
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
 
-namespace ads {
-namespace privacy {
+namespace ads::privacy {
 
 namespace {
 
@@ -90,5 +89,4 @@ bool IsValid(const UnblindedTokenInfo& unblinded_token) {
          unblinded_token.public_key.has_value();
 }
 
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy

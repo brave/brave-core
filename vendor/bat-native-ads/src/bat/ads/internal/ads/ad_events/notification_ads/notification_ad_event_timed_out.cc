@@ -8,8 +8,7 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/notification_ad_info.h"
 
-namespace ads {
-namespace notification_ads {
+namespace ads::notification_ads {
 
 AdEventTimedOut::AdEventTimedOut() = default;
 
@@ -21,5 +20,4 @@ void AdEventTimedOut::FireEvent(const NotificationAdInfo& ad) {
               << ad.creative_instance_id);
 }
 
-}  // namespace notification_ads
-}  // namespace ads
+}  // namespace ads::notification_ads

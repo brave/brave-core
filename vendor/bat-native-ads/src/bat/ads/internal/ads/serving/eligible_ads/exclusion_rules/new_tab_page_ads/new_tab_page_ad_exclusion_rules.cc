@@ -8,8 +8,7 @@
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
-namespace ads {
-namespace new_tab_page_ads {
+namespace ads::new_tab_page_ads {
 
 ExclusionRules::ExclusionRules(
     const AdEventList& ad_events,
@@ -23,5 +22,4 @@ ExclusionRules::ExclusionRules(
 
 ExclusionRules::~ExclusionRules() = default;
 
-}  // namespace new_tab_page_ads
-}  // namespace ads
+}  // namespace ads::new_tab_page_ads

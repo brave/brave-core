@@ -33,59 +33,58 @@ void ContributionMonthly::Process(ledger::LegacyResultCallback callback) {
 }
 
 void ContributionMonthly::PrepareTipList(
-    type::PublisherInfoList list,
+    std::vector<mojom::PublisherInfoPtr> list,
     ledger::LegacyResultCallback callback) {
-  type::PublisherInfoList verified_list;
+  std::vector<mojom::PublisherInfoPtr> verified_list;
   GetVerifiedTipList(list, &verified_list);
 
-  type::ContributionQueuePtr queue;
-  type::ContributionQueuePublisherPtr publisher;
+  mojom::ContributionQueuePtr queue;
+  mojom::ContributionQueuePublisherPtr publisher;
   for (const auto &item : verified_list) {
-    type::ContributionQueuePublisherList queue_list;
-    publisher = type::ContributionQueuePublisher::New();
+    std::vector<mojom::ContributionQueuePublisherPtr> queue_list;
+    publisher = mojom::ContributionQueuePublisher::New();
     publisher->publisher_key = item->id;
     publisher->amount_percent = 100.0;
     queue_list.push_back(std::move(publisher));
 
-    queue = type::ContributionQueue::New();
+    queue = mojom::ContributionQueue::New();
     queue->id = base::GenerateGUID();
-    queue->type = type::RewardsType::RECURRING_TIP;
+    queue->type = mojom::RewardsType::RECURRING_TIP;
     queue->amount = item->weight;
     queue->partial = false;
     queue->publishers = std::move(queue_list);
 
-    ledger_->database()->SaveContributionQueue(
-        std::move(queue),
-        [](const type::Result _){});
+    ledger_->database()->SaveContributionQueue(std::move(queue),
+                                               [](const mojom::Result _) {});
   }
 
   // TODO(https://github.com/brave/brave-browser/issues/8804):
   // we should change this logic and do batch insert with callback
   ledger_->contribution()->CheckContributionQueue();
-  callback(type::Result::LEDGER_OK);
+  callback(mojom::Result::LEDGER_OK);
 }
 
 void ContributionMonthly::GetVerifiedTipList(
-    const type::PublisherInfoList& list,
-    type::PublisherInfoList* verified_list) {
+    const std::vector<mojom::PublisherInfoPtr>& list,
+    std::vector<mojom::PublisherInfoPtr>* verified_list) {
   DCHECK(verified_list);
-  type::PendingContributionList non_verified;
+  std::vector<mojom::PendingContributionPtr> non_verified;
 
   for (const auto& publisher : list) {
     if (!publisher || publisher->id.empty() || publisher->weight == 0.0) {
       continue;
     }
 
-    if (publisher->status != type::PublisherStatus::NOT_VERIFIED) {
+    if (publisher->status != mojom::PublisherStatus::NOT_VERIFIED) {
       verified_list->push_back(publisher->Clone());
       continue;
     }
 
-    auto contribution = type::PendingContribution::New();
+    auto contribution = mojom::PendingContribution::New();
     contribution->amount = publisher->weight;
     contribution->publisher_key = publisher->id;
     contribution->viewing_id = "";
-    contribution->type = type::RewardsType::RECURRING_TIP;
+    contribution->type = mojom::RewardsType::RECURRING_TIP;
 
     non_verified.push_back(std::move(contribution));
   }
@@ -104,8 +103,8 @@ void ContributionMonthly::GetVerifiedTipList(
 }
 
 void ContributionMonthly::OnSavePendingContribution(
-    const type::Result result) {
-  if (result != type::Result::LEDGER_OK) {
+    const mojom::Result result) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Problem saving pending");
   }
 
@@ -123,9 +122,9 @@ void ContributionMonthly::HasSufficientBalance(
 
 void ContributionMonthly::OnSufficientBalanceWallet(
     ledger::HasSufficientBalanceToReconcileCallback callback,
-    const type::Result result,
-    type::BalancePtr info) {
-  if (result != type::Result::LEDGER_OK || !info) {
+    const mojom::Result result,
+    mojom::BalancePtr info) {
+  if (result != mojom::Result::LEDGER_OK || !info) {
     BLOG(0, "Problem getting balance");
     return;
   }
@@ -140,7 +139,7 @@ void ContributionMonthly::OnSufficientBalanceWallet(
 }
 
 void ContributionMonthly::OnHasSufficientBalance(
-    const type::PublisherInfoList& publisher_list,
+    const std::vector<mojom::PublisherInfoPtr>& publisher_list,
     const double balance,
     ledger::HasSufficientBalanceToReconcileCallback callback) {
   if (publisher_list.empty()) {

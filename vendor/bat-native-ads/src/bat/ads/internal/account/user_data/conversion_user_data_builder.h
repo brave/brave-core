@@ -11,17 +11,13 @@
 
 #include "base/values.h"
 
-namespace ads {
-namespace user_data {
-namespace builder {
+namespace ads::user_data::builder {
 
 using BuildConversionCallback = std::function<void(base::Value::Dict)>;
 
 void BuildConversion(const std::string& creative_instance_id,
                      BuildConversionCallback callback);
 
-}  // namespace builder
-}  // namespace user_data
-}  // namespace ads
+}  // namespace ads::user_data::builder
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_USER_DATA_CONVERSION_USER_DATA_BUILDER_H_

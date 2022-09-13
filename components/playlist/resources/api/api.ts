@@ -55,6 +55,14 @@ class API {
   removeItemFromPlaylist (playlistId: string, itemId: string) {
     this.#pageHandler.removeItemFromPlaylist(playlistId, itemId)
   }
+
+  recoverLocalData (playlistItemId: string) {
+    this.#pageHandler.recoverLocalDataForItem(playlistItemId)
+  }
+
+  removeLocalData (playlistItemId: string) {
+    this.#pageHandler.removeLocalDataForItem(playlistItemId)
+  }
 }
 
 export function getPlaylistAPI (): API {

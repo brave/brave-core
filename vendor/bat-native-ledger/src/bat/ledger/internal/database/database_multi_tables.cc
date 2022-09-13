@@ -24,7 +24,7 @@ DatabaseMultiTables::DatabaseMultiTables(LedgerImpl* ledger) {
 DatabaseMultiTables::~DatabaseMultiTables() = default;
 
 void DatabaseMultiTables::GetTransactionReport(
-    const type::ActivityMonth month,
+    const mojom::ActivityMonth month,
     const int year,
     ledger::GetTransactionReportCallback callback) {
   auto promotion_callback = std::bind(
@@ -38,16 +38,16 @@ void DatabaseMultiTables::GetTransactionReport(
 }
 
 void DatabaseMultiTables::OnGetTransactionReportPromotion(
-    type::PromotionMap promotions,
-    const type::ActivityMonth month,
+    base::flat_map<std::string, mojom::PromotionPtr> promotions,
+    const mojom::ActivityMonth month,
     const int year,
     ledger::GetTransactionReportCallback callback) {
   const auto converted_month = static_cast<int>(month);
-  type::TransactionReportInfoList list;
+  std::vector<mojom::TransactionReportInfoPtr> list;
 
   for (const auto& promotion : promotions) {
     if (!promotion.second ||
-        promotion.second->status != type::PromotionStatus::FINISHED ||
+        promotion.second->status != mojom::PromotionStatus::FINISHED ||
         promotion.second->claimed_at == 0) {
       continue;
     }
@@ -59,7 +59,7 @@ void DatabaseMultiTables::OnGetTransactionReportPromotion(
       continue;
     }
 
-    auto report = type::TransactionReportInfo::New();
+    auto report = mojom::TransactionReportInfo::New();
     report->type = promotion::ConvertPromotionTypeToReportType(
         promotion.second->type);
     report->amount = promotion.second->approximate_value;

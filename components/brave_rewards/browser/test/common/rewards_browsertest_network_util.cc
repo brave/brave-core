@@ -132,7 +132,7 @@ std::string GetUpholdCard(
       address.c_str());
 }
 
-std::string GetOrderCreateResponse(ledger::type::SKUOrderPtr sku_order) {
+std::string GetOrderCreateResponse(ledger::mojom::SKUOrderPtr sku_order) {
   DCHECK(sku_order);
   std::string items;
   for (const auto& item : sku_order->items) {

@@ -42,7 +42,7 @@ class PostSuggestionsClaimTest : public testing::Test {
         std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
     claim_ = std::make_unique<PostSuggestionsClaim>(mock_ledger_impl_.get());
 
-    type::UnblindedToken token;
+    mojom::UnblindedToken token;
     token.token_value =
         "s1OrSZUvo/33u3Y866mQaG/"
         "b6d94TqMThLal4+DSX4UrR4jT+GtTErim+"
@@ -51,8 +51,8 @@ class PostSuggestionsClaimTest : public testing::Test {
     token.public_key = "dvpysTSiJdZUPihius7pvGOfngRWfDiIbrowykgMi1I=";
     redeem_ = std::make_unique<credential::CredentialsRedeem>();
     redeem_->publisher_key = "brave.com";
-    redeem_->type = type::RewardsType::ONE_TIME_TIP;
-    redeem_->processor = type::ContributionProcessor::BRAVE_TOKENS;
+    redeem_->type = mojom::RewardsType::ONE_TIME_TIP;
+    redeem_->processor = mojom::ContributionProcessor::BRAVE_TOKENS;
     redeem_->token_list = {token};
     redeem_->order_id = "c4645786-052f-402f-8593-56af2f7a21ce";
     redeem_->contribution_id = "83b3b77b-e7c3-455b-adda-e476fa0656d2";
@@ -71,8 +71,8 @@ class PostSuggestionsClaimTest : public testing::Test {
 TEST_F(PostSuggestionsClaimTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"(
@@ -81,65 +81,65 @@ TEST_F(PostSuggestionsClaimTest, ServerOK) {
             std::move(callback).Run(response);
           }));
 
-  claim_->Request(*redeem_,
-                  base::BindOnce([](type::Result result, std::string drain_id) {
-                    EXPECT_EQ(result, type::Result::LEDGER_OK);
-                    EXPECT_EQ(drain_id, "1af0bf71-c81c-4b18-9188-a0d3c4a1b53b");
-                  }));
+  claim_->Request(
+      *redeem_, base::BindOnce([](mojom::Result result, std::string drain_id) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_OK);
+        EXPECT_EQ(drain_id, "1af0bf71-c81c-4b18-9188-a0d3c4a1b53b");
+      }));
 }
 
 TEST_F(PostSuggestionsClaimTest, ServerNeedsRetry) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = "";
             std::move(callback).Run(response);
           }));
 
-  claim_->Request(*redeem_,
-                  base::BindOnce([](type::Result result, std::string drain_id) {
-                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-                    EXPECT_EQ(drain_id, "");
-                  }));
+  claim_->Request(
+      *redeem_, base::BindOnce([](mojom::Result result, std::string drain_id) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
+        EXPECT_EQ(drain_id, "");
+      }));
 }
 
 TEST_F(PostSuggestionsClaimTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
             std::move(callback).Run(response);
           }));
 
-  claim_->Request(*redeem_,
-                  base::BindOnce([](type::Result result, std::string drain_id) {
-                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-                    EXPECT_EQ(drain_id, "");
-                  }));
+  claim_->Request(
+      *redeem_, base::BindOnce([](mojom::Result result, std::string drain_id) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
+        EXPECT_EQ(drain_id, "");
+      }));
 }
 
 TEST_F(PostSuggestionsClaimTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
             std::move(callback).Run(response);
           }));
 
-  claim_->Request(*redeem_,
-                  base::BindOnce([](type::Result result, std::string drain_id) {
-                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-                    EXPECT_EQ(drain_id, "");
-                  }));
+  claim_->Request(
+      *redeem_, base::BindOnce([](mojom::Result result, std::string drain_id) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
+        EXPECT_EQ(drain_id, "");
+      }));
 }
 
 }  // namespace promotion

@@ -209,6 +209,7 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
     for (bool allow_fingerprinting : {false, true}) {
       SetFingerprintingSetting(allow_fingerprinting);
       NavigateToURLUntilLoadStop(FarblingUrl());
+      auto* parent_contents = Contents();
       const char* script =
           "open('http://d.test/', '', `"
           "left=10,"
@@ -217,14 +218,13 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
           "height=${outerHeight + 200}"
           "`);";
       Browser* popup = OpenPopup(script);
-      base::RunLoop().RunUntilIdle();
-      gfx::Rect child_bounds = popup->window()->GetBounds();
-      auto* parent_contents = Contents();
       auto* popup_contents = popup->tab_strip_model()->GetActiveWebContents();
+      content::WaitForLoadStop(popup_contents);
       const int popup_inner_width =
           EvalJs(popup_contents, "innerWidth").value.GetInt();
       const int popup_inner_height =
           EvalJs(popup_contents, "innerHeight").value.GetInt();
+      gfx::Rect child_bounds = popup->window()->GetBounds();
       if (!allow_fingerprinting && !IsFlagDisabled()) {
         EXPECT_GE(child_bounds.x(), parent_bounds.x());
         EXPECT_GE(child_bounds.y(), parent_bounds.y());

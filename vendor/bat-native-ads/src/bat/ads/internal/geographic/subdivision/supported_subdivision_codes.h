@@ -11,8 +11,7 @@
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 
-namespace ads {
-namespace geographic {
+namespace ads::geographic {
 
 using SupportedSubdivisionCodesSet = base::flat_set<std::string>;
 using SupportedSubdivisionCodesMap =
@@ -20,8 +19,7 @@ using SupportedSubdivisionCodesMap =
 
 const SupportedSubdivisionCodesMap kSupportedSubdivisionCodes = {
     //  Format: { ISO Country Code, { ISO country subdivision codes as defined
-    //  in
-    //  ISO 3166-2 https://en.wikipedia.org/wiki/ISO_3166-2, ... } }
+    //  in ISO 3166-2 https://en.wikipedia.org/wiki/ISO_3166-2, ... } }
     {"US",
      {
          // United States of America
@@ -75,9 +73,20 @@ const SupportedSubdivisionCodesMap kSupportedSubdivisionCodes = {
          "US-WV",  // West Virginia
          "US-WI",  // Wisconsin
          "US-WY",  // Wyoming
+     }},
+    {"CA",
+     {
+         // Canada
+         "CA-AB",  // Alberta
+         "CA-BC",  // British Columbia
+         "CA-MB",  // Manitoba
+         "CA-NB",  // New Brunswick
+         "CA-NS",  // Nova Scotia
+         "CA-ON",  // Ontario
+         "CA-QC",  // Quebec
+         "CA-SK",  // Saskatchewan
      }}};
 
-}  // namespace geographic
-}  // namespace ads
+}  // namespace ads::geographic
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_GEOGRAPHIC_SUBDIVISION_SUPPORTED_SUBDIVISION_CODES_H_

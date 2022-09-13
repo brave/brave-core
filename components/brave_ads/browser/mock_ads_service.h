@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
 
 namespace brave_ads {
 
@@ -108,16 +108,16 @@ class MockAdsService : public AdsService {
   MOCK_METHOD3(GetHistory, void(base::Time, base::Time, GetHistoryCallback));
 
   MOCK_METHOD2(ToggleAdThumbUp,
-               void(const std::string&, ToggleAdThumbUpCallback));
+               void(base::Value::Dict, ToggleAdThumbUpCallback));
   MOCK_METHOD2(ToggleAdThumbDown,
-               void(const std::string&, ToggleAdThumbDownCallback));
+               void(base::Value::Dict, ToggleAdThumbDownCallback));
   MOCK_METHOD3(ToggleAdOptIn,
                void(const std::string&, int, ToggleAdOptInCallback));
   MOCK_METHOD3(ToggleAdOptOut,
                void(const std::string&, int, ToggleAdOptOutCallback));
-  MOCK_METHOD2(ToggleSavedAd, void(const std::string&, ToggleSavedAdCallback));
+  MOCK_METHOD2(ToggleSavedAd, void(base::Value::Dict, ToggleSavedAdCallback));
   MOCK_METHOD2(ToggleFlaggedAd,
-               void(const std::string&, ToggleFlaggedAdCallback));
+               void(base::Value::Dict, ToggleFlaggedAdCallback));
 
   MOCK_METHOD1(WipeState, void(bool));
 };

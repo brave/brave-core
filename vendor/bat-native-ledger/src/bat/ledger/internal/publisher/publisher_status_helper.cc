@@ -17,7 +17,7 @@
 namespace {
 
 struct PublisherStatusData {
-  ledger::type::PublisherStatus status;
+  ledger::mojom::PublisherStatus status;
   uint64_t updated_at;
 };
 
@@ -44,10 +44,8 @@ void RefreshNext(std::shared_ptr<RefreshTaskInfo> task_info) {
 
   // Find the first map element that has an expired status.
   task_info->current = std::find_if(
-      task_info->current,
-      task_info->map.end(),
-      [&task_info](auto& key_value) {
-        ledger::type::ServerPublisherInfo server_info;
+      task_info->current, task_info->map.end(), [&task_info](auto& key_value) {
+        ledger::mojom::ServerPublisherInfo server_info;
         server_info.status = key_value.second.status;
         server_info.updated_at = key_value.second.updated_at;
         return task_info->ledger->publisher()->ShouldFetchServerPublisherInfo(
@@ -74,13 +72,14 @@ void RefreshNext(std::shared_ptr<RefreshTaskInfo> task_info) {
         }
         // Fetch current publisher info.
         auto& key = task_info->current->first;
-        task_info->ledger->publisher()->GetServerPublisherInfo(key, [task_info](
-            ledger::type::ServerPublisherInfoPtr server_info) {
-          // Update status map and continue looking for expired entries.
-          task_info->current->second.status = server_info->status;
-          ++task_info->current;
-          RefreshNext(task_info);
-        });
+        task_info->ledger->publisher()->GetServerPublisherInfo(
+            key,
+            [task_info](ledger::mojom::ServerPublisherInfoPtr server_info) {
+              // Update status map and continue looking for expired entries.
+              task_info->current->second.status = server_info->status;
+              ++task_info->current;
+              RefreshNext(task_info);
+            });
       });
 }
 
@@ -100,10 +99,9 @@ void RefreshPublisherStatusMap(
 namespace ledger {
 namespace publisher {
 
-void RefreshPublisherStatus(
-    LedgerImpl* ledger,
-    type::PublisherInfoList&& info_list,
-    ledger::PublisherInfoListCallback callback) {
+void RefreshPublisherStatus(LedgerImpl* ledger,
+                            std::vector<mojom::PublisherInfoPtr>&& info_list,
+                            ledger::PublisherInfoListCallback callback) {
   DCHECK(ledger);
 
   PublisherStatusMap map;
@@ -111,7 +109,7 @@ void RefreshPublisherStatus(
     map[info->id] = {info->status, info->status_updated_at};
   }
 
-  auto shared_list = std::make_shared<type::PublisherInfoList>(
+  auto shared_list = std::make_shared<std::vector<mojom::PublisherInfoPtr>>(
       std::move(info_list));
 
   RefreshPublisherStatusMap(ledger, std::move(map),
@@ -125,7 +123,7 @@ void RefreshPublisherStatus(
 
 void RefreshPublisherStatus(
     LedgerImpl* ledger,
-    type::PendingContributionInfoList&& info_list,
+    std::vector<mojom::PendingContributionInfoPtr>&& info_list,
     ledger::PendingContributionInfoListCallback callback) {
   DCHECK(ledger);
 
@@ -134,8 +132,9 @@ void RefreshPublisherStatus(
     map[info->publisher_key] = {info->status, info->status_updated_at};
   }
 
-  auto shared_list = std::make_shared<type::PendingContributionInfoList>(
-      std::move(info_list));
+  auto shared_list =
+      std::make_shared<std::vector<mojom::PendingContributionInfoPtr>>(
+          std::move(info_list));
 
   RefreshPublisherStatusMap(ledger, std::move(map),
       [shared_list, callback](auto map) {

@@ -37,12 +37,14 @@ class UpholdCard {
  private:
   void GetBATCardId(endpoint::uphold::GetCardsCallback) const;
 
-  void OnGetBATCardId(CreateCardCallback, type::Result, std::string&& id) const;
+  void OnGetBATCardId(CreateCardCallback,
+                      mojom::Result,
+                      std::string&& id) const;
 
   void CreateBATCard(endpoint::uphold::PostCardsCallback) const;
 
   void OnCreateBATCard(CreateCardCallback,
-                       type::Result,
+                       mojom::Result,
                        std::string&& id) const;
 
   void UpdateBATCardSettings(const std::string& id,
@@ -50,7 +52,7 @@ class UpholdCard {
 
   void OnUpdateBATCardSettings(CreateCardCallback,
                                std::string&& id,
-                               type::Result) const;
+                               mojom::Result) const;
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::UpholdServer> uphold_server_;

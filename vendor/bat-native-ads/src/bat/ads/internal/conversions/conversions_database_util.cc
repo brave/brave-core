@@ -9,8 +9,7 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/conversions/conversions_database_table.h"
 
-namespace ads {
-namespace database {
+namespace ads::database {
 
 void PurgeExpiredConversions() {
   table::Conversions database_table;
@@ -36,5 +35,4 @@ void SaveConversions(const ConversionList& conversions) {
                       }));
 }
 
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database

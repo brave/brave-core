@@ -273,7 +273,7 @@ class PageWallet extends React.Component<Props, State> {
     }
 
     switch (externalWallet.status) {
-      // ledger::type::WalletStatus::CONNECTED
+      // ledger::mojom::WalletStatus::CONNECTED
       case 1:
       // WalletStatus::VERIFIED
       case 2:
@@ -283,7 +283,7 @@ class PageWallet extends React.Component<Props, State> {
       // WalletStatus::DISCONNECTED_VERIFIED
       case 4:
         return 'disconnected'
-      // ledger::type::WalletStatus::PENDING
+      // ledger::mojom::WalletStatus::PENDING
       case 5:
         return 'pending'
       default:
@@ -635,7 +635,7 @@ class PageWallet extends React.Component<Props, State> {
       return ''
     }
 
-    // ledger::type::Result::CORRUPTED_DATA
+    // ledger::mojom::Result::CORRUPTED_DATA
     if (walletRecoveryStatus === 17) {
       const tags = getLocaleWithTag('walletRecoveryOutdated')
       return (

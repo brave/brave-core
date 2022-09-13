@@ -38,14 +38,14 @@ void GeminiAuthorization::Authorize(
   const auto wallet = ledger_->wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
   auto gemini_wallet = ledger_->gemini()->GetWallet();
   if (!gemini_wallet) {
     BLOG(0, "Wallet is null");
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
@@ -56,13 +56,13 @@ void GeminiAuthorization::Authorize(
   const bool success = ledger_->gemini()->SetWallet(gemini_wallet->Clone());
 
   if (!success) {
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
   if (args.empty()) {
     BLOG(0, "Arguments are empty");
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
@@ -74,7 +74,7 @@ void GeminiAuthorization::Authorize(
 
   if (code.empty()) {
     BLOG(0, "Code is empty");
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
@@ -86,13 +86,13 @@ void GeminiAuthorization::Authorize(
 
   if (one_time_string.empty() || one_time_string.length() != 64) {
     BLOG(0, "One time string is empty");
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
   if (current_one_time != one_time_string) {
     BLOG(0, "One time string mismatch");
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
@@ -109,24 +109,24 @@ void GeminiAuthorization::Authorize(
 
 void GeminiAuthorization::OnAuthorize(
     ledger::ExternalWalletAuthorizationCallback callback,
-    type::Result result,
+    mojom::Result result,
     std::string&& token) {
-  if (result == type::Result::EXPIRED_TOKEN) {
+  if (result == mojom::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
     ledger_->gemini()->DisconnectWallet();
-    callback(type::Result::EXPIRED_TOKEN, {});
+    callback(mojom::Result::EXPIRED_TOKEN, {});
     return;
   }
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Couldn't get token");
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
   if (token.empty()) {
     BLOG(0, "Token is empty");
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
@@ -139,32 +139,32 @@ void GeminiAuthorization::OnAuthorize(
 void GeminiAuthorization::OnFetchRecipientId(
     ledger::ExternalWalletAuthorizationCallback callback,
     std::string&& token,
-    type::Result result,
+    mojom::Result result,
     std::string&& recipient_id) {
-  if (result == type::Result::NOT_FOUND) {
+  if (result == mojom::Result::NOT_FOUND) {
     BLOG(0, "Unverified User");
     ledger_->database()->SaveEventLog(log::kKYCRequired,
                                       constant::kWalletGemini);
-    callback(type::Result::NOT_FOUND, {});
+    callback(mojom::Result::NOT_FOUND, {});
     return;
   }
 
-  if (result == type::Result::EXPIRED_TOKEN) {
+  if (result == mojom::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
-    callback(type::Result::EXPIRED_TOKEN, {});
+    callback(mojom::Result::EXPIRED_TOKEN, {});
     ledger_->gemini()->DisconnectWallet();
     return;
   }
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Couldn't get token");
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
   if (recipient_id.empty()) {
     BLOG(0, "Recipient ID is empty!");
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
@@ -178,19 +178,19 @@ void GeminiAuthorization::OnPostAccount(
     ledger::ExternalWalletAuthorizationCallback callback,
     std::string&& token,
     std::string&& recipient_id,
-    type::Result result,
+    mojom::Result result,
     std::string&& linking_info,
     std::string&& user_name) {
-  if (result == type::Result::EXPIRED_TOKEN) {
+  if (result == mojom::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
-    callback(type::Result::EXPIRED_TOKEN, {});
+    callback(mojom::Result::EXPIRED_TOKEN, {});
     ledger_->gemini()->DisconnectWallet();
     return;
   }
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Couldn't get token");
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
@@ -206,7 +206,7 @@ void GeminiAuthorization::OnPostAccount(
                                             std::move(recipient_id)}) {
     std::move(request).Send(std::move(on_connect));
   } else {
-    std::move(on_connect).Run(type::Result::LEDGER_ERROR);
+    std::move(on_connect).Run(mojom::Result::LEDGER_ERROR);
   }
 }
 
@@ -214,11 +214,11 @@ void GeminiAuthorization::OnConnectWallet(
     ledger::ExternalWalletAuthorizationCallback callback,
     std::string&& token,
     std::string&& recipient_id,
-    type::Result result) {
+    mojom::Result result) {
   auto wallet_ptr = ledger_->gemini()->GetWallet();
   if (!wallet_ptr) {
     BLOG(0, "Gemini wallet is null!");
-    return callback(type::Result::LEDGER_ERROR, {});
+    return callback(mojom::Result::LEDGER_ERROR, {});
   }
 
   DCHECK(!token.empty());
@@ -226,38 +226,38 @@ void GeminiAuthorization::OnConnectWallet(
   const std::string abbreviated_address = recipient_id.substr(0, 5);
 
   switch (result) {
-    case type::Result::DEVICE_LIMIT_REACHED:
-    case type::Result::MISMATCHED_PROVIDER_ACCOUNTS:
-    case type::Result::REQUEST_SIGNATURE_VERIFICATION_FAILURE:
-    case type::Result::FLAGGED_WALLET:
-    case type::Result::REGION_NOT_SUPPORTED:
-    case type::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS:
+    case mojom::Result::DEVICE_LIMIT_REACHED:
+    case mojom::Result::MISMATCHED_PROVIDER_ACCOUNTS:
+    case mojom::Result::REQUEST_SIGNATURE_VERIFICATION_FAILURE:
+    case mojom::Result::FLAGGED_WALLET:
+    case mojom::Result::REGION_NOT_SUPPORTED:
+    case mojom::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS:
       ledger_->database()->SaveEventLog(
           log::GetEventLogKeyForLinkingResult(result),
           constant::kWalletGemini + std::string("/") + abbreviated_address);
       return callback(result, {});
     default:
-      if (result != type::Result::LEDGER_OK) {
+      if (result != mojom::Result::LEDGER_OK) {
         BLOG(0, "Couldn't claim wallet!");
         return callback(result, {});
       }
   }
 
   const auto from = wallet_ptr->status;
-  const auto to = wallet_ptr->status = type::WalletStatus::VERIFIED;
+  const auto to = wallet_ptr->status = mojom::WalletStatus::VERIFIED;
   wallet_ptr->token = std::move(token);
   wallet_ptr->address = std::move(recipient_id);
 
   if (!ledger_->gemini()->SetWallet(std::move(wallet_ptr))) {
     BLOG(0, "Unable to set Gemini wallet!");
-    return callback(type::Result::LEDGER_ERROR, {});
+    return callback(mojom::Result::LEDGER_ERROR, {});
   }
 
   OnWalletStatusChange(ledger_, from, to);
   ledger_->database()->SaveEventLog(
       log::kWalletVerified,
       constant::kWalletGemini + std::string("/") + abbreviated_address);
-  callback(type::Result::LEDGER_OK, {});
+  callback(mojom::Result::LEDGER_OK, {});
 }
 
 }  // namespace gemini

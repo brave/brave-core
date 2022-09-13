@@ -9,8 +9,7 @@
 #include <memory>
 #include <string>
 
-namespace ads {
-namespace resource {
+namespace ads::resource {
 
 template <typename T>
 struct ParsingResult {
@@ -21,7 +20,6 @@ struct ParsingResult {
 template <typename T>
 using ParsingResultPtr = std::unique_ptr<ParsingResult<T>>;
 
-}  // namespace resource
-}  // namespace ads
+}  // namespace ads::resource
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_PARSING_RESULT_H_

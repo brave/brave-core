@@ -44,43 +44,43 @@ class GeminiUtilTest : public testing::Test {
 
 TEST_F(GeminiUtilTest, GetClientId) {
   // production
-  ledger::_environment = type::Environment::PRODUCTION;
+  ledger::_environment = mojom::Environment::PRODUCTION;
   std::string result = gemini::GetClientId();
   ASSERT_EQ(result, BUILDFLAG(GEMINI_WALLET_CLIENT_ID));
 
   // staging
-  ledger::_environment = type::Environment::STAGING;
+  ledger::_environment = mojom::Environment::STAGING;
   result = gemini::GetClientId();
   ASSERT_EQ(result, BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_ID));
 }
 
 TEST_F(GeminiUtilTest, GetClientSecret) {
   // production
-  ledger::_environment = type::Environment::PRODUCTION;
+  ledger::_environment = mojom::Environment::PRODUCTION;
   std::string result = gemini::GetClientSecret();
   ASSERT_EQ(result, BUILDFLAG(GEMINI_WALLET_CLIENT_SECRET));
 
   // staging
-  ledger::_environment = type::Environment::STAGING;
+  ledger::_environment = mojom::Environment::STAGING;
   result = gemini::GetClientSecret();
   ASSERT_EQ(result, BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_SECRET));
 }
 
 TEST_F(GeminiUtilTest, GetFeeAddress) {
   // production
-  ledger::_environment = type::Environment::PRODUCTION;
+  ledger::_environment = mojom::Environment::PRODUCTION;
   std::string result = gemini::GetFeeAddress();
   ASSERT_EQ(result, kFeeAddressProduction);
 
   // staging
-  ledger::_environment = type::Environment::STAGING;
+  ledger::_environment = mojom::Environment::STAGING;
   result = gemini::GetFeeAddress();
   ASSERT_EQ(result, kFeeAddressStaging);
 }
 
 TEST_F(GeminiUtilTest, GetLoginUrl) {
   // production
-  ledger::_environment = type::Environment::PRODUCTION;
+  ledger::_environment = mojom::Environment::PRODUCTION;
   std::string result = gemini::GetLoginUrl("my-state");
   ASSERT_EQ(result, base::StrCat({BUILDFLAG(GEMINI_OAUTH_URL),
                                   "/auth"
@@ -98,7 +98,7 @@ TEST_F(GeminiUtilTest, GetLoginUrl) {
                                   "&response_type=code"}));
 
   // staging
-  ledger::_environment = type::Environment::STAGING;
+  ledger::_environment = mojom::Environment::STAGING;
   result = gemini::GetLoginUrl("my-state");
   ASSERT_EQ(result, base::StrCat({BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
                                   "/auth"
@@ -118,13 +118,13 @@ TEST_F(GeminiUtilTest, GetLoginUrl) {
 
 TEST_F(GeminiUtilTest, GetAddUrl) {
   // production
-  ledger::_environment = type::Environment::PRODUCTION;
+  ledger::_environment = mojom::Environment::PRODUCTION;
   std::string result = gemini::GetAddUrl();
   ASSERT_EQ(result,
             base::StrCat({BUILDFLAG(GEMINI_OAUTH_URL), "/transfer/deposit"}));
 
   // staging
-  ledger::_environment = type::Environment::STAGING;
+  ledger::_environment = mojom::Environment::STAGING;
   result = gemini::GetAddUrl();
   ASSERT_EQ(result, base::StrCat({BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
                                   "/transfer/deposit"}));
@@ -132,13 +132,13 @@ TEST_F(GeminiUtilTest, GetAddUrl) {
 
 TEST_F(GeminiUtilTest, GetWithdrawUrl) {
   // production
-  ledger::_environment = type::Environment::PRODUCTION;
+  ledger::_environment = mojom::Environment::PRODUCTION;
   std::string result = gemini::GetWithdrawUrl();
   ASSERT_EQ(result,
             base::StrCat({BUILDFLAG(GEMINI_OAUTH_URL), "/transfer/withdraw"}));
 
   // staging
-  ledger::_environment = type::Environment::STAGING;
+  ledger::_environment = mojom::Environment::STAGING;
   result = gemini::GetWithdrawUrl();
   ASSERT_EQ(result, base::StrCat({BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
                                   "/transfer/withdraw"}));
@@ -146,12 +146,12 @@ TEST_F(GeminiUtilTest, GetWithdrawUrl) {
 
 TEST_F(GeminiUtilTest, GetActivityUrl) {
   // production
-  ledger::_environment = type::Environment::PRODUCTION;
+  ledger::_environment = mojom::Environment::PRODUCTION;
   std::string result = gemini::GetActivityUrl();
   ASSERT_EQ(result, base::StrCat({BUILDFLAG(GEMINI_OAUTH_URL), "/balances"}));
 
   // staging
-  ledger::_environment = type::Environment::STAGING;
+  ledger::_environment = mojom::Environment::STAGING;
   result = gemini::GetActivityUrl();
   ASSERT_EQ(result,
             base::StrCat({BUILDFLAG(GEMINI_OAUTH_STAGING_URL), "/balances"}));
@@ -186,7 +186,7 @@ TEST_F(GeminiUtilTest, GetWallet) {
   ASSERT_EQ(result->address, "2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af");
   ASSERT_EQ(result->user_name, "test");
   ASSERT_EQ(result->token, "4c80232r219c30cdf112208890a32c7e00");
-  ASSERT_EQ(result->status, type::WalletStatus::VERIFIED);
+  ASSERT_EQ(result->status, mojom::WalletStatus::VERIFIED);
 }
 
 TEST_F(GeminiUtilTest, GenerateRandomHexString) {
@@ -197,20 +197,20 @@ TEST_F(GeminiUtilTest, GenerateRandomHexString) {
 
   // random string
   ledger::is_testing = false;
-  ledger::_environment = type::Environment::STAGING;
+  ledger::_environment = mojom::Environment::STAGING;
   result = ledger::util::GenerateRandomHexString();
   ASSERT_EQ(result.length(), 64u);
 }
 
 TEST_F(GeminiUtilTest, GenerateLinks) {
-  ledger::_environment = type::Environment::STAGING;
+  ledger::_environment = mojom::Environment::STAGING;
 
-  auto wallet = type::ExternalWallet::New();
+  auto wallet = mojom::ExternalWallet::New();
   wallet->address = "123123123124234234234";
   wallet->one_time_string = "aaabbbccc";
 
   // Not connected
-  wallet->status = type::WalletStatus::NOT_CONNECTED;
+  wallet->status = mojom::WalletStatus::NOT_CONNECTED;
   auto result = gemini::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
@@ -231,7 +231,7 @@ TEST_F(GeminiUtilTest, GenerateLinks) {
   ASSERT_EQ(result->account_url, BUILDFLAG(GEMINI_OAUTH_STAGING_URL));
 
   // Connected
-  wallet->status = type::WalletStatus::CONNECTED;
+  wallet->status = mojom::WalletStatus::CONNECTED;
   result = gemini::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
@@ -252,7 +252,7 @@ TEST_F(GeminiUtilTest, GenerateLinks) {
   ASSERT_EQ(result->account_url, BUILDFLAG(GEMINI_OAUTH_STAGING_URL));
 
   // Verified
-  wallet->status = type::WalletStatus::VERIFIED;
+  wallet->status = mojom::WalletStatus::VERIFIED;
   result = gemini::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, base::StrCat({BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
                                            "/transfer/deposit"}));
@@ -276,7 +276,7 @@ TEST_F(GeminiUtilTest, GenerateLinks) {
   ASSERT_EQ(result->account_url, BUILDFLAG(GEMINI_OAUTH_STAGING_URL));
 
   // Disconnected Non-Verified
-  wallet->status = type::WalletStatus::DISCONNECTED_NOT_VERIFIED;
+  wallet->status = mojom::WalletStatus::DISCONNECTED_NOT_VERIFIED;
   result = gemini::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
@@ -297,7 +297,7 @@ TEST_F(GeminiUtilTest, GenerateLinks) {
   ASSERT_EQ(result->account_url, BUILDFLAG(GEMINI_OAUTH_STAGING_URL));
 
   // Disconnected Verified
-  wallet->status = type::WalletStatus::DISCONNECTED_VERIFIED;
+  wallet->status = mojom::WalletStatus::DISCONNECTED_VERIFIED;
   result = gemini::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
@@ -318,7 +318,7 @@ TEST_F(GeminiUtilTest, GenerateLinks) {
   ASSERT_EQ(result->account_url, BUILDFLAG(GEMINI_OAUTH_STAGING_URL));
 
   // Pending
-  wallet->status = type::WalletStatus::PENDING;
+  wallet->status = mojom::WalletStatus::PENDING;
   result = gemini::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");

@@ -447,6 +447,41 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
 }
 
 TEST_F(BatAdsRedeemUnblindedTokenTest,
+       DoNotRetrySendingConfirmationForHttpCreatedResponseIfAdsIsDisabled) {
+  // Arrange
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
+
+  const URLResponseMap url_responses = {
+      {// Create confirmation request
+       "/v2/confirmation/8b742869-6e4a-490c-ac31-31b49130098a",
+       {{net::HTTP_CREATED, {}}}}};
+  MockUrlResponses(ads_client_mock_, url_responses);
+
+  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  CHECK(confirmation);
+
+  // Act
+  EXPECT_CALL(*redeem_unblinded_token_delegate_mock_, OnDidSendConfirmation(_))
+      .Times(0);
+
+  EXPECT_CALL(
+      *redeem_unblinded_token_delegate_mock_,
+      OnFailedToSendConfirmation(*confirmation, /*should_retry*/ false));
+
+  EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
+              OnDidRedeemUnblindedToken(_, _))
+      .Times(0);
+
+  EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
+              OnFailedToRedeemUnblindedToken(_, _, _))
+      .Times(0);
+
+  redeem_unblinded_token_->Redeem(*confirmation);
+
+  // Assert
+}
+
+TEST_F(BatAdsRedeemUnblindedTokenTest,
        RetrySendingConfirmationForNonHttpBadRequestResponseIfAdsIsDisabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);

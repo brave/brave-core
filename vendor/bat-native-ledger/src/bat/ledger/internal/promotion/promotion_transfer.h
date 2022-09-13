@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "bat/ledger/ledger.h"
 
@@ -30,11 +31,11 @@ class PromotionTransfer {
  private:
   void OnGetSpendableUnblindedTokens(
       ledger::PostSuggestionsClaimCallback callback,
-      type::UnblindedTokenList tokens) const;
+      std::vector<mojom::UnblindedTokenPtr> tokens) const;
 
   void OnDrainTokens(ledger::PostSuggestionsClaimCallback callback,
                      double transfer_amount,
-                     type::Result result,
+                     mojom::Result result,
                      std::string drain_id) const;
 
   LedgerImpl* ledger_;  // NOT OWNED

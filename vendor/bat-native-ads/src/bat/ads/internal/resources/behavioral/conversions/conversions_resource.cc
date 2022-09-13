@@ -13,8 +13,7 @@
 #include "bat/ads/internal/resources/behavioral/conversions/conversions_info.h"
 #include "bat/ads/internal/resources/resources_util_impl.h"
 
-namespace ads {
-namespace resource {
+namespace ads::resource {
 
 namespace {
 constexpr char kResourceId[] = "nnqccijfhvzwyrxpxwjrpmynaiazctqb";
@@ -62,5 +61,4 @@ void Conversions::OnLoadAndParseResource(
        "Successfully initialized " << kResourceId << " conversions resource");
 }
 
-}  // namespace resource
-}  // namespace ads
+}  // namespace ads::resource

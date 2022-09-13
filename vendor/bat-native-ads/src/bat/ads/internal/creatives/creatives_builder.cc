@@ -5,11 +5,11 @@
 
 #include "bat/ads/internal/creatives/creatives_builder.h"
 
-#include <algorithm>
 #include <string>
 #include <vector>
 
 #include "base/check.h"
+#include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -38,8 +38,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
     for (const auto& geo_target : campaign.geo_targets) {
       std::string code = geo_target.code;
 
-      if (std::find(geo_targets.cbegin(), geo_targets.cend(), code) !=
-          geo_targets.cend()) {
+      if (base::Contains(geo_targets, code)) {
         continue;
       }
 

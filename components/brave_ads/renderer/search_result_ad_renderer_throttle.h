@@ -29,8 +29,9 @@ class SearchResultAdRendererThrottle : public blink::URLLoaderThrottle {
       int render_frame_id,
       const blink::WebURLRequest& request);
 
-  SearchResultAdRendererThrottle(
-      mojo::PendingRemote<brave_ads::mojom::BraveAdsHost> brave_ads_remote);
+  explicit SearchResultAdRendererThrottle(
+      mojo::PendingRemote<brave_ads::mojom::BraveAdsHost>
+          brave_ads_pending_remote);
   ~SearchResultAdRendererThrottle() override;
 
   SearchResultAdRendererThrottle(const SearchResultAdRendererThrottle&) =

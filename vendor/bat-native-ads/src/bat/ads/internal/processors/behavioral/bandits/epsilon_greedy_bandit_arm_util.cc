@@ -8,11 +8,10 @@
 #include "absl/types/optional.h"
 #include "base/values.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arm_values_util.h"
+#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arm_value_util.h"
 #include "bat/ads/pref_names.h"
 
-namespace ads {
-namespace targeting {
+namespace ads::targeting {
 
 void SetEpsilonGreedyBanditArms(const EpsilonGreedyBanditArmMap& arms) {
   AdsClientHelper::GetInstance()->SetDictPref(
@@ -30,5 +29,4 @@ EpsilonGreedyBanditArmMap GetEpsilonGreedyBanditArms() {
   return EpsilonGreedyBanditArmsFromValue(*dict);
 }
 
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting

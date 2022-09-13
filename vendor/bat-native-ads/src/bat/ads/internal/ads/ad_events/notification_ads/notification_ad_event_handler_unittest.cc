@@ -19,8 +19,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace notification_ads {
+namespace ads::notification_ads {
 
 namespace {
 constexpr char kPlacementId[] = "d2ef9bb0-a0dc-472c-bc49-62105bb6da68";
@@ -80,7 +79,7 @@ class BatAdsNotificationAdEventHandlerTest : public EventHandlerObserver,
   NotificationAdInfo BuildAndSaveNotificationAd() {
     const CreativeNotificationAdInfo creative_ad =
         BuildCreativeNotificationAd();
-    const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
+    NotificationAdInfo ad = BuildNotificationAd(creative_ad);
     NotificationAdManager::GetInstance()->Add(ad);
     return ad;
   }
@@ -212,5 +211,4 @@ TEST_F(BatAdsNotificationAdEventHandlerTest, DoNotFireEventIfUuidWasNotFound) {
       0, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kViewed));
 }
 
-}  // namespace notification_ads
-}  // namespace ads
+}  // namespace ads::notification_ads

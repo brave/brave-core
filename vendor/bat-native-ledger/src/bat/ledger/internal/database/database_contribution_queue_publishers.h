@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_CONTRIBUTION_QUEUE_PUBLISHERS_H_
 
 #include <string>
+#include <vector>
 
 #include "bat/ledger/internal/database/database_table.h"
 
@@ -19,7 +20,7 @@ class DatabaseContributionQueuePublishers: public DatabaseTable {
   ~DatabaseContributionQueuePublishers() override;
 
   void InsertOrUpdate(const std::string& id,
-                      type::ContributionQueuePublisherList list,
+                      std::vector<mojom::ContributionQueuePublisherPtr> list,
                       ledger::LegacyResultCallback callback);
 
   void GetRecordsByQueueId(
@@ -27,9 +28,8 @@ class DatabaseContributionQueuePublishers: public DatabaseTable {
       ContributionQueuePublishersListCallback callback);
 
  private:
-  void OnGetRecordsByQueueId(
-      type::DBCommandResponsePtr response,
-      ContributionQueuePublishersListCallback callback);
+  void OnGetRecordsByQueueId(mojom::DBCommandResponsePtr response,
+                             ContributionQueuePublishersListCallback callback);
 };
 
 }  // namespace database

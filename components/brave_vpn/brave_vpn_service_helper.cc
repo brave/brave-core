@@ -9,6 +9,7 @@
 
 #include "base/base64.h"
 #include "base/notreached.h"
+#include "base/ranges/algorithm.h"
 #include "brave/components/brave_vpn/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/brave_vpn_data_types.h"
 #include "brave/components/skus/browser/skus_utils.h"
@@ -177,9 +178,7 @@ base::Value::Dict GetValueWithTicketInfos(const std::string& email,
 mojom::RegionPtr GetRegionPtrWithNameFromRegionList(
     const std::string& name,
     const std::vector<mojom::Region> region_list) {
-  auto it =
-      std::find_if(region_list.begin(), region_list.end(),
-                   [&name](const auto& region) { return region.name == name; });
+  auto it = base::ranges::find(region_list, name, &mojom::Region::name);
   if (it != region_list.end())
     return it->Clone();
   return mojom::RegionPtr();

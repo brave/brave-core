@@ -12,8 +12,6 @@
 #include "base/time/time.h"
 #include "bat/ads/ad_content_info.h"
 #include "bat/ads/confirmation_type.h"
-#include "bat/ads/history_info.h"
-#include "bat/ads/history_item_info.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_info.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
@@ -62,41 +60,36 @@ void HistoryManager::RemoveObserver(HistoryManagerObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
-HistoryInfo HistoryManager::Get(const HistoryFilterType filter_type,
-                                const HistorySortType sort_type,
-                                const base::Time from_time,
-                                const base::Time to_time) const {
-  base::circular_deque<HistoryItemInfo> history =
+HistoryItemList HistoryManager::Get(const HistoryFilterType filter_type,
+                                    const HistorySortType sort_type,
+                                    const base::Time from_time,
+                                    const base::Time to_time) const {
+  HistoryItemList history_items =
       ClientStateManager::GetInstance()->GetHistory();
 
   const auto date_range_filter =
       std::make_unique<DateRangeHistoryFilter>(from_time, to_time);
   if (date_range_filter) {
-    history = date_range_filter->Apply(history);
+    history_items = date_range_filter->Apply(history_items);
   }
 
   const auto filter = HistoryFilterFactory::Build(filter_type);
   if (filter) {
-    history = filter->Apply(history);
+    history_items = filter->Apply(history_items);
   }
 
   const auto sort = HistorySortFactory::Build(sort_type);
   if (sort) {
-    history = sort->Apply(history);
+    history_items = sort->Apply(history_items);
   }
 
-  HistoryInfo normalized_history;
-  for (const auto& item : history) {
-    normalized_history.items.push_back(item);
-  }
-
-  return normalized_history;
+  return history_items;
 }
 
 HistoryItemInfo HistoryManager::Add(
     const InlineContentAdInfo& ad,
     const ConfirmationType& confirmation_type) const {
-  const HistoryItemInfo history_item =
+  HistoryItemInfo history_item =
       AddHistory(ad, confirmation_type, ad.title, ad.description);
   NotifyHistoryDidChange();
   return history_item;
@@ -105,7 +98,7 @@ HistoryItemInfo HistoryManager::Add(
 HistoryItemInfo HistoryManager::Add(
     const NewTabPageAdInfo& ad,
     const ConfirmationType& confirmation_type) const {
-  const HistoryItemInfo history_item =
+  HistoryItemInfo history_item =
       AddHistory(ad, confirmation_type, ad.company_name, ad.alt);
   NotifyHistoryDidChange();
   return history_item;
@@ -114,7 +107,7 @@ HistoryItemInfo HistoryManager::Add(
 HistoryItemInfo HistoryManager::Add(
     const NotificationAdInfo& ad,
     const ConfirmationType& confirmation_type) const {
-  const HistoryItemInfo history_item =
+  HistoryItemInfo history_item =
       AddHistory(ad, confirmation_type, ad.title, ad.body);
   NotifyHistoryDidChange();
   return history_item;
@@ -123,7 +116,7 @@ HistoryItemInfo HistoryManager::Add(
 HistoryItemInfo HistoryManager::Add(
     const PromotedContentAdInfo& ad,
     const ConfirmationType& confirmation_type) const {
-  const HistoryItemInfo history_item =
+  HistoryItemInfo history_item =
       AddHistory(ad, confirmation_type, ad.title, ad.description);
   NotifyHistoryDidChange();
   return history_item;
@@ -132,7 +125,7 @@ HistoryItemInfo HistoryManager::Add(
 HistoryItemInfo HistoryManager::Add(
     const SearchResultAdInfo& ad,
     const ConfirmationType& confirmation_type) const {
-  const HistoryItemInfo history_item =
+  HistoryItemInfo history_item =
       AddHistory(ad, confirmation_type, ad.headline_text, ad.description);
   NotifyHistoryDidChange();
   return history_item;

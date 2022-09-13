@@ -13,9 +13,7 @@
 #include "base/check.h"
 #include "wrapper.hpp"
 
-namespace ads {
-namespace privacy {
-namespace cbr {
+namespace ads::privacy::cbr {
 
 // A |SignedToken| is the result of signing a |BlindedToken|.
 
@@ -53,8 +51,6 @@ class SignedToken {
 
 std::ostream& operator<<(std::ostream& os, const SignedToken& signed_token);
 
-}  // namespace cbr
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::cbr
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_CHALLENGE_BYPASS_RISTRETTO_SIGNED_TOKEN_H_

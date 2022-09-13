@@ -9,8 +9,7 @@
 #include "bat/ads/internal/account/deposits/deposits_database_table.h"
 #include "bat/ads/internal/base/logging_util.h"
 
-namespace ads {
-namespace database {
+namespace ads::database {
 
 void PurgeExpiredDeposits() {
   database::table::Deposits database_table;
@@ -24,5 +23,4 @@ void PurgeExpiredDeposits() {
   }));
 }
 
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database

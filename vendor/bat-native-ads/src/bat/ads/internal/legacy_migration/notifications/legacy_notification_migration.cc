@@ -12,13 +12,12 @@
 #include "base/containers/circular_deque.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/creatives/notification_ads/notification_ad_manager_values_util.h"
+#include "bat/ads/internal/creatives/notification_ads/notification_ad_manager_value_util.h"
 #include "bat/ads/internal/legacy_migration/notifications/legacy_notification_json_reader.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/pref_names.h"
 
-namespace ads {
-namespace notifications {
+namespace ads::notifications {
 
 namespace {
 
@@ -81,5 +80,4 @@ void Migrate(InitializeCallback callback) {
           callback));
 }
 
-}  // namespace notifications
-}  // namespace ads
+}  // namespace ads::notifications

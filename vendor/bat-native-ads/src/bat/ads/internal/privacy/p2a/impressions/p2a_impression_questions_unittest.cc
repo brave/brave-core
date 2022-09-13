@@ -9,9 +9,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace privacy {
-namespace p2a {
+namespace ads::privacy::p2a {
 
 TEST(BatAdsP2AAdImpressionQuestionTest, CreateAdImpressionQuestions) {
   // Arrange
@@ -29,6 +27,4 @@ TEST(BatAdsP2AAdImpressionQuestionTest, CreateAdImpressionQuestions) {
   EXPECT_EQ(expected_questions, questions);
 }
 
-}  // namespace p2a
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy::p2a

@@ -10,13 +10,11 @@
 
 #include "bat/ads/internal/account/user_data/totals_user_data_alias.h"
 
-namespace ads {
-namespace user_data {
+namespace ads::user_data {
 
 AdTypeBucketMap BuildBuckets(
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens);
 
-}  // namespace user_data
-}  // namespace ads
+}  // namespace ads::user_data
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_USER_DATA_TOTALS_USER_DATA_UTIL_H_

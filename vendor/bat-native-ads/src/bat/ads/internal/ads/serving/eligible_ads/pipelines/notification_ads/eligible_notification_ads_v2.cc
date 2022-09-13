@@ -20,8 +20,7 @@
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/segments/segment_alias.h"
 
-namespace ads {
-namespace notification_ads {
+namespace ads::notification_ads {
 
 EligibleAdsV2::EligibleAdsV2(
     geographic::SubdivisionTargeting* subdivision_targeting,
@@ -119,5 +118,4 @@ CreativeNotificationAdList EligibleAdsV2::FilterCreativeAds(
   return ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
 }
 
-}  // namespace notification_ads
-}  // namespace ads
+}  // namespace ads::notification_ads

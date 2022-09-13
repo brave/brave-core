@@ -23,9 +23,7 @@
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_transaction_constants.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
-namespace ads {
-namespace database {
-namespace table {
+namespace ads::database::table {
 
 namespace {
 
@@ -315,6 +313,4 @@ void Transactions::MigrateToV18(mojom::DBTransactionInfo* transaction) {
   CreateTableIndex(transaction, "transactions", "id");
 }
 
-}  // namespace table
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database::table

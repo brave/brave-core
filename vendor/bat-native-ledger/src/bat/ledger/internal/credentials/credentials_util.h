@@ -35,19 +35,17 @@ std::string GetBlindedCredsJSON(const std::vector<BlindedToken>& blinded);
 absl::optional<base::Value::List> ParseStringToBaseList(
     const std::string& string_list);
 
-bool UnBlindCreds(
-    const type::CredsBatch& creds,
-    std::vector<std::string>* unblinded_encoded_creds,
-    std::string* error);
+bool UnBlindCreds(const mojom::CredsBatch& creds,
+                  std::vector<std::string>* unblinded_encoded_creds,
+                  std::string* error);
 
-bool UnBlindCredsMock(
-    const type::CredsBatch& creds,
-    std::vector<std::string>* unblinded_encoded_creds);
+bool UnBlindCredsMock(const mojom::CredsBatch& creds,
+                      std::vector<std::string>* unblinded_encoded_creds);
 
-std::string ConvertRewardTypeToString(const type::RewardsType type);
+std::string ConvertRewardTypeToString(const mojom::RewardsType type);
 
 base::Value::List GenerateCredentials(
-    const std::vector<type::UnblindedToken>& token_list,
+    const std::vector<mojom::UnblindedToken>& token_list,
     const std::string& body);
 
 absl::optional<base::Value::Dict> GenerateSuggestion(

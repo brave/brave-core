@@ -26,17 +26,15 @@ class RewardsServiceObserver : public base::CheckedObserver {
 
   virtual void OnFetchPromotions(
       RewardsService* rewards_service,
-      const ledger::type::Result result,
-      const ledger::type::PromotionList& list) {}
+      const ledger::mojom::Result result,
+      const std::vector<ledger::mojom::PromotionPtr>& list) {}
 
-  virtual void OnRecoverWallet(
-      RewardsService* rewards_service,
-      const ledger::type::Result result) {}
+  virtual void OnRecoverWallet(RewardsService* rewards_service,
+                               const ledger::mojom::Result result) {}
 
-  virtual void OnPromotionFinished(
-      RewardsService* rewards_service,
-      const ledger::type::Result result,
-      ledger::type::PromotionPtr promotion) {}
+  virtual void OnPromotionFinished(RewardsService* rewards_service,
+                                   const ledger::mojom::Result result,
+                                   ledger::mojom::PromotionPtr promotion) {}
 
   virtual void OnExcludedSitesChanged(
       RewardsService* rewards_service,
@@ -45,13 +43,11 @@ class RewardsServiceObserver : public base::CheckedObserver {
 
   virtual void OnReconcileComplete(
       RewardsService* rewards_service,
-      const ledger::type::Result result,
+      const ledger::mojom::Result result,
       const std::string& contribution_id,
       const double amount,
-      const ledger::type::RewardsType type,
-      const ledger::type::ContributionProcessor processor) {}
-
-  virtual void OnRequestAdsEnabledPopupClosed(bool ads_enabled) {}
+      const ledger::mojom::RewardsType type,
+      const ledger::mojom::ContributionProcessor processor) {}
 
   virtual void OnAdsEnabled(
       brave_rewards::RewardsService* rewards_service,
@@ -59,11 +55,11 @@ class RewardsServiceObserver : public base::CheckedObserver {
 
   virtual void OnPendingContributionSaved(
       brave_rewards::RewardsService* rewards_service,
-      const ledger::type::Result result) {}
+      const ledger::mojom::Result result) {}
 
   virtual void OnPublisherListNormalized(
       RewardsService* rewards_service,
-      ledger::type::PublisherInfoList list) {}
+      std::vector<ledger::mojom::PublisherInfoPtr> list) {}
 
   virtual void OnPublisherRegistryUpdated() {}
 
@@ -82,11 +78,11 @@ class RewardsServiceObserver : public base::CheckedObserver {
 
   virtual void OnPendingContributionRemoved(
       brave_rewards::RewardsService* rewards_service,
-      const ledger::type::Result result) {}
+      const ledger::mojom::Result result) {}
 
   virtual void OnDisconnectWallet(
       brave_rewards::RewardsService* rewards_service,
-      const ledger::type::Result result,
+      const ledger::mojom::Result result,
       const std::string& wallet_type) {}
 
   virtual void OnUnblindedTokensReady(

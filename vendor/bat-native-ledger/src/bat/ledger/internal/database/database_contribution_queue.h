@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "bat/ledger/internal/database/database_contribution_queue_publishers.h"
 #include "bat/ledger/internal/database/database_table.h"
@@ -16,14 +17,14 @@ namespace ledger {
 namespace database {
 
 using GetFirstContributionQueueCallback =
-    std::function<void(type::ContributionQueuePtr)>;
+    std::function<void(mojom::ContributionQueuePtr)>;
 
 class DatabaseContributionQueue: public DatabaseTable {
  public:
   explicit DatabaseContributionQueue(LedgerImpl* ledger);
   ~DatabaseContributionQueue() override;
 
-  void InsertOrUpdate(type::ContributionQueuePtr info,
+  void InsertOrUpdate(mojom::ContributionQueuePtr info,
                       ledger::LegacyResultCallback callback);
 
   void GetFirstRecord(GetFirstContributionQueueCallback callback);
@@ -33,17 +34,16 @@ class DatabaseContributionQueue: public DatabaseTable {
 
  private:
   void OnInsertOrUpdate(
-      type::DBCommandResponsePtr response,
-      std::shared_ptr<type::ContributionQueuePtr> shared_queue,
+      mojom::DBCommandResponsePtr response,
+      std::shared_ptr<mojom::ContributionQueuePtr> shared_queue,
       ledger::LegacyResultCallback callback);
 
-  void OnGetFirstRecord(
-      type::DBCommandResponsePtr response,
-      GetFirstContributionQueueCallback callback);
+  void OnGetFirstRecord(mojom::DBCommandResponsePtr response,
+                        GetFirstContributionQueueCallback callback);
 
   void OnGetPublishers(
-      type::ContributionQueuePublisherList list,
-      std::shared_ptr<type::ContributionQueuePtr> shared_queue,
+      std::vector<mojom::ContributionQueuePublisherPtr> list,
+      std::shared_ptr<mojom::ContributionQueuePtr> shared_queue,
       GetFirstContributionQueueCallback callback);
 
   std::unique_ptr<DatabaseContributionQueuePublishers> publishers_;

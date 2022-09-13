@@ -23,7 +23,7 @@ void StateMigrationV7::Migrate(ledger::LegacyResultCallback callback) {
       ledger_->ledger_client()->GetStringState(kWalletBrave);
 
   if (!ledger_->state()->SetEncryptedString(kWalletBrave, brave)) {
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -31,11 +31,11 @@ void StateMigrationV7::Migrate(ledger::LegacyResultCallback callback) {
       ledger_->ledger_client()->GetStringState(kWalletUphold);
 
   if (!ledger_->state()->SetEncryptedString(kWalletUphold, uphold)) {
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  callback(type::Result::LEDGER_OK);
+  callback(mojom::Result::LEDGER_OK);
 }
 
 }  // namespace state

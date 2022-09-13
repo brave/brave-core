@@ -24,6 +24,7 @@ static_library("browser") {
 
   deps = [
     "//base",
+    "//brave/components/api_request_helper",
     "//brave/components/skus/common",
     "//brave/components/skus/common:mojom",
     "//components/keyed_service/core",
@@ -39,7 +40,10 @@ static_library("browser") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "skus_utils_unittest.cc" ]
+  sources = [
+    "skus_url_loader_impl_unittest.cc",
+    "skus_utils_unittest.cc",
+  ]
 
   # Remove when linux fixed https://github.com/brave/brave-browser/issues/15817.
   if (is_win || is_mac) {
@@ -54,6 +58,7 @@ source_set("unit_tests") {
     "//components/prefs:test_support",
     "//components/sync_preferences:test_support",
     "//net:test_support",
+    "//services/data_decoder/public/cpp:test_support",
     "//services/network:test_support",
     "//testing/gtest",
   ]

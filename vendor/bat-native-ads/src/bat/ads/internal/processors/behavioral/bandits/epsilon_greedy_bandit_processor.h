@@ -8,8 +8,7 @@
 
 #include <string>
 
-namespace ads {
-namespace processor {
+namespace ads::processor {
 
 struct BanditFeedbackInfo;
 
@@ -28,7 +27,6 @@ class EpsilonGreedyBandit final {
   void UpdateArm(int reward, const std::string& segment) const;
 };
 
-}  // namespace processor
-}  // namespace ads
+}  // namespace ads::processor
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PROCESSORS_BEHAVIORAL_BANDITS_EPSILON_GREEDY_BANDIT_PROCESSOR_H_

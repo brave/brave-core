@@ -61,15 +61,15 @@ class TipMessageHandler : public WebUIMessageHandler,
                              bool success) override;
 
   void OnPendingContributionSaved(RewardsService* rewards_service,
-                                  ledger::type::Result result) override;
+                                  ledger::mojom::Result result) override;
 
   void OnReconcileComplete(
       RewardsService* rewards_service,
-      const ledger::type::Result result,
+      const ledger::mojom::Result result,
       const std::string& contribution_id,
       const double amount,
-      const ledger::type::RewardsType type,
-      const ledger::type::ContributionProcessor processor) override;
+      const ledger::mojom::RewardsType type,
+      const ledger::mojom::ContributionProcessor processor) override;
 
   void OnUnblindedTokensReady(RewardsService* rewards_service) override;
 
@@ -86,24 +86,25 @@ class TipMessageHandler : public WebUIMessageHandler,
   void FetchBalance(const base::Value::List& args);
 
   // Rewards service callbacks
-  void OnTipCallback(double amount, ledger::type::Result result);
+  void OnTipCallback(double amount, ledger::mojom::Result result);
 
   void GetReconcileStampCallback(uint64_t reconcile_stamp);
 
-  void GetRecurringTipsCallback(ledger::type::PublisherInfoList list);
+  void GetRecurringTipsCallback(
+      std::vector<ledger::mojom::PublisherInfoPtr> list);
 
-  void GetExternalWalletCallback(const ledger::type::Result result,
-                                 ledger::type::ExternalWalletPtr wallet);
+  void GetExternalWalletCallback(const ledger::mojom::Result result,
+                                 ledger::mojom::ExternalWalletPtr wallet);
 
-  void GetPublisherBannerCallback(ledger::type::PublisherBannerPtr banner);
+  void GetPublisherBannerCallback(ledger::mojom::PublisherBannerPtr banner);
 
   void GetShareURLCallback(const std::string& url);
 
-  void FetchBalanceCallback(const ledger::type::Result result,
-                            ledger::type::BalancePtr balance);
+  void FetchBalanceCallback(const ledger::mojom::Result result,
+                            ledger::mojom::BalancePtr balance);
 
   void GetRewardsParametersCallback(
-      ledger::type::RewardsParametersPtr parameters);
+      ledger::mojom::RewardsParametersPtr parameters);
 
   RewardsService* rewards_service_ = nullptr;     // NOT OWNED
   brave_ads::AdsService* ads_service_ = nullptr;  // NOT OWNED
@@ -181,18 +182,18 @@ void TipMessageHandler::OnRecurringTipSaved(RewardsService* rewards_service,
 
 void TipMessageHandler::OnPendingContributionSaved(
     RewardsService* rewards_service,
-    ledger::type::Result result) {
+    ledger::mojom::Result result) {
   FireWebUIListener("pendingContributionSaved",
                     base::Value(static_cast<int>(result)));
 }
 
 void TipMessageHandler::OnReconcileComplete(
     RewardsService* rewards_service,
-    const ledger::type::Result result,
+    const ledger::mojom::Result result,
     const std::string& contribution_id,
     const double amount,
-    const ledger::type::RewardsType type,
-    const ledger::type::ContributionProcessor processor) {
+    const ledger::mojom::RewardsType type,
+    const ledger::mojom::ContributionProcessor processor) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -269,7 +270,7 @@ void TipMessageHandler::OnTip(const base::Value::List& args) {
 
   if (recurring && amount <= 0) {
     rewards_service_->RemoveRecurringTip(publisher_key);
-    OnTipCallback(0, ledger::type::Result::LEDGER_OK);
+    OnTipCallback(0, ledger::mojom::Result::LEDGER_OK);
   } else if (amount > 0) {
     rewards_service_->OnTip(publisher_key, amount, recurring,
                             base::BindOnce(&TipMessageHandler::OnTipCallback,
@@ -352,7 +353,7 @@ void TipMessageHandler::GetRecurringTips(const base::Value::List& args) {
 }
 
 void TipMessageHandler::GetRewardsParametersCallback(
-    ledger::type::RewardsParametersPtr parameters) {
+    ledger::mojom::RewardsParametersPtr parameters) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -389,7 +390,7 @@ void TipMessageHandler::GetRewardsParametersCallback(
 }
 
 void TipMessageHandler::GetRecurringTipsCallback(
-    ledger::type::PublisherInfoList list) {
+    std::vector<ledger::mojom::PublisherInfoPtr> list) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -406,7 +407,7 @@ void TipMessageHandler::GetRecurringTipsCallback(
 }
 
 void TipMessageHandler::GetPublisherBannerCallback(
-    ledger::type::PublisherBannerPtr banner) {
+    ledger::mojom::PublisherBannerPtr banner) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -434,9 +435,9 @@ void TipMessageHandler::GetPublisherBannerCallback(
 }
 
 void TipMessageHandler::OnTipCallback(double amount,
-                                      ledger::type::Result result) {
+                                      ledger::mojom::Result result) {
   if (IsJavascriptAllowed()) {
-    result == ledger::type::Result::LEDGER_OK
+    result == ledger::mojom::Result::LEDGER_OK
         ? FireWebUIListener("tipProcessed", base::Value(amount))
         : FireWebUIListener("tipFailed");
   }
@@ -466,8 +467,9 @@ void TipMessageHandler::GetShareURLCallback(const std::string& url) {
       ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false));
 }
 
-void TipMessageHandler::FetchBalanceCallback(const ledger::type::Result result,
-                                             ledger::type::BalancePtr balance) {
+void TipMessageHandler::FetchBalanceCallback(
+    const ledger::mojom::Result result,
+    ledger::mojom::BalancePtr balance) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -475,7 +477,7 @@ void TipMessageHandler::FetchBalanceCallback(const ledger::type::Result result,
   base::Value::Dict data;
   data.Set("status", static_cast<int>(result));
 
-  if (result == ledger::type::Result::LEDGER_OK && balance) {
+  if (result == ledger::mojom::Result::LEDGER_OK && balance) {
     base::Value::Dict wallets;
     for (const auto& wallet : balance->wallets) {
       wallets.Set(wallet.first, wallet.second);
@@ -492,8 +494,8 @@ void TipMessageHandler::FetchBalanceCallback(const ledger::type::Result result,
 }
 
 void TipMessageHandler::GetExternalWalletCallback(
-    const ledger::type::Result result,
-    ledger::type::ExternalWalletPtr wallet) {
+    const ledger::mojom::Result result,
+    ledger::mojom::ExternalWalletPtr wallet) {
   if (!IsJavascriptAllowed()) {
     return;
   }

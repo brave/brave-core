@@ -19,8 +19,8 @@ namespace credential {
 
 class PromotionUtilTest : public testing::Test {
  public:
-  type::CredsBatch GetCredsBatch() {
-    type::CredsBatch creds;
+  mojom::CredsBatch GetCredsBatch() {
+    mojom::CredsBatch creds;
 
     creds.creds = R"([
           "CeP4v0VvyP92xaaVz7SU5eUpFZvEyWYyTJvxep12aXH3uPhgovM81vtyi+ryoJeXDaUOJtxz1irzCp81Z0KAUqQSfv5CwjaK4mkrILvOEvD/Wfx6KjZvT+sYmlmlEJEM",

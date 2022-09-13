@@ -12,8 +12,7 @@
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "url/gurl.h"
 
-namespace ads {
-namespace geographic {
+namespace ads::geographic {
 
 GetSubdivisionUrlRequestBuilder::GetSubdivisionUrlRequestBuilder() = default;
 
@@ -37,5 +36,4 @@ GURL GetSubdivisionUrlRequestBuilder::BuildUrl() const {
   return GURL(spec);
 }
 
-}  // namespace geographic
-}  // namespace ads
+}  // namespace ads::geographic

@@ -12,8 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace privacy {
+namespace ads::privacy {
 
 class BatAdsUnblindedPaymentTokenUtilTest : public UnitTestBase {
  protected:
@@ -99,5 +98,4 @@ TEST_F(BatAdsUnblindedPaymentTokenUtilTest, UnblindedPaymentTokenCount) {
   EXPECT_EQ(3, UnblindedPaymentTokenCount());
 }
 
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy

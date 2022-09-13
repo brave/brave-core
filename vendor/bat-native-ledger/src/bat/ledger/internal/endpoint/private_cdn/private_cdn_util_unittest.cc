@@ -18,19 +18,19 @@ class PrivateCDNTest : public testing::Test {
 };
 
 TEST(PrivateCDNTest, GetServerUrlDevelopment) {
-  ledger::_environment = type::Environment::DEVELOPMENT;
+  ledger::_environment = mojom::Environment::DEVELOPMENT;
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, "https://pcdn.brave.software/test");
 }
 
 TEST(PrivateCDNTest, GetServerUrlStaging) {
-  ledger::_environment = type::Environment::STAGING;
+  ledger::_environment = mojom::Environment::STAGING;
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, "https://pcdn.bravesoftware.com/test");
 }
 
 TEST(PrivateCDNTest, GetServerUrlProduction) {
-  ledger::_environment = type::Environment::PRODUCTION;
+  ledger::_environment = mojom::Environment::PRODUCTION;
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, "https://pcdn.brave.com/test");
 }

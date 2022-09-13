@@ -81,8 +81,6 @@ import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.ntp.NewTabPage;
 import org.chromium.chrome.browser.omnibox.LocationBarCoordinator;
-import org.chromium.chrome.browser.onboarding.BraveTalkOptInPopup;
-import org.chromium.chrome.browser.onboarding.BraveTalkOptInPopupListener;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.SearchActivity;
 import org.chromium.chrome.browser.onboarding.v2.HighlightItem;
@@ -169,7 +167,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
     private BraveRewardsPanel mRewardsPopup;
     private DAppsWalletController mDAppsWalletController;
-    private BraveTalkOptInPopup mBraveTalkOptInPopup;
     private BraveShieldsContentSettings mBraveShieldsContentSettings;
     private BraveShieldsContentSettingsObserver mBraveShieldsContentSettingsObserver;
     private TextView mBraveRewardsNotificationsCount;
@@ -1077,31 +1074,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     public void openRewardsPanel() {
         onClick(mBraveRewardsButton);
-    }
-
-    public void openBraveTalkOptInPopup(BraveTalkOptInPopupListener popupListener) {
-        if (mRewardsPopup != null) {
-            dismissRewardsPanel();
-        }
-        dismissWalletPanelOrDialog();
-
-        if (mBraveTalkOptInPopup != null) {
-            mBraveTalkOptInPopup.dismissPopup();
-        }
-
-        mBraveTalkOptInPopup = new BraveTalkOptInPopup(mBraveRewardsButton, popupListener);
-        mBraveTalkOptInPopup.showLikePopDownMenu();
-    }
-
-    public void onBraveTalkOptInPopupDismiss() {
-        mBraveTalkOptInPopup = null;
-    }
-
-    public void closeBraveTalkOptInPopup() {
-        if (mBraveTalkOptInPopup != null) {
-            mBraveTalkOptInPopup.dismissPopup();
-            mBraveTalkOptInPopup = null;
-        }
     }
 
     public boolean isShieldsTooltipShown() {

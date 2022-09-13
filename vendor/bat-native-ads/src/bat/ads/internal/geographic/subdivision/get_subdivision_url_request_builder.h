@@ -11,8 +11,7 @@
 
 class GURL;
 
-namespace ads {
-namespace geographic {
+namespace ads::geographic {
 
 class GetSubdivisionUrlRequestBuilder final
     : public UrlRequestBuilderInterface {
@@ -30,7 +29,6 @@ class GetSubdivisionUrlRequestBuilder final
   GURL BuildUrl() const;
 };
 
-}  // namespace geographic
-}  // namespace ads
+}  // namespace ads::geographic
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_GEOGRAPHIC_SUBDIVISION_GET_SUBDIVISION_URL_REQUEST_BUILDER_H_

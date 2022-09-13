@@ -6,12 +6,10 @@
 
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
 
-#include <algorithm>
-
 #include "base/check_op.h"
+#include "base/containers/contains.h"
 
-namespace ads {
-namespace privacy {
+namespace ads::privacy {
 
 UnblindedTokens::UnblindedTokens() = default;
 
@@ -42,10 +40,7 @@ void UnblindedTokens::AddTokens(const UnblindedTokenList& unblinded_tokens) {
 }
 
 bool UnblindedTokens::RemoveToken(const UnblindedTokenInfo& unblinded_token) {
-  auto iter = std::find_if(unblinded_tokens_.cbegin(), unblinded_tokens_.cend(),
-                           [&unblinded_token](const UnblindedTokenInfo& value) {
-                             return unblinded_token == value;
-                           });
+  auto iter = base::ranges::find(unblinded_tokens_, unblinded_token);
 
   if (iter == unblinded_tokens_.cend()) {
     return false;
@@ -60,8 +55,7 @@ void UnblindedTokens::RemoveTokens(const UnblindedTokenList& unblinded_tokens) {
   const auto iter = std::remove_if(
       unblinded_tokens_.begin(), unblinded_tokens_.end(),
       [&unblinded_tokens](const UnblindedTokenInfo& unblinded_token) {
-        return std::find(unblinded_tokens.cbegin(), unblinded_tokens.cend(),
-                         unblinded_token) != unblinded_tokens.cend();
+        return base::Contains(unblinded_tokens, unblinded_token);
       });
 
   unblinded_tokens_.erase(iter, unblinded_tokens_.cend());
@@ -72,12 +66,7 @@ void UnblindedTokens::RemoveAllTokens() {
 }
 
 bool UnblindedTokens::TokenExists(const UnblindedTokenInfo& unblinded_token) {
-  auto iter = std::find_if(unblinded_tokens_.cbegin(), unblinded_tokens_.cend(),
-                           [&unblinded_token](const UnblindedTokenInfo& value) {
-                             return unblinded_token == value;
-                           });
-
-  return iter != unblinded_tokens_.cend();
+  return base::Contains(unblinded_tokens_, unblinded_token);
 }
 
 int UnblindedTokens::Count() const {
@@ -88,5 +77,4 @@ bool UnblindedTokens::IsEmpty() const {
   return unblinded_tokens_.empty();
 }
 
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy

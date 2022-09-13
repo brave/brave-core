@@ -8,8 +8,7 @@
 
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rules_base.h"
 
-namespace ads {
-namespace new_tab_page_ads {
+namespace ads::new_tab_page_ads {
 
 class PermissionRules final : public PermissionRulesBase {
  public:
@@ -21,7 +20,6 @@ class PermissionRules final : public PermissionRulesBase {
   bool HasPermission() const;
 };
 
-}  // namespace new_tab_page_ads
-}  // namespace ads
+}  // namespace ads::new_tab_page_ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SERVING_PERMISSION_RULES_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_AD_PERMISSION_RULES_H_

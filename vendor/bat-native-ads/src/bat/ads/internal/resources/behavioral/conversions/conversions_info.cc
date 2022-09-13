@@ -9,8 +9,7 @@
 #include "base/values.h"
 #include "bat/ads/internal/conversions/conversions_features.h"
 
-namespace ads {
-namespace resource {
+namespace ads::resource {
 
 ConversionsInfo::ConversionsInfo() = default;
 
@@ -72,5 +71,4 @@ std::unique_ptr<ConversionsInfo> ConversionsInfo::CreateFromValue(
   return conversion;
 }
 
-}  // namespace resource
-}  // namespace ads
+}  // namespace ads::resource

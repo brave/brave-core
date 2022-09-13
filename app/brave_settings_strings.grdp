@@ -731,7 +731,7 @@
     Automatically redirect .onion sites
   </message>
   <message name="IDS_SETTINGS_AUTO_ONION_LOCATION_DESC" desc="Text fragment for onion site component">
-    Brave will open onion service of the website when available or .onion domain in Tor window.
+    Brave will switch to the .onion version of a website when available, and automatically open all .onion domains in a Tor window.
   </message>
   <message name="IDS_SETTINGS_WEBTORRENT_ENABLED_DESC" desc="The description for WebTorrent switch in settings">
     Uses WebTorrent to display torrents directly in the browser. Supports torrent files and magnet links.

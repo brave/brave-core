@@ -8,8 +8,7 @@
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
 
-namespace ads {
-namespace privacy {
+namespace ads::privacy {
 
 namespace {
 
@@ -93,5 +92,4 @@ int UnblindedPaymentTokenCount() {
       ->Count();
 }
 
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy

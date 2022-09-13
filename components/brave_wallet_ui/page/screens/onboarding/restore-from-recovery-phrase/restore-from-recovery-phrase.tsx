@@ -214,9 +214,11 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
     if (currentStep === RestoreFromOtherWalletSteps.currentPassword && extensionPassword) {
       return checkImportPassword()
     }
-    if (currentStep === RestoreFromOtherWalletSteps.phrase && !invalidMnemonic) {
+
+    if (currentStep === RestoreFromOtherWalletSteps.phrase) {
       return setCurrentStep(RestoreFromOtherWalletSteps.newPassword)
     }
+
     if (currentStep === RestoreFromOtherWalletSteps.newPassword && isPasswordValid) {
       return restoreWallet()
     }
@@ -231,16 +233,23 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
   ])
 
   const onGoBack = React.useCallback(() => {
+    // clear errors
+    if (invalidMnemonic) {
+      dispatch(WalletPageActions.hasMnemonicError(false))
+    }
+
     if (
       currentStep === RestoreFromOtherWalletSteps.currentPassword ||
       currentStep === RestoreFromOtherWalletSteps.phrase
     ) {
       return history.goBack()
     }
+
     if (currentStep === RestoreFromOtherWalletSteps.newPassword) {
+      setPhraseInput('') // reset input state
       return setCurrentStep(RestoreFromOtherWalletSteps.phrase)
     }
-  }, [currentStep])
+  }, [invalidMnemonic, currentStep])
 
   const handleKeyDown = React.useCallback((event: React.KeyboardEvent<HTMLElement>) => {
     if (event.key === 'Enter') {
@@ -432,6 +441,11 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
                   {importWalletError.errorMessage}
                 </ErrorText>
               }
+              {!!invalidMnemonic &&
+                <ErrorText>
+                  {getLocale('braveWalletInvalidMnemonicError')}
+                </ErrorText>
+              }
             </>
           }
 
@@ -452,9 +466,8 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
                   isCheckingImportPassword ||
                   isImportingFromExtension && currentStep === RestoreFromOtherWalletSteps.currentPassword && !extensionPassword ||
                   restoreFrom === 'seed' && !phraseInput ||
-                  currentStep === RestoreFromOtherWalletSteps.phrase && (phraseWordsLength < 12 || (phraseWordsLength > 12 && !isCorrectPhraseLength)) ||
-                  currentStep === RestoreFromOtherWalletSteps.phrase && invalidMnemonic ||
-                  currentStep === RestoreFromOtherWalletSteps.newPassword && !isPasswordValid
+                  currentStep === RestoreFromOtherWalletSteps.phrase && (!phraseInput || phraseWordsLength < 12 || (phraseWordsLength > 12 && !isCorrectPhraseLength)) ||
+                  currentStep === RestoreFromOtherWalletSteps.newPassword && (!isPasswordValid || invalidMnemonic)
                 }
               />
             </NextButtonRow>

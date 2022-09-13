@@ -11,7 +11,7 @@
 
 namespace views {
 class Button;
-}
+}  // namespace views
 
 namespace brave_ads {
 
@@ -26,6 +26,11 @@ class NotificationAdControlButtonsView : public views::View {
   explicit NotificationAdControlButtonsView(
       NotificationAdView* notification_ad_view);
   ~NotificationAdControlButtonsView() override;
+
+  NotificationAdControlButtonsView(const NotificationAdControlButtonsView&) =
+      delete;
+  NotificationAdControlButtonsView& operator=(
+      const NotificationAdControlButtonsView&) = delete;
 
   // views::View:
   void OnThemeChanged() override;
@@ -45,11 +50,6 @@ class NotificationAdControlButtonsView : public views::View {
 
   void CreateCloseButton();
   void UpdateCloseButton();
-
-  NotificationAdControlButtonsView(const NotificationAdControlButtonsView&) =
-      delete;
-  NotificationAdControlButtonsView& operator=(
-      const NotificationAdControlButtonsView&) = delete;
 };
 
 }  // namespace brave_ads

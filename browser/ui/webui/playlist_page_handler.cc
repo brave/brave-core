@@ -41,8 +41,8 @@ void PlaylistPageHandler::GetAllPlaylists(
     std::vector<mojo::StructPtr<playlist::mojom::PlaylistItem>> items;
     for (const auto& item : playlist.items) {
       items.push_back(playlist::mojom::PlaylistItem::New(
-          item.id, item.title, GURL(item.media_file_path),
-          GURL(item.thumbnail_path), item.ready));
+          item.id, item.title, GURL(item.page_src), GURL(item.media_file_path),
+          GURL(item.thumbnail_path), item.media_file_cached));
     }
     playlists.push_back(playlist::mojom::Playlist::New(
         playlist.id, playlist.name, std::move(items)));
@@ -63,8 +63,8 @@ void PlaylistPageHandler::GetPlaylist(
   std::vector<mojo::StructPtr<playlist::mojom::PlaylistItem>> items;
   for (const auto& item : playlist->items) {
     items.push_back(playlist::mojom::PlaylistItem::New(
-        item.id, item.title, GURL(item.media_file_path),
-        GURL(item.thumbnail_path), item.ready));
+        item.id, item.title, GURL(item.page_src), GURL(item.media_file_path),
+        GURL(item.thumbnail_path), item.media_file_cached));
   }
   std::move(callback).Run(playlist::mojom::Playlist::New(
       playlist->id, playlist->name, std::move(items)));
@@ -93,6 +93,14 @@ void PlaylistPageHandler::AddMediaFilesFromOpenTabsToPlaylist(
 void PlaylistPageHandler::RemoveItemFromPlaylist(const std::string& playlist_id,
                                                  const std::string& item_id) {
   GetPlaylistService(profile_)->RemoveItemFromPlaylist(playlist_id, item_id);
+}
+
+void PlaylistPageHandler::RecoverLocalDataForItem(const std::string& item_id) {
+  GetPlaylistService(profile_)->RecoverPlaylistItem(item_id);
+}
+
+void PlaylistPageHandler::RemoveLocalDataForItem(const std::string& item_id) {
+  GetPlaylistService(profile_)->DeletePlaylistLocalData(item_id);
 }
 
 void PlaylistPageHandler::CreatePlaylist(

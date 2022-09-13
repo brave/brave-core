@@ -8,7 +8,7 @@
 namespace ads {
 
 bool operator==(const CatalogSegmentInfo& lhs, const CatalogSegmentInfo& rhs) {
-  return lhs.code == rhs.code && rhs.name == rhs.name;
+  return lhs.code == rhs.code && lhs.name == rhs.name;
 }
 
 bool operator!=(const CatalogSegmentInfo& lhs, const CatalogSegmentInfo& rhs) {

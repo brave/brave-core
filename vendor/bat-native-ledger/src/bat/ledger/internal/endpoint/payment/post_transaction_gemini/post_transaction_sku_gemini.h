@@ -47,24 +47,24 @@ namespace endpoint {
 namespace payment {
 
 using PostTransactionGeminiCallback =
-    std::function<void(const type::Result result)>;
+    std::function<void(const mojom::Result result)>;
 
 class PostTransactionGemini {
  public:
   explicit PostTransactionGemini(LedgerImpl* ledger);
   ~PostTransactionGemini();
 
-  void Request(const type::SKUTransaction& transaction,
+  void Request(const mojom::SKUTransaction& transaction,
                PostTransactionGeminiCallback callback);
 
  private:
   std::string GetUrl(const std::string& order_id);
 
-  std::string GeneratePayload(const type::SKUTransaction& transaction);
+  std::string GeneratePayload(const mojom::SKUTransaction& transaction);
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(const type::UrlResponse& response,
+  void OnRequest(const mojom::UrlResponse& response,
                  PostTransactionGeminiCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

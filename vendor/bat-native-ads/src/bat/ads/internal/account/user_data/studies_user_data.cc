@@ -9,8 +9,7 @@
 
 #include "bat/ads/internal/studies/studies_util.h"
 
-namespace ads {
-namespace user_data {
+namespace ads::user_data {
 
 namespace {
 
@@ -39,5 +38,4 @@ base::Value::Dict GetStudies() {
   return user_data;
 }
 
-}  // namespace user_data
-}  // namespace ads
+}  // namespace ads::user_data

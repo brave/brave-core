@@ -34,7 +34,7 @@ class WalletTest : public BATLedgerTest {
     base::RunLoop run_loop;
     mojom::Result result;
     ledger->wallet()->CreateWalletIfNecessary(
-        base::BindLambdaForTesting([&result, &run_loop](type::Result r) {
+        base::BindLambdaForTesting([&result, &run_loop](mojom::Result r) {
           result = r;
           run_loop.Quit();
         }));
@@ -52,7 +52,7 @@ TEST_F(WalletTest, GetWallet) {
   // sets the corrupted flag to false.
   GetTestLedgerClient()->SetStringState(state::kWalletBrave, "");
   corrupted = true;
-  mojom::BraveWalletPtr wallet = ledger->wallet()->GetWallet(&corrupted);
+  mojom::RewardsWalletPtr wallet = ledger->wallet()->GetWallet(&corrupted);
   EXPECT_FALSE(wallet);
   EXPECT_FALSE(corrupted);
 
@@ -73,7 +73,7 @@ TEST_F(WalletTest, CreateWallet) {
   GetTestLedgerClient()->SetStringState(state::kWalletBrave, "");
   mojom::Result result = CreateWalletIfNecessary();
   EXPECT_EQ(result, mojom::Result::WALLET_CREATED);
-  mojom::BraveWalletPtr wallet = ledger->wallet()->GetWallet();
+  mojom::RewardsWalletPtr wallet = ledger->wallet()->GetWallet();
   ASSERT_TRUE(wallet);
   EXPECT_TRUE(!wallet->payment_id.empty());
   EXPECT_TRUE(!wallet->recovery_seed.empty());

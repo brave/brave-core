@@ -70,10 +70,9 @@ void PublisherPrefixListUpdater::OnFetchTimerElapsed() {
   rewards_server_->get_prefix_list()->Request(url_callback);
 }
 
-void PublisherPrefixListUpdater::OnFetchCompleted(
-    const type::Result result,
-    const std::string& body) {
-  if (result != type::Result::LEDGER_OK) {
+void PublisherPrefixListUpdater::OnFetchCompleted(const mojom::Result result,
+                                                  const std::string& body) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Invalid server response for publisher prefix list");
     StartFetchTimer(FROM_HERE, GetRetryAfterFailureDelay());
     return;
@@ -108,7 +107,7 @@ void PublisherPrefixListUpdater::OnFetchCompleted(
 }
 
 void PublisherPrefixListUpdater::OnPrefixListInserted(
-    const type::Result result) {
+    const mojom::Result result) {
   // At this point we have received a valid response from the server
   // and we've attempted to insert it into the database. Store the last
   // successful fetch time for calculation of next refresh interval.
@@ -121,7 +120,7 @@ void PublisherPrefixListUpdater::OnPrefixListInserted(
     StartFetchTimer(FROM_HERE, GetAutoUpdateDelay());
   }
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Error updating publisher prefix list table: " << result);
     return;
   }

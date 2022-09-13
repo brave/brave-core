@@ -12,44 +12,43 @@
 namespace ledger {
 namespace contribution {
 
-type::ReportType GetReportTypeFromRewardsType(
-    const type::RewardsType type) {
+mojom::ReportType GetReportTypeFromRewardsType(const mojom::RewardsType type) {
   switch (static_cast<int>(type)) {
-    case static_cast<int>(type::RewardsType::AUTO_CONTRIBUTE): {
-      return type::ReportType::AUTO_CONTRIBUTION;
+    case static_cast<int>(mojom::RewardsType::AUTO_CONTRIBUTE): {
+      return mojom::ReportType::AUTO_CONTRIBUTION;
     }
-    case static_cast<int>(type::RewardsType::ONE_TIME_TIP): {
-      return type::ReportType::TIP;
+    case static_cast<int>(mojom::RewardsType::ONE_TIME_TIP): {
+      return mojom::ReportType::TIP;
     }
-    case static_cast<int>(type::RewardsType::RECURRING_TIP): {
-      return type::ReportType::TIP_RECURRING;
+    case static_cast<int>(mojom::RewardsType::RECURRING_TIP): {
+      return mojom::ReportType::TIP_RECURRING;
     }
     default: {
       // missing conversion, returning dummy value.
       NOTREACHED();
-      return type::ReportType::TIP;
+      return mojom::ReportType::TIP;
     }
   }
 }
 
-type::ContributionProcessor GetProcessor(const std::string& wallet_type) {
+mojom::ContributionProcessor GetProcessor(const std::string& wallet_type) {
   if (wallet_type == constant::kWalletUnBlinded) {
-    return type::ContributionProcessor::BRAVE_TOKENS;
+    return mojom::ContributionProcessor::BRAVE_TOKENS;
   }
 
   if (wallet_type == constant::kWalletUphold) {
-    return type::ContributionProcessor::UPHOLD;
+    return mojom::ContributionProcessor::UPHOLD;
   }
 
   if (wallet_type == constant::kWalletBitflyer) {
-    return type::ContributionProcessor::BITFLYER;
+    return mojom::ContributionProcessor::BITFLYER;
   }
 
   if (wallet_type == constant::kWalletGemini) {
-    return type::ContributionProcessor::GEMINI;
+    return mojom::ContributionProcessor::GEMINI;
   }
 
-  return type::ContributionProcessor::NONE;
+  return mojom::ContributionProcessor::NONE;
 }
 
 std::string GetNextProcessor(const std::string& current_processor) {

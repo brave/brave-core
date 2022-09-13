@@ -13,8 +13,7 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 
-namespace ads {
-namespace privacy {
+namespace ads::privacy {
 
 namespace {
 
@@ -114,5 +113,4 @@ UnblindedPaymentTokenList UnblindedPaymentTokensFromValue(
   return unblinded_tokens;
 }
 
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy

@@ -12,6 +12,7 @@
 #include "base/callback_helpers.h"
 #include "base/logging.h"
 #include "base/path_service.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/escape.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
@@ -312,11 +313,9 @@ void TestLedgerClient::SetLogCallbackForTesting(LogCallback callback) {
 
 void TestLedgerClient::LoadURLAfterDelay(mojom::UrlRequestPtr request,
                                          client::LoadURLCallback callback) {
-  auto iter = std::find_if(network_results_.begin(), network_results_.end(),
-                           [&request](auto& result) {
-                             return request->url == result.url &&
-                                    request->method == result.method;
-                           });
+  auto iter = base::ranges::find_if(network_results_, [&request](auto& result) {
+    return request->url == result.url && request->method == result.method;
+  });
 
   if (iter != network_results_.end()) {
     std::move(callback).Run(*iter->response);

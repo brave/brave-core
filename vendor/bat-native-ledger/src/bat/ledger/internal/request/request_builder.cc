@@ -11,7 +11,7 @@ namespace ledger::request {
 
 RequestBuilder::~RequestBuilder() = default;
 
-absl::optional<type::UrlRequestPtr> RequestBuilder::Request() const {
+absl::optional<mojom::UrlRequestPtr> RequestBuilder::Request() const {
   const auto url = Url();
   if (!url) {
     return absl::nullopt;
@@ -27,16 +27,16 @@ absl::optional<type::UrlRequestPtr> RequestBuilder::Request() const {
     return absl::nullopt;
   }
 
-  return type::UrlRequest::New(*url, Method(), std::move(*headers), *content,
-                               ContentType(), SkipLog(), LoadFlags());
+  return mojom::UrlRequest::New(*url, Method(), std::move(*headers), *content,
+                                ContentType(), SkipLog(), LoadFlags());
 }
 
 RequestBuilder::RequestBuilder(LedgerImpl* ledger) : ledger_(ledger) {
   DCHECK(ledger);
 }
 
-type::UrlMethod RequestBuilder::Method() const {
-  return type::UrlMethod::POST;
+mojom::UrlMethod RequestBuilder::Method() const {
+  return mojom::UrlMethod::POST;
 }
 
 absl::optional<std::vector<std::string>> RequestBuilder::Headers() const {

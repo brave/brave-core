@@ -18,7 +18,7 @@ class DatabaseRecurringTip: public DatabaseTable {
   explicit DatabaseRecurringTip(LedgerImpl* ledger);
   ~DatabaseRecurringTip() override;
 
-  void InsertOrUpdate(type::RecurringTipPtr info,
+  void InsertOrUpdate(mojom::RecurringTipPtr info,
                       ledger::LegacyResultCallback callback);
 
   void GetAllRecords(ledger::PublisherInfoListCallback callback);
@@ -27,9 +27,8 @@ class DatabaseRecurringTip: public DatabaseTable {
                     ledger::LegacyResultCallback callback);
 
  private:
-  void OnGetAllRecords(
-      type::DBCommandResponsePtr response,
-      ledger::PublisherInfoListCallback callback);
+  void OnGetAllRecords(mojom::DBCommandResponsePtr response,
+                       ledger::PublisherInfoListCallback callback);
 };
 
 }  // namespace database

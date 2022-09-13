@@ -6,12 +6,10 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CREATIVES_GEO_TARGETS_DATABASE_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CREATIVES_GEO_TARGETS_DATABASE_UTIL_H_
 
-namespace ads {
-namespace database {
+namespace ads::database {
 
 void DeleteGeoTargets();
 
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CREATIVES_GEO_TARGETS_DATABASE_UTIL_H_

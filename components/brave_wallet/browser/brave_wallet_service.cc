@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/metrics/histogram_macros.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
@@ -112,9 +113,8 @@ decltype(std::declval<T>().begin()) FindAsset(
   static_assert(std::is_same<std::decay_t<T>, base::Value::List>::value,
                 "Only call with base::Value::List");
 
-  auto iter = std::find_if(
-      user_assets_list->begin(), user_assets_list->end(),
-      [&](const base::Value& value) {
+  auto iter =
+      base::ranges::find_if(*user_assets_list, [&](const base::Value& value) {
         const auto* dict = value.GetIfDict();
         if (!dict) {
           return false;

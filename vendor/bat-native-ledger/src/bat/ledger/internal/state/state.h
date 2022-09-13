@@ -70,15 +70,15 @@ class State {
   void SetCreationStamp(const uint64_t stamp);
 
   bool GetInlineTippingPlatformEnabled(
-      const type::InlineTipsPlatforms platform);
+      const mojom::InlineTipsPlatforms platform);
 
   void SetInlineTippingPlatformEnabled(
-      const type::InlineTipsPlatforms platform,
+      const mojom::InlineTipsPlatforms platform,
       const bool enabled);
 
-  void SetRewardsParameters(const type::RewardsParameters& parameters);
+  void SetRewardsParameters(const mojom::RewardsParameters& parameters);
 
-  type::RewardsParametersPtr GetRewardsParameters();
+  mojom::RewardsParametersPtr GetRewardsParameters();
 
   double GetRate();
 

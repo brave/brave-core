@@ -144,6 +144,7 @@ provideStrings({
   braveWalletMetaMaskExtensionImportDescription: 'Enter your MetaMask wallet password to easily import to Brave Wallet.',
   braveWalletRestoreMyBraveWalletInstructions: 'Type your Brave Wallet 12-24 word recovery phrase.',
   braveWalletRecoveryPhraseLengthError: 'Recovery phrase must be 12, 15, 18, 21, or 24 words long',
+  braveWalletInvalidMnemonicError: 'The mnemonic being imported is not valid for Brave Wallet',
 
   // Onboarding - Backup Wallet - Intro
   braveWalletOnboardingRecoveryPhraseBackupIntroTitle: 'Before you start backing up wallet',
@@ -740,5 +741,10 @@ provideStrings({
 
   // ASCII toggles
   braveWalletViewEncodedMessage: 'View original message',
-  braveWalletViewDecodedMessage: 'View message in ASCII encoding'
+  braveWalletViewDecodedMessage: 'View message in ASCII encoding',
+
+  // NFTs Tab
+  braveWalletNftsEmptyState: 'No NFTs found in your wallet. You can add NFTs by clicking the "+ Visible assets" button at the bottom of' +
+    ' the "Portfolio" tab',
+  braveWalletNftsEmptyStateSearch: 'No NFTs matching search or filter found'
 })

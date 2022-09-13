@@ -15,9 +15,9 @@ AscendingHistorySort::AscendingHistorySort() = default;
 
 AscendingHistorySort::~AscendingHistorySort() = default;
 
-base::circular_deque<HistoryItemInfo> AscendingHistorySort::Apply(
-    const base::circular_deque<HistoryItemInfo>& history) const {
-  base::circular_deque<HistoryItemInfo> sorted_history = history;
+HistoryItemList AscendingHistorySort::Apply(
+    const HistoryItemList& history) const {
+  HistoryItemList sorted_history = history;
 
   std::sort(sorted_history.begin(), sorted_history.end(),
             [](const HistoryItemInfo& lhs, const HistoryItemInfo& rhs) {

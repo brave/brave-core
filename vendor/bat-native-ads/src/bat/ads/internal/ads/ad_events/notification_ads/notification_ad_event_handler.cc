@@ -12,8 +12,7 @@
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "bat/ads/notification_ad_info.h"
 
-namespace ads {
-namespace notification_ads {
+namespace ads::notification_ads {
 
 EventHandler::EventHandler() = default;
 
@@ -141,5 +140,4 @@ void EventHandler::NotifyNotificationAdEventFailed(
   }
 }
 
-}  // namespace notification_ads
-}  // namespace ads
+}  // namespace ads::notification_ads

@@ -13,15 +13,13 @@ namespace ads {
 class AdType;
 struct AdInfo;
 
-namespace privacy {
-namespace p2a {
+namespace privacy::p2a {
 
 std::string GetAdImpressionNameForAdType(const AdType& ad_type);
 
 void RecordAdImpression(const AdInfo& ad);
 
-}  // namespace p2a
-}  // namespace privacy
+}  // namespace privacy::p2a
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_P2A_IMPRESSIONS_P2A_IMPRESSION_H_

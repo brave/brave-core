@@ -5,11 +5,11 @@
 
 #include "bat/ads/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_table.h"
 
-#include <algorithm>
 #include <map>
 #include <utility>
 
 #include "base/bind.h"
+#include "base/containers/contains.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -31,9 +31,7 @@
 #include "bat/ads/internal/segments/segment_util.h"
 #include "url/gurl.h"
 
-namespace ads {
-namespace database {
-namespace table {
+namespace ads::database::table {
 
 using CreativePromotedContentAdMap =
     std::map<std::string, CreativePromotedContentAdInfo>;
@@ -118,17 +116,13 @@ CreativePromotedContentAdMap GroupCreativeAdsFromResponse(
     // Creative instance already exists, so append new geo targets and dayparts
     // to the existing creative ad
     for (const auto& geo_target : creative_ad.geo_targets) {
-      const auto geo_target_iter = iter->second.geo_targets.find(geo_target);
-      if (geo_target_iter == iter->second.geo_targets.cend()) {
+      if (!base::Contains(iter->second.geo_targets, geo_target)) {
         iter->second.geo_targets.insert(geo_target);
       }
     }
 
     for (const auto& daypart : creative_ad.dayparts) {
-      const auto daypart_iter =
-          std::find(iter->second.dayparts.cbegin(),
-                    iter->second.dayparts.cend(), daypart);
-      if (daypart_iter == iter->second.dayparts.cend()) {
+      if (!base::Contains(iter->second.dayparts, daypart)) {
         iter->second.dayparts.push_back(daypart);
       }
     }
@@ -613,6 +607,4 @@ void CreativePromotedContentAds::MigrateToV24(
   transaction->commands.push_back(std::move(command));
 }
 
-}  // namespace table
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database::table

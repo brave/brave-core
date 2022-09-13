@@ -10,8 +10,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace user_data {
+namespace ads::user_data {
 
 TEST(BatAdsTotalsUserDataUtilTest, GetBucketsForNoUnblindedPaymentTokens) {
   // Arrange
@@ -40,5 +39,4 @@ TEST(BatAdsTotalsUserDataUtilTest, GetBuckets) {
   EXPECT_EQ(expected_buckets, buckets);
 }
 
-}  // namespace user_data
-}  // namespace ads
+}  // namespace ads::user_data

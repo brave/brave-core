@@ -45,8 +45,8 @@ class PostCredentialsTest : public testing::Test {
 TEST_F(PostCredentialsTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = "";
@@ -58,16 +58,16 @@ TEST_F(PostCredentialsTest, ServerOK) {
 
   creds_->Request("pl2okf23-f2f02kf2fm2-msdkfsodkfds",
                   "ff50981d-47de-4210-848d-995e186901a1", "single-use",
-                  std::move(blinded), base::BindOnce([](type::Result result) {
-                    EXPECT_EQ(result, type::Result::LEDGER_OK);
+                  std::move(blinded), base::BindOnce([](mojom::Result result) {
+                    EXPECT_EQ(result, mojom::Result::LEDGER_OK);
                   }));
 }
 
 TEST_F(PostCredentialsTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
@@ -79,16 +79,16 @@ TEST_F(PostCredentialsTest, ServerError400) {
 
   creds_->Request("pl2okf23-f2f02kf2fm2-msdkfsodkfds",
                   "ff50981d-47de-4210-848d-995e186901a1", "single-use",
-                  std::move(blinded), base::BindOnce([](type::Result result) {
-                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                  std::move(blinded), base::BindOnce([](mojom::Result result) {
+                    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
                   }));
 }
 
 TEST_F(PostCredentialsTest, ServerError409) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 409;
             response.url = request->url;
             response.body = "";
@@ -100,16 +100,16 @@ TEST_F(PostCredentialsTest, ServerError409) {
 
   creds_->Request("pl2okf23-f2f02kf2fm2-msdkfsodkfds",
                   "ff50981d-47de-4210-848d-995e186901a1", "single-use",
-                  std::move(blinded), base::BindOnce([](type::Result result) {
-                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                  std::move(blinded), base::BindOnce([](mojom::Result result) {
+                    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
                   }));
 }
 
 TEST_F(PostCredentialsTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
@@ -121,16 +121,16 @@ TEST_F(PostCredentialsTest, ServerError500) {
 
   creds_->Request("pl2okf23-f2f02kf2fm2-msdkfsodkfds",
                   "ff50981d-47de-4210-848d-995e186901a1", "single-use",
-                  std::move(blinded), base::BindOnce([](type::Result result) {
-                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                  std::move(blinded), base::BindOnce([](mojom::Result result) {
+                    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
                   }));
 }
 
 TEST_F(PostCredentialsTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
@@ -142,8 +142,8 @@ TEST_F(PostCredentialsTest, ServerErrorRandom) {
 
   creds_->Request("pl2okf23-f2f02kf2fm2-msdkfsodkfds",
                   "ff50981d-47de-4210-848d-995e186901a1", "single-use",
-                  std::move(blinded), base::BindOnce([](type::Result result) {
-                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                  std::move(blinded), base::BindOnce([](mojom::Result result) {
+                    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
                   }));
 }
 

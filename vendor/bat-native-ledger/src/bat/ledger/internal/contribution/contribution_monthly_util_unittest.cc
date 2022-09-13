@@ -19,15 +19,15 @@ namespace contribution {
 class ContributionMonthlyUtilTest : public testing::Test {
  protected:
   void GetPublishersForRecurring(
-      type::PublisherInfoList* publisher_info_list,
+      std::vector<mojom::PublisherInfoPtr>* publisher_info_list,
       uint32_t iterations,
       std::vector<uint32_t> amounts,
       uint32_t variation) {
     for (uint32_t ix = 0; ix < iterations; ix++) {
       const auto status = ix < variation
-                              ? type::PublisherStatus::UPHOLD_VERIFIED
-                              : type::PublisherStatus::NOT_VERIFIED;
-      type::PublisherInfoPtr publisher_info = type::PublisherInfo::New();
+                              ? mojom::PublisherStatus::UPHOLD_VERIFIED
+                              : mojom::PublisherStatus::NOT_VERIFIED;
+      mojom::PublisherInfoPtr publisher_info = mojom::PublisherInfo::New();
       publisher_info->id = "recurringexample" + std::to_string(ix) + ".com";
       publisher_info->weight = amounts[ix % amounts.size()];
       publisher_info->status = status;
@@ -37,7 +37,7 @@ class ContributionMonthlyUtilTest : public testing::Test {
 };
 
 TEST_F(ContributionMonthlyUtilTest, GetTotalFromVerifiedTips) {
-  type::PublisherInfoList publisher_info_list;
+  std::vector<mojom::PublisherInfoPtr> publisher_info_list;
   GetPublishersForRecurring(&publisher_info_list, 5, {1, 5, 10}, 2);
   double amount = GetTotalFromVerifiedTips(publisher_info_list);
   EXPECT_EQ(amount, 6);

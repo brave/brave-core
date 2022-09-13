@@ -29,9 +29,9 @@ class MockLedgerClient : public LedgerClient {
 
   absl::optional<std::string> DecryptString(const std::string& value) override;
 
-  MOCK_METHOD2(OnReconcileComplete, void(
-      type::Result result,
-      type::ContributionInfoPtr contribution));
+  MOCK_METHOD2(OnReconcileComplete,
+               void(mojom::Result result,
+                    mojom::ContributionInfoPtr contribution));
 
   MOCK_METHOD1(LoadLedgerState, void(
       client::OnLoadCallback callback));
@@ -39,10 +39,10 @@ class MockLedgerClient : public LedgerClient {
   MOCK_METHOD1(LoadPublisherState, void(
       client::OnLoadCallback callback));
 
-  MOCK_METHOD3(OnPanelPublisherInfo, void(
-      type::Result result,
-      type::PublisherInfoPtr,
-      uint64_t windowId));
+  MOCK_METHOD3(OnPanelPublisherInfo,
+               void(mojom::Result result,
+                    mojom::PublisherInfoPtr,
+                    uint64_t windowId));
 
   MOCK_METHOD0(OnPublisherRegistryUpdated, void());
 
@@ -56,7 +56,7 @@ class MockLedgerClient : public LedgerClient {
   MOCK_METHOD1(URIEncode, std::string(const std::string& value));
 
   MOCK_METHOD2(LoadURL,
-               void(type::UrlRequestPtr request,
+               void(mojom::UrlRequestPtr request,
                     client::LoadURLCallback callback));
 
   MOCK_METHOD2(SetPublisherExclude, void(
@@ -69,7 +69,8 @@ class MockLedgerClient : public LedgerClient {
       const int verbose_level,
       const std::string& message));
 
-  MOCK_METHOD1(PublisherListNormalized, void(type::PublisherInfoList list));
+  MOCK_METHOD1(PublisherListNormalized,
+               void(std::vector<mojom::PublisherInfoPtr> list));
 
   MOCK_METHOD2(SetBooleanState, void(
       const std::string& name,
@@ -134,28 +135,28 @@ class MockLedgerClient : public LedgerClient {
   MOCK_CONST_METHOD1(GetUint64Option, uint64_t(
       const std::string& name));
 
-  MOCK_METHOD3(OnContributeUnverifiedPublishers, void(
-      type::Result result,
-      const std::string& publisher_key,
-      const std::string& publisher_name));
+  MOCK_METHOD3(OnContributeUnverifiedPublishers,
+               void(mojom::Result result,
+                    const std::string& publisher_key,
+                    const std::string& publisher_name));
 
   MOCK_METHOD3(ShowNotification,
                void(const std::string& type,
                     const std::vector<std::string>& args,
                     client::LegacyResultCallback callback));
 
-  MOCK_METHOD0(GetClientInfo, type::ClientInfoPtr());
+  MOCK_METHOD0(GetClientInfo, mojom::ClientInfoPtr());
 
   MOCK_METHOD0(UnblindedTokensReady, void());
 
   MOCK_METHOD0(ReconcileStampReset, void());
 
   MOCK_METHOD2(RunDBTransaction,
-               void(type::DBTransactionPtr, client::RunDBTransactionCallback));
+               void(mojom::DBTransactionPtr, client::RunDBTransactionCallback));
 
   MOCK_METHOD1(GetCreateScript, void(client::GetCreateScriptCallback));
 
-  MOCK_METHOD1(PendingContributionSaved, void(const type::Result result));
+  MOCK_METHOD1(PendingContributionSaved, void(const mojom::Result result));
 
   MOCK_METHOD0(ClearAllNotifications, void());
 

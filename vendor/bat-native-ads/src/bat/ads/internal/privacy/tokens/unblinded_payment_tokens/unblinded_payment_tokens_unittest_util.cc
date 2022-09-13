@@ -11,8 +11,7 @@
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
 
-namespace ads {
-namespace privacy {
+namespace ads::privacy {
 
 UnblindedPaymentTokens* GetUnblindedPaymentTokens() {
   return ConfirmationStateManager::GetInstance()->GetUnblindedPaymentTokens();
@@ -112,5 +111,4 @@ UnblindedPaymentTokenInfo GetUnblindedPaymentToken() {
   return unblinded_payment_tokens.front();
 }
 
-}  // namespace privacy
-}  // namespace ads
+}  // namespace ads::privacy

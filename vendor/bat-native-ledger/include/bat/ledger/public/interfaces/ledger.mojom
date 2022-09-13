@@ -557,7 +557,7 @@ struct EventLog {
   uint64 created_at;
 };
 
-struct BraveWallet {
+struct RewardsWallet {
   string payment_id;
   array<uint8> recovery_seed;
 };

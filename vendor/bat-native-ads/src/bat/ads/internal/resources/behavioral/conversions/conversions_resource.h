@@ -11,8 +11,7 @@
 #include "base/memory/weak_ptr.h"
 #include "bat/ads/internal/resources/parsing_result.h"
 
-namespace ads {
-namespace resource {
+namespace ads::resource {
 
 struct ConversionsInfo;
 
@@ -40,7 +39,6 @@ class Conversions final {
   base::WeakPtrFactory<Conversions> weak_ptr_factory_{this};
 };
 
-}  // namespace resource
-}  // namespace ads
+}  // namespace ads::resource
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_BEHAVIORAL_CONVERSIONS_CONVERSIONS_RESOURCE_H_

@@ -25,7 +25,7 @@ class StateMigrationV2 {
   void Migrate(ledger::LegacyResultCallback callback);
 
  private:
-  void OnLoadState(type::Result result, ledger::LegacyResultCallback callback);
+  void OnLoadState(mojom::Result result, ledger::LegacyResultCallback callback);
 
   std::unique_ptr<braveledger_bat_state::LegacyBatState> legacy_state_;
   LedgerImpl* ledger_;  // NOT OWNED

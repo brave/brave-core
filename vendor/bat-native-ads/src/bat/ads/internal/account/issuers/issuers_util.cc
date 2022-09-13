@@ -5,9 +5,8 @@
 
 #include "bat/ads/internal/account/issuers/issuers_util.h"
 
-#include <algorithm>
-
 #include "base/containers/flat_map.h"
+#include "base/ranges/algorithm.h"
 #include "bat/ads/internal/account/issuers/issuer_info.h"
 #include "bat/ads/internal/account/issuers/issuers_info.h"
 #include "bat/ads/internal/account/issuers/issuers_value_util.h"
@@ -78,14 +77,10 @@ bool HasIssuers() {
 bool HasIssuersChanged(const IssuersInfo& issuers) {
   const absl::optional<IssuersInfo> last_issuers = GetIssuers();
   if (!last_issuers) {
-    return false;
+    return true;
   }
 
-  if (issuers == *last_issuers) {
-    return false;
-  }
-
-  return true;
+  return issuers != *last_issuers;
 }
 
 bool IssuerExistsForType(const IssuerType issuer_type) {
@@ -102,10 +97,7 @@ bool IssuerExistsForType(const IssuerType issuer_type) {
 absl::optional<IssuerInfo> GetIssuerForType(const IssuersInfo& issuers,
                                             const IssuerType issuer_type) {
   const auto iter =
-      std::find_if(issuers.issuers.cbegin(), issuers.issuers.cend(),
-                   [issuer_type](const IssuerInfo& issuer) {
-                     return issuer.type == issuer_type;
-                   });
+      base::ranges::find(issuers.issuers, issuer_type, &IssuerInfo::type);
   if (iter == issuers.issuers.cend()) {
     return absl::nullopt;
   }

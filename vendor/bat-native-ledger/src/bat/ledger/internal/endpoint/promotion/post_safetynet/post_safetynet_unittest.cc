@@ -46,8 +46,8 @@ class PostSafetynetTest : public testing::Test {
 TEST_F(PostSafetynetTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"({
@@ -57,8 +57,8 @@ TEST_F(PostSafetynetTest, ServerOK) {
           }));
 
   safetynet_->Request(
-      base::BindOnce([](type::Result result, const std::string& nonce) {
-        EXPECT_EQ(result, type::Result::LEDGER_OK);
+      base::BindOnce([](mojom::Result result, const std::string& nonce) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_OK);
         EXPECT_EQ(nonce, "c4645786-052f-402f-8593-56af2f7a21ce");
       }));
 }
@@ -66,8 +66,8 @@ TEST_F(PostSafetynetTest, ServerOK) {
 TEST_F(PostSafetynetTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
@@ -75,8 +75,8 @@ TEST_F(PostSafetynetTest, ServerError400) {
           }));
 
   safetynet_->Request(
-      base::BindOnce([](type::Result result, const std::string& nonce) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+      base::BindOnce([](mojom::Result result, const std::string& nonce) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
         EXPECT_EQ(nonce, "");
       }));
 }
@@ -84,8 +84,8 @@ TEST_F(PostSafetynetTest, ServerError400) {
 TEST_F(PostSafetynetTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
             response.body = "";
@@ -93,8 +93,8 @@ TEST_F(PostSafetynetTest, ServerError401) {
           }));
 
   safetynet_->Request(
-      base::BindOnce([](type::Result result, const std::string& nonce) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+      base::BindOnce([](mojom::Result result, const std::string& nonce) {
+        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
         EXPECT_EQ(nonce, "");
       }));
 }

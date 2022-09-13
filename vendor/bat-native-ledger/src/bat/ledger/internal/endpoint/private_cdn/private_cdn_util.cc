@@ -19,13 +19,13 @@ std::string GetServerUrl(const std::string& path) {
 
   std::string url;
   switch (ledger::_environment) {
-    case type::Environment::DEVELOPMENT:
+    case mojom::Environment::DEVELOPMENT:
       url = kDevelopment;
       break;
-    case type::Environment::STAGING:
+    case mojom::Environment::STAGING:
       url = kStaging;
       break;
-    case type::Environment::PRODUCTION:
+    case mojom::Environment::PRODUCTION:
       url = kProduction;
       break;
   }

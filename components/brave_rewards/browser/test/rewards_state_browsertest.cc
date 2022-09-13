@@ -201,32 +201,28 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_1) {
       -14000.0);
 
   rewards_service_->GetBalanceReport(
-      4,
-      2020,
+      4, 2020,
       base::BindLambdaForTesting(
-          [&](
-              const ledger::type::Result result,
-              ledger::type::BalanceReportInfoPtr report) {
-        EXPECT_EQ(report->grants, 4.1);
-        EXPECT_EQ(report->earning_from_ads, 4.2);
-        EXPECT_EQ(report->auto_contribute, 4.3);
-        EXPECT_EQ(report->recurring_donation, 4.4);
-        EXPECT_EQ(report->one_time_donation, 4.5);
-      }));
+          [&](const ledger::mojom::Result result,
+              ledger::mojom::BalanceReportInfoPtr report) {
+            EXPECT_EQ(report->grants, 4.1);
+            EXPECT_EQ(report->earning_from_ads, 4.2);
+            EXPECT_EQ(report->auto_contribute, 4.3);
+            EXPECT_EQ(report->recurring_donation, 4.4);
+            EXPECT_EQ(report->one_time_donation, 4.5);
+          }));
 
   rewards_service_->GetBalanceReport(
-      5,
-      2020,
+      5, 2020,
       base::BindLambdaForTesting(
-          [&](
-              const ledger::type::Result result,
-              ledger::type::BalanceReportInfoPtr report) {
-        EXPECT_EQ(report->grants, 5.1);
-        EXPECT_EQ(report->earning_from_ads, 5.2);
-        EXPECT_EQ(report->auto_contribute, 5.3);
-        EXPECT_EQ(report->recurring_donation, 5.4);
-        EXPECT_EQ(report->one_time_donation, 5.5);
-      }));
+          [&](const ledger::mojom::Result result,
+              ledger::mojom::BalanceReportInfoPtr report) {
+            EXPECT_EQ(report->grants, 5.1);
+            EXPECT_EQ(report->earning_from_ads, 5.2);
+            EXPECT_EQ(report->auto_contribute, 5.3);
+            EXPECT_EQ(report->recurring_donation, 5.4);
+            EXPECT_EQ(report->one_time_donation, 5.5);
+          }));
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_2) {
@@ -391,7 +387,7 @@ class UpholdStateMachine : public RewardsStateBrowserTest,
   static std::string to_string(int status) {
     return status == -1 ? "unknown_WalletStatus_value"
                         : (std::ostringstream{}
-                           << static_cast<ledger::type::WalletStatus>(status))
+                           << static_cast<ledger::mojom::WalletStatus>(status))
                               .str();
   }
 

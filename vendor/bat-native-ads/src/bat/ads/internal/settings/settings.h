@@ -6,12 +6,10 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_SETTINGS_SETTINGS_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_SETTINGS_SETTINGS_H_
 
-namespace ads {
-namespace settings {
+namespace ads::settings {
 
 int GetMaximumNotificationAdsPerHour();
 
-}  // namespace settings
-}  // namespace ads
+}  // namespace ads::settings
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_SETTINGS_SETTINGS_H_

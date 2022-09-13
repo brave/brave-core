@@ -10,8 +10,7 @@
 #include "bat/ads/internal/base/metrics/field_trial_params_util.h"
 #include "bat/ads/pref_names.h"
 
-namespace ads {
-namespace features {
+namespace ads::features {
 
 namespace {
 
@@ -159,5 +158,4 @@ int GetBrowsingHistoryDaysAgo() {
       kDefaultBrowsingHistoryDaysAgo);
 }
 
-}  // namespace features
-}  // namespace ads
+}  // namespace ads::features

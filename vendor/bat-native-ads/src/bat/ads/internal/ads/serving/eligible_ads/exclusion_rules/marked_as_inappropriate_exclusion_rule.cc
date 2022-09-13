@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/marked_as_inappropriate_exclusion_rule.h"
 
-#include <algorithm>
-
+#include "base/containers/contains.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
@@ -50,13 +49,8 @@ bool MarkedAsInappropriateExclusionRule::DoesRespectCap(
     return true;
   }
 
-  const auto iter = std::find_if(
-      flagged_ads.cbegin(), flagged_ads.cend(),
-      [&creative_ad](const FlaggedAdInfo& flagged_ad) {
-        return flagged_ad.creative_set_id == creative_ad.creative_set_id;
-      });
-
-  return iter == flagged_ads.cend();
+  return !base::Contains(flagged_ads, creative_ad.creative_set_id,
+                         &FlaggedAdInfo::creative_set_id);
 }
 
 }  // namespace ads

@@ -21,7 +21,6 @@
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_util.h"
-#include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
 #include "bat/ads/pref_names.h"
 
 namespace ads {

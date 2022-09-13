@@ -19,19 +19,19 @@ namespace bitflyer {
 class BitflyerUtilsTest : public testing::Test {};
 
 TEST(BitflyerUtilsTest, GetServerUrlDevelopment) {
-  ledger::_environment = type::Environment::DEVELOPMENT;
+  ledger::_environment = mojom::Environment::DEVELOPMENT;
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, base::StrCat({BUILDFLAG(BITFLYER_STAGING_URL), "/test"}));
 }
 
 TEST(BitflyerUtilsTest, GetServerUrlStaging) {
-  ledger::_environment = type::Environment::STAGING;
+  ledger::_environment = mojom::Environment::STAGING;
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, base::StrCat({BUILDFLAG(BITFLYER_STAGING_URL), "/test"}));
 }
 
 TEST(BitflyerUtilsTest, GetServerUrlProduction) {
-  ledger::_environment = type::Environment::PRODUCTION;
+  ledger::_environment = mojom::Environment::PRODUCTION;
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, "https://bitflyer.com/test");
 }

@@ -101,7 +101,7 @@ class RewardsPublisherBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest,
                        PanelShowsCorrectPublisherData) {
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   // Navigate to a verified site in a new tab
   const std::string publisher = "duckduckgo.com";
   rewards_browsertest_util::NavigateToPublisherPage(
@@ -133,7 +133,7 @@ IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest, VisitVerifiedPublisher) {
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   rewards_service_->SetAutoContributeEnabled(true);
   context_helper_->LoadRewardsPage();
   context_helper_->VisitPublisher(
@@ -142,7 +142,7 @@ IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest, VisitVerifiedPublisher) {
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest, VisitUnverifiedPublisher) {
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   rewards_service_->SetAutoContributeEnabled(true);
   context_helper_->LoadRewardsPage();
   context_helper_->VisitPublisher(
@@ -152,7 +152,7 @@ IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest, VisitUnverifiedPublisher) {
 
 // Registered publishers without a wallet address are displayed as verified
 IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest, VisitRegisteredPublisher) {
-  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   rewards_service_->SetAutoContributeEnabled(true);
   context_helper_->LoadRewardsPage();
   context_helper_->VisitPublisher(

@@ -15,9 +15,7 @@
 #include "bat/ads/internal/database/database_table_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom-forward.h"
 
-namespace ads {
-namespace database {
-namespace table {
+namespace ads::database::table {
 
 using GetConversionQueueCallback =
     std::function<void(const bool, const ConversionQueueItemList&)>;
@@ -85,8 +83,6 @@ class ConversionQueue final : public TableInterface {
   int batch_size_;
 };
 
-}  // namespace table
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database::table
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONVERSIONS_CONVERSION_QUEUE_DATABASE_TABLE_H_

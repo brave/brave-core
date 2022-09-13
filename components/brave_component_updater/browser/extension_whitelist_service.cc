@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "base/containers/contains.h"
 #include "base/logging.h"
 #include "base/task/task_runner_util.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
@@ -42,8 +43,7 @@ bool ExtensionWhitelistService::IsBlacklisted(
 }
 
 bool ExtensionWhitelistService::IsVetted(const std::string& id) const {
-  if (std::find(whitelist_.begin(), whitelist_.end(), id) !=
-      whitelist_.end())
+  if (base::Contains(whitelist_, id))
     return true;
 
   return IsWhitelisted(id);

@@ -17,9 +17,9 @@ class LedgerImpl;
 namespace attestation {
 
 using StartCallback =
-    base::OnceCallback<void(type::Result, const std::string&)>;
+    base::OnceCallback<void(mojom::Result, const std::string&)>;
 
-using ConfirmCallback = base::OnceCallback<void(type::Result)>;
+using ConfirmCallback = base::OnceCallback<void(mojom::Result)>;
 
 class Attestation {
  public:

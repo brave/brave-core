@@ -18,9 +18,7 @@ namespace base {
 class Time;
 }  // namespace base
 
-namespace ads {
-namespace database {
-namespace table {
+namespace ads::database::table {
 
 using GetTransactionsCallback =
     std::function<void(const bool, const TransactionList&)>;
@@ -63,8 +61,6 @@ class Transactions final : public TableInterface {
   void MigrateToV18(mojom::DBTransactionInfo* transaction);
 };
 
-}  // namespace table
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database::table
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_DATABASE_TABLE_H_

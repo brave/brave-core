@@ -10,8 +10,7 @@
 #include "bat/ads/internal/ads/ad_events/ad_events.h"
 #include "bat/ads/internal/base/logging_util.h"
 
-namespace ads {
-namespace inline_content_ads {
+namespace ads::inline_content_ads {
 
 AdEventClicked::AdEventClicked() = default;
 
@@ -32,5 +31,4 @@ void AdEventClicked::FireEvent(const InlineContentAdInfo& ad) {
   });
 }
 
-}  // namespace inline_content_ads
-}  // namespace ads
+}  // namespace ads::inline_content_ads

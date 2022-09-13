@@ -10,14 +10,13 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace client {
+namespace ads::client {
 
 namespace {
 
 constexpr char kClientIssue23794Filename[] = "client_issue_23794.json";
 constexpr uint64_t kClientIssue23794JsonHash = 1891112954;
-constexpr uint64_t kMigratedClientIssue23794JsonHash = 1570672789;
+constexpr uint64_t kMigratedClientIssue23794JsonHash = 1461886612;
 
 }  // namespace
 
@@ -45,5 +44,4 @@ TEST_F(BatAdsLegacyClientMigrationIssue23794Test, Migrate) {
   EXPECT_EQ(kMigratedClientIssue23794JsonHash, GetHash());
 }
 
-}  // namespace client
-}  // namespace ads
+}  // namespace ads::client

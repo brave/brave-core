@@ -8,12 +8,10 @@
 
 #include "bat/ads/ads_callback.h"
 
-namespace ads {
-namespace client {
+namespace ads::client {
 
 void Migrate(InitializeCallback callback);
 
-}  // namespace client
-}  // namespace ads
+}  // namespace ads::client
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_LEGACY_MIGRATION_CLIENT_LEGACY_CLIENT_MIGRATION_H_

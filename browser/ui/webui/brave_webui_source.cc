@@ -540,7 +540,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "redirectModalMismatchedProviderAccountRegionsTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNT_REGIONS_TITLE},     // NOLINT
         { "redirectModalMismatchedProviderAccountsText", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNTS_TEXT},     // NOLINT
         { "redirectModalMismatchedProviderAccountsTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNTS_TITLE},     // NOLINT
-        { "redirectModalRegionNotSupportedText", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TEXT},     // NOLINT
+        { "redirectModalRegionNotSupportedText1", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TEXT_1},     // NOLINT
+        { "redirectModalRegionNotSupportedText2", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TEXT_2},     // NOLINT
         { "redirectModalRegionNotSupportedTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_REGION_NOT_SUPPORTED_TITLE},     // NOLINT
         { "redirectModalUpholdBATNotAllowedText", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_BAT_NOT_ALLOWED_TEXT},     // NOLINT
         { "redirectModalUpholdBATNotAllowedTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_BAT_NOT_ALLOWED_TITLE},     // NOLINT
@@ -687,7 +688,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "reservedAllLink", IDS_BRAVE_UI_RESERVED_ALL_LINK },
         { "reset", IDS_BRAVE_UI_RESET },
         { "restore", IDS_BRAVE_UI_RESTORE },
-        { "restoreAll", IDS_BRAVE_UI_RESTORE_ALL },
+        { "clearExcludeList", IDS_BRAVE_UI_CLEAR_EXCLUDE_LIST },
         { "reviewSitesMsg", IDS_BRAVE_UI_REVIEW_SITE_MSG },
         { "rewardsAdGrantAmount", IDS_REWARDS_WIDGET_AD_GRANT_AMOUNT },
         { "rewardsAdGrantTitle", IDS_REWARDS_WIDGET_AD_GRANT_TITLE },
@@ -736,7 +737,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "yourWallet", IDS_BRAVE_UI_YOUR_WALLET },
 
         { "excludedSites", IDS_BRAVE_UI_EXCLUDED_SITES_TEXT },
-        { "restoreSite", IDS_BRAVE_UI_RESTORE_SITE },
+        { "removeFromExcluded", IDS_BRAVE_UI_REMOVE_FROM_EXCLUDED },
         { "rewardsExcludedText1", IDS_BRAVE_UI_REWARDS_EXCLUDED_TEXT_1 },
         { "rewardsExcludedText2", IDS_BRAVE_UI_REWARDS_EXCLUDED_TEXT_2 },
         { "showAll", IDS_BRAVE_UI_SHOW_ALL },

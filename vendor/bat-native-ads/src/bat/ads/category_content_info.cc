@@ -7,44 +7,15 @@
 
 namespace ads {
 
-CategoryContentInfo::CategoryContentInfo() = default;
-
-CategoryContentInfo::CategoryContentInfo(const CategoryContentInfo& info) =
-    default;
-
-CategoryContentInfo& CategoryContentInfo::operator=(
-    const CategoryContentInfo& info) = default;
-
-CategoryContentInfo::~CategoryContentInfo() = default;
-
-bool CategoryContentInfo::operator==(const CategoryContentInfo& rhs) const {
-  return category == rhs.category && opt_action_type == rhs.opt_action_type;
+bool operator==(const CategoryContentInfo& lhs,
+                const CategoryContentInfo& rhs) {
+  return lhs.category == rhs.category &&
+         lhs.opt_action_type == rhs.opt_action_type;
 }
 
-bool CategoryContentInfo::operator!=(const CategoryContentInfo& rhs) const {
-  return !(*this == rhs);
-}
-
-base::Value::Dict CategoryContentInfo::ToValue() const {
-  base::Value::Dict dict;
-
-  dict.Set("category", category);
-  dict.Set("optAction", static_cast<int>(opt_action_type));
-
-  return dict;
-}
-
-void CategoryContentInfo::FromValue(const base::Value::Dict& root) {
-  if (const auto* value = root.FindString("category")) {
-    category = *value;
-  }
-
-  if (const auto value = root.FindInt("optAction")) {
-    opt_action_type = static_cast<CategoryContentOptActionType>(*value);
-  } else if (const auto value = root.FindInt("opt_action")) {
-    // Migrate legacy
-    opt_action_type = static_cast<CategoryContentOptActionType>(*value);
-  }
+bool operator!=(const CategoryContentInfo& lhs,
+                const CategoryContentInfo& rhs) {
+  return !(lhs == rhs);
 }
 
 }  // namespace ads

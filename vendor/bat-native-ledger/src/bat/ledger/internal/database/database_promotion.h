@@ -15,14 +15,14 @@
 namespace ledger {
 namespace database {
 
-using GetPromotionCallback = std::function<void(type::PromotionPtr)>;
+using GetPromotionCallback = std::function<void(mojom::PromotionPtr)>;
 
 class DatabasePromotion: public DatabaseTable {
  public:
   explicit DatabasePromotion(LedgerImpl* ledger);
   ~DatabasePromotion() override;
 
-  void InsertOrUpdate(type::PromotionPtr info,
+  void InsertOrUpdate(mojom::PromotionPtr info,
                       ledger::LegacyResultCallback callback);
 
   void GetRecord(
@@ -41,11 +41,11 @@ class DatabasePromotion: public DatabaseTable {
                    ledger::LegacyResultCallback callback);
 
   void UpdateStatus(const std::string& promotion_id,
-                    type::PromotionStatus status,
+                    mojom::PromotionStatus status,
                     ledger::LegacyResultCallback callback);
 
   void UpdateRecordsStatus(const std::vector<std::string>& ids,
-                           type::PromotionStatus status,
+                           mojom::PromotionStatus status,
                            ledger::LegacyResultCallback callback);
 
   void CredentialCompleted(const std::string& promotion_id,
@@ -55,17 +55,14 @@ class DatabasePromotion: public DatabaseTable {
                                    ledger::LegacyResultCallback callback);
 
  private:
-  void OnGetRecord(
-      type::DBCommandResponsePtr response,
-      GetPromotionCallback callback);
+  void OnGetRecord(mojom::DBCommandResponsePtr response,
+                   GetPromotionCallback callback);
 
-  void OnGetAllRecords(
-      type::DBCommandResponsePtr response,
-      ledger::GetAllPromotionsCallback callback);
+  void OnGetAllRecords(mojom::DBCommandResponsePtr response,
+                       ledger::GetAllPromotionsCallback callback);
 
-  void OnGetRecords(
-      type::DBCommandResponsePtr response,
-      client::GetPromotionListCallback callback);
+  void OnGetRecords(mojom::DBCommandResponsePtr response,
+                    client::GetPromotionListCallback callback);
 };
 
 }  // namespace database

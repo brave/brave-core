@@ -8,9 +8,7 @@
 
 #include "base/feature_list.h"  // IWYU pragma: keep
 
-namespace ads {
-namespace permission_rules {
-namespace features {
+namespace ads::permission_rules::features {
 
 extern const base::Feature kFeature;
 
@@ -24,8 +22,6 @@ bool ShouldOnlyServeAdsIfMediaIsNotPlaying();
 
 bool ShouldOnlyServeAdsIfBrowserIsActive();
 
-}  // namespace features
-}  // namespace permission_rules
-}  // namespace ads
+}  // namespace ads::permission_rules::features
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SERVING_PERMISSION_RULES_PERMISSION_RULE_FEATURES_H_

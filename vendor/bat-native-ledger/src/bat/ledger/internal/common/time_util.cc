@@ -11,15 +11,15 @@
 namespace ledger {
 namespace util {
 
-type::ActivityMonth GetCurrentMonth() {
+mojom::ActivityMonth GetCurrentMonth() {
   base::Time now = base::Time::Now();
   return GetMonth(now);
 }
 
-type::ActivityMonth GetMonth(const base::Time& time) {
+mojom::ActivityMonth GetMonth(const base::Time& time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
-  return (type::ActivityMonth)exploded.month;
+  return (mojom::ActivityMonth)exploded.month;
 }
 
 uint32_t GetCurrentYear() {

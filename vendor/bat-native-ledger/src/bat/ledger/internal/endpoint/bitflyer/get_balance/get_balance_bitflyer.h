@@ -47,8 +47,8 @@ class LedgerImpl;
 namespace endpoint {
 namespace bitflyer {
 
-using GetBalanceCallback =
-    base::OnceCallback<void(const type::Result result, const double available)>;
+using GetBalanceCallback = base::OnceCallback<void(const mojom::Result result,
+                                                   const double available)>;
 
 class GetBalance {
  public:
@@ -60,12 +60,12 @@ class GetBalance {
  private:
   std::string GetUrl();
 
-  type::Result CheckStatusCode(const int status_code);
+  mojom::Result CheckStatusCode(const int status_code);
 
-  type::Result ParseBody(const std::string& body, double* available);
+  mojom::Result ParseBody(const std::string& body, double* available);
 
   void OnRequest(GetBalanceCallback callback,
-                 const type::UrlResponse& response);
+                 const mojom::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

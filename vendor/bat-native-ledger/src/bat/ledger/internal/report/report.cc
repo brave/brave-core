@@ -25,10 +25,9 @@ Report::Report(LedgerImpl* ledger):
 
 Report::~Report() = default;
 
-void Report::GetMonthly(
-    const type::ActivityMonth month,
-    const int year,
-    ledger::GetMonthlyReportCallback callback) {
+void Report::GetMonthly(const mojom::ActivityMonth month,
+                        const int year,
+                        ledger::GetMonthlyReportCallback callback) {
   auto balance_callback = std::bind(&Report::OnBalance,
       this,
       _1,
@@ -40,41 +39,37 @@ void Report::GetMonthly(
   ledger_->database()->GetBalanceReportInfo(month, year, balance_callback);
 }
 
-void Report::OnBalance(
-    const type::Result result,
-    type::BalanceReportInfoPtr balance_report,
-    const type::ActivityMonth month,
-    const uint32_t year,
-    ledger::GetMonthlyReportCallback callback) {
-  if (result != type::Result::LEDGER_OK || !balance_report) {
+void Report::OnBalance(const mojom::Result result,
+                       mojom::BalanceReportInfoPtr balance_report,
+                       const mojom::ActivityMonth month,
+                       const uint32_t year,
+                       ledger::GetMonthlyReportCallback callback) {
+  if (result != mojom::Result::LEDGER_OK || !balance_report) {
     BLOG(0, "Could not get balance report");
     callback(result, nullptr);
     return;
   }
 
-  auto monthly_report = type::MonthlyReportInfo::New();
+  auto monthly_report = mojom::MonthlyReportInfo::New();
   monthly_report->balance = std::move(balance_report);
 
-  auto transaction_callback = std::bind(&Report::OnTransactions,
-      this,
-      _1,
-      month,
-      year,
-      std::make_shared<type::MonthlyReportInfoPtr>(std::move(monthly_report)),
+  auto transaction_callback = std::bind(
+      &Report::OnTransactions, this, _1, month, year,
+      std::make_shared<mojom::MonthlyReportInfoPtr>(std::move(monthly_report)),
       callback);
 
   ledger_->database()->GetTransactionReport(month, year, transaction_callback);
 }
 
 void Report::OnTransactions(
-    type::TransactionReportInfoList transaction_report,
-    const type::ActivityMonth month,
+    std::vector<mojom::TransactionReportInfoPtr> transaction_report,
+    const mojom::ActivityMonth month,
     const uint32_t year,
-    std::shared_ptr<type::MonthlyReportInfoPtr> shared_report,
+    std::shared_ptr<mojom::MonthlyReportInfoPtr> shared_report,
     ledger::GetMonthlyReportCallback callback) {
   if (!shared_report) {
     BLOG(0, "Could not parse monthly report");
-    callback(type::Result::LEDGER_ERROR, nullptr);
+    callback(mojom::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
@@ -93,18 +88,18 @@ void Report::OnTransactions(
 }
 
 void Report::OnContributions(
-    type::ContributionReportInfoList contribution_report,
-    std::shared_ptr<type::MonthlyReportInfoPtr> shared_report,
+    std::vector<mojom::ContributionReportInfoPtr> contribution_report,
+    std::shared_ptr<mojom::MonthlyReportInfoPtr> shared_report,
     ledger::GetMonthlyReportCallback callback) {
   if (!shared_report) {
     BLOG(0, "Could not parse monthly report");
-    callback(type::Result::LEDGER_ERROR, nullptr);
+    callback(mojom::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
   (*shared_report)->contributions = std::move(contribution_report);
 
-  callback(type::Result::LEDGER_OK, std::move(*shared_report));
+  callback(mojom::Result::LEDGER_OK, std::move(*shared_report));
 }
 
 // This will be removed when we move reports in database and just order in db
@@ -145,7 +140,7 @@ void Report::GetAllMonthlyIds(ledger::GetAllMonthlyReportIdsCallback callback) {
 }
 
 void Report::OnGetAllBalanceReports(
-    type::BalanceReportInfoList reports,
+    std::vector<mojom::BalanceReportInfoPtr> reports,
     ledger::GetAllMonthlyReportIdsCallback callback) {
   if (reports.empty()) {
     callback({});

@@ -14,8 +14,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace security {
+namespace ads::security {
 
 namespace {
 
@@ -108,5 +107,4 @@ TEST(BatAdsSecurityConversionsUtilsTest, SealEnvelope) {
   EXPECT_EQ(verifiable_conversion.id, *message);
 }
 
-}  // namespace security
-}  // namespace ads
+}  // namespace ads::security

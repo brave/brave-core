@@ -7,6 +7,7 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/containers/contains.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
@@ -83,18 +84,18 @@ base::flat_map<std::string, std::string> StringToPayoutStatus(
 }
 
 std::string ConvertInlineTipPlatformToKey(
-    const ledger::type::InlineTipsPlatforms platform) {
+    const ledger::mojom::InlineTipsPlatforms platform) {
   switch (platform) {
-    case ledger::type::InlineTipsPlatforms::REDDIT: {
+    case ledger::mojom::InlineTipsPlatforms::REDDIT: {
       return ledger::state::kInlineTipRedditEnabled;
     }
-    case ledger::type::InlineTipsPlatforms::TWITTER: {
+    case ledger::mojom::InlineTipsPlatforms::TWITTER: {
       return ledger::state::kInlineTipTwitterEnabled;
     }
-    case ledger::type::InlineTipsPlatforms::GITHUB: {
+    case ledger::mojom::InlineTipsPlatforms::GITHUB: {
       return ledger::state::kInlineTipGithubEnabled;
     }
-    case ledger::type::InlineTipsPlatforms::NONE: {
+    case ledger::mojom::InlineTipsPlatforms::NONE: {
       NOTREACHED();
       return "";
     }
@@ -265,20 +266,20 @@ void State::SetCreationStamp(const uint64_t stamp) {
 }
 
 bool State::GetInlineTippingPlatformEnabled(
-    const type::InlineTipsPlatforms platform) {
+    const mojom::InlineTipsPlatforms platform) {
   return ledger_->ledger_client()->GetBooleanState(
       ConvertInlineTipPlatformToKey(platform));
 }
 
 void State::SetInlineTippingPlatformEnabled(
-    const type::InlineTipsPlatforms platform,
+    const mojom::InlineTipsPlatforms platform,
     const bool enabled) {
   const std::string platform_string = ConvertInlineTipPlatformToKey(platform);
   ledger_->database()->SaveEventLog(platform_string, std::to_string(enabled));
   ledger_->ledger_client()->SetBooleanState(platform_string, enabled);
 }
 
-void State::SetRewardsParameters(const type::RewardsParameters& parameters) {
+void State::SetRewardsParameters(const mojom::RewardsParameters& parameters) {
   ledger_->ledger_client()->SetDoubleState(kParametersRate, parameters.rate);
   ledger_->ledger_client()->SetDoubleState(
       kParametersAutoContributeChoice,
@@ -296,8 +297,8 @@ void State::SetRewardsParameters(const type::RewardsParameters& parameters) {
       kParametersPayoutStatus, PayoutStatusToString(parameters.payout_status));
 }
 
-type::RewardsParametersPtr State::GetRewardsParameters() {
-  auto parameters = type::RewardsParameters::New();
+mojom::RewardsParametersPtr State::GetRewardsParameters() {
+  auto parameters = mojom::RewardsParameters::New();
   parameters->rate = GetRate();
   parameters->auto_contribute_choice = GetAutoContributeChoice();
   parameters->auto_contribute_choices = GetAutoContributeChoices();
@@ -323,12 +324,7 @@ std::vector<double> State::GetAutoContributeChoices() {
   std::vector<double> amounts = StringToVectorDouble(amounts_string);
 
   const double current_amount = GetAutoContributionAmount();
-  auto contains_amount = std::find(
-      amounts.begin(),
-      amounts.end(),
-      current_amount);
-
-  if (contains_amount == amounts.end()) {
+  if (!base::Contains(amounts, current_amount)) {
     amounts.push_back(current_amount);
     std::sort(amounts.begin(), amounts.end());
 

@@ -46,8 +46,8 @@ class PutSafetynetTest : public testing::Test {
 TEST_F(PutSafetynetTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = "";
@@ -55,16 +55,16 @@ TEST_F(PutSafetynetTest, ServerOK) {
           }));
 
   safetynet_->Request("sdfsdf32d323d23d", "dfasdfasdpflsadfplf2r23re2",
-                      base::BindOnce([](type::Result result) {
-                        EXPECT_EQ(result, type::Result::LEDGER_OK);
+                      base::BindOnce([](mojom::Result result) {
+                        EXPECT_EQ(result, mojom::Result::LEDGER_OK);
                       }));
 }
 
 TEST_F(PutSafetynetTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
@@ -72,16 +72,16 @@ TEST_F(PutSafetynetTest, ServerError400) {
           }));
 
   safetynet_->Request("sdfsdf32d323d23d", "dfasdfasdpflsadfplf2r23re2",
-                      base::BindOnce([](type::Result result) {
-                        EXPECT_EQ(result, type::Result::CAPTCHA_FAILED);
+                      base::BindOnce([](mojom::Result result) {
+                        EXPECT_EQ(result, mojom::Result::CAPTCHA_FAILED);
                       }));
 }
 
 TEST_F(PutSafetynetTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
             response.body = "";
@@ -89,16 +89,16 @@ TEST_F(PutSafetynetTest, ServerError401) {
           }));
 
   safetynet_->Request("sdfsdf32d323d23d", "dfasdfasdpflsadfplf2r23re2",
-                      base::BindOnce([](type::Result result) {
-                        EXPECT_EQ(result, type::Result::CAPTCHA_FAILED);
+                      base::BindOnce([](mojom::Result result) {
+                        EXPECT_EQ(result, mojom::Result::CAPTCHA_FAILED);
                       }));
 }
 
 TEST_F(PutSafetynetTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
+          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+            mojom::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
@@ -106,8 +106,8 @@ TEST_F(PutSafetynetTest, ServerError500) {
           }));
 
   safetynet_->Request("sdfsdf32d323d23d", "dfasdfasdpflsadfplf2r23re2",
-                      base::BindOnce([](type::Result result) {
-                        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                      base::BindOnce([](mojom::Result result) {
+                        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
                       }));
 }
 

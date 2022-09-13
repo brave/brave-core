@@ -13,8 +13,7 @@
 
 #include "base/containers/circular_deque.h"
 
-namespace ads {
-namespace targeting {
+namespace ads::targeting {
 
 using TextClassificationProbabilityMap = std::map<std::string, double>;
 using TextClassificationProbabilityList =
@@ -24,7 +23,6 @@ using SegmentProbabilityPair = std::pair<std::string, double>;
 using SegmentProbabilityList = std::vector<SegmentProbabilityPair>;
 using SegmentProbabilityMap = std::map<std::string, double>;
 
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SERVING_TARGETING_MODELS_CONTEXTUAL_TEXT_CLASSIFICATION_TEXT_CLASSIFICATION_ALIAS_H_

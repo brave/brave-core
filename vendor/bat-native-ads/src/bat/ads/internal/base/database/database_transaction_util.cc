@@ -10,8 +10,7 @@
 #include "base/callback.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
-namespace ads {
-namespace database {
+namespace ads::database {
 
 void OnResultCallback(ResultCallback callback,
                       mojom::DBCommandResponseInfoPtr response) {
@@ -26,5 +25,4 @@ void OnResultCallback(ResultCallback callback,
   std::move(callback).Run(/*success*/ true);
 }
 
-}  // namespace database
-}  // namespace ads
+}  // namespace ads::database

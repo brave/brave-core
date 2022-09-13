@@ -21,7 +21,7 @@ class DatabaseServerPublisherInfo: public DatabaseTable {
   explicit DatabaseServerPublisherInfo(LedgerImpl* ledger);
   ~DatabaseServerPublisherInfo() override;
 
-  void InsertOrUpdate(const type::ServerPublisherInfo& server_info,
+  void InsertOrUpdate(const mojom::ServerPublisherInfo& server_info,
                       ledger::LegacyResultCallback callback);
 
   void GetRecord(
@@ -32,18 +32,16 @@ class DatabaseServerPublisherInfo: public DatabaseTable {
                             ledger::LegacyResultCallback callback);
 
  private:
-  void OnGetRecordBanner(
-      type::PublisherBannerPtr banner,
-      const std::string& publisher_key,
-      client::GetServerPublisherInfoCallback callback);
+  void OnGetRecordBanner(mojom::PublisherBannerPtr banner,
+                         const std::string& publisher_key,
+                         client::GetServerPublisherInfoCallback callback);
 
-  void OnGetRecord(
-      type::DBCommandResponsePtr response,
-      const std::string& publisher_key,
-      const type::PublisherBanner& banner,
-      client::GetServerPublisherInfoCallback callback);
+  void OnGetRecord(mojom::DBCommandResponsePtr response,
+                   const std::string& publisher_key,
+                   const mojom::PublisherBanner& banner,
+                   client::GetServerPublisherInfoCallback callback);
 
-  void OnExpiredRecordsSelected(type::DBCommandResponsePtr response,
+  void OnExpiredRecordsSelected(mojom::DBCommandResponsePtr response,
                                 ledger::LegacyResultCallback callback);
 
   std::unique_ptr<DatabaseServerPublisherBanner> banner_;

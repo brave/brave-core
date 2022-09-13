@@ -90,7 +90,7 @@ OBJC_EXPORT
 
 /// Get the brave wallet's payment ID and seed for ads confirmations
 - (void)currentWalletInfo:
-    (void (^)(LedgerBraveWallet* _Nullable wallet))completion;
+    (void (^)(LedgerRewardsWallet* _Nullable wallet))completion;
 
 /// Get parameters served from the server
 - (void)getRewardsParameters:

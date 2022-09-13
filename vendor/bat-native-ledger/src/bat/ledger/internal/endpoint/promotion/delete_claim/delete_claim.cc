@@ -46,38 +46,38 @@ std::string DeleteClaim::GetUrl(const std::string& custodian) {
   return GetServerUrl(path);
 }
 
-type::Result DeleteClaim::CheckStatusCode(const int status_code) {
+mojom::Result DeleteClaim::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   if (status_code == net::HTTP_FORBIDDEN) {
     BLOG(0, "Forbidden");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   if (status_code == net::HTTP_NOT_FOUND) {
     BLOG(0, "Not found");
-    return type::Result::NOT_FOUND;
+    return mojom::Result::NOT_FOUND;
   }
 
   if (status_code == net::HTTP_CONFLICT) {
     BLOG(0, "Not found");
-    return type::Result::ALREADY_EXISTS;
+    return mojom::Result::ALREADY_EXISTS;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Internal server error");
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return type::Result::LEDGER_ERROR;
+    return mojom::Result::LEDGER_ERROR;
   }
 
-  return type::Result::LEDGER_OK;
+  return mojom::Result::LEDGER_OK;
 }
 
 void DeleteClaim::Request(const std::string& custodian,
@@ -88,7 +88,7 @@ void DeleteClaim::Request(const std::string& custodian,
   const auto wallet = ledger_->wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    callback(type::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -97,16 +97,16 @@ void DeleteClaim::Request(const std::string& custodian,
   auto headers = util::BuildSignHeaders(sign_url, payload, wallet->payment_id,
                                         wallet->recovery_seed);
 
-  auto request = type::UrlRequest::New();
+  auto request = mojom::UrlRequest::New();
   request->url = GetUrl(custodian);
   request->content = payload;
   request->content_type = "application/json; charset=utf-8";
   request->headers = headers;
-  request->method = type::UrlMethod::DEL;
+  request->method = mojom::UrlMethod::DEL;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
-void DeleteClaim::OnRequest(const type::UrlResponse& response,
+void DeleteClaim::OnRequest(const mojom::UrlResponse& response,
                             DeleteClaimCallback callback) {
   ledger::LogUrlResponse(__func__, response);
   callback(CheckStatusCode(response.status_code));

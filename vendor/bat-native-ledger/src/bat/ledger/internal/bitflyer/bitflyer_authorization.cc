@@ -37,14 +37,14 @@ void BitflyerAuthorization::Authorize(
   const auto wallet = ledger_->wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
   auto bitflyer_wallet = ledger_->bitflyer()->GetWallet();
   if (!bitflyer_wallet) {
     BLOG(0, "Wallet is null");
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
@@ -57,7 +57,7 @@ void BitflyerAuthorization::Authorize(
   const bool success = ledger_->bitflyer()->SetWallet(bitflyer_wallet->Clone());
 
   if (!success) {
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
@@ -68,17 +68,17 @@ void BitflyerAuthorization::Authorize(
     if (message == "User does not meet minimum requirements.") {
       ledger_->database()->SaveEventLog(log::kKYCRequired,
                                         constant::kWalletBitflyer);
-      callback(type::Result::NOT_FOUND, {});
+      callback(mojom::Result::NOT_FOUND, {});
       return;
     }
 
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
   if (args.empty()) {
     BLOG(0, "Arguments are empty");
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
@@ -90,7 +90,7 @@ void BitflyerAuthorization::Authorize(
 
   if (code.empty()) {
     BLOG(0, "Code is empty");
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
@@ -102,19 +102,19 @@ void BitflyerAuthorization::Authorize(
 
   if (one_time_string.empty()) {
     BLOG(0, "One time string is empty");
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
   if (current_one_time != one_time_string) {
     BLOG(0, "One time string mismatch");
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
   if (current_code_verifier.empty()) {
     BLOG(0, "Code verifier is empty");
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
@@ -131,38 +131,38 @@ void BitflyerAuthorization::Authorize(
 
 void BitflyerAuthorization::OnAuthorize(
     ledger::ExternalWalletAuthorizationCallback callback,
-    type::Result result,
+    mojom::Result result,
     std::string&& token,
     std::string&& address,
     std::string&& linking_info) {
-  if (result == type::Result::EXPIRED_TOKEN) {
+  if (result == mojom::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
-    callback(type::Result::EXPIRED_TOKEN, {});
+    callback(mojom::Result::EXPIRED_TOKEN, {});
     ledger_->bitflyer()->DisconnectWallet();
     return;
   }
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Couldn't get token");
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
   if (token.empty()) {
     BLOG(0, "Token is empty");
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
   if (address.empty()) {
     BLOG(0, "Address is empty");
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
   if (linking_info.empty()) {
     BLOG(0, "Linking info is empty");
-    callback(type::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
@@ -174,7 +174,7 @@ void BitflyerAuthorization::OnAuthorize(
                                               std::move(linking_info)}) {
     std::move(request).Send(std::move(on_connect));
   } else {
-    std::move(on_connect).Run(type::Result::LEDGER_ERROR);
+    std::move(on_connect).Run(mojom::Result::LEDGER_ERROR);
   }
 }
 
@@ -182,11 +182,11 @@ void BitflyerAuthorization::OnConnectWallet(
     ledger::ExternalWalletAuthorizationCallback callback,
     std::string&& token,
     std::string&& address,
-    type::Result result) {
+    mojom::Result result) {
   auto wallet_ptr = ledger_->bitflyer()->GetWallet();
   if (!wallet_ptr) {
     BLOG(0, "bitFlyer wallet is null!");
-    return callback(type::Result::LEDGER_ERROR, {});
+    return callback(mojom::Result::LEDGER_ERROR, {});
   }
 
   DCHECK(!token.empty());
@@ -194,38 +194,38 @@ void BitflyerAuthorization::OnConnectWallet(
   const std::string abbreviated_address = address.substr(0, 5);
 
   switch (result) {
-    case type::Result::DEVICE_LIMIT_REACHED:
-    case type::Result::MISMATCHED_PROVIDER_ACCOUNTS:
-    case type::Result::REQUEST_SIGNATURE_VERIFICATION_FAILURE:
-    case type::Result::FLAGGED_WALLET:
-    case type::Result::REGION_NOT_SUPPORTED:
-    case type::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS:
+    case mojom::Result::DEVICE_LIMIT_REACHED:
+    case mojom::Result::MISMATCHED_PROVIDER_ACCOUNTS:
+    case mojom::Result::REQUEST_SIGNATURE_VERIFICATION_FAILURE:
+    case mojom::Result::FLAGGED_WALLET:
+    case mojom::Result::REGION_NOT_SUPPORTED:
+    case mojom::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS:
       ledger_->database()->SaveEventLog(
           log::GetEventLogKeyForLinkingResult(result),
           constant::kWalletBitflyer + std::string("/") + abbreviated_address);
       return callback(result, {});
     default:
-      if (result != type::Result::LEDGER_OK) {
+      if (result != mojom::Result::LEDGER_OK) {
         BLOG(0, "Couldn't claim wallet!");
         return callback(result, {});
       }
   }
 
   const auto from = wallet_ptr->status;
-  const auto to = wallet_ptr->status = type::WalletStatus::VERIFIED;
+  const auto to = wallet_ptr->status = mojom::WalletStatus::VERIFIED;
   wallet_ptr->token = std::move(token);
   wallet_ptr->address = std::move(address);
 
   if (!ledger_->bitflyer()->SetWallet(std::move(wallet_ptr))) {
     BLOG(0, "Unable to set bitFlyer wallet!");
-    return callback(type::Result::LEDGER_ERROR, {});
+    return callback(mojom::Result::LEDGER_ERROR, {});
   }
 
   OnWalletStatusChange(ledger_, from, to);
   ledger_->database()->SaveEventLog(
       log::kWalletVerified,
       constant::kWalletBitflyer + std::string("/") + abbreviated_address);
-  callback(type::Result::LEDGER_OK, {});
+  callback(mojom::Result::LEDGER_OK, {});
 }
 
 }  // namespace ledger::bitflyer

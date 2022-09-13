@@ -27,8 +27,7 @@
 #include "bat/ads/internal/tabs/tab_manager.h"
 #include "url/gurl.h"
 
-namespace ads {
-namespace processor {
+namespace ads::processor {
 
 using KeywordList = std::vector<std::string>;
 
@@ -39,9 +38,8 @@ constexpr uint16_t kPurchaseIntentDefaultSignalWeight = 1;
 void AppendIntentSignalToHistory(
     const targeting::PurchaseIntentSignalInfo& purchase_intent_signal) {
   for (const auto& segment : purchase_intent_signal.segments) {
-    targeting::PurchaseIntentSignalHistoryInfo history;
-    history.created_at = purchase_intent_signal.created_at;
-    history.weight = purchase_intent_signal.weight;
+    targeting::PurchaseIntentSignalHistoryInfo history(
+        purchase_intent_signal.created_at, purchase_intent_signal.weight);
 
     ClientStateManager::GetInstance()
         ->AppendToPurchaseIntentSignalHistoryForSegment(segment, history);
@@ -253,5 +251,4 @@ void PurchaseIntent::OnTextContentDidChange(
   Process(url);
 }
 
-}  // namespace processor
-}  // namespace ads
+}  // namespace ads::processor

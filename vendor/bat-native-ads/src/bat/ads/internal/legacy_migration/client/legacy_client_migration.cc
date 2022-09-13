@@ -15,8 +15,7 @@
 #include "bat/ads/internal/legacy_migration/client/legacy_client_migration_util.h"
 #include "bat/ads/pref_names.h"
 
-namespace ads {
-namespace client {
+namespace ads::client {
 
 namespace {
 
@@ -83,5 +82,4 @@ void Migrate(InitializeCallback callback) {
           callback));
 }
 
-}  // namespace client
-}  // namespace ads
+}  // namespace ads::client

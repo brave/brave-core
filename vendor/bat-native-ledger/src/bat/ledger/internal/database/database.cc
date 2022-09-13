@@ -53,9 +53,9 @@ void Database::Initialize(bool execute_create_script,
 }
 
 void Database::Close(ledger::LegacyResultCallback callback) {
-  auto transaction = type::DBTransaction::New();
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::CLOSE;
+  auto transaction = mojom::DBTransaction::New();
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::CLOSE;
 
   transaction->commands.push_back(std::move(command));
   auto transaction_callback = std::bind(&OnResultCallback,
@@ -68,22 +68,21 @@ void Database::Close(ledger::LegacyResultCallback callback) {
 /**
  * ACTIVITY INFO
  */
-void Database::SaveActivityInfo(type::PublisherInfoPtr info,
+void Database::SaveActivityInfo(mojom::PublisherInfoPtr info,
                                 ledger::LegacyResultCallback callback) {
   activity_info_->InsertOrUpdate(std::move(info), callback);
 }
 
 void Database::NormalizeActivityInfoList(
-    type::PublisherInfoList list,
+    std::vector<mojom::PublisherInfoPtr> list,
     ledger::LegacyResultCallback callback) {
   activity_info_->NormalizeList(std::move(list), callback);
 }
 
-void Database::GetActivityInfoList(
-    uint32_t start,
-    uint32_t limit,
-    type::ActivityInfoFilterPtr filter,
-    ledger::PublisherInfoListCallback callback) {
+void Database::GetActivityInfoList(uint32_t start,
+                                   uint32_t limit,
+                                   mojom::ActivityInfoFilterPtr filter,
+                                   ledger::PublisherInfoListCallback callback) {
   activity_info_->GetRecordsList(start, limit, std::move(filter), callback);
 }
 
@@ -95,30 +94,29 @@ void Database::DeleteActivityInfo(const std::string& publisher_key,
 /**
  * BALANCE REPORT INFO
  */
-void Database::SaveBalanceReportInfo(type::BalanceReportInfoPtr info,
+void Database::SaveBalanceReportInfo(mojom::BalanceReportInfoPtr info,
                                      ledger::LegacyResultCallback callback) {
   balance_report_->InsertOrUpdate(std::move(info), callback);
 }
 
 void Database::SaveBalanceReportInfoList(
-    type::BalanceReportInfoList list,
+    std::vector<mojom::BalanceReportInfoPtr> list,
     ledger::LegacyResultCallback callback) {
   balance_report_->InsertOrUpdateList(std::move(list), callback);
 }
 
 void Database::SaveBalanceReportInfoItem(
-    type::ActivityMonth month,
+    mojom::ActivityMonth month,
     int year,
-    type::ReportType type,
+    mojom::ReportType type,
     double amount,
     ledger::LegacyResultCallback callback) {
   balance_report_->SetAmount(month, year, type, amount, callback);
 }
 
-void Database::GetBalanceReportInfo(
-    type::ActivityMonth month,
-    int year,
-    ledger::GetBalanceReportCallback callback) {
+void Database::GetBalanceReportInfo(mojom::ActivityMonth month,
+                                    int year,
+                                    ledger::GetBalanceReportCallback callback) {
   balance_report_->GetRecord(month, year, callback);
 }
 
@@ -134,7 +132,7 @@ void Database::DeleteAllBalanceReports(ledger::LegacyResultCallback callback) {
 /**
  * CONTRIBUTION INFO
  */
-void Database::SaveContributionInfo(type::ContributionInfoPtr info,
+void Database::SaveContributionInfo(mojom::ContributionInfoPtr info,
                                     ledger::LegacyResultCallback callback) {
   contribution_info_->InsertOrUpdate(std::move(info), callback);
 }
@@ -150,15 +148,14 @@ void Database::GetAllContributions(
   contribution_info_->GetAllRecords(callback);
 }
 
-void Database::GetOneTimeTips(
-    const type::ActivityMonth month,
-    const int year,
-    ledger::PublisherInfoListCallback callback) {
+void Database::GetOneTimeTips(const mojom::ActivityMonth month,
+                              const int year,
+                              ledger::PublisherInfoListCallback callback) {
   contribution_info_->GetOneTimeTips(month, year, callback);
 }
 
 void Database::GetContributionReport(
-    const type::ActivityMonth month,
+    const mojom::ActivityMonth month,
     const int year,
     ledger::GetContributionReportCallback callback) {
   contribution_info_->GetContributionReport(month, year, callback);
@@ -171,7 +168,7 @@ void Database::GetNotCompletedContributions(
 
 void Database::UpdateContributionInfoStep(
     const std::string& contribution_id,
-    type::ContributionStep step,
+    mojom::ContributionStep step,
     ledger::LegacyResultCallback callback) {
   contribution_info_->UpdateStep(
       contribution_id,
@@ -181,7 +178,7 @@ void Database::UpdateContributionInfoStep(
 
 void Database::UpdateContributionInfoStepAndCount(
     const std::string& contribution_id,
-    type::ContributionStep step,
+    mojom::ContributionStep step,
     int32_t retry_count,
     ledger::LegacyResultCallback callback) {
   contribution_info_->UpdateStepAndCount(
@@ -209,7 +206,7 @@ void Database::FinishAllInProgressContributions(
 /**
  * CONTRIBUTION QUEUE
  */
-void Database::SaveContributionQueue(type::ContributionQueuePtr info,
+void Database::SaveContributionQueue(mojom::ContributionQueuePtr info,
                                      ledger::LegacyResultCallback callback) {
   return contribution_queue_->InsertOrUpdate(std::move(info), callback);
 }
@@ -228,19 +225,18 @@ void Database::MarkContributionQueueAsComplete(
 /**
  * CREDS BATCH
  */
-void Database::SaveCredsBatch(type::CredsBatchPtr info,
+void Database::SaveCredsBatch(mojom::CredsBatchPtr info,
                               ledger::LegacyResultCallback callback) {
   creds_batch_->InsertOrUpdate(std::move(info), callback);
 }
 
-void Database::GetCredsBatchByTrigger(
-    const std::string& trigger_id,
-    const type::CredsBatchType trigger_type,
-    GetCredsBatchCallback callback) {
+void Database::GetCredsBatchByTrigger(const std::string& trigger_id,
+                                      const mojom::CredsBatchType trigger_type,
+                                      GetCredsBatchCallback callback) {
   creds_batch_->GetRecordByTrigger(trigger_id, trigger_type, callback);
 }
 
-void Database::SaveSignedCreds(type::CredsBatchPtr info,
+void Database::SaveSignedCreds(mojom::CredsBatchPtr info,
                                ledger::LegacyResultCallback callback) {
   creds_batch_->SaveSignedCreds(std::move(info), callback);
 }
@@ -250,16 +246,16 @@ void Database::GetAllCredsBatches(GetCredsBatchListCallback callback) {
 }
 
 void Database::UpdateCredsBatchStatus(const std::string& trigger_id,
-                                      type::CredsBatchType trigger_type,
-                                      type::CredsBatchStatus status,
+                                      mojom::CredsBatchType trigger_type,
+                                      mojom::CredsBatchStatus status,
                                       ledger::LegacyResultCallback callback) {
   creds_batch_->UpdateStatus(trigger_id, trigger_type, status, callback);
 }
 
 void Database::UpdateCredsBatchesStatus(
     const std::vector<std::string>& trigger_ids,
-    type::CredsBatchType trigger_type,
-    type::CredsBatchStatus status,
+    mojom::CredsBatchType trigger_type,
+    mojom::CredsBatchStatus status,
     ledger::LegacyResultCallback callback) {
   creds_batch_->UpdateRecordsStatus(
       trigger_ids,
@@ -310,7 +306,7 @@ void Database::GetMediaPublisherInfo(
  * for queries that are not limited to one table
  */
 void Database::GetTransactionReport(
-    const type::ActivityMonth month,
+    const mojom::ActivityMonth month,
     const int year,
     ledger::GetTransactionReportCallback callback) {
   multi_tables_->GetTransactionReport(month, year, callback);
@@ -319,8 +315,9 @@ void Database::GetTransactionReport(
 /**
  * PENDING CONTRIBUTION
  */
-void Database::SavePendingContribution(type::PendingContributionList list,
-                                       ledger::LegacyResultCallback callback) {
+void Database::SavePendingContribution(
+    std::vector<mojom::PendingContributionPtr> list,
+    ledger::LegacyResultCallback callback) {
   pending_contribution_->InsertOrUpdateList(std::move(list), callback);
 }
 
@@ -367,7 +364,7 @@ void Database::WasPublisherProcessed(const std::string& publisher_key,
 /**
  * PROMOTION
  */
-void Database::SavePromotion(type::PromotionPtr info,
+void Database::SavePromotion(mojom::PromotionPtr info,
                              ledger::LegacyResultCallback callback) {
   promotion_->InsertOrUpdate(std::move(info), callback);
 }
@@ -389,14 +386,14 @@ void Database::SavePromotionClaimId(const std::string& promotion_id,
 }
 
 void Database::UpdatePromotionStatus(const std::string& promotion_id,
-                                     type::PromotionStatus status,
+                                     mojom::PromotionStatus status,
                                      ledger::LegacyResultCallback callback) {
   promotion_->UpdateStatus(promotion_id, status, callback);
 }
 
 void Database::UpdatePromotionsStatus(
     const std::vector<std::string>& promotion_ids,
-    type::PromotionStatus status,
+    mojom::PromotionStatus status,
     ledger::LegacyResultCallback callback) {
   promotion_->UpdateRecordsStatus(promotion_ids, status, callback);
 }
@@ -422,7 +419,7 @@ void Database::UpdatePromotionsBlankPublicKey(
 /**
  * PUBLISHER INFO
  */
-void Database::SavePublisherInfo(type::PublisherInfoPtr publisher_info,
+void Database::SavePublisherInfo(mojom::PublisherInfoPtr publisher_info,
                                  ledger::LegacyResultCallback callback) {
   publisher_info_->InsertOrUpdate(std::move(publisher_info), callback);
 }
@@ -433,9 +430,8 @@ void Database::GetPublisherInfo(
   publisher_info_->GetRecord(publisher_key, callback);
 }
 
-void Database::GetPanelPublisherInfo(
-    type::ActivityInfoFilterPtr filter,
-    ledger::PublisherInfoCallback callback) {
+void Database::GetPanelPublisherInfo(mojom::ActivityInfoFilterPtr filter,
+                                     ledger::PublisherInfoCallback callback) {
   publisher_info_->GetPanelRecord(std::move(filter), callback);
 }
 
@@ -450,7 +446,7 @@ void Database::GetExcludedList(ledger::PublisherInfoListCallback callback) {
 /**
  * RECURRING TIPS
  */
-void Database::SaveRecurringTip(type::RecurringTipPtr info,
+void Database::SaveRecurringTip(mojom::RecurringTipPtr info,
                                 ledger::LegacyResultCallback callback) {
   if (info) {
     SaveEventLog(log::kRecurringTipAdded, info->publisher_key);
@@ -484,7 +480,7 @@ void Database::ResetPublisherPrefixList(
 }
 
 void Database::InsertServerPublisherInfo(
-    const type::ServerPublisherInfo& server_info,
+    const mojom::ServerPublisherInfo& server_info,
     ledger::LegacyResultCallback callback) {
   server_publisher_info_->InsertOrUpdate(server_info, callback);
 }
@@ -504,13 +500,13 @@ void Database::DeleteExpiredServerPublisherInfo(
 /**
  * SKU ORDER
  */
-void Database::SaveSKUOrder(type::SKUOrderPtr order,
+void Database::SaveSKUOrder(mojom::SKUOrderPtr order,
                             ledger::LegacyResultCallback callback) {
   sku_order_->InsertOrUpdate(std::move(order), callback);
 }
 
 void Database::UpdateSKUOrderStatus(const std::string& order_id,
-                                    type::SKUOrderStatus status,
+                                    mojom::SKUOrderStatus status,
                                     ledger::LegacyResultCallback callback) {
   sku_order_->UpdateStatus(order_id, status, callback);
 }
@@ -540,7 +536,7 @@ void Database::SaveContributionIdForSKUOrder(
 /**
  * SKU TRANSACTION
  */
-void Database::SaveSKUTransaction(type::SKUTransactionPtr transaction,
+void Database::SaveSKUTransaction(mojom::SKUTransactionPtr transaction,
                                   ledger::LegacyResultCallback callback) {
   sku_transaction_->InsertOrUpdate(std::move(transaction), callback);
 }
@@ -564,14 +560,15 @@ void Database::GetSKUTransactionByOrderId(
 /**
  * UNBLINDED TOKEN
  */
-void Database::SaveUnblindedTokenList(type::UnblindedTokenList list,
-                                      ledger::LegacyResultCallback callback) {
+void Database::SaveUnblindedTokenList(
+    std::vector<mojom::UnblindedTokenPtr> list,
+    ledger::LegacyResultCallback callback) {
   unblinded_token_->InsertOrUpdateList(std::move(list), callback);
 }
 
 void Database::MarkUnblindedTokensAsSpent(
     const std::vector<std::string>& ids,
-    type::RewardsType redeem_type,
+    mojom::RewardsType redeem_type,
     const std::string& redeem_id,
     ledger::LegacyResultCallback callback) {
   unblinded_token_->MarkRecordListAsSpent(
@@ -611,7 +608,7 @@ void Database::GetReservedUnblindedTokens(
 }
 
 void Database::GetSpendableUnblindedTokensByBatchTypes(
-    const std::vector<type::CredsBatchType>& batch_types,
+    const std::vector<mojom::CredsBatchType>& batch_types,
     GetUnblindedTokenListCallback callback) {
   unblinded_token_->GetSpendableRecordListByBatchTypes(batch_types, callback);
 }

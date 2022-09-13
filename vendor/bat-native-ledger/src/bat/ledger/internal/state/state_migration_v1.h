@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "bat/ledger/internal/legacy/publisher_state.h"
 #include "bat/ledger/ledger.h"
@@ -27,14 +28,14 @@ class StateMigrationV1 {
   bool legacy_data_migrated() const { return legacy_data_migrated_; }
 
  private:
-  void OnLoadState(type::Result result, ledger::LegacyResultCallback callback);
+  void OnLoadState(mojom::Result result, ledger::LegacyResultCallback callback);
 
-  void BalanceReportsSaved(type::Result result,
+  void BalanceReportsSaved(mojom::Result result,
                            ledger::LegacyResultCallback callback);
 
   void SaveProcessedPublishers(ledger::LegacyResultCallback callback);
 
-  void ProcessedPublisherSaved(type::Result result,
+  void ProcessedPublisherSaved(mojom::Result result,
                                ledger::LegacyResultCallback callback);
 
   std::unique_ptr<publisher::LegacyPublisherState> legacy_publisher_;

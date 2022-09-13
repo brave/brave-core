@@ -34,22 +34,22 @@ class GeminiAuthorization {
   void OnPostAccount(ledger::ExternalWalletAuthorizationCallback,
                      std::string&& token,
                      std::string&& recipient_id,
-                     type::Result,
+                     mojom::Result,
                      std::string&& linking_info,
                      std::string&& user_name);
 
   void OnAuthorize(ledger::ExternalWalletAuthorizationCallback,
-                   type::Result,
+                   mojom::Result,
                    std::string&& token);
 
   void OnConnectWallet(ledger::ExternalWalletAuthorizationCallback,
                        std::string&& token,
                        std::string&& address,
-                       type::Result);
+                       mojom::Result);
 
   void OnFetchRecipientId(ledger::ExternalWalletAuthorizationCallback,
                           std::string&& token,
-                          type::Result,
+                          mojom::Result,
                           std::string&& recipient_id);
 
   LedgerImpl* ledger_;  // NOT OWNED

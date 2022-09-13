@@ -13,8 +13,7 @@
 #include "bat/ads/internal/conversions/verifiable_conversion_envelope_info.h"
 #include "tweetnacl.h"  // NOLINT
 
-namespace ads {
-namespace security {
+namespace ads::security {
 
 namespace {
 constexpr size_t kCryptoBoxZeroBytes = crypto_box_BOXZEROBYTES;
@@ -111,5 +110,4 @@ absl::optional<std::string> OpenEvenlopeForUserDataAndAdvertiserSecretKey(
   return OpenEnvelope(*verifiable_conversion_envelope, advertiser_secret_key);
 }
 
-}  // namespace security
-}  // namespace ads
+}  // namespace ads::security

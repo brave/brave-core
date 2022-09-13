@@ -26,54 +26,45 @@ class Reddit {
 
   ~Reddit();
 
-  void ProcessActivityFromUrl(
-      uint64_t window_id,
-      const ledger::type::VisitData& visit_data);
+  void ProcessActivityFromUrl(uint64_t window_id,
+                              const ledger::mojom::VisitData& visit_data);
 
   void SaveMediaInfo(
       const base::flat_map<std::string, std::string>& data,
       ledger::PublisherInfoCallback callback);
 
  private:
-  void OnMediaActivityError(
-      const ledger::type::VisitData& visit_data,
-      uint64_t window_id);
+  void OnMediaActivityError(const ledger::mojom::VisitData& visit_data,
+                            uint64_t window_id);
 
-  void UserPath(
-      uint64_t window_id,
-      const ledger::type::VisitData& visit_data);
+  void UserPath(uint64_t window_id, const ledger::mojom::VisitData& visit_data);
 
-  void OnUserActivity(
-      uint64_t window_id,
-      const ledger::type::VisitData& visit_data,
-      ledger::type::Result result,
-      ledger::type::PublisherInfoPtr publisher_info);
+  void OnUserActivity(uint64_t window_id,
+                      const ledger::mojom::VisitData& visit_data,
+                      ledger::mojom::Result result,
+                      ledger::mojom::PublisherInfoPtr publisher_info);
 
   void FetchDataFromUrl(const std::string& url,
                         ledger::client::LegacyLoadURLCallback callback);
 
-  void GetPublisherPanelInfo(
-      uint64_t window_id,
-      const ledger::type::VisitData& visit_data,
-      const std::string& publisher_key);
+  void GetPublisherPanelInfo(uint64_t window_id,
+                             const ledger::mojom::VisitData& visit_data,
+                             const std::string& publisher_key);
 
-  void OnUserPage(
-      uint64_t window_id,
-      const ledger::type::VisitData& visit_data,
-      const ledger::type::UrlResponse& response);
+  void OnUserPage(uint64_t window_id,
+                  const ledger::mojom::VisitData& visit_data,
+                  const ledger::mojom::UrlResponse& response);
 
-  void OnPublisherPanelInfo(
-      uint64_t window_id,
-      const ledger::type::VisitData& visit_data,
-      const std::string& publisher_key,
-      ledger::type::Result result,
-      ledger::type::PublisherInfoPtr info);
+  void OnPublisherPanelInfo(uint64_t window_id,
+                            const ledger::mojom::VisitData& visit_data,
+                            const std::string& publisher_key,
+                            ledger::mojom::Result result,
+                            ledger::mojom::PublisherInfoPtr info);
 
-  void OnMediaPublisherInfo(
-      const std::string& user_name,
-      ledger::PublisherInfoCallback callback,
-      ledger::type::Result result,
-      ledger::type::PublisherInfoPtr publisher_info);
+  void OnMediaPublisherInfo(const std::string& user_name,
+                            ledger::PublisherInfoCallback callback,
+                            ledger::mojom::Result result,
+                            ledger::mojom::PublisherInfoPtr publisher_info);
 
   void SavePublisherInfo(
       uint64_t window_id,
@@ -81,9 +72,8 @@ class Reddit {
       ledger::PublisherInfoCallback callback,
       const std::string& data);
 
-  void OnRedditSaved(
-      ledger::type::Result result,
-      ledger::type::PublisherInfoPtr publisher_info);
+  void OnRedditSaved(ledger::mojom::Result result,
+                     ledger::mojom::PublisherInfoPtr publisher_info);
 
   static std::string GetUserNameFromUrl(const std::string& path);
 
@@ -97,10 +87,9 @@ class Reddit {
 
   static std::string GetProfileImageUrl(const std::string& response);
 
-  void OnPageDataFetched(
-      const std::string& user_name,
-      ledger::PublisherInfoCallback callback,
-      const ledger::type::UrlResponse& response);
+  void OnPageDataFetched(const std::string& user_name,
+                         ledger::PublisherInfoCallback callback,
+                         const ledger::mojom::UrlResponse& response);
 
   ledger::LedgerImpl* ledger_;  // NOT OWNED
 

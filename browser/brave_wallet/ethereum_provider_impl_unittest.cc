@@ -326,6 +326,23 @@ class EthereumProviderImplUnitTest : public testing::Test {
     return allowed_accounts;
   }
 
+  std::pair<bool, base::Value> CommonRequestOrSendAsync(
+      base::ValueView input_value) {
+    base::RunLoop run_loop;
+    std::pair<bool, base::Value> response;
+    provider()->CommonRequestOrSendAsync(
+        input_value,
+        base::BindLambdaForTesting(
+            [&](base::Value id, base::Value formed_response, const bool reject,
+                const std::string& first_allowed_account,
+                const bool update_bind_js_properties) {
+              response = std::make_pair(reject, std::move(formed_response));
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+    return response;
+  }
+
   std::vector<std::string> RequestEthereumPermissions() {
     std::vector<std::string> allowed_accounts;
     base::RunLoop run_loop;
@@ -1398,6 +1415,28 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoWallet) {
       base::Value(), "", GetOrigin());
   run_loop.Run();
   EXPECT_TRUE(new_setup_callback_called);
+
+  // Setup is called at most once
+  new_setup_callback_called = false;
+  SetCallbackForNewSetupNeededForTesting(
+      base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
+  base::RunLoop run_loop2;
+  provider()->RequestEthereumPermissions(
+      base::BindLambdaForTesting(
+          [&](base::Value id, base::Value formed_response, const bool reject,
+              const std::string& first_allowed_account,
+              const bool update_bind_js_properties) {
+            mojom::ProviderError error = mojom::ProviderError::kUnknown;
+            std::string error_message;
+            GetErrorCodeMessage(std::move(formed_response), &error,
+                                &error_message);
+            EXPECT_NE(error, mojom::ProviderError::kSuccess);
+            EXPECT_FALSE(error_message.empty());
+            run_loop2.Quit();
+          }),
+      base::Value(), "", GetOrigin());
+  run_loop2.Run();
+  EXPECT_FALSE(new_setup_callback_called);
 }
 
 TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsWithAccounts) {
@@ -1469,7 +1508,7 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsLocked) {
   // Allowing 1 account should return that account for allowed accounts
   AddEthereumPermission(GetOrigin(), 0);
   Lock();
-  // Allowed accounts is empty when locked
+  // Allowed accounts are empty when locked
   EXPECT_EQ(GetAllowedAccounts(false), std::vector<std::string>());
   EXPECT_EQ(GetAllowedAccounts(true), std::vector<std::string>{account0});
   std::vector<std::string> allowed_accounts;
@@ -1493,7 +1532,7 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsLocked) {
   base::RunLoop().RunUntilIdle();
 
   EXPECT_TRUE(keyring_service()->HasPendingUnlockRequest());
-  // Allowed accounts is still empty when locked
+  // Allowed accounts are still empty when locked
   EXPECT_EQ(GetAllowedAccounts(false), std::vector<std::string>());
   EXPECT_EQ(GetAllowedAccounts(true), std::vector<std::string>{account0});
   Unlock();
@@ -2331,6 +2370,74 @@ TEST_F(EthereumProviderImplUnitTest, Decrypt) {
   EXPECT_TRUE(unsafe_message.empty());
   EXPECT_EQ(mojom::ProviderError::kInvalidParams, error);
   EXPECT_FALSE(error_message.empty());
+}
+
+TEST_F(EthereumProviderImplUnitTest, RequestEthCoinbase) {
+  // Wallet that is not created should return empty base::Value for eth_coinbase
+  std::string request_payload_json =
+      R"({"id":1,"jsonrpc:": "2.0","method":"eth_coinbase"})";
+  absl::optional<base::Value> request_payload = base::JSONReader::Read(
+      request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                base::JSONParserOptions::JSON_PARSE_RFC);
+  auto response = CommonRequestOrSendAsync(request_payload.value());
+  EXPECT_EQ(response.first, false);
+  EXPECT_EQ(response.second, base::Value());
+
+  CreateWallet();
+  AddAccount();
+  std::string account0 = from(0);
+  GURL url("https://brave.com");
+  Navigate(url);
+
+  // Fresh wallet should return empty base::Value for eth_coinbase
+  response = CommonRequestOrSendAsync(request_payload.value());
+  EXPECT_EQ(response.first, false);
+  EXPECT_EQ(response.second, base::Value());
+
+  // Allow 1 account
+  AddEthereumPermission(GetOrigin(), 0);
+  Lock();
+
+  // eth_coinbase account is empty when locked
+  response = CommonRequestOrSendAsync(request_payload.value());
+  EXPECT_EQ(response.first, false);
+  EXPECT_EQ(response.second, base::Value());
+
+  std::vector<std::string> allowed_accounts;
+  base::RunLoop run_loop;
+  provider()->RequestEthereumPermissions(
+      base::BindLambdaForTesting(
+          [&](base::Value id, base::Value formed_response, const bool reject,
+              const std::string& first_allowed_account,
+              const bool update_bind_js_properties) {
+            if (formed_response.GetList().size() != 0) {
+              std::string stylesheet = "";
+              for (auto& account : formed_response.GetList()) {
+                allowed_accounts.push_back(account.GetString());
+              }
+            }
+            run_loop.Quit();
+          }),
+      base::Value(), "", GetOrigin());
+  // Wait for KeyringService::GetSelectedAccount called by
+  // BraveWalletProviderDelegateImpl::GetAllowedAccounts
+  base::RunLoop().RunUntilIdle();
+
+  EXPECT_TRUE(keyring_service()->HasPendingUnlockRequest());
+  // eth_coinbase account is still empty when locked
+  response = CommonRequestOrSendAsync(request_payload.value());
+  EXPECT_EQ(response.first, false);
+  EXPECT_EQ(response.second, base::Value());
+
+  Unlock();
+  run_loop.Run();
+
+  // eth_coinbase should now return the account since the account is
+  // allowed and the wallet is unlocked
+  response = CommonRequestOrSendAsync(request_payload.value());
+  EXPECT_FALSE(keyring_service()->HasPendingUnlockRequest());
+  EXPECT_EQ(response.first, false);
+  EXPECT_EQ(response.second, base::Value(account0));
 }
 
 }  // namespace brave_wallet

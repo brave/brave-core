@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_PUBLISHER_PUBLISHER_PREFIX_LIST_UPDATER_H_
-#define BRAVELEDGER_PUBLISHER_PUBLISHER_PREFIX_LIST_UPDATER_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_PUBLISHER_PUBLISHER_PREFIX_LIST_UPDATER_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_PUBLISHER_PUBLISHER_PREFIX_LIST_UPDATER_H_
 
 #include <functional>
 #include <map>
@@ -47,10 +47,8 @@ class PublisherPrefixListUpdater {
       base::TimeDelta delay);
 
   void OnFetchTimerElapsed();
-  void OnFetchCompleted(
-      const type::Result result,
-      const std::string& body);
-  void OnPrefixListInserted(const type::Result result);
+  void OnFetchCompleted(const mojom::Result result, const std::string& body);
+  void OnPrefixListInserted(const mojom::Result result);
 
   base::TimeDelta GetAutoUpdateDelay();
   base::TimeDelta GetRetryAfterFailureDelay();
@@ -66,4 +64,4 @@ class PublisherPrefixListUpdater {
 }  // namespace publisher
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_PUBLISHER_PUBLISHER_PREFIX_LIST_UPDATER_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_PUBLISHER_PUBLISHER_PREFIX_LIST_UPDATER_H_

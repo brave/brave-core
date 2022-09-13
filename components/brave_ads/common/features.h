@@ -8,14 +8,13 @@
 
 #include <string>
 
-#include "build/build_config.h"
+#include "build/build_config.h"  // IWYU pragma: keep
 
 namespace base {
 struct Feature;
 }  // namespace base
 
-namespace brave_ads {
-namespace features {
+namespace brave_ads::features {
 
 extern const base::Feature kNotificationAds;
 bool IsNotificationAdsEnabled();
@@ -39,12 +38,8 @@ int NotificationAdInsetY();
 extern const base::Feature kAllowedToFallbackToCustomNotificationAds;
 bool IsAllowedToFallbackToCustomNotificationAdsEnabled();
 
-extern const base::Feature kRequestAdsEnabledApi;
-bool IsRequestAdsEnabledApiEnabled();
-
 extern const base::Feature kSupportBraveSearchResultAdConfirmationEvents;
 
-}  // namespace features
-}  // namespace brave_ads
+}  // namespace brave_ads::features
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_COMMON_FEATURES_H_

@@ -13,9 +13,12 @@ constexpr char kPlaylistNameKey[] = "name";
 constexpr char kPlaylistItemsKey[] = "items";
 
 constexpr char kPlaylistItemIDKey[] = "id";
+constexpr char kPlaylistItemPageSrcKey[] = "pageSrc";
+constexpr char kPlaylistItemMediaSrcKey[] = "mediaSrc";
+constexpr char kPlaylistItemThumbnailSrcKey[] = "thumbnailSrc";
 constexpr char kPlaylistItemThumbnailPathKey[] = "thumbnailPath";
 constexpr char kPlaylistItemMediaFilePathKey[] = "mediaFilePath";
-constexpr char kPlaylistItemReadyKey[] = "ready";
+constexpr char kPlaylistItemMediaFileCachedKey[] = "mediaCached";
 constexpr char kPlaylistItemTitleKey[] = "title";
 
 constexpr char kDefaultPlaylistID[] = "default";

@@ -31,8 +31,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
-namespace targeting {
+namespace ads::targeting {
 
 namespace {
 
@@ -300,5 +299,4 @@ TEST_F(BatAdsTopSegmentsTest, GetSegmentsForFieldTrialParticipationPath) {
   EXPECT_EQ(5U, segments.size());
 }
 
-}  // namespace targeting
-}  // namespace ads
+}  // namespace ads::targeting
