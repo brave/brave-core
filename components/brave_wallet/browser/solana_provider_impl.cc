@@ -391,8 +391,9 @@ void SolanaProviderImpl::SignAndSendTransaction(
   SolanaTransaction tx =
       SolanaTransaction(std::move(msg_pair->first), std::move(param));
   tx.set_tx_type(mojom::TransactionType::SolanaDappSignAndSendTransaction);
-  tx.set_send_options(SolanaTransaction::SendOptions::FromValue(
-      base::Value(std::move(*send_options))));
+  if (send_options)
+    tx.set_send_options(SolanaTransaction::SendOptions::FromValue(
+        base::Value(std::move(*send_options))));
 
   tx_service_->AddUnapprovedTransaction(
       mojom::TxDataUnion::NewSolanaTxData(tx.ToSolanaTxData()),
