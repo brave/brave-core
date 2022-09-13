@@ -27,21 +27,22 @@ class SidePanelMenuModel : public ui::SimpleMenuModel,
     Build();
   }
 
-  ~SidePanelMenuModel() override = default;
   SidePanelMenuModel(const SidePanelMenuModel&) = delete;
   SidePanelMenuModel& operator=(const SidePanelMenuModel&) = delete;
+  ~SidePanelMenuModel() override = default;
 
  private:
-  enum ContextMenuCommand { HideSideBarButton };
-
-  void ExecuteCommand(int command_id, int event_flags) override {
-    if (command_id == ContextMenuCommand::HideSideBarButton)
-      prefs_->SetBoolean(kShowSidePanelButton, false);
-  }
+  enum ContextMenuCommand { kHideSideBarButton };
 
   void Build() {
-    AddItemWithStringId(ContextMenuCommand::HideSideBarButton,
+    AddItemWithStringId(ContextMenuCommand::kHideSideBarButton,
                         IDS_HIDE_SIDE_PANEL_TOOLBAR_BUTTON);
+  }
+
+  // ui::SimpleMenuModel::Delegate:
+  void ExecuteCommand(int command_id, int event_flags) override {
+    if (command_id == ContextMenuCommand::kHideSideBarButton)
+      prefs_->SetBoolean(kShowSidePanelButton, false);
   }
 
   raw_ptr<PrefService> prefs_ = nullptr;
