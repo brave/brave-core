@@ -79,7 +79,7 @@ absl::optional<privacy::UnblindedPaymentTokenList> ParseUnblindedPaymentTokens(
   const base::Value* const unblinded_payment_tokens_value =
       value.FindListKey(kUnblindedPaymentTokenListKey);
   if (!unblinded_payment_tokens_value) {
-    return absl::nullopt;
+    return privacy::UnblindedPaymentTokenList{};
   }
 
   const absl::optional<privacy::UnblindedPaymentTokenList>
