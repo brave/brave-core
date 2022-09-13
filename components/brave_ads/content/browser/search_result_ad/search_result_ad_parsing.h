@@ -9,8 +9,8 @@
 #include <map>
 #include <string>
 
-#include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
-#include "third_party/blink/public/mojom/document_metadata/document_metadata.mojom.h"
+#include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom-forward.h"
+#include "third_party/blink/public/mojom/document_metadata/document_metadata.mojom-forward.h"
 
 namespace brave_ads {
 

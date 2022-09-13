@@ -13,7 +13,7 @@ namespace translate {
 
 namespace features {
 const base::Feature kUseBraveTranslateGo{
-    "UseBraveTranslateGo", base::FeatureState::FEATURE_DISABLED_BY_DEFAULT};
+    "UseBraveTranslateGo", base::FeatureState::FEATURE_ENABLED_BY_DEFAULT};
 
 const base::FeatureParam<bool> kUpdateLanguageListParam{
     &kUseBraveTranslateGo, "update-languages", false};

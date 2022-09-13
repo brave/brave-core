@@ -20,7 +20,16 @@ SidePanelEntry::Id SidePanelIdFromSideBarItem(const SidebarItem& item) {
       return SidePanelEntry::Id::kReadingList;
     case BuiltInItemType::kBookmarks:
       return SidePanelEntry::Id::kBookmarks;
-    default:
+    case BuiltInItemType::kPlaylist:
+      NOTIMPLEMENTED();
+      return SidePanelEntry::Id::kReadingList;
+    case BuiltInItemType::kWallet:
+      [[fallthrough]];
+    case BuiltInItemType::kBraveTalk:
+      [[fallthrough]];
+    case BuiltInItemType::kHistory:
+      [[fallthrough]];
+    case BuiltInItemType::kNone:
       // Add a new case for any new types which we want to support.
       NOTREACHED() << "Asked for a panel Id from a sidebar item which should "
                       "not have a panel Id, sending Reading List instead.";

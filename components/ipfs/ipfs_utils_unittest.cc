@@ -619,8 +619,8 @@ TEST_F(IpfsUtilsUnitTest, ContentHashToIpfsTest) {
   std::string contenthash =
       "e30101701220f073be187e8e06039796c432a"
       "5bdd6da3f403c2f93fa5d9dbdc5547c7fe0e3bc";
-  std::string hex;
-  base::HexStringToString(contenthash, &hex);
+  std::vector<uint8_t> hex;
+  base::HexStringToBytes(contenthash, &hex);
   GURL ipfs_url = ipfs::ContentHashToCIDv1URL(hex);
   ASSERT_TRUE(ipfs_url.is_valid());
   EXPECT_EQ(
@@ -631,7 +631,7 @@ TEST_F(IpfsUtilsUnitTest, ContentHashToIpfsTest) {
       "e50101701220f073be187e8e06039796c432a"
       "5bdd6da3f403c2f93fa5d9dbdc5547c7fe0e3bc";
   hex.clear();
-  base::HexStringToString(contenthash, &hex);
+  base::HexStringToBytes(contenthash, &hex);
   ipfs_url = ipfs::ContentHashToCIDv1URL(hex);
   ASSERT_TRUE(ipfs_url.is_valid());
   EXPECT_EQ(
@@ -641,7 +641,7 @@ TEST_F(IpfsUtilsUnitTest, ContentHashToIpfsTest) {
       "0101701220f073be187e8e06039796c432a"
       "5bdd6da3f403c2f93fa5d9dbdc5547c7fe0e3bc";
   hex.clear();
-  base::HexStringToString(contenthash, &hex);
+  base::HexStringToBytes(contenthash, &hex);
   ipfs_url = ipfs::ContentHashToCIDv1URL(hex);
   ASSERT_FALSE(ipfs_url.is_valid());
   EXPECT_EQ(ipfs_url.spec(), "");

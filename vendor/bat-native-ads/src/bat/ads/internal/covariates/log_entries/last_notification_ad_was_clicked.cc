@@ -7,7 +7,6 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
-#include "bat/ads/history_info.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/covariates/covariate_constants.h"
 #include "bat/ads/internal/history/history_manager.h"
@@ -41,14 +40,14 @@ std::string LastNotificationAdWasClicked::GetValue() const {
   const base::Time from_time = now - kTimeWindow;
   const base::Time to_time = now;
 
-  const HistoryInfo history = HistoryManager::GetInstance()->Get(
+  const HistoryItemList history_items = HistoryManager::GetInstance()->Get(
       HistoryFilterType::kNone, HistorySortType::kDescendingOrder, from_time,
       to_time);
-  if (history.items.empty()) {
+  if (history_items.empty()) {
     return base::NumberToString(kCovariateMissingValue);
   }
 
-  const HistoryItemInfo& history_item = history.items.front();
+  const HistoryItemInfo& history_item = history_items.front();
   if (history_item.ad_content.confirmation_type == ConfirmationType::kClicked) {
     return base::NumberToString(kClickedValue);
   }

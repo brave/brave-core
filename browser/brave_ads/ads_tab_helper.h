@@ -44,7 +44,7 @@ class AdsTabHelper : public content::WebContentsObserver,
 #endif
                      public content::WebContentsUserData<AdsTabHelper> {
  public:
-  AdsTabHelper(content::WebContents*);
+  explicit AdsTabHelper(content::WebContents*);
   ~AdsTabHelper() override;
 
   AdsTabHelper(const AdsTabHelper&) = delete;

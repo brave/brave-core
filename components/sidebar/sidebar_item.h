@@ -16,6 +16,8 @@ struct SidebarItem {
     kTypeWeb,
   };
 
+  // Do not reorder or remove items, as underlying values are used as id of
+  // items.
   enum class BuiltInItemType {
     kNone = 0,
     kBraveTalk,
@@ -23,6 +25,9 @@ struct SidebarItem {
     kBookmarks,
     kReadingList,
     kHistory,
+    kPlaylist,
+    // When adding new item, dont' forget to update kBuiltInItemLast.
+    kBuiltInItemLast = kPlaylist,
   };
 
   static SidebarItem Create(const std::u16string& title,
@@ -42,11 +47,11 @@ struct SidebarItem {
   bool operator==(const SidebarItem& item) const;
 
   GURL url;
-  Type type;
-  BuiltInItemType built_in_item_type;
+  Type type = Type::kTypeBuiltIn;
+  BuiltInItemType built_in_item_type = BuiltInItemType::kNone;
   std::u16string title;
   // Set false to open this item in new tab.
-  bool open_in_panel;
+  bool open_in_panel = false;
 };
 
 bool IsBuiltInType(const SidebarItem& item);

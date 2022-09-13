@@ -263,8 +263,15 @@ bool ParseEthGasPrice(const std::string& json, std::string* result) {
 }
 
 bool ParseEnsResolverContentHash(const std::string& json,
-                                 std::string* content_hash) {
-  return ParseStringResult(json, content_hash);
+                                 std::vector<uint8_t>* content_hash) {
+  content_hash->clear();
+
+  std::string string_content_hash;
+  if (!ParseStringResult(json, &string_content_hash)) {
+    return false;
+  }
+  content_hash->assign(string_content_hash.begin(), string_content_hash.end());
+  return true;
 }
 
 absl::optional<std::vector<std::string>>

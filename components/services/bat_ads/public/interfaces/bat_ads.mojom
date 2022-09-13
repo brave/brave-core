@@ -156,13 +156,13 @@ interface BatAds {
   PurgeOrphanedAdEventsForType(ads.mojom.AdType ad_type) => (bool success);
 
   // History
-  GetHistory(mojo_base.mojom.Time from_time, mojo_base.mojom.Time to_time) => (mojo_base.mojom.BigString json);
+  GetHistory(mojo_base.mojom.Time from_time, mojo_base.mojom.Time to_time) => (mojo_base.mojom.ListValue value);
   RemoveAllHistory() => (bool success);
 
-  ToggleAdThumbUp(string json) => (string json);
-  ToggleAdThumbDown(string json) => (string json);
+  ToggleAdThumbUp(mojo_base.mojom.DictionaryValue value) => (mojo_base.mojom.DictionaryValue value);
+  ToggleAdThumbDown(mojo_base.mojom.DictionaryValue value) => (mojo_base.mojom.DictionaryValue value);
   ToggleAdOptIn(string category, int32 action) => (string category, int32 action);
   ToggleAdOptOut(string category, int32 action) => (string category, int32 action);
-  ToggleSavedAd(string json) => (string json);
-  ToggleFlaggedAd(string json) => (string json);
+  ToggleSavedAd(mojo_base.mojom.DictionaryValue value) => (mojo_base.mojom.DictionaryValue value);
+  ToggleFlaggedAd(mojo_base.mojom.DictionaryValue value) => (mojo_base.mojom.DictionaryValue value);
 };

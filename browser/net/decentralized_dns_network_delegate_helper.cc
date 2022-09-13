@@ -47,7 +47,7 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
 
   if (IsENSTLD(ctx->request_url) &&
       IsENSResolveMethodEthereum(g_browser_process->local_state())) {
-    json_rpc_service->EnsResolverGetContentHash(
+    json_rpc_service->EnsGetContentHash(
         ctx->request_url.host(),
         base::BindOnce(&OnBeforeURLRequest_EnsRedirectWork, next_callback,
                        ctx));
@@ -61,7 +61,7 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
 void OnBeforeURLRequest_EnsRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx,
-    const std::string& content_hash,
+    const std::vector<uint8_t>& content_hash,
     brave_wallet::mojom::ProviderError error,
     const std::string& error_message) {
   if (error != brave_wallet::mojom::ProviderError::kSuccess) {

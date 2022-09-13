@@ -14,7 +14,7 @@ class Profile;
 
 namespace gfx {
 class Vector2d;
-}
+}  // namespace gfx
 
 namespace brave_ads {
 

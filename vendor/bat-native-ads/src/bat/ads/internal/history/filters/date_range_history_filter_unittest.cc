@@ -18,8 +18,8 @@ namespace ads {
 
 namespace {
 
-base::circular_deque<HistoryItemInfo> GetHistory() {
-  base::circular_deque<HistoryItemInfo> history;
+HistoryItemList GetHistory() {
+  HistoryItemList history;
 
   HistoryItemInfo history_item;
   history_item.created_at = base::Time::FromDoubleT(333333333);
@@ -41,7 +41,7 @@ base::circular_deque<HistoryItemInfo> GetHistory() {
 TEST(BatAdsDateRangeHistoryFilterTest,
      FilterHistoryFromTimestamp444444444ToDistantFuture) {
   // Arrange
-  base::circular_deque<HistoryItemInfo> history = GetHistory();
+  HistoryItemList history = GetHistory();
 
   const base::Time from_time = base::Time::FromDoubleT(444444444);
   const base::Time to_time = DistantFuture();
@@ -51,7 +51,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   history = filter.Apply(history);
 
   // Assert
-  base::circular_deque<HistoryItemInfo> expected_history;
+  HistoryItemList expected_history;
 
   HistoryItemInfo history_item;
   history_item.created_at = base::Time::FromDoubleT(444444444);
@@ -67,7 +67,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
 TEST(BatAdsDateRangeHistoryFilterTest,
      FilterHistoryFromTimestamp777777777ToDistantFuture) {
   // Arrange
-  base::circular_deque<HistoryItemInfo> history = GetHistory();
+  HistoryItemList history = GetHistory();
 
   const base::Time from_time = base::Time::FromDoubleT(777777777);
   const base::Time to_time = DistantFuture();
@@ -77,7 +77,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   history = filter.Apply(history);
 
   // Assert
-  const base::circular_deque<HistoryItemInfo> expected_history;
+  const HistoryItemList expected_history;
 
   EXPECT_TRUE(IsEqualContainers(expected_history, history));
 }
@@ -85,7 +85,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
 TEST(BatAdsDateRangeHistoryFilterTest,
      FilterHistoryFromDistantPastToTimestamp444444444) {
   // Arrange
-  base::circular_deque<HistoryItemInfo> history = GetHistory();
+  HistoryItemList history = GetHistory();
 
   const base::Time from_time = DistantPast();
   const base::Time to_time = base::Time::FromDoubleT(444444444);
@@ -95,7 +95,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   history = filter.Apply(history);
 
   // Assert
-  base::circular_deque<HistoryItemInfo> expected_history;
+  HistoryItemList expected_history;
   HistoryItemInfo history_item;
   history_item.created_at = base::Time::FromDoubleT(333333333);
   expected_history.push_back(history_item);
@@ -110,7 +110,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
 TEST(BatAdsDateRangeHistoryFilterTest,
      FilterHistoryFromDistancePastToTimestamp111111111) {
   // Arrange
-  base::circular_deque<HistoryItemInfo> history = GetHistory();
+  HistoryItemList history = GetHistory();
 
   const base::Time from_time = DistantPast();
   const base::Time to_time = base::Time::FromDoubleT(111111111);
@@ -120,7 +120,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   history = filter.Apply(history);
 
   // Assert
-  const base::circular_deque<HistoryItemInfo> expected_history;
+  const HistoryItemList expected_history;
 
   EXPECT_TRUE(IsEqualContainers(expected_history, history));
 }
@@ -128,7 +128,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
 TEST(BatAdsDateRangeHistoryFilterTest,
      FilterHistoryFromDistantPastToDistantFuture) {
   // Arrange
-  base::circular_deque<HistoryItemInfo> history = GetHistory();
+  HistoryItemList history = GetHistory();
 
   const base::Time from_time = DistantPast();
   const base::Time to_time = DistantFuture();
@@ -138,7 +138,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   history = filter.Apply(history);
 
   // Assert
-  base::circular_deque<HistoryItemInfo> expected_history;
+  HistoryItemList expected_history;
   HistoryItemInfo history_item;
   history_item.created_at = base::Time::FromDoubleT(333333333);
   expected_history.push_back(history_item);
@@ -157,7 +157,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
 TEST(BatAdsDateRangeHistoryFilterTest,
      FilterHistoryFromDistantFutureToDistantPast) {
   // Arrange
-  base::circular_deque<HistoryItemInfo> history = GetHistory();
+  HistoryItemList history = GetHistory();
 
   const base::Time from_time = DistantFuture();
   const base::Time to_time = DistantPast();
@@ -167,14 +167,14 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   history = filter.Apply(history);
 
   // Assert
-  const base::circular_deque<HistoryItemInfo> expected_history;
+  const HistoryItemList expected_history;
 
   EXPECT_TRUE(IsEqualContainers(expected_history, history));
 }
 
 TEST(BatAdsDateRangeHistoryFilterTest, FilterEmptyHistory) {
   // Arrange
-  base::circular_deque<HistoryItemInfo> history;
+  HistoryItemList history;
 
   const base::Time from_time = base::Time::FromDoubleT(444444444);
   const base::Time to_time = DistantFuture();
@@ -184,7 +184,7 @@ TEST(BatAdsDateRangeHistoryFilterTest, FilterEmptyHistory) {
   history = filter.Apply(history);
 
   // Assert
-  const base::circular_deque<HistoryItemInfo> expected_history;
+  const HistoryItemList expected_history;
 
   EXPECT_TRUE(IsEqualContainers(expected_history, history));
 }

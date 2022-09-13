@@ -54,6 +54,16 @@ void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
       GetChromeSourceProfiles(GetChromeUserDataFolder().Append(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
       GetChromeUserDataFolder(), "Chrome ", importer::TYPE_CHROME);
+  AddChromeToProfiles(
+      profiles,
+      GetChromeSourceProfiles(GetChromeBetaUserDataFolder().Append(
+          base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
+      GetChromeBetaUserDataFolder(), "Chrome Beta ", importer::TYPE_CHROME);
+  AddChromeToProfiles(
+      profiles,
+      GetChromeSourceProfiles(GetChromeDevUserDataFolder().Append(
+          base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
+      GetChromeDevUserDataFolder(), "Chrome Dev ", importer::TYPE_CHROME);
 #if !BUILDFLAG(IS_LINUX)
   AddChromeToProfiles(
       profiles,

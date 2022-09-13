@@ -11,11 +11,12 @@
 
 #include "base/observer_list.h"
 #include "base/time/time.h"
-#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
+#include "base/values.h"
+#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/browser/ads_service_callback.h"
 #include "brave/components/brave_ads/browser/ads_service_observer.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/new_tab_page_ad_info.h"
-#include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
+#include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"  // IWYU pragma: keep
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/core/session_id.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -48,17 +49,17 @@ class AdsService : public KeyedService {
   virtual bool IsEnabled() const = 0;
 
   // Called to enable or disable ads.
-  virtual void SetEnabled(const bool is_enabled) = 0;
+  virtual void SetEnabled(bool is_enabled) = 0;
 
   // Returns the maximum number of notification ads that can be served per hour.
   virtual int64_t GetMaximumNotificationAdsPerHour() const = 0;
 
   // Called to set the maximum number of notification ads that can be served per
   // hour.
-  virtual void SetMaximumNotificationAdsPerHour(const int64_t ads_per_hour) = 0;
+  virtual void SetMaximumNotificationAdsPerHour(int64_t ads_per_hour) = 0;
 
   // Called to allow or disallow conversion tracking.
-  virtual void SetAllowConversionTracking(const bool should_allow) = 0;
+  virtual void SetAllowConversionTracking(bool should_allow) = 0;
 
   // Returns |true| if subdivision targeting is supported.
   virtual bool ShouldAllowSubdivisionTargeting() const = 0;
@@ -101,7 +102,7 @@ class AdsService : public KeyedService {
   // Called when a notification ad with |placement_id| is closed. |by_user| is
   // |true| if the user closed the notification otherwise |false|.
   virtual void OnNotificationAdClosed(const std::string& placement_id,
-                                      const bool by_user) = 0;
+                                      bool by_user) = 0;
 
   // Called when a notification ad with |placement_id| is clicked.
   virtual void OnNotificationAdClicked(const std::string& placement_id) = 0;
@@ -141,7 +142,7 @@ class AdsService : public KeyedService {
   // Called when a page navigation was initiated by a user gesture.
   // |page_transition_type| containing the page transition type, see enums for
   // |PageTransitionType|.
-  virtual void OnUserGesture(const int32_t page_transition_type) = 0;
+  virtual void OnUserGesture(int32_t page_transition_type) = 0;
 
   // Called when media starts playing on a browser tab for the specified
   // |tab_id|.
@@ -160,8 +161,8 @@ class AdsService : public KeyedService {
   // active otherwise |false|.
   virtual void OnTabUpdated(const SessionID& tab_id,
                             const std::vector<GURL>& redirect_chain,
-                            const bool is_active,
-                            const bool is_browser_active) = 0;
+                            bool is_active,
+                            bool is_browser_active) = 0;
 
   // Called when a browser tab with the specified |tab_id| was closed.
   virtual void OnTabClosed(const SessionID& tab_id) = 0;
@@ -178,7 +179,7 @@ class AdsService : public KeyedService {
   // Should be called to serve an inline content ad for the specified
   // |dimensions|. The callback takes three arguments - |bool| is set to |true|
   // if successful otherwise |false|, |std::string| containing the dimensions
-  // and |base::DictionaryValue| containing the ad.
+  // and |base::Value::Dict| containing the ad.
   virtual void MaybeServeInlineContentAd(
       const std::string& dimensions,
       MaybeServeInlineContentAdCallback callback) = 0;
@@ -192,7 +193,7 @@ class AdsService : public KeyedService {
   virtual void TriggerInlineContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      const ads::mojom::InlineContentAdEventType event_type) = 0;
+      ads::mojom::InlineContentAdEventType event_type) = 0;
 
   // Called to prefetch the next new tab page ad.
   virtual void PrefetchNewTabPageAd() = 0;
@@ -215,7 +216,7 @@ class AdsService : public KeyedService {
   virtual void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      const ads::mojom::NewTabPageAdEventType event_type) = 0;
+      ads::mojom::NewTabPageAdEventType event_type) = 0;
 
   // Called when a user views or interacts with a promoted content ad to trigger
   // an |event_type| event for the specified |placement_id| and
@@ -226,38 +227,38 @@ class AdsService : public KeyedService {
   virtual void TriggerPromotedContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      const ads::mojom::PromotedContentAdEventType event_type) = 0;
+      ads::mojom::PromotedContentAdEventType event_type) = 0;
 
   // Called when a user views or interacts with a search result ad to trigger an
   // |event_type| event for the ad specified in |ad_mojom|.
   virtual void TriggerSearchResultAdEvent(
       ads::mojom::SearchResultAdInfoPtr ad_mojom,
-      const ads::mojom::SearchResultAdEventType event_type) = 0;
+      ads::mojom::SearchResultAdEventType event_type) = 0;
 
   // Called to purge orphaned served ad events. NOTE: You should call before
   // triggering new ad events for the specified |ad_type|. The callback takes
   // one argument - |bool| is set to |true| if successful otherwise |false|.
   virtual void PurgeOrphanedAdEventsForType(
-      const ads::mojom::AdType ad_type,
+      ads::mojom::AdType ad_type,
       PurgeOrphanedAdEventsForTypeCallback callback) = 0;
 
   // Called to get history between |from_time| and |to_time| date range. The
-  // callback takes one argument - |base::ListValue| containing info of the
+  // callback takes one argument - |base::Value::List| containing info of the
   // obtained history.
-  virtual void GetHistory(const base::Time from_time,
-                          const base::Time to_time,
+  virtual void GetHistory(base::Time from_time,
+                          base::Time to_time,
                           GetHistoryCallback callback) = 0;
 
   // Called to like an advertiser. This is a toggle, so calling it again returns
   // the setting to the neutral state. The callback takes one argument -
-  // |std::string| containing the current state.
-  virtual void ToggleAdThumbUp(const std::string& json,
+  // |base::Value::Dict| containing the current state.
+  virtual void ToggleAdThumbUp(base::Value::Dict value,
                                ToggleAdThumbUpCallback callback) = 0;
 
   // Called to dislike an advertiser. This is a toggle, so calling it again
   // returns the setting to the neutral state. The callback takes one argument -
-  // |std::string| containing the current state.
-  virtual void ToggleAdThumbDown(const std::string& json,
+  // |base::Value::Dict| containing the current state.
+  virtual void ToggleAdThumbDown(base::Value::Dict value,
                                  ToggleAdThumbDownCallback callback) = 0;
 
   // Called to no longer receive ads for the specified category. This is a
@@ -265,7 +266,7 @@ class AdsService : public KeyedService {
   // callback takes two arguments - |std::string| containing the category. |int|
   // containing the action.
   virtual void ToggleAdOptIn(const std::string& category,
-                             const int action,
+                             int action,
                              ToggleAdOptInCallback callback) = 0;
 
   // Called to receive ads for the specified category. This is a toggle, so
@@ -273,23 +274,23 @@ class AdsService : public KeyedService {
   // takes two arguments - |std::string| containing the category. |int|
   // containing the action.
   virtual void ToggleAdOptOut(const std::string& category,
-                              const int action,
+                              int action,
                               ToggleAdOptOutCallback callback) = 0;
 
   // Called to save an ad for later viewing. This is a toggle, so calling it
   // again removes the ad from the saved list. The callback takes one argument -
-  // |std::string| containing the current state.
-  virtual void ToggleSavedAd(const std::string& json,
+  // |base::Value::Dict| containing the current state.
+  virtual void ToggleSavedAd(base::Value::Dict value,
                              ToggleSavedAdCallback callback) = 0;
 
   // Called to mark an ad as inappropriate. This is a toggle, so calling it
-  // again unmarks the ad. The callback takes one argument - |std::string|
+  // again unmarks the ad. The callback takes one argument - |base::Value::Dict|
   // containing the current state.
-  virtual void ToggleFlaggedAd(const std::string& json,
+  virtual void ToggleFlaggedAd(base::Value::Dict value,
                                ToggleFlaggedAdCallback callback) = 0;
 
   // Called to wipe all state.
-  virtual void WipeState(const bool should_shutdown) = 0;
+  virtual void WipeState(bool should_shutdown) = 0;
 
  protected:
   base::ObserverList<AdsServiceObserver> observers_;

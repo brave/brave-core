@@ -527,7 +527,9 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoType) {
   // included in the pref, above), minus the obsolete items (history), plus any
   // new default items, plus the custom item.
   EXPECT_EQ(service_->items().size(),
-            std::size(SidebarService::kDefaultBuiltInItemTypes) + 1);
+            std::size(SidebarService::kDefaultBuiltInItemTypes) -
+                2 /* for history and playlist: invisible built-in itmes */
+                + 1 /*for custom item added above*/);
 }
 
 TEST_F(SidebarServiceTest, HidesBuiltInItemsViaPref) {

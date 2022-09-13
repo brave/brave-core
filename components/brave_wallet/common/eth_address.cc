@@ -9,6 +9,7 @@
 
 #include "base/check_op.h"
 #include "base/logging.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
@@ -72,6 +73,11 @@ EthAddress EthAddress::FromBytes(base::span<const uint8_t> bytes) {
 }
 
 // static
+EthAddress EthAddress::ZeroAddress() {
+  return EthAddress(std::vector<uint8_t>(kAddressLength, 0));
+}
+
+// static
 bool EthAddress::IsValidAddress(const std::string& input) {
   if (!IsValidHexString(input)) {
     VLOG(1) << __func__ << ": input is not a valid hex representation";
@@ -120,6 +126,19 @@ std::string EthAddress::ToChecksumAddress(uint256_t eip1191_chaincode) const {
     }
   }
   return result;
+}
+
+bool EthAddress::IsEmpty() const {
+  return bytes_.empty();
+}
+
+bool EthAddress::IsValid() const {
+  return !bytes_.empty();
+}
+
+bool EthAddress::IsZeroAddress() const {
+  return IsValid() &&
+         base::ranges::all_of(bytes_, [](auto b) { return b == 0; });
 }
 
 }  // namespace brave_wallet

@@ -484,7 +484,9 @@ gfx::ImageSkia SidebarItemsContentsView::GetImageForBuiltInItems(
       focused_image_resource = IDR_SIDEBAR_HISTORY_FOCUSED;
       normal_image_icon = &kSidebarHistoryIcon;
       break;
-    default:
+    case sidebar::SidebarItem::BuiltInItemType::kPlaylist:
+      return gfx::ImageSkia();
+    case sidebar::SidebarItem::BuiltInItemType::kNone:
       NOTREACHED();
       return gfx::ImageSkia();
   }

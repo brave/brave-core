@@ -14,6 +14,8 @@
 #include "base/containers/contains.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/notreached.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
@@ -23,6 +25,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/ens_resolver_task.h"
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service_test_utils.h"
@@ -30,6 +33,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -183,6 +187,19 @@ void OnStringResponse(bool* callback_called,
                       const std::string& response,
                       brave_wallet::mojom::ProviderError error,
                       const std::string& error_message) {
+  *callback_called = true;
+  EXPECT_EQ(expected_response, response);
+  EXPECT_EQ(expected_error, error);
+  EXPECT_EQ(expected_error_message, error_message);
+}
+
+void OnBytesResponse(bool* callback_called,
+                     brave_wallet::mojom::ProviderError expected_error,
+                     const std::string& expected_error_message,
+                     const std::vector<uint8_t>& expected_response,
+                     const std::vector<uint8_t>& response,
+                     brave_wallet::mojom::ProviderError error,
+                     const std::string& error_message) {
   *callback_called = true;
   EXPECT_EQ(expected_response, response);
   EXPECT_EQ(expected_error, error);
@@ -1179,12 +1196,12 @@ TEST_F(JsonRpcServiceUnitTest, GetHiddenNetworks) {
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
-TEST_F(JsonRpcServiceUnitTest, EnsResolverGetContentHash) {
+TEST_F(JsonRpcServiceUnitTest, EnsGetContentHash) {
   bool callback_called = false;
   SetUDENSInterceptor(mojom::kMainnetChainId);
-  json_rpc_service_->EnsResolverGetContentHash(
+  json_rpc_service_->EnsGetContentHash(
       "brantly.eth",
-      base::BindLambdaForTesting([&](const std::string& result,
+      base::BindLambdaForTesting([&](const std::vector<uint8_t>& result,
                                      brave_wallet::mojom::ProviderError error,
                                      const std::string& error_message) {
         callback_called = true;
@@ -1200,30 +1217,33 @@ TEST_F(JsonRpcServiceUnitTest, EnsResolverGetContentHash) {
 
   callback_called = false;
   SetHTTPRequestTimeoutInterceptor();
-  json_rpc_service_->EnsResolverGetContentHash(
+  json_rpc_service_->EnsGetContentHash(
       "brantly.eth",
-      base::BindOnce(&OnStringResponse, &callback_called,
+      base::BindOnce(&OnBytesResponse, &callback_called,
                      mojom::ProviderError::kInternalError,
-                     l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), ""));
+                     l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
+                     std::vector<uint8_t>()));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
   SetInvalidJsonInterceptor();
-  json_rpc_service_->EnsResolverGetContentHash(
+  json_rpc_service_->EnsGetContentHash(
       "brantly.eth",
-      base::BindOnce(&OnStringResponse, &callback_called,
+      base::BindOnce(&OnBytesResponse, &callback_called,
                      mojom::ProviderError::kParsingError,
-                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), ""));
+                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR),
+                     std::vector<uint8_t>()));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
   SetLimitExceededJsonErrorResponse();
-  json_rpc_service_->EnsResolverGetContentHash(
-      "brantly.eth", base::BindOnce(&OnStringResponse, &callback_called,
-                                    mojom::ProviderError::kLimitExceeded,
-                                    "Request exceeds defined limit", ""));
+  json_rpc_service_->EnsGetContentHash(
+      "brantly.eth",
+      base::BindOnce(&OnBytesResponse, &callback_called,
+                     mojom::ProviderError::kLimitExceeded,
+                     "Request exceeds defined limit", std::vector<uint8_t>()));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 }
@@ -3965,31 +3985,54 @@ TEST_F(JsonRpcServiceUnitTest, SendFilecoinTransaction) {
 
 class EthCallHandler {
  public:
-  EthCallHandler() = default;
+  EthCallHandler(const EthAddress& to, const eth_abi::Bytes4& selector)
+      : to_(to), selectors_({selector}) {}
+  EthCallHandler(const EthAddress& to,
+                 const std::vector<eth_abi::Bytes4>& selectors)
+      : to_(to), selectors_(selectors) {}
   virtual ~EthCallHandler() = default;
 
-  virtual absl::optional<std::string> HandleEthCall(const std::string& data,
-                                                    const EthAddress& to) = 0;
+  bool CallSupported(const EthAddress& to, eth_abi::Span call_data) {
+    if (to != to_)
+      return false;
+
+    auto [selector, _] =
+        eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
+
+    for (const auto& s : selectors_) {
+      if (base::ranges::equal(s, selector))
+        return true;
+    }
+    return false;
+  }
+
+  virtual absl::optional<std::string> HandleEthCall(
+      eth_abi::Span call_data) = 0;
+
+ protected:
+  EthAddress to_;
+  std::vector<eth_abi::Bytes4> selectors_;
 };
 
-class GetEnsResolverHandler : public EthCallHandler {
+class EnsGetResolverHandler : public EthCallHandler {
  public:
-  explicit GetEnsResolverHandler(const EthAddress& resolver_address)
-      : resolver_address_(resolver_address) {}
+  EnsGetResolverHandler(const std::string& host_name,
+                        const EthAddress& resolver_address)
+      : EthCallHandler(EthAddress::FromHex(GetEnsRegistryContractAddress(
+                           mojom::kMainnetChainId)),
+                       GetFunctionHashBytes4("resolver(bytes32)")),
+        host_name_(host_name),
+        resolver_address_(resolver_address) {}
+  ~EnsGetResolverHandler() override = default;
 
-  ~GetEnsResolverHandler() override = default;
-  absl::optional<std::string> HandleEthCall(const std::string& data,
-                                            const EthAddress& to) override {
-    if (to != EthAddress::FromHex(
-                  GetEnsRegistryContractAddress(mojom::kMainnetChainId)))
-      return absl::nullopt;
+  absl::optional<std::string> HandleEthCall(eth_abi::Span call_data) override {
+    auto [_, args] = eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
+    auto namehash_bytes = eth_abi::ExtractFixedBytesFromTuple(args, 32, 0);
+    EXPECT_TRUE(namehash_bytes);
 
-    auto bytes = *PrefixedHexStringToBytes(data);
-    auto [selector, args] =
-        eth_abi::ExtractFunctionSelectorAndArgsFromCall(bytes);
-
-    if (ToHex(selector) != GetFunctionHash("resolver(bytes32)")) {
-      return absl::nullopt;
+    if (!base::ranges::equal(*namehash_bytes, Namehash(host_name_))) {
+      return MakeJsonRpcTupleResponse(
+          eth_abi::TupleEncoder().AddAddress(EthAddress::ZeroAddress()));
     }
 
     return MakeJsonRpcTupleResponse(
@@ -3997,65 +4040,101 @@ class GetEnsResolverHandler : public EthCallHandler {
   }
 
  private:
+  std::string host_name_;
   EthAddress resolver_address_;
 };
 
 class Ensip10SupportHandler : public EthCallHandler {
  public:
   explicit Ensip10SupportHandler(const EthAddress& resolver_address)
-      : resolver_address_(resolver_address) {}
-
+      : EthCallHandler(resolver_address,
+                       GetFunctionHashBytes4("supportsInterface(bytes4)")) {}
   ~Ensip10SupportHandler() override = default;
-  absl::optional<std::string> HandleEthCall(const std::string& data,
-                                            const EthAddress& to) override {
-    if (to != resolver_address_)
-      return absl::nullopt;
 
-    if (data != ToHex(erc165::SupportsInterface(kResolveBytesBytesSelector)))
-      return absl::nullopt;
+  absl::optional<std::string> HandleEthCall(eth_abi::Span call_data) override {
+    auto [_, args] = eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
+
+    auto arg_selector = eth_abi::ExtractFixedBytesFromTuple(args, 4, 0);
+    EXPECT_TRUE(arg_selector);
+    EXPECT_TRUE(base::ranges::equal(*arg_selector, kResolveBytesBytesSelector));
 
     return MakeJsonRpcTupleResponse(
-        eth_abi::TupleEncoder().AddUint256(uint256_t(1)));
+        eth_abi::TupleEncoder().AddUint256(uint256_t(result_value_)));
+  }
+
+  void DisableSupport() { result_value_ = 0; }
+
+ private:
+  uint256_t result_value_ = 1;
+};
+
+class EnsGetRecordHandler : public EthCallHandler {
+ public:
+  explicit EnsGetRecordHandler(const EthAddress& resolver_address,
+                               const std::string& host_name,
+                               const EthAddress& result_address,
+                               const std::vector<uint8_t>& result_contenthash)
+      : EthCallHandler(resolver_address,
+                       {GetFunctionHashBytes4("addr(bytes32)"),
+                        GetFunctionHashBytes4("contenthash(bytes32)")}),
+        host_name_(host_name),
+        result_address_(result_address),
+        result_contenthash_(result_contenthash) {}
+  ~EnsGetRecordHandler() override = default;
+
+  absl::optional<std::string> HandleEthCall(eth_abi::Span call_data) override {
+    auto [selector, args] =
+        eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
+
+    auto namehash_bytes = eth_abi::ExtractFixedBytesFromTuple(args, 32, 0);
+    EXPECT_TRUE(namehash_bytes);
+    bool host_matches =
+        base::ranges::equal(*namehash_bytes, Namehash(host_name_));
+
+    if (base::ranges::equal(selector, GetFunctionHashBytes4("addr(bytes32)"))) {
+      auto eth_address = EthAddress::ZeroAddress();
+      if (host_matches)
+        eth_address = result_address_;
+
+      return MakeJsonRpcTupleResponse(
+          eth_abi::TupleEncoder().AddAddress(eth_address));
+    } else if (base::ranges::equal(
+                   selector, GetFunctionHashBytes4("contenthash(bytes32)"))) {
+      std::vector<uint8_t> contenthash;
+      if (host_matches)
+        contenthash = result_contenthash_;
+
+      return MakeJsonRpcTupleResponse(
+          eth_abi::TupleEncoder().AddBytes(contenthash));
+    }
+    NOTREACHED();
+    return absl::nullopt;
   }
 
  private:
-  EthAddress resolver_address_;
+  std::string host_name_;
+  EthAddress result_address_;
+  std::vector<uint8_t> result_contenthash_;
 };
 
 class Ensip10ResolveHandler : public EthCallHandler {
  public:
-  explicit Ensip10ResolveHandler(const EthAddress& resolver_address,
-                                 const std::string& host_name,
-                                 const GURL& gateway_url)
-      : resolver_address_(resolver_address),
+  Ensip10ResolveHandler(const EthAddress& resolver_address,
+                        const std::string& host_name,
+                        const GURL& gateway_url)
+      : EthCallHandler(resolver_address,
+                       GetFunctionHashBytes4("resolve(bytes,bytes)")),
+        resolver_address_(resolver_address),
         host_name_(host_name),
         gateway_url_(gateway_url) {}
 
   ~Ensip10ResolveHandler() override = default;
 
-  absl::optional<std::string> HandleEthCall(const std::string& data,
-                                            const EthAddress& to) override {
-    if (to != resolver_address_)
-      return absl::nullopt;
-
-    auto bytes = *PrefixedHexStringToBytes(data);
-    auto [selector, args] =
-        eth_abi::ExtractFunctionSelectorAndArgsFromCall(bytes);
-
-    if (ToHex(selector) != GetFunctionHash("resolve(bytes,bytes)")) {
-      return absl::nullopt;
-    }
-
-    auto name_arg = eth_abi::ExtractBytesFromTuple(args, 0);
-    auto call_arg = eth_abi::ExtractBytesFromTuple(args, 1);
-
-    if (*ens::DnsEncode(host_name_) != name_arg) {
-      return absl::nullopt;
-    }
-
-    auto call_data = eth_abi::TupleEncoder().AddString("call data").Encode();
+  absl::optional<std::string> HandleEthCall(eth_abi::Span call_data) override {
     auto extra_data = eth_abi::TupleEncoder().AddString("extra data").Encode();
 
+    // Sending `bytes` as callData argument to gateway. Gateway will decode it
+    // and return requested ens record.
     auto offchain_lookup =
         eth_abi::TupleEncoder()
             .AddAddress(resolver_address_)          // address
@@ -4079,22 +4158,13 @@ class Ensip10ResolveHandler : public EthCallHandler {
 class Ensip10ResolveCallbackHandler : public EthCallHandler {
  public:
   explicit Ensip10ResolveCallbackHandler(const EthAddress& resolver_address)
-      : resolver_address_(resolver_address) {}
+      : EthCallHandler(resolver_address,
+                       GetFunctionHashBytes4("resolveCallback(bytes,bytes)")),
+        resolver_address_(resolver_address) {}
   ~Ensip10ResolveCallbackHandler() override = default;
 
-  absl::optional<std::string> HandleEthCall(const std::string& data,
-                                            const EthAddress& to) override {
-    if (to != resolver_address_)
-      return absl::nullopt;
-
-    auto bytes = *PrefixedHexStringToBytes(data);
-    auto [selector, args] =
-        eth_abi::ExtractFunctionSelectorAndArgsFromCall(bytes);
-
-    if (!base::ranges::equal(
-            selector, GetFunctionHashBytes4("resolveCallback(bytes,bytes)"))) {
-      return absl::nullopt;
-    }
+  absl::optional<std::string> HandleEthCall(eth_abi::Span call_data) override {
+    auto [_, args] = eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
 
     auto extra_data_bytes = eth_abi::ExtractBytesFromTuple(args, 1);
     EXPECT_EQ("extra data",
@@ -4132,8 +4202,8 @@ class JsonRpcEnpointHandler {
     return absl::nullopt;
   }
 
-  void AddEthCallHandler(std::unique_ptr<EthCallHandler> handler) {
-    eth_call_handlers_.push_back(std::move(handler));
+  void AddEthCallHandler(EthCallHandler* handler) {
+    eth_call_handlers_.push_back(handler);
   }
 
  protected:
@@ -4154,9 +4224,15 @@ class JsonRpcEnpointHandler {
     if (!data_param || !to_param || !EthAddress::FromHex(*to_param).IsValid())
       return absl::nullopt;
 
-    for (auto& handler : eth_call_handlers_) {
-      auto response =
-          handler->HandleEthCall(*data_param, EthAddress::FromHex(*to_param));
+    auto call_data = PrefixedHexStringToBytes(*data_param);
+    if (!call_data)
+      return absl::nullopt;
+
+    for (auto* handler : eth_call_handlers_) {
+      if (!handler->CallSupported(EthAddress::FromHex(*to_param), *call_data))
+        continue;
+
+      auto response = handler->HandleEthCall(*call_data);
       if (response)
         return response;
     }
@@ -4165,22 +4241,27 @@ class JsonRpcEnpointHandler {
 
  private:
   GURL endpoint_;
-  std::vector<std::unique_ptr<EthCallHandler>> eth_call_handlers_;
+  std::vector<EthCallHandler*> eth_call_handlers_;
 };
 
-class GatewayHandler {
+class OffchainGatewayHandler {
  public:
-  explicit GatewayHandler(const GURL& gateway_url,
-                          const EthAddress& resolver_address,
-                          const EthAddress& result_address)
+  OffchainGatewayHandler(const GURL& gateway_url,
+                         const EthAddress& resolver_address,
+                         const EthAddress& offchain_eth_address,
+                         const std::vector<uint8_t>& offchain_contenthash)
       : gateway_url_(gateway_url),
         resolver_address_(resolver_address),
-        result_address_(result_address) {}
+        offchain_eth_address_(offchain_eth_address),
+        offchain_contenthash_(offchain_contenthash) {}
 
   absl::optional<std::string> HandleRequest(
       const network::ResourceRequest& request) {
     if (request.url.host() != gateway_url_.host())
       return absl::nullopt;
+
+    if (respond_with_500_)
+      return "";
 
     auto payload = ToValue(request);
     if (!payload || !payload->is_dict())
@@ -4189,22 +4270,66 @@ class GatewayHandler {
     EXPECT_EQ(EthAddress::FromHex(*sender), resolver_address_);
 
     auto* data = payload->GetDict().FindString("data");
-    EXPECT_EQ("call data", eth_abi::ExtractStringFromTuple(
-                               *PrefixedHexStringToBytes(*data), 0));
+    auto bytes = PrefixedHexStringToBytes(*data);
+    if (!bytes) {
+      NOTREACHED();
+      return absl::nullopt;
+    }
+
+    auto [selector, args] =
+        eth_abi::ExtractFunctionSelectorAndArgsFromCall(*bytes);
+
+    if (ToHex(selector) != GetFunctionHash("resolve(bytes,bytes)")) {
+      NOTREACHED();
+      return absl::nullopt;
+    }
+
+    auto dns_encoded_name = eth_abi::ExtractBytesFromTuple(args, 0);
+    if (!dns_encoded_name) {
+      NOTREACHED();
+      return absl::nullopt;
+    }
+    if (dns_encoded_name != ens::DnsEncode("offchainexample.eth")) {
+      return absl::nullopt;
+    }
+
+    auto encoded_call = eth_abi::ExtractBytesFromTuple(args, 1);
+    auto [encoded_call_selector, _] =
+        eth_abi::ExtractFunctionSelectorAndArgsFromCall(*encoded_call);
+
+    std::string data_value;
+    if (base::ranges::equal(encoded_call_selector, kAddrBytes32Selector)) {
+      auto address = respond_with_no_record_ ? EthAddress::ZeroAddress()
+                                             : offchain_eth_address_;
+      data_value = ToHex(eth_abi::TupleEncoder().AddAddress(address).Encode());
+    } else if (base::ranges::equal(encoded_call_selector,
+                                   kContentHashBytes32Selector)) {
+      auto contenthash = respond_with_no_record_ ? std::vector<uint8_t>()
+                                                 : offchain_contenthash_;
+      data_value =
+          ToHex(eth_abi::TupleEncoder().AddBytes(contenthash).Encode());
+    } else {
+      NOTREACHED();
+      return absl::nullopt;
+    }
 
     base::Value::Dict result;
-    result.Set(
-        "data",
-        ToHex(eth_abi::TupleEncoder().AddAddress(result_address_).Encode()));
+    result.Set("data", data_value);
     std::string response;
     base::JSONWriter::Write(result, &response);
     return response;
   }
 
+  void SetRespondWith500() { respond_with_500_ = true; }
+  void SetRespondWithNoRecord() { respond_with_no_record_ = true; }
+
  private:
   GURL gateway_url_;
   EthAddress resolver_address_;
-  EthAddress result_address_;
+  EthAddress offchain_eth_address_;
+  std::vector<uint8_t> offchain_contenthash_;
+  bool respond_with_500_ = false;
+  bool respond_with_no_record_ = false;
 };
 
 class ENSL2JsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
@@ -4215,18 +4340,32 @@ class ENSL2JsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
     JsonRpcServiceUnitTest::SetUp();
     json_rpc_endpoint_handler_ = std::make_unique<JsonRpcEnpointHandler>(
         GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH));
+
+    ens_resolver_handler_ =
+        std::make_unique<EnsGetResolverHandler>(ens_host(), resolver_address());
+    ens_get_record_handler_ = std::make_unique<EnsGetRecordHandler>(
+        resolver_address(), ens_host(), onchain_eth_addr(),
+        onchain_contenthash());
+    ensip10_support_handler_ =
+        std::make_unique<Ensip10SupportHandler>(resolver_address());
+    ensip10_resolve_handler_ = std::make_unique<Ensip10ResolveHandler>(
+        resolver_address(), ens_host(), gateway_url());
+    ensip10_resolve_callback_handler_ =
+        std::make_unique<Ensip10ResolveCallbackHandler>(resolver_address());
+
+    json_rpc_endpoint_handler_->AddEthCallHandler(ens_resolver_handler_.get());
     json_rpc_endpoint_handler_->AddEthCallHandler(
-        std::make_unique<GetEnsResolverHandler>(offchain_resolver_address()));
+        ens_get_record_handler_.get());
     json_rpc_endpoint_handler_->AddEthCallHandler(
-        std::make_unique<Ensip10SupportHandler>(offchain_resolver_address()));
+        ensip10_support_handler_.get());
     json_rpc_endpoint_handler_->AddEthCallHandler(
-        std::make_unique<Ensip10ResolveHandler>(offchain_resolver_address(),
-                                                ens_host(), gateway_url()));
+        ensip10_resolve_handler_.get());
     json_rpc_endpoint_handler_->AddEthCallHandler(
-        std::make_unique<Ensip10ResolveCallbackHandler>(
-            offchain_resolver_address()));
-    gateway_handler_ = std::make_unique<GatewayHandler>(
-        gateway_url(), offchain_resolver_address(), offchain_address());
+        ensip10_resolve_callback_handler_.get());
+
+    offchain_gateway_handler_ = std::make_unique<OffchainGatewayHandler>(
+        gateway_url(), resolver_address(), offchain_eth_addr(),
+        offchain_contenthash());
 
     url_loader_factory_.SetInterceptor(base::BindRepeating(
         &ENSL2JsonRpcServiceUnitTest::HandleRequest, base::Unretained(this)));
@@ -4234,34 +4373,173 @@ class ENSL2JsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
 
   std::string ens_host() { return "offchainexample.eth"; }
   GURL gateway_url() { return GURL("https://gateway.brave.com/"); }
-  EthAddress offchain_resolver_address() {
+  EthAddress resolver_address() {
     return EthAddress::FromHex("0xc1735677a60884abbcf72295e88d47764beda282");
   }
-  EthAddress offchain_address() {
+  EthAddress offchain_eth_addr() {
     return EthAddress::FromHex("0xaabbccddeeaabbccddeeaabbccddeeaabbccddee");
+  }
+
+  EthAddress onchain_eth_addr() {
+    return EthAddress::FromHex("0x1234567890123456789012345678901234567890");
+  }
+
+  std::vector<uint8_t> offchain_contenthash() {
+    std::string contenthash =
+        "e30101701220f073be187e8e06039796c432a"
+        "5bdd6da3f403c2f93fa5d9dbdc5547c7fe0e3bc";
+    std::vector<uint8_t> bytes;
+    base::HexStringToBytes(contenthash, &bytes);
+    return bytes;
+  }
+
+  std::vector<uint8_t> onchain_contenthash() {
+    std::string contenthash =
+        "e50101701220f073be187e8e06039796c432a"
+        "5bdd6da3f403c2f93fa5d9dbdc5547c7fe0e3bc";
+    std::vector<uint8_t> bytes;
+    base::HexStringToBytes(contenthash, &bytes);
+    return bytes;
   }
 
  protected:
   void HandleRequest(const network::ResourceRequest& request) {
+    url_loader_factory_.ClearResponses();
     if (auto response = json_rpc_endpoint_handler_->HandleRequest(request)) {
       url_loader_factory_.AddResponse(request.url.spec(), *response);
-    } else if (auto response = gateway_handler_->HandleRequest(request)) {
-      url_loader_factory_.AddResponse(request.url.spec(), *response);
+    } else if (auto response =
+                   offchain_gateway_handler_->HandleRequest(request)) {
+      if (response->empty()) {
+        url_loader_factory_.AddResponse(request.url.spec(), "",
+                                        net::HTTP_INTERNAL_SERVER_ERROR);
+      } else {
+        url_loader_factory_.AddResponse(request.url.spec(), *response);
+      }
     }
   }
 
- private:
+  std::unique_ptr<EnsGetResolverHandler> ens_resolver_handler_;
+  std::unique_ptr<EnsGetRecordHandler> ens_get_record_handler_;
+  std::unique_ptr<Ensip10SupportHandler> ensip10_support_handler_;
+  std::unique_ptr<Ensip10ResolveHandler> ensip10_resolve_handler_;
+  std::unique_ptr<Ensip10ResolveCallbackHandler>
+      ensip10_resolve_callback_handler_;
   std::unique_ptr<JsonRpcEnpointHandler> json_rpc_endpoint_handler_;
-  std::unique_ptr<GatewayHandler> gateway_handler_;
+  std::unique_ptr<OffchainGatewayHandler> offchain_gateway_handler_;
+
+ private:
   base::test::ScopedFeatureList feature_list_{
       features::kBraveWalletENSL2Feature};
 };
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr) {
   base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
-  EXPECT_CALL(callback, Run(offchain_address().ToHex(),
+  EXPECT_CALL(callback, Run(offchain_eth_addr().ToHex(),
                             mojom::ProviderError::kSuccess, ""));
   json_rpc_service_->EnsGetEthAddr(ens_host(), callback.Get());
+  base::RunLoop().RunUntilIdle();
+}
+
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_NoResolver) {
+  base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
+  EXPECT_CALL(callback,
+              Run("", mojom::ProviderError::kInternalError,
+                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+  json_rpc_service_->EnsGetEthAddr("unknown-host.eth", callback.Get());
+  base::RunLoop().RunUntilIdle();
+}
+
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_NoEnsip10Support) {
+  // TODO(apaymyshev): ENS offchain lookup should work without ensip10
+  // support.
+
+  // Turning off Ensip-10 support for resolver so addr(bytes32) is called.
+  ensip10_support_handler_->DisableSupport();
+
+  base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
+  EXPECT_CALL(callback, Run(onchain_eth_addr().ToHex(),
+                            mojom::ProviderError::kSuccess, ""));
+  json_rpc_service_->EnsGetEthAddr(ens_host(), callback.Get());
+  base::RunLoop().RunUntilIdle();
+}
+
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_Gateway500Error) {
+  // Gateway request fails.
+  offchain_gateway_handler_->SetRespondWith500();
+
+  base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
+  EXPECT_CALL(callback,
+              Run("", mojom::ProviderError::kInternalError,
+                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+  json_rpc_service_->EnsGetEthAddr(ens_host(), callback.Get());
+  base::RunLoop().RunUntilIdle();
+}
+
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_GatewayNoRecord) {
+  // No data record in gateway.
+  offchain_gateway_handler_->SetRespondWithNoRecord();
+
+  base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
+  EXPECT_CALL(callback,
+              Run("", mojom::ProviderError::kInvalidParams,
+                  l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
+  json_rpc_service_->EnsGetEthAddr(ens_host(), callback.Get());
+  base::RunLoop().RunUntilIdle();
+}
+
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash) {
+  base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
+  EXPECT_CALL(callback,
+              Run(offchain_contenthash(), mojom::ProviderError::kSuccess, ""));
+  json_rpc_service_->EnsGetContentHash(ens_host(), callback.Get());
+  base::RunLoop().RunUntilIdle();
+}
+
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_NoResolver) {
+  base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
+  EXPECT_CALL(callback,
+              Run(std::vector<uint8_t>(), mojom::ProviderError::kInternalError,
+                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+  json_rpc_service_->EnsGetContentHash("unknown-host.eth", callback.Get());
+  base::RunLoop().RunUntilIdle();
+}
+
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_NoEnsip10Support) {
+  // TODO(apaymyshev): ENS offchain lookup should work without ensip10
+  // support.
+
+  // Turning off Ensip-10 support for resolver so contenthash(bytes32) is
+  // called.
+  ensip10_support_handler_->DisableSupport();
+
+  base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
+  EXPECT_CALL(callback,
+              Run(onchain_contenthash(), mojom::ProviderError::kSuccess, ""));
+  json_rpc_service_->EnsGetContentHash(ens_host(), callback.Get());
+  base::RunLoop().RunUntilIdle();
+}
+
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_Gateway500Error) {
+  // Gateway request fails.
+  offchain_gateway_handler_->SetRespondWith500();
+
+  base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
+  EXPECT_CALL(callback,
+              Run(std::vector<uint8_t>(), mojom::ProviderError::kInternalError,
+                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+  json_rpc_service_->EnsGetContentHash(ens_host(), callback.Get());
+  base::RunLoop().RunUntilIdle();
+}
+
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_GatewayNoRecord) {
+  // No data record in gateway.
+  offchain_gateway_handler_->SetRespondWithNoRecord();
+
+  base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
+  EXPECT_CALL(callback,
+              Run(std::vector<uint8_t>(), mojom::ProviderError::kInvalidParams,
+                  l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
+  json_rpc_service_->EnsGetContentHash(ens_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
 }
 

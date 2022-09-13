@@ -48,6 +48,18 @@ absl::optional<std::vector<uint8_t>> ExtractGatewayResult(
 
 }  // namespace
 
+std::vector<uint8_t> MakeAddrCall(const std::string& domain) {
+  return eth_abi::TupleEncoder()
+      .AddFixedBytes(Namehash(domain))
+      .EncodeWithSelector(base::make_span(kAddrBytes32Selector));
+}
+
+std::vector<uint8_t> MakeContentHashCall(const std::string& domain) {
+  return eth_abi::TupleEncoder()
+      .AddFixedBytes(Namehash(domain))
+      .EncodeWithSelector(base::make_span(kContentHashBytes32Selector));
+}
+
 OffchainLookupData::OffchainLookupData() = default;
 OffchainLookupData::OffchainLookupData(const OffchainLookupData&) = default;
 OffchainLookupData::OffchainLookupData(OffchainLookupData&&) = default;
@@ -134,6 +146,12 @@ EnsResolverTask::EnsResolverTask(
 
 EnsResolverTask::~EnsResolverTask() = default;
 
+void EnsResolverTask::ScheduleWorkOnTask() {
+  base::SequencedTaskRunnerHandle::Get()->PostTask(
+      FROM_HERE, base::BindOnce(&EnsResolverTask::WorkOnTask,
+                                weak_ptr_factory_.GetWeakPtr()));
+}
+
 void EnsResolverTask::WorkOnTask() {
   if (resolve_result_) {
     std::move(done_callback_)
@@ -150,7 +168,7 @@ void EnsResolverTask::WorkOnTask() {
     return;
   }
 
-  if (!resolver_) {
+  if (!resolver_address_.IsValid()) {
     FetchEnsResolver();
     return;
   }
@@ -182,7 +200,7 @@ void EnsResolverTask::WorkOnTask() {
 }
 
 void EnsResolverTask::FetchEnsResolver() {
-  DCHECK(!resolver_);
+  DCHECK(resolver_address_.IsEmpty());
   const std::string contract_address =
       GetEnsRegistryContractAddress(brave_wallet::mojom::kMainnetChainId);
 
@@ -203,25 +221,31 @@ void EnsResolverTask::OnFetchEnsResolverDone(
     return;
   }
 
-  std::string resolver_address;
-  if (!eth::ParseAddressResult(api_request_result.body(), &resolver_address) ||
-      resolver_address.empty()) {
+  auto bytes_result = ParseDecodedBytesResult(api_request_result.body());
+  if (!bytes_result) {
     ParseErrorResult<mojom::ProviderError>(api_request_result.body(),
                                            &error_.emplace(),
                                            &error_message_.emplace());
     return;
   }
 
-  resolver_ = resolver_address;
+  auto resolver_address = eth_abi::ExtractAddressFromTuple(*bytes_result, 0);
+  if (!resolver_address.IsValid() || resolver_address.IsZeroAddress()) {
+    error_ = mojom::ProviderError::kInternalError;
+    error_message_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+    return;
+  }
+
+  resolver_address_ = std::move(resolver_address);
 }
 
 void EnsResolverTask::FetchEnsip10Support() {
-  DCHECK(resolver_);
+  DCHECK(resolver_address_.IsValid());
 
   // https://docs.ens.domains/ens-improvement-proposals/ensip-10-wildcard-resolution#specification
   auto call = erc165::SupportsInterface(kResolveBytesBytesSelector);
 
-  RequestInternal(eth::eth_call(*resolver_, ToHex(call)),
+  RequestInternal(eth::eth_call(resolver_address_.ToHex(), ToHex(call)),
                   base::BindOnce(&EnsResolverTask::OnFetchEnsip10SupportDone,
                                  weak_ptr_factory_.GetWeakPtr()));
 }
@@ -248,12 +272,12 @@ void EnsResolverTask::OnFetchEnsip10SupportDone(
 }
 
 void EnsResolverTask::FetchEnsRecord() {
-  DCHECK(resolver_);
+  DCHECK(resolver_address_.IsValid());
   DCHECK(supports_ensip_10_);
   DCHECK(!supports_ensip_10_.value());
   DCHECK(!resolve_result_);
 
-  RequestInternal(eth::eth_call(*resolver_, ToHex(ens_call_)),
+  RequestInternal(eth::eth_call(resolver_address_.ToHex(), ToHex(ens_call_)),
                   base::BindOnce(&EnsResolverTask::OnFetchEnsRecordDone,
                                  weak_ptr_factory_.GetWeakPtr()));
 }
@@ -280,7 +304,7 @@ void EnsResolverTask::OnFetchEnsRecordDone(
 }
 
 void EnsResolverTask::FetchWithEnsip10Resolve() {
-  DCHECK(resolver_);
+  DCHECK(resolver_address_.IsValid());
   DCHECK(supports_ensip_10_);
   DCHECK(supports_ensip_10_.value());
   DCHECK(!resolve_result_);
@@ -290,9 +314,7 @@ void EnsResolverTask::FetchWithEnsip10Resolve() {
     if (!dns_encoded_name_) {
       error_ = mojom::ProviderError::kInvalidParams;
       error_message_ = l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS);
-      base::SequencedTaskRunnerHandle::Get()->PostTask(
-          FROM_HERE, base::BindOnce(&EnsResolverTask::WorkOnTask,
-                                    weak_ptr_factory_.GetWeakPtr()));
+      ScheduleWorkOnTask();
       return;
     }
   }
@@ -305,7 +327,7 @@ void EnsResolverTask::FetchWithEnsip10Resolve() {
   }
 
   RequestInternal(
-      eth::eth_call(*resolver_, ToHex(ens_resolve_call_)),
+      eth::eth_call(resolver_address_.ToHex(), ToHex(ens_resolve_call_)),
       base::BindOnce(&EnsResolverTask::OnFetchWithEnsip10ResolveDone,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -356,8 +378,7 @@ void EnsResolverTask::FetchOffchainData() {
 
   // Sender must match resolver per
   // https://eips.ethereum.org/EIPS/eip-3668#client-lookup-protocol #5.
-  if (base::CompareCaseInsensitiveASCII(offchain_lookup_data_->sender.ToHex(),
-                                        *resolver_)) {
+  if (offchain_lookup_data_->sender != resolver_address_) {
     valid_sender = false;
   }
 
@@ -381,9 +402,7 @@ void EnsResolverTask::FetchOffchainData() {
   if (!valid_sender || !offchain_url.is_valid()) {
     error_ = mojom::ProviderError::kInternalError;
     error_message_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
-    base::SequencedTaskRunnerHandle::Get()->PostTask(
-        FROM_HERE, base::BindOnce(&EnsResolverTask::WorkOnTask,
-                                  weak_ptr_factory_.GetWeakPtr()));
+    ScheduleWorkOnTask();
     return;
   }
 

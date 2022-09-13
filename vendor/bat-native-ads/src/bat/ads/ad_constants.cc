@@ -3,15 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_CONSTANTS_H_
-#define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_CONSTANTS_H_
-
-#include "bat/ads/export.h"
+#include "bat/ads/ad_constants.h"  // IWYU pragma: keep
 
 namespace ads::data::resource {
 
-ADS_EXPORT extern const char kCatalogJsonSchemaName[];
+const char kCatalogJsonSchemaFilename[] = "catalog-schema.json";
 
 }  // namespace ads::data::resource
-
-#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_CONSTANTS_H_

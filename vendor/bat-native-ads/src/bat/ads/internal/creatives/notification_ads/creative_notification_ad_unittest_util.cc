@@ -25,15 +25,16 @@ CreativeNotificationAdList BuildCreativeNotificationAds(const int count) {
 
   for (int i = 0; i < count; i++) {
     const CreativeNotificationAdInfo creative_ad =
-        BuildCreativeNotificationAd();
+        BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
     creative_ads.push_back(creative_ad);
   }
 
   return creative_ads;
 }
 
-CreativeNotificationAdInfo BuildCreativeNotificationAd() {
-  const CreativeAdInfo creative_ad = BuildCreativeAd();
+CreativeNotificationAdInfo BuildCreativeNotificationAd(
+    const bool should_use_random_guids) {
+  const CreativeAdInfo creative_ad = BuildCreativeAd(should_use_random_guids);
   CreativeNotificationAdInfo creative_notification_ad(creative_ad);
 
   creative_notification_ad.title = "Test Ad Title";

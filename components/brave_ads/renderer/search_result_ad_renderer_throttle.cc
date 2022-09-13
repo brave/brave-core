@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/feature_list.h"
+#include "base/feature_list.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/common/search_result_ad_util.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
@@ -17,7 +17,6 @@
 #include "third_party/blink/public/mojom/fetch/fetch_api_request.mojom-shared.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "third_party/blink/public/platform/web_security_origin.h"
-#include "third_party/blink/public/platform/web_string.h"
 #include "third_party/blink/public/platform/web_url.h"
 #include "third_party/blink/public/platform/web_url_request.h"
 #include "url/gurl.h"
@@ -39,13 +38,14 @@ SearchResultAdRendererThrottle::MaybeCreateThrottle(
   if (!top_frame_origin) {
     return nullptr;
   }
-  const GURL top_frame_origin_url = url::Origin(*top_frame_origin).GetURL();
+  const GURL top_frame_origin_url =
+      static_cast<url::Origin>(*top_frame_origin).GetURL();
   if (!brave_search::IsAllowedHost(top_frame_origin_url)) {
     return nullptr;
   }
 
   const GURL requestor_origin_url =
-      url::Origin(request.RequestorOrigin()).GetURL();
+      static_cast<url::Origin>(request.RequestorOrigin()).GetURL();
   if (!brave_search::IsAllowedHost(requestor_origin_url)) {
     return nullptr;
   }
@@ -115,7 +115,7 @@ void SearchResultAdRendererThrottle::WillStartRequest(
 }
 
 void SearchResultAdRendererThrottle::OnMaybeTriggerAdViewedEvent(
-    mojo::Remote<brave_ads::mojom::BraveAdsHost> brave_ads_remote,
+    mojo::Remote<brave_ads::mojom::BraveAdsHost> /*brave_ads_remote*/,
     bool event_triggered) {
   if (event_triggered) {
     delegate_->CancelWithError(net::ERR_ABORTED);
