@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_COMMON_POLICY_UTIL_H_
-#define BRAVE_COMPONENTS_BRAVE_REWARDS_COMMON_POLICY_UTIL_H_
+#ifndef BRAVE_BROWSER_BRAVE_REWARDS_REWARDS_UTIL_H_
+#define BRAVE_BROWSER_BRAVE_REWARDS_REWARDS_UTIL_H_
 
-class PrefService;
+class Profile;
 
 namespace brave_rewards {
 
-bool IsDisabledByPolicy(PrefService* prefs);
+bool IsSupportedForProfile(Profile* profile);
 
 }  // namespace brave_rewards
 
-#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_COMMON_POLICY_UTIL_H_
+#endif  // BRAVE_BROWSER_BRAVE_REWARDS_REWARDS_UTIL_H_

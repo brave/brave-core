@@ -5,6 +5,19 @@
 
 import("//testing/test.gni")
 
+source_set("util") {
+  sources = [
+    "rewards_util.cc",
+    "rewards_util.h",
+  ]
+
+  deps = [
+    "//brave/browser/profiles:util",
+    "//brave/components/brave_rewards/common",
+    "//components/prefs",
+  ]
+}
+
 source_set("browser_tests") {
   testonly = true
   if (!is_android) {
@@ -14,7 +27,9 @@ source_set("browser_tests") {
       "//base/test:test_support",
       "//brave/app:command_ids",
       "//brave/browser",
+      "//brave/browser/brave_rewards:util",
       "//brave/browser/ui",
+      "//brave/components/brave_rewards/browser",
       "//brave/components/brave_rewards/common",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",

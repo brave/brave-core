@@ -7,11 +7,13 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_actions/brave_rewards_action_view.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
-#include "brave/components/brave_rewards/common/policy_util.h"
+#include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_rewards/common/rewards_util.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -75,10 +77,12 @@ IN_PROC_BROWSER_TEST_P(BraveRewardsPolicyTest, IsBraveRewardsDisabled) {
   EXPECT_TRUE(prefs()->FindPreference(brave_rewards::prefs::kDisabledByPolicy));
   if (IsBraveRewardsDisabledTest()) {
     EXPECT_TRUE(prefs()->GetBoolean(brave_rewards::prefs::kDisabledByPolicy));
-    EXPECT_TRUE(brave_rewards::IsDisabledByPolicy(prefs()));
+    EXPECT_FALSE(brave_rewards::IsSupported(prefs()));
+    EXPECT_FALSE(brave_rewards::IsSupportedForProfile(profile()));
   } else {
     EXPECT_FALSE(prefs()->GetBoolean(brave_rewards::prefs::kDisabledByPolicy));
-    EXPECT_FALSE(brave_rewards::IsDisabledByPolicy(prefs()));
+    EXPECT_TRUE(brave_rewards::IsSupported(prefs()));
+    EXPECT_TRUE(brave_rewards::IsSupportedForProfile(profile()));
   }
 }
 

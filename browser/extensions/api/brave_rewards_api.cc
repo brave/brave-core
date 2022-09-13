@@ -16,6 +16,7 @@
 #include "brave/browser/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
+#include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/brave_rewards/tip_dialog.h"
 #include "brave/browser/extensions/api/brave_action_api.h"
 #include "brave/browser/extensions/brave_component_loader.h"
@@ -24,7 +25,6 @@
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/brave_rewards/common/policy_util.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -90,7 +90,7 @@ BraveRewardsIsSupportedFunction::~BraveRewardsIsSupportedFunction() = default;
 
 ExtensionFunction::ResponseAction BraveRewardsIsSupportedFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  bool is_supported = !::brave_rewards::IsDisabledByPolicy(profile->GetPrefs());
+  bool is_supported = ::brave_rewards::IsSupportedForProfile(profile);
   return RespondNow(OneArgument(base::Value(is_supported)));
 }
 

@@ -14,12 +14,12 @@ source_set("features") {
 
 static_library("common") {
   sources = [
-    "policy_util.cc",
-    "policy_util.h",
     "pref_names.cc",
     "pref_names.h",
     "rewards_flags.cc",
     "rewards_flags.h",
+    "rewards_util.cc",
+    "rewards_util.h",
     "url_constants.cc",
     "url_constants.h",
   ]

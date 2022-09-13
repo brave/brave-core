@@ -9,6 +9,7 @@
 
 #include "base/feature_list.h"
 #include "base/memory/ptr_util.h"
+#include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
 #include "brave/browser/ui/webui/brave_federated/federated_internals_ui.h"
@@ -17,8 +18,7 @@
 #include "brave/browser/ui/webui/brave_tip_ui.h"
 #include "brave/browser/ui/webui/webcompat_reporter_ui.h"
 #include "brave/components/brave_federated/features.h"
-#include "brave/components/brave_rewards/common/features.h"
-#include "brave/components/brave_rewards/common/policy_util.h"
+#include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -106,17 +106,20 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     return new WalletPanelUI(web_ui);
 #endif  // BUILDFLAG(OS_ANDROID)
   } else if (host == kRewardsPageHost &&
-             !brave_rewards::IsDisabledByPolicy(profile->GetPrefs())) {
+             // We don't want to check for supported profile type here because
+             // we want private windows to redirect to the regular profile.
+             // Guest session will just show an error page.
+             brave_rewards::IsSupported(profile->GetPrefs())) {
     return new BraveRewardsPageUI(web_ui, url.host());
   } else if (host == kRewardsInternalsHost &&
-             !brave_rewards::IsDisabledByPolicy(profile->GetPrefs())) {
+             brave_rewards::IsSupportedForProfile(profile)) {
     return new BraveRewardsInternalsUI(web_ui, url.host());
 #if !BUILDFLAG(IS_ANDROID)
   } else if (host == kTipHost &&
-             !brave_rewards::IsDisabledByPolicy(profile->GetPrefs())) {
+             brave_rewards::IsSupportedForProfile(profile)) {
     return new BraveTipUI(web_ui, url.host());
   } else if (host == kBraveRewardsPanelHost &&
-             !brave_rewards::IsDisabledByPolicy(profile->GetPrefs())) {
+             brave_rewards::IsSupportedForProfile(profile)) {
     return new RewardsPanelUI(web_ui);
 #endif  // !BUILDFLAG(IS_ANDROID)
 #if !BUILDFLAG(IS_ANDROID)
@@ -206,26 +209,18 @@ bool ShouldBlockRewardsWebUI(content::BrowserContext* browser_context,
       url.host_piece() != kRewardsInternalsHost) {
     return false;
   }
-#if BUILDFLAG(IS_ANDROID)
-  if (!base::FeatureList::IsEnabled(brave_rewards::features::kBraveRewards)) {
-    return true;
-  }
-#endif  // BUILDFLAG(IS_ANDROID)
 
   Profile* profile = Profile::FromBrowserContext(browser_context);
   if (profile) {
-    auto* prefs = profile->GetPrefs();
-    if (prefs) {
-#if BUILDFLAG(IS_ANDROID)
-      if (prefs->GetBoolean(kSafetynetCheckFailed)) {
-        return true;
-      }
-#else
-      if (brave_rewards::IsDisabledByPolicy(prefs)) {
-        return true;
-      }
-#endif  // BUILDFLAG(IS_ANDROID)
+    if (!brave_rewards::IsSupportedForProfile(profile)) {
+      return true;
     }
+#if BUILDFLAG(IS_ANDROID)
+    auto* prefs = profile->GetPrefs();
+    if (prefs && prefs->GetBoolean(kSafetynetCheckFailed)) {
+      return true;
+    }
+#endif  // BUILDFLAG(IS_ANDROID)
   }
   return false;
 }
