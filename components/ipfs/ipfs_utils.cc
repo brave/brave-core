@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/feature_list.h"
+#include "base/strings/string_piece_forward.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
@@ -28,15 +29,16 @@
 namespace {
 
 // Decodes a varint from the given string piece into the given int64_t. Returns
-// if the  string had a valid varint (where a byte was found with it's top bit
-// set).
-bool DecodeVarInt(base::StringPiece* from, int64_t* into) {
-  base::StringPiece::const_iterator it = from->begin();
+// remaining span if the string had a valid varint (where a byte was found with
+// it's top bit set).
+base::span<const uint8_t> DecodeVarInt(base::span<const uint8_t> from,
+                                       int64_t* into) {
+  auto it = from.begin();
   int shift = 0;
   uint64_t ret = 0;
   do {
-    if (it == from->end())
-      return false;
+    if (it == from.end())
+      return {};
 
     // Shifting 64 or more bits is undefined behavior.
     DCHECK_LT(shift, 64);
@@ -45,8 +47,7 @@ bool DecodeVarInt(base::StringPiece* from, int64_t* into) {
     shift += 7;
   } while (*it++ & 0x80);
   *into = static_cast<int64_t>(ret);
-  from->remove_prefix(it - from->begin());
-  return true;
+  return from.subspan(it - from.begin());
 }
 
 GURL AppendLocalPort(const std::string& port) {
@@ -384,14 +385,15 @@ bool IsValidNodeFilename(const std::string& filename) {
   return RE2::FullMatch(filename, kExecutableRegEx);
 }
 
-GURL ContentHashToCIDv1URL(const std::string& contenthash) {
+GURL ContentHashToCIDv1URL(base::span<const uint8_t> contenthash) {
   int64_t code = 0;
-  base::StringPiece input = contenthash;
-  if (!DecodeVarInt(&input, &code))
+  contenthash = DecodeVarInt(contenthash, &code);
+  if (contenthash.empty())
     return GURL();
   if (code != kIpnsNSCodec && code != kIpfsNSCodec)
     return GURL();
-  std::string encoded = base32::Base32Encode(input);
+  std::string encoded = base32::Base32Encode(base::StringPiece(
+      reinterpret_cast<const char*>(contenthash.data()), contenthash.size()));
   if (encoded.empty())
     return GURL();
   std::string trimmed;

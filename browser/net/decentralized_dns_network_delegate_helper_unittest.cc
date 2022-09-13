@@ -15,6 +15,8 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service_test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/eth_abi_utils.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/decentralized_dns/constants.h"
 #include "brave/components/decentralized_dns/pref_names.h"
 #include "brave/components/decentralized_dns/utils.h"
@@ -239,12 +241,12 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
 
   // No redirect for failed requests.
   OnBeforeURLRequest_EnsRedirectWork(
-      ResponseCallback(), brave_request_info, "",
+      ResponseCallback(), brave_request_info, {},
       brave_wallet::mojom::ProviderError::kInternalError, "todo");
   EXPECT_TRUE(brave_request_info->new_url_spec.empty());
 
   OnBeforeURLRequest_EnsRedirectWork(
-      ResponseCallback(), brave_request_info, "",
+      ResponseCallback(), brave_request_info, {},
       brave_wallet::mojom::ProviderError::kSuccess, "");
   EXPECT_TRUE(brave_request_info->new_url_spec.empty());
 
@@ -255,9 +257,8 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
       "e0160eec32d7875c19c5ac7c03bc1f306dc260080d621454bc5f631e7310a70000000000"
       "000000000000000000000000000000000000000000";
 
-  std::string content_hash;
-  EXPECT_TRUE(brave_wallet::DecodeString(66, content_hash_encoded_string,
-                                         &content_hash));
+  auto content_hash = *brave_wallet::eth_abi::ExtractBytesFromTuple(
+      *brave_wallet::PrefixedHexStringToBytes(content_hash_encoded_string), 0);
   OnBeforeURLRequest_EnsRedirectWork(
       ResponseCallback(), brave_request_info, content_hash,
       brave_wallet::mojom::ProviderError::kSuccess, "");
@@ -270,9 +271,8 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
       "e0160eec32d7875c19c5ac7c03bc1f306dc260080d621454bc5f631e7310a70000000000"
       "000000000000000000000000000000000000000000";
 
-  content_hash = "";
-  EXPECT_TRUE(brave_wallet::DecodeString(66, content_hash_encoded_string,
-                                         &content_hash));
+  content_hash = *brave_wallet::eth_abi::ExtractBytesFromTuple(
+      *brave_wallet::PrefixedHexStringToBytes(content_hash_encoded_string), 0);
   OnBeforeURLRequest_EnsRedirectWork(
       ResponseCallback(), brave_request_info, content_hash,
       brave_wallet::mojom::ProviderError::kSuccess, "");
