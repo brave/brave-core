@@ -467,9 +467,9 @@ void PlaylistService::RecoverPlaylistItem(const std::string& id) {
     return;
   }
 
-  auto* cached = playlist_value->FindBool(kPlaylistItemCachedKey)
-  DCHECK(cached);
-  if (*cached) {
+  auto cached = playlist_value->FindBool(kPlaylistItemMediaFileCachedKey);
+  DCHECK(cached.has_value());
+  if (cached.value()) {
     VLOG(2) << __func__ << ": This is ready to play(" << id << ")";
     return;
   }
@@ -490,7 +490,7 @@ void PlaylistService::RecoverPlaylistItem(const std::string& id) {
 
   auto on_path_exists = base::BindOnce(
       [](base::WeakPtr<PlaylistService> service, PlaylistItemInfo info) {
-        service->OnPlaylistItemDirCreated(info, /* directory_created = */true);
+        service->OnPlaylistItemDirCreated(info, /* directory_created = */ true);
       },
       weak_factory_.GetWeakPtr(), info);
 
