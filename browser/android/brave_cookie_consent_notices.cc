@@ -9,11 +9,13 @@
 
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
-#include "brave/build/android/jni_headers/BraveCookieConsentNotices_jni.h"
+#include "base/feature_list.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/build/android/jni_headers/BraveCookieConsentNotices_jni.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "url/gurl.h"
 
 namespace chrome {
@@ -43,6 +45,11 @@ bool BraveCookieConsentNotices::IsFilterListAvailable(JNIEnv* env) {
   return g_brave_browser_process->ad_block_service()
       ->regional_service_manager()
       ->IsFilterListAvailable(brave_shields::kCookieListUuid);
+}
+
+bool BraveCookieConsentNotices::IsAdblockCookieListOptInEnabled(JNIEnv* env) {
+  return base::FeatureList::IsEnabled(
+      brave_shields::features::kBraveAdblockCookieListOptIn);
 }
 
 static void JNI_BraveCookieConsentNotices_Init(

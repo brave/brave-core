@@ -23,6 +23,8 @@ class BraveCookieConsentNotices {
 
   bool IsFilterListAvailable(JNIEnv* env);
 
+  bool IsAdblockCookieListOptInEnabled(JNIEnv* env);
+
   void Destroy(JNIEnv* env);
 
  private:

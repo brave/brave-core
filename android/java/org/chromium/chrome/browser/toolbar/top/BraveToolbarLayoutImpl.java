@@ -95,6 +95,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.rewards.BraveRewardsPanel;
 import org.chromium.chrome.browser.settings.AppearancePreferences;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
+import org.chromium.chrome.browser.shields.BraveCookieConsentNotices;
 import org.chromium.chrome.browser.shields.BraveShieldsHandler;
 import org.chromium.chrome.browser.shields.BraveShieldsMenuObserver;
 import org.chromium.chrome.browser.shields.BraveShieldsUtils;
@@ -409,7 +410,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()
                             && mBraveShieldsHandler != null && !mBraveShieldsHandler.isShowing()) {
                         // checkForTooltip(tab);
-                        showCookieConsentTooltip();
+                        maybeShowCookieConsentTooltip();
                     }
                 }
 
@@ -475,15 +476,14 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void checkForTooltip(Tab tab) {
-        // if (!BraveShieldsUtils.isTooltipShown) {
-        //     if (!BraveShieldsUtils.hasShieldsTooltipShown(BraveShieldsUtils.PREF_SHIELDS_TOOLTIP)
-        //             && mBraveShieldsHandler.getTrackersBlockedCount(tab.getId())
-        //                             + mBraveShieldsHandler.getAdsBlockedCount(tab.getId())
-        //                     > 0) {
-        //         showTooltip(BraveShieldsUtils.PREF_SHIELDS_TOOLTIP, tab.getId());
-        //     }
-        // }
-        showTooltip(BraveShieldsUtils.PREF_SHIELDS_TOOLTIP, tab.getId());
+        if (!BraveShieldsUtils.isTooltipShown) {
+            if (!BraveShieldsUtils.hasShieldsTooltipShown(BraveShieldsUtils.PREF_SHIELDS_TOOLTIP)
+                    && mBraveShieldsHandler.getTrackersBlockedCount(tab.getId())
+                                    + mBraveShieldsHandler.getAdsBlockedCount(tab.getId())
+                            > 0) {
+                showTooltip(BraveShieldsUtils.PREF_SHIELDS_TOOLTIP, tab.getId());
+            }
+        }
     }
 
     private void showTooltip(String tooltipPref, int tabId) {
@@ -581,6 +581,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 BraveShieldsUtils.setShieldsTooltipShown(tooltipPref, true);
                 BraveShieldsUtils.isTooltipShown = true;
             }
+        }
+    }
+
+    private void maybeShowCookieConsentTooltip() {
+        if (BraveCookieConsentNotices.getInstance().isAdblockCookieListOptInEnabled()) {
+            showCookieConsentTooltip();
         }
     }
 

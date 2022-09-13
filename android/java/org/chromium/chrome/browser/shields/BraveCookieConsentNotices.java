@@ -52,6 +52,13 @@ public class BraveCookieConsentNotices {
         }
     }
 
+    public boolean isAdblockCookieListOptInEnabled() {
+        synchronized (lock) {
+            return BraveCookieConsentNoticesJni.get().isAdblockCookieListOptInEnabled(
+                    mNativeBraveCookieConsentNotices);
+        }
+    }
+
     @Override
     protected void finalize() {
         destroy();
@@ -75,6 +82,7 @@ public class BraveCookieConsentNotices {
         void init(BraveCookieConsentNotices self);
         void enableFilter(long nativeBraveCookieConsentNotices);
         boolean isFilterListAvailable(long nativeBraveCookieConsentNotices);
+        boolean isAdblockCookieListOptInEnabled(long nativeBraveCookieConsentNotices);
         void destroy(long nativeBraveCookieConsentNotices);
     }
 }

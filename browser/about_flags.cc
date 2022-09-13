@@ -563,7 +563,7 @@ constexpr char kBraveVerticalTabsDescription[] =
     {"brave-adblock-cookie-list-opt-in",                                    \
      flag_descriptions::kBraveAdblockCookieListOptInName,                   \
      flag_descriptions::kBraveAdblockCookieListOptInDescription,            \
-     kOsDesktop, FEATURE_VALUE_TYPE(kBraveAdblockCookieListOptIn)},         \
+     kOsDesktop | kOsAndroid, FEATURE_VALUE_TYPE(kBraveAdblockCookieListOptIn)},         \
     {"brave-adblock-cosmetic-filtering",                                    \
      flag_descriptions::kBraveAdblockCosmeticFilteringName,                 \
      flag_descriptions::kBraveAdblockCosmeticFilteringDescription, kOsAll,  \
