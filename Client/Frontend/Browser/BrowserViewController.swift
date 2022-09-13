@@ -2129,7 +2129,6 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
   ) {
     guard
       let tab = tabManager.selectedTab,
-      tab.mimeType != MIMEType.PDF, // Constraint-based animation is causing PDF docs to flicker.
       let webView = tab.webView,
       !webView.isLoading else {
       
@@ -2152,7 +2151,9 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
     }
     let headerHeight = toolbarVisibilityViewModel.transitionDistance
     let footerHeight = footer.bounds.height
-    if let progress = progress {
+    // Changing the web view size while scrolling and a PDF is visible causes strange flickering, so only show
+    // final expanded/collapsed states while a PDF is visible
+    if let progress = progress, tab.mimeType != MIMEType.PDF {
       switch state {
       case .expanded:
         toolbarTopConstraint?.update(offset: -min(headerHeight, max(0, headerHeight * progress)))
