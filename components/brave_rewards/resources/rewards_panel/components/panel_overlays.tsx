@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 import { HostContext, useHostListener } from '../lib/host_context'
-import { BraveTalkOptInForm, RewardsOptInModal, RewardsTourModal } from '../../shared/components/onboarding'
+import { RewardsOptInModal, RewardsTourModal } from '../../shared/components/onboarding'
 import { AdaptiveCaptchaView } from '../../rewards_panel/components/adaptive_captcha_view'
 import { GrantCaptchaModal } from './grant_captcha_modal'
 import { NotificationOverlay } from './notification_overlay'
@@ -49,7 +49,6 @@ export function PanelOverlays () {
     React.useState(host.state.notifications)
 
   const [showTour, setShowTour] = React.useState(false)
-  const [showTalkOptIn, setShowTalkOptIn] = React.useState(false)
   const [notificationsHidden, setNotificationsHidden] = React.useState(false)
 
   useHostListener(host, (state) => {
@@ -64,13 +63,8 @@ export function PanelOverlays () {
   })
 
   React.useEffect(() => {
-    switch (requestedView) {
-      case 'rewards-tour':
-        setShowTour(true)
-        break
-      case 'brave-talk-opt-in':
-        setShowTalkOptIn(true)
-        break
+    if (requestedView === 'rewards-tour') {
+      setShowTour(true)
     }
   }, [requestedView])
 
@@ -101,18 +95,6 @@ export function PanelOverlays () {
           onVerifyWalletClick={onVerifyWalletClick}
           onDone={toggleTour}
           onClose={toggleTour}
-        />
-      </NamedOverlay>
-    )
-  }
-
-  if (showTalkOptIn) {
-    return (
-      <NamedOverlay name='brave-talk-opt-in'>
-        <BraveTalkOptInForm
-          showRewardsOnboarding={!rewardsEnabled}
-          onEnable={host.enableRewards}
-          onTakeTour={toggleTour}
         />
       </NamedOverlay>
     )

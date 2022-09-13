@@ -368,4 +368,12 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         walletListItemModelListCopy.add(item);
         notifyDataSetChanged();
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void clear() {
+        walletListItemModelList.clear();
+        walletListItemModelListCopy.clear();
+        mCheckedPositions.clear();
+        notifyDataSetChanged();
+    }
 }

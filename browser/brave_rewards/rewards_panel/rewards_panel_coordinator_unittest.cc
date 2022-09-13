@@ -95,10 +95,4 @@ TEST_F(RewardsPanelCoordinatorTest, ShowAdaptiveCaptcha) {
   EXPECT_EQ(last_args().data, "");
 }
 
-TEST_F(RewardsPanelCoordinatorTest, ShowBraveTalkOptIn) {
-  EXPECT_TRUE(coordinator().ShowBraveTalkOptIn());
-  EXPECT_EQ(last_args().view, mojom::RewardsPanelView::kBraveTalkOptIn);
-  EXPECT_EQ(last_args().data, "");
-}
-
 }  // namespace brave_rewards

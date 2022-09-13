@@ -474,6 +474,7 @@ test("brave_unit_tests") {
 
     deps += [
       "//brave/browser/extensions",
+      "//brave/browser/importer:unit_tests",
       "//brave/common/importer",
       "//chrome/browser/extensions",
       "//components/crx_file",
@@ -645,7 +646,6 @@ if (!is_android) {
       "//brave/browser/brave_ads/ads_service_browsertest.cc",
       "//brave/browser/brave_ads/notification_helper/notification_helper_impl_mock.cc",
       "//brave/browser/brave_ads/notification_helper/notification_helper_impl_mock.h",
-      "//brave/browser/brave_ads/request_ads_enabled_api_browsertest.cc",
       "//brave/browser/brave_ads/search_result_ad/search_result_ad_browsertest.cc",
       "//brave/browser/brave_content_browser_client_browsertest.cc",
       "//brave/browser/brave_prefs_browsertest.cc",

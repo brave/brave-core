@@ -8,7 +8,6 @@
 #include <algorithm>
 
 #include "base/strings/string_number_conversions.h"
-#include "bat/ads/history_info.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/covariates/covariate_constants.h"
 #include "bat/ads/internal/history/history_manager.h"
@@ -33,14 +32,14 @@ std::string AverageClickthroughRate::GetValue() const {
   const base::Time from_time = now - time_window_;
   const base::Time to_time = now;
 
-  const HistoryInfo history = HistoryManager::GetInstance()->Get(
+  const HistoryItemList history_items = HistoryManager::GetInstance()->Get(
       HistoryFilterType::kNone, HistorySortType::kNone, from_time, to_time);
-  if (history.items.empty()) {
+  if (history_items.empty()) {
     return base::NumberToString(kCovariateMissingValue);
   }
 
   const int number_of_views =
-      std::count_if(history.items.cbegin(), history.items.cend(),
+      std::count_if(history_items.cbegin(), history_items.cend(),
                     [](const HistoryItemInfo& history_item) {
                       return history_item.ad_content.confirmation_type ==
                              ConfirmationType::kViewed;
@@ -51,7 +50,7 @@ std::string AverageClickthroughRate::GetValue() const {
   }
 
   const int number_of_clicks =
-      std::count_if(history.items.cbegin(), history.items.cend(),
+      std::count_if(history_items.cbegin(), history_items.cend(),
                     [](const HistoryItemInfo& history_item) {
                       return history_item.ad_content.confirmation_type ==
                              ConfirmationType::kClicked;

@@ -310,12 +310,9 @@ class RewardsServiceImpl : public RewardsService,
       const base::flat_map<std::string, std::string>& args,
       ExternalWalletAuthorizationCallback callback);
 
-  void ProcessRewardsPageUrl(
-      const std::string& path,
-      const std::string& query,
-      ProcessRewardsPageUrlCallback callback) override;
-
-  void RequestAdsEnabledPopupClosed(bool ads_enabled) override;
+  void ProcessRewardsPageUrl(const std::string& path,
+                             const std::string& query,
+                             ProcessRewardsPageUrlCallback callback) override;
 
   void DisconnectWallet() override;
 

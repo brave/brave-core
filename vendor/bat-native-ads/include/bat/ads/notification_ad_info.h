@@ -8,22 +8,13 @@
 
 #include <string>
 
-#include "base/values.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/export.h"
 
 namespace ads {
 
 struct ADS_EXPORT NotificationAdInfo final : AdInfo {
-  NotificationAdInfo();
-  NotificationAdInfo(const NotificationAdInfo& info);
-  NotificationAdInfo& operator=(const NotificationAdInfo& info);
-  ~NotificationAdInfo();
-
   bool IsValid() const;
-
-  base::Value::Dict ToValue() const;
-  void FromValue(const base::Value::Dict& root);
 
   std::string title;
   std::string body;

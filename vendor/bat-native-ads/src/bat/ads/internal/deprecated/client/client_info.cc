@@ -13,6 +13,8 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
+#include "bat/ads/history_item_value_util.h"
+#include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_value_util.h"
 #include "build/build_config.h"  // IWYU pragma: keep
 
 namespace ads {
@@ -30,17 +32,15 @@ base::Value::Dict ClientInfo::ToValue() const {
 
   dict.Set("adPreferences", ad_preferences.ToValue());
 
-  base::Value::List ads_shown_history;
-  for (const auto& item : history) {
-    ads_shown_history.Append(item.ToValue());
-  }
+  base::Value::List ads_shown_history = HistoryItemsToValue(history_items);
   dict.Set("adsShownHistory", std::move(ads_shown_history));
 
   base::Value::Dict purchase_intent_dict;
   for (const auto& [key, value] : purchase_intent_signal_history) {
     base::Value::List history;
     for (const auto& segment_history_item : value) {
-      history.Append(segment_history_item.ToValue());
+      history.Append(
+          targeting::PurchaseIntentSignalHistoryToValue(segment_history_item));
     }
     purchase_intent_dict.Set(key, std::move(history));
   }
@@ -94,17 +94,7 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
 
 #if !BUILDFLAG(IS_IOS)
   if (const auto* value = root.FindList("adsShownHistory")) {
-    for (const auto& ad_shown : *value) {
-      // adsShownHistory used to be an array of timestamps, so if that's what we
-      // have here don't import them and we'll just start fresh.
-      if (!ad_shown.is_dict()) {
-        continue;
-      }
-
-      HistoryItemInfo history_item;
-      history_item.FromValue(ad_shown.GetDict());
-      history.push_back(history_item);
-    }
+    history_items = HistoryItemsFromValue(*value);
   }
 #endif
 
@@ -122,8 +112,9 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
           continue;
         }
 
-        targeting::PurchaseIntentSignalHistoryInfo history;
-        history.FromValue(segment_history_item.GetDict());
+        const targeting::PurchaseIntentSignalHistoryInfo history =
+            targeting::PurchaseIntentSignalHistoryFromValue(
+                segment_history_item.GetDict());
         histories.push_back(history);
       }
 

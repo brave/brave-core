@@ -8,7 +8,7 @@
 #include "absl/types/optional.h"
 #include "base/values.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arm_values_util.h"
+#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arm_value_util.h"
 #include "bat/ads/pref_names.h"
 
 namespace ads::targeting {

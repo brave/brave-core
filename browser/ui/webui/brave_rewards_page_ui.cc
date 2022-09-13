@@ -13,10 +13,10 @@
 #include "base/i18n/time_formatting.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/notreached.h"
 #include "base/scoped_observation.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
-#include "bat/ads/ad_content_info.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
@@ -115,17 +115,17 @@ class RewardsDOMHandler
   void GetAdsHistory(const base::Value::List& args);
   void OnGetAdsHistory(base::Value::List history);
   void ToggleAdThumbUp(const base::Value::List& args);
-  void OnToggleAdThumbUp(const std::string& json);
+  void OnToggleAdThumbUp(base::Value::Dict dict);
   void ToggleAdThumbDown(const base::Value::List& args);
-  void OnToggleAdThumbDown(const std::string& json);
+  void OnToggleAdThumbDown(base::Value::Dict dict);
   void ToggleAdOptIn(const base::Value::List& args);
   void OnToggleAdOptIn(const std::string& category, const int action);
   void ToggleAdOptOut(const base::Value::List& args);
   void OnToggleAdOptOut(const std::string& category, const int action);
   void ToggleSavedAd(const base::Value::List& args);
-  void OnToggleSavedAd(const std::string& json);
+  void OnToggleSavedAd(base::Value::Dict dict);
   void ToggleFlaggedAd(const base::Value::List& args);
-  void OnToggleFlaggedAd(const std::string& json);
+  void OnToggleFlaggedAd(base::Value::Dict dict);
   void SaveAdsSetting(const base::Value::List& args);
   void OnGetContributionAmount(double amount);
   void OnGetAutoContributeProperties(
@@ -1241,29 +1241,26 @@ void RewardsDOMHandler::ToggleAdThumbUp(const base::Value::List& args) {
     return;
   }
 
+  const base::Value::Dict* dict = args[0].GetIfDict();
+  if (!dict) {
+    NOTREACHED();
+    return;
+  }
+
   AllowJavascript();
 
-  ads::AdContentInfo ad_content;
-  const base::Value& value = args[0];
-  if (value.is_dict())
-    ad_content.FromValue(value.GetDict());
-
   ads_service_->ToggleAdThumbUp(
-      ad_content.ToJson(), base::BindOnce(&RewardsDOMHandler::OnToggleAdThumbUp,
-                                          weak_factory_.GetWeakPtr()));
+      dict->Clone(), base::BindOnce(&RewardsDOMHandler::OnToggleAdThumbUp,
+                                    weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnToggleAdThumbUp(const std::string& json) {
+void RewardsDOMHandler::OnToggleAdThumbUp(base::Value::Dict dict) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
-  ads::AdContentInfo ad_content;
-  const bool success = ad_content.FromJson(json);
-  DCHECK(success);
-
   CallJavascriptFunction("brave_rewards.onToggleAdThumbUp",
-                         base::Value(ad_content.ToValue()));
+                         base::Value(std::move(dict)));
 }
 
 void RewardsDOMHandler::ToggleAdThumbDown(const base::Value::List& args) {
@@ -1273,30 +1270,26 @@ void RewardsDOMHandler::ToggleAdThumbDown(const base::Value::List& args) {
     return;
   }
 
+  const base::Value::Dict* dict = args[0].GetIfDict();
+  if (!dict) {
+    NOTREACHED();
+    return;
+  }
+
   AllowJavascript();
 
-  ads::AdContentInfo ad_content;
-  const base::Value& value = args[0];
-  if (value.is_dict())
-    ad_content.FromValue(value.GetDict());
-
   ads_service_->ToggleAdThumbDown(
-      ad_content.ToJson(),
-      base::BindOnce(&RewardsDOMHandler::OnToggleAdThumbDown,
-                     weak_factory_.GetWeakPtr()));
+      dict->Clone(), base::BindOnce(&RewardsDOMHandler::OnToggleAdThumbDown,
+                                    weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnToggleAdThumbDown(const std::string& json) {
+void RewardsDOMHandler::OnToggleAdThumbDown(base::Value::Dict dict) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
-  ads::AdContentInfo ad_content;
-  const bool success = ad_content.FromJson(json);
-  DCHECK(success);
-
   CallJavascriptFunction("brave_rewards.onToggleAdThumbDown",
-                         base::Value(ad_content.ToValue()));
+                         base::Value(std::move(dict)));
 }
 
 void RewardsDOMHandler::ToggleAdOptIn(const base::Value::List& args) {
@@ -1366,29 +1359,26 @@ void RewardsDOMHandler::ToggleSavedAd(const base::Value::List& args) {
     return;
   }
 
+  const base::Value::Dict* dict = args[0].GetIfDict();
+  if (!dict) {
+    NOTREACHED();
+    return;
+  }
+
   AllowJavascript();
 
-  ads::AdContentInfo ad_content;
-  const base::Value& value = args[0];
-  if (value.is_dict())
-    ad_content.FromValue(value.GetDict());
-
   ads_service_->ToggleSavedAd(
-      ad_content.ToJson(), base::BindOnce(&RewardsDOMHandler::OnToggleSavedAd,
-                                          weak_factory_.GetWeakPtr()));
+      dict->Clone(), base::BindOnce(&RewardsDOMHandler::OnToggleSavedAd,
+                                    weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnToggleSavedAd(const std::string& json) {
+void RewardsDOMHandler::OnToggleSavedAd(base::Value::Dict dict) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
-  ads::AdContentInfo ad_content;
-  const bool success = ad_content.FromJson(json);
-  DCHECK(success);
-
   CallJavascriptFunction("brave_rewards.onToggleSavedAd",
-                         base::Value(ad_content.ToValue()));
+                         base::Value(std::move(dict)));
 }
 
 void RewardsDOMHandler::ToggleFlaggedAd(const base::Value::List& args) {
@@ -1398,29 +1388,26 @@ void RewardsDOMHandler::ToggleFlaggedAd(const base::Value::List& args) {
     return;
   }
 
+  const base::Value::Dict* dict = args[0].GetIfDict();
+  if (!dict) {
+    NOTREACHED();
+    return;
+  }
+
   AllowJavascript();
 
-  ads::AdContentInfo ad_content;
-  const base::Value& value = args[0];
-  if (value.is_dict())
-    ad_content.FromValue(value.GetDict());
-
-  ads_service_->ToggleFlaggedAd(
-      ad_content.ToJson(), base::BindOnce(&RewardsDOMHandler::OnToggleFlaggedAd,
-                                          weak_factory_.GetWeakPtr()));
+  ads_service_->ToggleSavedAd(
+      dict->Clone(), base::BindOnce(&RewardsDOMHandler::OnToggleFlaggedAd,
+                                    weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnToggleFlaggedAd(const std::string& json) {
+void RewardsDOMHandler::OnToggleFlaggedAd(base::Value::Dict dict) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
-  ads::AdContentInfo ad_content;
-  const bool success = ad_content.FromJson(json);
-  DCHECK(success);
-
   CallJavascriptFunction("brave_rewards.onToggleFlaggedAd",
-                         base::Value(ad_content.ToValue()));
+                         base::Value(std::move(dict)));
 }
 
 void RewardsDOMHandler::SaveAdsSetting(const base::Value::List& args) {

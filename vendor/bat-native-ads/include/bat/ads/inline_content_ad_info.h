@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/values.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/export.h"
 #include "url/gurl.h"
@@ -17,17 +16,19 @@ namespace ads {
 
 struct ADS_EXPORT InlineContentAdInfo final : AdInfo {
   InlineContentAdInfo();
-  InlineContentAdInfo(const InlineContentAdInfo& info);
-  InlineContentAdInfo& operator=(const InlineContentAdInfo& info);
+
+  InlineContentAdInfo(const InlineContentAdInfo& other);
+  InlineContentAdInfo& operator=(const InlineContentAdInfo& other);
+
+  InlineContentAdInfo(InlineContentAdInfo&& other) noexcept;
+  InlineContentAdInfo& operator=(InlineContentAdInfo&& other) noexcept;
+
   ~InlineContentAdInfo();
 
   bool operator==(const InlineContentAdInfo& rhs) const;
   bool operator!=(const InlineContentAdInfo& rhs) const;
 
   bool IsValid() const;
-
-  base::Value::Dict ToValue() const;
-  void FromValue(const base::Value::Dict& root);
 
   std::string title;
   std::string description;

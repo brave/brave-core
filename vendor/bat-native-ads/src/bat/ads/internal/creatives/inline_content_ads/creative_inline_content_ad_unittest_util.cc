@@ -26,15 +26,16 @@ CreativeInlineContentAdList BuildCreativeInlineContentAds(const int count) {
 
   for (int i = 0; i < count; i++) {
     const CreativeInlineContentAdInfo creative_ad =
-        BuildCreativeInlineContentAd();
+        BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
     creative_ads.push_back(creative_ad);
   }
 
   return creative_ads;
 }
 
-CreativeInlineContentAdInfo BuildCreativeInlineContentAd() {
-  const CreativeAdInfo creative_ad = BuildCreativeAd();
+CreativeInlineContentAdInfo BuildCreativeInlineContentAd(
+    const bool should_use_random_guids) {
+  const CreativeAdInfo creative_ad = BuildCreativeAd(should_use_random_guids);
   CreativeInlineContentAdInfo creative_inline_content_ad(creative_ad);
 
   creative_inline_content_ad.title = "Test Ad Title";

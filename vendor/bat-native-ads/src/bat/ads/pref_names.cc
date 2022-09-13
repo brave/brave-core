@@ -64,7 +64,7 @@ const char kNextTokenRedemptionAt[] =
 
 // Stores migration status
 const char kHasMigratedClientState[] =
-    "brave.brave_ads.state.has_migrated.client.v4";
+    "brave.brave_ads.state.has_migrated.client.v5";
 const char kHasMigratedConfirmationState[] =
     "brave.brave_ads.state.has_migrated.confirmations.v5";
 const char kHasMigratedConversionState[] =

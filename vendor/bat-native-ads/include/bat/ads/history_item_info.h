@@ -6,11 +6,8 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_HISTORY_ITEM_INFO_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_HISTORY_ITEM_INFO_H_
 
-#include <string>
-#include <vector>
-
+#include "base/containers/circular_deque.h"
 #include "base/time/time.h"
-#include "base/values.h"
 #include "bat/ads/ad_content_info.h"
 #include "bat/ads/category_content_info.h"
 #include "bat/ads/export.h"
@@ -18,23 +15,15 @@
 namespace ads {
 
 struct ADS_EXPORT HistoryItemInfo final {
-  HistoryItemInfo();
-  HistoryItemInfo(const HistoryItemInfo& info);
-  HistoryItemInfo& operator=(const HistoryItemInfo& info);
-  ~HistoryItemInfo();
-
-  bool operator==(const HistoryItemInfo& rhs) const;
-  bool operator!=(const HistoryItemInfo& rhs) const;
-
-  base::Value::Dict ToValue() const;
-  void FromValue(const base::Value::Dict& root);
-
   base::Time created_at;
   AdContentInfo ad_content;
   CategoryContentInfo category_content;
 };
 
-using HistoryItemList = std::vector<HistoryItemInfo>;
+bool operator==(const HistoryItemInfo& lhs, const HistoryItemInfo& rhs);
+bool operator!=(const HistoryItemInfo& lhs, const HistoryItemInfo& rhs);
+
+using HistoryItemList = base::circular_deque<HistoryItemInfo>;
 
 }  // namespace ads
 

@@ -38,9 +38,8 @@ constexpr uint16_t kPurchaseIntentDefaultSignalWeight = 1;
 void AppendIntentSignalToHistory(
     const targeting::PurchaseIntentSignalInfo& purchase_intent_signal) {
   for (const auto& segment : purchase_intent_signal.segments) {
-    targeting::PurchaseIntentSignalHistoryInfo history;
-    history.created_at = purchase_intent_signal.created_at;
-    history.weight = purchase_intent_signal.weight;
+    targeting::PurchaseIntentSignalHistoryInfo history(
+        purchase_intent_signal.created_at, purchase_intent_signal.weight);
 
     ClientStateManager::GetInstance()
         ->AppendToPurchaseIntentSignalHistoryForSegment(segment, history);

@@ -55,7 +55,7 @@ const base::Feature kRestrictWebSocketsPool{"RestrictWebSocketsPool",
 
 // Disable protection against fingerprinting on screen dimensions by default.
 const base::Feature kBraveBlockScreenFingerprinting{
-    "kBraveBlockScreenFingerprinting", base::FEATURE_DISABLED_BY_DEFAULT};
+    "BraveBlockScreenFingerprinting", base::FEATURE_DISABLED_BY_DEFAULT};
 
 }  // namespace features
 }  // namespace blink

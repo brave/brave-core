@@ -6,7 +6,7 @@
 #include "bat/ads/internal/privacy/p2a/p2a.h"
 
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/privacy/p2a/p2a_values_util.h"
+#include "bat/ads/internal/privacy/p2a/p2a_value_util.h"
 
 namespace ads::privacy::p2a {
 

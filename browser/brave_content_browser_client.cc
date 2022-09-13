@@ -14,6 +14,7 @@
 #include "base/json/json_reader.h"
 #include "base/strings/strcat.h"
 #include "base/system/sys_info.h"
+#include "brave/browser/brave_ads/brave_ads_host.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
@@ -207,12 +208,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_today/common/features.h"
 #endif
 
-#if BUILDFLAG(IS_ANDROID)
-#include "brave/browser/brave_ads/brave_ads_host_android.h"
-#elif BUILDFLAG(ENABLE_EXTENSIONS)
-#include "brave/browser/brave_ads/brave_ads_host.h"
-#endif  // BUILDFLAG(IS_ANDROID)
-
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #include "brave/browser/ui/webui/playlist_ui.h"
 #endif  // BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
@@ -246,21 +241,14 @@ void BindCosmeticFiltersResourcesOnTaskRunner(
 void BindBraveAdsHost(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<brave_ads::mojom::BraveAdsHost> receiver) {
-#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(ENABLE_EXTENSIONS)
   auto* context = frame_host->GetBrowserContext();
   auto* profile = Profile::FromBrowserContext(context);
   content::WebContents* web_contents =
       content::WebContents::FromRenderFrameHost(frame_host);
 
   mojo::MakeSelfOwnedReceiver(
-#if BUILDFLAG(IS_ANDROID)
-      std::make_unique<brave_ads::BraveAdsHostAndroid>(
-#elif BUILDFLAG(ENABLE_EXTENSIONS)
-      std::make_unique<brave_ads::BraveAdsHost>(
-#endif  // BUILDFLAG(IS_ANDROID)
-          profile, web_contents),
+      std::make_unique<brave_ads::BraveAdsHost>(profile, web_contents),
       std::move(receiver));
-#endif  // BUILDFLAG(IS_ANDROID) || BUILDFLAG(ENABLE_EXTENSIONS)
 }
 
 void BindCosmeticFiltersResources(
@@ -546,8 +534,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         base::BindRepeating(&BindBraveSearchDefaultHost));
   }
 
-  if (brave_ads::features::IsRequestAdsEnabledApiEnabled() ||
-      base::FeatureList::IsEnabled(
+  if (base::FeatureList::IsEnabled(
           brave_ads::features::kSupportBraveSearchResultAdConfirmationEvents)) {
     map->Add<brave_ads::mojom::BraveAdsHost>(
         base::BindRepeating(&BindBraveAdsHost));

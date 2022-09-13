@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/history/sorts/history_sort_factory.h"
 
-#include "base/containers/circular_deque.h"
 #include "base/time/time.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/history_sort_types.h"
@@ -18,8 +17,8 @@ namespace ads {
 
 namespace {
 
-base::circular_deque<HistoryItemInfo> GetUnsortedHistory() {
-  base::circular_deque<HistoryItemInfo> history;
+HistoryItemList GetUnsortedHistory() {
+  HistoryItemList history;
 
   HistoryItemInfo history_item;
   history_item.created_at = base::Time::FromDoubleT(222222222);
@@ -53,13 +52,13 @@ TEST(BatAdsHistorySortTest, DescendingSortOrder) {
   const auto sort =
       HistorySortFactory::Build(HistorySortType::kDescendingOrder);
 
-  base::circular_deque<HistoryItemInfo> history = GetUnsortedHistory();
+  HistoryItemList history = GetUnsortedHistory();
 
   // Act
   history = sort->Apply(history);
 
   // Assert
-  base::circular_deque<HistoryItemInfo> expected_history;
+  HistoryItemList expected_history;
   HistoryItemInfo history_item;
   history_item.created_at = base::Time::FromDoubleT(555555555);
   expected_history.push_back(history_item);
@@ -80,13 +79,13 @@ TEST(BatAdsHistorySortTest, DescendingSortOrderForEmptyHistory) {
   const auto sort =
       HistorySortFactory::Build(HistorySortType::kDescendingOrder);
 
-  base::circular_deque<HistoryItemInfo> history;
+  HistoryItemList history;
 
   // Act
   history = sort->Apply(history);
 
   // Assert
-  const base::circular_deque<HistoryItemInfo> expected_history;
+  const HistoryItemList expected_history;
 
   EXPECT_TRUE(IsEqualContainers(expected_history, history));
 }
@@ -95,7 +94,7 @@ TEST(BatAdsHistorySortTest, AscendingSortOrder) {
   // Arrange
   const auto sort = HistorySortFactory::Build(HistorySortType::kAscendingOrder);
 
-  base::circular_deque<HistoryItemInfo> expected_history;
+  HistoryItemList expected_history;
   HistoryItemInfo history_item;
   history_item.created_at = base::Time::FromDoubleT(111111111);
   expected_history.push_back(history_item);
@@ -108,7 +107,7 @@ TEST(BatAdsHistorySortTest, AscendingSortOrder) {
   history_item.created_at = base::Time::FromDoubleT(555555555);
   expected_history.push_back(history_item);
 
-  base::circular_deque<HistoryItemInfo> history = GetUnsortedHistory();
+  HistoryItemList history = GetUnsortedHistory();
 
   // Act
   history = sort->Apply(history);
@@ -121,8 +120,8 @@ TEST(BatAdsHistorySortTest, AscendingSortOrderForEmptyHistory) {
   // Arrange
   const auto sort = HistorySortFactory::Build(HistorySortType::kAscendingOrder);
 
-  base::circular_deque<HistoryItemInfo> expected_history;
-  base::circular_deque<HistoryItemInfo> history;
+  HistoryItemList expected_history;
+  HistoryItemList history;
 
   // Act
   history = sort->Apply(history);
