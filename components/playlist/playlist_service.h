@@ -105,7 +105,10 @@ class PlaylistService : public KeyedService,
 
   void RemoveItemFromPlaylist(const std::string& playlist_id,
                               const std::string& item_id);
-  void DeletePlaylistItem(const std::string& id);
+  // Removes Item value from prefs and related cached data.
+  void DeletePlaylistItemData(const std::string& id);
+  // Removes only cached data.
+  void DeletePlaylistLocalData(const std::string& id);
   void DeleteAllPlaylistItems();
 
   void AddObserver(PlaylistServiceObserver* observer);
@@ -122,6 +125,7 @@ class PlaylistService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, CreatePlaylistItem);
   FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, MediaDownloadFailed);
   FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, ThumbnailFailed);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, RemoveAndRestoreLocalData);
 
   // KeyedService overrides:
   void Shutdown() override;
@@ -147,8 +151,10 @@ class PlaylistService : public KeyedService,
 
   base::SequencedTaskRunner* task_runner();
 
-  // Delete orphaned playlist item directories that are not included in db.
-  void CleanUp();
+  void CleanUpMalformedPlaylistItems();
+
+  // Delete orphaned playlist item directories that are not included in prefs.
+  void CleanUpOrphanedPlaylistItemDirs();
   void OnGetOrphanedPaths(const std::vector<base::FilePath> paths);
 
   void NotifyPlaylistChanged(const PlaylistChangeParams& params);

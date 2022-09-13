@@ -21,12 +21,13 @@ struct PlaylistItem {
   string id;
   string name;
   
+  url.mojom.Url page_source;
   url.mojom.Url media_path;
   url.mojom.Url thumbnail_path;
 
-  // When it's |ready|, |media_path| and |thumbnail_path| will be
+  // When it's |cached|, |media_path| and |thumbnail_path| will be
   // local path.
-  bool ready;
+  bool cached;
 };
 
 // Used by the WebUI page to bootstrap bidirectional communication.
@@ -49,6 +50,12 @@ interface PageHandler {
   AddMediaFilesFromOpenTabsToPlaylist(string playlist_id);
 
   RemoveItemFromPlaylist(string playlist_id, string item_id);
+
+  // Try downloading thumbnail and media files again
+  RecoverLocalDataForItem(string id);
+
+  // Removes thumbnail and media files for a item stored in local directory.
+  RemoveLocalDataForItem(string id);
 
   CreatePlaylist(Playlist playlist);
   RemovePlaylist(string id);

@@ -10,7 +10,7 @@
 
 namespace playlist {
 
-struct PlaylistItemChangeParams;
+struct PlaylistChangeParams;
 
 class PlaylistServiceObserver : public base::CheckedObserver {
  public:
