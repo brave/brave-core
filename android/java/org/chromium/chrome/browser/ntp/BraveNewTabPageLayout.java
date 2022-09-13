@@ -552,12 +552,13 @@ public class BraveNewTabPageLayout
                             }
 
                             final int visiblePercentageFinal = visiblePercentage;
-                            if (viewPosition >= 0) {
+                            int newsFeedViewPosition = viewPosition - newsFeedPosition;
+                            if (newsFeedViewPosition >= 0) {
                                 if (visiblePercentageFinal >= MINIMUM_VISIBLE_HEIGHT_THRESHOLD) {
-                                    mVisibleCard = mNewsItemsFeedCard.get(viewPosition);
+                                    mVisibleCard = mNewsItemsFeedCard.get(newsFeedViewPosition);
                                     // get params for view PROMOTED_ARTICLE
                                     if (mVisibleCard.getCardType() == CardType.PROMOTED_ARTICLE) {
-                                        mItemPosition = viewPosition;
+                                        mItemPosition = newsFeedViewPosition;
                                         mCreativeInstanceId =
                                                 BraveNewsUtils.getPromotionIdItem(mVisibleCard);
                                         mUuid = mVisibleCard.getUuid();
@@ -566,9 +567,10 @@ public class BraveNewTabPageLayout
 
                                     // get params for view DISPLAY_AD
                                     if (mVisibleCard.getCardType() == CardType.DISPLAY_AD) {
-                                        mItemPosition = viewPosition;
+                                        mItemPosition = newsFeedViewPosition;
                                         DisplayAd currentDisplayAd =
-                                                BraveNewsUtils.getFromDisplayAdsMap(viewPosition);
+                                                BraveNewsUtils.getFromDisplayAdsMap(
+                                                        newsFeedViewPosition);
                                         if (currentDisplayAd != null) {
                                             mCreativeInstanceId = currentDisplayAd != null
                                                     ? currentDisplayAd.creativeInstanceId
