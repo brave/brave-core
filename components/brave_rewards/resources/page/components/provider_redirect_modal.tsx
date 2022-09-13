@@ -107,8 +107,11 @@ export function ProviderRedirectModal () {
       return (
         <ModalRedirect
           id={'redirect-modal-region-not-supported'}
-          errorText={[getString('redirectModalRegionNotSupportedText')]}
+          errorText={[
+            getString('redirectModalRegionNotSupportedText1').replaceAll('$1', providerName),
+            getString('redirectModalRegionNotSupportedText2')]}
           titleText={getString('redirectModalRegionNotSupportedTitle')}
+          errorTextLink={'https://support.brave.com/hc/en-us/articles/6539887971469'}
           buttonText={getString('redirectModalClose')}
           walletType={walletType}
           onClick={actions.hideRedirectModal}

@@ -285,8 +285,11 @@ class SettingsPage extends React.Component<Props, State> {
         return (
           <ModalRedirect
             id={'redirect-modal-region-not-supported'}
-            errorText={[getLocale('redirectModalRegionNotSupportedText')]}
+            errorText={[
+              getLocale('redirectModalRegionNotSupportedText1').replaceAll('$1', getWalletProviderName(externalWallet)),
+              getLocale('redirectModalRegionNotSupportedText2')]}
             titleText={getLocale('redirectModalRegionNotSupportedTitle')}
+            errorTextLink={'https://support.brave.com/hc/en-us/articles/6539887971469'}
             buttonText={getLocale('redirectModalClose')}
             walletType={walletType}
             isMobile={true}
