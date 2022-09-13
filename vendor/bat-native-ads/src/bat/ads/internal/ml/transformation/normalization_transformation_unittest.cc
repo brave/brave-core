@@ -83,9 +83,9 @@ TEST_F(BatAdsNormalizationTest, ChainingTest) {
 
   ASSERT_EQ(DataType::kVector, data->GetType());
   const VectorData* vector_data = static_cast<VectorData*>(data.get());
+  ASSERT_TRUE(vector_data);
 
   // Assert
-  ASSERT_TRUE(vector_data);
   ASSERT_EQ(kDefaultBucketCount, vector_data->GetDimensionCount());
 
   // Hashes for [t, i, n, y, ti, in, ny, tin, iny, tiny] -- 10 in total

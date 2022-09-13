@@ -242,7 +242,7 @@ void UnitTestBase::SetDefaultMocks() {
 
   MockSave(ads_client_mock_);
   MockLoad(ads_client_mock_, temp_dir_);
-  MockLoadFileResource(ads_client_mock_);
+  MockLoadFileResource(ads_client_mock_, temp_dir_);
   MockLoadDataResource(ads_client_mock_);
 
   const base::FilePath database_path =

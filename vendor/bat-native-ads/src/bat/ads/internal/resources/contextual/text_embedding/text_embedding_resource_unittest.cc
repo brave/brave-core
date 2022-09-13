@@ -5,10 +5,6 @@
 
 #include "bat/ads/internal/resources/contextual/text_embedding/text_embedding_resource.h"
 
-#include <string>
-#include <utility>
-
-#include "base/files/file.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_file_util.h"
 
@@ -16,10 +12,11 @@
 
 namespace {
 
+constexpr char kResourceFile[] = "wtpwsrqtjxmfdwaymauprezkunxprysm";
 constexpr char kInvalidJsonResourceFile[] =
-    "wtpwsrqtjxmfdwaymauprezkunxprysm_invalid_json";
+    "resources/wtpwsrqtjxmfdwaymauprezkunxprysm_invalid_json";
 constexpr char kNotExistantResourceFile[] =
-    "wtpwsrqtjxmfdwaymauprezkunxprysm_not_existant";
+    "resources/wtpwsrqtjxmfdwaymauprezkunxprysm_not_existant";
 
 }  // namespace
 
@@ -49,20 +46,11 @@ TEST_F(BatAdsTextEmbeddingResourceTest, Load) {
 
 TEST_F(BatAdsTextEmbeddingResourceTest, LoadInvalidJsonResource) {
   // Arrange
+  CopyFileFromTestPathToTempPath(kInvalidJsonResourceFile, kResourceFile);
+
   TextEmbedding resource;
-  EXPECT_CALL(*ads_client_mock_, LoadFileResource(_, _, _))
-      .WillOnce(Invoke([](const std::string& /*id*/, const int /*version*/,
-                          LoadFileCallback callback) {
-        const base::FilePath path =
-            GetFileResourcePath().AppendASCII(kInvalidJsonResourceFile);
-
-        base::File file(
-            path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
-        std::move(callback).Run(std::move(file));
-      }));
-
-  // Act
   resource.Load();
+
   task_environment_.RunUntilIdle();
 
   // Assert
@@ -94,15 +82,6 @@ TEST_F(BatAdsTextEmbeddingResourceTest, LoadNotExistantJsonResource) {
 TEST_F(BatAdsTextEmbeddingResourceTest, LoadNotInitializedFile) {
   // Arrange
   TextEmbedding resource;
-  EXPECT_CALL(*ads_client_mock_, LoadFileResource(_, _, _))
-      .WillOnce(Invoke([](const std::string& /*id*/, const int /*version*/,
-                          LoadFileCallback callback) {
-        std::move(callback).Run(base::File());
-      }));
-
-  // Act
-  resource.Load();
-  task_environment_.RunUntilIdle();
 
   // Assert
   EXPECT_FALSE(resource.IsInitialized());

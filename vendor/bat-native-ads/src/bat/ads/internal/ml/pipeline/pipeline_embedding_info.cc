@@ -14,10 +14,10 @@ namespace ads::ml::pipeline {
 
 namespace {
 
-constexpr char version_key[] = "version";
-constexpr char timestamp_key[] = "timestamp";
-constexpr char locale_key[] = "locale";
-constexpr char embeddings_key[] = "embeddings";
+constexpr char kVersionKey[] = "version";
+constexpr char kTimestampKey[] = "timestamp";
+constexpr char kLocaleKey[] = "locale";
+constexpr char kEmbeddingsKey[] = "embeddings";
 
 }  // namespace
 
@@ -32,25 +32,25 @@ EmbeddingPipelineInfo& EmbeddingPipelineInfo::operator=(
 EmbeddingPipelineInfo::~EmbeddingPipelineInfo() = default;
 
 bool EmbeddingPipelineInfo::FromValue(const base::Value::Dict& root) {
-  if (absl::optional<int> value = root.FindInt(version_key)) {
+  if (absl::optional<int> value = root.FindInt(kVersionKey)) {
     version = *value;
   } else {
     return false;
   }
 
-  if (const auto* value = root.FindString(timestamp_key)) {
+  if (const auto* value = root.FindString(kTimestampKey)) {
     if (!base::Time::FromUTCString((*value).c_str(), &time)) {
       return false;
     }
   }
 
-  if (const auto* value = root.FindString(locale_key)) {
+  if (const auto* value = root.FindString(kLocaleKey)) {
     locale = *value;
   } else {
     return false;
   }
 
-  const auto* value = root.FindDict(embeddings_key);
+  const auto* value = root.FindDict(kEmbeddingsKey);
   if (!value) {
     return false;
   }

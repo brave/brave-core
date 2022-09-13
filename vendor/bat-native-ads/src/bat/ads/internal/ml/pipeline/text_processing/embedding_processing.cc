@@ -59,24 +59,23 @@ bool EmbeddingProcessing::SetEmbeddingPipeline(base::Value resource_value) {
 
 TextEmbeddingInfo EmbeddingProcessing::EmbedText(
     const std::string& text) const {
+  if (!IsInitialized()) {
+    return {};
+  }
+
+  if (text.empty()) {
+    return {};
+  }
+
   const std::vector<float> embedding_zeroed(embedding_pipeline_.dim, 0.0F);
   const VectorData embedding_vector_data = VectorData(embedding_zeroed);
   TextEmbeddingInfo text_embedding;
   text_embedding.embedding = embedding_vector_data;
 
-  if (!IsInitialized()) {
-    return text_embedding;
-  }
-
-  if (text.empty()) {
-    return text_embedding;
-  }
-
   const std::vector<std::string> tokens = base::SplitString(
       text, " ", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-
   std::vector<std::string> in_vocab_tokens;
-  int n_tokens = 0;
+
   for (const auto& token : tokens) {
     const auto iter = embedding_pipeline_.embeddings.find(token);
     if (iter == embedding_pipeline_.embeddings.end()) {
@@ -89,18 +88,17 @@ TextEmbeddingInfo EmbeddingProcessing::EmbedText(
     const VectorData& token_embedding_vector_data = iter->second;
     text_embedding.embedding.AddElementWise(token_embedding_vector_data);
     in_vocab_tokens.push_back(token);
-    n_tokens++;
   }
 
-  if (n_tokens == 0) {
+  if (in_vocab_tokens.empty()) {
     return text_embedding;
   }
 
   const std::string in_vocab_text = base::JoinString(in_vocab_tokens, " ");
-  const std::vector<uint8_t> sha256_hash = security::Sha256(in_vocab_text);
-  text_embedding.hashed_text_base64 = base::Base64Encode(sha256_hash);
+  const std::vector<uint8_t> in_vocab_sha256 = security::Sha256(in_vocab_text);
+  text_embedding.hashed_text_base64 = base::Base64Encode(in_vocab_sha256);
 
-  const auto scalar = static_cast<float>(n_tokens);
+  const auto scalar = static_cast<float>(in_vocab_tokens.size());
   text_embedding.embedding.DivideByScalar(scalar);
   return text_embedding;
 }

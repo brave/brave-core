@@ -13,11 +13,6 @@
 namespace ads::ml::pipeline {
 
 struct TextEmbeddingInfo final {
-  TextEmbeddingInfo();
-  TextEmbeddingInfo(const TextEmbeddingInfo& info);
-  TextEmbeddingInfo& operator=(const TextEmbeddingInfo& info);
-  ~TextEmbeddingInfo();
-
   std::string text;
   std::string hashed_text_base64;
   VectorData embedding;

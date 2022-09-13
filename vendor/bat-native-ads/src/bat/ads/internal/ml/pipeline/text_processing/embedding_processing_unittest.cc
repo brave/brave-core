@@ -6,26 +6,22 @@
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_processing.h"
 
 #include <map>
-#include <utility>
-#include <vector>
 
-#include "base/files/file.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/base/unittest/unittest_file_util.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/resources/contextual/text_embedding/text_embedding_resource.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace {
+
+constexpr char kResourceFile[] = "wtpwsrqtjxmfdwaymauprezkunxprysm";
 constexpr char kSimpleResourceFile[] =
-    "wtpwsrqtjxmfdwaymauprezkunxprysm_simple";
+    "resources/wtpwsrqtjxmfdwaymauprezkunxprysm_simple";
+
 }  // namespace
 
 namespace ads {
-
-using testing::_;
-using testing::Invoke;
 
 class BatAdsEmbeddingProcessingPipelineTest : public UnitTestBase {
  protected:
@@ -36,37 +32,30 @@ class BatAdsEmbeddingProcessingPipelineTest : public UnitTestBase {
 
 TEST_F(BatAdsEmbeddingProcessingPipelineTest, EmbedTextSimple) {
   // Arrange
+  CopyFileFromTestPathToTempPath(kSimpleResourceFile, kResourceFile);
+
   resource::TextEmbedding resource;
-  EXPECT_CALL(*ads_client_mock_, LoadFileResource(_, _, _))
-      .WillOnce(Invoke([](const std::string& /*id*/, const int /*version*/,
-                          LoadFileCallback callback) {
-        const base::FilePath path =
-            GetFileResourcePath().AppendASCII(kSimpleResourceFile);
-
-        base::File file(
-            path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
-        std::move(callback).Run(std::move(file));
-      }));
-
   resource.Load();
+
   task_environment_.RunUntilIdle();
-
   ASSERT_TRUE(resource.IsInitialized());
-  ml::pipeline::EmbeddingProcessing* embedding_processing = resource.Get();
 
-  const std::map<std::string, ml::VectorData> samples = {
+  ml::pipeline::EmbeddingProcessing* embedding_processing = resource.Get();
+  ASSERT_TRUE(embedding_processing);
+
+  const std::map<std::string, ml::VectorData> kSamples = {
       {"this simple unittest", ml::VectorData({0.5, 0.4, 1.0})},
       {"this is a simple unittest", ml::VectorData({0.5, 0.4, 1.0})},
       {"that is a test", ml::VectorData({0.0, 0.0, 0.0})},
       {"this 54 is simple", ml::VectorData({0.85, 0.2, 1.0})},
-      {"", ml::VectorData({0.0, 0.0, 0.0})}};
+      {{}, {}}};
 
-  for (const auto& sample : samples) {
+  for (const auto& [text, expected_embedding] : kSamples) {
     // Act
-    ml::pipeline::TextEmbeddingInfo text_embedding =
-        embedding_processing->EmbedText(sample.first);
+    const ml::pipeline::TextEmbeddingInfo text_embedding =
+        embedding_processing->EmbedText(text);
     // Assert
-    EXPECT_EQ(sample.second.GetValuesForTesting(),
+    EXPECT_EQ(expected_embedding.GetValuesForTesting(),
               text_embedding.embedding.GetValuesForTesting());
   }
 }

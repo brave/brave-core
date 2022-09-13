@@ -16,11 +16,9 @@ namespace ads {
 struct TextEmbeddingHtmlEventInfo final {
   TextEmbeddingHtmlEventInfo();
   TextEmbeddingHtmlEventInfo(const TextEmbeddingHtmlEventInfo& info);
-  TextEmbeddingHtmlEventInfo& operator=(const TextEmbeddingHtmlEventInfo& info);
-  ~TextEmbeddingHtmlEventInfo();
+  ~TextEmbeddingHtmlEventInfo();  // TODO(ptjames): non-trival destructor
 
   base::Time created_at;
-  std::string version;
   std::string locale;
   std::string hashed_text_base64;
   std::string embedding;

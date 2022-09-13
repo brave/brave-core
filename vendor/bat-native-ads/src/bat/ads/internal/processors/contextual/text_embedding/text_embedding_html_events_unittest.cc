@@ -33,19 +33,23 @@ TEST_F(BatAdsTextEmbeddingHtmlEventsTest, LogEvent) {
       embedding_as_string, text_embedding.hashed_text_base64,
       [=](const bool success) {
         ASSERT_TRUE(success) << "Failed to log text embedding html event";
-        if (success) {
-          GetTextEmbeddingHtmlEventsFromDatabase(
-              [=](const bool success, const TextEmbeddingHtmlEventList&
-                                          text_embedding_html_events) {
-                ASSERT_TRUE(success)
-                    << "Failed to get text embedding html events";
-                if (success) {
-                  // Assert
-                  EXPECT_EQ(text_embedding.hashed_text_base64,
-                            text_embedding_html_events[0].hashed_text_base64);
-                }
-              });
+        if (!success) {
+          return;
         }
+
+        GetTextEmbeddingHtmlEventsFromDatabase(
+            [=](const bool success,
+                const TextEmbeddingHtmlEventList& text_embedding_html_events) {
+              ASSERT_TRUE(success)
+                  << "Failed to get text embedding html events";
+              if (!success) {
+                return;
+              }
+
+              // Assert
+              EXPECT_EQ(text_embedding.hashed_text_base64,
+                        text_embedding_html_events[0].hashed_text_base64);
+            });
       });
 }
 
@@ -65,30 +69,36 @@ TEST_F(BatAdsTextEmbeddingHtmlEventsTest, PurgeEvents) {
         embedding_as_string, text_embedding.hashed_text_base64,
         [&](const bool success) {
           ASSERT_TRUE(success) << "Failed to log text embedding html event";
-          if (success) {
-            n_events_counter++;
-            if (n_events_counter == n_events) {
-              PurgeStaleTextEmbeddingHtmlEvents([](const bool success) {
-                ASSERT_TRUE(success)
-                    << "Failed to purge text embedding html events";
-                if (success) {
-                  GetTextEmbeddingHtmlEventsFromDatabase(
-                      [=](const bool success, const TextEmbeddingHtmlEventList&
-                                                  text_embedding_html_events) {
-                        ASSERT_TRUE(success)
-                            << "Failed to get text embedding html events";
-                        if (success) {
-                          // Assert
-                          const int size_events_default = targeting::features::
-                              GetTextEmbeddingsHistorySize();
-                          const int n_logged_events =
-                              text_embedding_html_events.size();
-                          EXPECT_TRUE(n_logged_events <= size_events_default);
-                        }
-                      });
-                }
-              });
-            }
+          if (!success) {
+            return;
+          }
+
+          n_events_counter++;
+          if (n_events_counter == n_events) {
+            PurgeStaleTextEmbeddingHtmlEvents([](const bool success) {
+              ASSERT_TRUE(success)
+                  << "Failed to purge text embedding html events";
+              if (!success) {
+                return;
+              }
+
+              GetTextEmbeddingHtmlEventsFromDatabase(
+                  [=](const bool success, const TextEmbeddingHtmlEventList&
+                                              text_embedding_html_events) {
+                    ASSERT_TRUE(success)
+                        << "Failed to get text embedding html events";
+                    if (!success) {
+                      return;
+                    }
+
+                    // Assert
+                    const int size_events_default =
+                        targeting::features::GetTextEmbeddingsHistorySize();
+                    const int n_logged_events =
+                        text_embedding_html_events.size();
+                    EXPECT_TRUE(n_logged_events <= size_events_default);
+                  });
+            });
           }
         });
   }

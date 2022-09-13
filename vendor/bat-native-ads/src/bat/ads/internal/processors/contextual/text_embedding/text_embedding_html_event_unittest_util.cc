@@ -16,11 +16,10 @@
 namespace ads {
 
 ml::pipeline::TextEmbeddingInfo BuildTextEmbedding() {
-  const std::string text = "The quick brown fox jumps over the lazy dog";
   ml::pipeline::TextEmbeddingInfo text_embedding;
-  text_embedding.text = text;
+  text_embedding.text = "The quick brown fox jumps over the lazy dog";
   text_embedding.hashed_text_base64 =
-      base::Base64Encode(security::Sha256(text));
+      base::Base64Encode(security::Sha256(text_embedding.text));
   text_embedding.embedding = ml::VectorData({0.0853, -0.1789, 0.4221});
 
   return text_embedding;
@@ -30,7 +29,6 @@ TextEmbeddingHtmlEventInfo BuildTextEmbeddingHtmlEvent() {
   ml::pipeline::TextEmbeddingInfo text_embedding = BuildTextEmbedding();
   TextEmbeddingHtmlEventInfo text_embedding_html_event;
   text_embedding_html_event.created_at = Now();
-  text_embedding_html_event.version = "0";
   text_embedding_html_event.locale = kDefaultLocale;
   text_embedding_html_event.hashed_text_base64 =
       text_embedding.hashed_text_base64;

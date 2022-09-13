@@ -8,10 +8,6 @@
 
 #include <string>
 
-namespace base {
-class Value;
-}  // namespace base
-
 namespace ads::processor {
 
 std::string SanitizeHtml(const std::string& html);

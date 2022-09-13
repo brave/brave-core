@@ -35,7 +35,6 @@ int BindParameters(
     BindInt64(command, index++,
               text_embedding_html_event.created_at.ToDeltaSinceWindowsEpoch()
                   .InMicroseconds());
-    BindString(command, index++, text_embedding_html_event.version);
     BindString(command, index++, text_embedding_html_event.locale);
     BindString(command, index++, text_embedding_html_event.hashed_text_base64);
     BindString(command, index++, text_embedding_html_event.embedding);
@@ -53,10 +52,9 @@ TextEmbeddingHtmlEventInfo GetFromRecord(mojom::DBRecordInfo* record) {
 
   text_embedding_html_event.created_at = base::Time::FromDeltaSinceWindowsEpoch(
       base::Microseconds(ColumnInt64(record, 0)));
-  text_embedding_html_event.version = ColumnString(record, 1);
-  text_embedding_html_event.locale = ColumnString(record, 2);
-  text_embedding_html_event.hashed_text_base64 = ColumnString(record, 3);
-  text_embedding_html_event.embedding = ColumnString(record, 4);
+  text_embedding_html_event.locale = ColumnString(record, 1);
+  text_embedding_html_event.hashed_text_base64 = ColumnString(record, 2);
+  text_embedding_html_event.embedding = ColumnString(record, 3);
 
   return text_embedding_html_event;
 }
@@ -84,7 +82,6 @@ void TextEmbeddingHtmlEvents::GetAll(
   const std::string& query = base::StringPrintf(
       "SELECT "
       "tehe.created_at, "
-      "tehe.version, "
       "tehe.locale, "
       "tehe.hashed_text_base64, "
       "tehe.embedding "
@@ -147,7 +144,6 @@ void TextEmbeddingHtmlEvents::RunTransaction(
 
   command->record_bindings = {
       mojom::DBCommandInfo::RecordBindingType::INT64_TYPE,   // created_at
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // version
       mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // locale
       mojom::DBCommandInfo::RecordBindingType::
           STRING_TYPE,  // hashed_text_base64
@@ -190,12 +186,11 @@ std::string TextEmbeddingHtmlEvents::BuildInsertOrUpdateQuery(
   return base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
       "(created_at, "
-      "version, "
       "locale, "
       "hashed_text_base64, "
       "embedding) VALUES %s",
       GetTableName().c_str(),
-      BuildBindingParameterPlaceholders(5, count).c_str());
+      BuildBindingParameterPlaceholders(4, count).c_str());
 }
 
 void TextEmbeddingHtmlEvents::OnGetTextEmbeddingHtmlEvents(
@@ -204,7 +199,7 @@ void TextEmbeddingHtmlEvents::OnGetTextEmbeddingHtmlEvents(
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get embeddings");
-    callback(/* success */ false, {});
+    callback(/* success */ false, /* text_embedding_html_events */ {});
     return;
   }
 
@@ -227,7 +222,6 @@ void TextEmbeddingHtmlEvents::MigrateToV25(
       "CREATE TABLE text_embedding_html_events "
       "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
       "created_at TIMESTAMP NOT NULL, "
-      "version TEXT NOT NULL, "
       "locale TEXT NOT NULL, "
       "hashed_text_base64 TEXT NOT NULL UNIQUE, "
       "embedding TEXT NOT NULL)");

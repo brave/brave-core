@@ -27,7 +27,7 @@ TEST_F(BatAdsStringHtmlUtilTest, ParseHtmlTagAttributeSimple) {
       R"(<meta property="og:title" description="a detailed summary" content="this is info ">)";
   const std::string html_2 =
       R"(<div href="brave.com" description="this is12 34 info">)";
-  const std::vector<std::vector<std::string>> samples = {
+  const std::vector<std::vector<std::string>> kSamples = {
       {html_1, "og:title", "content", "this is info "},
       {html_1, "title", "content", "this is info "},
       {html_1, "description", "content", "this is info "},
@@ -39,12 +39,12 @@ TEST_F(BatAdsStringHtmlUtilTest, ParseHtmlTagAttributeSimple) {
       {html_2, "href", "description", "this is12 34 info"},
       {html_2, "div", "href", "brave.com"}};
 
-  for (const auto& sample : samples) {
+  for (const auto& sample : kSamples) {
     // Act
     const std::string parsed =
-        ParseHtmlTagAttribute(sample[0], sample[1], sample[2]);
+        ParseHtmlTagAttribute(sample.at(0), sample.at(1), sample.at(2));
     // Assert
-    ASSERT_EQ(sample[3], parsed);
+    EXPECT_EQ(sample.at(3), parsed);
   }
 }
 

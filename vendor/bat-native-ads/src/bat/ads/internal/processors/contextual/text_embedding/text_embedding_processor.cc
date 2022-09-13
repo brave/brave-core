@@ -49,7 +49,7 @@ void TextEmbedding::Process(const std::string& text) {
   }
 
   const std::string sanitized_text = SanitizeHtml(text);
-  if (sanitized_text.length() == 0) {
+  if (sanitized_text.empty()) {
     BLOG(1, "No text available for embedding");
     return;
   }

@@ -19,7 +19,6 @@ void LogTextEmbeddingHtmlEvent(const std::string& embedding_as_string,
                                TextEmbeddingHtmlEventCallback callback) {
   TextEmbeddingHtmlEventInfo text_embedding_html_event;
   text_embedding_html_event.created_at = base::Time::Now();
-  text_embedding_html_event.version = {};
   text_embedding_html_event.locale = {};
   text_embedding_html_event.hashed_text_base64 = hashed_text_base64;
   text_embedding_html_event.embedding = embedding_as_string;
@@ -49,7 +48,7 @@ void GetTextEmbeddingHtmlEventsFromDatabase(
           const TextEmbeddingHtmlEventList& text_embedding_html_events) {
         if (!success) {
           BLOG(1, "Failed to get text embedding HTML events");
-          callback(success, {});
+          callback(success, /* text_embedding_html_events */ {});
           return;
         }
         callback(success, text_embedding_html_events);

@@ -10,8 +10,6 @@ namespace ads {
 TextEmbeddingHtmlEventInfo::TextEmbeddingHtmlEventInfo() = default;
 TextEmbeddingHtmlEventInfo::TextEmbeddingHtmlEventInfo(
     const TextEmbeddingHtmlEventInfo& info) = default;
-TextEmbeddingHtmlEventInfo& TextEmbeddingHtmlEventInfo::operator=(
-    const TextEmbeddingHtmlEventInfo& info) = default;
 TextEmbeddingHtmlEventInfo::~TextEmbeddingHtmlEventInfo() = default;
 
 }  // namespace ads

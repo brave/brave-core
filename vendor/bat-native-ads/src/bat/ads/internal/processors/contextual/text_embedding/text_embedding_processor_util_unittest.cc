@@ -22,7 +22,7 @@ class BatAdsTextEmbeddingProcessorUtilTest : public UnitTestBase {
 
 TEST_F(BatAdsTextEmbeddingProcessorUtilTest, SanitizeHtml) {
   // Arrange
-  const std::map<std::string, std::string> samples = {
+  const std::map<std::string, std::string> kSamples = {
       {R"(<meta property="og:title" content="test">)", "test"},
       {R"(<meta property="og:title" content=" testing   ">)", "testing"},
       {R"(<meta property="og:title" content="test (string) - for 78 unittest 246">)",
@@ -42,9 +42,10 @@ TEST_F(BatAdsTextEmbeddingProcessorUtilTest, SanitizeHtml) {
       {R"( )", {}},
       {R"()", {}}};
 
-  for (const auto& [key, value] : samples) {
+  for (const auto& [key, value] : kSamples) {
     // Act
     const std::string sanitized_html = SanitizeHtml(key);
+
     // Assert
     EXPECT_EQ(value, sanitized_html);
   }
@@ -52,7 +53,7 @@ TEST_F(BatAdsTextEmbeddingProcessorUtilTest, SanitizeHtml) {
 
 TEST_F(BatAdsTextEmbeddingProcessorUtilTest, SanitizeText) {
   // Arrange
-  const std::map<std::string, std::string> samples = {
+  const std::map<std::string, std::string> kSamples = {
       {"test", "test"},
       {" testing   ", "testing"},
       {"test (string) - for 78 unittest 246", "test string for unittest"},
@@ -65,9 +66,10 @@ TEST_F(BatAdsTextEmbeddingProcessorUtilTest, SanitizeText) {
       {" ", {}},
       {"", {}}};
 
-  for (const auto& [key, value] : samples) {
+  for (const auto& [key, value] : kSamples) {
     // Act
     const std::string sanitized_text = SanitizeText(key);
+
     // Assert
     EXPECT_EQ(value, sanitized_text);
   }
