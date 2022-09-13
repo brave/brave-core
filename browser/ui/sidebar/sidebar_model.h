@@ -79,7 +79,7 @@ class SidebarModel : public SidebarService::Observer,
   // |false| is used in unit test.
   void SetActiveIndex(int index, bool load = true);
   // Returns true if webcontents of item at |index| already loaded url.
-  bool IsSidebarHasAllBuiltiInItems() const;
+  bool IsSidebarHasAllBuiltInItems() const;
   int GetIndexOf(const SidebarItem& item) const;
 
   // Don't cache item list. list can be changed during the runtime.

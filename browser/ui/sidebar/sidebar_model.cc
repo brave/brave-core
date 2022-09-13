@@ -193,7 +193,7 @@ const std::vector<SidebarItem>& SidebarModel::GetAllSidebarItems() const {
   return GetSidebarService(profile_)->items();
 }
 
-bool SidebarModel::IsSidebarHasAllBuiltiInItems() const {
+bool SidebarModel::IsSidebarHasAllBuiltInItems() const {
   return GetSidebarService(profile_)->GetHiddenDefaultSidebarItems().empty();
 }
 
