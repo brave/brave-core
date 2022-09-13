@@ -85,6 +85,9 @@ void IPFSHostResolver::OnComplete(
   if (result != net::OK) {
     VLOG(1) << "DNS resolving error:" << net::ErrorToString(result)
             << " for host: " << prefix_ + resolving_host_;
+    if (resolved_callback_) {
+      std::move(resolved_callback_).Run(resolving_host_, absl::nullopt);
+    }
   }
   if (complete_callback_for_testing_)
     std::move(complete_callback_for_testing_).Run();

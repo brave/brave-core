@@ -31,7 +31,7 @@ class IPFSHostResolver : public network::ResolveHostClientBase {
 
   using HostTextResultsCallback =
       base::OnceCallback<void(const std::string& host,
-                              const std::string& dnslink)>;
+                              const absl::optional<std::string>& dnslink)>;
 
   virtual void Resolve(const net::HostPortPair& host,
                        const net::NetworkIsolationKey& isolation_key,

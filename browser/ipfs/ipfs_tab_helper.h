@@ -54,9 +54,30 @@ class IPFSTabHelper : public content::WebContentsObserver,
 
  private:
   FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest, CanResolveURLTest);
-  FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest, URLResolvingTest);
+  FRIEND_TEST_ALL_PREFIXES(
+      IpfsTabHelperUnitTest,
+      TranslateUrlToIpns_When_HasDNSLinkRecord_AndXIPFSPathHeader);
+  FRIEND_TEST_ALL_PREFIXES(
+      IpfsTabHelperUnitTest,
+      TranslateUrlToIpns_When_HasDNSLinkRecord_AndOriginalPageFails_500);
+  FRIEND_TEST_ALL_PREFIXES(
+      IpfsTabHelperUnitTest,
+      TranslateUrlToIpns_When_HasDNSLinkRecord_AndOriginalPageFails_400);
+  FRIEND_TEST_ALL_PREFIXES(
+      IpfsTabHelperUnitTest,
+      TranslateUrlToIpns_When_HasDNSLinkRecord_AndOriginalPageFails_505);
+  FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest,
+                           DoNotTranslateUrlToIpns_When_NoDNSLinkRecord);
+  FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest,
+                           DoNotTranslateUrlToIpns_When_NoHeader_And_NoError);
+  FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest,
+                           DNSLinkRecordResolved_AutoRedirectDNSLink);
+  FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest,
+                           XIpfsPathHeaderUsed_IfNoDnsLinkRecord_IPFS);
+  FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest,
+                           XIpfsPathHeaderUsed_IfNoDnsLinkRecord_IPNS);
+  FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest, ResolveXIPFSPathUrl);
   FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest, GatewayResolving);
-  FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest, ResolveDNSLinkURL);
 
   friend class content::WebContentsUserData<IPFSTabHelper>;
   explicit IPFSTabHelper(content::WebContents* web_contents);
@@ -64,10 +85,13 @@ class IPFSTabHelper : public content::WebContentsObserver,
   GURL GetCurrentPageURL() const;
   bool CanResolveURL(const GURL& url) const;
   bool IsDNSLinkCheckEnabled() const;
-  void IPFSLinkResolved(const GURL& ipfs);
-  void MaybeShowDNSLinkButton(const net::HttpResponseHeaders* headers);
+  void XIPFSPathLinkResolved(const GURL& ipfs);
+  void DNSLinkResolved(const GURL& ipfs);
+  void MaybeCheckDNSLinkRecord(const net::HttpResponseHeaders* headers);
   void UpdateDnsLinkButtonState();
-  GURL ResolveDNSLinkURL(GURL url);
+
+  GURL ResolveDNSLinkUrl(const GURL& url);
+  GURL ResolveXIPFSPathUrl(const std::string& x_ipfs_path_header_value);
 
   void MaybeSetupIpfsProtocolHandlers(const GURL& url);
 
@@ -76,10 +100,10 @@ class IPFSTabHelper : public content::WebContentsObserver,
       content::NavigationHandle* navigation_handle) override;
   void UpdateLocationBar();
 
-  void ResolveIPFSLink();
-  std::string GetPathForDNSLink(GURL url);
-  void HostResolvedCallback(const std::string& host,
-                            const std::string& dnslink);
+  void CheckDNSLinkRecord(absl::optional<std::string> x_ipfs_path_header);
+  void HostResolvedCallback(absl::optional<std::string> x_ipfs_path_header,
+                            const std::string& host,
+                            const absl::optional<std::string>& dnslink);
 
   PrefService* pref_service_ = nullptr;
   PrefChangeRegistrar pref_change_registrar_;

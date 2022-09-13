@@ -134,7 +134,7 @@ class IPFSHostResolverTest : public testing::Test {
   void HostResolvedCallback(base::OnceClosure callback,
                             const std::string& expected_host,
                             const std::string& host,
-                            const std::string& dnslink) {
+                            const absl::optional<std::string>& dnslink) {
     EXPECT_EQ(expected_host, host);
     resolved_callback_called_++;
     if (callback)
@@ -218,7 +218,9 @@ TEST_F(IPFSHostResolverTest, SuccessOnReuse) {
       net::DnsQueryType::TXT,
       base::BindOnce(
           [](const std::string& expected_host, const std::string& host,
-             const std::string& dnslink) { EXPECT_EQ(expected_host, host); },
+             const absl::optional<std::string>& dnslink) {
+            EXPECT_EQ(expected_host, host);
+          },
           host));
   EXPECT_EQ(fake_host_resolver_raw->resolve_host_called(), 1);
   EXPECT_EQ(resolved_callback_called(), 1);
@@ -239,8 +241,9 @@ TEST_F(IPFSHostResolverTest, ResolutionFailed) {
   ipfs_resolver.Resolve(
       net::HostPortPair(host, 11), net::NetworkIsolationKey(),
       net::DnsQueryType::TXT,
-      base::BindOnce([](const std::string& host, const std::string& dnslink) {
-        NOTREACHED();
+      base::BindOnce([](const std::string& host,
+                        const absl::optional<std::string>& dnslink) {
+        EXPECT_FALSE(dnslink);
       }));
   run_loop.Run();
   EXPECT_EQ(ipfs_resolver.host(), host);

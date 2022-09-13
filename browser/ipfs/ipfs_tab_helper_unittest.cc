@@ -17,11 +17,37 @@
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_browser_context.h"
 #include "content/public/test/test_renderer_host.h"
+#include "content/public/test/test_web_contents_factory.h"
 #include "content/public/test/web_contents_tester.h"
+#include "content/test/test_web_contents.h"
 #include "net/http/http_response_headers.h"
+#include "services/network/test/test_network_context.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ipfs {
+
+class FakeIPFSHostResolver : public ipfs::IPFSHostResolver {
+ public:
+  explicit FakeIPFSHostResolver(network::mojom::NetworkContext* context)
+      : ipfs::IPFSHostResolver(context) {}
+  ~FakeIPFSHostResolver() override = default;
+  void Resolve(const net::HostPortPair& host,
+               const net::NetworkIsolationKey& isolation_key,
+               net::DnsQueryType dns_query_type,
+               HostTextResultsCallback callback) override {
+    resolve_called_++;
+    if (callback)
+      std::move(callback).Run(host.host(), dnslink_);
+  }
+
+  bool resolve_called() const { return resolve_called_ == 1; }
+
+  void SetDNSLinkToRespond(const std::string& dnslink) { dnslink_ = dnslink; }
+
+ private:
+  int resolve_called_ = 0;
+  std::string dnslink_;
+};
 
 class IpfsTabHelperUnitTest : public testing::Test {
  public:
@@ -31,33 +57,46 @@ class IpfsTabHelperUnitTest : public testing::Test {
 
   void SetUp() override {
     ASSERT_TRUE(profile_manager_.SetUp());
+    test_network_context_ = std::make_unique<network::TestNetworkContext>();
     profile_ = profile_manager_.CreateTestingProfile("TestProfile");
-    web_contents_ =
-        content::WebContentsTester::CreateTestWebContents(profile(), nullptr);
+    web_contents_ = content::TestWebContents::Create(profile(), nullptr);
+    auto ipfs_host_resolver =
+        std::make_unique<FakeIPFSHostResolver>(test_network_context_.get());
+    ipfs_host_resolver_ = ipfs_host_resolver.get();
     ASSERT_TRUE(web_contents_.get());
     ASSERT_TRUE(
         ipfs::IPFSTabHelper::MaybeCreateForWebContents(web_contents_.get()));
+
+    ipfs_tab_helper()->SetResolverForTesting(std::move(ipfs_host_resolver));
     SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL);
   }
-
   TestingProfile* profile() { return profile_; }
   void SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes type) {
     profile_->GetPrefs()->SetInteger(kIPFSResolveMethod,
                                      static_cast<int>(type));
+  }
+  void SetAutoRedirectDNSLink(bool value) {
+    profile_->GetPrefs()->SetBoolean(kIPFSAutoRedirectDNSLink, value);
   }
 
   ipfs::IPFSTabHelper* ipfs_tab_helper() {
     return ipfs::IPFSTabHelper::FromWebContents(web_contents_.get());
   }
 
-  content::WebContents* web_contents() { return web_contents_.get(); }
+  ipfs::FakeIPFSHostResolver* ipfs_host_resolver() {
+    return ipfs_host_resolver_;
+  }
+
+  content::TestWebContents* web_contents() { return web_contents_.get(); }
 
  private:
   content::BrowserTaskEnvironment task_environment_;
   content::RenderViewHostTestEnabler render_view_host_test_enabler_;
   TestingProfileManager profile_manager_;
   raw_ptr<TestingProfile> profile_ = nullptr;
-  std::unique_ptr<content::WebContents> web_contents_;
+  std::unique_ptr<content::TestWebContents> web_contents_;
+  std::unique_ptr<network::TestNetworkContext> test_network_context_;
+  FakeIPFSHostResolver* ipfs_host_resolver_;
 };
 
 TEST_F(IpfsTabHelperUnitTest, CanResolveURLTest) {
@@ -81,93 +120,183 @@ TEST_F(IpfsTabHelperUnitTest, CanResolveURLTest) {
   ASSERT_FALSE(helper->CanResolveURL(GURL("https://bafyb.ipfs.dweb.link/")));
 }
 
-TEST_F(IpfsTabHelperUnitTest, URLResolvingTest) {
+TEST_F(IpfsTabHelperUnitTest,
+       TranslateUrlToIpns_When_HasDNSLinkRecord_AndXIPFSPathHeader) {
+  auto* helper = ipfs_tab_helper();
+  ASSERT_TRUE(helper);
+
+  web_contents()->NavigateAndCommit(GURL("https://brantly.eth/page?query#ref"));
+  helper->SetPageURLForTesting(GURL("https://brantly.eth/page?query#ref"));
+
+  auto headers = net::HttpResponseHeaders::TryToCreate("HTTP/1.1 200 OK");
+  headers->AddHeader("x-ipfs-path", "somevalue");
+
+  ipfs_host_resolver()->SetDNSLinkToRespond("/ipns/brantly.eth/");
+  helper->MaybeCheckDNSLinkRecord(headers.get());
+
+  EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
+  ASSERT_EQ(GURL("ipns://brantly.eth/page?query#ref"),
+            helper->GetIPFSResolvedURL());
+}
+
+TEST_F(IpfsTabHelperUnitTest,
+       TranslateUrlToIpns_When_HasDNSLinkRecord_AndOriginalPageFails_400) {
+  auto* helper = ipfs_tab_helper();
+  ASSERT_TRUE(helper);
+
+  web_contents()->NavigateAndCommit(GURL("https://brantly.eth/page?query#ref"));
+  helper->SetPageURLForTesting(GURL("https://brantly.eth/page?query#ref"));
+
+  auto headers = net::HttpResponseHeaders::TryToCreate("HTTP/1.1 400 Nan");
+  ipfs_host_resolver()->SetDNSLinkToRespond("/ipns/brantly.eth/");
+  helper->MaybeCheckDNSLinkRecord(headers.get());
+
+  EXPECT_FALSE(ipfs_host_resolver()->resolve_called());
+  ASSERT_EQ(GURL(), helper->GetIPFSResolvedURL());
+}
+
+TEST_F(IpfsTabHelperUnitTest,
+       TranslateUrlToIpns_When_HasDNSLinkRecord_AndOriginalPageFails_500) {
+  auto* helper = ipfs_tab_helper();
+  ASSERT_TRUE(helper);
+
+  web_contents()->NavigateAndCommit(GURL("https://brantly.eth/page?query#ref"));
+  helper->SetPageURLForTesting(GURL("https://brantly.eth/page?query#ref"));
+
+  auto headers = net::HttpResponseHeaders::TryToCreate(
+      "HTTP/1.1 500 Internal server error");
+  ipfs_host_resolver()->SetDNSLinkToRespond("/ipns/brantly.eth/");
+  helper->MaybeCheckDNSLinkRecord(headers.get());
+
+  EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
+  ASSERT_EQ(GURL("ipns://brantly.eth/page?query#ref"),
+            helper->GetIPFSResolvedURL());
+}
+
+TEST_F(IpfsTabHelperUnitTest,
+       TranslateUrlToIpns_When_HasDNSLinkRecord_AndOriginalPageFails_505) {
+  auto* helper = ipfs_tab_helper();
+  ASSERT_TRUE(helper);
+
+  web_contents()->NavigateAndCommit(GURL("https://brantly.eth/page?query#ref"));
+  helper->SetPageURLForTesting(GURL("https://brantly.eth/page?query#ref"));
+
+  auto headers = net::HttpResponseHeaders::TryToCreate(
+      "HTTP/1.1 505 Version not supported");
+  ipfs_host_resolver()->SetDNSLinkToRespond("/ipns/brantly.eth/");
+  helper->MaybeCheckDNSLinkRecord(headers.get());
+
+  EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
+  ASSERT_EQ(GURL("ipns://brantly.eth/page?query#ref"),
+            helper->GetIPFSResolvedURL());
+}
+
+TEST_F(IpfsTabHelperUnitTest,
+       DoNotTranslateUrlToIpns_When_NoHeader_And_NoError) {
+  auto* helper = ipfs_tab_helper();
+  ASSERT_TRUE(helper);
+
+  web_contents()->NavigateAndCommit(GURL("https://brantly.eth/page?query#ref"));
+  helper->SetPageURLForTesting(GURL("https://brantly.eth/page?query#ref"));
+
+  auto headers = net::HttpResponseHeaders::TryToCreate("HTTP/1.1 200 OK");
+
+  ipfs_host_resolver()->SetDNSLinkToRespond("");
+  helper->MaybeCheckDNSLinkRecord(headers.get());
+
+  EXPECT_FALSE(ipfs_host_resolver()->resolve_called());
+  ASSERT_EQ(GURL(), helper->GetIPFSResolvedURL());
+}
+
+TEST_F(IpfsTabHelperUnitTest, DNSLinkRecordResolved_AutoRedirectDNSLink) {
   auto* helper = ipfs_tab_helper();
   ASSERT_TRUE(helper);
   GURL gateway = ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
                                                 chrome::GetChannel());
+  web_contents()->NavigateAndCommit(GURL("https://brantly.eth/page?query#ref"));
 
-  GURL test_url("ipns://brantly.eth/page?query#ref");
-  helper->SetPageURLForTesting(test_url);
-  helper->IPFSLinkResolved(helper->ResolveDNSLinkURL(test_url));
-  auto resolved_url = helper->GetIPFSResolvedURL();
-  EXPECT_EQ(resolved_url.host(), gateway.host());
-  EXPECT_EQ(resolved_url.path(), "/brantly.eth/page");
-  EXPECT_EQ(resolved_url.query(), "query");
-  EXPECT_EQ(resolved_url.ref(), "ref");
+  helper->SetPageURLForTesting(GURL("https://brantly.eth/page?query#ref"));
+  helper->HostResolvedCallback(absl::nullopt, "brantly.eth",
+                               "/ipns/brantly.eth/");
+  ASSERT_EQ(GURL("ipns://brantly.eth/page?query#ref"),
+            helper->GetIPFSResolvedURL());
+}
 
-  test_url = GURL("ipns://brantly.eth/");
-  helper->SetPageURLForTesting(test_url);
-  helper->IPFSLinkResolved(helper->ResolveDNSLinkURL(test_url));
-  resolved_url = helper->GetIPFSResolvedURL();
-  EXPECT_EQ(resolved_url.host(), gateway.host());
-  EXPECT_EQ(resolved_url.path(), "/brantly.eth/");
-  EXPECT_EQ(resolved_url.query(), "");
-  EXPECT_EQ(resolved_url.ref(), "");
+TEST_F(IpfsTabHelperUnitTest, XIpfsPathHeaderUsed_IfNoDnsLinkRecord_IPFS) {
+  auto* helper = ipfs_tab_helper();
+  ASSERT_TRUE(helper);
 
-  test_url = GURL("https://docs.ipfs.io/install/ipfs-desktop/?foo=bar#ref");
-  helper->SetPageURLForTesting(test_url);
-  helper->IPFSLinkResolved(helper->ResolveDNSLinkURL(test_url));
-  resolved_url = helper->GetIPFSResolvedURL();
-  EXPECT_EQ(resolved_url.host(), gateway.host());
-  EXPECT_EQ(resolved_url.path(), "/ipns/docs.ipfs.io/install/ipfs-desktop/");
-  EXPECT_EQ(resolved_url.query(), "foo=bar");
-  EXPECT_EQ(resolved_url.ref(), "ref");
-
+  web_contents()->NavigateAndCommit(GURL("https://brantly.eth/page?query#ref"));
+  helper->SetPageURLForTesting(GURL("https://brantly.eth/page?query#ref"));
   SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
-  test_url = GURL("https://docs.ipfs.io/install/ipfs-desktop/?foo=bar#ref");
-  gateway = ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
-                                           chrome::GetChannel());
-  helper->SetPageURLForTesting(test_url);
-  helper->IPFSLinkResolved(helper->ResolveDNSLinkURL(test_url));
-  resolved_url = helper->GetIPFSResolvedURL();
+  GURL gateway = ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
+                                                chrome::GetChannel());
+
+  auto headers = net::HttpResponseHeaders::TryToCreate("HTTP/1.1 200 OK");
+  headers->AddHeader("x-ipfs-path", "/ipfs/bafy");
+
+  ipfs_host_resolver()->SetDNSLinkToRespond("");
+  helper->MaybeCheckDNSLinkRecord(headers.get());
+
+  EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
+  GURL resolved_url = helper->GetIPFSResolvedURL();
+
   EXPECT_EQ(resolved_url.host(), gateway.host());
-  EXPECT_EQ(resolved_url.path(), "/ipns/docs.ipfs.io/install/ipfs-desktop/");
-  EXPECT_EQ(resolved_url.query(), "foo=bar");
+  EXPECT_EQ(resolved_url.path(), "/ipfs/bafy");
+  EXPECT_EQ(resolved_url.query(), "query");
   EXPECT_EQ(resolved_url.ref(), "ref");
 }
 
-TEST_F(IpfsTabHelperUnitTest, ResolveDNSLinkURL) {
+TEST_F(IpfsTabHelperUnitTest, XIpfsPathHeaderUsed_IfNoDnsLinkRecord_IPNS) {
   auto* helper = ipfs_tab_helper();
   ASSERT_TRUE(helper);
-  SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL);
+
+  web_contents()->NavigateAndCommit(GURL("https://brantly.eth/page?query#ref"));
+  helper->SetPageURLForTesting(GURL("https://brantly.eth/page?query#ref"));
+  SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
   GURL gateway = ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
                                                 chrome::GetChannel());
 
-  GURL test_url("https://docs.ipfs.io/");
-  auto resolved_url = helper->ResolveDNSLinkURL(test_url);
+  auto headers = net::HttpResponseHeaders::TryToCreate("HTTP/1.1 200 OK");
+  headers->AddHeader("x-ipfs-path", "/ipns/brantly.eth/");
+
+  ipfs_host_resolver()->SetDNSLinkToRespond("");
+  helper->MaybeCheckDNSLinkRecord(headers.get());
+
+  EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
+  GURL resolved_url = helper->GetIPFSResolvedURL();
+
   EXPECT_EQ(resolved_url.host(), gateway.host());
-  EXPECT_EQ(resolved_url.path(), "/ipns/docs.ipfs.io/");
+  EXPECT_EQ(resolved_url.path(), "/ipns/brantly.eth/");
+  EXPECT_EQ(resolved_url.query(), "query");
+  EXPECT_EQ(resolved_url.ref(), "ref");
+}
 
-  SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
-  gateway = ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
-                                           chrome::GetChannel());
+TEST_F(IpfsTabHelperUnitTest, ResolveXIPFSPathUrl) {
+  auto* helper = ipfs_tab_helper();
+  ASSERT_TRUE(helper);
 
-  resolved_url = helper->ResolveDNSLinkURL(test_url);
-  EXPECT_EQ(resolved_url.host(), gateway.host());
-  EXPECT_EQ(resolved_url.path(), "/ipns/docs.ipfs.io/");
+  {
+    SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
+    GURL gateway = ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
+                                                  chrome::GetChannel());
+    GURL url = helper->ResolveXIPFSPathUrl("/ipfs/bafy");
+    EXPECT_EQ(url.host(), gateway.host());
+    EXPECT_EQ(url.path(), "/ipfs/bafy");
+    EXPECT_EQ(url.query(), "");
+    EXPECT_EQ(url.ref(), "");
+  }
 
-  SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL);
-  gateway = ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
-                                           chrome::GetChannel());
-
-  test_url = GURL("https://docs.ipfs.io/install/ipfs-desktop/?foo=bar#qqqq");
-  resolved_url = helper->ResolveDNSLinkURL(test_url);
-  EXPECT_EQ(resolved_url.host(), gateway.host());
-  EXPECT_EQ(resolved_url.path(), "/ipns/docs.ipfs.io/install/ipfs-desktop/");
-  EXPECT_TRUE(resolved_url.query().empty());
-  EXPECT_TRUE(resolved_url.ref().empty());
-
-  SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
-  gateway = ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
-                                           chrome::GetChannel());
-
-  test_url = GURL("https://docs.ipfs.io/install/ipfs-desktop/?foo=bar#qqqq");
-  resolved_url = helper->ResolveDNSLinkURL(test_url);
-  EXPECT_EQ(resolved_url.host(), gateway.host());
-  EXPECT_EQ(resolved_url.path(), "/ipns/docs.ipfs.io/install/ipfs-desktop/");
-  EXPECT_TRUE(resolved_url.query().empty());
-  EXPECT_TRUE(resolved_url.ref().empty());
+  {
+    SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL);
+    GURL gateway = ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
+                                                  chrome::GetChannel());
+    GURL url = helper->ResolveXIPFSPathUrl("/ipfs/bafy");
+    EXPECT_EQ(url.host(), gateway.host());
+    EXPECT_EQ(url.path(), "/ipfs/bafy");
+    EXPECT_EQ(url.query(), "");
+    EXPECT_EQ(url.ref(), "");
+  }
 }
 
 TEST_F(IpfsTabHelperUnitTest, GatewayResolving) {
@@ -176,7 +305,7 @@ TEST_F(IpfsTabHelperUnitTest, GatewayResolving) {
 
   GURL api_server = GetAPIServer(chrome::GetChannel());
   helper->SetPageURLForTesting(api_server);
-  helper->IPFSLinkResolved(GURL());
+  helper->DNSLinkResolved(GURL());
   ASSERT_FALSE(helper->GetIPFSResolvedURL().is_valid());
 
   scoped_refptr<net::HttpResponseHeaders> response_headers(
@@ -184,23 +313,25 @@ TEST_F(IpfsTabHelperUnitTest, GatewayResolving) {
                                                      std::to_string(200)));
 
   response_headers->AddHeader("x-ipfs-path", "/ipfs/bafy");
-  helper->MaybeShowDNSLinkButton(response_headers.get());
+
+  helper->MaybeCheckDNSLinkRecord(response_headers.get());
   ASSERT_FALSE(helper->ipfs_resolved_url_.is_valid());
 
   GURL test_url("ipns://brantly.eth/");
   helper->SetPageURLForTesting(api_server);
-  helper->IPFSLinkResolved(test_url);
-  helper->MaybeShowDNSLinkButton(response_headers.get());
+  helper->DNSLinkResolved(test_url);
+
+  helper->MaybeCheckDNSLinkRecord(response_headers.get());
   ASSERT_FALSE(helper->ipfs_resolved_url_.is_valid());
 
   helper->SetPageURLForTesting(api_server);
-  helper->IPFSLinkResolved(test_url);
+  helper->DNSLinkResolved(test_url);
   helper->UpdateDnsLinkButtonState();
   ASSERT_FALSE(helper->ipfs_resolved_url_.is_valid());
 
   helper->SetPageURLForTesting(api_server);
-  helper->IPFSLinkResolved(GURL());
-  helper->MaybeShowDNSLinkButton(response_headers.get());
+  helper->DNSLinkResolved(GURL());
+  helper->MaybeCheckDNSLinkRecord(response_headers.get());
   ASSERT_FALSE(helper->ipfs_resolved_url_.is_valid());
 }
 
