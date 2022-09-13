@@ -260,8 +260,15 @@ void BraveSyncServiceImpl::ResetEngine(ShutdownReason shutdown_reason,
     // Forcing stop and clear, because we are trying to join the sync chain, but
     // sync account was deleted
     BraveSyncServiceImpl::StopAndClear();
-    DCHECK(join_chain_result_callback_);
-    std::move(join_chain_result_callback_).Run(false);
+    // When it will be merged into master, iOS code will be a bit behind,
+    // so don't expect join_chain_result_callback_ is set, but get CHECK back
+    // once iOS changes will handle this
+    LOG_IF(ERROR, !join_chain_result_callback_)
+        << "[BraveSync] " << __func__
+        << " join_chain_result_callback_ must be set";
+    if (join_chain_result_callback_) {
+      std::move(join_chain_result_callback_).Run(false);
+    }
   }
 }
 
