@@ -394,6 +394,7 @@ extension Tab: BraveWalletKeyringServiceObserver {
   
   func keyringReset() {
     reload()
+    tabDelegate?.updateURLBarWalletButton()
   }
   
   func locked() {
