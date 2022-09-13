@@ -8,7 +8,7 @@
 
 namespace base {
 class FilePath;
-}
+}  // namespace base
 
 namespace brave_ads {
 

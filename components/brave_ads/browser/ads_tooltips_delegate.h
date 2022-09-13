@@ -8,6 +8,8 @@
 
 #include <string>
 
+#include "base/callback_forward.h"
+
 namespace brave_ads {
 
 using ShowScheduledCaptchaCallback =

@@ -13,15 +13,15 @@
 #include "base/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
+#include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom-forward.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/core/session_id.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "third_party/blink/public/mojom/document_metadata/document_metadata.mojom.h"
+#include "third_party/blink/public/mojom/document_metadata/document_metadata.mojom-forward.h"
 
 namespace content {
 class RenderFrameHost;
-}
+}  // namespace content
 
 namespace brave_ads {
 
@@ -62,8 +62,9 @@ class SearchResultAdService : public KeyedService {
  private:
   struct AdViewedEventCallbackInfo {
     AdViewedEventCallbackInfo();
-    AdViewedEventCallbackInfo(AdViewedEventCallbackInfo&& info);
-    AdViewedEventCallbackInfo& operator=(AdViewedEventCallbackInfo&& info);
+    AdViewedEventCallbackInfo(AdViewedEventCallbackInfo&& info) noexcept;
+    AdViewedEventCallbackInfo& operator=(
+        AdViewedEventCallbackInfo&& info) noexcept;
     ~AdViewedEventCallbackInfo();
 
     std::string creative_instance_id;

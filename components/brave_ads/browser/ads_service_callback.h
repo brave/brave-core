@@ -8,9 +8,9 @@
 
 #include <string>
 
-#include "base/callback.h"
+#include "base/callback.h"  // IWYU pragma: keep
 #include "base/values.h"
-#include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
+#include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom-forward.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {

@@ -3,11 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/common/pref_names.h"  // IWYU pragma: keep
 
-namespace brave_ads {
-
-namespace prefs {
+namespace brave_ads::prefs {
 
 // Stores whether ads were disabled at least once
 const char kAdsWereDisabled[] = "brave.brave_ads.were_disabled";
@@ -45,6 +43,4 @@ const char kVersion[] = "brave.brave_ads.prefs.version";
 
 const int kCurrentVersionNumber = 12;
 
-}  // namespace prefs
-
-}  // namespace brave_ads
+}  // namespace brave_ads::prefs

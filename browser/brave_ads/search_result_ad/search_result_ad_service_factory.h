@@ -13,7 +13,7 @@ class Profile;
 
 namespace content {
 class BrowserContext;
-}
+}  // namespace content
 
 namespace brave_ads {
 

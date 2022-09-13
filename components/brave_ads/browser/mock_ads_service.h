@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
 
 namespace brave_ads {
 

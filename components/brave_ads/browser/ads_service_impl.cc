@@ -16,7 +16,7 @@
 #include "base/containers/flat_map.h"
 #include "base/cxx17_backports.h"
 #include "base/debug/dump_without_crashing.h"
-#include "base/feature_list.h"
+#include "base/feature_list.h"  // IWYU pragma: keep
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
 #include "base/hash/hash.h"
@@ -45,14 +45,13 @@
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 #include "brave/components/brave_ads/browser/ads_storage_cleanup.h"
+#include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_ads/browser/device_id.h"
 #include "brave/components/brave_ads/browser/frequency_capping_helper.h"
-#include "brave/components/brave_ads/browser/service_sandbox_type.h"
+#include "brave/components/brave_ads/browser/service_sandbox_type.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_federated/data_store_service.h"
 #include "brave/components/brave_federated/data_stores/async_data_store.h"
-#include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -64,11 +63,11 @@
 #include "brave/components/rpill/common/rpill.h"
 #include "brave/components/services/bat_ads/public/cpp/ads_client_mojo_bridge.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "build/build_config.h"
+#include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom.h"
+#include "build/build_config.h"  // IWYU pragma: keep
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/notifications/notification_display_service.h"
-#include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/profiles/profile_manager.h"
+#include "services/network/public/mojom/url_response_head.mojom.h"
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/fullscreen.h"
 #include "chrome/browser/ui/browser.h"
@@ -79,7 +78,6 @@
 #include "chrome/browser/first_run/first_run.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
-#include "content/public/browser/network_service_instance.h"
 #include "content/public/browser/service_process_host.h"
 #include "content/public/browser/storage_partition.h"
 #include "net/base/network_change_notifier.h"
@@ -1622,7 +1620,8 @@ std::string AdsServiceImpl::LoadDataResource(const std::string& name) {
   if (resource_bundle.IsGzipped(id)) {
     data_resource = resource_bundle.LoadDataResourceString(id);
   } else {
-    data_resource = std::string(resource_bundle.GetRawDataResource(id));
+    data_resource =
+        static_cast<std::string>(resource_bundle.GetRawDataResource(id));
   }
 
   return data_resource;
