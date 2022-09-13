@@ -625,23 +625,24 @@ void PlaylistService::OnGetOrphanedPaths(
 }
 
 void PlaylistService::CleanUpMalformedPlaylistItems() {
-  if (base::ranges::none_of(prefs_->Get(kPlaylistItemsPref)->GetDict(),
-                            /* has_malformed_data = */ [](const auto& pair){
-    auto* dict = pair.second.GetIfDict();
-    DCHECK(dict);
+  if (base::ranges::none_of(
+          prefs_->Get(kPlaylistItemsPref)->GetDict(),
+          /* has_malformed_data = */ [](const auto& pair) {
+            auto* dict = pair.second.GetIfDict();
+            DCHECK(dict);
 
-    DCHECK(dict->contains(playlist::kPlaylistItemIDKey));
+            DCHECK(dict->contains(playlist::kPlaylistItemIDKey));
 
-    // As of 2022. Sep., properties of PlaylistItemInfo was updated.
-    return !dict->contains(playlist::kPlaylistItemPageSrcKey) ||
-        !dict->contains(playlist::kPlaylistItemMediaSrcKey) ||
-        !dict->contains(playlist::kPlaylistItemThumbnailSrcKey) ||
-        !dict->contains(playlist::kPlaylistItemMediaFileCachedKey);
-  })) {
+            // As of 2022. Sep., properties of PlaylistItemInfo was updated.
+            return !dict->contains(playlist::kPlaylistItemPageSrcKey) ||
+                   !dict->contains(playlist::kPlaylistItemMediaSrcKey) ||
+                   !dict->contains(playlist::kPlaylistItemThumbnailSrcKey) ||
+                   !dict->contains(playlist::kPlaylistItemMediaFileCachedKey);
+          })) {
     return;
   }
 
-  for (const auto* pref_key : { kPlaylistsPref, kPlaylistItemsPref })
+  for (const auto* pref_key : {kPlaylistsPref, kPlaylistItemsPref})
     prefs_->ClearPref(pref_key);
 }
 
