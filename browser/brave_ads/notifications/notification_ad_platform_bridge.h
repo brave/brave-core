@@ -17,6 +17,9 @@ namespace brave_ads {
 class NotificationAdPlatformBridge {
  public:
   explicit NotificationAdPlatformBridge(Profile* profile);
+  NotificationAdPlatformBridge(const NotificationAdPlatformBridge&) = delete;
+  NotificationAdPlatformBridge& operator=(const NotificationAdPlatformBridge&) =
+      delete;
   ~NotificationAdPlatformBridge();
 
   void ShowNotificationAd(NotificationAd notification_ad);
@@ -24,10 +27,6 @@ class NotificationAdPlatformBridge {
 
  private:
   raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
-
-  NotificationAdPlatformBridge(const NotificationAdPlatformBridge&) = delete;
-  NotificationAdPlatformBridge& operator=(const NotificationAdPlatformBridge&) =
-      delete;
 };
 
 }  // namespace brave_ads

@@ -227,7 +227,7 @@ void SidebarControlView::UpdateItemAddButtonState() {
   DCHECK(sidebar_item_add_view_);
   // Determine add button enabled state.
   bool should_enable = true;
-  if (browser_->sidebar_controller()->model()->IsSidebarHasAllBuiltiInItems() &&
+  if (browser_->sidebar_controller()->model()->IsSidebarHasAllBuiltInItems() &&
       !sidebar::CanAddCurrentActiveTabToSidebar(browser_)) {
     should_enable = false;
   }

@@ -202,11 +202,11 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
 }
 
 void NTPBackgroundImagesService::CheckSuperReferralComponent() {
-  const auto* value = local_pref_->Get(
+  const base::Value::Dict& value = local_pref_->GetValueDict(
       prefs::kNewTabPageCachedSuperReferralComponentInfo);
   // If we have valid cached SR component info, it means this install is valid
   // SR.
-  if (IsValidSuperReferralComponentInfo(*value)) {
+  if (IsValidSuperReferralComponentInfo(value)) {
     RegisterSuperReferralComponent();
     const std::string cached_data = local_pref_->GetString(
         prefs::kNewTabPageCachedSuperReferralComponentData);
@@ -315,16 +315,16 @@ void NTPBackgroundImagesService::RegisterSuperReferralComponent() {
   std::string public_key;
   std::string id;
   std::string theme_name;
-  if (initial_sr_component_info_.is_dict()) {
-    public_key = *initial_sr_component_info_.FindStringKey(kPublicKey);
-    id = *initial_sr_component_info_.FindStringKey(kComponentIDKey);
-    theme_name = *initial_sr_component_info_.FindStringKey(kThemeNameKey);
+  if (initial_sr_component_info_) {
+    public_key = *initial_sr_component_info_->FindString(kPublicKey);
+    id = *initial_sr_component_info_->FindString(kComponentIDKey);
+    theme_name = *initial_sr_component_info_->FindString(kThemeNameKey);
   } else {
-    const auto* value = local_pref_->Get(
+    const base::Value::Dict& value = local_pref_->GetValueDict(
         prefs::kNewTabPageCachedSuperReferralComponentInfo);
-    public_key = *value->FindStringKey(kPublicKey);
-    id = *value->FindStringKey(kComponentIDKey);
-    theme_name = *value->FindStringKey(kThemeNameKey);
+    public_key = *value.FindString(kPublicKey);
+    id = *value.FindString(kComponentIDKey);
+    theme_name = *value.FindString(kThemeNameKey);
   }
 
   RegisterNTPSponsoredImagesComponent(
@@ -388,11 +388,11 @@ void NTPBackgroundImagesService::OnGetMappingTableData(
 
   DVLOG(2) << __func__ << ": Downloaded valid mapping table.";
 
-  if (const base::Value* value =
-          mapping_table_value->FindDictKey(GetReferralPromoCode())) {
+  if (base::Value::Dict* value =
+          mapping_table_value->GetDict().FindDict(GetReferralPromoCode())) {
     DVLOG(2) << __func__
              << ": This is super referral. Cache SR's referral code";
-    initial_sr_component_info_ = value->Clone();
+    initial_sr_component_info_ = std::move(*value);
     RegisterSuperReferralComponent();
     local_pref_->SetString(prefs::kNewTabPageCachedSuperReferralCode,
                            GetReferralPromoCode());
@@ -507,9 +507,9 @@ void NTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
         json_string, sr_installed_dir_);
     // |initial_sr_component_info_| has proper data only for initial component
     // downloading. After that, it's empty. In test, it's also empty.
-    if (initial_sr_component_info_.is_dict()) {
-      local_pref_->Set(prefs::kNewTabPageCachedSuperReferralComponentInfo,
-                       initial_sr_component_info_);
+    if (initial_sr_component_info_) {
+      local_pref_->SetDict(prefs::kNewTabPageCachedSuperReferralComponentInfo,
+                           std::move(*initial_sr_component_info_));
     }
     local_pref_->SetString(prefs::kNewTabPageCachedSuperReferralComponentData,
                            json_string);
@@ -544,28 +544,19 @@ void NTPBackgroundImagesService::MarkThisInstallIsNotSuperReferralForever() {
 }
 
 bool NTPBackgroundImagesService::IsValidSuperReferralComponentInfo(
-    const base::Value& component_info) const {
-  if (!component_info.is_dict())
-    return false;
-
-  if (!component_info.FindStringKey(kPublicKey))
-    return false;
-  if (!component_info.FindStringKey(kComponentIDKey))
-    return false;
-  if (!component_info.FindStringKey(kThemeNameKey))
-    return false;
-
-  return true;
+    const base::Value::Dict& component_info) const {
+  return component_info.FindString(kPublicKey) &&
+         component_info.FindString(kComponentIDKey) &&
+         component_info.FindString(kThemeNameKey);
 }
 
 void NTPBackgroundImagesService::UnRegisterSuperReferralComponent() {
   if (!component_update_service_)
     return;
 
-  const auto* value = local_pref_->Get(
+  const base::Value::Dict& value = local_pref_->GetValueDict(
       prefs::kNewTabPageCachedSuperReferralComponentInfo);
-  DCHECK(value);
-  const std::string sr_component_id = *value->FindStringKey(kComponentIDKey);
+  const std::string sr_component_id = *value.FindString(kComponentIDKey);
   DVLOG(2) << __func__ << ": Unregister NTP SR component";
   component_update_service_->UnregisterComponent(sr_component_id);
 }
@@ -575,20 +566,20 @@ std::string NTPBackgroundImagesService::GetReferralPromoCode() const {
 }
 
 bool NTPBackgroundImagesService::IsSuperReferral() const {
-  const auto* value = local_pref_->Get(
+  const base::Value::Dict& value = local_pref_->GetValueDict(
       prefs::kNewTabPageCachedSuperReferralComponentInfo);
-  return
-      base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper) &&
-      IsValidSuperReferralComponentInfo(*value);
+  return base::FeatureList::IsEnabled(
+             features::kBraveNTPSuperReferralWallpaper) &&
+         IsValidSuperReferralComponentInfo(value);
 }
 
 std::string NTPBackgroundImagesService::GetSuperReferralThemeName() const {
   std::string theme_name;
-  const auto* value = local_pref_->Get(
+  const base::Value::Dict& value = local_pref_->GetValueDict(
       prefs::kNewTabPageCachedSuperReferralComponentInfo);
   if (base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper) &&
-      IsValidSuperReferralComponentInfo(*value)) {
-    theme_name = *value->FindStringKey(kThemeNameKey);
+      IsValidSuperReferralComponentInfo(value)) {
+    theme_name = *value.FindString(kThemeNameKey);
   }
 
   return theme_name;

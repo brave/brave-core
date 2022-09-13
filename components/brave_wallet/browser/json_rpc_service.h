@@ -65,7 +65,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       base::OnceCallback<void(const std::string& result,
                               mojom::ProviderError error,
                               const std::string& error_message)>;
-
+  using EnsGetContentHashCallback =
+      base::OnceCallback<void(const std::vector<uint8_t>& content_hash,
+                              mojom::ProviderError error,
+                              const std::string& error_message)>;
   using GetBlockNumberCallback =
       base::OnceCallback<void(uint256_t result,
                               mojom::ProviderError error,
@@ -164,8 +167,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const std::string& domain,
       UnstoppableDomainsGetEthAddrCallback callback) override;
 
-  void EnsResolverGetContentHash(const std::string& domain,
-                                 StringResultCallback callback);
+  void EnsGetContentHash(const std::string& domain,
+                         EnsGetContentHashCallback callback);
   void EnsGetEthAddr(const std::string& domain,
                      EnsGetEthAddrCallback callback) override;
 
@@ -415,22 +418,26 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                               StringResultCallback callback);
   void OnEnsRegistryGetResolver(StringResultCallback callback,
                                 APIRequestResult api_request_result);
-  void ContinueEnsResolverGetContentHash(const std::string& domain,
-                                         StringResultCallback callback,
-                                         const std::string& resolver_address,
-                                         mojom::ProviderError error,
-                                         const std::string& error_message);
-  void OnEnsResolverGetContentHash(StringResultCallback callback,
-                                   APIRequestResult api_request_result);
+  void ContinueEnsGetContentHash(const std::string& domain,
+                                 EnsGetContentHashCallback callback,
+                                 const std::string& resolver_address,
+                                 mojom::ProviderError error,
+                                 const std::string& error_message);
+  void OnEnsGetContentHash(EnsGetContentHashCallback callback,
+                           APIRequestResult api_request_result);
   void ContinueEnsGetEthAddr(const std::string& domain,
                              StringResultCallback callback,
                              const std::string& resolver_address,
                              mojom::ProviderError error,
                              const std::string& error_message);
-  void OnEnsResolverTaskDone(EnsResolverTask* task,
-                             std::vector<uint8_t> resolved_result,
-                             mojom::ProviderError error,
-                             std::string error_message);
+  void OnEnsGetEthAddrTaskDone(EnsResolverTask* task,
+                               std::vector<uint8_t> resolved_result,
+                               mojom::ProviderError error,
+                               std::string error_message);
+  void OnEnsGetContentHashTaskDone(EnsResolverTask* task,
+                                   std::vector<uint8_t> resolved_result,
+                                   mojom::ProviderError error,
+                                   std::string error_message);
   void OnEnsGetEthAddr(StringResultCallback callback,
                        APIRequestResult api_request_result);
   void OnGetFilEstimateGas(GetFilEstimateGasCallback callback,
@@ -537,10 +544,9 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   mojo::RemoteSet<mojom::JsonRpcServiceObserver> observers_;
 
-  base::flat_map<EnsResolverTask*,
-                 std::pair<std::unique_ptr<EnsResolverTask>,
-                           std::vector<EnsGetEthAddrCallback>>>
-      ens_get_eth_add_tasks_;
+  EnsResolverTaskContainer<EnsGetEthAddrCallback> ens_get_eth_addr_tasks_;
+  EnsResolverTaskContainer<EnsGetContentHashCallback>
+      ens_get_content_hash_tasks_;
 
   mojo::ReceiverSet<mojom::JsonRpcService> receivers_;
   PrefService* prefs_ = nullptr;

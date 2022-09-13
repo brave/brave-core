@@ -46,7 +46,16 @@ class SidebarService : public KeyedService {
       SidebarItem::BuiltInItemType::kBraveTalk,
       SidebarItem::BuiltInItemType::kWallet,
       SidebarItem::BuiltInItemType::kBookmarks,
-      SidebarItem::BuiltInItemType::kReadingList};
+      SidebarItem::BuiltInItemType::kReadingList,
+      SidebarItem::BuiltInItemType::kHistory,
+      SidebarItem::BuiltInItemType::kPlaylist};
+  static_assert(
+      std::size(kDefaultBuiltInItemTypes) ==
+          static_cast<size_t>(SidebarItem::BuiltInItemType::kBuiltInItemLast),
+      "A built-in item in this visual order is missing or you might forget to "
+      "update kBuiltInItemItemLast value. If you want to add a "
+      "new item while keeping that hidden, please visit "
+      "GetBuiltInItemForType() in sidebar_service.cc");
 
   class Observer : public base::CheckedObserver {
    public:

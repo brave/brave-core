@@ -1317,11 +1317,12 @@ void AddCustomNetwork(PrefService* prefs, const mojom::NetworkInfo& chain) {
 
   {  // Update needs to be done before GetNetworkId below.
     DictionaryPrefUpdate update(prefs, kBraveWalletCustomNetworks);
-    base::Value::Dict* dict = update.Get()->GetIfDict();
-    CHECK(dict);
-    base::Value::List* list = dict->FindList(GetPrefKeyForCoinType(chain.coin));
+    base::Value::Dict& dict = update.Get()->GetDict();
+    // TODO(cdesouza): Once cr106 is merged, this FindList should be replaced
+    // with EnsureList.
+    base::Value::List* list = dict.FindList(GetPrefKeyForCoinType(chain.coin));
     if (!list) {
-      list = dict->Set(GetPrefKeyForCoinType(chain.coin), base::Value::List())
+      list = dict.Set(GetPrefKeyForCoinType(chain.coin), base::Value::List())
                  ->GetIfList();
     }
     CHECK(list);
@@ -1336,10 +1337,13 @@ void AddCustomNetwork(PrefService* prefs, const mojom::NetworkInfo& chain) {
   DCHECK(!network_id.empty());  // Not possible for a custom network.
 
   DictionaryPrefUpdate update(prefs, kBraveWalletUserAssets);
-  base::Value* user_assets_pref = update.Get();
-  base::Value* asset_list = user_assets_pref->SetPath(
-      base::StrCat({GetPrefKeyForCoinType(chain.coin), ".", network_id}),
-      base::Value(base::Value::Type::LIST));
+  base::Value::Dict& user_assets_pref = update.Get()->GetDict();
+  base::Value::List& asset_list =
+      user_assets_pref
+          .SetByDottedPath(base::StrCat({GetPrefKeyForCoinType(chain.coin), ".",
+                                         network_id}),
+                           base::Value::List())
+          ->GetList();
 
   base::Value::Dict native_asset;
   native_asset.Set("address", "");
@@ -1351,7 +1355,7 @@ void AddCustomNetwork(PrefService* prefs, const mojom::NetworkInfo& chain) {
   native_asset.Set("visible", true);
   native_asset.Set("logo", chain.icon_urls.empty() ? "" : chain.icon_urls[0]);
 
-  asset_list->GetList().Append(std::move(native_asset));
+  asset_list.Append(std::move(native_asset));
 }
 
 void RemoveCustomNetwork(PrefService* prefs,
@@ -1360,13 +1364,13 @@ void RemoveCustomNetwork(PrefService* prefs,
   DCHECK(prefs);
 
   DictionaryPrefUpdate update(prefs, kBraveWalletCustomNetworks);
-  base::Value::Dict* dict = update.Get()->GetIfDict();
-  CHECK(dict);
-  base::Value::List* list = dict->FindList(GetPrefKeyForCoinType(coin));
+  base::Value::Dict& dict = update.Get()->GetDict();
+  base::Value::List* list = dict.FindList(GetPrefKeyForCoinType(coin));
   if (!list)
     return;
   list->EraseIf([&chain_id_to_remove](const base::Value& v) {
-    auto* chain_id_value = v.FindStringKey("chainId");
+    DCHECK(v.is_dict());
+    auto* chain_id_value = v.GetDict().FindString("chainId");
     if (!chain_id_value)
       return false;
     return *chain_id_value == chain_id_to_remove;
@@ -1376,13 +1380,11 @@ void RemoveCustomNetwork(PrefService* prefs,
 std::vector<std::string> GetAllHiddenNetworks(PrefService* prefs,
                                               mojom::CoinType coin) {
   std::vector<std::string> result;
-  const base::Value* hidden_networks =
-      prefs->GetDictionary(kBraveWalletHiddenNetworks);
-  if (!hidden_networks)
-    return result;
+  const base::Value::Dict& hidden_networks =
+      prefs->GetValueDict(kBraveWalletHiddenNetworks);
 
   auto* hidden_eth_networks =
-      hidden_networks->GetDict().FindList(GetPrefKeyForCoinType(coin));
+      hidden_networks.FindList(GetPrefKeyForCoinType(coin));
   if (!hidden_eth_networks)
     return result;
 
@@ -1399,16 +1401,17 @@ void AddHiddenNetwork(PrefService* prefs,
                       mojom::CoinType coin,
                       const std::string& chain_id) {
   DictionaryPrefUpdate update(prefs, kBraveWalletHiddenNetworks);
-  base::Value* dict = update.Get();
-  CHECK(dict);
-  base::Value* list = dict->FindKey(GetPrefKeyForCoinType(coin));
+  base::Value::Dict& dict = update.Get()->GetDict();
+  // TODO(cdesouza): Once cr106 is merged, this FindList should be replaced with
+  // EnsureList.
+  base::Value::List* list = dict.FindList(GetPrefKeyForCoinType(coin));
   if (!list) {
-    list = dict->SetKey(GetPrefKeyForCoinType(coin),
-                        base::Value(base::Value::Type::LIST));
+    list =
+        dict.Set(GetPrefKeyForCoinType(coin), base::Value::List())->GetIfList();
   }
   CHECK(list);
-  if (!base::Contains(list->GetList(), base::Value(chain_id))) {
-    list->Append(base::Value(chain_id));
+  if (!base::Contains(*list, base::Value(chain_id))) {
+    list->Append(chain_id);
   }
 }
 
@@ -1416,12 +1419,11 @@ void RemoveHiddenNetwork(PrefService* prefs,
                          mojom::CoinType coin,
                          const std::string& chain_id) {
   DictionaryPrefUpdate update(prefs, kBraveWalletHiddenNetworks);
-  base::Value* dict = update.Get();
-  CHECK(dict);
-  base::Value* list = dict->FindKey(GetPrefKeyForCoinType(coin));
+  base::Value::Dict& dict = update.Get()->GetDict();
+  base::Value::List* list = dict.FindList(GetPrefKeyForCoinType(coin));
   if (!list)
     return;
-  list->EraseListValueIf([&](const base::Value& v) {
+  list->EraseIf([&](const base::Value& v) {
     auto* chain_id_string = v.GetIfString();
     if (!chain_id_string)
       return false;
@@ -1430,11 +1432,10 @@ void RemoveHiddenNetwork(PrefService* prefs,
 }
 
 std::string GetCurrentChainId(PrefService* prefs, mojom::CoinType coin) {
-  const base::Value* selected_networks =
-      prefs->GetDictionary(kBraveWalletSelectedNetworks);
-  DCHECK(selected_networks);
+  const base::Value::Dict& selected_networks =
+      prefs->GetValueDict(kBraveWalletSelectedNetworks);
   const std::string* chain_id =
-      selected_networks->FindStringKey(GetPrefKeyForCoinType(coin));
+      selected_networks.FindString(GetPrefKeyForCoinType(coin));
   if (!chain_id)
     return std::string();
 

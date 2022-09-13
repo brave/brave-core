@@ -27,6 +27,7 @@ static_library("brave_wayback_machine") {
 
   deps = [
     "//base",
+    "//brave/components/api_request_helper",
     "//components/infobars/content",
     "//components/infobars/core",
     "//components/prefs",

@@ -10,9 +10,10 @@
 #include "base/bind.h"
 #include "base/check.h"
 #include "bat/ads/ad_content_info.h"
+#include "bat/ads/ad_content_value_util.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/confirmation_type.h"
-#include "bat/ads/history_info.h"
+#include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/account/account.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_util.h"
 #include "bat/ads/internal/ads/ad_events/ad_events.h"
@@ -366,10 +367,10 @@ void AdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
   callback(/*success*/ true);
 }
 
-HistoryInfo AdsImpl::GetHistory(const HistoryFilterType filter_type,
-                                const HistorySortType sort_type,
-                                const base::Time from_time,
-                                const base::Time to_time) {
+HistoryItemList AdsImpl::GetHistory(const HistoryFilterType filter_type,
+                                    const HistorySortType sort_type,
+                                    const base::Time from_time,
+                                    const base::Time to_time) {
   if (!IsInitialized()) {
     return {};
   }
@@ -393,16 +394,12 @@ void AdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   DiagnosticManager::GetInstance()->GetDiagnostics(callback);
 }
 
-AdContentLikeActionType AdsImpl::ToggleAdThumbUp(const std::string& json) {
-  AdContentInfo ad_content;
-  ad_content.FromJson(json);
-  return HistoryManager::GetInstance()->LikeAd(ad_content);
+AdContentLikeActionType AdsImpl::ToggleAdThumbUp(base::Value::Dict value) {
+  return HistoryManager::GetInstance()->LikeAd(AdContentFromValue(value));
 }
 
-AdContentLikeActionType AdsImpl::ToggleAdThumbDown(const std::string& json) {
-  AdContentInfo ad_content;
-  ad_content.FromJson(json);
-  return HistoryManager::GetInstance()->DislikeAd(ad_content);
+AdContentLikeActionType AdsImpl::ToggleAdThumbDown(base::Value::Dict value) {
+  return HistoryManager::GetInstance()->LikeAd(AdContentFromValue(value));
 }
 
 CategoryContentOptActionType AdsImpl::ToggleAdOptIn(
@@ -419,16 +416,14 @@ CategoryContentOptActionType AdsImpl::ToggleAdOptOut(
       category, action_type);
 }
 
-bool AdsImpl::ToggleFlaggedAd(const std::string& json) {
-  AdContentInfo ad_content;
-  ad_content.FromJson(json);
-  return HistoryManager::GetInstance()->ToggleMarkAdAsInappropriate(ad_content);
+bool AdsImpl::ToggleFlaggedAd(base::Value::Dict value) {
+  return HistoryManager::GetInstance()->ToggleMarkAdAsInappropriate(
+      AdContentFromValue(value));
 }
 
-bool AdsImpl::ToggleSavedAd(const std::string& json) {
-  AdContentInfo ad_content;
-  ad_content.FromJson(json);
-  return HistoryManager::GetInstance()->ToggleSavedAd(ad_content);
+bool AdsImpl::ToggleSavedAd(base::Value::Dict value) {
+  return HistoryManager::GetInstance()->ToggleSavedAd(
+      AdContentFromValue(value));
 }
 
 ///////////////////////////////////////////////////////////////////////////////

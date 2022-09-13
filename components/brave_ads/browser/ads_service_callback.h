@@ -8,9 +8,9 @@
 
 #include <string>
 
-#include "base/callback.h"
+#include "base/callback.h"  // IWYU pragma: keep
 #include "base/values.h"
-#include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
+#include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom-forward.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
@@ -30,13 +30,13 @@ using PurgeOrphanedAdEventsForTypeCallback =
 
 using GetHistoryCallback = base::OnceCallback<void(base::Value::List)>;
 
-using ToggleAdThumbUpCallback = base::OnceCallback<void(const std::string&)>;
-using ToggleAdThumbDownCallback = base::OnceCallback<void(const std::string&)>;
+using ToggleAdThumbUpCallback = base::OnceCallback<void(base::Value::Dict)>;
+using ToggleAdThumbDownCallback = base::OnceCallback<void(base::Value::Dict)>;
 using ToggleAdOptInCallback = base::OnceCallback<void(const std::string&, int)>;
 using ToggleAdOptOutCallback =
     base::OnceCallback<void(const std::string&, int)>;
-using ToggleSavedAdCallback = base::OnceCallback<void(const std::string&)>;
-using ToggleFlaggedAdCallback = base::OnceCallback<void(const std::string&)>;
+using ToggleSavedAdCallback = base::OnceCallback<void(base::Value::Dict)>;
+using ToggleFlaggedAdCallback = base::OnceCallback<void(base::Value::Dict)>;
 
 }  // namespace brave_ads
 

@@ -5,6 +5,7 @@
 
 #import <Network/Network.h>
 #import <UIKit/UIKit.h>
+#include "bat/ads/ad_content_value_util.h"
 
 #import "ads_client_bridge.h"
 #import "ads_client_ios.h"
@@ -23,13 +24,13 @@
 #include "base/values.h"
 #include "bat/ads/ad_content_action_types.h"
 #include "bat/ads/ad_content_info.h"
+#include "bat/ads/ad_content_value_util.h"
 #include "bat/ads/ad_event_history.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_callback.h"
 #include "bat/ads/build_channel.h"
 #include "bat/ads/database.h"
 #include "bat/ads/history_filter_types.h"
-#include "bat/ads/history_info.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/history_sort_types.h"
 #include "bat/ads/inline_content_ad_info.h"
@@ -495,14 +496,14 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     return @[];
   }
 
-  const auto history = ads->GetHistory(ads::HistoryFilterType::kNone,
-                                       ads::HistorySortType::kNone,
-                                       base::Time::Min(), base::Time::Max());
+  const auto history_items = ads->GetHistory(
+      ads::HistoryFilterType::kNone, ads::HistorySortType::kNone,
+      base::Time::Min(), base::Time::Max());
 
   const auto dates = [[NSMutableArray<NSDate*> alloc] init];
-  for (const auto& item : history.items) {
-    const auto date =
-        [NSDate dateWithTimeIntervalSince1970:item.created_at.ToDoubleT()];
+  for (const auto& history_item : history_items) {
+    const auto date = [NSDate
+        dateWithTimeIntervalSince1970:history_item.created_at.ToDoubleT()];
     [dates addObject:date];
   }
 
@@ -697,11 +698,11 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads::AdContentInfo info;
-  info.creative_instance_id = base::SysNSStringToUTF8(creativeInstanceId);
-  info.advertiser_id = base::SysNSStringToUTF8(advertiserId);
-  info.type = ads::AdType::kNotificationAd;
-  ads->ToggleAdThumbUp(info.ToJson());
+  ads::AdContentInfo ad_content;
+  ad_content.creative_instance_id = base::SysNSStringToUTF8(creativeInstanceId);
+  ad_content.advertiser_id = base::SysNSStringToUTF8(advertiserId);
+  ad_content.type = ads::AdType::kNotificationAd;
+  ads->ToggleAdThumbUp(ads::AdContentToValue(ad_content));
 }
 
 - (void)toggleThumbsDownForAd:(NSString*)creativeInstanceId
@@ -709,11 +710,11 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads::AdContentInfo info;
-  info.creative_instance_id = base::SysNSStringToUTF8(creativeInstanceId);
-  info.advertiser_id = base::SysNSStringToUTF8(advertiserId);
-  info.type = ads::AdType::kNotificationAd;
-  ads->ToggleAdThumbDown(info.ToJson());
+  ads::AdContentInfo ad_content;
+  ad_content.creative_instance_id = base::SysNSStringToUTF8(creativeInstanceId);
+  ad_content.advertiser_id = base::SysNSStringToUTF8(advertiserId);
+  ad_content.type = ads::AdType::kNotificationAd;
+  ads->ToggleAdThumbDown(ads::AdContentToValue(ad_content));
 }
 
 #pragma mark - Configuration

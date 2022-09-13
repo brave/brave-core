@@ -7,11 +7,13 @@
 
 #include <utility>
 
+#include "base/callback.h"
+
 namespace brave_ads {
 
 // static
 void DeviceIdImpl::GetRawDeviceId(DeviceIdCallback callback) {
-  std::move(callback).Run("");
+  std::move(callback).Run({});
 }
 
 }  // namespace brave_ads

@@ -5,19 +5,7 @@
 
 #include "bat/ads/notification_ad_info.h"
 
-#include "url/gurl.h"
-
 namespace ads {
-
-NotificationAdInfo::NotificationAdInfo() = default;
-
-NotificationAdInfo::NotificationAdInfo(const NotificationAdInfo& info) =
-    default;
-
-NotificationAdInfo& NotificationAdInfo::operator=(
-    const NotificationAdInfo& info) = default;
-
-NotificationAdInfo::~NotificationAdInfo() = default;
 
 bool NotificationAdInfo::IsValid() const {
   if (!AdInfo::IsValid()) {
@@ -29,65 +17,6 @@ bool NotificationAdInfo::IsValid() const {
   }
 
   return true;
-}
-
-base::Value::Dict NotificationAdInfo::ToValue() const {
-  base::Value::Dict dict;
-
-  dict.Set("type", type.ToString());
-  dict.Set("uuid", placement_id);
-  dict.Set("creative_instance_id", creative_instance_id);
-  dict.Set("creative_set_id", creative_set_id);
-  dict.Set("campaign_id", campaign_id);
-  dict.Set("advertiser_id", advertiser_id);
-  dict.Set("segment", segment);
-  dict.Set("title", title);
-  dict.Set("body", body);
-  dict.Set("target_url", target_url.spec());
-
-  return dict;
-}
-
-void NotificationAdInfo::FromValue(const base::Value::Dict& root) {
-  if (const auto* value = root.FindString("type")) {
-    type = AdType(*value);
-  }
-
-  if (const auto* value = root.FindString("uuid")) {
-    placement_id = *value;
-  }
-
-  if (const auto* value = root.FindString("creative_instance_id")) {
-    creative_instance_id = *value;
-  }
-
-  if (const auto* value = root.FindString("creative_set_id")) {
-    creative_set_id = *value;
-  }
-
-  if (const auto* value = root.FindString("campaign_id")) {
-    campaign_id = *value;
-  }
-
-  if (const auto* value = root.FindString("advertiser_id")) {
-    advertiser_id = *value;
-  }
-
-  if (const auto* value = root.FindString("segment")) {
-    segment = *value;
-  }
-
-  if (const auto* value = root.FindString("title")) {
-    title = *value;
-  }
-
-  if (const auto* value = root.FindString("body")) {
-    body = *value;
-  }
-
-  if (const auto* value = root.FindString("target_url")) {
-    target_url = GURL(*value);
-  }
 }
 
 }  // namespace ads

@@ -13,7 +13,8 @@ namespace ads {
 void SaveCreativeAds(const CreativeNotificationAdList& creative_ads);
 
 CreativeNotificationAdList BuildCreativeNotificationAds(int count);
-CreativeNotificationAdInfo BuildCreativeNotificationAd();
+CreativeNotificationAdInfo BuildCreativeNotificationAd(
+    bool should_use_random_guids = true);
 
 }  // namespace ads
 

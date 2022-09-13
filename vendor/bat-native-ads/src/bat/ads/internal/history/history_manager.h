@@ -12,6 +12,7 @@
 #include "bat/ads/ad_content_action_types.h"
 #include "bat/ads/category_content_action_types.h"
 #include "bat/ads/history_filter_types.h"
+#include "bat/ads/history_item_info.h"
 #include "bat/ads/history_sort_types.h"
 #include "bat/ads/internal/history/history_manager_observer.h"
 
@@ -28,8 +29,6 @@ struct NewTabPageAdInfo;
 struct NotificationAdInfo;
 struct PromotedContentAdInfo;
 struct SearchResultAdInfo;
-struct HistoryInfo;
-struct HistoryItemInfo;
 
 class HistoryManager final {
  public:
@@ -46,10 +45,10 @@ class HistoryManager final {
   void AddObserver(HistoryManagerObserver* observer);
   void RemoveObserver(HistoryManagerObserver* observer);
 
-  HistoryInfo Get(HistoryFilterType filter_type,
-                  HistorySortType sort_type,
-                  base::Time from_time,
-                  base::Time to_time) const;
+  HistoryItemList Get(HistoryFilterType filter_type,
+                      HistorySortType sort_type,
+                      base::Time from_time,
+                      base::Time to_time) const;
 
   HistoryItemInfo Add(const InlineContentAdInfo& ad,
                       const ConfirmationType& confirmation_type) const;

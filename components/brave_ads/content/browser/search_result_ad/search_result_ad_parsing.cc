@@ -12,7 +12,9 @@
 #include "base/containers/flat_set.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "third_party/blink/public/mojom/document_metadata/document_metadata.mojom.h"
 
 using ads::mojom::ConversionInfo;
 using ads::mojom::ConversionInfoPtr;
@@ -132,31 +134,55 @@ bool SetSearchAdProperty(const schema_org::mojom::PropertyPtr& ad_property,
   const std::string& name = ad_property->name;
   if (name == kDataPlacementId) {
     return GetStringValue(ad_property, &search_result_ad->placement_id);
-  } else if (name == kDataCreativeInstanceId) {
+  }
+
+  if (name == kDataCreativeInstanceId) {
     return GetStringValue(ad_property, &search_result_ad->creative_instance_id);
-  } else if (name == kDataCreativeSetId) {
+  }
+
+  if (name == kDataCreativeSetId) {
     return GetStringValue(ad_property, &search_result_ad->creative_set_id);
-  } else if (name == kDataCampaignId) {
+  }
+
+  if (name == kDataCampaignId) {
     return GetStringValue(ad_property, &search_result_ad->campaign_id);
-  } else if (name == kDataAdvertiserId) {
+  }
+
+  if (name == kDataAdvertiserId) {
     return GetStringValue(ad_property, &search_result_ad->advertiser_id);
-  } else if (name == kDataLandingPage) {
+  }
+
+  if (name == kDataLandingPage) {
     return GetUrlValue(ad_property, &search_result_ad->target_url);
-  } else if (name == kDataHeadlineText) {
+  }
+
+  if (name == kDataHeadlineText) {
     return GetStringValue(ad_property, &search_result_ad->headline_text);
-  } else if (name == kDataDescription) {
+  }
+
+  if (name == kDataDescription) {
     return GetStringValue(ad_property, &search_result_ad->description);
-  } else if (name == kDataRewardsValue) {
+  }
+
+  if (name == kDataRewardsValue) {
     return GetDoubleValue(ad_property, &search_result_ad->value);
-  } else if (name == kDataConversionTypeValue) {
+  }
+
+  if (name == kDataConversionTypeValue) {
     return GetStringValue(ad_property, &search_result_ad->conversion->type);
-  } else if (name == kDataConversionUrlPatternValue) {
+  }
+
+  if (name == kDataConversionUrlPatternValue) {
     return GetStringValue(ad_property,
                           &search_result_ad->conversion->url_pattern);
-  } else if (name == kDataConversionAdvertiserPublicKeyValue) {
+  }
+
+  if (name == kDataConversionAdvertiserPublicKeyValue) {
     return GetStringValue(ad_property,
                           &search_result_ad->conversion->advertiser_public_key);
-  } else if (name == kDataConversionObservationWindowValue) {
+  }
+
+  if (name == kDataConversionObservationWindowValue) {
     return GetIntValue(ad_property,
                        &search_result_ad->conversion->observation_window);
   }
@@ -312,7 +338,7 @@ SearchResultAdMap ParseWebPageEntities(blink::mojom::WebPagePtr web_page) {
 
   VLOG(1) << "No search result ad found.";
 
-  return SearchResultAdMap();
+  return {};
 }
 
 }  // namespace brave_ads

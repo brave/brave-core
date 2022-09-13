@@ -58,7 +58,7 @@ bool IsValidNodeFilename(const std::string& filename);
 bool ParsePeerConnectionString(const std::string& value,
                                std::string* id,
                                std::string* address);
-GURL ContentHashToCIDv1URL(const std::string& contenthash);
+GURL ContentHashToCIDv1URL(base::span<const uint8_t> contenthash);
 bool IsAPIGateway(const GURL& url, version_info::Channel channel);
 bool IsIpfsResolveMethodDisabled(PrefService* prefs);
 bool IsIpfsResolveMethodAsk(PrefService* prefs);

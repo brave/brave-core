@@ -14,6 +14,7 @@
 #include "absl/types/optional.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/history_filter_types.h"
+#include "bat/ads/history_item_info.h"
 #include "bat/ads/history_sort_types.h"
 #include "bat/ads/internal/account/account_observer.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
@@ -82,7 +83,6 @@ class UserActivityManager;
 class UserReactions;
 struct AdInfo;
 struct ConversionQueueItemInfo;
-struct HistoryInfo;
 struct NotificationAdInfo;
 
 class AdsImpl final : public Ads,
@@ -170,22 +170,22 @@ class AdsImpl final : public Ads,
       mojom::AdType ad_type,
       PurgeOrphanedAdEventsForTypeCallback callback) override;
 
-  HistoryInfo GetHistory(HistoryFilterType filter_type,
-                         HistorySortType sort_type,
-                         base::Time from_time,
-                         base::Time to_time) override;
+  HistoryItemList GetHistory(HistoryFilterType filter_type,
+                             HistorySortType sort_type,
+                             base::Time from_time,
+                             base::Time to_time) override;
   void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
 
-  AdContentLikeActionType ToggleAdThumbUp(const std::string& json) override;
-  AdContentLikeActionType ToggleAdThumbDown(const std::string& json) override;
+  AdContentLikeActionType ToggleAdThumbUp(base::Value::Dict value) override;
+  AdContentLikeActionType ToggleAdThumbDown(base::Value::Dict value) override;
   CategoryContentOptActionType ToggleAdOptIn(
       const std::string& category,
       const CategoryContentOptActionType& action_type) override;
   CategoryContentOptActionType ToggleAdOptOut(
       const std::string& category,
       const CategoryContentOptActionType& action_type) override;
-  bool ToggleSavedAd(const std::string& json) override;
-  bool ToggleFlaggedAd(const std::string& json) override;
+  bool ToggleSavedAd(base::Value::Dict value) override;
+  bool ToggleFlaggedAd(base::Value::Dict value) override;
 
  private:
   void CreateOrOpenDatabase(InitializeCallback callback);

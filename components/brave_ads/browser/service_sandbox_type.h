@@ -6,14 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_SERVICE_SANDBOX_TYPE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_SERVICE_SANDBOX_TYPE_H_
 
-#include "content/public/browser/service_process_host.h"
+#include "content/public/browser/service_process_host.h"  // IWYU pragma: keep
 
-// bat_ads::mojom::BatAdsService
-namespace bat_ads {
-namespace mojom {
+namespace bat_ads::mojom {
 class BatAdsService;
-}  // namespace mojom
-}  // namespace bat_ads
+}  // namespace bat_ads::mojom
 
 template <>
 inline sandbox::mojom::Sandbox

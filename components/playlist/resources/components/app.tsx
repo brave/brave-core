@@ -70,11 +70,19 @@ export class PlaylistPage extends React.Component<Props, State> {
     return lazyButtonStyle
   }
 
+  get lazyTextButtonStyle () {
+    return {
+      ...this.lazyButtonStyle,
+      width: 'inherit'
+    }
+  }
+
   getPlaylistHeader = (): Cell[] => {
     return [
       { content: 'INDEX' },
       { content: 'NAME' },
       { content: 'STATUS' },
+      { content: 'DATA' },
       { content: 'REMOVE' }
     ]
   }
@@ -96,8 +104,9 @@ export class PlaylistPage extends React.Component<Props, State> {
                         : this.getImgSrc(item.id)}/>
             )
           },
-          { content: (<span>{item.ready ? 'Ready' : 'Downloading'}</span>) },
-          { content: (<button style={this.lazyButtonStyle} onClick={this.onClickRemoveItemButton.bind(this, item.id)}><CloseCircleOIcon /></button>) }
+          { content: (<span>{item.cached ? 'Cached' : 'Not cached'}</span>) },
+          { content: (<button style={this.lazyTextButtonStyle} onClick={() => this.onClickDataButton(item.id)}>{item.cached ? 'Remove cache' : 'Cache'}</button>) },
+          { content: (<button style={this.lazyButtonStyle} onClick={() => this.onClickRemoveItemButton(item.id)}><CloseCircleOIcon /></button>) }
         ]
       }
       return cell
@@ -112,6 +121,25 @@ export class PlaylistPage extends React.Component<Props, State> {
     }
 
     getPlaylistAPI().removeItemFromPlaylist(currentList.id!, playlistItemId)
+  }
+
+  onClickDataButton = (playlistItemId: string) => {
+    const currentList = this.getCurrentPlaylist()
+    if (!currentList) {
+      console.error('There\'s no selected playlist.')
+      return
+    }
+
+    const item = currentList.items.find(item => item.id === playlistItemId)
+    if (!item) {
+      console.error(`There's item with id: ${playlistItemId}`)
+      return
+    }
+    if (item.cached) {
+      getPlaylistAPI().removeLocalData(playlistItemId)
+    } else {
+      getPlaylistAPI().recoverLocalData(playlistItemId)
+    }
   }
 
   get pageHasDownloadableVideo () {
@@ -133,7 +161,7 @@ export class PlaylistPage extends React.Component<Props, State> {
       return item.id === itemId
     })
 
-    if (!item || !item.ready) {
+    if (!item || !item.cached) {
       return
     }
 

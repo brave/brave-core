@@ -16,8 +16,13 @@ namespace ads {
 
 struct ADS_EXPORT AdInfo {
   AdInfo();
-  AdInfo(const AdInfo& info);
-  AdInfo& operator=(const AdInfo& info);
+
+  AdInfo(const AdInfo& other);
+  AdInfo& operator=(const AdInfo& other);
+
+  AdInfo(AdInfo&& other) noexcept;
+  AdInfo& operator=(AdInfo&& other) noexcept;
+
   ~AdInfo();
 
   bool operator==(const AdInfo& rhs) const;

@@ -16,6 +16,7 @@
 #include "bat/ads/category_content_action_types.h"
 #include "bat/ads/export.h"
 #include "bat/ads/history_filter_types.h"
+#include "bat/ads/history_item_info.h"
 #include "bat/ads/history_sort_types.h"
 #include "bat/ads/public/interfaces/ads.mojom-forward.h"
 
@@ -29,7 +30,6 @@ class TimeDelta;
 namespace ads {
 
 class AdsClient;
-struct HistoryInfo;
 struct NotificationAdInfo;
 
 // Returns |true| if the locale is supported otherwise returns |false|.
@@ -216,12 +216,12 @@ class ADS_EXPORT Ads {
       PurgeOrphanedAdEventsForTypeCallback callback) = 0;
 
   // Called to get history filtered by |filter_type| and sorted by |sort_type|
-  // between |from_time| and |to_time| date range. Returns |HistoryInfo|
+  // between |from_time| and |to_time| date range. Returns |HistoryItemList|
   // containing info of the obtained history.
-  virtual HistoryInfo GetHistory(HistoryFilterType filter_type,
-                                 HistorySortType sort_type,
-                                 base::Time from_time,
-                                 base::Time to_time) = 0;
+  virtual HistoryItemList GetHistory(HistoryFilterType filter_type,
+                                     HistorySortType sort_type,
+                                     base::Time from_time,
+                                     base::Time to_time) = 0;
 
   // Called to remove all history. The callback takes one argument - |bool| is
   // set to |true| if successful otherwise |false|.
@@ -230,13 +230,13 @@ class ADS_EXPORT Ads {
   // Called to like an advertiser. This is a toggle, so calling it again returns
   // the setting to the neutral state. Returns |AdContentLikeActionType|
   // containing the current state.
-  virtual AdContentLikeActionType ToggleAdThumbUp(const std::string& json) = 0;
+  virtual AdContentLikeActionType ToggleAdThumbUp(base::Value::Dict value) = 0;
 
   // Called to dislike an advertiser. This is a toggle, so calling it again
   // returns the setting to the neutral state. Returns |AdContentLikeActionType|
   // containing the current state.
   virtual AdContentLikeActionType ToggleAdThumbDown(
-      const std::string& json) = 0;
+      base::Value::Dict value) = 0;
 
   // Called to no longer receive ads for the specified category. This is a
   // toggle, so calling it again returns the setting to the neutral state.
@@ -255,12 +255,12 @@ class ADS_EXPORT Ads {
   // Called to save an ad for later viewing. This is a toggle, so calling it
   // again removes the ad from the saved list. Returns |true| if the ad was
   // saved otherwise |false|.
-  virtual bool ToggleSavedAd(const std::string& json) = 0;
+  virtual bool ToggleSavedAd(base::Value::Dict value) = 0;
 
   // Called to mark an ad as inappropriate. This is a toggle, so calling it
   // again unmarks the ad. Returns |true| if the ad was marked otherwise
   // |false|.
-  virtual bool ToggleFlaggedAd(const std::string& json) = 0;
+  virtual bool ToggleFlaggedAd(base::Value::Dict value) = 0;
 };
 
 }  // namespace ads

@@ -10,7 +10,9 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_piece.h"
 #include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_parsing.h"
-#include "testing/gtest/include/gtest/gtest.h"
+#include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
+#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
+#include "third_party/blink/public/mojom/document_metadata/document_metadata.mojom.h"
 
 namespace brave_ads {
 
@@ -114,7 +116,7 @@ TEST(SearchResultAdParsingTest, ValidWebPage) {
   TestWebPageConstructor constructor;
   blink::mojom::WebPagePtr web_page = constructor.GetWebPage();
   SearchResultAdMap ads = ParseWebPageEntities(std::move(web_page));
-  EXPECT_EQ(ads.size(), 1u);
+  EXPECT_EQ(ads.size(), 1U);
   ads::mojom::SearchResultAdInfoPtr& search_result_ad = ads["value0"];
   ASSERT_TRUE(search_result_ad.get());
 
@@ -122,7 +124,7 @@ TEST(SearchResultAdParsingTest, ValidWebPage) {
   EXPECT_EQ(search_result_ad->value, 0.5);
   EXPECT_EQ(
       static_cast<size_t>(search_result_ad->conversion->observation_window),
-      1u);
+      1U);
 
   EXPECT_EQ(search_result_ad->creative_instance_id, "value0");
   EXPECT_EQ(search_result_ad->placement_id, "value1");
