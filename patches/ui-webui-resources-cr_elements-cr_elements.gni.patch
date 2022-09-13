@@ -1,0 +1,12 @@
+diff --git a/ui/webui/resources/cr_elements/cr_elements.gni b/ui/webui/resources/cr_elements/cr_elements.gni
+index 263e74b8727efe0e9a6589360333a300a9bcbdfc..c5b529edb80708ccf0514845151cc0cd3699ca05 100644
+--- a/ui/webui/resources/cr_elements/cr_elements.gni
++++ b/ui/webui/resources/cr_elements/cr_elements.gni
+@@ -54,6 +54,7 @@ if (include_polymer) {
+     web_component_files_polymer_ts +=
+         [ "cr_searchable_drop_down/cr_searchable_drop_down.ts" ]
+   }
++  else if (!is_android) { web_component_files_polymer_ts += [ "cr_searchable_drop_down/cr_searchable_drop_down.ts" ] }
+ 
+   icons_html_files = [
+     "mwb_shared_icons.html",
