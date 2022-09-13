@@ -13,7 +13,7 @@ export const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
   padding: 0px 15px 15px 15px;
   min-height: 320px;
