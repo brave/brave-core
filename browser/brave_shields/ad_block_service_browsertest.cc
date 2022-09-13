@@ -275,8 +275,7 @@ bool AdBlockServiceTest::InstallRegionalAdBlockExtension(
   if (enable_list) {
     const extensions::Extension* ad_block_extension =
         InstallExtension(test_data_dir.AppendASCII("adblock-data")
-                             .AppendASCII("adblock-regional")
-                             .AppendASCII(uuid),
+                             .AppendASCII("adblock-regional"),
                          1);
     if (!ad_block_extension)
       return false;
