@@ -41,7 +41,6 @@ class BraveToolbarView : public ToolbarView,
   void OnEditBookmarksEnabledChanged();
   void OnLocationBarIsWideChanged();
   void OnShowBookmarksButtonChanged();
-  void OnShowSidePanelButtonChanged();
   void ShowBookmarkBubble(const GURL& url,
                           bool already_bookmarked,
                           bookmarks::BookmarkBubbleObserver* observer) override;
@@ -51,7 +50,6 @@ class BraveToolbarView : public ToolbarView,
   void ResetLocationBarBounds();
   void ResetButtonBounds();
   void UpdateBookmarkVisibility();
-  void UpdateSidePanelButtonVisibility();
 
   // ProfileAttributesStorage::Observer:
   void OnProfileAdded(const base::FilePath& profile_path) override;
@@ -70,7 +68,7 @@ class BraveToolbarView : public ToolbarView,
 #endif
 
   BooleanPrefMember show_bookmarks_button_;
-  BooleanPrefMember show_side_panel_button_;
+
   BooleanPrefMember location_bar_is_wide_;
   // Whether this toolbar has been initialized.
   bool brave_initialized_ = false;

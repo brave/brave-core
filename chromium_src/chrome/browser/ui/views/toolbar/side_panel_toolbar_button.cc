@@ -57,7 +57,7 @@ SidePanelToolbarButton::SidePanelToolbarButton(Browser* browser)
     : SidePanelToolbarButton_ChromiumImpl(browser) {
   SetMenuModel(
       std::make_unique<SidePanelMenuModel>(browser->profile()->GetPrefs()));
-  
+
   // Visibility is managed by |SideBarContainerView|.
   SetVisible(false);
 }

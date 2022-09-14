@@ -21,9 +21,9 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry_observer.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_registry_observer.h"
+#include "components/prefs/pref_member.h"
 #include "ui/events/event_observer.h"
 #include "ui/views/view.h"
-#include "components/prefs/pref_member.h"
 
 namespace views {
 class EventMonitor;

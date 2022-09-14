@@ -22,8 +22,7 @@ class SidePanelToolbarButton : public SidePanelToolbarButton_ChromiumImpl {
   explicit SidePanelToolbarButton(Browser* browser);
 
   SidePanelToolbarButton(const SidePanelToolbarButton&) = delete;
-  SidePanelToolbarButton& operator=(const SidePanelToolbarButton&) =
-      delete;
+  SidePanelToolbarButton& operator=(const SidePanelToolbarButton&) = delete;
   ~SidePanelToolbarButton() override;
 };
 
