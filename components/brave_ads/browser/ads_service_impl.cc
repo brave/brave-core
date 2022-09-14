@@ -12,6 +12,7 @@
 #include "base/bind.h"
 #include "base/callback_helpers.h"
 #include "base/check.h"
+#include "base/containers/circular_deque.h"
 #include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/cxx17_backports.h"
@@ -426,14 +427,10 @@ void AdsServiceImpl::InitializePrefChangeRegistrar() {
 }
 
 void AdsServiceImpl::SetSysInfo() {
-  DCHECK(IsBatAdsServiceBound());
-
   bat_ads_service_->SetSysInfo(sys_info_.Clone(), base::NullCallback());
 }
 
 void AdsServiceImpl::SetBuildChannel() {
-  DCHECK(IsBatAdsServiceBound());
-
   ads::mojom::BuildChannelInfoPtr build_channel =
       ads::mojom::BuildChannelInfo::New();
   build_channel->name = brave::GetChannelName();
@@ -451,7 +448,8 @@ void AdsServiceImpl::MaybeStartOrStop(const bool should_restart) {
   }
 
   if (!ShouldStartBatAds()) {
-    ShutdownBatAds();
+    VLOG(1) << "Shutting down ads service";
+    Shutdown();
     return;
   }
 
@@ -461,7 +459,7 @@ void AdsServiceImpl::MaybeStartOrStop(const bool should_restart) {
   }
 
   if (IsBatAdsBound()) {
-    VLOG(1) << "Already started bat-ads";
+    VLOG(1) << "Already started bat-ads service";
     return;
   }
 
@@ -513,26 +511,6 @@ base::TimeDelta AdsServiceImpl::GetBatAdsServiceRestartDelay() {
   return delay;
 }
 
-void AdsServiceImpl::ShutdownBatAds() {
-  if (!IsBatAdsBound()) {
-    return;
-  }
-
-  VLOG(1) << "Shutting down bat-ads";
-
-  bat_ads_->Shutdown(
-      base::BindOnce(&AdsServiceImpl::OnShutdownBatAds, AsWeakPtr()));
-}
-
-void AdsServiceImpl::OnShutdownBatAds(const bool success) {
-  if (!success) {
-    VLOG(0) << "Failed to shutdown bat-ads";
-    return;
-  }
-
-  Shutdown();
-}
-
 void AdsServiceImpl::Start(const uint32_t number_of_start) {
   GetDeviceId(number_of_start);
 }
@@ -575,10 +553,6 @@ void AdsServiceImpl::OnEnsureBaseDirectoryExists(const uint32_t number_of_start,
     VLOG(0) << "Failed to create base directory";
     return;
   }
-
-  SetSysInfo();
-
-  SetBuildChannel();
 
   CreateBatAdsService(number_of_start);
 
@@ -628,6 +602,10 @@ void AdsServiceImpl::OnCreateBatAdsService() {
   if (!IsBatAdsBound()) {
     return;
   }
+
+  SetSysInfo();
+
+  SetBuildChannel();
 
   bat_ads_->Initialize(
       base::BindOnce(&AdsServiceImpl::OnInitializeBatAds, AsWeakPtr()));
@@ -700,19 +678,6 @@ void AdsServiceImpl::OnResetState(const bool success) {
   }
 
   VLOG(1) << "Successfully reset ads state";
-}
-
-void AdsServiceImpl::OnShutdownAndResetState(const bool success) {
-  DCHECK(is_bat_ads_initialized_);
-
-  if (!success) {
-    VLOG(0) << "Failed to shutdown and reset ads state";
-    return;
-  }
-
-  Shutdown();
-
-  ResetState();
 }
 
 void AdsServiceImpl::GetRewardsWallet() {
@@ -951,7 +916,7 @@ void AdsServiceImpl::StartNotificationAdTimeOutTimer(
                      placement_id));
 
   VLOG(1) << "Timeout notification ad with placement id " << placement_id
-          << " in " << timeout_in_seconds << " seconds";
+          << " in " << timeout;
 }
 
 bool AdsServiceImpl::StopNotificationAdTimeOutTimer(
@@ -971,7 +936,15 @@ void AdsServiceImpl::NotificationAdTimedOut(const std::string& placement_id) {
     return;
   }
 
+  VLOG(1) << "Timed-out notification ad with placement id " << placement_id;
+
   CloseNotificationAd(placement_id);
+
+  if (!ShouldShowCustomNotificationAds() &&
+      NotificationHelper::GetInstance()->DoesSupportSystemNotifications()) {
+    bat_ads_->TriggerNotificationAdEvent(
+        placement_id, ads::mojom::NotificationAdEventType::kTimedOut);
+  }
 }
 
 void AdsServiceImpl::Shutdown() {
@@ -986,6 +959,8 @@ void AdsServiceImpl::Shutdown() {
   BackgroundHelper::GetInstance()->RemoveObserver(this);
 
   g_brave_browser_process->resource_component()->RemoveObserver(this);
+
+  CloseAllNotificationAds();
 
   url_loaders_.clear();
 
@@ -1086,7 +1061,10 @@ void AdsServiceImpl::OnNotificationAdShown(const std::string& placement_id) {
 
 void AdsServiceImpl::OnNotificationAdClosed(const std::string& placement_id,
                                             const bool by_user) {
-  StopNotificationAdTimeOutTimer(placement_id);
+  if (StopNotificationAdTimeOutTimer(placement_id)) {
+    VLOG(1) << "Cancelled timeout for notification ad with placement id "
+            << placement_id;
+  }
 
   if (!IsBatAdsBound()) {
     return;
@@ -1356,15 +1334,11 @@ void AdsServiceImpl::ToggleFlaggedAd(base::Value::Dict value,
 }
 
 void AdsServiceImpl::WipeState(const bool should_shutdown) {
-  if (!should_shutdown || !IsBatAdsBound()) {
-    ResetState();
-    return;
+  if (should_shutdown) {
+    Shutdown();
   }
 
-  VLOG(1) << "Shutting down and wiping ads state";
-
-  bat_ads_->Shutdown(
-      base::BindOnce(&AdsServiceImpl::OnShutdownAndResetState, AsWeakPtr()));
+  ResetState();
 }
 
 bool AdsServiceImpl::IsNetworkConnectionAvailable() const {
@@ -1471,18 +1445,36 @@ void AdsServiceImpl::CloseNotificationAd(const std::string& placement_id) {
         placement_id, url);
 #endif
     display_service_->Close(NotificationHandler::Type::BRAVE_ADS, placement_id);
-
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-    // AdsServiceImpl::OnNotificationAdClosed() is not called when the system
-    // notification is closed without the user's participation, so we need to
-    // trigger the timed-out event from here.
-    if (NotificationHelper::GetInstance()->DoesSupportSystemNotifications() &&
-        IsBatAdsBound()) {
-      bat_ads_->TriggerNotificationAdEvent(
-          placement_id, ads::mojom::NotificationAdEventType::kTimedOut);
-    }
-#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
   }
+}
+
+void AdsServiceImpl::CloseAllNotificationAds() {
+  // TODO(https://github.com/brave/brave-browser/issues/25410): Temporary
+  // solution until we refactor the shutdown business logic and investigate
+  // calling |ads::NotificationAdManager| to cleanup notification ads.
+
+#if BUILDFLAG(IS_ANDROID)
+  if (!ShouldShowCustomNotificationAds()) {
+    return;
+  }
+#endif
+
+  // TODO(https://github.com/brave/brave-browser/issues/22489): Temporary
+  // solution until we move all ads prefs to |components/brave_ads/pref_names|.
+  constexpr char kNotificationAdsPrefName[] =
+      "brave.brave_ads.notification_ads";
+
+  const base::Value::List& list =
+      profile_->GetPrefs()->GetValueList(kNotificationAdsPrefName);
+
+  const base::circular_deque<ads::NotificationAdInfo> ads =
+      ads::NotificationAdsFromValue(list);
+
+  for (const auto& ad : ads) {
+    CloseNotificationAd(ad.placement_id);
+  }
+
+  profile_->GetPrefs()->SetList(kNotificationAdsPrefName, {});
 }
 
 void AdsServiceImpl::UpdateAdRewards() {

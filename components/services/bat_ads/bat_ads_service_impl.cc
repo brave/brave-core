@@ -28,15 +28,11 @@ void BatAdsServiceImpl::Create(
       std::make_unique<BatAdsImpl>(std::move(client_info)),
       std::move(bat_ads));
 
-  is_initialized_ = true;
-
   std::move(callback).Run();
 }
 
 void BatAdsServiceImpl::SetSysInfo(ads::mojom::SysInfoPtr sys_info,
                                    SetSysInfoCallback callback) {
-  DCHECK(!is_initialized_);
-
   ads::SysInfo().device_id = sys_info->device_id;
   ads::SysInfo().is_uncertain_future = sys_info->is_uncertain_future;
 
@@ -46,8 +42,6 @@ void BatAdsServiceImpl::SetSysInfo(ads::mojom::SysInfoPtr sys_info,
 void BatAdsServiceImpl::SetBuildChannel(
     ads::mojom::BuildChannelInfoPtr build_channel,
     SetBuildChannelCallback callback) {
-  DCHECK(!is_initialized_);
-
   ads::BuildChannel().is_release = build_channel->is_release;
   ads::BuildChannel().name = build_channel->name;
 

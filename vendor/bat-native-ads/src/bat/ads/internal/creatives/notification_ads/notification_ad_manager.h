@@ -29,7 +29,9 @@ class NotificationAdManager final {
       const std::string& placement_id) const;
 
   void Add(const NotificationAdInfo& ad);
+
   bool Remove(const std::string& placement_id);
+  void RemoveAll();
 
   void CloseAll();
 
@@ -39,7 +41,6 @@ class NotificationAdManager final {
   void Initialize();
 
   void MaybeRemoveAll();
-  void RemoveAll();
 
   base::circular_deque<NotificationAdInfo> ads_;
 };

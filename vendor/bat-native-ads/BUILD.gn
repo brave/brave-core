@@ -757,8 +757,6 @@ source_set("ads") {
     "src/bat/ads/internal/creatives/notification_ads/notification_ad_builder.h",
     "src/bat/ads/internal/creatives/notification_ads/notification_ad_manager.cc",
     "src/bat/ads/internal/creatives/notification_ads/notification_ad_manager.h",
-    "src/bat/ads/internal/creatives/notification_ads/notification_ad_manager_value_util.cc",
-    "src/bat/ads/internal/creatives/notification_ads/notification_ad_manager_value_util.h",
     "src/bat/ads/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info.cc",
     "src/bat/ads/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info.h",
     "src/bat/ads/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_table.cc",

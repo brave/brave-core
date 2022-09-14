@@ -42,6 +42,17 @@ base::Value::Dict NotificationAdToValue(const NotificationAdInfo& ad) {
   return dict;
 }
 
+base::Value::List NotificationAdsToValue(
+    const base::circular_deque<NotificationAdInfo>& ads) {
+  base::Value::List list;
+
+  for (const auto& ad : ads) {
+    list.Append(NotificationAdToValue(ad));
+  }
+
+  return list;
+}
+
 NotificationAdInfo NotificationAdFromValue(const base::Value::Dict& root) {
   NotificationAdInfo ad;
 
@@ -86,6 +97,22 @@ NotificationAdInfo NotificationAdFromValue(const base::Value::Dict& root) {
   }
 
   return ad;
+}
+
+base::circular_deque<NotificationAdInfo> NotificationAdsFromValue(
+    const base::Value::List& list) {
+  base::circular_deque<NotificationAdInfo> ads;
+
+  for (const auto& item : list) {
+    const auto* dict = item.GetIfDict();
+    if (!dict) {
+      continue;
+    }
+
+    ads.push_back(NotificationAdFromValue(*dict));
+  }
+
+  return ads;
 }
 
 }  // namespace ads
