@@ -81,8 +81,7 @@ TEST_F(TorProfileManagerUnitTest, InitTorProfileUserPrefs) {
   EXPECT_FALSE(tor_profile->GetPrefs()->GetBoolean(kWebTorrentEnabled));
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION) || \
-    BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   // Check translate.enabled for translate bubble.
   EXPECT_FALSE(tor_profile->GetPrefs()->GetBoolean(
       translate::prefs::kOfferTranslateEnabled));
