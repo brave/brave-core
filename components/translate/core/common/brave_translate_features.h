@@ -20,13 +20,11 @@ extern const base::FeatureParam<bool> kReplaceSecurityOriginParam;
 }  // namespace features
 
 // The translate engine can work the folowing ways:
-// 1. IsTranslateExtensionAvailable() == true: Show a bubble to suggest a user
-// installation of Google translate extension.
-// 2. IsBraveTranslateGoAvailable() == true: The internal translation engine
-// is used instead of the old bubble.
-// 3. The other: no translation is available.
+// 1. IsBraveTranslateGoAvailable() == true: The internal translation engine
+//    is used to translate the pages.
+// 2. IsBraveTranslateGoAvailable() == false: no translation is available.
+//    Chromium Translate feature should also be disabled.
 bool IsBraveTranslateGoAvailable();
-bool IsTranslateExtensionAvailable();
 
 // True if the supported language list can be updated from the backend. False by
 // default.

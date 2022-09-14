@@ -59,8 +59,7 @@
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION) || \
-    BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 #include "brave/browser/translate/brave_translate_utils.h"
 #endif
 
@@ -288,13 +287,9 @@ void BraveBrowserView::ShowUpdateChromeDialog() {
 #endif
 }
 
-// The translate bubble will be shown if ENABLE_BRAVE_TRANSLATE_GO or
-// ENABLE_BRAVE_TRANSLATE_EXTENSIONS build flag is enabled and Google Translate
-// is not installed. In ENABLE_BRAVE_TRANSLATE case, we utilize chromium's
-// translate UI directly along with go-translate. In
-// ENABLE_BRAVE_TRANSLATE_EXTENSION case, we repurpose the translate bubble to
-// offer Google Translate extension installation, and the bubble will only be
-// shown when Google Translate is not installed.
+// The translate bubble will be shown if ENABLE_BRAVE_TRANSLATE_GO build flag
+// is enabled. We utilize chromium's translate UI directly along with
+// go-translate.
 ShowTranslateBubbleResult BraveBrowserView::ShowTranslateBubble(
     content::WebContents* web_contents,
     translate::TranslateStep step,
@@ -302,16 +297,13 @@ ShowTranslateBubbleResult BraveBrowserView::ShowTranslateBubble(
     const std::string& target_language,
     translate::TranslateErrors::Type error_type,
     bool is_user_gesture) {
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION) || \
-    BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-  if (translate::ShouldOfferExtensionInstallation(GetProfile()) ||
-      translate::IsInternalTranslationEnabled(GetProfile())) {
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
+  if (translate::IsInternalTranslationEnabled(GetProfile())) {
     return BrowserView::ShowTranslateBubble(web_contents, step, source_language,
                                             target_language, error_type,
                                             is_user_gesture);
   }
-#endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION) ||
-        // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
+#endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   return ShowTranslateBubbleResult::BROWSER_WINDOW_NOT_VALID;
 }
 

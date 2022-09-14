@@ -23,8 +23,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/common/peerconnection/webrtc_ip_handling_policy.h"
 
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION) || \
-    BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 #include "components/translate/core/browser/translate_pref_names.h"
 #endif
 

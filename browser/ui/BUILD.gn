@@ -704,10 +704,6 @@ source_set("ui") {
       "//ui/events",
       "//ui/views",
     ]
-
-    if (enable_brave_translate_extension) {
-      deps += [ "//components/translate/core/browser" ]
-    }
   }
 }
 

@@ -7,7 +7,6 @@
 
 #include "base/command_line.h"
 #include "brave/components/translate/core/common/brave_translate_switches.h"
-#include "brave/components/translate/core/common/buildflags.h"
 
 namespace translate {
 
@@ -21,20 +20,9 @@ const base::FeatureParam<bool> kUpdateLanguageListParam{
 }  // namespace features
 
 bool IsBraveTranslateGoAvailable() {
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   return base::FeatureList::IsEnabled(features::kUseBraveTranslateGo);
-#else   // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-  return false;
-#endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 }
 
-bool IsTranslateExtensionAvailable() {
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
-  return !base::FeatureList::IsEnabled(features::kUseBraveTranslateGo);
-#else   // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
-  return false;
-#endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
-}
 
 bool ShouldUpdateLanguagesList() {
   return IsBraveTranslateGoAvailable() &&
