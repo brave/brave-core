@@ -244,6 +244,9 @@ bool BraveContentSettingsAgentImpl::AllowFingerprinting() {
 
 bool BraveContentSettingsAgentImpl::IsCosmeticFilteringEnabled(
     const GURL& url) {
+  if (allow_cosmetic_filtering_)
+    return true;
+
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
   GURL secondary_url = GURL();
 
@@ -357,6 +360,10 @@ void BraveContentSettingsAgentImpl::SetAllowScriptsFromOriginsOnce(
 
 void BraveContentSettingsAgentImpl::SetReduceLanguageEnabled(bool enabled) {
   reduce_language_enabled_ = enabled;
+}
+
+void BraveContentSettingsAgentImpl::AllowCosmeticFiltering() {
+  allow_cosmetic_filtering_ = true;
 }
 
 void BraveContentSettingsAgentImpl::BindBraveShieldsReceiver(

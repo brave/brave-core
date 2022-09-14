@@ -81,6 +81,7 @@ class BraveContentSettingsAgentImpl
   void SetAllowScriptsFromOriginsOnce(
       const std::vector<std::string>& origins) override;
   void SetReduceLanguageEnabled(bool enabled) override;
+  void AllowCosmeticFiltering() override;
 
   void BindBraveShieldsReceiver(
       mojo::PendingAssociatedReceiver<brave_shields::mojom::BraveShields>
@@ -100,6 +101,9 @@ class BraveContentSettingsAgentImpl
 
   // Status of "reduce language identifiability" feature.
   bool reduce_language_enabled_;
+
+  // Allow cosmetic filtering regardless of content settings.
+  bool allow_cosmetic_filtering_ = false;
 
   base::flat_map<url::Origin, blink::WebSecurityOrigin>
       cached_ephemeral_storage_origins_;
