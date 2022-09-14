@@ -32,8 +32,7 @@ absl::optional<EmbeddingPipelineInfo> EmbeddingPipelineFromValue(
   }
 
   if (const auto* value = root.FindString(kTimestampKey)) {
-    if (!base::Time::FromUTCString((*value).c_str(),
-                                   &embedding_pipeline.time)) {
+    if (!base::Time::FromUTCString(value->c_str(), &embedding_pipeline.time)) {
       return absl::nullopt;
     }
   }

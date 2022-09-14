@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_processing.h"
 
-#include <map>
+#include <vector>
 
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
@@ -43,7 +43,7 @@ TEST_F(BatAdsEmbeddingProcessingPipelineTest, EmbedTextSimple) {
   ml::pipeline::EmbeddingProcessing* embedding_processing = resource.Get();
   ASSERT_TRUE(embedding_processing);
 
-  const std::map<std::string, ml::VectorData> kSamples = {
+  const std::vector<std::tuple<std::string, ml::VectorData>> kSamples = {
       {"this simple unittest", ml::VectorData({0.5, 0.4, 1.0})},
       {"this is a simple unittest", ml::VectorData({0.5, 0.4, 1.0})},
       {"that is a test", ml::VectorData({0.0, 0.0, 0.0})},

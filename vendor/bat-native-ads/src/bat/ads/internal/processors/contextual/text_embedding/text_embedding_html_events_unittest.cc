@@ -33,19 +33,12 @@ TEST_F(BatAdsTextEmbeddingHtmlEventsTest, LogEvent) {
       embedding_as_string, text_embedding.hashed_text_base64,
       [=](const bool success) {
         ASSERT_TRUE(success) << "Failed to log text embedding html event";
-        if (!success) {
-          return;
-        }
 
         GetTextEmbeddingHtmlEventsFromDatabase(
             [=](const bool success,
                 const TextEmbeddingHtmlEventList& text_embedding_html_events) {
               ASSERT_TRUE(!text_embedding_html_events.empty());
-              ASSERT_TRUE(success)
-                  << "Failed to get text embedding html events";
-              if (!success) {
-                return;
-              }
+              ASSERT_TRUE(success);
 
               // Assert
               EXPECT_EQ(text_embedding.hashed_text_base64,
@@ -55,9 +48,9 @@ TEST_F(BatAdsTextEmbeddingHtmlEventsTest, LogEvent) {
 }
 
 TEST_F(BatAdsTextEmbeddingHtmlEventsTest, PurgeEvents) {
-  int n_events_surplus = 4;
-  int n_events =
-      targeting::features::GetTextEmbeddingsHistorySize() + n_events_surplus;
+  int number_events_surplus = 4;
+  int n_events = targeting::features::GetTextEmbeddingsHistorySize() +
+                 number_events_surplus;
   int n_events_counter = 0;
   for (int i = 0; i < n_events; i++) {
     // Arrange
@@ -70,27 +63,18 @@ TEST_F(BatAdsTextEmbeddingHtmlEventsTest, PurgeEvents) {
         embedding_as_string, text_embedding.hashed_text_base64,
         [&](const bool success) {
           ASSERT_TRUE(success) << "Failed to log text embedding html event";
-          if (!success) {
-            return;
-          }
 
           n_events_counter++;
           if (n_events_counter == n_events) {
             PurgeStaleTextEmbeddingHtmlEvents([](const bool success) {
               ASSERT_TRUE(success)
                   << "Failed to purge text embedding html events";
-              if (!success) {
-                return;
-              }
 
               GetTextEmbeddingHtmlEventsFromDatabase(
                   [=](const bool success, const TextEmbeddingHtmlEventList&
                                               text_embedding_html_events) {
                     ASSERT_TRUE(success)
                         << "Failed to get text embedding html events";
-                    if (!success) {
-                      return;
-                    }
 
                     // Assert
                     const int text_embedding_history_size =

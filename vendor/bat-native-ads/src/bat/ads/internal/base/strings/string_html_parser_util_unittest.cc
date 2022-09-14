@@ -27,24 +27,26 @@ TEST_F(BatAdsStringHtmlUtilTest, ParseHtmlTagAttributeSimple) {
       R"(<meta property="og:title" description="a detailed summary" content="this is info ">)";
   const std::string html_2 =
       R"(<div href="brave.com" description="this is12 34 info">)";
-  const std::vector<std::vector<std::string>> kSamples = {
-      {html_1, "og:title", "content", "this is info "},
-      {html_1, "title", "content", "this is info "},
-      {html_1, "description", "content", "this is info "},
-      {html_1, "descript", "description", "a detailed summary"},
-      {html_1, "og:description", "description", ""},
-      {html_2, "og:title", "content", ""},
-      {html_2, "title", "content", ""},
-      {html_2, "description", "content", ""},
-      {html_2, "href", "description", "this is12 34 info"},
-      {html_2, "div", "href", "brave.com"}};
+  const std::vector<
+      std::tuple<std::string, std::string, std::string, std::string>>
+      kSamples = {{html_1, "og:title", "content", "this is info "},
+                  {html_1, "title", "content", "this is info "},
+                  {html_1, "description", "content", "this is info "},
+                  {html_1, "descript", "description", "a detailed summary"},
+                  {html_1, "og:description", "description", ""},
+                  {html_2, "og:title", "content", ""},
+                  {html_2, "title", "content", ""},
+                  {html_2, "description", "content", ""},
+                  {html_2, "href", "description", "this is12 34 info"},
+                  {html_2, "div", "href", "brave.com"}};
 
-  for (const auto& sample : kSamples) {
+  for (const auto& [html, tag_substr, tag_attribute, expected_html] :
+       kSamples) {
     // Act
     const std::string html_tag_attribute =
-        ParseHtmlTagAttribute(sample.at(0), sample.at(1), sample.at(2));
+        ParseHtmlTagAttribute(html, tag_substr, tag_attribute);
     // Assert
-    EXPECT_EQ(sample.at(3), html_tag_attribute);
+    EXPECT_EQ(expected_html, html_tag_attribute);
   }
 }
 
