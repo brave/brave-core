@@ -434,5 +434,4 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserMigrationTest,
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 
-
 }  // namespace translate

@@ -8,7 +8,5 @@ import("//build/buildflag_header.gni")
 
 buildflag_header("buildflags") {
   header = "buildflags.h"
-  flags = [
-    "ENABLE_BRAVE_TRANSLATE_GO=$enable_brave_translate_go",
-  ]
+  flags = [ "ENABLE_BRAVE_TRANSLATE_GO=$enable_brave_translate_go" ]
 }

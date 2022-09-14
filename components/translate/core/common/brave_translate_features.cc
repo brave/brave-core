@@ -23,7 +23,6 @@ bool IsBraveTranslateGoAvailable() {
   return base::FeatureList::IsEnabled(features::kUseBraveTranslateGo);
 }
 
-
 bool ShouldUpdateLanguagesList() {
   return IsBraveTranslateGoAvailable() &&
          features::kUpdateLanguageListParam.Get();
