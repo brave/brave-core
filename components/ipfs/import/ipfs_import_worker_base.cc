@@ -36,6 +36,7 @@
 #include "net/http/http_response_headers.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/resource_request.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "third_party/blink/public/mojom/blob/serialized_blob.mojom.h"
@@ -57,7 +58,7 @@ namespace ipfs {
 
 IpfsImportWorkerBase::IpfsImportWorkerBase(
     BlobContextGetterFactory* blob_context_getter_factory,
-    network::mojom::URLLoaderFactory* url_loader_factory,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     const GURL& endpoint,
     ImportCompletedCallback callback,
     const std::string& key)
@@ -133,10 +134,10 @@ void IpfsImportWorkerBase::UploadData(
   url = net::AppendQueryParameter(url, "progress", "false");
 
   DCHECK(!url_loader_);
-  url_loader_ = CreateURLLoader(url, "POST", std::move(request));
+  simple_url_loader_ = CreateURLLoader(url, "POST", std::move(request));
 
-  url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory_,
+  simple_url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+      url_loader_factory_.get(),
       base::BindOnce(&IpfsImportWorkerBase::OnImportAddComplete,
                      weak_factory_.GetWeakPtr()));
 }
@@ -165,16 +166,18 @@ bool IpfsImportWorkerBase::ParseResponseBody(const std::string& response_body,
 
 void IpfsImportWorkerBase::OnImportAddComplete(
     std::unique_ptr<std::string> response_body) {
-  int error_code = url_loader_->NetError();
+  int error_code = simple_url_loader_->NetError();
   int response_code = -1;
-  if (url_loader_->ResponseInfo() && url_loader_->ResponseInfo()->headers)
-    response_code = url_loader_->ResponseInfo()->headers->response_code();
+  if (simple_url_loader_->ResponseInfo() &&
+      simple_url_loader_->ResponseInfo()->headers)
+    response_code =
+        simple_url_loader_->ResponseInfo()->headers->response_code();
 
   bool success = (error_code == net::OK && response_code == net::HTTP_OK);
   if (success) {
     success = ParseResponseBody(*response_body, data_.get());
   }
-  url_loader_.reset();
+  simple_url_loader_.reset();
   if (success && !data_->hash.empty()) {
     CreateBraveDirectory();
     return;
@@ -191,22 +194,21 @@ void IpfsImportWorkerBase::CreateBraveDirectory() {
   directory += "/";
   url = net::AppendQueryParameter(url, "arg", directory);
 
-  url_loader_ = CreateURLLoader(url, "POST");
-  url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory_,
+  url_loader_ = std::make_unique<api_request_helper::APIRequestHelper>(
+      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
+  url_loader_->Request(
+      "POST", url, std::string(), std::string(), false,
       base::BindOnce(&IpfsImportWorkerBase::OnImportDirectoryCreated,
-                     base::Unretained(this), directory));
+                     base::Unretained(this), directory),
+      {{net::HttpRequestHeaders::kOrigin,
+        url::Origin::Create(url).Serialize()}});
 }
 
 void IpfsImportWorkerBase::OnImportDirectoryCreated(
     const std::string& directory,
-    std::unique_ptr<std::string> response_body) {
-  int error_code = url_loader_->NetError();
-  int response_code = -1;
-  if (url_loader_->ResponseInfo() && url_loader_->ResponseInfo()->headers)
-    response_code = url_loader_->ResponseInfo()->headers->response_code();
+    api_request_helper::APIRequestResult response) {
+  bool success = response.Is2XXResponseCode();
   url_loader_.reset();
-  bool success = (error_code == net::OK && response_code == net::HTTP_OK);
   if (success) {
     data_->directory = directory;
     CopyFilesToBraveDirectory();
@@ -223,24 +225,22 @@ void IpfsImportWorkerBase::CopyFilesToBraveDirectory() {
   std::string to = data_->directory + "/" + data_->filename;
   url = net::AppendQueryParameter(url, "arg", to);
 
-  url_loader_ = CreateURLLoader(url, "POST");
-  url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory_,
-      base::BindOnce(&IpfsImportWorkerBase::OnImportFilesMoved,
-                     base::Unretained(this)));
+  url_loader_ = std::make_unique<api_request_helper::APIRequestHelper>(
+      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
+  url_loader_->Request("POST", url, std::string(), std::string(), false,
+                       base::BindOnce(&IpfsImportWorkerBase::OnImportFilesMoved,
+                                      base::Unretained(this)),
+                       {{net::HttpRequestHeaders::kOrigin,
+                         url::Origin::Create(url).Serialize()}});
 }
 
 void IpfsImportWorkerBase::OnImportFilesMoved(
-    std::unique_ptr<std::string> response_body) {
-  int error_code = url_loader_->NetError();
-  int response_code = -1;
-  if (url_loader_->ResponseInfo() && url_loader_->ResponseInfo()->headers)
-    response_code = url_loader_->ResponseInfo()->headers->response_code();
+    api_request_helper::APIRequestResult response) {
   url_loader_.reset();
-  bool success = (error_code == net::OK && response_code == net::HTTP_OK);
+  bool success = response.Is2XXResponseCode();
   if (!success) {
-    VLOG(1) << "error_code:" << error_code << " response_code:" << response_code
-            << " response_body:" << *response_body;
+    VLOG(1) << "response_code:" << response.response_code()
+            << " response_body:" << response.body();
   }
   if (!data_->hash.empty() && !key_to_publish_.empty()) {
     PublishContent();
@@ -257,28 +257,27 @@ void IpfsImportWorkerBase::PublishContent() {
       server_endpoint_.Resolve(kAPIPublishNameEndpoint), "arg", from);
   url = net::AppendQueryParameter(url, "key", key_to_publish_);
 
-  url_loader_ = CreateURLLoader(url, "POST");
-  url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory_,
-      base::BindOnce(&IpfsImportWorkerBase::OnContentPublished,
-                     base::Unretained(this)));
+  url_loader_ = std::make_unique<api_request_helper::APIRequestHelper>(
+      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
+  url_loader_->Request("POST", url, std::string(), std::string(), false,
+                       base::BindOnce(&IpfsImportWorkerBase::OnContentPublished,
+                                      base::Unretained(this)),
+                       {{net::HttpRequestHeaders::kOrigin,
+                         url::Origin::Create(url).Serialize()}});
 }
 
 void IpfsImportWorkerBase::OnContentPublished(
-    std::unique_ptr<std::string> response_body) {
-  int error_code = url_loader_->NetError();
-  int response_code = -1;
-  if (url_loader_->ResponseInfo() && url_loader_->ResponseInfo()->headers)
-    response_code = url_loader_->ResponseInfo()->headers->response_code();
-  url_loader_.reset();
-  bool success = (error_code == net::OK && response_code == net::HTTP_OK);
+    api_request_helper::APIRequestResult response) {
+  int response_code = response.response_code();
+  bool success = response.Is2XXResponseCode();
+
   if (success)
     data_->published_key = key_to_publish_;
   if (!success) {
-    VLOG(1) << "error_code:" << error_code << " response_code:" << response_code
-            << " response_body:" << *response_body;
+    VLOG(1) << "response_code:" << response_code
+            << " response_body:" << response.body();
   }
-
+  url_loader_.reset();
   NotifyImportCompleted(success ? IPFS_IMPORT_SUCCESS
                                 : IPFS_IMPORT_ERROR_PUBLISH_FAILED);
 }
@@ -290,7 +289,8 @@ void IpfsImportWorkerBase::NotifyImportCompleted(ipfs::ImportState state) {
     std::move(callback_).Run(*data_.get());
 }
 
-network::mojom::URLLoaderFactory* IpfsImportWorkerBase::GetUrlLoaderFactory() {
+scoped_refptr<network::SharedURLLoaderFactory>
+IpfsImportWorkerBase::GetUrlLoaderFactory() {
   return url_loader_factory_;
 }
 

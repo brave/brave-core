@@ -30,7 +30,7 @@ namespace ipfs {
 
 IpfsLinkImportWorker::IpfsLinkImportWorker(
     BlobContextGetterFactory* blob_context_getter_factory,
-    network::mojom::URLLoaderFactory* url_loader_factory,
+    network::SharedURLLoaderFactory* url_loader_factory,
     const GURL& endpoint,
     ImportCompletedCallback callback,
     const GURL& url)
@@ -56,7 +56,7 @@ void IpfsLinkImportWorker::DownloadLinkContent(const GURL& url) {
   DCHECK(!url_loader_);
   url_loader_ = CreateURLLoader(import_url_, "GET");
   url_loader_->DownloadToTempFile(
-      GetUrlLoaderFactory(),
+      GetUrlLoaderFactory().get(),
       base::BindOnce(&IpfsLinkImportWorker::OnImportDataAvailable,
                      base::Unretained(this)));
 }

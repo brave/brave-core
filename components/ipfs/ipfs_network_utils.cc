@@ -33,28 +33,6 @@
 #endif
 
 namespace {
-net::NetworkTrafficAnnotationTag GetIpfsNetworkTrafficAnnotationTag() {
-  return net::DefineNetworkTrafficAnnotation("ipfs_service", R"(
-          semantics {
-            sender: "IPFS service"
-            description:
-              "This service is used to communicate with IPFS daemon "
-              "on behalf of the user interacting with the actions in brave://ipfs."
-            trigger:
-              "Triggered by actions in brave://ipfs."
-            data:
-              "Options of the commands."
-            destination: WEBSITE
-          }
-          policy {
-            cookies_allowed: NO
-            setting:
-              "You can enable or disable this feature in brave://settings."
-            policy_exception_justification:
-              "Not implemented."
-          }
-        )");
-}
 
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 struct ImportFileInfo {
@@ -170,6 +148,28 @@ std::unique_ptr<storage::BlobDataBuilder> BuildBlobWithFolder(
 
 namespace ipfs {
 
+net::NetworkTrafficAnnotationTag GetIpfsNetworkTrafficAnnotationTag() {
+  return net::DefineNetworkTrafficAnnotation("ipfs_service", R"(
+          semantics {
+            sender: "IPFS service"
+            description:
+              "This service is used to communicate with IPFS daemon "
+              "on behalf of the user interacting with the actions in brave://ipfs."
+            trigger:
+              "Triggered by actions in brave://ipfs."
+            data:
+              "Options of the commands."
+            destination: WEBSITE
+          }
+          policy {
+            cookies_allowed: NO
+            setting:
+              "You can enable or disable this feature in brave://settings."
+            policy_exception_justification:
+              "Not implemented."
+          }
+        )");
+}
 std::unique_ptr<network::SimpleURLLoader> CreateURLLoader(
     const GURL& gurl,
     const std::string& method,
