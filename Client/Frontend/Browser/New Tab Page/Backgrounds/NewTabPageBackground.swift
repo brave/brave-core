@@ -32,6 +32,9 @@ class NewTabPageBackground: PreferencesObserver {
   }
   /// The sponsors logo if available
   var sponsorLogoImage: UIImage? {
+    if let logoOverrideImage = currentBackground?.wallpaper.logo?.image {
+      return logoOverrideImage
+    }
     if case .withBrandLogo(let logo) = currentBackground?.type {
       return logo?.image
     }

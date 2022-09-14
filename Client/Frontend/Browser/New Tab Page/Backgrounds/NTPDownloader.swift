@@ -342,7 +342,8 @@ public class NTPDownloader {
   private func mapNTPWallpapersToFullPath(_ wallpapers: [NTPWallpaper], basePath: URL) -> [NTPWallpaper] {
     wallpapers.map {
       NTPWallpaper(
-        imageUrl: basePath.appendingPathComponent($0.imageUrl).path, logo: $0.logo,
+        imageUrl: basePath.appendingPathComponent($0.imageUrl).path,
+        logo: mapNTPLogoToFullPath($0.logo, basePath: basePath),
         focalPoint: $0.focalPoint, creativeInstanceId: $0.creativeInstanceId)
     }
   }

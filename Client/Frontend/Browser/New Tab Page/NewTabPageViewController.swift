@@ -325,8 +325,8 @@ class NewTabPageViewController: UIViewController {
         } else {
           backgroundButtonsView.activeButton = .none
         }
-      case .withBrandLogo(let logo):
-        guard let logo = logo else { break }
+      case .withBrandLogo(let defaultLogo):
+        guard let logo = background.currentBackground?.wallpaper.logo ?? defaultLogo else { break }
         backgroundButtonsView.activeButton = .brandLogo(logo)
       case .withQRCode(_):
         backgroundButtonsView.activeButton = .QRCode
