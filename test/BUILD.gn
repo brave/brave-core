@@ -521,15 +521,6 @@ test("brave_unit_tests") {
     deps += [ "//brave/browser/ethereum_remote_client" ]
   }
 
-  if (enable_brave_translate_extension) {
-    sources += [ "//brave/browser/ui/views/translate/brave_translate_bubble_view_unittest.cc" ]
-
-    deps += [
-      "//brave/browser/ui",
-      "//components/language/core/common",
-    ]
-  }
-
   if (enable_brave_wayback_machine) {
     sources += [
       "//brave/components/brave_wayback_machine/brave_wayback_machine_utils_unittest.cc",
