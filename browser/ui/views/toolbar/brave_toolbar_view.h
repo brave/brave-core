@@ -70,9 +70,7 @@ class BraveToolbarView : public ToolbarView,
 #endif
 
   BooleanPrefMember show_bookmarks_button_;
-
   BooleanPrefMember show_side_panel_button_;
-
   BooleanPrefMember location_bar_is_wide_;
   // Whether this toolbar has been initialized.
   bool brave_initialized_ = false;

@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/profiles/brave_avatar_toolbar_button.h"
 #include "brave/browser/ui/views/toolbar/brave_side_panel_toolbar_button.h"
 #include "extensions/buildflags/buildflags.h"
+
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
