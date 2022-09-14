@@ -11,13 +11,39 @@
 
 #include "base/containers/contains.h"
 #include "base/json/json_reader.h"
+#include "base/json/json_value_converter.h"
 #include "base/logging.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
+namespace {
+
+bool GetStringVector(const base::Value* value,
+                     std::vector<std::string>* field) {
+  field->clear();
+  if (value == nullptr || !value->is_list()) {
+    return false;
+  } else {
+    const base::Value::List& list = value->GetList();
+    for (const auto& list_value : list) {
+      const auto* s = list_value.GetIfString();
+      if (s) {
+        field->push_back(*s);
+      } else {
+        return false;
+      }
+    }
+    return true;
+  }
+}
+
+}  // namespace
+
 namespace brave_shields {
+
+RegionalCatalogEntry::RegionalCatalogEntry() {}
 
 RegionalCatalogEntry::RegionalCatalogEntry(
     const std::string& uuid,
@@ -41,6 +67,22 @@ RegionalCatalogEntry::RegionalCatalogEntry(const RegionalCatalogEntry& other) =
     default;
 
 RegionalCatalogEntry::~RegionalCatalogEntry() = default;
+
+void RegionalCatalogEntry::RegisterJSONConverter(
+    base::JSONValueConverter<RegionalCatalogEntry>* converter) {
+  converter->RegisterStringField("uuid", &RegionalCatalogEntry::uuid);
+  converter->RegisterStringField("url", &RegionalCatalogEntry::url);
+  converter->RegisterStringField("title", &RegionalCatalogEntry::title);
+  converter->RegisterCustomValueField<std::vector<std::string>>(
+      "langs", &RegionalCatalogEntry::langs, &GetStringVector);
+  converter->RegisterStringField("support_url",
+                                 &RegionalCatalogEntry::support_url);
+  converter->RegisterStringField("component_id",
+                                 &RegionalCatalogEntry::component_id);
+  converter->RegisterStringField("base64_public_key",
+                                 &RegionalCatalogEntry::base64_public_key);
+  converter->RegisterStringField("desc", &RegionalCatalogEntry::desc);
+}
 
 std::vector<RegionalCatalogEntry>::const_iterator FindAdBlockFilterListByUUID(
     const std::vector<RegionalCatalogEntry>& region_lists,
@@ -79,52 +121,14 @@ std::vector<RegionalCatalogEntry> RegionalCatalogFromJSON(
     return catalog;
   }
 
+  base::JSONValueConverter<RegionalCatalogEntry> converter;
+
   base::Value::List& regional_lists = parsed_json->GetList();
   for (const auto& item : regional_lists) {
     DCHECK(item.is_dict());
-    const base::Value::Dict& regional_list = item.GetDict();
-
-    const auto* uuid = regional_list.FindString("uuid");
-    if (!uuid) {
-      continue;
-    }
-    const auto* url = regional_list.FindString("url");
-    if (!url) {
-      continue;
-    }
-    const auto* title = regional_list.FindString("title");
-    if (!title) {
-      continue;
-    }
-    std::vector<std::string> langs = std::vector<std::string>();
-    const auto* langs_key = regional_list.FindList("langs");
-    if (!langs_key) {
-      continue;
-    }
-    for (const auto& lang : *langs_key) {
-      DCHECK(lang.is_string());
-      langs.push_back(lang.GetString());
-    }
-    const auto* support_url = regional_list.FindString("support_url");
-    if (!support_url) {
-      continue;
-    }
-    const auto* component_id = regional_list.FindString("component_id");
-    if (!component_id) {
-      continue;
-    }
-    const auto* base64_public_key =
-        regional_list.FindString("base64_public_key");
-    if (!base64_public_key) {
-      continue;
-    }
-    const auto* desc = regional_list.FindString("desc");
-    if (!desc) {
-      continue;
-    }
-
-    catalog.emplace_back(*uuid, *url, *title, langs, *support_url,
-                         *component_id, *base64_public_key, *desc);
+    RegionalCatalogEntry entry;
+    converter.Convert(item, &entry);
+    catalog.push_back(entry);
   }
 
   return catalog;

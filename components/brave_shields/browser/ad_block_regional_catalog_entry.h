@@ -9,10 +9,16 @@
 #include <string>
 #include <vector>
 
+namespace base {
+template <typename StructType>
+class JSONValueConverter;
+}
+
 namespace brave_shields {
 
 class RegionalCatalogEntry {
  public:
+  RegionalCatalogEntry();
   RegionalCatalogEntry(const std::string& uuid,
                        const std::string& url,
                        const std::string& title,
@@ -24,14 +30,17 @@ class RegionalCatalogEntry {
   explicit RegionalCatalogEntry(const RegionalCatalogEntry& other);
   ~RegionalCatalogEntry();
 
-  const std::string uuid;
-  const std::string url;
-  const std::string title;
-  const std::vector<std::string> langs;
-  const std::string support_url;
-  const std::string component_id;
-  const std::string base64_public_key;
-  const std::string desc;
+  std::string uuid;
+  std::string url;
+  std::string title;
+  std::vector<std::string> langs;
+  std::string support_url;
+  std::string component_id;
+  std::string base64_public_key;
+  std::string desc;
+
+  static void RegisterJSONConverter(
+      base::JSONValueConverter<RegionalCatalogEntry>*);
 };
 
 std::vector<RegionalCatalogEntry>::const_iterator FindAdBlockFilterListByUUID(
