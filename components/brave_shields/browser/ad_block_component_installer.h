@@ -20,6 +20,10 @@ namespace brave_shields {
 using OnComponentReadyCallback =
     base::RepeatingCallback<void(const base::FilePath& install_path)>;
 
+void RegisterAdBlockIosDefaultDatComponent(
+    component_updater::ComponentUpdateService* cus,
+    OnComponentReadyCallback callback);
+
 void RegisterAdBlockDefaultResourceComponent(
     component_updater::ComponentUpdateService* cus,
     OnComponentReadyCallback callback);

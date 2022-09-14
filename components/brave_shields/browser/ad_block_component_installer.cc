@@ -48,6 +48,18 @@ const char kAdBlockFilterListCatalogComponentBase64PublicKey[] =
     "1H8y9SR970LqsUMozu3ioSHtFh/IVgq7Nqy4TljaKsTE+3AdtjiOyHpW9ZaOkA7j"
     "2QIDAQAB";
 
+const char kAdBlockIosDefaultDatComponentName[] = "Brave Ad Block Updater";
+const char kAdBlockIosDefaultDatComponentId[] =
+    "cffkpbalmllkdoenhmdmpbkajipdjfam";
+const char kAdBlockIosDefaultDatComponentBase64PublicKey[] =
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs0qzJmHSgIiw7IGFCxij"
+    "1NnB5hJ5ZQ1LKW9htL4EBOaMJvmqaDs/wfq0nw/goBHWsqqkMBynRTu2Hxxirvdb"
+    "cugn1Goys5QKPgAvKwDHJp9jlnADWm5xQvPQ4GE1mK1/I3ka9cEOCzPW6GI+wGLi"
+    "VPx9VZrxHHsSBIJRaEB5Tyi5bj0CZ+kcfMnRTsXIBw3C6xJgCVKISQUkd8mawVvG"
+    "vqOhBOogCdb9qza5eJ1Cgx8RWKucFfaWWxKLOelCiBMT1Hm1znAoVBHG/blhJJOD"
+    "5HcH/heRrB4MvrE1J76WF3fvZ03aHVcnlLtQeiNNOZ7VbBDXdie8Nomf/QswbBGa"
+    "VwIDAQAB";
+
 class AdBlockComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
  public:
@@ -157,6 +169,22 @@ void OnRegistered(const std::string& component_id) {
 }
 
 }  // namespace
+
+void RegisterAdBlockIosDefaultDatComponent(
+    component_updater::ComponentUpdateService* cus,
+    OnComponentReadyCallback callback) {
+  // In test, |cus| could be nullptr.
+  if (!cus)
+    return;
+
+  auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
+      std::make_unique<AdBlockComponentInstallerPolicy>(
+          kAdBlockIosDefaultDatComponentBase64PublicKey,
+          kAdBlockIosDefaultDatComponentId, kAdBlockIosDefaultDatComponentName,
+          callback));
+  installer->Register(
+      cus, base::BindOnce(&OnRegistered, kAdBlockIosDefaultDatComponentId));
+}
 
 void RegisterAdBlockDefaultResourceComponent(
     component_updater::ComponentUpdateService* cus,

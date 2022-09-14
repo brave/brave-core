@@ -84,7 +84,9 @@ FilterListCatalogEntry::FilterListCatalogEntry(
     const std::string& support_url,
     const std::string& component_id,
     const std::string& base64_public_key,
-    const std::string& desc)
+    const std::string& desc,
+    const std::string& ios_component_id,
+    const std::string& ios_base64_public_key)
     : uuid(uuid),
       url(url),
       title(title),
@@ -92,7 +94,9 @@ FilterListCatalogEntry::FilterListCatalogEntry(
       support_url(support_url),
       component_id(component_id),
       base64_public_key(base64_public_key),
-      desc(desc) {}
+      desc(desc),
+      ios_component_id(ios_component_id),
+      ios_base64_public_key(ios_base64_public_key) {}
 
 FilterListCatalogEntry::FilterListCatalogEntry(
     const FilterListCatalogEntry& other) = default;

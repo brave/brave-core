@@ -29,7 +29,9 @@ class FilterListCatalogEntry {
                          const std::string& support_url,
                          const std::string& component_id,
                          const std::string& base64_public_key,
-                         const std::string& desc);
+                         const std::string& desc,
+                         const std::string& ios_component_id,
+                         const std::string& ios_base64_public_key);
   explicit FilterListCatalogEntry(const FilterListCatalogEntry& other);
   ~FilterListCatalogEntry();
 

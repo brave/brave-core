@@ -34,7 +34,7 @@
 
 - (void)registerDefaultShieldsComponent {
   __weak auto weakSelf = self;
-  brave_shields::RegisterAdBlockDefaultComponent(
+  brave_shields::RegisterAdBlockIosDefaultDatComponent(
       _cus, base::BindRepeating(^(const base::FilePath& install_path) {
         [weakSelf adblockComponentDidBecomeReady:install_path];
       }));
@@ -79,9 +79,9 @@
                          (void (^)(AdblockFilterListCatalogEntry* entry,
                                    NSString* _Nullable installPath))
                              componentReady {
-  brave_shields::RegisterAdBlockRegionalComponent(
-      _cus, base::SysNSStringToUTF8(entry.base64PublicKey),
-      base::SysNSStringToUTF8(entry.componentId),
+  brave_shields::RegisterAdBlockFiltersComponent(
+      _cus, base::SysNSStringToUTF8(entry.iosBase64PublicKey),
+      base::SysNSStringToUTF8(entry.iosComponentId),
       base::SysNSStringToUTF8(entry.title),
       base::BindRepeating(^(const base::FilePath& install_path) {
         const auto installPath = base::SysUTF8ToNSString(install_path.value());
@@ -90,7 +90,7 @@
 }
 
 - (void)unregisterFilterListComponent:(AdblockFilterListCatalogEntry*)entry {
-  _cus->UnregisterComponent(base::SysNSStringToUTF8(entry.componentId));
+  _cus->UnregisterComponent(base::SysNSStringToUTF8(entry.iosComponentId));
 }
 
 @end
