@@ -33,19 +33,19 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class BraveEthereumPermissionAccountsListAdapter
-        extends RecyclerView.Adapter<BraveEthereumPermissionAccountsListAdapter.ViewHolder> {
+public class BravePermissionAccountsListAdapter
+        extends RecyclerView.Adapter<BravePermissionAccountsListAdapter.ViewHolder> {
     private Context mContext;
     private AccountInfo[] accountInfos;
     private ExecutorService mExecutor;
     private Handler mHandler;
     private List<Integer> mCheckedPositions = new ArrayList<>();
     private boolean mCheckBoxStyle;
-    private BraveEthereumPermissionDelegate mDelegate;
+    private BravePermissionDelegate mDelegate;
     private HashSet<AccountInfo> mAccountsWithPermissions;
     private AccountInfo mSelectedAccount;
 
-    public interface BraveEthereumPermissionDelegate {
+    public interface BravePermissionDelegate {
         default HashSet<AccountInfo> getAccountsWithPermissions() {
             return null;
         }
@@ -58,8 +58,8 @@ public class BraveEthereumPermissionAccountsListAdapter
         default void onAccountCheckChanged(AccountInfo account, boolean isChecked){};
     }
 
-    public BraveEthereumPermissionAccountsListAdapter(AccountInfo[] accountInfo,
-            boolean checkBoxStyle, BraveEthereumPermissionDelegate delegate) {
+    public BravePermissionAccountsListAdapter(
+            AccountInfo[] accountInfo, boolean checkBoxStyle, BravePermissionDelegate delegate) {
         assert accountInfo != null;
         accountInfos = accountInfo;
         mCheckBoxStyle = checkBoxStyle;

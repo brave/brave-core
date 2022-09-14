@@ -34,7 +34,7 @@ import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.fragments.CreateAccountBottomSheetFragment;
-import org.chromium.chrome.browser.crypto_wallet.permission.BraveEthereumPermissionAccountsListAdapter;
+import org.chromium.chrome.browser.crypto_wallet.permission.BravePermissionAccountsListAdapter;
 import org.chromium.chrome.browser.crypto_wallet.util.AccountsPermissionsHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper;
@@ -49,14 +49,14 @@ import java.util.List;
 import java.util.Locale;
 
 public class ConnectAccountFragment extends BaseDAppsFragment
-        implements BraveEthereumPermissionAccountsListAdapter.BraveEthereumPermissionDelegate {
+        implements BravePermissionAccountsListAdapter.BravePermissionDelegate {
     private TextView mWebSite;
     private TextView mAccountsConnected;
     private TextView mbtNewAccount;
     private ImageView mFavicon;
     private AccountInfo[] mAccountInfos;
     private HashSet<AccountInfo> mAccountsWithPermissions;
-    private BraveEthereumPermissionAccountsListAdapter mAccountsListAdapter;
+    private BravePermissionAccountsListAdapter mAccountsListAdapter;
     private RecyclerView mRecyclerView;
     private AccountInfo mSelectedAccount;
     private FaviconHelper mFaviconHelper;
@@ -84,7 +84,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment
                             mAccountsWithPermissions.size()));
             if (mAccountsListAdapter == null) {
                 mAccountsListAdapter =
-                        new BraveEthereumPermissionAccountsListAdapter(mAccountInfos, false, this);
+                        new BravePermissionAccountsListAdapter(mAccountInfos, false, this);
                 mRecyclerView.setAdapter(mAccountsListAdapter);
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
                 mRecyclerView.setLayoutManager(layoutManager);

@@ -190,7 +190,7 @@ generate_jni("jni_headers") {
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/KeyringServiceFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/SwapServiceFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/TxServiceFactory.java",
-    "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/permission/BraveEthereumPermissionPromptDialog.java",
+    "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/permission/BraveDappPermissionPromptDialog.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/WalletNativeUtils.java",
     "//brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationPlatformBridge.java",
     "//brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationSettingsBridge.java",
