@@ -73,6 +73,10 @@ BraveNewsActionView::BraveNewsActionView(Profile* profile,
                     profile->GetPrefs(),
                     base::BindRepeating(&BraveNewsActionView::Update,
                                         base::Unretained(this)));
+  news_enabled_.Init(brave_news::prefs::kNewTabPageShowToday,
+                     profile->GetPrefs(),
+                     base::BindRepeating(&BraveNewsActionView::Update,
+                                         base::Unretained(this)));
 
   auto menu_button_controller = std::make_unique<views::MenuButtonController>(
       this,
@@ -97,7 +101,7 @@ void BraveNewsActionView::Init() {
 }
 
 void BraveNewsActionView::Update() {
-  if (!should_show_.GetValue()) {
+  if (!should_show_.GetValue() || !news_enabled_.GetValue()) {
     SetVisible(false);
     return;
   }
