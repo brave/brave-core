@@ -6,29 +6,26 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_CONTENTS_LAYOUT_MANAGER_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_CONTENTS_LAYOUT_MANAGER_H_
 
-#include "ui/views/layout/layout_manager.h"
+#include "base/memory/raw_ptr.h"
+#include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 
-class BraveContentsLayoutManager : public views::LayoutManager {
+class BraveContentsLayoutManager : public ContentsLayoutManager {
  public:
-  BraveContentsLayoutManager(views::View* sidebar_container_view,
-                             views::View* contents_container_view);
-  ~BraveContentsLayoutManager() override;
+  BraveContentsLayoutManager(views::View* devtools_view,
+                             views::View* contents_view,
+                             views::View* sidebar_container_view);
 
   BraveContentsLayoutManager(const BraveContentsLayoutManager&) = delete;
-  BraveContentsLayoutManager operator=(const BraveContentsLayoutManager&) =
+  BraveContentsLayoutManager& operator=(const BraveContentsLayoutManager&) =
       delete;
 
-  // views::LayoutManager overrides:
-  void Layout(views::View* host) override;
-  gfx::Size GetPreferredSize(const views::View* host) const override;
-  void Installed(views::View* host) override;
+  ~BraveContentsLayoutManager() override;
+
+  // ContentsLayoutManager overrides:
+  void Layout(views::View* contents_container) override;
 
  private:
-  views::View* sidebar_container_view_ = nullptr;
-  views::View* contents_container_view_ = nullptr;
-
-  // Host is BrowserView.
-  views::View* host_ = nullptr;
+  raw_ptr<views::View> sidebar_container_view_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_CONTENTS_LAYOUT_MANAGER_H_

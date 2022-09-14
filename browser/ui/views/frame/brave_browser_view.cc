@@ -178,25 +178,16 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
     return;
   }
 
-  auto brave_contents_container = std::make_unique<views::View>();
-
   // Wrap chromium side panel with our sidebar container
   auto original_side_panel = RemoveChildViewT(right_aligned_side_panel_.get());
-  sidebar_container_view_ = brave_contents_container->AddChildView(
-      std::make_unique<SidebarContainerView>(GetBraveBrowser(),
-                                             side_panel_coordinator(),
-                                             std::move(original_side_panel)));
+  sidebar_container_view_ =
+      contents_container_->AddChildView(std::make_unique<SidebarContainerView>(
+          GetBraveBrowser(), side_panel_coordinator(),
+          std::move(original_side_panel)));
   right_aligned_side_panel_ = sidebar_container_view_->side_panel();
-  // Put sidebar into chromium contents area
-  auto orignal_contents_container = RemoveChildViewT(contents_container_.get());
-  original_contents_container_ = brave_contents_container->AddChildView(
-      std::move(orignal_contents_container));
-  brave_contents_container->SetLayoutManager(
+  contents_container_->SetLayoutManager(
       std::make_unique<BraveContentsLayoutManager>(
-          sidebar_container_view_, original_contents_container_));
-  contents_container_ = AddChildView(std::move(brave_contents_container));
-  set_contents_view(contents_container_);
-
+          devtools_web_view_, contents_web_view_, sidebar_container_view_));
   sidebar_host_view_ = AddChildView(std::make_unique<views::View>());
 
   // Make sure |find_bar_host_view_| is the last child of BrowserView by
@@ -241,15 +232,6 @@ sidebar::Sidebar* BraveBrowserView::InitSidebar() {
   DCHECK(sidebar_container_view_);
   sidebar_container_view_->Init();
   return sidebar_container_view_;
-}
-
-ContentsLayoutManager* BraveBrowserView::GetContentsLayoutManager() const {
-  if (sidebar::CanUseSidebar(browser_.get())) {
-    return static_cast<ContentsLayoutManager*>(
-        original_contents_container_->GetLayoutManager());
-  }
-
-  return BrowserView::GetContentsLayoutManager();
 }
 #endif
 
