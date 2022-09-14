@@ -141,8 +141,8 @@ class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(serializer.Serialize(pre_test_data_));
   }
 
-  const base::Value* GetExpirationsPrefValue() {
-    return browser()->profile()->GetPrefs()->Get(
+  const base::Value::Dict& GetExpirationsPrefValue() {
+    return browser()->profile()->GetPrefs()->GetValueDict(
         prefs::kPermissionLifetimeExpirations);
   }
 
@@ -176,7 +176,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest, ExpirationSmoke) {
 
   EXPECT_EQ(1, prompt_factory_->show_count());
   EXPECT_TRUE(permission_lifetime_timer().IsRunning());
-  EXPECT_FALSE(GetExpirationsPrefValue()->DictEmpty());
+  EXPECT_FALSE(GetExpirationsPrefValue().empty());
 
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
@@ -190,7 +190,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest, ExpirationSmoke) {
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ASK);
   EXPECT_FALSE(permission_lifetime_timer().IsRunning());
-  EXPECT_TRUE(GetExpirationsPrefValue()->DictEmpty());
+  EXPECT_TRUE(GetExpirationsPrefValue().empty());
 }
 
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
@@ -227,12 +227,12 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ALLOW);
   EXPECT_TRUE(permission_lifetime_timer().IsRunning());
-  EXPECT_FALSE(GetExpirationsPrefValue()->DictEmpty());
+  EXPECT_FALSE(GetExpirationsPrefValue().empty());
 
   base::ScopedMockTimeMessageLoopTaskRunner scoped_mock_time_task_runner;
   permission_lifetime_manager()->RestartExpirationTimerForTesting();
   EXPECT_TRUE(permission_lifetime_timer().IsRunning());
-  EXPECT_FALSE(GetExpirationsPrefValue()->DictEmpty());
+  EXPECT_FALSE(GetExpirationsPrefValue().empty());
 
   scoped_mock_time_task_runner.task_runner()->FastForwardBy(base::Seconds(10));
   EXPECT_TRUE(permission_lifetime_timer().IsRunning());
@@ -242,7 +242,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
 
   scoped_mock_time_task_runner.task_runner()->FastForwardBy(base::Seconds(60));
   EXPECT_FALSE(permission_lifetime_timer().IsRunning());
-  EXPECT_TRUE(GetExpirationsPrefValue()->DictEmpty());
+  EXPECT_TRUE(GetExpirationsPrefValue().empty());
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ASK);
@@ -270,13 +270,13 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ALLOW);
   EXPECT_TRUE(permission_lifetime_timer().IsRunning());
-  EXPECT_FALSE(GetExpirationsPrefValue()->DictEmpty());
+  EXPECT_FALSE(GetExpirationsPrefValue().empty());
 
   host_content_settings_map()->SetContentSettingDefaultScope(
       url, url, ContentSettingsType::GEOLOCATION,
       ContentSetting::CONTENT_SETTING_DEFAULT);
   EXPECT_FALSE(permission_lifetime_timer().IsRunning());
-  EXPECT_TRUE(GetExpirationsPrefValue()->DictEmpty());
+  EXPECT_TRUE(GetExpirationsPrefValue().empty());
 }
 
 class PermissionLifetimeManagerWithOriginMonitorBrowserTest
@@ -306,7 +306,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
 
   EXPECT_EQ(1, prompt_factory_->show_count());
   EXPECT_FALSE(permission_lifetime_timer().IsRunning());
-  EXPECT_FALSE(GetExpirationsPrefValue()->DictEmpty());
+  EXPECT_FALSE(GetExpirationsPrefValue().empty());
 
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
@@ -329,7 +329,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ASK);
-  EXPECT_TRUE(GetExpirationsPrefValue()->DictEmpty());
+  EXPECT_TRUE(GetExpirationsPrefValue().empty());
 }
 
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
@@ -350,7 +350,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
 
   EXPECT_EQ(1, prompt_factory_->show_count());
   EXPECT_FALSE(permission_lifetime_timer().IsRunning());
-  EXPECT_FALSE(GetExpirationsPrefValue()->DictEmpty());
+  EXPECT_FALSE(GetExpirationsPrefValue().empty());
 
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
@@ -363,7 +363,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ALLOW);
-  EXPECT_FALSE(GetExpirationsPrefValue()->DictEmpty());
+  EXPECT_FALSE(GetExpirationsPrefValue().empty());
 
   // Navigate to another domain. It should keep the permission.
   const GURL& other_url =
@@ -372,7 +372,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ALLOW);
-  EXPECT_FALSE(GetExpirationsPrefValue()->DictEmpty());
+  EXPECT_FALSE(GetExpirationsPrefValue().empty());
 
   // Permission Should be reset after the timeout
   base::RunLoop run_loop;
@@ -383,7 +383,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ASK);
-  EXPECT_TRUE(GetExpirationsPrefValue()->DictEmpty());
+  EXPECT_TRUE(GetExpirationsPrefValue().empty());
 }
 
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
@@ -404,7 +404,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
 
   EXPECT_EQ(1, prompt_factory_->show_count());
   EXPECT_FALSE(permission_lifetime_timer().IsRunning());
-  EXPECT_FALSE(GetExpirationsPrefValue()->DictEmpty());
+  EXPECT_FALSE(GetExpirationsPrefValue().empty());
 
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
@@ -417,7 +417,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ALLOW);
-  EXPECT_FALSE(GetExpirationsPrefValue()->DictEmpty());
+  EXPECT_FALSE(GetExpirationsPrefValue().empty());
 
   // Navigate to another domain in PSL. It should keep the permission.
   const GURL& other_url =
@@ -426,7 +426,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ALLOW);
-  EXPECT_FALSE(GetExpirationsPrefValue()->DictEmpty());
+  EXPECT_FALSE(GetExpirationsPrefValue().empty());
 
   // Permission Should be reset after the timeout
   base::RunLoop run_loop;
@@ -437,7 +437,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ASK);
-  EXPECT_TRUE(GetExpirationsPrefValue()->DictEmpty());
+  EXPECT_TRUE(GetExpirationsPrefValue().empty());
 }
 
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
@@ -458,7 +458,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
 
   EXPECT_EQ(1, prompt_factory_->show_count());
   EXPECT_FALSE(permission_lifetime_timer().IsRunning());
-  EXPECT_FALSE(GetExpirationsPrefValue()->DictEmpty());
+  EXPECT_FALSE(GetExpirationsPrefValue().empty());
 
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
@@ -476,7 +476,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ASK);
-  EXPECT_TRUE(GetExpirationsPrefValue()->DictEmpty());
+  EXPECT_TRUE(GetExpirationsPrefValue().empty());
 }
 
 }  // namespace permissions

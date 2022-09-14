@@ -351,7 +351,7 @@ void PlaylistService::RemovePlaylist(const std::string& playlist_id) {
 
 std::vector<PlaylistItemInfo> PlaylistService::GetAllPlaylistItems() {
   std::vector<PlaylistItemInfo> items;
-  for (const auto it : prefs_->Get(kPlaylistItemsPref)->GetDict()) {
+  for (const auto it : prefs_->GetValueDict(kPlaylistItemsPref)) {
     const auto& dict = it.second.GetDict();
     DCHECK(dict.contains(playlist::kPlaylistItemIDKey));
     DCHECK(dict.contains(playlist::kPlaylistItemTitleKey));
@@ -629,7 +629,7 @@ void PlaylistService::OnGetOrphanedPaths(
 
 void PlaylistService::CleanUpMalformedPlaylistItems() {
   if (base::ranges::none_of(
-          prefs_->Get(kPlaylistItemsPref)->GetDict(),
+          prefs_->GetValueDict(kPlaylistItemsPref),
           /* has_malformed_data = */ [](const auto& pair) {
             auto* dict = pair.second.GetIfDict();
             DCHECK(dict);
