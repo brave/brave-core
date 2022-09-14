@@ -287,9 +287,9 @@ void ViewCounterService::ResetModel() {
       campaigns_total_branded_images_count.push_back(
           campaign.backgrounds.size());
     }
+    model_.set_always_show_branded_wallpaper(data->IsSuperReferral());
     model_.SetCampaignsTotalBrandedImageCount(
         campaigns_total_branded_images_count);
-    model_.set_always_show_branded_wallpaper(data->IsSuperReferral());
   }
   // BI
   if (auto* data = GetCurrentWallpaperData()) {

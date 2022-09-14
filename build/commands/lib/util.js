@@ -734,9 +734,15 @@ const util = {
     let cmd_options = config.defaultOptions
     cmd_options.cwd = config.braveCoreDir
     cmd_options = mergeWithDefault(cmd_options)
-    util.run('vpython', [path.join(config.braveCoreDir, 'build', 'commands', 'scripts', 'lint.py'),
-        '--project_root=' + config.srcDir,
-        '--base_branch=' + options.base], cmd_options)
+    util.run(
+        'vpython3',
+        [
+          '-vpython-spec=' + path.join(config.depotToolsDir, '.vpython3'),
+          path.join(
+              config.braveCoreDir, 'build', 'commands', 'scripts', 'lint.py'),
+          '--project_root=' + config.srcDir, '--base_branch=' + options.base
+        ],
+        cmd_options)
   },
 
   presubmit: (options = {}) => {

@@ -1,6 +1,8 @@
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.*
 -AccessCodeCastDiscoveryInterfaceTest.SyncError
+-AccessCodeCastFeatureTest.GetAccessCodeDeviceDurationPrefSwitchEnabled
+-AccessCodeCastSinkServiceFactoryTest.PrefEnabledReturnsValidService
 -AccessibilityCheckerTest.*
 -ActiveTabDelegateTest.*
 -ActiveTabTest.*
@@ -61,6 +63,8 @@
 -BrowserUnitTest.*
 -BrowserViewHostedAppTest.*
 -BrowserViewTest.*
+-CastDialogViewTest.AccessCodeEmptySinksSourcesAvailable
+-CastDialogViewTest.ShowAccessCodeCastButtonEnabled
 -CastHandlerTest.*
 -CastMediaNotificationProducerTest.*
 -CastToolbarButtonTest.*
