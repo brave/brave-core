@@ -936,6 +936,8 @@ source_set("ads") {
     "src/bat/ads/internal/ml/model/linear/linear.h",
     "src/bat/ads/internal/ml/pipeline/pipeline_embedding_info.cc",
     "src/bat/ads/internal/ml/pipeline/pipeline_embedding_info.h",
+    "src/bat/ads/internal/ml/pipeline/pipeline_embedding_value_util.cc",
+    "src/bat/ads/internal/ml/pipeline/pipeline_embedding_value_util.h",
     "src/bat/ads/internal/ml/pipeline/pipeline_info.cc",
     "src/bat/ads/internal/ml/pipeline/pipeline_info.h",
     "src/bat/ads/internal/ml/pipeline/pipeline_util.cc",

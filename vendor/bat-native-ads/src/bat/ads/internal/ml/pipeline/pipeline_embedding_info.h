@@ -10,7 +10,6 @@
 #include <string>
 
 #include "base/time/time.h"
-#include "base/values.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 
 namespace ads::ml::pipeline {
@@ -25,8 +24,6 @@ struct EmbeddingPipelineInfo final {
   EmbeddingPipelineInfo& operator=(EmbeddingPipelineInfo&& other) noexcept;
 
   ~EmbeddingPipelineInfo();
-
-  bool FromValue(const base::Value::Dict& root);
 
   int version = 0;
   base::Time time;

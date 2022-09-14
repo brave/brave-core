@@ -19,6 +19,7 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_embedding_info.h"
+#include "bat/ads/internal/ml/pipeline/pipeline_embedding_value_util.h"
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_info.h"
 
 namespace ads::ml::pipeline {
@@ -52,7 +53,14 @@ bool EmbeddingProcessing::SetEmbeddingPipeline(base::Value resource_value) {
     return is_initialized_;
   }
 
-  is_initialized_ = embedding_pipeline_.FromValue(*value);
+  absl::optional<EmbeddingPipelineInfo> embedding_pipeline =
+      EmbeddingPipelineFromValue(*value);
+  if (!embedding_pipeline) {
+    is_initialized_ = false;
+  } else {
+    embedding_pipeline_ = *embedding_pipeline;
+    is_initialized_ = true;
+  }
 
   return is_initialized_;
 }

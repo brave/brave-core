@@ -331,6 +331,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ml/data/vector_data_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ml/ml_prediction_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ml/model/linear/linear_unittest.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/ml/pipeline/pipeline_embedding_value_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ml/pipeline/pipeline_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ml/pipeline/text_processing/embedding_processing_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ml/pipeline/text_processing/text_processing_unittest.cc",
