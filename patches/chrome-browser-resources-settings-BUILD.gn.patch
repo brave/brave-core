@@ -1,12 +1,10 @@
 diff --git a/chrome/browser/resources/settings/BUILD.gn b/chrome/browser/resources/settings/BUILD.gn
-index 2e218dc46b90016e180da9b36232f47a1779c58e..750a87d8deefa9d1da807ca1442177750a1794d0 100644
+index ab01660acd836acb11a241bd3ff29790201baf60..1e85dc35af61c74d3cc0794ea1798b009aaea207 100644
 --- a/chrome/browser/resources/settings/BUILD.gn
 +++ b/chrome/browser/resources/settings/BUILD.gn
-@@ -477,4 +477,7 @@ build_webui("build") {
+@@ -478,4 +478,5 @@ build_webui("build") {
        "lazy_load.rollup.js|lazy_load.js",
      ]
    }
-+  extra_build_ts_in_files = brave_deps_chrome_browser_resources_settings_in_files
-+  extra_build_ts_extra_deps = brave_deps_chrome_browser_resources_settings_extra_deps
-+  extra_build_grd_deps = [ "//brave/browser/resources/settings:resources" ]
++  extra_build_ts_in_files = brave_deps_chrome_browser_resources_settings_in_files extra_build_ts_extra_deps = brave_deps_chrome_browser_resources_settings_extra_deps extra_build_grd_deps = [ "//brave/browser/resources/settings:resources" ]
  }
