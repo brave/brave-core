@@ -493,15 +493,10 @@ constexpr char kAllowCertainClientHintsDescription[] =
 
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 #define BRAVE_TRANSLATE_GO_FEATURE_ENTRIES                           \
-    {"brave-translate-go",                                           \
-     flag_descriptions::kBraveTranslateGoName,                       \
-     flag_descriptions::kBraveTranslateGoDescription,                \
-     kOsDesktop | kOsAndroid,                                        \
-     FEATURE_VALUE_TYPE(translate::features::kUseBraveTranslateGo)}, \
     {"translate",                                                    \
      flag_descriptions::kTranslateName,                              \
      flag_descriptions::kTranslateDescription,                       \
-     kOsAndroid,                                                     \
+     kOsDesktop | kOsAndroid,                                                     \
      FEATURE_VALUE_TYPE(translate::kTranslate)},
 #else
 #define BRAVE_TRANSLATE_GO_FEATURE_ENTRIES
