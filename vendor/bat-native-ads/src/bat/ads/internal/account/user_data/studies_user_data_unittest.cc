@@ -35,19 +35,19 @@ TEST(BatAdsStudiesUserDataTest, GetStudies) {
   const std::string group_name_1 = "GroupA";
   const scoped_refptr<base::FieldTrial> trial_1 =
       base::FieldTrialList::CreateFieldTrial(trial_name_1, group_name_1);
-  trial_1->group();
+  trial_1->group_name();
 
   const std::string trial_name_2 = "BarStudyForBraveAds";
   const std::string group_name_2 = "GroupB";
   const scoped_refptr<base::FieldTrial> trial_2 =
       base::FieldTrialList::CreateFieldTrial(trial_name_2, group_name_2);
-  trial_2->group();
+  trial_2->group_name();
 
   const std::string trial_name_3 = "FooBarStudy";
   const std::string group_name_3 = "GroupC";
   const scoped_refptr<base::FieldTrial> trial_3 =
       base::FieldTrialList::CreateFieldTrial(trial_name_3, group_name_3);
-  trial_3->group();
+  trial_3->group_name();
 
   ASSERT_EQ(3U, base::FieldTrialList::GetFieldTrialCount());
 
