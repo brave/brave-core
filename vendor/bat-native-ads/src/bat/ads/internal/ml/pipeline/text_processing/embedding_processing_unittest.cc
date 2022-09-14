@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_processing.h"
 
+#include <tuple>
 #include <vector>
 
 #include "bat/ads/internal/base/unittest/unittest_base.h"

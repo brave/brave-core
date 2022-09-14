@@ -6,6 +6,7 @@
 #include "bat/ads/internal/base/strings/string_html_parser_util.h"
 
 #include <string>
+#include <tuple>
 #include <vector>
 
 #include "bat/ads/internal/base/unittest/unittest_base.h"

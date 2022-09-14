@@ -4,8 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_processor.h"
-#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
-#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_processor_util.h"
 
 #include "base/check.h"
 #include "bat/ads/internal/base/logging_util.h"
@@ -15,6 +13,8 @@
 #include "bat/ads/internal/locale/locale_manager.h"
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_info.h"
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_processing.h"
+#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
+#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_processor_util.h"
 #include "bat/ads/internal/resources/contextual/text_embedding/text_embedding_resource.h"
 #include "bat/ads/internal/resources/language_components.h"
 #include "bat/ads/internal/resources/resource_manager.h"

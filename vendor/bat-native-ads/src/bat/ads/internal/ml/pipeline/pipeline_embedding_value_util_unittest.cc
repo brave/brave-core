@@ -5,6 +5,10 @@
 
 #include "bat/ads/internal/ml/pipeline/pipeline_embedding_value_util.h"
 
+#include <string>
+#include <tuple>
+#include <vector>
+
 #include "base/test/values_test_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_embedding_info.h"
@@ -31,7 +35,7 @@ TEST_F(BatAdsPipelineEmbeddingValueUtilTest, FromValue) {
   const base::Value::Dict* dict = value.GetIfDict();
   ASSERT_TRUE(dict);
 
-  const std::map<std::string, VectorData> kSamples = {
+  const std::vector<std::tuple<std::string, VectorData>> kSamples = {
       {"quick", VectorData({0.7481F, 0.0493F, -0.5572F})},
       {"brown", VectorData({-0.0647F, 0.4511F, -0.7326F})},
       {"fox", VectorData({-0.9328F, -0.2578F, 0.0032F})},
@@ -53,7 +57,7 @@ TEST_F(BatAdsPipelineEmbeddingValueUtilTest, FromValue) {
       EXPECT_NEAR(expected_embedding.GetValuesForTesting().at(i),
                   token_embedding_vector_data.GetValuesForTesting().at(i),
                   0.001F);
-    };
+    }
   }
 }
 
