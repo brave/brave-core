@@ -139,12 +139,6 @@ void BraveToolbarView::Init() {
       base::BindRepeating(&BraveToolbarView::OnShowBookmarksButtonChanged,
                           base::Unretained(this)));
 
-  show_side_panel_button_.Init(
-      kShowSidePanelButton, browser_->profile()->GetPrefs(),
-      base::BindRepeating(&BraveToolbarView::OnShowSidePanelButtonChanged,
-                          base::Unretained(this)));
-  UpdateSidePanelButtonVisibility();
-
   // track changes in wide locationbar setting
   location_bar_is_wide_.Init(
       kLocationBarIsWide, profile->GetPrefs(),
@@ -210,10 +204,6 @@ void BraveToolbarView::OnShowBookmarksButtonChanged() {
   UpdateBookmarkVisibility();
 }
 
-void BraveToolbarView::OnShowSidePanelButtonChanged() {
-  UpdateSidePanelButtonVisibility();
-}
-
 void BraveToolbarView::OnLocationBarIsWideChanged() {
   DCHECK_EQ(DisplayMode::NORMAL, display_mode_);
 
@@ -275,15 +265,6 @@ void BraveToolbarView::UpdateBookmarkVisibility() {
   bookmark_->SetVisible(browser_defaults::bookmarks_enabled &&
                         edit_bookmarks_enabled_.GetValue() &&
                         show_bookmarks_button_.GetValue());
-}
-
-void BraveToolbarView::UpdateSidePanelButtonVisibility() {
-  if (!side_panel_button_)
-    return;
-
-  DCHECK_EQ(DisplayMode::NORMAL, display_mode_);
-  LOG(ERROR) << "Setting visible to: " << show_side_panel_button_.GetValue();
-  side_panel_button_->SetVisible(show_side_panel_button_.GetValue());
 }
 
 void BraveToolbarView::ShowBookmarkBubble(

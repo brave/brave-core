@@ -23,6 +23,7 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_registry_observer.h"
 #include "ui/events/event_observer.h"
 #include "ui/views/view.h"
+#include "components/prefs/pref_member.h"
 
 namespace views {
 class EventMonitor;
@@ -139,6 +140,7 @@ class SidebarContainerView
   std::unique_ptr<BrowserWindowEventObserver> browser_window_event_observer_;
   std::unique_ptr<views::EventMonitor> browser_window_event_monitor_;
   std::unique_ptr<SidebarShowOptionsEventDetectWidget> show_options_widget_;
+  BooleanPrefMember show_side_panel_button_;
   base::ScopedObservation<sidebar::SidebarModel,
                           sidebar::SidebarModel::Observer>
       sidebar_model_observation_{this};
