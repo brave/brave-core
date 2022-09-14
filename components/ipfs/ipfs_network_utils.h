@@ -35,7 +35,7 @@ class BlobDataBuilder;
 }  // namespace storage
 
 namespace ipfs {
-
+net::NetworkTrafficAnnotationTag GetIpfsNetworkTrafficAnnotationTag();
 std::unique_ptr<network::SimpleURLLoader> CreateURLLoader(
     const GURL& gurl,
     const std::string& method,

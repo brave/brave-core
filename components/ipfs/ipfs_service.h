@@ -17,6 +17,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/observer_list.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/ipfs/addresses_config.h"
 #include "brave/components/ipfs/blob_context_getter_factory.h"
 #include "brave/components/ipfs/brave_ipfs_client_updater.h"
@@ -160,9 +161,10 @@ class IpfsService : public KeyedService,
   void OnConfigLoaded(GetConfigCallback, const std::pair<bool, std::string>&);
 
  private:
+  using APIRequestList =
+      std::list<std::unique_ptr<api_request_helper::APIRequestHelper>>;
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
-
   FRIEND_TEST_ALL_PREFIXES(IpfsServiceBrowserTest,
                            UpdaterRegistrationSuccessLaunch);
   FRIEND_TEST_ALL_PREFIXES(IpfsServiceBrowserTest,
@@ -192,24 +194,24 @@ class IpfsService : public KeyedService,
                                    const GURL& initial_url,
                                    std::unique_ptr<std::string> response_body);
 
-  void OnGetConnectedPeers(SimpleURLLoaderList::iterator iter,
+  void OnGetConnectedPeers(APIRequestList::iterator iter,
                            GetConnectedPeersCallback,
                            int retries,
-                           std::unique_ptr<std::string> response_body);
-  void OnGetAddressesConfig(SimpleURLLoaderList::iterator iter,
+                           api_request_helper::APIRequestResult response);
+  void OnGetAddressesConfig(APIRequestList::iterator iter,
                             GetAddressesConfigCallback callback,
-                            std::unique_ptr<std::string> response_body);
-  void OnRepoStats(SimpleURLLoaderList::iterator iter,
+                            api_request_helper::APIRequestResult response);
+  void OnRepoStats(APIRequestList::iterator iter,
                    GetRepoStatsCallback callback,
-                   std::unique_ptr<std::string> response_body);
-  void OnNodeInfo(SimpleURLLoaderList::iterator iter,
+                   api_request_helper::APIRequestResult response);
+  void OnNodeInfo(APIRequestList::iterator iter,
                   GetNodeInfoCallback callback,
-                  std::unique_ptr<std::string> response_body);
-  void OnGarbageCollection(SimpleURLLoaderList::iterator iter,
+                  api_request_helper::APIRequestResult response);
+  void OnGarbageCollection(APIRequestList::iterator iter,
                            GarbageCollectionCallback callback,
-                           std::unique_ptr<std::string> response_body);
-  void OnPreWarmComplete(SimpleURLLoaderList::iterator iter,
-                         std::unique_ptr<std::string> response_body);
+                           api_request_helper::APIRequestResult responsey);
+  void OnPreWarmComplete(APIRequestList::iterator iter,
+                         api_request_helper::APIRequestResult response);
   std::string GetStorageSize();
   void OnDnsConfigChanged(absl::optional<std::string> dns_server);
 
@@ -223,6 +225,7 @@ class IpfsService : public KeyedService,
 
   PrefService* prefs_ = nullptr;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  APIRequestList requests_list_;
   SimpleURLLoaderList url_loaders_;
   BlobContextGetterFactoryPtr blob_context_getter_factory_;
 

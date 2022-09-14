@@ -155,6 +155,12 @@ source_set("ui") {
       "webui/settings/brave_wallet_handler.h",
       "webui/settings/default_brave_shields_handler.cc",
       "webui/settings/default_brave_shields_handler.h",
+      "webui/speedreader/speedreader_panel_data_handler_impl.cc",
+      "webui/speedreader/speedreader_panel_data_handler_impl.h",
+      "webui/speedreader/speedreader_panel_handler_impl.cc",
+      "webui/speedreader/speedreader_panel_handler_impl.h",
+      "webui/speedreader/speedreader_panel_ui.cc",
+      "webui/speedreader/speedreader_panel_ui.h",
     ]
 
     if (is_mac) {
@@ -488,6 +494,9 @@ source_set("ui") {
       "//brave/components/brave_today/common",
       "//brave/components/brave_welcome/common",
       "//brave/components/brave_welcome_ui:generated_resources",
+      "//brave/components/speedreader/common",
+      "//brave/components/speedreader/common:mojom",
+      "//brave/components/speedreader/resources/panel:generated_resources",
       "//brave/components/version_info",
       "//chrome/app:chromium_strings",
       "//components/sync_device_info",

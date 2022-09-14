@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
+#include "brave/components/speedreader/common/speedreader_panel.mojom.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "components/keyed_service/core/keyed_service.h"
 
@@ -16,6 +17,7 @@ class PrefRegistrySimple;
 class PrefService;
 
 namespace speedreader {
+using mojom::Theme;
 
 class SpeedreaderService : public KeyedService {
  public:

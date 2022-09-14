@@ -54,7 +54,7 @@ namespace ipfs {
 
 IpnsKeysManager::IpnsKeysManager(
     BlobContextGetterFactory* context_factory,
-    network::mojom::URLLoaderFactory* url_loader_factory,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     const GURL& server_endpoint)
     : blob_context_getter_factory_(context_factory),
       url_loader_factory_(url_loader_factory),
@@ -97,36 +97,36 @@ void IpnsKeysManager::RemoveKey(const std::string& name,
   GURL gurl =
       net::AppendQueryParameter(generate_endpoint, kArgQueryParam, name);
 
-  auto url_loader = ipfs::CreateURLLoader(gurl, "POST");
+  auto url_loader = std::make_unique<api_request_helper::APIRequestHelper>(
+      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
 
-  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
-  iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory_,
+  auto iter =
+      requests_list_.insert(requests_list_.begin(), std::move(url_loader));
+  iter->get()->Request(
+      "POST", gurl, std::string(), std::string(), false,
       base::BindOnce(&IpnsKeysManager::OnKeyRemoved, weak_factory_.GetWeakPtr(),
-                     iter, name, std::move(callback)));
+                     iter, name, std::move(callback)),
+      {{net::HttpRequestHeaders::kOrigin,
+        url::Origin::Create(gurl).Serialize()}});
 }
 
-void IpnsKeysManager::OnKeyRemoved(SimpleURLLoaderList::iterator iter,
-                                   const std::string& key_to_remove,
-                                   RemoveKeyCallback callback,
-                                   std::unique_ptr<std::string> response_body) {
-  auto* url_loader = iter->get();
-  int error_code = url_loader->NetError();
-  int response_code = -1;
-  if (url_loader->ResponseInfo() && url_loader->ResponseInfo()->headers)
-    response_code = url_loader->ResponseInfo()->headers->response_code();
-  url_loaders_.erase(iter);
+void IpnsKeysManager::OnKeyRemoved(
+    APIRequestList::iterator iter,
+    const std::string& key_to_remove,
+    RemoveKeyCallback callback,
+    api_request_helper::APIRequestResult response) {
+  int response_code = response.response_code();
+  requests_list_.erase(iter);
 
-  bool success = (error_code == net::OK && response_code == net::HTTP_OK);
+  bool success = response.Is2XXResponseCode();
   std::unordered_map<std::string, std::string> removed_keys;
-  success = success &&
-            IPFSJSONParser::GetParseKeysFromJSON(*response_body, &removed_keys);
+  success = success && IPFSJSONParser::GetParseKeysFromJSON(response.body(),
+                                                            &removed_keys);
   if (success) {
     if (removed_keys.count(key_to_remove))
       keys_.erase(key_to_remove);
   } else {
-    VLOG(1) << "Fail to generate new key, error_code = " << error_code
-            << " response_code = " << response_code;
+    VLOG(1) << "Fail to generate new key, response code:" << response_code;
   }
   if (callback)
     std::move(callback).Run(key_to_remove, success);
@@ -145,35 +145,35 @@ void IpnsKeysManager::GenerateNewKey(const std::string& name,
   GURL gurl =
       net::AppendQueryParameter(generate_endpoint, kArgQueryParam, name);
 
-  auto url_loader = CreateURLLoader(gurl, "POST");
+  auto url_loader = std::make_unique<api_request_helper::APIRequestHelper>(
+      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
 
-  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
-  iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory_,
+  auto iter =
+      requests_list_.insert(requests_list_.begin(), std::move(url_loader));
+  iter->get()->Request(
+      "POST", gurl, std::string(), std::string(), false,
       base::BindOnce(&IpnsKeysManager::OnKeyCreated, weak_factory_.GetWeakPtr(),
-                     iter, std::move(callback)));
+                     iter, std::move(callback)),
+      {{net::HttpRequestHeaders::kOrigin,
+        url::Origin::Create(gurl).Serialize()}});
 }
 
-void IpnsKeysManager::OnKeyCreated(SimpleURLLoaderList::iterator iter,
-                                   GenerateKeyCallback callback,
-                                   std::unique_ptr<std::string> response_body) {
-  auto* url_loader = iter->get();
-  int error_code = url_loader->NetError();
-  int response_code = -1;
-  if (url_loader->ResponseInfo() && url_loader->ResponseInfo()->headers)
-    response_code = url_loader->ResponseInfo()->headers->response_code();
-  url_loaders_.erase(iter);
+void IpnsKeysManager::OnKeyCreated(
+    APIRequestList::iterator iter,
+    GenerateKeyCallback callback,
+    api_request_helper::APIRequestResult response) {
+  int response_code = response.response_code();
+  requests_list_.erase(iter);
 
   std::string name;
   std::string value;
-  bool success = (error_code == net::OK && response_code == net::HTTP_OK);
-  success = success && IPFSJSONParser::GetParseSingleKeyFromJSON(*response_body,
-                                                                 &name, &value);
+  bool success = response.Is2XXResponseCode();
+  success = success && IPFSJSONParser::GetParseSingleKeyFromJSON(
+                           response.body(), &name, &value);
   if (success) {
     keys_[name] = value;
   } else {
-    VLOG(1) << "Fail to generate new key, error_code = " << error_code
-            << " response_code = " << response_code;
+    VLOG(1) << "Fail to generate new key, response_code = " << response_code;
   }
   if (callback)
     std::move(callback).Run(success, name, value);
@@ -192,13 +192,18 @@ void IpnsKeysManager::LoadKeys(LoadKeysCallback callback) {
 }
 
 void IpnsKeysManager::LoadKeysInternal(int retries) {
-  auto url_loader =
-      CreateURLLoader(server_endpoint_.Resolve(kAPIKeyListEndpoint), "POST");
-  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
-  iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory_,
+  auto url_loader = std::make_unique<api_request_helper::APIRequestHelper>(
+      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
+
+  auto iter =
+      requests_list_.insert(requests_list_.begin(), std::move(url_loader));
+  auto url = server_endpoint_.Resolve(kAPIKeyListEndpoint);
+  iter->get()->Request(
+      "POST", url, std::string(), std::string(), false,
       base::BindOnce(&IpnsKeysManager::OnKeysLoaded, weak_factory_.GetWeakPtr(),
-                     iter, retries));
+                     iter, retries),
+      {{net::HttpRequestHeaders::kOrigin,
+        url::Origin::Create(url).Serialize()}});
 }
 
 void IpnsKeysManager::UploadData(
@@ -211,15 +216,15 @@ void IpnsKeysManager::UploadData(
 
   auto generate_endpoint = server_endpoint_.Resolve(kAPIKeyImportEndpoint);
   GURL url = net::AppendQueryParameter(generate_endpoint, kArgQueryParam, name);
-
   auto url_loader = CreateURLLoader(url, "POST", std::move(request));
+
   auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory_, base::BindOnce(&IpnsKeysManager::OnKeyImported,
-                                          weak_factory_.GetWeakPtr(), iter,
-                                          std::move(callback), name));
+      url_loader_factory_.get(),
+      base::BindOnce(&IpnsKeysManager::OnKeyImported,
+                     weak_factory_.GetWeakPtr(), iter, std::move(callback),
+                     name));
 }
-
 void IpnsKeysManager::OnKeyImported(
     SimpleURLLoaderList::iterator iter,
     ImportKeyCallback callback,
@@ -253,17 +258,13 @@ void IpnsKeysManager::OnIpfsShutdown() {
   keys_.clear();
 }
 
-void IpnsKeysManager::OnKeysLoaded(SimpleURLLoaderList::iterator iter,
-                                   int retry_number,
-                                   std::unique_ptr<std::string> response_body) {
-  auto* url_loader = iter->get();
-  int error_code = url_loader->NetError();
-  int response_code = -1;
-  if (url_loader->ResponseInfo() && url_loader->ResponseInfo()->headers)
-    response_code = url_loader->ResponseInfo()->headers->response_code();
-  url_loaders_.erase(iter);
+void IpnsKeysManager::OnKeysLoaded(
+    APIRequestList::iterator iter,
+    int retry_number,
+    api_request_helper::APIRequestResult response) {
+  requests_list_.erase(iter);
   last_load_retry_value_for_test_ = retry_number;
-  if (error_code == net::ERR_CONNECTION_REFUSED && retry_number) {
+  if (response.error_code() == net::ERR_CONNECTION_REFUSED && retry_number) {
     base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
         FROM_HERE,
         base::BindOnce(&IpnsKeysManager::LoadKeysInternal,
@@ -272,15 +273,15 @@ void IpnsKeysManager::OnKeysLoaded(SimpleURLLoaderList::iterator iter,
     return;
   }
 
-  bool success = (error_code == net::OK && response_code == net::HTTP_OK);
+  bool success = response.Is2XXResponseCode();
   std::unordered_map<std::string, std::string> new_keys;
-  success = success && response_body &&
-            IPFSJSONParser::GetParseKeysFromJSON(*response_body, &new_keys);
+  success = success && !response.body().empty() &&
+            IPFSJSONParser::GetParseKeysFromJSON(response.body(), &new_keys);
   if (success) {
     keys_.swap(new_keys);
   } else {
-    VLOG(1) << "Fail to load keys, error_code = " << error_code
-            << " response_code = " << response_code;
+    VLOG(1) << "Fail to load keys, response_code = "
+            << response.response_code();
   }
   NotifyKeysLoaded(success);
 }

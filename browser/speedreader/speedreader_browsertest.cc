@@ -14,6 +14,7 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/speedreader/common/constants.h"
 #include "brave/components/speedreader/common/features.h"
+#include "brave/components/speedreader/common/speedreader.mojom.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "chrome/browser/profiles/keep_alive/profile_keep_alive_types.h"
@@ -407,20 +408,22 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SetTheme) {
         document.documentElement.getAttribute('data-theme')
       )js";
 
-  EXPECT_EQ(speedreader::Theme::kNone, speedreader_service()->GetTheme());
+  EXPECT_EQ(speedreader::mojom::Theme::kNone,
+            speedreader_service()->GetTheme());
 
   EXPECT_EQ(nullptr, content::EvalJs(ActiveWebContents(), kGetTheme,
                                      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                                      speedreader::kIsolatedWorldId));
   auto* tab_helper =
       speedreader::SpeedreaderTabHelper::FromWebContents(ActiveWebContents());
-  tab_helper->SetTheme(speedreader::Theme::kDark);
+  tab_helper->SetTheme(speedreader::mojom::Theme::kDark);
 
   EXPECT_EQ("dark", content::EvalJs(ActiveWebContents(), kGetTheme,
                                     content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                                     speedreader::kIsolatedWorldId)
                         .ExtractString());
-  EXPECT_EQ(speedreader::Theme::kDark, speedreader_service()->GetTheme());
+  EXPECT_EQ(speedreader::mojom::Theme::kDark,
+            speedreader_service()->GetTheme());
 
   // New page
   NavigateToPageSynchronously(kTestPageReadable);

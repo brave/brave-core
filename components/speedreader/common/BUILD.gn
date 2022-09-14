@@ -29,7 +29,10 @@ static_library("common") {
 }
 
 mojom("mojom") {
-  sources = [ "speedreader.mojom" ]
+  sources = [
+    "speedreader.mojom",
+    "speedreader_panel.mojom",
+  ]
 
   public_deps = [ "//mojo/public/mojom/base" ]
 }

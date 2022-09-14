@@ -11,6 +11,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/speedreader/common/speedreader.mojom.h"
+#include "brave/components/speedreader/common/speedreader_panel.mojom.h"
 #include "brave/components/speedreader/speedreader_result_delegate.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -25,6 +26,7 @@ class WebContents;
 }  // namespace content
 
 namespace speedreader {
+using mojom::Theme;
 
 namespace test {
 void SetShowOriginalLinkTitle(const std::u16string* title);

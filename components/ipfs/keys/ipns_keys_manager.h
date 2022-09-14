@@ -15,6 +15,7 @@
 #include "base/containers/queue.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/ipfs/blob_context_getter_factory.h"
 #include "brave/components/ipfs/ipfs_network_utils.h"
 #include "brave/components/ipfs/ipfs_service_observer.h"
@@ -25,7 +26,6 @@ namespace network {
 namespace mojom {
 class URLLoaderFactory;
 }
-class SimpleURLLoader;
 struct ResourceRequest;
 }  // namespace network
 
@@ -35,9 +35,10 @@ namespace ipfs {
 // synchronize and remove p2p keys.
 class IpnsKeysManager : public IpfsServiceObserver {
  public:
-  IpnsKeysManager(BlobContextGetterFactory* blob_context_getter_factory,
-                  network::mojom::URLLoaderFactory* url_loader_factory,
-                  const GURL& server_endpoint);
+  IpnsKeysManager(
+      BlobContextGetterFactory* blob_context_getter_factory,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      const GURL& server_endpoint);
   ~IpnsKeysManager() override;
 
   IpnsKeysManager(const IpnsKeysManager&) = delete;
@@ -70,25 +71,26 @@ class IpnsKeysManager : public IpfsServiceObserver {
   }
 
  private:
+  using APIRequestList =
+      std::list<std::unique_ptr<api_request_helper::APIRequestHelper>>;
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
-
   // ipfs::IpfsServiceObserver
   void OnIpfsShutdown() override;
   void OnKeyImported(SimpleURLLoaderList::iterator iter,
                      ImportKeyCallback callback,
                      const std::string& key_name,
                      std::unique_ptr<std::string> response_body);
-  void OnKeyCreated(SimpleURLLoaderList::iterator iter,
+  void OnKeyCreated(APIRequestList::iterator iter,
                     GenerateKeyCallback callback,
-                    std::unique_ptr<std::string> response_body);
-  void OnKeyRemoved(SimpleURLLoaderList::iterator iter,
+                    api_request_helper::APIRequestResult response);
+  void OnKeyRemoved(APIRequestList::iterator iter,
                     const std::string& key_to_remove,
                     RemoveKeyCallback callback,
-                    std::unique_ptr<std::string> response_body);
-  void OnKeysLoaded(SimpleURLLoaderList::iterator iter,
+                    api_request_helper::APIRequestResult response);
+  void OnKeysLoaded(APIRequestList::iterator iter,
                     int retry_number,
-                    std::unique_ptr<std::string> response_body);
+                    api_request_helper::APIRequestResult response);
 
   void NotifyKeysLoaded(bool result);
   void LoadKeysInternal(int retries);
@@ -98,7 +100,8 @@ class IpnsKeysManager : public IpfsServiceObserver {
 
   int last_load_retry_value_for_test_ = -1;
   BlobContextGetterFactory* blob_context_getter_factory_ = nullptr;
-  raw_ptr<network::mojom::URLLoaderFactory> url_loader_factory_ = nullptr;
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  APIRequestList requests_list_;
   SimpleURLLoaderList url_loaders_;
   std::unordered_map<std::string, std::string> keys_;
   base::queue<LoadKeysCallback> pending_load_callbacks_;

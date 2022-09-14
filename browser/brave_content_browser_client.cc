@@ -153,6 +153,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
+#include "brave/browser/ui/webui/speedreader/speedreader_panel_ui.h"
+#include "brave/components/speedreader/common/speedreader_panel.mojom.h"
 #include "brave/components/speedreader/speedreader_throttle.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
@@ -588,6 +590,20 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   if (base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature)) {
     chrome::internal::RegisterWebUIControllerInterfaceBinder<
         brave_news::mojom::BraveNewsController, BraveNewTabUI>(map);
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+    chrome::internal::RegisterWebUIControllerInterfaceBinder<
+        playlist::mojom::PageHandlerFactory, playlist::PlaylistUI>(map);
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  if (speedreader::IsSpeedreaderPanelV2Enabled()) {
+    chrome::internal::RegisterWebUIControllerInterfaceBinder<
+        speedreader::mojom::PanelFactory, SpeedreaderPanelUI>(map);
   }
 #endif
 

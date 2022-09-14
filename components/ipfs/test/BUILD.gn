@@ -16,11 +16,13 @@ source_set("brave_ipfs_unit_tests") {
       "//brave/components/ipfs/ipfs_p3a_unittest.cc",
       "//brave/components/ipfs/ipfs_ports_unittest.cc",
       "//brave/components/ipfs/ipfs_utils_unittest.cc",
+      "//brave/components/ipfs/keys/ipns_keys_manager_unittest.cc",
     ]
 
     deps = [
       "//base/test:test_support",
       "//brave/components/ipfs",
+      "//chrome/test:test_support",
       "//components/prefs",
       "//components/prefs:test_support",
       "//components/user_prefs",
@@ -29,6 +31,8 @@ source_set("brave_ipfs_unit_tests") {
       "//content/test:test_support",
       "//net",
       "//net:test_support",
+      "//services/data_decoder/public/cpp:test_support",
+      "//services/network:test_support",
       "//testing/gtest",
       "//url",
     ]

@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_
 
 #include "brave/components/sidebar/buildflags/buildflags.h"
+#include "brave/components/speedreader/common/buildflags.h"
 #include "chrome/browser/ui/browser_window.h"
 
 namespace content {
@@ -36,6 +37,11 @@ class BraveBrowserWindow : public BrowserWindow {
   // Renderers will call this to check if the bottom of the panel exceeds
   // the overall screen's height
   virtual gfx::Rect GetShieldsBubbleRect();
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  virtual void ShowSpeedreaderWebUIBubble(Browser* browser) {}
+  virtual void HideSpeedreaderWebUIBubble() {}
+#endif
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
   virtual sidebar::Sidebar* InitSidebar();

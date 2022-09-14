@@ -54,3 +54,5 @@ const char kFederatedInternalsHost[] = "federated-internals";
 const char kContentFiltersPath[] = "shields/filters";
 const char kPlaylistHost[] = "playlist";
 const char kPlaylistURL[] = "chrome-untrusted://playlist/";
+const char kSpeedreaderPanelURL[] = "chrome://brave-speedreader.top-chrome";
+const char kSpeedreaderPanelHost[] = "brave-speedreader.top-chrome";

@@ -9,6 +9,7 @@
 
 #include "base/bind.h"
 #include "base/feature_list.h"
+#include "base/strings/string_piece.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_browser_process.h"
@@ -16,6 +17,7 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/speedreader/common/constants.h"
 #include "brave/components/speedreader/common/features.h"
@@ -30,6 +32,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/navigation_details.h"
 #include "content/public/browser/navigation_entry.h"
@@ -232,6 +235,12 @@ void SpeedreaderTabHelper::SetNextRequestState(DistillState state) {
 void SpeedreaderTabHelper::OnBubbleClosed() {
   speedreader_bubble_ = nullptr;
   UpdateButtonIfNeeded();
+
+  // auto* contents = web_contents();
+  // Browser* browser = chrome::FindBrowserWithWebContents(contents);
+  // if (browser) {
+  //   static_cast<BraveBrowserWindow*>(browser->window())->ShowSpeedreaderWebUIBubble(browser);
+  // }
 }
 
 void SpeedreaderTabHelper::ShowSpeedreaderBubble() {
@@ -253,12 +262,25 @@ void SpeedreaderTabHelper::ShowBubble(bool is_bubble_speedreader) {
   auto* contents = web_contents();
   Browser* browser = chrome::FindBrowserWithWebContents(contents);
   DCHECK(browser);
+
+  if (speedreader::IsSpeedreaderPanelV2Enabled()) {
+    static_cast<BraveBrowserWindow*>(browser->window())
+        ->ShowSpeedreaderWebUIBubble(browser);
+    return;
+  }
+
   speedreader_bubble_ =
       static_cast<BraveBrowserWindow*>(browser->window())
           ->ShowSpeedreaderBubble(this, is_bubble_speedreader);
 }
 
 void SpeedreaderTabHelper::HideBubble() {
+  Browser* browser = chrome::FindBrowserWithWebContents(web_contents());
+  if (browser) {
+    static_cast<BraveBrowserWindow*>(browser->window())
+        ->HideSpeedreaderWebUIBubble();
+  }
+
   if (speedreader_bubble_) {
     speedreader_bubble_->Hide();
     speedreader_bubble_ = nullptr;
