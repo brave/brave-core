@@ -939,7 +939,10 @@ if (!is_android) {
         "//brave/browser/speedreader/speedreader_browsertest.cc",
         "//brave/browser/ui/speedreader/speedreader_bubble_browsertest.cc",
       ]
-      deps += [ "//brave/components/speedreader" ]
+      deps += [
+        "//brave/components/speedreader",
+        "//brave/components/speedreader/common:mojom",
+      ]
     }
 
     if (enable_playlist) {

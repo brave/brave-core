@@ -31,6 +31,7 @@ static_library("speedreader") {
     "//brave/components/body_sniffer",
     "//brave/components/resources",
     "//brave/components/resources:static_resources_grit",
+    "//brave/components/speedreader/common:mojom",
     "//brave/components/time_period_storage",
     "//components/content_settings/core/browser",
     "//components/content_settings/core/common",

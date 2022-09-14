@@ -20,6 +20,11 @@
 #include "brave/browser/ui/views/toolbar/brave_vpn_panel_controller.h"
 #endif
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/browser/ui/webui/speedreader/speedreader_panel_ui.h"
+#include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
+#endif
+
 #if BUILDFLAG(ENABLE_SIDEBAR)
 class ContentsLayoutManager;
 class SidebarContainerView;
@@ -64,6 +69,8 @@ class BraveBrowserView : public BrowserView {
   void StartTabCycling() override;
   views::View* GetAnchorViewForBraveVPNPanel();
   gfx::Rect GetShieldsBubbleRect() override;
+  void ShowSpeedreaderWebUIBubble(Browser* browser) override;
+  void HideSpeedreaderWebUIBubble() override;
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
   views::View* sidebar_host_view() { return sidebar_host_view_; }
@@ -103,6 +110,11 @@ class BraveBrowserView : public BrowserView {
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   BraveVPNPanelController vpn_panel_controller_{this};
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  std::unique_ptr<WebUIBubbleManagerT<SpeedreaderPanelUI>>
+      speedreader_webui_bubble_manager_;
 #endif
 
   std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;

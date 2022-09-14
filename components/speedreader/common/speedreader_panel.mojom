@@ -1,0 +1,29 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+module speedreader.mojom;
+
+interface PanelFactory {
+  CreateInterfaces(pending_receiver<PanelHandler> panel_handler, pending_receiver<PanelDataHandler> panel_data_handler);
+};
+
+// Browser-side handler for requests from WebUI page.
+interface PanelHandler {
+  ShowBubble();
+  CloseBubble();
+};
+
+interface PanelDataHandler {
+  GetTheme() => (Theme theme);
+  SetTheme(Theme theme);
+};
+
+// Enum is used in prefs. Be careful when changing or extending.
+enum Theme {
+  kNone = 0,  // User doesn't select anything.
+  kLight = 1,
+  kSepia = 2,
+  kDark = 3,
+};

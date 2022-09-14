@@ -18,6 +18,9 @@ const base::Feature kSpeedreaderFeature {
 #endif
 };
 
+const base::Feature kSpeedreaderPanelV2{"SpeedreaderPanelV2",
+                                        base::FEATURE_DISABLED_BY_DEFAULT};
+
 const base::FeatureParam<int> kSpeedreaderMinOutLengthParam{
     &kSpeedreaderFeature, "min_out_length", 1000};
 

@@ -56,7 +56,9 @@
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
 #include "brave/browser/ui/views/speedreader/reader_mode_bubble.h"
 #include "brave/browser/ui/views/speedreader/speedreader_mode_bubble.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
+#include "components/grit/brave_components_strings.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION) || \
@@ -277,6 +279,27 @@ void BraveBrowserView::SetStarredState(bool is_starred) {
       static_cast<BraveToolbarView*>(toolbar())->bookmark_button();
   if (button)
     button->SetToggled(is_starred);
+}
+
+void BraveBrowserView::ShowSpeedreaderWebUIBubble(Browser* browser) {
+  if (!speedreader_webui_bubble_manager_) {
+    BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+
+    speedreader_webui_bubble_manager_ =
+        std::make_unique<WebUIBubbleManagerT<SpeedreaderPanelUI>>(
+            browser_view->GetLocationBarView(), GetProfile(),
+            GURL(base::StringPiece(kSpeedreaderPanelURL)),
+            IDS_SPEEDREADER_BRAND_LABEL);
+  }
+
+  speedreader_webui_bubble_manager_->ShowBubble();
+}
+
+void BraveBrowserView::HideSpeedreaderWebUIBubble() {
+  if (speedreader_webui_bubble_manager_ &&
+      speedreader_webui_bubble_manager_->GetBubbleWidget()) {
+    speedreader_webui_bubble_manager_->CloseBubble();
+  }
 }
 
 void BraveBrowserView::ShowUpdateChromeDialog() {

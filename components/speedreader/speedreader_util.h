@@ -10,15 +10,6 @@ class GURL;
 class HostContentSettingsMap;
 
 namespace speedreader {
-
-// Enum is used in prefs. Be careful when changing or extending.
-enum class Theme {
-  kNone = 0,  // User doesn't select anything.
-  kLight = 1,
-  kSepia = 2,
-  kDark = 3,
-};
-
 // DistillState is an enum for the current state of a speedreader WebContents
 enum class DistillState {
   // Used as an initialization state
@@ -77,6 +68,8 @@ void SetEnabledForSite(HostContentSettingsMap* map,
 
 // Checks content settings if Speedreader is disabled for the URL
 bool IsEnabledForSite(HostContentSettingsMap* map, const GURL& url);
+
+bool IsSpeedreaderPanelV2Enabled();
 
 }  // namespace speedreader
 

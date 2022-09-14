@@ -213,5 +213,9 @@
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-cookie_list_opt_in/cookie_list_opt_in.grd": {
     "META": {"sizes": {"includes": [30]}},
     "includes": [59800]
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_speedreader_panel/brave_speedreader_panel.grd": {
+    "META": {"sizes": {"includes": [20]}},
+    "includes": [59820]
   }
 }
