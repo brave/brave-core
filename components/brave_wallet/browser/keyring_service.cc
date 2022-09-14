@@ -614,7 +614,6 @@ HDKeyring* KeyringService::RestoreKeyring(const std::string& keyring_id,
                                           bool is_legacy_brave_wallet) {
   if (!IsValidMnemonic(mnemonic))
     return nullptr;
-
   // Try getting existing mnemonic first
   if (CreateEncryptorForKeyring(password, keyring_id)) {
     const std::string current_mnemonic = GetMnemonicForKeyringImpl(keyring_id);
@@ -701,7 +700,12 @@ void KeyringService::CreateWallet(const std::string& password,
 
   auto* keyring = CreateKeyring(mojom::kDefaultKeyringId, password);
   if (keyring) {
-    AddAccountForKeyring(mojom::kDefaultKeyringId, GetAccountName(1));
+    auto address =
+        AddAccountForKeyring(mojom::kDefaultKeyringId, GetAccountName(1));
+    if (address) {
+      SetPrefForKeyring(prefs_, kSelectedAccount, base::Value(*address),
+                        mojom::kDefaultKeyringId);
+    }
   }
 
   // keep encryptor pre-created
@@ -731,30 +735,53 @@ void KeyringService::RestoreWallet(const std::string& mnemonic,
   auto* keyring = RestoreKeyring(mojom::kDefaultKeyringId, mnemonic, password,
                                  is_legacy_brave_wallet);
   if (keyring && !keyring->GetAccountsNumber()) {
-    AddAccountForKeyring(mojom::kDefaultKeyringId, GetAccountName(1));
+    auto address =
+        AddAccountForKeyring(mojom::kDefaultKeyringId, GetAccountName(1));
+    if (address) {
+      SetPrefForKeyring(prefs_, kSelectedAccount, base::Value(*address),
+                        mojom::kDefaultKeyringId);
+    }
   }
 
   if (IsFilecoinEnabled()) {
     // Restore mainnet filecoin acc
     auto* filecoin_keyring = RestoreKeyring(mojom::kFilecoinKeyringId, mnemonic,
                                             password, is_legacy_brave_wallet);
-    if (filecoin_keyring && !filecoin_keyring->GetAccountsNumber())
-      AddAccountForKeyring(mojom::kFilecoinKeyringId, GetAccountName(1));
+    if (filecoin_keyring && !filecoin_keyring->GetAccountsNumber()) {
+      auto address =
+          AddAccountForKeyring(mojom::kFilecoinKeyringId, GetAccountName(1));
+      if (address) {
+        SetPrefForKeyring(prefs_, kSelectedAccount, base::Value(*address),
+                          mojom::kFilecoinKeyringId);
+      }
+    }
 
     // Restore testnet filecoin acc
     auto* testnet_filecoin_keyring =
         RestoreKeyring(mojom::kFilecoinTestnetKeyringId, mnemonic, password,
                        is_legacy_brave_wallet);
     if (testnet_filecoin_keyring &&
-        !testnet_filecoin_keyring->GetAccountsNumber())
-      AddAccountForKeyring(mojom::kFilecoinTestnetKeyringId, GetAccountName(1));
+        !testnet_filecoin_keyring->GetAccountsNumber()) {
+      auto address = AddAccountForKeyring(mojom::kFilecoinTestnetKeyringId,
+                                          GetAccountName(1));
+      if (address) {
+        SetPrefForKeyring(prefs_, kSelectedAccount, base::Value(*address),
+                          mojom::kFilecoinTestnetKeyringId);
+      }
+    }
   }
 
   if (IsSolanaEnabled()) {
     auto* solana_keyring = RestoreKeyring(mojom::kSolanaKeyringId, mnemonic,
                                           password, is_legacy_brave_wallet);
-    if (solana_keyring && !solana_keyring->GetAccountsNumber())
-      AddAccountForKeyring(mojom::kSolanaKeyringId, GetAccountName(1));
+    if (solana_keyring && !solana_keyring->GetAccountsNumber()) {
+      auto address =
+          AddAccountForKeyring(mojom::kSolanaKeyringId, GetAccountName(1));
+      if (address) {
+        SetPrefForKeyring(prefs_, kSelectedAccount, base::Value(*address),
+                          mojom::kSolanaKeyringId);
+      }
+    }
   }
 
   if (keyring) {
@@ -1140,7 +1167,6 @@ bool KeyringService::SetSelectedAccountForCoinSilently(
   if (keyring_id.empty()) {
     return false;
   }
-
   SetPrefForKeyring(prefs_, kSelectedAccount, base::Value(address), keyring_id);
   if (coin == mojom::CoinType::FIL) {
     json_rpc_service_->SetNetwork(keyring_id == mojom::kFilecoinKeyringId
