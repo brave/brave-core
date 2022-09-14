@@ -8,7 +8,6 @@
 
 #include <memory>
 
-#include "chrome/browser/ui/views/toolbar/side_panel_toolbar_button.h"
 #include "ui/base/models/simple_menu_model.h"
 
 #define SidePanelToolbarButton SidePanelToolbarButton_ChromiumImpl
