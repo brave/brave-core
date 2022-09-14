@@ -3,8 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/views/toolbar/brave_side_panel_toolbar_button.h"
-
 #include <memory>
 
 #include "base/memory/raw_ptr.h"
@@ -17,6 +15,12 @@
 #include "components/prefs/pref_service.h"
 #include "ui/base/models/simple_menu_model.h"
 #include "ui/views/context_menu_controller.h"
+
+#define SidePanelToolbarButton SidePanelToolbarButton_ChromiumImpl
+
+#include "src/chrome/browser/ui/views/toolbar/side_panel_toolbar_button.cc"
+
+#undef SidePanelToolbarButton
 
 namespace {
 class SidePanelMenuModel : public ui::SimpleMenuModel,
@@ -49,10 +53,10 @@ class SidePanelMenuModel : public ui::SimpleMenuModel,
 };
 }  // namespace
 
-BraveSidePanelToolbarButton::BraveSidePanelToolbarButton(Browser* browser)
-    : SidePanelToolbarButton(browser) {
+SidePanelToolbarButton::SidePanelToolbarButton(Browser* browser)
+    : SidePanelToolbarButton_ChromiumImpl(browser) {
   SetMenuModel(
       std::make_unique<SidePanelMenuModel>(browser->profile()->GetPrefs()));
 }
 
-BraveSidePanelToolbarButton::~BraveSidePanelToolbarButton() = default;
+SidePanelToolbarButton::~SidePanelToolbarButton() = default;

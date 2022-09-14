@@ -282,6 +282,7 @@ void BraveToolbarView::UpdateSidePanelButtonVisibility() {
     return;
 
   DCHECK_EQ(DisplayMode::NORMAL, display_mode_);
+  LOG(ERROR) << "Setting visible to: " << show_side_panel_button_.GetValue();
   side_panel_button_->SetVisible(show_side_panel_button_.GetValue());
 }
 

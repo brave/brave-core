@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/profiles/brave_avatar_toolbar_button.h"
-#include "brave/browser/ui/views/toolbar/brave_side_panel_toolbar_button.h"
 #include "extensions/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
@@ -12,7 +11,6 @@
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 
 #define LocationBarView BraveLocationBarView
-#define SidePanelToolbarButton BraveSidePanelToolbarButton
 #endif
 
 #define BRAVE_TOOLBAR_VIEW_INIT                                                \
@@ -24,5 +22,4 @@
 #undef BRAVE_TOOLBAR_VIEW_INIT
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #undef LocationBarView
-#undef SidePanelToolbarButton
 #endif
