@@ -372,7 +372,7 @@ bool BraveRewardsActionView::UpdatePublisherStatus() {
   }
 
   auto* rewards_service = GetRewardsService();
-  if (!rewards_service || !rewards_service->IsRewardsEnabled()) {
+  if (!rewards_service) {
     return false;
   }
 

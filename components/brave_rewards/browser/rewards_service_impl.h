@@ -28,7 +28,6 @@
 #include "bat/ledger/ledger_client.h"
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
@@ -119,12 +118,12 @@ class RewardsServiceImpl : public RewardsService,
 
   bool IsInitialized() override;
 
-  void Init(
-      std::unique_ptr<RewardsServiceObserver> extension_observer,
-      std::unique_ptr<RewardsServicePrivateObserver> private_observer,
-      std::unique_ptr<RewardsNotificationServiceObserver>
-          notification_observer);
+  void Init(std::unique_ptr<RewardsServiceObserver> extension_observer,
+            std::unique_ptr<RewardsNotificationServiceObserver>
+                notification_observer);
+
   void CreateRewardsWallet(CreateRewardsWalletCallback callback) override;
+
   void GetRewardsParameters(GetRewardsParametersCallback callback) override;
   void FetchPromotions() override;
   void ClaimPromotion(
@@ -219,10 +218,8 @@ class RewardsServiceImpl : public RewardsService,
       GetPendingContributionsTotalCallback callback) override;
 
   void GetOneTimeTips(GetOneTimeTipsCallback callback) override;
-  void RefreshPublisher(
-      const std::string& publisher_key,
-      RefreshPublisherCallback callback) override;
-  void OnAdsEnabled(bool ads_enabled) override;
+  void RefreshPublisher(const std::string& publisher_key,
+                        RefreshPublisherCallback callback) override;
 
   void OnSaveRecurringTip(OnTipCallback callback, ledger::mojom::Result result);
   void SaveRecurringTip(const std::string& publisher_key,
@@ -311,10 +308,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void SetAutoContributeEnabled(bool enabled) override;
 
-  bool ShouldShowOnboarding() const override;
-
-  void EnableRewards() override;
-
   void GetMonthlyReport(
       const uint32_t month,
       const uint32_t year,
@@ -340,10 +333,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetRewardsWalletPassphrase(
       GetRewardsWalletPassphraseCallback callback) override;
-
-  void SetAdsEnabled(const bool is_enabled) override;
-
-  bool IsRewardsEnabled() const override;
 
   // Testing methods
   void SetLedgerEnvForTesting();
@@ -391,8 +380,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnResult(ledger::LegacyResultCallback callback,
                 ledger::mojom::Result result);
 
-  void OnCreateRewardsWallet(CreateRewardsWalletCallback callback,
-                             ledger::mojom::Result result);
   void OnLedgerStateLoaded(ledger::client::OnLoadCallback callback,
                               std::pair<std::string, base::Value> data);
   void OnPublisherStateLoaded(ledger::client::OnLoadCallback callback,
@@ -462,16 +449,6 @@ class RewardsServiceImpl : public RewardsService,
       const bool attestation_passed);
 
   void OnRecoverWallet(const ledger::mojom::Result result);
-
-  void OnStartProcessForSetAdsEnabled();
-
-  void OnRewardsWalletCreatedForSetAdsEnabled(
-      const ledger::mojom::Result result);
-
-  void OnStartProcessForEnableRewards();
-
-  void OnFetchBalanceForEnableRewards(ledger::mojom::Result result,
-                                      ledger::mojom::BalancePtr balance);
 
   // ledger::LedgerClient
   void OnReconcileComplete(
@@ -604,12 +581,8 @@ class RewardsServiceImpl : public RewardsService,
 
   bool Connected() const;
   void ConnectionClosed();
-  void AddPrivateObserver(RewardsServicePrivateObserver* observer) override;
-  void RemovePrivateObserver(RewardsServicePrivateObserver* observer) override;
 
   void RecordBackendP3AStats();
-
-  bool IsAdsEnabled() const;
 
   void OnRecordBackendP3AStatsRecurring(
       std::vector<ledger::mojom::PublisherInfoPtr> list);
@@ -673,9 +646,7 @@ class RewardsServiceImpl : public RewardsService,
   std::unique_ptr<DiagnosticLog> diagnostic_log_;
   base::SequenceBound<ledger::LedgerDatabase> ledger_database_;
   std::unique_ptr<RewardsNotificationServiceImpl> notification_service_;
-  base::ObserverList<RewardsServicePrivateObserver> private_observers_;
   std::unique_ptr<RewardsServiceObserver> extension_observer_;
-  std::unique_ptr<RewardsServicePrivateObserver> private_observer_;
 
   std::unique_ptr<base::OneShotEvent> ready_;
   SimpleURLLoaderList url_loaders_;

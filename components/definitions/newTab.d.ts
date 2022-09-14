@@ -23,8 +23,8 @@ declare namespace NewTab {
     link?: string
     originalUrl?: string
     license?: string
-    
-    // Picked by our rotating algorithm. When it's false, it means that the user 
+
+    // Picked by our rotating algorithm. When it's false, it means that the user
     // has picked this background.
     random?: boolean
   }
@@ -256,7 +256,6 @@ declare namespace NewTab {
     NOT_FOUND = 9,
     REGISTRATION_VERIFICATION_FAILED = 10,
     BAD_REGISTRATION_RESPONSE = 11,
-    WALLET_CREATED = 12,
     WALLET_CORRUPT = 17
   }
 

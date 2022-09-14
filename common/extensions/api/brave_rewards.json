@@ -21,6 +21,12 @@
         ]
       },
       {
+        "name": "onRewardsWalletUpdated",
+        "type": "function",
+        "description": "Called when the user's Rewards wallet has been updated",
+        "parameters": []
+      },
+      {
         "name": "onPromotions",
         "type": "function",
         "description": "Fired when promotion list is received",
@@ -759,6 +765,49 @@
         ]
       },
       {
+        "name": "createRewardsWallet",
+        "type": "function",
+        "description": "Creates a Rewards wallet for the current profile",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "type": "number",
+                "name": "errorCode"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getRewardsWallet",
+        "type": "function",
+        "description": "Returns the Rewards wallet information for the current profile",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "wallet",
+                "type": "object",
+                "optional": true,
+                "properties": {
+                  "paymentId": {
+                    "type": "string"
+                  },
+                  "country": {
+                    "type": "string"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "getBalanceReport",
         "type": "function",
         "description": "Get current month wallet report",
@@ -1342,23 +1391,6 @@
         ]
       },
       {
-        "name": "shouldShowOnboarding",
-        "type": "function",
-        "description": "Gets a value indicating whether rewards onboarding should be shown to the user.",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "showOnboarding",
-                "type": "boolean"
-              }
-            ]
-          }
-        ]
-      },
-      {
         "name": "getScheduledCaptchaInfo",
         "type": "function",
         "description": "Gets all info required to retrieve a scheduled captcha (if any) for the user.",
@@ -1393,12 +1425,6 @@
             "type": "boolean"
           }
         ]
-      },
-      {
-        "name": "enableRewards",
-        "type": "function",
-        "description": "Enables rewards for the current profile.",
-        "parameters": []
       },
       {
         "name": "enableAds",

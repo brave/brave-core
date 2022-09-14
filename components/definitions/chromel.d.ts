@@ -69,7 +69,17 @@ declare namespace chrome.settingsPrivate {
 
 declare namespace chrome.braveRewards {
   const isSupported: (callback: (supported: boolean) => void) => {}
-  const setExternalWalletType: (walletType: string) => {}
+
+  interface RewardsWallet {
+    paymentId: string
+  }
+
+  const onRewardsWalletUpdated: {
+    addListener: (callback: () => void) => void
+  }
+
+  const createRewardsWallet: (callback: (errorCode?: number) => void) => void
+  const getRewardsWallet: (callback: (wallet?: RewardsWallet) => void) => void
   const getRewardsParameters: (callback: (properties: RewardsExtension.RewardsParameters) => void) => {}
   const updateMediaDuration: (tabId: number, publisherKey: string, duration: number, firstVisit: boolean) => {}
   const getPublisherInfo: (publisherKey: string, callback: (result: RewardsExtension.Result, properties: RewardsExtension.PublisherInfo) => void) => {}
@@ -167,9 +177,6 @@ declare namespace chrome.braveRewards {
 
   const updateScheduledCaptchaResult: (result: boolean) => void
 
-  const shouldShowOnboarding: (callback: (showOnboarding: boolean) => void) => {}
-
-  const enableRewards: () => void
   const enableAds: () => void
 
   interface RewardsPrefs {

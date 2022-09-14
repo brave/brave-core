@@ -69,7 +69,6 @@ using GetInlineTippingPlatformEnabledCallback = base::OnceCallback<void(bool)>;
 using GetShareURLCallback = base::OnceCallback<void(const std::string&)>;
 using GetPendingContributionsCallback = base::OnceCallback<void(
     std::vector<ledger::mojom::PendingContributionInfoPtr> list)>;
-using GetCurrentCountryCallback = base::OnceCallback<void(const std::string&)>;
 using FetchBalanceCallback =
     base::OnceCallback<void(const ledger::mojom::Result,
                             ledger::mojom::BalancePtr)>;
@@ -81,8 +80,6 @@ using ProcessRewardsPageUrlCallback =
                             const std::string&,
                             const std::string&,
                             const base::flat_map<std::string, std::string>&)>;
-using CreateRewardsWalletCallback =
-    base::OnceCallback<void(const ledger::mojom::Result)>;
 using ClaimPromotionCallback =
     base::OnceCallback<void(const ledger::mojom::Result,
                             const std::string&,
@@ -137,7 +134,15 @@ class RewardsService : public KeyedService {
 
   virtual bool IsInitialized() = 0;
 
+  using CreateRewardsWalletCallback =
+      base::OnceCallback<void(ledger::mojom::Result)>;
+
+  // Creates a Rewards wallet for the current profile. If a Rewards wallet has
+  // already been created, then the existing wallet information will be
+  // returned. Ads and AC will be enabled if those prefs have not been
+  // previously set.
   virtual void CreateRewardsWallet(CreateRewardsWalletCallback callback) = 0;
+
   virtual void GetRewardsParameters(GetRewardsParametersCallback callback) = 0;
   virtual void GetActivityInfoList(const uint32_t start,
                                    const uint32_t limit,
@@ -192,12 +197,6 @@ class RewardsService : public KeyedService {
   virtual void GetAutoContributeEnabled(
       GetAutoContributeEnabledCallback callback) = 0;
   virtual void SetAutoContributeEnabled(bool enabled) = 0;
-  virtual bool ShouldShowOnboarding() const = 0;
-
-  // Enables Rewards for the current profile. Enabling Rewards for the first
-  // time will turn on both Ads and auto-contribute. Subsequent calls will only
-  // turn on Ads.
-  virtual void EnableRewards() = 0;
 
   virtual void GetBalanceReport(
       const uint32_t month,
@@ -236,11 +235,6 @@ class RewardsService : public KeyedService {
       GetPendingContributionsTotalCallback callback) = 0;
   virtual void GetRewardsInternalsInfo(
       GetRewardsInternalsInfoCallback callback) = 0;
-  virtual void AddPrivateObserver(
-      RewardsServicePrivateObserver* observer) = 0;
-  virtual void RemovePrivateObserver(
-      RewardsServicePrivateObserver* observer) = 0;
-  virtual void OnAdsEnabled(bool ads_enabled) = 0;
 
   virtual void RefreshPublisher(
       const std::string& publisher_key,
@@ -351,10 +345,6 @@ class RewardsService : public KeyedService {
 
   virtual void GetRewardsWalletPassphrase(
       GetRewardsWalletPassphraseCallback callback) = 0;
-
-  virtual void SetAdsEnabled(const bool is_enabled) = 0;
-
-  virtual bool IsRewardsEnabled() const = 0;
 
   virtual void SetExternalWalletType(const std::string& wallet_type) = 0;
 

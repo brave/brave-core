@@ -258,7 +258,7 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
     case types.SAVE_ONBOARDING_RESULT: {
       state = { ...state, showOnboarding: false }
       if (payload.result === 'opted-in') {
-        chrome.braveRewards.enableRewards()
+        chrome.braveRewards.createRewardsWallet(() => {})
       }
       onboardingCompletedStore.save()
       break

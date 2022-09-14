@@ -299,7 +299,7 @@ void Promotion::OnCreateWalletIfNecessary(
     ledger::ClaimPromotionCallback callback,
     const std::string& payload,
     mojom::Result result) {
-  if (result != mojom::Result::WALLET_CREATED) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Wallet couldn't be created");
     std::move(callback).Run(mojom::Result::LEDGER_ERROR, "");
     return;
