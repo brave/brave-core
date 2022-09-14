@@ -80,7 +80,7 @@ absl::optional<PaymentList> ParsePayments(const base::Value& value) {
   const base::Value* const ads_rewards_value =
       value.FindDictKey(kAdsRewardsKey);
   if (!ads_rewards_value) {
-    return absl::nullopt;
+    return PaymentList{};
   }
 
   const base::Value* const payments_value =

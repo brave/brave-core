@@ -86,7 +86,7 @@ absl::optional<TransactionList> ParseTransactionHistory(
   const base::Value::Dict* transaction_history =
       value.FindDict(kTransactionHistoryKey);
   if (!transaction_history) {
-    return absl::nullopt;
+    return TransactionList{};
   }
 
   const base::Value::List* list =
