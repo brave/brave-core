@@ -185,6 +185,12 @@ constexpr char kBraveBlockScreenFingerprintingDescription[] =
     "Prevents JavaScript and CSS from learning the user's screen dimensions "
     "or window position.";
 
+constexpr char kBraveRoundTimeStampsName[] = "Round time stamps";
+constexpr char kBraveRoundTimeStampsDescription[] =
+    "Prevents JavaScript from getting access to high-resolution clocks by "
+    "rounding"
+    "all DOMHighResTimeStamps to the nearest millisecond.";
+
 constexpr char kBraveSpeedreaderName[] = "Enable SpeedReader";
 constexpr char kBraveSpeedreaderDescription[] =
     "Enables faster loading of simplified article-style web pages.";
@@ -660,6 +666,11 @@ constexpr char kAllowCertainClientHintsDescription[] =
       flag_descriptions::kBraveBlockScreenFingerprintingDescription,        \
       kOsAll, FEATURE_VALUE_TYPE(                                           \
           blink::features::kBraveBlockScreenFingerprinting)},               \
+    {"brave-round-time-stamps",                                             \
+      flag_descriptions::kBraveRoundTimeStampsName,                         \
+      flag_descriptions::kBraveRoundTimeStampsDescription,                  \
+      kOsAll, FEATURE_VALUE_TYPE(                                           \
+          blink::features::kBraveRoundTimeStamps)},                         \
     BRAVE_IPFS_FEATURE_ENTRIES                                              \
     BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                     \
     BRAVE_NEWS_FEATURE_ENTRIES                                              \

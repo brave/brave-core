@@ -10,6 +10,8 @@ brave_blink_renderer_core_sources = [
   "//brave/third_party/blink/renderer/core/farbling/brave_session_cache.h",
   "//brave/third_party/blink/renderer/core/resource_pool_limiter/resource_pool_limiter.cc",
   "//brave/third_party/blink/renderer/core/resource_pool_limiter/resource_pool_limiter.h",
+  "//brave/third_party/blink/renderer/core/dom/dom_high_res_time_stamp_feature.h",
+  "//brave/third_party/blink/renderer/core/dom/dom_high_res_time_stamp_feature.cc",
 ]
 
 brave_blink_renderer_core_deps = []
