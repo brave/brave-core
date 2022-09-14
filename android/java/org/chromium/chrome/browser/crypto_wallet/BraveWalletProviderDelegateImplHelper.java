@@ -5,11 +5,14 @@
 
 package org.chromium.chrome.browser.crypto_wallet;
 
+import org.chromium.base.Callback;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
+import org.chromium.base.annotations.NativeMethods;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.settings.BraveWalletPreferences;
 import org.chromium.content_public.browser.WebContents;
+import org.chromium.mojo.bindings.Callbacks;
 
 @JNINamespace("brave_wallet")
 public class BraveWalletProviderDelegateImplHelper {
@@ -40,5 +43,19 @@ public class BraveWalletProviderDelegateImplHelper {
     @CalledByNative
     public static boolean isWeb3NotificationAllowed() {
         return BraveWalletPreferences.getPrefWeb3NotificationsEnabled();
+    }
+
+    public static void IsSolanaConnected(
+            WebContents webContents, String account, Callbacks.Callback1<Boolean> callback) {
+        Callback<Boolean> callbackWrapper = result -> {
+            callback.call(result);
+        };
+        BraveWalletProviderDelegateImplHelperJni.get().IsSolanaConnected(
+                webContents, account, callbackWrapper);
+    }
+
+    @NativeMethods
+    interface Natives {
+        void IsSolanaConnected(WebContents webContents, String account, Callback<Boolean> callback);
     }
 }

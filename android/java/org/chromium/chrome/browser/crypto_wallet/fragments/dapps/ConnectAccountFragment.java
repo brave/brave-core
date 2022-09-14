@@ -91,7 +91,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment
             } else {
                 mAccountsListAdapter.setAccounts(mAccountInfos);
                 mAccountsListAdapter.setAccountsWithPermissions(mAccountsWithPermissions);
-                mAccountsListAdapter.setSelectedAccount(mSelectedAccount.address);
+                mAccountsListAdapter.setSelectedAccount(mSelectedAccount);
                 mAccountsListAdapter.notifyDataSetChanged();
             }
         });
@@ -177,8 +177,8 @@ public class ConnectAccountFragment extends BaseDAppsFragment
     }
 
     @Override
-    public String getSelectedAccount() {
-        return mSelectedAccount.address;
+    public AccountInfo getSelectedAccount() {
+        return mSelectedAccount;
     }
 
     @Override
@@ -188,12 +188,11 @@ public class ConnectAccountFragment extends BaseDAppsFragment
                     if (!success) {
                         return;
                     }
-                    getKeyringService().setSelectedAccount(
-                            account.address, account.coin, setSuccess -> {
-                                if (setSuccess) {
-                                    updateAccounts();
-                                }
-                            });
+                    if (CoinType.SOL != account.coin) {
+                        getKeyringService().setSelectedAccount(
+                                account.address, account.coin, setSuccess -> {});
+                    }
+                    updateAccounts();
                 });
     }
 
@@ -206,25 +205,20 @@ public class ConnectAccountFragment extends BaseDAppsFragment
                     }
                     if (!mSelectedAccount.address.equals(account.address)) {
                         updateAccounts();
-
                         return;
                     }
 
-                    boolean updateCalled = false;
                     assert mAccountsWithPermissions != null;
                     Iterator<AccountInfo> it = mAccountsWithPermissions.iterator();
                     while (it.hasNext()) {
                         AccountInfo accountInfo = it.next();
                         if (!accountInfo.address.equals(account.address)) {
-                            updateCalled = true;
-                            getKeyringService().setSelectedAccount(accountInfo.address,
-                                    accountInfo.coin, setSuccess -> { updateAccounts(); });
+                            getKeyringService().setSelectedAccount(
+                                    accountInfo.address, accountInfo.coin, setSuccess -> {});
                             break;
                         }
                     }
-                    if (!updateCalled) {
-                        updateAccounts();
-                    }
+                    updateAccounts();
                 });
     }
 

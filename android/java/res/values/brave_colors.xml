@@ -33,6 +33,8 @@
 
     <!-- Text colors -->
     <color name="brave_theme_hint_text">#868E96</color>
+    <color name="brave_theme_error">#cc0000</color>
+    <color name="brave_theme_success">#51cf66</color>
 
     <!-- Onborading colors -->
     <color name="onboarding_orange">#fb542b</color>

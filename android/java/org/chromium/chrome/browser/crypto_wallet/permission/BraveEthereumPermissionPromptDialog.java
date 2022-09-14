@@ -181,7 +181,7 @@ public class BraveEthereumPermissionPromptDialog
         mRecyclerView.setLayoutManager(layoutManager);
         mWalletModel.getDappsModel().fetchAccountsForConnectionReq(
                 mCoinType, selectedAccountAllAccounts -> {
-                    String selectedAccount = selectedAccountAllAccounts.first;
+                    AccountInfo selectedAccount = selectedAccountAllAccounts.first;
                     List<AccountInfo> accounts = selectedAccountAllAccounts.second;
                     mAccountsListAdapter.setAccounts(accounts.toArray(new AccountInfo[0]));
                     if (accounts.size() > 0) {
