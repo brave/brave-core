@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/components/constants/pref_names.h"
+#include "chrome/browser/devtools/devtools_window_testing.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -52,10 +53,18 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, OpenNewTabWhenTabStripIsEmpty) {
   ASSERT_EQ(1, tab_strip->count());
   EXPECT_EQ(page_url,
             tab_strip->GetWebContentsAt(0)->GetURL().possibly_invalid_spec());
+  auto* devtools_window = DevToolsWindowTesting::OpenDevToolsWindowSync(
+      tab_strip->GetActiveWebContents(), false);
+  EXPECT_EQ(chrome::GetTotalBrowserCount(), 3u);
+
   // Close the last tab.
   tab_strip->GetActiveWebContents()->Close();
-  base::RunLoop().RunUntilIdle();
+
+  ui_test_utils::WaitForBrowserToClose(
+      DevToolsWindowTesting::Get(devtools_window)->browser());
+  EXPECT_EQ(chrome::GetTotalBrowserCount(), 2u);
   ASSERT_EQ(1, tab_strip->count());
+
   // Expecting a new tab is opened.
   EXPECT_EQ(new_browser->GetNewTabURL(),
             tab_strip->GetWebContentsAt(0)->GetURL().possibly_invalid_spec());
