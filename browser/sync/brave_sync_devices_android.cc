@@ -74,15 +74,13 @@ base::Value::List BraveSyncDevicesAndroid::GetSyncDeviceList() {
   base::Value::List device_list;
 
   for (const auto& device : tracker->GetAllBraveDeviceInfo()) {
-    auto device_value = base::Value::FromUniquePtrValue(device->ToValue());
-    bool is_current_device = local_device_info
-        ? local_device_info->guid() == device->guid()
-        : false;
-    device_value.SetBoolKey("isCurrentDevice", is_current_device);
+    auto device_value = device->ToValue();
+    bool is_current_device =
+        local_device_info ? local_device_info->guid() == device->guid() : false;
+    device_value.Set("isCurrentDevice", is_current_device);
     // DeviceInfo::ToValue doesn't put guid
-    device_value.SetStringKey("guid", device->guid());
-    device_value.SetBoolKey("supportsSelfDelete",
-                            device->is_self_delete_supported());
+    device_value.Set("guid", device->guid());
+    device_value.Set("supportsSelfDelete", device->is_self_delete_supported());
     device_list.Append(std::move(device_value));
   }
 
