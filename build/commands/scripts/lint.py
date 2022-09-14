@@ -10,7 +10,7 @@
 
 # Copyright (C) 2008 Evan Martin <martine@danga.com>
 
-# pylint: disable=no-member,consider-using-f-string
+# pylint: disable=no-member,line-too-long
 
 import os
 import sys
@@ -88,8 +88,12 @@ def main(args):
 
         # Process cpplints arguments if any.
         command = args + files
+        filters = [
+            '-runtime/references',  # Allowed by Google style guide.
+        ]
         if options.filter:
-            command = ['--filter=' + ','.join(options.filter)] + command
+            filters.extend(options.filter)
+        command = ['--filter=' + ','.join(filters)] + command
         if options.project_root:
             command = ['--project_root=' +
                 options.project_root.replace('\\', '/')] + command
