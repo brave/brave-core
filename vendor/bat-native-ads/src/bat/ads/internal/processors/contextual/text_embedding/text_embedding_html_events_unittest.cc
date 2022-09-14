@@ -40,6 +40,7 @@ TEST_F(BatAdsTextEmbeddingHtmlEventsTest, LogEvent) {
         GetTextEmbeddingHtmlEventsFromDatabase(
             [=](const bool success,
                 const TextEmbeddingHtmlEventList& text_embedding_html_events) {
+              ASSERT_TRUE(!text_embedding_html_events.empty());
               ASSERT_TRUE(success)
                   << "Failed to get text embedding html events";
               if (!success) {
@@ -48,7 +49,7 @@ TEST_F(BatAdsTextEmbeddingHtmlEventsTest, LogEvent) {
 
               // Assert
               EXPECT_EQ(text_embedding.hashed_text_base64,
-                        text_embedding_html_events[0].hashed_text_base64);
+                        text_embedding_html_events.at(0).hashed_text_base64);
             });
       });
 }
@@ -92,11 +93,12 @@ TEST_F(BatAdsTextEmbeddingHtmlEventsTest, PurgeEvents) {
                     }
 
                     // Assert
-                    const int size_events_default =
+                    const int text_embedding_history_size =
                         targeting::features::GetTextEmbeddingsHistorySize();
-                    const int n_logged_events =
+                    const int text_embedding_html_event_count =
                         text_embedding_html_events.size();
-                    EXPECT_TRUE(n_logged_events <= size_events_default);
+                    EXPECT_TRUE(text_embedding_html_event_count <=
+                                text_embedding_history_size);
                   });
             });
           }

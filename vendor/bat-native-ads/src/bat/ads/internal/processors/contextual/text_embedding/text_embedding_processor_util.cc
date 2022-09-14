@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_processor_util.h"
 
-#include <algorithm>
-
 #include "base/strings/string_util.h"
 #include "bat/ads/internal/base/strings/string_html_parser_util.h"
 #include "bat/ads/internal/base/strings/string_strip_util.h"

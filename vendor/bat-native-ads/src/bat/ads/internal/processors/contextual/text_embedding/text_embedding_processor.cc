@@ -55,7 +55,7 @@ void TextEmbedding::Process(const std::string& text) {
   }
 
   ml::pipeline::EmbeddingProcessing* embedding_proc_pipeline = resource_->Get();
-  ml::pipeline::TextEmbeddingInfo text_embedding =
+  const ml::pipeline::TextEmbeddingInfo text_embedding =
       embedding_proc_pipeline->EmbedText(sanitized_text);
   if (text_embedding.embedding.GetNonZeroElementCount() == 0) {
     BLOG(1, "Failed to embed text");
@@ -64,7 +64,6 @@ void TextEmbedding::Process(const std::string& text) {
 
   const std::string embedding_as_string =
       text_embedding.embedding.GetVectorAsString();
-  BLOG(9, "Embedding: " << embedding_as_string);
   LogTextEmbeddingHtmlEvent(
       embedding_as_string, text_embedding.hashed_text_base64,
       [](const bool success) {

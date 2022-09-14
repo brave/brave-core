@@ -8,8 +8,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/time/time.h"
-
 namespace ads::ml::pipeline {
 
 namespace {
@@ -24,10 +22,16 @@ constexpr char kEmbeddingsKey[] = "embeddings";
 EmbeddingPipelineInfo::EmbeddingPipelineInfo() = default;
 
 EmbeddingPipelineInfo::EmbeddingPipelineInfo(
-    EmbeddingPipelineInfo&& info) noexcept = default;
+    const EmbeddingPipelineInfo& other) = default;
 
 EmbeddingPipelineInfo& EmbeddingPipelineInfo::operator=(
-    EmbeddingPipelineInfo&& info) noexcept = default;
+    const EmbeddingPipelineInfo& other) = default;
+
+EmbeddingPipelineInfo::EmbeddingPipelineInfo(
+    EmbeddingPipelineInfo&& other) noexcept = default;
+
+EmbeddingPipelineInfo& EmbeddingPipelineInfo::operator=(
+    EmbeddingPipelineInfo&& other) noexcept = default;
 
 EmbeddingPipelineInfo::~EmbeddingPipelineInfo() = default;
 
@@ -64,9 +68,8 @@ bool EmbeddingPipelineInfo::FromValue(const base::Value::Dict& root) {
 
     std::vector<float> embedding;
     embedding.reserve(list->size());
-    for (const base::Value& v_raw : *list) {
-      double v = v_raw.GetDouble();
-      embedding.push_back(v);
+    for (const base::Value& dimension_value : *list) {
+      embedding.push_back(dimension_value.GetDouble());
     }
     embeddings[key] = VectorData(std::move(embedding));
     dim = embeddings[key].GetDimensionCount();

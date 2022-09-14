@@ -8,8 +8,19 @@
 namespace ads {
 
 TextEmbeddingHtmlEventInfo::TextEmbeddingHtmlEventInfo() = default;
+
 TextEmbeddingHtmlEventInfo::TextEmbeddingHtmlEventInfo(
-    const TextEmbeddingHtmlEventInfo& info) = default;
+    const TextEmbeddingHtmlEventInfo& other) = default;
+
+TextEmbeddingHtmlEventInfo& TextEmbeddingHtmlEventInfo::operator=(
+    const TextEmbeddingHtmlEventInfo& other) = default;
+
+TextEmbeddingHtmlEventInfo::TextEmbeddingHtmlEventInfo(
+    TextEmbeddingHtmlEventInfo&& other) noexcept = default;
+
+TextEmbeddingHtmlEventInfo& TextEmbeddingHtmlEventInfo::operator=(
+    TextEmbeddingHtmlEventInfo&& other) noexcept = default;
+
 TextEmbeddingHtmlEventInfo::~TextEmbeddingHtmlEventInfo() = default;
 
 }  // namespace ads

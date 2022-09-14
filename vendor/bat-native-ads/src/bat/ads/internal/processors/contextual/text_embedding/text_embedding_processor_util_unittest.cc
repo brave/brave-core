@@ -42,12 +42,12 @@ TEST_F(BatAdsTextEmbeddingProcessorUtilTest, SanitizeHtml) {
       {R"( )", {}},
       {R"()", {}}};
 
-  for (const auto& [key, value] : kSamples) {
+  for (const auto& [html, expected_text] : kSamples) {
     // Act
-    const std::string sanitized_html = SanitizeHtml(key);
+    const std::string sanitized_html = SanitizeHtml(html);
 
     // Assert
-    EXPECT_EQ(value, sanitized_html);
+    EXPECT_EQ(expected_text, sanitized_html);
   }
 }
 
@@ -66,12 +66,12 @@ TEST_F(BatAdsTextEmbeddingProcessorUtilTest, SanitizeText) {
       {" ", {}},
       {"", {}}};
 
-  for (const auto& [key, value] : kSamples) {
+  for (const auto& [text, expected_text] : kSamples) {
     // Act
-    const std::string sanitized_text = SanitizeText(key);
+    const std::string sanitized_text = SanitizeText(text);
 
     // Assert
-    EXPECT_EQ(value, sanitized_text);
+    EXPECT_EQ(expected_text, sanitized_text);
   }
 }
 

@@ -17,8 +17,13 @@ namespace ads::ml::pipeline {
 
 struct EmbeddingPipelineInfo final {
   EmbeddingPipelineInfo();
-  EmbeddingPipelineInfo(EmbeddingPipelineInfo&& info) noexcept;
-  EmbeddingPipelineInfo& operator=(EmbeddingPipelineInfo&& info) noexcept;
+
+  EmbeddingPipelineInfo(const EmbeddingPipelineInfo& other);
+  EmbeddingPipelineInfo& operator=(const EmbeddingPipelineInfo& other);
+
+  EmbeddingPipelineInfo(EmbeddingPipelineInfo&& other) noexcept;
+  EmbeddingPipelineInfo& operator=(EmbeddingPipelineInfo&& other) noexcept;
+
   ~EmbeddingPipelineInfo();
 
   bool FromValue(const base::Value::Dict& root);
