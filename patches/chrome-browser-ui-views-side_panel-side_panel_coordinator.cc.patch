@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/side_panel/side_panel_coordinator.cc b/chrome/browser/ui/views/side_panel/side_panel_coordinator.cc
-index d987aa8efd9c78c21b529ef2a9e6e0cfe22899f8..aab65cf9071fa7eb2968cecfe15a120824ee9577 100644
+index 2a457d0d6d8703366f1b93141640ed1c9e8529d1..53821406f1f9c3ef3919f0b53409e1071e52ce9a 100644
 --- a/chrome/browser/ui/views/side_panel/side_panel_coordinator.cc
 +++ b/chrome/browser/ui/views/side_panel/side_panel_coordinator.cc
 @@ -175,6 +175,7 @@ SidePanelCoordinator::~SidePanelCoordinator() {
@@ -10,7 +10,7 @@ index d987aa8efd9c78c21b529ef2a9e6e0cfe22899f8..aab65cf9071fa7eb2968cecfe15a1208
    if (!entry_id.has_value())
      entry_id = GetLastActiveEntryId().value_or(kDefaultEntry);
  
-@@ -485,6 +486,7 @@ std::unique_ptr<views::View> SidePanelCoordinator::CreateHeader() {
+@@ -494,6 +495,7 @@ std::unique_ptr<views::View> SidePanelCoordinator::CreateHeader() {
        ChromeLayoutProvider::Get()->GetDistanceMetric(
            ChromeDistanceMetric::DISTANCE_SIDE_PANEL_HEADER_VECTOR_ICON_SIZE)));
  
