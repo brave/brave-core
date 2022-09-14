@@ -424,7 +424,7 @@ TEST_F(NTPBackgroundImagesViewCounterTest, GetCurrentWallpaperTest) {
 }
 
 TEST_F(NTPBackgroundImagesViewCounterTest,
-       GetSposoredImageWallpaperAdsServiceDisabled) {
+       GetSponsoredImageWallpaperAdsServiceDisabled) {
   InitBackgroundAndSponsoredImageWallpapers();
 
   EXPECT_CALL(ads_service_, IsEnabled()).WillRepeatedly(Return(false));
@@ -436,9 +436,8 @@ TEST_F(NTPBackgroundImagesViewCounterTest,
                    .value_or(true));
   ASSERT_TRUE(
       si_wallpaper->FindString(ntp_background_images::kCreativeInstanceIDKey));
-  EXPECT_EQ(kFirstCreativeInstanceId,
-            *(si_wallpaper->FindString(
-                ntp_background_images::kCreativeInstanceIDKey)));
+  EXPECT_TRUE(
+      si_wallpaper->FindString(ntp_background_images::kCreativeInstanceIDKey));
   ASSERT_TRUE(si_wallpaper->FindString(ntp_background_images::kWallpaperIDKey));
   EXPECT_FALSE(si_wallpaper->FindString(ntp_background_images::kWallpaperIDKey)
                    ->empty());
