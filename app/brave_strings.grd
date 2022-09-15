@@ -710,6 +710,9 @@ Permissions you've already given to websites and apps may apply to this account.
       </if>
 
       <!-- chrome://settings/extensions page -->
+      <message name="IDS_EXTENSIONS_ITEM_SHOW_ACCESS_REQUESTS_IN_TOOLBAR" desc="The label on the toggle to allow the extension to show site access requests in the toolbar.">
+        Allow extension to show access requests in the Brave toolbar
+      </message>
       <message name="IDS_EXTENSIONS_INCOGNITO_WARNING" desc="Warns the user that Brave cannot prevent extensions from recording history in Private mode. Displayed in extensions management UI after an extension is selected to be run in Private mode.">
         Warning: Brave cannot prevent extensions from recording your browsing history. To disable this extension in Private mode, unselect this option.
       </message>

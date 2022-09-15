@@ -663,7 +663,7 @@
     Notes can save up to <ph name="CHARACTER_LIMIT">$1<ex>1000</ex></ph> characters.
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_TIMED_OUT" desc="Title for the dialog which shows when the password manager authentication is expired.">
-    Passwords timed out
+    Brave Password Manager timed out
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_TIMED_OUT_DESCRIPTION" desc="Body text for the dialog which shows when the password manager authentication is expired.">
     {NUM_MINS, plural,
@@ -681,6 +681,9 @@
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_NONE" desc="Placeholder that is shown when there are no passwords in the list of saved passwords.">
     Saved passwords will appear here
+  </message>
+  <message name="IDS_SETTINGS_PASSWORDS_NONE_WITH_IMPORT" desc="Placeholder that is shown when there are no passwords in the list of saved passwords with an additional link to the import passwords flow.">
+    Saved passwords will appear here. <ph name="BEGIN_LINK">&lt;a href="#" &gt;</ph> Import passwords<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_EXCEPTIONS_NONE" desc="Placeholder text that is shown when there are no sites in the list of sites for which to never save passwords.">
     Sites which never save passwords will appear here
@@ -796,7 +799,7 @@
     Import passwords
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_CHOOSE_FILE" desc="A button in the dialog for importing passwords from Brave. Passwords will be imported from the file, which the user will be asked to choose after initiating this action.">
-    Choose file
+    Select file
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_DESCRIPTION_ACCOUNT_STORE_USERS" desc="Text shown to the account store users (who has the option to store passwords localy or in Brave Password manager) on the dialog for importing passwords, before the user has chosen the file to import passwords from.">
     To import passwords, select a CSV file
@@ -860,7 +863,7 @@
     You're already importing passwords in another tab
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_EXPORT_MENU_ITEM" desc="A menu item in the More Actions menu above the password list in Brave's settings. Selecting this action will open a dialog, through which the user can export their passwords outside of Brave.">
-    Export passwords...
+    Export passwords
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_EXPORT_TITLE" desc="The title of a dialog, which offers to the user the ability to export passwords they've saved with Brave.">
     Export passwords
@@ -869,7 +872,7 @@
     Your passwords will be visible to anyone who can see the exported file.
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_EXPORT" desc="A button in the dialog for exporting passwords from Brave. A password list will be written to a destination, which the user will be asked to choose after initiating this action.">
-    Export passwords...
+    Export passwords
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_EXPORT_TRY_AGAIN" desc="A button in the dialog for exporting passwords from Brave. The action is to attempt to export the passwords again. A password list will be written to a destination, which the user will be asked to choose after initiating this action.">
     Try again
@@ -1371,6 +1374,11 @@
   </message>
   <message name="IDS_SETTINGS_URL_TOOL_LONG" desc="Error message asking that the user enter a shorter URL.">
     Please enter a shorter URL
+  </message>
+
+  <!-- Performance Page -->
+  <message name="IDS_SETTINGS_PERFORMANCE_PAGE_TITLE" desc="Title of the performance page">
+    Performance
   </message>
 
   <!-- Languages Page -->

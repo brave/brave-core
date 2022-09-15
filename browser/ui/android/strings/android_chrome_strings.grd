@@ -745,6 +745,12 @@ CHAR_LIMIT guidelines:
       <message name="IDS_UPM_ERROR_NOTIFICATION_CONTENTS" translateable="false" desc="The contents of the UI surface shown when the new password manager backend encounters an error, prompting the user to file a bug.">
         The unified password manager was automatically disabled. Please submit an issue via the bug app!
       </message>
+      <message name="IDS_PASSWORDS_NOT_SECURE_FILLING" desc="The title of the dialog which is shown when the user attempts to enter obfuscated text to a regular text field.">
+        Not secure
+      </message>
+      <message name="IDS_PASSWORDS_NOT_SECURE_FILLING_DETAILS" desc="The message of the dialog which is shown when the user attempts to enter obfuscated text to a regular text field.">
+        To protect your privacy, Brave will not autofill your password in this field.
+      </message>
 
       <!-- Lock Screen Fragment -->
       <message name="IDS_LOCKSCREEN_DESCRIPTION_COPY" desc="When a user attempts to copy a password for a particular website into clipboard in Brave's settings, Brave launches a lock screen to verify the user's identity and displays the following explanation.">
@@ -4064,6 +4070,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_UNDO_BAR_CLOSE_ALL_MESSAGE" desc="Message shown when you can undo a close all tabs action.">
         <ph name="TAB_COUNT">%1$s<ex>3</ex></ph> tabs closed
+      </message>
+      <message name="IDS_CONFIRM_DELETE_MESSAGE" desc="Message shown or announced to get confirmation on whether a file should be deleted.">
+        Do you want to delete <ph name="ITEM_TITLE">%1$s<ex>example.pdf</ex></ph>?
       </message>
       <message name="IDS_DELETE_MESSAGE" desc="Message shown or announced when an item has been deleted. This message is short for a sentence &quot;ITEM_TITLE has been deleted&quot;, not a noun &quot;ITEM_TITLE, which is a deleted item&quot;.">
         Deleted <ph name="ITEM_TITLE">%1$s<ex>YouTube</ex></ph>
