@@ -34,7 +34,7 @@ class UserScriptHelper {
 
   /// Return the set of DomainScryptTypes for this navigation action.
   static func getUserScriptTypes(for navigationAction: WKNavigationAction, options: DomainScriptOptions) -> Set<UserScriptType> {
-    var userScriptTypes: Set<UserScriptType> = []
+    var userScriptTypes: Set<UserScriptType> = [.siteStateListener]
 
     // Handle dynamic domain level scripts on the request that don't use shields
     // This shield is always on and doesn't need sheild settings
@@ -83,6 +83,16 @@ class UserScriptHelper {
     let params: [String: String] = [
       "securityToken": securityToken,
       "handlerName": RequestBlockingContentHelper.scriptMessageHandlerName()
+    ]
+    let encoder = JSONEncoder()
+    let data = try encoder.encode(params)
+    return String(data: data, encoding: .utf8)
+  }
+  
+  static func makeSiteStateParams(securityToken: String) throws -> String? {
+    let params: [String: String] = [
+      "securityToken": securityToken,
+      "handlerName": SiteStateListenerContentHelper.scriptMessageHandlerName()
     ]
     let encoder = JSONEncoder()
     let data = try encoder.encode(params)

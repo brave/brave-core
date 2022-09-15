@@ -8,26 +8,33 @@ import WebKit
 import Shared
 import BraveShared
 import Combine
+import BraveUI
 
 private let log = Logger.browserLogger
 
 class AdblockDebugMenuTableViewController: TableViewController {
-
+  private static var fileDateFormatter: DateFormatter {
+    return DateFormatter().then {
+      $0.dateStyle = .short
+      $0.timeStyle = .short
+      $0.timeZone = TimeZone(abbreviation: "GMT")
+    }
+  }
+  
   private let fm = FileManager.default
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    ContentBlockerHelper.ruleStore.getAvailableContentRuleListIdentifiers { lists in
+    ContentBlockerManager.shared.ruleStore.getAvailableContentRuleListIdentifiers { lists in
       let listNames = lists ?? []
       if listNames.isEmpty { return }
 
       self.dataSource.sections = [
         self.actionsSection,
-        self.fetchSection,
         self.datesSection,
         self.bundledListsSection(names: listNames),
-        self.downloadedListsSection(names: listNames),
+        self.downloadedResourcesSection()
       ]
     }
   }
@@ -38,48 +45,20 @@ class AdblockDebugMenuTableViewController: TableViewController {
       Row(
         text: "Recompile Content Blockers",
         selection: {
-          BlocklistName.allLists.forEach { $0.fileVersionPref?.value = nil }
-          
-          var compileListsTask: AnyCancellable?
-          compileListsTask = ContentBlockerHelper.compileBundledLists()
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] res in
-              if case .failure(let error) = res {
-                let alert = UIAlertController(title: nil, message: "Failed to Recompile Blockers: \(error)", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default))
-                self?.present(alert, animated: true)
-              }
-              compileListsTask = nil
-          } receiveValue: { [weak self] _ in
-            let alert = UIAlertController(title: nil, message: "Recompiled Blockers", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
-            self?.present(alert, animated: true)
+          Task { @MainActor in
+            await ContentBlockerManager.shared.compilePendingResources()
+            self.showCompiledBlockListAlert()
           }
         }, cellClass: ButtonCell.self)
     ]
 
     return section
   }
-
-  private var fetchSection: Section {
-    var section = Section(footer: "Last time we pinged the server for new data. If adblock list hasn't changed `Last Time Updated` section does not update.")
-    let dateFormatter = DateFormatter().then {
-      $0.dateStyle = .short
-      $0.timeStyle = .short
-    }
-
-    section.rows = [
-      .init(
-        text: "Last fetch time (adblock)",
-        detailText:
-          dateFormatter.string(from: AdblockResourceDownloader.shared.lastFetchDate)),
-      .init(
-        text: "Last fetch time (cosmetic-filters)",
-        detailText:
-          dateFormatter.string(from: CosmeticFiltersResourceDownloader.shared.lastFetchDate)),
-    ]
-
-    return section
+  
+  @MainActor private func showCompiledBlockListAlert() {
+    let alert = UIAlertController(title: nil, message: "Recompiled Blockers", preferredStyle: .alert)
+    alert.addAction(UIAlertAction(title: "OK", style: .default))
+    present(alert, animated: true)
   }
 
   private var datesSection: Section {
@@ -159,84 +138,56 @@ class AdblockDebugMenuTableViewController: TableViewController {
     section.rows = rows
     return section
   }
-
-  private func downloadedListsSection(names: [String]) -> Section {
-    var section = Section(
-      header: "Downloaded lists",
-      footer: "Lists downloaded from the internet at app launch.")
-
-    func getEtag(name: String, folder: String) -> String? {
-      guard let folderUrl = fm.getOrCreateFolder(name: folder) else {
+  
+  private func downloadedResourcesSection() -> Section {
+    func createRows(from resources: [ResourceDownloader.Resource]) -> [Row] {
+      resources.compactMap { createRow(from: $0) }
+    }
+    
+    func getEtag(from resource: ResourceDownloader.Resource) -> String? {
+      do {
+        return try ResourceDownloader.etag(for: resource)
+      } catch {
         return nil
       }
-      let etagUrl = folderUrl.appendingPathComponent(name + ".etag")
-      guard let data = fm.contents(atPath: etagUrl.path) else { return nil }
-      return String(data: data, encoding: .utf8)
     }
-
-    func getLastModified(name: String, folder: String) -> String? {
-      let dateFormatter = DateFormatter().then {
-        $0.dateStyle = .short
-        $0.timeStyle = .short
-        $0.timeZone = TimeZone(abbreviation: "GMT")
-      }
-
-      guard let folderUrl = fm.getOrCreateFolder(name: folder) else {
+    
+    func getFileCreation(for resource: ResourceDownloader.Resource) -> String? {
+      do {
+        guard let date = try ResourceDownloader.creationDate(for: resource) else { return nil }
+        return Self.fileDateFormatter.string(from: date)
+      } catch {
         return nil
       }
-      let etagUrl = folderUrl.appendingPathComponent(name + ".lastmodified")
-      guard let data = fm.contents(atPath: etagUrl.path),
-        let stringData = String(data: data, encoding: .utf8)
-      else { return nil }
-
-      let timeInterval = (stringData as NSString).doubleValue
-      let date = Date(timeIntervalSince1970: timeInterval)
-
-      return dateFormatter.string(from: date)
     }
-
-    func createRows(folderName: String, names: [String]) -> [Row] {
-      guard let folderUrl = fm.getOrCreateFolder(name: folderName) else { return [] }
-
-      var rows = [Row]()
-      names.forEach {
-        if let data = fm.contents(atPath: folderUrl.appendingPathComponent($0 + ".json").path),
-          let json = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as? [[String: Any]] {
-          let text = "\($0).json: \(json.count) rules"
-          let name = $0 + ".json"
-
-          let etag = getEtag(name: name, folder: folderName) ?? "-"
-          let lastModified = getLastModified(name: name, folder: folderName) ?? "-"
-
-          let detail = "\(lastModified), etag: \(etag)"
-
-          rows.append(.init(text: text, detailText: detail, cellClass: ShrinkingSubtitleCell.self))
-        }
-
-        if fm.contents(atPath: folderUrl.appendingPathComponent($0 + ".dat").path) != nil {
-          let name = $0 + ".dat"
-
-          let etag = getEtag(name: name, folder: folderName) ?? "-"
-          let lastModified = getLastModified(name: name, folder: folderName) ?? "-"
-
-          let detail = "\(lastModified), etag: \(etag)"
-
-          rows.append(.init(text: $0 + ".dat", detailText: detail, cellClass: ShrinkingSubtitleCell.self))
-        }
+    
+    func createRow(from resource: ResourceDownloader.Resource) -> Row? {
+      guard let fileURL = ResourceDownloader.downloadedFileURL(for: resource) else {
+        return nil
       }
-      return rows
+      
+      let detailText = [
+        "created date: \(getFileCreation(for: resource) ?? "nil")",
+        "etag: \(getEtag(from: resource) ?? "nil")",
+        "folder: \(fileURL.deletingLastPathComponent().path)"
+      ].joined(separator: "\n")
+      
+      return Row(text: fileURL.lastPathComponent, detailText: detailText, cellClass: MultilineSubtitleCell.self)
     }
-
-    let cosmeticFilterNames = [
-      CosmeticFiltersResourceDownloader.CosmeticFilterType.cosmeticSample.identifier,
-      CosmeticFiltersResourceDownloader.CosmeticFilterType.resourceSample.identifier,
-    ]
-
-    var rows = [Row]()
-    rows.append(contentsOf: createRows(folderName: AdblockResourceDownloader.folderName, names: names))
-    rows.append(contentsOf: createRows(folderName: CosmeticFiltersResourceDownloader.folderName, names: cosmeticFilterNames))
-    section.rows = rows
-    return section
+    
+    var resources = FilterListResourceDownloader.shared.filterLists.flatMap { filterList -> [ResourceDownloader.Resource] in
+      return filterList.resources
+    }
+    
+    resources.append(contentsOf: [
+      .debounceRules, .genericContentBlockingBehaviors, .genericFilterRules, .generalCosmeticFilters, .generalScriptletResources
+    ])
+    
+    return Section(
+      header: "Downloaded resources",
+      rows: createRows(from: resources),
+      footer: "Lists downloaded from the internet at app launch using the ResourceDownloader."
+    )
   }
 }
 

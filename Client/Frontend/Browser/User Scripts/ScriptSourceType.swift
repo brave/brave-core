@@ -9,6 +9,8 @@ import Foundation
 ///
 /// - Warning: Some of these scripts are not usable "as-is". Rather, you should be using `UserScriptType`.
 enum ScriptSourceType {
+  /// A script that informs iOS of site state changes
+  case siteStateListener
   /// A simple encryption library found here:
   /// https://www.npmjs.com/package/tweetnacl
   case nacl
@@ -24,6 +26,7 @@ enum ScriptSourceType {
 
   var fileName: String {
     switch self {
+    case .siteStateListener: return "SiteStateListener"
     case .nacl: return "nacl.min"
     case .farblingProtection: return "FarblingProtection"
     case .youtubeAdBlock: return "YoutubeAdblock"

@@ -47,6 +47,13 @@ extension Preferences {
     ///
     /// Value should only be checked on launch
     public static let backgroundedCleanly = Option<Bool>(key: "appstate.backgrounded-cleanly", default: true)
+    
+    /// A cached value for the last folder path we got for filter lists
+    ///
+    /// This is a useful setting because it take too long for filter lists to load during launch
+    /// and therefore we can try to load them right away and have them ready on the first tab load
+    static let lastDefaultFilterListFolderPath =
+      Option<String?>(key: "caching.last-default-filter-list-folder-path", default: nil)
   }
 }
 

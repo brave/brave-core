@@ -105,7 +105,7 @@
          <EnvironmentVariable
             key = "OS_ACTIVITY_MODE"
             value = ""
-            isEnabled = "YES">
+            isEnabled = "NO">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "DYLD_PRINT_STATISTICS"

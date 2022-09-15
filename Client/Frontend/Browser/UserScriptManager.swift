@@ -99,9 +99,49 @@ class UserScriptManager {
   var userScriptTypes: Set<UserScriptType> {
     didSet {
       guard oldValue != userScriptTypes else { return }
+      
+      #if DEBUG
+      let oldValues = debugString(for: oldValue.sorted(by: { $0.order < $1.order }))
+      let newValues = debugString(for: userScriptTypes.sorted(by: { $0.order < $1.order }))
+      
+      let scriptDebugData =
+      """
+      Set<UserScriptType>
+      Old Values: [
+      \(oldValues)
+      ]
+      New Values: [
+      \(newValues)
+      ]
+      """
+      
+      ContentBlockerManager.log.debug("\(scriptDebugData, privacy: .public)")
+      #endif
+      
       reloadUserScripts()
     }
   }
+  
+  #if DEBUG
+  private func debugString(for scriptTypes: [UserScriptType]) -> String {
+    return scriptTypes.map({ scriptType in
+      let nameString: String
+      
+      switch scriptType {
+      case .domainUserScript:
+        nameString = "domainUserScript(\(scriptType.sourceType.fileName))"
+      case .nacl:
+        nameString = "nacl"
+      case .farblingProtection(let etld1):
+        nameString = "farblingProtection(\(etld1))"
+      case .siteStateListener:
+        nameString = "siteStateListener"
+      }
+      
+      return nameString
+    }).joined(separator: "\n")
+  }
+  #endif
 
   public static func isMessageHandlerTokenMissing(in body: [String: Any]) -> Bool {
     guard let token = body["securitytoken"] as? String, token == UserScriptManager.messageHandlerTokenString else {
@@ -453,7 +493,7 @@ class UserScriptManager {
 
   private var walletEthProviderJS: String?
     
-  private func reloadUserScripts() {
+  public func reloadUserScripts() {
     tab?.webView?.configuration.userContentController.do {
       $0.removeAllUserScripts()
       // This has to be added before `packedUserScripts` because some scripts do

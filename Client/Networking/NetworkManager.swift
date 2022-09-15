@@ -9,7 +9,7 @@ import Dispatch
 
 private let log = Logger.browserLogger
 
-class NetworkManager {
+final class NetworkManager: Sendable {
   private let session: NetworkSession
 
   init(session: NetworkSession = URLSession.shared) {

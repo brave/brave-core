@@ -7,7 +7,7 @@ import Combine
 
 typealias NetworkSessionDataResponse = (Data, URLResponse)
 
-protocol NetworkSession {
+protocol NetworkSession: Sendable {
   func dataRequest(with url: URL, _ completion: @escaping (Result<NetworkSessionDataResponse, Error>) -> Void)
   func dataRequest(with urlRequest: URLRequest, _ completion: @escaping (Result<NetworkSessionDataResponse, Error>) -> Void)
   

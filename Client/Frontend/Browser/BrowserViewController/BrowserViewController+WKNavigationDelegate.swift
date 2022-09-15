@@ -271,8 +271,28 @@ extension BrowserViewController: WKNavigationDelegate {
 
     // Check if custom user scripts must be added to or removed from the web view.
     tab?.userScriptManager?.userScriptTypes = UserScriptHelper.getUserScriptTypes(
-      for: navigationAction, options: isPrivateBrowsing ? .privateBrowsing : .default
+      for: navigationAction,
+      options: isPrivateBrowsing ? .privateBrowsing : .default
     )
+    
+    // Load engine scripts for this request and add it to the tab
+    // We can't execute them yet because the page is not yet ready
+    // But we can't load them later because we lose the frame information
+    // So we have to store it on the tab for now and execute them later
+    // They will be executed on `SiteStateListenerContentHelper`
+    // which will inform us of a frame load
+    if let frameInfo = navigationAction.targetFrame {
+      do {
+        let sources = try AdBlockStats.shared.makeEngineScriptSouces(for: url)
+        let evaluations = sources.map { source -> Tab.FrameEvaluation in
+          return (frameInfo: frameInfo, source: source)
+        }
+        
+        tab?.frameEvaluations[url] = evaluations
+      } catch {
+        log.error(error)
+      }
+    }
 
     // Brave Search logic.
 
@@ -345,29 +365,19 @@ extension BrowserViewController: WKNavigationDelegate {
         navigationAction.sourceFrame.isMainFrame || navigationAction.targetFrame?.isMainFrame == true {
         // Identify specific block lists that need to be applied to the requesting domain
         let domainForShields = Domain.getOrCreate(forUrl: mainDocumentURL, persistent: !isPrivateBrowsing)
-        let (on, off) = BlocklistName.blocklists(forDomain: domainForShields)
-        let controller = webView.configuration.userContentController
-
-        // Grab all lists that have valid rules and add/remove them as necessary
-        on.compactMap { $0.rule }.forEach(controller.add)
-        off.compactMap { $0.rule }.forEach(controller.remove)
-
+        
+        // Load rule lists
+        tab?.contentBlocker.ruleListTypes = ContentBlockerManager.shared.compiledRuleTypes(
+          for: domainForShields
+        )
+        
         let isScriptsEnabled = !domainForShields.isShieldExpected(.NoScript, considerAllShieldsOption: true)
         preferences.allowsContentJavaScript = isScriptsEnabled
       }
 
       // Cookie Blocking code below
-      if let tab = tab {
-        tab.userScriptManager?.isCookieBlockingEnabled = Preferences.Privacy.blockAllCookies.value
-      }
+      tab?.userScriptManager?.isCookieBlockingEnabled = Preferences.Privacy.blockAllCookies.value
 
-      if let rule = BlocklistName.cookie.rule {
-        if Preferences.Privacy.blockAllCookies.value {
-          webView.configuration.userContentController.add(rule)
-        } else {
-          webView.configuration.userContentController.remove(rule)
-        }
-      }
       // Reset the block alert bool on new host.
       if let newHost: String = url.host, let oldHost: String = webView.url?.host, newHost != oldHost {
         self.tabManager.selectedTab?.alertShownCount = 0
@@ -588,36 +598,20 @@ extension BrowserViewController: WKNavigationDelegate {
       if tab.walletEthProvider != nil {
         tab.emitEthereumEvent(.connect)
       }
-    }
 
-    // Cosmetic Filters
-    do {
-      // If the URL is not an `internal://`
-      // about:home url
-      // local-host url
-      // or any sort of internal-url, then we run cosmetic filters on it.
-      // If ad-block shields are enabled for this URL
-      if let url = webView.url,
-        !InternalURL.isValid(url: url),
-        !(InternalURL(url)?.isSessionRestore ?? false),
-        Domain.getOrCreate(
-          forUrl: url,
-          persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing
-        )
-        .isShieldExpected(.AdblockAndTp, considerAllShieldsOption: true),
-        let cosmeticFiltersScript = try AdBlockStats.shared.cosmeticFiltersScript(for: url) {
-        // Execute the cosmetic filters script in the cosmetic filters sandbox world
-        webView.evaluateSafeJavaScript(functionName: cosmeticFiltersScript, args: [], contentWorld: .cosmeticFiltersSandbox, asFunction: false) { _, error in
-          log.error("AdblockRustInjector error: \(String(describing: error))")
-        }
-      }
-    } catch {
-      log.error(error)
+      // Clear all the frame evaluations.
+      // We don't want to execute scripts that don't belong to this site
+      tab.frameEvaluations.removeAll()
     }
 
     // Added this method to determine long press menu actions better
     // Since these actions are depending on tabmanager opened WebsiteCount
     updateToolbarUsingTabManager(tabManager)
+  }
+  
+  public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+    let tab = tabManager[webView]
+    tab?.frameEvaluations.removeAll()
   }
 
   public func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
