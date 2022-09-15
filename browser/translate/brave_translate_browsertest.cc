@@ -16,7 +16,6 @@
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
 #include "brave/components/translate/core/common/buildflags.h"
-#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/translate/chrome_translate_client.h"
 #include "chrome/browser/translate/translate_test_utils.h"
@@ -25,6 +24,7 @@
 #include "chrome/browser/ui/views/translate/translate_bubble_controller.h"
 #include "chrome/browser/ui/views/translate/translate_bubble_view.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
+#include "chrome/grit/generated_resources.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/infobars/content/content_infobar_manager.h"
@@ -268,7 +268,7 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserTest, InternalTranslation) {
   // installation).
   ASSERT_EQ(bubble->GetWindowTitle(),
             brave_l10n::GetLocalizedResourceUTF16String(
-                IDS_BRAVE_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE));
+                IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE));
 
   // Translate the page. Note: the event onTranslateElementLoad() is
   // called from main.js (see SetupTestScriptExpectations()).
@@ -433,75 +433,5 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserMigrationTest,
 }
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-
-class BraveTranslateBrowserDisabledFeatureTest
-    : public BraveTranslateBrowserGoogleRedirectTest {
- public:
-  BraveTranslateBrowserDisabledFeatureTest() {
-    scoped_feature_list_.InitAndDisableFeature(features::kUseBraveTranslateGo);
-  }
-
- private:
-  base::test::ScopedFeatureList scoped_feature_list_;
-};
-
-IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserDisabledFeatureTest,
-                       FeatureDisabled) {
-  // Set target language to FR, that is unsupported target language
-  // for the brave backend.
-  GetChromeTranslateClient()->GetTranslatePrefs()->SetRecentTargetLanguage(
-      "fr");
-
-  net::EmbeddedTestServer chrome_test_embedded_test_server;
-  chrome_test_embedded_test_server.ServeFilesFromSourceDirectory(
-      "chrome/test/data");
-  ASSERT_TRUE(chrome_test_embedded_test_server.Start());
-
-  EXPECT_CALL(backend_request_, Call(_)).Times(0);
-  const GURL kTestUrls[] = {
-      // ES is supported by the brave backend.
-      embedded_test_server()->GetURL("/espanol_page.html"),
-
-      // EN is unsupported but the bubble must be shown anyway.
-      chrome_test_embedded_test_server.GetURL("/german_page.html")};
-
-  for (const auto& url : kTestUrls) {
-    SCOPED_TRACE(url);
-
-    ResetObserver();
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-    WaitUntilLanguageDetermined();
-
-    auto* bubble = TranslateBubbleController::FromWebContents(
-                       browser()->tab_strip_model()->GetActiveWebContents())
-                       ->GetTranslateBubble();
-    ASSERT_TRUE(bubble);
-
-    // The that we see a bubble that suggests Google translate extension
-    // installation.
-    ASSERT_EQ(bubble->GetWindowTitle(),
-              brave_l10n::GetLocalizedResourceUTF16String(
-                  IDS_BRAVE_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_INSTALL_TITLE));
-
-    // Check the we don't download the translate scripts
-    base::MockCallback<TranslateScript::RequestCallback> mock_callback;
-    EXPECT_CALL(mock_callback, Run(false));
-    TranslateDownloadManager::GetInstance()->script()->Request(
-        mock_callback.Get(), false);
-
-    // The resulting callback must be postted immediately, so simply use
-    // RunUtilIdle() to wait for it.
-    base::RunLoop().RunUntilIdle();
-
-    // Close the bubble to avoid reusing an existing bubble.
-    TranslateBubbleController::FromWebContents(
-        browser()->tab_strip_model()->GetActiveWebContents())
-        ->CloseBubble();
-
-    // Check no bad flags infobar is shown (about the different translate
-    // script/origin).
-    EXPECT_TRUE(HasNoBadFlagsInfobar());
-  }
-}
 
 }  // namespace translate

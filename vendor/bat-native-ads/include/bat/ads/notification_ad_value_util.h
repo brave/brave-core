@@ -6,6 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_NOTIFICATION_AD_VALUE_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_NOTIFICATION_AD_VALUE_UTIL_H_
 
+#include "base/containers/circular_deque.h"
 #include "base/values.h"
 
 namespace ads {
@@ -13,7 +14,12 @@ namespace ads {
 struct NotificationAdInfo;
 
 base::Value::Dict NotificationAdToValue(const NotificationAdInfo& ad);
+base::Value::List NotificationAdsToValue(
+    const base::circular_deque<NotificationAdInfo>& ads);
+
 NotificationAdInfo NotificationAdFromValue(const base::Value::Dict& root);
+base::circular_deque<NotificationAdInfo> NotificationAdsFromValue(
+    const base::Value::List& list);
 
 }  // namespace ads
 

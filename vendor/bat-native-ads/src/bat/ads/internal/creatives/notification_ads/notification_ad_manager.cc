@@ -10,7 +10,7 @@
 #include "base/values.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/creatives/notification_ads/notification_ad_manager_value_util.h"
+#include "bat/ads/notification_ad_value_util.h"
 #include "bat/ads/pref_names.h"
 #include "build/build_config.h"  // IWYU pragma: keep
 
@@ -104,6 +104,13 @@ bool NotificationAdManager::Remove(const std::string& placement_id) {
   return true;
 }
 
+void NotificationAdManager::RemoveAll() {
+  ads_.clear();
+
+  AdsClientHelper::GetInstance()->SetListPref(prefs::kNotificationAds,
+                                              NotificationAdsToValue(ads_));
+}
+
 void NotificationAdManager::CloseAll() {
   for (const auto& ad : ads_) {
     AdsClientHelper::GetInstance()->CloseNotificationAd(ad.placement_id);
@@ -142,13 +149,6 @@ void NotificationAdManager::MaybeRemoveAll() {
     RemoveAll();
   }
 #endif  // BUILDFLAG(IS_ANDROID)
-}
-
-void NotificationAdManager::RemoveAll() {
-  ads_.clear();
-
-  AdsClientHelper::GetInstance()->SetListPref(prefs::kNotificationAds,
-                                              NotificationAdsToValue(ads_));
 }
 
 }  // namespace ads

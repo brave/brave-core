@@ -466,23 +466,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         To disable this extension in private mode and Tor mode, unselect this option.
       </message>
 
-      <!-- In-page Translation -->
-      <message name="IDS_BRAVE_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE" desc="Title text for the translate bubble when asking to translate a page.">
-        Translate this page? This will send all text on this page to Microsoft for translation.
-      </message>
-      <message name="IDS_BRAVE_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_INSTALL_TITLE" desc="Title text for the translate bubble when asking to install Google Translate.">
-        Install Google Translate extension to translate this page?
-      </message>
-      <message name="IDS_BRAVE_TRANSLATE_BUBBLE_INSTALL" desc="Text to show for the translate bubble's accept button to install Google Translate.">
-        Install
-      </message>
-      <message name="IDS_BRAVE_TRANSLATE_BUBBLE_CANCEL" desc="Text to show for the translate bubble's cancel button to dismiss the bubble.">
-        Cancel
-      </message>
-      <message name="IDS_BRAVE_TRANSLATE_BUBBLE_DONT_ASK_AGAIN" desc="Text to show for the don't ask again button.">
-        Don't ask me again
-      </message>
-
       <!-- App shortcuts -->
       <if expr="not is_win">
         <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BRAVE_NIGHTLY" desc="Name for the Brave Apps Start Menu folder name.">

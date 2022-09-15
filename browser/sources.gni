@@ -327,7 +327,7 @@ if (enable_ftx) {
   brave_chrome_browser_deps += [ "//brave/browser/ftx" ]
 }
 
-if (enable_brave_translate_go || enable_brave_translate_extension) {
+if (enable_brave_translate_go) {
   brave_chrome_browser_sources += [
     "//brave/browser/translate/brave_translate_prefs_migration.cc",
     "//brave/browser/translate/brave_translate_prefs_migration.h",
