@@ -1,9 +1,9 @@
 diff --git a/build/config/chrome_build.gni b/build/config/chrome_build.gni
-index 5c51d7f2cc3dba9c46a4081eb5d9969c9a6eb900..3de22adb0f8979aa3d4463f74cb537b113ec07d3 100644
+index 3f16210b2f5916a2cd4f3406e964da98c4a4e63d..73457cfc8e2fd82a00739e790ada79fffe8a558b 100644
 --- a/build/config/chrome_build.gni
 +++ b/build/config/chrome_build.gni
 @@ -1,6 +1,7 @@
- # Copyright 2015 The Chromium Authors. All rights reserved.
+ # Copyright 2015 The Chromium Authors
  # Use of this source code is governed by a BSD-style license that can be
  # found in the LICENSE file.
 +import("//brave/build/config/brave_build.gni")

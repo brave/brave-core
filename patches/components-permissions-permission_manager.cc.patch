@@ -1,16 +1,16 @@
 diff --git a/components/permissions/permission_manager.cc b/components/permissions/permission_manager.cc
-index 04d25e19943c704e06a4859f01fa69455e232ac3..d2f73db0779bf344dadefdca0aa0883ecfc5da99 100644
+index 4d91605e578686e1fc7220acdf652bb5d7f5a417..e5986b0c722cd45728f670093a016663d5d391cf 100644
 --- a/components/permissions/permission_manager.cc
 +++ b/components/permissions/permission_manager.cc
-@@ -266,6 +266,7 @@ void PermissionManager::RequestPermissionsFromCurrentDocument(
- 
-   const PermissionRequestID request_id(render_frame_host, request_local_id);
+@@ -310,6 +310,7 @@ void PermissionManager::RequestPermissionsFromCurrentDocument(
+         permission_status_callback) {
+   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
    const GURL requesting_origin =
 +      BRAVE_FORCED_REQUESTING_ORIGIN
        PermissionUtil::GetLastCommittedOriginAsURL(render_frame_host);
-   const GURL embedding_origin =
-       GetEmbeddingOrigin(render_frame_host, requesting_origin);
-@@ -347,6 +348,7 @@ PermissionManager::GetPermissionResultForCurrentDocument(
+   RequestPermissionsInternal(permissions_types, render_frame_host,
+                              requesting_origin, user_gesture,
+@@ -360,6 +361,7 @@ PermissionManager::GetPermissionResultForCurrentDocument(
        PermissionUtil::PermissionTypeToContentSettingType(permission);
  
    const GURL requesting_origin =
