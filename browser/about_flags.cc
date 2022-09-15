@@ -496,7 +496,7 @@ constexpr char kAllowCertainClientHintsDescription[] =
     {"translate",                                                    \
      flag_descriptions::kTranslateName,                              \
      flag_descriptions::kTranslateDescription,                       \
-     kOsDesktop | kOsAndroid,                                                     \
+     kOsDesktop | kOsAndroid,                                        \
      FEATURE_VALUE_TYPE(translate::kTranslate)},
 #else
 #define BRAVE_TRANSLATE_GO_FEATURE_ENTRIES
