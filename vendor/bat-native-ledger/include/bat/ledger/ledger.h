@@ -282,11 +282,6 @@ class LEDGER_EXPORT Ledger {
 
   virtual void StartMonthlyContribution() = 0;
 
-  virtual void SaveMediaInfo(
-      const std::string& type,
-      const base::flat_map<std::string, std::string>& data,
-      PublisherInfoCallback callback) = 0;
-
   virtual void UpdateMediaDuration(uint64_t window_id,
                                    const std::string& publisher_key,
                                    uint64_t duration,
@@ -340,8 +335,6 @@ class LEDGER_EXPORT Ledger {
                                 LegacyResultCallback callback) = 0;
 
   virtual void GetAllPromotions(GetAllPromotionsCallback callback) = 0;
-
-  virtual void GetAnonWalletStatus(LegacyResultCallback callback) = 0;
 
   virtual void GetTransactionReport(mojom::ActivityMonth month,
                                     int year,

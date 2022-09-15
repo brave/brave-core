@@ -811,26 +811,13 @@ void RewardsServiceImpl::OnGetRewardsWalletForP3A(
   }
 }
 
-void RewardsServiceImpl::OnGetAutoContributeProperties(
-    GetAutoContributePropertiesCallback callback,
-    ledger::mojom::AutoContributePropertiesPtr properties) {
-  if (!properties) {
-    std::move(callback).Run(nullptr);
-    return;
-  }
-
-  std::move(callback).Run(std::move(properties));
-}
-
 void RewardsServiceImpl::GetAutoContributeProperties(
     GetAutoContributePropertiesCallback callback) {
   if (!Connected()) {
     return DeferCallback(FROM_HERE, std::move(callback), nullptr);
   }
 
-  bat_ledger_->GetAutoContributeProperties(
-      base::BindOnce(&RewardsServiceImpl::OnGetAutoContributeProperties,
-                     AsWeakPtr(), std::move(callback)));
+  bat_ledger_->GetAutoContributeProperties(std::move(callback));
 }
 
 void RewardsServiceImpl::OnReconcileComplete(
@@ -1136,8 +1123,8 @@ void RewardsServiceImpl::OnAttestationAndroid(
     const std::string& token,
     const bool attestation_passed) {
   if (!Connected() || !token_received) {
-    return DeferCallback(FROM_HERE, std::move(callback),
-                         ledger::mojom::Result::LEDGER_ERROR, nullptr);
+    std::move(callback).Run(ledger::mojom::Result::LEDGER_ERROR, nullptr);
+    return;
   }
 
   base::Value::Dict solution;
@@ -1832,29 +1819,6 @@ void RewardsServiceImpl::SaveRecurringTip(const std::string& publisher_key,
   bat_ledger_->SaveRecurringTip(
       std::move(info), base::BindOnce(&RewardsServiceImpl::OnSaveRecurringTip,
                                       AsWeakPtr(), std::move(callback)));
-}
-
-void RewardsServiceImpl::OnMediaInlineInfoSaved(
-    SaveMediaInfoCallback callback,
-    const ledger::mojom::Result result,
-    ledger::mojom::PublisherInfoPtr publisher) {
-  std::move(callback).Run(std::move(publisher));
-}
-
-void RewardsServiceImpl::SaveInlineMediaInfo(
-    const std::string& media_type,
-    const base::flat_map<std::string, std::string>& args,
-    SaveMediaInfoCallback callback) {
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback), nullptr);
-  }
-
-  bat_ledger_->SaveMediaInfo(
-      media_type,
-      args,
-      base::BindOnce(&RewardsServiceImpl::OnMediaInlineInfoSaved,
-                    AsWeakPtr(),
-                    std::move(callback)));
 }
 
 void RewardsServiceImpl::UpdateMediaDuration(
@@ -2789,16 +2753,6 @@ void RewardsServiceImpl::UnblindedTokensReady() {
   for (auto& observer : observers_) {
     observer.OnUnblindedTokensReady(this);
   }
-}
-
-void RewardsServiceImpl::GetAnonWalletStatus(
-    GetAnonWalletStatusCallback callback) {
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback),
-                         ledger::mojom::Result::LEDGER_ERROR);
-  }
-
-  bat_ledger_->GetAnonWalletStatus(std::move(callback));
 }
 
 void RewardsServiceImpl::GetMonthlyReport(

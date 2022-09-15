@@ -234,11 +234,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void SetAutoContributionAmount(const double amount) const override;
 
-  void SaveInlineMediaInfo(
-      const std::string& media_type,
-      const base::flat_map<std::string, std::string>& args,
-      SaveMediaInfoCallback callback) override;
-
   void UpdateMediaDuration(
       const uint64_t window_id,
       const std::string& publisher_key,
@@ -313,8 +308,6 @@ class RewardsServiceImpl : public RewardsService,
                              ProcessRewardsPageUrlCallback callback) override;
 
   void DisconnectWallet() override;
-
-  void GetAnonWalletStatus(GetAnonWalletStatusCallback callback) override;
 
   void SetAutoContributeEnabled(bool enabled) override;
 
@@ -598,17 +591,9 @@ class RewardsServiceImpl : public RewardsService,
 
   // end ledger::LedgerClient
 
-  // Mojo Proxy methods
-  void OnGetAutoContributeProperties(
-      GetAutoContributePropertiesCallback callback,
-      ledger::mojom::AutoContributePropertiesPtr props);
-
   void OnRefreshPublisher(RefreshPublisherCallback callback,
                           const std::string& publisher_key,
                           ledger::mojom::PublisherStatus status);
-  void OnMediaInlineInfoSaved(SaveMediaInfoCallback callback,
-                              const ledger::mojom::Result result,
-                              ledger::mojom::PublisherInfoPtr publisher);
 
   void OnContributeUnverifiedPublishers(
       ledger::mojom::Result result,

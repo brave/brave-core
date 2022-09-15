@@ -699,15 +699,6 @@ void LedgerImpl::StartMonthlyContribution() {
   WhenReady([this]() { contribution()->StartMonthlyContribution(); });
 }
 
-void LedgerImpl::SaveMediaInfo(
-    const std::string& type,
-    const base::flat_map<std::string, std::string>& data,
-    PublisherInfoCallback callback) {
-  WhenReady([this, type, data, callback]() {
-    media()->SaveMediaInfo(type, data, callback);
-  });
-}
-
 void LedgerImpl::UpdateMediaDuration(uint64_t window_id,
                                      const std::string& publisher_key,
                                      uint64_t duration,
@@ -860,10 +851,6 @@ void LedgerImpl::DisconnectWallet(const std::string& wallet_type,
 
 void LedgerImpl::GetAllPromotions(GetAllPromotionsCallback callback) {
   WhenReady([this, callback]() { database()->GetAllPromotions(callback); });
-}
-
-void LedgerImpl::GetAnonWalletStatus(LegacyResultCallback callback) {
-  WhenReady([this, callback]() { wallet()->GetAnonWalletStatus(callback); });
 }
 
 void LedgerImpl::GetTransactionReport(mojom::ActivityMonth month,

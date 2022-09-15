@@ -866,6 +866,10 @@ void RewardsDOMHandler::GetReconcileStamp(const base::Value::List& args) {
 
 void RewardsDOMHandler::OnAutoContributePropsReady(
     ledger::mojom::AutoContributePropertiesPtr properties) {
+  if (!properties) {
+    return;
+  }
+
   auto filter = ledger::mojom::ActivityInfoFilter::New();
   auto pair =
       ledger::mojom::ActivityInfoFilterOrderPair::New("ai.percent", false);
@@ -1663,6 +1667,7 @@ void RewardsDOMHandler::OnFetchBalance(const ledger::mojom::Result result,
     }
   } else {
     balance_value.Set("total", 0.0);
+    balance_value.Set("wallets", base::Value::Dict());
   }
 
   base::Value::Dict data;

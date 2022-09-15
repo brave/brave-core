@@ -1103,27 +1103,6 @@
         ]
       },
       {
-        "name": "getPublisherBanner",
-        "type": "function",
-        "description": "Retrieves data for publisher banner",
-        "parameters": [
-          {
-            "name": "publisher_key",
-            "type": "string"
-          },
-          {
-            "name": "callback",
-            "type": "function",
-            "parameters": [
-              {
-                "name": "banner",
-                "type": "any"
-              }
-            ]
-          }
-        ]
-      },
-      {
         "name": "refreshPublisher",
         "type": "function",
         "description": "Refreshes individual publisher status",
@@ -1340,23 +1319,6 @@
                     "type": "number"
                   }
                 }
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "getAnonWalletStatus",
-        "type": "function",
-        "description": "Gets wallet status for anon wallet",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "result",
-                "type": "integer"
               }
             ]
           }
