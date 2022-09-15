@@ -52,8 +52,8 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
         type: Array,
         readOnly: true,
         value: [
-          { name: "snowflake", value: 0 },
           { name: "obfs4", value: 1 },
+          { name: "Snowflake", value: 0 },
           { name: "meek-azure", value: 2 }
         ]
       },
@@ -157,6 +157,10 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
     this.browserProxy_.isTorManaged().then(managed => {
       this.disableTorOption_ = managed
     })
+  }
+
+  onSlotClick_(e) {
+    e.stopPropagation()
   }
 
   getCurrentConfig_() {
@@ -272,6 +276,10 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
     return item === selection
   }
 
+  usageEqual_(usage, current) {
+    return usage === current
+  }
+
   setTorEnabledPref_(enabled) {
     const pref = {
       key: '',
@@ -286,6 +294,13 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
     this.browserProxy_.setTorEnabled(e.target.checked)
   }
 
+  onUseBridgesChange_(e) {
+    e.stopPropagation()
+    setTimeout(() => {
+      this.$.bridgesGroup.scrollIntoView()
+    })
+  }
+
   setBridgesConfig_(e) {
     e.stopPropagation()
     this.loadedConfig_ = this.getCurrentConfig_()
@@ -298,7 +313,9 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
 
   showRequestBridgesDialogClosed_(event) {
     this.showRequestBridgesDialog_ = false
-    this.requestedBridges_ = event.currentTarget.bridges_.join('\n')
+    if (event.currentTarget.bridges_) {
+      this.requestedBridges_ = event.currentTarget.bridges_.join('\n')
+    }
   }
 
   currentRouteChanged() {

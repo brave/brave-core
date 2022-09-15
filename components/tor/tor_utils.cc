@@ -112,7 +112,7 @@ absl::optional<BridgesConfig> BridgesConfig::FromValue(const base::Value* v) {
       CastToEnum<Usage>(dict.FindInt(kUseBridgesKey).value_or(0));
 
   result.use_builtin =
-      CastToEnum<BuiltinType>(dict.FindInt(kUseBuiltinBridgesKey).value_or(0));
+      CastToEnum<BuiltinType>(dict.FindInt(kUseBuiltinBridgesKey).value_or(1));
 
   if (auto* bridges = dict.FindList(kProvidedBridgesKey)) {
     for (const auto& bridge : *bridges) {
