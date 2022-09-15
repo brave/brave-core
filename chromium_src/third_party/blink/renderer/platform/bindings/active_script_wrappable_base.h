@@ -6,14 +6,19 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_PLATFORM_BINDINGS_ACTIVE_SCRIPT_WRAPPABLE_BASE_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_PLATFORM_BINDINGS_ACTIVE_SCRIPT_WRAPPABLE_BASE_H_
 
+#include "brave/components/brave_page_graph/common/buildflags.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 #include "third_party/blink/renderer/platform/heap/garbage_collected.h"
 #include "v8/include/cppgc/allocation.h"
 #include "v8/include/v8.h"
 
 #define PostConstructionCallbackTrait PostConstructionCallbackTrait_ChromiumImpl
+#endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
 #include "src/third_party/blink/renderer/platform/bindings/active_script_wrappable_base.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 #undef PostConstructionCallbackTrait
 
 namespace blink {
@@ -25,6 +30,7 @@ namespace cppgc {
 template <typename T, typename>
 struct PostConstructionCallbackTrait;
 
+// Allow PostConstructionCallback to work with Node types.
 template <typename T>
 struct PostConstructionCallbackTrait<
     T,
@@ -38,5 +44,6 @@ struct PostConstructionCallbackTrait<
 };
 
 }  // namespace cppgc
+#endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_PLATFORM_BINDINGS_ACTIVE_SCRIPT_WRAPPABLE_BASE_H_
