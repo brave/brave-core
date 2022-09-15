@@ -41,20 +41,26 @@ struct TPPageStats {
 class TPStatsBlocklistChecker {
   static let shared = TPStatsBlocklistChecker()
   private let adblockSerialQueue = AdBlockStats.adblockSerialQueue
+  
+  enum BlockedType {
+    case image
+    case ad
+    case http
+  }
 
-  func isBlocked(requestURL: URL, sourceURL: URL, enabledLists: Set<BlocklistName>, resourceType: AdblockEngine.ResourceType, callback: @escaping (BlocklistName?) -> Void) {
+  func isBlocked(requestURL: URL, sourceURL: URL, loadedRuleTypes: Set<ContentBlockerManager.BlocklistRuleType>, resourceType: AdblockEngine.ResourceType, callback: @escaping (BlockedType?) -> Void) {
     guard let host = requestURL.host, !host.isEmpty else {
       // TP Stats init isn't complete yet
       callback(nil)
       return
     }
 
-    if resourceType == .image && enabledLists.contains(.image) {
+    if resourceType == .image && Preferences.Shields.blockImages.value {
       callback(.image)
     }
 
     adblockSerialQueue.async {
-      if (enabledLists.contains(.ad) || enabledLists.contains(.tracker))
+      if (loadedRuleTypes.contains(.general(.blockAds)) || loadedRuleTypes.contains(.general(.blockTrackers)))
           && AdBlockStats.shared.shouldBlock(requestURL: requestURL, sourceURL: sourceURL, resourceType: resourceType) {
         DispatchQueue.main.async {
           callback(.ad)
@@ -67,8 +73,8 @@ class TPStatsBlocklistChecker {
       if #unavailable(iOS 15.0) {
         HttpsEverywhereStats.shared.shouldUpgrade(requestURL) { shouldUpgrade in
           DispatchQueue.main.async {
-            if enabledLists.contains(.https) && shouldUpgrade {
-              callback(.https)
+            if loadedRuleTypes.contains(.general(.upgradeHTTP)) && shouldUpgrade {
+              callback(.http)
             } else {
               callback(nil)
             }

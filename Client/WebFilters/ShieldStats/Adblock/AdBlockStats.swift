@@ -8,34 +8,57 @@ import BraveCore
 
 private let log = Logger.browserLogger
 
-public class AdBlockStats: LocalAdblockResourceProtocol {
-  public static let shared = AdBlockStats()
+struct CosmeticFilterModel: Codable {
+  let hideSelectors: [String]
+  let styleSelectors: [String: [String]]
+  let exceptions: [String]
+  let injectedScript: String
+  let genericHide: Bool
+  
+  enum CodingKeys: String, CodingKey {
+    case hideSelectors = "hide_selectors"
+    case styleSelectors = "style_selectors"
+    case exceptions = "exceptions"
+    case injectedScript = "injected_script"
+    case genericHide = "generichide"
+  }
+  
+  func makeCSSRules() -> String {
+    let hideRules = hideSelectors.reduce("") { partialResult, rule in
+      return [partialResult, rule, "{display: none !important}\n"].joined()
+    }
+    
+    let styleRules = styleSelectors.reduce("") { partialResult, entry in
+      let subRules = entry.value.reduce("") { partialResult, subRule in
+        return [partialResult, subRule, ";"].joined()
+      }
+      
+      return [partialResult, entry.key, "{", subRules, " !important}\n"].joined()
+    }
+    
+    return [hideRules, styleRules].joined()
+  }
+}
 
-  /// File name of bundled general blocklist.
-  private let bundledGeneralBlocklist = "ABPFilterParserData"
+public class AdBlockStats {
+  public static let shared = AdBlockStats()
 
   fileprivate var fifoCacheOfUrlsChecked = FifoDict<Bool>()
 
   // Adblock engine for general adblock lists.
-  private let generalAdblockEngine: AdblockEngine
-
-  /// Adblock engine for regional, non-english locales.
-  private var regionalAdblockEngine: AdblockEngine?
+  private(set) var engines: [AdblockEngine]
 
   /// The task that downloads all the files. Can be cancelled
   private var downloadTask: AnyCancellable?
 
-  fileprivate var isRegionalAdblockEnabled: Bool { return Preferences.Shields.useRegionAdBlock.value }
-
-  fileprivate init() {
-    generalAdblockEngine = AdblockEngine()
+  init() {
+    engines = []
   }
 
   static let adblockSerialQueue = DispatchQueue(label: "com.brave.adblock-dispatch-queue")
-
-  public func startLoading() {
-    parseBundledGeneralBlocklist()
-    loadDownloadedDatFiles()
+  
+  func clearCaches() {
+    fifoCacheOfUrlsChecked = FifoDict<Bool>()
   }
   
   /// Checks the general and regional engines to see if the request should be blocked.
@@ -61,178 +84,96 @@ public class AdBlockStats: LocalAdblockResourceProtocol {
         return cachedResult
     }
     
-    let shouldBlock = generalAdblockEngine.shouldBlock(
-      requestURL: requestURL,
-      sourceURL: sourceURL,
-      resourceType: resourceType
-    ) || (isRegionalAdblockEnabled && regionalAdblockEngine?.shouldBlock(
-      requestURL: requestURL,
-      sourceURL: sourceURL,
-      resourceType: resourceType
-    ) ?? false)
+    let shouldBlock = engines.contains(where: { engine in
+      return engine.shouldBlock(
+        requestURL: requestURL,
+        sourceURL: sourceURL,
+        resourceType: resourceType
+      )
+    })
     
     fifoCacheOfUrlsChecked.addElement(shouldBlock, forKey: key)
     return shouldBlock
   }
-
-  private func parseBundledGeneralBlocklist() {
-    guard let path = Bundle.current.path(forResource: bundledGeneralBlocklist, ofType: "dat") else {
-      log.error("Can't find path for bundled general blocklist")
-      return
-    }
-    let fileUrl = URL(fileURLWithPath: path)
-
-    do {
-      let data = try Data(contentsOf: fileUrl)
-      AdBlockStats.adblockSerialQueue.async {
-        self.generalAdblockEngine.deserialize(data: data)
+  
+  func set(engines: [AdblockEngine]) {
+    self.engines = engines
+    self.clearCaches()
+  }
+  
+  func makeEngineScriptSouces(for url: URL) throws -> [String] {
+    return try engines.flatMap { engine -> [String] in
+      var results: [String] = []
+      let sources = try engine.makeEngineScriptSources(for: url)
+      
+      if let source = sources.cssInjectScript {
+        results.append(source)
       }
-    } catch {
-      log.error("Failed to parse bundled general blocklist: \(error)")
-    }
-  }
-
-  private func loadDownloadedDatFiles() {
-    let fm = FileManager.default
-
-    guard let folderUrl = fm.getOrCreateFolder(name: AdblockResourceDownloader.folderName) else {
-      log.error("Could not get directory with .dat files")
-      return
-    }
-
-    let enumerator = fm.enumerator(at: folderUrl, includingPropertiesForKeys: nil)
-    let filePaths = enumerator?.allObjects as? [URL]
-    let datFileUrls = filePaths?.filter { $0.pathExtension == "dat" }
-
-    downloadTask = nil
-    let setupFiles = datFileUrls?.compactMap({ url -> AnyPublisher<Void, Error>? in
-      let fileName = url.deletingPathExtension().lastPathComponent
-      guard let data = fm.contents(atPath: url.path) else { return nil }
-      return self.setDataFile(data: data, id: fileName)
-    }) ?? []
-    
-    if !setupFiles.isEmpty {
-      downloadTask = Publishers.MergeMany(setupFiles)
-        .collect()
-        .subscribe(on: DispatchQueue.global(qos: .userInitiated))
-        .map({ _ in () })
-        .sink { res in
-          if case .failure(let error) = res {
-            log.error("Failed to Setup Adblock Stats: \(error)")
-          }
-        } receiveValue: { _ in
-          log.debug("Successfully Setup Adblock Stats")
-        }
-    }
-  }
-
-  // Firefox has uses urls of the form
-  // http://localhost:6571/errors/error.html?url=http%3A//news.google.ca/
-  // to populate the browser history, and load+redirect using GCDWebServer
-  private func stripLocalhostWebServer(_ url: String?) -> String {
-    guard let url = url else { return "" }
-
-    // I think the ones prefixed with the following are the only ones of concern. There is also about/sessionrestore urls, not sure if we need to look at those
-    let token = "?url="
-
-    if let range = url.range(of: token) {
-      return url[range.upperBound..<url.endIndex].removingPercentEncoding ?? ""
-    } else {
-      return url
-    }
-  }
-
-  func setDataFile(data: Data, id: String) -> AnyPublisher<Void, Error> {
-    if !isGeneralAdblocker(id: id) && regionalAdblockEngine == nil {
-      regionalAdblockEngine = AdblockEngine()
-    }
-
-    guard let engine = isGeneralAdblocker(id: id) ? generalAdblockEngine : regionalAdblockEngine else {
-      return Fail(error: "Adblock engine with id: \(id) is nil").eraseToAnyPublisher()
-    }
-
-    return Combine.Deferred {
-      Future { completion in
-        AdBlockStats.adblockSerialQueue.async {
-          if engine.deserialize(data: data) {
-            log.debug("Adblock file with id: \(id) deserialized successfully")
-            // Clearing the cache or checked urls.
-            // The new list can bring blocked resource that were previously set as not-blocked.
-            self.fifoCacheOfUrlsChecked = FifoDict<Bool>()
-            completion(.success(()))
-          } else {
-            completion(.failure("Failed to deserialize adblock list with id: \(id)"))
-          }
-        }
+      
+      if let source = sources.generalScript {
+        results.append(source)
       }
-    }.eraseToAnyPublisher()
-  }
-
-  private func isGeneralAdblocker(id: String) -> Bool {
-    return id == AdblockerType.general.identifier || id == bundledGeneralBlocklist
+      
+      return results
+    }
   }
 }
 
-extension AdBlockStats {
-  func cosmeticFiltersScript(for url: URL) throws -> String? {
-    guard let rules = CosmeticFiltersResourceDownloader.shared.cssRules(for: url).data(using: .utf8) else {
-      return nil
-    }
+extension AdblockEngine {
+  func makeEngineScriptSources(for url: URL) throws -> (cssInjectScript: String?, generalScript: String?) {
+    let rules = cosmeticResourcesForURL(url.absoluteString)
+    guard let data = rules.data(using: .utf8) else { return (nil, nil) }
+    let model = try JSONDecoder().decode(CosmeticFilterModel.self, from: data)
+    let cssRules = model.makeCSSRules()
+    let cssInjectScript: String?
+    let generalScript: String?
     
-    let model = try JSONDecoder().decode(CosmeticFilterModel.self, from: rules)
-    
-    var cssRules = ""
-    for rule in model.hideSelectors {
-      cssRules += "\(rule){display: none !important}\n"
-    }
-    
-    for (key, value) in model.styleSelectors {
-      var subRules = ""
-      for subRule in value {
-        subRules += subRule + ";"
-      }
+    if !cssRules.isEmpty {
+      cssInjectScript = """
+      (function() {
+        var head = document.head || document.getElementsByTagName('head')[0];
+        if (head == null) {
+          return;
+        }
+        
+        var style = document.createElement('style');
+        style.type = 'text/css';
       
-      cssRules += "\(key){" + subRules + " !important}\n"
+        var styles = atob("\(cssRules.toBase64())");
+        
+        if (style.styleSheet) {
+          style.styleSheet.cssText = styles;
+        } else {
+          style.appendChild(document.createTextNode(styles));
+        }
+
+        head.appendChild(style);
+      })();
+      """
+    } else {
+      cssInjectScript = nil
     }
-
-    var injectedScript = model.injectedScript
-
-    if !injectedScript.isEmpty, Preferences.Shields.autoRedirectAMPPages.value {
-      injectedScript = [
+    
+    if !model.injectedScript.isEmpty {
+      var injectedScriptSource = model.injectedScript
+      
+      injectedScriptSource = [
+        "(function(){",
         /// This boolean is used by a script injected by cosmetic filters and enables that script via this boolean
         /// The script is found here: https://github.com/brave/adblock-resources/blob/master/resources/de-amp.js
         /// - Note: This script is only a smaller part (1 of 3) of de-amping:
         /// The second part is handled by an inected script that redirects amp pages to their canonical links
         /// The third part is handled by debouncing amp links and handled by debouncing rules
-        "const deAmpEnabled = true;",
-        injectedScript
+        Preferences.Shields.autoRedirectAMPPages.value ? "const deAmpEnabled = true;" : "",
+        injectedScriptSource,
+        "})();"
       ].joined(separator: "\n")
+      
+      generalScript = injectedScriptSource
+    } else {
+      generalScript = nil
     }
     
-    return """
-    (function() {
-      var head = document.head || document.getElementsByTagName('head')[0];
-      if (head == null) {
-          return;
-      }
-      
-      var style = document.createElement('style');
-      style.type = 'text/css';
-    
-      var styles = atob("\(cssRules.toBase64())");
-      
-      if (style.styleSheet) {
-        style.styleSheet.cssText = styles;
-      } else {
-        style.appendChild(document.createTextNode(styles));
-      }
-
-      head.appendChild(style);
-      
-      (function(){
-        \(injectedScript)
-      })();
-    })();
-    """
+    return (cssInjectScript, generalScript)
   }
 }

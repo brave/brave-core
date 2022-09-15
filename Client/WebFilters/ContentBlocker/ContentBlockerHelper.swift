@@ -7,8 +7,9 @@ import Shared
 import Data
 import BraveShared
 import Combine
+import os.log
 
-private let log = Logger.browserLogger
+private let log = ContentBlockerManager.log
 
 enum BlockerStatus: String {
   case Disabled
@@ -42,25 +43,17 @@ enum BlockingStrength: String {
 }
 
 class ContentBlockerHelper {
-
-  static let ruleStore: WKContentRuleListStore = WKContentRuleListStore.default()
   weak var tab: Tab?
 
-  static func compileBundledLists() -> AnyPublisher<Void, Error> {
-    return BlocklistName.compileBundledRules(ruleStore: ruleStore)
-  }
-
-  var isUserEnabled: Bool? {
-    didSet {
-      setupTabTrackingProtection()
-      guard let tab = tab else { return }
-      TabEvent.post(.didChangeContentBlocking, for: tab)
-      tab.reload()
-    }
-  }
-
   var isEnabled: Bool {
-    return isUserEnabled ?? (tab != nil)
+    return tab != nil
+  }
+  
+  /// The rule types and source types that are currently loaded in this tab
+  private(set) var loadedRuleTypeWithSourceTypes: Set<ContentBlockerManager.RuleTypeWithSourceType> = []
+  /// The rule types with their source types that should be  loaded in this tab
+  var ruleListTypes: Set<ContentBlockerManager.RuleTypeWithSourceType> = [] {
+    didSet { reloadNeededRuleLists() }
   }
 
   var stats: TPPageStats = TPPageStats() {
@@ -74,111 +67,68 @@ class ContentBlockerHelper {
   }
 
   var statsDidChange: ((TPPageStats) -> Void)?
-
   var blockedRequests: Set<URL> = []
-
-  static private var blockImagesRule: WKContentRuleList?
-  static var heavyInitHasRunOnce = false
 
   init(tab: Tab) {
     self.tab = tab
-
-    NotificationCenter.default.addObserver(self, selector: #selector(setupTabTrackingProtection), name: .contentBlockerTabSetupRequired, object: nil)
   }
-
-  class func prefsChanged() {
-    // This class func needs to notify all the active instances of ContentBlockerHelper to update.
-    NotificationCenter.default.post(name: .contentBlockerTabSetupRequired, object: nil)
-  }
-
-  deinit {
-    NotificationCenter.default.removeObserver(self)
-  }
-
-  // Function to install or remove TP for a tab
-  @objc func setupTabTrackingProtection() {
-    if !ContentBlockerHelper.heavyInitHasRunOnce {
-      return
-    }
-
-    removeTrackingProtection()
-
-    if !isEnabled {
-      return
-    }
-
-    let rules = BlocklistName.allLists
-    for list in rules {
-      let name = list.filename
-      ContentBlockerHelper.ruleStore.lookUpContentRuleList(forIdentifier: name) { rule, error in
-        guard let rule = rule else {
-          let msg = "lookUpContentRuleList for \(name):  \(error?.localizedDescription ?? "empty rules")"
-          log.error("Content blocker error: \(msg)")
-          return
-        }
-        self.addToTab(contentRuleList: rule)
+  
+  private func reloadNeededRuleLists() {
+    // Remove old values that were previously added
+    for loadedRuleTypeWithSourceType in loadedRuleTypeWithSourceTypes {
+      // Check if should be removed or if the source type doesn't match, otherwise don't do anything
+      guard !ruleListTypes.contains(loadedRuleTypeWithSourceType) else {
+        continue
       }
+      
+      guard let ruleList = ContentBlockerManager.shared.cachedRuleList(for: loadedRuleTypeWithSourceType.ruleType) else {
+        // For some reason the rule is not cached. Shouldn't happen.
+        // But if it does we have to remove all the rule lists
+        // We will add back all the necessary ones below
+        tab?.webView?.configuration.userContentController.removeAllContentRuleLists()
+        loadedRuleTypeWithSourceTypes = []
+        assertionFailure("This shouldn't happen!")
+        break
+      }
+      
+      // Since either it shouldn't be included or the source type doesn't match, we remove it
+      tab?.webView?.configuration.userContentController.remove(ruleList)
+      loadedRuleTypeWithSourceTypes.remove(loadedRuleTypeWithSourceType)
     }
-  }
-
-  private func removeTrackingProtection() {
-    guard let tab = tab else { return }
-    tab.webView?.configuration.userContentController.removeAllContentRuleLists()
-
-    if let rule = ContentBlockerHelper.blockImagesRule, tab.noImageMode {
-      addToTab(contentRuleList: rule)
+    
+    // Add new values that are not yet added (or were removed above because the source type didn't match)
+    for ruleTypeWithSourceType in ruleListTypes {
+      // Only add rule lists that are missing
+      guard !loadedRuleTypeWithSourceTypes.contains(ruleTypeWithSourceType) else { continue }
+      guard let ruleList = ContentBlockerManager.shared.cachedRuleList(for: ruleTypeWithSourceType.ruleType) else { continue }
+      tab?.webView?.configuration.userContentController.add(ruleList)
+      loadedRuleTypeWithSourceTypes.insert(ruleTypeWithSourceType)
     }
-  }
-
-  private func addToTab(contentRuleList: WKContentRuleList) {
-    tab?.webView?.configuration.userContentController.add(contentRuleList)
-  }
-
-  func noImageMode(enabled: Bool) {
-    guard let rule = ContentBlockerHelper.blockImagesRule else { return }
-
-    if enabled {
-      addToTab(contentRuleList: rule)
-    } else {
-      tab?.webView?.configuration.userContentController.remove(rule)
+    
+    #if DEBUG
+    let rulesString = loadedRuleTypeWithSourceTypes.map { ruleTypeWithSourceType -> String in
+      let ruleTypeString: String
+      
+      switch ruleTypeWithSourceType.ruleType {
+      case .general(let type):
+        ruleTypeString = type.rawValue
+      case .filterList(let uuid):
+        ruleTypeString = "filterList(\(uuid))"
+      }
+      
+      let rulesDebugString =
+      """
+      {
+      ruleType: \(ruleTypeString)
+      sourceType: \(ruleTypeWithSourceType.sourceType)
+      }
+      """
+      
+      return rulesDebugString
     }
-
-    // Async required here to ensure remove() call is processed.
-    DispatchQueue.main.async() {
-      self.tab?.webView?.evaluateSafeJavaScript(functionName: "window.__firefox__.NoImageMode.setEnabled", args: [enabled], contentWorld: .defaultClient)
-    }
-  }
-
-}
-
-// MARK: Static methods to check if Tracking Protection is enabled in the user's prefs
-
-extension ContentBlockerHelper {
-
-  static func setTrackingProtectionMode(_ enabled: Bool, for prefs: Prefs, with tabManager: TabManager) {
-    guard let selectedTab = tabManager.selectedTab else {
-      return
-    }
-
-    let key: String
-
-    switch selectedTab.type {
-    case .regular:
-      key = ContentBlockingConfig.Prefs.normalBrowsingEnabledKey
-    case .private:
-      key = ContentBlockingConfig.Prefs.privateBrowsingEnabledKey
-    }
-
-    prefs.setBool(enabled, forKey: key)
-    ContentBlockerHelper.prefsChanged()
-  }
-
-  static func isTrackingProtectionActive(tabManager: TabManager) -> Bool {
-    return tabManager.selectedTab != nil
-  }
-
-  static func toggleTrackingProtectionMode(for prefs: Prefs, tabManager: TabManager) {
-    let isEnabled = ContentBlockerHelper.isTrackingProtectionActive(tabManager: tabManager)
-    setTrackingProtectionMode(!isEnabled, for: prefs, with: tabManager)
+    
+    log.debug("ContentBlockerHelper")
+    log.debug("loaded \(self.loadedRuleTypeWithSourceTypes.count, privacy: .public) tab rules:\n\(rulesString, privacy: .public)")
+    #endif
   }
 }

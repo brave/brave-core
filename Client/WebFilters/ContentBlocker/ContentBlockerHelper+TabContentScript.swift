@@ -75,17 +75,17 @@ extension ContentBlockerHelper: TabContentScript {
       // Getting this domain and current tab urls before going into asynchronous closure
       // to avoid threading problems(#1094, #1096)
       assertIsMainThread("Getting enabled blocklists should happen on main thread")
-      let enabledLists = BlocklistName.blocklists(forDomain: domain).on
+      let loadedRuleTypes = Set(loadedRuleTypeWithSourceTypes.map({ $0.ruleType }))
 
       TPStatsBlocklistChecker.shared.isBlocked(
         requestURL: requestURL,
         sourceURL: sourceURL,
-        enabledLists: enabledLists,
+        loadedRuleTypes: loadedRuleTypes,
         resourceType: dto.data.resourceType
-      ) { listItem in
-        guard let listItem = listItem else { return }
+      ) { blockedType in
+        guard let blockedType = blockedType else { return }
  
-        if listItem == .https && dto.data.resourceType != .image && currentTabURL.scheme == "https" && requestURL.scheme == "http" {
+        if blockedType == .http && dto.data.resourceType != .image && currentTabURL.scheme == "https" && requestURL.scheme == "http" {
           // WKWebView will block loading this URL so we can't count it due to mixed content restrictions
           // Unfortunately, it does not check to see if a content blocker would promote said URL to https
           // before blocking the load
@@ -94,7 +94,7 @@ extension ContentBlockerHelper: TabContentScript {
         
         assertIsMainThread("Result should happen on the main thread")
         
-        if listItem == .ad, Preferences.PrivacyReports.captureShieldsData.value,
+        if blockedType == .ad, Preferences.PrivacyReports.captureShieldsData.value,
            let domainURL = URL(string: domainURLString),
            let blockedResourceHost = requestURL.baseDomain,
            !PrivateBrowsingManager.shared.isPrivateBrowsing {
@@ -108,21 +108,15 @@ extension ContentBlockerHelper: TabContentScript {
         // Increase global stats (here due to BlocklistName being in Client and BraveGlobalShieldStats being
         // in BraveShared)
         let stats = BraveGlobalShieldStats.shared
-        switch listItem {
+        switch blockedType {
         case .ad:
           stats.adblock += 1
           self.stats = self.stats.adding(adCount: 1)
-        case .https:
+        case .http:
           stats.httpse += 1
           self.stats = self.stats.adding(httpsCount: 1)
-        case .tracker:
-          stats.trackingProtection += 1
-          self.stats = self.stats.adding(trackerCount: 1)
         case .image:
           stats.images += 1
-        default:
-          // TODO: #97 Add fingerprinting count here when it is integrated
-          break
         }
       }
     } catch {

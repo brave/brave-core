@@ -120,6 +120,13 @@ class Tab: NSObject {
   var restoring: Bool = false
   var pendingScreenshot = false
   
+  typealias FrameEvaluation = (frameInfo: WKFrameInfo, source: String)
+  
+  /// A list of pending frames that are loaded per main frame
+  ///
+  /// We need this information in order to execute scripts on a per-frame basis once navigation is comitted and finished
+  var frameEvaluations: [URL: [FrameEvaluation]] = [:]
+  
   /// The url set after a successful navigation. This will also set the `url` property.
   ///
   /// - Note: Unlike the `url` property, which may be set during pre-navigation,
@@ -181,20 +188,6 @@ class Tab: NSObject {
   /// When viewing a non-HTML content type in the webview (like a PDF document), this URL will
   /// point to a tempfile containing the content so it can be shared to external applications.
   var temporaryDocument: TemporaryDocument?
-
-  fileprivate var _noImageMode = false
-
-  // Use computed property so @available can be used to guard `noImageMode`.
-  var noImageMode: Bool {
-    get { return _noImageMode }
-    set {
-      if newValue == _noImageMode {
-        return
-      }
-      _noImageMode = newValue
-      contentBlocker.noImageMode(enabled: _noImageMode)
-    }
-  }
 
   // There is no 'available macro' on props, we currently just need to store ownership.
   lazy var contentBlocker = ContentBlockerHelper(tab: self)

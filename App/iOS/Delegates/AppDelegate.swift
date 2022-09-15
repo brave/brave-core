@@ -140,8 +140,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     migration = Migration(braveCore: braveCore)
-    // Setup Adblock Stats and HTTPSE Stats.
-    AdBlockStats.shared.startLoading()
 
     // TODO: Downgrade to 14.5 once api becomes available.
     if #unavailable(iOS 15.0) {
@@ -351,8 +349,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       UrpLog.log("Failed to initialize user referral program")
     }
 
-    AdblockResourceDownloader.shared.startLoading()
-    CosmeticFiltersResourceDownloader.shared.startLoading()
     DebouncingResourceDownloader.shared.startLoading()
 
     return shouldPerformAdditionalDelegateHandling

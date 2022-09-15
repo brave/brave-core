@@ -67,6 +67,10 @@ class ScriptFactory {
     }
     
     switch domainType {
+    case .siteStateListener:
+      let fakeParams = try UserScriptHelper.makeSiteStateParams(securityToken: UserScriptManager.securityTokenString) ?? "{}"
+      source = source.replacingOccurrences(of: "$<args>", with: fakeParams)
+      
     case .farblingProtection(let etld):
       let randomConfiguration = RandomConfiguration(etld: etld)
       let fakeParams = try FarblingProtectionHelper.makeFarblingParams(from: randomConfiguration)

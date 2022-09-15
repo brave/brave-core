@@ -110,12 +110,19 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
             }
           }),
         .boolRow(title: Strings.fingerprintingProtection, detailText: Strings.fingerprintingProtectionDescription, option: Preferences.Shields.fingerprintingProtection),
+        
+        Row(
+          text: Strings.contentFiltering,
+          detailText: Strings.contentFilteringDescription,
+          selection: { [weak self] in
+            let controller = UIHostingController(rootView: FilterListsView())
+            self?.navigationController?.pushViewController(controller, animated: true)
+          },
+          accessory: .disclosureIndicator, cellClass: MultilineSubtitleCell.self, uuid: "content-filtering"
+        )
       ],
       footer: .title(Strings.shieldsDefaultsFooter)
     )
-    if let locale = Locale.current.languageCode, let _ = ContentBlockerRegion.with(localeCode: locale) {
-      shields.rows.append(.boolRow(title: Strings.useRegionalAdblock, option: Preferences.Shields.useRegionAdBlock))
-    }
     return shields
   }()
 
@@ -226,6 +233,7 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
         )
       )
     }
+    
     return section
   }()
 

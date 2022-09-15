@@ -43,6 +43,16 @@ class LinkPreviewViewController: UIViewController {
           let webView = currentTab.webView else {
       return
     }
+
+    let domain = Domain.getOrCreate(forUrl: url, persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
+    let compiledRuleTypes = ContentBlockerManager.shared.compiledRuleTypes(for: domain)
+    
+    Task(priority: .userInitiated) {
+      let ruleLists = await ContentBlockerManager.shared.loadRuleLists(for: Set(compiledRuleTypes.map({ $0.ruleType })))
+      for ruleList in ruleLists {
+        webView.configuration.userContentController.add(ruleList)
+      }
+    }
     
     webView.frame = view.bounds
     view.addSubview(webView)

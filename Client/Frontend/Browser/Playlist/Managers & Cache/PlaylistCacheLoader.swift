@@ -670,13 +670,10 @@ extension PlaylistWebLoader: WKNavigationDelegate {
         // Force adblocking on
         domainForShields.shield_allOff = 0
         domainForShields.shield_adblockAndTp = true
-
-        let (on, off) = BlocklistName.blocklists(forDomain: domainForShields)
-        let controller = webView.configuration.userContentController
-
-        // Grab all lists that have valid rules and add/remove them as necessary
-        on.compactMap { $0.rule }.forEach(controller.add)
-        off.compactMap { $0.rule }.forEach(controller.remove)
+        
+        // Load block lists
+        let enabledRuleTypes = ContentBlockerManager.shared.compiledRuleTypes(for: domainForShields)
+        tab.contentBlocker.ruleListTypes = enabledRuleTypes
 
         let isScriptsEnabled = !domainForShields.isShieldExpected(.NoScript, considerAllShieldsOption: true)
         preferences.allowsContentJavaScript = isScriptsEnabled
@@ -684,14 +681,6 @@ extension PlaylistWebLoader: WKNavigationDelegate {
 
       // Cookie Blocking code below
       tab.userScriptManager?.isCookieBlockingEnabled = Preferences.Privacy.blockAllCookies.value
-
-      if let rule = BlocklistName.cookie.rule {
-        if Preferences.Privacy.blockAllCookies.value {
-          webView.configuration.userContentController.add(rule)
-        } else {
-          webView.configuration.userContentController.remove(rule)
-        }
-      }
 
       decisionHandler(.allow, preferences)
       return
