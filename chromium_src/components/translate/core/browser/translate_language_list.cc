@@ -13,8 +13,8 @@ namespace translate {
 
 namespace {
 const char* const kBraveDefaultLanguageList[] = {
-    "de", "en", "es", "fr", "hi", "it", "ja",      "nl",
-    "pl", "pt", "ro", "ru", "tr", "vi", "zh-Hans",
+    "de", "en", "es", "fr", "hi", "it", "ja",    "nl",
+    "pl", "pt", "ro", "ru", "tr", "vi", "zh-CN",
 };
 }  // namespace
 
