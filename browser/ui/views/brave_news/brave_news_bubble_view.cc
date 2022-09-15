@@ -150,7 +150,7 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
   set_adjust_if_offscreen(true);
 
   title_label_ = AddChildView(std::make_unique<views::Label>(
-      l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_BUBBLE_DISMISS_FOREVER),
+      l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_BUBBLE_TITLE),
       views::style::CONTEXT_DIALOG_TITLE));
 
   views::FlexLayout* const layout =
