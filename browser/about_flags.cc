@@ -298,7 +298,7 @@ constexpr char kBraveNewsCardPeekFeatureDescription[] =
     "of the New Tab Page, after a short delay.";
 
 constexpr char kBraveNewsSubscribeButtonName[] =
-    "Enable Brave New Subscribe Button";
+    "Enable Brave News Subscribe Button";
 constexpr char kBraveNewsSubscribeButtonDescription[] =
     "Show a button in the toolbar to allow you to add supported sites to Brave "
     "News.";

@@ -112,7 +112,9 @@ void BraveActionsContainer::Init() {
   }
 
   if (base::FeatureList::IsEnabled(
-          brave_today::features::kBraveNewsSubscribeButtonFeature)) {
+          brave_today::features::kBraveNewsSubscribeButtonFeature) &&
+      base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature) &&
+      !browser_->profile()->IsOffTheRecord()) {
     AddActionViewForNews();
   }
 
