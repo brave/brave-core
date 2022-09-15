@@ -5,10 +5,10 @@
 
 #include "bat/ads/internal/ml/pipeline/pipeline_embedding_value_util.h"
 
-#include "bat/ads/internal/ml/pipeline/pipeline_embedding_info.h"
-
 #include <utility>
 #include <vector>
+
+#include "bat/ads/internal/ml/pipeline/pipeline_embedding_info.h"
 
 namespace {
 
