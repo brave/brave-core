@@ -4,8 +4,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/utilities/response_metadata.h"
+
 #include <sstream>
-#include <string>
+
 #include "third_party/blink/renderer/platform/loader/fetch/resource_response.h"
 #include "third_party/blink/renderer/platform/network/http_header_map.h"
 

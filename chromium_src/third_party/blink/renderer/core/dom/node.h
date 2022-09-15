@@ -30,6 +30,10 @@ namespace cppgc {
 template <typename T, typename>
 struct PostConstructionCallbackTrait;
 
+// This PostConstruction extension adds Node::NodeConstructed() call after the
+// Node construction. We use this to track fully constructed Node in the
+// PageGraph engine. It's important to have all subclasses constructed so we can
+// get the actual Node type and do DynamicTo<>() conversion if required.
 template <typename T>
 struct PostConstructionCallbackTrait<
     T,
@@ -40,6 +44,8 @@ struct PostConstructionCallbackTrait<
   static void Call(blink::Node* object) { object->NodeConstructed(); }
 };
 
+// If Node is derived from ActiveScriptWrappableBase we need to call both
+// PostConstructionCallbacks.
 template <typename T>
 struct PostConstructionCallbackTrait<
     T,

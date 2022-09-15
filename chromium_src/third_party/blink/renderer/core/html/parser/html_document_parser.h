@@ -25,6 +25,12 @@ namespace cppgc {
 template <typename T, typename>
 struct PostConstructionCallbackTrait;
 
+// This PostConstruction extension adds
+// HTMLDocumentParser::HTMLDocumentParserConstructed() call after the
+// HTMLDocumentParser construction. We use this to disable HTMLResourcePreloader
+// when a PageGraph session is active, which allows us to connect network
+// requests with the actual DOM Nodes.
+
 template <typename T>
 struct PostConstructionCallbackTrait<
     T,
