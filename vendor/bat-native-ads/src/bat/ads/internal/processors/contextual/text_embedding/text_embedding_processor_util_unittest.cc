@@ -45,10 +45,10 @@ TEST_F(BatAdsTextEmbeddingProcessorUtilTest, SanitizeHtml) {
 
   for (const auto& [html, expected_text] : kSamples) {
     // Act
-    const std::string sanitized_html = SanitizeHtml(html);
+    const std::string text = SanitizeHtml(html);
 
     // Assert
-    EXPECT_EQ(expected_text, sanitized_html);
+    EXPECT_EQ(expected_text, text);
   }
 }
 

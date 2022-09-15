@@ -197,10 +197,10 @@ TEST_F(BatAdsVectorDataTest, DivideByScalar) {
 
   // Assert
   for (int i = 0; i < 3; i++) {
-    EXPECT_NEAR(v1d[i], v1.GetValuesForTesting().at(i), 0.001F);
-    EXPECT_NEAR(v2d[i], v2.GetValuesForTesting().at(i), 0.001F);
-    EXPECT_NEAR(v3d[i], v3.GetValuesForTesting().at(i), 0.001F);
-    EXPECT_NEAR(v4d[i], v4.GetValuesForTesting().at(i), 0.001F);
+    EXPECT_NEAR(v1d.at(i), v1.GetValuesForTesting().at(i), 0.001F);
+    EXPECT_NEAR(v2d.at(i), v2.GetValuesForTesting().at(i), 0.001F);
+    EXPECT_NEAR(v3d.at(i), v3.GetValuesForTesting().at(i), 0.001F);
+    EXPECT_NEAR(v4d.at(i), v4.GetValuesForTesting().at(i), 0.001F);
   }
 }
 

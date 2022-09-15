@@ -6,7 +6,6 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_PIPELINE_TEXT_PROCESSING_EMBEDDING_PROCESSING_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_PIPELINE_TEXT_PROCESSING_EMBEDDING_PROCESSING_H_
 
-#include <map>
 #include <memory>
 #include <string>
 
@@ -41,7 +40,7 @@ class EmbeddingProcessing final {
  private:
   bool is_initialized_ = false;
 
-  struct EmbeddingPipelineInfo embedding_pipeline_;
+  EmbeddingPipelineInfo embedding_pipeline_;
 };
 
 }  // namespace ads::ml::pipeline

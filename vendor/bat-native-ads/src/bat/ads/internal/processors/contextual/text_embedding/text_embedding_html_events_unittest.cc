@@ -15,10 +15,6 @@
 
 namespace ads {
 
-namespace {
-const int kNumberEventsSurplus = 4;
-}  // namespace
-
 class BatAdsTextEmbeddingHtmlEventsTest : public UnitTestBase {
  protected:
   BatAdsTextEmbeddingHtmlEventsTest() = default;
@@ -50,11 +46,8 @@ TEST_F(BatAdsTextEmbeddingHtmlEventsTest, LogEvent) {
 
 TEST_F(BatAdsTextEmbeddingHtmlEventsTest, PurgeEvents) {
   // Arrange
-  const int text_embedding_total_size =
-      targeting::features::GetTextEmbeddingsHistorySize() +
-      kNumberEventsSurplus;
-
-  for (int i = 0; i < text_embedding_total_size; i++) {
+  for (int i = 0; i < targeting::features::GetTextEmbeddingsHistorySize() + 4;
+       i++) {
     const ml::pipeline::TextEmbeddingInfo text_embedding = BuildTextEmbedding();
     LogTextEmbeddingHtmlEvent(text_embedding,
                               [](const bool success) { ASSERT_TRUE(success); });
@@ -70,12 +63,10 @@ TEST_F(BatAdsTextEmbeddingHtmlEventsTest, PurgeEvents) {
          const TextEmbeddingHtmlEventList& text_embedding_html_events) {
         ASSERT_TRUE(success);
 
-        const int text_embedding_history_size =
-            targeting::features::GetTextEmbeddingsHistorySize();
         const int text_embedding_html_event_count =
             text_embedding_html_events.size();
         EXPECT_TRUE(text_embedding_html_event_count <=
-                    text_embedding_history_size);
+                    targeting::features::GetTextEmbeddingsHistorySize());
       });
 }
 

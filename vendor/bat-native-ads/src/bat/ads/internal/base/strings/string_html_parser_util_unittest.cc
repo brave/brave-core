@@ -42,12 +42,12 @@ TEST_F(BatAdsStringHtmlUtilTest, ParseHtmlTagAttributeSimple) {
                   {html_2, "div", "href", "brave.com"}};
 
   for (const auto& [html, tag_substr, tag_attribute,
-                    expected_html_targ_attribute] : kSamples) {
+                    expected_html_tag_attribute] : kSamples) {
     // Act
     const std::string html_tag_attribute =
         ParseHtmlTagAttribute(html, tag_substr, tag_attribute);
     // Assert
-    EXPECT_EQ(expected_html_targ_attribute, html_tag_attribute);
+    EXPECT_EQ(expected_html_tag_attribute, html_tag_attribute);
   }
 }
 

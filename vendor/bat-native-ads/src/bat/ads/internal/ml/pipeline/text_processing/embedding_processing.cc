@@ -48,12 +48,12 @@ bool EmbeddingProcessing::IsInitialized() const {
 }
 
 bool EmbeddingProcessing::SetEmbeddingPipeline(base::Value resource_value) {
-  base::Value::Dict* value = resource_value.GetIfDict();
+  const base::Value::Dict* value = resource_value.GetIfDict();
   if (!value) {
     return is_initialized_;
   }
 
-  absl::optional<EmbeddingPipelineInfo> embedding_pipeline =
+  const absl::optional<EmbeddingPipelineInfo> embedding_pipeline =
       EmbeddingPipelineFromValue(*value);
   if (!embedding_pipeline) {
     is_initialized_ = false;

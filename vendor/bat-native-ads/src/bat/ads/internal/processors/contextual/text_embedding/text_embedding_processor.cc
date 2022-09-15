@@ -42,21 +42,21 @@ bool TextEmbedding::IsEnabled() {
   return targeting::features::IsTextEmbeddingEnabled();
 }
 
-void TextEmbedding::Process(const std::string& text) {
+void TextEmbedding::Process(const std::string& html) {
   if (!resource_->IsInitialized()) {
     BLOG(1, "Failed to process text embeddings as resource not initialized");
     return;
   }
 
-  const std::string sanitized_text = SanitizeHtml(text);
-  if (sanitized_text.empty()) {
+  const std::string text = SanitizeHtml(html);
+  if (text.empty()) {
     BLOG(1, "No text available for embedding");
     return;
   }
 
   ml::pipeline::EmbeddingProcessing* embedding_proc_pipeline = resource_->Get();
   const ml::pipeline::TextEmbeddingInfo text_embedding =
-      embedding_proc_pipeline->EmbedText(sanitized_text);
+      embedding_proc_pipeline->EmbedText(text);
   if (text_embedding.embedding.GetNonZeroElementCount() == 0) {
     BLOG(1, "Failed to embed text");
     return;

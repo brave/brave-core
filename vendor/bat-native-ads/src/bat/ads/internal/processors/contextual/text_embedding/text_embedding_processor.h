@@ -36,7 +36,7 @@ class TextEmbedding final : public LocaleManagerObserver,
 
   bool IsEnabled();
 
-  void Process(const std::string& text);
+  void Process(const std::string& html);
 
  private:
   // LocaleManagerObserver:
