@@ -390,7 +390,7 @@ void RewardsServiceImpl::Init(
     AddObserver(extension_observer_.get());
   }
 
-  CheckPreferences();
+  StartLedgerProcessIfNecessary();
   InitPrefChangeRegistrar();
   p3a::RecordAdsEnabledDuration(
       profile_->GetPrefs(),
@@ -462,24 +462,30 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
   }
 }
 
-void RewardsServiceImpl::CheckPreferences() {
-  auto* prefs = profile_->GetPrefs();
+void RewardsServiceImpl::StartLedgerProcessIfNecessary() {
+  if (Connected()) {
+    BLOG(1, "Ledger process is already running");
+    return;
+  }
 
+  auto* prefs = profile_->GetPrefs();
   if (prefs->GetBoolean(prefs::kAutoContributeEnabled) ||
       prefs->GetBoolean(ads::prefs::kEnabled)) {
-    // If the user has enabled Ads or AC, then start the background Rewards
-    // utility process.
-    StartLedgerProcessIfNecessary();
-
     // If the user has enabled Ads or AC, but the "enabled" pref is missing, set
     // the "enabled" pref to true.
     if (!prefs->GetUserPrefValue(prefs::kEnabled)) {
       prefs->SetBoolean(prefs::kEnabled, true);
     }
   }
+
+  if (prefs->GetUserPrefValue(prefs::kEnabled)) {
+    // If the "enabled" pref is set, then start the background Rewards
+    // utility process.
+    StartLedgerProcess();
+  }
 }
 
-void RewardsServiceImpl::StartLedgerProcessIfNecessary() {
+void RewardsServiceImpl::StartLedgerProcess() {
   if (Connected()) {
     BLOG(1, "Ledger process is already running");
     return;
@@ -605,7 +611,8 @@ void RewardsServiceImpl::CreateRewardsWallet(
         base::BindOnce(on_created, self, std::move(callback)));
   };
 
-  StartProcess(base::BindOnce(on_start, AsWeakPtr(), std::move(callback)));
+  StartProcessForCreateRewardsWallet(
+      base::BindOnce(on_start, AsWeakPtr(), std::move(callback)));
 }
 
 void RewardsServiceImpl::GetActivityInfoList(
@@ -2964,6 +2971,12 @@ void RewardsServiceImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {
 void RewardsServiceImpl::StartProcess(base::OnceClosure callback) {
   ready_->Post(FROM_HERE, std::move(callback));
   StartLedgerProcessIfNecessary();
+}
+
+void RewardsServiceImpl::StartProcessForCreateRewardsWallet(
+    base::OnceClosure callback) {
+  ready_->Post(FROM_HERE, std::move(callback));
+  StartLedgerProcess();
 }
 
 void RewardsServiceImpl::GetRewardsWalletPassphrase(

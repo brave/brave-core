@@ -48,7 +48,7 @@ export function App () {
       <style.root id='rewardsPage'>
         <div ref={renderToolbar}></div>
         <AppErrorBoundary>
-          {!rewardsData.initializing && <Settings />}
+          <Settings />
         </AppErrorBoundary>
       </style.root>
     </LayoutManager>

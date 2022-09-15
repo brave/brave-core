@@ -362,8 +362,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnPreferenceChanged(const std::string& key);
 
-  void CheckPreferences();
-
+  void StartProcessForCreateRewardsWallet(base::OnceClosure callback);
+  void StartLedgerProcess();
   void StartLedgerProcessIfNecessary();
 
   void OnStopLedger(StopLedgerCallback callback,

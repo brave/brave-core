@@ -76,12 +76,12 @@ export function Settings () {
     if (handleURL()) {
       history.replaceState({}, '', '/')
     }
-  }, [])
+  }, [rewardsData.initializing])
 
   React.useEffect(() => {
     const id = setInterval(() => { actions.getBalance() }, 60000)
     return () => { clearInterval(id) }
-  }, [])
+  }, [rewardsData.initializing])
 
   React.useEffect(() => {
     actions.getContributeList()
