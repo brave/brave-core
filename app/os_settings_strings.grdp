@@ -1038,7 +1038,7 @@
       Zoomed in screen follows keyboard focus
   </message>
   <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_ZOOM_LABEL" desc="Label for dropdown menu which contains zoom levels for the fullscreen magnifier">
-    Fullscreen zoom level
+    Zoom level
   </message>
   <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_ZOOM_HINT_LABEL" desc="Label for keyboard shortcut for adjusting the zoom levels for the fullscreen magnifier">
     Use Ctrl + Alt + Brightness up to zoom in.
@@ -1138,7 +1138,7 @@ Use Ctrl + Alt + Brightness down to zoom out.
     Send your voice to Brave to allow dictation into any text field.
   </message>
   <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LABEL" desc="Label for checkbox which enables the ability to speak into text fields">
-    Enable dictation (speak to type)
+    Dictation
   </message>
   <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_NEW_DESCRIPTION" desc="Description explaining what Dictation does and how to use it. Is only user-visible if the kEnableExperimentalAccessibilityDictationOffline flag is enabled.">
     Type with your voice. Use Search + D, then start speaking.
