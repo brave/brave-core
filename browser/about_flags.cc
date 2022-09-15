@@ -376,7 +376,8 @@ constexpr char kAllowCertainClientHintsDescription[] =
 #if defined(TOOLKIT_VIEWS)
 constexpr char kBraveVerticalTabsName[] = "Vertical tabs";
 constexpr char kBraveVerticalTabsDescription[] =
-    "Uses vertical tabs instead of tabstrip";
+    "Move tab strip to be a vertical panel on the side of the window instead "
+    "of horizontal at the top of the window.";
 #endif
 }  // namespace
 
