@@ -18,8 +18,13 @@
 namespace ads::ml::pipeline {
 
 namespace {
+
 constexpr char kJson[] =
     R"({"locale": "EN", "timestamp": "2022-06-09 08:00:00.704847", "version": 1, "embeddings": {"quick": [0.7481, 0.0493, -0.5572], "brown": [-0.0647, 0.4511, -0.7326], "fox": [-0.9328, -0.2578, 0.0032]}})";
+constexpr char kJsonEmpty[] = "{}";
+constexpr char kJsonMalformed[] =
+    R"({"locale": "EN", "timestamp": "2022-06-09 08:00:00.704847", "version": 1, "embeddings": {"quick": "foobar"}})";
+
 }  // namespace
 
 class BatAdsEmbeddingPipelineValueUtilTest : public UnitTestBase {
@@ -59,6 +64,34 @@ TEST_F(BatAdsEmbeddingPipelineValueUtilTest, FromValue) {
                   0.001F);
     }
   }
+}
+
+TEST_F(BatAdsEmbeddingPipelineValueUtilTest, FromValueEmpty) {
+  // Arrange
+  const base::Value value = base::test::ParseJson(kJsonEmpty);
+  const base::Value::Dict* dict = value.GetIfDict();
+  ASSERT_TRUE(dict);
+
+  // Act
+  const absl::optional<EmbeddingPipelineInfo> pipeline =
+      EmbeddingPipelineFromValue(*dict);
+
+  // Assert
+  EXPECT_TRUE(!pipeline);
+}
+
+TEST_F(BatAdsEmbeddingPipelineValueUtilTest, FromValueMalformed) {
+  // Arrange
+  const base::Value value = base::test::ParseJson(kJsonMalformed);
+  const base::Value::Dict* dict = value.GetIfDict();
+  ASSERT_TRUE(dict);
+
+  // Act
+  const absl::optional<EmbeddingPipelineInfo> pipeline =
+      EmbeddingPipelineFromValue(*dict);
+
+  // Assert
+  EXPECT_TRUE(!pipeline);
 }
 
 }  // namespace ads::ml::pipeline

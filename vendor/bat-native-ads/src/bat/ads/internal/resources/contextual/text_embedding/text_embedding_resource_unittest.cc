@@ -13,6 +13,8 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
+namespace ads::resource {
+
 namespace {
 
 constexpr char kResourceFile[] = "wtpwsrqtjxmfdwaymauprezkunxprysm";
@@ -22,8 +24,6 @@ constexpr char kNotExistantResourceFile[] =
     "resources/wtpwsrqtjxmfdwaymauprezkunxprysm_not_existant";
 
 }  // namespace
-
-namespace ads::resource {
 
 using testing::_;
 using testing::Invoke;
