@@ -6,6 +6,7 @@
 #include "base/callback_helpers.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/files/scoped_temp_dir.h"
 #include "base/path_service.h"
 #include "base/process/process.h"
 #include "base/process/process_iterator.h"
@@ -30,6 +31,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/common/chrome_paths.h"
+#include "chrome/common/chrome_switches.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
@@ -216,7 +218,27 @@ IN_PROC_BROWSER_TEST_F(BraveTorTest, OpenCloseDisableTorWindow) {
   }
 }
 
-IN_PROC_BROWSER_TEST_F(BraveTorTest, PRE_SetupBridges) {
+class BraveTorTestWithCustomProfile : public BraveTorTest {
+ private:
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+
+    if (GetTestPreCount() > 0) {
+      base::ScopedAllowBlockingForTesting allow_blocking;
+
+      base::ScopedTempDir user_data_dir;
+      ASSERT_TRUE(user_data_dir.CreateUniqueTempDir());
+
+      // Used Take because InProcessBrowserTest will remove it.
+      const auto profile_path = user_data_dir.Take().AppendASCII("white space");
+      ASSERT_TRUE(base::CreateDirectory(profile_path));
+
+      command_line->AppendSwitchPath(switches::kUserDataDir, profile_path);
+    }
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(BraveTorTestWithCustomProfile, PRE_SetupBridges) {
   EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled());
   DownloadTorClient();
 
@@ -274,7 +296,7 @@ IN_PROC_BROWSER_TEST_F(BraveTorTest, PRE_SetupBridges) {
       g_brave_browser_process->tor_pluggable_transport_updater());
 }
 
-IN_PROC_BROWSER_TEST_F(BraveTorTest, SetupBridges) {
+IN_PROC_BROWSER_TEST_F(BraveTorTestWithCustomProfile, SetupBridges) {
   // Tor is disabled in PRE, check pluggable transports are removed.
   EXPECT_FALSE(CheckComponentExists(tor::kTorPluggableTransportComponentId));
 
