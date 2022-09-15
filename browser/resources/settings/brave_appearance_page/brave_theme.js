@@ -7,7 +7,7 @@ import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bun
 import {WebUIListenerBehavior} from 'chrome://resources/js/web_ui_listener_behavior.m.js';
 import {routes} from '../route.js';
 import {Router} from '../router.js';
-import 'chrome://resources/cr_elements/md_select_css.m.js';
+//import 'chrome://resources/cr_elements/md_select.css.js';
 import '../settings_shared.css.js';
 import '../settings_vars.css.js';
 import {loadTimeData} from "../i18n_setup.js"

@@ -5,7 +5,7 @@
 
 import './brave_adblock_subpage.js';
 import { html, PolymerElement } from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import '//resources/cr_elements/md_select_css.m.js';
+//import '//resources/cr_elements/md_select.css.js';
 import { DefaultBraveShieldsBrowserProxyImpl } from './default_brave_shields_browser_proxy.m.js';
 'use strict';
 import {Router, RouteObserverMixin} from '../router.js';
