@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/resources/history/history_item.ts b/chrome/browser/resources/history/history_item.ts
-index 9b643c931b0bcd3d1b62d623c65e68891950a64c..0a3bc83c83d9988dd0d0f0b40094b7914b34913b 100644
+index 28f02e7a43382e8beab4b66398240c4c6923b3f6..45459b9427a2c9130305f72427964191e41669a1 100644
 --- a/chrome/browser/resources/history/history_item.ts
 +++ b/chrome/browser/resources/history/history_item.ts
 @@ -9,6 +9,7 @@ import 'chrome://resources/cr_elements/cr_icons.css.js';
- import 'chrome://resources/cr_elements/shared_vars_css.m.js';
+ import 'chrome://resources/cr_elements/cr_shared_vars.css.js';
  import 'chrome://resources/js/icon.js';
  import 'chrome://resources/polymer/v3_0/iron-icon/iron-icon.js';
 +import 'chrome://brave-resources/page_specific/history/brave_history_item.m.js'

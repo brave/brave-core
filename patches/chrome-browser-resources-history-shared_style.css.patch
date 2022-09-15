@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/resources/history/shared_style.css b/chrome/browser/resources/history/shared_style.css
-index 1d2f6d077c1f80958e2cb905e02d08bd220d5752..b798c74d839d83866eaf4ce4cf7516e2cdd76458 100644
+index 12398fbab88c139f6e4a211d18ae8c7119512676..37487dc865a4733aad5e616e98fdfa52c722d0f1 100644
 --- a/chrome/browser/resources/history/shared_style.css
 +++ b/chrome/browser/resources/history/shared_style.css
 @@ -7,7 +7,7 @@
   * #import=./shared_vars.css.js
   * #import=chrome://resources/cr_elements/cr_hidden_style.css.js
-  * #import=chrome://resources/cr_elements/shared_vars_css.m.js
+  * #import=chrome://resources/cr_elements/cr_shared_vars.css.js
 - * #include=cr-hidden-style
 + * #include=cr-hidden-style br-shared-style
   * #css_wrapper_metadata_end */

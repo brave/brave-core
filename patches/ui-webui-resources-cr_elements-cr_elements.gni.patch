@@ -1,12 +1,12 @@
 diff --git a/ui/webui/resources/cr_elements/cr_elements.gni b/ui/webui/resources/cr_elements/cr_elements.gni
-index 263e74b8727efe0e9a6589360333a300a9bcbdfc..c5b529edb80708ccf0514845151cc0cd3699ca05 100644
+index 8641649f2982ce9c136bc9dc4d68c204dbedf67f..7895363dd662577768ffac43af67e4900641e147 100644
 --- a/ui/webui/resources/cr_elements/cr_elements.gni
 +++ b/ui/webui/resources/cr_elements/cr_elements.gni
-@@ -54,6 +54,7 @@ if (include_polymer) {
+@@ -65,6 +65,7 @@ if (include_polymer) {
      web_component_files_polymer_ts +=
          [ "cr_searchable_drop_down/cr_searchable_drop_down.ts" ]
    }
 +  else if (!is_android) { web_component_files_polymer_ts += [ "cr_searchable_drop_down/cr_searchable_drop_down.ts" ] }
  
    icons_html_files = [
-     "mwb_shared_icons.html",
+     "cr_fingerprint/cr_fingerprint_icons.html",

@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/webui/extensions/extensions_ui.cc b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-index 4c3f9b2c3fb5eba1ae4447882b8b4b204d096ffc..c8c3cc1bc86b59157efea1e697ab4f915297f4c2 100644
+index 80af47db4deab4fdc6514475b242e416c2165425..de080d0a975a7bbbd561746f3c32e222babcc7db 100644
 --- a/chrome/browser/ui/webui/extensions/extensions_ui.cc
 +++ b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-@@ -374,6 +374,7 @@ content::WebUIDataSource* CreateExtensionsSource(Profile* profile,
-                      base::FeatureList::IsEnabled(
-                          extensions_features::kExtensionsMenuAccessControl));
+@@ -379,6 +379,7 @@ content::WebUIDataSource* CreateExtensionsSource(Profile* profile,
+       "showAccessRequestsInToolbarLearnMoreLink",
+       chrome_extension_constants::kShowAccessRequestsInToolbarHelpURL);
  
 +  BRAVE_CREATE_EXTENSIONS_SOURCE
    return source;
