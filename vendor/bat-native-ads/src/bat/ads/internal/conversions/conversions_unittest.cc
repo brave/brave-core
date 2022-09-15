@@ -52,39 +52,6 @@ class BatAdsConversionsTest : public UnitTestBase {
   std::unique_ptr<database::table::Conversions> conversions_database_table_;
 };
 
-TEST_F(BatAdsConversionsTest, ShouldNotAllowConversionTracking) {
-  // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(
-      prefs::kShouldAllowConversionTracking, false);
-
-  ConversionList conversions;
-
-  ConversionInfo conversion;
-  conversion.creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
-  conversion.type = "postview";
-  conversion.url_pattern = "https://www.foobar.com/*";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
-  conversions.push_back(conversion);
-
-  database::SaveConversions(conversions);
-
-  // Act
-  conversions_->MaybeConvert({GURL("https://www.foobar.com/signup")}, {}, {});
-
-  // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
-
-  ad_events_database_table_->GetIf(
-      condition, [](const bool success, const AdEventList& ad_events) {
-        ASSERT_TRUE(success);
-
-        EXPECT_TRUE(ad_events.empty());
-      });
-}
-
 TEST_F(BatAdsConversionsTest,
        DoNotConvertViewedNotificationAdWhenAdsAreDisabled) {
   // Arrange
