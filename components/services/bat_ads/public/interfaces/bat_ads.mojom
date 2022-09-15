@@ -14,7 +14,7 @@ import "url/mojom/url.mojom";
 
 interface BatAdsService {
   Create(pending_associated_remote<BatAdsClient> bat_ads_client,
-         pending_associated_receiver<BatAds> database) => ();
+         pending_associated_receiver<BatAds> bat_ads) => ();
 
   SetSysInfo(ads.mojom.SysInfo sys_info) => ();
 

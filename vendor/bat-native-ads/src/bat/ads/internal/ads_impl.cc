@@ -164,6 +164,8 @@ void AdsImpl::Shutdown(ShutdownCallback callback) {
 
   NotificationAdManager::GetInstance()->CloseAll();
 
+  NotificationAdManager::GetInstance()->RemoveAll();
+
   callback(/*success*/ true);
 }
 

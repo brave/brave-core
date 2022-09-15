@@ -115,8 +115,6 @@ class AdsServiceImpl : public AdsService,
   void MaybeStartOrStop(bool should_restart);
   void StartBatAdsService();
   base::TimeDelta GetBatAdsServiceRestartDelay();
-  void ShutdownBatAds();
-  void OnShutdownBatAds(bool success);
   void Start(uint32_t number_of_start);
 
   void GetDeviceId(uint32_t number_of_start);
@@ -142,7 +140,6 @@ class AdsServiceImpl : public AdsService,
 
   void ResetState();
   void OnResetState(bool success);
-  void OnShutdownAndResetState(bool success);
 
   void OnEnabledPrefChanged();
   void OnIdleTimeThresholdPrefChanged();
@@ -339,6 +336,7 @@ class AdsServiceImpl : public AdsService,
   bool CanShowNotificationAdsWhileBrowserIsBackgrounded() const override;
   void ShowNotificationAd(const ads::NotificationAdInfo& ad) override;
   void CloseNotificationAd(const std::string& placement_id) override;
+  void CloseAllNotificationAds();
 
   void UpdateAdRewards() override;
 
