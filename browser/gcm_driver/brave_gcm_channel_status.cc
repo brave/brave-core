@@ -53,8 +53,7 @@ void BraveGCMChannelStatus::UpdateGCMDriverStatus() {
   gcm::GCMDriver* gcm_driver = gcm_profile_service->driver();
   if (!gcm_driver)
     return;
-  (static_cast<gcm::BraveGCMDriverDesktop*>(gcm_driver))
-      ->SetEnabled(IsGCMEnabled());
+  gcm_driver->SetEnabled(IsGCMEnabled());
 }
 
 }  // namespace gcm
