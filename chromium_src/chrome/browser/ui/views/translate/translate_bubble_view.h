@@ -6,32 +6,11 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TRANSLATE_TRANSLATE_BUBBLE_VIEW_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TRANSLATE_TRANSLATE_BUBBLE_VIEW_H_
 
-// The balloon can have several different states (that includes titles, icons,
-// etc) that depend on features/flags. That's why several methods are made
-// virtual. See the descendants of TranslateBubbleView.
-#define RevertOrDeclineTranslation                                         \
-  RevertOrDeclineTranslation();                                            \
-                                                                           \
-  friend class BraveTranslateBubbleView;                                   \
-  friend class BraveTranslateBubbleViewTest;                               \
-  FRIEND_TEST_ALL_PREFIXES(BraveTranslateBubbleViewTest,                   \
-                           BraveBeforeTranslateView);                      \
-  FRIEND_TEST_ALL_PREFIXES(BraveTranslateBubbleViewTest, TranslateButton); \
-  FRIEND_TEST_ALL_PREFIXES(BraveTranslateBubbleViewTest, CancelButton);    \
-                                                                           \
- public:                                                                   \
-  virtual int GetTitleBeforeTranslateTitle();                              \
-                                                                           \
- private:                                                                  \
-  void Dummy
-
-class BraveTranslateBubbleView;
 #define TranslateBubbleView TranslateBubbleView_ChromiumImpl
 #define CreateTranslateIcon virtual CreateTranslateIcon
 #include "src/chrome/browser/ui/views/translate/translate_bubble_view.h"
 #undef CreateTranslateIcon
 #undef TranslateBubbleView
-#undef RevertOrDeclineTranslation
 
 class TranslateBubbleView : public TranslateBubbleView_ChromiumImpl {
  public:

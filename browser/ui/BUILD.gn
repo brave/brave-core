@@ -258,15 +258,6 @@ source_set("ui") {
       ]
     }
 
-    if (enable_brave_translate_extension) {
-      sources += [
-        "views/translate/brave_translate_bubble_view.cc",
-        "views/translate/brave_translate_bubble_view.h",
-        "views/translate/brave_translate_icon_view.cc",
-        "views/translate/brave_translate_icon_view.h",
-      ]
-    }
-
     if (is_win) {
       sources += [
         "views/frame/brave_glass_browser_frame_view.cc",
@@ -722,10 +713,6 @@ source_set("ui") {
       "//ui/events",
       "//ui/views",
     ]
-
-    if (enable_brave_translate_extension) {
-      deps += [ "//components/translate/core/browser" ]
-    }
   }
 }
 
