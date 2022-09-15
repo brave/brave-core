@@ -19,8 +19,6 @@ namespace prefs {
 
 extern const char kEnabled[];
 
-extern const char kShouldAllowConversionTracking[];
-
 extern const char kMaximumNotificationAdsPerHour[];
 
 extern const char kIdleTimeThreshold[];

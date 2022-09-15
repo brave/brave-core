@@ -279,8 +279,6 @@ void UnitTestBase::SetDefaultPrefs() {
 
   ads_client_mock_->SetIntegerPref(prefs::kIdleTimeThreshold, 15);
 
-  ads_client_mock_->SetBooleanPref(prefs::kShouldAllowConversionTracking, true);
-
   ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
                                    false);
   ads_client_mock_->SetStringPref(prefs::kSubdivisionTargetingCode, "AUTO");

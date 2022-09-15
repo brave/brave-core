@@ -16,7 +16,6 @@
 #include "bat/ads/internal/ads/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ads/ad_events/ad_events.h"
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
-#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/base/time/time_formatting_util.h"
 #include "bat/ads/internal/base/url/url_util.h"
@@ -33,7 +32,6 @@
 #include "bat/ads/internal/resources/country_components.h"
 #include "bat/ads/internal/resources/resource_manager.h"
 #include "bat/ads/internal/tabs/tab_manager.h"
-#include "bat/ads/pref_names.h"
 #include "brave_base/random.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
@@ -208,11 +206,6 @@ void Conversions::MaybeConvert(
     const std::vector<GURL>& redirect_chain,
     const std::string& html,
     const ConversionIdPatternMap& conversion_id_patterns) {
-  if (!ShouldAllow()) {
-    BLOG(1, "Conversions are not allowed");
-    return;
-  }
-
   if (redirect_chain.empty()) {
     return;
   }
@@ -249,11 +242,6 @@ void Conversions::Process() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-bool Conversions::ShouldAllow() const {
-  return AdsClientHelper::GetInstance()->GetBooleanPref(
-      prefs::kShouldAllowConversionTracking);
-}
 
 void Conversions::CheckRedirectChain(
     const std::vector<GURL>& redirect_chain,

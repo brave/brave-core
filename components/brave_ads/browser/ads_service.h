@@ -58,9 +58,6 @@ class AdsService : public KeyedService {
   // hour.
   virtual void SetMaximumNotificationAdsPerHour(int64_t ads_per_hour) = 0;
 
-  // Called to allow or disallow conversion tracking.
-  virtual void SetAllowConversionTracking(bool should_allow) = 0;
-
   // Returns |true| if subdivision targeting is supported.
   virtual bool ShouldAllowSubdivisionTargeting() const = 0;
 

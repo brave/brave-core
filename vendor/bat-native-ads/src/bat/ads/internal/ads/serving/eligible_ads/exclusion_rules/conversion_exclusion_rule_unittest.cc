@@ -12,7 +12,6 @@
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
-#include "bat/ads/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -44,31 +43,6 @@ TEST_F(BatAdsConversionExclusionRuleTest, AllowAdIfThereIsNoConversionHistory) {
 
   // Assert
   EXPECT_FALSE(should_exclude);
-}
-
-TEST_F(BatAdsConversionExclusionRuleTest,
-       DoNotAllowAdIfShouldNotAllowConversionTracking) {
-  // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(
-      prefs::kShouldAllowConversionTracking, false);
-
-  CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetIds.at(0);
-
-  AdEventList ad_events;
-
-  const AdEventInfo ad_event =
-      BuildAdEvent(creative_ad, AdType::kNotificationAd,
-                   ConfirmationType::kConversion, Now());
-
-  ad_events.push_back(ad_event);
-
-  // Act
-  ConversionExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
-
-  // Assert
-  EXPECT_TRUE(should_exclude);
 }
 
 TEST_F(BatAdsConversionExclusionRuleTest, DoNotAllowAdIfAlreadyConverted) {
