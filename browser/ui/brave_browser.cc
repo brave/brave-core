@@ -74,7 +74,8 @@ void BraveBrowser::ScheduleUIUpdate(content::WebContents* source,
 }
 
 void BraveBrowser::TabStripEmpty() {
-  if (unload_controller_.is_attempting_to_close_browser()) {
+  if (unload_controller_.is_attempting_to_close_browser() ||
+      !is_type_normal()) {
     Browser::TabStripEmpty();
     return;
   }

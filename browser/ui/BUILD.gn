@@ -743,6 +743,7 @@ source_set("browser_tests") {
       "//brave/browser/ui",
       "//brave/components/constants",
       "//chrome/browser",
+      "//chrome/browser/devtools:test_support",
       "//chrome/browser/profiles:profile",
       "//chrome/browser/ui",
       "//chrome/test:test_support_ui",
