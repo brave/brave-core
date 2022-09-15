@@ -15,7 +15,7 @@ class BraveGCMDriverDesktop : public GCMDriverDesktop {
   using GCMDriverDesktop::GCMDriverDesktop;
   ~BraveGCMDriverDesktop() override;
 
-  void SetEnabled(bool enabled);
+  void SetEnabled(bool enabled) override;
 
  protected:
   // GCMDriver implementation:
