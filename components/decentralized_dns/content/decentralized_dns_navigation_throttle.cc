@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/decentralized_dns/decentralized_dns_navigation_throttle.h"
+#include "brave/components/decentralized_dns/content/decentralized_dns_navigation_throttle.h"
 
 #include <utility>
 
 #include "base/bind.h"
 #include "base/threading/sequenced_task_runner_handle.h"
-#include "brave/components/decentralized_dns/decentralized_dns_interstitial_controller_client.h"
-#include "brave/components/decentralized_dns/decentralized_dns_opt_in_page.h"
-#include "brave/components/decentralized_dns/utils.h"
+#include "brave/components/decentralized_dns/content/decentralized_dns_interstitial_controller_client.h"
+#include "brave/components/decentralized_dns/content/decentralized_dns_opt_in_page.h"
+#include "brave/components/decentralized_dns/core/utils.h"
 #include "components/prefs/pref_service.h"
 #include "components/security_interstitials/content/security_interstitial_tab_helper.h"
 #include "components/user_prefs/user_prefs.h"

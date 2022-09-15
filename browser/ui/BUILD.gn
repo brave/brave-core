@@ -582,7 +582,7 @@ source_set("ui") {
       "//brave/browser/resources/extensions:resources",
       "//brave/components/brave_extension:generated_resources",
       "//brave/components/brave_extension:static_resources",
-      "//brave/components/decentralized_dns",
+      "//brave/components/decentralized_dns/content",
       "//brave/components/resources:static_resources",
       "//brave/components/resources:strings_grit",
       "//chrome/browser/extensions",

@@ -86,7 +86,7 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/common:solana_utils",
     "//brave/components/brave_wallet/common:test_support",
     "//brave/components/constants",
-    "//brave/components/decentralized_dns",
+    "//brave/components/decentralized_dns/core",
     "//brave/components/filecoin/rs:cxx",
     "//brave/components/ipfs",
     "//brave/components/resources:strings_grit",

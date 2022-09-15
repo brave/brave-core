@@ -13,7 +13,7 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/decentralized_dns/utils.h"
+#include "brave/components/decentralized_dns/core/utils.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"

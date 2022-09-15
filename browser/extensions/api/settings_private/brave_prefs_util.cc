@@ -16,7 +16,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "brave/components/de_amp/common/pref_names.h"
-#include "brave/components/decentralized_dns/pref_names.h"
+#include "brave/components/decentralized_dns/core/pref_names.h"
 #include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"

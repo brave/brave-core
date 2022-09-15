@@ -20,9 +20,10 @@
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/decentralized_dns/constants.h"
-#include "brave/components/decentralized_dns/utils.h"
+#include "brave/components/decentralized_dns/core/constants.h"
+#include "brave/components/decentralized_dns/core/utils.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "chrome/browser/about_flags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/extensions/component_loader.h"
@@ -39,6 +40,7 @@
 #include "chrome/common/pref_names.h"
 #include "components/flags_ui/flags_ui_constants.h"
 #include "components/flags_ui/pref_service_flags_storage.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui.h"
 #include "extensions/browser/extension_registry.h"
@@ -60,6 +62,55 @@
 #include "brave/components/ipfs/keys/ipns_keys_manager.h"
 #include "brave/components/ipfs/pref_names.h"
 #endif
+
+using decentralized_dns::EnsOffchainResolveMethod;
+using decentralized_dns::ResolveMethodTypes;
+
+namespace {
+
+template <typename T>
+base::Value::Dict MakeSelectValue(T value, const std::u16string& name) {
+  base::Value::Dict item;
+  item.Set("value", base::Value(static_cast<int>(value)));
+  item.Set("name", base::Value(name));
+  return item;
+}
+
+base::Value::List GetResolveMethodList() {
+  base::Value::List list;
+  list.Append(MakeSelectValue(ResolveMethodTypes::ASK,
+                              brave_l10n::GetLocalizedResourceUTF16String(
+                                  IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_ASK)));
+  list.Append(
+      MakeSelectValue(ResolveMethodTypes::DISABLED,
+                      brave_l10n::GetLocalizedResourceUTF16String(
+                          IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_DISABLED)));
+  list.Append(
+      MakeSelectValue(ResolveMethodTypes::ETHEREUM,
+                      brave_l10n::GetLocalizedResourceUTF16String(
+                          IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_ETHEREUM)));
+
+  return list;
+}
+
+base::Value::List GetEnsOffchainResolveMethodList() {
+  base::Value::List list;
+  list.Append(MakeSelectValue(
+      EnsOffchainResolveMethod::kAsk,
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_DECENTRALIZED_DNS_ENS_OFFCHAIN_RESOLVE_OPTION_ASK)));
+  list.Append(MakeSelectValue(
+      EnsOffchainResolveMethod::kDisabled,
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_DECENTRALIZED_DNS_ENS_OFFCHAIN_RESOLVE_OPTION_DISABLED)));
+  list.Append(MakeSelectValue(
+      EnsOffchainResolveMethod::kEnabled,
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_DECENTRALIZED_DNS_ENS_OFFCHAIN_RESOLVE_OPTION_ENABLED)));
+
+  return list;
+}
+}  // namespace
 
 BraveDefaultExtensionsHandler::BraveDefaultExtensionsHandler()
     : weak_ptr_factory_(this) {
@@ -408,8 +459,7 @@ void BraveDefaultExtensionsHandler::GetDecentralizedDnsResolveMethodList(
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
 
-  ResolveJavascriptCallback(
-      args[0], base::Value(decentralized_dns::GetResolveMethodList()));
+  ResolveJavascriptCallback(args[0], base::Value(::GetResolveMethodList()));
 }
 
 void BraveDefaultExtensionsHandler::GetEnsOffchainResolveMethodList(
@@ -417,9 +467,8 @@ void BraveDefaultExtensionsHandler::GetEnsOffchainResolveMethodList(
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
 
-  ResolveJavascriptCallback(
-      args[0],
-      base::Value(decentralized_dns::GetEnsOffchainResolveMethodList()));
+  ResolveJavascriptCallback(args[0],
+                            base::Value(::GetEnsOffchainResolveMethodList()));
 }
 
 #if BUILDFLAG(ENABLE_IPFS)
