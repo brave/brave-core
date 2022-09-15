@@ -177,6 +177,10 @@ void BraveNewsActionView::OnAvailableFeedsChanged(
   Update();
 }
 
+void BraveNewsActionView::OnThemeChanged() {
+  Update();
+}
+
 void BraveNewsActionView::ButtonPressed() {
   // If the bubble is already open, do nothing.
   if (bubble_widget_) {

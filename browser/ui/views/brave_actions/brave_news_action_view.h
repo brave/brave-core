@@ -48,6 +48,9 @@ class BraveNewsActionView : public views::LabelButton,
   void OnAvailableFeedsChanged(
       const std::vector<BraveNewsTabHelper::FeedDetails>& feeds) override;
 
+  // views::View:
+  void OnThemeChanged() override;
+
  private:
   void ButtonPressed();
 
