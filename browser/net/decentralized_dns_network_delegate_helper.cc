@@ -62,8 +62,12 @@ void OnBeforeURLRequest_EnsRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx,
     const std::vector<uint8_t>& content_hash,
+    bool require_offchain_consent,
     brave_wallet::mojom::ProviderError error,
     const std::string& error_message) {
+  // TODO(apaymyshev): implement interstitial page.
+  DCHECK(!require_offchain_consent);
+
   if (error != brave_wallet::mojom::ProviderError::kSuccess) {
     if (!next_callback.is_null())
       next_callback.Run();

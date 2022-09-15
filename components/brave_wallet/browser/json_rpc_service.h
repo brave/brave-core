@@ -72,6 +72,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                               const std::string& error_message)>;
   using EnsGetContentHashCallback =
       base::OnceCallback<void(const std::vector<uint8_t>& content_hash,
+                              bool require_offchain_consent,
                               mojom::ProviderError error,
                               const std::string& error_message)>;
   using GetBlockNumberCallback =

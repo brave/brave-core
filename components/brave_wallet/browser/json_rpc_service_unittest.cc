@@ -63,6 +63,10 @@
 
 using testing::ElementsAreArray;
 
+MATCHER_P(MatchesCIDv1URL, ipfs_url, "") {
+  return ipfs::ContentHashToCIDv1URL(arg).spec() == ipfs_url;
+}
+
 namespace brave_wallet {
 
 namespace {
@@ -189,19 +193,6 @@ void OnStringResponse(bool* callback_called,
                       const std::string& response,
                       brave_wallet::mojom::ProviderError error,
                       const std::string& error_message) {
-  *callback_called = true;
-  EXPECT_EQ(expected_response, response);
-  EXPECT_EQ(expected_error, error);
-  EXPECT_EQ(expected_error_message, error_message);
-}
-
-void OnBytesResponse(bool* callback_called,
-                     brave_wallet::mojom::ProviderError expected_error,
-                     const std::string& expected_error_message,
-                     const std::vector<uint8_t>& expected_response,
-                     const std::vector<uint8_t>& response,
-                     brave_wallet::mojom::ProviderError error,
-                     const std::string& error_message) {
   *callback_called = true;
   EXPECT_EQ(expected_response, response);
   EXPECT_EQ(expected_error, error);
@@ -1202,55 +1193,51 @@ TEST_F(JsonRpcServiceUnitTest, GetHiddenNetworks) {
 }
 
 TEST_F(JsonRpcServiceUnitTest, EnsGetContentHash) {
-  bool callback_called = false;
-  SetUDENSInterceptor(mojom::kMainnetChainId);
-  json_rpc_service_->EnsGetContentHash(
-      "brantly.eth",
-      base::BindLambdaForTesting([&](const std::vector<uint8_t>& result,
-                                     brave_wallet::mojom::ProviderError error,
-                                     const std::string& error_message) {
-        callback_called = true;
-        EXPECT_EQ(error, mojom::ProviderError::kSuccess);
-        EXPECT_TRUE(error_message.empty());
-        EXPECT_EQ(
-            ipfs::ContentHashToCIDv1URL(result).spec(),
-            "ipfs://"
-            "bafybeibd4ala53bs26dvygofvr6ahpa7gbw4eyaibvrbivf4l5rr44yqu4");
-      }));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
+  {
+    base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
+    EXPECT_CALL(
+        callback,
+        Run(MatchesCIDv1URL(
+                "ipfs://"
+                "bafybeibd4ala53bs26dvygofvr6ahpa7gbw4eyaibvrbivf4l5rr44yqu4"),
+            false, mojom::ProviderError::kSuccess, ""));
 
-  callback_called = false;
-  SetHTTPRequestTimeoutInterceptor();
-  json_rpc_service_->EnsGetContentHash(
-      "brantly.eth",
-      base::BindOnce(&OnBytesResponse, &callback_called,
-                     mojom::ProviderError::kInternalError,
-                     l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
-                     std::vector<uint8_t>()));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
+    SetUDENSInterceptor(mojom::kMainnetChainId);
+    json_rpc_service_->EnsGetContentHash("brantly.eth", callback.Get());
+    base::RunLoop().RunUntilIdle();
+  }
 
-  callback_called = false;
-  SetInvalidJsonInterceptor();
-  json_rpc_service_->EnsGetContentHash(
-      "brantly.eth",
-      base::BindOnce(&OnBytesResponse, &callback_called,
-                     mojom::ProviderError::kParsingError,
-                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR),
-                     std::vector<uint8_t>()));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
+  {
+    base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
+    EXPECT_CALL(
+        callback,
+        Run(std::vector<uint8_t>(), false, mojom::ProviderError::kInternalError,
+            l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+    SetHTTPRequestTimeoutInterceptor();
+    json_rpc_service_->EnsGetContentHash("brantly.eth", callback.Get());
+    base::RunLoop().RunUntilIdle();
+  }
 
-  callback_called = false;
-  SetLimitExceededJsonErrorResponse();
-  json_rpc_service_->EnsGetContentHash(
-      "brantly.eth",
-      base::BindOnce(&OnBytesResponse, &callback_called,
-                     mojom::ProviderError::kLimitExceeded,
-                     "Request exceeds defined limit", std::vector<uint8_t>()));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
+  {
+    base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
+    EXPECT_CALL(
+        callback,
+        Run(std::vector<uint8_t>(), false, mojom::ProviderError::kParsingError,
+            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
+    SetInvalidJsonInterceptor();
+    json_rpc_service_->EnsGetContentHash("brantly.eth", callback.Get());
+    base::RunLoop().RunUntilIdle();
+  }
+
+  {
+    base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
+    EXPECT_CALL(callback, Run(std::vector<uint8_t>(), false,
+                              mojom::ProviderError::kLimitExceeded,
+                              "Request exceeds defined limit"));
+    SetLimitExceededJsonErrorResponse();
+    json_rpc_service_->EnsGetContentHash("brantly.eth", callback.Get());
+    base::RunLoop().RunUntilIdle();
+  }
 }
 
 TEST_F(JsonRpcServiceUnitTest, EnsGetEthAddr) {
@@ -4621,17 +4608,18 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_Consent) {
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash) {
   base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
-  EXPECT_CALL(callback,
-              Run(offchain_contenthash(), mojom::ProviderError::kSuccess, ""));
+  EXPECT_CALL(callback, Run(offchain_contenthash(), false,
+                            mojom::ProviderError::kSuccess, ""));
   json_rpc_service_->EnsGetContentHash(ens_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_NoResolver) {
   base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
-  EXPECT_CALL(callback,
-              Run(std::vector<uint8_t>(), mojom::ProviderError::kInternalError,
-                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+  EXPECT_CALL(
+      callback,
+      Run(std::vector<uint8_t>(), false, mojom::ProviderError::kInternalError,
+          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->EnsGetContentHash("unknown-host.eth", callback.Get());
   base::RunLoop().RunUntilIdle();
 }
@@ -4645,8 +4633,8 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_NoEnsip10Support) {
   ensip10_support_handler_->DisableSupport();
 
   base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
-  EXPECT_CALL(callback,
-              Run(onchain_contenthash(), mojom::ProviderError::kSuccess, ""));
+  EXPECT_CALL(callback, Run(onchain_contenthash(), false,
+                            mojom::ProviderError::kSuccess, ""));
   json_rpc_service_->EnsGetContentHash(ens_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
 }
@@ -4656,9 +4644,10 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_Gateway500Error) {
   offchain_gateway_handler_->SetRespondWith500();
 
   base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
-  EXPECT_CALL(callback,
-              Run(std::vector<uint8_t>(), mojom::ProviderError::kInternalError,
-                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+  EXPECT_CALL(
+      callback,
+      Run(std::vector<uint8_t>(), false, mojom::ProviderError::kInternalError,
+          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->EnsGetContentHash(ens_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
 }
@@ -4668,9 +4657,10 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_GatewayNoRecord) {
   offchain_gateway_handler_->SetRespondWithNoRecord();
 
   base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
-  EXPECT_CALL(callback,
-              Run(std::vector<uint8_t>(), mojom::ProviderError::kInvalidParams,
-                  l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
+  EXPECT_CALL(
+      callback,
+      Run(std::vector<uint8_t>(), false, mojom::ProviderError::kInvalidParams,
+          l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
   json_rpc_service_->EnsGetContentHash(ens_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
 }
@@ -4683,7 +4673,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_Consent) {
   // Ok by default.
   {
     base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
-    EXPECT_CALL(callback, Run(offchain_contenthash(),
+    EXPECT_CALL(callback, Run(offchain_contenthash(), false,
                               mojom::ProviderError::kSuccess, ""));
     json_rpc_service_->EnsGetContentHash(ens_host(), callback.Get());
     base::RunLoop().RunUntilIdle();
@@ -4695,7 +4685,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_Consent) {
   // Ok when enabled by prefs.
   {
     base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
-    EXPECT_CALL(callback, Run(offchain_contenthash(),
+    EXPECT_CALL(callback, Run(offchain_contenthash(), false,
                               mojom::ProviderError::kSuccess, ""));
     json_rpc_service_->EnsGetContentHash(ens_host(), callback.Get());
     base::RunLoop().RunUntilIdle();
@@ -4711,7 +4701,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_Consent) {
     base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
     EXPECT_CALL(
         callback,
-        Run(std::vector<uint8_t>(), mojom::ProviderError::kInternalError,
+        Run(std::vector<uint8_t>(), false, mojom::ProviderError::kInternalError,
             l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
     json_rpc_service_->EnsGetContentHash(ens_host(), callback.Get());
     base::RunLoop().RunUntilIdle();

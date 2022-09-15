@@ -1150,7 +1150,7 @@ void JsonRpcService::EnsGetContentHash(const std::string& domain,
         prefs_, brave_wallet::mojom::kMainnetChainId, mojom::CoinType::ETH);
     if (!network_url.is_valid()) {
       std::move(callback).Run(
-          {}, mojom::ProviderError::kInvalidParams,
+          {}, false, mojom::ProviderError::kInvalidParams,
           l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
       return;
     }
@@ -1181,14 +1181,14 @@ void JsonRpcService::ContinueEnsGetContentHash(
     mojom::ProviderError error,
     const std::string& error_message) {
   if (error != mojom::ProviderError::kSuccess || resolver_address.empty()) {
-    std::move(callback).Run({}, error, error_message);
+    std::move(callback).Run({}, false, error, error_message);
     return;
   }
 
   std::string data;
   if (!ens::ContentHash(domain, &data)) {
     std::move(callback).Run(
-        {}, mojom::ProviderError::kInvalidParams,
+        {}, false, mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
@@ -1197,7 +1197,7 @@ void JsonRpcService::ContinueEnsGetContentHash(
                                    mojom::CoinType::ETH);
   if (!network_url.is_valid()) {
     std::move(callback).Run(
-        {}, mojom::ProviderError::kInvalidParams,
+        {}, false, mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
@@ -1215,7 +1215,7 @@ void JsonRpcService::OnEnsGetContentHash(EnsGetContentHashCallback callback,
   DCHECK(callback);
   if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
-        {}, mojom::ProviderError::kInternalError,
+        {}, false, mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
@@ -1228,11 +1228,12 @@ void JsonRpcService::OnEnsGetContentHash(EnsGetContentHashCallback callback,
     std::string error_message;
     ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
                                            &error_message);
-    std::move(callback).Run({}, error, error_message);
+    std::move(callback).Run({}, false, error, error_message);
     return;
   }
 
-  std::move(callback).Run(content_hash, mojom::ProviderError::kSuccess, "");
+  std::move(callback).Run(content_hash, false, mojom::ProviderError::kSuccess,
+                          "");
 }
 
 void JsonRpcService::EnsGetEthAddr(const std::string& domain,
@@ -1355,9 +1356,17 @@ void JsonRpcService::OnEnsGetContentHashTaskDone(
     }
   }
 
+  bool require_offchain_consent =
+      (task_result ? task_result->need_to_allow_offchain : false);
+  if (require_offchain_consent && EnsOffchainPrefDisabled(local_state_prefs_)) {
+    require_offchain_consent = false;
+    error = mojom::ProviderError::kInvalidParams;
+    error_message = l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS);
+  }
+
   for (auto& cb : callbacks) {
-    std::move(cb).Run(content_hash.value_or(std::vector<uint8_t>()), error,
-                      error_message);
+    std::move(cb).Run(content_hash.value_or(std::vector<uint8_t>()),
+                      require_offchain_consent, error, error_message);
   }
 }
 
