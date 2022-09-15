@@ -48,17 +48,88 @@ void PlaylistRenderFrameObserver::HideMediaSourceAPI() {
   // Otherwise, we get "blob: " url which we can't handle.
   // This script is from
   // https://github.com/brave/brave-ios/blob/development/Client/Frontend/UserContent/UserScripts/PlaylistSwizzler.js
+  // TODO(sko) This script should be managed by "Component" as it's fragile.
   static const char16_t kScriptToHideMediaSourceAPI[] =
       uR"-(
     (function() {
+      const isYoutubeStreaming = () => {
+        return window.__isLiveContent__ || !!window.ytplayer?.bootstrapPlayerResponse?.videoDetails?.isLiveContent
+      }
+
       // Stub out the MediaSource API so video players do not attempt to use `blob` for streaming
       if (window.MediaSource || window.WebKitMediaSource || window.HTMLMediaElement && HTMLMediaElement.prototype.webkitSourceAddId) {
+        window.__MediaSource__ = window.MediaSource;
+        window.__WebKitMediaSource__ = window.WebKitMediaSource;
         window.MediaSource = null;
         window.WebKitMediaSource = null;
         delete window.MediaSource;
         delete window.WebKitMediaSource;
+
+        if (window.__MediaSource__) {
+          Object.defineProperties(window, {
+            MediaSource: {
+              get: function() {
+                return isYoutubeStreaming() ? window.__MediaSource__ : null
+              }
+            }
+          });
+        }
+
+        if (window.__WebKitMediaSource__) {
+          Object.defineProperties(window, {
+            WebKitMediaSource: {
+              get: function() {
+                return isYoutubeStreaming() ? window.__WebKitMediaSource__ : null
+              }
+            }
+          });
+        }
       }
     })();
+
+
+    (function(){
+      // Hook fetch API to intercept player information from the response.
+      // As youtube is SPA and player data is updated via Fetch API.
+      window.__isLiveContent__ = false;
+      window.__isLiveContentCache__ = {};
+
+      let originalFetch = window.fetch;
+      window.fetch = function(request, data) {
+        return new Promise((resolve, reject) => {
+          let originalPromise = originalFetch(request, data)
+          if (request?.url?.startsWith('https://www.youtube.com/youtubei/v1/player')) {
+            // Parse response and mark if it's streaming ahead of the application.
+            originalPromise.then(response => { 
+                    return Promise.all([response, response.clone().json()])
+                  })
+                  .then(([response, json, ...rest]) => { 
+                    const videoDetail = json?.videoDetails
+                    if (videoDetail) {
+                      const isLiveContent = !!videoDetail.isLiveContent;
+                      window.__isLiveContent__ = isLiveContent;
+                      window.__isLiveContentCache__[videoDetail.videoId] = isLiveContent;
+                    }
+                    resolve(response);
+                    })
+                  .catch(error => { 
+                    reject(error)
+                    })
+            return;
+          }
+
+          originalPromise.then(response => resolve(response))
+                         .catch(error => reject(error))
+        })
+      }
+
+      window.addEventListener('popstate', event => (event) => {
+        const videoId = event?.state?.endpoint?.watchEndpoint?.videoId;
+        if (videoId)
+          window.__isLiveContent__ = window.__isLiveContentCache__[videoId]
+      });
+    })();
+
     )-";
 
   blink::WebLocalFrame* web_frame = render_frame()->GetWebFrame();
