@@ -31,6 +31,7 @@
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/gfx/text_constants.h"
+#include "ui/gfx/vector_icon_types.h"
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/animation/ink_drop_host_view.h"
 #include "ui/views/background.h"
@@ -121,7 +122,7 @@ void BraveNewsActionView::Update() {
   }
 
   auto image = gfx::CreateVectorIcon(
-      kBraveTodaySubscribeIcon, 16,
+      subscribed ? kBraveTodaySubscribedIcon : kBraveTodaySubscribeIcon, 16,
       color_utils::DeriveDefaultIconColor(GetIconColor(subscribed)));
   SetImage(ButtonState::STATE_NORMAL, image);
   SetVisible(has_feeds);

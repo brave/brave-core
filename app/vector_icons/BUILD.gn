@@ -16,6 +16,7 @@ aggregate_vector_icons("brave_vector_icons") {
     "brave_ads_light_mode_info_button.icon",
     "brave_sad.icon",
     "brave_today_subscribe.icon",
+    "brave_today_subscribed.icon",
     "brave_tooltips_stopwatch.icon",
     "brave_translate.icon",
     "download_unlock.icon",
