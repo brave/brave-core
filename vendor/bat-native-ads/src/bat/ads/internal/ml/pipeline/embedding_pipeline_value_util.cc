@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/ml/pipeline/pipeline_embedding_value_util.h"
+#include "bat/ads/internal/ml/pipeline/embedding_pipeline_value_util.h"
 
 #include <utility>
 #include <vector>
 
-#include "bat/ads/internal/ml/pipeline/pipeline_embedding_info.h"
+#include "bat/ads/internal/ml/pipeline/embedding_pipeline_info.h"
 
 namespace {
 
@@ -48,7 +48,7 @@ absl::optional<EmbeddingPipelineInfo> EmbeddingPipelineFromValue(
     return absl::nullopt;
   }
 
-  embedding_pipeline.dim = 1;
+  embedding_pipeline.dimension = 1;
   for (const auto [key, value] : *value) {
     const auto* list = value.GetIfList();
     if (!list) {
@@ -61,11 +61,11 @@ absl::optional<EmbeddingPipelineInfo> EmbeddingPipelineFromValue(
       embedding.push_back(dimension_value.GetDouble());
     }
     embedding_pipeline.embeddings[key] = VectorData(std::move(embedding));
-    embedding_pipeline.dim =
+    embedding_pipeline.dimension =
         embedding_pipeline.embeddings[key].GetDimensionCount();
   }
 
-  if (embedding_pipeline.dim == 1) {
+  if (embedding_pipeline.dimension == 1) {
     return absl::nullopt;
   }
 

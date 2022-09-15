@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/ml/pipeline/pipeline_embedding_value_util.h"
+#include "bat/ads/internal/ml/pipeline/embedding_pipeline_value_util.h"
 
 #include <string>
 #include <tuple>
@@ -11,25 +11,25 @@
 
 #include "base/test/values_test_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/ml/pipeline/pipeline_embedding_info.h"
+#include "bat/ads/internal/ml/pipeline/embedding_pipeline_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
+
+namespace ads::ml::pipeline {
 
 namespace {
 constexpr char kJson[] =
     R"({"locale": "EN", "timestamp": "2022-06-09 08:00:00.704847", "version": 1, "embeddings": {"quick": [0.7481, 0.0493, -0.5572], "brown": [-0.0647, 0.4511, -0.7326], "fox": [-0.9328, -0.2578, 0.0032]}})";
 }  // namespace
 
-namespace ads::ml::pipeline {
-
-class BatAdsPipelineEmbeddingValueUtilTest : public UnitTestBase {
+class BatAdsEmbeddingPipelineValueUtilTest : public UnitTestBase {
  protected:
-  BatAdsPipelineEmbeddingValueUtilTest() = default;
+  BatAdsEmbeddingPipelineValueUtilTest() = default;
 
-  ~BatAdsPipelineEmbeddingValueUtilTest() override = default;
+  ~BatAdsEmbeddingPipelineValueUtilTest() override = default;
 };
 
-TEST_F(BatAdsPipelineEmbeddingValueUtilTest, FromValue) {
+TEST_F(BatAdsEmbeddingPipelineValueUtilTest, FromValue) {
   // Arrange
   const base::Value value = base::test::ParseJson(kJson);
   const base::Value::Dict* dict = value.GetIfDict();

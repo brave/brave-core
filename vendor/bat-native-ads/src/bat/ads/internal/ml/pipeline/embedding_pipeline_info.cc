@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/ml/pipeline/pipeline_embedding_info.h"
+#include "bat/ads/internal/ml/pipeline/embedding_pipeline_info.h"
 
 namespace ads::ml::pipeline {
 

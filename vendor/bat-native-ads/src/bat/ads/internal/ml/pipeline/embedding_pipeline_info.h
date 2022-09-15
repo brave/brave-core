@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_PIPELINE_PIPELINE_EMBEDDING_INFO_H_
-#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_PIPELINE_PIPELINE_EMBEDDING_INFO_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_PIPELINE_EMBEDDING_PIPELINE_INFO_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_PIPELINE_EMBEDDING_PIPELINE_INFO_H_
 
 #include <map>
 #include <string>
@@ -28,10 +28,10 @@ struct EmbeddingPipelineInfo final {
   int version = 0;
   base::Time time;
   std::string locale;
-  int dim = 0;
+  int dimension = 0;
   std::map<std::string, VectorData> embeddings;
 };
 
 }  // namespace ads::ml::pipeline
 
-#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_PIPELINE_PIPELINE_EMBEDDING_INFO_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_PIPELINE_EMBEDDING_PIPELINE_INFO_H_

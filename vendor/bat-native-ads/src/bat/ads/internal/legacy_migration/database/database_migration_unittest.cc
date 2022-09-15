@@ -13,9 +13,6 @@
 #include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/creatives/creative_ad_unittest_util.h"
 #include "bat/ads/internal/legacy_migration/database/database_constants.h"
-#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
-#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_event_unittest_util.h"
-#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -42,8 +39,6 @@ TEST_P(BatAdsDatabaseMigrationTest, MigrateFromSchema) {
   const CreativeAdInfo creative_ad = BuildCreativeAd();
   const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now());
-  const TextEmbeddingHtmlEventInfo text_embedding_html_event =
-      BuildTextEmbeddingHtmlEvent();
 
   // Act
   LogAdEvent(ad_event, [=](const bool success) {
@@ -52,14 +47,7 @@ TEST_P(BatAdsDatabaseMigrationTest, MigrateFromSchema) {
                          << database::kVersion;
   });
 
-  LogTextEmbeddingHtmlEvent(
-      text_embedding_html_event.embedding,
-      text_embedding_html_event.hashed_text_base64, [=](const bool success) {
-        EXPECT_TRUE(success)
-            << "Failed to migrate database from schema version "
-            << GetSchemaVersion() << " to schema version "
-            << database::kVersion;
-      });
+  // Assert
 }
 
 std::string TestParamToString(::testing::TestParamInfo<int> param_info) {

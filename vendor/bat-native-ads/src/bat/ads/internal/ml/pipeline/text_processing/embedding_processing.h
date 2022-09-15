@@ -10,7 +10,7 @@
 #include <memory>
 #include <string>
 
-#include "bat/ads/internal/ml/pipeline/pipeline_embedding_info.h"
+#include "bat/ads/internal/ml/pipeline/embedding_pipeline_info.h"
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_info.h"
 
 namespace base {

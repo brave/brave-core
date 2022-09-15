@@ -62,11 +62,8 @@ void TextEmbedding::Process(const std::string& text) {
     return;
   }
 
-  const std::string embedding_as_string =
-      text_embedding.embedding.GetVectorAsString();
   LogTextEmbeddingHtmlEvent(
-      embedding_as_string, text_embedding.hashed_text_base64,
-      [](const bool success) {
+      text_embedding, [](const bool success) {
         if (!success) {
           BLOG(1, "Failed to log text embedding HTML event");
           return;

@@ -11,8 +11,15 @@
 
 namespace ads::processor {
 
+namespace {
+
+constexpr char kTagName[] = "og:title";
+constexpr char kAttributeName[] = "content";
+
+}  // namespace
+
 std::string SanitizeHtml(const std::string& html) {
-  return SanitizeText(ParseHtmlTagAttribute(html, "og:title", "content"));
+  return SanitizeText(ParseHtmlTagAttribute(html, kTagName, kAttributeName));
 }
 
 std::string SanitizeText(const std::string& text) {

@@ -38,10 +38,10 @@ TEST_F(BatAdsTextEmbeddingProcessorUtilTest, SanitizeHtml) {
       {R"(<meta property="og:title" cc=" testing   ">)", {}},
       {R"(<meta property="og:title" content="test")", {}},
       {R"(meta property="og:title" content="test">)", {}},
-      {R"(<div>)", {}},
-      {R"(<>)", {}},
-      {R"( )", {}},
-      {R"()", {}}};
+      {"<div>", {}},
+      {"<>", {}},
+      {" ", {}},
+      {{}, {}}};
 
   for (const auto& [html, expected_text] : kSamples) {
     // Act
@@ -65,7 +65,7 @@ TEST_F(BatAdsTextEmbeddingProcessorUtilTest, SanitizeText) {
       {"321", {}},
       {"<>", {}},
       {" ", {}},
-      {"", {}}};
+      {{}, {}}};
 
   for (const auto& [text, expected_sanitized_text] : kSamples) {
     // Act

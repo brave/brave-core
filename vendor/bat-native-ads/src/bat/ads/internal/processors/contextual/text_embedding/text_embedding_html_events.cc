@@ -14,14 +14,16 @@
 
 namespace ads {
 
-void LogTextEmbeddingHtmlEvent(const std::string& embedding_as_string,
-                               const std::string& hashed_text_base64,
-                               TextEmbeddingHtmlEventCallback callback) {
+void LogTextEmbeddingHtmlEvent(
+    const ml::pipeline::TextEmbeddingInfo& text_embedding,
+    TextEmbeddingHtmlEventCallback callback) {
   TextEmbeddingHtmlEventInfo text_embedding_html_event;
   text_embedding_html_event.created_at = base::Time::Now();
   text_embedding_html_event.locale = {};
-  text_embedding_html_event.hashed_text_base64 = hashed_text_base64;
-  text_embedding_html_event.embedding = embedding_as_string;
+  text_embedding_html_event.hashed_text_base64 =
+      text_embedding.hashed_text_base64;
+  text_embedding_html_event.embedding =
+      text_embedding.embedding.GetVectorAsString();
 
   database::table::TextEmbeddingHtmlEvents database_table;
   database_table.LogEvent(

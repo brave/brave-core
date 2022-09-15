@@ -152,7 +152,7 @@ TEST_F(BatAdsVectorDataTest, NonsenseProduct) {
               std::isnan(wrong_sd) && std::isnan(wrong_ds));
 }
 
-TEST_F(BatAdsVectorDataTest, Add) {
+TEST_F(BatAdsVectorDataTest, AddElementWise) {
   // Arrange
   VectorData v1 = VectorData({0.3F, 0.5F, 0.8F});
   VectorData v1_b = VectorData({0.3F, 0.5F, 0.8F});
@@ -177,7 +177,7 @@ TEST_F(BatAdsVectorDataTest, Add) {
   }
 }
 
-TEST_F(BatAdsVectorDataTest, ScalarDivide) {
+TEST_F(BatAdsVectorDataTest, DivideByScalar) {
   // Arrange
   VectorData v1 = VectorData({0.4F, 0.3F, 0.8F});
   VectorData v2 = VectorData({1.9F, -0.75F, 0.0F});

@@ -34,20 +34,20 @@ TEST_F(BatAdsStringHtmlUtilTest, ParseHtmlTagAttributeSimple) {
                   {html_1, "title", "content", "this is info "},
                   {html_1, "description", "content", "this is info "},
                   {html_1, "descript", "description", "a detailed summary"},
-                  {html_1, "og:description", "description", ""},
-                  {html_2, "og:title", "content", ""},
-                  {html_2, "title", "content", ""},
-                  {html_2, "description", "content", ""},
+                  {html_1, "og:description", "description", {}},
+                  {html_2, "og:title", "content", {}},
+                  {html_2, "title", "content", {}},
+                  {html_2, "description", "content", {}},
                   {html_2, "href", "description", "this is12 34 info"},
                   {html_2, "div", "href", "brave.com"}};
 
-  for (const auto& [html, tag_substr, tag_attribute, expected_html] :
-       kSamples) {
+  for (const auto& [html, tag_substr, tag_attribute,
+                    expected_html_targ_attribute] : kSamples) {
     // Act
     const std::string html_tag_attribute =
         ParseHtmlTagAttribute(html, tag_substr, tag_attribute);
     // Assert
-    EXPECT_EQ(expected_html, html_tag_attribute);
+    EXPECT_EQ(expected_html_targ_attribute, html_tag_attribute);
   }
 }
 

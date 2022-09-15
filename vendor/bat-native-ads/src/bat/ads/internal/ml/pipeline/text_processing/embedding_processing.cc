@@ -18,8 +18,8 @@
 #include "bat/ads/internal/base/crypto/crypto_util.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
-#include "bat/ads/internal/ml/pipeline/pipeline_embedding_info.h"
-#include "bat/ads/internal/ml/pipeline/pipeline_embedding_value_util.h"
+#include "bat/ads/internal/ml/pipeline/embedding_pipeline_info.h"
+#include "bat/ads/internal/ml/pipeline/embedding_pipeline_value_util.h"
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_info.h"
 
 namespace ads::ml::pipeline {
@@ -75,10 +75,10 @@ TextEmbeddingInfo EmbeddingProcessing::EmbedText(
     return {};
   }
 
-  const std::vector<float> embedding_zeroed(embedding_pipeline_.dim, 0.0F);
-  const VectorData embedding_vector_data = VectorData(embedding_zeroed);
+  const std::vector<float> embedding_zeroed(embedding_pipeline_.dimension,
+                                            0.0F);
   TextEmbeddingInfo text_embedding;
-  text_embedding.embedding = embedding_vector_data;
+  text_embedding.embedding = VectorData(embedding_zeroed);
 
   const std::vector<std::string> tokens = base::SplitString(
       text, " ", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);

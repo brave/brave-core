@@ -15,6 +15,10 @@
 
 namespace ads {
 
+namespace {
+const int kNumberEventsSurplus = 4;
+}  // namespace
+
 class BatAdsTextEmbeddingHtmlEventsTest : public UnitTestBase {
  protected:
   BatAdsTextEmbeddingHtmlEventsTest() = default;
@@ -25,13 +29,10 @@ class BatAdsTextEmbeddingHtmlEventsTest : public UnitTestBase {
 TEST_F(BatAdsTextEmbeddingHtmlEventsTest, LogEvent) {
   // Arrange
   const ml::pipeline::TextEmbeddingInfo text_embedding = BuildTextEmbedding();
-  const std::string embedding_as_string =
-      text_embedding.embedding.GetVectorAsString();
 
   // Act
   LogTextEmbeddingHtmlEvent(
-      embedding_as_string, text_embedding.hashed_text_base64,
-      [=](const bool success) {
+      text_embedding, [=](const bool success) {
         ASSERT_TRUE(success) << "Failed to log text embedding html event";
 
         GetTextEmbeddingHtmlEventsFromDatabase(
@@ -48,46 +49,34 @@ TEST_F(BatAdsTextEmbeddingHtmlEventsTest, LogEvent) {
 }
 
 TEST_F(BatAdsTextEmbeddingHtmlEventsTest, PurgeEvents) {
-  int number_events_surplus = 4;
-  int n_events = targeting::features::GetTextEmbeddingsHistorySize() +
-                 number_events_surplus;
-  int n_events_counter = 0;
-  for (int i = 0; i < n_events; i++) {
-    // Arrange
+  // Arrange
+  const int text_embedding_total_size =
+      targeting::features::GetTextEmbeddingsHistorySize() +
+      kNumberEventsSurplus;
+
+  for (int i = 0; i < text_embedding_total_size; i++) {
     const ml::pipeline::TextEmbeddingInfo text_embedding = BuildTextEmbedding();
-    const std::string embedding_as_string =
-        text_embedding.embedding.GetVectorAsString();
-
-    // Act
-    LogTextEmbeddingHtmlEvent(
-        embedding_as_string, text_embedding.hashed_text_base64,
-        [&](const bool success) {
-          ASSERT_TRUE(success) << "Failed to log text embedding html event";
-
-          n_events_counter++;
-          if (n_events_counter == n_events) {
-            PurgeStaleTextEmbeddingHtmlEvents([](const bool success) {
-              ASSERT_TRUE(success)
-                  << "Failed to purge text embedding html events";
-
-              GetTextEmbeddingHtmlEventsFromDatabase(
-                  [=](const bool success, const TextEmbeddingHtmlEventList&
-                                              text_embedding_html_events) {
-                    ASSERT_TRUE(success)
-                        << "Failed to get text embedding html events";
-
-                    // Assert
-                    const int text_embedding_history_size =
-                        targeting::features::GetTextEmbeddingsHistorySize();
-                    const int text_embedding_html_event_count =
-                        text_embedding_html_events.size();
-                    EXPECT_TRUE(text_embedding_html_event_count <=
-                                text_embedding_history_size);
-                  });
-            });
-          }
-        });
+    LogTextEmbeddingHtmlEvent(text_embedding,
+                              [](const bool success) { ASSERT_TRUE(success); });
   }
+
+  // Act
+  PurgeStaleTextEmbeddingHtmlEvents(
+      [](const bool success) { ASSERT_TRUE(success); });
+
+  // Assert
+  GetTextEmbeddingHtmlEventsFromDatabase(
+      [](const bool success,
+         const TextEmbeddingHtmlEventList& text_embedding_html_events) {
+        ASSERT_TRUE(success);
+
+        const int text_embedding_history_size =
+            targeting::features::GetTextEmbeddingsHistorySize();
+        const int text_embedding_html_event_count =
+            text_embedding_html_events.size();
+        EXPECT_TRUE(text_embedding_html_event_count <=
+                    text_embedding_history_size);
+      });
 }
 
 }  // namespace ads

@@ -9,6 +9,7 @@
 #include <functional>
 #include <string>
 
+#include "bat/ads/internal/ml/pipeline/text_processing/embedding_info.h"
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events_database_table.h"
 
 namespace ads {
@@ -17,9 +18,9 @@ struct TextEmbeddingHtmlEventInfo;
 
 using TextEmbeddingHtmlEventCallback = std::function<void(const bool)>;
 
-void LogTextEmbeddingHtmlEvent(const std::string& embedding_as_string,
-                               const std::string& hashed_text_base64,
-                               TextEmbeddingHtmlEventCallback callback);
+void LogTextEmbeddingHtmlEvent(
+    const ml::pipeline::TextEmbeddingInfo& text_embedding,
+    TextEmbeddingHtmlEventCallback callback);
 void PurgeStaleTextEmbeddingHtmlEvents(TextEmbeddingHtmlEventCallback callback);
 void GetTextEmbeddingHtmlEventsFromDatabase(
     database::table::GetTextEmbeddingHtmlEventsCallback callback);
