@@ -1007,10 +1007,6 @@ void AdsServiceImpl::SetMaximumNotificationAdsPerHour(
   SetInt64Pref(ads::prefs::kMaximumNotificationAdsPerHour, ads_per_hour);
 }
 
-void AdsServiceImpl::SetAllowConversionTracking(const bool should_allow) {
-  SetBooleanPref(ads::prefs::kShouldAllowConversionTracking, should_allow);
-}
-
 bool AdsServiceImpl::ShouldAllowSubdivisionTargeting() const {
   return GetBooleanPref(ads::prefs::kShouldAllowSubdivisionTargeting);
 }

@@ -346,10 +346,6 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   [self savePref:kAdsEnabledPrefKey];
 }
 
-- (BOOL)shouldAllowAdConversionTracking {
-  return true;
-}
-
 - (NSInteger)numberOfAllowableAdsPerHour {
   return [self.prefs[kNumberOfAdsPerHourKey] integerValue];
 }
@@ -1355,9 +1351,6 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 - (bool)getBooleanPref:(const std::string&)path {
   const auto key = base::SysUTF8ToNSString(path);
-  if (path == ads::prefs::kShouldAllowConversionTracking) {
-    return [self shouldAllowAdConversionTracking];
-  }
   return [self.prefs[key] boolValue];
 }
 

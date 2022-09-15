@@ -9,9 +9,7 @@
 
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
-#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
-#include "bat/ads/pref_names.h"
 
 namespace ads {
 
@@ -20,11 +18,7 @@ constexpr int kConversionCap = 1;
 }  // namespace
 
 ConversionExclusionRule::ConversionExclusionRule(const AdEventList& ad_events)
-    : ad_events_(ad_events) {
-  should_allow_conversion_tracking_ =
-      AdsClientHelper::GetInstance()->GetBooleanPref(
-          prefs::kShouldAllowConversionTracking);
-}
+    : ad_events_(ad_events) {}
 
 ConversionExclusionRule::~ConversionExclusionRule() = default;
 
@@ -36,14 +30,6 @@ std::string ConversionExclusionRule::GetUuid(
 bool ConversionExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
   if (!exclusion_rules::features::ShouldExcludeAdIfConverted()) {
     return false;
-  }
-
-  if (!ShouldAllow(creative_ad)) {
-    last_message_ = base::StringPrintf(
-        "creativeSetId %s excluded due to disabled ad conversion tracking",
-        creative_ad.creative_set_id.c_str());
-
-    return true;
   }
 
   if (!DoesRespectCap(ad_events_, creative_ad)) {
@@ -59,11 +45,6 @@ bool ConversionExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
 
 const std::string& ConversionExclusionRule::GetLastMessage() const {
   return last_message_;
-}
-
-bool ConversionExclusionRule::ShouldAllow(
-    const CreativeAdInfo& creative_ad) const {
-  return !(creative_ad.conversion && !should_allow_conversion_tracking_);
 }
 
 bool ConversionExclusionRule::DoesRespectCap(
