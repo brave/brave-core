@@ -27,8 +27,4 @@ bool IsTranslateExtensionEnabled(content::BrowserContext* context) {
 #endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 }
 
-bool IsInternalTranslationEnabled(content::BrowserContext* context) {
-  return !IsTranslateExtensionEnabled(context) && IsBraveTranslateGoAvailable();
-}
-
 }  // namespace translate

@@ -333,11 +333,9 @@ ShowTranslateBubbleResult BraveBrowserView::ShowTranslateBubble(
     translate::TranslateErrors::Type error_type,
     bool is_user_gesture) {
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-  if (translate::IsInternalTranslationEnabled(GetProfile())) {
     return BrowserView::ShowTranslateBubble(web_contents, step, source_language,
                                             target_language, error_type,
                                             is_user_gesture);
-  }
 #endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   return ShowTranslateBubbleResult::BROWSER_WINDOW_NOT_VALID;
 }

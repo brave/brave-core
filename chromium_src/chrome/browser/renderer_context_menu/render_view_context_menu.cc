@@ -10,7 +10,6 @@
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "brave/components/translate/core/common/buildflags.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -35,10 +34,6 @@
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-#include "brave/browser/translate/brave_translate_utils.h"
 #endif
 
 // Our .h file creates a masquerade for RenderViewContextMenu.  Switch
@@ -404,20 +399,4 @@ void BraveRenderViewContextMenu::InitMenu() {
 #if BUILDFLAG(ENABLE_IPFS)
   BuildIPFSMenu();
 #endif
-
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-  const bool remove_translate =
-      !translate::IsInternalTranslationEnabled(GetProfile());
-#else
-  const bool remove_translate = true;
-#endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-
-  // Only show the translate item when go-translate is enabled.
-  // This removes menu item, but keeps the duplicated separator. The duplicated
-  // separator is removed in |BraveRenderViewContextMenuViews::Show|
-  if (remove_translate) {
-    index = menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_TRANSLATE);
-    if (index.has_value())
-      menu_model_.RemoveItemAt(index.value());
-  }
 }
