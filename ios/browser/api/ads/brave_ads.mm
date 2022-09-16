@@ -549,7 +549,8 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   urls.push_back(net::GURLWithNSURL(url));
   ads->OnTabTextContentDidChange((int32_t)tabId, urls,
                                  base::SysNSStringToUTF8(text));
-  ads->OnHtmlLoaded((int32_t)tabId, urls, base::SysNSStringToUTF8(html));
+  ads->OnTabHtmlContentDidChange((int32_t)tabId, urls,
+                                 base::SysNSStringToUTF8(html));
 }
 
 - (void)reportMediaStartedWithTabId:(NSInteger)tabId {

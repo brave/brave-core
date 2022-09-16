@@ -177,9 +177,9 @@ void AdsImpl::OnPrefDidChange(const std::string& path) {
   PrefManager::GetInstance()->OnPrefDidChange(path);
 }
 
-void AdsImpl::OnHtmlLoaded(const int32_t tab_id,
-                           const std::vector<GURL>& redirect_chain,
-                           const std::string& html) {
+void AdsImpl::OnTabHtmlContentDidChange(const int32_t tab_id,
+                                        const std::vector<GURL>& redirect_chain,
+                                        const std::string& html) {
   TabManager::GetInstance()->OnHtmlContentDidChange(tab_id, redirect_chain,
                                                     html);
 }

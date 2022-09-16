@@ -52,9 +52,9 @@ class BatAdsImpl :
 
   void OnDidUpdateResourceComponent(const std::string& id) override;
 
-  void OnHtmlLoaded(const int32_t tab_id,
-                    const std::vector<GURL>& redirect_chain,
-                    const std::string& html) override;
+  void OnTabHtmlContentDidChange(const int32_t tab_id,
+                                 const std::vector<GURL>& redirect_chain,
+                                 const std::string& html) override;
   void OnTabTextContentDidChange(const int32_t tab_id,
                                  const std::vector<GURL>& redirect_chain,
                                  const std::string& text) override;

@@ -1103,14 +1103,15 @@ void AdsServiceImpl::OnLocaleDidChange(const std::string& locale) {
   bat_ads_->OnLocaleDidChange(locale);
 }
 
-void AdsServiceImpl::OnHtmlLoaded(const SessionID& tab_id,
-                                  const std::vector<GURL>& redirect_chain,
-                                  const std::string& html) {
+void AdsServiceImpl::OnTabHtmlContentDidChange(
+    const SessionID& tab_id,
+    const std::vector<GURL>& redirect_chain,
+    const std::string& html) {
   if (!IsBatAdsBound()) {
     return;
   }
 
-  bat_ads_->OnHtmlLoaded(tab_id.id(), redirect_chain, html);
+  bat_ads_->OnTabHtmlContentDidChange(tab_id.id(), redirect_chain, html);
 }
 
 void AdsServiceImpl::OnTabTextContentDidChange(

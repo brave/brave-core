@@ -91,7 +91,7 @@ void AdsTabHelper::OnJavaScriptHtmlResult(base::Value value) {
     return;
   }
   const std::string& html = value.GetString();
-  ads_service_->OnHtmlLoaded(tab_id_, redirect_chain_, html);
+  ads_service_->OnTabHtmlContentDidChange(tab_id_, redirect_chain_, html);
 }
 
 void AdsTabHelper::OnJavaScriptTextResult(base::Value value) {

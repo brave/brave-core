@@ -54,7 +54,7 @@ class MockAdsService : public AdsService {
 
   MOCK_METHOD1(OnDidUpdateResourceComponent, void(const std::string&));
 
-  MOCK_METHOD3(OnHtmlLoaded,
+  MOCK_METHOD3(OnTabHtmlContentDidChange,
                void(const SessionID&,
                     const std::vector<GURL>&,
                     const std::string&));

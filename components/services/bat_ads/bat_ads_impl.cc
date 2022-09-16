@@ -74,10 +74,11 @@ void BatAdsImpl::OnPrefDidChange(const std::string& path) {
   ads_->OnPrefDidChange(path);
 }
 
-void BatAdsImpl::OnHtmlLoaded(const int32_t tab_id,
-                              const std::vector<GURL>& redirect_chain,
-                              const std::string& html) {
-  ads_->OnHtmlLoaded(tab_id, redirect_chain, html);
+void BatAdsImpl::OnTabHtmlContentDidChange(
+    const int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    const std::string& html) {
+  ads_->OnTabHtmlContentDidChange(tab_id, redirect_chain, html);
 }
 
 void BatAdsImpl::OnTabTextContentDidChange(

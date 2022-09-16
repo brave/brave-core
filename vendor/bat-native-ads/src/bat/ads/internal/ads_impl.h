@@ -106,9 +106,9 @@ class AdsImpl final : public Ads,
 
   void OnDidUpdateResourceComponent(const std::string& id) override;
 
-  void OnHtmlLoaded(int32_t tab_id,
-                    const std::vector<GURL>& redirect_chain,
-                    const std::string& html) override;
+  void OnTabHtmlContentDidChange(int32_t tab_id,
+                                 const std::vector<GURL>& redirect_chain,
+                                 const std::string& html) override;
   void OnTabTextContentDidChange(int32_t tab_id,
                                  const std::vector<GURL>& redirect_chain,
                                  const std::string& text) override;

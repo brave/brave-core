@@ -257,9 +257,9 @@ class AdsServiceImpl : public AdsService,
 
   void OnLocaleDidChange(const std::string& locale) override;
 
-  void OnHtmlLoaded(const SessionID& tab_id,
-                    const std::vector<GURL>& redirect_chain,
-                    const std::string& html) override;
+  void OnTabHtmlContentDidChange(const SessionID& tab_id,
+                                 const std::vector<GURL>& redirect_chain,
+                                 const std::string& html) override;
   void OnTabTextContentDidChange(const SessionID& tab_id,
                                  const std::vector<GURL>& redirect_chain,
                                  const std::string& text) override;
