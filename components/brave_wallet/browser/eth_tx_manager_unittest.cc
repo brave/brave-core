@@ -14,9 +14,11 @@
 #include "base/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/test/bind.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_data_parser.h"
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
@@ -29,6 +31,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -176,6 +179,15 @@ class EthTxManagerUnitTest : public testing::Test {
                 &url_loader_factory_)) {}
 
   void SetUp() override {
+    base::FieldTrialParams parameters;
+    parameters[features::kCreateDefaultSolanaAccount.name] = "false";
+    std::vector<base::test::ScopedFeatureList::FeatureAndParams>
+        enabled_features;
+    enabled_features.emplace_back(
+        brave_wallet::features::kBraveWalletSolanaFeature, parameters);
+
+    feature_list_.InitWithFeaturesAndParameters(enabled_features, {});
+
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
@@ -449,6 +461,7 @@ class EthTxManagerUnitTest : public testing::Test {
   }
 
  protected:
+  base::test::ScopedFeatureList feature_list_;
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   network::TestURLLoaderFactory url_loader_factory_;
