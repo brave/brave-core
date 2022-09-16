@@ -108,12 +108,6 @@ void Serving::ServeAd(const NewTabPageAdInfo& ad,
     return;
   }
 
-  if (ad.wallpapers.empty()) {
-    BLOG(1, "Failed to serve new tab page ad due to missing wallpapers");
-    callback(/*ads*/ absl::nullopt);
-    return;
-  }
-
   BLOG(1, "Served new tab page ad:\n"
               << "  placementId: " << ad.placement_id << "\n"
               << "  creativeInstanceId: " << ad.creative_instance_id << "\n"
