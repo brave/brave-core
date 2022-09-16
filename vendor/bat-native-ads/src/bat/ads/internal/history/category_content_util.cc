@@ -10,7 +10,6 @@
 
 namespace ads {
 
-// TODO(tmancey): Transition to bat/ads/internal/history
 CategoryContentInfo BuildCategoryContent(const std::string& segment) {
   CategoryContentInfo category_content;
 

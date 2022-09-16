@@ -12,7 +12,6 @@
 
 namespace ads {
 
-// TODO(tmancey): Transition to bat/ads/internal/history
 AdContentInfo BuildAdContent(const AdInfo& ad,
                              const ConfirmationType& confirmation_type,
                              const std::string& title,
