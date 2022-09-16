@@ -312,6 +312,42 @@ void BraveSyncWorker::PermanentlyDeleteAccount(
       &NativePermanentlyDeleteAccountCallback, env, java_callback));
 }
 
+namespace {
+
+base::android::ScopedJavaLocalRef<jobject> GetJavaBoolean(
+    JNIEnv* env,
+    const bool& native_bool) {
+  jclass booleanClass = env->FindClass("java/lang/Boolean");
+  jmethodID methodID = env->GetMethodID(booleanClass, "<init>", "(Z)V");
+  jobject booleanObject = env->NewObject(booleanClass, methodID, native_bool);
+
+  return base::android::ScopedJavaLocalRef<jobject>(env, booleanObject);
+}
+
+void NativeJoinSyncChainCallback(
+    JNIEnv* env,
+    const base::android::ScopedJavaGlobalRef<jobject>& callback,
+    const bool& result) {
+  Java_BraveSyncWorker_onJoinSyncChainResult(env, callback,
+                                             GetJavaBoolean(env, result));
+}
+
+}  // namespace
+
+void BraveSyncWorker::SetJoinSyncChainCallback(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& callback) {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  auto* sync_service = GetSyncService();
+  CHECK_NE(sync_service, nullptr);
+
+  base::android::ScopedJavaGlobalRef<jobject> java_callback;
+  java_callback.Reset(env, callback);
+
+  sync_service->SetJoinChainResultCallback(
+      base::BindOnce(&NativeJoinSyncChainCallback, env, java_callback));
+}
+
 void BraveSyncWorker::ClearAccountDeletedNoticePending(JNIEnv* env) {
   Profile* profile =
       ProfileManager::GetActiveUserProfile()->GetOriginalProfile();

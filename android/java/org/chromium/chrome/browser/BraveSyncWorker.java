@@ -218,6 +218,15 @@ public class BraveSyncWorker {
         return BraveSyncWorkerJni.get().isAccountDeletedNoticePending(mNativeBraveSyncWorker);
     }
 
+    @CalledByNative
+    private static void onJoinSyncChainResult(Callback<Boolean> callback, Boolean result) {
+        callback.onResult(result);
+    }
+
+    public void setJoinSyncChainCallback(Callback<Boolean> callback) {
+        BraveSyncWorkerJni.get().setJoinSyncChainCallback(mNativeBraveSyncWorker, callback);
+    }
+
     @NativeMethods
     interface Natives {
         void init(BraveSyncWorker caller);
@@ -252,5 +261,6 @@ public class BraveSyncWorker {
         void permanentlyDeleteAccount(long nativeBraveSyncWorker, Callback<String> callback);
         void clearAccountDeletedNoticePending(long nativeBraveSyncWorker);
         boolean isAccountDeletedNoticePending(long nativeBraveSyncWorker);
+        void setJoinSyncChainCallback(long nativeBraveSyncWorker, Callback<Boolean> callback);
     }
 }
