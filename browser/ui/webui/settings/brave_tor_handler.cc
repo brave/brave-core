@@ -83,7 +83,7 @@ constexpr const char16_t kParseBridgesScript[] =
 
     const bridges = bridgeLines.textContent.split('\n').filter(
        (bridge) => { return bridge.trim().length != 0 }).
-       map((brigde) => { return brigde.trim(); })
+       map((bridge) => { return bridge.trim(); })
     return {bridges : bridges}
   })();
 )js";
