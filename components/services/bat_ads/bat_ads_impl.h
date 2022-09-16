@@ -59,9 +59,9 @@ class BatAdsImpl :
                                  const std::vector<GURL>& redirect_chain,
                                  const std::string& text) override;
 
-  void OnIdle() override;
-  void OnUnIdle(const base::TimeDelta idle_time,
-                const bool was_locked) override;
+  void OnUserDidBecomeIdle() override;
+  void OnUserDidBecomeActive(const base::TimeDelta idle_time,
+                             const bool screen_was_locked) override;
 
   void OnUserGesture(const int32_t page_transition_type) override;
 

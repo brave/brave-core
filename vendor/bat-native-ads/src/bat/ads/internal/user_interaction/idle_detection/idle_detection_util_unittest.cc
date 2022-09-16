@@ -26,8 +26,9 @@ class BatAdsIdleTimeTest : public UnitTestBase {
 TEST_F(BatAdsIdleTimeTest, WasLocked) {
   // Arrange
   base::FieldTrialParams parameters;
-  const char kShouldDetectWasLockedParameter[] = "should_detect_was_locked";
-  parameters[kShouldDetectWasLockedParameter] = "true";
+  const char kShouldDetectScreenWasLockedParameter[] =
+      "should_detect_was_locked";
+  parameters[kShouldDetectScreenWasLockedParameter] = "true";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   enabled_features.emplace_back(user_activity::features::kFeature, parameters);
 
@@ -38,17 +39,19 @@ TEST_F(BatAdsIdleTimeTest, WasLocked) {
                                                     disabled_features);
 
   // Act
-  const bool was_locked = WasLocked(true);
+  const bool screen_was_locked =
+      MaybeScreenWasLocked(/*screen_was_locked*/ true);
 
   // Assert
-  EXPECT_TRUE(was_locked);
+  EXPECT_TRUE(screen_was_locked);
 }
 
-TEST_F(BatAdsIdleTimeTest, WasLockedIfShouldDetectWasLocked) {
+TEST_F(BatAdsIdleTimeTest, WasLockedIfShouldDetectScreenWasLocked) {
   // Arrange
   base::FieldTrialParams parameters;
-  const char kShouldDetectWasLockedParameter[] = "should_detect_was_locked";
-  parameters[kShouldDetectWasLockedParameter] = "true";
+  const char kShouldDetectScreenWasLockedParameter[] =
+      "should_detect_was_locked";
+  parameters[kShouldDetectScreenWasLockedParameter] = "true";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   enabled_features.emplace_back(user_activity::features::kFeature, parameters);
 
@@ -59,17 +62,19 @@ TEST_F(BatAdsIdleTimeTest, WasLockedIfShouldDetectWasLocked) {
                                                     disabled_features);
 
   // Act
-  const bool was_locked = WasLocked(true);
+  const bool screen_was_locked =
+      MaybeScreenWasLocked(/*screen_was_locked*/ true);
 
   // Assert
-  EXPECT_TRUE(was_locked);
+  EXPECT_TRUE(screen_was_locked);
 }
 
 TEST_F(BatAdsIdleTimeTest, WasNotLocked) {
   // Arrange
   base::FieldTrialParams parameters;
-  const char kShouldDetectWasLockedParameter[] = "should_detect_was_locked";
-  parameters[kShouldDetectWasLockedParameter] = "true";
+  const char kShouldDetectScreenWasLockedParameter[] =
+      "should_detect_was_locked";
+  parameters[kShouldDetectScreenWasLockedParameter] = "true";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   enabled_features.emplace_back(user_activity::features::kFeature, parameters);
 
@@ -80,17 +85,19 @@ TEST_F(BatAdsIdleTimeTest, WasNotLocked) {
                                                     disabled_features);
 
   // Act
-  const bool was_locked = WasLocked(false);
+  const bool screen_was_locked =
+      MaybeScreenWasLocked(/*screen_was_locked*/ false);
 
   // Assert
-  EXPECT_FALSE(was_locked);
+  EXPECT_FALSE(screen_was_locked);
 }
 
 TEST_F(BatAdsIdleTimeTest, WasNotLockedIfShouldNotDetectWasLocked) {
   // Arrange
   base::FieldTrialParams parameters;
-  const char kShouldDetectWasLockedParameter[] = "should_detect_was_locked";
-  parameters[kShouldDetectWasLockedParameter] = "false";
+  const char kShouldDetectScreenWasLockedParameter[] =
+      "should_detect_was_locked";
+  parameters[kShouldDetectScreenWasLockedParameter] = "false";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   enabled_features.emplace_back(user_activity::features::kFeature, parameters);
 
@@ -101,10 +108,11 @@ TEST_F(BatAdsIdleTimeTest, WasNotLockedIfShouldNotDetectWasLocked) {
                                                     disabled_features);
 
   // Act
-  const bool was_locked = WasLocked(true);
+  const bool screen_was_locked =
+      MaybeScreenWasLocked(/*screen_was_locked*/ true);
 
   // Assert
-  EXPECT_FALSE(was_locked);
+  EXPECT_FALSE(screen_was_locked);
 }
 
 TEST_F(BatAdsIdleTimeTest, HasNotExceededMaximumIdleTime) {

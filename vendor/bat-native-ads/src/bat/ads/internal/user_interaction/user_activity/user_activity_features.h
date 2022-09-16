@@ -27,7 +27,7 @@ double GetThreshold();
 base::TimeDelta GetIdleTimeThreshold();
 base::TimeDelta GetMaximumIdleTime();
 
-bool ShouldDetectWasLocked();
+bool ShouldDetectScreenWasLocked();
 
 }  // namespace ads::user_activity::features
 

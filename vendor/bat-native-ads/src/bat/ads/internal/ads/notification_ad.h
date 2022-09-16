@@ -82,7 +82,7 @@ class NotificationAd final : public AccountObserver,
 
   // IdleDetectionManagerObserver:
   void OnUserDidBecomeActive(base::TimeDelta idle_time,
-                             bool was_locked) override;
+                             bool screen_was_locked) override;
 
   // notification_ads::ServingObserver:
   void OnOpportunityAroseToServeNotificationAd(

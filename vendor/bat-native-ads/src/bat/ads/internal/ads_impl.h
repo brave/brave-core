@@ -113,8 +113,9 @@ class AdsImpl final : public Ads,
                                  const std::vector<GURL>& redirect_chain,
                                  const std::string& text) override;
 
-  void OnIdle() override;
-  void OnUnIdle(base::TimeDelta idle_time, bool was_locked) override;
+  void OnUserDidBecomeIdle() override;
+  void OnUserDidBecomeActive(base::TimeDelta idle_time,
+                             bool screen_was_locked) override;
 
   void OnUserGesture(int32_t page_transition_type) override;
 

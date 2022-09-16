@@ -92,13 +92,13 @@ void BatAdsImpl::OnUserGesture(const int32_t page_transition_type) {
   ads_->OnUserGesture(page_transition_type);
 }
 
-void BatAdsImpl::OnUnIdle(const base::TimeDelta idle_time,
-                          const bool was_locked) {
-  ads_->OnUnIdle(idle_time, was_locked);
+void BatAdsImpl::OnUserDidBecomeActive(const base::TimeDelta idle_time,
+                                       const bool screen_was_locked) {
+  ads_->OnUserDidBecomeActive(idle_time, screen_was_locked);
 }
 
-void BatAdsImpl::OnIdle() {
-  ads_->OnIdle();
+void BatAdsImpl::OnUserDidBecomeIdle() {
+  ads_->OnUserDidBecomeIdle();
 }
 
 void BatAdsImpl::OnBrowserDidEnterForeground() {

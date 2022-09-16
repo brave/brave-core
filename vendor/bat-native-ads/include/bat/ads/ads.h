@@ -91,13 +91,14 @@ class ADS_EXPORT Ads {
   // Called when a user has been idle for the threshold set in
   // |prefs::kIdleTimeThreshold|. NOTE: This should not be called on mobile
   // devices.
-  virtual void OnIdle() = 0;
+  virtual void OnUserDidBecomeIdle() = 0;
 
   // Called when a user is no longer idle. |idle_time| is the amount of time in
-  // seconds that the user was idle. |was_locked| should be |true| if the screen
-  // was locked, otherwise |false|. NOTE: This should not be called on mobile
-  // devices.
-  virtual void OnUnIdle(base::TimeDelta idle_time, bool was_locked) = 0;
+  // seconds that the user was idle. |screen_was_locked| should be |true| if the
+  // screen was locked, otherwise |false|. NOTE: This should not be called on
+  // mobile devices.
+  virtual void OnUserDidBecomeActive(base::TimeDelta idle_time,
+                                     bool screen_was_locked) = 0;
 
   // Called when a page navigation was initiated by a user gesture.
   // |page_transition_type| containing the page transition type, see enums for

@@ -50,15 +50,16 @@ void IdleDetectionManager::RemoveObserver(
   observers_.RemoveObserver(observer);
 }
 
-void IdleDetectionManager::UserDidBecomeActive(const base::TimeDelta idle_time,
-                                               const bool was_locked) const {
+void IdleDetectionManager::UserDidBecomeActive(
+    const base::TimeDelta idle_time,
+    const bool screen_was_locked) const {
   BLOG(1, "User is active after " << idle_time);
 
   MaybeUpdateIdleTimeThreshold();
 
   SetLastUnIdleTimeDiagnosticEntry();
 
-  NotifyUserDidBecomeActive(idle_time, was_locked);
+  NotifyUserDidBecomeActive(idle_time, screen_was_locked);
 }
 
 void IdleDetectionManager::UserDidBecomeIdle() const {
@@ -71,9 +72,9 @@ void IdleDetectionManager::UserDidBecomeIdle() const {
 
 void IdleDetectionManager::NotifyUserDidBecomeActive(
     const base::TimeDelta idle_time,
-    const bool was_locked) const {
+    const bool screen_was_locked) const {
   for (IdleDetectionManagerObserver& observer : observers_) {
-    observer.OnUserDidBecomeActive(idle_time, was_locked);
+    observer.OnUserDidBecomeActive(idle_time, screen_was_locked);
   }
 }
 

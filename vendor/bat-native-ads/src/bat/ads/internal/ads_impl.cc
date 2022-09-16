@@ -198,16 +198,17 @@ void AdsImpl::OnUserGesture(const int32_t page_transition_type) {
   }
 }
 
-void AdsImpl::OnIdle() {
+void AdsImpl::OnUserDidBecomeIdle() {
   if (IsInitialized()) {
     IdleDetectionManager::GetInstance()->UserDidBecomeIdle();
   }
 }
 
-void AdsImpl::OnUnIdle(const base::TimeDelta idle_time, const bool was_locked) {
+void AdsImpl::OnUserDidBecomeActive(const base::TimeDelta idle_time,
+                                    const bool screen_was_locked) {
   if (IsInitialized()) {
     IdleDetectionManager::GetInstance()->UserDidBecomeActive(idle_time,
-                                                             was_locked);
+                                                             screen_was_locked);
   }
 }
 

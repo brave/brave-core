@@ -767,15 +767,15 @@ void AdsServiceImpl::ProcessIdleState(const ui::IdleState idle_state,
 
   switch (idle_state) {
     case ui::IdleState::IDLE_STATE_ACTIVE: {
-      const bool was_locked =
+      const bool screen_was_locked =
           last_idle_state_ == ui::IdleState::IDLE_STATE_LOCKED;
-      bat_ads_->OnUnIdle(idle_time, was_locked);
+      bat_ads_->OnUserDidBecomeActive(idle_time, screen_was_locked);
       break;
     }
 
     case ui::IdleState::IDLE_STATE_IDLE:
     case ui::IdleState::IDLE_STATE_LOCKED: {
-      bat_ads_->OnIdle();
+      bat_ads_->OnUserDidBecomeIdle();
       break;
     }
 

@@ -118,8 +118,8 @@ interface BatAds {
   OnTabTextContentDidChange(int32 tab_id, array<url.mojom.Url> redirect_chain, string text);
 
   // User Interaction
-  OnIdle();
-  OnUnIdle(mojo_base.mojom.TimeDelta idle_time, bool was_locked);
+  OnUserDidBecomeIdle();
+  OnUserDidBecomeActive(mojo_base.mojom.TimeDelta idle_time, bool screen_was_locked);
 
   OnUserGesture(int32 page_transition_type);
 

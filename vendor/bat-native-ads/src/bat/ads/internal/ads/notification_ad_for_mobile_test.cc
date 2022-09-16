@@ -57,7 +57,8 @@ class BatAdsNotificationAdForMobileIntegrationTest : public UnitTestBase {
   }
 
   void ServeAd() {
-    GetAds()->OnUnIdle(base::TimeDelta::Min(), /*was_locked*/ false);
+    GetAds()->OnUserDidBecomeActive(base::TimeDelta::Min(),
+                                    /*screen_was_locked*/ false);
   }
 };
 
