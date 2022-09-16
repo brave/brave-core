@@ -13,6 +13,10 @@ IssuerInfo::IssuerInfo(const IssuerInfo& info) = default;
 
 IssuerInfo& IssuerInfo::operator=(const IssuerInfo& info) = default;
 
+IssuerInfo::IssuerInfo(IssuerInfo&& other) noexcept = default;
+
+IssuerInfo& IssuerInfo::operator=(IssuerInfo&& other) noexcept = default;
+
 IssuerInfo::~IssuerInfo() = default;
 
 bool IssuerInfo::operator==(const IssuerInfo& rhs) const {

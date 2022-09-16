@@ -23,6 +23,10 @@ class DismissedExclusionRule final
   DismissedExclusionRule(const DismissedExclusionRule&) = delete;
   DismissedExclusionRule& operator=(const DismissedExclusionRule&) = delete;
 
+  DismissedExclusionRule(DismissedExclusionRule&& other) noexcept = delete;
+  DismissedExclusionRule& operator=(DismissedExclusionRule&& other) noexcept =
+      delete;
+
   ~DismissedExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;

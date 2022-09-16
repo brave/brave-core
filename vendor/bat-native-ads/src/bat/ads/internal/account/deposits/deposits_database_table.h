@@ -29,6 +29,9 @@ class Deposits final : public TableInterface {
   Deposits(const Deposits&) = delete;
   Deposits& operator=(const Deposits&) = delete;
 
+  Deposits(Deposits&& other) noexcept = delete;
+  Deposits& operator=(Deposits&& other) noexcept = delete;
+
   ~Deposits() override;
 
   void Save(const DepositInfo& deposit, ResultCallback callback);

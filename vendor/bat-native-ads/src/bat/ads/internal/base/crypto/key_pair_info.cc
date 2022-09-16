@@ -13,6 +13,10 @@ KeyPairInfo::KeyPairInfo(const KeyPairInfo& info) = default;
 
 KeyPairInfo& KeyPairInfo::operator=(const KeyPairInfo& info) = default;
 
+KeyPairInfo::KeyPairInfo(KeyPairInfo&& other) noexcept = default;
+
+KeyPairInfo& KeyPairInfo::operator=(KeyPairInfo&& other) noexcept = default;
+
 KeyPairInfo::~KeyPairInfo() = default;
 
 bool KeyPairInfo::operator==(const KeyPairInfo& rhs) const {

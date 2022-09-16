@@ -18,6 +18,10 @@ class PlatformHelperAndroid final : public PlatformHelper {
   PlatformHelperAndroid(const PlatformHelperAndroid&) = delete;
   PlatformHelperAndroid& operator=(const PlatformHelperAndroid&) = delete;
 
+  PlatformHelperAndroid(PlatformHelperAndroid&& other) noexcept = delete;
+  PlatformHelperAndroid& operator=(PlatformHelperAndroid&& other) noexcept =
+      delete;
+
   ~PlatformHelperAndroid() override;
 
  protected:

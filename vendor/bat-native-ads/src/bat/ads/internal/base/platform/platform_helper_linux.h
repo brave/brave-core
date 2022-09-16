@@ -18,6 +18,9 @@ class PlatformHelperLinux final : public PlatformHelper {
   PlatformHelperLinux(const PlatformHelperLinux&) = delete;
   PlatformHelperLinux& operator=(const PlatformHelperLinux&) = delete;
 
+  PlatformHelperLinux(PlatformHelperLinux&& other) noexcept = delete;
+  PlatformHelperLinux& operator=(PlatformHelperLinux&& other) noexcept = delete;
+
   ~PlatformHelperLinux() override;
 
  protected:

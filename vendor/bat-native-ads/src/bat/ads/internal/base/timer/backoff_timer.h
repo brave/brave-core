@@ -21,6 +21,9 @@ class BackoffTimer final {
   BackoffTimer(const BackoffTimer&) = delete;
   BackoffTimer& operator=(const BackoffTimer&) = delete;
 
+  BackoffTimer(BackoffTimer&& other) noexcept = delete;
+  BackoffTimer& operator=(BackoffTimer&& other) noexcept = delete;
+
   ~BackoffTimer();
 
   // |location| provides basic info where the timer was posted from. Start a

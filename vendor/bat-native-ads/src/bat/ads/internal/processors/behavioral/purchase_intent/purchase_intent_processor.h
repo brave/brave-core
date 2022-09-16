@@ -37,8 +37,11 @@ class PurchaseIntent final : public LocaleManagerObserver,
  public:
   explicit PurchaseIntent(resource::PurchaseIntent* resource);
 
-  PurchaseIntent(const PurchaseIntent&) = delete;
-  PurchaseIntent& operator=(const PurchaseIntent&) = delete;
+  PurchaseIntent(const PurchaseIntent& info) = delete;
+  PurchaseIntent& operator=(const PurchaseIntent& info) = delete;
+
+  PurchaseIntent(PurchaseIntent&& other) noexcept = delete;
+  PurchaseIntent& operator=(PurchaseIntent&& other) noexcept = delete;
 
   ~PurchaseIntent() override;
 

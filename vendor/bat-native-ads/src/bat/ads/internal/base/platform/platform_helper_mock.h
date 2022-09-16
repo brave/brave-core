@@ -20,6 +20,9 @@ class PlatformHelperMock : public PlatformHelper {
   PlatformHelperMock(const PlatformHelperMock&) = delete;
   PlatformHelperMock& operator=(const PlatformHelperMock&) = delete;
 
+  PlatformHelperMock(PlatformHelperMock&& other) noexcept = delete;
+  PlatformHelperMock& operator=(PlatformHelperMock&& other) noexcept = delete;
+
   ~PlatformHelperMock() override;
 
   MOCK_CONST_METHOD0(IsMobile, bool());

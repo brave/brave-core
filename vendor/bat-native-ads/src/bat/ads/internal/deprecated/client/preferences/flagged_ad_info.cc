@@ -13,6 +13,11 @@ FlaggedAdInfo::FlaggedAdInfo(const FlaggedAdInfo& info) = default;
 
 FlaggedAdInfo& FlaggedAdInfo::operator=(const FlaggedAdInfo& info) = default;
 
+FlaggedAdInfo::FlaggedAdInfo(FlaggedAdInfo&& other) noexcept = default;
+
+FlaggedAdInfo& FlaggedAdInfo::operator=(FlaggedAdInfo&& other) noexcept =
+    default;
+
 FlaggedAdInfo::~FlaggedAdInfo() = default;
 
 base::Value::Dict FlaggedAdInfo::ToValue() const {

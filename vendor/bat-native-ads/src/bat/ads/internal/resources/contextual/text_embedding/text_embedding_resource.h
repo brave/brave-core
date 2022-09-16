@@ -22,8 +22,13 @@ namespace resource {
 class TextEmbedding final {
  public:
   TextEmbedding();
-  TextEmbedding(const TextEmbedding&) = delete;
-  TextEmbedding& operator=(const TextEmbedding&) = delete;
+
+  TextEmbedding(const TextEmbedding& other) = delete;
+  TextEmbedding& operator=(const TextEmbedding& other) = delete;
+
+  TextEmbedding(TextEmbedding&& other) noexcept = delete;
+  TextEmbedding& operator=(TextEmbedding&& other) noexcept = delete;
+
   ~TextEmbedding();
 
   bool IsInitialized() const;

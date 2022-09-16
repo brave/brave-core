@@ -17,7 +17,10 @@ struct UnblindedTokenInfo final {
   UnblindedTokenInfo();
 
   UnblindedTokenInfo(const UnblindedTokenInfo& info);
-  UnblindedTokenInfo& operator=(const UnblindedTokenInfo& other);
+  UnblindedTokenInfo& operator=(const UnblindedTokenInfo& info);
+
+  UnblindedTokenInfo(UnblindedTokenInfo&& other) noexcept;
+  UnblindedTokenInfo& operator=(UnblindedTokenInfo&& other) noexcept;
 
   ~UnblindedTokenInfo();
 

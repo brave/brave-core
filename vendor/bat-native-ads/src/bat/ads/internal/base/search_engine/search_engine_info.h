@@ -19,6 +19,9 @@ struct SearchEngineInfo final {
   SearchEngineInfo(const SearchEngineInfo& info);
   SearchEngineInfo& operator=(const SearchEngineInfo& info);
 
+  SearchEngineInfo(SearchEngineInfo&& other) noexcept;
+  SearchEngineInfo& operator=(SearchEngineInfo&& other) noexcept;
+
   ~SearchEngineInfo();
 
   std::string url_pattern;

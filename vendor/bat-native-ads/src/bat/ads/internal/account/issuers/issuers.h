@@ -24,6 +24,9 @@ class Issuers {
   Issuers(const Issuers&) = delete;
   Issuers& operator=(const Issuers&) = delete;
 
+  Issuers(Issuers&& other) noexcept = delete;
+  Issuers& operator=(Issuers&& other) noexcept = delete;
+
   ~Issuers();
 
   void SetDelegate(IssuersDelegate* delegate) {

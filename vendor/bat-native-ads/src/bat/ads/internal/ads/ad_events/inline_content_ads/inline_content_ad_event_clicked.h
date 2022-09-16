@@ -21,6 +21,9 @@ class AdEventClicked final : public AdEventInterface<InlineContentAdInfo> {
   AdEventClicked(const AdEventClicked&) = delete;
   AdEventClicked& operator=(const AdEventClicked&) = delete;
 
+  AdEventClicked(AdEventClicked&& other) noexcept = delete;
+  AdEventClicked& operator=(AdEventClicked&& other) noexcept = delete;
+
   ~AdEventClicked() override;
 
   void FireEvent(const InlineContentAdInfo& ad) override;

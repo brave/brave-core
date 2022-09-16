@@ -19,6 +19,10 @@ class DateRangeHistoryFilter final : public HistoryFilterInterface {
   DateRangeHistoryFilter(const DateRangeHistoryFilter&) = delete;
   DateRangeHistoryFilter& operator=(const DateRangeHistoryFilter&) = delete;
 
+  DateRangeHistoryFilter(DateRangeHistoryFilter&& other) noexcept = delete;
+  DateRangeHistoryFilter& operator=(DateRangeHistoryFilter&& other) noexcept =
+      delete;
+
   ~DateRangeHistoryFilter() override;
 
   HistoryItemList Apply(const HistoryItemList& history) const override;

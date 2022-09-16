@@ -20,6 +20,9 @@ struct CreativesInfo final {
   CreativesInfo(const CreativesInfo& info);
   CreativesInfo& operator=(const CreativesInfo& info);
 
+  CreativesInfo(CreativesInfo&& other) noexcept;
+  CreativesInfo& operator=(CreativesInfo&& other) noexcept;
+
   ~CreativesInfo();
 
   CreativeNotificationAdList notification_ads;

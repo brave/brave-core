@@ -29,6 +29,9 @@ class BlindedToken {
   BlindedToken(const BlindedToken& other);
   BlindedToken& operator=(const BlindedToken& info);
 
+  BlindedToken(BlindedToken&& other) noexcept;
+  BlindedToken& operator=(BlindedToken&& other) noexcept;
+
   ~BlindedToken();
 
   bool operator==(const BlindedToken& rhs) const;

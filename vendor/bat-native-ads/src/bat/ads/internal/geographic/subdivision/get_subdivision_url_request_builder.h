@@ -23,6 +23,11 @@ class GetSubdivisionUrlRequestBuilder final
   GetSubdivisionUrlRequestBuilder& operator=(
       const GetSubdivisionUrlRequestBuilder&) = delete;
 
+  GetSubdivisionUrlRequestBuilder(
+      GetSubdivisionUrlRequestBuilder&& other) noexcept = delete;
+  GetSubdivisionUrlRequestBuilder& operator=(
+      GetSubdivisionUrlRequestBuilder&& other) noexcept = delete;
+
   ~GetSubdivisionUrlRequestBuilder() override;
 
   mojom::UrlRequestInfoPtr Build() override;

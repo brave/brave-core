@@ -20,6 +20,11 @@ struct CatalogNotificationAdPayloadInfo final {
   CatalogNotificationAdPayloadInfo& operator=(
       const CatalogNotificationAdPayloadInfo& info);
 
+  CatalogNotificationAdPayloadInfo(
+      CatalogNotificationAdPayloadInfo&& other) noexcept;
+  CatalogNotificationAdPayloadInfo& operator=(
+      CatalogNotificationAdPayloadInfo&& other) noexcept;
+
   ~CatalogNotificationAdPayloadInfo();
 
   bool operator==(const CatalogNotificationAdPayloadInfo& rhs) const;

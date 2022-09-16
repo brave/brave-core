@@ -16,8 +16,13 @@ class NonAnonymousServerHost final : public ServerHostInterface {
  public:
   NonAnonymousServerHost();
 
-  NonAnonymousServerHost(const NonAnonymousServerHost&) = delete;
-  NonAnonymousServerHost& operator=(const NonAnonymousServerHost&) = delete;
+  NonAnonymousServerHost(const NonAnonymousServerHost& info) = delete;
+  NonAnonymousServerHost& operator=(const NonAnonymousServerHost& info) =
+      delete;
+
+  NonAnonymousServerHost(NonAnonymousServerHost&& other) noexcept = delete;
+  NonAnonymousServerHost& operator=(NonAnonymousServerHost&& other) noexcept =
+      delete;
 
   ~NonAnonymousServerHost() override;
 

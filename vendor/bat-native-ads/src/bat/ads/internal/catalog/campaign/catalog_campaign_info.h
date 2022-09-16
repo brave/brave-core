@@ -21,6 +21,9 @@ struct CatalogCampaignInfo final {
   CatalogCampaignInfo(const CatalogCampaignInfo& info);
   CatalogCampaignInfo& operator=(const CatalogCampaignInfo& info);
 
+  CatalogCampaignInfo(CatalogCampaignInfo&& other) noexcept;
+  CatalogCampaignInfo& operator=(CatalogCampaignInfo&& other) noexcept;
+
   ~CatalogCampaignInfo();
 
   bool operator==(const CatalogCampaignInfo& rhs) const;

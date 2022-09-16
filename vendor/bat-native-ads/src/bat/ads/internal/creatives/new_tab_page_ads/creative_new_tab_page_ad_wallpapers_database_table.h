@@ -24,6 +24,11 @@ class CreativeNewTabPageAdWallpapers final : public TableInterface {
   CreativeNewTabPageAdWallpapers& operator=(
       const CreativeNewTabPageAdWallpapers&) = delete;
 
+  CreativeNewTabPageAdWallpapers(
+      CreativeNewTabPageAdWallpapers&& other) noexcept = delete;
+  CreativeNewTabPageAdWallpapers& operator=(
+      CreativeNewTabPageAdWallpapers&& other) noexcept = delete;
+
   ~CreativeNewTabPageAdWallpapers() override;
 
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,

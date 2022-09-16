@@ -21,6 +21,11 @@ struct CreativeNewTabPageAdWallpaperInfo final {
   CreativeNewTabPageAdWallpaperInfo& operator=(
       const CreativeNewTabPageAdWallpaperInfo& info);
 
+  CreativeNewTabPageAdWallpaperInfo(
+      CreativeNewTabPageAdWallpaperInfo&& other) noexcept;
+  CreativeNewTabPageAdWallpaperInfo& operator=(
+      CreativeNewTabPageAdWallpaperInfo&& other) noexcept;
+
   ~CreativeNewTabPageAdWallpaperInfo();
 
   bool operator==(const CreativeNewTabPageAdWallpaperInfo& rhs) const;

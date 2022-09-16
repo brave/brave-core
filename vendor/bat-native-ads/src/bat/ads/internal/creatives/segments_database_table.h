@@ -22,6 +22,9 @@ class Segments final : public TableInterface {
   Segments(const Segments&) = delete;
   Segments& operator=(const Segments&) = delete;
 
+  Segments(Segments&& other) noexcept = delete;
+  Segments& operator=(Segments&& other) noexcept = delete;
+
   ~Segments() override;
 
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,

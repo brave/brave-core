@@ -14,8 +14,11 @@ class UnblindedTokens final {
  public:
   UnblindedTokens();
 
-  UnblindedTokens(const UnblindedTokens&) = delete;
-  UnblindedTokens& operator=(const UnblindedTokens&) = delete;
+  UnblindedTokens(const UnblindedTokens& info) = delete;
+  UnblindedTokens& operator=(const UnblindedTokens& info) = delete;
+
+  UnblindedTokens(UnblindedTokens&& other) noexcept = delete;
+  UnblindedTokens& operator=(UnblindedTokens&& other) noexcept = delete;
 
   ~UnblindedTokens();
 

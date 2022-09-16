@@ -45,6 +45,9 @@ class NewTabPageAd final : public new_tab_page_ads::EventHandlerObserver,
   NewTabPageAd(const NewTabPageAd&) = delete;
   NewTabPageAd& operator=(const NewTabPageAd&) = delete;
 
+  NewTabPageAd(NewTabPageAd&& other) noexcept = delete;
+  NewTabPageAd& operator=(NewTabPageAd&& other) noexcept = delete;
+
   ~NewTabPageAd() override;
 
   void MaybeServe(MaybeServeNewTabPageAdCallback callback);

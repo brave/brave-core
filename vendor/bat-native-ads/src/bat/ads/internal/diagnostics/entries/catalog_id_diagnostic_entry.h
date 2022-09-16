@@ -19,6 +19,10 @@ class CatalogIdDiagnosticEntry final : public DiagnosticEntryInterface {
   CatalogIdDiagnosticEntry(const CatalogIdDiagnosticEntry&) = delete;
   CatalogIdDiagnosticEntry& operator=(const CatalogIdDiagnosticEntry&) = delete;
 
+  CatalogIdDiagnosticEntry(CatalogIdDiagnosticEntry&& other) noexcept = delete;
+  CatalogIdDiagnosticEntry& operator=(
+      CatalogIdDiagnosticEntry&& other) noexcept = delete;
+
   ~CatalogIdDiagnosticEntry() override;
 
   // DiagnosticEntryInterface:

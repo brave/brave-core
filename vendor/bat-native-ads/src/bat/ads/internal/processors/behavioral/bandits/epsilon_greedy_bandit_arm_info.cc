@@ -17,6 +17,12 @@ EpsilonGreedyBanditArmInfo::EpsilonGreedyBanditArmInfo(
 EpsilonGreedyBanditArmInfo& EpsilonGreedyBanditArmInfo::operator=(
     const EpsilonGreedyBanditArmInfo& info) = default;
 
+EpsilonGreedyBanditArmInfo::EpsilonGreedyBanditArmInfo(
+    EpsilonGreedyBanditArmInfo&& other) noexcept = default;
+
+EpsilonGreedyBanditArmInfo& EpsilonGreedyBanditArmInfo::operator=(
+    EpsilonGreedyBanditArmInfo&& other) noexcept = default;
+
 EpsilonGreedyBanditArmInfo::~EpsilonGreedyBanditArmInfo() = default;
 
 bool EpsilonGreedyBanditArmInfo::operator==(

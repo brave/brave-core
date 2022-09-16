@@ -64,6 +64,9 @@ class NotificationAd final : public AccountObserver,
   NotificationAd(const NotificationAd&) = delete;
   NotificationAd& operator=(const NotificationAd&) = delete;
 
+  NotificationAd(NotificationAd&& other) noexcept = delete;
+  NotificationAd& operator=(NotificationAd&& other) noexcept = delete;
+
   ~NotificationAd() override;
 
   void MaybeServeAtRegularIntervals();

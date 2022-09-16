@@ -20,6 +20,9 @@ class PrefManager final {
   PrefManager(const PrefManager&) = delete;
   PrefManager& operator=(const PrefManager&) = delete;
 
+  PrefManager(PrefManager&& other) noexcept = delete;
+  PrefManager& operator=(PrefManager&& other) noexcept = delete;
+
   ~PrefManager();
 
   static PrefManager* GetInstance();

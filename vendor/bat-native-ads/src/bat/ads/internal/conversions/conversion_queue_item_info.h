@@ -20,6 +20,9 @@ struct ConversionQueueItemInfo final {
   ConversionQueueItemInfo(const ConversionQueueItemInfo& info);
   ConversionQueueItemInfo& operator=(const ConversionQueueItemInfo& info);
 
+  ConversionQueueItemInfo(ConversionQueueItemInfo&& other) noexcept;
+  ConversionQueueItemInfo& operator=(ConversionQueueItemInfo&& other) noexcept;
+
   ~ConversionQueueItemInfo();
 
   bool operator==(const ConversionQueueItemInfo& rhs) const;

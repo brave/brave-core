@@ -22,6 +22,10 @@ struct UnblindedPaymentTokenInfo final {
   UnblindedPaymentTokenInfo(const UnblindedPaymentTokenInfo& info);
   UnblindedPaymentTokenInfo& operator=(const UnblindedPaymentTokenInfo& info);
 
+  UnblindedPaymentTokenInfo(UnblindedPaymentTokenInfo&& other) noexcept;
+  UnblindedPaymentTokenInfo& operator=(
+      UnblindedPaymentTokenInfo&& other) noexcept;
+
   ~UnblindedPaymentTokenInfo();
 
   bool operator==(const UnblindedPaymentTokenInfo& rhs) const;

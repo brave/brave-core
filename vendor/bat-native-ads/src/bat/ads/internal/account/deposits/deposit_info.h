@@ -15,8 +15,11 @@ namespace ads {
 struct DepositInfo final {
   DepositInfo();
 
-  DepositInfo(DepositInfo&&) noexcept;
-  DepositInfo& operator=(DepositInfo&&) noexcept;
+  DepositInfo(const DepositInfo& info);
+  DepositInfo& operator=(const DepositInfo& info);
+
+  DepositInfo(DepositInfo&& other) noexcept;
+  DepositInfo& operator=(DepositInfo&& other) noexcept;
 
   ~DepositInfo();
 

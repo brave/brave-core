@@ -32,6 +32,11 @@ class RedeemUnblindedPaymentTokensUrlRequestBuilder final
   RedeemUnblindedPaymentTokensUrlRequestBuilder& operator=(
       const RedeemUnblindedPaymentTokensUrlRequestBuilder&) = delete;
 
+  RedeemUnblindedPaymentTokensUrlRequestBuilder(
+      RedeemUnblindedPaymentTokensUrlRequestBuilder&& other) noexcept = delete;
+  RedeemUnblindedPaymentTokensUrlRequestBuilder& operator=(
+      RedeemUnblindedPaymentTokensUrlRequestBuilder&& other) noexcept = delete;
+
   ~RedeemUnblindedPaymentTokensUrlRequestBuilder() override;
 
   mojom::UrlRequestInfoPtr Build() override;

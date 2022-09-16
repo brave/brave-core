@@ -30,6 +30,9 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
   Confirmations(const Confirmations&) = delete;
   Confirmations& operator=(const Confirmations&) = delete;
 
+  Confirmations(Confirmations&& other) noexcept = delete;
+  Confirmations& operator=(Confirmations&& other) noexcept = delete;
+
   ~Confirmations() override;
 
   void SetDelegate(ConfirmationsDelegate* delegate) {

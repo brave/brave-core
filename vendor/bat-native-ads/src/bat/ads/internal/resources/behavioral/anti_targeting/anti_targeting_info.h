@@ -29,6 +29,9 @@ struct AntiTargetingInfo final {
   AntiTargetingInfo(const AntiTargetingInfo& info);
   AntiTargetingInfo& operator=(const AntiTargetingInfo& info);
 
+  AntiTargetingInfo(AntiTargetingInfo&& other) noexcept;
+  AntiTargetingInfo& operator=(AntiTargetingInfo&& other) noexcept;
+
   ~AntiTargetingInfo();
 
   static std::unique_ptr<AntiTargetingInfo> CreateFromValue(

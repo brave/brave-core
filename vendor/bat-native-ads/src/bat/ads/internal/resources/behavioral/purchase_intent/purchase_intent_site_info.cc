@@ -20,6 +20,12 @@ PurchaseIntentSiteInfo::PurchaseIntentSiteInfo(
 PurchaseIntentSiteInfo& PurchaseIntentSiteInfo::operator=(
     const PurchaseIntentSiteInfo& info) = default;
 
+PurchaseIntentSiteInfo::PurchaseIntentSiteInfo(
+    PurchaseIntentSiteInfo&& other) noexcept = default;
+
+PurchaseIntentSiteInfo& PurchaseIntentSiteInfo::operator=(
+    PurchaseIntentSiteInfo&& other) noexcept = default;
+
 PurchaseIntentSiteInfo::~PurchaseIntentSiteInfo() = default;
 
 bool PurchaseIntentSiteInfo::operator==(

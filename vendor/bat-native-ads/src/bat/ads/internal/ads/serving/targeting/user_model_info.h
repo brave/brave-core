@@ -16,6 +16,9 @@ struct UserModelInfo final {
   UserModelInfo(const UserModelInfo& info);
   UserModelInfo& operator=(const UserModelInfo& info);
 
+  UserModelInfo(UserModelInfo&& other) noexcept;
+  UserModelInfo& operator=(UserModelInfo&& other) noexcept;
+
   ~UserModelInfo();
 
   SegmentList interest_segments;

@@ -25,6 +25,9 @@ class AdEvents final : public TableInterface {
   AdEvents(const AdEvents&) = delete;
   AdEvents& operator=(const AdEvents&) = delete;
 
+  AdEvents(AdEvents&& other) noexcept = delete;
+  AdEvents& operator=(AdEvents&& other) noexcept = delete;
+
   ~AdEvents() override;
 
   void LogEvent(const AdEventInfo& ad_event, ResultCallback callback);

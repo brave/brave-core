@@ -31,6 +31,9 @@ class PromotedContentAd final
   PromotedContentAd(const PromotedContentAd&) = delete;
   PromotedContentAd& operator=(const PromotedContentAd&) = delete;
 
+  PromotedContentAd(PromotedContentAd&& other) noexcept = delete;
+  PromotedContentAd& operator=(PromotedContentAd&& other) noexcept = delete;
+
   ~PromotedContentAd() override;
 
   void TriggerEvent(const std::string& placement_id,

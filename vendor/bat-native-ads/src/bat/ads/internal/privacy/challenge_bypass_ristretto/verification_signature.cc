@@ -42,10 +42,16 @@ VerificationSignature::VerificationSignature(
     : verification_signature_(verification_signature) {}
 
 VerificationSignature::VerificationSignature(
-    const VerificationSignature& other) = default;
+    const VerificationSignature& info) = default;
 
 VerificationSignature& VerificationSignature::operator=(
-    const VerificationSignature& other) = default;
+    const VerificationSignature& info) = default;
+
+VerificationSignature::VerificationSignature(
+    VerificationSignature&& other) noexcept = default;
+
+VerificationSignature& VerificationSignature::operator=(
+    VerificationSignature&& other) noexcept = default;
 
 VerificationSignature::~VerificationSignature() = default;
 

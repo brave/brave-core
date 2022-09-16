@@ -26,6 +26,9 @@ class Conversions final : public TableInterface {
   Conversions(const Conversions&) = delete;
   Conversions& operator=(const Conversions&) = delete;
 
+  Conversions(Conversions&& other) noexcept = delete;
+  Conversions& operator=(Conversions&& other) noexcept = delete;
+
   ~Conversions() override;
 
   void Save(const ConversionList& conversions, ResultCallback callback);

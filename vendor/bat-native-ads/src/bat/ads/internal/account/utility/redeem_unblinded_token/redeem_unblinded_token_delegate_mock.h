@@ -20,6 +20,11 @@ class RedeemUnblindedTokenDelegateMock : public RedeemUnblindedTokenDelegate {
   RedeemUnblindedTokenDelegateMock& operator=(
       const RedeemUnblindedTokenDelegateMock&) = delete;
 
+  RedeemUnblindedTokenDelegateMock(
+      RedeemUnblindedTokenDelegateMock&& other) noexcept = delete;
+  RedeemUnblindedTokenDelegateMock& operator=(
+      RedeemUnblindedTokenDelegateMock&& other) noexcept = delete;
+
   ~RedeemUnblindedTokenDelegateMock() override;
 
   MOCK_METHOD(void,

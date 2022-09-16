@@ -45,6 +45,11 @@ class CreativePromotedContentAds final : public TableInterface {
   CreativePromotedContentAds& operator=(const CreativePromotedContentAds&) =
       delete;
 
+  CreativePromotedContentAds(CreativePromotedContentAds&& other) noexcept =
+      delete;
+  CreativePromotedContentAds& operator=(
+      CreativePromotedContentAds&& other) noexcept = delete;
+
   ~CreativePromotedContentAds() override;
 
   void Save(const CreativePromotedContentAdList& creative_ads,

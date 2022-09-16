@@ -23,6 +23,10 @@ class PerHourExclusionRule final
   PerHourExclusionRule(const PerHourExclusionRule&) = delete;
   PerHourExclusionRule& operator=(const PerHourExclusionRule&) = delete;
 
+  PerHourExclusionRule(PerHourExclusionRule&& other) noexcept = delete;
+  PerHourExclusionRule& operator=(PerHourExclusionRule&& other) noexcept =
+      delete;
+
   ~PerHourExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;

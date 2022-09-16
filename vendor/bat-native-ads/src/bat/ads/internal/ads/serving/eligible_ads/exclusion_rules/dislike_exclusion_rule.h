@@ -22,6 +22,10 @@ class DislikeExclusionRule final
   DislikeExclusionRule(const DislikeExclusionRule&) = delete;
   DislikeExclusionRule& operator=(const DislikeExclusionRule&) = delete;
 
+  DislikeExclusionRule(DislikeExclusionRule&& other) noexcept = delete;
+  DislikeExclusionRule& operator=(DislikeExclusionRule&& other) noexcept =
+      delete;
+
   ~DislikeExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;

@@ -13,6 +13,10 @@ AdEventInfo::AdEventInfo(const AdEventInfo& info) = default;
 
 AdEventInfo& AdEventInfo::operator=(const AdEventInfo& info) = default;
 
+AdEventInfo::AdEventInfo(AdEventInfo&& other) noexcept = default;
+
+AdEventInfo& AdEventInfo::operator=(AdEventInfo&& other) noexcept = default;
+
 AdEventInfo::~AdEventInfo() = default;
 
 }  // namespace ads

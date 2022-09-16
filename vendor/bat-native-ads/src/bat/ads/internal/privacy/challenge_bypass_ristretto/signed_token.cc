@@ -42,6 +42,10 @@ SignedToken::SignedToken(const SignedToken& other) = default;
 
 SignedToken& SignedToken::operator=(const SignedToken& other) = default;
 
+SignedToken::SignedToken(SignedToken&& other) noexcept = default;
+
+SignedToken& SignedToken::operator=(SignedToken&& other) noexcept = default;
+
 SignedToken::~SignedToken() = default;
 
 bool SignedToken::operator==(const SignedToken& rhs) const {

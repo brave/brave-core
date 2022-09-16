@@ -34,6 +34,9 @@ class ExclusionRules final : public ExclusionRulesBase {
   ExclusionRules(const ExclusionRules&) = delete;
   ExclusionRules& operator=(const ExclusionRules&) = delete;
 
+  ExclusionRules(ExclusionRules&& other) noexcept = delete;
+  ExclusionRules& operator=(ExclusionRules&& other) noexcept = delete;
+
   ~ExclusionRules() override;
 
  private:

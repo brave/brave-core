@@ -38,6 +38,9 @@ class EligibleAdsV2 final : public EligibleAdsBase {
   EligibleAdsV2(const EligibleAdsV2&) = delete;
   EligibleAdsV2& operator=(const EligibleAdsV2&) = delete;
 
+  EligibleAdsV2(EligibleAdsV2&& other) noexcept = delete;
+  EligibleAdsV2& operator=(EligibleAdsV2&& other) noexcept = delete;
+
   ~EligibleAdsV2() override;
 
   void GetForUserModel(

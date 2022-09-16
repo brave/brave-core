@@ -13,6 +13,11 @@ UserModelInfo::UserModelInfo(const UserModelInfo& info) = default;
 
 UserModelInfo& UserModelInfo::operator=(const UserModelInfo& info) = default;
 
+UserModelInfo::UserModelInfo(UserModelInfo&& other) noexcept = default;
+
+UserModelInfo& UserModelInfo::operator=(UserModelInfo&& other) noexcept =
+    default;
+
 UserModelInfo::~UserModelInfo() = default;
 
 }  // namespace ads::targeting

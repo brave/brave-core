@@ -22,6 +22,10 @@ struct CreativeNotificationAdInfo final : CreativeAdInfo {
   CreativeNotificationAdInfo& operator=(
       const CreativeNotificationAdInfo& creative_ad_notification);
 
+  CreativeNotificationAdInfo(CreativeNotificationAdInfo&& other) noexcept;
+  CreativeNotificationAdInfo& operator=(
+      CreativeNotificationAdInfo&& other) noexcept;
+
   ~CreativeNotificationAdInfo();
 
   bool operator==(const CreativeNotificationAdInfo& rhs) const;

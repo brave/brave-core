@@ -22,6 +22,9 @@ struct PurchaseIntentSiteInfo final {
   PurchaseIntentSiteInfo(const PurchaseIntentSiteInfo& info);
   PurchaseIntentSiteInfo& operator=(const PurchaseIntentSiteInfo& info);
 
+  PurchaseIntentSiteInfo(PurchaseIntentSiteInfo&& other) noexcept;
+  PurchaseIntentSiteInfo& operator=(PurchaseIntentSiteInfo&& other) noexcept;
+
   ~PurchaseIntentSiteInfo();
 
   bool operator==(const PurchaseIntentSiteInfo& rhs) const;

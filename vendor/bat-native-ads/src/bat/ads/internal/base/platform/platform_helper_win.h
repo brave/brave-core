@@ -18,6 +18,9 @@ class PlatformHelperWin final : public PlatformHelper {
   PlatformHelperWin(const PlatformHelperWin&) = delete;
   PlatformHelperWin& operator=(const PlatformHelperWin&) = delete;
 
+  PlatformHelperWin(PlatformHelperWin&& other) noexcept = delete;
+  PlatformHelperWin& operator=(PlatformHelperWin&& other) noexcept = delete;
+
   ~PlatformHelperWin() override;
 
  protected:

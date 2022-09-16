@@ -19,6 +19,10 @@ class IssuersPermissionRule : public PermissionRuleInterface {
   IssuersPermissionRule(const IssuersPermissionRule&) = delete;
   IssuersPermissionRule& operator=(const IssuersPermissionRule&) = delete;
 
+  IssuersPermissionRule(IssuersPermissionRule&& other) noexcept = delete;
+  IssuersPermissionRule& operator=(IssuersPermissionRule&& other) noexcept =
+      delete;
+
   ~IssuersPermissionRule() override;
 
   bool ShouldAllow() override;

@@ -25,6 +25,11 @@ class RedeemUnblindedPaymentTokensDelegateMock
   RedeemUnblindedPaymentTokensDelegateMock& operator=(
       const RedeemUnblindedPaymentTokensDelegateMock&) = delete;
 
+  RedeemUnblindedPaymentTokensDelegateMock(
+      RedeemUnblindedPaymentTokensDelegateMock&& other) noexcept = delete;
+  RedeemUnblindedPaymentTokensDelegateMock& operator=(
+      RedeemUnblindedPaymentTokensDelegateMock&& other) noexcept = delete;
+
   ~RedeemUnblindedPaymentTokensDelegateMock() override;
 
   MOCK_METHOD(

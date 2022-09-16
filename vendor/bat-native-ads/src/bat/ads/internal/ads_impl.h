@@ -96,6 +96,9 @@ class AdsImpl final : public Ads,
   AdsImpl(const AdsImpl&) = delete;
   AdsImpl& operator=(const AdsImpl&) = delete;
 
+  AdsImpl(AdsImpl&& other) noexcept = delete;
+  AdsImpl& operator=(AdsImpl&& other) noexcept = delete;
+
   ~AdsImpl() override;
 
   // Ads:

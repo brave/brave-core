@@ -19,6 +19,9 @@ struct TabInfo final {
   TabInfo(const TabInfo& info);
   TabInfo& operator=(const TabInfo& info);
 
+  TabInfo(TabInfo&& other) noexcept;
+  TabInfo& operator=(TabInfo&& other) noexcept;
+
   ~TabInfo();
 
   bool operator==(const TabInfo& rhs) const;

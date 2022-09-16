@@ -22,8 +22,11 @@ class AntiTargeting final : public LocaleManagerObserver,
  public:
   AntiTargeting();
 
-  AntiTargeting(const AntiTargeting&) = delete;
-  AntiTargeting& operator=(const AntiTargeting&) = delete;
+  AntiTargeting(const AntiTargeting& info) = delete;
+  AntiTargeting& operator=(const AntiTargeting& info) = delete;
+
+  AntiTargeting(AntiTargeting&& other) noexcept = delete;
+  AntiTargeting& operator=(AntiTargeting&& other) noexcept = delete;
 
   ~AntiTargeting() override;
 

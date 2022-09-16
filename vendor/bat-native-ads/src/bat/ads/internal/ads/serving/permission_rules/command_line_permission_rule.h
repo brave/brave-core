@@ -20,6 +20,11 @@ class CommandLinePermissionRule final : public PermissionRuleInterface {
   CommandLinePermissionRule& operator=(const CommandLinePermissionRule&) =
       delete;
 
+  CommandLinePermissionRule(CommandLinePermissionRule&& other) noexcept =
+      delete;
+  CommandLinePermissionRule& operator=(
+      CommandLinePermissionRule&& other) noexcept = delete;
+
   ~CommandLinePermissionRule() override;
 
   bool ShouldAllow() override;

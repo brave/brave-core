@@ -15,6 +15,11 @@ ConversionInfo::ConversionInfo(const ConversionInfo& info) = default;
 
 ConversionInfo& ConversionInfo::operator=(const ConversionInfo& info) = default;
 
+ConversionInfo::ConversionInfo(ConversionInfo&& other) noexcept = default;
+
+ConversionInfo& ConversionInfo::operator=(ConversionInfo&& other) noexcept =
+    default;
+
 ConversionInfo::~ConversionInfo() = default;
 
 bool ConversionInfo::operator==(const ConversionInfo& rhs) const {

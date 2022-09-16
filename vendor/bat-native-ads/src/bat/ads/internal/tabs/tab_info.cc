@@ -13,6 +13,10 @@ TabInfo::TabInfo(const TabInfo& info) = default;
 
 TabInfo& TabInfo::operator=(const TabInfo& info) = default;
 
+TabInfo::TabInfo(TabInfo&& other) noexcept = default;
+
+TabInfo& TabInfo::operator=(TabInfo&& other) noexcept = default;
+
 TabInfo::~TabInfo() = default;
 
 bool TabInfo::operator==(const TabInfo& rhs) const {

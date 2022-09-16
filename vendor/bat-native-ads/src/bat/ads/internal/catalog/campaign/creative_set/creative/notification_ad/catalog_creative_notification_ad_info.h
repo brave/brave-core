@@ -21,6 +21,11 @@ struct CatalogCreativeNotificationAdInfo final : CatalogCreativeInfo {
   CatalogCreativeNotificationAdInfo& operator=(
       const CatalogCreativeNotificationAdInfo& info);
 
+  CatalogCreativeNotificationAdInfo(
+      CatalogCreativeNotificationAdInfo&& other) noexcept;
+  CatalogCreativeNotificationAdInfo& operator=(
+      CatalogCreativeNotificationAdInfo&& other) noexcept;
+
   ~CatalogCreativeNotificationAdInfo();
 
   bool operator==(const CatalogCreativeNotificationAdInfo& rhs) const;

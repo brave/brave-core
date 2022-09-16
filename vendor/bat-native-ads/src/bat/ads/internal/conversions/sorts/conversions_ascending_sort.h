@@ -17,6 +17,10 @@ class ConversionsAscendingSort final : public ConversionsSortInterface {
   ConversionsAscendingSort(const ConversionsAscendingSort&) = delete;
   ConversionsAscendingSort& operator=(const ConversionsAscendingSort&) = delete;
 
+  ConversionsAscendingSort(ConversionsAscendingSort&& other) noexcept = delete;
+  ConversionsAscendingSort& operator=(
+      ConversionsAscendingSort&& other) noexcept = delete;
+
   ~ConversionsAscendingSort() override;
 
   ConversionList Apply(const ConversionList& conversions) const override;

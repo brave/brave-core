@@ -13,6 +13,11 @@ CreativesInfo::CreativesInfo(const CreativesInfo& info) = default;
 
 CreativesInfo& CreativesInfo::operator=(const CreativesInfo& info) = default;
 
+CreativesInfo::CreativesInfo(CreativesInfo&& other) noexcept = default;
+
+CreativesInfo& CreativesInfo::operator=(CreativesInfo&& other) noexcept =
+    default;
+
 CreativesInfo::~CreativesInfo() = default;
 
 }  // namespace ads

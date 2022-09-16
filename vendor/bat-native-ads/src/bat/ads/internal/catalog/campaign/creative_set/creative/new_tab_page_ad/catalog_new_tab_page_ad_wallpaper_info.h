@@ -21,6 +21,11 @@ struct CatalogNewTabPageAdWallpaperInfo final {
   CatalogNewTabPageAdWallpaperInfo& operator=(
       const CatalogNewTabPageAdWallpaperInfo& info);
 
+  CatalogNewTabPageAdWallpaperInfo(
+      CatalogNewTabPageAdWallpaperInfo&& other) noexcept;
+  CatalogNewTabPageAdWallpaperInfo& operator=(
+      CatalogNewTabPageAdWallpaperInfo&& other) noexcept;
+
   ~CatalogNewTabPageAdWallpaperInfo();
 
   bool operator==(const CatalogNewTabPageAdWallpaperInfo& rhs) const;

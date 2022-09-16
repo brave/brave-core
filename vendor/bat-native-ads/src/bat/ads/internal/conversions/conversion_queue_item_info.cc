@@ -17,6 +17,12 @@ ConversionQueueItemInfo::ConversionQueueItemInfo(
 ConversionQueueItemInfo& ConversionQueueItemInfo::operator=(
     const ConversionQueueItemInfo& info) = default;
 
+ConversionQueueItemInfo::ConversionQueueItemInfo(
+    ConversionQueueItemInfo&& other) noexcept = default;
+
+ConversionQueueItemInfo& ConversionQueueItemInfo::operator=(
+    ConversionQueueItemInfo&& other) noexcept = default;
+
 ConversionQueueItemInfo::~ConversionQueueItemInfo() = default;
 
 bool ConversionQueueItemInfo::operator==(

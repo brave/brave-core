@@ -18,6 +18,9 @@ struct CatalogCreativeInfo {
   CatalogCreativeInfo(const CatalogCreativeInfo& info);
   CatalogCreativeInfo& operator=(const CatalogCreativeInfo& info);
 
+  CatalogCreativeInfo(CatalogCreativeInfo&& other) noexcept;
+  CatalogCreativeInfo& operator=(CatalogCreativeInfo&& other) noexcept;
+
   ~CatalogCreativeInfo();
 
   bool operator==(const CatalogCreativeInfo& rhs) const;

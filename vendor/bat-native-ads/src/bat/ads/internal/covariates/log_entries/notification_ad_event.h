@@ -20,6 +20,9 @@ class NotificationAdEvent final : public CovariateLogEntryInterface {
   NotificationAdEvent(const NotificationAdEvent&) = delete;
   NotificationAdEvent& operator=(const NotificationAdEvent&) = delete;
 
+  NotificationAdEvent(NotificationAdEvent&& other) noexcept = delete;
+  NotificationAdEvent& operator=(NotificationAdEvent&& other) noexcept = delete;
+
   ~NotificationAdEvent() override;
 
   void SetEventType(mojom::NotificationAdEventType event_type);

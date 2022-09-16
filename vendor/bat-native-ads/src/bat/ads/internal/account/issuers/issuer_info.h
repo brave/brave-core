@@ -19,6 +19,9 @@ struct IssuerInfo final {
   IssuerInfo(const IssuerInfo& info);
   IssuerInfo& operator=(const IssuerInfo& info);
 
+  IssuerInfo(IssuerInfo&& other) noexcept;
+  IssuerInfo& operator=(IssuerInfo&& other) noexcept;
+
   ~IssuerInfo();
 
   bool operator==(const IssuerInfo& rhs) const;

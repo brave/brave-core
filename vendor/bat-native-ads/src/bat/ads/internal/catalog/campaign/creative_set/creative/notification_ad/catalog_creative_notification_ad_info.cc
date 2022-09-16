@@ -16,6 +16,12 @@ CatalogCreativeNotificationAdInfo::CatalogCreativeNotificationAdInfo(
 CatalogCreativeNotificationAdInfo& CatalogCreativeNotificationAdInfo::operator=(
     const CatalogCreativeNotificationAdInfo& info) = default;
 
+CatalogCreativeNotificationAdInfo::CatalogCreativeNotificationAdInfo(
+    CatalogCreativeNotificationAdInfo&& other) noexcept = default;
+
+CatalogCreativeNotificationAdInfo& CatalogCreativeNotificationAdInfo::operator=(
+    CatalogCreativeNotificationAdInfo&& other) noexcept = default;
+
 CatalogCreativeNotificationAdInfo::~CatalogCreativeNotificationAdInfo() =
     default;
 

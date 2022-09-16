@@ -17,6 +17,9 @@ struct CatalogTypeInfo final {
   CatalogTypeInfo(const CatalogTypeInfo& info);
   CatalogTypeInfo& operator=(const CatalogTypeInfo& info);
 
+  CatalogTypeInfo(CatalogTypeInfo&& other) noexcept;
+  CatalogTypeInfo& operator=(CatalogTypeInfo&& other) noexcept;
+
   ~CatalogTypeInfo();
 
   bool operator==(const CatalogTypeInfo& rhs) const;

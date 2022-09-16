@@ -20,6 +20,9 @@ struct AdPredictorInfo final {
   AdPredictorInfo(const AdPredictorInfo& info);
   AdPredictorInfo& operator=(const AdPredictorInfo& info);
 
+  AdPredictorInfo(AdPredictorInfo&& other) noexcept;
+  AdPredictorInfo& operator=(AdPredictorInfo&& other) noexcept;
+
   ~AdPredictorInfo();
 
   T creative_ad;

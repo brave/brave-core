@@ -24,8 +24,11 @@ class TabManager final {
  public:
   TabManager();
 
-  TabManager(const TabManager&) = delete;
-  TabManager& operator=(const TabManager&) = delete;
+  TabManager(const TabManager& info) = delete;
+  TabManager& operator=(const TabManager& info) = delete;
+
+  TabManager(TabManager&& other) noexcept = delete;
+  TabManager& operator=(TabManager&& other) noexcept = delete;
 
   ~TabManager();
 

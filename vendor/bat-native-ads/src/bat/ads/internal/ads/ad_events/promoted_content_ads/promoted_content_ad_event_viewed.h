@@ -21,6 +21,9 @@ class AdEventViewed final : public AdEventInterface<PromotedContentAdInfo> {
   AdEventViewed(const AdEventViewed&) = delete;
   AdEventViewed& operator=(const AdEventViewed&) = delete;
 
+  AdEventViewed(AdEventViewed&& other) noexcept = delete;
+  AdEventViewed& operator=(AdEventViewed&& other) noexcept = delete;
+
   ~AdEventViewed() override;
 
   void FireEvent(const PromotedContentAdInfo& ad) override;

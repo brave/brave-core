@@ -26,8 +26,11 @@ class TokenPreimage {
   explicit TokenPreimage(
       const challenge_bypass_ristretto::TokenPreimage& token_preimage);
 
-  TokenPreimage(const TokenPreimage& other);
-  TokenPreimage& operator=(const TokenPreimage& other);
+  TokenPreimage(const TokenPreimage& info);
+  TokenPreimage& operator=(const TokenPreimage& info);
+
+  TokenPreimage(TokenPreimage&& other) noexcept;
+  TokenPreimage& operator=(TokenPreimage&& other) noexcept;
 
   ~TokenPreimage();
 

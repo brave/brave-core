@@ -19,6 +19,9 @@ struct ConversionInfo final {
   ConversionInfo(const ConversionInfo& info);
   ConversionInfo& operator=(const ConversionInfo& info);
 
+  ConversionInfo(ConversionInfo&& other) noexcept;
+  ConversionInfo& operator=(ConversionInfo&& other) noexcept;
+
   ~ConversionInfo();
 
   bool IsValid() const;

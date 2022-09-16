@@ -19,6 +19,9 @@ struct FlaggedAdInfo final {
   FlaggedAdInfo(const FlaggedAdInfo& info);
   FlaggedAdInfo& operator=(const FlaggedAdInfo& info);
 
+  FlaggedAdInfo(FlaggedAdInfo&& other) noexcept;
+  FlaggedAdInfo& operator=(FlaggedAdInfo&& other) noexcept;
+
   ~FlaggedAdInfo();
 
   base::Value::Dict ToValue() const;

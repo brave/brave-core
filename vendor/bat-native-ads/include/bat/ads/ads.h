@@ -42,6 +42,9 @@ class ADS_EXPORT Ads {
   Ads(const Ads&) = delete;
   Ads& operator=(const Ads&) = delete;
 
+  Ads(Ads&& other) noexcept = delete;
+  Ads& operator=(Ads&& other) noexcept = delete;
+
   virtual ~Ads() = default;
 
   static Ads* CreateInstance(AdsClient* ads_client);

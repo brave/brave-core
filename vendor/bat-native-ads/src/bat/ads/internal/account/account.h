@@ -50,6 +50,9 @@ class Account final : public PrefManagerObserver,
   Account(const Account&) = delete;
   Account& operator=(const Account&) = delete;
 
+  Account(Account&& other) noexcept = delete;
+  Account& operator=(Account&& other) noexcept = delete;
+
   ~Account() override;
 
   void AddObserver(AccountObserver* observer);

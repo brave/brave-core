@@ -21,6 +21,11 @@ SearchEngineInfo::SearchEngineInfo(const SearchEngineInfo& info) = default;
 SearchEngineInfo& SearchEngineInfo::operator=(const SearchEngineInfo& info) =
     default;
 
+SearchEngineInfo::SearchEngineInfo(SearchEngineInfo&& other) noexcept = default;
+
+SearchEngineInfo& SearchEngineInfo::operator=(
+    SearchEngineInfo&& other) noexcept = default;
+
 SearchEngineInfo::~SearchEngineInfo() = default;
 
 }  // namespace ads

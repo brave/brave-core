@@ -24,6 +24,9 @@ struct ClientInfo final {
   ClientInfo(const ClientInfo& info);
   ClientInfo& operator=(const ClientInfo& info);
 
+  ClientInfo(ClientInfo&& other) noexcept;
+  ClientInfo& operator=(ClientInfo&& other) noexcept;
+
   ~ClientInfo();
 
   base::Value::Dict ToValue() const;

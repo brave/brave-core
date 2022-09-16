@@ -20,6 +20,10 @@ class IssuersUrlRequestBuilder : public UrlRequestBuilderInterface {
   IssuersUrlRequestBuilder(const IssuersUrlRequestBuilder&) = delete;
   IssuersUrlRequestBuilder& operator=(const IssuersUrlRequestBuilder&) = delete;
 
+  IssuersUrlRequestBuilder(IssuersUrlRequestBuilder&& other) noexcept = delete;
+  IssuersUrlRequestBuilder& operator=(
+      IssuersUrlRequestBuilder&& other) noexcept = delete;
+
   ~IssuersUrlRequestBuilder() override;
 
   mojom::UrlRequestInfoPtr Build() override;

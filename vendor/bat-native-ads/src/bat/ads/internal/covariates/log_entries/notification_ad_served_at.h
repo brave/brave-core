@@ -20,6 +20,10 @@ class NotificationAdServedAt final : public CovariateLogEntryInterface {
   NotificationAdServedAt(const NotificationAdServedAt&) = delete;
   NotificationAdServedAt& operator=(const NotificationAdServedAt&) = delete;
 
+  NotificationAdServedAt(NotificationAdServedAt&& other) noexcept = delete;
+  NotificationAdServedAt& operator=(NotificationAdServedAt&& other) noexcept =
+      delete;
+
   ~NotificationAdServedAt() override;
 
   void SetTime(base::Time time);

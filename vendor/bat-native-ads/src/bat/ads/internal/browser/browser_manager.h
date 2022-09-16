@@ -18,6 +18,9 @@ class BrowserManager final {
   BrowserManager(const BrowserManager&) = delete;
   BrowserManager& operator=(const BrowserManager&) = delete;
 
+  BrowserManager(BrowserManager&& other) noexcept = delete;
+  BrowserManager& operator=(BrowserManager&& other) noexcept = delete;
+
   ~BrowserManager();
 
   static BrowserManager* GetInstance();

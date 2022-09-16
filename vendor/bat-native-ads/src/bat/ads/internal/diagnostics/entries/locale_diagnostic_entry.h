@@ -19,6 +19,10 @@ class LocaleDiagnosticEntry final : public DiagnosticEntryInterface {
   LocaleDiagnosticEntry(const LocaleDiagnosticEntry&) = delete;
   LocaleDiagnosticEntry& operator=(const LocaleDiagnosticEntry&) = delete;
 
+  LocaleDiagnosticEntry(LocaleDiagnosticEntry&& other) noexcept = delete;
+  LocaleDiagnosticEntry& operator=(LocaleDiagnosticEntry&& other) noexcept =
+      delete;
+
   ~LocaleDiagnosticEntry() override;
 
   // DiagnosticEntryInterface:

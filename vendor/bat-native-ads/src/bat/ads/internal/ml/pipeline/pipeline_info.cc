@@ -9,14 +9,6 @@
 
 namespace ads::ml::pipeline {
 
-PipelineInfo::PipelineInfo() = default;
-
-PipelineInfo::PipelineInfo(PipelineInfo&& info) noexcept = default;
-
-PipelineInfo& PipelineInfo::operator=(PipelineInfo&& info) noexcept = default;
-
-PipelineInfo::~PipelineInfo() = default;
-
 PipelineInfo::PipelineInfo(const int version,
                            const std::string& timestamp,
                            const std::string& locale,
@@ -28,5 +20,13 @@ PipelineInfo::PipelineInfo(const int version,
       linear_model(std::move(linear_model)) {
   transformations = std::move(new_transformations);
 }
+
+PipelineInfo::PipelineInfo() = default;
+
+PipelineInfo::PipelineInfo(PipelineInfo&& info) noexcept = default;
+
+PipelineInfo& PipelineInfo::operator=(PipelineInfo&& info) noexcept = default;
+
+PipelineInfo::~PipelineInfo() = default;
 
 }  // namespace ads::ml::pipeline

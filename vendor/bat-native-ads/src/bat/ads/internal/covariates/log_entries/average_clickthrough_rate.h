@@ -20,6 +20,10 @@ class AverageClickthroughRate final : public CovariateLogEntryInterface {
   AverageClickthroughRate(const AverageClickthroughRate&) = delete;
   AverageClickthroughRate& operator=(const AverageClickthroughRate&) = delete;
 
+  AverageClickthroughRate(AverageClickthroughRate&& other) noexcept = delete;
+  AverageClickthroughRate& operator=(AverageClickthroughRate&& other) noexcept =
+      delete;
+
   ~AverageClickthroughRate() override;
 
   // CovariateLogEntryInterface:

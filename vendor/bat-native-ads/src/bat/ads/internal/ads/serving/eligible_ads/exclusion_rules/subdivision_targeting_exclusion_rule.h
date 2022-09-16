@@ -30,6 +30,11 @@ class SubdivisionTargetingExclusionRule final
   SubdivisionTargetingExclusionRule& operator=(
       const SubdivisionTargetingExclusionRule&) = delete;
 
+  SubdivisionTargetingExclusionRule(
+      SubdivisionTargetingExclusionRule&& other) noexcept = delete;
+  SubdivisionTargetingExclusionRule& operator=(
+      SubdivisionTargetingExclusionRule&& other) noexcept = delete;
+
   ~SubdivisionTargetingExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;

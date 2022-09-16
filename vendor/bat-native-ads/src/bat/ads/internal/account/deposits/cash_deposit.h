@@ -19,6 +19,9 @@ class CashDeposit final : public DepositInterface {
   CashDeposit(const CashDeposit&) = delete;
   CashDeposit& operator=(const CashDeposit&) = delete;
 
+  CashDeposit(CashDeposit&& other) noexcept = delete;
+  CashDeposit& operator=(CashDeposit&& other) noexcept = delete;
+
   ~CashDeposit() override;
 
   void GetValue(const std::string& creative_instance_id,

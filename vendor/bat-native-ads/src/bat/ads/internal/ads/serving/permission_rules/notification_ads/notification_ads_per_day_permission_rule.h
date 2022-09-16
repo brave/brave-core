@@ -24,6 +24,10 @@ class AdsPerDayPermissionRule final : public PermissionRuleInterface {
   AdsPerDayPermissionRule(const AdsPerDayPermissionRule&) = delete;
   AdsPerDayPermissionRule& operator=(const AdsPerDayPermissionRule&) = delete;
 
+  AdsPerDayPermissionRule(AdsPerDayPermissionRule&& other) noexcept = delete;
+  AdsPerDayPermissionRule& operator=(AdsPerDayPermissionRule&& other) noexcept =
+      delete;
+
   ~AdsPerDayPermissionRule() override;
 
   bool ShouldAllow() override;

@@ -22,6 +22,9 @@ struct AdPreferencesInfo final {
   AdPreferencesInfo(const AdPreferencesInfo& info);
   AdPreferencesInfo& operator=(const AdPreferencesInfo& info);
 
+  AdPreferencesInfo(AdPreferencesInfo&& other) noexcept;
+  AdPreferencesInfo& operator=(AdPreferencesInfo&& other) noexcept;
+
   ~AdPreferencesInfo();
 
   base::Value::Dict ToValue() const;

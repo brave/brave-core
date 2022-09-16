@@ -13,6 +13,10 @@ SavedAdInfo::SavedAdInfo(const SavedAdInfo& info) = default;
 
 SavedAdInfo& SavedAdInfo::operator=(const SavedAdInfo& info) = default;
 
+SavedAdInfo::SavedAdInfo(SavedAdInfo&& other) noexcept = default;
+
+SavedAdInfo& SavedAdInfo::operator=(SavedAdInfo&& other) noexcept = default;
+
 SavedAdInfo::~SavedAdInfo() = default;
 
 base::Value::Dict SavedAdInfo::ToValue() const {

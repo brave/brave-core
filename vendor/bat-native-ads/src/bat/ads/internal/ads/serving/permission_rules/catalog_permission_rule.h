@@ -19,6 +19,10 @@ class CatalogPermissionRule final : public PermissionRuleInterface {
   CatalogPermissionRule(const CatalogPermissionRule&) = delete;
   CatalogPermissionRule& operator=(const CatalogPermissionRule&) = delete;
 
+  CatalogPermissionRule(CatalogPermissionRule&& other) noexcept = delete;
+  CatalogPermissionRule& operator=(CatalogPermissionRule&& other) noexcept =
+      delete;
+
   ~CatalogPermissionRule() override;
 
   bool ShouldAllow() override;

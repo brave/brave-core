@@ -16,6 +16,10 @@ struct EpsilonGreedyBanditArmInfo final {
   EpsilonGreedyBanditArmInfo(const EpsilonGreedyBanditArmInfo& info);
   EpsilonGreedyBanditArmInfo& operator=(const EpsilonGreedyBanditArmInfo& info);
 
+  EpsilonGreedyBanditArmInfo(EpsilonGreedyBanditArmInfo&& other) noexcept;
+  EpsilonGreedyBanditArmInfo& operator=(
+      EpsilonGreedyBanditArmInfo&& other) noexcept;
+
   ~EpsilonGreedyBanditArmInfo();
 
   bool operator==(const EpsilonGreedyBanditArmInfo& rhs) const;

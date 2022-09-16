@@ -27,6 +27,10 @@ class ConfirmationStateManager final {
   ConfirmationStateManager(const ConfirmationStateManager&) = delete;
   ConfirmationStateManager& operator=(const ConfirmationStateManager&) = delete;
 
+  ConfirmationStateManager(ConfirmationStateManager&& other) noexcept = delete;
+  ConfirmationStateManager& operator=(
+      ConfirmationStateManager&& other) noexcept = delete;
+
   ~ConfirmationStateManager();
 
   static ConfirmationStateManager* GetInstance();

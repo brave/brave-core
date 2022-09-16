@@ -22,6 +22,9 @@ class Dayparts final : public TableInterface {
   Dayparts(const Dayparts&) = delete;
   Dayparts& operator=(const Dayparts&) = delete;
 
+  Dayparts(Dayparts&& other) noexcept = delete;
+  Dayparts& operator=(Dayparts&& other) noexcept = delete;
+
   ~Dayparts() override;
 
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,

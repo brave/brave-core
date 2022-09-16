@@ -22,6 +22,9 @@ class GeoTargets final : public TableInterface {
   GeoTargets(const GeoTargets&) = delete;
   GeoTargets& operator=(const GeoTargets&) = delete;
 
+  GeoTargets(GeoTargets&& other) noexcept = delete;
+  GeoTargets& operator=(GeoTargets&& other) noexcept = delete;
+
   ~GeoTargets() override;
 
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,

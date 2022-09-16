@@ -30,6 +30,11 @@ class RedeemUnblindedPaymentTokens final {
   RedeemUnblindedPaymentTokens& operator=(const RedeemUnblindedPaymentTokens&) =
       delete;
 
+  RedeemUnblindedPaymentTokens(RedeemUnblindedPaymentTokens&& other) noexcept =
+      delete;
+  RedeemUnblindedPaymentTokens& operator=(
+      RedeemUnblindedPaymentTokens&& other) noexcept = delete;
+
   ~RedeemUnblindedPaymentTokens();
 
   void SetDelegate(RedeemUnblindedPaymentTokensDelegate* delegate) {

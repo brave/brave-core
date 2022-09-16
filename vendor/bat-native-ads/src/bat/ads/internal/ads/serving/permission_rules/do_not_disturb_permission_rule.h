@@ -20,6 +20,11 @@ class DoNotDisturbPermissionRule final : public PermissionRuleInterface {
   DoNotDisturbPermissionRule& operator=(const DoNotDisturbPermissionRule&) =
       delete;
 
+  DoNotDisturbPermissionRule(DoNotDisturbPermissionRule&& other) noexcept =
+      delete;
+  DoNotDisturbPermissionRule& operator=(
+      DoNotDisturbPermissionRule&& other) noexcept = delete;
+
   ~DoNotDisturbPermissionRule() override;
 
   bool ShouldAllow() override;

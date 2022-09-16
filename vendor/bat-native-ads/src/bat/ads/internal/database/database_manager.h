@@ -19,6 +19,9 @@ class DatabaseManager final {
   DatabaseManager(const DatabaseManager&) = delete;
   DatabaseManager& operator=(const DatabaseManager&) = delete;
 
+  DatabaseManager(DatabaseManager&& other) noexcept = delete;
+  DatabaseManager& operator=(DatabaseManager&& other) noexcept = delete;
+
   ~DatabaseManager();
 
   static DatabaseManager* GetInstance();

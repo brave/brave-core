@@ -61,10 +61,6 @@ DLEQProof::DLEQProof(const BlindedToken& blinded_token,
                      const SigningKey& signing_key)
     : dleq_proof_(Create(blinded_token, signed_token, signing_key)) {}
 
-DLEQProof::DLEQProof(const DLEQProof& other) = default;
-
-DLEQProof& DLEQProof::operator=(const DLEQProof& other) = default;
-
 DLEQProof::~DLEQProof() = default;
 
 bool DLEQProof::operator==(const DLEQProof& rhs) const {

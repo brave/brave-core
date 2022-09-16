@@ -19,8 +19,12 @@ class IdleDetectionManager final {
  public:
   IdleDetectionManager();
 
-  IdleDetectionManager(const IdleDetectionManager&) = delete;
-  IdleDetectionManager& operator=(const IdleDetectionManager&) = delete;
+  IdleDetectionManager(const IdleDetectionManager& info) = delete;
+  IdleDetectionManager& operator=(const IdleDetectionManager& info) = delete;
+
+  IdleDetectionManager(IdleDetectionManager&& other) noexcept = delete;
+  IdleDetectionManager& operator=(IdleDetectionManager&& other) noexcept =
+      delete;
 
   ~IdleDetectionManager();
 

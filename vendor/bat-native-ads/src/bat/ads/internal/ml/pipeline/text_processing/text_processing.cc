@@ -34,13 +34,13 @@ std::unique_ptr<TextProcessing> TextProcessing::CreateFromValue(
   return text_processing;
 }
 
-bool TextProcessing::IsInitialized() const {
-  return is_initialized_;
-}
-
 TextProcessing::TextProcessing() = default;
 
 TextProcessing::~TextProcessing() = default;
+
+bool TextProcessing::IsInitialized() const {
+  return is_initialized_;
+}
 
 TextProcessing::TextProcessing(TransformationVector transformations,
                                model::Linear linear_model)

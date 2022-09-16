@@ -37,6 +37,9 @@ class Serving final {
   Serving(const Serving&) = delete;
   Serving& operator=(const Serving&) = delete;
 
+  Serving(Serving&& other) noexcept = delete;
+  Serving& operator=(Serving&& other) noexcept = delete;
+
   ~Serving();
 
   void AddObserver(ServingObserver* observer);

@@ -23,6 +23,10 @@ class DailyCapExclusionRule final
   DailyCapExclusionRule(const DailyCapExclusionRule&) = delete;
   DailyCapExclusionRule& operator=(const DailyCapExclusionRule&) = delete;
 
+  DailyCapExclusionRule(DailyCapExclusionRule&& other) noexcept = delete;
+  DailyCapExclusionRule& operator=(DailyCapExclusionRule&& other) noexcept =
+      delete;
+
   ~DailyCapExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;

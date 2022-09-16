@@ -27,6 +27,11 @@ class GetSignedTokensUrlRequestBuilder final
   GetSignedTokensUrlRequestBuilder& operator=(
       const GetSignedTokensUrlRequestBuilder&) = delete;
 
+  GetSignedTokensUrlRequestBuilder(
+      GetSignedTokensUrlRequestBuilder&& other) noexcept = delete;
+  GetSignedTokensUrlRequestBuilder& operator=(
+      GetSignedTokensUrlRequestBuilder&& other) noexcept = delete;
+
   ~GetSignedTokensUrlRequestBuilder() override;
 
   mojom::UrlRequestInfoPtr Build() override;

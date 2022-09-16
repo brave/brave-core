@@ -15,6 +15,12 @@ FilteredAdvertiserInfo::FilteredAdvertiserInfo(
 FilteredAdvertiserInfo& FilteredAdvertiserInfo::operator=(
     const FilteredAdvertiserInfo& info) = default;
 
+FilteredAdvertiserInfo::FilteredAdvertiserInfo(
+    FilteredAdvertiserInfo&& other) noexcept = default;
+
+FilteredAdvertiserInfo& FilteredAdvertiserInfo::operator=(
+    FilteredAdvertiserInfo&& other) noexcept = default;
+
 FilteredAdvertiserInfo::~FilteredAdvertiserInfo() = default;
 
 base::Value::Dict FilteredAdvertiserInfo::ToValue() const {

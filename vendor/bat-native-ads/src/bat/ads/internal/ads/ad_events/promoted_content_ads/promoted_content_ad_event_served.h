@@ -21,6 +21,9 @@ class AdEventServed final : public AdEventInterface<PromotedContentAdInfo> {
   AdEventServed(const AdEventServed&) = delete;
   AdEventServed& operator=(const AdEventServed&) = delete;
 
+  AdEventServed(AdEventServed&& other) noexcept = delete;
+  AdEventServed& operator=(AdEventServed&& other) noexcept = delete;
+
   ~AdEventServed() override;
 
   void FireEvent(const PromotedContentAdInfo& ad) override;

@@ -22,6 +22,11 @@ class RedeemUnblindedPaymentTokensUserDataBuilder final
   RedeemUnblindedPaymentTokensUserDataBuilder& operator=(
       const RedeemUnblindedPaymentTokensUserDataBuilder&) = delete;
 
+  RedeemUnblindedPaymentTokensUserDataBuilder(
+      RedeemUnblindedPaymentTokensUserDataBuilder&& other) noexcept = delete;
+  RedeemUnblindedPaymentTokensUserDataBuilder& operator=(
+      RedeemUnblindedPaymentTokensUserDataBuilder&& other) noexcept = delete;
+
   ~RedeemUnblindedPaymentTokensUserDataBuilder() override;
 
   void Build(UserDataBuilderCallback callback) const override;

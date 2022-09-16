@@ -44,6 +44,9 @@ class Serving final : public PrefManagerObserver {
   Serving(const Serving&) = delete;
   Serving& operator=(const Serving&) = delete;
 
+  Serving(Serving&& other) noexcept = delete;
+  Serving& operator=(Serving&& other) noexcept = delete;
+
   ~Serving() override;
 
   void AddObserver(ServingObserver* observer);

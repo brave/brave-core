@@ -24,6 +24,9 @@ class Catalog final : public DatabaseManagerObserver {
   Catalog(const Catalog&) = delete;
   Catalog& operator=(const Catalog&) = delete;
 
+  Catalog(Catalog&& other) noexcept = delete;
+  Catalog& operator=(Catalog&& other) noexcept = delete;
+
   ~Catalog() override;
 
   void AddObserver(CatalogObserver* observer);

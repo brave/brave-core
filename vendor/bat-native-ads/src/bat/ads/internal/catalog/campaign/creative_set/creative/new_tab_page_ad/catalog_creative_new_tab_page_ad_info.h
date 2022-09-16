@@ -20,6 +20,11 @@ struct CatalogCreativeNewTabPageAdInfo final : CatalogCreativeInfo {
   CatalogCreativeNewTabPageAdInfo& operator=(
       const CatalogCreativeNewTabPageAdInfo& info);
 
+  CatalogCreativeNewTabPageAdInfo(
+      CatalogCreativeNewTabPageAdInfo&& other) noexcept;
+  CatalogCreativeNewTabPageAdInfo& operator=(
+      CatalogCreativeNewTabPageAdInfo&& other) noexcept;
+
   ~CatalogCreativeNewTabPageAdInfo();
 
   bool operator==(const CatalogCreativeNewTabPageAdInfo& rhs) const;

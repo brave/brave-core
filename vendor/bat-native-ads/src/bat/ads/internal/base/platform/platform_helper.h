@@ -18,6 +18,9 @@ class PlatformHelper {
   PlatformHelper(const PlatformHelper&) = delete;
   PlatformHelper& operator=(const PlatformHelper&) = delete;
 
+  PlatformHelper(PlatformHelper&& other) noexcept = delete;
+  PlatformHelper& operator=(PlatformHelper&& other) noexcept = delete;
+
   virtual ~PlatformHelper();
 
   static PlatformHelper* GetInstance();

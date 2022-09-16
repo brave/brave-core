@@ -19,6 +19,9 @@ class MediaPermissionRule final : public PermissionRuleInterface {
   MediaPermissionRule(const MediaPermissionRule&) = delete;
   MediaPermissionRule& operator=(const MediaPermissionRule&) = delete;
 
+  MediaPermissionRule(MediaPermissionRule&& other) noexcept = delete;
+  MediaPermissionRule& operator=(MediaPermissionRule&& other) noexcept = delete;
+
   ~MediaPermissionRule() override;
 
   bool ShouldAllow() override;

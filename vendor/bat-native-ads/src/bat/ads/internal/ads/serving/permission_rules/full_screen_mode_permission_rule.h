@@ -20,6 +20,11 @@ class FullScreenModePermissionRule final : public PermissionRuleInterface {
   FullScreenModePermissionRule& operator=(const FullScreenModePermissionRule&) =
       delete;
 
+  FullScreenModePermissionRule(FullScreenModePermissionRule&& other) noexcept =
+      delete;
+  FullScreenModePermissionRule& operator=(
+      FullScreenModePermissionRule&& other) noexcept = delete;
+
   ~FullScreenModePermissionRule() override;
 
   bool ShouldAllow() override;

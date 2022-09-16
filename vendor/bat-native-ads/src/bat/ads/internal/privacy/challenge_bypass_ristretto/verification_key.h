@@ -23,8 +23,11 @@ class VerificationKey {
   explicit VerificationKey(
       const challenge_bypass_ristretto::VerificationKey& verification_key);
 
-  VerificationKey(const VerificationKey& verification_key);
-  VerificationKey& operator=(const VerificationKey& verification_key);
+  VerificationKey(const VerificationKey& info);
+  VerificationKey& operator=(const VerificationKey& info);
+
+  VerificationKey(VerificationKey&& other) noexcept;
+  VerificationKey& operator=(VerificationKey&& other) noexcept;
 
   ~VerificationKey();
 

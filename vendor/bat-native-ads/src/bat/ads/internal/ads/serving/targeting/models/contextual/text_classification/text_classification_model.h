@@ -17,6 +17,9 @@ class TextClassification final : public ModelInterface {
   TextClassification(const TextClassification&) = delete;
   TextClassification& operator=(const TextClassification&) = delete;
 
+  TextClassification(TextClassification&& other) noexcept = delete;
+  TextClassification& operator=(TextClassification&& other) noexcept = delete;
+
   ~TextClassification() override;
 
   SegmentList GetSegments() const override;

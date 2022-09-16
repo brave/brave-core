@@ -15,6 +15,11 @@ CreativeAdInfo::CreativeAdInfo(const CreativeAdInfo& info) = default;
 
 CreativeAdInfo& CreativeAdInfo::operator=(const CreativeAdInfo& info) = default;
 
+CreativeAdInfo::CreativeAdInfo(CreativeAdInfo&& other) noexcept = default;
+
+CreativeAdInfo& CreativeAdInfo::operator=(CreativeAdInfo&& other) noexcept =
+    default;
+
 CreativeAdInfo::~CreativeAdInfo() = default;
 
 bool CreativeAdInfo::operator==(const CreativeAdInfo& rhs) const {

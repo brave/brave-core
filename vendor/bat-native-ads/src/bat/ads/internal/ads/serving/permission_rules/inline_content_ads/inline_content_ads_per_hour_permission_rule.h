@@ -24,6 +24,10 @@ class AdsPerHourPermissionRule final : public PermissionRuleInterface {
   AdsPerHourPermissionRule(const AdsPerHourPermissionRule&) = delete;
   AdsPerHourPermissionRule& operator=(const AdsPerHourPermissionRule&) = delete;
 
+  AdsPerHourPermissionRule(AdsPerHourPermissionRule&& other) noexcept = delete;
+  AdsPerHourPermissionRule& operator=(
+      AdsPerHourPermissionRule&& other) noexcept = delete;
+
   ~AdsPerHourPermissionRule() override;
 
   bool ShouldAllow() override;

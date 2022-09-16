@@ -18,6 +18,9 @@ class PlatformHelperMac final : public PlatformHelper {
   PlatformHelperMac(const PlatformHelperMac&) = delete;
   PlatformHelperMac& operator=(const PlatformHelperMac&) = delete;
 
+  PlatformHelperMac(PlatformHelperMac&& other) noexcept = delete;
+  PlatformHelperMac& operator=(PlatformHelperMac&& other) noexcept = delete;
+
   ~PlatformHelperMac() override;
 
  protected:

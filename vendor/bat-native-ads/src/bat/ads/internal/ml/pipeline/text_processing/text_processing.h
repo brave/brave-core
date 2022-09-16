@@ -34,6 +34,9 @@ class TextProcessing final {
   TextProcessing(const TextProcessing& pipeline) = delete;
   TextProcessing& operator=(const TextProcessing& pipeline) = delete;
 
+  TextProcessing(TextProcessing&& other) noexcept = delete;
+  TextProcessing& operator=(TextProcessing&& other) noexcept = delete;
+
   ~TextProcessing();
 
   bool IsInitialized() const;

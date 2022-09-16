@@ -21,6 +21,9 @@ struct TransactionInfo final {
   TransactionInfo(const TransactionInfo& info);
   TransactionInfo& operator=(const TransactionInfo& info);
 
+  TransactionInfo(TransactionInfo&& other) noexcept;
+  TransactionInfo& operator=(TransactionInfo&& other) noexcept;
+
   ~TransactionInfo();
 
   bool operator==(const TransactionInfo& rhs) const;

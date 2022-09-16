@@ -20,6 +20,11 @@ class UserActivityPermissionRule final : public PermissionRuleInterface {
   UserActivityPermissionRule& operator=(const UserActivityPermissionRule&) =
       delete;
 
+  UserActivityPermissionRule(UserActivityPermissionRule&& other) noexcept =
+      delete;
+  UserActivityPermissionRule& operator=(
+      UserActivityPermissionRule&& other) noexcept = delete;
+
   ~UserActivityPermissionRule() override;
 
   bool ShouldAllow() override;

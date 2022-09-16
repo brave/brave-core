@@ -29,8 +29,11 @@ class UnblindedToken {
   explicit UnblindedToken(
       const challenge_bypass_ristretto::UnblindedToken& unblinded_token);
 
-  UnblindedToken(const UnblindedToken& other);
-  UnblindedToken& operator=(const UnblindedToken& other);
+  UnblindedToken(const UnblindedToken& info);
+  UnblindedToken& operator=(const UnblindedToken& info);
+
+  UnblindedToken(UnblindedToken&& other) noexcept;
+  UnblindedToken& operator=(UnblindedToken&& other) noexcept;
 
   ~UnblindedToken();
 

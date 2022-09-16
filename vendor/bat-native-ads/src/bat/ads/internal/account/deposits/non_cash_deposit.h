@@ -19,6 +19,9 @@ class NonCashDeposit final : public DepositInterface {
   NonCashDeposit(const NonCashDeposit&) = delete;
   NonCashDeposit& operator=(const NonCashDeposit&) = delete;
 
+  NonCashDeposit(NonCashDeposit&& other) noexcept = delete;
+  NonCashDeposit& operator=(NonCashDeposit&& other) noexcept = delete;
+
   ~NonCashDeposit() override;
 
   void GetValue(const std::string& creative_instance_id,

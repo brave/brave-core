@@ -37,6 +37,9 @@ class HistoryManager final {
   HistoryManager(const HistoryManager&) = delete;
   HistoryManager& operator=(const HistoryManager&) = delete;
 
+  HistoryManager(HistoryManager&& other) noexcept = delete;
+  HistoryManager& operator=(HistoryManager&& other) noexcept = delete;
+
   ~HistoryManager();
 
   static HistoryManager* GetInstance();

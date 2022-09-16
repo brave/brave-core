@@ -22,6 +22,9 @@ class Campaigns final : public TableInterface {
   Campaigns(const Campaigns&) = delete;
   Campaigns& operator=(const Campaigns&) = delete;
 
+  Campaigns(Campaigns&& other) noexcept = delete;
+  Campaigns& operator=(Campaigns&& other) noexcept = delete;
+
   ~Campaigns() override;
 
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,

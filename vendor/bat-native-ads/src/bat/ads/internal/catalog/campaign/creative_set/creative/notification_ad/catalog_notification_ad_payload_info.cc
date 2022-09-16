@@ -15,6 +15,12 @@ CatalogNotificationAdPayloadInfo::CatalogNotificationAdPayloadInfo(
 CatalogNotificationAdPayloadInfo& CatalogNotificationAdPayloadInfo::operator=(
     const CatalogNotificationAdPayloadInfo& info) = default;
 
+CatalogNotificationAdPayloadInfo::CatalogNotificationAdPayloadInfo(
+    CatalogNotificationAdPayloadInfo&& other) noexcept = default;
+
+CatalogNotificationAdPayloadInfo& CatalogNotificationAdPayloadInfo::operator=(
+    CatalogNotificationAdPayloadInfo&& other) noexcept = default;
+
 CatalogNotificationAdPayloadInfo::~CatalogNotificationAdPayloadInfo() = default;
 
 bool CatalogNotificationAdPayloadInfo::operator==(

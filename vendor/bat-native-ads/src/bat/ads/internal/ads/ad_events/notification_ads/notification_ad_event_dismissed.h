@@ -21,6 +21,9 @@ class AdEventDismissed final : public AdEventInterface<NotificationAdInfo> {
   AdEventDismissed(const AdEventDismissed&) = delete;
   AdEventDismissed& operator=(const AdEventDismissed&) = delete;
 
+  AdEventDismissed(AdEventDismissed&& other) noexcept = delete;
+  AdEventDismissed& operator=(AdEventDismissed&& other) noexcept = delete;
+
   ~AdEventDismissed() override;
 
   void FireEvent(const NotificationAdInfo& ad) override;

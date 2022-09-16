@@ -16,6 +16,12 @@ CatalogInlineContentAdPayloadInfo::CatalogInlineContentAdPayloadInfo(
 CatalogInlineContentAdPayloadInfo& CatalogInlineContentAdPayloadInfo::operator=(
     const CatalogInlineContentAdPayloadInfo& info) = default;
 
+CatalogInlineContentAdPayloadInfo::CatalogInlineContentAdPayloadInfo(
+    CatalogInlineContentAdPayloadInfo&& other) noexcept = default;
+
+CatalogInlineContentAdPayloadInfo& CatalogInlineContentAdPayloadInfo::operator=(
+    CatalogInlineContentAdPayloadInfo&& other) noexcept = default;
+
 CatalogInlineContentAdPayloadInfo::~CatalogInlineContentAdPayloadInfo() =
     default;
 

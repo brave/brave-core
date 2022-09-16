@@ -13,6 +13,16 @@ namespace ads::resource {
 
 ConversionsInfo::ConversionsInfo() = default;
 
+ConversionsInfo::ConversionsInfo(const ConversionsInfo& info) = default;
+
+ConversionsInfo& ConversionsInfo::operator=(const ConversionsInfo& info) =
+    default;
+
+ConversionsInfo::ConversionsInfo(ConversionsInfo&& other) noexcept = default;
+
+ConversionsInfo& ConversionsInfo::operator=(ConversionsInfo&& other) noexcept =
+    default;
+
 ConversionsInfo::~ConversionsInfo() = default;
 
 // static

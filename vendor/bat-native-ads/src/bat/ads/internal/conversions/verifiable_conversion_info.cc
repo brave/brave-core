@@ -15,6 +15,12 @@ VerifiableConversionInfo::VerifiableConversionInfo(
 VerifiableConversionInfo& VerifiableConversionInfo::operator=(
     const VerifiableConversionInfo& info) = default;
 
+VerifiableConversionInfo::VerifiableConversionInfo(
+    VerifiableConversionInfo&& other) noexcept = default;
+
+VerifiableConversionInfo& VerifiableConversionInfo::operator=(
+    VerifiableConversionInfo&& other) noexcept = default;
+
 VerifiableConversionInfo::~VerifiableConversionInfo() = default;
 
 bool VerifiableConversionInfo::operator==(

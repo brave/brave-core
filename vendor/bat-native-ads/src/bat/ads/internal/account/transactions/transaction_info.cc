@@ -16,6 +16,11 @@ TransactionInfo::TransactionInfo(const TransactionInfo& info) = default;
 TransactionInfo& TransactionInfo::operator=(const TransactionInfo& info) =
     default;
 
+TransactionInfo::TransactionInfo(TransactionInfo&& other) noexcept = default;
+
+TransactionInfo& TransactionInfo::operator=(TransactionInfo&& other) noexcept =
+    default;
+
 TransactionInfo::~TransactionInfo() = default;
 
 bool TransactionInfo::operator==(const TransactionInfo& rhs) const {

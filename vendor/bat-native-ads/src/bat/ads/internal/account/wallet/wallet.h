@@ -19,6 +19,9 @@ class Wallet final {
   Wallet(const Wallet&) = delete;
   Wallet& operator=(const Wallet&) = delete;
 
+  Wallet(Wallet&& other) noexcept = delete;
+  Wallet& operator=(Wallet&& other) noexcept = delete;
+
   ~Wallet();
 
   bool Set(const std::string& id, const std::string& seed);

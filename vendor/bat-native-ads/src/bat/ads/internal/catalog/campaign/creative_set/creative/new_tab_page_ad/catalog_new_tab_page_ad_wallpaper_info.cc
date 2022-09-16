@@ -15,6 +15,12 @@ CatalogNewTabPageAdWallpaperInfo::CatalogNewTabPageAdWallpaperInfo(
 CatalogNewTabPageAdWallpaperInfo& CatalogNewTabPageAdWallpaperInfo::operator=(
     const CatalogNewTabPageAdWallpaperInfo& info) = default;
 
+CatalogNewTabPageAdWallpaperInfo::CatalogNewTabPageAdWallpaperInfo(
+    CatalogNewTabPageAdWallpaperInfo&& other) noexcept = default;
+
+CatalogNewTabPageAdWallpaperInfo& CatalogNewTabPageAdWallpaperInfo::operator=(
+    CatalogNewTabPageAdWallpaperInfo&& other) noexcept = default;
+
 CatalogNewTabPageAdWallpaperInfo::~CatalogNewTabPageAdWallpaperInfo() = default;
 
 bool CatalogNewTabPageAdWallpaperInfo::operator==(

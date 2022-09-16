@@ -21,6 +21,9 @@ class AdEventTimedOut final : public AdEventInterface<NotificationAdInfo> {
   AdEventTimedOut(const AdEventTimedOut&) = delete;
   AdEventTimedOut& operator=(const AdEventTimedOut&) = delete;
 
+  AdEventTimedOut(AdEventTimedOut&& other) noexcept = delete;
+  AdEventTimedOut& operator=(AdEventTimedOut&& other) noexcept = delete;
+
   ~AdEventTimedOut() override;
 
   void FireEvent(const NotificationAdInfo& ad) override;

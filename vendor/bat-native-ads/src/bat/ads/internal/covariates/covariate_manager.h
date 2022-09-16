@@ -34,6 +34,9 @@ class CovariateManager final {
   CovariateManager(const CovariateManager&) = delete;
   CovariateManager& operator=(const CovariateManager&) = delete;
 
+  CovariateManager(CovariateManager&& other) noexcept = delete;
+  CovariateManager& operator=(CovariateManager&& other) noexcept = delete;
+
   ~CovariateManager();
 
   static CovariateManager* GetInstance();

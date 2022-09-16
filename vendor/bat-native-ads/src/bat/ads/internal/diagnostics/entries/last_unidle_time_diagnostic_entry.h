@@ -21,6 +21,11 @@ class LastUnIdleTimeDiagnosticEntry final : public DiagnosticEntryInterface {
   LastUnIdleTimeDiagnosticEntry& operator=(
       const LastUnIdleTimeDiagnosticEntry&) = delete;
 
+  LastUnIdleTimeDiagnosticEntry(
+      LastUnIdleTimeDiagnosticEntry&& other) noexcept = delete;
+  LastUnIdleTimeDiagnosticEntry& operator=(
+      LastUnIdleTimeDiagnosticEntry&& other) noexcept = delete;
+
   ~LastUnIdleTimeDiagnosticEntry() override;
 
   void SetLastUnIdleTime(base::Time time);

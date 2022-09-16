@@ -26,6 +26,10 @@ class RedeemUnblindedToken final {
   RedeemUnblindedToken(const RedeemUnblindedToken&) = delete;
   RedeemUnblindedToken& operator=(const RedeemUnblindedToken&) = delete;
 
+  RedeemUnblindedToken(RedeemUnblindedToken&& other) noexcept = delete;
+  RedeemUnblindedToken& operator=(RedeemUnblindedToken&& other) noexcept =
+      delete;
+
   ~RedeemUnblindedToken();
 
   void SetDelegate(RedeemUnblindedTokenDelegate* delegate) {

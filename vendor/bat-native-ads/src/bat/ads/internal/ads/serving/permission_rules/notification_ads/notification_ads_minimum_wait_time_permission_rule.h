@@ -25,6 +25,11 @@ class MinimumWaitTimePermissionRule final : public PermissionRuleInterface {
   MinimumWaitTimePermissionRule& operator=(
       const MinimumWaitTimePermissionRule&) = delete;
 
+  MinimumWaitTimePermissionRule(
+      MinimumWaitTimePermissionRule&& other) noexcept = delete;
+  MinimumWaitTimePermissionRule& operator=(
+      MinimumWaitTimePermissionRule&& other) noexcept = delete;
+
   ~MinimumWaitTimePermissionRule() override;
 
   bool ShouldAllow() override;

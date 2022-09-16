@@ -27,6 +27,9 @@ class SignedToken {
   SignedToken(const SignedToken& other);
   SignedToken& operator=(const SignedToken& other);
 
+  SignedToken(SignedToken&& other) noexcept;
+  SignedToken& operator=(SignedToken&& other) noexcept;
+
   ~SignedToken();
 
   bool operator==(const SignedToken& rhs) const;

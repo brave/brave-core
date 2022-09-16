@@ -19,6 +19,9 @@ struct SavedAdInfo final {
   SavedAdInfo(const SavedAdInfo& info);
   SavedAdInfo& operator=(const SavedAdInfo& info);
 
+  SavedAdInfo(SavedAdInfo&& other) noexcept;
+  SavedAdInfo& operator=(SavedAdInfo&& other) noexcept;
+
   ~SavedAdInfo();
 
   base::Value::Dict ToValue() const;

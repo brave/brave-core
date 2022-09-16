@@ -16,6 +16,12 @@ CreativeNewTabPageAdWallpaperInfo::CreativeNewTabPageAdWallpaperInfo(
 CreativeNewTabPageAdWallpaperInfo& CreativeNewTabPageAdWallpaperInfo::operator=(
     const CreativeNewTabPageAdWallpaperInfo& info) = default;
 
+CreativeNewTabPageAdWallpaperInfo::CreativeNewTabPageAdWallpaperInfo(
+    CreativeNewTabPageAdWallpaperInfo&& other) noexcept = default;
+
+CreativeNewTabPageAdWallpaperInfo& CreativeNewTabPageAdWallpaperInfo::operator=(
+    CreativeNewTabPageAdWallpaperInfo&& other) noexcept = default;
+
 CreativeNewTabPageAdWallpaperInfo::~CreativeNewTabPageAdWallpaperInfo() =
     default;
 

@@ -39,6 +39,10 @@ class CreativeNotificationAds final : public TableInterface {
   CreativeNotificationAds(const CreativeNotificationAds&) = delete;
   CreativeNotificationAds& operator=(const CreativeNotificationAds&) = delete;
 
+  CreativeNotificationAds(CreativeNotificationAds&& other) noexcept = delete;
+  CreativeNotificationAds& operator=(CreativeNotificationAds&& other) noexcept =
+      delete;
+
   ~CreativeNotificationAds() override;
 
   void Save(const CreativeNotificationAdList& creative_ads,

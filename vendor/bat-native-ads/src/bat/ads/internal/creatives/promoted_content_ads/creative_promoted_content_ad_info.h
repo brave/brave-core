@@ -21,6 +21,10 @@ struct CreativePromotedContentAdInfo final : CreativeAdInfo {
   CreativePromotedContentAdInfo& operator=(
       const CreativePromotedContentAdInfo& info);
 
+  CreativePromotedContentAdInfo(CreativePromotedContentAdInfo&& other) noexcept;
+  CreativePromotedContentAdInfo& operator=(
+      CreativePromotedContentAdInfo&& other) noexcept;
+
   ~CreativePromotedContentAdInfo();
 
   bool operator==(const CreativePromotedContentAdInfo& rhs) const;

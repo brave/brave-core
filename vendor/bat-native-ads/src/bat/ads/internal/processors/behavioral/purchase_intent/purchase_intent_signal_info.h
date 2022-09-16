@@ -19,6 +19,10 @@ struct PurchaseIntentSignalInfo final {
   PurchaseIntentSignalInfo(const PurchaseIntentSignalInfo& info);
   PurchaseIntentSignalInfo& operator=(const PurchaseIntentSignalInfo& info);
 
+  PurchaseIntentSignalInfo(PurchaseIntentSignalInfo&& other) noexcept;
+  PurchaseIntentSignalInfo& operator=(
+      PurchaseIntentSignalInfo&& other) noexcept;
+
   ~PurchaseIntentSignalInfo();
 
   base::Time created_at;

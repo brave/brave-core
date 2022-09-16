@@ -20,6 +20,12 @@ PurchaseIntentFunnelKeywordInfo::PurchaseIntentFunnelKeywordInfo(
 PurchaseIntentFunnelKeywordInfo& PurchaseIntentFunnelKeywordInfo::operator=(
     const PurchaseIntentFunnelKeywordInfo& info) = default;
 
+PurchaseIntentFunnelKeywordInfo::PurchaseIntentFunnelKeywordInfo(
+    PurchaseIntentFunnelKeywordInfo&& other) noexcept = default;
+
+PurchaseIntentFunnelKeywordInfo& PurchaseIntentFunnelKeywordInfo::operator=(
+    PurchaseIntentFunnelKeywordInfo&& other) noexcept = default;
+
 PurchaseIntentFunnelKeywordInfo::~PurchaseIntentFunnelKeywordInfo() = default;
 
 }  // namespace ads::targeting

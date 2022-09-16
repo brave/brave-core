@@ -16,8 +16,11 @@ class GeoServerHost final : public ServerHostInterface {
  public:
   GeoServerHost();
 
-  GeoServerHost(const GeoServerHost&) = delete;
-  GeoServerHost& operator=(const GeoServerHost&) = delete;
+  GeoServerHost(const GeoServerHost& info) = delete;
+  GeoServerHost& operator=(const GeoServerHost& info) = delete;
+
+  GeoServerHost(GeoServerHost&& other) noexcept = delete;
+  GeoServerHost& operator=(GeoServerHost&& other) noexcept = delete;
 
   ~GeoServerHost() override;
 

@@ -22,6 +22,14 @@ AdPredictorInfo<T>& AdPredictorInfo<T>::operator=(
     const AdPredictorInfo<T>& info) = default;
 
 template <typename T>
+AdPredictorInfo<T>::AdPredictorInfo(AdPredictorInfo<T>&& other) noexcept =
+    default;
+
+template <typename T>
+AdPredictorInfo<T>& AdPredictorInfo<T>::operator=(
+    AdPredictorInfo<T>&& other) noexcept = default;
+
+template <typename T>
 AdPredictorInfo<T>::~AdPredictorInfo() = default;
 
 template struct AdPredictorInfo<CreativeInlineContentAdInfo>;

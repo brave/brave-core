@@ -33,6 +33,10 @@ class RefillUnblindedTokens final {
   RefillUnblindedTokens(const RefillUnblindedTokens&) = delete;
   RefillUnblindedTokens& operator=(const RefillUnblindedTokens&) = delete;
 
+  RefillUnblindedTokens(RefillUnblindedTokens&& other) noexcept = delete;
+  RefillUnblindedTokens& operator=(RefillUnblindedTokens&& other) noexcept =
+      delete;
+
   ~RefillUnblindedTokens();
 
   void SetDelegate(RefillUnblindedTokensDelegate* delegate) {

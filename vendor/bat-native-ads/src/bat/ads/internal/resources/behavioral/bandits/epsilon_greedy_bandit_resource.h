@@ -20,8 +20,11 @@ class EpsilonGreedyBandit final : public CatalogObserver {
  public:
   explicit EpsilonGreedyBandit(Catalog* catalog);
 
-  EpsilonGreedyBandit(const EpsilonGreedyBandit&) = delete;
-  EpsilonGreedyBandit& operator=(const EpsilonGreedyBandit&) = delete;
+  EpsilonGreedyBandit(const EpsilonGreedyBandit& info) = delete;
+  EpsilonGreedyBandit& operator=(const EpsilonGreedyBandit& info) = delete;
+
+  EpsilonGreedyBandit(EpsilonGreedyBandit&& other) noexcept = delete;
+  EpsilonGreedyBandit& operator=(EpsilonGreedyBandit&& other) noexcept = delete;
 
   ~EpsilonGreedyBandit() override;
 

@@ -41,6 +41,9 @@ class Conversions final : public LocaleManagerObserver,
   Conversions(const Conversions&) = delete;
   Conversions& operator=(const Conversions&) = delete;
 
+  Conversions(Conversions&& other) noexcept = delete;
+  Conversions& operator=(Conversions&& other) noexcept = delete;
+
   ~Conversions() override;
 
   void AddObserver(ConversionsObserver* observer);

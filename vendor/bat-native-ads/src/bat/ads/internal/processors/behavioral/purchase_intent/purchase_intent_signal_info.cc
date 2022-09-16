@@ -15,6 +15,12 @@ PurchaseIntentSignalInfo::PurchaseIntentSignalInfo(
 PurchaseIntentSignalInfo& PurchaseIntentSignalInfo::operator=(
     const PurchaseIntentSignalInfo& info) = default;
 
+PurchaseIntentSignalInfo::PurchaseIntentSignalInfo(
+    PurchaseIntentSignalInfo&& other) noexcept = default;
+
+PurchaseIntentSignalInfo& PurchaseIntentSignalInfo::operator=(
+    PurchaseIntentSignalInfo&& other) noexcept = default;
+
 PurchaseIntentSignalInfo::~PurchaseIntentSignalInfo() = default;
 
 }  // namespace ads::targeting

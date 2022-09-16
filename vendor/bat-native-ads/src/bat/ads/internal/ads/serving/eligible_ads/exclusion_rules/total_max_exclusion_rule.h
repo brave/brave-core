@@ -23,6 +23,10 @@ class TotalMaxExclusionRule final
   TotalMaxExclusionRule(const TotalMaxExclusionRule&) = delete;
   TotalMaxExclusionRule& operator=(const TotalMaxExclusionRule&) = delete;
 
+  TotalMaxExclusionRule(TotalMaxExclusionRule&& other) noexcept = delete;
+  TotalMaxExclusionRule& operator=(TotalMaxExclusionRule&& other) noexcept =
+      delete;
+
   ~TotalMaxExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;

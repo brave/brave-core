@@ -52,10 +52,6 @@ SigningKey::SigningKey(
     const challenge_bypass_ristretto::SigningKey& signing_key)
     : signing_key_(signing_key) {}
 
-SigningKey::SigningKey(const SigningKey& other) = default;
-
-SigningKey& SigningKey::operator=(const SigningKey& other) = default;
-
 SigningKey::~SigningKey() = default;
 
 bool SigningKey::operator==(const SigningKey& rhs) const {

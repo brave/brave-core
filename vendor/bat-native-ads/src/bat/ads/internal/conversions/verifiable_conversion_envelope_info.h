@@ -18,6 +18,11 @@ struct VerifiableConversionEnvelopeInfo final {
   VerifiableConversionEnvelopeInfo& operator=(
       const VerifiableConversionEnvelopeInfo& info);
 
+  VerifiableConversionEnvelopeInfo(
+      VerifiableConversionEnvelopeInfo&& other) noexcept;
+  VerifiableConversionEnvelopeInfo& operator=(
+      VerifiableConversionEnvelopeInfo&& other) noexcept;
+
   ~VerifiableConversionEnvelopeInfo();
 
   bool operator==(const VerifiableConversionEnvelopeInfo& rhs) const;

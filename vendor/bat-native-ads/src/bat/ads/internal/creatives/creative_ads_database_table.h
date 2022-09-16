@@ -28,6 +28,9 @@ class CreativeAds final : public TableInterface {
   CreativeAds(const CreativeAds&) = delete;
   CreativeAds& operator=(const CreativeAds&) = delete;
 
+  CreativeAds(CreativeAds&& other) noexcept = delete;
+  CreativeAds& operator=(CreativeAds&& other) noexcept = delete;
+
   ~CreativeAds() override;
 
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,

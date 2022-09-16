@@ -17,6 +17,9 @@ class EpsilonGreedyBandit final : public ModelInterface {
   EpsilonGreedyBandit(const EpsilonGreedyBandit&) = delete;
   EpsilonGreedyBandit& operator=(const EpsilonGreedyBandit&) = delete;
 
+  EpsilonGreedyBandit(EpsilonGreedyBandit&& other) noexcept = delete;
+  EpsilonGreedyBandit& operator=(EpsilonGreedyBandit&& other) noexcept = delete;
+
   ~EpsilonGreedyBandit() override;
 
   SegmentList GetSegments() const override;

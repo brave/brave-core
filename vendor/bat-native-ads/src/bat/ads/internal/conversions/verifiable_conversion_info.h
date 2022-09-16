@@ -16,6 +16,10 @@ struct VerifiableConversionInfo final {
   VerifiableConversionInfo(const VerifiableConversionInfo& info);
   VerifiableConversionInfo& operator=(const VerifiableConversionInfo& info);
 
+  VerifiableConversionInfo(VerifiableConversionInfo&& other) noexcept;
+  VerifiableConversionInfo& operator=(
+      VerifiableConversionInfo&& other) noexcept;
+
   ~VerifiableConversionInfo();
 
   bool operator==(const VerifiableConversionInfo& rhs) const;

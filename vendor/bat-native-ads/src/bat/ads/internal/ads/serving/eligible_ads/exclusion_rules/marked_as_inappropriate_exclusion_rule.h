@@ -24,6 +24,11 @@ class MarkedAsInappropriateExclusionRule final
   MarkedAsInappropriateExclusionRule& operator=(
       const MarkedAsInappropriateExclusionRule&) = delete;
 
+  MarkedAsInappropriateExclusionRule(
+      MarkedAsInappropriateExclusionRule&& other) noexcept = delete;
+  MarkedAsInappropriateExclusionRule& operator=(
+      MarkedAsInappropriateExclusionRule&& other) noexcept = delete;
+
   ~MarkedAsInappropriateExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;

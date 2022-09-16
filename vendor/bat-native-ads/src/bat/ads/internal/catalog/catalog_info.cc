@@ -13,6 +13,10 @@ CatalogInfo::CatalogInfo(const CatalogInfo& info) = default;
 
 CatalogInfo& CatalogInfo::operator=(const CatalogInfo& info) = default;
 
+CatalogInfo::CatalogInfo(CatalogInfo&& other) noexcept = default;
+
+CatalogInfo& CatalogInfo::operator=(CatalogInfo&& other) noexcept = default;
+
 CatalogInfo::~CatalogInfo() = default;
 
 bool CatalogInfo::operator==(const CatalogInfo& rhs) const {

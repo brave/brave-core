@@ -31,8 +31,11 @@ class SigningKey {
   explicit SigningKey(
       const challenge_bypass_ristretto::SigningKey& signing_key);
 
-  SigningKey(const SigningKey& other);
-  SigningKey& operator=(const SigningKey& other);
+  SigningKey(const SigningKey& info) = delete;
+  SigningKey& operator=(const SigningKey& info) = delete;
+
+  SigningKey(SigningKey&& other) noexcept = delete;
+  SigningKey& operator=(SigningKey&& other) noexcept = delete;
 
   ~SigningKey();
 

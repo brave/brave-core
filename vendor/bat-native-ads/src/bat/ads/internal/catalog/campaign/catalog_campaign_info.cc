@@ -17,6 +17,12 @@ CatalogCampaignInfo::CatalogCampaignInfo(const CatalogCampaignInfo& info) =
 CatalogCampaignInfo& CatalogCampaignInfo::operator=(
     const CatalogCampaignInfo& info) = default;
 
+CatalogCampaignInfo::CatalogCampaignInfo(CatalogCampaignInfo&& other) noexcept =
+    default;
+
+CatalogCampaignInfo& CatalogCampaignInfo::operator=(
+    CatalogCampaignInfo&& other) noexcept = default;
+
 CatalogCampaignInfo::~CatalogCampaignInfo() = default;
 
 bool CatalogCampaignInfo::operator==(const CatalogCampaignInfo& rhs) const {

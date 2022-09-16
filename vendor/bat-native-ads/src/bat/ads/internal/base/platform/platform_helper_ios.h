@@ -18,6 +18,9 @@ class PlatformHelperIos final : public PlatformHelper {
   PlatformHelperIos(const PlatformHelperIos&) = delete;
   PlatformHelperIos& operator=(const PlatformHelperIos&) = delete;
 
+  PlatformHelperIos(PlatformHelperIos&& other) noexcept = delete;
+  PlatformHelperIos& operator=(PlatformHelperIos&& other) noexcept = delete;
+
   ~PlatformHelperIos() override;
 
  protected:

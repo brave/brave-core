@@ -24,6 +24,11 @@ class ConfirmationUserDataBuilder final : public UserDataBuilderInterface {
   ConfirmationUserDataBuilder& operator=(const ConfirmationUserDataBuilder&) =
       delete;
 
+  ConfirmationUserDataBuilder(ConfirmationUserDataBuilder&& other) noexcept =
+      delete;
+  ConfirmationUserDataBuilder& operator=(
+      ConfirmationUserDataBuilder&& other) noexcept = delete;
+
   ~ConfirmationUserDataBuilder() override;
 
   void Build(UserDataBuilderCallback callback) const override;

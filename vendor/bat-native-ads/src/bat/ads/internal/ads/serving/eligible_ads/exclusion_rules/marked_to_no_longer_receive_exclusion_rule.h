@@ -24,6 +24,11 @@ class MarkedToNoLongerReceiveExclusionRule final
   MarkedToNoLongerReceiveExclusionRule& operator=(
       const MarkedToNoLongerReceiveExclusionRule&) = delete;
 
+  MarkedToNoLongerReceiveExclusionRule(
+      MarkedToNoLongerReceiveExclusionRule&& other) noexcept = delete;
+  MarkedToNoLongerReceiveExclusionRule& operator=(
+      MarkedToNoLongerReceiveExclusionRule&& other) noexcept = delete;
+
   ~MarkedToNoLongerReceiveExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;

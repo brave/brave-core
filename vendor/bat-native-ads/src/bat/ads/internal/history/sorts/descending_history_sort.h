@@ -17,6 +17,10 @@ class DescendingHistorySort final : public HistorySortInterface {
   DescendingHistorySort(const DescendingHistorySort&) = delete;
   DescendingHistorySort& operator=(const DescendingHistorySort&) = delete;
 
+  DescendingHistorySort(DescendingHistorySort&& other) noexcept = delete;
+  DescendingHistorySort& operator=(DescendingHistorySort&& other) noexcept =
+      delete;
+
   ~DescendingHistorySort() override;
 
   HistoryItemList Apply(const HistoryItemList& history) const override;

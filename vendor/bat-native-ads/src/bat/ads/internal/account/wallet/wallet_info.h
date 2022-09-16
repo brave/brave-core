@@ -16,6 +16,9 @@ struct WalletInfo final {
   WalletInfo(const WalletInfo& info);
   WalletInfo& operator=(const WalletInfo& info);
 
+  WalletInfo(WalletInfo&& other) noexcept;
+  WalletInfo& operator=(WalletInfo&& other) noexcept;
+
   ~WalletInfo();
 
   bool IsValid() const;

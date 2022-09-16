@@ -19,6 +19,9 @@ struct CatalogInfo final {
   CatalogInfo(const CatalogInfo& info);
   CatalogInfo& operator=(const CatalogInfo& info);
 
+  CatalogInfo(CatalogInfo&& other) noexcept;
+  CatalogInfo& operator=(CatalogInfo&& other) noexcept;
+
   ~CatalogInfo();
 
   bool operator==(const CatalogInfo& rhs) const;

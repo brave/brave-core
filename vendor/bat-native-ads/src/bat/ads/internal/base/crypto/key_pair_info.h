@@ -17,6 +17,9 @@ struct KeyPairInfo final {
   KeyPairInfo(const KeyPairInfo& info);
   KeyPairInfo& operator=(const KeyPairInfo& info);
 
+  KeyPairInfo(KeyPairInfo&& other) noexcept;
+  KeyPairInfo& operator=(KeyPairInfo&& other) noexcept;
+
   ~KeyPairInfo();
 
   bool operator==(const KeyPairInfo& rhs) const;

@@ -23,6 +23,11 @@ class NumberOfUserActivityEvents final : public CovariateLogEntryInterface {
   NumberOfUserActivityEvents& operator=(const NumberOfUserActivityEvents&) =
       delete;
 
+  NumberOfUserActivityEvents(NumberOfUserActivityEvents&& other) noexcept =
+      delete;
+  NumberOfUserActivityEvents& operator=(
+      NumberOfUserActivityEvents&& other) noexcept = delete;
+
   ~NumberOfUserActivityEvents() override;
 
   // CovariateLogEntryInterface:

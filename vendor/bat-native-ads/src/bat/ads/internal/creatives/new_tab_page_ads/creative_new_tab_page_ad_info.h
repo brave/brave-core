@@ -22,6 +22,10 @@ struct CreativeNewTabPageAdInfo final : CreativeAdInfo {
   CreativeNewTabPageAdInfo(const CreativeNewTabPageAdInfo& info);
   CreativeNewTabPageAdInfo& operator=(const CreativeNewTabPageAdInfo& info);
 
+  CreativeNewTabPageAdInfo(CreativeNewTabPageAdInfo&& other) noexcept;
+  CreativeNewTabPageAdInfo& operator=(
+      CreativeNewTabPageAdInfo&& other) noexcept;
+
   ~CreativeNewTabPageAdInfo();
 
   bool operator==(const CreativeNewTabPageAdInfo& rhs) const;

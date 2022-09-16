@@ -23,6 +23,9 @@ class AdsClientMock : public AdsClient {
   AdsClientMock(const AdsClientMock&) = delete;
   AdsClientMock& operator=(const AdsClientMock&) = delete;
 
+  AdsClientMock(AdsClientMock&& other) noexcept = delete;
+  AdsClientMock& operator=(AdsClientMock&& other) noexcept = delete;
+
   ~AdsClientMock() override;
 
   MOCK_CONST_METHOD0(IsNetworkConnectionAvailable, bool());

@@ -17,8 +17,11 @@ class ResourceManager final {
  public:
   ResourceManager();
 
-  ResourceManager(const ResourceManager&) = delete;
-  ResourceManager& operator=(const ResourceManager&) = delete;
+  ResourceManager(const ResourceManager& info) = delete;
+  ResourceManager& operator=(const ResourceManager& info) = delete;
+
+  ResourceManager(ResourceManager&& other) noexcept = delete;
+  ResourceManager& operator=(ResourceManager&& other) noexcept = delete;
 
   ~ResourceManager();
 

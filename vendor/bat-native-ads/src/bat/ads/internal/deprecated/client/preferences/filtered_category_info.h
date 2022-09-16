@@ -19,6 +19,9 @@ struct FilteredCategoryInfo final {
   FilteredCategoryInfo(const FilteredCategoryInfo& info);
   FilteredCategoryInfo& operator=(const FilteredCategoryInfo& info);
 
+  FilteredCategoryInfo(FilteredCategoryInfo&& other) noexcept;
+  FilteredCategoryInfo& operator=(FilteredCategoryInfo&& other) noexcept;
+
   ~FilteredCategoryInfo();
 
   base::Value::Dict ToValue() const;

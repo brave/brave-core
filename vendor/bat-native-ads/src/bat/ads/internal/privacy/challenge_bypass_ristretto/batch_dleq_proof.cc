@@ -82,11 +82,6 @@ BatchDLEQProof::BatchDLEQProof(const std::vector<BlindedToken>& blinded_tokens,
                                const SigningKey& signing_key)
     : batch_dleq_proof_(Create(blinded_tokens, signed_tokens, signing_key)) {}
 
-BatchDLEQProof::BatchDLEQProof(const BatchDLEQProof& other) = default;
-
-BatchDLEQProof& BatchDLEQProof::operator=(const BatchDLEQProof& other) =
-    default;
-
 BatchDLEQProof::~BatchDLEQProof() = default;
 
 bool BatchDLEQProof::operator==(const BatchDLEQProof& rhs) const {

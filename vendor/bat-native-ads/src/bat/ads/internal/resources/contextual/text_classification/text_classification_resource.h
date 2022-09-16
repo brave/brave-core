@@ -23,8 +23,11 @@ class TextClassification final {
  public:
   TextClassification();
 
-  TextClassification(const TextClassification&) = delete;
-  TextClassification& operator=(const TextClassification&) = delete;
+  TextClassification(const TextClassification& info) = delete;
+  TextClassification& operator=(const TextClassification& info) = delete;
+
+  TextClassification(TextClassification&& other) noexcept = delete;
+  TextClassification& operator=(TextClassification&& other) noexcept = delete;
 
   ~TextClassification();
 

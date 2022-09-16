@@ -26,6 +26,9 @@ class Timer final {
   Timer(const Timer&) = delete;
   Timer& operator=(const Timer&) = delete;
 
+  Timer(Timer&& other) noexcept = delete;
+  Timer& operator=(Timer&& other) noexcept = delete;
+
   ~Timer();
 
   // |location| provides basic info where the timer was posted from. Start a

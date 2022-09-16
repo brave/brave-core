@@ -20,8 +20,11 @@ namespace ads::resource {
 struct ConversionsInfo final {
   ConversionsInfo();
 
-  ConversionsInfo(const ConversionsInfo& info) = delete;
-  ConversionsInfo& operator=(const ConversionsInfo& info) = delete;
+  ConversionsInfo(const ConversionsInfo& info);
+  ConversionsInfo& operator=(const ConversionsInfo& info);
+
+  ConversionsInfo(ConversionsInfo&& other) noexcept;
+  ConversionsInfo& operator=(ConversionsInfo&& other) noexcept;
 
   ~ConversionsInfo();
 

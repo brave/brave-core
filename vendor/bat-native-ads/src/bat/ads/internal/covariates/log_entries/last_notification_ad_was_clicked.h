@@ -20,6 +20,11 @@ class LastNotificationAdWasClicked final : public CovariateLogEntryInterface {
   LastNotificationAdWasClicked& operator=(const LastNotificationAdWasClicked&) =
       delete;
 
+  LastNotificationAdWasClicked(LastNotificationAdWasClicked&& other) noexcept =
+      delete;
+  LastNotificationAdWasClicked& operator=(
+      LastNotificationAdWasClicked&& other) noexcept = delete;
+
   ~LastNotificationAdWasClicked() override;
 
   // CovariateLogEntryInterface:

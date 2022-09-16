@@ -27,6 +27,9 @@ struct PurchaseIntentInfo final {
   PurchaseIntentInfo(const PurchaseIntentInfo& info) = delete;
   PurchaseIntentInfo& operator=(const PurchaseIntentInfo& info) = delete;
 
+  PurchaseIntentInfo(PurchaseIntentInfo&& other) noexcept = delete;
+  PurchaseIntentInfo& operator=(PurchaseIntentInfo&& other) noexcept = delete;
+
   ~PurchaseIntentInfo();
 
   static std::unique_ptr<PurchaseIntentInfo> CreateFromValue(

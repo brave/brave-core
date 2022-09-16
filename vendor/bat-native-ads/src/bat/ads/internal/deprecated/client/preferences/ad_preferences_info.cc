@@ -21,6 +21,12 @@ AdPreferencesInfo::AdPreferencesInfo(const AdPreferencesInfo& info) = default;
 AdPreferencesInfo& AdPreferencesInfo::operator=(const AdPreferencesInfo& info) =
     default;
 
+AdPreferencesInfo::AdPreferencesInfo(AdPreferencesInfo&& other) noexcept =
+    default;
+
+AdPreferencesInfo& AdPreferencesInfo::operator=(
+    AdPreferencesInfo&& other) noexcept = default;
+
 AdPreferencesInfo::~AdPreferencesInfo() = default;
 
 base::Value::Dict AdPreferencesInfo::ToValue() const {

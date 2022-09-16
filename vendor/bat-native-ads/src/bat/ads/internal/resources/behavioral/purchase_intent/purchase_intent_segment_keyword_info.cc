@@ -20,6 +20,12 @@ PurchaseIntentSegmentKeywordInfo::PurchaseIntentSegmentKeywordInfo(
 PurchaseIntentSegmentKeywordInfo& PurchaseIntentSegmentKeywordInfo::operator=(
     const PurchaseIntentSegmentKeywordInfo& info) = default;
 
+PurchaseIntentSegmentKeywordInfo::PurchaseIntentSegmentKeywordInfo(
+    PurchaseIntentSegmentKeywordInfo&& other) noexcept = default;
+
+PurchaseIntentSegmentKeywordInfo& PurchaseIntentSegmentKeywordInfo::operator=(
+    PurchaseIntentSegmentKeywordInfo&& other) noexcept = default;
+
 PurchaseIntentSegmentKeywordInfo::~PurchaseIntentSegmentKeywordInfo() = default;
 
 }  // namespace ads::targeting

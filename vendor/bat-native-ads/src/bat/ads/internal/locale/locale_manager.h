@@ -20,6 +20,9 @@ class LocaleManager final {
   LocaleManager(const LocaleManager&) = delete;
   LocaleManager& operator=(const LocaleManager&) = delete;
 
+  LocaleManager(LocaleManager&& other) noexcept = delete;
+  LocaleManager& operator=(LocaleManager&& other) noexcept = delete;
+
   ~LocaleManager();
 
   static LocaleManager* GetInstance();

@@ -23,6 +23,10 @@ class TransferredExclusionRule final
   TransferredExclusionRule(const TransferredExclusionRule&) = delete;
   TransferredExclusionRule& operator=(const TransferredExclusionRule&) = delete;
 
+  TransferredExclusionRule(TransferredExclusionRule&& other) noexcept = delete;
+  TransferredExclusionRule& operator=(
+      TransferredExclusionRule&& other) noexcept = delete;
+
   ~TransferredExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;

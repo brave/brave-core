@@ -17,6 +17,9 @@ class Data {
   Data(const Data&) = delete;
   Data& operator=(const Data&) = delete;
 
+  Data(Data&& other) noexcept = delete;
+  Data& operator=(Data&& other) noexcept = delete;
+
   virtual ~Data();
 
   DataType GetType() const;

@@ -13,7 +13,13 @@ UnblindedTokenInfo::UnblindedTokenInfo(const UnblindedTokenInfo& info) =
     default;
 
 UnblindedTokenInfo& UnblindedTokenInfo::operator=(
-    const UnblindedTokenInfo& other) = default;
+    const UnblindedTokenInfo& info) = default;
+
+UnblindedTokenInfo::UnblindedTokenInfo(UnblindedTokenInfo&& other) noexcept =
+    default;
+
+UnblindedTokenInfo& UnblindedTokenInfo::operator=(
+    UnblindedTokenInfo&& other) noexcept = default;
 
 UnblindedTokenInfo::~UnblindedTokenInfo() = default;
 

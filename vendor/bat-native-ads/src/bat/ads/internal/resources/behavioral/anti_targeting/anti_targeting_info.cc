@@ -21,6 +21,12 @@ AntiTargetingInfo::AntiTargetingInfo(const AntiTargetingInfo& info) = default;
 AntiTargetingInfo& AntiTargetingInfo::operator=(const AntiTargetingInfo& info) =
     default;
 
+AntiTargetingInfo::AntiTargetingInfo(AntiTargetingInfo&& other) noexcept =
+    default;
+
+AntiTargetingInfo& AntiTargetingInfo::operator=(
+    AntiTargetingInfo&& other) noexcept = default;
+
 AntiTargetingInfo::~AntiTargetingInfo() = default;
 
 // static

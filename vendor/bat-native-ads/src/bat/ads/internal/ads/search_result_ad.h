@@ -31,6 +31,9 @@ class SearchResultAd final : public search_result_ads::EventHandlerObserver {
   SearchResultAd(const SearchResultAd&) = delete;
   SearchResultAd& operator=(const SearchResultAd&) = delete;
 
+  SearchResultAd(SearchResultAd&& other) noexcept = delete;
+  SearchResultAd& operator=(SearchResultAd&& other) noexcept = delete;
+
   ~SearchResultAd() override;
 
   void TriggerEvent(mojom::SearchResultAdInfoPtr ad_mojom,

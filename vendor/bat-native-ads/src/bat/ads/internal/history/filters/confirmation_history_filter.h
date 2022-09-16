@@ -19,6 +19,11 @@ class ConfirmationHistoryFilter final : public HistoryFilterInterface {
   ConfirmationHistoryFilter& operator=(const ConfirmationHistoryFilter&) =
       delete;
 
+  ConfirmationHistoryFilter(ConfirmationHistoryFilter&& other) noexcept =
+      delete;
+  ConfirmationHistoryFilter& operator=(
+      ConfirmationHistoryFilter&& other) noexcept = delete;
+
   ~ConfirmationHistoryFilter() override;
 
   HistoryItemList Apply(const HistoryItemList& history_items) const override;

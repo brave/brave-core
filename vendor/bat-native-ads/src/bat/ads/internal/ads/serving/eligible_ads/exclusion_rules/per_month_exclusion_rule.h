@@ -23,6 +23,10 @@ class PerMonthExclusionRule final
   PerMonthExclusionRule(const PerMonthExclusionRule&) = delete;
   PerMonthExclusionRule& operator=(const PerMonthExclusionRule&) = delete;
 
+  PerMonthExclusionRule(PerMonthExclusionRule&& other) noexcept = delete;
+  PerMonthExclusionRule& operator=(PerMonthExclusionRule&& other) noexcept =
+      delete;
+
   ~PerMonthExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;

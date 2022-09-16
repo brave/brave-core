@@ -38,9 +38,14 @@ TokenPreimage::TokenPreimage(
     const challenge_bypass_ristretto::TokenPreimage& token_preimage)
     : token_preimage_(token_preimage) {}
 
-TokenPreimage::TokenPreimage(const TokenPreimage& other) = default;
+TokenPreimage::TokenPreimage(const TokenPreimage& info) = default;
 
-TokenPreimage& TokenPreimage::operator=(const TokenPreimage& other) = default;
+TokenPreimage& TokenPreimage::operator=(const TokenPreimage& info) = default;
+
+TokenPreimage::TokenPreimage(TokenPreimage&& other) noexcept = default;
+
+TokenPreimage& TokenPreimage::operator=(TokenPreimage&& other) noexcept =
+    default;
 
 TokenPreimage::~TokenPreimage() = default;
 

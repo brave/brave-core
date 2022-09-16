@@ -22,6 +22,11 @@ class CatalogLastUpdatedDiagnosticEntry final
   CatalogLastUpdatedDiagnosticEntry& operator=(
       const CatalogLastUpdatedDiagnosticEntry&) = delete;
 
+  CatalogLastUpdatedDiagnosticEntry(
+      CatalogLastUpdatedDiagnosticEntry&& other) noexcept = delete;
+  CatalogLastUpdatedDiagnosticEntry& operator=(
+      CatalogLastUpdatedDiagnosticEntry&& other) noexcept = delete;
+
   ~CatalogLastUpdatedDiagnosticEntry() override;
 
   // DiagnosticEntryInterface:

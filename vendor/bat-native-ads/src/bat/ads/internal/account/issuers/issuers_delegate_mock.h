@@ -20,6 +20,9 @@ class IssuersDelegateMock : public IssuersDelegate {
   IssuersDelegateMock(const IssuersDelegateMock&) = delete;
   IssuersDelegateMock& operator=(const IssuersDelegateMock&) = delete;
 
+  IssuersDelegateMock(IssuersDelegateMock&& other) noexcept = delete;
+  IssuersDelegateMock& operator=(IssuersDelegateMock&& other) noexcept = delete;
+
   ~IssuersDelegateMock() override;
 
   MOCK_METHOD(void, OnDidFetchIssuers, (const IssuersInfo& issuers));

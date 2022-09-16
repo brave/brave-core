@@ -17,6 +17,9 @@ class FlagManager final {
   FlagManager(const FlagManager&) = delete;
   FlagManager& operator=(const FlagManager&) = delete;
 
+  FlagManager(FlagManager&& other) noexcept = delete;
+  FlagManager& operator=(FlagManager&& other) noexcept = delete;
+
   ~FlagManager();
 
   static FlagManager* GetInstance();

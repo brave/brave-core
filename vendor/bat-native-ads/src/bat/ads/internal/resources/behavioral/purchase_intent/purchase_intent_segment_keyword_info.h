@@ -22,6 +22,11 @@ struct PurchaseIntentSegmentKeywordInfo final {
   PurchaseIntentSegmentKeywordInfo& operator=(
       const PurchaseIntentSegmentKeywordInfo& info);
 
+  PurchaseIntentSegmentKeywordInfo(
+      PurchaseIntentSegmentKeywordInfo&& other) noexcept;
+  PurchaseIntentSegmentKeywordInfo& operator=(
+      PurchaseIntentSegmentKeywordInfo&& other) noexcept;
+
   ~PurchaseIntentSegmentKeywordInfo();
 
   SegmentList segments;

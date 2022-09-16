@@ -32,6 +32,9 @@ class ConversionQueue final : public TableInterface {
   ConversionQueue(const ConversionQueue&) = delete;
   ConversionQueue& operator=(const ConversionQueue&) = delete;
 
+  ConversionQueue(ConversionQueue&& other) noexcept = delete;
+  ConversionQueue& operator=(ConversionQueue&& other) noexcept = delete;
+
   ~ConversionQueue() override;
 
   void Save(const ConversionQueueItemList& conversion_queue_items,

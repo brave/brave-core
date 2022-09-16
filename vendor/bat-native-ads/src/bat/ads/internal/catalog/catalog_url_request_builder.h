@@ -20,6 +20,10 @@ class CatalogUrlRequestBuilder final : public UrlRequestBuilderInterface {
   CatalogUrlRequestBuilder(const CatalogUrlRequestBuilder&) = delete;
   CatalogUrlRequestBuilder& operator=(const CatalogUrlRequestBuilder&) = delete;
 
+  CatalogUrlRequestBuilder(CatalogUrlRequestBuilder&& other) noexcept = delete;
+  CatalogUrlRequestBuilder& operator=(
+      CatalogUrlRequestBuilder&& other) noexcept = delete;
+
   ~CatalogUrlRequestBuilder() override;
 
   mojom::UrlRequestInfoPtr Build() override;

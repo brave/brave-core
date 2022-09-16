@@ -16,8 +16,11 @@ class AnonymousServerHost final : public ServerHostInterface {
  public:
   AnonymousServerHost();
 
-  AnonymousServerHost(const AnonymousServerHost&) = delete;
-  AnonymousServerHost& operator=(const AnonymousServerHost&) = delete;
+  AnonymousServerHost(const AnonymousServerHost& info) = delete;
+  AnonymousServerHost& operator=(const AnonymousServerHost& info) = delete;
+
+  AnonymousServerHost(AnonymousServerHost&& other) noexcept = delete;
+  AnonymousServerHost& operator=(AnonymousServerHost&& other) noexcept = delete;
 
   ~AnonymousServerHost() override;
 

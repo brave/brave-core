@@ -19,6 +19,10 @@ class DeviceIdDiagnosticEntry final : public DiagnosticEntryInterface {
   DeviceIdDiagnosticEntry(const DeviceIdDiagnosticEntry&) = delete;
   DeviceIdDiagnosticEntry& operator=(const DeviceIdDiagnosticEntry&) = delete;
 
+  DeviceIdDiagnosticEntry(DeviceIdDiagnosticEntry&& other) noexcept = delete;
+  DeviceIdDiagnosticEntry& operator=(DeviceIdDiagnosticEntry&& other) noexcept =
+      delete;
+
   ~DeviceIdDiagnosticEntry() override;
 
   // DiagnosticEntryInterface:

@@ -22,6 +22,11 @@ class RefillUnblindedTokensDelegateMock : public RefillUnblindedTokensDelegate {
   RefillUnblindedTokensDelegateMock& operator=(
       const RefillUnblindedTokensDelegateMock&) = delete;
 
+  RefillUnblindedTokensDelegateMock(
+      RefillUnblindedTokensDelegateMock&& other) noexcept = delete;
+  RefillUnblindedTokensDelegateMock& operator=(
+      RefillUnblindedTokensDelegateMock&& other) noexcept = delete;
+
   ~RefillUnblindedTokensDelegateMock() override;
 
   MOCK_METHOD(void, OnDidRefillUnblindedTokens, ());

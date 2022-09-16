@@ -19,6 +19,11 @@ class ConversionsDescendingSort final : public ConversionsSortInterface {
   ConversionsDescendingSort& operator=(const ConversionsDescendingSort&) =
       delete;
 
+  ConversionsDescendingSort(ConversionsDescendingSort&& other) noexcept =
+      delete;
+  ConversionsDescendingSort& operator=(
+      ConversionsDescendingSort&& other) noexcept = delete;
+
   ~ConversionsDescendingSort() override;
 
   ConversionList Apply(const ConversionList& conversions) const override;

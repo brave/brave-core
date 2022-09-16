@@ -23,6 +23,10 @@ class ConversionExclusionRule final
   ConversionExclusionRule(const ConversionExclusionRule&) = delete;
   ConversionExclusionRule& operator=(const ConversionExclusionRule&) = delete;
 
+  ConversionExclusionRule(ConversionExclusionRule&& other) noexcept = delete;
+  ConversionExclusionRule& operator=(ConversionExclusionRule&& other) noexcept =
+      delete;
+
   ~ConversionExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;

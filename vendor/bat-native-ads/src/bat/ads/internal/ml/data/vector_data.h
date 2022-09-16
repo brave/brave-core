@@ -19,8 +19,6 @@ namespace ads::ml {
 class VectorData final : public Data {
  public:
   VectorData();
-  VectorData(const VectorData& vector_data);
-  VectorData(VectorData&& vector_data) noexcept;
 
   // Make a "dense" DataVector with points 0..n-1 (n = data.size()):
   // ({0, data[0]}, {1, data[0]}, .., {n-1, data[n-1]}}
@@ -32,7 +30,12 @@ class VectorData final : public Data {
 
   // Explicit copy assignment && move operators is required because the class
   // inherits const member type_ that cannot be copied by default
+  VectorData(const VectorData& vector_data);
   VectorData& operator=(const VectorData& vector_data);
+
+  // Explicit copy assignment && move operators is required because the class
+  // inherits const member type_ that cannot be copied by default
+  VectorData(VectorData&& vector_data) noexcept;
   VectorData& operator=(VectorData&& vector_data) noexcept;
 
   // Mathematical vector operations

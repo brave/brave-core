@@ -19,6 +19,9 @@ struct FilteredAdvertiserInfo final {
   FilteredAdvertiserInfo(const FilteredAdvertiserInfo& info);
   FilteredAdvertiserInfo& operator=(const FilteredAdvertiserInfo& info);
 
+  FilteredAdvertiserInfo(FilteredAdvertiserInfo&& other) noexcept;
+  FilteredAdvertiserInfo& operator=(FilteredAdvertiserInfo&& other) noexcept;
+
   ~FilteredAdvertiserInfo();
 
   base::Value::Dict ToValue() const;

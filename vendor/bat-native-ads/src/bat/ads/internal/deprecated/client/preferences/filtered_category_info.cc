@@ -15,6 +15,12 @@ FilteredCategoryInfo::FilteredCategoryInfo(const FilteredCategoryInfo& info) =
 FilteredCategoryInfo& FilteredCategoryInfo::operator=(
     const FilteredCategoryInfo& info) = default;
 
+FilteredCategoryInfo::FilteredCategoryInfo(
+    FilteredCategoryInfo&& other) noexcept = default;
+
+FilteredCategoryInfo& FilteredCategoryInfo::operator=(
+    FilteredCategoryInfo&& other) noexcept = default;
+
 FilteredCategoryInfo::~FilteredCategoryInfo() = default;
 
 base::Value::Dict FilteredCategoryInfo::ToValue() const {

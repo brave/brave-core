@@ -21,6 +21,9 @@ struct AdEventInfo final {
   AdEventInfo(const AdEventInfo& info);
   AdEventInfo& operator=(const AdEventInfo& info);
 
+  AdEventInfo(AdEventInfo&& other) noexcept;
+  AdEventInfo& operator=(AdEventInfo&& other) noexcept;
+
   ~AdEventInfo();
 
   AdType type = AdType::kUndefined;

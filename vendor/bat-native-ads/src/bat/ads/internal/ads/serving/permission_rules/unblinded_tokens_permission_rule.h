@@ -20,6 +20,11 @@ class UnblindedTokensPermissionRule final : public PermissionRuleInterface {
   UnblindedTokensPermissionRule& operator=(
       const UnblindedTokensPermissionRule&) = delete;
 
+  UnblindedTokensPermissionRule(
+      UnblindedTokensPermissionRule&& other) noexcept = delete;
+  UnblindedTokensPermissionRule& operator=(
+      UnblindedTokensPermissionRule&& other) noexcept = delete;
+
   ~UnblindedTokensPermissionRule() override;
 
   bool ShouldAllow() override;
