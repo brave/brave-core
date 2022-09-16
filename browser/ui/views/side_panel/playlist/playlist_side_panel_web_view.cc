@@ -7,7 +7,6 @@
 
 #include <memory>
 
-#include "brave/browser/ui/webui/playlist_ui.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -17,7 +16,6 @@ PlaylistSidePanelWebView::PlaylistSidePanelWebView(
     Browser* browser,
     base::RepeatingClosure close_cb)
     : SidePanelWebUIViewT(
-          browser,
           /* on_show_cb = */ base::RepeatingClosure(),
           close_cb,
           std::make_unique<BubbleContentsWrapperT<playlist::PlaylistUI>>(

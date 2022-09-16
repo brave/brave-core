@@ -12,6 +12,7 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_registry.h"
 #include "chrome/grit/generated_resources.h"
+#include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
 #include "ui/views/vector_icons.h"
@@ -25,7 +26,8 @@ void PlaylistSidePanelCoordinator::CreateAndRegisterEntry(
     SidePanelRegistry* global_registry) {
   global_registry->Register(std::make_unique<SidePanelEntry>(
       SidePanelEntry::Id::kPlaylist,
-      l10n_util::GetStringUTF16(IDS_READ_LATER_TITLE), ui::ImageModel(),
+      l10n_util::GetStringUTF16(IDS_SIDEBAR_PLAYLIST_ITEM_TITLE),
+      ui::ImageModel(),
       base::BindRepeating(&PlaylistSidePanelCoordinator::CreateWebView,
                           base::Unretained(this))));
 }

@@ -6,11 +6,11 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_PLAYLIST_PLAYLIST_SIDE_PANEL_WEB_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_PLAYLIST_PLAYLIST_SIDE_PANEL_WEB_VIEW_H_
 
+class Browser;
+
 #include "base/callback_forward.h"
-#include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/webui/playlist_ui.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
-#include "ui/views/controls/webview/webview.h"
 
 class PlaylistSidePanelWebView
     : public SidePanelWebUIViewT<playlist::PlaylistUI> {
@@ -19,9 +19,6 @@ class PlaylistSidePanelWebView
   PlaylistSidePanelWebView(const PlaylistSidePanelWebView&) = delete;
   PlaylistSidePanelWebView& operator=(const PlaylistSidePanelWebView&) = delete;
   ~PlaylistSidePanelWebView() override;
-
- private:
-  base::WeakPtrFactory<PlaylistSidePanelWebView> weak_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_PLAYLIST_PLAYLIST_SIDE_PANEL_WEB_VIEW_H_

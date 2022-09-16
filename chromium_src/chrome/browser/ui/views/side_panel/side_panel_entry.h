@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_SIDE_PANEL_SIDE_PANEL_ENTRY_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_SIDE_PANEL_SIDE_PANEL_ENTRY_H_
 
-#define kAssistant kAssistant, kPlaylist,
+#define kAssistant kAssistant, kPlaylist
 
 #include "src/chrome/browser/ui/views/side_panel/side_panel_entry.h"
 
