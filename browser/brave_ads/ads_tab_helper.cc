@@ -210,14 +210,14 @@ void AdsTabHelper::OnVisibilityChanged(content::Visibility visibility) {
 
 void AdsTabHelper::WebContentsDestroyed() {
   if (search_result_ad_service_) {
-    search_result_ad_service_->OnTabClosed(tab_id_);
+    search_result_ad_service_->OnDidCloseTab(tab_id_);
   }
 
   if (!ads_service_) {
     return;
   }
 
-  ads_service_->OnTabClosed(tab_id_);
+  ads_service_->OnDidCloseTab(tab_id_);
   ads_service_ = nullptr;
 }
 

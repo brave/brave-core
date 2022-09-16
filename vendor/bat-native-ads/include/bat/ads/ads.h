@@ -134,7 +134,7 @@ class ADS_EXPORT Ads {
                               bool is_incognito) = 0;
 
   // Called when a browser tab with the specified |tab_id| was closed.
-  virtual void OnTabClosed(int32_t tab_id) = 0;
+  virtual void OnDidCloseTab(int32_t tab_id) = 0;
 
   // Called when the user's wallet has been updated.
   virtual void OnWalletUpdated(const std::string& payment_id,

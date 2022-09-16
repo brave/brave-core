@@ -131,7 +131,7 @@ interface BatAds {
   OnTabDidStartPlayingMedia(int32 tab_id);
   OnTabDidStopPlayingMedia(int32 tab_id);
   OnTabDidChange(int32 tab_id, array<url.mojom.Url> redirect_chain, bool is_active, bool is_browser_active, bool is_incognito);
-  OnTabClosed(int32 tab_id);
+  OnDidCloseTab(int32 tab_id);
 
   // Account
   OnWalletUpdated(string payment_id, string seed);

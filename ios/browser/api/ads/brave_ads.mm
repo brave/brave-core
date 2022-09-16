@@ -588,7 +588,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnTabClosed((int32_t)tabId);
+  ads->OnDidCloseTab((int32_t)tabId);
 }
 
 - (void)reportNotificationAdEvent:(NSString*)placementId

@@ -90,13 +90,13 @@ void Transfer::OnTransferAd(const int32_t tab_id,
 
   transferring_ad_tab_id_ = 0;
 
-  if (!TabManager::GetInstance()->IsTabVisible(tab_id)) {
+  if (!TabManager::GetInstance()->IsVisible(tab_id)) {
     FailedToTransferAd(ad);
     return;
   }
 
   const absl::optional<TabInfo> tab =
-      TabManager::GetInstance()->GetTabForId(tab_id);
+      TabManager::GetInstance()->GetForId(tab_id);
   if (!tab) {
     FailedToTransferAd(ad);
     return;

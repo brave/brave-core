@@ -33,8 +33,7 @@ const std::string& MediaPermissionRule::GetLastMessage() const {
 }
 
 bool MediaPermissionRule::DoesRespectCap() {
-  const absl::optional<TabInfo> tab =
-      TabManager::GetInstance()->GetVisibleTab();
+  const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetVisible();
   if (!tab) {
     return true;
   }

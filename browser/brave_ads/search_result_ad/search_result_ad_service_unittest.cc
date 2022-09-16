@@ -211,7 +211,7 @@ TEST_F(SearchResultAdServiceTest, TryTriggerAdBeforeTabDeleted) {
           base::Unretained(&run_loop)));
 
   // Simulate tab deletion before search result JSON-ln loading.
-  search_result_ad_service_->OnTabClosed(session_id);
+  search_result_ad_service_->OnDidCloseTab(session_id);
 
   run_loop.Run();
 }
@@ -223,7 +223,7 @@ TEST_F(SearchResultAdServiceTest, TryTriggerAdAfterTabDeleted) {
   // Simulate navigation was finished.
   search_result_ad_service_->OnDidFinishNavigation(session_id);
   // Simulate tab deletion before search result JSON-ln loading.
-  search_result_ad_service_->OnTabClosed(session_id);
+  search_result_ad_service_->OnDidCloseTab(session_id);
 
   base::RunLoop run_loop;
   search_result_ad_service_->MaybeTriggerSearchResultAdViewedEvent(

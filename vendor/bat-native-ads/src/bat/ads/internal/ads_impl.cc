@@ -252,9 +252,9 @@ void AdsImpl::OnTabDidChange(const int32_t tab_id,
                                          is_incognito);
 }
 
-void AdsImpl::OnTabClosed(const int32_t tab_id) {
+void AdsImpl::OnDidCloseTab(const int32_t tab_id) {
   if (IsInitialized()) {
-    TabManager::GetInstance()->OnTabClosed(tab_id);
+    TabManager::GetInstance()->OnDidClose(tab_id);
   }
 }
 

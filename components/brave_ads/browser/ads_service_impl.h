@@ -272,7 +272,7 @@ class AdsServiceImpl : public AdsService,
                       const std::vector<GURL>& redirect_chain,
                       bool is_active,
                       bool is_browser_active) override;
-  void OnTabClosed(const SessionID& tab_id) override;
+  void OnDidCloseTab(const SessionID& tab_id) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 

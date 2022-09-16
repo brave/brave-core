@@ -34,7 +34,7 @@ class TabManager final {
   void AddObserver(TabManagerObserver* observer);
   void RemoveObserver(TabManagerObserver* observer);
 
-  bool IsTabVisible(int32_t id) const;
+  bool IsVisible(int32_t id) const;
 
   void OnDidChange(int32_t id,
                    const std::vector<GURL>& redirect_chain,
@@ -48,22 +48,22 @@ class TabManager final {
                               const std::vector<GURL>& redirect_chain,
                               const std::string& content);
 
-  void OnTabClosed(int32_t id);
+  void OnDidClose(int32_t id);
 
   void OnDidStartPlayingMedia(int32_t id);
   void OnDidStopPlayingMedia(int32_t id);
 
   bool IsPlayingMedia(int32_t id) const;
 
-  absl::optional<TabInfo> GetVisibleTab() const;
-  absl::optional<TabInfo> GetLastVisibleTab() const;
+  absl::optional<TabInfo> GetVisible() const;
+  absl::optional<TabInfo> GetLastVisible() const;
 
-  absl::optional<TabInfo> GetTabForId(int32_t id) const;
+  absl::optional<TabInfo> GetForId(int32_t id) const;
 
  private:
-  void AddTab(const TabInfo& tab);
-  void UpdateTab(const TabInfo& tab);
-  void RemoveTab(int32_t id);
+  void Add(const TabInfo& tab);
+  void Update(const TabInfo& tab);
+  void Remove(int32_t id);
 
   void NotifyTabDidChangeFocus(int32_t id) const;
   void NotifyTabDidChange(const TabInfo& tab) const;

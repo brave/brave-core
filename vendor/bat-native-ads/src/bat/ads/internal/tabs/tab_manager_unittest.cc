@@ -80,7 +80,7 @@ TEST_F(BatAdsTabManagerTest, HasInstance) {
   EXPECT_TRUE(has_instance);
 }
 
-TEST_F(BatAdsTabManagerTest, IsTabVisible) {
+TEST_F(BatAdsTabManagerTest, IsVisible) {
   // Arrange
 
   // Act
@@ -90,7 +90,7 @@ TEST_F(BatAdsTabManagerTest, IsTabVisible) {
       /*is_incognito*/ false);
 
   // Assert
-  EXPECT_TRUE(TabManager::GetInstance()->IsTabVisible(1));
+  EXPECT_TRUE(TabManager::GetInstance()->IsVisible(/*id*/ 1));
 }
 
 TEST_F(BatAdsTabManagerTest, IsTabOccluded) {
@@ -102,7 +102,7 @@ TEST_F(BatAdsTabManagerTest, IsTabOccluded) {
       /*is_visible*/ false, /*is_incognito*/ false);
 
   // Assert
-  EXPECT_FALSE(TabManager::GetInstance()->IsTabVisible(1));
+  EXPECT_FALSE(TabManager::GetInstance()->IsVisible(/*id*/ 1));
 }
 
 TEST_F(BatAdsTabManagerTest, OpenNewTab) {
@@ -115,7 +115,7 @@ TEST_F(BatAdsTabManagerTest, OpenNewTab) {
       /*is_incognito*/ false);
 
   // Assert
-  absl::optional<TabInfo> tab = TabManager::GetInstance()->GetTabForId(1);
+  const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetForId(1);
 
   TabInfo expected_tab;
   expected_tab.id = 1;
@@ -163,7 +163,7 @@ TEST_F(BatAdsTabManagerTest, DoNotUpdateIncognitoTab) {
       /*is_incognito*/ true);
 
   // Assert
-  EXPECT_FALSE(TabManager::GetInstance()->GetTabForId(1));
+  EXPECT_FALSE(TabManager::GetInstance()->GetForId(1));
 
   EXPECT_FALSE(tab_did_change_focus_);
   EXPECT_FALSE(tab_did_change_);
@@ -186,7 +186,7 @@ TEST_F(BatAdsTabManagerTest, DoNotUpdateExistingOccludedTabWithSameUrl) {
       /*is_visible*/ false, /*is_incognito*/ false);
 
   // Assert
-  const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetTabForId(1);
+  const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetForId(1);
 
   TabInfo expected_tab;
   expected_tab.id = 1;
@@ -215,7 +215,7 @@ TEST_F(BatAdsTabManagerTest, UpdateExistingOccludedTabWithDifferentUrl) {
       /*is_visible*/ false, /*is_incognito*/ false);
 
   // Assert
-  const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetTabForId(1);
+  const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetForId(1);
 
   TabInfo expected_tab;
   expected_tab.id = 1;
@@ -246,7 +246,7 @@ TEST_F(BatAdsTabManagerTest, DoNotUpdateExistingTabWithSameUrl) {
       /*is_incognito*/ false);
 
   // Assert
-  const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetTabForId(1);
+  const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetForId(1);
 
   TabInfo expected_tab;
   expected_tab.id = 1;
@@ -276,7 +276,7 @@ TEST_F(BatAdsTabManagerTest, UpdatedExistingTabWithDifferentUrl) {
       /*is_visible*/ true, /*is_incognito*/ false);
 
   // Assert
-  const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetTabForId(1);
+  const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetForId(1);
 
   TabInfo expected_tab;
   expected_tab.id = 1;
@@ -301,10 +301,10 @@ TEST_F(BatAdsTabManagerTest, CloseTab) {
   ResetObserver();
 
   // Act
-  TabManager::GetInstance()->OnTabClosed(1);
+  TabManager::GetInstance()->OnDidClose(/*id*/ 1);
 
   // Assert
-  EXPECT_FALSE(TabManager::GetInstance()->GetTabForId(1));
+  EXPECT_FALSE(TabManager::GetInstance()->GetForId(1));
 
   EXPECT_FALSE(tab_did_change_focus_);
   EXPECT_FALSE(tab_did_change_);
@@ -382,7 +382,7 @@ TEST_F(BatAdsTabManagerTest, StopPlayingMedia) {
   EXPECT_TRUE(tab_did_stop_playing_media_);
 }
 
-TEST_F(BatAdsTabManagerTest, GetVisibleTab) {
+TEST_F(BatAdsTabManagerTest, GetVisible) {
   // Arrange
   TabManager::GetInstance()->OnDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://foobar.com")},
@@ -395,8 +395,7 @@ TEST_F(BatAdsTabManagerTest, GetVisibleTab) {
   ResetObserver();
 
   // Act
-  const absl::optional<TabInfo> tab =
-      TabManager::GetInstance()->GetVisibleTab();
+  const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetVisible();
 
   // Assert
   TabInfo expected_tab;
@@ -407,7 +406,7 @@ TEST_F(BatAdsTabManagerTest, GetVisibleTab) {
   EXPECT_EQ(expected_tab, *tab);
 }
 
-TEST_F(BatAdsTabManagerTest, GetLastVisibleTab) {
+TEST_F(BatAdsTabManagerTest, GetLastVisible) {
   // Arrange
   TabManager::GetInstance()->OnDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://foobar.com")},
@@ -421,7 +420,7 @@ TEST_F(BatAdsTabManagerTest, GetLastVisibleTab) {
 
   // Act
   const absl::optional<TabInfo> tab =
-      TabManager::GetInstance()->GetLastVisibleTab();
+      TabManager::GetInstance()->GetLastVisible();
 
   // Assert
   TabInfo expected_tab;
@@ -432,7 +431,7 @@ TEST_F(BatAdsTabManagerTest, GetLastVisibleTab) {
   EXPECT_EQ(expected_tab, *tab);
 }
 
-TEST_F(BatAdsTabManagerTest, GetTabForId) {
+TEST_F(BatAdsTabManagerTest, GetForId) {
   // Arrange
   TabManager::GetInstance()->OnDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
@@ -441,7 +440,7 @@ TEST_F(BatAdsTabManagerTest, GetTabForId) {
   ResetObserver();
 
   // Act
-  const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetTabForId(1);
+  const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetForId(1);
 
   // Assert
   TabInfo expected_tab;
@@ -463,7 +462,7 @@ TEST_F(BatAdsTabManagerTest, DoNotGetTabForMissingId) {
   // Act
 
   // Assert
-  EXPECT_FALSE(TabManager::GetInstance()->GetTabForId(2));
+  EXPECT_FALSE(TabManager::GetInstance()->GetForId(2));
 }
 
 }  // namespace ads

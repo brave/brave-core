@@ -130,7 +130,7 @@ class AdsImpl final : public Ads,
                       bool is_active,
                       bool is_browser_active,
                       bool is_incognito) override;
-  void OnTabClosed(int32_t tab_id) override;
+  void OnDidCloseTab(int32_t tab_id) override;
 
   void OnWalletUpdated(const std::string& id, const std::string& seed) override;
 

@@ -70,13 +70,12 @@ class BatAdsImpl :
 
   void OnTabDidStartPlayingMedia(const int32_t tab_id) override;
   void OnTabDidStopPlayingMedia(const int32_t tab_id) override;
-
   void OnTabDidChange(const int32_t tab_id,
                       const std::vector<GURL>& redirect_chain,
                       const bool is_active,
                       const bool is_browser_active,
                       const bool is_incognito) override;
-  void OnTabClosed(const int32_t tab_id) override;
+  void OnDidCloseTab(const int32_t tab_id) override;
 
   void OnWalletUpdated(const std::string& payment_id,
                        const std::string& seed) override;

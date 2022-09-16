@@ -126,9 +126,8 @@ void BatAdsImpl::OnTabDidChange(const int32_t tab_id,
                        is_incognito);
 }
 
-void BatAdsImpl::OnTabClosed(
-    const int32_t tab_id) {
-  ads_->OnTabClosed(tab_id);
+void BatAdsImpl::OnDidCloseTab(const int32_t tab_id) {
+  ads_->OnDidCloseTab(tab_id);
 }
 
 void BatAdsImpl::MaybeGetNotificationAd(

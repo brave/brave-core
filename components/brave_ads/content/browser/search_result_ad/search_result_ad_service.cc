@@ -81,7 +81,7 @@ void SearchResultAdService::OnDidFinishNavigation(SessionID tab_id) {
       std::vector<AdViewedEventCallbackInfo>();
 }
 
-void SearchResultAdService::OnTabClosed(SessionID tab_id) {
+void SearchResultAdService::OnDidCloseTab(SessionID tab_id) {
   // Clear the tab state in memory.
   ResetState(tab_id);
 }

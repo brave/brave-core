@@ -1163,12 +1163,12 @@ void AdsServiceImpl::OnTabDidChange(const SessionID& tab_id,
                            is_browser_active, is_incognito);
 }
 
-void AdsServiceImpl::OnTabClosed(const SessionID& tab_id) {
+void AdsServiceImpl::OnDidCloseTab(const SessionID& tab_id) {
   if (!IsBatAdsBound()) {
     return;
   }
 
-  bat_ads_->OnTabClosed(tab_id.id());
+  bat_ads_->OnDidCloseTab(tab_id.id());
 }
 
 void AdsServiceImpl::GetStatementOfAccounts(

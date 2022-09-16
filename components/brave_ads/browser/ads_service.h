@@ -164,7 +164,7 @@ class AdsService : public KeyedService {
                               bool is_browser_active) = 0;
 
   // Called when a browser tab with the specified |tab_id| was closed.
-  virtual void OnTabClosed(const SessionID& tab_id) = 0;
+  virtual void OnDidCloseTab(const SessionID& tab_id) = 0;
 
   // Called to get the statement of accounts. The callback takes five arguments
   // - |bool| is set to |true| if successful otherwise |false|. |double|
