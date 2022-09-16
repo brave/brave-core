@@ -176,7 +176,6 @@ int FarbledPointerScreenCoordinate(const DOMWindow* view,
 
 BraveSessionCache::BraveSessionCache(ExecutionContext& context)
     : Supplement<ExecutionContext>(context) {
-  default_language_ = blink::DefaultLanguage().GetString().Left(2);
   farbling_enabled_ = false;
   scoped_refptr<const blink::SecurityOrigin> origin;
   if (auto* window = blink::DynamicTo<blink::LocalDOMWindow>(context)) {
@@ -369,7 +368,8 @@ bool BraveSessionCache::AllowFontFamily(
       break;
     case BraveFarblingLevel::BALANCED:
     case BraveFarblingLevel::MAXIMUM: {
-      if (AllowFontByFamilyName(family_name, default_language_))
+      if (AllowFontByFamilyName(family_name,
+                                blink::DefaultLanguage().GetString().Left(2)))
         return true;
       FarblingPRNG prng = MakePseudoRandomGenerator();
       prng.discard(family_name.Impl()->GetHash() % 16);
