@@ -8,8 +8,8 @@ import * as React from 'react'
 import {
   NftUiCommand,
   sendMessageToNftUiFrame,
-  UpdateNftImageUrl,
-  UpdateLoadingMessage
+  UpdateLoadingMessage,
+  UpdateNFtMetadataMessage
 } from '../../../nft/nft-ui-messages'
 
 import {
@@ -35,10 +35,13 @@ export const NftIcon = (props: Props) => {
   }
 
   React.useEffect(() => {
-    if (loaded && icon && nftImageIframeRef?.current) {
-      const command: UpdateNftImageUrl = {
-        command: NftUiCommand.UpdateNFTImageUrl,
-        payload: icon
+    if (loaded && icon !== undefined && nftImageIframeRef?.current) {
+      const command: UpdateNFtMetadataMessage = {
+        command: NftUiCommand.UpdateNFTMetadata,
+        payload: {
+          displayMode: 'icon',
+          icon
+        }
       }
       sendMessageToNftUiFrame(nftImageIframeRef.current.contentWindow, command)
       sendMessageToNftUiFrame(nftImageIframeRef.current.contentWindow, loadingCommand)

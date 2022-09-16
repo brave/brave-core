@@ -765,5 +765,6 @@ provideStrings({
 
   // Add asset tabs
   braveWalletAddAssetTokenTabTitle: 'Token',
-  braveWalletAddAssetNftTabTitle: 'NFT'
+  braveWalletAddAssetNftTabTitle: 'NFT',
+  braveWalletNftFetchingError: 'Something went wrong when fetching NFT details. Please try again later.'
 })

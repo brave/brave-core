@@ -10,3 +10,9 @@ html, body {
     margin: 0;
     overflow: hidden;
 }
+
+model-viewer {
+    width: 100%;
+    height: 100%;
+    --progress-bar-color: #E9E9F4;
+}

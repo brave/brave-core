@@ -237,10 +237,12 @@ export const FilterTokenRow = styled.div`
 
 export const NftDetails = styled.iframe<{ visible?: boolean }>`
   width: 100%;
-  min-height: ${p => p.visible ? '490px' : '0px'};
+  min-height: ${p => p.visible ? '440px' : '0px'};
   height: ${p => p.visible ? 'auto' : '0px'};
   border: none;
   visibility: ${p => p.visible ? 'visible' : 'hidden'};
+  margin-bottom: 50px;
+  margin-top: 16px;
 `
 
 export const BridgeToAuroraButton = styled(WalletButton)`

@@ -42,7 +42,8 @@ UntrustedNftUI::UntrustedNftUI(content::WebUI* web_ui)
       IDR_BRAVE_WALLET_NFT_DISPLAY_HTML);
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
-      std::string("script-src 'self' chrome-untrusted://resources;"));
+      std::string("script-src 'self' chrome-untrusted://resources "
+                  "chrome-untrusted://brave-resources https://unpkg.com;"));
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
       std::string("style-src 'self' 'unsafe-inline';"));
@@ -61,7 +62,19 @@ UntrustedNftUI::UntrustedNftUI(content::WebUI* web_ui)
                               kUntrustedMarketURL);
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
-      std::string("img-src 'self' https: data:;"));
+      std::string("img-src 'self' https: data: blob:;"));
+  untrusted_source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::MediaSrc,
+      std::string("media-src 'self' https:;"));
+  untrusted_source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ChildSrc,
+      std::string("child-src 'self' https:;"));
+  untrusted_source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ConnectSrc,
+      std::string("connect-src 'self' https: blob:;"));
+  untrusted_source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ObjectSrc,
+      std::string("object-src 'self' blob:;"));
   auto* browser_context = web_ui->GetWebContents()->GetBrowserContext();
   content::WebUIDataSource::Add(browser_context, untrusted_source);
 }
