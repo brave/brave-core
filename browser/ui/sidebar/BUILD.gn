@@ -75,6 +75,7 @@ source_set("browser_tests") {
       "//brave/browser/ui/sidebar",
       "//brave/components/sidebar",
       "//chrome/browser",
+      "//chrome/browser/profiles:profile",
       "//chrome/browser/ui",
       "//chrome/test:test_support_ui",
       "//content/test:test_support",
