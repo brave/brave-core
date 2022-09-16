@@ -113,11 +113,11 @@ class ADS_EXPORT Ads {
 
   // Called when media starts playing on a browser tab for the specified
   // |tab_id|.
-  virtual void OnMediaPlaying(int32_t tab_id) = 0;
+  virtual void OnTabDidStartPlayingMedia(int32_t tab_id) = 0;
 
   // Called when media stops playing on a browser tab for the specified
   // |tab_id|.
-  virtual void OnMediaStopped(int32_t tab_id) = 0;
+  virtual void OnTabDidStopPlayingMedia(int32_t tab_id) = 0;
 
   // Called when a browser tab is updated with the specified |redirect_chain|
   // containing a list of redirect URLs that occurred on the way to the current

@@ -109,14 +109,12 @@ void BatAdsImpl::OnBrowserDidEnterBackground() {
   ads_->OnBrowserDidEnterBackground();
 }
 
-void BatAdsImpl::OnMediaPlaying(
-    const int32_t tab_id) {
-  ads_->OnMediaPlaying(tab_id);
+void BatAdsImpl::OnTabDidStartPlayingMedia(const int32_t tab_id) {
+  ads_->OnTabDidStartPlayingMedia(tab_id);
 }
 
-void BatAdsImpl::OnMediaStopped(
-    const int32_t tab_id) {
-  ads_->OnMediaStopped(tab_id);
+void BatAdsImpl::OnTabDidStopPlayingMedia(const int32_t tab_id) {
+  ads_->OnTabDidStopPlayingMedia(tab_id);
 }
 
 void BatAdsImpl::OnTabUpdated(const int32_t tab_id,

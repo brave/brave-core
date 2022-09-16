@@ -68,8 +68,8 @@ class BatAdsImpl :
   void OnBrowserDidEnterForeground() override;
   void OnBrowserDidEnterBackground() override;
 
-  void OnMediaPlaying(const int32_t tab_id) override;
-  void OnMediaStopped(const int32_t tab_id) override;
+  void OnTabDidStartPlayingMedia(const int32_t tab_id) override;
+  void OnTabDidStopPlayingMedia(const int32_t tab_id) override;
 
   void OnTabUpdated(const int32_t tab_id,
                     const std::vector<GURL>& redirect_chain,

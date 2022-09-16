@@ -122,8 +122,8 @@ class AdsImpl final : public Ads,
   void OnBrowserDidEnterForeground() override;
   void OnBrowserDidEnterBackground() override;
 
-  void OnMediaPlaying(int32_t tab_id) override;
-  void OnMediaStopped(int32_t tab_id) override;
+  void OnTabDidStartPlayingMedia(int32_t tab_id) override;
+  void OnTabDidStopPlayingMedia(int32_t tab_id) override;
 
   void OnTabUpdated(int32_t tab_id,
                     const std::vector<GURL>& redirect_chain,

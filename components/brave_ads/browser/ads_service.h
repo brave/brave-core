@@ -145,11 +145,11 @@ class AdsService : public KeyedService {
 
   // Called when media starts playing on a browser tab for the specified
   // |tab_id|.
-  virtual void OnMediaStart(const SessionID& tab_id) = 0;
+  virtual void OnTabDidStartPlayingMedia(const SessionID& tab_id) = 0;
 
   // Called when media stops playing on a browser tab for the specified
   // |tab_id|.
-  virtual void OnMediaStop(const SessionID& tab_id) = 0;
+  virtual void OnTabDidStopPlayingMedia(const SessionID& tab_id) = 0;
 
   // Called when a browser tab is updated with the specified |redirect_chain|
   // containing a list of redirect URLs that occurred on the way to the current

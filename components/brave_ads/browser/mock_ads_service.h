@@ -65,8 +65,8 @@ class MockAdsService : public AdsService {
 
   MOCK_METHOD1(OnUserGesture, void(int32_t));
 
-  MOCK_METHOD1(OnMediaStart, void(const SessionID&));
-  MOCK_METHOD1(OnMediaStop, void(const SessionID&));
+  MOCK_METHOD1(OnTabDidStartPlayingMedia, void(const SessionID&));
+  MOCK_METHOD1(OnTabDidStopPlayingMedia, void(const SessionID&));
 
   MOCK_METHOD4(OnTabUpdated,
                void(const SessionID&, const std::vector<GURL>&, bool, bool));

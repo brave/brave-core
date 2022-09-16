@@ -1133,20 +1133,20 @@ void AdsServiceImpl::OnUserGesture(const int32_t page_transition_type) {
   bat_ads_->OnUserGesture(page_transition_type);
 }
 
-void AdsServiceImpl::OnMediaStart(const SessionID& tab_id) {
+void AdsServiceImpl::OnTabDidStartPlayingMedia(const SessionID& tab_id) {
   if (!IsBatAdsBound()) {
     return;
   }
 
-  bat_ads_->OnMediaPlaying(tab_id.id());
+  bat_ads_->OnTabDidStartPlayingMedia(tab_id.id());
 }
 
-void AdsServiceImpl::OnMediaStop(const SessionID& tab_id) {
+void AdsServiceImpl::OnTabDidStopPlayingMedia(const SessionID& tab_id) {
   if (!IsBatAdsBound()) {
     return;
   }
 
-  bat_ads_->OnMediaStopped(tab_id.id());
+  bat_ads_->OnTabDidStopPlayingMedia(tab_id.id());
 }
 
 void AdsServiceImpl::OnTabUpdated(const SessionID& tab_id,

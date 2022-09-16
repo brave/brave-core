@@ -50,8 +50,8 @@ class TabManager final {
 
   void OnTabClosed(int32_t id);
 
-  void OnMediaPlaying(int32_t id);
-  void OnMediaStopped(int32_t id);
+  void OnDidStartPlayingMedia(int32_t id);
+  void OnDidStopPlayingMedia(int32_t id);
 
   bool IsPlayingMedia(int32_t id) const;
 

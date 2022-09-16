@@ -323,7 +323,7 @@ TEST_F(BatAdsTabManagerTest, PlayMedia) {
   ResetObserver();
 
   // Act
-  TabManager::GetInstance()->OnMediaPlaying(1);
+  TabManager::GetInstance()->OnDidStartPlayingMedia(/*tab_id*/ 1);
 
   // Assert
   EXPECT_TRUE(TabManager::GetInstance()->IsPlayingMedia(1));
@@ -342,11 +342,11 @@ TEST_F(BatAdsTabManagerTest, AlreadyPlayingMedia) {
       /*id*/ 1, /*redirect_chain*/ {GURL("https://foobar.com")},
       /*is_visible*/ true,
       /*is_incognito*/ false);
-  TabManager::GetInstance()->OnMediaPlaying(1);
+  TabManager::GetInstance()->OnDidStartPlayingMedia(/*tab_id*/ 1);
   ResetObserver();
 
   // Act
-  TabManager::GetInstance()->OnMediaPlaying(1);
+  TabManager::GetInstance()->OnDidStartPlayingMedia(/*tab_id*/ 1);
 
   // Assert
   EXPECT_TRUE(TabManager::GetInstance()->IsPlayingMedia(1));
@@ -365,11 +365,11 @@ TEST_F(BatAdsTabManagerTest, StopPlayingMedia) {
       /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
       /*is_active*/ true,
       /*is_incognito*/ false);
-  TabManager::GetInstance()->OnMediaPlaying(1);
+  TabManager::GetInstance()->OnDidStartPlayingMedia(/*tab_id*/ 1);
   ResetObserver();
 
   // Act
-  TabManager::GetInstance()->OnMediaStopped(1);
+  TabManager::GetInstance()->OnDidStopPlayingMedia(/*id*/ 1);
 
   // Assert
   EXPECT_FALSE(TabManager::GetInstance()->IsPlayingMedia(1));

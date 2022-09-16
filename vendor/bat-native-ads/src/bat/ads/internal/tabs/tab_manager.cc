@@ -166,7 +166,7 @@ void TabManager::OnTabClosed(const int32_t id) {
   NotifyDidCloseTab(id);
 }
 
-void TabManager::OnMediaPlaying(const int32_t id) {
+void TabManager::OnDidStartPlayingMedia(const int32_t id) {
   if (tabs_[id].is_playing_media) {
     return;
   }
@@ -178,7 +178,7 @@ void TabManager::OnMediaPlaying(const int32_t id) {
   NotifyTabDidStartPlayingMedia(id);
 }
 
-void TabManager::OnMediaStopped(const int32_t id) {
+void TabManager::OnDidStopPlayingMedia(const int32_t id) {
   if (!tabs_[id].is_playing_media) {
     return;
   }

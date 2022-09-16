@@ -171,7 +171,7 @@ void AdsTabHelper::MediaStartedPlaying(const MediaPlayerInfo& video_type,
     return;
   }
 
-  ads_service_->OnMediaStart(tab_id_);
+  ads_service_->OnTabDidStartPlayingMedia(tab_id_);
 }
 
 void AdsTabHelper::MediaStoppedPlaying(
@@ -182,7 +182,7 @@ void AdsTabHelper::MediaStoppedPlaying(
     return;
   }
 
-  ads_service_->OnMediaStop(tab_id_);
+  ads_service_->OnTabDidStopPlayingMedia(tab_id_);
 }
 
 void AdsTabHelper::OnVisibilityChanged(content::Visibility visibility) {

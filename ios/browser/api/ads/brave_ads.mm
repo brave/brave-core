@@ -557,14 +557,14 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnMediaPlaying((int32_t)tabId);
+  ads->OnTabDidStartPlayingMedia((int32_t)tabId);
 }
 
 - (void)reportMediaStoppedWithTabId:(NSInteger)tabId {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnMediaStopped((int32_t)tabId);
+  ads->OnTabDidStopPlayingMedia((int32_t)tabId);
 }
 
 - (void)reportTabUpdated:(NSInteger)tabId

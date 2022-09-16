@@ -41,8 +41,8 @@ TEST_F(BatAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedForSingleTab) {
       /*is_active*/ true,
       /*is_incognito*/ false);
 
-  TabManager::GetInstance()->OnMediaPlaying(1);
-  TabManager::GetInstance()->OnMediaStopped(1);
+  TabManager::GetInstance()->OnDidStartPlayingMedia(/*id*/ 1);
+  TabManager::GetInstance()->OnDidStopPlayingMedia(/*id*/ 1);
 
   // Act
   MediaPermissionRule permission_rule;
@@ -59,10 +59,10 @@ TEST_F(BatAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedOnMultipleTabs) {
       /*is_active*/ true,
       /*is_incognito*/ false);
 
-  TabManager::GetInstance()->OnMediaPlaying(1);
-  TabManager::GetInstance()->OnMediaPlaying(2);
-  TabManager::GetInstance()->OnMediaStopped(1);
-  TabManager::GetInstance()->OnMediaStopped(2);
+  TabManager::GetInstance()->OnDidStartPlayingMedia(/*id*/ 1);
+  TabManager::GetInstance()->OnDidStartPlayingMedia(/*id*/ 2);
+  TabManager::GetInstance()->OnDidStopPlayingMedia(/*id*/ 1);
+  TabManager::GetInstance()->OnDidStopPlayingMedia(/*id*/ 2);
 
   // Act
   MediaPermissionRule permission_rule;
@@ -80,9 +80,9 @@ TEST_F(BatAdsMediaPermissionRuleTest,
       /*is_active*/ true,
       /*is_incognito*/ false);
 
-  TabManager::GetInstance()->OnMediaPlaying(1);
-  TabManager::GetInstance()->OnMediaPlaying(2);
-  TabManager::GetInstance()->OnMediaStopped(1);
+  TabManager::GetInstance()->OnDidStartPlayingMedia(/*id*/ 1);
+  TabManager::GetInstance()->OnDidStartPlayingMedia(/*id*/ 2);
+  TabManager::GetInstance()->OnDidStopPlayingMedia(/*id*/ 1);
 
   // Act
   MediaPermissionRule permission_rule;
@@ -100,7 +100,7 @@ TEST_F(BatAdsMediaPermissionRuleTest,
       /*is_active*/ true,
       /*is_incognito*/ false);
 
-  TabManager::GetInstance()->OnMediaPlaying(1);
+  TabManager::GetInstance()->OnDidStartPlayingMedia(/*id*/ 1);
 
   // Act
   MediaPermissionRule permission_rule;
@@ -130,7 +130,7 @@ TEST_F(BatAdsMediaPermissionRuleTest,
       /*is_active*/ true,
       /*is_incognito*/ false);
 
-  TabManager::GetInstance()->OnMediaPlaying(1);
+  TabManager::GetInstance()->OnDidStartPlayingMedia(/*id*/ 1);
 
   // Act
   MediaPermissionRule permission_rule;
@@ -148,8 +148,8 @@ TEST_F(BatAdsMediaPermissionRuleTest,
       /*is_active*/ true,
       /*is_incognito*/ false);
 
-  TabManager::GetInstance()->OnMediaPlaying(1);
-  TabManager::GetInstance()->OnMediaPlaying(2);
+  TabManager::GetInstance()->OnDidStartPlayingMedia(/*id*/ 1);
+  TabManager::GetInstance()->OnDidStartPlayingMedia(/*id*/ 2);
 
   // Act
   MediaPermissionRule permission_rule;
@@ -167,9 +167,9 @@ TEST_F(BatAdsMediaPermissionRuleTest,
       /*is_active*/ true,
       /*is_incognito*/ false);
 
-  TabManager::GetInstance()->OnMediaPlaying(1);
-  TabManager::GetInstance()->OnMediaPlaying(2);
-  TabManager::GetInstance()->OnMediaStopped(2);
+  TabManager::GetInstance()->OnDidStartPlayingMedia(/*id*/ 1);
+  TabManager::GetInstance()->OnDidStartPlayingMedia(/*id*/ 2);
+  TabManager::GetInstance()->OnDidStopPlayingMedia(/*id*/ 2);
 
   // Act
   MediaPermissionRule permission_rule;

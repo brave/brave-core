@@ -220,15 +220,15 @@ void AdsImpl::OnBrowserDidEnterBackground() {
   BrowserManager::GetInstance()->OnBrowserDidEnterBackground();
 }
 
-void AdsImpl::OnMediaPlaying(const int32_t tab_id) {
+void AdsImpl::OnTabDidStartPlayingMedia(const int32_t tab_id) {
   if (IsInitialized()) {
-    TabManager::GetInstance()->OnMediaPlaying(tab_id);
+    TabManager::GetInstance()->OnDidStartPlayingMedia(tab_id);
   }
 }
 
-void AdsImpl::OnMediaStopped(const int32_t tab_id) {
+void AdsImpl::OnTabDidStopPlayingMedia(const int32_t tab_id) {
   if (IsInitialized()) {
-    TabManager::GetInstance()->OnMediaStopped(tab_id);
+    TabManager::GetInstance()->OnDidStopPlayingMedia(tab_id);
   }
 }
 
