@@ -3,35 +3,36 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/playlist/playlist_background_web_contents_observer.h"
+#include "brave/components/brave_shields/browser/allow_cosmetic_filtering_web_contents_observer.h"
 
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 
-namespace playlist {
+namespace brave_shields {
 
-PlaylistBackgroundWebContentsObserver::PlaylistBackgroundWebContentsObserver(
-    content::WebContents* web_contents)
+AllowCosmeticFilteringWebContentsObserver::
+    AllowCosmeticFilteringWebContentsObserver(
+        content::WebContents* web_contents)
     : WebContentsObserver(web_contents),
-      content::WebContentsUserData<PlaylistBackgroundWebContentsObserver>(
+      content::WebContentsUserData<AllowCosmeticFilteringWebContentsObserver>(
           *web_contents) {}
 
-PlaylistBackgroundWebContentsObserver::
-    ~PlaylistBackgroundWebContentsObserver() {
+AllowCosmeticFilteringWebContentsObserver::
+    ~AllowCosmeticFilteringWebContentsObserver() {
   brave_shields_remotes_.clear();
 }
 
-void PlaylistBackgroundWebContentsObserver::RenderFrameCreated(
+void AllowCosmeticFilteringWebContentsObserver::RenderFrameCreated(
     content::RenderFrameHost* rfh) {
   if (rfh)
     GetBraveShieldsRemote(rfh)->AllowCosmeticFiltering();
 }
 
-void PlaylistBackgroundWebContentsObserver::RenderFrameDeleted(
+void AllowCosmeticFilteringWebContentsObserver::RenderFrameDeleted(
     content::RenderFrameHost* rfh) {
   brave_shields_remotes_.erase(rfh);
 }
 
-void PlaylistBackgroundWebContentsObserver::RenderFrameHostChanged(
+void AllowCosmeticFilteringWebContentsObserver::RenderFrameHostChanged(
     content::RenderFrameHost* old_rfh,
     content::RenderFrameHost* new_rfh) {
   if (old_rfh)
@@ -42,7 +43,7 @@ void PlaylistBackgroundWebContentsObserver::RenderFrameHostChanged(
 }
 
 mojo::AssociatedRemote<brave_shields::mojom::BraveShields>&
-PlaylistBackgroundWebContentsObserver::GetBraveShieldsRemote(
+AllowCosmeticFilteringWebContentsObserver::GetBraveShieldsRemote(
     content::RenderFrameHost* rfh) {
   if (!brave_shields_remotes_.contains(rfh)) {
     rfh->GetRemoteAssociatedInterfaces()->GetInterface(
@@ -53,6 +54,6 @@ PlaylistBackgroundWebContentsObserver::GetBraveShieldsRemote(
   return brave_shields_remotes_[rfh];
 }
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(PlaylistBackgroundWebContentsObserver);
+WEB_CONTENTS_USER_DATA_KEY_IMPL(AllowCosmeticFilteringWebContentsObserver);
 
-}  // namespace playlist
+}  // namespace brave_shields
