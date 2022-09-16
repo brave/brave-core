@@ -151,7 +151,8 @@ void TorLauncherFactory::SetupPluggableTransport(
     const base::FilePath& snowflake,
     const base::FilePath& obfs4) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  control_->SetupPluggableTransport(snowflake, obfs4, base::DoNothing());
+  control_->SetupPluggableTransport(config_.binary_path, snowflake, obfs4,
+                                    base::DoNothing());
 }
 
 void TorLauncherFactory::SetupBridges(tor::BridgesConfig bridges_config) {

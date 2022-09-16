@@ -87,6 +87,7 @@ void TorLauncherImpl::Launch(mojom::TorConfigPtr config,
 #if BUILDFLAG(IS_WIN)
   launchopts.start_hidden = true;
 #endif
+  launchopts.current_directory = config->binary_path.DirName();
   base::Process tor_process = base::LaunchProcess(args, launchopts);
 
   bool result = tor_process.IsValid();

@@ -93,8 +93,9 @@ class TorControl {
   void GetCircuitEstablished(
       base::OnceCallback<void(bool error, bool established)> callback);
 
-  void SetupPluggableTransport(const base::FilePath& snowflake,
-                               const base::FilePath& obsf4,
+  void SetupPluggableTransport(const base::FilePath& tor,
+                               const base::FilePath& snowflake,
+                               const base::FilePath& obfs4,
                                base::OnceCallback<void(bool error)> callback);
   void SetupBridges(const std::vector<std::string>& bridges,
                     base::OnceCallback<void(bool error)> callback);
