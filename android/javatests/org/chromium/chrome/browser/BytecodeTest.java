@@ -7,6 +7,7 @@ package org.chromium.chrome.browser;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Handler;
 import android.util.AttributeSet;
@@ -284,6 +285,8 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/omnibox/LocationBarMediator"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/omnibox/BraveLocationBarMediator"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/IntentHandler"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/BraveIntentHandler"));
     }
 
     @Test
@@ -420,6 +423,14 @@ public class BytecodeTest {
                 "onAssistantVoiceSearchServiceChanged", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/omnibox/LocationBarMediator",
                 "shouldShowDeleteButton", false, null));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
+                "getUrlForCustomTab", true, String.class, Intent.class));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
+                "getUrlForWebapp", true, String.class, Intent.class));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
+                "isJavascriptSchemeOrInvalidUrl", true, boolean.class, String.class));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
+                "extractUrlFromIntent", true, String.class, Intent.class));
     }
 
     @Test
@@ -659,6 +670,9 @@ public class BytecodeTest {
                 BraveLocationBarMediator.getLensControllerClass(), Runnable.class,
                 BraveLocationBarMediator.getSaveOfflineButtonStateClass(),
                 BraveLocationBarMediator.getOmniboxUmaClass(), BooleanSupplier.class));
+        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/IntentHandler",
+                "org/chromium/chrome/browser/BraveIntentHandler", Activity.class,
+                IntentHandler.IntentHandlerDelegate.class));
     }
 
     @Test

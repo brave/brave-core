@@ -14,11 +14,15 @@ public class BraveIntentHandlerClassAdapter extends BraveClassVisitor {
     public BraveIntentHandlerClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
+        redirectConstructor(sIntentHandlerClassName, sBraveIntentHandlerClassName);
+
         makePublicMethod(sIntentHandlerClassName, "getUrlForCustomTab");
         changeMethodOwner(
                 sBraveIntentHandlerClassName, "getUrlForCustomTab", sIntentHandlerClassName);
+
         makePublicMethod(sIntentHandlerClassName, "getUrlForWebapp");
         changeMethodOwner(sBraveIntentHandlerClassName, "getUrlForWebapp", sIntentHandlerClassName);
+
         makePublicMethod(sIntentHandlerClassName, "isJavascriptSchemeOrInvalidUrl");
         changeMethodOwner(sBraveIntentHandlerClassName, "isJavascriptSchemeOrInvalidUrl",
                 sIntentHandlerClassName);
