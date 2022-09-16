@@ -54,7 +54,11 @@ copy("dist_resources") {
   outputs = [ "$brave_dist_dir/{{source_file_part}}" ]
 
   public_deps = [
-    "//chrome/chrome_elf",
-    "//third_party/angle:copy_compiler_dll",
+    "//chrome/chrome_elf"
   ]
+
+  if (target_cpu != "arm64") {
+    # As of this writing, Angle does not define copy_compiler_dll for arm64.
+    public_deps += [ "//third_party/angle:copy_compiler_dll" ]
+  }
 }
