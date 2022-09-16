@@ -580,8 +580,8 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     urls.push_back(net::GURLWithNSURL(redirectURL));
   }
   urls.push_back(net::GURLWithNSURL(url));
-  ads->OnTabUpdated((int32_t)tabId, urls, isSelected, [self isBrowserActive],
-                    isPrivate);
+  ads->OnTabDidChange((int32_t)tabId, urls, isSelected, [self isBrowserActive],
+                      isPrivate);
 }
 
 - (void)reportTabClosedWithTabId:(NSInteger)tabId {

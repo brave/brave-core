@@ -36,10 +36,10 @@ class TabManager final {
 
   bool IsTabVisible(int32_t id) const;
 
-  void OnTabUpdated(int32_t id,
-                    const std::vector<GURL>& redirect_chain,
-                    bool is_visible,
-                    bool is_incognito);
+  void OnDidChange(int32_t id,
+                   const std::vector<GURL>& redirect_chain,
+                   bool is_visible,
+                   bool is_incognito);
 
   void OnTextContentDidChange(int32_t id,
                               const std::vector<GURL>& redirect_chain,

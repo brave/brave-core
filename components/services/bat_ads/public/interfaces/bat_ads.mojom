@@ -130,8 +130,7 @@ interface BatAds {
   // Tabs
   OnTabDidStartPlayingMedia(int32 tab_id);
   OnTabDidStopPlayingMedia(int32 tab_id);
-
-  OnTabUpdated(int32 tab_id, array<url.mojom.Url> redirect_chain, bool is_active, bool is_browser_active, bool is_incognito);
+  OnTabDidChange(int32 tab_id, array<url.mojom.Url> redirect_chain, bool is_active, bool is_browser_active, bool is_incognito);
   OnTabClosed(int32 tab_id);
 
   // Account

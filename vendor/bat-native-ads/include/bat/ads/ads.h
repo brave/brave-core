@@ -127,11 +127,11 @@ class ADS_EXPORT Ads {
   // |false|. |is_browser_active| is set to |true| if the browser window is
   // active otherwise |false|. |is_incognito| is set to |true| if the tab is
   // incognito otherwise |false|.
-  virtual void OnTabUpdated(int32_t tab_id,
-                            const std::vector<GURL>& redirect_chain,
-                            bool is_active,
-                            bool is_browser_active,
-                            bool is_incognito) = 0;
+  virtual void OnTabDidChange(int32_t tab_id,
+                              const std::vector<GURL>& redirect_chain,
+                              bool is_active,
+                              bool is_browser_active,
+                              bool is_incognito) = 0;
 
   // Called when a browser tab with the specified |tab_id| was closed.
   virtual void OnTabClosed(int32_t tab_id) = 0;

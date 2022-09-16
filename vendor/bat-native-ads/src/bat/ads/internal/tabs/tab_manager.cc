@@ -55,10 +55,10 @@ bool TabManager::IsTabVisible(const int32_t id) const {
   return visible_tab_id_ == id;
 }
 
-void TabManager::OnTabUpdated(const int32_t id,
-                              const std::vector<GURL>& redirect_chain,
-                              const bool is_visible,
-                              const bool is_incognito) {
+void TabManager::OnDidChange(const int32_t id,
+                             const std::vector<GURL>& redirect_chain,
+                             const bool is_visible,
+                             const bool is_incognito) {
   if (is_incognito) {
     BLOG(7, "Tab id " << id << " is incognito");
     return;
@@ -78,7 +78,7 @@ void TabManager::OnTabUpdated(const int32_t id,
         return;
       }
 
-      BLOG(2, "Tab id " << id << " was updated");
+      BLOG(2, "Tab id " << id << " did change");
 
       tabs_[id].redirect_chain = redirect_chain;
 

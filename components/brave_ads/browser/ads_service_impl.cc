@@ -1149,18 +1149,18 @@ void AdsServiceImpl::OnTabDidStopPlayingMedia(const SessionID& tab_id) {
   bat_ads_->OnTabDidStopPlayingMedia(tab_id.id());
 }
 
-void AdsServiceImpl::OnTabUpdated(const SessionID& tab_id,
-                                  const std::vector<GURL>& redirect_chain,
-                                  const bool is_active,
-                                  const bool is_browser_active) {
+void AdsServiceImpl::OnTabDidChange(const SessionID& tab_id,
+                                    const std::vector<GURL>& redirect_chain,
+                                    const bool is_active,
+                                    const bool is_browser_active) {
   if (!IsBatAdsBound()) {
     return;
   }
 
   const bool is_incognito = !brave::IsRegularProfile(profile_);
 
-  bat_ads_->OnTabUpdated(tab_id.id(), redirect_chain, is_active,
-                         is_browser_active, is_incognito);
+  bat_ads_->OnTabDidChange(tab_id.id(), redirect_chain, is_active,
+                           is_browser_active, is_incognito);
 }
 
 void AdsServiceImpl::OnTabClosed(const SessionID& tab_id) {

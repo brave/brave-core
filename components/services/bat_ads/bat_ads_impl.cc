@@ -117,13 +117,13 @@ void BatAdsImpl::OnTabDidStopPlayingMedia(const int32_t tab_id) {
   ads_->OnTabDidStopPlayingMedia(tab_id);
 }
 
-void BatAdsImpl::OnTabUpdated(const int32_t tab_id,
-                              const std::vector<GURL>& redirect_chain,
-                              const bool is_active,
-                              const bool is_browser_active,
-                              const bool is_incognito) {
-  ads_->OnTabUpdated(tab_id, redirect_chain, is_active, is_browser_active,
-                     is_incognito);
+void BatAdsImpl::OnTabDidChange(const int32_t tab_id,
+                                const std::vector<GURL>& redirect_chain,
+                                const bool is_active,
+                                const bool is_browser_active,
+                                const bool is_incognito) {
+  ads_->OnTabDidChange(tab_id, redirect_chain, is_active, is_browser_active,
+                       is_incognito);
 }
 
 void BatAdsImpl::OnTabClosed(

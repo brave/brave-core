@@ -125,11 +125,11 @@ class AdsImpl final : public Ads,
   void OnTabDidStartPlayingMedia(int32_t tab_id) override;
   void OnTabDidStopPlayingMedia(int32_t tab_id) override;
 
-  void OnTabUpdated(int32_t tab_id,
-                    const std::vector<GURL>& redirect_chain,
-                    bool is_active,
-                    bool is_browser_active,
-                    bool is_incognito) override;
+  void OnTabDidChange(int32_t tab_id,
+                      const std::vector<GURL>& redirect_chain,
+                      bool is_active,
+                      bool is_browser_active,
+                      bool is_incognito) override;
   void OnTabClosed(int32_t tab_id) override;
 
   void OnWalletUpdated(const std::string& id, const std::string& seed) override;

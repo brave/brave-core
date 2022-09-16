@@ -68,7 +68,7 @@ class MockAdsService : public AdsService {
   MOCK_METHOD1(OnTabDidStartPlayingMedia, void(const SessionID&));
   MOCK_METHOD1(OnTabDidStopPlayingMedia, void(const SessionID&));
 
-  MOCK_METHOD4(OnTabUpdated,
+  MOCK_METHOD4(OnTabDidChange,
                void(const SessionID&, const std::vector<GURL>&, bool, bool));
   MOCK_METHOD1(OnTabClosed, void(const SessionID&));
 

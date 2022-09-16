@@ -63,8 +63,8 @@ void AdsTabHelper::TabUpdated() {
     return;
   }
 
-  ads_service_->OnTabUpdated(tab_id_, redirect_chain_, is_active_,
-                             is_browser_active_);
+  ads_service_->OnTabDidChange(tab_id_, redirect_chain_, is_active_,
+                               is_browser_active_);
 }
 
 void AdsTabHelper::RunIsolatedJavaScript(

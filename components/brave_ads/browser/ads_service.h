@@ -158,10 +158,10 @@ class AdsService : public KeyedService {
   // |true| if |tab_id| refers to the currently active tab otherwise is set to
   // |false|. |is_browser_active| is set to |true| if the browser window is
   // active otherwise |false|.
-  virtual void OnTabUpdated(const SessionID& tab_id,
-                            const std::vector<GURL>& redirect_chain,
-                            bool is_active,
-                            bool is_browser_active) = 0;
+  virtual void OnTabDidChange(const SessionID& tab_id,
+                              const std::vector<GURL>& redirect_chain,
+                              bool is_active,
+                              bool is_browser_active) = 0;
 
   // Called when a browser tab with the specified |tab_id| was closed.
   virtual void OnTabClosed(const SessionID& tab_id) = 0;
