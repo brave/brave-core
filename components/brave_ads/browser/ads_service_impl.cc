@@ -1829,12 +1829,12 @@ void AdsServiceImpl::OnBrowserDidEnterBackground() {
   bat_ads_->OnBrowserDidEnterBackground();
 }
 
-void AdsServiceImpl::OnResourceComponentUpdated(const std::string& id) {
+void AdsServiceImpl::OnDidUpdateResourceComponent(const std::string& id) {
   if (!IsBatAdsBound()) {
     return;
   }
 
-  bat_ads_->OnResourceComponentUpdated(id);
+  bat_ads_->OnDidUpdateResourceComponent(id);
 }
 
 void AdsServiceImpl::PrefetchNewTabPageAd() {

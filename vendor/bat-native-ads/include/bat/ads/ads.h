@@ -66,7 +66,7 @@ class ADS_EXPORT Ads {
   virtual void OnPrefChanged(const std::string& path) = 0;
 
   // Called when a resource component has been updated.
-  virtual void OnResourceComponentUpdated(const std::string& id) = 0;
+  virtual void OnDidUpdateResourceComponent(const std::string& id) = 0;
 
   // Called when the page for |tad_id| has loaded and the content is available
   // for analysis. |redirect_chain| containing a list of redirect URLs that

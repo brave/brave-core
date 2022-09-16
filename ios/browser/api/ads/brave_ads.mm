@@ -824,7 +824,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                    if (success) {
                      const std::string bridged_language_code_adsResource_idkey =
                          base::SysNSStringToUTF8(languageCodeAdsResourceId);
-                     strongSelf->ads->OnResourceComponentUpdated(
+                     strongSelf->ads->OnDidUpdateResourceComponent(
                          bridged_language_code_adsResource_idkey);
                    }
                  }];
@@ -862,7 +862,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                      const std::string bridged_country_code_adsResource_idkey =
                          base::SysNSStringToUTF8(countryCodeAdsResourceId);
 
-                     strongSelf->ads->OnResourceComponentUpdated(
+                     strongSelf->ads->OnDidUpdateResourceComponent(
                          bridged_country_code_adsResource_idkey);
                    }
                  }];
@@ -938,7 +938,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                      }
 
                      BLOG(1, @"Notifying ads resource observers");
-                     strongSelf->ads->OnResourceComponentUpdated(
+                     strongSelf->ads->OnDidUpdateResourceComponent(
                          base::SysNSStringToUTF8(key));
                    }];
   }

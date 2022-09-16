@@ -52,7 +52,7 @@ class MockAdsService : public AdsService {
 
   MOCK_METHOD1(OnChangeLocale, void(const std::string&));
 
-  MOCK_METHOD1(OnResourceComponentUpdated, void(const std::string&));
+  MOCK_METHOD1(OnDidUpdateResourceComponent, void(const std::string&));
 
   MOCK_METHOD3(OnHtmlLoaded,
                void(const SessionID&,

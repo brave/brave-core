@@ -50,7 +50,7 @@ class BatAdsImpl :
 
   void OnPrefChanged(const std::string& path) override;
 
-  void OnResourceComponentUpdated(const std::string& id) override;
+  void OnDidUpdateResourceComponent(const std::string& id) override;
 
   void OnHtmlLoaded(const int32_t tab_id,
                     const std::vector<GURL>& redirect_chain,

@@ -261,7 +261,7 @@ void AdsImpl::OnWalletUpdated(const std::string& id, const std::string& seed) {
   account_->SetWallet(id, seed);
 }
 
-void AdsImpl::OnResourceComponentUpdated(const std::string& id) {
+void AdsImpl::OnDidUpdateResourceComponent(const std::string& id) {
   ResourceManager::GetInstance()->UpdateResource(id);
 }
 

@@ -316,8 +316,8 @@ void BatAdsImpl::ToggleFlaggedAd(base::Value::Dict value,
   std::move(callback).Run(AdContentToValue(ad_content));
 }
 
-void BatAdsImpl::OnResourceComponentUpdated(const std::string& id) {
-  ads_->OnResourceComponentUpdated(id);
+void BatAdsImpl::OnDidUpdateResourceComponent(const std::string& id) {
+  ads_->OnDidUpdateResourceComponent(id);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

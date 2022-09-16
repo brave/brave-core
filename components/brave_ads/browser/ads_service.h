@@ -116,7 +116,7 @@ class AdsService : public KeyedService {
   virtual void OnChangeLocale(const std::string& locale) = 0;
 
   // Called when a resource component has been updated.
-  virtual void OnResourceComponentUpdated(const std::string& id) = 0;
+  virtual void OnDidUpdateResourceComponent(const std::string& id) = 0;
 
   // Called when the page for |tab_id| has loaded and the content is available
   // for analysis. |redirect_chain| containing a list of redirect URLs that
