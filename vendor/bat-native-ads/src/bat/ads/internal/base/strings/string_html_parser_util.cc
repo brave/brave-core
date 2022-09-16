@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/base/strings/string_html_parser_util.h"
+
 #include "base/strings/strcat.h"
 #include "third_party/re2/src/re2/re2.h"
 

@@ -24,22 +24,39 @@ class BatAdsStringHtmlUtilTest : public UnitTestBase {
 
 TEST_F(BatAdsStringHtmlUtilTest, ParseHtmlTagAttributeSimple) {
   // Arrange
-  const std::string html_1 =
-      R"(<meta property="og:title" description="a detailed summary" content="this is info ">)";
-  const std::string html_2 =
-      R"(<div href="brave.com" description="this is12 34 info">)";
-  const std::vector<
-      std::tuple<std::string, std::string, std::string, std::string>>
-      kSamples = {{html_1, "og:title", "content", "this is info "},
-                  {html_1, "title", "content", "this is info "},
-                  {html_1, "description", "content", "this is info "},
-                  {html_1, "descript", "description", "a detailed summary"},
-                  {html_1, "og:description", "description", {}},
-                  {html_2, "og:title", "content", {}},
-                  {html_2, "title", "content", {}},
-                  {html_2, "description", "content", {}},
-                  {html_2, "href", "description", "this is12 34 info"},
-                  {html_2, "div", "href", "brave.com"}};
+  const std::string meta_html_tag =
+      R"(<meta property="og:title" content="this is info ">)";
+  const std::string meta_html_with_foobar_tag =
+      R"(<meta property="og:title" foo="bar" content="this is info ">)";
+  const std::string non_meta_html_tag =
+      R"(<div href="brave.com" content="this is info ">)";
+  const std::vector<std::tuple</*html*/ std::string, /*tag_substr*/ std::string,
+                               /*tag_attribute*/ std::string,
+                               /*expected_html_tag_attribute*/ std::string>>
+      kSamples = {
+          {meta_html_tag, "og:title", "content", "this is info "},
+          {meta_html_tag, "title", "content", "this is info "},
+          {meta_html_tag, "title", "foo", {}},
+          {meta_html_with_foobar_tag, "og:title", "content", "this is info "},
+          {meta_html_with_foobar_tag, "og:title", "foo", "bar"},
+          {non_meta_html_tag, "og:title", "content", {}},
+          {non_meta_html_tag, "href", "content", "this is info "},
+          {non_meta_html_tag, "href", "foo", {}},
+          {R"(<div property="og:title" content="The quick brown fox jumps over the lazy dog.">)",
+           "og:title", "content",
+           "The quick brown fox jumps over the lazy dog."},
+          {R"(<div property="og:title" content="Les naïfs ægithales hâtifs pondant à Noël où il gèle sont sûrs d'être déçus en voyant leurs drôles d'œufs abîmés.">)",
+           "og:title", "content",
+           "Les naïfs ægithales hâtifs pondant à Noël où il gèle sont sûrs "
+           "d'être déçus en voyant leurs drôles d'œufs abîmés."},
+          {R"(<div property="og:title" content="Falsches Üben von Xylophonmusik quält jeden größeren Zwerg. ξεσκεπάζω την ψυχοφθόρα βδελυγμία.">)",
+           "og:title", "content",
+           "Falsches Üben von Xylophonmusik quält jeden größeren Zwerg. "
+           "ξεσκεπάζω την ψυχοφθόρα βδελυγμία."},
+          {R"(<div property="og:title" content="いろはにほへど　ちりぬるを わがよたれぞ　つねならむ うゐのおくやま　けふこえて あさきゆめみじ　ゑひもせず">)",
+           "og:title", "content",
+           "いろはにほへど　ちりぬるを わがよたれぞ　つねならむ "
+           "うゐのおくやま　けふこえて あさきゆめみじ　ゑひもせず"}};
 
   for (const auto& [html, tag_substr, tag_attribute,
                     expected_html_tag_attribute] : kSamples) {

@@ -160,9 +160,9 @@ TEST_F(BatAdsVectorDataTest, AddElementWise) {
   VectorData v3 = VectorData({0.0F, 0.0F, 0.0F});
   VectorData v4 = VectorData({0.7F, 0.2F, -0.35F});
 
-  std::vector<float> v12({1.3F, -0.1F, 0.8F});
-  std::vector<float> v21({1.3F, -0.1F, 0.8F});
-  std::vector<float> v34({0.7F, 0.2F, -0.35F});
+  const std::vector<float> v12({1.3F, -0.1F, 0.8F});
+  const std::vector<float> v21({1.3F, -0.1F, 0.8F});
+  const std::vector<float> v34({0.7F, 0.2F, -0.35F});
 
   // Act
   v1.AddElementWise(v2);
@@ -171,9 +171,9 @@ TEST_F(BatAdsVectorDataTest, AddElementWise) {
 
   // Assert
   for (int i = 0; i < 3; i++) {
-    EXPECT_NEAR(v12[i], v1.GetValuesForTesting().at(i), 0.001F);
-    EXPECT_NEAR(v21[i], v2.GetValuesForTesting().at(i), 0.001F);
-    EXPECT_NEAR(v34[i], v3.GetValuesForTesting().at(i), 0.001F);
+    EXPECT_NEAR(v12.at(i), v1.GetValuesForTesting().at(i), 0.001F);
+    EXPECT_NEAR(v21.at(i), v2.GetValuesForTesting().at(i), 0.001F);
+    EXPECT_NEAR(v34.at(i), v3.GetValuesForTesting().at(i), 0.001F);
   }
 }
 

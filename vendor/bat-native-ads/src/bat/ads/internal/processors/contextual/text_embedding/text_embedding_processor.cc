@@ -63,7 +63,7 @@ void TextEmbedding::Process(const std::string& html) {
   }
 
   LogTextEmbeddingHtmlEvent(
-      text_embedding, [](const bool success) {
+      BuildTextEmbeddingHtmlEvent(text_embedding), [](const bool success) {
         if (!success) {
           BLOG(1, "Failed to log text embedding HTML event");
           return;
@@ -118,9 +118,11 @@ void TextEmbedding::OnHtmlContentDidChange(
     return;
   }
 
-  if (TextEmbedding::IsEnabled()) {
-    Process(html);
+  if (!TextEmbedding::IsEnabled()) {
+    return;
   }
+
+  Process(html);
 }
 
 }  // namespace ads::processor

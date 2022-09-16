@@ -14,14 +14,19 @@
 
 namespace ads {
 
-struct TextEmbeddingHtmlEventInfo;
-
 using TextEmbeddingHtmlEventCallback = std::function<void(const bool)>;
 
+struct TextEmbeddingHtmlEventInfo;
+
+TextEmbeddingHtmlEventInfo BuildTextEmbeddingHtmlEvent(
+    const ml::pipeline::TextEmbeddingInfo& text_embedding);
+
 void LogTextEmbeddingHtmlEvent(
-    const ml::pipeline::TextEmbeddingInfo& text_embedding,
+    const TextEmbeddingHtmlEventInfo& text_embedding_html_event,
     TextEmbeddingHtmlEventCallback callback);
+
 void PurgeStaleTextEmbeddingHtmlEvents(TextEmbeddingHtmlEventCallback callback);
+
 void GetTextEmbeddingHtmlEventsFromDatabase(
     database::table::GetTextEmbeddingHtmlEventsCallback callback);
 

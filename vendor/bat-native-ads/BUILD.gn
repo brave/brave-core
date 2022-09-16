@@ -940,6 +940,7 @@ source_set("ads") {
     "src/bat/ads/internal/ml/pipeline/pipeline_info.h",
     "src/bat/ads/internal/ml/pipeline/pipeline_util.cc",
     "src/bat/ads/internal/ml/pipeline/pipeline_util.h",
+    "src/bat/ads/internal/ml/pipeline/text_processing/embedding_info.cc",
     "src/bat/ads/internal/ml/pipeline/text_processing/embedding_info.h",
     "src/bat/ads/internal/ml/pipeline/text_processing/embedding_processing.cc",
     "src/bat/ads/internal/ml/pipeline/text_processing/embedding_processing.h",

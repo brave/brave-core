@@ -13,8 +13,19 @@
 namespace ads::ml::pipeline {
 
 struct TextEmbeddingInfo final {
+  TextEmbeddingInfo();
+
+  TextEmbeddingInfo(const TextEmbeddingInfo& other);
+  TextEmbeddingInfo& operator=(const TextEmbeddingInfo& other);
+
+  TextEmbeddingInfo(TextEmbeddingInfo&& other) noexcept;
+  TextEmbeddingInfo& operator=(TextEmbeddingInfo&& other) noexcept;
+
+  ~TextEmbeddingInfo();
+
   std::string text;
   std::string hashed_text_base64;
+  std::string locale;
   VectorData embedding;
 };
 

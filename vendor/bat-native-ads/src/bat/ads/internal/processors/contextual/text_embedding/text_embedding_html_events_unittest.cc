@@ -10,6 +10,7 @@
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_info.h"
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_event_unittest_util.h"
+#include "gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -22,25 +23,39 @@ class BatAdsTextEmbeddingHtmlEventsTest : public UnitTestBase {
   ~BatAdsTextEmbeddingHtmlEventsTest() override = default;
 };
 
+TEST_F(BatAdsTextEmbeddingHtmlEventsTest, BuildEvent) {
+  // Arrange
+  const ml::pipeline::TextEmbeddingInfo text_embedding = BuildTextEmbedding();
+
+  // Act
+  TextEmbeddingHtmlEventInfo text_embedding_html_event =
+      BuildTextEmbeddingHtmlEvent(text_embedding);
+
+  // Assert
+  EXPECT_EQ(text_embedding.locale, text_embedding_html_event.locale);
+  EXPECT_EQ(text_embedding.hashed_text_base64,
+            text_embedding_html_event.hashed_text_base64);
+  EXPECT_EQ(text_embedding.embedding.GetVectorAsString(),
+            text_embedding_html_event.embedding);
+}
+
 TEST_F(BatAdsTextEmbeddingHtmlEventsTest, LogEvent) {
   // Arrange
   const ml::pipeline::TextEmbeddingInfo text_embedding = BuildTextEmbedding();
 
   // Act
-  LogTextEmbeddingHtmlEvent(
-      text_embedding, [=](const bool success) {
-        ASSERT_TRUE(success) << "Failed to log text embedding html event";
+  LogTextEmbeddingHtmlEvent(BuildTextEmbeddingHtmlEvent(text_embedding),
+                            [=](const bool success) { ASSERT_TRUE(success); });
 
-        GetTextEmbeddingHtmlEventsFromDatabase(
-            [=](const bool success,
-                const TextEmbeddingHtmlEventList& text_embedding_html_events) {
-              ASSERT_TRUE(!text_embedding_html_events.empty());
-              ASSERT_TRUE(success);
+  GetTextEmbeddingHtmlEventsFromDatabase(
+      [=](const bool success,
+          const TextEmbeddingHtmlEventList& text_embedding_html_events) {
+        ASSERT_TRUE(!text_embedding_html_events.empty());
+        ASSERT_TRUE(success);
 
-              // Assert
-              EXPECT_EQ(text_embedding.hashed_text_base64,
-                        text_embedding_html_events.at(0).hashed_text_base64);
-            });
+        // Assert
+        EXPECT_EQ(text_embedding.hashed_text_base64,
+                  text_embedding_html_events.front().hashed_text_base64);
       });
 }
 
@@ -49,7 +64,7 @@ TEST_F(BatAdsTextEmbeddingHtmlEventsTest, PurgeEvents) {
   for (int i = 0; i < targeting::features::GetTextEmbeddingsHistorySize() + 4;
        i++) {
     const ml::pipeline::TextEmbeddingInfo text_embedding = BuildTextEmbedding();
-    LogTextEmbeddingHtmlEvent(text_embedding,
+    LogTextEmbeddingHtmlEvent(BuildTextEmbeddingHtmlEvent(text_embedding),
                               [](const bool success) { ASSERT_TRUE(success); });
   }
 
