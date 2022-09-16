@@ -388,7 +388,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 - (void)savePref:(NSString*)name {
   if ([self isAdsServiceRunning]) {
-    ads->OnPrefChanged(base::SysNSStringToUTF8(name));
+    ads->OnPrefDidChange(base::SysNSStringToUTF8(name));
   }
 
   [self savePrefs];

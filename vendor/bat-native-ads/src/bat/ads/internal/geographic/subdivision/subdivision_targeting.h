@@ -59,7 +59,7 @@ class SubdivisionTargeting final : public LocaleManagerObserver,
   void OnLocaleDidChange(const std::string& locale) override;
 
   // PrefManagerObserver:
-  void OnPrefChanged(const std::string& path) override;
+  void OnPrefDidChange(const std::string& path) override;
 
   Timer timer_;
   BackoffTimer retry_timer_;

@@ -95,7 +95,7 @@ class Account final : public PrefManagerObserver,
   void NotifyStatementOfAccountsDidChange() const;
 
   // PrefManagerObserver:
-  void OnPrefChanged(const std::string& path) override;
+  void OnPrefDidChange(const std::string& path) override;
 
   // ConfirmationsDelegate:
   void OnDidConfirm(const ConfirmationInfo& confirmation) override;

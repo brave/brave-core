@@ -102,7 +102,7 @@ class AdsImpl final : public Ads,
 
   void OnLocaleDidChange(const std::string& locale) override;
 
-  void OnPrefChanged(const std::string& path) override;
+  void OnPrefDidChange(const std::string& path) override;
 
   void OnDidUpdateResourceComponent(const std::string& id) override;
 

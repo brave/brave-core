@@ -63,7 +63,7 @@ class ADS_EXPORT Ads {
   virtual void OnLocaleDidChange(const std::string& locale) = 0;
 
   // Called when a preference has changed for the specified |path|.
-  virtual void OnPrefChanged(const std::string& path) = 0;
+  virtual void OnPrefDidChange(const std::string& path) = 0;
 
   // Called when a resource component has been updated.
   virtual void OnDidUpdateResourceComponent(const std::string& id) = 0;

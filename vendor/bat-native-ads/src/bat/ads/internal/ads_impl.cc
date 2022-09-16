@@ -173,8 +173,8 @@ void AdsImpl::OnLocaleDidChange(const std::string& locale) {
   LocaleManager::GetInstance()->OnLocaleDidChange(locale);
 }
 
-void AdsImpl::OnPrefChanged(const std::string& path) {
-  PrefManager::GetInstance()->OnPrefChanged(path);
+void AdsImpl::OnPrefDidChange(const std::string& path) {
+  PrefManager::GetInstance()->OnPrefDidChange(path);
 }
 
 void AdsImpl::OnHtmlLoaded(const int32_t tab_id,

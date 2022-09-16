@@ -267,7 +267,7 @@ void Account::NotifyStatementOfAccountsDidChange() const {
   }
 }
 
-void Account::OnPrefChanged(const std::string& path) {
+void Account::OnPrefDidChange(const std::string& path) {
   if (path == prefs::kEnabled) {
     MaybeGetIssuers();
   }

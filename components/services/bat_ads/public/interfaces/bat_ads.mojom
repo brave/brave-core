@@ -110,7 +110,7 @@ interface BatAds {
 
   OnLocaleDidChange(string locale);
 
-  OnPrefChanged(string path);
+  OnPrefDidChange(string path);
 
   OnDidUpdateResourceComponent(string id);
 

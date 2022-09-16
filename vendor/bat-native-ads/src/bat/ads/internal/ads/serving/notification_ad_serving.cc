@@ -229,7 +229,7 @@ void Serving::NotifyFailedToServeNotificationAd() const {
   }
 }
 
-void Serving::OnPrefChanged(const std::string& path) {
+void Serving::OnPrefDidChange(const std::string& path) {
   if (path == prefs::kMaximumNotificationAdsPerHour) {
     OnAdsPerHourPrefChanged();
   }

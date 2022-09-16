@@ -105,7 +105,7 @@ void NotificationAd::OnBrowserDidEnterBackground() {
   MaybeServeAtRegularIntervals();
 }
 
-void NotificationAd::OnPrefChanged(const std::string& path) {
+void NotificationAd::OnPrefDidChange(const std::string& path) {
   if (path == prefs::kEnabled) {
     MaybeServeAtRegularIntervals();
   }

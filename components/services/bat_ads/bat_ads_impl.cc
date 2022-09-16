@@ -70,8 +70,8 @@ void BatAdsImpl::OnLocaleDidChange(const std::string& locale) {
   ads_->OnLocaleDidChange(locale);
 }
 
-void BatAdsImpl::OnPrefChanged(const std::string& path) {
-  ads_->OnPrefChanged(path);
+void BatAdsImpl::OnPrefDidChange(const std::string& path) {
+  ads_->OnPrefDidChange(path);
 }
 
 void BatAdsImpl::OnHtmlLoaded(const int32_t tab_id,

@@ -70,7 +70,7 @@ class Serving final : public PrefManagerObserver {
   void NotifyFailedToServeNotificationAd() const;
 
   // PrefManagerObserver:
-  void OnPrefChanged(const std::string& path) override;
+  void OnPrefDidChange(const std::string& path) override;
 
   base::ObserverList<ServingObserver> observers_;
 
