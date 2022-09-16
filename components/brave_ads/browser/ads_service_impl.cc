@@ -1086,7 +1086,7 @@ void AdsServiceImpl::OnNotificationAdClicked(const std::string& placement_id) {
 
 void AdsServiceImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   if (!IsBatAdsBound()) {
-    std::move(callback).Run(/* diagnostics */ absl::nullopt);
+    std::move(callback).Run(/*diagnostics*/ absl::nullopt);
     return;
   }
 
