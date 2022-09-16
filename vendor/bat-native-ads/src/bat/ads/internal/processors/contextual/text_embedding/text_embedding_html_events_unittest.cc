@@ -10,7 +10,6 @@
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_info.h"
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_event_unittest_util.h"
-#include "gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
