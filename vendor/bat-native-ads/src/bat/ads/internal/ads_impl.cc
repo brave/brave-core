@@ -258,8 +258,9 @@ void AdsImpl::OnDidCloseTab(const int32_t tab_id) {
   }
 }
 
-void AdsImpl::OnWalletUpdated(const std::string& id, const std::string& seed) {
-  account_->SetWallet(id, seed);
+void AdsImpl::OnRewardsWalletDidChange(const std::string& payment_id,
+                                       const std::string& seed) {
+  account_->SetWallet(payment_id, seed);
 }
 
 void AdsImpl::OnDidUpdateResourceComponent(const std::string& id) {

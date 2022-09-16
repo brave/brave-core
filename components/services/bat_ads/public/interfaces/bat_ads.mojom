@@ -114,9 +114,6 @@ interface BatAds {
 
   OnDidUpdateResourceComponent(string id);
 
-  OnTabHtmlContentDidChange(int32 tab_id, array<url.mojom.Url> redirect_chain, string html);
-  OnTabTextContentDidChange(int32 tab_id, array<url.mojom.Url> redirect_chain, string text);
-
   // User Interaction
   OnUserDidBecomeIdle();
   OnUserDidBecomeActive(mojo_base.mojom.TimeDelta idle_time, bool screen_was_locked);
@@ -128,13 +125,15 @@ interface BatAds {
   OnBrowserDidEnterBackground();
 
   // Tabs
+  OnTabHtmlContentDidChange(int32 tab_id, array<url.mojom.Url> redirect_chain, string html);
+  OnTabTextContentDidChange(int32 tab_id, array<url.mojom.Url> redirect_chain, string text);
   OnTabDidStartPlayingMedia(int32 tab_id);
   OnTabDidStopPlayingMedia(int32 tab_id);
   OnTabDidChange(int32 tab_id, array<url.mojom.Url> redirect_chain, bool is_active, bool is_browser_active, bool is_incognito);
   OnDidCloseTab(int32 tab_id);
 
   // Account
-  OnWalletUpdated(string payment_id, string seed);
+  OnRewardsWalletDidChange(string payment_id, string seed);
 
   GetStatementOfAccounts() => (ads.mojom.StatementInfo? statement);
 

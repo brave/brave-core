@@ -136,9 +136,9 @@ class ADS_EXPORT Ads {
   // Called when a browser tab with the specified |tab_id| was closed.
   virtual void OnDidCloseTab(int32_t tab_id) = 0;
 
-  // Called when the user's wallet has been updated.
-  virtual void OnWalletUpdated(const std::string& payment_id,
-                               const std::string& seed) = 0;
+  // Called when the user's Brave Rewards wallet has changed.
+  virtual void OnRewardsWalletDidChange(const std::string& payment_id,
+                                        const std::string& seed) = 0;
 
   // Called to get the statement of accounts. The callback takes one argument -
   // |mojom::StatementInfo| containing info of the obtained statement of

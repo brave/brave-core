@@ -280,8 +280,8 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnWalletUpdated(base::SysNSStringToUTF8(paymentId),
-                       base::SysNSStringToUTF8(base64Seed));
+  ads->OnRewardsWalletDidChange(base::SysNSStringToUTF8(paymentId),
+                                base::SysNSStringToUTF8(base64Seed));
 }
 
 - (NSString*)adsDatabasePath {

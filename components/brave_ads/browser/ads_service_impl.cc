@@ -695,8 +695,8 @@ void AdsServiceImpl::OnGetRewardsWallet(
     return;
   }
 
-  bat_ads_->OnWalletUpdated(wallet->payment_id,
-                            base::Base64Encode(wallet->recovery_seed));
+  bat_ads_->OnRewardsWalletDidChange(wallet->payment_id,
+                                     base::Base64Encode(wallet->recovery_seed));
 }
 
 void AdsServiceImpl::OnEnabledPrefChanged() {

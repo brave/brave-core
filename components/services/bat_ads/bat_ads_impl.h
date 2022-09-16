@@ -77,8 +77,8 @@ class BatAdsImpl :
                       const bool is_incognito) override;
   void OnDidCloseTab(const int32_t tab_id) override;
 
-  void OnWalletUpdated(const std::string& payment_id,
-                       const std::string& seed) override;
+  void OnRewardsWalletDidChange(const std::string& payment_id,
+                                const std::string& seed) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
