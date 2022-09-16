@@ -2,12 +2,12 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-#include "brave/browser/permissions/brave_ethereum_permission_prompt_dialog_controller_android.h"
+#include "brave/browser/permissions/brave_dapp_permission_prompt_dialog_controller_android.h"
 
 #include "base/android/jni_android.h"
 #include "base/android/jni_array.h"
 #include "base/android/jni_string.h"
-#include "brave/build/android/jni_headers/BraveEthereumPermissionPromptDialog_jni.h"
+#include "brave/build/android/jni_headers/BraveDappPermissionPromptDialog_jni.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/blink/public/mojom/favicon/favicon_url.mojom.h"
 #include "ui/android/view_android.h"
@@ -30,27 +30,27 @@ GURL GetFavIconURL(const std::vector<blink::mojom::FaviconURLPtr>& candidates) {
 
 }  // namespace
 
-BraveEthereumPermissionPromptDialogController::
-    BraveEthereumPermissionPromptDialogController(
+BraveDappPermissionPromptDialogController::
+    BraveDappPermissionPromptDialogController(
         Delegate* delegate,
         content::WebContents* web_contents,
         brave_wallet::mojom::CoinType coin_type)
     : delegate_(delegate), web_contents_(web_contents), coin_type_(coin_type) {}
 
-BraveEthereumPermissionPromptDialogController::
-    ~BraveEthereumPermissionPromptDialogController() {
+BraveDappPermissionPromptDialogController::
+    ~BraveDappPermissionPromptDialogController() {
   DismissDialog();
 }
 
-void BraveEthereumPermissionPromptDialogController::ShowDialog() {
+void BraveDappPermissionPromptDialogController::ShowDialog() {
   if (!GetOrCreateJavaObject())
     return;
 
   JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveEthereumPermissionPromptDialog_show(env, GetOrCreateJavaObject());
+  Java_BraveDappPermissionPromptDialog_show(env, GetOrCreateJavaObject());
 }
 
-void BraveEthereumPermissionPromptDialogController::OnPrimaryButtonClicked(
+void BraveDappPermissionPromptDialogController::OnPrimaryButtonClicked(
     JNIEnv* env,
     const base::android::JavaParamRef<jobjectArray>& accounts) {
   std::vector<std::string> allowedAccounts;
@@ -59,26 +59,25 @@ void BraveEthereumPermissionPromptDialogController::OnPrimaryButtonClicked(
   delegate_->ConnectToSite(allowedAccounts);
 }
 
-void BraveEthereumPermissionPromptDialogController::OnNegativeButtonClicked(
+void BraveDappPermissionPromptDialogController::OnNegativeButtonClicked(
     JNIEnv* env) {
   delegate_->CancelConnectToSite();
 }
 
-void BraveEthereumPermissionPromptDialogController::OnDialogDismissed(
-    JNIEnv* env) {
+void BraveDappPermissionPromptDialogController::OnDialogDismissed(JNIEnv* env) {
   java_object_.Reset();
   delegate_->OnDialogDismissed();
 }
 
-void BraveEthereumPermissionPromptDialogController::DismissDialog() {
+void BraveDappPermissionPromptDialogController::DismissDialog() {
   if (java_object_) {
-    Java_BraveEthereumPermissionPromptDialog_dismissDialog(
+    Java_BraveDappPermissionPromptDialog_dismissDialog(
         base::android::AttachCurrentThread(), java_object_);
   }
 }
 
 base::android::ScopedJavaGlobalRef<jobject>
-BraveEthereumPermissionPromptDialogController::GetOrCreateJavaObject() {
+BraveDappPermissionPromptDialogController::GetOrCreateJavaObject() {
   if (java_object_)
     return java_object_;
 
@@ -89,7 +88,7 @@ BraveEthereumPermissionPromptDialogController::GetOrCreateJavaObject() {
   GURL fav_icon_url = GetFavIconURL(web_contents_->GetFaviconURLs());
   JNIEnv* env = base::android::AttachCurrentThread();
   ui::ViewAndroid* view_android = web_contents_->GetNativeView();
-  return java_object_ = Java_BraveEthereumPermissionPromptDialog_create(
+  return java_object_ = Java_BraveDappPermissionPromptDialog_create(
              env, reinterpret_cast<intptr_t>(this),
              view_android->GetWindowAndroid()->GetJavaObject(),
              web_contents_->GetJavaWebContents(),

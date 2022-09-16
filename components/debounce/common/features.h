@@ -6,11 +6,7 @@
 #ifndef BRAVE_COMPONENTS_DEBOUNCE_COMMON_FEATURES_H_
 #define BRAVE_COMPONENTS_DEBOUNCE_COMMON_FEATURES_H_
 
-namespace base {
-
-struct Feature;
-
-}  // namespace base
+#include "base/feature_list.h"
 
 namespace debounce {
 namespace features {

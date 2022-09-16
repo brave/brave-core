@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_PERMISSIONS_BRAVE_ETHEREUM_PERMISSION_PROMPT_DIALOG_CONTROLLER_ANDROID_H_
-#define BRAVE_BROWSER_PERMISSIONS_BRAVE_ETHEREUM_PERMISSION_PROMPT_DIALOG_CONTROLLER_ANDROID_H_
+#ifndef BRAVE_BROWSER_PERMISSIONS_BRAVE_DAPP_PERMISSION_PROMPT_DIALOG_CONTROLLER_ANDROID_H_
+#define BRAVE_BROWSER_PERMISSIONS_BRAVE_DAPP_PERMISSION_PROMPT_DIALOG_CONTROLLER_ANDROID_H_
 
 #include <jni.h>
 #include <string>
@@ -18,7 +18,7 @@ namespace content {
 class WebContents;
 }
 
-class BraveEthereumPermissionPromptDialogController {
+class BraveDappPermissionPromptDialogController {
  public:
   class Delegate {
    public:
@@ -28,11 +28,11 @@ class BraveEthereumPermissionPromptDialogController {
   };
 
   // Both the `delegate` and `web_contents` should outlive `this`.
-  BraveEthereumPermissionPromptDialogController(
+  BraveDappPermissionPromptDialogController(
       Delegate* delegate,
       content::WebContents* web_contents_,
       brave_wallet::mojom::CoinType coin_type_);
-  ~BraveEthereumPermissionPromptDialogController();
+  ~BraveDappPermissionPromptDialogController();
 
   void ShowDialog();
   void DismissDialog();
@@ -54,4 +54,4 @@ class BraveEthereumPermissionPromptDialogController {
   base::android::ScopedJavaGlobalRef<jobject> java_object_;
 };
 
-#endif  // BRAVE_BROWSER_PERMISSIONS_BRAVE_ETHEREUM_PERMISSION_PROMPT_DIALOG_CONTROLLER_ANDROID_H_
+#endif  // BRAVE_BROWSER_PERMISSIONS_BRAVE_DAPP_PERMISSION_PROMPT_DIALOG_CONTROLLER_ANDROID_H_

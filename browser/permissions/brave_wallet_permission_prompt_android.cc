@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "brave/browser/permissions/brave_ethereum_permission_prompt_dialog_controller_android.h"
+#include "brave/browser/permissions/brave_dapp_permission_prompt_dialog_controller_android.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "components/permissions/android/permission_prompt/permission_prompt_android.h"
@@ -19,7 +19,7 @@ BraveWalletPermissionPrompt::BraveWalletPermissionPrompt(
     brave_wallet::mojom::CoinType coin_type)
     : web_contents_(web_contents), delegate_(std::move(delegate)) {
   dialog_controller_ =
-      std::make_unique<BraveEthereumPermissionPromptDialogController>(
+      std::make_unique<BraveDappPermissionPromptDialogController>(
           this, web_contents_, coin_type);
   dialog_controller_->ShowDialog();
 }

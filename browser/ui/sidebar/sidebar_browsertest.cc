@@ -20,9 +20,14 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
+#include "testing/gmock/include/gmock/gmock-matchers.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "ui/events/base_event_utils.h"
 #include "ui/events/event.h"
 #include "ui/gfx/geometry/point.h"
+
+using ::testing::Eq;
+using ::testing::Optional;
 
 namespace sidebar {
 
@@ -72,7 +77,7 @@ class SidebarBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   // Initially, active index is not set.
-  EXPECT_EQ(-1, model()->active_index());
+  EXPECT_THAT(model()->active_index(), Eq(absl::nullopt));
 
   // Check sidebar UI is initalized properly.
   EXPECT_TRUE(!!controller()->sidebar());
@@ -81,7 +86,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   EXPECT_EQ(4UL, model()->GetAllSidebarItems().size());
   // Activate item that opens in panel.
   controller()->ActivateItemAt(2);
-  EXPECT_EQ(2, model()->active_index());
+  EXPECT_THAT(model()->active_index(), Optional(2u));
   EXPECT_TRUE(controller()->IsActiveIndex(2));
 
   // Try to activate item at index 1.
@@ -90,18 +95,18 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   const auto item = model()->GetAllSidebarItems()[1];
   EXPECT_FALSE(item.open_in_panel);
   controller()->ActivateItemAt(1);
-  EXPECT_EQ(2, model()->active_index());
+  EXPECT_THAT(model()->active_index(), Optional(2u));
 
-  // Setting -1 means deactivate current active tab.
-  controller()->ActivateItemAt(-1);
-  EXPECT_EQ(-1, model()->active_index());
+  // Setting absl::nullopt means deactivate current active tab.
+  controller()->ActivateItemAt(absl::nullopt);
+  EXPECT_THAT(model()->active_index(), Eq(absl::nullopt));
 
   controller()->ActivateItemAt(2);
 
   // Remove Item at index 0 change active index from 3 to 2.
   SidebarServiceFactory::GetForProfile(browser()->profile())->RemoveItemAt(0);
   EXPECT_EQ(3UL, model()->GetAllSidebarItems().size());
-  EXPECT_EQ(1, model()->active_index());
+  EXPECT_THAT(model()->active_index(), Optional(1u));
 
   // If current active tab is not NTP, we can add current url to sidebar.
   EXPECT_TRUE(CanAddCurrentActiveTabToSidebar(browser()));
@@ -113,9 +118,10 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   // Check |BrowserView::find_bar_host_view_| is the last child view.
   // If not, findbar dialog is not positioned properly.
   BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
-  const size_t find_bar_host_view_index =
+  auto find_bar_host_view_index =
       browser_view->GetIndexOf(browser_view->find_bar_host_view());
-  EXPECT_EQ(browser_view->children().size() - 1, find_bar_host_view_index);
+  EXPECT_THAT(find_bar_host_view_index,
+              Optional(browser_view->children().size() - 1));
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, WebTypePanelTest) {

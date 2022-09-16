@@ -10,11 +10,11 @@
   <if expr="chromeos_lacros">
     </if>
 
-  <if expr="chromeos_ash or chromeos_lacros">
+  <if expr="is_chromeos">
     </if>
 
   <if expr="chromeos_ash">
     </if>
-  <if expr="chromeos_ash or chromeos_lacros">
+  <if expr="is_chromeos">
     </if>
 </grit-part>

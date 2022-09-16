@@ -6,12 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SEARCH_CONVERSION_FEATURES_H_
 #define BRAVE_COMPONENTS_BRAVE_SEARCH_CONVERSION_FEATURES_H_
 
-namespace base {
-struct Feature;
-}  // namespace base
+#include "base/feature_list.h"
 
 namespace brave_search_conversion {
-
 namespace features {
 
 extern const base::Feature kOmniboxBanner;
@@ -19,7 +16,6 @@ extern const base::Feature kOmniboxButton;
 extern const base::Feature kNTP;
 
 }  // namespace features
-
 }  // namespace brave_search_conversion
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SEARCH_CONVERSION_FEATURES_H_

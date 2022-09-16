@@ -308,8 +308,9 @@ OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
 }
 
 - (id)createSyncServiceObserver:(void (^)())onSyncServiceStateChanged {
-  auto* service = SyncServiceFactory::GetAsSyncServiceImplForBrowserState(
-      _chromeBrowserState);
+  auto* service =
+      SyncServiceFactory::GetAsSyncServiceImplForBrowserStateForTesting(
+          _chromeBrowserState);
   return [[BraveSyncServiceObserver alloc]
       initWithSyncServiceImpl:service
                      callback:onSyncServiceStateChanged];

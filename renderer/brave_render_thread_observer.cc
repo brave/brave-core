@@ -32,9 +32,10 @@ BraveRenderThreadObserver::GetDynamicParams() {
 
 void BraveRenderThreadObserver::RegisterMojoInterfaces(
     blink::AssociatedInterfaceRegistry* associated_interfaces) {
-  associated_interfaces->AddInterface(base::BindRepeating(
-      &BraveRenderThreadObserver::OnRendererConfigurationAssociatedRequest,
-      base::Unretained(this)));
+  associated_interfaces->AddInterface<brave::mojom::BraveRendererConfiguration>(
+      base::BindRepeating(
+          &BraveRenderThreadObserver::OnRendererConfigurationAssociatedRequest,
+          base::Unretained(this)));
 }
 
 void BraveRenderThreadObserver::UnregisterMojoInterfaces(

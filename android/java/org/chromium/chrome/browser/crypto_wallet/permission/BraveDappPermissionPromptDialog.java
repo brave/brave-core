@@ -50,7 +50,7 @@ import org.chromium.url.GURL;
 import java.util.Iterator;
 import java.util.List;
 
-public class BraveEthereumPermissionPromptDialog
+public class BraveDappPermissionPromptDialog
         implements ModalDialogProperties.Controller, ImageDownloadCallback, ConnectionErrorHandler {
     static final int MAX_BITMAP_SIZE_FOR_DOWNLOAD = 2048;
 
@@ -63,7 +63,7 @@ public class BraveEthereumPermissionPromptDialog
     private String mFavIconURL;
     private ImageView mFavIconImage;
     private RecyclerView mRecyclerView;
-    private BraveEthereumPermissionAccountsListAdapter mAccountsListAdapter;
+    private BravePermissionAccountsListAdapter mAccountsListAdapter;
     private int mRequestId; // Used for favicon downloader
     private KeyringService mKeyringService;
     private boolean mMojoServicesClosed;
@@ -72,16 +72,15 @@ public class BraveEthereumPermissionPromptDialog
     private WalletModel mWalletModel;
 
     @CalledByNative
-    private static BraveEthereumPermissionPromptDialog create(long nativeDialogController,
+    private static BraveDappPermissionPromptDialog create(long nativeDialogController,
             @NonNull WindowAndroid windowAndroid, WebContents webContents, String favIconURL,
             @CoinType.EnumType int coinType) {
-        return new BraveEthereumPermissionPromptDialog(
+        return new BraveDappPermissionPromptDialog(
                 nativeDialogController, windowAndroid, webContents, favIconURL, coinType);
     }
 
-    public BraveEthereumPermissionPromptDialog(long nativeDialogController,
-            WindowAndroid windowAndroid, WebContents webContents, String favIconURL,
-            @CoinType.EnumType int coinType) {
+    public BraveDappPermissionPromptDialog(long nativeDialogController, WindowAndroid windowAndroid,
+            WebContents webContents, String favIconURL, @CoinType.EnumType int coinType) {
         mNativeDialogController = nativeDialogController;
         mWebContents = webContents;
         mFavIconURL = favIconURL;
@@ -96,6 +95,9 @@ public class BraveEthereumPermissionPromptDialog
         }
     }
 
+    // TODO: It is much more efficient to retrieve resources by identifier (e.g. R.foo.bar) than by
+    // name (e.g. getIdentifier("bar", "foo", null)).
+    @SuppressLint("DiscouragedApi")
     @CalledByNative
     void show() {
         View customView = LayoutInflaterUtils.inflate(
@@ -162,9 +164,8 @@ public class BraveEthereumPermissionPromptDialog
     private void initAccounts() {
         assert mKeyringService != null;
         assert mWalletModel != null;
-        mAccountsListAdapter = new BraveEthereumPermissionAccountsListAdapter(new AccountInfo[0],
-                true,
-                new BraveEthereumPermissionAccountsListAdapter.BraveEthereumPermissionDelegate() {
+        mAccountsListAdapter = new BravePermissionAccountsListAdapter(new AccountInfo[0], true,
+                new BravePermissionAccountsListAdapter.BravePermissionDelegate() {
                     @Override
                     public void onAccountCheckChanged(AccountInfo account, boolean isChecked) {
                         if (mPermissionDialogPositiveButton != null) {
@@ -178,7 +179,7 @@ public class BraveEthereumPermissionPromptDialog
         mRecyclerView.setLayoutManager(layoutManager);
         mWalletModel.getDappsModel().fetchAccountsForConnectionReq(
                 mCoinType, selectedAccountAllAccounts -> {
-                    String selectedAccount = selectedAccountAllAccounts.first;
+                    AccountInfo selectedAccount = selectedAccountAllAccounts.first;
                     List<AccountInfo> accounts = selectedAccountAllAccounts.second;
                     mAccountsListAdapter.setAccounts(accounts.toArray(new AccountInfo[0]));
                     if (accounts.size() > 0) {
@@ -240,12 +241,12 @@ public class BraveEthereumPermissionPromptDialog
     @Override
     public void onClick(PropertyModel model, @ButtonType int buttonType) {
         if (buttonType == ButtonType.POSITIVE) {
-            BraveEthereumPermissionPromptDialogJni.get().onPrimaryButtonClicked(
+            BraveDappPermissionPromptDialogJni.get().onPrimaryButtonClicked(
                     mNativeDialogController, getSelectedAccounts());
             mModalDialogManager.dismissDialog(
                     mPropertyModel, DialogDismissalCause.POSITIVE_BUTTON_CLICKED);
         } else if (buttonType == ButtonType.NEGATIVE) {
-            BraveEthereumPermissionPromptDialogJni.get().onNegativeButtonClicked(
+            BraveDappPermissionPromptDialogJni.get().onNegativeButtonClicked(
                     mNativeDialogController);
             mModalDialogManager.dismissDialog(
                     mPropertyModel, DialogDismissalCause.NEGATIVE_BUTTON_CLICKED);
@@ -255,7 +256,7 @@ public class BraveEthereumPermissionPromptDialog
     @Override
     public void onDismiss(PropertyModel model, int dismissalCause) {
         DisconnectMojoServices();
-        BraveEthereumPermissionPromptDialogJni.get().onDialogDismissed(mNativeDialogController);
+        BraveDappPermissionPromptDialogJni.get().onDialogDismissed(mNativeDialogController);
         mNativeDialogController = 0;
     }
 
@@ -297,8 +298,8 @@ public class BraveEthereumPermissionPromptDialog
     @NativeMethods
     interface Natives {
         void onPrimaryButtonClicked(
-                long nativeBraveEthereumPermissionPromptDialogController, String[] accounts);
-        void onNegativeButtonClicked(long nativeBraveEthereumPermissionPromptDialogController);
-        void onDialogDismissed(long nativeBraveEthereumPermissionPromptDialogController);
+                long nativeBraveDappPermissionPromptDialogController, String[] accounts);
+        void onNegativeButtonClicked(long nativeBraveDappPermissionPromptDialogController);
+        void onDialogDismissed(long nativeBraveDappPermissionPromptDialogController);
     }
 }

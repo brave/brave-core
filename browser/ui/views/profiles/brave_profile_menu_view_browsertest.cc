@@ -10,6 +10,7 @@
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
+#include "chrome/browser/ui/views/profiles/profile_menu_coordinator.h"
 #include "chrome/browser/ui/views/profiles/profile_menu_view_base.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -44,11 +45,14 @@ class BraveProfileMenuViewTest : public InProcessBrowserTest {
     avatar_button()->OnMousePressed(press);
     avatar_button()->OnMousePressed(release);
     base::RunLoop().RunUntilIdle();
-    EXPECT_TRUE(ProfileMenuViewBase::IsShowing());
+    auto* coordinator = ProfileMenuCoordinator::FromBrowser(browser());
+    EXPECT_TRUE(coordinator->IsShowing());
   }
 
   ProfileMenuViewBase* profile_menu() {
-    ProfileMenuViewBase* bubble = ProfileMenuViewBase::GetBubbleForTesting();
+    auto* coordinator = ProfileMenuCoordinator::FromBrowser(browser());
+    ProfileMenuViewBase* bubble =
+        coordinator ? coordinator->GetProfileMenuViewBaseForTesting() : nullptr;
     DCHECK(bubble);
     return bubble;
   }

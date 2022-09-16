@@ -56,14 +56,14 @@ void HistoryServiceListenerIOS::HistoryServiceBeingDeleted(
   }
 }
 
-void HistoryServiceListenerIOS::OnURLVisited(history::HistoryService* service,
-                                             ui::PageTransition transition,
-                                             const history::URLRow& row,
-                                             base::Time visit_time) {
-  IOSHistoryNode* historyNode =
-      [[IOSHistoryNode alloc] initWithURL:net::NSURLWithGURL(row.url())
-                                    title:base::SysUTF16ToNSString(row.title())
-                                dateAdded:visit_time.ToNSDate()];
+void HistoryServiceListenerIOS::OnURLVisited(
+    history::HistoryService* history_service,
+    const history::URLRow& url_row,
+    const history::VisitRow& new_visit) {
+  IOSHistoryNode* historyNode = [[IOSHistoryNode alloc]
+      initWithURL:net::NSURLWithGURL(url_row.url())
+            title:base::SysUTF16ToNSString(url_row.title())
+        dateAdded:new_visit.visit_time.ToNSDate()];
 
   if ([observer_ respondsToSelector:@selector(historyNodeVisited:)]) {
     [observer_ historyNodeVisited:historyNode];

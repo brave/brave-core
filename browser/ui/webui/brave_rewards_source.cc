@@ -87,7 +87,7 @@ void BraveRewardsSource::StartDataRequest(
   }
 }
 
-std::string BraveRewardsSource::GetMimeType(const std::string&) {
+std::string BraveRewardsSource::GetMimeType(const GURL& url) {
   // We need to explicitly return a mime type, otherwise if the user tries to
   // drag the image they get no extension.
   return "image/png";

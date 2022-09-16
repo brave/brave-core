@@ -2626,6 +2626,15 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_DAPP_WALLET_PANEL_CONNECTIVITY_STATUS" desc="Brave wallet Dapp wallet connectivity status">
       Connect
     </message>
+    <message name="IDS_DAPP_WALLET_PANEL_DISCONNECT_STATUS" desc="Brave wallet Dapp wallet disconnect status">
+      Disconnected
+    </message>
+    <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_TRUST" desc="Site Permissions panel trust account for connected site">
+      Trust
+    </message>
+    <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_REVOKE" desc="Site Permissions panel revoke account for connected site">
+      Revoke
+    </message>
     <message name="IDS_DAPP_WALLET_PANEL_CONNECTIVITY_STATUS_CONNECTED" desc="Brave wallet Dapp wallet connectivity status">
       Connected
     </message>

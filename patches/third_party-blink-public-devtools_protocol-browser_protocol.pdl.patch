@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/public/devtools_protocol/browser_protocol.pdl b/third_party/blink/public/devtools_protocol/browser_protocol.pdl
-index 73feffdbb21001f6672d0987228018aaa3c4a0da..c41050934ffd322bcca8441b5ba17022c167c856 100644
+index 89f9fe3345d6b701b65b9620e4e269015a3d6c9f..c3d08b435451f0fc1f8d6999bf0970c12f8dff1e 100644
 --- a/third_party/blink/public/devtools_protocol/browser_protocol.pdl
 +++ b/third_party/blink/public/devtools_protocol/browser_protocol.pdl
-@@ -7131,6 +7131,8 @@ domain Page
+@@ -7165,6 +7165,8 @@ domain Page
        web-share
        window-placement
        xr-spatial-tracking

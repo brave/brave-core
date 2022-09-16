@@ -8,11 +8,8 @@
 
 #include <string>
 
+#include "base/feature_list.h"
 #include "build/build_config.h"  // IWYU pragma: keep
-
-namespace base {
-struct Feature;
-}  // namespace base
 
 namespace brave_ads::features {
 

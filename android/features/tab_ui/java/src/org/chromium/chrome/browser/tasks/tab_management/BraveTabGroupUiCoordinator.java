@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 
 import org.chromium.base.ApiCompatibilityUtils;
+import org.chromium.base.Callback;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
@@ -85,8 +86,9 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
 
     @Override
     public void initializeWithNative(Activity activity,
-            BottomControlsCoordinator.BottomControlsVisibilityController visibilityController) {
-        super.initializeWithNative(activity, visibilityController);
+            BottomControlsCoordinator.BottomControlsVisibilityController visibilityController,
+            Callback<Object> onModelTokenChange) {
+        super.initializeWithNative(activity, visibilityController, onModelTokenChange);
 
         mIncognitoStateObserver = (isIncognito) -> {
             if (!isIncognito) {

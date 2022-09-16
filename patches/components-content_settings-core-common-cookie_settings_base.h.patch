@@ -1,14 +1,8 @@
 diff --git a/components/content_settings/core/common/cookie_settings_base.h b/components/content_settings/core/common/cookie_settings_base.h
-index 954be95c153ca822d3dc9f41868d82545a20b3ff..37f71e8c3b0be178dc8a928dac36f3ed7ac09c64 100644
+index deb6d6139075e30cf372b134d843adc5a3c4d332..b9d4d52d21cde5b612d3862ecfd551b337f7d44b 100644
 --- a/components/content_settings/core/common/cookie_settings_base.h
 +++ b/components/content_settings/core/common/cookie_settings_base.h
-@@ -66,12 +66,12 @@ namespace content_settings {
- // |top_frame_origin|. This is done inconsistently and needs to be fixed.
- class CookieSettingsBase {
-  public:
--  CookieSettingsBase() = default;
-+  CookieSettingsBase();
- 
+@@ -71,7 +71,7 @@ class CookieSettingsBase {
    CookieSettingsBase(const CookieSettingsBase&) = delete;
    CookieSettingsBase& operator=(const CookieSettingsBase&) = delete;
  

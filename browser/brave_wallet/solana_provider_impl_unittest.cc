@@ -27,7 +27,9 @@
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
+#include "brave/components/permissions/brave_permission_manager.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/permissions/permission_manager_factory.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/grit/brave_components_strings.h"
@@ -116,6 +118,10 @@ class SolanaProviderImplUnitTest : public testing::Test {
             browser_context());
     tx_service_ =
         brave_wallet::TxServiceFactory::GetServiceForContext(browser_context());
+    profile_.SetPermissionControllerDelegate(
+        base::WrapUnique(static_cast<permissions::BravePermissionManager*>(
+            PermissionManagerFactory::GetInstance()->BuildServiceInstanceFor(
+                browser_context()))));
     provider_ = std::make_unique<SolanaProviderImpl>(
         keyring_service_, brave_wallet_service_, tx_service_,
         std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(

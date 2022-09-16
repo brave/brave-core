@@ -90,7 +90,8 @@ void NTPBackgroundImagesSource::OnGotImageFile(
   std::move(callback).Run(std::move(bytes));
 }
 
-std::string NTPBackgroundImagesSource::GetMimeType(const std::string& path) {
+std::string NTPBackgroundImagesSource::GetMimeType(const GURL& url) {
+  const std::string path = URLDataSource::URLToRequestPath(url);
   const auto file_path = base::FilePath::FromUTF8Unsafe(path);
   if (file_path.MatchesExtension(FILE_PATH_LITERAL(".jpg"))) {
     return "image/jpeg";

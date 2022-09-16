@@ -7,7 +7,7 @@
  * 'settings-brave-sync-page' is the settings page containing brave's
  * custom sync.
  */
-import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.m.js';
+import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js';
 import 'chrome://resources/cr_elements/icons.m.js';
 import '../settings_page/settings_animated_pages.js';
 import '../settings_page/settings_subpage.js';

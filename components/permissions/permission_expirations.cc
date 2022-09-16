@@ -322,20 +322,20 @@ PermissionExpirations::ParseExpiringPermissions(
 
 base::Value PermissionExpirations::ExpiringPermissionsToValue(
     const ExpiringPermissions& expiring_permissions) const {
-  base::Value::ListStorage items;
+  base::Value::List items;
   items.reserve(expiring_permissions.size());
 
   for (const auto& expiring_permission : expiring_permissions) {
-    base::Value value(base::Value::Type::DICTIONARY);
-    value.SetStringKey(kRequestingOriginKey,
-                       expiring_permission.requesting_origin().spec());
+    base::Value::Dict value;
+    value.Set(kRequestingOriginKey,
+              expiring_permission.requesting_origin().spec());
     if (expiring_permission.embedding_origin() !=
         expiring_permission.requesting_origin()) {
-      value.SetStringKey(kEmbeddingOriginKey,
-                         expiring_permission.embedding_origin().spec());
+      value.Set(kEmbeddingOriginKey,
+                expiring_permission.embedding_origin().spec());
     }
-    value.SetIntKey(kContentSettingKey, expiring_permission.content_setting());
-    items.push_back(std::move(value));
+    value.Set(kContentSettingKey, expiring_permission.content_setting());
+    items.Append(std::move(value));
   }
 
   return base::Value(std::move(items));

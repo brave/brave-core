@@ -18,6 +18,8 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using ::testing::Eq;
+using ::testing::Optional;
 using version_info::Channel;
 
 namespace sidebar {
@@ -29,15 +31,15 @@ class MockSidebarServiceObserver : public SidebarService::Observer {
 
   MOCK_METHOD(void,
               OnItemAdded,
-              (const SidebarItem& item, int index),
+              (const SidebarItem& item, size_t index),
               (override));
   MOCK_METHOD(void,
               OnWillRemoveItem,
-              (const SidebarItem& item, int index),
+              (const SidebarItem& item, size_t index),
               (override));
   MOCK_METHOD(void,
               OnItemRemoved,
-              (const SidebarItem& item, int index),
+              (const SidebarItem& item, size_t index),
               (override));
   MOCK_METHOD(void,
               OnItemUpdated,
@@ -45,7 +47,7 @@ class MockSidebarServiceObserver : public SidebarService::Observer {
               (override));
   MOCK_METHOD(void,
               OnItemMoved,
-              (const SidebarItem& item, int from, int to),
+              (const SidebarItem& item, size_t from, size_t to),
               (override));
 };
 

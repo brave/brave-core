@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import 'chrome://resources/cr_elements/cr_input/cr_input.m.js';
+import 'chrome://resources/cr_elements/cr_input/cr_input.js';
 import './wallet_networks_subpage.js';
 
 import {BraveWalletBrowserProxy,  BraveWalletBrowserProxyImpl} from './brave_wallet_browser_proxy.m.js';

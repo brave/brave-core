@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_H_
 
 #include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/views/controls/resize_area_delegate.h"
 #include "ui/views/view.h"
 #include "ui/views/view_observer.h"
 
@@ -14,7 +15,9 @@ class BrowserView;
 
 // Replacement for chromium's SidePanel which defines a
 // unique inset and border style compared to Brave
-class BraveSidePanel : public views::View, public views::ViewObserver {
+class BraveSidePanel : public views::View,
+                       public views::ViewObserver,
+                       public views::ResizeAreaDelegate {
  public:
   // Determines the side from which the side panel will appear.
   // LTR / RTL conversions are handled in
@@ -31,9 +34,13 @@ class BraveSidePanel : public views::View, public views::ViewObserver {
   BraveSidePanel& operator=(const BraveSidePanel&) = delete;
   ~BraveSidePanel() override;
 
+  void SetPanelWidth(int width);
   void SetHorizontalAlignment(HorizontalAlignment alignment);
   HorizontalAlignment GetHorizontalAlignment();
   bool IsRightAligned();
+
+  // views::ResizeAreaDelegate:
+  void OnResize(int resize_amount, bool done_resizing) override;
 
  private:
   void UpdateVisibility();

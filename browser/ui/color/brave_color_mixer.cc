@@ -437,10 +437,11 @@ void AddBraveOmniboxLightThemeColorMixer(
     const ui::ColorProviderManager::Key& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
-  mixer[kColorOmniboxBackground] = {GetLocationBarBackground(
+  mixer[kColorToolbarBackgroundSubtleEmphasis] = {GetLocationBarBackground(
       /*dark*/ false, /*private*/ false, /*hover*/ false)};
-  mixer[kColorOmniboxBackgroundHovered] = {GetLocationBarBackground(
-      /*dark*/ false, /*private*/ false, /*hover*/ true)};
+  mixer[kColorToolbarBackgroundSubtleEmphasisHovered] = {
+      GetLocationBarBackground(
+          /*dark*/ false, /*private*/ false, /*hover*/ true)};
   mixer[kColorOmniboxText] = {kLightOmniboxText};
 
   mixer[kColorOmniboxResultsBackground] = {GetOmniboxResultBackground(
@@ -458,10 +459,11 @@ void AddBraveOmniboxDarkThemeColorMixer(
     const ui::ColorProviderManager::Key& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
-  mixer[kColorOmniboxBackground] = {GetLocationBarBackground(
+  mixer[kColorToolbarBackgroundSubtleEmphasis] = {GetLocationBarBackground(
       /*dark*/ true, /*private*/ false, /*hover*/ false)};
-  mixer[kColorOmniboxBackgroundHovered] = {GetLocationBarBackground(
-      /*dark*/ true, /*private*/ false, /*hover*/ true)};
+  mixer[kColorToolbarBackgroundSubtleEmphasisHovered] = {
+      GetLocationBarBackground(
+          /*dark*/ true, /*private*/ false, /*hover*/ true)};
   mixer[kColorOmniboxText] = {kDarkOmniboxText};
 
   mixer[kColorOmniboxResultsBackground] = {GetOmniboxResultBackground(
@@ -479,10 +481,11 @@ void AddBraveOmniboxPrivateThemeColorMixer(
     const ui::ColorProviderManager::Key& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
-  mixer[kColorOmniboxBackground] = {GetLocationBarBackground(
+  mixer[kColorToolbarBackgroundSubtleEmphasis] = {GetLocationBarBackground(
       /*dark*/ false, /*private*/ true, /*hover*/ false)};
-  mixer[kColorOmniboxBackgroundHovered] = {GetLocationBarBackground(
-      /*dark*/ false, /*private*/ true, /*hover*/ true)};
+  mixer[kColorToolbarBackgroundSubtleEmphasisHovered] = {
+      GetLocationBarBackground(
+          /*dark*/ false, /*private*/ true, /*hover*/ true)};
   mixer[kColorOmniboxText] = {kDarkOmniboxText};
 
   mixer[kColorOmniboxResultsBackground] = {GetOmniboxResultBackground(

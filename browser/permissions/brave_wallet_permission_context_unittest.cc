@@ -6,9 +6,12 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/ptr_util.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
+#include "brave/components/permissions/brave_permission_manager.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/permissions/permission_manager_factory.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/permissions/permission_util.h"
@@ -25,6 +28,10 @@ class BraveWalletPermissionContextUnitTest : public testing::Test {
 
   void SetUp() override {
     map_ = HostContentSettingsMapFactory::GetForProfile(&profile_);
+    profile_.SetPermissionControllerDelegate(
+        base::WrapUnique(static_cast<BravePermissionManager*>(
+            PermissionManagerFactory::GetInstance()->BuildServiceInstanceFor(
+                browser_context()))));
   }
 
   HostContentSettingsMap* map() { return map_.get(); }
@@ -72,7 +79,7 @@ TEST_F(BraveWalletPermissionContextUnitTest, AddPermission) {
     // Set blocked content setting for the url.
     map()->SetContentSettingDefaultScope(
         origin.GetURL(), origin.GetURL(),
-        PermissionUtil::PermissionTypeToContentSettingSafe(entry.type),
+        PermissionUtil::PermissionTypeToContentSettingTypeSafe(entry.type),
         CONTENT_SETTING_BLOCK);
     success = permissions::BraveWalletPermissionContext::HasPermission(
         entry.type, browser_context(), origin, entry.address, &has_permission);
@@ -82,7 +89,7 @@ TEST_F(BraveWalletPermissionContextUnitTest, AddPermission) {
     // Set content setting to default
     map()->SetContentSettingDefaultScope(
         origin.GetURL(), origin.GetURL(),
-        PermissionUtil::PermissionTypeToContentSettingSafe(entry.type),
+        PermissionUtil::PermissionTypeToContentSettingTypeSafe(entry.type),
         CONTENT_SETTING_DEFAULT);
     success = permissions::BraveWalletPermissionContext::HasPermission(
         entry.type, browser_context(), origin, entry.address, &has_permission);
@@ -121,14 +128,14 @@ TEST_F(BraveWalletPermissionContextUnitTest, ResetPermission) {
     // CONTENT_SETTING_BLOCK shouldn't affect reset.
     map()->SetContentSettingDefaultScope(
         origin.GetURL(), origin.GetURL(),
-        PermissionUtil::PermissionTypeToContentSettingSafe(entry.type),
+        PermissionUtil::PermissionTypeToContentSettingTypeSafe(entry.type),
         CONTENT_SETTING_BLOCK);
     // Reset the permission
     ASSERT_TRUE(permissions::BraveWalletPermissionContext::ResetPermission(
         entry.type, browser_context(), origin, entry.address));
     map()->SetContentSettingDefaultScope(
         origin.GetURL(), origin.GetURL(),
-        PermissionUtil::PermissionTypeToContentSettingSafe(entry.type),
+        PermissionUtil::PermissionTypeToContentSettingTypeSafe(entry.type),
         CONTENT_SETTING_DEFAULT);
 
     // Verify the permission is reset

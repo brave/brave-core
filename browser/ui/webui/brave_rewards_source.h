@@ -33,7 +33,7 @@ class BraveRewardsSource : public content::URLDataSource {
       const content::WebContents::Getter& wc_getter,
       content::URLDataSource::GotDataCallback got_data_callback)
       override;
-  std::string GetMimeType(const std::string&) override;
+  std::string GetMimeType(const GURL& url) override;
   bool AllowCaching() override;
   bool ShouldReplaceExistingSource() override;
   bool ShouldServiceRequest(const GURL& url,

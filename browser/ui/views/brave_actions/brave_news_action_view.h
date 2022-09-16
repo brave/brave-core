@@ -52,6 +52,7 @@ class BraveNewsActionView : public views::LabelButton,
   void ButtonPressed();
 
   BooleanPrefMember should_show_;
+  BooleanPrefMember news_enabled_;
 
   base::raw_ptr<Profile> profile_;
   base::raw_ptr<TabStripModel> tab_strip_;
