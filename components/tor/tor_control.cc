@@ -11,6 +11,7 @@
 #include "base/bind.h"
 #include "base/callback_helpers.h"
 #include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "base/sequence_checker.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
@@ -18,6 +19,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/task_traits.h"
+#include "base/task/thread_pool.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "net/base/io_buffer.h"
 #include "net/base/net_errors.h"
@@ -519,19 +521,42 @@ void TorControl::GetCircuitEstablishedDone(
 }
 
 void TorControl::SetupPluggableTransport(
+    const base::FilePath& tor,
     const base::FilePath& snowflake,
-    const base::FilePath& obsf4,
+    const base::FilePath& obfs4,
     base::OnceCallback<void(bool error)> callback) {
+  if (tor.empty() || snowflake.empty() || obfs4.empty())
+    return;
+
   if (owner_task_runner_->RunsTasksInCurrentSequence()) {
     io_task_runner_->PostTask(
         FROM_HERE, base::BindOnce(&TorControl::SetupPluggableTransport,
-                                  weak_ptr_factory_.GetWeakPtr(), snowflake,
-                                  obsf4, std::move(callback)));
+                                  weak_ptr_factory_.GetWeakPtr(), tor,
+                                  snowflake, obfs4, std::move(callback)));
     return;
   }
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
 
-  constexpr const char kObsf4ConfigCmd[] =
+  const auto snowflake_path =
+      base::FilePath::FromASCII("../../").Append(snowflake);
+  const auto obfs4_path = base::FilePath::FromASCII("../../").Append(obfs4);
+
+#if DCHECK_IS_ON()
+  // Check we can touch pluggable transport executables from the tor's working
+  // dir.
+  base::ThreadPool::PostTask(
+      FROM_HERE, {base::MayBlock()},
+      base::BindOnce(
+          [](const base::FilePath& tor, const base::FilePath& snowflake_path,
+             const base::FilePath& obfs4_path) {
+            const auto tor_path = tor.DirName();
+            DCHECK(base::PathExists(tor_path.Append(snowflake_path)));
+            DCHECK(base::PathExists(tor_path.Append(obfs4_path)));
+          },
+          tor, snowflake_path, obfs4_path));
+#endif
+
+  constexpr const char kObfs4ConfigCmd[] =
       "ClientTransportPlugin=\"meek_lite,obfs2,obfs3,obfs4,scramblesuit "
       "exec %s\"";
   constexpr const char kSnowflakeConfigCmd[] =
@@ -548,16 +573,17 @@ void TorControl::SetupPluggableTransport(
 
   const std::string snowflake_setup = base::StringPrintf(
       kSnowflakeConfigCmd,
-      snowflake.NormalizePathSeparatorsTo(FILE_PATH_LITERAL('/'))
+      snowflake_path.NormalizePathSeparatorsTo(FILE_PATH_LITERAL('/'))
           .AsUTF8Unsafe()
           .c_str());
-  const std::string obsf4_setup = base::StringPrintf(
-      kObsf4ConfigCmd, obsf4.NormalizePathSeparatorsTo(FILE_PATH_LITERAL('/'))
-                           .AsUTF8Unsafe()
-                           .c_str());
+  const std::string obfs4_setup = base::StringPrintf(
+      kObfs4ConfigCmd,
+      obfs4_path.NormalizePathSeparatorsTo(FILE_PATH_LITERAL('/'))
+          .AsUTF8Unsafe()
+          .c_str());
 
   const std::string configure_pluggable_transport =
-      base::StrCat({"SETCONF ", snowflake_setup, " ", obsf4_setup});
+      base::StrCat({"SETCONF ", snowflake_setup, " ", obfs4_setup});
 
   DoCmd(configure_pluggable_transport, base::DoNothing(),
         base::BindOnce(&TorControl::OnPluggableTransportsConfigured,
