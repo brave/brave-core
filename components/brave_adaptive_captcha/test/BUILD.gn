@@ -19,6 +19,4 @@ source_set("brave_adaptive_captcha_unit_tests") {
     "//services/network:test_support",
     "//services/network/public/cpp",
   ]
-
-  data = [ "//brave/vendor/bat-native-ads/data/" ]
 }
