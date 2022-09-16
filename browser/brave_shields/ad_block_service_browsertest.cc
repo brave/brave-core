@@ -34,6 +34,7 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
+#include "brave/components/playlist/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -49,6 +50,12 @@
 #include "extensions/test/extension_test_message_listener.h"
 #include "net/dns/mock_host_resolver.h"
 #include "services/network/host_resolver.h"
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/playlist_background_web_contents_observer.h"
+#include "chrome/browser/content_settings/page_specific_content_settings_delegate.h"
+#include "components/content_settings/browser/page_specific_content_settings.h"
+#endif
 
 const char kAdBlockTestPage[] = "/blocking.html";
 
@@ -1789,6 +1796,40 @@ IN_PROC_BROWSER_TEST_F(CosmeticFilteringFlagDisabledTest,
 
   ASSERT_EQ(true, EvalJs(contents, "checkSelector('.ad', 'display', 'block')"));
 }
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+// Ensure cosmetic filtering occurs always when AllowCosmeticFiltering() is
+// called.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AllowCosmeticFiltering) {
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  GURL url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+
+  // Set cosmetic filtering is not enabled.
+  brave_shields::SetCosmeticFilteringControlType(
+      content_settings(), brave_shields::ControlType::ALLOW, url);
+  UpdateAdBlockInstanceWithRules("b.com###ad-banner");
+
+  // Used background web contents as AllowCosmeticFiltering() will be used for
+  // it.
+  content::WebContents::CreateParams create_params(browser()->profile(),
+                                                   nullptr);
+  auto web_contents = content::WebContents::Create(create_params);
+  content_settings::PageSpecificContentSettings::CreateForWebContents(
+      web_contents.get(),
+      std::make_unique<chrome::PageSpecificContentSettingsDelegate>(
+          web_contents.get()));
+
+  playlist::PlaylistBackgroundWebContentsObserver::CreateForWebContents(
+      web_contents.get());
+  web_contents->GetController().LoadURLWithParams(
+      content::NavigationController::LoadURLParams(url));
+  content::WaitForLoadStop(web_contents.get());
+
+  EXPECT_EQ(false, EvalJs(web_contents.get(),
+                          "checkSelector('#ad-banner', 'display', 'block')"));
+}
+#endif
 
 // Ensure no cosmetic filtering occurs when the shields setting is disabled
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDisabled) {
