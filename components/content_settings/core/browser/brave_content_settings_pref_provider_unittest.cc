@@ -6,6 +6,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/json/json_reader.h"
 #include "base/json/values_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/values.h"
@@ -730,6 +731,61 @@ TEST_F(BravePrefProviderTest, EnsureNoWildcardEntries) {
   base::RunLoop().RunUntilIdle();
   // Verify global has reset
   shields_enabled_settings.CheckSettingsAreDefault(example_url);
+  provider.ShutdownOnUIThread();
+}
+
+TEST_F(BravePrefProviderTest, TestShieldsHttpsMigration) {
+  BravePrefProvider provider(
+      testing_profile()->GetPrefs(), false /* incognito */,
+      true /* store_last_modified */, false /* restore_session */);
+
+  auto* prefs = testing_profile()->GetPrefs();
+  std::string old_content_setting_path =
+      "profile.content_settings.exceptions.httpUpgradableResources";
+  std::string default_content_setting_path =
+      "profile.default_content_setting_values.httpUpgradableResources";
+  {
+    prefs->Set(old_content_setting_path, *base::JSONReader::Read(R"({
+      "*,*": {
+        "expiration": "0",
+        "last_modified": "12312",
+        "model": 0,
+        "setting": 2
+      }
+    })"));
+    provider.MigrateShieldsSettings(/*incognito*/ false);
+    EXPECT_TRUE(prefs->Get(old_content_setting_path)->DictEmpty());
+    EXPECT_FALSE(prefs->HasPrefPath(default_content_setting_path));
+  }
+  prefs->ClearPref(old_content_setting_path);
+  {
+    prefs->Set(old_content_setting_path, *base::JSONReader::Read(R"({
+      "*,*": {
+        "expiration": "0",
+        "last_modified": "12312",
+        "model": 0,
+        "setting": 1
+      }
+    })"));
+    provider.MigrateShieldsSettings(/*incognito*/ false);
+    EXPECT_TRUE(prefs->Get(old_content_setting_path)->DictEmpty());
+    EXPECT_EQ(*prefs->Get(default_content_setting_path), base::Value(1));
+  }
+  prefs->ClearPref(old_content_setting_path);
+  prefs->ClearPref(default_content_setting_path);
+  {
+    prefs->Set(old_content_setting_path, *base::JSONReader::Read(R"({})"));
+    provider.MigrateShieldsSettings(/*incognito*/ false);
+    EXPECT_TRUE(prefs->Get(old_content_setting_path)->DictEmpty());
+    EXPECT_FALSE(prefs->HasPrefPath(default_content_setting_path));
+  }
+  prefs->ClearPref(old_content_setting_path);
+  {
+    provider.MigrateShieldsSettings(/*incognito*/ false);
+    EXPECT_TRUE(prefs->Get(old_content_setting_path)->DictEmpty());
+    EXPECT_FALSE(prefs->HasPrefPath(default_content_setting_path));
+  }
+
   provider.ShutdownOnUIThread();
 }
 

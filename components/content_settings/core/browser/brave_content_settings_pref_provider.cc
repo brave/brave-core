@@ -42,7 +42,10 @@
 namespace content_settings {
 
 namespace {
-
+constexpr char kDefaultHttpsPreferencePath[] =
+    "profile.default_content_setting_values.httpUpgradableResources";
+constexpr char kObsoleteDefaultHttpsSetting[] =
+    "profile.content_settings.exceptions.httpUpgradableResources";
 constexpr char kObsoleteShieldCookies[] =
     "profile.content_settings.exceptions.shieldsCookies";
 constexpr char kBraveShieldsFPSettingsMigration[] =
@@ -176,9 +179,8 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
   // Fix any wildcard entries that could cause issues like
   // https://github.com/brave/brave-browser/issues/23113
   constexpr const ContentSettingsType kNoWildcardTypes[] = {
-      ContentSettingsType::BRAVE_SHIELDS,
       ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
-  };
+      ContentSettingsType::BRAVE_SHIELDS};
 
   auto* content_settings =
       content_settings::ContentSettingsRegistry::GetInstance();
@@ -212,6 +214,7 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
   MigrateShieldsSettingsV2ToV3();
 
   MigrateShieldsSettingsV3ToV4(version);
+  MigrateDefaultHttpsContentSetting();
 }
 
 void BravePrefProvider::EnsureNoWildcardEntries(
@@ -340,6 +343,20 @@ void BravePrefProvider::MigrateShieldsSettingsV1ToV2() {
 
   // Mark migration as done.
   prefs_->SetInteger(kBraveShieldsSettingsVersion, 2);
+}
+
+void BravePrefProvider::MigrateDefaultHttpsContentSetting() {
+  auto* obsolete_pref = prefs_->Get(kObsoleteDefaultHttpsSetting);
+  if (!obsolete_pref || !obsolete_pref->is_dict())
+    return;
+  auto* obsolete_default_key = obsolete_pref->FindDictKey("*,*");
+  if (!obsolete_default_key || !obsolete_default_key->is_dict())
+    return;
+  auto value = obsolete_default_key->GetDict().FindInt("setting");
+  if (value.has_value() && value.value() == 1) {
+    prefs_->Set(kDefaultHttpsPreferencePath, base::Value(1));
+  }
+  prefs_->ClearPref(kObsoleteDefaultHttpsSetting);
 }
 
 void BravePrefProvider::MigrateShieldsSettingsV2ToV3() {
