@@ -108,7 +108,7 @@ interface BatAds {
 
   GetDiagnostics() => (mojo_base.mojom.ListValue? value);
 
-  OnChangeLocale(string locale);
+  OnLocaleDidChange(string locale);
 
   OnPrefChanged(string path);
 

@@ -1093,14 +1093,14 @@ void AdsServiceImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   bat_ads_->GetDiagnostics(std::move(callback));
 }
 
-void AdsServiceImpl::OnChangeLocale(const std::string& locale) {
+void AdsServiceImpl::OnLocaleDidChange(const std::string& locale) {
   if (!IsBatAdsBound()) {
     return;
   }
 
   RegisterResourceComponentsForLocale(locale);
 
-  bat_ads_->OnChangeLocale(locale);
+  bat_ads_->OnLocaleDidChange(locale);
 }
 
 void AdsServiceImpl::OnHtmlLoaded(const SessionID& tab_id,

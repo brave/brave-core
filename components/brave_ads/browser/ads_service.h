@@ -113,7 +113,7 @@ class AdsService : public KeyedService {
   // call is not required if the operating system restarts the browser when
   // changing the locale. |locale| should be specified in either
   // <ISO-639-1>-<ISO-3166-1> or <ISO-639-1>_<ISO-3166-1> format.
-  virtual void OnChangeLocale(const std::string& locale) = 0;
+  virtual void OnLocaleDidChange(const std::string& locale) = 0;
 
   // Called when a resource component has been updated.
   virtual void OnDidUpdateResourceComponent(const std::string& id) = 0;

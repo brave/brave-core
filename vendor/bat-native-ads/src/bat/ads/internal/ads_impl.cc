@@ -169,7 +169,7 @@ void AdsImpl::Shutdown(ShutdownCallback callback) {
   callback(/*success*/ true);
 }
 
-void AdsImpl::OnChangeLocale(const std::string& locale) {
+void AdsImpl::OnLocaleDidChange(const std::string& locale) {
   LocaleManager::GetInstance()->OnLocaleDidChange(locale);
 }
 

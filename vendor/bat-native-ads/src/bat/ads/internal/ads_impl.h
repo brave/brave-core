@@ -100,7 +100,7 @@ class AdsImpl final : public Ads,
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
-  void OnChangeLocale(const std::string& locale) override;
+  void OnLocaleDidChange(const std::string& locale) override;
 
   void OnPrefChanged(const std::string& path) override;
 

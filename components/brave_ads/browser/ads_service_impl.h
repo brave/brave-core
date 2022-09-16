@@ -255,7 +255,7 @@ class AdsServiceImpl : public AdsService,
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
-  void OnChangeLocale(const std::string& locale) override;
+  void OnLocaleDidChange(const std::string& locale) override;
 
   void OnHtmlLoaded(const SessionID& tab_id,
                     const std::vector<GURL>& redirect_chain,

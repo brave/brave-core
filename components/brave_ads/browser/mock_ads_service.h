@@ -50,7 +50,7 @@ class MockAdsService : public AdsService {
 
   MOCK_METHOD1(GetDiagnostics, void(GetDiagnosticsCallback));
 
-  MOCK_METHOD1(OnChangeLocale, void(const std::string&));
+  MOCK_METHOD1(OnLocaleDidChange, void(const std::string&));
 
   MOCK_METHOD1(OnDidUpdateResourceComponent, void(const std::string&));
 
