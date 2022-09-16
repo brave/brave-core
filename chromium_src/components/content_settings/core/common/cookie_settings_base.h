@@ -37,21 +37,26 @@ struct CookieSettingWithBraveMetadata {
   ShouldUseEphemeralStorage(                                                   \
       const GURL& url, const net::SiteForCookies& site_for_cookies,            \
       const absl::optional<url::Origin>& top_frame_origin) const;              \
-  bool IsEphemeralCookieAccessAllowed(const GURL& url,                         \
-                                      const GURL& first_party_url) const;      \
+  bool IsEphemeralCookieAccessAllowed(                                         \
+      const GURL& url, const GURL& first_party_url,                            \
+      CookieSettingsBase::QueryReason query_reason) const;                     \
   bool IsEphemeralCookieAccessAllowed(                                         \
       const GURL& url, const net::SiteForCookies& site_for_cookies,            \
-      const absl::optional<url::Origin>& top_frame_origin) const;              \
-  bool IsChromiumFullCookieAccessAllowed(const GURL& url,                      \
-                                         const GURL& first_party_url) const;   \
+      const absl::optional<url::Origin>& top_frame_origin,                     \
+      CookieSettingsBase::QueryReason query_reason) const;                     \
+  bool IsChromiumFullCookieAccessAllowed(                                      \
+      const GURL& url, const GURL& first_party_url,                            \
+      CookieSettingsBase::QueryReason query_reason) const;                     \
   bool IsChromiumFullCookieAccessAllowed(                                      \
       const GURL& url, const net::SiteForCookies& site_for_cookies,            \
-      const absl::optional<url::Origin>& top_frame_origin) const;              \
+      const absl::optional<url::Origin>& top_frame_origin,                     \
+      CookieSettingsBase::QueryReason query_reason) const;                     \
   bool ShouldBlockThirdPartyIfSettingIsExplicit(                               \
       bool block_third_party_cookies, ContentSetting cookie_setting,           \
       bool is_explicit_setting, bool is_first_party_allowed_scheme) const;     \
   CookieSettingWithBraveMetadata GetCookieSettingWithBraveMetadata(            \
-      const GURL& url, const GURL& first_party_url) const;                     \
+      const GURL& url, const GURL& first_party_url,                            \
+      CookieSettingsBase::QueryReason query_reason) const;                     \
   CookieSettingWithBraveMetadata* cookie_setting_with_brave_metadata() const { \
     return cookie_setting_with_brave_metadata_.Get();                          \
   }                                                                            \
@@ -59,7 +64,8 @@ struct CookieSettingWithBraveMetadata {
  private:                                                                      \
   bool IsCookieAccessAllowedImpl(                                              \
       const GURL& url, const net::SiteForCookies& site_for_cookies,            \
-      const absl::optional<url::Origin>& top_frame_origin) const;              \
+      const absl::optional<url::Origin>& top_frame_origin,                     \
+      CookieSettingsBase::QueryReason query_reason) const;                     \
                                                                                \
   mutable base::ThreadLocalPointer<CookieSettingWithBraveMetadata>             \
       cookie_setting_with_brave_metadata_;                                     \

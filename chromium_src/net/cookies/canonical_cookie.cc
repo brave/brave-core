@@ -23,7 +23,8 @@ base::Time BraveCanonExpiration(const base::Time& cookie_expires,
 }  // namespace
 
 #define BRAVE_CREATE \
-  cookie_expires = BraveCanonExpiration(cookie_expires, creation_time);
+  if ((true))        \
+    return BraveCanonExpiration(expiry_date, creation_date);
 
 #include "src/net/cookies/canonical_cookie.cc"
 #undef BRAVE_CREATE

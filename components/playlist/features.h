@@ -6,9 +6,7 @@
 #ifndef BRAVE_COMPONENTS_PLAYLIST_FEATURES_H_
 #define BRAVE_COMPONENTS_PLAYLIST_FEATURES_H_
 
-namespace base {
-struct Feature;
-}  // namespace base
+#include "base/feature_list.h"
 
 namespace playlist {
 namespace features {

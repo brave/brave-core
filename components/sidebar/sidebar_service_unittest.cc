@@ -14,8 +14,11 @@
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/version_info/channel.h"
+#include "testing/gmock/include/gmock/gmock-matchers.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using ::testing::Eq;
+using ::testing::Optional;
 using version_info::Channel;
 
 namespace sidebar {
@@ -35,24 +38,24 @@ class SidebarServiceTest : public testing::Test,
   }
 
   // SidebarServiceObserver overrides:
-  void OnItemAdded(const SidebarItem& item, int index) override {
+  void OnItemAdded(const SidebarItem& item, size_t index) override {
     item_index_on_called_ = index;
     on_item_added_called_ = true;
   }
 
-  void OnWillRemoveItem(const SidebarItem& item, int index) override {
+  void OnWillRemoveItem(const SidebarItem& item, size_t index) override {
     item_index_on_called_ = index;
     on_will_remove_item_called_ = true;
   }
 
-  void OnItemRemoved(const SidebarItem& item, int index) override {
+  void OnItemRemoved(const SidebarItem& item, size_t index) override {
     // Make sure OnWillRemoveItem() must be called before this.
     EXPECT_TRUE(on_will_remove_item_called_);
     item_index_on_called_ = index;
     on_item_removed_called_ = true;
   }
 
-  void OnItemMoved(const SidebarItem& item, int from, int to) override {
+  void OnItemMoved(const SidebarItem& item, size_t from, size_t to) override {
     on_item_moved_called_ = true;
   }
 

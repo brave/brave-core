@@ -7,7 +7,7 @@
 #include "build/build_config.h"
 #include "chrome/browser/domain_reliability/service_factory.h"
 #include "chrome/browser/enterprise/connectors/analysis/content_analysis_features.h"
-#include "chrome/browser/prefetch/prefetch_proxy/prefetch_proxy_features.h"
+#include "chrome/browser/preloading/prefetch/prefetch_proxy/prefetch_proxy_features.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/test/base/chrome_test_utils.h"
@@ -89,6 +89,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &autofill::features::kAutofillUpstreamAllowAdditionalEmailDomains,
     &blink::features::kAdInterestGroupAPI,
     &blink::features::kAllowURNsInIframes,
+    &blink::features::kAnonymousIframeOriginTrial,
     &blink::features::kBrowsingTopics,
     &blink::features::kClientHintsMetaEquivDelegateCH,
     &blink::features::kComputePressure,
@@ -141,6 +142,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &history_clusters::internal::kOmniboxAction,
     &history_clusters::internal::kPersistContextAnnotationsInHistoryDb,
     &lens::features::kLensStandalone,
+    &lens::features::kLensUnifiedSidePanelFooter,
     &media::kLiveCaption,
     &net::features::kNoncedPartitionedCookies,
     &net::features::kPartitionedCookies,
@@ -150,8 +152,10 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &optimization_guide::features::kRemoteOptimizationGuideFetching,
     &optimization_guide::features::
         kRemoteOptimizationGuideFetchingAnonymousDataConsent,
+    &password_manager::features::kUnifiedPasswordManagerDesktop,
 #if !BUILDFLAG(IS_ANDROID)
     &permissions::features::kPermissionsPostPromptSurvey,
+    &permissions::features::kRecordPermissionExpirationTimestamps,
 #endif
     &permissions::features::kPermissionOnDeviceNotificationPredictions,
     &privacy_sandbox::kOverridePrivacySandboxSettingsLocalTesting,

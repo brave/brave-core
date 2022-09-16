@@ -107,9 +107,9 @@ void SidebarItemsContentsView::UpdateAllBuiltInItemsViewState() {
   if (children().size() != items.size())
     return;
 
-  const int active_index = sidebar_model_->active_index();
-  const int items_num = items.size();
-  for (int item_index = 0; item_index < items_num; ++item_index) {
+  auto active_index = sidebar_model_->active_index();
+  const size_t items_num = items.size();
+  for (size_t item_index = 0; item_index < items_num; ++item_index) {
     const auto item = items[item_index];
     if (!sidebar::IsBuiltInType(item))
       continue;
@@ -131,13 +131,9 @@ void SidebarItemsContentsView::UpdateAllBuiltInItemsViewState() {
 
 std::u16string SidebarItemsContentsView::GetTooltipTextFor(
     const views::View* view) const {
-  int index = GetIndexOf(view);
-  DCHECK_GE(index, 0);
-
-  if (index == -1)
-    return std::u16string();
-
-  auto& item = sidebar_model_->GetAllSidebarItems()[index];
+  auto index = GetIndexOf(view);
+  DCHECK(index);
+  auto& item = sidebar_model_->GetAllSidebarItems()[*index];
   if (!item.title.empty())
     return item.title;
 
@@ -151,7 +147,7 @@ void SidebarItemsContentsView::ShowContextMenuForViewImpl(
   if (context_menu_runner_ && context_menu_runner_->IsRunning())
     return;
 
-  if (GetIndexOf(source) == -1)
+  if (!GetIndexOf(source))
     return;
 
   view_for_context_menu_ = source;
@@ -175,14 +171,9 @@ void SidebarItemsContentsView::ShowContextMenuForViewImpl(
 }
 
 void SidebarItemsContentsView::ExecuteCommand(int command_id, int event_flags) {
-  int index = GetIndexOf(view_for_context_menu_);
-  DCHECK_GE(index, 0);
-
-  if (index == -1)
-    return;
-
+  auto index = GetIndexOf(view_for_context_menu_);
   if (command_id == kItemRemove) {
-    GetSidebarService(browser_)->RemoveItemAt(index);
+    GetSidebarService(browser_)->RemoveItemAt(*index);
     return;
   }
 }
@@ -203,13 +194,14 @@ void SidebarItemsContentsView::OnItemRemoved(int index) {
   InvalidateLayout();
 }
 
-void SidebarItemsContentsView::OnActiveIndexChanged(int old_index,
-                                                    int new_index) {
-  if (old_index != -1)
-    UpdateItemViewStateAt(old_index, false);
+void SidebarItemsContentsView::OnActiveIndexChanged(
+    absl::optional<size_t> old_index,
+    absl::optional<size_t> new_index) {
+  if (old_index)
+    UpdateItemViewStateAt(*old_index, false);
 
-  if (new_index != -1)
-    UpdateItemViewStateAt(new_index, true);
+  if (new_index)
+    UpdateItemViewStateAt(*new_index, true);
 }
 
 void SidebarItemsContentsView::OnItemMoved(const sidebar::SidebarItem& item,
@@ -289,18 +281,18 @@ void SidebarItemsContentsView::ShowItemAddedFeedbackBubble(
 }
 
 bool SidebarItemsContentsView::IsBuiltInTypeItemView(views::View* view) const {
-  const int index = GetIndexOf(view);
-  return sidebar::IsBuiltInType(sidebar_model_->GetAllSidebarItems()[index]);
+  auto index = GetIndexOf(view);
+  return sidebar::IsBuiltInType(sidebar_model_->GetAllSidebarItems()[*index]);
 }
 
 void SidebarItemsContentsView::SetImageForItem(const sidebar::SidebarItem& item,
                                                const gfx::ImageSkia& image) {
-  int index = sidebar_model_->GetIndexOf(item);
-  // -1 means |item| is deleted while fetching favicon.
-  if (index == -1)
+  auto index = sidebar_model_->GetIndexOf(item);
+  // disengaged means |item| is deleted while fetching favicon.
+  if (!index)
     return;
 
-  SidebarItemView* item_view = GetItemViewAt(index);
+  SidebarItemView* item_view = GetItemViewAt(*index);
   item_view->SetImage(
       views::Button::STATE_NORMAL,
       gfx::ImageSkiaOperations::CreateResizedImage(
@@ -313,7 +305,8 @@ void SidebarItemsContentsView::ClearDragIndicator() {
   }
 }
 
-int SidebarItemsContentsView::CalculateTargetDragIndicatorIndex(
+absl::optional<size_t>
+SidebarItemsContentsView::CalculateTargetDragIndicatorIndex(
     const gfx::Point& screen_position) {
   // Find which item view includes this |screen_position|.
   const int child_count = children().size();
@@ -329,17 +322,19 @@ int SidebarItemsContentsView::CalculateTargetDragIndicatorIndex(
   }
 
   NOTREACHED();
-  return -1;
+  return absl::nullopt;
 }
 
-int SidebarItemsContentsView::DrawDragIndicator(views::View* source,
-                                                const gfx::Point& position) {
-  const int source_view_index = GetIndexOf(source);
-  int target_index = CalculateTargetDragIndicatorIndex(position);
+absl::optional<size_t> SidebarItemsContentsView::DrawDragIndicator(
+    views::View* source,
+    const gfx::Point& position) {
+  auto source_view_index = GetIndexOf(source);
+  auto target_index = CalculateTargetDragIndicatorIndex(position);
   // If target position is right before or right after, don't need to draw
   // drag indicator.
+  DCHECK(source_view_index);
   if (source_view_index == target_index ||
-      source_view_index + 1 == target_index) {
+      *source_view_index + 1 == target_index) {
     ClearDragIndicator();
   } else {
     DoDrawDragIndicator(target_index);
@@ -348,28 +343,30 @@ int SidebarItemsContentsView::DrawDragIndicator(views::View* source,
   return target_index;
 }
 
-void SidebarItemsContentsView::DoDrawDragIndicator(int index) {
+void SidebarItemsContentsView::DoDrawDragIndicator(
+    absl::optional<size_t> index) {
   // Clear current drag indicator.
   ClearDragIndicator();
 
-  if (index == -1)
+  if (!index)
     return;
 
   // Use item's top or bottom border as a drag indicator.
   // Item's top border is used as a drag indicator except last item.
   // Last item's bottom border is used for indicator when drag candidate
   // position is behind the last item.
-  const int child_count = children().size();
-  const bool draw_top_border = child_count != index;
-  const int item_index = draw_top_border ? index : index - 1;
+  const size_t child_count = children().size();
+  const bool draw_top_border = child_count != *index;
+  const size_t item_index = draw_top_border ? *index : *index - 1;
   GetItemViewAt(item_index)->DrawHorizontalBorder(draw_top_border);
 }
 
-SidebarItemView* SidebarItemsContentsView::GetItemViewAt(int index) {
+SidebarItemView* SidebarItemsContentsView::GetItemViewAt(size_t index) {
   return static_cast<SidebarItemView*>(children()[index]);
 }
 
-void SidebarItemsContentsView::UpdateItemViewStateAt(int index, bool active) {
+void SidebarItemsContentsView::UpdateItemViewStateAt(size_t index,
+                                                     bool active) {
   const auto& item = sidebar_model_->GetAllSidebarItems()[index];
   SidebarItemView* item_view = GetItemViewAt(index);
 
@@ -390,11 +387,11 @@ void SidebarItemsContentsView::UpdateItemViewStateAt(int index, bool active) {
 void SidebarItemsContentsView::OnItemPressed(const views::View* item,
                                              const ui::Event& event) {
   auto* controller = browser_->sidebar_controller();
-  const int index = GetIndexOf(item);
+  auto index = GetIndexOf(item);
   if (controller->IsActiveIndex(index)) {
     // TODO(simonhong): This is for demo. We will have another UI for closing.
     // De-activate active item.
-    controller->ActivateItemAt(-1);
+    controller->ActivateItemAt(absl::nullopt);
     return;
   }
 

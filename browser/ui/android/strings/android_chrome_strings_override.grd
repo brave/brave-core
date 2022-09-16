@@ -140,10 +140,10 @@ Based on your interaction with a site, like regularly signing in to an account, 
 
 Trust tokens improve privacy on the web and can’t be used to find out who you are.
       </message>
-      <message name="IDS_PRIVACY_REVIEW_COOKIES_BLOCK_INCOGNITO_TITLE" desc="Title for the radio button for blocking third-party cookies in private.">
+      <message name="IDS_PRIVACY_GUIDE_COOKIES_BLOCK_INCOGNITO_TITLE" desc="Title for the radio button for blocking third-party cookies in private.">
         Block while using private
       </message>
-      <message name="IDS_PRIVACY_REVIEW_COOKIES_BLOCK_INCOGNITO_DESCRIPTION" desc="Description for the radio button for blocking third-party cookies in private.">
+      <message name="IDS_PRIVACY_GUIDE_COOKIES_BLOCK_INCOGNITO_DESCRIPTION" desc="Description for the radio button for blocking third-party cookies in private.">
         While in private, sites can’t use your cookies to see your browsing activity across different sites, for example, to personalize ads. Features on some sites may break.
       </message>
       <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_INCOGNITO_STACK" desc="Content description for the Private stack selection 'button'.">
@@ -186,6 +186,9 @@ Trust tokens improve privacy on the web and can’t be used to find out who you 
      </message>
      <message name="IDS_INCOGNITO_REAUTH_LOCK_ACTION_TEXT" desc="The label of the button which upon click would turn on the corresponding Brave level Private lock setting after a re-authentication.">
        Turn on Private lock
+     </message>
+     <message name="IDS_INCOGNITO_REAUTH_SNACKBAR_TEXT" desc="The label of the snackbar notification which appears after the private re-authentication is turned on from the promo card shown inside the Private grid tab switcher.">
+        Private tabs will be locked when you leave Brave
      </message>
 
       <message name="IDS_SIGNIN_FRE_UMA_DIALOG_FIRST_SECTION_BODY" desc="Text that describes the benefits users will get if they turn on the metrics sharing option.">

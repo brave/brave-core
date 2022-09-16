@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/document/ChromeLauncherActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/document/ChromeLauncherActivity.java
-index 7ec8dadd1cd6eb65f4870317b00cae6a2421daf4..858e18ed9e4184efa9068eab88037b2e9fa48097 100644
+index 5b75069397ed9a6d8789183d51cabcc6fdb61ada..60cfb4861d00acd06cdd51638a984577da322f21 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/document/ChromeLauncherActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/document/ChromeLauncherActivity.java
-@@ -19,7 +19,7 @@ import org.chromium.chrome.browser.vr.VrModuleProvider;
+@@ -18,7 +18,7 @@ import org.chromium.chrome.browser.vr.VrModuleProvider;
   * Dispatches incoming intents to the appropriate activity based on the current configuration and
   * Intent fired.
   */

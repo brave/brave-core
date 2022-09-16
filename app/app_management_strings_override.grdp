@@ -5,7 +5,7 @@
   </message>
   <if expr="is_win">
     </if>
-  <if expr="chromeos_ash or chromeos_lacros">
+  <if expr="is_chromeos">
     </if>
   <if expr="is_macosx">
     </if>

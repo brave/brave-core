@@ -1588,12 +1588,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 ContextUtils.getApplicationContext());
     }
 
-    @Override
-    protected boolean supportsDynamicColors() {
-        // Dynamic colors cause styling issues with Brave theme.
-        return false;
-    }
-
     private void InitBraveWalletService() {
         if (mBraveWalletService != null) {
             return;

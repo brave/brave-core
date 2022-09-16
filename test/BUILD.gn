@@ -83,7 +83,7 @@ static_library("brave_test_support_unit") {
 test("brave_unit_tests") {
   testonly = true
 
-  configs += [ "//chrome:disable_thinlto_cache_flags" ]
+  configs += [ "//chrome/test:disable_thinlto_cache_flags" ]
 
   sources = [
     "//brave/browser/brave_ads/search_result_ad/search_result_ad_service_unittest.cc",
@@ -635,7 +635,7 @@ if (!is_android) {
       "//brave/vendor/bat-native-ads:internal_config",
       "//brave/vendor/bat-native-ledger:internal_config",
       "//build/config:precompiled_headers",
-      "//chrome:disable_thinlto_cache_flags",
+      "//chrome/test:disable_thinlto_cache_flags",
     ]
 
     sources = [
@@ -843,6 +843,7 @@ if (!is_android) {
       "//components/javascript_dialogs",
       "//components/lens",
       "//components/metrics_services_manager",
+      "//components/network_session_configurator/common:common",
       "//components/optimization_guide/core",
       "//components/permissions:permissions_common",
       "//components/privacy_sandbox",
@@ -1052,7 +1053,7 @@ if (!is_android) {
     # We need to disable the ThinLTO cache or the linker will die with
     # a "Resource temporarily unavailable" error due to the linking
     # reaching the vm.max_map_count limit of 65530 memory mappings.
-    configs += [ "//chrome:disable_thinlto_cache_flags" ]
+    configs += [ "//chrome/test:disable_thinlto_cache_flags" ]
 
     sources = [
       "//brave/browser/net/brave_network_audit_allowed_lists.h",

@@ -15,6 +15,8 @@
 -All/DiceWebSigninInterceptorManagedAccountTest.*
 -All/EnterpriseProfileWelcomeHandleProceedTest.HandleProceed/*
 -All/ExtensionActionAPIUnitTest.*
+-All/ExtensionContextMenuModelWithUserHostControlsTest.PageAccessItemsVisibilityBasedOnSiteSettings/*
+-All/ExtensionContextMenuModelWithUserHostControlsTest.TestClickingPageAccessPermissionsPage/*
 -All/IntentPickerBubbleViewLayoutTest.*
 -All/InvalidSearchProviderTest.DoesNotSendSuggestRequests/*
 -All/MultipleRulesetsTest_Unpacked.*
@@ -63,6 +65,7 @@
 -BrowserUnitTest.*
 -BrowserViewHostedAppTest.*
 -BrowserViewTest.*
+-CastDialogCoordinatorTest.ShowAndHideDialog
 -CastDialogViewTest.AccessCodeEmptySinksSourcesAvailable
 -CastDialogViewTest.ShowAccessCodeCastButtonEnabled
 -CastHandlerTest.*
@@ -84,6 +87,7 @@
 -ChromeCustomizeThemesHandlerTest.*
 -ChromeDownloadManagerDelegateTest.*
 -ChromeEnterpriseRealTimeUrlLookupServiceTest.*
+-ChromeFileSystemAccessPermissionContextTest.ConfirmSensitiveEntryAccess_DangerousFile
 -ChromeLabs*Test.*
 -ChromeLocationBarModelDelegateTest.*
 -ChromeMetricsServicesManagerClientTest.*
@@ -322,6 +326,10 @@
 -SendTabToSelfUtilTestWithWindow.*
 -SessionServiceTest.*
 -SessionStorageApiUnittest.*
+-SettingsOverriddenDialogViewUnitTest.DialogResult_ChangeSettingsBack
+-SettingsOverriddenDialogViewUnitTest.DialogResult_CloseParentWidget
+-SettingsOverriddenDialogViewUnitTest.DialogResult_DismissDialog
+-SettingsOverriddenDialogViewUnitTest.DialogResult_KeepNewSettings
 -SettingsOverriddenParamsProvidersUnitTest.*
 -SettingsResetPromptModel/ResetStatesTest.*
 -SettingsResetPromptModelTest.*
@@ -333,6 +341,11 @@
 -SigninErrorHandlerTest.*
 -SigninManagerTest.*
 -SigninUiUtilTest.*
+-SingletonTabsTest.DoesNotFindDifferentPath
+-SingletonTabsTest.DoesNotFindNonSingletonDisposition
+-SingletonTabsTest.DoesNotFindViewSource
+-SingletonTabsTest.FindsExactMatch
+-SingletonTabsTest.FindsWithDifferentRef
 -SitePermissionsHelperUnitTest.*
 -SitePermissionsHelperWithUserHostControlsUnitTest.DowngradingFromAllSitesToOnClickAppliesUserPermittedSites
 -SideSearchTabContentsHelperTest.*

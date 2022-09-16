@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_MANAGER_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_MANAGER_H_
 
+#include "components/permissions/permission_util.h"
+
 // In case this fails compilation in the future, simply apply to any
 // other private member, more obscure name is better so it doesn't
 // affect other included header files from this header file.
@@ -14,9 +16,7 @@
   friend class BravePermissionManager;    \
   GURL forced_requesting_origin_;
 
-#define GetCanonicalOrigin virtual GetCanonicalOrigin
 #include "src/components/permissions/permission_manager.h"
-#undef GetCanonicalOrigin
 
 #undef devtools_global_overrides_origin_
 

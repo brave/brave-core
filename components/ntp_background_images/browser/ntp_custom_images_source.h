@@ -36,7 +36,7 @@ class NTPCustomImagesSource : public content::URLDataSource {
   void StartDataRequest(const GURL& url,
                         const content::WebContents::Getter& wc_getter,
                         GotDataCallback callback) override;
-  std::string GetMimeType(const std::string& path) override;
+  std::string GetMimeType(const GURL& url) override;
   bool AllowCaching() override;
 
   void GetImageFile(const base::FilePath& image_file_path,

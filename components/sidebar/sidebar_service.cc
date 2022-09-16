@@ -259,9 +259,9 @@ void SidebarService::RemoveItemAt(int index) {
   UpdateSidebarItemsToPrefStore();
 }
 
-void SidebarService::MoveItem(int from, int to) {
+void SidebarService::MoveItem(size_t from, size_t to) {
   DCHECK(items_.size() > static_cast<size_t>(from) &&
-         items_.size() > static_cast<size_t>(to) && from >= 0 && to >= 0);
+         items_.size() > static_cast<size_t>(to));
 
   if (from == to)
     return;

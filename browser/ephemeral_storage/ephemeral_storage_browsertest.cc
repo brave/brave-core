@@ -22,6 +22,7 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -247,7 +248,7 @@ void EphemeralStorageBrowserTest::CloseWebContents(WebContents* web_contents) {
   int tab_index =
       browser()->tab_strip_model()->GetIndexOfWebContents(web_contents);
   bool was_closed = browser()->tab_strip_model()->CloseWebContentsAt(
-      tab_index, TabStripModel::CloseTypes::CLOSE_NONE);
+      tab_index, TabCloseTypes::CLOSE_NONE);
   EXPECT_TRUE(was_closed);
 }
 
@@ -653,7 +654,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   int tab_index =
       browser()->tab_strip_model()->GetIndexOfWebContents(site_a_tab);
   bool was_closed = browser()->tab_strip_model()->CloseWebContentsAt(
-      tab_index, TabStripModel::CloseTypes::CLOSE_NONE);
+      tab_index, TabCloseTypes::CLOSE_NONE);
   EXPECT_TRUE(was_closed);
 
   // Navigate the main tab to the same site.

@@ -1,8 +1,8 @@
 diff --git a/chrome/renderer/chrome_content_renderer_client.cc b/chrome/renderer/chrome_content_renderer_client.cc
-index 0cc423db56e007d0bfab8cd8730b6279931f8c84..2119191d85ccae969bb53b70561f41f272ac1639 100644
+index a7ffa185b5df0073b7503453cf4478e80d774e68..2cd42e1f2a504c5b6c1e1b780d8d7e7fae51e0a4 100644
 --- a/chrome/renderer/chrome_content_renderer_client.cc
 +++ b/chrome/renderer/chrome_content_renderer_client.cc
-@@ -549,7 +549,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
+@@ -560,7 +560,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
        ChromeExtensionsRendererClient::GetInstance()->extension_dispatcher());
  #endif
    content_settings::ContentSettingsAgentImpl* content_settings =
@@ -11,8 +11,8 @@ index 0cc423db56e007d0bfab8cd8730b6279931f8c84..2119191d85ccae969bb53b70561f41f2
            render_frame, should_allow_for_content_settings,
            std::move(content_settings_delegate));
    if (chrome_observer_.get()) {
-@@ -735,6 +735,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
-         &RenderFrameFontFamilyAccessor::Bind, render_frame));
+@@ -750,6 +750,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
+                                 render_frame));
    }
  #endif
 +  BRAVE_RENDER_FRAME_CREATED

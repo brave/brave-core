@@ -543,7 +543,7 @@ public class BytecodeTest {
                 ObservableSupplier.class, BooleanSupplier.class, boolean.class, boolean.class,
                 boolean.class, boolean.class, boolean.class, HistoryDelegate.class,
                 BooleanSupplier.class, OfflineDownloader.class, boolean.class,
-                ObservableSupplier.class, Callback.class));
+                ObservableSupplier.class, Callback.class, boolean.class, ObservableSupplier.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
                 "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator",
@@ -581,7 +581,7 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/share/send_tab_to_self/ManageAccountDevicesLinkView",
                 "org/chromium/chrome/browser/share/send_tab_to_self/BraveManageAccountDevicesLinkView",
-                Context.class));
+                Context.class, AttributeSet.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
                 "org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesMediator",

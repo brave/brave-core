@@ -21,29 +21,19 @@ class BravePermissionManager : public PermissionManager {
   BravePermissionManager(const BravePermissionManager&) = delete;
   BravePermissionManager& operator=(const BravePermissionManager&) = delete;
 
-  GURL GetCanonicalOrigin(ContentSettingsType permission,
-                          const GURL& requesting_origin,
-                          const GURL& embedding_origin) const override;
-
   void RequestPermissionsForOrigin(
       const std::vector<blink::PermissionType>& permissions,
       content::RenderFrameHost* render_frame_host,
       const GURL& requesting_origin,
       bool user_gesture,
       base::OnceCallback<
-          void(const std::vector<blink::mojom::PermissionStatus>&)> callback);
+          void(const std::vector<blink::mojom::PermissionStatus>&)> callback)
+      override;
 
   blink::mojom::PermissionStatus GetPermissionStatusForOrigin(
       blink::PermissionType permission,
       content::RenderFrameHost* render_frame_host,
-      const GURL& requesting_origin);
-
-  void ResetPermission(blink::PermissionType permission,
-                       const GURL& requesting_origin,
-                       const GURL& embedding_origin) override;
-
-  using PermissionManager::GetPermissionStatus;
-  using PermissionManager::ResetPermission;
+      const GURL& requesting_origin) override;
 };
 
 }  // namespace permissions

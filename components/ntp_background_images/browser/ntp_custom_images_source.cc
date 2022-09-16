@@ -51,7 +51,7 @@ void NTPCustomImagesSource::StartDataRequest(
   GetImageFile(service_->GetImageFilePath(), std::move(callback));
 }
 
-std::string NTPCustomImagesSource::GetMimeType(const std::string& path) {
+std::string NTPCustomImagesSource::GetMimeType(const GURL& url) {
   return "image/jpeg";
 }
 

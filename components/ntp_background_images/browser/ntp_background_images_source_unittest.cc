@@ -75,18 +75,27 @@ TEST_F(NTPBackgroundImagesSourceTest, SponsoredImagesTest) {
   EXPECT_FALSE(source_->IsValidPath("super-duper/brave.png"));
   EXPECT_FALSE(source_->IsValidPath("sponsored-images/abcd.png"));
 
-  EXPECT_EQ("image/jpeg", source_->GetMimeType("wallpaper-0.jpg"));
-  EXPECT_EQ("image/jpeg", source_->GetMimeType("wallpaper-0.jpeg"));
-  EXPECT_EQ("image/webp", source_->GetMimeType("wallpaper-0.webp"));
-  EXPECT_EQ("image/png", source_->GetMimeType("wallpaper-0.png"));
-  EXPECT_EQ("image/avif", source_->GetMimeType("wallpaper-0.avif"));
+  EXPECT_EQ("image/jpeg",
+            source_->GetMimeType(GURL("brave://test/wallpaper-0.jpg")));
+  EXPECT_EQ("image/jpeg",
+            source_->GetMimeType(GURL("brave://test/wallpaper-0.jpeg")));
+  EXPECT_EQ("image/webp",
+            source_->GetMimeType(GURL("brave://test/wallpaper-0.webp")));
+  EXPECT_EQ("image/png",
+            source_->GetMimeType(GURL("brave://test/wallpaper-0.png")));
+  EXPECT_EQ("image/avif",
+            source_->GetMimeType(GURL("brave://test/wallpaper-0.avif")));
 }
 
 TEST_F(NTPBackgroundImagesSourceTest, BackgroundImagesFormatTest) {
-  EXPECT_EQ("image/jpeg", bg_source_->GetMimeType("wallpaper-0.jpg"));
-  EXPECT_EQ("image/webp", bg_source_->GetMimeType("wallpaper-0.webp"));
-  EXPECT_EQ("image/png", bg_source_->GetMimeType("wallpaper-0.png"));
-  EXPECT_EQ("image/avif", bg_source_->GetMimeType("wallpaper-0.avif"));
+  EXPECT_EQ("image/jpeg",
+            bg_source_->GetMimeType(GURL("brave://test/wallpaper-0.jpg")));
+  EXPECT_EQ("image/webp",
+            bg_source_->GetMimeType(GURL("brave://test/wallpaper-0.webp")));
+  EXPECT_EQ("image/png",
+            bg_source_->GetMimeType(GURL("brave://test/wallpaper-0.png")));
+  EXPECT_EQ("image/avif",
+            bg_source_->GetMimeType(GURL("brave://test/wallpaper-0.avif")));
 }
 
 TEST_F(NTPBackgroundImagesSourceTest, BackgroundImagesTest) {

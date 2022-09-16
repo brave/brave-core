@@ -18,8 +18,12 @@
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
+#include "testing/gmock/include/gmock/gmock-matchers.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
+
+using ::testing::Eq;
+using ::testing::Optional;
 
 namespace sidebar {
 
@@ -37,10 +41,11 @@ class SidebarModelTest : public testing::Test, public SidebarModel::Observer {
   }
 
   // SidebarModel::Observer overrides:
-  void OnItemMoved(const SidebarItem& item, int from, int to) override {
+  void OnItemMoved(const SidebarItem& item, size_t from, size_t to) override {
     on_item_moved_called_ = true;
   }
-  void OnActiveIndexChanged(int old_index, int new_index) override {
+  void OnActiveIndexChanged(absl::optional<size_t> old_index,
+                            absl::optional<size_t> new_index) override {
     on_active_index_changed_called_ = true;
   }
 
@@ -69,7 +74,7 @@ TEST_F(SidebarModelTest, ItemsChangedTest) {
   EXPECT_EQ(built_in_items_size, service()->items().size());
   model()->Init(nullptr);
 
-  EXPECT_EQ(-1, model()->active_index());
+  EXPECT_THAT(model()->active_index(), Eq(absl::nullopt));
 
   // Add one more item to test with 5 items.
   SidebarItem new_item;
@@ -94,11 +99,11 @@ TEST_F(SidebarModelTest, ItemsChangedTest) {
             service()->items()[2].built_in_item_type);
   EXPECT_EQ(item_data.url, service()->items()[2].url);
   EXPECT_EQ(item_data.title, service()->items()[2].title);
-  EXPECT_EQ(-1, model()->active_index());
+  EXPECT_THAT(model()->active_index(), Eq(absl::nullopt));
   EXPECT_EQ(items_size, service()->items().size());
 
   model()->SetActiveIndex(1, false);
-  EXPECT_EQ(1, model()->active_index());
+  EXPECT_THAT(model()->active_index(), Optional(1u));
 
   // Move item at 1 to 2. This causes active index change because item at 1 was
   // active item. After moving, active item index should be 2.
@@ -106,14 +111,14 @@ TEST_F(SidebarModelTest, ItemsChangedTest) {
   service()->MoveItem(1, 2);
   EXPECT_TRUE(on_item_moved_called_);
   EXPECT_TRUE(on_active_index_changed_called_);
-  EXPECT_EQ(2, model()->active_index());
+  EXPECT_THAT(model()->active_index(), Optional(2u));
 
   // Moving item from 1 to 0 doesn't affect active index.
   ClearState();
   service()->MoveItem(1, 0);
   EXPECT_TRUE(on_item_moved_called_);
   EXPECT_FALSE(on_active_index_changed_called_);
-  EXPECT_EQ(2, model()->active_index());
+  EXPECT_THAT(model()->active_index(), Optional(2u));
 
   // Moving item from 3 to 0 affect active index. Items behind the active
   // item(at 2) to the front of active index. So, active item is also moved from
@@ -122,7 +127,7 @@ TEST_F(SidebarModelTest, ItemsChangedTest) {
   service()->MoveItem(3, 0);
   EXPECT_TRUE(on_item_moved_called_);
   EXPECT_TRUE(on_active_index_changed_called_);
-  EXPECT_EQ(3, model()->active_index());
+  EXPECT_THAT(model()->active_index(), Optional(3u));
 }
 
 TEST_F(SidebarModelTest, CanUseNotAddedBuiltInItemInsteadOfTest) {

@@ -19,19 +19,6 @@ BravePermissionManager::BravePermissionManager(
     PermissionContextMap permission_contexts)
     : PermissionManager(browser_context, std::move(permission_contexts)) {}
 
-GURL BravePermissionManager::GetCanonicalOrigin(
-    ContentSettingsType permission,
-    const GURL& requesting_origin,
-    const GURL& embedding_origin) const {
-  // Use requesting_origin which will have ethereum or solana address info.
-  if (permission == ContentSettingsType::BRAVE_ETHEREUM ||
-      permission == ContentSettingsType::BRAVE_SOLANA)
-    return requesting_origin;
-
-  return PermissionManager::GetCanonicalOrigin(permission, requesting_origin,
-                                               embedding_origin);
-}
-
 void BravePermissionManager::RequestPermissionsForOrigin(
     const std::vector<blink::PermissionType>& permissions,
     content::RenderFrameHost* render_frame_host,
@@ -55,12 +42,6 @@ BravePermissionManager::GetPermissionStatusForOrigin(
   base::AutoReset<GURL> auto_reset_requesting_origin(&forced_requesting_origin_,
                                                      requesting_origin);
   return GetPermissionStatusForCurrentDocument(permission, render_frame_host);
-}
-void BravePermissionManager::ResetPermission(blink::PermissionType permission,
-                                             const GURL& requesting_origin,
-                                             const GURL& embedding_origin) {
-  PermissionManager::ResetPermission(permission, requesting_origin,
-                                     embedding_origin);
 }
 
 }  // namespace permissions

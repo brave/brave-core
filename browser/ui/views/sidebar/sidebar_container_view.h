@@ -80,10 +80,11 @@ class SidebarContainerView
 
   // sidebar::SidebarModel::Observer overrides:
   void OnItemAdded(const sidebar::SidebarItem& item,
-                   int index,
+                   size_t index,
                    bool user_gesture) override;
-  void OnActiveIndexChanged(int old_index, int new_index) override;
-  void OnItemRemoved(int index) override;
+  void OnActiveIndexChanged(absl::optional<size_t> old_index,
+                            absl::optional<size_t> new_index) override;
+  void OnItemRemoved(size_t index) override;
 
   // SidePanelEntryObserver:
   void OnEntryShown(SidePanelEntry* entry) override;
