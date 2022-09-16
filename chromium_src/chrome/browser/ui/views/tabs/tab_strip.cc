@@ -18,17 +18,20 @@
 #define AddTab(TAB, MODEL_INDEX, PINNED) \
   AddTab(std::make_unique<BraveTab>(this), MODEL_INDEX, PINNED)
 #define TabHoverCardController BraveTabHoverCardController
-#define TabContainer BraveTabContainer
-#define BRAVE_CALCULATE_INSERTION_INDEX                                        \
-  if (tabs::features::ShouldShowVerticalTabs()) {                              \
-    const int ideal_y =                                                        \
-        candidate_index == 0 ? 0 : ideal_bounds(candidate_index - 1).bottom(); \
-    const int distance = std::abs(dragged_bounds.y() - ideal_y);               \
-    if (distance < min_distance) {                                             \
-      min_distance = distance;                                                 \
-      min_distance_index = candidate_index;                                    \
-    }                                                                          \
-    continue;                                                                  \
+#define TabContainerImpl BraveTabContainer
+#define BRAVE_CALCULATE_INSERTION_INDEX                                       \
+  if (tabs::features::ShouldShowVerticalTabs()) {                             \
+    const int ideal_y =                                                       \
+        candidate_index == 0                                                  \
+            ? 0                                                               \
+            : tab_strip_->tab_container_->GetIdealBounds(candidate_index - 1) \
+                  .bottom();                                                  \
+    const int distance = std::abs(dragged_bounds.y() - ideal_y);              \
+    if (distance < min_distance) {                                            \
+      min_distance = distance;                                                \
+      min_distance_index = candidate_index;                                   \
+    }                                                                         \
+    continue;                                                                 \
   }
 
 #define BRAVE_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS        \

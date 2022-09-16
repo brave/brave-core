@@ -38,7 +38,7 @@ class TabDragController : public TabDragControllerChromium {
             const gfx::Point& mouse_offset,
             int source_view_offset,
             ui::ListSelectionModel initial_selection_model,
-            EventSource event_source);
+            ui::mojom::DragEventSource event_source);
 
   // TabDragControllerChromium:
   gfx::Point GetAttachedDragPoint(const gfx::Point& point_in_screen) override;

@@ -6,8 +6,10 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TABS_FEATURES_H_
 #define BRAVE_BROWSER_UI_VIEWS_TABS_FEATURES_H_
 
+#include "base/compiler_specific.h"
+
 namespace base {
-struct Feature;
+struct LOGICALLY_CONST Feature;
 }  // namespace base
 
 namespace tabs {

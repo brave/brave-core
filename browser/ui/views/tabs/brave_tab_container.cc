@@ -11,16 +11,16 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 
 BraveTabContainer::BraveTabContainer(
-    TabStripController* controller,
+    TabContainerController& controller,
     TabHoverCardController* hover_card_controller,
     TabDragContext* drag_context,
-    TabSlotController* tab_slot_controller,
+    TabSlotController& tab_slot_controller,
     views::View* scroll_contents_view)
-    : TabContainer(controller,
-                   hover_card_controller,
-                   drag_context,
-                   tab_slot_controller,
-                   scroll_contents_view) {
+    : TabContainerImpl(controller,
+                       hover_card_controller,
+                       drag_context,
+                       tab_slot_controller,
+                       scroll_contents_view) {
   layout_helper_->set_use_vertical_tabs(
       tabs::features::ShouldShowVerticalTabs());
 }
@@ -34,7 +34,7 @@ gfx::Size BraveTabContainer::CalculatePreferredSize() const {
                          (tabs_view_model_.view_size() + group_views_.size()));
   }
 
-  return TabContainer::CalculatePreferredSize();
+  return TabContainerImpl::CalculatePreferredSize();
 }
 
 void BraveTabContainer::UpdateClosingModeOnRemovedTab(int model_index,
@@ -42,14 +42,15 @@ void BraveTabContainer::UpdateClosingModeOnRemovedTab(int model_index,
   if (tabs::features::ShouldShowVerticalTabs())
     return;
 
-  TabContainer::UpdateClosingModeOnRemovedTab(model_index, was_active);
+  TabContainerImpl::UpdateClosingModeOnRemovedTab(model_index, was_active);
 }
 
 gfx::Rect BraveTabContainer::GetTargetBoundsForClosingTab(
     Tab* tab,
     int former_model_index) const {
   if (!tabs::features::ShouldShowVerticalTabs())
-    return TabContainer::GetTargetBoundsForClosingTab(tab, former_model_index);
+    return TabContainerImpl::GetTargetBoundsForClosingTab(tab,
+                                                          former_model_index);
 
   gfx::Rect target_bounds = tab->bounds();
   target_bounds.set_y(
@@ -59,5 +60,5 @@ gfx::Rect BraveTabContainer::GetTargetBoundsForClosingTab(
   return target_bounds;
 }
 
-BEGIN_METADATA(BraveTabContainer, TabContainer)
+BEGIN_METADATA(BraveTabContainer, TabContainerImpl)
 END_METADATA

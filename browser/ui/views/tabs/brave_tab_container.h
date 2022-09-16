@@ -6,18 +6,18 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_CONTAINER_H_
 #define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_CONTAINER_H_
 
-#include "chrome/browser/ui/views/tabs/tab_container.h"
+#include "chrome/browser/ui/views/tabs/tab_container_impl.h"
 
 #include "chrome/browser/ui/views/tabs/tab_drag_context.h"
 
-class BraveTabContainer : public TabContainer {
+class BraveTabContainer : public TabContainerImpl {
  public:
   METADATA_HEADER(BraveTabContainer);
 
-  BraveTabContainer(TabStripController* controller,
+  BraveTabContainer(TabContainerController& controller,
                     TabHoverCardController* hover_card_controller,
                     TabDragContext* drag_context,
-                    TabSlotController* tab_slot_controller,
+                    TabSlotController& tab_slot_controller,
                     views::View* scroll_contents_view);
   ~BraveTabContainer() override;
 
