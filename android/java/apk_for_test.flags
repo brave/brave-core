@@ -586,3 +586,15 @@
 -keep class org.chromium.chrome.browser.tasks.ReturnToChromeUtil {
     *** shouldShowTabSwitcher(...);
 }
+
+-keep class org.chromium.chrome.browser.IntentHandler {
+    public <init>(...);
+    *** getUrlForCustomTab(...);
+    *** getUrlForWebapp(...);
+    *** isJavascriptSchemeOrInvalidUrl(...);
+    *** extractUrlFromIntent(...);
+}
+
+-keep class org.chromium.chrome.browser.BraveIntentHandler {
+    public <init>(...);
+}
