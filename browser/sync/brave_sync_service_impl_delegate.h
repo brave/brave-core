@@ -55,7 +55,7 @@ class BraveSyncServiceImplDelegate
 
   raw_ptr<DeviceInfoSyncService> device_info_sync_service_ = nullptr;
 
-  // This is triggereded once after SetLocalDeviceAppearedCallback
+  // This is triggered once after SetLocalDeviceAppearedCallback
   // when the local device first appears in the changed synced devices list
   base::OnceCallback<void()> local_device_appeared_callback_;
 

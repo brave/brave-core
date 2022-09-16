@@ -653,7 +653,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                 // Code phrase looks valid, we can pass it down to sync system
                 mCodephrase = codephraseCandidate;
                 seedWordsReceived(mCodephrase);
-                setAppropriateView();
             }, () -> {});
         } else if (mEnterCodeWordsButton == v) {
             getActivity().getWindow().setSoftInputMode(
@@ -731,7 +730,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             public void run() {
                 String seedWords = getBraveSyncWorker().GetWordsFromSeedHex(seedHex);
                 seedWordsReceivedImpl(seedWords);
-                setAppropriateView();
             }
         });
     }
@@ -792,7 +790,29 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         mFinalWarningDialog = confirmDialog.show();
     }
 
+    private void AllowNewQrScan() {
+        synchronized (mQrInProcessingOrFinalizedLock) {
+            if (mQrInProcessingOrFinalized) {
+                mQrInProcessingOrFinalized = false;
+            }
+        }
+    }
+
     private void seedWordsReceivedImpl(String seedWords) {
+        pauseSyncStateChangedObserver();
+
+        getBraveSyncWorker().setJoinSyncChainCallback((Boolean result) -> {
+            if (result) {
+                resumeSyncStateChangedObserver();
+                setAppropriateView();
+            } else {
+                // TODO(AlexeyBarabash): consider to have error code if there will
+                // be more than only one case of failure
+                onSyncError(getResources().getString(R.string.brave_sync_joining_deleted_account));
+                AllowNewQrScan();
+            }
+        });
+
         getBraveSyncWorker().RequestSync();
         getBraveSyncWorker().SaveCodephrase(seedWords);
         getBraveSyncWorker().FinalizeSyncSetup();
@@ -1153,7 +1173,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
 
     private void permanentlyDeleteAccountImpl() {
         getBraveSyncWorker().permanentlyDeleteAccount((String result) -> {
-            Log.i(TAG, "[BraveSync] permanentlyDeleteAccount result is <" + result + ">");
             if (result == null || result.isEmpty()) {
                 Toast.makeText(getActivity().getApplicationContext(),
                              getResources().getString(
@@ -1200,8 +1219,25 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         }
     }
 
+    private boolean mSyncStateChangedObserverPaused;
+
+    private void pauseSyncStateChangedObserver() {
+        mSyncStateChangedObserverPaused = true;
+    }
+
+    private void resumeSyncStateChangedObserver() {
+        mSyncStateChangedObserverPaused = false;
+    }
+
+    private boolean isSyncStateChangedObserverPaused() {
+        return mSyncStateChangedObserverPaused;
+    }
+
     @Override
     public void syncStateChanged() {
+        if (isSyncStateChangedObserverPaused()) {
+            return;
+        }
         if (SyncService.get().isFirstSetupComplete() == false) {
             if (mLeaveSyncChainInProgress) {
                 leaveSyncChainComplete();
