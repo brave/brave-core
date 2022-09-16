@@ -73,6 +73,7 @@ class TabTrayController: LoadingViewController {
   private struct UX {
     static let horizontalInset = 5.0
     static let buttonEdgeInset = 10.0
+    static let segmentedControlTopInset = 16.0
   }
   
   private let containerView = UIView().then {
@@ -262,12 +263,12 @@ class TabTrayController: LoadingViewController {
     let contentStackView = UIStackView().then {
       $0.axis = .vertical
       $0.alignment = .center
-      $0.layoutMargins = UIEdgeInsets(top: UX.horizontalInset, left: 0, bottom: 0, right: 0)
+      $0.layoutMargins = UIEdgeInsets(top: UX.segmentedControlTopInset, left: 0, bottom: 0, right: 0)
       $0.isLayoutMarginsRelativeArrangement = true
     }
         
     contentStackView.addArrangedSubview(tabTypeSelector)
-    contentStackView.setCustomSpacing(UX.horizontalInset, after: tabTypeSelector)
+    contentStackView.setCustomSpacing(UX.segmentedControlTopInset, after: tabTypeSelector)
     contentStackView.addArrangedSubview(tabContentView)
     
     containerView.addSubview(contentStackView)

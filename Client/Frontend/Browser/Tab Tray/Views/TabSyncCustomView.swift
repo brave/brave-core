@@ -13,7 +13,9 @@ protocol TabSyncHeaderViewDelegate {
 class TabSyncHeaderView: UITableViewHeaderFooterView, TableViewReusable {
     
   struct UX {
-    static let labelOffset = 5.0
+    static let labelOffset = 11.0
+    static let imageSize = 24.0
+    static let iconSize = 20.0
   }
   
   var delegate: TabSyncHeaderViewDelegate?
@@ -40,7 +42,7 @@ class TabSyncHeaderView: UITableViewHeaderFooterView, TableViewReusable {
   
   let titleLabel = UILabel().then {
     $0.textColor = .braveLabel
-    $0.font = .preferredFont(forTextStyle: .footnote, weight: .semibold)
+    $0.font = .preferredFont(forTextStyle: .body, weight: .bold)
   }
   
   let descriptionLabel = UILabel().then {
@@ -49,7 +51,7 @@ class TabSyncHeaderView: UITableViewHeaderFooterView, TableViewReusable {
   }
   
   let arrowIconView = UIImageView().then {
-    $0.image = UIImage(systemName: "arrowtriangle.down")
+    $0.image = UIImage(systemName: "chevron.down")
     $0.contentMode = .scaleAspectFit
     $0.tintColor = .braveLabel
     $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
@@ -68,23 +70,23 @@ class TabSyncHeaderView: UITableViewHeaderFooterView, TableViewReusable {
     labelStackView.addArrangedSubview(descriptionLabel)
 
     imageIconView.snp.makeConstraints {
-      $0.leading.equalToSuperview().inset(TwoLineCellUX.borderViewMargin)
+      $0.leading.equalToSuperview().inset(UX.iconSize)
       $0.centerY.equalToSuperview()
-      $0.size.equalTo(TwoLineCellUX.imageSize)
+      $0.size.equalTo(UX.imageSize)
     }
     
     labelStackView.snp.makeConstraints {
-      $0.leading.equalTo(imageIconView.snp.trailing).offset(TwoLineCellUX.borderViewMargin)
+      $0.leading.equalTo(imageIconView.snp.trailing).offset(UX.iconSize)
       $0.trailing.equalToSuperview().offset(-UX.labelOffset)
       $0.top.equalToSuperview().offset(UX.labelOffset)
       $0.bottom.equalToSuperview().offset(-UX.labelOffset)
     }
     
     arrowIconView.snp.makeConstraints {
-      $0.trailing.equalToSuperview().inset(TwoLineCellUX.borderViewMargin)
+      $0.trailing.equalToSuperview().inset(UX.labelOffset)
       $0.leading.greaterThanOrEqualTo(titleLabel.snp.trailing).inset(-TwoLineCellUX.borderViewMargin)
       $0.centerY.equalToSuperview()
-      $0.size.equalTo(2 * TwoLineCellUX.imageSize / 3)
+      $0.size.equalTo(UX.iconSize)
     }
 
     addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapHeader(_:))))
@@ -133,7 +135,8 @@ class TabSyncHeaderView: UITableViewHeaderFooterView, TableViewReusable {
 class TabSyncTableViewCell: UITableViewCell, TableViewReusable {
     
   struct UX {
-    static let labelOffset = 5.0
+    static let labelOffset = 11.0
+    static let imageSize = 32.0
   }
   
   var delegate: TabSyncHeaderViewDelegate?
@@ -162,7 +165,7 @@ class TabSyncTableViewCell: UITableViewCell, TableViewReusable {
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-    contentView.backgroundColor = .clear
+    contentView.backgroundColor = .sectionBackgroundColor
     
     contentView.addSubview(imageIconView)
     contentView.addSubview(labelStackView)
@@ -174,7 +177,7 @@ class TabSyncTableViewCell: UITableViewCell, TableViewReusable {
     imageIconView.snp.makeConstraints {
       $0.leading.equalToSuperview().inset(TwoLineCellUX.borderViewMargin)
       $0.centerY.equalToSuperview()
-      $0.size.equalTo(TwoLineCellUX.imageSize)
+      $0.size.equalTo(UX.imageSize)
     }
     
     labelStackView.snp.makeConstraints {
@@ -193,5 +196,12 @@ class TabSyncTableViewCell: UITableViewCell, TableViewReusable {
   func setLines(_ text: String?, detailText: String?) {
     titleLabel.text = text
     descriptionLabel.text = detailText
+  }
+}
+
+private extension UIColor {
+  
+  static var sectionBackgroundColor: UIColor {
+    return UIColor { $0.userInterfaceStyle == .dark ? .black : .white }
   }
 }

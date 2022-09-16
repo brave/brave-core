@@ -8,20 +8,22 @@ import BraveUI
 import BraveCore
 import BraveShared
 
-class SendTabToSelfController: UIViewController {
+class SendTabToSelfController: SendTabTransitioningController {
   
   struct UX {
     static let contentInset = 20.0
     static let preferredSizePadding = 132.0
   }
   
+  // MARK: Internal
+  
   let contentNavigationController: UINavigationController
   private let sendTabContentController: SendTabToSelfContentController
   
-  let backgroundView = UIView().then {
-    $0.backgroundColor = UIColor(white: 0.0, alpha: 0.3)
-  }
+  var sendWebSiteHandler: ((SendableTabInfoDataSource) -> Void)?
 
+  // MARK: Lifecycle
+  
   init(sendTabAPI: BraveSendTabAPI, dataSource: SendableTabInfoDataSource) {
     sendTabContentController = SendTabToSelfContentController(sendTabAPI: sendTabAPI, dataSource: dataSource)
     contentNavigationController = UINavigationController(rootViewController: sendTabContentController).then {
@@ -30,12 +32,18 @@ class SendTabToSelfController: UIViewController {
       $0.view.clipsToBounds = true
     }
     
-    super.init(nibName: nil, bundle: nil)
+    super.init()
         
-    transitioningDelegate = self
-    modalPresentationStyle = .overFullScreen
     addChild(contentNavigationController)
     contentNavigationController.didMove(toParent: self)
+    
+    sendTabContentController.sendWebSiteHandler = { [weak self] dataSource in
+      guard let self = self else { return }
+      
+      self.dismiss(animated: true) {
+        self.sendWebSiteHandler?(dataSource)
+      }
+    }
   }
   
   @available(*, unavailable)
@@ -46,9 +54,7 @@ class SendTabToSelfController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    view.backgroundColor = .clear
-    view.addSubview(backgroundView)
-    view.addSubview(contentNavigationController.view)
+    contentView.addSubview(contentNavigationController.view)
 
     updateLayoutConstraints()
   }
@@ -60,10 +66,6 @@ class SendTabToSelfController: UIViewController {
   }
   
   private func updateLayoutConstraints() {
-    backgroundView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
-    }
-
     let preferredSize = sendTabContentController.view.systemLayoutSizeFitting(
       CGSize(width: view.bounds.size.width, height: view.frame.height),
       withHorizontalFittingPriority: .required,
@@ -74,7 +76,7 @@ class SendTabToSelfController: UIViewController {
     
     contentNavigationController.view.snp.makeConstraints {
       if traitCollection.horizontalSizeClass == .compact && traitCollection.verticalSizeClass == .regular {
-        $0.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(UX.contentInset)
+        $0.leading.trailing.equalTo(contentView.safeAreaLayoutGuide).inset(UX.contentInset)
       } else {
         $0.width.equalToSuperview().multipliedBy(0.75)
       }
@@ -96,6 +98,8 @@ class SendTabToSelfContentController: UITableViewController {
   
   private var dataSource: SendableTabInfoDataSource?
   private var sendTabAPI: BraveSendTabAPI?
+  
+  var sendWebSiteHandler: ((SendableTabInfoDataSource) -> Void)?
 
   // MARK: Lifecycle
   
@@ -211,15 +215,8 @@ extension SendTabToSelfContentController {
   
   @objc private func tappedSendLabel(_ gesture: UITapGestureRecognizer) {
     guard let dataSource = dataSource, gesture.state == .ended else { return }
-
-    if let deviceCacheId = dataSource.deviceCacheID() {
-      sendTabAPI?.sendActiveTab(
-        toDevice: deviceCacheId,
-        tabTitle: dataSource.displayTitle,
-        activeURL: dataSource.sendableURL)
-    }
     
-    dismiss(animated: true)
+    sendWebSiteHandler?(dataSource)
   }
 }
 
