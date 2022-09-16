@@ -394,7 +394,7 @@ void AdsServiceImpl::OnMigrateConfirmationState(const bool success) {
 
   InitializePrefChangeRegistrar();
 
-  MaybeStartOrStop(/* should_restart */ false);
+  MaybeStartOrStop(/*should_restart*/ false);
 }
 
 void AdsServiceImpl::InitializePrefChangeRegistrar() {
@@ -491,7 +491,7 @@ void AdsServiceImpl::StartBatAdsService() {
 
     bat_ads_service_.set_disconnect_handler(
         base::BindOnce(&AdsServiceImpl::MaybeStartOrStop, AsWeakPtr(),
-                       /* should_restart */ true));
+                       /*should_restart*/ true));
   }
 }
 
@@ -717,7 +717,7 @@ void AdsServiceImpl::OnEnabledPrefChanged() {
   brave_rewards::p3a::UpdateAdsStateOnPreferenceChange(profile_->GetPrefs(),
                                                        ads::prefs::kEnabled);
 
-  MaybeStartOrStop(/* should_restart */ false);
+  MaybeStartOrStop(/*should_restart*/ false);
 }
 
 void AdsServiceImpl::OnIdleTimeThresholdPrefChanged() {
@@ -729,11 +729,11 @@ void AdsServiceImpl::OnWalletBravePrefChanged() {
 }
 
 void AdsServiceImpl::OnBraveTodayOptedInPrefChanged() {
-  MaybeStartOrStop(/* should_restart */ false);
+  MaybeStartOrStop(/*should_restart*/ false);
 }
 
 void AdsServiceImpl::OnNewTabPageShowTodayPrefChanged() {
-  MaybeStartOrStop(/* should_restart */ false);
+  MaybeStartOrStop(/*should_restart*/ false);
 }
 
 void AdsServiceImpl::NotifyPrefChanged(const std::string& path) {
@@ -1175,7 +1175,7 @@ void AdsServiceImpl::OnDidCloseTab(const SessionID& tab_id) {
 void AdsServiceImpl::GetStatementOfAccounts(
     GetStatementOfAccountsCallback callback) {
   if (!IsBatAdsBound()) {
-    std::move(callback).Run(/* statement */ nullptr);
+    std::move(callback).Run(/*statement*/ nullptr);
     return;
   }
 
@@ -2204,13 +2204,13 @@ void AdsServiceImpl::MigratePrefsVersion6To7() {
     return;
   }
 
-  SetEnabled(/* is_enabled */ false);
+  SetEnabled(false);
 }
 
 void AdsServiceImpl::MigratePrefsVersion7To8() {
   const bool rewards_enabled = GetBooleanPref(brave_rewards::prefs::kEnabled);
   if (!rewards_enabled) {
-    SetEnabled(/* is_enabled */ false);
+    SetEnabled(false);
   }
 }
 
@@ -2289,7 +2289,7 @@ void AdsServiceImpl::DisableAdsIfUpgradingFromPreBraveAdsBuild() {
     return;
   }
 
-  SetEnabled(/* is_enabled */ false);
+  SetEnabled(false);
 }
 
 void AdsServiceImpl::DisableAdsForUnsupportedCountryCodes(
@@ -2299,7 +2299,7 @@ void AdsServiceImpl::DisableAdsForUnsupportedCountryCodes(
     return;
   }
 
-  SetEnabled(/* is_enabled */ false);
+  SetEnabled(false);
 }
 
 void AdsServiceImpl::MaybeShowOnboardingNotification() {

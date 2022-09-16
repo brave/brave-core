@@ -33,7 +33,7 @@ void BraveAdsHost::MaybeTriggerAdViewedEvent(
   DCHECK(!creative_instance_id.empty());
 
   if (!tab_id_.is_valid()) {
-    std::move(callback).Run(/* event_triggered */ false);
+    std::move(callback).Run(/*event_triggered*/ false);
     return;
   }
 
@@ -41,7 +41,7 @@ void BraveAdsHost::MaybeTriggerAdViewedEvent(
       SearchResultAdServiceFactory::GetForProfile(profile_);
 
   if (!search_result_ad_service) {
-    std::move(callback).Run(/* event_triggered */ false);
+    std::move(callback).Run(/*event_triggered*/ false);
     return;
   }
 

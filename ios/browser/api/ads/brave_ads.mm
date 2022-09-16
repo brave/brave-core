@@ -1185,9 +1185,9 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 - (void)load:(const std::string&)name callback:(ads::LoadCallback)callback {
   const auto contents = [self.commonOps loadContentsFromFileWithName:name];
   if (contents.empty()) {
-    std::move(callback).Run(/* success */ false, "");
+    std::move(callback).Run(/*success*/ false, {});
   } else {
-    std::move(callback).Run(/* success */ true, contents);
+    std::move(callback).Run(/*success*/ true, contents);
   }
 }
 
@@ -1212,9 +1212,9 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
        value:(const std::string&)value
     callback:(ads::SaveCallback)callback {
   if ([self.commonOps saveContents:value name:name]) {
-    std::move(callback).Run(/* success */ true);
+    std::move(callback).Run(/*success*/ true);
   } else {
-    std::move(callback).Run(/* success */ false);
+    std::move(callback).Run(/*success*/ false);
   }
 }
 
