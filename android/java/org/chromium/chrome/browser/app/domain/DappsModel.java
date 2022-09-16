@@ -46,7 +46,7 @@ public class DappsModel {
     }
 
     public void fetchAccountsForConnectionReq(@CoinType.EnumType int coinType,
-            Callbacks.Callback1<Pair<String, List<AccountInfo>>> callback) {
+            Callbacks.Callback1<Pair<AccountInfo, List<AccountInfo>>> callback) {
         if (coinType == CoinType.ETH || coinType == CoinType.SOL) {
             mKeyringService.getKeyringInfo(Utils.getKeyringForCoinType(coinType), keyringInfo -> {
                 mKeyringService.getSelectedAccount(coinType, accountAddress -> {
@@ -56,13 +56,16 @@ public class DappsModel {
                             if (accountAddress.equals(accountInfo.address)) {
                                 List<AccountInfo> accountInfos = new ArrayList<>();
                                 accountInfos.add(accountInfo);
-                                callback.call(new Pair<>(accountAddress, accountInfos));
+                                callback.call(new Pair<>(
+                                        Utils.findAccount(keyringInfo.accountInfos, accountAddress),
+                                        accountInfos));
                                 return;
                             }
                         }
                     } else {
                         callback.call(new Pair<>(
-                                accountAddress, Arrays.asList(keyringInfo.accountInfos)));
+                                Utils.findAccount(keyringInfo.accountInfos, accountAddress),
+                                Arrays.asList(keyringInfo.accountInfos)));
                     }
                 });
             });

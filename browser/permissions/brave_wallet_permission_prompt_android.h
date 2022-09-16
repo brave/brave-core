@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/browser/permissions/brave_ethereum_permission_prompt_dialog_controller_android.h"
+#include "brave/browser/permissions/brave_dapp_permission_prompt_dialog_controller_android.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/permissions/permissions_client.h"
 
@@ -24,7 +24,7 @@ class PermissionPromptAndroid;
 }
 
 class BraveWalletPermissionPrompt
-    : public BraveEthereumPermissionPromptDialogController::Delegate,
+    : public BraveDappPermissionPromptDialogController::Delegate,
       public permissions::PermissionsClient::PermissionMessageDelegate {
  public:
   class Delegate {
@@ -45,14 +45,13 @@ class BraveWalletPermissionPrompt
   ~BraveWalletPermissionPrompt() override;
 
  protected:
-  // BraveEthereumPermissionPromptDialogController::Delegate:
+  // BraveDappPermissionPromptDialogController::Delegate:
   void OnDialogDismissed() override;
   void ConnectToSite(const std::vector<std::string>& accounts) override;
   void CancelConnectToSite() override;
 
  private:
-  std::unique_ptr<BraveEthereumPermissionPromptDialogController>
-      dialog_controller_;
+  std::unique_ptr<BraveDappPermissionPromptDialogController> dialog_controller_;
   raw_ptr<content::WebContents> web_contents_ = nullptr;
   std::unique_ptr<Delegate> delegate_;
 

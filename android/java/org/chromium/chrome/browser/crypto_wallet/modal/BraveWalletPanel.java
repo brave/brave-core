@@ -26,6 +26,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.lifecycle.Observer;
@@ -34,7 +35,6 @@ import org.chromium.base.SysUtils;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
-import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
@@ -43,6 +43,7 @@ import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletProviderDelegateImplHelper;
 import org.chromium.chrome.browser.crypto_wallet.activities.AccountSelectorActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.NetworkSelectorActivity;
@@ -75,6 +76,7 @@ public class BraveWalletPanel implements DialogInterface {
     private TextView mAccountAddress;
     private TextView mAmountAsset;
     private TextView mAmountFiat;
+    private View mCvSolConnectionStatus;
     private AccountInfo[] mAccountInfos;
     private HashSet<AccountInfo> mAccountsWithPermissions;
     private ExecutorService mExecutor;
@@ -271,23 +273,60 @@ public class BraveWalletPanel implements DialogInterface {
         mAccountName.setText(selectedAccount.name);
         mAccountAddress.setText(Utils.stripAccountAddress(selectedAccount.address));
         getBalance(selectedAccount);
-        updateAccountConnected(selectedAccount.address);
+        updateAccountConnected(selectedAccount);
     }
 
-    private void updateAccountConnected(String selectedAccount) {
-        Iterator<AccountInfo> it = mAccountsWithPermissions.iterator();
-        boolean found = false;
-        while (it.hasNext()) {
-            if (it.next().address.equals(selectedAccount)) {
-                found = true;
-                break;
+    private void updateAccountConnected(AccountInfo selectedAccount) {
+        if (CoinType.SOL == selectedAccount.coin) {
+            if (mAccountsWithPermissions.size() == 0) {
+                mBtnConnectedStatus.setText("");
+                mBtnConnectedStatus.setVisibility(View.GONE);
+                mCvSolConnectionStatus.setVisibility(View.GONE);
+            } else {
+                BraveActivity activity = BraveActivity.getBraveActivity();
+                if (activity != null) {
+                    BraveWalletProviderDelegateImplHelper.IsSolanaConnected(
+                            activity.getActivityTab().getWebContents(), selectedAccount.address,
+                            isConnected -> {
+                                updateConnectedState(isConnected,
+                                        isConnected
+                                                ? R.string.dapp_wallet_panel_connectivity_status_connected
+                                                : R.string.dapp_wallet_panel_disconnect_status,
+                                        true);
+                            });
+                }
             }
+        } else {
+            Iterator<AccountInfo> it = mAccountsWithPermissions.iterator();
+            boolean isConnected = false;
+            while (it.hasNext()) {
+                if (it.next().address.equals(selectedAccount.address)) {
+                    isConnected = true;
+                    break;
+                }
+            }
+            updateConnectedState(isConnected,
+                    isConnected ? R.string.dapp_wallet_panel_connectivity_status_connected
+                                : R.string.dapp_wallet_panel_connectivity_status,
+                    false);
         }
-        mBtnConnectedStatus.setText(mPopupView.getResources().getString(found
-                        ? R.string.dapp_wallet_panel_connectivity_status_connected
-                        : R.string.dapp_wallet_panel_connectivity_status));
-        mBtnConnectedStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                found ? R.drawable.ic_check_white : 0, 0, 0, 0);
+    }
+
+    private void updateConnectedState(
+            boolean isConnected, @StringRes int connectedText, boolean showSolStatus) {
+        mBtnConnectedStatus.setVisibility(View.VISIBLE);
+        mBtnConnectedStatus.setText(mPopupView.getResources().getString(connectedText));
+        if (showSolStatus) {
+            mCvSolConnectionStatus.setBackgroundResource(isConnected
+                            ? R.drawable.rounded_dot_success_status
+                            : R.drawable.rounded_dot_error_status);
+            mCvSolConnectionStatus.setVisibility(View.VISIBLE);
+            mBtnConnectedStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
+        } else {
+            mCvSolConnectionStatus.setVisibility(View.GONE);
+            mBtnConnectedStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                    isConnected ? R.drawable.ic_check_white : 0, 0, 0, 0);
+        }
     }
 
     private void getBalance(AccountInfo selectedAccount) {
@@ -348,14 +387,10 @@ public class BraveWalletPanel implements DialogInterface {
             Intent intent = new Intent(mActivity, NetworkSelectorActivity.class);
             mActivity.startActivity(intent);
         });
+        mCvSolConnectionStatus = mPopupView.findViewById(R.id.v_dapps_panel_sol_connection_status);
         mBtnConnectedStatus = mPopupView.findViewById(R.id.sp_dapps_panel_state);
-        mBtnConnectedStatus.setOnClickListener(v -> {
-            BraveActivity activity = BraveActivity.getBraveActivity();
-            if (activity != null) {
-                activity.openBraveWalletDAppsActivity(
-                        BraveWalletDAppsActivity.ActivityType.CONNECT_ACCOUNT);
-            }
-        });
+        mBtnConnectedStatus.setOnClickListener(onConnectedAccountClick);
+        mCvSolConnectionStatus.setOnClickListener(onConnectedAccountClick);
         mPopupWindow.setContentView(mPopupView);
         mContainerConstraintLayout = mPopupView.findViewById(R.id.container_constraint_panel);
         mAccountImage = mPopupView.findViewById(R.id.iv_dapps_panel_account_image);
@@ -380,4 +415,12 @@ public class BraveWalletPanel implements DialogInterface {
         });
         setUpObservers();
     }
+
+    private final View.OnClickListener onConnectedAccountClick = v -> {
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity != null) {
+            activity.openBraveWalletDAppsActivity(
+                    BraveWalletDAppsActivity.ActivityType.CONNECT_ACCOUNT);
+        }
+    };
 }
