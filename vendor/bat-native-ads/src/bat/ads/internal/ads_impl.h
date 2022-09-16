@@ -117,7 +117,7 @@ class AdsImpl final : public Ads,
   void OnUserDidBecomeActive(base::TimeDelta idle_time,
                              bool screen_was_locked) override;
 
-  void OnUserGesture(int32_t page_transition_type) override;
+  void TriggerUserGestureEvent(int32_t page_transition_type) override;
 
   void OnBrowserDidEnterForeground() override;
   void OnBrowserDidEnterBackground() override;

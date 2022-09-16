@@ -63,7 +63,7 @@ class MockAdsService : public AdsService {
                     const std::vector<GURL>&,
                     const std::string&));
 
-  MOCK_METHOD1(OnUserGesture, void(int32_t));
+  MOCK_METHOD1(TriggerUserGestureEvent, void(int32_t));
 
   MOCK_METHOD1(OnTabDidStartPlayingMedia, void(const SessionID&));
   MOCK_METHOD1(OnTabDidStopPlayingMedia, void(const SessionID&));

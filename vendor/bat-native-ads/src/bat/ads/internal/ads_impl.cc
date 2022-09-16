@@ -191,7 +191,7 @@ void AdsImpl::OnTabTextContentDidChange(const int32_t tab_id,
                                                     text);
 }
 
-void AdsImpl::OnUserGesture(const int32_t page_transition_type) {
+void AdsImpl::TriggerUserGestureEvent(const int32_t page_transition_type) {
   if (IsInitialized()) {
     UserActivityManager::GetInstance()->RecordEventForPageTransition(
         page_transition_type);

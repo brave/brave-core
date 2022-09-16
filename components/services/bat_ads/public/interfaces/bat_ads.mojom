@@ -118,18 +118,21 @@ interface BatAds {
   OnUserDidBecomeIdle();
   OnUserDidBecomeActive(mojo_base.mojom.TimeDelta idle_time, bool screen_was_locked);
 
-  OnUserGesture(int32 page_transition_type);
+  TriggerUserGestureEvent(int32 page_transition_type);
 
   // Browser
   OnBrowserDidEnterForeground();
   OnBrowserDidEnterBackground();
 
   // Tabs
+  OnTabDidChange(int32 tab_id, array<url.mojom.Url> redirect_chain, bool is_active, bool is_browser_active, bool is_incognito);
+
   OnTabHtmlContentDidChange(int32 tab_id, array<url.mojom.Url> redirect_chain, string html);
   OnTabTextContentDidChange(int32 tab_id, array<url.mojom.Url> redirect_chain, string text);
+
   OnTabDidStartPlayingMedia(int32 tab_id);
   OnTabDidStopPlayingMedia(int32 tab_id);
-  OnTabDidChange(int32 tab_id, array<url.mojom.Url> redirect_chain, bool is_active, bool is_browser_active, bool is_incognito);
+
   OnDidCloseTab(int32 tab_id);
 
   // Account

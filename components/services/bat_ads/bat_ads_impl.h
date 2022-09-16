@@ -63,7 +63,7 @@ class BatAdsImpl :
   void OnUserDidBecomeActive(const base::TimeDelta idle_time,
                              const bool screen_was_locked) override;
 
-  void OnUserGesture(const int32_t page_transition_type) override;
+  void TriggerUserGestureEvent(const int32_t page_transition_type) override;
 
   void OnBrowserDidEnterForeground() override;
   void OnBrowserDidEnterBackground() override;
@@ -136,7 +136,7 @@ class BatAdsImpl :
                        ToggleFlaggedAdCallback callback) override;
 
  private:
-  // TODO(https://github.com/brave/brave-browser/issues/20940) Workaround to
+  // TODO(https://github.com/brave/brave-browser/issues/24661) Workaround to
   // pass |base::OnceCallback| into |std::bind| until we refactor Brave Ads
   // |std::function| to |base::OnceCallback|.
   template <typename T>

@@ -1125,12 +1125,13 @@ void AdsServiceImpl::OnTabTextContentDidChange(
   bat_ads_->OnTabTextContentDidChange(tab_id.id(), redirect_chain, text);
 }
 
-void AdsServiceImpl::OnUserGesture(const int32_t page_transition_type) {
+void AdsServiceImpl::TriggerUserGestureEvent(
+    const int32_t page_transition_type) {
   if (!IsBatAdsBound()) {
     return;
   }
 
-  bat_ads_->OnUserGesture(page_transition_type);
+  bat_ads_->TriggerUserGestureEvent(page_transition_type);
 }
 
 void AdsServiceImpl::OnTabDidStartPlayingMedia(const SessionID& tab_id) {

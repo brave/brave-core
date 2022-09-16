@@ -119,7 +119,7 @@ void AdsTabHelper::DidFinishNavigation(
     const int32_t page_transition =
         static_cast<int32_t>(navigation_handle->GetPageTransition());
 
-    ads_service_->OnUserGesture(page_transition);
+    ads_service_->TriggerUserGestureEvent(page_transition);
   }
 
   redirect_chain_ = navigation_handle->GetRedirectChain();

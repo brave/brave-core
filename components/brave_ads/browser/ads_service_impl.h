@@ -264,7 +264,7 @@ class AdsServiceImpl : public AdsService,
                                  const std::vector<GURL>& redirect_chain,
                                  const std::string& text) override;
 
-  void OnUserGesture(int32_t page_transition_type) override;
+  void TriggerUserGestureEvent(int32_t page_transition_type) override;
 
   void OnTabDidStartPlayingMedia(const SessionID& tab_id) override;
   void OnTabDidStopPlayingMedia(const SessionID& tab_id) override;

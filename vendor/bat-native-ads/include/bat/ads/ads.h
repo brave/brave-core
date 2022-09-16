@@ -103,7 +103,7 @@ class ADS_EXPORT Ads {
   // Called when a page navigation was initiated by a user gesture.
   // |page_transition_type| containing the page transition type, see enums for
   // |PageTransitionType|.
-  virtual void OnUserGesture(int32_t page_transition_type) = 0;
+  virtual void TriggerUserGestureEvent(int32_t page_transition_type) = 0;
 
   // Called when the browser did enter the foreground.
   virtual void OnBrowserDidEnterForeground() = 0;

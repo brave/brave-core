@@ -88,8 +88,8 @@ void BatAdsImpl::OnTabTextContentDidChange(
   ads_->OnTabTextContentDidChange(tab_id, redirect_chain, text);
 }
 
-void BatAdsImpl::OnUserGesture(const int32_t page_transition_type) {
-  ads_->OnUserGesture(page_transition_type);
+void BatAdsImpl::TriggerUserGestureEvent(const int32_t page_transition_type) {
+  ads_->TriggerUserGestureEvent(page_transition_type);
 }
 
 void BatAdsImpl::OnUserDidBecomeActive(const base::TimeDelta idle_time,

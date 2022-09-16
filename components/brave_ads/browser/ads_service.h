@@ -141,7 +141,7 @@ class AdsService : public KeyedService {
   // Called when a page navigation was initiated by a user gesture.
   // |page_transition_type| containing the page transition type, see enums for
   // |PageTransitionType|.
-  virtual void OnUserGesture(int32_t page_transition_type) = 0;
+  virtual void TriggerUserGestureEvent(int32_t page_transition_type) = 0;
 
   // Called when media starts playing on a browser tab for the specified
   // |tab_id|.
