@@ -1,5 +1,6 @@
 include_rules = [
-  "+third_party/brotli",
+  "+third_party/re2",
+  "+third_party/zlib",
 ]
 
 specific_include_rules = {
