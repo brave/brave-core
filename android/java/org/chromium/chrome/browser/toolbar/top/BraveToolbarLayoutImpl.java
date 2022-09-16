@@ -409,7 +409,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
                     if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()
                             && mBraveShieldsHandler != null && !mBraveShieldsHandler.isShowing()) {
-                        // checkForTooltip(tab);
+                        checkForTooltip(tab);
+                    }
+                    if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()
+                            && mBraveShieldsHandler != null && !mBraveShieldsHandler.isShowing()
+                            && !url.getSpec().startsWith(UrlConstants.CHROME_SCHEME)) {
                         maybeShowCookieConsentTooltip();
                     }
                 }
@@ -585,7 +589,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void maybeShowCookieConsentTooltip() {
-        if (BraveCookieConsentNotices.getInstance().isAdblockCookieListOptInEnabled()) {
+        if (BraveCookieConsentNotices.getInstance().isFilterListAvailable()
+                && BraveCookieConsentNotices.getInstance().isAdblockCookieListOptInEnabled()) {
             showCookieConsentTooltip();
         }
     }
@@ -594,16 +599,16 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         ViewGroup viewGroup =
                 BraveActivity.getBraveActivity().getWindow().getDecorView().findViewById(
                         android.R.id.content);
-        // float padding = (float) dpToPx(getContext(), 20);
+        float padding = (float) dpToPx(getContext(), 20);
         mCookieConsentTooltip = new PopupWindowTooltip.Builder(getContext())
                                         .anchorView(mBraveShieldsButton)
                                         .arrowColor(ContextCompat.getColor(
                                                 getContext(), R.color.cookie_consent_tooltip_color))
                                         .gravity(Gravity.BOTTOM)
-                                        .dismissOnOutsideTouch(false)
+                                        .dismissOnOutsideTouch(true)
                                         .dismissOnInsideTouch(false)
                                         .backgroundDimDisabled(false)
-                                        // .padding(padding)
+                                        .padding(padding)
                                         .parentPaddingHorizontal(dpToPx(getContext(), 10))
                                         .modal(true)
                                         .onDismissListener(tooltip
@@ -617,6 +622,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         btnAction.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                BraveCookieConsentNotices.getInstance().enableFilter();
                 mCookieConsentTooltip.dismiss();
             }
         }));

@@ -4,14 +4,10 @@
      License, v. 2.0. If a copy of the MPL was not distributed with this file,
      You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:drawable="@drawable/ic_cookie_background" />
     <item>
         <shape android:shape="rectangle">
-            <corners
-                 android:bottomRightRadius="8dp"
-                 android:bottomLeftRadius="8dp"
-                 android:topLeftRadius="8dp"
-                 android:topRightRadius="8dp"/>
+            <corners android:radius="8dp"/>
          </shape>
    </item>
-   <item android:drawable="@drawable/ic_cookie_background" />
 </layer-list>

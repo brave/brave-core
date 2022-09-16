@@ -20,10 +20,10 @@ public class BraveCookieConsentNotices {
     private static final Object lock = new Object();
 
     public static BraveCookieConsentNotices getInstance() {
-        synchronized(lock) {
-          if(sInstance == null) {
-              sInstance = new BraveCookieConsentNotices();
-          }
+        synchronized (lock) {
+            if (sInstance == null) {
+                sInstance = new BraveCookieConsentNotices();
+            }
         }
         return sInstance;
     }
