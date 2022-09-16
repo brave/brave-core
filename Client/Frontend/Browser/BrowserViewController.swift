@@ -1776,6 +1776,15 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
           sendableURL: url)
         
         let controller = SendTabToSelfController(sendTabAPI: self.braveCore.sendTabAPI, dataSource: dataSource)
+        
+        controller.sendWebSiteHandler = { [weak self] dataSource in
+          guard let self = self else { return }
+          
+          self.present(
+            SendTabProcessController(type: .progress, data: dataSource, sendTabAPI: self.braveCore.sendTabAPI),
+            animated: true,
+            completion: nil)
+        }
         self.present(controller, animated: true, completion: nil)
       }
 

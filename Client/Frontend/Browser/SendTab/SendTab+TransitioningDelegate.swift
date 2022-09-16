@@ -9,17 +9,16 @@ import BraveUI
 
 // MARK: - BasicAnimationControllerDelegate
 
-extension SendTabToSelfController: BasicAnimationControllerDelegate {
+extension SendTabTransitioningController: BasicAnimationControllerDelegate {
   public func animatePresentation(context: UIViewControllerContextTransitioning) {
     context.containerView.addSubview(view)
-
+    
     backgroundView.alpha = 0.0
-    contentNavigationController.view.transform =
-      CGAffineTransform(translationX: 0, y: context.containerView.bounds.height)
-
+    contentView.transform = CGAffineTransform(translationX: 0, y: context.containerView.bounds.height)
+    
     UIViewPropertyAnimator(duration: 0.35, dampingRatio: 1.0) { [self] in
       backgroundView.alpha = 1.0
-      contentNavigationController.view.transform = .identity
+      contentView.transform = .identity
     }.startAnimation()
 
     context.completeTransition(true)
@@ -28,7 +27,7 @@ extension SendTabToSelfController: BasicAnimationControllerDelegate {
   public func animateDismissal(context: UIViewControllerContextTransitioning) {
     let animator = UIViewPropertyAnimator(duration: 0.25, dampingRatio: 1.0) { [self] in
       backgroundView.alpha = 0.0
-      contentNavigationController.view.transform =
+      contentView.transform =
         CGAffineTransform(translationX: 0, y: context.containerView.bounds.height)
     }
     animator.addCompletion { _ in
@@ -41,7 +40,7 @@ extension SendTabToSelfController: BasicAnimationControllerDelegate {
 
 // MARK: - UIViewControllerTransitioningDelegate
 
-extension SendTabToSelfController: UIViewControllerTransitioningDelegate {
+extension SendTabTransitioningController: UIViewControllerTransitioningDelegate {
   public func animationController(
     forPresented presented: UIViewController,
     presenting: UIViewController,

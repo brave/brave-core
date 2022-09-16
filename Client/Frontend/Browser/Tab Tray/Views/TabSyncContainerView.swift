@@ -24,7 +24,7 @@ extension TabTrayController {
       case noSyncChain, openTabsDisabled
     }
 
-    private(set) var tableView = UITableView()
+    private(set) var tableView = UITableView(frame: .zero, style: .insetGrouped)
     
     var actionHandler: ((SyncActionType) -> Void)?
     
@@ -45,7 +45,6 @@ extension TabTrayController {
       tableView.do {
         $0.register(TabSyncTableViewCell.self)
         $0.registerHeaderFooter(TabSyncHeaderView.self)
-        $0.layoutMargins = .zero
         $0.backgroundColor = .secondaryBraveBackground
         $0.estimatedRowHeight = SiteTableViewControllerUX.rowHeight
         $0.estimatedSectionHeaderHeight = SiteTableViewControllerUX.rowHeight
@@ -55,6 +54,23 @@ extension TabTrayController {
           $0.sectionHeaderTopPadding = UX.sectionTopPadding
         }
       }
+      
+      let tableTitleLabel = UILabel().then {
+        $0.textColor = .braveLabel
+        $0.textAlignment = .left
+        $0.font = .preferredFont(forTextStyle: .title2, weight: .bold)
+        $0.text = Strings.OpenTabs.openTabsListTableHeaderTitle
+      }
+                 
+      let headerView = UIView(frame: .init(width: tableView.frame.width, height: 30))
+      headerView.addSubview(tableTitleLabel)
+
+      tableTitleLabel.snp.makeConstraints {
+        $0.leading.equalToSuperview().inset(16)
+        $0.top.bottom.trailing.equalToSuperview()
+      }
+      
+      tableView.tableHeaderView = headerView
 
       // Set an empty footer to prevent empty cells from appearing in the list.
       tableView.tableFooterView = UIView()

@@ -3019,29 +3019,22 @@ extension Strings {
         "opentabs.openTabsItemLastSyncedTodayTitle",
         tableName: "BraveShared",
         bundle: .strings,
-        value: "Last synced: Today %@",
-        comment: "The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Last Synced: Today 12:00 PM")
+        value: "Today %@",
+        comment: "The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Today 12:00 PM")
     public static let openTabsItemLastSyncedYesterdayTitle =
       NSLocalizedString(
         "opentabs.openTabsItemLastSyncedYesterdayTitle",
         tableName: "BraveShared",
         bundle: .strings,
-        value: "Last synced: Yesterday %@",
-        comment: "The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Last Synced: Yesterday 12:00 PM")
+        value: "Yesterday %@",
+        comment: "The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Yesterday 12:00 PM")
     public static let openTabsItemLastSyncedLastWeekTitle =
       NSLocalizedString(
         "opentabs.openTabsItemLastSyncedLastWeekTitle",
         tableName: "BraveShared",
         bundle: .strings,
-        value: "Last synced: Last Week %@",
-        comment: "The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Synced: Last Week Monday 12:00 PM")
-    public static let openTabsItemLastSyncedFullTitle =
-      NSLocalizedString(
-        "opentabs.openTabsItemLastSyncedFullTitle",
-        tableName: "BraveShared",
-        bundle: .strings,
-        value: "Last synced: %@",
-        comment: "The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time-date. E.g.: Last Synced: 14:00 PM 08-08-2022")
+        value: "Last Week %@",
+        comment: "The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM")
     public static let activePeriodDeviceTodayTitle =
       NSLocalizedString(
         "opentabs.activePeriodDeviceTodayTitle",
@@ -3147,6 +3140,27 @@ extension Strings {
         bundle: .strings,
         value: "To see your devices and enabled sync types, join a sync chain",
         comment: "The description of the view showing no devices inside sync chain")
+    public static let sendingWebpageProgressTitle =
+      NSLocalizedString(
+        "openTabs.sendingWebpageProgressTitle",
+        tableName: "BraveShared",
+        bundle: .strings,
+        value: "Sending…",
+        comment: "The title displayed on screen showing webpage is being sent")
+    public static let sendingWebpageCompletedTitle =
+      NSLocalizedString(
+        "openTabs.sendingWebpageCompletedTitle",
+        tableName: "BraveShared",
+        bundle: .strings,
+        value: "Sent!",
+        comment: "The title displayed on screen showing sending page is already completed")
+    public static let openTabsListTableHeaderTitle =
+      NSLocalizedString(
+        "openTabs.openTabsListTableHeaderTitle",
+        tableName: "BraveShared",
+        bundle: .strings,
+        value: "Devices",
+        comment: "The title displayed on table header for open tabs list from other devices")
   }
 }
 

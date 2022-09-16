@@ -109,3 +109,17 @@ extension Task where Success == Never, Failure == Never {
     try await sleep(nanoseconds: NSEC_PER_MSEC * UInt64(seconds * 1000))
   }
 }
+
+extension Task where Failure == Error {
+  @discardableResult
+  static func delayed(
+    bySeconds seconds: TimeInterval,
+    priority: TaskPriority? = nil,
+    operation: @escaping @Sendable () async throws -> Success
+  ) -> Task {
+    Task(priority: priority) {
+      try await Task<Never, Never>.sleep(seconds: seconds)
+      return try await operation()
+    }
+  }
+}

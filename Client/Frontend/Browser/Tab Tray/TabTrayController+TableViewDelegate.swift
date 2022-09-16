@@ -37,7 +37,6 @@ extension TabTrayController: UITableViewDataSource, UITableViewDelegate, TabSync
     }
 
     cell.do {
-      $0.backgroundColor = .clear
       $0.detailTextLabel?.font = .preferredFont(forTextStyle: .subheadline)
       $0.setLines(distantTab.title, detailText: distantTab.url.absoluteString)
     }
@@ -180,7 +179,7 @@ extension Date {
       return String(format: Strings.OpenTabs.openTabsItemLastSyncedLastWeekTitle, hourDayFormatter.string(from: self))
     }
     
-    return String(format: Strings.OpenTabs.openTabsItemLastSyncedFullTitle, fullDateFormatter.string(from: self))
+    return fullDateFormatter.string(from: self)
   }
   
   var formattedActivePeriodDate: String {
