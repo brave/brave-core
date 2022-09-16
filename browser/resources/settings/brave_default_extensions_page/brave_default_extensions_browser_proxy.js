@@ -6,79 +6,70 @@
 // #import {addSingletonGetter, sendWithPromise} from 'chrome://resources/js/cr.m.js';
 // clang-format on
 
-cr.define('settings', function () {
-  /** @interface */
-  /* #export */ class BraveDefaultExtensionsBrowserProxy {
-    /**
-     * @param {boolean} value name.
-     */
-    setWebTorrentEnabled (value) {}
-    setHangoutsEnabled (value) {}
-    setWidevineEnabled() {}
-    isWidevineEnabled() {}
-    getRestartNeeded () {}
-    wasSignInEnabledAtStartup () {}
-    isMediaRouterEnabled () {}
-    getDecentralizedDnsResolveMethodList() {}
-    getEnsOffchainResolveMethodList() {}
-    isENSL2Enabled() {}
-  }
-
+export class BraveDefaultExtensionsBrowserProxy {
   /**
-   * @implements {settings.BraveDefaultExtensionsBrowserProxy}
+   * @param {boolean} value name.
    */
-  /* #export */ class BraveDefaultExtensionsBrowserProxyImpl {
-    /** @override */
-    setWebTorrentEnabled (value) {
-      chrome.send('setWebTorrentEnabled', [value])
-    }
+  setWebTorrentEnabled(value) { }
+  setHangoutsEnabled(value) { }
+  setWidevineEnabled() { }
+  isWidevineEnabled() { }
+  getRestartNeeded() { }
+  wasSignInEnabledAtStartup() { }
+  isMediaRouterEnabled() { }
+  getDecentralizedDnsResolveMethodList() { }
+  getEnsOffchainResolveMethodList() { }
+  isENSL2Enabled() { }
+}
 
-    setHangoutsEnabled (value) {
-      chrome.send('setHangoutsEnabled', [value])
-    }
-
-    setMediaRouterEnabled (value) {
-      chrome.send('setMediaRouterEnabled', [value])
-    }
-
-    setWidevineEnabled (value) {
-      chrome.send('setWidevineEnabled', [value])
-    }
-
-    isWidevineEnabled () {
-      return cr.sendWithPromise('isWidevineEnabled')
-    }
-
-    getRestartNeeded () {
-      return cr.sendWithPromise('getRestartNeeded')
-    }
-
-    wasSignInEnabledAtStartup () {
-      return loadTimeData.getBoolean('signInAllowedOnNextStartupInitialValue')
-    }
-
-    isMediaRouterEnabled () {
-      return loadTimeData.getBoolean('isMediaRouterEnabled')
-    }
-
-    getDecentralizedDnsResolveMethodList () {
-      return cr.sendWithPromise('getDecentralizedDnsResolveMethodList')
-    }
-
-    getEnsOffchainResolveMethodList() {
-      return cr.sendWithPromise('getEnsOffchainResolveMethodList')
-    }
-
-    isENSL2Enabled() {
-      return loadTimeData.getBoolean('isENSL2Enabled')
-    }
+/**
+ * @implements {settings.BraveDefaultExtensionsBrowserProxy}
+ */
+export class BraveDefaultExtensionsBrowserProxyImpl {
+  /** @override */
+  setWebTorrentEnabled(value) {
+    chrome.send('setWebTorrentEnabled', [value])
   }
 
-  cr.addSingletonGetter(BraveDefaultExtensionsBrowserProxyImpl)
-
-  // #cr_define_end
-  return {
-    BraveDefaultExtensionsBrowserProxy,
-    BraveDefaultExtensionsBrowserProxyImpl
+  setHangoutsEnabled(value) {
+    chrome.send('setHangoutsEnabled', [value])
   }
-})
+
+  setMediaRouterEnabled(value) {
+    chrome.send('setMediaRouterEnabled', [value])
+  }
+
+  setWidevineEnabled(value) {
+    chrome.send('setWidevineEnabled', [value])
+  }
+
+  isWidevineEnabled() {
+    return cr.sendWithPromise('isWidevineEnabled')
+  }
+
+  getRestartNeeded() {
+    return cr.sendWithPromise('getRestartNeeded')
+  }
+
+  wasSignInEnabledAtStartup() {
+    return loadTimeData.getBoolean('signInAllowedOnNextStartupInitialValue')
+  }
+
+  isMediaRouterEnabled() {
+    return loadTimeData.getBoolean('isMediaRouterEnabled')
+  }
+
+  getDecentralizedDnsResolveMethodList() {
+    return cr.sendWithPromise('getDecentralizedDnsResolveMethodList')
+  }
+
+  getEnsOffchainResolveMethodList() {
+    return cr.sendWithPromise('getEnsOffchainResolveMethodList')
+  }
+
+  isENSL2Enabled() {
+    return loadTimeData.getBoolean('isENSL2Enabled')
+  }
+}
+
+cr.addSingletonGetter(BraveDefaultExtensionsBrowserProxyImpl)
