@@ -16,7 +16,7 @@ namespace syncer {
 
 namespace sync_ui_util {
 
-std::unique_ptr<base::DictionaryValue> ConstructAboutInformation(
+base::Value::Dict ConstructAboutInformation(
     IncludeSensitiveData include_sensitive_data,
     SyncService* service,
     const std::string& channel);

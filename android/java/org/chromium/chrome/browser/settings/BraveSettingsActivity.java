@@ -38,10 +38,4 @@ public class BraveSettingsActivity extends SettingsActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    protected boolean supportsDynamicColors() {
-        // Dynamic colors cause styling issues with Brave theme.
-        return false;
-    }
 }

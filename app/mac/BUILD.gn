@@ -1,7 +1,7 @@
 import("//brave/build/config.gni")
 import("//build/util/branding.gni")
-import("//build/util/version.gni")
 import("//chrome/common/features.gni")
+import("//chrome/version.gni")
 
 chrome_framework_name = chrome_product_full_name + " Framework"
 chrome_helper_name = chrome_product_full_name + " Helper"

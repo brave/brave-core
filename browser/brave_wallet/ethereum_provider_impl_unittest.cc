@@ -41,9 +41,11 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
+#include "brave/components/permissions/brave_permission_manager.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "brave/components/version_info/version_info.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/permissions/permission_manager_factory.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/test/base/testing_profile.h"
@@ -209,6 +211,11 @@ class EthereumProviderImplUnitTest : public testing::Test {
     brave_wallet_service_ =
         brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
             browser_context());
+
+    profile_.SetPermissionControllerDelegate(
+        base::WrapUnique(static_cast<permissions::BravePermissionManager*>(
+            PermissionManagerFactory::GetInstance()->BuildServiceInstanceFor(
+                browser_context()))));
 
     provider_ = std::make_unique<EthereumProviderImpl>(
         host_content_settings_map(), json_rpc_service(), tx_service(),

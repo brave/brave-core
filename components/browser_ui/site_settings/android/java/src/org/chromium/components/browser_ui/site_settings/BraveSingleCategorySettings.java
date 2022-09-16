@@ -29,7 +29,7 @@ public class BraveSingleCategorySettings
         SiteSettingsCategory mCategory = (SiteSettingsCategory) BraveReflectionUtil.getField(
                 SingleCategorySettings.class, "mCategory", this);
 
-        if (mCategory.showSites(SiteSettingsCategory.Type.AUTOPLAY)) {
+        if (mCategory.getType() == SiteSettingsCategory.Type.AUTOPLAY) {
             resource = R.string.website_settings_add_site_description_autoplay;
         } else {
             return (String) BraveReflectionUtil.InvokeMethod(
@@ -47,7 +47,7 @@ public class BraveSingleCategorySettings
         SiteSettingsCategory mCategory = (SiteSettingsCategory) BraveReflectionUtil.getField(
                 SingleCategorySettings.class, "mCategory", this);
 
-        if (mCategory.showSites(SiteSettingsCategory.Type.AUTOPLAY)) {
+        if (mCategory.getType() == SiteSettingsCategory.Type.AUTOPLAY) {
             exception = true;
         }
         if (exception) {

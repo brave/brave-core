@@ -111,7 +111,8 @@ void MdTextButton::OnPaintBackground(gfx::Canvas* canvas) {
       (hover_animation().is_animating() || GetState() == STATE_HOVERED)) {
     constexpr SkColor normal_color = kBraveBrandColor;
     constexpr SkColor hover_color = SkColorSetRGB(0xff, 0x97, 0x7d);
-    const SkAlpha alpha = hover_animation().CurrentValueBetween(0x00, 0xff);
+    const SkAlpha alpha =
+        static_cast<SkAlpha>(hover_animation().CurrentValueBetween(0x00, 0xff));
     const SkColor current_color =
         color_utils::AlphaBlend(hover_color, normal_color, alpha);
     cc::PaintFlags flags;

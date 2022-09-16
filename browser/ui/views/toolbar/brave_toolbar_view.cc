@@ -153,7 +153,7 @@ void BraveToolbarView::Init() {
   bookmark_ =
       AddChildViewAt(std::make_unique<BookmarkButton>(base::BindRepeating(
                          callback, browser_, IDC_BOOKMARK_THIS_TAB)),
-                     GetIndexOf(location_bar_));
+                     *GetIndexOf(location_bar_));
   bookmark_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
                                       ui::EF_MIDDLE_MOUSE_BUTTON);
   bookmark_->UpdateImageAndText();
@@ -162,7 +162,7 @@ void BraveToolbarView::Init() {
       brave_wallet::IsAllowedForContext(profile)) {
     wallet_ = AddChildViewAt(
         std::make_unique<WalletButton>(GetAppMenuButton(), profile->GetPrefs()),
-        GetIndexOf(GetAppMenuButton()) - 1);
+        *GetIndexOf(GetAppMenuButton()) - 1);
     wallet_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
                                       ui::EF_MIDDLE_MOUSE_BUTTON);
     wallet_->UpdateImageAndText();
@@ -175,7 +175,7 @@ void BraveToolbarView::Init() {
         base::BindRepeating(&BraveToolbarView::OnVPNButtonVisibilityChanged,
                             base::Unretained(this)));
     brave_vpn_ = AddChildViewAt(std::make_unique<BraveVPNButton>(browser()),
-                                GetIndexOf(GetAppMenuButton()) - 1);
+                                *GetIndexOf(GetAppMenuButton()) - 1);
     brave_vpn_->SetVisible(show_brave_vpn_button_.GetValue());
   }
 #endif

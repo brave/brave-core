@@ -20,8 +20,8 @@
 #include "components/sync/driver/sync_service_impl_bundle.h"
 #include "components/sync/engine/nigori/key_derivation_params.h"
 #include "components/sync/engine/nigori/nigori.h"
-#include "components/sync/test/engine/fake_sync_engine.h"
-#include "components/sync/test/engine/fake_sync_manager.h"
+#include "components/sync/test/fake_sync_engine.h"
+#include "components/sync/test/fake_sync_manager.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

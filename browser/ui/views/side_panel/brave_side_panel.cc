@@ -73,5 +73,14 @@ void BraveSidePanel::OnChildViewRemoved(View* observed_view, View* child) {
   UpdateVisibility();
 }
 
+void BraveSidePanel::SetPanelWidth(int width) {
+  // Only the width is used by BrowserViewLayout.
+  SetPreferredSize(gfx::Size(width, 1));
+}
+
+void BraveSidePanel::OnResize(int resize_amount, bool done_resizing) {
+  // Do Nothing.
+}
+
 BEGIN_METADATA(BraveSidePanel, views::View)
 END_METADATA

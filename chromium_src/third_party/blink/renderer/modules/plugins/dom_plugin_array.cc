@@ -11,6 +11,7 @@
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/page/plugin_data.h"
 #include "third_party/blink/renderer/modules/plugins/dom_plugin.h"
+#include "third_party/blink/renderer/platform/graphics/color.h"
 #include "third_party/blink/renderer/platform/heap/garbage_collected.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
@@ -99,7 +100,7 @@ void FarblePlugins(DOMPluginArray* owner,
               .GenerateRandomString("PLUGIN_1_FILENAME", 16),
           BraveSessionCache::From(*(frame->DomWindow()))
               .GenerateRandomString("PLUGIN_1_DESCRIPTION", 32),
-          0, false);
+          blink::Color::FromRGBA32(0) /* background_color */, false);
       Vector<String> fake_plugin_extensions_1{
           BraveSessionCache::From(*(frame->DomWindow()))
               .GenerateRandomString("PLUGIN_1_EXTENSION", 3)};
@@ -120,7 +121,7 @@ void FarblePlugins(DOMPluginArray* owner,
               .GenerateRandomString("PLUGIN_2_FILENAME", 15),
           BraveSessionCache::From(*(frame->DomWindow()))
               .GenerateRandomString("PLUGIN_2_DESCRIPTION", 31),
-          0, false);
+          blink::Color::FromRGBA32(0) /* background_color */, false);
       Vector<String> fake_plugin_extensions_2{
           BraveSessionCache::From(*(frame->DomWindow()))
               .GenerateRandomString("PLUGIN_2_EXTENSION", 3)};

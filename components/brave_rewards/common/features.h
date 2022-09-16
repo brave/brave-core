@@ -6,12 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_COMMON_FEATURES_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_COMMON_FEATURES_H_
 
+#include "base/feature_list.h"
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "build/build_config.h"
-
-namespace base {
-struct Feature;
-}  // namespace base
 
 namespace brave_rewards {
 namespace features {

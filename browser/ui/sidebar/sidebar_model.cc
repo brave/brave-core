@@ -63,11 +63,10 @@ SidebarModel::~SidebarModel() = default;
 
 void SidebarModel::Init(history::HistoryService* history_service) {
   // Start with saved item list.
-  int index = -1;
-  for (const auto& item : GetAllSidebarItems()) {
-    index++;
-    AddItem(item, index, false);
-  }
+  int index = 0u;
+  for (const auto& item : GetAllSidebarItems())
+    AddItem(item, index++, false);
+
   sidebar_observed_.Observe(GetSidebarService(profile_));
   // Can be null in test.
   if (history_service)
@@ -83,17 +82,16 @@ void SidebarModel::RemoveObserver(Observer* observer) {
 }
 
 void SidebarModel::AddItem(const SidebarItem& item,
-                           int index,
+                           size_t index,
                            bool user_gesture) {
   // Sidebar service should always call with a valid index equal to the
   // index of the SidebarItem.
-  DCHECK_GE(index, 0);
   for (Observer& obs : observers_) {
     obs.OnItemAdded(item, index, user_gesture);
   }
 
-  // If active_index_ is not -1, check this addition affects active index.
-  if (active_index_ != -1 && active_index_ >= index)
+  // Check this addition affects active index.
+  if (active_index_ >= index)
     UpdateActiveIndexAndNotify(index);
 
   // Web type uses site favicon as button's image.
@@ -101,15 +99,17 @@ void SidebarModel::AddItem(const SidebarItem& item,
     FetchFavicon(item);
 }
 
-void SidebarModel::OnItemAdded(const SidebarItem& item, int index) {
+void SidebarModel::OnItemAdded(const SidebarItem& item, size_t index) {
   AddItem(item, index, true);
 }
 
-void SidebarModel::OnItemMoved(const SidebarItem& item, int from, int to) {
+void SidebarModel::OnItemMoved(const SidebarItem& item,
+                               size_t from,
+                               size_t to) {
   for (Observer& obs : observers_)
     obs.OnItemMoved(item, from, to);
 
-  if (active_index_ == -1)
+  if (!active_index_)
     return;
 
   // Find new active items index.
@@ -119,13 +119,13 @@ void SidebarModel::OnItemMoved(const SidebarItem& item, int from, int to) {
   if (active_index_is_unaffected) {
     return;
   }
-  int new_active_index = -1;
+  absl::optional<size_t> new_active_index = absl::nullopt;
   if (active_index_ == from) {
     new_active_index = to;
   } else {
-    new_active_index = (to < from) ? active_index_ + 1 : active_index_ - 1;
+    new_active_index = (to < from) ? *active_index_ + 1 : *active_index_ - 1;
   }
-  DCHECK_GE(new_active_index, 0);
+  DCHECK(new_active_index);
   UpdateActiveIndexAndNotify(new_active_index);
 }
 
@@ -139,19 +139,18 @@ void SidebarModel::OnItemUpdated(const SidebarItem& item,
   }
 }
 
-void SidebarModel::OnWillRemoveItem(const SidebarItem& item, int index) {
+void SidebarModel::OnWillRemoveItem(const SidebarItem& item, size_t index) {
   if (index == active_index_)
-    UpdateActiveIndexAndNotify(-1);
+    UpdateActiveIndexAndNotify(absl::nullopt);
 }
 
-void SidebarModel::OnItemRemoved(const SidebarItem& item, int index) {
+void SidebarModel::OnItemRemoved(const SidebarItem& item, size_t index) {
   RemoveItemAt(index);
 }
 
 void SidebarModel::OnURLVisited(history::HistoryService* history_service,
-                                ui::PageTransition transition,
-                                const history::URLRow& row,
-                                base::Time visit_time) {
+                                const history::URLRow& url_row,
+                                const history::VisitRow& new_visit) {
   for (const auto& item : GetAllSidebarItems()) {
     // Don't try to update builtin items image. It uses bundled one.
     if (IsBuiltInType(item))
@@ -159,7 +158,7 @@ void SidebarModel::OnURLVisited(history::HistoryService* history_service,
 
     // If same url is added to history service, try to fetch favicon to update
     // for item.
-    if (item.url.host() == row.url().host()) {
+    if (item.url.host() == url_row.url().host()) {
       // Favicon seems cached after this callback.
       // TODO(simonhong): Find more deterministic method instead of using
       // delayed task.
@@ -172,17 +171,17 @@ void SidebarModel::OnURLVisited(history::HistoryService* history_service,
   }
 }
 
-void SidebarModel::RemoveItemAt(int index) {
+void SidebarModel::RemoveItemAt(size_t index) {
   for (Observer& obs : observers_)
     obs.OnItemRemoved(index);
 
   if (active_index_ > index) {
-    active_index_--;
+    --(*active_index_);
     UpdateActiveIndexAndNotify(active_index_);
   }
 }
 
-void SidebarModel::SetActiveIndex(int index, bool load) {
+void SidebarModel::SetActiveIndex(absl::optional<size_t> index, bool load) {
   if (index == active_index_)
     return;
 
@@ -197,23 +196,24 @@ bool SidebarModel::IsSidebarHasAllBuiltInItems() const {
   return GetSidebarService(profile_)->GetHiddenDefaultSidebarItems().empty();
 }
 
-int SidebarModel::GetIndexOf(const SidebarItem& item) const {
+absl::optional<size_t> SidebarModel::GetIndexOf(const SidebarItem& item) const {
   const auto items = GetAllSidebarItems();
   const auto iter = base::ranges::find_if(items, [&item](const auto& i) {
     return (item.built_in_item_type == i.built_in_item_type &&
             item.url == i.url);
   });
   if (iter == items.end())
-    return -1;
+    return absl::nullopt;
 
   return std::distance(items.begin(), iter);
 }
 
-void SidebarModel::UpdateActiveIndexAndNotify(int new_active_index) {
+void SidebarModel::UpdateActiveIndexAndNotify(
+    absl::optional<size_t> new_active_index) {
   if (new_active_index == active_index_)
     return;
 
-  const int old_active_index = active_index_;
+  auto old_active_index = active_index_;
   active_index_ = new_active_index;
 
   for (Observer& obs : observers_)
@@ -237,8 +237,8 @@ void SidebarModel::FetchFavicon(const sidebar::SidebarItem& item) {
 void SidebarModel::OnGetLocalFaviconImage(
     const sidebar::SidebarItem& item,
     const favicon_base::FaviconRawBitmapResult& bitmap_result) {
-  const int index = GetIndexOf(item);
-  if (index == -1)
+  auto index = GetIndexOf(item);
+  if (!index)
     return;
 
   // Fetch favicon from local favicon service.

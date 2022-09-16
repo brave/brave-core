@@ -17,6 +17,7 @@
 #include "chrome/browser/permissions/permission_manager_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -323,7 +324,7 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
     // Close tab with active request pending.
     content::WebContentsDestroyedWatcher tab_destroyed_watcher(web_contents());
     browser()->tab_strip_model()->CloseWebContentsAt(0,
-                                                     TabStripModel::CLOSE_NONE);
+                                                     TabCloseTypes::CLOSE_NONE);
     tab_destroyed_watcher.Wait();
     EXPECT_TRUE(IsPendingGroupedRequestsEmpty(cases[i].type));
   }
@@ -348,7 +349,7 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, GetCanonicalOrigin) {
         GetLastCommitedOrigin(), cases[i].addresses, &origin))
         << "case: " << i;
 
-    EXPECT_EQ(origin.GetURL(), permission_manager()->GetCanonicalOrigin(
+    EXPECT_EQ(origin.GetURL(), permissions::PermissionUtil::GetCanonicalOrigin(
                                    cases[i].type, origin.GetURL(),
                                    GetLastCommitedOrigin().GetURL()))
         << "GetCanonicalOrigin should return requesting_origin for Ethereum "

@@ -26,7 +26,7 @@ source_set("bookmark") {
   deps += [
     "//chrome/browser/cart:mojo_bindings",
     "//chrome/browser/new_tab_page/modules/drive:mojo_bindings",
-    "//chrome/browser/new_tab_page/modules/task_module:mojo_bindings",
+    "//chrome/browser/new_tab_page/modules/recipes:mojo_bindings",
     "//chrome/browser/ui/webui/new_tab_page:mojo_bindings",
     "//chrome/browser/ui/webui/realbox:mojo_bindings",
     "//ui/webui/resources/js/browser_command:mojo_bindings",

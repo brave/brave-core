@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index b21cd6596bd7f63bd94781379c3b26a9b3fb06d1..2f418b8c36ff0128bdb3a69abee8f65a22eedc93 100644
+index 56fda9d97da5a58cb623f0d375f5a172c9836af4..1a731902a0d3c0e8c67da3ac198b1e0c4a24d91b 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
 @@ -13,6 +13,7 @@
@@ -7,7 +7,7 @@ index b21cd6596bd7f63bd94781379c3b26a9b3fb06d1..2f418b8c36ff0128bdb3a69abee8f65a
        }
      </style>
 +<if expr="_google_chrome">
- <if expr="not chromeos_ash and not chromeos_lacros">
+ <if expr="not is_chromeos">
      <!-- Signout is not supported yet on lacros, https://crbug.com/1217645 -->
      <settings-toggle-button id="signinAllowedToggle"
 @@ -26,6 +27,7 @@
@@ -43,7 +43,7 @@ index b21cd6596bd7f63bd94781379c3b26a9b3fb06d1..2f418b8c36ff0128bdb3a69abee8f65a
  <if expr="_google_chrome">
      <settings-toggle-button id="spellCheckControl"
          class="hr"
-@@ -118,6 +122,7 @@
+@@ -120,6 +124,7 @@
        </settings-toggle-button>
      </template>
  
@@ -51,7 +51,7 @@ index b21cd6596bd7f63bd94781379c3b26a9b3fb06d1..2f418b8c36ff0128bdb3a69abee8f65a
      <template is="dom-if" if="[[showSignoutDialog_]]" restamp>
        <settings-signout-dialog sync-status="[[syncStatus]]"
            on-close="onSignoutDialogClosed_">
-@@ -135,3 +140,4 @@
+@@ -137,3 +142,4 @@
            on-close="onRelaunchDialogClose"></relaunch-confirmation-dialog>
      </template>
  </if>

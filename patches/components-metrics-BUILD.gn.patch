@@ -1,10 +1,10 @@
 diff --git a/components/metrics/BUILD.gn b/components/metrics/BUILD.gn
-index 334f527bfbefddbe19883d24d738e00a0d385d3c..03fc051ad0b2f93894827890bcf8ce3d2012fe71 100644
+index 2006302e4bebb7382d63537714751d1701edc10e..b0bf88b6bfd8d640eaee2bfb56ff1c01b1023f67 100644
 --- a/components/metrics/BUILD.gn
 +++ b/components/metrics/BUILD.gn
-@@ -192,6 +192,7 @@ static_library("metrics") {
-   if (is_fuchsia) {
-     sources += [ "drive_metrics_provider_fuchsia.cc" ]
+@@ -200,6 +200,7 @@ static_library("metrics") {
+       "motherboard_metrics_provider.h",
+     ]
    }
 +  import("//brave/components/metrics/sources.gni") deps += brave_components_metrics_deps
  }

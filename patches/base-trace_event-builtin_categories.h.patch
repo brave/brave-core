@@ -1,8 +1,8 @@
 diff --git a/base/trace_event/builtin_categories.h b/base/trace_event/builtin_categories.h
-index a1a93418b0b0d56f92647aa1087bb4485c354201..77e8b0773c597d38dd885d9bdcc78af077f7294c 100644
+index be712614ac5be3573427247d7032432f18e47a15..f7ac3142142ce25c4b6e04158d9ff22eca22d871 100644
 --- a/base/trace_event/builtin_categories.h
 +++ b/base/trace_event/builtin_categories.h
-@@ -178,6 +178,7 @@
+@@ -180,6 +180,7 @@
    X("WebCore")                                                           \
    X("webrtc")                                                            \
    X("xr")                                                                \

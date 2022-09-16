@@ -7,6 +7,7 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/common/url_constants.h"
@@ -188,7 +189,7 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
     // Close the first a.com tab, ensure all blobs created there become obsolete
     // and can't be fetched.
     ASSERT_TRUE(browser()->tab_strip_model()->CloseWebContentsAt(
-        1, TabStripModel::CloseTypes::CLOSE_NONE));
+        1, TabCloseTypes::CLOSE_NONE));
     content::RunAllTasksUntilIdle();
     for (size_t idx = 0; idx < a_com2_registered_blobs.size(); ++idx) {
       auto* rfh = a_com2_registered_blobs[idx].rfh;
@@ -265,7 +266,7 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
     // Close the first a.com tab, ensure all blobs created there become obsolete
     // and can't be fetched.
     ASSERT_TRUE(browser()->tab_strip_model()->CloseWebContentsAt(
-        1, TabStripModel::CloseTypes::CLOSE_NONE));
+        1, TabCloseTypes::CLOSE_NONE));
     content::RunAllTasksUntilIdle();
     for (size_t idx = 0; idx < a_com2_registered_blobs.size(); ++idx) {
       auto* rfh = a_com2_registered_blobs[idx].rfh;

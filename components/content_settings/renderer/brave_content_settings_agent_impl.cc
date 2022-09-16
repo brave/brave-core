@@ -79,8 +79,8 @@ BraveContentSettingsAgentImpl::BraveContentSettingsAgentImpl(
     : ContentSettingsAgentImpl(render_frame,
                                should_whitelist,
                                std::move(delegate)) {
-  render_frame->GetAssociatedInterfaceRegistry()->AddInterface(
-      base::BindRepeating(
+  render_frame->GetAssociatedInterfaceRegistry()
+      ->AddInterface<brave_shields::mojom::BraveShields>(base::BindRepeating(
           &BraveContentSettingsAgentImpl::BindBraveShieldsReceiver,
           base::Unretained(this)));
 }
