@@ -1113,14 +1113,15 @@ void AdsServiceImpl::OnHtmlLoaded(const SessionID& tab_id,
   bat_ads_->OnHtmlLoaded(tab_id.id(), redirect_chain, html);
 }
 
-void AdsServiceImpl::OnTextLoaded(const SessionID& tab_id,
-                                  const std::vector<GURL>& redirect_chain,
-                                  const std::string& text) {
+void AdsServiceImpl::OnTabTextContentDidChange(
+    const SessionID& tab_id,
+    const std::vector<GURL>& redirect_chain,
+    const std::string& text) {
   if (!IsBatAdsBound()) {
     return;
   }
 
-  bat_ads_->OnTextLoaded(tab_id.id(), redirect_chain, text);
+  bat_ads_->OnTabTextContentDidChange(tab_id.id(), redirect_chain, text);
 }
 
 void AdsServiceImpl::OnUserGesture(const int32_t page_transition_type) {

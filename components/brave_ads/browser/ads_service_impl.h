@@ -260,9 +260,9 @@ class AdsServiceImpl : public AdsService,
   void OnHtmlLoaded(const SessionID& tab_id,
                     const std::vector<GURL>& redirect_chain,
                     const std::string& html) override;
-  void OnTextLoaded(const SessionID& tab_id,
-                    const std::vector<GURL>& redirect_chain,
-                    const std::string& text) override;
+  void OnTabTextContentDidChange(const SessionID& tab_id,
+                                 const std::vector<GURL>& redirect_chain,
+                                 const std::string& text) override;
 
   void OnUserGesture(int32_t page_transition_type) override;
 

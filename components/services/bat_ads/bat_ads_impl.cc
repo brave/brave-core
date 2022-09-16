@@ -80,10 +80,11 @@ void BatAdsImpl::OnHtmlLoaded(const int32_t tab_id,
   ads_->OnHtmlLoaded(tab_id, redirect_chain, html);
 }
 
-void BatAdsImpl::OnTextLoaded(const int32_t tab_id,
-                              const std::vector<GURL>& redirect_chain,
-                              const std::string& text) {
-  ads_->OnTextLoaded(tab_id, redirect_chain, text);
+void BatAdsImpl::OnTabTextContentDidChange(
+    const int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    const std::string& text) {
+  ads_->OnTabTextContentDidChange(tab_id, redirect_chain, text);
 }
 
 void BatAdsImpl::OnUserGesture(const int32_t page_transition_type) {

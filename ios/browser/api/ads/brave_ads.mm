@@ -547,7 +547,8 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     urls.push_back(net::GURLWithNSURL(redirectURL));
   }
   urls.push_back(net::GURLWithNSURL(url));
-  ads->OnTextLoaded((int32_t)tabId, urls, base::SysNSStringToUTF8(text));
+  ads->OnTabTextContentDidChange((int32_t)tabId, urls,
+                                 base::SysNSStringToUTF8(text));
   ads->OnHtmlLoaded((int32_t)tabId, urls, base::SysNSStringToUTF8(html));
 }
 

@@ -58,7 +58,7 @@ class MockAdsService : public AdsService {
                void(const SessionID&,
                     const std::vector<GURL>&,
                     const std::string&));
-  MOCK_METHOD3(OnTextLoaded,
+  MOCK_METHOD3(OnTabTextContentDidChange,
                void(const SessionID&,
                     const std::vector<GURL>&,
                     const std::string&));

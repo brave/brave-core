@@ -132,9 +132,10 @@ class AdsService : public KeyedService {
   // occurred on the way to the current page. The current page is the last one
   // in the list (so even when there's no redirect, there should be one entry in
   // the list). |text| containing the page content as text.
-  virtual void OnTextLoaded(const SessionID& tab_id,
-                            const std::vector<GURL>& redirect_chain,
-                            const std::string& text) = 0;
+  virtual void OnTabTextContentDidChange(
+      const SessionID& tab_id,
+      const std::vector<GURL>& redirect_chain,
+      const std::string& text) = 0;
 
   // Called when a page navigation was initiated by a user gesture.
   // |page_transition_type| containing the page transition type, see enums for

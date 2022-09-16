@@ -115,7 +115,7 @@ interface BatAds {
   OnDidUpdateResourceComponent(string id);
 
   OnHtmlLoaded(int32 tab_id, array<url.mojom.Url> redirect_chain, string html);
-  OnTextLoaded(int32 tab_id, array<url.mojom.Url> redirect_chain, string text);
+  OnTabTextContentDidChange(int32 tab_id, array<url.mojom.Url> redirect_chain, string text);
 
   // User Interaction
   OnIdle();

@@ -184,9 +184,9 @@ void AdsImpl::OnHtmlLoaded(const int32_t tab_id,
                                                     html);
 }
 
-void AdsImpl::OnTextLoaded(const int32_t tab_id,
-                           const std::vector<GURL>& redirect_chain,
-                           const std::string& text) {
+void AdsImpl::OnTabTextContentDidChange(const int32_t tab_id,
+                                        const std::vector<GURL>& redirect_chain,
+                                        const std::string& text) {
   TabManager::GetInstance()->OnTextContentDidChange(tab_id, redirect_chain,
                                                     text);
 }

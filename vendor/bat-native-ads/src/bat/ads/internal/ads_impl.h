@@ -109,9 +109,9 @@ class AdsImpl final : public Ads,
   void OnHtmlLoaded(int32_t tab_id,
                     const std::vector<GURL>& redirect_chain,
                     const std::string& html) override;
-  void OnTextLoaded(int32_t tab_id,
-                    const std::vector<GURL>& redirect_chain,
-                    const std::string& text) override;
+  void OnTabTextContentDidChange(int32_t tab_id,
+                                 const std::vector<GURL>& redirect_chain,
+                                 const std::string& text) override;
 
   void OnIdle() override;
   void OnUnIdle(base::TimeDelta idle_time, bool was_locked) override;

@@ -55,9 +55,9 @@ class BatAdsImpl :
   void OnHtmlLoaded(const int32_t tab_id,
                     const std::vector<GURL>& redirect_chain,
                     const std::string& html) override;
-  void OnTextLoaded(const int32_t tab_id,
-                    const std::vector<GURL>& redirect_chain,
-                    const std::string& text) override;
+  void OnTabTextContentDidChange(const int32_t tab_id,
+                                 const std::vector<GURL>& redirect_chain,
+                                 const std::string& text) override;
 
   void OnIdle() override;
   void OnUnIdle(const base::TimeDelta idle_time,

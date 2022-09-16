@@ -82,9 +82,10 @@ class ADS_EXPORT Ads {
   // occurred on the way to the current page. The current page is the last one
   // in the list (so even when there's no redirect, there should be one entry in
   // the list). |text| containing the page content as text.
-  virtual void OnTextLoaded(int32_t tab_id,
-                            const std::vector<GURL>& redirect_chain,
-                            const std::string& text) = 0;
+  virtual void OnTabTextContentDidChange(
+      int32_t tab_id,
+      const std::vector<GURL>& redirect_chain,
+      const std::string& text) = 0;
 
   // Called when a user has been idle for the threshold set in
   // |prefs::kIdleTimeThreshold|. NOTE: This should not be called on mobile
