@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_FEATURES_H_
 
 #include "base/feature_list.h"
+#include "base/metrics/field_trial_params.h"
 
 namespace brave_wallet {
 namespace features {
@@ -14,6 +15,7 @@ namespace features {
 extern const base::Feature kNativeBraveWalletFeature;
 extern const base::Feature kBraveWalletFilecoinFeature;
 extern const base::Feature kBraveWalletSolanaFeature;
+extern const base::FeatureParam<bool> kCreateDefaultSolanaAccount;
 extern const base::Feature kBraveWalletSolanaProviderFeature;
 extern const base::Feature kBraveWalletDappsSupportFeature;
 extern const base::Feature kBraveWalletENSL2Feature;

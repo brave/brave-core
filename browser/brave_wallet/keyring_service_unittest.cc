@@ -1287,6 +1287,7 @@ TEST_F(KeyringServiceUnitTest, LockAndUnlock) {
       {brave_wallet::features::kBraveWalletFilecoinFeature,
        brave_wallet::features::kBraveWalletSolanaFeature},
       {});
+
   {
     KeyringService service(json_rpc_service(), GetPrefs());
     // No encryptor
@@ -1472,6 +1473,16 @@ TEST_F(KeyringServiceUnitTest, AccountMetasForKeyring) {
 }
 
 TEST_F(KeyringServiceUnitTest, CreateAndRestoreWallet) {
+  base::test::ScopedFeatureList feature_list;
+  base::FieldTrialParams parameters;
+  parameters[features::kCreateDefaultSolanaAccount.name] = "false";
+
+  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  enabled_features.emplace_back(
+      brave_wallet::features::kBraveWalletSolanaFeature, parameters);
+
+  feature_list.InitWithFeaturesAndParameters(enabled_features, {});
+
   KeyringService service(json_rpc_service(), GetPrefs());
 
   TestKeyringServiceObserver observer;
@@ -1563,6 +1574,38 @@ TEST_F(KeyringServiceUnitTest, CreateAndRestoreWallet) {
   EXPECT_FALSE(observer.IsKeyringRestored(mojom::kFilecoinKeyringId));
   EXPECT_FALSE(observer.IsKeyringCreated(mojom::kSolanaKeyringId));
   EXPECT_FALSE(observer.IsKeyringRestored(mojom::kSolanaKeyringId));
+}
+
+TEST_F(KeyringServiceUnitTest, DefaultSolanaAccountCreated) {
+  KeyringService service(json_rpc_service(), GetPrefs());
+  ASSERT_NE(CreateWallet(&service, "brave"), absl::nullopt);
+
+  std::vector<mojom::AccountInfoPtr> account_infos =
+      service.GetAccountInfosForKeyring(mojom::kSolanaKeyringId);
+  EXPECT_EQ(account_infos.size(), 1u);
+  EXPECT_FALSE(account_infos[0]->address.empty());
+  EXPECT_EQ(account_infos[0]->name, "Solana Account 1");
+}
+
+TEST_F(KeyringServiceUnitTest, DefaultSolanaAccountRestored) {
+  base::test::ScopedFeatureList feature_list;
+  base::FieldTrialParams parameters;
+  parameters[features::kCreateDefaultSolanaAccount.name] = "true";
+
+  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  enabled_features.emplace_back(
+      brave_wallet::features::kBraveWalletSolanaFeature, parameters);
+
+  feature_list.InitWithFeaturesAndParameters(enabled_features, {});
+
+  KeyringService service(json_rpc_service(), GetPrefs());
+  ASSERT_TRUE(RestoreWallet(&service, kMnemonic1, "brave", false));
+
+  std::vector<mojom::AccountInfoPtr> account_infos =
+      service.GetAccountInfosForKeyring(mojom::kSolanaKeyringId);
+  EXPECT_EQ(account_infos.size(), 1u);
+  EXPECT_FALSE(account_infos[0]->address.empty());
+  EXPECT_EQ(account_infos[0]->name, "Solana Account 1");
 }
 
 TEST_F(KeyringServiceUnitTest, AddAccount) {
@@ -1870,8 +1913,15 @@ TEST_F(KeyringServiceUnitTest, ImportedAccountFromJson) {
 
 TEST_F(KeyringServiceUnitTest, GetPrivateKeyForKeyringAccount) {
   base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeature(
-      brave_wallet::features::kBraveWalletSolanaFeature);
+  base::FieldTrialParams parameters;
+  parameters[features::kCreateDefaultSolanaAccount.name] = "false";
+
+  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  enabled_features.emplace_back(
+      brave_wallet::features::kBraveWalletSolanaFeature, parameters);
+
+  feature_list.InitWithFeaturesAndParameters(enabled_features, {});
+
   KeyringService service(json_rpc_service(), GetPrefs());
   ASSERT_TRUE(RestoreWallet(&service, kMnemonic1, "brave", false));
 
@@ -2473,6 +2523,16 @@ TEST_F(KeyringServiceUnitTest, NotifyUserInteraction) {
 }
 
 TEST_F(KeyringServiceUnitTest, SelectAddedAccount) {
+  base::test::ScopedFeatureList feature_list;
+  base::FieldTrialParams parameters;
+  parameters[features::kCreateDefaultSolanaAccount.name] = "false";
+
+  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  enabled_features.emplace_back(
+      brave_wallet::features::kBraveWalletSolanaFeature, parameters);
+
+  feature_list.InitWithFeaturesAndParameters(enabled_features, {});
+
   KeyringService service(json_rpc_service(), GetPrefs());
   ASSERT_TRUE(CreateWallet(&service, "brave"));
 
@@ -3437,6 +3497,16 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
 }
 
 TEST_F(KeyringServiceUnitTest, PreCreateEncryptors) {
+  base::test::ScopedFeatureList feature_list;
+  base::FieldTrialParams parameters;
+  parameters[features::kCreateDefaultSolanaAccount.name] = "false";
+
+  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  enabled_features.emplace_back(
+      brave_wallet::features::kBraveWalletSolanaFeature, parameters);
+
+  feature_list.InitWithFeaturesAndParameters(enabled_features, {});
+
   {
     // Create default wallet with disabled filecoin feature.
     // Solana feature is enabled on desktop and disabled on Android.
@@ -3508,10 +3578,19 @@ TEST_F(KeyringServiceUnitTest, PreCreateEncryptors) {
 #endif
 
     base::test::ScopedFeatureList feature_list;
-    feature_list.InitWithFeatures(
-        {brave_wallet::features::kBraveWalletFilecoinFeature,
-         brave_wallet::features::kBraveWalletSolanaFeature},
-        {});
+    base::FieldTrialParams parameters;
+    parameters[features::kCreateDefaultSolanaAccount.name] = "false";
+
+    std::vector<base::test::ScopedFeatureList::FeatureAndParams>
+        enabled_features;
+    enabled_features.emplace_back(
+        brave_wallet::features::kBraveWalletSolanaFeature, parameters);
+    enabled_features.emplace_back(
+        brave_wallet::features::kBraveWalletFilecoinFeature,
+        base::FieldTrialParams());
+
+    feature_list.InitWithFeaturesAndParameters(enabled_features, {});
+
     service.Reset();
     ASSERT_TRUE(
         RestoreWallet(&service, *mnemonic_to_be_restored, "brave", false));
@@ -3532,8 +3611,15 @@ TEST_F(KeyringServiceUnitTest, PreCreateEncryptors) {
 
 TEST_F(KeyringServiceUnitTest, SolanaKeyring) {
   base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeature(
-      brave_wallet::features::kBraveWalletSolanaFeature);
+  base::FieldTrialParams parameters;
+  parameters[features::kCreateDefaultSolanaAccount.name] = "false";
+
+  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  enabled_features.emplace_back(
+      brave_wallet::features::kBraveWalletSolanaFeature, parameters);
+
+  feature_list.InitWithFeaturesAndParameters(enabled_features, {});
+
   {
     KeyringService service(json_rpc_service(), GetPrefs());
     TestKeyringServiceObserver observer;
@@ -3701,8 +3787,15 @@ TEST_F(KeyringServiceUnitTest, SolanaKeyring) {
 
 TEST_F(KeyringServiceUnitTest, SignMessage) {
   base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeature(
-      brave_wallet::features::kBraveWalletSolanaFeature);
+  base::FieldTrialParams parameters;
+  parameters[features::kCreateDefaultSolanaAccount.name] = "false";
+
+  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  enabled_features.emplace_back(
+      brave_wallet::features::kBraveWalletSolanaFeature, parameters);
+
+  feature_list.InitWithFeaturesAndParameters(enabled_features, {});
+
   KeyringService service(json_rpc_service(), GetPrefs());
   ASSERT_TRUE(RestoreWallet(&service, kMnemonic1, "brave", false));
   base::RunLoop().RunUntilIdle();

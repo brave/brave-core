@@ -127,6 +127,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void GetMnemonicForDefaultKeyring(
       const std::string& password,
       GetMnemonicForDefaultKeyringCallback callback) override;
+  void MaybeCreateDefaultSolanaAccount();
   void CreateWallet(const std::string& password,
                     CreateWalletCallback callback) override;
   void RestoreWallet(const std::string& mnemonic,
@@ -293,6 +294,9 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, ImportFilecoinAccounts);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, PreCreateEncryptors);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, HardwareAccounts);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, DefaultSolanaAccountCreated);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
+                           DefaultSolanaAccountRestored);
 
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceAccountDiscoveryUnitTest,
                            AccountDiscovery);

@@ -23,6 +23,8 @@ const base::Feature kBraveWalletFilecoinFeature{
 
 const base::Feature kBraveWalletSolanaFeature{"BraveWalletSolana",
                                               base::FEATURE_ENABLED_BY_DEFAULT};
+const base::FeatureParam<bool> kCreateDefaultSolanaAccount{
+    &kBraveWalletSolanaFeature, "create_default_solana_account", true};
 
 const base::Feature kBraveWalletSolanaProviderFeature{
 #if BUILDFLAG(IS_ANDROID)
