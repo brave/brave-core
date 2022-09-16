@@ -47,7 +47,7 @@ declare namespace NewTab {
   }
 
   export interface Wallpaper {
-    backgroundWallpaper?: BackgroundWallpaper
+    backgroundWallpaper: BackgroundWallpaper
     brandedWallpaper?: BrandedWallpaper
   }
 
