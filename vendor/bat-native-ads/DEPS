@@ -1,5 +1,4 @@
 include_rules = [
   "+absl/types/optional.h",
   "+bat/ads",
-  "+third_party/re2",
 ]
