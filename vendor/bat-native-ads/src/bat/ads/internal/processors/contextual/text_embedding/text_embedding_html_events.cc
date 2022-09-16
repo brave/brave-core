@@ -26,7 +26,7 @@ TextEmbeddingHtmlEventInfo BuildTextEmbeddingHtmlEvent(
       text_embedding.embedding.GetVectorAsString();
 
   return text_embedding_html_event;
-};
+}
 
 void LogTextEmbeddingHtmlEvent(
     const TextEmbeddingHtmlEventInfo& text_embedding_html_event,
