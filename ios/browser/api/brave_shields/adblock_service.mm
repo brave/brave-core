@@ -9,9 +9,9 @@
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/browser/ad_block_component_installer.h"
-#include "brave/components/brave_shields/browser/ad_block_regional_catalog_entry.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
-#include "brave/ios/browser/api/brave_shields/adblock_regional_catalog_entry+private.h"
+#include "brave/components/brave_shields/browser/filter_list_catalog_entry.h"
+#include "brave/ios/browser/api/brave_shields/adblock_filter_list_catalog_entry+private.h"
 #include "components/component_updater/component_updater_service.h"
 
 @interface AdblockService () {
@@ -19,7 +19,7 @@
 }
 @property(nonatomic, copy) NSString* shieldsInstallPath;
 @property(nonatomic, copy)
-    NSArray<AdblockRegionalCatalogEntry*>* regionalFilterLists;
+    NSArray<AdblockFilterListCatalogEntry*>* regionalFilterLists;
 @end
 
 @implementation AdblockService
@@ -57,13 +57,14 @@
         if (!strongSelf) {
           return;
         }
-        auto catalog = brave_shields::RegionalCatalogFromJSON(json);
+        auto catalog = brave_shields::FilterListCatalogFromJSON(json);
 
         NSMutableArray* lists = [[NSMutableArray alloc] init];
         for (const auto& entry : catalog) {
-          [lists addObject:[[AdblockRegionalCatalogEntry alloc]
-                               initWithFilterList:
-                                   brave_shields::RegionalCatalogEntry(entry)]];
+          [lists
+              addObject:[[AdblockFilterListCatalogEntry alloc]
+                            initWithFilterList:
+                                brave_shields::FilterListCatalogEntry(entry)]];
         }
         strongSelf.regionalFilterLists = lists;
 
@@ -73,9 +74,9 @@
       }));
 }
 
-- (void)registerFilterListComponent:(AdblockRegionalCatalogEntry*)entry
+- (void)registerFilterListComponent:(AdblockFilterListCatalogEntry*)entry
                      componentReady:
-                         (void (^)(AdblockRegionalCatalogEntry* entry,
+                         (void (^)(AdblockFilterListCatalogEntry* entry,
                                    NSString* _Nullable installPath))
                              componentReady {
   brave_shields::RegisterAdBlockRegionalComponent(
@@ -88,7 +89,7 @@
       }));
 }
 
-- (void)unregisterFilterListComponent:(AdblockRegionalCatalogEntry*)entry {
+- (void)unregisterFilterListComponent:(AdblockFilterListCatalogEntry*)entry {
   _cus->UnregisterComponent(base::SysNSStringToUTF8(entry.componentId));
 }
 

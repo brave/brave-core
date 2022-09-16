@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/ios/browser/api/brave_shields/adblock_regional_catalog_entry.h"
+#include "brave/ios/browser/api/brave_shields/adblock_filter_list_catalog_entry.h"
 
 #include "base/strings/sys_string_conversions.h"
 #include "brave/base/mac/conversions.h"
-#include "brave/components/brave_shields/browser/ad_block_regional_catalog_entry.h"
+#include "brave/components/brave_shields/browser/filter_list_catalog_entry.h"
 
-@interface AdblockRegionalCatalogEntry ()
+@interface AdblockFilterListCatalogEntry ()
 @property(nonatomic, copy) NSString* uuid;
 @property(nonatomic, copy) NSString* url;
 @property(nonatomic, copy) NSString* title;
@@ -20,10 +20,10 @@
 @property(nonatomic, copy) NSString* desc;
 @end
 
-@implementation AdblockRegionalCatalogEntry
+@implementation AdblockFilterListCatalogEntry
 
-- (instancetype)initWithRegionalCatalogEntry:
-    (brave_shields::RegionalCatalogEntry)entry {
+- (instancetype)initWithFilterListCatalogEntry:
+    (brave_shields::FilterListCatalogEntry)entry {
   if ((self = [super init])) {
     self.uuid = base::SysUTF8ToNSString(entry.uuid);
     self.url = base::SysUTF8ToNSString(entry.url);
@@ -37,8 +37,8 @@
   return self;
 }
 
-- (brave_shields::RegionalCatalogEntry)entry {
-  return brave_shields::RegionalCatalogEntry(
+- (brave_shields::FilterListCatalogEntry)entry {
+  return brave_shields::FilterListCatalogEntry(
       base::SysNSStringToUTF8(self.uuid), base::SysNSStringToUTF8(self.url),
       base::SysNSStringToUTF8(self.title),
       brave::ns_to_vector<std::string>(self.languages),

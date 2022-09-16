@@ -13,7 +13,7 @@
 #include "base/logging.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_shields/browser/ad_block_component_installer.h"
-#include "brave/components/brave_shields/browser/ad_block_regional_catalog_entry.h"
+#include "brave/components/brave_shields/browser/filter_list_catalog_entry.h"
 #include "components/component_updater/component_updater_service.h"
 #include "content/public/browser/browser_task_traits.h"
 
@@ -21,7 +21,7 @@ namespace brave_shields {
 
 AdBlockRegionalFiltersProvider::AdBlockRegionalFiltersProvider(
     component_updater::ComponentUpdateService* cus,
-    const RegionalCatalogEntry& catalog_entry)
+    const FilterListCatalogEntry& catalog_entry)
     : uuid_(catalog_entry.uuid),
       component_id_(catalog_entry.component_id),
       component_updater_service_(cus) {

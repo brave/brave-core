@@ -26,12 +26,12 @@ class AdBlockServiceTest;
 
 namespace brave_shields {
 
-class RegionalCatalogEntry;
+class FilterListCatalogEntry;
 
 class AdBlockRegionalFiltersProvider : public AdBlockFiltersProvider {
  public:
   AdBlockRegionalFiltersProvider(component_updater::ComponentUpdateService* cus,
-                                 const RegionalCatalogEntry& catalog_entry);
+                                 const FilterListCatalogEntry& catalog_entry);
   ~AdBlockRegionalFiltersProvider() override;
   AdBlockRegionalFiltersProvider(const AdBlockRegionalFiltersProvider&) =
       delete;

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class AdblockRegionalCatalogEntry;
+@class AdblockFilterListCatalogEntry;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -20,7 +20,7 @@ OBJC_EXPORT
 
 /// Regional filter lists
 @property(readonly, nullable)
-    NSArray<AdblockRegionalCatalogEntry*>* regionalFilterLists;
+    NSArray<AdblockFilterListCatalogEntry*>* regionalFilterLists;
 
 /// Executed each time the main shields component is updated
 @property(nonatomic, copy, nullable) void (^shieldsComponentReady)
@@ -28,14 +28,15 @@ OBJC_EXPORT
 
 /// Registers a filter list with the component updater and calls
 /// `componentReady` each time the component is updated
-- (void)registerFilterListComponent:(AdblockRegionalCatalogEntry*)filterList
+- (void)registerFilterListComponent:(AdblockFilterListCatalogEntry*)filterList
                      componentReady:
-                         (void (^)(AdblockRegionalCatalogEntry* filterList,
+                         (void (^)(AdblockFilterListCatalogEntry* filterList,
                                    NSString* _Nullable installPath))
                              componentReady;
 
 /// Unregisters a filter list with the component updater
-- (void)unregisterFilterListComponent:(AdblockRegionalCatalogEntry*)filterList;
+- (void)unregisterFilterListComponent:
+    (AdblockFilterListCatalogEntry*)filterList;
 
 - (instancetype)init NS_UNAVAILABLE;
 

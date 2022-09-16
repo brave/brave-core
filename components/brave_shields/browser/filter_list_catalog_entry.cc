@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_shields/browser/ad_block_regional_catalog_entry.h"
+#include "brave/components/brave_shields/browser/filter_list_catalog_entry.h"
 
 #include <algorithm>
 #include <string>
@@ -43,9 +43,9 @@ bool GetStringVector(const base::Value* value,
 
 namespace brave_shields {
 
-RegionalCatalogEntry::RegionalCatalogEntry() {}
+FilterListCatalogEntry::FilterListCatalogEntry() {}
 
-RegionalCatalogEntry::RegionalCatalogEntry(
+FilterListCatalogEntry::FilterListCatalogEntry(
     const std::string& uuid,
     const std::string& url,
     const std::string& title,
@@ -63,37 +63,38 @@ RegionalCatalogEntry::RegionalCatalogEntry(
       base64_public_key(base64_public_key),
       desc(desc) {}
 
-RegionalCatalogEntry::RegionalCatalogEntry(const RegionalCatalogEntry& other) =
-    default;
+FilterListCatalogEntry::FilterListCatalogEntry(
+    const FilterListCatalogEntry& other) = default;
 
-RegionalCatalogEntry::~RegionalCatalogEntry() = default;
+FilterListCatalogEntry::~FilterListCatalogEntry() = default;
 
-void RegionalCatalogEntry::RegisterJSONConverter(
-    base::JSONValueConverter<RegionalCatalogEntry>* converter) {
-  converter->RegisterStringField("uuid", &RegionalCatalogEntry::uuid);
-  converter->RegisterStringField("url", &RegionalCatalogEntry::url);
-  converter->RegisterStringField("title", &RegionalCatalogEntry::title);
+void FilterListCatalogEntry::RegisterJSONConverter(
+    base::JSONValueConverter<FilterListCatalogEntry>* converter) {
+  converter->RegisterStringField("uuid", &FilterListCatalogEntry::uuid);
+  converter->RegisterStringField("url", &FilterListCatalogEntry::url);
+  converter->RegisterStringField("title", &FilterListCatalogEntry::title);
   converter->RegisterCustomValueField<std::vector<std::string>>(
-      "langs", &RegionalCatalogEntry::langs, &GetStringVector);
+      "langs", &FilterListCatalogEntry::langs, &GetStringVector);
   converter->RegisterStringField("support_url",
-                                 &RegionalCatalogEntry::support_url);
+                                 &FilterListCatalogEntry::support_url);
   converter->RegisterStringField("component_id",
-                                 &RegionalCatalogEntry::component_id);
+                                 &FilterListCatalogEntry::component_id);
   converter->RegisterStringField("base64_public_key",
-                                 &RegionalCatalogEntry::base64_public_key);
-  converter->RegisterStringField("desc", &RegionalCatalogEntry::desc);
+                                 &FilterListCatalogEntry::base64_public_key);
+  converter->RegisterStringField("desc", &FilterListCatalogEntry::desc);
 }
 
-std::vector<RegionalCatalogEntry>::const_iterator FindAdBlockFilterListByUUID(
-    const std::vector<RegionalCatalogEntry>& region_lists,
+std::vector<FilterListCatalogEntry>::const_iterator FindAdBlockFilterListByUUID(
+    const std::vector<FilterListCatalogEntry>& region_lists,
     const std::string& uuid) {
   std::string uuid_uppercase = base::ToUpperASCII(uuid);
   return base::ranges::find(region_lists, uuid_uppercase,
-                            &RegionalCatalogEntry::uuid);
+                            &FilterListCatalogEntry::uuid);
 }
 
-std::vector<RegionalCatalogEntry>::const_iterator FindAdBlockFilterListByLocale(
-    const std::vector<RegionalCatalogEntry>& region_lists,
+std::vector<FilterListCatalogEntry>::const_iterator
+FindAdBlockFilterListByLocale(
+    const std::vector<FilterListCatalogEntry>& region_lists,
     const std::string& locale) {
   std::string adjusted_locale;
   std::string::size_type loc = locale.find("-");
@@ -104,15 +105,15 @@ std::vector<RegionalCatalogEntry>::const_iterator FindAdBlockFilterListByLocale(
   }
   adjusted_locale = base::ToLowerASCII(adjusted_locale);
   return base::ranges::find_if(
-      region_lists, [&adjusted_locale](const RegionalCatalogEntry& entry) {
+      region_lists, [&adjusted_locale](const FilterListCatalogEntry& entry) {
         return base::Contains(entry.langs, adjusted_locale);
       });
 }
 
-std::vector<RegionalCatalogEntry> RegionalCatalogFromJSON(
+std::vector<FilterListCatalogEntry> FilterListCatalogFromJSON(
     const std::string& catalog_json) {
-  std::vector<RegionalCatalogEntry> catalog =
-      std::vector<RegionalCatalogEntry>();
+  std::vector<FilterListCatalogEntry> catalog =
+      std::vector<FilterListCatalogEntry>();
 
   absl::optional<base::Value> parsed_json =
       base::JSONReader::Read(catalog_json);
@@ -121,12 +122,12 @@ std::vector<RegionalCatalogEntry> RegionalCatalogFromJSON(
     return catalog;
   }
 
-  base::JSONValueConverter<RegionalCatalogEntry> converter;
+  base::JSONValueConverter<FilterListCatalogEntry> converter;
 
   base::Value::List& regional_lists = parsed_json->GetList();
   for (const auto& item : regional_lists) {
     DCHECK(item.is_dict());
-    RegionalCatalogEntry entry;
+    FilterListCatalogEntry entry;
     converter.Convert(item, &entry);
     catalog.push_back(entry);
   }

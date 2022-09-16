@@ -8,9 +8,9 @@ source_set("brave_shields") {
   sources = [
     "adblock_engine.h",
     "adblock_engine.mm",
-    "adblock_regional_catalog_entry+private.h",
-    "adblock_regional_catalog_entry.h",
-    "adblock_regional_catalog_entry.mm",
+    "adblock_filter_list_catalog_entry+private.h",
+    "adblock_filter_list_catalog_entry.h",
+    "adblock_filter_list_catalog_entry.mm",
     "adblock_service+private.h",
     "adblock_service.h",
     "adblock_service.mm",

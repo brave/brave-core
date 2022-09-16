@@ -18,7 +18,7 @@
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_shields/browser/ad_block_engine.h"
-#include "brave/components/brave_shields/browser/ad_block_regional_catalog_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_filter_list_catalog_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_resource_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
@@ -33,12 +33,12 @@ using brave_component_updater::BraveComponent;
 namespace brave_shields {
 
 class AdBlockRegionalService;
-class RegionalCatalogEntry;
+class FilterListCatalogEntry;
 
 // The AdBlock regional service manager, in charge of initializing and
 // managing regional AdBlock clients.
 class AdBlockRegionalServiceManager
-    : public AdBlockRegionalCatalogProvider::Observer {
+    : public AdBlockFilterListCatalogProvider::Observer {
  public:
   explicit AdBlockRegionalServiceManager(
       PrefService* local_state,
@@ -52,8 +52,8 @@ class AdBlockRegionalServiceManager
 
   base::Value::List GetRegionalLists();
 
-  void SetRegionalCatalog(std::vector<RegionalCatalogEntry> catalog);
-  const std::vector<RegionalCatalogEntry>& GetRegionalCatalog();
+  void SetFilterListCatalog(std::vector<FilterListCatalogEntry> catalog);
+  const std::vector<FilterListCatalogEntry>& GetFilterListCatalog();
 
   bool Start();
   void ShouldStartRequest(const GURL& url,
@@ -81,10 +81,10 @@ class AdBlockRegionalServiceManager
       const std::vector<std::string>& exceptions);
 
   void Init(AdBlockResourceProvider* resource_provider,
-            AdBlockRegionalCatalogProvider* catalog_provider);
+            AdBlockFilterListCatalogProvider* catalog_provider);
 
-  // AdBlockRegionalCatalogProvider::Observer
-  void OnRegionalCatalogLoaded(const std::string& catalog_json) override;
+  // AdBlockFilterListCatalogProvider::Observer
+  void OnFilterListCatalogLoaded(const std::string& catalog_json) override;
 
  private:
   friend class ::AdBlockServiceTest;
@@ -103,12 +103,12 @@ class AdBlockRegionalServiceManager
   std::map<std::string, std::unique_ptr<AdBlockService::SourceProviderObserver>>
       regional_source_observers_;
 
-  std::vector<RegionalCatalogEntry> regional_catalog_;
+  std::vector<FilterListCatalogEntry> filter_list_catalog_;
 
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   raw_ptr<component_updater::ComponentUpdateService> component_update_service_;
   raw_ptr<AdBlockResourceProvider> resource_provider_;
-  raw_ptr<AdBlockRegionalCatalogProvider> catalog_provider_;
+  raw_ptr<AdBlockFilterListCatalogProvider> catalog_provider_;
 
   base::WeakPtrFactory<AdBlockRegionalServiceManager> weak_factory_{this};
 };

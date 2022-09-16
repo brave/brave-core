@@ -13,9 +13,9 @@
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/browser/ad_block_engine.h"
-#include "brave/components/brave_shields/browser/ad_block_regional_catalog_entry.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
+#include "brave/components/brave_shields/browser/filter_list_catalog_entry.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_shields/common/pref_names.h"
@@ -41,12 +41,12 @@ AdBlockRegionalServiceManager::AdBlockRegionalServiceManager(
 
 void AdBlockRegionalServiceManager::Init(
     AdBlockResourceProvider* resource_provider,
-    AdBlockRegionalCatalogProvider* catalog_provider) {
+    AdBlockFilterListCatalogProvider* catalog_provider) {
   DCHECK(!initialized_);
   resource_provider_ = resource_provider;
   catalog_provider_ = catalog_provider;
-  catalog_provider_->LoadRegionalCatalog(
-      base::BindOnce(&AdBlockRegionalServiceManager::OnRegionalCatalogLoaded,
+  catalog_provider_->LoadFilterListCatalog(
+      base::BindOnce(&AdBlockRegionalServiceManager::OnFilterListCatalogLoaded,
                      weak_factory_.GetWeakPtr()));
   catalog_provider_->AddObserver(this);
   initialized_ = true;
@@ -61,7 +61,7 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
   if (!local_state_)
     return;
 
-  if (regional_catalog_.size() == 0) {
+  if (filter_list_catalog_.size() == 0) {
     return;
   }
 
@@ -71,9 +71,9 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
       local_state_->GetBoolean(prefs::kAdBlockCheckedDefaultRegion);
   if (!checked_default_region) {
     local_state_->SetBoolean(prefs::kAdBlockCheckedDefaultRegion, true);
-    auto it = brave_shields::FindAdBlockFilterListByLocale(regional_catalog_,
+    auto it = brave_shields::FindAdBlockFilterListByLocale(filter_list_catalog_,
                                                            locale_);
-    if (it == regional_catalog_.end())
+    if (it == filter_list_catalog_.end())
       return;
     EnableFilterList(it->uuid, true);
   }
@@ -104,13 +104,13 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
       enabled = regional_filter_dict->FindBool("enabled").value_or(false);
     }
     if (enabled) {
-      auto catalog_entry =
-          brave_shields::FindAdBlockFilterListByUUID(regional_catalog_, uuid);
+      auto catalog_entry = brave_shields::FindAdBlockFilterListByUUID(
+          filter_list_catalog_, uuid);
       auto existing_engine = regional_services_.find(uuid);
       // Iterating through locally enabled lists - don't disable any engines or
       // update existing engines with a potentially new catalog entry. They'll
       // be handled after a browser restart.
-      if (catalog_entry != regional_catalog_.end() &&
+      if (catalog_entry != filter_list_catalog_.end() &&
           existing_engine == regional_services_.end()) {
         auto regional_filters_provider =
             std::make_unique<AdBlockRegionalFiltersProvider>(
@@ -208,8 +208,8 @@ bool AdBlockRegionalServiceManager::IsFilterListAvailable(
     const std::string& uuid) const {
   DCHECK(!uuid.empty());
   auto catalog_entry =
-      brave_shields::FindAdBlockFilterListByUUID(regional_catalog_, uuid);
-  return catalog_entry != regional_catalog_.end();
+      brave_shields::FindAdBlockFilterListByUUID(filter_list_catalog_, uuid);
+  return catalog_entry != filter_list_catalog_.end();
 }
 
 bool AdBlockRegionalServiceManager::IsFilterListEnabled(
@@ -238,11 +238,11 @@ void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
                                                      bool enabled) {
   DCHECK(!uuid.empty());
   auto catalog_entry =
-      brave_shields::FindAdBlockFilterListByUUID(regional_catalog_, uuid);
+      brave_shields::FindAdBlockFilterListByUUID(filter_list_catalog_, uuid);
 
   // Enable or disable the specified filter list
   base::AutoLock lock(regional_services_lock_);
-  DCHECK(catalog_entry != regional_catalog_.end());
+  DCHECK(catalog_entry != filter_list_catalog_.end());
   auto it = regional_services_.find(uuid);
   if (enabled) {
     DCHECK(it == regional_services_.end());
@@ -330,15 +330,15 @@ base::Value::List AdBlockRegionalServiceManager::HiddenClassIdSelectors(
   return first_value;
 }
 
-void AdBlockRegionalServiceManager::SetRegionalCatalog(
-    std::vector<RegionalCatalogEntry> catalog) {
-  regional_catalog_ = std::move(catalog);
+void AdBlockRegionalServiceManager::SetFilterListCatalog(
+    std::vector<FilterListCatalogEntry> catalog) {
+  filter_list_catalog_ = std::move(catalog);
   StartRegionalServices();
 }
 
-const std::vector<RegionalCatalogEntry>&
-AdBlockRegionalServiceManager::GetRegionalCatalog() {
-  return regional_catalog_;
+const std::vector<FilterListCatalogEntry>&
+AdBlockRegionalServiceManager::GetFilterListCatalog() {
+  return filter_list_catalog_;
 }
 
 base::Value::List AdBlockRegionalServiceManager::GetRegionalLists() {
@@ -346,7 +346,7 @@ base::Value::List AdBlockRegionalServiceManager::GetRegionalLists() {
   DCHECK(local_state_);
 
   base::Value::List list;
-  for (const auto& region_list : regional_catalog_) {
+  for (const auto& region_list : filter_list_catalog_) {
     // Most settings come directly from the regional catalog from
     // https://github.com/brave/adblock-resources
     base::Value::Dict dict;
@@ -365,9 +365,9 @@ base::Value::List AdBlockRegionalServiceManager::GetRegionalLists() {
   return list;
 }
 
-void AdBlockRegionalServiceManager::OnRegionalCatalogLoaded(
+void AdBlockRegionalServiceManager::OnFilterListCatalogLoaded(
     const std::string& catalog_json) {
-  SetRegionalCatalog(RegionalCatalogFromJSON(catalog_json));
+  SetFilterListCatalog(FilterListCatalogFromJSON(catalog_json));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
