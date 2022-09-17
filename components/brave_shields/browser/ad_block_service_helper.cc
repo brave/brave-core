@@ -7,104 +7,10 @@
 
 #include <utility>
 
-#include "base/containers/contains.h"
-#include "base/json/json_reader.h"
-#include "base/logging.h"
-#include "base/path_service.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
-#include "base/strings/string_util.h"
 #include "base/values.h"
 
-using adblock::FilterList;
-
 namespace brave_shields {
-
-std::vector<FilterList>::const_iterator FindAdBlockFilterListByUUID(
-    const std::vector<FilterList>& region_lists,
-    const std::string& uuid) {
-  std::string uuid_uppercase = base::ToUpperASCII(uuid);
-  return base::ranges::find(region_lists, uuid_uppercase, &FilterList::uuid);
-}
-
-std::vector<FilterList>::const_iterator FindAdBlockFilterListByLocale(
-    const std::vector<FilterList>& region_lists,
-    const std::string& locale) {
-  std::string adjusted_locale;
-  std::string::size_type loc = locale.find("-");
-  if (loc == std::string::npos) {
-    adjusted_locale = locale;
-  } else {
-    adjusted_locale = locale.substr(0, loc);
-  }
-  adjusted_locale = base::ToLowerASCII(adjusted_locale);
-  return base::ranges::find_if(
-      region_lists, [&adjusted_locale](const FilterList& filter_list) {
-        return base::Contains(filter_list.langs, adjusted_locale);
-      });
-}
-
-std::vector<FilterList> RegionalCatalogFromJSON(
-    const std::string& catalog_json) {
-  std::vector<adblock::FilterList> catalog = std::vector<adblock::FilterList>();
-
-  absl::optional<base::Value> parsed_json =
-      base::JSONReader::Read(catalog_json);
-  if (!parsed_json || !parsed_json->is_list()) {
-    LOG(ERROR) << "Could not load regional adblock catalog";
-    return catalog;
-  }
-
-  base::Value::List& regional_lists = parsed_json->GetList();
-  for (const auto& item : regional_lists) {
-    DCHECK(item.is_dict());
-    const base::Value::Dict& regional_list = item.GetDict();
-
-    const auto* uuid = regional_list.FindString("uuid");
-    if (!uuid) {
-      continue;
-    }
-    const auto* url = regional_list.FindString("url");
-    if (!url) {
-      continue;
-    }
-    const auto* title = regional_list.FindString("title");
-    if (!title) {
-      continue;
-    }
-    std::vector<std::string> langs = std::vector<std::string>();
-    const auto* langs_key = regional_list.FindList("langs");
-    if (!langs_key) {
-      continue;
-    }
-    for (const auto& lang : *langs_key) {
-      DCHECK(lang.is_string());
-      langs.push_back(lang.GetString());
-    }
-    const auto* support_url = regional_list.FindString("support_url");
-    if (!support_url) {
-      continue;
-    }
-    const auto* component_id = regional_list.FindString("component_id");
-    if (!component_id) {
-      continue;
-    }
-    const auto* base64_public_key =
-        regional_list.FindString("base64_public_key");
-    if (!base64_public_key) {
-      continue;
-    }
-    const auto* desc = regional_list.FindString("desc");
-    if (!desc) {
-      continue;
-    }
-
-    catalog.emplace_back(*uuid, *url, *title, langs, *support_url,
-                         *component_id, *base64_public_key, *desc);
-  }
-
-  return catalog;
-}
 
 // Merges the first CSP directive into the second one provided, if they exist.
 //

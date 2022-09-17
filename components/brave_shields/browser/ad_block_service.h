@@ -48,7 +48,7 @@ class AdBlockEngine;
 class AdBlockDefaultFiltersProvider;
 class AdBlockRegionalServiceManager;
 class AdBlockCustomFiltersProvider;
-class AdBlockRegionalCatalogProvider;
+class AdBlockFilterListCatalogProvider;
 class AdBlockSubscriptionServiceManager;
 
 // The brave shields service in charge of ad-block checking and init.

@@ -10,7 +10,6 @@
 
 #include "base/callback.h"
 #include "base/observer_list.h"
-#include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/browser/ad_block_filters_provider.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -27,10 +26,12 @@ class AdBlockServiceTest;
 
 namespace brave_shields {
 
+class FilterListCatalogEntry;
+
 class AdBlockRegionalFiltersProvider : public AdBlockFiltersProvider {
  public:
   AdBlockRegionalFiltersProvider(component_updater::ComponentUpdateService* cus,
-                                 const adblock::FilterList& catalog_entry);
+                                 const FilterListCatalogEntry& catalog_entry);
   ~AdBlockRegionalFiltersProvider() override;
   AdBlockRegionalFiltersProvider(const AdBlockRegionalFiltersProvider&) =
       delete;

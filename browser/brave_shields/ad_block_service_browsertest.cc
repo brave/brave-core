@@ -27,6 +27,7 @@
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager_observer.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/browser/filter_list_catalog_entry.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_shields/common/pref_names.h"
@@ -255,15 +256,15 @@ bool AdBlockServiceTest::InstallRegionalAdBlockExtension(
 
   base::FilePath test_data_dir;
   GetTestDataDir(&test_data_dir);
-  std::vector<adblock::FilterList> regional_catalog;
-  regional_catalog.push_back(adblock::FilterList(
+  std::vector<brave_shields::FilterListCatalogEntry> filter_list_catalog;
+  filter_list_catalog.push_back(brave_shields::FilterListCatalogEntry(
       uuid, "https://easylist-downloads.adblockplus.org/liste_fr.txt",
       "EasyList Liste FR", {"fr"}, "https://forums.lanik.us/viewforum.php?f=91",
       kRegionalAdBlockComponentTestId, kRegionalAdBlockComponentTest64PublicKey,
       "Removes advertisements from French websites"));
   g_brave_browser_process->ad_block_service()
       ->regional_service_manager()
-      ->SetRegionalCatalog(regional_catalog);
+      ->SetFilterListCatalog(filter_list_catalog);
 
   if (enable_list) {
     const extensions::Extension* ad_block_extension =

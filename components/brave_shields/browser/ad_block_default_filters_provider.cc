@@ -59,7 +59,7 @@ void AdBlockDefaultFiltersProvider::OnComponentReady(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::GetDATFileAsString,
                      component_path_.AppendASCII(REGIONAL_CATALOG)),
-      base::BindOnce(&AdBlockDefaultFiltersProvider::OnRegionalCatalogLoaded,
+      base::BindOnce(&AdBlockDefaultFiltersProvider::OnFilterListCatalogLoaded,
                      weak_factory_.GetWeakPtr()));
 }
 
@@ -95,7 +95,7 @@ void AdBlockDefaultFiltersProvider::LoadResources(
       std::move(cb));
 }
 
-void AdBlockDefaultFiltersProvider::LoadRegionalCatalog(
+void AdBlockDefaultFiltersProvider::LoadFilterListCatalog(
     base::OnceCallback<void(const std::string& catalog_json)> cb) {
   if (component_path_.empty()) {
     // If the path is not ready yet, don't run the callback. An update should be

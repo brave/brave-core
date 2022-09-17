@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_REGIONAL_CATALOG_PROVIDER_H_
-#define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_REGIONAL_CATALOG_PROVIDER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_FILTER_LIST_CATALOG_PROVIDER_H_
+#define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_FILTER_LIST_CATALOG_PROVIDER_H_
 
 #include <string>
 
@@ -18,24 +18,24 @@ using brave_component_updater::DATFileDataBuffer;
 
 namespace brave_shields {
 
-class AdBlockRegionalCatalogProvider {
+class AdBlockFilterListCatalogProvider {
  public:
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnRegionalCatalogLoaded(const std::string& catalog_json) = 0;
+    virtual void OnFilterListCatalogLoaded(const std::string& catalog_json) = 0;
   };
 
-  AdBlockRegionalCatalogProvider();
-  virtual ~AdBlockRegionalCatalogProvider();
+  AdBlockFilterListCatalogProvider();
+  virtual ~AdBlockFilterListCatalogProvider();
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  virtual void LoadRegionalCatalog(
+  virtual void LoadFilterListCatalog(
       base::OnceCallback<void(const std::string& catalog_json)>) = 0;
 
  protected:
-  void OnRegionalCatalogLoaded(const std::string& catalog_json);
+  void OnFilterListCatalogLoaded(const std::string& catalog_json);
 
  private:
   base::ObserverList<Observer> observers_;
@@ -43,4 +43,4 @@ class AdBlockRegionalCatalogProvider {
 
 }  // namespace brave_shields
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_REGIONAL_CATALOG_PROVIDER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_FILTER_LIST_CATALOG_PROVIDER_H_
