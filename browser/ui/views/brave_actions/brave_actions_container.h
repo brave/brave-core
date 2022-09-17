@@ -10,6 +10,7 @@
 #include <memory>
 #include <string>
 
+#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/extensions/api/brave_action_api.h"
@@ -37,6 +38,10 @@ class BraveNewsActionView;
 
 namespace extensions {
 class ExtensionActionManager;
+}
+
+namespace policy {
+FORWARD_DECLARE_TEST(BraveRewardsPolicyTest, RewardsIconIsHidden);
 }
 
 namespace views {
@@ -109,6 +114,7 @@ class BraveActionsContainer : public views::View,
   BraveShieldsActionView* GetShieldsActionView() { return shields_action_btn_; }
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(policy::BraveRewardsPolicyTest, RewardsIconIsHidden);
   friend class ::BraveActionsContainerTest;
   friend class ::RewardsBrowserTest;
 

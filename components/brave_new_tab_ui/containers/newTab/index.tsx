@@ -801,6 +801,7 @@ class NewTabPage extends React.Component<Props, State> {
     }
     const {
       widgetStackOrder,
+      braveRewardsSupported,
       braveTalkSupported,
       showRewards,
       showBinance,
@@ -815,7 +816,7 @@ class NewTabPage extends React.Component<Props, State> {
     } = this.props.newTabData
     const lookup = {
       'rewards': {
-        display: showRewards,
+        display: braveRewardsSupported && showRewards,
         render: this.renderRewardsWidget.bind(this)
       },
       'binance': {
@@ -864,6 +865,7 @@ class NewTabPage extends React.Component<Props, State> {
 
   allWidgetsHidden = () => {
     const {
+      braveRewardsSupported,
       braveTalkSupported,
       showRewards,
       showBinance,
@@ -878,7 +880,7 @@ class NewTabPage extends React.Component<Props, State> {
       hideAllWidgets
     } = this.props.newTabData
     return hideAllWidgets || [
-      showRewards,
+      braveRewardsSupported && showRewards,
       braveTalkSupported && showBraveTalk,
       binanceSupported && showBinance,
       geminiSupported && showGemini,
@@ -944,8 +946,8 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   renderRewardsWidget (showContent: boolean, position: number) {
-    const { rewardsState, showRewards, textDirection } = this.props.newTabData
-    if (!showRewards) {
+    const { rewardsState, showRewards, textDirection, braveRewardsSupported } = this.props.newTabData
+    if (!braveRewardsSupported || !showRewards) {
       return null
     }
 
@@ -1192,9 +1194,7 @@ class NewTabPage extends React.Component<Props, State> {
             showClock={showClock}
             showStats={showStats}
             colorForBackground={colorForBackground}
-            showRewards={!!cryptoContent}
-            showBraveTalk={newTabData.showBraveTalk && newTabData.braveTalkSupported}
-            showBinance={newTabData.showBinance}
+            showCryptoContent={!!cryptoContent}
             showTopSites={showTopSites}
             showBrandedWallpaper={isShowingBrandedWallpaper}
         >
@@ -1340,6 +1340,7 @@ class NewTabPage extends React.Component<Props, State> {
           showTopSites={newTabData.showTopSites}
           customLinksEnabled={newTabData.customLinksEnabled}
           showRewards={newTabData.showRewards}
+          braveRewardsSupported={newTabData.braveRewardsSupported}
           showBinance={newTabData.showBinance}
           brandedWallpaperOptIn={newTabData.brandedWallpaperOptIn}
           allowSponsoredWallpaperUI={newTabData.featureFlagBraveNTPSponsoredImagesWallpaper}

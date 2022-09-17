@@ -981,6 +981,7 @@ if (!is_android) {
       "//brave/app/theme:brave_theme_resources_grit",
       "//brave/app/theme:brave_unscaled_resources_grit",
       "//brave/browser",
+      "//brave/browser/brave_rewards:browser_tests",
       "//brave/browser/ethereum_remote_client/buildflags",
       "//brave/browser/extensions",
       "//brave/browser/net",

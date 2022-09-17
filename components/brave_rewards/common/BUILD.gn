@@ -18,6 +18,8 @@ static_library("common") {
     "pref_names.h",
     "rewards_flags.cc",
     "rewards_flags.h",
+    "rewards_util.cc",
+    "rewards_util.h",
     "url_constants.cc",
     "url_constants.h",
   ]
@@ -25,6 +27,7 @@ static_library("common") {
   deps = [
     ":features",
     "//base",
+    "//components/prefs",
     "//third_party/abseil-cpp:absl",
   ]
 }

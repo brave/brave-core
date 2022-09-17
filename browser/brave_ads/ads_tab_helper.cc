@@ -42,6 +42,9 @@ AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
   Profile* profile =
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
   ads_service_ = AdsServiceFactory::GetForProfile(profile);
+  if (!ads_service_) {
+    return;
+  }
   search_result_ad_service_ =
       SearchResultAdServiceFactory::GetForProfile(profile);
 

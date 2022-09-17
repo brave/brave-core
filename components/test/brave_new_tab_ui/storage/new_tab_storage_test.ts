@@ -98,6 +98,7 @@ describe('new tab storage', () => {
         ...defaultState,
         showBinance: true,
         showRewards: true,
+        braveRewardsSupported: true,
         widgetStackOrder: ['binance']
       }
       const expectedState = {

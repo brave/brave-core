@@ -83,6 +83,7 @@ export interface Props {
   showBraveTalk: boolean
   showBinance: boolean
   binanceSupported: boolean
+  braveRewardsSupported: boolean
   braveTalkSupported: boolean
   showGemini: boolean
   geminiSupported: boolean
@@ -285,6 +286,7 @@ export default class Settings extends React.PureComponent<Props, State> {
       toggleShowBinance,
       showBinance,
       binanceSupported,
+      braveRewardsSupported,
       braveTalkSupported,
       toggleShowGemini,
       geminiSupported,
@@ -423,6 +425,7 @@ export default class Settings extends React.PureComponent<Props, State> {
                       showBraveTalk={showBraveTalk}
                       braveTalkSupported={braveTalkSupported}
                       toggleShowRewards={toggleShowRewards}
+                      braveRewardsSupported={braveRewardsSupported}
                       showRewards={showRewards}
                       showGemini={showGemini}
                       toggleShowGemini={toggleShowGemini}

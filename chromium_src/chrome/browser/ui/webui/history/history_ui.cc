@@ -6,6 +6,7 @@
 #include "brave/browser/resources/history/grit/brave_history_resources.h"
 #include "brave/browser/resources/history/grit/brave_history_resources_map.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/common/buildflags.h"
 #include "content/public/browser/web_ui_data_source.h"
 
@@ -20,11 +21,16 @@ void BraveAddHistoryResources(content::WebUIDataSource* source) {
 #endif
 }
 
-void BraveCustomizeHistoryDataSource(content::WebUIDataSource* source) {
-  NavigationBarDataProvider::Initialize(source);
+void BraveCustomizeHistoryDataSource(content::WebUIDataSource* source,
+                                     Profile* profile) {
+  NavigationBarDataProvider::Initialize(source, profile);
   BraveAddHistoryResources(source);
 }
 
 }  // namespace
 
+#define BRAVE_CREATE_HISTORY_UI_HTML_SOURCE \
+  BraveCustomizeHistoryDataSource(source, profile);
+
 #include "src/chrome/browser/ui/webui/history/history_ui.cc"
+#undef BRAVE_CREATE_HISTORY_UI_HTML_SOURCE

@@ -463,6 +463,7 @@ source_set("ui") {
   if (!is_android) {
     deps += [
       "//brave/app:brave_generated_resources_grit",
+      "//brave/browser/brave_rewards:util",
       "//brave/browser/resources/bookmarks:resources",
       "//brave/browser/resources/history:resources",
       "//brave/browser/resources/settings:resources",
@@ -473,6 +474,8 @@ source_set("ui") {
       "//brave/components/brave_private_new_tab_ui/common",
       "//brave/components/brave_private_new_tab_ui/common:mojom",
       "//brave/components/brave_private_new_tab_ui/resources/page:generated_resources",
+      "//brave/components/brave_rewards/browser",
+      "//brave/components/brave_rewards/common",
       "//brave/components/brave_rewards/common:mojom",
       "//brave/components/brave_rewards/resources:tip_generated_resources",
       "//brave/components/brave_rewards/resources/rewards_panel:brave_rewards_panel_generated",

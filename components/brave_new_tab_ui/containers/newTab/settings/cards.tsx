@@ -44,6 +44,7 @@ interface Props {
   braveTalkSupported: boolean
   toggleShowRewards: () => void
   showRewards: boolean
+  braveRewardsSupported: boolean
   toggleShowGemini: () => void
   geminiSupported: boolean
   showGemini: boolean
@@ -92,6 +93,7 @@ class CardsSettings extends React.PureComponent<Props, {}> {
       braveTalkSupported,
       toggleShowRewards,
       showRewards,
+      braveRewardsSupported,
       geminiSupported,
       toggleShowGemini,
       showGemini,
@@ -185,18 +187,22 @@ class CardsSettings extends React.PureComponent<Props, {}> {
           {this.renderToggleButton(showFTX, toggleShowFTX, false)}
         </SettingsWidget>
         }
-        <SettingsWidget>
-          <StyledBannerImage src={rewardsBanner} />
-          <StyledSettingsInfo>
-            <StyledSettingsTitle>
-              {getLocale('braveRewardsTitle')}
-            </StyledSettingsTitle>
-            <StyledSettingsCopy>
-              {getLocale('rewardsWidgetDesc')}
-            </StyledSettingsCopy>
-          </StyledSettingsInfo>
-          {this.renderToggleButton(showRewards, toggleShowRewards, false)}
-        </SettingsWidget>
+        {
+          braveRewardsSupported
+            ? <SettingsWidget>
+              <StyledBannerImage src={rewardsBanner} />
+              <StyledSettingsInfo>
+                <StyledSettingsTitle>
+                  {getLocale('braveRewardsTitle')}
+                </StyledSettingsTitle>
+                <StyledSettingsCopy>
+                  {getLocale('rewardsWidgetDesc')}
+                </StyledSettingsCopy>
+              </StyledSettingsInfo>
+              {this.renderToggleButton(showRewards, toggleShowRewards, false)}
+            </SettingsWidget>
+            : null
+        }
         <FeaturedSettingsWidget>
           <ToggleCardsWrapper>
             <ToggleCardsText>

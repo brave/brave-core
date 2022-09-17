@@ -15,6 +15,7 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -126,12 +127,14 @@ bool BraveBrowserCommandController::UpdateCommandEnabled(int id, bool state) {
 }
 
 void BraveBrowserCommandController::InitBraveCommandState() {
-  // Sync & Rewards pages doesn't work on tor(guest) session.
-  // They also doesn't work on private window but they are redirected
-  // to normal window in this case.
+  // Sync, Rewards, and Wallet pages don't work in tor(guest) sessions.
+  // They also don't work in private windows but they are redirected
+  // to a normal window in this case.
   const bool is_guest_session = browser_->profile()->IsGuestSession();
   if (!is_guest_session) {
-    UpdateCommandForBraveRewards();
+    if (brave_rewards::IsSupported(browser_->profile()->GetPrefs())) {
+      UpdateCommandForBraveRewards();
+    }
     UpdateCommandForBraveWallet();
     if (syncer::IsSyncAllowedByFlag())
       UpdateCommandForBraveSync();

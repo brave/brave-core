@@ -21,7 +21,7 @@
 #include "url/gurl.h"
 
 class PrefRegistrySimple;
-class Profile;
+class PrefService;
 
 namespace content {
 class NavigationHandle;

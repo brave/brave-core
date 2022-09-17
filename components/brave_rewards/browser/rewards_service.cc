@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 
+#include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/time/time.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
@@ -84,6 +85,7 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kWalletUphold, "");
   registry->RegisterStringPref(prefs::kWalletBitflyer, "");
   registry->RegisterStringPref(prefs::kWalletGemini, "");
+  registry->RegisterBooleanPref(prefs::kDisabledByPolicy, false);
 }
 
 }  // namespace brave_rewards

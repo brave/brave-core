@@ -7,6 +7,7 @@
 #include "brave/browser/resources/extensions/grit/brave_extensions_resources_map.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/common/buildflags.h"
 #include "chrome/grit/generated_resources.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -17,14 +18,15 @@ namespace {
 
 // Called from the original extension_ui.cc's CreateMdExtensionsSource via a
 // patch.
-void BraveAddExtensionsResources(content::WebUIDataSource* source) {
+void BraveAddExtensionsResources(content::WebUIDataSource* source,
+                                 Profile* profile) {
 #if !BUILDFLAG(OPTIMIZE_WEBUI)
   for (size_t i = 0; i < kBraveExtensionsResourcesSize; ++i) {
     source->AddResourcePath(kBraveExtensionsResources[i].path,
                             kBraveExtensionsResources[i].id);
   }
 #endif
-  NavigationBarDataProvider::Initialize(source);
+  NavigationBarDataProvider::Initialize(source, profile);
   source->AddLocalizedString("privateInfoWarning",
                              IDS_EXTENSIONS_BRAVE_PRIVATE_WARNING);
   source->AddLocalizedString("spanningInfoWarning",
@@ -47,4 +49,8 @@ void BraveAddExtensionsResources(content::WebUIDataSource* source) {
 #define IDS_EXTENSIONS_ITEM_SOURCE_WEBSTORE \
   IDS_EXTENSIONS_BRAVE_ITEM_SOURCE_WEBSTORE
 
+#define BRAVE_CREATE_EXTENSIONS_SOURCE \
+  BraveAddExtensionsResources(source, profile);
+
 #include "src/chrome/browser/ui/webui/extensions/extensions_ui.cc"
+#undef BRAVE_CREATE_EXTENSIONS_SOURCE

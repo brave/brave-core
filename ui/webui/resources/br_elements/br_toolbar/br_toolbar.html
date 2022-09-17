@@ -114,17 +114,19 @@
         <span class="nav-item_text">[[settingsTitle]]</span>
       </a>
     </li>
-    <li class="nav-items_list-item" title="[[braveRewardsTitle]]">
-      <a class$="nav-item [[getNavItemSelectedClassName('rewards')]]" href="chrome://rewards">
-        <span class="nav-item_icon">
-          <svg
-            xmlns="http://www.w3.org/2000/svg" width="20" height="20">
-            <path fill-rule="evenodd" d="M13.595 12.065l-2.974-4.73V4.755l5.325 8.877-2.35-1.568zM7.063 13.11h5.846l1.897 1.265H4.85l2.214-1.265zm2.308-5.775l-2.96 4.708-2.15 1.228 5.11-8.515v2.579zm.625 1.355l1.994 3.17H8.002l1.994-3.17zm8.036 5.988l-7.5-12.5c-.02-.032-.046-.058-.071-.086a.616.616 0 0 0-.465-.217.617.617 0 0 0-.465.217c-.025.027-.052.053-.07.086l-7.5 12.5a.641.641 0 0 0-.067.156l-.002.011a.619.619 0 0 0-.008.256.606.606 0 0 0 .068.207l.001.002c.01.018.025.031.037.048.02.028.04.059.064.083.024.024.051.042.078.062.018.012.033.027.051.038.03.017.06.027.092.038.02.008.038.019.059.024a.652.652 0 0 0 .143.02l.019.002h15a.624.624 0 0 0 .536-.947z"/>
-          </svg>
-        </span>
-        <span class="nav-item_text">[[braveRewardsTitle]]</span>
-      </a>
-    </li>
+    <template is="dom-if" if="[[isBraveRewardsSupported_]]">
+      <li class="nav-items_list-item" title="[[braveRewardsTitle]]">
+        <a class$="nav-item [[getNavItemSelectedClassName('rewards')]]" href="chrome://rewards">
+          <span class="nav-item_icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+              <path fill-rule="evenodd" d="M13.595 12.065l-2.974-4.73V4.755l5.325 8.877-2.35-1.568zM7.063 13.11h5.846l1.897 1.265H4.85l2.214-1.265zm2.308-5.775l-2.96 4.708-2.15 1.228 5.11-8.515v2.579zm.625 1.355l1.994 3.17H8.002l1.994-3.17zm8.036 5.988l-7.5-12.5c-.02-.032-.046-.058-.071-.086a.616.616 0 0 0-.465-.217.617.617 0 0 0-.465.217c-.025.027-.052.053-.07.086l-7.5 12.5a.641.641 0 0 0-.067.156l-.002.011a.619.619 0 0 0-.008.256.606.606 0 0 0 .068.207l.001.002c.01.018.025.031.037.048.02.028.04.059.064.083.024.024.051.042.078.062.018.012.033.027.051.038.03.017.06.027.092.038.02.008.038.019.059.024a.652.652 0 0 0 .143.02l.019.002h15a.624.624 0 0 0 .536-.947z"/>
+            </svg>
+          </span>
+          <span class="nav-item_text">[[braveRewardsTitle]]</span>
+        </a>
+      </li>
+    </template>
     <li class="nav-items_list-item" title="[[historyTitle]]">
       <a class$="nav-item [[getNavItemSelectedClassName('history')]]" href="chrome://history">
         <span class="nav-item_icon">

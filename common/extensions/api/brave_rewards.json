@@ -327,6 +327,23 @@
     ],
     "functions": [
       {
+        "name": "isSupported",
+        "type": "function",
+        "description": "Fetches whether or not Brave Rewards is supported",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "supported",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "getLocale",
         "type": "function",
         "description": "Retrieves the current locale",
