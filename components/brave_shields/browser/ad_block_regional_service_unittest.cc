@@ -8,8 +8,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 TEST(AdBlockRegionalServiceTest, UserModelLanguages) {
-  std::vector<brave_shields::FilterListCatalogEntry> catalog =
-      std::vector<brave_shields::FilterListCatalogEntry>();
+  std::vector<brave_shields::FilterListCatalogEntry> catalog;
   catalog.push_back(brave_shields::FilterListCatalogEntry(
       "uuid", "https://brave.com", "Testing Filter List", {"fr"},
       "https://support.brave.com", "componentid", "base64publickey",

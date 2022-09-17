@@ -22,6 +22,7 @@ namespace {
 
 bool GetStringVector(const base::Value* value,
                      std::vector<std::string>* field) {
+  DCHECK(field);
   field->clear();
   if (value == nullptr || !value->is_list()) {
     return false;
