@@ -25,8 +25,8 @@ struct ConversionQueueItemInfo final {
 
   ~ConversionQueueItemInfo();
 
-  bool operator==(const ConversionQueueItemInfo& rhs) const;
-  bool operator!=(const ConversionQueueItemInfo& rhs) const;
+  bool operator==(const ConversionQueueItemInfo& other) const;
+  bool operator!=(const ConversionQueueItemInfo& other) const;
 
   std::string campaign_id;
   std::string creative_set_id;

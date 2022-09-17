@@ -42,8 +42,8 @@ class BatchDLEQProof {
 
   ~BatchDLEQProof();
 
-  bool operator==(const BatchDLEQProof& rhs) const;
-  bool operator!=(const BatchDLEQProof& rhs) const;
+  bool operator==(const BatchDLEQProof& other) const;
+  bool operator!=(const BatchDLEQProof& other) const;
 
   bool has_value() const { return batch_dleq_proof_.has_value(); }
 

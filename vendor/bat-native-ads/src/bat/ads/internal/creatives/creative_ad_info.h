@@ -27,8 +27,8 @@ struct CreativeAdInfo {
 
   ~CreativeAdInfo();
 
-  bool operator==(const CreativeAdInfo& rhs) const;
-  bool operator!=(const CreativeAdInfo& rhs) const;
+  bool operator==(const CreativeAdInfo& other) const;
+  bool operator!=(const CreativeAdInfo& other) const;
 
   std::string creative_instance_id;
   std::string creative_set_id;

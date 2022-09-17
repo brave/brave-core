@@ -26,14 +26,14 @@ EpsilonGreedyBanditArmInfo& EpsilonGreedyBanditArmInfo::operator=(
 EpsilonGreedyBanditArmInfo::~EpsilonGreedyBanditArmInfo() = default;
 
 bool EpsilonGreedyBanditArmInfo::operator==(
-    const EpsilonGreedyBanditArmInfo& rhs) const {
-  return segment == rhs.segment && DoubleEquals(value, rhs.value) &&
-         pulls == rhs.pulls;
+    const EpsilonGreedyBanditArmInfo& other) const {
+  return segment == other.segment && DoubleEquals(value, other.value) &&
+         pulls == other.pulls;
 }
 
 bool EpsilonGreedyBanditArmInfo::operator!=(
-    const EpsilonGreedyBanditArmInfo& rhs) const {
-  return !(*this == rhs);
+    const EpsilonGreedyBanditArmInfo& other) const {
+  return !(*this == other);
 }
 
 bool EpsilonGreedyBanditArmInfo::IsValid() const {

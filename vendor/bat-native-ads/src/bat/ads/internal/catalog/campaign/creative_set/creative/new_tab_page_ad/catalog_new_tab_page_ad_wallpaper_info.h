@@ -28,8 +28,8 @@ struct CatalogNewTabPageAdWallpaperInfo final {
 
   ~CatalogNewTabPageAdWallpaperInfo();
 
-  bool operator==(const CatalogNewTabPageAdWallpaperInfo& rhs) const;
-  bool operator!=(const CatalogNewTabPageAdWallpaperInfo& rhs) const;
+  bool operator==(const CatalogNewTabPageAdWallpaperInfo& other) const;
+  bool operator!=(const CatalogNewTabPageAdWallpaperInfo& other) const;
 
   GURL image_url;
   CatalogNewTabPageAdWallpaperFocalPointInfo focal_point;

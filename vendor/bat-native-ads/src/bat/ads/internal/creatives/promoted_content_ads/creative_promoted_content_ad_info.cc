@@ -28,14 +28,14 @@ CreativePromotedContentAdInfo& CreativePromotedContentAdInfo::operator=(
 CreativePromotedContentAdInfo::~CreativePromotedContentAdInfo() = default;
 
 bool CreativePromotedContentAdInfo::operator==(
-    const CreativePromotedContentAdInfo& rhs) const {
-  return CreativeAdInfo::operator==(rhs) && title == rhs.title &&
-         description == rhs.description;
+    const CreativePromotedContentAdInfo& other) const {
+  return CreativeAdInfo::operator==(other) && title == other.title &&
+         description == other.description;
 }
 
 bool CreativePromotedContentAdInfo::operator!=(
-    const CreativePromotedContentAdInfo& rhs) const {
-  return !(*this == rhs);
+    const CreativePromotedContentAdInfo& other) const {
+  return !(*this == other);
 }
 
 }  // namespace ads

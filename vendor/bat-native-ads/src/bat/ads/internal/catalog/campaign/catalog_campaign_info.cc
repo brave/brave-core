@@ -25,17 +25,17 @@ CatalogCampaignInfo& CatalogCampaignInfo::operator=(
 
 CatalogCampaignInfo::~CatalogCampaignInfo() = default;
 
-bool CatalogCampaignInfo::operator==(const CatalogCampaignInfo& rhs) const {
-  return campaign_id == rhs.campaign_id && priority == rhs.priority &&
-         DoubleEquals(ptr, rhs.ptr) && start_at == rhs.start_at &&
-         end_at == rhs.end_at && daily_cap == rhs.daily_cap &&
-         advertiser_id == rhs.advertiser_id &&
-         creative_sets == rhs.creative_sets && dayparts == rhs.dayparts &&
-         geo_targets == rhs.geo_targets;
+bool CatalogCampaignInfo::operator==(const CatalogCampaignInfo& other) const {
+  return campaign_id == other.campaign_id && priority == other.priority &&
+         DoubleEquals(ptr, other.ptr) && start_at == other.start_at &&
+         end_at == other.end_at && daily_cap == other.daily_cap &&
+         advertiser_id == other.advertiser_id &&
+         creative_sets == other.creative_sets && dayparts == other.dayparts &&
+         geo_targets == other.geo_targets;
 }
 
-bool CatalogCampaignInfo::operator!=(const CatalogCampaignInfo& rhs) const {
-  return !(*this == rhs);
+bool CatalogCampaignInfo::operator!=(const CatalogCampaignInfo& other) const {
+  return !(*this == other);
 }
 
 }  // namespace ads

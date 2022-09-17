@@ -28,8 +28,8 @@ struct UnblindedPaymentTokenInfo final {
 
   ~UnblindedPaymentTokenInfo();
 
-  bool operator==(const UnblindedPaymentTokenInfo& rhs) const;
-  bool operator!=(const UnblindedPaymentTokenInfo& rhs) const;
+  bool operator==(const UnblindedPaymentTokenInfo& other) const;
+  bool operator!=(const UnblindedPaymentTokenInfo& other) const;
 
   std::string transaction_id;
   cbr::UnblindedToken value;

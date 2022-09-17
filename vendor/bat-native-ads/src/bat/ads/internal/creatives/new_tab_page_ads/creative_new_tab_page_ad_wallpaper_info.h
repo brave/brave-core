@@ -28,8 +28,8 @@ struct CreativeNewTabPageAdWallpaperInfo final {
 
   ~CreativeNewTabPageAdWallpaperInfo();
 
-  bool operator==(const CreativeNewTabPageAdWallpaperInfo& rhs) const;
-  bool operator!=(const CreativeNewTabPageAdWallpaperInfo& rhs) const;
+  bool operator==(const CreativeNewTabPageAdWallpaperInfo& other) const;
+  bool operator!=(const CreativeNewTabPageAdWallpaperInfo& other) const;
 
   GURL image_url;
   CreativeNewTabPageAdWallpaperFocalPointInfo focal_point;

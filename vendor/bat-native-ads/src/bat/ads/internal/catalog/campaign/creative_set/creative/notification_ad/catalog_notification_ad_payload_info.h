@@ -27,8 +27,8 @@ struct CatalogNotificationAdPayloadInfo final {
 
   ~CatalogNotificationAdPayloadInfo();
 
-  bool operator==(const CatalogNotificationAdPayloadInfo& rhs) const;
-  bool operator!=(const CatalogNotificationAdPayloadInfo& rhs) const;
+  bool operator==(const CatalogNotificationAdPayloadInfo& other) const;
+  bool operator!=(const CatalogNotificationAdPayloadInfo& other) const;
 
   std::string body;
   std::string title;

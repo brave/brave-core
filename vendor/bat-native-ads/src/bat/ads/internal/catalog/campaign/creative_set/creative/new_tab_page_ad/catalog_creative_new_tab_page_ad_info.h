@@ -27,8 +27,8 @@ struct CatalogCreativeNewTabPageAdInfo final : CatalogCreativeInfo {
 
   ~CatalogCreativeNewTabPageAdInfo();
 
-  bool operator==(const CatalogCreativeNewTabPageAdInfo& rhs) const;
-  bool operator!=(const CatalogCreativeNewTabPageAdInfo& rhs) const;
+  bool operator==(const CatalogCreativeNewTabPageAdInfo& other) const;
+  bool operator!=(const CatalogCreativeNewTabPageAdInfo& other) const;
 
   CatalogNewTabPageAdPayloadInfo payload;
 };

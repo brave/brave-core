@@ -28,14 +28,14 @@ CreativeNotificationAdInfo& CreativeNotificationAdInfo::operator=(
 CreativeNotificationAdInfo::~CreativeNotificationAdInfo() = default;
 
 bool CreativeNotificationAdInfo::operator==(
-    const CreativeNotificationAdInfo& rhs) const {
-  return CreativeAdInfo::operator==(rhs) && title == rhs.title &&
-         body == rhs.body;
+    const CreativeNotificationAdInfo& other) const {
+  return CreativeAdInfo::operator==(other) && title == other.title &&
+         body == other.body;
 }
 
 bool CreativeNotificationAdInfo::operator!=(
-    const CreativeNotificationAdInfo& rhs) const {
-  return !(*this == rhs);
+    const CreativeNotificationAdInfo& other) const {
+  return !(*this == other);
 }
 
 }  // namespace ads

@@ -26,15 +26,15 @@ CatalogInlineContentAdPayloadInfo::~CatalogInlineContentAdPayloadInfo() =
     default;
 
 bool CatalogInlineContentAdPayloadInfo::operator==(
-    const CatalogInlineContentAdPayloadInfo& rhs) const {
-  return title == rhs.title && description == rhs.description &&
-         image_url == rhs.image_url && dimensions == rhs.dimensions &&
-         cta_text == rhs.cta_text && target_url == rhs.target_url;
+    const CatalogInlineContentAdPayloadInfo& other) const {
+  return title == other.title && description == other.description &&
+         image_url == other.image_url && dimensions == other.dimensions &&
+         cta_text == other.cta_text && target_url == other.target_url;
 }
 
 bool CatalogInlineContentAdPayloadInfo::operator!=(
-    const CatalogInlineContentAdPayloadInfo& rhs) const {
-  return !(*this == rhs);
+    const CatalogInlineContentAdPayloadInfo& other) const {
+  return !(*this == other);
 }
 
 }  // namespace ads

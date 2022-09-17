@@ -24,13 +24,13 @@ CatalogNewTabPageAdWallpaperInfo& CatalogNewTabPageAdWallpaperInfo::operator=(
 CatalogNewTabPageAdWallpaperInfo::~CatalogNewTabPageAdWallpaperInfo() = default;
 
 bool CatalogNewTabPageAdWallpaperInfo::operator==(
-    const CatalogNewTabPageAdWallpaperInfo& rhs) const {
-  return image_url == rhs.image_url && focal_point == rhs.focal_point;
+    const CatalogNewTabPageAdWallpaperInfo& other) const {
+  return image_url == other.image_url && focal_point == other.focal_point;
 }
 
 bool CatalogNewTabPageAdWallpaperInfo::operator!=(
-    const CatalogNewTabPageAdWallpaperInfo& rhs) const {
-  return !(*this == rhs);
+    const CatalogNewTabPageAdWallpaperInfo& other) const {
+  return !(*this == other);
 }
 
 }  // namespace ads

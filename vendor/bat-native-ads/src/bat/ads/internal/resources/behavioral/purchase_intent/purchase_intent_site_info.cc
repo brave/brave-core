@@ -29,14 +29,14 @@ PurchaseIntentSiteInfo& PurchaseIntentSiteInfo::operator=(
 PurchaseIntentSiteInfo::~PurchaseIntentSiteInfo() = default;
 
 bool PurchaseIntentSiteInfo::operator==(
-    const PurchaseIntentSiteInfo& rhs) const {
-  return segments == rhs.segments && url_netloc == rhs.url_netloc &&
-         weight == rhs.weight;
+    const PurchaseIntentSiteInfo& other) const {
+  return segments == other.segments && url_netloc == other.url_netloc &&
+         weight == other.weight;
 }
 
 bool PurchaseIntentSiteInfo::operator!=(
-    const PurchaseIntentSiteInfo& rhs) const {
-  return !(*this == rhs);
+    const PurchaseIntentSiteInfo& other) const {
+  return !(*this == other);
 }
 
 }  // namespace ads::targeting

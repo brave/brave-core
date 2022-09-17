@@ -23,12 +23,12 @@ UnblindedTokenInfo& UnblindedTokenInfo::operator=(
 
 UnblindedTokenInfo::~UnblindedTokenInfo() = default;
 
-bool UnblindedTokenInfo::operator==(const UnblindedTokenInfo& rhs) const {
-  return public_key == rhs.public_key && value == rhs.value;
+bool UnblindedTokenInfo::operator==(const UnblindedTokenInfo& other) const {
+  return public_key == other.public_key && value == other.value;
 }
 
-bool UnblindedTokenInfo::operator!=(const UnblindedTokenInfo& rhs) const {
-  return !(*this == rhs);
+bool UnblindedTokenInfo::operator!=(const UnblindedTokenInfo& other) const {
+  return !(*this == other);
 }
 
 }  // namespace ads::privacy

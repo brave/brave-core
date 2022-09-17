@@ -49,12 +49,12 @@ TokenPreimage& TokenPreimage::operator=(TokenPreimage&& other) noexcept =
 
 TokenPreimage::~TokenPreimage() = default;
 
-bool TokenPreimage::operator==(const TokenPreimage& rhs) const {
-  return EncodeBase64().value_or("") == rhs.EncodeBase64().value_or("");
+bool TokenPreimage::operator==(const TokenPreimage& other) const {
+  return EncodeBase64().value_or("") == other.EncodeBase64().value_or("");
 }
 
-bool TokenPreimage::operator!=(const TokenPreimage& rhs) const {
-  return !(*this == rhs);
+bool TokenPreimage::operator!=(const TokenPreimage& other) const {
+  return !(*this == other);
 }
 
 TokenPreimage TokenPreimage::DecodeBase64(

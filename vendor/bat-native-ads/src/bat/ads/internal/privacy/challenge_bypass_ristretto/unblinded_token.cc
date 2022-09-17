@@ -51,12 +51,12 @@ UnblindedToken& UnblindedToken::operator=(UnblindedToken&& other) noexcept =
 
 UnblindedToken::~UnblindedToken() = default;
 
-bool UnblindedToken::operator==(const UnblindedToken& rhs) const {
-  return EncodeBase64().value_or("") == rhs.EncodeBase64().value_or("");
+bool UnblindedToken::operator==(const UnblindedToken& other) const {
+  return EncodeBase64().value_or("") == other.EncodeBase64().value_or("");
 }
 
-bool UnblindedToken::operator!=(const UnblindedToken& rhs) const {
-  return !(*this == rhs);
+bool UnblindedToken::operator!=(const UnblindedToken& other) const {
+  return !(*this == other);
 }
 
 UnblindedToken UnblindedToken::DecodeBase64(

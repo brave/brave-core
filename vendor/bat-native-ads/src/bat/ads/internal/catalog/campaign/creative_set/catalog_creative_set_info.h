@@ -30,8 +30,8 @@ struct CatalogCreativeSetInfo final {
 
   ~CatalogCreativeSetInfo();
 
-  bool operator==(const CatalogCreativeSetInfo& rhs) const;
-  bool operator!=(const CatalogCreativeSetInfo& rhs) const;
+  bool operator==(const CatalogCreativeSetInfo& other) const;
+  bool operator!=(const CatalogCreativeSetInfo& other) const;
 
   bool DoesSupportOS() const;
 

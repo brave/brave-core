@@ -55,12 +55,14 @@ VerificationSignature& VerificationSignature::operator=(
 
 VerificationSignature::~VerificationSignature() = default;
 
-bool VerificationSignature::operator==(const VerificationSignature& rhs) const {
-  return EncodeBase64().value_or("") == rhs.EncodeBase64().value_or("");
+bool VerificationSignature::operator==(
+    const VerificationSignature& other) const {
+  return EncodeBase64().value_or("") == other.EncodeBase64().value_or("");
 }
 
-bool VerificationSignature::operator!=(const VerificationSignature& rhs) const {
-  return !(*this == rhs);
+bool VerificationSignature::operator!=(
+    const VerificationSignature& other) const {
+  return !(*this == other);
 }
 
 VerificationSignature VerificationSignature::DecodeBase64(

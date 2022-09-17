@@ -23,8 +23,8 @@ struct EpsilonGreedyBanditArmInfo final {
 
   ~EpsilonGreedyBanditArmInfo();
 
-  bool operator==(const EpsilonGreedyBanditArmInfo& rhs) const;
-  bool operator!=(const EpsilonGreedyBanditArmInfo& rhs) const;
+  bool operator==(const EpsilonGreedyBanditArmInfo& other) const;
+  bool operator!=(const EpsilonGreedyBanditArmInfo& other) const;
 
   bool IsValid() const;
 

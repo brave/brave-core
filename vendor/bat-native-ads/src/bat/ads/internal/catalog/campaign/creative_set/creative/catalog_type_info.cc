@@ -21,13 +21,13 @@ CatalogTypeInfo& CatalogTypeInfo::operator=(CatalogTypeInfo&& other) noexcept =
 
 CatalogTypeInfo::~CatalogTypeInfo() = default;
 
-bool CatalogTypeInfo::operator==(const CatalogTypeInfo& rhs) const {
-  return code == rhs.code && name == rhs.name && platform == rhs.platform &&
-         version == rhs.version;
+bool CatalogTypeInfo::operator==(const CatalogTypeInfo& other) const {
+  return code == other.code && name == other.name &&
+         platform == other.platform && version == other.version;
 }
 
-bool CatalogTypeInfo::operator!=(const CatalogTypeInfo& rhs) const {
-  return !(*this == rhs);
+bool CatalogTypeInfo::operator!=(const CatalogTypeInfo& other) const {
+  return !(*this == other);
 }
 
 }  // namespace ads

@@ -34,8 +34,8 @@ class TokenPreimage {
 
   ~TokenPreimage();
 
-  bool operator==(const TokenPreimage& rhs) const;
-  bool operator!=(const TokenPreimage& rhs) const;
+  bool operator==(const TokenPreimage& other) const;
+  bool operator!=(const TokenPreimage& other) const;
 
   bool has_value() const { return token_preimage_.has_value(); }
 

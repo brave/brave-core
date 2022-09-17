@@ -25,8 +25,8 @@ struct VerifiableConversionEnvelopeInfo final {
 
   ~VerifiableConversionEnvelopeInfo();
 
-  bool operator==(const VerifiableConversionEnvelopeInfo& rhs) const;
-  bool operator!=(const VerifiableConversionEnvelopeInfo& rhs) const;
+  bool operator==(const VerifiableConversionEnvelopeInfo& other) const;
+  bool operator!=(const VerifiableConversionEnvelopeInfo& other) const;
 
   bool IsValid() const;
 

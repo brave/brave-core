@@ -84,12 +84,12 @@ BatchDLEQProof::BatchDLEQProof(const std::vector<BlindedToken>& blinded_tokens,
 
 BatchDLEQProof::~BatchDLEQProof() = default;
 
-bool BatchDLEQProof::operator==(const BatchDLEQProof& rhs) const {
-  return EncodeBase64().value_or("") == rhs.EncodeBase64().value_or("");
+bool BatchDLEQProof::operator==(const BatchDLEQProof& other) const {
+  return EncodeBase64().value_or("") == other.EncodeBase64().value_or("");
 }
 
-bool BatchDLEQProof::operator!=(const BatchDLEQProof& rhs) const {
-  return !(*this == rhs);
+bool BatchDLEQProof::operator!=(const BatchDLEQProof& other) const {
+  return !(*this == other);
 }
 
 BatchDLEQProof BatchDLEQProof::DecodeBase64(

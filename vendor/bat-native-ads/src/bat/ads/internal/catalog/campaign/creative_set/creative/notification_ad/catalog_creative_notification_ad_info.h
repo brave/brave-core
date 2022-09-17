@@ -28,8 +28,8 @@ struct CatalogCreativeNotificationAdInfo final : CatalogCreativeInfo {
 
   ~CatalogCreativeNotificationAdInfo();
 
-  bool operator==(const CatalogCreativeNotificationAdInfo& rhs) const;
-  bool operator!=(const CatalogCreativeNotificationAdInfo& rhs) const;
+  bool operator==(const CatalogCreativeNotificationAdInfo& other) const;
+  bool operator!=(const CatalogCreativeNotificationAdInfo& other) const;
 
   CatalogNotificationAdPayloadInfo payload;
 };

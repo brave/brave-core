@@ -53,12 +53,12 @@ Token& Token::operator=(Token&& other) noexcept = default;
 
 Token::~Token() = default;
 
-bool Token::operator==(const Token& rhs) const {
-  return EncodeBase64().value_or("") == rhs.EncodeBase64().value_or("");
+bool Token::operator==(const Token& other) const {
+  return EncodeBase64().value_or("") == other.EncodeBase64().value_or("");
 }
 
-bool Token::operator!=(const Token& rhs) const {
-  return !(*this == rhs);
+bool Token::operator!=(const Token& other) const {
+  return !(*this == other);
 }
 
 Token Token::DecodeBase64(const std::string& token_base64) {

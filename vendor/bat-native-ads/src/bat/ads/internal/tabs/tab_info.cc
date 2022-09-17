@@ -19,13 +19,13 @@ TabInfo& TabInfo::operator=(TabInfo&& other) noexcept = default;
 
 TabInfo::~TabInfo() = default;
 
-bool TabInfo::operator==(const TabInfo& rhs) const {
-  return id == rhs.id && redirect_chain == rhs.redirect_chain &&
-         is_playing_media == rhs.is_playing_media;
+bool TabInfo::operator==(const TabInfo& other) const {
+  return id == other.id && redirect_chain == other.redirect_chain &&
+         is_playing_media == other.is_playing_media;
 }
 
-bool TabInfo::operator!=(const TabInfo& rhs) const {
-  return !(*this == rhs);
+bool TabInfo::operator!=(const TabInfo& other) const {
+  return !(*this == other);
 }
 
 }  // namespace ads

@@ -35,8 +35,8 @@ class VerificationSignature {
 
   ~VerificationSignature();
 
-  bool operator==(const VerificationSignature& rhs) const;
-  bool operator!=(const VerificationSignature& rhs) const;
+  bool operator==(const VerificationSignature& other) const;
+  bool operator!=(const VerificationSignature& other) const;
 
   bool has_value() const { return verification_signature_.has_value(); }
 

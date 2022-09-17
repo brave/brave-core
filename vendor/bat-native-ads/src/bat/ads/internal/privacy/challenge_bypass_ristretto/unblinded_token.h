@@ -37,8 +37,8 @@ class UnblindedToken {
 
   ~UnblindedToken();
 
-  bool operator==(const UnblindedToken& rhs) const;
-  bool operator!=(const UnblindedToken& rhs) const;
+  bool operator==(const UnblindedToken& other) const;
+  bool operator!=(const UnblindedToken& other) const;
 
   bool has_value() const { return unblinded_token_.has_value(); }
 

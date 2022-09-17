@@ -32,8 +32,8 @@ class SignedToken {
 
   ~SignedToken();
 
-  bool operator==(const SignedToken& rhs) const;
-  bool operator!=(const SignedToken& rhs) const;
+  bool operator==(const SignedToken& other) const;
+  bool operator!=(const SignedToken& other) const;
 
   bool has_value() const { return signed_token_.has_value(); }
 

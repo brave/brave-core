@@ -48,12 +48,12 @@ SignedToken& SignedToken::operator=(SignedToken&& other) noexcept = default;
 
 SignedToken::~SignedToken() = default;
 
-bool SignedToken::operator==(const SignedToken& rhs) const {
-  return EncodeBase64().value_or("") == rhs.EncodeBase64().value_or("");
+bool SignedToken::operator==(const SignedToken& other) const {
+  return EncodeBase64().value_or("") == other.EncodeBase64().value_or("");
 }
 
-bool SignedToken::operator!=(const SignedToken& rhs) const {
-  return !(*this == rhs);
+bool SignedToken::operator!=(const SignedToken& other) const {
+  return !(*this == other);
 }
 
 SignedToken SignedToken::DecodeBase64(const std::string& signed_token_base64) {

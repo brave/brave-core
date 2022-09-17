@@ -28,22 +28,22 @@ CatalogCreativeSetInfo& CatalogCreativeSetInfo::operator=(
 CatalogCreativeSetInfo::~CatalogCreativeSetInfo() = default;
 
 bool CatalogCreativeSetInfo::operator==(
-    const CatalogCreativeSetInfo& rhs) const {
-  return creative_set_id == rhs.creative_set_id && per_day == rhs.per_day &&
-         per_week == rhs.per_week && per_month == rhs.per_month &&
-         total_max == rhs.total_max && DoubleEquals(value, rhs.value) &&
-         split_test_group == rhs.split_test_group && segments == rhs.segments &&
-         oses == rhs.oses &&
-         creative_notification_ads == rhs.creative_notification_ads &&
-         creative_inline_content_ads == rhs.creative_inline_content_ads &&
-         creative_new_tab_page_ads == rhs.creative_new_tab_page_ads &&
-         creative_promoted_content_ads == rhs.creative_promoted_content_ads &&
-         conversions == rhs.conversions;
+    const CatalogCreativeSetInfo& other) const {
+  return creative_set_id == other.creative_set_id && per_day == other.per_day &&
+         per_week == other.per_week && per_month == other.per_month &&
+         total_max == other.total_max && DoubleEquals(value, other.value) &&
+         split_test_group == other.split_test_group &&
+         segments == other.segments && oses == other.oses &&
+         creative_notification_ads == other.creative_notification_ads &&
+         creative_inline_content_ads == other.creative_inline_content_ads &&
+         creative_new_tab_page_ads == other.creative_new_tab_page_ads &&
+         creative_promoted_content_ads == other.creative_promoted_content_ads &&
+         conversions == other.conversions;
 }
 
 bool CatalogCreativeSetInfo::operator!=(
-    const CatalogCreativeSetInfo& rhs) const {
-  return !(*this == rhs);
+    const CatalogCreativeSetInfo& other) const {
+  return !(*this == other);
 }
 
 bool CatalogCreativeSetInfo::DoesSupportOS() const {

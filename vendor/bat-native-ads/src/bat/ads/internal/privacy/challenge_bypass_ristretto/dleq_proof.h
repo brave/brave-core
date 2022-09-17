@@ -39,8 +39,8 @@ class DLEQProof {
 
   ~DLEQProof();
 
-  bool operator==(const DLEQProof& rhs) const;
-  bool operator!=(const DLEQProof& rhs) const;
+  bool operator==(const DLEQProof& other) const;
+  bool operator!=(const DLEQProof& other) const;
 
   bool has_value() const { return dleq_proof_.has_value(); }
 

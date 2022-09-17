@@ -39,8 +39,8 @@ class SigningKey {
 
   ~SigningKey();
 
-  bool operator==(const SigningKey& rhs) const;
-  bool operator!=(const SigningKey& rhs) const;
+  bool operator==(const SigningKey& other) const;
+  bool operator!=(const SigningKey& other) const;
 
   bool has_value() const { return signing_key_.has_value(); }
 

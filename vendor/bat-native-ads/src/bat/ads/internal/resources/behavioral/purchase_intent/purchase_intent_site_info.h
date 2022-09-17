@@ -27,8 +27,8 @@ struct PurchaseIntentSiteInfo final {
 
   ~PurchaseIntentSiteInfo();
 
-  bool operator==(const PurchaseIntentSiteInfo& rhs) const;
-  bool operator!=(const PurchaseIntentSiteInfo& rhs) const;
+  bool operator==(const PurchaseIntentSiteInfo& other) const;
+  bool operator!=(const PurchaseIntentSiteInfo& other) const;
 
   SegmentList segments;
   GURL url_netloc;

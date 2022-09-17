@@ -19,12 +19,12 @@ KeyPairInfo& KeyPairInfo::operator=(KeyPairInfo&& other) noexcept = default;
 
 KeyPairInfo::~KeyPairInfo() = default;
 
-bool KeyPairInfo::operator==(const KeyPairInfo& rhs) const {
-  return public_key == rhs.public_key && secret_key == rhs.secret_key;
+bool KeyPairInfo::operator==(const KeyPairInfo& other) const {
+  return public_key == other.public_key && secret_key == other.secret_key;
 }
 
-bool KeyPairInfo::operator!=(const KeyPairInfo& rhs) const {
-  return !(*this == rhs);
+bool KeyPairInfo::operator!=(const KeyPairInfo& other) const {
+  return !(*this == other);
 }
 
 bool KeyPairInfo::IsValid() const {

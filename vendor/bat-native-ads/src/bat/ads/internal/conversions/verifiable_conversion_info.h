@@ -22,8 +22,8 @@ struct VerifiableConversionInfo final {
 
   ~VerifiableConversionInfo();
 
-  bool operator==(const VerifiableConversionInfo& rhs) const;
-  bool operator!=(const VerifiableConversionInfo& rhs) const;
+  bool operator==(const VerifiableConversionInfo& other) const;
+  bool operator!=(const VerifiableConversionInfo& other) const;
 
   bool IsValid() const;
 

@@ -24,8 +24,8 @@ struct IssuerInfo final {
 
   ~IssuerInfo();
 
-  bool operator==(const IssuerInfo& rhs) const;
-  bool operator!=(const IssuerInfo& rhs) const;
+  bool operator==(const IssuerInfo& other) const;
+  bool operator!=(const IssuerInfo& other) const;
 
   IssuerType type = IssuerType::kUndefined;
   PublicKeyMap public_keys;

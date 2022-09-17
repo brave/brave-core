@@ -28,13 +28,13 @@ CatalogCreativePromotedContentAdInfo::~CatalogCreativePromotedContentAdInfo() =
     default;
 
 bool CatalogCreativePromotedContentAdInfo::operator==(
-    const CatalogCreativePromotedContentAdInfo& rhs) const {
-  return CatalogCreativeInfo::operator==(rhs) && payload == rhs.payload;
+    const CatalogCreativePromotedContentAdInfo& other) const {
+  return CatalogCreativeInfo::operator==(other) && payload == other.payload;
 }
 
 bool CatalogCreativePromotedContentAdInfo::operator!=(
-    const CatalogCreativePromotedContentAdInfo& rhs) const {
-  return !(*this == rhs);
+    const CatalogCreativePromotedContentAdInfo& other) const {
+  return !(*this == other);
 }
 
 }  // namespace ads

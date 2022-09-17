@@ -24,15 +24,16 @@ UnblindedPaymentTokenInfo& UnblindedPaymentTokenInfo::operator=(
 UnblindedPaymentTokenInfo::~UnblindedPaymentTokenInfo() = default;
 
 bool UnblindedPaymentTokenInfo::operator==(
-    const UnblindedPaymentTokenInfo& rhs) const {
-  return transaction_id == rhs.transaction_id && public_key == rhs.public_key &&
-         value == rhs.value && confirmation_type == rhs.confirmation_type &&
-         ad_type == rhs.ad_type;
+    const UnblindedPaymentTokenInfo& other) const {
+  return transaction_id == other.transaction_id &&
+         public_key == other.public_key && value == other.value &&
+         confirmation_type == other.confirmation_type &&
+         ad_type == other.ad_type;
 }
 
 bool UnblindedPaymentTokenInfo::operator!=(
-    const UnblindedPaymentTokenInfo& rhs) const {
-  return !(*this == rhs);
+    const UnblindedPaymentTokenInfo& other) const {
+  return !(*this == other);
 }
 
 }  // namespace ads::privacy

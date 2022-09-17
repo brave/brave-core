@@ -22,16 +22,16 @@ ConversionInfo& ConversionInfo::operator=(ConversionInfo&& other) noexcept =
 
 ConversionInfo::~ConversionInfo() = default;
 
-bool ConversionInfo::operator==(const ConversionInfo& rhs) const {
-  return creative_set_id == rhs.creative_set_id && type == rhs.type &&
-         url_pattern == rhs.url_pattern &&
-         observation_window == rhs.observation_window &&
-         advertiser_public_key == rhs.advertiser_public_key &&
-         DoubleEquals(expire_at.ToDoubleT(), rhs.expire_at.ToDoubleT());
+bool ConversionInfo::operator==(const ConversionInfo& other) const {
+  return creative_set_id == other.creative_set_id && type == other.type &&
+         url_pattern == other.url_pattern &&
+         observation_window == other.observation_window &&
+         advertiser_public_key == other.advertiser_public_key &&
+         DoubleEquals(expire_at.ToDoubleT(), other.expire_at.ToDoubleT());
 }
 
-bool ConversionInfo::operator!=(const ConversionInfo& rhs) const {
-  return !(*this == rhs);
+bool ConversionInfo::operator!=(const ConversionInfo& other) const {
+  return !(*this == other);
 }
 
 bool ConversionInfo::IsValid() const {

@@ -34,8 +34,8 @@ class Token {
 
   ~Token();
 
-  bool operator==(const Token& rhs) const;
-  bool operator!=(const Token& rhs) const;
+  bool operator==(const Token& other) const;
+  bool operator!=(const Token& other) const;
 
   bool has_value() const { return token_.has_value(); }
 

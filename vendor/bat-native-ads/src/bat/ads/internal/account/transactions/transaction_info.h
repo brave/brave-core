@@ -26,8 +26,8 @@ struct TransactionInfo final {
 
   ~TransactionInfo();
 
-  bool operator==(const TransactionInfo& rhs) const;
-  bool operator!=(const TransactionInfo& rhs) const;
+  bool operator==(const TransactionInfo& other) const;
+  bool operator!=(const TransactionInfo& other) const;
 
   bool IsValid() const;
 

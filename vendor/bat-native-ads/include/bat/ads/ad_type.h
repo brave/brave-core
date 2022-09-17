@@ -38,8 +38,8 @@ class AdType final {
   Value value() const;
   std::string ToString() const;
 
-  bool operator==(const AdType& rhs) const;
-  bool operator!=(const AdType& rhs) const;
+  bool operator==(const AdType& other) const;
+  bool operator!=(const AdType& other) const;
 
  private:
   Value value_ = kUndefined;

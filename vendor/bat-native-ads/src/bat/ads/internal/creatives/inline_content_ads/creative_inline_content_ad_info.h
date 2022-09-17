@@ -28,8 +28,8 @@ struct CreativeInlineContentAdInfo final : CreativeAdInfo {
 
   ~CreativeInlineContentAdInfo();
 
-  bool operator==(const CreativeInlineContentAdInfo& rhs) const;
-  bool operator!=(const CreativeInlineContentAdInfo& rhs) const;
+  bool operator==(const CreativeInlineContentAdInfo& other) const;
+  bool operator!=(const CreativeInlineContentAdInfo& other) const;
 
   std::string title;
   std::string description;
