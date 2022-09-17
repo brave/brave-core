@@ -43,8 +43,6 @@ class BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest
  protected:
   BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest() = default;
 
-  ~BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

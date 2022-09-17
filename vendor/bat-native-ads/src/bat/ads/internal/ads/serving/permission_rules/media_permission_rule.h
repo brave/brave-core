@@ -14,16 +14,6 @@ namespace ads {
 
 class MediaPermissionRule final : public PermissionRuleInterface {
  public:
-  MediaPermissionRule();
-
-  MediaPermissionRule(const MediaPermissionRule& other) = delete;
-  MediaPermissionRule& operator=(const MediaPermissionRule& other) = delete;
-
-  MediaPermissionRule(MediaPermissionRule&& other) noexcept = delete;
-  MediaPermissionRule& operator=(MediaPermissionRule&& other) noexcept = delete;
-
-  ~MediaPermissionRule() override;
-
   bool ShouldAllow() override;
 
   const std::string& GetLastMessage() const override;

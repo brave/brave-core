@@ -22,12 +22,7 @@ namespace {
 constexpr char kCatalog[] = "catalog.json";
 }  // namespace
 
-class BatAdsEpsilonGreedyBanditResourceTest : public UnitTestBase {
- protected:
-  BatAdsEpsilonGreedyBanditResourceTest() = default;
-
-  ~BatAdsEpsilonGreedyBanditResourceTest() override = default;
-};
+class BatAdsEpsilonGreedyBanditResourceTest : public UnitTestBase {};
 
 TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
        SuccessfullyInitializeWithCatalog) {

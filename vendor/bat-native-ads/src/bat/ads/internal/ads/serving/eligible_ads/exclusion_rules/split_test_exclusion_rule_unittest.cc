@@ -27,12 +27,7 @@ scoped_refptr<base::FieldTrial> CreateFieldTrial(
 
 }  // namespace
 
-class BatAdsSplitTestExclusionRuleTest : public UnitTestBase {
- protected:
-  BatAdsSplitTestExclusionRuleTest() = default;
-
-  ~BatAdsSplitTestExclusionRuleTest() override = default;
-};
+class BatAdsSplitTestExclusionRuleTest : public UnitTestBase {};
 
 TEST_F(BatAdsSplitTestExclusionRuleTest, AllowIfNoFieldTrialAndNoAdGroup) {
   // Arrange

@@ -7,18 +7,6 @@
 
 namespace ads {
 
-WalletInfo::WalletInfo() = default;
-
-WalletInfo::WalletInfo(const WalletInfo& info) = default;
-
-WalletInfo& WalletInfo::operator=(const WalletInfo& info) = default;
-
-WalletInfo::WalletInfo(WalletInfo&& other) noexcept = default;
-
-WalletInfo& WalletInfo::operator=(WalletInfo&& other) noexcept = default;
-
-WalletInfo::~WalletInfo() = default;
-
 bool WalletInfo::IsValid() const {
   return !id.empty() && !secret_key.empty();
 }

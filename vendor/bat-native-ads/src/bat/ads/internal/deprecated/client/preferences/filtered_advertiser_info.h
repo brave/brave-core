@@ -14,16 +14,6 @@
 namespace ads {
 
 struct FilteredAdvertiserInfo final {
-  FilteredAdvertiserInfo();
-
-  FilteredAdvertiserInfo(const FilteredAdvertiserInfo& other);
-  FilteredAdvertiserInfo& operator=(const FilteredAdvertiserInfo& other);
-
-  FilteredAdvertiserInfo(FilteredAdvertiserInfo&& other) noexcept;
-  FilteredAdvertiserInfo& operator=(FilteredAdvertiserInfo&& other) noexcept;
-
-  ~FilteredAdvertiserInfo();
-
   base::Value::Dict ToValue() const;
   void FromValue(const base::Value::Dict& root);
 

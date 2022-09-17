@@ -19,10 +19,6 @@ namespace {
 constexpr int kMinimumWaitTimeCap = 1;
 }  // namespace
 
-MinimumWaitTimePermissionRule::MinimumWaitTimePermissionRule() = default;
-
-MinimumWaitTimePermissionRule::~MinimumWaitTimePermissionRule() = default;
-
 bool MinimumWaitTimePermissionRule::ShouldAllow() {
   if (PlatformHelper::GetInstance()->IsMobile()) {
     // Ads are periodically served on mobile so they will never be served before

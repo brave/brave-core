@@ -12,12 +12,7 @@
 
 namespace ads {
 
-class BatAdsCovariateManagerTest : public UnitTestBase {
- protected:
-  BatAdsCovariateManagerTest() = default;
-
-  ~BatAdsCovariateManagerTest() override = default;
-};
+class BatAdsCovariateManagerTest : public UnitTestBase {};
 
 TEST_F(BatAdsCovariateManagerTest, GetTrainingInstance) {
   // Arrange

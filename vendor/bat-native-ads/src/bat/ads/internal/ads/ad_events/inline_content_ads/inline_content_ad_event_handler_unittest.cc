@@ -36,8 +36,6 @@ class BatAdsInlineContentAdEventHandlerTest : public EventHandlerObserver,
  protected:
   BatAdsInlineContentAdEventHandlerTest() = default;
 
-  ~BatAdsInlineContentAdEventHandlerTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

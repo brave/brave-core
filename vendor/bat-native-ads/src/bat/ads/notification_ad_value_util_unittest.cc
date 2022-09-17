@@ -29,12 +29,7 @@ constexpr char kListJson[] =
 
 }  // namespace
 
-class BatAdsNotificationAdValueUtilTest : public UnitTestBase {
- protected:
-  BatAdsNotificationAdValueUtilTest() = default;
-
-  ~BatAdsNotificationAdValueUtilTest() override = default;
-};
+class BatAdsNotificationAdValueUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsNotificationAdValueUtilTest, ToValue) {
   // Arrange

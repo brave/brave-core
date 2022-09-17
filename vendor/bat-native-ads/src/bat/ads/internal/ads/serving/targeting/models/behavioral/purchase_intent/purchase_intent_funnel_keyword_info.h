@@ -15,17 +15,6 @@ struct PurchaseIntentFunnelKeywordInfo final {
   PurchaseIntentFunnelKeywordInfo();
   PurchaseIntentFunnelKeywordInfo(const std::string& keywords, uint16_t weight);
 
-  PurchaseIntentFunnelKeywordInfo(const PurchaseIntentFunnelKeywordInfo& other);
-  PurchaseIntentFunnelKeywordInfo& operator=(
-      const PurchaseIntentFunnelKeywordInfo& other);
-
-  PurchaseIntentFunnelKeywordInfo(
-      PurchaseIntentFunnelKeywordInfo&& other) noexcept;
-  PurchaseIntentFunnelKeywordInfo& operator=(
-      PurchaseIntentFunnelKeywordInfo&& other) noexcept;
-
-  ~PurchaseIntentFunnelKeywordInfo();
-
   std::string keywords;
   uint16_t weight = 0;
 };

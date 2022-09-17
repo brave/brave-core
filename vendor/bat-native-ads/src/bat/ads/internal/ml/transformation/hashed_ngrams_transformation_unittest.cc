@@ -13,12 +13,7 @@
 
 namespace ads::ml {
 
-class BatAdsHashedNGramsTest : public UnitTestBase {
- protected:
-  BatAdsHashedNGramsTest() = default;
-
-  ~BatAdsHashedNGramsTest() override = default;
-};
+class BatAdsHashedNGramsTest : public UnitTestBase {};
 
 TEST_F(BatAdsHashedNGramsTest, HashingTest) {
   // Arrange

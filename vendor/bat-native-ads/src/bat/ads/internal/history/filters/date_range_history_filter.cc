@@ -13,8 +13,6 @@ DateRangeHistoryFilter::DateRangeHistoryFilter(const base::Time from_time,
                                                const base::Time to_time)
     : from_time_(from_time), to_time_(to_time) {}
 
-DateRangeHistoryFilter::~DateRangeHistoryFilter() = default;
-
 HistoryItemList DateRangeHistoryFilter::Apply(
     const HistoryItemList& history) const {
   HistoryItemList filtered_history = history;

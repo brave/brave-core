@@ -11,12 +11,7 @@
 
 namespace ads::resource {
 
-class BatAdsPurchaseIntentResourceTest : public UnitTestBase {
- protected:
-  BatAdsPurchaseIntentResourceTest() = default;
-
-  ~BatAdsPurchaseIntentResourceTest() override = default;
-};
+class BatAdsPurchaseIntentResourceTest : public UnitTestBase {};
 
 TEST_F(BatAdsPurchaseIntentResourceTest, Load) {
   // Arrange

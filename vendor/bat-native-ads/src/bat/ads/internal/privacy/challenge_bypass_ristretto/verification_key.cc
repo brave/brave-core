@@ -14,18 +14,6 @@ VerificationKey::VerificationKey(
     const challenge_bypass_ristretto::VerificationKey& verification_key)
     : verification_key_(verification_key) {}
 
-VerificationKey::VerificationKey(const VerificationKey& info) = default;
-
-VerificationKey& VerificationKey::operator=(const VerificationKey& info) =
-    default;
-
-VerificationKey::VerificationKey(VerificationKey&& other) noexcept = default;
-
-VerificationKey& VerificationKey::operator=(VerificationKey&& other) noexcept =
-    default;
-
-VerificationKey::~VerificationKey() = default;
-
 absl::optional<VerificationSignature> VerificationKey::Sign(
     const std::string& message) {
   const challenge_bypass_ristretto::VerificationSignature

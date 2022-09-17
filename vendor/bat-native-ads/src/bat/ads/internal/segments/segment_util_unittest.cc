@@ -20,12 +20,7 @@ namespace {
 constexpr char kCatalog[] = "catalog_with_multiple_campaigns.json";
 }  // namespace
 
-class BatAdsTargetingSegmentUtilTest : public UnitTestBase {
- protected:
-  BatAdsTargetingSegmentUtilTest() = default;
-
-  ~BatAdsTargetingSegmentUtilTest() override = default;
-};
+class BatAdsTargetingSegmentUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsTargetingSegmentUtilTest, GetSegmentsFromCatalog) {
   // Arrange

@@ -25,8 +25,6 @@ class BatAdsCashDepositIntegrationTest : public UnitTestBase {
  protected:
   BatAdsCashDepositIntegrationTest() = default;
 
-  ~BatAdsCashDepositIntegrationTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
   }

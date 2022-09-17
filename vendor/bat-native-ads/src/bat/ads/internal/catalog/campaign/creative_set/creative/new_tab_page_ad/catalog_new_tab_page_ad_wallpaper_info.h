@@ -14,20 +14,6 @@
 namespace ads {
 
 struct CatalogNewTabPageAdWallpaperInfo final {
-  CatalogNewTabPageAdWallpaperInfo();
-
-  CatalogNewTabPageAdWallpaperInfo(
-      const CatalogNewTabPageAdWallpaperInfo& other);
-  CatalogNewTabPageAdWallpaperInfo& operator=(
-      const CatalogNewTabPageAdWallpaperInfo& other);
-
-  CatalogNewTabPageAdWallpaperInfo(
-      CatalogNewTabPageAdWallpaperInfo&& other) noexcept;
-  CatalogNewTabPageAdWallpaperInfo& operator=(
-      CatalogNewTabPageAdWallpaperInfo&& other) noexcept;
-
-  ~CatalogNewTabPageAdWallpaperInfo();
-
   bool operator==(const CatalogNewTabPageAdWallpaperInfo& other) const;
   bool operator!=(const CatalogNewTabPageAdWallpaperInfo& other) const;
 

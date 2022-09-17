@@ -14,20 +14,6 @@
 namespace ads {
 
 struct CatalogCreativeNotificationAdInfo final : CatalogCreativeInfo {
-  CatalogCreativeNotificationAdInfo();
-
-  CatalogCreativeNotificationAdInfo(
-      const CatalogCreativeNotificationAdInfo& other);
-  CatalogCreativeNotificationAdInfo& operator=(
-      const CatalogCreativeNotificationAdInfo& other);
-
-  CatalogCreativeNotificationAdInfo(
-      CatalogCreativeNotificationAdInfo&& other) noexcept;
-  CatalogCreativeNotificationAdInfo& operator=(
-      CatalogCreativeNotificationAdInfo&& other) noexcept;
-
-  ~CatalogCreativeNotificationAdInfo();
-
   bool operator==(const CatalogCreativeNotificationAdInfo& other) const;
   bool operator!=(const CatalogCreativeNotificationAdInfo& other) const;
 

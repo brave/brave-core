@@ -63,12 +63,7 @@ privacy::UnblindedPaymentTokenList GetUnblindedPaymentTokens(const int count) {
 
 }  // namespace
 
-class BatAdsRedeemUnblindedPaymentTokensRequestTest : public UnitTestBase {
- protected:
-  BatAdsRedeemUnblindedPaymentTokensRequestTest() = default;
-
-  ~BatAdsRedeemUnblindedPaymentTokensRequestTest() override = default;
-};
+class BatAdsRedeemUnblindedPaymentTokensRequestTest : public UnitTestBase {};
 
 TEST_F(BatAdsRedeemUnblindedPaymentTokensRequestTest, BuildUrlForRPill) {
   // Arrange

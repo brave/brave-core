@@ -12,10 +12,6 @@
 
 namespace ads::notification_ads {
 
-AdEventViewed::AdEventViewed() = default;
-
-AdEventViewed::~AdEventViewed() = default;
-
 void AdEventViewed::FireEvent(const NotificationAdInfo& ad) {
   BLOG(3, "Viewed notification ad with placement id "
               << ad.placement_id << " and creative instance id "

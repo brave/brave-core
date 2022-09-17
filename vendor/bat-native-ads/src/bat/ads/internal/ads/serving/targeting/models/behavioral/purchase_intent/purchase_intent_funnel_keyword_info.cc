@@ -14,18 +14,4 @@ PurchaseIntentFunnelKeywordInfo::PurchaseIntentFunnelKeywordInfo(
     const uint16_t weight)
     : keywords(keywords), weight(weight) {}
 
-PurchaseIntentFunnelKeywordInfo::PurchaseIntentFunnelKeywordInfo(
-    const PurchaseIntentFunnelKeywordInfo& info) = default;
-
-PurchaseIntentFunnelKeywordInfo& PurchaseIntentFunnelKeywordInfo::operator=(
-    const PurchaseIntentFunnelKeywordInfo& info) = default;
-
-PurchaseIntentFunnelKeywordInfo::PurchaseIntentFunnelKeywordInfo(
-    PurchaseIntentFunnelKeywordInfo&& other) noexcept = default;
-
-PurchaseIntentFunnelKeywordInfo& PurchaseIntentFunnelKeywordInfo::operator=(
-    PurchaseIntentFunnelKeywordInfo&& other) noexcept = default;
-
-PurchaseIntentFunnelKeywordInfo::~PurchaseIntentFunnelKeywordInfo() = default;
-
 }  // namespace ads::targeting

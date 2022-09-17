@@ -23,16 +23,6 @@ using GetCreativeAdCallback =
 
 class CreativeAds final : public TableInterface {
  public:
-  CreativeAds();
-
-  CreativeAds(const CreativeAds& other) = delete;
-  CreativeAds& operator=(const CreativeAds& other) = delete;
-
-  CreativeAds(CreativeAds&& other) noexcept = delete;
-  CreativeAds& operator=(CreativeAds&& other) noexcept = delete;
-
-  ~CreativeAds() override;
-
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const CreativeAdList& creative_ads);
 

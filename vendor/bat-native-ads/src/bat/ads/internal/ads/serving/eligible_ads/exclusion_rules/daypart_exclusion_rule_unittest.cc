@@ -18,12 +18,7 @@ namespace {
 constexpr char kCreativeSetId[] = "654f10df-fbc4-4a92-8d43-2edf73734a60";
 }  // namespace
 
-class BatAdsDaypartExclusionRuleTest : public UnitTestBase {
- protected:
-  BatAdsDaypartExclusionRuleTest() = default;
-
-  ~BatAdsDaypartExclusionRuleTest() override = default;
-};
+class BatAdsDaypartExclusionRuleTest : public UnitTestBase {};
 
 TEST_F(BatAdsDaypartExclusionRuleTest, AllowIfDaypartsIsEmpty) {
   // Arrange

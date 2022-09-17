@@ -16,12 +16,7 @@
 
 namespace ads {
 
-class BatAdsSettingsTest : public UnitTestBase {
- protected:
-  BatAdsSettingsTest() = default;
-
-  ~BatAdsSettingsTest() override = default;
-};
+class BatAdsSettingsTest : public UnitTestBase {};
 
 TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasChangedDefaultSetting) {
   // Arrange

@@ -72,10 +72,6 @@ SegmentList ToSegmentList(const SegmentProbabilityList& segment_probabilities) {
 
 }  // namespace
 
-TextClassification::TextClassification() = default;
-
-TextClassification::~TextClassification() = default;
-
 SegmentList TextClassification::GetSegments() const {
   const TextClassificationProbabilityList& probabilities =
       ClientStateManager::GetInstance()

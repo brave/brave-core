@@ -33,12 +33,7 @@ constexpr char kAdvertiserSecretKey[] =
 
 }  // namespace
 
-class BatAdsConversionUserDataBuilderTest : public UnitTestBase {
- protected:
-  BatAdsConversionUserDataBuilderTest() = default;
-
-  ~BatAdsConversionUserDataBuilderTest() override = default;
-};
+class BatAdsConversionUserDataBuilderTest : public UnitTestBase {};
 
 TEST_F(BatAdsConversionUserDataBuilderTest, BuildConversion) {
   // Arrange

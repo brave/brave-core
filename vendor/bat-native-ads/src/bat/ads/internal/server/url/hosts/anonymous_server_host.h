@@ -14,16 +14,6 @@ namespace ads {
 
 class AnonymousServerHost final : public ServerHostInterface {
  public:
-  AnonymousServerHost();
-
-  AnonymousServerHost(const AnonymousServerHost& other) = delete;
-  AnonymousServerHost& operator=(const AnonymousServerHost& other) = delete;
-
-  AnonymousServerHost(AnonymousServerHost&& other) noexcept = delete;
-  AnonymousServerHost& operator=(AnonymousServerHost&& other) noexcept = delete;
-
-  ~AnonymousServerHost() override;
-
   std::string Get() const override;
 };
 

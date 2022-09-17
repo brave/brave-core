@@ -48,8 +48,6 @@ class BatAdsAccountTest : public AccountObserver, public UnitTestBase {
  protected:
   BatAdsAccountTest() = default;
 
-  ~BatAdsAccountTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

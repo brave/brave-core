@@ -43,11 +43,6 @@ struct CreativeAdInfo;
 
 class ExclusionRulesBase {
  public:
-  ExclusionRulesBase(const AdEventList& ad_events,
-                     geographic::SubdivisionTargeting* subdivision_targeting,
-                     resource::AntiTargeting* anti_targeting_resource,
-                     const BrowsingHistoryList& browsing_history);
-
   ExclusionRulesBase(const ExclusionRulesBase& other) = delete;
   ExclusionRulesBase& operator=(const ExclusionRulesBase& other) = delete;
 
@@ -59,6 +54,11 @@ class ExclusionRulesBase {
   virtual bool ShouldExcludeCreativeAd(const CreativeAdInfo& creative_ad);
 
  protected:
+  ExclusionRulesBase(const AdEventList& ad_events,
+                     geographic::SubdivisionTargeting* subdivision_targeting,
+                     resource::AntiTargeting* anti_targeting_resource,
+                     const BrowsingHistoryList& browsing_history);
+
   std::vector<ExclusionRuleInterface<CreativeAdInfo>*> exclusion_rules_;
 
   std::set<std::string> uuids_;

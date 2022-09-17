@@ -18,10 +18,6 @@ namespace {
 constexpr int kMinimumWaitTimeCap = 1;
 }  // namespace
 
-MinimumWaitTimePermissionRule::MinimumWaitTimePermissionRule() = default;
-
-MinimumWaitTimePermissionRule::~MinimumWaitTimePermissionRule() = default;
-
 bool MinimumWaitTimePermissionRule::ShouldAllow() {
   const std::vector<base::Time> history =
       GetAdEventHistory(AdType::kNewTabPageAd, ConfirmationType::kServed);

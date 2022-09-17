@@ -7,22 +7,6 @@
 
 namespace ads {
 
-FilteredCategoryInfo::FilteredCategoryInfo() = default;
-
-FilteredCategoryInfo::FilteredCategoryInfo(const FilteredCategoryInfo& info) =
-    default;
-
-FilteredCategoryInfo& FilteredCategoryInfo::operator=(
-    const FilteredCategoryInfo& info) = default;
-
-FilteredCategoryInfo::FilteredCategoryInfo(
-    FilteredCategoryInfo&& other) noexcept = default;
-
-FilteredCategoryInfo& FilteredCategoryInfo::operator=(
-    FilteredCategoryInfo&& other) noexcept = default;
-
-FilteredCategoryInfo::~FilteredCategoryInfo() = default;
-
 base::Value::Dict FilteredCategoryInfo::ToValue() const {
   base::Value::Dict dict;
   dict.Set("name", name);

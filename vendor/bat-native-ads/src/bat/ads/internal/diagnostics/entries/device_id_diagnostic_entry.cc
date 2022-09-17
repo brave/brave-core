@@ -17,10 +17,6 @@ constexpr char kUnknown[] = "Unknown";
 
 }  // namespace
 
-DeviceIdDiagnosticEntry::DeviceIdDiagnosticEntry() = default;
-
-DeviceIdDiagnosticEntry::~DeviceIdDiagnosticEntry() = default;
-
 DiagnosticEntryType DeviceIdDiagnosticEntry::GetType() const {
   return DiagnosticEntryType::kDeviceId;
 }

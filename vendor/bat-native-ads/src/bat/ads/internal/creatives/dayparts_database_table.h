@@ -17,16 +17,6 @@ namespace ads::database::table {
 
 class Dayparts final : public TableInterface {
  public:
-  Dayparts();
-
-  Dayparts(const Dayparts& other) = delete;
-  Dayparts& operator=(const Dayparts& other) = delete;
-
-  Dayparts(Dayparts&& other) noexcept = delete;
-  Dayparts& operator=(Dayparts&& other) noexcept = delete;
-
-  ~Dayparts() override;
-
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const CreativeAdList& creative_ads);
 

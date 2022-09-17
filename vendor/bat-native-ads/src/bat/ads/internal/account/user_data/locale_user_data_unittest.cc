@@ -13,12 +13,7 @@
 
 namespace ads::user_data {
 
-class BatAdsLocaleUserDataTest : public UnitTestBase {
- protected:
-  BatAdsLocaleUserDataTest() = default;
-
-  ~BatAdsLocaleUserDataTest() override = default;
-};
+class BatAdsLocaleUserDataTest : public UnitTestBase {};
 
 TEST_F(BatAdsLocaleUserDataTest, GetLocaleForNonReleaseBuildChannel) {
   // Arrange

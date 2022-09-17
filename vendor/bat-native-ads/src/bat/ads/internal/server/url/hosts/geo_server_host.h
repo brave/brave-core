@@ -14,16 +14,6 @@ namespace ads {
 
 class GeoServerHost final : public ServerHostInterface {
  public:
-  GeoServerHost();
-
-  GeoServerHost(const GeoServerHost& other) = delete;
-  GeoServerHost& operator=(const GeoServerHost& other) = delete;
-
-  GeoServerHost(GeoServerHost&& other) noexcept = delete;
-  GeoServerHost& operator=(GeoServerHost&& other) noexcept = delete;
-
-  ~GeoServerHost() override;
-
   std::string Get() const override;
 };
 

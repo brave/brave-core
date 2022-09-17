@@ -19,9 +19,6 @@ class CatalogObserver : public base::CheckedObserver {
 
   // Invoked when the catalog failes to update.
   virtual void OnFailedToUpdateCatalog() {}
-
- protected:
-  ~CatalogObserver() override = default;
 };
 
 }  // namespace ads

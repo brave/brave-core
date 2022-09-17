@@ -16,12 +16,7 @@ namespace {
 constexpr char kSegment[] = "segment";
 }  // namespace
 
-class BatAdsCategoryContentUtilTest : public UnitTestBase {
- protected:
-  BatAdsCategoryContentUtilTest() = default;
-
-  ~BatAdsCategoryContentUtilTest() override = default;
-};
+class BatAdsCategoryContentUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsCategoryContentUtilTest, Build) {
   // Arrange

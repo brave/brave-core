@@ -18,8 +18,6 @@ class BatAdsCatalogPermissionRuleIntegrationTest : public UnitTestBase {
  protected:
   BatAdsCatalogPermissionRuleIntegrationTest() = default;
 
-  ~BatAdsCatalogPermissionRuleIntegrationTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
   }

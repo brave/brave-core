@@ -23,18 +23,6 @@ class CreateConfirmationUrlRequestBuilder final
   explicit CreateConfirmationUrlRequestBuilder(
       const ConfirmationInfo& confirmation);
 
-  CreateConfirmationUrlRequestBuilder(
-      const CreateConfirmationUrlRequestBuilder& other) = delete;
-  CreateConfirmationUrlRequestBuilder operator=(
-      const CreateConfirmationUrlRequestBuilder& other) = delete;
-
-  CreateConfirmationUrlRequestBuilder(
-      CreateConfirmationUrlRequestBuilder&& other) noexcept = delete;
-  CreateConfirmationUrlRequestBuilder& operator=(
-      CreateConfirmationUrlRequestBuilder&& other) noexcept = delete;
-
-  ~CreateConfirmationUrlRequestBuilder() override;
-
   mojom::UrlRequestInfoPtr Build() override;
 
  private:

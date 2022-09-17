@@ -12,13 +12,6 @@ namespace ads::targeting::model {
 
 class PurchaseIntent final : public ModelInterface {
  public:
-  PurchaseIntent();
-
-  PurchaseIntent(const PurchaseIntent& other) = delete;
-  PurchaseIntent& operator=(const PurchaseIntent& other) = delete;
-
-  ~PurchaseIntent() override;
-
   SegmentList GetSegments() const override;
 };
 

@@ -20,12 +20,7 @@ constexpr char kCreativeSetId[] = "654f10df-fbc4-4a92-8d43-2edf73734a60";
 
 }  // namespace
 
-class BatAdsMarkedAsInappropriateExclusionRuleTest : public UnitTestBase {
- protected:
-  BatAdsMarkedAsInappropriateExclusionRuleTest() = default;
-
-  ~BatAdsMarkedAsInappropriateExclusionRuleTest() override = default;
-};
+class BatAdsMarkedAsInappropriateExclusionRuleTest : public UnitTestBase {};
 
 TEST_F(BatAdsMarkedAsInappropriateExclusionRuleTest, AllowAd) {
   // Arrange

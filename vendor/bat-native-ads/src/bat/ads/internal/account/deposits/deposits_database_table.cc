@@ -64,10 +64,6 @@ DepositInfo GetFromRecord(mojom::DBRecordInfo* record) {
 
 }  // namespace
 
-Deposits::Deposits() = default;
-
-Deposits::~Deposits() = default;
-
 void Deposits::Save(const DepositInfo& deposit, ResultCallback callback) {
   if (!deposit.IsValid()) {
     std::move(callback).Run(/*success*/ false);

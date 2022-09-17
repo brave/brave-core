@@ -20,12 +20,7 @@
 
 namespace ads::targeting::model {
 
-class BatAdsEpsilonGreedyBanditModelTest : public UnitTestBase {
- protected:
-  BatAdsEpsilonGreedyBanditModelTest() = default;
-
-  ~BatAdsEpsilonGreedyBanditModelTest() override = default;
-};
+class BatAdsEpsilonGreedyBanditModelTest : public UnitTestBase {};
 
 TEST_F(BatAdsEpsilonGreedyBanditModelTest,
        GetSegmentsIfProcessorNeverInitialized) {

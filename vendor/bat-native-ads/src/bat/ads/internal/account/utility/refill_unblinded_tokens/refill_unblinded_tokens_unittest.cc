@@ -35,8 +35,6 @@ class BatAdsRefillUnblindedTokensTest : public UnitTestBase {
  protected:
   BatAdsRefillUnblindedTokensTest() = default;
 
-  ~BatAdsRefillUnblindedTokensTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

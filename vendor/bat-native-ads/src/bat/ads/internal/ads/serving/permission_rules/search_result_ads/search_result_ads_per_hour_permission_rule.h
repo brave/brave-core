@@ -19,18 +19,6 @@ namespace ads::search_result_ads {
 
 class AdsPerHourPermissionRule final : public PermissionRuleInterface {
  public:
-  AdsPerHourPermissionRule();
-
-  AdsPerHourPermissionRule(const AdsPerHourPermissionRule& other) = delete;
-  AdsPerHourPermissionRule& operator=(const AdsPerHourPermissionRule& other) =
-      delete;
-
-  AdsPerHourPermissionRule(AdsPerHourPermissionRule&& other) noexcept = delete;
-  AdsPerHourPermissionRule& operator=(
-      AdsPerHourPermissionRule&& other) noexcept = delete;
-
-  ~AdsPerHourPermissionRule() override;
-
   bool ShouldAllow() override;
 
   const std::string& GetLastMessage() const override;

@@ -15,11 +15,6 @@ namespace ads::ml {
 NormalizationTransformation::NormalizationTransformation()
     : Transformation(TransformationType::kNormalization) {}
 
-NormalizationTransformation::NormalizationTransformation(
-    NormalizationTransformation&& transformation) noexcept = default;
-
-NormalizationTransformation::~NormalizationTransformation() = default;
-
 std::unique_ptr<Data> NormalizationTransformation::Apply(
     const std::unique_ptr<Data>& input_data) const {
   DCHECK(input_data->GetType() == DataType::kVector);

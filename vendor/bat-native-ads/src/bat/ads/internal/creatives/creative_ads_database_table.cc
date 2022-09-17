@@ -122,10 +122,6 @@ CreativeAdList GetCreativeAdsFromResponse(
 
 }  // namespace
 
-CreativeAds::CreativeAds() = default;
-
-CreativeAds::~CreativeAds() = default;
-
 void CreativeAds::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                                  const CreativeAdList& creative_ads) {
   DCHECK(transaction);

@@ -22,8 +22,6 @@ class BatAdsLocaleManagerTest : public LocaleManagerObserver,
  protected:
   BatAdsLocaleManagerTest() = default;
 
-  ~BatAdsLocaleManagerTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

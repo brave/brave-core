@@ -14,12 +14,7 @@
 
 namespace ads::user_data {
 
-class BatAdsSystemTimestampUserDataTest : public UnitTestBase {
- protected:
-  BatAdsSystemTimestampUserDataTest() = default;
-
-  ~BatAdsSystemTimestampUserDataTest() override = default;
-};
+class BatAdsSystemTimestampUserDataTest : public UnitTestBase {};
 
 TEST_F(BatAdsSystemTimestampUserDataTest, GetSystemTimestamp) {
   // Arrange

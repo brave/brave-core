@@ -17,8 +17,6 @@ namespace ads {
 AverageClickthroughRate::AverageClickthroughRate(base::TimeDelta time_window)
     : time_window_(time_window) {}
 
-AverageClickthroughRate::~AverageClickthroughRate() = default;
-
 brave_federated::mojom::DataType AverageClickthroughRate::GetDataType() const {
   return brave_federated::mojom::DataType::kDouble;
 }

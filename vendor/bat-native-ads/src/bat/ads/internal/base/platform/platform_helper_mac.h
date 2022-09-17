@@ -21,15 +21,13 @@ class PlatformHelperMac final : public PlatformHelper {
   PlatformHelperMac(PlatformHelperMac&& other) noexcept = delete;
   PlatformHelperMac& operator=(PlatformHelperMac&& other) noexcept = delete;
 
-  ~PlatformHelperMac() override;
-
  protected:
   friend class base::NoDestructor<PlatformHelperMac>;
 
   PlatformHelperMac();
 
  private:
-  // PlatformHelper impl
+  // PlatformHelper:
   bool IsMobile() const override;
   std::string GetName() const override;
   PlatformType GetType() const override;

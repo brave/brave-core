@@ -99,8 +99,6 @@ class BatAdsSearchResultAdEventHandlerTest : public EventHandlerObserver,
  protected:
   BatAdsSearchResultAdEventHandlerTest() = default;
 
-  ~BatAdsSearchResultAdEventHandlerTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

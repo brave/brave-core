@@ -15,12 +15,7 @@
 
 namespace ads {
 
-class BatAdsFetchPaymentTokenUrlRequestBuilderTest : public UnitTestBase {
- protected:
-  BatAdsFetchPaymentTokenUrlRequestBuilderTest() = default;
-
-  ~BatAdsFetchPaymentTokenUrlRequestBuilderTest() override = default;
-};
+class BatAdsFetchPaymentTokenUrlRequestBuilderTest : public UnitTestBase {};
 
 TEST_F(BatAdsFetchPaymentTokenUrlRequestBuilderTest, BuildUrl) {
   // Arrange

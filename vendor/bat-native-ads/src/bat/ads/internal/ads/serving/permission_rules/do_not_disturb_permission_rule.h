@@ -14,19 +14,6 @@ namespace ads {
 
 class DoNotDisturbPermissionRule final : public PermissionRuleInterface {
  public:
-  DoNotDisturbPermissionRule();
-
-  DoNotDisturbPermissionRule(const DoNotDisturbPermissionRule& other) = delete;
-  DoNotDisturbPermissionRule& operator=(const DoNotDisturbPermissionRule&) =
-      delete;
-
-  DoNotDisturbPermissionRule(DoNotDisturbPermissionRule&& other) noexcept =
-      delete;
-  DoNotDisturbPermissionRule& operator=(
-      DoNotDisturbPermissionRule&& other) noexcept = delete;
-
-  ~DoNotDisturbPermissionRule() override;
-
   bool ShouldAllow() override;
 
   const std::string& GetLastMessage() const override;

@@ -12,12 +12,7 @@
 
 namespace ads {
 
-class BatAdsAdContentInfoTest : public UnitTestBase {
- protected:
-  BatAdsAdContentInfoTest() = default;
-
-  ~BatAdsAdContentInfoTest() override = default;
-};
+class BatAdsAdContentInfoTest : public UnitTestBase {};
 
 TEST_F(BatAdsAdContentInfoTest, ToggleThumbUp) {
   // Arrange

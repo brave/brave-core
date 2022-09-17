@@ -14,12 +14,7 @@
 
 namespace ads::ml {
 
-class BatAdsVectorDataTest : public UnitTestBase {
- protected:
-  BatAdsVectorDataTest() = default;
-
-  ~BatAdsVectorDataTest() override = default;
-};
+class BatAdsVectorDataTest : public UnitTestBase {};
 
 TEST_F(BatAdsVectorDataTest, DenseVectorDataInitialization) {
   // Arrange

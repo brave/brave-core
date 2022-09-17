@@ -14,12 +14,7 @@
 
 namespace ads {
 
-class BatAdsCatalogLastUpdatedDiagnosticEntryTest : public UnitTestBase {
- protected:
-  BatAdsCatalogLastUpdatedDiagnosticEntryTest() = default;
-
-  ~BatAdsCatalogLastUpdatedDiagnosticEntryTest() override = default;
-};
+class BatAdsCatalogLastUpdatedDiagnosticEntryTest : public UnitTestBase {};
 
 TEST_F(BatAdsCatalogLastUpdatedDiagnosticEntryTest, CatalogLastUpdated) {
   // Arrange

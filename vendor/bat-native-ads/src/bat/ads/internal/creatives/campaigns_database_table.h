@@ -17,16 +17,6 @@ namespace ads::database::table {
 
 class Campaigns final : public TableInterface {
  public:
-  Campaigns();
-
-  Campaigns(const Campaigns& other) = delete;
-  Campaigns& operator=(const Campaigns& other) = delete;
-
-  Campaigns(Campaigns&& other) noexcept = delete;
-  Campaigns& operator=(Campaigns&& other) noexcept = delete;
-
-  ~Campaigns() override;
-
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const CreativeAdList& creative_ads);
 

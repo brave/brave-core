@@ -10,10 +10,6 @@
 
 namespace ads {
 
-NetworkConnectionPermissionRule::NetworkConnectionPermissionRule() = default;
-
-NetworkConnectionPermissionRule::~NetworkConnectionPermissionRule() = default;
-
 bool NetworkConnectionPermissionRule::ShouldAllow() {
   if (!permission_rules::features::
           ShouldOnlyServeAdsWithValidInternetConnection()) {

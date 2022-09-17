@@ -21,8 +21,6 @@ class BatAdsCreativeNotificationAdsDatabaseTableTest : public UnitTestBase {
  protected:
   BatAdsCreativeNotificationAdsDatabaseTableTest() = default;
 
-  ~BatAdsCreativeNotificationAdsDatabaseTableTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

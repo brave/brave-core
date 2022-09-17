@@ -38,6 +38,8 @@ class VectorData final : public Data {
   VectorData(VectorData&& vector_data) noexcept;
   VectorData& operator=(VectorData&& vector_data) noexcept;
 
+  ~VectorData() override;
+
   // Mathematical vector operations
   friend double operator*(const VectorData& lhs, const VectorData& rhs);
   void AddElementWise(const VectorData& v_add);

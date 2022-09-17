@@ -16,8 +16,6 @@ NumberOfUserActivityEvents::NumberOfUserActivityEvents(
     brave_federated::mojom::CovariateType covariate_type)
     : event_type_(event_type), covariate_type_(covariate_type) {}
 
-NumberOfUserActivityEvents::~NumberOfUserActivityEvents() = default;
-
 brave_federated::mojom::DataType NumberOfUserActivityEvents::GetDataType()
     const {
   return brave_federated::mojom::DataType::kInt;

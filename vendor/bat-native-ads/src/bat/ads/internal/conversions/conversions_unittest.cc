@@ -28,8 +28,6 @@ class BatAdsConversionsTest : public UnitTestBase {
  protected:
   BatAdsConversionsTest() = default;
 
-  ~BatAdsConversionsTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

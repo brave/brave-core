@@ -20,6 +20,4 @@ ExclusionRules::ExclusionRules(
                          anti_targeting_resource,
                          browsing_history) {}
 
-ExclusionRules::~ExclusionRules() = default;
-
 }  // namespace ads::new_tab_page_ads

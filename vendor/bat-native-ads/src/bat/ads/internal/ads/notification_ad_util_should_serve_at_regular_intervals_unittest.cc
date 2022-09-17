@@ -82,8 +82,6 @@ class BatAdsNotificationAdUtilServeAtRegularIntervalsTest
  protected:
   BatAdsNotificationAdUtilServeAtRegularIntervalsTest() = default;
 
-  ~BatAdsNotificationAdUtilServeAtRegularIntervalsTest() override = default;
-
   void SetUpMocks() override {
     const ParamInfo param = GetParam();
 

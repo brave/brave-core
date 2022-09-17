@@ -14,18 +14,6 @@ namespace ads {
 
 class EnabledDiagnosticEntry final : public DiagnosticEntryInterface {
  public:
-  EnabledDiagnosticEntry();
-
-  EnabledDiagnosticEntry(const EnabledDiagnosticEntry& other) = delete;
-  EnabledDiagnosticEntry& operator=(const EnabledDiagnosticEntry& other) =
-      delete;
-
-  EnabledDiagnosticEntry(EnabledDiagnosticEntry&& other) noexcept = delete;
-  EnabledDiagnosticEntry& operator=(EnabledDiagnosticEntry&& other) noexcept =
-      delete;
-
-  ~EnabledDiagnosticEntry() override;
-
   // DiagnosticEntryInterface:
   DiagnosticEntryType GetType() const override;
   std::string GetName() const override;

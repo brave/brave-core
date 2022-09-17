@@ -21,16 +21,6 @@ using GetConversionsCallback =
 
 class Conversions final : public TableInterface {
  public:
-  Conversions();
-
-  Conversions(const Conversions& other) = delete;
-  Conversions& operator=(const Conversions& other) = delete;
-
-  Conversions(Conversions&& other) noexcept = delete;
-  Conversions& operator=(Conversions&& other) noexcept = delete;
-
-  ~Conversions() override;
-
   void Save(const ConversionList& conversions, ResultCallback callback);
 
   void GetAll(GetConversionsCallback callback);

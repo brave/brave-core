@@ -35,14 +35,6 @@ class EligibleAdsV1 final : public EligibleAdsBase {
   EligibleAdsV1(geographic::SubdivisionTargeting* subdivision_targeting,
                 resource::AntiTargeting* anti_targeting);
 
-  EligibleAdsV1(const EligibleAdsV1& other) = delete;
-  EligibleAdsV1& operator=(const EligibleAdsV1& other) = delete;
-
-  EligibleAdsV1(EligibleAdsV1&& other) noexcept = delete;
-  EligibleAdsV1& operator=(EligibleAdsV1&& other) noexcept = delete;
-
-  ~EligibleAdsV1() override;
-
   void GetForUserModel(
       const targeting::UserModelInfo& user_model,
       const std::string& dimensions,

@@ -7,22 +7,6 @@
 
 namespace ads {
 
-CatalogCreativeInfo::CatalogCreativeInfo() = default;
-
-CatalogCreativeInfo::CatalogCreativeInfo(const CatalogCreativeInfo& info) =
-    default;
-
-CatalogCreativeInfo& CatalogCreativeInfo::operator=(
-    const CatalogCreativeInfo& info) = default;
-
-CatalogCreativeInfo::CatalogCreativeInfo(CatalogCreativeInfo&& other) noexcept =
-    default;
-
-CatalogCreativeInfo& CatalogCreativeInfo::operator=(
-    CatalogCreativeInfo&& other) noexcept = default;
-
-CatalogCreativeInfo::~CatalogCreativeInfo() = default;
-
 bool CatalogCreativeInfo::operator==(const CatalogCreativeInfo& other) const {
   return creative_instance_id == other.creative_instance_id &&
          type == other.type;

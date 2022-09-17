@@ -13,16 +13,6 @@
 namespace ads {
 
 struct DepositInfo final {
-  DepositInfo();
-
-  DepositInfo(const DepositInfo& other);
-  DepositInfo& operator=(const DepositInfo& other);
-
-  DepositInfo(DepositInfo&& other) noexcept;
-  DepositInfo& operator=(DepositInfo&& other) noexcept;
-
-  ~DepositInfo();
-
   bool IsValid() const;
 
   std::string creative_instance_id;

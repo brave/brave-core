@@ -33,8 +33,6 @@ class BatAdsConfirmationUtilTest : public UnitTestBase {
  protected:
   BatAdsConfirmationUtilTest() = default;
 
-  ~BatAdsConfirmationUtilTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

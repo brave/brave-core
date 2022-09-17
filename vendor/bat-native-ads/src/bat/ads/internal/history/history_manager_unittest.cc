@@ -27,8 +27,6 @@ class BatAdsHistoryManagerTest : public HistoryManagerObserver,
  protected:
   BatAdsHistoryManagerTest() = default;
 
-  ~BatAdsHistoryManagerTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

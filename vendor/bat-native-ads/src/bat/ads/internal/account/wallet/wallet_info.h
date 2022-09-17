@@ -11,16 +11,6 @@
 namespace ads {
 
 struct WalletInfo final {
-  WalletInfo();
-
-  WalletInfo(const WalletInfo& other);
-  WalletInfo& operator=(const WalletInfo& other);
-
-  WalletInfo(WalletInfo&& other) noexcept;
-  WalletInfo& operator=(WalletInfo&& other) noexcept;
-
-  ~WalletInfo();
-
   bool IsValid() const;
 
   bool HasChanged(const WalletInfo& other) const;

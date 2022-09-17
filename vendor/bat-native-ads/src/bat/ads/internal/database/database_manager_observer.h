@@ -37,9 +37,6 @@ class DatabaseManagerObserver : public base::CheckedObserver {
 
   // Invoked when the database is ready to be queried.
   virtual void OnDatabaseIsReady() {}
-
- protected:
-  ~DatabaseManagerObserver() override = default;
 };
 
 }  // namespace ads

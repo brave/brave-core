@@ -14,20 +14,6 @@
 namespace ads {
 
 struct CreativeNewTabPageAdWallpaperInfo final {
-  CreativeNewTabPageAdWallpaperInfo();
-
-  CreativeNewTabPageAdWallpaperInfo(
-      const CreativeNewTabPageAdWallpaperInfo& other);
-  CreativeNewTabPageAdWallpaperInfo& operator=(
-      const CreativeNewTabPageAdWallpaperInfo& other);
-
-  CreativeNewTabPageAdWallpaperInfo(
-      CreativeNewTabPageAdWallpaperInfo&& other) noexcept;
-  CreativeNewTabPageAdWallpaperInfo& operator=(
-      CreativeNewTabPageAdWallpaperInfo&& other) noexcept;
-
-  ~CreativeNewTabPageAdWallpaperInfo();
-
   bool operator==(const CreativeNewTabPageAdWallpaperInfo& other) const;
   bool operator!=(const CreativeNewTabPageAdWallpaperInfo& other) const;
 

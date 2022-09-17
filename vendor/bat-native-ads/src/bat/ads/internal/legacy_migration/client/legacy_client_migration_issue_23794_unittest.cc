@@ -20,12 +20,7 @@ constexpr uint64_t kMigratedClientIssue23794JsonHash = 1461886612;
 
 }  // namespace
 
-class BatAdsLegacyClientMigrationIssue23794Test : public UnitTestBase {
- protected:
-  BatAdsLegacyClientMigrationIssue23794Test() = default;
-
-  ~BatAdsLegacyClientMigrationIssue23794Test() override = default;
-};
+class BatAdsLegacyClientMigrationIssue23794Test : public UnitTestBase {};
 
 TEST_F(BatAdsLegacyClientMigrationIssue23794Test, Migrate) {
   // Arrange

@@ -14,12 +14,7 @@
 
 namespace ads::targeting::model {
 
-class BatAdsPurchaseIntentModelTest : public UnitTestBase {
- protected:
-  BatAdsPurchaseIntentModelTest() = default;
-
-  ~BatAdsPurchaseIntentModelTest() override = default;
-};
+class BatAdsPurchaseIntentModelTest : public UnitTestBase {};
 
 TEST_F(BatAdsPurchaseIntentModelTest, DoNotGetSegmentsForUnitializedResource) {
   // Arrange

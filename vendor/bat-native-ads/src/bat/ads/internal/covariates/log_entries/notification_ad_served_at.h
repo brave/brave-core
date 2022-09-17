@@ -15,18 +15,6 @@ namespace ads {
 
 class NotificationAdServedAt final : public CovariateLogEntryInterface {
  public:
-  NotificationAdServedAt();
-
-  NotificationAdServedAt(const NotificationAdServedAt& other) = delete;
-  NotificationAdServedAt& operator=(const NotificationAdServedAt& other) =
-      delete;
-
-  NotificationAdServedAt(NotificationAdServedAt&& other) noexcept = delete;
-  NotificationAdServedAt& operator=(NotificationAdServedAt&& other) noexcept =
-      delete;
-
-  ~NotificationAdServedAt() override;
-
   void SetTime(base::Time time);
 
   // CovariateLogEntryInterface:

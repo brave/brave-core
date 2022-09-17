@@ -14,12 +14,7 @@
 
 namespace ads::user_data {
 
-class BatAdsCreatedAtTimestampUserDataTest : public UnitTestBase {
- protected:
-  BatAdsCreatedAtTimestampUserDataTest() = default;
-
-  ~BatAdsCreatedAtTimestampUserDataTest() override = default;
-};
+class BatAdsCreatedAtTimestampUserDataTest : public UnitTestBase {};
 
 TEST_F(BatAdsCreatedAtTimestampUserDataTest, GetCreatedAtTimestamp) {
   // Arrange

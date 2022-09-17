@@ -15,12 +15,7 @@
 
 namespace ads::database::table {
 
-class BatAdsTransactionsDatabaseTableTest : public UnitTestBase {
- protected:
-  BatAdsTransactionsDatabaseTableTest() = default;
-
-  ~BatAdsTransactionsDatabaseTableTest() override = default;
-};
+class BatAdsTransactionsDatabaseTableTest : public UnitTestBase {};
 
 TEST_F(BatAdsTransactionsDatabaseTableTest, SaveEmptyTransactions) {
   // Arrange

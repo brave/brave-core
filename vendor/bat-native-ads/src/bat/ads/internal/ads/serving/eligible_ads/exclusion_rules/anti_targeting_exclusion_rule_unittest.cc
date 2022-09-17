@@ -22,12 +22,7 @@ constexpr char kCreativeSetIdNotOnAntiTargetingList[] =
 
 }  // namespace
 
-class BatAdsAntiTargetingExclusionRuleTest : public UnitTestBase {
- protected:
-  BatAdsAntiTargetingExclusionRuleTest() = default;
-
-  ~BatAdsAntiTargetingExclusionRuleTest() override = default;
-};
+class BatAdsAntiTargetingExclusionRuleTest : public UnitTestBase {};
 
 TEST_F(BatAdsAntiTargetingExclusionRuleTest, AllowIfResourceDidNotLoad) {
   // Arrange

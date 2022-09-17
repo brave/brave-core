@@ -153,8 +153,6 @@ class BatAdsDidOverrideFeaturesFromCommandLineUtilTest
  protected:
   BatAdsDidOverrideFeaturesFromCommandLineUtilTest() = default;
 
-  ~BatAdsDidOverrideFeaturesFromCommandLineUtilTest() override = default;
-
   void SetUpMocks() override {
     const ParamInfo param = GetParam();
 

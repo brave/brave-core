@@ -18,8 +18,6 @@ class BatAdsCreativeNewTabPageAdsDatabaseTableTest : public UnitTestBase {
  protected:
   BatAdsCreativeNewTabPageAdsDatabaseTableTest() = default;
 
-  ~BatAdsCreativeNewTabPageAdsDatabaseTableTest() override = default;
-
   CreativeNewTabPageAds database_table;
 };
 

@@ -14,20 +14,6 @@ namespace ads {
 
 class BrowserIsActivePermissionRule final : public PermissionRuleInterface {
  public:
-  BrowserIsActivePermissionRule();
-
-  BrowserIsActivePermissionRule(const BrowserIsActivePermissionRule& other) =
-      delete;
-  BrowserIsActivePermissionRule& operator=(
-      const BrowserIsActivePermissionRule& other) = delete;
-
-  BrowserIsActivePermissionRule(
-      BrowserIsActivePermissionRule&& other) noexcept = delete;
-  BrowserIsActivePermissionRule& operator=(
-      BrowserIsActivePermissionRule&& other) noexcept = delete;
-
-  ~BrowserIsActivePermissionRule() override;
-
   bool ShouldAllow() override;
 
   const std::string& GetLastMessage() const override;

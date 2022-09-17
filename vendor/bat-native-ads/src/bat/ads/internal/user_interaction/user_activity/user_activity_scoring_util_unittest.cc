@@ -20,8 +20,6 @@ class BatAdsUserActivityScoringUtilTest : public UnitTestBase {
  protected:
   BatAdsUserActivityScoringUtilTest() = default;
 
-  ~BatAdsUserActivityScoringUtilTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

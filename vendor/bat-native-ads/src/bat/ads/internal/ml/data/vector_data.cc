@@ -221,7 +221,7 @@ std::string VectorData::GetVectorAsString() const {
     return {};
   }
 
-  int storage_size = storage_->GetSize();
+  const int storage_size = storage_->GetSize();
   if (storage_size == 0) {
     return {};
   }

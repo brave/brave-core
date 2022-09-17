@@ -7,19 +7,6 @@
 
 namespace ads {
 
-FlaggedAdInfo::FlaggedAdInfo() = default;
-
-FlaggedAdInfo::FlaggedAdInfo(const FlaggedAdInfo& info) = default;
-
-FlaggedAdInfo& FlaggedAdInfo::operator=(const FlaggedAdInfo& info) = default;
-
-FlaggedAdInfo::FlaggedAdInfo(FlaggedAdInfo&& other) noexcept = default;
-
-FlaggedAdInfo& FlaggedAdInfo::operator=(FlaggedAdInfo&& other) noexcept =
-    default;
-
-FlaggedAdInfo::~FlaggedAdInfo() = default;
-
 base::Value::Dict FlaggedAdInfo::ToValue() const {
   base::Value::Dict dict;
   dict.Set("creative_set_id", creative_set_id);

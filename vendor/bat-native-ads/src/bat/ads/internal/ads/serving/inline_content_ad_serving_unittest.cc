@@ -27,8 +27,6 @@ class BatAdsInlineContentAdServingTest : public ServingObserver,
  protected:
   BatAdsInlineContentAdServingTest() = default;
 
-  ~BatAdsInlineContentAdServingTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

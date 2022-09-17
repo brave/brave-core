@@ -16,12 +16,7 @@ namespace {
 constexpr int kSegmentsMaxCount = 3;
 }  // namespace
 
-class BatAdsTopSegmentsUtilTest : public UnitTestBase {
- protected:
-  BatAdsTopSegmentsUtilTest() = default;
-
-  ~BatAdsTopSegmentsUtilTest() override = default;
-};
+class BatAdsTopSegmentsUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsTopSegmentsUtilTest, GetTopChildSegments) {
   // Arrange

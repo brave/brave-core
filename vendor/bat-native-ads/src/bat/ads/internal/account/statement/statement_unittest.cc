@@ -14,12 +14,7 @@
 
 namespace ads {
 
-class BatAdsStatementTest : public UnitTestBase {
- protected:
-  BatAdsStatementTest() = default;
-
-  ~BatAdsStatementTest() override = default;
-};
+class BatAdsStatementTest : public UnitTestBase {};
 
 TEST_F(BatAdsStatementTest, GetForTransactionsThisMonth) {
   // Arrange

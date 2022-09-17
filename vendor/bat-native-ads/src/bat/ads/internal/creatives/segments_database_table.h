@@ -17,16 +17,6 @@ namespace ads::database::table {
 
 class Segments final : public TableInterface {
  public:
-  Segments();
-
-  Segments(const Segments& other) = delete;
-  Segments& operator=(const Segments& other) = delete;
-
-  Segments(Segments&& other) noexcept = delete;
-  Segments& operator=(Segments&& other) noexcept = delete;
-
-  ~Segments() override;
-
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const CreativeAdList& creative_ads);
 

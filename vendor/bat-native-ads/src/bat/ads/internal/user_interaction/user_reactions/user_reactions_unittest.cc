@@ -35,8 +35,6 @@ class BatAdsReactionsTest : public AccountObserver, public UnitTestBase {
  protected:
   BatAdsReactionsTest() = default;
 
-  ~BatAdsReactionsTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

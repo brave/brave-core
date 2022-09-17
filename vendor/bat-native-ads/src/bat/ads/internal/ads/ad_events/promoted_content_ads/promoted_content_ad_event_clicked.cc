@@ -12,10 +12,6 @@
 
 namespace ads::promoted_content_ads {
 
-AdEventClicked::AdEventClicked() = default;
-
-AdEventClicked::~AdEventClicked() = default;
-
 void AdEventClicked::FireEvent(const PromotedContentAdInfo& ad) {
   BLOG(3, "Clicked promoted content ad with placement id "
               << ad.placement_id << " and creative instance id "

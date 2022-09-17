@@ -22,8 +22,6 @@ class BatAdsEligibleNotificationAdsV2Test : public UnitTestBase {
  protected:
   BatAdsEligibleNotificationAdsV2Test() = default;
 
-  ~BatAdsEligibleNotificationAdsV2Test() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

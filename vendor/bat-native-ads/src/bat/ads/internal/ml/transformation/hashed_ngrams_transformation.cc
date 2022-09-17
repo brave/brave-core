@@ -20,16 +20,16 @@ HashedNGramsTransformation::HashedNGramsTransformation()
 }
 
 HashedNGramsTransformation::HashedNGramsTransformation(
-    HashedNGramsTransformation&& hashed_ngrams) noexcept = default;
-
-HashedNGramsTransformation::~HashedNGramsTransformation() = default;
-
-HashedNGramsTransformation::HashedNGramsTransformation(
     const int bucket_count,
     const std::vector<int>& subgrams)
     : Transformation(TransformationType::kHashedNGrams) {
   hash_vectorizer = std::make_unique<HashVectorizer>(bucket_count, subgrams);
 }
+
+HashedNGramsTransformation::HashedNGramsTransformation(
+    HashedNGramsTransformation&& hashed_ngrams) noexcept = default;
+
+HashedNGramsTransformation::~HashedNGramsTransformation() = default;
 
 std::unique_ptr<Data> HashedNGramsTransformation::Apply(
     const std::unique_ptr<Data>& input_data) const {

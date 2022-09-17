@@ -7,22 +7,6 @@
 
 namespace ads::privacy {
 
-UnblindedTokenInfo::UnblindedTokenInfo() = default;
-
-UnblindedTokenInfo::UnblindedTokenInfo(const UnblindedTokenInfo& info) =
-    default;
-
-UnblindedTokenInfo& UnblindedTokenInfo::operator=(
-    const UnblindedTokenInfo& info) = default;
-
-UnblindedTokenInfo::UnblindedTokenInfo(UnblindedTokenInfo&& other) noexcept =
-    default;
-
-UnblindedTokenInfo& UnblindedTokenInfo::operator=(
-    UnblindedTokenInfo&& other) noexcept = default;
-
-UnblindedTokenInfo::~UnblindedTokenInfo() = default;
-
 bool UnblindedTokenInfo::operator==(const UnblindedTokenInfo& other) const {
   return public_key == other.public_key && value == other.value;
 }

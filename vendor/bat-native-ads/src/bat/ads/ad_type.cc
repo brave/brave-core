@@ -26,10 +26,6 @@ constexpr char kSearchResultAdType[] = "search_result_ad";
 
 AdType::AdType() = default;
 
-AdType::AdType(const AdType&) = default;
-
-AdType& AdType::operator=(const AdType&) = default;
-
 AdType::AdType(const std::string& value) {
   if (value == kUndefinedType) {
     value_ = kUndefined;

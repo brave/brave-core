@@ -27,8 +27,6 @@ class BatAdsNewTabPageAdServingTest : public ServingObserver,
  protected:
   BatAdsNewTabPageAdServingTest() = default;
 
-  ~BatAdsNewTabPageAdServingTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

@@ -12,12 +12,7 @@
 
 namespace ads::resource {
 
-class BatAdsConversionsResourceTest : public UnitTestBase {
- protected:
-  BatAdsConversionsResourceTest() = default;
-
-  ~BatAdsConversionsResourceTest() override = default;
-};
+class BatAdsConversionsResourceTest : public UnitTestBase {};
 
 TEST_F(BatAdsConversionsResourceTest, Load) {
   // Arrange

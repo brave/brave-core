@@ -47,10 +47,6 @@ int BindParameters(mojom::DBCommandInfo* command,
 
 }  // namespace
 
-Campaigns::Campaigns() = default;
-
-Campaigns::~Campaigns() = default;
-
 void Campaigns::Delete(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 

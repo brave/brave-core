@@ -27,9 +27,6 @@ class ServingObserver : public base::CheckedObserver {
 
   // Invoked when an inline content ad fails to serve.
   virtual void OnFailedToServeInlineContentAd() {}
-
- protected:
-  ~ServingObserver() override = default;
 };
 
 }  // namespace inline_content_ads

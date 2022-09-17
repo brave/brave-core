@@ -14,19 +14,6 @@ namespace ads {
 
 class UserActivityPermissionRule final : public PermissionRuleInterface {
  public:
-  UserActivityPermissionRule();
-
-  UserActivityPermissionRule(const UserActivityPermissionRule& other) = delete;
-  UserActivityPermissionRule& operator=(const UserActivityPermissionRule&) =
-      delete;
-
-  UserActivityPermissionRule(UserActivityPermissionRule&& other) noexcept =
-      delete;
-  UserActivityPermissionRule& operator=(
-      UserActivityPermissionRule&& other) noexcept = delete;
-
-  ~UserActivityPermissionRule() override;
-
   bool ShouldAllow() override;
 
   const std::string& GetLastMessage() const override;

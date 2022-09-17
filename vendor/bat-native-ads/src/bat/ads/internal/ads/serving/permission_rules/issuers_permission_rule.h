@@ -14,17 +14,6 @@ namespace ads {
 
 class IssuersPermissionRule : public PermissionRuleInterface {
  public:
-  IssuersPermissionRule();
-
-  IssuersPermissionRule(const IssuersPermissionRule& other) = delete;
-  IssuersPermissionRule& operator=(const IssuersPermissionRule& other) = delete;
-
-  IssuersPermissionRule(IssuersPermissionRule&& other) noexcept = delete;
-  IssuersPermissionRule& operator=(IssuersPermissionRule&& other) noexcept =
-      delete;
-
-  ~IssuersPermissionRule() override;
-
   bool ShouldAllow() override;
 
   const std::string& GetLastMessage() const override;

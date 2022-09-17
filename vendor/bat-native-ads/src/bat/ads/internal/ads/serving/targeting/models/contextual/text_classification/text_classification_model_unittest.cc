@@ -20,8 +20,6 @@ class BatAdsTextClassificationModelTest : public UnitTestBase {
  protected:
   BatAdsTextClassificationModelTest() = default;
 
-  ~BatAdsTextClassificationModelTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

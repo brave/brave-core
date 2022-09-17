@@ -20,18 +20,6 @@ class FetchPaymentTokenUrlRequestBuilder final
   explicit FetchPaymentTokenUrlRequestBuilder(
       const ConfirmationInfo& confirmation);
 
-  FetchPaymentTokenUrlRequestBuilder(
-      const FetchPaymentTokenUrlRequestBuilder& other) = delete;
-  FetchPaymentTokenUrlRequestBuilder operator=(
-      const FetchPaymentTokenUrlRequestBuilder& other) = delete;
-
-  FetchPaymentTokenUrlRequestBuilder(
-      FetchPaymentTokenUrlRequestBuilder&& other) noexcept = delete;
-  FetchPaymentTokenUrlRequestBuilder& operator=(
-      FetchPaymentTokenUrlRequestBuilder&& other) noexcept = delete;
-
-  ~FetchPaymentTokenUrlRequestBuilder() override;
-
   mojom::UrlRequestInfoPtr Build() override;
 
  private:

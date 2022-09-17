@@ -15,12 +15,7 @@
 namespace ads {
 
 class BatAdsFederatedLogEntriesNumberOfUserActivityEventsTest
-    : public UnitTestBase {
- protected:
-  BatAdsFederatedLogEntriesNumberOfUserActivityEventsTest() = default;
-
-  ~BatAdsFederatedLogEntriesNumberOfUserActivityEventsTest() override = default;
-};
+    : public UnitTestBase {};
 
 TEST_F(BatAdsFederatedLogEntriesNumberOfUserActivityEventsTest, GetDataType) {
   // Arrange

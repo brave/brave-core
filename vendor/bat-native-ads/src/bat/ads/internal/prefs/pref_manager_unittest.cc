@@ -19,8 +19,6 @@ class BatAdsPrefManagerTest : public PrefManagerObserver, public UnitTestBase {
  protected:
   BatAdsPrefManagerTest() = default;
 
-  ~BatAdsPrefManagerTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

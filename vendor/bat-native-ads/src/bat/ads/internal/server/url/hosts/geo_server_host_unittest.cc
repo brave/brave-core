@@ -12,12 +12,7 @@
 
 namespace ads {
 
-class BatAdsGeoServerHostTest : public UnitTestBase {
- protected:
-  BatAdsGeoServerHostTest() = default;
-
-  ~BatAdsGeoServerHostTest() override = default;
-};
+class BatAdsGeoServerHostTest : public UnitTestBase {};
 
 TEST_F(BatAdsGeoServerHostTest, GetProductionHost) {
   // Arrange

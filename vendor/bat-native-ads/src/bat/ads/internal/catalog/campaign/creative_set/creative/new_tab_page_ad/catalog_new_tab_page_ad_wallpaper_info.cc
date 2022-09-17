@@ -7,22 +7,6 @@
 
 namespace ads {
 
-CatalogNewTabPageAdWallpaperInfo::CatalogNewTabPageAdWallpaperInfo() = default;
-
-CatalogNewTabPageAdWallpaperInfo::CatalogNewTabPageAdWallpaperInfo(
-    const CatalogNewTabPageAdWallpaperInfo& info) = default;
-
-CatalogNewTabPageAdWallpaperInfo& CatalogNewTabPageAdWallpaperInfo::operator=(
-    const CatalogNewTabPageAdWallpaperInfo& info) = default;
-
-CatalogNewTabPageAdWallpaperInfo::CatalogNewTabPageAdWallpaperInfo(
-    CatalogNewTabPageAdWallpaperInfo&& other) noexcept = default;
-
-CatalogNewTabPageAdWallpaperInfo& CatalogNewTabPageAdWallpaperInfo::operator=(
-    CatalogNewTabPageAdWallpaperInfo&& other) noexcept = default;
-
-CatalogNewTabPageAdWallpaperInfo::~CatalogNewTabPageAdWallpaperInfo() = default;
-
 bool CatalogNewTabPageAdWallpaperInfo::operator==(
     const CatalogNewTabPageAdWallpaperInfo& other) const {
   return image_url == other.image_url && focal_point == other.focal_point;

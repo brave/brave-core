@@ -15,18 +15,6 @@ namespace ads {
 
 class IssuersUrlRequestBuilder : public UrlRequestBuilderInterface {
  public:
-  IssuersUrlRequestBuilder();
-
-  IssuersUrlRequestBuilder(const IssuersUrlRequestBuilder& other) = delete;
-  IssuersUrlRequestBuilder& operator=(const IssuersUrlRequestBuilder& other) =
-      delete;
-
-  IssuersUrlRequestBuilder(IssuersUrlRequestBuilder&& other) noexcept = delete;
-  IssuersUrlRequestBuilder& operator=(
-      IssuersUrlRequestBuilder&& other) noexcept = delete;
-
-  ~IssuersUrlRequestBuilder() override;
-
   mojom::UrlRequestInfoPtr Build() override;
 
  private:

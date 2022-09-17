@@ -13,12 +13,7 @@
 
 namespace ads {
 
-class BatAdsEarningsUtilTest : public UnitTestBase {
- protected:
-  BatAdsEarningsUtilTest() = default;
-
-  ~BatAdsEarningsUtilTest() override = default;
-};
+class BatAdsEarningsUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsEarningsUtilTest, GetUnreconciledEarnings) {
   // Arrange

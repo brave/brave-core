@@ -39,8 +39,6 @@ class BatAdsRedeemUnblindedPaymentTokensTest : public UnitTestBase {
         redeem_unblinded_payment_tokens_delegate_mock_.get());
   }
 
-  ~BatAdsRedeemUnblindedPaymentTokensTest() override = default;
-
   std::unique_ptr<RedeemUnblindedPaymentTokens>
       redeem_unblinded_payment_tokens_;
   std::unique_ptr<RedeemUnblindedPaymentTokensDelegateMock>

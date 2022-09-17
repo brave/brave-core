@@ -9,10 +9,6 @@
 
 namespace ads {
 
-CommandLinePermissionRule::CommandLinePermissionRule() = default;
-
-CommandLinePermissionRule::~CommandLinePermissionRule() = default;
-
 bool CommandLinePermissionRule::ShouldAllow() {
   if (!DoesRespectCap()) {
     last_message_ = "--enable-features command-line arg is not supported";

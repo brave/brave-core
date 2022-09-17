@@ -14,20 +14,6 @@ namespace ads {
 
 class NetworkConnectionPermissionRule final : public PermissionRuleInterface {
  public:
-  NetworkConnectionPermissionRule();
-
-  NetworkConnectionPermissionRule(const NetworkConnectionPermissionRule&) =
-      delete;
-  NetworkConnectionPermissionRule& operator=(
-      const NetworkConnectionPermissionRule& other) = delete;
-
-  NetworkConnectionPermissionRule(
-      NetworkConnectionPermissionRule&& other) noexcept = delete;
-  NetworkConnectionPermissionRule& operator=(
-      NetworkConnectionPermissionRule&& other) noexcept = delete;
-
-  ~NetworkConnectionPermissionRule() override;
-
   bool ShouldAllow() override;
 
   const std::string& GetLastMessage() const override;

@@ -14,17 +14,6 @@ namespace ads {
 
 class LocaleDiagnosticEntry final : public DiagnosticEntryInterface {
  public:
-  LocaleDiagnosticEntry();
-
-  LocaleDiagnosticEntry(const LocaleDiagnosticEntry& other) = delete;
-  LocaleDiagnosticEntry& operator=(const LocaleDiagnosticEntry& other) = delete;
-
-  LocaleDiagnosticEntry(LocaleDiagnosticEntry&& other) noexcept = delete;
-  LocaleDiagnosticEntry& operator=(LocaleDiagnosticEntry&& other) noexcept =
-      delete;
-
-  ~LocaleDiagnosticEntry() override;
-
   // DiagnosticEntryInterface:
   DiagnosticEntryType GetType() const override;
   std::string GetName() const override;

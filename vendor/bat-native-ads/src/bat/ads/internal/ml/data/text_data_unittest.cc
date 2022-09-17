@@ -11,12 +11,7 @@
 
 namespace ads::ml {
 
-class BatAdsTextDataTest : public UnitTestBase {
- protected:
-  BatAdsTextDataTest() = default;
-
-  ~BatAdsTextDataTest() override = default;
-};
+class BatAdsTextDataTest : public UnitTestBase {};
 
 TEST_F(BatAdsTextDataTest, TextDataInitialization) {
   // Arrange

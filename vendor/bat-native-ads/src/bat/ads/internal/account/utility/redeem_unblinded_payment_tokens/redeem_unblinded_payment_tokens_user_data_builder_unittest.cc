@@ -17,12 +17,7 @@
 namespace ads {
 
 class BatAdsRedeemUnblindedPaymentTokensUserDataBuilderTest
-    : public UnitTestBase {
- protected:
-  BatAdsRedeemUnblindedPaymentTokensUserDataBuilderTest() = default;
-
-  ~BatAdsRedeemUnblindedPaymentTokensUserDataBuilderTest() override = default;
-};
+    : public UnitTestBase {};
 
 TEST_F(BatAdsRedeemUnblindedPaymentTokensUserDataBuilderTest, BuildUserData) {
   // Arrange

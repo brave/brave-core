@@ -17,12 +17,7 @@
 namespace ads {
 
 class BatAdsFederatedLogEntriesAverageClickthroughRateTest
-    : public UnitTestBase {
- protected:
-  BatAdsFederatedLogEntriesAverageClickthroughRateTest() = default;
-
-  ~BatAdsFederatedLogEntriesAverageClickthroughRateTest() override = default;
-};
+    : public UnitTestBase {};
 
 TEST_F(BatAdsFederatedLogEntriesAverageClickthroughRateTest, GetDataType) {
   std::unique_ptr<CovariateLogEntryInterface> entry =

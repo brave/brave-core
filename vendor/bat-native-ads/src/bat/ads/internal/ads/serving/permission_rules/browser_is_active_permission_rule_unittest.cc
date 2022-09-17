@@ -17,12 +17,7 @@
 
 namespace ads {
 
-class BatAdsBrowserIsActivePermissionRuleTest : public UnitTestBase {
- protected:
-  BatAdsBrowserIsActivePermissionRuleTest() = default;
-
-  ~BatAdsBrowserIsActivePermissionRuleTest() override = default;
-};
+class BatAdsBrowserIsActivePermissionRuleTest : public UnitTestBase {};
 
 TEST_F(BatAdsBrowserIsActivePermissionRuleTest, AllowAd) {
   // Arrange

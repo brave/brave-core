@@ -13,12 +13,7 @@
 
 namespace ads {
 
-class BatAdsTransactionsUtilTest : public UnitTestBase {
- protected:
-  BatAdsTransactionsUtilTest() = default;
-
-  ~BatAdsTransactionsUtilTest() override = default;
-};
+class BatAdsTransactionsUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsTransactionsUtilTest, GetTransactionsForDateRange) {
   // Arrange

@@ -14,12 +14,7 @@
 
 namespace ads {
 
-class BatAdsGetSignedTokensUrlRequestBuilderTest : public UnitTestBase {
- protected:
-  BatAdsGetSignedTokensUrlRequestBuilderTest() = default;
-
-  ~BatAdsGetSignedTokensUrlRequestBuilderTest() override = default;
-};
+class BatAdsGetSignedTokensUrlRequestBuilderTest : public UnitTestBase {};
 
 TEST_F(BatAdsGetSignedTokensUrlRequestBuilderTest, BuildUrl) {
   // Arrange

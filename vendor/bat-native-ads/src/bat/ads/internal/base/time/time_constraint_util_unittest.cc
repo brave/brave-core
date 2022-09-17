@@ -15,12 +15,7 @@
 
 namespace ads {
 
-class BatAdsTimeConstraintUtilTest : public UnitTestBase {
- protected:
-  BatAdsTimeConstraintUtilTest() = default;
-
-  ~BatAdsTimeConstraintUtilTest() override = default;
-};
+class BatAdsTimeConstraintUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsTimeConstraintUtilTest, DoesRespectWhenNoHistoory) {
   // Arrange

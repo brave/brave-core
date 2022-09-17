@@ -19,8 +19,6 @@ class BatAdsTextClassificationProcessorTest : public UnitTestBase {
  protected:
   BatAdsTextClassificationProcessorTest() = default;
 
-  ~BatAdsTextClassificationProcessorTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

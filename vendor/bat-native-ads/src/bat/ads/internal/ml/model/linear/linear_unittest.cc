@@ -12,12 +12,7 @@
 
 namespace ads::ml {
 
-class BatAdsLinearModelTest : public UnitTestBase {
- protected:
-  BatAdsLinearModelTest() = default;
-
-  ~BatAdsLinearModelTest() override = default;
-};
+class BatAdsLinearModelTest : public UnitTestBase {};
 
 TEST_F(BatAdsLinearModelTest, ThreeClassesPredictionTest) {
   // Arrange

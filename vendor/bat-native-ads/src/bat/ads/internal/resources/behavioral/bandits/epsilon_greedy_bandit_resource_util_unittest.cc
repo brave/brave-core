@@ -16,12 +16,7 @@ namespace {
 const SegmentList kSegments = {"foo", "bar"};
 }  // namespace
 
-class BatAdsEpsilonGreedyBanditResourceUtilTest : public UnitTestBase {
- protected:
-  BatAdsEpsilonGreedyBanditResourceUtilTest() = default;
-
-  ~BatAdsEpsilonGreedyBanditResourceUtilTest() override = default;
-};
+class BatAdsEpsilonGreedyBanditResourceUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsEpsilonGreedyBanditResourceUtilTest, SetEligibleSegments) {
   // Arrange

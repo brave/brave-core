@@ -31,12 +31,7 @@ constexpr char kAdvertiserPublicKey[] =
 
 }  // namespace
 
-class BatAdsConfirmationUserDataTest : public UnitTestBase {
- protected:
-  BatAdsConfirmationUserDataTest() = default;
-
-  ~BatAdsConfirmationUserDataTest() override = default;
-};
+class BatAdsConfirmationUserDataTest : public UnitTestBase {};
 
 TEST_F(BatAdsConfirmationUserDataTest, BuildForNonConversionConfirmationType) {
   // Arrange

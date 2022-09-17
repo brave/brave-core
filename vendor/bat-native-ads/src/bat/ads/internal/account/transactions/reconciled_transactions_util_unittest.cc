@@ -13,12 +13,7 @@
 
 namespace ads {
 
-class BatAdsReconciledTransactionsUtilTest : public UnitTestBase {
- protected:
-  BatAdsReconciledTransactionsUtilTest() = default;
-
-  ~BatAdsReconciledTransactionsUtilTest() override = default;
-};
+class BatAdsReconciledTransactionsUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsReconciledTransactionsUtilTest,
        DidReconcileTransactionsThisMonth) {

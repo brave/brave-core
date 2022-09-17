@@ -19,12 +19,7 @@
 
 namespace ads::ml {
 
-class BatAdsNormalizationTest : public UnitTestBase {
- protected:
-  BatAdsNormalizationTest() = default;
-
-  ~BatAdsNormalizationTest() override = default;
-};
+class BatAdsNormalizationTest : public UnitTestBase {};
 
 TEST_F(BatAdsNormalizationTest, NormalizationTest) {
   // Arrange

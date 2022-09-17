@@ -13,12 +13,7 @@
 
 namespace ads {
 
-class BatAdsEnabledDiagnosticEntryTest : public UnitTestBase {
- protected:
-  BatAdsEnabledDiagnosticEntryTest() = default;
-
-  ~BatAdsEnabledDiagnosticEntryTest() override = default;
-};
+class BatAdsEnabledDiagnosticEntryTest : public UnitTestBase {};
 
 TEST_F(BatAdsEnabledDiagnosticEntryTest, Enabled) {
   // Arrange

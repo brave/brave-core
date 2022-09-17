@@ -12,10 +12,6 @@
 
 namespace ads::inline_content_ads {
 
-AdEventServed::AdEventServed() = default;
-
-AdEventServed::~AdEventServed() = default;
-
 void AdEventServed::FireEvent(const InlineContentAdInfo& ad) {
   BLOG(3, "Served inline content ad with placement id "
               << ad.placement_id << " and creative instance id "

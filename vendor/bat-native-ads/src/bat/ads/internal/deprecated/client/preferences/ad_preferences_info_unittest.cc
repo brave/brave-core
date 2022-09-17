@@ -42,8 +42,6 @@ class BatAdsAdPreferencesInfoTest : public UnitTestBase {
  public:
   BatAdsAdPreferencesInfoTest() = default;
 
-  ~BatAdsAdPreferencesInfoTest() override = default;
-
   void ParseJsonAndCompareWithSampleAdPreferencesInfo(const std::string& json) {
     // Arrange
     AdPreferencesInfo ad_preferences_info;

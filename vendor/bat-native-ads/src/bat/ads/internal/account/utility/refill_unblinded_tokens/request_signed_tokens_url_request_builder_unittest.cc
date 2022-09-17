@@ -21,8 +21,6 @@ class BatAdsRequestSignedTokensUrlRequestBuilderTest : public UnitTestBase {
  protected:
   BatAdsRequestSignedTokensUrlRequestBuilderTest() = default;
 
-  ~BatAdsRequestSignedTokensUrlRequestBuilderTest() override = default;
-
   std::vector<privacy::cbr::Token> GetTokens(const int count) {
     const std::vector<std::string> tokens_base64 = {
         R"~(B2CbFJJ1gKJy9qs8NMburYj12VAqnVfFrQ2K2u0QwcBi1YoMMHQfRQeDbOQ62Z+WrCOTYLbZrBY7+j9hz2jLFL74KSQig7/PDbqIpmNYs6PpNUK3MpVc4dm5R9lkySQF)~",

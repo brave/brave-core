@@ -13,12 +13,7 @@
 
 namespace ads::user_data {
 
-class BatAdsMutatedUserDataTest : public UnitTestBase {
- protected:
-  BatAdsMutatedUserDataTest() = default;
-
-  ~BatAdsMutatedUserDataTest() override = default;
-};
+class BatAdsMutatedUserDataTest : public UnitTestBase {};
 
 TEST_F(BatAdsMutatedUserDataTest, GetMutatedConfirmations) {
   // Arrange

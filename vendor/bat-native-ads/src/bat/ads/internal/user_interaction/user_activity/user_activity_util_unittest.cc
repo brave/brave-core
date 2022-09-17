@@ -13,12 +13,7 @@
 
 namespace ads {
 
-class BatAdsUserActivityUtilTest : public UnitTestBase {
- protected:
-  BatAdsUserActivityUtilTest() = default;
-
-  ~BatAdsUserActivityUtilTest() override = default;
-};
+class BatAdsUserActivityUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsUserActivityUtilTest, NoTabsOpened) {
   // Arrange

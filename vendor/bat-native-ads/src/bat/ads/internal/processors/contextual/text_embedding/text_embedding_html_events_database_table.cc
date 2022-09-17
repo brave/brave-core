@@ -62,10 +62,6 @@ TextEmbeddingHtmlEventInfo GetFromRecord(mojom::DBRecordInfo* record) {
 
 }  // namespace
 
-TextEmbeddingHtmlEvents::TextEmbeddingHtmlEvents() = default;
-
-TextEmbeddingHtmlEvents::~TextEmbeddingHtmlEvents() = default;
-
 void TextEmbeddingHtmlEvents::LogEvent(
     const TextEmbeddingHtmlEventInfo& text_embedding_html_event,
     ResultCallback callback) {

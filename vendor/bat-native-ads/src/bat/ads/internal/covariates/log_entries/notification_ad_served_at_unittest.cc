@@ -13,12 +13,7 @@
 namespace ads {
 
 class BatAdsFederatedLogEntriesNotificationAdServedAtTest
-    : public UnitTestBase {
- protected:
-  BatAdsFederatedLogEntriesNotificationAdServedAtTest() = default;
-
-  ~BatAdsFederatedLogEntriesNotificationAdServedAtTest() override = default;
-};
+    : public UnitTestBase {};
 
 TEST_F(BatAdsFederatedLogEntriesNotificationAdServedAtTest, GetDataType) {
   NotificationAdServedAt notification_ad_served_at;

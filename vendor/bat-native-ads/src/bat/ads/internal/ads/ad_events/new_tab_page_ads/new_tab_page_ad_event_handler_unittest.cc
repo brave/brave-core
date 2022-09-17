@@ -41,8 +41,6 @@ class BatAdsNewTabPageAdEventHandlerTest : public EventHandlerObserver,
  protected:
   BatAdsNewTabPageAdEventHandlerTest() = default;
 
-  ~BatAdsNewTabPageAdEventHandlerTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

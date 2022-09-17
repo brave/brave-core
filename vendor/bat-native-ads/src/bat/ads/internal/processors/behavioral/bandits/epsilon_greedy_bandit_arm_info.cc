@@ -9,22 +9,6 @@
 
 namespace ads::targeting {
 
-EpsilonGreedyBanditArmInfo::EpsilonGreedyBanditArmInfo() = default;
-
-EpsilonGreedyBanditArmInfo::EpsilonGreedyBanditArmInfo(
-    const EpsilonGreedyBanditArmInfo& info) = default;
-
-EpsilonGreedyBanditArmInfo& EpsilonGreedyBanditArmInfo::operator=(
-    const EpsilonGreedyBanditArmInfo& info) = default;
-
-EpsilonGreedyBanditArmInfo::EpsilonGreedyBanditArmInfo(
-    EpsilonGreedyBanditArmInfo&& other) noexcept = default;
-
-EpsilonGreedyBanditArmInfo& EpsilonGreedyBanditArmInfo::operator=(
-    EpsilonGreedyBanditArmInfo&& other) noexcept = default;
-
-EpsilonGreedyBanditArmInfo::~EpsilonGreedyBanditArmInfo() = default;
-
 bool EpsilonGreedyBanditArmInfo::operator==(
     const EpsilonGreedyBanditArmInfo& other) const {
   return segment == other.segment && DoubleEquals(value, other.value) &&

@@ -43,10 +43,6 @@ uint16_t CalculateScoreForHistory(
 
 }  // namespace
 
-PurchaseIntent::PurchaseIntent() = default;
-
-PurchaseIntent::~PurchaseIntent() = default;
-
 SegmentList PurchaseIntent::GetSegments() const {
   SegmentList segments;
 

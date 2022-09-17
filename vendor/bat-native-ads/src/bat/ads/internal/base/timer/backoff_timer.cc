@@ -9,10 +9,6 @@
 
 namespace ads {
 
-BackoffTimer::BackoffTimer() = default;
-
-BackoffTimer::~BackoffTimer() = default;
-
 base::Time BackoffTimer::Start(const base::Location& location,
                                const base::TimeDelta delay,
                                base::OnceClosure user_task) {

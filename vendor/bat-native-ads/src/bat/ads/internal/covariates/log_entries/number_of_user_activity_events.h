@@ -19,17 +19,6 @@ class NumberOfUserActivityEvents final : public CovariateLogEntryInterface {
       UserActivityEventType event_type,
       brave_federated::mojom::CovariateType covariate_type);
 
-  NumberOfUserActivityEvents(const NumberOfUserActivityEvents& other) = delete;
-  NumberOfUserActivityEvents& operator=(const NumberOfUserActivityEvents&) =
-      delete;
-
-  NumberOfUserActivityEvents(NumberOfUserActivityEvents&& other) noexcept =
-      delete;
-  NumberOfUserActivityEvents& operator=(
-      NumberOfUserActivityEvents&& other) noexcept = delete;
-
-  ~NumberOfUserActivityEvents() override;
-
   // CovariateLogEntryInterface:
   brave_federated::mojom::DataType GetDataType() const override;
   brave_federated::mojom::CovariateType GetType() const override;

@@ -15,18 +15,6 @@ namespace ads {
 
 class CatalogUrlRequestBuilder final : public UrlRequestBuilderInterface {
  public:
-  CatalogUrlRequestBuilder();
-
-  CatalogUrlRequestBuilder(const CatalogUrlRequestBuilder& other) = delete;
-  CatalogUrlRequestBuilder& operator=(const CatalogUrlRequestBuilder& other) =
-      delete;
-
-  CatalogUrlRequestBuilder(CatalogUrlRequestBuilder&& other) noexcept = delete;
-  CatalogUrlRequestBuilder& operator=(
-      CatalogUrlRequestBuilder&& other) noexcept = delete;
-
-  ~CatalogUrlRequestBuilder() override;
-
   mojom::UrlRequestInfoPtr Build() override;
 
  private:

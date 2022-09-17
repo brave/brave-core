@@ -20,10 +20,6 @@ constexpr char kStagingHost[] = "https://static.ads.bravesoftware.com";
 
 }  // namespace
 
-StaticServerHost::StaticServerHost() = default;
-
-StaticServerHost::~StaticServerHost() = default;
-
 std::string StaticServerHost::Get() const {
   const EnvironmentType environment_type = GetEnvironmentType();
 

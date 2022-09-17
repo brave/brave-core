@@ -41,8 +41,6 @@ class BatAdsPromotedContentAdEventHandlerTest : public EventHandlerObserver,
  protected:
   BatAdsPromotedContentAdEventHandlerTest() = default;
 
-  ~BatAdsPromotedContentAdEventHandlerTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

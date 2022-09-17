@@ -40,12 +40,7 @@ constexpr char kTextCMCCrash[] =
 
 }  // namespace
 
-class BatAdsTextProcessingPipelineTest : public UnitTestBase {
- protected:
-  BatAdsTextProcessingPipelineTest() = default;
-
-  ~BatAdsTextProcessingPipelineTest() override = default;
-};
+class BatAdsTextProcessingPipelineTest : public UnitTestBase {};
 
 TEST_F(BatAdsTextProcessingPipelineTest, BuildSimplePipeline) {
   // Arrange

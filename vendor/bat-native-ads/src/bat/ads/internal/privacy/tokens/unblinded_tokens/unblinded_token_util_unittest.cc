@@ -14,12 +14,7 @@
 
 namespace ads::privacy {
 
-class BatAdsUnblindedTokenUtilTest : public UnitTestBase {
- protected:
-  BatAdsUnblindedTokenUtilTest() = default;
-
-  ~BatAdsUnblindedTokenUtilTest() override = default;
-};
+class BatAdsUnblindedTokenUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsUnblindedTokenUtilTest, GetUnblindedToken) {
   // Arrange

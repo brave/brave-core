@@ -16,12 +16,7 @@
 
 namespace ads {
 
-class BatAdsFullScreenModePermissionRuleTest : public UnitTestBase {
- protected:
-  BatAdsFullScreenModePermissionRuleTest() = default;
-
-  ~BatAdsFullScreenModePermissionRuleTest() override = default;
-};
+class BatAdsFullScreenModePermissionRuleTest : public UnitTestBase {};
 
 TEST_F(BatAdsFullScreenModePermissionRuleTest, AllowAd) {
   // Arrange

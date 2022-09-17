@@ -13,20 +13,6 @@
 namespace ads {
 
 struct CatalogNotificationAdPayloadInfo final {
-  CatalogNotificationAdPayloadInfo();
-
-  CatalogNotificationAdPayloadInfo(
-      const CatalogNotificationAdPayloadInfo& other);
-  CatalogNotificationAdPayloadInfo& operator=(
-      const CatalogNotificationAdPayloadInfo& other);
-
-  CatalogNotificationAdPayloadInfo(
-      CatalogNotificationAdPayloadInfo&& other) noexcept;
-  CatalogNotificationAdPayloadInfo& operator=(
-      CatalogNotificationAdPayloadInfo&& other) noexcept;
-
-  ~CatalogNotificationAdPayloadInfo();
-
   bool operator==(const CatalogNotificationAdPayloadInfo& other) const;
   bool operator!=(const CatalogNotificationAdPayloadInfo& other) const;
 

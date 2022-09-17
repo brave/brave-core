@@ -17,8 +17,6 @@ class BatAdsIdleDetectionManagerTest : public IdleDetectionManagerObserver,
  protected:
   BatAdsIdleDetectionManagerTest() = default;
 
-  ~BatAdsIdleDetectionManagerTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

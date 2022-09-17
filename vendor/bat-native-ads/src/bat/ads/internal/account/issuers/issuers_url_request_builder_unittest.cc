@@ -13,12 +13,7 @@
 
 namespace ads {
 
-class BatAdsIssuersUrlRequestBuilderTest : public UnitTestBase {
- protected:
-  BatAdsIssuersUrlRequestBuilderTest() = default;
-
-  ~BatAdsIssuersUrlRequestBuilderTest() override = default;
-};
+class BatAdsIssuersUrlRequestBuilderTest : public UnitTestBase {};
 
 TEST_F(BatAdsIssuersUrlRequestBuilderTest, BuildUrl) {
   // Arrange

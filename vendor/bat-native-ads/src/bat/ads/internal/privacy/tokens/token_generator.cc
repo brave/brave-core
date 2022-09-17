@@ -11,10 +11,6 @@
 
 namespace ads::privacy {
 
-TokenGenerator::TokenGenerator() = default;
-
-TokenGenerator::~TokenGenerator() = default;
-
 std::vector<cbr::Token> TokenGenerator::Generate(const int count) const {
   std::vector<cbr::Token> tokens;
 

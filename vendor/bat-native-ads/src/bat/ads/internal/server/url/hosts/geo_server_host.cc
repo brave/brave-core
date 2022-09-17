@@ -20,10 +20,6 @@ constexpr char kStagingHost[] = "https://geo.ads.bravesoftware.com";
 
 }  // namespace
 
-GeoServerHost::GeoServerHost() = default;
-
-GeoServerHost::~GeoServerHost() = default;
-
 std::string GeoServerHost::Get() const {
   const EnvironmentType environment_type = GetEnvironmentType();
 

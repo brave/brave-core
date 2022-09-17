@@ -14,20 +14,6 @@ namespace ads {
 
 class FullScreenModePermissionRule final : public PermissionRuleInterface {
  public:
-  FullScreenModePermissionRule();
-
-  FullScreenModePermissionRule(const FullScreenModePermissionRule& other) =
-      delete;
-  FullScreenModePermissionRule& operator=(const FullScreenModePermissionRule&) =
-      delete;
-
-  FullScreenModePermissionRule(FullScreenModePermissionRule&& other) noexcept =
-      delete;
-  FullScreenModePermissionRule& operator=(
-      FullScreenModePermissionRule&& other) noexcept = delete;
-
-  ~FullScreenModePermissionRule() override;
-
   bool ShouldAllow() override;
 
   const std::string& GetLastMessage() const override;

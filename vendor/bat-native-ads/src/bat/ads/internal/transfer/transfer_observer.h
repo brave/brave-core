@@ -28,9 +28,6 @@ class TransferObserver : public base::CheckedObserver {
 
   // Invoked when an ad fails to transfer
   virtual void OnFailedToTransferAd(const AdInfo& ad) {}
-
- protected:
-  ~TransferObserver() override = default;
 };
 
 }  // namespace ads

@@ -11,18 +11,9 @@
 namespace ads {
 
 struct SearchEngineInfo final {
-  SearchEngineInfo();
   SearchEngineInfo(const std::string& url_pattern,
                    const std::string& result_page_url_pattern,
                    const std::string& search_term_query_key);
-
-  SearchEngineInfo(const SearchEngineInfo& other);
-  SearchEngineInfo& operator=(const SearchEngineInfo& other);
-
-  SearchEngineInfo(SearchEngineInfo&& other) noexcept;
-  SearchEngineInfo& operator=(SearchEngineInfo&& other) noexcept;
-
-  ~SearchEngineInfo();
 
   std::string url_pattern;
   std::string result_page_url_pattern;

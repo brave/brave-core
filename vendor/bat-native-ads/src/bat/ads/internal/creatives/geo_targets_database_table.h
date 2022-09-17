@@ -17,16 +17,6 @@ namespace ads::database::table {
 
 class GeoTargets final : public TableInterface {
  public:
-  GeoTargets();
-
-  GeoTargets(const GeoTargets& other) = delete;
-  GeoTargets& operator=(const GeoTargets& other) = delete;
-
-  GeoTargets(GeoTargets&& other) noexcept = delete;
-  GeoTargets& operator=(GeoTargets&& other) noexcept = delete;
-
-  ~GeoTargets() override;
-
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const CreativeAdList& creative_ads);
 

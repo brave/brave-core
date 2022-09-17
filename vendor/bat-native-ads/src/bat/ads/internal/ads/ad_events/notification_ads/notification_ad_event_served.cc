@@ -12,10 +12,6 @@
 
 namespace ads::notification_ads {
 
-AdEventServed::AdEventServed() = default;
-
-AdEventServed::~AdEventServed() = default;
-
 void AdEventServed::FireEvent(const NotificationAdInfo& ad) {
   BLOG(3, "Served notification ad with placement id "
               << ad.placement_id << " and creative instance id "

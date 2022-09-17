@@ -28,8 +28,6 @@ class BatAdsRedeemUnblindedTokenTest : public UnitTestBase {
  protected:
   BatAdsRedeemUnblindedTokenTest() = default;
 
-  ~BatAdsRedeemUnblindedTokenTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

@@ -45,11 +45,15 @@ class Database;
 
 class UnitTestBase : public testing::Test {
  public:
-  UnitTestBase(const UnitTestBase&) = delete;
-  UnitTestBase& operator=(const UnitTestBase&) = delete;
+  UnitTestBase(const UnitTestBase& other) = delete;
+  UnitTestBase& operator=(const UnitTestBase& other) = delete;
+
+  UnitTestBase(UnitTestBase&& other) noexcept = delete;
+  UnitTestBase& operator=(UnitTestBase&& other) noexcept = delete;
 
  protected:
   UnitTestBase();
+
   ~UnitTestBase() override;
 
   // testing::Test:

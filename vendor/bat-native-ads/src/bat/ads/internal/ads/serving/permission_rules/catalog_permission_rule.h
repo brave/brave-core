@@ -14,17 +14,6 @@ namespace ads {
 
 class CatalogPermissionRule final : public PermissionRuleInterface {
  public:
-  CatalogPermissionRule();
-
-  CatalogPermissionRule(const CatalogPermissionRule& other) = delete;
-  CatalogPermissionRule& operator=(const CatalogPermissionRule& other) = delete;
-
-  CatalogPermissionRule(CatalogPermissionRule&& other) noexcept = delete;
-  CatalogPermissionRule& operator=(CatalogPermissionRule&& other) noexcept =
-      delete;
-
-  ~CatalogPermissionRule() override;
-
   bool ShouldAllow() override;
 
   const std::string& GetLastMessage() const override;

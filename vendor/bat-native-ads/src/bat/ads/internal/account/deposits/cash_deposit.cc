@@ -11,10 +11,6 @@
 
 namespace ads {
 
-CashDeposit::CashDeposit() = default;
-
-CashDeposit::~CashDeposit() = default;
-
 void CashDeposit::GetValue(const std::string& creative_instance_id,
                            GetDepositCallback callback) {
   database::table::Deposits database_table;

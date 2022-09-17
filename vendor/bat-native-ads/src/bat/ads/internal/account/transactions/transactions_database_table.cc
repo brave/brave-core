@@ -69,10 +69,6 @@ TransactionInfo GetFromRecord(mojom::DBRecordInfo* record) {
 
 }  // namespace
 
-Transactions::Transactions() = default;
-
-Transactions::~Transactions() = default;
-
 void Transactions::Save(const TransactionList& transactions,
                         ResultCallback callback) {
   if (transactions.empty()) {

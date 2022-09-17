@@ -20,12 +20,7 @@
 
 namespace ads {
 
-class BatAdsPurchaseIntentProcessorTest : public UnitTestBase {
- protected:
-  BatAdsPurchaseIntentProcessorTest() = default;
-
-  ~BatAdsPurchaseIntentProcessorTest() override = default;
-};
+class BatAdsPurchaseIntentProcessorTest : public UnitTestBase {};
 
 TEST_F(BatAdsPurchaseIntentProcessorTest,
        DoNotProcessIfResourceIsNotInitialized) {

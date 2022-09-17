@@ -10,10 +10,6 @@
 
 namespace ads {
 
-NotificationAdServedAt::NotificationAdServedAt() = default;
-
-NotificationAdServedAt::~NotificationAdServedAt() = default;
-
 void NotificationAdServedAt::SetTime(const base::Time time) {
   time_ = time;
 }

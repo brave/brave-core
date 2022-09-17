@@ -10,10 +10,6 @@
 
 namespace ads::notification_ads {
 
-AdEventTimedOut::AdEventTimedOut() = default;
-
-AdEventTimedOut::~AdEventTimedOut() = default;
-
 void AdEventTimedOut::FireEvent(const NotificationAdInfo& ad) {
   BLOG(3, "Timed out notification ad with placement id "
               << ad.placement_id << " and creative instance id "

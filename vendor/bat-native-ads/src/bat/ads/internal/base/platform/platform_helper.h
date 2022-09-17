@@ -15,12 +15,6 @@ namespace ads {
 
 class PlatformHelper {
  public:
-  PlatformHelper(const PlatformHelper& other) = delete;
-  PlatformHelper& operator=(const PlatformHelper& other) = delete;
-
-  PlatformHelper(PlatformHelper&& other) noexcept = delete;
-  PlatformHelper& operator=(PlatformHelper&& other) noexcept = delete;
-
   virtual ~PlatformHelper();
 
   static PlatformHelper* GetInstance();

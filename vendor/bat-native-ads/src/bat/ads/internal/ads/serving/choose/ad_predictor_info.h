@@ -15,16 +15,6 @@ namespace ads {
 
 template <typename T>
 struct AdPredictorInfo final {
-  AdPredictorInfo();
-
-  AdPredictorInfo(const AdPredictorInfo& other);
-  AdPredictorInfo& operator=(const AdPredictorInfo& other);
-
-  AdPredictorInfo(AdPredictorInfo&& other) noexcept;
-  AdPredictorInfo& operator=(AdPredictorInfo&& other) noexcept;
-
-  ~AdPredictorInfo();
-
   T creative_ad;
   SegmentList segments;
   bool does_match_intent_child_segments = false;

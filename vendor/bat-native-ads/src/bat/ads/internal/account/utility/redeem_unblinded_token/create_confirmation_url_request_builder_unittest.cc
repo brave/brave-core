@@ -26,12 +26,7 @@ constexpr char kExpectedContent[] =
     R"({"blindedPaymentTokens":["Ev5JE4/9TZI/5TqyN9JWfJ1To0HBwQw2rWeAPcdjX3Q="],"creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","payload":{},"publicKey":"RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=","transactionId":"8b742869-6e4a-490c-ac31-31b49130098a","type":"view"})";
 }  // namespace
 
-class BatAdsCreateConfirmationUrlRequestBuilderTest : public UnitTestBase {
- protected:
-  BatAdsCreateConfirmationUrlRequestBuilderTest() = default;
-
-  ~BatAdsCreateConfirmationUrlRequestBuilderTest() override = default;
-};
+class BatAdsCreateConfirmationUrlRequestBuilderTest : public UnitTestBase {};
 
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
        BuildUrlForLargeAnonmityCountryForRPill) {

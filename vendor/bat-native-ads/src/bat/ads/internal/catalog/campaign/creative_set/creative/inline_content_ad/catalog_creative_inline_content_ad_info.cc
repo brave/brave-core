@@ -7,26 +7,6 @@
 
 namespace ads {
 
-CatalogCreativeInlineContentAdInfo::CatalogCreativeInlineContentAdInfo() =
-    default;
-
-CatalogCreativeInlineContentAdInfo::CatalogCreativeInlineContentAdInfo(
-    const CatalogCreativeInlineContentAdInfo& info) = default;
-
-CatalogCreativeInlineContentAdInfo&
-CatalogCreativeInlineContentAdInfo::operator=(
-    const CatalogCreativeInlineContentAdInfo& info) = default;
-
-CatalogCreativeInlineContentAdInfo::CatalogCreativeInlineContentAdInfo(
-    CatalogCreativeInlineContentAdInfo&& other) noexcept = default;
-
-CatalogCreativeInlineContentAdInfo&
-CatalogCreativeInlineContentAdInfo::operator=(
-    CatalogCreativeInlineContentAdInfo&& other) noexcept = default;
-
-CatalogCreativeInlineContentAdInfo::~CatalogCreativeInlineContentAdInfo() =
-    default;
-
 bool CatalogCreativeInlineContentAdInfo::operator==(
     const CatalogCreativeInlineContentAdInfo& other) const {
   return CatalogCreativeInfo::operator==(other) && payload == other.payload;

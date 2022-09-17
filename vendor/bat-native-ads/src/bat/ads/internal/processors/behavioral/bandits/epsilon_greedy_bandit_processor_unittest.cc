@@ -13,12 +13,7 @@
 
 namespace ads {
 
-class BatAdsEpsilonGreedyBanditProcessorTest : public UnitTestBase {
- protected:
-  BatAdsEpsilonGreedyBanditProcessorTest() = default;
-
-  ~BatAdsEpsilonGreedyBanditProcessorTest() override = default;
-};
+class BatAdsEpsilonGreedyBanditProcessorTest : public UnitTestBase {};
 
 TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, InitializeArmsFromResource) {
   // Arrange

@@ -77,8 +77,6 @@ class BatAdsTopSegmentsTest
  protected:
   BatAdsTopSegmentsTest() = default;
 
-  ~BatAdsTopSegmentsTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

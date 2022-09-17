@@ -7,22 +7,6 @@
 
 namespace ads {
 
-CatalogNotificationAdPayloadInfo::CatalogNotificationAdPayloadInfo() = default;
-
-CatalogNotificationAdPayloadInfo::CatalogNotificationAdPayloadInfo(
-    const CatalogNotificationAdPayloadInfo& info) = default;
-
-CatalogNotificationAdPayloadInfo& CatalogNotificationAdPayloadInfo::operator=(
-    const CatalogNotificationAdPayloadInfo& info) = default;
-
-CatalogNotificationAdPayloadInfo::CatalogNotificationAdPayloadInfo(
-    CatalogNotificationAdPayloadInfo&& other) noexcept = default;
-
-CatalogNotificationAdPayloadInfo& CatalogNotificationAdPayloadInfo::operator=(
-    CatalogNotificationAdPayloadInfo&& other) noexcept = default;
-
-CatalogNotificationAdPayloadInfo::~CatalogNotificationAdPayloadInfo() = default;
-
 bool CatalogNotificationAdPayloadInfo::operator==(
     const CatalogNotificationAdPayloadInfo& other) const {
   return body == other.body && title == other.title &&

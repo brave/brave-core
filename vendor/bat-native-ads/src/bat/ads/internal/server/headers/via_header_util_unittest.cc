@@ -12,12 +12,7 @@
 
 namespace ads {
 
-class BatAdsViaHeaderUtilTest : public UnitTestBase {
- protected:
-  BatAdsViaHeaderUtilTest() = default;
-
-  ~BatAdsViaHeaderUtilTest() override = default;
-};
+class BatAdsViaHeaderUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsViaHeaderUtilTest, BuildViaHeaderForUncertainFuture) {
   // Arrange

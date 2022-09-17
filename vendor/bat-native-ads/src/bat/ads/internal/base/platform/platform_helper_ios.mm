@@ -13,8 +13,6 @@ constexpr char kPlatformName[] = "ios";
 
 PlatformHelperIos::PlatformHelperIos() = default;
 
-PlatformHelperIos::~PlatformHelperIos() = default;
-
 bool PlatformHelperIos::IsMobile() const {
   return true;
 }

@@ -13,10 +13,6 @@ namespace {
 constexpr char kName[] = "Catalog ID";
 }  // namespace
 
-CatalogIdDiagnosticEntry::CatalogIdDiagnosticEntry() = default;
-
-CatalogIdDiagnosticEntry::~CatalogIdDiagnosticEntry() = default;
-
 DiagnosticEntryType CatalogIdDiagnosticEntry::GetType() const {
   return DiagnosticEntryType::kCatalogId;
 }

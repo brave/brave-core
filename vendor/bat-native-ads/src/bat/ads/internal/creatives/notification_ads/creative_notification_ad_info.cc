@@ -13,20 +13,6 @@ CreativeNotificationAdInfo::CreativeNotificationAdInfo(
     const CreativeAdInfo& creative_ad)
     : CreativeAdInfo(creative_ad) {}
 
-CreativeNotificationAdInfo::CreativeNotificationAdInfo(
-    const CreativeNotificationAdInfo& creative_ad_notification) = default;
-
-CreativeNotificationAdInfo& CreativeNotificationAdInfo::operator=(
-    const CreativeNotificationAdInfo& creative_ad_notification) = default;
-
-CreativeNotificationAdInfo::CreativeNotificationAdInfo(
-    CreativeNotificationAdInfo&& other) noexcept = default;
-
-CreativeNotificationAdInfo& CreativeNotificationAdInfo::operator=(
-    CreativeNotificationAdInfo&& other) noexcept = default;
-
-CreativeNotificationAdInfo::~CreativeNotificationAdInfo() = default;
-
 bool CreativeNotificationAdInfo::operator==(
     const CreativeNotificationAdInfo& other) const {
   return CreativeAdInfo::operator==(other) && title == other.title &&

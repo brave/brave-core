@@ -13,12 +13,6 @@
 
 namespace ads {
 
-MarkedAsInappropriateExclusionRule::MarkedAsInappropriateExclusionRule() =
-    default;
-
-MarkedAsInappropriateExclusionRule::~MarkedAsInappropriateExclusionRule() =
-    default;
-
 std::string MarkedAsInappropriateExclusionRule::GetUuid(
     const CreativeAdInfo& creative_ad) const {
   return creative_ad.creative_set_id;

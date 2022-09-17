@@ -13,10 +13,6 @@
 
 namespace ads {
 
-DislikeExclusionRule::DislikeExclusionRule() = default;
-
-DislikeExclusionRule::~DislikeExclusionRule() = default;
-
 std::string DislikeExclusionRule::GetUuid(
     const CreativeAdInfo& creative_ad) const {
   return creative_ad.advertiser_id;

@@ -17,16 +17,6 @@ class AverageClickthroughRate final : public CovariateLogEntryInterface {
  public:
   explicit AverageClickthroughRate(base::TimeDelta time_window);
 
-  AverageClickthroughRate(const AverageClickthroughRate& other) = delete;
-  AverageClickthroughRate& operator=(const AverageClickthroughRate& other) =
-      delete;
-
-  AverageClickthroughRate(AverageClickthroughRate&& other) noexcept = delete;
-  AverageClickthroughRate& operator=(AverageClickthroughRate&& other) noexcept =
-      delete;
-
-  ~AverageClickthroughRate() override;
-
   // CovariateLogEntryInterface:
   brave_federated::mojom::DataType GetDataType() const override;
   brave_federated::mojom::CovariateType GetType() const override;

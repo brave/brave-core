@@ -33,14 +33,6 @@ class EligibleAdsV2 final : public EligibleAdsBase {
   EligibleAdsV2(geographic::SubdivisionTargeting* subdivision_targeting,
                 resource::AntiTargeting* anti_targeting);
 
-  EligibleAdsV2(const EligibleAdsV2& other) = delete;
-  EligibleAdsV2& operator=(const EligibleAdsV2& other) = delete;
-
-  EligibleAdsV2(EligibleAdsV2&& other) noexcept = delete;
-  EligibleAdsV2& operator=(EligibleAdsV2&& other) noexcept = delete;
-
-  ~EligibleAdsV2() override;
-
   void GetForUserModel(
       const targeting::UserModelInfo& user_model,
       GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) override;

@@ -12,12 +12,7 @@
 
 namespace ads {
 
-class BatAdsAllowNotificationsPermissionRuleTest : public UnitTestBase {
- protected:
-  BatAdsAllowNotificationsPermissionRuleTest() = default;
-
-  ~BatAdsAllowNotificationsPermissionRuleTest() override = default;
-};
+class BatAdsAllowNotificationsPermissionRuleTest : public UnitTestBase {};
 
 TEST_F(BatAdsAllowNotificationsPermissionRuleTest, AllowAd) {
   // Arrange

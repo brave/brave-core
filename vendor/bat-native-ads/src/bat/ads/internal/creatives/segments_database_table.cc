@@ -42,10 +42,6 @@ int BindParameters(mojom::DBCommandInfo* command,
 
 }  // namespace
 
-Segments::Segments() = default;
-
-Segments::~Segments() = default;
-
 void Segments::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                               const CreativeAdList& creative_ads) {
   DCHECK(transaction);

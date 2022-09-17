@@ -13,12 +13,7 @@
 
 namespace ads::privacy {
 
-class BatAdsUnblindedPaymentTokensTest : public UnitTestBase {
- protected:
-  BatAdsUnblindedPaymentTokensTest() = default;
-
-  ~BatAdsUnblindedPaymentTokensTest() override = default;
-};
+class BatAdsUnblindedPaymentTokensTest : public UnitTestBase {};
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, GetToken) {
   // Arrange

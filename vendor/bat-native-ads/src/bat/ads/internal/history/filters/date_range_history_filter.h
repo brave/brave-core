@@ -16,16 +16,6 @@ class DateRangeHistoryFilter final : public HistoryFilterInterface {
  public:
   DateRangeHistoryFilter(base::Time from_time, base::Time to_time);
 
-  DateRangeHistoryFilter(const DateRangeHistoryFilter& other) = delete;
-  DateRangeHistoryFilter& operator=(const DateRangeHistoryFilter& other) =
-      delete;
-
-  DateRangeHistoryFilter(DateRangeHistoryFilter&& other) noexcept = delete;
-  DateRangeHistoryFilter& operator=(DateRangeHistoryFilter&& other) noexcept =
-      delete;
-
-  ~DateRangeHistoryFilter() override;
-
   HistoryItemList Apply(const HistoryItemList& history) const override;
 
  private:
