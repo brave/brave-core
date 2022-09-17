@@ -17,8 +17,8 @@ class NotificationAdEvent final : public CovariateLogEntryInterface {
  public:
   NotificationAdEvent();
 
-  NotificationAdEvent(const NotificationAdEvent&) = delete;
-  NotificationAdEvent& operator=(const NotificationAdEvent&) = delete;
+  NotificationAdEvent(const NotificationAdEvent& other) = delete;
+  NotificationAdEvent& operator=(const NotificationAdEvent& other) = delete;
 
   NotificationAdEvent(NotificationAdEvent&& other) noexcept = delete;
   NotificationAdEvent& operator=(NotificationAdEvent&& other) noexcept = delete;

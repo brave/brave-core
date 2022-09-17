@@ -16,8 +16,8 @@ class Wallet final {
  public:
   Wallet();
 
-  Wallet(const Wallet&) = delete;
-  Wallet& operator=(const Wallet&) = delete;
+  Wallet(const Wallet& other) = delete;
+  Wallet& operator=(const Wallet& other) = delete;
 
   Wallet(Wallet&& other) noexcept = delete;
   Wallet& operator=(Wallet&& other) noexcept = delete;

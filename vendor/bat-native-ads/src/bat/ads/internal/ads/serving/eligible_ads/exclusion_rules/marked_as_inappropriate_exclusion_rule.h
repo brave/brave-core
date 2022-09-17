@@ -20,9 +20,9 @@ class MarkedAsInappropriateExclusionRule final
   MarkedAsInappropriateExclusionRule();
 
   MarkedAsInappropriateExclusionRule(
-      const MarkedAsInappropriateExclusionRule&) = delete;
+      const MarkedAsInappropriateExclusionRule& other) = delete;
   MarkedAsInappropriateExclusionRule& operator=(
-      const MarkedAsInappropriateExclusionRule&) = delete;
+      const MarkedAsInappropriateExclusionRule& other) = delete;
 
   MarkedAsInappropriateExclusionRule(
       MarkedAsInappropriateExclusionRule&& other) noexcept = delete;

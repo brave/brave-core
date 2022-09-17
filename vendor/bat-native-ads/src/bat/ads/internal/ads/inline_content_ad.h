@@ -42,8 +42,8 @@ class InlineContentAd final : public inline_content_ads::EventHandlerObserver,
                   geographic::SubdivisionTargeting* subdivision_targeting,
                   resource::AntiTargeting* anti_targeting_resource);
 
-  InlineContentAd(const InlineContentAd&) = delete;
-  InlineContentAd& operator=(const InlineContentAd&) = delete;
+  InlineContentAd(const InlineContentAd& other) = delete;
+  InlineContentAd& operator=(const InlineContentAd& other) = delete;
 
   InlineContentAd(InlineContentAd&& other) noexcept = delete;
   InlineContentAd& operator=(InlineContentAd&& other) noexcept = delete;

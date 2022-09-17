@@ -13,8 +13,8 @@ namespace ads::targeting {
 struct UserModelInfo final {
   UserModelInfo();
 
-  UserModelInfo(const UserModelInfo& info);
-  UserModelInfo& operator=(const UserModelInfo& info);
+  UserModelInfo(const UserModelInfo& other);
+  UserModelInfo& operator=(const UserModelInfo& other);
 
   UserModelInfo(UserModelInfo&& other) noexcept;
   UserModelInfo& operator=(UserModelInfo&& other) noexcept;

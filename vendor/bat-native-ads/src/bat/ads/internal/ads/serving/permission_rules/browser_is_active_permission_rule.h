@@ -16,9 +16,10 @@ class BrowserIsActivePermissionRule final : public PermissionRuleInterface {
  public:
   BrowserIsActivePermissionRule();
 
-  BrowserIsActivePermissionRule(const BrowserIsActivePermissionRule&) = delete;
+  BrowserIsActivePermissionRule(const BrowserIsActivePermissionRule& other) =
+      delete;
   BrowserIsActivePermissionRule& operator=(
-      const BrowserIsActivePermissionRule&) = delete;
+      const BrowserIsActivePermissionRule& other) = delete;
 
   BrowserIsActivePermissionRule(
       BrowserIsActivePermissionRule&& other) noexcept = delete;

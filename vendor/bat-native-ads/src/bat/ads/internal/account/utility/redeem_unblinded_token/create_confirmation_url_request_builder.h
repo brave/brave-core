@@ -24,9 +24,9 @@ class CreateConfirmationUrlRequestBuilder final
       const ConfirmationInfo& confirmation);
 
   CreateConfirmationUrlRequestBuilder(
-      const CreateConfirmationUrlRequestBuilder&) = delete;
+      const CreateConfirmationUrlRequestBuilder& other) = delete;
   CreateConfirmationUrlRequestBuilder operator=(
-      const CreateConfirmationUrlRequestBuilder&) = delete;
+      const CreateConfirmationUrlRequestBuilder& other) = delete;
 
   CreateConfirmationUrlRequestBuilder(
       CreateConfirmationUrlRequestBuilder&& other) noexcept = delete;

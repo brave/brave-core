@@ -16,8 +16,8 @@ namespace ads {
 struct FilteredAdvertiserInfo final {
   FilteredAdvertiserInfo();
 
-  FilteredAdvertiserInfo(const FilteredAdvertiserInfo& info);
-  FilteredAdvertiserInfo& operator=(const FilteredAdvertiserInfo& info);
+  FilteredAdvertiserInfo(const FilteredAdvertiserInfo& other);
+  FilteredAdvertiserInfo& operator=(const FilteredAdvertiserInfo& other);
 
   FilteredAdvertiserInfo(FilteredAdvertiserInfo&& other) noexcept;
   FilteredAdvertiserInfo& operator=(FilteredAdvertiserInfo&& other) noexcept;

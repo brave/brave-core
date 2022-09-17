@@ -27,8 +27,8 @@ class UserActivityManager final : public BrowserManagerObserver,
  public:
   UserActivityManager();
 
-  UserActivityManager(const UserActivityManager& info) = delete;
-  UserActivityManager& operator=(const UserActivityManager& info) = delete;
+  UserActivityManager(const UserActivityManager& other) = delete;
+  UserActivityManager& operator=(const UserActivityManager& other) = delete;
 
   UserActivityManager(UserActivityManager&& other) noexcept = delete;
   UserActivityManager& operator=(UserActivityManager&& other) noexcept = delete;

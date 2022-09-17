@@ -28,7 +28,7 @@ class SubdivisionTargetingExclusionRule final
   SubdivisionTargetingExclusionRule(const SubdivisionTargetingExclusionRule&) =
       delete;
   SubdivisionTargetingExclusionRule& operator=(
-      const SubdivisionTargetingExclusionRule&) = delete;
+      const SubdivisionTargetingExclusionRule& other) = delete;
 
   SubdivisionTargetingExclusionRule(
       SubdivisionTargetingExclusionRule&& other) noexcept = delete;

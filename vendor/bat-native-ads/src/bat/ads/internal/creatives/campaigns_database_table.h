@@ -19,8 +19,8 @@ class Campaigns final : public TableInterface {
  public:
   Campaigns();
 
-  Campaigns(const Campaigns&) = delete;
-  Campaigns& operator=(const Campaigns&) = delete;
+  Campaigns(const Campaigns& other) = delete;
+  Campaigns& operator=(const Campaigns& other) = delete;
 
   Campaigns(Campaigns&& other) noexcept = delete;
   Campaigns& operator=(Campaigns&& other) noexcept = delete;

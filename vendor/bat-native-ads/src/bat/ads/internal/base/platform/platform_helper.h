@@ -15,8 +15,8 @@ namespace ads {
 
 class PlatformHelper {
  public:
-  PlatformHelper(const PlatformHelper&) = delete;
-  PlatformHelper& operator=(const PlatformHelper&) = delete;
+  PlatformHelper(const PlatformHelper& other) = delete;
+  PlatformHelper& operator=(const PlatformHelper& other) = delete;
 
   PlatformHelper(PlatformHelper&& other) noexcept = delete;
   PlatformHelper& operator=(PlatformHelper&& other) noexcept = delete;

@@ -22,8 +22,8 @@ class AdEvents final : public TableInterface {
  public:
   AdEvents();
 
-  AdEvents(const AdEvents&) = delete;
-  AdEvents& operator=(const AdEvents&) = delete;
+  AdEvents(const AdEvents& other) = delete;
+  AdEvents& operator=(const AdEvents& other) = delete;
 
   AdEvents(AdEvents&& other) noexcept = delete;
   AdEvents& operator=(AdEvents&& other) noexcept = delete;

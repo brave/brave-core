@@ -26,7 +26,8 @@ class RedeemUnblindedPaymentTokens final {
  public:
   RedeemUnblindedPaymentTokens();
 
-  RedeemUnblindedPaymentTokens(const RedeemUnblindedPaymentTokens&) = delete;
+  RedeemUnblindedPaymentTokens(const RedeemUnblindedPaymentTokens& other) =
+      delete;
   RedeemUnblindedPaymentTokens& operator=(const RedeemUnblindedPaymentTokens&) =
       delete;
 

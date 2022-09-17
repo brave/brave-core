@@ -15,8 +15,8 @@ namespace ads {
 
 class PlatformHelperLinux final : public PlatformHelper {
  public:
-  PlatformHelperLinux(const PlatformHelperLinux&) = delete;
-  PlatformHelperLinux& operator=(const PlatformHelperLinux&) = delete;
+  PlatformHelperLinux(const PlatformHelperLinux& other) = delete;
+  PlatformHelperLinux& operator=(const PlatformHelperLinux& other) = delete;
 
   PlatformHelperLinux(PlatformHelperLinux&& other) noexcept = delete;
   PlatformHelperLinux& operator=(PlatformHelperLinux&& other) noexcept = delete;

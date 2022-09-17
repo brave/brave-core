@@ -15,8 +15,8 @@ namespace ads {
 
 class PlatformHelperAndroid final : public PlatformHelper {
  public:
-  PlatformHelperAndroid(const PlatformHelperAndroid&) = delete;
-  PlatformHelperAndroid& operator=(const PlatformHelperAndroid&) = delete;
+  PlatformHelperAndroid(const PlatformHelperAndroid& other) = delete;
+  PlatformHelperAndroid& operator=(const PlatformHelperAndroid& other) = delete;
 
   PlatformHelperAndroid(PlatformHelperAndroid&& other) noexcept = delete;
   PlatformHelperAndroid& operator=(PlatformHelperAndroid&& other) noexcept =

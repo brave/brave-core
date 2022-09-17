@@ -17,9 +17,10 @@ class LastUnIdleTimeDiagnosticEntry final : public DiagnosticEntryInterface {
  public:
   LastUnIdleTimeDiagnosticEntry();
 
-  LastUnIdleTimeDiagnosticEntry(const LastUnIdleTimeDiagnosticEntry&) = delete;
+  LastUnIdleTimeDiagnosticEntry(const LastUnIdleTimeDiagnosticEntry& other) =
+      delete;
   LastUnIdleTimeDiagnosticEntry& operator=(
-      const LastUnIdleTimeDiagnosticEntry&) = delete;
+      const LastUnIdleTimeDiagnosticEntry& other) = delete;
 
   LastUnIdleTimeDiagnosticEntry(
       LastUnIdleTimeDiagnosticEntry&& other) noexcept = delete;

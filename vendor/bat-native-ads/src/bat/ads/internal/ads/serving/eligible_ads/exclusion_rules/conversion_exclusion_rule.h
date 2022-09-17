@@ -20,8 +20,9 @@ class ConversionExclusionRule final
  public:
   explicit ConversionExclusionRule(const AdEventList& ad_events);
 
-  ConversionExclusionRule(const ConversionExclusionRule&) = delete;
-  ConversionExclusionRule& operator=(const ConversionExclusionRule&) = delete;
+  ConversionExclusionRule(const ConversionExclusionRule& other) = delete;
+  ConversionExclusionRule& operator=(const ConversionExclusionRule& other) =
+      delete;
 
   ConversionExclusionRule(ConversionExclusionRule&& other) noexcept = delete;
   ConversionExclusionRule& operator=(ConversionExclusionRule&& other) noexcept =

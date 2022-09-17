@@ -25,7 +25,7 @@ class GetSignedTokensUrlRequestBuilder final
   GetSignedTokensUrlRequestBuilder(const GetSignedTokensUrlRequestBuilder&) =
       delete;
   GetSignedTokensUrlRequestBuilder& operator=(
-      const GetSignedTokensUrlRequestBuilder&) = delete;
+      const GetSignedTokensUrlRequestBuilder& other) = delete;
 
   GetSignedTokensUrlRequestBuilder(
       GetSignedTokensUrlRequestBuilder&& other) noexcept = delete;

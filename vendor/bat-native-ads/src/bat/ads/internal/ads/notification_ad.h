@@ -61,8 +61,8 @@ class NotificationAd final : public AccountObserver,
       geographic::SubdivisionTargeting* subdivision_targeting,
       resource::AntiTargeting* anti_targeting_resource);
 
-  NotificationAd(const NotificationAd&) = delete;
-  NotificationAd& operator=(const NotificationAd&) = delete;
+  NotificationAd(const NotificationAd& other) = delete;
+  NotificationAd& operator=(const NotificationAd& other) = delete;
 
   NotificationAd(NotificationAd&& other) noexcept = delete;
   NotificationAd& operator=(NotificationAd&& other) noexcept = delete;

@@ -21,8 +21,8 @@ class Catalog final : public DatabaseManagerObserver {
  public:
   Catalog();
 
-  Catalog(const Catalog&) = delete;
-  Catalog& operator=(const Catalog&) = delete;
+  Catalog(const Catalog& other) = delete;
+  Catalog& operator=(const Catalog& other) = delete;
 
   Catalog(Catalog&& other) noexcept = delete;
   Catalog& operator=(Catalog&& other) noexcept = delete;

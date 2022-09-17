@@ -14,8 +14,8 @@ class UnblindedPaymentTokens final {
  public:
   UnblindedPaymentTokens();
 
-  UnblindedPaymentTokens(const UnblindedPaymentTokens& info) = delete;
-  UnblindedPaymentTokens& operator=(const UnblindedPaymentTokens& info) =
+  UnblindedPaymentTokens(const UnblindedPaymentTokens& other) = delete;
+  UnblindedPaymentTokens& operator=(const UnblindedPaymentTokens& other) =
       delete;
 
   UnblindedPaymentTokens(UnblindedPaymentTokens&& other) noexcept = delete;

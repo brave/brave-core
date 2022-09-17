@@ -16,8 +16,8 @@ class NonCashDeposit final : public DepositInterface {
  public:
   NonCashDeposit();
 
-  NonCashDeposit(const NonCashDeposit&) = delete;
-  NonCashDeposit& operator=(const NonCashDeposit&) = delete;
+  NonCashDeposit(const NonCashDeposit& other) = delete;
+  NonCashDeposit& operator=(const NonCashDeposit& other) = delete;
 
   NonCashDeposit(NonCashDeposit&& other) noexcept = delete;
   NonCashDeposit& operator=(NonCashDeposit&& other) noexcept = delete;

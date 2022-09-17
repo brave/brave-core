@@ -19,8 +19,8 @@ namespace ads::privacy {
 struct UnblindedPaymentTokenInfo final {
   UnblindedPaymentTokenInfo();
 
-  UnblindedPaymentTokenInfo(const UnblindedPaymentTokenInfo& info);
-  UnblindedPaymentTokenInfo& operator=(const UnblindedPaymentTokenInfo& info);
+  UnblindedPaymentTokenInfo(const UnblindedPaymentTokenInfo& other);
+  UnblindedPaymentTokenInfo& operator=(const UnblindedPaymentTokenInfo& other);
 
   UnblindedPaymentTokenInfo(UnblindedPaymentTokenInfo&& other) noexcept;
   UnblindedPaymentTokenInfo& operator=(

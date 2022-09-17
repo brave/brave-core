@@ -26,8 +26,8 @@ using AntiTargetingMap = std::map<std::string, AntiTargetingSiteList>;
 struct AntiTargetingInfo final {
   AntiTargetingInfo();
 
-  AntiTargetingInfo(const AntiTargetingInfo& info);
-  AntiTargetingInfo& operator=(const AntiTargetingInfo& info);
+  AntiTargetingInfo(const AntiTargetingInfo& other);
+  AntiTargetingInfo& operator=(const AntiTargetingInfo& other);
 
   AntiTargetingInfo(AntiTargetingInfo&& other) noexcept;
   AntiTargetingInfo& operator=(AntiTargetingInfo&& other) noexcept;

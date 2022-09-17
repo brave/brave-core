@@ -44,8 +44,9 @@ class CreativeInlineContentAds final : public TableInterface {
  public:
   CreativeInlineContentAds();
 
-  CreativeInlineContentAds(const CreativeInlineContentAds&) = delete;
-  CreativeInlineContentAds& operator=(const CreativeInlineContentAds&) = delete;
+  CreativeInlineContentAds(const CreativeInlineContentAds& other) = delete;
+  CreativeInlineContentAds& operator=(const CreativeInlineContentAds& other) =
+      delete;
 
   CreativeInlineContentAds(CreativeInlineContentAds&& other) noexcept = delete;
   CreativeInlineContentAds& operator=(

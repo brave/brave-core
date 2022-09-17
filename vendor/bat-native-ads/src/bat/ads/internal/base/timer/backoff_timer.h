@@ -18,8 +18,8 @@ class BackoffTimer final {
  public:
   BackoffTimer();
 
-  BackoffTimer(const BackoffTimer&) = delete;
-  BackoffTimer& operator=(const BackoffTimer&) = delete;
+  BackoffTimer(const BackoffTimer& other) = delete;
+  BackoffTimer& operator=(const BackoffTimer& other) = delete;
 
   BackoffTimer(BackoffTimer&& other) noexcept = delete;
   BackoffTimer& operator=(BackoffTimer&& other) noexcept = delete;

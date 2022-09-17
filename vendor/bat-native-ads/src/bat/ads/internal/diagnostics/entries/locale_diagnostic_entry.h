@@ -16,8 +16,8 @@ class LocaleDiagnosticEntry final : public DiagnosticEntryInterface {
  public:
   LocaleDiagnosticEntry();
 
-  LocaleDiagnosticEntry(const LocaleDiagnosticEntry&) = delete;
-  LocaleDiagnosticEntry& operator=(const LocaleDiagnosticEntry&) = delete;
+  LocaleDiagnosticEntry(const LocaleDiagnosticEntry& other) = delete;
+  LocaleDiagnosticEntry& operator=(const LocaleDiagnosticEntry& other) = delete;
 
   LocaleDiagnosticEntry(LocaleDiagnosticEntry&& other) noexcept = delete;
   LocaleDiagnosticEntry& operator=(LocaleDiagnosticEntry&& other) noexcept =

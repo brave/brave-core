@@ -17,8 +17,8 @@ template <typename T>
 struct AdPredictorInfo final {
   AdPredictorInfo();
 
-  AdPredictorInfo(const AdPredictorInfo& info);
-  AdPredictorInfo& operator=(const AdPredictorInfo& info);
+  AdPredictorInfo(const AdPredictorInfo& other);
+  AdPredictorInfo& operator=(const AdPredictorInfo& other);
 
   AdPredictorInfo(AdPredictorInfo&& other) noexcept;
   AdPredictorInfo& operator=(AdPredictorInfo&& other) noexcept;

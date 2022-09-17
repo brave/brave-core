@@ -23,8 +23,8 @@ class Conversions final : public TableInterface {
  public:
   Conversions();
 
-  Conversions(const Conversions&) = delete;
-  Conversions& operator=(const Conversions&) = delete;
+  Conversions(const Conversions& other) = delete;
+  Conversions& operator=(const Conversions& other) = delete;
 
   Conversions(Conversions&& other) noexcept = delete;
   Conversions& operator=(Conversions&& other) noexcept = delete;

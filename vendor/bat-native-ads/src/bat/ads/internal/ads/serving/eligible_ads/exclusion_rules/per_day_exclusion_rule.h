@@ -20,8 +20,8 @@ class PerDayExclusionRule final
  public:
   explicit PerDayExclusionRule(const AdEventList& ad_events);
 
-  PerDayExclusionRule(const PerDayExclusionRule&) = delete;
-  PerDayExclusionRule& operator=(const PerDayExclusionRule&) = delete;
+  PerDayExclusionRule(const PerDayExclusionRule& other) = delete;
+  PerDayExclusionRule& operator=(const PerDayExclusionRule& other) = delete;
 
   PerDayExclusionRule(PerDayExclusionRule&& other) noexcept = delete;
   PerDayExclusionRule& operator=(PerDayExclusionRule&& other) noexcept = delete;

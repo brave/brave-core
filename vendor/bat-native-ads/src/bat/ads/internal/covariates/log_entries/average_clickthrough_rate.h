@@ -17,8 +17,9 @@ class AverageClickthroughRate final : public CovariateLogEntryInterface {
  public:
   explicit AverageClickthroughRate(base::TimeDelta time_window);
 
-  AverageClickthroughRate(const AverageClickthroughRate&) = delete;
-  AverageClickthroughRate& operator=(const AverageClickthroughRate&) = delete;
+  AverageClickthroughRate(const AverageClickthroughRate& other) = delete;
+  AverageClickthroughRate& operator=(const AverageClickthroughRate& other) =
+      delete;
 
   AverageClickthroughRate(AverageClickthroughRate&& other) noexcept = delete;
   AverageClickthroughRate& operator=(AverageClickthroughRate&& other) noexcept =

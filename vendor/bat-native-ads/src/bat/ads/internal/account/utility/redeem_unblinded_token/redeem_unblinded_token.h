@@ -23,8 +23,8 @@ class RedeemUnblindedToken final {
  public:
   RedeemUnblindedToken();
 
-  RedeemUnblindedToken(const RedeemUnblindedToken&) = delete;
-  RedeemUnblindedToken& operator=(const RedeemUnblindedToken&) = delete;
+  RedeemUnblindedToken(const RedeemUnblindedToken& other) = delete;
+  RedeemUnblindedToken& operator=(const RedeemUnblindedToken& other) = delete;
 
   RedeemUnblindedToken(RedeemUnblindedToken&& other) noexcept = delete;
   RedeemUnblindedToken& operator=(RedeemUnblindedToken&& other) noexcept =

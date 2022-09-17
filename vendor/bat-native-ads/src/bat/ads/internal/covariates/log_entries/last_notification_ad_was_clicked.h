@@ -16,7 +16,8 @@ class LastNotificationAdWasClicked final : public CovariateLogEntryInterface {
  public:
   LastNotificationAdWasClicked();
 
-  LastNotificationAdWasClicked(const LastNotificationAdWasClicked&) = delete;
+  LastNotificationAdWasClicked(const LastNotificationAdWasClicked& other) =
+      delete;
   LastNotificationAdWasClicked& operator=(const LastNotificationAdWasClicked&) =
       delete;
 

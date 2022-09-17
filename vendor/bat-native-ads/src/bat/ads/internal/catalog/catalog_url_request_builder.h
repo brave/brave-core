@@ -17,8 +17,9 @@ class CatalogUrlRequestBuilder final : public UrlRequestBuilderInterface {
  public:
   CatalogUrlRequestBuilder();
 
-  CatalogUrlRequestBuilder(const CatalogUrlRequestBuilder&) = delete;
-  CatalogUrlRequestBuilder& operator=(const CatalogUrlRequestBuilder&) = delete;
+  CatalogUrlRequestBuilder(const CatalogUrlRequestBuilder& other) = delete;
+  CatalogUrlRequestBuilder& operator=(const CatalogUrlRequestBuilder& other) =
+      delete;
 
   CatalogUrlRequestBuilder(CatalogUrlRequestBuilder&& other) noexcept = delete;
   CatalogUrlRequestBuilder& operator=(

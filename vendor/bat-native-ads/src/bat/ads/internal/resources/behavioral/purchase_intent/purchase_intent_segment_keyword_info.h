@@ -18,9 +18,9 @@ struct PurchaseIntentSegmentKeywordInfo final {
                                    const std::string& keywords);
 
   PurchaseIntentSegmentKeywordInfo(
-      const PurchaseIntentSegmentKeywordInfo& info);
+      const PurchaseIntentSegmentKeywordInfo& other);
   PurchaseIntentSegmentKeywordInfo& operator=(
-      const PurchaseIntentSegmentKeywordInfo& info);
+      const PurchaseIntentSegmentKeywordInfo& other);
 
   PurchaseIntentSegmentKeywordInfo(
       PurchaseIntentSegmentKeywordInfo&& other) noexcept;

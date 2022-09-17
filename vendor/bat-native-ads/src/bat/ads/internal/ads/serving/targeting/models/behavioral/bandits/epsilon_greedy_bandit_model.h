@@ -14,8 +14,8 @@ class EpsilonGreedyBandit final : public ModelInterface {
  public:
   EpsilonGreedyBandit();
 
-  EpsilonGreedyBandit(const EpsilonGreedyBandit&) = delete;
-  EpsilonGreedyBandit& operator=(const EpsilonGreedyBandit&) = delete;
+  EpsilonGreedyBandit(const EpsilonGreedyBandit& other) = delete;
+  EpsilonGreedyBandit& operator=(const EpsilonGreedyBandit& other) = delete;
 
   EpsilonGreedyBandit(EpsilonGreedyBandit&& other) noexcept = delete;
   EpsilonGreedyBandit& operator=(EpsilonGreedyBandit&& other) noexcept = delete;

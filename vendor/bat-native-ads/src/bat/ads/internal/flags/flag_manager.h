@@ -14,8 +14,8 @@ class FlagManager final {
  public:
   FlagManager();
 
-  FlagManager(const FlagManager&) = delete;
-  FlagManager& operator=(const FlagManager&) = delete;
+  FlagManager(const FlagManager& other) = delete;
+  FlagManager& operator=(const FlagManager& other) = delete;
 
   FlagManager(FlagManager&& other) noexcept = delete;
   FlagManager& operator=(FlagManager&& other) noexcept = delete;

@@ -16,8 +16,9 @@ class EnabledDiagnosticEntry final : public DiagnosticEntryInterface {
  public:
   EnabledDiagnosticEntry();
 
-  EnabledDiagnosticEntry(const EnabledDiagnosticEntry&) = delete;
-  EnabledDiagnosticEntry& operator=(const EnabledDiagnosticEntry&) = delete;
+  EnabledDiagnosticEntry(const EnabledDiagnosticEntry& other) = delete;
+  EnabledDiagnosticEntry& operator=(const EnabledDiagnosticEntry& other) =
+      delete;
 
   EnabledDiagnosticEntry(EnabledDiagnosticEntry&& other) noexcept = delete;
   EnabledDiagnosticEntry& operator=(EnabledDiagnosticEntry&& other) noexcept =

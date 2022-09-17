@@ -13,8 +13,8 @@ namespace ads {
 struct WalletInfo final {
   WalletInfo();
 
-  WalletInfo(const WalletInfo& info);
-  WalletInfo& operator=(const WalletInfo& info);
+  WalletInfo(const WalletInfo& other);
+  WalletInfo& operator=(const WalletInfo& other);
 
   WalletInfo(WalletInfo&& other) noexcept;
   WalletInfo& operator=(WalletInfo&& other) noexcept;

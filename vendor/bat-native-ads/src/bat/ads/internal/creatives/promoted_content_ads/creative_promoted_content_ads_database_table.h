@@ -41,7 +41,7 @@ class CreativePromotedContentAds final : public TableInterface {
  public:
   CreativePromotedContentAds();
 
-  CreativePromotedContentAds(const CreativePromotedContentAds&) = delete;
+  CreativePromotedContentAds(const CreativePromotedContentAds& other) = delete;
   CreativePromotedContentAds& operator=(const CreativePromotedContentAds&) =
       delete;
 

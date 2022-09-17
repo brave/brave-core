@@ -16,7 +16,8 @@ class FullScreenModePermissionRule final : public PermissionRuleInterface {
  public:
   FullScreenModePermissionRule();
 
-  FullScreenModePermissionRule(const FullScreenModePermissionRule&) = delete;
+  FullScreenModePermissionRule(const FullScreenModePermissionRule& other) =
+      delete;
   FullScreenModePermissionRule& operator=(const FullScreenModePermissionRule&) =
       delete;
 

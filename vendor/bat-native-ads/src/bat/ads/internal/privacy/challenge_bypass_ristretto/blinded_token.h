@@ -27,7 +27,7 @@ class BlindedToken {
       const challenge_bypass_ristretto::BlindedToken& blinded_token);
 
   BlindedToken(const BlindedToken& other);
-  BlindedToken& operator=(const BlindedToken& info);
+  BlindedToken& operator=(const BlindedToken& other);
 
   BlindedToken(BlindedToken&& other) noexcept;
   BlindedToken& operator=(BlindedToken&& other) noexcept;

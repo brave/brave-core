@@ -20,7 +20,7 @@ class CatalogLastUpdatedDiagnosticEntry final
   CatalogLastUpdatedDiagnosticEntry(const CatalogLastUpdatedDiagnosticEntry&) =
       delete;
   CatalogLastUpdatedDiagnosticEntry& operator=(
-      const CatalogLastUpdatedDiagnosticEntry&) = delete;
+      const CatalogLastUpdatedDiagnosticEntry& other) = delete;
 
   CatalogLastUpdatedDiagnosticEntry(
       CatalogLastUpdatedDiagnosticEntry&& other) noexcept = delete;

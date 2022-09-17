@@ -28,8 +28,8 @@ class SearchResultAd final : public search_result_ads::EventHandlerObserver {
  public:
   SearchResultAd(Account* account, Transfer* transfer);
 
-  SearchResultAd(const SearchResultAd&) = delete;
-  SearchResultAd& operator=(const SearchResultAd&) = delete;
+  SearchResultAd(const SearchResultAd& other) = delete;
+  SearchResultAd& operator=(const SearchResultAd& other) = delete;
 
   SearchResultAd(SearchResultAd&& other) noexcept = delete;
   SearchResultAd& operator=(SearchResultAd&& other) noexcept = delete;

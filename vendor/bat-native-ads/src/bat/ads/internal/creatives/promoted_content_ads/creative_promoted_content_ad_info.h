@@ -17,9 +17,9 @@ struct CreativePromotedContentAdInfo final : CreativeAdInfo {
   CreativePromotedContentAdInfo();
   explicit CreativePromotedContentAdInfo(const CreativeAdInfo& creative_ad);
 
-  CreativePromotedContentAdInfo(const CreativePromotedContentAdInfo& info);
+  CreativePromotedContentAdInfo(const CreativePromotedContentAdInfo& other);
   CreativePromotedContentAdInfo& operator=(
-      const CreativePromotedContentAdInfo& info);
+      const CreativePromotedContentAdInfo& other);
 
   CreativePromotedContentAdInfo(CreativePromotedContentAdInfo&& other) noexcept;
   CreativePromotedContentAdInfo& operator=(

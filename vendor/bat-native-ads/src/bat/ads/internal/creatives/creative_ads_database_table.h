@@ -25,8 +25,8 @@ class CreativeAds final : public TableInterface {
  public:
   CreativeAds();
 
-  CreativeAds(const CreativeAds&) = delete;
-  CreativeAds& operator=(const CreativeAds&) = delete;
+  CreativeAds(const CreativeAds& other) = delete;
+  CreativeAds& operator=(const CreativeAds& other) = delete;
 
   CreativeAds(CreativeAds&& other) noexcept = delete;
   CreativeAds& operator=(CreativeAds&& other) noexcept = delete;

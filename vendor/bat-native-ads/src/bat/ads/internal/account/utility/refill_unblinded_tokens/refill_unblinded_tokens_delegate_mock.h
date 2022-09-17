@@ -20,7 +20,7 @@ class RefillUnblindedTokensDelegateMock : public RefillUnblindedTokensDelegate {
   RefillUnblindedTokensDelegateMock(const RefillUnblindedTokensDelegateMock&) =
       delete;
   RefillUnblindedTokensDelegateMock& operator=(
-      const RefillUnblindedTokensDelegateMock&) = delete;
+      const RefillUnblindedTokensDelegateMock& other) = delete;
 
   RefillUnblindedTokensDelegateMock(
       RefillUnblindedTokensDelegateMock&& other) noexcept = delete;

@@ -16,8 +16,8 @@ namespace ads {
 struct ConversionInfo final {
   ConversionInfo();
 
-  ConversionInfo(const ConversionInfo& info);
-  ConversionInfo& operator=(const ConversionInfo& info);
+  ConversionInfo(const ConversionInfo& other);
+  ConversionInfo& operator=(const ConversionInfo& other);
 
   ConversionInfo(ConversionInfo&& other) noexcept;
   ConversionInfo& operator=(ConversionInfo&& other) noexcept;

@@ -15,8 +15,8 @@ class BrowserManager final {
  public:
   BrowserManager();
 
-  BrowserManager(const BrowserManager&) = delete;
-  BrowserManager& operator=(const BrowserManager&) = delete;
+  BrowserManager(const BrowserManager& other) = delete;
+  BrowserManager& operator=(const BrowserManager& other) = delete;
 
   BrowserManager(BrowserManager&& other) noexcept = delete;
   BrowserManager& operator=(BrowserManager&& other) noexcept = delete;

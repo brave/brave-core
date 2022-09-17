@@ -16,8 +16,8 @@ namespace ads {
 struct IssuerInfo final {
   IssuerInfo();
 
-  IssuerInfo(const IssuerInfo& info);
-  IssuerInfo& operator=(const IssuerInfo& info);
+  IssuerInfo(const IssuerInfo& other);
+  IssuerInfo& operator=(const IssuerInfo& other);
 
   IssuerInfo(IssuerInfo&& other) noexcept;
   IssuerInfo& operator=(IssuerInfo&& other) noexcept;

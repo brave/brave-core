@@ -14,8 +14,8 @@ class AdsClientHelper final {
  public:
   explicit AdsClientHelper(AdsClient* ads_client);
 
-  AdsClientHelper(const AdsClientHelper&) = delete;
-  AdsClientHelper& operator=(const AdsClientHelper&) = delete;
+  AdsClientHelper(const AdsClientHelper& other) = delete;
+  AdsClientHelper& operator=(const AdsClientHelper& other) = delete;
 
   AdsClientHelper(AdsClientHelper&& other) noexcept = delete;
   AdsClientHelper& operator=(AdsClientHelper&& other) noexcept = delete;

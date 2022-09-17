@@ -20,8 +20,8 @@ class AdsClientMock : public AdsClient {
  public:
   AdsClientMock();
 
-  AdsClientMock(const AdsClientMock&) = delete;
-  AdsClientMock& operator=(const AdsClientMock&) = delete;
+  AdsClientMock(const AdsClientMock& other) = delete;
+  AdsClientMock& operator=(const AdsClientMock& other) = delete;
 
   AdsClientMock(AdsClientMock&& other) noexcept = delete;
   AdsClientMock& operator=(AdsClientMock&& other) noexcept = delete;

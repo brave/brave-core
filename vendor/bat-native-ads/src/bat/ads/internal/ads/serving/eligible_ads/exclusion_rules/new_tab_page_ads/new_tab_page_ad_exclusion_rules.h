@@ -27,8 +27,8 @@ class ExclusionRules final : public ExclusionRulesBase {
                  resource::AntiTargeting* anti_targeting_resource,
                  const BrowsingHistoryList& browsing_history);
 
-  ExclusionRules(const ExclusionRules&) = delete;
-  ExclusionRules& operator=(const ExclusionRules&) = delete;
+  ExclusionRules(const ExclusionRules& other) = delete;
+  ExclusionRules& operator=(const ExclusionRules& other) = delete;
 
   ExclusionRules(ExclusionRules&& other) noexcept = delete;
   ExclusionRules& operator=(ExclusionRules&& other) noexcept = delete;

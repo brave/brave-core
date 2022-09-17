@@ -14,8 +14,8 @@ class Data {
  public:
   explicit Data(const DataType& type);
 
-  Data(const Data&) = delete;
-  Data& operator=(const Data&) = delete;
+  Data(const Data& other) = delete;
+  Data& operator=(const Data& other) = delete;
 
   Data(Data&& other) noexcept = delete;
   Data& operator=(Data&& other) noexcept = delete;

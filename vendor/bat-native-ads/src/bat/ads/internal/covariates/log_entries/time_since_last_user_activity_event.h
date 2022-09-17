@@ -22,7 +22,7 @@ class TimeSinceLastUserActivityEvent final : public CovariateLogEntryInterface {
   TimeSinceLastUserActivityEvent(const TimeSinceLastUserActivityEvent&) =
       delete;
   TimeSinceLastUserActivityEvent& operator=(
-      const TimeSinceLastUserActivityEvent&) = delete;
+      const TimeSinceLastUserActivityEvent& other) = delete;
 
   TimeSinceLastUserActivityEvent(
       TimeSinceLastUserActivityEvent&& other) noexcept = delete;

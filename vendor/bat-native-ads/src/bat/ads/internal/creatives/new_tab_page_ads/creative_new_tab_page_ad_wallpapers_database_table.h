@@ -22,7 +22,7 @@ class CreativeNewTabPageAdWallpapers final : public TableInterface {
   CreativeNewTabPageAdWallpapers(const CreativeNewTabPageAdWallpapers&) =
       delete;
   CreativeNewTabPageAdWallpapers& operator=(
-      const CreativeNewTabPageAdWallpapers&) = delete;
+      const CreativeNewTabPageAdWallpapers& other) = delete;
 
   CreativeNewTabPageAdWallpapers(
       CreativeNewTabPageAdWallpapers&& other) noexcept = delete;

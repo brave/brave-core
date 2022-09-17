@@ -16,8 +16,8 @@ namespace ads {
 struct FilteredCategoryInfo final {
   FilteredCategoryInfo();
 
-  FilteredCategoryInfo(const FilteredCategoryInfo& info);
-  FilteredCategoryInfo& operator=(const FilteredCategoryInfo& info);
+  FilteredCategoryInfo(const FilteredCategoryInfo& other);
+  FilteredCategoryInfo& operator=(const FilteredCategoryInfo& other);
 
   FilteredCategoryInfo(FilteredCategoryInfo&& other) noexcept;
   FilteredCategoryInfo& operator=(FilteredCategoryInfo&& other) noexcept;

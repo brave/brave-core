@@ -20,9 +20,9 @@ class MarkedToNoLongerReceiveExclusionRule final
   MarkedToNoLongerReceiveExclusionRule();
 
   MarkedToNoLongerReceiveExclusionRule(
-      const MarkedToNoLongerReceiveExclusionRule&) = delete;
+      const MarkedToNoLongerReceiveExclusionRule& other) = delete;
   MarkedToNoLongerReceiveExclusionRule& operator=(
-      const MarkedToNoLongerReceiveExclusionRule&) = delete;
+      const MarkedToNoLongerReceiveExclusionRule& other) = delete;
 
   MarkedToNoLongerReceiveExclusionRule(
       MarkedToNoLongerReceiveExclusionRule&& other) noexcept = delete;

@@ -18,8 +18,8 @@ namespace ads {
 struct CatalogCampaignInfo final {
   CatalogCampaignInfo();
 
-  CatalogCampaignInfo(const CatalogCampaignInfo& info);
-  CatalogCampaignInfo& operator=(const CatalogCampaignInfo& info);
+  CatalogCampaignInfo(const CatalogCampaignInfo& other);
+  CatalogCampaignInfo& operator=(const CatalogCampaignInfo& other);
 
   CatalogCampaignInfo(CatalogCampaignInfo&& other) noexcept;
   CatalogCampaignInfo& operator=(CatalogCampaignInfo&& other) noexcept;

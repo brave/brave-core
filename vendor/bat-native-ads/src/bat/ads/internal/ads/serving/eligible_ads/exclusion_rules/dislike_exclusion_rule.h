@@ -19,8 +19,8 @@ class DislikeExclusionRule final
  public:
   DislikeExclusionRule();
 
-  DislikeExclusionRule(const DislikeExclusionRule&) = delete;
-  DislikeExclusionRule& operator=(const DislikeExclusionRule&) = delete;
+  DislikeExclusionRule(const DislikeExclusionRule& other) = delete;
+  DislikeExclusionRule& operator=(const DislikeExclusionRule& other) = delete;
 
   DislikeExclusionRule(DislikeExclusionRule&& other) noexcept = delete;
   DislikeExclusionRule& operator=(DislikeExclusionRule&& other) noexcept =

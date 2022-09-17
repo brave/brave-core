@@ -16,8 +16,9 @@ class DeviceIdDiagnosticEntry final : public DiagnosticEntryInterface {
  public:
   DeviceIdDiagnosticEntry();
 
-  DeviceIdDiagnosticEntry(const DeviceIdDiagnosticEntry&) = delete;
-  DeviceIdDiagnosticEntry& operator=(const DeviceIdDiagnosticEntry&) = delete;
+  DeviceIdDiagnosticEntry(const DeviceIdDiagnosticEntry& other) = delete;
+  DeviceIdDiagnosticEntry& operator=(const DeviceIdDiagnosticEntry& other) =
+      delete;
 
   DeviceIdDiagnosticEntry(DeviceIdDiagnosticEntry&& other) noexcept = delete;
   DeviceIdDiagnosticEntry& operator=(DeviceIdDiagnosticEntry&& other) noexcept =

@@ -19,7 +19,7 @@ class NetworkConnectionPermissionRule final : public PermissionRuleInterface {
   NetworkConnectionPermissionRule(const NetworkConnectionPermissionRule&) =
       delete;
   NetworkConnectionPermissionRule& operator=(
-      const NetworkConnectionPermissionRule&) = delete;
+      const NetworkConnectionPermissionRule& other) = delete;
 
   NetworkConnectionPermissionRule(
       NetworkConnectionPermissionRule&& other) noexcept = delete;

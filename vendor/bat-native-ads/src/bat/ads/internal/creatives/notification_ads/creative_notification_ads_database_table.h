@@ -36,8 +36,9 @@ class CreativeNotificationAds final : public TableInterface {
  public:
   CreativeNotificationAds();
 
-  CreativeNotificationAds(const CreativeNotificationAds&) = delete;
-  CreativeNotificationAds& operator=(const CreativeNotificationAds&) = delete;
+  CreativeNotificationAds(const CreativeNotificationAds& other) = delete;
+  CreativeNotificationAds& operator=(const CreativeNotificationAds& other) =
+      delete;
 
   CreativeNotificationAds(CreativeNotificationAds&& other) noexcept = delete;
   CreativeNotificationAds& operator=(CreativeNotificationAds&& other) noexcept =

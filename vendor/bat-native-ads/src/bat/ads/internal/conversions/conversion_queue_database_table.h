@@ -29,8 +29,8 @@ class ConversionQueue final : public TableInterface {
  public:
   ConversionQueue();
 
-  ConversionQueue(const ConversionQueue&) = delete;
-  ConversionQueue& operator=(const ConversionQueue&) = delete;
+  ConversionQueue(const ConversionQueue& other) = delete;
+  ConversionQueue& operator=(const ConversionQueue& other) = delete;
 
   ConversionQueue(ConversionQueue&& other) noexcept = delete;
   ConversionQueue& operator=(ConversionQueue&& other) noexcept = delete;

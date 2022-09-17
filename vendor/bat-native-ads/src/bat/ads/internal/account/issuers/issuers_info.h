@@ -13,8 +13,8 @@ namespace ads {
 struct IssuersInfo final {
   IssuersInfo();
 
-  IssuersInfo(const IssuersInfo& info);
-  IssuersInfo& operator=(const IssuersInfo& info);
+  IssuersInfo(const IssuersInfo& other);
+  IssuersInfo& operator=(const IssuersInfo& other);
 
   IssuersInfo(IssuersInfo&& other) noexcept;
   IssuersInfo& operator=(IssuersInfo&& other) noexcept;

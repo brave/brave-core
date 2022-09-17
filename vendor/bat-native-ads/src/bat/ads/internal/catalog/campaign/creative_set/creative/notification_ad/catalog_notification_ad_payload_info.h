@@ -16,9 +16,9 @@ struct CatalogNotificationAdPayloadInfo final {
   CatalogNotificationAdPayloadInfo();
 
   CatalogNotificationAdPayloadInfo(
-      const CatalogNotificationAdPayloadInfo& info);
+      const CatalogNotificationAdPayloadInfo& other);
   CatalogNotificationAdPayloadInfo& operator=(
-      const CatalogNotificationAdPayloadInfo& info);
+      const CatalogNotificationAdPayloadInfo& other);
 
   CatalogNotificationAdPayloadInfo(
       CatalogNotificationAdPayloadInfo&& other) noexcept;

@@ -17,7 +17,7 @@ class ConfirmationsDelegateMock : public ConfirmationsDelegate {
  public:
   ConfirmationsDelegateMock();
 
-  ConfirmationsDelegateMock(const ConfirmationsDelegateMock&) = delete;
+  ConfirmationsDelegateMock(const ConfirmationsDelegateMock& other) = delete;
   ConfirmationsDelegateMock& operator=(const ConfirmationsDelegateMock&) =
       delete;
 

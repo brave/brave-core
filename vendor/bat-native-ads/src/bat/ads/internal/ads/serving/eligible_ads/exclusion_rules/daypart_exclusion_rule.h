@@ -19,8 +19,8 @@ class DaypartExclusionRule final
  public:
   DaypartExclusionRule();
 
-  DaypartExclusionRule(const DaypartExclusionRule&) = delete;
-  DaypartExclusionRule& operator=(const DaypartExclusionRule&) = delete;
+  DaypartExclusionRule(const DaypartExclusionRule& other) = delete;
+  DaypartExclusionRule& operator=(const DaypartExclusionRule& other) = delete;
 
   DaypartExclusionRule(DaypartExclusionRule&& other) noexcept = delete;
   DaypartExclusionRule& operator=(DaypartExclusionRule&& other) noexcept =

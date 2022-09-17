@@ -15,7 +15,7 @@ class ConversionsDescendingSort final : public ConversionsSortInterface {
  public:
   ConversionsDescendingSort();
 
-  ConversionsDescendingSort(const ConversionsDescendingSort&) = delete;
+  ConversionsDescendingSort(const ConversionsDescendingSort& other) = delete;
   ConversionsDescendingSort& operator=(const ConversionsDescendingSort&) =
       delete;
 

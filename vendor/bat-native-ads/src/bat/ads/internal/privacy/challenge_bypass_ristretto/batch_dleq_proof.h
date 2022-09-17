@@ -34,8 +34,8 @@ class BatchDLEQProof {
                  const std::vector<SignedToken>& signed_tokens,
                  const SigningKey& signing_key);
 
-  BatchDLEQProof(const BatchDLEQProof& info) = delete;
-  BatchDLEQProof& operator=(const BatchDLEQProof& info) = delete;
+  BatchDLEQProof(const BatchDLEQProof& other) = delete;
+  BatchDLEQProof& operator=(const BatchDLEQProof& other) = delete;
 
   BatchDLEQProof(BatchDLEQProof&& other) noexcept = delete;
   BatchDLEQProof& operator=(BatchDLEQProof&& other) noexcept = delete;

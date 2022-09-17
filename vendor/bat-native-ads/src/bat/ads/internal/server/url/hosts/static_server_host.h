@@ -16,8 +16,8 @@ class StaticServerHost final : public ServerHostInterface {
  public:
   StaticServerHost();
 
-  StaticServerHost(const StaticServerHost& info) = delete;
-  StaticServerHost& operator=(const StaticServerHost& info) = delete;
+  StaticServerHost(const StaticServerHost& other) = delete;
+  StaticServerHost& operator=(const StaticServerHost& other) = delete;
 
   StaticServerHost(StaticServerHost&& other) noexcept = delete;
   StaticServerHost& operator=(StaticServerHost&& other) noexcept = delete;

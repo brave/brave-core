@@ -14,8 +14,8 @@ class AscendingHistorySort final : public HistorySortInterface {
  public:
   AscendingHistorySort();
 
-  AscendingHistorySort(const AscendingHistorySort&) = delete;
-  AscendingHistorySort& operator=(const AscendingHistorySort&) = delete;
+  AscendingHistorySort(const AscendingHistorySort& other) = delete;
+  AscendingHistorySort& operator=(const AscendingHistorySort& other) = delete;
 
   AscendingHistorySort(AscendingHistorySort&& other) noexcept = delete;
   AscendingHistorySort& operator=(AscendingHistorySort&& other) noexcept =

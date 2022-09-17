@@ -16,9 +16,10 @@ class UnblindedTokensPermissionRule final : public PermissionRuleInterface {
  public:
   UnblindedTokensPermissionRule();
 
-  UnblindedTokensPermissionRule(const UnblindedTokensPermissionRule&) = delete;
+  UnblindedTokensPermissionRule(const UnblindedTokensPermissionRule& other) =
+      delete;
   UnblindedTokensPermissionRule& operator=(
-      const UnblindedTokensPermissionRule&) = delete;
+      const UnblindedTokensPermissionRule& other) = delete;
 
   UnblindedTokensPermissionRule(
       UnblindedTokensPermissionRule&& other) noexcept = delete;

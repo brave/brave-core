@@ -19,8 +19,8 @@ class Conversions final {
  public:
   Conversions();
 
-  Conversions(const Conversions& info) = delete;
-  Conversions& operator=(const Conversions& info) = delete;
+  Conversions(const Conversions& other) = delete;
+  Conversions& operator=(const Conversions& other) = delete;
 
   Conversions(Conversions&& other) noexcept = delete;
   Conversions& operator=(Conversions&& other) noexcept = delete;

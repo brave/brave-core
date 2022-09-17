@@ -16,8 +16,8 @@ class CashDeposit final : public DepositInterface {
  public:
   CashDeposit();
 
-  CashDeposit(const CashDeposit&) = delete;
-  CashDeposit& operator=(const CashDeposit&) = delete;
+  CashDeposit(const CashDeposit& other) = delete;
+  CashDeposit& operator=(const CashDeposit& other) = delete;
 
   CashDeposit(CashDeposit&& other) noexcept = delete;
   CashDeposit& operator=(CashDeposit&& other) noexcept = delete;

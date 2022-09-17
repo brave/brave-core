@@ -16,8 +16,9 @@ class CatalogIdDiagnosticEntry final : public DiagnosticEntryInterface {
  public:
   CatalogIdDiagnosticEntry();
 
-  CatalogIdDiagnosticEntry(const CatalogIdDiagnosticEntry&) = delete;
-  CatalogIdDiagnosticEntry& operator=(const CatalogIdDiagnosticEntry&) = delete;
+  CatalogIdDiagnosticEntry(const CatalogIdDiagnosticEntry& other) = delete;
+  CatalogIdDiagnosticEntry& operator=(const CatalogIdDiagnosticEntry& other) =
+      delete;
 
   CatalogIdDiagnosticEntry(CatalogIdDiagnosticEntry&& other) noexcept = delete;
   CatalogIdDiagnosticEntry& operator=(

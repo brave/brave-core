@@ -14,8 +14,8 @@ class PermissionRules final : public PermissionRulesBase {
  public:
   PermissionRules();
 
-  PermissionRules(const PermissionRules&) = delete;
-  PermissionRules& operator=(const PermissionRules&) = delete;
+  PermissionRules(const PermissionRules& other) = delete;
+  PermissionRules& operator=(const PermissionRules& other) = delete;
 
   PermissionRules(PermissionRules&& other) noexcept = delete;
   PermissionRules& operator=(PermissionRules&& other) noexcept = delete;

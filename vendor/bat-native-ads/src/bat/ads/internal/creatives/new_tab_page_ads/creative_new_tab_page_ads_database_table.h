@@ -42,8 +42,8 @@ class CreativeNewTabPageAds final : public TableInterface {
  public:
   CreativeNewTabPageAds();
 
-  CreativeNewTabPageAds(const CreativeNewTabPageAds&) = delete;
-  CreativeNewTabPageAds& operator=(const CreativeNewTabPageAds&) = delete;
+  CreativeNewTabPageAds(const CreativeNewTabPageAds& other) = delete;
+  CreativeNewTabPageAds& operator=(const CreativeNewTabPageAds& other) = delete;
 
   CreativeNewTabPageAds(CreativeNewTabPageAds&& other) noexcept = delete;
   CreativeNewTabPageAds& operator=(CreativeNewTabPageAds&& other) noexcept =

@@ -15,8 +15,8 @@ namespace ads {
 
 class PlatformHelperWin final : public PlatformHelper {
  public:
-  PlatformHelperWin(const PlatformHelperWin&) = delete;
-  PlatformHelperWin& operator=(const PlatformHelperWin&) = delete;
+  PlatformHelperWin(const PlatformHelperWin& other) = delete;
+  PlatformHelperWin& operator=(const PlatformHelperWin& other) = delete;
 
   PlatformHelperWin(PlatformHelperWin&& other) noexcept = delete;
   PlatformHelperWin& operator=(PlatformHelperWin&& other) noexcept = delete;

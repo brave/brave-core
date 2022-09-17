@@ -16,8 +16,8 @@ namespace ads {
 struct FlaggedAdInfo final {
   FlaggedAdInfo();
 
-  FlaggedAdInfo(const FlaggedAdInfo& info);
-  FlaggedAdInfo& operator=(const FlaggedAdInfo& info);
+  FlaggedAdInfo(const FlaggedAdInfo& other);
+  FlaggedAdInfo& operator=(const FlaggedAdInfo& other);
 
   FlaggedAdInfo(FlaggedAdInfo&& other) noexcept;
   FlaggedAdInfo& operator=(FlaggedAdInfo&& other) noexcept;

@@ -21,7 +21,7 @@ class GetSubdivisionUrlRequestBuilder final
   GetSubdivisionUrlRequestBuilder(const GetSubdivisionUrlRequestBuilder&) =
       delete;
   GetSubdivisionUrlRequestBuilder& operator=(
-      const GetSubdivisionUrlRequestBuilder&) = delete;
+      const GetSubdivisionUrlRequestBuilder& other) = delete;
 
   GetSubdivisionUrlRequestBuilder(
       GetSubdivisionUrlRequestBuilder&& other) noexcept = delete;

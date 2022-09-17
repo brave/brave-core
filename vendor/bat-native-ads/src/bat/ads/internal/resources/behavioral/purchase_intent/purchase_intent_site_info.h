@@ -19,8 +19,8 @@ struct PurchaseIntentSiteInfo final {
                          const GURL& url_netloc,
                          uint16_t weight);
 
-  PurchaseIntentSiteInfo(const PurchaseIntentSiteInfo& info);
-  PurchaseIntentSiteInfo& operator=(const PurchaseIntentSiteInfo& info);
+  PurchaseIntentSiteInfo(const PurchaseIntentSiteInfo& other);
+  PurchaseIntentSiteInfo& operator=(const PurchaseIntentSiteInfo& other);
 
   PurchaseIntentSiteInfo(PurchaseIntentSiteInfo&& other) noexcept;
   PurchaseIntentSiteInfo& operator=(PurchaseIntentSiteInfo&& other) noexcept;

@@ -16,8 +16,8 @@ namespace ads {
 struct SavedAdInfo final {
   SavedAdInfo();
 
-  SavedAdInfo(const SavedAdInfo& info);
-  SavedAdInfo& operator=(const SavedAdInfo& info);
+  SavedAdInfo(const SavedAdInfo& other);
+  SavedAdInfo& operator=(const SavedAdInfo& other);
 
   SavedAdInfo(SavedAdInfo&& other) noexcept;
   SavedAdInfo& operator=(SavedAdInfo&& other) noexcept;

@@ -18,9 +18,9 @@ struct CreativeInlineContentAdInfo final : CreativeAdInfo {
   CreativeInlineContentAdInfo();
   explicit CreativeInlineContentAdInfo(const CreativeAdInfo& creative_ad);
 
-  CreativeInlineContentAdInfo(const CreativeInlineContentAdInfo& info);
+  CreativeInlineContentAdInfo(const CreativeInlineContentAdInfo& other);
   CreativeInlineContentAdInfo& operator=(
-      const CreativeInlineContentAdInfo& info);
+      const CreativeInlineContentAdInfo& other);
 
   CreativeInlineContentAdInfo(CreativeInlineContentAdInfo&& other) noexcept;
   CreativeInlineContentAdInfo& operator=(

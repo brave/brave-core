@@ -20,8 +20,8 @@ class TokenGenerator : public TokenGeneratorInterface {
  public:
   TokenGenerator();
 
-  TokenGenerator(const TokenGenerator&) = delete;
-  TokenGenerator& operator=(const TokenGenerator&) = delete;
+  TokenGenerator(const TokenGenerator& other) = delete;
+  TokenGenerator& operator=(const TokenGenerator& other) = delete;
 
   TokenGenerator(TokenGenerator&& other) noexcept = delete;
   TokenGenerator& operator=(TokenGenerator&& other) noexcept = delete;

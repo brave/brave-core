@@ -20,7 +20,8 @@ class ConfirmationUserDataBuilder final : public UserDataBuilderInterface {
                               const std::string& creative_instance_id,
                               const ConfirmationType& confirmation_type);
 
-  ConfirmationUserDataBuilder(const ConfirmationUserDataBuilder&) = delete;
+  ConfirmationUserDataBuilder(const ConfirmationUserDataBuilder& other) =
+      delete;
   ConfirmationUserDataBuilder& operator=(const ConfirmationUserDataBuilder&) =
       delete;
 

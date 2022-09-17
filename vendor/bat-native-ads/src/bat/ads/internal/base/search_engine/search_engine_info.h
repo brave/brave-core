@@ -16,8 +16,8 @@ struct SearchEngineInfo final {
                    const std::string& result_page_url_pattern,
                    const std::string& search_term_query_key);
 
-  SearchEngineInfo(const SearchEngineInfo& info);
-  SearchEngineInfo& operator=(const SearchEngineInfo& info);
+  SearchEngineInfo(const SearchEngineInfo& other);
+  SearchEngineInfo& operator=(const SearchEngineInfo& other);
 
   SearchEngineInfo(SearchEngineInfo&& other) noexcept;
   SearchEngineInfo& operator=(SearchEngineInfo&& other) noexcept;

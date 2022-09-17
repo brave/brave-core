@@ -14,9 +14,9 @@ struct VerifiableConversionEnvelopeInfo final {
   VerifiableConversionEnvelopeInfo();
 
   VerifiableConversionEnvelopeInfo(
-      const VerifiableConversionEnvelopeInfo& info);
+      const VerifiableConversionEnvelopeInfo& other);
   VerifiableConversionEnvelopeInfo& operator=(
-      const VerifiableConversionEnvelopeInfo& info);
+      const VerifiableConversionEnvelopeInfo& other);
 
   VerifiableConversionEnvelopeInfo(
       VerifiableConversionEnvelopeInfo&& other) noexcept;

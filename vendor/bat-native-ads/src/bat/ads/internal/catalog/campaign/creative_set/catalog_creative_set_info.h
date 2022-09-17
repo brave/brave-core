@@ -22,8 +22,8 @@ namespace ads {
 struct CatalogCreativeSetInfo final {
   CatalogCreativeSetInfo();
 
-  CatalogCreativeSetInfo(const CatalogCreativeSetInfo& info);
-  CatalogCreativeSetInfo& operator=(const CatalogCreativeSetInfo& info);
+  CatalogCreativeSetInfo(const CatalogCreativeSetInfo& other);
+  CatalogCreativeSetInfo& operator=(const CatalogCreativeSetInfo& other);
 
   CatalogCreativeSetInfo(CatalogCreativeSetInfo&& other) noexcept;
   CatalogCreativeSetInfo& operator=(CatalogCreativeSetInfo&& other) noexcept;

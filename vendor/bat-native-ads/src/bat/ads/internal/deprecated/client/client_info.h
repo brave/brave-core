@@ -21,8 +21,8 @@ namespace ads {
 struct ClientInfo final {
   ClientInfo();
 
-  ClientInfo(const ClientInfo& info);
-  ClientInfo& operator=(const ClientInfo& info);
+  ClientInfo(const ClientInfo& other);
+  ClientInfo& operator=(const ClientInfo& other);
 
   ClientInfo(ClientInfo&& other) noexcept;
   ClientInfo& operator=(ClientInfo&& other) noexcept;

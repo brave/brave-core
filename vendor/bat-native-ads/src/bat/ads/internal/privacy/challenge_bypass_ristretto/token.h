@@ -26,8 +26,8 @@ class Token {
   Token();
   explicit Token(const std::string& token_base64);
 
-  Token(const Token& info);
-  Token& operator=(const Token& info);
+  Token(const Token& other);
+  Token& operator=(const Token& other);
 
   Token(Token&& other) noexcept;
   Token& operator=(Token&& other) noexcept;

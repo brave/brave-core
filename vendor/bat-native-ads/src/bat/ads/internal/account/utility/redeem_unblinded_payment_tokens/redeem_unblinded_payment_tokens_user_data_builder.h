@@ -18,9 +18,9 @@ class RedeemUnblindedPaymentTokensUserDataBuilder final
       const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens);
 
   RedeemUnblindedPaymentTokensUserDataBuilder(
-      const RedeemUnblindedPaymentTokensUserDataBuilder&) = delete;
+      const RedeemUnblindedPaymentTokensUserDataBuilder& other) = delete;
   RedeemUnblindedPaymentTokensUserDataBuilder& operator=(
-      const RedeemUnblindedPaymentTokensUserDataBuilder&) = delete;
+      const RedeemUnblindedPaymentTokensUserDataBuilder& other) = delete;
 
   RedeemUnblindedPaymentTokensUserDataBuilder(
       RedeemUnblindedPaymentTokensUserDataBuilder&& other) noexcept = delete;

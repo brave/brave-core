@@ -19,8 +19,8 @@ class Segments final : public TableInterface {
  public:
   Segments();
 
-  Segments(const Segments&) = delete;
-  Segments& operator=(const Segments&) = delete;
+  Segments(const Segments& other) = delete;
+  Segments& operator=(const Segments& other) = delete;
 
   Segments(Segments&& other) noexcept = delete;
   Segments& operator=(Segments&& other) noexcept = delete;

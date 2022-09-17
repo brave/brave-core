@@ -16,9 +16,9 @@ struct CatalogInlineContentAdPayloadInfo final {
   CatalogInlineContentAdPayloadInfo();
 
   CatalogInlineContentAdPayloadInfo(
-      const CatalogInlineContentAdPayloadInfo& info);
+      const CatalogInlineContentAdPayloadInfo& other);
   CatalogInlineContentAdPayloadInfo& operator=(
-      const CatalogInlineContentAdPayloadInfo& info);
+      const CatalogInlineContentAdPayloadInfo& other);
 
   CatalogInlineContentAdPayloadInfo(
       CatalogInlineContentAdPayloadInfo&& other) noexcept;

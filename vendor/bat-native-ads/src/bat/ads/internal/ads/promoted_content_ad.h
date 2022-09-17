@@ -28,8 +28,8 @@ class PromotedContentAd final
  public:
   PromotedContentAd(Account* account, Transfer* transfer);
 
-  PromotedContentAd(const PromotedContentAd&) = delete;
-  PromotedContentAd& operator=(const PromotedContentAd&) = delete;
+  PromotedContentAd(const PromotedContentAd& other) = delete;
+  PromotedContentAd& operator=(const PromotedContentAd& other) = delete;
 
   PromotedContentAd(PromotedContentAd&& other) noexcept = delete;
   PromotedContentAd& operator=(PromotedContentAd&& other) noexcept = delete;

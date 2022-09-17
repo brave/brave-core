@@ -13,8 +13,8 @@ namespace ads {
 struct VerifiableConversionInfo final {
   VerifiableConversionInfo();
 
-  VerifiableConversionInfo(const VerifiableConversionInfo& info);
-  VerifiableConversionInfo& operator=(const VerifiableConversionInfo& info);
+  VerifiableConversionInfo(const VerifiableConversionInfo& other);
+  VerifiableConversionInfo& operator=(const VerifiableConversionInfo& other);
 
   VerifiableConversionInfo(VerifiableConversionInfo&& other) noexcept;
   VerifiableConversionInfo& operator=(

@@ -16,7 +16,7 @@ class DoNotDisturbPermissionRule final : public PermissionRuleInterface {
  public:
   DoNotDisturbPermissionRule();
 
-  DoNotDisturbPermissionRule(const DoNotDisturbPermissionRule&) = delete;
+  DoNotDisturbPermissionRule(const DoNotDisturbPermissionRule& other) = delete;
   DoNotDisturbPermissionRule& operator=(const DoNotDisturbPermissionRule&) =
       delete;
 

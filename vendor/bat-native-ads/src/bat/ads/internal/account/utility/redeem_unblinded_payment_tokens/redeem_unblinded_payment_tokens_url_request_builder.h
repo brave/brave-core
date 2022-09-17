@@ -28,9 +28,9 @@ class RedeemUnblindedPaymentTokensUrlRequestBuilder final
       const base::Value::Dict& user_data);
 
   RedeemUnblindedPaymentTokensUrlRequestBuilder(
-      const RedeemUnblindedPaymentTokensUrlRequestBuilder&) = delete;
+      const RedeemUnblindedPaymentTokensUrlRequestBuilder& other) = delete;
   RedeemUnblindedPaymentTokensUrlRequestBuilder& operator=(
-      const RedeemUnblindedPaymentTokensUrlRequestBuilder&) = delete;
+      const RedeemUnblindedPaymentTokensUrlRequestBuilder& other) = delete;
 
   RedeemUnblindedPaymentTokensUrlRequestBuilder(
       RedeemUnblindedPaymentTokensUrlRequestBuilder&& other) noexcept = delete;

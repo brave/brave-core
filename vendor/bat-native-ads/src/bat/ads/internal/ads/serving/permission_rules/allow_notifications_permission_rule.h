@@ -19,7 +19,7 @@ class AllowNotificationsPermissionRule final : public PermissionRuleInterface {
   AllowNotificationsPermissionRule(const AllowNotificationsPermissionRule&) =
       delete;
   AllowNotificationsPermissionRule& operator=(
-      const AllowNotificationsPermissionRule&) = delete;
+      const AllowNotificationsPermissionRule& other) = delete;
 
   AllowNotificationsPermissionRule(
       AllowNotificationsPermissionRule&& other) noexcept = delete;

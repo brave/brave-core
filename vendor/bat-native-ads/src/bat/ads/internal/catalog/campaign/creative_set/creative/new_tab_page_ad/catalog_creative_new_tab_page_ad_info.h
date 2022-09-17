@@ -16,9 +16,9 @@ namespace ads {
 struct CatalogCreativeNewTabPageAdInfo final : CatalogCreativeInfo {
   CatalogCreativeNewTabPageAdInfo();
 
-  CatalogCreativeNewTabPageAdInfo(const CatalogCreativeNewTabPageAdInfo& info);
+  CatalogCreativeNewTabPageAdInfo(const CatalogCreativeNewTabPageAdInfo& other);
   CatalogCreativeNewTabPageAdInfo& operator=(
-      const CatalogCreativeNewTabPageAdInfo& info);
+      const CatalogCreativeNewTabPageAdInfo& other);
 
   CatalogCreativeNewTabPageAdInfo(
       CatalogCreativeNewTabPageAdInfo&& other) noexcept;

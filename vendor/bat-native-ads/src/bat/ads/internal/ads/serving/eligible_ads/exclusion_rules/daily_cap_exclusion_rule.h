@@ -20,8 +20,8 @@ class DailyCapExclusionRule final
  public:
   explicit DailyCapExclusionRule(const AdEventList& ad_events);
 
-  DailyCapExclusionRule(const DailyCapExclusionRule&) = delete;
-  DailyCapExclusionRule& operator=(const DailyCapExclusionRule&) = delete;
+  DailyCapExclusionRule(const DailyCapExclusionRule& other) = delete;
+  DailyCapExclusionRule& operator=(const DailyCapExclusionRule& other) = delete;
 
   DailyCapExclusionRule(DailyCapExclusionRule&& other) noexcept = delete;
   DailyCapExclusionRule& operator=(DailyCapExclusionRule&& other) noexcept =

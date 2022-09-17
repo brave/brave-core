@@ -18,8 +18,8 @@ class AdEventViewed final : public AdEventInterface<PromotedContentAdInfo> {
  public:
   AdEventViewed();
 
-  AdEventViewed(const AdEventViewed&) = delete;
-  AdEventViewed& operator=(const AdEventViewed&) = delete;
+  AdEventViewed(const AdEventViewed& other) = delete;
+  AdEventViewed& operator=(const AdEventViewed& other) = delete;
 
   AdEventViewed(AdEventViewed&& other) noexcept = delete;
   AdEventViewed& operator=(AdEventViewed&& other) noexcept = delete;

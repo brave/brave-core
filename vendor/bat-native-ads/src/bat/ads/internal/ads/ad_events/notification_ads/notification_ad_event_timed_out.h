@@ -18,8 +18,8 @@ class AdEventTimedOut final : public AdEventInterface<NotificationAdInfo> {
  public:
   AdEventTimedOut();
 
-  AdEventTimedOut(const AdEventTimedOut&) = delete;
-  AdEventTimedOut& operator=(const AdEventTimedOut&) = delete;
+  AdEventTimedOut(const AdEventTimedOut& other) = delete;
+  AdEventTimedOut& operator=(const AdEventTimedOut& other) = delete;
 
   AdEventTimedOut(AdEventTimedOut&& other) noexcept = delete;
   AdEventTimedOut& operator=(AdEventTimedOut&& other) noexcept = delete;

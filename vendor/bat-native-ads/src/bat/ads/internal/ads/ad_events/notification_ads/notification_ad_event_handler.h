@@ -22,8 +22,8 @@ class EventHandler final : public EventHandlerObserver {
  public:
   EventHandler();
 
-  EventHandler(const EventHandler& info) = delete;
-  EventHandler& operator=(const EventHandler& info) = delete;
+  EventHandler(const EventHandler& other) = delete;
+  EventHandler& operator=(const EventHandler& other) = delete;
 
   EventHandler(EventHandler&& other) noexcept = delete;
   EventHandler& operator=(EventHandler&& other) noexcept = delete;

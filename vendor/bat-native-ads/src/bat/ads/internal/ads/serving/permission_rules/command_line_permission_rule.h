@@ -16,7 +16,7 @@ class CommandLinePermissionRule final : public PermissionRuleInterface {
  public:
   CommandLinePermissionRule();
 
-  CommandLinePermissionRule(const CommandLinePermissionRule&) = delete;
+  CommandLinePermissionRule(const CommandLinePermissionRule& other) = delete;
   CommandLinePermissionRule& operator=(const CommandLinePermissionRule&) =
       delete;
 

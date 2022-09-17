@@ -15,7 +15,7 @@ class ConfirmationHistoryFilter final : public HistoryFilterInterface {
  public:
   ConfirmationHistoryFilter();
 
-  ConfirmationHistoryFilter(const ConfirmationHistoryFilter&) = delete;
+  ConfirmationHistoryFilter(const ConfirmationHistoryFilter& other) = delete;
   ConfirmationHistoryFilter& operator=(const ConfirmationHistoryFilter&) =
       delete;
 

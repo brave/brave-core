@@ -19,8 +19,8 @@ namespace ads {
 struct CreativeAdInfo {
   CreativeAdInfo();
 
-  CreativeAdInfo(const CreativeAdInfo& info);
-  CreativeAdInfo& operator=(const CreativeAdInfo& info);
+  CreativeAdInfo(const CreativeAdInfo& other);
+  CreativeAdInfo& operator=(const CreativeAdInfo& other);
 
   CreativeAdInfo(CreativeAdInfo&& other) noexcept;
   CreativeAdInfo& operator=(CreativeAdInfo&& other) noexcept;

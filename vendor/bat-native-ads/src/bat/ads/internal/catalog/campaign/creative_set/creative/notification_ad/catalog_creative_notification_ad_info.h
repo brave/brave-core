@@ -17,9 +17,9 @@ struct CatalogCreativeNotificationAdInfo final : CatalogCreativeInfo {
   CatalogCreativeNotificationAdInfo();
 
   CatalogCreativeNotificationAdInfo(
-      const CatalogCreativeNotificationAdInfo& info);
+      const CatalogCreativeNotificationAdInfo& other);
   CatalogCreativeNotificationAdInfo& operator=(
-      const CatalogCreativeNotificationAdInfo& info);
+      const CatalogCreativeNotificationAdInfo& other);
 
   CatalogCreativeNotificationAdInfo(
       CatalogCreativeNotificationAdInfo&& other) noexcept;

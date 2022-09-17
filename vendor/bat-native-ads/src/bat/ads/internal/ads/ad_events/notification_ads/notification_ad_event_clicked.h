@@ -18,8 +18,8 @@ class AdEventClicked final : public AdEventInterface<NotificationAdInfo> {
  public:
   AdEventClicked();
 
-  AdEventClicked(const AdEventClicked&) = delete;
-  AdEventClicked& operator=(const AdEventClicked&) = delete;
+  AdEventClicked(const AdEventClicked& other) = delete;
+  AdEventClicked& operator=(const AdEventClicked& other) = delete;
 
   AdEventClicked(AdEventClicked&& other) noexcept = delete;
   AdEventClicked& operator=(AdEventClicked&& other) noexcept = delete;

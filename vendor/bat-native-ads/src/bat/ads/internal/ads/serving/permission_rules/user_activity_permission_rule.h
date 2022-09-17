@@ -16,7 +16,7 @@ class UserActivityPermissionRule final : public PermissionRuleInterface {
  public:
   UserActivityPermissionRule();
 
-  UserActivityPermissionRule(const UserActivityPermissionRule&) = delete;
+  UserActivityPermissionRule(const UserActivityPermissionRule& other) = delete;
   UserActivityPermissionRule& operator=(const UserActivityPermissionRule&) =
       delete;
 

@@ -14,8 +14,9 @@ class ConversionsAscendingSort final : public ConversionsSortInterface {
  public:
   ConversionsAscendingSort();
 
-  ConversionsAscendingSort(const ConversionsAscendingSort&) = delete;
-  ConversionsAscendingSort& operator=(const ConversionsAscendingSort&) = delete;
+  ConversionsAscendingSort(const ConversionsAscendingSort& other) = delete;
+  ConversionsAscendingSort& operator=(const ConversionsAscendingSort& other) =
+      delete;
 
   ConversionsAscendingSort(ConversionsAscendingSort&& other) noexcept = delete;
   ConversionsAscendingSort& operator=(

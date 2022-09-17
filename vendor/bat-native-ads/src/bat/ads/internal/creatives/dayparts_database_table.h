@@ -19,8 +19,8 @@ class Dayparts final : public TableInterface {
  public:
   Dayparts();
 
-  Dayparts(const Dayparts&) = delete;
-  Dayparts& operator=(const Dayparts&) = delete;
+  Dayparts(const Dayparts& other) = delete;
+  Dayparts& operator=(const Dayparts& other) = delete;
 
   Dayparts(Dayparts&& other) noexcept = delete;
   Dayparts& operator=(Dayparts&& other) noexcept = delete;

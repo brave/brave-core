@@ -18,7 +18,7 @@ class RedeemUnblindedTokenDelegateMock : public RedeemUnblindedTokenDelegate {
   RedeemUnblindedTokenDelegateMock(const RedeemUnblindedTokenDelegateMock&) =
       delete;
   RedeemUnblindedTokenDelegateMock& operator=(
-      const RedeemUnblindedTokenDelegateMock&) = delete;
+      const RedeemUnblindedTokenDelegateMock& other) = delete;
 
   RedeemUnblindedTokenDelegateMock(
       RedeemUnblindedTokenDelegateMock&& other) noexcept = delete;

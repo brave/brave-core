@@ -41,8 +41,8 @@ class Serving final : public PrefManagerObserver {
   Serving(geographic::SubdivisionTargeting* subdivision_targeting,
           resource::AntiTargeting* anti_targeting_resource);
 
-  Serving(const Serving&) = delete;
-  Serving& operator=(const Serving&) = delete;
+  Serving(const Serving& other) = delete;
+  Serving& operator=(const Serving& other) = delete;
 
   Serving(Serving&& other) noexcept = delete;
   Serving& operator=(Serving&& other) noexcept = delete;

@@ -20,8 +20,8 @@ class Linear final {
 
   explicit Linear(const std::string& model);
 
-  Linear(const Linear& info);
-  Linear& operator=(const Linear& info);
+  Linear(const Linear& other);
+  Linear& operator=(const Linear& other);
 
   Linear(Linear&& other) noexcept;
   Linear& operator=(Linear&& other) noexcept;

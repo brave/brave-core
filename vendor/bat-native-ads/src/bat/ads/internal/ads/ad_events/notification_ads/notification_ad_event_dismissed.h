@@ -18,8 +18,8 @@ class AdEventDismissed final : public AdEventInterface<NotificationAdInfo> {
  public:
   AdEventDismissed();
 
-  AdEventDismissed(const AdEventDismissed&) = delete;
-  AdEventDismissed& operator=(const AdEventDismissed&) = delete;
+  AdEventDismissed(const AdEventDismissed& other) = delete;
+  AdEventDismissed& operator=(const AdEventDismissed& other) = delete;
 
   AdEventDismissed(AdEventDismissed&& other) noexcept = delete;
   AdEventDismissed& operator=(AdEventDismissed&& other) noexcept = delete;

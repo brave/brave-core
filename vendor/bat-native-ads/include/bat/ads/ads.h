@@ -39,8 +39,8 @@ class ADS_EXPORT Ads {
  public:
   Ads() = default;
 
-  Ads(const Ads&) = delete;
-  Ads& operator=(const Ads&) = delete;
+  Ads(const Ads& other) = delete;
+  Ads& operator=(const Ads& other) = delete;
 
   Ads(Ads&& other) noexcept = delete;
   Ads& operator=(Ads&& other) noexcept = delete;

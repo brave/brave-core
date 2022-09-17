@@ -17,8 +17,9 @@ class IssuersUrlRequestBuilder : public UrlRequestBuilderInterface {
  public:
   IssuersUrlRequestBuilder();
 
-  IssuersUrlRequestBuilder(const IssuersUrlRequestBuilder&) = delete;
-  IssuersUrlRequestBuilder& operator=(const IssuersUrlRequestBuilder&) = delete;
+  IssuersUrlRequestBuilder(const IssuersUrlRequestBuilder& other) = delete;
+  IssuersUrlRequestBuilder& operator=(const IssuersUrlRequestBuilder& other) =
+      delete;
 
   IssuersUrlRequestBuilder(IssuersUrlRequestBuilder&& other) noexcept = delete;
   IssuersUrlRequestBuilder& operator=(

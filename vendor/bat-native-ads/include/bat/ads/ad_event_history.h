@@ -22,8 +22,8 @@ class ADS_EXPORT AdEventHistory final {
  public:
   AdEventHistory();
 
-  AdEventHistory(const AdEventHistory& info) = delete;
-  AdEventHistory& operator=(const AdEventHistory& info) = delete;
+  AdEventHistory(const AdEventHistory& other) = delete;
+  AdEventHistory& operator=(const AdEventHistory& other) = delete;
 
   AdEventHistory(AdEventHistory&& other) noexcept = delete;
   AdEventHistory& operator=(AdEventHistory&& other) noexcept = delete;

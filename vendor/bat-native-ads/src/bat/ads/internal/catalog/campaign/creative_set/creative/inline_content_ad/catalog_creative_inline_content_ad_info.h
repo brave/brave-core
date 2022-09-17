@@ -17,9 +17,9 @@ struct CatalogCreativeInlineContentAdInfo final : CatalogCreativeInfo {
   CatalogCreativeInlineContentAdInfo();
 
   CatalogCreativeInlineContentAdInfo(
-      const CatalogCreativeInlineContentAdInfo& info);
+      const CatalogCreativeInlineContentAdInfo& other);
   CatalogCreativeInlineContentAdInfo& operator=(
-      const CatalogCreativeInlineContentAdInfo& info);
+      const CatalogCreativeInlineContentAdInfo& other);
 
   CatalogCreativeInlineContentAdInfo(
       CatalogCreativeInlineContentAdInfo&& other) noexcept;

@@ -23,8 +23,8 @@ class PublicKey {
   explicit PublicKey(const std::string& public_key_base64);
   explicit PublicKey(const challenge_bypass_ristretto::PublicKey& public_key);
 
-  PublicKey(const PublicKey& info);
-  PublicKey& operator=(const PublicKey& info);
+  PublicKey(const PublicKey& other);
+  PublicKey& operator=(const PublicKey& other);
 
   PublicKey(PublicKey&& other) noexcept;
   PublicKey& operator=(PublicKey&& other) noexcept;

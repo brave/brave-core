@@ -20,8 +20,9 @@ class DismissedExclusionRule final
  public:
   explicit DismissedExclusionRule(const AdEventList& ad_events);
 
-  DismissedExclusionRule(const DismissedExclusionRule&) = delete;
-  DismissedExclusionRule& operator=(const DismissedExclusionRule&) = delete;
+  DismissedExclusionRule(const DismissedExclusionRule& other) = delete;
+  DismissedExclusionRule& operator=(const DismissedExclusionRule& other) =
+      delete;
 
   DismissedExclusionRule(DismissedExclusionRule&& other) noexcept = delete;
   DismissedExclusionRule& operator=(DismissedExclusionRule&& other) noexcept =

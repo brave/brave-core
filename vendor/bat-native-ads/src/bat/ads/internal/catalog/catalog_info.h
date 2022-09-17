@@ -16,8 +16,8 @@ namespace ads {
 struct CatalogInfo final {
   CatalogInfo();
 
-  CatalogInfo(const CatalogInfo& info);
-  CatalogInfo& operator=(const CatalogInfo& info);
+  CatalogInfo(const CatalogInfo& other);
+  CatalogInfo& operator=(const CatalogInfo& other);
 
   CatalogInfo(CatalogInfo&& other) noexcept;
   CatalogInfo& operator=(CatalogInfo&& other) noexcept;

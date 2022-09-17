@@ -19,8 +19,8 @@ namespace ads {
 struct ADS_EXPORT AdContentInfo final {
   AdContentInfo();
 
-  AdContentInfo(const AdContentInfo& info);
-  AdContentInfo& operator=(const AdContentInfo& info);
+  AdContentInfo(const AdContentInfo& other);
+  AdContentInfo& operator=(const AdContentInfo& other);
 
   AdContentInfo(AdContentInfo&& other) noexcept;
   AdContentInfo& operator=(AdContentInfo&& other) noexcept;

@@ -21,9 +21,9 @@ class FetchPaymentTokenUrlRequestBuilder final
       const ConfirmationInfo& confirmation);
 
   FetchPaymentTokenUrlRequestBuilder(
-      const FetchPaymentTokenUrlRequestBuilder&) = delete;
+      const FetchPaymentTokenUrlRequestBuilder& other) = delete;
   FetchPaymentTokenUrlRequestBuilder operator=(
-      const FetchPaymentTokenUrlRequestBuilder&) = delete;
+      const FetchPaymentTokenUrlRequestBuilder& other) = delete;
 
   FetchPaymentTokenUrlRequestBuilder(
       FetchPaymentTokenUrlRequestBuilder&& other) noexcept = delete;

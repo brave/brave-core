@@ -31,8 +31,8 @@ class DLEQProof {
             const SignedToken& signed_token,
             const SigningKey& signing_key);
 
-  DLEQProof(const DLEQProof& info) = delete;
-  DLEQProof& operator=(const DLEQProof& info) = delete;
+  DLEQProof(const DLEQProof& other) = delete;
+  DLEQProof& operator=(const DLEQProof& other) = delete;
 
   DLEQProof(DLEQProof&& other) noexcept = delete;
   DLEQProof& operator=(DLEQProof&& other) noexcept = delete;

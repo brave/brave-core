@@ -26,8 +26,8 @@ class Deposits final : public TableInterface {
  public:
   Deposits();
 
-  Deposits(const Deposits&) = delete;
-  Deposits& operator=(const Deposits&) = delete;
+  Deposits(const Deposits& other) = delete;
+  Deposits& operator=(const Deposits& other) = delete;
 
   Deposits(Deposits&& other) noexcept = delete;
   Deposits& operator=(Deposits&& other) noexcept = delete;
