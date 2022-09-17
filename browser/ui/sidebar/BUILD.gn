@@ -7,6 +7,8 @@ import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 source_set("sidebar") {
+  assert(enable_sidebar)
+
   # Set due to //chrome/browser and //chrome/browser/ui circular dependencies.
   # TODO(simonhong): Create issue for removing this. Remove when XXXXXXX is resolved
   check_includes = false

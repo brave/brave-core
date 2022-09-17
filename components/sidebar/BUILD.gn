@@ -6,6 +6,8 @@
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 
 static_library("sidebar") {
+  assert(enable_sidebar)
+
   sources = [
     "constants.h",
     "pref_names.h",

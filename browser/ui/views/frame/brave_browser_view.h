@@ -13,7 +13,6 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
-#include "brave/components/sidebar/buildflags/buildflags.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -23,11 +22,6 @@
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/ui/webui/speedreader/speedreader_panel_ui.h"
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
-#endif
-
-#if BUILDFLAG(ENABLE_SIDEBAR)
-class ContentsLayoutManager;
-class SidebarContainerView;
 #endif
 
 namespace speedreader {
@@ -40,6 +34,8 @@ class WebContents;
 }  // namespace content
 
 class BraveBrowser;
+class ContentsLayoutManager;
+class SidebarContainerView;
 class WalletButton;
 
 class BraveBrowserView : public BrowserView {
@@ -71,10 +67,9 @@ class BraveBrowserView : public BrowserView {
   gfx::Rect GetShieldsBubbleRect() override;
   void ShowSpeedreaderWebUIBubble(Browser* browser) override;
   void HideSpeedreaderWebUIBubble() override;
+  bool GetTabStripVisible() const override;
 
-#if BUILDFLAG(ENABLE_SIDEBAR)
   views::View* sidebar_host_view() { return sidebar_host_view_; }
-#endif
 
  private:
   class TabCyclingEventHandler;
@@ -101,12 +96,11 @@ class BraveBrowserView : public BrowserView {
   void OnWindowClosingConfirmResponse(bool allowed_to_close);
   BraveBrowser* GetBraveBrowser() const;
 
-#if BUILDFLAG(ENABLE_SIDEBAR)
   sidebar::Sidebar* InitSidebar() override;
 
   raw_ptr<SidebarContainerView> sidebar_container_view_ = nullptr;
   raw_ptr<views::View> sidebar_host_view_ = nullptr;
-#endif
+  raw_ptr<views::View> vertical_tabs_container_ = nullptr;
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   BraveVPNPanelController vpn_panel_controller_{this};

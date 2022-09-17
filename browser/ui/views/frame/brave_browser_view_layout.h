@@ -11,10 +11,12 @@
 class BraveBrowserViewLayout : public BrowserViewLayout {
  public:
   using BrowserViewLayout::BrowserViewLayout;
+  ~BraveBrowserViewLayout() override;
 
   // BrowserViewLayout overrides:
   void LayoutSidePanelView(views::View* side_panel,
                            gfx::Rect& contents_container_bounds) override;
+  int LayoutTabStripRegion(int top) override;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_VIEW_LAYOUT_H_

@@ -6,13 +6,15 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_STRIP_H_
 #define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_STRIP_H_
 
+#include <memory>
+
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 
 class Tab;
-
 class BraveTabStrip : public TabStrip {
  public:
-  using TabStrip::TabStrip;
+  METADATA_HEADER(BraveTabStrip);
+  explicit BraveTabStrip(std::unique_ptr<TabStripController> controller);
   ~BraveTabStrip() override;
   BraveTabStrip(const BraveTabStrip&) = delete;
   BraveTabStrip& operator=(const BraveTabStrip&) = delete;

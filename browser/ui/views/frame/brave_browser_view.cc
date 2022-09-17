@@ -12,10 +12,15 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/brave_shields/cookie_list_opt_in_bubble_host.h"
+#include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
+#include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
+#include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
+#include "brave/browser/ui/views/tabs/features.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
@@ -25,6 +30,7 @@
 #include "brave/components/translate/core/common/buildflags.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
+#include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
@@ -33,18 +39,11 @@
 #include "ui/events/event_observer.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/event_monitor.h"
+#include "ui/views/layout/fill_layout.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
 #include "brave/components/brave_vpn/pref_names.h"
-#endif
-
-#if BUILDFLAG(ENABLE_SIDEBAR)
-#include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
-#include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
-#include "chrome/browser/ui/views/frame/contents_layout_manager.h"
-#include "ui/views/layout/fill_layout.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPARKLE)
@@ -173,11 +172,14 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
                           base::Unretained(this)));
 #endif
 
-#if BUILDFLAG(ENABLE_SIDEBAR)
+  const bool show_vertical_tabs =
+      browser_->is_type_normal() && tabs::features::ShouldShowVerticalTabs();
+
   // Only normal window (tabbed) should have sidebar.
-  if (!sidebar::CanUseSidebar(browser_.get())) {
+  const bool can_have_sidebar = sidebar::CanUseSidebar(browser_.get());
+
+  if (!show_vertical_tabs && !can_have_sidebar)
     return;
-  }
 
   // Wrap chromium side panel with our sidebar container
   auto original_side_panel = RemoveChildViewT(right_aligned_side_panel_.get());
@@ -186,16 +188,21 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
           GetBraveBrowser(), side_panel_coordinator(),
           std::move(original_side_panel)));
   right_aligned_side_panel_ = sidebar_container_view_->side_panel();
+  if (show_vertical_tabs) {
+    vertical_tabs_container_ = contents_container_->AddChildView(
+        std::make_unique<VerticalTabStripRegionView>(tab_strip_region_view_));
+  }
+
   contents_container_->SetLayoutManager(
       std::make_unique<BraveContentsLayoutManager>(
-          devtools_web_view_, contents_web_view_, sidebar_container_view_));
+          devtools_web_view_, contents_web_view_, sidebar_container_view_,
+          vertical_tabs_container_));
   sidebar_host_view_ = AddChildView(std::make_unique<views::View>());
 
   // Make sure |find_bar_host_view_| is the last child of BrowserView by
   // re-ordering. FindBarHost widgets uses this view as a  kHostViewKey.
   // See the comments of BrowserView::find_bar_host_view().
   ReorderChildView(find_bar_host_view_, -1);
-#endif
 }
 
 void BraveBrowserView::OnPreferenceChanged(const std::string& pref_name) {
@@ -227,14 +234,12 @@ BraveBrowserView::~BraveBrowserView() {
   DCHECK(!tab_cycling_event_handler_);
 }
 
-#if BUILDFLAG(ENABLE_SIDEBAR)
 sidebar::Sidebar* BraveBrowserView::InitSidebar() {
   // Start Sidebar UI initialization.
   DCHECK(sidebar_container_view_);
   sidebar_container_view_->Init();
   return sidebar_container_view_;
 }
-#endif
 
 void BraveBrowserView::ShowBraveVPNBubble() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -271,6 +276,13 @@ gfx::Rect BraveBrowserView::GetShieldsBubbleRect() {
     return gfx::Rect();
 
   return bubble_widget->GetClientAreaBoundsInScreen();
+}
+
+bool BraveBrowserView::GetTabStripVisible() const {
+  if (tabs::features::ShouldShowVerticalTabs())
+    return false;
+
+  return BrowserView::GetTabStripVisible();
 }
 
 void BraveBrowserView::SetStarredState(bool is_starred) {
