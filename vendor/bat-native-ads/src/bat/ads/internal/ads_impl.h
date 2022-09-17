@@ -100,38 +100,40 @@ class AdsImpl final : public Ads,
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
-  void OnChangeLocale(const std::string& locale) override;
+  void OnLocaleDidChange(const std::string& locale) override;
 
-  void OnPrefChanged(const std::string& path) override;
+  void OnPrefDidChange(const std::string& path) override;
 
-  void OnResourceComponentUpdated(const std::string& id) override;
+  void OnDidUpdateResourceComponent(const std::string& id) override;
 
-  void OnHtmlLoaded(int32_t tab_id,
-                    const std::vector<GURL>& redirect_chain,
-                    const std::string& html) override;
-  void OnTextLoaded(int32_t tab_id,
-                    const std::vector<GURL>& redirect_chain,
-                    const std::string& text) override;
+  void OnTabHtmlContentDidChange(int32_t tab_id,
+                                 const std::vector<GURL>& redirect_chain,
+                                 const std::string& html) override;
+  void OnTabTextContentDidChange(int32_t tab_id,
+                                 const std::vector<GURL>& redirect_chain,
+                                 const std::string& text) override;
 
-  void OnIdle() override;
-  void OnUnIdle(base::TimeDelta idle_time, bool was_locked) override;
+  void OnUserDidBecomeIdle() override;
+  void OnUserDidBecomeActive(base::TimeDelta idle_time,
+                             bool screen_was_locked) override;
 
-  void OnUserGesture(int32_t page_transition_type) override;
+  void TriggerUserGestureEvent(int32_t page_transition_type) override;
 
   void OnBrowserDidEnterForeground() override;
   void OnBrowserDidEnterBackground() override;
 
-  void OnMediaPlaying(int32_t tab_id) override;
-  void OnMediaStopped(int32_t tab_id) override;
+  void OnTabDidStartPlayingMedia(int32_t tab_id) override;
+  void OnTabDidStopPlayingMedia(int32_t tab_id) override;
 
-  void OnTabUpdated(int32_t tab_id,
-                    const std::vector<GURL>& redirect_chain,
-                    bool is_active,
-                    bool is_browser_active,
-                    bool is_incognito) override;
-  void OnTabClosed(int32_t tab_id) override;
+  void OnTabDidChange(int32_t tab_id,
+                      const std::vector<GURL>& redirect_chain,
+                      bool is_active,
+                      bool is_browser_active,
+                      bool is_incognito) override;
+  void OnDidCloseTab(int32_t tab_id) override;
 
-  void OnWalletUpdated(const std::string& id, const std::string& seed) override;
+  void OnRewardsWalletDidChange(const std::string& payment_id,
+                                const std::string& seed) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 

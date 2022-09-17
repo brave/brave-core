@@ -347,11 +347,12 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultMaximumIdleTimeWhenDisabled) {
   EXPECT_EQ(expected_maximum_idle_time, maximum_idle_time);
 }
 
-TEST(BatAdsUserActivityFeaturesTest, ShouldDetectWasLocked) {
+TEST(BatAdsUserActivityFeaturesTest, ShouldDetectScreenWasLocked) {
   // Arrange
   base::FieldTrialParams parameters;
-  const char kShouldDetectWasLockedParameter[] = "should_detect_was_locked";
-  parameters[kShouldDetectWasLockedParameter] = "false";
+  const char kShouldDetectScreenWasLockedParameter[] =
+      "should_detect_was_locked";
+  parameters[kShouldDetectScreenWasLockedParameter] = "false";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   enabled_features.emplace_back(kFeature, parameters);
 
@@ -362,14 +363,15 @@ TEST(BatAdsUserActivityFeaturesTest, ShouldDetectWasLocked) {
                                                     disabled_features);
 
   // Act
-  const bool should_detect_was_locked = ShouldDetectWasLocked();
+  const bool should_detect_screen_was_locked = ShouldDetectScreenWasLocked();
 
   // Assert
-  const bool expected_should_detect_was_locked = false;
-  EXPECT_EQ(expected_should_detect_was_locked, should_detect_was_locked);
+  const bool expected_should_detect_screen_was_locked = false;
+  EXPECT_EQ(expected_should_detect_screen_was_locked,
+            should_detect_screen_was_locked);
 }
 
-TEST(BatAdsUserActivityFeaturesTest, DefaultShouldDetectWasLocked) {
+TEST(BatAdsUserActivityFeaturesTest, DefaultShouldDetectScreenWasLocked) {
   // Arrange
   const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
       enabled_features;
@@ -381,14 +383,15 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultShouldDetectWasLocked) {
                                                     disabled_features);
 
   // Act
-  const bool should_detect_was_locked = ShouldDetectWasLocked();
+  const bool should_detect_screen_was_locked = ShouldDetectScreenWasLocked();
 
   // Assert
-  const bool expected_should_detect_was_locked = false;
-  EXPECT_EQ(expected_should_detect_was_locked, should_detect_was_locked);
+  const bool expected_should_detect_screen_was_locked = false;
+  EXPECT_EQ(expected_should_detect_screen_was_locked,
+            should_detect_screen_was_locked);
 }
 
-TEST(BatAdsUserActivityFeaturesTest, ShouldDetectWasLockedWhenDisabled) {
+TEST(BatAdsUserActivityFeaturesTest, ShouldDetectScreenWasLockedWhenDisabled) {
   // Arrange
   const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
       enabled_features;
@@ -401,11 +404,12 @@ TEST(BatAdsUserActivityFeaturesTest, ShouldDetectWasLockedWhenDisabled) {
                                                     disabled_features);
 
   // Act
-  const bool should_detect_was_locked = ShouldDetectWasLocked();
+  const bool should_detect_screen_was_locked = ShouldDetectScreenWasLocked();
 
   // Assert
-  const bool expected_should_detect_was_locked = false;
-  EXPECT_EQ(expected_should_detect_was_locked, should_detect_was_locked);
+  const bool expected_should_detect_screen_was_locked = false;
+  EXPECT_EQ(expected_should_detect_screen_was_locked,
+            should_detect_screen_was_locked);
 }
 
 }  // namespace ads::user_activity::features

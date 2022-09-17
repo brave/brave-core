@@ -63,8 +63,8 @@ void AdsTabHelper::TabUpdated() {
     return;
   }
 
-  ads_service_->OnTabUpdated(tab_id_, redirect_chain_, is_active_,
-                             is_browser_active_);
+  ads_service_->OnTabDidChange(tab_id_, redirect_chain_, is_active_,
+                               is_browser_active_);
 }
 
 void AdsTabHelper::RunIsolatedJavaScript(
@@ -91,7 +91,7 @@ void AdsTabHelper::OnJavaScriptHtmlResult(base::Value value) {
     return;
   }
   const std::string& html = value.GetString();
-  ads_service_->OnHtmlLoaded(tab_id_, redirect_chain_, html);
+  ads_service_->OnTabHtmlContentDidChange(tab_id_, redirect_chain_, html);
 }
 
 void AdsTabHelper::OnJavaScriptTextResult(base::Value value) {
@@ -103,7 +103,7 @@ void AdsTabHelper::OnJavaScriptTextResult(base::Value value) {
     return;
   }
   const std::string& text = value.GetString();
-  ads_service_->OnTextLoaded(tab_id_, redirect_chain_, text);
+  ads_service_->OnTabTextContentDidChange(tab_id_, redirect_chain_, text);
 }
 
 void AdsTabHelper::DidFinishNavigation(
@@ -119,7 +119,7 @@ void AdsTabHelper::DidFinishNavigation(
     const int32_t page_transition =
         static_cast<int32_t>(navigation_handle->GetPageTransition());
 
-    ads_service_->OnUserGesture(page_transition);
+    ads_service_->TriggerUserGestureEvent(page_transition);
   }
 
   redirect_chain_ = navigation_handle->GetRedirectChain();
@@ -171,7 +171,7 @@ void AdsTabHelper::MediaStartedPlaying(const MediaPlayerInfo& video_type,
     return;
   }
 
-  ads_service_->OnMediaStart(tab_id_);
+  ads_service_->OnTabDidStartPlayingMedia(tab_id_);
 }
 
 void AdsTabHelper::MediaStoppedPlaying(
@@ -182,7 +182,7 @@ void AdsTabHelper::MediaStoppedPlaying(
     return;
   }
 
-  ads_service_->OnMediaStop(tab_id_);
+  ads_service_->OnTabDidStopPlayingMedia(tab_id_);
 }
 
 void AdsTabHelper::OnVisibilityChanged(content::Visibility visibility) {
@@ -210,14 +210,14 @@ void AdsTabHelper::OnVisibilityChanged(content::Visibility visibility) {
 
 void AdsTabHelper::WebContentsDestroyed() {
   if (search_result_ad_service_) {
-    search_result_ad_service_->OnTabClosed(tab_id_);
+    search_result_ad_service_->OnDidCloseTab(tab_id_);
   }
 
   if (!ads_service_) {
     return;
   }
 
-  ads_service_->OnTabClosed(tab_id_);
+  ads_service_->OnDidCloseTab(tab_id_);
   ads_service_ = nullptr;
 }
 

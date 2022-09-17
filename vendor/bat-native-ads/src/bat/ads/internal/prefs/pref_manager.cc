@@ -44,7 +44,7 @@ void PrefManager::RemoveObserver(PrefManagerObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void PrefManager::OnPrefChanged(const std::string& path) const {
+void PrefManager::OnPrefDidChange(const std::string& path) const {
   NotifyPrefChanged(path);
 }
 
@@ -52,7 +52,7 @@ void PrefManager::OnPrefChanged(const std::string& path) const {
 
 void PrefManager::NotifyPrefChanged(const std::string& path) const {
   for (PrefManagerObserver& observer : observers_) {
-    observer.OnPrefChanged(path);
+    observer.OnPrefDidChange(path);
   }
 }
 

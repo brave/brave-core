@@ -105,19 +105,19 @@ void NotificationAd::OnBrowserDidEnterBackground() {
   MaybeServeAtRegularIntervals();
 }
 
-void NotificationAd::OnPrefChanged(const std::string& path) {
+void NotificationAd::OnPrefDidChange(const std::string& path) {
   if (path == prefs::kEnabled) {
     MaybeServeAtRegularIntervals();
   }
 }
 
 void NotificationAd::OnUserDidBecomeActive(const base::TimeDelta idle_time,
-                                           const bool was_locked) {
+                                           const bool screen_was_locked) {
   if (!CanServeIfUserIsActive() || !ShouldServe()) {
     return;
   }
 
-  if (WasLocked(was_locked)) {
+  if (MaybeScreenWasLocked(screen_was_locked)) {
     BLOG(1, "Notification ad not served: Screen was locked");
     return;
   }

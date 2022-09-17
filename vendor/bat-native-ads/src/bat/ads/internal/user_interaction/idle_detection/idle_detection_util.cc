@@ -12,8 +12,9 @@
 
 namespace ads {
 
-bool WasLocked(const bool was_locked) {
-  return user_activity::features::ShouldDetectWasLocked() && was_locked;
+bool MaybeScreenWasLocked(const bool screen_was_locked) {
+  return user_activity::features::ShouldDetectScreenWasLocked() &&
+         screen_was_locked;
 }
 
 bool HasExceededMaximumIdleTime(const base::TimeDelta idle_time) {

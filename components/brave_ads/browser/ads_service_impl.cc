@@ -394,7 +394,7 @@ void AdsServiceImpl::OnMigrateConfirmationState(const bool success) {
 
   InitializePrefChangeRegistrar();
 
-  MaybeStartOrStop(/* should_restart */ false);
+  MaybeStartOrStop(/*should_restart*/ false);
 }
 
 void AdsServiceImpl::InitializePrefChangeRegistrar() {
@@ -491,7 +491,7 @@ void AdsServiceImpl::StartBatAdsService() {
 
     bat_ads_service_.set_disconnect_handler(
         base::BindOnce(&AdsServiceImpl::MaybeStartOrStop, AsWeakPtr(),
-                       /* should_restart */ true));
+                       /*should_restart*/ true));
   }
 }
 
@@ -695,8 +695,8 @@ void AdsServiceImpl::OnGetRewardsWallet(
     return;
   }
 
-  bat_ads_->OnWalletUpdated(wallet->payment_id,
-                            base::Base64Encode(wallet->recovery_seed));
+  bat_ads_->OnRewardsWalletDidChange(wallet->payment_id,
+                                     base::Base64Encode(wallet->recovery_seed));
 }
 
 void AdsServiceImpl::OnEnabledPrefChanged() {
@@ -717,7 +717,7 @@ void AdsServiceImpl::OnEnabledPrefChanged() {
   brave_rewards::p3a::UpdateAdsStateOnPreferenceChange(profile_->GetPrefs(),
                                                        ads::prefs::kEnabled);
 
-  MaybeStartOrStop(/* should_restart */ false);
+  MaybeStartOrStop(/*should_restart*/ false);
 }
 
 void AdsServiceImpl::OnIdleTimeThresholdPrefChanged() {
@@ -729,16 +729,16 @@ void AdsServiceImpl::OnWalletBravePrefChanged() {
 }
 
 void AdsServiceImpl::OnBraveTodayOptedInPrefChanged() {
-  MaybeStartOrStop(/* should_restart */ false);
+  MaybeStartOrStop(/*should_restart*/ false);
 }
 
 void AdsServiceImpl::OnNewTabPageShowTodayPrefChanged() {
-  MaybeStartOrStop(/* should_restart */ false);
+  MaybeStartOrStop(/*should_restart*/ false);
 }
 
 void AdsServiceImpl::NotifyPrefChanged(const std::string& path) {
   if (IsBatAdsBound()) {
-    bat_ads_->OnPrefChanged(path);
+    bat_ads_->OnPrefDidChange(path);
   }
 }
 
@@ -767,15 +767,15 @@ void AdsServiceImpl::ProcessIdleState(const ui::IdleState idle_state,
 
   switch (idle_state) {
     case ui::IdleState::IDLE_STATE_ACTIVE: {
-      const bool was_locked =
+      const bool screen_was_locked =
           last_idle_state_ == ui::IdleState::IDLE_STATE_LOCKED;
-      bat_ads_->OnUnIdle(idle_time, was_locked);
+      bat_ads_->OnUserDidBecomeActive(idle_time, screen_was_locked);
       break;
     }
 
     case ui::IdleState::IDLE_STATE_IDLE:
     case ui::IdleState::IDLE_STATE_LOCKED: {
-      bat_ads_->OnIdle();
+      bat_ads_->OnUserDidBecomeIdle();
       break;
     }
 
@@ -1086,93 +1086,96 @@ void AdsServiceImpl::OnNotificationAdClicked(const std::string& placement_id) {
 
 void AdsServiceImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   if (!IsBatAdsBound()) {
-    std::move(callback).Run(/* diagnostics */ absl::nullopt);
+    std::move(callback).Run(/*diagnostics*/ absl::nullopt);
     return;
   }
 
   bat_ads_->GetDiagnostics(std::move(callback));
 }
 
-void AdsServiceImpl::OnChangeLocale(const std::string& locale) {
+void AdsServiceImpl::OnLocaleDidChange(const std::string& locale) {
   if (!IsBatAdsBound()) {
     return;
   }
 
   RegisterResourceComponentsForLocale(locale);
 
-  bat_ads_->OnChangeLocale(locale);
+  bat_ads_->OnLocaleDidChange(locale);
 }
 
-void AdsServiceImpl::OnHtmlLoaded(const SessionID& tab_id,
-                                  const std::vector<GURL>& redirect_chain,
-                                  const std::string& html) {
+void AdsServiceImpl::OnTabHtmlContentDidChange(
+    const SessionID& tab_id,
+    const std::vector<GURL>& redirect_chain,
+    const std::string& html) {
   if (!IsBatAdsBound()) {
     return;
   }
 
-  bat_ads_->OnHtmlLoaded(tab_id.id(), redirect_chain, html);
+  bat_ads_->OnTabHtmlContentDidChange(tab_id.id(), redirect_chain, html);
 }
 
-void AdsServiceImpl::OnTextLoaded(const SessionID& tab_id,
-                                  const std::vector<GURL>& redirect_chain,
-                                  const std::string& text) {
+void AdsServiceImpl::OnTabTextContentDidChange(
+    const SessionID& tab_id,
+    const std::vector<GURL>& redirect_chain,
+    const std::string& text) {
   if (!IsBatAdsBound()) {
     return;
   }
 
-  bat_ads_->OnTextLoaded(tab_id.id(), redirect_chain, text);
+  bat_ads_->OnTabTextContentDidChange(tab_id.id(), redirect_chain, text);
 }
 
-void AdsServiceImpl::OnUserGesture(const int32_t page_transition_type) {
+void AdsServiceImpl::TriggerUserGestureEvent(
+    const int32_t page_transition_type) {
   if (!IsBatAdsBound()) {
     return;
   }
 
-  bat_ads_->OnUserGesture(page_transition_type);
+  bat_ads_->TriggerUserGestureEvent(page_transition_type);
 }
 
-void AdsServiceImpl::OnMediaStart(const SessionID& tab_id) {
+void AdsServiceImpl::OnTabDidStartPlayingMedia(const SessionID& tab_id) {
   if (!IsBatAdsBound()) {
     return;
   }
 
-  bat_ads_->OnMediaPlaying(tab_id.id());
+  bat_ads_->OnTabDidStartPlayingMedia(tab_id.id());
 }
 
-void AdsServiceImpl::OnMediaStop(const SessionID& tab_id) {
+void AdsServiceImpl::OnTabDidStopPlayingMedia(const SessionID& tab_id) {
   if (!IsBatAdsBound()) {
     return;
   }
 
-  bat_ads_->OnMediaStopped(tab_id.id());
+  bat_ads_->OnTabDidStopPlayingMedia(tab_id.id());
 }
 
-void AdsServiceImpl::OnTabUpdated(const SessionID& tab_id,
-                                  const std::vector<GURL>& redirect_chain,
-                                  const bool is_active,
-                                  const bool is_browser_active) {
+void AdsServiceImpl::OnTabDidChange(const SessionID& tab_id,
+                                    const std::vector<GURL>& redirect_chain,
+                                    const bool is_active,
+                                    const bool is_browser_active) {
   if (!IsBatAdsBound()) {
     return;
   }
 
   const bool is_incognito = !brave::IsRegularProfile(profile_);
 
-  bat_ads_->OnTabUpdated(tab_id.id(), redirect_chain, is_active,
-                         is_browser_active, is_incognito);
+  bat_ads_->OnTabDidChange(tab_id.id(), redirect_chain, is_active,
+                           is_browser_active, is_incognito);
 }
 
-void AdsServiceImpl::OnTabClosed(const SessionID& tab_id) {
+void AdsServiceImpl::OnDidCloseTab(const SessionID& tab_id) {
   if (!IsBatAdsBound()) {
     return;
   }
 
-  bat_ads_->OnTabClosed(tab_id.id());
+  bat_ads_->OnDidCloseTab(tab_id.id());
 }
 
 void AdsServiceImpl::GetStatementOfAccounts(
     GetStatementOfAccountsCallback callback) {
   if (!IsBatAdsBound()) {
-    std::move(callback).Run(/* statement */ nullptr);
+    std::move(callback).Run(/*statement*/ nullptr);
     return;
   }
 
@@ -1829,12 +1832,12 @@ void AdsServiceImpl::OnBrowserDidEnterBackground() {
   bat_ads_->OnBrowserDidEnterBackground();
 }
 
-void AdsServiceImpl::OnResourceComponentUpdated(const std::string& id) {
+void AdsServiceImpl::OnDidUpdateResourceComponent(const std::string& id) {
   if (!IsBatAdsBound()) {
     return;
   }
 
-  bat_ads_->OnResourceComponentUpdated(id);
+  bat_ads_->OnDidUpdateResourceComponent(id);
 }
 
 void AdsServiceImpl::PrefetchNewTabPageAd() {
@@ -2201,13 +2204,13 @@ void AdsServiceImpl::MigratePrefsVersion6To7() {
     return;
   }
 
-  SetEnabled(/* is_enabled */ false);
+  SetEnabled(false);
 }
 
 void AdsServiceImpl::MigratePrefsVersion7To8() {
   const bool rewards_enabled = GetBooleanPref(brave_rewards::prefs::kEnabled);
   if (!rewards_enabled) {
-    SetEnabled(/* is_enabled */ false);
+    SetEnabled(false);
   }
 }
 
@@ -2286,7 +2289,7 @@ void AdsServiceImpl::DisableAdsIfUpgradingFromPreBraveAdsBuild() {
     return;
   }
 
-  SetEnabled(/* is_enabled */ false);
+  SetEnabled(false);
 }
 
 void AdsServiceImpl::DisableAdsForUnsupportedCountryCodes(
@@ -2296,7 +2299,7 @@ void AdsServiceImpl::DisableAdsForUnsupportedCountryCodes(
     return;
   }
 
-  SetEnabled(/* is_enabled */ false);
+  SetEnabled(false);
 }
 
 void AdsServiceImpl::MaybeShowOnboardingNotification() {

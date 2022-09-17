@@ -66,37 +66,39 @@ void BatAdsImpl::Shutdown(
   ads_->Shutdown(shutdown_callback);
 }
 
-void BatAdsImpl::OnChangeLocale(const std::string& locale) {
-  ads_->OnChangeLocale(locale);
+void BatAdsImpl::OnLocaleDidChange(const std::string& locale) {
+  ads_->OnLocaleDidChange(locale);
 }
 
-void BatAdsImpl::OnPrefChanged(const std::string& path) {
-  ads_->OnPrefChanged(path);
+void BatAdsImpl::OnPrefDidChange(const std::string& path) {
+  ads_->OnPrefDidChange(path);
 }
 
-void BatAdsImpl::OnHtmlLoaded(const int32_t tab_id,
-                              const std::vector<GURL>& redirect_chain,
-                              const std::string& html) {
-  ads_->OnHtmlLoaded(tab_id, redirect_chain, html);
+void BatAdsImpl::OnTabHtmlContentDidChange(
+    const int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    const std::string& html) {
+  ads_->OnTabHtmlContentDidChange(tab_id, redirect_chain, html);
 }
 
-void BatAdsImpl::OnTextLoaded(const int32_t tab_id,
-                              const std::vector<GURL>& redirect_chain,
-                              const std::string& text) {
-  ads_->OnTextLoaded(tab_id, redirect_chain, text);
+void BatAdsImpl::OnTabTextContentDidChange(
+    const int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    const std::string& text) {
+  ads_->OnTabTextContentDidChange(tab_id, redirect_chain, text);
 }
 
-void BatAdsImpl::OnUserGesture(const int32_t page_transition_type) {
-  ads_->OnUserGesture(page_transition_type);
+void BatAdsImpl::TriggerUserGestureEvent(const int32_t page_transition_type) {
+  ads_->TriggerUserGestureEvent(page_transition_type);
 }
 
-void BatAdsImpl::OnUnIdle(const base::TimeDelta idle_time,
-                          const bool was_locked) {
-  ads_->OnUnIdle(idle_time, was_locked);
+void BatAdsImpl::OnUserDidBecomeActive(const base::TimeDelta idle_time,
+                                       const bool screen_was_locked) {
+  ads_->OnUserDidBecomeActive(idle_time, screen_was_locked);
 }
 
-void BatAdsImpl::OnIdle() {
-  ads_->OnIdle();
+void BatAdsImpl::OnUserDidBecomeIdle() {
+  ads_->OnUserDidBecomeIdle();
 }
 
 void BatAdsImpl::OnBrowserDidEnterForeground() {
@@ -107,28 +109,25 @@ void BatAdsImpl::OnBrowserDidEnterBackground() {
   ads_->OnBrowserDidEnterBackground();
 }
 
-void BatAdsImpl::OnMediaPlaying(
-    const int32_t tab_id) {
-  ads_->OnMediaPlaying(tab_id);
+void BatAdsImpl::OnTabDidStartPlayingMedia(const int32_t tab_id) {
+  ads_->OnTabDidStartPlayingMedia(tab_id);
 }
 
-void BatAdsImpl::OnMediaStopped(
-    const int32_t tab_id) {
-  ads_->OnMediaStopped(tab_id);
+void BatAdsImpl::OnTabDidStopPlayingMedia(const int32_t tab_id) {
+  ads_->OnTabDidStopPlayingMedia(tab_id);
 }
 
-void BatAdsImpl::OnTabUpdated(const int32_t tab_id,
-                              const std::vector<GURL>& redirect_chain,
-                              const bool is_active,
-                              const bool is_browser_active,
-                              const bool is_incognito) {
-  ads_->OnTabUpdated(tab_id, redirect_chain, is_active, is_browser_active,
-                     is_incognito);
+void BatAdsImpl::OnTabDidChange(const int32_t tab_id,
+                                const std::vector<GURL>& redirect_chain,
+                                const bool is_active,
+                                const bool is_browser_active,
+                                const bool is_incognito) {
+  ads_->OnTabDidChange(tab_id, redirect_chain, is_active, is_browser_active,
+                       is_incognito);
 }
 
-void BatAdsImpl::OnTabClosed(
-    const int32_t tab_id) {
-  ads_->OnTabClosed(tab_id);
+void BatAdsImpl::OnDidCloseTab(const int32_t tab_id) {
+  ads_->OnDidCloseTab(tab_id);
 }
 
 void BatAdsImpl::MaybeGetNotificationAd(
@@ -238,10 +237,9 @@ void BatAdsImpl::RemoveAllHistory(
   ads_->RemoveAllHistory(remove_all_history_callback);
 }
 
-void BatAdsImpl::OnWalletUpdated(
-    const std::string& payment_id,
-    const std::string& seed) {
-  ads_->OnWalletUpdated(payment_id, seed);
+void BatAdsImpl::OnRewardsWalletDidChange(const std::string& payment_id,
+                                          const std::string& seed) {
+  ads_->OnRewardsWalletDidChange(payment_id, seed);
 }
 
 void BatAdsImpl::GetHistory(const base::Time from_time,
@@ -316,8 +314,8 @@ void BatAdsImpl::ToggleFlaggedAd(base::Value::Dict value,
   std::move(callback).Run(AdContentToValue(ad_content));
 }
 
-void BatAdsImpl::OnResourceComponentUpdated(const std::string& id) {
-  ads_->OnResourceComponentUpdated(id);
+void BatAdsImpl::OnDidUpdateResourceComponent(const std::string& id) {
+  ads_->OnDidUpdateResourceComponent(id);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

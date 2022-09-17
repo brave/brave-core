@@ -46,40 +46,39 @@ class BatAdsImpl :
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
-  void OnChangeLocale(const std::string& locale) override;
+  void OnLocaleDidChange(const std::string& locale) override;
 
-  void OnPrefChanged(const std::string& path) override;
+  void OnPrefDidChange(const std::string& path) override;
 
-  void OnResourceComponentUpdated(const std::string& id) override;
+  void OnDidUpdateResourceComponent(const std::string& id) override;
 
-  void OnHtmlLoaded(const int32_t tab_id,
-                    const std::vector<GURL>& redirect_chain,
-                    const std::string& html) override;
-  void OnTextLoaded(const int32_t tab_id,
-                    const std::vector<GURL>& redirect_chain,
-                    const std::string& text) override;
+  void OnTabHtmlContentDidChange(const int32_t tab_id,
+                                 const std::vector<GURL>& redirect_chain,
+                                 const std::string& html) override;
+  void OnTabTextContentDidChange(const int32_t tab_id,
+                                 const std::vector<GURL>& redirect_chain,
+                                 const std::string& text) override;
 
-  void OnIdle() override;
-  void OnUnIdle(const base::TimeDelta idle_time,
-                const bool was_locked) override;
+  void OnUserDidBecomeIdle() override;
+  void OnUserDidBecomeActive(const base::TimeDelta idle_time,
+                             const bool screen_was_locked) override;
 
-  void OnUserGesture(const int32_t page_transition_type) override;
+  void TriggerUserGestureEvent(const int32_t page_transition_type) override;
 
   void OnBrowserDidEnterForeground() override;
   void OnBrowserDidEnterBackground() override;
 
-  void OnMediaPlaying(const int32_t tab_id) override;
-  void OnMediaStopped(const int32_t tab_id) override;
+  void OnTabDidStartPlayingMedia(const int32_t tab_id) override;
+  void OnTabDidStopPlayingMedia(const int32_t tab_id) override;
+  void OnTabDidChange(const int32_t tab_id,
+                      const std::vector<GURL>& redirect_chain,
+                      const bool is_active,
+                      const bool is_browser_active,
+                      const bool is_incognito) override;
+  void OnDidCloseTab(const int32_t tab_id) override;
 
-  void OnTabUpdated(const int32_t tab_id,
-                    const std::vector<GURL>& redirect_chain,
-                    const bool is_active,
-                    const bool is_browser_active,
-                    const bool is_incognito) override;
-  void OnTabClosed(const int32_t tab_id) override;
-
-  void OnWalletUpdated(const std::string& payment_id,
-                       const std::string& seed) override;
+  void OnRewardsWalletDidChange(const std::string& payment_id,
+                                const std::string& seed) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
@@ -137,7 +136,7 @@ class BatAdsImpl :
                        ToggleFlaggedAdCallback callback) override;
 
  private:
-  // TODO(https://github.com/brave/brave-browser/issues/20940) Workaround to
+  // TODO(https://github.com/brave/brave-browser/issues/24661) Workaround to
   // pass |base::OnceCallback| into |std::bind| until we refactor Brave Ads
   // |std::function| to |base::OnceCallback|.
   template <typename T>

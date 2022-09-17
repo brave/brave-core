@@ -24,11 +24,7 @@ namespace {
 
 constexpr SkColor kBackgroundColor = SK_ColorTRANSPARENT;
 
-constexpr auto kBorderInset = gfx::Insets::TLBR(
-    /* top */ 4,
-    /* left */ 4,
-    /* bottom */ 0,
-    /* right */ 4);
+constexpr auto kBorderInset = gfx::Insets::TLBR(4, 4, 0, 4);
 
 const float kVisibleOpacity = 0.12f;
 
@@ -61,7 +57,7 @@ void PaddedImageButton::AdjustBorderInsetToFitHeight(const int height) {
   gfx::Insets insets = border->GetInsets();
   const int inset = std::max(0, height - insets.height() - image.height());
 
-  insets += gfx::Insets::TLBR(0, 0, /* bottom */ inset, 0);
+  insets += gfx::Insets::TLBR(0, 0, inset, 0);
   SetBorder(views::CreateEmptyBorder(insets));
 }
 

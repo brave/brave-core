@@ -78,11 +78,11 @@ class NotificationAd final : public AccountObserver,
   void OnBrowserDidEnterBackground() override;
 
   // PrefManagerObserver:
-  void OnPrefChanged(const std::string& path) override;
+  void OnPrefDidChange(const std::string& path) override;
 
   // IdleDetectionManagerObserver:
   void OnUserDidBecomeActive(base::TimeDelta idle_time,
-                             bool was_locked) override;
+                             bool screen_was_locked) override;
 
   // notification_ads::ServingObserver:
   void OnOpportunityAroseToServeNotificationAd(

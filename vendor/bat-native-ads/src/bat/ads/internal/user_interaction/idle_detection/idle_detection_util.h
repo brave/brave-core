@@ -12,7 +12,7 @@ class TimeDelta;
 
 namespace ads {
 
-bool WasLocked(bool was_locked);
+bool MaybeScreenWasLocked(bool screen_was_locked);
 
 bool HasExceededMaximumIdleTime(base::TimeDelta idle_time);
 

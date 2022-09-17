@@ -280,8 +280,8 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnWalletUpdated(base::SysNSStringToUTF8(paymentId),
-                       base::SysNSStringToUTF8(base64Seed));
+  ads->OnRewardsWalletDidChange(base::SysNSStringToUTF8(paymentId),
+                                base::SysNSStringToUTF8(base64Seed));
 }
 
 - (NSString*)adsDatabasePath {
@@ -388,7 +388,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 - (void)savePref:(NSString*)name {
   if ([self isAdsServiceRunning]) {
-    ads->OnPrefChanged(base::SysNSStringToUTF8(name));
+    ads->OnPrefDidChange(base::SysNSStringToUTF8(name));
   }
 
   [self savePrefs];
@@ -547,22 +547,24 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     urls.push_back(net::GURLWithNSURL(redirectURL));
   }
   urls.push_back(net::GURLWithNSURL(url));
-  ads->OnTextLoaded((int32_t)tabId, urls, base::SysNSStringToUTF8(text));
-  ads->OnHtmlLoaded((int32_t)tabId, urls, base::SysNSStringToUTF8(html));
+  ads->OnTabTextContentDidChange((int32_t)tabId, urls,
+                                 base::SysNSStringToUTF8(text));
+  ads->OnTabHtmlContentDidChange((int32_t)tabId, urls,
+                                 base::SysNSStringToUTF8(html));
 }
 
 - (void)reportMediaStartedWithTabId:(NSInteger)tabId {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnMediaPlaying((int32_t)tabId);
+  ads->OnTabDidStartPlayingMedia((int32_t)tabId);
 }
 
 - (void)reportMediaStoppedWithTabId:(NSInteger)tabId {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnMediaStopped((int32_t)tabId);
+  ads->OnTabDidStopPlayingMedia((int32_t)tabId);
 }
 
 - (void)reportTabUpdated:(NSInteger)tabId
@@ -578,15 +580,15 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     urls.push_back(net::GURLWithNSURL(redirectURL));
   }
   urls.push_back(net::GURLWithNSURL(url));
-  ads->OnTabUpdated((int32_t)tabId, urls, isSelected, [self isBrowserActive],
-                    isPrivate);
+  ads->OnTabDidChange((int32_t)tabId, urls, isSelected, [self isBrowserActive],
+                      isPrivate);
 }
 
 - (void)reportTabClosedWithTabId:(NSInteger)tabId {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnTabClosed((int32_t)tabId);
+  ads->OnDidCloseTab((int32_t)tabId);
 }
 
 - (void)reportNotificationAdEvent:(NSString*)placementId
@@ -824,7 +826,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                    if (success) {
                      const std::string bridged_language_code_adsResource_idkey =
                          base::SysNSStringToUTF8(languageCodeAdsResourceId);
-                     strongSelf->ads->OnResourceComponentUpdated(
+                     strongSelf->ads->OnDidUpdateResourceComponent(
                          bridged_language_code_adsResource_idkey);
                    }
                  }];
@@ -862,7 +864,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                      const std::string bridged_country_code_adsResource_idkey =
                          base::SysNSStringToUTF8(countryCodeAdsResourceId);
 
-                     strongSelf->ads->OnResourceComponentUpdated(
+                     strongSelf->ads->OnDidUpdateResourceComponent(
                          bridged_country_code_adsResource_idkey);
                    }
                  }];
@@ -938,7 +940,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                      }
 
                      BLOG(1, @"Notifying ads resource observers");
-                     strongSelf->ads->OnResourceComponentUpdated(
+                     strongSelf->ads->OnDidUpdateResourceComponent(
                          base::SysNSStringToUTF8(key));
                    }];
   }
@@ -1183,9 +1185,9 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 - (void)load:(const std::string&)name callback:(ads::LoadCallback)callback {
   const auto contents = [self.commonOps loadContentsFromFileWithName:name];
   if (contents.empty()) {
-    std::move(callback).Run(/* success */ false, "");
+    std::move(callback).Run(/*success*/ false, {});
   } else {
-    std::move(callback).Run(/* success */ true, contents);
+    std::move(callback).Run(/*success*/ true, contents);
   }
 }
 
@@ -1210,9 +1212,9 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
        value:(const std::string&)value
     callback:(ads::SaveCallback)callback {
   if ([self.commonOps saveContents:value name:name]) {
-    std::move(callback).Run(/* success */ true);
+    std::move(callback).Run(/*success*/ true);
   } else {
-    std::move(callback).Run(/* success */ false);
+    std::move(callback).Run(/*success*/ false);
   }
 }
 

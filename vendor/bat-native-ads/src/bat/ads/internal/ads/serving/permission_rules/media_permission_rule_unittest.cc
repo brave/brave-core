@@ -36,13 +36,13 @@ TEST_F(BatAdsMediaPermissionRuleTest, AllowAdIfMediaIsNotPlaying) {
 
 TEST_F(BatAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedForSingleTab) {
   // Arrange
-  TabManager::GetInstance()->OnTabUpdated(
+  TabManager::GetInstance()->OnDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
       /*is_active*/ true,
       /*is_incognito*/ false);
 
-  TabManager::GetInstance()->OnMediaPlaying(1);
-  TabManager::GetInstance()->OnMediaStopped(1);
+  TabManager::GetInstance()->OnDidStartPlayingMedia(/*id*/ 1);
+  TabManager::GetInstance()->OnDidStopPlayingMedia(/*id*/ 1);
 
   // Act
   MediaPermissionRule permission_rule;
@@ -54,15 +54,15 @@ TEST_F(BatAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedForSingleTab) {
 
 TEST_F(BatAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedOnMultipleTabs) {
   // Arrange
-  TabManager::GetInstance()->OnTabUpdated(
+  TabManager::GetInstance()->OnDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
       /*is_active*/ true,
       /*is_incognito*/ false);
 
-  TabManager::GetInstance()->OnMediaPlaying(1);
-  TabManager::GetInstance()->OnMediaPlaying(2);
-  TabManager::GetInstance()->OnMediaStopped(1);
-  TabManager::GetInstance()->OnMediaStopped(2);
+  TabManager::GetInstance()->OnDidStartPlayingMedia(/*id*/ 1);
+  TabManager::GetInstance()->OnDidStartPlayingMedia(/*id*/ 2);
+  TabManager::GetInstance()->OnDidStopPlayingMedia(/*id*/ 1);
+  TabManager::GetInstance()->OnDidStopPlayingMedia(/*id*/ 2);
 
   // Act
   MediaPermissionRule permission_rule;
@@ -75,14 +75,14 @@ TEST_F(BatAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedOnMultipleTabs) {
 TEST_F(BatAdsMediaPermissionRuleTest,
        AllowAdIfMediaIsPlayingOnMultipleTabsButStoppedForVisibleTab) {
   // Arrange
-  TabManager::GetInstance()->OnTabUpdated(
+  TabManager::GetInstance()->OnDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
       /*is_active*/ true,
       /*is_incognito*/ false);
 
-  TabManager::GetInstance()->OnMediaPlaying(1);
-  TabManager::GetInstance()->OnMediaPlaying(2);
-  TabManager::GetInstance()->OnMediaStopped(1);
+  TabManager::GetInstance()->OnDidStartPlayingMedia(/*id*/ 1);
+  TabManager::GetInstance()->OnDidStartPlayingMedia(/*id*/ 2);
+  TabManager::GetInstance()->OnDidStopPlayingMedia(/*id*/ 1);
 
   // Act
   MediaPermissionRule permission_rule;
@@ -95,12 +95,12 @@ TEST_F(BatAdsMediaPermissionRuleTest,
 TEST_F(BatAdsMediaPermissionRuleTest,
        DoNotAllowAdIfMediaIsPlayingOnVisibleTab) {
   // Arrange
-  TabManager::GetInstance()->OnTabUpdated(
+  TabManager::GetInstance()->OnDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
       /*is_active*/ true,
       /*is_incognito*/ false);
 
-  TabManager::GetInstance()->OnMediaPlaying(1);
+  TabManager::GetInstance()->OnDidStartPlayingMedia(/*id*/ 1);
 
   // Act
   MediaPermissionRule permission_rule;
@@ -125,12 +125,12 @@ TEST_F(BatAdsMediaPermissionRuleTest,
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  TabManager::GetInstance()->OnTabUpdated(
+  TabManager::GetInstance()->OnDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
       /*is_active*/ true,
       /*is_incognito*/ false);
 
-  TabManager::GetInstance()->OnMediaPlaying(1);
+  TabManager::GetInstance()->OnDidStartPlayingMedia(/*id*/ 1);
 
   // Act
   MediaPermissionRule permission_rule;
@@ -143,13 +143,13 @@ TEST_F(BatAdsMediaPermissionRuleTest,
 TEST_F(BatAdsMediaPermissionRuleTest,
        DoNotAllowAdIfMediaIsPlayingOnMultipleTabs) {
   // Arrange
-  TabManager::GetInstance()->OnTabUpdated(
+  TabManager::GetInstance()->OnDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
       /*is_active*/ true,
       /*is_incognito*/ false);
 
-  TabManager::GetInstance()->OnMediaPlaying(1);
-  TabManager::GetInstance()->OnMediaPlaying(2);
+  TabManager::GetInstance()->OnDidStartPlayingMedia(/*id*/ 1);
+  TabManager::GetInstance()->OnDidStartPlayingMedia(/*id*/ 2);
 
   // Act
   MediaPermissionRule permission_rule;
@@ -162,14 +162,14 @@ TEST_F(BatAdsMediaPermissionRuleTest,
 TEST_F(BatAdsMediaPermissionRuleTest,
        DoNotAllowAdIfMediaIsPlayingOnMultipleTabsButStoppedForOccludedTab) {
   // Arrange
-  TabManager::GetInstance()->OnTabUpdated(
+  TabManager::GetInstance()->OnDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
       /*is_active*/ true,
       /*is_incognito*/ false);
 
-  TabManager::GetInstance()->OnMediaPlaying(1);
-  TabManager::GetInstance()->OnMediaPlaying(2);
-  TabManager::GetInstance()->OnMediaStopped(2);
+  TabManager::GetInstance()->OnDidStartPlayingMedia(/*id*/ 1);
+  TabManager::GetInstance()->OnDidStartPlayingMedia(/*id*/ 2);
+  TabManager::GetInstance()->OnDidStopPlayingMedia(/*id*/ 2);
 
   // Act
   MediaPermissionRule permission_rule;

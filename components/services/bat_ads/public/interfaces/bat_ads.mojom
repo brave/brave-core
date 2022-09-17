@@ -108,34 +108,35 @@ interface BatAds {
 
   GetDiagnostics() => (mojo_base.mojom.ListValue? value);
 
-  OnChangeLocale(string locale);
+  OnLocaleDidChange(string locale);
 
-  OnPrefChanged(string path);
+  OnPrefDidChange(string path);
 
-  OnResourceComponentUpdated(string id);
-
-  OnHtmlLoaded(int32 tab_id, array<url.mojom.Url> redirect_chain, string html);
-  OnTextLoaded(int32 tab_id, array<url.mojom.Url> redirect_chain, string text);
+  OnDidUpdateResourceComponent(string id);
 
   // User Interaction
-  OnIdle();
-  OnUnIdle(mojo_base.mojom.TimeDelta idle_time, bool was_locked);
+  OnUserDidBecomeIdle();
+  OnUserDidBecomeActive(mojo_base.mojom.TimeDelta idle_time, bool screen_was_locked);
 
-  OnUserGesture(int32 page_transition_type);
+  TriggerUserGestureEvent(int32 page_transition_type);
 
   // Browser
   OnBrowserDidEnterForeground();
   OnBrowserDidEnterBackground();
 
   // Tabs
-  OnMediaPlaying(int32 tab_id);
-  OnMediaStopped(int32 tab_id);
+  OnTabDidChange(int32 tab_id, array<url.mojom.Url> redirect_chain, bool is_active, bool is_browser_active, bool is_incognito);
 
-  OnTabUpdated(int32 tab_id, array<url.mojom.Url> redirect_chain, bool is_active, bool is_browser_active, bool is_incognito);
-  OnTabClosed(int32 tab_id);
+  OnTabHtmlContentDidChange(int32 tab_id, array<url.mojom.Url> redirect_chain, string html);
+  OnTabTextContentDidChange(int32 tab_id, array<url.mojom.Url> redirect_chain, string text);
+
+  OnTabDidStartPlayingMedia(int32 tab_id);
+  OnTabDidStopPlayingMedia(int32 tab_id);
+
+  OnDidCloseTab(int32 tab_id);
 
   // Account
-  OnWalletUpdated(string payment_id, string seed);
+  OnRewardsWalletDidChange(string payment_id, string seed);
 
   GetStatementOfAccounts() => (ads.mojom.StatementInfo? statement);
 

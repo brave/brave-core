@@ -32,11 +32,8 @@ namespace {
 const int kNotificationWidth = 350;
 const int kNotificationHeight = 100;
 
-constexpr auto kContainerViewInsideBorderInsets = gfx::Insets::TLBR(
-    /* top */ 0,
-    /* left */ 20,
-    /* bottom */ 10,
-    /* right */ 10);
+constexpr auto kContainerViewInsideBorderInsets =
+    gfx::Insets::TLBR(0, 20, 10, 10);
 
 constexpr gfx::Insets kBodyViewBorderInsets(0);
 

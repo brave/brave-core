@@ -33,7 +33,7 @@ class BatAdsPrefManagerTest : public PrefManagerObserver, public UnitTestBase {
     UnitTestBase::TearDown();
   }
 
-  void OnPrefChanged(const std::string& /*path*/) override {
+  void OnPrefDidChange(const std::string& /*path*/) override {
     pref_changed_ = true;
   }
 
@@ -54,7 +54,7 @@ TEST_F(BatAdsPrefManagerTest, PrefChanged) {
   // Arrange
 
   // Act
-  PrefManager::GetInstance()->OnPrefChanged(kPrefName);
+  PrefManager::GetInstance()->OnPrefDidChange(kPrefName);
 
   // Assert
   EXPECT_TRUE(pref_changed_);

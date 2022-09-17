@@ -43,7 +43,7 @@ void NotificationAdView::OnCloseButtonPressed() {
 
   is_closing_ = true;
 
-  NotificationAdPopupHandler::Close(notification_ad_.id(), /* by_user */ true);
+  NotificationAdPopupHandler::Close(notification_ad_.id(), /*by_user*/ true);
 }
 
 void NotificationAdView::GetAccessibleNodeData(ui::AXNodeData* node_data) {

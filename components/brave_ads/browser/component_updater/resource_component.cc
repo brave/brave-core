@@ -44,6 +44,18 @@ ResourceComponent::ResourceComponent(Delegate* delegate)
 
 ResourceComponent::~ResourceComponent() = default;
 
+void ResourceComponent::AddObserver(ResourceComponentObserver* observer) {
+  DCHECK(observer);
+
+  observers_.AddObserver(observer);
+}
+
+void ResourceComponent::RemoveObserver(ResourceComponentObserver* observer) {
+  DCHECK(observer);
+
+  observers_.RemoveObserver(observer);
+}
+
 void ResourceComponent::RegisterComponentsForLocale(const std::string& locale) {
   const std::string country_code = brave_l10n::GetCountryCode(locale);
   RegisterComponentForCountryCode(country_code);
@@ -52,21 +64,10 @@ void ResourceComponent::RegisterComponentsForLocale(const std::string& locale) {
   RegisterComponentForLanguageCode(language_code);
 }
 
-void ResourceComponent::AddObserver(Observer* observer) {
-  DCHECK(observer);
-
-  observers_.AddObserver(observer);
-}
-
-void ResourceComponent::RemoveObserver(Observer* observer) {
-  DCHECK(observer);
-
-  observers_.RemoveObserver(observer);
-}
-
-void ResourceComponent::NotifyObservers(const std::string& id) {
+void ResourceComponent::NotifyDidUpdateResourceComponent(
+    const std::string& id) {
   for (auto& observer : observers_) {
-    observer.OnResourceComponentUpdated(id);
+    observer.OnDidUpdateResourceComponent(id);
   }
 }
 
@@ -212,8 +213,8 @@ void ResourceComponent::OnGetManifest(const std::string& component_id,
     }
   }
 
-  VLOG(1) << "Notifying resource observers";
-  NotifyObservers(component_id);
+  VLOG(1) << "Notifying resource component observers";
+  NotifyDidUpdateResourceComponent(component_id);
 }
 
 }  // namespace brave_ads

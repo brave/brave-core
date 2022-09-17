@@ -27,9 +27,9 @@ constexpr base::TimeDelta kDefaultIdleTimeThreshold = base::Seconds(15);
 constexpr char kFieldTrialParameterMaximumIdleTime[] = "maximum_idle_time";
 constexpr base::TimeDelta kDefaultMaximumIdleTime = base::Seconds(0);
 
-constexpr char kFieldTrialParameterShouldDetectWasLocked[] =
+constexpr char kFieldTrialParameterShouldDetectScreenWasLocked[] =
     "should_detect_was_locked";
-constexpr bool kDefaultShouldDetectWasLocked = false;
+constexpr bool kDefaultShouldDetectScreenWasLocked = false;
 
 }  // namespace
 
@@ -65,10 +65,10 @@ base::TimeDelta GetMaximumIdleTime() {
       kFeature, kFieldTrialParameterMaximumIdleTime, kDefaultMaximumIdleTime);
 }
 
-bool ShouldDetectWasLocked() {
+bool ShouldDetectScreenWasLocked() {
   return GetFieldTrialParamByFeatureAsBool(
-      kFeature, kFieldTrialParameterShouldDetectWasLocked,
-      kDefaultShouldDetectWasLocked);
+      kFeature, kFieldTrialParameterShouldDetectScreenWasLocked,
+      kDefaultShouldDetectScreenWasLocked);
 }
 
 }  // namespace ads::user_activity::features

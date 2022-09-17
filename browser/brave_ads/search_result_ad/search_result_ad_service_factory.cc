@@ -16,7 +16,7 @@ namespace brave_ads {
 SearchResultAdService* SearchResultAdServiceFactory::GetForProfile(
     Profile* profile) {
   return static_cast<SearchResultAdService*>(
-      GetInstance()->GetServiceForBrowserContext(profile, /* create = */ true));
+      GetInstance()->GetServiceForBrowserContext(profile, /*create*/ true));
 }
 
 // static

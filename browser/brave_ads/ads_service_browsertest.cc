@@ -510,558 +510,556 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
     // Upgrade from 0.62 to current version
     {
         "PreferencesForVersion062WithRewardsDisabled",
-        false, /* supported_locale */
-        false, /* newly_supported_locale */
-        false, /* rewards_enabled */
-        false  /* ads_enabled */
+        false, /*supported_locale*/
+        false, /*newly_supported_locale*/
+        false, /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion062WithRewardsEnabled",
-        false, /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        false  /* ads_enabled */
+        false, /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion062WithRewardsDisabled",
-        true,  /* supported_locale */
-        false, /* newly_supported_locale */
-        false, /* rewards_enabled */
-        false  /* ads_enabled */
+        true,  /*supported_locale*/
+        false, /*newly_supported_locale*/
+        false, /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
-        "PreferencesForVersion062WithRewardsEnabled",
-        true,  /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        false  /* ads_enabled */
+        "PreferencesForVersion062WithRewardsEnabled", true, /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion062WithRewardsDisabled",
-        true,  /* supported_locale */
-        true,  /* newly_supported_locale */
-        false, /* rewards_enabled */
-        false  /* ads_enabled */
+        true,  /*supported_locale*/
+        true,  /*newly_supported_locale*/
+        false, /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
-        "PreferencesForVersion062WithRewardsEnabled",
-        true, /* supported_locale */
-        true, /* newly_supported_locale */
-        true, /* rewards_enabled */
-        false /* ads_enabled */
+        "PreferencesForVersion062WithRewardsEnabled", true, /*supported_locale*/
+        true, /*newly_supported_locale*/
+        true, /*rewards_enabled*/
+        false /*ads_enabled*/
     },
     //
     // Upgrade from 0.63 to current version (Initial release of Brave ads)
     {
         "PreferencesForVersion063WithRewardsAndAdsDisabled",
-        false, /* supported_locale */
-        false, /* newly_supported_locale */
-        false, /* rewards_enabled */
-        false  /* ads_enabled */
+        false, /*supported_locale*/
+        false, /*newly_supported_locale*/
+        false, /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion063WithRewardsEnabledAndAdsDisabled",
-        false, /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        false  /* ads_enabled */
+        false, /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion063WithRewardsAndAdsEnabled",
-        false, /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        false  /* ads_enabled */
+        false, /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion063WithRewardsAndAdsDisabled",
-        true,  /* supported_locale */
-        false, /* newly_supported_locale */
-        false, /* rewards_enabled */
-        false  /* ads_enabled */
+        true,  /*supported_locale*/
+        false, /*newly_supported_locale*/
+        false, /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion063WithRewardsEnabledAndAdsDisabled",
-        true,  /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        false  /* ads_enabled */
+        true,  /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion063WithRewardsAndAdsDisabled",
-        true,  /* supported_locale */
-        true,  /* newly_supported_locale */
-        false, /* rewards_enabled */
-        false  /* ads_enabled */
+        true,  /*supported_locale*/
+        true,  /*newly_supported_locale*/
+        false, /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion063WithRewardsEnabledAndAdsDisabled",
-        true, /* supported_locale */
-        true, /* newly_supported_locale */
-        true, /* rewards_enabled */
-        false /* ads_enabled */
+        true, /*supported_locale*/
+        true, /*newly_supported_locale*/
+        true, /*rewards_enabled*/
+        false /*ads_enabled*/
     },
     {
         "PreferencesForVersion063WithRewardsAndAdsEnabled",
-        true, /* supported_locale */
-        true, /* newly_supported_locale */
-        true, /* rewards_enabled */
-        false /* ads_enabled */
+        true, /*supported_locale*/
+        true, /*newly_supported_locale*/
+        true, /*rewards_enabled*/
+        false /*ads_enabled*/
     },
 
     // Upgrade from 0.67 to current version
     {
         "PreferencesForVersion067WithRewardsAndAdsDisabled",
-        false, /* supported_locale */
-        false, /* newly_supported_locale */
-        false, /* rewards_enabled */
-        false  /* ads_enabled */
+        false, /*supported_locale*/
+        false, /*newly_supported_locale*/
+        false, /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion067WithRewardsEnabledAndAdsDisabled",
-        false, /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        false  /* ads_enabled */
+        false, /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion067WithRewardsAndAdsEnabled",
-        false, /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        false  /* ads_enabled */
+        false, /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion067WithRewardsAndAdsDisabled",
-        true,  /* supported_locale */
-        false, /* newly_supported_locale */
-        false, /* rewards_enabled */
-        false  /* ads_enabled */
+        true,  /*supported_locale*/
+        false, /*newly_supported_locale*/
+        false, /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion067WithRewardsEnabledAndAdsDisabled",
-        true,  /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        false  /* ads_enabled */
+        true,  /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion067WithRewardsAndAdsEnabled",
-        true,  /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        true   /* ads_enabled */
+        true,  /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        true   /*ads_enabled*/
     },
     {
         "PreferencesForVersion067WithRewardsAndAdsDisabled",
-        true,  /* supported_locale */
-        true,  /* newly_supported_locale */
-        false, /* rewards_enabled */
-        false  /* ads_enabled */
+        true,  /*supported_locale*/
+        true,  /*newly_supported_locale*/
+        false, /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion067WithRewardsEnabledAndAdsDisabled",
-        true, /* supported_locale */
-        true, /* newly_supported_locale */
-        true, /* rewards_enabled */
-        false /* ads_enabled */
+        true, /*supported_locale*/
+        true, /*newly_supported_locale*/
+        true, /*rewards_enabled*/
+        false /*ads_enabled*/
     },
     {
         "PreferencesForVersion067WithRewardsAndAdsEnabled",
-        true, /* supported_locale */
-        true, /* newly_supported_locale */
-        true, /* rewards_enabled */
-        false /* ads_enabled */
+        true, /*supported_locale*/
+        true, /*newly_supported_locale*/
+        true, /*rewards_enabled*/
+        false /*ads_enabled*/
     },
 
     // Upgrade from 0.68 to current version
     {
         "PreferencesForVersion068WithRewardsAndAdsDisabled",
-        false, /* supported_locale */
-        false, /* newly_supported_locale */
-        false, /* rewards_enabled */
-        false  /* ads_enabled */
+        false, /*supported_locale*/
+        false, /*newly_supported_locale*/
+        false, /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion068WithRewardsEnabledAndAdsDisabled",
-        false, /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        false  /* ads_enabled */
+        false, /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion068WithRewardsAndAdsEnabled",
-        false, /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        false  /* ads_enabled */
+        false, /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion068WithRewardsAndAdsDisabled",
-        true,  /* supported_locale */
-        false, /* newly_supported_locale */
-        false, /* rewards_enabled */
-        false  /* ads_enabled */
+        true,  /*supported_locale*/
+        false, /*newly_supported_locale*/
+        false, /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion068WithRewardsEnabledAndAdsDisabled",
-        true,  /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        false  /* ads_enabled */
+        true,  /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion068WithRewardsAndAdsEnabled",
-        true,  /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        true   /* ads_enabled */
+        true,  /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        true   /*ads_enabled*/
     },
     {
         "PreferencesForVersion068WithRewardsAndAdsDisabled",
-        true,  /* supported_locale */
-        true,  /* newly_supported_locale */
-        false, /* rewards_enabled */
-        false  /* ads_enabled */
+        true,  /*supported_locale*/
+        true,  /*newly_supported_locale*/
+        false, /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion068WithRewardsEnabledAndAdsDisabled",
-        true, /* supported_locale */
-        true, /* newly_supported_locale */
-        true, /* rewards_enabled */
-        false /* ads_enabled */
+        true, /*supported_locale*/
+        true, /*newly_supported_locale*/
+        true, /*rewards_enabled*/
+        false /*ads_enabled*/
     },
     {
         "PreferencesForVersion068WithRewardsAndAdsEnabled",
-        true, /* supported_locale */
-        true, /* newly_supported_locale */
-        true, /* rewards_enabled */
-        false /* ads_enabled */
+        true, /*supported_locale*/
+        true, /*newly_supported_locale*/
+        true, /*rewards_enabled*/
+        false /*ads_enabled*/
     },
 
     // Upgrade from 0.69 to current version
     {
         "PreferencesForVersion069WithRewardsAndAdsDisabled",
-        false, /* supported_locale */
-        false, /* newly_supported_locale */
-        false, /* rewards_enabled */
-        false  /* ads_enabled */
+        false, /*supported_locale*/
+        false, /*newly_supported_locale*/
+        false, /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion069WithRewardsEnabledAndAdsDisabled",
-        false, /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        false  /* ads_enabled */
+        false, /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion069WithRewardsAndAdsEnabled",
-        false, /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        false  /* ads_enabled */
+        false, /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion069WithRewardsAndAdsDisabled",
-        true,  /* supported_locale */
-        false, /* newly_supported_locale */
-        false, /* rewards_enabled */
-        false  /* ads_enabled */
+        true,  /*supported_locale*/
+        false, /*newly_supported_locale*/
+        false, /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion069WithRewardsEnabledAndAdsDisabled",
-        true,  /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        false  /* ads_enabled */
+        true,  /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion069WithRewardsAndAdsEnabled",
-        true,  /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        true   /* ads_enabled */
+        true,  /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        true   /*ads_enabled*/
     },
     {
         "PreferencesForVersion069WithRewardsAndAdsDisabled",
-        true,  /* supported_locale */
-        true,  /* newly_supported_locale */
-        false, /* rewards_enabled */
-        false  /* ads_enabled */
+        true,  /*supported_locale*/
+        true,  /*newly_supported_locale*/
+        false, /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion069WithRewardsEnabledAndAdsDisabled",
-        true, /* supported_locale */
-        true, /* newly_supported_locale */
-        true, /* rewards_enabled */
-        false /* ads_enabled */
+        true, /*supported_locale*/
+        true, /*newly_supported_locale*/
+        true, /*rewards_enabled*/
+        false /*ads_enabled*/
     },
     {
         "PreferencesForVersion069WithRewardsAndAdsEnabled",
-        true, /* supported_locale */
-        true, /* newly_supported_locale */
-        true, /* rewards_enabled */
-        false /* ads_enabled */
+        true, /*supported_locale*/
+        true, /*newly_supported_locale*/
+        true, /*rewards_enabled*/
+        false /*ads_enabled*/
     },
 
     // Upgrade from 0.70 to current version
     {
         "PreferencesForVersion070WithRewardsAndAdsDisabled",
-        false, /* supported_locale */
-        false, /* newly_supported_locale */
-        false, /* rewards_enabled */
-        false  /* ads_enabled */
+        false, /*supported_locale*/
+        false, /*newly_supported_locale*/
+        false, /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion070WithRewardsEnabledAndAdsDisabled",
-        false, /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        false  /* ads_enabled */
+        false, /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion070WithRewardsAndAdsEnabled",
-        false, /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        false  /* ads_enabled */
+        false, /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion070WithRewardsAndAdsDisabled",
-        true,  /* supported_locale */
-        false, /* newly_supported_locale */
-        false, /* rewards_enabled */
-        false  /* ads_enabled */
+        true,  /*supported_locale*/
+        false, /*newly_supported_locale*/
+        false, /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion070WithRewardsEnabledAndAdsDisabled",
-        true,  /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        false  /* ads_enabled */
+        true,  /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion070WithRewardsAndAdsEnabled",
-        true,  /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        true   /* ads_enabled */
+        true,  /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        true   /*ads_enabled*/
     },
     {
         "PreferencesForVersion070WithRewardsAndAdsDisabled",
-        true,  /* supported_locale */
-        true,  /* newly_supported_locale */
-        false, /* rewards_enabled */
-        false  /* ads_enabled */
+        true,  /*supported_locale*/
+        true,  /*newly_supported_locale*/
+        false, /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion070WithRewardsEnabledAndAdsDisabled",
-        true, /* supported_locale */
-        true, /* newly_supported_locale */
-        true, /* rewards_enabled */
-        false /* ads_enabled */
+        true, /*supported_locale*/
+        true, /*newly_supported_locale*/
+        true, /*rewards_enabled*/
+        false /*ads_enabled*/
     },
     {
         "PreferencesForVersion070WithRewardsAndAdsEnabled",
-        true, /* supported_locale */
-        true, /* newly_supported_locale */
-        true, /* rewards_enabled */
-        false /* ads_enabled */
+        true, /*supported_locale*/
+        true, /*newly_supported_locale*/
+        true, /*rewards_enabled*/
+        false /*ads_enabled*/
     },
 
     // Upgrade from 0.71 to current version
     {
         "PreferencesForVersion071WithRewardsAndAdsDisabled",
-        false, /* supported_locale */
-        false, /* newly_supported_locale */
-        false, /* rewards_enabled */
-        false  /* ads_enabled */
+        false, /*supported_locale*/
+        false, /*newly_supported_locale*/
+        false, /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion071WithRewardsEnabledAndAdsDisabled",
-        false, /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        false  /* ads_enabled */
+        false, /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion071WithRewardsAndAdsEnabled",
-        false, /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        false  /* ads_enabled */
+        false, /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion071WithRewardsAndAdsDisabled",
-        true,  /* supported_locale */
-        false, /* newly_supported_locale */
-        false, /* rewards_enabled */
-        false  /* ads_enabled */
+        true,  /*supported_locale*/
+        false, /*newly_supported_locale*/
+        false, /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion071WithRewardsEnabledAndAdsDisabled",
-        true,  /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        false  /* ads_enabled */
+        true,  /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion071WithRewardsAndAdsEnabled",
-        true,  /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        true   /* ads_enabled */
+        true,  /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        true   /*ads_enabled*/
     },
     {
         "PreferencesForVersion071WithRewardsAndAdsDisabled",
-        true,  /* supported_locale */
-        true,  /* newly_supported_locale */
-        false, /* rewards_enabled */
-        false  /* ads_enabled */
+        true,  /*supported_locale*/
+        true,  /*newly_supported_locale*/
+        false, /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion071WithRewardsEnabledAndAdsDisabled",
-        true, /* supported_locale */
-        true, /* newly_supported_locale */
-        true, /* rewards_enabled */
-        false /* ads_enabled */
+        true, /*supported_locale*/
+        true, /*newly_supported_locale*/
+        true, /*rewards_enabled*/
+        false /*ads_enabled*/
     },
     {
         "PreferencesForVersion071WithRewardsAndAdsEnabled",
-        true, /* supported_locale */
-        true, /* newly_supported_locale */
-        true, /* rewards_enabled */
-        false /* ads_enabled */
+        true, /*supported_locale*/
+        true, /*newly_supported_locale*/
+        true, /*rewards_enabled*/
+        false /*ads_enabled*/
     },
 
     // Upgrade from 0.72 to current version
     {
         "PreferencesForVersion072WithRewardsAndAdsDisabled",
-        false, /* supported_locale */
-        false, /* newly_supported_locale */
-        false, /* rewards_enabled */
-        false  /* ads_enabled */
+        false, /*supported_locale*/
+        false, /*newly_supported_locale*/
+        false, /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion072WithRewardsEnabledAndAdsDisabled",
-        false, /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        false  /* ads_enabled */
+        false, /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion072WithRewardsAndAdsEnabled",
-        false, /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        false  /* ads_enabled */
+        false, /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion072WithRewardsAndAdsDisabled",
-        true,  /* supported_locale */
-        false, /* newly_supported_locale */
-        false, /* rewards_enabled */
-        false  /* ads_enabled */
+        true,  /*supported_locale*/
+        false, /*newly_supported_locale*/
+        false, /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion072WithRewardsEnabledAndAdsDisabled",
-        true,  /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        false  /* ads_enabled */
+        true,  /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion072WithRewardsAndAdsEnabled",
-        true,  /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        true   /* ads_enabled */
+        true,  /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        true   /*ads_enabled*/
     },
     {
         "PreferencesForVersion072WithRewardsAndAdsDisabled",
-        true,  /* supported_locale */
-        true,  /* newly_supported_locale */
-        false, /* rewards_enabled */
-        false  /* ads_enabled */
+        true,  /*supported_locale*/
+        true,  /*newly_supported_locale*/
+        false, /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion072WithRewardsEnabledAndAdsDisabled",
-        true, /* supported_locale */
-        true, /* newly_supported_locale */
-        true, /* rewards_enabled */
-        false /* ads_enabled */
+        true, /*supported_locale*/
+        true, /*newly_supported_locale*/
+        true, /*rewards_enabled*/
+        false /*ads_enabled*/
     },
     {
         "PreferencesForVersion072WithRewardsAndAdsEnabled",
-        true, /* supported_locale */
-        true, /* newly_supported_locale */
-        true, /* rewards_enabled */
-        false /* ads_enabled */
+        true, /*supported_locale*/
+        true, /*newly_supported_locale*/
+        true, /*rewards_enabled*/
+        false /*ads_enabled*/
     },
 
     // Upgrade from 1.2 to current version
     {
         "PreferencesForVersion12WithRewardsAndAdsDisabled",
-        false, /* supported_locale */
-        false, /* newly_supported_locale */
-        false, /* rewards_enabled */
-        false  /* ads_enabled */
+        false, /*supported_locale*/
+        false, /*newly_supported_locale*/
+        false, /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion12WithRewardsEnabledAndAdsDisabled",
-        false, /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        false  /* ads_enabled */
+        false, /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion12WithRewardsAndAdsEnabled",
-        false, /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        false  /* ads_enabled */
+        false, /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion12WithRewardsAndAdsDisabled",
-        true,  /* supported_locale */
-        false, /* newly_supported_locale */
-        false, /* rewards_enabled */
-        false  /* ads_enabled */
+        true,  /*supported_locale*/
+        false, /*newly_supported_locale*/
+        false, /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion12WithRewardsEnabledAndAdsDisabled",
-        true,  /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        false  /* ads_enabled */
+        true,  /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion12WithRewardsAndAdsEnabled",
-        true,  /* supported_locale */
-        false, /* newly_supported_locale */
-        true,  /* rewards_enabled */
-        true   /* ads_enabled */
+        true,  /*supported_locale*/
+        false, /*newly_supported_locale*/
+        true,  /*rewards_enabled*/
+        true   /*ads_enabled*/
     },
     {
         "PreferencesForVersion12WithRewardsAndAdsDisabled",
-        true,  /* supported_locale */
-        true,  /* newly_supported_locale */
-        false, /* rewards_enabled */
-        false  /* ads_enabled */
+        true,  /*supported_locale*/
+        true,  /*newly_supported_locale*/
+        false, /*rewards_enabled*/
+        false  /*ads_enabled*/
     },
     {
         "PreferencesForVersion12WithRewardsEnabledAndAdsDisabled",
-        true, /* supported_locale */
-        true, /* newly_supported_locale */
-        true, /* rewards_enabled */
-        false /* ads_enabled */
+        true, /*supported_locale*/
+        true, /*newly_supported_locale*/
+        true, /*rewards_enabled*/
+        false /*ads_enabled*/
     },
     {
         "PreferencesForVersion12WithRewardsAndAdsEnabled",
-        true, /* supported_locale */
-        true, /* newly_supported_locale */
-        true, /* rewards_enabled */
-        false /* ads_enabled */
+        true, /*supported_locale*/
+        true, /*newly_supported_locale*/
+        true, /*rewards_enabled*/
+        false /*ads_enabled*/
     }};
 
 IN_PROC_BROWSER_TEST_P(BraveAdsUpgradeBrowserTest, PRE_UpgradePath) {
