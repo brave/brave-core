@@ -213,15 +213,6 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       state = handleWidgetPrefsChange(newState, state)
       break
 
-    case types.UPDATE_CLOCK_WIDGET: {
-      const { showClockWidget, clockFormat } = payload
-      performSideEffect(async function (state) {
-        preferencesAPI.saveShowClock(showClockWidget)
-        preferencesAPI.saveClockFormat(clockFormat)
-      })
-      break
-    }
-
     case types.SET_MOST_VISITED_SITES: {
       const { showTopSites, customLinksEnabled } = payload
       performSideEffect(async function (state) {

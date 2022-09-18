@@ -83,6 +83,7 @@ export const useNewTabData = (state: NewTab.State = defaultState) => {
     showStats: boolean('Show stats?', true),
     showToday: boolean('Show Brave News?', true),
     showClock: boolean('Show clock?', true),
+    clockFormat: select('Clock format?', ['', '12', '24'], ''),
     showTopSites: boolean('Show top sites?', true),
     braveRewardsSupported: boolean('Brave Rewards supported?', true),
     showRewards: boolean('Show rewards?', true),

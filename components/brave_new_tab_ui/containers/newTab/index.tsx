@@ -11,7 +11,7 @@ import TopSitesGrid from './gridSites'
 import FooterInfo from '../../components/default/footer/footer'
 import SiteRemovalNotification from './notification'
 import {
-  ClockWidget as Clock,
+  Clock,
   RewardsWidget as Rewards,
   BraveTalkWidget as BraveTalk,
   BinanceWidget as Binance,
@@ -53,7 +53,7 @@ import { FTXState } from '../../widgets/ftx/ftx_state'
 // NTP features
 import Settings, { TabType as SettingsTabType } from './settings'
 import { MAX_GRID_SIZE } from '../../constants/new_tab_ui'
-import { saveShowStats } from '../../api/preferences'
+import GridWidget from './gridWidget'
 
 interface Props {
   newTabData: NewTab.State
@@ -276,42 +276,21 @@ class NewTabPage extends React.Component<Props, State> {
     )
   }
 
-  toggleShowClock = () => {
-    this.props.actions.clockWidgetUpdated(
-      !this.props.newTabData.showClock,
-      this.props.newTabData.clockFormat)
-  }
-
-  toggleClockFormat = () => {
-    const currentFormat = this.props.newTabData.clockFormat
-    let newFormat
-    // cycle through the available options
-    switch (currentFormat) {
-      case '': newFormat = '12'; break
-      case '12': newFormat = '24'; break
-      case '24': newFormat = ''; break
-      default: newFormat = ''; break
-    }
-    this.props.actions.clockWidgetUpdated(
-      this.props.newTabData.showClock,
-      newFormat)
-  }
-
   toggleShowToday = () => {
     this.props.saveShowToday(
       !this.props.newTabData.showToday
     )
   }
 
+  toggleShowTopSites = () => {
+    const { showTopSites, customLinksEnabled } = this.props.newTabData
+    this.props.actions.setMostVisitedSettings(!showTopSites, customLinksEnabled)
+  }
+
   toggleShowBraveNewsButton = () => {
     this.props.saveShowBraveNewsButton(
       !this.props.newTabData.showBraveNewsButton
     )
-  }
-
-  toggleShowTopSites = () => {
-    const { showTopSites, customLinksEnabled } = this.props.newTabData
-    this.props.actions.setMostVisitedSettings(!showTopSites, customLinksEnabled)
   }
 
   toggleCustomLinksEnabled = () => {
@@ -1199,31 +1178,24 @@ class NewTabPage extends React.Component<Props, State> {
             showBrandedWallpaper={isShowingBrandedWallpaper}
         >
           {this.renderSearchPromotion()}
-          {showStats &&
-          <Page.GridItemStats>
-            <Stats
-              paddingType={'right'}
-              widgetTitle={getLocale('statsTitle')}
-              textDirection={newTabData.textDirection}
-              stats={newTabData.stats}
-              hideWidget={() => saveShowStats(false)}
-              menuPosition={'right'}
-            />
-          </Page.GridItemStats>
-          }
-          {showClock &&
-          <Page.GridItemClock>
-            <Clock
-              paddingType={'right'}
-              widgetTitle={getLocale('clockTitle')}
-              textDirection={newTabData.textDirection}
-              hideWidget={this.toggleShowClock}
-              menuPosition={'left'}
-              toggleClickFormat={this.toggleClockFormat}
-              clockFormat={newTabData.clockFormat}
-            />
-          </Page.GridItemClock>
-          }
+          <GridWidget
+            pref='showStats'
+            container={Page.GridItemStats}
+            paddingType={'right'}
+            widgetTitle={getLocale('statsTitle')}
+            textDirection={newTabData.textDirection}
+            menuPosition={'right'}>
+            <Stats stats={newTabData.stats}/>
+          </GridWidget>
+          <GridWidget
+            pref='showClock'
+            container={Page.GridItemClock}
+            paddingType='right'
+            widgetTitle={getLocale('clockTitle')}
+            textDirection={newTabData.textDirection}
+            menuPosition='left'>
+            <Clock />
+          </GridWidget>
           {
             showTopSites
               ? (
@@ -1323,7 +1295,6 @@ class NewTabPage extends React.Component<Props, State> {
           onDisplayTodaySection={this.props.actions.today.ensureSettingsData}
           onClearTodayPrefs={this.props.actions.today.resetTodayPrefsToDefault}
           toggleShowBackgroundImage={this.toggleShowBackgroundImage}
-          toggleShowClock={this.toggleShowClock}
           toggleShowToday={this.toggleShowToday}
           toggleShowBraveNewsButton={this.toggleShowBraveNewsButton}
           toggleShowTopSites={this.toggleShowTopSites}
@@ -1333,8 +1304,6 @@ class NewTabPage extends React.Component<Props, State> {
           setBraveBackground={this.props.setBraveBackground}
           setColorBackground={this.props.setColorBackground}
           showBackgroundImage={newTabData.showBackgroundImage}
-          showClock={newTabData.showClock}
-          clockFormat={newTabData.clockFormat}
           showToday={newTabData.showToday}
           showBraveNewsButton={newTabData.showBraveNewsButton}
           showTopSites={newTabData.showTopSites}
