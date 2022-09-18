@@ -32,17 +32,17 @@ class BatAdsIdleDetectionManagerTest : public IdleDetectionManagerObserver,
   }
 
   void OnUserDidBecomeActive(const base::TimeDelta idle_time,
-                             const bool was_locked) override {
+                             const bool screen_was_locked) override {
     user_is_active_ = true;
     idle_time_ = idle_time;
-    was_locked_ = was_locked;
+    screen_was_locked_ = screen_was_locked;
   }
 
   void OnUserDidBecomeIdle() override { user_is_active_ = false; }
 
   bool user_is_active_ = false;
   base::TimeDelta idle_time_;
-  bool was_locked_ = false;
+  bool screen_was_locked_ = false;
 };
 
 TEST_F(BatAdsIdleDetectionManagerTest, HasInstance) {
@@ -60,12 +60,12 @@ TEST_F(BatAdsIdleDetectionManagerTest, UserDidBecomeActive) {
 
   // Act
   IdleDetectionManager::GetInstance()->UserDidBecomeActive(
-      /*idle_time */ base::Seconds(5), /* was_locked*/ false);
+      /*idle_time */ base::Seconds(5), /*screen_was_locked*/ false);
 
   // Assert
   EXPECT_TRUE(user_is_active_);
   EXPECT_EQ(base::Seconds(5), idle_time_);
-  EXPECT_FALSE(was_locked_);
+  EXPECT_FALSE(screen_was_locked_);
 }
 
 TEST_F(BatAdsIdleDetectionManagerTest,
@@ -74,12 +74,12 @@ TEST_F(BatAdsIdleDetectionManagerTest,
 
   // Act
   IdleDetectionManager::GetInstance()->UserDidBecomeActive(
-      /*idle_time */ base::Seconds(5), /* was_locked*/ true);
+      /*idle_time */ base::Seconds(5), /*screen_was_locked*/ true);
 
   // Assert
   EXPECT_TRUE(user_is_active_);
   EXPECT_EQ(base::Seconds(5), idle_time_);
-  EXPECT_TRUE(was_locked_);
+  EXPECT_TRUE(screen_was_locked_);
 }
 
 TEST_F(BatAdsIdleDetectionManagerTest, UserDidBecomeIdle) {

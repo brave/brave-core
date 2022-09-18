@@ -235,7 +235,7 @@ void PurchaseIntent::OnTextContentDidChange(
   }
 
   const absl::optional<TabInfo> last_visible_tab =
-      TabManager::GetInstance()->GetLastVisibleTab();
+      TabManager::GetInstance()->GetLastVisible();
   if (!last_visible_tab) {
     return;
   }

@@ -16,6 +16,7 @@ export type InitialData = {
   privateTabData: privateTabDataAPI.PrivateTabData
   wallpaperData?: NewTab.Wallpaper
   braveBackgrounds: NewTab.BraveBackground[]
+  braveRewardsSupported: boolean
   braveTalkSupported: boolean
   geminiSupported: boolean
   binanceSupported: boolean
@@ -50,6 +51,7 @@ export async function getInitialData (): Promise<InitialData> {
       stats,
       privateTabData,
       wallpaperData,
+      braveRewardsSupported,
       braveTalkSupported,
       geminiSupported,
       cryptoDotComSupported,
@@ -62,6 +64,11 @@ export async function getInitialData (): Promise<InitialData> {
       statsAPI.getStats(),
       privateTabDataAPI.getPrivateTabData(),
       !isIncognito ? wallpaper.getWallpaper() : Promise.resolve(undefined),
+      new Promise((resolve) => {
+        chrome.braveRewards.isSupported((supported: boolean) => {
+          resolve(supported)
+        })
+      }),
       new Promise((resolve) => {
         if (!('braveTalk' in chrome)) {
           resolve(false)
@@ -104,6 +111,7 @@ export async function getInitialData (): Promise<InitialData> {
       privateTabData,
       wallpaperData,
       braveBackgrounds,
+      braveRewardsSupported,
       braveTalkSupported,
       geminiSupported,
       cryptoDotComSupported,

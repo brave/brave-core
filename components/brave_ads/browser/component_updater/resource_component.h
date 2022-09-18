@@ -27,11 +27,12 @@ class ResourceComponent : public brave_component_updater::BraveComponent {
   ResourceComponent(const ResourceComponent&) = delete;
   ResourceComponent& operator=(const ResourceComponent&) = delete;
 
+  void AddObserver(ResourceComponentObserver* observer);
+  void RemoveObserver(ResourceComponentObserver* observer);
+
   void RegisterComponentsForLocale(const std::string& locale);
 
-  void AddObserver(Observer* observer);
-  void RemoveObserver(Observer* observer);
-  void NotifyObservers(const std::string& id);
+  void NotifyDidUpdateResourceComponent(const std::string& id);
 
   absl::optional<base::FilePath> GetPath(const std::string& id, int version);
 
@@ -49,7 +50,7 @@ class ResourceComponent : public brave_component_updater::BraveComponent {
                      const std::string& json);
 
   std::map<std::string, ResourceInfo> resources_;
-  base::ObserverList<Observer> observers_;
+  base::ObserverList<ResourceComponentObserver> observers_;
   base::WeakPtrFactory<ResourceComponent> weak_factory_{this};
 };
 

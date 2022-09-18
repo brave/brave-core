@@ -5,6 +5,10 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_view_layout.h"
 
+#include "brave/browser/ui/views/tabs/features.h"
+
+BraveBrowserViewLayout::~BraveBrowserViewLayout() = default;
+
 void BraveBrowserViewLayout::LayoutSidePanelView(
     views::View* side_panel,
     gfx::Rect& contents_container_bounds) {
@@ -12,4 +16,11 @@ void BraveBrowserViewLayout::LayoutSidePanelView(
   // is the parent of chromium's side panel). We simply
   // use flex layout to put it to the side of the content view.
   return;
+}
+
+int BraveBrowserViewLayout::LayoutTabStripRegion(int top) {
+  if (tabs::features::ShouldShowVerticalTabs())
+    return top;
+
+  return BrowserViewLayout::LayoutTabStripRegion(top);
 }

@@ -68,6 +68,7 @@ declare namespace chrome.settingsPrivate {
 }
 
 declare namespace chrome.braveRewards {
+  const isSupported: (callback: (supported: boolean) => void) => {}
   const setExternalWalletType: (walletType: string) => {}
   const getRewardsParameters: (callback: (properties: RewardsExtension.RewardsParameters) => void) => {}
   const updateMediaDuration: (tabId: number, publisherKey: string, duration: number, firstVisit: boolean) => {}

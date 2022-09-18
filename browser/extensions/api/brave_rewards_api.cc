@@ -16,6 +16,7 @@
 #include "brave/browser/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
+#include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/brave_rewards/tip_dialog.h"
 #include "brave/browser/extensions/api/brave_action_api.h"
 #include "brave/browser/extensions/brave_component_loader.h"
@@ -84,6 +85,14 @@ RewardsPanelCoordinator* GetPanelCoordinator(ExtensionFunction* function) {
 
 namespace extensions {
 namespace api {
+
+BraveRewardsIsSupportedFunction::~BraveRewardsIsSupportedFunction() = default;
+
+ExtensionFunction::ResponseAction BraveRewardsIsSupportedFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  bool is_supported = ::brave_rewards::IsSupportedForProfile(profile);
+  return RespondNow(OneArgument(base::Value(is_supported)));
+}
 
 BraveRewardsGetLocaleFunction::~BraveRewardsGetLocaleFunction() = default;
 

@@ -55,7 +55,7 @@ void SearchResultAdService::MaybeRetrieveSearchResultAd(
       std::move(metadata_request_finished_callback_for_testing_).Run();
     }
     search_result_ads_[tab_id] = SearchResultAdMap();
-    RunAdViewedEventPendingCallbacks(tab_id, /* ads_fetched */ false);
+    RunAdViewedEventPendingCallbacks(tab_id, /*ads_fetched*/ false);
     return;
   }
 
@@ -81,7 +81,7 @@ void SearchResultAdService::OnDidFinishNavigation(SessionID tab_id) {
       std::vector<AdViewedEventCallbackInfo>();
 }
 
-void SearchResultAdService::OnTabClosed(SessionID tab_id) {
+void SearchResultAdService::OnDidCloseTab(SessionID tab_id) {
   // Clear the tab state in memory.
   ResetState(tab_id);
 }
@@ -95,7 +95,7 @@ void SearchResultAdService::MaybeTriggerSearchResultAdViewedEvent(
   DCHECK(tab_id.is_valid());
 
   if (!ads_service_->IsEnabled()) {
-    std::move(callback).Run(/* event_triggered */ false);
+    std::move(callback).Run(/*event_triggered*/ false);
     return;
   }
 
@@ -103,7 +103,7 @@ void SearchResultAdService::MaybeTriggerSearchResultAdViewedEvent(
   if (!base::Contains(search_result_ads_, tab_id)) {
     // Check if OnDidFinishNavigation was called for tab_id.
     if (!base::Contains(ad_viewed_event_pending_callbacks_, tab_id)) {
-      std::move(callback).Run(/* event_triggered */ false);
+      std::move(callback).Run(/*event_triggered*/ false);
       return;
     }
 
@@ -152,7 +152,7 @@ void SearchResultAdService::OnRetrieveSearchResultAdEntities(
 
   if (!web_page) {
     search_result_ads_[tab_id] = SearchResultAdMap();
-    RunAdViewedEventPendingCallbacks(tab_id, /* ads_fetched */ false);
+    RunAdViewedEventPendingCallbacks(tab_id, /*ads_fetched*/ false);
     return;
   }
 
@@ -161,7 +161,7 @@ void SearchResultAdService::OnRetrieveSearchResultAdEntities(
 
   search_result_ads_.emplace(tab_id, std::move(search_result_ads));
 
-  RunAdViewedEventPendingCallbacks(tab_id, /* ads_fetched */ true);
+  RunAdViewedEventPendingCallbacks(tab_id, /*ads_fetched*/ true);
 }
 
 void SearchResultAdService::RunAdViewedEventPendingCallbacks(SessionID tab_id,

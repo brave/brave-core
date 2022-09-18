@@ -39,6 +39,7 @@ export const defaultState: NewTab.State = {
   isBrandedWallpaperNotificationDismissed: true,
   isBraveTodayOptedIn: false,
   showEmptyPage: false,
+  braveRewardsSupported: false,
   braveTalkSupported: false,
   geminiSupported: false,
   binanceSupported: false,
@@ -225,12 +226,13 @@ export const replaceStackWidgets = (state: NewTab.State) => {
     showBinance,
     showRewards,
     showBraveTalk,
+    braveRewardsSupported,
     braveTalkSupported,
     binanceSupported
   } = state
   const displayLookup = {
     'rewards': {
-      display: showRewards
+      display: braveRewardsSupported && showRewards
     },
     'binance': {
       display: binanceSupported && showBinance
@@ -297,6 +299,7 @@ export const debouncedSave = debounce<NewTab.State>((data: NewTab.State) => {
     // fix errors related to properties which shouldn't be defined as persistant
     // (or are obsolete).
     const dataToSave = {
+      braveRewardsSupported: data.braveRewardsSupported,
       braveTalkSupported: data.braveTalkSupported,
       braveTalkPromptDismissed: data.braveTalkPromptDismissed,
       braveTalkPromptAutoDismissed: data.braveTalkPromptAutoDismissed,

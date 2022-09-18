@@ -324,8 +324,9 @@ void UnitTestBase::SetUpIntegrationTest() {
   ads_->Initialize([=](const bool success) {
     ASSERT_TRUE(success);
 
-    ads_->OnWalletUpdated("c387c2d8-a26d-4451-83e4-5c0c6fd942be",
-                          "5BEKM1Y7xcRSg/1q8in/+Lki2weFZQB+UMYZlRw8ql8=");
+    ads_->OnRewardsWalletDidChange(
+        /*payment_id*/ "c387c2d8-a26d-4451-83e4-5c0c6fd942be",
+        /*seed*/ "5BEKM1Y7xcRSg/1q8in/+Lki2weFZQB+UMYZlRw8ql8=");
   });
 
   task_environment_.RunUntilIdle();

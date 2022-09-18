@@ -11,8 +11,8 @@
 #include "base/callback.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
+#include "brave/components/brave_shields/browser/ad_block_filter_list_catalog_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_filters_provider.h"
-#include "brave/components/brave_shields/browser/ad_block_regional_catalog_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_resource_provider.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -32,7 +32,7 @@ namespace brave_shields {
 
 class AdBlockDefaultFiltersProvider : public AdBlockFiltersProvider,
                                       public AdBlockResourceProvider,
-                                      public AdBlockRegionalCatalogProvider {
+                                      public AdBlockFilterListCatalogProvider {
  public:
   explicit AdBlockDefaultFiltersProvider(
       component_updater::ComponentUpdateService* cus);
@@ -48,7 +48,7 @@ class AdBlockDefaultFiltersProvider : public AdBlockFiltersProvider,
   void LoadResources(
       base::OnceCallback<void(const std::string& resources_json)>) override;
 
-  void LoadRegionalCatalog(
+  void LoadFilterListCatalog(
       base::OnceCallback<void(const std::string& catalog_json)>) override;
 
  private:

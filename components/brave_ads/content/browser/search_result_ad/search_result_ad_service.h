@@ -47,7 +47,7 @@ class SearchResultAdService : public KeyedService {
   void OnDidFinishNavigation(SessionID tab_id);
 
   // Removes search result ads when closing the tab.
-  void OnTabClosed(SessionID tab_id);
+  void OnDidCloseTab(SessionID tab_id);
 
   // Triggers a search result ad viewed event on a specific tab.
   void MaybeTriggerSearchResultAdViewedEvent(

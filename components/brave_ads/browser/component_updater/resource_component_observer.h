@@ -12,12 +12,13 @@
 
 namespace brave_ads {
 
-class Observer : public base::CheckedObserver {
+class ResourceComponentObserver : public base::CheckedObserver {
  public:
-  virtual void OnResourceComponentUpdated(const std::string& id) = 0;
+  // Invoked when the resource for the given |id| has updated.
+  virtual void OnDidUpdateResourceComponent(const std::string& id) = 0;
 
  protected:
-  ~Observer() override = default;
+  ~ResourceComponentObserver() override = default;
 };
 
 }  // namespace brave_ads

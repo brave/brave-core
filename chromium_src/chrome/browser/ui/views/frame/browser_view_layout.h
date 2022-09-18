@@ -8,7 +8,14 @@
 
 // Make override-able
 #define LayoutSidePanelView virtual LayoutSidePanelView
+#define LayoutTabStripRegion           \
+  UnUsed() { return {}; }              \
+  friend class BraveBrowserViewLayout; \
+  virtual int LayoutTabStripRegion
+
 #include "src/chrome/browser/ui/views/frame/browser_view_layout.h"
+
+#undef LayoutTabStripRegion
 #undef LayoutSidePanelView
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_VIEW_LAYOUT_H_

@@ -49,7 +49,8 @@ class BatAdsNotificationAdIntegrationTest : public UnitTestBase {
         privacy::p2a::GetAdOpportunityNameForAdType(AdType::kNotificationAd);
     EXPECT_CALL(*ads_client_mock_, RecordP2AEvent(name, _));
 
-    GetAds()->OnUnIdle(base::TimeDelta::Min(), /*was_locked*/ false);
+    GetAds()->OnUserDidBecomeActive(base::TimeDelta::Min(),
+                                    /*screen_was_locked*/ false);
   }
 };
 

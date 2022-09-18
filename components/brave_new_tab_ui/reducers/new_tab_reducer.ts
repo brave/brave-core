@@ -44,6 +44,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         ...initialDataPayload.preferences,
         stats: initialDataPayload.stats,
         ...initialDataPayload.privateTabData,
+        braveRewardsSupported: initialDataPayload.braveRewardsSupported,
         braveTalkSupported: initialDataPayload.braveTalkSupported,
         geminiSupported: initialDataPayload.geminiSupported,
         cryptoDotComSupported: initialDataPayload.cryptoDotComSupported,

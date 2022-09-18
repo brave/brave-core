@@ -13,7 +13,7 @@ namespace brave_ads {
 
 namespace {
 
-std::map<std::string, NotificationAdPopup* /* NOT OWNED */>
+std::map<std::string, NotificationAdPopup* /*NOT OWNED*/>
     g_notification_ad_popups;
 
 }  // namespace

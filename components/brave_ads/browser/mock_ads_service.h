@@ -50,27 +50,26 @@ class MockAdsService : public AdsService {
 
   MOCK_METHOD1(GetDiagnostics, void(GetDiagnosticsCallback));
 
-  MOCK_METHOD1(OnChangeLocale, void(const std::string&));
+  MOCK_METHOD1(OnLocaleDidChange, void(const std::string&));
 
-  MOCK_METHOD1(OnResourceComponentUpdated, void(const std::string&));
+  MOCK_METHOD1(OnDidUpdateResourceComponent, void(const std::string&));
 
-  MOCK_METHOD3(OnHtmlLoaded,
+  MOCK_METHOD3(OnTabHtmlContentDidChange,
                void(const SessionID&,
                     const std::vector<GURL>&,
                     const std::string&));
-  MOCK_METHOD3(OnTextLoaded,
+  MOCK_METHOD3(OnTabTextContentDidChange,
                void(const SessionID&,
                     const std::vector<GURL>&,
                     const std::string&));
 
-  MOCK_METHOD1(OnUserGesture, void(int32_t));
+  MOCK_METHOD1(TriggerUserGestureEvent, void(int32_t));
 
-  MOCK_METHOD1(OnMediaStart, void(const SessionID&));
-  MOCK_METHOD1(OnMediaStop, void(const SessionID&));
-
-  MOCK_METHOD4(OnTabUpdated,
+  MOCK_METHOD1(OnTabDidStartPlayingMedia, void(const SessionID&));
+  MOCK_METHOD1(OnTabDidStopPlayingMedia, void(const SessionID&));
+  MOCK_METHOD4(OnTabDidChange,
                void(const SessionID&, const std::vector<GURL>&, bool, bool));
-  MOCK_METHOD1(OnTabClosed, void(const SessionID&));
+  MOCK_METHOD1(OnDidCloseTab, void(const SessionID&));
 
   MOCK_METHOD1(GetStatementOfAccounts, void(GetStatementOfAccountsCallback));
 

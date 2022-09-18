@@ -291,7 +291,7 @@ void SubdivisionTargeting::OnLocaleDidChange(const std::string& locale) {
   MaybeFetchForLocale(locale);
 }
 
-void SubdivisionTargeting::OnPrefChanged(const std::string& path) {
+void SubdivisionTargeting::OnPrefDidChange(const std::string& path) {
   if (path == prefs::kAutoDetectedSubdivisionTargetingCode) {
     OnAutoDetectedSubdivisionTargetingCodePrefChanged();
   } else if (path == prefs::kSubdivisionTargetingCode) {

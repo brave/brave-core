@@ -90,13 +90,13 @@ void Transfer::OnTransferAd(const int32_t tab_id,
 
   transferring_ad_tab_id_ = 0;
 
-  if (!TabManager::GetInstance()->IsTabVisible(tab_id)) {
+  if (!TabManager::GetInstance()->IsVisible(tab_id)) {
     FailedToTransferAd(ad);
     return;
   }
 
   const absl::optional<TabInfo> tab =
-      TabManager::GetInstance()->GetTabForId(tab_id);
+      TabManager::GetInstance()->GetForId(tab_id);
   if (!tab) {
     FailedToTransferAd(ad);
     return;
@@ -105,9 +105,10 @@ void Transfer::OnTransferAd(const int32_t tab_id,
   if (tab->redirect_chain.empty()) {
     // TODO(https://github.com/brave/brave-browser/issues/24970): Decouple
     // |BrowserListObserver| from |AdsTabHelper| because right now,
-    // |OnTabUpdated| is also called when the browser becomes active or
+    // |OnTabDidChange| is also called when the browser becomes active or
     // inactive, which can have an empty redirect chain if the navigation for a
-    // tab did not complete before calling |OnTabUpdated|, which caused a crash.
+    // tab did not complete before calling |OnTabDidChange|, which caused a
+    // crash.
     return;
   }
 
@@ -183,9 +184,10 @@ void Transfer::OnTabDidChange(const TabInfo& tab) {
   if (tab.redirect_chain.empty()) {
     // TODO(https://github.com/brave/brave-browser/issues/24970): Decouple
     // |BrowserListObserver| from |AdsTabHelper| because right now,
-    // |OnTabUpdated| is also called when the browser becomes active or
+    // |OnTabDidChange| is also called when the browser becomes active or
     // inactive, which can have an empty redirect chain if the navigation for a
-    // tab did not complete before calling |OnTabUpdated|, which caused a crash.
+    // tab did not complete before calling |OnTabDidChange|, which caused a
+    // crash.
     return;
   }
 

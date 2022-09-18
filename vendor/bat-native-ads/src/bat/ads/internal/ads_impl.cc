@@ -174,45 +174,46 @@ void AdsImpl::Shutdown(ShutdownCallback callback) {
   callback(/*success*/ true);
 }
 
-void AdsImpl::OnChangeLocale(const std::string& locale) {
+void AdsImpl::OnLocaleDidChange(const std::string& locale) {
   LocaleManager::GetInstance()->OnLocaleDidChange(locale);
 }
 
-void AdsImpl::OnPrefChanged(const std::string& path) {
-  PrefManager::GetInstance()->OnPrefChanged(path);
+void AdsImpl::OnPrefDidChange(const std::string& path) {
+  PrefManager::GetInstance()->OnPrefDidChange(path);
 }
 
-void AdsImpl::OnHtmlLoaded(const int32_t tab_id,
-                           const std::vector<GURL>& redirect_chain,
-                           const std::string& html) {
+void AdsImpl::OnTabHtmlContentDidChange(const int32_t tab_id,
+                                        const std::vector<GURL>& redirect_chain,
+                                        const std::string& html) {
   TabManager::GetInstance()->OnHtmlContentDidChange(tab_id, redirect_chain,
                                                     html);
 }
 
-void AdsImpl::OnTextLoaded(const int32_t tab_id,
-                           const std::vector<GURL>& redirect_chain,
-                           const std::string& text) {
+void AdsImpl::OnTabTextContentDidChange(const int32_t tab_id,
+                                        const std::vector<GURL>& redirect_chain,
+                                        const std::string& text) {
   TabManager::GetInstance()->OnTextContentDidChange(tab_id, redirect_chain,
                                                     text);
 }
 
-void AdsImpl::OnUserGesture(const int32_t page_transition_type) {
+void AdsImpl::TriggerUserGestureEvent(const int32_t page_transition_type) {
   if (IsInitialized()) {
     UserActivityManager::GetInstance()->RecordEventForPageTransition(
         page_transition_type);
   }
 }
 
-void AdsImpl::OnIdle() {
+void AdsImpl::OnUserDidBecomeIdle() {
   if (IsInitialized()) {
     IdleDetectionManager::GetInstance()->UserDidBecomeIdle();
   }
 }
 
-void AdsImpl::OnUnIdle(const base::TimeDelta idle_time, const bool was_locked) {
+void AdsImpl::OnUserDidBecomeActive(const base::TimeDelta idle_time,
+                                    const bool screen_was_locked) {
   if (IsInitialized()) {
     IdleDetectionManager::GetInstance()->UserDidBecomeActive(idle_time,
-                                                             was_locked);
+                                                             screen_was_locked);
   }
 }
 
@@ -224,23 +225,23 @@ void AdsImpl::OnBrowserDidEnterBackground() {
   BrowserManager::GetInstance()->OnBrowserDidEnterBackground();
 }
 
-void AdsImpl::OnMediaPlaying(const int32_t tab_id) {
+void AdsImpl::OnTabDidStartPlayingMedia(const int32_t tab_id) {
   if (IsInitialized()) {
-    TabManager::GetInstance()->OnMediaPlaying(tab_id);
+    TabManager::GetInstance()->OnDidStartPlayingMedia(tab_id);
   }
 }
 
-void AdsImpl::OnMediaStopped(const int32_t tab_id) {
+void AdsImpl::OnTabDidStopPlayingMedia(const int32_t tab_id) {
   if (IsInitialized()) {
-    TabManager::GetInstance()->OnMediaStopped(tab_id);
+    TabManager::GetInstance()->OnDidStopPlayingMedia(tab_id);
   }
 }
 
-void AdsImpl::OnTabUpdated(const int32_t tab_id,
-                           const std::vector<GURL>& redirect_chain,
-                           const bool is_active,
-                           const bool is_browser_active,
-                           const bool is_incognito) {
+void AdsImpl::OnTabDidChange(const int32_t tab_id,
+                             const std::vector<GURL>& redirect_chain,
+                             const bool is_active,
+                             const bool is_browser_active,
+                             const bool is_incognito) {
   if (!IsInitialized()) {
     return;
   }
@@ -252,21 +253,22 @@ void AdsImpl::OnTabUpdated(const int32_t tab_id,
   }
 
   const bool is_visible = is_active && is_browser_active;
-  TabManager::GetInstance()->OnTabUpdated(tab_id, redirect_chain, is_visible,
-                                          is_incognito);
+  TabManager::GetInstance()->OnDidChange(tab_id, redirect_chain, is_visible,
+                                         is_incognito);
 }
 
-void AdsImpl::OnTabClosed(const int32_t tab_id) {
+void AdsImpl::OnDidCloseTab(const int32_t tab_id) {
   if (IsInitialized()) {
-    TabManager::GetInstance()->OnTabClosed(tab_id);
+    TabManager::GetInstance()->OnDidClose(tab_id);
   }
 }
 
-void AdsImpl::OnWalletUpdated(const std::string& id, const std::string& seed) {
-  account_->SetWallet(id, seed);
+void AdsImpl::OnRewardsWalletDidChange(const std::string& payment_id,
+                                       const std::string& seed) {
+  account_->SetWallet(payment_id, seed);
 }
 
-void AdsImpl::OnResourceComponentUpdated(const std::string& id) {
+void AdsImpl::OnDidUpdateResourceComponent(const std::string& id) {
   ResourceManager::GetInstance()->UpdateResource(id);
 }
 

@@ -25,7 +25,13 @@
 #define MaybeShowReadingListInSidePanelIPH \
   virtual MaybeShowReadingListInSidePanelIPH
 
+#define GetTabStripVisible virtual GetTabStripVisible
+#define BrowserViewLayout BraveBrowserViewLayout
+
 #include "src/chrome/browser/ui/views/frame/browser_view.h"
+
+#undef BrowserViewLayout
+#undef GetTabStripVisible
 #undef BrowserViewLayoutDelegateImpl
 #undef BrowserWindow
 #undef MaybeShowReadingListInSidePanelIPH

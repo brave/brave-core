@@ -75,7 +75,7 @@ class DeviceId;
 class AdsServiceImpl : public AdsService,
                        public ads::AdsClient,
                        BackgroundHelper::Observer,
-                       public Observer,
+                       public ResourceComponentObserver,
                        public base::SupportsWeakPtr<AdsServiceImpl> {
  public:
   explicit AdsServiceImpl(
@@ -255,25 +255,24 @@ class AdsServiceImpl : public AdsService,
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
-  void OnChangeLocale(const std::string& locale) override;
+  void OnLocaleDidChange(const std::string& locale) override;
 
-  void OnHtmlLoaded(const SessionID& tab_id,
-                    const std::vector<GURL>& redirect_chain,
-                    const std::string& html) override;
-  void OnTextLoaded(const SessionID& tab_id,
-                    const std::vector<GURL>& redirect_chain,
-                    const std::string& text) override;
+  void OnTabHtmlContentDidChange(const SessionID& tab_id,
+                                 const std::vector<GURL>& redirect_chain,
+                                 const std::string& html) override;
+  void OnTabTextContentDidChange(const SessionID& tab_id,
+                                 const std::vector<GURL>& redirect_chain,
+                                 const std::string& text) override;
 
-  void OnUserGesture(int32_t page_transition_type) override;
+  void TriggerUserGestureEvent(int32_t page_transition_type) override;
 
-  void OnMediaStart(const SessionID& tab_id) override;
-  void OnMediaStop(const SessionID& tab_id) override;
-
-  void OnTabUpdated(const SessionID& tab_id,
-                    const std::vector<GURL>& redirect_chain,
-                    bool is_active,
-                    bool is_browser_active) override;
-  void OnTabClosed(const SessionID& tab_id) override;
+  void OnTabDidStartPlayingMedia(const SessionID& tab_id) override;
+  void OnTabDidStopPlayingMedia(const SessionID& tab_id) override;
+  void OnTabDidChange(const SessionID& tab_id,
+                      const std::vector<GURL>& redirect_chain,
+                      bool is_active,
+                      bool is_browser_active) override;
+  void OnDidCloseTab(const SessionID& tab_id) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
@@ -416,8 +415,8 @@ class AdsServiceImpl : public AdsService,
   void OnBrowserDidEnterForeground() override;
   void OnBrowserDidEnterBackground() override;
 
-  // Observer:
-  void OnResourceComponentUpdated(const std::string& id) override;
+  // ResourceComponentObserver:
+  void OnDidUpdateResourceComponent(const std::string& id) override;
 
   bool is_bat_ads_initialized_ = false;
   bool did_cleanup_on_first_run_ = false;

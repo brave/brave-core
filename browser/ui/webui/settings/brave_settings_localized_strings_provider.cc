@@ -12,6 +12,7 @@
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/url_constants.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -144,10 +145,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_TITLE},
     {"braveShieldsDefaultsSectionDescription1",
      IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_1},
-    {"braveShieldsDefaultsSectionDescription2",
-     IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2},
-    {"braveShieldsDefaultsSectionDescription3",
-     IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_3},
+    {"braveShieldsDefaultsSectionDescription2RewardsDisabled",
+     IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2_REWARDS_DISABLED},
     {"socialBlocking", IDS_SETTINGS_SOCIAL_BLOCKING_DEFAULTS_TITLE},
     {"defaultView", IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DEFAULT_VIEW_LABEL},
     {"simpleView", IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_SIMPLE_VIEW_LABEL},
@@ -601,6 +600,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       l10n_util::GetStringFUTF16(
           IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_DESC_LABEL,
           kBraveTermsOfUseURL, kBravePrivacyPolicyURL));
+
+  html_source->AddString("braveShieldsDefaultsSectionDescription2",
+                         l10n_util::GetStringFUTF16(
+                             IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2,
+                             base::ASCIIToUTF16(kBraveUIRewardsURL)));
 }  // NOLINT(readability/fn_size)
 
 void BraveAddResources(content::WebUIDataSource* html_source,

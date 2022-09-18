@@ -199,18 +199,22 @@ RegisterPolymerTemplateModifications({
           prefs: '{{prefs}}'
         }
       ))
-      const sectionRewards = document.createElement('template')
-      sectionRewards.setAttribute('is', 'dom-if')
-      sectionRewards.setAttribute('restamp', true)
-      sectionRewards.setAttribute('if', '[[showPage_(pageVisibility.rewards)]]')
-      sectionRewards.content.appendChild(createSectionElement(
-        'rewards',
-        'braveRewards',
-        'settings-brave-rewards-page',
-        {
-          prefs: '{{prefs}}'
-        }
-      ))
+      const isBraveRewardsSupported = loadTimeData.getBoolean('isBraveRewardsSupported')
+      let sectionRewards = undefined
+      if (isBraveRewardsSupported) {
+        sectionRewards = document.createElement('template')
+        sectionRewards.setAttribute('is', 'dom-if')
+        sectionRewards.setAttribute('restamp', true)
+        sectionRewards.setAttribute('if', '[[showPage_(pageVisibility.rewards)]]')
+        sectionRewards.content.appendChild(createSectionElement(
+          'rewards',
+          'braveRewards',
+          'settings-brave-rewards-page',
+          {
+            prefs: '{{prefs}}'
+          }
+        ))
+      }
       const sectionSocialBlocking = document.createElement('template')
       sectionSocialBlocking.setAttribute('is', 'dom-if')
       sectionSocialBlocking.setAttribute('restamp', true)
@@ -256,10 +260,13 @@ RegisterPolymerTemplateModifications({
       sectionAppearance.insertAdjacentElement('afterend', sectionNewTab)
       // Insert shields
       sectionNewTab.insertAdjacentElement('afterend', sectionShields)
-      // Insert Rewards
-      sectionShields.insertAdjacentElement('afterend', sectionRewards)
-      // Insert Social Blocking
-      sectionRewards.insertAdjacentElement('afterend', sectionSocialBlocking)
+      // Insert Rewards and Social Blocking
+      if (isBraveRewardsSupported) {
+        sectionShields.insertAdjacentElement('afterend', sectionRewards)
+        sectionRewards.insertAdjacentElement('afterend', sectionSocialBlocking)
+      } else {
+        sectionShields.insertAdjacentElement('afterend', sectionSocialBlocking)
+      }
       // Move privacy section to after social blocking
       const sectionPrivacy = getSectionElement(actualTemplate.content, 'privacy')
       sectionSocialBlocking.insertAdjacentElement('afterend', sectionPrivacy)

@@ -50,7 +50,25 @@ def AddBravePolicies(template_file_contents):
             'tags': [],
             'desc': ('''This policy allows an admin to specify whether IPFS '''
                      '''feature can be enabled.'''),
-        }
+        },
+        {
+            'name': 'BraveRewardsDisabled',
+            'type': 'main',
+            'schema': {'type': 'boolean'},
+            'supported_on': ['chrome.*:105-'],
+            'features': {
+                'dynamic_refresh': False,
+                'per_profile': True,
+                'can_be_recommended': False,
+                'can_be_mandatory': True
+            },
+            'example_value': True,
+            'id': 2,
+            'caption': '''Disable Brave Rewards feature.''',
+            'tags': [],
+            'desc': ('''This policy allows an admin to specify that Brave '''
+                     '''Rewards feature will be disabled.'''),
+        },
     ]
 
     # Our new polices are added with highest id

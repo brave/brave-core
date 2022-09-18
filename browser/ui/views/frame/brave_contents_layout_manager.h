@@ -13,12 +13,11 @@ class BraveContentsLayoutManager : public ContentsLayoutManager {
  public:
   BraveContentsLayoutManager(views::View* devtools_view,
                              views::View* contents_view,
-                             views::View* sidebar_container_view);
-
+                             views::View* sidebar_container_view,
+                             views::View* vertical_tabs_container);
   BraveContentsLayoutManager(const BraveContentsLayoutManager&) = delete;
   BraveContentsLayoutManager& operator=(const BraveContentsLayoutManager&) =
       delete;
-
   ~BraveContentsLayoutManager() override;
 
   // ContentsLayoutManager overrides:
@@ -26,6 +25,7 @@ class BraveContentsLayoutManager : public ContentsLayoutManager {
 
  private:
   raw_ptr<views::View> sidebar_container_view_ = nullptr;
+  raw_ptr<views::View> vertical_tabs_container_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_CONTENTS_LAYOUT_MANAGER_H_

@@ -96,7 +96,7 @@ void NotificationAdPlatformBridge::ShowNotificationAd(
 
 void NotificationAdPlatformBridge::CloseNotificationAd(
     const std::string& notification_id) {
-  NotificationAdPopupHandler::Close(notification_id, /* by_user */ false);
+  NotificationAdPopupHandler::Close(notification_id, /*by_user*/ false);
 }
 
 }  // namespace brave_ads

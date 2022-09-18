@@ -9,6 +9,9 @@
 namespace brave_rewards {
 namespace prefs {
 
+// Used to enable/disable Rewards via a policy.
+extern const char kDisabledByPolicy[];
+
 extern const char kHideButton[];  // DEPRECATED
 extern const char kShowButton[];
 extern const char kEnabled[];  // DEPRECATED

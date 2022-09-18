@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_NAVIGATION_BAR_DATA_PROVIDER_H_
 #define BRAVE_BROWSER_UI_WEBUI_NAVIGATION_BAR_DATA_PROVIDER_H_
 
+class Profile;
 namespace content {
 class WebUIDataSource;
 }
@@ -14,7 +15,7 @@ class NavigationBarDataProvider {
  public:
   // Sets load-time constants on |source|. This handles a flicker-free initial
   // page load (i.e. loadTimeData.getString('brToolbarSettingsTitle')).
-  static void Initialize(content::WebUIDataSource* source);
+  static void Initialize(content::WebUIDataSource* source, Profile* profile);
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_NAVIGATION_BAR_DATA_PROVIDER_H_

@@ -23,7 +23,7 @@ class BraveOpaqueBrowserFrameView : public OpaqueBrowserFrameView {
   BraveOpaqueBrowserFrameView& operator=(
       const BraveOpaqueBrowserFrameView&) = delete;
 
-  // BraveOpaqueBrowserFrameView overrides:
+  // OpaqueBrowserFrameView overrides:
   void OnPaint(gfx::Canvas* canvas) override;
 
  private:

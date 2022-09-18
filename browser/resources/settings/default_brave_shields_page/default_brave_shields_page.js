@@ -64,6 +64,13 @@ class BraveShieldsPage extends BraveShieldsPageBase {
             ];
           }
       },
+      isBraveRewardsSupported_: {
+        readOnly: true,
+        type: Boolean,
+        value: function () {
+          return loadTimeData.getBoolean('isBraveRewardsSupported')
+        }
+      },
       adControlType_: String,
       cookieControlType_: String,
       fingerprintingControlType_: String,

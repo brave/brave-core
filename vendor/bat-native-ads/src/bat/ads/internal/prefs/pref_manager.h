@@ -28,7 +28,7 @@ class PrefManager final {
   void AddObserver(PrefManagerObserver* observer);
   void RemoveObserver(PrefManagerObserver* observer);
 
-  void OnPrefChanged(const std::string& path) const;
+  void OnPrefDidChange(const std::string& path) const;
 
  private:
   void NotifyPrefChanged(const std::string& path) const;

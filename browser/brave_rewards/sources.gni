@@ -18,6 +18,7 @@ brave_browser_brave_rewards_sources = [
 
 brave_browser_brave_rewards_deps = [
   "//base",
+  "//brave/browser/brave_rewards:util",
   "//brave/browser/brave_rewards/rewards_panel",
   "//brave/browser/profiles",
   "//brave/browser/profiles:util",
