@@ -63,7 +63,7 @@ class BraveVpnDnsObserverServiceUnitTest : public testing::Test {
     SystemNetworkContextManager::set_stub_resolver_config_reader_for_testing(
         stub_resolver_config_reader_.get());
     SetPolicyValue(policy::key::kDnsOverHttpsMode, "");
-    brave_vpn::RegisterProfilePrefs(pref_service_.registry());
+    brave_vpn::RegisterLocalStatePrefs(pref_service_.registry());
     dns_service_->SetPrefServiceForTesting(pref_service());
   }
 
@@ -112,7 +112,7 @@ class BraveVpnDnsObserverServiceUnitTest : public testing::Test {
   std::unordered_map<std::string, std::string> policy_map_;
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<BraveVpnDnsObserverService> dns_service_;
-  sync_preferences::TestingPrefServiceSyncable pref_service_;
+  TestingPrefServiceSimple pref_service_;
   ScopedTestingLocalState local_state_;
   std::unique_ptr<StubResolverConfigReader> stub_resolver_config_reader_;
 };

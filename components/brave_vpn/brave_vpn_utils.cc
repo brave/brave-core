@@ -14,9 +14,49 @@
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/skus/common/features.h"
 #include "build/build_config.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_registry_simple.h"
+#include "components/prefs/pref_service.h"
 
 namespace brave_vpn {
+
+namespace {
+
+void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
+#if !BUILDFLAG(IS_ANDROID)
+  registry->RegisterBooleanPref(prefs::kBraveVPNShowButton, true);
+  registry->RegisterListPref(prefs::kBraveVPNRegionList);
+  registry->RegisterStringPref(prefs::kBraveVPNDeviceRegion, "");
+  registry->RegisterStringPref(prefs::kBraveVPNSelectedRegion, "");
+  registry->RegisterBooleanPref(prefs::kBraveVPNShowDNSPolicyWarningDialog,
+                                true);
+#elif BUILDFLAG(IS_ANDROID)
+  registry->RegisterStringPref(prefs::kBraveVPNPurchaseTokenAndroid, "");
+  registry->RegisterStringPref(prefs::kBraveVPNPackageAndroid, "");
+#endif
+  registry->RegisterStringPref(prefs::kBraveVPNEEnvironment,
+                               skus::GetDefaultEnvironment());
+  registry->RegisterDictionaryPref(prefs::kBraveVPNRootPref);
+}
+
+}  // namespace
+
+void MigrateVPNSettings(PrefService* profile_prefs, PrefService* local_prefs) {
+  auto* obsolete_pref = profile_prefs->Get(prefs::kBraveVPNRootPref);
+  if (!obsolete_pref || !obsolete_pref->is_dict())
+    return;
+
+  base::Value result;
+  if (local_prefs->HasPrefPath(prefs::kBraveVPNRootPref)) {
+    result = local_prefs->Get(prefs::kBraveVPNRootPref)->Clone();
+    auto& result_dict = result.GetDict();
+    result_dict.Merge(obsolete_pref->GetDict().Clone());
+  } else {
+    result = obsolete_pref->Clone();
+  }
+  local_prefs->Set(prefs::kBraveVPNRootPref, result);
+  profile_prefs->ClearPref(prefs::kBraveVPNRootPref);
+}
 
 bool IsBraveVPNEnabled() {
   return base::FeatureList::IsEnabled(brave_vpn::features::kBraveVPN) &&
@@ -35,26 +75,16 @@ std::string GetManageUrl(const std::string& env) {
   return brave_vpn::kManageUrlProd;
 }
 
-void RegisterProfilePrefs(PrefRegistrySimple* registry) {
-#if !BUILDFLAG(IS_ANDROID)
-  registry->RegisterBooleanPref(prefs::kBraveVPNShowButton, true);
-  registry->RegisterListPref(prefs::kBraveVPNRegionList);
-  registry->RegisterStringPref(prefs::kBraveVPNDeviceRegion, "");
-  registry->RegisterStringPref(prefs::kBraveVPNSelectedRegion, "");
-  registry->RegisterBooleanPref(prefs::kBraveVPNShowDNSPolicyWarningDialog,
-                                true);
-#elif BUILDFLAG(IS_ANDROID)
-  registry->RegisterStringPref(prefs::kBraveVPNPurchaseTokenAndroid, "");
-  registry->RegisterStringPref(prefs::kBraveVPNPackageAndroid, "");
-#endif
-  registry->RegisterStringPref(prefs::kBraveVPNEEnvironment,
-                               skus::GetDefaultEnvironment());
+void RegisterProfilePrefsForMigration(
+    user_prefs::PrefRegistrySyncable* registry) {
+  registry->RegisterDictionaryPref(prefs::kBraveVPNRootPref);
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   p3a_utils::RegisterFeatureUsagePrefs(
       registry, prefs::kBraveVPNFirstUseTime, prefs::kBraveVPNLastUseTime,
       prefs::kBraveVPNUsedSecondDay, prefs::kBraveVPNDaysInMonthUsed);
+  RegisterVPNLocalStatePrefs(registry);
 }
 
 }  // namespace brave_vpn

@@ -22,15 +22,18 @@
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
-#include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_today/common/features.h"
+#include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/playlist/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
+#include "brave/browser/skus/skus_service_factory.h"
+#endif
 #if BUILDFLAG(ENABLE_GREASELION)
 #include "brave/browser/greaselion/greaselion_service_factory.h"
 #endif
@@ -112,9 +115,10 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #endif
 
   PermissionLifetimeManagerFactory::GetInstance();
-
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
   skus::SkusServiceFactory::GetInstance();
-
+  brave_vpn::BraveVpnServiceFactory::GetInstance();
+#endif
 #if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     playlist::PlaylistServiceFactory::GetInstance();

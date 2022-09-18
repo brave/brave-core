@@ -9,15 +9,19 @@
 #include <string>
 
 class PrefRegistrySimple;
+class PrefService;
+namespace user_prefs {
+class PrefRegistrySyncable;
+}  // namespace user_prefs
 
 namespace brave_vpn {
 
 bool IsBraveVPNEnabled();
 std::string GetManageUrl(const std::string& env);
-
-void RegisterProfilePrefs(PrefRegistrySimple* registry);
+void MigrateVPNSettings(PrefService* profile_prefs, PrefService* local_prefs);
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
-
+void RegisterProfilePrefsForMigration(
+    user_prefs::PrefRegistrySyncable* registry);
 }  // namespace brave_vpn
 
 #endif  // BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_UTILS_H_

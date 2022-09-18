@@ -9,7 +9,8 @@
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
 #include "brave/components/skus/browser/pref_names.h"
-#include "components/pref_registry/pref_registry_syncable.h"
+#include "components/prefs/pref_registry_simple.h"
+#include "components/prefs/pref_service.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
 namespace skus {
@@ -59,8 +60,21 @@ std::string GetEnvironmentForDomain(const std::string& domain) {
   return "";
 }
 
-void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(prefs::kSkusState);
+}
+
+void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry) {
+  registry->RegisterDictionaryPref(prefs::kSkusState);
+}
+
+void MigrateSkusSettings(PrefService* profile_prefs, PrefService* local_prefs) {
+  auto* obsolete_pref = profile_prefs->Get(prefs::kSkusState);
+  if (!obsolete_pref || !obsolete_pref->is_dict())
+    return;
+
+  local_prefs->Set(prefs::kSkusState, obsolete_pref->Clone());
+  profile_prefs->ClearPref(prefs::kSkusState);
 }
 
 }  // namespace skus

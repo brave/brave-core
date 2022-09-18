@@ -8,6 +8,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/components/brave_vpn/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -40,6 +41,6 @@ void BraveVPNMenuModel::ExecuteCommand(int command_id, int event_flags) {
 }
 
 bool BraveVPNMenuModel::IsBraveVPNButtonVisible() const {
-  auto* prefs = browser_->profile()->GetPrefs();
-  return prefs->GetBoolean(brave_vpn::prefs::kBraveVPNShowButton);
+  return g_browser_process->local_state()->GetBoolean(
+      brave_vpn::prefs::kBraveVPNShowButton);
 }
