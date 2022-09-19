@@ -19,6 +19,11 @@ BravePermissionManager::BravePermissionManager(
     PermissionContextMap permission_contexts)
     : PermissionManager(browser_context, std::move(permission_contexts)) {}
 
+void BravePermissionManager::Shutdown() {
+  PermissionManager::Shutdown();
+  permission_contexts_.clear();
+}
+
 void BravePermissionManager::RequestPermissionsForOrigin(
     const std::vector<blink::PermissionType>& permissions,
     content::RenderFrameHost* render_frame_host,
