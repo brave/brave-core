@@ -19,8 +19,6 @@ from shutil import rmtree, move, copy
 
 
 async def ProcessBinary(semaphore, options, binary):
-    dump_syms = os.path.join(options.build_dir, options.dump_syms_path)
-
     sym_temp_output = binary + '.sym'
     error = None
     async with semaphore:
@@ -29,7 +27,7 @@ async def ProcessBinary(semaphore, options, binary):
             print(f'Generating symbols for {binary}')
         with open(sym_temp_output, 'w', encoding='utf-8') as output:
             process = await asyncio.create_subprocess_exec(
-                dump_syms,
+                options.dump_syms_path,
                 binary,
                 stdout=output,
                 stderr=asyncio.subprocess.PIPE)
