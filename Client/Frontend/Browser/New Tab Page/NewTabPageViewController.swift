@@ -745,8 +745,8 @@ class NewTabPageViewController: UIViewController {
     switch background.type {
     case .regular:
       presentImageCredit(sender)
-    case .withBrandLogo(let logo):
-      guard let logo = logo else { break }
+    case .withBrandLogo(let defaultLogo):
+      guard let logo = background.wallpaper.logo ?? defaultLogo else { break }
       tappedSponsorButton(logo)
     case .withQRCode(let code):
       tappedQRCode(code)
