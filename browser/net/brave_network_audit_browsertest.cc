@@ -334,8 +334,8 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
       WaitForTimeout(kMaxTimeoutPerLoadedURL);
     }
   }
-  // TODO(sko) What should we do for this? is this comment still valid?
-  // Currently, builtin panel item is one.
+
+  // Currently, we have 3 builtin panel items.
   // If it's increased, --test-launcher-time should be increased also.
   EXPECT_EQ(builtin_panel_item_total, builtin_panel_item_count);
 #endif
