@@ -189,6 +189,10 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
         brave_rewards::RewardsService* rewards_service,
         const ledger::type::Result result) override;
 
+    void OnPendingContributionSaved(
+        brave_rewards::RewardsService* rewards_service,
+        const ledger::type::Result result) override;
+
     void OnNotificationAdded(
       brave_rewards::RewardsNotificationService* rewards_notification_service,
       const brave_rewards::RewardsNotificationService::RewardsNotification&
@@ -217,6 +221,10 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
 
     void OnGetExternalWallet(const ledger::mojom::Result result,
                              ledger::mojom::ExternalWalletPtr wallet);
+
+    void onPublisherBanner(ledger::type::PublisherBannerPtr wallet);
+
+    void OnOneTimeTip(ledger::type::Result result);
 
     void onPublisherBanner(ledger::type::PublisherBannerPtr wallet);
 
