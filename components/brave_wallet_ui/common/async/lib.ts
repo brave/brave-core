@@ -214,16 +214,20 @@ export async function getBuyAssets (onRampProvider: BraveWallet.OnRampProvider, 
 export const getAllBuyAssets = async (): Promise<{
   rampAssetOptions: BraveWallet.BlockchainToken[]
   wyreAssetOptions: BraveWallet.BlockchainToken[]
+  sardineAssetOptions: BraveWallet.BlockchainToken[]
   allAssetOptions: BraveWallet.BlockchainToken[]
 }> => {
   const { blockchainRegistry } = getAPIProxy()
-  const { kRamp, kWyre } = BraveWallet.OnRampProvider
+  const { kRamp, kWyre, kSardine } = BraveWallet.OnRampProvider
 
   const rampAssetsPromises = await Promise.all(
     SupportedOnRampNetworks.map(chainId => blockchainRegistry.getBuyTokens(kRamp, chainId))
   )
   const wyreAssetsPromises = await Promise.all(
     SupportedOnRampNetworks.map(chainId => blockchainRegistry.getBuyTokens(kWyre, chainId))
+  )
+  const sardineAssetsPromises = await Promise.all(
+    SupportedOnRampNetworks.map(chainId => blockchainRegistry.getBuyTokens(kSardine, chainId))
   )
 
   // add token logos
@@ -232,6 +236,10 @@ export const getAllBuyAssets = async (): Promise<{
     .map(addLogoToToken)
 
   const wyreAssetOptions: BraveWallet.BlockchainToken[] = wyreAssetsPromises
+    .flatMap(p => p.tokens)
+    .map(addLogoToToken)
+
+  const sardineAssetOptions: BraveWallet.BlockchainToken[] = sardineAssetsPromises
     .flatMap(p => p.tokens)
     .map(addLogoToToken)
 
@@ -246,7 +254,12 @@ export const getAllBuyAssets = async (): Promise<{
     nativeAssets: wyreNativeAssetOptions
   } = getNativeTokensFromList(wyreAssetOptions)
 
-  // seperate BAT from other tokens
+  const {
+    tokens: sardineTokenOptions,
+    nativeAssets: sardineNativeAssetOptions
+  } = getNativeTokensFromList(sardineAssetOptions)
+
+  // separate BAT from other tokens
   const {
     bat: rampBatTokens,
     nonBat: rampNonBatTokens
@@ -257,14 +270,21 @@ export const getAllBuyAssets = async (): Promise<{
     nonBat: wyreNonBatTokens
   } = getBatTokensFromList(wyreTokenOptions)
 
+  const {
+    bat: sardineBatTokens,
+    nonBat: sardineNonBatTokens
+  } = getBatTokensFromList(sardineTokenOptions)
+
   // sort lists
   // Move Gas coins and BAT to front of list
   const sortedRampOptions = [...rampNativeAssetOptions, ...rampBatTokens, ...rampNonBatTokens]
   const sortedWyreOptions = [...wyreNativeAssetOptions, ...wyreBatTokens, ...wyreNonBatTokens]
+  const sortedSardineOptions = [...sardineNativeAssetOptions, ...sardineBatTokens, ...sardineNonBatTokens]
 
   const results = {
     rampAssetOptions: sortedRampOptions,
     wyreAssetOptions: sortedWyreOptions,
+    sardineAssetOptions: sortedSardineOptions,
     allAssetOptions: getUniqueAssets([
       ...sortedRampOptions,
       ...sortedWyreOptions
