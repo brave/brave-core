@@ -5,7 +5,6 @@
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 import os
 import json
-import sys
 import logging
 import shlex
 import shutil
@@ -291,7 +290,7 @@ class RunableConfiguration:
 def PrepareBinariesAndDirectories(configurations: List[RunnerConfig],
                                   common_options: CommonOptions
                                   ) -> List[RunableConfiguration]:
-  runable_configurations: list[RunableConfiguration] = []
+  runable_configurations: List[RunableConfiguration] = []
   for config in configurations:
     if config.tag == config.label:
       description = config.tag
@@ -316,7 +315,7 @@ def PrepareBinariesAndDirectories(configurations: List[RunnerConfig],
 def SpawnConfigurationsFromTargetList(target_list: List[str],
                                       base_configuration: RunnerConfig
                                       ) -> List[RunnerConfig]:
-  configurations: list[RunnerConfig] = []
+  configurations: List[RunnerConfig] = []
   for target_string in target_list:
     config = deepcopy(base_configuration)
     config.tag, location = ParseTarget(target_string)
