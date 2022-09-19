@@ -537,3 +537,7 @@
 -keep class org.chromium.chrome.browser.crash.BravePureJavaExceptionReporter {
     public <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.tasks.ReturnToChromeUtil {
+    *** shouldShowTabSwitcher(...);
+}

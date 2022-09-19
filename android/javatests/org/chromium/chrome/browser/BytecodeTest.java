@@ -263,6 +263,7 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListManager"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListManager"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/tasks/ReturnToChromeUtil"));
     }
 
     @Test
@@ -391,6 +392,8 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
                 "updateTilePlaceholderVisibility", true, void.class));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/tasks/ReturnToChromeUtil",
+                "shouldShowTabSwitcher", true, boolean.class, long.class));
     }
 
     @Test
