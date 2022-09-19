@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import {RegisterPolymerTemplateModifications} from 'chrome://brave-resources/polymer_overriding.js'
-import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js'
+import {I18nBehavior} from 'chrome://resources/cr_elements/i18n_behavior.js'
 import {Router} from '../router.js'
 import {loadTimeData} from '../i18n_setup.js'
 

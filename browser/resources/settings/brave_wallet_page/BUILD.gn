@@ -32,8 +32,8 @@ js_modulizer("modules") {
 
 js_library("wallet_networks") {
   deps = [
+    "//ui/webui/resources/cr_elements:i18n_behavior",
     "//ui/webui/resources/js:cr.m",
-    "//ui/webui/resources/js:i18n_behavior.m",
     "//ui/webui/resources/js:load_time_data.m",
   ]
   externs_list = [ "$externs_path/settings_private.js" ]
