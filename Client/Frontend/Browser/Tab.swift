@@ -403,6 +403,7 @@ class Tab: NSObject {
         let request = PrivilegedRequest(url: restoreURL) as URLRequest
         webView.load(request)
         lastRequest = request
+        restoring = false
       }
     } else if let request = lastRequest {
       webView.load(request)
