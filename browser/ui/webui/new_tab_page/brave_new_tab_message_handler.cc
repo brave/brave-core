@@ -558,12 +558,21 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
       data->FindBool(ntp_background_images::kIsBackgroundKey);
   DCHECK(is_background);
 
+  constexpr char kBackgroundWallpaperKey[] = "backgroundWallpaper";
   if (is_background.value()) {
-    constexpr char kBackgroundWallpaperKey[] = "backgroundWallpaper";
     wallpaper.Set(kBackgroundWallpaperKey, std::move(*data));
     ResolveJavascriptCallback(args[0], base::Value(std::move(wallpaper)));
     return;
   }
+
+  // Even though we show sponsored image, we should pass "Background wallpaper"
+  // data so that NTP customization menu can know which wallpaper is selected by
+  // users.
+  auto backgroundWallpaper = service->GetCurrentWallpaper();
+  wallpaper.Set(kBackgroundWallpaperKey,
+                backgroundWallpaper
+                    ? base::Value(std::move(*backgroundWallpaper))
+                    : base::Value());
 
   const std::string* creative_instance_id =
       data->FindString(ntp_background_images::kCreativeInstanceIDKey);
