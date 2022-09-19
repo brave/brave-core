@@ -71,8 +71,8 @@ class BraveTorPluggableTransportUpdater : public BraveComponent {
   base::ObserverList<Observer> observers_;
   raw_ptr<PrefService> local_state_ = nullptr;
   base::FilePath user_data_dir_;
-  base::FilePath snowflake_path_;
-  base::FilePath obsf4_path_;
+  base::FilePath snowflake_path_;  // Relative to the user data dir
+  base::FilePath obfs4_path_;      // Relative to the user data dir
 
   base::WeakPtrFactory<BraveTorPluggableTransportUpdater> weak_ptr_factory_{
       this};
