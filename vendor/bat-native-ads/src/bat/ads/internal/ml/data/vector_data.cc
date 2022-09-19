@@ -30,7 +30,7 @@ constexpr double kMinimumVectorLength = 1e-7;
 class VectorDataStorage {
  public:
   VectorDataStorage() = default;
-  VectorDataStorage(int dimension_count,
+  VectorDataStorage(const int dimension_count,
                     std::vector<uint32_t> points,
                     std::vector<float> values)
       : dimension_count_(dimension_count),
