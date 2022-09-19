@@ -320,12 +320,17 @@ public class BraveRewardsCreatorPanelFragment extends Fragment
 
         if (!TextUtils.isEmpty(notePart1)) {
             getActivity().findViewById(R.id.not_verified_warning_text).setVisibility(View.VISIBLE);
-            String notePart2 = getResources().getString(R.string.learn_more);
+            String notePart2 = getResources().getString(R.string.learn_more_tip);
             final StringBuilder sb1 = new StringBuilder();
+            sb1.append("<b>");
+            sb1.append(getResources().getString(R.string.note_text));
+            sb1.append("</b>");
+            sb1.append(" ");
             sb1.append(notePart1);
-            sb1.append(" <font color=#00afff>");
+            sb1.append(" ");
+            sb1.append("<b><font color=#00afff>");
             sb1.append(notePart2);
-            sb1.append("</font>");
+            sb1.append("</font></b>");
             Spanned toInsert = BraveRewardsHelper.spannedFromHtmlString(sb1.toString());
             TextView not_verified_warning_text =
                     (TextView) getActivity().findViewById(R.id.not_verified_warning_text);

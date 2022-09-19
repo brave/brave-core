@@ -86,7 +86,6 @@ public class BraveRewardsCustomTipFragment extends Fragment {
             public void onClick(View v) {
                 if (getParentFragmentManager().getBackStackEntryCount() != 0) {
                     ((BraveRewardsSiteBannerActivity) getActivity()).resetUpdateLayout();
-                    getParentFragmentManager().popBackStack();
                 }
             }
         });

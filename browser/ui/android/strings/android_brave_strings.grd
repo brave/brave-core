@@ -151,14 +151,21 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
 
 
+      <message name="IDS_NEXT_TIP_DATE"  desc="Text for Next tip date">Next tip date</message>
+      <message name="IDS_NOTE_TEXT"  desc="Text for note">Note:</message>
+      <message name="IDS_SET_MONTHLY_TIP"  desc="Text for Set monthly tip">Set monthly tip</message>
+      <message name="IDS_ONE_TIME_TIP_AMOUNT"  desc="Text for Next tip date">One-time tip amount</message>
+      <message name="IDS_ONE_TIME_TIP_SUCCESS_NOTE"  desc="Text for Next tip date1">Your tip can take several minutes to process</message>
 
-      
 
-      <message name="IDS_OTHER_AMOUNTS" desc="Custom tip that allow other amounts">Other amounts</message>
+
+
+      <message name="IDS_CUSTOM_TIP_AMOUNT" desc="Custom tip that allow other amounts">Custom tip amount</message>
+      <message name="IDS_LEARN_MORE_TIP" desc="Learn more tipping">Learn More.</message>
       <message name="IDS_THANKS_FOR_SUPPORT" desc="Text for Thanks for the support">Thanks for the support!</message>
-      <message name="IDS_YOUR_ONE_TIME_TIP_HAS_BEEN_SENT"  desc="Text for Your one time tip has been sent">Your one time tip has been sent</message>
-      <message name="IDS_YOUR_MONTHLY_TIP_HAS_BEEN_SENT"  desc="Text for Your monthly tip has been sent">Your monthly contribution has been sent</message>
-      <message name="IDS_TWEET_ABOUT_YOUR_SUPPORT"  desc="Text for Tweet about your support">Tweet about your support!</message>
+      <message name="IDS_YOUR_ONE_TIME_TIP_HAS_BEEN_SENT"  desc="Text for Your one time tip has been sent">Your one-time tip has been sent.</message>
+      <message name="IDS_YOUR_MONTHLY_TIP_HAS_BEEN_SENT"  desc="Text for Monthly tip has been sent">Monthly tip has been set.</message>
+      <message name="IDS_TWEET_ABOUT_YOUR_SUPPORT"  desc="Text for Tweet about your support">Tweet about your support</message>
       <message name="IDS_MONTHLY_CONTRIBUTION"  desc="Text for Monthly">Monthly</message>
       <message name="IDS_BAT_FUNDS"  desc="Text for BAT Funds">BAT Funds</message>
       <message name="IDS_PROCESSING_FEE"  desc="Text for Brave collects 5% of the tip amount as a processing fee">Brave collects 5% of the tip amount as a processing fee.</message>
@@ -169,8 +176,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BACK_BUTTON" desc="Text for back">back</message>
       <message name="IDS_EXCHANGE_BUTTON" desc="Text for exchange">exchange</message>
       <message name="IDS_ABOUT_TO_TIP" desc="Text for You are about to tip">You are about to tip</message>
+      <message name="IDS_YOUR_MONTHLY_SUPPORT" desc="Text for Your monthly support will be">Your monthly support will be</message>
       <message name="IDS_MINIMUM_TIP_AMOUNT">Minimum tip amount is 0.25 BAT</message>
-      <message name="IDS_NOT_ENOUGH_FUND" desc="Text for Not Enough Fund">Not Enough Fund</message>
+      <message name="IDS_NOT_ENOUGH_FUND" desc="Text for Not Enough Fund">Not enough tokens.</message>
       <message name="IDS_CONTINUE_TIP" desc="Text for continue">Continue</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET_UNVERIFIED_PUBLISHER" desc="Text of a tweet after tipping an unverified creator.">
         Love that #Brave lets me support creators! Just tipped <ph name="NAME">%1$s<ex>user</ex></ph> with #BAT. If they verify at https://creators.brave.com before <ph name="DATE">%2$s<ex>Jan 2, 2023</ex></ph>, the BAT is theirs!
@@ -570,7 +578,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Your first monthly tip will be sent on:
       </message>
       <message name="IDS_BRAVE_UI_SITE_BANNER_UNVERIFIED_NOTICE_TEXT" desc="A message on tipping page when a creator is not verified yet">
-        NOTE: This creator has not yet signed up to receive contributions from Brave users. We'll keep trying to contribute until they verify, or until 90 days have passed.
+        This creator has not yet signed up to receive contributions from Brave users. We'll keep trying to contribute until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_BRAVE_UI_SITE_BANNER_DIFFERENT_VERIFIED_NOTICE_TEXT" desc="A message on tipping page when a creator is not verified yet">
         NOTE: This creator is currently not configured to receive tips from your Rewards custodial wallet service. Any tip you make will remain pending and retry automatically for 90 days.
@@ -579,7 +587,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Welcome!
       </message>
       <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT1" desc="Tipping page description">
-        You can support this site by sending a tip. It's a way of thanking them for making great content. Verified content creators get paid for their tips during the first week of each calendar month.\nIf you like, you can schedule monthly tips to support this site on a continuous basis.
+        You can support this site by sending a tip. It's a way of thanking them for making great content.
       </message>
       <!-- <message name="IDS_BRAVE_UI_DONATION_AMOUNT" desc="Tipping amount screen title">
         Tip amount

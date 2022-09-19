@@ -7,17 +7,16 @@
     android:background="@android:color/white"
     tools:context=".BraveRewardsTipConfirmationFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:id="@+id/id_thanks_for_support"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_regular"
+        android:fontFamily="@font/poppins_medium"
         android:text="@string/thanks_for_support"
         android:textStyle="bold"
         android:textColor="#212529"
         android:textSize="20sp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintBottom_toTopOf="@+id/divider_line"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -43,9 +42,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:fontFamily="@font/poppins_regular"
-        android:letterSpacing="0.03"
+        android:fontFamily="@font/poppins_medium"
+        android:text="@string/your_one_time_tip_has_been_sent"
         android:textColor="#212529"
+        android:textStyle="bold"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/amount_sent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,44 +53,102 @@
         app:layout_constraintTop_toBottomOf="@+id/divider_line" />
 
     <TextView
+        android:id="@+id/tip_amount_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:text="@string/one_time_tip_amount"
+        android:textColor="#212529"
+        android:textSize="16sp"
+        android:layout_marginStart="40dp"
+        app:layout_constraintBottom_toBottomOf="@+id/amount_sent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/amount_sent" />
+
+    <TextView
         android:id="@+id/amount_sent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="7dp"
         android:fontFamily="@font/poppins_regular"
-        android:textStyle="bold"
-        android:letterSpacing="-0.01"
         android:textColor="#212529"
-        android:textSize="22sp"
-        app:layout_constraintBottom_toTopOf="@+id/textview_tweet_your_support"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginEnd="40dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/your_tip_amount_sent" />
 
     <TextView
-        android:id="@+id/textview_tweet_your_support"
+        android:id="@+id/next_tip_date_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="7dp"
         android:fontFamily="@font/poppins_regular"
-        android:text="@string/tweet_about_your_support"
-        android:textColor="#339AF0"
-        app:layout_constraintBottom_toTopOf="@+id/twitter_button"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:letterSpacing="-0.01"
+        android:text="@string/next_tip_date"
+        android:textColor="#212529"
+        android:textSize="16sp"
+        android:layout_marginStart="40dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/next_tip_date_value"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/next_tip_date_value" />
+
+    <TextView
+        android:id="@+id/next_tip_date_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:fontFamily="@font/poppins_regular"
+        android:letterSpacing="-0.01"
+        android:textColor="#212529"
+        android:textSize="16sp"
+        android:visibility="gone"
+        android:layout_marginEnd="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/amount_sent" />
 
-    <ImageView
+    <TextView
+        android:id="@+id/one_time_tip_note"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="#F7F8FA"
+        android:fontFamily="@font/poppins_regular"
+        android:paddingLeft="18dp"
+        android:paddingTop="10dp"
+        android:paddingRight="18dp"
+        android:paddingBottom="10dp"
+        android:text="@string/one_time_tip_success_note"
+        android:visibility="gone"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/next_tip_date_value" />
+
+    <TextView
         android:id="@+id/twitter_button"
-        android:layout_width="51dp"
+        android:layout_width="wrap_content"
         android:layout_height="51dp"
-        android:layout_marginTop="23dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/twitter_button_background"
         android:contentDescription="@null"
-        android:src="@drawable/icn_tweet"
+        android:drawableStart="@drawable/ic_twitter_logo_white"
+        android:fontFamily="@font/poppins_regular"
+        android:gravity="center"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="@string/tweet_about_your_support"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview_tweet_your_support"
-        android:layout_marginBottom="64dp"/>
+        app:layout_constraintTop_toBottomOf="@+id/one_time_tip_note"
+        tools:ignore="UseCompatTextViewDrawableXml" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

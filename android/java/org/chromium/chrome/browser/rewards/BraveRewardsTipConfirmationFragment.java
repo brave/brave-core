@@ -12,6 +12,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,14 +23,25 @@ import androidx.fragment.app.Fragment;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveRewardsHelper;
+import org.chromium.chrome.browser.BraveRewardsNativeWorker;
+import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsSiteBannerActivity;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
-public class BraveRewardsTipConfirmationFragment extends Fragment {
+public class BraveRewardsTipConfirmationFragment extends Fragment implements BraveRewardsObserver {
+    private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
+    private int mStatus;
+    private String mPublisherName;
+    private boolean mMonthlyContribution;
+    private TextView mNextTipDateText;
+    private TextView mNextTipDateValue;
+
     public static BraveRewardsTipConfirmationFragment newInstance(
             int status, String name, double amount, boolean isMonthly) {
         BraveRewardsTipConfirmationFragment fragment = new BraveRewardsTipConfirmationFragment();
@@ -45,22 +57,21 @@ public class BraveRewardsTipConfirmationFragment extends Fragment {
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
+        mBraveRewardsNativeWorker.AddObserver(this);
         View view = inflater.inflate(R.layout.brave_rewards_tip_confirmation, container, false);
         if (getArguments() != null) {
             double amount = getArguments().getDouble(BraveRewardsSiteBannerActivity.AMOUNT_EXTRA);
-            boolean monthlyContribution = getArguments().getBoolean(
+            mMonthlyContribution = getArguments().getBoolean(
                     BraveRewardsSiteBannerActivity.IS_MONTHLY_CONTRIBUTION);
             int status = getArguments().getInt(BraveRewardsSiteBannerActivity.STATUS_ARGS, -1);
             String publisherName =
                     getArguments().getString(BraveRewardsSiteBannerActivity.NAME_ARGS);
 
-            initView(view, status, publisherName, amount, monthlyContribution);
+            initView(view, status, publisherName, amount, mMonthlyContribution);
         }
         return view;
     }
-
-    int mStatus;
-    String mPublisherName;
 
     @SuppressLint("SetTextI18n")
     private void initView(
@@ -70,6 +81,20 @@ public class BraveRewardsTipConfirmationFragment extends Fragment {
         TextView tipAmountTextView = view.findViewById(R.id.amount_sent);
         tipAmountTextView.setText(amount + " BAT");
         TextView tipTypeDescriptionTextView = view.findViewById(R.id.your_tip_amount_sent);
+        TextView oneTtimeTipNote = view.findViewById(R.id.one_time_tip_note);
+        String oneTimeNoteString = getResources().getString(R.string.one_time_tip_success_note);
+
+        final StringBuilder sb1 = new StringBuilder();
+        sb1.append("<b>");
+        sb1.append(getResources().getString(R.string.note_text));
+        sb1.append("</b>");
+        sb1.append(" ");
+        sb1.append(oneTimeNoteString);
+        Spanned toInsert = BraveRewardsHelper.spannedFromHtmlString(sb1.toString());
+        oneTtimeTipNote.setText(toInsert);
+
+        mNextTipDateText = view.findViewById(R.id.next_tip_date_text);
+        mNextTipDateValue = view.findViewById(R.id.next_tip_date_value);
 
         if (monthlyContribution) {
             tipTypeDescriptionTextView.setText(
@@ -77,13 +102,14 @@ public class BraveRewardsTipConfirmationFragment extends Fragment {
         } else {
             tipTypeDescriptionTextView.setText(
                     getResources().getString(R.string.your_one_time_tip_has_been_sent));
+            oneTtimeTipNote.setVisibility(View.VISIBLE);
         }
-
+        mBraveRewardsNativeWorker.GetReconcileStamp();
         setTweetClickListener(view);
     }
 
     private void setTweetClickListener(View view) {
-        ImageView twitter_button = view.findViewById(R.id.twitter_button);
+        TextView twitter_button = view.findViewById(R.id.twitter_button);
         twitter_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,5 +160,27 @@ public class BraveRewardsTipConfirmationFragment extends Fragment {
                                 publisherName))
                 .appendQueryParameter("hashtags", "TipWithBrave");
         return builder.build().toString();
+    }
+
+    @Override
+    public void OnGetReconcileStamp(long timestamp) {
+        // make reconcile date views visible
+        if (true == mMonthlyContribution) {
+            Date reconcileStamp = new Date(timestamp * 1000); // ms
+            DateFormat formatter =
+                    DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
+
+            mNextTipDateText.setVisibility(View.VISIBLE);
+            mNextTipDateValue.setVisibility(View.VISIBLE);
+            mNextTipDateValue.setText(formatter.format(reconcileStamp));
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (null != mBraveRewardsNativeWorker) {
+            mBraveRewardsNativeWorker.RemoveObserver(this);
+        }
     }
 }

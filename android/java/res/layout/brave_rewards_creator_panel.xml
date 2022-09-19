@@ -51,6 +51,7 @@
         android:layout_gravity="top"
         android:layout_marginStart="12dp"
         android:background="@android:color/transparent"
+        android:fontFamily="@font/poppins_regular"
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="#F8F9FA"
@@ -144,7 +145,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:fadeScrollbars="false"
+        android:scrollbarThumbVertical="@color/rewards_send_scrollbar_color"
+        android:scrollbarSize="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/publisher_favicon"
         app:layout_constraintTop_toBottomOf="@+id/publisher_favicon">
@@ -158,12 +160,14 @@
                 android:id="@+id/not_verified_warning_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:letterSpacing="0.02"
-                android:paddingStart="15.03dp"
-                android:paddingEnd="17.98dp"
+                android:background="@drawable/brave_rewards_warning_text_background"
+                android:fontFamily="@font/poppins_regular"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
                 android:text="@string/brave_ui_site_banner_unverified_notice_text"
-                android:textColor="#686978"
+                android:textColor="#000000"
                 android:textSize="14sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -196,6 +200,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/banner_title"
                 app:layout_constraintBottom_toBottomOf="parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout> <!--Welcome-->
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout> <!--Welcome-->
+</androidx.constraintlayout.widget.ConstraintLayout>
