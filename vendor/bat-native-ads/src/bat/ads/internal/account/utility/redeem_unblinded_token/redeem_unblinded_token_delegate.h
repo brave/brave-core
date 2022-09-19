@@ -16,8 +16,6 @@ struct ConfirmationInfo;
 
 class RedeemUnblindedTokenDelegate {
  public:
-  virtual ~RedeemUnblindedTokenDelegate() = default;
-
   // Invoked to tell the delegate the |confirmation| was successfully sent.
   virtual void OnDidSendConfirmation(const ConfirmationInfo& confirmation) {}
 
@@ -39,6 +37,9 @@ class RedeemUnblindedTokenDelegate {
       const ConfirmationInfo& confirmation,
       const bool should_retry,
       const bool should_backoff) {}
+
+ protected:
+  virtual ~RedeemUnblindedTokenDelegate() = default;
 };
 
 }  // namespace ads

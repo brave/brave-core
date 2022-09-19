@@ -14,8 +14,6 @@ namespace ads {
 
 class RefillUnblindedTokensDelegate {
  public:
-  virtual ~RefillUnblindedTokensDelegate() = default;
-
   // Invoked to tell the delegate we successfully refilled the unblinded tokens.
   virtual void OnDidRefillUnblindedTokens() {}
 
@@ -34,6 +32,9 @@ class RefillUnblindedTokensDelegate {
   // with the given |captcha_id| before we can refill the unblinded tokens.
   virtual void OnCaptchaRequiredToRefillUnblindedTokens(
       const std::string& captcha_id) {}
+
+ protected:
+  virtual ~RefillUnblindedTokensDelegate() = default;
 };
 
 }  // namespace ads
