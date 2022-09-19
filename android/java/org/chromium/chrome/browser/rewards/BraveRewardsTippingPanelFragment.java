@@ -164,7 +164,8 @@ public class BraveRewardsTippingPanelFragment extends Fragment implements BraveR
                 FragmentManager fragmentManager = getParentFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.conversionFragmentContainer,
-                                BraveRewardsCustomTipFragment.newInstance(amount), "custom_tip_fragment")
+                                BraveRewardsCustomTipFragment.newInstance(amount),
+                                "custom_tip_fragment")
                         .addToBackStack(null)
                         .commit();
             }

@@ -23,7 +23,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.Arrays;
 import java.util.HashMap;
 
-
 /**
  * BraveRewardsNativeWorker.GetPublisherBanner json response converted to this pojo class
  * */
@@ -127,7 +126,6 @@ public class BraveRewardsBannerInfo implements Parcelable {
         return mLogo;
     }
 
-    
     public String getProvider() {
         return mProvider;
     }
@@ -152,7 +150,7 @@ public class BraveRewardsBannerInfo implements Parcelable {
         mDescription = jsonObj.getString(DESCRIPTION);
         mBackground = jsonObj.getString(BACKGROUND);
         mLogo = jsonObj.getString(LOGO);
-      
+
         mProvider = jsonObj.getString(PROVIDER);
         JSONObject linksJsonObject = jsonObj.getJSONObject(LINKS);
         if (linksJsonObject != null) {

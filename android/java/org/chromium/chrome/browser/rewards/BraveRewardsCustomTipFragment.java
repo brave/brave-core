@@ -30,7 +30,6 @@ import org.chromium.chrome.browser.BraveRewardsSiteBannerActivity;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 public class BraveRewardsCustomTipFragment extends Fragment {
     public static final int MAX_BAT_VALUE = 100;
     public static final double AMOUNT_STEP_BY = 0.25;
@@ -62,7 +61,6 @@ public class BraveRewardsCustomTipFragment extends Fragment {
         return view;
     }
 
-
     private void exchangeButtonClick(View view) {
         TextView currencyOneSubTextView = view.findViewById(R.id.currencyOneSubTextView);
         TextView currencyTwoSubTextView = view.findViewById(R.id.currencyTwoSubTextView);
@@ -72,7 +70,7 @@ public class BraveRewardsCustomTipFragment extends Fragment {
         exchangeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isBatCurrencyMode = !isBatCurrencyMode; //toggle
+                isBatCurrencyMode = !isBatCurrencyMode; // toggle
                 String currency1 = currencyOneEditText.getText().toString();
                 String currency2 = currencyTwoTextView.getText().toString();
 
@@ -114,8 +112,9 @@ public class BraveRewardsCustomTipFragment extends Fragment {
         currencyOneEditText.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(5, 2)});
         currencyOneEditText.addTextChangedListener(textChangeListener);
         mSelectedAmount = getArguments().getDouble(SELECTED_AMOUNT);
-        currencyOneEditText.setText(String.valueOf(mSelectedAmount)); //Default value
-        ((BraveRewardsSiteBannerActivity) getActivity()).onAmountChange(mSelectedAmount, mSelectedAmount*exchangeRate);
+        currencyOneEditText.setText(String.valueOf(mSelectedAmount)); // Default value
+        ((BraveRewardsSiteBannerActivity) getActivity())
+                .onAmountChange(mSelectedAmount, mSelectedAmount * exchangeRate);
     }
 
     private TextWatcher textChangeListener = new TextWatcher() {

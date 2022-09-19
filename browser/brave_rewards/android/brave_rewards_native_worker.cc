@@ -749,32 +749,32 @@ void BraveRewardsNativeWorker::GetPublisherBanner(
 void BraveRewardsNativeWorker::onPublisherBanner(
     ledger::mojom::PublisherBannerPtr banner) {
   std::string json_banner_info;
-      if (!banner) {
-        json_banner_info = "";
-      } else {
-        base::Value::Dict dict;
-        dict.Set("publisher_key", banner->publisher_key);
-        dict.Set("title", banner->title);
+  if (!banner) {
+    json_banner_info = "";
+  } else {
+    base::Value::Dict dict;
+    dict.Set("publisher_key", banner->publisher_key);
+    dict.Set("title", banner->title);
 
-        dict.Set("name", banner->name);
-        dict.Set("description", banner->description);
-        dict.Set("background", banner->background);
-        dict.Set("logo", banner->logo);
-        dict.Set("provider", banner->provider);
+    dict.Set("name", banner->name);
+    dict.Set("description", banner->description);
+    dict.Set("background", banner->background);
+    dict.Set("logo", banner->logo);
+    dict.Set("provider", banner->provider);
 
-        base::Value::Dict links;
-        for (auto const& link : banner->links) {
-          links.Set(link.first, link.second);
-        }
-        dict.Set("links", std::move(links));
+    base::Value::Dict links;
+    for (auto const& link : banner->links) {
+      links.Set(link.first, link.second);
+    }
+    dict.Set("links", std::move(links));
 
-        dict.Set("status", static_cast<int32_t>(banner->status));
-        base::JSONWriter::Write(dict, &json_banner_info);
-      }
-      JNIEnv* env = base::android::AttachCurrentThread();
-      Java_BraveRewardsNativeWorker_onPublisherBanner(
-          env, weak_java_brave_rewards_native_worker_.get(env),
-          base::android::ConvertUTF8ToJavaString(env, json_banner_info));
+    dict.Set("status", static_cast<int32_t>(banner->status));
+    base::JSONWriter::Write(dict, &json_banner_info);
+  }
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_onPublisherBanner(
+      env, weak_java_brave_rewards_native_worker_.get(env),
+      base::android::ConvertUTF8ToJavaString(env, json_banner_info));
 }
 
 void BraveRewardsNativeWorker::OnGetExternalWallet(
