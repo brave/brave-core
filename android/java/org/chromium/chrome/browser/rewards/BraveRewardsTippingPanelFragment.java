@@ -159,10 +159,12 @@ public class BraveRewardsTippingPanelFragment extends Fragment implements BraveR
         otherAmountsText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                double amount = selectedAmount();
+
                 FragmentManager fragmentManager = getParentFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.conversionFragmentContainer,
-                                new BraveRewardsCustomTipFragment(), "custom_tip_fragment")
+                                BraveRewardsCustomTipFragment.newInstance(amount), "custom_tip_fragment")
                         .addToBackStack(null)
                         .commit();
             }

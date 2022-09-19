@@ -24,6 +24,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsSiteBannerActivity;
 
 import java.util.regex.Matcher;
@@ -34,10 +35,22 @@ public class BraveRewardsCustomTipFragment extends Fragment {
     public static final int MAX_BAT_VALUE = 100;
     public static final double AMOUNT_STEP_BY = 0.25;
 
+    private static final String SELECTED_AMOUNT = "selected_amount";
+
     private boolean isBatCurrencyMode = true;
     private double exchangeRate;
     private EditText currencyOneEditText;
     private TextView currencyTwoTextView;
+    private double mSelectedAmount;
+
+    public static BraveRewardsCustomTipFragment newInstance(double selectedAmount) {
+        BraveRewardsCustomTipFragment fragment = new BraveRewardsCustomTipFragment();
+
+        Bundle args = new Bundle();
+        args.putDouble(SELECTED_AMOUNT, selectedAmount);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(
@@ -59,7 +72,7 @@ public class BraveRewardsCustomTipFragment extends Fragment {
         exchangeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isBatCurrencyMode = !isBatCurrencyMode;
+                isBatCurrencyMode = !isBatCurrencyMode; //toggle
                 String currency1 = currencyOneEditText.getText().toString();
                 String currency2 = currencyTwoTextView.getText().toString();
 
@@ -95,13 +108,14 @@ public class BraveRewardsCustomTipFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     private void updateText(View view) {
-        exchangeRate = mBraveRewardsNativeWorker.GetWalletRate();
+        exchangeRate = BraveRewardsNativeWorker.getInstance().GetWalletRate();
         currencyOneEditText = view.findViewById(R.id.currencyOneEditText);
         currencyTwoTextView = view.findViewById(R.id.currencyTwoTextView);
         currencyOneEditText.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(5, 2)});
         currencyOneEditText.addTextChangedListener(textChangeListener);
-        currencyOneEditText.setText("1.0"); //Default value
-        ((BraveRewardsSiteBannerActivity) getActivity()).onAmountChange(1.0, exchangeRate);
+        mSelectedAmount = getArguments().getDouble(SELECTED_AMOUNT);
+        currencyOneEditText.setText(String.valueOf(mSelectedAmount)); //Default value
+        ((BraveRewardsSiteBannerActivity) getActivity()).onAmountChange(mSelectedAmount, mSelectedAmount*exchangeRate);
     }
 
     private TextWatcher textChangeListener = new TextWatcher() {
