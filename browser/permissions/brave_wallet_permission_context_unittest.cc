@@ -34,6 +34,10 @@ class BraveWalletPermissionContextUnitTest : public testing::Test {
                 browser_context()))));
   }
 
+  void TearDown() override {
+    profile_.SetPermissionControllerDelegate(nullptr);
+  }
+
   HostContentSettingsMap* map() { return map_.get(); }
 
   content::BrowserContext* browser_context() { return &profile_; }
