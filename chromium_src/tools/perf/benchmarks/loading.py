@@ -4,9 +4,10 @@
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 """A inline part of loading.py"""
 
+
 @benchmark.Info(emails=['matuchin@brave.com', 'iefremov@brave.com'],
-               component='Blink>Loader',
-               documentation_url='https://bit.ly/loading-benchmarks')
+                component='Blink>Loader',
+                documentation_url='https://bit.ly/loading-benchmarks')
 class LoadingDesktopBrave(LoadingDesktop):
   """ A benchmark measuring loading performance of desktop sites. """
   SUPPORTED_PLATFORM_TAGS = [platforms.DESKTOP]

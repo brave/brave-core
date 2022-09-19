@@ -15,8 +15,6 @@ The tool is best run on specially prepared hardware/OS to minimize jitter.
                           --config=compare_configs.json
 """
 
-from __future__ import annotations
-
 import argparse
 import sys
 import logging

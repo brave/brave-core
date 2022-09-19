@@ -3,8 +3,6 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # you can obtain one at http://mozilla.org/MPL/2.0/.
-from __future__ import annotations
-
 import os
 import subprocess
 import logging
@@ -48,7 +46,7 @@ def LoadJsonConfig(config_path: str) -> dict:
     return json5.load(config_file)
 
 
-def GetRevisionNumberAndHash(revision: str) -> tuple[str, str]:
+def GetRevisionNumberAndHash(revision: str) -> Tuple[str, str]:
   """Returns pair [revision_number, sha1]. revision_number is a number "primary"
   commits from the begging to `revision`.
   Use this to get the commit from a revision number:

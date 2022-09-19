@@ -3,8 +3,6 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # you can obtain one at http://mozilla.org/MPL/2.0/.
-from __future__ import annotations
-
 import os
 import json
 import sys
@@ -35,7 +33,7 @@ class CommonOptions:
 
   @classmethod
   def make_local(cls, working_directory: str, verbose: bool,
-                 benchmarks: List[BenchmarkConfig]) -> CommonOptions:
+                 benchmarks: List[BenchmarkConfig]) -> 'CommonOptions':
     options = CommonOptions()
     options.verbose = verbose
     options.working_directory = working_directory
@@ -44,7 +42,8 @@ class CommonOptions:
     return options
 
   @classmethod
-  def from_args(cls, args, benchmarks: List[BenchmarkConfig]) -> CommonOptions:
+  def from_args(cls, args,
+                benchmarks: List[BenchmarkConfig]) -> 'CommonOptions':
     options = CommonOptions()
     options.verbose = args.verbose
     options.do_run_tests = not args.report_only
@@ -272,7 +271,7 @@ class RunableConfiguration:
                                      'artifacts')
         shutil.rmtree(artifacts_dir)
 
-  def Run(self) -> tuple[bool, List[str]]:
+  def Run(self) -> Tuple[bool, List[str]]:
     logging.info('##Label: %s binary %s', self.config.label, self.binary_path)
     run_tests_ok = True
     report_ok = True
@@ -289,9 +288,9 @@ class RunableConfiguration:
     return run_tests_ok and report_ok, self.logs
 
 
-def PrepareBinariesAndDirectories(configurations: list[RunnerConfig],
+def PrepareBinariesAndDirectories(configurations: List[RunnerConfig],
                                   common_options: CommonOptions
-                                  ) -> list[RunableConfiguration]:
+                                  ) -> List[RunableConfiguration]:
   runable_configurations: list[RunableConfiguration] = []
   for config in configurations:
     if config.tag == config.label:
@@ -300,6 +299,7 @@ def PrepareBinariesAndDirectories(configurations: list[RunnerConfig],
       description = f'{config.label}'
       if config.tag is not None:
         description += f'[tag_{config.tag}]'
+    assert(description)
     out_dir = os.path.join(common_options.working_directory, description)
     binary_path = None
 
@@ -315,7 +315,7 @@ def PrepareBinariesAndDirectories(configurations: list[RunnerConfig],
 
 def SpawnConfigurationsFromTargetList(target_list: List[str],
                                       base_configuration: RunnerConfig
-                                      ) -> list[RunnerConfig]:
+                                      ) -> List[RunnerConfig]:
   configurations: list[RunnerConfig] = []
   for target_string in target_list:
     config = deepcopy(base_configuration)
@@ -329,7 +329,7 @@ def SpawnConfigurationsFromTargetList(target_list: List[str],
   return configurations
 
 
-def RunConfigurations(configurations: list[RunnerConfig],
+def RunConfigurations(configurations: List[RunnerConfig],
                       common_options: CommonOptions) -> bool:
   runable_configurations = PrepareBinariesAndDirectories(
       configurations, common_options)

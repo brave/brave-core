@@ -49,7 +49,7 @@ def override_method(scope, name=None, condition=True):
         method_name = name or new_method.__name__
         original_method = getattr(scope, method_name, None)
 
-        assert(inspect.ismethod(original_method))
+        assert(inspect.isfunction(original_method))
 
         def wrapped_method(self, *args, **kwargs):
             return new_method(self, original_method, *args, **kwargs)

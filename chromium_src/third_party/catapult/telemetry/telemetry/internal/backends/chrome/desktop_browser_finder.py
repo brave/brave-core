@@ -8,7 +8,6 @@ import shutil
 import override_utils
 
 @override_utils.override_method(PossibleDesktopBrowser)
-#def MaybeUpdateSourceProfile(browser_options, profile_directory):
 def _TearDownEnvironment(self, original_method):
   if '--update-source-profile' in self._browser_options.extra_browser_args:
       # Override the source profile by the result profile.

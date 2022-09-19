@@ -17,8 +17,6 @@ Example usage:
                                      --config=smoke.json
                                      --target v1.36.23
 """
-from __future__ import annotations
-
 import sys
 import logging
 import argparse
