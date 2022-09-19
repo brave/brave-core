@@ -694,6 +694,23 @@ void KeyringService::GetMnemonicForDefaultKeyring(
   std::move(callback).Run(GetMnemonicForKeyringImpl(mojom::kDefaultKeyringId));
 }
 
+void KeyringService::MaybeCreateDefaultSolanaAccount() {
+  if (ShouldCreateDefaultSolanaAccount() &&
+      LazilyCreateKeyring(mojom::kSolanaKeyringId)) {
+    auto address = AddAccountForKeyring(mojom::kSolanaKeyringId,
+                                        "Solana " + GetAccountName(1));
+    if (address) {
+      SetPrefForKeyring(prefs_, kSelectedAccount, base::Value(*address),
+                        mojom::kSolanaKeyringId);
+      SetSelectedCoin(prefs_, mojom::CoinType::SOL);
+      // This is needed for Android to select default coin, because they listen
+      // to network change events.
+      json_rpc_service_->SetNetwork(brave_wallet::mojom::kSolanaMainnet,
+                                    mojom::CoinType::SOL, false);
+    }
+  }
+}
+
 void KeyringService::CreateWallet(const std::string& password,
                                   CreateWalletCallback callback) {
   prefs_->SetBoolean(kBraveWalletKeyringEncryptionKeysMigrated, true);
@@ -723,6 +740,7 @@ void KeyringService::CreateWallet(const std::string& password,
     if (!CreateEncryptorForKeyring(password, mojom::kSolanaKeyringId)) {
       VLOG(1) << "Unable to create solana encryptor";
     }
+    MaybeCreateDefaultSolanaAccount();
   }
 
   std::move(callback).Run(GetMnemonicForKeyringImpl(mojom::kDefaultKeyringId));
@@ -781,6 +799,8 @@ void KeyringService::RestoreWallet(const std::string& mnemonic,
         SetPrefForKeyring(prefs_, kSelectedAccount, base::Value(*address),
                           mojom::kSolanaKeyringId);
       }
+    } else {
+      MaybeCreateDefaultSolanaAccount();
     }
   }
 

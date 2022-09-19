@@ -215,10 +215,17 @@ class SolanaProviderTest : public InProcessBrowserTest {
   SolanaProviderTest()
       : https_server_for_files_(net::EmbeddedTestServer::TYPE_HTTPS),
         https_server_for_rpc_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    feature_list_.InitWithFeatures(
-        {brave_wallet::features::kBraveWalletSolanaFeature,
-         brave_wallet::features::kBraveWalletSolanaProviderFeature},
-        {});
+    base::FieldTrialParams parameters;
+    parameters[features::kCreateDefaultSolanaAccount.name] = "false";
+
+    std::vector<base::test::ScopedFeatureList::FeatureAndParams>
+        enabled_features;
+    enabled_features.emplace_back(
+        brave_wallet::features::kBraveWalletSolanaFeature, parameters);
+    enabled_features.emplace_back(
+        brave_wallet::features::kBraveWalletSolanaProviderFeature,
+        base::FieldTrialParams());
+    feature_list_.InitWithFeaturesAndParameters(enabled_features, {});
   }
 
   ~SolanaProviderTest() override = default;
