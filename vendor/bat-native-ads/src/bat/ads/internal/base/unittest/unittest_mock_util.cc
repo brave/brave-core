@@ -315,16 +315,23 @@ void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
           }));
 }
 
-void MockLoadFileResource(const std::unique_ptr<AdsClientMock>& mock) {
+void MockLoadFileResource(const std::unique_ptr<AdsClientMock>& mock,
+                          const base::ScopedTempDir& temp_dir) {
   ON_CALL(*mock, LoadFileResource(_, _, _))
-      .WillByDefault(Invoke([](const std::string& id, const int /*version*/,
-                               LoadFileCallback callback) {
-        const base::FilePath path = GetFileResourcePath().AppendASCII(id);
+      .WillByDefault(
+          Invoke([&temp_dir](const std::string& id, const int /*version*/,
+                             LoadFileCallback callback) {
+            base::FilePath path = temp_dir.GetPath().AppendASCII(id);
 
-        base::File file(
-            path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
-        std::move(callback).Run(std::move(file));
-      }));
+            if (!base::PathExists(path)) {
+              // If path does not exist load the file from the test path.
+              path = GetFileResourcePath().AppendASCII(id);
+            }
+
+            base::File file(path, base::File::Flags::FLAG_OPEN |
+                                      base::File::Flags::FLAG_READ);
+            std::move(callback).Run(std::move(file));
+          }));
 }
 
 void MockLoadDataResource(const std::unique_ptr<AdsClientMock>& mock) {

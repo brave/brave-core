@@ -104,7 +104,7 @@ TEST_F(BatAdsTextProcessingPipelineTest, TestLoadFromValue) {
 
   // Act
   pipeline::TextProcessing text_processing_pipeline;
-  ASSERT_TRUE(text_processing_pipeline.FromValue(std::move(value)));
+  ASSERT_TRUE(text_processing_pipeline.SetPipeline(std::move(value)));
 
   std::vector<PredictionMap> prediction_maps(train_texts.size());
   for (size_t i = 0; i < train_texts.size(); i++) {
@@ -135,7 +135,7 @@ TEST_F(BatAdsTextProcessingPipelineTest, InitValidModelTest) {
 
   // Act
   pipeline::TextProcessing text_processing_pipeline;
-  const bool success = text_processing_pipeline.FromValue(std::move(value));
+  const bool success = text_processing_pipeline.SetPipeline(std::move(value));
 
   // Assert
   EXPECT_TRUE(success);
@@ -151,7 +151,7 @@ TEST_F(BatAdsTextProcessingPipelineTest, EmptySegmentModelTest) {
 
   // Act
   pipeline::TextProcessing text_processing_pipeline;
-  const bool success = text_processing_pipeline.FromValue(std::move(value));
+  const bool success = text_processing_pipeline.SetPipeline(std::move(value));
 
   // Assert
   EXPECT_FALSE(success);
@@ -165,7 +165,7 @@ TEST_F(BatAdsTextProcessingPipelineTest, EmptyModelTest) {
 
   // Act
   pipeline::TextProcessing text_processing_pipeline;
-  const bool success = text_processing_pipeline.FromValue(std::move(value));
+  const bool success = text_processing_pipeline.SetPipeline(std::move(value));
 
   // Assert
   EXPECT_FALSE(success);
@@ -176,7 +176,7 @@ TEST_F(BatAdsTextProcessingPipelineTest, MissingModelTest) {
 
   // Act
   pipeline::TextProcessing text_processing_pipeline;
-  const bool success = text_processing_pipeline.FromValue(base::Value());
+  const bool success = text_processing_pipeline.SetPipeline(base::Value());
 
   // Assert
   EXPECT_FALSE(success);
@@ -194,7 +194,7 @@ TEST_F(BatAdsTextProcessingPipelineTest, TopPredUnitTest) {
   base::Value value = base::test::ParseJson(*json);
 
   pipeline::TextProcessing text_processing_pipeline;
-  ASSERT_TRUE(text_processing_pipeline.FromValue(std::move(value)));
+  ASSERT_TRUE(text_processing_pipeline.SetPipeline(std::move(value)));
 
   // Act
   const PredictionMap predictions =
@@ -221,7 +221,7 @@ TEST_F(BatAdsTextProcessingPipelineTest, TextCMCCrashTest) {
   base::Value value = base::test::ParseJson(*json);
 
   pipeline::TextProcessing text_processing_pipeline;
-  ASSERT_TRUE(text_processing_pipeline.FromValue(std::move(value)));
+  ASSERT_TRUE(text_processing_pipeline.SetPipeline(std::move(value)));
 
   const absl::optional<std::string> text =
       ReadFileFromTestPathToString(kTextCMCCrash);

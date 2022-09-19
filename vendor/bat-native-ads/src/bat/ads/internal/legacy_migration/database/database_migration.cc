@@ -28,6 +28,7 @@
 #include "bat/ads/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_table.h"
 #include "bat/ads/internal/creatives/segments_database_table.h"
 #include "bat/ads/internal/legacy_migration/database/database_constants.h"
+#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events_database_table.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads::database {
@@ -46,6 +47,9 @@ void MigrateToVersion(mojom::DBTransactionInfo* transaction,
 
   table::AdEvents ad_events_database_table;
   ad_events_database_table.Migrate(transaction, to_version);
+
+  table::TextEmbeddingHtmlEvents text_embedding_html_events_database_table;
+  text_embedding_html_events_database_table.Migrate(transaction, to_version);
 
   table::Transactions transactions_database_table;
   transactions_database_table.Migrate(transaction, to_version);

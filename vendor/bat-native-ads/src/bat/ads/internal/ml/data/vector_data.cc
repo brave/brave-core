@@ -10,6 +10,8 @@
 #include <utility>
 
 #include "base/check_op.h"
+#include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
 
 namespace ads::ml {
 
@@ -49,7 +51,7 @@ class VectorDataStorage {
 
   std::vector<float>& values() { return values_; }
   const std::vector<float>& values() const { return values_; }
-  int dimension_count() const { return dimension_count_; }
+  int DimensionCount() const { return dimension_count_; }
 
  private:
   int dimension_count_ = 0;
@@ -104,11 +106,11 @@ VectorData& VectorData::operator=(VectorData&& vector_data) noexcept {
 }
 
 double operator*(const VectorData& lhs, const VectorData& rhs) {
-  if (!lhs.storage_->dimension_count() || !rhs.storage_->dimension_count()) {
+  if (!lhs.storage_->DimensionCount() || !rhs.storage_->DimensionCount()) {
     return std::numeric_limits<double>::quiet_NaN();
   }
 
-  if (lhs.storage_->dimension_count() != rhs.storage_->dimension_count()) {
+  if (lhs.storage_->DimensionCount() != rhs.storage_->DimensionCount()) {
     return std::numeric_limits<double>::quiet_NaN();
   }
 
@@ -136,6 +138,47 @@ double operator*(const VectorData& lhs, const VectorData& rhs) {
   return dot_product;
 }
 
+void VectorData::AddElementWise(const VectorData& v_add) {
+  if (!storage_->DimensionCount() || !v_add.storage_->DimensionCount()) {
+    return;
+  }
+
+  if (storage_->DimensionCount() != v_add.storage_->DimensionCount()) {
+    return;
+  }
+
+  size_t v_base_index = 0;
+  size_t v_add_index = 0;
+  while (v_base_index < storage_->GetSize() &&
+         v_add_index < v_add.storage_->GetSize()) {
+    if (storage_->GetPointAt(v_base_index) ==
+        v_add.storage_->GetPointAt(v_add_index)) {
+      storage_->values()[v_base_index] += v_add.storage_->values()[v_add_index];
+      ++v_base_index;
+      ++v_add_index;
+    } else {
+      if (storage_->GetPointAt(v_base_index) <
+          v_add.storage_->GetPointAt(v_add_index)) {
+        ++v_base_index;
+      } else {
+        ++v_add_index;
+      }
+    }
+  }
+}
+
+void VectorData::DivideByScalar(const float scalar) {
+  if (!storage_->DimensionCount()) {
+    return;
+  }
+
+  size_t v_index = 0;
+  while (v_index < storage_->GetSize()) {
+    storage_->values()[v_index] /= scalar;
+    ++v_index;
+  }
+}
+
 void VectorData::Normalize() {
   const auto vector_length = sqrt(
       std::accumulate(storage_->values().cbegin(), storage_->values().cend(),
@@ -149,12 +192,48 @@ void VectorData::Normalize() {
   }
 }
 
-int VectorData::GetDimensionCountForTesting() const {
-  return storage_->dimension_count();
+int VectorData::GetDimensionCount() const {
+  return storage_->DimensionCount();
+}
+
+int VectorData::GetNonZeroElementCount() const {
+  if (storage_->DimensionCount() == 0) {
+    return 0;
+  }
+
+  int non_zero_count = 0;
+  size_t v_index = 0;
+  while (v_index < storage_->GetSize()) {
+    if (storage_->values()[v_index] != 0) {
+      non_zero_count++;
+    }
+    ++v_index;
+  }
+  return non_zero_count;
 }
 
 const std::vector<float>& VectorData::GetValuesForTesting() const {
   return storage_->values();
+}
+
+std::string VectorData::GetVectorAsString() const {
+  if (!storage_->DimensionCount()) {
+    return {};
+  }
+
+  int storage_size = storage_->GetSize();
+  if (storage_size == 0) {
+    return {};
+  }
+
+  int v_index = 0;
+  std::vector<std::string> vector_as_string;
+  while (v_index < storage_size) {
+    vector_as_string.push_back(
+        base::NumberToString(storage_->values()[v_index]));
+    ++v_index;
+  }
+  return base::JoinString(vector_as_string, " ");
 }
 
 }  // namespace ads::ml
