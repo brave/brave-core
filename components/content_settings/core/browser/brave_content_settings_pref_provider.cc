@@ -271,8 +271,8 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
           continue;
         }
 
-        DCHECK(value.is_int());
-        int setting = value.GetInt();
+        DCHECK(resource_value.is_int());
+        int setting = resource_value.GetInt();
         DCHECK_NE(CONTENT_SETTING_DEFAULT, setting);
 
         MigrateShieldsSettingsFromResourceIdsForOneType(

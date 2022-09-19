@@ -125,15 +125,15 @@ void NTPBackgroundImagesService::Init() {
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   if (base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper)) {
     // Flag override for testing or demo purposes
-    base::FilePath forced_local_path(
+    base::FilePath forced_local_path_super_referral(
         base::CommandLine::ForCurrentProcess()->GetSwitchValueNative(
             switches::kNTPSuperReferralDataPathForTesting));
-    if (!forced_local_path.empty()) {
+    if (!forced_local_path_super_referral.empty()) {
       test_data_used_ = true;
       DVLOG(2) << __func__ << ": NTP SR test data will be loaded"
                << " from local path at: "
-               << forced_local_path.LossyDisplayName();
-      OnSponsoredComponentReady(false, forced_local_path);
+               << forced_local_path_super_referral.LossyDisplayName();
+      OnSponsoredComponentReady(false, forced_local_path_super_referral);
     } else {
       CheckSuperReferralComponent();
     }

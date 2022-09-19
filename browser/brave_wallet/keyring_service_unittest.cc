@@ -2788,35 +2788,38 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
   EXPECT_TRUE(Unlock(&service, "brave"));
   // Can set Filecoin account
   {
-    absl::optional<std::string> imported_account = ImportFilecoinAccount(
+    absl::optional<std::string> fil_imported_account = ImportFilecoinAccount(
         &service, "Imported Filecoin account 1",
         // t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q
         "7b2254797065223a22736563703235366b31222c22507269766174654b6579223a2257"
         "6b4545645a45794235364b5168512b453338786a7663464c2b545a4842464e732b696a"
         "58533535794b383d227d",
         mojom::kFilecoinTestnet);
-    ASSERT_TRUE(imported_account.has_value());
-    EXPECT_EQ(*imported_account, "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q");
-    EXPECT_TRUE(SetSelectedAccount(
-        &service, &observer, imported_account.value(), mojom::CoinType::FIL));
-    EXPECT_EQ(imported_account.value(),
+    ASSERT_TRUE(fil_imported_account.has_value());
+    EXPECT_EQ(*fil_imported_account,
+              "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q");
+    EXPECT_TRUE(SetSelectedAccount(&service, &observer,
+                                   fil_imported_account.value(),
+                                   mojom::CoinType::FIL));
+    EXPECT_EQ(fil_imported_account.value(),
               GetFilecoinSelectedAccount(&service, mojom::kFilecoinTestnet));
   }
   // Can set Solana account
   {
     // lazily create keyring when importing SOL account
-    absl::optional<std::string> imported_account = ImportAccount(
+    absl::optional<std::string> sol_imported_account = ImportAccount(
         &service, "Imported Account 1",
         // C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ
         "sCzwsBKmKtk5Hgb4YUJAduQ5nmJq4GTyzCXhrKonAGaexa83MgSZuTSMS6TSZTndnC"
         "YbQtaJQKLXET9jVjepWXe",
         mojom::CoinType::SOL);
-    ASSERT_TRUE(imported_account.has_value());
-    EXPECT_EQ(*imported_account,
+    ASSERT_TRUE(sol_imported_account.has_value());
+    EXPECT_EQ(*sol_imported_account,
               "C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ");
-    EXPECT_TRUE(SetSelectedAccount(
-        &service, &observer, imported_account.value(), mojom::CoinType::SOL));
-    EXPECT_EQ(imported_account.value(),
+    EXPECT_TRUE(SetSelectedAccount(&service, &observer,
+                                   sol_imported_account.value(),
+                                   mojom::CoinType::SOL));
+    EXPECT_EQ(sol_imported_account.value(),
               GetSelectedAccount(&service, mojom::CoinType::SOL));
   }
   EXPECT_EQ(hardware_account,
@@ -3531,8 +3534,8 @@ TEST_F(KeyringServiceUnitTest, PreCreateEncryptors) {
   }
   {
     // Create wallet with enabled filecoin & solana
-    base::test::ScopedFeatureList feature_list;
-    feature_list.InitWithFeatures(
+    base::test::ScopedFeatureList local_feature_list;
+    local_feature_list.InitWithFeatures(
         {brave_wallet::features::kBraveWalletFilecoinFeature,
          brave_wallet::features::kBraveWalletSolanaFeature},
         {});
@@ -3555,8 +3558,8 @@ TEST_F(KeyringServiceUnitTest, PreCreateEncryptors) {
     EXPECT_NE(service.encryptors_.at(mojom::kFilecoinKeyringId), nullptr);
 #endif
     service.Lock();
-    base::test::ScopedFeatureList feature_list;
-    feature_list.InitWithFeatures(
+    base::test::ScopedFeatureList local_feature_list;
+    local_feature_list.InitWithFeatures(
         {brave_wallet::features::kBraveWalletFilecoinFeature,
          brave_wallet::features::kBraveWalletSolanaFeature},
         {});
@@ -3586,19 +3589,20 @@ TEST_F(KeyringServiceUnitTest, PreCreateEncryptors) {
     EXPECT_NE(service.encryptors_.at(mojom::kFilecoinKeyringId), nullptr);
 #endif
 
-    base::test::ScopedFeatureList feature_list;
-    base::FieldTrialParams parameters;
-    parameters[features::kCreateDefaultSolanaAccount.name] = "false";
+    base::test::ScopedFeatureList local_feature_list;
+    base::FieldTrialParams local_parameters;
+    local_parameters[features::kCreateDefaultSolanaAccount.name] = "false";
 
     std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-        enabled_features;
-    enabled_features.emplace_back(
-        brave_wallet::features::kBraveWalletSolanaFeature, parameters);
-    enabled_features.emplace_back(
+        local_enabled_features;
+    local_enabled_features.emplace_back(
+        brave_wallet::features::kBraveWalletSolanaFeature, local_parameters);
+    local_enabled_features.emplace_back(
         brave_wallet::features::kBraveWalletFilecoinFeature,
         base::FieldTrialParams());
 
-    feature_list.InitWithFeaturesAndParameters(enabled_features, {});
+    local_feature_list.InitWithFeaturesAndParameters(local_enabled_features,
+                                                     {});
 
     service.Reset();
     ASSERT_TRUE(

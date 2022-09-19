@@ -147,8 +147,8 @@ class BinanceService : public KeyedService {
       URLRequestCallback callback,
       const std::unique_ptr<std::string> response_body);
   void SetClientIdForTest(const std::string& client_id);
-  void SetOAuthHostForTest(const std::string& oauth_host);
-  void SetGatewayHostForTest(const std::string& gateway_host);
+  void SetOAuthHostForTest(const std::string& host);
+  void SetGatewayHostForTest(const std::string& host);
 
   scoped_refptr<base::SequencedTaskRunner> io_task_runner_;
   std::string auth_token_;

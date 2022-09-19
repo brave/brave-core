@@ -2849,8 +2849,6 @@ TEST_F(JsonRpcServiceUnitTest, GetTokenMetadata) {
   })";
   const std::string invalid_json =
       "It might make sense just to get some in case it catches on";
-  const std::string https_metadata_response =
-      R"({"attributes":[{"trait_type":"Feet","value":"Green Shoes"},{"trait_type":"Legs","value":"Tan Pants"},{"trait_type":"Suspenders","value":"White Suspenders"},{"trait_type":"Upper Body","value":"Indigo Turtleneck"},{"trait_type":"Sleeves","value":"Long Sleeves"},{"trait_type":"Hat","value":"Yellow / Blue Pointy Beanie"},{"trait_type":"Eyes","value":"White Nerd Glasses"},{"trait_type":"Mouth","value":"Toothpick"},{"trait_type":"Ears","value":"Bing Bong Stick"},{"trait_type":"Right Arm","value":"Swinging"},{"trait_type":"Left Arm","value":"Diamond Hand"},{"trait_type":"Background","value":"Blue"}],"description":"5,000 animated Invisible Friends hiding in the metaverse. A collection by Markus Magnusson & Random Character Collective.","image":"https://rcc.mypinata.cloud/ipfs/QmXmuSenZRnofhGMz2NyT3Yc4Zrty1TypuiBKDcaBsNw9V/1817.gif","name":"Invisible Friends #1817"})";
   const std::string ipfs_token_uri_response = R"({
       "jsonrpc":"2.0",
       "id":1,
@@ -4813,15 +4811,16 @@ class ENSL2JsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
  protected:
   void HandleRequest(const network::ResourceRequest& request) {
     url_loader_factory_.ClearResponses();
-    if (auto response = json_rpc_endpoint_handler_->HandleRequest(request)) {
-      url_loader_factory_.AddResponse(request.url.spec(), *response);
-    } else if (auto response =
+    if (auto json_response =
+            json_rpc_endpoint_handler_->HandleRequest(request)) {
+      url_loader_factory_.AddResponse(request.url.spec(), *json_response);
+    } else if (auto offchain_response =
                    offchain_gateway_handler_->HandleRequest(request)) {
-      if (response->empty()) {
+      if (offchain_response->empty()) {
         url_loader_factory_.AddResponse(request.url.spec(), "",
                                         net::HTTP_INTERNAL_SERVER_ERROR);
       } else {
-        url_loader_factory_.AddResponse(request.url.spec(), *response);
+        url_loader_factory_.AddResponse(request.url.spec(), *offchain_response);
       }
     }
   }

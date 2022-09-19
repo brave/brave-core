@@ -138,14 +138,14 @@ TEST(JsonRpcResponseParserUnitTest, ParseErrorResult) {
       "some string",
   };
 
-  for (const std::string& json : errors) {
-    ParseErrorResult<mojom::ProviderError>(json, &eth_error,
+  for (const std::string& json_error : errors) {
+    ParseErrorResult<mojom::ProviderError>(json_error, &eth_error,
                                            &eth_error_message);
     EXPECT_EQ(eth_error, mojom::ProviderError::kParsingError);
     EXPECT_EQ(eth_error_message,
               l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 
-    ParseErrorResult<mojom::SolanaProviderError>(json, &solana_error,
+    ParseErrorResult<mojom::SolanaProviderError>(json_error, &solana_error,
                                                  &solana_error_message);
     EXPECT_EQ(solana_error, mojom::SolanaProviderError::kParsingError);
     EXPECT_EQ(solana_error_message,
