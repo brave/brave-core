@@ -23,9 +23,11 @@ namespace ads {
 class TabManager final {
  public:
   TabManager();
-  ~TabManager();
+
   TabManager(const TabManager&) = delete;
   TabManager& operator=(const TabManager&) = delete;
+
+  ~TabManager();
 
   static TabManager* GetInstance();
 

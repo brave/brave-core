@@ -19,10 +19,11 @@ class TransferredExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
   explicit TransferredExclusionRule(const AdEventList& ad_events);
-  ~TransferredExclusionRule() override;
 
   TransferredExclusionRule(const TransferredExclusionRule&) = delete;
   TransferredExclusionRule& operator=(const TransferredExclusionRule&) = delete;
+
+  ~TransferredExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
 

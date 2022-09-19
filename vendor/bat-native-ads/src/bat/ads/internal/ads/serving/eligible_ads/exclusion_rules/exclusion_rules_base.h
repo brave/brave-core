@@ -47,8 +47,10 @@ class ExclusionRulesBase {
                      geographic::SubdivisionTargeting* subdivision_targeting,
                      resource::AntiTargeting* anti_targeting_resource,
                      const BrowsingHistoryList& browsing_history);
+
   ExclusionRulesBase(const ExclusionRulesBase&) = delete;
   ExclusionRulesBase& operator=(const ExclusionRulesBase&) = delete;
+
   virtual ~ExclusionRulesBase();
 
   virtual bool ShouldExcludeCreativeAd(const CreativeAdInfo& creative_ad);

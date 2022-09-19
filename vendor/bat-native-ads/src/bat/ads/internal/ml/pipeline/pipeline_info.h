@@ -15,15 +15,16 @@ namespace ads::ml::pipeline {
 
 struct PipelineInfo final {
   PipelineInfo();
-  PipelineInfo(PipelineInfo&& info) noexcept;
-  PipelineInfo& operator=(PipelineInfo&& info) noexcept;
-  ~PipelineInfo();
-
   PipelineInfo(int version,
                const std::string& timestamp,
                const std::string& locale,
                TransformationVector transformations,
                model::Linear linear_model);
+
+  PipelineInfo(PipelineInfo&& info) noexcept;
+  PipelineInfo& operator=(PipelineInfo&& info) noexcept;
+
+  ~PipelineInfo();
 
   int version;
   std::string timestamp;

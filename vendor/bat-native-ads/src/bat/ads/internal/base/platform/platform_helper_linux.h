@@ -15,10 +15,10 @@ namespace ads {
 
 class PlatformHelperLinux final : public PlatformHelper {
  public:
-  ~PlatformHelperLinux() override;
-
   PlatformHelperLinux(const PlatformHelperLinux&) = delete;
   PlatformHelperLinux& operator=(const PlatformHelperLinux&) = delete;
+
+  ~PlatformHelperLinux() override;
 
  protected:
   friend class base::NoDestructor<PlatformHelperLinux>;

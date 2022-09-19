@@ -18,8 +18,10 @@ namespace ads {
 
 struct CreativeAdInfo {
   CreativeAdInfo();
+
   CreativeAdInfo(const CreativeAdInfo& info);
   CreativeAdInfo& operator=(const CreativeAdInfo& info);
+
   ~CreativeAdInfo();
 
   bool operator==(const CreativeAdInfo& rhs) const;

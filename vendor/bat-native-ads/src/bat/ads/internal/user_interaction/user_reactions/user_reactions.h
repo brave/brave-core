@@ -17,8 +17,10 @@ struct AdContentInfo;
 class UserReactions final : public HistoryManagerObserver {
  public:
   explicit UserReactions(Account* account);
+
   UserReactions(const UserReactions&) = delete;
   UserReactions& operator=(const UserReactions&) = delete;
+
   ~UserReactions() override;
 
  private:

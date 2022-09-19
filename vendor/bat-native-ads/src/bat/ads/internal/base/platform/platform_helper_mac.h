@@ -15,10 +15,10 @@ namespace ads {
 
 class PlatformHelperMac final : public PlatformHelper {
  public:
-  ~PlatformHelperMac() override;
-
   PlatformHelperMac(const PlatformHelperMac&) = delete;
   PlatformHelperMac& operator=(const PlatformHelperMac&) = delete;
+
+  ~PlatformHelperMac() override;
 
  protected:
   friend class base::NoDestructor<PlatformHelperMac>;

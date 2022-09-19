@@ -18,8 +18,10 @@ namespace ads::privacy {
 
 struct UnblindedPaymentTokenInfo final {
   UnblindedPaymentTokenInfo();
+
   UnblindedPaymentTokenInfo(const UnblindedPaymentTokenInfo& info);
   UnblindedPaymentTokenInfo& operator=(const UnblindedPaymentTokenInfo& info);
+
   ~UnblindedPaymentTokenInfo();
 
   bool operator==(const UnblindedPaymentTokenInfo& rhs) const;

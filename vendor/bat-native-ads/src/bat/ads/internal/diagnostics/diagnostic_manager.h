@@ -16,8 +16,10 @@ namespace ads {
 class DiagnosticManager final {
  public:
   DiagnosticManager();
+
   DiagnosticManager(const DiagnosticManager&) = delete;
   DiagnosticManager& operator=(const DiagnosticManager&) = delete;
+
   ~DiagnosticManager();
 
   static DiagnosticManager* GetInstance();

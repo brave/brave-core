@@ -15,8 +15,10 @@ namespace ads {
 class EnabledDiagnosticEntry final : public DiagnosticEntryInterface {
  public:
   EnabledDiagnosticEntry();
+
   EnabledDiagnosticEntry(const EnabledDiagnosticEntry&) = delete;
   EnabledDiagnosticEntry& operator=(const EnabledDiagnosticEntry&) = delete;
+
   ~EnabledDiagnosticEntry() override;
 
   // DiagnosticEntryInterface:

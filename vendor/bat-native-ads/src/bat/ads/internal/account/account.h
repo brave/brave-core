@@ -46,9 +46,11 @@ class Account final : public PrefManagerObserver,
                       public RefillUnblindedTokensDelegate {
  public:
   explicit Account(privacy::TokenGeneratorInterface* token_generator);
-  ~Account() override;
+
   Account(const Account&) = delete;
   Account& operator=(const Account&) = delete;
+
+  ~Account() override;
 
   void AddObserver(AccountObserver* observer);
   void RemoveObserver(AccountObserver* observer);

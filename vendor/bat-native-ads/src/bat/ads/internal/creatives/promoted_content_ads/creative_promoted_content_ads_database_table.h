@@ -40,10 +40,12 @@ using GetCreativePromotedContentAdsCallback =
 class CreativePromotedContentAds final : public TableInterface {
  public:
   CreativePromotedContentAds();
-  ~CreativePromotedContentAds() override;
+
   CreativePromotedContentAds(const CreativePromotedContentAds&) = delete;
   CreativePromotedContentAds& operator=(const CreativePromotedContentAds&) =
       delete;
+
+  ~CreativePromotedContentAds() override;
 
   void Save(const CreativePromotedContentAdList& creative_ads,
             ResultCallback callback);

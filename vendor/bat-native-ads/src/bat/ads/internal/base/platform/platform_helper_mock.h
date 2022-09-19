@@ -16,10 +16,11 @@ namespace ads {
 class PlatformHelperMock : public PlatformHelper {
  public:
   PlatformHelperMock();
-  ~PlatformHelperMock() override;
 
   PlatformHelperMock(const PlatformHelperMock&) = delete;
   PlatformHelperMock& operator=(const PlatformHelperMock&) = delete;
+
+  ~PlatformHelperMock() override;
 
   MOCK_CONST_METHOD0(IsMobile, bool());
   MOCK_CONST_METHOD0(GetName, std::string());

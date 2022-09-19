@@ -31,9 +31,11 @@ struct ClientInfo;
 class ClientStateManager final {
  public:
   ClientStateManager();
-  ~ClientStateManager();
+
   ClientStateManager(const ClientStateManager&) = delete;
   ClientStateManager& operator=(const ClientStateManager&) = delete;
+
+  ~ClientStateManager();
 
   static ClientStateManager* GetInstance();
 

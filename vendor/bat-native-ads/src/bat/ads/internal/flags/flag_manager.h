@@ -13,8 +13,10 @@ namespace ads {
 class FlagManager final {
  public:
   FlagManager();
+
   FlagManager(const FlagManager&) = delete;
   FlagManager& operator=(const FlagManager&) = delete;
+
   ~FlagManager();
 
   static FlagManager* GetInstance();

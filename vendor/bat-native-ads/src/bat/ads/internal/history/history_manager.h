@@ -33,10 +33,11 @@ struct SearchResultAdInfo;
 class HistoryManager final {
  public:
   HistoryManager();
-  ~HistoryManager();
 
   HistoryManager(const HistoryManager&) = delete;
   HistoryManager& operator=(const HistoryManager&) = delete;
+
+  ~HistoryManager();
 
   static HistoryManager* GetInstance();
 

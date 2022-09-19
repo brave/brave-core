@@ -15,8 +15,10 @@ namespace ads {
 class CatalogIdDiagnosticEntry final : public DiagnosticEntryInterface {
  public:
   CatalogIdDiagnosticEntry();
+
   CatalogIdDiagnosticEntry(const CatalogIdDiagnosticEntry&) = delete;
   CatalogIdDiagnosticEntry& operator=(const CatalogIdDiagnosticEntry&) = delete;
+
   ~CatalogIdDiagnosticEntry() override;
 
   // DiagnosticEntryInterface:

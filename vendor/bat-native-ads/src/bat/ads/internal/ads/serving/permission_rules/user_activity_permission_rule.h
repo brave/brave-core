@@ -15,9 +15,11 @@ namespace ads {
 class UserActivityPermissionRule final : public PermissionRuleInterface {
  public:
   UserActivityPermissionRule();
+
   UserActivityPermissionRule(const UserActivityPermissionRule&) = delete;
   UserActivityPermissionRule& operator=(const UserActivityPermissionRule&) =
       delete;
+
   ~UserActivityPermissionRule() override;
 
   bool ShouldAllow() override;

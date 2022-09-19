@@ -15,10 +15,10 @@ namespace ads {
 
 class PlatformHelperAndroid final : public PlatformHelper {
  public:
-  ~PlatformHelperAndroid() override;
-
   PlatformHelperAndroid(const PlatformHelperAndroid&) = delete;
   PlatformHelperAndroid& operator=(const PlatformHelperAndroid&) = delete;
+
+  ~PlatformHelperAndroid() override;
 
  protected:
   friend class base::NoDestructor<PlatformHelperAndroid>;

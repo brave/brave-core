@@ -19,10 +19,11 @@ class DismissedExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
   explicit DismissedExclusionRule(const AdEventList& ad_events);
-  ~DismissedExclusionRule() override;
 
   DismissedExclusionRule(const DismissedExclusionRule&) = delete;
   DismissedExclusionRule& operator=(const DismissedExclusionRule&) = delete;
+
+  ~DismissedExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
 

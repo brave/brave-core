@@ -25,10 +25,12 @@ namespace ads {
 class RedeemUnblindedPaymentTokens final {
  public:
   RedeemUnblindedPaymentTokens();
-  ~RedeemUnblindedPaymentTokens();
+
   RedeemUnblindedPaymentTokens(const RedeemUnblindedPaymentTokens&) = delete;
   RedeemUnblindedPaymentTokens& operator=(const RedeemUnblindedPaymentTokens&) =
       delete;
+
+  ~RedeemUnblindedPaymentTokens();
 
   void SetDelegate(RedeemUnblindedPaymentTokensDelegate* delegate) {
     DCHECK_EQ(delegate_, nullptr);

@@ -18,10 +18,11 @@ class DaypartExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
   DaypartExclusionRule();
-  ~DaypartExclusionRule() override;
 
   DaypartExclusionRule(const DaypartExclusionRule&) = delete;
   DaypartExclusionRule& operator=(const DaypartExclusionRule&) = delete;
+
+  ~DaypartExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
 

@@ -15,9 +15,11 @@ namespace ads {
 class GeoServerHost final : public ServerHostInterface {
  public:
   GeoServerHost();
-  ~GeoServerHost() override;
+
   GeoServerHost(const GeoServerHost&) = delete;
   GeoServerHost& operator=(const GeoServerHost&) = delete;
+
+  ~GeoServerHost() override;
 
   std::string Get() const override;
 };

@@ -21,9 +21,11 @@ namespace notification_ads {
 class EventHandler final : public EventHandlerObserver {
  public:
   EventHandler();
-  ~EventHandler() override;
+
   EventHandler(const EventHandler& info) = delete;
   EventHandler& operator=(const EventHandler& info) = delete;
+
+  ~EventHandler() override;
 
   void AddObserver(EventHandlerObserver* observer);
   void RemoveObserver(EventHandlerObserver* observer);

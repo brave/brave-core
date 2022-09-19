@@ -22,9 +22,11 @@ using GetConversionsCallback =
 class Conversions final : public TableInterface {
  public:
   Conversions();
-  ~Conversions() override;
+
   Conversions(const Conversions&) = delete;
   Conversions& operator=(const Conversions&) = delete;
+
+  ~Conversions() override;
 
   void Save(const ConversionList& conversions, ResultCallback callback);
 

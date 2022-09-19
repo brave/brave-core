@@ -15,8 +15,10 @@ namespace ads {
 class LocaleDiagnosticEntry final : public DiagnosticEntryInterface {
  public:
   LocaleDiagnosticEntry();
+
   LocaleDiagnosticEntry(const LocaleDiagnosticEntry&) = delete;
   LocaleDiagnosticEntry& operator=(const LocaleDiagnosticEntry&) = delete;
+
   ~LocaleDiagnosticEntry() override;
 
   // DiagnosticEntryInterface:

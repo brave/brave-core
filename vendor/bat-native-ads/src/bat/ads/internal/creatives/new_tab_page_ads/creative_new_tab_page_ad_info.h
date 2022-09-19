@@ -18,8 +18,10 @@ namespace ads {
 struct CreativeNewTabPageAdInfo final : CreativeAdInfo {
   CreativeNewTabPageAdInfo();
   explicit CreativeNewTabPageAdInfo(const CreativeAdInfo& creative_ad);
+
   CreativeNewTabPageAdInfo(const CreativeNewTabPageAdInfo& info);
   CreativeNewTabPageAdInfo& operator=(const CreativeNewTabPageAdInfo& info);
+
   ~CreativeNewTabPageAdInfo();
 
   bool operator==(const CreativeNewTabPageAdInfo& rhs) const;

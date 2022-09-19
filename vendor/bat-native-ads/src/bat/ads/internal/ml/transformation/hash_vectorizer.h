@@ -17,9 +17,11 @@ class HashVectorizer final {
  public:
   HashVectorizer();
   HashVectorizer(int bucket_count, const std::vector<int>& subgrams);
-  ~HashVectorizer();
+
   HashVectorizer(const HashVectorizer& info) = delete;
   HashVectorizer& operator=(const HashVectorizer& info) = delete;
+
+  ~HashVectorizer();
 
   std::map<uint32_t, double> GetFrequencies(const std::string& html) const;
 

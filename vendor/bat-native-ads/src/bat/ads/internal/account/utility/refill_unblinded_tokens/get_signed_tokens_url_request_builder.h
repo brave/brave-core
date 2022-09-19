@@ -21,11 +21,13 @@ class GetSignedTokensUrlRequestBuilder final
  public:
   GetSignedTokensUrlRequestBuilder(const WalletInfo& wallet,
                                    const std::string& nonce);
-  ~GetSignedTokensUrlRequestBuilder() override;
+
   GetSignedTokensUrlRequestBuilder(const GetSignedTokensUrlRequestBuilder&) =
       delete;
   GetSignedTokensUrlRequestBuilder& operator=(
       const GetSignedTokensUrlRequestBuilder&) = delete;
+
+  ~GetSignedTokensUrlRequestBuilder() override;
 
   mojom::UrlRequestInfoPtr Build() override;
 

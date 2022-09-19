@@ -15,9 +15,11 @@ namespace ads {
 class BrowserIsActivePermissionRule final : public PermissionRuleInterface {
  public:
   BrowserIsActivePermissionRule();
+
   BrowserIsActivePermissionRule(const BrowserIsActivePermissionRule&) = delete;
   BrowserIsActivePermissionRule& operator=(
       const BrowserIsActivePermissionRule&) = delete;
+
   ~BrowserIsActivePermissionRule() override;
 
   bool ShouldAllow() override;

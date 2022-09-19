@@ -15,9 +15,11 @@ namespace ads {
 class DateRangeHistoryFilter final : public HistoryFilterInterface {
  public:
   DateRangeHistoryFilter(base::Time from_time, base::Time to_time);
-  ~DateRangeHistoryFilter() override;
+
   DateRangeHistoryFilter(const DateRangeHistoryFilter&) = delete;
   DateRangeHistoryFilter& operator=(const DateRangeHistoryFilter&) = delete;
+
+  ~DateRangeHistoryFilter() override;
 
   HistoryItemList Apply(const HistoryItemList& history) const override;
 

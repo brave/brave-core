@@ -41,9 +41,11 @@ class InlineContentAd final : public inline_content_ads::EventHandlerObserver,
                   Transfer* transfer,
                   geographic::SubdivisionTargeting* subdivision_targeting,
                   resource::AntiTargeting* anti_targeting_resource);
-  ~InlineContentAd() override;
+
   InlineContentAd(const InlineContentAd&) = delete;
   InlineContentAd& operator=(const InlineContentAd&) = delete;
+
+  ~InlineContentAd() override;
 
   void MaybeServe(const std::string& dimensions,
                   MaybeServeInlineContentAdCallback callback);

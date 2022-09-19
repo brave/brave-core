@@ -28,9 +28,11 @@ using GetConversionQueueForCreativeInstanceIdCallback =
 class ConversionQueue final : public TableInterface {
  public:
   ConversionQueue();
-  ~ConversionQueue() override;
+
   ConversionQueue(const ConversionQueue&) = delete;
   ConversionQueue& operator=(const ConversionQueue&) = delete;
+
+  ~ConversionQueue() override;
 
   void Save(const ConversionQueueItemList& conversion_queue_items,
             ResultCallback callback);

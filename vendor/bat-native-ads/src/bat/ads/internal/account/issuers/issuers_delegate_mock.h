@@ -16,10 +16,11 @@ struct IssuersInfo;
 class IssuersDelegateMock : public IssuersDelegate {
  public:
   IssuersDelegateMock();
-  ~IssuersDelegateMock() override;
 
   IssuersDelegateMock(const IssuersDelegateMock&) = delete;
   IssuersDelegateMock& operator=(const IssuersDelegateMock&) = delete;
+
+  ~IssuersDelegateMock() override;
 
   MOCK_METHOD(void, OnDidFetchIssuers, (const IssuersInfo& issuers));
 

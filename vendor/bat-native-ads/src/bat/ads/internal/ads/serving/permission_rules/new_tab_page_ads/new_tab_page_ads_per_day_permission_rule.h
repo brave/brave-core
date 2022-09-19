@@ -20,8 +20,10 @@ namespace ads::new_tab_page_ads {
 class AdsPerDayPermissionRule final : public PermissionRuleInterface {
  public:
   AdsPerDayPermissionRule();
+
   AdsPerDayPermissionRule(const AdsPerDayPermissionRule&) = delete;
   AdsPerDayPermissionRule& operator=(const AdsPerDayPermissionRule&) = delete;
+
   ~AdsPerDayPermissionRule() override;
 
   bool ShouldAllow() override;

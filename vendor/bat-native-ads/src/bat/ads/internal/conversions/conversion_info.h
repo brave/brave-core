@@ -15,8 +15,10 @@ namespace ads {
 
 struct ConversionInfo final {
   ConversionInfo();
+
   ConversionInfo(const ConversionInfo& info);
   ConversionInfo& operator=(const ConversionInfo& info);
+
   ~ConversionInfo();
 
   bool IsValid() const;

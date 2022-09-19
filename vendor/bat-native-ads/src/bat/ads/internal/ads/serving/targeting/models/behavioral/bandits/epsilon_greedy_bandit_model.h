@@ -13,9 +13,11 @@ namespace ads::targeting::model {
 class EpsilonGreedyBandit final : public ModelInterface {
  public:
   EpsilonGreedyBandit();
-  ~EpsilonGreedyBandit() override;
+
   EpsilonGreedyBandit(const EpsilonGreedyBandit&) = delete;
   EpsilonGreedyBandit& operator=(const EpsilonGreedyBandit&) = delete;
+
+  ~EpsilonGreedyBandit() override;
 
   SegmentList GetSegments() const override;
 };

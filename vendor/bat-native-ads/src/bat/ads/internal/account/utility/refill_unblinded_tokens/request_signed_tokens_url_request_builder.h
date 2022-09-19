@@ -24,11 +24,13 @@ class RequestSignedTokensUrlRequestBuilder final
   RequestSignedTokensUrlRequestBuilder(
       const WalletInfo& wallet,
       const std::vector<privacy::cbr::BlindedToken>& tokens);
-  ~RequestSignedTokensUrlRequestBuilder() override;
+
   RequestSignedTokensUrlRequestBuilder(
       const RequestSignedTokensUrlRequestBuilder&) = delete;
   RequestSignedTokensUrlRequestBuilder& operator=(
       const RequestSignedTokensUrlRequestBuilder&) = delete;
+
+  ~RequestSignedTokensUrlRequestBuilder() override;
 
   mojom::UrlRequestInfoPtr Build() override;
 

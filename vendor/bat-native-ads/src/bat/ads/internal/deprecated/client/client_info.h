@@ -20,8 +20,10 @@ namespace ads {
 
 struct ClientInfo final {
   ClientInfo();
+
   ClientInfo(const ClientInfo& info);
   ClientInfo& operator=(const ClientInfo& info);
+
   ~ClientInfo();
 
   base::Value::Dict ToValue() const;

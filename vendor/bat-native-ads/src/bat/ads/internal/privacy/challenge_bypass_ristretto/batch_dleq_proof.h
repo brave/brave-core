@@ -33,8 +33,10 @@ class BatchDLEQProof {
   BatchDLEQProof(const std::vector<BlindedToken>& blinded_tokens,
                  const std::vector<SignedToken>& signed_tokens,
                  const SigningKey& signing_key);
+
   BatchDLEQProof(const BatchDLEQProof& other);
   BatchDLEQProof& operator=(const BatchDLEQProof& other);
+
   ~BatchDLEQProof();
 
   bool operator==(const BatchDLEQProof& rhs) const;

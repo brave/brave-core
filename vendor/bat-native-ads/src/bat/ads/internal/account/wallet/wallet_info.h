@@ -12,8 +12,10 @@ namespace ads {
 
 struct WalletInfo final {
   WalletInfo();
+
   WalletInfo(const WalletInfo& info);
   WalletInfo& operator=(const WalletInfo& info);
+
   ~WalletInfo();
 
   bool IsValid() const;

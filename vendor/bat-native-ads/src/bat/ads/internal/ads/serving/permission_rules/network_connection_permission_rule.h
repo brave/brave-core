@@ -15,10 +15,12 @@ namespace ads {
 class NetworkConnectionPermissionRule final : public PermissionRuleInterface {
  public:
   NetworkConnectionPermissionRule();
+
   NetworkConnectionPermissionRule(const NetworkConnectionPermissionRule&) =
       delete;
   NetworkConnectionPermissionRule& operator=(
       const NetworkConnectionPermissionRule&) = delete;
+
   ~NetworkConnectionPermissionRule() override;
 
   bool ShouldAllow() override;

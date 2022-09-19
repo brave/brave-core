@@ -16,9 +16,11 @@ namespace ads {
 class LastUnIdleTimeDiagnosticEntry final : public DiagnosticEntryInterface {
  public:
   LastUnIdleTimeDiagnosticEntry();
+
   LastUnIdleTimeDiagnosticEntry(const LastUnIdleTimeDiagnosticEntry&) = delete;
   LastUnIdleTimeDiagnosticEntry& operator=(
       const LastUnIdleTimeDiagnosticEntry&) = delete;
+
   ~LastUnIdleTimeDiagnosticEntry() override;
 
   void SetLastUnIdleTime(base::Time time);

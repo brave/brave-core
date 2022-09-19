@@ -18,8 +18,10 @@ struct PurchaseIntentSiteInfo final {
   PurchaseIntentSiteInfo(const SegmentList& segments,
                          const GURL& url_netloc,
                          uint16_t weight);
+
   PurchaseIntentSiteInfo(const PurchaseIntentSiteInfo& info);
   PurchaseIntentSiteInfo& operator=(const PurchaseIntentSiteInfo& info);
+
   ~PurchaseIntentSiteInfo();
 
   bool operator==(const PurchaseIntentSiteInfo& rhs) const;

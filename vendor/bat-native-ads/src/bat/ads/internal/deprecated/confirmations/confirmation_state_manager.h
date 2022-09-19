@@ -23,9 +23,11 @@ class UnblindedTokens;
 class ConfirmationStateManager final {
  public:
   ConfirmationStateManager();
-  ~ConfirmationStateManager();
+
   ConfirmationStateManager(const ConfirmationStateManager&) = delete;
   ConfirmationStateManager& operator=(const ConfirmationStateManager&) = delete;
+
+  ~ConfirmationStateManager();
 
   static ConfirmationStateManager* GetInstance();
 

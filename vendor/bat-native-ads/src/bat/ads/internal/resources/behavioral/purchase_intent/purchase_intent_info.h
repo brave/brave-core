@@ -23,10 +23,11 @@ namespace ads::targeting {
 
 struct PurchaseIntentInfo final {
   PurchaseIntentInfo();
-  ~PurchaseIntentInfo();
 
   PurchaseIntentInfo(const PurchaseIntentInfo& info) = delete;
   PurchaseIntentInfo& operator=(const PurchaseIntentInfo& info) = delete;
+
+  ~PurchaseIntentInfo();
 
   static std::unique_ptr<PurchaseIntentInfo> CreateFromValue(
       base::Value resource_value,

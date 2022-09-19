@@ -20,8 +20,10 @@ struct CatalogInfo;
 class Catalog final : public DatabaseManagerObserver {
  public:
   Catalog();
+
   Catalog(const Catalog&) = delete;
   Catalog& operator=(const Catalog&) = delete;
+
   ~Catalog() override;
 
   void AddObserver(CatalogObserver* observer);

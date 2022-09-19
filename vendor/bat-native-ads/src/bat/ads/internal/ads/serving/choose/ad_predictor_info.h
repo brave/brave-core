@@ -16,8 +16,10 @@ namespace ads {
 template <typename T>
 struct AdPredictorInfo final {
   AdPredictorInfo();
+
   AdPredictorInfo(const AdPredictorInfo& info);
   AdPredictorInfo& operator=(const AdPredictorInfo& info);
+
   ~AdPredictorInfo();
 
   T creative_ad;

@@ -22,10 +22,11 @@ namespace ads {
 class ADS_EXPORT Database final {
  public:
   explicit Database(const base::FilePath& path);
-  ~Database();
 
   Database(const Database&) = delete;
   Database& operator=(const Database&) = delete;
+
+  ~Database();
 
   void RunTransaction(mojom::DBTransactionInfoPtr transaction,
                       mojom::DBCommandResponseInfo* command_response);

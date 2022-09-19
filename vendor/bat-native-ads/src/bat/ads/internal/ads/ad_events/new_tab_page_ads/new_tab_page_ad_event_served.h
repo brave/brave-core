@@ -17,9 +17,11 @@ namespace new_tab_page_ads {
 class AdEventServed final : public AdEventInterface<NewTabPageAdInfo> {
  public:
   AdEventServed();
-  ~AdEventServed() override;
+
   AdEventServed(const AdEventServed&) = delete;
   AdEventServed& operator=(const AdEventServed&) = delete;
+
+  ~AdEventServed() override;
 
   void FireEvent(const NewTabPageAdInfo& ad) override;
 };

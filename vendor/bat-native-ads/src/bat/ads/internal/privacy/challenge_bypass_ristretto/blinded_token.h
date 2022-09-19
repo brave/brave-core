@@ -25,8 +25,10 @@ class BlindedToken {
   explicit BlindedToken(const std::string& blinded_token_base64);
   explicit BlindedToken(
       const challenge_bypass_ristretto::BlindedToken& blinded_token);
+
   BlindedToken(const BlindedToken& other);
   BlindedToken& operator=(const BlindedToken& info);
+
   ~BlindedToken();
 
   bool operator==(const BlindedToken& rhs) const;

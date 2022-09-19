@@ -18,12 +18,13 @@ class MarkedToNoLongerReceiveExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
   MarkedToNoLongerReceiveExclusionRule();
-  ~MarkedToNoLongerReceiveExclusionRule() override;
 
   MarkedToNoLongerReceiveExclusionRule(
       const MarkedToNoLongerReceiveExclusionRule&) = delete;
   MarkedToNoLongerReceiveExclusionRule& operator=(
       const MarkedToNoLongerReceiveExclusionRule&) = delete;
+
+  ~MarkedToNoLongerReceiveExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
 

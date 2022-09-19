@@ -19,12 +19,13 @@ class RedeemUnblindedPaymentTokensDelegateMock
     : public RedeemUnblindedPaymentTokensDelegate {
  public:
   RedeemUnblindedPaymentTokensDelegateMock();
-  ~RedeemUnblindedPaymentTokensDelegateMock() override;
 
   RedeemUnblindedPaymentTokensDelegateMock(
       const RedeemUnblindedPaymentTokensDelegateMock&) = delete;
   RedeemUnblindedPaymentTokensDelegateMock& operator=(
       const RedeemUnblindedPaymentTokensDelegateMock&) = delete;
+
+  ~RedeemUnblindedPaymentTokensDelegateMock() override;
 
   MOCK_METHOD(
       void,

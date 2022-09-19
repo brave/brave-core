@@ -14,10 +14,11 @@ namespace ads {
 class BrowserManager final {
  public:
   BrowserManager();
-  ~BrowserManager();
 
   BrowserManager(const BrowserManager&) = delete;
   BrowserManager& operator=(const BrowserManager&) = delete;
+
+  ~BrowserManager();
 
   static BrowserManager* GetInstance();
 

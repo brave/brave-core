@@ -16,8 +16,10 @@ namespace ads {
 class NotificationAdEvent final : public CovariateLogEntryInterface {
  public:
   NotificationAdEvent();
+
   NotificationAdEvent(const NotificationAdEvent&) = delete;
   NotificationAdEvent& operator=(const NotificationAdEvent&) = delete;
+
   ~NotificationAdEvent() override;
 
   void SetEventType(mojom::NotificationAdEventType event_type);

@@ -15,10 +15,11 @@ namespace ads {
 class DatabaseManager final {
  public:
   DatabaseManager();
-  ~DatabaseManager();
 
   DatabaseManager(const DatabaseManager&) = delete;
   DatabaseManager& operator=(const DatabaseManager&) = delete;
+
+  ~DatabaseManager();
 
   static DatabaseManager* GetInstance();
 

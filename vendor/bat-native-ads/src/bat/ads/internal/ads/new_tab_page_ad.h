@@ -41,9 +41,11 @@ class NewTabPageAd final : public new_tab_page_ads::EventHandlerObserver,
                Transfer* transfer,
                geographic::SubdivisionTargeting* subdivision_targeting,
                resource::AntiTargeting* anti_targeting_resource);
-  ~NewTabPageAd() override;
+
   NewTabPageAd(const NewTabPageAd&) = delete;
   NewTabPageAd& operator=(const NewTabPageAd&) = delete;
+
+  ~NewTabPageAd() override;
 
   void MaybeServe(MaybeServeNewTabPageAdCallback callback);
 

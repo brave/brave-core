@@ -30,8 +30,10 @@ namespace ads {
 class CovariateManager final {
  public:
   CovariateManager();
+
   CovariateManager(const CovariateManager&) = delete;
   CovariateManager& operator=(const CovariateManager&) = delete;
+
   ~CovariateManager();
 
   static CovariateManager* GetInstance();

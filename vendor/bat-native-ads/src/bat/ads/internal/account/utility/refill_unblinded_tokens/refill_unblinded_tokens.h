@@ -29,9 +29,11 @@ class RefillUnblindedTokens final {
  public:
   explicit RefillUnblindedTokens(
       privacy::TokenGeneratorInterface* token_generator);
-  ~RefillUnblindedTokens();
+
   RefillUnblindedTokens(const RefillUnblindedTokens&) = delete;
   RefillUnblindedTokens& operator=(const RefillUnblindedTokens&) = delete;
+
+  ~RefillUnblindedTokens();
 
   void SetDelegate(RefillUnblindedTokensDelegate* delegate) {
     DCHECK_EQ(delegate_, nullptr);

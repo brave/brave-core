@@ -20,9 +20,11 @@ namespace ads::notification_ads {
 class MinimumWaitTimePermissionRule final : public PermissionRuleInterface {
  public:
   MinimumWaitTimePermissionRule();
+
   MinimumWaitTimePermissionRule(const MinimumWaitTimePermissionRule&) = delete;
   MinimumWaitTimePermissionRule& operator=(
       const MinimumWaitTimePermissionRule&) = delete;
+
   ~MinimumWaitTimePermissionRule() override;
 
   bool ShouldAllow() override;

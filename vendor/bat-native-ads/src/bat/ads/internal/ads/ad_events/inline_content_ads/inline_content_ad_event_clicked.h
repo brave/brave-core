@@ -17,9 +17,11 @@ namespace inline_content_ads {
 class AdEventClicked final : public AdEventInterface<InlineContentAdInfo> {
  public:
   AdEventClicked();
-  ~AdEventClicked() override;
+
   AdEventClicked(const AdEventClicked&) = delete;
   AdEventClicked& operator=(const AdEventClicked&) = delete;
+
+  ~AdEventClicked() override;
 
   void FireEvent(const InlineContentAdInfo& ad) override;
 };

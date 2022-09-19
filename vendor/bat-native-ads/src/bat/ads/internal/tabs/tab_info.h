@@ -15,8 +15,10 @@ namespace ads {
 
 struct TabInfo final {
   TabInfo();
+
   TabInfo(const TabInfo& info);
   TabInfo& operator=(const TabInfo& info);
+
   ~TabInfo();
 
   bool operator==(const TabInfo& rhs) const;

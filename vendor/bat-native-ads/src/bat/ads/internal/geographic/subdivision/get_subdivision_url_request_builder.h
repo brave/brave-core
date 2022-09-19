@@ -17,11 +17,13 @@ class GetSubdivisionUrlRequestBuilder final
     : public UrlRequestBuilderInterface {
  public:
   GetSubdivisionUrlRequestBuilder();
-  ~GetSubdivisionUrlRequestBuilder() override;
+
   GetSubdivisionUrlRequestBuilder(const GetSubdivisionUrlRequestBuilder&) =
       delete;
   GetSubdivisionUrlRequestBuilder& operator=(
       const GetSubdivisionUrlRequestBuilder&) = delete;
+
+  ~GetSubdivisionUrlRequestBuilder() override;
 
   mojom::UrlRequestInfoPtr Build() override;
 

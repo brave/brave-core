@@ -15,9 +15,11 @@ namespace ads {
 class StaticServerHost final : public ServerHostInterface {
  public:
   StaticServerHost();
-  ~StaticServerHost() override;
+
   StaticServerHost(const StaticServerHost&) = delete;
   StaticServerHost& operator=(const StaticServerHost&) = delete;
+
+  ~StaticServerHost() override;
 
   std::string Get() const override;
 };

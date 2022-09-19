@@ -17,9 +17,11 @@ namespace notification_ads {
 class AdEventTimedOut final : public AdEventInterface<NotificationAdInfo> {
  public:
   AdEventTimedOut();
-  ~AdEventTimedOut() override;
+
   AdEventTimedOut(const AdEventTimedOut&) = delete;
   AdEventTimedOut& operator=(const AdEventTimedOut&) = delete;
+
+  ~AdEventTimedOut() override;
 
   void FireEvent(const NotificationAdInfo& ad) override;
 };

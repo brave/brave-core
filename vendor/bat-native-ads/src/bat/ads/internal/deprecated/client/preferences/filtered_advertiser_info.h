@@ -15,8 +15,10 @@ namespace ads {
 
 struct FilteredAdvertiserInfo final {
   FilteredAdvertiserInfo();
+
   FilteredAdvertiserInfo(const FilteredAdvertiserInfo& info);
   FilteredAdvertiserInfo& operator=(const FilteredAdvertiserInfo& info);
+
   ~FilteredAdvertiserInfo();
 
   base::Value::Dict ToValue() const;

@@ -21,10 +21,11 @@ class AntiTargeting final : public LocaleManagerObserver,
                             public ResourceManagerObserver {
  public:
   AntiTargeting();
-  ~AntiTargeting() override;
 
   AntiTargeting(const AntiTargeting&) = delete;
   AntiTargeting& operator=(const AntiTargeting&) = delete;
+
+  ~AntiTargeting() override;
 
   bool IsInitialized() const;
 

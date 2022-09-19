@@ -15,9 +15,11 @@ namespace ads {
 class LastNotificationAdWasClicked final : public CovariateLogEntryInterface {
  public:
   LastNotificationAdWasClicked();
+
   LastNotificationAdWasClicked(const LastNotificationAdWasClicked&) = delete;
   LastNotificationAdWasClicked& operator=(const LastNotificationAdWasClicked&) =
       delete;
+
   ~LastNotificationAdWasClicked() override;
 
   // CovariateLogEntryInterface:

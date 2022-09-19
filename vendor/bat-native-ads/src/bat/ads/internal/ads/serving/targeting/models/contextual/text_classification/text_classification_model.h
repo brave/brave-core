@@ -13,9 +13,11 @@ namespace ads::targeting::model {
 class TextClassification final : public ModelInterface {
  public:
   TextClassification();
-  ~TextClassification() override;
+
   TextClassification(const TextClassification&) = delete;
   TextClassification& operator=(const TextClassification&) = delete;
+
+  ~TextClassification() override;
 
   SegmentList GetSegments() const override;
 };

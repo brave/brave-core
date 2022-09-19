@@ -25,8 +25,10 @@ using AntiTargetingMap = std::map<std::string, AntiTargetingSiteList>;
 
 struct AntiTargetingInfo final {
   AntiTargetingInfo();
+
   AntiTargetingInfo(const AntiTargetingInfo& info);
   AntiTargetingInfo& operator=(const AntiTargetingInfo& info);
+
   ~AntiTargetingInfo();
 
   static std::unique_ptr<AntiTargetingInfo> CreateFromValue(

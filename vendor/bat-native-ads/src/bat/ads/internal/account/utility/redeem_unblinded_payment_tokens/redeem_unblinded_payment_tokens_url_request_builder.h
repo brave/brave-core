@@ -26,11 +26,13 @@ class RedeemUnblindedPaymentTokensUrlRequestBuilder final
       const WalletInfo& wallet,
       const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
       const base::Value::Dict& user_data);
-  ~RedeemUnblindedPaymentTokensUrlRequestBuilder() override;
+
   RedeemUnblindedPaymentTokensUrlRequestBuilder(
       const RedeemUnblindedPaymentTokensUrlRequestBuilder&) = delete;
   RedeemUnblindedPaymentTokensUrlRequestBuilder& operator=(
       const RedeemUnblindedPaymentTokensUrlRequestBuilder&) = delete;
+
+  ~RedeemUnblindedPaymentTokensUrlRequestBuilder() override;
 
   mojom::UrlRequestInfoPtr Build() override;
 

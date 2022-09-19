@@ -20,8 +20,10 @@ namespace ads::inline_content_ads {
 class AdsPerHourPermissionRule final : public PermissionRuleInterface {
  public:
   AdsPerHourPermissionRule();
+
   AdsPerHourPermissionRule(const AdsPerHourPermissionRule&) = delete;
   AdsPerHourPermissionRule& operator=(const AdsPerHourPermissionRule&) = delete;
+
   ~AdsPerHourPermissionRule() override;
 
   bool ShouldAllow() override;

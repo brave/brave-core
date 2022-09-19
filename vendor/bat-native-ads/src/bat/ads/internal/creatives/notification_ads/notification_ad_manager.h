@@ -17,8 +17,10 @@ namespace ads {
 class NotificationAdManager final {
  public:
   NotificationAdManager();
+
   NotificationAdManager(const NotificationAdManager&) = delete;
   NotificationAdManager& operator=(const NotificationAdManager&) = delete;
+
   ~NotificationAdManager();
 
   static NotificationAdManager* GetInstance();

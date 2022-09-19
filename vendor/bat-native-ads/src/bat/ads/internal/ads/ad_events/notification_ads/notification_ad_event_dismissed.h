@@ -17,9 +17,11 @@ namespace notification_ads {
 class AdEventDismissed final : public AdEventInterface<NotificationAdInfo> {
  public:
   AdEventDismissed();
-  ~AdEventDismissed() override;
+
   AdEventDismissed(const AdEventDismissed&) = delete;
   AdEventDismissed& operator=(const AdEventDismissed&) = delete;
+
+  ~AdEventDismissed() override;
 
   void FireEvent(const NotificationAdInfo& ad) override;
 };

@@ -38,8 +38,10 @@ bool IsSupportedLocale(const std::string& locale);
 class ADS_EXPORT Ads {
  public:
   Ads() = default;
+
   Ads(const Ads&) = delete;
   Ads& operator=(const Ads&) = delete;
+
   virtual ~Ads() = default;
 
   static Ads* CreateInstance(AdsClient* ads_client);

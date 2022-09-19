@@ -16,10 +16,12 @@ struct PurchaseIntentSegmentKeywordInfo final {
   PurchaseIntentSegmentKeywordInfo();
   PurchaseIntentSegmentKeywordInfo(const SegmentList& segments,
                                    const std::string& keywords);
+
   PurchaseIntentSegmentKeywordInfo(
       const PurchaseIntentSegmentKeywordInfo& info);
   PurchaseIntentSegmentKeywordInfo& operator=(
       const PurchaseIntentSegmentKeywordInfo& info);
+
   ~PurchaseIntentSegmentKeywordInfo();
 
   SegmentList segments;

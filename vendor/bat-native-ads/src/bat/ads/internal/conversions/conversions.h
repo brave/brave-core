@@ -37,9 +37,11 @@ class Conversions final : public LocaleManagerObserver,
                           public TabManagerObserver {
  public:
   Conversions();
-  ~Conversions() override;
+
   Conversions(const Conversions&) = delete;
   Conversions& operator=(const Conversions&) = delete;
+
+  ~Conversions() override;
 
   void AddObserver(ConversionsObserver* observer);
   void RemoveObserver(ConversionsObserver* observer);

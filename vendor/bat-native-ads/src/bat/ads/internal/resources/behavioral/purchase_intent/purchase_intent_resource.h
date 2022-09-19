@@ -22,8 +22,10 @@ namespace resource {
 class PurchaseIntent final {
  public:
   PurchaseIntent();
+
   PurchaseIntent(const PurchaseIntent&) = delete;
   PurchaseIntent& operator=(const PurchaseIntent&) = delete;
+
   ~PurchaseIntent();
 
   bool IsInitialized() const;

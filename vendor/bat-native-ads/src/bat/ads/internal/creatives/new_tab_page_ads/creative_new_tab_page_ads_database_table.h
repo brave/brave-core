@@ -41,9 +41,11 @@ using GetCreativeNewTabPageAdsCallback =
 class CreativeNewTabPageAds final : public TableInterface {
  public:
   CreativeNewTabPageAds();
-  ~CreativeNewTabPageAds() override;
+
   CreativeNewTabPageAds(const CreativeNewTabPageAds&) = delete;
   CreativeNewTabPageAds& operator=(const CreativeNewTabPageAds&) = delete;
+
+  ~CreativeNewTabPageAds() override;
 
   void Save(const CreativeNewTabPageAdList& creative_ads,
             ResultCallback callback);

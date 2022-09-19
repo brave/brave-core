@@ -15,8 +15,10 @@ namespace ads {
 
 struct SavedAdInfo final {
   SavedAdInfo();
+
   SavedAdInfo(const SavedAdInfo& info);
   SavedAdInfo& operator=(const SavedAdInfo& info);
+
   ~SavedAdInfo();
 
   base::Value::Dict ToValue() const;

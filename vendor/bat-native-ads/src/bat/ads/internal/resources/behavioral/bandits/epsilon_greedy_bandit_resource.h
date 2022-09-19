@@ -19,8 +19,10 @@ namespace resource {
 class EpsilonGreedyBandit final : public CatalogObserver {
  public:
   explicit EpsilonGreedyBandit(Catalog* catalog);
+
   EpsilonGreedyBandit(const EpsilonGreedyBandit&) = delete;
   EpsilonGreedyBandit& operator=(const EpsilonGreedyBandit&) = delete;
+
   ~EpsilonGreedyBandit() override;
 
   bool IsInitialized() const;

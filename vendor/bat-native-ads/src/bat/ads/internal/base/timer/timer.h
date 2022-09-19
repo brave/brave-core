@@ -22,9 +22,11 @@ namespace ads {
 class Timer final {
  public:
   Timer();
-  ~Timer();
+
   Timer(const Timer&) = delete;
   Timer& operator=(const Timer&) = delete;
+
+  ~Timer();
 
   // |location| provides basic info where the timer was posted from. Start a
   // timer to run at the given |delay| from now. If the timer is already

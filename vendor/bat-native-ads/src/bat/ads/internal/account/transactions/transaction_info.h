@@ -17,8 +17,10 @@ namespace ads {
 
 struct TransactionInfo final {
   TransactionInfo();
+
   TransactionInfo(const TransactionInfo& info);
   TransactionInfo& operator=(const TransactionInfo& info);
+
   ~TransactionInfo();
 
   bool operator==(const TransactionInfo& rhs) const;

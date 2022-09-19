@@ -26,9 +26,11 @@ using GetTransactionsCallback =
 class Transactions final : public TableInterface {
  public:
   Transactions();
-  ~Transactions() override;
+
   Transactions(const Transactions&) = delete;
   Transactions& operator=(const Transactions&) = delete;
+
+  ~Transactions() override;
 
   void Save(const TransactionList& transactions, ResultCallback callback);
 

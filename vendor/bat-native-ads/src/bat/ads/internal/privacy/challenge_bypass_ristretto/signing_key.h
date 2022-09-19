@@ -30,8 +30,10 @@ class SigningKey {
   explicit SigningKey(const std::string& signing_key_base64);
   explicit SigningKey(
       const challenge_bypass_ristretto::SigningKey& signing_key);
+
   SigningKey(const SigningKey& other);
   SigningKey& operator=(const SigningKey& other);
+
   ~SigningKey();
 
   bool operator==(const SigningKey& rhs) const;

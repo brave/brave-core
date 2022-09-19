@@ -19,10 +19,11 @@ class DailyCapExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
   explicit DailyCapExclusionRule(const AdEventList& ad_events);
-  ~DailyCapExclusionRule() override;
 
   DailyCapExclusionRule(const DailyCapExclusionRule&) = delete;
   DailyCapExclusionRule& operator=(const DailyCapExclusionRule&) = delete;
+
+  ~DailyCapExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
 

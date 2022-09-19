@@ -15,8 +15,10 @@ namespace ads {
 class MediaPermissionRule final : public PermissionRuleInterface {
  public:
   MediaPermissionRule();
+
   MediaPermissionRule(const MediaPermissionRule&) = delete;
   MediaPermissionRule& operator=(const MediaPermissionRule&) = delete;
+
   ~MediaPermissionRule() override;
 
   bool ShouldAllow() override;

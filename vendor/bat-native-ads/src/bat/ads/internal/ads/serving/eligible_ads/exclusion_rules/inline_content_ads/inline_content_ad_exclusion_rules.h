@@ -30,8 +30,10 @@ class ExclusionRules final : public ExclusionRulesBase {
                  geographic::SubdivisionTargeting* subdivision_targeting,
                  resource::AntiTargeting* anti_targeting_resource,
                  const BrowsingHistoryList& browsing_history);
+
   ExclusionRules(const ExclusionRules&) = delete;
   ExclusionRules& operator=(const ExclusionRules&) = delete;
+
   ~ExclusionRules() override;
 
  private:

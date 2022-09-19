@@ -15,9 +15,11 @@ namespace ads {
 class CommandLinePermissionRule final : public PermissionRuleInterface {
  public:
   CommandLinePermissionRule();
+
   CommandLinePermissionRule(const CommandLinePermissionRule&) = delete;
   CommandLinePermissionRule& operator=(const CommandLinePermissionRule&) =
       delete;
+
   ~CommandLinePermissionRule() override;
 
   bool ShouldAllow() override;

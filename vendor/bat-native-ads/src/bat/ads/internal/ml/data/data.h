@@ -14,10 +14,10 @@ class Data {
  public:
   explicit Data(const DataType& type);
 
-  virtual ~Data();
-
   Data(const Data&) = delete;
   Data& operator=(const Data&) = delete;
+
+  virtual ~Data();
 
   DataType GetType() const;
 

@@ -34,9 +34,11 @@ class EligibleAdsV1 final : public EligibleAdsBase {
  public:
   EligibleAdsV1(geographic::SubdivisionTargeting* subdivision_targeting,
                 resource::AntiTargeting* anti_targeting);
-  ~EligibleAdsV1() override;
+
   EligibleAdsV1(const EligibleAdsV1&) = delete;
   EligibleAdsV1& operator=(const EligibleAdsV1&) = delete;
+
+  ~EligibleAdsV1() override;
 
   void GetForUserModel(
       const targeting::UserModelInfo& user_model,

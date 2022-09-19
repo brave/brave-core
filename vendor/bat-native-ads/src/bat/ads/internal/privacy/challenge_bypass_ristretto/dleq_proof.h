@@ -30,8 +30,10 @@ class DLEQProof {
   DLEQProof(const BlindedToken& blinded_token,
             const SignedToken& signed_token,
             const SigningKey& signing_key);
+
   DLEQProof(const DLEQProof& other);
   DLEQProof& operator=(const DLEQProof& other);
+
   ~DLEQProof();
 
   bool operator==(const DLEQProof& rhs) const;

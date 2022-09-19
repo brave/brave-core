@@ -18,11 +18,13 @@ namespace ads::database::table {
 class CreativeNewTabPageAdWallpapers final : public TableInterface {
  public:
   CreativeNewTabPageAdWallpapers();
-  ~CreativeNewTabPageAdWallpapers() override;
+
   CreativeNewTabPageAdWallpapers(const CreativeNewTabPageAdWallpapers&) =
       delete;
   CreativeNewTabPageAdWallpapers& operator=(
       const CreativeNewTabPageAdWallpapers&) = delete;
+
+  ~CreativeNewTabPageAdWallpapers() override;
 
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const CreativeNewTabPageAdList& creative_ads);

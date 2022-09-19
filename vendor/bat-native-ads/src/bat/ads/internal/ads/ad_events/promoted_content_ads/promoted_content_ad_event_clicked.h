@@ -17,9 +17,11 @@ namespace promoted_content_ads {
 class AdEventClicked final : public AdEventInterface<PromotedContentAdInfo> {
  public:
   AdEventClicked();
-  ~AdEventClicked() override;
+
   AdEventClicked(const AdEventClicked&) = delete;
   AdEventClicked& operator=(const AdEventClicked&) = delete;
+
+  ~AdEventClicked() override;
 
   void FireEvent(const PromotedContentAdInfo& ad) override;
 };

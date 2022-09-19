@@ -14,8 +14,10 @@ namespace ads {
 
 struct CatalogCreativeInfo {
   CatalogCreativeInfo();
+
   CatalogCreativeInfo(const CatalogCreativeInfo& info);
   CatalogCreativeInfo& operator=(const CatalogCreativeInfo& info);
+
   ~CatalogCreativeInfo();
 
   bool operator==(const CatalogCreativeInfo& rhs) const;

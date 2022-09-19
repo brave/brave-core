@@ -27,9 +27,11 @@ struct SearchResultAdInfo;
 class SearchResultAd final : public search_result_ads::EventHandlerObserver {
  public:
   SearchResultAd(Account* account, Transfer* transfer);
-  ~SearchResultAd() override;
+
   SearchResultAd(const SearchResultAd&) = delete;
   SearchResultAd& operator=(const SearchResultAd&) = delete;
+
+  ~SearchResultAd() override;
 
   void TriggerEvent(mojom::SearchResultAdInfoPtr ad_mojom,
                     mojom::SearchResultAdEventType event_type);

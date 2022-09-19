@@ -19,9 +19,11 @@ class Token;
 class TokenGenerator : public TokenGeneratorInterface {
  public:
   TokenGenerator();
-  ~TokenGenerator() override;
+
   TokenGenerator(const TokenGenerator&) = delete;
   TokenGenerator& operator=(const TokenGenerator&) = delete;
+
+  ~TokenGenerator() override;
 
   std::vector<cbr::Token> Generate(int count) const override;
 };

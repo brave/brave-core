@@ -14,10 +14,12 @@ namespace ads {
 
 struct CatalogInlineContentAdPayloadInfo final {
   CatalogInlineContentAdPayloadInfo();
+
   CatalogInlineContentAdPayloadInfo(
       const CatalogInlineContentAdPayloadInfo& info);
   CatalogInlineContentAdPayloadInfo& operator=(
       const CatalogInlineContentAdPayloadInfo& info);
+
   ~CatalogInlineContentAdPayloadInfo();
 
   bool operator==(const CatalogInlineContentAdPayloadInfo& rhs) const;

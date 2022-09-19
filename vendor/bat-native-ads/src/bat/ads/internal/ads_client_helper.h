@@ -13,9 +13,11 @@ namespace ads {
 class AdsClientHelper final {
  public:
   explicit AdsClientHelper(AdsClient* ads_client);
-  ~AdsClientHelper();
+
   AdsClientHelper(const AdsClientHelper&) = delete;
   AdsClientHelper& operator=(const AdsClientHelper&) = delete;
+
+  ~AdsClientHelper();
 
   static AdsClient* GetInstance();
 

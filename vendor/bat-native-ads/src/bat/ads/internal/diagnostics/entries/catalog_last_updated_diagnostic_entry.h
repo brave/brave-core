@@ -16,10 +16,12 @@ class CatalogLastUpdatedDiagnosticEntry final
     : public DiagnosticEntryInterface {
  public:
   CatalogLastUpdatedDiagnosticEntry();
+
   CatalogLastUpdatedDiagnosticEntry(const CatalogLastUpdatedDiagnosticEntry&) =
       delete;
   CatalogLastUpdatedDiagnosticEntry& operator=(
       const CatalogLastUpdatedDiagnosticEntry&) = delete;
+
   ~CatalogLastUpdatedDiagnosticEntry() override;
 
   // DiagnosticEntryInterface:

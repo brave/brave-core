@@ -28,9 +28,11 @@ struct TabInfo;
 class Transfer final : public TabManagerObserver {
  public:
   Transfer();
-  ~Transfer() override;
+
   Transfer(const Transfer&) = delete;
   Transfer& operator=(const Transfer&) = delete;
+
+  ~Transfer() override;
 
   void AddObserver(TransferObserver* observer);
   void RemoveObserver(TransferObserver* observer);

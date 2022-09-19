@@ -20,9 +20,11 @@ struct IssuersInfo;
 class Issuers {
  public:
   Issuers();
-  ~Issuers();
+
   Issuers(const Issuers&) = delete;
   Issuers& operator=(const Issuers&) = delete;
+
+  ~Issuers();
 
   void SetDelegate(IssuersDelegate* delegate) {
     DCHECK_EQ(delegate_, nullptr);

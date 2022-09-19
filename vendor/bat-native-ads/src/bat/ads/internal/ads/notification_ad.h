@@ -60,9 +60,11 @@ class NotificationAd final : public AccountObserver,
       processor::EpsilonGreedyBandit* epsilon_greedy_bandit_processor,
       geographic::SubdivisionTargeting* subdivision_targeting,
       resource::AntiTargeting* anti_targeting_resource);
-  ~NotificationAd() override;
+
   NotificationAd(const NotificationAd&) = delete;
   NotificationAd& operator=(const NotificationAd&) = delete;
+
+  ~NotificationAd() override;
 
   void MaybeServeAtRegularIntervals();
 

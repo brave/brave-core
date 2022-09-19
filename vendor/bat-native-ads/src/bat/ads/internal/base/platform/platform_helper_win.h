@@ -15,10 +15,10 @@ namespace ads {
 
 class PlatformHelperWin final : public PlatformHelper {
  public:
-  ~PlatformHelperWin() override;
-
   PlatformHelperWin(const PlatformHelperWin&) = delete;
   PlatformHelperWin& operator=(const PlatformHelperWin&) = delete;
+
+  ~PlatformHelperWin() override;
 
  protected:
   friend class base::NoDestructor<PlatformHelperWin>;

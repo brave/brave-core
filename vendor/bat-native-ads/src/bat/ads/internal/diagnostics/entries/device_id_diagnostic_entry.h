@@ -15,8 +15,10 @@ namespace ads {
 class DeviceIdDiagnosticEntry final : public DiagnosticEntryInterface {
  public:
   DeviceIdDiagnosticEntry();
+
   DeviceIdDiagnosticEntry(const DeviceIdDiagnosticEntry&) = delete;
   DeviceIdDiagnosticEntry& operator=(const DeviceIdDiagnosticEntry&) = delete;
+
   ~DeviceIdDiagnosticEntry() override;
 
   // DiagnosticEntryInterface:

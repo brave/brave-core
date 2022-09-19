@@ -13,6 +13,7 @@ double GeneratePacingRandomNumber();
 class ScopedPacingRandomNumberSetter final {
  public:
   explicit ScopedPacingRandomNumberSetter(double number);
+
   ~ScopedPacingRandomNumberSetter();
 };
 

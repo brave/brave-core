@@ -16,10 +16,11 @@ namespace ads {
 class PrefManager final {
  public:
   PrefManager();
-  ~PrefManager();
 
   PrefManager(const PrefManager&) = delete;
   PrefManager& operator=(const PrefManager&) = delete;
+
+  ~PrefManager();
 
   static PrefManager* GetInstance();
 

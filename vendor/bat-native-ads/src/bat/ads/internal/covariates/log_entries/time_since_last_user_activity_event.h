@@ -18,10 +18,12 @@ class TimeSinceLastUserActivityEvent final : public CovariateLogEntryInterface {
   TimeSinceLastUserActivityEvent(
       UserActivityEventType event_type,
       brave_federated::mojom::CovariateType covariate_type);
+
   TimeSinceLastUserActivityEvent(const TimeSinceLastUserActivityEvent&) =
       delete;
   TimeSinceLastUserActivityEvent& operator=(
       const TimeSinceLastUserActivityEvent&) = delete;
+
   ~TimeSinceLastUserActivityEvent() override;
 
   // CovariateLoCovariateLogEntryInterfacegEntry:

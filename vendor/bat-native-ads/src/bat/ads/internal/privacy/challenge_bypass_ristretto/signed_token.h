@@ -23,8 +23,10 @@ class SignedToken {
   explicit SignedToken(const std::string& signed_token_base64);
   explicit SignedToken(
       const challenge_bypass_ristretto::SignedToken& signed_token);
+
   SignedToken(const SignedToken& other);
   SignedToken& operator=(const SignedToken& other);
+
   ~SignedToken();
 
   bool operator==(const SignedToken& rhs) const;

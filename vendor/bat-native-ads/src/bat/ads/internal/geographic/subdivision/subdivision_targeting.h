@@ -21,8 +21,10 @@ class SubdivisionTargeting final : public LocaleManagerObserver,
                                    public PrefManagerObserver {
  public:
   SubdivisionTargeting();
+
   SubdivisionTargeting(const SubdivisionTargeting&) = delete;
   SubdivisionTargeting& operator=(const SubdivisionTargeting&) = delete;
+
   ~SubdivisionTargeting() override;
 
   bool ShouldAllow() const;

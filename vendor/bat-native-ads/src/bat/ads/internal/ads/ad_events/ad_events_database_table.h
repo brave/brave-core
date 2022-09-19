@@ -21,9 +21,11 @@ using GetAdEventsCallback = std::function<void(const bool, const AdEventList&)>;
 class AdEvents final : public TableInterface {
  public:
   AdEvents();
-  ~AdEvents() override;
+
   AdEvents(const AdEvents&) = delete;
   AdEvents& operator=(const AdEvents&) = delete;
+
+  ~AdEvents() override;
 
   void LogEvent(const AdEventInfo& ad_event, ResultCallback callback);
 
