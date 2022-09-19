@@ -53,11 +53,10 @@ def override_method(scope, name=None, condition=True):
 
         def wrapped_method(self, *args, **kwargs):
             return new_method(self, original_method, *args, **kwargs)
-
         if not condition:
             wrapped_method = original_method
 
-        setattr(scope, method_name, types.MethodType(wrapped_method, scope))
+        setattr(scope, method_name, wrapped_method)
 
         return wrapped_method
 
