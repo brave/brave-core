@@ -230,10 +230,9 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
 
     void OnOneTimeTip(ledger::type::Result result);
 
-    void OnDisconnectWallet(
-      brave_rewards::RewardsService* rewards_service,
-      const ledger::type::Result result,
-      const std::string& wallet_type) override;
+    void OnDisconnectWallet(brave_rewards::RewardsService* rewards_service,
+                            const ledger::type::Result result,
+                            const std::string& wallet_type) override;
 
     void OnRecoverWallet(brave_rewards::RewardsService* rewards_service,
                          const ledger::mojom::Result result) override;
