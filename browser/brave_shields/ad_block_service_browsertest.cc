@@ -26,7 +26,6 @@
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager_observer.h"
-#include "brave/components/brave_shields/browser/allow_cosmetic_filtering_web_contents_observer.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/filter_list_catalog_entry.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -35,15 +34,14 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
+#include "brave/components/playlist/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
-#include "chrome/browser/content_settings/page_specific_content_settings_delegate.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/content_settings/browser/page_specific_content_settings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
@@ -52,6 +50,12 @@
 #include "extensions/test/extension_test_message_listener.h"
 #include "net/dns/mock_host_resolver.h"
 #include "services/network/host_resolver.h"
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/playlist_background_web_contents_observer.h"
+#include "chrome/browser/content_settings/page_specific_content_settings_delegate.h"
+#include "components/content_settings/browser/page_specific_content_settings.h"
+#endif
 
 const char kAdBlockTestPage[] = "/blocking.html";
 
@@ -1793,6 +1797,7 @@ IN_PROC_BROWSER_TEST_F(CosmeticFilteringFlagDisabledTest,
   ASSERT_EQ(true, EvalJs(contents, "checkSelector('.ad', 'display', 'block')"));
 }
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
 // Ensure cosmetic filtering occurs always when AllowCosmeticFiltering() is
 // called.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AllowCosmeticFiltering) {
@@ -1815,8 +1820,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AllowCosmeticFiltering) {
       std::make_unique<chrome::PageSpecificContentSettingsDelegate>(
           web_contents.get()));
 
-  brave_shields::AllowCosmeticFilteringWebContentsObserver::
-      CreateForWebContents(web_contents.get());
+  playlist::PlaylistBackgroundWebContentsObserver::CreateForWebContents(
+      web_contents.get());
   web_contents->GetController().LoadURLWithParams(
       content::NavigationController::LoadURLParams(url));
   content::WaitForLoadStop(web_contents.get());
@@ -1824,6 +1829,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AllowCosmeticFiltering) {
   EXPECT_EQ(false, EvalJs(web_contents.get(),
                           "checkSelector('#ad-banner', 'display', 'block')"));
 }
+#endif
 
 // Ensure no cosmetic filtering occurs when the shields setting is disabled
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDisabled) {

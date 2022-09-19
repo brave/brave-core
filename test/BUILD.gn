@@ -824,6 +824,8 @@ if (!is_android) {
       "//brave/components/debounce/common",
       "//brave/components/l10n/common",
       "//brave/components/ntp_background_images/buildflags",
+      "//brave/components/playlist",
+      "//brave/components/playlist/buildflags",
       "//brave/components/resources:strings_grit",
       "//brave/components/sessions/browser:browser_tests",
       "//brave/components/skus/common",

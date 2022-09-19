@@ -12,7 +12,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
-#include "brave/components/brave_shields/browser/allow_cosmetic_filtering_web_contents_observer.h"
+#include "brave/components/playlist/playlist_background_web_contents_observer.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
@@ -72,8 +72,8 @@ void PlaylistDownloadRequestManager::CreateWebContents() {
     // |web_contents_| is created on demand.
     content::WebContents::CreateParams create_params(context_, nullptr);
     web_contents_ = content::WebContents::Create(create_params);
-    brave_shields::AllowCosmeticFilteringWebContentsObserver::
-        CreateForWebContents(web_contents_.get());
+    PlaylistBackgroundWebContentsObserver::CreateForWebContents(
+        web_contents_.get());
   }
 
   Observe(web_contents_.get());
