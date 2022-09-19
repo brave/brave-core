@@ -47,7 +47,7 @@ let package = Package(
     .package(url: "https://github.com/devxoul/Then", from: "2.7.0"),
     .package(url: "https://github.com/mkrd/Swift-BigInt", from: "2.0.0"),
     .package(url: "https://github.com/apple/swift-markdown", revision: "4f0c76fcd29fea648915f41e2aa896d47608087a"),
-    .package(url: "https://github.com/GuardianFirewall/GuardianConnect", exact: "1.6.2"),
+    .package(url: "https://github.com/GuardianFirewall/GuardianConnect", exact: "1.7.2"),
     .package(name: "Static", path: "ThirdParty/Static"),
   ],
   targets: [
@@ -158,6 +158,7 @@ let package = Package(
         .copy("Frontend/UserContent/UserScripts/ArchiveIsCompat.js"),
         .copy("Frontend/UserContent/UserScripts/BraveSearchHelper.js"),
         .copy("Frontend/UserContent/UserScripts/BraveTalkHelper.js"),
+        .copy("Frontend/UserContent/UserScripts/BraveSkusHelper.js"),
         .copy("Frontend/UserContent/UserScripts/CookieControl.js"),
         .copy("Frontend/UserContent/UserScripts/FarblingProtection.js"),
         .copy("Frontend/UserContent/UserScripts/FullscreenHelper.js"),

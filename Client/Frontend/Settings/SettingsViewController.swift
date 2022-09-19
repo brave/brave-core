@@ -482,6 +482,7 @@ class SettingsViewController: TableViewController {
               self?.settingsDelegate?.settingsOpenURLInNewTab(BraveUX.braveVPNFaqURL)
               self?.dismiss(animated: true)
             }
+            
             return vc
           }
         }()

@@ -36,7 +36,7 @@ public class BraveVPN {
 
   /// Initialize the vpn service. It should be called even if the user hasn't bought the vpn yet.
   /// This function can have side effects if the receipt has expired(removes the vpn connection then).
-  public static func initialize() {
+  public static func initialize(customCredential: (credential: String, environment: String)?) {
     func clearConfiguration() {
       GRDVPNHelper.clearVpnConfiguration()
       clearCredentials()
@@ -46,6 +46,10 @@ public class BraveVPN {
           logAndStoreError("Remove vpn error: \(error)")
         }
       }
+    }
+    
+    if let customCredential = customCredential {
+      setCustomVPNCredential(customCredential.credential, environment: customCredential.environment)
     }
     
     helper.verifyMainCredentials { valid, error in
@@ -74,13 +78,36 @@ public class BraveVPN {
     }
   }
   
+  public static var receipt: String? {
+    guard let receiptUrl = Bundle.main.appStoreReceiptURL,
+          let receipt = try? Data(contentsOf: receiptUrl).base64EncodedString else { return nil }
+    
+    return receipt
+  }
+  
+  public static func setCustomVPNCredential(_ credential: String, environment: String) {
+    GRDSubscriptionManager.setIsPayingUser(true)
+    populateRegionDataIfNecessary()
+    
+    let dict: NSMutableDictionary =
+    ["brave-vpn-premium-monthly-pass": credential,
+     "brave-payments-env": environment,
+     "validation-method": "brave-premium"]
+    helper.customSubscriberCredentialAuthKeys = dict
+  }
+  
   /// Connects to Guardian's server to validate locally stored receipt.
   /// Returns true if the receipt expired, false if not or nil if expiration status can't be determined.
   public static func validateReceipt(receiptHasExpired: ((Bool?) -> Void)? = nil) {
-    guard let receiptUrl = Bundle.main.appStoreReceiptURL,
-          let receipt = try? Data(contentsOf: receiptUrl).base64EncodedString,
-          let bundleId = Bundle.main.bundleIdentifier else {
+    guard let receipt = receipt,
+    let bundleId = Bundle.main.bundleIdentifier else {
       receiptHasExpired?(nil)
+      return
+    }
+    
+    if Preferences.VPN.skusCredential.value != nil {
+      // Receipt verification applies to Apple's IAP only,
+      // if we detect Brave's SKU token we should not look at Apple's receipt.
       return
     }
 
@@ -185,6 +212,8 @@ public class BraveVPN {
       return Strings.VPN.vpnSettingsMonthlySubName
     case VPNProductInfo.ProductIdentifiers.yearlySub:
       return Strings.VPN.vpnSettingsYearlySubName
+    case VPNProductInfo.ProductIdentifiers.monthlySubSKU:
+      return Strings.VPN.vpnSettingsMonthlySubName
     default:
       assertionFailure("Can't get product id")
       return ""
