@@ -1065,6 +1065,7 @@ if (!is_android) {
       "//base",
       "//brave/browser/ui",
       "//brave/components/brave_rewards/browser",
+      "//brave/components/playlist/buildflags",
       "//brave/components/sidebar/buildflags",
       "//chrome/browser",
       "//chrome/browser/profiles:profile",
@@ -1083,6 +1084,10 @@ if (!is_android) {
         "//brave/browser/ui/sidebar",
         "//brave/components/sidebar",
       ]
+    }
+
+    if (enable_playlist_webui) {
+      deps += [ "//brave/components/playlist:playlist_features" ]
     }
 
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]

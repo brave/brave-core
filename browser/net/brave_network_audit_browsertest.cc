@@ -19,6 +19,7 @@
 #include "brave/browser/net/brave_network_audit_allowed_lists.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
+#include "brave/components/playlist/buildflags/buildflags.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -34,6 +35,10 @@
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/components/sidebar/sidebar_item.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+#include "brave/components/playlist/features.h"
 #endif
 
 namespace brave {
@@ -185,7 +190,12 @@ void WriteNetworkAuditResultsToDisk(const base::Value::Dict& results_dic,
 
 class BraveNetworkAuditTest : public InProcessBrowserTest {
  public:
-  BraveNetworkAuditTest() = default;
+  BraveNetworkAuditTest() {
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+    scoped_feature_list_.InitAndEnableFeature(playlist::features::kPlaylist);
+#endif  // BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+  }
+
   BraveNetworkAuditTest(const BraveNetworkAuditTest&) = delete;
   BraveNetworkAuditTest& operator=(const BraveNetworkAuditTest&) = delete;
 
@@ -276,6 +286,10 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
   raw_ptr<brave_rewards::RewardsServiceImpl> rewards_service_ = nullptr;
   base::FilePath net_log_path_;
   base::FilePath audit_results_path_;
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+  base::test::ScopedFeatureList scoped_feature_list_;
+#endif  // BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 };
 
 // Loads brave://welcome first to simulate a first run and then loads another
@@ -309,7 +323,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
   auto* sidebar_model = sidebar_controller->model();
   const auto& all_items = sidebar_model->GetAllSidebarItems();
   const int item_num = all_items.size();
-  const int builtin_panel_item_total = 2;
+  const int builtin_panel_item_total = 3;
   int builtin_panel_item_count = 0;
   for (int i = 0; i < item_num; ++i) {
     auto item = all_items[i];
@@ -320,6 +334,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
       WaitForTimeout(kMaxTimeoutPerLoadedURL);
     }
   }
+  // TODO(sko) What should we do for this? is this comment still valid?
   // Currently, builtin panel item is one.
   // If it's increased, --test-launcher-time should be increased also.
   EXPECT_EQ(builtin_panel_item_total, builtin_panel_item_count);
