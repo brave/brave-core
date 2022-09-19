@@ -6,8 +6,6 @@ source_set("android_browser_process") {
 
   sources = [
     "//brave/browser/brave_ads/android/brave_ads_native_helper.cc",
-    "brave_cookie_consent_notices.cc",
-    "brave_cookie_consent_notices.h",
     "brave_feature_util.cc",
     "brave_relaunch_utils.cc",
     "brave_shields_content_settings.cc",
