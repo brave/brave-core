@@ -52,9 +52,10 @@
 #include "services/network/host_resolver.h"
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/components/playlist/playlist_background_web_contents_observer.h"
-#include "chrome/browser/content_settings/page_specific_content_settings_delegate.h"
-#include "components/content_settings/browser/page_specific_content_settings.h"
+#include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/components/playlist/features.h"
+#include "brave/components/playlist/playlist_download_request_manager.h"
+#include "brave/components/playlist/playlist_service.h"
 #endif
 
 const char kAdBlockTestPage[] = "/blocking.html";
@@ -1798,11 +1799,25 @@ IN_PROC_BROWSER_TEST_F(CosmeticFilteringFlagDisabledTest,
 }
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
+
+namespace playlist {
+
+class CosmeticFilteringPlaylistFlagEnabledTest : public AdBlockServiceTest {
+ public:
+  CosmeticFilteringPlaylistFlagEnabledTest() {
+    feature_list_.InitAndEnableFeature(features::kPlaylist);
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
 // Ensure cosmetic filtering occurs always when AllowCosmeticFiltering() is
 // called.
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AllowCosmeticFiltering) {
+IN_PROC_BROWSER_TEST_F(CosmeticFilteringPlaylistFlagEnabledTest,
+                       AllowCosmeticFiltering) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
-  GURL url =
+  const GURL url =
       embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
 
   // Set cosmetic filtering is not enabled.
@@ -1810,25 +1825,25 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AllowCosmeticFiltering) {
       content_settings(), brave_shields::ControlType::ALLOW, url);
   UpdateAdBlockInstanceWithRules("b.com###ad-banner");
 
-  // Used background web contents as AllowCosmeticFiltering() will be used for
-  // it.
-  content::WebContents::CreateParams create_params(browser()->profile(),
-                                                   nullptr);
-  auto web_contents = content::WebContents::Create(create_params);
-  content_settings::PageSpecificContentSettings::CreateForWebContents(
-      web_contents.get(),
-      std::make_unique<chrome::PageSpecificContentSettingsDelegate>(
-          web_contents.get()));
+  auto* playlist_service_factory = PlaylistServiceFactory::GetInstance();
+  auto* playlist_service =
+      playlist_service_factory->GetForBrowserContext(browser()->profile());
+  auto* download_request_manager =
+      playlist_service->download_request_manager_.get();
+  download_request_manager->CreateWebContents();
+  auto* web_contents = download_request_manager->web_contents_.get();
 
-  playlist::PlaylistBackgroundWebContentsObserver::CreateForWebContents(
-      web_contents.get());
   web_contents->GetController().LoadURLWithParams(
       content::NavigationController::LoadURLParams(url));
-  content::WaitForLoadStop(web_contents.get());
+  content::WaitForLoadStop(web_contents);
 
-  EXPECT_EQ(false, EvalJs(web_contents.get(),
+  // Check filter is applied properly.
+  EXPECT_EQ(false, EvalJs(web_contents,
                           "checkSelector('#ad-banner', 'display', 'block')"));
 }
+
+}  // namespace playlist
+
 #endif
 
 // Ensure no cosmetic filtering occurs when the shields setting is disabled

@@ -67,6 +67,9 @@ class PlaylistDownloadRequestManager
   void GetMediaFilesFromPage(Request request);
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(CosmeticFilteringPlaylistFlagEnabledTest,
+                           AllowCosmeticFiltering);
+
   // Calling this will trigger loading |url| on a web contents,
   // and we'll inject javascript on the contents to get a list of
   // media files on the page.

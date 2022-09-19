@@ -16,9 +16,7 @@ PlaylistBackgroundWebContentsObserver::PlaylistBackgroundWebContentsObserver(
           *web_contents) {}
 
 PlaylistBackgroundWebContentsObserver::
-    ~PlaylistBackgroundWebContentsObserver() {
-  brave_shields_remotes_.clear();
-}
+    ~PlaylistBackgroundWebContentsObserver() = default;
 
 void PlaylistBackgroundWebContentsObserver::RenderFrameCreated(
     content::RenderFrameHost* rfh) {

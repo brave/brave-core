@@ -126,6 +126,8 @@ class PlaylistService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, MediaDownloadFailed);
   FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, ThumbnailFailed);
   FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, RemoveAndRestoreLocalData);
+  FRIEND_TEST_ALL_PREFIXES(CosmeticFilteringPlaylistFlagEnabledTest,
+                           AllowCosmeticFiltering);
 
   // KeyedService overrides:
   void Shutdown() override;
