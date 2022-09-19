@@ -22,6 +22,7 @@ enum ScriptSourceType {
   case archive
   case braveSearchHelper
   case braveTalkHelper
+  case braveSkus
   case bravePlaylistFolderSharingHelper
 
   var fileName: String {
@@ -34,6 +35,7 @@ enum ScriptSourceType {
     case .braveSearchHelper: return "BraveSearchHelper"
     case .braveTalkHelper: return "BraveTalkHelper"
     case .bravePlaylistFolderSharingHelper: return "PlaylistFolderSharing"
+    case .braveSkus: return "BraveSkusHelper"
     }
   }
 

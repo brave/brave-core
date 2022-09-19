@@ -40,7 +40,7 @@ class BraveTalkScriptHandler: TabContentScript {
       allowedHosts.contains(requestHost),
       message.frameInfo.isMainFrame
     else {
-      log.error("Backup search request called from disallowed host")
+      log.error("Brave Talk request called from disallowed host")
       return
     }
 

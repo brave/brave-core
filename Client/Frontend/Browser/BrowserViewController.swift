@@ -834,7 +834,13 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
     // epsecially when you are connected to a VPN.
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
       self.vpnProductInfo.load()
-      BraveVPN.initialize()
+      if let customCredential = Preferences.VPN.skusCredential.value,
+         let customCredentialDomain = Preferences.VPN.skusCredentialDomain.value,
+          let vpnCredential = BraveSkusWebHelper.fetchVPNCredential(customCredential, domain: customCredentialDomain) {
+        BraveVPN.initialize(customCredential: vpnCredential)
+      } else {
+        BraveVPN.initialize(customCredential: nil)
+      }
     }
 
     showWalletTransferExpiryPanelIfNeeded()
@@ -2352,6 +2358,10 @@ extension BrowserViewController: TabDelegate {
         tab: tab,
         rewards: rewards),
       name: BraveTalkScriptHandler.name(), contentWorld: .page)
+    
+    tab.addContentScript(BraveSkusScriptHandler(tab: tab),
+                         name: BraveSkusScriptHandler.name(),
+                         contentWorld: .page)
 
     tab.addContentScript(ResourceDownloadManager(tab: tab), name: ResourceDownloadManager.name(), contentWorld: .defaultClient)
 

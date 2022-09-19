@@ -36,8 +36,12 @@ public class VPNProductInfo: NSObject {
 
   /// These product ids work only on release channel.
   struct ProductIdentifiers {
+    /// Apple's monthly IAP
     static let monthlySub = "bravevpn.monthly"
+    /// Apple's yearly IAP
     static let yearlySub = "bravevpn.yearly"
+    /// account.brave.com  monthly subscription product
+    static let monthlySubSKU = "brave-premium"
 
     static let all = Set<String>(arrayLiteral: monthlySub, yearlySub)
   }

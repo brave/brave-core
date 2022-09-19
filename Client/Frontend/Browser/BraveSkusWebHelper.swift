@@ -82,6 +82,54 @@ class BraveSkusWebHelper {
       return nil
     }
   }
+  
+  var environment: String? {
+    guard let host = url.host else { return nil }
+    return Self.environment(domain: host)
+  }
+  
+  private enum SkusEnvironment: String {
+    case development, staging, production
+  }
+  
+  static func environment(domain: String) -> String? {
+    switch domain {
+    case "account.brave.software", "vpn.brave.software": return SkusEnvironment.development.rawValue
+    case "account.bravesoftware.com", "vpn.bravesoftware.com": return SkusEnvironment.staging.rawValue
+    case "account.brave.com", "vpn.brave.com": return SkusEnvironment.production.rawValue
+    default:
+      return nil
+    }
+  }
+  
+  /// Takes credential passed from the Brave SKUs and extract a proper credential to pass to the GuardianConnect framework.
+  static func fetchVPNCredential(_ credential: String, domain: String) -> (credential: String, environment: String)? {
+    guard let unescapedCredential = credential.unescape(),
+          let env = environment(domain: domain),
+            let sampleUrl = URL(string: "https://brave.com") else { return nil }
+    
+    guard let guardianConnectCredential =
+      HTTPCookie.cookies(withResponseHeaderFields:
+                          ["Set-Cookie": unescapedCredential], for: sampleUrl).first?.value else {
+      return nil
+    }
+    
+    return (guardianConnectCredential, env)
+  }
+  
+  static func milisecondsOptionalDate(from stringDate: String) -> Date? {
+    let formatter = ISO8601DateFormatter()
+    formatter.formatOptions = [
+      .withYear,
+      .withMonth,
+      .withDay,
+      .withTime,
+      .withDashSeparatorInDate,
+      .withColonSeparatorInTime
+    ]
+    
+    return formatter.date(from: stringDate)
+  }
 }
 
 // MARK: - Testing

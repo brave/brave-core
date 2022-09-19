@@ -119,6 +119,13 @@ class ScriptFactory {
         source = source
           .replacingOccurrences(of: "$<handler>", with: "playlistFolderSharingHelper_\(UserScriptManager.messageHandlerTokenString)", options: .literal)
           .replacingOccurrences(of: "$<security_token>", with: securityToken, options: .literal)
+      case .braveSkus:
+        let securityToken = UserScriptManager.securityTokenString
+        let messageToken = "BraveSkusHelper_\(UserScriptManager.messageHandlerTokenString)"
+        source = source
+          .replacingOccurrences(of: "$<security_token>", with: securityToken)
+        
+        return WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: true, in: .page)
       }
     }
     
