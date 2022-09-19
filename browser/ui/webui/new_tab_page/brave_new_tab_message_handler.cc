@@ -566,7 +566,8 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
   }
 
   // Even though we show sponsored image, we should pass "Background wallpaper"
-  // data so that NTP can know which wallpaper is selected by users.
+  // data so that NTP customization menu can know which wallpaper is selected by
+  // users.
   auto backgroundWallpaper = service->GetCurrentWallpaper();
   wallpaper.Set(kBackgroundWallpaperKey,
                 backgroundWallpaper
