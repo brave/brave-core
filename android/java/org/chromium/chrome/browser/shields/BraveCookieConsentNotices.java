@@ -39,15 +39,23 @@ public class BraveCookieConsentNotices {
         }
     }
 
-    public void enableFilter() {
+    public void enableFilter(boolean shouldEnableFilter) {
         synchronized (lock) {
-            BraveCookieConsentNoticesJni.get().enableFilter(mNativeBraveCookieConsentNotices);
+            BraveCookieConsentNoticesJni.get().enableFilter(
+                    mNativeBraveCookieConsentNotices, shouldEnableFilter);
         }
     }
 
     public boolean isFilterListAvailable() {
         synchronized (lock) {
             return BraveCookieConsentNoticesJni.get().isFilterListAvailable(
+                    mNativeBraveCookieConsentNotices);
+        }
+    }
+
+    public boolean isFilterListEnabled() {
+        synchronized (lock) {
+            return BraveCookieConsentNoticesJni.get().isFilterListEnabled(
                     mNativeBraveCookieConsentNotices);
         }
     }
@@ -80,8 +88,9 @@ public class BraveCookieConsentNotices {
     @NativeMethods
     interface Natives {
         void init(BraveCookieConsentNotices self);
-        void enableFilter(long nativeBraveCookieConsentNotices);
+        void enableFilter(long nativeBraveCookieConsentNotices, boolean shouldEnableFilter);
         boolean isFilterListAvailable(long nativeBraveCookieConsentNotices);
+        boolean isFilterListEnabled(long nativeBraveCookieConsentNotices);
         boolean isAdblockCookieListOptInEnabled(long nativeBraveCookieConsentNotices);
         void destroy(long nativeBraveCookieConsentNotices);
     }

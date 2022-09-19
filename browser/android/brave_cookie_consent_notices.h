@@ -19,9 +19,11 @@ class BraveCookieConsentNotices {
                             const base::android::JavaRef<jobject>& obj);
   ~BraveCookieConsentNotices();
 
-  void EnableFilter(JNIEnv* env);
+  void EnableFilter(JNIEnv* env, jboolean shouldEnableFilter);
 
   bool IsFilterListAvailable(JNIEnv* env);
+
+  bool IsFilterListEnabled(JNIEnv* env);
 
   bool IsAdblockCookieListOptInEnabled(JNIEnv* env);
 

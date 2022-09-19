@@ -590,7 +590,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     private void maybeShowCookieConsentTooltip() {
         if (BraveCookieConsentNotices.getInstance().isFilterListAvailable()
-                && BraveCookieConsentNotices.getInstance().isAdblockCookieListOptInEnabled()) {
+                && BraveCookieConsentNotices.getInstance().isAdblockCookieListOptInEnabled()
+                && UserPrefs.get(Profile.getLastUsedRegularProfile())
+                           .getBoolean(BravePref.AD_BLOCK_COOKIE_LIST_OPT_IN_SHOWN)) {
             showCookieConsentTooltip();
         }
     }
@@ -622,7 +624,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         btnAction.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BraveCookieConsentNotices.getInstance().enableFilter();
+                BraveCookieConsentNotices.getInstance().enableFilter(true);
                 mCookieConsentTooltip.dismiss();
             }
         }));
@@ -637,6 +639,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
         if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()) {
             mCookieConsentTooltip.show();
+            UserPrefs.get(Profile.getLastUsedRegularProfile())
+                    .setBoolean(BravePref.AD_BLOCK_COOKIE_LIST_OPT_IN_SHOWN, true);
         }
     }
 

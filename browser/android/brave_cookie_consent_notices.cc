@@ -35,16 +35,23 @@ void BraveCookieConsentNotices::Destroy(JNIEnv* env) {
   delete this;
 }
 
-void BraveCookieConsentNotices::EnableFilter(JNIEnv* env) {
+void BraveCookieConsentNotices::EnableFilter(JNIEnv* env,
+                                             jboolean shouldEnableFilter) {
   g_brave_browser_process->ad_block_service()
       ->regional_service_manager()
-      ->EnableFilterList(brave_shields::kCookieListUuid, true);
+      ->EnableFilterList(brave_shields::kCookieListUuid, shouldEnableFilter);
 }
 
 bool BraveCookieConsentNotices::IsFilterListAvailable(JNIEnv* env) {
   return g_brave_browser_process->ad_block_service()
       ->regional_service_manager()
       ->IsFilterListAvailable(brave_shields::kCookieListUuid);
+}
+
+bool BraveCookieConsentNotices::IsFilterListEnabled(JNIEnv* env) {
+  return g_brave_browser_process->ad_block_service()
+      ->regional_service_manager()
+      ->IsFilterListEnabled(brave_shields::kCookieListUuid);
 }
 
 bool BraveCookieConsentNotices::IsAdblockCookieListOptInEnabled(JNIEnv* env) {
