@@ -20,8 +20,4 @@ interface BraveShields {
   // Tell the associated RenderFrame(s) whether "reduce language
   // identifiability" is enabled.
   SetReduceLanguageEnabled(bool enabled);
-
-  // Tell the associated RenderFrame(s) to allow cosmetic filtering.
-  // For now, only used by background web contents.
-  AllowCosmeticFiltering();
 };

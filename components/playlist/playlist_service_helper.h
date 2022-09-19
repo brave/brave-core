@@ -10,11 +10,17 @@
 
 #include "base/values.h"
 
+namespace content {
+class WebContents;
+}  // namespace content
+
 namespace playlist {
 
 struct PlaylistItemInfo;
 
 base::Value::Dict GetValueFromPlaylistItemInfo(const PlaylistItemInfo& info);
+void MarkAsBackgroundWebContents(content::WebContents* web_contents);
+bool IsBackgroundWebContents(content::WebContents* web_contents);
 
 }  // namespace playlist
 
