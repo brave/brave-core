@@ -1454,10 +1454,8 @@ TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetEthContractAddress) {
     user_assets_pref->Set("goerli", std::move(user_assets_list));
   }
 
-  const base::Value* pref =
-      GetPrefs()->GetDictionary(kBraveWalletUserAssetsDeprecated);
-  ASSERT_TRUE(pref);
-  const auto* user_assets_list = pref->GetDict().FindList("goerli");
+  const auto& pref = GetPrefs()->GetDict(kBraveWalletUserAssetsDeprecated);
+  const auto* user_assets_list = pref.FindList("goerli");
   ASSERT_TRUE(user_assets_list);
   ASSERT_EQ(user_assets_list->size(), 1u);
   EXPECT_EQ(*(*user_assets_list)[0].GetDict().FindString("contract_address"),
@@ -1519,11 +1517,9 @@ TEST_F(BraveWalletServiceUnitTest, MigrateMultichainUserAssets) {
   ASSERT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletUserAssetsDeprecated));
   BraveWalletService::MigrateMultichainUserAssets(GetPrefs());
 
-  const auto* assets =
-      GetPrefs()->GetDictionary(kBraveWalletUserAssets)->GetIfDict();
-  ASSERT_TRUE(assets);
+  const auto& assets = GetPrefs()->GetDict(kBraveWalletUserAssets);
   const auto* ethereum_mainnet_list =
-      assets->FindListByDottedPath("ethereum.mainnet");
+      assets.FindListByDottedPath("ethereum.mainnet");
   ASSERT_TRUE(ethereum_mainnet_list);
   ASSERT_EQ(ethereum_mainnet_list->size(), 2u);
   EXPECT_FALSE(
@@ -1534,18 +1530,18 @@ TEST_F(BraveWalletServiceUnitTest, MigrateMultichainUserAssets) {
   EXPECT_EQ(*(*ethereum_mainnet_list)[1].GetDict().FindString("address"),
             "0x0D8775F648430679A709E98d2b0Cb6250d2887EF");
   const auto* ethereum_rinkbey_list =
-      assets->FindListByDottedPath("ethereum.rinkbey");
+      assets.FindListByDottedPath("ethereum.rinkbey");
   ASSERT_TRUE(ethereum_rinkbey_list);
   ASSERT_EQ(ethereum_rinkbey_list->size(), 1u);
   EXPECT_FALSE(
       (*ethereum_rinkbey_list)[0].GetDict().FindString("contract_address"));
   EXPECT_EQ(*(*ethereum_rinkbey_list)[0].GetDict().FindString("address"), "");
 
-  const auto* solana_dict = assets->FindDict("solana");
+  const auto* solana_dict = assets.FindDict("solana");
   ASSERT_TRUE(solana_dict);
   EXPECT_EQ(*solana_dict, BraveWalletService::GetDefaultSolanaAssets());
 
-  const auto* filecoin_dict = assets->FindDict("filecoin");
+  const auto* filecoin_dict = assets.FindDict("filecoin");
   ASSERT_TRUE(filecoin_dict);
   EXPECT_EQ(*filecoin_dict, BraveWalletService::GetDefaultFilecoinAssets());
 

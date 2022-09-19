@@ -332,12 +332,10 @@ bool KeyringService::HasPrefForKeyring(const PrefService& prefs,
 std::vector<std::string> KeyringService::GetAvailableKeyringsFromPrefs(
     PrefService* prefs) {
   DCHECK(prefs);
-  const base::Value* keyrings_pref = prefs->GetDictionary(kBraveWalletKeyrings);
-  if (!keyrings_pref)
-    return {};
+  const auto& keyrings_pref = prefs->GetDict(kBraveWalletKeyrings);
   std::vector<std::string> keyrings;
-  for (const auto it : keyrings_pref->DictItems()) {
-    keyrings.push_back(it.first);
+  for (const auto&& [key, value] : keyrings_pref) {
+    keyrings.push_back(key);
   }
   return keyrings;
 }

@@ -387,9 +387,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
     if (chain_id == mojom::kLocalhostChainId)
       return prefs()->GetBoolean(kSupportEip1559OnLocalhostChain);
     const base::Value* custom_networks =
-        prefs()
-            ->GetDictionary(kBraveWalletCustomNetworks)
-            ->FindKey(kEthereumPrefKey);
+        prefs()->GetDict(kBraveWalletCustomNetworks).Find(kEthereumPrefKey);
     if (!custom_networks)
       return false;
 
@@ -1389,9 +1387,8 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApproved) {
   ASSERT_EQ(GetAllEthCustomChains(prefs()).size(), 1u);
   EXPECT_EQ(GetAllEthCustomChains(prefs())[0], chain.Clone());
 
-  const base::Value* assets_pref =
-      prefs()->GetDictionary(kBraveWalletUserAssets);
-  const base::Value* list = assets_pref->FindPath("ethereum.0x111");
+  const auto& assets_pref = prefs()->GetDict(kBraveWalletUserAssets);
+  const base::Value* list = assets_pref.FindByDottedPath("ethereum.0x111");
   ASSERT_TRUE(list->is_list());
   const base::Value::List& asset_list = list->GetList();
   ASSERT_EQ(asset_list.size(), 1u);
@@ -1454,9 +1451,8 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApprovedForOrigin) {
   ASSERT_EQ(GetAllEthCustomChains(prefs()).size(), 1u);
   EXPECT_EQ(GetAllEthCustomChains(prefs())[0], chain.Clone());
 
-  const base::Value* assets_pref =
-      prefs()->GetDictionary(kBraveWalletUserAssets);
-  const base::Value* list = assets_pref->FindPath("ethereum.0x111");
+  const auto& assets_pref = prefs()->GetDict(kBraveWalletUserAssets);
+  const base::Value* list = assets_pref.FindByDottedPath("ethereum.0x111");
   ASSERT_TRUE(list->is_list());
   const base::Value::List& asset_list = list->GetList();
   ASSERT_EQ(asset_list.size(), 1u);
@@ -3727,22 +3723,19 @@ TEST_F(JsonRpcServiceUnitTest, MigrateDeprecatedEthereumTestnets) {
     DictionaryPrefUpdate update(prefs(), kBraveWalletSelectedNetworks);
     auto& selected_networks_pref = update.Get()->GetDict();
     selected_networks_pref.Set(kEthereumPrefKey, deprecated_chain_id);
-    const base::Value* selected_networks =
-        prefs()->GetDictionary(kBraveWalletSelectedNetworks);
-    ASSERT_TRUE(selected_networks);
+    const auto& selected_networks =
+        prefs()->GetDict(kBraveWalletSelectedNetworks);
     const std::string* selected_eth_network =
-        selected_networks->FindStringKey(kEthereumPrefKey);
+        selected_networks.FindString(kEthereumPrefKey);
     ASSERT_TRUE(selected_eth_network);
     EXPECT_EQ(*selected_eth_network, deprecated_chain_id);
 
     // Run deprecation migration and validate network is set to mainnet and
     // migrated pref flag is set to true
     JsonRpcService::MigrateDeprecatedEthereumTestnets(prefs());
-    const base::Value* new_selected_networks =
-        prefs()->GetDictionary(kBraveWalletSelectedNetworks);
-    ASSERT_TRUE(new_selected_networks);
-    selected_eth_network =
-        new_selected_networks->FindStringKey(kEthereumPrefKey);
+    const auto& new_selected_networks =
+        prefs()->GetDict(kBraveWalletSelectedNetworks);
+    selected_eth_network = new_selected_networks.FindString(kEthereumPrefKey);
     EXPECT_EQ(*selected_eth_network, mojom::kMainnetChainId);
     EXPECT_TRUE(
         prefs()->GetBoolean(kBraveWalletDeprecateEthereumTestNetworksMigrated));
@@ -3759,21 +3752,19 @@ TEST_F(JsonRpcServiceUnitTest, MigrateDeprecatedEthereumTestnets) {
   DictionaryPrefUpdate update(prefs(), kBraveWalletSelectedNetworks);
   auto& selected_networks_pref = update.Get()->GetDict();
   selected_networks_pref.Set(kEthereumPrefKey, mojom::kSepoliaChainId);
-  const base::Value* selected_networks =
-      prefs()->GetDictionary(kBraveWalletSelectedNetworks);
-  ASSERT_TRUE(selected_networks);
+  const auto& selected_networks =
+      prefs()->GetDict(kBraveWalletSelectedNetworks);
   const std::string* selected_eth_network =
-      selected_networks->FindStringKey(kEthereumPrefKey);
+      selected_networks.FindString(kEthereumPrefKey);
   ASSERT_TRUE(selected_eth_network);
   EXPECT_EQ(*selected_eth_network, mojom::kSepoliaChainId);
 
   // Run migration and validate network is unchanged and migrated
   // pref flag is set to true
   JsonRpcService::MigrateDeprecatedEthereumTestnets(prefs());
-  const base::Value* new_selected_networks =
-      prefs()->GetDictionary(kBraveWalletSelectedNetworks);
-  ASSERT_TRUE(new_selected_networks);
-  selected_eth_network = new_selected_networks->FindStringKey(kEthereumPrefKey);
+  const auto& new_selected_networks =
+      prefs()->GetDict(kBraveWalletSelectedNetworks);
+  selected_eth_network = new_selected_networks.FindString(kEthereumPrefKey);
   EXPECT_EQ(*selected_eth_network, mojom::kSepoliaChainId);
   EXPECT_TRUE(
       prefs()->GetBoolean(kBraveWalletDeprecateEthereumTestNetworksMigrated));
@@ -3827,28 +3818,26 @@ TEST_F(JsonRpcServiceUnitTest, MigrateMultichainNetworks) {
 
   JsonRpcService::MigrateMultichainNetworks(prefs());
 
-  const base::Value* new_custom_networks =
-      prefs()->GetDictionary(kBraveWalletCustomNetworks);
-  ASSERT_TRUE(new_custom_networks);
+  const auto& new_custom_networks =
+      prefs()->GetDict(kBraveWalletCustomNetworks);
   const base::Value* eth_custom_networks =
-      new_custom_networks->FindKey(kEthereumPrefKey);
+      new_custom_networks.Find(kEthereumPrefKey);
   ASSERT_TRUE(eth_custom_networks);
   EXPECT_EQ(*eth_custom_networks, *old_custom_networks);
 
-  const base::Value* selected_networks =
-      prefs()->GetDictionary(kBraveWalletSelectedNetworks);
-  ASSERT_TRUE(selected_networks);
+  const auto& selected_networks =
+      prefs()->GetDict(kBraveWalletSelectedNetworks);
   const std::string* eth_selected_networks =
-      selected_networks->FindStringKey(kEthereumPrefKey);
+      selected_networks.FindString(kEthereumPrefKey);
   ASSERT_TRUE(eth_selected_networks);
   EXPECT_EQ(*eth_selected_networks, "0x3");
   const std::string* sol_selected_networks =
-      selected_networks->FindStringKey(kSolanaPrefKey);
+      selected_networks.FindString(kSolanaPrefKey);
   ASSERT_TRUE(sol_selected_networks);
   EXPECT_EQ(*sol_selected_networks, mojom::kSolanaMainnet);
 
   const std::string* fil_selected_networks =
-      selected_networks->FindStringKey(kFilecoinPrefKey);
+      selected_networks.FindString(kFilecoinPrefKey);
   ASSERT_TRUE(fil_selected_networks);
   EXPECT_EQ(*fil_selected_networks, mojom::kFilecoinMainnet);
 

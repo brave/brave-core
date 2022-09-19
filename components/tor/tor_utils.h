@@ -43,6 +43,7 @@ struct BridgesConfig {
 
   const std::vector<std::string>& GetBuiltinBridges() const;
 
+  static absl::optional<BridgesConfig> FromDict(const base::Value::Dict& dict);
   static absl::optional<BridgesConfig> FromValue(const base::Value* v);
   base::Value::Dict ToDict() const;
   base::Value ToValue() const;

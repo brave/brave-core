@@ -153,7 +153,5 @@ std::vector<std::string> NTPBackgroundPrefs::GetCustomImageList() const {
 }
 
 const base::Value::Dict* NTPBackgroundPrefs::GetPrefValue() const {
-  const auto* value = service_->GetDictionary(kPrefName);
-  DCHECK(value && value->is_dict());
-  return value->GetIfDict();
+  return &service_->GetDict(kPrefName);
 }

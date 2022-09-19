@@ -86,7 +86,7 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
   // Start all regional services associated with enabled filter lists
   base::AutoLock lock(regional_services_lock_);
   const auto& regional_filters_dict =
-      local_state_->GetDictionary(prefs::kAdBlockRegionalFilters)->GetDict();
+      local_state_->GetDict(prefs::kAdBlockRegionalFilters);
 
   auto regional_filters_dict_with_cookielist = regional_filters_dict.Clone();
   if (base::FeatureList::IsEnabled(kBraveAdblockCookieListDefault) &&
@@ -234,7 +234,7 @@ bool AdBlockRegionalServiceManager::IsFilterListEnabled(
   }
 
   const auto& regional_filters_dict =
-      local_state_->GetDictionary(prefs::kAdBlockRegionalFilters)->GetDict();
+      local_state_->GetDict(prefs::kAdBlockRegionalFilters);
 
   if (const auto* regional_filter_dict = regional_filters_dict.FindDict(uuid)) {
     return regional_filter_dict->FindBool("enabled").value_or(false);
