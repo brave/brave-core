@@ -7,7 +7,7 @@ import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bun
 import {loadTimeData} from "../i18n_setup.js"
 import '../settings_shared.css.js';
 import '../settings_vars.css.js';
-import { I18nBehavior } from 'chrome://resources/js/i18n_behavior.m.js'
+import { I18nBehavior } from 'chrome://resources/cr_elements/i18n_behavior.js'
 
 /**
  * 'settings-brave-appearance-toolbar' is the settings page area containing

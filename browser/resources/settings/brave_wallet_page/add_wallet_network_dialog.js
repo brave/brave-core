@@ -8,7 +8,7 @@ import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js';
 import 'chrome://resources/cr_elements/cr_input/cr_input.js';
 import 'chrome://resources/cr_elements/cr_searchable_drop_down/cr_searchable_drop_down.js';
 import { Polymer, html } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import { I18nBehavior } from 'chrome://resources/js/i18n_behavior.m.js';
+import { I18nBehavior } from 'chrome://resources/cr_elements/i18n_behavior.js';
 import { BraveWalletBrowserProxyImpl } from './brave_wallet_browser_proxy.m.js';
 
 Polymer({

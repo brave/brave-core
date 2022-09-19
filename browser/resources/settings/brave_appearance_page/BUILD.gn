@@ -32,9 +32,9 @@ js_library("brave_appearance_browser_proxy") {
 js_library("brave_theme") {
   deps = [
     ":brave_appearance_browser_proxy",
+    "//ui/webui/resources/cr_elements:web_ui_listener_behavior",
     "//ui/webui/resources/js:cr.m",
     "//ui/webui/resources/js:load_time_data.m",
-    "//ui/webui/resources/js:web_ui_listener_behavior.m",
   ]
   externs_list = [ "$externs_path/settings_private.js" ]
   extra_deps = [ ":templatize" ]
@@ -42,8 +42,8 @@ js_library("brave_theme") {
 
 js_library("super_referral") {
   deps = [
+    "//ui/webui/resources/cr_elements:i18n_behavior",
     "//ui/webui/resources/js:cr.m",
-    "//ui/webui/resources/js:i18n_behavior.m",
     "//ui/webui/resources/js:load_time_data.m",
   ]
   externs_list = [ "$externs_path/settings_private.js" ]

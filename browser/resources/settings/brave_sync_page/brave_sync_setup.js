@@ -11,7 +11,7 @@
 import './brave_sync_code_dialog.js';
 
 import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js';
+import {I18nBehavior} from 'chrome://resources/cr_elements/i18n_behavior.js';
 
 import {BraveSyncBrowserProxy} from './brave_sync_browser_proxy.js';
 
