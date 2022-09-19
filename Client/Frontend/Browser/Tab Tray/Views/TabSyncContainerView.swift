@@ -18,23 +18,15 @@ extension TabTrayController {
       static let sectionTopPadding = 5.0
     }
     
-    // MARK: SyncActionType
-    
-    enum SyncActionType {
-      case noSyncChain, openTabsDisabled
-    }
-
     private(set) var tableView = UITableView(frame: .zero, style: .insetGrouped)
-    
-    var actionHandler: ((SyncActionType) -> Void)?
+
+    var actionHandler: ((SyncStatusState) -> Void)?
     
     private var noSyncTabsOverlayView = EmptyStateOverlayView()
     
     override init(frame: CGRect) {
       super.init(frame: frame)
       
-      noSyncTabsOverlayView = createNewPanelStateView()
-
       backgroundColor = .braveBackground
       
       addSubview(tableView)
@@ -79,11 +71,23 @@ extension TabTrayController {
     @available(*, unavailable)
     required init(coder: NSCoder) { fatalError() }
     
-    private func createNewPanelStateView() -> EmptyStateOverlayView {
-      if Preferences.Chromium.syncEnabled.value, !Preferences.Chromium.syncOpenTabsEnabled.value {
+    private func createNewEmptyStateView(for state: SyncStatusState) -> EmptyStateOverlayView {
+      switch state {
+      case .noSyncChain:
+        let noSyncChainEmptyStateView = EmptyStateOverlayView(
+          title: Strings.OpenTabs.noSyncSessionPlaceHolderViewTitle,
+          description: Strings.OpenTabs.noSyncChainPlaceHolderViewDescription,
+          icon: UIImage(named: "sync-settings", in: .current, compatibleWith: nil),
+          buttonText: "\(Strings.OpenTabs.syncChainStartButtonTitle) →",
+          action: { [weak self] in
+            self?.actionHandler?(.noSyncChain)
+          })
+        
+        return noSyncChainEmptyStateView
+      case .openTabsDisabled:
         let disabledOpenTabsEmptyStateView = EmptyStateOverlayView(
           title: Strings.OpenTabs.noSyncSessionPlaceHolderViewTitle,
-          description: Strings.OpenTabs.noSyncSessionPlaceHolderViewDescription,
+          description: Strings.OpenTabs.enableOpenTabsPlaceHolderViewDescription,
           icon: UIImage(named: "sync-settings", in: .current, compatibleWith: nil),
           buttonText: Strings.OpenTabs.tabSyncEnableButtonTitle,
           action: { [weak self] in
@@ -92,29 +96,30 @@ extension TabTrayController {
           actionDescription: Strings.OpenTabs.noSyncSessionPlaceHolderViewAdditionalDescription)
         
         return disabledOpenTabsEmptyStateView
+      default:
+        let noSessionsEmptyStateView = EmptyStateOverlayView(
+          title: Strings.OpenTabs.noSyncSessionPlaceHolderViewTitle,
+          description: Strings.OpenTabs.noSyncSessionPlaceHolderViewDescription,
+          icon: UIImage(named: "sync-settings", in: .current, compatibleWith: nil),
+          buttonText: Strings.OpenTabs.showSettingsSyncButtonTitle,
+          action: { [weak self] in
+            self?.actionHandler?(.noSyncedSessions)
+          },
+          actionDescription: Strings.OpenTabs.noSyncSessionPlaceHolderViewAdditionalDescription)
+        
+        return noSessionsEmptyStateView
       }
-      
-      let noSyncChainEmptyStateView = EmptyStateOverlayView(
-        title: Strings.OpenTabs.noSyncSessionPlaceHolderViewTitle,
-        description: Strings.OpenTabs.noSyncChainPlaceHolderViewDescription,
-        icon: UIImage(named: "sync-settings", in: .current, compatibleWith: nil),
-        buttonText: "\(Strings.OpenTabs.syncChainStartButtonTitle) →",
-        action: { [weak self] in
-          self?.actionHandler?(.noSyncChain)
-        })
-      
-      return noSyncChainEmptyStateView
     }
     
     /// Update visibility of view shown when no synced session exists
     /// This view contains information about  how to join sync chain and enable open tabs
     /// - Parameter isHidden: Boolean to set isHidden
-    func updateNoSyncPanelState(isHidden: Bool) {
+    func updateSyncStatusPanel(for state: SyncStatusState) {
       noSyncTabsOverlayView.removeFromSuperview()
       
-      if !isHidden {
+      if state != .activeSessions {
         noSyncTabsOverlayView.removeFromSuperview()
-        noSyncTabsOverlayView = createNewPanelStateView()
+        noSyncTabsOverlayView = createNewEmptyStateView(for: state)
         
         if noSyncTabsOverlayView.superview == nil {
           addSubview(noSyncTabsOverlayView)

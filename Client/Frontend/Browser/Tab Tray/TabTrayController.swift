@@ -32,6 +32,15 @@ class TabTrayController: LoadingViewController {
     case local
     case sync
   }
+  
+  // MARK: SyncStatusState
+  
+  enum SyncStatusState {
+    case noSyncChain
+    case openTabsDisabled
+    case noSyncedSessions
+    case activeSessions
+  }
 
   let tabManager: TabManager
   private let braveCore: BraveCoreMain
@@ -39,6 +48,24 @@ class TabTrayController: LoadingViewController {
   
   weak var delegate: TabTrayDelegate?
   weak var toolbarUrlActionsDelegate: ToolbarUrlActionsDelegate?
+  
+  private var emptyPanelState: SyncStatusState {
+    get {
+      if Preferences.Chromium.syncEnabled.value {
+        if !Preferences.Chromium.syncOpenTabsEnabled.value {
+          return .openTabsDisabled
+        }
+      } else {
+        return .noSyncChain
+      }
+      
+      if sessionList.count > 0 {
+        return .activeSessions
+      }
+      
+      return .noSyncedSessions
+    }
+  }
 
   private(set) lazy var dataSource =
     DataSource(
@@ -412,7 +439,7 @@ class TabTrayController: LoadingViewController {
     
     tabSyncView.do {
       $0.tableView.reloadData()
-      $0.updateNoSyncPanelState(isHidden: sessionList.count > 0)
+      $0.updateSyncStatusPanel(for: emptyPanelState)
     }
     
     updateEmptyPanelState(isHidden: !(isTabTrayBeingSearched && sessionList.isEmpty && !(query?.isEmpty ?? true)))
@@ -531,7 +558,7 @@ class TabTrayController: LoadingViewController {
     applySnapshot()
   }
   
-  private func presentSyncSettings(status: TabSyncContainerView.SyncActionType) {
+  private func presentSyncSettings(status: SyncStatusState) {
     switch status {
       case .noSyncChain:
         openInsideSettingsNavigation(
@@ -539,7 +566,7 @@ class TabTrayController: LoadingViewController {
             syncAPI: braveCore.syncAPI,
             syncProfileServices: braveCore.syncProfileService,
             tabManager: tabManager))
-      case .openTabsDisabled:
+      case .openTabsDisabled, .noSyncedSessions:
         if !DeviceInfo.hasConnectivity() {
           present(SyncAlerts.noConnection, animated: true)
           return
@@ -550,6 +577,8 @@ class TabTrayController: LoadingViewController {
             syncAPI: braveCore.syncAPI,
             syncProfileService: braveCore.syncProfileService,
             tabManager: tabManager))
+      default:
+        return
     }
   }
   

@@ -3098,13 +3098,20 @@ extension Strings {
         bundle: .strings,
         value: "To get started, set up a sync chain and toggle \"Open Tabs\" in Sync Settings.",
         comment: "The description of the view explaining user should join a sync chain.")
+    public static let enableOpenTabsPlaceHolderViewDescription =
+      NSLocalizedString(
+        "opentabs.enableOpenTabsPlaceHolderViewDescription",
+        tableName: "BraveShared",
+        bundle: .strings,
+        value: "Enable tab syncing to see tabs from your other devices.",
+        comment: "The description of the view describing tab syncing should be enabled.")
     public static let noSyncSessionPlaceHolderViewDescription =
       NSLocalizedString(
         "opentabs.noSyncSessionPlaceHolderViewDescription",
         tableName: "BraveShared",
         bundle: .strings,
-        value: "Enable tab syncing to see tabs from your other devices.",
-        comment: "The description of the view describing tab syncing should be enabled.")
+        value: "There are no active sessions to show from your other devices.",
+        comment: "The description of the view describing no other sessions are active in sync.")
     public static let syncChainStartButtonTitle =
       NSLocalizedString(
         "opentabs.startASyncChainButtonTitle",
@@ -3119,6 +3126,13 @@ extension Strings {
         bundle: .strings,
         value: "Enable tab syncing",
         comment: "The button which navigates to screen where Tab Sync functionality toggle can be adjusted")
+    public static let showSettingsSyncButtonTitle =
+      NSLocalizedString(
+        "opentabs.showSettingsSyncButtonTitle",
+        tableName: "BraveShared",
+        bundle: .strings,
+        value: "Show Sync Settings",
+        comment: "The button which navigates to screen where user can view sync settings")
     public static let noSyncSessionPlaceHolderViewAdditionalDescription =
       NSLocalizedString(
         "opentabs.noSyncSessionPlaceHolderViewAdditionalDescription",
