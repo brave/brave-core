@@ -10,7 +10,6 @@ import os
 
 _gn_args = None
 
-
 def override_function(scope, name=None, condition=True):
     """Replaces an existing function in the scope."""
 

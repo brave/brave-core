@@ -19,8 +19,10 @@ def GetProcessOutput(args: List[str], cwd: str = None,
   try:
     logging.debug('Run binary: %s, cwd = %s', ' '.join(args), cwd)
 
-    output = subprocess.check_output(
-        args, stderr=subprocess.STDOUT, cwd=cwd, text=True)
+    output = subprocess.check_output(args,
+                                     stderr=subprocess.STDOUT,
+                                     cwd=cwd,
+                                     text=True)
     logging.debug('Binary output: %s', output)
     return True, output
   except subprocess.CalledProcessError as e:

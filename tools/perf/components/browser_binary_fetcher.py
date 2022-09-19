@@ -25,5 +25,5 @@ def PrepareBinary(out_dir: str, tag: Optional[str], location: Optional[str],
     if os.path.exists(location):
       return location
     raise RuntimeError(f'{location} doesn\'t exist')
-  assert(tag is not None)
+  assert (tag is not None)
   return browser_type.DownloadBrowserBinary(tag, out_dir)

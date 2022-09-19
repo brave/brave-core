@@ -299,7 +299,7 @@ def PrepareBinariesAndDirectories(configurations: List[RunnerConfig],
       description = f'{config.label}'
       if config.tag is not None:
         description += f'[tag_{config.tag}]'
-    assert(description)
+    assert (description)
     out_dir = os.path.join(common_options.working_directory, description)
     binary_path = None
 
