@@ -114,8 +114,8 @@ BraveNewsController::BraveNewsController(
 
   if (base::FeatureList::IsEnabled(
           brave_today::features::kBraveNewsV2Feature)) {
-    auto* channels = prefs_->GetDictionary(prefs::kBraveNewsChannels);
-    if (channels->DictEmpty()) {
+    const auto& channels = prefs_->GetDict(prefs::kBraveNewsChannels);
+    if (channels.empty()) {
       publishers_controller_.GetLocale(base::BindOnce(
           [](ChannelsController* channels_controller,
              const std::string& locale) {

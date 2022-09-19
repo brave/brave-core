@@ -91,9 +91,10 @@ void BravePrefProvider::CopyPluginSettingsForMigration(PrefService* prefs) {
     return;
   }
 
-  auto* plugins =
-      prefs->GetDictionary("profile.content_settings.exceptions.plugins");
-  prefs->Set("brave.migrate.content_settings.exceptions.plugins", *plugins);
+  const auto& plugins =
+      prefs->GetDict("profile.content_settings.exceptions.plugins");
+  prefs->SetDict("brave.migrate.content_settings.exceptions.plugins",
+                 plugins.Clone());
 
   // Upstream won't clean this up for ANDROID, need to do it ourselves.
   prefs->ClearPref("profile.content_settings.exceptions.plugins");
@@ -165,12 +166,10 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
     return;
 
   const int version = prefs_->GetInteger(kBraveShieldsSettingsVersion);
-  auto* shields_cookies = prefs_->GetDictionary(kObsoleteShieldCookies);
-  if (shields_cookies) {
-    if (version < 4) {
-      prefs_->Set("profile.content_settings.exceptions.shieldsCookiesV3",
-                  *shields_cookies);
-    }
+  const auto& shields_cookies = prefs_->GetDict(kObsoleteShieldCookies);
+  if (version < 4) {
+    prefs_->SetDict("profile.content_settings.exceptions.shieldsCookiesV3",
+                    shields_cookies.Clone());
   }
 
   // Fix any wildcard entries that could cause issues like
@@ -248,8 +247,8 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
       base::Time last_modified =
           base::ValueToTime(settings_dict->Find(kLastModifiedPath))
               .value_or(base::Time());
-      for (const auto [key, value] : *resource_dict) {
-        const std::string& resource_identifier(key);
+      for (const auto&& [resource_key, resource_value] : *resource_dict) {
+        const std::string& resource_identifier(resource_key);
         std::string shields_preference_name;
 
         // For "ads" and "cookies" we need to adapt the name to the new one,

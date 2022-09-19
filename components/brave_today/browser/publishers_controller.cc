@@ -151,13 +151,12 @@ void PublishersController::EnsurePublishersIsUpdating() {
         Publishers publisher_list;
         ParseCombinedPublisherList(api_request_result.body(), &publisher_list);
         // Add user enabled statuses
-        const base::Value* publisher_prefs =
-            controller->prefs_->GetDictionary(prefs::kBraveTodaySources);
+        const auto& publisher_prefs =
+            controller->prefs_->GetDict(prefs::kBraveTodaySources);
         std::vector<std::string> missing_publishers_;
-
-        for (auto kv : publisher_prefs->DictItems()) {
-          auto publisher_id = kv.first;
-          auto is_user_enabled = kv.second.GetIfBool();
+        for (const auto&& [key, value] : publisher_prefs) {
+          auto publisher_id = key;
+          auto is_user_enabled = value.GetIfBool();
           if (publisher_list.contains(publisher_id) &&
               is_user_enabled.has_value()) {
             publisher_list[publisher_id]->user_enabled_status =

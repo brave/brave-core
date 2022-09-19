@@ -129,10 +129,8 @@ std::unique_ptr<skus::SkusUrlLoader> SkusContextImpl::CreateFetcher() const {
 
 std::string SkusContextImpl::GetValueFromStore(std::string key) const {
   VLOG(1) << "shim_get: `" << key << "`";
-  const base::Value* state = prefs_->GetDictionary(prefs::kSkusState);
-  DCHECK(state);
-  DCHECK(state->is_dict());
-  const base::Value* value = state->FindKey(key);
+  const auto& state = prefs_->GetDict(prefs::kSkusState);
+  const base::Value* value = state.Find(key);
   if (value) {
     return value->GetString();
   }

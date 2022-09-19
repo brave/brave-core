@@ -193,8 +193,8 @@ void TorProfileServiceImpl::OnPluggableTransportReady(bool success) {
 }
 
 void TorProfileServiceImpl::OnBridgesConfigChanged() {
-  auto config = tor::BridgesConfig::FromValue(
-                    local_state_->GetDictionary(tor::prefs::kBridgesConfig))
+  auto config = tor::BridgesConfig::FromDict(
+                    local_state_->GetDict(tor::prefs::kBridgesConfig))
                     .value_or(tor::BridgesConfig());
   if (!tor_pluggable_transport_updater_)
     return;

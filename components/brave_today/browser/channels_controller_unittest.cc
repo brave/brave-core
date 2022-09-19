@@ -107,8 +107,8 @@ class ChannelsControllerTest : public testing::Test {
   }
 
   bool CombinedSourceExists(const std::string& publisher_id) {
-    auto* value = profile_.GetPrefs()->GetDictionary(prefs::kBraveTodaySources);
-    return value->FindBoolKey(publisher_id).has_value();
+    const auto& value = profile_.GetPrefs()->GetDict(prefs::kBraveTodaySources);
+    return value.FindBool(publisher_id).has_value();
   }
 
  protected:

@@ -177,10 +177,11 @@ class ShieldsCookieSetting : public ShieldsSetting {
         prefs_(prefs) {}
 
   void RollbackShieldsCookiesVersion() {
-    auto* shieldsCookies = prefs_->GetDictionary(
-        "profile.content_settings.exceptions.shieldsCookiesV3");
+    base::Value::Dict shieldsCookies =
+        prefs_->GetDict("profile.content_settings.exceptions.shieldsCookiesV3")
+            .Clone();
     prefs_->Set("profile.content_settings.exceptions.shieldsCookies",
-                *shieldsCookies);
+                base::Value(std::move(shieldsCookies)));
     prefs_->ClearPref("profile.content_settings.exceptions.shieldsCookiesV3");
   }
 
@@ -633,11 +634,10 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromUnknownSettings) {
   // New Shields-specific content settings types should have been created due to
   // the migration, but all should be empty since only invalid data was fed.
   for (auto content_type : GetShieldsContentSettingsTypes()) {
-    const base::Value* brave_shields_dict =
-        pref_service->GetDictionary(GetShieldsSettingUserPrefsPath(
+    const auto& brave_shields_dict =
+        pref_service->GetDict(GetShieldsSettingUserPrefsPath(
             GetShieldsContentTypeName(content_type)));
-    EXPECT_NE(brave_shields_dict, nullptr);
-    EXPECT_TRUE(brave_shields_dict->DictEmpty());
+    EXPECT_TRUE(brave_shields_dict.empty());
   }
 
   provider.ShutdownOnUIThread();

@@ -449,11 +449,8 @@ constexpr const char kEnsRegistryContractAddress[] =
 
 const base::Value::List* GetCustomNetworksList(PrefService* prefs,
                                                mojom::CoinType coin) {
-  const base::Value* custom_networks =
-      prefs->GetDictionary(kBraveWalletCustomNetworks);
-  if (!custom_networks)
-    return nullptr;
-  return custom_networks->GetDict().FindList(GetPrefKeyForCoinType(coin));
+  const auto& custom_networks = prefs->GetDict(kBraveWalletCustomNetworks);
+  return custom_networks.FindList(GetPrefKeyForCoinType(coin));
 }
 
 std::vector<mojom::NetworkInfoPtr> MergeKnownAndCustomChains(

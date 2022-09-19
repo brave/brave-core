@@ -475,8 +475,8 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, AddItemsToList) {
 
   // Precondition - Default playlist exists and its items should be empty.
   auto* prefs = GetPrefs();
-  auto* playlists = prefs->GetDictionary(playlist::kPlaylistsPref)->GetIfDict();
-  auto* default_playlist = playlists->FindDict(playlist::kDefaultPlaylistID);
+  auto* default_playlist = prefs->GetDict(playlist::kPlaylistsPref)
+                               .FindDict(playlist::kDefaultPlaylistID);
   ASSERT_TRUE(default_playlist);
   auto* items = default_playlist->FindList(playlist::kPlaylistItemsKey);
   ASSERT_TRUE(items);
@@ -488,8 +488,8 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, AddItemsToList) {
   for (int i = 0; i < 2; i++) {
     EXPECT_TRUE(service->AddItemsToPlaylist(
         playlist::kDefaultPlaylistID, {item_ids.begin(), item_ids.end()}));
-    playlists = prefs->GetDictionary(playlist::kPlaylistsPref)->GetIfDict();
-    default_playlist = playlists->FindDict(playlist::kDefaultPlaylistID);
+    default_playlist = prefs->GetDict(playlist::kPlaylistsPref)
+                           .FindDict(playlist::kDefaultPlaylistID);
     EXPECT_TRUE(default_playlist);
 
     items = default_playlist->FindList(playlist::kPlaylistItemsKey);
@@ -515,8 +515,8 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, RemoveItemFromList) {
   EXPECT_TRUE(service->AddItemsToPlaylist(playlist::kDefaultPlaylistID,
                                           {item_ids.begin(), item_ids.end()}));
   auto* prefs = GetPrefs();
-  auto* playlists = prefs->GetDictionary(playlist::kPlaylistsPref)->GetIfDict();
-  auto* default_playlist = playlists->FindDict(playlist::kDefaultPlaylistID);
+  auto* default_playlist = prefs->GetDict(playlist::kPlaylistsPref)
+                               .FindDict(playlist::kDefaultPlaylistID);
   ASSERT_TRUE(default_playlist);
   auto* items = default_playlist->FindList(playlist::kPlaylistItemsKey);
   ASSERT_EQ(item_ids.size(), items->size());
@@ -529,8 +529,8 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, RemoveItemFromList) {
     item_ids.erase(id);
   }
 
-  playlists = prefs->GetDictionary(playlist::kPlaylistsPref)->GetIfDict();
-  default_playlist = playlists->FindDict(playlist::kDefaultPlaylistID);
+  default_playlist = prefs->GetDict(playlist::kPlaylistsPref)
+                         .FindDict(playlist::kDefaultPlaylistID);
   items = default_playlist->FindList(playlist::kPlaylistItemsKey);
   EXPECT_TRUE(items->empty());
 
@@ -556,8 +556,8 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, MoveItem) {
   EXPECT_TRUE(service->AddItemsToPlaylist(playlist::kDefaultPlaylistID,
                                           {item_ids.begin(), item_ids.end()}));
   auto* prefs = GetPrefs();
-  auto* playlists = prefs->GetDictionary(playlist::kPlaylistsPref)->GetIfDict();
-  auto* playlist_value = playlists->FindDict(playlist::kDefaultPlaylistID);
+  auto* playlist_value = prefs->GetDict(playlist::kPlaylistsPref)
+                             .FindDict(playlist::kDefaultPlaylistID);
   ASSERT_TRUE(playlist_value);
   auto* items = playlist_value->FindList(playlist::kPlaylistItemsKey);
   ASSERT_EQ(item_ids.size(), items->size());
@@ -565,8 +565,8 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, MoveItem) {
   playlist::PlaylistInfo another_playlist;
   service->CreatePlaylist(another_playlist);
 
-  playlists = prefs->GetDictionary(playlist::kPlaylistsPref)->GetIfDict();
-  playlist_value = playlists->FindDict(another_playlist.id);
+  playlist_value =
+      prefs->GetDict(playlist::kPlaylistsPref).FindDict(another_playlist.id);
   ASSERT_TRUE(playlist_value);
   items = playlist_value->FindList(playlist::kPlaylistItemsKey);
   ASSERT_TRUE(items->empty());
@@ -577,15 +577,16 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, MoveItem) {
                                   PlaylistId(another_playlist.id),
                                   PlaylistItemId(id)));
   }
-  playlists = prefs->GetDictionary(playlist::kPlaylistsPref)->GetIfDict();
-  playlist_value = playlists->FindDict(another_playlist.id);
+  playlist_value =
+      prefs->GetDict(playlist::kPlaylistsPref).FindDict(another_playlist.id);
   EXPECT_TRUE(playlist_value);
   items = playlist_value->FindList(playlist::kPlaylistItemsKey);
   base::flat_set<std::string> stored_ids;
   base::ranges::transform(*items, std::inserter(stored_ids, stored_ids.end()),
                           [](const auto& item) { return item.GetString(); });
   EXPECT_EQ(item_ids, stored_ids);
-  playlist_value = playlists->FindDict(playlist::kDefaultPlaylistID);
+  playlist_value = prefs->GetDict(playlist::kPlaylistsPref)
+                       .FindDict(playlist::kDefaultPlaylistID);
   EXPECT_TRUE(playlist_value->FindList(playlist::kPlaylistItemsKey)->empty());
 
   // Try moving items to non-existing playlist. Then it should fail and the
@@ -595,8 +596,8 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, MoveItem) {
                                    PlaylistId("non-existing-id"),
                                    PlaylistItemId(id)));
   }
-  playlists = prefs->GetDictionary(playlist::kPlaylistsPref)->GetIfDict();
-  playlist_value = playlists->FindDict(another_playlist.id);
+  playlist_value =
+      prefs->GetDict(playlist::kPlaylistsPref).FindDict(another_playlist.id);
   EXPECT_TRUE(playlist_value);
   items = playlist_value->FindList(playlist::kPlaylistItemsKey);
   stored_ids.clear();
