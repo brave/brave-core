@@ -32,14 +32,16 @@ import java.util.regex.Pattern;
 public class BraveRewardsCustomTipConfirmationFragment extends Fragment {
     private static final String CONFIRM_BAT_VALUE = "confirm_bat_value";
     private static final String CONFIRM_USD_VALUE = "confirm_usd_value";
+    private static final String IS_MONTHLY_CONTRIBUTION = "is_monthly_contribution";
 
     public static BraveRewardsCustomTipConfirmationFragment newInstance(
-            double batValue, double usdValue) {
+            boolean isMonthlyContribution, double batValue, double usdValue) {
         BraveRewardsCustomTipConfirmationFragment fragment =
                 new BraveRewardsCustomTipConfirmationFragment();
         Bundle args = new Bundle();
         args.putDouble(CONFIRM_BAT_VALUE, batValue);
         args.putDouble(CONFIRM_USD_VALUE, usdValue);
+        args.putBoolean(IS_MONTHLY_CONTRIBUTION, isMonthlyContribution);
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,9 +60,18 @@ public class BraveRewardsCustomTipConfirmationFragment extends Fragment {
     private void updateValues(View view) {
         TextView batValueText = view.findViewById(R.id.batValueText);
         TextView usdValueText = view.findViewById(R.id.usdValueText);
+        TextView aboutToTipText = view.findViewById(R.id.about_to_tip);
         if (getArguments() != null) {
             double batValue = getArguments().getDouble(CONFIRM_BAT_VALUE);
             double usdValue = getArguments().getDouble(CONFIRM_USD_VALUE);
+            Boolean isMonthlyContribution = getArguments().getBoolean(IS_MONTHLY_CONTRIBUTION);
+
+            if (isMonthlyContribution) {
+                aboutToTipText.setText(R.string.your_monthly_support);
+            } else {
+                aboutToTipText.setText(R.string.about_to_tip);
+            }
+
             batValueText.setText(batValue + " BAT");
             usdValueText.setText(usdValue + " USD");
         }

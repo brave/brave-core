@@ -5,35 +5,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    android:paddingTop="8dp"
     >
 
 
     <TextView
-        android:id="@+id/customAmount"
+        android:id="@+id/about_to_tip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/about_to_tip"
         android:textSize="14sp"
+        android:layout_marginTop="20dp"
         android:textColor="#212529"
         android:fontFamily="@font/poppins_regular"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/batValueText" />
 
     <TextView
         android:id="@+id/batValueText"
         android:layout_width="178dp"
         android:layout_height="40dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/bat_value_text_selector"
         android:gravity="center"
         android:fontFamily="@font/poppins_regular"
+        android:textStyle="bold"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/customAmount" />
+        app:layout_constraintTop_toBottomOf="@+id/about_to_tip" />
 
     <ImageView
         android:id="@+id/custom_tip_cancel_background"

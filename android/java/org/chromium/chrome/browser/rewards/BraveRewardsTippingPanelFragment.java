@@ -10,6 +10,7 @@ package org.chromium.chrome.browser.rewards;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -17,6 +18,7 @@ import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,11 +27,13 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -59,6 +63,7 @@ public class BraveRewardsTippingPanelFragment extends Fragment implements BraveR
     private double mBatValue;
     private double mUsdValue;
     private double[] mAmounts;
+    private double[] mTipChoices;
 
     private final int TIP_SENT_REQUEST_CODE = 2;
     private final int FADE_OUT_DURATION = 500;
@@ -93,7 +98,7 @@ public class BraveRewardsTippingPanelFragment extends Fragment implements BraveR
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.brave_rewards_tipping_panel, container, false);
-
+        addRadioButtonListener(view);
         init(view);
         updateTermsOfServicePlaceHolder(view);
         initRadioButtons(view);
@@ -101,6 +106,34 @@ public class BraveRewardsTippingPanelFragment extends Fragment implements BraveR
         sendTipButtonClick();
         clickOtherAmounts(view);
         return view;
+    }
+
+    private void addRadioButtonListener(View view) {
+        RadioGroup radioGroup =
+                (RadioGroup) view.findViewById(R.id.one_time_or_monthly_radio_group);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton oneTimeRadioButton =
+                        (RadioButton) view.findViewById(R.id.one_time_radio_button);
+                RadioButton monthlyRadio =
+                        (RadioButton) view.findViewById(R.id.monthly_radio_button);
+                if (getParentFragmentManager().getBackStackEntryCount() != 0) {
+                    ((BraveRewardsSiteBannerActivity) getActivity()).resetUpdateLayout();
+                }
+                if (checkedId == R.id.monthly_radio_button) {
+                    oneTimeRadioButton.setTypeface(Typeface.DEFAULT, Typeface.NORMAL);
+                    monthlyRadio.setTypeface(Typeface.DEFAULT_BOLD, Typeface.BOLD);
+                    monthlyContribution = true;
+                    monthlyLayoutText();
+                } else {
+                    monthlyRadio.setTypeface(Typeface.DEFAULT, Typeface.NORMAL);
+                    oneTimeRadioButton.setTypeface(Typeface.DEFAULT_BOLD, Typeface.BOLD);
+                    monthlyContribution = false;
+                    resetSendLayoutText();
+                }
+            }
+        });
     }
 
     @Override
@@ -135,7 +168,7 @@ public class BraveRewardsTippingPanelFragment extends Fragment implements BraveR
             }
         });
     }
-    double[] mTipChoices;
+
     private void initRadioButtons(View view) {
         mTipChoices = mBraveRewardsNativeWorker.GetTipChoices();
         double rate = mBraveRewardsNativeWorker.GetWalletRate();
@@ -250,7 +283,8 @@ public class BraveRewardsTippingPanelFragment extends Fragment implements BraveR
         FragmentManager fragmentManager = getParentFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.conversionFragmentContainer,
-                        BraveRewardsCustomTipConfirmationFragment.newInstance(mBatValue, mUsdValue),
+                        BraveRewardsCustomTipConfirmationFragment.newInstance(
+                                monthlyContribution, mBatValue, mUsdValue),
                         "custom_tip_confirmation_fragment")
                 .addToBackStack(null)
                 .commit();
@@ -365,8 +399,13 @@ public class BraveRewardsTippingPanelFragment extends Fragment implements BraveR
         int spanLength = spanString.length();
         int index = text.indexOf(spanString);
 
+        StyleSpan boldSpan = new StyleSpan(Typeface.BOLD);
+        tosTextSS.setSpan(boldSpan, index, index + spanLength, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tosTextSS.setSpan(
                 clickableSpan, index, index + spanLength, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        Typeface typeface = ResourcesCompat.getFont(getActivity(), R.font.poppins_medium);
+        tosTextSS.setSpan(new StyleSpan(typeface.getStyle()), index, index + spanLength,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tosTextSS.setSpan(new ForegroundColorSpan(
                                   getResources().getColor(R.color.brave_rewards_modal_theme_color)),
                 index, index + spanLength, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -469,6 +508,17 @@ public class BraveRewardsTippingPanelFragment extends Fragment implements BraveR
         imageView.setVisibility(View.GONE);
     }
 
+    public void monthlyLayoutText() {
+        ImageView imageView = sendDonationLayout.findViewById(R.id.send_tip_image);
+        sendDonationLayout.setBackgroundColor(
+                ContextCompat.getColor(getContext(), R.color.rewards_send_tip_background));
+        TextView sendDonationText = sendDonationLayout.findViewById(R.id.send_donation_text);
+        sendDonationText.setText(getResources().getString(R.string.set_monthly_tip));
+        sendDonationText.setTextColor(ContextCompat.getColor(getContext(), android.R.color.white));
+        imageView.setImageResource(R.drawable.ic_calendar_icon);
+        imageView.setVisibility(View.VISIBLE);
+    }
+
     public void resetSendLayoutText() {
         ImageView imageView = sendDonationLayout.findViewById(R.id.send_tip_image);
         sendDonationLayout.setBackgroundColor(
@@ -477,8 +527,6 @@ public class BraveRewardsTippingPanelFragment extends Fragment implements BraveR
         sendDonationText.setText(getResources().getString(R.string.send_tip));
         sendDonationText.setTextColor(ContextCompat.getColor(getContext(), android.R.color.white));
         imageView.setImageResource(R.drawable.ic_send_tip);
-        imageView.setColorFilter(
-                ContextCompat.getColor(getContext(), R.color.rewards_send_tip_icon_tint));
         imageView.setVisibility(View.VISIBLE);
     }
 }

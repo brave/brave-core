@@ -53,12 +53,15 @@ public class BraveRewardsSiteBannerActivity
     public static final int TIP_SUCCESS = 2;
     public static final int TIP_PENDING = 3;
 
+    private View progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         //inflate
         super.onCreate(savedInstanceState);
         setContentView(R.layout.brave_rewards_site_banner);
+        progressBar = findViewById(R.id.progressBar);
         mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
         mBraveRewardsNativeWorker.AddObserver(this);
 
@@ -84,7 +87,6 @@ public class BraveRewardsSiteBannerActivity
                 } catch (JSONException e) {
                 }
 
-                View progressBar = findViewById(R.id.progressBar);
                 progressBar.setVisibility(View.GONE);
 
                 BraveRewardsCreatorPanelFragment creatorPanelFragment =
@@ -108,16 +110,27 @@ public class BraveRewardsSiteBannerActivity
     }
 
     /*----------TIP CHECK start >> ---------------*/
+    /**
+     Once you call donate it will call one of in 3 second
+        1. OnOneTimeTip with LEDGER_ERROR -> This is error
+        2. onReconcileComplete with LEDGER_OK -> This is success
+        3. OnPendingContributionSaved with LEDGER_OK -> This is pending
+        4. if non of the method called with in 3 second -> This is success
+     *
+   */
 
     @Override
     public void onTipConfirmation(double amount, boolean isMonthly) {
         mAmount = amount;
         mIsMonthly = isMonthly;
         mTipUpdated = false;
+        progressBar.setVisibility(View.VISIBLE);
         enableTimeout(); // wait for 3 seconds
     }
 
     private void tipConfirmation(int status, double amount, boolean isMonthly) {
+        progressBar.setVisibility(View.GONE);
+
         String publisherName = "";
         if (bannerInfo != null) publisherName = bannerInfo.getName();
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -206,7 +219,6 @@ public class BraveRewardsSiteBannerActivity
             super.onBackPressed();
         } else {
             resetUpdateLayout();
-            getSupportFragmentManager().popBackStack();
         }
     }
 
@@ -218,6 +230,7 @@ public class BraveRewardsSiteBannerActivity
         if (tippingPanelFragment != null) {
             tippingPanelFragment.resetSendLayoutText();
         }
+        getSupportFragmentManager().popBackStack();
     }
 
     @Override

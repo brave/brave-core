@@ -5,17 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-     <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:indeterminateDrawable="@drawable/progress_indeterminate"
-        android:indeterminateTint="@android:color/holo_blue_dark"
-        android:indeterminateTintMode="src_in"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Header creator panel-->
     <androidx.fragment.app.FragmentContainerView
@@ -27,6 +16,16 @@
         app:layout_constraintTop_toTopOf="parent"
         
         />
+    <!-- Shadow -->
+    <View
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@drawable/brave_rewards_overlay_shadow"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toTopOf="@id/tippingPanelFragment"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
     <!-- Footer tipping panel-->
     <androidx.fragment.app.FragmentContainerView
@@ -36,5 +35,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
        
         />
+
+     <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:indeterminateDrawable="@drawable/progress_indeterminate_orange"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
