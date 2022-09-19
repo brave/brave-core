@@ -17,7 +17,7 @@ import {
   Tokens
 } from '../../ui/components'
 
-import { Grid, Column, Select, ControlWrapper } from 'brave-ui/components'
+import { Grid, Column, ControlWrapper } from 'brave-ui/components'
 import { AlertCircleIcon } from 'brave-ui/components/icons'
 
 import { LayoutKind } from '../lib/layout_context'
@@ -65,7 +65,7 @@ class AdsBox extends React.Component<Props, State> {
       <DisabledContent
         type={'ads'}
       >
-        {getLocale('adsDisabledTextOne')} <br />
+        {getLocale('adsDisabledTextOne')}&nbsp;
         {getLocale('adsDisabledTextTwo')}
       </DisabledContent>
     )
@@ -99,16 +99,12 @@ class AdsBox extends React.Component<Props, State> {
     )
   }
 
-  onAdsSettingChange = (key: string, value: boolean) => {
+  onAdsSettingChange = (key: string, value: string) => {
     const { adsEnabled } = this.props.rewardsData.adsData
-
-    let newValue: any = value
-
     if (key === 'adsEnabled') {
-      newValue = !adsEnabled
+      value = String(!adsEnabled)
     }
-
-    this.props.actions.onAdsSettingSave(key, newValue)
+    this.props.actions.onAdsSettingSave(key, value)
   }
 
   adsSettings = (enabled?: boolean) => {
@@ -122,42 +118,48 @@ class AdsBox extends React.Component<Props, State> {
       adsSubdivisionTargeting
     } = this.props.rewardsData.adsData
 
+    const selectChangeHandler = (setting: string) => {
+      return (event: React.FormEvent<HTMLSelectElement>) => {
+        this.onAdsSettingChange(setting, event.currentTarget.value)
+      }
+    }
+
     return (
       <Grid columns={1} customStyle={{ margin: '0 auto' }}>
         <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
           <ControlWrapper text={getLocale('adsPerHour')}>
-            <Select
+            <select
               value={adsPerHour.toString()}
-              onChange={this.onAdsSettingChange.bind(this, 'adsPerHour')}
+              onChange={selectChangeHandler('adsPerHour')}
             >
-              {['0', '1', '2', '3', '4', '5', '10'].map((num: string) => {
-                return (
-                  <div key={`num-per-hour-${num}`} data-value={num}>
-                    {getLocale(`adsPerHour${num}`)}
-                  </div>
-                )
-              })}
-            </Select>
+              {
+                [0, 1, 2, 3, 4, 5, 10].map((n) => (
+                  <option key={`num-per-hour-${n}`} value={n}>
+                    {getLocale(`adsPerHour${n}`)}
+                  </option>
+                ))
+              }
+            </select>
           </ControlWrapper>
         </Column>
         { shouldAllowAdsSubdivisionTargeting
           ? <>
             <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
               <ControlWrapper text={getLocale('adsSubdivisionTargetingTitle')}>
-                <Select
-                  value={(adsSubdivisionTargeting || '').toString()}
-                  onChange={this.onAdsSettingChange.bind(this, 'adsSubdivisionTargeting')}
+                <select
+                  value={adsSubdivisionTargeting || ''}
+                  onChange={selectChangeHandler('adsSubdivisionTargeting')}
                 >
                   {
                     getAdsSubdivisions(this.props.rewardsData).map((subdivision) => {
                       return (
-                        <div key={`${subdivision[0]}`} data-value={subdivision[0]}>
-                          {`${subdivision[1]}`}
-                        </div>
+                        <option key={subdivision[0]} value={subdivision[0]}>
+                          {subdivision[1]}
+                        </option>
                       )
                     })
                   }
-                </Select>
+                </select>
               </ControlWrapper>
             </Column>
             <div>

@@ -92,5 +92,15 @@ export const action = styled.div`
     &:active {
       background: var(--brave-palette-blurple400);
     }
+
+    .icon {
+      height: 20px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    &[disabled] {
+      background: var(--brave-palette-blurple500) !important;
+    }
   }
 `

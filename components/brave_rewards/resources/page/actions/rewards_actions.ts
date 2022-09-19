@@ -36,6 +36,10 @@ export const claimPromotion = (promotionId: string) => action(types.CLAIM_PROMOT
   promotionId
 })
 
+export const onPromotionClaimStarted = (promotionId: string) => action(types.ON_PROMOTION_CLAIM_STARTED, {
+  promotionId
+})
+
 export const onPromotionFinish = (properties: Rewards.PromotionFinish) => action(types.ON_PROMOTION_FINISH, {
   properties
 })

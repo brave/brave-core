@@ -82,7 +82,7 @@ export const infoListItem = styled.div`
   color: var(--brave-palette-neutral900);
   font-weight: 600;
   margin-top: 16px;
-  background: top 4px left no-repeat url("${greenCheckIcon}");
+  background: top 4px left no-repeat url(/${greenCheckIcon});
   padding-left: 23px;
 `
 

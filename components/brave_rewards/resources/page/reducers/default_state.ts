@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 export const defaultState: Rewards.State = {
-  version: 3,
+  version: 4,
   createdTimestamp: null,
   enabledAds: false,
   enabledAdsMigrated: false,
@@ -77,5 +77,5 @@ export const defaultState: Rewards.State = {
   initializing: true,
   paymentId: '',
   recoveryKey: '',
-  showOnboarding: false
+  showOnboarding: null
 }
