@@ -15,10 +15,10 @@ PurchaseIntentSiteInfo::PurchaseIntentSiteInfo(const SegmentList& segments,
     : segments(segments), url_netloc(url_netloc), weight(weight) {}
 
 PurchaseIntentSiteInfo::PurchaseIntentSiteInfo(
-    const PurchaseIntentSiteInfo& info) = default;
+    const PurchaseIntentSiteInfo& other) = default;
 
 PurchaseIntentSiteInfo& PurchaseIntentSiteInfo::operator=(
-    const PurchaseIntentSiteInfo& info) = default;
+    const PurchaseIntentSiteInfo& other) = default;
 
 PurchaseIntentSiteInfo::PurchaseIntentSiteInfo(
     PurchaseIntentSiteInfo&& other) noexcept = default;

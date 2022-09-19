@@ -40,7 +40,7 @@ BlindedToken::BlindedToken(
 
 BlindedToken::BlindedToken(const BlindedToken& other) = default;
 
-BlindedToken& BlindedToken::operator=(const BlindedToken& info) = default;
+BlindedToken& BlindedToken::operator=(const BlindedToken& other) = default;
 
 BlindedToken::BlindedToken(BlindedToken&& other) noexcept = default;
 

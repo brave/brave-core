@@ -23,9 +23,9 @@ PipelineInfo::PipelineInfo(const int version,
 
 PipelineInfo::PipelineInfo() = default;
 
-PipelineInfo::PipelineInfo(PipelineInfo&& info) noexcept = default;
+PipelineInfo::PipelineInfo(PipelineInfo&& other) noexcept = default;
 
-PipelineInfo& PipelineInfo::operator=(PipelineInfo&& info) noexcept = default;
+PipelineInfo& PipelineInfo::operator=(PipelineInfo&& other) noexcept = default;
 
 PipelineInfo::~PipelineInfo() = default;
 

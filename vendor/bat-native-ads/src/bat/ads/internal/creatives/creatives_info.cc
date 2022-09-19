@@ -9,9 +9,9 @@ namespace ads {
 
 CreativesInfo::CreativesInfo() = default;
 
-CreativesInfo::CreativesInfo(const CreativesInfo& info) = default;
+CreativesInfo::CreativesInfo(const CreativesInfo& other) = default;
 
-CreativesInfo& CreativesInfo::operator=(const CreativesInfo& info) = default;
+CreativesInfo& CreativesInfo::operator=(const CreativesInfo& other) = default;
 
 CreativesInfo::CreativesInfo(CreativesInfo&& other) noexcept = default;
 

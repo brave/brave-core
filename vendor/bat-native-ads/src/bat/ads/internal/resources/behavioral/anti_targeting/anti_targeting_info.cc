@@ -16,10 +16,10 @@ namespace ads::resource {
 
 AntiTargetingInfo::AntiTargetingInfo() = default;
 
-AntiTargetingInfo::AntiTargetingInfo(const AntiTargetingInfo& info) = default;
+AntiTargetingInfo::AntiTargetingInfo(const AntiTargetingInfo& other) = default;
 
-AntiTargetingInfo& AntiTargetingInfo::operator=(const AntiTargetingInfo& info) =
-    default;
+AntiTargetingInfo& AntiTargetingInfo::operator=(
+    const AntiTargetingInfo& other) = default;
 
 AntiTargetingInfo::AntiTargetingInfo(AntiTargetingInfo&& other) noexcept =
     default;

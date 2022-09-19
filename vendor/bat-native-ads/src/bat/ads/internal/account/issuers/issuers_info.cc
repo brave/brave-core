@@ -9,9 +9,9 @@ namespace ads {
 
 IssuersInfo::IssuersInfo() = default;
 
-IssuersInfo::IssuersInfo(const IssuersInfo& info) = default;
+IssuersInfo::IssuersInfo(const IssuersInfo& other) = default;
 
-IssuersInfo& IssuersInfo::operator=(const IssuersInfo& info) = default;
+IssuersInfo& IssuersInfo::operator=(const IssuersInfo& other) = default;
 
 IssuersInfo::IssuersInfo(IssuersInfo&& other) noexcept = default;
 

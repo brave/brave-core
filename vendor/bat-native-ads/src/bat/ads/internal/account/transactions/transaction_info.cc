@@ -11,9 +11,9 @@ namespace ads {
 
 TransactionInfo::TransactionInfo() = default;
 
-TransactionInfo::TransactionInfo(const TransactionInfo& info) = default;
+TransactionInfo::TransactionInfo(const TransactionInfo& other) = default;
 
-TransactionInfo& TransactionInfo::operator=(const TransactionInfo& info) =
+TransactionInfo& TransactionInfo::operator=(const TransactionInfo& other) =
     default;
 
 TransactionInfo::TransactionInfo(TransactionInfo&& other) noexcept = default;

@@ -10,10 +10,10 @@ namespace ads {
 CatalogNewTabPageAdPayloadInfo::CatalogNewTabPageAdPayloadInfo() = default;
 
 CatalogNewTabPageAdPayloadInfo::CatalogNewTabPageAdPayloadInfo(
-    const CatalogNewTabPageAdPayloadInfo& info) = default;
+    const CatalogNewTabPageAdPayloadInfo& other) = default;
 
 CatalogNewTabPageAdPayloadInfo& CatalogNewTabPageAdPayloadInfo::operator=(
-    const CatalogNewTabPageAdPayloadInfo& info) = default;
+    const CatalogNewTabPageAdPayloadInfo& other) = default;
 
 CatalogNewTabPageAdPayloadInfo::CatalogNewTabPageAdPayloadInfo(
     CatalogNewTabPageAdPayloadInfo&& other) noexcept = default;

@@ -40,9 +40,10 @@ UnblindedToken::UnblindedToken(
     const challenge_bypass_ristretto::UnblindedToken& unblinded_token)
     : unblinded_token_(unblinded_token) {}
 
-UnblindedToken::UnblindedToken(const UnblindedToken& info) = default;
+UnblindedToken::UnblindedToken(const UnblindedToken& other) = default;
 
-UnblindedToken& UnblindedToken::operator=(const UnblindedToken& info) = default;
+UnblindedToken& UnblindedToken::operator=(const UnblindedToken& other) =
+    default;
 
 UnblindedToken::UnblindedToken(UnblindedToken&& other) noexcept = default;
 

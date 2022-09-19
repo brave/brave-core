@@ -14,10 +14,10 @@ namespace ads {
 CatalogCreativeSetInfo::CatalogCreativeSetInfo() = default;
 
 CatalogCreativeSetInfo::CatalogCreativeSetInfo(
-    const CatalogCreativeSetInfo& info) = default;
+    const CatalogCreativeSetInfo& other) = default;
 
 CatalogCreativeSetInfo& CatalogCreativeSetInfo::operator=(
-    const CatalogCreativeSetInfo& info) = default;
+    const CatalogCreativeSetInfo& other) = default;
 
 CatalogCreativeSetInfo::CatalogCreativeSetInfo(
     CatalogCreativeSetInfo&& other) noexcept = default;

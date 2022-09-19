@@ -10,10 +10,10 @@ namespace ads::privacy {
 UnblindedPaymentTokenInfo::UnblindedPaymentTokenInfo() = default;
 
 UnblindedPaymentTokenInfo::UnblindedPaymentTokenInfo(
-    const UnblindedPaymentTokenInfo& info) = default;
+    const UnblindedPaymentTokenInfo& other) = default;
 
 UnblindedPaymentTokenInfo& UnblindedPaymentTokenInfo::operator=(
-    const UnblindedPaymentTokenInfo& info) = default;
+    const UnblindedPaymentTokenInfo& other) = default;
 
 UnblindedPaymentTokenInfo::UnblindedPaymentTokenInfo(
     UnblindedPaymentTokenInfo&& other) noexcept = default;

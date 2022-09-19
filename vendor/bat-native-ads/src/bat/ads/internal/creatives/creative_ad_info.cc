@@ -11,9 +11,10 @@ namespace ads {
 
 CreativeAdInfo::CreativeAdInfo() = default;
 
-CreativeAdInfo::CreativeAdInfo(const CreativeAdInfo& info) = default;
+CreativeAdInfo::CreativeAdInfo(const CreativeAdInfo& other) = default;
 
-CreativeAdInfo& CreativeAdInfo::operator=(const CreativeAdInfo& info) = default;
+CreativeAdInfo& CreativeAdInfo::operator=(const CreativeAdInfo& other) =
+    default;
 
 CreativeAdInfo::CreativeAdInfo(CreativeAdInfo&& other) noexcept = default;
 

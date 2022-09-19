@@ -36,9 +36,9 @@ PublicKey::PublicKey(const std::string& public_key_base64)
 PublicKey::PublicKey(const challenge_bypass_ristretto::PublicKey& public_key)
     : public_key_(public_key) {}
 
-PublicKey::PublicKey(const PublicKey& info) = default;
+PublicKey::PublicKey(const PublicKey& other) = default;
 
-PublicKey& PublicKey::operator=(const PublicKey& info) = default;
+PublicKey& PublicKey::operator=(const PublicKey& other) = default;
 
 PublicKey::PublicKey(PublicKey&& other) noexcept = default;
 

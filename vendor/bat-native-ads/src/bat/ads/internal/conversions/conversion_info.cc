@@ -11,9 +11,10 @@ namespace ads {
 
 ConversionInfo::ConversionInfo() = default;
 
-ConversionInfo::ConversionInfo(const ConversionInfo& info) = default;
+ConversionInfo::ConversionInfo(const ConversionInfo& other) = default;
 
-ConversionInfo& ConversionInfo::operator=(const ConversionInfo& info) = default;
+ConversionInfo& ConversionInfo::operator=(const ConversionInfo& other) =
+    default;
 
 ConversionInfo::ConversionInfo(ConversionInfo&& other) noexcept = default;
 

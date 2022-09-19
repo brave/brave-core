@@ -10,10 +10,10 @@ namespace ads::security {
 VerifiableConversionEnvelopeInfo::VerifiableConversionEnvelopeInfo() = default;
 
 VerifiableConversionEnvelopeInfo::VerifiableConversionEnvelopeInfo(
-    const VerifiableConversionEnvelopeInfo& info) = default;
+    const VerifiableConversionEnvelopeInfo& other) = default;
 
 VerifiableConversionEnvelopeInfo& VerifiableConversionEnvelopeInfo::operator=(
-    const VerifiableConversionEnvelopeInfo& info) = default;
+    const VerifiableConversionEnvelopeInfo& other) = default;
 
 VerifiableConversionEnvelopeInfo::VerifiableConversionEnvelopeInfo(
     VerifiableConversionEnvelopeInfo&& other) noexcept = default;

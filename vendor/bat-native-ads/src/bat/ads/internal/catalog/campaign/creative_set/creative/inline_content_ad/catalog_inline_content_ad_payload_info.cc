@@ -11,10 +11,10 @@ CatalogInlineContentAdPayloadInfo::CatalogInlineContentAdPayloadInfo() =
     default;
 
 CatalogInlineContentAdPayloadInfo::CatalogInlineContentAdPayloadInfo(
-    const CatalogInlineContentAdPayloadInfo& info) = default;
+    const CatalogInlineContentAdPayloadInfo& other) = default;
 
 CatalogInlineContentAdPayloadInfo& CatalogInlineContentAdPayloadInfo::operator=(
-    const CatalogInlineContentAdPayloadInfo& info) = default;
+    const CatalogInlineContentAdPayloadInfo& other) = default;
 
 CatalogInlineContentAdPayloadInfo::CatalogInlineContentAdPayloadInfo(
     CatalogInlineContentAdPayloadInfo&& other) noexcept = default;

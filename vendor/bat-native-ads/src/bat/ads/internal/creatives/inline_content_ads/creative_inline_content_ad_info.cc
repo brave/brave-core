@@ -14,10 +14,10 @@ CreativeInlineContentAdInfo::CreativeInlineContentAdInfo(
     : CreativeAdInfo(creative_ad) {}
 
 CreativeInlineContentAdInfo::CreativeInlineContentAdInfo(
-    const CreativeInlineContentAdInfo& info) = default;
+    const CreativeInlineContentAdInfo& other) = default;
 
 CreativeInlineContentAdInfo& CreativeInlineContentAdInfo::operator=(
-    const CreativeInlineContentAdInfo& info) = default;
+    const CreativeInlineContentAdInfo& other) = default;
 
 CreativeInlineContentAdInfo::CreativeInlineContentAdInfo(
     CreativeInlineContentAdInfo&& other) noexcept = default;

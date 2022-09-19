@@ -9,9 +9,9 @@ namespace ads {
 
 TabInfo::TabInfo() = default;
 
-TabInfo::TabInfo(const TabInfo& info) = default;
+TabInfo::TabInfo(const TabInfo& other) = default;
 
-TabInfo& TabInfo::operator=(const TabInfo& info) = default;
+TabInfo& TabInfo::operator=(const TabInfo& other) = default;
 
 TabInfo::TabInfo(TabInfo&& other) noexcept = default;
 

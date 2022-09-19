@@ -11,11 +11,11 @@ namespace ads {
 
 CatalogCampaignInfo::CatalogCampaignInfo() = default;
 
-CatalogCampaignInfo::CatalogCampaignInfo(const CatalogCampaignInfo& info) =
+CatalogCampaignInfo::CatalogCampaignInfo(const CatalogCampaignInfo& other) =
     default;
 
 CatalogCampaignInfo& CatalogCampaignInfo::operator=(
-    const CatalogCampaignInfo& info) = default;
+    const CatalogCampaignInfo& other) = default;
 
 CatalogCampaignInfo::CatalogCampaignInfo(CatalogCampaignInfo&& other) noexcept =
     default;

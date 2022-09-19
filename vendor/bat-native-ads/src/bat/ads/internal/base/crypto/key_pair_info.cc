@@ -9,9 +9,9 @@ namespace ads::security {
 
 KeyPairInfo::KeyPairInfo() = default;
 
-KeyPairInfo::KeyPairInfo(const KeyPairInfo& info) = default;
+KeyPairInfo::KeyPairInfo(const KeyPairInfo& other) = default;
 
-KeyPairInfo& KeyPairInfo::operator=(const KeyPairInfo& info) = default;
+KeyPairInfo& KeyPairInfo::operator=(const KeyPairInfo& other) = default;
 
 KeyPairInfo::KeyPairInfo(KeyPairInfo&& other) noexcept = default;
 

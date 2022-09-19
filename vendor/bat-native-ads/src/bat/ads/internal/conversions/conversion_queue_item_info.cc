@@ -12,10 +12,10 @@ namespace ads {
 ConversionQueueItemInfo::ConversionQueueItemInfo() = default;
 
 ConversionQueueItemInfo::ConversionQueueItemInfo(
-    const ConversionQueueItemInfo& info) = default;
+    const ConversionQueueItemInfo& other) = default;
 
 ConversionQueueItemInfo& ConversionQueueItemInfo::operator=(
-    const ConversionQueueItemInfo& info) = default;
+    const ConversionQueueItemInfo& other) = default;
 
 ConversionQueueItemInfo::ConversionQueueItemInfo(
     ConversionQueueItemInfo&& other) noexcept = default;

@@ -9,9 +9,9 @@ namespace ads {
 
 CatalogTypeInfo::CatalogTypeInfo() = default;
 
-CatalogTypeInfo::CatalogTypeInfo(const CatalogTypeInfo& info) = default;
+CatalogTypeInfo::CatalogTypeInfo(const CatalogTypeInfo& other) = default;
 
-CatalogTypeInfo& CatalogTypeInfo::operator=(const CatalogTypeInfo& info) =
+CatalogTypeInfo& CatalogTypeInfo::operator=(const CatalogTypeInfo& other) =
     default;
 
 CatalogTypeInfo::CatalogTypeInfo(CatalogTypeInfo&& other) noexcept = default;

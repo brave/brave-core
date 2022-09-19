@@ -14,10 +14,10 @@ CreativeNewTabPageAdInfo::CreativeNewTabPageAdInfo(
     : CreativeAdInfo(creative_ad) {}
 
 CreativeNewTabPageAdInfo::CreativeNewTabPageAdInfo(
-    const CreativeNewTabPageAdInfo& info) = default;
+    const CreativeNewTabPageAdInfo& other) = default;
 
 CreativeNewTabPageAdInfo& CreativeNewTabPageAdInfo::operator=(
-    const CreativeNewTabPageAdInfo& info) = default;
+    const CreativeNewTabPageAdInfo& other) = default;
 
 CreativeNewTabPageAdInfo::CreativeNewTabPageAdInfo(
     CreativeNewTabPageAdInfo&& other) noexcept = default;

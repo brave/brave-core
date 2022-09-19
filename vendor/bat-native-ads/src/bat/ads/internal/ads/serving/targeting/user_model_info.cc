@@ -9,9 +9,9 @@ namespace ads::targeting {
 
 UserModelInfo::UserModelInfo() = default;
 
-UserModelInfo::UserModelInfo(const UserModelInfo& info) = default;
+UserModelInfo::UserModelInfo(const UserModelInfo& other) = default;
 
-UserModelInfo& UserModelInfo::operator=(const UserModelInfo& info) = default;
+UserModelInfo& UserModelInfo::operator=(const UserModelInfo& other) = default;
 
 UserModelInfo::UserModelInfo(UserModelInfo&& other) noexcept = default;
 
