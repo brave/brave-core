@@ -18,6 +18,7 @@
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_side_panel_utils.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -113,6 +114,11 @@ void SidebarContainerView::Init() {
     DVLOG(1) << "Observing panel entry in ctor: " << entry->name();
     panel_entry_observations_.AddObservation(entry.get());
   }
+
+  show_side_panel_button_.Init(
+      kShowSidePanelButton, browser_->profile()->GetPrefs(),
+      base::BindRepeating(&SidebarContainerView::UpdateToolbarButtonVisibility,
+                          base::Unretained(this)));
 
   AddChildViews();
   // Hide by default. Visibility will be controlled by show options later.
@@ -351,7 +357,8 @@ void SidebarContainerView::UpdateToolbarButtonVisibility() {
   auto has_panel_item =
       GetSidebarService(browser_)->GetDefaultPanelItem().has_value();
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
-  browser_view->toolbar()->side_panel_button()->SetVisible(has_panel_item);
+  browser_view->toolbar()->side_panel_button()->SetVisible(
+      has_panel_item && show_side_panel_button_.GetValue());
 }
 
 void SidebarContainerView::StartBrowserWindowEventMonitoring() {
