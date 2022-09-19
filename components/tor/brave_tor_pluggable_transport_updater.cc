@@ -127,7 +127,7 @@ BraveTorPluggableTransportUpdater::GetSnowflakeExecutable() const {
 
 const base::FilePath& BraveTorPluggableTransportUpdater::GetObfs4Executable()
     const {
-  return obsf4_path_;
+  return obfs4_path_;
 }
 
 void BraveTorPluggableTransportUpdater::AddObserver(Observer* observer) {
@@ -152,11 +152,17 @@ void BraveTorPluggableTransportUpdater::OnInitialized(
     const base::FilePath& install_dir,
     bool success) {
   if (success) {
-    snowflake_path_ = install_dir.AppendASCII(kSnowflakeExecutableName);
-    obsf4_path_ = install_dir.AppendASCII(kObfs4ExecutableName);
+    // <component_id>/<version>
+    const auto relative_component_path =
+        base::FilePath::FromASCII(kTorPluggableTransportComponentId)
+            .Append(install_dir.BaseName());
+
+    snowflake_path_ =
+        relative_component_path.AppendASCII(kSnowflakeExecutableName);
+    obfs4_path_ = relative_component_path.AppendASCII(kObfs4ExecutableName);
   } else {
     snowflake_path_.clear();
-    obsf4_path_.clear();
+    obfs4_path_.clear();
   }
 
   is_ready_ = success;
