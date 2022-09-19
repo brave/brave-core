@@ -65,8 +65,6 @@ using GetPublisherInfoCallback =
                             ledger::mojom::PublisherInfoPtr)>;
 using SavePublisherInfoCallback =
     base::OnceCallback<void(const ledger::mojom::Result)>;
-using SaveMediaInfoCallback =
-    base::OnceCallback<void(ledger::mojom::PublisherInfoPtr publisher)>;
 using GetInlineTippingPlatformEnabledCallback = base::OnceCallback<void(bool)>;
 using GetShareURLCallback = base::OnceCallback<void(const std::string&)>;
 using GetPendingContributionsCallback = base::OnceCallback<void(
@@ -93,8 +91,6 @@ using ClaimPromotionCallback =
 using AttestPromotionCallback =
     base::OnceCallback<void(const ledger::mojom::Result result,
                             ledger::mojom::PromotionPtr promotion)>;
-using GetAnonWalletStatusCallback =
-    base::OnceCallback<void(const ledger::mojom::Result)>;
 
 using GetBalanceReportCallback =
     base::OnceCallback<void(const ledger::mojom::Result,
@@ -268,11 +264,6 @@ class RewardsService : public KeyedService {
   virtual const RewardsNotificationService::RewardsNotificationsMap&
   GetAllNotifications() = 0;
 
-  virtual void SaveInlineMediaInfo(
-      const std::string& media_type,
-      const base::flat_map<std::string, std::string>& args,
-      SaveMediaInfoCallback callback) = 0;
-
   virtual void UpdateMediaDuration(
       const uint64_t window_id,
       const std::string& publisher_key,
@@ -323,8 +314,6 @@ class RewardsService : public KeyedService {
       ProcessRewardsPageUrlCallback callback) = 0;
 
   virtual void DisconnectWallet() = 0;
-
-  virtual void GetAnonWalletStatus(GetAnonWalletStatusCallback callback) = 0;
 
   virtual void GetMonthlyReport(
       const uint32_t month,

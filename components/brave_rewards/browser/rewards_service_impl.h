@@ -191,8 +191,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnPublisherBanner(GetPublisherBannerCallback callback,
                          ledger::mojom::PublisherBannerPtr banner);
   void RemoveRecurringTip(const std::string& publisher_key) override;
-  void OnGetRecurringTips(GetRecurringTipsCallback callback,
-                          std::vector<ledger::mojom::PublisherInfoPtr> list);
   void GetRecurringTips(GetRecurringTipsCallback callback) override;
   void SetPublisherExclude(
       const std::string& publisher_key,
@@ -235,11 +233,6 @@ class RewardsServiceImpl : public RewardsService,
     GetAllNotifications() override;
 
   void SetAutoContributionAmount(const double amount) const override;
-
-  void SaveInlineMediaInfo(
-      const std::string& media_type,
-      const base::flat_map<std::string, std::string>& args,
-      SaveMediaInfoCallback callback) override;
 
   void UpdateMediaDuration(
       const uint64_t window_id,
@@ -315,8 +308,6 @@ class RewardsServiceImpl : public RewardsService,
                              ProcessRewardsPageUrlCallback callback) override;
 
   void DisconnectWallet() override;
-
-  void GetAnonWalletStatus(GetAnonWalletStatusCallback callback) override;
 
   void SetAutoContributeEnabled(bool enabled) override;
 
@@ -406,8 +397,6 @@ class RewardsServiceImpl : public RewardsService,
                               std::pair<std::string, base::Value> data);
   void OnPublisherStateLoaded(ledger::client::OnLoadCallback callback,
                               const std::string& data);
-  void OnGetRewardsParameters(GetRewardsParametersCallback callback,
-                              ledger::mojom::RewardsParametersPtr parameters);
   void OnFetchPromotions(ledger::mojom::Result result,
                          std::vector<ledger::mojom::PromotionPtr> promotions);
   void OnRestorePublishers(const ledger::mojom::Result result);
@@ -415,19 +404,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnRecurringTip(const ledger::mojom::Result result);
 
   void MaybeShowAddFundsNotification(uint64_t reconcile_stamp);
-
-  void OnGetOneTimeTips(GetRecurringTipsCallback callback,
-                        std::vector<ledger::mojom::PublisherInfoPtr> list);
-
-  void OnInlineTipSetting(
-      GetInlineTippingPlatformEnabledCallback callback,
-      bool enabled);
-
-  void OnShareURL(GetShareURLCallback callback, const std::string& url);
-
-  void OnGetPendingContributions(
-      GetPendingContributionsCallback callback,
-      std::vector<ledger::mojom::PendingContributionInfoPtr> list);
 
   void OnURLLoaderComplete(SimpleURLLoaderList::iterator url_loader_it,
                            ledger::client::LoadURLCallback callback,
@@ -451,20 +427,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnPendingContributionRemoved(const ledger::mojom::Result result);
 
   void OnRemoveAllPendingContributions(const ledger::mojom::Result result);
-
-  void OnFetchBalance(FetchBalanceCallback callback,
-                      const ledger::mojom::Result result,
-                      ledger::mojom::BalancePtr balance);
-
-  void OnGetExternalWallet(GetExternalWalletCallback callback,
-                           const ledger::mojom::Result result,
-                           ledger::mojom::ExternalWalletPtr wallet);
-
-  void OnExternalWalletAuthorization(
-      const std::string& wallet_type,
-      ExternalWalletAuthorizationCallback callback,
-      const ledger::mojom::Result result,
-      const base::flat_map<std::string, std::string>& args);
 
   void OnProcessExternalWalletAuthorization(
       const std::string& wallet_type,
@@ -498,9 +460,6 @@ class RewardsServiceImpl : public RewardsService,
       const bool token_received,
       const std::string& token,
       const bool attestation_passed);
-
-  void OnGetAnonWalletStatus(GetAnonWalletStatusCallback callback,
-                             const ledger::mojom::Result result);
 
   void OnRecoverWallet(const ledger::mojom::Result result);
 
@@ -541,20 +500,12 @@ class RewardsServiceImpl : public RewardsService,
   void OnSetOnDemandFaviconComplete(const std::string& favicon_url,
                                     ledger::client::FetchIconCallback callback,
                                     bool success);
-  void OnPublisherInfo(GetPublisherInfoCallback callback,
-                       const ledger::mojom::Result result,
-                       ledger::mojom::PublisherInfoPtr info);
   void OnStartProcessForGetPublisherInfo(const std::string& publisher_key,
                                          GetPublisherInfoCallback callback);
-  void OnPublisherPanelInfo(GetPublisherInfoCallback callback,
-                            const ledger::mojom::Result result,
-                            ledger::mojom::PublisherInfoPtr info);
   void OnStartProcessForSavePublisherInfo(
       uint64_t window_id,
       ledger::mojom::PublisherInfoPtr publisher_info,
       SavePublisherInfoCallback callback);
-  void OnSavePublisherInfo(SavePublisherInfoCallback callback,
-                           const ledger::mojom::Result result);
 
   void WriteDiagnosticLog(const std::string& file,
                           const int line,
@@ -573,9 +524,6 @@ class RewardsServiceImpl : public RewardsService,
   void ClearDiagnosticLog(ClearDiagnosticLogCallback callback) override;
 
   void CompleteReset(SuccessCallback callback) override;
-
-  void OnDiagnosticLogCleared(ClearDiagnosticLogCallback callback,
-                              const bool success);
 
   void Log(
       const char* file,
@@ -643,19 +591,9 @@ class RewardsServiceImpl : public RewardsService,
 
   // end ledger::LedgerClient
 
-  // Mojo Proxy methods
-  void OnGetAutoContributeProperties(
-      GetAutoContributePropertiesCallback callback,
-      ledger::mojom::AutoContributePropertiesPtr props);
-  void OnGetRewardsInternalsInfo(GetRewardsInternalsInfoCallback callback,
-                                 ledger::mojom::RewardsInternalsInfoPtr info);
-
   void OnRefreshPublisher(RefreshPublisherCallback callback,
                           const std::string& publisher_key,
                           ledger::mojom::PublisherStatus status);
-  void OnMediaInlineInfoSaved(SaveMediaInfoCallback callback,
-                              const ledger::mojom::Result result,
-                              ledger::mojom::PublisherInfoPtr publisher);
 
   void OnContributeUnverifiedPublishers(
       ledger::mojom::Result result,
@@ -695,14 +633,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnRunDBTransaction(ledger::client::RunDBTransactionCallback callback,
                           ledger::mojom::DBCommandResponsePtr response);
 
-  void OnGetAllMonthlyReportIds(
-      GetAllMonthlyReportIdsCallback callback,
-      const std::vector<std::string>& ids);
-
-  void OnGetAllContributions(
-      GetAllContributionsCallback callback,
-      std::vector<ledger::mojom::ContributionInfoPtr> contributions);
-
   void OnGetAllPromotions(
       GetAllPromotionsCallback callback,
       base::flat_map<std::string, ledger::mojom::PromotionPtr> promotions);
@@ -714,12 +644,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnDiagnosticLogDeleted(ledger::LegacyResultCallback callback,
                               bool success);
-
-  void OnGetEventLogs(GetEventLogsCallback callback,
-                      std::vector<ledger::mojom::EventLogPtr> logs);
-
-  void OnGetRewardsWallet(GetRewardsWalletCallback callback,
-                          ledger::mojom::RewardsWalletPtr wallet);
 
   bool IsBitFlyerRegion() const;
 

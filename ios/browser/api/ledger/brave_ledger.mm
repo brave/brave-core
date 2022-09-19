@@ -523,7 +523,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   ledger->FetchBalance(base::BindOnce(
       ^(ledger::mojom::Result result, ledger::mojom::BalancePtr balance) {
         const auto strongSelf = weakSelf;
-        if (result == ledger::mojom::Result::LEDGER_OK) {
+        if (result == ledger::mojom::Result::LEDGER_OK && balance) {
           strongSelf.balance =
               [[LedgerBalance alloc] initWithBalancePtr:std::move(balance)];
         }

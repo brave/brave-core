@@ -454,32 +454,6 @@ void BatLedgerImpl::GetExcludedList(
       std::bind(BatLedgerImpl::OnGetExcludedList, holder, _1));
 }
 
-// static
-void BatLedgerImpl::OnSaveMediaInfoCallback(
-    CallbackHolder<SaveMediaInfoCallback>* holder,
-    ledger::mojom::Result result,
-    ledger::mojom::PublisherInfoPtr publisher_info) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(result, std::move(publisher_info));
-  }
-
-  delete holder;
-}
-
-void BatLedgerImpl::SaveMediaInfo(
-    const std::string& type,
-    const base::flat_map<std::string, std::string>& args,
-    SaveMediaInfoCallback callback) {
-  auto* holder = new CallbackHolder<SaveMediaInfoCallback>(
-      AsWeakPtr(), std::move(callback));
-
-  ledger_->SaveMediaInfo(
-      type,
-      args,
-      std::bind(BatLedgerImpl::OnSaveMediaInfoCallback, holder, _1, _2));
-}
-
 void BatLedgerImpl::UpdateMediaDuration(
     const uint64_t window_id,
     const std::string& publisher_key,
@@ -763,26 +737,6 @@ void BatLedgerImpl::DisconnectWallet(
   ledger_->DisconnectWallet(
       wallet_type,
       std::bind(BatLedgerImpl::OnDisconnectWallet,
-                holder,
-                _1));
-}
-
-// static
-void BatLedgerImpl::OnGetAnonWalletStatus(
-    CallbackHolder<GetAnonWalletStatusCallback>* holder,
-    const ledger::mojom::Result result) {
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(result);
-  }
-  delete holder;
-}
-
-void BatLedgerImpl::GetAnonWalletStatus(GetAnonWalletStatusCallback callback) {
-  auto* holder = new CallbackHolder<GetAnonWalletStatusCallback>(
-      AsWeakPtr(), std::move(callback));
-
-  ledger_->GetAnonWalletStatus(
-      std::bind(BatLedgerImpl::OnGetAnonWalletStatus,
                 holder,
                 _1));
 }

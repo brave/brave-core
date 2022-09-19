@@ -283,7 +283,7 @@ BraveRewardsGetPublisherPanelInfoFunction::Run() {
       RewardsServiceFactory::GetForProfile(profile);
 
   if (!rewards_service) {
-    return RespondNow(NoArguments());
+    return RespondNow(Error("Rewards service is not available"));
   }
 
   rewards_service->GetPublisherPanelInfo(
@@ -331,7 +331,7 @@ ExtensionFunction::ResponseAction BraveRewardsSavePublisherInfoFunction::Run() {
       RewardsServiceFactory::GetForProfile(profile);
 
   if (!rewards_service) {
-    return RespondNow(NoArguments());
+    return RespondNow(Error("Rewards service is not available"));
   }
 
   auto publisher_info = ledger::mojom::PublisherInfo::New();
@@ -512,9 +512,6 @@ void BraveRewardsTipUserFunction::ShowTipDialog() {
   ::brave_rewards::OpenTipDialog(contents, std::move(params_dict));
 }
 
-BraveRewardsGetPublisherDataFunction::~BraveRewardsGetPublisherDataFunction() =
-    default;
-
 BraveRewardsIncludeInAutoContributionFunction::
     ~BraveRewardsIncludeInAutoContributionFunction() = default;
 
@@ -531,6 +528,9 @@ BraveRewardsIncludeInAutoContributionFunction::Run() {
   }
   return RespondNow(NoArguments());
 }
+
+BraveRewardsGetPublisherDataFunction::~BraveRewardsGetPublisherDataFunction() =
+    default;
 
 ExtensionFunction::ResponseAction BraveRewardsGetPublisherDataFunction::Run() {
   std::unique_ptr<brave_rewards::GetPublisherData::Params> params(
@@ -553,8 +553,7 @@ BraveRewardsGetRewardsParametersFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
-    base::Value::Dict data;
-    return RespondNow(OneArgument(base::Value(std::move(data))));
+    return RespondNow(Error("Rewards service is not available"));
   }
 
   rewards_service->GetRewardsParameters(base::BindOnce(
@@ -567,6 +566,10 @@ void BraveRewardsGetRewardsParametersFunction::OnGetRewardsParameters(
   base::Value::Dict data;
 
   if (!parameters) {
+    data.Set("rate", 0.0);
+    data.Set("monthlyTipChoices", base::Value::List());
+    data.Set("autoContributeChoices", base::Value::List());
+    data.Set("payoutStatus", base::Value::Dict());
     return Respond(OneArgument(base::Value(std::move(data))));
   }
 
@@ -599,8 +602,7 @@ ExtensionFunction::ResponseAction BraveRewardsGetBalanceReportFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
-    base::Value::Dict data;
-    return RespondNow(OneArgument(base::Value(std::move(data))));
+    return RespondNow(Error("Rewards service is not available"));
   }
 
   std::unique_ptr<brave_rewards::GetBalanceReport::Params> params(
@@ -617,15 +619,11 @@ void BraveRewardsGetBalanceReportFunction::OnBalanceReport(
     const ledger::mojom::Result result,
     ledger::mojom::BalanceReportInfoPtr report) {
   base::Value::Dict data;
-  if (!report) {
-    Respond(OneArgument(base::Value(std::move(data))));
-    return;
-  }
-  data.Set("ads", report->earning_from_ads);
-  data.Set("contribute", report->auto_contribute);
-  data.Set("grant", report->grants);
-  data.Set("tips", report->one_time_donation);
-  data.Set("monthly", report->recurring_donation);
+  data.Set("ads", report ? report->earning_from_ads : 0.0);
+  data.Set("contribute", report ? report->auto_contribute : 0.0);
+  data.Set("grant", report ? report->grants : 0.0);
+  data.Set("tips", report ? report->one_time_donation : 0.0);
+  data.Set("monthly", report ? report->recurring_donation : 0.0);
   Respond(OneArgument(base::Value(std::move(data))));
 }
 
@@ -652,9 +650,7 @@ ExtensionFunction::ResponseAction BraveRewardsClaimPromotionFunction::Run() {
   RewardsService* rewards_service =
       RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
-    base::Value::Dict data;
-    data.Set("result", 1);
-    return RespondNow(OneArgument(base::Value(std::move(data))));
+    return RespondNow(Error("Rewards service is not available"));
   }
 
   rewards_service->ClaimPromotion(
@@ -689,7 +685,7 @@ ExtensionFunction::ResponseAction BraveRewardsAttestPromotionFunction::Run() {
   RewardsService* rewards_service =
       RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
-    return RespondNow(OneArgument(base::Value(1)));
+    return RespondNow(Error("Rewards service is not available"));
   }
 
   rewards_service->AttestPromotion(
@@ -889,53 +885,6 @@ void BraveRewardsGetRecurringTipsFunction::OnGetRecurringTips(
   Respond(OneArgument(base::Value(std::move(result))));
 }
 
-BraveRewardsGetPublisherBannerFunction::
-    ~BraveRewardsGetPublisherBannerFunction() = default;
-
-ExtensionFunction::ResponseAction
-BraveRewardsGetPublisherBannerFunction::Run() {
-  std::unique_ptr<brave_rewards::GetPublisherBanner::Params> params(
-      brave_rewards::GetPublisherBanner::Params::Create(args()));
-
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-      RewardsServiceFactory::GetForProfile(profile);
-
-  if (!rewards_service) {
-    return RespondNow(Error("Rewards service is not initialized"));
-  }
-
-  rewards_service->GetPublisherBanner(
-      params->publisher_key,
-      base::BindOnce(&BraveRewardsGetPublisherBannerFunction::OnPublisherBanner,
-                     this));
-  return RespondLater();
-}
-
-void BraveRewardsGetPublisherBannerFunction::OnPublisherBanner(
-    ledger::mojom::PublisherBannerPtr banner) {
-  base::Value::Dict result;
-
-  if (banner) {
-    result.Set("publisherKey", banner->publisher_key);
-    result.Set("title", banner->title);
-    result.Set("name", banner->name);
-    result.Set("description", banner->description);
-    result.Set("background", banner->background);
-    result.Set("logo", banner->logo);
-    result.Set("provider", banner->provider);
-    result.Set("verified", static_cast<int>(banner->status));
-
-    base::Value::Dict links;
-    for (auto const& item : banner->links) {
-      links.Set(item.first, item.second);
-    }
-    result.Set("links", std::move(links));
-  }
-
-  Respond(OneArgument(base::Value(std::move(result))));
-}
-
 BraveRewardsRefreshPublisherFunction::~BraveRewardsRefreshPublisherFunction() =
     default;
 
@@ -1051,8 +1000,7 @@ ExtensionFunction::ResponseAction BraveRewardsFetchBalanceFunction::Run() {
   RewardsService* rewards_service =
       RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
-    base::Value::Dict balance_value;
-    return RespondNow(OneArgument(base::Value(std::move(balance_value))));
+    return RespondNow(Error("Rewards service is not available"));
   }
 
   rewards_service->FetchBalance(
@@ -1089,8 +1037,7 @@ ExtensionFunction::ResponseAction BraveRewardsGetExternalWalletFunction::Run() {
   RewardsService* rewards_service =
       RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
-    base::Value::Dict data;
-    return RespondNow(OneArgument(base::Value(std::move(data))));
+    return RespondNow(Error("Rewards service is not available"));
   }
 
   rewards_service->GetExternalWallet(base::BindOnce(
@@ -1248,29 +1195,6 @@ ExtensionFunction::ResponseAction BraveRewardsGetAdsDataFunction::Run() {
   return RespondNow(OneArgument(base::Value(std::move(ads_data))));
 }
 
-BraveRewardsGetAnonWalletStatusFunction::
-    ~BraveRewardsGetAnonWalletStatusFunction() = default;
-
-ExtensionFunction::ResponseAction
-BraveRewardsGetAnonWalletStatusFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-      RewardsServiceFactory::GetForProfile(profile);
-
-  if (!rewards_service) {
-    return RespondNow(Error("Rewards service is not initialized"));
-  }
-
-  rewards_service->GetAnonWalletStatus(base::BindOnce(
-      &BraveRewardsGetAnonWalletStatusFunction::OnGetAnonWalletStatus, this));
-  return RespondLater();
-}
-
-void BraveRewardsGetAnonWalletStatusFunction::OnGetAnonWalletStatus(
-    const ledger::mojom::Result result) {
-  Respond(OneArgument(base::Value(static_cast<int>(result))));
-}
-
 BraveRewardsIsInitializedFunction::~BraveRewardsIsInitializedFunction() =
     default;
 
@@ -1399,8 +1323,9 @@ ExtensionFunction::ResponseAction BraveRewardsGetPrefsFunction::Run() {
 void BraveRewardsGetPrefsFunction::GetAutoContributePropertiesCallback(
     ledger::mojom::AutoContributePropertiesPtr properties) {
   base::Value::Dict prefs;
-  prefs.Set("autoContributeEnabled", properties->enabled_contribute);
-  prefs.Set("autoContributeAmount", properties->amount);
+  prefs.Set("autoContributeEnabled",
+            properties ? properties->enabled_contribute : false);
+  prefs.Set("autoContributeAmount", properties ? properties->amount : 0.0);
 
   auto* ads_service = AdsServiceFactory::GetForProfile(
       Profile::FromBrowserContext(browser_context()));
