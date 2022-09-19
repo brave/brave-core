@@ -1588,16 +1588,6 @@ TEST_F(KeyringServiceUnitTest, DefaultSolanaAccountCreated) {
 }
 
 TEST_F(KeyringServiceUnitTest, DefaultSolanaAccountRestored) {
-  base::test::ScopedFeatureList feature_list;
-  base::FieldTrialParams parameters;
-  parameters[features::kCreateDefaultSolanaAccount.name] = "true";
-
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
-  enabled_features.emplace_back(
-      brave_wallet::features::kBraveWalletSolanaFeature, parameters);
-
-  feature_list.InitWithFeaturesAndParameters(enabled_features, {});
-
   KeyringService service(json_rpc_service(), GetPrefs());
   ASSERT_TRUE(RestoreWallet(&service, kMnemonic1, "brave", false));
 
