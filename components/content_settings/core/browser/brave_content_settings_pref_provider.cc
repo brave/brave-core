@@ -228,8 +228,8 @@ void BravePrefProvider::EnsureNoWildcardEntries(
 void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
   BravePrefProvider::CopyPluginSettingsForMigration(prefs_);
 
-  const base::Value::Dict& plugins_dict =
-      prefs_->GetValueDict("brave.migrate.content_settings.exceptions.plugins");
+  const auto& plugins_dict =
+      prefs_->GetDict("brave.migrate.content_settings.exceptions.plugins");
 
   for (const auto [key, value] : plugins_dict) {
     const std::string& patterns_string(key);

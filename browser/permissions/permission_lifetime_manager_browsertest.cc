@@ -142,7 +142,7 @@ class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
   }
 
   const base::Value::Dict& GetExpirationsPrefValue() {
-    return browser()->profile()->GetPrefs()->GetValueDict(
+    return browser()->profile()->GetPrefs()->GetDict(
         prefs::kPermissionLifetimeExpirations);
   }
 

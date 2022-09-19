@@ -346,8 +346,7 @@ std::vector<std::string> KeyringService::GetAvailableKeyringsFromPrefs(
 const base::Value* KeyringService::GetPrefForKeyring(const PrefService& prefs,
                                                      const std::string& key,
                                                      const std::string& id) {
-  const base::Value::Dict& keyrings_pref =
-      prefs.GetValueDict(kBraveWalletKeyrings);
+  const auto& keyrings_pref = prefs.GetDict(kBraveWalletKeyrings);
   const base::Value::Dict* keyring_dict = keyrings_pref.FindDict(id);
   if (!keyring_dict)
     return nullptr;
