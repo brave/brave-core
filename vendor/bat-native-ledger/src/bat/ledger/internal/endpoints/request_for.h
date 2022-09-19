@@ -18,6 +18,14 @@
 
 namespace ledger::endpoints {
 
+template <typename, typename = void>
+inline constexpr bool enumerator_check = false;
+
+template <typename T>
+inline constexpr bool
+    enumerator_check<T, std::void_t<decltype(T::kFailedToCreateRequest)>> =
+        true;
+
 template <typename Endpoint>
 class RequestFor {
  public:
@@ -39,6 +47,11 @@ class RequestFor {
   void Send(base::OnceCallback<void(typename Endpoint::Result&&)> callback) && {
     if (!request_ || !*request_) {
       BLOG(0, "Failed to create request!");
+
+      static_assert(enumerator_check<typename Endpoint::Error>,
+                    "Please make sure the error type of your endpoint has the "
+                    "kFailedToCreateRequest enumerator!");
+
       base::SequencedTaskRunnerHandle::Get()->PostTask(
           FROM_HERE,
           base::BindOnce(

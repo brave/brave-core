@@ -13,6 +13,7 @@
 #include "bat/ledger/internal/endpoints/response_handler.h"
 #include "bat/ledger/internal/endpoints/result_for.h"
 #include "bat/ledger/mojom_structs.h"
+#include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_endpoints.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ledger {
@@ -20,7 +21,14 @@ class LedgerImpl;
 
 namespace endpoints {
 
-RESULT_FOR(PostConnect, void);
+class PostConnect;
+
+template <>
+struct ResultFor<PostConnect> {
+  using Value = void;
+  using Error = mojom::PostConnectError;
+};
+
 class PostConnect : public RequestBuilder, public ResponseHandler<PostConnect> {
  public:
   static Result ProcessResponse(const mojom::UrlResponse&);

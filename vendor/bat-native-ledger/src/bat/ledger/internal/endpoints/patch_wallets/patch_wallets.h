@@ -13,6 +13,7 @@
 #include "bat/ledger/internal/endpoints/response_handler.h"
 #include "bat/ledger/internal/endpoints/result_for.h"
 #include "bat/ledger/mojom_structs.h"
+#include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_endpoints.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 // PATCH /v4/wallets/<rewards_payment_id>
@@ -29,7 +30,14 @@ class LedgerImpl;
 
 namespace endpoints {
 
-RESULT_FOR(PatchWallets, void);
+class PatchWallets;
+
+template <>
+struct ResultFor<PatchWallets> {
+  using Value = void;
+  using Error = mojom::PatchWalletsError;
+};
+
 class PatchWallets final : public RequestBuilder,
                            public ResponseHandler<PatchWallets> {
  public:

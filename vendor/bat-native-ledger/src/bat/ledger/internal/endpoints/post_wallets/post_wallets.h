@@ -13,6 +13,7 @@
 #include "bat/ledger/internal/endpoints/response_handler.h"
 #include "bat/ledger/internal/endpoints/result_for.h"
 #include "bat/ledger/mojom_structs.h"
+#include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_endpoints.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 // POST /v4/wallets
@@ -34,7 +35,14 @@ class LedgerImpl;
 
 namespace endpoints {
 
-RESULT_FOR(PostWallets, std::string);  // Rewards payment ID
+class PostWallets;
+
+template <>
+struct ResultFor<PostWallets> {
+  using Value = std::string;  // Rewards payment ID
+  using Error = mojom::PostWalletsError;
+};
+
 class PostWallets final : public RequestBuilder,
                           public ResponseHandler<PostWallets> {
  public:

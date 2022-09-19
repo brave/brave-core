@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/callback.h"
+#include "base/types/expected.h"
 #include "bat/ledger/internal/endpoints/result_for.h"
 #include "bat/ledger/internal/logging/logging_util.h"
 #include "bat/ledger/mojom_structs.h"
@@ -18,9 +19,9 @@ namespace ledger::endpoints {
 template <typename Endpoint>
 class ResponseHandler {
  public:
-  using Result = typename ResultFor<Endpoint>::Result;
-  using Value = typename Result::value_type;
-  using Error = typename Result::error_type;
+  using Value = typename ResultFor<Endpoint>::Value;
+  using Error = typename ResultFor<Endpoint>::Error;
+  using Result = base::expected<Value, Error>;
 
  private:
   static void OnResponse(base::OnceCallback<void(Result&&)> callback,
