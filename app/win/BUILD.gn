@@ -11,10 +11,11 @@ if (should_generate_breakpad_symbols) {
       platform_symbols_dir = "$brave_dist_dir/$brave_product_name.pdb.syms"
       outputs += [ platform_symbols_dir ]
     }
-    dump_syms_label = "//third_party/breakpad:dump_syms($host_toolchain)"
-    deps = [ "//brave/build/win:copy_pdb", dump_syms_label ]
+    dump_syms = "//third_party/breakpad:dump_syms($host_toolchain)"
+    deps = [ "//brave/build/win:copy_pdb", dump_syms ]
     dump_syms_path =
-        get_label_info(dump_syms_label, "root_out_dir") + "/dump_syms.exe"
+        get_label_info(dump_syms, "root_out_dir") + "/" +
+        get_label_info(dump_syms, "name")
 
     args = [
       "--symbols-dir=" + rebase_path(symbols_dir),
