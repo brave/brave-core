@@ -26,6 +26,7 @@ extern const char kAskWidevineInstall[];
 extern const char kBraveThemeType[];
 extern const char kUseOverriddenBraveThemeType[];
 extern const char kShowBookmarksButton[];
+extern const char kShowSidePanelButton[];
 extern const char kLocationBarIsWide[];
 extern const char kReferralDownloadID[];
 extern const char kReferralTimestamp[];
