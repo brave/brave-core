@@ -122,7 +122,7 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
       if (!web_contents) {
         start_time_ = base::TimeTicks::Now();
         this->OnComplete(net::ERR_FAILED, net::ResolveErrorInfo(),
-                         absl::nullopt);
+                         absl::nullopt, absl::nullopt);
         return;
       }
 
@@ -138,16 +138,17 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
           receiver_.BindNewPipeAndPassRemote());
     }
 
-    receiver_.set_disconnect_handler(
-        base::BindOnce(&AdblockCnameResolveHostClient::OnComplete,
-                       base::Unretained(this), net::ERR_NAME_NOT_RESOLVED,
-                       net::ResolveErrorInfo(net::ERR_FAILED), absl::nullopt));
+    receiver_.set_disconnect_handler(base::BindOnce(
+        &AdblockCnameResolveHostClient::OnComplete, base::Unretained(this),
+        net::ERR_NAME_NOT_RESOLVED, net::ResolveErrorInfo(net::ERR_FAILED),
+        absl::nullopt, absl::nullopt));
   }
 
-  void OnComplete(
-      int32_t result,
-      const net::ResolveErrorInfo& resolve_error_info,
-      const absl::optional<net::AddressList>& resolved_addresses) override {
+  void OnComplete(int32_t result,
+                  const net::ResolveErrorInfo& resolve_error_info,
+                  const absl::optional<net::AddressList>& resolved_addresses,
+                  const absl::optional<net::HostResolverEndpointResults>&
+                      endpoint_results_with_metadata) override {
     UMA_HISTOGRAM_TIMES("Brave.ShieldsCNAMEBlocking.TotalResolutionTime",
                         base::TimeTicks::Now() - start_time_);
     if (result == net::OK && resolved_addresses) {

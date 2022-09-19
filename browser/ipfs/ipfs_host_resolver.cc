@@ -83,7 +83,9 @@ void IPFSHostResolver::Resolve(const net::HostPortPair& host,
 void IPFSHostResolver::OnComplete(
     int result,
     const net::ResolveErrorInfo& error_info,
-    const absl::optional<net::AddressList>& list) {
+    const absl::optional<net::AddressList>& list,
+    const absl::optional<net::HostResolverEndpointResults>&
+        endpoint_results_with_metadata) {
   if (result != net::OK) {
     VLOG(1) << "DNS resolving error:" << net::ErrorToString(result)
             << " for host: " << prefix_ + resolving_host_;

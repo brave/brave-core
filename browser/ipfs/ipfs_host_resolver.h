@@ -43,10 +43,11 @@ class IPFSHostResolver : public network::ResolveHostClientBase {
 
  private:
   // network::mojom::ResolveHostClient implementation:
-  void OnComplete(
-      int result,
-      const net::ResolveErrorInfo& resolve_error_info,
-      const absl::optional<net::AddressList>& resolved_addresses) override;
+  void OnComplete(int result,
+                  const net::ResolveErrorInfo& resolve_error_info,
+                  const absl::optional<net::AddressList>& resolved_addresses,
+                  const absl::optional<net::HostResolverEndpointResults>&
+                      endpoint_results_with_metadata) override;
   void OnTextResults(const std::vector<std::string>& text_results) override;
 
   std::string resolving_host_;
