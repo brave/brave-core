@@ -26,9 +26,10 @@ T PrioritizeCreativeAds(const T& creative_ads) {
     return {};
   }
 
-  const std::pair<unsigned int, T> bucket = GetHighestPriorityBucket(buckets);
-  const unsigned int priority = bucket.first;
-  const T prioritized_creative_ads = bucket.second;
+  const std::pair<unsigned int, T> highest_priority_bucket =
+      GetHighestPriorityBucket(buckets);
+  const unsigned int priority = highest_priority_bucket.first;
+  const T prioritized_creative_ads = highest_priority_bucket.second;
 
   BLOG(2, prioritized_creative_ads.size()
               << " ads with a priority of " << priority << " in bucket 1");

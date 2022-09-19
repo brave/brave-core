@@ -96,8 +96,8 @@ class GeminiService : public KeyedService {
 
   void SetClientIdForTest(const std::string& client_id);
   void SetClientSecretForTest(const std::string& client_secret);
-  void SetOAuthHostForTest(const std::string& oauth_host);
-  void SetApiHostForTest(const std::string& api_host);
+  void SetOAuthHostForTest(const std::string& host);
+  void SetApiHostForTest(const std::string& host);
 
  private:
   base::SequencedTaskRunner* io_task_runner();

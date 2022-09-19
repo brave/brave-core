@@ -70,14 +70,15 @@ std::unique_ptr<sync_preferences::PrefServiceSyncable> CreatePrefService(
     Profile* original_profile =
         g_browser_process->profile_manager()->GetProfileByPath(original_path);
     DCHECK(original_profile);
-    PrefStore* extension_pref_store = nullptr;
+    PrefStore* local_extension_pref_store = nullptr;
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-    extension_pref_store = new ExtensionPrefStore(
+    local_extension_pref_store = new ExtensionPrefStore(
         ExtensionPrefValueMapFactory::GetForBrowserContext(original_profile),
         true);
 #endif
     return CreateIncognitoPrefServiceSyncable(
-        PrefServiceSyncableFromProfile(original_profile), extension_pref_store);
+        PrefServiceSyncableFromProfile(original_profile),
+        local_extension_pref_store);
   }
 
   return CreatePrefService_ChromiumImpl(

@@ -104,10 +104,12 @@ bool ClientProperties::FromValue(const base::Value::Dict& dict) {
   // to the JS spec. Since then, the value is now transported as a string and
   // then converted to an int64_t. In case that fails, there's a fallback to old
   // double conversion, for backwards compatibility.)
-  if (auto value = base::ValueToInt64(dict.Find(kBootTimestampKey))) {
-    boot_timestamp = *value;
-  } else if (auto value = dict.FindDouble(kBootTimestampKey)) {
-    boot_timestamp = static_cast<uint64_t>(*value);
+  if (auto boot_timestamp_value_int64 =
+          base::ValueToInt64(dict.Find(kBootTimestampKey))) {
+    boot_timestamp = *boot_timestamp_value_int64;
+  } else if (auto boot_timestamp_value_double =
+                 dict.FindDouble(kBootTimestampKey)) {
+    boot_timestamp = static_cast<uint64_t>(*boot_timestamp_value_double);
   } else {
     NOTREACHED();
     return false;
@@ -118,10 +120,13 @@ bool ClientProperties::FromValue(const base::Value::Dict& dict) {
   // according to the JS spec. Since then, the value is now transported as a
   // string and then converted to an int64_t. In case that fails, there's a
   // fallback to old double conversion, for backwards compatibility.)
-  if (auto value = base::ValueToInt64(dict.Find(kReconcileTimestampKey))) {
-    reconcile_timestamp = *value;
-  } else if (auto value = dict.FindDouble(kReconcileTimestampKey)) {
-    reconcile_timestamp = static_cast<uint64_t>(*value);
+  if (auto reconcile_timestamp_value_int64 =
+          base::ValueToInt64(dict.Find(kReconcileTimestampKey))) {
+    reconcile_timestamp = *reconcile_timestamp_value_int64;
+  } else if (auto reconcile_timestamp_value_double =
+                 dict.FindDouble(kReconcileTimestampKey)) {
+    reconcile_timestamp =
+        static_cast<uint64_t>(*reconcile_timestamp_value_double);
   } else {
     NOTREACHED();
     return false;
@@ -161,8 +166,8 @@ bool ClientProperties::FromValue(const base::Value::Dict& dict) {
 
   // Inline Tips
   if (const auto* value = dict.FindDict(kInlineTipsKey)) {
-    for (const auto [key, value] : *value) {
-      inline_tips.emplace(key, value.GetBool());
+    for (const auto [inline_tips_key, inline_tips_value] : *value) {
+      inline_tips.emplace(inline_tips_key, inline_tips_value.GetBool());
     }
   } else {
     NOTREACHED();

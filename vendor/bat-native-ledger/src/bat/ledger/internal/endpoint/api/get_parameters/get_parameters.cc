@@ -128,9 +128,9 @@ mojom::Result GetParameters::ParseBody(const std::string& body,
     return mojom::Result::LEDGER_ERROR;
   }
 
-  for (auto&& [key, value] : *payout_status_dict) {
-    if (value.is_string()) {
-      parameters->payout_status.emplace(key, value.GetString());
+  for (auto&& [k, v] : *payout_status_dict) {
+    if (v.is_string()) {
+      parameters->payout_status.emplace(k, v.GetString());
     }
   }
 

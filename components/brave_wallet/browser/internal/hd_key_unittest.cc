@@ -371,9 +371,10 @@ TEST(HDKeyUnitTest, DeriveChildFromPath) {
     EXPECT_TRUE(
         base::HexStringToBytes("000102030405060708090a0b0c0d0e0f", &bytes));
 
-    std::unique_ptr<HDKey> m_key = HDKey::GenerateFromSeed(bytes);
-    std::unique_ptr<HDKeyBase> key = m_key->DeriveChildFromPath("m/44'/6'/4'");
-    EXPECT_EQ(static_cast<HDKey*>(key.get())->GetPrivateExtendedKey(),
+    std::unique_ptr<HDKey> key = HDKey::GenerateFromSeed(bytes);
+    std::unique_ptr<HDKeyBase> derived_key =
+        key->DeriveChildFromPath("m/44'/6'/4'");
+    EXPECT_EQ(static_cast<HDKey*>(derived_key.get())->GetPrivateExtendedKey(),
               "xprv9ymoag6W7cR6KBcJzhCM6qqTrb3rRVVwXKzwNqp1tDWcwierEv3BA9if3ARH"
               "MhMPh9u2jNoutcgpUBLMfq3kADDo7LzfoCnhhXMRGX3PXDx");
   }

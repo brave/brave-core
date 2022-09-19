@@ -186,10 +186,10 @@ void APIRequestHelper::OnResponse(
     auto headers_list = loader->ResponseInfo()->headers;
     if (headers_list) {
       response_code = headers_list->response_code();
-      size_t iter = 0;
+      size_t header_iter = 0;
       std::string key;
       std::string value;
-      while (headers_list->EnumerateHeaderLines(&iter, &key, &value)) {
+      while (headers_list->EnumerateHeaderLines(&header_iter, &key, &value)) {
         key = base::ToLowerASCII(key);
         headers[key] = value;
       }

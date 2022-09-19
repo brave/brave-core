@@ -92,10 +92,10 @@ mojom::Result GetAvailable::ParseBody(
   }
 
   const auto promotion_size = promotions->size();
-  for (const auto& value : *promotions) {
+  for (const auto& promotion_value : *promotions) {
     mojom::PromotionPtr promotion = mojom::Promotion::New();
 
-    const auto* item = value.GetIfDict();
+    const auto* item = promotion_value.GetIfDict();
     if (!item) {
       continue;
     }
@@ -166,17 +166,19 @@ mojom::Result GetAvailable::ParseBody(
       continue;
     }
 
-    base::Time time;
-    bool success = base::Time::FromUTCString((*expires_at).c_str(), &time);
+    base::Time expires_at_time;
+    bool success =
+        base::Time::FromUTCString((*expires_at).c_str(), &expires_at_time);
     if (success) {
-      promotion->expires_at = time.ToDoubleT();
+      promotion->expires_at = expires_at_time.ToDoubleT();
     }
 
     auto* claimable_until = item->FindString("claimableUntil");
     if (claimable_until) {
-      base::Time time;
-      if (base::Time::FromUTCString(claimable_until->c_str(), &time)) {
-        promotion->claimable_until = time.ToDoubleT();
+      base::Time claimable_until_time;
+      if (base::Time::FromUTCString(claimable_until->c_str(),
+                                    &claimable_until_time)) {
+        promotion->claimable_until = claimable_until_time.ToDoubleT();
       }
     }
 

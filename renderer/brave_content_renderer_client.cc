@@ -139,9 +139,9 @@ void BraveContentRendererClient::RunScriptsAtDocumentStart(
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
-    if (auto* observer =
+    if (auto* playlist_observer =
             playlist::PlaylistRenderFrameObserver::Get(render_frame)) {
-      observer->RunScriptsAtDocumentStart();
+      playlist_observer->RunScriptsAtDocumentStart();
     }
   }
 #endif
