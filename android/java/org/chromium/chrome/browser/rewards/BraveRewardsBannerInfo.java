@@ -23,21 +23,21 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.Arrays;
 import java.util.HashMap;
 
+
+/**
+ * BraveRewardsNativeWorker.GetPublisherBanner json response converted to this pojo class
+ * */
 public class BraveRewardsBannerInfo implements Parcelable {
-    // fields
     public static final String PUBLISHER_KEY = "publisher_key";
     public static final String TITLE = "title";
     public static final String NAME = "name";
     public static final String DESCRIPTION = "description";
     public static final String BACKGROUND = "background";
     public static final String LOGO = "logo";
-    // public static final String AMOUNTS = "amounts";
     public static final String PROVIDER = "provider";
     public static final String LINKS = "links";
     public static final String STATUS = "status";
 
-    // WalletStatus @
-    // vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({NOT_CONNECTED, CONNECTED, VERIFIED, DISCONNECTED_NOT_VERIFIED, DISCONNECTED_VERIFIED,
             PENDING})
@@ -127,10 +127,7 @@ public class BraveRewardsBannerInfo implements Parcelable {
         return mLogo;
     }
 
-    // public double[] getAmounts() {
-    //     return mAmounts;
-    // }
-
+    
     public String getProvider() {
         return mProvider;
     }
@@ -155,13 +152,7 @@ public class BraveRewardsBannerInfo implements Parcelable {
         mDescription = jsonObj.getString(DESCRIPTION);
         mBackground = jsonObj.getString(BACKGROUND);
         mLogo = jsonObj.getString(LOGO);
-        // JSONArray jsonAmountArray = jsonObj.getJSONArray(AMOUNTS);
-        // if(jsonAmountArray != null) {
-        //     mAmounts = new double[jsonAmountArray.length()];
-        //     for(int index = 0; index < jsonAmountArray.length(); index++) {
-        //         mAmounts[index] = jsonAmountArray.getDouble(index);
-        //     }
-        // }
+      
         mProvider = jsonObj.getString(PROVIDER);
         JSONObject linksJsonObject = jsonObj.getJSONObject(LINKS);
         if (linksJsonObject != null) {

@@ -149,13 +149,11 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_SWITCH" desc="Switch for HTTPS Everywhere.">
         Upgrade connections to HTTPS
       </message>
-
-
       <message name="IDS_NEXT_TIP_DATE"  desc="Text for Next tip date">Next tip date</message>
       <message name="IDS_NOTE_TEXT"  desc="Text for note">Note:</message>
       <message name="IDS_SET_MONTHLY_TIP"  desc="Text for Set monthly tip">Set monthly tip</message>
       <message name="IDS_ONE_TIME_TIP_AMOUNT"  desc="Text for Next tip date">One-time tip amount</message>
-      <message name="IDS_ONE_TIME_TIP_SUCCESS_NOTE"  desc="Text for Next tip date1">Your tip can take several minutes to process</message>
+      <message name="IDS_ONE_TIME_TIP_SUCCESS_NOTE"  desc="Text for one time tip success note">Your tip can take several minutes to process</message>
 
 
 
@@ -183,7 +181,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET_UNVERIFIED_PUBLISHER" desc="Text of a tweet after tipping an unverified creator.">
         Love that #Brave lets me support creators! Just tipped <ph name="NAME">%1$s<ex>user</ex></ph> with #BAT. If they verify at https://creators.brave.com before <ph name="DATE">%2$s<ex>Jan 2, 2023</ex></ph>, the BAT is theirs!
       </message>
-       <message name="IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET" desc="Text of a tweet after tipping an verified creator.">
+      <message name="IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET" desc="Text of a tweet after tipping an verified creator.">
         I just tipped <ph name="NAME">%1$s<ex>user</ex></ph> using the Brave Browser. Check it out at https://brave.com/tips.
       </message>
       <message name="IDS_PROBLEM_SENDING_YOUR_TIP" desc="Text for problem sending tip">
@@ -282,7 +280,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Today’s top stories in a completely private feed, just for you.
       </message>
 
-       <message name="IDS_BRAVE_NEWS_OPTIN_SUBTITLE" desc="Text for opt in card subtitle">
+      <message name="IDS_BRAVE_NEWS_OPTIN_SUBTITLE" desc="Text for opt in card subtitle">
         Brave News is ad-supported with completely private and anonymized ads matched on your device.
       </message>
 

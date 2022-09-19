@@ -61,9 +61,6 @@ public class BraveRewardsCreatorPanelFragment extends Fragment
     private boolean monthlyContribution;
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
     private final int PUBLISHER_ICON_SIDE_LEN = 50; // dp
-    private final int TOUCH_PADDING_MONTHLY = 32; // dp
-    private final int ACTIVITY_HEADER_PADDING = 10; // dp
-    private final int ACTIVITY_HEADER_CONTENT_SIDE_MARGIN = 22; // dp
     private BraveRewardsHelper mIconFetcher;
     private boolean mTippingInProgress; // flag preventing multiple tipping processes
     private BraveRewardsBannerInfo mBannerInfo;

@@ -29,9 +29,15 @@ import org.chromium.chrome.browser.BraveRewardsSiteBannerActivity;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 public class BraveRewardsCustomTipFragment extends Fragment {
     public static final int MAX_BAT_VALUE = 100;
     public static final double AMOUNT_STEP_BY = 0.25;
+
+    private boolean isBatCurrencyMode = true;
+    private double exchangeRate;
+    private EditText currencyOneEditText;
+    private TextView currencyTwoTextView;
 
     @Override
     public View onCreateView(
@@ -43,10 +49,6 @@ public class BraveRewardsCustomTipFragment extends Fragment {
         return view;
     }
 
-    boolean isBatCurrencyMode = true;
-    double exchangeRate = 0.38;
-    EditText currencyOneEditText;
-    TextView currencyTwoTextView;
 
     private void exchangeButtonClick(View view) {
         TextView currencyOneSubTextView = view.findViewById(R.id.currencyOneSubTextView);
@@ -93,13 +95,13 @@ public class BraveRewardsCustomTipFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     private void updateText(View view) {
+        exchangeRate = mBraveRewardsNativeWorker.GetWalletRate();
         currencyOneEditText = view.findViewById(R.id.currencyOneEditText);
         currencyTwoTextView = view.findViewById(R.id.currencyTwoTextView);
         currencyOneEditText.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(5, 2)});
         currencyOneEditText.addTextChangedListener(textChangeListener);
-        currencyTwoTextView.setText("0.36");
-        currencyOneEditText.setText("1.0");
-        ((BraveRewardsSiteBannerActivity) getActivity()).onAmountChange(1.0, 0.36);
+        currencyOneEditText.setText("1.0"); //Default value
+        ((BraveRewardsSiteBannerActivity) getActivity()).onAmountChange(1.0, exchangeRate);
     }
 
     private TextWatcher textChangeListener = new TextWatcher() {
