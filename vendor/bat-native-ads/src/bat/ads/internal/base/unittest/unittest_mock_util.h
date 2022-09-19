@@ -57,7 +57,8 @@ void MockUrlResponses(const std::unique_ptr<AdsClientMock>& mock,
 void MockSave(const std::unique_ptr<AdsClientMock>& mock);
 void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
               const base::ScopedTempDir& temp_dir);
-void MockLoadFileResource(const std::unique_ptr<AdsClientMock>& mock);
+void MockLoadFileResource(const std::unique_ptr<AdsClientMock>& mock,
+                          const base::ScopedTempDir& temp_dir);
 void MockLoadDataResource(const std::unique_ptr<AdsClientMock>& mock);
 
 void MockRunDBTransaction(const std::unique_ptr<AdsClientMock>& mock,

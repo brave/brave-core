@@ -21,12 +21,12 @@ namespace ads::ml::pipeline {
 
 // static
 std::unique_ptr<TextProcessing> TextProcessing::CreateFromValue(
-    base::Value resource_value,
+    base::Value value,
     std::string* error_message) {
   DCHECK(error_message);
 
   auto text_processing = std::make_unique<TextProcessing>();
-  if (!text_processing->FromValue(std::move(resource_value))) {
+  if (!text_processing->SetPipeline(std::move(value))) {
     *error_message = "Failed to parse text classification pipeline JSON";
     return {};
   }
@@ -49,7 +49,7 @@ TextProcessing::TextProcessing(TransformationVector transformations,
   transformations_ = std::move(transformations);
 }
 
-void TextProcessing::SetInfo(PipelineInfo info) {
+void TextProcessing::SetPipeline(PipelineInfo info) {
   version_ = info.version;
   timestamp_ = info.timestamp;
   locale_ = info.locale;
@@ -57,11 +57,11 @@ void TextProcessing::SetInfo(PipelineInfo info) {
   transformations_ = std::move(info.transformations);
 }
 
-bool TextProcessing::FromValue(base::Value value) {
+bool TextProcessing::SetPipeline(base::Value value) {
   absl::optional<PipelineInfo> pipeline = ParsePipelineValue(std::move(value));
 
   if (pipeline) {
-    SetInfo(std::move(*pipeline));
+    SetPipeline(std::move(*pipeline));
     is_initialized_ = true;
   } else {
     is_initialized_ = false;

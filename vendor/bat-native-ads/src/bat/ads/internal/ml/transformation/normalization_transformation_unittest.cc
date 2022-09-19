@@ -82,13 +82,14 @@ TEST_F(BatAdsNormalizationTest, ChainingTest) {
   }
 
   ASSERT_EQ(DataType::kVector, data->GetType());
-  const VectorData* vect_data = static_cast<VectorData*>(data.get());
+  const VectorData* vector_data = static_cast<VectorData*>(data.get());
+  ASSERT_TRUE(vector_data);
 
   // Assert
-  EXPECT_EQ(kDefaultBucketCount, vect_data->GetDimensionCountForTesting());
+  ASSERT_EQ(kDefaultBucketCount, vector_data->GetDimensionCount());
 
   // Hashes for [t, i, n, y, ti, in, ny, tin, iny, tiny] -- 10 in total
-  EXPECT_EQ(kExpectedElementCount, vect_data->GetValuesForTesting().size());
+  EXPECT_EQ(kExpectedElementCount, vector_data->GetValuesForTesting().size());
 }
 
 }  // namespace ads::ml

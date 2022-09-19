@@ -10,8 +10,8 @@
 
 namespace ads::database {
 
-constexpr int32_t kVersion = 24;
-constexpr int32_t kCompatibleVersion = 24;
+constexpr int32_t kVersion = 25;
+constexpr int32_t kCompatibleVersion = 25;
 
 }  // namespace ads::database
 
