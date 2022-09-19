@@ -1037,10 +1037,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private boolean isShieldsOnForTab(Tab tab) {
-        if (tab == null) {
-            assert false;
+        if (!isNativeLibraryReady() || tab == null
+                || Profile.fromWebContents(((TabImpl) tab).getWebContents()) == null) {
             return false;
         }
+
         return BraveShieldsContentSettings.getShields(
                 Profile.fromWebContents(((TabImpl) tab).getWebContents()), tab.getUrl().getSpec(),
                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS);
