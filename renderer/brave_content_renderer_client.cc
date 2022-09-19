@@ -49,7 +49,7 @@ void BraveContentRendererClient::
   ChromeContentRendererClient::
       SetRuntimeFeaturesDefaultsBeforeBlinkInitialization();
 
-  blink::WebRuntimeFeatures::EnableWebNfc(false);
+  blink::WebRuntimeFeatures::EnableWebNFC(false);
 
   // These features don't have dedicated WebRuntimeFeatures wrappers.
   blink::WebRuntimeFeatures::EnableFeatureFromString("DigitalGoods", false);
