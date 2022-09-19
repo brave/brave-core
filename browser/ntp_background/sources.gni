@@ -32,6 +32,8 @@ brave_browser_ntp_background_deps = [
 if (enable_custom_background) {
   brave_browser_ntp_background_sources += [
     "//brave/browser/ntp_background/constants.h",
+    "//brave/browser/ntp_background/custom_background_file_manager.cc",
+    "//brave/browser/ntp_background/custom_background_file_manager.h",
     "//brave/browser/ntp_background/ntp_background_prefs.cc",
     "//brave/browser/ntp_background/ntp_background_prefs.h",
     "//brave/browser/ntp_background/ntp_custom_background_images_service_delegate.cc",

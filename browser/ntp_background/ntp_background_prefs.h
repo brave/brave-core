@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_NTP_BACKGROUND_NTP_BACKGROUND_PREFS_H_
 
 #include <string>
+#include <vector>
 
 #include "base/values.h"
 #include "third_party/abseil-cpp/absl/types/variant.h"
@@ -33,7 +34,7 @@ class PrefService;
 //            |selected_value| is empty.
 //
 //   'custom_image': mapped to |Type::kCustomImage.| custom image uploaded by
-//                   user. |selected_value| is url of the image.
+//                   user. |selected_value| is name of image file.
 //
 //   'color' | 'solid_color': mapped to |Type::kColor|. |selected_value| is css
 //                            value or either one of 'gradient' or ' solid' in
@@ -46,6 +47,9 @@ class NTPBackgroundPrefs final {
   static constexpr char kDeprecatedPrefName[] =
       "brave.new_tab_page.custom_background_enabled";
   static constexpr char kPrefName[] = "brave.new_tab_page.background";
+
+  static constexpr char kCustomImageListPrefName[] =
+      "brave.new_tab_page.custom_background_image_list";
 
   enum class Type {
     kBrave,  // Images that we supply.
@@ -79,6 +83,9 @@ class NTPBackgroundPrefs final {
 
   // Return a value to use as NTP background.
   absl::variant<GURL, std::string> GetSelectedValue() const;
+
+  void AddCustomImageToList(const std::string& file_name);
+  std::vector<std::string> GetCustomImageList() const;
 
  private:
   const base::Value::Dict* GetPrefValue() const;

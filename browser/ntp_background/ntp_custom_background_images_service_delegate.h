@@ -6,11 +6,16 @@
 #ifndef BRAVE_BROWSER_NTP_BACKGROUND_NTP_CUSTOM_BACKGROUND_IMAGES_SERVICE_DELEGATE_H_
 #define BRAVE_BROWSER_NTP_BACKGROUND_NTP_CUSTOM_BACKGROUND_IMAGES_SERVICE_DELEGATE_H_
 
+#include <memory>
 #include <string>
 
+#include "base/callback.h"
+#include "base/callback_helpers.h"
+#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_background_images_service.h"
 
+class CustomBackgroundFileManager;
 class Profile;
 
 class NTPCustomBackgroundImagesServiceDelegate
@@ -24,6 +29,15 @@ class NTPCustomBackgroundImagesServiceDelegate
       const NTPCustomBackgroundImagesServiceDelegate&) = delete;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(NTPCustomBackgroundImagesServiceDelegateUnitTest,
+                           MigrationSuccess);
+  FRIEND_TEST_ALL_PREFIXES(NTPCustomBackgroundImagesServiceDelegateUnitTest,
+                           MigrationFail);
+
+  bool ShouldMigrateCustomImagePref() const;
+  void MigrateCustomImage(
+      base::OnceCallback<void(bool)> callback = base::DoNothing());
+
   // NTPCustomBackgroundImagesService::Delegate overrides:
   bool IsCustomImageBackgroundEnabled() const override;
   base::FilePath GetCustomBackgroundImageLocalFilePath() const override;
@@ -34,6 +48,8 @@ class NTPCustomBackgroundImagesServiceDelegate
   base::Value::Dict GetPreferredBraveBackground() const override;
 
   raw_ptr<Profile> profile_ = nullptr;
+
+  std::unique_ptr<CustomBackgroundFileManager> file_manager_;
 };
 
 #endif  // BRAVE_BROWSER_NTP_BACKGROUND_NTP_CUSTOM_BACKGROUND_IMAGES_SERVICE_DELEGATE_H_
