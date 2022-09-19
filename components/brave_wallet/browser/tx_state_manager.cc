@@ -118,8 +118,7 @@ void TxStateManager::AddOrUpdateTx(const TxMeta& meta) {
 }
 
 std::unique_ptr<TxMeta> TxStateManager::GetTx(const std::string& id) {
-  const base::Value::Dict& dict =
-      prefs_->GetValueDict(kBraveWalletTransactions);
+  const auto& dict = prefs_->GetDict(kBraveWalletTransactions);
   const base::Value::Dict* value =
       dict.FindDictByDottedPath(GetTxPrefPathPrefix() + "." + id);
   if (!value)
@@ -144,8 +143,7 @@ std::vector<std::unique_ptr<TxMeta>> TxStateManager::GetTransactionsByStatus(
     absl::optional<mojom::TransactionStatus> status,
     absl::optional<std::string> from) {
   std::vector<std::unique_ptr<TxMeta>> result;
-  const base::Value::Dict& dict =
-      prefs_->GetValueDict(kBraveWalletTransactions);
+  const auto& dict = prefs_->GetDict(kBraveWalletTransactions);
   const base::Value::Dict* network_dict =
       dict.FindDictByDottedPath(GetTxPrefPathPrefix());
   if (!network_dict)

@@ -1461,8 +1461,7 @@ void AdsServiceImpl::CloseAllNotificationAds() {
   constexpr char kNotificationAdsPrefName[] =
       "brave.brave_ads.notification_ads";
 
-  const base::Value::List& list =
-      profile_->GetPrefs()->GetValueList(kNotificationAdsPrefName);
+  const auto& list = profile_->GetPrefs()->GetList(kNotificationAdsPrefName);
 
   const base::circular_deque<ads::NotificationAdInfo> ads =
       ads::NotificationAdsFromValue(list);
@@ -1773,7 +1772,7 @@ void AdsServiceImpl::SetTimePref(const std::string& path,
 
 absl::optional<base::Value::Dict> AdsServiceImpl::GetDictPref(
     const std::string& path) const {
-  return profile_->GetPrefs()->GetValueDict(path).Clone();
+  return profile_->GetPrefs()->GetDict(path).Clone();
 }
 
 void AdsServiceImpl::SetDictPref(const std::string& path,
@@ -1784,7 +1783,7 @@ void AdsServiceImpl::SetDictPref(const std::string& path,
 
 absl::optional<base::Value::List> AdsServiceImpl::GetListPref(
     const std::string& path) const {
-  return profile_->GetPrefs()->GetValueList(path).Clone();
+  return profile_->GetPrefs()->GetList(path).Clone();
 }
 
 void AdsServiceImpl::SetListPref(const std::string& path,

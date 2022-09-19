@@ -572,8 +572,8 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromResourceIDs) {
 
   // Check migration for all the settings has been properly done.
   for (auto content_type : GetShieldsContentSettingsTypes()) {
-    const base::Value::Dict& brave_shields_dict =
-        pref_service->GetValueDict(GetShieldsSettingUserPrefsPath(
+    const auto& brave_shields_dict =
+        pref_service->GetDict(GetShieldsSettingUserPrefsPath(
             GetShieldsContentTypeName(content_type)));
 
     if (content_type == ContentSettingsType::BRAVE_SHIELDS) {
