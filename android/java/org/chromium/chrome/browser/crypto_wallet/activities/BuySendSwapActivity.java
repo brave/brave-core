@@ -114,6 +114,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     private int radioSlippageToleranceCheckedId;
     private List<AccountInfo> mAccountInfos;
     private SendModel mSendModel;
+    private NetworkInfo[] mNetworks;
 
     public enum ActivityType {
         BUY(0),
@@ -671,7 +672,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             getSendSwapQuota(true, false);
         }
     }
-    private void setSelected(NetworkInfo networkInfo, NetworkInfo[] networkInfos) {
+    private void setSelectedNetowrk(NetworkInfo networkInfo, NetworkInfo[] networkInfos) {
         if (isSameSelectedNetwork(networkInfo)) return;
         mNetworkSpinner.setSelection(getIndexOf(networkInfo, networkInfos));
     }
@@ -1507,14 +1508,14 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 this, chainAllNetworksAllNetwork -> {
                     mCurrentChainId = chainAllNetworksAllNetwork.first;
                     mSelectedNetwork = chainAllNetworksAllNetwork.second;
-                    NetworkInfo[] networks = mActivityType != ActivityType.SEND
+                    mNetworks = mActivityType != ActivityType.SEND
                             ? mWalletModel.getCryptoModel()
                                       .getNetworkModel()
                                       .stripNoBuySwapNetworks(chainAllNetworksAllNetwork.third)
                             : chainAllNetworksAllNetwork.third;
 
-                    mNetworkAdapter.setNetworks(networks);
-                    setSelected(mSelectedNetwork, networks);
+                    mNetworkAdapter.setNetworks(mNetworks);
+                    setSelectedNetowrk(mSelectedNetwork, mNetworks);
 
                     mFromAssetText.setText(mSelectedNetwork.symbol);
                     mMarketLimitPriceText.setText(String.format(
@@ -1573,6 +1574,9 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                                                 });
                                     })
                             .setNegativeButton(R.string.wallet_action_no, (dialog, which) -> {
+                                // update mNetworkSpinner to current network
+                                setSelectedNetowrk(mSelectedNetwork, mNetworks);
+
                                 mWalletModel.getCryptoModel()
                                         .getNetworkModel()
                                         .clearCreateAccountState();
