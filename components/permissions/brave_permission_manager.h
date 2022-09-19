@@ -21,6 +21,8 @@ class BravePermissionManager : public PermissionManager {
   BravePermissionManager(const BravePermissionManager&) = delete;
   BravePermissionManager& operator=(const BravePermissionManager&) = delete;
 
+  void Shutdown() override;
+
   void RequestPermissionsForOrigin(
       const std::vector<blink::PermissionType>& permissions,
       content::RenderFrameHost* render_frame_host,
