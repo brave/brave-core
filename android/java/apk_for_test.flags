@@ -598,3 +598,11 @@
 -keep class org.chromium.chrome.browser.BraveIntentHandler {
     public <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.AppHooksImpl {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.BraveAppHooks {
+    public <init>(...);
+}
