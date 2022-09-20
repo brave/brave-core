@@ -14,6 +14,7 @@
 #include "ui/views/controls/label.h"
 #include "ui/views/view.h"
 #include "ui/views/widget/widget.h"
+#include "brave/browser/ui/views/brave_news/brave_news_feeds_container_view.h"
 
 class BraveNewsBubbleView : public views::BubbleDialogDelegateView {
  public:
@@ -32,6 +33,7 @@ class BraveNewsBubbleView : public views::BubbleDialogDelegateView {
  private:
   raw_ptr<content::WebContents> contents_;
   raw_ptr<views::Label> title_label_ = nullptr;
+  raw_ptr<views::Label> subtitle_label_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_NEWS_BRAVE_NEWS_BUBBLE_VIEW_H_
