@@ -11,9 +11,44 @@ namespace types {
     boolean silent;
   };
 
+  dictionary JsonRpcRequest {
+    double id;
+    DOMString jsonrpc;
+    DOMString method;
+    any[] params;
+  };
+
+  dictionary JsonRpcResponseSuccess {
+    double id;
+    DOMString jsonrpc;
+    any result;
+  };
+
   dictionary EncryptionPayload {
     DOMString data;
     DOMString hmac;
     DOMString iv;
+  };
+
+  dictionary ClientMeta {
+    DOMString description;
+    DOMString url;
+    DOMString[] icons;
+    DOMString name;
+  };
+
+  dictionary SessionRequest {
+    DOMString peerId;
+    ClientMeta peerMeta;
+  };
+
+  dictionary SessionParams {
+    boolean approved;
+    long chainId;
+    long networkId;
+    DOMString[] accounts;
+    DOMString? rpcUrl;
+    DOMString? peerId;
+    ClientMeta? peerMeta;
   };
 };

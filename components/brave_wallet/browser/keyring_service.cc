@@ -1678,6 +1678,7 @@ void KeyringService::Lock() {
     observer->Locked();
   }
   StopAutoLockTimer();
+  // wallet_connect_client_.reset();
 }
 
 bool KeyringService::IsHardwareAccount(const std::string& address) const {
@@ -1695,6 +1696,9 @@ bool KeyringService::IsHardwareAccount(const std::string& address) const {
 
 void KeyringService::Unlock(const std::string& password,
                             KeyringService::UnlockCallback callback) {
+  wallet_connect_client_ =
+      std::make_unique<wallet_connect::WalletConnectClient>();
+  wallet_connect_client_->Init(password);
   if (!ResumeKeyring(mojom::kDefaultKeyringId, password)) {
     encryptors_.erase(mojom::kDefaultKeyringId);
     std::move(callback).Run(false);

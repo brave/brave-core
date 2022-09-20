@@ -4,8 +4,12 @@ import("//tools/json_schema_compiler/json_schema_api.gni")
 
 static_library("wallet_connect") {
   sources = [
+    "wallet_connect_client.cc",
+    "wallet_connect_client.h",
     "wallet_connect_utils.cc",
     "wallet_connect_utils.h",
+    "websocket_adapter.cc",
+    "websocket_adapter.h",
   ]
 
   deps = [
@@ -13,6 +17,7 @@ static_library("wallet_connect") {
     ":generated_payload_types",
     ":mojom",
     "//base",
+    "//services/network/public/mojom",
     "//url",
   ]
 }

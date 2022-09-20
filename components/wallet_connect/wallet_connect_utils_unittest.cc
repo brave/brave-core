@@ -6,10 +6,6 @@
 #include "brave/components/wallet_connect/wallet_connect_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-#include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
-#include "brave/components/wallet_connect/wallet_connect.h"
-
 namespace wallet_connect {
 
 TEST(WalletConnectUtilsUnitTest, ParseWalletConnectURI) {
@@ -73,27 +69,6 @@ TEST(WalletConnectUtilsUnitTest, ParseWalletConnectURI) {
         "7ff3e362f825ab868e20e767fe580d0311181632707e7c878cbeca0238d45b8b"}) {
     EXPECT_FALSE(ParseWalletConnectURI(c));
   }
-}
-
-TEST(WalletConnectUtilsUnitTest, Test) {
-  constexpr char example_json[] =
-      //R"({"topic": "topic_value", "type": "type_value", "payload": "payload_value", "silent": true})";
-      //R"({"topic": "topic_value", "type": "type_value", "payload": "payload_value"})";
-      R"({"topic": "topic_value", "type": "type_value", "payload": 123, "silent": true})";
-  auto value = base::JSONReader::Read(example_json);
-  ASSERT_TRUE(value);
-  auto message = types::SocketMessage::FromValue(*value);
-  ASSERT_TRUE(message);
-  EXPECT_EQ(message->topic, "topic_value");
-  EXPECT_EQ(message->type, "type_value");
-  EXPECT_EQ(message->payload, "payload_value");
-  EXPECT_TRUE(message->silent);
-
-  std::string json;
-  auto dictionary_value = message->ToValue();
-  ASSERT_TRUE(dictionary_value);
-  ASSERT_TRUE(base::JSONWriter::Write(*dictionary_value, &json));
-  EXPECT_EQ(json, example_json);
 }
 
 }  // namespace wallet_connect

@@ -25,6 +25,8 @@
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
+#include "brave/components/wallet_connect/wallet_connect_client.h"
+
 class PrefChangeRegistrar;
 class PrefService;
 
@@ -406,6 +408,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
 
   bool ValidatePasswordInternal(const std::string& password);
 
+  std::unique_ptr<wallet_connect::WalletConnectClient> wallet_connect_client_;
   std::unique_ptr<base::OneShotTimer> auto_lock_timer_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
   base::flat_map<std::string, std::unique_ptr<HDKeyring>> keyrings_;
