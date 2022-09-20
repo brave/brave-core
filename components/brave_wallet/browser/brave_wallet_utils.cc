@@ -17,6 +17,7 @@
 #include "base/environment.h"
 #include "base/feature_list.h"
 #include "base/logging.h"
+#include "base/metrics/field_trial_params.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/strings/strcat.h"
@@ -697,6 +698,11 @@ bool IsDappsSupportEnabled() {
 bool IsSolanaEnabled() {
   return base::FeatureList::IsEnabled(
       brave_wallet::features::kBraveWalletSolanaFeature);
+}
+
+bool ShouldCreateDefaultSolanaAccount() {
+  return IsSolanaEnabled() &&
+         brave_wallet::features::kCreateDefaultSolanaAccount.Get();
 }
 
 std::vector<brave_wallet::mojom::NetworkInfoPtr>

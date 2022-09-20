@@ -27,6 +27,7 @@ namespace brave_wallet {
 bool IsNativeWalletEnabled();
 bool IsFilecoinEnabled();
 bool IsSolanaEnabled();
+bool ShouldCreateDefaultSolanaAccount();
 bool IsDappsSupportEnabled();
 
 // Generate mnemonic from random entropy following BIP39.
