@@ -72,7 +72,9 @@ void MigrateSkusSettings(PrefService* profile_prefs, PrefService* local_prefs) {
   auto* obsolete_pref = profile_prefs->Get(prefs::kSkusState);
   if (!obsolete_pref || !obsolete_pref->is_dict())
     return;
-
+  if (local_prefs->HasPrefPath(prefs::kSkusState)) {
+    return;
+  }
   local_prefs->Set(prefs::kSkusState, obsolete_pref->Clone());
   profile_prefs->ClearPref(prefs::kSkusState);
 }
