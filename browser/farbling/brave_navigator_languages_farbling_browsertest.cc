@@ -32,6 +32,7 @@
 #include "content/public/renderer/render_frame.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
@@ -55,12 +56,10 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
     https_server_.ServeFilesFromDirectory(test_data_dir);
     https_server_.RegisterRequestMonitor(base::BindRepeating(
         &BraveNavigatorLanguagesFarblingBrowserTest::MonitorHTTPRequest,
         base::Unretained(this)));
-    EXPECT_TRUE(https_server_.Start());
   }
 
   BraveNavigatorLanguagesFarblingBrowserTest(
@@ -69,6 +68,16 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
       const BraveNavigatorLanguagesFarblingBrowserTest&) = delete;
 
   ~BraveNavigatorLanguagesFarblingBrowserTest() override = default;
+
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -81,7 +90,16 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
         ->set_session_tokens_for_testing(kTestingSessionToken,
                                          kTestingSessionToken);
 
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
+    ASSERT_TRUE(https_server_.Start());
+    ASSERT_TRUE(test_server_handle_ =
+                    embedded_test_server()->StartAndReturnHandle());
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
   }
 
   void TearDown() override {
@@ -91,6 +109,8 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
 
  protected:
   base::test::ScopedFeatureList feature_list_;
+  net::test_server::EmbeddedTestServerHandle test_server_handle_;
+  content::ContentMockCertVerifier mock_cert_verifier_;
   net::EmbeddedTestServer https_server_;
 
   HostContentSettingsMap* content_settings() {
@@ -239,10 +259,13 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
                        FarbleHTTPAcceptLanguage) {
   std::string domain_b = "b.test";
   std::string domain_d = "d.test";
+  std::string domain_x = "www.ulta.com";
   GURL url_b = https_server_.GetURL(
       domain_b, "/reduce-language/page-with-subresources.html");
   GURL url_d = https_server_.GetURL(
       domain_d, "/reduce-language/page-with-subresources.html");
+  GURL url_x = https_server_.GetURL(
+      domain_x, "/reduce-language/page-with-subresources.html");
   SetAcceptLanguages("la,es,en");
 
   // Farbling level: off
@@ -297,4 +320,10 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
   NavigateToURLUntilLoadStop(url_b);
   BlockFingerprinting(domain_d);
   NavigateToURLUntilLoadStop(url_d);
+
+  // Farbling level: maximum but domain is on exceptions list
+  // HTTP Accept-Language header should not be farbled.
+  BlockFingerprinting(domain_x);
+  SetExpectedHTTPAcceptLanguage("zh-HK,zh;q=0.9,la;q=0.8");
+  NavigateToURLUntilLoadStop(url_x);
 }

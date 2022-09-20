@@ -35,7 +35,7 @@ const std::array<std::string, 5> kFakeQValues = {";q=0.5", ";q=0.6", ";q=0.7",
 static constexpr auto kFarbleAcceptLanguageExceptions =
     base::MakeFixedFlatSet<base::StringPiece>(
         {// https://github.com/brave/brave-browser/issues/25309
-         "ulta.com"});
+         "ulta.com", "www.ulta.com"});
 }  // namespace
 
 std::string FarbleAcceptLanguageHeader(
@@ -75,11 +75,8 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
                                              profile->GetPrefs())) {
     return net::OK;
   }
-  std::string tab_origin_etld1_host =
-      net::registry_controlled_domains::GetDomainAndRegistry(
-          ctx->tab_origin.host(),
-          net::registry_controlled_domains::EXCLUDE_PRIVATE_REGISTRIES);
-  if (kFarbleAcceptLanguageExceptions.contains(tab_origin_etld1_host))
+  base::StringPiece tab_origin_host(ctx->tab_origin.host_piece());
+  if (kFarbleAcceptLanguageExceptions.contains(tab_origin_host))
     return net::OK;
 
   std::string accept_language_string;
