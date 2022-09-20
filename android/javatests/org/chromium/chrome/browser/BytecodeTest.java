@@ -676,6 +676,8 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/IntentHandler",
                 "org/chromium/chrome/browser/BraveIntentHandler", Activity.class,
                 IntentHandler.IntentHandlerDelegate.class));
+        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/AppHooksImpl",
+                "org/chromium/chrome/browser/BraveAppHooks"));
     }
 
     @Test
