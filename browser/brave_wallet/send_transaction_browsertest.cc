@@ -278,10 +278,10 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
 
   std::string from(size_t index = 0) {
     if (index == 0) {
-      return "0x084DCb94038af1715963F149079cE011C4B22961";
+      return "0x084dcb94038af1715963f149079ce011c4b22961";
     }
     if (index == 1) {
-      return "0xE60A2209372AF1049C4848B1bF0136258c35f268";
+      return "0xe60a2209372af1049c4848b1bf0136258c35f268";
     }
     return "";
   }
