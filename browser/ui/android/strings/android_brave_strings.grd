@@ -587,18 +587,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT1" desc="Tipping page description">
         You can support this site by sending a tip. It's a way of thanking them for making great content.
       </message>
-      <!-- <message name="IDS_BRAVE_UI_DONATION_AMOUNT" desc="Tipping amount screen title">
-        Tip amount
-      </message> -->
-      <!-- <message name="IDS_BRAVE_UI_WALLET_BALANCE" desc="Wallet balance on tipping screen">
-        Rewards balance:
-      </message>
-      <message name="IDS_BRAVE_UI_SEND_TIP" desc="Send my tip button text">
-        send my tip
-      </message>
-      <message name="IDS_BRAVE_UI_MAKE_MONTHLY" desc="A button to make monthly tipping">
-        Make this monthly
-      </message> -->
       <message name="IDS_BRAVE_CANCEL" desc="Set default browser modal button text">
         Cancel
       </message>
@@ -722,15 +710,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_UI_NOT_ENOUGH_TOKENS" desc="Message if not enough tokens to make a tip">
         not enough <ph name="TOKEN">%1$s<ex>token</ex></ph>s
       </message>
-      <!-- <message name="IDS_BRAVE_UI_PLEASE" desc="Part of a message about not enough tokens to pay">
-        please
-      </message> -->
-      <!-- <message name="IDS_BRAVE_UI_ADD_FUNDS" desc="Part of a message about not enough tokens to pay">
-        add funds
-      </message> -->
-      <!-- <message name="IDS_BRAVE_UI_DO_MONTHLY" desc="Set monthly tip button text">
-        set monthly tip
-      </message> -->
       <message name="IDS_BRAVE_ADS_EXISTING_USER_OFFER_TITLE" desc="Title for Brave Ads offer.">
         Brave Ads are here!
       </message>
@@ -1568,15 +1547,6 @@ Are you sure you want to do this?
       <message name="IDS_VALUE_5_BAT" desc="value for 5 BAT">
         5 BAT
       </message>
-      <!-- <message name="IDS_VALUE_10_BAT" desc="value for 10 BAT">
-        10 BAT
-      </message>
-      <message name="IDS_VALUE_0_BAT" desc="value for 0 BAT">
-        0.00 BAT
-      </message>
-      <message name="IDS_VALUE_0_USD" desc="value for 0 USD">
-        0.00 USD
-      </message> -->
       <message name="IDS_SETTINGS_WEBRTC_POLICY_LABEL" desc="WebRTC policy setting label">
         WebRTC IP handling policy
       </message>
@@ -1694,12 +1664,6 @@ Are you sure you want to do this?
     <message name="IDS_ALL" desc="Brave Wallet graph duration text">
       ALL
     </message>
-    <!-- <message name="IDS_ALL_SET" desc="Brave Wallet onboarding text">
-      All set!
-    </message>
-    <message name="IDS_ADD_ACCOUNT_DIALOG_TEXT" desc="Brave Wallet onboarding text">
-      Buy, trade, or hold crypto. If you have an existing crypto account you may add it now.
-    </message> -->
     <message name="IDS_NEW_ACCOUNT_PREFIX" desc="Brave Wallet new account default name prefix">
       <ph name="ACCOUNT_NAME">%1$s<ex>Ethereum</ex></ph> Account <ph name="ACCOUNT_NUMBER">%2$s<ex>2</ex></ph>
     </message>
