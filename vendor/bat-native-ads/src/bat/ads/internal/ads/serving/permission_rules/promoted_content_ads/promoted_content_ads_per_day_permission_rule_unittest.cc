@@ -20,8 +20,6 @@ class BatAdsPromotedContentAdsPerDayPermissionRuleTest : public UnitTestBase {
  protected:
   BatAdsPromotedContentAdsPerDayPermissionRuleTest() = default;
 
-  ~BatAdsPromotedContentAdsPerDayPermissionRuleTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

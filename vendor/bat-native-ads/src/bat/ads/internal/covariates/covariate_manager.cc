@@ -160,7 +160,7 @@ bool CovariateManager::HasInstance() {
 void CovariateManager::SetLogEntry(
     std::unique_ptr<CovariateLogEntryInterface> entry) {
   DCHECK(entry);
-  brave_federated::mojom::CovariateType key = entry->GetType();
+  const brave_federated::mojom::CovariateType key = entry->GetType();
   covariate_log_entries_[key] = std::move(entry);
 }
 

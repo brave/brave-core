@@ -9,18 +9,22 @@ namespace ads::security {
 
 KeyPairInfo::KeyPairInfo() = default;
 
-KeyPairInfo::KeyPairInfo(const KeyPairInfo& info) = default;
+KeyPairInfo::KeyPairInfo(const KeyPairInfo& other) = default;
 
-KeyPairInfo& KeyPairInfo::operator=(const KeyPairInfo& info) = default;
+KeyPairInfo& KeyPairInfo::operator=(const KeyPairInfo& other) = default;
+
+KeyPairInfo::KeyPairInfo(KeyPairInfo&& other) noexcept = default;
+
+KeyPairInfo& KeyPairInfo::operator=(KeyPairInfo&& other) noexcept = default;
 
 KeyPairInfo::~KeyPairInfo() = default;
 
-bool KeyPairInfo::operator==(const KeyPairInfo& rhs) const {
-  return public_key == rhs.public_key && secret_key == rhs.secret_key;
+bool KeyPairInfo::operator==(const KeyPairInfo& other) const {
+  return public_key == other.public_key && secret_key == other.secret_key;
 }
 
-bool KeyPairInfo::operator!=(const KeyPairInfo& rhs) const {
-  return !(*this == rhs);
+bool KeyPairInfo::operator!=(const KeyPairInfo& other) const {
+  return !(*this == other);
 }
 
 bool KeyPairInfo::IsValid() const {

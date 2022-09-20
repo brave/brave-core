@@ -16,12 +16,7 @@
 
 namespace ads {
 
-class BatAdsNetworkConnectionPermissionRuleTest : public UnitTestBase {
- protected:
-  BatAdsNetworkConnectionPermissionRuleTest() = default;
-
-  ~BatAdsNetworkConnectionPermissionRuleTest() override = default;
-};
+class BatAdsNetworkConnectionPermissionRuleTest : public UnitTestBase {};
 
 TEST_F(BatAdsNetworkConnectionPermissionRuleTest, AllowAd) {
   // Arrange

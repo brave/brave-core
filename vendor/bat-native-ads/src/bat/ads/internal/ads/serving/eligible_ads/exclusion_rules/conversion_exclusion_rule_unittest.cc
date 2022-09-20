@@ -23,12 +23,7 @@ const std::vector<std::string> kCreativeSetIds = {
     "465f10df-fbc4-4a92-8d43-4edf73734a60"};
 }  // namespace
 
-class BatAdsConversionExclusionRuleTest : public UnitTestBase {
- protected:
-  BatAdsConversionExclusionRuleTest() = default;
-
-  ~BatAdsConversionExclusionRuleTest() override = default;
-};
+class BatAdsConversionExclusionRuleTest : public UnitTestBase {};
 
 TEST_F(BatAdsConversionExclusionRuleTest, AllowAdIfThereIsNoConversionHistory) {
   // Arrange

@@ -13,7 +13,7 @@
 namespace ads::database {
 
 void DeleteCreativeNewTabPageAds() {
-  table::CreativeNewTabPageAds database_table;
+  const table::CreativeNewTabPageAds database_table;
   database_table.Delete(base::BindOnce([](const bool success) {
     if (!success) {
       BLOG(0, "Failed to delete creative new tab page ads");
@@ -25,7 +25,7 @@ void DeleteCreativeNewTabPageAds() {
 }
 
 void DeleteCreativeNewTabPageAdWallpapers() {
-  table::CreativeNewTabPageAdWallpapers database_table;
+  const table::CreativeNewTabPageAdWallpapers database_table;
   database_table.Delete(base::BindOnce([](const bool success) {
     if (!success) {
       BLOG(0, "Failed to delete creative new tab page ad wallpapers");

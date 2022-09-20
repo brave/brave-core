@@ -26,10 +26,14 @@ class UserActivityManager final : public BrowserManagerObserver,
                                   public TabManagerObserver {
  public:
   UserActivityManager();
-  ~UserActivityManager() override;
 
-  UserActivityManager(const UserActivityManager&) = delete;
-  UserActivityManager& operator=(const UserActivityManager&) = delete;
+  UserActivityManager(const UserActivityManager& other) = delete;
+  UserActivityManager& operator=(const UserActivityManager& other) = delete;
+
+  UserActivityManager(UserActivityManager&& other) noexcept = delete;
+  UserActivityManager& operator=(UserActivityManager&& other) noexcept = delete;
+
+  ~UserActivityManager() override;
 
   static UserActivityManager* GetInstance();
 

@@ -7,16 +7,6 @@
 
 namespace ads {
 
-FilteredAdvertiserInfo::FilteredAdvertiserInfo() = default;
-
-FilteredAdvertiserInfo::FilteredAdvertiserInfo(
-    const FilteredAdvertiserInfo& info) = default;
-
-FilteredAdvertiserInfo& FilteredAdvertiserInfo::operator=(
-    const FilteredAdvertiserInfo& info) = default;
-
-FilteredAdvertiserInfo::~FilteredAdvertiserInfo() = default;
-
 base::Value::Dict FilteredAdvertiserInfo::ToValue() const {
   base::Value::Dict dict;
   dict.Set("id", id);

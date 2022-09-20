@@ -22,8 +22,13 @@ namespace resource {
 class TextClassification final {
  public:
   TextClassification();
-  TextClassification(const TextClassification&) = delete;
-  TextClassification& operator=(const TextClassification&) = delete;
+
+  TextClassification(const TextClassification& other) = delete;
+  TextClassification& operator=(const TextClassification& other) = delete;
+
+  TextClassification(TextClassification&& other) noexcept = delete;
+  TextClassification& operator=(TextClassification&& other) noexcept = delete;
+
   ~TextClassification();
 
   bool IsInitialized() const;

@@ -12,12 +12,7 @@
 
 namespace ads::confirmations {
 
-class BatAdsLegacyConfirmationMigrationUtilTest : public UnitTestBase {
- protected:
-  BatAdsLegacyConfirmationMigrationUtilTest() = default;
-
-  ~BatAdsLegacyConfirmationMigrationUtilTest() override = default;
-};
+class BatAdsLegacyConfirmationMigrationUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsLegacyConfirmationMigrationUtilTest, HasMigrated) {
   // Arrange

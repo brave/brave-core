@@ -38,7 +38,7 @@ absl::optional<TransformationVector> ParsePipelineTransformations(
       return absl::nullopt;
     }
 
-    std::string parsed_transformation_type = *transformation_type;
+    const std::string parsed_transformation_type = *transformation_type;
 
     if (parsed_transformation_type == "TO_LOWER") {
       transformations->push_back(std::make_unique<LowercaseTransformation>());
@@ -62,7 +62,7 @@ absl::optional<TransformationVector> ParsePipelineTransformations(
       if (!nb) {
         return absl::nullopt;
       }
-      int num_buckets = *nb;
+      const int num_buckets = *nb;
 
       const base::Value* ngram_sizes =
           transformation_params->FindListKey("ngrams_range");
@@ -99,7 +99,7 @@ absl::optional<model::Linear> ParsePipelineClassifier(
     return absl::nullopt;
   }
 
-  std::string parsed_classifier_type = *classifier_type;
+  const std::string parsed_classifier_type = *classifier_type;
 
   if (parsed_classifier_type != "LINEAR") {
     return absl::nullopt;

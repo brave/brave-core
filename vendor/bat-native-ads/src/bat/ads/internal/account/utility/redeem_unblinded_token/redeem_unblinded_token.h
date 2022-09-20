@@ -22,9 +22,15 @@ struct ConfirmationInfo;
 class RedeemUnblindedToken final {
  public:
   RedeemUnblindedToken();
+
+  RedeemUnblindedToken(const RedeemUnblindedToken& other) = delete;
+  RedeemUnblindedToken& operator=(const RedeemUnblindedToken& other) = delete;
+
+  RedeemUnblindedToken(RedeemUnblindedToken&& other) noexcept = delete;
+  RedeemUnblindedToken& operator=(RedeemUnblindedToken&& other) noexcept =
+      delete;
+
   ~RedeemUnblindedToken();
-  RedeemUnblindedToken(const RedeemUnblindedToken&) = delete;
-  RedeemUnblindedToken& operator=(const RedeemUnblindedToken&) = delete;
 
   void SetDelegate(RedeemUnblindedTokenDelegate* delegate) {
     DCHECK_EQ(delegate_, nullptr);

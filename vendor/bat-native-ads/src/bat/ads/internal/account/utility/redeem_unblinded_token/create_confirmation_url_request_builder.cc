@@ -23,9 +23,6 @@ CreateConfirmationUrlRequestBuilder::CreateConfirmationUrlRequestBuilder(
   DCHECK(IsValid(confirmation_));
 }
 
-CreateConfirmationUrlRequestBuilder::~CreateConfirmationUrlRequestBuilder() =
-    default;
-
 // POST /v2/confirmation/{transactionId}/{credential}
 
 mojom::UrlRequestInfoPtr CreateConfirmationUrlRequestBuilder::Build() {

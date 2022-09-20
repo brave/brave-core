@@ -28,9 +28,14 @@ using FireAdEventHandlerCallback =
 class EventHandler final : public EventHandlerObserver {
  public:
   EventHandler();
+
+  EventHandler(const EventHandler& other) = delete;
+  EventHandler& operator=(const EventHandler& other) = delete;
+
+  EventHandler(EventHandler&& other) noexcept = delete;
+  EventHandler& operator=(EventHandler&& other) noexcept = delete;
+
   ~EventHandler() override;
-  EventHandler(const EventHandler&) = delete;
-  EventHandler& operator=(const EventHandler&) = delete;
 
   void AddObserver(EventHandlerObserver* observer);
   void RemoveObserver(EventHandlerObserver* observer);

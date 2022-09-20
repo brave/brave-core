@@ -15,13 +15,6 @@ namespace ads {
 class CatalogLastUpdatedDiagnosticEntry final
     : public DiagnosticEntryInterface {
  public:
-  CatalogLastUpdatedDiagnosticEntry();
-  CatalogLastUpdatedDiagnosticEntry(const CatalogLastUpdatedDiagnosticEntry&) =
-      delete;
-  CatalogLastUpdatedDiagnosticEntry& operator=(
-      const CatalogLastUpdatedDiagnosticEntry&) = delete;
-  ~CatalogLastUpdatedDiagnosticEntry() override;
-
   // DiagnosticEntryInterface:
   DiagnosticEntryType GetType() const override;
   std::string GetName() const override;

@@ -14,19 +14,13 @@
 namespace ads {
 
 class PlatformHelperAndroid final : public PlatformHelper {
- public:
-  ~PlatformHelperAndroid() override;
-
-  PlatformHelperAndroid(const PlatformHelperAndroid&) = delete;
-  PlatformHelperAndroid& operator=(const PlatformHelperAndroid&) = delete;
-
  protected:
   friend class base::NoDestructor<PlatformHelperAndroid>;
 
   PlatformHelperAndroid();
 
  private:
-  // PlatformHelper impl
+  // PlatformHelper:
   bool IsMobile() const override;
   std::string GetName() const override;
   PlatformType GetType() const override;

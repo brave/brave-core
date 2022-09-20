@@ -16,10 +16,16 @@ namespace ads {
 
 AdPreferencesInfo::AdPreferencesInfo() = default;
 
-AdPreferencesInfo::AdPreferencesInfo(const AdPreferencesInfo& info) = default;
+AdPreferencesInfo::AdPreferencesInfo(const AdPreferencesInfo& other) = default;
 
-AdPreferencesInfo& AdPreferencesInfo::operator=(const AdPreferencesInfo& info) =
+AdPreferencesInfo& AdPreferencesInfo::operator=(
+    const AdPreferencesInfo& other) = default;
+
+AdPreferencesInfo::AdPreferencesInfo(AdPreferencesInfo&& other) noexcept =
     default;
+
+AdPreferencesInfo& AdPreferencesInfo::operator=(
+    AdPreferencesInfo&& other) noexcept = default;
 
 AdPreferencesInfo::~AdPreferencesInfo() = default;
 

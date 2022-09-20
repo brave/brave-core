@@ -15,8 +15,6 @@ class BatAdsTabManagerTest : public TabManagerObserver, public UnitTestBase {
  protected:
   BatAdsTabManagerTest() = default;
 
-  ~BatAdsTabManagerTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

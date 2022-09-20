@@ -21,11 +21,6 @@ using GetTextEmbeddingHtmlEventsCallback =
 
 class TextEmbeddingHtmlEvents final : public TableInterface {
  public:
-  TextEmbeddingHtmlEvents();
-  ~TextEmbeddingHtmlEvents() override;
-  TextEmbeddingHtmlEvents(const TextEmbeddingHtmlEvents&) = delete;
-  TextEmbeddingHtmlEvents& operator=(const TextEmbeddingHtmlEvents&) = delete;
-
   void LogEvent(const TextEmbeddingHtmlEventInfo& text_embedding_html_event,
                 ResultCallback callback);
 

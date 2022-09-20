@@ -13,12 +13,4 @@ CommandLineSwitchInfo::CommandLineSwitchInfo(const std::string& key,
                                              const std::string& value)
     : key(key), value(value) {}
 
-CommandLineSwitchInfo::CommandLineSwitchInfo(
-    const CommandLineSwitchInfo& info) = default;
-
-CommandLineSwitchInfo& CommandLineSwitchInfo::operator=(
-    const CommandLineSwitchInfo& info) = default;
-
-CommandLineSwitchInfo::~CommandLineSwitchInfo() = default;
-
 }  // namespace ads

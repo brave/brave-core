@@ -16,12 +16,7 @@
 
 namespace ads {
 
-class BatAdsIdleTimeTest : public UnitTestBase {
- protected:
-  BatAdsIdleTimeTest() = default;
-
-  ~BatAdsIdleTimeTest() override = default;
-};
+class BatAdsIdleTimeTest : public UnitTestBase {};
 
 TEST_F(BatAdsIdleTimeTest, WasLocked) {
   // Arrange

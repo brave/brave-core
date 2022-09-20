@@ -12,7 +12,7 @@
 namespace ads::database {
 
 void DeleteDayparts() {
-  table::Dayparts database_table;
+  const table::Dayparts database_table;
   database_table.Delete(base::BindOnce([](const bool success) {
     if (!success) {
       BLOG(0, "Failed to delete dayparts");

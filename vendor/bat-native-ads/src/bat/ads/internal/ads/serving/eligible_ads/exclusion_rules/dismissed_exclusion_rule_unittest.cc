@@ -27,12 +27,7 @@ const std::vector<std::string> kCampaignIds = {
 
 }  // namespace
 
-class BatAdsDismissedExclusionRuleTest : public UnitTestBase {
- protected:
-  BatAdsDismissedExclusionRuleTest() = default;
-
-  ~BatAdsDismissedExclusionRuleTest() override = default;
-};
+class BatAdsDismissedExclusionRuleTest : public UnitTestBase {};
 
 TEST_F(BatAdsDismissedExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   // Arrange

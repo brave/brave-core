@@ -15,12 +15,17 @@ namespace ads {
 
 struct IssuerInfo final {
   IssuerInfo();
-  IssuerInfo(const IssuerInfo& info);
-  IssuerInfo& operator=(const IssuerInfo& info);
+
+  IssuerInfo(const IssuerInfo& other);
+  IssuerInfo& operator=(const IssuerInfo& other);
+
+  IssuerInfo(IssuerInfo&& other) noexcept;
+  IssuerInfo& operator=(IssuerInfo&& other) noexcept;
+
   ~IssuerInfo();
 
-  bool operator==(const IssuerInfo& rhs) const;
-  bool operator!=(const IssuerInfo& rhs) const;
+  bool operator==(const IssuerInfo& other) const;
+  bool operator!=(const IssuerInfo& other) const;
 
   IssuerType type = IssuerType::kUndefined;
   PublicKeyMap public_keys;

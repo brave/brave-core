@@ -41,8 +41,6 @@ class BatAdsNewTabPageAdEventHandlerTest : public EventHandlerObserver,
  protected:
   BatAdsNewTabPageAdEventHandlerTest() = default;
 
-  ~BatAdsNewTabPageAdEventHandlerTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 
@@ -80,7 +78,7 @@ class BatAdsNewTabPageAdEventHandlerTest : public EventHandlerObserver,
 
   CreativeNewTabPageAdInfo BuildAndSaveCreativeAd() {
     CreativeNewTabPageAdList creative_ads;
-    const CreativeNewTabPageAdInfo creative_ad = BuildCreativeNewTabPageAd();
+    CreativeNewTabPageAdInfo creative_ad = BuildCreativeNewTabPageAd();
     creative_ads.push_back(creative_ad);
 
     SaveCreativeAds(creative_ads);

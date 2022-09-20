@@ -13,9 +13,16 @@ namespace ads::privacy {
 class UnblindedPaymentTokens final {
  public:
   UnblindedPaymentTokens();
+
+  UnblindedPaymentTokens(const UnblindedPaymentTokens& other) = delete;
+  UnblindedPaymentTokens& operator=(const UnblindedPaymentTokens& other) =
+      delete;
+
+  UnblindedPaymentTokens(UnblindedPaymentTokens&& other) noexcept = delete;
+  UnblindedPaymentTokens& operator=(UnblindedPaymentTokens&& other) noexcept =
+      delete;
+
   ~UnblindedPaymentTokens();
-  UnblindedPaymentTokens(const UnblindedPaymentTokens&) = delete;
-  UnblindedPaymentTokens& operator=(const UnblindedPaymentTokens&) = delete;
 
   const UnblindedPaymentTokenInfo& GetToken() const;
   const UnblindedPaymentTokenList& GetAllTokens() const;

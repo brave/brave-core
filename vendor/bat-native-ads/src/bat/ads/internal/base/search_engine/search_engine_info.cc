@@ -7,20 +7,11 @@
 
 namespace ads {
 
-SearchEngineInfo::SearchEngineInfo() = default;
-
 SearchEngineInfo::SearchEngineInfo(const std::string& url_pattern,
                                    const std::string& result_page_url_pattern,
                                    const std::string& search_term_query_key)
     : url_pattern(url_pattern),
       result_page_url_pattern(result_page_url_pattern),
       search_term_query_key(search_term_query_key) {}
-
-SearchEngineInfo::SearchEngineInfo(const SearchEngineInfo& info) = default;
-
-SearchEngineInfo& SearchEngineInfo::operator=(const SearchEngineInfo& info) =
-    default;
-
-SearchEngineInfo::~SearchEngineInfo() = default;
 
 }  // namespace ads

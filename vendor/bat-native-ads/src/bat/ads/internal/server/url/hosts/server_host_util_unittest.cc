@@ -13,12 +13,7 @@
 
 namespace ads {
 
-class BatAdsServerHostUtilTest : public UnitTestBase {
- protected:
-  BatAdsServerHostUtilTest() = default;
-
-  ~BatAdsServerHostUtilTest() override = default;
-};
+class BatAdsServerHostUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsServerHostUtilTest, GetStaticHost) {
   // Arrange

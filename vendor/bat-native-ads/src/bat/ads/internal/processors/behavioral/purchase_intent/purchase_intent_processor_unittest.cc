@@ -20,12 +20,7 @@
 
 namespace ads {
 
-class BatAdsPurchaseIntentProcessorTest : public UnitTestBase {
- protected:
-  BatAdsPurchaseIntentProcessorTest() = default;
-
-  ~BatAdsPurchaseIntentProcessorTest() override = default;
-};
+class BatAdsPurchaseIntentProcessorTest : public UnitTestBase {};
 
 TEST_F(BatAdsPurchaseIntentProcessorTest,
        DoNotProcessIfResourceIsNotInitialized) {
@@ -69,7 +64,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, NeverProcessed) {
   task_environment_.RunUntilIdle();
 
   // Act
-  targeting::model::PurchaseIntent model;
+  const targeting::model::PurchaseIntent model;
   const SegmentList segments = model.GetSegments();
 
   // Assert

@@ -16,11 +16,6 @@ namespace search_result_ads {
 
 class AdEventViewed final : public AdEventInterface<SearchResultAdInfo> {
  public:
-  AdEventViewed();
-  ~AdEventViewed() override;
-  AdEventViewed(const AdEventViewed&) = delete;
-  AdEventViewed& operator=(const AdEventViewed&) = delete;
-
   void FireEvent(const SearchResultAdInfo& ad) override;
 };
 

@@ -20,12 +20,7 @@ constexpr char kExpectedJson[] =
 
 }  // namespace
 
-class BatAdsConfirmationPayloadJsonWriterTest : public UnitTestBase {
- protected:
-  BatAdsConfirmationPayloadJsonWriterTest() = default;
-
-  ~BatAdsConfirmationPayloadJsonWriterTest() override = default;
-};
+class BatAdsConfirmationPayloadJsonWriterTest : public UnitTestBase {};
 
 TEST_F(BatAdsConfirmationPayloadJsonWriterTest, WriteJson) {
   // Arrange

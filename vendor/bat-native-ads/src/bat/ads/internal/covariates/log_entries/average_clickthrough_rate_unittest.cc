@@ -17,19 +17,14 @@
 namespace ads {
 
 class BatAdsFederatedLogEntriesAverageClickthroughRateTest
-    : public UnitTestBase {
- protected:
-  BatAdsFederatedLogEntriesAverageClickthroughRateTest() = default;
-
-  ~BatAdsFederatedLogEntriesAverageClickthroughRateTest() override = default;
-};
+    : public UnitTestBase {};
 
 TEST_F(BatAdsFederatedLogEntriesAverageClickthroughRateTest, GetDataType) {
   std::unique_ptr<CovariateLogEntryInterface> entry =
       std::make_unique<AverageClickthroughRate>(base::Days(7));
 
   // Act
-  brave_federated::mojom::DataType data_type = entry->GetDataType();
+  const brave_federated::mojom::DataType data_type = entry->GetDataType();
 
   // Assert
   EXPECT_EQ(brave_federated::mojom::DataType::kDouble, data_type);

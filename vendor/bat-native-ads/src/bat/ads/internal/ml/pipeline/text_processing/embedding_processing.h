@@ -26,11 +26,6 @@ class EmbeddingProcessing final {
       base::Value resource_value,
       std::string* error_message);
 
-  EmbeddingProcessing();
-  ~EmbeddingProcessing();
-  EmbeddingProcessing(const EmbeddingProcessing& pipeline) = delete;
-  EmbeddingProcessing& operator=(const EmbeddingProcessing& pipeline) = delete;
-
   bool IsInitialized() const;
 
   bool SetEmbeddingPipeline(base::Value resource_value);

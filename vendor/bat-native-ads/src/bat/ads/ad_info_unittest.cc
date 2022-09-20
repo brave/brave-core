@@ -12,12 +12,7 @@
 
 namespace ads {
 
-class BatAdsAdInfoTest : public UnitTestBase {
- protected:
-  BatAdsAdInfoTest() = default;
-
-  ~BatAdsAdInfoTest() override = default;
-};
+class BatAdsAdInfoTest : public UnitTestBase {};
 
 TEST_F(BatAdsAdInfoTest, IsValid) {
   // Arrange

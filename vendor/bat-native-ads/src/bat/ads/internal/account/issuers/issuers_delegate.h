@@ -14,8 +14,6 @@ struct IssuersInfo;
 
 class IssuersDelegate {
  public:
-  virtual ~IssuersDelegate() = default;
-
   // Invoked to tell the delegate we successfully fetched the |issuers|.
   virtual void OnDidFetchIssuers(const IssuersInfo& issuers) {}
 
@@ -28,6 +26,9 @@ class IssuersDelegate {
 
   // Invoked to tell the delegate we retried fetching the issuers.
   virtual void OnDidRetryFetchingIssuers() {}
+
+ protected:
+  virtual ~IssuersDelegate() = default;
 };
 
 }  // namespace ads

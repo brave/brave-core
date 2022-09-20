@@ -14,12 +14,7 @@
 
 namespace ads {
 
-class BatAdsGetSignedTokensUrlRequestBuilderTest : public UnitTestBase {
- protected:
-  BatAdsGetSignedTokensUrlRequestBuilderTest() = default;
-
-  ~BatAdsGetSignedTokensUrlRequestBuilderTest() override = default;
-};
+class BatAdsGetSignedTokensUrlRequestBuilderTest : public UnitTestBase {};
 
 TEST_F(BatAdsGetSignedTokensUrlRequestBuilderTest, BuildUrl) {
   // Arrange
@@ -36,7 +31,7 @@ TEST_F(BatAdsGetSignedTokensUrlRequestBuilderTest, BuildUrl) {
   GetSignedTokensUrlRequestBuilder url_request_builder(wallet, nonce);
 
   // Act
-  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestInfoPtr const url_request = url_request_builder.Build();
 
   // Assert
   mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();

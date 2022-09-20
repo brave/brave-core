@@ -32,7 +32,7 @@ TEST_F(BatAdsFederatedLogEntriesTimeSinceLastUserActivityEventTest,
       brave_federated::mojom::CovariateType::kTimeSinceLastOpenedNewTabEvent);
 
   // Act
-  brave_federated::mojom::DataType data_type = entry->GetDataType();
+  const brave_federated::mojom::DataType data_type = entry->GetDataType();
 
   // Assert
   EXPECT_EQ(brave_federated::mojom::DataType::kInt, data_type);

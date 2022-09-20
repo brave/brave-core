@@ -68,10 +68,6 @@ std::map<std::string, HistoryItemInfo> BuildBuckets(
 
 }  // namespace
 
-ConfirmationHistoryFilter::ConfirmationHistoryFilter() = default;
-
-ConfirmationHistoryFilter::~ConfirmationHistoryFilter() = default;
-
 HistoryItemList ConfirmationHistoryFilter::Apply(
     const HistoryItemList& history) const {
   const std::map<std::string, HistoryItemInfo> buckets = BuildBuckets(history);

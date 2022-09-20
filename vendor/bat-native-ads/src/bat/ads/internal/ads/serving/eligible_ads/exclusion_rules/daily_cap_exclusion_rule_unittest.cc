@@ -23,12 +23,7 @@ const std::vector<std::string> kCampaignIds = {
 
 }  // namespace
 
-class BatAdsDailyCapExclusionRuleTest : public UnitTestBase {
- protected:
-  BatAdsDailyCapExclusionRuleTest() = default;
-
-  ~BatAdsDailyCapExclusionRuleTest() override = default;
-};
+class BatAdsDailyCapExclusionRuleTest : public UnitTestBase {};
 
 TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   // Arrange

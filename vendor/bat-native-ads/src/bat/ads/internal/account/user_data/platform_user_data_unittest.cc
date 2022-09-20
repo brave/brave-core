@@ -13,12 +13,7 @@
 
 namespace ads::user_data {
 
-class BatAdsPlatformUserDataTest : public UnitTestBase {
- protected:
-  BatAdsPlatformUserDataTest() = default;
-
-  ~BatAdsPlatformUserDataTest() override = default;
-};
+class BatAdsPlatformUserDataTest : public UnitTestBase {};
 
 TEST_F(BatAdsPlatformUserDataTest, GetPlatform) {
   // Arrange

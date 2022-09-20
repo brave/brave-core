@@ -26,10 +26,6 @@ constexpr char kSearchResultAdType[] = "search_result_ad";
 
 AdType::AdType() = default;
 
-AdType::AdType(const AdType&) = default;
-
-AdType& AdType::operator=(const AdType&) = default;
-
 AdType::AdType(const std::string& value) {
   if (value == kUndefinedType) {
     value_ = kUndefined;
@@ -119,12 +115,12 @@ std::string AdType::ToString() const {
   return kUndefinedType;
 }
 
-bool AdType::operator==(const AdType& rhs) const {
-  return value_ == rhs.value_;
+bool AdType::operator==(const AdType& other) const {
+  return value_ == other.value_;
 }
 
-bool AdType::operator!=(const AdType& rhs) const {
-  return value_ != rhs.value_;
+bool AdType::operator!=(const AdType& other) const {
+  return value_ != other.value_;
 }
 
 std::ostream& operator<<(std::ostream& os, const AdType& type) {

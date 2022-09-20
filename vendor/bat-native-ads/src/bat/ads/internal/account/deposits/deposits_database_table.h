@@ -24,11 +24,6 @@ using GetDepositsCallback =
 
 class Deposits final : public TableInterface {
  public:
-  Deposits();
-  ~Deposits() override;
-  Deposits(const Deposits&) = delete;
-  Deposits& operator=(const Deposits&) = delete;
-
   void Save(const DepositInfo& deposit, ResultCallback callback);
 
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,

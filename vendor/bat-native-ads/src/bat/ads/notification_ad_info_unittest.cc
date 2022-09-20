@@ -14,12 +14,7 @@
 
 namespace ads {
 
-class BatAdsNotificationAdInfoTest : public UnitTestBase {
- protected:
-  BatAdsNotificationAdInfoTest() = default;
-
-  ~BatAdsNotificationAdInfoTest() override = default;
-};
+class BatAdsNotificationAdInfoTest : public UnitTestBase {};
 
 TEST_F(BatAdsNotificationAdInfoTest, IsValid) {
   // Arrange

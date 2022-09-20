@@ -23,8 +23,6 @@ class BatAdsWalletTest : public UnitTestBase {
  protected:
   BatAdsWalletTest() = default;
 
-  ~BatAdsWalletTest() override = default;
-
   bool SetWallet(const std::string& id, const std::string& seed) {
     return wallet_.Set(id, seed);
   }

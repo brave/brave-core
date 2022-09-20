@@ -22,12 +22,7 @@ namespace {
 constexpr char kCatalog[] = "catalog.json";
 }  // namespace
 
-class BatAdsEpsilonGreedyBanditResourceTest : public UnitTestBase {
- protected:
-  BatAdsEpsilonGreedyBanditResourceTest() = default;
-
-  ~BatAdsEpsilonGreedyBanditResourceTest() override = default;
-};
+class BatAdsEpsilonGreedyBanditResourceTest : public UnitTestBase {};
 
 TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
        SuccessfullyInitializeWithCatalog) {
@@ -54,7 +49,7 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
        SuccessfullyInitializeWithEmptyCatalog) {
   // Arrange
   Catalog catalog;
-  CatalogInfo catalog_info;
+  const CatalogInfo catalog_info;
 
   // Act
   EpsilonGreedyBandit resource(&catalog);
@@ -70,7 +65,7 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
   Catalog catalog;
 
   // Act
-  EpsilonGreedyBandit resource(&catalog);
+  const EpsilonGreedyBandit resource(&catalog);
 
   // Assert
   EXPECT_FALSE(resource.IsInitialized());

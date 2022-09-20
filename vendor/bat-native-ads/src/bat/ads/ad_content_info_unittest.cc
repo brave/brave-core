@@ -12,12 +12,7 @@
 
 namespace ads {
 
-class BatAdsAdContentInfoTest : public UnitTestBase {
- protected:
-  BatAdsAdContentInfoTest() = default;
-
-  ~BatAdsAdContentInfoTest() override = default;
-};
+class BatAdsAdContentInfoTest : public UnitTestBase {};
 
 TEST_F(BatAdsAdContentInfoTest, ToggleThumbUp) {
   // Arrange
@@ -47,7 +42,7 @@ TEST_F(BatAdsAdContentInfoTest, ToggleThumbUpToNetrual) {
 
 TEST_F(BatAdsAdContentInfoTest, ToggleThumbDown) {
   // Arrange
-  AdContentInfo ad_content;
+  const AdContentInfo ad_content;
 
   // Act
   const AdContentLikeActionType like_action_type =

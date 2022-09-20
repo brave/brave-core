@@ -12,11 +12,6 @@ namespace ads {
 
 class AscendingHistorySort final : public HistorySortInterface {
  public:
-  AscendingHistorySort();
-  ~AscendingHistorySort() override;
-  AscendingHistorySort(const AscendingHistorySort&) = delete;
-  AscendingHistorySort& operator=(const AscendingHistorySort&) = delete;
-
   HistoryItemList Apply(const HistoryItemList& history) const override;
 };
 

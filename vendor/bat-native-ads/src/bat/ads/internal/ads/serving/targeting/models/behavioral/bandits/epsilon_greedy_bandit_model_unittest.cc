@@ -20,12 +20,7 @@
 
 namespace ads::targeting::model {
 
-class BatAdsEpsilonGreedyBanditModelTest : public UnitTestBase {
- protected:
-  BatAdsEpsilonGreedyBanditModelTest() = default;
-
-  ~BatAdsEpsilonGreedyBanditModelTest() override = default;
-};
+class BatAdsEpsilonGreedyBanditModelTest : public UnitTestBase {};
 
 TEST_F(BatAdsEpsilonGreedyBanditModelTest,
        GetSegmentsIfProcessorNeverInitialized) {
@@ -33,7 +28,7 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest,
   resource::SetEpsilonGreedyBanditEligibleSegments(kSegments);
 
   // Act
-  EpsilonGreedyBandit model;
+  const EpsilonGreedyBandit model;
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -46,10 +41,10 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, EligableSegmentsAreEmpty) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       features::kEpsilonGreedyBandit, {{"epsilon_value", "0.5"}});
 
-  processor::EpsilonGreedyBandit processor;
+  const processor::EpsilonGreedyBandit processor;
 
   // Act
-  EpsilonGreedyBandit model;
+  const EpsilonGreedyBandit model;
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -64,10 +59,10 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsIfNeverProcessed) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       features::kEpsilonGreedyBandit, {{"epsilon_value", "0.25"}});
 
-  processor::EpsilonGreedyBandit processor;
+  const processor::EpsilonGreedyBandit processor;
 
   // Act
-  EpsilonGreedyBandit model;
+  const EpsilonGreedyBandit model;
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -90,7 +85,7 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploration) {
   processor.Process({segment_2, mojom::NotificationAdEventType::kClicked});
 
   // Act
-  EpsilonGreedyBandit model;
+  const EpsilonGreedyBandit model;
   const SegmentList segments = model.GetSegments();
 
   // Exploration is non-deterministic, so can only verify the number of
@@ -113,23 +108,23 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploitation) {
     processor.Process({segment, mojom::NotificationAdEventType::kDismissed});
   }
 
-  std::string segment_1 = "science";
+  const std::string segment_1 = "science";
   processor.Process({segment_1, mojom::NotificationAdEventType::kClicked});
   processor.Process({segment_1, mojom::NotificationAdEventType::kClicked});
   processor.Process({segment_1, mojom::NotificationAdEventType::kClicked});
 
-  std::string segment_2 = "travel";
+  const std::string segment_2 = "travel";
   processor.Process({segment_2, mojom::NotificationAdEventType::kDismissed});
   processor.Process({segment_2, mojom::NotificationAdEventType::kClicked});
   processor.Process({segment_2, mojom::NotificationAdEventType::kClicked});
 
-  std::string segment_3 = "technology & computing";
+  const std::string segment_3 = "technology & computing";
   processor.Process({segment_3, mojom::NotificationAdEventType::kDismissed});
   processor.Process({segment_3, mojom::NotificationAdEventType::kDismissed});
   processor.Process({segment_3, mojom::NotificationAdEventType::kClicked});
 
   // Act
-  EpsilonGreedyBandit model;
+  const EpsilonGreedyBandit model;
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -155,23 +150,23 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForEligibleSegments) {
     processor.Process({segment, mojom::NotificationAdEventType::kDismissed});
   }
 
-  std::string segment_1 = "science";
+  const std::string segment_1 = "science";
   processor.Process({segment_1, mojom::NotificationAdEventType::kClicked});
   processor.Process({segment_1, mojom::NotificationAdEventType::kClicked});
   processor.Process({segment_1, mojom::NotificationAdEventType::kClicked});
 
-  std::string segment_2 = "travel";
+  const std::string segment_2 = "travel";
   processor.Process({segment_2, mojom::NotificationAdEventType::kDismissed});
   processor.Process({segment_2, mojom::NotificationAdEventType::kClicked});
   processor.Process({segment_2, mojom::NotificationAdEventType::kClicked});
 
-  std::string segment_3 = "technology & computing";
+  const std::string segment_3 = "technology & computing";
   processor.Process({segment_3, mojom::NotificationAdEventType::kDismissed});
   processor.Process({segment_3, mojom::NotificationAdEventType::kDismissed});
   processor.Process({segment_3, mojom::NotificationAdEventType::kClicked});
 
   // Act
-  EpsilonGreedyBandit model;
+  const EpsilonGreedyBandit model;
   const SegmentList segments = model.GetSegments();
 
   // Assert

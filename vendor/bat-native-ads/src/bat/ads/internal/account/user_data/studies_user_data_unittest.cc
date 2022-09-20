@@ -31,21 +31,21 @@ TEST(BatAdsStudiesUserDataTest, GetStudiesForNoFieldTrials) {
 
 TEST(BatAdsStudiesUserDataTest, GetStudies) {
   // Arrange
-  std::string trial_name_1 = "BraveAdsFooStudy";
-  std::string group_name_1 = "GroupA";
-  scoped_refptr<base::FieldTrial> trial_1 =
+  const std::string trial_name_1 = "BraveAdsFooStudy";
+  const std::string group_name_1 = "GroupA";
+  const scoped_refptr<base::FieldTrial> trial_1 =
       base::FieldTrialList::CreateFieldTrial(trial_name_1, group_name_1);
   trial_1->group();
 
-  std::string trial_name_2 = "BarStudyForBraveAds";
-  std::string group_name_2 = "GroupB";
-  scoped_refptr<base::FieldTrial> trial_2 =
+  const std::string trial_name_2 = "BarStudyForBraveAds";
+  const std::string group_name_2 = "GroupB";
+  const scoped_refptr<base::FieldTrial> trial_2 =
       base::FieldTrialList::CreateFieldTrial(trial_name_2, group_name_2);
   trial_2->group();
 
-  std::string trial_name_3 = "FooBarStudy";
-  std::string group_name_3 = "GroupC";
-  scoped_refptr<base::FieldTrial> trial_3 =
+  const std::string trial_name_3 = "FooBarStudy";
+  const std::string group_name_3 = "GroupC";
+  const scoped_refptr<base::FieldTrial> trial_3 =
       base::FieldTrialList::CreateFieldTrial(trial_name_3, group_name_3);
   trial_3->group();
 

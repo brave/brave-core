@@ -7,24 +7,14 @@
 
 namespace ads {
 
-CatalogCreativeNewTabPageAdInfo::CatalogCreativeNewTabPageAdInfo() = default;
-
-CatalogCreativeNewTabPageAdInfo::CatalogCreativeNewTabPageAdInfo(
-    const CatalogCreativeNewTabPageAdInfo& info) = default;
-
-CatalogCreativeNewTabPageAdInfo& CatalogCreativeNewTabPageAdInfo::operator=(
-    const CatalogCreativeNewTabPageAdInfo& info) = default;
-
-CatalogCreativeNewTabPageAdInfo::~CatalogCreativeNewTabPageAdInfo() = default;
-
 bool CatalogCreativeNewTabPageAdInfo::operator==(
-    const CatalogCreativeNewTabPageAdInfo& rhs) const {
-  return CatalogCreativeInfo::operator==(rhs) && payload == rhs.payload;
+    const CatalogCreativeNewTabPageAdInfo& other) const {
+  return CatalogCreativeInfo::operator==(other) && payload == other.payload;
 }
 
 bool CatalogCreativeNewTabPageAdInfo::operator!=(
-    const CatalogCreativeNewTabPageAdInfo& rhs) const {
-  return !(*this == rhs);
+    const CatalogCreativeNewTabPageAdInfo& other) const {
+  return !(*this == other);
 }
 
 }  // namespace ads

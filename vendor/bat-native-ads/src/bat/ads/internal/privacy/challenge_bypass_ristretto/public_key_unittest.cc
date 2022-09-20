@@ -16,7 +16,7 @@ namespace ads::privacy::cbr {
 
 TEST(BatAdsPublicKeyTest, FailToInitialize) {
   // Arrange
-  PublicKey public_key;
+  const PublicKey public_key;
 
   // Act
   const bool has_value = public_key.has_value();
@@ -27,7 +27,7 @@ TEST(BatAdsPublicKeyTest, FailToInitialize) {
 
 TEST(BatAdsPublicKeyTest, FailToInitializeWithEmptyBase64) {
   // Arrange
-  PublicKey public_key("");
+  const PublicKey public_key("");
 
   // Act
   const bool has_value = public_key.has_value();
@@ -38,7 +38,7 @@ TEST(BatAdsPublicKeyTest, FailToInitializeWithEmptyBase64) {
 
 TEST(BatAdsPublicKeyTest, FailToInitializeWithInvalidBase64) {
   // Arrange
-  PublicKey public_key(kInvalidBase64);
+  const PublicKey public_key(kInvalidBase64);
 
   // Act
   const bool has_value = public_key.has_value();
@@ -82,7 +82,7 @@ TEST(BatAdsPublicKeyTest, FailToDecodeInvalidBase64) {
 
 TEST(BatAdsPublicKeyTest, EncodeBase64) {
   // Arrange
-  PublicKey public_key(kPublicKeyBase64);
+  const PublicKey public_key(kPublicKeyBase64);
 
   // Act
   const absl::optional<std::string> encoded_base64 = public_key.EncodeBase64();
@@ -94,7 +94,7 @@ TEST(BatAdsPublicKeyTest, EncodeBase64) {
 
 TEST(BatAdsPublicKeyTest, FailToEncodeBase64WhenUninitialized) {
   // Arrange
-  PublicKey public_key;
+  const PublicKey public_key;
 
   // Act
   const absl::optional<std::string> encoded_base64 = public_key.EncodeBase64();
@@ -105,7 +105,7 @@ TEST(BatAdsPublicKeyTest, FailToEncodeBase64WhenUninitialized) {
 
 TEST(BatAdsPublicKeyTest, IsEqual) {
   // Arrange
-  PublicKey public_key(kPublicKeyBase64);
+  const PublicKey public_key(kPublicKeyBase64);
 
   // Act
 
@@ -115,7 +115,7 @@ TEST(BatAdsPublicKeyTest, IsEqual) {
 
 TEST(BatAdsPublicKeyTest, IsEqualWhenUninitialized) {
   // Arrange
-  PublicKey public_key;
+  const PublicKey public_key;
 
   // Act
 
@@ -125,7 +125,7 @@ TEST(BatAdsPublicKeyTest, IsEqualWhenUninitialized) {
 
 TEST(BatAdsPublicKeyTest, IsEmptyBase64Equal) {
   // Arrange
-  PublicKey public_key("");
+  const PublicKey public_key("");
 
   // Act
 
@@ -135,7 +135,7 @@ TEST(BatAdsPublicKeyTest, IsEmptyBase64Equal) {
 
 TEST(BatAdsPublicKeyTest, IsInvalidBase64Equal) {
   // Arrange
-  PublicKey public_key(kInvalidBase64);
+  const PublicKey public_key(kInvalidBase64);
 
   // Act
 
@@ -145,18 +145,18 @@ TEST(BatAdsPublicKeyTest, IsInvalidBase64Equal) {
 
 TEST(BatAdsPublicKeyTest, IsNotEqual) {
   // Arrange
-  PublicKey public_key(kPublicKeyBase64);
+  const PublicKey public_key(kPublicKeyBase64);
 
   // Act
 
   // Assert
-  PublicKey different_public_key(kInvalidBase64);
+  const PublicKey different_public_key(kInvalidBase64);
   EXPECT_NE(different_public_key, public_key);
 }
 
 TEST(BatAdsPublicKeyTest, OutputStream) {
   // Arrange
-  PublicKey public_key(kPublicKeyBase64);
+  const PublicKey public_key(kPublicKeyBase64);
 
   // Act
   std::stringstream ss;
@@ -168,7 +168,7 @@ TEST(BatAdsPublicKeyTest, OutputStream) {
 
 TEST(BatAdsPublicKeyTest, OutputStreamWhenUninitialized) {
   // Arrange
-  PublicKey public_key;
+  const PublicKey public_key;
 
   // Act
   std::stringstream ss;

@@ -14,12 +14,6 @@ namespace ads {
 
 class LastNotificationAdWasClicked final : public CovariateLogEntryInterface {
  public:
-  LastNotificationAdWasClicked();
-  LastNotificationAdWasClicked(const LastNotificationAdWasClicked&) = delete;
-  LastNotificationAdWasClicked& operator=(const LastNotificationAdWasClicked&) =
-      delete;
-  ~LastNotificationAdWasClicked() override;
-
   // CovariateLogEntryInterface:
   brave_federated::mojom::DataType GetDataType() const override;
   brave_federated::mojom::CovariateType GetType() const override;

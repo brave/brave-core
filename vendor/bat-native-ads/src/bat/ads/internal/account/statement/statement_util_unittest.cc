@@ -16,12 +16,7 @@
 
 namespace ads {
 
-class BatAdsStatementUtilTest : public UnitTestBase {
- protected:
-  BatAdsStatementUtilTest() = default;
-
-  ~BatAdsStatementUtilTest() override = default;
-};
+class BatAdsStatementUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsStatementUtilTest, GetNextPaymentDate) {
   // Arrange

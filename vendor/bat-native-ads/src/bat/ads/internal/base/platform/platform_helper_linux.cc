@@ -13,8 +13,6 @@ constexpr char kPlatformName[] = "linux";
 
 PlatformHelperLinux::PlatformHelperLinux() = default;
 
-PlatformHelperLinux::~PlatformHelperLinux() = default;
-
 bool PlatformHelperLinux::IsMobile() const {
   return false;
 }

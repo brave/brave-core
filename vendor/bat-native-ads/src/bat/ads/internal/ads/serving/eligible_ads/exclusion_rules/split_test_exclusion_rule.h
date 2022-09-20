@@ -16,12 +16,6 @@ struct CreativeAdInfo;
 
 class SplitTestExclusionRule : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
-  SplitTestExclusionRule();
-  ~SplitTestExclusionRule() override;
-
-  SplitTestExclusionRule(const SplitTestExclusionRule&) = delete;
-  SplitTestExclusionRule& operator=(const SplitTestExclusionRule&) = delete;
-
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
 
   bool ShouldExclude(const CreativeAdInfo& creative_ad) override;

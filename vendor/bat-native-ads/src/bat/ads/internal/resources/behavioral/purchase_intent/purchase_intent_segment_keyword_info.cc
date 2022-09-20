@@ -15,10 +15,16 @@ PurchaseIntentSegmentKeywordInfo::PurchaseIntentSegmentKeywordInfo(
     : segments(segments), keywords(keywords) {}
 
 PurchaseIntentSegmentKeywordInfo::PurchaseIntentSegmentKeywordInfo(
-    const PurchaseIntentSegmentKeywordInfo& info) = default;
+    const PurchaseIntentSegmentKeywordInfo& other) = default;
 
 PurchaseIntentSegmentKeywordInfo& PurchaseIntentSegmentKeywordInfo::operator=(
-    const PurchaseIntentSegmentKeywordInfo& info) = default;
+    const PurchaseIntentSegmentKeywordInfo& other) = default;
+
+PurchaseIntentSegmentKeywordInfo::PurchaseIntentSegmentKeywordInfo(
+    PurchaseIntentSegmentKeywordInfo&& other) noexcept = default;
+
+PurchaseIntentSegmentKeywordInfo& PurchaseIntentSegmentKeywordInfo::operator=(
+    PurchaseIntentSegmentKeywordInfo&& other) noexcept = default;
 
 PurchaseIntentSegmentKeywordInfo::~PurchaseIntentSegmentKeywordInfo() = default;
 

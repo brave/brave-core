@@ -14,19 +14,13 @@
 namespace ads {
 
 class PlatformHelperWin final : public PlatformHelper {
- public:
-  ~PlatformHelperWin() override;
-
-  PlatformHelperWin(const PlatformHelperWin&) = delete;
-  PlatformHelperWin& operator=(const PlatformHelperWin&) = delete;
-
  protected:
   friend class base::NoDestructor<PlatformHelperWin>;
 
   PlatformHelperWin();
 
  private:
-  // PlatformHelper impl
+  // PlatformHelper:
   bool IsMobile() const override;
   std::string GetName() const override;
   PlatformType GetType() const override;

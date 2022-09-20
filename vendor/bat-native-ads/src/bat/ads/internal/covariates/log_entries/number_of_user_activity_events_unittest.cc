@@ -15,12 +15,7 @@
 namespace ads {
 
 class BatAdsFederatedLogEntriesNumberOfUserActivityEventsTest
-    : public UnitTestBase {
- protected:
-  BatAdsFederatedLogEntriesNumberOfUserActivityEventsTest() = default;
-
-  ~BatAdsFederatedLogEntriesNumberOfUserActivityEventsTest() override = default;
-};
+    : public UnitTestBase {};
 
 TEST_F(BatAdsFederatedLogEntriesNumberOfUserActivityEventsTest, GetDataType) {
   // Arrange
@@ -30,7 +25,7 @@ TEST_F(BatAdsFederatedLogEntriesNumberOfUserActivityEventsTest, GetDataType) {
           brave_federated::mojom::CovariateType::kNumberOfOpenedNewTabEvents);
 
   // Act
-  brave_federated::mojom::DataType data_type = entry->GetDataType();
+  const brave_federated::mojom::DataType data_type = entry->GetDataType();
 
   // Assert
   EXPECT_EQ(brave_federated::mojom::DataType::kInt, data_type);

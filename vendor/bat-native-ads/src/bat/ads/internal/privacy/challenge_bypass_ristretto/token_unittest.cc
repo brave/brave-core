@@ -16,7 +16,7 @@ namespace ads::privacy::cbr {
 
 TEST(BatAdsTokenTest, Random) {
   // Arrange
-  Token token;
+  const Token token;
 
   // Act
   const bool has_value = token.has_value();
@@ -27,7 +27,7 @@ TEST(BatAdsTokenTest, Random) {
 
 TEST(BatAdsTokenTest, FailToInitializeWithEmptyBase64) {
   // Arrange
-  Token token("");
+  const Token token("");
 
   // Act
   const bool has_value = token.has_value();
@@ -38,7 +38,7 @@ TEST(BatAdsTokenTest, FailToInitializeWithEmptyBase64) {
 
 TEST(BatAdsTokenTest, FailToInitializeWithInvalidBase64) {
   // Arrange
-  Token token(kInvalidBase64);
+  const Token token(kInvalidBase64);
 
   // Act
   const bool has_value = token.has_value();
@@ -82,7 +82,7 @@ TEST(BatAdsTokenTest, FailToDecodeInvalidBase64) {
 
 TEST(BatAdsTokenTest, EncodeBase64) {
   // Arrange
-  Token token(kTokenBase64);
+  const Token token(kTokenBase64);
 
   // Act
   const absl::optional<std::string> encoded_base64 = token.EncodeBase64();
@@ -94,7 +94,7 @@ TEST(BatAdsTokenTest, EncodeBase64) {
 
 TEST(BatAdsTokenTest, EncodeRandomBase64) {
   // Arrange
-  Token token;
+  const Token token;
 
   // Act
   const absl::optional<std::string> encoded_base64 = token.EncodeBase64();
@@ -105,7 +105,7 @@ TEST(BatAdsTokenTest, EncodeRandomBase64) {
 
 TEST(BatAdsTokenTest, IsEqual) {
   // Arrange
-  Token token;
+  const Token token;
 
   // Act
 
@@ -115,7 +115,7 @@ TEST(BatAdsTokenTest, IsEqual) {
 
 TEST(BatAdsTokenTest, IsEmptyBase64Equal) {
   // Arrange
-  Token token("");
+  const Token token("");
 
   // Act
 
@@ -125,7 +125,7 @@ TEST(BatAdsTokenTest, IsEmptyBase64Equal) {
 
 TEST(BatAdsTokenTest, IsInvalidBase64Equal) {
   // Arrange
-  Token token(kInvalidBase64);
+  const Token token(kInvalidBase64);
 
   // Act
 
@@ -135,18 +135,18 @@ TEST(BatAdsTokenTest, IsInvalidBase64Equal) {
 
 TEST(BatAdsTokenTest, IsNotEqual) {
   // Arrange
-  Token token;
+  const Token token;
 
   // Act
 
   // Assert
-  Token different_token;
+  const Token different_token;
   EXPECT_NE(different_token, token);
 }
 
 TEST(BatAdsTokenTest, OutputStream) {
   // Arrange
-  Token token(kTokenBase64);
+  const Token token(kTokenBase64);
 
   // Act
   std::stringstream ss;

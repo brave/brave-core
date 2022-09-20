@@ -20,8 +20,6 @@ class BatAdsNewTabPageAdsPerDayPermissionRuleTest : public UnitTestBase {
  protected:
   BatAdsNewTabPageAdsPerDayPermissionRuleTest() = default;
 
-  ~BatAdsNewTabPageAdsPerDayPermissionRuleTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

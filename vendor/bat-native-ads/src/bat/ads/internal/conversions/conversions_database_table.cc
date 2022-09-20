@@ -64,10 +64,6 @@ ConversionInfo GetFromRecord(mojom::DBRecordInfo* record) {
 
 }  // namespace
 
-Conversions::Conversions() = default;
-
-Conversions::~Conversions() = default;
-
 void Conversions::Save(const ConversionList& conversions,
                        ResultCallback callback) {
   if (conversions.empty()) {

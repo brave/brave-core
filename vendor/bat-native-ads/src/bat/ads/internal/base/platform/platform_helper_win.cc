@@ -13,8 +13,6 @@ constexpr char kPlatformName[] = "windows";
 
 PlatformHelperWin::PlatformHelperWin() = default;
 
-PlatformHelperWin::~PlatformHelperWin() = default;
-
 bool PlatformHelperWin::IsMobile() const {
   return false;
 }

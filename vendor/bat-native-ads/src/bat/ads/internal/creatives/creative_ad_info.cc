@@ -11,30 +11,36 @@ namespace ads {
 
 CreativeAdInfo::CreativeAdInfo() = default;
 
-CreativeAdInfo::CreativeAdInfo(const CreativeAdInfo& info) = default;
+CreativeAdInfo::CreativeAdInfo(const CreativeAdInfo& other) = default;
 
-CreativeAdInfo& CreativeAdInfo::operator=(const CreativeAdInfo& info) = default;
+CreativeAdInfo& CreativeAdInfo::operator=(const CreativeAdInfo& other) =
+    default;
+
+CreativeAdInfo::CreativeAdInfo(CreativeAdInfo&& other) noexcept = default;
+
+CreativeAdInfo& CreativeAdInfo::operator=(CreativeAdInfo&& other) noexcept =
+    default;
 
 CreativeAdInfo::~CreativeAdInfo() = default;
 
-bool CreativeAdInfo::operator==(const CreativeAdInfo& rhs) const {
-  return creative_instance_id == rhs.creative_instance_id &&
-         creative_set_id == rhs.creative_set_id &&
-         campaign_id == rhs.campaign_id &&
-         DoubleEquals(start_at.ToDoubleT(), rhs.start_at.ToDoubleT()) &&
-         DoubleEquals(end_at.ToDoubleT(), rhs.end_at.ToDoubleT()) &&
-         daily_cap == rhs.daily_cap && advertiser_id == rhs.advertiser_id &&
-         priority == rhs.priority && DoubleEquals(ptr, rhs.ptr) &&
-         conversion == rhs.conversion && per_day == rhs.per_day &&
-         per_week == rhs.per_week && per_month == rhs.per_month &&
-         total_max == rhs.total_max && DoubleEquals(value, rhs.value) &&
-         split_test_group == rhs.split_test_group && segment == rhs.segment &&
-         geo_targets == rhs.geo_targets && target_url == rhs.target_url &&
-         dayparts == rhs.dayparts;
+bool CreativeAdInfo::operator==(const CreativeAdInfo& other) const {
+  return creative_instance_id == other.creative_instance_id &&
+         creative_set_id == other.creative_set_id &&
+         campaign_id == other.campaign_id &&
+         DoubleEquals(start_at.ToDoubleT(), other.start_at.ToDoubleT()) &&
+         DoubleEquals(end_at.ToDoubleT(), other.end_at.ToDoubleT()) &&
+         daily_cap == other.daily_cap && advertiser_id == other.advertiser_id &&
+         priority == other.priority && DoubleEquals(ptr, other.ptr) &&
+         conversion == other.conversion && per_day == other.per_day &&
+         per_week == other.per_week && per_month == other.per_month &&
+         total_max == other.total_max && DoubleEquals(value, other.value) &&
+         split_test_group == other.split_test_group &&
+         segment == other.segment && geo_targets == other.geo_targets &&
+         target_url == other.target_url && dayparts == other.dayparts;
 }
 
-bool CreativeAdInfo::operator!=(const CreativeAdInfo& rhs) const {
-  return !(*this == rhs);
+bool CreativeAdInfo::operator!=(const CreativeAdInfo& other) const {
+  return !(*this == other);
 }
 
 }  // namespace ads

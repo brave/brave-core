@@ -25,8 +25,6 @@ class AdType final {
   };
 
   AdType();
-  AdType(const AdType&);
-  AdType& operator=(const AdType&);
 
   // Allow implicit conversion of the enum value to this wrapper
   constexpr AdType(const Value& value)  // NOLINT (runtime/explicit)
@@ -38,8 +36,8 @@ class AdType final {
   Value value() const;
   std::string ToString() const;
 
-  bool operator==(const AdType& rhs) const;
-  bool operator!=(const AdType& rhs) const;
+  bool operator==(const AdType& other) const;
+  bool operator!=(const AdType& other) const;
 
  private:
   Value value_ = kUndefined;

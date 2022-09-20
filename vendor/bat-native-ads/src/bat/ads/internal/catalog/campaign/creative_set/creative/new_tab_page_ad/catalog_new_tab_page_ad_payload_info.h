@@ -15,13 +15,20 @@ namespace ads {
 
 struct CatalogNewTabPageAdPayloadInfo final {
   CatalogNewTabPageAdPayloadInfo();
-  CatalogNewTabPageAdPayloadInfo(const CatalogNewTabPageAdPayloadInfo& info);
+
+  CatalogNewTabPageAdPayloadInfo(const CatalogNewTabPageAdPayloadInfo& other);
   CatalogNewTabPageAdPayloadInfo& operator=(
-      const CatalogNewTabPageAdPayloadInfo& info);
+      const CatalogNewTabPageAdPayloadInfo& other);
+
+  CatalogNewTabPageAdPayloadInfo(
+      CatalogNewTabPageAdPayloadInfo&& other) noexcept;
+  CatalogNewTabPageAdPayloadInfo& operator=(
+      CatalogNewTabPageAdPayloadInfo&& other) noexcept;
+
   ~CatalogNewTabPageAdPayloadInfo();
 
-  bool operator==(const CatalogNewTabPageAdPayloadInfo& rhs) const;
-  bool operator!=(const CatalogNewTabPageAdPayloadInfo& rhs) const;
+  bool operator==(const CatalogNewTabPageAdPayloadInfo& other) const;
+  bool operator!=(const CatalogNewTabPageAdPayloadInfo& other) const;
 
   std::string company_name;
   GURL image_url;

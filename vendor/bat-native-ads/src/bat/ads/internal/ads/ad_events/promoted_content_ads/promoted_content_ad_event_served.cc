@@ -12,10 +12,6 @@
 
 namespace ads::promoted_content_ads {
 
-AdEventServed::AdEventServed() = default;
-
-AdEventServed::~AdEventServed() = default;
-
 void AdEventServed::FireEvent(const PromotedContentAdInfo& ad) {
   BLOG(3, "Served promoted content ad with placement id "
               << ad.placement_id << " and creative instance id "

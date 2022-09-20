@@ -34,13 +34,13 @@ std::unique_ptr<TextProcessing> TextProcessing::CreateFromValue(
   return text_processing;
 }
 
-bool TextProcessing::IsInitialized() const {
-  return is_initialized_;
-}
-
 TextProcessing::TextProcessing() = default;
 
 TextProcessing::~TextProcessing() = default;
+
+bool TextProcessing::IsInitialized() const {
+  return is_initialized_;
+}
 
 TextProcessing::TextProcessing(TransformationVector transformations,
                                model::Linear linear_model)
@@ -93,9 +93,9 @@ PredictionMap TextProcessing::Apply(
 PredictionMap TextProcessing::GetTopPredictions(
     const std::string& content) const {
   std::string stripped_content = StripNonAlphaCharacters(content);
-  PredictionMap predictions =
+  const PredictionMap predictions =
       Apply(std::make_unique<TextData>(std::move(stripped_content)));
-  double expected_prob =
+  const double expected_prob =
       1.0 / std::max(1.0, static_cast<double>(predictions.size()));
   PredictionMap rtn;
   for (auto const& prediction : predictions) {

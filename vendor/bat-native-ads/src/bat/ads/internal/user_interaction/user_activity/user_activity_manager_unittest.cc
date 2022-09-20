@@ -14,12 +14,7 @@
 
 namespace ads {
 
-class BatAdsUserActivityManagerTest : public UnitTestBase {
- protected:
-  BatAdsUserActivityManagerTest() = default;
-
-  ~BatAdsUserActivityManagerTest() override = default;
-};
+class BatAdsUserActivityManagerTest : public UnitTestBase {};
 
 TEST_F(BatAdsUserActivityManagerTest, HasInstance) {
   // Arrange

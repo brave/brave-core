@@ -30,12 +30,17 @@ class DLEQProof {
   DLEQProof(const BlindedToken& blinded_token,
             const SignedToken& signed_token,
             const SigningKey& signing_key);
-  DLEQProof(const DLEQProof& other);
-  DLEQProof& operator=(const DLEQProof& other);
+
+  DLEQProof(const DLEQProof& other) = delete;
+  DLEQProof& operator=(const DLEQProof& other) = delete;
+
+  DLEQProof(DLEQProof&& other) noexcept = delete;
+  DLEQProof& operator=(DLEQProof&& other) noexcept = delete;
+
   ~DLEQProof();
 
-  bool operator==(const DLEQProof& rhs) const;
-  bool operator!=(const DLEQProof& rhs) const;
+  bool operator==(const DLEQProof& other) const;
+  bool operator!=(const DLEQProof& other) const;
 
   bool has_value() const { return dleq_proof_.has_value(); }
 

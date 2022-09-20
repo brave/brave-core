@@ -13,12 +13,7 @@
 
 namespace ads {
 
-class BatAdsCommandLinePermissionRuleTest : public UnitTestBase {
- protected:
-  BatAdsCommandLinePermissionRuleTest() = default;
-
-  ~BatAdsCommandLinePermissionRuleTest() override = default;
-};
+class BatAdsCommandLinePermissionRuleTest : public UnitTestBase {};
 
 TEST_F(BatAdsCommandLinePermissionRuleTest,
        AllowAdIfDidNotOverrideCommandLineSwitchesForProduction) {

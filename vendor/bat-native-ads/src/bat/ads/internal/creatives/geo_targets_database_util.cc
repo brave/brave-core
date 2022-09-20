@@ -12,7 +12,7 @@
 namespace ads::database {
 
 void DeleteGeoTargets() {
-  table::GeoTargets database_table;
+  const table::GeoTargets database_table;
   database_table.Delete(base::BindOnce([](const bool success) {
     if (!success) {
       BLOG(0, "Failed to delete geo targets");

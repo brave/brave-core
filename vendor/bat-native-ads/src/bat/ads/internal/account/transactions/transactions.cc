@@ -66,7 +66,7 @@ void GetForDateRange(const base::Time from_time,
 }
 
 void RemoveAll(RemoveAllCallback callback) {
-  database::table::Transactions database_table;
+  const database::table::Transactions database_table;
   database_table.Delete(base::BindOnce(
       [](RemoveAllCallback callback, const bool success) {
         if (!success) {

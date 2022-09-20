@@ -21,9 +21,6 @@ class IdleDetectionManagerObserver : public base::CheckedObserver {
 
   // Invoked when the user becomes idle.
   virtual void OnUserDidBecomeIdle() {}
-
- protected:
-  ~IdleDetectionManagerObserver() override = default;
 };
 
 }  // namespace ads

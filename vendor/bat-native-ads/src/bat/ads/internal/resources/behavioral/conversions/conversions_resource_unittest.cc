@@ -12,12 +12,7 @@
 
 namespace ads::resource {
 
-class BatAdsConversionsResourceTest : public UnitTestBase {
- protected:
-  BatAdsConversionsResourceTest() = default;
-
-  ~BatAdsConversionsResourceTest() override = default;
-};
+class BatAdsConversionsResourceTest : public UnitTestBase {};
 
 TEST_F(BatAdsConversionsResourceTest, Load) {
   // Arrange
@@ -38,7 +33,8 @@ TEST_F(BatAdsConversionsResourceTest, Get) {
   task_environment_.RunUntilIdle();
 
   // Act
-  ConversionIdPatternMap conversion_id_patterns = resource.get()->id_patterns;
+  const ConversionIdPatternMap conversion_id_patterns =
+      resource.get()->id_patterns;
 
   // Assert
   EXPECT_EQ(2U, conversion_id_patterns.size());

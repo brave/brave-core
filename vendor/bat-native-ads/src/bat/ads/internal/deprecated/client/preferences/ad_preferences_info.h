@@ -18,8 +18,13 @@ namespace ads {
 
 struct AdPreferencesInfo final {
   AdPreferencesInfo();
-  AdPreferencesInfo(const AdPreferencesInfo& info);
-  AdPreferencesInfo& operator=(const AdPreferencesInfo& info);
+
+  AdPreferencesInfo(const AdPreferencesInfo& other);
+  AdPreferencesInfo& operator=(const AdPreferencesInfo& other);
+
+  AdPreferencesInfo(AdPreferencesInfo&& other) noexcept;
+  AdPreferencesInfo& operator=(AdPreferencesInfo&& other) noexcept;
+
   ~AdPreferencesInfo();
 
   base::Value::Dict ToValue() const;

@@ -11,10 +11,6 @@
 
 namespace ads {
 
-DescendingHistorySort::DescendingHistorySort() = default;
-
-DescendingHistorySort::~DescendingHistorySort() = default;
-
 HistoryItemList DescendingHistorySort::Apply(
     const HistoryItemList& history) const {
   HistoryItemList sorted_history = history;

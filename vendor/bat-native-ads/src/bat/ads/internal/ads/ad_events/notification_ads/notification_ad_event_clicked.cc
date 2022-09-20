@@ -12,10 +12,6 @@
 
 namespace ads::notification_ads {
 
-AdEventClicked::AdEventClicked() = default;
-
-AdEventClicked::~AdEventClicked() = default;
-
 void AdEventClicked::FireEvent(const NotificationAdInfo& ad) {
   BLOG(3, "Clicked notification ad with placement id "
               << ad.placement_id << " and creative instance id "

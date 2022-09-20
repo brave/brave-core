@@ -16,12 +16,7 @@
 
 namespace ads {
 
-class BatAdsMediaPermissionRuleTest : public UnitTestBase {
- protected:
-  BatAdsMediaPermissionRuleTest() = default;
-
-  ~BatAdsMediaPermissionRuleTest() override = default;
-};
+class BatAdsMediaPermissionRuleTest : public UnitTestBase {};
 
 TEST_F(BatAdsMediaPermissionRuleTest, AllowAdIfMediaIsNotPlaying) {
   // Arrange

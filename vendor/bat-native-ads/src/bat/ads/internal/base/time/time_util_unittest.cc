@@ -67,8 +67,6 @@ class BatAdsTimeUtilTest : public UnitTestBase,
  protected:
   BatAdsTimeUtilTest() = default;
 
-  ~BatAdsTimeUtilTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

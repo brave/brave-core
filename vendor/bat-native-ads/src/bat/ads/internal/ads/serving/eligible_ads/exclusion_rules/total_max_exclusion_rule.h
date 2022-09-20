@@ -19,10 +19,15 @@ class TotalMaxExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
   explicit TotalMaxExclusionRule(const AdEventList& ad_events);
-  ~TotalMaxExclusionRule() override;
 
-  TotalMaxExclusionRule(const TotalMaxExclusionRule&) = delete;
-  TotalMaxExclusionRule& operator=(const TotalMaxExclusionRule&) = delete;
+  TotalMaxExclusionRule(const TotalMaxExclusionRule& other) = delete;
+  TotalMaxExclusionRule& operator=(const TotalMaxExclusionRule& other) = delete;
+
+  TotalMaxExclusionRule(TotalMaxExclusionRule&& other) noexcept = delete;
+  TotalMaxExclusionRule& operator=(TotalMaxExclusionRule&& other) noexcept =
+      delete;
+
+  ~TotalMaxExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
 

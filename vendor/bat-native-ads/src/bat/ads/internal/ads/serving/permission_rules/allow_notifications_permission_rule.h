@@ -14,13 +14,6 @@ namespace ads {
 
 class AllowNotificationsPermissionRule final : public PermissionRuleInterface {
  public:
-  AllowNotificationsPermissionRule();
-  AllowNotificationsPermissionRule(const AllowNotificationsPermissionRule&) =
-      delete;
-  AllowNotificationsPermissionRule& operator=(
-      const AllowNotificationsPermissionRule&) = delete;
-  ~AllowNotificationsPermissionRule() override;
-
   bool ShouldAllow() override;
 
   const std::string& GetLastMessage() const override;

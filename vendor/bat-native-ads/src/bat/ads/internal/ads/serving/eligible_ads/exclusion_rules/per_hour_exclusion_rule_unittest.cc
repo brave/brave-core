@@ -17,12 +17,7 @@ namespace {
 constexpr char kCreativeInstanceId[] = "9aea9a47-c6a0-4718-a0fa-706338bb2156";
 }  // namespace
 
-class BatAdsPerHourExclusionRuleTest : public UnitTestBase {
- protected:
-  BatAdsPerHourExclusionRuleTest() = default;
-
-  ~BatAdsPerHourExclusionRuleTest() override = default;
-};
+class BatAdsPerHourExclusionRuleTest : public UnitTestBase {};
 
 TEST_F(BatAdsPerHourExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   // Arrange

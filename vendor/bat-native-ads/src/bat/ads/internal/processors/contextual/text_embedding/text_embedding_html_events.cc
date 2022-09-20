@@ -41,7 +41,7 @@ void LogTextEmbeddingHtmlEvent(
 
 void PurgeStaleTextEmbeddingHtmlEvents(
     TextEmbeddingHtmlEventCallback callback) {
-  database::table::TextEmbeddingHtmlEvents database_table;
+  const database::table::TextEmbeddingHtmlEvents database_table;
   database_table.PurgeStale(
       base::BindOnce([](TextEmbeddingHtmlEventCallback callback,
                         const bool success) { callback(success); },

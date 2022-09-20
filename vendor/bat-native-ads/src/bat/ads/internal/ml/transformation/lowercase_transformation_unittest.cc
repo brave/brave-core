@@ -14,12 +14,7 @@
 
 namespace ads::ml {
 
-class BatAdsLowercaseTest : public UnitTestBase {
- protected:
-  BatAdsLowercaseTest() = default;
-
-  ~BatAdsLowercaseTest() override = default;
-};
+class BatAdsLowercaseTest : public UnitTestBase {};
 
 TEST_F(BatAdsLowercaseTest, LowercaseTest) {
   // Arrange

@@ -12,10 +12,6 @@
 
 namespace ads::search_result_ads {
 
-AdEventClicked::AdEventClicked() = default;
-
-AdEventClicked::~AdEventClicked() = default;
-
 void AdEventClicked::FireEvent(const SearchResultAdInfo& ad) {
   BLOG(3, "Clicked search result ad with placement id "
               << ad.placement_id << " and creative instance id "

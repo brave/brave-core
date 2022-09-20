@@ -17,8 +17,6 @@ class BatAdsConversionsDatabaseTableIntegrationTest : public UnitTestBase {
  protected:
   BatAdsConversionsDatabaseTableIntegrationTest() = default;
 
-  ~BatAdsConversionsDatabaseTableIntegrationTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
   }

@@ -60,7 +60,7 @@ void Serving::MaybeServeAd(const std::string& dimensions,
     return;
   }
 
-  PermissionRules permission_rules;
+  const PermissionRules permission_rules;
   if (!permission_rules.HasPermission()) {
     BLOG(1,
          "Inline content ad not served: Not allowed due to permission rules");

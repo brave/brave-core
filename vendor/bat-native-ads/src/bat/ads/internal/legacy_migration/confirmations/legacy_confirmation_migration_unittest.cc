@@ -26,8 +26,6 @@ class BatAdsLegacyConfirmationMigrationTest : public UnitTestBase {
  protected:
   BatAdsLegacyConfirmationMigrationTest() = default;
 
-  ~BatAdsLegacyConfirmationMigrationTest() override = default;
-
   void SetUpMocks() override {
     AdsClientHelper::GetInstance()->SetBooleanPref(
         prefs::kHasMigratedConfirmationState, false);

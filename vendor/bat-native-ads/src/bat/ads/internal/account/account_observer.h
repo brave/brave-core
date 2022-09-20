@@ -40,9 +40,6 @@ class AccountObserver : public base::CheckedObserver {
 
   // Invoked when the statement of accounts have changed.
   virtual void OnStatementOfAccountsDidChange() {}
-
- protected:
-  ~AccountObserver() override = default;
 };
 
 }  // namespace ads

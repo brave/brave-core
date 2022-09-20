@@ -20,7 +20,7 @@ class BatAdsTextEmbeddingHtmlEventsDatabaseTableTest : public UnitTestBase {
 
 TEST(BatAdsTextEmbeddingHtmlEventsDatabaseTableTest, TableName) {
   // Arrange
-  TextEmbeddingHtmlEvents database_table;
+  const TextEmbeddingHtmlEvents database_table;
 
   // Act
   const std::string table_name = database_table.GetTableName();

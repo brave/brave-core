@@ -19,16 +19,17 @@ AdInfo& AdInfo::operator=(AdInfo&& other) noexcept = default;
 
 AdInfo::~AdInfo() = default;
 
-bool AdInfo::operator==(const AdInfo& rhs) const {
-  return type == rhs.type && placement_id == rhs.placement_id &&
-         creative_instance_id == rhs.creative_instance_id &&
-         creative_set_id == rhs.creative_set_id &&
-         campaign_id == rhs.campaign_id && advertiser_id == rhs.advertiser_id &&
-         segment == rhs.segment && target_url == rhs.target_url;
+bool AdInfo::operator==(const AdInfo& other) const {
+  return type == other.type && placement_id == other.placement_id &&
+         creative_instance_id == other.creative_instance_id &&
+         creative_set_id == other.creative_set_id &&
+         campaign_id == other.campaign_id &&
+         advertiser_id == other.advertiser_id && segment == other.segment &&
+         target_url == other.target_url;
 }
 
-bool AdInfo::operator!=(const AdInfo& rhs) const {
-  return !(*this == rhs);
+bool AdInfo::operator!=(const AdInfo& other) const {
+  return !(*this == other);
 }
 
 bool AdInfo::IsValid() const {

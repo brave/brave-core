@@ -15,22 +15,28 @@ PurchaseIntentSiteInfo::PurchaseIntentSiteInfo(const SegmentList& segments,
     : segments(segments), url_netloc(url_netloc), weight(weight) {}
 
 PurchaseIntentSiteInfo::PurchaseIntentSiteInfo(
-    const PurchaseIntentSiteInfo& info) = default;
+    const PurchaseIntentSiteInfo& other) = default;
 
 PurchaseIntentSiteInfo& PurchaseIntentSiteInfo::operator=(
-    const PurchaseIntentSiteInfo& info) = default;
+    const PurchaseIntentSiteInfo& other) = default;
+
+PurchaseIntentSiteInfo::PurchaseIntentSiteInfo(
+    PurchaseIntentSiteInfo&& other) noexcept = default;
+
+PurchaseIntentSiteInfo& PurchaseIntentSiteInfo::operator=(
+    PurchaseIntentSiteInfo&& other) noexcept = default;
 
 PurchaseIntentSiteInfo::~PurchaseIntentSiteInfo() = default;
 
 bool PurchaseIntentSiteInfo::operator==(
-    const PurchaseIntentSiteInfo& rhs) const {
-  return segments == rhs.segments && url_netloc == rhs.url_netloc &&
-         weight == rhs.weight;
+    const PurchaseIntentSiteInfo& other) const {
+  return segments == other.segments && url_netloc == other.url_netloc &&
+         weight == other.weight;
 }
 
 bool PurchaseIntentSiteInfo::operator!=(
-    const PurchaseIntentSiteInfo& rhs) const {
-  return !(*this == rhs);
+    const PurchaseIntentSiteInfo& other) const {
+  return !(*this == other);
 }
 
 }  // namespace ads::targeting

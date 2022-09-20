@@ -13,12 +13,6 @@ namespace ads {
 
 class ConfirmationHistoryFilter final : public HistoryFilterInterface {
  public:
-  ConfirmationHistoryFilter();
-  ~ConfirmationHistoryFilter() override;
-  ConfirmationHistoryFilter(const ConfirmationHistoryFilter&) = delete;
-  ConfirmationHistoryFilter& operator=(const ConfirmationHistoryFilter&) =
-      delete;
-
   HistoryItemList Apply(const HistoryItemList& history_items) const override;
 };
 

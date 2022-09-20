@@ -14,13 +14,8 @@
 namespace ads::privacy {
 
 struct UnblindedTokenInfo final {
-  UnblindedTokenInfo();
-  UnblindedTokenInfo(const UnblindedTokenInfo& info);
-  UnblindedTokenInfo& operator=(const UnblindedTokenInfo& other);
-  ~UnblindedTokenInfo();
-
-  bool operator==(const UnblindedTokenInfo& rhs) const;
-  bool operator!=(const UnblindedTokenInfo& rhs) const;
+  bool operator==(const UnblindedTokenInfo& other) const;
+  bool operator!=(const UnblindedTokenInfo& other) const;
 
   cbr::UnblindedToken value;
   cbr::PublicKey public_key;

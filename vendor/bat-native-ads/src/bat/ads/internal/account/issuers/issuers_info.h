@@ -12,12 +12,17 @@ namespace ads {
 
 struct IssuersInfo final {
   IssuersInfo();
-  IssuersInfo(const IssuersInfo& info);
-  IssuersInfo& operator=(const IssuersInfo& info);
+
+  IssuersInfo(const IssuersInfo& other);
+  IssuersInfo& operator=(const IssuersInfo& other);
+
+  IssuersInfo(IssuersInfo&& other) noexcept;
+  IssuersInfo& operator=(IssuersInfo&& other) noexcept;
+
   ~IssuersInfo();
 
-  bool operator==(const IssuersInfo& rhs) const;
-  bool operator!=(const IssuersInfo& rhs) const;
+  bool operator==(const IssuersInfo& other) const;
+  bool operator!=(const IssuersInfo& other) const;
 
   int ping = 0;
   IssuerList issuers;

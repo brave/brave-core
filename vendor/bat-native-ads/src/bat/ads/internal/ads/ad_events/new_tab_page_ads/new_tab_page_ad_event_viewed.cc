@@ -12,10 +12,6 @@
 
 namespace ads::new_tab_page_ads {
 
-AdEventViewed::AdEventViewed() = default;
-
-AdEventViewed::~AdEventViewed() = default;
-
 void AdEventViewed::FireEvent(const NewTabPageAdInfo& ad) {
   BLOG(3, "Viewed new tab page ad with placement id "
               << ad.placement_id << " and creative instance id "

@@ -14,12 +14,6 @@ namespace ads {
 
 class UnblindedTokensPermissionRule final : public PermissionRuleInterface {
  public:
-  UnblindedTokensPermissionRule();
-  UnblindedTokensPermissionRule(const UnblindedTokensPermissionRule&) = delete;
-  UnblindedTokensPermissionRule& operator=(
-      const UnblindedTokensPermissionRule&) = delete;
-  ~UnblindedTokensPermissionRule() override;
-
   bool ShouldAllow() override;
 
   const std::string& GetLastMessage() const override;

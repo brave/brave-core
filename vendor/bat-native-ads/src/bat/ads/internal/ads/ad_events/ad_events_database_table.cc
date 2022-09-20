@@ -66,10 +66,6 @@ AdEventInfo GetFromRecord(mojom::DBRecordInfo* record) {
 
 }  // namespace
 
-AdEvents::AdEvents() = default;
-
-AdEvents::~AdEvents() = default;
-
 void AdEvents::LogEvent(const AdEventInfo& ad_event, ResultCallback callback) {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 

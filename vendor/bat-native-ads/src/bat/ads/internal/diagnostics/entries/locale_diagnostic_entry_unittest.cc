@@ -13,18 +13,13 @@
 
 namespace ads {
 
-class BatAdsLocaleDiagnosticEntryTest : public UnitTestBase {
- protected:
-  BatAdsLocaleDiagnosticEntryTest() = default;
-
-  ~BatAdsLocaleDiagnosticEntryTest() override = default;
-};
+class BatAdsLocaleDiagnosticEntryTest : public UnitTestBase {};
 
 TEST_F(BatAdsLocaleDiagnosticEntryTest, GetValue) {
   // Arrange
   MockLocaleHelper(locale_helper_mock_, "en-KY");
 
-  LocaleDiagnosticEntry diagnostic_entry;
+  const LocaleDiagnosticEntry diagnostic_entry;
 
   // Act
 

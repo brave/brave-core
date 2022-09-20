@@ -10,22 +10,29 @@ namespace ads::security {
 VerifiableConversionEnvelopeInfo::VerifiableConversionEnvelopeInfo() = default;
 
 VerifiableConversionEnvelopeInfo::VerifiableConversionEnvelopeInfo(
-    const VerifiableConversionEnvelopeInfo& info) = default;
+    const VerifiableConversionEnvelopeInfo& other) = default;
 
 VerifiableConversionEnvelopeInfo& VerifiableConversionEnvelopeInfo::operator=(
-    const VerifiableConversionEnvelopeInfo& info) = default;
+    const VerifiableConversionEnvelopeInfo& other) = default;
+
+VerifiableConversionEnvelopeInfo::VerifiableConversionEnvelopeInfo(
+    VerifiableConversionEnvelopeInfo&& other) noexcept = default;
+
+VerifiableConversionEnvelopeInfo& VerifiableConversionEnvelopeInfo::operator=(
+    VerifiableConversionEnvelopeInfo&& other) noexcept = default;
 
 VerifiableConversionEnvelopeInfo::~VerifiableConversionEnvelopeInfo() = default;
 
 bool VerifiableConversionEnvelopeInfo::operator==(
-    const VerifiableConversionEnvelopeInfo& rhs) const {
-  return algorithm == rhs.algorithm && ciphertext == rhs.ciphertext &&
-         ephemeral_public_key == rhs.ephemeral_public_key && nonce == rhs.nonce;
+    const VerifiableConversionEnvelopeInfo& other) const {
+  return algorithm == other.algorithm && ciphertext == other.ciphertext &&
+         ephemeral_public_key == other.ephemeral_public_key &&
+         nonce == other.nonce;
 }
 
 bool VerifiableConversionEnvelopeInfo::operator!=(
-    const VerifiableConversionEnvelopeInfo& rhs) const {
-  return !(*this == rhs);
+    const VerifiableConversionEnvelopeInfo& other) const {
+  return !(*this == other);
 }
 
 bool VerifiableConversionEnvelopeInfo::IsValid() const {

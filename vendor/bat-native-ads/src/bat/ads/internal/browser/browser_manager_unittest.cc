@@ -16,8 +16,6 @@ class BatAdsBrowserManagerTest : public BrowserManagerObserver,
  protected:
   BatAdsBrowserManagerTest() = default;
 
-  ~BatAdsBrowserManagerTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

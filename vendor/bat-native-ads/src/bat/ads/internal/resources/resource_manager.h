@@ -16,10 +16,14 @@ namespace ads {
 class ResourceManager final {
  public:
   ResourceManager();
-  ~ResourceManager();
 
-  ResourceManager(const ResourceManager&) = delete;
-  ResourceManager& operator=(const ResourceManager&) = delete;
+  ResourceManager(const ResourceManager& other) = delete;
+  ResourceManager& operator=(const ResourceManager& other) = delete;
+
+  ResourceManager(ResourceManager&& other) noexcept = delete;
+  ResourceManager& operator=(ResourceManager&& other) noexcept = delete;
+
+  ~ResourceManager();
 
   static ResourceManager* GetInstance();
 

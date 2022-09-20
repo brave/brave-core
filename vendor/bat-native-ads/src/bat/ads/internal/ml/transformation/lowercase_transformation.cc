@@ -18,11 +18,6 @@ namespace ads::ml {
 LowercaseTransformation::LowercaseTransformation()
     : Transformation(TransformationType::kLowercase) {}
 
-LowercaseTransformation::LowercaseTransformation(
-    LowercaseTransformation&& transformation) noexcept = default;
-
-LowercaseTransformation::~LowercaseTransformation() = default;
-
 std::unique_ptr<Data> LowercaseTransformation::Apply(
     const std::unique_ptr<Data>& input_data) const {
   DCHECK(input_data->GetType() == DataType::kText);

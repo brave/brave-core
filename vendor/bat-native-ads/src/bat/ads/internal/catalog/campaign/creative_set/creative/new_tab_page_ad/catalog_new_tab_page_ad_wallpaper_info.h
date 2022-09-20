@@ -14,15 +14,8 @@
 namespace ads {
 
 struct CatalogNewTabPageAdWallpaperInfo final {
-  CatalogNewTabPageAdWallpaperInfo();
-  CatalogNewTabPageAdWallpaperInfo(
-      const CatalogNewTabPageAdWallpaperInfo& info);
-  CatalogNewTabPageAdWallpaperInfo& operator=(
-      const CatalogNewTabPageAdWallpaperInfo& info);
-  ~CatalogNewTabPageAdWallpaperInfo();
-
-  bool operator==(const CatalogNewTabPageAdWallpaperInfo& rhs) const;
-  bool operator!=(const CatalogNewTabPageAdWallpaperInfo& rhs) const;
+  bool operator==(const CatalogNewTabPageAdWallpaperInfo& other) const;
+  bool operator!=(const CatalogNewTabPageAdWallpaperInfo& other) const;
 
   GURL image_url;
   CatalogNewTabPageAdWallpaperFocalPointInfo focal_point;

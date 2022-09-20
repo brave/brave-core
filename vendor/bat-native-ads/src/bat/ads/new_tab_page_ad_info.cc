@@ -23,8 +23,8 @@ NewTabPageAdInfo& NewTabPageAdInfo::operator=(
 
 NewTabPageAdInfo::~NewTabPageAdInfo() = default;
 
-bool NewTabPageAdInfo::operator==(const NewTabPageAdInfo& rhs) const {
-  if (!AdInfo::operator==(rhs)) {
+bool NewTabPageAdInfo::operator==(const NewTabPageAdInfo& other) const {
+  if (!AdInfo::operator==(other)) {
     return false;
   }
 
@@ -32,11 +32,11 @@ bool NewTabPageAdInfo::operator==(const NewTabPageAdInfo& rhs) const {
     return std::tie(ad.company_name, ad.image_url, ad.alt, ad.wallpapers);
   };
 
-  return tie(*this) == tie(rhs);
+  return tie(*this) == tie(other);
 }
 
-bool NewTabPageAdInfo::operator!=(const NewTabPageAdInfo& rhs) const {
-  return !(*this == rhs);
+bool NewTabPageAdInfo::operator!=(const NewTabPageAdInfo& other) const {
+  return !(*this == other);
 }
 
 bool NewTabPageAdInfo::IsValid() const {

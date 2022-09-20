@@ -42,7 +42,8 @@ TEST(BatAdsEligibleAdsFeaturesTest, DefaultAdFeatureWeights) {
   const AdPredictorWeightList weights = GetAdPredictorWeights();
 
   // Assert
-  AdPredictorWeightList expected_weights = {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
+  const AdPredictorWeightList expected_weights = {1.0, 1.0, 1.0, 1.0,
+                                                  1.0, 1.0, 1.0};
   EXPECT_EQ(expected_weights, weights);
 }
 

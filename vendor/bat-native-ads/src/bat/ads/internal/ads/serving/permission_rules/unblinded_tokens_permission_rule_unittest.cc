@@ -12,12 +12,7 @@
 
 namespace ads {
 
-class BatAdsUnblindedTokensPermissionRuleTest : public UnitTestBase {
- protected:
-  BatAdsUnblindedTokensPermissionRuleTest() = default;
-
-  ~BatAdsUnblindedTokensPermissionRuleTest() override = default;
-};
+class BatAdsUnblindedTokensPermissionRuleTest : public UnitTestBase {};
 
 TEST_F(BatAdsUnblindedTokensPermissionRuleTest, AllowAdIfDoesNotExceedCap) {
   // Arrange

@@ -34,8 +34,6 @@ class BatAdsInlineContentAdIntegrationTest : public UnitTestBase {
  protected:
   BatAdsInlineContentAdIntegrationTest() = default;
 
-  ~BatAdsInlineContentAdIntegrationTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
 

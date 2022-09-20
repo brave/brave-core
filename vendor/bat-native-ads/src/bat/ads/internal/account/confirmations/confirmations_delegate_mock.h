@@ -16,11 +16,17 @@ struct ConfirmationInfo;
 class ConfirmationsDelegateMock : public ConfirmationsDelegate {
  public:
   ConfirmationsDelegateMock();
-  ~ConfirmationsDelegateMock() override;
 
-  ConfirmationsDelegateMock(const ConfirmationsDelegateMock&) = delete;
+  ConfirmationsDelegateMock(const ConfirmationsDelegateMock& other) = delete;
   ConfirmationsDelegateMock& operator=(const ConfirmationsDelegateMock&) =
       delete;
+
+  ConfirmationsDelegateMock(ConfirmationsDelegateMock&& other) noexcept =
+      delete;
+  ConfirmationsDelegateMock& operator=(
+      ConfirmationsDelegateMock&& other) noexcept = delete;
+
+  ~ConfirmationsDelegateMock() override;
 
   MOCK_METHOD(void, OnDidConfirm, (const ConfirmationInfo& confirmation));
 

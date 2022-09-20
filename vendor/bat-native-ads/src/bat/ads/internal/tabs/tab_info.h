@@ -15,12 +15,17 @@ namespace ads {
 
 struct TabInfo final {
   TabInfo();
-  TabInfo(const TabInfo& info);
-  TabInfo& operator=(const TabInfo& info);
+
+  TabInfo(const TabInfo& other);
+  TabInfo& operator=(const TabInfo& other);
+
+  TabInfo(TabInfo&& other) noexcept;
+  TabInfo& operator=(TabInfo&& other) noexcept;
+
   ~TabInfo();
 
-  bool operator==(const TabInfo& rhs) const;
-  bool operator!=(const TabInfo& rhs) const;
+  bool operator==(const TabInfo& other) const;
+  bool operator!=(const TabInfo& other) const;
 
   int32_t id = 0;
   std::vector<GURL> redirect_chain;

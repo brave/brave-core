@@ -16,10 +16,6 @@ constexpr char kNever[] = "Never";
 
 }  // namespace
 
-LastUnIdleTimeDiagnosticEntry::LastUnIdleTimeDiagnosticEntry() = default;
-
-LastUnIdleTimeDiagnosticEntry::~LastUnIdleTimeDiagnosticEntry() = default;
-
 void LastUnIdleTimeDiagnosticEntry::SetLastUnIdleTime(const base::Time time) {
   last_unidle_time_ = time;
 }

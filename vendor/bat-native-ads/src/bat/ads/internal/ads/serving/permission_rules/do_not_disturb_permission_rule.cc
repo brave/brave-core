@@ -19,10 +19,6 @@ constexpr int kDoNotDisturbToHour = 6;     // 6am
 
 }  // namespace
 
-DoNotDisturbPermissionRule::DoNotDisturbPermissionRule() = default;
-
-DoNotDisturbPermissionRule::~DoNotDisturbPermissionRule() = default;
-
 bool DoNotDisturbPermissionRule::ShouldAllow() {
   if (!DoesRespectCap()) {
     last_message_ = "Should not disturb";

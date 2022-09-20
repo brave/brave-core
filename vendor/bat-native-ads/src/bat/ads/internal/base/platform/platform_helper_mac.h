@@ -15,10 +15,11 @@ namespace ads {
 
 class PlatformHelperMac final : public PlatformHelper {
  public:
-  ~PlatformHelperMac() override;
+  PlatformHelperMac(const PlatformHelperMac& other) = delete;
+  PlatformHelperMac& operator=(const PlatformHelperMac& other) = delete;
 
-  PlatformHelperMac(const PlatformHelperMac&) = delete;
-  PlatformHelperMac& operator=(const PlatformHelperMac&) = delete;
+  PlatformHelperMac(PlatformHelperMac&& other) noexcept = delete;
+  PlatformHelperMac& operator=(PlatformHelperMac&& other) noexcept = delete;
 
  protected:
   friend class base::NoDestructor<PlatformHelperMac>;
@@ -26,7 +27,7 @@ class PlatformHelperMac final : public PlatformHelper {
   PlatformHelperMac();
 
  private:
-  // PlatformHelper impl
+  // PlatformHelper:
   bool IsMobile() const override;
   std::string GetName() const override;
   PlatformType GetType() const override;

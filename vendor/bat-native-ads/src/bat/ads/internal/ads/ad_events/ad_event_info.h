@@ -17,8 +17,13 @@ namespace ads {
 
 struct AdEventInfo final {
   AdEventInfo();
-  AdEventInfo(const AdEventInfo& info);
-  AdEventInfo& operator=(const AdEventInfo& info);
+
+  AdEventInfo(const AdEventInfo& other);
+  AdEventInfo& operator=(const AdEventInfo& other);
+
+  AdEventInfo(AdEventInfo&& other) noexcept;
+  AdEventInfo& operator=(AdEventInfo&& other) noexcept;
+
   ~AdEventInfo();
 
   AdType type = AdType::kUndefined;

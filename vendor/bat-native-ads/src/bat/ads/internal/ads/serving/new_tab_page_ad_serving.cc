@@ -59,7 +59,7 @@ void Serving::MaybeServeAd(MaybeServeNewTabPageAdCallback callback) {
     return;
   }
 
-  PermissionRules permission_rules;
+  const PermissionRules permission_rules;
   if (!permission_rules.HasPermission()) {
     BLOG(1, "New tab page ad not served: Not allowed due to permission rules");
     FailedToServeAd(callback);

@@ -100,8 +100,6 @@ class BatAdsFlagManagerTest : public UnitTestBase,
  protected:
   BatAdsFlagManagerTest() = default;
 
-  ~BatAdsFlagManagerTest() override = default;
-
   void SetUpMocks() override {
     const ParamInfo param = GetParam();
 

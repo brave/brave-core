@@ -30,12 +30,7 @@ constexpr char kNotExistantResourceFile[] =
 
 namespace resource {
 
-class BatAdsTextClassificationResourceTest : public UnitTestBase {
- protected:
-  BatAdsTextClassificationResourceTest() = default;
-
-  ~BatAdsTextClassificationResourceTest() override = default;
-};
+class BatAdsTextClassificationResourceTest : public UnitTestBase {};
 
 TEST_F(BatAdsTextClassificationResourceTest, Load) {
   // Arrange

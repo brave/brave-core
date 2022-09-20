@@ -16,9 +16,6 @@ class PrefManagerObserver : public base::CheckedObserver {
  public:
   // Invoked when the pref specified by |path| has changed.
   virtual void OnPrefDidChange(const std::string& path) {}
-
- protected:
-  ~PrefManagerObserver() override = default;
 };
 
 }  // namespace ads

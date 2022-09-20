@@ -26,10 +26,14 @@ struct TransactionInfo;
 class Confirmations final : public RedeemUnblindedTokenDelegate {
  public:
   explicit Confirmations(privacy::TokenGeneratorInterface* token_generator);
-  ~Confirmations() override;
 
-  Confirmations(const Confirmations&) = delete;
-  Confirmations& operator=(const Confirmations&) = delete;
+  Confirmations(const Confirmations& other) = delete;
+  Confirmations& operator=(const Confirmations& other) = delete;
+
+  Confirmations(Confirmations&& other) noexcept = delete;
+  Confirmations& operator=(Confirmations&& other) noexcept = delete;
+
+  ~Confirmations() override;
 
   void SetDelegate(ConfirmationsDelegate* delegate) {
     DCHECK_EQ(delegate_, nullptr);

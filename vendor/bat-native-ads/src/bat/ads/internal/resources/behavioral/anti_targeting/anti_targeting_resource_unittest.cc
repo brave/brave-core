@@ -11,12 +11,7 @@
 
 namespace ads::resource {
 
-class BatAdsAntiTargetingResourceTest : public UnitTestBase {
- protected:
-  BatAdsAntiTargetingResourceTest() = default;
-
-  ~BatAdsAntiTargetingResourceTest() override = default;
-};
+class BatAdsAntiTargetingResourceTest : public UnitTestBase {};
 
 TEST_F(BatAdsAntiTargetingResourceTest, Load) {
   // Arrange

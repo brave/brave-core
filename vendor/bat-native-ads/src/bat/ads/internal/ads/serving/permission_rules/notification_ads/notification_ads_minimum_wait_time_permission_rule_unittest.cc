@@ -14,12 +14,7 @@
 namespace ads::notification_ads {
 
 class BatAdsNotificationAdsMinimumWaitTimePermissionRuleTest
-    : public UnitTestBase {
- protected:
-  BatAdsNotificationAdsMinimumWaitTimePermissionRuleTest() = default;
-
-  ~BatAdsNotificationAdsMinimumWaitTimePermissionRuleTest() override = default;
-};
+    : public UnitTestBase {};
 
 TEST_F(BatAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
        AllowAdIfThereIsNoAdsHistory) {

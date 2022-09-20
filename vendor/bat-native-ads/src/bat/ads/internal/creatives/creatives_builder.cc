@@ -36,7 +36,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
     // Geo Targets
     base::flat_set<std::string> geo_targets;
     for (const auto& geo_target : campaign.geo_targets) {
-      std::string code = geo_target.code;
+      const std::string code = geo_target.code;
 
       if (base::Contains(geo_targets, code)) {
         continue;

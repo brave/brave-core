@@ -30,9 +30,14 @@ class TextProcessing final {
   TextProcessing();
   TextProcessing(TransformationVector transformations,
                  model::Linear linear_model);
-  ~TextProcessing();
+
   TextProcessing(const TextProcessing& pipeline) = delete;
   TextProcessing& operator=(const TextProcessing& pipeline) = delete;
+
+  TextProcessing(TextProcessing&& other) noexcept = delete;
+  TextProcessing& operator=(TextProcessing&& other) noexcept = delete;
+
+  ~TextProcessing();
 
   bool IsInitialized() const;
 

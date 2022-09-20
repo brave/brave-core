@@ -12,10 +12,6 @@
 
 namespace ads::notification_ads {
 
-AdEventDismissed::AdEventDismissed() = default;
-
-AdEventDismissed::~AdEventDismissed() = default;
-
 void AdEventDismissed::FireEvent(const NotificationAdInfo& ad) {
   BLOG(3, "Dismissed notification ad with placement id "
               << ad.placement_id << " and creative instance id "

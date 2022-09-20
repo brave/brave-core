@@ -21,9 +21,14 @@ namespace ads {
 class ADS_EXPORT AdEventHistory final {
  public:
   AdEventHistory();
+
+  AdEventHistory(const AdEventHistory& other) = delete;
+  AdEventHistory& operator=(const AdEventHistory& other) = delete;
+
+  AdEventHistory(AdEventHistory&& other) noexcept = delete;
+  AdEventHistory& operator=(AdEventHistory&& other) noexcept = delete;
+
   ~AdEventHistory();
-  AdEventHistory(const AdEventHistory&) = delete;
-  AdEventHistory& operator=(const AdEventHistory&) = delete;
 
   void RecordForId(const std::string& id,
                    const std::string& ad_type,

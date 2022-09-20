@@ -22,8 +22,6 @@ class BatAdsEligibleNewTabPageAdsV2Test : public UnitTestBase {
  protected:
   BatAdsEligibleNewTabPageAdsV2Test() = default;
 
-  ~BatAdsEligibleNewTabPageAdsV2Test() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

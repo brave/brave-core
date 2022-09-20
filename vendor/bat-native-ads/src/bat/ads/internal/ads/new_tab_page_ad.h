@@ -41,9 +41,14 @@ class NewTabPageAd final : public new_tab_page_ads::EventHandlerObserver,
                Transfer* transfer,
                geographic::SubdivisionTargeting* subdivision_targeting,
                resource::AntiTargeting* anti_targeting_resource);
+
+  NewTabPageAd(const NewTabPageAd& other) = delete;
+  NewTabPageAd& operator=(const NewTabPageAd& other) = delete;
+
+  NewTabPageAd(NewTabPageAd&& other) noexcept = delete;
+  NewTabPageAd& operator=(NewTabPageAd&& other) noexcept = delete;
+
   ~NewTabPageAd() override;
-  NewTabPageAd(const NewTabPageAd&) = delete;
-  NewTabPageAd& operator=(const NewTabPageAd&) = delete;
 
   void MaybeServe(MaybeServeNewTabPageAdCallback callback);
 

@@ -17,12 +17,7 @@ namespace {
 constexpr char kAdvertiserId[] = "1d3349f6-6713-4324-a135-b377237450a4";
 }  // namespace
 
-class BatAdsDislikeExclusionRuleTest : public UnitTestBase {
- protected:
-  BatAdsDislikeExclusionRuleTest() = default;
-
-  ~BatAdsDislikeExclusionRuleTest() override = default;
-};
+class BatAdsDislikeExclusionRuleTest : public UnitTestBase {};
 
 TEST_F(BatAdsDislikeExclusionRuleTest, AllowAd) {
   // Arrange

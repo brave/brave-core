@@ -24,12 +24,7 @@ constexpr char kQuestionsAsJson[] = R"(["question_1","question_2"])";
 
 }  // namespace
 
-class BatAdsP2ATest : public UnitTestBase {
- protected:
-  BatAdsP2ATest() = default;
-
-  ~BatAdsP2ATest() override = default;
-};
+class BatAdsP2ATest : public UnitTestBase {};
 
 TEST_F(BatAdsP2ATest, RecordEvent) {
   // Arrange

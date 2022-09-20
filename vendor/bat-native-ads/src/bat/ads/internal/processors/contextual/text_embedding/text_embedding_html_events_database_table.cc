@@ -62,10 +62,6 @@ TextEmbeddingHtmlEventInfo GetFromRecord(mojom::DBRecordInfo* record) {
 
 }  // namespace
 
-TextEmbeddingHtmlEvents::TextEmbeddingHtmlEvents() = default;
-
-TextEmbeddingHtmlEvents::~TextEmbeddingHtmlEvents() = default;
-
 void TextEmbeddingHtmlEvents::LogEvent(
     const TextEmbeddingHtmlEventInfo& text_embedding_html_event,
     ResultCallback callback) {
@@ -94,7 +90,7 @@ void TextEmbeddingHtmlEvents::GetAll(
 }
 
 void TextEmbeddingHtmlEvents::PurgeStale(ResultCallback callback) const {
-  std::string limit =
+  const std::string limit =
       std::to_string(targeting::features::GetTextEmbeddingsHistorySize());
   const std::string& query = base::StringPrintf(
       "DELETE FROM %s "

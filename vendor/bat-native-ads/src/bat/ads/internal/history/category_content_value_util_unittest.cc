@@ -22,12 +22,7 @@ constexpr char kJson[] = R"({"category":"segment","optAction":0})";
 
 }  // namespace
 
-class BatAdsCategoryContentValueUtilTest : public UnitTestBase {
- protected:
-  BatAdsCategoryContentValueUtilTest() = default;
-
-  ~BatAdsCategoryContentValueUtilTest() override = default;
-};
+class BatAdsCategoryContentValueUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsCategoryContentValueUtilTest, FromValue) {
   // Arrange

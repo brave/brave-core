@@ -27,8 +27,6 @@ class BatAdsIssuersTest : public UnitTestBase {
  protected:
   BatAdsIssuersTest() = default;
 
-  ~BatAdsIssuersTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

@@ -12,10 +12,6 @@
 
 namespace ads::inline_content_ads {
 
-AdEventClicked::AdEventClicked() = default;
-
-AdEventClicked::~AdEventClicked() = default;
-
 void AdEventClicked::FireEvent(const InlineContentAdInfo& ad) {
   BLOG(3, "Clicked inline content ad with placement id "
               << ad.placement_id << " and creative instance id "

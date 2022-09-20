@@ -46,9 +46,6 @@ class TabManagerObserver : public base::CheckedObserver {
 
   // Invoked when media stops playing in a tab specified by |id|.
   virtual void OnTabDidStopPlayingMedia(const int32_t tab_id) {}
-
- protected:
-  ~TabManagerObserver() override = default;
 };
 
 }  // namespace ads

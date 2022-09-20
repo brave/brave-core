@@ -17,12 +17,6 @@ struct CreativeAdInfo;
 class DaypartExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
-  DaypartExclusionRule();
-  ~DaypartExclusionRule() override;
-
-  DaypartExclusionRule(const DaypartExclusionRule&) = delete;
-  DaypartExclusionRule& operator=(const DaypartExclusionRule&) = delete;
-
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
 
   bool ShouldExclude(const CreativeAdInfo& creative_ad) override;

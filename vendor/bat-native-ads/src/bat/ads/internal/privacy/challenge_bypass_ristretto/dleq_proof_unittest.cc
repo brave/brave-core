@@ -29,7 +29,7 @@ constexpr char kDLEQProofBase64[] =
 
 TEST(BatAdsDLEQProofTest, FailToInitialize) {
   // Arrange
-  DLEQProof dleq_proof;
+  const DLEQProof dleq_proof;
 
   // Act
   const bool has_value = dleq_proof.has_value();
@@ -40,7 +40,7 @@ TEST(BatAdsDLEQProofTest, FailToInitialize) {
 
 TEST(BatAdsDLEQProofTest, FailToInitializeWithEmptyBase64) {
   // Arrange
-  DLEQProof dleq_proof("");
+  const DLEQProof dleq_proof("");
 
   // Act
   const bool has_value = dleq_proof.has_value();
@@ -51,7 +51,7 @@ TEST(BatAdsDLEQProofTest, FailToInitializeWithEmptyBase64) {
 
 TEST(BatAdsDLEQProofTest, FailToInitializeWithInvalidBase64) {
   // Arrange
-  DLEQProof dleq_proof(kInvalidBase64);
+  const DLEQProof dleq_proof(kInvalidBase64);
 
   // Act
   const bool has_value = dleq_proof.has_value();
@@ -62,8 +62,8 @@ TEST(BatAdsDLEQProofTest, FailToInitializeWithInvalidBase64) {
 
 TEST(BatAdsDLEQProofTest, FailToInitializeWithInvalidBlindedToken) {
   // Arrange
-  DLEQProof dleq_proof(GetInvalidBlindedToken(), GetSignedToken(),
-                       GetSigningKey());
+  const DLEQProof dleq_proof(GetInvalidBlindedToken(), GetSignedToken(),
+                             GetSigningKey());
 
   // Act
   const bool has_value = dleq_proof.has_value();
@@ -74,8 +74,8 @@ TEST(BatAdsDLEQProofTest, FailToInitializeWithInvalidBlindedToken) {
 
 TEST(BatAdsDLEQProofTest, FailToInitializeWithInvalidSignedToken) {
   // Arrange
-  DLEQProof dleq_proof(GetBlindedToken(), GetInvalidSignedToken(),
-                       GetSigningKey());
+  const DLEQProof dleq_proof(GetBlindedToken(), GetInvalidSignedToken(),
+                             GetSigningKey());
 
   // Act
   const bool has_value = dleq_proof.has_value();
@@ -86,8 +86,8 @@ TEST(BatAdsDLEQProofTest, FailToInitializeWithInvalidSignedToken) {
 
 TEST(BatAdsDLEQProofTest, FailToInitializeWithInvalidSigningKey) {
   // Arrange
-  DLEQProof dleq_proof(GetBlindedToken(), GetSignedToken(),
-                       GetInvalidSigningKey());
+  const DLEQProof dleq_proof(GetBlindedToken(), GetSignedToken(),
+                             GetInvalidSigningKey());
 
   // Act
   const bool has_value = dleq_proof.has_value();
@@ -131,7 +131,7 @@ TEST(BatAdsDLEQProofTest, FailToDecodeInvalidBase64) {
 
 TEST(BatAdsDLEQProofTest, EncodeBase64) {
   // Arrange
-  DLEQProof dleq_proof(kDLEQProofBase64);
+  const DLEQProof dleq_proof(kDLEQProofBase64);
 
   // Act
   const absl::optional<std::string> encoded_base64 = dleq_proof.EncodeBase64();
@@ -143,7 +143,7 @@ TEST(BatAdsDLEQProofTest, EncodeBase64) {
 
 TEST(BatAdsDLEQProofTest, FailToEncodeBase64WhenUninitialized) {
   // Arrange
-  DLEQProof dleq_proof;
+  const DLEQProof dleq_proof;
 
   // Act
   const absl::optional<std::string> encoded_base64 = dleq_proof.EncodeBase64();
@@ -226,7 +226,7 @@ TEST(BatAdsDLEQProofTest, FailToVerifyWithInvalidPublicKey) {
 
 TEST(BatAdsDLEQProofTest, IsEqual) {
   // Arrange
-  DLEQProof dleq_proof(kDLEQProofBase64);
+  const DLEQProof dleq_proof(kDLEQProofBase64);
 
   // Act
 
@@ -236,7 +236,7 @@ TEST(BatAdsDLEQProofTest, IsEqual) {
 
 TEST(BatAdsDLEQProofTest, IsEqualWhenUninitialized) {
   // Arrange
-  DLEQProof dleq_proof;
+  const DLEQProof dleq_proof;
 
   // Act
 
@@ -246,7 +246,7 @@ TEST(BatAdsDLEQProofTest, IsEqualWhenUninitialized) {
 
 TEST(BatAdsDLEQProofTest, IsEmptyBase64Equal) {
   // Arrange
-  DLEQProof dleq_proof("");
+  const DLEQProof dleq_proof("");
 
   // Act
 
@@ -256,7 +256,7 @@ TEST(BatAdsDLEQProofTest, IsEmptyBase64Equal) {
 
 TEST(BatAdsDLEQProofTest, IsInvalidBase64Equal) {
   // Arrange
-  DLEQProof dleq_proof(kInvalidBase64);
+  const DLEQProof dleq_proof(kInvalidBase64);
 
   // Act
 
@@ -266,18 +266,18 @@ TEST(BatAdsDLEQProofTest, IsInvalidBase64Equal) {
 
 TEST(BatAdsDLEQProofTest, IsNotEqual) {
   // Arrange
-  DLEQProof dleq_proof(kDLEQProofBase64);
+  const DLEQProof dleq_proof(kDLEQProofBase64);
 
   // Act
 
   // Assert
-  DLEQProof different_dleq_proof(kInvalidBase64);
+  const DLEQProof different_dleq_proof(kInvalidBase64);
   EXPECT_NE(different_dleq_proof, dleq_proof);
 }
 
 TEST(BatAdsDLEQProofTest, OutputStream) {
   // Arrange
-  DLEQProof dleq_proof(kDLEQProofBase64);
+  const DLEQProof dleq_proof(kDLEQProofBase64);
 
   // Act
   std::stringstream ss;
@@ -289,7 +289,7 @@ TEST(BatAdsDLEQProofTest, OutputStream) {
 
 TEST(BatAdsDLEQProofTest, OutputStreamWhenUninitialized) {
   // Arrange
-  DLEQProof dleq_proof;
+  const DLEQProof dleq_proof;
 
   // Act
   std::stringstream ss;

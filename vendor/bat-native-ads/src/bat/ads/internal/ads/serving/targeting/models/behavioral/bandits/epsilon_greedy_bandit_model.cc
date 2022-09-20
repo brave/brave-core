@@ -177,10 +177,6 @@ SegmentList GetSegmentsForArms(const EpsilonGreedyBanditArmMap& arms) {
 
 }  // namespace
 
-EpsilonGreedyBandit::EpsilonGreedyBandit() = default;
-
-EpsilonGreedyBandit::~EpsilonGreedyBandit() = default;
-
 SegmentList EpsilonGreedyBandit::GetSegments() const {
   return GetSegmentsForArms(GetEpsilonGreedyBanditArms());
 }

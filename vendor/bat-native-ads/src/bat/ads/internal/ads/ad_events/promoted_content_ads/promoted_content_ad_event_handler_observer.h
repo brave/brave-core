@@ -34,9 +34,6 @@ class EventHandlerObserver : public base::CheckedObserver {
       const std::string& placement_id,
       const std::string& creative_instance_id,
       const mojom::PromotedContentAdEventType event_type) {}
-
- protected:
-  ~EventHandlerObserver() override = default;
 };
 
 }  // namespace promoted_content_ads

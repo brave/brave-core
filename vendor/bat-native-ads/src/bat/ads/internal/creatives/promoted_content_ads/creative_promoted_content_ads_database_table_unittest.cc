@@ -19,8 +19,6 @@ class BatAdsCreativePromotedContentAdsDatabaseTableTest : public UnitTestBase {
  protected:
   BatAdsCreativePromotedContentAdsDatabaseTableTest() = default;
 
-  ~BatAdsCreativePromotedContentAdsDatabaseTableTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 
@@ -33,7 +31,7 @@ class BatAdsCreativePromotedContentAdsDatabaseTableTest : public UnitTestBase {
 TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
        SaveEmptyCreativePromotedContentAds) {
   // Arrange
-  CreativePromotedContentAdList creative_promoted_content_ads;
+  const CreativePromotedContentAdList creative_promoted_content_ads;
 
   // Act
   SaveCreativePromotedContentAds(creative_promoted_content_ads);
@@ -46,7 +44,7 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   // Arrange
   CreativePromotedContentAdList creative_promoted_content_ads;
 
-  CreativeDaypartInfo daypart_info;
+  const CreativeDaypartInfo daypart_info;
   CreativePromotedContentAdInfo info_1;
   info_1.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info_1.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
@@ -117,7 +115,7 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   // Arrange
   database_table_->SetBatchSize(2);
 
-  CreativeDaypartInfo daypart_info;
+  const CreativeDaypartInfo daypart_info;
   CreativePromotedContentAdList creative_promoted_content_ads;
 
   CreativePromotedContentAdInfo info_1;
@@ -214,7 +212,7 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   // Arrange
   CreativePromotedContentAdList creative_promoted_content_ads;
 
-  CreativeDaypartInfo daypart_info;
+  const CreativeDaypartInfo daypart_info;
   CreativePromotedContentAdInfo info;
   info.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
@@ -265,7 +263,7 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest, GetForSegments) {
 
   CreativePromotedContentAdList creative_promoted_content_ads;
 
-  CreativeDaypartInfo daypart_info;
+  const CreativeDaypartInfo daypart_info;
   CreativePromotedContentAdInfo info_1;
   info_1.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info_1.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
@@ -398,7 +396,7 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   // Arrange
   CreativePromotedContentAdList creative_promoted_content_ads;
 
-  CreativeDaypartInfo daypart_info;
+  const CreativeDaypartInfo daypart_info;
   CreativePromotedContentAdInfo info;
   info.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
@@ -442,7 +440,7 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   // Arrange
   CreativePromotedContentAdList creative_promoted_content_ads;
 
-  CreativeDaypartInfo daypart_info;
+  const CreativeDaypartInfo daypart_info;
   CreativePromotedContentAdInfo info;
   info.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
@@ -492,7 +490,7 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   // Arrange
   CreativePromotedContentAdList creative_promoted_content_ads;
 
-  CreativeDaypartInfo daypart_info;
+  const CreativeDaypartInfo daypart_info;
   CreativePromotedContentAdInfo info;
   info.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
@@ -542,7 +540,7 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   // Arrange
   CreativePromotedContentAdList creative_promoted_content_ads;
 
-  CreativeDaypartInfo daypart_info;
+  const CreativeDaypartInfo daypart_info;
   CreativePromotedContentAdInfo info_1;
   info_1.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info_1.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
@@ -640,7 +638,7 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   // Arrange
   CreativePromotedContentAdList creative_promoted_content_ads;
 
-  CreativeDaypartInfo daypart_info;
+  const CreativeDaypartInfo daypart_info;
   CreativePromotedContentAdInfo info_1;
   info_1.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info_1.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
@@ -714,7 +712,7 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   // Arrange
   CreativePromotedContentAdList creative_promoted_content_ads;
 
-  CreativeDaypartInfo daypart_info;
+  const CreativeDaypartInfo daypart_info;
   CreativePromotedContentAdInfo info_1;
   info_1.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info_1.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";

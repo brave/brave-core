@@ -26,12 +26,17 @@ class VerificationSignature {
   explicit VerificationSignature(
       const challenge_bypass_ristretto::VerificationSignature&
           verification_signature);
+
   VerificationSignature(const VerificationSignature& other);
   VerificationSignature& operator=(const VerificationSignature& other);
+
+  VerificationSignature(VerificationSignature&& other) noexcept;
+  VerificationSignature& operator=(VerificationSignature&& other) noexcept;
+
   ~VerificationSignature();
 
-  bool operator==(const VerificationSignature& rhs) const;
-  bool operator!=(const VerificationSignature& rhs) const;
+  bool operator==(const VerificationSignature& other) const;
+  bool operator!=(const VerificationSignature& other) const;
 
   bool has_value() const { return verification_signature_.has_value(); }
 

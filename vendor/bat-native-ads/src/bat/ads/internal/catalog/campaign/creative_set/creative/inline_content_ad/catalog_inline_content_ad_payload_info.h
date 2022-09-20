@@ -14,14 +14,21 @@ namespace ads {
 
 struct CatalogInlineContentAdPayloadInfo final {
   CatalogInlineContentAdPayloadInfo();
+
   CatalogInlineContentAdPayloadInfo(
-      const CatalogInlineContentAdPayloadInfo& info);
+      const CatalogInlineContentAdPayloadInfo& other);
   CatalogInlineContentAdPayloadInfo& operator=(
-      const CatalogInlineContentAdPayloadInfo& info);
+      const CatalogInlineContentAdPayloadInfo& other);
+
+  CatalogInlineContentAdPayloadInfo(
+      CatalogInlineContentAdPayloadInfo&& other) noexcept;
+  CatalogInlineContentAdPayloadInfo& operator=(
+      CatalogInlineContentAdPayloadInfo&& other) noexcept;
+
   ~CatalogInlineContentAdPayloadInfo();
 
-  bool operator==(const CatalogInlineContentAdPayloadInfo& rhs) const;
-  bool operator!=(const CatalogInlineContentAdPayloadInfo& rhs) const;
+  bool operator==(const CatalogInlineContentAdPayloadInfo& other) const;
+  bool operator!=(const CatalogInlineContentAdPayloadInfo& other) const;
 
   std::string title;
   std::string description;

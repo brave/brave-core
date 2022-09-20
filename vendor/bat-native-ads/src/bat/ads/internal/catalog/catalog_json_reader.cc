@@ -73,7 +73,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
     }
 
     if (campaign.dayparts.empty()) {
-      CatalogDaypartInfo daypart;
+      const CatalogDaypartInfo daypart;
       campaign.dayparts.push_back(daypart);
     }
 
@@ -148,13 +148,13 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
       // Creatives
       for (const auto& creative_node :
            creative_set_node["creatives"].GetArray()) {
-        std::string creative_instance_id =
+        const std::string creative_instance_id =
             creative_node["creativeInstanceId"].GetString();
 
         // Type
         const auto type = creative_node["type"].GetObject();
 
-        std::string code = type["code"].GetString();
+        const std::string code = type["code"].GetString();
         if (code == "notification_all_v1") {
           CatalogCreativeNotificationAdInfo creative;
           creative.creative_instance_id = creative_instance_id;

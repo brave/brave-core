@@ -13,12 +13,7 @@
 
 namespace ads {
 
-class BatAdsLastUnIdleTimeDiagnosticEntryTest : public UnitTestBase {
- protected:
-  BatAdsLastUnIdleTimeDiagnosticEntryTest() = default;
-
-  ~BatAdsLastUnIdleTimeDiagnosticEntryTest() override = default;
-};
+class BatAdsLastUnIdleTimeDiagnosticEntryTest : public UnitTestBase {};
 
 TEST_F(BatAdsLastUnIdleTimeDiagnosticEntryTest, LastUnIdleTime) {
   // Arrange
@@ -38,7 +33,7 @@ TEST_F(BatAdsLastUnIdleTimeDiagnosticEntryTest, LastUnIdleTime) {
 
 TEST_F(BatAdsLastUnIdleTimeDiagnosticEntryTest, WasNeverUnIdle) {
   // Arrange
-  LastUnIdleTimeDiagnosticEntry diagnostic_entry;
+  const LastUnIdleTimeDiagnosticEntry diagnostic_entry;
 
   // Act
 

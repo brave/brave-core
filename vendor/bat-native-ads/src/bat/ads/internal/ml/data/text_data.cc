@@ -18,6 +18,4 @@ const std::string& TextData::GetText() const {
   return text_;
 }
 
-TextData::~TextData() = default;
-
 }  // namespace ads::ml

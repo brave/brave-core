@@ -34,9 +34,14 @@ class Serving final {
  public:
   Serving(geographic::SubdivisionTargeting* subdivision_targeting,
           resource::AntiTargeting* anti_targeting_resource);
+
+  Serving(const Serving& other) = delete;
+  Serving& operator=(const Serving& other) = delete;
+
+  Serving(Serving&& other) noexcept = delete;
+  Serving& operator=(Serving&& other) noexcept = delete;
+
   ~Serving();
-  Serving(const Serving&) = delete;
-  Serving& operator=(const Serving&) = delete;
 
   void AddObserver(ServingObserver* observer);
   void RemoveObserver(ServingObserver* observer);

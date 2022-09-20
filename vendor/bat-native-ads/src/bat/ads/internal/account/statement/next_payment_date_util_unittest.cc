@@ -15,12 +15,7 @@
 
 namespace ads {
 
-class BatAdsNextPaymentDateUtilTest : public UnitTestBase {
- protected:
-  BatAdsNextPaymentDateUtilTest() = default;
-
-  ~BatAdsNextPaymentDateUtilTest() override = default;
-};
+class BatAdsNextPaymentDateUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsNextPaymentDateUtilTest,
        TimeNowIsBeforeNextPaymentDayWithReconciledTransactionsLastMonth) {

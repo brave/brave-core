@@ -21,10 +21,6 @@ constexpr base::TimeDelta kTimeWindow = base::Days(7);
 
 }  // namespace
 
-LastNotificationAdWasClicked::LastNotificationAdWasClicked() = default;
-
-LastNotificationAdWasClicked::~LastNotificationAdWasClicked() = default;
-
 brave_federated::mojom::DataType LastNotificationAdWasClicked::GetDataType()
     const {
   return brave_federated::mojom::DataType::kBool;

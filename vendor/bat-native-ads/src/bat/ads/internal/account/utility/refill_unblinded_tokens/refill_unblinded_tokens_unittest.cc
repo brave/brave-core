@@ -35,8 +35,6 @@ class BatAdsRefillUnblindedTokensTest : public UnitTestBase {
  protected:
   BatAdsRefillUnblindedTokensTest() = default;
 
-  ~BatAdsRefillUnblindedTokensTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 
@@ -400,7 +398,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   BuildAndSetIssuers();
 
   // Act
-  InSequence seq;
+  const InSequence seq;
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnFailedToRefillUnblindedTokens());
@@ -542,7 +540,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   BuildAndSetIssuers();
 
   // Act
-  InSequence seq;
+  const InSequence seq;
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnFailedToRefillUnblindedTokens());

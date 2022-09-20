@@ -15,12 +15,7 @@
 
 namespace ads::privacy {
 
-class BatAdsUnblindedTokensTest : public UnitTestBase {
- protected:
-  BatAdsUnblindedTokensTest() = default;
-
-  ~BatAdsUnblindedTokensTest() override = default;
-};
+class BatAdsUnblindedTokensTest : public UnitTestBase {};
 
 TEST_F(BatAdsUnblindedTokensTest, GetToken) {
   // Arrange
@@ -198,7 +193,7 @@ TEST_F(BatAdsUnblindedTokensTest, Count) {
 
 TEST_F(BatAdsUnblindedTokensTest, IsEmpty) {
   // Arrange
-  UnblindedTokens unblinded_tokens;
+  const UnblindedTokens unblinded_tokens;
 
   // Act
 

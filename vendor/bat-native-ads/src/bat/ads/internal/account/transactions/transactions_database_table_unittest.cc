@@ -15,12 +15,7 @@
 
 namespace ads::database::table {
 
-class BatAdsTransactionsDatabaseTableTest : public UnitTestBase {
- protected:
-  BatAdsTransactionsDatabaseTableTest() = default;
-
-  ~BatAdsTransactionsDatabaseTableTest() override = default;
-};
+class BatAdsTransactionsDatabaseTableTest : public UnitTestBase {};
 
 TEST_F(BatAdsTransactionsDatabaseTableTest, SaveEmptyTransactions) {
   // Arrange
@@ -192,7 +187,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, DeleteTransactions) {
 
 TEST_F(BatAdsTransactionsDatabaseTableTest, TableName) {
   // Arrange
-  Transactions database_table;
+  const Transactions database_table;
 
   // Act
   const std::string table_name = database_table.GetTableName();

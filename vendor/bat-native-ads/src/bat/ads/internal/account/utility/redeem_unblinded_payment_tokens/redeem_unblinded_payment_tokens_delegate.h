@@ -13,8 +13,6 @@ namespace ads {
 
 class RedeemUnblindedPaymentTokensDelegate {
  public:
-  virtual ~RedeemUnblindedPaymentTokensDelegate() = default;
-
   // Invoked to tell the delegate that the |unblinded_payment_tokens| were
   // successfully redeemed.
   virtual void OnDidRedeemUnblindedPaymentTokens(
@@ -37,6 +35,9 @@ class RedeemUnblindedPaymentTokensDelegate {
   // Invoked to tell the delegate that we retried redeeming unblinded payment
   // tokens.
   virtual void OnDidRetryRedeemingUnblindedPaymentTokens() {}
+
+ protected:
+  virtual ~RedeemUnblindedPaymentTokensDelegate() = default;
 };
 
 }  // namespace ads

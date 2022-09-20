@@ -25,12 +25,7 @@ constexpr char kJson[] =
 
 }  // namespace
 
-class BatAdsNewTabPageAdValueUtilTest : public UnitTestBase {
- protected:
-  BatAdsNewTabPageAdValueUtilTest() = default;
-
-  ~BatAdsNewTabPageAdValueUtilTest() override = default;
-};
+class BatAdsNewTabPageAdValueUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsNewTabPageAdValueUtilTest, FromValue) {
   // Arrange

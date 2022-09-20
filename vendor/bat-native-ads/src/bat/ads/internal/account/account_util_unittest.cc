@@ -20,12 +20,7 @@
 
 namespace ads {
 
-class BatAdsAccountUtilTest : public UnitTestBase {
- protected:
-  BatAdsAccountUtilTest() = default;
-
-  ~BatAdsAccountUtilTest() override = default;
-};
+class BatAdsAccountUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsAccountUtilTest, ShouldRewardUser) {
   // Arrange

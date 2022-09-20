@@ -19,10 +19,15 @@ class PerWeekExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
   explicit PerWeekExclusionRule(const AdEventList& ad_events);
-  ~PerWeekExclusionRule() override;
 
-  PerWeekExclusionRule(const PerWeekExclusionRule&) = delete;
-  PerWeekExclusionRule& operator=(const PerWeekExclusionRule&) = delete;
+  PerWeekExclusionRule(const PerWeekExclusionRule& other) = delete;
+  PerWeekExclusionRule& operator=(const PerWeekExclusionRule& other) = delete;
+
+  PerWeekExclusionRule(PerWeekExclusionRule&& other) noexcept = delete;
+  PerWeekExclusionRule& operator=(PerWeekExclusionRule&& other) noexcept =
+      delete;
+
+  ~PerWeekExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
 

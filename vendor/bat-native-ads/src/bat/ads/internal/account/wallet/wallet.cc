@@ -13,10 +13,6 @@
 
 namespace ads {
 
-Wallet::Wallet() = default;
-
-Wallet::~Wallet() = default;
-
 bool Wallet::Set(const std::string& id, const std::string& seed) {
   const std::vector<uint8_t> secret_key =
       security::GenerateSecretKeyFromSeed(seed);

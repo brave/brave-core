@@ -14,12 +14,6 @@ namespace ads {
 
 class CashDeposit final : public DepositInterface {
  public:
-  CashDeposit();
-  ~CashDeposit() override;
-
-  CashDeposit(const CashDeposit&) = delete;
-  CashDeposit& operator=(const CashDeposit&) = delete;
-
   void GetValue(const std::string& creative_instance_id,
                 GetDepositCallback callback) override;
 };

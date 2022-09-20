@@ -20,12 +20,7 @@ constexpr char kExpectedJson[] =
 
 }  // namespace
 
-class BatAdsOptedInCredentialJsonWriterTest : public UnitTestBase {
- protected:
-  BatAdsOptedInCredentialJsonWriterTest() = default;
-
-  ~BatAdsOptedInCredentialJsonWriterTest() override = default;
-};
+class BatAdsOptedInCredentialJsonWriterTest : public UnitTestBase {};
 
 TEST_F(BatAdsOptedInCredentialJsonWriterTest, WriteJson) {
   // Arrange

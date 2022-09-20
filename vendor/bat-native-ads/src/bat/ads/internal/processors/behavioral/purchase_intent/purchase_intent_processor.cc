@@ -38,7 +38,7 @@ constexpr uint16_t kPurchaseIntentDefaultSignalWeight = 1;
 void AppendIntentSignalToHistory(
     const targeting::PurchaseIntentSignalInfo& purchase_intent_signal) {
   for (const auto& segment : purchase_intent_signal.segments) {
-    targeting::PurchaseIntentSignalHistoryInfo history(
+    const targeting::PurchaseIntentSignalHistoryInfo history(
         purchase_intent_signal.created_at, purchase_intent_signal.weight);
 
     ClientStateManager::GetInstance()
@@ -133,7 +133,7 @@ targeting::PurchaseIntentSignalInfo PurchaseIntent::ExtractSignal(
       signal_info.weight = GetFunnelWeightForSearchQuery(*search_query);
     }
   } else {
-    targeting::PurchaseIntentSiteInfo info = GetSite(url);
+    const targeting::PurchaseIntentSiteInfo info = GetSite(url);
 
     if (info.url_netloc.is_valid()) {
       signal_info.created_at = base::Time::Now();

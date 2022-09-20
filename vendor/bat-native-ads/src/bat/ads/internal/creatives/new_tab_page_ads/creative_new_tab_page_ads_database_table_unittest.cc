@@ -18,8 +18,6 @@ class BatAdsCreativeNewTabPageAdsDatabaseTableTest : public UnitTestBase {
  protected:
   BatAdsCreativeNewTabPageAdsDatabaseTableTest() = default;
 
-  ~BatAdsCreativeNewTabPageAdsDatabaseTableTest() override = default;
-
   CreativeNewTabPageAds database_table;
 };
 
@@ -78,7 +76,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   // Arrange
   CreativeNewTabPageAdList creative_ads;
 
-  CreativeNewTabPageAdInfo creative_ad = BuildCreativeNewTabPageAd();
+  const CreativeNewTabPageAdInfo creative_ad = BuildCreativeNewTabPageAd();
   creative_ads.push_back(creative_ad);
 
   SaveCreativeAds(creative_ads);

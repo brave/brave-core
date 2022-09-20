@@ -24,8 +24,6 @@ class BatAdsLegacyRewardsMigrationIssue25384Test : public UnitTestBase {
  protected:
   BatAdsLegacyRewardsMigrationIssue25384Test() = default;
 
-  ~BatAdsLegacyRewardsMigrationIssue25384Test() override = default;
-
   void SetUpMocks() override {
     CopyFileFromTestPathToTempPath(kIssue25384ConfirmationStateFilename,
                                    kConfirmationStateFilename);

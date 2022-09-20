@@ -19,11 +19,6 @@ namespace ads {
 
 class AdsPerDayPermissionRule final : public PermissionRuleInterface {
  public:
-  AdsPerDayPermissionRule();
-  AdsPerDayPermissionRule(const AdsPerDayPermissionRule&) = delete;
-  AdsPerDayPermissionRule& operator=(const AdsPerDayPermissionRule&) = delete;
-  ~AdsPerDayPermissionRule() override;
-
   bool ShouldAllow() override;
 
   const std::string& GetLastMessage() const override;

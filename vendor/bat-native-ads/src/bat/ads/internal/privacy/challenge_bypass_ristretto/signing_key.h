@@ -30,12 +30,17 @@ class SigningKey {
   explicit SigningKey(const std::string& signing_key_base64);
   explicit SigningKey(
       const challenge_bypass_ristretto::SigningKey& signing_key);
-  SigningKey(const SigningKey& other);
-  SigningKey& operator=(const SigningKey& other);
+
+  SigningKey(const SigningKey& other) = delete;
+  SigningKey& operator=(const SigningKey& other) = delete;
+
+  SigningKey(SigningKey&& other) noexcept = delete;
+  SigningKey& operator=(SigningKey&& other) noexcept = delete;
+
   ~SigningKey();
 
-  bool operator==(const SigningKey& rhs) const;
-  bool operator!=(const SigningKey& rhs) const;
+  bool operator==(const SigningKey& other) const;
+  bool operator!=(const SigningKey& other) const;
 
   bool has_value() const { return signing_key_.has_value(); }
 

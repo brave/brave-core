@@ -16,8 +16,13 @@ namespace ads {
 
 struct CreativesInfo final {
   CreativesInfo();
-  CreativesInfo(const CreativesInfo& info);
-  CreativesInfo& operator=(const CreativesInfo& info);
+
+  CreativesInfo(const CreativesInfo& other);
+  CreativesInfo& operator=(const CreativesInfo& other);
+
+  CreativesInfo(CreativesInfo&& other) noexcept;
+  CreativesInfo& operator=(CreativesInfo&& other) noexcept;
+
   ~CreativesInfo();
 
   CreativeNotificationAdList notification_ads;

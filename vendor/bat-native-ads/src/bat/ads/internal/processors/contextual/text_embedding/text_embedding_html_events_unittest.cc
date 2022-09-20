@@ -27,7 +27,7 @@ TEST_F(BatAdsTextEmbeddingHtmlEventsTest, BuildEvent) {
   const ml::pipeline::TextEmbeddingInfo text_embedding = BuildTextEmbedding();
 
   // Act
-  TextEmbeddingHtmlEventInfo text_embedding_html_event =
+  const TextEmbeddingHtmlEventInfo text_embedding_html_event =
       BuildTextEmbeddingHtmlEvent(text_embedding);
 
   // Assert

@@ -30,8 +30,6 @@ class BatAdsNewTabPageAdIntegrationTest : public UnitTestBase {
  protected:
   BatAdsNewTabPageAdIntegrationTest() = default;
 
-  ~BatAdsNewTabPageAdIntegrationTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
 

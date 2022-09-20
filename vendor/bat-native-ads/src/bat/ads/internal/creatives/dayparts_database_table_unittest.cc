@@ -13,7 +13,7 @@ namespace ads::database::table {
 
 TEST(BatAdsDayPartsDatabaseTableTest, TableName) {
   // Arrange
-  Dayparts database_table;
+  const Dayparts database_table;
 
   // Act
   const std::string table_name = database_table.GetTableName();
