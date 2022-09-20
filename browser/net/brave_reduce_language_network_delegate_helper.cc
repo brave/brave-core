@@ -22,7 +22,6 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
 #include "net/base/net_errors.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
 using brave_shields::ControlType;
 
