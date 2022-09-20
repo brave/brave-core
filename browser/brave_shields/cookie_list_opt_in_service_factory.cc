@@ -5,6 +5,8 @@
 
 #include "brave/browser/brave_shields/cookie_list_opt_in_service_factory.h"
 
+#include <utility>
+
 #include "brave/components/brave_shields/browser/cookie_list_opt_in_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"

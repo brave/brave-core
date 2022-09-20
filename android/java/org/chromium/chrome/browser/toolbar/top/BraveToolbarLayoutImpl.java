@@ -347,7 +347,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     @Override
     public void onConnectionError(MojoException e) {
-        Log.e("NTP", "MojoException : " + e.getMessage());
         mCookieListOptInPageAndroidHandler = null;
         initCookieListOptInPageAndroidHandler();
     }
@@ -364,7 +363,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     @Override
     protected void onNativeLibraryReady() {
-        Log.e("NTP", "onNativeLibraryReady : ");
         super.onNativeLibraryReady();
         initCookieListOptInPageAndroidHandler();
         mBraveShieldsContentSettings = BraveShieldsContentSettings.getInstance();

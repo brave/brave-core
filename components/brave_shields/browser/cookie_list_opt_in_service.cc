@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_shields/browser/cookie_list_opt_in_service.h"
 
+#include <utility>
+
 #include "base/feature_list.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"

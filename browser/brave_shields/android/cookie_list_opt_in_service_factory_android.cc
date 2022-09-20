@@ -2,7 +2,6 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 #include "base/android/jni_android.h"
 #include "brave/browser/brave_shields/cookie_list_opt_in_service_factory.h"
 #include "brave/build/android/jni_headers/CookieListOptInServiceFactory_jni.h"
@@ -13,7 +12,7 @@
 namespace chrome {
 namespace android {
 static jint
-JNI_CookieListOptInServiceFactory_GetInterfaceToCookieListOptInPageAndroidHandler(
+JNI_CookieListOptInServiceFactory_GetInterfaceToCookieListOptInService(
     JNIEnv* env) {
   auto* profile = ProfileManager::GetActiveUserProfile();
   auto pending = brave_shields::CookieListOptInServiceFactory::GetInstance()
