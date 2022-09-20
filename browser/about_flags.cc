@@ -205,6 +205,11 @@ constexpr char kBraveTorWindowsHttpsOnlyDescription[] =
     "Prevents Private Windows with Tor from making any insecure HTTP "
     "connections without warning the user first.";
 
+constexpr char kBraveRoundTimeStampsName[] = "Round time stamps";
+constexpr char kBraveRoundTimeStampsDescription[] =
+    "Prevents JavaScript from getting access to high-resolution clocks by "
+    "rounding all DOMHighResTimeStamps to the nearest millisecond.";
+
 constexpr char kBraveSpeedreaderName[] = "Enable SpeedReader";
 constexpr char kBraveSpeedreaderDescription[] =
     "Enables faster loading of simplified article-style web pages.";
@@ -717,6 +722,11 @@ constexpr char kBraveBackgroundVideoPlaybackDescription[] =
       flag_descriptions::kBraveTorWindowsHttpsOnlyDescription,              \
       kOsAll, FEATURE_VALUE_TYPE(                                           \
           blink::features::kBraveTorWindowsHttpsOnly)},                     \
+    {"brave-round-time-stamps",                                             \
+      flag_descriptions::kBraveRoundTimeStampsName,                         \
+      flag_descriptions::kBraveRoundTimeStampsDescription,                  \
+      kOsAll, FEATURE_VALUE_TYPE(                                           \
+          blink::features::kBraveRoundTimeStamps)},                         \
     BRAVE_IPFS_FEATURE_ENTRIES                                              \
     BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                     \
     BRAVE_NEWS_FEATURE_ENTRIES                                              \

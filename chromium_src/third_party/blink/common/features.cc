@@ -62,5 +62,8 @@ const base::Feature kBraveBlockScreenFingerprinting{
 const base::Feature kBraveTorWindowsHttpsOnly{"BraveTorWindowsHttpsOnly",
                                               base::FEATURE_ENABLED_BY_DEFAULT};
 
+// Disable protection against fingerprinting via high-resolution time stamps.
+const base::Feature kBraveRoundTimeStamps{"BraveRoundTimeStamps",
+                                          base::FEATURE_ENABLED_BY_DEFAULT};
 }  // namespace features
 }  // namespace blink
