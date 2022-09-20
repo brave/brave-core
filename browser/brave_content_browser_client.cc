@@ -14,6 +14,7 @@
 #include "base/json/json_reader.h"
 #include "base/strings/strcat.h"
 #include "base/system/sys_info.h"
+#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_ads/brave_ads_host.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process.h"
@@ -34,6 +35,7 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
+#include "brave/components/brave_ads/browser/ads_status_header_throttle.h"
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_rewards/browser/rewards_protocol_handler.h"
@@ -770,11 +772,20 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
     }
 #endif  // ENABLE_SPEEDREADER
 
-    // De-AMP
     if (isMainFrame) {
+      // De-AMP
       if (auto de_amp_throttle = de_amp::DeAmpThrottle::MaybeCreateThrottleFor(
               base::ThreadTaskRunnerHandle::Get(), request, wc_getter)) {
         result.push_back(std::move(de_amp_throttle));
+      }
+
+      brave_ads::AdsService* ads_service =
+          brave_ads::AdsServiceFactory::GetForProfile(
+              Profile::FromBrowserContext(browser_context));
+      if (auto ads_status_header_throttle =
+              brave_ads::AdsStatusHeaderThrottle::MaybeCreateThrottle(
+                  ads_service, request)) {
+        result.push_back(std::move(ads_status_header_throttle));
       }
     }
   }
