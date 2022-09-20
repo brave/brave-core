@@ -3,12 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+#include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
+
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
-#include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "brave/components/sidebar/sidebar_service.h"
@@ -22,11 +23,12 @@
 
 class SidebarContainerViewBrowserTest : public InProcessBrowserTest {
  public:
-  SidebarContainerViewBrowserTest() {}
+  SidebarContainerViewBrowserTest() = default;
   SidebarContainerViewBrowserTest(const SidebarContainerViewBrowserTest&) =
       delete;
   SidebarContainerViewBrowserTest& operator=(
       const SidebarContainerViewBrowserTest&) = delete;
+  ~SidebarContainerViewBrowserTest() override = default;
 
   BraveBrowserView* brave_browser_view() {
     return static_cast<BraveBrowserView*>(
@@ -53,8 +55,8 @@ class SidebarContainerViewBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(SidebarContainerViewBrowserTest,
                        ButtonIsShownByDefault) {
   EXPECT_LT(0u, GetService()->items().size());
-  EXPECT_NE(nullptr, sidebar());
-  EXPECT_NE(nullptr, toolbar_button());
+  EXPECT_TRUE(sidebar());
+  EXPECT_TRUE(toolbar_button());
   EXPECT_TRUE(toolbar_button()->GetVisible());
 }
 
