@@ -9,13 +9,21 @@
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feed_item_view.h"
 #include "content/public/browser/web_contents.h"
+#include "include/core/SkColor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/size.h"
+#include "ui/views/background.h"
+#include "ui/views/border.h"
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/layout/layout_manager.h"
 #include "ui/views/layout/layout_types.h"
 #include "ui/views/view_class_properties.h"
+
+namespace {
+  SkColor kLightBackgroundColor = SK_ColorWHITE;
+  SkColor kLightBorderColor = SkColorSetRGB(233, 233, 244);
+}
 
 BraveNewsFeedsContainerView::BraveNewsFeedsContainerView(
     content::WebContents* contents) {
@@ -23,14 +31,19 @@ BraveNewsFeedsContainerView::BraveNewsFeedsContainerView(
   for (const auto& feed_item : tab_helper->GetAvailableFeeds()) {
     auto* child = AddChildView(
         std::make_unique<BraveNewsFeedItemView>(feed_item, contents));
-    child->SetProperty(views::kMarginsKey, gfx::Insets::TLBR(10, 0, 0, 0));
+    child->SetProperty(views::kMarginsKey, gfx::Insets::VH(12, 12));
+
+    // TODO: Maybe insert separator view here?
   }
 
   views::FlexLayout* const layout = SetLayoutManager(std::make_unique<views::FlexLayout>());
   layout->SetOrientation(views::LayoutOrientation::kVertical);
   layout->SetMainAxisAlignment(views::LayoutAlignment::kStart);
   layout->SetCrossAxisAlignment(views::LayoutAlignment::kStretch);
-  layout->SetCollapseMargins(true);
+  layout->SetCollapseMargins(false);
+
+  SetBackground(views::CreateSolidBackground(kLightBackgroundColor));
+  SetBorder(views::CreateRoundedRectBorder(1, 12, kLightBorderColor));
 }
 
 BraveNewsFeedsContainerView::~BraveNewsFeedsContainerView() = default;

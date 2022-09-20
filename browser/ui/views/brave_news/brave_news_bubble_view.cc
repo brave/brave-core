@@ -45,8 +45,8 @@
 
 namespace {
 SkColor kSubtitleColor = SkColorSetRGB(134, 142, 150);
-SkColor kBackgroundLightColor = SkColorSetRGB(99, 105, 110);
-}
+// SkColor kBackgroundLightColor = SkColorSetRGB(99, 105, 110);
+}  // namespace
 
 // static
 base::WeakPtr<views::Widget> BraveNewsBubbleView::Show(
@@ -71,9 +71,7 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
   set_adjust_if_offscreen(true);
   set_close_on_deactivate(false);
 
-  SetBackground(views::CreateSolidBackground(kBackgroundLightColor));
-
-  this->SetProperty(views::kInternalPaddingKey, gfx::Insets::VH(16, 16));
+  SetProperty(views::kInternalPaddingKey, gfx::Insets::VH(16, 16));
 
   auto title_font_list = views::Label::GetDefaultFontList().DeriveWithWeight(
       gfx::Font::Weight::SEMIBOLD);
@@ -116,6 +114,9 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
       views::kFlexBehaviorKey,
       views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,
                                views::MaximumFlexSizeRule::kPreferred));
+
+  // TODO:
+  //   GetBubbleFrameView()->SetBackgroundColor(kLightBackgroundColor);
 }
 
 BraveNewsBubbleView::~BraveNewsBubbleView() = default;
