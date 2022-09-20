@@ -128,7 +128,8 @@ public class BraveRewardsCustomTipFragment extends Fragment {
             Double batValue = getBatValue(s.toString());
             Double usdValue = exchangeRate * batValue;
 
-            ((BraveRewardsSiteBannerActivity) getActivity()).onAmountChange(batValue, roundExchangeUp(usdValue));
+            ((BraveRewardsSiteBannerActivity) getActivity())
+                    .onAmountChange(batValue, roundExchangeUp(usdValue));
             if (isBatCurrencyMode) {
                 currencyTwoTextView.setText(String.valueOf(roundExchangeUp(usdValue)));
             } else {
@@ -139,7 +140,6 @@ public class BraveRewardsCustomTipFragment extends Fragment {
         @Override
         public void afterTextChanged(Editable s) {}
     };
-
 
     class DecimalDigitsInputFilter implements InputFilter {
         private Pattern mPattern;
