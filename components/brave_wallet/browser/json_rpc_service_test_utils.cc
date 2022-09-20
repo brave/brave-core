@@ -39,6 +39,11 @@ std::string MakeJsonRpcTupleResponse(const eth_abi::TupleEncoder& tuple) {
                             ToHex(tuple.Encode()).c_str());
 }
 
+std::string MakeJsonRpcRawBytesResponse(const std::vector<uint8_t>& bytes) {
+  return base::StringPrintf(R"({"jsonrpc":"2.0", "id":1, "result":"%s"})",
+                            ToHex(bytes).c_str());
+}
+
 std::string MakeJsonRpcErrorResponse(int error,
                                      const std::string& error_message) {
   return base::StringPrintf(R"({"jsonrpc":"2.0", "id":1,)"

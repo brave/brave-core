@@ -135,6 +135,9 @@ class EnsResolverTask {
   void FetchOffchainData();
   void OnFetchOffchainDone(APIRequestResult api_request_result);
 
+  void FetchOffchainCallback();
+  void OnFetchOffchainCallbackDone(APIRequestResult api_request_result);
+
   void RequestInternal(const std::string& json_payload,
                        RequestIntermediateCallback callback);
 
@@ -151,9 +154,10 @@ class EnsResolverTask {
   absl::optional<EnsResolverTaskResult> task_result_;
   absl::optional<EnsResolverTaskError> task_error_;
 
-  std::vector<uint8_t> ens_resolve_call_;
   EthAddress resolver_address_;
   absl::optional<bool> supports_ensip_10_;
+
+  absl::optional<std::vector<uint8_t>> offchain_callback_call_;
   absl::optional<OffchainLookupData> offchain_lookup_data_;
 
   base::WeakPtrFactory<EnsResolverTask> weak_ptr_factory_{this};
