@@ -28,8 +28,8 @@ bool CreateURLPatternSetFromValue(const base::Value* value,
     return false;
   std::string error;
   bool valid = result->Populate(
-      base::Value::AsListValue(*value),
-      URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, false, &error);
+      value->GetList(), URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS,
+      false, &error);
   if (!valid) {
     VLOG(1) << "Unable to create url pattern:" << error;
   }
