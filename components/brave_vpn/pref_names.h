@@ -11,6 +11,7 @@
 namespace brave_vpn {
 namespace prefs {
 
+constexpr char kBraveVPNLocalStateMigrated[] = "brave.brave_vpn.migrated";
 constexpr char kBraveVPNRootPref[] = "brave.brave_vpn";
 constexpr char kBraveVPNShowButton[] = "brave.brave_vpn.show_button";
 constexpr char kBraveVPNRegionList[] = "brave.brave_vpn.region_list";

@@ -19,7 +19,8 @@ TEST(BraveVPNUtilsUnitTest, MigrateAndMerge) {
   brave_vpn::RegisterProfilePrefs(profile_pref_service.registry());
   TestingPrefServiceSimple local_state_pref_service;
   brave_vpn::RegisterLocalStatePrefs(local_state_pref_service.registry());
-
+  EXPECT_FALSE(local_state_pref_service.HasPrefPath(
+      brave_vpn::prefs::kBraveVPNLocalStateMigrated));
   auto vpn_settings = base::JSONReader::Read(R"(
         {
             "device_region_name": "eu-de",
@@ -61,6 +62,8 @@ TEST(BraveVPNUtilsUnitTest, MigrateAndMerge) {
   result_dict.Merge(p3a_settings->GetDict().Clone());
   EXPECT_EQ(*local_state_pref_service.Get(brave_vpn::prefs::kBraveVPNRootPref),
             result);
+  EXPECT_TRUE(local_state_pref_service.HasPrefPath(
+      brave_vpn::prefs::kBraveVPNLocalStateMigrated));
 }
 
 TEST(BraveVPNUtilsUnitTest, Migrate) {
@@ -68,6 +71,8 @@ TEST(BraveVPNUtilsUnitTest, Migrate) {
   brave_vpn::RegisterProfilePrefs(profile_pref_service.registry());
   TestingPrefServiceSimple local_state_pref_service;
   brave_vpn::RegisterLocalStatePrefs(local_state_pref_service.registry());
+  EXPECT_FALSE(local_state_pref_service.HasPrefPath(
+      brave_vpn::prefs::kBraveVPNLocalStateMigrated));
 
   auto vpn_settings = base::JSONReader::Read(R"(
         {
@@ -93,6 +98,8 @@ TEST(BraveVPNUtilsUnitTest, Migrate) {
   vpn_settings->RemovePath("show_button");
   EXPECT_EQ(*local_state_pref_service.Get(brave_vpn::prefs::kBraveVPNRootPref),
             *vpn_settings);
+  EXPECT_TRUE(local_state_pref_service.HasPrefPath(
+      brave_vpn::prefs::kBraveVPNLocalStateMigrated));
 }
 
 TEST(BraveVPNUtilsUnitTest, NoMigration) {
@@ -126,4 +133,54 @@ TEST(BraveVPNUtilsUnitTest, NoMigration) {
       brave_vpn::prefs::kBraveVPNRootPref));
   EXPECT_EQ(*local_state_pref_service.Get(brave_vpn::prefs::kBraveVPNRootPref),
             *p3a_settings);
+  EXPECT_TRUE(local_state_pref_service.HasPrefPath(
+      brave_vpn::prefs::kBraveVPNLocalStateMigrated));
+}
+
+TEST(BraveVPNUtilsUnitTest, AlreadyMigrated) {
+  sync_preferences::TestingPrefServiceSyncable profile_pref_service;
+  brave_vpn::RegisterProfilePrefs(profile_pref_service.registry());
+  TestingPrefServiceSimple local_state_pref_service;
+  brave_vpn::RegisterLocalStatePrefs(local_state_pref_service.registry());
+  local_state_pref_service.SetBoolean(
+      brave_vpn::prefs::kBraveVPNLocalStateMigrated, true);
+
+  auto vpn_settings = base::JSONReader::Read(R"(
+        {
+            "show_button": true,
+            "device_region_name": "eu-de",
+            "env": "development",
+            "region_list":
+            [
+                {
+                    "continent": "oceania",
+                    "country-iso-code": "AU",
+                    "name": "au-au",
+                    "name-pretty": "Australia"
+                }
+            ]
+        })");
+  profile_pref_service.Set(brave_vpn::prefs::kBraveVPNRootPref, *vpn_settings);
+  auto p3a_settings = base::JSONReader::Read(R"(
+          {
+            "days_in_month_used":
+            [
+                {
+                    "day": 1663448400.0,
+                    "value": 1.0
+                }
+            ],
+            "first_use_time": "13307922000000000",
+            "last_use_time": "13307922000000000"
+          })");
+  local_state_pref_service.Set(brave_vpn::prefs::kBraveVPNRootPref,
+                               *p3a_settings);
+  brave_vpn::MigrateVPNSettings(&profile_pref_service,
+                                &local_state_pref_service);
+  EXPECT_TRUE(local_state_pref_service.HasPrefPath(
+      brave_vpn::prefs::kBraveVPNRootPref));
+  EXPECT_EQ(*local_state_pref_service.Get(brave_vpn::prefs::kBraveVPNRootPref),
+            *p3a_settings);
+  EXPECT_TRUE(local_state_pref_service.HasPrefPath(
+      brave_vpn::prefs::kBraveVPNLocalStateMigrated));
 }

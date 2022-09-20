@@ -37,14 +37,22 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kBraveVPNEEnvironment,
                                skus::GetDefaultEnvironment());
   registry->RegisterDictionaryPref(prefs::kBraveVPNRootPref);
+
+  registry->RegisterBooleanPref(prefs::kBraveVPNLocalStateMigrated, false);
 }
 
 }  // namespace
 
 void MigrateVPNSettings(PrefService* profile_prefs, PrefService* local_prefs) {
-  auto* obsolete_pref = profile_prefs->Get(prefs::kBraveVPNRootPref);
-  if (!obsolete_pref || !obsolete_pref->is_dict())
+  if (local_prefs->GetBoolean(prefs::kBraveVPNLocalStateMigrated)) {
     return;
+  }
+
+  auto* obsolete_pref = profile_prefs->Get(prefs::kBraveVPNRootPref);
+  if (!obsolete_pref || !obsolete_pref->is_dict()) {
+    local_prefs->SetBoolean(prefs::kBraveVPNLocalStateMigrated, true);
+    return;
+  }
   base::Value result;
   if (local_prefs->HasPrefPath(prefs::kBraveVPNRootPref)) {
     result = local_prefs->Get(prefs::kBraveVPNRootPref)->Clone();
@@ -62,6 +70,7 @@ void MigrateVPNSettings(PrefService* profile_prefs, PrefService* local_prefs) {
     result.RemoveKey(tokens.back());
   }
   local_prefs->Set(prefs::kBraveVPNRootPref, result);
+  local_prefs->SetBoolean(prefs::kBraveVPNLocalStateMigrated, true);
 
   bool show_button =
       profile_prefs->GetBoolean(brave_vpn::prefs::kBraveVPNShowButton);
