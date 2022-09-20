@@ -436,6 +436,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()
                             && mBraveShieldsHandler != null && !mBraveShieldsHandler.isShowing()) {
                         checkForTooltip(tab);
+                    }
+                    if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()
+                            && mBraveShieldsHandler != null && !mBraveShieldsHandler.isShowing()) {
                         SharedPreferencesManager.getInstance().writeInt(
                                 BravePreferenceKeys.LOADED_SITE_COUNT,
                                 SharedPreferencesManager.getInstance().readInt(
@@ -621,7 +624,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (mCookieListOptInPageAndroidHandler != null) {
             mCookieListOptInPageAndroidHandler.shouldShowDialog(shouldShowDialog -> {
                 mCookieListOptInPageAndroidHandler.isFilterListEnabled(isEnabled -> {
-                    if (isEnabled && shouldShowDialog
+                    if (!isEnabled && shouldShowDialog
                             && SharedPreferencesManager.getInstance().readBoolean(
                                     BravePreferenceKeys.SHOULD_SHOW_COOKIE_CONSENT_NOTICE, true)
                             && SharedPreferencesManager.getInstance().readInt(
