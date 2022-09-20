@@ -10,7 +10,7 @@ import NewTabPage from '../containers/newTab'
 import { getActionsForDispatch } from '../api/getActions'
 import store from '../store'
 import { useNewTabData, getGridSitesData } from './default/data/storybookState'
-import { onChangeColoredBackground, onUseBraveBackground } from './default/data/backgroundWallpaper'
+import { onChangeColoredBackground, onUseBraveBackground, onShowBrandedImageChanged } from './default/data/backgroundWallpaper'
 import getTodayState from './default/data/todayStorybookState'
 import getBraveNewsDisplayAd from './default/data/getBraveNewsDisplayAd'
 import { getDataUrl, getUnpaddedAsDataUrl } from '../../common/privateCDN'
@@ -80,7 +80,7 @@ export const Regular = () => {
       saveShowGemini={doNothing}
       saveShowCryptoDotCom={doNothing}
       saveShowFTX={doNothing}
-      saveBrandedWallpaperOptIn={doNothing}
+      saveBrandedWallpaperOptIn={onShowBrandedImageChanged}
       saveSetAllStackWidgets={doNothing}
       getBraveNewsDisplayAd={getBraveNewsDisplayAd}
       setBraveBackground={onUseBraveBackground}

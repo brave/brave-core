@@ -71,3 +71,10 @@ export const onUseBraveBackground = (selectedBackground: string) => {
     value: backgroundWallpapers.defaultImage
   })
 }
+
+export const onShowBrandedImageChanged = (show: boolean) => {
+  addonsChannel.emit(CHANGE, {
+    name: 'Show branded background image?',
+    value: show
+  })
+}
