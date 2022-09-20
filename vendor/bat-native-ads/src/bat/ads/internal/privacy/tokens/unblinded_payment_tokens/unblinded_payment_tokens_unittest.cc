@@ -200,7 +200,7 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, Count) {
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, IsEmpty) {
   // Arrange
-  UnblindedPaymentTokens unblinded_payment_tokens;
+  const UnblindedPaymentTokens unblinded_payment_tokens;
 
   // Act
 

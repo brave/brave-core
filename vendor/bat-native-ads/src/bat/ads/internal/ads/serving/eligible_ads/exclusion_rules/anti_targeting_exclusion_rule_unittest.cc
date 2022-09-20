@@ -31,9 +31,9 @@ TEST_F(BatAdsAntiTargetingExclusionRuleTest, AllowIfResourceDidNotLoad) {
 
   resource::AntiTargeting resource;
 
-  BrowsingHistoryList history = {GURL("https://www.foo1.org"),
-                                 GURL("https://www.brave.com"),
-                                 GURL("https://www.foo2.org")};
+  const BrowsingHistoryList history = {GURL("https://www.foo1.org"),
+                                       GURL("https://www.brave.com"),
+                                       GURL("https://www.foo2.org")};
 
   // Act
   AntiTargetingExclusionRule exclusion_rule(&resource, history);
@@ -52,9 +52,9 @@ TEST_F(BatAdsAntiTargetingExclusionRuleTest, AllowIfCreativeSetDoesNotMatch) {
   resource.Load();
   task_environment_.RunUntilIdle();
 
-  BrowsingHistoryList history = {GURL("https://www.foo1.org"),
-                                 GURL("https://www.brave.com"),
-                                 GURL("https://www.foo2.org")};
+  const BrowsingHistoryList history = {GURL("https://www.foo1.org"),
+                                       GURL("https://www.brave.com"),
+                                       GURL("https://www.foo2.org")};
 
   // Act
   AntiTargetingExclusionRule exclusion_rule(&resource, history);
@@ -73,8 +73,8 @@ TEST_F(BatAdsAntiTargetingExclusionRuleTest, AllowIfSiteDoesNotMatch) {
   resource.Load();
   task_environment_.RunUntilIdle();
 
-  BrowsingHistoryList history = {GURL("https://www.foo1.org"),
-                                 GURL("https://www.foo2.org")};
+  const BrowsingHistoryList history = {GURL("https://www.foo1.org"),
+                                       GURL("https://www.foo2.org")};
 
   // Act
   AntiTargetingExclusionRule exclusion_rule(&resource, history);
@@ -94,8 +94,8 @@ TEST_F(BatAdsAntiTargetingExclusionRuleTest,
   resource.Load();
   task_environment_.RunUntilIdle();
 
-  BrowsingHistoryList history = {GURL("https://www.foo1.org"),
-                                 GURL("https://www.brave.com")};
+  const BrowsingHistoryList history = {GURL("https://www.foo1.org"),
+                                       GURL("https://www.brave.com")};
 
   // Act
   AntiTargetingExclusionRule exclusion_rule(&resource, history);

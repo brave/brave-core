@@ -310,7 +310,7 @@ void Account::OnDidFetchIssuers(const IssuersInfo& issuers) {
 
 void Account::OnDidRedeemUnblindedPaymentTokens(
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens) {
-  database::table::Transactions database_table;
+  const database::table::Transactions database_table;
   database_table.Update(unblinded_payment_tokens,
                         base::BindOnce([](const bool success) {
                           if (!success) {

@@ -246,7 +246,7 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, DoNotGetPacedAds) {
   SaveCreativeAds(creative_ads);
 
   // Act
-  ScopedPacingRandomNumberSetter scoped_setter(0.3);
+  const ScopedPacingRandomNumberSetter scoped_setter(0.3);
 
   const CreativeNotificationAdList expected_creative_ads = {creative_ad_2};
 

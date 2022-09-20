@@ -43,13 +43,13 @@ TEST_F(BatAdsTargetingSegmentUtilTest, GetSegmentsFromCatalog) {
 
 TEST_F(BatAdsTargetingSegmentUtilTest, GetSegmentsFromEmptyCatalog) {
   // Arrange
-  CatalogInfo catalog;
+  const CatalogInfo catalog;
 
   // Act
   const SegmentList segments = GetSegments(catalog);
 
   // Assert
-  SegmentList expected_segments;
+  const SegmentList expected_segments;
   EXPECT_EQ(expected_segments, segments);
 }
 

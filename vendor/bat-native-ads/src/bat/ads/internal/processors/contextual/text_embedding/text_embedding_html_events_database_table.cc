@@ -90,7 +90,7 @@ void TextEmbeddingHtmlEvents::GetAll(
 }
 
 void TextEmbeddingHtmlEvents::PurgeStale(ResultCallback callback) const {
-  std::string limit =
+  const std::string limit =
       std::to_string(targeting::features::GetTextEmbeddingsHistorySize());
   const std::string& query = base::StringPrintf(
       "DELETE FROM %s "

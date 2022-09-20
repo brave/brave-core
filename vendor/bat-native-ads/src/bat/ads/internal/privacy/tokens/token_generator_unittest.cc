@@ -14,7 +14,7 @@ namespace ads::privacy {
 
 TEST(BatAdsTokensTest, Generate) {
   // Arrange
-  TokenGenerator token_generator;
+  const TokenGenerator token_generator;
 
   // Act
   const std::vector<cbr::Token> tokens = token_generator.Generate(5);
@@ -26,7 +26,7 @@ TEST(BatAdsTokensTest, Generate) {
 
 TEST(BatAdsTokensTest, GenerateZero) {
   // Arrange
-  TokenGenerator token_generator;
+  const TokenGenerator token_generator;
 
   // Act
   const std::vector<cbr::Token> tokens = token_generator.Generate(0);

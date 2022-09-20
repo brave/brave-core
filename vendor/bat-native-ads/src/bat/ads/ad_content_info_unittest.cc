@@ -42,7 +42,7 @@ TEST_F(BatAdsAdContentInfoTest, ToggleThumbUpToNetrual) {
 
 TEST_F(BatAdsAdContentInfoTest, ToggleThumbDown) {
   // Arrange
-  AdContentInfo ad_content;
+  const AdContentInfo ad_content;
 
   // Act
   const AdContentLikeActionType like_action_type =

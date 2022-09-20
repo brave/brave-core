@@ -87,7 +87,7 @@ void RedeemUnblindedPaymentTokens::Redeem() {
   const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
       privacy::GetAllUnblindedPaymentTokens();
 
-  RedeemUnblindedPaymentTokensUserDataBuilder user_data_builder(
+  const RedeemUnblindedPaymentTokensUserDataBuilder user_data_builder(
       unblinded_payment_tokens);
   user_data_builder.Build([=](const base::Value::Dict& user_data) {
     RedeemUnblindedPaymentTokensUrlRequestBuilder url_request_builder(

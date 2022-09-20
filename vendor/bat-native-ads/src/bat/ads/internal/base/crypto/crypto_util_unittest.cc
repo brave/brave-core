@@ -185,7 +185,7 @@ TEST(BatAdsSecurityCryptoUtilsTest, GenerateBoxKeyPair) {
   // Arrange
 
   // Act
-  KeyPairInfo key_pair = GenerateBoxKeyPair();
+  const KeyPairInfo key_pair = GenerateBoxKeyPair();
 
   // Assert
   ASSERT_EQ(kCryptoBoxPublicKeyBytes, key_pair.public_key.size());
@@ -195,11 +195,11 @@ TEST(BatAdsSecurityCryptoUtilsTest, GenerateBoxKeyPair) {
 
 TEST(BatAdsSecurityCryptoUtilsTest, Encrypt) {
   // Arrange
-  KeyPairInfo key_pair = GenerateBoxKeyPair();
-  KeyPairInfo ephemeral_key_pair = GenerateBoxKeyPair();
-  std::vector<uint8_t> nonce = GenerateRandom192BitNonce();
+  const KeyPairInfo key_pair = GenerateBoxKeyPair();
+  const KeyPairInfo ephemeral_key_pair = GenerateBoxKeyPair();
+  const std::vector<uint8_t> nonce = GenerateRandom192BitNonce();
   const std::string message = "The quick brown fox jumps over the lazy dog";
-  std::vector<uint8_t> plaintext(message.cbegin(), message.cend());
+  const std::vector<uint8_t> plaintext(message.cbegin(), message.cend());
 
   // Act
   const std::vector<uint8_t> ciphertext = security::Encrypt(

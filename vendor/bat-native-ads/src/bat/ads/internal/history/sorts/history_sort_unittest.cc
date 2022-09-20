@@ -120,13 +120,13 @@ TEST(BatAdsHistorySortTest, AscendingSortOrderForEmptyHistory) {
   // Arrange
   const auto sort = HistorySortFactory::Build(HistorySortType::kAscendingOrder);
 
-  HistoryItemList expected_history;
   HistoryItemList history;
 
   // Act
   history = sort->Apply(history);
 
   // Assert
+  const HistoryItemList expected_history;
   EXPECT_TRUE(IsEqualContainers(expected_history, history));
 }
 

@@ -280,7 +280,7 @@ void Transactions::OnGetTransactions(const GetTransactionsCallback& callback,
   TransactionList transactions;
 
   for (const auto& record : response->result->get_records()) {
-    TransactionInfo info = GetFromRecord(record.get());
+    const TransactionInfo info = GetFromRecord(record.get());
     transactions.push_back(info);
   }
 

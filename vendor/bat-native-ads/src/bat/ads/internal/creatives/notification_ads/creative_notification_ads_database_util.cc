@@ -12,7 +12,7 @@
 namespace ads::database {
 
 void DeleteCreativeNotificationAds() {
-  table::CreativeNotificationAds database_table;
+  const table::CreativeNotificationAds database_table;
   database_table.Delete(base::BindOnce([](const bool success) {
     if (!success) {
       BLOG(0, "Failed to delete creative notification ads");

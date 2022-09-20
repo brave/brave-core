@@ -46,7 +46,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
   // Arrange
   CreativeNotificationAdList creative_ads;
 
-  CreativeDaypartInfo daypart_info;
+  const CreativeDaypartInfo daypart_info;
   CreativeNotificationAdInfo info_1;
   info_1.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info_1.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
@@ -117,7 +117,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
 
   CreativeNotificationAdList creative_ads;
 
-  CreativeDaypartInfo daypart_info;
+  const CreativeDaypartInfo daypart_info;
   CreativeNotificationAdInfo info_1;
   info_1.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info_1.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
@@ -209,7 +209,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
   // Arrange
   CreativeNotificationAdList creative_ads;
 
-  CreativeDaypartInfo daypart_info;
+  const CreativeDaypartInfo daypart_info;
   CreativeNotificationAdInfo info;
   info.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
@@ -337,7 +337,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
   // Arrange
   CreativeNotificationAdList creative_ads;
 
-  CreativeDaypartInfo daypart_info;
+  const CreativeDaypartInfo daypart_info;
   CreativeNotificationAdInfo info;
   info.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
@@ -384,7 +384,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
   // Arrange
   CreativeNotificationAdList creative_ads;
 
-  CreativeDaypartInfo daypart_info;
+  const CreativeDaypartInfo daypart_info;
   CreativeNotificationAdInfo info;
   info.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
@@ -431,7 +431,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
   // Arrange
   CreativeNotificationAdList creative_ads;
 
-  CreativeDaypartInfo daypart_info;
+  const CreativeDaypartInfo daypart_info;
   CreativeNotificationAdInfo info_1;
   info_1.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info_1.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
@@ -527,7 +527,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
   // Arrange
   CreativeNotificationAdList creative_ads;
 
-  CreativeDaypartInfo daypart_info;
+  const CreativeDaypartInfo daypart_info;
   CreativeNotificationAdInfo info_1;
   info_1.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info_1.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
@@ -599,7 +599,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
   // Arrange
   CreativeNotificationAdList creative_ads;
 
-  CreativeDaypartInfo daypart_info;
+  const CreativeDaypartInfo daypart_info;
   CreativeNotificationAdInfo info_1;
   info_1.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info_1.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";

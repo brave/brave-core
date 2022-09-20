@@ -25,11 +25,11 @@ TEST_F(BatAdsNormalizationTest, NormalizationTest) {
   // Arrange
   const double kTolerance = 1e-7;
 
-  std::string kTestString = "quite a small test string";
+  const std::string kTestString = "quite a small test string";
   std::unique_ptr<Data> data = std::make_unique<TextData>(kTestString);
 
-  HashedNGramsTransformation hashed_ngrams(10, std::vector<int>{3, 4});
-  NormalizationTransformation normalization;
+  const HashedNGramsTransformation hashed_ngrams(10, std::vector<int>{3, 4});
+  const NormalizationTransformation normalization;
 
   // Act
   data = hashed_ngrams.Apply(data);
@@ -42,7 +42,7 @@ TEST_F(BatAdsNormalizationTest, NormalizationTest) {
 
   std::vector<double> components;
   double s = 0.0;
-  for (double x : norm_data->GetValuesForTesting()) {
+  for (const double x : norm_data->GetValuesForTesting()) {
     components.push_back(x);
     s += x * x;
   }

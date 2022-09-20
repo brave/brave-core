@@ -187,7 +187,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, DeleteTransactions) {
 
 TEST_F(BatAdsTransactionsDatabaseTableTest, TableName) {
   // Arrange
-  Transactions database_table;
+  const Transactions database_table;
 
   // Act
   const std::string table_name = database_table.GetTableName();

@@ -20,7 +20,7 @@ namespace ads {
 
 TEST(BatAdsAdEventUtilTest, GetLastSeenAdTimeForEmptyAdEvents) {
   // Arrange
-  AdEventList ad_events;
+  const AdEventList ad_events;
 
   const CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
 
@@ -98,7 +98,7 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdTime) {
 
 TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTimeForEmptyAdEvents) {
   // Arrange
-  AdEventList ad_events;
+  const AdEventList ad_events;
 
   const CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
 

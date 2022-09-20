@@ -59,7 +59,7 @@ std::vector<UnblindedToken> ToUnblindedTokens(
     const std::vector<challenge_bypass_ristretto::UnblindedToken>& raw_tokens) {
   std::vector<UnblindedToken> unblinded_tokens;
   for (const auto& raw_token : raw_tokens) {
-    UnblindedToken unblinded_token(raw_token);
+    const UnblindedToken unblinded_token(raw_token);
     if (!unblinded_token.has_value()) {
       return {};
     }

@@ -18,8 +18,9 @@ TEST_F(BatAdsCovariateManagerTest, GetTrainingInstance) {
   // Arrange
 
   // Act
-  std::vector<brave_federated::mojom::CovariateInfoPtr> training_covariates =
-      CovariateManager::GetInstance()->GetTrainingInstance();
+  const std::vector<brave_federated::mojom::CovariateInfoPtr>
+      training_covariates =
+          CovariateManager::GetInstance()->GetTrainingInstance();
 
   // Assert
   EXPECT_EQ(32U, training_covariates.size());
@@ -32,8 +33,9 @@ TEST_F(BatAdsCovariateManagerTest, GetTrainingInstanceWithSetters) {
       mojom::NotificationAdEventType::kClicked);
 
   // Act
-  std::vector<brave_federated::mojom::CovariateInfoPtr> training_covariates =
-      CovariateManager::GetInstance()->GetTrainingInstance();
+  const std::vector<brave_federated::mojom::CovariateInfoPtr>
+      training_covariates =
+          CovariateManager::GetInstance()->GetTrainingInstance();
 
   // Assert
   EXPECT_EQ(34U, training_covariates.size());

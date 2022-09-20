@@ -33,7 +33,7 @@ TEST(BatAdsTokenUtilTest, TokensToRawTokens) {
 
 TEST(BatAdsTokenUtilTest, EmptyTokensToRawTokens) {
   // Arrange
-  std::vector<Token> tokens;
+  const std::vector<Token> tokens;
 
   // Act
   const std::vector<challenge_bypass_ristretto::Token> raw_tokens =

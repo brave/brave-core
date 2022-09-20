@@ -30,7 +30,7 @@ TEST_F(BatAdsFederatedLogEntriesLastNotificationAdWasClickedTest, GetDataType) {
       std::make_unique<LastNotificationAdWasClicked>();
 
   // Act
-  brave_federated::mojom::DataType data_type = entry->GetDataType();
+  const brave_federated::mojom::DataType data_type = entry->GetDataType();
 
   // Assert
   EXPECT_EQ(brave_federated::mojom::DataType::kBool, data_type);

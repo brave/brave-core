@@ -16,7 +16,7 @@ namespace ads::privacy::cbr {
 
 TEST(BatAdsTokenPreimageTest, FailToInitialize) {
   // Arrange
-  TokenPreimage token_preimage;
+  const TokenPreimage token_preimage;
 
   // Act
   const bool has_value = token_preimage.has_value();
@@ -27,7 +27,7 @@ TEST(BatAdsTokenPreimageTest, FailToInitialize) {
 
 TEST(BatAdsTokenPreimageTest, FailToInitializeWithEmptyBase64) {
   // Arrange
-  TokenPreimage token_preimage("");
+  const TokenPreimage token_preimage("");
 
   // Act
   const bool has_value = token_preimage.has_value();
@@ -38,7 +38,7 @@ TEST(BatAdsTokenPreimageTest, FailToInitializeWithEmptyBase64) {
 
 TEST(BatAdsTokenPreimageTest, FailToInitializeWithInvalidBase64) {
   // Arrange
-  TokenPreimage token_preimage(kInvalidBase64);
+  const TokenPreimage token_preimage(kInvalidBase64);
 
   // Act
   const bool has_value = token_preimage.has_value();
@@ -84,7 +84,7 @@ TEST(BatAdsTokenPreimageTest, FailToDecodeInvalidBase64) {
 
 TEST(BatAdsTokenPreimageTest, EncodeBase64) {
   // Arrange
-  TokenPreimage token_preimage(kTokenPreimageBase64);
+  const TokenPreimage token_preimage(kTokenPreimageBase64);
 
   // Act
   const absl::optional<std::string> encoded_base64 =
@@ -97,7 +97,7 @@ TEST(BatAdsTokenPreimageTest, EncodeBase64) {
 
 TEST(BatAdsTokenPreimageTest, FailToEncodeBase64WhenUninitialized) {
   // Arrange
-  TokenPreimage token_preimage;
+  const TokenPreimage token_preimage;
 
   // Act
   const absl::optional<std::string> encoded_base64 =
@@ -109,7 +109,7 @@ TEST(BatAdsTokenPreimageTest, FailToEncodeBase64WhenUninitialized) {
 
 TEST(BatAdsTokenPreimageTest, IsEqual) {
   // Arrange
-  TokenPreimage token_preimage(kTokenPreimageBase64);
+  const TokenPreimage token_preimage(kTokenPreimageBase64);
 
   // Act
 
@@ -119,7 +119,7 @@ TEST(BatAdsTokenPreimageTest, IsEqual) {
 
 TEST(BatAdsTokenPreimageTest, IsEqualWhenUninitialized) {
   // Arrange
-  TokenPreimage token_preimage;
+  const TokenPreimage token_preimage;
 
   // Act
 
@@ -129,7 +129,7 @@ TEST(BatAdsTokenPreimageTest, IsEqualWhenUninitialized) {
 
 TEST(BatAdsTokenPreimageTest, IsEmptyBase64Equal) {
   // Arrange
-  TokenPreimage token_preimage("");
+  const TokenPreimage token_preimage("");
 
   // Act
 
@@ -139,7 +139,7 @@ TEST(BatAdsTokenPreimageTest, IsEmptyBase64Equal) {
 
 TEST(BatAdsTokenPreimageTest, IsInvalidBase64Equal) {
   // Arrange
-  TokenPreimage token_preimage(kInvalidBase64);
+  const TokenPreimage token_preimage(kInvalidBase64);
 
   // Act
 
@@ -149,18 +149,18 @@ TEST(BatAdsTokenPreimageTest, IsInvalidBase64Equal) {
 
 TEST(BatAdsTokenPreimageTest, IsNotEqual) {
   // Arrange
-  TokenPreimage token_preimage(kTokenPreimageBase64);
+  const TokenPreimage token_preimage(kTokenPreimageBase64);
 
   // Act
 
   // Assert
-  TokenPreimage different_token_preimage(kInvalidBase64);
+  const TokenPreimage different_token_preimage(kInvalidBase64);
   EXPECT_NE(different_token_preimage, token_preimage);
 }
 
 TEST(BatAdsTokenPreimageTest, OutputStream) {
   // Arrange
-  TokenPreimage token_preimage(kTokenPreimageBase64);
+  const TokenPreimage token_preimage(kTokenPreimageBase64);
 
   // Act
   std::stringstream ss;
@@ -172,7 +172,7 @@ TEST(BatAdsTokenPreimageTest, OutputStream) {
 
 TEST(BatAdsTokenPreimageTest, OutputStreamWhenUninitialized) {
   // Arrange
-  TokenPreimage token_preimage;
+  const TokenPreimage token_preimage;
 
   // Act
   std::stringstream ss;

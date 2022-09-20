@@ -89,9 +89,9 @@ TEST_F(BatAdsDaypartExclusionRuleTest, AllowIfOneMatchExists) {
   Now().LocalExplode(&exploded);
   const int current_time =
       base::Time::kMinutesPerHour * exploded.hour + exploded.minute;
-  std::string tomorrow_dow =
+  const std::string tomorrow_dow =
       base::NumberToString((exploded.day_of_week + 1) % 7);
-  std::string current_dow = base::NumberToString(exploded.day_of_week);
+  const std::string current_dow = base::NumberToString(exploded.day_of_week);
 
   CreativeDaypartInfo daypart_info;
   daypart_info.dow = tomorrow_dow;
@@ -128,9 +128,9 @@ TEST_F(BatAdsDaypartExclusionRuleTest, DisallowIfNoMatches) {
   Now().LocalExplode(&exploded);
   const int current_time =
       base::Time::kMinutesPerHour * exploded.hour + exploded.minute;
-  std::string tomorrow_dow =
+  const std::string tomorrow_dow =
       base::NumberToString((exploded.day_of_week + 1) % 7);
-  std::string current_dow = base::NumberToString(exploded.day_of_week);
+  const std::string current_dow = base::NumberToString(exploded.day_of_week);
 
   CreativeDaypartInfo daypart_info;
   daypart_info.dow = tomorrow_dow;
@@ -167,7 +167,7 @@ TEST_F(BatAdsDaypartExclusionRuleTest, DisallowIfWrongDay) {
   Now().LocalExplode(&exploded);
   const int current_time =
       base::Time::kMinutesPerHour * exploded.hour + exploded.minute;
-  std::string tomorrow_dow =
+  const std::string tomorrow_dow =
       base::NumberToString((exploded.day_of_week + 1) % 7);
 
   CreativeDaypartInfo daypart_info;
@@ -193,7 +193,7 @@ TEST_F(BatAdsDaypartExclusionRuleTest, DisallowIfWrongHours) {
   Now().LocalExplode(&exploded);
   const int current_time =
       base::Time::kMinutesPerHour * exploded.hour + exploded.minute;
-  std::string current_dow = base::NumberToString(exploded.day_of_week);
+  const std::string current_dow = base::NumberToString(exploded.day_of_week);
 
   CreativeDaypartInfo daypart_info;
   daypart_info.dow = current_dow;

@@ -47,7 +47,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   const base::Time to_time = DistantFuture();
 
   // Act
-  DateRangeHistoryFilter filter(from_time, to_time);
+  const DateRangeHistoryFilter filter(from_time, to_time);
   history = filter.Apply(history);
 
   // Assert
@@ -73,7 +73,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   const base::Time to_time = DistantFuture();
 
   // Act
-  DateRangeHistoryFilter filter(from_time, to_time);
+  const DateRangeHistoryFilter filter(from_time, to_time);
   history = filter.Apply(history);
 
   // Assert
@@ -91,7 +91,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   const base::Time to_time = base::Time::FromDoubleT(444444444);
 
   // Act
-  DateRangeHistoryFilter filter(from_time, to_time);
+  const DateRangeHistoryFilter filter(from_time, to_time);
   history = filter.Apply(history);
 
   // Assert
@@ -116,7 +116,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   const base::Time to_time = base::Time::FromDoubleT(111111111);
 
   // Act
-  DateRangeHistoryFilter filter(from_time, to_time);
+  const DateRangeHistoryFilter filter(from_time, to_time);
   history = filter.Apply(history);
 
   // Assert
@@ -134,7 +134,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   const base::Time to_time = DistantFuture();
 
   // Act
-  DateRangeHistoryFilter filter(from_time, to_time);
+  const DateRangeHistoryFilter filter(from_time, to_time);
   history = filter.Apply(history);
 
   // Assert
@@ -163,7 +163,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   const base::Time to_time = DistantPast();
 
   // Act
-  DateRangeHistoryFilter filter(from_time, to_time);
+  const DateRangeHistoryFilter filter(from_time, to_time);
   history = filter.Apply(history);
 
   // Assert
@@ -180,7 +180,7 @@ TEST(BatAdsDateRangeHistoryFilterTest, FilterEmptyHistory) {
   const base::Time to_time = DistantFuture();
 
   // Act
-  DateRangeHistoryFilter filter(from_time, to_time);
+  const DateRangeHistoryFilter filter(from_time, to_time);
   history = filter.Apply(history);
 
   // Assert

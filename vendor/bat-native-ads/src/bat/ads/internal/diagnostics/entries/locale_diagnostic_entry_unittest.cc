@@ -19,7 +19,7 @@ TEST_F(BatAdsLocaleDiagnosticEntryTest, GetValue) {
   // Arrange
   MockLocaleHelper(locale_helper_mock_, "en-KY");
 
-  LocaleDiagnosticEntry diagnostic_entry;
+  const LocaleDiagnosticEntry diagnostic_entry;
 
   // Act
 

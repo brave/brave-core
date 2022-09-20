@@ -93,7 +93,7 @@ TEST_F(BatAdsAdPreferencesInfoTest, SerializeSampleAdPreferencesInfo) {
 }
 
 TEST_F(BatAdsAdPreferencesInfoTest, ParseSampleAdPreferencesInfoJson) {
-  AdPreferencesInfo ad_preferences_info;
+  const AdPreferencesInfo ad_preferences_info;
   ParseJsonAndCompareWithSampleAdPreferencesInfo(kSampleAdPreferencesInfoJson);
 }
 

@@ -261,7 +261,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, DoNotGetPacedAds) {
   SaveCreativeAds(creative_ads);
 
   // Act
-  ScopedPacingRandomNumberSetter scoped_setter(0.3);
+  const ScopedPacingRandomNumberSetter scoped_setter(0.3);
 
   const CreativeInlineContentAdList expected_creative_ads = {creative_ad_2};
 

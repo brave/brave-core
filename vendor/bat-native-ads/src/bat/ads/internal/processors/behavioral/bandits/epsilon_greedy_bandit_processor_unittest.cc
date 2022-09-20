@@ -36,7 +36,7 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, InitializeArmsFromResource) {
   }
 
   // Act
-  processor::EpsilonGreedyBandit processor;
+  const processor::EpsilonGreedyBandit processor;
 
   // Assert
   const targeting::EpsilonGreedyBanditArmMap arms =
@@ -52,7 +52,7 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, NeverProcessed) {
   const std::string segment = "travel";  // rewards: [] => value: 1.0
 
   // Act
-  processor::EpsilonGreedyBandit processor;
+  const processor::EpsilonGreedyBandit processor;
 
   // Assert
   const targeting::EpsilonGreedyBanditArmMap arms =

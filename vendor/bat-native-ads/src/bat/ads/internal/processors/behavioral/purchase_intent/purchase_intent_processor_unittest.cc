@@ -64,7 +64,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, NeverProcessed) {
   task_environment_.RunUntilIdle();
 
   // Act
-  targeting::model::PurchaseIntent model;
+  const targeting::model::PurchaseIntent model;
   const SegmentList segments = model.GetSegments();
 
   // Assert

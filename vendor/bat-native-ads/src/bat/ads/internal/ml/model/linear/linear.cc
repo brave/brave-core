@@ -48,8 +48,8 @@ PredictionMap Linear::Predict(const VectorData& x) const {
 
 PredictionMap Linear::GetTopPredictions(const VectorData& x,
                                         const int top_count) const {
-  PredictionMap prediction_map = Predict(x);
-  PredictionMap prediction_map_softmax = Softmax(prediction_map);
+  const PredictionMap prediction_map = Predict(x);
+  const PredictionMap prediction_map_softmax = Softmax(prediction_map);
   std::vector<std::pair<double, std::string>> prediction_order;
   prediction_order.reserve(prediction_map_softmax.size());
   for (const auto& prediction : prediction_map_softmax) {

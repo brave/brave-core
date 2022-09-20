@@ -254,7 +254,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
   privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
 
   // Act
-  InSequence seq;
+  const InSequence seq;
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
               OnFailedToRedeemUnblindedPaymentTokens());
@@ -362,7 +362,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, Retry) {
   privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
 
   // Act
-  InSequence seq;
+  const InSequence seq;
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
               OnFailedToRedeemUnblindedPaymentTokens());

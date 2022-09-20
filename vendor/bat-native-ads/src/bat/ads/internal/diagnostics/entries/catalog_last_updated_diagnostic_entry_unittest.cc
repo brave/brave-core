@@ -23,7 +23,7 @@ TEST_F(BatAdsCatalogLastUpdatedDiagnosticEntryTest, CatalogLastUpdated) {
 
   SetCatalogLastUpdated(Now());
 
-  CatalogLastUpdatedDiagnosticEntry diagnostic_entry;
+  const CatalogLastUpdatedDiagnosticEntry diagnostic_entry;
 
   // Act
 
@@ -37,7 +37,7 @@ TEST_F(BatAdsCatalogLastUpdatedDiagnosticEntryTest, CatalogLastUpdated) {
 
 TEST_F(BatAdsCatalogLastUpdatedDiagnosticEntryTest, CatalogNeverUpdated) {
   // Arrange
-  CatalogLastUpdatedDiagnosticEntry diagnostic_entry;
+  const CatalogLastUpdatedDiagnosticEntry diagnostic_entry;
 
   // Act
 

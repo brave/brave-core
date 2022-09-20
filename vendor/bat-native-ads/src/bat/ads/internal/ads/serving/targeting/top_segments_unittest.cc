@@ -152,7 +152,7 @@ TEST_P(BatAdsTopSegmentsTest, GetSegments) {
   // Arrange
   resource::SetEpsilonGreedyBanditEligibleSegments(kSegments);
 
-  ModelCombinationsParamInfo param(GetParam());
+  const ModelCombinationsParamInfo param(GetParam());
   if (param.previously_processed) {
     ProcessBandit();
     ProcessTextClassification();

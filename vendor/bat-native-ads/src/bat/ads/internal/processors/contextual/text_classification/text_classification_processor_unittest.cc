@@ -63,7 +63,7 @@ TEST_F(BatAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
 
 TEST_F(BatAdsTextClassificationProcessorTest, NeverProcessed) {
   // Act
-  targeting::model::TextClassification model;
+  const targeting::model::TextClassification model;
   const SegmentList segments = model.GetSegments();
 
   // Assert

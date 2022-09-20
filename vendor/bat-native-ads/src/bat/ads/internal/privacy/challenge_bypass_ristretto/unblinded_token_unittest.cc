@@ -17,7 +17,7 @@ namespace ads::privacy::cbr {
 
 TEST(BatAdsUnblindedTokenTest, FailToInitialize) {
   // Arrange
-  UnblindedToken unblinded_token;
+  const UnblindedToken unblinded_token;
 
   // Act
   const bool has_value = unblinded_token.has_value();
@@ -28,7 +28,7 @@ TEST(BatAdsUnblindedTokenTest, FailToInitialize) {
 
 TEST(BatAdsUnblindedTokenTest, FailToInitializeWithEmptyBase64) {
   // Arrange
-  UnblindedToken unblinded_token("");
+  const UnblindedToken unblinded_token("");
 
   // Act
   const bool has_value = unblinded_token.has_value();
@@ -39,7 +39,7 @@ TEST(BatAdsUnblindedTokenTest, FailToInitializeWithEmptyBase64) {
 
 TEST(BatAdsUnblindedTokenTest, FailToInitializeWithInvalidBase64) {
   // Arrange
-  UnblindedToken unblinded_token(kInvalidBase64);
+  const UnblindedToken unblinded_token(kInvalidBase64);
 
   // Act
   const bool has_value = unblinded_token.has_value();
@@ -85,7 +85,7 @@ TEST(BatAdsUnblindedTokenTest, FailToDecodeInvalidBase64) {
 
 TEST(BatAdsUnblindedTokenTest, EncodeBase64) {
   // Arrange
-  UnblindedToken unblinded_token(kUnblindedTokenBase64);
+  const UnblindedToken unblinded_token(kUnblindedTokenBase64);
 
   // Act
   const absl::optional<std::string> encoded_base64 =
@@ -98,7 +98,7 @@ TEST(BatAdsUnblindedTokenTest, EncodeBase64) {
 
 TEST(BatAdsUnblindedTokenTest, FailToEncodeBase64WhenUninitialized) {
   // Arrange
-  UnblindedToken unblinded_token;
+  const UnblindedToken unblinded_token;
 
   // Act
   const absl::optional<std::string> encoded_base64 =
@@ -110,7 +110,7 @@ TEST(BatAdsUnblindedTokenTest, FailToEncodeBase64WhenUninitialized) {
 
 TEST(BatAdsUnblindedTokenTest, IsEqual) {
   // Arrange
-  UnblindedToken unblinded_token(kUnblindedTokenBase64);
+  const UnblindedToken unblinded_token(kUnblindedTokenBase64);
 
   // Act
 
@@ -120,7 +120,7 @@ TEST(BatAdsUnblindedTokenTest, IsEqual) {
 
 TEST(BatAdsUnblindedTokenTest, IsEqualWhenUninitialized) {
   // Arrange
-  UnblindedToken unblinded_token;
+  const UnblindedToken unblinded_token;
 
   // Act
 
@@ -130,7 +130,7 @@ TEST(BatAdsUnblindedTokenTest, IsEqualWhenUninitialized) {
 
 TEST(BatAdsUnblindedTokenTest, IsEmptyBase64Equal) {
   // Arrange
-  UnblindedToken unblinded_token("");
+  const UnblindedToken unblinded_token("");
 
   // Act
 
@@ -140,7 +140,7 @@ TEST(BatAdsUnblindedTokenTest, IsEmptyBase64Equal) {
 
 TEST(BatAdsUnblindedTokenTest, IsInvalidBase64Equal) {
   // Arrange
-  UnblindedToken unblinded_token(kInvalidBase64);
+  const UnblindedToken unblinded_token(kInvalidBase64);
 
   // Act
 
@@ -150,18 +150,18 @@ TEST(BatAdsUnblindedTokenTest, IsInvalidBase64Equal) {
 
 TEST(BatAdsUnblindedTokenTest, IsNotEqual) {
   // Arrange
-  UnblindedToken unblinded_token(kUnblindedTokenBase64);
+  const UnblindedToken unblinded_token(kUnblindedTokenBase64);
 
   // Act
 
   // Assert
-  UnblindedToken different_blinded_token(kInvalidBase64);
+  const UnblindedToken different_blinded_token(kInvalidBase64);
   EXPECT_NE(different_blinded_token, unblinded_token);
 }
 
 TEST(BatAdsUnblindedTokenTest, OutputStream) {
   // Arrange
-  UnblindedToken unblinded_token(kUnblindedTokenBase64);
+  const UnblindedToken unblinded_token(kUnblindedTokenBase64);
 
   // Act
   std::stringstream ss;
@@ -173,7 +173,7 @@ TEST(BatAdsUnblindedTokenTest, OutputStream) {
 
 TEST(BatAdsUnblindedTokenTest, OutputStreamWhenUninitialized) {
   // Arrange
-  UnblindedToken unblinded_token;
+  const UnblindedToken unblinded_token;
 
   // Act
   std::stringstream ss;
@@ -185,7 +185,7 @@ TEST(BatAdsUnblindedTokenTest, OutputStreamWhenUninitialized) {
 
 TEST(BatAdsUnUnblindedTokenTest, DeriveVerificationKey) {
   // Arrange
-  UnblindedToken unblinded_token(kUnblindedTokenBase64);
+  const UnblindedToken unblinded_token(kUnblindedTokenBase64);
 
   // Act
   const absl::optional<VerificationKey> verification_key =
@@ -197,7 +197,7 @@ TEST(BatAdsUnUnblindedTokenTest, DeriveVerificationKey) {
 
 TEST(BatAdsUnUnblindedTokenTest, FailToDeriveVerificationKeyWhenUninitialized) {
   // Arrange
-  UnblindedToken unblinded_token;
+  const UnblindedToken unblinded_token;
 
   // Act
   const absl::optional<VerificationKey> verification_key =
@@ -210,7 +210,7 @@ TEST(BatAdsUnUnblindedTokenTest, FailToDeriveVerificationKeyWhenUninitialized) {
 TEST(BatAdsUnUnblindedTokenTest,
      FailToDeriveVerificationKeyWithInvalidUnblindedToken) {
   // Arrange
-  UnblindedToken unblinded_token(kInvalidBase64);
+  const UnblindedToken unblinded_token(kInvalidBase64);
 
   // Act
   const absl::optional<VerificationKey> verification_key =
@@ -222,7 +222,7 @@ TEST(BatAdsUnUnblindedTokenTest,
 
 TEST(BatAdsUnblindedTokenTest, GetTokenPreimage) {
   // Arrange
-  UnblindedToken unblinded_token(kUnblindedTokenBase64);
+  const UnblindedToken unblinded_token(kUnblindedTokenBase64);
 
   // Act
   const absl::optional<TokenPreimage> token_preimage =
@@ -235,7 +235,7 @@ TEST(BatAdsUnblindedTokenTest, GetTokenPreimage) {
 
 TEST(BatAdsUnblindedTokenTest, FailToGetTokenPreimageWhenUninitialized) {
   // Arrange
-  UnblindedToken unblinded_token;
+  const UnblindedToken unblinded_token;
 
   // Act
   const absl::optional<TokenPreimage> token_preimage =
@@ -248,7 +248,7 @@ TEST(BatAdsUnblindedTokenTest, FailToGetTokenPreimageWhenUninitialized) {
 TEST(BatAdsUnblindedTokenTest,
      FailToGetTokenPreimageWithInvalidUnblindedToken) {
   // Arrange
-  UnblindedToken unblinded_token(kInvalidBase64);
+  const UnblindedToken unblinded_token(kInvalidBase64);
 
   // Act
   const absl::optional<TokenPreimage> token_preimage =

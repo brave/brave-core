@@ -33,7 +33,7 @@ TEST(BatAdsSignedTokenUtilTest, TokensToRawTokens) {
 
 TEST(BatAdsSignedTokenUtilTest, EmptyTokensToRawTokens) {
   // Arrange
-  std::vector<SignedToken> tokens;
+  const std::vector<SignedToken> tokens;
 
   // Act
   const std::vector<challenge_bypass_ristretto::SignedToken> raw_tokens =

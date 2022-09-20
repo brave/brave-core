@@ -22,7 +22,7 @@ TEST_F(BatAdsIssuersUrlRequestBuilderTest, BuildUrl) {
   IssuersUrlRequestBuilder url_request_builder;
 
   // Act
-  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
+  const mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
 
   // Assert
   mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();

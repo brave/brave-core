@@ -16,7 +16,7 @@ namespace ads::privacy::cbr {
 
 TEST(BatAdsVerificationSignatureTest, FailToInitialize) {
   // Arrange
-  VerificationSignature verification_signature;
+  const VerificationSignature verification_signature;
 
   // Act
   const bool has_value = verification_signature.has_value();
@@ -27,7 +27,7 @@ TEST(BatAdsVerificationSignatureTest, FailToInitialize) {
 
 TEST(BatAdsVerificationSignatureTest, FailToInitializeWithEmptyBase64) {
   // Arrange
-  VerificationSignature verification_signature("");
+  const VerificationSignature verification_signature("");
 
   // Act
   const bool has_value = verification_signature.has_value();
@@ -38,7 +38,7 @@ TEST(BatAdsVerificationSignatureTest, FailToInitializeWithEmptyBase64) {
 
 TEST(BatAdsVerificationSignatureTest, FailToInitializeWithInvalidBase64) {
   // Arrange
-  VerificationSignature verification_signature(kInvalidBase64);
+  const VerificationSignature verification_signature(kInvalidBase64);
 
   // Act
   const bool has_value = verification_signature.has_value();
@@ -85,7 +85,8 @@ TEST(BatAdsVerificationSignatureTest, FailToDecodeInvalidBase64) {
 
 TEST(BatAdsVerificationSignatureTest, EncodeBase64) {
   // Arrange
-  VerificationSignature verification_signature(kVerificationSignatureBase64);
+  const VerificationSignature verification_signature(
+      kVerificationSignatureBase64);
 
   // Act
   const absl::optional<std::string> encoded_base64 =
@@ -98,7 +99,7 @@ TEST(BatAdsVerificationSignatureTest, EncodeBase64) {
 
 TEST(BatAdsVerificationSignatureTest, FailToEncodeBase64WhenUninitialized) {
   // Arrange
-  VerificationSignature verification_signature;
+  const VerificationSignature verification_signature;
 
   // Act
   const absl::optional<std::string> encoded_base64 =
@@ -110,7 +111,8 @@ TEST(BatAdsVerificationSignatureTest, FailToEncodeBase64WhenUninitialized) {
 
 TEST(BatAdsVerificationSignatureTest, IsEqual) {
   // Arrange
-  VerificationSignature verification_signature(kVerificationSignatureBase64);
+  const VerificationSignature verification_signature(
+      kVerificationSignatureBase64);
 
   // Act
 
@@ -120,7 +122,7 @@ TEST(BatAdsVerificationSignatureTest, IsEqual) {
 
 TEST(BatAdsVerificationSignatureTest, IsEqualWhenUninitialized) {
   // Arrange
-  VerificationSignature verification_signature;
+  const VerificationSignature verification_signature;
 
   // Act
 
@@ -130,7 +132,7 @@ TEST(BatAdsVerificationSignatureTest, IsEqualWhenUninitialized) {
 
 TEST(BatAdsVerificationSignatureTest, IsEmptyBase64Equal) {
   // Arrange
-  VerificationSignature verification_signature("");
+  const VerificationSignature verification_signature("");
 
   // Act
 
@@ -140,7 +142,7 @@ TEST(BatAdsVerificationSignatureTest, IsEmptyBase64Equal) {
 
 TEST(BatAdsVerificationSignatureTest, IsInvalidBase64Equal) {
   // Arrange
-  VerificationSignature verification_signature(kInvalidBase64);
+  const VerificationSignature verification_signature(kInvalidBase64);
 
   // Act
 
@@ -150,18 +152,20 @@ TEST(BatAdsVerificationSignatureTest, IsInvalidBase64Equal) {
 
 TEST(BatAdsVerificationSignatureTest, IsNotEqual) {
   // Arrange
-  VerificationSignature verification_signature(kVerificationSignatureBase64);
+  const VerificationSignature verification_signature(
+      kVerificationSignatureBase64);
 
   // Act
 
   // Assert
-  VerificationSignature different_verification_signature(kInvalidBase64);
+  const VerificationSignature different_verification_signature(kInvalidBase64);
   EXPECT_NE(different_verification_signature, verification_signature);
 }
 
 TEST(BatAdsVerificationSignatureTest, OutputStream) {
   // Arrange
-  VerificationSignature verification_signature(kVerificationSignatureBase64);
+  const VerificationSignature verification_signature(
+      kVerificationSignatureBase64);
 
   // Act
   std::stringstream ss;
@@ -173,7 +177,7 @@ TEST(BatAdsVerificationSignatureTest, OutputStream) {
 
 TEST(BatAdsVerificationSignatureTest, OutputStreamWhenUninitialized) {
   // Arrange
-  VerificationSignature verification_signature;
+  const VerificationSignature verification_signature;
 
   // Act
   std::stringstream ss;

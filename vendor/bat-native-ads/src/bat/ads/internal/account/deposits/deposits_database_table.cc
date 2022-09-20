@@ -230,7 +230,7 @@ void Deposits::OnGetForCreativeInstanceId(
     return;
   }
 
-  mojom::DBRecordInfoPtr record =
+  const mojom::DBRecordInfoPtr record =
       std::move(response->result->get_records().front());
   DepositInfo deposit = GetFromRecord(record.get());
 

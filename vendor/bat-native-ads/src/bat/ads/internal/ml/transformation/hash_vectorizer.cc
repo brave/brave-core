@@ -61,8 +61,8 @@ std::map<uint32_t, double> HashVectorizer::GetFrequencies(
       break;
     }
     for (size_t i = 0; i < data.length() - substring_size + 1; ++i) {
-      std::string ss = data.substr(i, substring_size);
-      uint32_t idx = GetHash(ss);
+      const std::string ss = data.substr(i, substring_size);
+      const uint32_t idx = GetHash(ss);
       ++frequencies[idx % static_cast<uint32_t>(bucket_count_)];
     }
   }

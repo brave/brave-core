@@ -34,7 +34,7 @@ constexpr char kBatchDLEQProofBase64[] =
 
 TEST(BatAdsBatchDLEQProofTest, FailToInitialize) {
   // Arrange
-  BatchDLEQProof batch_dleq_proof;
+  const BatchDLEQProof batch_dleq_proof;
 
   // Act
   const bool has_value = batch_dleq_proof.has_value();
@@ -45,7 +45,7 @@ TEST(BatAdsBatchDLEQProofTest, FailToInitialize) {
 
 TEST(BatAdsBatchDLEQProofTest, FailToInitializeWithEmptyBase64) {
   // Arrange
-  BatchDLEQProof batch_dleq_proof("");
+  const BatchDLEQProof batch_dleq_proof("");
 
   // Act
   const bool has_value = batch_dleq_proof.has_value();
@@ -56,7 +56,7 @@ TEST(BatAdsBatchDLEQProofTest, FailToInitializeWithEmptyBase64) {
 
 TEST(BatAdsBatchDLEQProofTest, FailToInitializeWithInvalidBase64) {
   // Arrange
-  BatchDLEQProof batch_dleq_proof(kInvalidBase64);
+  const BatchDLEQProof batch_dleq_proof(kInvalidBase64);
 
   // Act
   const bool has_value = batch_dleq_proof.has_value();
@@ -67,8 +67,8 @@ TEST(BatAdsBatchDLEQProofTest, FailToInitializeWithInvalidBase64) {
 
 TEST(BatAdsBatchDLEQProofTest, FailToInitializeWithInvalidBlindedTokens) {
   // Arrange
-  BatchDLEQProof batch_dleq_proof(GetInvalidBlindedTokens(), GetSignedTokens(),
-                                  GetSigningKey());
+  const BatchDLEQProof batch_dleq_proof(GetInvalidBlindedTokens(),
+                                        GetSignedTokens(), GetSigningKey());
 
   // Act
   const bool has_value = batch_dleq_proof.has_value();
@@ -79,8 +79,8 @@ TEST(BatAdsBatchDLEQProofTest, FailToInitializeWithInvalidBlindedTokens) {
 
 TEST(BatAdsBatchDLEQProofTest, FailToInitializeWithInvalidSignedTokens) {
   // Arrange
-  BatchDLEQProof batch_dleq_proof(GetBlindedTokens(), GetInvalidSignedTokens(),
-                                  GetSigningKey());
+  const BatchDLEQProof batch_dleq_proof(
+      GetBlindedTokens(), GetInvalidSignedTokens(), GetSigningKey());
 
   // Act
   const bool has_value = batch_dleq_proof.has_value();
@@ -91,8 +91,8 @@ TEST(BatAdsBatchDLEQProofTest, FailToInitializeWithInvalidSignedTokens) {
 
 TEST(BatAdsBatchDLEQProofTest, FailToInitializeWithInvalidSigningKey) {
   // Arrange
-  BatchDLEQProof batch_dleq_proof(GetBlindedTokens(), GetSignedTokens(),
-                                  GetInvalidSigningKey());
+  const BatchDLEQProof batch_dleq_proof(GetBlindedTokens(), GetSignedTokens(),
+                                        GetInvalidSigningKey());
 
   // Act
   const bool has_value = batch_dleq_proof.has_value();
@@ -138,7 +138,7 @@ TEST(BatAdsBatchDLEQProofTest, FailToDecodeInvalidBase64) {
 
 TEST(BatAdsBatchDLEQProofTest, EncodeBase64) {
   // Arrange
-  BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
+  const BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
   // Act
   const absl::optional<std::string> encoded_base64 =
@@ -151,7 +151,7 @@ TEST(BatAdsBatchDLEQProofTest, EncodeBase64) {
 
 TEST(BatAdsBatchDLEQProofTest, FailToEncodeBase64WhenUninitialized) {
   // Arrange
-  BatchDLEQProof batch_dleq_proof;
+  const BatchDLEQProof batch_dleq_proof;
 
   // Act
   const absl::optional<std::string> encoded_base64 =
@@ -330,7 +330,7 @@ TEST(BatAdsBatchDLEQProofTest, FailToVerifyAndUnblindWithInvalidPublicKey) {
 
 TEST(BatAdsBatchDLEQProofTest, IsEqual) {
   // Arrange
-  BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
+  const BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
   // Act
 
@@ -340,7 +340,7 @@ TEST(BatAdsBatchDLEQProofTest, IsEqual) {
 
 TEST(BatAdsBatchDLEQProofTest, IsEqualWhenUninitialized) {
   // Arrange
-  BatchDLEQProof batch_dleq_proof;
+  const BatchDLEQProof batch_dleq_proof;
 
   // Act
 
@@ -350,7 +350,7 @@ TEST(BatAdsBatchDLEQProofTest, IsEqualWhenUninitialized) {
 
 TEST(BatAdsBatchDLEQProofTest, IsEmptyBase64Equal) {
   // Arrange
-  BatchDLEQProof batch_dleq_proof("");
+  const BatchDLEQProof batch_dleq_proof("");
 
   // Act
 
@@ -360,7 +360,7 @@ TEST(BatAdsBatchDLEQProofTest, IsEmptyBase64Equal) {
 
 TEST(BatAdsBatchDLEQProofTest, IsInvalidBase64Equal) {
   // Arrange
-  BatchDLEQProof batch_dleq_proof(kInvalidBase64);
+  const BatchDLEQProof batch_dleq_proof(kInvalidBase64);
 
   // Act
 
@@ -370,18 +370,18 @@ TEST(BatAdsBatchDLEQProofTest, IsInvalidBase64Equal) {
 
 TEST(BatAdsBatchDLEQProofTest, IsNotEqual) {
   // Arrange
-  BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
+  const BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
   // Act
 
   // Assert
-  BatchDLEQProof different_batch_dleq_proof(kInvalidBase64);
+  const BatchDLEQProof different_batch_dleq_proof(kInvalidBase64);
   EXPECT_NE(different_batch_dleq_proof, batch_dleq_proof);
 }
 
 TEST(BatAdsBatchDLEQProofTest, OutputStream) {
   // Arrange
-  BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
+  const BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
   // Act
   std::stringstream ss;
@@ -393,7 +393,7 @@ TEST(BatAdsBatchDLEQProofTest, OutputStream) {
 
 TEST(BatAdsBatchDLEQProofTest, OutputStreamWhenUninitialized) {
   // Arrange
-  BatchDLEQProof batch_dleq_proof;
+  const BatchDLEQProof batch_dleq_proof;
 
   // Act
   std::stringstream ss;

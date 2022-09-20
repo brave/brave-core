@@ -12,7 +12,7 @@
 namespace ads::database {
 
 void PurgeExpiredConversions() {
-  table::Conversions database_table;
+  const table::Conversions database_table;
   database_table.PurgeExpired(base::BindOnce([](const bool success) {
     if (!success) {
       BLOG(0, "Failed to purge expired conversions");

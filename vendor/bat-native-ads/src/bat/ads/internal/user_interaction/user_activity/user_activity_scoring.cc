@@ -79,7 +79,7 @@ double GetUserActivityScore(const UserActivityTriggerList& triggers,
     return 0.0;
   }
 
-  UserActivityTriggerList sorted_triggers = SortTriggers(triggers);
+  const UserActivityTriggerList sorted_triggers = SortTriggers(triggers);
 
   const std::string encoded_events = EncodeEvents(events);
 

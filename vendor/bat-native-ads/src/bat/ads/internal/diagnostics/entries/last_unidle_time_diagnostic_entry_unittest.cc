@@ -33,7 +33,7 @@ TEST_F(BatAdsLastUnIdleTimeDiagnosticEntryTest, LastUnIdleTime) {
 
 TEST_F(BatAdsLastUnIdleTimeDiagnosticEntryTest, WasNeverUnIdle) {
   // Arrange
-  LastUnIdleTimeDiagnosticEntry diagnostic_entry;
+  const LastUnIdleTimeDiagnosticEntry diagnostic_entry;
 
   // Act
 

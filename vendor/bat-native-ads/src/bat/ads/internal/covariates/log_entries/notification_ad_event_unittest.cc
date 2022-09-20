@@ -32,10 +32,10 @@ std::string GetEventTypeAsString(
 }  // namespace
 
 TEST(BatAdsFederatedLogEntriesNotificationAdEventTest, GetDataType) {
-  NotificationAdEvent notification_ad_event;
+  const NotificationAdEvent notification_ad_event;
 
   // Act
-  brave_federated::mojom::DataType data_type =
+  const brave_federated::mojom::DataType data_type =
       notification_ad_event.GetDataType();
 
   // Assert
@@ -44,7 +44,7 @@ TEST(BatAdsFederatedLogEntriesNotificationAdEventTest, GetDataType) {
 
 TEST(BatAdsFederatedLogEntriesNotificationAdEventTest, GetValueWhenClicked) {
   // Arrange
-  mojom::NotificationAdEventType event_type =
+  const mojom::NotificationAdEventType event_type =
       mojom::NotificationAdEventType::kClicked;
 
   // Act
@@ -57,7 +57,7 @@ TEST(BatAdsFederatedLogEntriesNotificationAdEventTest, GetValueWhenClicked) {
 
 TEST(BatAdsFederatedLogEntriesNotificationAdEventTest, GetValueWhenDismissed) {
   // Arrange
-  mojom::NotificationAdEventType event_type =
+  const mojom::NotificationAdEventType event_type =
       mojom::NotificationAdEventType::kDismissed;
 
   // Act
@@ -70,7 +70,7 @@ TEST(BatAdsFederatedLogEntriesNotificationAdEventTest, GetValueWhenDismissed) {
 
 TEST(BatAdsFederatedLogEntriesNotificationAdEventTest, GetValueWhenTimeout) {
   // Arrange
-  mojom::NotificationAdEventType event_type =
+  const mojom::NotificationAdEventType event_type =
       mojom::NotificationAdEventType::kTimedOut;
 
   // Act

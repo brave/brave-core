@@ -13,7 +13,7 @@ namespace ads::database::table {
 
 TEST(BatAdsGeoTargetsDatabaseTableTest, TableName) {
   // Arrange
-  GeoTargets database_table;
+  const GeoTargets database_table;
 
   // Act
   const std::string table_name = database_table.GetTableName();

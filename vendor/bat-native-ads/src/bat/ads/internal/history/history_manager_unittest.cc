@@ -99,7 +99,7 @@ TEST_F(BatAdsHistoryManagerTest, HasInstance) {
 
 TEST_F(BatAdsHistoryManagerTest, AddNotificationAd) {
   // Arrange
-  NotificationAdInfo ad;
+  const NotificationAdInfo ad;
 
   // Act
   const HistoryItemInfo history_item =
@@ -117,7 +117,7 @@ TEST_F(BatAdsHistoryManagerTest, AddNotificationAd) {
 
 TEST_F(BatAdsHistoryManagerTest, AddNewTabPageAd) {
   // Arrange
-  NewTabPageAdInfo ad;
+  const NewTabPageAdInfo ad;
 
   // Act
   const HistoryItemInfo history_item =
@@ -135,7 +135,7 @@ TEST_F(BatAdsHistoryManagerTest, AddNewTabPageAd) {
 
 TEST_F(BatAdsHistoryManagerTest, AddPromotedContentAd) {
   // Arrange
-  PromotedContentAdInfo ad;
+  const PromotedContentAdInfo ad;
 
   // Act
   const HistoryItemInfo history_item =
@@ -153,7 +153,7 @@ TEST_F(BatAdsHistoryManagerTest, AddPromotedContentAd) {
 
 TEST_F(BatAdsHistoryManagerTest, AddInlineContentAd) {
   // Arrange
-  InlineContentAdInfo ad;
+  const InlineContentAdInfo ad;
 
   // Act
   const HistoryItemInfo history_item =
@@ -171,7 +171,7 @@ TEST_F(BatAdsHistoryManagerTest, AddInlineContentAd) {
 
 TEST_F(BatAdsHistoryManagerTest, AddSearchResultAd) {
   // Arrange
-  SearchResultAdInfo ad;
+  const SearchResultAdInfo ad;
 
   // Act
   const HistoryItemInfo history_item =

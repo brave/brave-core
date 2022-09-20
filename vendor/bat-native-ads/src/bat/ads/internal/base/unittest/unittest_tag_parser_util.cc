@@ -86,7 +86,7 @@ absl::optional<std::string> ParseTimeTagValue(const std::string& value) {
 
 std::vector<std::string> ParseTagsForText(const std::string& text) {
   re2::StringPiece text_string_piece(text);
-  RE2 r("<(.*)>");
+  const RE2 r("<(.*)>");
 
   std::vector<std::string> tags;
 
