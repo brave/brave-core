@@ -10,4 +10,10 @@ namespace types {
     DOMString payload;
     boolean silent;
   };
+
+  dictionary EncryptionPayload {
+    DOMString data;
+    DOMString hmac;
+    DOMString iv;
+  };
 };

@@ -9,10 +9,25 @@ static_library("wallet_connect") {
   ]
 
   deps = [
-    ":mojom",
+    ":encryptor",
     ":generated_payload_types",
+    ":mojom",
     "//base",
     "//url",
+  ]
+}
+
+source_set("encryptor") {
+  sources = [
+    "encryptor.cc",
+    "encryptor.h",
+  ]
+
+  deps = [
+    ":generated_payload_types",
+    "//base",
+    "//crypto",
+    "//third_party/boringssl",
   ]
 }
 
@@ -23,21 +38,29 @@ mojom("mojom") {
 }
 
 generated_types("generated_payload_types") {
-  sources = ["wallet_connect.idl"]
+  sources = [ "wallet_connect.idl" ]
   root_namespace = "wallet_connect::%(namespace)s"
-  deps = [
-    "//base",
+  deps = [ "//base" ]
+  visibility = [
+    ":encryptor",
+    ":unit_tests",
+    ":wallet_connect",
   ]
-  visibility = [ ":wallet_connect", ":unit_tests" ]
 }
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "wallet_connect_utils_unittest.cc" ]
+  sources = [
+    "encryptor_unittest.cc",
+    "wallet_connect_utils_unittest.cc",
+  ]
 
   deps = [
-    ":wallet_connect",
+    ":encryptor",
     ":generated_payload_types",
+    ":wallet_connect",
+    "//base",
+    "//crypto",
     "//testing/gtest",
   ]
 }
