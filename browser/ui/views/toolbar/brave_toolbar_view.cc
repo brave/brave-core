@@ -171,7 +171,7 @@ void BraveToolbarView::Init() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsBraveVPNEnabled(profile)) {
     show_brave_vpn_button_.Init(
-        brave_vpn::prefs::kBraveVPNShowButton, g_browser_process->local_state(),
+        brave_vpn::prefs::kBraveVPNShowButton, profile->GetPrefs(),
         base::BindRepeating(&BraveToolbarView::OnVPNButtonVisibilityChanged,
                             base::Unretained(this)));
     brave_vpn_ = AddChildViewAt(std::make_unique<BraveVPNButton>(browser()),

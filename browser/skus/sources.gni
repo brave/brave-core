@@ -13,8 +13,6 @@ brave_browser_skus_deps = [
   "//brave/components/skus/browser",
   "//brave/components/skus/common",
   "//brave/components/skus/common:mojom",
-  "//chrome/browser/profiles",
-  "//chrome/browser/profiles:profile",
   "//components/keyed_service/content",
   "//components/pref_registry",
   "//content/public/browser",

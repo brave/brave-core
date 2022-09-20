@@ -7,6 +7,7 @@
 
 #include "base/feature_list.h"
 #include "base/notreached.h"
+#include "base/strings/string_split.h"
 #include "brave/components/brave_vpn/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/features.h"
 #include "brave/components/brave_vpn/pref_names.h"
@@ -24,7 +25,6 @@ namespace {
 
 void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
 #if !BUILDFLAG(IS_ANDROID)
-  registry->RegisterBooleanPref(prefs::kBraveVPNShowButton, true);
   registry->RegisterListPref(prefs::kBraveVPNRegionList);
   registry->RegisterStringPref(prefs::kBraveVPNDeviceRegion, "");
   registry->RegisterStringPref(prefs::kBraveVPNSelectedRegion, "");
@@ -45,7 +45,6 @@ void MigrateVPNSettings(PrefService* profile_prefs, PrefService* local_prefs) {
   auto* obsolete_pref = profile_prefs->Get(prefs::kBraveVPNRootPref);
   if (!obsolete_pref || !obsolete_pref->is_dict())
     return;
-
   base::Value result;
   if (local_prefs->HasPrefPath(prefs::kBraveVPNRootPref)) {
     result = local_prefs->Get(prefs::kBraveVPNRootPref)->Clone();
@@ -54,8 +53,22 @@ void MigrateVPNSettings(PrefService* profile_prefs, PrefService* local_prefs) {
   } else {
     result = obsolete_pref->Clone();
   }
+  // Do not migrate brave_vpn::prefs::kBraveVPNShowButton, we want it to be
+  // inside the profile preferences.
+  auto tokens =
+      base::SplitString(brave_vpn::prefs::kBraveVPNShowButton, ".",
+                        base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  if (result.GetDict().FindBool(tokens.back())) {
+    result.RemoveKey(tokens.back());
+  }
   local_prefs->Set(prefs::kBraveVPNRootPref, result);
+
+  bool show_button =
+      profile_prefs->GetBoolean(brave_vpn::prefs::kBraveVPNShowButton);
   profile_prefs->ClearPref(prefs::kBraveVPNRootPref);
+  // Set kBraveVPNShowButton back, it is only one per profile preference for
+  // now.
+  profile_prefs->SetBoolean(brave_vpn::prefs::kBraveVPNShowButton, show_button);
 }
 
 bool IsBraveVPNEnabled() {
@@ -75,9 +88,9 @@ std::string GetManageUrl(const std::string& env) {
   return brave_vpn::kManageUrlProd;
 }
 
-void RegisterProfilePrefsForMigration(
-    user_prefs::PrefRegistrySyncable* registry) {
+void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterDictionaryPref(prefs::kBraveVPNRootPref);
+  registry->RegisterBooleanPref(prefs::kBraveVPNShowButton, true);
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {

@@ -92,7 +92,7 @@ KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
 
 void BraveVpnServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
-  brave_vpn::RegisterProfilePrefsForMigration(registry);
+  brave_vpn::RegisterProfilePrefs(registry);
 }
 
 }  // namespace brave_vpn

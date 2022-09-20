@@ -6,6 +6,7 @@
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 
 #include "base/json/json_reader.h"
+#include "base/logging.h"
 #include "brave/components/brave_vpn/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/testing_pref_service.h"
@@ -15,7 +16,7 @@
 
 TEST(BraveVPNUtilsUnitTest, MigrateAndMerge) {
   sync_preferences::TestingPrefServiceSyncable profile_pref_service;
-  brave_vpn::RegisterProfilePrefsForMigration(profile_pref_service.registry());
+  brave_vpn::RegisterProfilePrefs(profile_pref_service.registry());
   TestingPrefServiceSimple local_state_pref_service;
   brave_vpn::RegisterLocalStatePrefs(local_state_pref_service.registry());
 
@@ -64,12 +65,13 @@ TEST(BraveVPNUtilsUnitTest, MigrateAndMerge) {
 
 TEST(BraveVPNUtilsUnitTest, Migrate) {
   sync_preferences::TestingPrefServiceSyncable profile_pref_service;
-  brave_vpn::RegisterProfilePrefsForMigration(profile_pref_service.registry());
+  brave_vpn::RegisterProfilePrefs(profile_pref_service.registry());
   TestingPrefServiceSimple local_state_pref_service;
   brave_vpn::RegisterLocalStatePrefs(local_state_pref_service.registry());
 
   auto vpn_settings = base::JSONReader::Read(R"(
         {
+            "show_button": true,
             "device_region_name": "eu-de",
             "env": "development",
             "region_list":
@@ -85,18 +87,17 @@ TEST(BraveVPNUtilsUnitTest, Migrate) {
   profile_pref_service.Set(brave_vpn::prefs::kBraveVPNRootPref, *vpn_settings);
   brave_vpn::MigrateVPNSettings(&profile_pref_service,
                                 &local_state_pref_service);
-
-  EXPECT_FALSE(
-      profile_pref_service.HasPrefPath(brave_vpn::prefs::kBraveVPNRootPref));
+  EXPECT_TRUE(profile_pref_service.Get(brave_vpn::prefs::kBraveVPNShowButton));
   EXPECT_TRUE(local_state_pref_service.HasPrefPath(
       brave_vpn::prefs::kBraveVPNRootPref));
+  vpn_settings->RemovePath("show_button");
   EXPECT_EQ(*local_state_pref_service.Get(brave_vpn::prefs::kBraveVPNRootPref),
             *vpn_settings);
 }
 
 TEST(BraveVPNUtilsUnitTest, NoMigration) {
   sync_preferences::TestingPrefServiceSyncable profile_pref_service;
-  brave_vpn::RegisterProfilePrefsForMigration(profile_pref_service.registry());
+  brave_vpn::RegisterProfilePrefs(profile_pref_service.registry());
   TestingPrefServiceSimple local_state_pref_service;
   brave_vpn::RegisterLocalStatePrefs(local_state_pref_service.registry());
   EXPECT_FALSE(

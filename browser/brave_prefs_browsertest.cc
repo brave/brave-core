@@ -139,6 +139,11 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
       kBraveGCMChannelStatus));
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+  EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+      brave_vpn::prefs::kBraveVPNShowButton));
+#endif
+
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
   EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetDictionary(
       NTPBackgroundPrefs::kPrefName));
@@ -186,10 +191,6 @@ IN_PROC_BROWSER_TEST_F(BraveLocalStatePrefsBrowserTest, DefaultLocalStateTest) {
 #if !BUILDFLAG(IS_ANDROID)
   EXPECT_TRUE(g_browser_process->local_state()->GetBoolean(
       kDefaultBrowserPromptEnabled));
-#endif
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
-  EXPECT_TRUE(g_browser_process->local_state()->GetBoolean(
-      brave_vpn::prefs::kBraveVPNShowButton));
 #endif
 
 #if BUILDFLAG(ENABLE_CRASH_DIALOG)

@@ -102,7 +102,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, VPNButtonVisibility) {
   auto* browser_view = static_cast<BraveBrowserView*>(
       BrowserView::GetBrowserViewForBrowser(browser()));
   auto* toolbar = static_cast<BraveToolbarView*>(browser_view->toolbar());
-  auto* prefs = g_browser_process->local_state();
+  auto* prefs = browser()->profile()->GetPrefs();
 
   // Button is visible by default.
   EXPECT_TRUE(prefs->GetBoolean(brave_vpn::prefs::kBraveVPNShowButton));

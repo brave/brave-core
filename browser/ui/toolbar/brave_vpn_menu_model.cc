@@ -41,6 +41,6 @@ void BraveVPNMenuModel::ExecuteCommand(int command_id, int event_flags) {
 }
 
 bool BraveVPNMenuModel::IsBraveVPNButtonVisible() const {
-  return g_browser_process->local_state()->GetBoolean(
-      brave_vpn::prefs::kBraveVPNShowButton);
+  auto* prefs = browser_->profile()->GetPrefs();
+  return prefs->GetBoolean(brave_vpn::prefs::kBraveVPNShowButton);
 }
