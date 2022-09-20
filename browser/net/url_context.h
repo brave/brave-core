@@ -74,6 +74,7 @@ struct BraveRequestInfo {
       net::ReferrerPolicy::CLEAR_ON_TRANSITION_FROM_SECURE_TO_INSECURE;
   absl::optional<GURL> new_referrer;
 
+  absl::optional<int> pending_error;
   std::string new_url_spec;
   // TODO(iefremov): rename to shields_up.
   bool allow_brave_shields = true;

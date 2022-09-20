@@ -1142,9 +1142,12 @@ void JsonRpcService::EnsGetContentHash(const std::string& domain,
       return;
     }
 
-    // TODO(apaymyshev): Implement UI for contenthash offchain lookup consent.
-    absl::optional<bool> allow_offchain =
-        !EnsOffchainPrefDisabled(local_state_prefs_);
+    absl::optional<bool> allow_offchain;
+    if (EnsOffchainPrefEnabled(local_state_prefs_)) {
+      allow_offchain = true;
+    } else if (EnsOffchainPrefDisabled(local_state_prefs_)) {
+      allow_offchain = false;
+    }
 
     GURL network_url = GetNetworkURL(
         prefs_, brave_wallet::mojom::kMainnetChainId, mojom::CoinType::ETH);
@@ -1339,8 +1342,6 @@ void JsonRpcService::OnEnsGetContentHashTaskDone(
   if (callbacks.empty()) {
     return;
   }
-
-  DCHECK(!(task_result && task_result->need_to_allow_offchain));
 
   absl::optional<std::vector<uint8_t>> content_hash;
   mojom::ProviderError error =

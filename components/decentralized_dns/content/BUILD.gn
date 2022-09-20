@@ -11,6 +11,10 @@ static_library("content") {
     "decentralized_dns_navigation_throttle.h",
     "decentralized_dns_opt_in_page.cc",
     "decentralized_dns_opt_in_page.h",
+    "ens_offchain_lookup_interstitial_controller_client.cc",
+    "ens_offchain_lookup_interstitial_controller_client.h",
+    "ens_offchain_lookup_opt_in_page.cc",
+    "ens_offchain_lookup_opt_in_page.h",
   ]
 
   deps = [
