@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_BRAVE_NEWS_BRAVE_NEWS_BUBBLE_VIEW_H_
 
 #include "base/memory/raw_ptr.h"
+#include "brave/browser/ui/views/brave_news/brave_news_feeds_container_view.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/geometry/size.h"
@@ -14,7 +15,6 @@
 #include "ui/views/controls/label.h"
 #include "ui/views/view.h"
 #include "ui/views/widget/widget.h"
-#include "brave/browser/ui/views/brave_news/brave_news_feeds_container_view.h"
 
 class BraveNewsBubbleView : public views::BubbleDialogDelegateView {
  public:
@@ -34,6 +34,7 @@ class BraveNewsBubbleView : public views::BubbleDialogDelegateView {
   raw_ptr<content::WebContents> contents_;
   raw_ptr<views::Label> title_label_ = nullptr;
   raw_ptr<views::Label> subtitle_label_ = nullptr;
+  raw_ptr<BraveNewsFeedsContainerView> feeds_container_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_NEWS_BRAVE_NEWS_BUBBLE_VIEW_H_

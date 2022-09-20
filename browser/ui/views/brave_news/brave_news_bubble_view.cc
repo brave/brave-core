@@ -13,6 +13,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feed_item_view.h"
+#include "brave/browser/ui/views/brave_news/brave_news_feeds_container_view.h"
 #include "brave/components/brave_today/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_strings.h"
@@ -44,6 +45,7 @@
 
 namespace {
 SkColor kSubtitleColor = SkColorSetRGB(134, 142, 150);
+SkColor kBackgroundLightColor = SkColorSetRGB(99, 105, 110);
 }
 
 // static
@@ -67,6 +69,9 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
   SetButtons(ui::DIALOG_BUTTON_NONE);
   SetAccessibleRole(ax::mojom::Role::kDialog);
   set_adjust_if_offscreen(true);
+  set_close_on_deactivate(false);
+
+  SetBackground(views::CreateSolidBackground(kBackgroundLightColor));
 
   this->SetProperty(views::kInternalPaddingKey, gfx::Insets::VH(16, 16));
 
@@ -91,19 +96,15 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
   subtitle_label_->SetEnabledColor(kSubtitleColor);
   subtitle_label_->SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT);
 
+  feeds_container_ =
+      AddChildView(std::make_unique<BraveNewsFeedsContainerView>(contents));
+
   views::FlexLayout* const layout =
       SetLayoutManager(std::make_unique<views::FlexLayout>());
   layout->SetOrientation(views::LayoutOrientation::kVertical);
   layout->SetMainAxisAlignment(views::LayoutAlignment::kStart);
   layout->SetCrossAxisAlignment(views::LayoutAlignment::kStretch);
   layout->SetCollapseMargins(true);
-
-  auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents);
-  for (const auto& feed_item : tab_helper->GetAvailableFeeds()) {
-    auto* child = AddChildView(
-        std::make_unique<BraveNewsFeedItemView>(feed_item, contents));
-    child->SetProperty(views::kMarginsKey, gfx::Insets::TLBR(10, 0, 0, 0));
-  }
 
   auto* dismiss_button = AddChildView(std::make_unique<views::MdTextButton>(
       base::BindRepeating(&BraveNewsBubbleView::DismissForever,

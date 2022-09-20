@@ -6,19 +6,24 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_NEWS_BRAVE_NEWS_FEEDS_CONTAINER_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_BRAVE_NEWS_BRAVE_NEWS_FEEDS_CONTAINER_VIEW_H_
 
+#include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/gfx/geometry/size.h"
+#include "ui/views/layout/layout_types.h"
 #include "ui/views/view.h"
 
 namespace content {
 class WebContents;
 }
 
-class BraveNewsFeedsContainerView {
+class BraveNewsFeedsContainerView : public views::View {
  public:
+  METADATA_HEADER(BraveNewsFeedsContainerView);
+
   explicit BraveNewsFeedsContainerView(content::WebContents* contents);
   BraveNewsFeedsContainerView(const BraveNewsFeedsContainerView&) = delete;
   BraveNewsFeedsContainerView& operator=(const BraveNewsFeedsContainerView&) =
       delete;
-  ~BraveNewsFeedsContainerView();
+  ~BraveNewsFeedsContainerView() override;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_NEWS_BRAVE_NEWS_FEEDS_CONTAINER_VIEW_H_
