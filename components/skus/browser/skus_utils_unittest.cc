@@ -53,6 +53,8 @@ TEST(SkusUtilsUnittest, Migrate) {
   skus::RegisterProfilePrefsForMigration(profile_pref_service.registry());
   TestingPrefServiceSimple local_state_pref_service;
   skus::RegisterLocalStatePrefs(local_state_pref_service.registry());
+  EXPECT_FALSE(local_state_pref_service.HasPrefPath(
+      skus::prefs::kSkusStateMigratedToLocalState));
   EXPECT_FALSE(local_state_pref_service.HasPrefPath(skus::prefs::kSkusState));
   auto skus_settings = base::JSONReader::Read(R"({
     "skus":
@@ -70,36 +72,42 @@ TEST(SkusUtilsUnittest, Migrate) {
   EXPECT_TRUE(local_state_pref_service.HasPrefPath(skus::prefs::kSkusState));
   EXPECT_EQ(*local_state_pref_service.Get(skus::prefs::kSkusState),
             *skus_settings);
+  EXPECT_TRUE(local_state_pref_service.HasPrefPath(
+      skus::prefs::kSkusStateMigratedToLocalState));
 }
 
-TEST(SkusUtilsUnittest, NoMigration) {
+TEST(SkusUtilsUnittest, AlreadyMigrated) {
   TestingPrefServiceSimple profile_pref_service;
   skus::RegisterProfilePrefsForMigration(profile_pref_service.registry());
   TestingPrefServiceSimple local_state_pref_service;
   skus::RegisterLocalStatePrefs(local_state_pref_service.registry());
+  local_state_pref_service.SetBoolean(
+      skus::prefs::kSkusStateMigratedToLocalState, true);
   auto existing_skus = base::JSONReader::Read(R"({
       "skus": {
-            "state":{}
+            "state":{
+              "migrated_to_local_state": true
+            }
         }
       })");
   local_state_pref_service.Set(skus::prefs::kSkusState, *existing_skus);
-  EXPECT_TRUE(local_state_pref_service.HasPrefPath(skus::prefs::kSkusState));
   auto skus_settings = base::JSONReader::Read(R"({
     "skus":
       {
           "state":
           {
-              "skus:development": "{}"
+              "development": "{}"
           }
       }
     })");
   profile_pref_service.Set(skus::prefs::kSkusState, *skus_settings);
   skus::MigrateSkusSettings(&profile_pref_service, &local_state_pref_service);
 
-  EXPECT_TRUE(profile_pref_service.HasPrefPath(skus::prefs::kSkusState));
   EXPECT_TRUE(local_state_pref_service.HasPrefPath(skus::prefs::kSkusState));
   EXPECT_EQ(*local_state_pref_service.Get(skus::prefs::kSkusState),
             *existing_skus);
+  EXPECT_TRUE(local_state_pref_service.HasPrefPath(
+      skus::prefs::kSkusStateMigratedToLocalState));
 }
 
 }  // namespace skus

@@ -62,6 +62,7 @@ std::string GetEnvironmentForDomain(const std::string& domain) {
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(prefs::kSkusState);
+  registry->RegisterBooleanPref(prefs::kSkusStateMigratedToLocalState, false);
 }
 
 void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry) {
@@ -72,10 +73,11 @@ void MigrateSkusSettings(PrefService* profile_prefs, PrefService* local_prefs) {
   auto* obsolete_pref = profile_prefs->Get(prefs::kSkusState);
   if (!obsolete_pref || !obsolete_pref->is_dict())
     return;
-  if (local_prefs->HasPrefPath(prefs::kSkusState)) {
+  if (local_prefs->GetBoolean(prefs::kSkusStateMigratedToLocalState)) {
     return;
   }
   local_prefs->Set(prefs::kSkusState, obsolete_pref->Clone());
+  local_prefs->SetBoolean(prefs::kSkusStateMigratedToLocalState, true);
   profile_prefs->ClearPref(prefs::kSkusState);
 }
 
