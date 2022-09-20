@@ -119,7 +119,8 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #endif
 
   if (base::FeatureList::IsEnabled(
-          brave_today::features::kBraveNewsSubscribeButtonFeature)) {
+          brave_today::features::kBraveNewsSubscribeButtonFeature) &&
+      !web_contents->GetBrowserContext()->IsOffTheRecord()) {
     BraveNewsTabHelper::CreateForWebContents(web_contents);
   }
 
