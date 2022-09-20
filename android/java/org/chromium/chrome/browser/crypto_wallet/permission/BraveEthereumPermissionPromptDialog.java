@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.permission;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
