@@ -9,6 +9,7 @@ import {
 import {
   AccountTransactions,
   BraveWallet,
+  BalancePayload,
   WalletAccountType,
   AccountInfo,
   BraveKeyrings,
@@ -29,6 +30,7 @@ import { getTokenParam, getFlattenedAccountBalances } from '../../utils/api-util
 import Amount from '../../utils/amount'
 import { sortTransactionByDate } from '../../utils/tx-utils'
 import { addLogoToToken, getBatTokensFromList, getNativeTokensFromList, getUniqueAssets } from '../../utils/asset-utils'
+import { loadTimeData } from '../../../common/loadTimeData'
 
 import getAPIProxy from './bridge'
 import { Dispatch, State, Store } from './types'
@@ -370,6 +372,52 @@ export function refreshVisibleTokenInfo (currentNetwork: BraveWallet.NetworkInfo
   }
 }
 
+function reportActiveWalletsToP3A (accounts: WalletAccountType[],
+                                   nativeBalances: BalancePayload[][],
+                                   blockchainTokenBalances: BalancePayload[][]) {
+  const { braveWalletP3A } = getAPIProxy()
+  const coinsActiveAddresses: {
+    [coin: BraveWallet.CoinType]: {
+      [address: string]: boolean
+    }
+  } = {}
+  const countTestNetworks = loadTimeData.getBoolean(BraveWallet.P3A_COUNT_TEST_NETWORKS_LOAD_TIME_KEY)
+  for (const balances of [nativeBalances, blockchainTokenBalances]) {
+    for (const [index, account] of accounts.entries()) {
+      const balanceInfos = balances[index]
+
+      const coinIndex = SupportedCoinTypes.indexOf(account.coin)
+      if (coinIndex === -1) {
+        continue
+      }
+      let coinActiveAddresses = coinsActiveAddresses[coinIndex]
+      if (!coinActiveAddresses) {
+        coinActiveAddresses = coinsActiveAddresses[coinIndex] = {}
+      }
+
+      for (const balanceInfo of balanceInfos) {
+        // Skip counting empty balances and balances on testnets
+        // Testnet balance counting can be enabled via the --p3a-count-wallet-test-networks switch
+        if (!balanceInfo ||
+          (!countTestNetworks &&
+            SupportedTestNetworks.includes(balanceInfo.chainId)) ||
+          balanceInfo.balance === '0x0' ||
+          balanceInfo.balance === '0' ||
+          balanceInfo.balance === '') {
+          continue
+        }
+
+        coinActiveAddresses[account.address] = true
+      }
+    }
+  }
+  for (const [coin, coinActiveAddresses] of Object.entries(coinsActiveAddresses)) {
+    braveWalletP3A.recordActiveWalletCount(
+      Object.keys(coinActiveAddresses).length,
+      SupportedCoinTypes[coin])
+  }
+}
+
 export function refreshBalances () {
   return async (dispatch: Dispatch, getState: () => State) => {
     const { jsonRpcService } = getAPIProxy()
@@ -448,13 +496,20 @@ export function refreshBalances () {
       const networks = getNetworksByCoinType(networkList, account.coin)
       if (account.coin === BraveWallet.CoinType.ETH) {
         return Promise.all(visibleTokens.map(async (token) => {
+          let balanceInfo = emptyBalance
           if (networks.some(n => n.chainId === token.chainId)) {
             if (token.isErc721) {
-              return jsonRpcService.getERC721TokenBalance(token.contractAddress, token.tokenId ?? '', account.address, token?.chainId ?? '')
+              balanceInfo =
+                await jsonRpcService.getERC721TokenBalance(token.contractAddress, token.tokenId ?? '', account.address, token?.chainId ?? '')
+            } else {
+              balanceInfo =
+               await jsonRpcService.getERC20TokenBalance(token.contractAddress, account.address, token?.chainId ?? '')
             }
-            return jsonRpcService.getERC20TokenBalance(token.contractAddress, account.address, token?.chainId ?? '')
           }
-          return emptyBalance
+          return {
+            ...balanceInfo,
+            chainId: token?.chainId ?? ''
+          }
         }))
       } else if (account.coin === BraveWallet.CoinType.SOL) {
         return Promise.all(visibleTokens.map(async (token) => {
@@ -463,10 +518,14 @@ export function refreshBalances () {
             return {
               balance: getSolTokenBalance.amount,
               error: getSolTokenBalance.error,
-              errorMessage: getSolTokenBalance.errorMessage
+              errorMessage: getSolTokenBalance.errorMessage,
+              chainId: token.chainId
             }
           }
-          return emptyBalance
+          return {
+            ...emptyBalance,
+            chainId: token?.chainId ?? ''
+          }
         }))
       } else {
         // MULTICHAIN: We do not yet support getting
@@ -475,9 +534,16 @@ export function refreshBalances () {
         return []
       }
     }))
+
     await dispatch(WalletActions.tokenBalancesUpdated({
       balances: getBlockchainTokensBalanceReturnInfos
     }))
+
+    reportActiveWalletsToP3A(
+      accounts,
+      getNativeAssetsBalanceReturnInfos,
+      getBlockchainTokensBalanceReturnInfos
+    )
   }
 }
 

@@ -69,6 +69,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterTimePref(kBraveWalletP3ALastReportTime, base::Time());
   registry->RegisterTimePref(kBraveWalletP3AFirstReportTime, base::Time());
   registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
+  registry->RegisterDictionaryPref(kBraveWalletP3AActiveWalletDict);
   registry->RegisterDictionaryPref(kBraveWalletKeyrings);
   registry->RegisterBooleanPref(kBraveWalletKeyringEncryptionKeysMigrated,
                                 false);

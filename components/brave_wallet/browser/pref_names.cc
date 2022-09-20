@@ -25,6 +25,8 @@ const char kBraveWalletP3AFirstReportTime[] =
     "brave.wallet.wallet_p3a_first_report_time";
 const char kBraveWalletP3AWeeklyStorage[] =
     "brave.wallet.wallet_p3a_weekly_storage";
+const char kBraveWalletP3AActiveWalletDict[] =
+    "brave.wallet.wallet_p3a_active_wallets";
 const char kBraveWalletCustomNetworks[] = "brave.wallet.custom_networks";
 const char kBraveWalletHiddenNetworks[] = "brave.wallet.hidden_networks";
 const char kBraveWalletSelectedNetworks[] = "brave.wallet.selected_networks";

@@ -1328,6 +1328,9 @@ interface BraveWalletP3A {
 
   // Called when a mainnet transaction is sent.
   ReportTransactionSent(CoinType coin, bool new_send);
+
+  // Called to report an active wallet count for P3A
+  RecordActiveWalletCount(int32 count, CoinType coin_type);
 };
 
 enum OnboardingAction {

@@ -14,6 +14,8 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
+#include "brave/components/p3a_utils/bucket.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 
@@ -32,6 +34,13 @@ const char kSolTransactionSentHistogramName[] =
     "Brave.Wallet.SolTransactionSent";
 const char kFilTransactionSentHistogramName[] =
     "Brave.Wallet.FilTransactionSent";
+const char kEthActiveAccountHistogramName[] = "Brave.Wallet.ActiveEthAccounts";
+const char kSolActiveAccountHistogramName[] = "Brave.Wallet.ActiveSolAccounts";
+const char kFilActiveAccountHistogramName[] = "Brave.Wallet.ActiveFilAccounts";
+
+namespace {
+
+constexpr int kActiveAccountBuckets[] = {0, 1, 2, 3, 7};
 
 // Has the Wallet keyring been created?
 // 0) No, 1) Yes
@@ -62,6 +71,8 @@ void RecordDefaultSolanaWalletSetting(PrefService* pref_service) {
                              max_bucket);
 }
 
+}  // namespace
+
 BraveWalletP3A::BraveWalletP3A(BraveWalletService* wallet_service,
                                KeyringService* keyring_service,
                                PrefService* pref_service)
@@ -69,13 +80,17 @@ BraveWalletP3A::BraveWalletP3A(BraveWalletService* wallet_service,
       keyring_service_(keyring_service),
       pref_service_(pref_service) {
   RecordInitialBraveWalletP3AState();
+  AddObservers();
+}
+
+BraveWalletP3A::~BraveWalletP3A() = default;
+
+void BraveWalletP3A::AddObservers() {
   wallet_service_->AddObserver(
       wallet_service_observer_receiver_.BindNewPipeAndPassRemote());
   keyring_service_->AddObserver(
       keyring_service_observer_receiver_.BindNewPipeAndPassRemote());
 }
-
-BraveWalletP3A::~BraveWalletP3A() = default;
 
 mojo::PendingRemote<mojom::BraveWalletP3A> BraveWalletP3A::MakeRemote() {
   mojo::PendingRemote<mojom::BraveWalletP3A> remote;
@@ -143,6 +158,42 @@ void BraveWalletP3A::ReportTransactionSent(mojom::CoinType coin,
   }
 
   base::UmaHistogramExactLinear(histogram_name, answer, 2);
+}
+
+void BraveWalletP3A::RecordActiveWalletCount(int count,
+                                             mojom::CoinType coin_type) {
+  DCHECK_GE(count, 0);
+  const char* histogram_name;
+
+  switch (coin_type) {
+    case mojom::CoinType::ETH:
+      histogram_name = kEthActiveAccountHistogramName;
+      break;
+    case mojom::CoinType::SOL:
+      histogram_name = kSolActiveAccountHistogramName;
+      break;
+    case mojom::CoinType::FIL:
+      histogram_name = kFilActiveAccountHistogramName;
+      break;
+    default:
+      return;
+  }
+
+  const base::Value::Dict& active_wallet_dict =
+      pref_service_->GetDict(kBraveWalletP3AActiveWalletDict);
+  std::string coin_type_str = base::NumberToString(static_cast<int>(coin_type));
+  if (!active_wallet_dict.FindBool(coin_type_str).has_value()) {
+    if (count == 0) {
+      // Should not record zero to histogram if user never had an active
+      // account, to avoid sending unnecessary data.
+      return;
+    }
+    DictionaryPrefUpdate active_wallet_dict_update(
+        pref_service_, kBraveWalletP3AActiveWalletDict);
+    active_wallet_dict_update->GetDict().Set(coin_type_str, true);
+  }
+  p3a_utils::RecordToHistogramBucket(histogram_name, kActiveAccountBuckets,
+                                     count);
 }
 
 void BraveWalletP3A::RecordInitialBraveWalletP3AState() {
