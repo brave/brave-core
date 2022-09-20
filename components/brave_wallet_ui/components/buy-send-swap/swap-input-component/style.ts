@@ -281,7 +281,7 @@ export const WarningText = styled.span<Partial<StyleProps>>`
   font-family: Poppins;
   letter-spacing: 0.01em;
   font-size: 12px;
-  color: ${(p) => p.isWarning ? p.theme.color.warningBorder : p.theme.color.errorText};
+  color: ${(p) => p.isWarning ? p.theme.color.interactive03 : p.theme.color.errorText};
   word-break: break-word;
 `
 
