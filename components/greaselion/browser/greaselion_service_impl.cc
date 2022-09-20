@@ -127,7 +127,7 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
   extensions::api::content_scripts::ContentScript content_script;
   content_script.matches = std::move(matches);
 
-  content_script.js = std::make_unique<std::vector<std::string>>();
+  content_script.js.emplace();
   for (auto script : rule.scripts())
     content_script.js->push_back(script.BaseName().AsUTF8Unsafe());
 
@@ -142,7 +142,7 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
   }
 
   base::Value::List content_scripts;
-  content_scripts.Append(std::move(*content_script.ToValue()));
+  content_scripts.Append(content_script.ToValue());
 
   root.Set(extensions::api::content_scripts::ManifestKeys::kContentScripts,
            std::move(content_scripts));
