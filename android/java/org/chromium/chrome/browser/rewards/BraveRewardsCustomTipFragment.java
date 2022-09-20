@@ -114,7 +114,7 @@ public class BraveRewardsCustomTipFragment extends Fragment {
         mSelectedAmount = getArguments().getDouble(SELECTED_AMOUNT);
         currencyOneEditText.setText(String.valueOf(mSelectedAmount)); // Default value
         ((BraveRewardsSiteBannerActivity) getActivity())
-                .onAmountChange(mSelectedAmount, mSelectedAmount * exchangeRate);
+                .onAmountChange(mSelectedAmount, roundExchangeUp(mSelectedAmount * exchangeRate));
     }
 
     private TextWatcher textChangeListener = new TextWatcher() {
@@ -128,7 +128,7 @@ public class BraveRewardsCustomTipFragment extends Fragment {
             Double batValue = getBatValue(s.toString());
             Double usdValue = exchangeRate * batValue;
 
-            ((BraveRewardsSiteBannerActivity) getActivity()).onAmountChange(batValue, usdValue);
+            ((BraveRewardsSiteBannerActivity) getActivity()).onAmountChange(batValue, roundExchangeUp(usdValue));
             if (isBatCurrencyMode) {
                 currencyTwoTextView.setText(String.valueOf(roundExchangeUp(usdValue)));
             } else {
@@ -139,6 +139,7 @@ public class BraveRewardsCustomTipFragment extends Fragment {
         @Override
         public void afterTextChanged(Editable s) {}
     };
+
 
     class DecimalDigitsInputFilter implements InputFilter {
         private Pattern mPattern;
