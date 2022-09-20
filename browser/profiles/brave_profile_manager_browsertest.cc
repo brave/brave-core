@@ -154,6 +154,8 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
   Profile* otr_profile =
       profile->GetPrimaryOTRProfile(/*create_if_needed=*/true);
 
+// We use x86 builds on Android to run tests and rewards with ads
+// are off on x86 builds
 #if !BUILDFLAG(IS_ANDROID)
   profiles::SwitchToGuestProfile(base::DoNothing());
   ui_test_utils::WaitForBrowserToOpen();
@@ -167,7 +169,6 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
             nullptr);
   EXPECT_EQ(brave_ads::AdsServiceFactory::GetForProfile(guest_profile),
             nullptr);
-#endif
 
   ASSERT_TRUE(otr_profile->IsOffTheRecord());
 
@@ -180,6 +181,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
   EXPECT_NE(brave_ads::AdsServiceFactory::GetForProfile(profile), nullptr);
   EXPECT_EQ(brave_ads::AdsServiceFactory::GetForProfile(otr_profile),
             nullptr);
+#endif
 
 #if BUILDFLAG(ENABLE_IPFS)
   EXPECT_NE(ipfs::IpfsServiceFactory::GetForContext(profile), nullptr);
