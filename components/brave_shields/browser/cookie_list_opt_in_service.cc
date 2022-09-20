@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/feature_list.h"
-#include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -17,7 +16,8 @@
 #include "brave/components/brave_shields/common/features.h"
 
 namespace brave_shields {
-CookieListOptInService::CookieListOptInService() {}
+CookieListOptInService::CookieListOptInService(AdBlockService* ad_block_service)
+    : ad_block_service_(ad_block_service) {}
 
 CookieListOptInService::~CookieListOptInService() = default;
 
@@ -38,24 +38,21 @@ void CookieListOptInService::ShouldShowDialog(
   bool should_show_dialog =
       base::FeatureList::IsEnabled(
           brave_shields::features::kBraveAdblockCookieListOptIn) &&
-      g_brave_browser_process->ad_block_service()
-          ->regional_service_manager()
-          ->IsFilterListAvailable(brave_shields::kCookieListUuid);
+      ad_block_service_->regional_service_manager()->IsFilterListAvailable(
+          brave_shields::kCookieListUuid);
   std::move(callback).Run(should_show_dialog);
 }
 
 void CookieListOptInService::IsFilterListEnabled(
     IsFilterListEnabledCallback callback) {
   std::move(callback).Run(
-      g_brave_browser_process->ad_block_service()
-          ->regional_service_manager()
-          ->IsFilterListEnabled(brave_shields::kCookieListUuid));
+      ad_block_service_->regional_service_manager()->IsFilterListEnabled(
+          brave_shields::kCookieListUuid));
 }
 
 void CookieListOptInService::EnableFilter(bool shouldEnableFilter) {
-  g_brave_browser_process->ad_block_service()
-      ->regional_service_manager()
-      ->EnableFilterList(brave_shields::kCookieListUuid, shouldEnableFilter);
+  ad_block_service_->regional_service_manager()->EnableFilterList(
+      brave_shields::kCookieListUuid, shouldEnableFilter);
 }
 
 }  // namespace brave_shields

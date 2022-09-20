@@ -436,15 +436,15 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         checkForTooltip(tab);
                     }
                     if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()
-                            && mBraveShieldsHandler != null && !mBraveShieldsHandler.isShowing()) {
+                            && mBraveShieldsHandler != null && !mBraveShieldsHandler.isShowing()
+                            && !url.getSpec().startsWith(UrlConstants.CHROME_SCHEME)
+                            && !UrlUtilities.isNTPUrl(url.getSpec())) {
                         SharedPreferencesManager.getInstance().writeInt(
                                 BravePreferenceKeys.LOADED_SITE_COUNT,
                                 SharedPreferencesManager.getInstance().readInt(
                                         BravePreferenceKeys.LOADED_SITE_COUNT, 0)
                                         + 1);
-                        if (!url.getSpec().startsWith(UrlConstants.CHROME_SCHEME)) {
-                            maybeShowCookieConsentTooltip();
-                        }
+                        maybeShowCookieConsentTooltip();
                     }
                 }
 
