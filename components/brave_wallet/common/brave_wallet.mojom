@@ -1330,6 +1330,48 @@ struct SolanaAccountMeta {
   bool is_writable;
 };
 
+// https://docs.rs/solana-program/latest/solana_program/system_instruction/enum.SystemInstruction.html
+enum SolanaSystemInstruction {
+  kCreateAccount = 0,
+  kAssign = 1,
+  kTransfer = 2,
+  kCreateAccountWithSeed = 3,
+  kAdvanceNonceAccount = 4,
+  kWithdrawNonceAccount = 5,
+  kInitializeNonceAccount = 6,
+  kAuthorizeNonceAccount = 7,
+  kAllocate = 8,
+  kAllocateWithSeed = 9,
+  kAssignWithSeed = 10,
+  kTransferWithSeed = 11,
+  kUpgradeNonceAccount = 12,
+};
+
+// https://docs.rs/spl-token/latest/spl_token/instruction/enum.TokenInstruction.html
+enum SolanaTokenInstruction {
+  kInitializeMint = 0,
+  kInitializeAccount = 1,
+  kInitializeMultisig = 2,
+  kTransfer = 3,
+  kApprove = 4,
+  kRevoke = 5,
+  kSetAuthority = 6,
+  kMintTo = 7,
+  kBurn = 8,
+  kCloseAccount = 9,
+  kFreezeAccount = 10,
+  kThawAccount = 11,
+  kTransferChecked = 12,
+  kApproveChecked = 13,
+  kMintToChecked = 14,
+  kBurnChecked = 15,
+  kInitializeAccount2 = 16,
+  kSyncNative = 17,
+  kInitializeAccount3 = 18,
+  kInitializeMultisig2 = 19,
+  kInitializeMint2 = 20,
+};
+
 struct SolanaInstruction {
   string program_id;
   array<SolanaAccountMeta> account_metas;

@@ -59,8 +59,9 @@ absl::optional<SolanaInstruction> Transfer(const std::string& from_pubkey,
 
   // Instruction data is consisted of u32 instruction index and u64 lamport.
   std::vector<uint8_t> instruction_data;
-  UintToLEBytes(static_cast<uint32_t>(SolanaSystemInstruction::kTransfer),
-                &instruction_data);
+  UintToLEBytes(
+      static_cast<uint32_t>(mojom::SolanaSystemInstruction::kTransfer),
+      &instruction_data);
 
   std::vector<uint8_t> lamport_bytes;
   UintToLEBytes(lamport, &lamport_bytes);
@@ -104,7 +105,7 @@ absl::optional<SolanaInstruction> Transfer(
 
   // Instruction data is consisted of u8 instruction index and u64 amount.
   std::vector<uint8_t> instruction_data = {
-      static_cast<uint8_t>(SolanaTokenInstruction::kTransfer)};
+      static_cast<uint8_t>(mojom::SolanaTokenInstruction::kTransfer)};
 
   std::vector<uint8_t> amount_bytes;
   UintToLEBytes(amount, &amount_bytes);
