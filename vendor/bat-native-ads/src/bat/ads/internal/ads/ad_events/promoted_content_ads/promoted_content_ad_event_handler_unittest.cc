@@ -78,7 +78,7 @@ class BatAdsPromotedContentAdEventHandlerTest : public EventHandlerObserver,
 
   CreativePromotedContentAdInfo BuildAndSaveCreativeAd() {
     CreativePromotedContentAdList creative_ads;
-    const CreativePromotedContentAdInfo creative_ad =
+    CreativePromotedContentAdInfo creative_ad =
         BuildCreativePromotedContentAd();
     creative_ads.push_back(creative_ad);
 

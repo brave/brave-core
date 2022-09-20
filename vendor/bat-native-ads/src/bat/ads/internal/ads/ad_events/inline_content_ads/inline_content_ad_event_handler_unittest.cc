@@ -73,8 +73,7 @@ class BatAdsInlineContentAdEventHandlerTest : public EventHandlerObserver,
 
   CreativeInlineContentAdInfo BuildAndSaveCreativeAd() {
     CreativeInlineContentAdList creative_ads;
-    const CreativeInlineContentAdInfo creative_ad =
-        BuildCreativeInlineContentAd();
+    CreativeInlineContentAdInfo creative_ad = BuildCreativeInlineContentAd();
     creative_ads.push_back(creative_ad);
 
     SaveCreativeAds(creative_ads);
