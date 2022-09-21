@@ -182,8 +182,7 @@ class BraveVPNServiceTest : public testing::Test {
     if (base::Time::FromString("2023-01-04", &future_mock_time)) {
       task_environment_.AdvanceClock(future_mock_time - base::Time::Now());
     }
-    skus::RegisterProfilePrefs(profile_pref_service_.registry());
-    brave_vpn::RegisterProfilePrefs(profile_pref_service_.registry());
+    skus::RegisterLocalStatePrefs(local_pref_service_.registry());
     brave_vpn::RegisterLocalStatePrefs(local_pref_service_.registry());
     shared_url_loader_factory_ =
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
@@ -192,14 +191,20 @@ class BraveVPNServiceTest : public testing::Test {
         &BraveVPNServiceTest::Interceptor, base::Unretained(this)));
     // Setup required for SKU (dependency of VPN)
     skus_service_ = std::make_unique<skus::SkusServiceImpl>(
-        &profile_pref_service_, url_loader_factory_.GetSafeWeakWrapper());
+        &local_pref_service_, url_loader_factory_.GetSafeWeakWrapper());
     ResetVpnService();
   }
-
+  void TearDown() override {
+    if (service_) {
+      service_->Shutdown();
+    }
+  }
   void ResetVpnService() {
+    if (service_) {
+      service_->Shutdown();
+    }
     service_ = std::make_unique<BraveVpnService>(
         url_loader_factory_.GetSafeWeakWrapper(), &local_pref_service_,
-        &profile_pref_service_,
         base::BindRepeating(&BraveVPNServiceTest::GetSkusService,
                             base::Unretained(this)));
   }
@@ -489,7 +494,7 @@ class BraveVPNServiceTest : public testing::Test {
     auto testing_payload = GenerateTestingCreds(domain, active_subscription);
     base::Value state(base::Value::Type::DICT);
     state.SetStringKey("skus:" + env, testing_payload);
-    profile_pref_service_.Set(skus::prefs::kSkusState, std::move(state));
+    local_pref_service_.Set(skus::prefs::kSkusState, std::move(state));
     SetInterceptorResponse(GetRegionsData());
     return domain;
   }
@@ -507,8 +512,7 @@ class BraveVPNServiceTest : public testing::Test {
   std::string https_response_;
   base::test::ScopedFeatureList scoped_feature_list_;
   content::BrowserTaskEnvironment task_environment_;
-  sync_preferences::TestingPrefServiceSyncable profile_pref_service_;
-  sync_preferences::TestingPrefServiceSyncable local_pref_service_;
+  TestingPrefServiceSimple local_pref_service_;
   std::unique_ptr<skus::SkusServiceImpl> skus_service_;
   std::unique_ptr<BraveVpnService> service_;
   network::TestURLLoaderFactory url_loader_factory_;
@@ -935,7 +939,7 @@ TEST_F(BraveVPNServiceTest, CheckInitialPurchasedStateTest) {
   EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
 
   // Dirty region list prefs to pretend it's already cached.
-  profile_pref_service_.SetList(prefs::kBraveVPNRegionList, {});
+  local_pref_service_.SetList(prefs::kBraveVPNRegionList, {});
   ResetVpnService();
   EXPECT_EQ(PurchasedState::LOADING, GetPurchasedStateSync());
 }
