@@ -1322,7 +1322,7 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
       case .always:
         return tabCount > 1 || UIDevice.current.userInterfaceIdiom == .pad
       case .landscapeOnly:
-        return tabCount > 1 && UIDevice.current.orientation.isLandscape
+        return (tabCount > 1 && UIDevice.current.orientation.isLandscape) || UIDevice.current.userInterfaceIdiom == .pad
       case .never:
         return false
       }
