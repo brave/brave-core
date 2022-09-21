@@ -106,24 +106,25 @@ void PlaylistService::RemoveItemFromPlaylist(const std::string& playlist_id,
       return;
     }
 
-    base::ListValue* item_ids = nullptr;
-    if (!a_playlist_update->GetList(kPlaylistItemsKey, &item_ids)) {
+    base::Value::List* item_ids = nullptr;
+    if (!a_playlist_update->GetListWithoutPathExpansion(kPlaylistItemsKey,
+                                                        &item_ids)) {
       NOTREACHED() << __func__ << " Playlist " << playlist_id
                    << " doesn't have |items| field";
       return;
     }
 
-    auto& id_list = item_ids->GetList();
-    auto it = base::ranges::find_if(id_list, [&item_id](const auto& id) {
+    auto it = base::ranges::find_if(*item_ids, [&item_id](const auto& id) {
       return id.GetString() == item_id;
     });
-    if (it == id_list.end())
+    if (it == item_ids->end())
       return;
 
-    id_list.erase(it);
+    item_ids->erase(it);
 
-    a_playlist_update->Set(kPlaylistItemsKey,
-                           base::Value::ToUniquePtrValue(std::move(*item_ids)));
+    a_playlist_update->Set(
+        kPlaylistItemsKey,
+        base::Value::ToUniquePtrValue(base::Value(std::move(*item_ids))));
   }
 
   // TODO(sko) Once we can support to share an item between playlists, we should
@@ -146,8 +147,9 @@ void PlaylistService::OnPlaylistCreationParamsReady(
       return;
     }
 
-    base::ListValue* item_ids = nullptr;
-    if (!a_playlist_update->GetList(kPlaylistItemsKey, &item_ids)) {
+    base::Value::List* item_ids = nullptr;
+    if (!a_playlist_update->GetListWithoutPathExpansion(kPlaylistItemsKey,
+                                                        &item_ids)) {
       NOTREACHED() << __func__ << " Playlist " << playlist_id
                    << " doesn't have |items| field";
       return;
@@ -158,8 +160,9 @@ void PlaylistService::OnPlaylistCreationParamsReady(
       item_ids->Append(item.id);
     }
 
-    a_playlist_update->Set(kPlaylistItemsKey,
-                           base::Value::ToUniquePtrValue(std::move(*item_ids)));
+    a_playlist_update->Set(
+        kPlaylistItemsKey,
+        base::Value::ToUniquePtrValue(base::Value(std::move(*item_ids))));
   }
 
   base::ranges::for_each(
@@ -299,15 +302,15 @@ void PlaylistService::RemovePlaylist(const std::string& playlist_id) {
       return;
     }
 
-    base::ListValue* item_ids = nullptr;
-    if (!a_playlist_update->GetList(kPlaylistItemsKey, &item_ids)) {
+    base::Value::List* item_ids = nullptr;
+    if (!a_playlist_update->GetListWithoutPathExpansion(kPlaylistItemsKey,
+                                                        &item_ids)) {
       NOTREACHED() << __func__ << " Playlist " << playlist_id
                    << " doesn't have |items| field";
       return;
     }
 
-    id_list =
-        std::make_unique<base::Value::List>(std::move(item_ids->GetList()));
+    id_list = std::make_unique<base::Value::List>(std::move(*item_ids));
     playlists_update->Remove(playlist_id);
   }
 

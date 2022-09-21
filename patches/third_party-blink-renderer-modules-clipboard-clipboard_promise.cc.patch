@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/clipboard/clipboard_promise.cc b/third_party/blink/renderer/modules/clipboard/clipboard_promise.cc
-index 232be5f18146d7e54aa41c34fb2f1d4da97c261a..5d678d5c4d57faedf507543939b958bd5ca4c6b4 100644
+index b022b0b6a206efcd5588eb9f1c5303e3d6648bcb..b317d68d6843de555adfacdc89f105e000e6ac54 100644
 --- a/third_party/blink/renderer/modules/clipboard/clipboard_promise.cc
 +++ b/third_party/blink/renderer/modules/clipboard/clipboard_promise.cc
-@@ -550,6 +550,7 @@ void ClipboardPromise::RequestPermission(
+@@ -548,6 +548,7 @@ void ClipboardPromise::RequestPermission(
    // Currently NTP relies on readText & writeText to be called without any user
    // gesture.
    if (allow_without_sanitization &&

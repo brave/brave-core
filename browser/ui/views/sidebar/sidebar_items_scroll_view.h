@@ -77,11 +77,14 @@ class SidebarItemsScrollView : public views::View,
 
   // sidebar::SidebarModel::Observer overrides:
   void OnItemAdded(const sidebar::SidebarItem& item,
-                   int index,
+                   size_t index,
                    bool user_gesture) override;
-  void OnItemMoved(const sidebar::SidebarItem& item, int from, int to) override;
-  void OnItemRemoved(int index) override;
-  void OnActiveIndexChanged(int old_index, int new_index) override;
+  void OnItemMoved(const sidebar::SidebarItem& item,
+                   size_t from,
+                   size_t to) override;
+  void OnItemRemoved(size_t index) override;
+  void OnActiveIndexChanged(absl::optional<size_t> old_index,
+                            absl::optional<size_t> new_index) override;
   void OnFaviconUpdatedForItem(const sidebar::SidebarItem& item,
                                const gfx::ImageSkia& image) override;
 

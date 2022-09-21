@@ -13,9 +13,11 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/country_codes/country_codes.h"
+#include "components/network_session_configurator/common/network_switches.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/content_mock_cert_verifier.h"
 #include "net/base/url_util.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/http_request.h"
@@ -153,6 +155,8 @@ class GeminiAPIBrowserTest : public InProcessBrowserTest {
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
   }
 
   ~GeminiAPIBrowserTest() override = default;
@@ -300,6 +304,21 @@ class GeminiAPIBrowserTest : public InProcessBrowserTest {
     return service;
   }
 
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+  }
+
  private:
   net::EmbeddedTestServer* https_server() { return https_server_.get(); }
 
@@ -314,6 +333,7 @@ class GeminiAPIBrowserTest : public InProcessBrowserTest {
 
   std::unique_ptr<base::RunLoop> wait_for_request_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
+  content::ContentMockCertVerifier mock_cert_verifier_;
 };
 
 

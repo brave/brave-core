@@ -110,8 +110,8 @@ bool BraveSharedResourcesDataSource::AllowCaching() {
   return true;
 }
 
-std::string BraveSharedResourcesDataSource::GetMimeType(
-    const std::string& path) {
+std::string BraveSharedResourcesDataSource::GetMimeType(const GURL& url) {
+  const std::string path = URLDataSource::URLToRequestPath(url);
   if (path.empty())
     return "text/html";
 

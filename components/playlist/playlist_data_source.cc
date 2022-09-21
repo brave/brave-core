@@ -105,7 +105,8 @@ void PlaylistDataSource::OnGotDataFile(
   std::move(got_data_callback).Run(input);
 }
 
-std::string PlaylistDataSource::GetMimeType(const std::string& path) {
+std::string PlaylistDataSource::GetMimeType(const GURL& url) {
+  const std::string path = URLDataSource::URLToRequestPath(url);
   std::string id;
   std::string type_string;
   if (auto pos = path.find("/"); pos != std::string::npos) {

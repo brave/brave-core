@@ -11,6 +11,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/common/chrome_features.h"
@@ -389,7 +390,7 @@ class EphemeralStorageTest : public InProcessBrowserTest {
 
     ASSERT_TRUE(
         tabs_->CloseWebContentsAt(tabs_->GetIndexOfWebContents(original_tab_),
-                                  TabStripModel::CloseTypes::CLOSE_NONE));
+                                  TabCloseTypes::CLOSE_NONE));
 
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(target)));
 

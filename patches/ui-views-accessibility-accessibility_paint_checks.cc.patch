@@ -1,0 +1,12 @@
+diff --git a/ui/views/accessibility/accessibility_paint_checks.cc b/ui/views/accessibility/accessibility_paint_checks.cc
+index fbda0e2df78ce64d2cd8eb4467228493235837c6..fd09ff50aa7b4911068bddec70848c6e4fe295ab 100644
+--- a/ui/views/accessibility/accessibility_paint_checks.cc
++++ b/ui/views/accessibility/accessibility_paint_checks.cc
+@@ -33,6 +33,7 @@ void RunAccessibilityPaintChecks(View* view) {
+   // some additional fields are processed and set there.
+   ui::AXNodeData node_data;
+   view->GetViewAccessibility().GetAccessibleNodeData(&node_data);
++  node_data.SetNameExplicitlyEmpty();
+ 
+   // No checks for unfocusable items yet.
+   if (!node_data.HasState(ax::mojom::State::kFocusable))

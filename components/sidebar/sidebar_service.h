@@ -35,10 +35,10 @@ class SidebarService : public KeyedService {
 
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnItemAdded(const SidebarItem& item, int index) {}
-    virtual void OnItemMoved(const SidebarItem& item, int from, int to) {}
-    virtual void OnWillRemoveItem(const SidebarItem& item, int index) {}
-    virtual void OnItemRemoved(const SidebarItem& item, int index) {}
+    virtual void OnItemAdded(const SidebarItem& item, size_t index) {}
+    virtual void OnItemMoved(const SidebarItem& item, size_t from, size_t to) {}
+    virtual void OnWillRemoveItem(const SidebarItem& item, size_t index) {}
+    virtual void OnItemRemoved(const SidebarItem& item, size_t index) {}
     virtual void OnShowSidebarOptionChanged(ShowSidebarOption option) {}
 
    protected:
@@ -55,7 +55,7 @@ class SidebarService : public KeyedService {
 
   void AddItem(const SidebarItem& item);
   void RemoveItemAt(int index);
-  void MoveItem(int from, int to);
+  void MoveItem(size_t from, size_t to);
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);

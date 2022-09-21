@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_ITEM_DRAG_CONTEXT_H_
 
 #include "base/memory/raw_ptr.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/gfx/geometry/point.h"
 
 namespace views {
@@ -24,21 +25,23 @@ class SidebarItemDragContext final {
 
   bool ShouldMoveItem() const;
 
-  int source_index() const { return source_index_; }
-  void set_source_index(int index) { source_index_ = index; }
+  absl::optional<size_t> source_index() const { return source_index_; }
+  void set_source_index(absl::optional<size_t> index) { source_index_ = index; }
 
   void set_source(views::View* source) { source_ = source; }
   views::View* source() const { return source_; }
 
-  void set_drag_indicator_index(int index) { drag_indicator_index_ = index; }
-  int GetTargetIndex() const;
+  void set_drag_indicator_index(absl::optional<size_t> index) {
+    drag_indicator_index_ = index;
+  }
+  size_t GetTargetIndex() const;
 
   void Reset();
 
  private:
-  int source_index_ = -1;
+  absl::optional<size_t> source_index_ = absl::nullopt;
   raw_ptr<views::View> source_ = nullptr;
-  int drag_indicator_index_ = -1;
+  absl::optional<size_t> drag_indicator_index_ = absl::nullopt;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_ITEM_DRAG_CONTEXT_H_

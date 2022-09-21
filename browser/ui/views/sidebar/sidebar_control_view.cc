@@ -183,12 +183,12 @@ std::u16string SidebarControlView::GetTooltipTextFor(
 }
 
 void SidebarControlView::OnItemAdded(const sidebar::SidebarItem& item,
-                                     int index,
+                                     size_t index,
                                      bool user_gesture) {
   UpdateItemAddButtonState();
 }
 
-void SidebarControlView::OnItemRemoved(int index) {
+void SidebarControlView::OnItemRemoved(size_t index) {
   UpdateItemAddButtonState();
 }
 
@@ -227,7 +227,7 @@ void SidebarControlView::UpdateItemAddButtonState() {
   DCHECK(sidebar_item_add_view_);
   // Determine add button enabled state.
   bool should_enable = true;
-  if (browser_->sidebar_controller()->model()->IsSidebarHasAllBuiltiInItems() &&
+  if (browser_->sidebar_controller()->model()->IsSidebarHasAllBuiltInItems() &&
       !sidebar::CanAddCurrentActiveTabToSidebar(browser_)) {
     should_enable = false;
   }

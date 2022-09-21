@@ -8,7 +8,7 @@ import {BaseMixin} from '../../base_mixin.js';
 import {PrefsMixin} from '../../prefs/prefs_mixin.js';
 
 import 'chrome://resources/cr_elements/cr_action_menu/cr_action_menu.js';
-import 'chrome://resources/cr_elements/cr_icon_button/cr_icon_button.m.js';
+import 'chrome://resources/cr_elements/cr_icon_button/cr_icon_button.js';
 import 'chrome://resources/cr_elements/icons.m.js';
 
 const AdblockSubscribeDropDownBase = PrefsMixin(I18nMixin(BaseMixin(PolymerElement)))

@@ -12,6 +12,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/components/sidebar/sidebar_service.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/window_open_disposition.h"
 
 class BraveBrowser;
@@ -42,7 +43,7 @@ class SidebarController : public SidebarService::Observer {
   // |disposition| is only valid for shortcut type. If |disposition| is not
   // CURRENT_TAB, item at |index| is handled based on |disposition|.
   void ActivateItemAt(
-      int index,
+      absl::optional<size_t> index,
       WindowOpenDisposition disposition = WindowOpenDisposition::CURRENT_TAB);
   void AddItemWithCurrentTab();
   // If current browser doesn't have a tab for |url|, active tab will load
@@ -51,7 +52,7 @@ class SidebarController : public SidebarService::Observer {
   // new tab.
   void LoadAtTab(const GURL& url);
 
-  bool IsActiveIndex(int index) const;
+  bool IsActiveIndex(absl::optional<size_t> index) const;
 
   bool DoesBrowserHaveOpenedTabForItem(const SidebarItem& item) const;
 

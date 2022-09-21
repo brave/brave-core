@@ -1,11 +1,11 @@
 diff --git a/ios/chrome/browser/net/ios_chrome_network_delegate.h b/ios/chrome/browser/net/ios_chrome_network_delegate.h
-index a84345cfcead8d80325064cdf7c8e4cbaa36deea..0c74065f9081630a39e37cbc01004358937f00fe 100644
+index 7924f9cfc53401b397934ad649e717b5c4315677..b1e493ca002b8829b86feccb468d88973c230e71 100644
 --- a/ios/chrome/browser/net/ios_chrome_network_delegate.h
 +++ b/ios/chrome/browser/net/ios_chrome_network_delegate.h
-@@ -48,6 +48,7 @@ class IOSChromeNetworkDelegate : public net::NetworkDelegateImpl {
-                                         PrefService* pref_service);
+@@ -49,6 +49,7 @@ class IOSChromeNetworkDelegate : public net::NetworkDelegateImpl {
  
   private:
+   using QueryReason = content_settings::CookieSettings::QueryReason;
 +  BRAVE_IOS_CHROME_NETWORK_DELEGATE_H
    // NetworkDelegate implementation.
    int OnBeforeURLRequest(net::URLRequest* request,

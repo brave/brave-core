@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.permission;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -86,6 +87,9 @@ public class BraveEthereumPermissionPromptDialog
         mMojoServicesClosed = false;
     }
 
+    // TODO: It is much more efficient to retrieve resources by identifier (e.g. R.foo.bar) than by
+    // name (e.g. getIdentifier("bar", "foo", null)).
+    @SuppressLint("DiscouragedApi")
     @CalledByNative
     void show() {
         View customView = LayoutInflaterUtils.inflate(

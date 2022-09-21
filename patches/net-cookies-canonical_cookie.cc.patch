@@ -1,12 +1,12 @@
 diff --git a/net/cookies/canonical_cookie.cc b/net/cookies/canonical_cookie.cc
-index 91d210fa1683da314922a15734d4fabbde8ab873..1123de9ee42317726e3e0d8f4a37bd71a54202d7 100644
+index 06fbffaee108b1d4f44ab687e7766da4837c838b..a27b680c0abaea713ee57b3166cbdab1a20951b4 100644
 --- a/net/cookies/canonical_cookie.cc
 +++ b/net/cookies/canonical_cookie.cc
-@@ -666,6 +666,7 @@ std::unique_ptr<CanonicalCookie> CanonicalCookie::Create(
-   // Get the port, this will get a default value if a port isn't provided.
-   int source_port = ValidateAndAdjustSourcePort(url.EffectiveIntPort());
- 
+@@ -515,6 +515,7 @@ base::Time CanonicalCookie::ValidateAndAdjustExpiryDate(
+     // * network_handler.cc::MakeCookieFromProtocolValues
+     fixed_creation_date = base::Time::Now();
+   }
 +  BRAVE_CREATE
-   std::unique_ptr<CanonicalCookie> cc = base::WrapUnique(new CanonicalCookie(
-       parsed_cookie.Name(), parsed_cookie.Value(), cookie_domain, cookie_path,
-       creation_time, cookie_expires, creation_time,
+   if (base::FeatureList::IsEnabled(features::kClampCookieExpiryTo400Days)) {
+     base::Time maximum_expiry_date = fixed_creation_date + base::Days(400);
+     if (expiry_date > maximum_expiry_date)

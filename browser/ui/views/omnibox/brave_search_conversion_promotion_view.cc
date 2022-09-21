@@ -440,7 +440,7 @@ void BraveSearchConversionPromotionView::ConfigureForButtonType() {
   button_type_description_->SetAutoColorReadabilityEnabled(false);
   button_type_description_->SetHorizontalAlignment(gfx::ALIGN_LEFT);
   button_type_description_->SetTextStyleRange(
-      ChromeTextStyle::STYLE_EMPHASIZED, gfx::Range(0, first_part.length()));
+      views::style::STYLE_EMPHASIZED, gfx::Range(0, first_part.length()));
 
   contents_container->SetProperty(
       views::kFlexBehaviorKey,

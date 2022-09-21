@@ -311,6 +311,9 @@
   <message name="IDS_EXTENSIONS_ITEM_SOURCE" desc="The label above an extension's source, which indicates where the extension came from (webstore, third-party, local disk, etc).">
     Source
   </message>
+  <message name="IDS_EXTENSIONS_ITEM_SOURCE_INSTALLED_BY_DEFAULT" desc="The text to indicate that an extension has been added by default for the user's profile.">
+    Installed by default
+  </message>
   <message name="IDS_EXTENSIONS_ITEM_SOURCE_POLICY" desc="The text to indicate that an extension has been added by enterprise policy.">
     Added by policy
   </message>
@@ -403,6 +406,9 @@
   </message>
   <message name="IDS_EXTENSIONS_SITE_PERMISSIONS_ALL_SITES_PAGE_TITLE" desc="The title for the all sites subpage for extensions site permissions management.">
     All sites
+  </message>
+  <message name="IDS_EXTENSIONS_SITE_PERMISSIONS_ALL_SITES_EXTENSION_COUNT" desc="The subtext displayed for sites in the all sites subpage showing the number of extensions that can run for that site.">
+    <ph name="NUM_EXTENSIONS">$1</ph> extensions
   </message>
   <message name="IDS_EXTENSIONS_PERMITTED_SITES" desc="The label above the list of sites that extensions are always permitted to run in.">
     All extensions allowed

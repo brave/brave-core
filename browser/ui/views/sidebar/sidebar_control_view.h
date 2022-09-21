@@ -72,9 +72,9 @@ class SidebarControlView : public views::View,
 
   // sidebar::SidebarModel::Observer overrides:
   void OnItemAdded(const sidebar::SidebarItem& item,
-                   int index,
+                   size_t index,
                    bool user_gesture) override;
-  void OnItemRemoved(int index) override;
+  void OnItemRemoved(size_t index) override;
 
   void Update();
 

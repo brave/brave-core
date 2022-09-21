@@ -77,6 +77,7 @@ import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ApplicationLifetime;
 import org.chromium.chrome.browser.BraveAdaptiveCaptchaUtils;
+import org.chromium.chrome.browser.BraveFeatureUtil;
 import org.chromium.chrome.browser.BraveHelper;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
@@ -747,6 +748,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         super.finishNativeInitialization();
 
         BraveHelper.maybeMigrateSettings();
+        BraveHelper.cacheNativeFeatures();
 
         PrefChangeRegistrar mPrefChangeRegistrar = new PrefChangeRegistrar();
         mPrefChangeRegistrar.addObserver(BravePref.SCHEDULED_CAPTCHA_ID, this);
@@ -1586,12 +1588,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
         BraveTabUiFeatureUtilities.maybeOverrideEnableTabGroupAutoCreationPreference(
                 ContextUtils.getApplicationContext());
-    }
-
-    @Override
-    protected boolean supportsDynamicColors() {
-        // Dynamic colors cause styling issues with Brave theme.
-        return false;
     }
 
     private void InitBraveWalletService() {

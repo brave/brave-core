@@ -4,13 +4,14 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "components/permissions/permission_util.h"
+#include "components/permissions/permission_uma_util.h"
 #include "third_party/blink/public/common/permissions/permission_utils.h"
 
 #define PermissionUtil PermissionUtil_ChromiumImpl
 
-#define NUM                                                      \
-  BRAVE_ADS:                                                     \
-  return ContentSettingsType::BRAVE_ADS;                         \
+#define PERMISSION_UTIL_PERMISSION_TYPE_TO_CONTENT_SETTINGS_TYPE \
+  case PermissionType::BRAVE_ADS:                                \
+    return ContentSettingsType::BRAVE_ADS;                       \
   case PermissionType::BRAVE_COSMETIC_FILTERING:                 \
     return ContentSettingsType::BRAVE_COSMETIC_FILTERING;        \
   case PermissionType::BRAVE_TRACKERS:                           \
@@ -30,12 +31,11 @@
   case PermissionType::BRAVE_ETHEREUM:                           \
     return ContentSettingsType::BRAVE_ETHEREUM;                  \
   case PermissionType::BRAVE_SOLANA:                             \
-    return ContentSettingsType::BRAVE_SOLANA;                    \
-  case PermissionType::NUM
+    return ContentSettingsType::BRAVE_SOLANA;
 
 #include "src/components/permissions/permission_util.cc"
-#undef NUM
 #undef PermissionUtil
+#undef PERMISSION_UTIL_PERMISSION_TYPE_TO_CONTENT_SETTINGS_TYPE
 
 namespace permissions {
 
@@ -73,6 +73,49 @@ bool PermissionUtil::IsPermission(ContentSettingsType type) {
     default:
       return PermissionUtil_ChromiumImpl::IsPermission(type);
   }
+}
+
+PermissionType PermissionUtil::ContentSettingTypeToPermissionType(
+    ContentSettingsType permission) {
+  switch (permission) {
+    case ContentSettingsType::BRAVE_ADS:
+      return PermissionType::BRAVE_ADS;
+    case ContentSettingsType::BRAVE_COSMETIC_FILTERING:
+      return PermissionType::BRAVE_COSMETIC_FILTERING;
+    case ContentSettingsType::BRAVE_TRACKERS:
+      return PermissionType::BRAVE_TRACKERS;
+    case ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES:
+      return PermissionType::BRAVE_HTTP_UPGRADABLE_RESOURCES;
+    case ContentSettingsType::BRAVE_FINGERPRINTING_V2:
+      return PermissionType::BRAVE_FINGERPRINTING_V2;
+    case ContentSettingsType::BRAVE_SHIELDS:
+      return PermissionType::BRAVE_SHIELDS;
+    case ContentSettingsType::BRAVE_REFERRERS:
+      return PermissionType::BRAVE_REFERRERS;
+    case ContentSettingsType::BRAVE_COOKIES:
+      return PermissionType::BRAVE_COOKIES;
+    case ContentSettingsType::BRAVE_SPEEDREADER:
+      return PermissionType::BRAVE_SPEEDREADER;
+    case ContentSettingsType::BRAVE_ETHEREUM:
+      return PermissionType::BRAVE_ETHEREUM;
+    case ContentSettingsType::BRAVE_SOLANA:
+      return PermissionType::BRAVE_SOLANA;
+    default:
+      return PermissionUtil_ChromiumImpl::ContentSettingTypeToPermissionType(
+          permission);
+  }
+}
+
+GURL PermissionUtil::GetCanonicalOrigin(ContentSettingsType permission,
+                                        const GURL& requesting_origin,
+                                        const GURL& embedding_origin) {
+  // Use requesting_origin which will have ethereum or solana address info.
+  if (permission == ContentSettingsType::BRAVE_ETHEREUM ||
+      permission == ContentSettingsType::BRAVE_SOLANA)
+    return requesting_origin;
+
+  return PermissionUtil_ChromiumImpl::GetCanonicalOrigin(
+      permission, requesting_origin, embedding_origin);
 }
 
 }  // namespace permissions

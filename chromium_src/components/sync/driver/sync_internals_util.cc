@@ -16,7 +16,7 @@ namespace syncer {
 
 namespace sync_ui_util {
 
-std::unique_ptr<base::DictionaryValue> ConstructAboutInformation(
+base::Value::Dict ConstructAboutInformation(
     IncludeSensitiveData include_sensitive_data,
     SyncService* service,
     const std::string& channel) {
@@ -49,12 +49,10 @@ std::unique_ptr<base::DictionaryValue> ConstructAboutInformation(
       section_brave_sync.AddBoolStat("OS encryption available");
   is_os_encryption_available->Set(OSCrypt::IsEncryptionAvailable());
 
-  base::Value* details = about_info->GetDict().Find(kDetailsKey);
+  base::Value::List* details = about_info.FindList(kDetailsKey);
   DCHECK_NE(details, nullptr);
-  DCHECK(details->is_list());
 
   details->Append(section_brave_sync.ToValue());
-
   return about_info;
 }
 

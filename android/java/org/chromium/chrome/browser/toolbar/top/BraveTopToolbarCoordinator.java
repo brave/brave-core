@@ -42,6 +42,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     private ToolbarLayout mBraveToolbarLayout;
     private MenuButtonCoordinator mBraveMenuButtonCoordinator;
     private boolean mIsBottomToolbarVisible;
+    private ObservableSupplier<Integer> mConstraintsProxy;
 
     public BraveTopToolbarCoordinator(ToolbarControlContainer controlContainer,
             ViewStub toolbarStub, ViewStub fullscreenToolbarStub, ToolbarLayout toolbarLayout,
@@ -65,7 +66,9 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             HistoryDelegate historyDelegate, BooleanSupplier partnerHomepageEnabledSupplier,
             OfflineDownloader offlineDownloader, boolean initializeWithIncognitoColors,
             ObservableSupplier<Profile> profileSupplier,
-            Callback<LoadUrlParams> startSurfaceLogoClickedCallback) {
+            Callback<LoadUrlParams> startSurfaceLogoClickedCallback,
+            boolean isStartSurfaceRefactorEnabled,
+            ObservableSupplier<Integer> constraintsSupplier) {
         super(controlContainer, toolbarStub, fullscreenToolbarStub, toolbarLayout,
                 toolbarDataProvider, tabController, userEducationHelper, buttonDataProviders,
                 layoutStateProviderSupplier, normalThemeColorProvider, overviewThemeColorProvider,
@@ -77,10 +80,12 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 isTabToGtsAnimationEnabled, isStartSurfaceEnabled,
                 isTabGroupsAndroidContinuationEnabled, historyDelegate,
                 partnerHomepageEnabledSupplier, offlineDownloader, initializeWithIncognitoColors,
-                profileSupplier, startSurfaceLogoClickedCallback);
+                profileSupplier, startSurfaceLogoClickedCallback, isStartSurfaceRefactorEnabled,
+                constraintsSupplier);
 
         mBraveToolbarLayout = toolbarLayout;
         mBraveMenuButtonCoordinator = browsingModeMenuButtonCoordinator;
+        mConstraintsProxy = constraintsSupplier;
 
         if (isToolbarPhone()) {
             if (!isStartSurfaceEnabled) {
@@ -114,5 +119,9 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     public MenuButton getMenuButtonWrapper() {
         // We consider that there is no top toolbar menu button, if bottom toolbar is visible.
         return mIsBottomToolbarVisible ? null : mBraveMenuButtonCoordinator.getMenuButton();
+    }
+
+    public ObservableSupplier<Integer> getConstraintsProxy() {
+        return mConstraintsProxy;
     }
 }

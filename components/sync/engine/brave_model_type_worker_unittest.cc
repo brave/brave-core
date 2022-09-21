@@ -14,9 +14,9 @@
 #include "components/sync/engine/cancelation_signal.h"
 #include "components/sync/nigori/cryptographer_impl.h"
 #include "components/sync/protocol/sync.pb.h"
-#include "components/sync/test/engine/fake_cryptographer.h"
-#include "components/sync/test/engine/mock_model_type_processor.h"
-#include "components/sync/test/engine/mock_nudge_handler.h"
+#include "components/sync/test/fake_cryptographer.h"
+#include "components/sync/test/mock_model_type_processor.h"
+#include "components/sync/test/mock_nudge_handler.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using base::subtle::ScopedTimeClockOverrides;

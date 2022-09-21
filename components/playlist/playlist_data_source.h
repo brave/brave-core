@@ -37,7 +37,7 @@ class PlaylistDataSource : public content::URLDataSource {
   void StartDataRequest(const GURL& url,
                         const content::WebContents::Getter& wc_getter,
                         GotDataCallback got_data_callback) override;
-  std::string GetMimeType(const std::string& path) override;
+  std::string GetMimeType(const GURL& url) override;
   bool AllowCaching() override;
 
  private:
