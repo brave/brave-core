@@ -147,6 +147,7 @@
         android:layout_marginTop="32dp"
         android:scrollbarThumbVertical="@color/rewards_send_scrollbar_color"
         android:scrollbarSize="4dp"
+        android:fadeScrollbars="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/publisher_favicon"
         app:layout_constraintTop_toBottomOf="@+id/publisher_favicon">

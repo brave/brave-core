@@ -16,16 +16,6 @@
         app:layout_constraintTop_toTopOf="parent"
         
         />
-    <!-- Shadow -->
-    <View
-        android:id="@+id/overlay"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@drawable/brave_rewards_overlay_shadow"
-        android:elevation="2dp"
-        app:layout_constraintBottom_toTopOf="@id/tippingPanelFragment"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
 
     <!-- Footer tipping panel-->
     <androidx.fragment.app.FragmentContainerView
