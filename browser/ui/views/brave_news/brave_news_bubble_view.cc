@@ -45,7 +45,7 @@
 
 namespace {
 SkColor kSubtitleColor = SkColorSetRGB(134, 142, 150);
-// SkColor kBackgroundLightColor = SkColorSetRGB(99, 105, 110);
+SkColor kBackgroundLightColor = SkColorSetRGB(248, 249, 250);
 }  // namespace
 
 // static
@@ -93,6 +93,8 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
       subtitle_custom_font));
   subtitle_label_->SetEnabledColor(kSubtitleColor);
   subtitle_label_->SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT);
+  subtitle_label_->SetProperty(views::kMarginsKey,
+                               gfx::Insets::TLBR(0, 0, 16, 0));
 
   feeds_container_ =
       AddChildView(std::make_unique<BraveNewsFeedsContainerView>(contents));
@@ -115,8 +117,7 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
       views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,
                                views::MaximumFlexSizeRule::kPreferred));
 
-  // TODO:
-  //   GetBubbleFrameView()->SetBackgroundColor(kLightBackgroundColor);
+  this->set_color(kBackgroundLightColor);
 }
 
 BraveNewsBubbleView::~BraveNewsBubbleView() = default;
