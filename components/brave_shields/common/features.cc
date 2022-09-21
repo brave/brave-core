@@ -76,8 +76,8 @@ const base::Feature kCosmeticFilteringJsPerformance{
     "CosmeticFilteringJsPerformance", base::FEATURE_DISABLED_BY_DEFAULT};
 
 constexpr base::FeatureParam<std::string>
-    kCosmeticFilteringfirstSelectorsPollingDelayMs{
-        &kCosmeticFilteringJsPerformance, "first_selectors_query_delay_ms",
+    kCosmeticFilteringSubFrameFirstSelectorsPollingDelayMs{
+        &kCosmeticFilteringJsPerformance, "subframes_first_query_delay_ms",
         "undefined"};
 
 constexpr base::FeatureParam<std::string>

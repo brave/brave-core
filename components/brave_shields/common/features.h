@@ -28,7 +28,7 @@ extern const base::Feature kCosmeticFilteringSyncLoad;
 extern const base::Feature kCosmeticFilteringExtraPerfMetrics;
 extern const base::Feature kCosmeticFilteringJsPerformance;
 extern const base::FeatureParam<std::string>
-    kCosmeticFilteringfirstSelectorsPollingDelayMs;
+    kCosmeticFilteringSubFrameFirstSelectorsPollingDelayMs;
 extern const base::FeatureParam<std::string>
     kCosmeticFilteringswitchToSelectorsPollingThreshold;
 extern const base::FeatureParam<std::string>

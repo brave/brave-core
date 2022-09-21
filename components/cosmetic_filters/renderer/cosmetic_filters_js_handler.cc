@@ -142,7 +142,7 @@ bool IsVettedSearchEngine(const GURL& url) {
   return false;
 }
 
-// ID is used in TRACE_ID_WITH_SCOPE(). must be unique accoss the process.
+// ID is used in TRACE_ID_WITH_SCOPE(). Must be unique accoss the process.
 int MakeUniquePerfId() {
   static int counter = 0;
   ++counter;
@@ -433,7 +433,10 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
   std::string cosmetic_filtering_init_script = base::StringPrintf(
       kCosmeticFilteringInitScript, enabled_1st_party_cf_ ? "true" : "false",
       generichide_ ? "true" : "false",
-      bf::kCosmeticFilteringfirstSelectorsPollingDelayMs.Get().c_str(),
+      render_frame_->IsMainFrame()
+          ? "undefined"
+          : bf::kCosmeticFilteringSubFrameFirstSelectorsPollingDelayMs.Get()
+                .c_str(),
       bf::kCosmeticFilteringswitchToSelectorsPollingThreshold.Get().c_str(),
       bf::kCosmeticFilteringFetchNewClassIdRulesThrottlingMs.Get().c_str());
   std::string pre_init_script = base::StringPrintf(
