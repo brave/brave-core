@@ -858,6 +858,15 @@ if (!is_android) {
       "//media:test_support",
       "//testing/gmock",
     ]
+
+    if (enable_sidebar) {
+      sources += [ "//brave/browser/ui/views/sidebar/sidebar_container_view_browsertest.cc" ]
+      deps += [
+        "//brave/browser/ui/sidebar",
+        "//brave/components/sidebar",
+      ]
+    }
+
     if (enable_brave_vpn) {
       deps += [ "//brave/renderer/brave_vpn:browser_tests" ]
     }
