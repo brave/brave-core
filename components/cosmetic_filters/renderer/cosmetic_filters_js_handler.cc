@@ -74,21 +74,16 @@ const char kPreInitScript[] =
 const char kCosmeticFilteringInitScript[] =
     R"({
         const CC = window.content_cosmetic
-        if (CC.hide1pContent === undefined) {
+        if (CC.hide1pContent === undefined)
           CC.hide1pContent = %s;
-        }
-        if (CC.generichide === undefined) {
+        if (CC.generichide === undefined)
           CC.generichide = %s;
-        }
-        if (CC.firstSelectorsPollingDelayMs === undefined) {
+        if (CC.firstSelectorsPollingDelayMs === undefined)
           CC.firstSelectorsPollingDelayMs = %s;
-        }
-        if (CC.switchToSelectorsPollingThreshold === undefined) {
+        if (CC.switchToSelectorsPollingThreshold === undefined)
           CC.switchToSelectorsPollingThreshold = %s;
-        }
-        if (CC.fetchNewClassIdRulesThrottlingMs === undefined) {
+        if (CC.fetchNewClassIdRulesThrottlingMs === undefined)
           CC.fetchNewClassIdRulesThrottlingMs = %s;
-        }
        })";
 
 const char kHideSelectorsInjectScript[] =
@@ -147,7 +142,7 @@ bool IsVettedSearchEngine(const GURL& url) {
   return false;
 }
 
-// must be unique accoss the process.
+// ID is used in TRACE_ID_WITH_SCOPE(). must be unique accoss the process.
 int MakeUniquePerfId() {
   static int counter = 0;
   ++counter;

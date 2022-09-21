@@ -148,7 +148,6 @@ const fetchNewClassIdRules = () => {
     (!notYetQueriedIds || notYetQueriedIds.length === 0)) {
     return
   }
-
   // Callback to c++ renderer process
   // @ts-expect-error
   cf_worker.hiddenClassIdSelectors(
@@ -221,7 +220,6 @@ const handleMutations: MutationCallback = (mutations: MutationRecord[]) => {
         }
         mutationScore++
         const id = element.id
-
         if (id && !queriedIds.has(id)) {
           notYetQueriedIds.push(id)
           queriedIds.add(id)

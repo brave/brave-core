@@ -67,7 +67,7 @@ const base::Feature kBraveDarkModeBlock{"BraveDarkModeBlock",
 const base::Feature kCosmeticFilteringSyncLoad{
     "CosmeticFilterSyncLoad", base::FEATURE_ENABLED_BY_DEFAULT};
 
-// Enables an extra TRAVE_EVENT in content filter scripts. The feature is
+// Enables extra TRACE_EVENTs in content filter js. The feature is
 // primary designed for local debugging.
 const base::Feature kCosmeticFilteringExtraPerfMetrics{
     "CosmeticFilteringExtraPerfMetrics", base::FEATURE_DISABLED_BY_DEFAULT};
