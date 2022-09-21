@@ -8,6 +8,7 @@
 #include <sstream>
 #include <string>
 #include "absl/types/optional.h"
+#include "base/bind.h"
 #include "include/core/SkColor.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/views/background.h"
@@ -19,19 +20,36 @@ namespace leo {
 namespace colors {
 
 LeoButton::ButtonTheme g_primary_theme = {
+    // Normal
     LeoButton::ButtonStyle{SkColorSetRGB(32, 74, 227), absl::nullopt,
                            SK_ColorWHITE},
+    // Hover
     LeoButton::ButtonStyle{SkColorSetRGB(24, 56, 172), absl::nullopt,
+                           SK_ColorWHITE},
+    // Disabled
+    LeoButton::ButtonStyle{SkColorSetRGB(172, 175, 187), absl::nullopt,
+                           SK_ColorWHITE},
+    // Loading
+    LeoButton::ButtonStyle{SkColorSetRGB(32, 74, 227), absl::nullopt,
                            SK_ColorWHITE}};
 
 LeoButton::ButtonTheme g_secondary_theme = {
+    // Normal
     LeoButton::ButtonStyle{absl::nullopt, SkColorSetRGB(226, 227, 231),
                            SkColorSetRGB(107, 112, 132)},
+    // Hover
     LeoButton::ButtonStyle{SkColorSetRGB(243, 245, 254),
                            SkColorSetRGB(221, 228, 251),
                            SkColorSetRGB(65, 101, 233)}};
 
-LeoButton::ButtonTheme g_tertiary_theme = {};
+LeoButton::ButtonTheme g_tertiary_theme = {
+    // Normal
+    LeoButton::ButtonStyle{absl::nullopt, absl::nullopt,
+                           SkColorSetRGB(32, 74, 227)},
+    // Hover
+    LeoButton::ButtonStyle{absl::nullopt, absl::nullopt,
+                           SkColorSetRGB(24, 56, 172)},
+};
 
 }  // namespace colors
 
@@ -41,6 +59,9 @@ LeoButton::LeoButton(PressedCallback callback,
     : views::LabelButton(callback, text, button_context),
       theme_(colors::g_primary_theme) {
   UpdateTheme();
+
+  DCHECK(AddEnabledChangedCallback(
+      base::BindRepeating(&LeoButton::UpdateTheme, base::Unretained(this))));
 }
 
 LeoButton::~LeoButton() = default;
@@ -71,8 +92,14 @@ void LeoButton::StateChanged(ButtonState old_state) {
 LeoButton::ButtonTheme LeoButton::GetTheme() {
   return theme_;
 }
+
 void LeoButton::SetTheme(ButtonTheme theme) {
   theme_ = theme;
+  UpdateTheme();
+}
+
+void LeoButton::SetLoading(bool loading) {
+  loading_ = loading;
   UpdateTheme();
 }
 
@@ -81,6 +108,12 @@ void LeoButton::UpdateTheme() {
   auto style = theme_.normal;
   if (state == STATE_HOVERED)
     style = theme_.hover;
+
+  if (loading_)
+    style = theme_.loading;
+  if (!GetEnabled())
+    style = theme_.disabled;
+
   ApplyStyle(style);
 }
 

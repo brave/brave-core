@@ -22,6 +22,8 @@ class LeoButton : public views::LabelButton {
   struct ButtonTheme {
     ButtonStyle normal;
     ButtonStyle hover;
+    ButtonStyle disabled;
+    ButtonStyle loading;
   };
 
   enum Kind { PRIMARY, SECONDARY, TERTIARY };
@@ -43,12 +45,16 @@ class LeoButton : public views::LabelButton {
   void SetTheme(ButtonTheme theme);
   ButtonTheme GetTheme();
 
+  bool IsLoading() { return loading_;}
+  void SetLoading(bool loading);
+
  private:
   void UpdateTheme();
   void ApplyStyle(ButtonStyle style);
 
   Kind mode_ = Kind::PRIMARY;
   ButtonTheme theme_;
+  bool loading_ = false;
 };
 
 }  // namespace leo
