@@ -15,7 +15,7 @@ export const StyledWrapper = styled('div')`
   align-items: flex-start;
   justify-content: center;
   background-color: ${(p) => p.theme.color.background01};
-  overflow-y: scroll;
+  overflow-y: auto;
  `
 
 export const StyledContent = styled('div')`
