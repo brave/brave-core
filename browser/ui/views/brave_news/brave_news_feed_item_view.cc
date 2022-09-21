@@ -63,9 +63,9 @@ void BraveNewsFeedItemView::Update() {
       loading_        ? IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_LOADING
       : is_subscribed ? IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_UNSUBSCRIBE
                       : IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_SUBSCRIBE));
-  subscribe_button_->SetMode(!is_subscribed && !loading_
-                                 ? leo::LeoButton::Mode::PRIMARY
-                                 : leo::LeoButton::Mode::SECONDARY);
+  subscribe_button_->SetKind(!is_subscribed && !loading_
+                                 ? leo::LeoButton::Kind::PRIMARY
+                                 : leo::LeoButton::Kind::SECONDARY);
 }
 
 void BraveNewsFeedItemView::OnAvailableFeedsChanged(

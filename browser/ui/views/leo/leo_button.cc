@@ -45,16 +45,16 @@ LeoButton::LeoButton(PressedCallback callback,
 
 LeoButton::~LeoButton() = default;
 
-LeoButton::Mode LeoButton::GetMode() {
+LeoButton::Kind LeoButton::GetKind() {
   return mode_;
 }
-void LeoButton::SetMode(Mode mode) {
+void LeoButton::SetKind(Kind mode) {
   mode_ = mode;
-  if (mode == Mode::PRIMARY)
+  if (mode == Kind::PRIMARY)
     theme_ = colors::g_primary_theme;
-  if (mode == Mode::SECONDARY)
+  if (mode == Kind::SECONDARY)
     theme_ = colors::g_secondary_theme;
-  if (mode == Mode::TERTIARY)
+  if (mode == Kind::TERTIARY)
     theme_ = colors::g_tertiary_theme;
   UpdateTheme();
 }

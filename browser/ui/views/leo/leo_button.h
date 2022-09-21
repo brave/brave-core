@@ -24,7 +24,7 @@ class LeoButton : public views::LabelButton {
     ButtonStyle hover;
   };
 
-  enum Mode { PRIMARY, SECONDARY, TERTIARY };
+  enum Kind { PRIMARY, SECONDARY, TERTIARY };
 
   explicit LeoButton(PressedCallback callback = PressedCallback(),
                      const std::u16string& text = std::u16string(),
@@ -33,8 +33,8 @@ class LeoButton : public views::LabelButton {
   LeoButton& operator=(const LeoButton&) = delete;
   ~LeoButton() override;
 
-  void SetMode(Mode mode);
-  Mode GetMode();
+  void SetKind(Kind mode);
+  Kind GetKind();
 
   // views::LabelButton
   gfx::Insets GetInsets() const override;
@@ -47,7 +47,7 @@ class LeoButton : public views::LabelButton {
   void UpdateTheme();
   void ApplyStyle(ButtonStyle style);
 
-  Mode mode_ = Mode::PRIMARY;
+  Kind mode_ = Kind::PRIMARY;
   ButtonTheme theme_;
 };
 
