@@ -38,7 +38,6 @@ UnsupportedPublisherMigrator::UnsupportedPublisherMigrator(
 UnsupportedPublisherMigrator::~UnsupportedPublisherMigrator() = default;
 
 void UnsupportedPublisherMigrator::EnsureInitialized() {
-  LOG(ERROR) << "Initializing!";
   if (initialized_)
     return;
   GURL sources_url("https://" + brave_today::GetHostname() + "/sources." +
@@ -52,7 +51,6 @@ void UnsupportedPublisherMigrator::EnsureInitialized() {
         // can try and migrate the sources again next time the browser is
         // launched.
         if (result.Is2XXResponseCode()) {
-          LOG(ERROR) << "Got response!" << result.body();
           ParseCombinedPublisherList(result.body(),
                                      &migrator->v1_api_publishers_);
         }
