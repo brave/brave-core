@@ -61,7 +61,7 @@
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
 #include "brave/components/de_amp/browser/de_amp_throttle.h"
 #include "brave/components/debounce/browser/debounce_navigation_throttle.h"
-#include "brave/components/decentralized_dns/decentralized_dns_navigation_throttle.h"
+#include "brave/components/decentralized_dns/content/decentralized_dns_navigation_throttle.h"
 #include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"

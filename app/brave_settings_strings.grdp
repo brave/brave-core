@@ -670,6 +670,12 @@
   <message name="IDS_SETTINGS_RESOLVE_ENS_DESC" desc="The description for how to handle ENS">
     Method to resolve Ethereum Name Service (ENS)
   </message>
+  <message name="IDS_SETTINGS_ENABLE_ENS_OFFCHAIN_LOOKUP_TITLE" desc="ENS offchain lookup method title">
+    Allow ENS offchain lookup.
+  </message>
+  <message name="IDS_SETTINGS_ENABLE_ENS_OFFCHAIN_LOOKUP_DESC" desc="ENS offchain lookup method desc">
+    <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn More<ph name="END_LINK">&lt;/a&gt;</ph> about ENS offchain lookup privacy considerations.
+  </message>
   <message name="IDS_SETTINGS_ENABLE_TOR_TITLE" desc="Text fragment for enabling tor component">
     Private window with Tor
   </message>

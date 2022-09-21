@@ -2,59 +2,53 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-(function() {
-'use strict';
+import { html, PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import { PrefsMixin } from '../prefs/prefs_mixin.js';
+import { WebUIListenerMixin } from 'chrome://resources/js/web_ui_listener_mixin.js';
+import { BraveDefaultExtensionsBrowserProxyImpl } from './brave_default_extensions_browser_proxy.m.js';
+
+const SettingBraveDefaultExtensionsPageElementBase = WebUIListenerMixin(PrefsMixin(PolymerElement))
 
 /**
  * 'settings-brave-default-extensions-page' is the settings page containing
  * brave's default extensions.
  */
-Polymer({
-  is: 'settings-brave-default-extensions-page',
+class SettingBraveDefaultExtensionsPageElement extends SettingBraveDefaultExtensionsPageElementBase {
+  static get is() {
+    return 'settings-brave-default-extensions-page'
+  }
 
-  behaviors: [
-    WebUIListenerBehavior,
-  ],
+  static get template() {
+    return html`{__html_template__}`
+  }
 
-  /**
-   * Keep it the same as Provider in
-   * brave/componentsdecentralized_dns/constants.h.
-   */
-  Provider: {
-    UNSTOPPABLE_DOMAINS: 0,
-    ENS: 1
-  },
-
-  properties: {
-    showRestartToast_: Boolean,
-    unstoppableDomainsResolveMethod_: Array,
-    ensResolveMethod_: Array,
-    widevineEnabledPref_: {
-      type: Object,
-      value() {
-        // TODO(dbeam): this is basically only to appease PrefControlMixin.
-        // Maybe add a no-validate attribute instead? This makes little sense.
-        return {};
+  static get properties() {
+    return {
+      showRestartToast_: Boolean,
+      unstoppableDomainsResolveMethod_: Array,
+      ensResolveMethod_: Array,
+      ensOffchainResolveMethod_: Array,
+      showEnsOffchainLookupRow_: {
+        type: Boolean,
+        computed: 'computeShowEnsOffchainLookupRow_(prefs.*)',
       },
-    },
-  },
+      widevineEnabledPref_: {
+        type: Object,
+        value() {
+          // TODO(dbeam): this is basically only to appease PrefControlMixin.
+          // Maybe add a no-validate attribute instead? This makes little sense.
+          return {};
+        },
+      }
+    }
+  }
 
-  /** @private {?settings.BraveDefaultExtensionsBrowserProxy} */
-  browserProxy_: null,
+  /** @private {?BraveDefaultExtensionsBrowserProxy} */
+  browserProxy_ = BraveDefaultExtensionsBrowserProxyImpl.getInstance()
 
   /** @override */
-  created: function() {
-    this.browserProxy_ = settings.BraveDefaultExtensionsBrowserProxyImpl.getInstance();
-  },
-
-  /** @override */
-  ready: function() {
-    this.onWebTorrentEnabledChange_ = this.onWebTorrentEnabledChange_.bind(this)
-    this.onHangoutsEnabledChange_ = this.onHangoutsEnabledChange_.bind(this)
-    this.openExtensionsPage_ = this.openExtensionsPage_.bind(this)
-    this.openKeyboardShortcutsPage_ = this.openKeyboardShortcutsPage_.bind(this)
-    this.onWidevineEnabledChange_ = this.onWidevineEnabledChange_.bind(this)
-    this.restartBrowser_ = this.restartBrowser_.bind(this)
+  ready() {
+    super.ready()
 
     this.addWebUIListener('brave-needs-restart-changed', (needsRestart) => {
       this.showRestartToast_ = needsRestart
@@ -64,10 +58,13 @@ Polymer({
       this.showRestartToast_ = show;
     });
     this.browserProxy_.getDecentralizedDnsResolveMethodList().then(list => {
-        this.unstoppableDomainsResolveMethod_ = list
+      this.unstoppableDomainsResolveMethod_ = list
     })
     this.browserProxy_.getDecentralizedDnsResolveMethodList().then(list => {
       this.ensResolveMethod_ = list
+    })
+    this.browserProxy_.getEnsOffchainResolveMethodList().then(list => {
+      this.ensOffchainResolveMethod_ = list
     })
 
     // PrefControlMixin checks for a pref being valid, so have to fake it,
@@ -75,53 +72,60 @@ Polymer({
     const setWidevineEnabledPref = (enabled) => this.setWidevineEnabledPref_(enabled);
     this.addWebUIListener('widevine-enabled-changed', setWidevineEnabledPref);
     this.browserProxy_.isWidevineEnabled().then(setWidevineEnabledPref);
-  },
+  }
 
-  onWebTorrentEnabledChange_: function() {
+  onWebTorrentEnabledChange_() {
     this.browserProxy_.setWebTorrentEnabled(this.$.webTorrentEnabled.checked);
-  },
+  }
 
-  onHangoutsEnabledChange_: function() {
+  onHangoutsEnabledChange_() {
     this.browserProxy_.setHangoutsEnabled(this.$.hangoutsEnabled.checked);
-  },
+  }
 
-  restartBrowser_: function(e) {
+  restartBrowser_(e) {
     e.stopPropagation();
     window.open("chrome://restart", "_self");
-  },
+  }
 
-  setWidevineEnabledPref_: function (enabled) {
+  setWidevineEnabledPref_(enabled) {
     const pref = {
       key: '',
       type: chrome.settingsPrivate.PrefType.BOOLEAN,
       value: enabled,
     };
     this.widevineEnabledPref_ = pref;
-  },
+  }
 
-  onWidevineEnabledChange_: function() {
+  onWidevineEnabledChange_() {
     this.browserProxy_.setWidevineEnabled(this.$.widevineEnabled.checked);
-  },
+  }
 
-  openExtensionsPage_: function() {
+  openExtensionsPage_() {
     window.open("chrome://extensions", "_self");
-  },
+  }
 
-  openKeyboardShortcutsPage_: function() {
+  openKeyboardShortcutsPage_() {
     window.open("chrome://extensions/shortcuts", "_self");
-  },
+  }
 
-  openWebStoreUrl_: function() {
+  openWebStoreUrl_() {
     window.open(loadTimeData.getString('getMoreExtensionsUrl'));
-  },
+  }
 
-  shouldShowRestartForGoogleLogin_: function(value) {
+  shouldShowRestartForGoogleLogin_(value) {
     return this.browserProxy_.wasSignInEnabledAtStartup() != value;
-  },
+  }
 
-  shouldShowRestartForMediaRouter_: function(value) {
+  shouldShowRestartForMediaRouter_(value) {
     return this.browserProxy_.isMediaRouterEnabled() != value;
   }
 
-});
-})();
+  computeShowEnsOffchainLookupRow_() {
+    if (!this.browserProxy_.isENSL2Enabled())
+      return false;
+    return !!this.prefs && this.getPref('brave.ens.resolve_method').value === 3
+  }
+}
+
+customElements.define(
+  SettingBraveDefaultExtensionsPageElement.is, SettingBraveDefaultExtensionsPageElement)

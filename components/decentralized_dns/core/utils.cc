@@ -3,39 +3,26 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/decentralized_dns/utils.h"
+#include "brave/components/decentralized_dns/core/utils.h"
 
-#include "base/feature_list.h"
 #include "base/strings/string_util.h"
-#include "base/values.h"
-#include "brave/components/decentralized_dns/constants.h"
-#include "brave/components/decentralized_dns/pref_names.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/decentralized_dns/core/constants.h"
+#include "brave/components/decentralized_dns/core/pref_names.h"
 #include "brave/net/decentralized_dns/constants.h"
-#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "url/gurl.h"
 
 namespace decentralized_dns {
 
-namespace {
-
-base::Value::Dict MakeSelectValue(ResolveMethodTypes value,
-                                  const std::u16string& name) {
-  base::Value::Dict item;
-  item.Set("value", base::Value(static_cast<int>(value)));
-  item.Set("name", base::Value(name));
-  return item;
-}
-
-}  // namespace
-
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(kUnstoppableDomainsResolveMethod,
                                 static_cast<int>(ResolveMethodTypes::ASK));
   registry->RegisterIntegerPref(kENSResolveMethod,
                                 static_cast<int>(ResolveMethodTypes::ASK));
+  registry->RegisterIntegerPref(
+      kEnsOffchainResolveMethod,
+      static_cast<int>(EnsOffchainResolveMethod::kAsk));
 }
 
 void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
@@ -99,21 +86,14 @@ bool IsENSResolveMethodEthereum(PrefService* local_state) {
          static_cast<int>(ResolveMethodTypes::ETHEREUM);
 }
 
-base::Value::List GetResolveMethodList() {
-  base::Value::List list;
-  list.Append(MakeSelectValue(ResolveMethodTypes::ASK,
-                              brave_l10n::GetLocalizedResourceUTF16String(
-                                  IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_ASK)));
-  list.Append(
-      MakeSelectValue(ResolveMethodTypes::DISABLED,
-                      brave_l10n::GetLocalizedResourceUTF16String(
-                          IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_DISABLED)));
-  list.Append(
-      MakeSelectValue(ResolveMethodTypes::ETHEREUM,
-                      brave_l10n::GetLocalizedResourceUTF16String(
-                          IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_ETHEREUM)));
+void SetEnsOffchainResolveMethod(PrefService* local_state,
+                                 EnsOffchainResolveMethod method) {
+  local_state->SetInteger(kEnsOffchainResolveMethod, static_cast<int>(method));
+}
 
-  return list;
+EnsOffchainResolveMethod GetEnsOffchainResolveMethod(PrefService* local_state) {
+  return static_cast<EnsOffchainResolveMethod>(
+      local_state->GetInteger(kEnsOffchainResolveMethod));
 }
 
 }  // namespace decentralized_dns

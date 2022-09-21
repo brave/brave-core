@@ -46,7 +46,44 @@ absl::optional<std::vector<uint8_t>> ExtractGatewayResult(
   return result;
 }
 
+EnsResolverTaskError ParseErrorResult(const std::string& json) {
+  EnsResolverTaskError task_error;
+  brave_wallet::ParseErrorResult<mojom::ProviderError>(
+      json, &task_error.error, &task_error.error_message);
+
+  return task_error;
+}
+
+EnsResolverTaskError MakeInternalError() {
+  return EnsResolverTaskError(
+      mojom::ProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+}
+
 }  // namespace
+
+EnsResolverTaskResult::EnsResolverTaskResult() = default;
+EnsResolverTaskResult::EnsResolverTaskResult(const EnsResolverTaskResult&) =
+    default;
+EnsResolverTaskResult::EnsResolverTaskResult(EnsResolverTaskResult&&) = default;
+EnsResolverTaskResult& EnsResolverTaskResult::operator=(
+    const EnsResolverTaskResult&) = default;
+EnsResolverTaskResult& EnsResolverTaskResult::operator=(
+    EnsResolverTaskResult&&) = default;
+EnsResolverTaskResult::~EnsResolverTaskResult() = default;
+
+EnsResolverTaskError::EnsResolverTaskError() = default;
+EnsResolverTaskError::EnsResolverTaskError(mojom::ProviderError error,
+                                           std::string error_message)
+    : error(error), error_message(error_message) {}
+EnsResolverTaskError::EnsResolverTaskError(const EnsResolverTaskError&) =
+    default;
+EnsResolverTaskError::EnsResolverTaskError(EnsResolverTaskError&&) = default;
+EnsResolverTaskError& EnsResolverTaskError::operator=(
+    const EnsResolverTaskError&) = default;
+EnsResolverTaskError& EnsResolverTaskError::operator=(EnsResolverTaskError&&) =
+    default;
+EnsResolverTaskError::~EnsResolverTaskError() = default;
 
 std::vector<uint8_t> MakeAddrCall(const std::string& domain) {
   return eth_abi::TupleEncoder()
@@ -133,13 +170,15 @@ EnsResolverTask::EnsResolverTask(
     APIRequestHelper* api_request_helper_ens_offchain,
     std::vector<uint8_t> ens_call,
     const std::string& domain,
-    const GURL& network_url)
+    const GURL& network_url,
+    absl::optional<bool> allow_offchain)
     : done_callback_(std::move(done_callback)),
       api_request_helper_(api_request_helper),
       api_request_helper_ens_offchain_(api_request_helper_ens_offchain),
       ens_call_(std::move(ens_call)),
       domain_(domain),
-      network_url_(network_url) {
+      network_url_(network_url),
+      allow_offchain_(allow_offchain) {
   DCHECK(api_request_helper_);
   DCHECK(api_request_helper_ens_offchain_);
 }
@@ -153,17 +192,13 @@ void EnsResolverTask::ScheduleWorkOnTask() {
 }
 
 void EnsResolverTask::WorkOnTask() {
-  if (resolve_result_) {
-    std::move(done_callback_)
-        .Run(this, std::move(resolve_result_.value()),
-             mojom::ProviderError::kSuccess, "");
+  if (task_result_) {
+    std::move(done_callback_).Run(this, std::move(task_result_), absl::nullopt);
     // `this` is not valid here
     return;
   }
-  if (error_ || error_message_) {
-    std::move(done_callback_)
-        .Run(this, {}, error_.value_or(mojom::ProviderError::kInternalError),
-             error_message_.value_or(""));
+  if (task_error_) {
+    std::move(done_callback_).Run(this, absl::nullopt, std::move(task_error_));
     // `this` is not valid here.
     return;
   }
@@ -194,8 +229,7 @@ void EnsResolverTask::WorkOnTask() {
   }
 
   std::move(done_callback_)
-      .Run(this, {}, mojom::ProviderError::kInternalError,
-           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+      .Run(this, absl::nullopt, EnsResolverTaskError(MakeInternalError()));
   // `this` is not valid here.
 }
 
@@ -216,23 +250,19 @@ void EnsResolverTask::OnFetchEnsResolverDone(
   ScopedWorkOnTask work_on_task(this);
 
   if (!api_request_result.Is2XXResponseCode()) {
-    error_ = mojom::ProviderError::kInternalError;
-    error_message_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+    task_error_.emplace(MakeInternalError());
     return;
   }
 
   auto bytes_result = ParseDecodedBytesResult(api_request_result.body());
   if (!bytes_result) {
-    ParseErrorResult<mojom::ProviderError>(api_request_result.body(),
-                                           &error_.emplace(),
-                                           &error_message_.emplace());
+    task_error_ = ParseErrorResult(api_request_result.body());
     return;
   }
 
   auto resolver_address = eth_abi::ExtractAddressFromTuple(*bytes_result, 0);
   if (!resolver_address.IsValid() || resolver_address.IsZeroAddress()) {
-    error_ = mojom::ProviderError::kInternalError;
-    error_message_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+    task_error_.emplace(MakeInternalError());
     return;
   }
 
@@ -255,16 +285,13 @@ void EnsResolverTask::OnFetchEnsip10SupportDone(
   ScopedWorkOnTask work_on_task(this);
 
   if (!api_request_result.Is2XXResponseCode()) {
-    error_ = mojom::ProviderError::kInternalError;
-    error_message_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+    task_error_.emplace(MakeInternalError());
     return;
   }
 
   bool is_supported = false;
   if (!ParseBoolResult(api_request_result.body(), &is_supported)) {
-    ParseErrorResult<mojom::ProviderError>(api_request_result.body(),
-                                           &error_.emplace(),
-                                           &error_message_.emplace());
+    task_error_ = ParseErrorResult(api_request_result.body());
     return;
   }
 
@@ -275,7 +302,7 @@ void EnsResolverTask::FetchEnsRecord() {
   DCHECK(resolver_address_.IsValid());
   DCHECK(supports_ensip_10_);
   DCHECK(!supports_ensip_10_.value());
-  DCHECK(!resolve_result_);
+  DCHECK(!task_result_);
 
   RequestInternal(eth::eth_call(resolver_address_.ToHex(), ToHex(ens_call_)),
                   base::BindOnce(&EnsResolverTask::OnFetchEnsRecordDone,
@@ -287,33 +314,30 @@ void EnsResolverTask::OnFetchEnsRecordDone(
   ScopedWorkOnTask work_on_task(this);
 
   if (!api_request_result.Is2XXResponseCode()) {
-    error_ = mojom::ProviderError::kInternalError;
-    error_message_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+    task_error_.emplace(MakeInternalError());
     return;
   }
 
   auto bytes_result = ParseDecodedBytesResult(api_request_result.body());
   if (!bytes_result) {
-    ParseErrorResult<mojom::ProviderError>(api_request_result.body(),
-                                           &error_.emplace(),
-                                           &error_message_.emplace());
+    task_error_ = ParseErrorResult(api_request_result.body());
     return;
   }
 
-  resolve_result_ = std::move(bytes_result);
+  task_result_.emplace();
+  task_result_->resolved_result = std::move(*bytes_result);
 }
 
 void EnsResolverTask::FetchWithEnsip10Resolve() {
   DCHECK(resolver_address_.IsValid());
   DCHECK(supports_ensip_10_);
   DCHECK(supports_ensip_10_.value());
-  DCHECK(!resolve_result_);
+  DCHECK(!task_result_);
 
   if (!dns_encoded_name_) {
     dns_encoded_name_ = ens::DnsEncode(domain_);
     if (!dns_encoded_name_) {
-      error_ = mojom::ProviderError::kInvalidParams;
-      error_message_ = l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS);
+      task_error_.emplace(MakeInternalError());
       ScheduleWorkOnTask();
       return;
     }
@@ -337,8 +361,7 @@ void EnsResolverTask::OnFetchWithEnsip10ResolveDone(
   ScopedWorkOnTask work_on_task(this);
 
   if (!api_request_result.Is2XXResponseCode()) {
-    error_ = mojom::ProviderError::kInternalError;
-    error_message_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+    task_error_.emplace(MakeInternalError());
     return;
   }
 
@@ -350,9 +373,7 @@ void EnsResolverTask::OnFetchWithEnsip10ResolveDone(
 
   auto bytes_result = ParseDecodedBytesResult(api_request_result.body());
   if (!bytes_result) {
-    ParseErrorResult<mojom::ProviderError>(api_request_result.body(),
-                                           &error_.emplace(),
-                                           &error_message_.emplace());
+    task_error_ = ParseErrorResult(api_request_result.body());
     return;
   }
 
@@ -361,12 +382,12 @@ void EnsResolverTask::OnFetchWithEnsip10ResolveDone(
   auto decoded_resolve_result =
       eth_abi::ExtractBytesFromTuple(*bytes_result, 0);
   if (!decoded_resolve_result) {
-    error_ = mojom::ProviderError::kInternalError;
-    error_message_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+    task_error_.emplace(MakeInternalError());
     return;
   }
 
-  resolve_result_ = std::move(*decoded_resolve_result);
+  task_result_.emplace();
+  task_result_->resolved_result = std::move(*decoded_resolve_result);
 }
 
 void EnsResolverTask::FetchOffchainData() {
@@ -375,6 +396,19 @@ void EnsResolverTask::FetchOffchainData() {
   GURL offchain_url;
   bool data_substitued = false;
   bool valid_sender = true;
+
+  if (!allow_offchain_.has_value()) {
+    // No explicit offchain lookup decision. Will popup ui.
+    task_result_.emplace();
+    task_result_->need_to_allow_offchain = true;
+    ScheduleWorkOnTask();
+    return;
+  } else if (!allow_offchain_.value()) {
+    // Offchain lookup explicily disabled.
+    task_error_.emplace(MakeInternalError());
+    ScheduleWorkOnTask();
+    return;
+  }
 
   // Sender must match resolver per
   // https://eips.ethereum.org/EIPS/eip-3668#client-lookup-protocol #5.
@@ -400,8 +434,7 @@ void EnsResolverTask::FetchOffchainData() {
   }
 
   if (!valid_sender || !offchain_url.is_valid()) {
-    error_ = mojom::ProviderError::kInternalError;
-    error_message_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+    task_error_.emplace(MakeInternalError());
     ScheduleWorkOnTask();
     return;
   }
@@ -426,15 +459,13 @@ void EnsResolverTask::OnFetchOffchainDone(APIRequestResult api_request_result) {
   ScopedWorkOnTask work_on_task(this);
 
   if (!api_request_result.Is2XXResponseCode()) {
-    error_ = mojom::ProviderError::kInternalError;
-    error_message_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+    task_error_.emplace(MakeInternalError());
     return;
   }
 
   auto bytes_result = ExtractGatewayResult(api_request_result.body());
   if (!bytes_result) {
-    error_ = mojom::ProviderError::kInternalError;
-    error_message_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+    task_error_.emplace(MakeInternalError());
     return;
   }
 

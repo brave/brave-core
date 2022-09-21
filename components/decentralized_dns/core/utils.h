@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_DECENTRALIZED_DNS_UTILS_H_
-#define BRAVE_COMPONENTS_DECENTRALIZED_DNS_UTILS_H_
+#ifndef BRAVE_COMPONENTS_DECENTRALIZED_DNS_CORE_UTILS_H_
+#define BRAVE_COMPONENTS_DECENTRALIZED_DNS_CORE_UTILS_H_
 
-#include "base/values.h"
+#include "brave/components/decentralized_dns/core/constants.h"
 
 class GURL;
 class PrefService;
@@ -24,8 +24,11 @@ bool IsUnstoppableDomainsResolveMethodEthereum(PrefService* local_state);
 bool IsENSTLD(const GURL& url);
 bool IsENSResolveMethodAsk(PrefService* local_state);
 bool IsENSResolveMethodEthereum(PrefService* local_state);
-base::Value::List GetResolveMethodList();
+
+void SetEnsOffchainResolveMethod(PrefService* local_state,
+                                 EnsOffchainResolveMethod method);
+EnsOffchainResolveMethod GetEnsOffchainResolveMethod(PrefService* local_state);
 
 }  // namespace decentralized_dns
 
-#endif  // BRAVE_COMPONENTS_DECENTRALIZED_DNS_UTILS_H_
+#endif  // BRAVE_COMPONENTS_DECENTRALIZED_DNS_CORE_UTILS_H_

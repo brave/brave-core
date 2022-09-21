@@ -33,4 +33,13 @@
   <message name="IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_ETHEREUM" desc="Select control value for which decentralized DNS resolve method to use">
     Ethereum
   </message>
+  <message name="IDS_DECENTRALIZED_DNS_ENS_OFFCHAIN_RESOLVE_OPTION_ASK" desc="ENS offchain resolve method 'Ask'">
+    Ask
+  </message>
+  <message name="IDS_DECENTRALIZED_DNS_ENS_OFFCHAIN_RESOLVE_OPTION_DISABLED" desc="ENS offchain resolve method 'Disabled'">
+    Disabled
+  </message>
+  <message name="IDS_DECENTRALIZED_DNS_ENS_OFFCHAIN_RESOLVE_OPTION_ENABLED" desc="ENS offchain resolve method 'Enabled'">
+    Enabled
+  </message>
 </grit-part>

@@ -882,7 +882,15 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_REQUEST_FEATURE_BUTTON_TEXT},
     {"braveWalletNftsEmptyState", IDS_BRAVE_WALLET_NFTS_EMPTY_STATE},
     {"braveWalletNftsEmptyStateSearch",
-     IDS_BRAVE_WALLET_NFTS_EMPTY_STATE_SEARCH_FILTER}};
+     IDS_BRAVE_WALLET_NFTS_EMPTY_STATE_SEARCH_FILTER},
+    {"braveWalletEnsOffchainProceedWithYes",
+     IDS_BRAVE_WALLET_ENS_OFFCHAIN_PROCEED_WITH_YES},
+    {"braveWalletEnsOffchainProceedWithNo",
+     IDS_BRAVE_WALLET_ENS_OFFCHAIN_PROCEED_WITH_NO},
+    {"braveWalletEnsOffchainDontShowAgain",
+     IDS_BRAVE_WALLET_ENS_OFFCHAIN_DONT_SHOW_AGAIN},
+    {"braveWalletEnsOffchainWarning", IDS_BRAVE_WALLET_ENS_OFFCHAIN_WARNING},
+};
 
 // 0x swap constants
 constexpr char kRopstenSwapBaseAPIURL[] = "https://ropsten.api.0x.org/";

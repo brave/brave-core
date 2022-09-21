@@ -16,7 +16,7 @@
 #include "brave/components/brave_today/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
-#include "brave/components/decentralized_dns/pref_names.h"
+#include "brave/components/decentralized_dns/core/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/p3a/buildflags.h"
 #include "build/build_config.h"

@@ -1,162 +1,157 @@
-<link rel="import" href="chrome://resources/html/cr.html">
-<link rel="import" href="chrome://resources/html/polymer.html">
+<style include="settings-shared md-select iron-flex">
+  .settings-row:not(:first-child) {
+    border-top: var(--cr-separator-line);
+  }
 
-<link rel="import" href="chrome://resources/html/i18n_behavior.html">
-<link rel="import" href="chrome://resources/html/web_ui_listener_behavior.html">
-<link rel="import" href="brave_default_extensions_browser_proxy.html">
-<script type="module" src="../settings_page/settings_section.js"></script>
-<script type="module" src="../settings_shared.css.js"></script>
-<script type="module" src="../settings_vars.css.js"></script>
-<script type="module" src="chrome://resources/cr_elements/cr_link_row/cr_link_row.js"></script>
+  #needsRestart {
+    background-color: #fff;
+    bottom: 0;
+    box-shadow: 0 -2px 2px 0 var(--shadow-color);
+    box-sizing: border-box;
+    left: 0;
+    opacity: 1;
+    padding: 16px;
+    position: fixed;
+    transform: translate(0);
+    transition: all 225ms var(--ease-in-out);
+    width: 100%;
+    z-index: 10;
+  }
 
-<dom-module id="settings-brave-default-extensions-page">
-  <template>
-    <style include="settings-shared md-select iron-flex">
-      .settings-row:not(:first-child) {
-        border-top: var(--cr-separator-line);
-      }
+  @media (prefers-color-scheme: dark) {
+    #needsRestart {
+      background-color: #161719;
+    }
+  }
 
-      #needsRestart {
-        background-color: #fff;
-        bottom: 0;
-        box-shadow: 0 -2px 2px 0 var(--shadow-color);
-        box-sizing: border-box;
-        left: 0;
-        opacity: 1;
-        padding: 16px;
-        position: fixed;
-        transform: translate(0);
-        transition: all 225ms var(--ease-in-out);
-        width: 100%;
-        z-index: 10;
-      }
+  #needsRestart .flex:last-child {
+    text-align: right; /* csschecker-disable-line left-right */
+  }
 
-      @media (prefers-color-scheme: dark) {
-        #needsRestart {
-          background-color: #161719;
-        }
-      }
+  .flex {
+    align-self: center;
+    flex: 1 1 auto;
+  }
 
-      #needsRestart .flex:last-child {
-        text-align: right; /* csschecker-disable-line left-right */
-      }
+  .flex-container {
+    display: flex;
+    padding: 8px 1em;
+  }
 
-      .flex {
-        align-self: center;
-        flex: 1 1 auto;
-      }
+  .restart-notice {
+    font-size: .9375rem;
+    line-height: 1.4;
+  }
 
-      .flex-container {
-        display: flex;
-        padding: 8px 1em;
-      }
+  button.primary {
+    background: var(--interactive-color);
+    border: 0;
+    border-radius: 3px;
+    color: white;
+    font-size: .875rem;
+    padding: 14px 38px;
+  }
+</style>
 
-      .restart-notice {
-        font-size: .9375rem;
-        line-height: 1.4;
-      }
-
-      button.primary {
-        background: var(--interactive-color);
-        border: 0;
-        border-radius: 3px;
-        color: white;
-        font-size: .875rem;
-        padding: 14px 38px;
-      }
-    </style>
-
-    <settings-toggle-button id="googleLoginForExtensions"
-        class="cr-row first"
-        pref="{{prefs.signin.allowed_on_next_startup}}"
-        learn-more-url="$i18n{googleLoginLearnMoreURL}"
-        label="$i18n{googleLoginForExtensionsDesc}">
-        <template is="dom-if" if="[[shouldShowRestartForGoogleLogin_(
-          prefs.signin.allowed_on_next_startup.value)]]">
-        <cr-button on-click="restartBrowser_" slot="more-actions">
-          $i18n{restart}
-        </cr-button>
-        </template>
-    </settings-toggle-button>
-    <settings-toggle-button id="hangoutsEnabled"
-        class="cr-row"
-        pref="{{prefs.brave.hangouts_enabled}}"
-        label="Hangouts"
-        sub-label="$i18n{hangoutsEnabledDesc}"
-        on-settings-boolean-control-change="onHangoutsEnabledChange_">
-    </settings-toggle-button>
-    <settings-toggle-button id="mediaRouterEnabled"
-        class="cr-row"
-        pref="{{prefs.brave.enable_media_router_on_restart}}"
-        label="Media Router"
-        sub-label="$i18n{mediaRouterEnabledDesc}">
-        <template is="dom-if" if="[[shouldShowRestartForMediaRouter_(
-          prefs.brave.enable_media_router_on_restart.value)]]">
-          <cr-button on-click="restartBrowser_" slot="more-actions">
-            $i18n{restart}
-          </cr-button>
-        </template>
-    </settings-toggle-button>
-    <div class="settings-box">
-      <div class="flex cr-padded-text">
-        <div class="start">$i18n{resolveUnstoppableDomainsDesc}</div>
-        <div class="secondary">$i18nRaw{resolveUnstoppableDomainsSubDesc}</div>
-      </div>
-      <settings-dropdown-menu id="unstoppableDomainsResolveMethodType"
-                              pref="{{prefs.brave.unstoppable_domains.resolve_method}}"
-                              menu-options="[[unstoppableDomainsResolveMethod_]]">
+<settings-toggle-button id="googleLoginForExtensions"
+    class="cr-row first"
+    pref="{{prefs.signin.allowed_on_next_startup}}"
+    learn-more-url="$i18n{googleLoginLearnMoreURL}"
+    label="$i18n{googleLoginForExtensionsDesc}">
+    <template is="dom-if" if="[[shouldShowRestartForGoogleLogin_(
+      prefs.signin.allowed_on_next_startup.value)]]">
+    <cr-button on-click="restartBrowser_" slot="more-actions">
+      $i18n{restart}
+    </cr-button>
+    </template>
+</settings-toggle-button>
+<settings-toggle-button id="hangoutsEnabled"
+    class="cr-row"
+    pref="{{prefs.brave.hangouts_enabled}}"
+    label="Hangouts"
+    sub-label="$i18n{hangoutsEnabledDesc}"
+    on-settings-boolean-control-change="onHangoutsEnabledChange_">
+</settings-toggle-button>
+<settings-toggle-button id="mediaRouterEnabled"
+    class="cr-row"
+    pref="{{prefs.brave.enable_media_router_on_restart}}"
+    label="Media Router"
+    sub-label="$i18n{mediaRouterEnabledDesc}">
+    <template is="dom-if" if="[[shouldShowRestartForMediaRouter_(
+      prefs.brave.enable_media_router_on_restart.value)]]">
+      <cr-button on-click="restartBrowser_" slot="more-actions">
+        $i18n{restart}
+      </cr-button>
+    </template>
+</settings-toggle-button>
+<div class="settings-box">
+  <div class="flex cr-padded-text">
+    <div class="start">$i18n{resolveUnstoppableDomainsDesc}</div>
+    <div class="secondary">$i18nRaw{resolveUnstoppableDomainsSubDesc}</div>
+  </div>
+  <settings-dropdown-menu id="unstoppableDomainsResolveMethodType"
+                          pref="{{prefs.brave.unstoppable_domains.resolve_method}}"
+                          menu-options="[[unstoppableDomainsResolveMethod_]]">
+</div>
+<div class="settings-box">
+  <div class="start">$i18n{resolveENSDesc}</div>
+  <settings-dropdown-menu id="ensResolveMethodType"
+                          pref="{{prefs.brave.ens.resolve_method}}"
+                          on-settings-control-change="updateShowENSOffchainLookupRow_"
+                          menu-options="[[ensResolveMethod_]]">
+</div>
+<template is="dom-if" if="[[showEnsOffchainLookupRow_]]">
+  <div class="settings-box">
+    <div class="flex cr-padded-text">
+      <div class="start">$i18n{ensOffchainLookupTitle}</div>
+      <div class="secondary">$i18nRaw{ensOffchainLookupDesc}</div>
     </div>
-    <div class="settings-box">
-      <div class="start">$i18n{resolveENSDesc}</div>
-      <settings-dropdown-menu id="ensResolveMethodType"
-                              pref="{{prefs.brave.ens.resolve_method}}"
-                              menu-options="[[ensResolveMethod_]]">
-    </div>
-    <settings-toggle-button id="webTorrentEnabled"
-        class="cr-row"
-        pref="{{prefs.brave.webtorrent_enabled}}"
-        label="WebTorrent"
-        sub-label="$i18n{webTorrentEnabledDesc}"
-        on-settings-boolean-control-change="onWebTorrentEnabledChange_">
-    </settings-toggle-button>
-    <settings-toggle-button
-        id="widevineEnabled"
-        class="cr-row"
-        pref="[[widevineEnabledPref_]]"
-        label="Widevine"
-        sub-label="$i18n{widevineEnabledDesc}"
-        on-settings-boolean-control-change="onWidevineEnabledChange_">
-    </settings-toggle-button>
-    <div class="settings-row" id="manageExtensionsRow">
-      <cr-link-row icon-class="icon-external"
-        label="$i18n{manageExtensionsLabel}" on-click="openExtensionsPage_">
-      </cr-link-row>
-    </div>
-    <div class="settings-row" id="manageKeyboardShortcutsRow">
-      <cr-link-row icon-class="icon-external"
-        label="$i18n{keyboardShortcuts}" on-click="openKeyboardShortcutsPage_">
-      </cr-link-row>
-    </div>
-    <div class="settings-row" id="getMoreExtensionsRow">
-      <cr-link-row
-        label="$i18n{getMoreExtensionsLabel}"
-        sub-label="$i18n{getMoreExtensionsSubLabel}"
-        on-click="openWebStoreUrl_" external>
-      </cr-link-row>
-    </div>
-  <template is="dom-if" if="{{ showRestartToast_ }}">
-    <div id="needsRestart">
-        <div class="flex-container">
-          <div class="flex restart-notice" jstcache="0">$i18n{restartNotice}</div>
-          <div class="flex">
-            <button id="restartButton" class="primary" tabindex="9" on-click="restartBrowser_">
-            $i18n{relaunchButtonLabel}
-            </button>
-          </div>
-        </div>
+    <settings-dropdown-menu id="ensOffchainLookupMethod"
+      pref="{{prefs.brave.ens.offchain_resolve_method}}" menu-options="[[ensOffchainResolveMethod_]]">
+  </div>
+</template>
+<settings-toggle-button id="webTorrentEnabled"
+    class="cr-row"
+    pref="{{prefs.brave.webtorrent_enabled}}"
+    label="WebTorrent"
+    sub-label="$i18n{webTorrentEnabledDesc}"
+    on-settings-boolean-control-change="onWebTorrentEnabledChange_">
+</settings-toggle-button>
+<settings-toggle-button
+    id="widevineEnabled"
+    class="cr-row"
+    pref="[[widevineEnabledPref_]]"
+    label="Widevine"
+    sub-label="$i18n{widevineEnabledDesc}"
+    on-settings-boolean-control-change="onWidevineEnabledChange_">
+</settings-toggle-button>
+<div class="settings-row" id="manageExtensionsRow">
+  <cr-link-row icon-class="icon-external"
+    label="$i18n{manageExtensionsLabel}" on-click="openExtensionsPage_">
+  </cr-link-row>
+</div>
+<div class="settings-row" id="manageKeyboardShortcutsRow">
+  <cr-link-row icon-class="icon-external"
+    label="$i18n{keyboardShortcuts}" on-click="openKeyboardShortcutsPage_">
+  </cr-link-row>
+</div>
+<div class="settings-row" id="getMoreExtensionsRow">
+  <cr-link-row
+    label="$i18n{getMoreExtensionsLabel}"
+    sub-label="$i18n{getMoreExtensionsSubLabel}"
+    on-click="openWebStoreUrl_" external>
+  </cr-link-row>
+</div>
+<template is="dom-if" if="{{ showRestartToast_ }}">
+<div id="needsRestart">
+    <div class="flex-container">
+      <div class="flex restart-notice" jstcache="0">$i18n{restartNotice}</div>
+      <div class="flex">
+        <button id="restartButton" class="primary" tabindex="9" on-click="restartBrowser_">
+        $i18n{relaunchButtonLabel}
+        </button>
       </div>
     </div>
-  </template>
-  </template>
-  <script src="brave_default_extensions_page.js"></script>
-</dom-module>
+  </div>
+</div>
+</template>

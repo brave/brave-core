@@ -13,6 +13,8 @@ export interface PendingCryptoSendState {
   addressError?: string
   addressWarning?: string
   sendAmount: string
+  showEnsOffchainLookupOptions: boolean
+  ensOffchainLookupOptions?: BraveWallet.EnsOffchainLookupOptions
 }
 
 const defaultState: PendingCryptoSendState = {
@@ -21,7 +23,9 @@ const defaultState: PendingCryptoSendState = {
   addressError: undefined,
   addressWarning: undefined,
   selectedSendAsset: undefined,
-  toAddressOrUrl: ''
+  toAddressOrUrl: '',
+  showEnsOffchainLookupOptions: false,
+  ensOffchainLookupOptions: undefined
 }
 
 export const SendCryptoActions = {
@@ -29,6 +33,8 @@ export const SendCryptoActions = {
   setToAddressOrUrl: createAction<string | undefined>('setToAddressOrUrl'),
   setAddressError: createAction<string | undefined>('setAddressError'),
   setToAddress: createAction<string | undefined>('setToAddress'),
+  setShowEnsOffchainLookupOptions: createAction<boolean>('setShowEnsOffchainLookupOptions'),
+  setEnsOffchainLookupOptions: createAction<BraveWallet.EnsOffchainLookupOptions | undefined>('setEnsOffchainLookupOptions'),
   setAddressWarning: createAction<string | undefined>('setAddressWarning'),
   selectSendAsset: createAction<BraveWallet.BlockchainToken | undefined>('selectSendAsset')
 }
@@ -73,6 +79,26 @@ export const createSendCryptoReducer = (initialState: PendingCryptoSendState) =>
     return {
       ...state,
       toAddress: payload
+    }
+  })
+
+  reducer.on(SendCryptoActions.setShowEnsOffchainLookupOptions, (
+    state: PendingCryptoSendState,
+    payload: boolean
+  ): PendingCryptoSendState => {
+    return {
+      ...state,
+      showEnsOffchainLookupOptions: payload
+    }
+  })
+
+  reducer.on(SendCryptoActions.setEnsOffchainLookupOptions, (
+    state: PendingCryptoSendState,
+    payload: BraveWallet.EnsOffchainLookupOptions | undefined
+  ): PendingCryptoSendState => {
+    return {
+      ...state,
+      ensOffchainLookupOptions: payload
     }
   })
 

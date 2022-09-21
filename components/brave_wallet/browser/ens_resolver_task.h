@@ -57,15 +57,39 @@ struct OffchainLookupData {
   std::vector<uint8_t> extra_data;
 };
 
+struct EnsResolverTaskResult {
+  EnsResolverTaskResult();
+  EnsResolverTaskResult(const EnsResolverTaskResult&);
+  EnsResolverTaskResult(EnsResolverTaskResult&&);
+  EnsResolverTaskResult& operator=(const EnsResolverTaskResult&);
+  EnsResolverTaskResult& operator=(EnsResolverTaskResult&&);
+  ~EnsResolverTaskResult();
+
+  std::vector<uint8_t> resolved_result;
+  bool need_to_allow_offchain = false;
+};
+
+struct EnsResolverTaskError {
+  EnsResolverTaskError();
+  EnsResolverTaskError(mojom::ProviderError error, std::string error_message);
+  EnsResolverTaskError(const EnsResolverTaskError&);
+  EnsResolverTaskError(EnsResolverTaskError&&);
+  EnsResolverTaskError& operator=(const EnsResolverTaskError&);
+  EnsResolverTaskError& operator=(EnsResolverTaskError&&);
+  ~EnsResolverTaskError();
+
+  mojom::ProviderError error;
+  std::string error_message;
+};
+
 class EnsResolverTask {
  public:
   using APIRequestHelper = api_request_helper::APIRequestHelper;
   using APIRequestResult = api_request_helper::APIRequestResult;
   using DoneCallback =
       base::OnceCallback<void(EnsResolverTask* task,
-                              std::vector<uint8_t> resolved_result,
-                              mojom::ProviderError error,
-                              std::string error_message)>;
+                              absl::optional<EnsResolverTaskResult> result,
+                              absl::optional<EnsResolverTaskError> error)>;
   using RequestIntermediateCallback =
       base::OnceCallback<void(APIRequestResult api_request_result)>;
 
@@ -74,7 +98,8 @@ class EnsResolverTask {
                   APIRequestHelper* api_request_helper_ens_offchain,
                   std::vector<uint8_t> ens_call,
                   const std::string& domain,
-                  const GURL& network_url);
+                  const GURL& network_url,
+                  absl::optional<bool> allow_offchain);
   EnsResolverTask(const EnsResolverTask&) = delete;
   EnsResolverTask& operator=(const EnsResolverTask&) = delete;
   ~EnsResolverTask();
@@ -112,12 +137,12 @@ class EnsResolverTask {
   std::string domain_;
   absl::optional<std::vector<uint8_t>> dns_encoded_name_;
   GURL network_url_;
+  absl::optional<bool> allow_offchain_;
   int offchain_lookup_attemps_left_ = 4;
 
-  absl::optional<std::vector<uint8_t>> resolve_result_;
+  absl::optional<EnsResolverTaskResult> task_result_;
+  absl::optional<EnsResolverTaskError> task_error_;
 
-  absl::optional<mojom::ProviderError> error_;
-  absl::optional<std::string> error_message_;
   std::vector<uint8_t> ens_resolve_call_;
   EthAddress resolver_address_;
   absl::optional<bool> supports_ensip_10_;

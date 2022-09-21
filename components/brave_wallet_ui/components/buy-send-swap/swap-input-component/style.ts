@@ -307,6 +307,20 @@ export const LearnMoreButton = styled(WalletButton)`
   padding: 0px;
 `
 
+export const EnsProceedButton = styled(WalletButton)`
+  cursor: pointer;
+  outline: none;
+  background: none;
+  border: none;
+  font-family: Poppins;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.01em;
+  color: ${(p) => p.theme.color.interactive05};
+  margin: 10px;
+  padding: 0px;
+`
+
 export const WarningRow = styled.div<Partial<StyleProps>>`
   display: flex;
   width: 100%;

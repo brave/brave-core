@@ -12,7 +12,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/decentralized_dns/utils.h"
+#include "brave/components/decentralized_dns/core/utils.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/tor/buildflags/buildflags.h"

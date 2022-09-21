@@ -74,7 +74,7 @@ source_set("extensions") {
     "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/constants",
     "//brave/components/de_amp/common",
-    "//brave/components/decentralized_dns",
+    "//brave/components/decentralized_dns/content",
     "//brave/components/ipfs/buildflags",
     "//brave/components/ntp_widget_utils/browser",
     "//brave/components/sidebar/buildflags",
