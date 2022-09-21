@@ -218,6 +218,8 @@ source_set("ui") {
       "views/frame/brave_opaque_browser_frame_view.h",
       "views/frame/brave_window_frame_graphic.cc",
       "views/frame/brave_window_frame_graphic.h",
+      "views/leo/leo_button.cc",
+      "views/leo/leo_button.h",
       "views/omnibox/brave_omnibox_result_view.cc",
       "views/omnibox/brave_omnibox_result_view.h",
       "views/omnibox/brave_search_conversion_promotion_view.cc",

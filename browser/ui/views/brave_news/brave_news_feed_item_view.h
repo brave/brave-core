@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_BRAVE_NEWS_BRAVE_NEWS_FEED_ITEM_VIEW_H_
 
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
+#include "brave/browser/ui/views/leo/leo_button.h"
 #include "ui/views/controls/button/md_text_button.h"
 #include "ui/views/view.h"
 
@@ -34,7 +35,7 @@ class BraveNewsFeedItemView : public views::View,
 
  private:
   bool loading_ = false;
-  raw_ptr<views::MdTextButton> subscribe_button_ = nullptr;
+  raw_ptr<leo::LeoButton> subscribe_button_ = nullptr;
 
   BraveNewsTabHelper::FeedDetails feed_details_;
   raw_ptr<content::WebContents> contents_;

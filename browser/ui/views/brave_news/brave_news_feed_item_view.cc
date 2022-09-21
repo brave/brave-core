@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/brave_news/brave_news_feed_item_view.h"
 
+#include "brave/browser/ui/views/leo/leo_button.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/browser_thread.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -44,7 +45,7 @@ BraveNewsFeedItemView::BraveNewsFeedItemView(
       views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToMinimum,
                                views::MaximumFlexSizeRule::kUnbounded));
 
-  subscribe_button_ = AddChildView(std::make_unique<views::MdTextButton>(
+  subscribe_button_ = AddChildView(std::make_unique<leo::LeoButton>(
       base::BindRepeating(&BraveNewsFeedItemView::OnPressed,
                           base::Unretained(this)),
       u""));
@@ -62,7 +63,9 @@ void BraveNewsFeedItemView::Update() {
       loading_        ? IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_LOADING
       : is_subscribed ? IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_UNSUBSCRIBE
                       : IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_SUBSCRIBE));
-  subscribe_button_->SetProminent(!is_subscribed && !loading_);
+  subscribe_button_->SetMode(!is_subscribed && !loading_
+                                 ? leo::LeoButton::Mode::PRIMARY
+                                 : leo::LeoButton::Mode::SECONDARY);
 }
 
 void BraveNewsFeedItemView::OnAvailableFeedsChanged(
