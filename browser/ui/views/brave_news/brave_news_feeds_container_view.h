@@ -24,6 +24,9 @@ class BraveNewsFeedsContainerView : public views::View {
   BraveNewsFeedsContainerView& operator=(const BraveNewsFeedsContainerView&) =
       delete;
   ~BraveNewsFeedsContainerView() override;
+
+  // views::View
+  void OnThemeChanged() override;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_NEWS_BRAVE_NEWS_FEEDS_CONTAINER_VIEW_H_

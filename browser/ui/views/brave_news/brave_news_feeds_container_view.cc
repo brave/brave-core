@@ -7,6 +7,7 @@
 #include <memory>
 
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
+#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feed_item_view.h"
 #include "content/public/browser/web_contents.h"
 #include "include/core/SkColor.h"
@@ -22,8 +23,11 @@
 #include "ui/views/view_class_properties.h"
 
 namespace {
-SkColor kLightBackgroundColor = SK_ColorWHITE;
-SkColor kLightBorderColor = SkColorSetRGB(233, 233, 244);
+SkColor kBackgroundColorLight = SK_ColorWHITE;
+SkColor kBackgroundColorDark = SkColorSetRGB(36, 37, 45);
+
+SkColor kBorderColorLight = SkColorSetRGB(233, 233, 244);
+SkColor kBorderColorDark = SkColorSetRGB(59, 62, 79);
 }  // namespace
 
 BraveNewsFeedsContainerView::BraveNewsFeedsContainerView(
@@ -50,12 +54,19 @@ BraveNewsFeedsContainerView::BraveNewsFeedsContainerView(
   layout->SetMainAxisAlignment(views::LayoutAlignment::kStart);
   layout->SetCrossAxisAlignment(views::LayoutAlignment::kStretch);
   layout->SetCollapseMargins(false);
-
-  SetBackground(views::CreateSolidBackground(kLightBackgroundColor));
-  SetBorder(views::CreateRoundedRectBorder(1, 12, kLightBorderColor));
 }
 
 BraveNewsFeedsContainerView::~BraveNewsFeedsContainerView() = default;
+
+void BraveNewsFeedsContainerView::OnThemeChanged() {
+  views::View::OnThemeChanged();
+  auto is_dark = dark_mode::GetActiveBraveDarkModeType() ==
+                 dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK;
+  SetBackground(views::CreateSolidBackground(is_dark ? kBackgroundColorDark
+                                                     : kBackgroundColorLight));
+  SetBorder(views::CreateRoundedRectBorder(
+      1, 12, is_dark ? kBorderColorDark : kBorderColorLight));
+}
 
 BEGIN_METADATA(BraveNewsFeedsContainerView, views::View)
 END_METADATA
