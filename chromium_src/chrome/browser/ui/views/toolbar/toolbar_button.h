@@ -6,7 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TOOLBAR_TOOLBAR_BUTTON_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TOOLBAR_TOOLBAR_BUTTON_H_
 
-#define SetHighlight virtual SetHighlight
+#define SetHighlight                                  \
+  SetMenuModel(std::unique_ptr<ui::MenuModel> model); \
+  virtual void SetHighlight
 #define UpdateColorsAndInsets virtual UpdateColorsAndInsets
 #include "src/chrome/browser/ui/views/toolbar/toolbar_button.h"
 #undef SetHighlight

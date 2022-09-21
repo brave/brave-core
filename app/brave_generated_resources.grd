@@ -647,6 +647,16 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
 
       <!-- Sidebar -->
       <if expr="enable_sidebar">
+        <if expr="not use_titlecase">
+          <message name="IDS_HIDE_SIDE_PANEL_TOOLBAR_BUTTON" desc="The menu item to hide the side panel icon on the toolbar">
+            Hide side panel icon
+          </message>
+        </if>
+        <if expr="use_titlecase">
+          <message name="IDS_HIDE_SIDE_PANEL_TOOLBAR_BUTTON" desc="The menu item to hide the side panel icon on the toolbar">
+            Hide Side Panel Icon
+          </message>
+        </if>
         <message name="IDS_SIDEBAR_ITEM_CONTEXT_MENU_REMOVE" desc="Menu for removing an item from sidebar">
           Remove
         </message>
