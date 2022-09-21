@@ -64,9 +64,8 @@ void BraveNewsFeedItemView::Update() {
 
   auto is_subscribed = tab_helper_->IsSubscribed(feed_details_);
   subscribe_button_->SetText(l10n_util::GetStringUTF16(
-      loading_        ? IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_LOADING
-      : is_subscribed ? IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_UNSUBSCRIBE
-                      : IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_SUBSCRIBE));
+      is_subscribed ? IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_UNSUBSCRIBE
+                    : IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_SUBSCRIBE));
 
   subscribe_button_->SetLoading(loading_);
   subscribe_button_->SetKind(!is_subscribed ? leo::LeoButton::Kind::PRIMARY

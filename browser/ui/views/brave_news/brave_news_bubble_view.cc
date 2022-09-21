@@ -11,6 +11,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feed_item_view.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feeds_container_view.h"
@@ -120,6 +121,9 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
                                views::MaximumFlexSizeRule::kPreferred));
   manage_feeds_button->SetProperty(views::kCrossAxisAlignmentKey,
                                    views::LayoutAlignment::kEnd);
+  manage_feeds_button->SetIcon(&kBraveNewsArrowRightIcon);
+  manage_feeds_button->SetHorizontalAlignment(
+      gfx::HorizontalAlignment::ALIGN_RIGHT);
 
   this->set_color(kBackgroundLightColor);
 }
@@ -128,7 +132,7 @@ BraveNewsBubbleView::~BraveNewsBubbleView() = default;
 
 void BraveNewsBubbleView::OpenManageFeeds() {
   GetWidget()->Hide();
-  
+
   // TODO: Open the manage feeds page on a new tab.
 }
 

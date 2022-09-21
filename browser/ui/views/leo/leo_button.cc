@@ -28,11 +28,11 @@ LeoButton::ButtonTheme g_primary_theme = {
     LeoButton::ButtonStyle{SkColorSetRGB(24, 56, 172), absl::nullopt,
                            SK_ColorWHITE},
     // Disabled
-    LeoButton::ButtonStyle{SkColorSetRGB(172, 175, 187), absl::nullopt,
-                           SK_ColorWHITE},
+    LeoButton::ButtonStyle{SkColorSetARGB(128, 172, 175, 187), absl::nullopt,
+                           SkColorSetA(SK_ColorWHITE, 128)},
     // Loading
-    LeoButton::ButtonStyle{SkColorSetRGB(32, 74, 227), absl::nullopt,
-                           SK_ColorWHITE}};
+    LeoButton::ButtonStyle{SkColorSetARGB(192, 32, 74, 227), absl::nullopt,
+                           SkColorSetA(SK_ColorWHITE, 192)}};
 
 LeoButton::ButtonTheme g_secondary_theme = {
     // Normal
@@ -41,7 +41,13 @@ LeoButton::ButtonTheme g_secondary_theme = {
     // Hover
     LeoButton::ButtonStyle{SkColorSetRGB(243, 245, 254),
                            SkColorSetRGB(221, 228, 251),
-                           SkColorSetRGB(65, 101, 233)}};
+                           SkColorSetRGB(65, 101, 233)},
+    // Disabled
+    LeoButton::ButtonStyle{absl::nullopt, SkColorSetARGB(128, 226, 227, 231),
+                           SkColorSetARGB(128, 107, 112, 132)},
+    // Loading
+    LeoButton::ButtonStyle{absl::nullopt, SkColorSetARGB(192, 226, 227, 231),
+                           SkColorSetARGB(192, 107, 112, 132)}};
 
 LeoButton::ButtonTheme g_tertiary_theme = {
     // Normal
@@ -60,6 +66,7 @@ LeoButton::LeoButton(PressedCallback callback,
     : views::LabelButton(callback, text, button_context),
       theme_(colors::g_primary_theme) {
   UpdateTheme();
+  SetImageLabelSpacing(6);
 
   DCHECK(AddEnabledChangedCallback(
       base::BindRepeating(&LeoButton::UpdateTheme, base::Unretained(this))));
