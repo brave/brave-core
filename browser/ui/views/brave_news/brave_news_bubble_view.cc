@@ -14,6 +14,7 @@
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feed_item_view.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feeds_container_view.h"
+#include "brave/browser/ui/views/leo/leo_button.h"
 #include "brave/components/brave_today/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_strings.h"
@@ -38,6 +39,7 @@
 #include "ui/views/controls/label.h"
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/layout/flex_layout_types.h"
+#include "ui/views/layout/layout_types.h"
 #include "ui/views/style/typography.h"
 #include "ui/views/view.h"
 #include "ui/views/view_class_properties.h"
@@ -106,27 +108,29 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
   layout->SetCrossAxisAlignment(views::LayoutAlignment::kStretch);
   layout->SetCollapseMargins(true);
 
-  auto* dismiss_button = AddChildView(std::make_unique<views::MdTextButton>(
-      base::BindRepeating(&BraveNewsBubbleView::DismissForever,
+  auto* manage_feeds_button = AddChildView(std::make_unique<leo::LeoButton>(
+      base::BindRepeating(&BraveNewsBubbleView::OpenManageFeeds,
                           base::Unretained(this)),
-      l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_BUBBLE_DISMISS_FOREVER)));
-  dismiss_button->SetProperty(views::kMarginsKey,
-                              gfx::Insets::TLBR(10, 0, 0, 0));
-  dismiss_button->SetProperty(
+      l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_BUBBLE_MANAGE_FEEDS)));
+  manage_feeds_button->SetKind(leo::LeoButton::Kind::TERTIARY);
+  manage_feeds_button->SetProperty(views::kMarginsKey,
+                                   gfx::Insets::TLBR(10, 0, 0, 0));
+  manage_feeds_button->SetProperty(
       views::kFlexBehaviorKey,
       views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,
                                views::MaximumFlexSizeRule::kPreferred));
+  manage_feeds_button->SetProperty(views::kCrossAxisAlignmentKey,
+                                   views::LayoutAlignment::kEnd);
 
   this->set_color(kBackgroundLightColor);
 }
 
 BraveNewsBubbleView::~BraveNewsBubbleView() = default;
 
-void BraveNewsBubbleView::DismissForever() {
+void BraveNewsBubbleView::OpenManageFeeds() {
   GetWidget()->Hide();
-  auto* profile = Profile::FromBrowserContext(contents_->GetBrowserContext());
-  profile->GetPrefs()->SetBoolean(brave_news::prefs::kShouldShowToolbarButton,
-                                  false);
+  
+  // TODO: Open the manage feeds page on a new tab.
 }
 
 BEGIN_METADATA(BraveNewsBubbleView, views::BubbleDialogDelegateView)

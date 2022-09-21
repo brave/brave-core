@@ -28,7 +28,7 @@ class BraveNewsBubbleView : public views::BubbleDialogDelegateView {
   BraveNewsBubbleView& operator=(const BraveNewsBubbleView&) = delete;
   ~BraveNewsBubbleView() override;
 
-  void DismissForever();
+  void OpenManageFeeds();
 
  private:
   raw_ptr<content::WebContents> contents_;
