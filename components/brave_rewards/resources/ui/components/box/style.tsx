@@ -122,7 +122,7 @@ export const StyledSettingsToggleContainer = styled('div')<{}>`
 
 export const StyledSettingsText = styled('div')<{}>`
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 500;
   font-family: ${p => p.theme.fontFamily.heading};
   color: ${p => p.theme.color.text};
   display: flex;

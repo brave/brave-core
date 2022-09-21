@@ -5,7 +5,6 @@
 import * as React from 'react'
 
 // Assets
-require('../../../../ui/webui/resources/fonts/muli.css')
 
 // Components
 import TorrentFileList from './torrentFileList'

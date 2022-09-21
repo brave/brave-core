@@ -36,7 +36,7 @@ export const StyledValue = styled('div')<{}>`
 `
 
 export const StyledText = styled('div')<{}>`
-  font-family: Muli, sans-serif;
+  font-family: Poppins, sans-serif;
   font-size: 14px;
   line-height: 1.29;
   color: #838391;

@@ -44,7 +44,7 @@ export const theme = {
     margin: '40px 0 0'
   },
   text: {
-    fontFamily: '"Muli", sans-serif',
+    fontFamily: '"Poppins", sans-serif',
     fontSize: '18px',
     color: '#76777A',
     lineHeight: '34px',

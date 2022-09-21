@@ -6,7 +6,6 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 
 import 'emptykit.css'
-import '../../../../../ui/webui/resources/fonts/muli.css'
 import '../../../../../ui/webui/resources/fonts/poppins.css'
 
 import { App } from '../../rewards_panel/components/app'
