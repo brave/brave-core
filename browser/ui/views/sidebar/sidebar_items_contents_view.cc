@@ -26,6 +26,7 @@
 #include "brave/components/sidebar/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
+#include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/views/event_utils.h"
@@ -479,8 +480,10 @@ gfx::ImageSkia SidebarItemsContentsView::GetImageForBuiltInItems(
       focused_image_resource = IDR_SIDEBAR_HISTORY_FOCUSED;
       normal_image_icon = &kSidebarHistoryIcon;
       break;
-    case sidebar::SidebarItem::BuiltInItemType::kPlaylist:
-      return gfx::ImageSkia();
+    case sidebar::SidebarItem::BuiltInItemType::kPlaylist: {
+      return gfx::CreateVectorIcon(kMediaToolbarButtonIcon, kBuiltInIconSize,
+                                   base_button_color);
+    }
     case sidebar::SidebarItem::BuiltInItemType::kNone:
       NOTREACHED();
       return gfx::ImageSkia();

@@ -79,7 +79,6 @@ export class PlaylistPage extends React.Component<Props, State> {
 
   getPlaylistHeader = (): Cell[] => {
     return [
-      { content: 'INDEX' },
       { content: 'NAME' },
       { content: 'STATUS' },
       { content: 'DATA' },
@@ -95,7 +94,6 @@ export class PlaylistPage extends React.Component<Props, State> {
     return playlist.items.map((item: PlaylistMojo.PlaylistItem, index: any): any => {
       const cell: Row = {
         content: [
-          { content: (<div style={{ textAlign: 'center' }}>{index + 1}</div>) },
           {
             content: (
                 <PlaylistItem id={item.id} name={item.name} onClick={this.onClickItem.bind(this)}
@@ -194,7 +192,7 @@ export class PlaylistPage extends React.Component<Props, State> {
             onCreatePlaylist= {this.createPlaylist}
             onSelectPlaylist={this.selectPlaylist}
             onRemovePlaylist={this.removePlaylist} />
-        <div style={{ minHeight: '600px', width: '1200px' }}>
+        <div style={{ minHeight: '600px' }}>
           <Table header={this.getPlaylistHeader()} rows={this.getPlaylistRows(this.getCurrentPlaylist())}>
             YOUR PLAYLIST IS EMPTY
           </Table>
@@ -209,8 +207,6 @@ export class PlaylistPage extends React.Component<Props, State> {
           <div>
             <div>URL input</div>
             <textarea
-              cols={100}
-              rows={10}
               value={this.state.experimentalUrl}
               onChange={this.onChangeExperimentalUrl}
             />

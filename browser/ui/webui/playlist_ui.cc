@@ -80,6 +80,10 @@ void PlaylistUI::CreatePageHandler(
   page_handler_ = std::make_unique<PlaylistPageHandler>(
       Profile::FromWebUI(web_ui()), web_ui()->GetWebContents(),
       std::move(pending_page_handler), std::move(pending_page));
+
+  // When WebUI calls this, mark that the page can be shown on sidebar.
+  if (embedder_)
+    embedder_->ShowUI();
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(PlaylistUI)

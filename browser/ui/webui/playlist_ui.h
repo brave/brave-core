@@ -9,8 +9,10 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/weak_ptr.h"
 #include "brave/components/playlist/mojom/playlist.mojom.h"
 #include "content/public/browser/webui_config.h"
+#include "ui/webui/mojo_bubble_web_ui_controller.h"
 #include "ui/webui/untrusted_web_ui_controller.h"
 
 namespace content {
@@ -36,6 +38,13 @@ class PlaylistUI : public ui::UntrustedWebUIController,
   void BindInterface(mojo::PendingReceiver<playlist::mojom::PageHandlerFactory>
                          pending_receiver);
 
+  // Set by BubbleContentsWrapperT. MojoBubbleWebUIController provides default
+  // implementation for this but we don't use it.
+  void set_embedder(
+      base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder) {
+    embedder_ = embedder;
+  }
+
   // playlist::mojom::PageHandlerFactory:
   void CreatePageHandler(
       mojo::PendingRemote<playlist::mojom::Page> pending_page,
@@ -44,6 +53,8 @@ class PlaylistUI : public ui::UntrustedWebUIController,
 
  private:
   std::unique_ptr<PlaylistPageHandler> page_handler_;
+
+  base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder_;
 
   mojo::Receiver<playlist::mojom::PageHandlerFactory> page_factory_receiver_{
       this};
