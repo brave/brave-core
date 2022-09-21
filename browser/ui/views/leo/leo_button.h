@@ -22,10 +22,17 @@ class LeoButton : public views::LabelButton {
   };
 
   struct ButtonTheme {
-    ButtonStyle normal;
-    ButtonStyle hover;
-    ButtonStyle disabled;
-    ButtonStyle loading;
+    ButtonStyle normal_light;
+    ButtonStyle normal_dark;
+
+    ButtonStyle hover_light;
+    ButtonStyle hover_dark;
+
+    ButtonStyle disabled_light;
+    ButtonStyle disabled_dark;
+
+    ButtonStyle loading_light;
+    ButtonStyle loading_dark;
   };
 
   enum Kind { PRIMARY, SECONDARY, TERTIARY };
@@ -42,15 +49,16 @@ class LeoButton : public views::LabelButton {
   void SetKind(Kind mode);
   Kind GetKind();
 
-  // views::LabelButton
-  gfx::Insets GetInsets() const override;
-  void StateChanged(ButtonState old_state) override;
-
   void SetTheme(ButtonTheme theme);
   ButtonTheme GetTheme();
 
   bool IsLoading() { return loading_; }
   void SetLoading(bool loading);
+
+  // views::LabelButton
+  gfx::Insets GetInsets() const override;
+  void StateChanged(ButtonState old_state) override;
+  void OnThemeChanged() override;
 
  private:
   void UpdateTheme();
