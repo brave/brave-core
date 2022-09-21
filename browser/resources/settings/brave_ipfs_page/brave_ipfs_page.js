@@ -10,7 +10,7 @@ import {BraveIPFSBrowserProxyImpl} from './brave_ipfs_browser_proxy.m.js';
 import {PrefsMixin} from '../prefs/prefs_mixin.js';
 import './p2p_keys_subpage.m.js';
 import './ipfs_peers_subpage.m.js';
-import './change_ipfs_gateway_dialog.js';
+import './change_ipfs_gateway_dialog.html.js';
 
 /**
  * Keep it same as in IPFSResolveMethodTypes

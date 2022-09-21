@@ -3,8 +3,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import 'chrome://resources/cr_elements/cr_button/cr_button.js';
-import './add_wallet_network_dialog.js';
-import './wallet_networks_list.js';
+import './add_wallet_network_dialog.html.js';
+import './wallet_networks_list.html.js';
 
 import {BraveWalletBrowserProxyImpl} from './brave_wallet_browser_proxy.m.js';
 import {I18nMixin} from 'chrome://resources/js/i18n_mixin.js';
