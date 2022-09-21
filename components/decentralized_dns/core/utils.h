@@ -28,6 +28,7 @@ bool IsENSResolveMethodEthereum(PrefService* local_state);
 void SetEnsOffchainResolveMethod(PrefService* local_state,
                                  EnsOffchainResolveMethod method);
 EnsOffchainResolveMethod GetEnsOffchainResolveMethod(PrefService* local_state);
+
 }  // namespace decentralized_dns
 
 #endif  // BRAVE_COMPONENTS_DECENTRALIZED_DNS_CORE_UTILS_H_

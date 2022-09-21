@@ -1322,8 +1322,8 @@ void JsonRpcService::OnEnsGetEthAddrTaskDone(
       (task_result ? task_result->need_to_allow_offchain : false);
   if (require_offchain_consent && EnsOffchainPrefDisabled(local_state_prefs_)) {
     require_offchain_consent = false;
-    error = mojom::ProviderError::kInvalidParams;
-    error_message = l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS);
+    error = mojom::ProviderError::kInternalError;
+    error_message = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
   }
 
   for (auto& cb : callbacks) {

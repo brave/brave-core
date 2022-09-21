@@ -4590,7 +4590,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_Consent) {
         decentralized_dns::GetEnsOffchainResolveMethod(local_state_prefs()));
   }
 
-  // Still ok with explicit consent. Should not happen with or ui, but still
+  // Still ok with explicit consent. Should not happen with our ui, but still
   // fixing that behavior.
   {
     base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
