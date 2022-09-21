@@ -59,7 +59,7 @@ std::unique_ptr<KeyedService> SkusServiceFactory::BuildServiceInstanceFor(
 
 void SkusServiceFactory::RegisterBrowserStatePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
-  skus::RegisterProfilePrefs(registry);
+  skus::RegisterProfilePrefsForMigration(registry);
 }
 
 bool SkusServiceFactory::ServiceIsNULLWhileTesting() const {

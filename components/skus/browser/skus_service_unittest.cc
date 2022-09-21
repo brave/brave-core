@@ -247,7 +247,7 @@ class SkusServiceTestUnitTest : public testing::Test {
 
  protected:
   void SetUp() override {
-    skus::RegisterProfilePrefs(prefs_.registry());
+    skus::RegisterLocalStatePrefs(prefs_.registry());
     shared_url_loader_factory_ =
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &url_loader_factory_);
@@ -280,7 +280,7 @@ class SkusServiceTestUnitTest : public testing::Test {
  private:
   base::test::TaskEnvironment task_environment_;
   std::unique_ptr<skus::SkusServiceImpl> skus_service_;
-  sync_preferences::TestingPrefServiceSyncable prefs_;
+  TestingPrefServiceSimple prefs_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;

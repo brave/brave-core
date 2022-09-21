@@ -40,6 +40,8 @@ class BraveVpnServiceFactory : public BrowserContextKeyedServiceFactory {
   // BrowserContextKeyedServiceFactory overrides:
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
+  void RegisterProfilePrefs(
+      user_prefs::PrefRegistrySyncable* registry) override;
 };
 
 }  // namespace brave_vpn

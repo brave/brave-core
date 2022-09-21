@@ -70,7 +70,6 @@ class BraveVpnService :
   BraveVpnService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       PrefService* local_prefs,
-      PrefService* profile_prefs,
       base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
           skus_service_getter);
   ~BraveVpnService() override;
@@ -259,7 +258,6 @@ class BraveVpnService :
       const std::string& credential_as_cookie);
 
   raw_ptr<PrefService> local_prefs_ = nullptr;
-  raw_ptr<PrefService> profile_prefs_ = nullptr;
 #if !BUILDFLAG(IS_ANDROID)
   std::vector<mojom::Region> regions_;
   std::unique_ptr<Hostname> hostname_;

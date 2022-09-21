@@ -71,15 +71,15 @@ KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
   auto shared_url_loader_factory =
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
   auto* local_state = g_browser_process->local_state();
-
+  brave_vpn::MigrateVPNSettings(user_prefs::UserPrefs::Get(context),
+                                local_state);
   auto callback = base::BindRepeating(
       [](content::BrowserContext* context) {
         return skus::SkusServiceFactory::GetForContext(context);
       },
       context);
   auto* vpn_service =
-      new BraveVpnService(shared_url_loader_factory, local_state,
-                          user_prefs::UserPrefs::Get(context), callback);
+      new BraveVpnService(shared_url_loader_factory, local_state, callback);
 #if BUILDFLAG(IS_WIN)
   auto* dns_observer_service =
       brave_vpn::BraveVpnDnsObserverFactory::GetInstance()
@@ -88,6 +88,11 @@ KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
     dns_observer_service->Observe(vpn_service);
 #endif
   return vpn_service;
+}
+
+void BraveVpnServiceFactory::RegisterProfilePrefs(
+    user_prefs::PrefRegistrySyncable* registry) {
+  brave_vpn::RegisterProfilePrefs(registry);
 }
 
 }  // namespace brave_vpn
