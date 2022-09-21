@@ -18,14 +18,19 @@
 #include "brave/browser/ui/views/leo/leo_button.h"
 #include "brave/components/brave_today/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/common/referrer.h"
 #include "include/core/SkColor.h"
 #include "ui/accessibility/ax_enums.mojom-shared.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/page_transition_types.h"
 #include "ui/gfx/font.h"
 #include "ui/gfx/font_list.h"
 #include "ui/gfx/geometry/insets.h"
@@ -133,7 +138,10 @@ BraveNewsBubbleView::~BraveNewsBubbleView() = default;
 void BraveNewsBubbleView::OpenManageFeeds() {
   GetWidget()->Hide();
 
-  // TODO: Open the manage feeds page on a new tab.
+  auto* browser = chrome::FindBrowserWithWebContents(contents_);
+  browser->OpenURL({GURL("brave://newtab#customize/news"), content::Referrer(),
+                    WindowOpenDisposition::NEW_FOREGROUND_TAB,
+                    ui::PAGE_TRANSITION_LINK, false});
 }
 
 BEGIN_METADATA(BraveNewsBubbleView, views::BubbleDialogDelegateView)
