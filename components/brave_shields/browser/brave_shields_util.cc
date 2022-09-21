@@ -17,6 +17,7 @@
 #include "brave/components/brave_shields/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_shields/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "brave/components/debounce/common/features.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
@@ -603,6 +604,13 @@ void ResetHTTPSEverywhereEnabled(HostContentSettingsMap* map,
       primary_pattern, ContentSettingsPattern::Wildcard(),
       ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
       CONTENT_SETTING_DEFAULT);
+}
+
+bool IsHTTPSEverywhereManaged(PrefService* prefs) {
+  DCHECK(prefs);
+  return prefs->IsManagedPreference(kManagedHTTPSEverywhereDefault) ||
+         prefs->IsManagedPreference(kManagedHTTPSEverywhereAllowedForUrls) ||
+         prefs->IsManagedPreference(kManagedHTTPSEverywhereBlockedForUrls);
 }
 
 bool GetHTTPSEverywhereEnabled(HostContentSettingsMap* map, const GURL& url) {

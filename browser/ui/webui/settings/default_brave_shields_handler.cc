@@ -194,9 +194,13 @@ void DefaultBraveShieldsHandler::GetHTTPSEverywhereEnabled(
 
   auto value = brave_shields::GetHTTPSEverywhereEnabled(
       HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
-
   AllowJavascript();
-  ResolveJavascriptCallback(args[0].Clone(), base::Value(value));
+  base::Value::Dict response;
+  response.Set("value", base::Value(value));
+  response.Set("controlled",
+               base::Value(brave_shields::IsHTTPSEverywhereManaged(
+                   profile_->GetPrefs())));
+  ResolveJavascriptCallback(args[0].Clone(), std::move(response));
 }
 
 void DefaultBraveShieldsHandler::SetNoScriptControlType(

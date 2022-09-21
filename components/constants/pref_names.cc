@@ -5,6 +5,13 @@
 
 #include "brave/components/constants/pref_names.h"
 
+const char kManagedHTTPSEverywhereDefault[] =
+    "brave.managed_https_everywhere_default";
+const char kManagedHTTPSEverywhereAllowedForUrls[] =
+    "brave.managed_https_everywhere_allowed";
+const char kManagedHTTPSEverywhereBlockedForUrls[] =
+    "brave.managed_https_everywhere_blocked";
+
 const char kAdsBlocked[] = "brave.stats.ads_blocked";
 // We no longer update this pref, but we keep it around for now because it's
 // added to kAdsBlocked when being displayed.

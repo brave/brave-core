@@ -75,8 +75,10 @@ class BraveShieldsPage extends BraveShieldsPageBase {
       cookieControlType_: String,
       fingerprintingControlType_: String,
       httpsEverywhereEnabled_: {
-        type: Boolean,
-        value: false
+        type: Object,
+        value() {
+          return /** @type {!chrome.settingsPrivate.PrefObject} */ ({});
+        },
       },
       isAdBlockRoute_: {
         type: Boolean,
@@ -107,8 +109,19 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   }
 
   refreshState() {
-    this.browserProxy_.getHTTPSEverywhereEnabled().then(value => {
-      this.httpsEverywhereEnabled_ = value
+    this.browserProxy_.getHTTPSEverywhereEnabled().then((value) => {
+      const pref = {
+        key: '',
+        type: chrome.settingsPrivate.PrefType.BOOLEAN,
+        // Most behaviors get a dedicated label and appear as checked.
+        value: value.value,
+      };
+      if (value.controlled) {
+        pref.enforcement = chrome.settingsPrivate.Enforcement.ENFORCED;
+        pref.controlledBy = chrome.settingsPrivate.ControlledBy.USER_POLICY;
+      }
+
+      this.httpsEverywhereEnabled_ = pref
     })
     this.browserProxy_.getCookieControlType().then(value => {
       this.cookieControlType_ = value
@@ -152,7 +165,7 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   }
 
   onHTTPSEverywhereControlChange_ () {
-    this.browserProxy_.setHTTPSEverywhereEnabled(this.httpsEverywhereEnabled_)
+    this.browserProxy_.setHTTPSEverywhereEnabled(this.httpsEverywhereEnabled_.value)
   }
 
   onNoScriptControlChange_ () {

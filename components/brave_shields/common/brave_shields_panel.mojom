@@ -63,6 +63,7 @@ struct SiteSettings {
   FingerprintMode fingerprint_mode;
   CookieBlockMode cookie_block_mode;
   bool is_https_everywhere_enabled;
+  bool is_https_everywhere_managed;
   bool is_noscript_enabled;
 };
 

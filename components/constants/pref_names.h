@@ -8,6 +8,9 @@
 
 #include "build/build_config.h"
 
+extern const char kManagedHTTPSEverywhereDefault[];
+extern const char kManagedHTTPSEverywhereAllowedForUrls[];
+extern const char kManagedHTTPSEverywhereBlockedForUrls[];
 extern const char kAdsBlocked[];
 extern const char kTrackersBlocked[];
 extern const char kJavascriptBlocked[];

@@ -87,6 +87,66 @@ def AddBravePolicies(template_file_contents):
             'desc': ('''This policy allows an admin to specify that Brave '''
                      '''Wallet feature will be disabled.'''),
         },
+        {
+            'name': 'HTTPSEverywhereDefault',
+            'type': 'main',
+            'schema': {'type': 'integer'},
+            'supported_on': ['chrome.*:106-'],
+            'features': {
+                'dynamic_refresh': False,
+                'per_profile': True,
+                'can_be_recommended': False,
+                'can_be_mandatory': True
+            },
+            'example_value': True,
+            'id': 4,
+            'caption': '''Enable HTTP-to-HTTPS automatic conversion.''',
+            'tags': [],
+            'desc': ('''This policy allows an admin to specify that Brave '''
+                     '''HTTP-to-HTTPS automatic conversion enabled.'''),
+        },
+        {
+            'name': 'HTTPSEverywhereAllowedForUrls',
+            'type': 'main',
+            'schema': {
+              'type': 'array',
+              'items': { 'type': 'string' },
+            },
+            'supported_on': ['chrome.*:106-'],
+            'features': {
+                'dynamic_refresh': False,
+                'per_profile': True,
+                'can_be_recommended': False,
+                'can_be_mandatory': True
+            },
+            'example_value': True,
+            'id': 5,
+            'caption': '''Enable HTTP-to-HTTPS automatic conversion for urls.''',
+            'tags': [],
+            'desc': ('''This policy allows an admin to specify that Brave '''
+                     '''HTTP-to-HTTPS automatic conversion enabled.'''),
+        },
+        {
+            'name': 'HTTPSEverywhereBlockedForUrls',
+            'type': 'main',
+            'schema': {
+              'type': 'array',
+              'items': { 'type': 'string' },
+            },
+            'supported_on': ['chrome.*:106-'],
+            'features': {
+                'dynamic_refresh': False,
+                'per_profile': True,
+                'can_be_recommended': False,
+                'can_be_mandatory': True
+            },
+            'example_value': True,
+            'id': 6,
+            'caption': '''Blocks HTTP-to-HTTPS automatic conversion for urls.''',
+            'tags': [],
+            'desc': ('''This policy allows an admin to specify that Brave '''
+                     '''HTTP-to-HTTPS automatic conversion blocked.'''),
+        },
     ]
 
     # Our new polices are added with highest id

@@ -231,6 +231,13 @@ bool BraveShieldsDataController::GetHTTPSEverywhereEnabled() {
       GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
 }
 
+bool BraveShieldsDataController::IsHTTPSEverywhereManaged() {
+  PrefService* profile_prefs =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext())
+          ->GetPrefs();
+  return brave_shields::IsHTTPSEverywhereManaged(profile_prefs);
+}
+
 bool BraveShieldsDataController::GetNoScriptEnabled() {
   ControlType control_type = brave_shields::GetNoScriptControlType(
       GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());

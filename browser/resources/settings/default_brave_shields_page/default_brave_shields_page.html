@@ -76,9 +76,9 @@
   </div>
   <div class="settings-box">
     <div class="start">$i18n{httpsEverywhereControlLabel}</div>
-    <cr-toggle id="httpsControl" checked="{{httpsEverywhereEnabled_}}"
-      on-change="onHTTPSEverywhereControlChange_">
-    </cr-toggle>
+    <settings-toggle-button id="httpsControl" pref="[[httpsEverywhereEnabled_]]"
+      on-settings-boolean-control-change="onHTTPSEverywhereControlChange_"  no-set-pref>
+    </settings-toggle-button>
   </div>
   <settings-toggle-button id="noScriptControlType"
       class="cr-row"

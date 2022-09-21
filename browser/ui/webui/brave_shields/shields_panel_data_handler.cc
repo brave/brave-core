@@ -71,6 +71,8 @@ void ShieldsPanelDataHandler::GetSiteSettings(
       active_shields_data_controller_->GetCookieBlockMode();
   settings.is_https_everywhere_enabled =
       active_shields_data_controller_->GetHTTPSEverywhereEnabled();
+  settings.is_https_everywhere_managed =
+      active_shields_data_controller_->IsHTTPSEverywhereManaged();
   settings.is_noscript_enabled =
       active_shields_data_controller_->GetNoScriptEnabled();
 

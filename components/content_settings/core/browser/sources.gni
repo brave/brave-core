@@ -8,6 +8,8 @@ brave_components_content_settings_core_browser_deps = []
 
 if (!is_ios) {
   brave_components_content_settings_core_browser_sources += [
+    "//brave/components/content_settings/core/browser/brave_content_settings_policy_provider.cc",
+    "//brave/components/content_settings/core/browser/brave_content_settings_policy_provider.h",
     "//brave/components/content_settings/core/browser/brave_content_settings_pref_provider.cc",
     "//brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h",
     "//brave/components/content_settings/core/browser/brave_content_settings_utils.cc",

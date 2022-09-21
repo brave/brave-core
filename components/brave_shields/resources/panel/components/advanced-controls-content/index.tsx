@@ -129,6 +129,7 @@ function AdvancedControlsContent () {
               isOn={siteSettings?.isHttpsEverywhereEnabled}
               size='sm'
               accessibleLabel='Enable HTTPS'
+              disabled={siteSettings?.isHttpsEverywhereManaged}
             />
           </label>
           <S.CountButton
