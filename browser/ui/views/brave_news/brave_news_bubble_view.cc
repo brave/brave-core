@@ -13,6 +13,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
+#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feed_item_view.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feeds_container_view.h"
 #include "brave/browser/ui/views/leo/leo_button.h"
@@ -52,8 +53,12 @@
 #include "ui/views/widget/widget.h"
 
 namespace {
-SkColor kSubtitleColor = SkColorSetRGB(134, 142, 150);
-SkColor kBackgroundLightColor = SkColorSetRGB(248, 249, 250);
+SkColor kSubtitleColorLight = SkColorSetRGB(134, 142, 150);
+SkColor kSubtitleColorDark = SkColorSetRGB(134, 142, 150);
+
+SkColor kBackgroundColorLight = SkColorSetRGB(248, 249, 250);
+SkColor kBackgroundColorDark = SkColorSetRGB(30, 32, 41);
+
 }  // namespace
 
 // static
@@ -98,7 +103,6 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
   subtitle_label_ = AddChildView(std::make_unique<views::Label>(
       l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_BUBBLE_SUBTITLE),
       subtitle_custom_font));
-  subtitle_label_->SetEnabledColor(kSubtitleColor);
   subtitle_label_->SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT);
   subtitle_label_->SetProperty(views::kMarginsKey,
                                gfx::Insets::TLBR(0, 0, 16, 0));
@@ -129,8 +133,6 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
   manage_feeds_button->SetIcon(&kBraveNewsArrowRightIcon);
   manage_feeds_button->SetHorizontalAlignment(
       gfx::HorizontalAlignment::ALIGN_RIGHT);
-
-  this->set_color(kBackgroundLightColor);
 }
 
 BraveNewsBubbleView::~BraveNewsBubbleView() = default;
@@ -142,6 +144,16 @@ void BraveNewsBubbleView::OpenManageFeeds() {
   browser->OpenURL({GURL("brave://newtab#customize/news"), content::Referrer(),
                     WindowOpenDisposition::NEW_FOREGROUND_TAB,
                     ui::PAGE_TRANSITION_LINK, false});
+}
+
+void BraveNewsBubbleView::OnThemeChanged() {
+  views::BubbleDialogDelegateView::OnThemeChanged();
+
+  auto is_dark = dark_mode::GetActiveBraveDarkModeType() ==
+                 dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK;
+  set_color(is_dark ? kBackgroundColorDark : kBackgroundColorLight);
+  subtitle_label_->SetEnabledColor(is_dark ? kSubtitleColorDark
+                                           : kSubtitleColorLight);
 }
 
 BEGIN_METADATA(BraveNewsBubbleView, views::BubbleDialogDelegateView)

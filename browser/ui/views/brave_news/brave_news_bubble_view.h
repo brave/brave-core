@@ -30,6 +30,9 @@ class BraveNewsBubbleView : public views::BubbleDialogDelegateView {
 
   void OpenManageFeeds();
 
+  // views::BubbleDialogDelegateView:
+  void OnThemeChanged() override;
+
  private:
   raw_ptr<content::WebContents> contents_;
   raw_ptr<views::Label> title_label_ = nullptr;
