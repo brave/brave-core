@@ -24,6 +24,7 @@
 #include "gin/function_template.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
+#include "third_party/blink/public/common/web_preferences/web_preferences.h"
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_css_origin.h"
 #include "third_party/blink/public/web/web_document.h"
@@ -275,7 +276,10 @@ bool CosmeticFiltersJSHandler::ProcessURL(
       static_cast<content_settings::BraveContentSettingsAgentImpl*>(
           content_settings::ContentSettingsAgentImpl::Get(render_frame_));
 
-  if (!content_settings->IsCosmeticFilteringEnabled(url_)) {
+  const bool force_cosmetic_filtering =
+      render_frame_->GetBlinkPreferences().force_cosmetic_filtering;
+  if (!force_cosmetic_filtering &&
+      !content_settings->IsCosmeticFilteringEnabled(url_)) {
     return false;
   }
 

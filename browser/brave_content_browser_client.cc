@@ -211,6 +211,11 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_today/common/features.h"
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/components/playlist/playlist_service.h"
+#endif
+
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #include "brave/browser/ui/webui/playlist_ui.h"
 #endif  // BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
@@ -1047,6 +1052,15 @@ void BraveContentBrowserClient::OverrideWebkitPrefs(WebContents* web_contents,
   // This will stop NavigatorPlugins from returning fixed plugins data and will
   // allow us to return our farbled data
   web_prefs->allow_non_empty_navigator_plugins = true;
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  if (auto* playlist_service =
+          playlist::PlaylistServiceFactory::GetForBrowserContext(
+              web_contents->GetBrowserContext())) {
+    playlist_service->ConfigureWebPrefsforBackgroundWebContents(web_contents,
+                                                                web_prefs);
+  }
+#endif
 }
 
 blink::UserAgentMetadata BraveContentBrowserClient::GetUserAgentMetadata() {

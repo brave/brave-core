@@ -219,6 +219,17 @@ base::FilePath PlaylistService::GetPlaylistItemDirPath(
   return base_dir_.AppendASCII(id);
 }
 
+void PlaylistService::ConfigureWebPrefsforBackgroundWebContents(
+    content::WebContents* web_contents,
+    blink::web_pref::WebPreferences* web_prefs) {
+  download_request_manager_->ConfigureWebPrefsforBackgroundWebContents(
+      web_contents, web_prefs);
+}
+
+content::WebContents* PlaylistService::GetBackgroundWebContentsForTesting() {
+  return download_request_manager_->GetBackgroundWebContentsForTesting();
+}
+
 void PlaylistService::UpdatePlaylistItemValue(const std::string& id,
                                               base::Value value) {
   prefs::ScopedDictionaryPrefUpdate update(prefs_, kPlaylistItemsPref);

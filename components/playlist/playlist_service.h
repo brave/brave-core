@@ -25,12 +25,17 @@ namespace base {
 class SequencedTaskRunner;
 }  // namespace base
 
+namespace blink::web_pref {
+struct WebPreferences;
+}  // namespace blink::web_pref
+
 namespace content {
 class BrowserContext;
 class WebContents;
 }  // namespace content
 
 class PrefService;
+class CosmeticFilteringPlaylistFlagEnabledTest;
 
 namespace playlist {
 
@@ -119,7 +124,13 @@ class PlaylistService : public KeyedService,
 
   base::FilePath GetPlaylistItemDirPath(const std::string& id) const;
 
+  // Update |web_prefs| if we want for |web_contents|.
+  void ConfigureWebPrefsforBackgroundWebContents(
+      content::WebContents* web_contents,
+      blink::web_pref::WebPreferences* web_prefs);
+
  private:
+  friend class ::CosmeticFilteringPlaylistFlagEnabledTest;
   FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, ApiFunctions);
   FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, CreatePlaylist);
   FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, CreatePlaylistItem);
@@ -176,6 +187,8 @@ class PlaylistService : public KeyedService,
   //         it is notified.
 
   void OnGetMetadata(base::Value value);
+
+  content::WebContents* GetBackgroundWebContentsForTesting();
 
   const base::FilePath base_dir_;
   base::ObserverList<PlaylistServiceObserver> observers_;
