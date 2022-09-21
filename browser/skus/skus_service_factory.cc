@@ -12,9 +12,11 @@
 #include "brave/components/skus/browser/skus_service_impl.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/skus/common/features.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 
@@ -64,16 +66,17 @@ KeyedService* SkusServiceFactory::BuildServiceInstanceFor(
   if (!brave::IsRegularProfile(context)) {
     return nullptr;
   }
-
+  skus::MigrateSkusSettings(user_prefs::UserPrefs::Get(context),
+                            g_browser_process->local_state());
   return new skus::SkusServiceImpl(
-      Profile::FromBrowserContext(context)->GetPrefs(),
+      g_browser_process->local_state(),
       context->GetDefaultStoragePartition()
           ->GetURLLoaderFactoryForBrowserProcess());
 }
 
 void SkusServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
-  skus::RegisterProfilePrefs(registry);
+  skus::RegisterProfilePrefsForMigration(registry);
 }
 
 }  // namespace skus

@@ -117,11 +117,9 @@ using PurchasedState = mojom::PurchasedState;
 BraveVpnService::BraveVpnService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs,
-    PrefService* profile_prefs,
     base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
         skus_service_getter)
     : local_prefs_(local_prefs),
-      profile_prefs_(profile_prefs),
       skus_service_getter_(skus_service_getter),
       api_request_helper_(GetNetworkTrafficAnnotationTag(),
                           url_loader_factory) {
@@ -141,7 +139,7 @@ BraveVpnService::BraveVpnService(
   // To prevent this, we load purchased state at startup only
   // when profile has cached region list because region list is fetched
   // and cached only when user purchased at least once.
-  auto* preference = profile_prefs_->FindPreference(prefs::kBraveVPNRegionList);
+  auto* preference = local_prefs_->FindPreference(prefs::kBraveVPNRegionList);
   if (preference && !preference->IsDefaultValue()) {
     ReloadPurchasedState();
   }
@@ -155,7 +153,7 @@ BraveVpnService::BraveVpnService(
 BraveVpnService::~BraveVpnService() = default;
 
 std::string BraveVpnService::GetCurrentEnvironment() const {
-  return profile_prefs_->GetString(prefs::kBraveVPNEEnvironment);
+  return local_prefs_->GetString(prefs::kBraveVPNEEnvironment);
 }
 
 void BraveVpnService::ReloadPurchasedState() {
@@ -454,7 +452,7 @@ void BraveVpnService::LoadCachedRegionData() {
   if (GetDeviceRegion().empty())
     return;
 
-  auto* preference = profile_prefs_->FindPreference(prefs::kBraveVPNRegionList);
+  auto* preference = local_prefs_->FindPreference(prefs::kBraveVPNRegionList);
   DCHECK(preference);
   // Early return when we don't have any cached region data.
   if (preference->IsDefaultValue())
@@ -481,8 +479,8 @@ void BraveVpnService::SetRegionListToPrefs() {
   for (const auto& region : regions_) {
     regions_list.Append(GetValueFromRegion(region));
   }
-  profile_prefs_->Set(prefs::kBraveVPNRegionList,
-                      base::Value(std::move(regions_list)));
+  local_prefs_->Set(prefs::kBraveVPNRegionList,
+                    base::Value(std::move(regions_list)));
 }
 
 void BraveVpnService::OnFetchRegionList(bool background_fetch,
@@ -592,22 +590,22 @@ void BraveVpnService::SetDeviceRegionWithTimezone(
 
 void BraveVpnService::SetDeviceRegion(const std::string& name) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  profile_prefs_->SetString(prefs::kBraveVPNDeviceRegion, name);
+  local_prefs_->SetString(prefs::kBraveVPNDeviceRegion, name);
 }
 
 void BraveVpnService::SetSelectedRegion(const std::string& name) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  profile_prefs_->SetString(prefs::kBraveVPNSelectedRegion, name);
+  local_prefs_->SetString(prefs::kBraveVPNSelectedRegion, name);
 }
 
 std::string BraveVpnService::GetDeviceRegion() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return profile_prefs_->GetString(prefs::kBraveVPNDeviceRegion);
+  return local_prefs_->GetString(prefs::kBraveVPNDeviceRegion);
 }
 
 std::string BraveVpnService::GetSelectedRegion() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return profile_prefs_->GetString(prefs::kBraveVPNSelectedRegion);
+  return local_prefs_->GetString(prefs::kBraveVPNSelectedRegion);
 }
 
 void BraveVpnService::SetFallbackDeviceRegion() {
@@ -888,18 +886,17 @@ void BraveVpnService::GetPurchaseToken(GetPurchaseTokenCallback callback) {
   // Get the Android purchase token (for Google Play Store).
   // The value for this is validated on the account.brave.com side
   auto* purchase_token =
-      profile_prefs_->FindPreference(prefs::kBraveVPNPurchaseTokenAndroid);
+      local_prefs_->FindPreference(prefs::kBraveVPNPurchaseTokenAndroid);
   if (purchase_token && !purchase_token->IsDefaultValue()) {
     purchase_token_string =
-        profile_prefs_->GetString(prefs::kBraveVPNPurchaseTokenAndroid);
+        local_prefs_->GetString(prefs::kBraveVPNPurchaseTokenAndroid);
   }
 
   // Package name is important; for real users, it'll be the Release package.
   // For testing we do have the ability to use the Nightly package.
-  auto* package =
-      profile_prefs_->FindPreference(prefs::kBraveVPNPackageAndroid);
+  auto* package = local_prefs_->FindPreference(prefs::kBraveVPNPackageAndroid);
   if (package && !package->IsDefaultValue()) {
-    package_string = profile_prefs_->GetString(prefs::kBraveVPNPackageAndroid);
+    package_string = local_prefs_->GetString(prefs::kBraveVPNPackageAndroid);
   }
 
   base::Value::Dict response;
@@ -1143,7 +1140,7 @@ void BraveVpnService::SetPurchasedState(const std::string& env,
 }
 
 void BraveVpnService::SetCurrentEnvironment(const std::string& env) {
-  profile_prefs_->SetString(prefs::kBraveVPNEEnvironment, env);
+  local_prefs_->SetString(prefs::kBraveVPNEEnvironment, env);
   purchased_state_.reset();
 }
 

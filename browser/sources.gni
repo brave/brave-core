@@ -31,6 +31,7 @@ import("//brave/browser/ntp_background/sources.gni")
 import("//brave/browser/permissions/sources.gni")
 import("//brave/browser/playlist/sources.gni")
 import("//brave/browser/search_engines/sources.gni")
+import("//brave/browser/skus/sources.gni")
 import("//brave/browser/speedreader/sources.gni")
 import("//brave/browser/themes/sources.gni")
 import("//brave/browser/url_sanitizer/sources.gni")
@@ -114,7 +115,6 @@ brave_chrome_browser_deps = [
   "//brave/browser/profiles",
   "//brave/browser/renderer_context_menu",
   "//brave/browser/search",
-  "//brave/browser/skus",
   "//brave/browser/sync",
   "//brave/browser/themes",
   "//brave/browser/ui",
@@ -401,6 +401,7 @@ brave_chrome_browser_sources += brave_browser_brave_ads_sources
 brave_chrome_browser_sources += brave_browser_brave_wallet_sources
 brave_chrome_browser_sources += brave_browser_brave_news_sources
 brave_chrome_browser_sources += brave_browser_brave_vpn_sources
+brave_chrome_browser_sources += brave_browser_skus_sources
 brave_chrome_browser_sources += brave_browser_brave_rewards_sources
 brave_chrome_browser_sources += brave_browser_brave_shields_sources
 brave_chrome_browser_sources += brave_browser_brave_stats_updater_sources
@@ -431,6 +432,7 @@ brave_chrome_browser_deps += brave_browser_brave_adaptive_captcha_deps
 brave_chrome_browser_deps += brave_browser_brave_ads_deps
 brave_chrome_browser_deps += brave_browser_brave_news_deps
 brave_chrome_browser_deps += brave_browser_brave_vpn_deps
+brave_chrome_browser_deps += brave_browser_skus_deps
 brave_chrome_browser_deps += brave_browser_brave_rewards_deps
 brave_chrome_browser_deps += brave_browser_brave_shields_deps
 brave_chrome_browser_deps += brave_browser_brave_stats_updater_deps
