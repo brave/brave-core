@@ -11,6 +11,7 @@
 #include "base/bind.h"
 #include "include/core/SkColor.h"
 #include "ui/gfx/geometry/insets.h"
+#include "ui/gfx/paint_vector_icon.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/button/label_button.h"
@@ -66,9 +67,18 @@ LeoButton::LeoButton(PressedCallback callback,
 
 LeoButton::~LeoButton() = default;
 
+void LeoButton::SetIcon(const gfx::VectorIcon* icon) {
+  icon_ = icon;
+  if (icon_)
+    UpdateTheme();
+  else
+    image()->SetImage(nullptr);
+}
+
 LeoButton::Kind LeoButton::GetKind() {
   return mode_;
 }
+
 void LeoButton::SetKind(Kind mode) {
   mode_ = mode;
   if (mode == Kind::PRIMARY)
@@ -117,22 +127,7 @@ void LeoButton::UpdateTheme() {
   ApplyStyle(style);
 }
 
-void echo_color(std::string name, absl::optional<SkColor> c) {
-  if (!c.has_value()) {
-    LOG(ERROR) << name << ": undefined";
-    return;
-  }
-  LOG(ERROR) << name << ": rgb(" << SkColorGetR(c.value()) << ", "
-             << SkColorGetG(c.value()) << ", " << SkColorGetB(c.value()) << ")";
-}
-
 void LeoButton::ApplyStyle(ButtonStyle style) {
-  LOG(ERROR) << "===Start Style===";
-  echo_color("Text", style.text_color);
-  echo_color("Backgroudn", style.background_color);
-  echo_color("Border", style.border_color);
-  LOG(ERROR) << "====End Style====";
-
   SetBackground(style.background_color.has_value()
                     ? views::CreateRoundedRectBackground(
                           style.background_color.value(), 1000)
@@ -143,6 +138,11 @@ void LeoButton::ApplyStyle(ButtonStyle style) {
           : nullptr);
 
   SetEnabledTextColors(style.text_color);
+
+  if (icon_) {
+    SetImage(ButtonState::STATE_NORMAL,
+             gfx::CreateVectorIcon(*icon_, style.text_color));
+  }
 }
 
 }  // namespace leo

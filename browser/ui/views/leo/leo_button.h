@@ -6,7 +6,9 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_LEO_LEO_BUTTON_H_
 #define BRAVE_BROWSER_UI_VIEWS_LEO_LEO_BUTTON_H_
 
+#include "absl/types/optional.h"
 #include "ui/gfx/geometry/insets.h"
+#include "ui/gfx/vector_icon_types.h"
 #include "ui/views/controls/button/label_button.h"
 
 namespace leo {
@@ -35,6 +37,8 @@ class LeoButton : public views::LabelButton {
   LeoButton& operator=(const LeoButton&) = delete;
   ~LeoButton() override;
 
+  void SetIcon(const gfx::VectorIcon* icon);
+
   void SetKind(Kind mode);
   Kind GetKind();
 
@@ -45,13 +49,14 @@ class LeoButton : public views::LabelButton {
   void SetTheme(ButtonTheme theme);
   ButtonTheme GetTheme();
 
-  bool IsLoading() { return loading_;}
+  bool IsLoading() { return loading_; }
   void SetLoading(bool loading);
 
  private:
   void UpdateTheme();
   void ApplyStyle(ButtonStyle style);
 
+  raw_ptr<const gfx::VectorIcon> icon_ = nullptr;
   Kind mode_ = Kind::PRIMARY;
   ButtonTheme theme_;
   bool loading_ = false;
