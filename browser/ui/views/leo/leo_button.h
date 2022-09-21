@@ -6,7 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_LEO_LEO_BUTTON_H_
 #define BRAVE_BROWSER_UI_VIEWS_LEO_LEO_BUTTON_H_
 
-#include "absl/types/optional.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/vector_icon_types.h"
 #include "ui/views/controls/button/label_button.h"

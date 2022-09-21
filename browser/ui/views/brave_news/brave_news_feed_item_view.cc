@@ -5,11 +5,14 @@
 
 #include "brave/browser/ui/views/brave_news/brave_news_feed_item_view.h"
 
+#include <memory>
+#include <vector>
+
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/views/leo/leo_button.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/browser_thread.h"
-#include "include/core/SkColor.h"
+#include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/paint_vector_icon.h"

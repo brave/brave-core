@@ -4,13 +4,13 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "brave/browser/ui/views/leo/leo_button.h"
+
 #include <memory>
-#include <sstream>
-#include <string>
-#include "absl/types/optional.h"
+
 #include "base/bind.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
-#include "include/core/SkColor.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "third_party/skia/include/core/SkColor.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/views/background.h"

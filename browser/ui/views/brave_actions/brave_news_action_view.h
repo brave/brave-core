@@ -14,7 +14,7 @@
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "components/prefs/pref_member.h"
-#include "include/core/SkColor.h"
+#include "third_party/skia/include/core/SkColor.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/views/controls/button/label_button.h"
 

@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_NEWS_BRAVE_NEWS_FEED_ITEM_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_BRAVE_NEWS_BRAVE_NEWS_FEED_ITEM_VIEW_H_
 
+#include <vector>
+
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/browser/ui/views/leo/leo_button.h"
 #include "ui/views/controls/button/md_text_button.h"

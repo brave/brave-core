@@ -27,7 +27,7 @@
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/referrer.h"
-#include "include/core/SkColor.h"
+#include "third_party/skia/include/core/SkColor.h"
 #include "ui/accessibility/ax_enums.mojom-shared.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -141,7 +141,8 @@ void BraveNewsBubbleView::OpenManageFeeds() {
   GetWidget()->Hide();
 
   auto* browser = chrome::FindBrowserWithWebContents(contents_);
-  browser->OpenURL({GURL("brave://newtab/?openSettings=BraveToday"), content::Referrer(),
+  browser->OpenURL({GURL("brave://newtab/?openSettings=BraveToday"),
+                    content::Referrer(),
                     WindowOpenDisposition::NEW_FOREGROUND_TAB,
                     ui::PAGE_TRANSITION_LINK, false});
 }

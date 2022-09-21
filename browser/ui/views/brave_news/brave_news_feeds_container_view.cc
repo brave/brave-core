@@ -10,7 +10,7 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feed_item_view.h"
 #include "content/public/browser/web_contents.h"
-#include "include/core/SkColor.h"
+#include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/size.h"
@@ -40,7 +40,6 @@ BraveNewsFeedsContainerView::BraveNewsFeedsContainerView(
         std::make_unique<BraveNewsFeedItemView>(feed_item, contents));
     child->SetProperty(views::kMarginsKey, gfx::Insets::VH(12, 12));
 
-    // TODO: Maybe insert separator view here?
     if (&feed_item != &available_feeds.back()) {
       auto* separator = AddChildView(std::make_unique<views::Separator>());
       separator->SetProperty(views::kMarginsKey, gfx::Insets::VH(0, 12));
