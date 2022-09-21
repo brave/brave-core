@@ -66,5 +66,11 @@ const base::Feature kBraveDarkModeBlock{"BraveDarkModeBlock",
 // load the cosmetic filter rules using sync ipc
 const base::Feature kCosmeticFilteringSyncLoad{
     "CosmeticFilterSyncLoad", base::FEATURE_ENABLED_BY_DEFAULT};
+
+// Enables an extra TRAVE_EVENT in content filter scripts. The feature is
+// primary designed for local debugging.
+const base::Feature kCosmeticFilteringTraceJsPerformance{
+    "CosmeticFilteringTraceJsPerformance", base::FEATURE_DISABLED_BY_DEFAULT};
+
 }  // namespace features
 }  // namespace brave_shields

@@ -105,6 +105,11 @@ const fetchNewClassIdRules = () => {
 }
 
 const handleMutations: MutationCallback = (mutations: MutationRecord[]) => {
+  // Callback to c++ renderer process
+  // @ts-expect-error
+  const eventId : number | undefined = cf_worker.onHandleMutationsBegin?.()
+
+  let mutationScore = 0
   for (const aMutation of mutations) {
     if (aMutation.type === 'attributes') {
       // Since we're filtering for attribute modifications, we can be certain
@@ -153,6 +158,10 @@ const handleMutations: MutationCallback = (mutations: MutationRecord[]) => {
   }
 
   fetchNewClassIdRules()
+
+  // Callback to c++ renderer process
+  if (eventId)  // @ts-expect-error
+    cf_worker.onHandleMutationsEnd(eventId)
 }
 
 const isFirstPartyUrl = (url: string): boolean => {
@@ -475,9 +484,11 @@ const pumpCosmeticFilterQueuesOnIdle = idleize(
   pumpIntervalMaxMs
 )
 
-const startObserving = () => {
-  // First queue up any classes and ids that exist before the mutation observer
-  // starts running.
+const querySelectors = () => {
+  // Callback to c++ renderer process
+  // @ts-expect-error
+  const eventId : number | undefined = cf_worker.onQuerySelectorsBegin?.()
+
   const elmWithClassOrId = document.querySelectorAll('[class],[id]')
   for (const elm of elmWithClassOrId) {
     for (const aClassName of elm.classList.values()) {
@@ -488,6 +499,16 @@ const startObserving = () => {
       queriedIds.add(elmId)
     }
   }
+
+  // Callback to c++ renderer process
+  if (eventId)  // @ts-expect-error
+    cf_worker.onQuerySelectorsEnd(eventId)
+}
+
+const startObserving = () => {
+  // First queue up any classes and ids that exist before the mutation observer
+  // starts running.
+  querySelectors();
 
   notYetQueriedClasses = Array.from(queriedClasses)
   notYetQueriedIds = Array.from(queriedIds)

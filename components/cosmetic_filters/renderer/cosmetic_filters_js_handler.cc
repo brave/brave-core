@@ -135,9 +135,52 @@ bool IsVettedSearchEngine(const GURL& url) {
   return false;
 }
 
+// must be unique accoss the process.
+int MakeUniquePerfId() {
+  static int counter = 0;
+  ++counter;
+  return counter;
+}
+
+constexpr const char TRACE_CATEGORY[] = "brave.adblock";
+
 }  // namespace
 
 namespace cosmetic_filters {
+
+// A class to record performance events from content_filter.ts.
+// The events are reported as async traces and/or UMAs and can be retrived by
+// brave://tracing & brave://histograms.
+class CosmeticFilterPerfTracker {
+ public:
+  int OnHandleMutationsBegin() {
+    const auto event_id = MakeUniquePerfId();
+    TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(
+        TRACE_CATEGORY, "HandleMutations",
+        TRACE_ID_WITH_SCOPE("HandleMutations", event_id));
+    return event_id;
+  }
+
+  void OnHandleMutationsEnd(int event_id) {
+    TRACE_EVENT_NESTABLE_ASYNC_END0(
+        TRACE_CATEGORY, "HandleMutations",
+        TRACE_ID_WITH_SCOPE("HandleMutations", event_id));
+  }
+
+  int OnQuerySelectorsBegin() {
+    const auto event_id = MakeUniquePerfId();
+    TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(
+        TRACE_CATEGORY, "QuerySelectors",
+        TRACE_ID_WITH_SCOPE("QuerySelectors", event_id));
+    return event_id;
+  }
+
+  void OnQuerySelectorsEnd(int event_id) {
+    TRACE_EVENT_NESTABLE_ASYNC_END0(
+        TRACE_CATEGORY, "QuerySelectors",
+        TRACE_ID_WITH_SCOPE("QuerySelectors", event_id));
+  }
+};
 
 CosmeticFiltersJSHandler::CosmeticFiltersJSHandler(
     content::RenderFrame* render_frame,
@@ -146,6 +189,12 @@ CosmeticFiltersJSHandler::CosmeticFiltersJSHandler(
       isolated_world_id_(isolated_world_id),
       enabled_1st_party_cf_(false) {
   EnsureConnected();
+
+  const bool perf_tracing_enabled = base::FeatureList::IsEnabled(
+      brave_shields::features::kCosmeticFilteringTraceJsPerformance);
+  if (perf_tracing_enabled) {
+    perf_tracker_ = std::make_unique<CosmeticFilterPerfTracker>();
+  }
 }
 
 CosmeticFiltersJSHandler::~CosmeticFiltersJSHandler() = default;
@@ -226,6 +275,25 @@ void CosmeticFiltersJSHandler::BindFunctionsToObject(
       isolate, javascript_object, "isFirstPartyUrl",
       base::BindRepeating(&CosmeticFiltersJSHandler::OnIsFirstParty,
                           base::Unretained(this)));
+
+  if (perf_tracker_) {
+    BindFunctionToObject(
+        isolate, javascript_object, "onHandleMutationsBegin",
+        base::BindRepeating(&CosmeticFilterPerfTracker::OnHandleMutationsBegin,
+                            base::Unretained(perf_tracker_.get())));
+    BindFunctionToObject(
+        isolate, javascript_object, "onHandleMutationsEnd",
+        base::BindRepeating(&CosmeticFilterPerfTracker::OnHandleMutationsEnd,
+                            base::Unretained(perf_tracker_.get())));
+    BindFunctionToObject(
+        isolate, javascript_object, "onQuerySelectorsBegin",
+        base::BindRepeating(&CosmeticFilterPerfTracker::OnQuerySelectorsBegin,
+                            base::Unretained(perf_tracker_.get())));
+    BindFunctionToObject(
+        isolate, javascript_object, "onQuerySelectorsEnd",
+        base::BindRepeating(&CosmeticFilterPerfTracker::OnQuerySelectorsEnd,
+                            base::Unretained(perf_tracker_.get())));
+  }
 }
 
 template <typename Sig>
@@ -328,6 +396,9 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
   if (!resources_dict_ || web_frame->IsProvisional())
     return;
 
+  SCOPED_UMA_HISTOGRAM_TIMER_MICROS("Brave.CosmeticFilters.ApplyRules");
+  TRACE_EVENT1("brave.adblock", "ApplyRules", "url", url_.spec());
+
   std::string scriptlet_script;
   base::Value* injected_script = resources_dict_->Find("injected_script");
   if (injected_script &&
@@ -368,6 +439,9 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
 
 void CosmeticFiltersJSHandler::CSSRulesRoutine(
     const base::Value::Dict& resources_dict) {
+  SCOPED_UMA_HISTOGRAM_TIMER_MICROS("Brave.CosmeticFilters.CSSRulesRoutine");
+  TRACE_EVENT1("brave.adblock", "CSSRulesRoutine", "url", url_.spec());
+
   blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
   const auto* cf_exceptions_list = resources_dict.FindList("exceptions");
   if (cf_exceptions_list) {
@@ -449,6 +523,10 @@ void CosmeticFiltersJSHandler::OnHiddenClassIdSelectors(
     return;
   }
 
+  SCOPED_UMA_HISTOGRAM_TIMER_MICROS(
+      "Brave.CosmeticFilters.OnHiddenClassIdSelectors");
+  TRACE_EVENT1("brave.adblock", "OnHiddenClassIdSelectors", "url", url_.spec());
+
   base::Value::List* hide_selectors = result.FindList("hide_selectors");
   DCHECK(hide_selectors);
 
@@ -505,6 +583,11 @@ void CosmeticFiltersJSHandler::ExecuteObservingBundleEntryPoint() {
   DCHECK(web_frame);
 
   if (!bundle_injected_) {
+    SCOPED_UMA_HISTOGRAM_TIMER_MICROS(
+        "Brave.CosmeticFilters.ExecuteObservingBundleEntryPoint");
+    TRACE_EVENT1("brave.adblock", "ExecuteObservingBundleEntryPoint", "url",
+                 url_.spec());
+
     static base::NoDestructor<std::string> s_observing_script(
         LoadDataResource(kCosmeticFiltersGenerated[0].id));
     bundle_injected_ = true;
