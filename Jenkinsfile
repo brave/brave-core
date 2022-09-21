@@ -1,7 +1,4 @@
-def SKIP_SIGNING_DEFAULT = true
-if (JOB_NAME.indexOf("windows") != -1) {
-    SKIP_SIGNING_DEFAULT = false
-}
+def SKIP_SIGNING_DEFAULT = ! JOB_NAME.contains("windows")
 pipeline {
     agent none
     options {
