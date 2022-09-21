@@ -478,12 +478,12 @@ void BravePrefProvider::MigrateFingerprintingSettings() {
     if (fp_rule.secondary_pattern == ContentSettingsPattern::Wildcard() &&
         fp_rule.value == CONTENT_SETTING_BLOCK) {
 #if BUILDFLAG(IS_ANDROID)
-      SetWebsiteSettingInternal(fp_rule.primary_pattern,
-                                fp_rule.secondary_pattern,
-                                ContentSettingsType::BRAVE_FINGERPRINTING_V2,
-                                ContentSettingToValue(CONTENT_SETTING_ASK),
-                                {fp_rule.expiration, fp_rule.session_model});
-#endif
+      SetWebsiteSettingInternal(
+          fp_rule.primary_pattern, fp_rule.secondary_pattern,
+          ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+          ContentSettingToValue(CONTENT_SETTING_ASK),
+          {fp_rule.metadata.expiration, fp_rule.metadata.session_model});
+#endif  // BUILDFLAG(IS_ANDROID)
     }
   }
 
