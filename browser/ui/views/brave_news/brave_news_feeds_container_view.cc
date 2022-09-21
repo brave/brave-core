@@ -15,28 +15,37 @@
 #include "ui/gfx/geometry/size.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
+#include "ui/views/controls/separator.h"
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/layout/layout_manager.h"
 #include "ui/views/layout/layout_types.h"
 #include "ui/views/view_class_properties.h"
 
 namespace {
-  SkColor kLightBackgroundColor = SK_ColorWHITE;
-  SkColor kLightBorderColor = SkColorSetRGB(233, 233, 244);
-}
+SkColor kLightBackgroundColor = SK_ColorWHITE;
+SkColor kLightBorderColor = SkColorSetRGB(233, 233, 244);
+}  // namespace
 
 BraveNewsFeedsContainerView::BraveNewsFeedsContainerView(
     content::WebContents* contents) {
   auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents);
-  for (const auto& feed_item : tab_helper->GetAvailableFeeds()) {
+
+  auto available_feeds = tab_helper->GetAvailableFeeds();
+  for (auto& feed_item : available_feeds) {
     auto* child = AddChildView(
         std::make_unique<BraveNewsFeedItemView>(feed_item, contents));
     child->SetProperty(views::kMarginsKey, gfx::Insets::VH(12, 12));
 
     // TODO: Maybe insert separator view here?
+    if (&feed_item != &available_feeds.back()) {
+      auto* separator = AddChildView(std::make_unique<views::Separator>());
+      separator->SetProperty(views::kMarginsKey, gfx::Insets::VH(0, 12));
+      separator->SetOrientation(views::Separator::Orientation::kHorizontal);
+    }
   }
 
-  views::FlexLayout* const layout = SetLayoutManager(std::make_unique<views::FlexLayout>());
+  views::FlexLayout* const layout =
+      SetLayoutManager(std::make_unique<views::FlexLayout>());
   layout->SetOrientation(views::LayoutOrientation::kVertical);
   layout->SetMainAxisAlignment(views::LayoutAlignment::kStart);
   layout->SetCrossAxisAlignment(views::LayoutAlignment::kStretch);
