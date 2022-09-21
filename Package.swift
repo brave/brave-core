@@ -31,7 +31,7 @@ let package = Package(
     .plugin(name: "CurrentBundleGenPlugin", targets: ["CurrentBundleGenPlugin"]),
   ],
   dependencies: [
-    .package(url: "https://github.com/weichsel/ZIPFoundation", from: "0.9.11"),
+    .package(url: "https://github.com/weichsel/ZIPFoundation", from: "0.9.15"),
     .package(url: "https://github.com/SnapKit/SnapKit", from: "5.0.1"),
     .package(url: "https://github.com/DaveWoodCom/XCGLogger", from: "7.0.1"),
     .package(url: "https://github.com/cezheng/Fuzi", from: "3.1.3"),
