@@ -5,7 +5,7 @@
 
 import {RegisterPolymerTemplateModifications} from 'chrome://brave-resources/polymer_overriding.js'
 
-import '../brave_search_engines_page/brave_search_engines_page.js'
+import '../brave_search_engines_page/brave_search_engines_page.html.js'
 
 RegisterPolymerTemplateModifications({
   'settings-search-page': (templateContent) => {

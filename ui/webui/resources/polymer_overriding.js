@@ -6,7 +6,7 @@
 import {html as polymerHtml, mixinBehaviors, Polymer, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
 // Global overrides
-import 'chrome://brave-resources/br_elements/br_toolbar/br_toolbar.js';
+import 'chrome://brave-resources/br_elements/br_toolbar/br_toolbar.html.js';
 import CrButtonStyleTemplate from './overrides/cr_button.js'
 import CrToggleStyleTemplate from './overrides/cr_toggle.js'
 
