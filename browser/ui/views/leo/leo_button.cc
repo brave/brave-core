@@ -5,6 +5,9 @@
 
 #include "brave/browser/ui/views/leo/leo_button.h"
 #include <memory>
+#include <sstream>
+#include <string>
+#include "absl/types/optional.h"
 #include "include/core/SkColor.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/views/background.h"
@@ -14,22 +17,30 @@
 
 namespace leo {
 namespace colors {
-SkColor kButtonPrimaryBackground = SkColorSetRGB(32, 74, 227);
-SkColor kButtonPrimaryBackgroundHover = SkColorSetRGB(24, 56, 172);
-SkColor kButtonPrimaryText = SK_ColorWHITE;
 
-SkColor kButtonSecondaryBackgroundColorHover = SkColorSetRGB(221, 228, 251);
-SkColor kButtonSecondaryText = SkColorSetRGB(107, 112, 132);
-SkColor kButtonSecondaryTextHover = SkColorSetRGB(65, 101, 233);
-SkColor kButtonSecondaryBorderColor = SkColorSetRGB(226, 227, 231);
-SkColor kButtonSecondaryBorderColorHover = SkColorSetRGB(221, 228, 251);
+LeoButton::ButtonTheme g_primary_theme = {
+    LeoButton::ButtonStyle{SkColorSetRGB(32, 74, 227), absl::nullopt,
+                           SK_ColorWHITE},
+    LeoButton::ButtonStyle{SkColorSetRGB(24, 56, 172), absl::nullopt,
+                           SK_ColorWHITE}};
+
+LeoButton::ButtonTheme g_secondary_theme = {
+    LeoButton::ButtonStyle{absl::nullopt, SkColorSetRGB(226, 227, 231),
+                           SkColorSetRGB(107, 112, 132)},
+    LeoButton::ButtonStyle{SkColorSetRGB(243, 245, 254),
+                           SkColorSetRGB(221, 228, 251),
+                           SkColorSetRGB(65, 101, 233)}};
+
+LeoButton::ButtonTheme g_tertiary_theme = {};
+
 }  // namespace colors
 
 LeoButton::LeoButton(PressedCallback callback,
                      const std::u16string& text,
                      int button_context)
-    : views::LabelButton(callback, text, button_context) {
-  ApplyTheme();
+    : views::LabelButton(callback, text, button_context),
+      theme_(colors::g_primary_theme) {
+  UpdateTheme();
 }
 
 LeoButton::~LeoButton() = default;
@@ -39,24 +50,13 @@ LeoButton::Mode LeoButton::GetMode() {
 }
 void LeoButton::SetMode(Mode mode) {
   mode_ = mode;
-  ApplyTheme();
-}
-
-void LeoButton::UpdateBackgroundColor() {
-  auto state = GetVisualState();
-  switch (mode_) {
-    case PRIMARY:
-      SetBackground(views::CreateRoundedRectBackground(
-          state == ButtonState::STATE_HOVERED
-              ? colors::kButtonPrimaryBackgroundHover
-              : colors::kButtonPrimaryBackground,
-          1000));
-      break;
-    case SECONDARY:
-    case TERTIARY:
-      SetBackground(nullptr);
-      break;
-  }
+  if (mode == Mode::PRIMARY)
+    theme_ = colors::g_primary_theme;
+  if (mode == Mode::SECONDARY)
+    theme_ = colors::g_secondary_theme;
+  if (mode == Mode::TERTIARY)
+    theme_ = colors::g_tertiary_theme;
+  UpdateTheme();
 }
 
 gfx::Insets LeoButton::GetInsets() const {
@@ -65,40 +65,51 @@ gfx::Insets LeoButton::GetInsets() const {
 
 void LeoButton::StateChanged(ButtonState old_state) {
   views::LabelButton::StateChanged(old_state);
-  ApplyTheme();
+  UpdateTheme();
 }
 
-void LeoButton::ApplyTheme() {
-  switch (mode_) {
-    case PRIMARY:
-      ApplyPrimaryStyle();
-      break;
-    case SECONDARY:
-      ApplySecondaryStyle();
-      break;
-    case TERTIARY:
-      ApplyTertiaryStyle();
-      break;
-  }
-  UpdateBackgroundColor();
+LeoButton::ButtonTheme LeoButton::GetTheme() {
+  return theme_;
+}
+void LeoButton::SetTheme(ButtonTheme theme) {
+  theme_ = theme;
+  UpdateTheme();
 }
 
-void LeoButton::ApplyPrimaryStyle() {
-  SetBorder(nullptr);
-  SetEnabledTextColors(colors::kButtonPrimaryText);
-}
-
-void LeoButton::ApplySecondaryStyle() {
+void LeoButton::UpdateTheme() {
   auto state = GetVisualState();
-  SetBorder(views::CreateRoundedRectBorder(
-      1, 1000,
-      state == ButtonState::STATE_HOVERED
-          ? colors::kButtonSecondaryBorderColorHover
-          : colors::kButtonSecondaryBorderColor));
-  SetEnabledTextColors(colors::kButtonSecondaryText);
-  SetTextColor(ButtonState::STATE_HOVERED, colors::kButtonSecondaryTextHover);
+  auto style = theme_.normal;
+  if (state == STATE_HOVERED)
+    style = theme_.hover;
+  ApplyStyle(style);
 }
 
-void LeoButton::ApplyTertiaryStyle() {}
+void echo_color(std::string name, absl::optional<SkColor> c) {
+  if (!c.has_value()) {
+    LOG(ERROR) << name << ": undefined";
+    return;
+  }
+  LOG(ERROR) << name << ": rgb(" << SkColorGetR(c.value()) << ", "
+             << SkColorGetG(c.value()) << ", " << SkColorGetB(c.value()) << ")";
+}
+
+void LeoButton::ApplyStyle(ButtonStyle style) {
+  LOG(ERROR) << "===Start Style===";
+  echo_color("Text", style.text_color);
+  echo_color("Backgroudn", style.background_color);
+  echo_color("Border", style.border_color);
+  LOG(ERROR) << "====End Style====";
+
+  SetBackground(style.background_color.has_value()
+                    ? views::CreateRoundedRectBackground(
+                          style.background_color.value(), 1000)
+                    : nullptr);
+  SetBorder(
+      style.border_color.has_value()
+          ? views::CreateRoundedRectBorder(1, 1000, style.border_color.value())
+          : nullptr);
+
+  SetEnabledTextColors(style.text_color);
+}
 
 }  // namespace leo

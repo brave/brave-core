@@ -13,6 +13,17 @@ namespace leo {
 
 class LeoButton : public views::LabelButton {
  public:
+  struct ButtonStyle {
+    absl::optional<SkColor> background_color;
+    absl::optional<SkColor> border_color;
+    SkColor text_color;
+  };
+
+  struct ButtonTheme {
+    ButtonStyle normal;
+    ButtonStyle hover;
+  };
+
   enum Mode { PRIMARY, SECONDARY, TERTIARY };
 
   explicit LeoButton(PressedCallback callback = PressedCallback(),
@@ -26,17 +37,18 @@ class LeoButton : public views::LabelButton {
   Mode GetMode();
 
   // views::LabelButton
-  void UpdateBackgroundColor() override;
   gfx::Insets GetInsets() const override;
   void StateChanged(ButtonState old_state) override;
 
+  void SetTheme(ButtonTheme theme);
+  ButtonTheme GetTheme();
+
  private:
-  void ApplyTheme();
-  void ApplyPrimaryStyle();
-  void ApplySecondaryStyle();
-  void ApplyTertiaryStyle();
+  void UpdateTheme();
+  void ApplyStyle(ButtonStyle style);
 
   Mode mode_ = Mode::PRIMARY;
+  ButtonTheme theme_;
 };
 
 }  // namespace leo
