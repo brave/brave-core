@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <stdint.h>
+#include <map>
 #include <memory>
 #include <utility>
 #include <vector>
@@ -4616,14 +4617,16 @@ class JsonRpcEnpointHandler {
 
 class OffchainGatewayHandler {
  public:
-  OffchainGatewayHandler(const GURL& gateway_url,
-                         const EthAddress& resolver_address,
-                         const EthAddress& offchain_eth_address,
-                         const std::vector<uint8_t>& offchain_contenthash)
+  OffchainGatewayHandler(
+      const GURL& gateway_url,
+      const EthAddress& resolver_address,
+      const std::map<std::string, EthAddress>& map_offchain_eth_address,
+      const std::map<std::string, std::vector<uint8_t>>&
+          map_offchain_contenthash)
       : gateway_url_(gateway_url),
         resolver_address_(resolver_address),
-        offchain_eth_address_(offchain_eth_address),
-        offchain_contenthash_(offchain_contenthash) {}
+        map_offchain_eth_address_(map_offchain_eth_address),
+        map_offchain_contenthash_(map_offchain_contenthash) {}
 
   absl::optional<std::string> HandleRequest(
       const network::ResourceRequest& request) {
@@ -4654,7 +4657,7 @@ class OffchainGatewayHandler {
     if (ToHex(selector) == GetFunctionHash("resolve(bytes,bytes)")) {
       auto dns_encoded_name = eth_abi::ExtractBytesFromTuple(args, 0);
       EXPECT_TRUE(dns_encoded_name);
-      EXPECT_EQ(*dns_encoded_name, ens::DnsEncode("offchainexample.eth"));
+      EXPECT_FALSE(dns_encoded_name->empty());
       encoded_call = eth_abi::ExtractBytesFromTuple(args, 1);
       ensip10_resolve = true;
     } else if (ToHex(selector) == GetFunctionHash("addr(bytes32)")) {
@@ -4669,19 +4672,32 @@ class OffchainGatewayHandler {
     auto domain_namehash =
         eth_abi::ExtractFixedBytesFromTuple(enconed_call_args, 32, 0);
     EXPECT_TRUE(domain_namehash);
-    EXPECT_TRUE(
-        base::ranges::equal(*domain_namehash, Namehash("offchainexample.eth")));
 
     std::vector<uint8_t> data_value;
     if (base::ranges::equal(encoded_call_selector, kAddrBytes32Selector)) {
-      auto address = respond_with_no_record_ ? EthAddress::ZeroAddress()
-                                             : offchain_eth_address_;
-      data_value = eth_abi::TupleEncoder().AddAddress(address).Encode();
+      data_value = eth_abi::TupleEncoder()
+                       .AddAddress(EthAddress::ZeroAddress())
+                       .Encode();
+      if (!respond_with_no_record_) {
+        for (auto& [domain, address] : map_offchain_eth_address_) {
+          if (base::ranges::equal(*domain_namehash, Namehash(domain))) {
+            data_value = eth_abi::TupleEncoder().AddAddress(address).Encode();
+            break;
+          }
+        }
+      }
     } else if (base::ranges::equal(encoded_call_selector,
                                    kContentHashBytes32Selector)) {
-      auto contenthash = respond_with_no_record_ ? std::vector<uint8_t>()
-                                                 : offchain_contenthash_;
-      data_value = eth_abi::TupleEncoder().AddBytes(contenthash).Encode();
+      data_value =
+          eth_abi::TupleEncoder().AddBytes(std::vector<uint8_t>()).Encode();
+      if (!respond_with_no_record_) {
+        for (auto& [domain, contenthash] : map_offchain_contenthash_) {
+          if (base::ranges::equal(*domain_namehash, Namehash(domain))) {
+            data_value = eth_abi::TupleEncoder().AddBytes(contenthash).Encode();
+            break;
+          }
+        }
+      }
     } else {
       NOTREACHED();
       return absl::nullopt;
@@ -4706,8 +4722,8 @@ class OffchainGatewayHandler {
  private:
   GURL gateway_url_;
   EthAddress resolver_address_;
-  EthAddress offchain_eth_address_;
-  std::vector<uint8_t> offchain_contenthash_;
+  std::map<std::string, EthAddress> map_offchain_eth_address_;
+  std::map<std::string, std::vector<uint8_t>> map_offchain_contenthash_;
   bool respond_with_500_ = false;
   bool respond_with_no_record_ = false;
 };
@@ -4744,21 +4760,31 @@ class ENSL2JsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
     json_rpc_endpoint_handler_->AddEthCallHandler(
         ensip10_resolve_callback_handler_.get());
 
+    std::map<std::string, EthAddress> map_offchain_eth_address = {
+        {ens_host(), offchain_eth_addr()},
+        {ens_subdomain_host(), offchain_subdomain_eth_addr()}};
+    std::map<std::string, std::vector<uint8_t>> map_offchain_contenthash = {
+        {ens_host(), offchain_contenthash()},
+        {ens_subdomain_host(), offchain_subdomain_contenthash()}};
     offchain_gateway_handler_ = std::make_unique<OffchainGatewayHandler>(
-        gateway_url(), resolver_address(), offchain_eth_addr(),
-        offchain_contenthash());
+        gateway_url(), resolver_address(), std::move(map_offchain_eth_address),
+        std::move(map_offchain_contenthash));
 
     url_loader_factory_.SetInterceptor(base::BindRepeating(
         &ENSL2JsonRpcServiceUnitTest::HandleRequest, base::Unretained(this)));
   }
 
   std::string ens_host() { return "offchainexample.eth"; }
+  std::string ens_subdomain_host() { return "test.offchainexample.eth"; }
   GURL gateway_url() { return GURL("https://gateway.brave.com/"); }
   EthAddress resolver_address() {
     return EthAddress::FromHex("0xc1735677a60884abbcf72295e88d47764beda282");
   }
   EthAddress offchain_eth_addr() {
     return EthAddress::FromHex("0xaabbccddeeaabbccddeeaabbccddeeaabbccddee");
+  }
+  EthAddress offchain_subdomain_eth_addr() {
+    return EthAddress::FromHex("0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
   }
 
   EthAddress onchain_eth_addr() {
@@ -4769,6 +4795,14 @@ class ENSL2JsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
     std::string contenthash =
         "e30101701220f073be187e8e06039796c432a"
         "5bdd6da3f403c2f93fa5d9dbdc5547c7fe0e3bc";
+    std::vector<uint8_t> bytes;
+    base::HexStringToBytes(contenthash, &bytes);
+    return bytes;
+  }
+  std::vector<uint8_t> offchain_subdomain_contenthash() {
+    std::string contenthash =
+        "e30101701220f073be187e8e06039796c432a"
+        "5bdd6da3f403c2f93fa5d9dbdc5547c7feeeeee";
     std::vector<uint8_t> bytes;
     base::HexStringToBytes(contenthash, &bytes);
     return bytes;
@@ -4826,6 +4860,28 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr) {
   base::RunLoop().RunUntilIdle();
 }
 
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_Subdomain) {
+  base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
+  EXPECT_CALL(callback, Run(offchain_subdomain_eth_addr().ToHex(), false,
+                            mojom::ProviderError::kSuccess, ""));
+  json_rpc_service_->EnsGetEthAddr(ens_subdomain_host(), AllowOffchain(),
+                                   callback.Get());
+  base::RunLoop().RunUntilIdle();
+}
+
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_Subdomain_NoEnsip10Support) {
+  // Turning off Ensip-10 support for resolver so addr(bytes32) is called.
+  ensip10_support_handler_->DisableSupport();
+
+  base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
+  EXPECT_CALL(callback,
+              Run("", false, mojom::ProviderError::kInvalidParams,
+                  l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
+  json_rpc_service_->EnsGetEthAddr(ens_subdomain_host(), AllowOffchain(),
+                                   callback.Get());
+  base::RunLoop().RunUntilIdle();
+}
+
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_NoResolver) {
   base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
   EXPECT_CALL(callback,
@@ -4837,9 +4893,6 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_NoResolver) {
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_NoEnsip10Support) {
-  // TODO(apaymyshev): ENS offchain lookup should work without ensip10
-  // support.
-
   // Turning off Ensip-10 support for resolver so addr(bytes32) is called.
   ensip10_support_handler_->DisableSupport();
 
@@ -5016,6 +5069,35 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash) {
   EXPECT_CALL(callback, Run(offchain_contenthash(), false,
                             mojom::ProviderError::kSuccess, ""));
   json_rpc_service_->EnsGetContentHash(ens_host(), callback.Get());
+  base::RunLoop().RunUntilIdle();
+}
+
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_Subdomain) {
+  decentralized_dns::SetEnsOffchainResolveMethod(
+      local_state_prefs(),
+      decentralized_dns::EnsOffchainResolveMethod::kEnabled);
+
+  base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
+  EXPECT_CALL(callback, Run(offchain_subdomain_contenthash(), false,
+                            mojom::ProviderError::kSuccess, ""));
+  json_rpc_service_->EnsGetContentHash(ens_subdomain_host(), callback.Get());
+  base::RunLoop().RunUntilIdle();
+}
+
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_Subdomain_NoEnsip10Support) {
+  // Turning off Ensip-10 support for resolver so addr(bytes32) is called.
+  ensip10_support_handler_->DisableSupport();
+
+  decentralized_dns::SetEnsOffchainResolveMethod(
+      local_state_prefs(),
+      decentralized_dns::EnsOffchainResolveMethod::kEnabled);
+
+  base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
+  EXPECT_CALL(
+      callback,
+      Run(std::vector<uint8_t>(), false, mojom::ProviderError::kInvalidParams,
+          l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
+  json_rpc_service_->EnsGetContentHash(ens_subdomain_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
 }
 

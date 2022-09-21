@@ -26,6 +26,7 @@
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "components/grit/brave_components_strings.h"
 
 namespace brave_wallet {
 namespace {
@@ -59,6 +60,22 @@ EnsResolverTaskError MakeInternalError() {
   return EnsResolverTaskError(
       mojom::ProviderError::kInternalError,
       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+}
+
+EnsResolverTaskError MakeInvalidParamsError() {
+  return EnsResolverTaskError(
+      mojom::ProviderError::kInvalidParams,
+      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+}
+
+std::string GetParent(const std::string& domain) {
+  DCHECK(domain == "eth" || base::EndsWith(domain, ".eth"));
+  if (domain == "eth")
+    return "";
+  std::size_t dot_pos = domain.find('.');
+  if (dot_pos == std::string::npos)
+    return "";
+  return domain.substr(dot_pos + 1);
 }
 
 }  // namespace
@@ -183,6 +200,7 @@ EnsResolverTask::EnsResolverTask(
       api_request_helper_ens_offchain_(api_request_helper_ens_offchain),
       ens_call_(std::move(ens_call)),
       domain_(domain),
+      resolver_domain_(domain),
       network_url_(network_url),
       allow_offchain_(allow_offchain) {
   DCHECK(api_request_helper_);
@@ -230,15 +248,8 @@ void EnsResolverTask::WorkOnTask() {
   }
 
   if (offchain_lookup_data_) {
-    if (offchain_lookup_attemps_left_ > 0) {
-      FetchOffchainData();
-      return;
-    } else {
-      std::move(done_callback_)
-          .Run(this, absl::nullopt, EnsResolverTaskError(MakeInternalError()));
-      // `this` is not valid here.
-      return;
-    }
+    FetchOffchainData();
+    return;
   }
 
   if (offchain_callback_call_) {
@@ -273,7 +284,7 @@ void EnsResolverTask::FetchEnsResolver() {
   const std::string contract_address =
       GetEnsRegistryContractAddress(brave_wallet::mojom::kMainnetChainId);
 
-  std::string call_data = ens::Resolver(domain_);
+  std::string call_data = ens::Resolver(resolver_domain_);
 
   RequestInternal(eth::eth_call(contract_address, call_data),
                   base::BindOnce(&EnsResolverTask::OnFetchEnsResolverDone,
@@ -296,9 +307,20 @@ void EnsResolverTask::OnFetchEnsResolverDone(
   }
 
   auto resolver_address = eth_abi::ExtractAddressFromTuple(*bytes_result, 0);
-  if (!resolver_address.IsValid() || resolver_address.IsZeroAddress()) {
+  if (!resolver_address.IsValid()) {
     task_error_.emplace(MakeInternalError());
     return;
+  }
+
+  if (resolver_address.IsZeroAddress()) {
+    auto parent = GetParent(resolver_domain_);
+    if (parent.empty()) {
+      task_error_.emplace(MakeInternalError());
+      return;
+    } else {
+      resolver_domain_ = parent;
+      return;
+    }
   }
 
   resolver_address_ = std::move(resolver_address);
@@ -338,6 +360,13 @@ void EnsResolverTask::FetchEnsRecord() {
   DCHECK(supports_ensip_10_);
   DCHECK(!supports_ensip_10_.value());
   DCHECK(!task_result_);
+
+  if (domain_ != resolver_domain_) {
+    // Wildcard resolution is supported only with resolve(bytes,bytes) method.
+    task_error_.emplace(MakeInvalidParamsError());
+    ScheduleWorkOnTask();
+    return;
+  }
 
   RequestInternal(eth::eth_call(resolver_address_.ToHex(), ToHex(ens_call_)),
                   base::BindOnce(&EnsResolverTask::OnFetchEnsRecordDone,
@@ -445,6 +474,13 @@ void EnsResolverTask::FetchOffchainData() {
     return;
   } else if (!allow_offchain_.value()) {
     // Offchain lookup explicily disabled.
+    task_error_.emplace(MakeInternalError());
+    ScheduleWorkOnTask();
+    return;
+  }
+
+  if (offchain_lookup_attemps_left_ <= 0) {
+    // No more attempts left results in a error.
     task_error_.emplace(MakeInternalError());
     ScheduleWorkOnTask();
     return;

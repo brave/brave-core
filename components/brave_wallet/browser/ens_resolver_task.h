@@ -146,6 +146,7 @@ class EnsResolverTask {
   raw_ptr<APIRequestHelper> api_request_helper_ens_offchain_;
   std::vector<uint8_t> ens_call_;
   std::string domain_;
+  std::string resolver_domain_;
   absl::optional<std::vector<uint8_t>> dns_encoded_name_;
   GURL network_url_;
   absl::optional<bool> allow_offchain_;
