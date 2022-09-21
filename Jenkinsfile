@@ -1,3 +1,7 @@
+def SKIP_SIGNING_DEFAULT = true
+if (JOB_NAME.indexOf("windows") != -1) {
+    SKIP_SIGNING_DEFAULT = false
+}
 pipeline {
     agent none
     options {
@@ -9,7 +13,7 @@ pipeline {
         choice(name: 'BUILD_TYPE', choices: ["Static", "Release", "Component", "Debug"])
         booleanParam(name: 'WIPE_WORKSPACE', defaultValue: false)
         booleanParam(name: 'USE_GOMA', defaultValue: true)
-        booleanParam(name: 'SKIP_SIGNING', defaultValue: true)
+        booleanParam(name: 'SKIP_SIGNING', defaultValue: SKIP_SIGNING_DEFAULT)
         booleanParam(name: 'DCHECK_ALWAYS_ON', defaultValue: true)
         string(name: 'DEVOPS_BRANCH', defaultValue: 'master')
         string(name: 'NODE_LABEL', defaultValue: '')
@@ -56,7 +60,7 @@ pipeline {
                                 choiceParam('BUILD_TYPE', ["Static", "Release", "Component", "Debug"])
                                 booleanParam('WIPE_WORKSPACE', false)
                                 booleanParam('USE_GOMA', true)
-                                booleanParam('SKIP_SIGNING', true)
+                                booleanParam('SKIP_SIGNING', ${SKIP_SIGNING_DEFAULT})
                                 booleanParam('DCHECK_ALWAYS_ON', true)
                                 booleanParam('RUN_NETWORK_AUDIT', false)
                                 booleanParam('RUN_AUDIT_DEPS', false)
