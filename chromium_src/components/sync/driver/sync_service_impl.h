@@ -6,9 +6,15 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_SYNC_SERVICE_IMPL_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_SYNC_SERVICE_IMPL_H_
 
-#define BRAVE_SYNC_SERVICE_IMPL_H_ \
- private:                          \
-  friend class BraveSyncServiceImpl;
+#define BRAVE_SYNC_SERVICE_IMPL_H_                            \
+ private:                                                     \
+  friend class BraveSyncServiceImpl;                          \
+  friend class BraveSyncServiceImplTest;                      \
+  FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,          \
+                           PermanentlyDeleteAccount);         \
+  FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,          \
+                           OnAccountDeleted_FailureAndRetry); \
+  FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest, JoinDeletedChain);
 
 // Forcing this include before define virtual to avoid error of
 // "duplicate 'virtual' declaration specifier" at SyncEngine's

@@ -11,6 +11,7 @@
 #include "base/test/task_environment.h"
 #include "brave/components/sync/driver/brave_sync_service_impl.h"
 #include "brave/components/sync/driver/sync_service_impl_delegate.h"
+#include "brave/components/sync/test/brave_mock_sync_engine.h"
 #include "build/build_config.h"
 #include "components/os_crypt/os_crypt.h"
 #include "components/os_crypt/os_crypt_mocker.h"
@@ -270,6 +271,150 @@ TEST_F(BraveSyncServiceImplTest, ForcedSetDecryptionPassphrase) {
   brave_sync_service_impl()->OnEngineInitialized(true, false);
   EXPECT_FALSE(
       brave_sync_service_impl()->GetUserSettings()->IsPassphraseRequired());
+
+  OSCryptMocker::TearDown();
+}
+
+TEST_F(BraveSyncServiceImplTest, PermanentlyDeleteAccount) {
+  OSCryptMocker::SetUp();
+  CreateSyncService(SyncServiceImpl::MANUAL_START);
+
+  brave_sync_service_impl()->Initialize();
+  EXPECT_FALSE(engine());
+  brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
+  task_environment_.RunUntilIdle();
+
+  brave_sync_service_impl()->GetUserSettings()->SetFirstSetupComplete(
+      syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+  EXPECT_TRUE(engine());
+
+  std::unique_ptr<testing::NiceMock<BraveMockSyncEngine>> mock_sync_engine =
+      std::make_unique<testing::NiceMock<BraveMockSyncEngine>>();
+  EXPECT_CALL(*mock_sync_engine, PermanentlyDeleteAccount).Times(1);
+  std::unique_ptr<SyncEngine> engine_orig =
+      std::move(brave_sync_service_impl()->engine_);
+  brave_sync_service_impl()->engine_ = std::move(mock_sync_engine);
+  brave_sync_service_impl()->PermanentlyDeleteAccount(base::BindOnce(
+      [](const syncer::SyncProtocolError& sync_protocol_error) {}));
+  brave_sync_service_impl()->engine_ = std::move(engine_orig);
+  OSCryptMocker::TearDown();
+}
+
+TEST_F(BraveSyncServiceImplTest, OnAccountDeleted_Success) {
+  OSCryptMocker::SetUp();
+  CreateSyncService(SyncServiceImpl::MANUAL_START);
+
+  brave_sync_service_impl()->Initialize();
+  EXPECT_FALSE(engine());
+
+  brave_sync_service_impl()->initiated_delete_account_ = true;
+  SyncProtocolError sync_protocol_error;
+  sync_protocol_error.error_type = SYNC_SUCCESS;
+
+  brave_sync_service_impl()->OnAccountDeleted(
+      1, base::BindOnce([](const syncer::SyncProtocolError& spe) {
+        EXPECT_EQ(spe.error_type, SYNC_SUCCESS);
+      }),
+      sync_protocol_error);
+
+  OSCryptMocker::TearDown();
+}
+
+TEST_F(BraveSyncServiceImplTest, OnAccountDeleted_FailureAndRetry) {
+  OSCryptMocker::SetUp();
+  CreateSyncService(SyncServiceImpl::MANUAL_START);
+
+  brave_sync_service_impl()->Initialize();
+  EXPECT_FALSE(engine());
+
+  brave_sync_service_impl()->initiated_delete_account_ = true;
+  SyncProtocolError sync_protocol_error;
+  sync_protocol_error.error_type = TRANSIENT_ERROR;
+
+  // Five unsuccessful attempts, the callback must be fired once, for the last
+  // one
+  bool was_callback_invoked[] = {false, false, false, false, true};
+
+  for (size_t i = 0; i < std::size(was_callback_invoked); ++i) {
+    bool on_account_deleted_invoked = false;
+    brave_sync_service_impl()->OnAccountDeleted(
+        i + 1,
+        base::BindOnce(
+            [](bool* on_account_deleted_invoked,
+               const syncer::SyncProtocolError& spe) {
+              *on_account_deleted_invoked = true;
+              EXPECT_EQ(spe.error_type, TRANSIENT_ERROR);
+            },
+            &on_account_deleted_invoked),
+        sync_protocol_error);
+
+    EXPECT_EQ(on_account_deleted_invoked, was_callback_invoked[i]);
+  }
+
+  OSCryptMocker::TearDown();
+}
+
+TEST_F(BraveSyncServiceImplTest, JoinActiveOrNewChain) {
+  OSCryptMocker::SetUp();
+  CreateSyncService(SyncServiceImpl::MANUAL_START);
+
+  brave_sync_service_impl()->Initialize();
+  EXPECT_FALSE(engine());
+
+  EXPECT_FALSE(brave_sync_service_impl()->join_chain_result_callback_);
+
+  bool join_chain_callback_invoked = false;
+
+  brave_sync_service_impl()->SetJoinChainResultCallback(base::BindOnce(
+      [](bool* join_chain_callback_invoked, const bool& join_succeeded) {
+        *join_chain_callback_invoked = true;
+        EXPECT_TRUE(join_succeeded);
+      },
+      &join_chain_callback_invoked));
+
+  EXPECT_TRUE(brave_sync_service_impl()->join_chain_result_callback_);
+  EXPECT_FALSE(join_chain_callback_invoked);
+  brave_sync_service_impl()->LocalDeviceAppeared();
+  EXPECT_TRUE(join_chain_callback_invoked);
+
+  OSCryptMocker::TearDown();
+}
+
+TEST_F(BraveSyncServiceImplTest, JoinDeletedChain) {
+  OSCryptMocker::SetUp();
+  CreateSyncService(SyncServiceImpl::MANUAL_START);
+
+  brave_sync_service_impl()->Initialize();
+  EXPECT_FALSE(engine());
+
+  EXPECT_FALSE(brave_sync_service_impl()->join_chain_result_callback_);
+
+  bool join_chain_callback_invoked = false;
+
+  brave_sync_service_impl()->SetJoinChainResultCallback(base::BindOnce(
+      [](bool* join_chain_callback_invoked, const bool& join_succeeded) {
+        *join_chain_callback_invoked = true;
+        EXPECT_FALSE(join_succeeded);
+      },
+      &join_chain_callback_invoked));
+
+  EXPECT_TRUE(brave_sync_service_impl()->join_chain_result_callback_);
+  EXPECT_FALSE(join_chain_callback_invoked);
+  EXPECT_FALSE(brave_sync_service_impl()->initiated_self_device_info_deleted_);
+
+  EXPECT_FALSE(brave_sync_service_impl()->initiated_join_chain_);
+  brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
+  EXPECT_TRUE(brave_sync_service_impl()->initiated_join_chain_);
+
+  // Normally sync_disabled_by_admin_ is set at
+  // SyncServiceImpl::OnActionableError, but we can't invoke it, so set it
+  // directly for test
+  brave_sync_service_impl()->sync_disabled_by_admin_ = true;
+  brave_sync_service_impl()->ResetEngine(
+      ShutdownReason::DISABLE_SYNC_AND_CLEAR_DATA,
+      SyncServiceImpl::ResetEngineReason::kDisabledAccount);
+
+  EXPECT_TRUE(join_chain_callback_invoked);
 
   OSCryptMocker::TearDown();
 }

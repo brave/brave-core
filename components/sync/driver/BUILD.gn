@@ -22,6 +22,7 @@ source_set("unit_tests") {
     "//brave/components/brave_sync:network_time_helper",
     "//brave/components/brave_sync:prefs",
     "//brave/components/constants",
+    "//brave/components/sync/test:test_support",
     "//components/os_crypt:os_crypt",
     "//components/os_crypt:test_support",
     "//components/prefs:prefs",
