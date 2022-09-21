@@ -483,8 +483,8 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 
   const double amount = 5.0;
   contribution_->TipViaCode("bumpsmack.com", amount,
-                            ledger::mojom::PublisherStatus::CONNECTED, 1);
-  contribution_->VerifyTip(amount, true, false, true);
+                            ledger::mojom::PublisherStatus::NOT_VERIFIED, 0);
+  contribution_->VerifyTip(amount, false, false, true);
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -498,8 +498,8 @@ IN_PROC_BROWSER_TEST_F(
 
   const double amount = 5.0;
   contribution_->TipViaCode("bumpsmack.com", amount,
-                            ledger::mojom::PublisherStatus::CONNECTED, 1);
-  contribution_->VerifyTip(amount, true, false, true);
+                            ledger::mojom::PublisherStatus::NOT_VERIFIED, 0);
+  contribution_->VerifyTip(amount, false, false, true);
 }
 
 // Reenable when https://github.com/brave/brave-browser/issues/19982 is fixed.
@@ -512,7 +512,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 
   const double amount = 5.0;
   contribution_->TipViaCode("bumpsmack.com", amount,
-                            ledger::mojom::PublisherStatus::CONNECTED, 0);
+                            ledger::mojom::PublisherStatus::NOT_VERIFIED, 0);
 
   contribution_->IsBalanceCorrect();
 

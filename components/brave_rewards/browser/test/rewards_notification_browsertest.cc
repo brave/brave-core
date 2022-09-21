@@ -342,7 +342,7 @@ IN_PROC_BROWSER_TEST_F(
       rewards_browsertest_util::GetUrl(https_server_.get(), "duckduckgo.com"),
       verified);
   context_helper_->VisitPublisher(
-      rewards_browsertest_util::GetUrl(https_server_.get(), "bumpsmack.com"),
+      rewards_browsertest_util::GetUrl(https_server_.get(), "3zsistemi.si"),
       verified);
   context_helper_->VisitPublisher(
       rewards_browsertest_util::GetUrl(https_server_.get(), "brave.com"),
