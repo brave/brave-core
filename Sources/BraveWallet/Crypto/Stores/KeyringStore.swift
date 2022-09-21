@@ -243,8 +243,6 @@ public class KeyringStore: ObservableObject {
         self.updateKeyringInfo()
         self.resetKeychainStoredPassword()
       }
-      self.walletService.setSelectedCoin(.eth)
-      self.rpcService.setNetwork(BraveWallet.MainnetChainId, coin: .eth, completion: { _ in })
       for coin in WalletConstants.supportedCoinTypes {
         Domain.clearAllWalletPermissions(for: coin)
       }
