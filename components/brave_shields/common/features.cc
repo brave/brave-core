@@ -69,8 +69,25 @@ const base::Feature kCosmeticFilteringSyncLoad{
 
 // Enables an extra TRAVE_EVENT in content filter scripts. The feature is
 // primary designed for local debugging.
-const base::Feature kCosmeticFilteringTraceJsPerformance{
-    "CosmeticFilteringTraceJsPerformance", base::FEATURE_DISABLED_BY_DEFAULT};
+const base::Feature kCosmeticFilteringExtraPerfMetrics{
+    "CosmeticFilteringExtraPerfMetrics", base::FEATURE_DISABLED_BY_DEFAULT};
+
+const base::Feature kCosmeticFilteringJsPerformance{
+    "CosmeticFilteringJsPerformance", base::FEATURE_DISABLED_BY_DEFAULT};
+
+constexpr base::FeatureParam<std::string>
+    kCosmeticFilteringfirstSelectorsPollingDelayMs{
+        &kCosmeticFilteringJsPerformance, "first_selectors_query_delay_ms",
+        "undefined"};
+
+constexpr base::FeatureParam<std::string>
+    kCosmeticFilteringswitchToSelectorsPollingThreshold{
+        &kCosmeticFilteringJsPerformance, "switch_to_polling_threshold",
+        "undefined"};
+
+constexpr base::FeatureParam<std::string>
+    kCosmeticFilteringFetchNewClassIdRulesThrottlingMs{
+        &kCosmeticFilteringJsPerformance, "fetch_throttling_ms", "undefined"};
 
 }  // namespace features
 }  // namespace brave_shields

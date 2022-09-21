@@ -72,11 +72,23 @@ const char kPreInitScript[] =
         })();)";
 
 const char kCosmeticFilteringInitScript[] =
-    R"(if (window.content_cosmetic.hide1pContent === undefined) {
-        window.content_cosmetic.hide1pContent = %s;
-       }
-       if (window.content_cosmetic.generichide === undefined) {
-         window.content_cosmetic.generichide = %s;
+    R"({
+        const CC = window.content_cosmetic
+        if (CC.hide1pContent === undefined) {
+          CC.hide1pContent = %s;
+        }
+        if (CC.generichide === undefined) {
+          CC.generichide = %s;
+        }
+        if (CC.firstSelectorsPollingDelayMs === undefined) {
+          CC.firstSelectorsPollingDelayMs = %s;
+        }
+        if (CC.switchToSelectorsPollingThreshold === undefined) {
+          CC.switchToSelectorsPollingThreshold = %s;
+        }
+        if (CC.fetchNewClassIdRulesThrottlingMs === undefined) {
+          CC.fetchNewClassIdRulesThrottlingMs = %s;
+        }
        })";
 
 const char kHideSelectorsInjectScript[] =
@@ -190,9 +202,9 @@ CosmeticFiltersJSHandler::CosmeticFiltersJSHandler(
       enabled_1st_party_cf_(false) {
   EnsureConnected();
 
-  const bool perf_tracing_enabled = base::FeatureList::IsEnabled(
-      brave_shields::features::kCosmeticFilteringTraceJsPerformance);
-  if (perf_tracing_enabled) {
+  const bool perf_tracker_enabled = base::FeatureList::IsEnabled(
+      brave_shields::features::kCosmeticFilteringExtraPerfMetrics);
+  if (perf_tracker_enabled) {
     perf_tracker_ = std::make_unique<CosmeticFilterPerfTracker>();
   }
 }
@@ -422,9 +434,13 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
 
   // Working on css rules
   generichide_ = resources_dict_->FindBool("generichide").value_or(false);
+  namespace bf = brave_shields::features;
   std::string cosmetic_filtering_init_script = base::StringPrintf(
       kCosmeticFilteringInitScript, enabled_1st_party_cf_ ? "true" : "false",
-      generichide_ ? "true" : "false");
+      generichide_ ? "true" : "false",
+      bf::kCosmeticFilteringfirstSelectorsPollingDelayMs.Get().c_str(),
+      bf::kCosmeticFilteringswitchToSelectorsPollingThreshold.Get().c_str(),
+      bf::kCosmeticFilteringFetchNewClassIdRulesThrottlingMs.Get().c_str());
   std::string pre_init_script = base::StringPrintf(
       kPreInitScript, cosmetic_filtering_init_script.c_str());
 
