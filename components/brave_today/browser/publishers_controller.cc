@@ -126,15 +126,12 @@ void PublishersController::GetOrFetchPublishers(base::OnceClosure callback,
 
 void PublishersController::GetLocale(
     mojom::BraveNewsController::GetLocaleCallback callback) {
-  if (publishers_.empty() || is_update_in_progress_) {
-    on_current_update_complete_->Post(
-        FROM_HERE, base::BindOnce(&PublishersController::GetLocale,
-                                  base::Unretained(this), std::move(callback)));
-    EnsurePublishersIsUpdating();
-    return;
-  }
-
-  std::move(callback).Run(default_locale_);
+  GetOrFetchPublishers(base::BindOnce(
+      [](PublishersController* controller,
+         mojom::BraveNewsController::GetLocaleCallback callback, Publishers _) {
+        std::move(callback).Run(controller->default_locale_);
+      },
+      base::Unretained(this), std::move(callback)));
 }
 
 void PublishersController::EnsurePublishersIsUpdating() {
