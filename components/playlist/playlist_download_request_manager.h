@@ -25,6 +25,10 @@ class OneShotTimer;
 class Value;
 }  // namespace base
 
+namespace blink::web_pref {
+struct WebPreferences;
+}  // namespace blink::web_pref
+
 namespace content {
 class BrowserContext;
 }  // namespace content
@@ -66,10 +70,14 @@ class PlaylistDownloadRequestManager
   // Request::callback will be called with generated param.
   void GetMediaFilesFromPage(Request request);
 
- private:
-  FRIEND_TEST_ALL_PREFIXES(CosmeticFilteringPlaylistFlagEnabledTest,
-                           AllowCosmeticFiltering);
+  // Update |web_prefs| if we want for |web_contents|.
+  void ConfigureWebPrefsforBackgroundWebContents(
+      content::WebContents* web_contents,
+      blink::web_pref::WebPreferences* web_prefs);
 
+  content::WebContents* GetBackgroundWebContentsForTesting();
+
+ private:
   // Calling this will trigger loading |url| on a web contents,
   // and we'll inject javascript on the contents to get a list of
   // media files on the page.

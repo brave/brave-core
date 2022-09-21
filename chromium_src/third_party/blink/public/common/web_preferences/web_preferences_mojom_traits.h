@@ -22,9 +22,9 @@ struct BLINK_COMMON_EXPORT StructTraits<blink::mojom::WebPreferencesDataView,
                                         blink::web_pref::WebPreferences>
     : public StructTraits<blink::mojom::WebPreferencesDataView,
                           blink::web_pref::WebPreferences_ChromiumImpl> {
-  static bool allow_cosmetic_filtering(
+  static bool force_cosmetic_filtering(
       const blink::web_pref::WebPreferences& r) {
-    return r.allow_cosmetic_filtering;
+    return r.force_cosmetic_filtering;
   }
 
   static bool Read(blink::mojom::WebPreferencesDataView r,

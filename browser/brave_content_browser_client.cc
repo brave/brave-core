@@ -212,7 +212,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/components/playlist/playlist_service_helper.h"
+#include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/components/playlist/playlist_service.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
@@ -1053,8 +1054,11 @@ void BraveContentBrowserClient::OverrideWebkitPrefs(WebContents* web_contents,
   web_prefs->allow_non_empty_navigator_plugins = true;
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-  if (playlist::IsBackgroundWebContents(web_contents)) {
-    web_prefs->allow_cosmetic_filtering = true;
+  if (auto* playlist_service =
+          playlist::PlaylistServiceFactory::GetForBrowserContext(
+              web_contents->GetBrowserContext())) {
+    playlist_service->ConfigureWebPrefsforBackgroundWebContents(web_contents,
+                                                                web_prefs);
   }
 #endif
 }

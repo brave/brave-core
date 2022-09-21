@@ -276,9 +276,9 @@ bool CosmeticFiltersJSHandler::ProcessURL(
       static_cast<content_settings::BraveContentSettingsAgentImpl*>(
           content_settings::ContentSettingsAgentImpl::Get(render_frame_));
 
-  const bool always_allow_cosmetic_filtering =
-      render_frame_->GetBlinkPreferences().allow_cosmetic_filtering;
-  if (!always_allow_cosmetic_filtering &&
+  const bool force_cosmetic_filtering =
+      render_frame_->GetBlinkPreferences().force_cosmetic_filtering;
+  if (!force_cosmetic_filtering &&
       !content_settings->IsCosmeticFilteringEnabled(url_)) {
     return false;
   }

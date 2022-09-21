@@ -7,5 +7,5 @@ module blink.mojom;
 
 [BraveExtend]
 struct WebPreferences {
-  bool allow_cosmetic_filtering;
+  bool force_cosmetic_filtering;
 };

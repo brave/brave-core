@@ -25,8 +25,7 @@ struct BLINK_COMMON_EXPORT WebPreferences : public WebPreferences_ChromiumImpl {
   WebPreferences& operator=(const WebPreferences& other);
   WebPreferences& operator=(WebPreferences&& other);
 
-  // Force to allow cosmetic filtering.
-  bool allow_cosmetic_filtering = false;
+  bool force_cosmetic_filtering = false;
 };
 
 }  // namespace web_pref

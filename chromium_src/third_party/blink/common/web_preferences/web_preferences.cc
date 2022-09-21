@@ -17,14 +17,10 @@ namespace blink {
 namespace web_pref {
 
 WebPreferences::WebPreferences(const WebPreferences& other) = default;
-
 WebPreferences::WebPreferences(WebPreferences&& other) = default;
-
 WebPreferences::~WebPreferences() = default;
-
 WebPreferences& WebPreferences::operator=(const WebPreferences& other) =
     default;
-
 WebPreferences& WebPreferences::operator=(WebPreferences&& other) = default;
 
 }  // namespace web_pref

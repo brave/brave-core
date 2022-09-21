@@ -54,7 +54,6 @@
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/playlist/features.h"
-#include "brave/components/playlist/playlist_download_request_manager.h"
 #include "brave/components/playlist/playlist_service.h"
 #endif
 
@@ -1800,20 +1799,26 @@ IN_PROC_BROWSER_TEST_F(CosmeticFilteringFlagDisabledTest,
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 
-namespace playlist {
-
 class CosmeticFilteringPlaylistFlagEnabledTest : public AdBlockServiceTest {
  public:
   CosmeticFilteringPlaylistFlagEnabledTest() {
-    feature_list_.InitAndEnableFeature(features::kPlaylist);
+    feature_list_.InitAndEnableFeature(playlist::features::kPlaylist);
+  }
+
+  content::WebContents* GetBackgroundWebContents() {
+    auto* playlist_service =
+        playlist::PlaylistServiceFactory::GetForBrowserContext(
+            browser()->profile());
+
+    return playlist_service->GetBackgroundWebContentsForTesting();
   }
 
  private:
   base::test::ScopedFeatureList feature_list_;
 };
 
-// Ensure cosmetic filtering occurs always when AllowCosmeticFiltering() is
-// called.
+// Check cosmetic filtering is applied to any loading from Playlist's
+// background web contents.
 IN_PROC_BROWSER_TEST_F(CosmeticFilteringPlaylistFlagEnabledTest,
                        AllowCosmeticFiltering) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
@@ -1825,24 +1830,16 @@ IN_PROC_BROWSER_TEST_F(CosmeticFilteringPlaylistFlagEnabledTest,
       content_settings(), brave_shields::ControlType::ALLOW, url);
   UpdateAdBlockInstanceWithRules("b.com###ad-banner");
 
-  auto* playlist_service_factory = PlaylistServiceFactory::GetInstance();
-  auto* playlist_service =
-      playlist_service_factory->GetForBrowserContext(browser()->profile());
-  auto* download_request_manager =
-      playlist_service->download_request_manager_.get();
-  download_request_manager->CreateWebContents();
-  auto* web_contents = download_request_manager->web_contents_.get();
+  auto* web_contents = GetBackgroundWebContents();
 
   web_contents->GetController().LoadURLWithParams(
       content::NavigationController::LoadURLParams(url));
-  content::WaitForLoadStop(web_contents);
+  EXPECT_TRUE(content::WaitForLoadStop(web_contents));
 
   // Check filter is applied properly.
   EXPECT_EQ(false, EvalJs(web_contents,
                           "checkSelector('#ad-banner', 'display', 'block')"));
 }
-
-}  // namespace playlist
 
 #endif
 

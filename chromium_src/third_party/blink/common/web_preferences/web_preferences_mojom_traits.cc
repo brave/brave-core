@@ -23,7 +23,7 @@ bool StructTraits<blink::mojom::WebPreferencesDataView,
     return false;
   }
 
-  out->allow_cosmetic_filtering = data.allow_cosmetic_filtering();
+  out->force_cosmetic_filtering = data.force_cosmetic_filtering();
   return true;
 }
 
