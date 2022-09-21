@@ -10,6 +10,10 @@ import '../settings_page/settings_animated_pages.js'
 import '../default_browser_page/default_browser_page.js'
 import '../on_startup_page/on_startup_page.js'
 
+// <if expr="is_win">
+import '../pin_shortcut_page/pin_shortcut_page.js'
+// </if>
+
 Polymer({
   is: 'brave-settings-getting-started',
 

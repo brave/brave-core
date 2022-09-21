@@ -15,5 +15,11 @@ settings_namespace_rewrites = [
   "settings.Router|Router",
 ]
 
+if (is_win) {
+  settings_namespace_rewrites += [
+    "settings.PinShortcutPageBrowserProxyImpl|PinShortcutPageBrowserProxyImpl",
+  ]
+}
+
 settings_auto_imports =
     [ "chrome/browser/resources/settings/router.html|Router,Route" ]

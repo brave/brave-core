@@ -11,17 +11,20 @@
 #include "base/memory/scoped_refptr.h"
 #include "brave/browser/brave_shell_integration.h"
 #include "brave/browser/ui/browser_dialogs.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "components/constrained_window/constrained_window_views.h"
 #include "components/prefs/pref_service.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/color/color_provider.h"
 #include "ui/views/bubble/bubble_frame_view.h"
 #include "ui/views/controls/button/checkbox.h"
+#include "ui/views/controls/button/label_button.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/layout/layout_provider.h"
@@ -44,27 +47,73 @@ namespace {
 
 constexpr int kPadding = 24;
 
-class NoSnappedBubbleFrameView : public views::BubbleFrameView {
+class DontAskAgainButton : public views::LabelButton {
  public:
-  using BubbleFrameView::BubbleFrameView;
-  ~NoSnappedBubbleFrameView() override = default;
+  METADATA_HEADER(DontAskAgainButton);
 
-  NoSnappedBubbleFrameView(const NoSnappedBubbleFrameView&) = delete;
-  NoSnappedBubbleFrameView& operator=(const NoSnappedBubbleFrameView&) = delete;
+  explicit DontAskAgainButton(PressedCallback callback)
+      : LabelButton(std::move(callback)) {
+    SetFontList();
+    SetText(brave_l10n::GetLocalizedResourceUTF16String(
+        IDS_BRAVE_DEFAULT_BROWSER_DIALOG_DONT_ASK));
+  }
+  DontAskAgainButton(const DontAskAgainButton&) = delete;
+  DontAskAgainButton& operator=(const DontAskAgainButton&) = delete;
+  ~DontAskAgainButton() override = default;
 
  private:
-  // views::BubbleFrarmeView overrides:
-  // BubbleFrameView::GetFrameWidthForClientWidth() uses snapped dialog width
-  // if dialog uses buttons. This width doesn't align with our design.
-  int GetFrameWidthForClientWidth(int client_width) const override {
-    // This doesn't use title bar. So, just using |client_width| is fine.
-    return client_width;
+  void SetFontList() {
+    gfx::FontList font_list;
+    constexpr int kFontSize = 13;
+    font_list.Derive(kFontSize - font_list.GetFontSize(),
+                     font_list.GetFontStyle(), gfx::Font::Weight::NORMAL);
+    label()->SetFontList(font_list);
+  }
+
+  // views::LabelButton overrides:
+  void OnThemeChanged() override {
+    LabelButton::OnThemeChanged();
+
+    auto* cp = GetColorProvider();
+    SetTextColor(views::Button::STATE_NORMAL,
+                 cp->GetColor(kColorDialogDontAskAgainButton));
+    SetTextColor(views::Button::STATE_HOVERED,
+                 cp->GetColor(kColorDialogDontAskAgainButtonHovered));
   }
 };
+
+BEGIN_METADATA(DontAskAgainButton, views::LabelButton)
+END_METADATA
+
+class CustomCheckbox : public views::Checkbox {
+ public:
+  METADATA_HEADER(CustomCheckbox);
+
+  explicit CustomCheckbox(const std::u16string& label) : Checkbox(label) {
+    SetFontList();
+  }
+  ~CustomCheckbox() override = default;
+  CustomCheckbox(const CustomCheckbox&) = delete;
+  CustomCheckbox& operator=(const CustomCheckbox&) = delete;
+
+ private:
+  void SetFontList() {
+    gfx::FontList font_list;
+    constexpr int kFontSize = 14;
+    font_list.Derive(kFontSize - font_list.GetFontSize(),
+                     font_list.GetFontStyle(), gfx::Font::Weight::NORMAL);
+    label()->SetFontList(font_list);
+  }
+};
+
+BEGIN_METADATA(CustomCheckbox, views::Checkbox)
+END_METADATA
 
 }  // namespace
 
 BraveDefaultBrowserDialogView::BraveDefaultBrowserDialogView() {
+  set_should_ignore_snapping(true);
+
   SetButtonLabel(ui::DIALOG_BUTTON_OK,
                  brave_l10n::GetLocalizedResourceUTF16String(
                      IDS_BRAVE_DEFAULT_BROWSER_DIALOG_OK_BUTTON_LABEL));
@@ -78,7 +127,6 @@ BraveDefaultBrowserDialogView::BraveDefaultBrowserDialogView() {
   SetCancelCallback(
       base::BindOnce(&BraveDefaultBrowserDialogView::OnCancelButtonClicked,
                      base::Unretained(this)));
-
   CreateChildViews();
 }
 
@@ -119,30 +167,19 @@ void BraveDefaultBrowserDialogView::CreateChildViews() {
   contents_label_->SetMultiLine(true);
   contents_label_->SetMaximumWidth(350);
 
-  dont_ask_again_checkbox_ = AddChildView(std::make_unique<views::Checkbox>(
+#if BUILDFLAG(IS_WIN)
+  pin_shortcut_checkbox_ = AddChildView(std::make_unique<CustomCheckbox>(
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_FIRSTRUN_DLG_PIN_SHORTCUT_TEXT)));
+  SetExtraView(std::make_unique<DontAskAgainButton>(
+      views::Button::PressedCallback(base::BindRepeating(
+          &BraveDefaultBrowserDialogView::OnDontAskAgainButtonPressed,
+          base::Unretained(this)))));
+#else
+  dont_ask_again_checkbox_ = AddChildView(std::make_unique<CustomCheckbox>(
       brave_l10n::GetLocalizedResourceUTF16String(
           IDS_BRAVE_DEFAULT_BROWSER_DIALOG_DONT_ASK)));
-}
-
-std::unique_ptr<views::NonClientFrameView>
-BraveDefaultBrowserDialogView::CreateNonClientFrameView(views::Widget* widget) {
-  if (!use_custom_frame())
-    return DialogDelegateView::CreateNonClientFrameView(widget);
-
-  views::LayoutProvider* provider = views::LayoutProvider::Get();
-  auto frame = std::make_unique<NoSnappedBubbleFrameView>(
-      provider->GetInsetsMetric(views::INSETS_DIALOG_TITLE), gfx::Insets());
-
-  const views::BubbleBorder::Shadow kShadow =
-      views::BubbleBorder::DIALOG_SHADOW;
-  std::unique_ptr<views::BubbleBorder> border =
-      std::make_unique<views::BubbleBorder>(views::BubbleBorder::FLOAT,
-                                            kShadow);
-  if (GetParams().round_corners)
-    border->SetCornerRadius(GetCornerRadius());
-  frame->SetFootnoteView(DisownFootnoteView());
-  frame->SetBubbleBorder(std::move(border));
-  return frame;
+#endif
 }
 
 ui::ModalType BraveDefaultBrowserDialogView::GetModalType() const {
@@ -158,8 +195,10 @@ void BraveDefaultBrowserDialogView::OnWidgetInitialized() {
 }
 
 void BraveDefaultBrowserDialogView::OnCancelButtonClicked() {
+#if !BUILDFLAG(IS_WIN)
   g_browser_process->local_state()->SetBoolean(
       kDefaultBrowserPromptEnabled, !dont_ask_again_checkbox_->GetChecked());
+#endif
 }
 
 void BraveDefaultBrowserDialogView::OnAcceptButtonClicked() {
@@ -168,14 +207,27 @@ void BraveDefaultBrowserDialogView::OnAcceptButtonClicked() {
   // and it will be automatically freed once all its tasks have finished.
   base::MakeRefCounted<shell_integration::BraveDefaultBrowserWorker>()
 #if BUILDFLAG(IS_WIN)
-      ->StartSetAsDefault(
-          base::BindOnce([](shell_integration::DefaultWebClientState state) {
+      ->StartSetAsDefault(base::BindOnce(
+          [](bool pin_to_taskbar,
+             shell_integration::DefaultWebClientState state) {
             if (state == shell_integration::DefaultWebClientState::IS_DEFAULT) {
               // Try to pin to taskbar when Brave is set as a default browser.
               shell_integration::win::PinToTaskbar();
             }
-          }));
+          },
+          pin_shortcut_checkbox_->GetChecked()));
 #else
       ->StartSetAsDefault(base::NullCallback());
 #endif
 }
+
+#if BUILDFLAG(IS_WIN)
+void BraveDefaultBrowserDialogView::OnDontAskAgainButtonPressed() {
+  g_browser_process->local_state()->SetBoolean(kDefaultBrowserPromptEnabled,
+                                               false);
+  CancelDialog();
+}
+#endif
+
+BEGIN_METADATA(BraveDefaultBrowserDialogView, views::DialogDelegateView)
+END_METADATA

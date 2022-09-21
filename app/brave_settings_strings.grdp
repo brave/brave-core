@@ -140,6 +140,19 @@
     Customize the background image and widgets that appear on the new tab page
   </message>
 
+  <!-- Settings / Pin shortcut-->
+  <if expr="is_win">
+    <message name="IDS_SETTINGS_CAN_PIN_SHORTCUT">
+      Pin to taskbar
+    </message>
+    <message name="IDS_SETTINGS_PIN_SHORTCUT">
+      Pin
+    </message>
+    <message name="IDS_SETTINGS_SHORTCUT_PINNED">
+      Brave is already pinned
+    </message>
+  </if>
+
   <!-- Settings / Shields -->
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_TITLE" desc="The title for Brave shields section in settings">
     Shields
