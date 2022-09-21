@@ -379,8 +379,12 @@ extension KeyringStore: BraveWalletKeyringServiceObserver {
   public func keyringCreated(_ keyringId: String) {
     Task { @MainActor in
       let newKeyring = await keyringService.keyringInfo(keyringId)
-      if let newAccount = newKeyring.accountInfos.first {
-        await keyringService.setSelectedAccount(newAccount.address, coin: newAccount.coin)
+      if let newKeyringCoin = newKeyring.coin {
+        let selectedAccount = await keyringService.selectedAccount(newKeyringCoin)
+        // if the new Keyring doesn't have a selected account, select the first account
+        if selectedAccount == nil, let newAccount = newKeyring.accountInfos.first {
+          await keyringService.setSelectedAccount(newAccount.address, coin: newAccount.coin)
+        }
       }
       updateKeyringInfo()
     }
