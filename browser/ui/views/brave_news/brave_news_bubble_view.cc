@@ -141,7 +141,7 @@ void BraveNewsBubbleView::OpenManageFeeds() {
   GetWidget()->Hide();
 
   auto* browser = chrome::FindBrowserWithWebContents(contents_);
-  browser->OpenURL({GURL("brave://newtab#customize/news"), content::Referrer(),
+  browser->OpenURL({GURL("brave://newtab/?openSettings=BraveToday"), content::Referrer(),
                     WindowOpenDisposition::NEW_FOREGROUND_TAB,
                     ui::PAGE_TRANSITION_LINK, false});
 }
