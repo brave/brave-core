@@ -351,9 +351,9 @@ void ApplicationContextImpl::CreateLocalState() {
   // Register local state preferences.
   RegisterLocalStatePrefs(pref_registry.get());
 
-  local_state_ = ::CreateLocalState(
-      local_state_path, local_state_task_runner_.get(), pref_registry,
-      nullptr, nullptr);
+  local_state_ =
+      ::CreateLocalState(local_state_path, local_state_task_runner_.get(),
+                         pref_registry, nullptr, nullptr);
   DCHECK(local_state_);
 
   sessions::SessionIdGenerator::GetInstance()->Init(local_state_.get());
