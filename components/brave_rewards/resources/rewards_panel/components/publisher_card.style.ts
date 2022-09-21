@@ -48,7 +48,7 @@ export const name = styled.div`
 `
 
 export const status = styled.div`
-  font-weight: 600;
+  font-weight: 500;
   font-size: 12px;
   line-height: 18px;
   margin-top: 7px;
@@ -216,7 +216,7 @@ export const attention = styled.div`
   }
 
   .value {
-    font-weight: 600;
+    font-weight: 500;
     text-align: right;
   }
 

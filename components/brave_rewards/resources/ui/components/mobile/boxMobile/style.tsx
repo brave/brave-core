@@ -124,7 +124,7 @@ export const SettingsTitle = styled('span')<{}>`
 export const SettingsText = styled('div')<{}>`
   color: #4B4C5C;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   display: flex;
   align-items: center;
 `
@@ -136,7 +136,7 @@ export const DetailsLink = styled('a')<{}>`
   align-items: center;
   justify-content: center;
   padding: 16px;
-  font-weight: 600;
+  font-weight: 500;
 `
 
 export const DetailInfo = styled('div')<{}>`

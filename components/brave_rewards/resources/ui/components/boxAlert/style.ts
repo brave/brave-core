@@ -83,7 +83,7 @@ export const StyledModalInfo = styled('div')<{}>`
 export const StyledListMessage = styled('div')<{}>`
   display: block;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   margin-top: 30px;
 `
 

@@ -12,7 +12,7 @@ export const paymentStatus = styled.div`
 
   a {
     color: var(--brave-palette-blurple500);
-    font-weight: 600;
+    font-weight: 500;
     text-decoration: none;
   }
 
@@ -22,7 +22,7 @@ export const paymentStatus = styled.div`
     padding: 6px 21px;
     display: flex;
     gap: 6px;
-    font-weight: 600;
+    font-weight: 500;
   }
 
   .rewards-payment-amount {
