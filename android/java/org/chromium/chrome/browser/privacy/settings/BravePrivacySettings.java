@@ -173,6 +173,14 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     }
 
     @Override
+    public void onDestroy() {
+        if (mCookieListOptInPageAndroidHandler != null) {
+            mCookieListOptInPageAndroidHandler.close();
+        }
+        super.onDestroy();
+    }
+
+    @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         super.onCreatePreferences(savedInstanceState, rootKey);
 

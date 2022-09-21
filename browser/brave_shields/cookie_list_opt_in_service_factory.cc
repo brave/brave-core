@@ -38,10 +38,10 @@ CookieListOptInService* CookieListOptInServiceFactory::GetServiceForContext(
 void CookieListOptInServiceFactory::BindForContext(
     content::BrowserContext* context,
     mojo::PendingReceiver<mojom::CookieListOptInPageAndroidHandler> receiver) {
-  auto* keyring_service =
+  auto* cookie_list_opt_in_service =
       CookieListOptInServiceFactory::GetServiceForContext(context);
-  if (keyring_service) {
-    keyring_service->Bind(std::move(receiver));
+  if (cookie_list_opt_in_service) {
+    cookie_list_opt_in_service->Bind(std::move(receiver));
   }
 }
 

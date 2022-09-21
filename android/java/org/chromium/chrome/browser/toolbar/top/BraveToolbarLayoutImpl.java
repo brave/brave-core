@@ -210,8 +210,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (mBraveShieldsContentSettings != null) {
             mBraveShieldsContentSettings.removeObserver(mBraveShieldsContentSettingsObserver);
         }
+        if (mCookieListOptInPageAndroidHandler != null) {
+            mCookieListOptInPageAndroidHandler.close();
+        }
         super.destroy();
-
         if (mBraveRewardsNativeWorker != null) {
             mBraveRewardsNativeWorker.RemoveObserver(this);
             mBraveRewardsNativeWorker.RemovePublisherObserver(this);

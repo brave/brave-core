@@ -8,6 +8,8 @@ package org.chromium.chrome.browser.shields;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.brave_shields.mojom.CookieListOptInPageAndroidHandler;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Interface;
 import org.chromium.mojo.bindings.Interface.Proxy.Handler;
@@ -32,8 +34,10 @@ public class CookieListOptInServiceFactory {
 
     public CookieListOptInPageAndroidHandler getCookieListOptInPageAndroidHandler(
             ConnectionErrorHandler connectionErrorHandler) {
+        Profile profile = Utils.getProfile(false); // Always use regular profile
         int nativeHandle =
-                CookieListOptInServiceFactoryJni.get().getInterfaceToCookieListOptInService();
+                CookieListOptInServiceFactoryJni.get().getInterfaceToCookieListOptInService(
+                        profile);
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         CookieListOptInPageAndroidHandler cookieListOptInPageAndroidHandler =
                 CookieListOptInPageAndroidHandler.MANAGER.attachProxy(handle, 0);
@@ -49,6 +53,6 @@ public class CookieListOptInServiceFactory {
 
     @NativeMethods
     interface Natives {
-        int getInterfaceToCookieListOptInService();
+        int getInterfaceToCookieListOptInService(Profile profile);
     }
 }
