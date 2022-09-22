@@ -95,11 +95,15 @@
                       android:textColor="@color/wallet_text_color"
                       android:textSize="20sp"/>
 
+<!--           android:digits is a workaround for a 13 years old bug which Google claimed to have fixed but actually not:
+                   - https://issuetracker.google.com/issues/36907764
+                   - https://stackoverflow.com/questions/3821539/decimal-separator-comma-with-numberdecimal-inputtype-in-edittext -->
                   <EditText
                       android:id="@+id/from_value_text"
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
-                      android:inputType="numberDecimal"
+                      android:inputType="number"
+                      android:digits="0123456789.,"
                       android:textColor="@color/wallet_text_color"
                       android:textSize="20sp"/>
 

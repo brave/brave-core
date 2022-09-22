@@ -91,6 +91,7 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -1248,8 +1249,8 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             Double fromSendValue = 0d;
             try {
-                fromSendValue = Double.parseDouble(s.toString());
-            } catch (NumberFormatException ex) {
+                fromSendValue = Utils.parseDouble(s.toString());
+            } catch (ParseException ex) {
             }
 
             String validationResult = (fromSendValue > mConvertedFromBalance)
