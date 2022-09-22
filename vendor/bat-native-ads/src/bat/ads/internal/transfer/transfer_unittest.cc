@@ -19,8 +19,6 @@ class BatAdsTransferTest : public TransferObserver, public UnitTestBase {
  protected:
   BatAdsTransferTest() = default;
 
-  ~BatAdsTransferTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

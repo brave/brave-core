@@ -7,7 +7,7 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Components
-import { Checkbox, Grid, Column, Select, ControlWrapper } from 'brave-ui/components'
+import { Checkbox, Grid, Column, ControlWrapper } from 'brave-ui/components'
 import { Box, TableContribute, DisabledContent, List, ModalContribute, Tokens, NextContribution } from '../../ui/components'
 import { Provider } from '../../ui/components/profile'
 
@@ -120,7 +120,7 @@ class ContributeBox extends React.Component<Props, State> {
       <DisabledContent
         type={'contribute'}
       >
-        {getLocale('contributionDisabledText1')} <br />
+        {getLocale('contributionDisabledText1')}&nbsp;
         {getLocale('contributionDisabledText2')}
       </DisabledContent>
     )
@@ -140,8 +140,8 @@ class ContributeBox extends React.Component<Props, State> {
     })
   }
 
-  onSelectSettingChange = (key: string, value: string) => {
-    this.actions.onSettingSave(key, +value)
+  onSelectSettingChange = (key: string, event: React.FormEvent<HTMLSelectElement>) => {
+    this.actions.onSettingSave(key, Number(event.currentTarget.value))
   }
 
   onCheckSettingChange = (key: string, selected: boolean) => {
@@ -161,38 +161,38 @@ class ContributeBox extends React.Component<Props, State> {
       <Grid columns={1} customStyle={{ margin: '0 auto' }}>
         <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
           <ControlWrapper text={getLocale('contributionMonthly')}>
-            <Select
+            <select
               onChange={this.onSelectSettingChange.bind(this, 'contributionMonthly')}
-              value={parseFloat((contributionMonthly.toString() || '0')).toFixed(3)}
+              value={(contributionMonthly || 0).toFixed(3)}
             >
               {
-                monthlyList.map((choice: MonthlyChoice) => {
-                  return <div key={`choice-setting-${choice.tokens}`} data-value={choice.tokens.toString()}>
-                    {getLocale('contributionUpTo')} <Tokens value={choice.tokens} converted={choice.converted} />
-                  </div>
-                })
+                monthlyList.map((choice) => (
+                  <option key={`choice-setting-${choice.tokens}`} value={choice.tokens.toString()}>
+                    {getLocale('contributionUpTo')} {choice.tokens} BAT ({choice.converted} USD)
+                  </option>
+                ))
               }
-            </Select>
+            </select>
           </ControlWrapper>
           <ControlWrapper text={getLocale('contributionMinTime')}>
-            <Select
+            <select
               onChange={this.onSelectSettingChange.bind(this, 'contributionMinTime')}
               value={(contributionMinTime || '').toString()}
             >
-              <div data-value='5'>{getLocale('contributionTime5')}</div>
-              <div data-value='8'>{getLocale('contributionTime8')}</div>
-              <div data-value='60'>{getLocale('contributionTime60')}</div>
-            </Select>
+              <option value='5'>{getLocale('contributionTime5')}</option>
+              <option value='8'>{getLocale('contributionTime8')}</option>
+              <option value='60'>{getLocale('contributionTime60')}</option>
+            </select>
           </ControlWrapper>
           <ControlWrapper text={getLocale('contributionMinVisits')}>
-            <Select
+            <select
               onChange={this.onSelectSettingChange.bind(this, 'contributionMinVisits')}
               value={(contributionMinVisits || '').toString()}
             >
-              <div data-value='1'>{getLocale('contributionVisit1')}</div>
-              <div data-value='5'>{getLocale('contributionVisit5')}</div>
-              <div data-value='10'>{getLocale('contributionVisit10')}</div>
-            </Select>
+              <option value='1'>{getLocale('contributionVisit1')}</option>
+              <option value='5'>{getLocale('contributionVisit5')}</option>
+              <option value='10'>{getLocale('contributionVisit10')}</option>
+            </select>
           </ControlWrapper>
           <ControlWrapper text={getLocale('contributionOther')}>
             <Checkbox
@@ -266,22 +266,18 @@ class ContributeBox extends React.Component<Props, State> {
           : null
         }
         <List title={getLocale('contributionMonthly')}>
-          <Select
-            floating={true}
+          <select
+            value={(contributionMonthly || 0).toFixed(3)}
             onChange={this.onSelectSettingChange.bind(this, 'contributionMonthly')}
-            value={parseFloat((contributionMonthly.toString() || '0')).toFixed(3)}
-            showAllContents={true}
           >
             {
-              monthlyList.map((choice: MonthlyChoice) => {
-                return (
-                  <div key={`choice-${choice.tokens}`} data-value={choice.tokens.toString()}>
-                    {getLocale('contributionUpTo')} <Tokens value={choice.tokens} converted={choice.converted} />
-                  </div>
-                )
-              })
+              monthlyList.map((choice) => (
+                <option key={`choice-${choice.tokens}`} value={choice.tokens.toString()}>
+                  {getLocale('contributionUpTo')} {choice.tokens} BAT ({choice.converted} USD)
+                </option>
+              ))
             }
-          </Select>
+          </select>
         </List>
         <List title={getLocale('contributionNextDate')}>
           <NextContribution>

@@ -97,8 +97,6 @@ bool ExclusionRulesBase::ShouldExcludeCreativeAd(
   });
 }
 
-///////////////////////////////////////////////////////////////////////////////
-
 bool ExclusionRulesBase::AddToCacheIfNeeded(
     const CreativeAdInfo& creative_ad,
     ExclusionRuleInterface<CreativeAdInfo>* exclusion_rule) {

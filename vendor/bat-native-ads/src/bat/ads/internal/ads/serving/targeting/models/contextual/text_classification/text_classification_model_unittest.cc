@@ -20,8 +20,6 @@ class BatAdsTextClassificationModelTest : public UnitTestBase {
  protected:
   BatAdsTextClassificationModelTest() = default;
 
-  ~BatAdsTextClassificationModelTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 
@@ -42,7 +40,7 @@ TEST_F(BatAdsTextClassificationModelTest,
   processor.Process(text);
 
   // Act
-  TextClassification model;
+  const TextClassification model;
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -57,7 +55,7 @@ TEST_F(BatAdsTextClassificationModelTest, DoNotGetSegmentsForEmptyText) {
   processor.Process(text);
 
   // Act
-  TextClassification model;
+  const TextClassification model;
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -73,7 +71,7 @@ TEST_F(BatAdsTextClassificationModelTest,
   processor.Process(text);
 
   // Act
-  TextClassification model;
+  const TextClassification model;
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -150,7 +148,7 @@ TEST_F(BatAdsTextClassificationModelTest,
   }
 
   // Act
-  TextClassification model;
+  const TextClassification model;
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -258,7 +256,7 @@ TEST_F(BatAdsTextClassificationModelTest,
 
 TEST_F(BatAdsTextClassificationModelTest, DoNotGetSegmentsIfNeverProcessed) {
   // Act
-  TextClassification model;
+  const TextClassification model;
   const SegmentList segments = model.GetSegments();
 
   // Assert

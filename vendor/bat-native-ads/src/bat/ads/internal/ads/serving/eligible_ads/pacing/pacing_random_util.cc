@@ -22,7 +22,8 @@ double GeneratePacingRandomNumber() {
   return base::RandDouble();
 }
 
-ScopedPacingRandomNumberSetter::ScopedPacingRandomNumberSetter(double number) {
+ScopedPacingRandomNumberSetter::ScopedPacingRandomNumberSetter(
+    const double number) {
   g_pacing_random_number = number;
 }
 

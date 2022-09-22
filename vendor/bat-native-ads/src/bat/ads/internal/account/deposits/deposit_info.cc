@@ -7,14 +7,6 @@
 
 namespace ads {
 
-DepositInfo::DepositInfo() = default;
-
-DepositInfo::~DepositInfo() = default;
-
-DepositInfo::DepositInfo(DepositInfo&&) noexcept = default;
-
-DepositInfo& DepositInfo::operator=(DepositInfo&&) noexcept = default;
-
 bool DepositInfo::IsValid() const {
   return !creative_instance_id.empty();
 }

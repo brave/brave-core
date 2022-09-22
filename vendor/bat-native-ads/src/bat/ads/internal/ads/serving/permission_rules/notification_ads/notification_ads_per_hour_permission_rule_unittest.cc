@@ -16,12 +16,7 @@
 
 namespace ads::notification_ads {
 
-class BatAdsAdsPerHourPermissionRuleTest : public UnitTestBase {
- protected:
-  BatAdsAdsPerHourPermissionRuleTest() = default;
-
-  ~BatAdsAdsPerHourPermissionRuleTest() override = default;
-};
+class BatAdsAdsPerHourPermissionRuleTest : public UnitTestBase {};
 
 TEST_F(BatAdsAdsPerHourPermissionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   // Arrange

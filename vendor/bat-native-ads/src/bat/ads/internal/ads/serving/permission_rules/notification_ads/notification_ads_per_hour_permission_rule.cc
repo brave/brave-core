@@ -19,10 +19,6 @@ namespace {
 constexpr base::TimeDelta kTimeConstraint = base::Hours(1);
 }  // namespace
 
-AdsPerHourPermissionRule::AdsPerHourPermissionRule() = default;
-
-AdsPerHourPermissionRule::~AdsPerHourPermissionRule() = default;
-
 bool AdsPerHourPermissionRule::ShouldAllow() {
   if (PlatformHelper::GetInstance()->IsMobile()) {
     // Ads are periodically served on mobile so they will never exceed the

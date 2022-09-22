@@ -16,12 +16,17 @@ namespace ads {
 
 struct ConversionQueueItemInfo final {
   ConversionQueueItemInfo();
-  ConversionQueueItemInfo(const ConversionQueueItemInfo& info);
-  ConversionQueueItemInfo& operator=(const ConversionQueueItemInfo& info);
+
+  ConversionQueueItemInfo(const ConversionQueueItemInfo& other);
+  ConversionQueueItemInfo& operator=(const ConversionQueueItemInfo& other);
+
+  ConversionQueueItemInfo(ConversionQueueItemInfo&& other) noexcept;
+  ConversionQueueItemInfo& operator=(ConversionQueueItemInfo&& other) noexcept;
+
   ~ConversionQueueItemInfo();
 
-  bool operator==(const ConversionQueueItemInfo& rhs) const;
-  bool operator!=(const ConversionQueueItemInfo& rhs) const;
+  bool operator==(const ConversionQueueItemInfo& other) const;
+  bool operator!=(const ConversionQueueItemInfo& other) const;
 
   std::string campaign_id;
   std::string creative_set_id;

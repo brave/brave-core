@@ -78,8 +78,12 @@ void PlaylistPageHandler::AddMediaFilesFromPageToPlaylist(const std::string& id,
 
 void PlaylistPageHandler::AddMediaFilesFromOpenTabsToPlaylist(
     const std::string& playlist_id) {
-  auto* browser = chrome::FindBrowserWithWebContents(web_contents_);
-  DCHECK(browser);
+  auto* browser = chrome::FindLastActive();
+  if (!browser) {
+    LOG(ERROR) << "No active browser";
+    return;
+  }
+
   auto* tab_strip_model = browser->tab_strip_model();
   for (auto i = 0; i < tab_strip_model->count(); i++) {
     if (auto* contents = tab_strip_model->GetWebContentsAt(i);

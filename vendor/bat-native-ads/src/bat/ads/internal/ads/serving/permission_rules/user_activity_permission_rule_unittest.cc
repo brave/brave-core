@@ -19,8 +19,6 @@ class BatAdsUserActivityPermissionRuleTest : public UnitTestBase {
  protected:
   BatAdsUserActivityPermissionRuleTest() = default;
 
-  ~BatAdsUserActivityPermissionRuleTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

@@ -30,8 +30,9 @@ export const Content = styled('div')<{}>`
 
 export const WelcomeText = styled('span')<{}>`
   display: block;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 13px;
+  line-height: 1.2;
+  font-weight: 400;
   text-align: center;
   color: ${palette.white};
   max-width: 80%;

@@ -30,8 +30,6 @@ class ConfirmationType final {
   };
 
   ConfirmationType();
-  ConfirmationType(const ConfirmationType&);
-  ConfirmationType& operator=(const ConfirmationType&);
 
   // Allow implicit conversion of the enum value to this wrapper
   constexpr ConfirmationType(const Value& value)  // NOLINT (runtime/explicit)
@@ -42,8 +40,8 @@ class ConfirmationType final {
   Value value() const;
   std::string ToString() const;
 
-  bool operator==(const ConfirmationType& rhs) const;
-  bool operator!=(const ConfirmationType& rhs) const;
+  bool operator==(const ConfirmationType& other) const;
+  bool operator!=(const ConfirmationType& other) const;
 
  private:
   Value value_ = kUndefined;

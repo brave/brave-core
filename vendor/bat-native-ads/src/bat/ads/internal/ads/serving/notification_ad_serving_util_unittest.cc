@@ -15,12 +15,7 @@
 
 namespace ads::notification_ads {
 
-class BatAdsNotificationAdServingUtilTest : public UnitTestBase {
- protected:
-  BatAdsNotificationAdServingUtilTest() = default;
-
-  ~BatAdsNotificationAdServingUtilTest() override = default;
-};
+class BatAdsNotificationAdServingUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsNotificationAdServingUtilTest, ShouldServeAdsAtRegularIntervals) {
   // Arrange

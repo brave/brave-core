@@ -9,9 +9,13 @@ namespace ads {
 
 AdEventInfo::AdEventInfo() = default;
 
-AdEventInfo::AdEventInfo(const AdEventInfo& info) = default;
+AdEventInfo::AdEventInfo(const AdEventInfo& other) = default;
 
-AdEventInfo& AdEventInfo::operator=(const AdEventInfo& info) = default;
+AdEventInfo& AdEventInfo::operator=(const AdEventInfo& other) = default;
+
+AdEventInfo::AdEventInfo(AdEventInfo&& other) noexcept = default;
+
+AdEventInfo& AdEventInfo::operator=(AdEventInfo&& other) noexcept = default;
 
 AdEventInfo::~AdEventInfo() = default;
 

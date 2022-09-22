@@ -112,6 +112,21 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
       }
       break
     }
+    case types.ON_PROMOTION_CLAIM_STARTED: {
+      if (state.promotions) {
+        const promotion = getPromotion(payload.promotionId, state.promotions)
+        if (promotion) {
+          state = {
+            ...state,
+            promotions: updatePromotions({
+              ...promotion,
+              captchaStatus: 'start'
+            }, state.promotions)
+          }
+        }
+      }
+      break
+    }
     case types.ON_PROMOTION_FINISH: {
       state = { ...state }
       let newPromotion: any = {}

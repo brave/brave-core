@@ -12,12 +12,7 @@
 
 namespace ads::client {
 
-class BatAdsLegacyClientMigrationUtilTest : public UnitTestBase {
- protected:
-  BatAdsLegacyClientMigrationUtilTest() = default;
-
-  ~BatAdsLegacyClientMigrationUtilTest() override = default;
-};
+class BatAdsLegacyClientMigrationUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsLegacyClientMigrationUtilTest, HasMigrated) {
   // Arrange

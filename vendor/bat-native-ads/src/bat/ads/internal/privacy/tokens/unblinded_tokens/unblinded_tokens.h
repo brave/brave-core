@@ -13,9 +13,14 @@ namespace ads::privacy {
 class UnblindedTokens final {
  public:
   UnblindedTokens();
+
+  UnblindedTokens(const UnblindedTokens& other) = delete;
+  UnblindedTokens& operator=(const UnblindedTokens& other) = delete;
+
+  UnblindedTokens(UnblindedTokens&& other) noexcept = delete;
+  UnblindedTokens& operator=(UnblindedTokens&& other) noexcept = delete;
+
   ~UnblindedTokens();
-  UnblindedTokens(const UnblindedTokens&) = delete;
-  UnblindedTokens& operator=(const UnblindedTokens&) = delete;
 
   const UnblindedTokenInfo& GetToken() const;
   const UnblindedTokenList& GetAllTokens() const;

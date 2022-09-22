@@ -23,7 +23,7 @@ namespace ads::privacy::cbr {
 
 TEST(BatAdsSigningKeyTest, FailToInitializeWithEmptyBase64) {
   // Arrange
-  SigningKey signing_key("");
+  const SigningKey signing_key("");
 
   // Act
   const bool has_value = signing_key.has_value();
@@ -34,7 +34,7 @@ TEST(BatAdsSigningKeyTest, FailToInitializeWithEmptyBase64) {
 
 TEST(BatAdsSigningKeyTest, FailToInitializeWithInvalidBase64) {
   // Arrange
-  SigningKey signing_key(kInvalidBase64);
+  const SigningKey signing_key(kInvalidBase64);
 
   // Act
   const bool has_value = signing_key.has_value();
@@ -78,7 +78,7 @@ TEST(BatAdsSigningKeyTest, FailToDecodeInvalidBase64) {
 
 TEST(BatAdsSigningKeyTest, EncodeBase64) {
   // Arrange
-  SigningKey signing_key(kSigningKeyBase64);
+  const SigningKey signing_key(kSigningKeyBase64);
 
   // Act
   const absl::optional<std::string> encoded_base64 = signing_key.EncodeBase64();
@@ -90,7 +90,7 @@ TEST(BatAdsSigningKeyTest, EncodeBase64) {
 
 TEST(BatAdsSigningKeyTest, Sign) {
   // Arrange
-  SigningKey signing_key(kSigningKeyBase64);
+  const SigningKey signing_key(kSigningKeyBase64);
 
   // Act
   const absl::optional<SignedToken> signed_token =
@@ -103,7 +103,7 @@ TEST(BatAdsSigningKeyTest, Sign) {
 
 TEST(BatAdsSigningKeyTest, FailToSignWithInvalidBlindedToken) {
   // Arrange
-  SigningKey signing_key(kSigningKeyBase64);
+  const SigningKey signing_key(kSigningKeyBase64);
 
   // Act
   const absl::optional<SignedToken> signed_token =
@@ -153,7 +153,7 @@ TEST(BatAdsSigningKeyTest, GetPublicKey) {
 
 TEST(BatAdsSigningKeyTest, IsEqual) {
   // Arrange
-  SigningKey signing_key;
+  const SigningKey signing_key;
 
   // Act
 
@@ -163,7 +163,7 @@ TEST(BatAdsSigningKeyTest, IsEqual) {
 
 TEST(BatAdsSigningKeyTest, IsEmptyBase64Equal) {
   // Arrange
-  SigningKey signing_key("");
+  const SigningKey signing_key("");
 
   // Act
 
@@ -173,7 +173,7 @@ TEST(BatAdsSigningKeyTest, IsEmptyBase64Equal) {
 
 TEST(BatAdsSigningKeyTest, IsInvalidBase64Equal) {
   // Arrange
-  SigningKey signing_key(kInvalidBase64);
+  const SigningKey signing_key(kInvalidBase64);
 
   // Act
 
@@ -183,18 +183,18 @@ TEST(BatAdsSigningKeyTest, IsInvalidBase64Equal) {
 
 TEST(BatAdsSigningKeyTest, IsNotEqual) {
   // Arrange
-  SigningKey signing_key;
+  const SigningKey signing_key;
 
   // Act
 
   // Assert
-  SigningKey different_signing_key;
+  const SigningKey different_signing_key;
   EXPECT_NE(different_signing_key, signing_key);
 }
 
 TEST(BatAdsSigningKeyTest, OutputStream) {
   // Arrange
-  SigningKey signing_key(kSigningKeyBase64);
+  const SigningKey signing_key(kSigningKeyBase64);
 
   // Act
   std::stringstream ss;

@@ -18,12 +18,7 @@ namespace {
 constexpr char kCreativeInstanceId[] = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
 }  // namespace
 
-class BatAdsRotatingHashUserDataTest : public UnitTestBase {
- protected:
-  BatAdsRotatingHashUserDataTest() = default;
-
-  ~BatAdsRotatingHashUserDataTest() override = default;
-};
+class BatAdsRotatingHashUserDataTest : public UnitTestBase {};
 
 TEST_F(BatAdsRotatingHashUserDataTest, GetRotatingHash) {
   // Arrange

@@ -27,9 +27,6 @@ class ServingObserver : public base::CheckedObserver {
 
   // Invoked when a notification ad fails to serve.
   virtual void OnFailedToServeNotificationAd() {}
-
- protected:
-  ~ServingObserver() override = default;
 };
 
 }  // namespace notification_ads

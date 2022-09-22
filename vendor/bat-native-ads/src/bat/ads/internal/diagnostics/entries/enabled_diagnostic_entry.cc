@@ -15,10 +15,6 @@ namespace {
 constexpr char kName[] = "Enabled";
 }  // namespace
 
-EnabledDiagnosticEntry::EnabledDiagnosticEntry() = default;
-
-EnabledDiagnosticEntry::~EnabledDiagnosticEntry() = default;
-
 DiagnosticEntryType EnabledDiagnosticEntry::GetType() const {
   return DiagnosticEntryType::kEnabled;
 }

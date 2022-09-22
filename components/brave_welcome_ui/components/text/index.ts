@@ -11,7 +11,7 @@ export const Title = styled.h1`
   margin: 24px 0 0;
   text-align: center;
   line-height: 44px;
-  font-weight: 600;
+  font-weight: 400;
 `
 
 export const Paragraph = styled.p`

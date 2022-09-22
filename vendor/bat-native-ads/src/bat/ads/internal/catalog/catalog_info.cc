@@ -9,19 +9,23 @@ namespace ads {
 
 CatalogInfo::CatalogInfo() = default;
 
-CatalogInfo::CatalogInfo(const CatalogInfo& info) = default;
+CatalogInfo::CatalogInfo(const CatalogInfo& other) = default;
 
-CatalogInfo& CatalogInfo::operator=(const CatalogInfo& info) = default;
+CatalogInfo& CatalogInfo::operator=(const CatalogInfo& other) = default;
+
+CatalogInfo::CatalogInfo(CatalogInfo&& other) noexcept = default;
+
+CatalogInfo& CatalogInfo::operator=(CatalogInfo&& other) noexcept = default;
 
 CatalogInfo::~CatalogInfo() = default;
 
-bool CatalogInfo::operator==(const CatalogInfo& rhs) const {
-  return id == rhs.id && version == rhs.version && ping == rhs.ping &&
-         campaigns == rhs.campaigns;
+bool CatalogInfo::operator==(const CatalogInfo& other) const {
+  return id == other.id && version == other.version && ping == other.ping &&
+         campaigns == other.campaigns;
 }
 
-bool CatalogInfo::operator!=(const CatalogInfo& rhs) const {
-  return !(*this == rhs);
+bool CatalogInfo::operator!=(const CatalogInfo& other) const {
+  return !(*this == other);
 }
 
 }  // namespace ads

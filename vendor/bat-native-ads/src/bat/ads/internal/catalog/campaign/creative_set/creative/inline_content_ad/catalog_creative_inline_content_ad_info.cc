@@ -7,27 +7,14 @@
 
 namespace ads {
 
-CatalogCreativeInlineContentAdInfo::CatalogCreativeInlineContentAdInfo() =
-    default;
-
-CatalogCreativeInlineContentAdInfo::CatalogCreativeInlineContentAdInfo(
-    const CatalogCreativeInlineContentAdInfo& info) = default;
-
-CatalogCreativeInlineContentAdInfo&
-CatalogCreativeInlineContentAdInfo::operator=(
-    const CatalogCreativeInlineContentAdInfo& info) = default;
-
-CatalogCreativeInlineContentAdInfo::~CatalogCreativeInlineContentAdInfo() =
-    default;
-
 bool CatalogCreativeInlineContentAdInfo::operator==(
-    const CatalogCreativeInlineContentAdInfo& rhs) const {
-  return CatalogCreativeInfo::operator==(rhs) && payload == rhs.payload;
+    const CatalogCreativeInlineContentAdInfo& other) const {
+  return CatalogCreativeInfo::operator==(other) && payload == other.payload;
 }
 
 bool CatalogCreativeInlineContentAdInfo::operator!=(
-    const CatalogCreativeInlineContentAdInfo& rhs) const {
-  return !(*this == rhs);
+    const CatalogCreativeInlineContentAdInfo& other) const {
+  return !(*this == other);
 }
 
 }  // namespace ads

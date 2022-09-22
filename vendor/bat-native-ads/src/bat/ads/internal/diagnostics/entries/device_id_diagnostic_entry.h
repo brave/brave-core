@@ -14,11 +14,6 @@ namespace ads {
 
 class DeviceIdDiagnosticEntry final : public DiagnosticEntryInterface {
  public:
-  DeviceIdDiagnosticEntry();
-  DeviceIdDiagnosticEntry(const DeviceIdDiagnosticEntry&) = delete;
-  DeviceIdDiagnosticEntry& operator=(const DeviceIdDiagnosticEntry&) = delete;
-  ~DeviceIdDiagnosticEntry() override;
-
   // DiagnosticEntryInterface:
   DiagnosticEntryType GetType() const override;
   std::string GetName() const override;

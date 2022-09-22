@@ -33,8 +33,6 @@ EligibleAdsV1::EligibleAdsV1(
     resource::AntiTargeting* anti_targeting_resource)
     : EligibleAdsBase(subdivision_targeting, anti_targeting_resource) {}
 
-EligibleAdsV1::~EligibleAdsV1() = default;
-
 void EligibleAdsV1::GetForUserModel(
     const targeting::UserModelInfo& user_model,
     const std::string& dimensions,

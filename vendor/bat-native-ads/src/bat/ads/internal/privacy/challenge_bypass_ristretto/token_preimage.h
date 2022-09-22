@@ -25,12 +25,17 @@ class TokenPreimage {
   explicit TokenPreimage(const std::string& token_preimage_base64);
   explicit TokenPreimage(
       const challenge_bypass_ristretto::TokenPreimage& token_preimage);
+
   TokenPreimage(const TokenPreimage& other);
   TokenPreimage& operator=(const TokenPreimage& other);
+
+  TokenPreimage(TokenPreimage&& other) noexcept;
+  TokenPreimage& operator=(TokenPreimage&& other) noexcept;
+
   ~TokenPreimage();
 
-  bool operator==(const TokenPreimage& rhs) const;
-  bool operator!=(const TokenPreimage& rhs) const;
+  bool operator==(const TokenPreimage& other) const;
+  bool operator!=(const TokenPreimage& other) const;
 
   bool has_value() const { return token_preimage_.has_value(); }
 

@@ -47,10 +47,6 @@ int BindParameters(mojom::DBCommandInfo* command,
 
 }  // namespace
 
-CreativeNewTabPageAdWallpapers::CreativeNewTabPageAdWallpapers() = default;
-
-CreativeNewTabPageAdWallpapers::~CreativeNewTabPageAdWallpapers() = default;
-
 void CreativeNewTabPageAdWallpapers::InsertOrUpdate(
     mojom::DBTransactionInfo* transaction,
     const CreativeNewTabPageAdList& creative_ads) {

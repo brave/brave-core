@@ -10,6 +10,7 @@ import * as knobs from '@storybook/addon-knobs'
 import { ConnectWalletModal } from '../components/connect_wallet_modal'
 import { ClaimGrantView } from '../components/claim_grant_view'
 import { Settings } from '../components/settings'
+import { PlatformContext } from '../lib/platform_context'
 import { LocaleContext } from '../../shared/lib/locale_context'
 import { LayoutManager } from '../components/layout_manager'
 import { WithThemeVariables } from '../../shared/components/with_theme_variables'
@@ -76,6 +77,7 @@ export function Claim () {
               claimableUntil: Date.now() + 1000 * 60 * 60 * 24 * 5,
               expiresAt: Date.now() + 1000 * 60 * 60 * 24 * 5
             }}
+            showSpinner={false}
             onClaim={actionLogger('onClaim')}
           />
         </div>
@@ -91,9 +93,11 @@ export function Page () {
     <Provider store={store}>
       <LocaleContext.Provider value={locale}>
         <WithThemeVariables>
-          <LayoutManager layout={narrow ? 'narrow' : 'wide'}>
-            <Settings />
-          </LayoutManager>
+          <PlatformContext.Provider value={{ isAndroid: false }}>
+            <LayoutManager layout={narrow ? 'narrow' : 'wide'}>
+              <Settings />
+            </LayoutManager>
+          </PlatformContext.Provider>
         </WithThemeVariables>
       </LocaleContext.Provider>
     </Provider>

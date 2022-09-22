@@ -20,12 +20,7 @@ namespace {
 constexpr char kCatalog[] = "catalog_with_multiple_campaigns.json";
 }  // namespace
 
-class BatAdsTargetingSegmentUtilTest : public UnitTestBase {
- protected:
-  BatAdsTargetingSegmentUtilTest() = default;
-
-  ~BatAdsTargetingSegmentUtilTest() override = default;
-};
+class BatAdsTargetingSegmentUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsTargetingSegmentUtilTest, GetSegmentsFromCatalog) {
   // Arrange
@@ -48,13 +43,13 @@ TEST_F(BatAdsTargetingSegmentUtilTest, GetSegmentsFromCatalog) {
 
 TEST_F(BatAdsTargetingSegmentUtilTest, GetSegmentsFromEmptyCatalog) {
   // Arrange
-  CatalogInfo catalog;
+  const CatalogInfo catalog;
 
   // Act
   const SegmentList segments = GetSegments(catalog);
 
   // Assert
-  SegmentList expected_segments;
+  const SegmentList expected_segments;
   EXPECT_EQ(expected_segments, segments);
 }
 

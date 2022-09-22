@@ -27,8 +27,6 @@ class BatAdsNotificationAdServingTest : public ServingObserver,
  protected:
   BatAdsNotificationAdServingTest() = default;
 
-  ~BatAdsNotificationAdServingTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

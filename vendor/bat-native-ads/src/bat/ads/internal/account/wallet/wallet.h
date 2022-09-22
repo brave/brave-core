@@ -14,11 +14,6 @@ namespace ads {
 
 class Wallet final {
  public:
-  Wallet();
-  ~Wallet();
-  Wallet(const Wallet&) = delete;
-  Wallet& operator=(const Wallet&) = delete;
-
   bool Set(const std::string& id, const std::string& seed);
   const WalletInfo& Get() const;
 

@@ -22,8 +22,6 @@ class BatAdsEligibleInlineContentAdsV2Test : public UnitTestBase {
  protected:
   BatAdsEligibleInlineContentAdsV2Test() = default;
 
-  ~BatAdsEligibleInlineContentAdsV2Test() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

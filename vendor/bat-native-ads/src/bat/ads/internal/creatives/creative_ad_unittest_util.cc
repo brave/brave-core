@@ -52,7 +52,7 @@ CreativeAdInfo BuildCreativeAd(const bool should_use_random_guids) {
   creative_ad.value = 2.0;
   creative_ad.segment = "untargeted";
   creative_ad.split_test_group = "";
-  CreativeDaypartInfo daypart;
+  const CreativeDaypartInfo daypart;
   creative_ad.dayparts = {daypart};
   creative_ad.geo_targets = {"US"};
   creative_ad.target_url = GURL("https://brave.com");

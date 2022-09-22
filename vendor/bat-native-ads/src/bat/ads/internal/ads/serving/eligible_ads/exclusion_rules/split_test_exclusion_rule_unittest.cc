@@ -27,12 +27,7 @@ scoped_refptr<base::FieldTrial> CreateFieldTrial(
 
 }  // namespace
 
-class BatAdsSplitTestExclusionRuleTest : public UnitTestBase {
- protected:
-  BatAdsSplitTestExclusionRuleTest() = default;
-
-  ~BatAdsSplitTestExclusionRuleTest() override = default;
-};
+class BatAdsSplitTestExclusionRuleTest : public UnitTestBase {};
 
 TEST_F(BatAdsSplitTestExclusionRuleTest, AllowIfNoFieldTrialAndNoAdGroup) {
   // Arrange
@@ -66,7 +61,7 @@ TEST_F(BatAdsSplitTestExclusionRuleTest, AllowIfFieldTrialAndNoAdGroup) {
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
 
-  scoped_refptr<base::FieldTrial> trial = CreateFieldTrial(kTrial);
+  const scoped_refptr<base::FieldTrial> trial = CreateFieldTrial(kTrial);
   trial->AppendGroup(kGroup, 100);
 
   // Act
@@ -83,7 +78,7 @@ TEST_F(BatAdsSplitTestExclusionRuleTest, AllowIfFieldTrialMatchesAdGroup) {
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.split_test_group = "GroupA";
 
-  scoped_refptr<base::FieldTrial> trial = CreateFieldTrial(kTrial);
+  const scoped_refptr<base::FieldTrial> trial = CreateFieldTrial(kTrial);
   trial->AppendGroup(kGroup, 100);
 
   // Act
@@ -101,7 +96,7 @@ TEST_F(BatAdsSplitTestExclusionRuleTest,
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.split_test_group = "GroupB";
 
-  scoped_refptr<base::FieldTrial> trial = CreateFieldTrial(kTrial);
+  const scoped_refptr<base::FieldTrial> trial = CreateFieldTrial(kTrial);
   trial->AppendGroup(kGroup, 100);
 
   // Act

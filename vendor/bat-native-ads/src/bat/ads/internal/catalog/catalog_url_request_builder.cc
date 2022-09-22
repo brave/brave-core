@@ -15,10 +15,6 @@
 
 namespace ads {
 
-CatalogUrlRequestBuilder::CatalogUrlRequestBuilder() = default;
-
-CatalogUrlRequestBuilder::~CatalogUrlRequestBuilder() = default;
-
 // GET /v#/catalog
 
 mojom::UrlRequestInfoPtr CatalogUrlRequestBuilder::Build() {

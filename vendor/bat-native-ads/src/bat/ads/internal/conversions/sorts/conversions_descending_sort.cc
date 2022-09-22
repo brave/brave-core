@@ -9,10 +9,6 @@
 
 namespace ads {
 
-ConversionsDescendingSort::ConversionsDescendingSort() = default;
-
-ConversionsDescendingSort::~ConversionsDescendingSort() = default;
-
 ConversionList ConversionsDescendingSort::Apply(
     const ConversionList& conversions) const {
   ConversionList sorted_conversions = conversions;

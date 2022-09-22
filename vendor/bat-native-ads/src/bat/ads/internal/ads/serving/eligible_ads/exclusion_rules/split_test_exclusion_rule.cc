@@ -27,10 +27,6 @@ absl::optional<std::string> GetSplitTestGroup(const std::string& study_name) {
 
 }  // namespace
 
-SplitTestExclusionRule::SplitTestExclusionRule() = default;
-
-SplitTestExclusionRule::~SplitTestExclusionRule() = default;
-
 std::string SplitTestExclusionRule::GetUuid(
     const CreativeAdInfo& creative_ad) const {
   return creative_ad.creative_set_id;

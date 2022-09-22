@@ -15,9 +15,6 @@ struct BanditFeedbackInfo;
 class EpsilonGreedyBandit final {
  public:
   EpsilonGreedyBandit();
-  ~EpsilonGreedyBandit() = default;
-  EpsilonGreedyBandit(const EpsilonGreedyBandit&) = delete;
-  EpsilonGreedyBandit& operator=(const EpsilonGreedyBandit&) = delete;
 
   void Process(const BanditFeedbackInfo& feedback);
 

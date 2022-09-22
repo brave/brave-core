@@ -13,12 +13,7 @@
 
 namespace ads {
 
-class BatAdsAdsReceivedUtilTest : public UnitTestBase {
- protected:
-  BatAdsAdsReceivedUtilTest() = default;
-
-  ~BatAdsAdsReceivedUtilTest() override = default;
-};
+class BatAdsAdsReceivedUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsAdsReceivedUtilTest, GetAdsReceivedForDateRange) {
   // Arrange

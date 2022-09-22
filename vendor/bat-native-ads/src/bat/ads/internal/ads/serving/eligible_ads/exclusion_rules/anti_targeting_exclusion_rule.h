@@ -25,11 +25,17 @@ class AntiTargetingExclusionRule final
  public:
   AntiTargetingExclusionRule(resource::AntiTargeting* anti_targeting_resource,
                              const BrowsingHistoryList& browsing_history);
-  ~AntiTargetingExclusionRule() override;
 
-  AntiTargetingExclusionRule(const AntiTargetingExclusionRule&) = delete;
+  AntiTargetingExclusionRule(const AntiTargetingExclusionRule& other) = delete;
   AntiTargetingExclusionRule& operator=(const AntiTargetingExclusionRule&) =
       delete;
+
+  AntiTargetingExclusionRule(AntiTargetingExclusionRule&& other) noexcept =
+      delete;
+  AntiTargetingExclusionRule& operator=(
+      AntiTargetingExclusionRule&& other) noexcept = delete;
+
+  ~AntiTargetingExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
 

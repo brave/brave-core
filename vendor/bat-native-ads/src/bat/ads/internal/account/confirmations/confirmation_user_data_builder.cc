@@ -33,8 +33,6 @@ ConfirmationUserDataBuilder::ConfirmationUserDataBuilder(
   DCHECK_NE(ConfirmationType::kUndefined, confirmation_type_.value());
 }
 
-ConfirmationUserDataBuilder::~ConfirmationUserDataBuilder() = default;
-
 void ConfirmationUserDataBuilder::Build(
     UserDataBuilderCallback callback) const {
   user_data::GetConversion(

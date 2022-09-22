@@ -11,12 +11,6 @@
 
 namespace ads {
 
-MarkedToNoLongerReceiveExclusionRule::MarkedToNoLongerReceiveExclusionRule() =
-    default;
-
-MarkedToNoLongerReceiveExclusionRule::~MarkedToNoLongerReceiveExclusionRule() =
-    default;
-
 std::string MarkedToNoLongerReceiveExclusionRule::GetUuid(
     const CreativeAdInfo& creative_ad) const {
   return creative_ad.segment;

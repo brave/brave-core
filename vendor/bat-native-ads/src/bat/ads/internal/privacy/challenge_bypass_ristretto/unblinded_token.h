@@ -28,12 +28,17 @@ class UnblindedToken {
   explicit UnblindedToken(const std::string& unblinded_token_base64);
   explicit UnblindedToken(
       const challenge_bypass_ristretto::UnblindedToken& unblinded_token);
+
   UnblindedToken(const UnblindedToken& other);
   UnblindedToken& operator=(const UnblindedToken& other);
+
+  UnblindedToken(UnblindedToken&& other) noexcept;
+  UnblindedToken& operator=(UnblindedToken&& other) noexcept;
+
   ~UnblindedToken();
 
-  bool operator==(const UnblindedToken& rhs) const;
-  bool operator!=(const UnblindedToken& rhs) const;
+  bool operator==(const UnblindedToken& other) const;
+  bool operator!=(const UnblindedToken& other) const;
 
   bool has_value() const { return unblinded_token_.has_value(); }
 

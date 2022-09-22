@@ -36,9 +36,14 @@ class PurchaseIntent final : public LocaleManagerObserver,
                              public TabManagerObserver {
  public:
   explicit PurchaseIntent(resource::PurchaseIntent* resource);
+
+  PurchaseIntent(const PurchaseIntent& other) = delete;
+  PurchaseIntent& operator=(const PurchaseIntent& other) = delete;
+
+  PurchaseIntent(PurchaseIntent&& other) noexcept = delete;
+  PurchaseIntent& operator=(PurchaseIntent&& other) noexcept = delete;
+
   ~PurchaseIntent() override;
-  PurchaseIntent(const PurchaseIntent&) = delete;
-  PurchaseIntent& operator=(const PurchaseIntent&) = delete;
 
   void Process(const GURL& url);
 

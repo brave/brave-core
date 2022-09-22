@@ -13,12 +13,7 @@
 
 namespace ads {
 
-class BatAdsDeviceIdDiagnosticEntryTest : public UnitTestBase {
- protected:
-  BatAdsDeviceIdDiagnosticEntryTest() = default;
-
-  ~BatAdsDeviceIdDiagnosticEntryTest() override = default;
-};
+class BatAdsDeviceIdDiagnosticEntryTest : public UnitTestBase {};
 
 TEST_F(BatAdsDeviceIdDiagnosticEntryTest, GetValue) {
   // Arrange
@@ -26,7 +21,7 @@ TEST_F(BatAdsDeviceIdDiagnosticEntryTest, GetValue) {
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
   // Act
-  DeviceIdDiagnosticEntry diagnostic_entry;
+  const DeviceIdDiagnosticEntry diagnostic_entry;
 
   // Assert
   EXPECT_EQ(DiagnosticEntryType::kDeviceId, diagnostic_entry.GetType());

@@ -20,8 +20,6 @@ class BatAdsConversionQueueDatabaseTableTest : public UnitTestBase {
  protected:
   BatAdsConversionQueueDatabaseTableTest() = default;
 
-  ~BatAdsConversionQueueDatabaseTableTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

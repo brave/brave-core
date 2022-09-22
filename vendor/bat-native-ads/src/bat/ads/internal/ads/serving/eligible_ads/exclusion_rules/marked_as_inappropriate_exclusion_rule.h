@@ -17,14 +17,6 @@ struct CreativeAdInfo;
 class MarkedAsInappropriateExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
-  MarkedAsInappropriateExclusionRule();
-  ~MarkedAsInappropriateExclusionRule() override;
-
-  MarkedAsInappropriateExclusionRule(
-      const MarkedAsInappropriateExclusionRule&) = delete;
-  MarkedAsInappropriateExclusionRule& operator=(
-      const MarkedAsInappropriateExclusionRule&) = delete;
-
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
 
   bool ShouldExclude(const CreativeAdInfo& creative_ad) override;

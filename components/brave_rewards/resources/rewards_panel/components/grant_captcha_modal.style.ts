@@ -49,7 +49,7 @@ export const summaryItem = styled.div`
 
 export const summaryValue = styled.div`
   margin-top: 5px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--brave-palette-neutral900);
 `
 

@@ -84,7 +84,7 @@ TEST_F(BatAdsTextEmbeddingResourceTest, LoadNotExistantJsonResource) {
 
 TEST_F(BatAdsTextEmbeddingResourceTest, LoadNotInitializedFile) {
   // Arrange
-  TextEmbedding resource;
+  const TextEmbedding resource;
 
   // Assert
   EXPECT_FALSE(resource.IsInitialized());

@@ -15,12 +15,6 @@ namespace {
 constexpr char kName[] = "Catalog last updated";
 }  // namespace
 
-CatalogLastUpdatedDiagnosticEntry::CatalogLastUpdatedDiagnosticEntry() =
-    default;
-
-CatalogLastUpdatedDiagnosticEntry::~CatalogLastUpdatedDiagnosticEntry() =
-    default;
-
 DiagnosticEntryType CatalogLastUpdatedDiagnosticEntry::GetType() const {
   return DiagnosticEntryType::kCatalogLastUpdated;
 }

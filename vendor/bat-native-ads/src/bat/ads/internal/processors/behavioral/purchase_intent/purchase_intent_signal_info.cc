@@ -10,10 +10,16 @@ namespace ads::targeting {
 PurchaseIntentSignalInfo::PurchaseIntentSignalInfo() = default;
 
 PurchaseIntentSignalInfo::PurchaseIntentSignalInfo(
-    const PurchaseIntentSignalInfo& info) = default;
+    const PurchaseIntentSignalInfo& other) = default;
 
 PurchaseIntentSignalInfo& PurchaseIntentSignalInfo::operator=(
-    const PurchaseIntentSignalInfo& info) = default;
+    const PurchaseIntentSignalInfo& other) = default;
+
+PurchaseIntentSignalInfo::PurchaseIntentSignalInfo(
+    PurchaseIntentSignalInfo&& other) noexcept = default;
+
+PurchaseIntentSignalInfo& PurchaseIntentSignalInfo::operator=(
+    PurchaseIntentSignalInfo&& other) noexcept = default;
 
 PurchaseIntentSignalInfo::~PurchaseIntentSignalInfo() = default;
 

@@ -22,12 +22,7 @@
 
 namespace ads {
 
-class BatAdsDiagnosticManagerTest : public UnitTestBase {
- protected:
-  BatAdsDiagnosticManagerTest() = default;
-
-  ~BatAdsDiagnosticManagerTest() override = default;
-};
+class BatAdsDiagnosticManagerTest : public UnitTestBase {};
 
 TEST_F(BatAdsDiagnosticManagerTest, DiagnosticManager) {
   // Arrange

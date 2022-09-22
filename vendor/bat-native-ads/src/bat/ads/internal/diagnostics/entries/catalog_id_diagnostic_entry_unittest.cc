@@ -13,19 +13,14 @@
 
 namespace ads {
 
-class BatAdsCatalogIdDiagnosticEntryTest : public UnitTestBase {
- protected:
-  BatAdsCatalogIdDiagnosticEntryTest() = default;
-
-  ~BatAdsCatalogIdDiagnosticEntryTest() override = default;
-};
+class BatAdsCatalogIdDiagnosticEntryTest : public UnitTestBase {};
 
 TEST_F(BatAdsCatalogIdDiagnosticEntryTest, CatalogId) {
   // Arrange
   SetCatalogId("da5dd0e8-71e9-4607-a45b-13e28b607a81");
 
   // Act
-  CatalogIdDiagnosticEntry diagnostic_entry;
+  const CatalogIdDiagnosticEntry diagnostic_entry;
 
   // Assert
   EXPECT_EQ(DiagnosticEntryType::kCatalogId, diagnostic_entry.GetType());
@@ -38,7 +33,7 @@ TEST_F(BatAdsCatalogIdDiagnosticEntryTest, EmptyCatalogId) {
   // Arrange
 
   // Act
-  CatalogIdDiagnosticEntry diagnostic_entry;
+  const CatalogIdDiagnosticEntry diagnostic_entry;
 
   // Assert
   EXPECT_EQ(DiagnosticEntryType::kCatalogId, diagnostic_entry.GetType());

@@ -19,8 +19,6 @@ class BatAdsTextClassificationProcessorTest : public UnitTestBase {
  protected:
   BatAdsTextClassificationProcessorTest() = default;
 
-  ~BatAdsTextClassificationProcessorTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 
@@ -65,7 +63,7 @@ TEST_F(BatAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
 
 TEST_F(BatAdsTextClassificationProcessorTest, NeverProcessed) {
   // Act
-  targeting::model::TextClassification model;
+  const targeting::model::TextClassification model;
   const SegmentList segments = model.GetSegments();
 
   // Assert

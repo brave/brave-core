@@ -23,8 +23,6 @@ class BatAdsHashVectorizerTest : public UnitTestBase {
  protected:
   BatAdsHashVectorizerTest() = default;
 
-  ~BatAdsHashVectorizerTest() override = default;
-
   void RunHashingExtractorTestCase(const std::string& test_case_name) {
     // Arrange
     const double kTolerance = 1e-7;

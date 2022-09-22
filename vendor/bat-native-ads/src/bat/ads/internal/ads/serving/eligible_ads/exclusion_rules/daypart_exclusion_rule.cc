@@ -28,10 +28,6 @@ bool MatchTimeSlot(const CreativeDaypartInfo& daypart, const int minutes) {
 
 }  // namespace
 
-DaypartExclusionRule::DaypartExclusionRule() = default;
-
-DaypartExclusionRule::~DaypartExclusionRule() = default;
-
 std::string DaypartExclusionRule::GetUuid(
     const CreativeAdInfo& creative_ad) const {
   return creative_ad.creative_set_id;

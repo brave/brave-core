@@ -20,10 +20,6 @@ constexpr char kStagingHost[] = "https://mywallet.ads.bravesoftware.com";
 
 }  // namespace
 
-NonAnonymousServerHost::NonAnonymousServerHost() = default;
-
-NonAnonymousServerHost::~NonAnonymousServerHost() = default;
-
 std::string NonAnonymousServerHost::Get() const {
   const EnvironmentType environment_type = GetEnvironmentType();
 

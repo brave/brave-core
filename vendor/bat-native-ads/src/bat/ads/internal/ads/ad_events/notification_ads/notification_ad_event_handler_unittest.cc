@@ -30,8 +30,6 @@ class BatAdsNotificationAdEventHandlerTest : public EventHandlerObserver,
  protected:
   BatAdsNotificationAdEventHandlerTest() = default;
 
-  ~BatAdsNotificationAdEventHandlerTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

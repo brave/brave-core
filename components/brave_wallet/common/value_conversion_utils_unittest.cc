@@ -356,7 +356,7 @@ TEST(ValueConversionUtilsUnitTest, PermissionRequestResponseToValue) {
   ASSERT_NE(exposed_accounts, nullptr);
   ASSERT_EQ(exposed_accounts->size(), 1UL);
   EXPECT_EQ((*exposed_accounts)[0],
-            base::Value("0xA99D71De40D67394eBe68e4D0265cA6C9D421029"));
+            base::Value("0xa99d71de40d67394ebe68e4d0265ca6c9d421029"));
 
   auto* context = param0.FindList("context");
   ASSERT_NE(context, nullptr);

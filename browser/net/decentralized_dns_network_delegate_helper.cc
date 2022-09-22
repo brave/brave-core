@@ -11,8 +11,8 @@
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/decentralized_dns/constants.h"
-#include "brave/components/decentralized_dns/utils.h"
+#include "brave/components/decentralized_dns/core/constants.h"
+#include "brave/components/decentralized_dns/core/utils.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "chrome/browser/browser_process.h"
 #include "content/public/browser/browser_context.h"
@@ -62,8 +62,12 @@ void OnBeforeURLRequest_EnsRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx,
     const std::vector<uint8_t>& content_hash,
+    bool require_offchain_consent,
     brave_wallet::mojom::ProviderError error,
     const std::string& error_message) {
+  // TODO(apaymyshev): implement interstitial page.
+  DCHECK(!require_offchain_consent);
+
   if (error != brave_wallet::mojom::ProviderError::kSuccess) {
     if (!next_callback.is_null())
       next_callback.Run();

@@ -29,7 +29,6 @@
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_today/browser/brave_news_controller.h"
 #include "brave/components/brave_today/common/features.h"
-#include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
@@ -143,10 +142,6 @@
 using extensions::FeatureSwitch;
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-#include "brave/components/brave_vpn/brave_vpn_utils.h"
-#endif
-
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
 #endif
@@ -170,7 +165,6 @@ void RegisterProfilePrefsForMigration(
   // Added 06/2022
   brave::RegisterSearchEngineProviderPrefsForMigration(registry);
 #endif
-
   brave_wallet::RegisterProfilePrefsForMigration(registry);
 
   // Restore "Other Bookmarks" migration
@@ -193,6 +187,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   // appearance
   registry->RegisterBooleanPref(kShowBookmarksButton, true);
+  registry->RegisterBooleanPref(kShowSidePanelButton, true);
   registry->RegisterBooleanPref(kLocationBarIsWide, false);
   registry->RegisterBooleanPref(brave_rewards::prefs::kShowButton, true);
   registry->RegisterBooleanPref(kMRUCyclingEnabled, false);
@@ -201,10 +196,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   brave_sync::Prefs::RegisterProfilePrefs(registry);
 
   brave_shields::RegisterShieldsP3AProfilePrefs(registry);
-
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  brave_vpn::RegisterProfilePrefs(registry);
-#endif
 
   brave_news::BraveNewsController::RegisterProfilePrefs(registry);
 

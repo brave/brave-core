@@ -56,7 +56,7 @@ export const StyledInfo = styled('div')<{}>`
   font-size: 11.5px;
   line-height: 18px;
   color: ${palette.grey600};
-  font-family: Muli, sans-serif;
+  font-family: Poppins, sans-serif;
   line-height: 1.57;
 `
 
@@ -74,7 +74,7 @@ export const StyledDisclaimer = styled('span')<{}>`
   font-size: 11px;
   font-weight: bold;
   color: ${palette.grey500};
-  font-family: Muli, sans-serif;
+  font-family: Poppins, sans-serif;
 `
 
 export const StyleRight = styled('div')<{}>`

@@ -13,13 +13,8 @@
 namespace ads {
 
 struct CatalogCreativeInfo {
-  CatalogCreativeInfo();
-  CatalogCreativeInfo(const CatalogCreativeInfo& info);
-  CatalogCreativeInfo& operator=(const CatalogCreativeInfo& info);
-  ~CatalogCreativeInfo();
-
-  bool operator==(const CatalogCreativeInfo& rhs) const;
-  bool operator!=(const CatalogCreativeInfo& rhs) const;
+  bool operator==(const CatalogCreativeInfo& other) const;
+  bool operator!=(const CatalogCreativeInfo& other) const;
 
   std::string creative_instance_id;
   CatalogTypeInfo type;

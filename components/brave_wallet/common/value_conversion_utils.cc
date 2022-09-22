@@ -323,7 +323,7 @@ base::Value::List PermissionRequestResponseToValue(
   caveats_obj2.Set("type", "filterResponse");
   base::Value::List filter_response_list;
   for (auto account : accounts) {
-    filter_response_list.Append(account);
+    filter_response_list.Append(base::ToLowerASCII(account));
   }
   caveats_obj2.Set("value", std::move(filter_response_list));
   caveats_list.Append(std::move(caveats_obj2));

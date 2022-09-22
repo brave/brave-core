@@ -253,7 +253,7 @@ std::string TimeToPrivacyPreservingISO8601(const base::Time time) {
                             exploded.hour);
 }
 
-void SetFromLocalExplodedFailedForTesting(bool set_failed) {
+void SetFromLocalExplodedFailedForTesting(const bool set_failed) {
   g_from_local_exploded_failed = set_failed;
 }
 

@@ -22,8 +22,6 @@ class BatAdsNotificationAdUtilTest : public UnitTestBase {
  protected:
   BatAdsNotificationAdUtilTest() = default;
 
-  ~BatAdsNotificationAdUtilTest() override = default;
-
   void BuildAndShowNotificationAd() {
     const CreativeNotificationAdInfo creative_ad =
         BuildCreativeNotificationAd();

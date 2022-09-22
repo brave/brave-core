@@ -40,14 +40,18 @@ PublicKey::PublicKey(const PublicKey& other) = default;
 
 PublicKey& PublicKey::operator=(const PublicKey& other) = default;
 
+PublicKey::PublicKey(PublicKey&& other) noexcept = default;
+
+PublicKey& PublicKey::operator=(PublicKey&& other) noexcept = default;
+
 PublicKey::~PublicKey() = default;
 
-bool PublicKey::operator==(const PublicKey& rhs) const {
-  return EncodeBase64().value_or("") == rhs.EncodeBase64().value_or("");
+bool PublicKey::operator==(const PublicKey& other) const {
+  return EncodeBase64().value_or("") == other.EncodeBase64().value_or("");
 }
 
-bool PublicKey::operator!=(const PublicKey& rhs) const {
-  return !(*this == rhs);
+bool PublicKey::operator!=(const PublicKey& other) const {
+  return !(*this == other);
 }
 
 PublicKey PublicKey::DecodeBase64(const std::string& public_key_base64) {

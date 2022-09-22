@@ -43,9 +43,16 @@ using GetCreativeInlineContentAdsForDimensionsCallback =
 class CreativeInlineContentAds final : public TableInterface {
  public:
   CreativeInlineContentAds();
+
+  CreativeInlineContentAds(const CreativeInlineContentAds& other) = delete;
+  CreativeInlineContentAds& operator=(const CreativeInlineContentAds& other) =
+      delete;
+
+  CreativeInlineContentAds(CreativeInlineContentAds&& other) noexcept = delete;
+  CreativeInlineContentAds& operator=(
+      CreativeInlineContentAds&& other) noexcept = delete;
+
   ~CreativeInlineContentAds() override;
-  CreativeInlineContentAds(const CreativeInlineContentAds&) = delete;
-  CreativeInlineContentAds& operator=(const CreativeInlineContentAds&) = delete;
 
   void Save(const CreativeInlineContentAdList& creative_ads,
             ResultCallback callback);

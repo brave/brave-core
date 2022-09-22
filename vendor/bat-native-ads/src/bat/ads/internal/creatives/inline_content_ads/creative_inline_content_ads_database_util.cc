@@ -12,7 +12,7 @@
 namespace ads::database {
 
 void DeleteCreativeInlineContentAds() {
-  table::CreativeInlineContentAds database_table;
+  const table::CreativeInlineContentAds database_table;
   database_table.Delete(base::BindOnce([](const bool success) {
     if (!success) {
       BLOG(0, "Failed to delete creative inline content ads");

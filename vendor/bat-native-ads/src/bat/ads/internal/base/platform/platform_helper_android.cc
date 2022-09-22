@@ -13,8 +13,6 @@ constexpr char kPlatformName[] = "android";
 
 PlatformHelperAndroid::PlatformHelperAndroid() = default;
 
-PlatformHelperAndroid::~PlatformHelperAndroid() = default;
-
 bool PlatformHelperAndroid::IsMobile() const {
   return true;
 }

@@ -40,8 +40,6 @@ class BatAdsDebugCommandLineSwitchParserUtilTest
  protected:
   BatAdsDebugCommandLineSwitchParserUtilTest() = default;
 
-  ~BatAdsDebugCommandLineSwitchParserUtilTest() override = default;
-
   void SetUpMocks() override {
     AppendCommandLineSwitches({GetParam().command_line_switch});
   }

@@ -17,12 +17,6 @@ struct CreativeAdInfo;
 class DislikeExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
-  DislikeExclusionRule();
-  ~DislikeExclusionRule() override;
-
-  DislikeExclusionRule(const DislikeExclusionRule&) = delete;
-  DislikeExclusionRule& operator=(const DislikeExclusionRule&) = delete;
-
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
 
   bool ShouldExclude(const CreativeAdInfo& creative_ad) override;

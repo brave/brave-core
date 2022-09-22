@@ -9,10 +9,6 @@
 
 namespace ads {
 
-CatalogPermissionRule::CatalogPermissionRule() = default;
-
-CatalogPermissionRule::~CatalogPermissionRule() = default;
-
 bool CatalogPermissionRule::ShouldAllow() {
   return DoesRespectCap();
 }

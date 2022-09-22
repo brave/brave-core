@@ -12,10 +12,6 @@
 
 namespace ads::search_result_ads {
 
-AdEventServed::AdEventServed() = default;
-
-AdEventServed::~AdEventServed() = default;
-
 void AdEventServed::FireEvent(const SearchResultAdInfo& ad) {
   BLOG(3, "Served search result ad with placement id "
               << ad.placement_id << " and creative instance id "

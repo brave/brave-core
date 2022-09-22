@@ -23,8 +23,6 @@ class BatAdsAdEventHistoryTest : public UnitTestBase {
  protected:
   BatAdsAdEventHistoryTest() = default;
 
-  ~BatAdsAdEventHistoryTest() override = default;
-
   void RecordAdEvent(const std::string& id,
                      const AdType& ad_type,
                      const ConfirmationType& confirmation_type) {

@@ -11,13 +11,8 @@
 namespace ads {
 
 struct VerifiableConversionInfo final {
-  VerifiableConversionInfo();
-  VerifiableConversionInfo(const VerifiableConversionInfo& info);
-  VerifiableConversionInfo& operator=(const VerifiableConversionInfo& info);
-  ~VerifiableConversionInfo();
-
-  bool operator==(const VerifiableConversionInfo& rhs) const;
-  bool operator!=(const VerifiableConversionInfo& rhs) const;
+  bool operator==(const VerifiableConversionInfo& other) const;
+  bool operator!=(const VerifiableConversionInfo& other) const;
 
   bool IsValid() const;
 

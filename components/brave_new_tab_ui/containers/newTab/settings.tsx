@@ -69,6 +69,7 @@ export interface Props {
   useCustomBackgroundImage: () => void
   setBraveBackground: (selectedBackground: string) => void
   setColorBackground: (color: string, useRandomColor: boolean) => void
+  onEnableRewards: () => void
   showBackgroundImage: boolean
   showToday: boolean
   showBraveNewsButton: boolean
@@ -292,7 +293,8 @@ export default class Settings extends React.PureComponent<Props, State> {
       ftxSupported,
       showFTX,
       toggleCards,
-      cardsHidden
+      cardsHidden,
+      onEnableRewards
     } = this.props
     const { activeTab } = this.state
 
@@ -358,6 +360,7 @@ export default class Settings extends React.PureComponent<Props, State> {
                     brandedWallpaperOptIn={brandedWallpaperOptIn}
                     showBackgroundImage={showBackgroundImage}
                     featureCustomBackgroundEnabled={featureCustomBackgroundEnabled}
+                    onEnableRewards={onEnableRewards}
                   />
                 ) : null
               }

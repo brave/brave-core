@@ -22,12 +22,7 @@ constexpr char kValidSpamClassificationPipeline[] =
     "ml/pipeline/text_processing/valid_spam_classification.json";
 }  // namespace
 
-class BatAdsPipelineUtilTest : public UnitTestBase {
- protected:
-  BatAdsPipelineUtilTest() = default;
-
-  ~BatAdsPipelineUtilTest() override = default;
-};
+class BatAdsPipelineUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsPipelineUtilTest, ParsePipelineValueTest) {
   // Arrange

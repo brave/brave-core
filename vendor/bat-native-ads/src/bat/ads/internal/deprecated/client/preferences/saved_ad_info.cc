@@ -7,14 +7,6 @@
 
 namespace ads {
 
-SavedAdInfo::SavedAdInfo() = default;
-
-SavedAdInfo::SavedAdInfo(const SavedAdInfo& info) = default;
-
-SavedAdInfo& SavedAdInfo::operator=(const SavedAdInfo& info) = default;
-
-SavedAdInfo::~SavedAdInfo() = default;
-
 base::Value::Dict SavedAdInfo::ToValue() const {
   base::Value::Dict dict;
   dict.Set("uuid", creative_instance_id);

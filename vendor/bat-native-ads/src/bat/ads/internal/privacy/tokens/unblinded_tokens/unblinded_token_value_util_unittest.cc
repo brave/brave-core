@@ -32,12 +32,7 @@ constexpr char kEmptyJson[] = "[]";
 
 }  // namespace
 
-class BatAdsUnblindedTokenValueUtilTest : public UnitTestBase {
- protected:
-  BatAdsUnblindedTokenValueUtilTest() = default;
-
-  ~BatAdsUnblindedTokenValueUtilTest() override = default;
-};
+class BatAdsUnblindedTokenValueUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsUnblindedTokenValueUtilTest, ToValue) {
   // Arrange

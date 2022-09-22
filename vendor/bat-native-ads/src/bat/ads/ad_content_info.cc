@@ -9,9 +9,9 @@ namespace ads {
 
 AdContentInfo::AdContentInfo() = default;
 
-AdContentInfo::AdContentInfo(const AdContentInfo& info) = default;
+AdContentInfo::AdContentInfo(const AdContentInfo& other) = default;
 
-AdContentInfo& AdContentInfo::operator=(const AdContentInfo& info) = default;
+AdContentInfo& AdContentInfo::operator=(const AdContentInfo& other) = default;
 
 AdContentInfo::AdContentInfo(AdContentInfo&& other) noexcept = default;
 

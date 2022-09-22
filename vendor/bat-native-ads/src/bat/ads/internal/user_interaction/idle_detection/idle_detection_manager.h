@@ -18,10 +18,15 @@ namespace ads {
 class IdleDetectionManager final {
  public:
   IdleDetectionManager();
-  ~IdleDetectionManager();
 
-  IdleDetectionManager(const IdleDetectionManager&) = delete;
-  IdleDetectionManager& operator=(const IdleDetectionManager&) = delete;
+  IdleDetectionManager(const IdleDetectionManager& other) = delete;
+  IdleDetectionManager& operator=(const IdleDetectionManager& other) = delete;
+
+  IdleDetectionManager(IdleDetectionManager&& other) noexcept = delete;
+  IdleDetectionManager& operator=(IdleDetectionManager&& other) noexcept =
+      delete;
+
+  ~IdleDetectionManager();
 
   static IdleDetectionManager* GetInstance();
 

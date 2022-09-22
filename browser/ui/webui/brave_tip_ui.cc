@@ -429,9 +429,9 @@ void TipMessageHandler::GetPublisherBannerCallback(
       links.Set(item.first, item.second);
     }
     result.Set("links", std::move(links));
-  }
 
-  FireWebUIListener("publisherBannerUpdated", base::Value(std::move(result)));
+    FireWebUIListener("publisherBannerUpdated", base::Value(std::move(result)));
+  }
 }
 
 void TipMessageHandler::OnTipCallback(double amount,

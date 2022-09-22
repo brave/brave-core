@@ -39,8 +39,6 @@ class BatAdsRedeemUnblindedPaymentTokensTest : public UnitTestBase {
         redeem_unblinded_payment_tokens_delegate_mock_.get());
   }
 
-  ~BatAdsRedeemUnblindedPaymentTokensTest() override = default;
-
   std::unique_ptr<RedeemUnblindedPaymentTokens>
       redeem_unblinded_payment_tokens_;
   std::unique_ptr<RedeemUnblindedPaymentTokensDelegateMock>
@@ -256,7 +254,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
   privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
 
   // Act
-  InSequence seq;
+  const InSequence seq;
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
               OnFailedToRedeemUnblindedPaymentTokens());
@@ -364,7 +362,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, Retry) {
   privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
 
   // Act
-  InSequence seq;
+  const InSequence seq;
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
               OnFailedToRedeemUnblindedPaymentTokens());

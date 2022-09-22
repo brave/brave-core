@@ -1332,6 +1332,7 @@ class NewTabPage extends React.Component<Props, State> {
           cardsHidden={this.allWidgetsHidden()}
           toggleCards={this.props.saveSetAllStackWidgets}
           newTabData={this.props.newTabData}
+          onEnableRewards={this.startRewards}
         />
         {
           showEditTopSite

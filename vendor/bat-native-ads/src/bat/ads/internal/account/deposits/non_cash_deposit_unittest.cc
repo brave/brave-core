@@ -15,12 +15,7 @@ namespace {
 constexpr char kCreativeInstanceId[] = "b77e16fd-e4bf-4bfb-b033-b8772ec6113b";
 }  // namespace
 
-class BatAdsNonCashDepositTest : public UnitTestBase {
- protected:
-  BatAdsNonCashDepositTest() = default;
-
-  ~BatAdsNonCashDepositTest() override = default;
-};
+class BatAdsNonCashDepositTest : public UnitTestBase {};
 
 TEST_F(BatAdsNonCashDepositTest, GetValue) {
   // Arrange

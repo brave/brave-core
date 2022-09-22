@@ -102,9 +102,6 @@ interface BatLedger {
 
   StartMonthlyContribution();
 
-  SaveMediaInfo(string type, map<string, string> args) =>
-    (ledger.mojom.Result result, ledger.mojom.PublisherInfo? publisher_info);
-
   UpdateMediaDuration(uint64 window_id, string publisher_key, uint64 duration, bool first_visit);
 
   IsPublisherRegistered(string publisher_id) => (bool registered);
@@ -138,8 +135,6 @@ interface BatLedger {
   ExternalWalletAuthorization(string wallet_type, map<string, string> args) => (ledger.mojom.Result result, map<string, string> args);
 
   DisconnectWallet(string wallet_type) => (ledger.mojom.Result result);
-
-  GetAnonWalletStatus() => (ledger.mojom.Result result);
 
   GetTransactionReport(ledger.mojom.ActivityMonth month, int32 year) => (array<ledger.mojom.TransactionReportInfo> list);
 

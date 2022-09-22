@@ -21,11 +21,6 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 
-#if BUILDFLAG(IS_WIN)
-#include "brave/browser/brave_vpn/dns/brave_vpn_dns_observer_factory.h"
-#include "brave/browser/brave_vpn/dns/brave_vpn_dns_observer_service.h"
-#endif
-
 namespace brave_vpn {
 
 // static
@@ -55,9 +50,6 @@ BraveVpnServiceFactory::BraveVpnServiceFactory()
           "BraveVpnService",
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(skus::SkusServiceFactory::GetInstance());
-#if BUILDFLAG(IS_WIN)
-  DependsOn(brave_vpn::BraveVpnDnsObserverFactory::GetInstance());
-#endif
 }
 
 BraveVpnServiceFactory::~BraveVpnServiceFactory() = default;
@@ -71,23 +63,20 @@ KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
   auto shared_url_loader_factory =
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
   auto* local_state = g_browser_process->local_state();
-
+  brave_vpn::MigrateVPNSettings(user_prefs::UserPrefs::Get(context),
+                                local_state);
   auto callback = base::BindRepeating(
       [](content::BrowserContext* context) {
         return skus::SkusServiceFactory::GetForContext(context);
       },
       context);
-  auto* vpn_service =
-      new BraveVpnService(shared_url_loader_factory, local_state,
-                          user_prefs::UserPrefs::Get(context), callback);
-#if BUILDFLAG(IS_WIN)
-  auto* dns_observer_service =
-      brave_vpn::BraveVpnDnsObserverFactory::GetInstance()
-          ->GetServiceForContext(context);
-  if (dns_observer_service)
-    dns_observer_service->Observe(vpn_service);
-#endif
-  return vpn_service;
+
+  return new BraveVpnService(shared_url_loader_factory, local_state, callback);
+}
+
+void BraveVpnServiceFactory::RegisterProfilePrefs(
+    user_prefs::PrefRegistrySyncable* registry) {
+  brave_vpn::RegisterProfilePrefs(registry);
 }
 
 }  // namespace brave_vpn

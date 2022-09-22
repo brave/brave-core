@@ -52,18 +52,14 @@ SigningKey::SigningKey(
     const challenge_bypass_ristretto::SigningKey& signing_key)
     : signing_key_(signing_key) {}
 
-SigningKey::SigningKey(const SigningKey& other) = default;
-
-SigningKey& SigningKey::operator=(const SigningKey& other) = default;
-
 SigningKey::~SigningKey() = default;
 
-bool SigningKey::operator==(const SigningKey& rhs) const {
-  return EncodeBase64().value_or("") == rhs.EncodeBase64().value_or("");
+bool SigningKey::operator==(const SigningKey& other) const {
+  return EncodeBase64().value_or("") == other.EncodeBase64().value_or("");
 }
 
-bool SigningKey::operator!=(const SigningKey& rhs) const {
-  return !(*this == rhs);
+bool SigningKey::operator!=(const SigningKey& other) const {
+  return !(*this == other);
 }
 
 SigningKey SigningKey::DecodeBase64(const std::string& signing_key_base64) {

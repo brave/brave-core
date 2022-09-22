@@ -14,10 +14,6 @@
 
 namespace ads {
 
-IssuersUrlRequestBuilder::IssuersUrlRequestBuilder() = default;
-
-IssuersUrlRequestBuilder::~IssuersUrlRequestBuilder() = default;
-
 // GET /v1/issuers/
 
 mojom::UrlRequestInfoPtr IssuersUrlRequestBuilder::Build() {

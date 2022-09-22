@@ -12,29 +12,35 @@ namespace ads {
 ConversionQueueItemInfo::ConversionQueueItemInfo() = default;
 
 ConversionQueueItemInfo::ConversionQueueItemInfo(
-    const ConversionQueueItemInfo& info) = default;
+    const ConversionQueueItemInfo& other) = default;
 
 ConversionQueueItemInfo& ConversionQueueItemInfo::operator=(
-    const ConversionQueueItemInfo& info) = default;
+    const ConversionQueueItemInfo& other) = default;
+
+ConversionQueueItemInfo::ConversionQueueItemInfo(
+    ConversionQueueItemInfo&& other) noexcept = default;
+
+ConversionQueueItemInfo& ConversionQueueItemInfo::operator=(
+    ConversionQueueItemInfo&& other) noexcept = default;
 
 ConversionQueueItemInfo::~ConversionQueueItemInfo() = default;
 
 bool ConversionQueueItemInfo::operator==(
-    const ConversionQueueItemInfo& rhs) const {
-  return campaign_id == rhs.campaign_id &&
-         creative_set_id == rhs.creative_set_id &&
-         creative_instance_id == rhs.creative_instance_id &&
-         advertiser_id == rhs.advertiser_id &&
-         conversion_id == rhs.conversion_id &&
-         advertiser_public_key == rhs.advertiser_public_key &&
-         ad_type == rhs.ad_type &&
-         DoubleEquals(process_at.ToDoubleT(), rhs.process_at.ToDoubleT()) &&
-         was_processed == rhs.was_processed;
+    const ConversionQueueItemInfo& other) const {
+  return campaign_id == other.campaign_id &&
+         creative_set_id == other.creative_set_id &&
+         creative_instance_id == other.creative_instance_id &&
+         advertiser_id == other.advertiser_id &&
+         conversion_id == other.conversion_id &&
+         advertiser_public_key == other.advertiser_public_key &&
+         ad_type == other.ad_type &&
+         DoubleEquals(process_at.ToDoubleT(), other.process_at.ToDoubleT()) &&
+         was_processed == other.was_processed;
 }
 
 bool ConversionQueueItemInfo::operator!=(
-    const ConversionQueueItemInfo& rhs) const {
-  return !(*this == rhs);
+    const ConversionQueueItemInfo& other) const {
+  return !(*this == other);
 }
 
 bool ConversionQueueItemInfo::IsValid() const {

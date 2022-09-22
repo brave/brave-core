@@ -4,6 +4,8 @@
 
 import styled from 'styled-components'
 
+import selectArrow from '../assets/select_arrow.svg'
+
 export const root = styled.div`
   font-family: Poppins;
   min-height: 100vh;
@@ -11,7 +13,19 @@ export const root = styled.div`
   padding: 48px 20px;
 
   .layout-narrow & {
-    padding: 24px 16px;
+    padding: 80px 10px 24px;
+  }
+
+  select {
+    -webkit-appearance: none;
+    background: url(/${selectArrow}) calc(100% - 12px) center no-repeat;
+    background-size: 12px;
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid #DFDFE8;
+    color: #686978;
+    font-size: 14px;
+    padding: 8px 41px 8px 13px;
   }
 `
 
@@ -22,6 +36,8 @@ export const onboarding = styled.div`
   .layout-narrow & {
     width: 100%;
     max-width: 600px;
+    min-width: 320px;
+    margin-top: -20px;
   }
 `
 
@@ -34,7 +50,7 @@ export const content = styled.div`
   .layout-narrow & {
     width: 100%;
     max-width: 450px;
-    min-width: 380px;
+    min-width: 320px;
     flex-direction: column;
   }
 `
@@ -97,8 +113,4 @@ export const grants = styled.div``
 
 export const rewardsCard = styled.div``
 
-export const promotions = styled.div`
-  .layout-narrow & {
-    display: none;
-  }
-`
+export const promotions = styled.div``

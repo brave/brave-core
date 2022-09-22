@@ -17,7 +17,7 @@ export const root = styled.div`
   border-radius: 4px;
   font-family: var(--brave-font-heading);
   text-align: center;
-  padding: 90px 0;
+  padding: 90px 16px;
 
   a {
     color: var(--brave-color-brandBat);
@@ -35,7 +35,15 @@ export const heading = styled.div`
     height: 45px;
     vertical-align: middle;
     margin-bottom: 6px;
-    margin-right: 13px;
+    margin-right: 12px;
+  }
+
+  @media (max-width: 500px) {
+    font-size: 32px;
+
+    .icon {
+      margin-right: 8px;
+    }
   }
 `
 
@@ -73,12 +81,13 @@ export const enable = styled.div`
   margin-top: 62px;
 
   button {
-    min-width: 330px;
+    width: 100%;
+    max-width: 330px;
   }
 `
 
 export const footer = styled.div`
-  width: 320px;
+  max-width: 320px;
   margin: 10px auto;
   font-size: 11px;
   line-height: 16px;

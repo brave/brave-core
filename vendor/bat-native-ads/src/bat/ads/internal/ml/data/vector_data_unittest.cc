@@ -14,12 +14,7 @@
 
 namespace ads::ml {
 
-class BatAdsVectorDataTest : public UnitTestBase {
- protected:
-  BatAdsVectorDataTest() = default;
-
-  ~BatAdsVectorDataTest() override = default;
-};
+class BatAdsVectorDataTest : public UnitTestBase {};
 
 TEST_F(BatAdsVectorDataTest, DenseVectorDataInitialization) {
   // Arrange
@@ -155,10 +150,10 @@ TEST_F(BatAdsVectorDataTest, NonsenseProduct) {
 TEST_F(BatAdsVectorDataTest, AddElementWise) {
   // Arrange
   VectorData v1 = VectorData({0.3F, 0.5F, 0.8F});
-  VectorData v1_b = VectorData({0.3F, 0.5F, 0.8F});
+  const VectorData v1_b = VectorData({0.3F, 0.5F, 0.8F});
   VectorData v2 = VectorData({1.0F, -0.6F, 0.0F});
   VectorData v3 = VectorData({0.0F, 0.0F, 0.0F});
-  VectorData v4 = VectorData({0.7F, 0.2F, -0.35F});
+  const VectorData v4 = VectorData({0.7F, 0.2F, -0.35F});
 
   const std::vector<float> v12({1.3F, -0.1F, 0.8F});
   const std::vector<float> v21({1.3F, -0.1F, 0.8F});

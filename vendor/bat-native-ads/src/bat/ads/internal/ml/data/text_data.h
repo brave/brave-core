@@ -16,9 +16,6 @@ class TextData final : public Data {
  public:
   TextData();
   explicit TextData(std::string text);
-  ~TextData() override;
-  TextData(const TextData& text_data) = delete;
-  TextData& operator=(const TextData& text_data) = delete;
 
   const std::string& GetText() const;
 

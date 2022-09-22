@@ -8,11 +8,13 @@ import { GrantInfo, formatGrantMonth, formatGrantDaysToClaim } from '../../share
 import { LocaleContext, formatMessage } from '../../shared/lib/locale_context'
 import { TokenAmount } from '../../shared/components/token_amount'
 import { MoneyBagIcon } from '../../shared/components/icons/money_bag_icon'
+import { LoadingIcon } from '../../shared/components/icons/loading_icon'
 
 import * as style from './claim_grant_view.style'
 
 interface Props {
   grantInfo: GrantInfo
+  showSpinner: boolean
   onClaim: () => void
 }
 
@@ -56,8 +58,8 @@ export function ClaimGrantView (props: Props) {
         }
       </style.text>
       <style.action>
-        <button onClick={props.onClaim}>
-          {getString('claim')}
+        <button onClick={props.onClaim} disabled={props.showSpinner}>
+          {props.showSpinner ? <LoadingIcon /> : getString('claim')}
         </button>
       </style.action>
     </style.root>

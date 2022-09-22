@@ -4,9 +4,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/decentralized_dns/constants.h"
-#include "brave/components/decentralized_dns/decentralized_dns_opt_in_page.h"
-#include "brave/components/decentralized_dns/pref_names.h"
+#include "brave/components/decentralized_dns/content/decentralized_dns_opt_in_page.h"
+#include "brave/components/decentralized_dns/core/constants.h"
+#include "brave/components/decentralized_dns/core/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"

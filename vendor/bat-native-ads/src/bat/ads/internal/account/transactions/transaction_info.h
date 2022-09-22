@@ -17,12 +17,17 @@ namespace ads {
 
 struct TransactionInfo final {
   TransactionInfo();
-  TransactionInfo(const TransactionInfo& info);
-  TransactionInfo& operator=(const TransactionInfo& info);
+
+  TransactionInfo(const TransactionInfo& other);
+  TransactionInfo& operator=(const TransactionInfo& other);
+
+  TransactionInfo(TransactionInfo&& other) noexcept;
+  TransactionInfo& operator=(TransactionInfo&& other) noexcept;
+
   ~TransactionInfo();
 
-  bool operator==(const TransactionInfo& rhs) const;
-  bool operator!=(const TransactionInfo& rhs) const;
+  bool operator==(const TransactionInfo& other) const;
+  bool operator!=(const TransactionInfo& other) const;
 
   bool IsValid() const;
 

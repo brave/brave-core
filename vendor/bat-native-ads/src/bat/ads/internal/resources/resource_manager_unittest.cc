@@ -20,8 +20,6 @@ class BatAdsResourceManagerTest : public ResourceManagerObserver,
  protected:
   BatAdsResourceManagerTest() = default;
 
-  ~BatAdsResourceManagerTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

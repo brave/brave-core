@@ -7,24 +7,14 @@
 
 namespace ads {
 
-CatalogNewTabPageAdWallpaperInfo::CatalogNewTabPageAdWallpaperInfo() = default;
-
-CatalogNewTabPageAdWallpaperInfo::CatalogNewTabPageAdWallpaperInfo(
-    const CatalogNewTabPageAdWallpaperInfo& info) = default;
-
-CatalogNewTabPageAdWallpaperInfo& CatalogNewTabPageAdWallpaperInfo::operator=(
-    const CatalogNewTabPageAdWallpaperInfo& info) = default;
-
-CatalogNewTabPageAdWallpaperInfo::~CatalogNewTabPageAdWallpaperInfo() = default;
-
 bool CatalogNewTabPageAdWallpaperInfo::operator==(
-    const CatalogNewTabPageAdWallpaperInfo& rhs) const {
-  return image_url == rhs.image_url && focal_point == rhs.focal_point;
+    const CatalogNewTabPageAdWallpaperInfo& other) const {
+  return image_url == other.image_url && focal_point == other.focal_point;
 }
 
 bool CatalogNewTabPageAdWallpaperInfo::operator!=(
-    const CatalogNewTabPageAdWallpaperInfo& rhs) const {
-  return !(*this == rhs);
+    const CatalogNewTabPageAdWallpaperInfo& other) const {
+  return !(*this == other);
 }
 
 }  // namespace ads

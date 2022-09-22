@@ -17,9 +17,9 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "brave/components/decentralized_dns/constants.h"
-#include "brave/components/decentralized_dns/pref_names.h"
-#include "brave/components/decentralized_dns/utils.h"
+#include "brave/components/decentralized_dns/core/constants.h"
+#include "brave/components/decentralized_dns/core/pref_names.h"
+#include "brave/components/decentralized_dns/core/utils.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
@@ -241,12 +241,12 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
 
   // No redirect for failed requests.
   OnBeforeURLRequest_EnsRedirectWork(
-      ResponseCallback(), brave_request_info, {},
+      ResponseCallback(), brave_request_info, {}, false,
       brave_wallet::mojom::ProviderError::kInternalError, "todo");
   EXPECT_TRUE(brave_request_info->new_url_spec.empty());
 
   OnBeforeURLRequest_EnsRedirectWork(
-      ResponseCallback(), brave_request_info, {},
+      ResponseCallback(), brave_request_info, {}, false,
       brave_wallet::mojom::ProviderError::kSuccess, "");
   EXPECT_TRUE(brave_request_info->new_url_spec.empty());
 
@@ -260,7 +260,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
   auto content_hash = *brave_wallet::eth_abi::ExtractBytesFromTuple(
       *brave_wallet::PrefixedHexStringToBytes(content_hash_encoded_string), 0);
   OnBeforeURLRequest_EnsRedirectWork(
-      ResponseCallback(), brave_request_info, content_hash,
+      ResponseCallback(), brave_request_info, content_hash, false,
       brave_wallet::mojom::ProviderError::kSuccess, "");
   EXPECT_TRUE(brave_request_info->new_url_spec.empty());
 
@@ -274,7 +274,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
   content_hash = *brave_wallet::eth_abi::ExtractBytesFromTuple(
       *brave_wallet::PrefixedHexStringToBytes(content_hash_encoded_string), 0);
   OnBeforeURLRequest_EnsRedirectWork(
-      ResponseCallback(), brave_request_info, content_hash,
+      ResponseCallback(), brave_request_info, content_hash, false,
       brave_wallet::mojom::ProviderError::kSuccess, "");
   EXPECT_EQ(brave_request_info->new_url_spec,
             "ipfs://"

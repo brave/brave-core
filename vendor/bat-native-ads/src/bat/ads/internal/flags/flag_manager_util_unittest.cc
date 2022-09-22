@@ -12,12 +12,7 @@
 
 namespace ads {
 
-class BatAdsFlagManagerUtilTest : public UnitTestBase {
- protected:
-  BatAdsFlagManagerUtilTest() = default;
-
-  ~BatAdsFlagManagerUtilTest() override = default;
-};
+class BatAdsFlagManagerUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsFlagManagerUtilTest, ShouldDebug) {
   // Arrange

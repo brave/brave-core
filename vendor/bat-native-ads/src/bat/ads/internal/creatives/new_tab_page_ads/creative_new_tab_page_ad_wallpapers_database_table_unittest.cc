@@ -13,7 +13,7 @@ namespace ads::database::table {
 
 TEST(BatAdsCreativeNewTabPageAdWallpapersDatabaseTableTest, TableName) {
   // Arrange
-  CreativeNewTabPageAdWallpapers database_table;
+  const CreativeNewTabPageAdWallpapers database_table;
 
   // Act
   const std::string table_name = database_table.GetTableName();

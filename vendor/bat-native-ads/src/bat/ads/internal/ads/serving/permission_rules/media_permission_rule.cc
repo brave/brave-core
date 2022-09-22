@@ -11,10 +11,6 @@
 
 namespace ads {
 
-MediaPermissionRule::MediaPermissionRule() = default;
-
-MediaPermissionRule::~MediaPermissionRule() = default;
-
 bool MediaPermissionRule::ShouldAllow() {
   if (!permission_rules::features::ShouldOnlyServeAdsIfMediaIsNotPlaying()) {
     return true;

@@ -121,7 +121,6 @@ declare namespace chrome.braveRewards {
   const getRecurringTips: (callback: (tips: RewardsExtension.RecurringTips) => void) => {}
   const saveRecurringTip: (publisherKey: string, newAmount: string) => {}
   const removeRecurringTip: (publisherKey: string) => {}
-  const getPublisherBanner: (publisherKey: string, callback: (banner: RewardsExtension.PublisherBanner) => void) => {}
   const onRecurringTipSaved: {
     addListener: (callback: (success: boolean) => void) => void
   }
@@ -154,8 +153,6 @@ declare namespace chrome.braveRewards {
     addListener: (callback: () => void) => void
   }
 
-  const getAnonWalletStatus: (callback: (result: RewardsExtension.Result) => void) => {}
-
   const onCompleteReset: {
     addListener: (callback: (properties: { success: boolean }) => void) => void
   }
@@ -184,7 +181,6 @@ declare namespace chrome.braveRewards {
 
   const getPrefs: (callback: (prefs: RewardsPrefs) => void) => void
   const updatePrefs: (prefs: Partial<RewardsPrefs>) => void
-  const requestAdsEnabledPopupClosed: (adsEnabled: boolean) => void
 }
 
 declare namespace chrome.binance {

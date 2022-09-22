@@ -113,7 +113,7 @@ RegisterStyleOverride(
 
       a[href].iron-selected {
         color: #DB2F04;
-        font-weight: 500 !important;
+        font-weight: 400 !important;
       }
 
       a:hover, iron-icon:hover {

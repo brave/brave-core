@@ -216,31 +216,6 @@ void Wallet::DisconnectWallet(const std::string& wallet_type,
   callback(mojom::Result::LEDGER_OK);
 }
 
-void Wallet::GetAnonWalletStatus(ledger::LegacyResultCallback callback) {
-  const auto wallet = GetWallet();
-  if (!wallet) {
-    BLOG(0, "Wallet is null");
-    callback(mojom::Result::LEDGER_ERROR);
-    return;
-  }
-
-  const std::string passphrase = GetWalletPassphrase(wallet->Clone());
-  const uint64_t stamp = ledger_->state()->GetCreationStamp();
-
-  if (!wallet->payment_id.empty() && stamp != 0) {
-    callback(mojom::Result::WALLET_CREATED);
-    return;
-  }
-
-  if (wallet->payment_id.empty() || passphrase.empty()) {
-    BLOG(0, "Wallet is corrupted");
-    callback(mojom::Result::CORRUPTED_DATA);
-    return;
-  }
-
-  callback(mojom::Result::LEDGER_OK);
-}
-
 void Wallet::DisconnectAllWallets(ledger::LegacyResultCallback callback) {
   DisconnectWallet(constant::kWalletUphold, [](const mojom::Result result) {});
   DisconnectWallet(constant::kWalletBitflyer,

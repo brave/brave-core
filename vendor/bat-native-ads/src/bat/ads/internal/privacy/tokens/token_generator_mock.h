@@ -17,6 +17,7 @@ namespace ads::privacy {
 class TokenGeneratorMock : public TokenGenerator {
  public:
   TokenGeneratorMock();
+
   ~TokenGeneratorMock() override;
 
   MOCK_METHOD(std::vector<cbr::Token>, Generate, (const int count), (const));

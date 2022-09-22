@@ -20,8 +20,6 @@ class BatAdsInlineContentAdsPerHourPermissionRuleTest : public UnitTestBase {
  protected:
   BatAdsInlineContentAdsPerHourPermissionRuleTest() = default;
 
-  ~BatAdsInlineContentAdsPerHourPermissionRuleTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

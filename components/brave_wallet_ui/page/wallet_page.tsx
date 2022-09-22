@@ -29,8 +29,6 @@ import { store, walletPageApiProxy } from './store'
 import walletDarkTheme from '../theme/wallet-dark'
 import walletLightTheme from '../theme/wallet-light'
 import 'emptykit.css'
-import '../../../ui/webui/resources/fonts/poppins.css'
-import '../../../ui/webui/resources/fonts/muli.css'
 
 function App () {
   const [initialThemeType, setInitialThemeType] = React.useState<chrome.braveTheme.ThemeType>()

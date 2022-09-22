@@ -7,6 +7,8 @@ import * as React from 'react'
 import { Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
+import '$web-components/app.global.scss'
+
 // Components
 import NewTabPage from './newTab'
 

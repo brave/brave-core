@@ -10,23 +10,29 @@ namespace ads {
 CatalogNewTabPageAdPayloadInfo::CatalogNewTabPageAdPayloadInfo() = default;
 
 CatalogNewTabPageAdPayloadInfo::CatalogNewTabPageAdPayloadInfo(
-    const CatalogNewTabPageAdPayloadInfo& info) = default;
+    const CatalogNewTabPageAdPayloadInfo& other) = default;
 
 CatalogNewTabPageAdPayloadInfo& CatalogNewTabPageAdPayloadInfo::operator=(
-    const CatalogNewTabPageAdPayloadInfo& info) = default;
+    const CatalogNewTabPageAdPayloadInfo& other) = default;
+
+CatalogNewTabPageAdPayloadInfo::CatalogNewTabPageAdPayloadInfo(
+    CatalogNewTabPageAdPayloadInfo&& other) noexcept = default;
+
+CatalogNewTabPageAdPayloadInfo& CatalogNewTabPageAdPayloadInfo::operator=(
+    CatalogNewTabPageAdPayloadInfo&& other) noexcept = default;
 
 CatalogNewTabPageAdPayloadInfo::~CatalogNewTabPageAdPayloadInfo() = default;
 
 bool CatalogNewTabPageAdPayloadInfo::operator==(
-    const CatalogNewTabPageAdPayloadInfo& rhs) const {
-  return company_name == rhs.company_name && image_url == rhs.image_url &&
-         alt == rhs.alt && target_url == rhs.target_url &&
-         wallpapers == rhs.wallpapers;
+    const CatalogNewTabPageAdPayloadInfo& other) const {
+  return company_name == other.company_name && image_url == other.image_url &&
+         alt == other.alt && target_url == other.target_url &&
+         wallpapers == other.wallpapers;
 }
 
 bool CatalogNewTabPageAdPayloadInfo::operator!=(
-    const CatalogNewTabPageAdPayloadInfo& rhs) const {
-  return !(*this == rhs);
+    const CatalogNewTabPageAdPayloadInfo& other) const {
+  return !(*this == other);
 }
 
 }  // namespace ads

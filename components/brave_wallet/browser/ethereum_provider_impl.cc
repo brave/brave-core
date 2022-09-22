@@ -1260,7 +1260,7 @@ void EthereumProviderImpl::OnRequestEthereumPermissions(
 
   std::string first_allowed_account;
   if (accounts.size() > 0) {
-    first_allowed_account = accounts[0];
+    first_allowed_account = base::ToLowerASCII(accounts[0]);
   }
   if (success && accounts.empty()) {
     formed_response = GetProviderErrorDictionary(
@@ -1287,7 +1287,7 @@ void EthereumProviderImpl::OnRequestEthereumPermissions(
   } else {
     base::Value::List list;
     for (const auto& account : accounts) {
-      list.Append(account);
+      list.Append(base::ToLowerASCII(account));
     }
     formed_response = base::Value(std::move(list));
   }
@@ -1313,7 +1313,7 @@ void EthereumProviderImpl::ContinueGetAllowedAccounts(
     brave_wallet::mojom::KeyringInfoPtr keyring_info) {
   std::vector<std::string> addresses;
   for (const auto& account_info : keyring_info->account_infos) {
-    addresses.push_back(account_info->address);
+    addresses.push_back(base::ToLowerASCII(account_info->address));
   }
 
   DCHECK(delegate_);
@@ -1361,7 +1361,7 @@ void EthereumProviderImpl::OnContinueGetAllowedAccounts(
   } else if (method == kEthAccounts) {
     base::Value::List list;
     for (const auto& account : accounts) {
-      list.Append(account);
+      list.Append(base::ToLowerASCII(account));
     }
     formed_response = base::Value(std::move(list));
     update_bindings = false;
@@ -1369,7 +1369,7 @@ void EthereumProviderImpl::OnContinueGetAllowedAccounts(
     if (accounts.empty()) {
       formed_response = base::Value();
     } else {
-      formed_response = base::Value(accounts[0]);
+      formed_response = base::Value(base::ToLowerASCII(accounts[0]));
     }
     update_bindings = false;
   } else {

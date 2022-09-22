@@ -43,10 +43,6 @@ int BindParameters(mojom::DBCommandInfo* command,
 
 }  // namespace
 
-GeoTargets::GeoTargets() = default;
-
-GeoTargets::~GeoTargets() = default;
-
 void GeoTargets::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                                 const CreativeAdList& creative_ads) {
   DCHECK(transaction);

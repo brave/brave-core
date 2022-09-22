@@ -11,17 +11,12 @@
 namespace ads {
 
 struct WalletInfo final {
-  WalletInfo();
-  WalletInfo(const WalletInfo& info);
-  WalletInfo& operator=(const WalletInfo& info);
-  ~WalletInfo();
-
   bool IsValid() const;
 
-  bool HasChanged(const WalletInfo& rhs) const;
+  bool HasChanged(const WalletInfo& other) const;
 
-  bool operator==(const WalletInfo& rhs) const;
-  bool operator!=(const WalletInfo& rhs) const;
+  bool operator==(const WalletInfo& other) const;
+  bool operator!=(const WalletInfo& other) const;
 
   std::string id;
   std::string secret_key;

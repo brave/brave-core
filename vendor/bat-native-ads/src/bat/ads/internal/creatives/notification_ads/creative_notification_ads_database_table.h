@@ -35,9 +35,16 @@ using GetCreativeNotificationAdsCallback =
 class CreativeNotificationAds final : public TableInterface {
  public:
   CreativeNotificationAds();
+
+  CreativeNotificationAds(const CreativeNotificationAds& other) = delete;
+  CreativeNotificationAds& operator=(const CreativeNotificationAds& other) =
+      delete;
+
+  CreativeNotificationAds(CreativeNotificationAds&& other) noexcept = delete;
+  CreativeNotificationAds& operator=(CreativeNotificationAds&& other) noexcept =
+      delete;
+
   ~CreativeNotificationAds() override;
-  CreativeNotificationAds(const CreativeNotificationAds&) = delete;
-  CreativeNotificationAds& operator=(const CreativeNotificationAds&) = delete;
 
   void Save(const CreativeNotificationAdList& creative_ads,
             ResultCallback callback);

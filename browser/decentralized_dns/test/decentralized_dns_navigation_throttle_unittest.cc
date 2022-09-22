@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/decentralized_dns/decentralized_dns_navigation_throttle.h"
+#include "brave/components/decentralized_dns/content/decentralized_dns_navigation_throttle.h"
 
 #include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"

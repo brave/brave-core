@@ -66,7 +66,7 @@ declare namespace Rewards {
     recurringList: Publisher[]
     recurringLoad: boolean
     safetyNetFailed?: boolean
-    showOnboarding?: boolean
+    showOnboarding: boolean | null
     tipsList: Publisher[]
     tipsLoad: boolean
     ui: {

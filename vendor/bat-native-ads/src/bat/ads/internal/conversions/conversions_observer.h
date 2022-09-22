@@ -21,9 +21,6 @@ class ConversionsObserver : public base::CheckedObserver {
   // Invoked when an ad conversion fails.
   virtual void OnConversionFailed(
       const ConversionQueueItemInfo& conversion_queue_item) {}
-
- protected:
-  ~ConversionsObserver() override = default;
 };
 
 }  // namespace ads

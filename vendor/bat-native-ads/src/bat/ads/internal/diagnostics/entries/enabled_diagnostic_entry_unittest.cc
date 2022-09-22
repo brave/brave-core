@@ -13,19 +13,14 @@
 
 namespace ads {
 
-class BatAdsEnabledDiagnosticEntryTest : public UnitTestBase {
- protected:
-  BatAdsEnabledDiagnosticEntryTest() = default;
-
-  ~BatAdsEnabledDiagnosticEntryTest() override = default;
-};
+class BatAdsEnabledDiagnosticEntryTest : public UnitTestBase {};
 
 TEST_F(BatAdsEnabledDiagnosticEntryTest, Enabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   // Act
-  EnabledDiagnosticEntry diagnostic_entry;
+  const EnabledDiagnosticEntry diagnostic_entry;
 
   // Assert
   EXPECT_EQ(DiagnosticEntryType::kEnabled, diagnostic_entry.GetType());
@@ -38,7 +33,7 @@ TEST_F(BatAdsEnabledDiagnosticEntryTest, Disabled) {
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
   // Act
-  EnabledDiagnosticEntry diagnostic_entry;
+  const EnabledDiagnosticEntry diagnostic_entry;
 
   // Assert
   EXPECT_EQ(DiagnosticEntryType::kEnabled, diagnostic_entry.GetType());

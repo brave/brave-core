@@ -13,10 +13,6 @@ namespace {
 constexpr char kName[] = "Locale";
 }  // namespace
 
-LocaleDiagnosticEntry::LocaleDiagnosticEntry() = default;
-
-LocaleDiagnosticEntry::~LocaleDiagnosticEntry() = default;
-
 DiagnosticEntryType LocaleDiagnosticEntry::GetType() const {
   return DiagnosticEntryType::kLocale;
 }

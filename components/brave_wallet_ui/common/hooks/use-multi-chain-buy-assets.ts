@@ -40,11 +40,13 @@ export const useMultiChainBuyAssets = () => {
     {
       wyreAssetOptions: BraveWallet.BlockchainToken[]
       rampAssetOptions: BraveWallet.BlockchainToken[]
+      sardineAssetOptions: BraveWallet.BlockchainToken[]
       allAssetOptions: BraveWallet.BlockchainToken[]
     }
   >({
     wyreAssetOptions: [],
     rampAssetOptions: [],
+    sardineAssetOptions: [],
     allAssetOptions: []
   })
 
@@ -59,16 +61,17 @@ export const useMultiChainBuyAssets = () => {
     return selectedAsset ? getNetworkInfo(selectedAsset.chainId, selectedAsset.coin, buyAssetNetworks) : undefined
   }, [selectedAsset, buyAssetNetworks])
 
-  const selectedAssetBuyOptions = React.useMemo((): BuyOption[] => {
+  const selectedAssetBuyOptions: BuyOption[] = React.useMemo(() => {
+    const { wyreAssetOptions, rampAssetOptions, sardineAssetOptions } = options
+    const onRampAssetMap = {
+      [BraveWallet.OnRampProvider.kWyre]: wyreAssetOptions,
+      [BraveWallet.OnRampProvider.kRamp]: rampAssetOptions,
+      [BraveWallet.OnRampProvider.kSardine]: sardineAssetOptions
+    }
     return selectedAsset
-      ? BuyOptions.filter(buyOption => {
-          return isSelectedAssetInAssetOptions(
-            selectedAsset,
-            buyOption.id === BraveWallet.OnRampProvider.kWyre
-              ? options.wyreAssetOptions
-              : buyOption.id === BraveWallet.OnRampProvider.kRamp ? options.rampAssetOptions : []
-          )
-        })
+      ? [...BuyOptions]
+        .filter(buyOption => isSelectedAssetInAssetOptions(selectedAsset, onRampAssetMap[buyOption.id]))
+        .sort((optionA, optionB) => optionA.name.localeCompare(optionB.name))
       : []
   }, [selectedAsset, options])
 

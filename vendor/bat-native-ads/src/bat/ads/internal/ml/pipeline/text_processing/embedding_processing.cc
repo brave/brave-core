@@ -39,10 +39,6 @@ std::unique_ptr<EmbeddingProcessing> EmbeddingProcessing::CreateFromValue(
   return embedding_processing;
 }
 
-EmbeddingProcessing::EmbeddingProcessing() = default;
-
-EmbeddingProcessing::~EmbeddingProcessing() = default;
-
 bool EmbeddingProcessing::IsInitialized() const {
   return is_initialized_;
 }

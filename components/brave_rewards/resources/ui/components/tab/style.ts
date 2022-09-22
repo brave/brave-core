@@ -90,16 +90,13 @@ export const StyledText = styled('div')<StyleProps>`
 
   @media (max-width: 485px) {
     font-size: 12px;
-    margin-top: 15px;
   }
 
   @media (max-width: 435px) {
     font-size: 10px;
-    margin-top: 17px;
   }
 
   @media (max-width: 385px) {
     font-size: 9px;
-    margin-top: 18px;
   }
 `

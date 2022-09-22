@@ -40,16 +40,20 @@ BlindedToken::BlindedToken(
 
 BlindedToken::BlindedToken(const BlindedToken& other) = default;
 
-BlindedToken& BlindedToken::operator=(const BlindedToken& info) = default;
+BlindedToken& BlindedToken::operator=(const BlindedToken& other) = default;
+
+BlindedToken::BlindedToken(BlindedToken&& other) noexcept = default;
+
+BlindedToken& BlindedToken::operator=(BlindedToken&& other) noexcept = default;
 
 BlindedToken::~BlindedToken() = default;
 
-bool BlindedToken::operator==(const BlindedToken& rhs) const {
-  return EncodeBase64().value_or("") == rhs.EncodeBase64().value_or("");
+bool BlindedToken::operator==(const BlindedToken& other) const {
+  return EncodeBase64().value_or("") == other.EncodeBase64().value_or("");
 }
 
-bool BlindedToken::operator!=(const BlindedToken& rhs) const {
-  return !(*this == rhs);
+bool BlindedToken::operator!=(const BlindedToken& other) const {
+  return !(*this == other);
 }
 
 BlindedToken BlindedToken::DecodeBase64(

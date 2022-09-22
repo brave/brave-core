@@ -16,10 +16,14 @@ namespace ads {
 class LocaleManager final {
  public:
   LocaleManager();
-  ~LocaleManager();
 
-  LocaleManager(const LocaleManager&) = delete;
-  LocaleManager& operator=(const LocaleManager&) = delete;
+  LocaleManager(const LocaleManager& other) = delete;
+  LocaleManager& operator=(const LocaleManager& other) = delete;
+
+  LocaleManager(LocaleManager&& other) noexcept = delete;
+  LocaleManager& operator=(LocaleManager&& other) noexcept = delete;
+
+  ~LocaleManager();
 
   static LocaleManager* GetInstance();
 

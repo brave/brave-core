@@ -15,8 +15,14 @@ namespace ads::targeting {
 
 struct PurchaseIntentSignalInfo final {
   PurchaseIntentSignalInfo();
-  PurchaseIntentSignalInfo(const PurchaseIntentSignalInfo& info);
-  PurchaseIntentSignalInfo& operator=(const PurchaseIntentSignalInfo& info);
+
+  PurchaseIntentSignalInfo(const PurchaseIntentSignalInfo& other);
+  PurchaseIntentSignalInfo& operator=(const PurchaseIntentSignalInfo& other);
+
+  PurchaseIntentSignalInfo(PurchaseIntentSignalInfo&& other) noexcept;
+  PurchaseIntentSignalInfo& operator=(
+      PurchaseIntentSignalInfo&& other) noexcept;
+
   ~PurchaseIntentSignalInfo();
 
   base::Time created_at;

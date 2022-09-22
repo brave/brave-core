@@ -63,12 +63,7 @@ privacy::UnblindedPaymentTokenList GetUnblindedPaymentTokens(const int count) {
 
 }  // namespace
 
-class BatAdsRedeemUnblindedPaymentTokensRequestTest : public UnitTestBase {
- protected:
-  BatAdsRedeemUnblindedPaymentTokensRequestTest() = default;
-
-  ~BatAdsRedeemUnblindedPaymentTokensRequestTest() override = default;
-};
+class BatAdsRedeemUnblindedPaymentTokensRequestTest : public UnitTestBase {};
 
 TEST_F(BatAdsRedeemUnblindedPaymentTokensRequestTest, BuildUrlForRPill) {
   // Arrange
@@ -87,7 +82,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensRequestTest, BuildUrlForRPill) {
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
       GetUnblindedPaymentTokens(7);
 
-  RedeemUnblindedPaymentTokensUserDataBuilder user_data_builder(
+  const RedeemUnblindedPaymentTokensUserDataBuilder user_data_builder(
       unblinded_payment_tokens);
 
   // Act
@@ -96,7 +91,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensRequestTest, BuildUrlForRPill) {
     RedeemUnblindedPaymentTokensUrlRequestBuilder url_request_builder(
         wallet, unblinded_payment_tokens, user_data);
 
-    mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
+    const mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
 
     mojom::UrlRequestInfoPtr expected_url_request =
         mojom::UrlRequestInfo::New();
@@ -133,7 +128,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensRequestTest, BuildUrlForBPill) {
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
       GetUnblindedPaymentTokens(7);
 
-  RedeemUnblindedPaymentTokensUserDataBuilder user_data_builder(
+  const RedeemUnblindedPaymentTokensUserDataBuilder user_data_builder(
       unblinded_payment_tokens);
 
   // Act
@@ -142,7 +137,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensRequestTest, BuildUrlForBPill) {
     RedeemUnblindedPaymentTokensUrlRequestBuilder url_request_builder(
         wallet, unblinded_payment_tokens, user_data);
 
-    mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
+    const mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
 
     mojom::UrlRequestInfoPtr expected_url_request =
         mojom::UrlRequestInfo::New();

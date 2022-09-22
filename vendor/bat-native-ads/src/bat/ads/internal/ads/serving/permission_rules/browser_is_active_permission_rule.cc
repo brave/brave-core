@@ -11,10 +11,6 @@
 
 namespace ads {
 
-BrowserIsActivePermissionRule::BrowserIsActivePermissionRule() = default;
-
-BrowserIsActivePermissionRule::~BrowserIsActivePermissionRule() = default;
-
 bool BrowserIsActivePermissionRule::ShouldAllow() {
   if (!permission_rules::features::ShouldOnlyServeAdsIfBrowserIsActive()) {
     return true;

@@ -43,7 +43,7 @@ export const amount = styled.div`
   color: var(--brave-palette-neutral600);
 
   .amount {
-    font-weight: 600;
+    font-weight: 500;
     color: var(--brave-color-brandBatInteracting);
 
     .brave-theme-dark & {

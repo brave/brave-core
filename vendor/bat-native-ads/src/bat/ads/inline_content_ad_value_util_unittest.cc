@@ -25,12 +25,7 @@ constexpr char kJson[] =
 
 }  // namespace
 
-class BatAdsInlineContentAdValueUtilTest : public UnitTestBase {
- protected:
-  BatAdsInlineContentAdValueUtilTest() = default;
-
-  ~BatAdsInlineContentAdValueUtilTest() override = default;
-};
+class BatAdsInlineContentAdValueUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsInlineContentAdValueUtilTest, FromValue) {
   // Arrange

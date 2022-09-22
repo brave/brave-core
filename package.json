@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.45.59",
+  "version": "1.46.3",
   "description": "Brave Core is a set of changes, APIs and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
@@ -258,7 +258,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "106.0.5249.40",
+        "tag": "106.0.5249.55",
         "repository": {
           "url": "https://github.com/chromium/chromium"
         }
@@ -289,7 +289,7 @@
     "@typescript-eslint/eslint-plugin": "4.33.0",
     "acorn": "8.0.5",
     "babel-loader": "8.2.3",
-    "brave-ui": "github:brave/brave-ui#8339e7dd496576bcfb2fb65f749ca971f45d249f",
+    "brave-ui": "github:brave/brave-ui#e4c049880199ac652b8f69610b8b70d1cd6d906f",
     "chalk": "4.1.0",
     "commander": "2.20.3",
     "css-loader": "3.6.0",

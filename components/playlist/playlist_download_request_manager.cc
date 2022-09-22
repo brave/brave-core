@@ -18,6 +18,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/isolated_world_ids.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "third_party/blink/public/common/web_preferences/web_preferences.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "ui/base/page_transition_types.h"
 
@@ -253,6 +254,20 @@ void PlaylistDownloadRequestManager::ScheduleWebContentsDestroying() {
 
 void PlaylistDownloadRequestManager::DestroyWebContents() {
   web_contents_.reset();
+}
+
+void PlaylistDownloadRequestManager::ConfigureWebPrefsforBackgroundWebContents(
+    content::WebContents* web_contents,
+    blink::web_pref::WebPreferences* web_prefs) {
+  if (web_contents_ && web_contents_.get() == web_contents) {
+    web_prefs->force_cosmetic_filtering = true;
+  }
+}
+
+content::WebContents*
+PlaylistDownloadRequestManager::GetBackgroundWebContentsForTesting() {
+  CreateWebContents();
+  return web_contents_.get();
 }
 
 }  // namespace playlist

@@ -12,14 +12,21 @@ namespace ads::security {
 
 struct VerifiableConversionEnvelopeInfo final {
   VerifiableConversionEnvelopeInfo();
+
   VerifiableConversionEnvelopeInfo(
-      const VerifiableConversionEnvelopeInfo& info);
+      const VerifiableConversionEnvelopeInfo& other);
   VerifiableConversionEnvelopeInfo& operator=(
-      const VerifiableConversionEnvelopeInfo& info);
+      const VerifiableConversionEnvelopeInfo& other);
+
+  VerifiableConversionEnvelopeInfo(
+      VerifiableConversionEnvelopeInfo&& other) noexcept;
+  VerifiableConversionEnvelopeInfo& operator=(
+      VerifiableConversionEnvelopeInfo&& other) noexcept;
+
   ~VerifiableConversionEnvelopeInfo();
 
-  bool operator==(const VerifiableConversionEnvelopeInfo& rhs) const;
-  bool operator!=(const VerifiableConversionEnvelopeInfo& rhs) const;
+  bool operator==(const VerifiableConversionEnvelopeInfo& other) const;
+  bool operator!=(const VerifiableConversionEnvelopeInfo& other) const;
 
   bool IsValid() const;
 

@@ -11,24 +11,30 @@ namespace ads {
 
 TransactionInfo::TransactionInfo() = default;
 
-TransactionInfo::TransactionInfo(const TransactionInfo& info) = default;
+TransactionInfo::TransactionInfo(const TransactionInfo& other) = default;
 
-TransactionInfo& TransactionInfo::operator=(const TransactionInfo& info) =
+TransactionInfo& TransactionInfo::operator=(const TransactionInfo& other) =
+    default;
+
+TransactionInfo::TransactionInfo(TransactionInfo&& other) noexcept = default;
+
+TransactionInfo& TransactionInfo::operator=(TransactionInfo&& other) noexcept =
     default;
 
 TransactionInfo::~TransactionInfo() = default;
 
-bool TransactionInfo::operator==(const TransactionInfo& rhs) const {
-  return id == rhs.id &&
-         DoubleEquals(created_at.ToDoubleT(), rhs.created_at.ToDoubleT()) &&
-         creative_instance_id == rhs.creative_instance_id &&
-         DoubleEquals(value, rhs.value) && ad_type == rhs.ad_type &&
-         confirmation_type == rhs.confirmation_type &&
-         DoubleEquals(reconciled_at.ToDoubleT(), rhs.reconciled_at.ToDoubleT());
+bool TransactionInfo::operator==(const TransactionInfo& other) const {
+  return id == other.id &&
+         DoubleEquals(created_at.ToDoubleT(), other.created_at.ToDoubleT()) &&
+         creative_instance_id == other.creative_instance_id &&
+         DoubleEquals(value, other.value) && ad_type == other.ad_type &&
+         confirmation_type == other.confirmation_type &&
+         DoubleEquals(reconciled_at.ToDoubleT(),
+                      other.reconciled_at.ToDoubleT());
 }
 
-bool TransactionInfo::operator!=(const TransactionInfo& rhs) const {
-  return !(*this == rhs);
+bool TransactionInfo::operator!=(const TransactionInfo& other) const {
+  return !(*this == other);
 }
 
 bool TransactionInfo::IsValid() const {

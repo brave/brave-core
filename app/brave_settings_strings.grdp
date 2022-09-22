@@ -74,6 +74,9 @@
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_BOOKMARKS_BUTTON" desc="The label for whether the bookmarks button should be shown or not">
     Show bookmarks button
   </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_SIDE_PANEL_BUTTON" desc="The label for whether the side panel button should be shown or not">
+    Show side panel button
+  </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_LOCATION_BAR_IS_WIDE" desc="The label for whether the location bar should display wide or not">
     Use wide address bar
   </message>
@@ -666,6 +669,12 @@
   </message>
   <message name="IDS_SETTINGS_RESOLVE_ENS_DESC" desc="The description for how to handle ENS">
     Method to resolve Ethereum Name Service (ENS)
+  </message>
+  <message name="IDS_SETTINGS_ENABLE_ENS_OFFCHAIN_LOOKUP_TITLE" desc="ENS offchain lookup method title">
+    Allow ENS offchain lookup.
+  </message>
+  <message name="IDS_SETTINGS_ENABLE_ENS_OFFCHAIN_LOOKUP_DESC" desc="ENS offchain lookup method desc">
+    <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn More<ph name="END_LINK">&lt;/a&gt;</ph> about ENS offchain lookup privacy considerations.
   </message>
   <message name="IDS_SETTINGS_ENABLE_TOR_TITLE" desc="Text fragment for enabling tor component">
     Private window with Tor

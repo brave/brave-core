@@ -27,9 +27,14 @@ class PromotedContentAd final
     : public promoted_content_ads::EventHandlerObserver {
  public:
   PromotedContentAd(Account* account, Transfer* transfer);
+
+  PromotedContentAd(const PromotedContentAd& other) = delete;
+  PromotedContentAd& operator=(const PromotedContentAd& other) = delete;
+
+  PromotedContentAd(PromotedContentAd&& other) noexcept = delete;
+  PromotedContentAd& operator=(PromotedContentAd&& other) noexcept = delete;
+
   ~PromotedContentAd() override;
-  PromotedContentAd(const PromotedContentAd&) = delete;
-  PromotedContentAd& operator=(const PromotedContentAd&) = delete;
 
   void TriggerEvent(const std::string& placement_id,
                     const std::string& creative_instance_id,

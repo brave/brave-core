@@ -30,7 +30,7 @@ export const amount = styled.div`
   color: var(--brave-palette-grey400);
 
   .amount, .currency {
-    font-weight: 600;
+    font-weight: 500;
   }
 `
 
@@ -72,6 +72,6 @@ export const text = styled.div`
 `
 
 export const days = styled.span`
-  font-weight: 600;
+  font-weight: 500;
   color: var(--brave-palette-white);
 `

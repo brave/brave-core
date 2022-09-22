@@ -35,6 +35,7 @@ static_library("brave_vpn") {
     "//brave/components/skus/common:mojom",
     "//brave/components/version_info",
     "//components/keyed_service/core",
+    "//components/pref_registry",
     "//components/prefs",
     "//components/version_info",
     "//net",
@@ -108,7 +109,10 @@ source_set("unit_tests") {
     sources = []
 
     if (is_win || is_mac || is_android) {
-      sources += [ "brave_vpn_unittest.cc" ]
+      sources += [
+        "brave_vpn_unittest.cc",
+        "brave_vpn_utils_unittest.cc",
+      ]
     }
 
     deps = [

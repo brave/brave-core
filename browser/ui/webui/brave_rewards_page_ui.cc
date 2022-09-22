@@ -791,6 +791,10 @@ void RewardsDOMHandler::ClaimPromotion(const base::Value::List& args) {
     coordinator->ShowGrantCaptcha(promotion_id);
   }
 #else
+  // Notify the UI that the claim process for this promotion has started.
+  CallJavascriptFunction("brave_rewards.promotionClaimStarted",
+                         base::Value(promotion_id));
+
   // No need for a callback. The UI receives "brave_rewards.promotionFinish".
   brave_rewards::AttestPromotionCallback callback = base::DoNothing();
   rewards_service_->ClaimPromotion(promotion_id, std::move(callback));
@@ -862,6 +866,10 @@ void RewardsDOMHandler::GetReconcileStamp(const base::Value::List& args) {
 
 void RewardsDOMHandler::OnAutoContributePropsReady(
     ledger::mojom::AutoContributePropertiesPtr properties) {
+  if (!properties) {
+    return;
+  }
+
   auto filter = ledger::mojom::ActivityInfoFilter::New();
   auto pair =
       ledger::mojom::ActivityInfoFilterOrderPair::New("ai.percent", false);
@@ -1659,6 +1667,7 @@ void RewardsDOMHandler::OnFetchBalance(const ledger::mojom::Result result,
     }
   } else {
     balance_value.Set("total", 0.0);
+    balance_value.Set("wallets", base::Value::Dict());
   }
 
   base::Value::Dict data;
@@ -2077,14 +2086,16 @@ void RewardsDOMHandler::GetExternalWalletProviders(
 BraveRewardsPageUI::BraveRewardsPageUI(content::WebUI* web_ui,
                                        const std::string& name)
     : WebUIController(web_ui) {
-  CreateAndAddWebUIDataSource(web_ui, name, kBraveRewardsPageGenerated,
-                              kBraveRewardsPageGeneratedSize,
+  auto* source = CreateAndAddWebUIDataSource(
+      web_ui, name, kBraveRewardsPageGenerated, kBraveRewardsPageGeneratedSize,
+      IDR_BRAVE_REWARDS_PAGE_HTML, /*disable_trusted_types_csp=*/true);
+
 #if BUILDFLAG(IS_ANDROID)
-                              IDR_BRAVE_REWARDS_ANDROID_PAGE_HTML,
+  source->AddBoolean("isAndroid", true);
 #else
-                              IDR_BRAVE_REWARDS_PAGE_HTML,
+  source->AddBoolean("isAndroid", false);
 #endif
-                              /*disable_trusted_types_csp=*/true);
+
   auto handler_owner = std::make_unique<RewardsDOMHandler>();
   RewardsDOMHandler* handler = handler_owner.get();
   web_ui->AddMessageHandler(std::move(handler_owner));

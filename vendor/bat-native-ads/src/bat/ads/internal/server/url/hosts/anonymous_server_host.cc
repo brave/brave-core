@@ -20,10 +20,6 @@ constexpr char kStagingHost[] = "https://anonymous.ads.bravesoftware.com";
 
 }  // namespace
 
-AnonymousServerHost::AnonymousServerHost() = default;
-
-AnonymousServerHost::~AnonymousServerHost() = default;
-
 std::string AnonymousServerHost::Get() const {
   const EnvironmentType environment_type = GetEnvironmentType();
 

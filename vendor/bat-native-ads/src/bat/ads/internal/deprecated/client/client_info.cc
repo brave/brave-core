@@ -21,9 +21,13 @@ namespace ads {
 
 ClientInfo::ClientInfo() = default;
 
-ClientInfo::ClientInfo(const ClientInfo& info) = default;
+ClientInfo::ClientInfo(const ClientInfo& other) = default;
 
-ClientInfo& ClientInfo::operator=(const ClientInfo& info) = default;
+ClientInfo& ClientInfo::operator=(const ClientInfo& other) = default;
+
+ClientInfo::ClientInfo(ClientInfo&& other) noexcept = default;
+
+ClientInfo& ClientInfo::operator=(ClientInfo&& other) noexcept = default;
 
 ClientInfo::~ClientInfo() = default;
 

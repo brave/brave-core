@@ -14,12 +14,7 @@
 
 namespace ads {
 
-class BatAdsIssuersPermissionRuleTest : public UnitTestBase {
- protected:
-  BatAdsIssuersPermissionRuleTest() = default;
-
-  ~BatAdsIssuersPermissionRuleTest() override = default;
-};
+class BatAdsIssuersPermissionRuleTest : public UnitTestBase {};
 
 TEST_F(BatAdsIssuersPermissionRuleTest, Issuers) {
   // Arrange

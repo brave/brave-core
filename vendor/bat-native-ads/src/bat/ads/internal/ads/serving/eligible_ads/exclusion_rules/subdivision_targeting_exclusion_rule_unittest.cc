@@ -36,8 +36,6 @@ class BatAdsSubdivisionTargetingExclusionRuleTest
  protected:
   BatAdsSubdivisionTargetingExclusionRuleTest() = default;
 
-  ~BatAdsSubdivisionTargetingExclusionRuleTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

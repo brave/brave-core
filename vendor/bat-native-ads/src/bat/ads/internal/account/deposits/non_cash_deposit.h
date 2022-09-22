@@ -14,11 +14,6 @@ namespace ads {
 
 class NonCashDeposit final : public DepositInterface {
  public:
-  NonCashDeposit();
-  ~NonCashDeposit() override;
-  NonCashDeposit(const NonCashDeposit&) = delete;
-  NonCashDeposit& operator=(const NonCashDeposit&) = delete;
-
   void GetValue(const std::string& creative_instance_id,
                 GetDepositCallback callback) override;
 };

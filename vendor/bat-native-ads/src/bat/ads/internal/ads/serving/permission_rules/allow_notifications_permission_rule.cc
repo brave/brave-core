@@ -9,10 +9,6 @@
 
 namespace ads {
 
-AllowNotificationsPermissionRule::AllowNotificationsPermissionRule() = default;
-
-AllowNotificationsPermissionRule::~AllowNotificationsPermissionRule() = default;
-
 bool AllowNotificationsPermissionRule::ShouldAllow() {
   if (!DoesRespectCap()) {
     last_message_ = "System notifications not allowed";

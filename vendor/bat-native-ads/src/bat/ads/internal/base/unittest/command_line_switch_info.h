@@ -14,9 +14,6 @@ namespace ads {
 struct CommandLineSwitchInfo final {
   CommandLineSwitchInfo();
   CommandLineSwitchInfo(const std::string& key, const std::string& value);
-  CommandLineSwitchInfo(const CommandLineSwitchInfo& info);
-  CommandLineSwitchInfo& operator=(const CommandLineSwitchInfo& info);
-  ~CommandLineSwitchInfo();
 
   std::string key;
   std::string value;

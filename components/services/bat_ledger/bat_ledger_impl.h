@@ -145,11 +145,6 @@ class BatLedgerImpl :
 
   void GetExcludedList(GetExcludedListCallback callback) override;
 
-  void SaveMediaInfo(
-      const std::string& type,
-      const base::flat_map<std::string, std::string>& args,
-      SaveMediaInfoCallback callback) override;
-
   void UpdateMediaDuration(
       const uint64_t window_id,
       const std::string& publisher_key,
@@ -209,8 +204,6 @@ class BatLedgerImpl :
   void DisconnectWallet(
     const std::string& wallet_type,
     DisconnectWalletCallback callback) override;
-
-  void GetAnonWalletStatus(GetAnonWalletStatusCallback callback) override;
 
   void GetTransactionReport(const ledger::mojom::ActivityMonth month,
                             const int year,
@@ -322,11 +315,6 @@ class BatLedgerImpl :
       CallbackHolder<GetExcludedListCallback>* holder,
       std::vector<ledger::mojom::PublisherInfoPtr> list);
 
-  static void OnSaveMediaInfoCallback(
-      CallbackHolder<SaveMediaInfoCallback>* holder,
-      ledger::mojom::Result result,
-      ledger::mojom::PublisherInfoPtr info);
-
   static void OnGetPendingContributions(
       CallbackHolder<GetPendingContributionsCallback>* holder,
       std::vector<ledger::mojom::PendingContributionInfoPtr> list);
@@ -355,10 +343,6 @@ class BatLedgerImpl :
   static void OnDisconnectWallet(
       CallbackHolder<DisconnectWalletCallback>* holder,
       ledger::mojom::Result result);
-
-  static void OnGetAnonWalletStatus(
-      CallbackHolder<GetAnonWalletStatusCallback>* holder,
-      const ledger::mojom::Result result);
 
   static void OnGetTransactionReport(
       CallbackHolder<GetTransactionReportCallback>* holder,

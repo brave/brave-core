@@ -637,4 +637,8 @@
   <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_LENGTH_ERROR" desc="Error message for when a supplied recovery phrase has an invalid number of words">Recovery phrase must be 12, 15, 18, 21, or 24 words long</message>
   <message name="IDS_BRAVE_WALLET_NFTS_EMPTY_STATE" desc="Message displayed when user has no NFTs">No NFTs found in your wallet. You can add NFTs by clicking the "+ Visible assets" button at the bottom of the "Portfolio" tab</message>
   <message name="IDS_BRAVE_WALLET_NFTS_EMPTY_STATE_SEARCH_FILTER" desc="Message displayed no NFTs match search criteria">No NFTs matching search or filter found</message>
+  <message name="IDS_BRAVE_WALLET_ENS_OFFCHAIN_PROCEED_WITH_YES" desc="Proceed with ENS offchain lookup answer">Yes</message>
+  <message name="IDS_BRAVE_WALLET_ENS_OFFCHAIN_PROCEED_WITH_NO" desc="Proceed with ENS offchain lookup answer">No</message>
+  <message name="IDS_BRAVE_WALLET_ENS_OFFCHAIN_DONT_SHOW_AGAIN" desc="Proceed with ENS offchain lookup checkbox">Don't show this again</message>
+  <message name="IDS_BRAVE_WALLET_ENS_OFFCHAIN_WARNING" desc="ENS offchain lookup warning line">Address resolution requires offchain network requests. Proceed?</message>
 </grit-part>

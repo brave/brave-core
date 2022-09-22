@@ -16,12 +16,18 @@ namespace ads {
 class RefillUnblindedTokensDelegateMock : public RefillUnblindedTokensDelegate {
  public:
   RefillUnblindedTokensDelegateMock();
-  ~RefillUnblindedTokensDelegateMock() override;
 
   RefillUnblindedTokensDelegateMock(const RefillUnblindedTokensDelegateMock&) =
       delete;
   RefillUnblindedTokensDelegateMock& operator=(
-      const RefillUnblindedTokensDelegateMock&) = delete;
+      const RefillUnblindedTokensDelegateMock& other) = delete;
+
+  RefillUnblindedTokensDelegateMock(
+      RefillUnblindedTokensDelegateMock&& other) noexcept = delete;
+  RefillUnblindedTokensDelegateMock& operator=(
+      RefillUnblindedTokensDelegateMock&& other) noexcept = delete;
+
+  ~RefillUnblindedTokensDelegateMock() override;
 
   MOCK_METHOD(void, OnDidRefillUnblindedTokens, ());
 

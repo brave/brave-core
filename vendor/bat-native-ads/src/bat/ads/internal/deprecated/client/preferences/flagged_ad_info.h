@@ -14,11 +14,6 @@
 namespace ads {
 
 struct FlaggedAdInfo final {
-  FlaggedAdInfo();
-  FlaggedAdInfo(const FlaggedAdInfo& info);
-  FlaggedAdInfo& operator=(const FlaggedAdInfo& info);
-  ~FlaggedAdInfo();
-
   base::Value::Dict ToValue() const;
   void FromValue(const base::Value::Dict& root);
 

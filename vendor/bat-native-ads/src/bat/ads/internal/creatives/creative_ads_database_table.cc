@@ -122,10 +122,6 @@ CreativeAdList GetCreativeAdsFromResponse(
 
 }  // namespace
 
-CreativeAds::CreativeAds() = default;
-
-CreativeAds::~CreativeAds() = default;
-
 void CreativeAds::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                                  const CreativeAdList& creative_ads) {
   DCHECK(transaction);
@@ -154,7 +150,7 @@ void CreativeAds::Delete(ResultCallback callback) const {
 void CreativeAds::GetForCreativeInstanceId(
     const std::string& creative_instance_id,
     GetCreativeAdCallback callback) {
-  CreativeAdInfo creative_ad;
+  const CreativeAdInfo creative_ad;
 
   if (creative_instance_id.empty()) {
     callback(/*success*/ false, creative_instance_id, creative_ad);

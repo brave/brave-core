@@ -218,10 +218,6 @@ class LedgerImpl : public Ledger {
 
   void StartMonthlyContribution() override;
 
-  void SaveMediaInfo(const std::string& type,
-                     const base::flat_map<std::string, std::string>& data,
-                     PublisherInfoCallback callback) override;
-
   void UpdateMediaDuration(uint64_t window_id,
                            const std::string& publisher_key,
                            uint64_t duration,
@@ -274,8 +270,6 @@ class LedgerImpl : public Ledger {
                         LegacyResultCallback callback) override;
 
   void GetAllPromotions(GetAllPromotionsCallback callback) override;
-
-  void GetAnonWalletStatus(LegacyResultCallback callback) override;
 
   void GetTransactionReport(mojom::ActivityMonth month,
                             int year,

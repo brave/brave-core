@@ -43,8 +43,6 @@ class BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest
  protected:
   BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest() = default;
 
-  ~BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 
@@ -84,7 +82,7 @@ class BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest
 
   CreativeNewTabPageAdInfo BuildAndSaveCreativeAd() {
     CreativeNewTabPageAdList creative_ads;
-    const CreativeNewTabPageAdInfo creative_ad = BuildCreativeNewTabPageAd();
+    CreativeNewTabPageAdInfo creative_ad = BuildCreativeNewTabPageAd();
     creative_ads.push_back(creative_ad);
 
     SaveCreativeAds(creative_ads);

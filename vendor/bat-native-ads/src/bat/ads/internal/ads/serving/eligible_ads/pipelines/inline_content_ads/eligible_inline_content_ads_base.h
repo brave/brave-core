@@ -31,6 +31,12 @@ namespace inline_content_ads {
 
 class EligibleAdsBase {
  public:
+  EligibleAdsBase(const EligibleAdsBase& other) = delete;
+  EligibleAdsBase& operator=(const EligibleAdsBase& other) = delete;
+
+  EligibleAdsBase(EligibleAdsBase&& other) noexcept = delete;
+  EligibleAdsBase& operator=(EligibleAdsBase&& other) noexcept = delete;
+
   virtual ~EligibleAdsBase();
 
   virtual void GetForUserModel(

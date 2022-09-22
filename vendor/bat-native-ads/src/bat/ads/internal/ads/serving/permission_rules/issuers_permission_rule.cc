@@ -10,10 +10,6 @@
 
 namespace ads {
 
-IssuersPermissionRule::IssuersPermissionRule() = default;
-
-IssuersPermissionRule::~IssuersPermissionRule() = default;
-
 bool IssuersPermissionRule::ShouldAllow() {
   if (!DoesRespectCap()) {
     last_message_ = "Missing issuers";

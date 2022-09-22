@@ -16,7 +16,7 @@ namespace ads::privacy::cbr {
 
 TEST(BatAdsSignedTokenTest, FailToInitialize) {
   // Arrange
-  SignedToken signed_token;
+  const SignedToken signed_token;
 
   // Act
   const bool has_value = signed_token.has_value();
@@ -27,7 +27,7 @@ TEST(BatAdsSignedTokenTest, FailToInitialize) {
 
 TEST(BatAdsSignedTokenTest, FailToInitializeWithEmptyBase64) {
   // Arrange
-  SignedToken signed_token("");
+  const SignedToken signed_token("");
 
   // Act
   const bool has_value = signed_token.has_value();
@@ -38,7 +38,7 @@ TEST(BatAdsSignedTokenTest, FailToInitializeWithEmptyBase64) {
 
 TEST(BatAdsSignedTokenTest, FailToInitializeWithInvalidBase64) {
   // Arrange
-  SignedToken signed_token(kInvalidBase64);
+  const SignedToken signed_token(kInvalidBase64);
 
   // Act
   const bool has_value = signed_token.has_value();
@@ -83,7 +83,7 @@ TEST(BatAdsSignedTokenTest, FailToDecodeInvalidBase64) {
 
 TEST(BatAdsSignedTokenTest, EncodeBase64) {
   // Arrange
-  SignedToken signed_token(kSignedTokenBase64);
+  const SignedToken signed_token(kSignedTokenBase64);
 
   // Act
   const absl::optional<std::string> encoded_base64 =
@@ -96,7 +96,7 @@ TEST(BatAdsSignedTokenTest, EncodeBase64) {
 
 TEST(BatAdsSignedTokenTest, FailToEncodeBase64WhenUninitialized) {
   // Arrange
-  SignedToken signed_token;
+  const SignedToken signed_token;
 
   // Act
   const absl::optional<std::string> encoded_base64 =
@@ -108,7 +108,7 @@ TEST(BatAdsSignedTokenTest, FailToEncodeBase64WhenUninitialized) {
 
 TEST(BatAdsSignedTokenTest, IsEqual) {
   // Arrange
-  SignedToken signed_token(kSignedTokenBase64);
+  const SignedToken signed_token(kSignedTokenBase64);
 
   // Act
 
@@ -118,7 +118,7 @@ TEST(BatAdsSignedTokenTest, IsEqual) {
 
 TEST(BatAdsSignedTokenTest, IsEqualWhenUninitialized) {
   // Arrange
-  SignedToken signed_token;
+  const SignedToken signed_token;
 
   // Act
 
@@ -128,7 +128,7 @@ TEST(BatAdsSignedTokenTest, IsEqualWhenUninitialized) {
 
 TEST(BatAdsSignedTokenTest, IsEmptyBase64Equal) {
   // Arrange
-  SignedToken signed_token("");
+  const SignedToken signed_token("");
 
   // Act
 
@@ -138,7 +138,7 @@ TEST(BatAdsSignedTokenTest, IsEmptyBase64Equal) {
 
 TEST(BatAdsSignedTokenTest, IsInvalidBase64Equal) {
   // Arrange
-  SignedToken signed_token(kInvalidBase64);
+  const SignedToken signed_token(kInvalidBase64);
 
   // Act
 
@@ -148,18 +148,18 @@ TEST(BatAdsSignedTokenTest, IsInvalidBase64Equal) {
 
 TEST(BatAdsSignedTokenTest, IsNotEqual) {
   // Arrange
-  SignedToken signed_token(kSignedTokenBase64);
+  const SignedToken signed_token(kSignedTokenBase64);
 
   // Act
 
   // Assert
-  SignedToken different_signed_token(kInvalidBase64);
+  const SignedToken different_signed_token(kInvalidBase64);
   EXPECT_NE(different_signed_token, signed_token);
 }
 
 TEST(BatAdsSignedTokenTest, OutputStream) {
   // Arrange
-  SignedToken signed_token(kSignedTokenBase64);
+  const SignedToken signed_token(kSignedTokenBase64);
 
   // Act
   std::stringstream ss;
@@ -171,7 +171,7 @@ TEST(BatAdsSignedTokenTest, OutputStream) {
 
 TEST(BatAdsSignedTokenTest, OutputStreamWhenUninitialized) {
   // Arrange
-  SignedToken signed_token;
+  const SignedToken signed_token;
 
   // Act
   std::stringstream ss;

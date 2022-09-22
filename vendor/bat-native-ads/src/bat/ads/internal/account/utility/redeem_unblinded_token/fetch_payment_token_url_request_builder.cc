@@ -22,9 +22,6 @@ FetchPaymentTokenUrlRequestBuilder::FetchPaymentTokenUrlRequestBuilder(
   DCHECK(IsValid(confirmation_));
 }
 
-FetchPaymentTokenUrlRequestBuilder::~FetchPaymentTokenUrlRequestBuilder() =
-    default;
-
 // GET /v2/confirmation/{transactionId}/paymentToken
 
 mojom::UrlRequestInfoPtr FetchPaymentTokenUrlRequestBuilder::Build() {

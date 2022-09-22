@@ -19,12 +19,7 @@
 
 namespace ads {
 
-class BatAdsHistoryUtilTest : public UnitTestBase {
- protected:
-  BatAdsHistoryUtilTest() = default;
-
-  ~BatAdsHistoryUtilTest() override = default;
-};
+class BatAdsHistoryUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsHistoryUtilTest, AddHistory) {
   // Arrange

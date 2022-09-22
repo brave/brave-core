@@ -14,10 +14,6 @@
 
 namespace ads::geographic {
 
-GetSubdivisionUrlRequestBuilder::GetSubdivisionUrlRequestBuilder() = default;
-
-GetSubdivisionUrlRequestBuilder::~GetSubdivisionUrlRequestBuilder() = default;
-
 // GET /v1/getstate
 
 mojom::UrlRequestInfoPtr GetSubdivisionUrlRequestBuilder::Build() {

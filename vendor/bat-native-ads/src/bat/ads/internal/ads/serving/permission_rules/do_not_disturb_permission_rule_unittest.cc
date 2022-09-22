@@ -12,12 +12,7 @@
 
 namespace ads {
 
-class BatAdsDoNotDisturbPermissionRuleTest : public UnitTestBase {
- protected:
-  BatAdsDoNotDisturbPermissionRuleTest() = default;
-
-  ~BatAdsDoNotDisturbPermissionRuleTest() override = default;
-};
+class BatAdsDoNotDisturbPermissionRuleTest : public UnitTestBase {};
 
 TEST_F(BatAdsDoNotDisturbPermissionRuleTest,
        AllowAdWhileBrowserIsInactiveBetween6amAnd9pmForAndroid) {

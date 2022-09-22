@@ -45,8 +45,6 @@ class Wallet {
   void DisconnectWallet(const std::string& wallet_type,
                         ledger::LegacyResultCallback callback);
 
-  void GetAnonWalletStatus(ledger::LegacyResultCallback callback);
-
   void DisconnectAllWallets(ledger::LegacyResultCallback callback);
 
   mojom::RewardsWalletPtr GetWallet();

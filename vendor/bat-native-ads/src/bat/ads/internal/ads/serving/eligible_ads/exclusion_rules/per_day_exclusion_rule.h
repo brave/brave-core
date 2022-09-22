@@ -19,10 +19,14 @@ class PerDayExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
   explicit PerDayExclusionRule(const AdEventList& ad_events);
-  ~PerDayExclusionRule() override;
 
-  PerDayExclusionRule(const PerDayExclusionRule&) = delete;
-  PerDayExclusionRule& operator=(const PerDayExclusionRule&) = delete;
+  PerDayExclusionRule(const PerDayExclusionRule& other) = delete;
+  PerDayExclusionRule& operator=(const PerDayExclusionRule& other) = delete;
+
+  PerDayExclusionRule(PerDayExclusionRule&& other) noexcept = delete;
+  PerDayExclusionRule& operator=(PerDayExclusionRule&& other) noexcept = delete;
+
+  ~PerDayExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
 

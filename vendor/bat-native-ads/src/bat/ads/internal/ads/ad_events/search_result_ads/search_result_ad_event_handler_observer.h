@@ -30,9 +30,6 @@ class EventHandlerObserver : public base::CheckedObserver {
   virtual void OnSearchResultAdEventFailed(
       const SearchResultAdInfo& ad,
       const mojom::SearchResultAdEventType event_type) {}
-
- protected:
-  ~EventHandlerObserver() override = default;
 };
 
 }  // namespace search_result_ads

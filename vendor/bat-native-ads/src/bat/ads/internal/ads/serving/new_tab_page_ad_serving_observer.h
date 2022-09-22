@@ -27,9 +27,6 @@ class ServingObserver : public base::CheckedObserver {
 
   // Invoked when a new tab page ad fails to serve.
   virtual void OnFailedToServeNewTabPageAd() {}
-
- protected:
-  ~ServingObserver() override = default;
 };
 
 }  // namespace new_tab_page_ads

@@ -13,8 +13,6 @@ constexpr char kPlatformName[] = "macos";
 
 PlatformHelperMac::PlatformHelperMac() = default;
 
-PlatformHelperMac::~PlatformHelperMac() = default;
-
 bool PlatformHelperMac::IsMobile() const {
   return false;
 }

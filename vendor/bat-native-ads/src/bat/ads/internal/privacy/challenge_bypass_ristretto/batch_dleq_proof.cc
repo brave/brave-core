@@ -59,7 +59,7 @@ std::vector<UnblindedToken> ToUnblindedTokens(
     const std::vector<challenge_bypass_ristretto::UnblindedToken>& raw_tokens) {
   std::vector<UnblindedToken> unblinded_tokens;
   for (const auto& raw_token : raw_tokens) {
-    UnblindedToken unblinded_token(raw_token);
+    const UnblindedToken unblinded_token(raw_token);
     if (!unblinded_token.has_value()) {
       return {};
     }
@@ -82,19 +82,14 @@ BatchDLEQProof::BatchDLEQProof(const std::vector<BlindedToken>& blinded_tokens,
                                const SigningKey& signing_key)
     : batch_dleq_proof_(Create(blinded_tokens, signed_tokens, signing_key)) {}
 
-BatchDLEQProof::BatchDLEQProof(const BatchDLEQProof& other) = default;
-
-BatchDLEQProof& BatchDLEQProof::operator=(const BatchDLEQProof& other) =
-    default;
-
 BatchDLEQProof::~BatchDLEQProof() = default;
 
-bool BatchDLEQProof::operator==(const BatchDLEQProof& rhs) const {
-  return EncodeBase64().value_or("") == rhs.EncodeBase64().value_or("");
+bool BatchDLEQProof::operator==(const BatchDLEQProof& other) const {
+  return EncodeBase64().value_or("") == other.EncodeBase64().value_or("");
 }
 
-bool BatchDLEQProof::operator!=(const BatchDLEQProof& rhs) const {
-  return !(*this == rhs);
+bool BatchDLEQProof::operator!=(const BatchDLEQProof& other) const {
+  return !(*this == other);
 }
 
 BatchDLEQProof BatchDLEQProof::DecodeBase64(

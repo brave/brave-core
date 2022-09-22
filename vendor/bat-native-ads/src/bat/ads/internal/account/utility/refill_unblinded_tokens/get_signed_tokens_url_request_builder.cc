@@ -21,8 +21,6 @@ GetSignedTokensUrlRequestBuilder::GetSignedTokensUrlRequestBuilder(
   DCHECK(!nonce_.empty());
 }
 
-GetSignedTokensUrlRequestBuilder::~GetSignedTokensUrlRequestBuilder() = default;
-
 // GET /v2/confirmation/token/{paymentId}?nonce={nonce}
 
 mojom::UrlRequestInfoPtr GetSignedTokensUrlRequestBuilder::Build() {

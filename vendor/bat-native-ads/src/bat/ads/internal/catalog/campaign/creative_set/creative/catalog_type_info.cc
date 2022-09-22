@@ -9,20 +9,25 @@ namespace ads {
 
 CatalogTypeInfo::CatalogTypeInfo() = default;
 
-CatalogTypeInfo::CatalogTypeInfo(const CatalogTypeInfo& info) = default;
+CatalogTypeInfo::CatalogTypeInfo(const CatalogTypeInfo& other) = default;
 
-CatalogTypeInfo& CatalogTypeInfo::operator=(const CatalogTypeInfo& info) =
+CatalogTypeInfo& CatalogTypeInfo::operator=(const CatalogTypeInfo& other) =
+    default;
+
+CatalogTypeInfo::CatalogTypeInfo(CatalogTypeInfo&& other) noexcept = default;
+
+CatalogTypeInfo& CatalogTypeInfo::operator=(CatalogTypeInfo&& other) noexcept =
     default;
 
 CatalogTypeInfo::~CatalogTypeInfo() = default;
 
-bool CatalogTypeInfo::operator==(const CatalogTypeInfo& rhs) const {
-  return code == rhs.code && name == rhs.name && platform == rhs.platform &&
-         version == rhs.version;
+bool CatalogTypeInfo::operator==(const CatalogTypeInfo& other) const {
+  return code == other.code && name == other.name &&
+         platform == other.platform && version == other.version;
 }
 
-bool CatalogTypeInfo::operator!=(const CatalogTypeInfo& rhs) const {
-  return !(*this == rhs);
+bool CatalogTypeInfo::operator!=(const CatalogTypeInfo& other) const {
+  return !(*this == other);
 }
 
 }  // namespace ads

@@ -14,12 +14,7 @@
 
 namespace ads {
 
-class BatAdsCatalogLastUpdatedDiagnosticEntryTest : public UnitTestBase {
- protected:
-  BatAdsCatalogLastUpdatedDiagnosticEntryTest() = default;
-
-  ~BatAdsCatalogLastUpdatedDiagnosticEntryTest() override = default;
-};
+class BatAdsCatalogLastUpdatedDiagnosticEntryTest : public UnitTestBase {};
 
 TEST_F(BatAdsCatalogLastUpdatedDiagnosticEntryTest, CatalogLastUpdated) {
   // Arrange
@@ -28,7 +23,7 @@ TEST_F(BatAdsCatalogLastUpdatedDiagnosticEntryTest, CatalogLastUpdated) {
 
   SetCatalogLastUpdated(Now());
 
-  CatalogLastUpdatedDiagnosticEntry diagnostic_entry;
+  const CatalogLastUpdatedDiagnosticEntry diagnostic_entry;
 
   // Act
 
@@ -42,7 +37,7 @@ TEST_F(BatAdsCatalogLastUpdatedDiagnosticEntryTest, CatalogLastUpdated) {
 
 TEST_F(BatAdsCatalogLastUpdatedDiagnosticEntryTest, CatalogNeverUpdated) {
   // Arrange
-  CatalogLastUpdatedDiagnosticEntry diagnostic_entry;
+  const CatalogLastUpdatedDiagnosticEntry diagnostic_entry;
 
   // Act
 

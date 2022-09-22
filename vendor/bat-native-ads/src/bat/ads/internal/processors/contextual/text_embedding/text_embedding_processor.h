@@ -30,9 +30,14 @@ class TextEmbedding final : public LocaleManagerObserver,
                             public TabManagerObserver {
  public:
   explicit TextEmbedding(resource::TextEmbedding* resource);
+
+  TextEmbedding(const TextEmbedding& other) = delete;
+  TextEmbedding& operator=(const TextEmbedding& other) = delete;
+
+  TextEmbedding(TextEmbedding&& other) noexcept = delete;
+  TextEmbedding& operator=(TextEmbedding&& other) noexcept = delete;
+
   ~TextEmbedding() override;
-  TextEmbedding(const TextEmbedding&) = delete;
-  TextEmbedding& operator=(const TextEmbedding&) = delete;
 
   bool IsEnabled();
 

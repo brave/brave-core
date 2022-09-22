@@ -15,16 +15,11 @@
 
 namespace ads {
 
-class BatAdsTimeConstraintUtilTest : public UnitTestBase {
- protected:
-  BatAdsTimeConstraintUtilTest() = default;
-
-  ~BatAdsTimeConstraintUtilTest() override = default;
-};
+class BatAdsTimeConstraintUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsTimeConstraintUtilTest, DoesRespectWhenNoHistoory) {
   // Arrange
-  std::vector<base::Time> history;
+  const std::vector<base::Time> history;
 
   // Act
   const bool does_respect =

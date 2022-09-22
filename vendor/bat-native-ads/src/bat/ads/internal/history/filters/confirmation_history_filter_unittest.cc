@@ -61,7 +61,7 @@ TEST(BatAdsConfirmationHistoryFilterTest, FilterActions) {
   HistoryItemList history = {ad1, ad2, ad3, ad4, ad5, ad6, ad7};
 
   // Act
-  ConfirmationHistoryFilter filter;
+  const ConfirmationHistoryFilter filter;
   history = filter.Apply(history);
 
   // Assert
@@ -129,7 +129,7 @@ TEST(BatAdsConfirmationHistoryFilterTest, FilterUnsupportedActions) {
   HistoryItemList history = {ad1, ad2, ad3, ad4, ad5, ad6, ad7, ad8};
 
   // Act
-  ConfirmationHistoryFilter filter;
+  const ConfirmationHistoryFilter filter;
   history = filter.Apply(history);
 
   // Assert

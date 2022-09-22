@@ -43,9 +43,6 @@ class HistoryManagerObserver : public base::CheckedObserver {
 
   // Invoked when a user unsaves an ad.
   virtual void OnDidUnsaveAd(const AdContentInfo& ad_content) {}
-
- protected:
-  ~HistoryManagerObserver() override = default;
 };
 
 }  // namespace ads

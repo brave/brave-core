@@ -22,7 +22,7 @@ constexpr char kGroupKey[] = "group";
 base::Value::Dict GetStudies() {
   base::Value::List list;
 
-  base::FieldTrial::ActiveGroups studies = GetActiveStudies();
+  const base::FieldTrial::ActiveGroups studies = GetActiveStudies();
   for (const auto& study : studies) {
     base::Value::Dict dict;
 

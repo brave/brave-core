@@ -30,9 +30,14 @@ class TextClassification final : public LocaleManagerObserver,
                                  public TabManagerObserver {
  public:
   explicit TextClassification(resource::TextClassification* resource);
+
+  TextClassification(const TextClassification& other) = delete;
+  TextClassification& operator=(const TextClassification& other) = delete;
+
+  TextClassification(TextClassification&& other) noexcept = delete;
+  TextClassification& operator=(TextClassification&& other) noexcept = delete;
+
   ~TextClassification() override;
-  TextClassification(const TextClassification&) = delete;
-  TextClassification& operator=(const TextClassification&) = delete;
 
   void Process(const std::string& text);
 

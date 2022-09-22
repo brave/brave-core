@@ -14,23 +14,29 @@ CreativeNewTabPageAdInfo::CreativeNewTabPageAdInfo(
     : CreativeAdInfo(creative_ad) {}
 
 CreativeNewTabPageAdInfo::CreativeNewTabPageAdInfo(
-    const CreativeNewTabPageAdInfo& info) = default;
+    const CreativeNewTabPageAdInfo& other) = default;
 
 CreativeNewTabPageAdInfo& CreativeNewTabPageAdInfo::operator=(
-    const CreativeNewTabPageAdInfo& info) = default;
+    const CreativeNewTabPageAdInfo& other) = default;
+
+CreativeNewTabPageAdInfo::CreativeNewTabPageAdInfo(
+    CreativeNewTabPageAdInfo&& other) noexcept = default;
+
+CreativeNewTabPageAdInfo& CreativeNewTabPageAdInfo::operator=(
+    CreativeNewTabPageAdInfo&& other) noexcept = default;
 
 CreativeNewTabPageAdInfo::~CreativeNewTabPageAdInfo() = default;
 
 bool CreativeNewTabPageAdInfo::operator==(
-    const CreativeNewTabPageAdInfo& rhs) const {
-  return CreativeAdInfo::operator==(rhs) && company_name == rhs.company_name &&
-         image_url == rhs.image_url && alt == rhs.alt &&
-         wallpapers == rhs.wallpapers;
+    const CreativeNewTabPageAdInfo& other) const {
+  return CreativeAdInfo::operator==(other) &&
+         company_name == other.company_name && image_url == other.image_url &&
+         alt == other.alt && wallpapers == other.wallpapers;
 }
 
 bool CreativeNewTabPageAdInfo::operator!=(
-    const CreativeNewTabPageAdInfo& rhs) const {
-  return !(*this == rhs);
+    const CreativeNewTabPageAdInfo& other) const {
+  return !(*this == other);
 }
 
 }  // namespace ads

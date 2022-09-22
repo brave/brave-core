@@ -333,20 +333,6 @@ class BraveRewardsGetRecurringTipsFunction : public ExtensionFunction {
   void OnGetRecurringTips(std::vector<ledger::mojom::PublisherInfoPtr> list);
 };
 
-class BraveRewardsGetPublisherBannerFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION(
-      "braveRewards.getPublisherBanner", UNKNOWN)
-
- protected:
-  ~BraveRewardsGetPublisherBannerFunction() override;
-
-  ResponseAction Run() override;
-
- private:
-  void OnPublisherBanner(ledger::mojom::PublisherBannerPtr banner);
-};
-
 class BraveRewardsRefreshPublisherFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.refreshPublisher", UNKNOWN)
@@ -486,20 +472,6 @@ class BraveRewardsGetAdsDataFunction : public ExtensionFunction {
   ~BraveRewardsGetAdsDataFunction() override;
 
   ResponseAction Run() override;
-};
-
-class BraveRewardsGetAnonWalletStatusFunction
-    : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.getAnonWalletStatus", UNKNOWN)
-
- protected:
-  ~BraveRewardsGetAnonWalletStatusFunction() override;
-
-  ResponseAction Run() override;
-
- private:
-  void OnGetAnonWalletStatus(const ledger::mojom::Result result);
 };
 
 class BraveRewardsIsInitializedFunction : public ExtensionFunction {

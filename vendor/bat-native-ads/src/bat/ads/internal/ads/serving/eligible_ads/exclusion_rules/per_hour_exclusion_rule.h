@@ -19,10 +19,15 @@ class PerHourExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
   explicit PerHourExclusionRule(const AdEventList& ad_events);
-  ~PerHourExclusionRule() override;
 
-  PerHourExclusionRule(const PerHourExclusionRule&) = delete;
-  PerHourExclusionRule& operator=(const PerHourExclusionRule&) = delete;
+  PerHourExclusionRule(const PerHourExclusionRule& other) = delete;
+  PerHourExclusionRule& operator=(const PerHourExclusionRule& other) = delete;
+
+  PerHourExclusionRule(PerHourExclusionRule&& other) noexcept = delete;
+  PerHourExclusionRule& operator=(PerHourExclusionRule&& other) noexcept =
+      delete;
+
+  ~PerHourExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
 

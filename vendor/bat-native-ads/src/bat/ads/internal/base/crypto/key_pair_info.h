@@ -13,12 +13,17 @@ namespace ads::security {
 
 struct KeyPairInfo final {
   KeyPairInfo();
-  KeyPairInfo(const KeyPairInfo& info);
-  KeyPairInfo& operator=(const KeyPairInfo& info);
+
+  KeyPairInfo(const KeyPairInfo& other);
+  KeyPairInfo& operator=(const KeyPairInfo& other);
+
+  KeyPairInfo(KeyPairInfo&& other) noexcept;
+  KeyPairInfo& operator=(KeyPairInfo&& other) noexcept;
+
   ~KeyPairInfo();
 
-  bool operator==(const KeyPairInfo& rhs) const;
-  bool operator!=(const KeyPairInfo& rhs) const;
+  bool operator==(const KeyPairInfo& other) const;
+  bool operator!=(const KeyPairInfo& other) const;
 
   bool IsValid() const;
 

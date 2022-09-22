@@ -17,7 +17,7 @@ export const StyledTitle = styled('div')<{}>`
   font-size: 16px;
   color: #4b4c5c;
   padding: 16px 0;
-  font-weight: 600;
+  font-weight: 500;
 `
 
 export const StyledContentWrapper = styled('div')<{}>`

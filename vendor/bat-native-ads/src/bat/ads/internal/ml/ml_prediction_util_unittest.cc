@@ -15,12 +15,7 @@
 
 namespace ads::ml {
 
-class BatAdsMLPredictionUtilTest : public UnitTestBase {
- protected:
-  BatAdsMLPredictionUtilTest() = default;
-
-  ~BatAdsMLPredictionUtilTest() override = default;
-};
+class BatAdsMLPredictionUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsMLPredictionUtilTest, SoftmaxTest) {
   // Arrange

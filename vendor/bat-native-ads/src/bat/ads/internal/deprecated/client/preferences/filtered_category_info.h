@@ -14,11 +14,6 @@
 namespace ads {
 
 struct FilteredCategoryInfo final {
-  FilteredCategoryInfo();
-  FilteredCategoryInfo(const FilteredCategoryInfo& info);
-  FilteredCategoryInfo& operator=(const FilteredCategoryInfo& info);
-  ~FilteredCategoryInfo();
-
   base::Value::Dict ToValue() const;
   void FromValue(const base::Value::Dict& root);
 

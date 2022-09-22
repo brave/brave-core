@@ -61,7 +61,7 @@
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
 #include "brave/components/de_amp/browser/de_amp_throttle.h"
 #include "brave/components/debounce/browser/debounce_navigation_throttle.h"
-#include "brave/components/decentralized_dns/decentralized_dns_navigation_throttle.h"
+#include "brave/components/decentralized_dns/content/decentralized_dns_navigation_throttle.h"
 #include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -209,6 +209,11 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_shields/common/cookie_list_opt_in.mojom.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "brave/components/brave_today/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/components/playlist/playlist_service.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
@@ -1047,6 +1052,15 @@ void BraveContentBrowserClient::OverrideWebkitPrefs(WebContents* web_contents,
   // This will stop NavigatorPlugins from returning fixed plugins data and will
   // allow us to return our farbled data
   web_prefs->allow_non_empty_navigator_plugins = true;
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  if (auto* playlist_service =
+          playlist::PlaylistServiceFactory::GetForBrowserContext(
+              web_contents->GetBrowserContext())) {
+    playlist_service->ConfigureWebPrefsforBackgroundWebContents(web_contents,
+                                                                web_prefs);
+  }
+#endif
 }
 
 blink::UserAgentMetadata BraveContentBrowserClient::GetUserAgentMetadata() {

@@ -12,7 +12,7 @@ export const reduxState: Rewards.ApplicationState = {
     firstLoad: false,
     contributionMinTime: 8,
     contributionMinVisits: 1,
-    contributionMonthly: 0,
+    contributionMonthly: 5,
     contributionNonVerified: true,
     contributionVideos: true,
     donationAbilityYT: true,
@@ -127,7 +127,7 @@ export const reduxState: Rewards.ApplicationState = {
     currentCountryCode: '',
     parameters: {
       autoContributeChoice: 0,
-      autoContributeChoices: [],
+      autoContributeChoices: [1, 2, 5, 10],
       rate: 0,
       payoutStatus: {}
     },

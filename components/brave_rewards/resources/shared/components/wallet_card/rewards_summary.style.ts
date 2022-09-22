@@ -79,7 +79,7 @@ export const dataTable = styled.div`
 
   td.amount {
     text-align: right;
-    font-weight: 600;
+    font-weight: 500;
     color: #6971d5;
 
     .currency {

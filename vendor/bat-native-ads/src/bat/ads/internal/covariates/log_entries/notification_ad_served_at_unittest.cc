@@ -13,18 +13,13 @@
 namespace ads {
 
 class BatAdsFederatedLogEntriesNotificationAdServedAtTest
-    : public UnitTestBase {
- protected:
-  BatAdsFederatedLogEntriesNotificationAdServedAtTest() = default;
-
-  ~BatAdsFederatedLogEntriesNotificationAdServedAtTest() override = default;
-};
+    : public UnitTestBase {};
 
 TEST_F(BatAdsFederatedLogEntriesNotificationAdServedAtTest, GetDataType) {
-  NotificationAdServedAt notification_ad_served_at;
+  const NotificationAdServedAt notification_ad_served_at;
 
   // Act
-  brave_federated::mojom::DataType data_type =
+  const brave_federated::mojom::DataType data_type =
       notification_ad_served_at.GetDataType();
 
   // Assert
@@ -49,7 +44,7 @@ TEST_F(BatAdsFederatedLogEntriesNotificationAdServedAtTest, GetValue) {
 TEST_F(BatAdsFederatedLogEntriesNotificationAdServedAtTest,
        GetValueWithoutTime) {
   // Arrange
-  NotificationAdServedAt notification_ad_served_at;
+  const NotificationAdServedAt notification_ad_served_at;
 
   // Act
   const std::string value = notification_ad_served_at.GetValue();

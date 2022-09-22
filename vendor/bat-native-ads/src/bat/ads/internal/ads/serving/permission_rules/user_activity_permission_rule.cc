@@ -11,10 +11,6 @@
 
 namespace ads {
 
-UserActivityPermissionRule::UserActivityPermissionRule() = default;
-
-UserActivityPermissionRule::~UserActivityPermissionRule() = default;
-
 bool UserActivityPermissionRule::ShouldAllow() {
   if (!DoesRespectCap()) {
     last_message_ = "User was inactive";

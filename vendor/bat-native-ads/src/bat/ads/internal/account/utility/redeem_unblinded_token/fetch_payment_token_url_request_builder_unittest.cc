@@ -15,12 +15,7 @@
 
 namespace ads {
 
-class BatAdsFetchPaymentTokenUrlRequestBuilderTest : public UnitTestBase {
- protected:
-  BatAdsFetchPaymentTokenUrlRequestBuilderTest() = default;
-
-  ~BatAdsFetchPaymentTokenUrlRequestBuilderTest() override = default;
-};
+class BatAdsFetchPaymentTokenUrlRequestBuilderTest : public UnitTestBase {};
 
 TEST_F(BatAdsFetchPaymentTokenUrlRequestBuilderTest, BuildUrl) {
   // Arrange
@@ -33,7 +28,7 @@ TEST_F(BatAdsFetchPaymentTokenUrlRequestBuilderTest, BuildUrl) {
   FetchPaymentTokenUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
-  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
+  const mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
 
   // Assert
   mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();

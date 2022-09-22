@@ -24,12 +24,7 @@ constexpr char kDescription[] = "description";
 
 }  // namespace
 
-class BatAdsAdContentUtilTest : public UnitTestBase {
- protected:
-  BatAdsAdContentUtilTest() = default;
-
-  ~BatAdsAdContentUtilTest() override = default;
-};
+class BatAdsAdContentUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsAdContentUtilTest, Build) {
   // Arrange

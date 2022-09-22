@@ -9,18 +9,22 @@ namespace ads {
 
 IssuerInfo::IssuerInfo() = default;
 
-IssuerInfo::IssuerInfo(const IssuerInfo& info) = default;
+IssuerInfo::IssuerInfo(const IssuerInfo& other) = default;
 
-IssuerInfo& IssuerInfo::operator=(const IssuerInfo& info) = default;
+IssuerInfo& IssuerInfo::operator=(const IssuerInfo& other) = default;
+
+IssuerInfo::IssuerInfo(IssuerInfo&& other) noexcept = default;
+
+IssuerInfo& IssuerInfo::operator=(IssuerInfo&& other) noexcept = default;
 
 IssuerInfo::~IssuerInfo() = default;
 
-bool IssuerInfo::operator==(const IssuerInfo& rhs) const {
-  return type == rhs.type && public_keys == rhs.public_keys;
+bool IssuerInfo::operator==(const IssuerInfo& other) const {
+  return type == other.type && public_keys == other.public_keys;
 }
 
-bool IssuerInfo::operator!=(const IssuerInfo& rhs) const {
-  return !(*this == rhs);
+bool IssuerInfo::operator!=(const IssuerInfo& other) const {
+  return !(*this == other);
 }
 
 }  // namespace ads

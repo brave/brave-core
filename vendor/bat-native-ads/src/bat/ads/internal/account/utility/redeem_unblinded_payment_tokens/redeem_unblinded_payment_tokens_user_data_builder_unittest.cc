@@ -17,12 +17,7 @@
 namespace ads {
 
 class BatAdsRedeemUnblindedPaymentTokensUserDataBuilderTest
-    : public UnitTestBase {
- protected:
-  BatAdsRedeemUnblindedPaymentTokensUserDataBuilderTest() = default;
-
-  ~BatAdsRedeemUnblindedPaymentTokensUserDataBuilderTest() override = default;
-};
+    : public UnitTestBase {};
 
 TEST_F(BatAdsRedeemUnblindedPaymentTokensUserDataBuilderTest, BuildUserData) {
   // Arrange
@@ -33,7 +28,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensUserDataBuilderTest, BuildUserData) {
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
       privacy::GetUnblindedPaymentTokens(2);
 
-  RedeemUnblindedPaymentTokensUserDataBuilder user_data_builder(
+  const RedeemUnblindedPaymentTokensUserDataBuilder user_data_builder(
       unblinded_payment_tokens);
 
   // Act

@@ -102,6 +102,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
   void TearDown() override {
     provider_.reset();
     web_contents_.reset();
+    profile_.SetPermissionControllerDelegate(nullptr);
   }
 
   void SetUp() override {

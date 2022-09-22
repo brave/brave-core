@@ -26,7 +26,7 @@ bool JSON::Validate(rapidjson::Document* document,
     return false;
   }
 
-  rapidjson::SchemaDocument schema(document_schema);
+  const rapidjson::SchemaDocument schema(document_schema);
   rapidjson::SchemaValidator validator(schema);
   return document->Accept(validator);
 }
@@ -37,8 +37,9 @@ std::string JSON::GetLastError(rapidjson::Document* document) {
   }
 
   auto parse_error_code = document->GetParseError();
-  std::string description(rapidjson::GetParseError_En(parse_error_code));
-  std::string error_offset = base::NumberToString(document->GetErrorOffset());
+  const std::string description(rapidjson::GetParseError_En(parse_error_code));
+  const std::string error_offset =
+      base::NumberToString(document->GetErrorOffset());
   return description + " (" + error_offset + ")";
 }
 

@@ -28,7 +28,7 @@ TEST(BatAdsBlindedTokenUtilTest, BlindTokens) {
 
 TEST(BatAdsBlindedTokenUtilTToUnblindedTokensest, BlindEmptyTokens) {
   // Arrange
-  std::vector<Token> tokens;
+  const std::vector<Token> tokens;
 
   // Act
   const std::vector<BlindedToken> blinded_tokens = BlindTokens(tokens);
@@ -57,7 +57,7 @@ TEST(BatAdsBlindedTokenUtilTest, TokensToRawTokens) {
 
 TEST(BatAdsBlindedTokenUtilTest, EmptyTokensToRawTokens) {
   // Arrange
-  std::vector<BlindedToken> tokens;
+  const std::vector<BlindedToken> tokens;
 
   // Act
   const std::vector<challenge_bypass_ristretto::BlindedToken> raw_tokens =

@@ -22,8 +22,6 @@ class BatAdsEligibleNotificationAdsV1Issue17199Test : public UnitTestBase {
  protected:
   BatAdsEligibleNotificationAdsV1Issue17199Test() = default;
 
-  ~BatAdsEligibleNotificationAdsV1Issue17199Test() override = default;
-
   void SetUpMocks() override {
     CopyFileFromTestPathToTempPath("database_issue_17199.sqlite",
                                    kDatabaseFilename);

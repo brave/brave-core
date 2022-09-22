@@ -45,8 +45,6 @@ class BatAdsCatalogTest : public UnitTestBase {
  protected:
   BatAdsCatalogTest() = default;
 
-  ~BatAdsCatalogTest() override = default;
-
   CatalogCampaignInfo BuildCatalogCampaign1() {
     // Segments
     CatalogSegmentList catalog_segments;

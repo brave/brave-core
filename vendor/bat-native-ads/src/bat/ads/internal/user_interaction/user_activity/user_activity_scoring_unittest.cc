@@ -13,12 +13,7 @@
 
 namespace ads {
 
-class BatAdsUserActivityScoringTest : public UnitTestBase {
- protected:
-  BatAdsUserActivityScoringTest() = default;
-
-  ~BatAdsUserActivityScoringTest() override = default;
-};
+class BatAdsUserActivityScoringTest : public UnitTestBase {};
 
 TEST_F(BatAdsUserActivityScoringTest, GetUserActivityScore) {
   // Arrange

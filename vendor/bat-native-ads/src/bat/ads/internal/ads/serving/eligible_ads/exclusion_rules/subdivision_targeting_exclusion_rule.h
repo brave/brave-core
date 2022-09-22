@@ -24,12 +24,18 @@ class SubdivisionTargetingExclusionRule final
  public:
   explicit SubdivisionTargetingExclusionRule(
       geographic::SubdivisionTargeting* subdivision_targeting);
-  ~SubdivisionTargetingExclusionRule() override;
 
   SubdivisionTargetingExclusionRule(const SubdivisionTargetingExclusionRule&) =
       delete;
   SubdivisionTargetingExclusionRule& operator=(
-      const SubdivisionTargetingExclusionRule&) = delete;
+      const SubdivisionTargetingExclusionRule& other) = delete;
+
+  SubdivisionTargetingExclusionRule(
+      SubdivisionTargetingExclusionRule&& other) noexcept = delete;
+  SubdivisionTargetingExclusionRule& operator=(
+      SubdivisionTargetingExclusionRule&& other) noexcept = delete;
+
+  ~SubdivisionTargetingExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
 

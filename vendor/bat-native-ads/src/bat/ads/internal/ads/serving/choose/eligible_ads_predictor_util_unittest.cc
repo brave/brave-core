@@ -55,7 +55,7 @@ TEST(BatAdsEligibleAdsPredictorUtilTest, GroupCreativeAdsByCreativeInstanceId) {
 TEST(BatAdsEligibleAdsPredictorUtilTest,
      GroupCreativeAdsByCreativeInstanceIdForEmptyAds) {
   // Arrange
-  CreativeNotificationAdList creative_ads;
+  const CreativeNotificationAdList creative_ads;
 
   // Act
   const CreativeAdPredictorMap<CreativeNotificationAdInfo>

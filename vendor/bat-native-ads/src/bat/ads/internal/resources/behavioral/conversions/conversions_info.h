@@ -19,10 +19,14 @@ namespace ads::resource {
 
 struct ConversionsInfo final {
   ConversionsInfo();
-  ~ConversionsInfo();
 
-  ConversionsInfo(const ConversionsInfo& info) = delete;
-  ConversionsInfo& operator=(const ConversionsInfo& info) = delete;
+  ConversionsInfo(const ConversionsInfo& other);
+  ConversionsInfo& operator=(const ConversionsInfo& other);
+
+  ConversionsInfo(ConversionsInfo&& other) noexcept;
+  ConversionsInfo& operator=(ConversionsInfo&& other) noexcept;
+
+  ~ConversionsInfo();
 
   static std::unique_ptr<ConversionsInfo> CreateFromValue(
       base::Value resource_value,

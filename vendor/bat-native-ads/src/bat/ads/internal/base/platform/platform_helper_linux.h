@@ -14,19 +14,13 @@
 namespace ads {
 
 class PlatformHelperLinux final : public PlatformHelper {
- public:
-  ~PlatformHelperLinux() override;
-
-  PlatformHelperLinux(const PlatformHelperLinux&) = delete;
-  PlatformHelperLinux& operator=(const PlatformHelperLinux&) = delete;
-
  protected:
   friend class base::NoDestructor<PlatformHelperLinux>;
 
   PlatformHelperLinux();
 
  private:
-  // PlatformHelper impl
+  // PlatformHelper:
   bool IsMobile() const override;
   std::string GetName() const override;
   PlatformType GetType() const override;

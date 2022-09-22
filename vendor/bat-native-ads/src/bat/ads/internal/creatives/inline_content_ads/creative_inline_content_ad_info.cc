@@ -14,23 +14,29 @@ CreativeInlineContentAdInfo::CreativeInlineContentAdInfo(
     : CreativeAdInfo(creative_ad) {}
 
 CreativeInlineContentAdInfo::CreativeInlineContentAdInfo(
-    const CreativeInlineContentAdInfo& info) = default;
+    const CreativeInlineContentAdInfo& other) = default;
 
 CreativeInlineContentAdInfo& CreativeInlineContentAdInfo::operator=(
-    const CreativeInlineContentAdInfo& info) = default;
+    const CreativeInlineContentAdInfo& other) = default;
+
+CreativeInlineContentAdInfo::CreativeInlineContentAdInfo(
+    CreativeInlineContentAdInfo&& other) noexcept = default;
+
+CreativeInlineContentAdInfo& CreativeInlineContentAdInfo::operator=(
+    CreativeInlineContentAdInfo&& other) noexcept = default;
 
 CreativeInlineContentAdInfo::~CreativeInlineContentAdInfo() = default;
 
 bool CreativeInlineContentAdInfo::operator==(
-    const CreativeInlineContentAdInfo& rhs) const {
-  return CreativeAdInfo::operator==(rhs) && title == rhs.title &&
-         description == rhs.description && image_url == rhs.image_url &&
-         dimensions == rhs.dimensions && cta_text == rhs.cta_text;
+    const CreativeInlineContentAdInfo& other) const {
+  return CreativeAdInfo::operator==(other) && title == other.title &&
+         description == other.description && image_url == other.image_url &&
+         dimensions == other.dimensions && cta_text == other.cta_text;
 }
 
 bool CreativeInlineContentAdInfo::operator!=(
-    const CreativeInlineContentAdInfo& rhs) const {
-  return !(*this == rhs);
+    const CreativeInlineContentAdInfo& other) const {
+  return !(*this == other);
 }
 
 }  // namespace ads

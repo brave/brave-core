@@ -23,8 +23,6 @@ class BatAdsDatabaseMigrationTest : public UnitTestBase,
  protected:
   BatAdsDatabaseMigrationTest() = default;
 
-  ~BatAdsDatabaseMigrationTest() override = default;
-
   void SetUpMocks() override {
     const std::string database_filename =
         base::StringPrintf("database_schema_%d.sqlite", GetSchemaVersion());

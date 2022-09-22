@@ -75,8 +75,6 @@ ConversionQueueItemInfo GetFromRecord(mojom::DBRecordInfo* record) {
 
 ConversionQueue::ConversionQueue() : batch_size_(kDefaultBatchSize) {}
 
-ConversionQueue::~ConversionQueue() = default;
-
 void ConversionQueue::Save(
     const ConversionQueueItemList& conversion_queue_items,
     ResultCallback callback) {

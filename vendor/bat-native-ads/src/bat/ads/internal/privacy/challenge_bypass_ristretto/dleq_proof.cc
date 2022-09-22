@@ -61,18 +61,14 @@ DLEQProof::DLEQProof(const BlindedToken& blinded_token,
                      const SigningKey& signing_key)
     : dleq_proof_(Create(blinded_token, signed_token, signing_key)) {}
 
-DLEQProof::DLEQProof(const DLEQProof& other) = default;
-
-DLEQProof& DLEQProof::operator=(const DLEQProof& other) = default;
-
 DLEQProof::~DLEQProof() = default;
 
-bool DLEQProof::operator==(const DLEQProof& rhs) const {
-  return EncodeBase64().value_or("") == rhs.EncodeBase64().value_or("");
+bool DLEQProof::operator==(const DLEQProof& other) const {
+  return EncodeBase64().value_or("") == other.EncodeBase64().value_or("");
 }
 
-bool DLEQProof::operator!=(const DLEQProof& rhs) const {
-  return !(*this == rhs);
+bool DLEQProof::operator!=(const DLEQProof& other) const {
+  return !(*this == other);
 }
 
 DLEQProof DLEQProof::DecodeBase64(const std::string& dleq_proof_base64) {

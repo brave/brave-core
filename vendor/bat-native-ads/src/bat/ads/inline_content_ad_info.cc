@@ -23,14 +23,14 @@ InlineContentAdInfo& InlineContentAdInfo::operator=(
 
 InlineContentAdInfo::~InlineContentAdInfo() = default;
 
-bool InlineContentAdInfo::operator==(const InlineContentAdInfo& rhs) const {
-  return AdInfo::operator==(rhs) && title == rhs.title &&
-         description == rhs.description && image_url == rhs.image_url &&
-         dimensions == rhs.dimensions && cta_text == rhs.cta_text;
+bool InlineContentAdInfo::operator==(const InlineContentAdInfo& other) const {
+  return AdInfo::operator==(other) && title == other.title &&
+         description == other.description && image_url == other.image_url &&
+         dimensions == other.dimensions && cta_text == other.cta_text;
 }
 
-bool InlineContentAdInfo::operator!=(const InlineContentAdInfo& rhs) const {
-  return !(*this == rhs);
+bool InlineContentAdInfo::operator!=(const InlineContentAdInfo& other) const {
+  return !(*this == other);
 }
 
 bool InlineContentAdInfo::IsValid() const {

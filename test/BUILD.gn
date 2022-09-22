@@ -164,7 +164,6 @@ test("brave_unit_tests") {
     "//brave/browser",
     "//brave/browser:unit_tests",
     "//brave/browser/brave_rewards/rewards_panel:unit_tests",
-    "//brave/browser/brave_vpn/test:unit_tests",
     "//brave/browser/brave_wallet",
     "//brave/browser/brave_wallet:unit_tests",
     "//brave/browser/content_settings:unit_tests",
@@ -228,6 +227,7 @@ test("brave_unit_tests") {
     "//brave/components/constants",
     "//brave/components/de_amp/browser/test:unit_tests",
     "//brave/components/debounce/browser/test:unit_tests",
+    "//brave/components/embedder_support:unit_tests",
     "//brave/components/ipfs/buildflags",
     "//brave/components/ipfs/test:brave_ipfs_unit_tests",
     "//brave/components/json:brave_json_unit_tests",
@@ -824,6 +824,8 @@ if (!is_android) {
       "//brave/components/debounce/common",
       "//brave/components/l10n/common",
       "//brave/components/ntp_background_images/buildflags",
+      "//brave/components/playlist",
+      "//brave/components/playlist/buildflags",
       "//brave/components/resources:strings_grit",
       "//brave/components/sessions/browser:browser_tests",
       "//brave/components/skus/common",
@@ -856,6 +858,15 @@ if (!is_android) {
       "//media:test_support",
       "//testing/gmock",
     ]
+
+    if (enable_sidebar) {
+      sources += [ "//brave/browser/ui/views/sidebar/sidebar_container_view_browsertest.cc" ]
+      deps += [
+        "//brave/browser/ui/sidebar",
+        "//brave/components/sidebar",
+      ]
+    }
+
     if (enable_brave_vpn) {
       deps += [ "//brave/renderer/brave_vpn:browser_tests" ]
     }
@@ -1074,6 +1085,7 @@ if (!is_android) {
       "//base",
       "//brave/browser/ui",
       "//brave/components/brave_rewards/browser",
+      "//brave/components/playlist/buildflags",
       "//brave/components/sidebar/buildflags",
       "//chrome/browser",
       "//chrome/browser/profiles:profile",
@@ -1092,6 +1104,10 @@ if (!is_android) {
         "//brave/browser/ui/sidebar",
         "//brave/components/sidebar",
       ]
+    }
+
+    if (enable_playlist_webui) {
+      deps += [ "//brave/components/playlist:playlist_features" ]
     }
 
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]

@@ -64,10 +64,6 @@ DepositInfo GetFromRecord(mojom::DBRecordInfo* record) {
 
 }  // namespace
 
-Deposits::Deposits() = default;
-
-Deposits::~Deposits() = default;
-
 void Deposits::Save(const DepositInfo& deposit, ResultCallback callback) {
   if (!deposit.IsValid()) {
     std::move(callback).Run(/*success*/ false);
@@ -234,7 +230,7 @@ void Deposits::OnGetForCreativeInstanceId(
     return;
   }
 
-  mojom::DBRecordInfoPtr record =
+  const mojom::DBRecordInfoPtr record =
       std::move(response->result->get_records().front());
   DepositInfo deposit = GetFromRecord(record.get());
 

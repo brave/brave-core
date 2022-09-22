@@ -19,10 +19,6 @@ class ConfirmationUserDataBuilder final : public UserDataBuilderInterface {
   ConfirmationUserDataBuilder(base::Time created_at,
                               const std::string& creative_instance_id,
                               const ConfirmationType& confirmation_type);
-  ConfirmationUserDataBuilder(const ConfirmationUserDataBuilder&) = delete;
-  ConfirmationUserDataBuilder& operator=(const ConfirmationUserDataBuilder&) =
-      delete;
-  ~ConfirmationUserDataBuilder() override;
 
   void Build(UserDataBuilderCallback callback) const override;
 

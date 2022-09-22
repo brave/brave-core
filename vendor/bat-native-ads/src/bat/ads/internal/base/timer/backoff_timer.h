@@ -16,11 +16,6 @@ namespace ads {
 
 class BackoffTimer final {
  public:
-  BackoffTimer();
-  ~BackoffTimer();
-  BackoffTimer(const BackoffTimer&) = delete;
-  BackoffTimer& operator=(const BackoffTimer&) = delete;
-
   // |location| provides basic info where the timer was posted from. Start a
   // timer to run at the given |delay| from now backing off exponentially for
   // each call. If the timer is already running, it will be replaced to call the

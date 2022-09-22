@@ -21,8 +21,6 @@ TimeSinceLastUserActivityEvent::TimeSinceLastUserActivityEvent(
     brave_federated::mojom::CovariateType covariate_type)
     : event_type_(event_type), covariate_type_(covariate_type) {}
 
-TimeSinceLastUserActivityEvent::~TimeSinceLastUserActivityEvent() = default;
-
 brave_federated::mojom::DataType TimeSinceLastUserActivityEvent::GetDataType()
     const {
   return brave_federated::mojom::DataType::kInt;

@@ -40,6 +40,8 @@
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/constants/brave_services_key.h"
+#include "brave/components/decentralized_dns/core/constants.h"
+#include "brave/components/decentralized_dns/core/utils.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
@@ -60,6 +62,10 @@
 #include "url/origin.h"
 
 using testing::ElementsAreArray;
+
+MATCHER_P(MatchesCIDv1URL, ipfs_url, "") {
+  return ipfs::ContentHashToCIDv1URL(arg).spec() == ipfs_url;
+}
 
 namespace brave_wallet {
 
@@ -187,19 +193,6 @@ void OnStringResponse(bool* callback_called,
                       const std::string& response,
                       brave_wallet::mojom::ProviderError error,
                       const std::string& error_message) {
-  *callback_called = true;
-  EXPECT_EQ(expected_response, response);
-  EXPECT_EQ(expected_error, error);
-  EXPECT_EQ(expected_error_message, error_message);
-}
-
-void OnBytesResponse(bool* callback_called,
-                     brave_wallet::mojom::ProviderError expected_error,
-                     const std::string& expected_error_message,
-                     const std::vector<uint8_t>& expected_response,
-                     const std::vector<uint8_t>& response,
-                     brave_wallet::mojom::ProviderError error,
-                     const std::string& error_message) {
   *callback_called = true;
   EXPECT_EQ(expected_response, response);
   EXPECT_EQ(expected_error, error);
@@ -364,11 +357,12 @@ class JsonRpcServiceUnitTest : public testing::Test {
               "0000\"}");
         }));
 
+    decentralized_dns::RegisterLocalStatePrefs(local_state_prefs_.registry());
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     brave_wallet::RegisterProfilePrefsForMigration(prefs_.registry());
     ipfs::IpfsService::RegisterProfilePrefs(prefs_.registry());
-    json_rpc_service_ =
-        std::make_unique<JsonRpcService>(shared_url_loader_factory_, &prefs_);
+    json_rpc_service_ = std::make_unique<JsonRpcService>(
+        shared_url_loader_factory_, &prefs_, &local_state_prefs_);
     SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH);
     SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::SOL);
     SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL);
@@ -381,6 +375,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
   }
 
   PrefService* prefs() { return &prefs_; }
+  PrefService* local_state_prefs() { return &local_state_prefs_; }
 
   GURL GetNetwork(const std::string& chain_id, mojom::CoinType coin) {
     return brave_wallet::GetNetworkURL(prefs(), chain_id, coin);
@@ -1008,6 +1003,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
  private:
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
+  sync_preferences::TestingPrefServiceSyncable local_state_prefs_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
@@ -1197,55 +1193,51 @@ TEST_F(JsonRpcServiceUnitTest, GetHiddenNetworks) {
 }
 
 TEST_F(JsonRpcServiceUnitTest, EnsGetContentHash) {
-  bool callback_called = false;
-  SetUDENSInterceptor(mojom::kMainnetChainId);
-  json_rpc_service_->EnsGetContentHash(
-      "brantly.eth",
-      base::BindLambdaForTesting([&](const std::vector<uint8_t>& result,
-                                     brave_wallet::mojom::ProviderError error,
-                                     const std::string& error_message) {
-        callback_called = true;
-        EXPECT_EQ(error, mojom::ProviderError::kSuccess);
-        EXPECT_TRUE(error_message.empty());
-        EXPECT_EQ(
-            ipfs::ContentHashToCIDv1URL(result).spec(),
-            "ipfs://"
-            "bafybeibd4ala53bs26dvygofvr6ahpa7gbw4eyaibvrbivf4l5rr44yqu4");
-      }));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
+  {
+    base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
+    EXPECT_CALL(
+        callback,
+        Run(MatchesCIDv1URL(
+                "ipfs://"
+                "bafybeibd4ala53bs26dvygofvr6ahpa7gbw4eyaibvrbivf4l5rr44yqu4"),
+            false, mojom::ProviderError::kSuccess, ""));
 
-  callback_called = false;
-  SetHTTPRequestTimeoutInterceptor();
-  json_rpc_service_->EnsGetContentHash(
-      "brantly.eth",
-      base::BindOnce(&OnBytesResponse, &callback_called,
-                     mojom::ProviderError::kInternalError,
-                     l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
-                     std::vector<uint8_t>()));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
+    SetUDENSInterceptor(mojom::kMainnetChainId);
+    json_rpc_service_->EnsGetContentHash("brantly.eth", callback.Get());
+    base::RunLoop().RunUntilIdle();
+  }
 
-  callback_called = false;
-  SetInvalidJsonInterceptor();
-  json_rpc_service_->EnsGetContentHash(
-      "brantly.eth",
-      base::BindOnce(&OnBytesResponse, &callback_called,
-                     mojom::ProviderError::kParsingError,
-                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR),
-                     std::vector<uint8_t>()));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
+  {
+    base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
+    EXPECT_CALL(
+        callback,
+        Run(std::vector<uint8_t>(), false, mojom::ProviderError::kInternalError,
+            l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+    SetHTTPRequestTimeoutInterceptor();
+    json_rpc_service_->EnsGetContentHash("brantly.eth", callback.Get());
+    base::RunLoop().RunUntilIdle();
+  }
 
-  callback_called = false;
-  SetLimitExceededJsonErrorResponse();
-  json_rpc_service_->EnsGetContentHash(
-      "brantly.eth",
-      base::BindOnce(&OnBytesResponse, &callback_called,
-                     mojom::ProviderError::kLimitExceeded,
-                     "Request exceeds defined limit", std::vector<uint8_t>()));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
+  {
+    base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
+    EXPECT_CALL(
+        callback,
+        Run(std::vector<uint8_t>(), false, mojom::ProviderError::kParsingError,
+            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
+    SetInvalidJsonInterceptor();
+    json_rpc_service_->EnsGetContentHash("brantly.eth", callback.Get());
+    base::RunLoop().RunUntilIdle();
+  }
+
+  {
+    base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
+    EXPECT_CALL(callback, Run(std::vector<uint8_t>(), false,
+                              mojom::ProviderError::kLimitExceeded,
+                              "Request exceeds defined limit"));
+    SetLimitExceededJsonErrorResponse();
+    json_rpc_service_->EnsGetContentHash("brantly.eth", callback.Get());
+    base::RunLoop().RunUntilIdle();
+  }
 }
 
 TEST_F(JsonRpcServiceUnitTest, EnsGetEthAddr) {
@@ -1253,9 +1245,9 @@ TEST_F(JsonRpcServiceUnitTest, EnsGetEthAddr) {
   EXPECT_TRUE(SetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH));
 
   base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
-  EXPECT_CALL(callback, Run("0x983110309620D911731Ac0932219af06091b6744",
+  EXPECT_CALL(callback, Run("0x983110309620D911731Ac0932219af06091b6744", false,
                             mojom::ProviderError::kSuccess, ""));
-  json_rpc_service_->EnsGetEthAddr("brantly-test.eth", callback.Get());
+  json_rpc_service_->EnsGetEthAddr("brantly-test.eth", nullptr, callback.Get());
   base::RunLoop().RunUntilIdle();
 }
 
@@ -2571,25 +2563,26 @@ TEST_F(JsonRpcServiceUnitTest, GetEthAddrInvalidDomain) {
                                                     "brave-.eth", "b.eth"};
 
   for (const auto& domain : invalid_domains) {
-    bool callback_called = false;
-    json_rpc_service_->EnsGetEthAddr(
-        domain,
-        base::BindOnce(&OnStringResponse, &callback_called,
-                       mojom::ProviderError::kInvalidParams,
-                       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
-                       ""));
-    base::RunLoop().RunUntilIdle();
-    EXPECT_TRUE(callback_called);
+    {
+      base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
+      EXPECT_CALL(callback,
+                  Run("", false, mojom::ProviderError::kInvalidParams,
+                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
 
-    callback_called = false;
-    json_rpc_service_->UnstoppableDomainsGetEthAddr(
-        domain,
-        base::BindOnce(&OnStringResponse, &callback_called,
-                       mojom::ProviderError::kInvalidParams,
-                       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
-                       ""));
-    base::RunLoop().RunUntilIdle();
-    EXPECT_TRUE(callback_called);
+      json_rpc_service_->EnsGetEthAddr(domain, nullptr, callback.Get());
+      base::RunLoop().RunUntilIdle();
+    }
+
+    {
+      base::MockCallback<JsonRpcService::UnstoppableDomainsGetEthAddrCallback>
+          callback;
+      EXPECT_CALL(callback,
+                  Run("", mojom::ProviderError::kInvalidParams,
+                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
+
+      json_rpc_service_->UnstoppableDomainsGetEthAddr(domain, callback.Get());
+      base::RunLoop().RunUntilIdle();
+    }
   }
 }
 
@@ -4338,6 +4331,7 @@ class ENSL2JsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
 
   void SetUp() override {
     JsonRpcServiceUnitTest::SetUp();
+
     json_rpc_endpoint_handler_ = std::make_unique<JsonRpcEnpointHandler>(
         GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH));
 
@@ -4402,6 +4396,10 @@ class ENSL2JsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
     return bytes;
   }
 
+  mojom::EnsOffchainLookupOptionsPtr AllowOffchain() {
+    return mojom::EnsOffchainLookupOptions::New(true, false);
+  }
+
  protected:
   void HandleRequest(const network::ResourceRequest& request) {
     url_loader_factory_.ClearResponses();
@@ -4434,18 +4432,19 @@ class ENSL2JsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr) {
   base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
-  EXPECT_CALL(callback, Run(offchain_eth_addr().ToHex(),
+  EXPECT_CALL(callback, Run(offchain_eth_addr().ToHex(), false,
                             mojom::ProviderError::kSuccess, ""));
-  json_rpc_service_->EnsGetEthAddr(ens_host(), callback.Get());
+  json_rpc_service_->EnsGetEthAddr(ens_host(), AllowOffchain(), callback.Get());
   base::RunLoop().RunUntilIdle();
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_NoResolver) {
   base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
   EXPECT_CALL(callback,
-              Run("", mojom::ProviderError::kInternalError,
+              Run("", false, mojom::ProviderError::kInternalError,
                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
-  json_rpc_service_->EnsGetEthAddr("unknown-host.eth", callback.Get());
+  json_rpc_service_->EnsGetEthAddr("unknown-host.eth", AllowOffchain(),
+                                   callback.Get());
   base::RunLoop().RunUntilIdle();
 }
 
@@ -4457,9 +4456,9 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_NoEnsip10Support) {
   ensip10_support_handler_->DisableSupport();
 
   base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
-  EXPECT_CALL(callback, Run(onchain_eth_addr().ToHex(),
+  EXPECT_CALL(callback, Run(onchain_eth_addr().ToHex(), false,
                             mojom::ProviderError::kSuccess, ""));
-  json_rpc_service_->EnsGetEthAddr(ens_host(), callback.Get());
+  json_rpc_service_->EnsGetEthAddr(ens_host(), AllowOffchain(), callback.Get());
   base::RunLoop().RunUntilIdle();
 }
 
@@ -4469,9 +4468,9 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_Gateway500Error) {
 
   base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
   EXPECT_CALL(callback,
-              Run("", mojom::ProviderError::kInternalError,
+              Run("", false, mojom::ProviderError::kInternalError,
                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
-  json_rpc_service_->EnsGetEthAddr(ens_host(), callback.Get());
+  json_rpc_service_->EnsGetEthAddr(ens_host(), AllowOffchain(), callback.Get());
   base::RunLoop().RunUntilIdle();
 }
 
@@ -4481,25 +4480,146 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_GatewayNoRecord) {
 
   base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
   EXPECT_CALL(callback,
-              Run("", mojom::ProviderError::kInvalidParams,
+              Run("", false, mojom::ProviderError::kInvalidParams,
                   l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
-  json_rpc_service_->EnsGetEthAddr(ens_host(), callback.Get());
+  json_rpc_service_->EnsGetEthAddr(ens_host(), AllowOffchain(), callback.Get());
   base::RunLoop().RunUntilIdle();
+}
+
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_Consent) {
+  EXPECT_EQ(
+      decentralized_dns::EnsOffchainResolveMethod::kAsk,
+      decentralized_dns::GetEnsOffchainResolveMethod(local_state_prefs()));
+
+  // Call with defaults.
+  {
+    base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
+    // Called with `require_offchain_consent` == true.
+    EXPECT_CALL(callback, Run("", true, mojom::ProviderError::kSuccess, ""));
+    json_rpc_service_->EnsGetEthAddr(ens_host(), nullptr, callback.Get());
+    base::RunLoop().RunUntilIdle();
+    EXPECT_EQ(
+        decentralized_dns::EnsOffchainResolveMethod::kAsk,
+        decentralized_dns::GetEnsOffchainResolveMethod(local_state_prefs()));
+  }
+
+  // Allow once.
+  {
+    base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
+    EXPECT_CALL(callback, Run(offchain_eth_addr().ToHex(), false,
+                              mojom::ProviderError::kSuccess, ""));
+    json_rpc_service_->EnsGetEthAddr(
+        ens_host(), mojom::EnsOffchainLookupOptions::New(true, false),
+        callback.Get());
+    base::RunLoop().RunUntilIdle();
+    EXPECT_EQ(
+        decentralized_dns::EnsOffchainResolveMethod::kAsk,
+        decentralized_dns::GetEnsOffchainResolveMethod(local_state_prefs()));
+  }
+
+  // Allow and remember.
+  {
+    base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
+    EXPECT_CALL(callback, Run(offchain_eth_addr().ToHex(), false,
+                              mojom::ProviderError::kSuccess, ""));
+    json_rpc_service_->EnsGetEthAddr(
+        ens_host(), mojom::EnsOffchainLookupOptions::New(true, true),
+        callback.Get());
+    base::RunLoop().RunUntilIdle();
+    EXPECT_EQ(
+        decentralized_dns::EnsOffchainResolveMethod::kEnabled,
+        decentralized_dns::GetEnsOffchainResolveMethod(local_state_prefs()));
+  }
+
+  // Allowed without explicit consent.
+  {
+    base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
+    EXPECT_CALL(callback, Run(offchain_eth_addr().ToHex(), false,
+                              mojom::ProviderError::kSuccess, ""));
+    json_rpc_service_->EnsGetEthAddr(ens_host(), nullptr, callback.Get());
+    base::RunLoop().RunUntilIdle();
+    EXPECT_EQ(
+        decentralized_dns::EnsOffchainResolveMethod::kEnabled,
+        decentralized_dns::GetEnsOffchainResolveMethod(local_state_prefs()));
+  }
+
+  // Reset in prefs.
+  decentralized_dns::SetEnsOffchainResolveMethod(
+      local_state_prefs(), decentralized_dns::EnsOffchainResolveMethod::kAsk);
+
+  // Fails after no once.
+  {
+    base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
+    EXPECT_CALL(callback,
+                Run("", false, mojom::ProviderError::kInternalError,
+                    l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+    json_rpc_service_->EnsGetEthAddr(
+        ens_host(), mojom::EnsOffchainLookupOptions::New(false, false),
+        callback.Get());
+    base::RunLoop().RunUntilIdle();
+    EXPECT_EQ(
+        decentralized_dns::EnsOffchainResolveMethod::kAsk,
+        decentralized_dns::GetEnsOffchainResolveMethod(local_state_prefs()));
+  }
+
+  // Fails after no and remember.
+  {
+    base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
+    EXPECT_CALL(callback,
+                Run("", false, mojom::ProviderError::kInternalError,
+                    l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+    json_rpc_service_->EnsGetEthAddr(
+        ens_host(), mojom::EnsOffchainLookupOptions::New(false, true),
+        callback.Get());
+    base::RunLoop().RunUntilIdle();
+    EXPECT_EQ(
+        decentralized_dns::EnsOffchainResolveMethod::kDisabled,
+        decentralized_dns::GetEnsOffchainResolveMethod(local_state_prefs()));
+  }
+
+  // Fails after no explicit consent.
+  {
+    base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
+    EXPECT_CALL(callback,
+                Run("", false, mojom::ProviderError::kInternalError,
+                    l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+    json_rpc_service_->EnsGetEthAddr(ens_host(), nullptr, callback.Get());
+    base::RunLoop().RunUntilIdle();
+    EXPECT_EQ(
+        decentralized_dns::EnsOffchainResolveMethod::kDisabled,
+        decentralized_dns::GetEnsOffchainResolveMethod(local_state_prefs()));
+  }
+
+  // Still ok with explicit consent. Should not happen with our ui, but still
+  // fixing that behavior.
+  {
+    base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
+    EXPECT_CALL(callback, Run(offchain_eth_addr().ToHex(), false,
+                              mojom::ProviderError::kSuccess, ""));
+    json_rpc_service_->EnsGetEthAddr(
+        ens_host(), mojom::EnsOffchainLookupOptions::New(true, false),
+        callback.Get());
+    base::RunLoop().RunUntilIdle();
+    EXPECT_EQ(
+        decentralized_dns::EnsOffchainResolveMethod::kDisabled,
+        decentralized_dns::GetEnsOffchainResolveMethod(local_state_prefs()));
+  }
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash) {
   base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
-  EXPECT_CALL(callback,
-              Run(offchain_contenthash(), mojom::ProviderError::kSuccess, ""));
+  EXPECT_CALL(callback, Run(offchain_contenthash(), false,
+                            mojom::ProviderError::kSuccess, ""));
   json_rpc_service_->EnsGetContentHash(ens_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_NoResolver) {
   base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
-  EXPECT_CALL(callback,
-              Run(std::vector<uint8_t>(), mojom::ProviderError::kInternalError,
-                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+  EXPECT_CALL(
+      callback,
+      Run(std::vector<uint8_t>(), false, mojom::ProviderError::kInternalError,
+          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->EnsGetContentHash("unknown-host.eth", callback.Get());
   base::RunLoop().RunUntilIdle();
 }
@@ -4513,8 +4633,8 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_NoEnsip10Support) {
   ensip10_support_handler_->DisableSupport();
 
   base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
-  EXPECT_CALL(callback,
-              Run(onchain_contenthash(), mojom::ProviderError::kSuccess, ""));
+  EXPECT_CALL(callback, Run(onchain_contenthash(), false,
+                            mojom::ProviderError::kSuccess, ""));
   json_rpc_service_->EnsGetContentHash(ens_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
 }
@@ -4524,9 +4644,10 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_Gateway500Error) {
   offchain_gateway_handler_->SetRespondWith500();
 
   base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
-  EXPECT_CALL(callback,
-              Run(std::vector<uint8_t>(), mojom::ProviderError::kInternalError,
-                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+  EXPECT_CALL(
+      callback,
+      Run(std::vector<uint8_t>(), false, mojom::ProviderError::kInternalError,
+          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->EnsGetContentHash(ens_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
 }
@@ -4536,11 +4657,55 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_GatewayNoRecord) {
   offchain_gateway_handler_->SetRespondWithNoRecord();
 
   base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
-  EXPECT_CALL(callback,
-              Run(std::vector<uint8_t>(), mojom::ProviderError::kInvalidParams,
-                  l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
+  EXPECT_CALL(
+      callback,
+      Run(std::vector<uint8_t>(), false, mojom::ProviderError::kInvalidParams,
+          l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
   json_rpc_service_->EnsGetContentHash(ens_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
+}
+
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_Consent) {
+  EXPECT_EQ(
+      decentralized_dns::EnsOffchainResolveMethod::kAsk,
+      decentralized_dns::GetEnsOffchainResolveMethod(local_state_prefs()));
+
+  // Ok by default.
+  {
+    base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
+    EXPECT_CALL(callback, Run(offchain_contenthash(), false,
+                              mojom::ProviderError::kSuccess, ""));
+    json_rpc_service_->EnsGetContentHash(ens_host(), callback.Get());
+    base::RunLoop().RunUntilIdle();
+  }
+
+  decentralized_dns::SetEnsOffchainResolveMethod(
+      local_state_prefs(),
+      decentralized_dns::EnsOffchainResolveMethod::kEnabled);
+  // Ok when enabled by prefs.
+  {
+    base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
+    EXPECT_CALL(callback, Run(offchain_contenthash(), false,
+                              mojom::ProviderError::kSuccess, ""));
+    json_rpc_service_->EnsGetContentHash(ens_host(), callback.Get());
+    base::RunLoop().RunUntilIdle();
+  }
+
+  // Disable in prefs.
+  decentralized_dns::SetEnsOffchainResolveMethod(
+      local_state_prefs(),
+      decentralized_dns::EnsOffchainResolveMethod::kDisabled);
+
+  // Fails when disabled in prefs.
+  {
+    base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
+    EXPECT_CALL(
+        callback,
+        Run(std::vector<uint8_t>(), false, mojom::ProviderError::kInternalError,
+            l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+    json_rpc_service_->EnsGetContentHash(ens_host(), callback.Get());
+    base::RunLoop().RunUntilIdle();
+  }
 }
 
 }  // namespace brave_wallet

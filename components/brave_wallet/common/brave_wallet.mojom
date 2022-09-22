@@ -833,6 +833,11 @@ struct SolanaSendTransactionOptions {
   OptionalSkipPreflight? skip_preflight;
 };
 
+struct EnsOffchainLookupOptions {
+  bool allow;
+  bool remember;
+};
+
 // Deals with the ETH JSON RPC API, as well as things like the user's current
 // network.
 interface JsonRpcService {
@@ -883,7 +888,7 @@ interface JsonRpcService {
   GetERC1155Metadata(string contract, string token_id, string chain_id) => (string response, ProviderError error, string error_message);
 
   // ENS lookups
-  EnsGetEthAddr(string domain) => (string address, ProviderError error, string error_message);
+  EnsGetEthAddr(string domain, EnsOffchainLookupOptions? options) => (string address, bool require_offchain_consent, ProviderError error, string error_message);
 
   // Unstoppable Domains lookups
   UnstoppableDomainsGetEthAddr(string domain) => (string address, ProviderError error, string error_message);

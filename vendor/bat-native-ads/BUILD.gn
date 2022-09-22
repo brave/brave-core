@@ -339,7 +339,6 @@ source_set("ads") {
     "src/bat/ads/internal/ads/promoted_content_ad.h",
     "src/bat/ads/internal/ads/search_result_ad.cc",
     "src/bat/ads/internal/ads/search_result_ad.h",
-    "src/bat/ads/internal/ads/serving/choose/ad_predictor_info.cc",
     "src/bat/ads/internal/ads/serving/choose/ad_predictor_info.h",
     "src/bat/ads/internal/ads/serving/choose/eligible_ads_predictor_util.h",
     "src/bat/ads/internal/ads/serving/choose/predict_ad.h",

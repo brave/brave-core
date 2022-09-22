@@ -39,9 +39,6 @@ class EventHandlerObserver : public base::CheckedObserver {
   virtual void OnNotificationAdEventFailed(
       const std::string& placement_id,
       const mojom::NotificationAdEventType event_type) {}
-
- protected:
-  ~EventHandlerObserver() override = default;
 };
 
 }  // namespace notification_ads

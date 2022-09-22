@@ -14,10 +14,6 @@ namespace {
 constexpr int kUnblindedTokensMinimumThreshold = 10;
 }  // namespace
 
-UnblindedTokensPermissionRule::UnblindedTokensPermissionRule() = default;
-
-UnblindedTokensPermissionRule::~UnblindedTokensPermissionRule() = default;
-
 bool UnblindedTokensPermissionRule::ShouldAllow() {
   if (!DoesRespectCap()) {
     last_message_ = "You do not have enough unblinded tokens";

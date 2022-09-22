@@ -17,7 +17,7 @@ namespace ads::privacy::cbr {
 
 TEST(BatAdsBlindedTokenTest, FailToInitialize) {
   // Arrange
-  BlindedToken blinded_token;
+  const BlindedToken blinded_token;
 
   // Act
   const bool has_value = blinded_token.has_value();
@@ -28,7 +28,7 @@ TEST(BatAdsBlindedTokenTest, FailToInitialize) {
 
 TEST(BatAdsBlindedTokenTest, FailToInitializeWithEmptyBase64) {
   // Arrange
-  BlindedToken blinded_token("");
+  const BlindedToken blinded_token("");
 
   // Act
   const bool has_value = blinded_token.has_value();
@@ -39,7 +39,7 @@ TEST(BatAdsBlindedTokenTest, FailToInitializeWithEmptyBase64) {
 
 TEST(BatAdsBlindedTokenTest, FailToInitializeWithInvalidBase64) {
   // Arrange
-  BlindedToken blinded_token(kInvalidBase64);
+  const BlindedToken blinded_token(kInvalidBase64);
 
   // Act
   const bool has_value = blinded_token.has_value();
@@ -84,7 +84,7 @@ TEST(BatAdsBlindedTokenTest, FailToDecodeInvalidBase64) {
 
 TEST(BatAdsBlindedTokenTest, EncodeBase64) {
   // Arrange
-  BlindedToken blinded_token(kBlindedTokenBase64);
+  const BlindedToken blinded_token(kBlindedTokenBase64);
 
   // Act
   const absl::optional<std::string> encoded_base64 =
@@ -97,7 +97,7 @@ TEST(BatAdsBlindedTokenTest, EncodeBase64) {
 
 TEST(BatAdsBlindedTokenTest, FailToEncodeBase64WhenUninitialized) {
   // Arrange
-  BlindedToken blinded_token;
+  const BlindedToken blinded_token;
 
   // Act
   const absl::optional<std::string> encoded_base64 =
@@ -109,7 +109,7 @@ TEST(BatAdsBlindedTokenTest, FailToEncodeBase64WhenUninitialized) {
 
 TEST(BatAdsBlindedTokenTest, IsEqual) {
   // Arrange
-  BlindedToken blinded_token(kBlindedTokenBase64);
+  const BlindedToken blinded_token(kBlindedTokenBase64);
 
   // Act
 
@@ -119,7 +119,7 @@ TEST(BatAdsBlindedTokenTest, IsEqual) {
 
 TEST(BatAdsBlindedTokenTest, IsEqualWhenUninitialized) {
   // Arrange
-  BlindedToken blinded_token;
+  const BlindedToken blinded_token;
 
   // Act
 
@@ -129,7 +129,7 @@ TEST(BatAdsBlindedTokenTest, IsEqualWhenUninitialized) {
 
 TEST(BatAdsBlindedTokenTest, IsEmptyBase64Equal) {
   // Arrange
-  BlindedToken blinded_token("");
+  const BlindedToken blinded_token("");
 
   // Act
 
@@ -139,7 +139,7 @@ TEST(BatAdsBlindedTokenTest, IsEmptyBase64Equal) {
 
 TEST(BatAdsBlindedTokenTest, IsInvalidBase64Equal) {
   // Arrange
-  BlindedToken blinded_token(kInvalidBase64);
+  const BlindedToken blinded_token(kInvalidBase64);
 
   // Act
 
@@ -151,8 +151,8 @@ TEST(BatAdsBlindedTokenTest, IsNotEqual) {
   // Arrange
 
   // Act
-  BlindedToken blinded_token(kBlindedTokenBase64);
-  BlindedToken different_blinded_token(kInvalidBase64);
+  const BlindedToken blinded_token(kBlindedTokenBase64);
+  const BlindedToken different_blinded_token(kInvalidBase64);
 
   // Assert
   EXPECT_NE(different_blinded_token, blinded_token);
@@ -160,7 +160,7 @@ TEST(BatAdsBlindedTokenTest, IsNotEqual) {
 
 TEST(BatAdsBlindedTokenTest, OutputStream) {
   // Arrange
-  BlindedToken blinded_token(kBlindedTokenBase64);
+  const BlindedToken blinded_token(kBlindedTokenBase64);
 
   // Act
   std::stringstream ss;
@@ -172,7 +172,7 @@ TEST(BatAdsBlindedTokenTest, OutputStream) {
 
 TEST(BatAdsBlindedTokenTest, OutputStreamWhenUninitialized) {
   // Arrange
-  BlindedToken blinded_token;
+  const BlindedToken blinded_token;
 
   // Act
   std::stringstream ss;

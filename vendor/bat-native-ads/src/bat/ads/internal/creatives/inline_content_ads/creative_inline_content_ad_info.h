@@ -17,13 +17,19 @@ namespace ads {
 struct CreativeInlineContentAdInfo final : CreativeAdInfo {
   CreativeInlineContentAdInfo();
   explicit CreativeInlineContentAdInfo(const CreativeAdInfo& creative_ad);
-  CreativeInlineContentAdInfo(const CreativeInlineContentAdInfo& info);
+
+  CreativeInlineContentAdInfo(const CreativeInlineContentAdInfo& other);
   CreativeInlineContentAdInfo& operator=(
-      const CreativeInlineContentAdInfo& info);
+      const CreativeInlineContentAdInfo& other);
+
+  CreativeInlineContentAdInfo(CreativeInlineContentAdInfo&& other) noexcept;
+  CreativeInlineContentAdInfo& operator=(
+      CreativeInlineContentAdInfo&& other) noexcept;
+
   ~CreativeInlineContentAdInfo();
 
-  bool operator==(const CreativeInlineContentAdInfo& rhs) const;
-  bool operator!=(const CreativeInlineContentAdInfo& rhs) const;
+  bool operator==(const CreativeInlineContentAdInfo& other) const;
+  bool operator!=(const CreativeInlineContentAdInfo& other) const;
 
   std::string title;
   std::string description;

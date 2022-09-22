@@ -7,24 +7,14 @@
 
 namespace ads {
 
-VerifiableConversionInfo::VerifiableConversionInfo() = default;
-
-VerifiableConversionInfo::VerifiableConversionInfo(
-    const VerifiableConversionInfo& info) = default;
-
-VerifiableConversionInfo& VerifiableConversionInfo::operator=(
-    const VerifiableConversionInfo& info) = default;
-
-VerifiableConversionInfo::~VerifiableConversionInfo() = default;
-
 bool VerifiableConversionInfo::operator==(
-    const VerifiableConversionInfo& rhs) const {
-  return id == rhs.id && public_key == rhs.public_key;
+    const VerifiableConversionInfo& other) const {
+  return id == other.id && public_key == other.public_key;
 }
 
 bool VerifiableConversionInfo::operator!=(
-    const VerifiableConversionInfo& rhs) const {
-  return !(*this == rhs);
+    const VerifiableConversionInfo& other) const {
+  return !(*this == other);
 }
 
 bool VerifiableConversionInfo::IsValid() const {

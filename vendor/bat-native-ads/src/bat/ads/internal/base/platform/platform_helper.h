@@ -17,9 +17,6 @@ class PlatformHelper {
  public:
   virtual ~PlatformHelper();
 
-  PlatformHelper(const PlatformHelper&) = delete;
-  PlatformHelper& operator=(const PlatformHelper&) = delete;
-
   static PlatformHelper* GetInstance();
 
   void SetForTesting(PlatformHelper* platform_helper);

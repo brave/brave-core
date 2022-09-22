@@ -18,12 +18,17 @@ namespace ads {
 
 struct CreativeAdInfo {
   CreativeAdInfo();
-  CreativeAdInfo(const CreativeAdInfo& info);
-  CreativeAdInfo& operator=(const CreativeAdInfo& info);
+
+  CreativeAdInfo(const CreativeAdInfo& other);
+  CreativeAdInfo& operator=(const CreativeAdInfo& other);
+
+  CreativeAdInfo(CreativeAdInfo&& other) noexcept;
+  CreativeAdInfo& operator=(CreativeAdInfo&& other) noexcept;
+
   ~CreativeAdInfo();
 
-  bool operator==(const CreativeAdInfo& rhs) const;
-  bool operator!=(const CreativeAdInfo& rhs) const;
+  bool operator==(const CreativeAdInfo& other) const;
+  bool operator!=(const CreativeAdInfo& other) const;
 
   std::string creative_instance_id;
   std::string creative_set_id;

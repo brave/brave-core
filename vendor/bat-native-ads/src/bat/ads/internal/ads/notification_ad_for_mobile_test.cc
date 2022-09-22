@@ -29,8 +29,6 @@ class BatAdsNotificationAdForMobileIntegrationTest : public UnitTestBase {
  protected:
   BatAdsNotificationAdForMobileIntegrationTest() = default;
 
-  ~BatAdsNotificationAdForMobileIntegrationTest() override = default;
-
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
 

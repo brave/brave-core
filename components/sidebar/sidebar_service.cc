@@ -12,12 +12,14 @@
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/playlist/features.h"
 #include "brave/components/sidebar/constants.h"
 #include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
@@ -85,11 +87,21 @@ SidebarItem GetBuiltInItemForType(SidebarItem::BuiltInItemType type) {
         return SidebarItem();
       }
     }
-    case SidebarItem::BuiltInItemType::kPlaylist:
+    case SidebarItem::BuiltInItemType::kPlaylist: {
+      if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+        return SidebarItem::Create(brave_l10n::GetLocalizedResourceUTF16String(
+                                       IDS_SIDEBAR_PLAYLIST_ITEM_TITLE),
+                                   SidebarItem::Type::kTypeBuiltIn,
+                                   SidebarItem::BuiltInItemType::kPlaylist,
+                                   /* open_in_panel = */ true);
+      }
+
       return SidebarItem();
-    case SidebarItem::BuiltInItemType::kNone:
+    }
+    case SidebarItem::BuiltInItemType::kNone: {
       NOTREACHED();
       break;
+    }
   }
   return SidebarItem();
 }

@@ -19,10 +19,16 @@ class ConversionExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
   explicit ConversionExclusionRule(const AdEventList& ad_events);
-  ~ConversionExclusionRule() override;
 
-  ConversionExclusionRule(const ConversionExclusionRule&) = delete;
-  ConversionExclusionRule& operator=(const ConversionExclusionRule&) = delete;
+  ConversionExclusionRule(const ConversionExclusionRule& other) = delete;
+  ConversionExclusionRule& operator=(const ConversionExclusionRule& other) =
+      delete;
+
+  ConversionExclusionRule(ConversionExclusionRule&& other) noexcept = delete;
+  ConversionExclusionRule& operator=(ConversionExclusionRule&& other) noexcept =
+      delete;
+
+  ~ConversionExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
 

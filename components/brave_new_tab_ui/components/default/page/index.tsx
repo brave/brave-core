@@ -369,7 +369,7 @@ export const PhotoName = styled('div')<{}>`
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
   font-size: 12px;
-  font-family: Muli, sans-serif;
+  font-family: Poppins, sans-serif;
   color: rgba(255, 255, 255, 0.6);
   white-space: nowrap;
 `

@@ -11,10 +11,6 @@
 
 namespace ads {
 
-FullScreenModePermissionRule::FullScreenModePermissionRule() = default;
-
-FullScreenModePermissionRule::~FullScreenModePermissionRule() = default;
-
 bool FullScreenModePermissionRule::ShouldAllow() {
   if (!permission_rules::features::ShouldOnlyServeAdsInWindowedMode()) {
     return true;

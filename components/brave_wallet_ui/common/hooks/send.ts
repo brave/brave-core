@@ -51,7 +51,9 @@ export default function useSend () {
     selectedSendAsset,
     sendAmount,
     toAddress,
-    toAddressOrUrl
+    toAddressOrUrl,
+    showEnsOffchainLookupOptions,
+    ensOffchainLookupOptions
   } = useSelector((state: { sendCrypto: PendingCryptoSendState }) => state.sendCrypto)
 
   // custom hooks
@@ -66,6 +68,12 @@ export default function useSend () {
   // methods
   const setToAddress = (payload?: string | undefined) => {
     dispatch(SendCryptoActions.setToAddress(payload))
+  }
+  const setShowEnsOffchainLookupOptions = (payload: boolean) => {
+    dispatch(SendCryptoActions.setShowEnsOffchainLookupOptions(payload))
+  }
+  const setEnsOffchainLookupOptions = (payload?: BraveWallet.EnsOffchainLookupOptions | undefined) => {
+    dispatch(SendCryptoActions.setEnsOffchainLookupOptions(payload))
   }
   const setAddressWarning = (payload?: string | undefined) => {
     dispatch(SendCryptoActions.setAddressWarning(payload))
@@ -98,13 +106,15 @@ export default function useSend () {
     // If value ends with a supported ENS extension, will call findENSAddress.
     // If success true, will set toAddress else will return error message.
     if (endsWithAny(supportedENSExtensions, valueToLowerCase)) {
-      findENSAddress(toAddressOrUrl).then((value: GetEthAddrReturnInfo) => {
+      findENSAddress(toAddressOrUrl, ensOffchainLookupOptions).then((value: GetEthAddrReturnInfo) => {
         if (value.error === BraveWallet.ProviderError.kSuccess) {
           setAddressError('')
           setAddressWarning('')
           setToAddress(value.address)
+          setShowEnsOffchainLookupOptions(value.requireOffchainConsent)
           return
         }
+        setShowEnsOffchainLookupOptions(false)
         setNotRegisteredError(valueToLowerCase)
       }).catch(e => console.log(e))
       return
@@ -179,7 +189,7 @@ export default function useSend () {
     // Fallback error state
     setAddressWarning('')
     setAddressError(getLocale('braveWalletNotValidAddress'))
-  }, [selectedAccount])
+  }, [selectedAccount, ensOffchainLookupOptions])
 
   const processFilecoinAddress = React.useCallback((toAddressOrUrl: string) => {
     // Do nothing if value is an empty string
@@ -357,7 +367,7 @@ export default function useSend () {
     } else if (selectedAccount?.coin === BraveWallet.CoinType.SOL) {
       processSolanaAddress(toAddressOrUrl)
     }
-  }, [toAddressOrUrl, selectedAccount?.coin])
+  }, [toAddressOrUrl, selectedAccount?.coin, ensOffchainLookupOptions])
 
   return {
     setSendAmount,
@@ -370,6 +380,9 @@ export default function useSend () {
     addressError,
     addressWarning,
     selectedSendAsset,
-    sendAmountValidationError
+    sendAmountValidationError,
+    showEnsOffchainLookupOptions,
+    ensOffchainLookupOptions,
+    setEnsOffchainLookupOptions
   }
 }

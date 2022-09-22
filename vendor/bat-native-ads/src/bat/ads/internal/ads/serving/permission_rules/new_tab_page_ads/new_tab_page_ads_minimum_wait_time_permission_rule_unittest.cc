@@ -14,12 +14,7 @@
 namespace ads::new_tab_page_ads {
 
 class BatAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest
-    : public UnitTestBase {
- protected:
-  BatAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest() = default;
-
-  ~BatAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest() override = default;
-};
+    : public UnitTestBase {};
 
 TEST_F(BatAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
        AllowAdIfThereIsNoAdsHistory) {

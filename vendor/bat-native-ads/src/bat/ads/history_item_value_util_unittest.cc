@@ -40,12 +40,7 @@ HistoryItemList BuildHistoryItems() {
 
 }  // namespace
 
-class BatAdsHistoryItemValueUtilTest : public UnitTestBase {
- protected:
-  BatAdsHistoryItemValueUtilTest() = default;
-
-  ~BatAdsHistoryItemValueUtilTest() override = default;
-};
+class BatAdsHistoryItemValueUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsHistoryItemValueUtilTest, FromValue) {
   // Arrange

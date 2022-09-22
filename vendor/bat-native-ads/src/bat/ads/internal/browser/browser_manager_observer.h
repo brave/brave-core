@@ -23,9 +23,6 @@ class BrowserManagerObserver : public base::CheckedObserver {
 
   // Invoked when the browser enters the background.
   virtual void OnBrowserDidEnterBackground() {}
-
- protected:
-  ~BrowserManagerObserver() override = default;
 };
 
 }  // namespace ads

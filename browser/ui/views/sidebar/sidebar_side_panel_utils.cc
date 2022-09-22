@@ -21,8 +21,7 @@ SidePanelEntry::Id SidePanelIdFromSideBarItem(const SidebarItem& item) {
     case BuiltInItemType::kBookmarks:
       return SidePanelEntry::Id::kBookmarks;
     case BuiltInItemType::kPlaylist:
-      NOTIMPLEMENTED();
-      return SidePanelEntry::Id::kReadingList;
+      return SidePanelEntry::Id::kPlaylist;
     case BuiltInItemType::kWallet:
       [[fallthrough]];
     case BuiltInItemType::kBraveTalk:

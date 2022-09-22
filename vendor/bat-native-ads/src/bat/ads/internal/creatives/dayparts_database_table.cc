@@ -45,10 +45,6 @@ int BindParameters(mojom::DBCommandInfo* command,
 
 }  // namespace
 
-Dayparts::Dayparts() = default;
-
-Dayparts::~Dayparts() = default;
-
 void Dayparts::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                               const CreativeAdList& creative_ads) {
   DCHECK(transaction);

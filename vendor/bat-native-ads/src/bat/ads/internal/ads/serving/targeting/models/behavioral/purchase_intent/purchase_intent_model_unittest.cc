@@ -14,12 +14,7 @@
 
 namespace ads::targeting::model {
 
-class BatAdsPurchaseIntentModelTest : public UnitTestBase {
- protected:
-  BatAdsPurchaseIntentModelTest() = default;
-
-  ~BatAdsPurchaseIntentModelTest() override = default;
-};
+class BatAdsPurchaseIntentModelTest : public UnitTestBase {};
 
 TEST_F(BatAdsPurchaseIntentModelTest, DoNotGetSegmentsForUnitializedResource) {
   // Arrange
@@ -30,7 +25,7 @@ TEST_F(BatAdsPurchaseIntentModelTest, DoNotGetSegmentsForUnitializedResource) {
   processor.Process(url);
 
   // Act
-  PurchaseIntent model;
+  const PurchaseIntent model;
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -56,7 +51,7 @@ TEST_F(BatAdsPurchaseIntentModelTest, DoNotGetSegmentsForExpiredSignals) {
   processor.Process(url_2);
 
   // Act
-  PurchaseIntent model;
+  const PurchaseIntent model;
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -72,7 +67,7 @@ TEST_F(BatAdsPurchaseIntentModelTest, DoNotGetSegmentsIfNeverProcessed) {
   task_environment_.RunUntilIdle();
 
   // Act
-  PurchaseIntent model;
+  const PurchaseIntent model;
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -94,7 +89,7 @@ TEST_F(BatAdsPurchaseIntentModelTest,
   processor.Process(url);
 
   // Act
-  PurchaseIntent model;
+  const PurchaseIntent model;
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -120,7 +115,7 @@ TEST_F(BatAdsPurchaseIntentModelTest, GetSegmentsForPreviouslyMatchedSite) {
   processor.Process(url_1);
 
   // Act
-  PurchaseIntent model;
+  const PurchaseIntent model;
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -144,7 +139,7 @@ TEST_F(BatAdsPurchaseIntentModelTest,
   processor.Process(url);
 
   // Act
-  PurchaseIntent model;
+  const PurchaseIntent model;
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -167,7 +162,7 @@ TEST_F(BatAdsPurchaseIntentModelTest,
   processor.Process(url);
 
   // Act
-  PurchaseIntent model;
+  const PurchaseIntent model;
   const SegmentList segments = model.GetSegments();
 
   // Assert

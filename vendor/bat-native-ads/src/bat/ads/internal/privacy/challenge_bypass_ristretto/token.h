@@ -25,12 +25,17 @@ class Token {
  public:
   Token();
   explicit Token(const std::string& token_base64);
+
   Token(const Token& other);
   Token& operator=(const Token& other);
+
+  Token(Token&& other) noexcept;
+  Token& operator=(Token&& other) noexcept;
+
   ~Token();
 
-  bool operator==(const Token& rhs) const;
-  bool operator!=(const Token& rhs) const;
+  bool operator==(const Token& other) const;
+  bool operator!=(const Token& other) const;
 
   bool has_value() const { return token_.has_value(); }
 

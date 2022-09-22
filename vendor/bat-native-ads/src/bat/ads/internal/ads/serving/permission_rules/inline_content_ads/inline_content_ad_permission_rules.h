@@ -12,11 +12,6 @@ namespace ads::inline_content_ads {
 
 class PermissionRules final : public PermissionRulesBase {
  public:
-  PermissionRules();
-  PermissionRules(const PermissionRules&) = delete;
-  PermissionRules& operator=(const PermissionRules&) = delete;
-  ~PermissionRules() override;
-
   bool HasPermission() const;
 };
 

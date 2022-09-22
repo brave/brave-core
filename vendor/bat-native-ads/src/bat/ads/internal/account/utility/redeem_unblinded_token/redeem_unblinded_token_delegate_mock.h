@@ -14,12 +14,18 @@ namespace ads {
 class RedeemUnblindedTokenDelegateMock : public RedeemUnblindedTokenDelegate {
  public:
   RedeemUnblindedTokenDelegateMock();
-  ~RedeemUnblindedTokenDelegateMock() override;
 
   RedeemUnblindedTokenDelegateMock(const RedeemUnblindedTokenDelegateMock&) =
       delete;
   RedeemUnblindedTokenDelegateMock& operator=(
-      const RedeemUnblindedTokenDelegateMock&) = delete;
+      const RedeemUnblindedTokenDelegateMock& other) = delete;
+
+  RedeemUnblindedTokenDelegateMock(
+      RedeemUnblindedTokenDelegateMock&& other) noexcept = delete;
+  RedeemUnblindedTokenDelegateMock& operator=(
+      RedeemUnblindedTokenDelegateMock&& other) noexcept = delete;
+
+  ~RedeemUnblindedTokenDelegateMock() override;
 
   MOCK_METHOD(void,
               OnDidSendConfirmation,

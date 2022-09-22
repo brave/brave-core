@@ -22,12 +22,17 @@ class PublicKey {
   PublicKey();
   explicit PublicKey(const std::string& public_key_base64);
   explicit PublicKey(const challenge_bypass_ristretto::PublicKey& public_key);
+
   PublicKey(const PublicKey& other);
   PublicKey& operator=(const PublicKey& other);
+
+  PublicKey(PublicKey&& other) noexcept;
+  PublicKey& operator=(PublicKey&& other) noexcept;
+
   ~PublicKey();
 
-  bool operator==(const PublicKey& rhs) const;
-  bool operator!=(const PublicKey& rhs) const;
+  bool operator==(const PublicKey& other) const;
+  bool operator!=(const PublicKey& other) const;
 
   bool has_value() const { return public_key_.has_value(); }
 

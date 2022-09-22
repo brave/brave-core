@@ -18,10 +18,6 @@ namespace {
 constexpr base::TimeDelta kTimeConstraint = base::Hours(1);
 }  // namespace
 
-AdsPerHourPermissionRule::AdsPerHourPermissionRule() = default;
-
-AdsPerHourPermissionRule::~AdsPerHourPermissionRule() = default;
-
 bool AdsPerHourPermissionRule::ShouldAllow() {
   const std::vector<base::Time> history =
       GetAdEventHistory(AdType::kInlineContentAd, ConfirmationType::kServed);

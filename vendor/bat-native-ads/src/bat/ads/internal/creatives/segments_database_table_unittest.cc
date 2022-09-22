@@ -13,7 +13,7 @@ namespace ads::database::table {
 
 TEST(BatAdsSegmentsDatabaseTableTest, TableName) {
   // Arrange
-  Segments database_table;
+  const Segments database_table;
 
   // Act
   const std::string table_name = database_table.GetTableName();

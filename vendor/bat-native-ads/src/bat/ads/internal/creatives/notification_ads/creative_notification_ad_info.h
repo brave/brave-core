@@ -16,14 +16,9 @@ namespace ads {
 struct CreativeNotificationAdInfo final : CreativeAdInfo {
   CreativeNotificationAdInfo();
   explicit CreativeNotificationAdInfo(const CreativeAdInfo& creative_ad);
-  CreativeNotificationAdInfo(
-      const CreativeNotificationAdInfo& creative_ad_notification);
-  CreativeNotificationAdInfo& operator=(
-      const CreativeNotificationAdInfo& creative_ad_notification);
-  ~CreativeNotificationAdInfo();
 
-  bool operator==(const CreativeNotificationAdInfo& rhs) const;
-  bool operator!=(const CreativeNotificationAdInfo& rhs) const;
+  bool operator==(const CreativeNotificationAdInfo& other) const;
+  bool operator!=(const CreativeNotificationAdInfo& other) const;
 
   std::string title;
   std::string body;

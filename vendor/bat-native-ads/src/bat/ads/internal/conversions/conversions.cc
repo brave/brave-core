@@ -120,7 +120,7 @@ std::string ExtractConversionIdFromText(
   }
 
   re2::StringPiece text_string_piece(text);
-  RE2 r(conversion_id_pattern);
+  const RE2 r(conversion_id_pattern);
   RE2::FindAndConsume(&text_string_piece, r, &conversion_id);
 
   return conversion_id;
@@ -474,7 +474,7 @@ void Conversions::ProcessQueue() {
 
 void Conversions::RemoveInvalidQueueItem(
     const ConversionQueueItemInfo& conversion_queue_item) {
-  database::table::ConversionQueue database_table;
+  const database::table::ConversionQueue database_table;
   database_table.Delete(
       conversion_queue_item,
       base::BindOnce(&Conversions::OnRemoveInvalidQueueItem,
@@ -495,7 +495,7 @@ void Conversions::OnRemoveInvalidQueueItem(
 
 void Conversions::MarkQueueItemAsProcessed(
     const ConversionQueueItemInfo& conversion_queue_item) {
-  database::table::ConversionQueue database_table;
+  const database::table::ConversionQueue database_table;
   database_table.Update(
       conversion_queue_item,
       base::BindOnce(&Conversions::OnMarkQueueItemAsProcessed,
