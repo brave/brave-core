@@ -6,6 +6,7 @@ import { Notification } from '../../shared/components/notifications'
 import { GrantInfo } from '../../shared/lib/grant_info'
 import { ProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { RewardsSummaryData } from '../../shared/components/wallet_card'
+import { OnboardingResult } from '../../shared/components/onboarding'
 import { mapNotification } from './notification_adapter'
 
 import {
@@ -191,8 +192,34 @@ export function getRewardsEnabled () {
   })
 }
 
-export function onRewardsEnabled (callback: () => void) {
-  chrome.braveRewards.onRewardsWalletUpdated.addListener(() => { callback() })
+export function getDeclaredCountry () {
+  return new Promise<string>((resolve) => {
+    chrome.braveRewards.getDeclaredCountry(resolve)
+  })
+}
+
+export function createRewardsWallet (country: string) {
+  return new Promise<OnboardingResult>((resolve) => {
+    chrome.braveRewards.createRewardsWallet(country, (result) => {
+      switch (result) {
+        case 'success':
+        case 'unexpected-error':
+        case 'wallet-generation-disabled':
+        case 'country-already-declared':
+          resolve(result)
+          break
+        default:
+          resolve('unexpected-error')
+          break
+      }
+    })
+  })
+}
+
+export function getAvailableCountries () {
+  return new Promise<string[]>((resolve) => {
+    chrome.braveRewards.getAvailableCountries(resolve)
+  })
 }
 
 function getMonthlyTipAmount (publisherKey: string) {

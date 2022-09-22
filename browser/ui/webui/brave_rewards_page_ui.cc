@@ -1776,6 +1776,8 @@ void RewardsDOMHandler::OnRewardsWalletUpdated() {
   GetAdsData(base::Value::List());
   GetAutoContributeProperties(base::Value::List());
   GetOnboardingStatus(base::Value::List());
+  GetExternalWallet(base::Value::List());
+  GetCountryCode(base::Value::List());
 }
 
 void RewardsDOMHandler::OnUnblindedTokensReady(
@@ -1946,14 +1948,13 @@ void RewardsDOMHandler::GetAllMonthlyReportIds(const base::Value::List& args) {
 }
 
 void RewardsDOMHandler::GetCountryCode(const base::Value::List& args) {
+  if (!rewards_service_) {
+    return;
+  }
+
   AllowJavascript();
-
-  const std::string locale =
-      brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-  const std::string country_code = brave_l10n::GetCountryCode(locale);
-
   CallJavascriptFunction("brave_rewards.countryCode",
-                         base::Value(country_code));
+                         base::Value(rewards_service_->GetCountryCode()));
 }
 
 void RewardsDOMHandler::CompleteReset(const base::Value::List& args) {

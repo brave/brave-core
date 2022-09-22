@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 import { HostContext, useHostListener } from '../lib/host_context'
-import { RewardsOptInModal, RewardsTourModal } from '../../shared/components/onboarding'
+import { OnboardingResult, RewardsOptInModal, RewardsTourModal } from '../../shared/components/onboarding'
 import { AdaptiveCaptchaView } from '../../rewards_panel/components/adaptive_captcha_view'
 import { GrantCaptchaModal } from './grant_captcha_modal'
 import { NotificationOverlay } from './notification_overlay'
@@ -37,6 +37,10 @@ export function PanelOverlays () {
     React.useState(host.state.requestedView)
   const [rewardsEnabled, setRewardsEnabled] =
     React.useState(host.state.rewardsEnabled)
+  const [declaredCountry, setDeclaredCountry] =
+    React.useState(host.state.declaredCountry)
+  const [availableCountries, setAvailableCountries] =
+    React.useState(host.state.availableCountries)
   const [settings, setSettings] = React.useState(host.state.settings)
   const [options, setOptions] = React.useState(host.state.options)
   const [externalWalletProviders, setExternalWalletProviders] =
@@ -50,10 +54,16 @@ export function PanelOverlays () {
 
   const [showTour, setShowTour] = React.useState(false)
   const [notificationsHidden, setNotificationsHidden] = React.useState(false)
+  const [onboardingResult, setOnboardingResult] =
+    React.useState<OnboardingResult | null>(null)
+
+  const needsCountry = rewardsEnabled && !declaredCountry
 
   useHostListener(host, (state) => {
     setRequestedView(state.requestedView)
     setRewardsEnabled(state.rewardsEnabled)
+    setDeclaredCountry(state.declaredCountry)
+    setAvailableCountries(state.availableCountries)
     setSettings(state.settings)
     setOptions(state.options)
     setExternalWalletProviders(state.externalWalletProviders)
@@ -70,11 +80,6 @@ export function PanelOverlays () {
 
   function toggleTour () {
     setShowTour(!showTour)
-  }
-
-  function onEnable () {
-    host.enableRewards()
-    setShowTour(true)
   }
 
   if (showTour) {
@@ -100,10 +105,31 @@ export function PanelOverlays () {
     )
   }
 
-  if (!rewardsEnabled) {
+  if (onboardingResult || !rewardsEnabled || needsCountry) {
+    const onHideResult = () => {
+      setOnboardingResult(null)
+    }
+
+    const onEnable = (country: string) => {
+      host.enableRewards(country).then((result) => {
+        setOnboardingResult(result)
+        if (!rewardsEnabled && result === 'success') {
+          setOnboardingResult(null)
+          setShowTour(true)
+        }
+      })
+    }
+
     return (
       <NamedOverlay name='opt-in'>
-        <RewardsOptInModal onEnable={onEnable} onTakeTour={toggleTour} />
+        <RewardsOptInModal
+          availableCountries={availableCountries}
+          initialView={needsCountry ? 'declare-country' : 'default'}
+          result={onboardingResult}
+          onEnable={onEnable}
+          onTakeTour={toggleTour}
+          onHideResult={onHideResult}
+        />
       </NamedOverlay>
     )
   }

@@ -81,6 +81,19 @@ RewardsPanelCoordinator* GetPanelCoordinator(ExtensionFunction* function) {
   return browser ? RewardsPanelCoordinator::FromBrowser(browser) : nullptr;
 }
 
+std::string StringifyResult(ledger::mojom::CreateRewardsWalletResult result) {
+  switch (result) {
+    case ledger::mojom::CreateRewardsWalletResult::kSuccess:
+      return "success";
+    case ledger::mojom::CreateRewardsWalletResult::kWalletGenerationDisabled:
+      return "wallet-generation-disabled";
+    case ledger::mojom::CreateRewardsWalletResult::kGeoCountryAlreadyDeclared:
+      return "country-already-declared";
+    case ledger::mojom::CreateRewardsWalletResult::kUnexpected:
+      return "unexpected-error";
+  }
+}
+
 }  // namespace
 
 namespace extensions {
@@ -587,47 +600,65 @@ BraveRewardsCreateRewardsWalletFunction::
 
 ExtensionFunction::ResponseAction
 BraveRewardsCreateRewardsWalletFunction::Run() {
+  auto params = brave_rewards::CreateRewardsWallet::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
+
   auto* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
     return RespondNow(Error("RewardsService not available"));
   }
 
-  rewards_service->CreateRewardsWallet(base::BindOnce(
-      &BraveRewardsCreateRewardsWalletFunction::CreateRewardsWalletCallback,
-      this));
+  rewards_service->CreateRewardsWallet(
+      params->country,
+      base::BindOnce(
+          &BraveRewardsCreateRewardsWalletFunction::CreateRewardsWalletCallback,
+          this));
 
   return RespondLater();
 }
 
 void BraveRewardsCreateRewardsWalletFunction::CreateRewardsWalletCallback(
-    ledger::mojom::Result result) {
-  Respond(OneArgument(base::Value(static_cast<int>(result))));
+    ledger::mojom::CreateRewardsWalletResult result) {
+  Respond(OneArgument(base::Value(StringifyResult(result))));
 }
 
-BraveRewardsGetRewardsWalletFunction::~BraveRewardsGetRewardsWalletFunction() =
-    default;
+BraveRewardsGetAvailableCountriesFunction::
+    ~BraveRewardsGetAvailableCountriesFunction() = default;
 
-ExtensionFunction::ResponseAction BraveRewardsGetRewardsWalletFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
+ExtensionFunction::ResponseAction
+BraveRewardsGetAvailableCountriesFunction::Run() {
+  auto* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+
   if (!rewards_service) {
-    return RespondNow(Error("RewardsService not available"));
+    return RespondNow(Error("Rewards service is not initialized"));
   }
 
-  rewards_service->GetRewardsWallet(base::BindOnce(
-      &BraveRewardsGetRewardsWalletFunction::GetRewardsWalletCallback, this));
+  rewards_service->GetAvailableCountries(base::BindOnce(
+      &BraveRewardsGetAvailableCountriesFunction::GetAvailableCountriesCallback,
+      this));
+
   return RespondLater();
 }
 
-void BraveRewardsGetRewardsWalletFunction::GetRewardsWalletCallback(
-    ledger::mojom::RewardsWalletPtr rewards_wallet) {
-  if (!rewards_wallet) {
-    return Respond(NoArguments());
+void BraveRewardsGetAvailableCountriesFunction::GetAvailableCountriesCallback(
+    std::vector<std::string> countries) {
+  base::Value::List country_list;
+  for (auto& country : countries) {
+    country_list.Append(std::move(country));
   }
-  base::Value::Dict dict;
-  dict.Set("paymentId", rewards_wallet->payment_id);
-  Respond(OneArgument(base::Value(std::move(dict))));
+  Respond(OneArgument(base::Value(std::move(country_list))));
+}
+
+BraveRewardsGetDeclaredCountryFunction::
+    ~BraveRewardsGetDeclaredCountryFunction() = default;
+
+ExtensionFunction::ResponseAction
+BraveRewardsGetDeclaredCountryFunction::Run() {
+  auto* prefs = Profile::FromBrowserContext(browser_context())->GetPrefs();
+  std::string country = prefs->GetString(::brave_rewards::prefs::kDeclaredGeo);
+  return RespondNow(OneArgument(base::Value(std::move(country))));
 }
 
 BraveRewardsGetBalanceReportFunction::~BraveRewardsGetBalanceReportFunction() =

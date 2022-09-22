@@ -556,8 +556,14 @@ struct EventLog {
   uint64 created_at;
 };
 
+enum CreateRewardsWalletResult {
+  kSuccess,
+  kWalletGenerationDisabled,
+  kGeoCountryAlreadyDeclared,
+  kUnexpected
+};
+
 struct RewardsWallet {
   string payment_id;
   array<uint8> recovery_seed;
-  string geo_country;
 };

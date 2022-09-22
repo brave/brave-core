@@ -74,10 +74,6 @@ class Promotion {
                         const std::string& payload,
                         mojom::PromotionPtr promotion);
 
-  void OnCreateWalletIfNecessary(ledger::ClaimPromotionCallback callback,
-                                 const std::string& payload,
-                                 mojom::Result result);
-
   void OnAttestPromotion(ledger::AttestPromotionCallback callback,
                          const std::string& solution,
                          mojom::PromotionPtr promotion);

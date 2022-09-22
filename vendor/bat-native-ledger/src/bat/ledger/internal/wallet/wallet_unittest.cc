@@ -21,7 +21,7 @@ namespace ledger {
 
 class WalletTest : public BATLedgerTest {
  protected:
-  mojom::Result CreateWalletIfNecessary() {
+  mojom::CreateRewardsWalletResult CreateWalletIfNecessary() {
     auto* ledger = GetLedgerImpl();
 
     auto response = mojom::UrlResponse::New();
@@ -34,12 +34,14 @@ class WalletTest : public BATLedgerTest {
         mojom::UrlMethod::POST, std::move(response));
 
     base::RunLoop run_loop;
-    mojom::Result result;
+    mojom::CreateRewardsWalletResult result;
     ledger->wallet()->CreateWalletIfNecessary(
-        base::BindLambdaForTesting([&result, &run_loop](mojom::Result r) {
-          result = r;
-          run_loop.Quit();
-        }));
+        absl::nullopt,
+        base::BindLambdaForTesting(
+            [&result, &run_loop](mojom::CreateRewardsWalletResult r) {
+              result = r;
+              run_loop.Quit();
+            }));
 
     run_loop.Run();
     return result;
@@ -73,23 +75,21 @@ TEST_F(WalletTest, CreateWallet) {
 
   // Create a wallet when there is no current wallet information.
   GetTestLedgerClient()->SetStringState(state::kWalletBrave, "");
-  mojom::Result result = CreateWalletIfNecessary();
-  EXPECT_EQ(result, mojom::Result::LEDGER_OK);
+  mojom::CreateRewardsWalletResult result = CreateWalletIfNecessary();
+  EXPECT_EQ(result, mojom::CreateRewardsWalletResult::kSuccess);
   mojom::RewardsWalletPtr wallet = ledger->wallet()->GetWallet();
   ASSERT_TRUE(wallet);
   EXPECT_TRUE(!wallet->payment_id.empty());
   EXPECT_TRUE(!wallet->recovery_seed.empty());
-  EXPECT_TRUE(wallet->geo_country.empty());
 
   // Create a wallet when there is corrupted wallet information.
   GetTestLedgerClient()->SetStringState(state::kWalletBrave, "BAD-DATA");
   result = CreateWalletIfNecessary();
-  EXPECT_EQ(result, mojom::Result::LEDGER_OK);
+  EXPECT_EQ(result, mojom::CreateRewardsWalletResult::kSuccess);
   wallet = ledger->wallet()->GetWallet();
   ASSERT_TRUE(wallet);
   EXPECT_TRUE(!wallet->payment_id.empty());
   EXPECT_TRUE(!wallet->recovery_seed.empty());
-  EXPECT_TRUE(wallet->geo_country.empty());
 }
 
 }  // namespace ledger

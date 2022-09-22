@@ -38,6 +38,7 @@ export function Card () {
         <div style={{ width: '284px' }}>
           <RewardsCard
             rewardsEnabled={true}
+            declaredCountry='US'
             adsEnabled={true}
             adsSupported={true}
             needsBrowserUpgradeToServeAds={false}
@@ -67,6 +68,7 @@ export function Card () {
             contributionsThisMonth={10}
             onEnableRewards={actionLogger('onEnableRewards')}
             onEnableAds={actionLogger('onEnableAds')}
+            onSelectCountry={actionLogger('onSelectCountry')}
             onClaimGrant={actionLogger('onClaimGrant')}
           />
         </div>

@@ -36,8 +36,9 @@ Wallet::Wallet(LedgerImpl* ledger)
 
 Wallet::~Wallet() = default;
 
-void Wallet::CreateWalletIfNecessary(ledger::ResultCallback callback) {
-  create_->CreateWallet(absl::nullopt, std::move(callback));
+void Wallet::CreateWalletIfNecessary(absl::optional<std::string>&& geo_country,
+                                     CreateRewardsWalletCallback callback) {
+  create_->CreateWallet(std::move(geo_country), std::move(callback));
 }
 
 std::string Wallet::GetWalletPassphrase(mojom::RewardsWalletPtr wallet) {
@@ -86,29 +87,6 @@ void Wallet::FetchBalance(ledger::FetchBalanceCallback callback) {
 }
 
 void Wallet::ExternalWalletAuthorization(
-    const std::string& wallet_type,
-    const base::flat_map<std::string, std::string>& args,
-    ledger::ExternalWalletAuthorizationCallback callback) {
-  CreateWalletIfNecessary(
-      base::BindOnce(&Wallet::OnCreateWalletIfNecessary, base::Unretained(this),
-                     std::move(callback), wallet_type, args));
-}
-
-void Wallet::OnCreateWalletIfNecessary(
-    ledger::ExternalWalletAuthorizationCallback callback,
-    const std::string& wallet_type,
-    const base::flat_map<std::string, std::string>& args,
-    mojom::Result result) {
-  if (result != mojom::Result::LEDGER_OK) {
-    BLOG(0, "Wallet couldn't be created");
-    callback(mojom::Result::LEDGER_ERROR, {});
-    return;
-  }
-
-  AuthorizeWallet(wallet_type, args, callback);
-}
-
-void Wallet::AuthorizeWallet(
     const std::string& wallet_type,
     const base::flat_map<std::string, std::string>& args,
     ledger::ExternalWalletAuthorizationCallback callback) {
@@ -268,10 +246,6 @@ mojom::RewardsWalletPtr Wallet::GetWallet(bool* corrupted) {
   vector_seed.assign(decoded_seed.begin(), decoded_seed.end());
   wallet->recovery_seed = vector_seed;
 
-  if (const auto* geo_country = dict.FindString("geo_country")) {
-    wallet->geo_country = *geo_country;
-  }
-
   return wallet;
 }
 
@@ -296,7 +270,6 @@ bool Wallet::SetWallet(mojom::RewardsWalletPtr wallet) {
   base::Value::Dict new_wallet;
   new_wallet.Set("payment_id", wallet->payment_id);
   new_wallet.Set("recovery_seed", seed_string);
-  new_wallet.Set("geo_country", wallet->geo_country);
 
   std::string json;
   base::JSONWriter::Write(new_wallet, &json);

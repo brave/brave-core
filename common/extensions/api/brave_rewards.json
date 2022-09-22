@@ -776,38 +776,53 @@
         "description": "Creates a Rewards wallet for the current profile",
         "parameters": [
           {
+            "type": "string",
+            "name": "country"
+          },
+          {
             "type": "function",
             "name": "callback",
             "parameters": [
               {
-                "type": "number",
-                "name": "errorCode"
+                "type": "string",
+                "name": "result"
               }
             ]
           }
         ]
       },
       {
-        "name": "getRewardsWallet",
+        "name": "getAvailableCountries",
         "type": "function",
-        "description": "Returns the Rewards wallet information for the current profile",
+        "description": "",
         "parameters": [
           {
-            "type": "function",
             "name": "callback",
+            "type": "function",
             "parameters": [
               {
-                "name": "wallet",
-                "type": "object",
-                "optional": true,
-                "properties": {
-                  "paymentId": {
-                    "type": "string"
-                  },
-                  "country": {
-                    "type": "string"
-                  }
+                "name": "countries",
+                "type": "array",
+                "items": {
+                  "type": "string"
                 }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getDeclaredCountry",
+        "type": "function",
+        "description": "",
+        "parameters": [
+          {
+            "name": "callback",
+            "type": "function",
+            "parameters": [
+              {
+                "name": "country",
+                "type": "string"
               }
             ]
           }

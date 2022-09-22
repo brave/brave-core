@@ -60,6 +60,10 @@ export const rewardsOptInHeader = styled.div`
   line-height: 20px;
 `
 
+export const selectCountry = styled.div`
+  margin: 16px -12px 0;
+`
+
 export const terms = styled.div`
   margin-top: 14px;
   padding-bottom: 10px;

@@ -269,9 +269,13 @@ void LedgerImpl::OnStateInitialized(mojom::Result result,
   callback(mojom::Result::LEDGER_OK);
 }
 
-void LedgerImpl::CreateRewardsWallet(ResultCallback callback) {
-  WhenReady([this, callback = std::move(callback)]() mutable {
-    wallet()->CreateWalletIfNecessary(std::move(callback));
+void LedgerImpl::CreateRewardsWallet(const std::string& country,
+                                     CreateRewardsWalletCallback callback) {
+  WhenReady([this, country, callback = std::move(callback)]() mutable {
+    wallet()->CreateWalletIfNecessary(
+        country.empty() ? absl::nullopt
+                        : absl::optional<std::string>(std::move(country)),
+        std::move(callback));
   });
 }
 
@@ -935,7 +939,18 @@ bool LedgerImpl::IsShuttingDown() const {
 }
 
 void LedgerImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {
-  WhenReady([this, callback]() { callback(wallet()->GetWallet()); });
+  WhenReady([this, callback]() {
+    auto rewards_wallet = wallet()->GetWallet();
+    if (rewards_wallet) {
+      // While the wallet creation flow is running, the Rewards wallet data may
+      // have a recovery seed without a payment ID. Only return a struct to the
+      // caller if it contains a payment ID.
+      if (rewards_wallet->payment_id.empty()) {
+        rewards_wallet = nullptr;
+      }
+    }
+    callback(std::move(rewards_wallet));
+  });
 }
 
 std::string LedgerImpl::GetRewardsWalletPassphrase() {

@@ -71,7 +71,7 @@ void BraveRewardsNativeWorker::Destroy(JNIEnv* env) {
 
 void BraveRewardsNativeWorker::CreateRewardsWallet(JNIEnv* env) {
   if (brave_rewards_service_) {
-    brave_rewards_service_->CreateRewardsWallet(base::DoNothing());
+    brave_rewards_service_->CreateRewardsWallet("", base::DoNothing());
   }
 }
 

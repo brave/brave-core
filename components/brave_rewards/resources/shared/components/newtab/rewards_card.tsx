@@ -17,6 +17,7 @@ import { TokenAmount } from '../token_amount'
 import { ExchangeAmount } from '../exchange_amount'
 import { NewTabLink } from '../new_tab_link'
 import { GrantOverlay } from './grant_overlay'
+import { SelectCountryCard } from './select_country_card'
 import { PaymentStatusView, shouldRenderPendingRewards } from '../payment_status_view'
 
 import * as urls from '../../lib/rewards_urls'
@@ -62,6 +63,7 @@ export function RewardsCardHeader () {
 
 interface Props {
   rewardsEnabled: boolean
+  declaredCountry: string
   adsEnabled: boolean
   adsSupported: boolean
   needsBrowserUpgradeToServeAds: boolean
@@ -77,6 +79,7 @@ interface Props {
   externalWallet: ExternalWallet | null
   onEnableRewards: () => void
   onEnableAds: () => void
+  onSelectCountry: () => void
   onClaimGrant: () => void
 }
 
@@ -202,6 +205,17 @@ export function RewardsCard (props: Props) {
     )
   }
 
+  function renderCountrySelect () {
+    return (
+      <style.root>
+        <RewardsCardHeader />
+        <style.selectCountry>
+          <SelectCountryCard onContinue={props.onSelectCountry} />
+        </style.selectCountry>
+      </style.root>
+    )
+  }
+
   function renderAdsOptIn () {
     if (props.adsEnabled || !props.adsSupported) {
       return null
@@ -223,6 +237,10 @@ export function RewardsCard (props: Props) {
 
   if (!props.rewardsEnabled) {
     return renderRewardsOptIn()
+  }
+
+  if (!props.declaredCountry) {
+    return renderCountrySelect()
   }
 
   return (

@@ -122,7 +122,13 @@ class RewardsServiceImpl : public RewardsService,
             std::unique_ptr<RewardsNotificationServiceObserver>
                 notification_observer);
 
-  void CreateRewardsWallet(CreateRewardsWalletCallback callback) override;
+  void CreateRewardsWallet(const std::string& country,
+                           CreateRewardsWalletCallback callback) override;
+
+  std::string GetCountryCode() const override;
+
+  void GetAvailableCountries(
+      GetAvailableCountriesCallback callback) const override;
 
   void GetRewardsParameters(GetRewardsParametersCallback callback) override;
 

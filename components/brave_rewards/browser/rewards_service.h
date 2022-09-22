@@ -135,13 +135,25 @@ class RewardsService : public KeyedService {
   virtual bool IsInitialized() = 0;
 
   using CreateRewardsWalletCallback =
-      base::OnceCallback<void(ledger::mojom::Result)>;
+      base::OnceCallback<void(ledger::mojom::CreateRewardsWalletResult)>;
 
   // Creates a Rewards wallet for the current profile. If a Rewards wallet has
   // already been created, then the existing wallet information will be
   // returned. Ads and AC will be enabled if those prefs have not been
   // previously set.
-  virtual void CreateRewardsWallet(CreateRewardsWalletCallback callback) = 0;
+  virtual void CreateRewardsWallet(const std::string& country,
+                                   CreateRewardsWalletCallback callback) = 0;
+
+  // Returns the country code associated with the user's Rewards profile.
+  virtual std::string GetCountryCode() const = 0;
+
+  using GetAvailableCountriesCallback =
+      base::OnceCallback<void(std::vector<std::string>)>;
+
+  // Asynchronously returns a vector of ISO country codes that the user can
+  // select when creating a Rewards ID.
+  virtual void GetAvailableCountries(
+      GetAvailableCountriesCallback callback) const = 0;
 
   virtual void GetRewardsParameters(GetRewardsParametersCallback callback) = 0;
   virtual void GetActivityInfoList(const uint32_t start,
