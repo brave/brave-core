@@ -1297,7 +1297,7 @@ TEST_F(JsonRpcServiceUnitTest, EnsGetEthAddr_ZeroAddress) {
 
   base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
   EXPECT_CALL(callback,
-              Run("", false, mojom::ProviderError::kInvalidParams,
+              Run("", mojom::ProviderError::kInvalidParams,
                   l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
   json_rpc_service_->EnsGetEthAddr("brantly-test.eth", nullptr, callback.Get());
   base::RunLoop().RunUntilIdle();
