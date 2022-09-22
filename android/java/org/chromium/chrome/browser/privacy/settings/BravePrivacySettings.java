@@ -15,12 +15,14 @@ import androidx.preference.PreferenceCategory;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.brave_shields.mojom.CookieListOptInPageAndroidHandler;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.metrics.UmaSessionStats;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.Pref;
+import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.privacy.settings.PrivacySettings;
@@ -29,14 +31,17 @@ import org.chromium.chrome.browser.settings.BraveDialogPreference;
 import org.chromium.chrome.browser.settings.BravePreferenceDialogFragment;
 import org.chromium.chrome.browser.settings.BraveWebrtcPolicyPreference;
 import org.chromium.chrome.browser.settings.ChromeManagedPreferenceDelegate;
+import org.chromium.chrome.browser.shields.CookieListOptInServiceFactory;
 import org.chromium.components.browser_ui.settings.ChromeBaseCheckBoxPreference;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.prefs.PrefService;
 import org.chromium.components.user_prefs.UserPrefs;
+import org.chromium.mojo.bindings.ConnectionErrorHandler;
+import org.chromium.mojo.system.MojoException;
 
-public class BravePrivacySettings extends PrivacySettings {
+public class BravePrivacySettings extends PrivacySettings implements ConnectionErrorHandler {
     // Chromium Prefs
     private static final String PREF_CAN_MAKE_PAYMENT = "can_make_payment";
     private static final String PREF_NETWORK_PREDICTIONS = "preload_pages";
@@ -64,6 +69,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private static final String PREF_HTTPSE = "httpse";
     private static final String PREF_DE_AMP = "de_amp";
     private static final String PREF_IPFS_GATEWAY = "ipfs_gateway";
+    private static final String PREF_BLOCK_COOKIE_CONSENT_NOTICES = "block_cookie_consent_notices";
     private static final String PREF_AD_BLOCK = "ad_block";
     private static final String PREF_BLOCK_SCRIPTS = "scripts_block";
     public static final String PREF_FINGERPRINTING_PROTECTION = "fingerprinting_protection";
@@ -105,11 +111,11 @@ public class BravePrivacySettings extends PrivacySettings {
             PREF_OTHER_PRIVACY_SETTINGS_SECTION, // other section
             PREF_WEBRTC_POLICY, PREF_SAFE_BROWSING, PREF_INCOGNITO_LOCK, PREF_CAN_MAKE_PAYMENT,
             PREF_UNSTOPPABLE_DOMAINS, PREF_ETH_NAMED_SERVICE, PREF_IPFS_GATEWAY, PREF_SECURE_DNS,
-            PREF_DO_NOT_TRACK, PREF_PHONE_AS_A_SECURITY_KEY, PREF_CLOSE_TABS_ON_EXIT, PREF_SEND_P3A,
-            PREF_SEND_CRASH_REPORTS, PREF_BRAVE_STATS_USAGE_PING,
-            PREF_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR, PREF_SEARCH_SUGGESTIONS,
-            PREF_AUTOCOMPLETE_TOP_SITES, PREF_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES, PREF_USAGE_STATS,
-            PREF_PRIVACY_SANDBOX};
+            PREF_BLOCK_COOKIE_CONSENT_NOTICES, PREF_DO_NOT_TRACK, PREF_PHONE_AS_A_SECURITY_KEY,
+            PREF_CLOSE_TABS_ON_EXIT, PREF_SEND_P3A, PREF_SEND_CRASH_REPORTS,
+            PREF_BRAVE_STATS_USAGE_PING, PREF_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR,
+            PREF_SEARCH_SUGGESTIONS, PREF_AUTOCOMPLETE_TOP_SITES,
+            PREF_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES, PREF_USAGE_STATS, PREF_PRIVACY_SANDBOX};
 
     private final int STRICT = 0;
     private final int STANDARD = 1;
@@ -137,6 +143,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private ChromeSwitchPreference mSendCrashReports;
     private ChromeSwitchPreference mBraveStatsUsagePing;
     private ChromeSwitchPreference mIpfsGatewayPref;
+    private ChromeSwitchPreference mBlockCookieConsentNoticesPref;
     private PreferenceCategory mSocialBlockingCategory;
     private ChromeSwitchPreference mSocialBlockingGoogle;
     private ChromeSwitchPreference mHttpsEverywhere;
@@ -147,6 +154,31 @@ public class BravePrivacySettings extends PrivacySettings {
     private ChromeSwitchPreference mClearBrowsingDataOnExit;
     private Preference mUstoppableDomains;
     private ChromeSwitchPreference mFingerprntLanguagePref;
+    private CookieListOptInPageAndroidHandler mCookieListOptInPageAndroidHandler;
+
+    @Override
+    public void onConnectionError(MojoException e) {
+        mCookieListOptInPageAndroidHandler = null;
+        initCookieListOptInPageAndroidHandler();
+    }
+
+    private void initCookieListOptInPageAndroidHandler() {
+        if (mCookieListOptInPageAndroidHandler != null) {
+            return;
+        }
+
+        mCookieListOptInPageAndroidHandler =
+                CookieListOptInServiceFactory.getInstance().getCookieListOptInPageAndroidHandler(
+                        this);
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mCookieListOptInPageAndroidHandler != null) {
+            mCookieListOptInPageAndroidHandler.close();
+        }
+        super.onDestroy();
+    }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -156,6 +188,8 @@ public class BravePrivacySettings extends PrivacySettings {
         getActivity().setTitle(R.string.brave_shields_and_privacy);
 
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_privacy_preferences);
+
+        initCookieListOptInPageAndroidHandler();
 
         mHttpsePref = (ChromeSwitchPreference) findPreference(PREF_HTTPSE);
         mHttpsePref.setOnPreferenceChangeListener(this);
@@ -177,6 +211,10 @@ public class BravePrivacySettings extends PrivacySettings {
 
         mIpfsGatewayPref = (ChromeSwitchPreference) findPreference(PREF_IPFS_GATEWAY);
         mIpfsGatewayPref.setOnPreferenceChangeListener(this);
+
+        mBlockCookieConsentNoticesPref =
+                (ChromeSwitchPreference) findPreference(PREF_BLOCK_COOKIE_CONSENT_NOTICES);
+        mBlockCookieConsentNoticesPref.setOnPreferenceChangeListener(this);
 
         mBlockCrosssiteCookies =
                 (BraveDialogPreference) findPreference(PREF_BLOCK_CROSS_SITE_COOKIES);
@@ -245,6 +283,14 @@ public class BravePrivacySettings extends PrivacySettings {
         removePreferenceIfPresent(PREF_PRIVACY_SANDBOX);
         removePreferenceIfPresent(PREF_SAFE_BROWSING);
 
+        if (mCookieListOptInPageAndroidHandler != null) {
+            mCookieListOptInPageAndroidHandler.shouldShowDialog(shouldShowDialog -> {
+                if (!shouldShowDialog) {
+                    removePreferenceIfPresent(PREF_BLOCK_COOKIE_CONSENT_NOTICES);
+                }
+            });
+        }
+
         updateBravePreferences();
     }
 
@@ -295,6 +341,11 @@ public class BravePrivacySettings extends PrivacySettings {
 
         } else if (PREF_IPFS_GATEWAY.equals(key)) {
             BravePrefServiceBridge.getInstance().setIpfsGatewayEnabled((boolean) newValue);
+        } else if (PREF_BLOCK_COOKIE_CONSENT_NOTICES.equals(key)) {
+            if (mCookieListOptInPageAndroidHandler != null) {
+                mCookieListOptInPageAndroidHandler.enableFilter((boolean) newValue);
+            }
+
         } else if (PREF_FINGERPRINTING_PROTECTION.equals(key)) {
             if (newValue instanceof String
                     && String.valueOf(newValue).equals(
@@ -522,6 +573,10 @@ public class BravePrivacySettings extends PrivacySettings {
         mAutocompleteBraveSuggestedSites.setEnabled(autocompleteEnabled);
         mFingerprntLanguagePref.setChecked(UserPrefs.get(Profile.getLastUsedRegularProfile())
                                                    .getBoolean(BravePref.REDUCE_LANGUAGE_ENABLED));
+        if (mCookieListOptInPageAndroidHandler != null) {
+            mCookieListOptInPageAndroidHandler.isFilterListEnabled(
+                    isEnabled -> { mBlockCookieConsentNoticesPref.setChecked(isEnabled); });
+        }
     }
 
     private void removePreferenceIfPresent(String key) {

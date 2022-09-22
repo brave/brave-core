@@ -44,4 +44,7 @@ public final class BravePreferenceKeys {
             "org.chromium.chrome.browser.Brave_Biometrics_For_Wallet_Encrypted";
     public static final String BRAVE_AD_FREE_CALLOUT_DIALOG = "brave_ad_free_callout_dialog";
     public static final String BRAVE_OPENED_YOUTUBE = "brave_opened_youtube";
+    public static final String SHOULD_SHOW_COOKIE_CONSENT_NOTICE =
+            "should_show_cookie_consent_notice";
+    public static final String LOADED_SITE_COUNT = "loaded_site_count";
 }

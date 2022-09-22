@@ -27,6 +27,7 @@ static_library("common") {
 }
 
 mojom("mojom") {
+  generate_java = true
   sources = [
     "brave_shields.mojom",
     "brave_shields_panel.mojom",
