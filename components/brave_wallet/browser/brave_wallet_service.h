@@ -223,6 +223,9 @@ class BraveWalletService : public KeyedService,
 
   void OnOnboardingShown() override;
 
+  void ReportEthereumProviderForP3A(
+      mojom::EthereumProviderType provider_type) override;
+
  private:
   friend class EthereumProviderImplUnitTest;
   friend class SolanaProviderImplUnitTest;

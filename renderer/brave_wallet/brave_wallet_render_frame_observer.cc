@@ -10,6 +10,7 @@
 
 #include "base/feature_list.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/renderer/v8_helper.h"
 #include "content/public/common/isolated_world_ids.h"
 #include "content/public/renderer/render_frame.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -65,6 +66,7 @@ void BraveWalletRenderFrameObserver::DidCreateScriptContext(
   if (render_frame()->GetWebFrame()->GetDocument().IsDOMFeaturePolicyEnabled(
           render_frame()->GetWebFrame()->MainWorldScriptContext(),
           "ethereum")) {
+    EnsureConnected();
     if (!js_ethereum_provider_) {
       js_ethereum_provider_ = std::make_unique<JSEthereumProvider>(
           render_frame(), dynamic_params.brave_use_native_ethereum_wallet);
@@ -74,6 +76,42 @@ void BraveWalletRenderFrameObserver::DidCreateScriptContext(
         is_main_world);
     js_ethereum_provider_->ConnectEvent();
   }
+}
+
+void BraveWalletRenderFrameObserver::DidFinishLoad() {
+#if !BUILDFLAG(IS_ANDROID)
+  v8::Isolate* isolate = blink::MainThreadIsolate();
+  v8::MicrotasksScope microtasks(isolate,
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
+  v8::HandleScope handle_scope(isolate);
+  auto* web_frame = render_frame()->GetWebFrame();
+  v8::Local<v8::Context> context = web_frame->MainWorldScriptContext();
+  if (!brave_wallet_service_.is_bound() || context.IsEmpty() ||
+      !CanCreateProvider()) {
+    return;
+  }
+  if (render_frame()->GetWebFrame()->GetDocument().IsDOMFeaturePolicyEnabled(
+          context, "ethereum")) {
+    v8::Local<v8::Value> ethereum_value;
+    v8::Local<v8::Object> ethereum_obj;
+    mojom::EthereumProviderType ethereum_provider_type =
+        mojom::EthereumProviderType::None;
+    if (context->Global()
+            ->Get(context, gin::StringToV8(isolate, "ethereum"))
+            .ToLocal(&ethereum_value) &&
+        ethereum_value->ToObject(context).ToLocal(&ethereum_obj)) {
+      v8::Local<v8::Value> is_brave_wallet;
+      if (GetProperty(context, ethereum_obj, "isBraveWallet")
+              .ToLocal(&is_brave_wallet) &&
+          is_brave_wallet->BooleanValue(isolate)) {
+        ethereum_provider_type = mojom::EthereumProviderType::Native;
+      } else {
+        ethereum_provider_type = mojom::EthereumProviderType::ThirdParty;
+      }
+    }
+    brave_wallet_service_->ReportEthereumProviderForP3A(ethereum_provider_type);
+  }
+#endif
 }
 
 void BraveWalletRenderFrameObserver::WillReleaseScriptContext(
@@ -109,6 +147,14 @@ void BraveWalletRenderFrameObserver::DidClearWindowObject() {
     JSSolanaProvider::Install(
         dynamic_params.allow_overwrite_window_solana_provider, render_frame());
   }
+}
+
+bool BraveWalletRenderFrameObserver::EnsureConnected() {
+  if (!brave_wallet_service_.is_bound()) {
+    render_frame()->GetBrowserInterfaceBroker()->GetInterface(
+        brave_wallet_service_.BindNewPipeAndPassReceiver());
+  }
+  return brave_wallet_service_.is_bound();
 }
 
 void BraveWalletRenderFrameObserver::OnDestruct() {

@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "brave/common/brave_renderer_configuration.mojom.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/renderer/js_ethereum_provider.h"
 #include "brave/components/brave_wallet/renderer/js_solana_provider.h"
 #include "content/public/renderer/render_frame.h"
@@ -39,7 +40,11 @@ class BraveWalletRenderFrameObserver : public content::RenderFrameObserver {
                                 int32_t world_id) override;
   void DidClearWindowObject() override;
 
+  void DidFinishLoad() override;
+
  private:
+  bool EnsureConnected();
+
   // RenderFrameObserver implementation.
   void OnDestruct() override;
 
@@ -47,6 +52,8 @@ class BraveWalletRenderFrameObserver : public content::RenderFrameObserver {
 
   // Handle to "handler" JavaScript object functionality.
   std::unique_ptr<JSEthereumProvider> js_ethereum_provider_;
+  // Handle to wallet service for reporting current ethereum provider type.
+  mojo::Remote<brave_wallet::mojom::BraveWalletService> brave_wallet_service_;
 
   GURL url_;
   GetDynamicParamsCallback get_dynamic_params_callback_;

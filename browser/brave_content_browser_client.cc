@@ -270,6 +270,14 @@ void BindCosmeticFiltersResources(
                                 std::move(receiver)));
 }
 
+void MaybeBindWalletService(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService> receiver) {
+  auto* context = frame_host->GetBrowserContext();
+  brave_wallet::BraveWalletServiceFactory::BindForContext(context,
+                                                          std::move(receiver));
+}
+
 void MaybeBindEthereumProvider(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<brave_wallet::mojom::EthereumProvider> receiver) {
@@ -553,13 +561,16 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         base::BindRepeating(&BindBraveAdsHost));
   }
 
-  if (brave_wallet::IsNativeWalletEnabled() &&
-      brave_wallet::IsAllowedForContext(
+  if (brave_wallet::IsAllowedForContext(
           render_frame_host->GetBrowserContext())) {
-    map->Add<brave_wallet::mojom::EthereumProvider>(
-        base::BindRepeating(&MaybeBindEthereumProvider));
-    map->Add<brave_wallet::mojom::SolanaProvider>(
-        base::BindRepeating(&MaybeBindSolanaProvider));
+    map->Add<brave_wallet::mojom::BraveWalletService>(
+        base::BindRepeating(&MaybeBindWalletService));
+    if (brave_wallet::IsNativeWalletEnabled()) {
+      map->Add<brave_wallet::mojom::EthereumProvider>(
+          base::BindRepeating(&MaybeBindEthereumProvider));
+      map->Add<brave_wallet::mojom::SolanaProvider>(
+          base::BindRepeating(&MaybeBindSolanaProvider));
+    }
   }
 
   map->Add<skus::mojom::SkusService>(

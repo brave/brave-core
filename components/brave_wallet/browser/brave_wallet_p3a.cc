@@ -57,6 +57,11 @@ BraveWalletP3A::BraveWalletP3A(BraveWalletService* wallet_service,
 
 BraveWalletP3A::~BraveWalletP3A() = default;
 
+void BraveWalletP3A::ReportEthereumProvider(
+    mojom::EthereumProviderType provider_type) {
+  UMA_HISTOGRAM_ENUMERATION("Brave.Wallet.EthProvider", provider_type);
+}
+
 void BraveWalletP3A::RecordInitialBraveWalletP3AState() {
   keyring_service_->GetKeyringInfo(mojom::kDefaultKeyringId,
                                    base::BindOnce(&RecordKeyringCreated));

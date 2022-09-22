@@ -879,6 +879,11 @@ void BraveWalletService::OnOnboardingShown() {
   RecordWalletUsage(false);
 }
 
+void BraveWalletService::ReportEthereumProviderForP3A(
+    mojom::EthereumProviderType provider_type) {
+  brave_wallet_p3a_.ReportEthereumProvider(provider_type);
+}
+
 void BraveWalletService::RecordWalletUsage(bool unlocked) {
   VLOG(1) << "Wallet P3A: starting report";
   base::Time wallet_last_used = prefs_->GetTime(kBraveWalletLastUnlockTime);

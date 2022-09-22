@@ -31,6 +31,8 @@ class BraveWalletP3A : public mojom::BraveWalletServiceObserver,
   BraveWalletP3A(const BraveWalletP3A&) = delete;
   BraveWalletP3A& operator=(BraveWalletP3A&) = delete;
 
+  void ReportEthereumProvider(mojom::EthereumProviderType provider_type);
+
   // KeyringServiceObserver
   void KeyringCreated(const std::string& keyring_id) override;
   void KeyringRestored(const std::string& keyring_id) override {}

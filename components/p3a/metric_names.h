@@ -79,6 +79,7 @@ constexpr inline auto kCollectedTypicalHistograms =
     "Brave.VPN.NewUserReturning",
     "Brave.VPN.DaysInMonthUsed",
     "Brave.VPN.LastUsageTime",
+    "Brave.Wallet.EthProvider",
     "Brave.Wallet.DefaultSolanaWalletSetting",
     "Brave.Wallet.DefaultWalletSetting",
     "Brave.Wallet.KeyringCreated",
