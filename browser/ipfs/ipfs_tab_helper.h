@@ -62,7 +62,7 @@ class IPFSTabHelper : public content::WebContentsObserver,
       TranslateUrlToIpns_When_HasDNSLinkRecord_AndOriginalPageFails_500);
   FRIEND_TEST_ALL_PREFIXES(
       IpfsTabHelperUnitTest,
-      TranslateUrlToIpns_When_HasDNSLinkRecord_AndOriginalPageFails_400);
+      DoNotTranslateUrlToIpns_When_HasDNSLinkRecord_AndOriginalPageFails_400);
   FRIEND_TEST_ALL_PREFIXES(
       IpfsTabHelperUnitTest,
       TranslateUrlToIpns_When_HasDNSLinkRecord_AndOriginalPageFails_505);

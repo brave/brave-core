@@ -23,8 +23,9 @@ namespace {
 const char kDnsLinkHeader[] = "dnslink";
 
 // Expects dns TXT record in format: name=value
-std::string GetDNSRecordValue(const std::vector<std::string>& text_results,
-                              const std::string& name) {
+absl::optional<std::string> GetDNSRecordValue(
+    const std::vector<std::string>& text_results,
+    const std::string& name) {
   for (const auto& txt : text_results) {
     std::vector<std::string> tokens = base::SplitString(
         txt, "=", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
@@ -34,7 +35,7 @@ std::string GetDNSRecordValue(const std::vector<std::string>& text_results,
       continue;
     return tokens.back();
   }
-  return std::string();
+  return absl::nullopt;
 }
 
 }  // namespace
@@ -69,7 +70,7 @@ void IPFSHostResolver::Resolve(const net::HostPortPair& host,
 
   receiver_.reset();
   resolved_callback_ = std::move(callback);
-  dnslink_.erase();
+  dnslink_ = absl::nullopt;
   resolving_host_ = host.host();
   net::HostPortPair local_host_port(prefix_ + resolving_host_, host.port());
 
@@ -89,8 +90,6 @@ void IPFSHostResolver::OnComplete(
       std::move(resolved_callback_).Run(resolving_host_, absl::nullopt);
     }
   }
-  if (complete_callback_for_testing_)
-    std::move(complete_callback_for_testing_).Run();
 }
 
 void IPFSHostResolver::OnTextResults(const std::vector<std::string>& results) {

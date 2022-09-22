@@ -136,20 +136,20 @@ class IPFSHostResolverTest : public testing::Test {
                             const std::string& host,
                             const absl::optional<std::string>& dnslink) {
     EXPECT_EQ(expected_host, host);
-    resolved_callback_called_++;
+    resolved_callback_called_ = true;
     if (callback)
       std::move(callback).Run();
   }
 
   FakeNetworkContext* GetNetworkContext() { return network_context_.get(); }
 
-  void SetResolvedCallbackCalled(int value) {
+  void SetResolvedCallbackCalled(bool value) {
     resolved_callback_called_ = value;
   }
   int resolved_callback_called() const { return resolved_callback_called_; }
 
   content::BrowserTaskEnvironment task_environment_;
-  int resolved_callback_called_ = 0;
+  bool resolved_callback_called_ = false;
   std::unique_ptr<FakeNetworkContext> network_context_;
   std::unique_ptr<ScopedTestingLocalState> local_state_;
   std::unique_ptr<StubResolverConfigReader> stub_resolver_config_reader_;
@@ -182,7 +182,7 @@ TEST_F(IPFSHostResolverTest, PrefixRunSuccess) {
   EXPECT_EQ(ipfs_resolver.host(), host);
   EXPECT_EQ(ipfs_resolver.dnslink(), "abc");
   EXPECT_EQ(fake_host_resolver_raw->resolve_host_called(), 1);
-  EXPECT_EQ(resolved_callback_called(), 1);
+  EXPECT_TRUE(resolved_callback_called());
 }
 
 TEST_F(IPFSHostResolverTest, SuccessOnReuse) {
@@ -196,34 +196,40 @@ TEST_F(IPFSHostResolverTest, SuccessOnReuse) {
   auto* network_context = GetNetworkContext();
   auto* fake_host_resolver_raw = fake_host_resolver.get();
   network_context->SetHostResolver(std::move(fake_host_resolver));
-  base::RunLoop run_loop;
   ipfs::IPFSHostResolver ipfs_resolver(network_context, prefix);
 
   SetResolvedCallbackCalled(0);
-  ipfs_resolver.Resolve(
-      net::HostPortPair(host, 11), net::NetworkIsolationKey(),
-      net::DnsQueryType::TXT,
-      base::BindOnce(&IPFSHostResolverTest::HostResolvedCallback,
-                     weak_ptr_factory_.GetWeakPtr(), run_loop.QuitClosure(),
-                     host));
+  {
+    base::RunLoop run_loop;
+    ipfs_resolver.Resolve(
+        net::HostPortPair(host, 11), net::NetworkIsolationKey(),
+        net::DnsQueryType::TXT,
+        base::BindOnce(&IPFSHostResolverTest::HostResolvedCallback,
+                       weak_ptr_factory_.GetWeakPtr(), run_loop.QuitClosure(),
+                       host));
+    run_loop.Run();
+  }
 
-  run_loop.Run();
   EXPECT_EQ(ipfs_resolver.host(), host);
   EXPECT_EQ(ipfs_resolver.dnslink(), "abc");
   EXPECT_EQ(fake_host_resolver_raw->resolve_host_called(), 1);
-  EXPECT_EQ(resolved_callback_called(), 1);
-
-  ipfs_resolver.Resolve(
-      net::HostPortPair(host, 11), net::NetworkIsolationKey(),
-      net::DnsQueryType::TXT,
-      base::BindOnce(
-          [](const std::string& expected_host, const std::string& host,
-             const absl::optional<std::string>& dnslink) {
-            EXPECT_EQ(expected_host, host);
-          },
-          host));
+  EXPECT_TRUE(resolved_callback_called());
+  {
+    base::RunLoop run_loop;
+    std::string expected_host = host;
+    ipfs_resolver.Resolve(net::HostPortPair(host, 11),
+                          net::NetworkIsolationKey(), net::DnsQueryType::TXT,
+                          base::BindLambdaForTesting(
+                              [&run_loop, &expected_host](
+                                  const std::string& host,
+                                  const absl::optional<std::string>& dnslink) {
+                                EXPECT_EQ(expected_host, host);
+                                EXPECT_EQ(dnslink.value(), "abc");
+                                run_loop.Quit();
+                              }));
+    run_loop.Run();
+  }
   EXPECT_EQ(fake_host_resolver_raw->resolve_host_called(), 1);
-  EXPECT_EQ(resolved_callback_called(), 1);
   EXPECT_EQ(ipfs_resolver.dnslink(), "abc");
 }
 
@@ -234,20 +240,20 @@ TEST_F(IPFSHostResolverTest, ResolutionFailed) {
   auto* network_context = GetNetworkContext();
   auto* fake_host_resolver_raw = fake_host_resolver.get();
   network_context->SetHostResolver(std::move(fake_host_resolver));
-  base::RunLoop run_loop;
   ipfs::IPFSHostResolver ipfs_resolver(network_context);
-  ipfs_resolver.SetCompleteCallbackForTesting(run_loop.QuitClosure());
-  SetResolvedCallbackCalled(0);
+  SetResolvedCallbackCalled(false);
+  base::RunLoop run_loop;
   ipfs_resolver.Resolve(
       net::HostPortPair(host, 11), net::NetworkIsolationKey(),
       net::DnsQueryType::TXT,
-      base::BindOnce([](const std::string& host,
-                        const absl::optional<std::string>& dnslink) {
-        EXPECT_FALSE(dnslink);
-      }));
+      base::BindLambdaForTesting(
+          [&run_loop](const std::string& host,
+                      const absl::optional<std::string>& dnslink) {
+            EXPECT_FALSE(dnslink);
+            run_loop.Quit();
+          }));
   run_loop.Run();
   EXPECT_EQ(ipfs_resolver.host(), host);
-  EXPECT_EQ(ipfs_resolver.dnslink(), "");
+  EXPECT_FALSE(ipfs_resolver.dnslink());
   EXPECT_EQ(fake_host_resolver_raw->resolve_host_called(), 1);
-  EXPECT_EQ(resolved_callback_called(), 0);
 }

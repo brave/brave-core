@@ -95,15 +95,14 @@ bool IPFSTabHelper::MaybeCreateForWebContents(
 }
 
 void IPFSTabHelper::XIPFSPathLinkResolved(const GURL& ipfs) {
-  ipfs_resolved_url_ = ipfs;
+  ipfs_resolved_url_ = ipfs.is_valid() ? ipfs : GURL();
   UpdateLocationBar();
 }
 
 void IPFSTabHelper::DNSLinkResolved(const GURL& ipfs) {
-  ipfs_resolved_url_ = ipfs;
-  DCHECK(ipfs.is_empty() || ipfs.SchemeIs(kIPNSScheme));
-  if (pref_service_->GetBoolean(kIPFSAutoRedirectDNSLink) &&
-      !ipfs_resolved_url_.is_empty()) {
+  DCHECK(!ipfs.is_valid() || ipfs.SchemeIs(kIPNSScheme));
+  ipfs_resolved_url_ = ipfs.is_valid() ? ipfs : GURL();
+  if (ipfs.is_valid() && pref_service_->GetBoolean(kIPFSAutoRedirectDNSLink)) {
     content::OpenURLParams params(GetIPFSResolvedURL(), content::Referrer(),
                                   WindowOpenDisposition::CURRENT_TAB,
                                   ui::PAGE_TRANSITION_LINK, false);
@@ -128,9 +127,7 @@ void IPFSTabHelper::HostResolvedCallback(
     }
     return;
   }
-  GURL resolved_url = ResolveDNSLinkUrl(current);
-  if (resolved_url.is_valid())
-    DNSLinkResolved(resolved_url);
+  DNSLinkResolved(ResolveDNSLinkUrl(current));
 }
 
 void IPFSTabHelper::UpdateLocationBar() {

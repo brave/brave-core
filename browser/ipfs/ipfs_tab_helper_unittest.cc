@@ -35,17 +35,17 @@ class FakeIPFSHostResolver : public ipfs::IPFSHostResolver {
                const net::NetworkIsolationKey& isolation_key,
                net::DnsQueryType dns_query_type,
                HostTextResultsCallback callback) override {
-    resolve_called_++;
+    resolve_called_ = true;
     if (callback)
       std::move(callback).Run(host.host(), dnslink_);
   }
 
-  bool resolve_called() const { return resolve_called_ == 1; }
+  bool resolve_called() const { return resolve_called_; }
 
   void SetDNSLinkToRespond(const std::string& dnslink) { dnslink_ = dnslink; }
 
  private:
-  int resolve_called_ = 0;
+  bool resolve_called_ = false;
   std::string dnslink_;
 };
 
@@ -140,7 +140,7 @@ TEST_F(IpfsTabHelperUnitTest,
 }
 
 TEST_F(IpfsTabHelperUnitTest,
-       TranslateUrlToIpns_When_HasDNSLinkRecord_AndOriginalPageFails_400) {
+       DoNotTranslateUrlToIpns_When_HasDNSLinkRecord_AndOriginalPageFails_400) {
   auto* helper = ipfs_tab_helper();
   ASSERT_TRUE(helper);
 
