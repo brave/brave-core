@@ -79,7 +79,7 @@ public class BraveRewardsTipConfirmationFragment extends Fragment implements Bra
         mStatus = status;
         mPublisherName = name;
         TextView tipAmountTextView = view.findViewById(R.id.amount_sent);
-        tipAmountTextView.setText(amount + " "+ BraveRewardsHelper.BAT_TEXT);
+        tipAmountTextView.setText(amount + " " + BraveRewardsHelper.BAT_TEXT);
         TextView tipTypeDescriptionTextView = view.findViewById(R.id.your_tip_amount_sent);
         TextView oneTtimeTipNote = view.findViewById(R.id.one_time_tip_note);
         String oneTimeNoteString = getResources().getString(R.string.one_time_tip_success_note);

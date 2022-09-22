@@ -73,8 +73,8 @@ public class BraveRewardsCustomTipConfirmationFragment extends Fragment {
                 aboutToTipText.setText(R.string.about_to_tip);
             }
 
-            batValueText.setText(batValue + " "+BraveRewardsHelper.BAT_TEXT);
-            usdValueText.setText(usdValue + " "+BraveRewardsHelper.USD_TEXT);
+            batValueText.setText(batValue + " " + BraveRewardsHelper.BAT_TEXT);
+            usdValueText.setText(usdValue + " " + BraveRewardsHelper.USD_TEXT);
         }
     }
 
