@@ -124,8 +124,7 @@ public class BraveRewardsSiteBannerActivity
 
     @Override
     public void onTipConfirmation(double amount, boolean isMonthly) {
-        if (!mIsActivityIsActive)
-            return;
+        if (!mIsActivityIsActive) return;
         mAmount = amount;
         mIsMonthly = isMonthly;
         mTipUpdated = false;
@@ -134,8 +133,7 @@ public class BraveRewardsSiteBannerActivity
     }
 
     private void tipConfirmation(int status, double amount, boolean isMonthly) {
-        if (!mIsActivityIsActive)
-                return;
+        if (!mIsActivityIsActive) return;
         progressBar.setVisibility(View.GONE);
 
         String publisherName = "";
@@ -164,8 +162,7 @@ public class BraveRewardsSiteBannerActivity
 
     @Override
     public void OnOneTimeTip(int resultCode) {
-        if (!mIsActivityIsActive)
-            return;
+        if (!mIsActivityIsActive) return;
         if (resultCode == BraveRewardsNativeWorker.LEDGER_ERROR && mTipUpdated == false) {
             // tip error
             mTipUpdated = true;
@@ -176,8 +173,7 @@ public class BraveRewardsSiteBannerActivity
 
     @Override
     public void onReconcileComplete(int resultCode, int rewardsType, double amount) {
-        if (!mIsActivityIsActive)
-            return;
+        if (!mIsActivityIsActive) return;
         if (resultCode == BraveRewardsNativeWorker.LEDGER_OK && mTipUpdated == false) {
             // tip success
             mTipUpdated = true;
@@ -188,8 +184,7 @@ public class BraveRewardsSiteBannerActivity
 
     @Override
     public void OnPendingContributionSaved(int resultCode) {
-        if (!mIsActivityIsActive)
-            return;
+        if (!mIsActivityIsActive) return;
         if (resultCode == BraveRewardsNativeWorker.LEDGER_OK && mTipUpdated == false) {
             // tip pending
             mTipUpdated = true;
@@ -202,8 +197,7 @@ public class BraveRewardsSiteBannerActivity
         @Override
         public void run() {
             // if called means success
-            if (!mIsActivityIsActive)
-                return;
+            if (!mIsActivityIsActive) return;
             tipConfirmation(TIP_SUCCESS, mAmount, mIsMonthly);
         }
     };
