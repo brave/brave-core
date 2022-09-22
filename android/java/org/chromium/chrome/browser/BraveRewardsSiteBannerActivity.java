@@ -45,7 +45,7 @@ public class BraveRewardsSiteBannerActivity
     private boolean mIsMonthlyContribution;
     private final int TIP_TIMEOUT = 3000; // 3 seconds
     private Handler tipTimerHandler = new Handler();
-    private BraveRewardsBannerInfo bannerInfo;
+    private BraveRewardsBannerInfo mBannerInfo;
     private double mAmount;
     private boolean mIsMonthly;
     private boolean mTipUpdated;
@@ -69,7 +69,7 @@ public class BraveRewardsSiteBannerActivity
         currentTabId_ = IntentUtils.safeGetIntExtra(getIntent(), TAB_ID_EXTRA, -1);
         mIsMonthlyContribution =
                 IntentUtils.safeGetBooleanExtra(getIntent(), IS_MONTHLY_CONTRIBUTION, false);
-        bannerInfo = null;
+        mBannerInfo = null;
         if (savedInstanceState == null) {
             mBraveRewardsNativeWorker.GetPublisherBanner(
                     mBraveRewardsNativeWorker.GetPublisherId(currentTabId_));
@@ -84,7 +84,7 @@ public class BraveRewardsSiteBannerActivity
                 double[] amounts = null;
 
                 try {
-                    bannerInfo = new BraveRewardsBannerInfo(jsonBannerInfo);
+                    mBannerInfo = new BraveRewardsBannerInfo(jsonBannerInfo);
                 } catch (JSONException e) {
                 }
 
@@ -133,7 +133,7 @@ public class BraveRewardsSiteBannerActivity
         progressBar.setVisibility(View.GONE);
 
         String publisherName = "";
-        if (bannerInfo != null) publisherName = bannerInfo.getName();
+        if (mBannerInfo != null) publisherName = mBannerInfo.getName();
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         if (!fragmentManager.isDestroyed()) {
