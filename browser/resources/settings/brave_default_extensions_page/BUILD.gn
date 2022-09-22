@@ -40,7 +40,3 @@ js_modulizer("modules") {
   input_files = [ "brave_default_extensions_browser_proxy.js" ]
   namespace_rewrites = settings_namespace_rewrites
 }
-
-html_to_js("templatize") {
-  js_files = [ "brave_default_extensions_page.js" ]
-}
