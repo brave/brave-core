@@ -103,7 +103,7 @@ declare namespace chrome.braveRewards {
     addListener: (callback: (result: RewardsExtension.Result, promotion: RewardsExtension.Promotion) => void) => void
   }
   const includeInAutoContribution: (publisherKey: string, exclude: boolean) => {}
-  const fetchPromotions: () => {}
+  const fetchPromotions: (callback: (promotions: RewardsExtension.Promotion[]) => void) => {}
   const claimPromotion: (promotionId: string, callback: (properties: RewardsExtension.Captcha) => void) => {}
   const attestPromotion: (promotionId: string, solution: string, callback: (result: number, promotion?: RewardsExtension.Promotion) => void) => {}
   const getPendingContributionsTotal: (callback: (amount: number) => void) => {}

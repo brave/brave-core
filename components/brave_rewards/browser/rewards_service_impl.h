@@ -125,7 +125,9 @@ class RewardsServiceImpl : public RewardsService,
   void CreateRewardsWallet(CreateRewardsWalletCallback callback) override;
 
   void GetRewardsParameters(GetRewardsParametersCallback callback) override;
-  void FetchPromotions() override;
+
+  void FetchPromotions(FetchPromotionsCallback callback) override;
+
   void ClaimPromotion(
       const std::string& promotion_id,
       ClaimPromotionCallback callback) override;
@@ -384,8 +386,7 @@ class RewardsServiceImpl : public RewardsService,
                               std::pair<std::string, base::Value> data);
   void OnPublisherStateLoaded(ledger::client::OnLoadCallback callback,
                               const std::string& data);
-  void OnFetchPromotions(ledger::mojom::Result result,
-                         std::vector<ledger::mojom::PromotionPtr> promotions);
+
   void OnRestorePublishers(const ledger::mojom::Result result);
 
   void OnRecurringTip(const ledger::mojom::Result result);

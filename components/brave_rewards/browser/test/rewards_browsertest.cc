@@ -365,7 +365,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, EnableRewardsWithBalance) {
   auto* prefs = browser()->profile()->GetPrefs();
   EXPECT_TRUE(prefs->GetBoolean(brave_rewards::prefs::kEnabled));
 
-  rewards_service_->FetchPromotions();
+  rewards_service_->FetchPromotions(base::DoNothing());
   promotion_->WaitForPromotionInitialization();
   promotion_->ClaimPromotionViaCode();
 

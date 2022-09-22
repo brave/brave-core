@@ -240,6 +240,9 @@ class BraveRewardsFetchPromotionsFunction : public ExtensionFunction {
   ~BraveRewardsFetchPromotionsFunction() override;
 
   ResponseAction Run() override;
+
+ private:
+  void OnPromotionsFetched(std::vector<ledger::mojom::PromotionPtr> promotions);
 };
 
 class BraveRewardsClaimPromotionFunction : public ExtensionFunction {
