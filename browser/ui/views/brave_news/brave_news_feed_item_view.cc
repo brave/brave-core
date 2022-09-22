@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "brave/app/vector_icons/vector_icons.h"
-#include "brave/browser/ui/views/leo/leo_button.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/browser_thread.h"
 #include "third_party/skia/include/core/SkColor.h"

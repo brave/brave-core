@@ -16,7 +16,6 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feed_item_view.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feeds_container_view.h"
-#include "brave/browser/ui/views/leo/leo_button.h"
 #include "brave/components/brave_today/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -117,11 +116,11 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
   layout->SetCrossAxisAlignment(views::LayoutAlignment::kStretch);
   layout->SetCollapseMargins(true);
 
-  auto* manage_feeds_button = AddChildView(std::make_unique<leo::LeoButton>(
+  auto* manage_feeds_button = AddChildView(std::make_unique<views::MdTextButton>(
       base::BindRepeating(&BraveNewsBubbleView::OpenManageFeeds,
                           base::Unretained(this)),
       l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_BUBBLE_MANAGE_FEEDS)));
-  manage_feeds_button->SetKind(leo::LeoButton::Kind::TERTIARY);
+  manage_feeds_button->SetKind(views::MdTextButton::Kind::TERTIARY);
   manage_feeds_button->SetProperty(views::kMarginsKey,
                                    gfx::Insets::TLBR(10, 0, 0, 0));
   manage_feeds_button->SetProperty(

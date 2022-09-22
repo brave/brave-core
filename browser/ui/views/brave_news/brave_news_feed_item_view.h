@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
-#include "brave/browser/ui/views/leo/leo_button.h"
 #include "ui/views/controls/button/md_text_button.h"
 #include "ui/views/view.h"
 
