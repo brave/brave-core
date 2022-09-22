@@ -150,16 +150,15 @@ IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest, VisitUnverifiedPublisher) {
       false);
 }
 
-// Registered publishers without a wallet address are displayed as verified
+// Registered publishers without a wallet address are displayed as not verified
 IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest, VisitRegisteredPublisher) {
   rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   rewards_service_->SetAutoContributeEnabled(true);
   context_helper_->LoadRewardsPage();
   context_helper_->VisitPublisher(
-      rewards_browsertest_util::GetUrl(
-          https_server_.get(),
-          "registeredsite.com"),
-      true);
+      rewards_browsertest_util::GetUrl(https_server_.get(),
+                                       "registeredsite.com"),
+      false);
 }
 
 }  // namespace rewards_browsertest
