@@ -10,20 +10,11 @@
     android:paddingEnd="36dp"
     tools:context=".BraveRewardsCreatorPanelFragment">
 
-    <ProgressBar
-        android:id="@+id/publisher_favicon_update"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:indeterminateDrawable="@drawable/progress_indeterminate"
-        android:visibility="visible"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <!-- Publisher's icon-->
     <ImageView
         android:id="@+id/publisher_favicon"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:background="@drawable/publisher_favicon_background"
         android:baselineAlignBottom="true"
         android:contentDescription="@null"
@@ -31,6 +22,16 @@
         android:scaleType="center"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/publisher_favicon_update"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:indeterminateDrawable="@drawable/progress_indeterminate_orange"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <ImageView
         android:id="@+id/publisher_favicon_verified"

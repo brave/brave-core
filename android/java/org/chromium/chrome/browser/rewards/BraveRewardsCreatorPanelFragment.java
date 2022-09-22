@@ -178,12 +178,9 @@ public class BraveRewardsCreatorPanelFragment extends Fragment
     private void showAndSetListener(ImageView icon, String url) {
         icon.setVisibility(View.VISIBLE);
         icon.setTag(url);
-        icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url = (String) v.getTag();
-                openLink(url);
-            }
+        icon.setOnClickListener(v -> {
+            String openUrl = (String) v.getTag();
+            openLink(openUrl);
         });
     }
 
@@ -226,8 +223,7 @@ public class BraveRewardsCreatorPanelFragment extends Fragment
         if (mBannerInfo == null) return;
         String description = mBannerInfo.getDescription();
         if (description != null && !description.isEmpty()) {
-            TextView descriptionTextView =
-                    (TextView) view.findViewById(R.id.rewards_banner_description);
+            TextView descriptionTextView = view.findViewById(R.id.rewards_banner_description);
             descriptionTextView.setText(description);
         }
     }
@@ -236,25 +232,21 @@ public class BraveRewardsCreatorPanelFragment extends Fragment
         if (mBannerInfo == null) return;
         String title = mBannerInfo.getTitle();
         if (title != null && !title.isEmpty()) {
-            TextView titleTextView = (TextView) view.findViewById(R.id.banner_title);
+            TextView titleTextView = view.findViewById(R.id.banner_title);
             titleTextView.setText(title);
         }
     }
 
     private void SetFavIcon(Bitmap bmp) {
         if (bmp != null) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ImageView iv = (ImageView) getActivity().findViewById(R.id.publisher_favicon);
-                    int nPx = BraveRewardsHelper.dp2px(PUBLISHER_ICON_SIDE_LEN);
-                    Bitmap resized = Bitmap.createScaledBitmap(bmp, nPx, nPx, true);
-
-                    View fadeout = getActivity().findViewById(R.id.publisher_favicon_update);
-                    BraveRewardsHelper.crossfade(
-                            fadeout, iv, View.GONE, 1f, BraveRewardsHelper.CROSS_FADE_DURATION);
-                    iv.setImageBitmap(BraveRewardsHelper.getCircularBitmap(resized));
-                }
+            int nPx = BraveRewardsHelper.dp2px(PUBLISHER_ICON_SIDE_LEN);
+            Bitmap resized = Bitmap.createScaledBitmap(bmp, nPx, nPx, true);
+            getActivity().runOnUiThread(() -> {
+                ImageView iv = (ImageView) getActivity().findViewById(R.id.publisher_favicon);
+                View fadeout = getActivity().findViewById(R.id.publisher_favicon_update);
+                BraveRewardsHelper.crossfade(
+                        fadeout, iv, View.GONE, 1f, BraveRewardsHelper.CROSS_FADE_DURATION);
+                iv.setImageBitmap(BraveRewardsHelper.getCircularBitmap(resized));
             });
         }
     }

@@ -67,39 +67,33 @@ public class BraveRewardsCustomTipFragment extends Fragment {
         TextView exampleTextView = view.findViewById(R.id.sampleText);
 
         ImageView exchangeButton = view.findViewById(R.id.exchangeButton);
-        exchangeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isBatCurrencyMode = !isBatCurrencyMode; // toggle
-                String currency1 = currencyOneEditText.getText().toString();
-                String currency2 = currencyTwoTextView.getText().toString();
+        exchangeButton.setOnClickListener(v -> {
+            isBatCurrencyMode = !isBatCurrencyMode; // toggle
+            String currency1 = currencyOneEditText.getText().toString();
+            String currency2 = currencyTwoTextView.getText().toString();
 
-                currencyTwoTextView.setText(currency1);
-                currencyOneEditText.setText(currency2);
+            currencyTwoTextView.setText(currency1);
+            currencyOneEditText.setText(currency2);
 
-                currencyOneEditText.removeTextChangedListener(textChangeListener);
-                if (isBatCurrencyMode) {
-                    currencyOneSubTextView.setText(R.string.bat);
-                    currencyTwoSubTextView.setText(R.string.usd);
-                    exampleTextView.setVisibility(View.VISIBLE);
-                } else {
-                    currencyOneSubTextView.setText(R.string.usd);
-                    currencyTwoSubTextView.setText(R.string.bat);
-                    exampleTextView.setVisibility(View.INVISIBLE);
-                }
-                currencyOneEditText.addTextChangedListener(textChangeListener);
+            currencyOneEditText.removeTextChangedListener(textChangeListener);
+            if (isBatCurrencyMode) {
+                currencyOneSubTextView.setText(R.string.bat);
+                currencyTwoSubTextView.setText(R.string.usd);
+                exampleTextView.setVisibility(View.VISIBLE);
+            } else {
+                currencyOneSubTextView.setText(R.string.usd);
+                currencyTwoSubTextView.setText(R.string.bat);
+                exampleTextView.setVisibility(View.INVISIBLE);
             }
+            currencyOneEditText.addTextChangedListener(textChangeListener);
         });
     }
 
     private void backButtonClick(View view) {
         ImageView backButton = view.findViewById(R.id.backButton);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (getParentFragmentManager().getBackStackEntryCount() != 0) {
-                    ((BraveRewardsSiteBannerActivity) getActivity()).resetUpdateLayout();
-                }
+        backButton.setOnClickListener(v -> {
+            if (getParentFragmentManager().getBackStackEntryCount() != 0) {
+                ((BraveRewardsSiteBannerActivity) getActivity()).resetUpdateLayout();
             }
         });
     }

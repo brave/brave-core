@@ -149,35 +149,81 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_SWITCH" desc="Switch for HTTPS Everywhere.">
         Upgrade connections to HTTPS
       </message>
-      <message name="IDS_NEXT_TIP_DATE"  desc="Text for Next tip date">Next tip date</message>
-      <message name="IDS_NOTE_TEXT"  desc="Text for note">Note:</message>
-      <message name="IDS_SET_MONTHLY_TIP"  desc="Text for Set monthly tip">Set monthly tip</message>
-      <message name="IDS_ONE_TIME_TIP_AMOUNT"  desc="Text for Next tip date">One-time tip amount</message>
-      <message name="IDS_ONE_TIME_TIP_SUCCESS_NOTE"  desc="Text for one time tip success note">Your tip can take several minutes to process</message>
-
-
-
-
-      <message name="IDS_CUSTOM_TIP_AMOUNT" desc="Custom tip that allow other amounts">Custom tip amount</message>
-      <message name="IDS_LEARN_MORE_TIP" desc="Learn more tipping">Learn More.</message>
-      <message name="IDS_THANKS_FOR_SUPPORT" desc="Text for Thanks for the support">Thanks for the support!</message>
-      <message name="IDS_YOUR_ONE_TIME_TIP_HAS_BEEN_SENT"  desc="Text for Your one time tip has been sent">Your one-time tip has been sent.</message>
-      <message name="IDS_YOUR_MONTHLY_TIP_HAS_BEEN_SENT"  desc="Text for Monthly tip has been sent">Monthly tip has been set.</message>
-      <message name="IDS_TWEET_ABOUT_YOUR_SUPPORT"  desc="Text for Tweet about your support">Tweet about your support</message>
-      <message name="IDS_MONTHLY_CONTRIBUTION"  desc="Text for Monthly">Monthly</message>
-      <message name="IDS_BAT_FUNDS"  desc="Text for BAT Funds">BAT Funds</message>
-      <message name="IDS_PROCESSING_FEE"  desc="Text for Brave collects 5% of the tip amount as a processing fee">Brave collects 5% of the tip amount as a processing fee.</message>
-      <message name="IDS_CUSTOM_AMOUNT" desc="Text for Custom Amount">Custom Amount</message>
-      <message name="IDS_BAT" desc="Text for BAT">BAT</message>
-      <message name="IDS_USD" desc="Text for USD">USD</message>
-      <message name="IDS_E_G_12_75_BAT" desc="Text for example text">e.g. 12.75 BAT</message>
-      <message name="IDS_BACK_BUTTON" desc="Text for back">back</message>
-      <message name="IDS_EXCHANGE_BUTTON" desc="Text for exchange">exchange</message>
-      <message name="IDS_ABOUT_TO_TIP" desc="Text for You are about to tip">You are about to tip</message>
-      <message name="IDS_YOUR_MONTHLY_SUPPORT" desc="Text for Your monthly support will be">Your monthly support will be</message>
-      <message name="IDS_MINIMUM_TIP_AMOUNT">Minimum tip amount is 0.25 BAT</message>
-      <message name="IDS_NOT_ENOUGH_FUND" desc="Text for Not Enough Fund">Not enough tokens.</message>
-      <message name="IDS_CONTINUE_TIP" desc="Text for continue">Continue</message>
+      <message name="IDS_NEXT_TIP_DATE"  desc="Text for Next tip date">
+        Next tip date
+      </message>
+      <message name="IDS_NOTE_TEXT"  desc="Text for note">
+        Note:
+      </message>
+      <message name="IDS_SET_MONTHLY_TIP"  desc="Text for Set monthly tip">
+        Set monthly tip
+      </message>
+      <message name="IDS_ONE_TIME_TIP_AMOUNT"  desc="Text for Next tip date">
+        One-time tip amount
+      </message>
+      <message name="IDS_ONE_TIME_TIP_SUCCESS_NOTE"  desc="Text for one time tip success note">
+        Your tip can take several minutes to process
+      </message>
+      <message name="IDS_CUSTOM_TIP_AMOUNT" desc="Custom tip that allow other amounts">
+        Custom tip amount
+      </message>
+      <message name="IDS_LEARN_MORE_TIP" desc="Learn more tipping">
+        Learn More.
+      </message>
+      <message name="IDS_THANKS_FOR_SUPPORT" desc="Text for Thanks for the support">
+        Thanks for the support!
+      </message>
+      <message name="IDS_YOUR_ONE_TIME_TIP_HAS_BEEN_SENT"  desc="Text for Your one time tip has been sent">
+        Your one-time tip has been sent.
+      </message>
+      <message name="IDS_YOUR_MONTHLY_TIP_HAS_BEEN_SENT"  desc="Text for Monthly tip has been sent">
+        Monthly tip has been set.
+      </message>
+      <message name="IDS_TWEET_ABOUT_YOUR_SUPPORT"  desc="Text for Tweet about your support">
+        Tweet about your support
+      </message>
+      <message name="IDS_MONTHLY_CONTRIBUTION"  desc="Text for Monthly">
+        Monthly
+      </message>
+      <message name="IDS_BAT_FUNDS"  desc="Text for BAT Funds">
+        BAT Funds
+      </message>
+      <message name="IDS_PROCESSING_FEE"  desc="Text for Brave collects 5% of the tip amount as a processing fee">
+        Brave collects 5% of the tip amount as a processing fee.
+      </message>
+      <message name="IDS_CUSTOM_AMOUNT" desc="Text for Custom Amount">
+        Custom Amount
+      </message>
+      <message name="IDS_BAT" desc="Text for BAT">
+        BAT
+      </message>
+      <message name="IDS_USD" desc="Text for USD">
+        USD
+      </message>
+      <message name="IDS_E_G_12_75_BAT" desc="Text for example text">
+        e.g. 12.75 BAT
+      </message>
+      <message name="IDS_BACK_BUTTON" desc="Text for back for content description">
+        back
+      </message>
+      <message name="IDS_EXCHANGE_BUTTON" desc="Text for exchange for content description">
+        exchange
+      </message>
+      <message name="IDS_ABOUT_TO_TIP" desc="Text for You are about to tip">
+        You are about to tip
+      </message>
+      <message name="IDS_YOUR_MONTHLY_SUPPORT" desc="Text for Your monthly support will be">
+        Your monthly support will be
+      </message>
+      <message name="IDS_MINIMUM_TIP_AMOUNT" desc="Text for minimum tip amount">
+        Minimum tip amount is 0.25 BAT
+      </message>
+      <message name="IDS_NOT_ENOUGH_FUND" desc="Text for Not Enough Fund">
+        Not enough tokens.
+      </message>
+      <message name="IDS_CONTINUE_TIP" desc="Text for continue">
+        Continue
+      </message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET_UNVERIFIED_PUBLISHER" desc="Text of a tweet after tipping an unverified creator.">
         Love that #Brave lets me support creators! Just tipped <ph name="NAME">%1$s<ex>user</ex></ph> with #BAT. If they verify at https://creators.brave.com before <ph name="DATE">%2$s<ex>Jan 2, 2023</ex></ph>, the BAT is theirs!
       </message>
@@ -190,8 +236,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_PROBLEM_SENDING_YOUR_TIP_DESCRIPTION" desc="Text for problem sending tip description">
         Please close and reopen the tipping banner to try again.
       </message>
-
-
       <message name="IDS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_SWITCH_SUMMARY" desc="Summary for HTTPS Everywhere.">
         Opens some sites using a secure HTTPS connection instead of plain HTTP.
       </message>
@@ -347,7 +391,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BLOCK_TRACKERS_ADS_SUMMARY" desc="Text summary for Block trackers and ads.">
         Prevents trackers &amp; ads from loading and showing in webpages
       </message>
-
       <message name="IDS_CLOSE_TABS_ON_EXIT_SUMMARY" desc="Summary for closing tabs on exit.">
         Don't persist tabs between browsing sessions
       </message>

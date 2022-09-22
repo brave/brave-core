@@ -100,6 +100,7 @@ public class BraveRewardsBannerInfo implements Parcelable {
         dest.writeString(mLogo);
         dest.writeString(mProvider);
         dest.writeInt(mStatus);
+        dest.writeSerializable(mLinks);
     }
 
     public String getPublisherKey() {

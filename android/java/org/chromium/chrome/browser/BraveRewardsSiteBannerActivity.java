@@ -39,6 +39,7 @@ public class BraveRewardsSiteBannerActivity
     public static final String BANNER_INFO_ARGS = "banner_info_args";
     public static final String STATUS_ARGS = "status_args";
     public static final String NAME_ARGS = "name_args";
+    public static final String TIPPING_PANEL_FRAGMENT_TAG = "tipping_panel_fragment";
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
     private int currentTabId_ = -1;
     private boolean mIsMonthlyContribution;
@@ -103,7 +104,7 @@ public class BraveRewardsSiteBannerActivity
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.tippingPanelFragment, tippingPanelFragment,
-                                "tipping_panel_fragment")
+                                TIPPING_PANEL_FRAGMENT_TAG)
                         .commit();
             }
         });
@@ -115,7 +116,7 @@ public class BraveRewardsSiteBannerActivity
         1. OnOneTimeTip with LEDGER_ERROR -> This is error
         2. onReconcileComplete with LEDGER_OK -> This is success
         3. OnPendingContributionSaved with LEDGER_OK -> This is pending
-        4. if non of the method called with in 3 second -> This is success
+        4. if none of the method called with in 3 second -> This is success
      *
    */
 
@@ -201,7 +202,7 @@ public class BraveRewardsSiteBannerActivity
         tipTimerHandler.postDelayed(tipRunnable, TIP_TIMEOUT);
     }
 
-    /*----------TIP CHECK End >> ---------------*/
+    /*----------TIP CHECK End << ---------------*/
 
     @Override
     public void onAmountChange(double batValue, double usdValue) {
@@ -225,7 +226,7 @@ public class BraveRewardsSiteBannerActivity
     public void resetUpdateLayout() {
         BraveRewardsTippingPanelFragment tippingPanelFragment =
                 (BraveRewardsTippingPanelFragment) getSupportFragmentManager().findFragmentByTag(
-                        "tipping_panel_fragment");
+                        TIPPING_PANEL_FRAGMENT_TAG);
 
         if (tippingPanelFragment != null) {
             tippingPanelFragment.resetSendLayoutText();
@@ -236,6 +237,7 @@ public class BraveRewardsSiteBannerActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        removeTimeout();
         if (null != mBraveRewardsNativeWorker) {
             mBraveRewardsNativeWorker.RemoveObserver(this);
         }

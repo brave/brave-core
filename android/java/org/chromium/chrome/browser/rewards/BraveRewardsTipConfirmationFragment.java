@@ -110,21 +110,18 @@ public class BraveRewardsTipConfirmationFragment extends Fragment implements Bra
 
     private void setTweetClickListener(View view) {
         TextView twitter_button = view.findViewById(R.id.twitter_button);
-        twitter_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String tweetUrl;
-                if (mStatus == BraveRewardsSiteBannerActivity.TIP_SUCCESS) {
-                    tweetUrl = getTipSuccessTweetUrl(mPublisherName);
-                    Uri uri = Uri.parse(tweetUrl);
-                    startActivity(new Intent(Intent.ACTION_VIEW, uri));
-                } else if (mStatus == BraveRewardsSiteBannerActivity.TIP_PENDING) {
-                    tweetUrl = getTipPendingTweetUrl(mPublisherName);
-                    Uri uri = Uri.parse(tweetUrl);
-                    startActivity(new Intent(Intent.ACTION_VIEW, uri));
-                } else {
-                    // error
-                }
+        twitter_button.setOnClickListener(v -> {
+            String tweetUrl;
+            if (mStatus == BraveRewardsSiteBannerActivity.TIP_SUCCESS) {
+                tweetUrl = getTipSuccessTweetUrl(mPublisherName);
+                Uri uri = Uri.parse(tweetUrl);
+                startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            } else if (mStatus == BraveRewardsSiteBannerActivity.TIP_PENDING) {
+                tweetUrl = getTipPendingTweetUrl(mPublisherName);
+                Uri uri = Uri.parse(tweetUrl);
+                startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            } else {
+                // error
             }
         });
     }

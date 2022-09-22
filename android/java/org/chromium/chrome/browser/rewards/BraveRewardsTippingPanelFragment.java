@@ -68,6 +68,10 @@ public class BraveRewardsTippingPanelFragment extends Fragment implements BraveR
     private final int TIP_SENT_REQUEST_CODE = 2;
     private final int FADE_OUT_DURATION = 500;
 
+    private static final String CUSTOM_TIP_CONFIRMATION_FRAGMENT_TAG =
+            "custom_tip_confirmation_fragment";
+    private static final String CUSTOM_TIP_FRAGMENT_TAG = "custom_tip_fragment";
+
     public static BraveRewardsTippingPanelFragment newInstance(
             int tabId, boolean isMonthlyContribution, double[] amounts) {
         BraveRewardsTippingPanelFragment fragment = new BraveRewardsTippingPanelFragment();
@@ -156,19 +160,16 @@ public class BraveRewardsTippingPanelFragment extends Fragment implements BraveR
 
     private void clickOtherAmounts(View view) {
         TextView otherAmountsText = view.findViewById(R.id.other_amounts);
-        otherAmountsText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                double amount = selectedAmount();
+        otherAmountsText.setOnClickListener(v -> {
+            double amount = selectedAmount();
 
-                FragmentManager fragmentManager = getParentFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.conversionFragmentContainer,
-                                BraveRewardsCustomTipFragment.newInstance(amount),
-                                "custom_tip_fragment")
-                        .addToBackStack(null)
-                        .commit();
-            }
+            FragmentManager fragmentManager = getParentFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.conversionFragmentContainer,
+                            BraveRewardsCustomTipFragment.newInstance(amount),
+                            CUSTOM_TIP_FRAGMENT_TAG)
+                    .addToBackStack(null)
+                    .commit();
         });
     }
 
@@ -224,22 +225,19 @@ public class BraveRewardsTippingPanelFragment extends Fragment implements BraveR
         ((TextView) view.findViewById(R.id.amount3)).setText(tenBatRate);
     }
 
-    private View.OnClickListener radio_clicker = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            ToggleButton tb_pressed = (ToggleButton) view;
-            if (tb_pressed.isChecked() == false) {
-                tb_pressed.setChecked(true);
-                return;
-            }
+    private View.OnClickListener radio_clicker = view -> {
+        ToggleButton tb_pressed = (ToggleButton) view;
+        if (!tb_pressed.isChecked()) {
+            tb_pressed.setChecked(true);
+            return;
+        }
 
-            int id = view.getId();
-            for (ToggleButton tb : radio_tip_amount) {
-                if (tb.getId() == id) {
-                    continue;
-                }
-                tb.setChecked(false);
+        int id = view.getId();
+        for (ToggleButton tb : radio_tip_amount) {
+            if (tb.getId() == id) {
+                continue;
             }
+            tb.setChecked(false);
         }
     };
 
@@ -262,7 +260,7 @@ public class BraveRewardsTippingPanelFragment extends Fragment implements BraveR
         // Selected amount from custom tip
         BraveRewardsCustomTipConfirmationFragment customTipConfirmationFragment =
                 (BraveRewardsCustomTipConfirmationFragment) getParentFragmentManager()
-                        .findFragmentByTag("custom_tip_confirmation_fragment");
+                        .findFragmentByTag(CUSTOM_TIP_CONFIRMATION_FRAGMENT_TAG);
         if (customTipConfirmationFragment != null && customTipConfirmationFragment.isVisible()) {
             amount = mBatValue;
         }
@@ -273,7 +271,7 @@ public class BraveRewardsTippingPanelFragment extends Fragment implements BraveR
     private boolean isCustomTipFragmentVisibile() {
         BraveRewardsCustomTipFragment customTipFragment =
                 (BraveRewardsCustomTipFragment) getParentFragmentManager().findFragmentByTag(
-                        "custom_tip_fragment");
+                        CUSTOM_TIP_FRAGMENT_TAG);
         return customTipFragment != null && customTipFragment.isVisible();
     }
 
@@ -288,7 +286,7 @@ public class BraveRewardsTippingPanelFragment extends Fragment implements BraveR
                 .replace(R.id.conversionFragmentContainer,
                         BraveRewardsCustomTipConfirmationFragment.newInstance(
                                 monthlyContribution, mBatValue, mUsdValue),
-                        "custom_tip_confirmation_fragment")
+                        CUSTOM_TIP_CONFIRMATION_FRAGMENT_TAG)
                 .addToBackStack(null)
                 .commit();
     }
@@ -340,33 +338,28 @@ public class BraveRewardsTippingPanelFragment extends Fragment implements BraveR
     }
 
     private void sendTipButtonClick() {
-        View.OnClickListener send_tip_clicker = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                double balance = getBalance();
-                double amount = selectedAmount();
-                boolean enough_funds = ((balance - amount) >= 0);
+        sendDonationLayout.setOnClickListener(v -> {
+            double balance = getBalance();
+            double amount = selectedAmount();
+            boolean enough_funds = ((balance - amount) >= 0);
 
-                // When custom tip with enough funds is there then continue button will show
-                // click on continue button will show CustomTipConfirmation UI
-                if (isCustomTipFragmentVisibile()) {
-                    enough_funds = ((balance - mBatValue) >= 0) && mBatValue >= 0.25;
-                    if (true == enough_funds) {
-                        showCustomTipConfirmationFrament();
-                    } // else nothing
-                }
-                // proceed to tipping
-                else if (true == enough_funds) {
-                    donateAndShowConfirmationScreen(amount);
-                }
-                // if not enough funds
-                else {
-                    showNotEnoughFunds();
-                }
+            // When custom tip with enough funds is there then continue button will show
+            // click on continue button will show CustomTipConfirmation UI
+            if (isCustomTipFragmentVisibile()) {
+                enough_funds = ((balance - mBatValue) >= 0) && mBatValue >= 0.25;
+                if (enough_funds) {
+                    showCustomTipConfirmationFrament();
+                } // else nothing
             }
-        };
-
-        sendDonationLayout.setOnClickListener(send_tip_clicker);
+            // proceed to tipping
+            else if (enough_funds) {
+                donateAndShowConfirmationScreen(amount);
+            }
+            // if not enough funds
+            else {
+                showNotEnoughFunds();
+            }
+        });
     }
 
     public void replaceTipConfirmationFragment(double amount, boolean isMonthly) {
