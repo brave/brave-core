@@ -339,7 +339,7 @@ Polymer({
       })
   },
   getHexNumber: function (value) {
-    if (Number.isInteger(value))
+    if (!isNaN(Number(value)))
       return '0x' + Number(value).toString(16)
     return value
   },

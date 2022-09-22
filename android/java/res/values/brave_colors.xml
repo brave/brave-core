@@ -222,5 +222,7 @@
     <color name="rewards_send_tip_icon_not_enough_fund_tint">@android:color/white</color>
     <color name="rewards_send_scrollbar_color">#DFDFE8</color>
     <color name="brave_rewards_theme_color">#4C54D2</color>
-
+    <color name="cookie_consent_action_color">@color/brave_action_color</color>
+    <color name="cookie_consent_text_color">#212529</color>
+    <color name="cookie_consent_tooltip_color">@android:color/white</color>
 </resources>

@@ -108,6 +108,12 @@
             android:title="@string/ipfs_gateway_title"
             android:summary="@string/ipfs_gateway_summary"
             android:defaultValue="true" />
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="block_cookie_consent_notices"
+            android:order="25"
+            android:title="@string/block_cookie_consent_notices_title"
+            android:summary="@string/block_cookie_consent_notices_summary"
+            android:defaultValue="false" />
         <Preference
             android:fragment="org.chromium.chrome.browser.decentralized_dns.settings.UnstoppableDomainsSettingsFragment"
             android:key="unstoppable_domains"

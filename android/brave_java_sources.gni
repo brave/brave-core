@@ -312,6 +312,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/shields/BraveShieldsHandler.java",
   "../../brave/android/java/org/chromium/chrome/browser/shields/BraveShieldsMenuObserver.java",
   "../../brave/android/java/org/chromium/chrome/browser/shields/BraveShieldsUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/shields/CookieListOptInServiceFactory.java",
   "../../brave/android/java/org/chromium/chrome/browser/signin/BraveSigninManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/BraveSiteSettingsDelegate.java",
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/BraveWalletEthereumConnectedSites.java",
