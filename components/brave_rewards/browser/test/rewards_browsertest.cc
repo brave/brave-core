@@ -360,19 +360,23 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewardsWithBAT) {
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, EnableRewardsWithBalance) {
-  // Make sure rewards, ads, and AC prefs are off
-  auto* prefs = browser()->profile()->GetPrefs();
-  prefs->SetBoolean(brave_rewards::prefs::kEnabled, false);
-  prefs->SetBoolean(brave_rewards::prefs::kAutoContributeEnabled, false);
-
   // Load a balance into the user's wallet
   rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
+  auto* prefs = browser()->profile()->GetPrefs();
+  EXPECT_TRUE(prefs->GetBoolean(brave_rewards::prefs::kEnabled));
+
   rewards_service_->FetchPromotions();
   promotion_->WaitForPromotionInitialization();
   promotion_->ClaimPromotionViaCode();
 
-  rewards_service_->EnableRewards();
-  base::RunLoop().RunUntilIdle();
+  // Make sure rewards, ads, and AC prefs are off
+  prefs->SetBoolean(brave_rewards::prefs::kEnabled, false);
+  prefs->SetBoolean(brave_rewards::prefs::kAutoContributeEnabled, false);
+
+  base::RunLoop run_loop;
+  rewards_service_->CreateRewardsWallet(base::BindLambdaForTesting(
+      [&run_loop](ledger::mojom::Result) { run_loop.Quit(); }));
+  run_loop.Run();
 
   // Ensure that AC is not enabled
   EXPECT_TRUE(prefs->GetBoolean(brave_rewards::prefs::kEnabled));

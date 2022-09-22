@@ -114,9 +114,8 @@ public class BraveAdsSignupDialog {
 
                 neverShowOnboardingDialogAgain();
 
-                BraveRewardsNativeWorker braveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
-
                 // Enable ads
+                BraveRewardsNativeWorker.getInstance().CreateRewardsWallet();
                 BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
             }
         }).create();
@@ -140,6 +139,7 @@ public class BraveAdsSignupDialog {
                 // Enable ads
                 neverShowOnboardingDialogAgain();
 
+                BraveRewardsNativeWorker.getInstance().CreateRewardsWallet();
                 BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
             }
         }).create();

@@ -866,8 +866,8 @@ public class BraveRewardsPanel
             @Override
             public void onClick(View v) {
                 braveRewardsOnboardingModalView.setVisibility(View.GONE);
+                mBraveRewardsNativeWorker.CreateRewardsWallet();
                 BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
-                BraveRewardsNativeWorker.getInstance().SetAutoContributeEnabled(true);
                 mBraveRewardsNativeWorker.GetAutoContributeProperties();
                 BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
                 showBraveRewardsOnboarding(root, true);

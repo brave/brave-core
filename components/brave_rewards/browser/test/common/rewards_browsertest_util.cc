@@ -114,7 +114,7 @@ void CreateRewardsWallet(brave_rewards::RewardsServiceImpl* rewards_service) {
   bool success = false;
   rewards_service->CreateRewardsWallet(
       base::BindLambdaForTesting([&](const ledger::mojom::Result result) {
-        success = result == ledger::mojom::Result::WALLET_CREATED;
+        success = result == ledger::mojom::Result::LEDGER_OK;
         run_loop.Quit();
       }));
 

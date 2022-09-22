@@ -46,7 +46,6 @@ BraveRewardsNativeWorker::BraveRewardsNativeWorker(JNIEnv* env,
       ProfileManager::GetActiveUserProfile()->GetOriginalProfile());
   if (brave_rewards_service_) {
     brave_rewards_service_->AddObserver(this);
-    brave_rewards_service_->AddPrivateObserver(this);
     brave_rewards::RewardsNotificationService* notification_service =
       brave_rewards_service_->GetNotificationService();
     if (notification_service) {
@@ -61,7 +60,6 @@ BraveRewardsNativeWorker::~BraveRewardsNativeWorker() {
 void BraveRewardsNativeWorker::Destroy(JNIEnv* env) {
   if (brave_rewards_service_) {
     brave_rewards_service_->RemoveObserver(this);
-    brave_rewards_service_->RemovePrivateObserver(this);
     brave_rewards::RewardsNotificationService* notification_service =
       brave_rewards_service_->GetNotificationService();
     if (notification_service) {
@@ -69,6 +67,12 @@ void BraveRewardsNativeWorker::Destroy(JNIEnv* env) {
     }
   }
   delete this;
+}
+
+void BraveRewardsNativeWorker::CreateRewardsWallet(JNIEnv* env) {
+  if (brave_rewards_service_) {
+    brave_rewards_service_->CreateRewardsWallet(base::DoNothing());
+  }
 }
 
 void BraveRewardsNativeWorker::GetRewardsParameters(JNIEnv* env) {
@@ -697,13 +701,6 @@ void BraveRewardsNativeWorker::OnGetAutoContributionAmount(
   Java_BraveRewardsNativeWorker_OnGetAutoContributionAmount(
       env, weak_java_brave_rewards_native_worker_.get(env),
       auto_contribution_amount);
-}
-
-bool BraveRewardsNativeWorker::IsRewardsEnabled(JNIEnv* env) {
-  if (brave_rewards_service_) {
-    return brave_rewards_service_->IsRewardsEnabled();
-  }
-  return false;
 }
 
 void BraveRewardsNativeWorker::GetExternalWallet(JNIEnv* env) {

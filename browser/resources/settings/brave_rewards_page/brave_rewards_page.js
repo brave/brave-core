@@ -112,7 +112,7 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
         this.onRewardsEnabled_()
       }
     })
-    chrome.braveRewards.onAdsEnabled.addListener(() => {
+    chrome.braveRewards.onRewardsWalletUpdated.addListener(() => {
       // If Rewards hasn't been enabled before now, we know it is now so trigger
       // its handler
       if (!this.isRewardsEnabled_) {
