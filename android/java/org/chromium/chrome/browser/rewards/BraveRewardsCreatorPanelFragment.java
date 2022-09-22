@@ -73,13 +73,13 @@ public class BraveRewardsCreatorPanelFragment extends Fragment
     private final String VIMEO = "vimeo";
 
     public static BraveRewardsCreatorPanelFragment newInstance(
-            int tabId, boolean isMonthlyContribution, BraveRewardsBannerInfo bannerInfo) {
+            int tabId, boolean isMonthlyContribution, String bannerInfo) {
         BraveRewardsCreatorPanelFragment fragment = new BraveRewardsCreatorPanelFragment();
         Bundle args = new Bundle();
         args.putInt(BraveRewardsSiteBannerActivity.TAB_ID_EXTRA, tabId);
         args.putBoolean(
                 BraveRewardsSiteBannerActivity.IS_MONTHLY_CONTRIBUTION, isMonthlyContribution);
-        args.putParcelable(BraveRewardsSiteBannerActivity.BANNER_INFO_ARGS, bannerInfo);
+        args.putString(BraveRewardsSiteBannerActivity.BANNER_INFO_ARGS, bannerInfo);
         fragment.setArguments(args);
         return fragment;
     }
@@ -91,8 +91,12 @@ public class BraveRewardsCreatorPanelFragment extends Fragment
             currentTabId_ = getArguments().getInt(BraveRewardsSiteBannerActivity.TAB_ID_EXTRA);
             monthlyContribution = getArguments().getBoolean(
                     BraveRewardsSiteBannerActivity.IS_MONTHLY_CONTRIBUTION);
-            mBannerInfo =
-                    getArguments().getParcelable(BraveRewardsSiteBannerActivity.BANNER_INFO_ARGS);
+            String bannerInfoJson =
+                    getArguments().getString(BraveRewardsSiteBannerActivity.BANNER_INFO_ARGS);
+            try {
+                mBannerInfo = new BraveRewardsBannerInfo(bannerInfoJson);
+            } catch (JSONException e) {
+            }
         }
     }
 

@@ -182,19 +182,14 @@ public class BraveRewardsTippingPanelFragment extends Fragment implements BraveR
 
         // bind tip amount custom radio buttons
         radio_tip_amount[0] = view.findViewById(R.id.bat_option1);
-        radio_tip_amount[0].setTextOff(mTipChoices[0] + " " + BraveRewardsHelper.BAT_TEXT);
-        radio_tip_amount[0].setTextOn(mTipChoices[0] + " " + BraveRewardsHelper.BAT_TEXT);
-        radio_tip_amount[0].setChecked(false);
-
         radio_tip_amount[1] = view.findViewById(R.id.bat_option2);
-        radio_tip_amount[1].setTextOff(mTipChoices[1] + " " + BraveRewardsHelper.BAT_TEXT);
-        radio_tip_amount[1].setTextOn(mTipChoices[1] + " " + BraveRewardsHelper.BAT_TEXT);
-        radio_tip_amount[1].setChecked(false);
-
         radio_tip_amount[2] = view.findViewById(R.id.bat_option3);
-        radio_tip_amount[2].setTextOff(mTipChoices[2] + " " + BraveRewardsHelper.BAT_TEXT);
-        radio_tip_amount[2].setTextOn(mTipChoices[2] + " " + BraveRewardsHelper.BAT_TEXT);
-        radio_tip_amount[2].setChecked(false);
+
+        for (int i = 0; i < 3; i++) {
+            radio_tip_amount[i].setTextOff(mTipChoices[i] + " " + BraveRewardsHelper.BAT_TEXT);
+            radio_tip_amount[i].setTextOn(mTipChoices[i] + " " + BraveRewardsHelper.BAT_TEXT);
+            radio_tip_amount[i].setChecked(false);
+        }
 
         switch (recurrentAmount) {
             case 1:

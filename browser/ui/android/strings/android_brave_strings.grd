@@ -168,7 +168,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Custom tip amount
       </message>
       <message name="IDS_LEARN_MORE_TIP" desc="Learn more tipping">
-        Learn More.
+        Learn more.
       </message>
       <message name="IDS_THANKS_FOR_SUPPORT" desc="Text for Thanks for the support">
         Thanks for the support!

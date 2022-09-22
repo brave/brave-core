@@ -92,7 +92,7 @@ public class BraveRewardsCustomTipFragment extends Fragment {
     private void backButtonClick(View view) {
         ImageView backButton = view.findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> {
-            if (getParentFragmentManager().getBackStackEntryCount() != 0) {
+            if (getParentFragmentManager().getBackStackEntryCount() > 0) {
                 ((BraveRewardsSiteBannerActivity) getActivity()).resetUpdateLayout();
             }
         });

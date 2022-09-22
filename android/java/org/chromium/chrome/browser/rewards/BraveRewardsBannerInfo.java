@@ -26,7 +26,7 @@ import java.util.HashMap;
 /**
  * BraveRewardsNativeWorker.GetPublisherBanner json response converted to this pojo class
  * */
-public class BraveRewardsBannerInfo implements Parcelable {
+public class BraveRewardsBannerInfo {
     public static final String PUBLISHER_KEY = "publisher_key";
     public static final String TITLE = "title";
     public static final String NAME = "name";
@@ -60,48 +60,6 @@ public class BraveRewardsBannerInfo implements Parcelable {
     private HashMap<String, String> mLinks;
     @WalletStatus
     private int mStatus;
-
-    protected BraveRewardsBannerInfo(Parcel in) {
-        mPublisherKey = in.readString();
-        mTitle = in.readString();
-        mName = in.readString();
-        mDescription = in.readString();
-        mBackground = in.readString();
-        mLogo = in.readString();
-        mProvider = in.readString();
-        mStatus = in.readInt();
-    }
-
-    public static final Creator<BraveRewardsBannerInfo> CREATOR =
-            new Creator<BraveRewardsBannerInfo>() {
-                @Override
-                public BraveRewardsBannerInfo createFromParcel(Parcel in) {
-                    return new BraveRewardsBannerInfo(in);
-                }
-
-                @Override
-                public BraveRewardsBannerInfo[] newArray(int size) {
-                    return new BraveRewardsBannerInfo[size];
-                }
-            };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mPublisherKey);
-        dest.writeString(mTitle);
-        dest.writeString(mName);
-        dest.writeString(mDescription);
-        dest.writeString(mBackground);
-        dest.writeString(mLogo);
-        dest.writeString(mProvider);
-        dest.writeInt(mStatus);
-        dest.writeSerializable(mLinks);
-    }
 
     public String getPublisherKey() {
         return mPublisherKey;

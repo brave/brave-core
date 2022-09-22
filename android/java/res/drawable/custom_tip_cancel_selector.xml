@@ -3,7 +3,7 @@
     <item>
         <shape android:shape="rectangle"  >
             <corners android:radius="20dip" />
-            <solid android:color="#AEB1C2"/>
+            <solid android:color="@color/wallet_edittext_outline_color"/>
         </shape>
     </item>
 </selector>

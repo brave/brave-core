@@ -24,6 +24,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsSiteBannerActivity;
 
 import java.util.regex.Matcher;
@@ -72,15 +73,15 @@ public class BraveRewardsCustomTipConfirmationFragment extends Fragment {
                 aboutToTipText.setText(R.string.about_to_tip);
             }
 
-            batValueText.setText(batValue + " BAT");
-            usdValueText.setText(usdValue + " USD");
+            batValueText.setText(batValue + " "+BraveRewardsHelper.BAT_TEXT);
+            usdValueText.setText(usdValue + " "+BraveRewardsHelper.USD_TEXT);
         }
     }
 
     private void cancelButtonClick(View view) {
         ImageView customTipCancel = view.findViewById(R.id.custom_tip_cancel);
         customTipCancel.setOnClickListener((v) -> {
-            if (getParentFragmentManager().getBackStackEntryCount() != 0) {
+            if (getParentFragmentManager().getBackStackEntryCount() > 0) {
                 getParentFragmentManager().popBackStack();
             }
         });

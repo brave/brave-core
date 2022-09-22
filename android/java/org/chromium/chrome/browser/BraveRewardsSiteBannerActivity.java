@@ -92,7 +92,7 @@ public class BraveRewardsSiteBannerActivity
 
                 BraveRewardsCreatorPanelFragment creatorPanelFragment =
                         BraveRewardsCreatorPanelFragment.newInstance(
-                                currentTabId_, mIsMonthlyContribution, bannerInfo);
+                                currentTabId_, mIsMonthlyContribution, jsonBannerInfo);
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.creatorPanelFragment, creatorPanelFragment)
