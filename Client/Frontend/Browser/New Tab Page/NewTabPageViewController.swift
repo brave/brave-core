@@ -128,8 +128,11 @@ class NewTabPageViewController: UIViewController {
     collectionView = NewTabCollectionView(frame: .zero, collectionViewLayout: layout)
     super.init(nibName: nil, bundle: nil)
 
+    Preferences.NewTabPage.showNewTabPrivacyHub.observe(from: self)
+    Preferences.NewTabPage.showNewTabFavourites.observe(from: self)
+    
     sections = [
-      StatsSectionProvider(action: { [weak self] in
+      StatsSectionProvider(openPrivacyHubPressed: { [weak self] in
         if PrivateBrowsingManager.shared.isPrivateBrowsing {
           return
         }
@@ -149,6 +152,9 @@ class NewTabPageViewController: UIViewController {
         }
         
         self?.present(host, animated: true)
+      }, hidePrivacyHubPressed: { [weak self] in
+        Preferences.NewTabPage.showNewTabPrivacyHub.value = false
+        self?.collectionView.reloadData()
       }),
       FavoritesSectionProvider(action: { [weak self] bookmark, action in
         self?.handleFavoriteAction(favorite: bookmark, action: action)
@@ -811,6 +817,11 @@ class NewTabPageViewController: UIViewController {
 
 extension NewTabPageViewController: PreferencesObserver {
   func preferencesDidChange(for key: String) {
+    if key == Preferences.NewTabPage.showNewTabPrivacyHub.key || key == Preferences.NewTabPage.showNewTabFavourites.key {
+      collectionView.reloadData()
+      return
+    }
+    
     if !preventReloadOnBraveNewsEnabledChange {
       collectionView.reloadData()
     }

@@ -5,6 +5,7 @@
 
 import Foundation
 import BraveUI
+import BraveShared
 import Data
 import CoreData
 import Shared
@@ -70,7 +71,10 @@ class FavoritesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     let width = fittingSizeForCollectionView(collectionView, section: section).width
     let count = frc.fetchedObjects?.count ?? 0
-    return count > FavoritesSectionProvider.numberOfItems(in: collectionView, availableWidth: width) ? 1 : 0
+    
+    let isShowShowMoreButtonVisible = count > FavoritesSectionProvider.numberOfItems(in: collectionView, availableWidth: width) &&
+      Preferences.NewTabPage.showNewTabFavourites.value
+    return isShowShowMoreButtonVisible ? 1 : 0
   }
 
   func registerCells(to collectionView: UICollectionView) {

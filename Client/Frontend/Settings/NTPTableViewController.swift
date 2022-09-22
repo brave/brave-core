@@ -22,7 +22,7 @@ class NTPTableViewController: TableViewController {
 
     public var displayString: String {
       switch self {
-      case .defaultImages: return "(\(Strings.NTP.settingsDefaultImagesOnly))"
+      case .defaultImages: return "\(Strings.NTP.settingsDefaultImagesOnly)"
       case .sponsored: return Strings.NTP.settingsSponsoredImagesSelection
       case .superReferrer(let referrer): return referrer
       }
@@ -30,7 +30,7 @@ class NTPTableViewController: TableViewController {
   }
 
   init() {
-    super.init(style: .grouped)
+    super.init(style: .insetGrouped)
   }
 
   @available(*, unavailable)
@@ -52,17 +52,32 @@ class NTPTableViewController: TableViewController {
   }
 
   private func loadSections() {
-    var section = Section(rows: [
-      Row.boolRow(
-        title: Strings.NTP.settingsBackgroundImages,
-        option: Preferences.NewTabPage.backgroundImages)
-    ])
+    var imageSection = Section(
+      header: .title(Strings.NTP.settingsBackgroundImages.uppercased()),
+      rows: [
+        .boolRow(
+          title: Strings.NTP.settingsBackgroundImages,
+          option: Preferences.NewTabPage.backgroundImages)
+      ]
+    )
 
     if Preferences.NewTabPage.backgroundImages.value {
-      section.rows.append(backgroundImagesSetting(section: section))
+      imageSection.rows.append(backgroundImagesSetting(section: imageSection))
     }
+    
+    let widgetSection = Section(
+      header: .title(Strings.Widgets.widgetTitle.uppercased()),
+      rows: [
+        .boolRow(
+          title: Strings.PrivacyHub.privacyReportsTitle,
+          option: Preferences.NewTabPage.showNewTabPrivacyHub),
+        .boolRow(
+          title: Strings.Widgets.favoritesWidgetTitle,
+          option: Preferences.NewTabPage.showNewTabFavourites)
+      ]
+    )
 
-    dataSource.sections = [section]
+    dataSource.sections = [imageSection, widgetSection]
   }
 
   private func selectedItem() -> BackgroundImageType {
@@ -86,11 +101,14 @@ class NTPTableViewController: TableViewController {
       text: Strings.NTP.settingsBackgroundImageSubMenu,
       detailText: selectedItem().displayString,
       accessory: .disclosureIndicator,
-      cellClass: MultilineSubtitleCell.self)
+      cellClass: Value1Cell.self)
 
     row.selection = { [unowned self] in
       // Show options for tab bar visibility
       let optionsViewController = OptionSelectionViewController<BackgroundImageType>(
+        headerText: Strings.NTP.settingsBackgroundImageSubMenu,
+        footerText: Strings.NTP.imageTypeSelectionDescription,
+        style: .insetGrouped,
         options: self.backgroundImageOptions,
         selectedOption: self.selectedItem(),
         optionChanged: { _, option in

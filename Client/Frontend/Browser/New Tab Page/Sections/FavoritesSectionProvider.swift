@@ -5,6 +5,7 @@
 
 import Foundation
 import BraveUI
+import BraveShared
 import Data
 import CoreData
 import Shared
@@ -86,7 +87,10 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     let fetchedCount = frc.fetchedObjects?.count ?? 0
-    return min(fetchedCount, Self.numberOfItems(in: collectionView, availableWidth: fittingSizeForCollectionView(collectionView, section: section).width))
+    let numberOfItems = min(fetchedCount, Self.numberOfItems(
+      in: collectionView,
+      availableWidth: fittingSizeForCollectionView(collectionView, section: section).width))
+    return Preferences.NewTabPage.showNewTabFavourites.value ? numberOfItems : 0
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

@@ -10,18 +10,29 @@ import BraveUI
 import UIKit
 
 class StatsSectionProvider: NSObject, NTPSectionProvider {
-  let action: () -> Void
-  
-  init(action: @escaping () -> Void) {
-    self.action = action
+  var openPrivacyHubPressed: () -> Void
+  var hidePrivacyHubPressed: () -> Void
+
+  init(openPrivacyHubPressed: @escaping () -> Void, hidePrivacyHubPressed: @escaping () -> Void) {
+    self.openPrivacyHubPressed = openPrivacyHubPressed
+    self.hidePrivacyHubPressed = hidePrivacyHubPressed
   }
   
-  @objc private func tappedButton() {
-    action()
+  @objc private func tappedButton(_ gestureRecognizer: UIGestureRecognizer) {
+    guard let cell = gestureRecognizer.view as? BraveShieldStatsView else {
+      return
+    }
+    
+    cell.isHighlighted = true
+    
+    Task.delayed(bySeconds: 0.1) { @MainActor in
+      cell.isHighlighted = false
+      self.openPrivacyHubPressed()
+    }
   }
   
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 1
+    return Preferences.NewTabPage.showNewTabPrivacyHub.value ? 1 : 0
   }
   
   func registerCells(to collectionView: UICollectionView) {
@@ -30,7 +41,23 @@ class StatsSectionProvider: NSObject, NTPSectionProvider {
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(for: indexPath) as NewTabCenteredCollectionViewCell<BraveShieldStatsView>
-    cell.view.addTarget(self, action: #selector(tappedButton), for: .touchUpInside)
+    
+    let tap = UITapGestureRecognizer(target: self, action: #selector(tappedButton(_:)))
+    let longPress = UILongPressGestureRecognizer(target: self, action: #selector(tappedButton(_:)))
+
+    cell.view.do {
+      $0.addGestureRecognizer(tap)
+      $0.addGestureRecognizer(longPress)
+      
+      $0.openPrivacyHubPressed = { [weak self] in
+        self?.openPrivacyHubPressed()
+      }
+      
+      $0.hidePrivacyHubPressed = { [weak self] in
+        self?.hidePrivacyHubPressed()
+      }
+    }
+
     return cell
   }
   
@@ -47,6 +74,9 @@ class StatsSectionProvider: NSObject, NTPSectionProvider {
 }
 
 class BraveShieldStatsView: SpringButton {
+  var openPrivacyHubPressed: (() -> Void)?
+  var hidePrivacyHubPressed: (() -> Void)?
+
   private lazy var adsStatView: StatView = {
     let statView = StatView(frame: CGRect.zero)
     statView.title = Strings.shieldsAdAndTrackerStats.capitalized
@@ -118,7 +148,7 @@ class BraveShieldStatsView: SpringButton {
   override init(frame: CGRect) {
     super.init(frame: frame)
     
-    if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+    if !PrivateBrowsingManager.shared.isPrivateBrowsing, Preferences.NewTabPage.showNewTabPrivacyHub.value {
       let background = UIView()
       background.backgroundColor = .init(white: 0, alpha: 0.25)
       background.layer.cornerRadius = 12
@@ -129,17 +159,36 @@ class BraveShieldStatsView: SpringButton {
         $0.edges.equalToSuperview()
       }
       
-      let image = UIImageView(image: UIImage(named: "privacy_reports_3dots", in: .current, compatibleWith: nil)!.template)
-      image.tintColor = .white
-      topStackView.addStackViewItems(.view(privacyReportLabel), .view(image))
+      let settingsButton = BraveButton(type: .system).then {
+        $0.setImage(UIImage(named: "privacy_reports_3dots", in: .current, compatibleWith: nil)!.template, for: .normal)
+        $0.tintColor = .white
+        $0.hitTestSlop = UIEdgeInsets(equalInset: -25)
+      }
+            
+      let hidePrivacyHub = UIAction(
+        title: Strings.PrivacyHub.hidePrivacyHubWidgetActionTitle,
+        image: UIImage(braveSystemNamed: "brave.eye.slash"),
+        handler: UIAction.deferredActionHandler { [unowned self] _ in
+          self.hidePrivacyHubPressed?()
+        })
+      
+      let showPrivacyHub = UIAction(
+        title: Strings.PrivacyHub.openPrivacyHubWidgetActionTitle,
+        image: UIImage(named: "privacy_reports_shield", in: .current, compatibleWith: nil)?.template,
+        handler: UIAction.deferredActionHandler { [unowned self] _ in
+          self.openPrivacyHubPressed?()
+        })
+
+      settingsButton.menu = UIMenu(title: "", options: .displayInline, children: [hidePrivacyHub, showPrivacyHub])
+      settingsButton.showsMenuAsPrimaryAction = true
+      
+      topStackView.addStackViewItems(.view(privacyReportLabel), .view(settingsButton))
     }
     
-    isEnabled = !PrivateBrowsingManager.shared.isPrivateBrowsing
     statsStackView.addStackViewItems(.view(adsStatView), .view(dataSavedStatView), .view(timeStatView))
     contentStackView.addStackViewItems(.view(topStackView), .view(statsStackView))
     addSubview(contentStackView)
     
-    contentStackView.isUserInteractionEnabled = false
     update()
     
     contentStackView.snp.makeConstraints {
