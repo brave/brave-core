@@ -30,7 +30,6 @@ public interface BraveRewardsObserver {
   default public void OnRefreshPublisher(int status, String publisherKey){};
   default public void OnOneTimeTip(int result){};
   default public void OnPendingContributionSaved(int result){};
-  default public void OnStartProcess(){};
   default public void OnGetAdsAccountStatement(boolean success, double nextPaymentDate,
           int adsReceivedThisMonth, double earningsThisMonth, double earningsLastMonth){};
   default public void onPublisherBanner(String jsonBannerInfo){};

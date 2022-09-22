@@ -208,7 +208,7 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
     rewards_service_ = static_cast<brave_rewards::RewardsServiceImpl*>(
         brave_rewards::RewardsServiceFactory::GetForProfile(profile()));
     base::RunLoop run_loop;
-    rewards_service_->StartProcess(run_loop.QuitClosure());
+    rewards_service_->StartProcessForTesting(run_loop.QuitClosure());
     run_loop.Run();
   }
 

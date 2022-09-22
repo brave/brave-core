@@ -354,19 +354,6 @@ void BraveRewardsNativeWorker::FetchGrants(JNIEnv* env) {
   }
 }
 
-void BraveRewardsNativeWorker::StartProcess(JNIEnv* env) {
-  if (brave_rewards_service_) {
-    brave_rewards_service_->StartProcess(base::BindOnce(
-        &BraveRewardsNativeWorker::OnStartProcess, weak_factory_.GetWeakPtr()));
-  }
-}
-
-void BraveRewardsNativeWorker::OnStartProcess() {
-  JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveRewardsNativeWorker_OnStartProcess(
-      env, weak_java_brave_rewards_native_worker_.get(env));
-}
-
 void BraveRewardsNativeWorker::GetCurrentBalanceReport(JNIEnv* env) {
   if (brave_rewards_service_) {
     auto now = base::Time::Now();

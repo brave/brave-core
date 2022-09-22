@@ -331,8 +331,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetRewardsWallet(GetRewardsWalletCallback callback) override;
 
-  void StartProcess(base::OnceClosure callback) override;
-
   void GetRewardsWalletPassphrase(
       GetRewardsWalletPassphraseCallback callback) override;
 
@@ -345,6 +343,7 @@ class RewardsServiceImpl : public RewardsService,
   void CheckInsufficientFundsForTesting();
   void ForTestingSetTestResponseCallback(
       const GetTestResponseCallback& callback);
+  void StartProcessForTesting(base::OnceClosure callback);
 
  private:
   friend class ::RewardsFlagBrowserTest;
@@ -362,8 +361,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnPreferenceChanged(const std::string& key);
 
-  void StartProcessForCreateRewardsWallet(base::OnceClosure callback);
-  void StartLedgerProcess();
+  void CheckPreferences();
+
   void StartLedgerProcessIfNecessary();
 
   void OnStopLedger(StopLedgerCallback callback,
@@ -478,12 +477,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnSetOnDemandFaviconComplete(const std::string& favicon_url,
                                     ledger::client::FetchIconCallback callback,
                                     bool success);
-  void OnStartProcessForGetPublisherInfo(const std::string& publisher_key,
-                                         GetPublisherInfoCallback callback);
-  void OnStartProcessForSavePublisherInfo(
-      uint64_t window_id,
-      ledger::mojom::PublisherInfoPtr publisher_info,
-      SavePublisherInfoCallback callback);
 
   void WriteDiagnosticLog(const std::string& file,
                           const int line,
@@ -613,8 +606,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnFilesDeletedForCompleteReset(SuccessCallback callback,
                                       const bool success);
-
-  void OnStartProcessForCompleteReset(SuccessCallback callback, bool success);
 
   void OnDiagnosticLogDeleted(ledger::LegacyResultCallback callback,
                               bool success);

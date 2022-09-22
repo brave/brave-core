@@ -756,19 +756,6 @@ public class BraveRewardsPanel
         mPopupWindow.showAsDropDown(mAnchorView, 0, 0);
 
         checkForRewardsOnboarding();
-        BraveRewardsNativeWorker.getInstance().StartProcess();
-    }
-
-    private void checkForRewardsOnboarding() {
-        if (mPopupView != null && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
-                && BraveRewardsHelper.shouldShowBraveRewardsOnboardingOnce()) {
-            showBraveRewardsOnboarding(mPopupView, false);
-            BraveRewardsHelper.setShowBraveRewardsOnboardingOnce(false);
-        }
-    }
-
-    @Override
-    public void OnStartProcess() {
         requestPublisherInfo();
         fetchRewardsData();
         setNotificationsControls();
@@ -779,6 +766,14 @@ public class BraveRewardsPanel
                         Profile.getLastUsedRegularProfile())) {
             showBraveRewardsOnboardingModal(mPopupView);
             BraveRewardsHelper.updateBraveRewardsAppOpenCount();
+        }
+    }
+
+    private void checkForRewardsOnboarding() {
+        if (mPopupView != null && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
+                && BraveRewardsHelper.shouldShowBraveRewardsOnboardingOnce()) {
+            showBraveRewardsOnboarding(mPopupView, false);
+            BraveRewardsHelper.setShowBraveRewardsOnboardingOnce(false);
         }
     }
 

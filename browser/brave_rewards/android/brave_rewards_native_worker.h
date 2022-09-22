@@ -233,7 +233,6 @@ class BraveRewardsNativeWorker
     void SetAutoContributeEnabled(
         JNIEnv* env,
         bool isAutoContributeEnabled);
-    void StartProcess(JNIEnv* env);
 
  private:
     std::string StdStrStrMapToJsonString(
@@ -241,8 +240,6 @@ class BraveRewardsNativeWorker
 
     void OnBalance(const ledger::mojom::Result result,
                    ledger::mojom::BalancePtr balance);
-
-    void OnStartProcess();
 
     void OnGetAdsAccountStatement(ads::mojom::StatementInfoPtr statement);
 

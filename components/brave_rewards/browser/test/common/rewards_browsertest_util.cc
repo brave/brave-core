@@ -47,7 +47,7 @@ GURL GetNewTabUrl() {
 void StartProcess(brave_rewards::RewardsServiceImpl* rewards_service) {
   DCHECK(rewards_service);
   base::RunLoop run_loop;
-  rewards_service->StartProcess(
+  rewards_service->StartProcessForTesting(
       base::BindLambdaForTesting([&]() { run_loop.Quit(); }));
   run_loop.Run();
 }

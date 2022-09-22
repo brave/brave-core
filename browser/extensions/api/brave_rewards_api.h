@@ -152,7 +152,6 @@ class BraveRewardsTipUserFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnProcessStarted(const std::string& publisher_key);
   void OnTipUserGetPublisherInfo(const ledger::mojom::Result result,
                                  ledger::mojom::PublisherInfoPtr info);
   void OnTipUserSavePublisherInfo(const ledger::mojom::Result result);

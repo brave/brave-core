@@ -305,13 +305,7 @@ export function createHost (): Host {
     apiAdapter.onRewardsEnabled(() => {
       stateManager.update({ rewardsEnabled: true })
 
-      apiAdapter.getSettings().then((settings) => {
-        stateManager.update({ settings })
-      }).catch(console.error)
-
-      // After enabling rewards, we may be able to display additional data about
-      // the current publisher.
-      updatePublisherInfo().catch(console.error)
+      loadPanelData().catch(console.error)
     })
 
     apiAdapter.onGrantsUpdated(updateGrants)
@@ -377,8 +371,6 @@ export function createHost (): Host {
 
     addListeners()
     setLoadingTimer()
-
-    await proxy.handler.startRewards()
 
     await loadPanelData()
 
