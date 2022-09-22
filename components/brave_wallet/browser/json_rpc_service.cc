@@ -1346,6 +1346,13 @@ void JsonRpcService::OnEnsGetEthAddr(StringResultCallback callback,
     return;
   }
 
+  if (EthAddress::FromHex(address).IsZeroAddress()) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
   std::move(callback).Run(address, mojom::ProviderError::kSuccess, "");
 }
 
