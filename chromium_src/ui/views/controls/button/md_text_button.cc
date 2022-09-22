@@ -47,12 +47,13 @@ class BraveTextButtonHighlightPathGenerator
 
 namespace views {
 
+SkColor kBravePrimaryColor = SkColorSetRGB(32, 74, 227);
 MdTextButton::ButtonTheme g_primary_theme = {
     // Normal Light
-    MdTextButton::ButtonStyle{SkColorSetRGB(32, 74, 227), absl::nullopt,
+    MdTextButton::ButtonStyle{kBravePrimaryColor, absl::nullopt,
                               SK_ColorWHITE},
     // Normal Dark
-    MdTextButton::ButtonStyle{SkColorSetRGB(32, 74, 227), absl::nullopt,
+    MdTextButton::ButtonStyle{kBravePrimaryColor, absl::nullopt,
                               SK_ColorWHITE},
     // Hover Light
     MdTextButton::ButtonStyle{SkColorSetRGB(24, 56, 172), absl::nullopt,
@@ -75,19 +76,13 @@ MdTextButton::ButtonTheme g_primary_theme = {
 
 MdTextButton::ButtonTheme g_secondary_theme = {
     // Normal Light
-    MdTextButton::ButtonStyle{absl::nullopt, SkColorSetRGB(226, 227, 231),
-                              SkColorSetRGB(107, 112, 132)},
+    MdTextButton::ButtonStyle{absl::nullopt, SK_ColorBLACK, SK_ColorBLACK},
     // Normal Dark
-    MdTextButton::ButtonStyle{absl::nullopt, SkColorSetRGB(46, 48, 57),
-                              SkColorSetRGB(140, 144, 161)},
+    MdTextButton::ButtonStyle{absl::nullopt, SK_ColorWHITE, SK_ColorWHITE},
     // Hover Light
-    MdTextButton::ButtonStyle{SkColorSetRGB(243, 245, 254),
-                              SkColorSetRGB(221, 228, 251),
-                              SkColorSetRGB(65, 101, 233)},
+    MdTextButton::ButtonStyle{absl::nullopt, kBravePrimaryColor, kBravePrimaryColor},
     // Hover Dark
-    MdTextButton::ButtonStyle{SkColorSetRGB(7, 16, 50),
-                              SkColorSetRGB(17, 39, 121),
-                              SkColorSetRGB(153, 173, 243)},
+    MdTextButton::ButtonStyle{absl::nullopt, kBravePrimaryColor, kBravePrimaryColor},
     // Disabled Light
     MdTextButton::ButtonStyle{absl::nullopt, SkColorSetARGB(128, 226, 227, 231),
                               SkColorSetARGB(128, 107, 112, 132)},
