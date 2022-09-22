@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2022 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/shields_tooltip_layout"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="@drawable/cookie_consent_tooltip_background"
+	android:fadeScrollbars="false">
+
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_vertical">
+
+		    	<ImageView
+		          android:layout_width="48dp"
+		          android:layout_height="48dp"
+		          android:layout_marginTop="24dp"
+		          android:layout_gravity="center_horizontal"
+		          app:srcCompat="@drawable/ic_cookie"
+		          android:contentDescription="@null" />
+
+		     <TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:textSize="24sp"
+				android:layout_marginTop="22dp"
+				android:layout_marginBottom="16dp"
+				android:gravity="center_horizontal"
+				android:text="@string/block_cookie_notices_title"
+				android:textColor="@color/cookie_consent_text_color"/>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textSize="16sp"
+				android:layout_marginBottom="32dp"
+				android:gravity="center_horizontal"
+				android:text="@string/block_cookie_notices_text"
+				android:textColor="@color/cookie_consent_text_color"/>
+
+			<androidx.appcompat.widget.AppCompatButton
+				android:id="@+id/btn_action"
+		          android:layout_width="match_parent"
+		          android:layout_height="wrap_content"
+		          android:layout_gravity="center_horizontal"
+		          android:gravity="center"
+		          android:background="@drawable/crypto_wallet_blue_button"
+		          android:text="@string/block_cookie_notices_action_text"
+		          android:textAllCaps="false"
+		          android:textSize="14sp"
+		          android:paddingVertical="8dp"
+		          android:paddingBottom="8dp"
+		          android:paddingStart="16dp"
+		          android:paddingEnd="16dp"
+		          android:layout_marginBottom="16dp"
+		          android:textColor="@android:color/white"
+		          style="?android:attr/borderlessButtonStyle"/>
+
+		     <TextView
+		     	android:id="@+id/txt_no_thanks"
+		        	android:layout_width="match_parent"
+		        	android:layout_height="wrap_content"
+		        	android:paddingHorizontal="30dp"
+		        	android:text="@string/no_thanks"
+		        	android:textAlignment="center"
+		        	android:textColor="@color/cookie_consent_action_color"
+		        	android:textSize="14sp" />
+
+		</LinearLayout>
+
+</ScrollView>
