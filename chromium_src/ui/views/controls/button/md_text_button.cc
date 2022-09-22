@@ -191,7 +191,6 @@ void MdTextButton::UpdateColorsForBrave() {
   // Theme should only ever be |absl::nullopt| if the button is Prominent.
   DCHECK(theme_);
 
-  const ui::NativeTheme* theme = GetNativeTheme();
   absl::optional<ButtonStyle> style;
   auto is_dark = GetNativeTheme()->GetPreferredColorScheme() ==
                  ui::NativeTheme::PreferredColorScheme::kDark;
@@ -215,31 +214,6 @@ void MdTextButton::UpdateColorsForBrave() {
         Painter::CreateRoundRectWith1PxBorderPainter(bg_color, stroke_color,
                                                      GetCornerRadius())));
     return;
-  }
-  // Override different text hover color
-  if (theme->GetPlatformHighContrastColorScheme() !=
-      ui::NativeTheme::PlatformHighContrastColorScheme::kDark) {
-    SetTextColor(ButtonState::STATE_HOVERED, kBraveBrandColor);
-    SetTextColor(ButtonState::STATE_PRESSED, kBraveBrandColor);
-  }
-  // Override border color for hover on non-prominent
-  if (GetState() == ButtonState::STATE_PRESSED ||
-      GetState() == ButtonState::STATE_HOVERED) {
-    // First, get the same background fill color that MdTextButtonBase does.
-    // It is undfortunate to copy these lines almost as-is. Consider otherwise
-    // patching it in via a #define.
-    SkColor bg_color = GetColorProvider()->GetColor(ui::kColorDialogBackground);
-    if (GetBgColorOverride()) {
-      bg_color = *GetBgColorOverride();
-    }
-    if (GetState() == STATE_PRESSED) {
-      bg_color = GetNativeTheme()->GetSystemButtonPressedColor(bg_color);
-    }
-    // The only thing that differs for Brave is the stroke color
-    SkColor stroke_color = kBraveBrandColor;
-    SetBackground(CreateBackgroundFromPainter(
-        Painter::CreateRoundRectWith1PxBorderPainter(bg_color, stroke_color,
-                                                     GetCornerRadius())));
   }
 }
 
