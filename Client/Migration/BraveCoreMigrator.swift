@@ -40,8 +40,7 @@ public class BraveCoreMigrator {
     }
   }
 
-  @Observable
-  private(set) public var migrationObserver: MigrationState = .notStarted
+  @Published private(set) public var migrationObserver: MigrationState = .notStarted
 
   private var bookmarkMigrationState: MigrationState = .notStarted
   private var historyMigrationState: MigrationState = .notStarted
@@ -114,10 +113,6 @@ public class BraveCoreMigrator {
 
     print("DONE TESTING MIGRATION")
     #endif
-  }
-
-  public func observeState(from object: AnyObject, _ handler: @escaping (MigrationState, MigrationState) -> Void) {
-    _migrationObserver.observe(from: object, handler)
   }
 
   public func migrate(_ completion: ((MigrationError?) -> Void)? = nil) {
