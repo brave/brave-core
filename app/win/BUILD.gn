@@ -20,7 +20,7 @@ if (should_generate_breakpad_symbols) {
     args = [
       "--symbols-dir=" + rebase_path(symbols_dir),
       "--build-dir=" + rebase_path(root_out_dir),
-      "--dump-syms-path=" + dump_syms_path,
+      "--dump-syms-path=" + rebase_path(dump_syms_path),
       "--verbose",
       "--clear",
       rebase_path(root_out_dir),
