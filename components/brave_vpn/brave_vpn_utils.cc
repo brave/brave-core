@@ -33,6 +33,7 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
 #elif BUILDFLAG(IS_ANDROID)
   registry->RegisterStringPref(prefs::kBraveVPNPurchaseTokenAndroid, "");
   registry->RegisterStringPref(prefs::kBraveVPNPackageAndroid, "");
+  registry->RegisterStringPref(prefs::kBraveVPNProductIdAndroid, "");
 #endif
   registry->RegisterStringPref(prefs::kBraveVPNEEnvironment,
                                skus::GetDefaultEnvironment());

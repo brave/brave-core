@@ -882,6 +882,7 @@ void BraveVpnService::OnResume() {}
 void BraveVpnService::GetPurchaseToken(GetPurchaseTokenCallback callback) {
   std::string purchase_token_string = "";
   std::string package_string = "com.brave.browser";
+  std::string product_id_string = "brave-firewall-vpn-premium";
 
   // Get the Android purchase token (for Google Play Store).
   // The value for this is validated on the account.brave.com side
@@ -899,11 +900,18 @@ void BraveVpnService::GetPurchaseToken(GetPurchaseTokenCallback callback) {
     package_string = local_prefs_->GetString(prefs::kBraveVPNPackageAndroid);
   }
 
+  auto* product_id =
+      local_prefs_->FindPreference(prefs::kBraveVPNProductIdAndroid);
+  if (product_id && !product_id->IsDefaultValue()) {
+    product_id_string =
+        local_prefs_->GetString(prefs::kBraveVPNProductIdAndroid);
+  }
+
   base::Value::Dict response;
   response.Set("type", "android");
   response.Set("raw_receipt", purchase_token_string);
   response.Set("package", package_string);
-  response.Set("subscription_id", "brave-firewall-vpn-premium");
+  response.Set("subscription_id", product_id_string);
 
   std::string response_json;
   base::JSONWriter::Write(response, &response_json);
