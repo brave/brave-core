@@ -37,7 +37,7 @@ class BraveNewsFeedItemView : public views::View,
 
  private:
   bool loading_ = false;
-  raw_ptr<leo::LeoButton> subscribe_button_ = nullptr;
+  raw_ptr<views::MdTextButton> subscribe_button_ = nullptr;
 
   BraveNewsTabHelper::FeedDetails feed_details_;
   raw_ptr<content::WebContents> contents_;

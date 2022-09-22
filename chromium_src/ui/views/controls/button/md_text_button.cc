@@ -5,14 +5,22 @@
 
 #include "ui/views/controls/button/md_text_button.h"
 
+#include "absl/types/optional.h"
+#include "include/core/SkColor.h"
 #include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"
 #include "ui/gfx/geometry/rect_f.h"
+#include "ui/gfx/paint_vector_icon.h"
+#include "ui/gfx/vector_icon_types.h"
+#include "ui/native_theme/native_theme.h"
+#include "ui/views/background.h"
 #include "ui/views/controls/highlight_path_generator.h"
 #include "ui/views/view_class_properties.h"
 
 // To be called from MdTextButtonBase::UpdateColors().
-#define BRAVE_MD_TEXT_BUTTON_UPDATE_COLORS UpdateColorsForBrave();
+#define BRAVE_MD_TEXT_BUTTON_UPDATE_COLORS \
+  UpdateColorsForBrave();                  \
+  UpdateIconForBrave();
 
 #define MdTextButton MdTextButtonBase
 #include "src/ui/views/controls/button/md_text_button.cc"
@@ -39,12 +47,175 @@ class BraveTextButtonHighlightPathGenerator
 
 namespace views {
 
+MdTextButton::ButtonTheme g_primary_theme = {
+    // Normal Light
+    MdTextButton::ButtonStyle{SkColorSetRGB(32, 74, 227), absl::nullopt,
+                              SK_ColorWHITE},
+    // Normal Dark
+    MdTextButton::ButtonStyle{SkColorSetRGB(32, 74, 227), absl::nullopt,
+                              SK_ColorWHITE},
+    // Hover Light
+    MdTextButton::ButtonStyle{SkColorSetRGB(24, 56, 172), absl::nullopt,
+                              SK_ColorWHITE},
+    // Hover Dark
+    MdTextButton::ButtonStyle{SkColorSetRGB(77, 92, 253), absl::nullopt,
+                              SK_ColorWHITE},
+    // Disabled Light
+    MdTextButton::ButtonStyle{SkColorSetARGB(128, 172, 175, 187), absl::nullopt,
+                              SkColorSetA(SK_ColorWHITE, 128)},
+    // Disabled Dark
+    MdTextButton::ButtonStyle{SkColorSetARGB(128, 88, 92, 109), absl::nullopt,
+                              SkColorSetA(SK_ColorWHITE, 128)},
+    // Loading Light
+    MdTextButton::ButtonStyle{SkColorSetARGB(192, 32, 74, 227), absl::nullopt,
+                              SkColorSetA(SK_ColorWHITE, 192)},
+    // Loading Dark
+    MdTextButton::ButtonStyle{SkColorSetARGB(192, 32, 74, 227), absl::nullopt,
+                              SkColorSetA(SK_ColorWHITE, 192)}};
+
+MdTextButton::ButtonTheme g_secondary_theme = {
+    // Normal Light
+    MdTextButton::ButtonStyle{absl::nullopt, SkColorSetRGB(226, 227, 231),
+                              SkColorSetRGB(107, 112, 132)},
+    // Normal Dark
+    MdTextButton::ButtonStyle{absl::nullopt, SkColorSetRGB(46, 48, 57),
+                              SkColorSetRGB(140, 144, 161)},
+    // Hover Light
+    MdTextButton::ButtonStyle{SkColorSetRGB(243, 245, 254),
+                              SkColorSetRGB(221, 228, 251),
+                              SkColorSetRGB(65, 101, 233)},
+    // Hover Dark
+    MdTextButton::ButtonStyle{SkColorSetRGB(7, 16, 50),
+                              SkColorSetRGB(17, 39, 121),
+                              SkColorSetRGB(153, 173, 243)},
+    // Disabled Light
+    MdTextButton::ButtonStyle{absl::nullopt, SkColorSetARGB(128, 226, 227, 231),
+                              SkColorSetARGB(128, 107, 112, 132)},
+    // Disabled Dark
+    MdTextButton::ButtonStyle{absl::nullopt, SkColorSetARGB(128, 46, 48, 57),
+                              SkColorSetARGB(128, 140, 144, 161)},
+    // Loading Light
+    MdTextButton::ButtonStyle{absl::nullopt, SkColorSetARGB(192, 226, 227, 231),
+                              SkColorSetARGB(192, 107, 112, 132)},
+    // Loading Dark
+    MdTextButton::ButtonStyle{absl::nullopt, SkColorSetARGB(192, 46, 48, 57),
+                              SkColorSetARGB(192, 140, 144, 161)}};
+
+MdTextButton::ButtonTheme g_tertiary_theme = {
+    // Normal Light
+    MdTextButton::ButtonStyle{absl::nullopt, absl::nullopt,
+                              SkColorSetRGB(32, 74, 227)},
+    // Normal Dark
+    MdTextButton::ButtonStyle{absl::nullopt, absl::nullopt,
+                              SkColorSetRGB(153, 173, 243)},
+    // Hover Light
+    MdTextButton::ButtonStyle{absl::nullopt, absl::nullopt,
+                              SkColorSetRGB(24, 56, 172)},
+    // Hover Dark
+    MdTextButton::ButtonStyle{absl::nullopt, absl::nullopt,
+                              SkColorSetRGB(186, 199, 247)},
+};
+
+MdTextButton::MdTextButton(PressedCallback callback,
+                           const std::u16string& text,
+                           int button_context)
+    : MdTextButtonBase(std::move(callback), text, button_context) {
+  SetCornerRadius(100);
+  views::HighlightPathGenerator::Install(
+      this, std::make_unique<BraveTextButtonHighlightPathGenerator>());
+  auto* ink_drop = views::InkDrop::Get(this);
+  views::InkDrop::UseInkDropForFloodFillRipple(ink_drop,
+                                               /*highlight_on_hover=*/false,
+                                               /*highlight_on_focus=*/true);
+  ink_drop->SetCreateHighlightCallback(base::BindRepeating(
+      [](Button* host) {
+        const SkColor fill_color = SK_ColorTRANSPARENT;
+        gfx::RectF boundsF(host->GetLocalBounds());
+        return std::make_unique<InkDropHighlight>(
+            boundsF.size(), static_cast<MdTextButton*>(host)->GetCornerRadius(),
+            boundsF.CenterPoint(), fill_color);
+      },
+      this));
+  SetKind(SECONDARY);
+  SetImageLabelSpacing(6);
+}
+
+MdTextButton::~MdTextButton() = default;
+
+SkPath MdTextButton::GetHighlightPath() const {
+  SkPath path;
+  int radius = GetCornerRadius();
+  path.addRRect(
+      SkRRect::MakeRectXY(RectToSkRect(GetLocalBounds()), radius, radius));
+  return path;
+}
+
+MdTextButton::Kind MdTextButton::GetKind() const {
+  return GetProminent() ? CTA : kind_;
+}
+
+void MdTextButton::SetKind(Kind kind) {
+  kind_ = kind;
+  switch (kind_) {
+    case PRIMARY:
+      theme_ = g_primary_theme;
+      break;
+    case SECONDARY:
+      theme_ = g_secondary_theme;
+      break;
+    case TERTIARY:
+      theme_ = g_tertiary_theme;
+      break;
+    default:
+      theme_ = absl::nullopt;
+      break;
+  }
+
+  // Unfortunately we also have to deal with |IsProminent| from the
+  // MdTextButtonBase. This theme corresponds to the CTA theme in Leo.
+  SetProminent(kind == CTA);
+  UpdateColors();
+}
+
+void MdTextButton::SetIcon(const gfx::VectorIcon* icon) {
+  icon_ = icon;
+  UpdateColors();
+}
+
 // To be called from MdTextButtonBase::UpdateColors().
-void MdTextButtonBase::UpdateColorsForBrave() {
+void MdTextButton::UpdateColorsForBrave() {
   if (GetProminent()) {
     return;
   }
+
+  // Theme should only ever be |absl::nullopt| if the button is Prominent.
+  DCHECK(theme_);
+
   const ui::NativeTheme* theme = GetNativeTheme();
+  absl::optional<ButtonStyle> style;
+  auto is_dark = GetNativeTheme()->GetPreferredColorScheme() ==
+                 ui::NativeTheme::PreferredColorScheme::kDark;
+  auto state = GetVisualState();
+  if (theme_) {
+    style = is_dark ? theme_->normal_dark : theme_->normal_light;
+    if (state == STATE_HOVERED)
+      style = is_dark ? theme_->hover_dark : theme_->hover_light;
+    // TODO: Loading
+    if (!GetEnabled() || state == STATE_DISABLED)
+      style = is_dark ? theme_->disabled_dark : theme_->disabled_light;
+
+    SetTextColor(state, style->text_color);
+
+    // Prefer the BgColorOverride, if there is one. Fallback to what's in our
+    // style.
+    SkColor bg_color = GetBgColorOverride().value_or(
+        style->background_color.value_or(SK_ColorTRANSPARENT));
+    SkColor stroke_color = style->border_color.value_or(bg_color);
+    SetBackground(CreateBackgroundFromPainter(
+        Painter::CreateRoundRectWith1PxBorderPainter(bg_color, stroke_color,
+                                                     GetCornerRadius())));
+    return;
+  }
   // Override different text hover color
   if (theme->GetPlatformHighContrastColorScheme() !=
       ui::NativeTheme::PlatformHighContrastColorScheme::kDark) {
@@ -72,36 +243,11 @@ void MdTextButtonBase::UpdateColorsForBrave() {
   }
 }
 
-MdTextButton::MdTextButton(PressedCallback callback,
-                           const std::u16string& text,
-                           int button_context)
-    : MdTextButtonBase(std::move(callback), text, button_context) {
-  SetCornerRadius(100);
-  views::HighlightPathGenerator::Install(
-      this, std::make_unique<BraveTextButtonHighlightPathGenerator>());
-  auto* ink_drop = views::InkDrop::Get(this);
-  views::InkDrop::UseInkDropForFloodFillRipple(ink_drop,
-                                               /*highlight_on_hover=*/false,
-                                               /*highlight_on_focus=*/true);
-  ink_drop->SetCreateHighlightCallback(base::BindRepeating(
-      [](Button* host) {
-        const SkColor fill_color = SK_ColorTRANSPARENT;
-        gfx::RectF boundsF(host->GetLocalBounds());
-        return std::make_unique<InkDropHighlight>(
-            boundsF.size(), static_cast<MdTextButton*>(host)->GetCornerRadius(),
-            boundsF.CenterPoint(), fill_color);
-      },
-      this));
-}
-
-MdTextButton::~MdTextButton() = default;
-
-SkPath MdTextButton::GetHighlightPath() const {
-  SkPath path;
-  int radius = GetCornerRadius();
-  path.addRRect(
-      SkRRect::MakeRectXY(RectToSkRect(GetLocalBounds()), radius, radius));
-  return path;
+void MdTextButton::UpdateIconForBrave() {
+  if (icon_) {
+    SetImage(ButtonState::STATE_NORMAL,
+             gfx::CreateVectorIcon(*icon_, GetCurrentTextColor()));
+  }
 }
 
 void MdTextButton::OnPaintBackground(gfx::Canvas* canvas) {

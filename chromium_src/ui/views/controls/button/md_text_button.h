@@ -7,6 +7,8 @@
 #define BRAVE_CHROMIUM_SRC_UI_VIEWS_CONTROLS_BUTTON_MD_TEXT_BUTTON_H_
 
 // Rename MdTextButton to MdTextButtonBase
+#include "absl/types/optional.h"
+#include "ui/gfx/vector_icon_types.h"
 #define MdTextButton MdTextButtonBase
 
 // Define a Brave-specific method we can get called from UpdateColors() to
@@ -14,9 +16,13 @@
 // overriding it in our version of the MdTextButton class because there are some
 // subclasses that define their own UpdateColors() method (OmniboxChipButton)
 // now, which would not work with the virtual + override approach.
-#define UpdateColors \
-  UpdateColors();    \
-  void UpdateColorsForBrave
+#define UpdateColors                       \
+  UpdateColors_Unused();                   \
+                                           \
+ protected:                                \
+  virtual void UpdateColorsForBrave() = 0; \
+  virtual void UpdateIconForBrave() = 0;   \
+  void UpdateColors
 
 #include "src/ui/views/controls/button/md_text_button.h"
 
@@ -32,6 +38,28 @@ namespace views {
 //  - No shadow for prominent background
 class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
  public:
+  struct ButtonStyle {
+    absl::optional<SkColor> background_color;
+    absl::optional<SkColor> border_color;
+    SkColor text_color;
+  };
+
+  struct ButtonTheme {
+    ButtonStyle normal_light;
+    ButtonStyle normal_dark;
+
+    ButtonStyle hover_light;
+    ButtonStyle hover_dark;
+
+    ButtonStyle disabled_light;
+    ButtonStyle disabled_dark;
+
+    ButtonStyle loading_light;
+    ButtonStyle loading_dark;
+  };
+
+  enum Kind { CTA, PRIMARY, SECONDARY, TERTIARY };
+
   explicit MdTextButton(PressedCallback callback = PressedCallback(),
                         const std::u16string& text = std::u16string(),
                         int button_context = style::CONTEXT_BUTTON_MD);
@@ -41,9 +69,23 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
 
   SkPath GetHighlightPath() const;
 
+  Kind GetKind() const;
+  void SetKind(Kind kind);
+
+  void SetIcon(const gfx::VectorIcon* icon);
+
+  // MdTextButtonBase:
+  void UpdateColorsForBrave() override;
+  void UpdateIconForBrave() override;
+
  protected:
   // views::Views
   void OnPaintBackground(gfx::Canvas* canvas) override;
+
+ private:
+  Kind kind_ = CTA;
+  absl::optional<ButtonTheme> theme_;
+  raw_ptr<const gfx::VectorIcon> icon_ = nullptr;
 };
 
 }  // namespace views

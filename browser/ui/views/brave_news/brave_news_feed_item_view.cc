@@ -16,7 +16,9 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "ui/views/controls/button/button.h"
 #include "ui/views/controls/button/label_button.h"
+#include "ui/views/controls/button/md_text_button.h"
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/layout/flex_layout_types.h"
 #include "ui/views/view_class_properties.h"
@@ -52,7 +54,7 @@ BraveNewsFeedItemView::BraveNewsFeedItemView(
       views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToMinimum,
                                views::MaximumFlexSizeRule::kUnbounded));
 
-  subscribe_button_ = AddChildView(std::make_unique<leo::LeoButton>(
+  subscribe_button_ = AddChildView(std::make_unique<views::MdTextButton>(
       base::BindRepeating(&BraveNewsFeedItemView::OnPressed,
                           base::Unretained(this)),
       u""));
@@ -70,9 +72,9 @@ void BraveNewsFeedItemView::Update() {
       is_subscribed ? IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_UNSUBSCRIBE
                     : IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_SUBSCRIBE));
 
-  subscribe_button_->SetLoading(loading_);
-  subscribe_button_->SetKind(!is_subscribed ? leo::LeoButton::Kind::PRIMARY
-                                            : leo::LeoButton::Kind::SECONDARY);
+  // subscribe_button_->SetLoading(loading_);
+  subscribe_button_->SetKind(is_subscribed ? views::MdTextButton::SECONDARY
+                                           : views::MdTextButton::PRIMARY);
   subscribe_button_->SetIcon(is_subscribed ? &kBraveNewsUnfollowButtonIcon
                                            : &kBraveNewsFollowButtonIcon);
 }
