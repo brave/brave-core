@@ -1254,6 +1254,11 @@ TEST_F(JsonRpcServiceUnitTest, GetHiddenNetworks) {
 }
 
 TEST_F(JsonRpcServiceUnitTest, EnsGetContentHash) {
+#if !BUILDFLAG(IS_ANDROID)
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndDisableFeature(features::kBraveWalletENSL2Feature);
+#endif
+
   {
     base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
     EXPECT_CALL(
@@ -1302,6 +1307,11 @@ TEST_F(JsonRpcServiceUnitTest, EnsGetContentHash) {
 }
 
 TEST_F(JsonRpcServiceUnitTest, EnsGetEthAddr) {
+#if !BUILDFLAG(IS_ANDROID)
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndDisableFeature(features::kBraveWalletENSL2Feature);
+#endif
+
   SetUDENSInterceptor(mojom::kMainnetChainId);
   EXPECT_TRUE(SetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH));
 
@@ -1313,6 +1323,11 @@ TEST_F(JsonRpcServiceUnitTest, EnsGetEthAddr) {
 }
 
 TEST_F(JsonRpcServiceUnitTest, EnsGetEthAddr_ZeroAddress) {
+#if !BUILDFLAG(IS_ANDROID)
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndDisableFeature(features::kBraveWalletENSL2Feature);
+#endif
+
   SetENSZeroAddressInterceptor(mojom::kMainnetChainId);
   EXPECT_TRUE(SetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH));
 
@@ -4696,8 +4711,10 @@ class ENSL2JsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
   std::unique_ptr<OffchainGatewayHandler> offchain_gateway_handler_;
 
  private:
+#if BUILDFLAG(IS_ANDROID)
   base::test::ScopedFeatureList feature_list_{
       features::kBraveWalletENSL2Feature};
+#endif
 };
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr) {
