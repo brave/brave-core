@@ -250,6 +250,14 @@ extension Preferences {
     /// Tells the app whether we should try to fetch super referrer assets again in case of network error.
     public static let superReferrerThemeRetryDeadline =
       Option<Date?>(key: "newtabpage.superreferrer-retry-deadline", default: nil)
+    
+    /// Tells the app whether we should show Privacy Hub in new tab page view controller
+    public static let showNewTabPrivacyHub =
+      Option<Bool>(key: "newtabpage.show-newtab-privacyhub", default: true)
+    
+    /// Tells the app whether we should show Favourites in new tab page view controller
+    public static let showNewTabFavourites =
+      Option<Bool>(key: "newtabpage.show-newtab-favourites", default: true)
   }
 
   final public class Chromium {

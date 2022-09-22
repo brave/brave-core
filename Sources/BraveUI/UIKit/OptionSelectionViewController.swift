@@ -40,17 +40,35 @@ public class OptionSelectionViewController<OptionType: RepresentableOptionType>:
     }
   }
 
-  public init(options: [OptionType], selectedOption: OptionType? = nil, optionChanged: @escaping SelectedOptionChanged) {
+  public init(
+    headerText: String? = nil,
+    footerText: String? = nil,
+    style: UITableView.Style = .grouped,
+    options: [OptionType],
+    selectedOption: OptionType? = nil,
+    optionChanged: @escaping SelectedOptionChanged) {
     assert(!options.isEmpty, "There should always be at least 1 option to choose from")
 
     self.options = options
     self.selectedOption = selectedOption ?? options.first!
     self.optionChanged = optionChanged
 
-    super.init(style: .grouped)
+    super.init(style: style)
+      
+    var header: Section.Extremity?
+    var footer: Section.Extremity?
+
+    if let headerText = headerText {
+      header = .title(headerText)
+    }
+      
+    if let footerText = footerText {
+      footer = .title(footerText)
+    }
 
     dataSource.sections = [
       Section(
+        header: header,
         rows: options.map { o in
           Row(
             text: o.displayString,
@@ -60,7 +78,8 @@ public class OptionSelectionViewController<OptionType: RepresentableOptionType>:
               self.updateRowsForSelectedOption()
               self.navigationController?.popViewController(animated: true)
             }, image: o.image, accessory: o == selectedOption ? .checkmark : .none)
-        }
+        },
+        footer: footer
       )
     ]
   }
