@@ -957,6 +957,11 @@ public class BraveNewTabPageLayout
         }
 
         if (mIsDisplayNews) {
+            if (mIsDisplayNewsOptin) {
+                mIsDisplayNewsOptin = false;
+                mNtpAdapter.removeNewsOptin();
+                mNtpAdapter.setImageCreditAlpha(1f);
+            }
             mNtpAdapter.setDisplayNews(mIsDisplayNews);
             getFeed(false);
         }
