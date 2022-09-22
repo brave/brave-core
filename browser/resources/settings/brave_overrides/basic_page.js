@@ -6,7 +6,7 @@
 import {html, RegisterPolymerTemplateModifications, RegisterStyleOverride} from 'chrome://brave-resources/polymer_overriding.js'
 import {loadTimeData} from '../i18n_setup.js'
 
-import '../brave_default_extensions_page/brave_default_extensions_page.js'
+import '../brave_default_extensions_page/brave_default_extensions_page.html.js'
 import '../brave_help_tips_page/brave_help_tips_page.html.js'
 import '../brave_ipfs_page/brave_ipfs_page.html.js'
 import '../brave_new_tab_page/brave_new_tab_page.m.js'
