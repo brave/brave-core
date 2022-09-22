@@ -1,0 +1,44 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+module ledger.mojom;
+
+enum PatchWalletsError {
+  kFailedToCreateRequest,
+  kInvalidRequest,                      // HTTP 400, HTTP 403
+  kBadRequestSignature,                 // HTTP 401
+  kRequestSignatureVerificationFailure, // HTTP 403
+  kUnknownMessage,                      // HTTP 403
+  kGeoCountryAlreadyDeclared,           // HTTP 409
+  kUnexpectedError,                     // HTTP 500
+  kUnexpectedStatusCode,                // HTTP xxx
+  kFailedToParseBody
+};
+
+enum PostConnectError {
+  kFailedToCreateRequest,
+  kFlaggedWallet,                       // HTTP 400
+  kMismatchedProviderAccountRegions,    // HTTP 400
+  kRegionNotSupported,                  // HTTP 400
+  kUnknownMessage,                      // HTTP 400, HTTP 403
+  kKycRequired,                         // HTTP 403, HTTP 404
+  kMismatchedProviderAccounts,          // HTTP 403
+  kRequestSignatureVerificationFailure, // HTTP 403
+  kTransactionVerificationFailure,      // HTTP 403
+  kDeviceLimitReached,                  // HTTP 409
+  kUnexpectedError,                     // HTTP 500
+  kUnexpectedStatusCode,                // HTTP xxx
+  kFailedToParseBody
+};
+
+enum PostWalletsError {
+  kFailedToCreateRequest,
+  kInvalidRequest,                      // HTTP 400
+  kInvalidPublicKey,                    // HTTP 401
+  kWalletGenerationDisabled,            // HTTP 403
+  kWalletAlreadyExists,                 // HTTP 409
+  kUnexpectedError,                     // HTTP 500
+  kUnexpectedStatusCode,                // HTTP xxx
+  kFailedToParseBody
+};

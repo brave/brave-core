@@ -3,13 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_REQUEST_POST_CONNECT_GEMINI_POST_CONNECT_GEMINI_H_
-#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_REQUEST_POST_CONNECT_GEMINI_POST_CONNECT_GEMINI_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINTS_POST_CONNECT_GEMINI_POST_CONNECT_GEMINI_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINTS_POST_CONNECT_GEMINI_POST_CONNECT_GEMINI_H_
 
 #include <string>
 
-#include "bat/ledger/internal/request/post_connect/post_connect.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "bat/ledger/internal/endpoints/post_connect/post_connect.h"
 
 // POST /v3/wallet/gemini/{rewards_payment_id}/claim
 //
@@ -21,20 +20,12 @@
 // }
 // clang-format on
 //
-// Success code:
-// HTTP_OK (200)
-//
-// Error codes:
-// HTTP_BAD_REQUEST (400)
-// HTTP_FORBIDDEN (403)
-// HTTP_NOT_FOUND (404)
-// HTTP_CONFLICT (409)
-// HTTP_INTERNAL_SERVER_ERROR (500)
+// Response body: -
 
 namespace ledger {
 class LedgerImpl;
 
-namespace request::connect {
+namespace endpoints {
 
 class PostConnectGemini final : public PostConnect {
  public:
@@ -52,7 +43,7 @@ class PostConnectGemini final : public PostConnect {
   std::string recipient_id_;
 };
 
-}  // namespace request::connect
+}  // namespace endpoints
 }  // namespace ledger
 
-#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_REQUEST_POST_CONNECT_GEMINI_POST_CONNECT_GEMINI_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINTS_POST_CONNECT_GEMINI_POST_CONNECT_GEMINI_H_

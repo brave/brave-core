@@ -3,9 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ledger/internal/request/post_connect/uphold/post_connect_uphold.h"
+#include "bat/ledger/internal/endpoints/post_connect/uphold/post_connect_uphold.h"
 
-#include <map>
 #include <utility>
 
 #include "base/base64.h"
@@ -13,7 +12,7 @@
 #include "bat/ledger/internal/common/security_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
-namespace ledger::request::connect {
+namespace ledger::endpoints {
 
 PostConnectUphold::PostConnectUphold(LedgerImpl* ledger, std::string&& address)
     : PostConnect(ledger), address_(std::move(address)) {}
@@ -21,11 +20,18 @@ PostConnectUphold::PostConnectUphold(LedgerImpl* ledger, std::string&& address)
 PostConnectUphold::~PostConnectUphold() = default;
 
 absl::optional<std::string> PostConnectUphold::Content() const {
+  if (address_.empty()) {
+    BLOG(0, "address_ is empty!");
+    return absl::nullopt;
+  }
+
   const auto wallet = ledger_->wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Rewards wallet is null!");
     return absl::nullopt;
   }
+
+  DCHECK(!wallet->recovery_seed.empty());
 
   base::Value::Dict denomination;
   denomination.Set("amount", "0");
@@ -79,7 +85,8 @@ absl::optional<std::string> PostConnectUphold::Content() const {
   return json;
 }
 
-absl::optional<std::vector<std::string>> PostConnectUphold::Headers() const {
+absl::optional<std::vector<std::string>> PostConnectUphold::Headers(
+    const std::string&) const {
   return std::vector<std::string>{};
 }
 
@@ -87,4 +94,4 @@ const char* PostConnectUphold::Path() const {
   return "/v3/wallet/uphold/%s/claim";
 }
 
-}  // namespace ledger::request::connect
+}  // namespace ledger::endpoints

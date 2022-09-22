@@ -15,6 +15,8 @@
 #include "bat/ledger/internal/state/state_keys.h"
 #include "net/http/http_status_code.h"
 
+// npm run test -- brave_unit_tests --filter=*WalletTest*
+
 namespace ledger {
 
 class WalletTest : public BATLedgerTest {
@@ -77,6 +79,7 @@ TEST_F(WalletTest, CreateWallet) {
   ASSERT_TRUE(wallet);
   EXPECT_TRUE(!wallet->payment_id.empty());
   EXPECT_TRUE(!wallet->recovery_seed.empty());
+  EXPECT_TRUE(wallet->geo_country.empty());
 
   // Create a wallet when there is corrupted wallet information.
   GetTestLedgerClient()->SetStringState(state::kWalletBrave, "BAD-DATA");
@@ -86,6 +89,7 @@ TEST_F(WalletTest, CreateWallet) {
   ASSERT_TRUE(wallet);
   EXPECT_TRUE(!wallet->payment_id.empty());
   EXPECT_TRUE(!wallet->recovery_seed.empty());
+  EXPECT_TRUE(wallet->geo_country.empty());
 }
 
 }  // namespace ledger
