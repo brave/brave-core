@@ -25,18 +25,17 @@ const returnToMutationObserverIntervalMs = 10000
 const selectorsPollingIntervalMs = 500
 let selectorsPollingIntervalId: number | undefined
 
-
 // The number of potentially new selectors that are processed during the last
 // |scoreCalcIntervalMs|.
 let currentMutationScore = 0
 // The time frame used to calc |currentMutationScore|.
-const scoreCalcIntervalMs = 1000;
+const scoreCalcIntervalMs = 1000
 // The begin of the time frame to calc |currentMutationScore|.
 let currentMutationStartTime = performance.now()
 
 // The next allowed time to call FetchNewClassIdRules() if it's throttled.
 let nextFetchNewClassIdRulesCall = 0
-let fetchNewClassIdRulesTimeoutId : number | undefined
+let fetchNewClassIdRulesTimeoutId: number | undefined
 
 const queriedIds = new Set<string>()
 const queriedClasses = new Set<string>()
@@ -118,23 +117,25 @@ const isHTMLElement = (node: Node): boolean => {
 // process => request to the rust CS engine and back.
 // So limit the number of calls to one per fetchNewClassIdRulesThrottlingMs.
 const ShouldThrottleFetchNewClassIdsRules = (): boolean => {
-  if (CC.fetchNewClassIdRulesThrottlingMs === undefined)
+  if (CC.fetchNewClassIdRulesThrottlingMs === undefined) {
     return false // the feature is disabled.
+  }
 
-  if (fetchNewClassIdRulesTimeoutId)
+  if (fetchNewClassIdRulesTimeoutId) {
     return true // The function has already scheduled and called later.
+  }
 
   const now = performance.now()
-  const ms_to_wait = nextFetchNewClassIdRulesCall - now;
-  if (ms_to_wait > 0) {
-    // Schedule the call in |ms_to_wait| ms and return.
+  const msToWait = nextFetchNewClassIdRulesCall - now
+  if (msToWait > 0) {
+    // Schedule the call in |msToWait| ms and return.
     fetchNewClassIdRulesTimeoutId =
       window.setTimeout(
         () => {
           fetchNewClassIdRulesTimeoutId = undefined
           fetchNewClassIdRules()
         }
-        , ms_to_wait)
+        , msToWait)
     return true
   }
 
@@ -158,13 +159,13 @@ const fetchNewClassIdRules = () => {
   notYetQueriedIds = []
 }
 
-
 const UseMutationObserver = () => {
   clearInterval(selectorsPollingIntervalId)
   selectorsPollingIntervalId = undefined
 
-  if (!cosmeticObserver)
+  if (!cosmeticObserver) {
     cosmeticObserver = new MutationObserver(handleMutations)
+  }
 
   const observerConfig = {
     subtree: true,
@@ -175,7 +176,7 @@ const UseMutationObserver = () => {
 }
 
 const UseSelectorsPolling = () => {
-  cosmeticObserver?.disconnect();
+  cosmeticObserver?.disconnect()
   selectorsPollingIntervalId = window.setInterval(querySelectors,
                                                  selectorsPollingIntervalMs)
   window.setTimeout(UseMutationObserver, returnToMutationObserverIntervalMs)
@@ -245,21 +246,25 @@ const handleMutations: MutationCallback = (mutations: MutationRecord[]) => {
 
     if (now > currentMutationStartTime + scoreCalcIntervalMs) {
       // Start the next time frame.
-      currentMutationStartTime = now;
-      currentMutationScore = 0;
+      currentMutationStartTime = now
+      currentMutationScore = 0
     }
 
     currentMutationScore += mutationScore
-    if (currentMutationScore > CC.switchToSelectorsPollingThreshold)
+    if (currentMutationScore > CC.switchToSelectorsPollingThreshold) {
       UseSelectorsPolling()
+    }
   }
 
-  if (!ShouldThrottleFetchNewClassIdsRules())
+  if (!ShouldThrottleFetchNewClassIdsRules()) {
     fetchNewClassIdRules()
+  }
 
-  // Callback to c++ renderer process
-  if (eventId)  // @ts-expect-error
+  if (eventId) {
+    // Callback to c++ renderer process
+    // @ts-expect-error
     cf_worker.onHandleMutationsEnd(eventId)
+  }
 }
 
 const isFirstPartyUrl = (url: string): boolean => {
@@ -585,7 +590,7 @@ const pumpCosmeticFilterQueuesOnIdle = idleize(
 const querySelectors = () => {
   // Callback to c++ renderer process
   // @ts-expect-error
-  const eventId : number | undefined = cf_worker.onQuerySelectorsBegin?.()
+  const eventId: number | undefined = cf_worker.onQuerySelectorsBegin?.()
 
   const elmWithClassOrId = document.querySelectorAll('[class],[id]')
   for (const elm of elmWithClassOrId) {
@@ -604,19 +609,21 @@ const querySelectors = () => {
 
   fetchNewClassIdRules()
 
-  // Callback to c++ renderer process
-  if (eventId)  // @ts-expect-error
+  if (eventId) {
+    // Callback to c++ renderer process
+    // @ts-expect-error
     cf_worker.onQuerySelectorsEnd(eventId)
+  }
 }
 
 const startObserving = () => {
   // First queue up any classes and ids that exist before the mutation observer
   // starts running.
-  querySelectors();
+  querySelectors()
 
   // Second, set up a mutation observer to handle any new ids or classes
   // that are added to the document.
-  UseMutationObserver();
+  UseMutationObserver()
 }
 
 const scheduleQueuePump = (hide1pContent: boolean, genericHide: boolean) => {
@@ -636,10 +643,11 @@ const scheduleQueuePump = (hide1pContent: boolean, genericHide: boolean) => {
   CC._startCheckingId = window.requestIdleCallback(function ({ didTimeout }) {
     CC._hasDelayOcurred = true
     if (!genericHide) {
-      if (CC.firstSelectorsPollingDelayMs === undefined)
-        startObserving();
-      else
+      if (CC.firstSelectorsPollingDelayMs === undefined) {
+        startObserving()
+      } else {
         window.setTimeout(startObserving, CC.firstSelectorsPollingDelayMs)
+      }
     }
     if (!hide1pContent) {
       pumpCosmeticFilterQueuesOnIdle()
