@@ -454,6 +454,38 @@ class JsonRpcServiceUnitTest : public testing::Test {
         }));
   }
 
+  void SetENSZeroAddressInterceptor(const std::string& chain_id) {
+    GURL network_url = AddInfuraProjectId(
+        GetNetworkURL(prefs(), chain_id, mojom::CoinType::ETH));
+    ASSERT_TRUE(network_url.is_valid());
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&, network_url](const network::ResourceRequest& request) {
+          base::StringPiece request_string(request.request_body->elements()
+                                               ->at(0)
+                                               .As<network::DataElementBytes>()
+                                               .AsStringPiece());
+          url_loader_factory_.ClearResponses();
+          if (request_string.find(GetFunctionHash("resolver(bytes32)")) !=
+              std::string::npos) {
+            url_loader_factory_.AddResponse(
+                network_url.spec(),
+                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+                "\"0x0000000000000000000000004976fb03c32e5b8cfe2b6ccb31c09ba78e"
+                "baba41\"}");
+          } else if (request_string.find(GetFunctionHash("addr(bytes32)")) !=
+                     std::string::npos) {
+            url_loader_factory_.AddResponse(
+                network_url.spec(),
+                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+                "\"0x0000000000000000000000000000000000000000000000000000000000"
+                "000000\"}");
+          } else {
+            url_loader_factory_.AddResponse(request.url.spec(), "",
+                                            net::HTTP_REQUEST_TIMEOUT);
+          }
+        }));
+  }
+
   void SetTokenMetadataInterceptor(
       const std::string& interface_id,
       const std::string& chain_id,
@@ -1215,6 +1247,18 @@ TEST_F(JsonRpcServiceUnitTest, EnsGetEthAddr) {
   base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
   EXPECT_CALL(callback, Run("0x983110309620D911731Ac0932219af06091b6744",
                             mojom::ProviderError::kSuccess, ""));
+  json_rpc_service_->EnsGetEthAddr("brantly-test.eth", callback.Get());
+  base::RunLoop().RunUntilIdle();
+}
+
+TEST_F(JsonRpcServiceUnitTest, EnsGetEthAddr_ZeroAddress) {
+  SetENSZeroAddressInterceptor(mojom::kMainnetChainId);
+  EXPECT_TRUE(SetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH));
+
+  base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
+  EXPECT_CALL(callback,
+              Run("", mojom::ProviderError::kInvalidParams,
+                  l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
   json_rpc_service_->EnsGetEthAddr("brantly-test.eth", callback.Get());
   base::RunLoop().RunUntilIdle();
 }
