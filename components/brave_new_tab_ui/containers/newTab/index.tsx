@@ -169,6 +169,7 @@ class NewTabPage extends React.Component<Props, State> {
     const shouldPromptBraveToday =
       this.props.newTabData.featureFlagBraveNewsPromptEnabled &&
       this.props.newTabData.showToday &&
+      !this.props.newTabData.brandedWallpaper?.isSponsored &&
       !this.props.todayData.articleScrollTo
     if (shouldPromptBraveToday) {
       this.braveNewsPromptTimerId = window.setTimeout(() => {
