@@ -1,20 +1,19 @@
 diff --git a/ios/chrome/browser/prefs/browser_prefs.mm b/ios/chrome/browser/prefs/browser_prefs.mm
-index 4d86ea0dd360ddfa560563d22d0567a579ffe1b0..2f62d05f0e630597b34d9b7a3a37b1bc599b1a6f 100644
+index 3bb081791231cb284626472c55648d14c31ed934..035c9c6c845ddf004ee44bb71890e79671618f4b 100644
 --- a/ios/chrome/browser/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/prefs/browser_prefs.mm
-@@ -179,6 +179,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-   registry->RegisterIntegerPref(kFRETrialGroupPrefName, 0);
- 
-   registry->RegisterIntegerPref(kTrialGroupV3PrefName, 0);
+@@ -193,6 +193,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+   // times a user should see autofill branding animation after installation.
+   registry->RegisterIntegerPref(
+       prefs::kAutofillBrandingIconAnimationRemainingCountPrefName, 2);
 +  BRAVE_REGISTER_LOCAL_STATE_PREFS
  }
  
  void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -297,6 +298,8 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-                                 PrefRegistry::LOSSY_PREF);
-   registry->RegisterTimePref(prefs::kIosShareChromeLastShare, base::Time(),
+@@ -310,6 +311,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
                               PrefRegistry::LOSSY_PREF);
-+
+ 
+   registry->RegisterDictionaryPref(kPrefPromoObject);
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  
