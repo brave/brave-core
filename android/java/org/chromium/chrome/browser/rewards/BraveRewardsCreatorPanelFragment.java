@@ -72,6 +72,9 @@ public class BraveRewardsCreatorPanelFragment extends Fragment
     private final String REDDIT = "reddit";
     private final String VIMEO = "vimeo";
 
+    private static final String TAG = "TippingBanner";
+
+
     public static BraveRewardsCreatorPanelFragment newInstance(
             int tabId, boolean isMonthlyContribution, String bannerInfo) {
         BraveRewardsCreatorPanelFragment fragment = new BraveRewardsCreatorPanelFragment();
@@ -270,7 +273,7 @@ public class BraveRewardsCreatorPanelFragment extends Fragment
                         new BraveRewardsExternalWallet(externalWallet);
                 walletStatus = mExternalWallet.getStatus();
             } catch (JSONException e) {
-                Log.e("BraveRewards", e.getMessage());
+                Log.e(TAG, "BraveRewardsCreatorPanelFragment" + e.getMessage());
             }
         }
         @PublisherStatus
@@ -287,17 +290,17 @@ public class BraveRewardsCreatorPanelFragment extends Fragment
                     || pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED
                     || pubStatus == BraveRewardsPublisher.BITFLYER_VERIFIED
                     || pubStatus == BraveRewardsPublisher.GEMINI_VERIFIED) {
-                Log.e("BraveRewards", "User is unverified and publisher is verified");
+                Log.e(TAG, "User is unverified and publisher is verified");
             } else {
                 notePart1 = getResources().getString(
                         R.string.brave_ui_site_banner_unverified_notice_text);
-                Log.e("BraveRewards", "User is unverified and publisher is unverified");
+                Log.e(TAG, "User is unverified and publisher is unverified");
             }
         } else {
             if (pubStatus == BraveRewardsPublisher.NOT_VERIFIED) {
                 notePart1 = getResources().getString(
                         R.string.brave_ui_site_banner_unverified_notice_text);
-                Log.e("BraveRewards", "User is verified and publisher is unverified");
+                Log.e(TAG, "User is verified and publisher is unverified");
             } else if (pubStatus == BraveRewardsPublisher.CONNECTED
                     || (pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED
                             && !walletType.equals(BraveWalletProvider.UPHOLD))
@@ -307,7 +310,7 @@ public class BraveRewardsCreatorPanelFragment extends Fragment
                             && !walletType.equals(BraveWalletProvider.GEMINI))) {
                 notePart1 = getResources().getString(
                         R.string.brave_ui_site_banner_different_verified_notice_text);
-                Log.e("BraveRewards",
+                Log.e(TAG,
                         "User is verified and publisher is verified but not with the same provider");
             }
         }
