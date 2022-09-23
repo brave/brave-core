@@ -34,227 +34,226 @@ class BraveRewardsNativeWorker
     : public brave_rewards::RewardsServiceObserver,
       public brave_rewards::RewardsNotificationServiceObserver {
  public:
-    BraveRewardsNativeWorker(JNIEnv* env,
-        const base::android::JavaRef<jobject>& obj);
-    ~BraveRewardsNativeWorker() override;
+  BraveRewardsNativeWorker(JNIEnv* env,
+                           const base::android::JavaRef<jobject>& obj);
+  ~BraveRewardsNativeWorker() override;
 
-    void Destroy(JNIEnv* env);
+  void Destroy(JNIEnv* env);
 
-    void CreateRewardsWallet(JNIEnv* env);
+  void CreateRewardsWallet(JNIEnv* env);
 
-    void GetRewardsParameters(JNIEnv* env);
+  void GetRewardsParameters(JNIEnv* env);
 
-    void GetPublisherInfo(JNIEnv* env,
-                          int tabId,
-                          const base::android::JavaParamRef<jstring>& host);
+  void GetPublisherInfo(JNIEnv* env,
+                        int tabId,
+                        const base::android::JavaParamRef<jstring>& host);
 
-    base::android::ScopedJavaLocalRef<jstring> GetWalletBalance(JNIEnv* env);
+  base::android::ScopedJavaLocalRef<jstring> GetWalletBalance(JNIEnv* env);
 
-    base::android::ScopedJavaLocalRef<jstring> GetExternalWalletType(
-        JNIEnv* env);
+  base::android::ScopedJavaLocalRef<jstring> GetExternalWalletType(JNIEnv* env);
 
-    void GetAdsAccountStatement(JNIEnv* env);
+  void GetAdsAccountStatement(JNIEnv* env);
 
-    base::android::ScopedJavaLocalRef<jdoubleArray> GetTipChoices(JNIEnv* env);
+  base::android::ScopedJavaLocalRef<jdoubleArray> GetTipChoices(JNIEnv* env);
 
-    double GetWalletRate(JNIEnv* env);
+  double GetWalletRate(JNIEnv* env);
 
-    base::android::ScopedJavaLocalRef<jstring> GetPublisherURL(JNIEnv* env,
-                                                               uint64_t tabId);
+  base::android::ScopedJavaLocalRef<jstring> GetPublisherURL(JNIEnv* env,
+                                                             uint64_t tabId);
 
-    base::android::ScopedJavaLocalRef<jstring> GetPublisherFavIconURL(
-        JNIEnv* env,
-        uint64_t tabId);
+  base::android::ScopedJavaLocalRef<jstring> GetPublisherFavIconURL(
+      JNIEnv* env,
+      uint64_t tabId);
 
-    base::android::ScopedJavaLocalRef<jstring> GetPublisherName(JNIEnv* env,
-                                                                uint64_t tabId);
-    base::android::ScopedJavaLocalRef<jstring> GetCaptchaSolutionURL(
-        JNIEnv* env,
-        const base::android::JavaParamRef<jstring>& paymentId,
-        const base::android::JavaParamRef<jstring>& captchaId);
+  base::android::ScopedJavaLocalRef<jstring> GetPublisherName(JNIEnv* env,
+                                                              uint64_t tabId);
+  base::android::ScopedJavaLocalRef<jstring> GetCaptchaSolutionURL(
+      JNIEnv* env,
+      const base::android::JavaParamRef<jstring>& paymentId,
+      const base::android::JavaParamRef<jstring>& captchaId);
 
-    base::android::ScopedJavaLocalRef<jstring> GetPublisherId(JNIEnv* env,
-        uint64_t tabId);
+  base::android::ScopedJavaLocalRef<jstring> GetPublisherId(JNIEnv* env,
+                                                            uint64_t tabId);
 
-    int GetPublisherPercent(JNIEnv* env, uint64_t tabId);
+  int GetPublisherPercent(JNIEnv* env, uint64_t tabId);
 
-    bool GetPublisherExcluded(JNIEnv* env, uint64_t tabId);
+  bool GetPublisherExcluded(JNIEnv* env, uint64_t tabId);
 
-    int GetPublisherStatus(JNIEnv* env, uint64_t tabId);
+  int GetPublisherStatus(JNIEnv* env, uint64_t tabId);
 
-    void GetCurrentBalanceReport(JNIEnv* env);
+  void GetCurrentBalanceReport(JNIEnv* env);
 
-    void IncludeInAutoContribution(JNIEnv* env, uint64_t tabId, bool exclude);
+  void IncludeInAutoContribution(JNIEnv* env, uint64_t tabId, bool exclude);
 
-    void RemovePublisherFromMap(JNIEnv* env, uint64_t tabId);
+  void RemovePublisherFromMap(JNIEnv* env, uint64_t tabId);
 
-    void Donate(JNIEnv* env,
-                const base::android::JavaParamRef<jstring>& publisher_key,
-                double amount,
-                bool recurring);
+  void Donate(JNIEnv* env,
+              const base::android::JavaParamRef<jstring>& publisher_key,
+              double amount,
+              bool recurring);
 
-    void GetAllNotifications(JNIEnv* env);
+  void GetAllNotifications(JNIEnv* env);
 
-    void DeleteNotification(JNIEnv* env,
-        const base::android::JavaParamRef<jstring>& notification_id);
+  void DeleteNotification(
+      JNIEnv* env,
+      const base::android::JavaParamRef<jstring>& notification_id);
 
-    void GetGrant(JNIEnv* env,
-                  const base::android::JavaParamRef<jstring>& promotionId);
+  void GetGrant(JNIEnv* env,
+                const base::android::JavaParamRef<jstring>& promotionId);
 
-    base::android::ScopedJavaLocalRef<jobjectArray> GetCurrentGrant(
-        JNIEnv* env,
-        int position);
+  base::android::ScopedJavaLocalRef<jobjectArray> GetCurrentGrant(JNIEnv* env,
+                                                                  int position);
 
-    void GetPendingContributionsTotal(JNIEnv* env);
+  void GetPendingContributionsTotal(JNIEnv* env);
 
-    void GetRecurringDonations(JNIEnv* env);
+  void GetRecurringDonations(JNIEnv* env);
 
-    bool IsCurrentPublisherInRecurrentDonations(JNIEnv* env,
-        const base::android::JavaParamRef<jstring>& publisher);
+  bool IsCurrentPublisherInRecurrentDonations(
+      JNIEnv* env,
+      const base::android::JavaParamRef<jstring>& publisher);
 
-    void GetAutoContributeProperties(JNIEnv* env);
+  void GetAutoContributeProperties(JNIEnv* env);
 
-    bool IsAutoContributeEnabled(JNIEnv* env);
+  bool IsAutoContributeEnabled(JNIEnv* env);
 
-    void GetReconcileStamp(JNIEnv* env);
+  void GetReconcileStamp(JNIEnv* env);
 
-    void ResetTheWholeState(JNIEnv* env);
+  void ResetTheWholeState(JNIEnv* env);
 
-    double GetPublisherRecurrentDonationAmount(JNIEnv* env,
-        const base::android::JavaParamRef<jstring>& publisher);
+  double GetPublisherRecurrentDonationAmount(
+      JNIEnv* env,
+      const base::android::JavaParamRef<jstring>& publisher);
 
-    void RemoveRecurring(JNIEnv* env,
-        const base::android::JavaParamRef<jstring>& publisher);
+  void RemoveRecurring(JNIEnv* env,
+                       const base::android::JavaParamRef<jstring>& publisher);
 
-    void FetchGrants(JNIEnv* env);
+  void FetchGrants(JNIEnv* env);
 
-    int GetAdsPerHour(JNIEnv* env);
+  int GetAdsPerHour(JNIEnv* env);
 
-    void SetAdsPerHour(JNIEnv* env, jint value);
+  void SetAdsPerHour(JNIEnv* env, jint value);
 
-    void SetAutoContributionAmount(JNIEnv* env, jdouble value);
+  void SetAutoContributionAmount(JNIEnv* env, jdouble value);
 
-    void GetAutoContributionAmount(JNIEnv* env);
+  void GetAutoContributionAmount(JNIEnv* env);
 
-    void GetExternalWallet(JNIEnv* env);
+  void GetExternalWallet(JNIEnv* env);
 
-    void GetPublisherBanner(
-        JNIEnv* env,
-        const base::android::JavaParamRef<jstring>& publisher_key);
+  void GetPublisherBanner(
+      JNIEnv* env,
+      const base::android::JavaParamRef<jstring>& publisher_key);
 
-    void DisconnectWallet(JNIEnv* env);
+  void DisconnectWallet(JNIEnv* env);
 
-    void RecoverWallet(JNIEnv* env,
-                       const base::android::JavaParamRef<jstring>& pass_phrase);
+  void RecoverWallet(JNIEnv* env,
+                     const base::android::JavaParamRef<jstring>& pass_phrase);
 
-    void RefreshPublisher(
-        JNIEnv* env,
-        const base::android::JavaParamRef<jstring>& publisher_key);
+  void RefreshPublisher(
+      JNIEnv* env,
+      const base::android::JavaParamRef<jstring>& publisher_key);
 
-    void OnResetTheWholeState(const bool success);
+  void OnResetTheWholeState(const bool success);
 
-    void OnGetGetReconcileStamp(uint64_t timestamp);
+  void OnGetGetReconcileStamp(uint64_t timestamp);
 
-    void OnGetAutoContributeProperties(
-        ledger::mojom::AutoContributePropertiesPtr properties);
+  void OnGetAutoContributeProperties(
+      ledger::mojom::AutoContributePropertiesPtr properties);
 
-    void OnGetAutoContributionAmount(double auto_contribution_amount);
+  void OnGetAutoContributionAmount(double auto_contribution_amount);
 
-    void OnGetPendingContributionsTotal(double amount);
+  void OnGetPendingContributionsTotal(double amount);
 
-    void OnPanelPublisherInfo(brave_rewards::RewardsService* rewards_service,
-                              const ledger::mojom::Result result,
-                              const ledger::mojom::PublisherInfo* info,
-                              uint64_t tabId) override;
+  void OnPanelPublisherInfo(brave_rewards::RewardsService* rewards_service,
+                            const ledger::mojom::Result result,
+                            const ledger::mojom::PublisherInfo* info,
+                            uint64_t tabId) override;
 
-    void OnGetCurrentBalanceReport(
-        brave_rewards::RewardsService* rewards_service,
-        const ledger::mojom::Result result,
-        ledger::mojom::BalanceReportInfoPtr report);
+  void OnGetCurrentBalanceReport(brave_rewards::RewardsService* rewards_service,
+                                 const ledger::mojom::Result result,
+                                 ledger::mojom::BalanceReportInfoPtr report);
 
-    void OnGetRewardsParameters(brave_rewards::RewardsService* rewards_service,
-                                ledger::mojom::RewardsParametersPtr parameters);
+  void OnGetRewardsParameters(brave_rewards::RewardsService* rewards_service,
+                              ledger::mojom::RewardsParametersPtr parameters);
 
-    void OnUnblindedTokensReady(
-        brave_rewards::RewardsService* rewards_service) override;
+  void OnUnblindedTokensReady(
+      brave_rewards::RewardsService* rewards_service) override;
 
-    void OnReconcileComplete(
-        brave_rewards::RewardsService* rewards_service,
-        const ledger::mojom::Result result,
-        const std::string& contribution_id,
-        const double amount,
-        const ledger::mojom::RewardsType type,
-        const ledger::mojom::ContributionProcessor processor) override;
+  void OnReconcileComplete(
+      brave_rewards::RewardsService* rewards_service,
+      const ledger::mojom::Result result,
+      const std::string& contribution_id,
+      const double amount,
+      const ledger::mojom::RewardsType type,
+      const ledger::mojom::ContributionProcessor processor) override;
 
-    void OnPendingContributionSaved(
-        brave_rewards::RewardsService* rewards_service,
-        const ledger::mojom::Result result) override;
+  void OnPendingContributionSaved(
+      brave_rewards::RewardsService* rewards_service,
+      const ledger::mojom::Result result) override;
 
-    void OnNotificationAdded(
+  void OnNotificationAdded(
       brave_rewards::RewardsNotificationService* rewards_notification_service,
       const brave_rewards::RewardsNotificationService::RewardsNotification&
-        notification) override;
+          notification) override;
 
-    void OnGetAllNotifications(
+  void OnGetAllNotifications(
       brave_rewards::RewardsNotificationService* rewards_notification_service,
       const brave_rewards::RewardsNotificationService::RewardsNotificationsList&
           notifications_list) override;
 
-    void OnNotificationDeleted(
+  void OnNotificationDeleted(
       brave_rewards::RewardsNotificationService* rewards_notification_service,
       const brave_rewards::RewardsNotificationService::RewardsNotification&
-        notification) override;
+          notification) override;
 
-    void OnPromotionFinished(brave_rewards::RewardsService* rewards_service,
-                             const ledger::mojom::Result result,
-                             ledger::mojom::PromotionPtr promotion) override;
+  void OnPromotionFinished(brave_rewards::RewardsService* rewards_service,
+                           const ledger::mojom::Result result,
+                           ledger::mojom::PromotionPtr promotion) override;
 
-    void OnGetRecurringTips(std::vector<ledger::mojom::PublisherInfoPtr> list);
+  void OnGetRecurringTips(std::vector<ledger::mojom::PublisherInfoPtr> list);
 
-    void OnClaimPromotion(const ledger::mojom::Result result,
-                          ledger::mojom::PromotionPtr promotion);
+  void OnClaimPromotion(const ledger::mojom::Result result,
+                        ledger::mojom::PromotionPtr promotion);
 
-    void OnGetExternalWallet(const ledger::mojom::Result result,
-                             ledger::mojom::ExternalWalletPtr wallet);
+  void OnGetExternalWallet(const ledger::mojom::Result result,
+                           ledger::mojom::ExternalWalletPtr wallet);
 
-    void onPublisherBanner(ledger::mojom::PublisherBannerPtr wallet);
+  void onPublisherBanner(ledger::mojom::PublisherBannerPtr wallet);
 
-    void OnOneTimeTip(ledger::mojom::Result result);
+  void OnOneTimeTip(ledger::mojom::Result result);
 
-    void OnDisconnectWallet(brave_rewards::RewardsService* rewards_service,
-                            const ledger::mojom::Result result,
-                            const std::string& wallet_type) override;
+  void OnDisconnectWallet(brave_rewards::RewardsService* rewards_service,
+                          const ledger::mojom::Result result,
+                          const std::string& wallet_type) override;
 
-    void OnRecoverWallet(brave_rewards::RewardsService* rewards_service,
-                         const ledger::mojom::Result result) override;
+  void OnRecoverWallet(brave_rewards::RewardsService* rewards_service,
+                       const ledger::mojom::Result result) override;
 
-    void OnRefreshPublisher(const ledger::mojom::PublisherStatus status,
-                            const std::string& publisher_key);
-    void SetAutoContributeEnabled(
-        JNIEnv* env,
-        bool isAutoContributeEnabled);
+  void OnRefreshPublisher(const ledger::mojom::PublisherStatus status,
+                          const std::string& publisher_key);
+  void SetAutoContributeEnabled(JNIEnv* env, bool isAutoContributeEnabled);
 
  private:
-    std::string StdStrStrMapToJsonString(
-        const base::flat_map<std::string, std::string>& args);
+  std::string StdStrStrMapToJsonString(
+      const base::flat_map<std::string, std::string>& args);
 
-    void OnBalance(const ledger::mojom::Result result,
-                   ledger::mojom::BalancePtr balance);
+  void OnBalance(const ledger::mojom::Result result,
+                 ledger::mojom::BalancePtr balance);
 
-    void OnGetAdsAccountStatement(ads::mojom::StatementInfoPtr statement);
+  void OnGetAdsAccountStatement(ads::mojom::StatementInfoPtr statement);
 
-    JavaObjectWeakGlobalRef weak_java_brave_rewards_native_worker_;
-    raw_ptr<brave_rewards::RewardsService> brave_rewards_service_ = nullptr;
-    ledger::mojom::RewardsParameters parameters_;
-    ledger::mojom::Balance balance_;
-    ledger::mojom::AutoContributePropertiesPtr auto_contrib_properties_;
-    PublishersInfoMap map_publishers_info_;
-    std::map<std::string, ledger::mojom::PublisherInfoPtr>
-        map_recurrent_publishers_;
-    std::map<std::string, std::string> addresses_;
-    std::vector<ledger::mojom::PromotionPtr> promotions_;
-    base::WeakPtrFactory<BraveRewardsNativeWorker> weak_factory_;
+  JavaObjectWeakGlobalRef weak_java_brave_rewards_native_worker_;
+  raw_ptr<brave_rewards::RewardsService> brave_rewards_service_ = nullptr;
+  ledger::mojom::RewardsParameters parameters_;
+  ledger::mojom::Balance balance_;
+  ledger::mojom::AutoContributePropertiesPtr auto_contrib_properties_;
+  PublishersInfoMap map_publishers_info_;
+  std::map<std::string, ledger::mojom::PublisherInfoPtr>
+      map_recurrent_publishers_;
+  std::map<std::string, std::string> addresses_;
+  std::vector<ledger::mojom::PromotionPtr> promotions_;
+  base::WeakPtrFactory<BraveRewardsNativeWorker> weak_factory_;
 };
+
 }  // namespace android
 }  // namespace chrome
 
