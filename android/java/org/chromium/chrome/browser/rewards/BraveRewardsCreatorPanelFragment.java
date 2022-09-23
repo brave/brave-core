@@ -290,17 +290,17 @@ public class BraveRewardsCreatorPanelFragment extends Fragment
                     || pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED
                     || pubStatus == BraveRewardsPublisher.BITFLYER_VERIFIED
                     || pubStatus == BraveRewardsPublisher.GEMINI_VERIFIED) {
-                Log.e(TAG, "User is unverified and publisher is verified");
+                Log.d(TAG, "User is unverified and publisher is verified");
             } else {
                 notePart1 = getResources().getString(
                         R.string.brave_ui_site_banner_unverified_notice_text);
-                Log.e(TAG, "User is unverified and publisher is unverified");
+                Log.d(TAG, "User is unverified and publisher is unverified");
             }
         } else {
             if (pubStatus == BraveRewardsPublisher.NOT_VERIFIED) {
                 notePart1 = getResources().getString(
                         R.string.brave_ui_site_banner_unverified_notice_text);
-                Log.e(TAG, "User is verified and publisher is unverified");
+                Log.d(TAG, "User is verified and publisher is unverified");
             } else if (pubStatus == BraveRewardsPublisher.CONNECTED
                     || (pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED
                             && !walletType.equals(BraveWalletProvider.UPHOLD))
@@ -310,7 +310,7 @@ public class BraveRewardsCreatorPanelFragment extends Fragment
                             && !walletType.equals(BraveWalletProvider.GEMINI))) {
                 notePart1 = getResources().getString(
                         R.string.brave_ui_site_banner_different_verified_notice_text);
-                Log.e(TAG,
+                Log.d(TAG,
                         "User is verified and publisher is verified but not with the same provider");
             }
         }
