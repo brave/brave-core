@@ -63,7 +63,7 @@ export const DropDown = styled.div`
   @media screen and (max-width: 800px) {
     right: 0px;
   }
- `
+`
 
 export const NetworkItemWrapper = styled.div`
   display: flex;
@@ -99,6 +99,9 @@ export const LeftSide = styled.div`
   align-items: center;
   justify-content: flex-start;
   flex-direction: row;
+`
+
+export const SelectorLeftSide = styled(LeftSide)`
   white-space: nowrap;
   margin-right: 4px;
 `
@@ -145,7 +148,7 @@ export const SubDropDown = styled.div`
   @media screen and (max-width: 800px) {
     left: -252px;
   }
- `
+`
 
 export const SecondaryNetworkText = styled.span`
   font-family: Poppins;
