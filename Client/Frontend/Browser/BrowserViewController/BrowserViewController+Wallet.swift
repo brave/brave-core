@@ -80,7 +80,8 @@ extension BrowserViewController {
   /// when the pending request is updated so we can update the wallet url bar button.
   func newWalletStore() -> WalletStore? {
     let privateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
-    guard let walletStore = WalletStore.from(privateMode: privateMode) else {
+    guard let walletStore = WalletStore.from(privateMode: privateMode)
+    else {
       log.error("Failed to load wallet. One or more services were unavailable")
       return nil
     }
@@ -92,11 +93,11 @@ extension BrowserViewController {
     return walletStore
   }
   
-  func presentWalletPanel(tab: Tab) {
+  func presentWalletPanel(from origin: URLOrigin, with tabDappStore: TabDappStore) {
     guard let walletStore = self.walletStore ?? newWalletStore() else { return }
-    let origin = tab.getOrigin()
     let controller = WalletPanelHostingController(
       walletStore: walletStore,
+      tabDappStore: tabDappStore,
       origin: origin,
       faviconRenderer: FavIconImageRenderer()
     )
@@ -273,13 +274,19 @@ extension Tab: BraveWalletProviderDelegate {
   }
   
   func isSolanaAccountConnected(_ account: String) -> Bool {
-    return false
+    tabDappStore.solConnectedAddresses.contains(account)
   }
   
   func addSolanaConnectedAccount(_ account: String) {
+    tabDappStore.solConnectedAddresses.insert(account)
   }
   
   func removeSolanaConnectedAccount(_ account: String) {
+    tabDappStore.solConnectedAddresses.remove(account)
+  }
+  
+  func clearSolanaConnectedAccounts() {
+    tabDappStore.solConnectedAddresses = .init()
   }
 }
 

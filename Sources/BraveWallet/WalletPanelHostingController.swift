@@ -19,6 +19,7 @@ public class WalletPanelHostingController: UIHostingController<WalletPanelContai
 
   public init(
     walletStore: WalletStore,
+    tabDappStore: TabDappStore,
     origin: URLOrigin,
     faviconRenderer: WalletFaviconRenderer
   ) {
@@ -28,6 +29,7 @@ public class WalletPanelHostingController: UIHostingController<WalletPanelContai
     super.init(rootView: WalletPanelContainerView(
       walletStore: walletStore,
       keyringStore: walletStore.keyringStore,
+      tabDappStore: tabDappStore,
       origin: origin
     ))
     rootView.presentWalletWithContext = { [weak self] context in

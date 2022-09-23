@@ -197,6 +197,12 @@ extension SettingsStore {
   }
 }
 
+extension TabDappStore {
+  static var previewStore: TabDappStore {
+    .init()
+  }
+}
+
 extension BraveWallet.TestSolanaTxManagerProxy {
   static var previewProxy: BraveWallet.TestSolanaTxManagerProxy {
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()

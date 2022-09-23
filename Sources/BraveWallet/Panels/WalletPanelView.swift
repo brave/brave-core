@@ -9,6 +9,7 @@ import BraveCore
 import DesignSystem
 import Strings
 import Data
+import BraveShared
 
 public protocol WalletSiteConnectionDelegate {
   /// A list of accounts connected to this webpage (addresses)
@@ -20,6 +21,7 @@ public protocol WalletSiteConnectionDelegate {
 public struct WalletPanelContainerView: View {
   var walletStore: WalletStore
   @ObservedObject var keyringStore: KeyringStore
+  @ObservedObject var tabDappStore: TabDappStore
   var origin: URLOrigin
   var presentWalletWithContext: ((PresentingContext) -> Void)?
   var presentBuySendSwap: (() -> Void)?
@@ -118,6 +120,7 @@ public struct WalletPanelContainerView: View {
             cryptoStore: cryptoStore,
             networkStore: cryptoStore.networkStore,
             accountActivityStore: cryptoStore.accountActivityStore(for: keyringStore.selectedAccount),
+            tabDappStore: tabDappStore,
             origin: origin,
             presentWalletWithContext: { context in
               self.presentWalletWithContext?(context)
@@ -153,6 +156,8 @@ struct WalletPanelView: View {
   @ObservedObject var cryptoStore: CryptoStore
   @ObservedObject var networkStore: NetworkStore
   @ObservedObject var accountActivityStore: AccountActivityStore
+  @ObservedObject var allowSolProviderAccess: Preferences.Option<Bool> = Preferences.Wallet.allowSolProviderAccess
+  @ObservedObject var tabDappStore: TabDappStore
   var origin: URLOrigin
   var presentWalletWithContext: (PresentingContext) -> Void
   var presentBuySendSwap: () -> Void
@@ -169,6 +174,7 @@ struct WalletPanelView: View {
     cryptoStore: CryptoStore,
     networkStore: NetworkStore,
     accountActivityStore: AccountActivityStore,
+    tabDappStore: TabDappStore,
     origin: URLOrigin,
     presentWalletWithContext: @escaping (PresentingContext) -> Void,
     presentBuySendSwap: @escaping () -> Void,
@@ -178,6 +184,7 @@ struct WalletPanelView: View {
     self.cryptoStore = cryptoStore
     self.networkStore = networkStore
     self.accountActivityStore = accountActivityStore
+    self.tabDappStore = tabDappStore
     self.origin = origin
     self.presentWalletWithContext = presentWalletWithContext
     self.presentBuySendSwap = presentBuySendSwap
@@ -186,25 +193,101 @@ struct WalletPanelView: View {
     currencyFormatter.currencyCode = accountActivityStore.currencyCode
   }
   
-  @State private var permittedAccounts: [String] = []
+  @State private var ethPermittedAccounts: [String] = []
+  @State private var solConnectedAddresses: Set<String> = .init()
+  @State private var isConnectHidden: Bool = false
   
-  private var isConnected: Bool {
-    return permittedAccounts.contains(keyringStore.selectedAccount.address)
+  enum ConnectionStatus {
+    case connected
+    case disconnected
+    case blocked
+    
+    func title(_ coin: BraveWallet.CoinType) -> String {
+      if WalletDebugFlags.isSolanaDappsEnabled {
+        switch self {
+        case .connected:
+          return Strings.Wallet.walletPanelConnected
+        case .disconnected:
+          if coin == .eth {
+            return Strings.Wallet.walletPanelConnect
+          } else {
+            return Strings.Wallet.walletPanelDisconnected
+          }
+        case .blocked:
+          return Strings.Wallet.walletPanelBlocked
+        }
+      } else {
+        if self == .connected {
+          return Strings.Wallet.walletPanelConnected
+        }
+        return Strings.Wallet.walletPanelConnect
+      }
+    }
   }
   
-  private var connectButton: some View {
+  private var accountStatus: ConnectionStatus {
+    let selectedAccount = keyringStore.selectedAccount
+    if WalletDebugFlags.isSolanaDappsEnabled {
+      switch selectedAccount.coin {
+      case .eth:
+        return ethPermittedAccounts.contains(selectedAccount.address) ? .connected : .disconnected
+      case .sol:
+        if !allowSolProviderAccess.value {
+          return .blocked
+        } else {
+          return solConnectedAddresses.contains(selectedAccount.address) ? .connected : .disconnected
+        }
+      case .fil:
+        return .blocked
+      @unknown default:
+        return .blocked
+      }
+    } else {
+      return ethPermittedAccounts.contains(selectedAccount.address) ? .connected : .disconnected
+    }
+  }
+  
+  @ViewBuilder private var connectButton: some View {
     Button {
-      presentWalletWithContext(.editSiteConnection(origin, handler: { accounts in
-        permittedAccounts = accounts
-      }))
+      if accountStatus == .blocked {
+        presentWalletWithContext(.settings)
+      } else {
+        presentWalletWithContext(.editSiteConnection(origin, handler: { accounts in
+          if keyringStore.selectedAccount.coin == .eth {
+            ethPermittedAccounts = accounts
+          }
+        }))
+      }
     } label: {
       HStack {
-        if isConnected {
-          Image(systemName: "checkmark")
+        if WalletDebugFlags.isSolanaDappsEnabled {
+          if keyringStore.selectedAccount.coin == .sol {
+            Circle()
+              .strokeBorder(.white, lineWidth: 1)
+              .background(
+                Circle()
+                  .foregroundColor(accountStatus == .connected ? .green : .red)
+              )
+              .frame(width: 12, height: 12)
+            Text(accountStatus.title(keyringStore.selectedAccount.coin))
+              .fontWeight(.bold)
+              .lineLimit(1)
+          } else {
+            if accountStatus == .connected {
+              Image(systemName: "checkmark")
+            }
+            Text(accountStatus.title(keyringStore.selectedAccount.coin))
+              .fontWeight(.bold)
+              .lineLimit(1)
+          }
+        } else {
+          if accountStatus == .connected {
+            Image(systemName: "checkmark")
+          }
+          Text(accountStatus.title(keyringStore.selectedAccount.coin))
+            .fontWeight(.bold)
+            .lineLimit(1)
         }
-        Text(isConnected ? Strings.Wallet.walletPanelConnected : Strings.Wallet.walletPanelConnect)
-          .fontWeight(.bold)
-          .lineLimit(1)
       }
       .foregroundColor(.white)
       .font(.caption.weight(.semibold))
@@ -262,6 +345,22 @@ struct WalletPanelView: View {
         .contentShape(Rectangle())
     }
     .accessibilityLabel(Strings.Wallet.otherWalletActionsAccessibilityTitle)
+  }
+  
+  /// A boolean value indicates to hide or unhide `Connect` button
+  private func isConnectButtonHidden() -> Bool {
+    guard WalletDebugFlags.isSolanaDappsEnabled else { return false }
+    let account = keyringStore.selectedAccount
+    if account.coin == .sol {
+      for domain in Domain.allDomainsWithWalletPermissions(for: .sol) {
+        if let accounts = domain.wallet_solanaPermittedAcccounts, !accounts.isEmpty {
+          return false
+        }
+      }
+      return true
+    } else {
+      return false
+    }
   }
   
   var body: some View {
@@ -322,12 +421,16 @@ struct WalletPanelView: View {
         VStack {
           if sizeCategory.isAccessibilityCategory {
             VStack {
-              connectButton
+              if !isConnectHidden {
+                connectButton
+              }
               networkPickerButton
             }
           } else {
             HStack {
-              connectButton
+              if !isConnectHidden {
+                connectButton
+              }
               Spacer()
               networkPickerButton
             }
@@ -402,18 +505,33 @@ struct WalletPanelView: View {
         presentWalletWithContext(.pendingRequests)
       }
     }
+    .onChange(of: tabDappStore.solConnectedAddresses) { newValue in
+      solConnectedAddresses = newValue
+    }
+    .onChange(of: keyringStore.selectedAccount) { _ in
+      isConnectHidden = isConnectButtonHidden()
+    }
     .onAppear {
       let permissionRequestManager = WalletProviderPermissionRequestsManager.shared
       if let request = permissionRequestManager.pendingRequests(for: origin, coinType: .eth).first {
         presentWalletWithContext(.requestEthererumPermissions(request, onPermittedAccountsUpdated: { accounts in
-          permittedAccounts = accounts
+          if request.coinType == .eth {
+            ethPermittedAccounts = accounts
+          } else if request.coinType == .sol {
+            isConnectHidden = false
+          }
         }))
       } else {
         cryptoStore.prepare()
       }
       if let url = origin.url, let accounts = Domain.walletPermissions(forUrl: url, coin: .eth) {
-        permittedAccounts = accounts
+        ethPermittedAccounts = accounts
       }
+      
+      solConnectedAddresses = tabDappStore.solConnectedAddresses
+      
+      isConnectHidden = isConnectButtonHidden()
+      
       accountActivityStore.update()
     }
   }
@@ -438,6 +556,7 @@ struct WalletPanelView_Previews: PreviewProvider {
         cryptoStore: .previewStore,
         networkStore: .previewStore,
         accountActivityStore: .previewStore,
+        tabDappStore: .previewStore,
         origin: .init(url: URL(string: "https://app.uniswap.org")!),
         presentWalletWithContext: { _ in },
         presentBuySendSwap: {},
@@ -448,6 +567,7 @@ struct WalletPanelView_Previews: PreviewProvider {
         cryptoStore: .previewStore,
         networkStore: .previewStore,
         accountActivityStore: .previewStore,
+        tabDappStore: .previewStore,
         origin: .init(url: URL(string: "https://app.uniswap.org")!),
         presentWalletWithContext: { _ in },
         presentBuySendSwap: {},
@@ -462,6 +582,7 @@ struct WalletPanelView_Previews: PreviewProvider {
         cryptoStore: .previewStore,
         networkStore: .previewStore,
         accountActivityStore: .previewStore,
+        tabDappStore: .previewStore,
         origin: .init(url: URL(string: "https://app.uniswap.org")!),
         presentWalletWithContext: { _ in },
         presentBuySendSwap: {},
