@@ -33,7 +33,7 @@ brave_wallet::mojom::JupiterQuoteParamsPtr GetCannedJupiterQuoteParams() {
   params->output_mint = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
   params->input_mint = "So11111111111111111111111111111111111111112";
   params->amount = "10000";
-  params->slippage_percentage = 1;
+  params->slippage_percentage = 0.5;
   return params;
 }
 
@@ -460,7 +460,8 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuoteURL) {
             "outputMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v&"
             "amount=10000&"
             "feeBps=85&"
-            "slippagePercentage=1.000000");
+            "slippage=0.500000&"
+            "onlyDirectRoutes=true");
 }
 
 TEST_F(SwapServiceUnitTest, GetJupiterSwapTransactionsURL) {
