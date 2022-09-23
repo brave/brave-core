@@ -769,7 +769,7 @@ void RewardsDOMHandler::OnFetchPromotions(
 void RewardsDOMHandler::FetchPromotions(const base::Value::List& args) {
   if (rewards_service_) {
     AllowJavascript();
-    rewards_service_->FetchPromotions();
+    rewards_service_->FetchPromotions(base::DoNothing());
   }
 }
 
