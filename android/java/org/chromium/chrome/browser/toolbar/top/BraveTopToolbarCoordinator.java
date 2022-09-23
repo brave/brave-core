@@ -65,7 +65,6 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             boolean isStartSurfaceEnabled, boolean isTabGroupsAndroidContinuationEnabled,
             HistoryDelegate historyDelegate, BooleanSupplier partnerHomepageEnabledSupplier,
             OfflineDownloader offlineDownloader, boolean initializeWithIncognitoColors,
-            ObservableSupplier<Profile> profileSupplier,
             Callback<LoadUrlParams> startSurfaceLogoClickedCallback,
             boolean isStartSurfaceRefactorEnabled,
             ObservableSupplier<Integer> constraintsSupplier) {
@@ -80,7 +79,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 isTabToGtsAnimationEnabled, isStartSurfaceEnabled,
                 isTabGroupsAndroidContinuationEnabled, historyDelegate,
                 partnerHomepageEnabledSupplier, offlineDownloader, initializeWithIncognitoColors,
-                profileSupplier, startSurfaceLogoClickedCallback, isStartSurfaceRefactorEnabled,
+                startSurfaceLogoClickedCallback, isStartSurfaceRefactorEnabled,
                 constraintsSupplier);
 
         mBraveToolbarLayout = toolbarLayout;
