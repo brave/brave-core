@@ -865,4 +865,43 @@
 <translation id="8423380132356660250">Відкрити додаток <ph name="APP_NAME"/></translation>
 <translation id="168154537623654021">Оновлення профілю VPN…</translation>
 <translation id="7457027586454688423">Уведіть пароль до гаманця Brave</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">Доступно <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">Купити <ph name="COIN_NAME"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Адреса депозиту</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Мемо щодо депозиту</translation>
+<translation id="6755546361496900700">Переглянути обмін</translation>
+<translation id="5110244215256675209">Купити криптовалюту</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="7144878232160441200">Спробувати знову</translation>
+<translation id="1366855498335432549">Внести депозит</translation>
+<translation id="1301340234286078471">Обміняти</translation>
+<translation id="4584930231524505442">Я хочу обміняти...</translation>
+<translation id="5749014321384313843">Я хочу витратити...</translation>
+<translation id="2480674848181564169">Недостатній залишок для конвертування</translation>
+<translation id="2215334405220411393">Мінімальна сума для конвертації - це : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Не вдалось під'єднатись</translation>
+<translation id="7742417737698031726">Збір</translation>
+<translation id="2122225204180056042">Ви отримаєте</translation>
+<translation id="6432284126416751397">Підтвердити обмін</translation>
+<translation id="3891414008432200754">Ціна</translation>
+<translation id="3733576242118819803">Підтвердити (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Не вдалось провести конвертацію. Будь ласка, спробуйте пізніше.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="8037420924417098685">Увімкніть Brave Rewards, щоб розпочати безкоштовний виклик</translation>
+<translation id="8961724619078500274">За програмою Brave Rewards ви заробляєте токени за перегляд приватних рекламних оголошень (ваші дані в безпеці). Перетворіть ці токени на готівку, подарункові картки… або навіть залиште чайові для вебсайтів, які вам справді подобаються. Без відстежування. Жодних сповільнень у роботі.</translation>
+<translation id="7307847920988946894">Увімкнути Винагороди</translation>
+<translation id="7872993190040589450">Увімкнувши цю опцію, ви погоджуєтеся з <ph name="TERMS_OF_SERVICE"/> і <ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="6128511569382736135">Увімкніть Brave Private Ads, щоб розпочати безкоштовний виклик.</translation>
+<translation id="7930006085154756245">За допомогою Brave Private Ads ви заробляєте токени за перегляд приватних рекламних оголошень (ваші дані в безпеці). Перетворіть ці токени на готівку, подарункові картки… або навіть залиште чайові для вебсайтів, які вам справді подобаються. Без відстежування. Жодних сповільнень у роботі.</translation>
+<translation id="4992617448154987397">Увімкнути Brave Private Ads</translation>
+<translation id="3415016869273103668">Тепер ви можете розпочати безкоштовний виклик</translation>
+<translation id="7073631403665023390">Натисніть або торкніться в будь-якому місці екрана, щоб перейти в Brave Talk.</translation>
+<translation id="626339649633171286">Хочете дізнатися більше про Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">Ви конвертували <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> в <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Будь ласка, перевірте підключення до мережі.</translation>
+<translation id="2490428413101944234">Перевірити кран</translation>
+<translation id="2581671693710952401">Отримати Ефір</translation>
+<translation id="8165484222652118977">Отримати Ether з крана для тестової мережі <ph name="NETWORK"/></translation>
 </translationbundle>

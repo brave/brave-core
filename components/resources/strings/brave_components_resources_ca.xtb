@@ -1499,4 +1499,28 @@
 <translation id="6973157709854838218">Oculta els teus saldos de la pantalla</translation>
 <translation id="4548946945059463969">Mostra els teus saldos a la pantalla</translation>
 <translation id="242959166945779492">No tens cap balanç al teu compte. Visita FTX per comprar-ne algunes.</translation>
+<translation id="2532127066761785857">Nombre màxim d'anuncis mostrats</translation>
+<translation id="6177749339095882127">0 anuncis per hora</translation>
+<translation id="5171071066587880677">1 anunci per hora</translation>
+<translation id="7885315050812316860">2 anuncis per hora</translation>
+<translation id="2232753742630178222">3 anuncis per hora</translation>
+<translation id="905529390827000221">4 anuncis per hora</translation>
+<translation id="7694167481321619202">5 anuncis per hora</translation>
+<translation id="3705420658531870884">10 anuncis per hora</translation>
+<translation id="3669086939205397942">Espereu, encara no podeu’t donar propina</translation>
+<translation id="7354412786785889047">Pots donar suport a aquest lloc web deixant-hi una propina. És una manera de donar-los les gràcies per oferir uns bons continguts. Els creadors de contingut verificats reben les seves propines durant la primera setmana de cada mes natural.</translation>
+<translation id="5119190679543565400">Recuperar aquest lloc</translation>
+<translation id="6783637972818687030">Brave utilitzarà Infura per emetre trucades Ethereum JSON-RPC al contracte intel·ligent des de Unstoppable Domains per resoldre .crypto (i també .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin, .zil) sol·licituds de cerca de noms de domini. Si l'activeu, Infura veurà aquells dominis específics que esteu intentant visitar, però no podran veure'n altres dominis. Consulteu les <ph name="BEGIN_INFURA_TOU_LINK"/>condicions d'ús<ph name="END_INFURA_TOU_LINK"/> i la <ph name="BEGIN_INFURA_PRIVACY_LINK"/>política de privadesa<ph name="END_INFURA_PRIVACY_LINK"/> d'Infura.</translation>
+<translation id="8037420924417098685">Per iniciar una trucada gratuïta, activeu Brave Rewards</translation>
+<translation id="8961724619078500274">Amb Brave Rewards guanyeu criptovalors per veure anuncis privats (les vostres dades estan segures). Convertiu aquests criptovalors en efectiu, targetes de regal, etc. o, fins i tot, doneu propina als llocs web que us agraden. Sense seguiment ni alentiments.</translation>
+<translation id="7307847920988946894">Activa les Recompenses</translation>
+<translation id="799591303418199877">Si ho habititeu, accepteu les <ph name="TOS_LINK_BEGIN"/>Condicions del servei<ph name="TOS_LINK_END"/> i la <ph name="PP_LINK_BEGIN"/>Política de privacitat<ph name="PP_LINK_END"/>.</translation>
+<translation id="6128511569382736135">Per iniciar una trucada gratuïta, activeu Brave Private Ads</translation>
+<translation id="7930006085154756245">Amb Brave Private Ads guanyeu criptovalors per veure anuncis privats (les vostres dades estan segures). Convertiu aquests criptovalors en efectiu, targetes de regal, etc. o, fins i tot, doneu propina als llocs web que us agraden. Sense seguiment ni alentiments.</translation>
+<translation id="4992617448154987397">Activeu Brave Private Ads</translation>
+<translation id="3415016869273103668">Ara podeu iniciar una trucada gratuïta</translation>
+<translation id="7073631403665023390">Fes clic o toca qualsevol lloc de la pantalla per continuar a Brave Talk.</translation>
+<translation id="9115939801961482572">Voleu saber més sobre les recompenses de Brave?<ph name="TOUR_LINK_BEGIN"/>Feu un petit tour<ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">Dona propines amb Brave Rewards</translation>
+<translation id="1895476463085410109">Guanya Rewards en visualitzar els Brave Private Ads i dona suport als creadors de contingut de forma automàtica</translation>
 </translationbundle>

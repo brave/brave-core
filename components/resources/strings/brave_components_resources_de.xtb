@@ -1499,4 +1499,28 @@ hat <ph name="NUMBER"/> Tracker, Anzeigen und mehr blockiert</translation>
 <translation id="6973157709854838218">Guthabenanzeige ausblenden</translation>
 <translation id="4548946945059463969">Guthabenanzeige erlauben</translation>
 <translation id="242959166945779492">Sie haben kein Guthaben auf Ihrem Konto. Gehen Sie zu FTX, um welches zu kaufen.</translation>
+<translation id="2532127066761785857">Maximale Anzahl an Anzeigen</translation>
+<translation id="6177749339095882127">0 Anzeigen pro Stunde</translation>
+<translation id="5171071066587880677">1 Werbeanzeige pro Stunde</translation>
+<translation id="7885315050812316860">2 Anzeigen pro Stunde</translation>
+<translation id="2232753742630178222">3 Anzeigen pro Stunde</translation>
+<translation id="905529390827000221">4 Anzeigen pro Stunde</translation>
+<translation id="7694167481321619202">5 Anzeigen pro Stunde</translation>
+<translation id="3705420658531870884">10 Anzeigen pro Stunde</translation>
+<translation id="3669086939205397942">Momentchen mal, Sie können noch keine Spenden vergeben</translation>
+<translation id="7354412786785889047">Sie können diesen Urheber von Inhalten unterstützen, indem Sie ein Trinkgeld senden. Es’ist eine Möglichkeit, ihm für die Erstellung seiner großartigen Inhalte zu danken. Verifizierte Urheber werden im Lauf der ersten Woche in jedem Kalendermonat für ihre Trinkgelder bezahlt.</translation>
+<translation id="5119190679543565400">Diese Website wiederherstellen</translation>
+<translation id="6783637972818687030">Brave wird Infura verwenden, um Ethereum JSON-RPC-Aufrufe an den Smart Contract von Unstoppable Domains zu senden, um .crypto (und auch .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin, .zil) Suchanfragen für Domänennamen. Wenn Sie dies aktivieren, sieht Infura diese spezifischen Domains, die Sie zu besuchen versuchen, aber sie können andere Domains nicht sehen. Siehe Infuras <ph name="BEGIN_INFURA_TOU_LINK"/>Nutzungsbedingungen<ph name="END_INFURA_TOU_LINK"/> und <ph name="BEGIN_INFURA_PRIVACY_LINK"/>Datenschutzrichtlinie<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="8037420924417098685">Um einen kostenlosen Anruf zu starten, aktivieren Sie Brave-Prämien</translation>
+<translation id="8961724619078500274">Mit Brave-Prämien verdienen Sie Token für das Ansehen privater Anzeigen (Ihre Daten sind sicher). Verwandeln Sie diese Token in Bargeld, Geschenkkarten … oder geben Sie sogar den Websites, die Sie lieben, Trinkgeld. Kein Tracking. Keine Verlangsamungen.</translation>
+<translation id="7307847920988946894">Rewards aktivieren</translation>
+<translation id="799591303418199877">Durch die Aktivierung, stimmen Sie den <ph name="TOS_LINK_BEGIN"/>Nutzungsbedingungen<ph name="TOS_LINK_END"/> und <ph name="PP_LINK_BEGIN"/>Datenschutzrichtlinien<ph name="PP_LINK_END"/> zu.</translation>
+<translation id="6128511569382736135">Um einen kostenlosen Anruf zu starten, aktivieren Sie Brave Private Ads</translation>
+<translation id="7930006085154756245">Mit Brave Private Ads verdienen Sie Token für das Anzeigen privater Anzeigen (Ihre Daten sind sicher). Verwandeln Sie diese Token in Bargeld, Geschenkkarten … oder geben Sie sogar den Websites, die Sie lieben, Trinkgeld. Kein Tracking. Keine Verlangsamungen.</translation>
+<translation id="4992617448154987397">Brave Private Ads aktivieren</translation>
+<translation id="3415016869273103668">Sie können jetzt einen kostenlosen Anruf starten</translation>
+<translation id="7073631403665023390">Klicken oder tippen Sie auf eine beliebige Stelle auf dem Bildschirm, um mit Brave Talk fortzufahren.</translation>
+<translation id="9115939801961482572">Möchten Sie mehr über Brave-Belohnungen erfahren? <ph name="TOUR_LINK_BEGIN"/>Hier eine kurze Einführung<ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">Trinkgeld verteilen mit Brave Rewards</translation>
+<translation id="1895476463085410109">Verdienen Sie Belohnungen, indem Sie Brave Private Ads ansehen und automatisch die Ersteller von Inhalten unterstützen</translation>
 </translationbundle>

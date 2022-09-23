@@ -1499,4 +1499,28 @@
 <translation id="6973157709854838218">Ficha masalio yako ili yasionekane</translation>
 <translation id="4548946945059463969">Tambua masalio yako kwenye skrini</translation>
 <translation id="242959166945779492">Huna salio lolote katika akaunti yako. Tembelea FTX ili ununue kadhaa.</translation>
+<translation id="2532127066761785857">Idadi ya juu ya matangazo yaliyoonyeshwa</translation>
+<translation id="6177749339095882127">Matangazo 0 kwa saa</translation>
+<translation id="5171071066587880677">Tangazo 1 kwa saa</translation>
+<translation id="7885315050812316860">Matangazo 2 kwa saa</translation>
+<translation id="2232753742630178222">Matangazo 3 kwa saa</translation>
+<translation id="905529390827000221">Matangazo 4 kwa saa</translation>
+<translation id="7694167481321619202">Matangazo 5 kwa saa</translation>
+<translation id="3705420658531870884">Matangazo 10 kwa saa</translation>
+<translation id="3669086939205397942">Subiri, bado huwezi kutoa bahshishi</translation>
+<translation id="7354412786785889047">Unaweza kumsaidia mtengeneza maudhui huyu kwa kutuma zawadi.  N’i njia ya kuwashukuru kwa kutengeneza maudhui bora. Watengeneza maudhui waliothibitishwa hulipwa kwa zawadi zao katika wiki ya kwanza ya kila mwezi.</translation>
+<translation id="5119190679543565400">Rejesha tovuti hii</translation>
+<translation id="6783637972818687030">Brave itatumia Infura kutoa simu za Ethereum JSON-RPC kwa mkataba mahiri kutoka Vikoa Visivyoweza Kusimamishwa ili kutatua maombi ya kuangalia jina la kikoa ya .crypto (na pia .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin, .zil). Ukiwezesha hii, Infura itaona vikoa hivyo mahususi ambavyo unajaribu kutembelea lakini haitaweza kuona vikoa vingine. Angalia<ph name="BEGIN_INFURA_TOU_LINK"/>masharti ya matumizi<ph name="END_INFURA_TOU_LINK"/> na <ph name="BEGIN_INFURA_PRIVACY_LINK"/>sera ya faragha<ph name="END_INFURA_PRIVACY_LINK"/> ya Infura.</translation>
+<translation id="8037420924417098685">Ili kuanza simu ya bila malipo, washa Brave Rewards</translation>
+<translation id="8961724619078500274">Ukiwa na Brave Rewards, unapata tokeni za kutazama matangazo ya faragha (data yako iko salama). Zibadilishe tokeni hizo ziwe pesa, kadi za zawadi au zipe tovuti unazopenda bahshishi. Hakuna kufuatilia. Hakuna kasi kupungua.</translation>
+<translation id="7307847920988946894">Washa Zawadi</translation>
+<translation id="799591303418199877">Kwa kuwezesha, unakubali <ph name="TOS_LINK_BEGIN"/>Masharti ya Huduma<ph name="TOS_LINK_END"/> na <ph name="PP_LINK_BEGIN"/>Sera ya Faragha<ph name="PP_LINK_END"/>.</translation>
+<translation id="6128511569382736135">Ili kuanza simu ya bila malipo, wezesha Brave Private Ads</translation>
+<translation id="7930006085154756245">Ukiwa na Brave Private Ads, unapata tokeni za kutazama matangazo ya faragha (data yako iko salama). Zibadilishe tokeni hizo ziwe pesa, kadi za zawadi au zipe tovuti unazopenda bahshishi. Hakuna kufuatilia. Hakuna kasi kupungua.</translation>
+<translation id="4992617448154987397">Washa Brave Private Ads</translation>
+<translation id="3415016869273103668">Sasa unaweza kuanza simu ya bila malipo</translation>
+<translation id="7073631403665023390">Bofya au gusa popote kwenye skrini ili uende kwenye Brave Talk.</translation>
+<translation id="9115939801961482572">Je, unataka kujifunza zaidi kuhusu Zawadi za Brave? <ph name="TOUR_LINK_BEGIN"/> Fanya ukaguzi wa haraka <ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">Kidokezo chenye Brave Rewards</translation>
+<translation id="1895476463085410109">Pata Rewards kwa kutazama Brave Private Ads na uwadhamini waundaji maudhui kiotomatiki</translation>
 </translationbundle>

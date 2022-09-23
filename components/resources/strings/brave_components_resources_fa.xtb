@@ -1499,4 +1499,28 @@
 <translation id="6973157709854838218">پنهان کردن موجودی‌های ارزی شما در صفحه‌نمایش</translation>
 <translation id="4548946945059463969">نشان دادن موجودی‌های ارزی شما در صفحه‌نمایش</translation>
 <translation id="242959166945779492">هیچ موجودی در حسابتان ندارید. برای خرید مقداری ارز، به FTX بروید.</translation>
+<translation id="2532127066761785857">بیشترین تعداد آگهی مجاز نمایش داده شد</translation>
+<translation id="6177749339095882127">۰ آگهی در ساعت</translation>
+<translation id="5171071066587880677">۱ آگهی در ساعت</translation>
+<translation id="7885315050812316860">۲ آگهی در ساعت</translation>
+<translation id="2232753742630178222">۳ آگهی در ساعت</translation>
+<translation id="905529390827000221">۴ آگهی در ساعت</translation>
+<translation id="7694167481321619202">۵ آگهی در ساعت</translation>
+<translation id="3705420658531870884">۱۰ آگهی در ساعت</translation>
+<translation id="3669086939205397942">دست نگه دارید، هنوز نمی‌توانید انعام بدهید</translation>
+<translation id="7354412786785889047">می‌توانید با انعام دادن، از این پدیدآورنده محتوا پشتیبانی کنید. انعام دادن روشی برای تشکر از مدیران سایت‌ها بابت ساخت محتوای عالی است. پدیدآورندگانی که به تأیید رسیده‌اند درطول اولین هفته هر ماه تقویمی،‌ به‌ازای انعام‌هایشان، پول دریافت می‌کنند.</translation>
+<translation id="5119190679543565400">بازنشانی این سایت</translation>
+<translation id="6783637972818687030">Brave از Infura برای صدور فراخوان‌های Ethereum JSON-RPC به قرارداد هوشمند از دامنه‌های غیرقابل توقف برای حل‌وفصل کریپتو (و همچنین .x، .coin، .nft، .dao، .wallet، .888، .blockchain، .bitcoin، استفاده خواهد کرد. .zil) درخواست های جستجوی نام دامنه. اگر این را فعال کنید، Infura دامنه‌های خاصی را که می‌خواهید بازدید کنید، می‌بیند، اما آنها نمی‌توانند دامنه‌های دیگر را ببینند. به <ph name="BEGIN_INFURA_TOU_LINK"/>شرایط استفاده<ph name="END_INFURA_TOU_LINK"/> و <ph name="BEGIN_INFURA_PRIVACY_LINK"/>خط‌مشی رازداری<ph name="END_INFURA_PRIVACY_LINK"/> مراجعه کنید Infura.</translation>
+<translation id="8037420924417098685">برای شروع یک تماس رایگان، «پاداش‌های Brave» را روشن کنید</translation>
+<translation id="8961724619078500274">با Brave Rewards، برای مشاهده آگهی‌های خصوصی توکن دریافت می‌کنید  (داده‌های شما ایمن هستند). آن توکن‌ها را به پول نقد، کارت هدیه یا... تبدیل کنید یا حتی به وب‌سایت‌های موردعلاقه‌تان  انعام دهید. ردیابی در کار نیست. بدون افت سرعت.</translation>
+<translation id="7307847920988946894">روشن کردن «پاداش‌ها»</translation>
+<translation id="799591303418199877">فعالسازی به‌منزله موافقت شما با <ph name="TOS_LINK_BEGIN"/>شرایط خدمات<ph name="TOS_LINK_END"/> و <ph name="PP_LINK_BEGIN"/>خط‌مشی حریم خصوصی<ph name="PP_LINK_END"/> است.</translation>
+<translation id="6128511569382736135">برای شروع تماس رایگان، Brave Private Ads را فعال کنید</translation>
+<translation id="7930006085154756245">با Brave Private Ads، شما برای مشاهده آگهی‌های خصوصی توکن دریافت می‌کنید  (اطلاعات شما ایمن است). آن توکن‌ها را به پول نقد، کارت هدیه یا... تبدیل کنید یا حتی به وب‌سایت‌های موردعلاقه‌تان انعام دهید. ردیابی در کار نیست. بدون افت سرعت.</translation>
+<translation id="4992617448154987397">روشن کردن Brave Private Ads</translation>
+<translation id="3415016869273103668">اکنون می‌توانید تماس رایگان برقرار کنید</translation>
+<translation id="7073631403665023390">برای ادامه و رفتن به Brave Talk، روی جایی از صفحه کلیک کنید یا ضربه بزنید.</translation>
+<translation id="9115939801961482572">آیا می‌خواهید اطلاعات بیشتری درباره  «جوایز Brave» کسب کنید؟ <ph name="TOUR_LINK_BEGIN"/>گشتی سریع بزنید<ph name="TOUR_LINK_END"/></translation>
+<translation id="8222322431155185238">انعام با «Brave Rewards»</translation>
+<translation id="1895476463085410109">با بازدید از «Brave Private Ads» پاداش کسب کنید و از تولیدکننده‌های محتوا به‌طور خودکار پشتیبانی کنید</translation>
 </translationbundle>

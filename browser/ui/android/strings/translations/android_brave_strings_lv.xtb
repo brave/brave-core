@@ -865,4 +865,43 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="8423380132356660250">Atvērt <ph name="APP_NAME"/> lietotni</translation>
 <translation id="168154537623654021">Notiek VPN profila atjaunināšana...</translation>
 <translation id="7457027586454688423">Ievadiet savu Brave maka paroli</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">Pieejams <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">Iegādāties <ph name="COIN_NAME"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Depozīta adrese</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Iemaksas rēķins</translation>
+<translation id="6755546361496900700">Priekšskatīt konversiju</translation>
+<translation id="5110244215256675209">Pirkt kriptovalūtu</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="7144878232160441200">Mēģināt vēlreiz</translation>
+<translation id="1366855498335432549">Depozīts</translation>
+<translation id="1301340234286078471">Konvertēt</translation>
+<translation id="4584930231524505442">Es vēlot konvertēt...</translation>
+<translation id="5749014321384313843">Es vēlos tērēt...</translation>
+<translation id="2480674848181564169">Nepietiek līdzekļu konvertācijai</translation>
+<translation id="2215334405220411393">Minimālā konvertējamā summa ir: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Nevar pieslēgties</translation>
+<translation id="7742417737698031726">Maksa</translation>
+<translation id="2122225204180056042">Jūs saņemsiet</translation>
+<translation id="6432284126416751397">Apstiprināt konversiju</translation>
+<translation id="3891414008432200754">Cena</translation>
+<translation id="3733576242118819803">Apstiprināt (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Konversija neizdevās. Lūdzu, mēģiniet vēlreiz.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="8037420924417098685">Lai sāktu bezmaksas zvanu, ieslēdziet Brave balvas.</translation>
+<translation id="8961724619078500274">Izmantojot Brave Rewards, jūs nopelnāt žetonus, skatoties privātas reklāmas (jūsu dati ir drošībā). Pārvērtiet šos žetonus naudā, dāvanu kartēs... vai pat nosūtiet dzeramnaudu vietnēm, kuras jums patīk. Bez izsekošanas. Bez palēninātas darbības.</translation>
+<translation id="7307847920988946894">Ieslēgt balvas</translation>
+<translation id="7872993190040589450">Iespējojot jūs piekrītat <ph name="TERMS_OF_SERVICE"/> un<ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="6128511569382736135">Lai sāktu bezmaksas zvanu, iespējojiet Brave privātās reklāmas.</translation>
+<translation id="7930006085154756245">Ar Brave Privātajām reklāmām jūs nopelnāt marķierus, skatoties privātas reklāmas (jūsu dati ir drošībā). Pārvērtiet šos marķierus naudā, dāvanu kartēs... vai pat nosūtiet dzeramnaudu vietnēm, kuras jums patīk. Bez izsekošanas. Bez palēninātas darbības.</translation>
+<translation id="4992617448154987397">Ieslēdziet Brave privātās reklāmas.</translation>
+<translation id="3415016869273103668">Tagad varat sākt bezmaksas zvanu.</translation>
+<translation id="7073631403665023390">Noklikšķiniet vai pieskarieties jebkur uz ekrāna, lai atvērtu Brave Talk.</translation>
+<translation id="626339649633171286">Vai vēlaties uzzināt vairāk par Brave balvām? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">Jūs konvertējāt <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> uz <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Lūdzu, pārbaudiet savu tīkla savienojumu.</translation>
+<translation id="2490428413101944234">Testēt "krāna" vietni</translation>
+<translation id="2581671693710952401">Saņemt Ether</translation>
+<translation id="8165484222652118977">Saņemiet Ether no plūsmas <ph name="NETWORK"/> testa tīklam</translation>
 </translationbundle>

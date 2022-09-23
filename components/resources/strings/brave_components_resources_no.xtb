@@ -1499,4 +1499,28 @@
 <translation id="6973157709854838218">Skjul saldoene dine fra visning</translation>
 <translation id="4548946945059463969">Avslør saldoene dine på skjermen</translation>
 <translation id="242959166945779492">Saldoen på kontoen din er tom. Besøk FTX for å endre dette.</translation>
+<translation id="2532127066761785857">Maks antall annonser vist</translation>
+<translation id="6177749339095882127">0 annonser i timen</translation>
+<translation id="5171071066587880677">1 annonse i timen</translation>
+<translation id="7885315050812316860">2 annonser i timen</translation>
+<translation id="2232753742630178222">3 annonser i timen</translation>
+<translation id="905529390827000221">4 annonser i timen</translation>
+<translation id="7694167481321619202">5 annonser i timen</translation>
+<translation id="3705420658531870884">10 annonser i timen</translation>
+<translation id="3669086939205397942">Vent litt, du kan ikke tipse enda</translation>
+<translation id="7354412786785889047">Du kan støtte denne innholdskreatøren ved å sende et tips. It’s en måte å takke dem for å lage flott innhold. Verifiserte kreatører blir betalt for tipsene deres i løpet av den første uken i hver kalendermåten.</translation>
+<translation id="5119190679543565400">Gjenopprett denne siden</translation>
+<translation id="6783637972818687030">Brave bruker Infura til å sende Ethereum JSON-RPC-oppkall til smartkontrakten fra Unstoppable Domains for lookup-forespørsler for .crypto- (og også .x-, .con-, .nft-, .dao-, .wallet-, .888-, .blockchain-, .bitcoin-)-domenenavn. Hvis du slår dette på, vil Infura se de spesifikke domenene du prøver å besøke, men ikke andre domener. Se også Infuras <ph name="BEGIN_INFURA_TOU_LINK"/>brukervilkår<ph name="END_INFURA_TOU_LINK"/> og <ph name="BEGIN_INFURA_PRIVACY_LINK"/>personvernerklæring<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="8037420924417098685">Slå på Brave-belønninger for å starte et gratis anrop</translation>
+<translation id="8961724619078500274">Med Brave Rewards tjener du opp tokener ved å se på private annonser (dataene dine er trygge). Tokenene kan konverteres til kontanter, kavekort … eller tips til favoritt-nettstedene dine. Ingen sporing – ingen treghet.</translation>
+<translation id="7307847920988946894">Slå på Rewards</translation>
+<translation id="799591303418199877">Ved å fortsette samtykker du til <ph name="TOS_LINK_BEGIN"/>tjenestevilkårene<ph name="TOS_LINK_END"/> og <ph name="PP_LINK_BEGIN"/>personvernerklæringen<ph name="PP_LINK_END"/>.</translation>
+<translation id="6128511569382736135">Slå på Brave Private Ads for å starte et gratis anrop</translation>
+<translation id="7930006085154756245">Bed Brave Private Ads tjener du opp tokener for å se på private annonser (dataene dine er trygge). Konverter tokenene til kontanter, gavekort … eller tips til nettsidene du liker aller best. Ingen sporing – ingen treghet i systemet.</translation>
+<translation id="4992617448154987397">Slå på Brave Private Ads</translation>
+<translation id="3415016869273103668">Du kan nå starte et gratis anrop</translation>
+<translation id="7073631403665023390">Klikk eller trykk hvor som helst på skjermen for å fortsette til Brave Talk.</translation>
+<translation id="9115939801961482572">Vil du finne ut mer om Brave-belønninger? <ph name="TOUR_LINK_BEGIN"/>Få en kjapp gjennomgang<ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">Gi driks med Brave Rewards</translation>
+<translation id="1895476463085410109">Få belønninger ved å se Brave Private Ads og støtt innholdsskapere i samme slengen</translation>
 </translationbundle>

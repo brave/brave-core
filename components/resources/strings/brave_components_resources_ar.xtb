@@ -1500,4 +1500,28 @@
 <translation id="6973157709854838218">إخفاء أرصدتك من العرض</translation>
 <translation id="4548946945059463969">الكشف عن أرصدتك على الشاشة</translation>
 <translation id="242959166945779492">ليس لديك أي أرصدة في حسابك. تفضل بزيارة FTX لشراء بعضها.</translation>
+<translation id="2532127066761785857">الحد الأقصى لعدد الإعلانات المعروضة</translation>
+<translation id="6177749339095882127">0 إعلان في الساعة</translation>
+<translation id="5171071066587880677">إعلان واحد في الساعة</translation>
+<translation id="7885315050812316860">إعلانان في الساعة</translation>
+<translation id="2232753742630178222">3 إعلانات في الساعة</translation>
+<translation id="905529390827000221">4 إعلانات في الساعة</translation>
+<translation id="7694167481321619202">5 إعلانات في الساعة</translation>
+<translation id="3705420658531870884">10 إعلانات في الساعة</translation>
+<translation id="3669086939205397942">مهلاً، لا يمكنك منح ’الإكرامية بعد</translation>
+<translation id="7354412786785889047">يمكنك دعم مبدع المحتوى هذا عن طريق إرسال إكرامية. إنها’ طريقة لشكره على صنع محتوى رائع. يتقاضى منشئو المحتوى الذين تم التحقق منهم النفقات مقابل إكرامياتهم خلال الأسبوع الأول من كل شهر تقويمي.</translation>
+<translation id="5119190679543565400">استعادة هذا الموقع</translation>
+<translation id="6783637972818687030">ستستخدم Brave منصة Infura لإصدار استدعاءات إيثريوم JSON-RPC إلى العقد الذكي من النطاقات التي لا يمكن إيقافها لحل طلبات البحث عن اسم نطاق العملة المشفرة (وأيضًا .x وcoin وnft وdao وwallet و888 وblockchain وbitcoin وzil). إذا قمت بتمكين ذلك، فستتعرف منصة Infura على تلك النطاقات المحددة التي تحاول زيارتها ولكنها لن تتمكن من التعرف على النطاقات الأخرى. راجع <ph name="BEGIN_INFURA_TOU_LINK"/>شروط الاستخدام <ph name="END_INFURA_TOU_LINK"/>و<ph name="BEGIN_INFURA_PRIVACY_LINK"/>سياسة الخوصية<ph name="END_INFURA_PRIVACY_LINK"/>الخاصة بمنصة Infura.</translation>
+<translation id="8037420924417098685">للبدء في إجراء مكالمة مجانية، قم بتشغيل Brave Rewards.</translation>
+<translation id="8961724619078500274">مع Brave Rewards ، تكسب رموزًا لعرض الإعلانات الخاصة (بياناتك آمنة). حوّل هذه الرموز إلى نقود أو بطاقات هدايا ... أو حتى بقشيش للمواقع التي تحبها. لا نتبع سياسة التعقب أو التباطؤ.</translation>
+<translation id="7307847920988946894">تشغيل المكافآت</translation>
+<translation id="799591303418199877">بمجرد تفعيلك، فأنت توافق على <ph name="TOS_LINK_BEGIN"/> شروط الخدمة <ph name="TOS_LINK_END"/> و<ph name="PP_LINK_BEGIN"/>سياسة الخصوصية<ph name="PP_LINK_END"/>.</translation>
+<translation id="6128511569382736135">للبدء في إجراء مكالمة مجانية، قم بتمكين Brave Private Ads.</translation>
+<translation id="7930006085154756245">مع Brave Private Ads، تربح رموزًا لعرض الإعلانات الخاصة (بياناتك آمنة). حوّل هذه الرموز إلى نقود أو بطاقات هدايا ... أو حتى بقشيش للمواقع التي تحبها. لا نتبع سياسة التعقب أو التباطؤ.</translation>
+<translation id="4992617448154987397">تشغيل Brave Private Ads</translation>
+<translation id="3415016869273103668">يمكنك إجراء مكالمة مجانية الآن</translation>
+<translation id="7073631403665023390">انقر أو اضغط في أي مكان على الشاشة للمتابعة إلى Brave Talk.</translation>
+<translation id="9115939801961482572">هل تريد معرفة المزيد عن مكافآت Brave؟ <ph name="TOUR_LINK_BEGIN"/> لنقم بجولة سريعة<ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">نصيحة مع مكافآت Brave</translation>
+<translation id="1895476463085410109">اربح مكافآت من خلال عرض الإعلانات الخاصة من Brave ودعم منشئي المحتوى تلقائيًا</translation>
 </translationbundle>

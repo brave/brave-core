@@ -1499,4 +1499,28 @@
 <translation id="6973157709854838218">Ocultar a exibição dos seus saldos</translation>
 <translation id="4548946945059463969">Revelar seus saldos na tela</translation>
 <translation id="242959166945779492">Você não tem nenhum saldo na sua conta. Acesse o FTX para adquirir saldo.</translation>
+<translation id="2532127066761785857">Número máximo de anúncios exibidos</translation>
+<translation id="6177749339095882127">Nenhum anúncio por hora</translation>
+<translation id="5171071066587880677">1 anúncio por hora</translation>
+<translation id="7885315050812316860">2 anúncios por hora</translation>
+<translation id="2232753742630178222">3 anúncios por hora</translation>
+<translation id="905529390827000221">4 anúncios por hora</translation>
+<translation id="7694167481321619202">5 anúncios por hora</translation>
+<translation id="3705420658531870884">10 anúncios por hora</translation>
+<translation id="3669086939205397942">Só um momento, você ainda não pode dar gorjetas</translation>
+<translation id="7354412786785889047">Você pode ajudar este criador de conteúdo enviando uma gorjeta. É uma maneira de agradecê-lo por criar um ótimo conteúdo. Os criadores verificados recebem suas gorjetas durante a primeira semana de cada mês.</translation>
+<translation id="5119190679543565400">Restaurar este site</translation>
+<translation id="6783637972818687030">O Brave utilizará o Infura para emitir chamadas JSON-RPC de Ethereum ao contrato inteligente da Unstoppable Domains para resolver solicitações de pesquisa do nome de domínio .crypto (e também .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin e .zil). Se você ativar essa opção, o Infura verá esses domínios específicos que você está tentando acessar, mas não verá outros. Consulte os <ph name="BEGIN_INFURA_TOU_LINK"/>termos de uso<ph name="END_INFURA_TOU_LINK"/> e a <ph name="BEGIN_INFURA_PRIVACY_LINK"/>política de privacidade<ph name="END_INFURA_PRIVACY_LINK"/> do Infura.</translation>
+<translation id="8037420924417098685">Para iniciar uma chamada gratuita, ative as Recompensas do Brave</translation>
+<translation id="8961724619078500274">Com as Recompensas do Brave, você ganha tokens ao visualizar anúncios privados (seus dados ficam seguros). Transforme esses tokens em dinheiro, vale-presentes... ou em doações para os sites que você adora. Sem rastreamento nem lentidão.</translation>
+<translation id="7307847920988946894">Ativar Recompensas</translation>
+<translation id="799591303418199877">Ao ativar, você concorda com os <ph name="TOS_LINK_BEGIN"/>Termos de Serviço<ph name="TOS_LINK_END"/> e com a <ph name="PP_LINK_BEGIN"/>Política de Privacidade<ph name="PP_LINK_END"/>.</translation>
+<translation id="6128511569382736135">Para iniciar uma chamada gratuita, ative os Anúncios privados do Brave</translation>
+<translation id="7930006085154756245">Com os Anúncios privados do Brave, você ganha tokens ao visualizar anúncios privados (seus dados ficam seguros). Transforme esses tokens em dinheiro, vale-presentes... ou em doações para os sites que você adora. Sem rastreamento nem lentidão.</translation>
+<translation id="4992617448154987397">Ativar os Anúncios privados do Brave</translation>
+<translation id="3415016869273103668">Agora você pode iniciar uma chamada gratuita</translation>
+<translation id="7073631403665023390">Clique ou toque em qualquer parte da tela para ir para o Brave Talk.</translation>
+<translation id="9115939801961482572">Quer saber mais sobre as Recompensas Brave? <ph name="TOUR_LINK_BEGIN"/>Faça um tour rápido<ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">Faça uma doação com o Brave Rewards</translation>
+<translation id="1895476463085410109">Receba recompensas visualizando Brave Private Ads e apoie os criadores de conteúdo automaticamente</translation>
 </translationbundle>

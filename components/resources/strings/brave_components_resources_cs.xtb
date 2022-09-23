@@ -1499,4 +1499,28 @@
 <translation id="6973157709854838218">Skrýt vaše zůstatky ze zobrazení</translation>
 <translation id="4548946945059463969">Odhalit vaše zůstatky na obrazovce</translation>
 <translation id="242959166945779492">Na účtu nemáte žádný zůstatek. Navštivte FTX a proveďte nákup.</translation>
+<translation id="2532127066761785857">Maximální počet zobrazených reklam</translation>
+<translation id="6177749339095882127">0 reklam za hodinu</translation>
+<translation id="5171071066587880677">1 reklama za hodinu</translation>
+<translation id="7885315050812316860">2 reklamy za hodinu</translation>
+<translation id="2232753742630178222">3 reklamy za hodinu</translation>
+<translation id="905529390827000221">4 reklamy za hodinu</translation>
+<translation id="7694167481321619202">5 reklam za hodinu</translation>
+<translation id="3705420658531870884">10 reklam za hodinu</translation>
+<translation id="3669086939205397942">Vydržte, ještě nemůžete přispívat</translation>
+<translation id="7354412786785889047">Tento obsah a jeho tvůrce můžete podpořit darem. Je to způsob vašeho poděkování za skvělý obsah. Ověřeným tvůrcům jejich příspěvky vyplácíme během prvního týdne každého kalendářního měsíce.</translation>
+<translation id="5119190679543565400">Obnovit tuto stránku</translation>
+<translation id="6783637972818687030">Brave bude používat Infura k vydávání volání Ethereum JSON-RPC na inteligentní smlouvu z Unstoppable Domains k vyřešení .crypto (a také .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin, .zil) požadavky na vyhledávání doménových jmen. Pokud to povolíte, Infura uvidí ty konkrétní domény, které se pokoušíte navštívit, ale nebudou moci vidět jiné domény. Viz Infura"s <ph name="BEGIN_INFURA_TOU_LINK"/>podmínky použití<ph name="END_INFURA_TOU_LINK"/> a <ph name="BEGIN_INFURA_PRIVACY_LINK"/>Zásady ochrany osobních údajů<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="8037420924417098685">Chcete-li zahájit bezplatný hovor, zapněte funkci Brave Rewards.</translation>
+<translation id="8961724619078500274">Se službou Brave Rewards získáváte žetony za prohlížení soukromých reklam (vaše údaje jsou v bezpečí). Tyto žetony můžete proměnit v hotovost, dárkové karty... nebo dokonce dát spropitné oblíbeným webovým stránkám. Žádné sledování. Žádná zdržení.</translation>
+<translation id="7307847920988946894">Zapnout odměny</translation>
+<translation id="799591303418199877">Povolením souhlasíte s <ph name="TOS_LINK_BEGIN"/>podmínkami poskytování služeb<ph name="TOS_LINK_END"/> a <ph name="PP_LINK_BEGIN"/>zásadami ochrany osobních údajů<ph name="PP_LINK_END"/>.</translation>
+<translation id="6128511569382736135">Chcete-li zahájit bezplatný hovor, povolte službu Brave Private Ads.</translation>
+<translation id="7930006085154756245">Se službou Brave Private Ads získáváte žetony za prohlížení soukromých reklam (vaše údaje jsou v bezpečí). Tyto žetony můžete proměnit v peníze, dárkové karty... nebo dokonce dát spropitné oblíbeným webovým stránkám. Žádné sledování. Žádná zdržení.</translation>
+<translation id="4992617448154987397">Zapněte si funkci Brave Private Ads</translation>
+<translation id="3415016869273103668">Nyní můžete zahájit bezplatný hovor</translation>
+<translation id="7073631403665023390">Kliknutím nebo klepnutím kdekoli na obrazovce můžete pokračovat v Brave Talk.</translation>
+<translation id="9115939801961482572">Chcete se dozvědět více o odměnách Brave? <ph name="TOUR_LINK_BEGIN"/>Udělejte si krátkou prohlídku<ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">Odměňování s Brave Rewards</translation>
+<translation id="1895476463085410109">Získávejte odměny za prohlížení soukromých reklam Brave a automaticky podporujte tvůrce obsahu.</translation>
 </translationbundle>

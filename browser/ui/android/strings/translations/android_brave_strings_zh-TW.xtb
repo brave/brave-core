@@ -865,4 +865,43 @@
 <translation id="8423380132356660250">開啟 <ph name="APP_NAME"/> 應用程式</translation>
 <translation id="168154537623654021">正在更新 VPN 設定檔……</translation>
 <translation id="7457027586454688423">輸入您的 Brave 錢包密碼</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">可用 <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">購買 <ph name="COIN_NAME"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> 存款地址</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> 存款備忘單</translation>
+<translation id="6755546361496900700">預覽轉換</translation>
+<translation id="5110244215256675209">購買加密貨幣</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="7144878232160441200">重試</translation>
+<translation id="1366855498335432549">存款</translation>
+<translation id="1301340234286078471">轉換</translation>
+<translation id="4584930231524505442">我想要轉換……</translation>
+<translation id="5749014321384313843">我想要花費……</translation>
+<translation id="2480674848181564169">餘額不足，無法轉換</translation>
+<translation id="2215334405220411393">最低轉換金額為：<ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">無法連線</translation>
+<translation id="7742417737698031726">手續費</translation>
+<translation id="2122225204180056042">您將會收到</translation>
+<translation id="6432284126416751397">確認轉換</translation>
+<translation id="3891414008432200754">價格</translation>
+<translation id="3733576242118819803">確認 (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">轉換失敗。請再試一次。</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="8037420924417098685">要開始免費通話，請開啟 Brave Rewards</translation>
+<translation id="8961724619078500274">使用 Brave Rewards，您可以透過檢視私人廣告獲得代幣（您的資料是安全的）。把這些代幣變成現金、禮品卡……或是給您喜歡的網站小費。沒有追蹤。不會拖慢網站速度。</translation>
+<translation id="7307847920988946894">開啟 Rewards</translation>
+<translation id="7872993190040589450">啟用即表示您同意 <ph name="TERMS_OF_SERVICE"/> 和 <ph name="PRIVACY_POLICY"/>。</translation>
+<translation id="6128511569382736135">要開始免費通話，請開啟 Brave Private Ads</translation>
+<translation id="7930006085154756245">使用 Brave Private Ads，您可以透過檢視私人廣告獲得代幣（您的資料是安全的）。把這些代幣變成現金、禮品卡……或是給您喜歡的網站小費。沒有追蹤。不會拖慢網站速度。</translation>
+<translation id="4992617448154987397">開啟 Brave Private Ads</translation>
+<translation id="3415016869273103668">您現在可以開始免費通話了</translation>
+<translation id="7073631403665023390">點擊或輕按螢幕上的任何位置以繼續 Brave 通話。</translation>
+<translation id="626339649633171286">想要取得更多關於 Brave 獎勵？<ph name="TAKE_QUICK_TOUR"/>。</translation>
+<translation id="3604285424134705930">您已將 <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> 轉換為 <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>！</translation>
+<translation id="392587271502873865">請檢查您的網路連線。</translation>
+<translation id="2490428413101944234">測試水管</translation>
+<translation id="2581671693710952401">取得乙太幣</translation>
+<translation id="8165484222652118977">從水龍頭取得 Ether 以用於 <ph name="NETWORK"/> 測試網路</translation>
 </translationbundle>

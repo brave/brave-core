@@ -865,4 +865,43 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="8423380132356660250">Otevřít aplikaci<ph name="APP_NAME"/></translation>
 <translation id="168154537623654021">Aktualizace profilu VPN...</translation>
 <translation id="7457027586454688423">Zadejte heslo Brave Wallet</translation>
+<translation id="4789438578712143420">≈ <ph name="USD_BALANCE"/> $</translation>
+<translation id="558614325644656740">Dostupných <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">Nakupte <ph name="COIN_NAME"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Adresa vkladu</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Poznámka ke vkladu</translation>
+<translation id="6755546361496900700">Náhled převodu</translation>
+<translation id="5110244215256675209">Koupit kryptoměny</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="7144878232160441200">Zkusit znovu</translation>
+<translation id="1366855498335432549">Vklad</translation>
+<translation id="1301340234286078471">Převést</translation>
+<translation id="4584930231524505442">Chci převést...</translation>
+<translation id="5749014321384313843">Chci utratit...</translation>
+<translation id="2480674848181564169">Nedostatečný zůstatek pro převod</translation>
+<translation id="2215334405220411393">Minimální částka pro převod je: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Nelze se připojit</translation>
+<translation id="7742417737698031726">Poplatek</translation>
+<translation id="2122225204180056042">Dostanete</translation>
+<translation id="6432284126416751397">Potvrdit převod</translation>
+<translation id="3891414008432200754">Cena</translation>
+<translation id="3733576242118819803">Potvrdit (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Převod se nezdařil. Zkuste to prosím znovu.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="8037420924417098685">Chcete-li zahájit bezplatný hovor, zapněte funkci Brave Rewards.</translation>
+<translation id="8961724619078500274">Se službou Brave Rewards získáváte žetony za prohlížení soukromých reklam (vaše údaje jsou v bezpečí). Tyto žetony můžete proměnit v hotovost, dárkové karty... nebo dokonce dát spropitné oblíbeným webovým stránkám. Žádné sledování. Žádná zdržení.</translation>
+<translation id="7307847920988946894">Zapnout Rewards</translation>
+<translation id="7872993190040589450">Povolením souhlasíte s <ph name="TERMS_OF_SERVICE"/> a <ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="6128511569382736135">Chcete-li zahájit bezplatný hovor, povolte službu Brave Private Ads.</translation>
+<translation id="7930006085154756245">Se službou Brave Private Ads získáváte žetony za prohlížení soukromých reklam (vaše údaje jsou v bezpečí). Tyto žetony můžete proměnit v peníze, dárkové karty... nebo dokonce dát spropitné oblíbeným webovým stránkám. Žádné sledování. Žádná zdržení.</translation>
+<translation id="4992617448154987397">Zapněte si funkci Brave Private Ads</translation>
+<translation id="3415016869273103668">Nyní můžete zahájit bezplatný hovor</translation>
+<translation id="7073631403665023390">Kliknutím nebo klepnutím kdekoli na obrazovce můžete pokračovat v Brave Talk.</translation>
+<translation id="626339649633171286">Chcete se o Brave Rewards dozvědět více? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">Převedli jste <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> na <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Zkontrolujte prosím své připojení.</translation>
+<translation id="2490428413101944234">Zkušební kohoutek</translation>
+<translation id="2581671693710952401">Získejte Ether</translation>
+<translation id="8165484222652118977">Získejte Ether z kohoutku pro testovací síť <ph name="NETWORK"/></translation>
 </translationbundle>

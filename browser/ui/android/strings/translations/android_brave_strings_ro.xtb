@@ -853,4 +853,43 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="8181161042860463420">Contul token asociat nu există încă. O cantitate mică de SOL va fi cheltuită pentru a o crea și a o finanța. <ph name="CLICK_START"/>Aflați mai multe<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Actualizarea profilului VPN ...</translation>
 <translation id="7457027586454688423">Introduceți parola Portofelului Brave</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">Disponibil <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">Cumpărați <ph name="COIN_NAME"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Adresă Depozit</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Memento Depozit</translation>
+<translation id="6755546361496900700">Previzualizează schimbul</translation>
+<translation id="5110244215256675209">Cumpără cripto</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="7144878232160441200">Reîncearcă</translation>
+<translation id="1366855498335432549">Depune</translation>
+<translation id="1301340234286078471">Schimbă</translation>
+<translation id="4584930231524505442">Vreau să schimb...</translation>
+<translation id="5749014321384313843">Vreau să cheltuiesc...</translation>
+<translation id="2480674848181564169">Fonduri insuficiente pentru efectuarea schimbului</translation>
+<translation id="2215334405220411393">Suma minimă de schimbat este : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Imposibil de conectat</translation>
+<translation id="7742417737698031726">Taxă</translation>
+<translation id="2122225204180056042">Vei primi</translation>
+<translation id="6432284126416751397">Confirmă conversia</translation>
+<translation id="3891414008432200754">Preț</translation>
+<translation id="3733576242118819803">Confirmați (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Schimbul a eșuat. Vă rugăm să încercați din nou.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="8037420924417098685">Pentru a iniția un apel gratuit, activați Brave Rewards</translation>
+<translation id="8961724619078500274">Cu Brave Rewards, câștigați token-uri când afișați reclame (datele dvs. sunt în siguranță). Transformați acele token-uri în bani sau carduri cadou ori puteți susține site-urile care vă plac. Nu sunteți urmărit, iar viteza de încărcare nu este redusă!</translation>
+<translation id="7307847920988946894">Activare Rewards</translation>
+<translation id="7872993190040589450">Dacă activați opțiunea, acceptați <ph name="TERMS_OF_SERVICE"/> și <ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="6128511569382736135">Pentru a iniția un apel gratuit, activați Brave Private Ads</translation>
+<translation id="7930006085154756245">Cu Brave Private Ads, câștigați token-uri când afișați reclame (datele dvs. sunt în siguranță). Transformați acele token-uri în bani sau carduri cadou ori puteți susține site-urile care vă plac. Nu sunteți urmărit, iar viteza de încărcare nu este redusă!</translation>
+<translation id="4992617448154987397">Activați Brave Private Ads</translation>
+<translation id="3415016869273103668">Acum puteți iniția un apel gratuit</translation>
+<translation id="7073631403665023390">Atingeți sau dați clic pe orice loc pe ecran pentru a continua la Brave Talk.</translation>
+<translation id="626339649633171286">Doriți să aflați mai multe despre Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">Ați convertit <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Verificați conexiunea la rețea.</translation>
+<translation id="2490428413101944234">Robinet de testare</translation>
+<translation id="2581671693710952401">Obțineți Ether</translation>
+<translation id="8165484222652118977">Obțineți Ether de la un robinet pentru rețeaua de test <ph name="NETWORK"/></translation>
 </translationbundle>

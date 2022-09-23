@@ -864,4 +864,43 @@
 <translation id="8423380132356660250"><ph name="APP_NAME"/> ऐप खोलें</translation>
 <translation id="168154537623654021">VPN प्रोफ़ाइल अपडेट किया जा रहा है...</translation>
 <translation id="7457027586454688423">अपने Brave वॉलेट का पासवर्ड डालें</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">उपलब्ध <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">खरीदें <ph name="COIN_NAME"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> डिपॉज़िट एड्रेस</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> डिपॉज़िट मेमो</translation>
+<translation id="6755546361496900700">संवाद को प्रीव्यू करें</translation>
+<translation id="5110244215256675209">क्रिप्टो खरीदें</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="7144878232160441200">पुन: प्रयास करें</translation>
+<translation id="1366855498335432549">जमा</translation>
+<translation id="1301340234286078471">परिवर्तन करना</translation>
+<translation id="4584930231524505442">मैं कन्वर्ट करना चाहता हूं ...</translation>
+<translation id="5749014321384313843">मुझे खर्च करना है...</translation>
+<translation id="2480674848181564169">कन्वर्शन के लिए पर्याप्त राशि नहीं</translation>
+<translation id="2215334405220411393">कन्वर्ट करने के लिए न्यूनतम राशि है : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">कनेक्ट करने में सक्षम नहीं</translation>
+<translation id="7742417737698031726">शुल्क</translation>
+<translation id="2122225204180056042">आप पाएंगे</translation>
+<translation id="6432284126416751397">संवाद की पुष्टि करें</translation>
+<translation id="3891414008432200754">मूल्य</translation>
+<translation id="3733576242118819803">पुष्टि करें (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">कन्वर्शन फ़ेल हो गया है। कृपया दोबारा कोशिश करें।</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="8037420924417098685">फ़्री कॉल शुरू करने के लिए,  Brave Rewards चालू करें</translation>
+<translation id="8961724619078500274">Brave Rewards के साथ, आप निजी विज्ञापन देखने के लिए टोकन पाते हैं (आपका डेटा सुरक्षित है). उन टोकन को नकद, उपहार कार्ड... या यहां तक कि अपनी पसंदीदा वेबसाइटों को टिप दें. ट्रैकिंग नहीं. धीमा नहीं पड़ता.</translation>
+<translation id="7307847920988946894">रिवॉर्ड शुरू करें</translation>
+<translation id="7872993190040589450">इसे चालू करके, आप <ph name="TERMS_OF_SERVICE"/> और <ph name="PRIVACY_POLICY"/> पर सहमति देते हैं.</translation>
+<translation id="6128511569382736135">फ़्री कॉल शुरू करने के लिए,  Brave Private Ads चालू करें</translation>
+<translation id="7930006085154756245">Brave Private Ads के साथ, आप निजी विज्ञापन देखने के लिए टोकन पाते हैं (आपका डेटा सुरक्षित है). उन टोकन को नकद, उपहार कार्ड... या यहां तक कि अपनी पसंदीदा वेबसाइटों को टिप दें. ट्रैकिंग नहीं. धीमा नहीं पड़ता.</translation>
+<translation id="4992617448154987397">Brave Private Ads को शुरू करें.</translation>
+<translation id="3415016869273103668">अब आप फ़्री कॉल  शुरू कर सकते हैं</translation>
+<translation id="7073631403665023390">Brave Talk पर जारी रखने के लिए स्क्रीन पर कहीं भी क्लिक या टैप करें.</translation>
+<translation id="626339649633171286">के बारे में अधिक जानना चाहते हैं? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">आपने <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> से <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/> में बदला है!</translation>
+<translation id="392587271502873865">कृपया अपना नेटवर्क कनेक्शन जांचें।</translation>
+<translation id="2490428413101944234">टेस्ट फ़ॉसेट</translation>
+<translation id="2581671693710952401">Ether पाएँ</translation>
+<translation id="8165484222652118977"><ph name="NETWORK"/> टेस्ट नेटवर्क के लिए फॉसेट से ईथर प्राप्त करें</translation>
 </translationbundle>

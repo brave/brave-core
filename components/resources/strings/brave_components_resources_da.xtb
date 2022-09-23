@@ -1499,4 +1499,28 @@
 <translation id="6973157709854838218">Skjul dine saldoer fra visning</translation>
 <translation id="4548946945059463969">Vis dine balancer på skærmen</translation>
 <translation id="242959166945779492">Du har intet tilgodehavende på din konto. Besøg FTX for at købe midler.</translation>
+<translation id="2532127066761785857">Maksimum antal af annoncer vist</translation>
+<translation id="6177749339095882127">0 annoncer i timen</translation>
+<translation id="5171071066587880677">1 annonce i timen</translation>
+<translation id="7885315050812316860">2 annoncer i timen</translation>
+<translation id="2232753742630178222">3 annoncer i timen</translation>
+<translation id="905529390827000221">4 annoncer i timen</translation>
+<translation id="7694167481321619202">5 annoncer i timen</translation>
+<translation id="3705420658531870884">10 annoncer i timen</translation>
+<translation id="3669086939205397942">Vent, du kan ikke give drikkepenge endnu</translation>
+<translation id="7354412786785889047">Du kan støtte denne indholdsskaber ved at sende drikkepenge. Det er en måde, hvorpå du kan takke dem for at skabe godt indhold. Bekræftede skabere bliver betalt for deres drikkepenge i den første måned af hver kalendermåned.</translation>
+<translation id="5119190679543565400">Gendan denne side</translation>
+<translation id="6783637972818687030">Brave vil bruge Infura til at udstede Ethereum JSON-RPC-opkald til smart-kontrakten fra Unstoppable Domains for at løse .crypto (og også .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin, .zil) opslagsanmodninger for domænenavne. Hvis du aktiverer dette, vil Infura se de specifikke domæner, som du forsøger at besøge, men de kan ikke se andre domæner. Se Infuras <ph name="BEGIN_INFURA_TOU_LINK"/>vilkår for brug<ph name="END_INFURA_TOU_LINK"/> og <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privatlivspolitik<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="8037420924417098685">For at starte et gratis opkald skal du aktivere Brave Rewards</translation>
+<translation id="8961724619078500274">Med Brave Rewards kan du optjene poletter for at se privatreklamer (din data er sikker). Konvertér disse poletter til kontanter, gavekort ... eller giv dem i drikkepenge til hjemmesider, du elsker. Der er ingen tracking og ingen forsinkelser.</translation>
+<translation id="7307847920988946894">Slå Rewards til</translation>
+<translation id="799591303418199877">Ved aktivering accepterer du <ph name="TOS_LINK_BEGIN"/>servicevilkårene<ph name="TOS_LINK_END"/>og<ph name="PP_LINK_BEGIN"/>privatpolitikken<ph name="PP_LINK_END"/>.</translation>
+<translation id="6128511569382736135">For at starte et gratis opkald skal du aktivere Brave Private Ads</translation>
+<translation id="7930006085154756245">Med Brave Private Ads kan du optjene poletter for at se privatreklamer (din data er sikker). Konvertér disse poletter til kontanter, gavekort ... eller giv dem i drikkepenge til hjemmesider, du elsker. Der er ingen tracking og ingen forsinkelser.</translation>
+<translation id="4992617448154987397">Aktivér Brave Private Ads</translation>
+<translation id="3415016869273103668">Du kan nu startet et gratis opkald</translation>
+<translation id="7073631403665023390">Klik eller tryk hvor som helst på skærmen for at fortsætte Brave Talk.</translation>
+<translation id="9115939801961482572">Vil du gerne høre mere om Brave-belønninger?<ph name="TOUR_LINK_BEGIN"/>Tag et hurtigt kig<ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">Giv drikkepenge med Brave Rewards</translation>
+<translation id="1895476463085410109">Optjen belønninger ved at se Brave Private Ads, og støt automatisk indholdsskaberne</translation>
 </translationbundle>

@@ -865,4 +865,43 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="8423380132356660250">Öppna <ph name="APP_NAME"/>-appen</translation>
 <translation id="168154537623654021">Uppdaterar VPN-profil ...</translation>
 <translation id="7457027586454688423">Ange ditt lösenord för Brave Wallet</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">Tillgängligt <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">Köp <ph name="COIN_NAME"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Insättningsadress</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Insättningsmemo</translation>
+<translation id="6755546361496900700">Förhandsgranska omvandling</translation>
+<translation id="5110244215256675209">Köp kryptovaluta</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="7144878232160441200">Försök igen</translation>
+<translation id="1366855498335432549">Sätt in</translation>
+<translation id="1301340234286078471">Omvandla</translation>
+<translation id="4584930231524505442">Jag vill omvandla ...</translation>
+<translation id="5749014321384313843">Jag vill spendera ...</translation>
+<translation id="2480674848181564169">Otillräcklig balans för konvertering</translation>
+<translation id="2215334405220411393">Minsta belopp att konvertera är : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Kan inte ansluta</translation>
+<translation id="7742417737698031726">Avgift</translation>
+<translation id="2122225204180056042">Du erhåller</translation>
+<translation id="6432284126416751397">Bekräfta omvandling</translation>
+<translation id="3891414008432200754">Pris</translation>
+<translation id="3733576242118819803">Bekräfta (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Konvertering misslyckades. Var god försök igen.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="8037420924417098685">För att starta ett kostnadsfritt samtal, starta Brave Rewards</translation>
+<translation id="8961724619078500274">Med Brave Rewards tjänar du tokens för att se privata annonser (din data är säker). Gör dessa tokens till kontanter, presentkort... eller till och med tipsa de webbplatser som du älskar. Ingen spårning. Inga långsamma nedgångar.</translation>
+<translation id="7307847920988946894">Aktivera Rewards</translation>
+<translation id="7872993190040589450">Genom att aktivera samtycker du till <ph name="TERMS_OF_SERVICE"/> och <ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="6128511569382736135">För att starta ett kostnadsfritt samtal, aktivera Brave Private Ads</translation>
+<translation id="7930006085154756245">Med Brave Private Ads tjänar du tokens för att visa privata annonser (din data är säker). Gör dessa tokens till kontanter, presentkort... eller till och med tipsa de webbplatser som du älskar. Ingen spårning. Inga långsamma nedgångar.</translation>
+<translation id="4992617448154987397">Aktivera Brave privata annonser</translation>
+<translation id="3415016869273103668">Du kan nu starta ett kostnadsfritt samtal</translation>
+<translation id="7073631403665023390">Klicka eller tryck någonstans på skärmen för att fortsätt‏a Brave Talk.</translation>
+<translation id="626339649633171286">Vill du lära dig mer om Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">Du konverterade <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> till <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Kontrollera din nätverksanslutning.</translation>
+<translation id="2490428413101944234">Testkran</translation>
+<translation id="2581671693710952401">Skaffa Ether</translation>
+<translation id="8165484222652118977">Hämta Ether från en kran för <ph name="NETWORK"/>-testnätverk</translation>
 </translationbundle>

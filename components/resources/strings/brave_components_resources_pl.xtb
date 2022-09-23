@@ -1499,4 +1499,28 @@
 <translation id="6973157709854838218">Ukryj swoje salda na ekranie</translation>
 <translation id="4548946945059463969">Pokaż swoje salda na ekranie</translation>
 <translation id="242959166945779492">Nie masz żadnych środków na swoim koncie. Odwiedź FTX, aby je nabyć.</translation>
+<translation id="2532127066761785857">Maksymalna liczba wyświetlanych reklam</translation>
+<translation id="6177749339095882127">0 reklam na godzinę</translation>
+<translation id="5171071066587880677">1 reklama na godzinę</translation>
+<translation id="7885315050812316860">2 reklamy na godzinę</translation>
+<translation id="2232753742630178222">3 reklamy na godzinę</translation>
+<translation id="905529390827000221">4 reklamy na godzinę</translation>
+<translation id="7694167481321619202">5 reklam na godzinę</translation>
+<translation id="3705420658531870884">10 reklam na godzinę</translation>
+<translation id="3669086939205397942">Poczekaj, jeszecze nie możesz dawać napiwków.</translation>
+<translation id="7354412786785889047">Możesz wesprzeć tego twórcę treści, dając napiwek. To forma podziękowania za tworzenie świetnych treści. Napiwek jest wypłacany zweryfikowanym twórcom w pierwszym tygodniu każdego miesiąca kalendarzowego.</translation>
+<translation id="5119190679543565400">Przywróć tę stronę</translation>
+<translation id="6783637972818687030">Brave będzie korzystać z usługi Infura na potrzeby wykonywania wywołań Ethereum JSON-RPC do inteligentnego kontraktu z Unstoppable Domains w celu rozwiązywania żądań wyszukiwania nazw domen .crypto (a także .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin). Jeśli włączysz tę opcję, Infura zobaczy te konkretne domeny, które będziesz próbować odwiedzić, ale nie będzie widzieć innych domen. Zapoznaj się z <ph name="BEGIN_INFURA_TOU_LINK"/>regulaminem<ph name="END_INFURA_TOU_LINK"/> i <ph name="BEGIN_INFURA_PRIVACY_LINK"/>polityką prywatności<ph name="END_INFURA_PRIVACY_LINK"/> usługi Infura.</translation>
+<translation id="8037420924417098685">Aby rozpocząć bezpłatne połączenie, włącz Brave Revards</translation>
+<translation id="8961724619078500274">Brave Rewards nagradza Cię tokenami za oglądanie prywatnych reklam (Twoje dane są bezpieczne). Tokeny możesz wymieniać na gotówkę, karty podarunkowe, a nawet napiwki dla ulubionych stron internetowych. Bez śledzenia i bez spowolnionego działania.</translation>
+<translation id="7307847920988946894">Włącz system nagród Rewards</translation>
+<translation id="799591303418199877">Włączając tę opcję, zgadzasz się na <ph name="TOS_LINK_BEGIN"/>Warunki<ph name="TOS_LINK_END"/> i <ph name="PP_LINK_BEGIN"/>Politykę prywatności<ph name="PP_LINK_END"/>.</translation>
+<translation id="6128511569382736135">Aby rozpocząć bezpłatne połączenie, włącz reklamy prywatne Brave</translation>
+<translation id="7930006085154756245">Brave Private Ads nagradza Cię tokenami za oglądanie prywatnych reklam (Twoje dane są bezpieczne). Tokeny możesz wymieniać na gotówkę, karty podarunkowe, a nawet napiwki dla ulubionych stron internetowych. Bez śledzenia i bez spowolnionego działania.</translation>
+<translation id="4992617448154987397">Włącz  Brave Private Ads</translation>
+<translation id="3415016869273103668">Teraz możesz rozpocząć bezpłatne połączenie</translation>
+<translation id="7073631403665023390">Kliknij lub dotknij dowolne miejsce ekranu, aby przejść do Brave Talk.</translation>
+<translation id="9115939801961482572">Chcesz dowiedzieć się więcej o nagrodach Brave? <ph name="TOUR_LINK_BEGIN"/>Zapoznaj się z krótką demonstracją<ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">Daj napiwek z nagrodami Brave</translation>
+<translation id="1895476463085410109">Zdobywaj nagrody za oglądanie reklam Brave w trybie prywatnym i automatycznie wspieraj twórców treści</translation>
 </translationbundle>

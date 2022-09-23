@@ -1499,4 +1499,28 @@
 <translation id="6973157709854838218">Piilota saldosi näytöltä</translation>
 <translation id="4548946945059463969">Näytä saldosi näytöllä</translation>
 <translation id="242959166945779492">Sinulla ei ole yhtään saldoa tililläsi. Käy FTX:ssä ostaaksesi valuuttoja.</translation>
+<translation id="2532127066761785857">Näytetty maksimimäärä mainoksia</translation>
+<translation id="6177749339095882127">0 mainosta tunnissa</translation>
+<translation id="5171071066587880677">1 mainos tunnissa</translation>
+<translation id="7885315050812316860">2 mainosta tunnissa</translation>
+<translation id="2232753742630178222">3 mainosta tunnissa</translation>
+<translation id="905529390827000221">4 mainosta tunnissa</translation>
+<translation id="7694167481321619202">5 mainosta tunnissa</translation>
+<translation id="3705420658531870884">10 mainosta tunnissa</translation>
+<translation id="3669086939205397942">Odota hetki, et voi tipata vielä</translation>
+<translation id="7354412786785889047">Voit tukea tätä sisällönkehittäjää antamalla tipin. Se on kiitos mainion sisällön tuottamisesta. Vahvistetut kehittäjät saavat maksun tipeistään jokaisen kalenterikuun ensimmäisen viikon aikana.</translation>
+<translation id="5119190679543565400">Palauta tämä sivusto</translation>
+<translation id="6783637972818687030">Brave käyttää Infuraa lähettääkseen Ethereum JSON-RPC -kutsuja älykkääseen sopimukseen Unstoppable Domainsista käsitelläkseen .crypto (sekä .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin) -verkkotunnuksen nimen hakupyynnöt. Jos otat tämän käyttöön, Infura näkee ne tietyt verkkotunnukset, joissa yrität käydä, mutta se ei pysty näkemään muita verkkotunnuksia. Tutustu Infuran <ph name="BEGIN_INFURA_TOU_LINK"/>käyttöehtoihin<ph name="END_INFURA_TOU_LINK"/> ja <ph name="BEGIN_INFURA_PRIVACY_LINK"/>tietosuojakäytäntöön<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="8037420924417098685">Aloita ilmainen puhelu ottamalla Brave Rewards käyttöön</translation>
+<translation id="8961724619078500274">Brave Rewardsin kautta ansaitset tokeneita yksityisten mainosten katselusta (tietosi ovat turvassa). Muuta rahakkeet rahaksi, lahjakortteiksi… voit jopa antaa suosikkisivustoillesi tipin. Ei seurantaa. Ei hidastuksia.</translation>
+<translation id="7307847920988946894">Ota palkinnot käyttöön</translation>
+<translation id="799591303418199877">Käyttöönottamalla hyväksyt <ph name="TOS_LINK_BEGIN"/>palveluehdot<ph name="TOS_LINK_END"/> ja <ph name="PP_LINK_BEGIN"/>tietosuojakäytännön<ph name="PP_LINK_END"/>.</translation>
+<translation id="6128511569382736135">Aloita ilmainen puhelu ottamalla Brave Private Ads käyttöön</translation>
+<translation id="7930006085154756245">Brave Private Adsin kautta ansaitset tokeneita yksityisten mainosten katselusta (tietosi ovat turvassa). Muuta rahakkeet rahaksi, lahjakortteiksi… voit jopa antaa suosikkisivustoillesi tipin. Ei seurantaa. Ei hidastuksia.</translation>
+<translation id="4992617448154987397">Ota Brave Private Ads käyttöön</translation>
+<translation id="3415016869273103668">Voit nyt aloittaa ilmaisen puhelun</translation>
+<translation id="7073631403665023390">Napsauta tai napauta mitä tahansa näytön kohtaa jatkaaksesi Brave Talk -videopuheluun.</translation>
+<translation id="9115939801961482572">Haluatko lisää tietoa Brave-palkinnoista? <ph name="TOUR_LINK_BEGIN"/>Tässä on pikakatsaus<ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">Tippaa Brave Rewardseilla</translation>
+<translation id="1895476463085410109">Ansaitse palkintoja katsomalla Brave Private Ads -mainoksia ja tue sisällönluojia automaattisesti</translation>
 </translationbundle>

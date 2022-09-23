@@ -1454,4 +1454,28 @@
 <translation id="6973157709854838218">Nu afișați soldurile</translation>
 <translation id="4548946945059463969">Afișați soldurile pe ecran</translation>
 <translation id="242959166945779492">Nu aveți niciun sold în contul dvs. Accesați FTX pentru a achiziționa.</translation>
+<translation id="2532127066761785857">Număr maxim de anunțuri afișate</translation>
+<translation id="6177749339095882127">0 anunțuri pe oră</translation>
+<translation id="5171071066587880677">1 anunț pe oră</translation>
+<translation id="7885315050812316860">2 anunțuri pe oră</translation>
+<translation id="2232753742630178222">3 anunțuri pe oră</translation>
+<translation id="905529390827000221">4 anunțuri pe oră</translation>
+<translation id="7694167481321619202">5 anunțuri pe oră</translation>
+<translation id="3705420658531870884">10 anunțuri pe oră</translation>
+<translation id="3669086939205397942">Așteptați, nu puteți trimite tokenuri încă</translation>
+<translation id="7354412786785889047">Puteți sprijini acest creator de conținut trimițându-i un bacșiș. Este un mod de a-i mulțumi pentru faptul că creează conținut excelent. Creatorii verificați sunt plătiți pentru bacșișurile lor în prima săptămână a fiecărei luni calendaristice.</translation>
+<translation id="5119190679543565400">Restabiliți acest site</translation>
+<translation id="6783637972818687030">Brave va folosi Infura pentru a emite apeluri Ethereum JSON-RPC la contractul inteligent de la Domenii de neoprit pentru a rezolva .crypto (și, de asemenea, .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin, .zil) solicitările de căutare a numelor de domeniu. Dacă activați acest lucru, Infura va vedea acele domenii specifice pe care încercați să le vizitați, dar nu vor putea vedea alte domenii. A se vedea Infura's <ph name="BEGIN_INFURA_TOU_LINK"/>terms of use<ph name="END_INFURA_TOU_LINK"/> and <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privacy policy<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="8037420924417098685">Pentru a iniția un apel gratuit, activați Brave Rewards</translation>
+<translation id="8961724619078500274">Cu Brave Rewards, câștigați token-uri când afișați reclame (datele dvs. sunt în siguranță). Transformați acele token-uri în bani sau carduri cadou ori susțineți site-urile care vă plac. Nu sunteți urmărit, iar viteza de încărcare nu este redusă!</translation>
+<translation id="7307847920988946894">Activați Recompensele</translation>
+<translation id="799591303418199877">Prin activare, acceptați <ph name="TOS_LINK_BEGIN"/>Termenii de utilizare<ph name="TOS_LINK_END"/> și <ph name="PP_LINK_BEGIN"/>Politica de confidențialitate<ph name="PP_LINK_END"/>.</translation>
+<translation id="6128511569382736135">Pentru a iniția un apel gratuit, activați Brave Private Ads</translation>
+<translation id="7930006085154756245">Cu Brave Private Ads, câștigați token-uri când afișați reclame (datele dvs. sunt în siguranță). Transformați acele token-uri în bani sau carduri cadou ori susțineți site-urile care vă plac. Nu sunteți urmărit, iar viteza de încărcare nu este redusă!</translation>
+<translation id="4992617448154987397">Activați Brave Private Ads</translation>
+<translation id="3415016869273103668">Acum puteți iniția un apel gratuit</translation>
+<translation id="7073631403665023390">Atingeți sau dați clic pe orice loc pe ecran pentru a continua la Brave Talk.</translation>
+<translation id="9115939801961482572">Doriți să aflați mai multe despre recompensele Brave? <ph name="TOUR_LINK_BEGIN"/>Faceți un tur rapid<ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">Contribuiți cu Brave Rewards</translation>
+<translation id="1895476463085410109">Câștigați Brave Rewards prin afișarea de Brave Private Ads și susțineți automat creatorii de conținut</translation>
 </translationbundle>

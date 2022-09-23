@@ -1504,4 +1504,33 @@ Blokirano <ph name="NUMBER"/> element/a/ata za praćenje, oglas/a i više</trans
 <translation id="6973157709854838218">Sakrij svoje raspoložive iznose sa zaslona</translation>
 <translation id="4548946945059463969">Otkrij svoje raspoložive iznose na ekranu</translation>
 <translation id="242959166945779492">Nemate raspoloživih iznosa na svom računu. Posjetite FTX da biste ih kupili.</translation>
+<translation id="2532127066761785857">Maksimalni broj prikazanih oglasa</translation>
+<translation id="6177749339095882127">0 oglasa po satu</translation>
+<translation id="5171071066587880677">1 oglas po satu</translation>
+<translation id="7885315050812316860">2 oglasa po satu</translation>
+<translation id="2232753742630178222">3 oglasa po satu</translation>
+<translation id="905529390827000221">4 oglasa po satu</translation>
+<translation id="7694167481321619202">5 oglasa po satu</translation>
+<translation id="3705420658531870884">10 oglasa po satu</translation>
+<translation id="3669086939205397942">Pričekajte, ne možete’ još dati napojnicu</translation>
+<translation id="7354412786785889047">Pošaljite napojnicu kako biste podržali ovog stvaratelja sadržaja. Na ovaj se način zahvaljujete za odličan sadržaj. Potvrđeni autori sadržaja plaćaju su za napojnice tijekom prvog tjedna svakog kalendarskog mjeseca.</translation>
+<translation id="5119190679543565400">Obnovi ovo mjesto</translation>
+<translation id="6783637972818687030">Preglednikom Brave upotrebljava se Infura za upućivanje poziva Ethereum JSON-RPC pametnom ugovoru od nezaustavljivih domena za rješavanje zahtjeva za traženje naziva domene .crypto (i također .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin). Ako to omogućite, društvo Infura može vidjeti te određene domene koje pokušavate posjetiti, ali ne može vidjeti ostale domene. Pogledajte <ph name="BEGIN_INFURA_TOU_LINK"/>Uvjete uporabe<ph name="END_INFURA_TOU_LINK"/> i <ph name="BEGIN_INFURA_PRIVACY_LINK"/>Pravilnik o zaštiti privatnosti<ph name="END_INFURA_PRIVACY_LINK"/> društva Infura.</translation>
+<translation id="8037420924417098685">Za besplatan poziv uključite značajku Nagrade Brave</translation>
+<translation id="8961724619078500274">Značajkom Nagrade Brave zarađujete tokene za pregledavanje privatnih oglasa (vaši su podatci sigurni). Pretvorite te tokene u novac, darovne kartice ili čak u napojnice za mrežna mjesta koja vam se sviđaju. Nema praćenja. Nema usporavanja.</translation>
+<translation id="7307847920988946894">Uključi Nagrade</translation>
+<translation id="799591303418199877">Omogućavanjem pristajete na
+<ph name="TOS_LINK_BEGIN"/>Uvjete pružanja usluge<ph name="TOS_LINK_END"/> i <ph name="PP_LINK_BEGIN"/>
+Pravilnik o zaštiti privatnosti
+<ph name="PP_LINK_END"/>˘.</translation>
+<translation id="6128511569382736135">Za besplatan poziv omogućite značajku Brave Private Ads</translation>
+<translation id="7930006085154756245">Značajkom Brave Private Ads zarađujete tokene za pregledavanje privatnih oglasa (vaši su podatci sigurni). Pretvorite te tokene u novac, darovne kartice ili čak u napojnice za mrežna mjesta koja vam se sviđaju. Nema praćenja. Nema usporavanja.</translation>
+<translation id="4992617448154987397">Uključi značajku Brave Private Ads</translation>
+<translation id="3415016869273103668">Sada možeš obaviti besplatan poziv</translation>
+<translation id="7073631403665023390">Kliknite ili dodirnite bilo gdje na zaslonu za nastavak do značajke Razgovor Brave.</translation>
+<translation id="9115939801961482572">Želite li saznati više o nagradama Brave?
+<ph name="TOUR_LINK_BEGIN"/>Krenite u brzi obilazak
+<ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">Daj napojnicu putem usluge Brave Rewards</translation>
+<translation id="1895476463085410109">Zaradi Rewards pregledavanjem oglasa Brave Private Ads i automatski pruži podršku autorima sadržaja</translation>
 </translationbundle>

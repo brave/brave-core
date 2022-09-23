@@ -1500,4 +1500,28 @@
 <translation id="6973157709854838218">अपना बैलेंस छुपाएं</translation>
 <translation id="4548946945059463969">अपना बैलेंस स्क्रीन पर दिखाएं</translation>
 <translation id="242959166945779492">आपके अकाउंट में कोई बैलेंस नहीं है. खरीदने के लिए FTX पर जाएं.</translation>
+<translation id="2532127066761785857">प्रदर्शित विज्ञापनों की अधिकतम संख्या</translation>
+<translation id="6177749339095882127">0 विज्ञापन प्रति घंटा</translation>
+<translation id="5171071066587880677">1 विज्ञापन प्रति घंटा</translation>
+<translation id="7885315050812316860">2 विज्ञापन प्रति घंटा</translation>
+<translation id="2232753742630178222">3 विज्ञापन प्रति घंटा</translation>
+<translation id="905529390827000221">4 विज्ञापन प्रति घंटा</translation>
+<translation id="7694167481321619202">5 विज्ञापन प्रति घंटा</translation>
+<translation id="3705420658531870884">10 विज्ञापन प्रति घंटा</translation>
+<translation id="3669086939205397942">रुकें, आप अभी तक टिप नहीं कर सकते</translation>
+<translation id="7354412786785889047">आप बख्शीश भेजकर इस सामग्री निर्माता का समर्थन कर सकते हैं। यह बढ़िया सामग्री बनाने के लिए उन्हें धन्यवाद देने का एक माध्यम है। सत्यापित निर्माताओं को प्रत्येक कैलेंडर माह के पहले सप्ताह के दौरान उनकी बख्शीशों का भुगतान किया जाता है।</translation>
+<translation id="5119190679543565400">इस साइट को पुन: स्थापित करें</translation>
+<translation id="6783637972818687030">Brave .crypto (और .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin, .zil) डोमेन नेम खोजने के अनुरोधों पर काम करने के लिए Ethereum JSON-RPC कॉल के ज़रिए Unstoppable Domains से स्मार्ट कॉनट्रैक्ट करने के लिए Infura का इस्तेमाल करेगा. अगर आप इसे चालू करते हैं, तो Infura उन डोमेन को देख पाएगा, जिन पर आप जाने की कोशिश कर रहे हैं, लेकिन वो अन्य डोमेन नहीं देख पाएगा. Infura की <ph name="BEGIN_INFURA_TOU_LINK"/>इस्तेमाल की शर्तें<ph name="END_INFURA_TOU_LINK"/> और <ph name="BEGIN_INFURA_PRIVACY_LINK"/>गोपनीयता नीति<ph name="END_INFURA_PRIVACY_LINK"/> देखें.</translation>
+<translation id="8037420924417098685">फ़्री कॉल शुरू करने के लिए,  Brave Rewards चालू करें</translation>
+<translation id="8961724619078500274">Brave Rewards के साथ, आप निजी विज्ञापन देखने के लिए टोकन पाते हैं (आपका डेटा सुरक्षित है). उन टोकन को नकद, उपहार कार्ड... या यहां तक कि अपनी पसंदीदा वेबसाइटों को टिप दें. ट्रैकिंग नहीं. धीमा नहीं पड़ता.</translation>
+<translation id="7307847920988946894">रिवॉर्ड शुरू करें</translation>
+<translation id="799591303418199877">चालू करने का मतलब है कि <ph name="TOS_LINK_BEGIN"/>सेवा की शर्तों<ph name="TOS_LINK_END"/> और <ph name="PP_LINK_BEGIN"/>गोपनीयता नीति<ph name="PP_LINK_END"/> पर आपकी सहमति है.</translation>
+<translation id="6128511569382736135">फ़्री कॉल शुरू करने के लिए,  Brave Private Ads चालू करें</translation>
+<translation id="7930006085154756245">Brave Private Ads के साथ, आप निजी विज्ञापन देखने के लिए टोकन पाते हैं (आपका डेटा सुरक्षित है). उन टोकन को नकद, उपहार कार्ड... या यहां तक कि अपनी पसंदीदा वेबसाइटों को टिप दें. ट्रैकिंग नहीं. धीमा नहीं पड़ता.</translation>
+<translation id="4992617448154987397">Brave Private Ads को शुरू करें.</translation>
+<translation id="3415016869273103668">अब आप फ़्री कॉल  शुरू कर सकते हैं</translation>
+<translation id="7073631403665023390">Brave Talk जारी रखने के लिए स्क्रीन पर कहीं भी क्लिक या टैप करें.</translation>
+<translation id="9115939801961482572">Brave रिवॉर्ड के बारे में और जानना चाहते हैं? <ph name="TOUR_LINK_BEGIN"/>तुरंत जानकारी पाएँ<ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">Brave रिवॉर्ड से टिप करें</translation>
+<translation id="1895476463085410109">Brave निजी विज्ञापन देखकर पुरस्कार अर्जित करें और अपने आप कंटेंट क्रिएटर का समर्थन करें</translation>
 </translationbundle>

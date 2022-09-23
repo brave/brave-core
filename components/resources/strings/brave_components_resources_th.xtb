@@ -1500,4 +1500,28 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6973157709854838218">ซ่อนยอดคงเหลือของคุณจากจอแสดงผล</translation>
 <translation id="4548946945059463969">เปิดเผยยอดคงเหลือของคุณบนหน้าจอ</translation>
 <translation id="242959166945779492">คุณไม่มียอดคงเหลือในบัญชีของคุณ โปรดไปยัง FTX เพื่อซื้อเพิ่ม</translation>
+<translation id="2532127066761785857">จำนวนโฆษณาสูงสุดที่แสดง</translation>
+<translation id="6177749339095882127">0 Ads ต่อชั่วโมง</translation>
+<translation id="5171071066587880677">1 โฆษณาต่อชั่วโมง</translation>
+<translation id="7885315050812316860">2 โฆษณาต่อชั่วโมง</translation>
+<translation id="2232753742630178222">3 โฆษณาต่อชั่วโมง</translation>
+<translation id="905529390827000221">4 โฆษณาต่อชั่วโมง</translation>
+<translation id="7694167481321619202">5 โฆษณาต่อชั่วโมง</translation>
+<translation id="3705420658531870884">10 Ads ต่อชั่วโมง</translation>
+<translation id="3669086939205397942">ช้าก่อน คุณยังไม่สามารถให้ทิปได้</translation>
+<translation id="7354412786785889047">คุณสามารถสนับสนุนผู้สร้างเนื้อหานี้ได้โดยการส่งทิป ซึ่งเป็นหนึ่งในช่องทางการแสดงความขอบคุณที่ช่วยสร้างเนื้อหาดีๆ ผู้สร้างที่ยืนยันตัวตนแล้วจะได้รับเงินค่าทิปในช่วงสัปดาห์แรกของแต่ละเดือนปฏิทิน</translation>
+<translation id="5119190679543565400">กู้คืนไซต์นี้</translation>
+<translation id="6783637972818687030">Brave จะใช้ Infura เพื่อออกคำสั่ง Ethereum JSON-RPC ไปเรียกสมาร์ทคอนแทรคจาก Unstoppable Domains เพื่อแก้ไขคำขอค้นหาชื่อโดเมน .crypto (และ .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin, .zil) หากคุณเปิดใช้งานคำสั่งนี้ Infura จะมองเห็นโดเมนดังกล่าวที่คุณพยายามเข้าชม แต่จะไม่เห็นโดเมนอื่นๆ โปรดอ่าน<ph name="BEGIN_INFURA_TOU_LINK"/>ข้อกำหนดและเงื่อนไขการใช้งาน<ph name="END_INFURA_TOU_LINK"/>และ<ph name="BEGIN_INFURA_PRIVACY_LINK"/>นโยบายความเป็นส่วนตัว<ph name="END_INFURA_PRIVACY_LINK"/></translation>
+<translation id="8037420924417098685">หากต้องการเริ่มการโทรฟรี ให้เปิดการทำงานของ Brave Rewards</translation>
+<translation id="8961724619078500274">ด้วย Brave รีวอร์ด คุณจะสามารถรับโทเค็นจากการดูโฆษณาแบบส่วนตัว (ข้อมูลของคุณจะปลอดภัย) เปลี่ยนโทเค็นเหล่านั้นเป็นเงินสด บัตรของขวัญ… หรือแม้แต่เป็นทิปให้แก่เว็บไซต์ที่คุณชื่นชอบ โดยไม่มีการติดตาม และไม่ทำให้การทำงานช้าลง</translation>
+<translation id="7307847920988946894">เปิดใช้ Rewards</translation>
+<translation id="799591303418199877">การเปิดใช้งานจะถือว่าคุณยอมรับ <ph name="TOS_LINK_BEGIN"/>ข้อกำหนดในการให้บริการ<ph name="TOS_LINK_END"/> และ <ph name="PP_LINK_BEGIN"/>นโยบายความเป็นส่วนตัว<ph name="PP_LINK_END"/></translation>
+<translation id="6128511569382736135">หากต้องการเริ่มการโทรฟรี ให้เปิดใช้งาน Brave Private Ads</translation>
+<translation id="7930006085154756245">ด้วย Brave Private Ads คุณจะสามารถรับโทเค็นจากการดูโฆษณาแบบส่วนตัว (ข้อมูลของคุณจะปลอดภัย) เปลี่ยนโทเค็นเหล่านั้นเป็นเงินสด บัตรของขวัญ… หรือแม้แต่เป็นทิปให้แก่เว็บไซต์ที่คุณชื่นชอบ โดยไม่มีการติดตาม และไม่ทำให้การทำงานช้าลง</translation>
+<translation id="4992617448154987397">เปิดการทำงานของ Brave Private Ads</translation>
+<translation id="3415016869273103668">คุณสามารถเริ่มการโทรฟรีได้เลยตอนนี้</translation>
+<translation id="7073631403665023390">คลิกหรือแตะที่ใดก็ได้บนหน้าจอเพื่อดำเนินการต่อใน Brave Talk</translation>
+<translation id="9115939801961482572">ต้องการเรียนรู้เพิ่มเติมเกี่ยวกับ Brave Rewards ใช่ไหม <ph name="TOUR_LINK_BEGIN"/>ดูรายละเอียดคร่าวๆ<ph name="TOUR_LINK_END"/></translation>
+<translation id="8222322431155185238">ให้ทิปด้วย Brave Rewards</translation>
+<translation id="1895476463085410109">รับ Rewards จากการชม Brave Private Ads และสนับสนุนคอนเทนต์ครีเอเตอร์โดยอัตโนมัติ</translation>
 </translationbundle>

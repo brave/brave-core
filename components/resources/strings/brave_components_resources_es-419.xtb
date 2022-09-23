@@ -1499,4 +1499,28 @@ Se han bloqueado <ph name="NUMBER"/> rastreadores, anuncios y otros elementos</t
 <translation id="6973157709854838218">Oculta tus saldos de la pantalla</translation>
 <translation id="4548946945059463969">Muestra tus saldos en la pantalla</translation>
 <translation id="242959166945779492">No tienes ningún saldo en tu cuenta. Visita FTX para adquirir un poco.</translation>
+<translation id="2532127066761785857">Cantidad máxima de anuncios mostrados</translation>
+<translation id="6177749339095882127">0 anuncios por hora</translation>
+<translation id="5171071066587880677">1 anuncio por hora</translation>
+<translation id="7885315050812316860">2 anuncios por hora</translation>
+<translation id="2232753742630178222">3 anuncios por hora</translation>
+<translation id="905529390827000221">4 anuncios por hora</translation>
+<translation id="7694167481321619202">5 anuncios por hora</translation>
+<translation id="3705420658531870884">10 anuncios por hora</translation>
+<translation id="3669086939205397942">Espera, todavía no puedes dar propinas.</translation>
+<translation id="7354412786785889047">Puedes colaborar con este creador de contenido enviando una propina. De esa manera, podrás agradecerle por haber creado contenido excelente. Los creadores verificados reciben el pago de sus propinas durante la primera semana de cada mes calendario.</translation>
+<translation id="5119190679543565400">Restaurar este sitio</translation>
+<translation id="6783637972818687030">Brave utilizará Infura para emitir llamadas JSON-RPC de Ethereum al contrato inteligente de Unstoppable Domains para resolver solicitudes de búsqueda de nombres de dominio .crypto (y también .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin o .zil). Si activa esto, Infura verá esos dominios específicos que intenta visitar, pero no podrá ver otros dominios. Consulte las <ph name="BEGIN_INFURA_TOU_LINK"/>condiciones de uso<ph name="END_INFURA_TOU_LINK"/> y la <ph name="BEGIN_INFURA_PRIVACY_LINK"/>política de privacidad<ph name="END_INFURA_PRIVACY_LINK"/> de Infura.</translation>
+<translation id="8037420924417098685">Para iniciar una llamada gratuita, active Brave Rewards</translation>
+<translation id="8961724619078500274">Con Recompensas Brave, gane tokens por ver anuncios privados (sus datos están protegidos). Puede convertir esos tokens en efectivo o tarjetas de regalo, o bien dar propina a los sitios web que más le gustan. Sin seguimiento alguno ni demoras.</translation>
+<translation id="7307847920988946894">Activar Rewards</translation>
+<translation id="799591303418199877">Al continuar, aceptas las <ph name="TOS_LINK_BEGIN"/>Condiciones del servicio<ph name="TOS_LINK_END"/> y la <ph name="PP_LINK_BEGIN"/>Política de privacidad<ph name="PP_LINK_END"/>.</translation>
+<translation id="6128511569382736135">Para iniciar una llamada gratuita, active Brave Private Ads</translation>
+<translation id="7930006085154756245">Con Brave Private Ads, gane tokens por ver anuncios privados (sus datos están protegidos). Puede convertir esos tokens en efectivo o tarjetas de regalo, o bien dar propina a los sitios web que más le gustan. Sin seguimiento alguno ni demoras.</translation>
+<translation id="4992617448154987397">Activar Brave Private Ads</translation>
+<translation id="3415016869273103668">Ya puede iniciar una llamada gratuita</translation>
+<translation id="7073631403665023390">Haga clic o toque en cualquier lugar de la pantalla para continuar con Brave Talk.</translation>
+<translation id="9115939801961482572">¿Quieres más información sobre Recompensas de Brave? <ph name="TOUR_LINK_BEGIN"/>Haz un recorrido rápido<ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">Envía propinas con Brave Rewards</translation>
+<translation id="1895476463085410109">Consigue recompensas por ver los anuncios privados de Brave y apoya automáticamente a los creadores de contenido</translation>
 </translationbundle>

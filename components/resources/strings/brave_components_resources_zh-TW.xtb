@@ -1499,4 +1499,28 @@
 <translation id="6973157709854838218">隱藏顯示餘額</translation>
 <translation id="4548946945059463969">在螢幕上顯示您的餘額</translation>
 <translation id="242959166945779492">您的帳戶中沒有任何餘額。請造訪 FTX 購買。</translation>
+<translation id="2532127066761785857">廣告顯示數量上限</translation>
+<translation id="6177749339095882127">每小時 0 則廣告</translation>
+<translation id="5171071066587880677">每小時 1 則廣告</translation>
+<translation id="7885315050812316860">每小時 2 則廣告</translation>
+<translation id="2232753742630178222">每小時 3 則廣告</translation>
+<translation id="905529390827000221">每小時 4 則廣告</translation>
+<translation id="7694167481321619202">每小時 5 則廣告</translation>
+<translation id="3705420658531870884">每小時 10 則廣告</translation>
+<translation id="3669086939205397942">等等，您還不能給小費</translation>
+<translation id="7354412786785889047">你可以藉由發送打賞來支持這位推文作者。這是感謝他們提供優質內容的方式。驗證過的作者在每個行事曆月份的第一週收到打賞。</translation>
+<translation id="5119190679543565400">復原此網頁</translation>
+<translation id="6783637972818687030">Brave 將使用 Infura 從 Unstoppable Domains 向智慧型合約發出以太坊 JSON-RPC 呼叫，以解析 .crypto（以及 .x、.coin、.nft、.dao、.wallet、.888、.blockchain、.bitcoin、 .zil）域名查詢請求。如果您啟用此功能，Infura 將看到您嘗試前往的那些特定網域，但他們將無法看到其他網域。請參閱 Infura 的<ph name="BEGIN_INFURA_TOU_LINK"/>使用條款<ph name="END_INFURA_TOU_LINK"/>和<ph name="BEGIN_INFURA_PRIVACY_LINK"/>隱私政策<ph name="END_INFURA_PRIVACY_LINK"/>。</translation>
+<translation id="8037420924417098685">要開始免費通話，請開啟 Brave Rewards</translation>
+<translation id="8961724619078500274">使用 Brave Rewards，您可以透過檢視私人廣告獲得代幣（您的資料是安全的）。把這些代幣變成現金、禮品卡……或是給您喜歡的網站小費。沒有追蹤。不會拖慢網站速度。</translation>
+<translation id="7307847920988946894">開啟 Rewards</translation>
+<translation id="799591303418199877">啟用即表示您同意《<ph name="TOS_LINK_BEGIN"/>服務條款<ph name="TOS_LINK_END"/>》與《<ph name="PP_LINK_BEGIN"/>隱私權政策<ph name="PP_LINK_END"/>》。</translation>
+<translation id="6128511569382736135">要開始免費通話，請開啟 Brave Private Ads</translation>
+<translation id="7930006085154756245">使用 Brave Private Ads，您可以透過檢視私人廣告獲得代幣（您的資料是安全的）。把這些代幣變成現金、禮品卡……或是給您喜歡的網站小費。沒有追蹤。不會拖慢網站速度。</translation>
+<translation id="4992617448154987397">開啟 Brave Private Ads</translation>
+<translation id="3415016869273103668">您現在可以開始免費通話了</translation>
+<translation id="7073631403665023390">點擊或輕按螢幕上的任何位置以繼續 Brave 通話。</translation>
+<translation id="9115939801961482572">想深入瞭解 Brave 獎勵？<ph name="TOUR_LINK_BEGIN"/>立即啟動快速導覽<ph name="TOUR_LINK_END"/>。</translation>
+<translation id="8222322431155185238">透過 Brave Rewards 給予小費</translation>
+<translation id="1895476463085410109">檢視 Brave Private Ads 不僅能賺取獎勵，還能一併支持內容創作者</translation>
 </translationbundle>

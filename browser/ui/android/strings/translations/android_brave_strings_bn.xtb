@@ -865,4 +865,43 @@
 <translation id="8423380132356660250"><ph name="APP_NAME"/> অ্যাপটি খুলুন</translation>
 <translation id="168154537623654021">VPN প্রোফাইল আপডেট করা হচ্ছে ...</translation>
 <translation id="7457027586454688423">আপনার Brave ওয়ালেট পাসওয়ার্ড লিখুন</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">উপলব্ধ <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869"><ph name="COIN_NAME"/> কিনুন</translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> ডিপোজিটের ঠিকানা</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> ডিপোজিট মেমো</translation>
+<translation id="6755546361496900700">রূপান্তর প্রিভিউ করুন</translation>
+<translation id="5110244215256675209">Crypto ক্রয় করুন</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="7144878232160441200">আবার চেষ্টা করুন</translation>
+<translation id="1366855498335432549">জমা</translation>
+<translation id="1301340234286078471">রূপান্তর করুন</translation>
+<translation id="4584930231524505442">আমি … পরিবর্তন করতে চাই</translation>
+<translation id="5749014321384313843">আমি ব্যয় করতে চাই...</translation>
+<translation id="2480674848181564169">রূপান্তরের জন্য পর্যাপ্ত ব্যালেন্স নেই</translation>
+<translation id="2215334405220411393">রূপান্তর করার জন্য ন্যুনতম অর্থরাশি : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">সংযোগ করতে পারছে না</translation>
+<translation id="7742417737698031726">ফী</translation>
+<translation id="2122225204180056042">আপনি পাবেন</translation>
+<translation id="6432284126416751397">রূপান্তর নিশ্চিত করুন</translation>
+<translation id="3891414008432200754">মূল্য</translation>
+<translation id="3733576242118819803">নিশ্চিত করুন (<ph name="REMAINING_TIME"/>সেঃ)</translation>
+<translation id="1627064138060308910">রূপান্তর ব্যর্থ হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="8037420924417098685">একটি বিনামূল্যে কল শুরু করতে Brave রিওয়ার্ডস চালু করুন</translation>
+<translation id="8961724619078500274">Brave Rewards-এর সাহায্যে আপনি ব্যক্তিগত বিজ্ঞাপনগুলো দেখার জন্য টোকেন অর্জন করেন (আপনার ডেটা নিরাপদ)। সেই টোকেনগুলো নগদ, উপহার কার্ডে…বা এমনকি আপনি ভালবাসেন এমন টিপে পরিণত করুন। কোনও ট্র্যাকিং নেই। কোনও গতি হ্রাস নেই।</translation>
+<translation id="7307847920988946894">পুরষ্কারগুলির বোতাম চালু করুন</translation>
+<translation id="7872993190040589450">সক্ষম করে আপনি <ph name="TERMS_OF_SERVICE"/> এবং <ph name="PRIVACY_POLICY"/>-এর সথে সম্মত হন।</translation>
+<translation id="6128511569382736135">একটি বিনামূল্যে কল শুরু করতে Brave ব্যক্তিগত বিজ্ঞাপন সক্ষম করুন</translation>
+<translation id="7930006085154756245">Brave ব্যক্তিগত বিজ্ঞাপন-এর সাহায্যে আপনি ব্যক্তিগত বিজ্ঞাপন দেখার জন্য টোকেন উপার্জন করুন (আপনার ডেটা নিরাপদ)। সেই টোকেনগুলো নগদ, উপহার কার্ডে…বা এমনকি আপনি ভালবাসেন এমন টিপে পরিণত করুন। কোনও ট্র্যাকিং নেই। কোনও গতি হ্রাস নেই।</translation>
+<translation id="4992617448154987397">Brave ব্যক্তিগত বিজ্ঞাপনগুলো চালু করুন</translation>
+<translation id="3415016869273103668">আপনি এখন বিনামূল্যে কল শুরু করতে পারেন</translation>
+<translation id="7073631403665023390">Brave টক অবিরত রাখতে স্ক্রিনের যেকোনো জায়গায় ক্লিক বা ট্যাপ করুন।</translation>
+<translation id="626339649633171286">Brave রিওয়ার্ডস সম্পর্কে আরও জানতে চান? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">আপনি রূপান্তর করেছেন <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">আপনার নেটওয়ার্ক সংযোগ পরীক্ষা করুন।</translation>
+<translation id="2490428413101944234">ফসেট পরীক্ষা করুন</translation>
+<translation id="2581671693710952401">ইথার পান</translation>
+<translation id="8165484222652118977"><ph name="NETWORK"/> টেস্ট নেটওয়ার্কের জন্য কল থেকে ইথার পান</translation>
 </translationbundle>

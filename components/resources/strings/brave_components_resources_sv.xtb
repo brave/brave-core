@@ -1499,4 +1499,28 @@
 <translation id="6973157709854838218">Dölj dina saldon från att visas</translation>
 <translation id="4548946945059463969">Visa dina saldon på skärmen</translation>
 <translation id="242959166945779492">Du har inga saldon på ditt konto. Besök FTX för att köpa.</translation>
+<translation id="2532127066761785857">Maximalt antal annonser har visats</translation>
+<translation id="6177749339095882127">0 annonser per timme</translation>
+<translation id="5171071066587880677">1 annons per timme</translation>
+<translation id="7885315050812316860">2 annonser per timme</translation>
+<translation id="2232753742630178222">3 annonser per timme</translation>
+<translation id="905529390827000221">4 annonser per timme</translation>
+<translation id="7694167481321619202">5 annonser per timme</translation>
+<translation id="3705420658531870884">10 annonser per timme</translation>
+<translation id="3669086939205397942">Vänta, du kan inte ge dricks än</translation>
+<translation id="7354412786785889047">Du kan stödja denna contentskapare genom att skicka dricks. Det är ett sätt att tacka för bra innehåll. Verifierade skapare får sin dricks utbetald under varje kalendermånads första vecka.</translation>
+<translation id="5119190679543565400">Återställ denna webbplats</translation>
+<translation id="6783637972818687030">Brave kommer att använda Infura för att utfärda Ethereum JSON-RPC-anrop till det smarta kontraktet från Unstoppable Domains för att lösa domännamnsökningar för .crypto (och även .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin). Om du aktiverar detta kommer Infura att se de specifika domäner som du försöker besöka, men de kommer inte att kunna se andra domäner. Se Infuras <ph name="BEGIN_INFURA_TOU_LINK"/>användningsvillkor<ph name="END_INFURA_TOU_LINK"/> och <ph name="BEGIN_INFURA_PRIVACY_LINK"/>sekretesspolicy<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="8037420924417098685">För att starta ett kostnadsfritt samtal, starta Brave Rewards</translation>
+<translation id="8961724619078500274">Med Brave Rewards tjänar du tokens för att se privata annonser (din data är säker). Gör dessa tokens till kontanter, presentkort... eller till och med tipsa de webbplatser som du älskar. Ingen spårning. Inga långsamma nedgångar.</translation>
+<translation id="7307847920988946894">Aktivera Rewards</translation>
+<translation id="799591303418199877">Genom att aktivera godkänner du <ph name="TOS_LINK_BEGIN"/>Användarvillkoren<ph name="TOS_LINK_END"/> och <ph name="PP_LINK_BEGIN"/>Sekretesspolicyn<ph name="PP_LINK_END"/>.</translation>
+<translation id="6128511569382736135">För att starta ett kostnadsfritt samtal, aktivera Brave Private Ads</translation>
+<translation id="7930006085154756245">Med Brave Private Ads tjänar du tokens för att visa privata annonser (din data är säker). Gör dessa tokens till kontanter, presentkort... eller till och med tipsa de webbplatser som du älskar. Ingen spårning. Inga långsamma nedgångar.</translation>
+<translation id="4992617448154987397">Aktivera Brave privata annonser</translation>
+<translation id="3415016869273103668">Du kan nu starta ett kostnadsfritt samtal</translation>
+<translation id="7073631403665023390">Klicka eller tryck någonstans på skärmen för att fortsätt‏a Brave Talk.</translation>
+<translation id="9115939801961482572">Vill du lära dig mer om Brave Rewards? <ph name="TOUR_LINK_BEGIN"/>Ta en snabb rundtur<ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">Tips med Brave Rewards</translation>
+<translation id="1895476463085410109">Tjäna ihop belöningar genom att visa Brave Private Ads och stöd innehållsskapare automatiskt</translation>
 </translationbundle>

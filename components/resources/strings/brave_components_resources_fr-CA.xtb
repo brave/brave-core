@@ -1499,4 +1499,28 @@
 <translation id="6973157709854838218">Masquer vos soldes</translation>
 <translation id="4548946945059463969">Afficher vos soldes à l'écran</translation>
 <translation id="242959166945779492">Le solde de votre compte est nul. Accédez à FTX pour acheter des devises.</translation>
+<translation id="2532127066761785857">Nombre maximum d'annonces affichées</translation>
+<translation id="6177749339095882127">0 publicité par heure</translation>
+<translation id="5171071066587880677">Une annonce par heure</translation>
+<translation id="7885315050812316860">Deux annonces par heure</translation>
+<translation id="2232753742630178222">3 annonces par heures</translation>
+<translation id="905529390827000221">Quatre annonces par heure</translation>
+<translation id="7694167481321619202">Cinq annonces par heure</translation>
+<translation id="3705420658531870884">10 publicités par heure</translation>
+<translation id="3669086939205397942">Attendez, vous ne pouvez pas encore donner de pourboire</translation>
+<translation id="7354412786785889047">Vous pouvez soutenir ce créateur de contenu en lui envoyant un pourboire. C’est une façon de les remercier d’avoir créé un contenu de qualité. Les créateurs vérifiés sont payés pour leurs pourboires pendant la première semaine de chaque mois civil.</translation>
+<translation id="5119190679543565400">Restaurer ce site</translation>
+<translation id="6783637972818687030">Brave utilisera Infura pour transmettre les appels JSON-RPC Ethereum au contrat intelligent depuis les domaines Unstoppable Domains afin de résoudre les requêtes de résolution des noms de domaine en .crypto (ainsi que ceux en .x, .coin, .nft, .dao, .wallet, .888, .blockchain et .bitcoin). Si vous activez cette option, Infura pourra voir ces domaines spécifiques lorsque vous essayez de les consulter, mais pas les autres domaines. Consultez les <ph name="BEGIN_INFURA_TOU_LINK"/>conditions d'utilisation<ph name="END_INFURA_TOU_LINK"/> et la <ph name="BEGIN_INFURA_PRIVACY_LINK"/>politique de confidentialité<ph name="END_INFURA_PRIVACY_LINK"/> d'Infura.</translation>
+<translation id="8037420924417098685">Pour démarrer un appel gratuit, activez les récompenses Brave</translation>
+<translation id="8961724619078500274">Avec les récompenses Brave, vous gagnez des jetons en regardant des annonces privées (vos données sont en sécurité). Transformez ces jetons en espèces, en cartes-cadeaux… Vous pouvez même faire un don aux sites web que vous aimez. Sans suivi. Sans ralentissements.</translation>
+<translation id="7307847920988946894">Activez les récompenses</translation>
+<translation id="799591303418199877">En activant cette option, vous acceptez les <ph name="TOS_LINK_BEGIN"/>Conditions d'utilisation<ph name="TOS_LINK_END"/> et la <ph name="PP_LINK_BEGIN"/>Politique de confidentialité<ph name="PP_LINK_END"/>.</translation>
+<translation id="6128511569382736135">Pour démarrer un appel gratuit, activez Brave Private Ads</translation>
+<translation id="7930006085154756245">Avec Brave Private Ads, vous gagnez des jetons en regardant des annonces privées (vos données sont en sécurité). Transformez ces jetons en espèces, en cartes-cadeaux… Vous pouvez même faire un don aux sites web que vous aimez. Sans suivi. Sans ralentissements.</translation>
+<translation id="4992617448154987397">Activer Brave Private Ads</translation>
+<translation id="3415016869273103668">Vous pouvez maintenant démarrer un appel gratuit</translation>
+<translation id="7073631403665023390">Cliquez ou appuyez n'importe où sur l'écran pour continuer vers Brave Talk.</translation>
+<translation id="9115939801961482572">Vous souhaitez en savoir plus sur les Récompenses Brave? <ph name="TOUR_LINK_BEGIN"/>Faire une visite rapide<ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">Contribution avec Brave Rewards</translation>
+<translation id="1895476463085410109">Remportez des récompenses en regardant les Brave Private Ads et assistez automatiquement les créateurs de contenu</translation>
 </translationbundle>

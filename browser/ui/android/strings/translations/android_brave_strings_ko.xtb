@@ -865,4 +865,43 @@
 <translation id="8423380132356660250"><ph name="APP_NAME"/> 앱 열기</translation>
 <translation id="168154537623654021">VPN 프로필 업데이트 중...</translation>
 <translation id="7457027586454688423">Brave Wallet 비밀번호 입력</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">사용 가능한 <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869"><ph name="COIN_NAME"/> 구매</translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> 입금 주소</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> 입금 메모</translation>
+<translation id="6755546361496900700">전환 미리보기</translation>
+<translation id="5110244215256675209">암호 화폐 구매</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="7144878232160441200">재시도</translation>
+<translation id="1366855498335432549">입금</translation>
+<translation id="1301340234286078471">전환</translation>
+<translation id="4584930231524505442">전환하고 싶습니다...</translation>
+<translation id="5749014321384313843">쓰고 싶습니다...</translation>
+<translation id="2480674848181564169">환전용 잔액 부족</translation>
+<translation id="2215334405220411393">환전 최소 금액 : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">연결할 수 없음</translation>
+<translation id="7742417737698031726">수수료</translation>
+<translation id="2122225204180056042">수령하시게 됩니다</translation>
+<translation id="6432284126416751397">전환 확인</translation>
+<translation id="3891414008432200754">가격</translation>
+<translation id="3733576242118819803">(<ph name="REMAINING_TIME"/>s) 확인</translation>
+<translation id="1627064138060308910">환전 실패. 다시 시도하세요.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="8037420924417098685">무료 통화를 시작하려면 Brave Rewards를 켜세요.</translation>
+<translation id="8961724619078500274">Brave Rewards를 이용하면 프라이빗 광고를 보고 토큰을 적립할 수 있습니다(개인 데이터는 안전함). 토큰은 원하는 대로 현금, 기프트카드, 웹사이트 팁 등으로 전환할 수 있습니다. 추적도 없고, 느려지지도 않습니다.</translation>
+<translation id="7307847920988946894">리워드 켜기</translation>
+<translation id="7872993190040589450">활성화하면 <ph name="TERMS_OF_SERVICE"/>, <ph name="PRIVACY_POLICY"/>에 동의하게 됩니다.</translation>
+<translation id="6128511569382736135">무료 통화를 시작하려면 Brave Private Ads를 활성화하세요.</translation>
+<translation id="7930006085154756245">Brave Private Ads를 이용하면 프라이빗 광고를 보고 토큰을 적립할 수 있습니다(개인 데이터는 안전함). 토큰은 원하는 대로 현금, 기프트카드, 웹사이트 팁 등으로 전환할 수 있습니다. 추적도 없고, 느려지지도 않습니다.</translation>
+<translation id="4992617448154987397">Brave Private Ads 켜기</translation>
+<translation id="3415016869273103668">이제 무료 통화 시작 가능</translation>
+<translation id="7073631403665023390">Brave Talk로 이동하려면 화면의 아무데나 클릭 또는 탭하세요.</translation>
+<translation id="626339649633171286">Brave Rewards에 대해 자세히 알고 싶으신가요? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930"><ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/>에서 <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>(으)로 바꿨습니다!</translation>
+<translation id="392587271502873865">네트워크 연결을 확인하세요.</translation>
+<translation id="2490428413101944234">파우셋 테스트</translation>
+<translation id="2581671693710952401">이더 얻기</translation>
+<translation id="8165484222652118977"><ph name="NETWORK"/> Test Network 파우싯에서 이더 얻기</translation>
 </translationbundle>

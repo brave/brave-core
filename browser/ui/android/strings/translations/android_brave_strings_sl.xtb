@@ -865,4 +865,43 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="8423380132356660250">Odpri aplikacijo <ph name="APP_NAME"/></translation>
 <translation id="168154537623654021">Posodabljanje profila VPN ...</translation>
 <translation id="7457027586454688423">Vnesite geslo za Brave Wallet</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">Razpoložljivih je <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">Kupite <ph name="COIN_NAME"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Naslov depozita</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Opomnik za depozit</translation>
+<translation id="6755546361496900700">Predogled pretvorbe</translation>
+<translation id="5110244215256675209">Kupi Kripto</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="7144878232160441200">Poskusi znova</translation>
+<translation id="1366855498335432549">Polog</translation>
+<translation id="1301340234286078471">Pretvori</translation>
+<translation id="4584930231524505442">Pretvoriti želim ...</translation>
+<translation id="5749014321384313843">Porabiti želim</translation>
+<translation id="2480674848181564169">Ni dovolj na stanju za pretvorbo</translation>
+<translation id="2215334405220411393">Najmanjši znesek za pretvorbo je: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Povezava ni mogoča</translation>
+<translation id="7742417737698031726">Pristojbina</translation>
+<translation id="2122225204180056042">Prejeli boste</translation>
+<translation id="6432284126416751397">Potrdi pretvorbo</translation>
+<translation id="3891414008432200754">Cena</translation>
+<translation id="3733576242118819803">Potrdite (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Pretvorba ni uspela. Prosim poskusite ponovno.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="8037420924417098685">Če želite klicati brezplačno, vklopite Brave Rewards</translation>
+<translation id="8961724619078500274">Z nagradami Brave Rewards si prislužite žetone za ogled zasebnih oglasov (vaši podatki so varni). Pretvarjajte te žetone v gotovino, darilne kartice... ali jih dajte kot prispevek za spletna mesta, ki jih imate radi. Brez sledenja. Brez upočasnitev.</translation>
+<translation id="7307847920988946894">Vklopite storitev Rewards</translation>
+<translation id="7872993190040589450">Z omogočanjem se strinjate z <ph name="TERMS_OF_SERVICE"/> in <ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="6128511569382736135">Če želite klicati brezplačno, omogočite Brave Private Ads</translation>
+<translation id="7930006085154756245">Z zasebnimi oglasi Brave Private Ads si prislužite žetone za ogled zasebnih oglasov (vaši podatki so varni). Pretvarjajte te žetone v gotovino, darilne kartice... ali jih dajte kot prispevek za spletna mesta, ki jih imate radi. Brez sledenja. Brez upočasnitev.</translation>
+<translation id="4992617448154987397">Vklopi zasebne oglase Brave Private Ads</translation>
+<translation id="3415016869273103668">Zdaj lahko kličete brezplačno</translation>
+<translation id="7073631403665023390">Kliknite ali tapnite kjer koli na zaslonu, da nadaljujete na Brave Talk.</translation>
+<translation id="626339649633171286">Želite izvedeti več o Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">Pretvorili ste <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> v <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Preverite vašo omrežno povezavo.</translation>
+<translation id="2490428413101944234">Testna pipa</translation>
+<translation id="2581671693710952401">Pridobi Ether</translation>
+<translation id="8165484222652118977">Pridobite Ether iz pipe za testno omrežje <ph name="NETWORK"/></translation>
 </translationbundle>

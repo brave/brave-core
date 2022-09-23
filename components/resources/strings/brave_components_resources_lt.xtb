@@ -1504,4 +1504,28 @@ neįmanoma, matyti, kokiose svetainėse lankotės. Tačiau net ir privatus langa
 <translation id="6973157709854838218">Slėpti likučius ekrane</translation>
 <translation id="4548946945059463969">Likučius matykite ekrane</translation>
 <translation id="242959166945779492">Jūsų sąskaitoje likučio nėra. Apsilankykite FTX ir šiek tiek įsigykite.</translation>
+<translation id="2532127066761785857">Didžiausias rodomų reklamų skaičius</translation>
+<translation id="6177749339095882127">0 reklamų per valandą</translation>
+<translation id="5171071066587880677">1 reklama per valandą</translation>
+<translation id="7885315050812316860">2 reklamos per valandą</translation>
+<translation id="2232753742630178222">3 reklamos per valandą</translation>
+<translation id="905529390827000221">4 reklamos per valandą</translation>
+<translation id="7694167481321619202">5 reklamos per valandą</translation>
+<translation id="3705420658531870884">10 reklamų per valandą</translation>
+<translation id="3669086939205397942">Palaukite, dar negalite skirti arbatpinigių</translation>
+<translation id="7354412786785889047">Šio turinio kūrėją galite paremti nusiųsdami arbatpinigių. Tai būdas padėkoti jam už tai, kad kuria puikų turinį. Patvirtintiems turinio kūrėjams už gautus arbatpinigius mokama kiekvieno kalendorinio mėnesio pirmąją savaitę.</translation>
+<translation id="5119190679543565400">Atkurti šią svetainę</translation>
+<translation id="6783637972818687030">„Brave“ naudos „Infura“, kad iš Unstoppable Domains pateiktų Ethereum JSON-RPC skambučius į išmaniąją sutartį, kad išspręstų .crypto (taip pat .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin, .zil) domeno vardo paieškos užklausos. Jei tai įjungsite, „Infura“ matys tuos konkrečius domenus, kuriuose bandote apsilankyti, bet nematys kitų domenų. Žr. Infura <ph name="BEGIN_INFURA_TOU_LINK"/>naudojimo sąlygas<ph name="END_INFURA_TOU_LINK"/> ir <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privatumo politiką<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="8037420924417098685">Norėdami pradėti nemokamą skambutį, įjunkite „Brave Rewards“</translation>
+<translation id="8961724619078500274">Naudojant „Brave Rewards“ suteikiama žetonų už privačių reklamų peržiūrą (jūsų duomenys lieka saugūs). Iškeiskite šiuos žetonus į grynuosius pinigus ar dovanų korteles arba skirkite arbatpinigių mėgstamiausioms svetainėms. Jokio sekimo ar sulėtėjusio naršymo.</translation>
+<translation id="7307847920988946894">Įjungti „Rewards“</translation>
+<translation id="799591303418199877">Įjungdami sutinkate su <ph name="TOS_LINK_BEGIN"/>paslaugų teikimo sąlygomis<ph name="TOS_LINK_END"/> ir <ph name="PP_LINK_BEGIN"/>privatumo politika<ph name="PP_LINK_END"/>.</translation>
+<translation id="6128511569382736135">Norėdami pradėti nemokamą skambutį, įjunkite privatumo nepažeidžiančias „Brave“ reklamas</translation>
+<translation id="7930006085154756245">Naudojant privatumo nepažeidžiančias „Brave“ reklamas suteikiama žetonų už privačių reklamų peržiūrą (jūsų duomenys lieka saugūs). Iškeiskite šiuos žetonus į grynuosius pinigus ar dovanų korteles arba skirkite arbatpinigių mėgstamiausioms svetainėms. Jokio sekimo ar sulėtėjusio naršymo.</translation>
+<translation id="4992617448154987397">Įjungti privatumo nepažeidžiančias „Brave“ reklamas</translation>
+<translation id="3415016869273103668">Dabar galite pradėti nemokamą pokalbį</translation>
+<translation id="7073631403665023390">Spustelėkite ar bakstelėkite bet kurią ekrano vietą, kad toliau naudotumėtės „Brave Talk“.</translation>
+<translation id="9115939801961482572">Norite apie „Brave“ atlygį sužinoti daugiau? <ph name="TOUR_LINK_BEGIN"/>Peržiūrėkite trumpą apžvalgą<ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">Skirti arbatpinigių per „Brave Rewards“</translation>
+<translation id="1895476463085410109">Gaukite „Rewards“ peržiūrėdami privačias „Brave Ads“ ir automatiškai paremkite turinio kūrėjus</translation>
 </translationbundle>

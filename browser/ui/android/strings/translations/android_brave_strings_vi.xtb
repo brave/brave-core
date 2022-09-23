@@ -865,4 +865,43 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="8423380132356660250">Mở ứng dụng <ph name="APP_NAME"/></translation>
 <translation id="168154537623654021">Đang cập nhật cấu hình VPN...</translation>
 <translation id="7457027586454688423">Nhập mật khẩu Ví Brave của bạn</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">Có sẵn <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">Mua <ph name="COIN_NAME"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Địa chỉ Gửi tiền</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Ghi chú Gửi tiền</translation>
+<translation id="6755546361496900700">Xem trước Quy đổi</translation>
+<translation id="5110244215256675209">Mua Tiền điện tử</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="7144878232160441200">Thử lại</translation>
+<translation id="1366855498335432549">Ký quỹ</translation>
+<translation id="1301340234286078471">Quy đổi</translation>
+<translation id="4584930231524505442">Tôi muốn quy đổi...</translation>
+<translation id="5749014321384313843">Tôi muốn chi tiêu...</translation>
+<translation id="2480674848181564169">Không đủ số dư để chuyển đổi</translation>
+<translation id="2215334405220411393">Số lượng tối thiểu để chuyển đổi là : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Không thể kết nối</translation>
+<translation id="7742417737698031726">Phí</translation>
+<translation id="2122225204180056042">Bạn sẽ nhận được</translation>
+<translation id="6432284126416751397">Xác nhận Quy đổi</translation>
+<translation id="3891414008432200754">Giá</translation>
+<translation id="3733576242118819803">Xác nhận (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Chuyển đổi Không thành công. Xin vui lòng thử lại.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="8037420924417098685">Để bắt đầu một cuộc gọi miễn phí, hãy bật Phần thưởng Brave</translation>
+<translation id="8961724619078500274">Với Phần thưởng Brave, bạn kiếm được token khi xem quảng cáo riêng tư (dữ liệu của bạn được an toàn). Biến những token này thành tiền mặt, phiếu quà tặng... hoặc thậm chí là thưởng cho những trang web mà bạn yêu thích. Không theo dõi. Không chậm đi.</translation>
+<translation id="7307847920988946894">Bật Rewards</translation>
+<translation id="7872993190040589450">Với việc bật, bạn đồng ý với <ph name="TERMS_OF_SERVICE"/> và <ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="6128511569382736135">Để bắt đầu một cuộc gọi miễn phí, hãy bật Quảng cáo Riêng tư Brave</translation>
+<translation id="7930006085154756245">Với Quảng cáo Riêng tư Brave, bạn kiếm được token khi xem quảng cáo riêng tư (dữ liệu của bạn được an toàn). Biến những token này thành tiền mặt, phiếu quà tặng... hoặc thậm chí là thưởng cho những trang web mà bạn yêu thích. Không theo dõi. Không chậm đi.</translation>
+<translation id="4992617448154987397">Bật Quảng cáo Riêng tư Brave</translation>
+<translation id="3415016869273103668">Giờ đây bạn có thể bắt đầu một cuộc gọi miễn phí</translation>
+<translation id="7073631403665023390">Nhấp hoặc chạm vào bất cứ đâu trên màn hình để tiếp tục đến Trò chuyện Brave.</translation>
+<translation id="626339649633171286">Muốn tìm hiểu thêm về Phần thưởng Brave? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">Bạn đã chuyển đổi <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> thành <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Xin vui lòng kiểm tra kết nối mạng của bạn.</translation>
+<translation id="2490428413101944234">Kiểm tra vòi nước</translation>
+<translation id="2581671693710952401">Lấy Ether</translation>
+<translation id="8165484222652118977">Nhận Ether từ vòi nước cho Mạng thử nghiệm <ph name="NETWORK"/></translation>
 </translationbundle>

@@ -1502,4 +1502,28 @@
 <translation id="6973157709854838218">残高を非表示</translation>
 <translation id="4548946945059463969">画面に残高を表示</translation>
 <translation id="242959166945779492">アカウントに残高がありません。購入するにはFTXへ移動します。</translation>
+<translation id="2532127066761785857">表示される広告の最大数</translation>
+<translation id="6177749339095882127">1時間に0件の広告</translation>
+<translation id="5171071066587880677">1 時間に 1 件の広告</translation>
+<translation id="7885315050812316860">1 時間に 2 件の広告</translation>
+<translation id="2232753742630178222">1 時間に 3 件の広告</translation>
+<translation id="905529390827000221">1 時間に 4 件の広告</translation>
+<translation id="7694167481321619202">1 時間に 5 件の広告</translation>
+<translation id="3705420658531870884">1時間に10件の広告</translation>
+<translation id="3669086939205397942">ちょっと待ってください、まだチップを渡すことはできません</translation>
+<translation id="7354412786785889047">素晴らしいコンテンツを作成してくれた感謝を込めて、チップを送ることでこのサイトを支援できます。認証されたコンテンツクリエイターは、毎月第1週目にチップを受け取ります。</translation>
+<translation id="5119190679543565400">このサイトを元に戻す</translation>
+<translation id="6783637972818687030">BraveはInfuraを使用して、Unstoppable DomainsからスマートコントラクトにEthereum JSON-RPCコールを発行し、.crypto（および.x、.coin、.nft、.dao、.wallet、.888、.blockchain、.bitcoin、.zil ）ドメイン名検索要求を解決する予定です。これを有効にすると、Infuraは、あなたが訪問しようとしているそれらの特定のドメインを見ることができますが、他のドメインを見ることができなくなります。Infuraの<ph name="BEGIN_INFURA_TOU_LINK"/>利用条件<ph name="END_INFURA_TOU_LINK"/>および<ph name="BEGIN_INFURA_PRIVACY_LINK"/>プライバシーポリシー<ph name="END_INFURA_PRIVACY_LINK"/>を参照してください。</translation>
+<translation id="8037420924417098685">無料通話を開始するには、Brave Rewards を有効にします</translation>
+<translation id="8961724619078500274">Brave Rewards を使用すると、プライバシーが保護された広告を表示してトークンを獲得できます (あなたのデータが漏洩することはありません。)。そのトークンを現金やギフトカードに変えたり、お気に入りのウェブサイトにチップを渡したりすることもできます。これによって追跡や遅延が発生することはありません。</translation>
+<translation id="7307847920988946894">「Rewards」をオンにする</translation>
+<translation id="799591303418199877">有効にすることで、お客様は <ph name="TOS_LINK_BEGIN"/>利用規約<ph name="TOS_LINK_END"/>および<ph name="PP_LINK_BEGIN"/>プライバシーポリシー<ph name="PP_LINK_END"/>に同意したことになります。</translation>
+<translation id="6128511569382736135">無料通話を開始するには、Brave Private Ads を有効にします</translation>
+<translation id="7930006085154756245">Brave Private Ads を使用すると、プライバシーが保護された広告を表示してトークンを獲得できます (あなたのデータが漏洩することはありません)。そのトークンを現金やギフトカードに変えたり、お気に入りのウェブサイトにチップを渡したりすることもできます。これによって追跡や遅延が発生することはありません。</translation>
+<translation id="4992617448154987397">Brave Private Ads を有効にする</translation>
+<translation id="3415016869273103668">これで無料通話を開始できます</translation>
+<translation id="7073631403665023390">画面上をクリックまたはタップして、Brave Talk に進みます。</translation>
+<translation id="9115939801961482572">Brave リワードについて詳しくは、<ph name="TOUR_LINK_BEGIN"/>こちらをご覧ください<ph name="TOUR_LINK_END"/>。</translation>
+<translation id="8222322431155185238">Brave Rewardsについて</translation>
+<translation id="1895476463085410109">Braveによるプライバシーを尊重した広告を表示することで報酬を獲得し、コンテンツクリエイターを自動的にサポートします。</translation>
 </translationbundle>

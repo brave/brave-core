@@ -1454,4 +1454,28 @@
 <translation id="6973157709854838218">Скриване на салдата от дисплея</translation>
 <translation id="4548946945059463969">Показване на салдата на екрана</translation>
 <translation id="242959166945779492">Нямате салда по сметката си. Посетете FTX, за да закупите такива.</translation>
+<translation id="2532127066761785857">Максимален брой показани реклами</translation>
+<translation id="6177749339095882127">0 реклами на час</translation>
+<translation id="5171071066587880677">1 реклама на час</translation>
+<translation id="7885315050812316860">2 реклами на час</translation>
+<translation id="2232753742630178222">3 реклами на час</translation>
+<translation id="905529390827000221">4 реклами на час</translation>
+<translation id="7694167481321619202">5 реклами на час</translation>
+<translation id="3705420658531870884">10 реклами на час</translation>
+<translation id="3669086939205397942">Изчакайте, още не можете да подпомагате</translation>
+<translation id="7354412786785889047">Можете да поддържате автора на това съдържание, като му изпратите бакшиш. It’s е начин да му благодарите за създаване на страхотно съдържание. Потвърдените автори получават заплащане за бакшиши по време на първата седмица от всеки календарен месец.</translation>
+<translation id="5119190679543565400">Възстановете този сайт</translation>
+<translation id="6783637972818687030">Brave ще използва Infura за издаване на Ethereum JSON-RPC извиквания към интелигентния договор от Unstoppable Domains за разрешаване на .crypto (и също .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin, .zil) заявки за търсене на име на домейн. Ако активирате това, Infura ще види онези конкретни домейни, които се опитвате да посетите, но няма да може да види други домейни. Вижте на Infura<ph name="BEGIN_INFURA_TOU_LINK"/>условията за използване<ph name="END_INFURA_TOU_LINK"/> и <ph name="BEGIN_INFURA_PRIVACY_LINK"/>декларацията за поверителност<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="8037420924417098685">За да започнете безплатно обаждане, активирайте Brave награди</translation>
+<translation id="8961724619078500274">С Brave награди можете да спечелите токени от гледането на поверителни реклами (вашите данни са в безопасност). Превърнете жетоните в пари в брой, карти за подаръци…или дори дарение за уебсайтовете, които харесвате. Без проследяване. Без забавяния.</translation>
+<translation id="7307847920988946894">Включете Награди</translation>
+<translation id="799591303418199877">Като активирате, вие се съгласявате с <ph name="TOS_LINK_BEGIN"/>Условията на ползване<ph name="TOS_LINK_END"/> и <ph name="PP_LINK_BEGIN"/>Политиката за поверителност<ph name="PP_LINK_END"/>.</translation>
+<translation id="6128511569382736135">За да започнете безплатно обаждане, активирайте Brave Private Ads</translation>
+<translation id="7930006085154756245">С Brave Private Ads можете да спечелите жетони от гледането на поверителни реклами (вашите данни са в безопасност). Превърнете жетоните в пари в брой, карти за подаръци…или дори дарение за уебсайтовете, които харесвате. Без проследяване. Без забавяния.</translation>
+<translation id="4992617448154987397">Включете Brave Private Ads</translation>
+<translation id="3415016869273103668">Вече можете да започнете безплатно обаждане</translation>
+<translation id="7073631403665023390">Щракнете или натиснете където и да е по екрана, за да продължите към Brave Talk.</translation>
+<translation id="9115939801961482572">Искате да научите повече за Brave Rewards? <ph name="TOUR_LINK_BEGIN"/> Разгледайте набързо<ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">Съвет с Brave награди</translation>
+<translation id="1895476463085410109">Печелете Rewards, като гледате Brave Private Ads и поддържате автоматично създателите на съдържание</translation>
 </translationbundle>

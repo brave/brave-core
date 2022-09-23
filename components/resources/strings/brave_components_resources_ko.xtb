@@ -1499,4 +1499,28 @@
 <translation id="6973157709854838218">화면에서 잔액 숨김</translation>
 <translation id="4548946945059463969">화면에 잔액 표시</translation>
 <translation id="242959166945779492">계정 내에 잔액이 없습니다. FTX를 방문하여 구매하세요.</translation>
+<translation id="2532127066761785857">최대 표시 광고 수</translation>
+<translation id="6177749339095882127">시간당 광고 0개</translation>
+<translation id="5171071066587880677">시간당 광고 1개</translation>
+<translation id="7885315050812316860">시간당 광고 2개</translation>
+<translation id="2232753742630178222">시간당 광고 3개</translation>
+<translation id="905529390827000221">시간당 광고 4개</translation>
+<translation id="7694167481321619202">시간당 광고 5개</translation>
+<translation id="3705420658531870884">시간당 광고 10개</translation>
+<translation id="3669086939205397942">잠깐만요, 아직 팁을 줄 수 없습니다</translation>
+<translation id="7354412786785889047">팁을 보내서 이 콘텐츠 크리에이터를 지원할 수 있습니다. 이것은 훌륭한 콘텐츠를 만드는 분들에게 감사를 전하는 방법입니다. 인증된 크리에이터는 각 달 첫 주에 자신의 팁에 대한 돈을 받습니다.</translation>
+<translation id="5119190679543565400">이 사이트 복원</translation>
+<translation id="6783637972818687030">Brave는 Infura를 사용하여 이더리움 JSON-RPC 콜을 Unstoppable Domains에서의 스마트 컨트랙트로 발행하고 .crypto (및 .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin도 해당) 도메인 이름 조회 요청을 해석합니다. 이 기능을 활성화하면 귀하가 방문하려는 특정 도메인은 Infura가 볼 수 있지만 다른 도메인은 볼 수 없습니다. Infura <ph name="BEGIN_INFURA_TOU_LINK"/>이용 약관<ph name="END_INFURA_TOU_LINK"/> 및 <ph name="BEGIN_INFURA_PRIVACY_LINK"/>개인정보처리방침<ph name="END_INFURA_PRIVACY_LINK"/>을 참조하세요.</translation>
+<translation id="8037420924417098685">무료 통화를 시작하려면 Brave Rewards를 켜세요.</translation>
+<translation id="8961724619078500274">Brave Rewards를 이용하면 프라이빗 광고를 보고 토큰을 적립할 수 있습니다(개인 데이터는 안전함). 토큰은 원하는 대로 현금, 기프트카드, 웹사이트 팁 등으로 전환할 수 있습니다. 추적도 없고, 느려지지도 않습니다.</translation>
+<translation id="7307847920988946894">리워드 켜기</translation>
+<translation id="799591303418199877">활성화하면 <ph name="TOS_LINK_BEGIN"/>이용 약관<ph name="TOS_LINK_END"/> 및 <ph name="PP_LINK_BEGIN"/>개인정보 보호정책<ph name="PP_LINK_END"/>에 동의하게 됩니다.</translation>
+<translation id="6128511569382736135">무료 통화를 시작하려면 Brave Private Ads를 활성화하세요.</translation>
+<translation id="7930006085154756245">Brave Private Ads를 이용하면 프라이빗 광고를 보고 토큰을 적립할 수 있습니다(개인 데이터는 안전함). 토큰은 원하는 대로 현금, 기프트카드, 웹사이트 팁 등으로 전환할 수 있습니다. 추적도 없고, 느려지지도 않습니다.</translation>
+<translation id="4992617448154987397">Brave Private Ads 켜기</translation>
+<translation id="3415016869273103668">이제 무료 통화 시작 가능</translation>
+<translation id="7073631403665023390">Brave Talk로 이동하려면 화면의 아무데나 클릭 또는 탭하세요.</translation>
+<translation id="9115939801961482572">Brave Rewards에 대해 자세히 알고 싶으십니까? <ph name="TOUR_LINK_BEGIN"/>빠르게 둘러보세요<ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">Brave Rewards 팁</translation>
+<translation id="1895476463085410109">Brave Private Ads를 보고 리워드를 적립하며, 콘텐츠 제작자를 자동으로 지원하세요.</translation>
 </translationbundle>

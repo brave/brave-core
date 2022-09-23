@@ -1499,4 +1499,28 @@
 <translation id="6973157709854838218">Uw saldo verbergen</translation>
 <translation id="4548946945059463969">Uw saldo tonen</translation>
 <translation id="242959166945779492">Je hebt geen saldo in je account. Ga naar FTX om saldo toe te voegen.</translation>
+<translation id="2532127066761785857">Maximum aantal advertenties weergegeven</translation>
+<translation id="6177749339095882127">0 advertenties per uur</translation>
+<translation id="5171071066587880677">1 advertentie per uur</translation>
+<translation id="7885315050812316860">2 advertenties per uur</translation>
+<translation id="2232753742630178222">3 advertenties per uur</translation>
+<translation id="905529390827000221">4 advertenties per uur</translation>
+<translation id="7694167481321619202">5 advertenties per uur</translation>
+<translation id="3705420658531870884">10 advertenties per uur</translation>
+<translation id="3669086939205397942">Wacht even, U kunt nog geen fooi geven</translation>
+<translation id="7354412786785889047">U kunt deze contentmaker steunen door een fooi te sturen. Het is een manier om hen te bedanken voor het maken van geweldige content. Geverifieerde makers worden iedere eerste week van de kalendermaand uitbetaald.</translation>
+<translation id="5119190679543565400">Herstel deze pagina</translation>
+<translation id="6783637972818687030">Brave zal Infura gebruiken om Ethereum JSON-RPC-aanroepen te doen naar het smart contract van Unstoppable Domains om .crypto (en ook .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin, .zil) verzoeken om domeinnamen op te lossen. Als u dit inschakelt, zal Infura de domeinen zien die u probeert te bezoeken, maar ze zullen niet in staat zijn om andere domeinen te zien. Zie de <ph name="BEGIN_INFURA_TOU_LINK"/> gebruiksvoorwaarden<ph name="END_INFURA_TOU_LINK"/> en <ph name="BEGIN_INFURA_PRIVACY_LINK"/>het privacybeleid<ph name="END_INFURA_PRIVACY_LINK"/> van Infura.</translation>
+<translation id="8037420924417098685">Zet Brave Rewards aan om een gratis telefoongesprek te starten</translation>
+<translation id="8961724619078500274">Met Brave Rewards verdien je tokens door privéadvertenties te bekijken (je gegevens zijn veilig). Zet die tokens om in geld, cadeaubonnen... of zelfs in fooi voor de websites die je leuk vindt. Geen tracking. Geen vertragingen.</translation>
+<translation id="7307847920988946894">Beloningen inschakelen</translation>
+<translation id="799591303418199877">Door deze functie in te schakelen, gaat u akkoord met de <ph name="TOS_LINK_BEGIN"/>servicevoorwaarden<ph name="TOS_LINK_END"/> en het <ph name="PP_LINK_BEGIN"/>privacybeleid<ph name="PP_LINK_END"/>.</translation>
+<translation id="6128511569382736135">Schakel Brave Private Ads in om een gratis telefoongesprek te starten</translation>
+<translation id="7930006085154756245">Met Brave Private Ads verdien je tokens door privéadvertenties te bekijken (je gegevens zijn veilig). Zet die tokens om in geld, cadeaubonnen... of zelfs in fooi voor websites die je leuk vindt. Geen tracking. Geen vertragingen.</translation>
+<translation id="4992617448154987397">Brave Private Ads aanzetten</translation>
+<translation id="3415016869273103668">Je kunt nu een gratis telefoongesprek starten</translation>
+<translation id="7073631403665023390">Klik of tik ergens op het scherm om door te gaan naar Brave Talk.</translation>
+<translation id="9115939801961482572">Wilt u meer weten over Brave-beloningen? <ph name="TOUR_LINK_BEGIN"/>Volg een snelle rondleiding<ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">Geef fooi met Brave-beloningen</translation>
+<translation id="1895476463085410109">Ontvang beloningen door Brave Private Ads te bekijken en steun content creators automatisch</translation>
 </translationbundle>

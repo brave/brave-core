@@ -1499,4 +1499,28 @@
 <translation id="6973157709854838218">Hide your balances from display</translation>
 <translation id="4548946945059463969">Reveal your balances on screen</translation>
 <translation id="242959166945779492">You do not have any balances in your account. Visit FTX to purchase some.</translation>
+<translation id="2532127066761785857">Maximum number of ads displayed</translation>
+<translation id="6177749339095882127">0 ads per hour</translation>
+<translation id="5171071066587880677">1 ad per hour</translation>
+<translation id="7885315050812316860">2 ads per hour</translation>
+<translation id="2232753742630178222">3 ads per hour</translation>
+<translation id="905529390827000221">4 ads per hour</translation>
+<translation id="7694167481321619202">5 ads per hour</translation>
+<translation id="3705420658531870884">10 ads per hour</translation>
+<translation id="3669086939205397942">Hold on, you can’t tip yet</translation>
+<translation id="7354412786785889047">You can support this content creator by sending a tip. It’s a way of thanking them for making great content. Verified creators get paid for their tips during the first week of each calendar month.</translation>
+<translation id="5119190679543565400">Restore this site</translation>
+<translation id="6783637972818687030">Brave will be using Infura to issue Ethereum JSON-RPC calls to the smart contract from Unstoppable Domains to resolve .crypto (and also .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin, .zil) domain name lookup requests. If you enable this, Infura will see those specific domains that you're trying to visit but they will not be able to see other domains. See Infura's <ph name="BEGIN_INFURA_TOU_LINK"/>terms of use<ph name="END_INFURA_TOU_LINK"/> and <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privacy policy<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="8037420924417098685">To start a free call, turn on Brave Rewards</translation>
+<translation id="8961724619078500274">With Brave Rewards, you earn tokens for viewing private ads (your data is safe). Turn those tokens into cash, gift cards … or even tip the websites you love. No tracking. No slow downs.</translation>
+<translation id="7307847920988946894">Turn on Rewards</translation>
+<translation id="799591303418199877">By enabling, you agree to the <ph name="TOS_LINK_BEGIN"/>Terms of Service<ph name="TOS_LINK_END"/> and <ph name="PP_LINK_BEGIN"/>Privacy Policy<ph name="PP_LINK_END"/>.</translation>
+<translation id="6128511569382736135">To start a free call, enable Brave Private Ads</translation>
+<translation id="7930006085154756245">With Brave Private Ads, you earn tokens for viewing private ads (your data is safe). Turn those tokens into cash, gift cards … or even tip the websites you love. No tracking. No slow downs.</translation>
+<translation id="4992617448154987397">Turn on Brave Private Ads</translation>
+<translation id="3415016869273103668">You can now start a free call</translation>
+<translation id="7073631403665023390">Click or tap anywhere on the screen to continue to Brave Talk.</translation>
+<translation id="9115939801961482572">Want to learn more about Brave Rewards? <ph name="TOUR_LINK_BEGIN"/>Take a quick tour<ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">Tip with Brave Rewards</translation>
+<translation id="1895476463085410109">Earn Rewards by viewing Brave Private Ads and support content creators automatically</translation>
 </translationbundle>

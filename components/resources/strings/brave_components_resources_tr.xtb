@@ -1499,4 +1499,28 @@
 <translation id="6973157709854838218">Bakiyenizi ekranda gizleyin</translation>
 <translation id="4548946945059463969">Bakiyenizi ekranda gösterin</translation>
 <translation id="242959166945779492">Hesabınızda bakiye yok. Satın almak için FTX'i ziyaret edin.</translation>
+<translation id="2532127066761785857">Görüntülenen maksimum reklam sayısı</translation>
+<translation id="6177749339095882127">Saatte 0 reklam</translation>
+<translation id="5171071066587880677">Saatte 1 reklam</translation>
+<translation id="7885315050812316860">Saatte 2 reklam</translation>
+<translation id="2232753742630178222">Saatte 3 reklam</translation>
+<translation id="905529390827000221">Saatte 4 reklam</translation>
+<translation id="7694167481321619202">Saatte 5 reklam</translation>
+<translation id="3705420658531870884">Saatte 10 reklam</translation>
+<translation id="3669086939205397942">Bekle, henüz bahşiş veremezsiniz</translation>
+<translation id="7354412786785889047">Bu içerik üreticisini bir bahşiş göndererek destekleyebilirsin. It’s, harika içerikler yaptıkları için onlara teşekkür etmenin bir yoludur. Doğrulanmış içerik üreticilerine, her takvim ayının ilk haftası içerisinde bahşişleri için ödeme yapılır.</translation>
+<translation id="5119190679543565400">Bu siteyi eski haline getir</translation>
+<translation id="6783637972818687030">Brave, .crypto (ve ayrıca .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin, .zil) alan adı arama isteklerini çözmek için Unstoppable Domains'den akıllı sözleşmeye Ethereum JSON-RPC çağrıları yapmak için Infura'yı kullanacak. Bunu etkinleştirirseniz, Infura ziyaret etmeye çalıştığınız bu belirli alanları görür, ancak diğer alanları göremez. Infura'nın <ph name="BEGIN_INFURA_TOU_LINK"/>kullanım koşulları<ph name="END_INFURA_TOU_LINK"/> ve <ph name="BEGIN_INFURA_PRIVACY_LINK"/>gizlilik politikası<ph name="END_INFURA_PRIVACY_LINK"/> bölümlerine bakın.</translation>
+<translation id="8037420924417098685">Ücretsiz bir arama başlatmak için, Brave Ödülleri'ni açın</translation>
+<translation id="8961724619078500274">Brave Ödülleri sayesinde, özel reklamları görüntülemek karşılığında (verileriniz güvende tutularak) token kazanırsınız. Bu token'ları ister nakit paraya, ister hediye kartına, hatta isterseniz sevdiğiniz internet siteleri için bahşişe dönüştürebilirsiniz. İzleme yok. Yavaşlama yok.</translation>
+<translation id="7307847920988946894">Ödülleri Aç</translation>
+<translation id="799591303418199877">Etkinleştirerek, <ph name="TOS_LINK_BEGIN"/>Hizmet Koşulları<ph name="TOS_LINK_END"/> ve <ph name="PP_LINK_BEGIN"/>Gizlilik Politikası<ph name="PP_LINK_END"/> içeriğini kabul etmiş olursunuz.</translation>
+<translation id="6128511569382736135">Ücretsiz bir arama başlatmak için, Brave Özel Reklamlar'ı etkinleştirin</translation>
+<translation id="7930006085154756245">Brave Özel Reklamlar sayesinde, özel reklamları görüntülemek karşılığında (verileriniz güvende tutularak) token kazanırsınız. Bu token'ları ister nakit paraya, ister hediye kartına, hatta isterseniz sevdiğiniz internet siteleri için bahşişe dönüştürebilirsiniz. İzleme yok. Yavaşlama yok.</translation>
+<translation id="4992617448154987397">Brave Özel Reklamlar'ı Aç</translation>
+<translation id="3415016869273103668">Şimdi ücretsiz bir arama başlatabilirsiniz</translation>
+<translation id="7073631403665023390">Brave Sohbet'e devam etmek için ekranın herhangi bir yerine dokunun veya tıklayın.</translation>
+<translation id="9115939801961482572">Brave Ödülleri hakkında daha fazlasını mı öğrenmek istiyorsunuz? <ph name="TOUR_LINK_BEGIN"/>Hızlı bir gezinti yapın<ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">Brave Rewards ile bahşiş verin</translation>
+<translation id="1895476463085410109">Brave Private Ads'i görüntüleyerek Rewards ödülleri kazanın ve içerik oluşturucuları otomatik olarak destekleyin</translation>
 </translationbundle>

@@ -1499,4 +1499,28 @@
 <translation id="6973157709854838218">Az egyenlegek elrejtése a megjelenítésből</translation>
 <translation id="4548946945059463969">Az egyenlegek mutatása a képernyőn</translation>
 <translation id="242959166945779492">Fiókja nem rendelkezik egyenleggel. A beszerzéshez látogasson el az FTX-re.</translation>
+<translation id="2532127066761785857">Megjelenített hirdetések maximális száma</translation>
+<translation id="6177749339095882127">Óránként 0 hirdetés</translation>
+<translation id="5171071066587880677">Óránként 1 hirdetés</translation>
+<translation id="7885315050812316860">Óránként 2 hirdetés</translation>
+<translation id="2232753742630178222">Óránként 3 hirdetés</translation>
+<translation id="905529390827000221">Óránként 4 hirdetés</translation>
+<translation id="7694167481321619202">Óránként 5 hirdetés</translation>
+<translation id="3705420658531870884">Óránként 10 hirdetés</translation>
+<translation id="3669086939205397942">Várjon, még nem adhat borravalót</translation>
+<translation id="7354412786785889047">Ezt az alkotót jatt küldésével támogathatod. Ezzel’ megköszönheted, hogy nagyszerű tartalmat készített.  A megerősített fiókkal rendelkező alkotók minden naptári hónap első hetében megkapják a küldött jattokat.</translation>
+<translation id="5119190679543565400">Állítsd helyre ezt az oldalt</translation>
+<translation id="6783637972818687030">A Brave az Infurát fogja használni, hogy Ethereum JSON-RPC hívásokat küldjön az intelligens szerződésnek az Unstoppable Domainstől a .crypto (valamint a .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin, .zil) domainnév-keresési kérések feloldásához. Ha engedélyezi ezt, az Infura látni fogja azokat a konkrét domaineket, amelyeket Ön meg szeretne látogatni, de nem láthatja a többi domaint. Tekintse meg az Infura <ph name="BEGIN_INFURA_TOU_LINK"/>használati feltételeit<ph name="END_INFURA_TOU_LINK"/> és <ph name="BEGIN_INFURA_PRIVACY_LINK"/>adatvédelmi irányelveit<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="8037420924417098685">Ingyenes hívás indításához kapcsolja be a Brave jutalmakat</translation>
+<translation id="8961724619078500274">A Brave jutalmak privát reklámainak megtekintése után tokeneket kap (az adatai biztonságban maradnak). Váltsa be ezeket a tokeneket készpénzre, ajándékutalványra… vagy adjon borravalót a kedvenc weboldalainak. Nincs nyomon követés. Nincs belassulás.</translation>
+<translation id="7307847920988946894">Rewards bekapcsolása</translation>
+<translation id="799591303418199877">Az engedélyezéssel elfogadja a <ph name="TOS_LINK_BEGIN"/>Szolgáltatási feltételeket<ph name="TOS_LINK_END"/> és az <ph name="PP_LINK_BEGIN"/>Adatvédelmi szabályzatot<ph name="PP_LINK_END"/>.</translation>
+<translation id="6128511569382736135">Ingyenes hívás indításához engedélyezze a Brave Private Adst.</translation>
+<translation id="7930006085154756245">A Brave Private Ads privát reklámainak megtekintése után tokeneket kap (az adatai biztonságban maradnak). Váltsa be ezeket a tokeneket készpénzre, ajándékutalványra… vagy adjon borravalót a kedvenc weboldalainak. Nincs nyomon követés. Nincs belassulás.</translation>
+<translation id="4992617448154987397">Brave Private Ads bekapcsolása</translation>
+<translation id="3415016869273103668">Most már indíthat ingyenes hívást</translation>
+<translation id="7073631403665023390">Kattintson vagy koppintson bárhova a képernyőn, hogy továbblépjen a Brave Talkhoz.</translation>
+<translation id="9115939801961482572">Szeretne többet megtudni a Brave jutalmakról? <ph name="TOUR_LINK_BEGIN"/>Nézze meg rövid bemutatónkat<ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">Borravaló küldése a Brave jutalmakkal</translation>
+<translation id="1895476463085410109">Szerezzen jutalmakat a Brave Private Ads-ek megtekintésével, és támogassa automatikusan a tartalmak létrehozóit</translation>
 </translationbundle>

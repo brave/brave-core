@@ -1499,4 +1499,28 @@
 <translation id="6973157709854838218">Sembunyikan baki anda dari paparan</translation>
 <translation id="4548946945059463969">Dedahkan baki anda di skrin</translation>
 <translation id="242959166945779492">Anda tidak mempunyai sebarang baki dalam akaun anda. Lawati FTX untuk membeli sedikit.</translation>
+<translation id="2532127066761785857">Bilangan maksimum iklan dipaparkan</translation>
+<translation id="6177749339095882127">0 iklan setiap jam</translation>
+<translation id="5171071066587880677">1 iklan setiap jam</translation>
+<translation id="7885315050812316860">2 iklan setiap jam</translation>
+<translation id="2232753742630178222">3 iklan setiap jam</translation>
+<translation id="905529390827000221">4 iklan setiap jam</translation>
+<translation id="7694167481321619202">5 iklan setiap jam</translation>
+<translation id="3705420658531870884">10 iklan setiap jam</translation>
+<translation id="3669086939205397942">Nanti dulu, anda masih belum boleh memberi tip lagi</translation>
+<translation id="7354412786785889047">Anda boleh menyokong pencipta kandungan dengan menghantar tip. Ia merupakan cara untuk mengucapkan terima kasih kepada mereka kerana menghasilkan kandungan yang hebat. Pencipta yang disahkan akan dibayar tipnya pada minggu pertama setiap bulan kalendar.</translation>
+<translation id="5119190679543565400">Pulihkan laman ini</translation>
+<translation id="6783637972818687030">Brave akan menggunakan Infura untuk mengeluarkan panggilan Ethereum JSON-RPC kepada kontrak pintar daripada Unstoppable Domains untuk menyelesaikan permintaan carian nama domain .crypto (dan juga .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin, .zil). Jika anda mendayakan ini, Infura akan melihat domain khusus yang anda cuba lawati tetapi mereka tidak akan dapat melihat domain lain. Lihat <ph name="BEGIN_INFURA_TOU_LINK"/>syarat penggunaan<ph name="END_INFURA_TOU_LINK"/> dan <ph name="BEGIN_INFURA_PRIVACY_LINK"/>dasar privasi Infura<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="8037420924417098685">Untuk memulakan panggilan percuma, hidupkan Brave Rewards</translation>
+<translation id="8961724619078500274">Dengan Brave Rewards, anda memperoleh token hasil tontonan iklan peribadi (data anda selamat). Tukarkan token kepada wang tunai, kad hadiah...atau berikan tip kepada laman web yang anda gemari. Tiada penjejakan. Tidak diperlahankan.</translation>
+<translation id="7307847920988946894">Hidupkan Ganjaran</translation>
+<translation id="799591303418199877">Dengan mendayakan, maksudnya anda bersetuju menerima <ph name="TOS_LINK_BEGIN"/>Syarat Perkhidmatan<ph name="TOS_LINK_END"/> dan <ph name="PP_LINK_BEGIN"/>Dasar Privasi<ph name="PP_LINK_END"/>.</translation>
+<translation id="6128511569382736135">Untuk memulakan panggilan percuma, dayakan Brave Private Ads</translation>
+<translation id="7930006085154756245">Dengan Brave Private Ads, anda memperoleh token hasil tontonan iklan peribadi (data anda selamat). Tukarkan token kepada wang tunai, kad hadiah...atau berikan tip kepada laman web yang anda gemari. Tiada penjejakan. Tidak diperlahankan.</translation>
+<translation id="4992617448154987397">Hidupkan Brave Private Ads</translation>
+<translation id="3415016869273103668">Anda kini boleh memulakan panggilan percuma</translation>
+<translation id="7073631403665023390">Klik atau ketik di mana-mana sahaja pada skrin untuk terus ke Brave Talk.</translation>
+<translation id="9115939801961482572">Ingin ketahui lebih lanjut tentang Ganjaran Brave? <ph name="TOUR_LINK_BEGIN"/>Ikuti jelajah pantas<ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">Beri tip dengan Ganjaran Brave</translation>
+<translation id="1895476463085410109">Dapatkan Ganjaran dengan melihat Brave Private Ads dan menyokong pencipta kandungan secara automatik</translation>
 </translationbundle>

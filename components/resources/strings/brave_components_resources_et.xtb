@@ -1498,4 +1498,28 @@
 <translation id="6973157709854838218">Varja oma saldod kuval</translation>
 <translation id="4548946945059463969">Näita kuval oma saldosid</translation>
 <translation id="242959166945779492">Teie konto saldo on tühi. Külastage FTXi, et vahendeid osta.</translation>
+<translation id="2532127066761785857">Suurim näidatavate reklaamide arv</translation>
+<translation id="6177749339095882127">0 reklaami tunnis</translation>
+<translation id="5171071066587880677">Üks reklaam tunnis</translation>
+<translation id="7885315050812316860">Kaks reklaami tunnis</translation>
+<translation id="2232753742630178222">Kolm reklaami tunnis</translation>
+<translation id="905529390827000221">Neli reklaami tunnis</translation>
+<translation id="7694167481321619202">Viis reklaami tunnis</translation>
+<translation id="3705420658531870884">10 reklaami tunnis</translation>
+<translation id="3669086939205397942">Oodake, te ei saa veel preemiat maksta</translation>
+<translation id="7354412786785889047">Võite anda tippi, et seda sisuloojat toetada. Nii saate autoreid tunnustada saidile suurepärase sisu loomise eest. Saadud tipp makstakse verifitseeritud sisu autoritele välja iga kalendrikuu esimesel nädalal.</translation>
+<translation id="5119190679543565400">Taasta see veebisait</translation>
+<translation id="6783637972818687030">Brave kasutab Infurat Ethereumi JSON-RPC kutsete väljastamiseks Unstoppable Domainsi nutilepingusse domeeninime .crypto (ja ka .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin, .zil) leidmispäringute lahendamiseks. Kui selle lubate, näeb Infura neid konkreetseid domeene, mida üritate külastada, kuid ei näe muid domeene. Vaadake Infura <ph name="BEGIN_INFURA_TOU_LINK"/>kasutustingimusi<ph name="END_INFURA_TOU_LINK"/> ja <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privaatsuspõhimõtteid<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="8037420924417098685">Tasuta kõne alustamiseks lülitage sisse Brave Rewards</translation>
+<translation id="8961724619078500274">Brave Rewardsiga teenite privaatse reklaami vaatamise eest tokeneid (teie andmed on kaitstud). Need tokenid saate muuta sularahaks või kinkekaartideks või koguni anda preemiat oma lemmikveebisaitidele. Ei mingit jälgimist. Ei mingit aeglasemaks muutumist.</translation>
+<translation id="7307847920988946894">Lülita Rewards sisse</translation>
+<translation id="799591303418199877">Lubamisega nõustute <ph name="TOS_LINK_BEGIN"/>teenusetingimuste<ph name="TOS_LINK_END"/> ja <ph name="PP_LINK_BEGIN"/>privaatsuspõhimõtetega<ph name="PP_LINK_END"/>.</translation>
+<translation id="6128511569382736135">Tasuta kõne alustamiseks lubage Brave Private Ads</translation>
+<translation id="7930006085154756245">Brave Private Adsiga teenite privaatse reklaami vaatamise eest tokeneid (teie andmed on kaitstud). Need tokenid saate muuta sularahaks või kinkekaartideks või koguni anda preemiat oma lemmikveebisaitidele. Ei mingit jälgimist. Ei mingit aeglasemaks muutumist.</translation>
+<translation id="4992617448154987397">Lülita Brave Private Ads sisse</translation>
+<translation id="3415016869273103668">Saate nüüd alustada tasuta kõnet</translation>
+<translation id="7073631403665023390">Brave'i vestluses jätkamiseks puudutage mis tahes kohta ekraanil.</translation>
+<translation id="9115939801961482572">Kas soovite lisateavet Brave'i preemiate kohta? <ph name="TOUR_LINK_BEGIN"/>Tehke kiire ringkäik<ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">Brave Rewardsiga annetamine</translation>
+<translation id="1895476463085410109">Brave Private Adsi vaadates teenite preemiaid ja toetate automaatselt sisuloojaid.</translation>
 </translationbundle>

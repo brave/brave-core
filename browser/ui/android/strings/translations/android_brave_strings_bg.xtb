@@ -852,4 +852,43 @@
 <translation id="8181161042860463420">Съответният токен акаунт все още не съществува. За създаването и финансирането му ще бъде изразходвано малко сума SOL. <ph name="CLICK_START"/>Научете повече<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Актуализиране на VPN профила ...</translation>
 <translation id="7457027586454688423">Въведете вашата парола за Brave Wallet</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">Налично <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">Купете <ph name="COIN_NAME"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Адрес за депозиране</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Депозитна бележка</translation>
+<translation id="6755546361496900700">Преглед на конвертирането</translation>
+<translation id="5110244215256675209">Купете криптовалути</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="7144878232160441200">Повторен опит</translation>
+<translation id="1366855498335432549">Депозиране</translation>
+<translation id="1301340234286078471">Конвертиер</translation>
+<translation id="4584930231524505442">Искам да конвертирам...</translation>
+<translation id="5749014321384313843">Искам да похарча...</translation>
+<translation id="2480674848181564169">Недостатъчно салдо за конвертиране</translation>
+<translation id="2215334405220411393">Минималната сума за конвертиране е : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Не може да осъществи връзка</translation>
+<translation id="7742417737698031726">Такса</translation>
+<translation id="2122225204180056042">Ще получите</translation>
+<translation id="6432284126416751397">Потвърди конвертирането</translation>
+<translation id="3891414008432200754">Цена</translation>
+<translation id="3733576242118819803">Потвърдете (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Конвертирането не беше успешно. Опитайте отново.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="8037420924417098685">За да започнете безплатно обаждане, активирайте Brave Rewards</translation>
+<translation id="8961724619078500274">С Brave Rewards можете да спечелите жетони от гледането на поверителни реклами (вашите данни са в безопасност). Превърнете жетоните в пари в брой, карти за подаръци…или дори дарение за уебсайтовете, които харесвате. Без проследяване. Без забавания.</translation>
+<translation id="7307847920988946894">Включете Rewards</translation>
+<translation id="7872993190040589450">Разрешавайки, се съгласявате с <ph name="TERMS_OF_SERVICE"/> и <ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="6128511569382736135">За да започнете безплатно обаждане, активирайте Brave Private Ads</translation>
+<translation id="7930006085154756245">С Brave Private Ads можете да спечелите жетони от гледането на поверителни реклами (вашите данни са в безопасност). Превърнете жетоните в пари в брой, карти за подаръци…или дори дарение за уебсайтовете, които харесвате. Без проследяване. Без забавяния.</translation>
+<translation id="4992617448154987397">Включете Brave Private Ads</translation>
+<translation id="3415016869273103668">Вече можете да започнете безплатно обаждане</translation>
+<translation id="7073631403665023390">Щракнете или натиснете където и да е по екрана, за да продължите към Brave Talk.</translation>
+<translation id="626339649633171286">Искате ли да научите повече за Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">Превърнахте <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> в <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Проверете вашата мрежова връзка.</translation>
+<translation id="2490428413101944234">Тестване на faucet</translation>
+<translation id="2581671693710952401">Вземете етер</translation>
+<translation id="8165484222652118977">Вземете Ether от faucet за <ph name="NETWORK"/> тестова мрежа</translation>
 </translationbundle>

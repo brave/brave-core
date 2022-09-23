@@ -1499,4 +1499,28 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="6973157709854838218">Paslēpt bilanci no displeja</translation>
 <translation id="4548946945059463969">Atklājiet savu bilanci ekrānā</translation>
 <translation id="242959166945779492">Jūsu kontā nav atlikuma. Apmeklējiet FTX, lai iegādātos valūtu.</translation>
+<translation id="2532127066761785857">Maksimālais rādīto reklāmu skaits</translation>
+<translation id="6177749339095882127">0 reklāmu stundā</translation>
+<translation id="5171071066587880677">1 reklāma stundā</translation>
+<translation id="7885315050812316860">2 reklāmas stundā</translation>
+<translation id="2232753742630178222">3 reklāmas stundā</translation>
+<translation id="905529390827000221">4 reklāmas stundā</translation>
+<translation id="7694167481321619202">5 reklāmas stundā</translation>
+<translation id="3705420658531870884">10 reklāmu stundā</translation>
+<translation id="3669086939205397942">Pagaidiet, jūs vēl nevarat piešķirt dzeramnaudu</translation>
+<translation id="7354412786785889047">Jūs varat atbalstīt šo satura veidotāju, nosūtot dzeramnaudu. Tas ir veids, kā pateikties viņiem par lielisku saturu. Verificētiem satura veidotājiem dzeramnauda tiek izmaksāta katra kalendārā mēneša pirmajā nedēļā.</translation>
+<translation id="5119190679543565400">Atkopt šo vietni</translation>
+<translation id="6783637972818687030">Brave izmantos Infura, lai veiktu Ethereum JSON-RPC izsaukumus viedajam līgumam no Unstoppable Domains, lai atrisinātu .crypto (un arī .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin, .zil) domēna vārda meklēšanas pieprasījumi. Ja to iespējosit, Infura redzēs tos konkrētos domēnus, kurus mēģināt apmeklēt, taču viņi nevarēs redzēt citus domēnus. Skatiet Infura <ph name="BEGIN_INFURA_TOU_LINK"/>pakalpojuma noteikumus<ph name="END_INFURA_TOU_LINK"/> un <ph name="BEGIN_INFURA_PRIVACY_LINK"/>konfidencialitātes politiku<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="8037420924417098685">Lai sāktu bezmaksas zvanu, ieslēdziet Brave balvas.</translation>
+<translation id="8961724619078500274">Ar Brave balvām jūs nopelnāt marķierus, skatoties privātas reklāmas (jūsu dati ir drošībā). Pārvērtiet šos marķierus naudā, dāvanu kartēs... vai pat nosūtiet dzeramnaudu vietnēm, kuras jums patīk. Bez izsekošanas. Bez palēninātas darbības.</translation>
+<translation id="7307847920988946894">Ieslēgt Rewards</translation>
+<translation id="799591303418199877">Iespējojot jūs piekrītat <ph name="TOS_LINK_BEGIN"/>pakalpojumu sniegšanas noteikumiem<ph name="TOS_LINK_END"/> un <ph name="PP_LINK_BEGIN"/>konfidencialitātes politikai<ph name="PP_LINK_END"/>.</translation>
+<translation id="6128511569382736135">Lai sāktu bezmaksas zvanu, iespējojiet Brave privātās reklāmas.</translation>
+<translation id="7930006085154756245">Ar Brave privātajām reklāmām jūs nopelnāt marķierus, skatoties privātas reklāmas (jūsu dati ir drošībā). Pārvērtiet šos marķierus naudā, dāvanu kartēs... vai pat nosūtiet dzeramnaudu vietnēm, kuras jums patīk. Bez izsekošanas. Bez palēninātas darbības.</translation>
+<translation id="4992617448154987397">Ieslēdziet Brave privātās reklāmas.</translation>
+<translation id="3415016869273103668">Tagad varat sākt bezmaksas zvanu.</translation>
+<translation id="7073631403665023390">Noklikšķiniet vai pieskarieties jebkur uz ekrāna, lai atvērtu Brave Talk.</translation>
+<translation id="9115939801961482572">Vai vēlaties uzzināt vairāk par Brave Rewards? <ph name="TOUR_LINK_BEGIN"/>Uzziniet vairāk<ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">Piešķiriet dzeramnaudas ar Brave Rewards</translation>
+<translation id="1895476463085410109">Nopelniet Rewards, skatoties Brave Private Ads, un automātiski atbalstiet satura veidotājus</translation>
 </translationbundle>

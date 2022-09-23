@@ -1499,4 +1499,28 @@
 <translation id="6973157709854838218">Ẩn số dư của bạn khỏi màn hình</translation>
 <translation id="4548946945059463969">Tiết lộ số dư của bạn trên màn hình</translation>
 <translation id="242959166945779492">Bạn không có bất kỳ số dư nào trong tài khoản của mình. Hãy truy cập FTX để mua.</translation>
+<translation id="2532127066761785857">Số lượng quảng cáo tối đa được hiển thị</translation>
+<translation id="6177749339095882127">0 quảng cáo mỗi giờ</translation>
+<translation id="5171071066587880677">1 quảng cáo mỗi giờ</translation>
+<translation id="7885315050812316860">2 quảng cáo mỗi giờ</translation>
+<translation id="2232753742630178222">3 quảng cáo mỗi giờ</translation>
+<translation id="905529390827000221">4 quảng cáo mỗi giờ</translation>
+<translation id="7694167481321619202">5 quảng cáo mỗi giờ</translation>
+<translation id="3705420658531870884">10 quảng cáo mỗi giờ</translation>
+<translation id="3669086939205397942">Chờ đã, bạn chưa thể tặng tiền</translation>
+<translation id="7354412786785889047">Bạn có thể hỗ trợ người tạo nội dung này bằng cách thưởng tiền. Đây là một cách cảm ơn họ đã tạo ra nội dung tuyệt vời. Người tạo đã được xác minh nhận được tiền từ phần tiền thưởng của họ vào tuần đầu tiên của mỗi tháng dương lịch.</translation>
+<translation id="5119190679543565400">Khôi phục website này</translation>
+<translation id="6783637972818687030">Brave sẽ sử dụng Infura để đưa ra các lệnh gọi Ethereum JSON-RPC tới hợp đồng thông minh từ Unstoppable Domains để xử lý các yêu cầu tra cứu tên miền .crypto (và cả .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin). Nếu bạn bật tính năng này thì Infura sẽ thấy các tên miền cụ thể mà bạn đang cố gắng truy cập nhưng họ sẽ không thể thấy các tên miền khác. Xem <ph name="BEGIN_INFURA_TOU_LINK"/>điều khoản sử dụng<ph name="END_INFURA_TOU_LINK"/> và <ph name="BEGIN_INFURA_PRIVACY_LINK"/>chính sách bảo mật<ph name="END_INFURA_PRIVACY_LINK"/> của Infura.</translation>
+<translation id="8037420924417098685">Để bắt đầu một cuộc gọi miễn phí, hãy bật Phần thưởng Brave</translation>
+<translation id="8961724619078500274">Với Phần thưởng Brave, bạn kiếm được token khi xem quảng cáo riêng tư (dữ liệu của bạn được an toàn). Biến những token này thành tiền mặt, phiếu quà tặng... hoặc thậm chí là thưởng cho những trang web mà bạn yêu thích. Không theo dõi. Không chậm đi.</translation>
+<translation id="7307847920988946894">Bật Rewards</translation>
+<translation id="799591303418199877">Bằng cách bật lên, bạn đồng ý với <ph name="TOS_LINK_BEGIN"/>Điều khoản dịch vụ<ph name="TOS_LINK_END"/> và <ph name="PP_LINK_BEGIN"/>Chính sách Quyền riêng tư<ph name="PP_LINK_END"/>.</translation>
+<translation id="6128511569382736135">Để bắt đầu một cuộc gọi miễn phí, hãy bật Quảng cáo Riêng tư Brave</translation>
+<translation id="7930006085154756245">Với Quảng cáo Riêng tư Brave, bạn kiếm được token khi xem quảng cáo riêng tư (dữ liệu của bạn được an toàn). Biến những token này thành tiền mặt, phiếu quà tặng... hoặc thậm chí là thưởng cho những trang web mà bạn yêu thích. Không theo dõi. Không chậm đi.</translation>
+<translation id="4992617448154987397">Bật Quảng cáo Riêng tư Brave</translation>
+<translation id="3415016869273103668">Giờ đây bạn có thể bắt đầu một cuộc gọi miễn phí</translation>
+<translation id="7073631403665023390">Nhấp hoặc chạm vào bất cứ đâu trên màn hình để tiếp tục đến Trò chuyện Brave.</translation>
+<translation id="9115939801961482572">Muốn tìm hiểu thêm về Phần thưởng Brave? <ph name="TOUR_LINK_BEGIN"/>Xem giới thiệu nhanh<ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">Tiền thưởng với Brave Rewards</translation>
+<translation id="1895476463085410109">Kiếm Rewards bằng cách xem Brave Private Ads và tự động hỗ trợ người sáng tạo nội dung</translation>
 </translationbundle>

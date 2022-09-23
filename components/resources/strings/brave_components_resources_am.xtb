@@ -1511,4 +1511,28 @@
 <translation id="6973157709854838218">ሂሳቦን ከማሳያ ይደብቁ</translation>
 <translation id="4548946945059463969">ቀሪ ሂሳብዎን በማያ ገጽ ላይ ያሳዩ</translation>
 <translation id="242959166945779492">በመለያዎ ውስጥ ምንም ቀሪ ሂሳቦች የሉዎትም። የተወሰኑትን ለመግዛት FTX ን ይጎብኙ።</translation>
+<translation id="2532127066761785857">የሚታየው ከፍተኛው የማስታወቂያ ብዛት</translation>
+<translation id="6177749339095882127">በሰዓት 0 ማስታወቂያዎች</translation>
+<translation id="5171071066587880677">በሰዓት 1 ማስታወቂያ</translation>
+<translation id="7885315050812316860">በሰዓት 2 ማስታወቂያዎች</translation>
+<translation id="2232753742630178222">በሰዓት 3 ማስታወቂያዎች</translation>
+<translation id="905529390827000221">በሰዓት 4 ማስታወቂያዎች</translation>
+<translation id="7694167481321619202">በሰዓት 5 ማስታወቂያዎች</translation>
+<translation id="3705420658531870884">በሰዓት 10 ማስታወቂያዎች</translation>
+<translation id="3669086939205397942">አንዴ ይቆዩ አሁን’ ጠቃሚ ምክር መስጠት አይችሉም</translation>
+<translation id="7354412786785889047">ጠቃሚ ምክሮችን በመላክ የዚህን ይዘት ፈጣሪ መደገፍ ይችላሉ፤ ምርጥ ይዘት ስላደረጉ ምስጋና ማቅረቢያ መንገድ ነው፤ የተረጋገጡ ፈጣሪዎች በእያንዳንዱ የቀን መቁጠሪያ ወር የመጀመሪያ ሳምንት ውስጥ ለጠቃሚ ምክራቸው ይከፈላቸዋል።</translation>
+<translation id="5119190679543565400">ይህን ድረ ገጽ ወደነበረበት መልስ</translation>
+<translation id="6783637972818687030">Brave .crypto (እንዲሁም .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin, እና .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin, .zil) የጎራ ስም ፍለጋ ጥያቄዎችን መፍታት እንዲችሉ Ethereum JSON-RPC ከማይቆሙ ጎራዎች ወደ ስማርት ኮንትራት ጥሪዎችን ለማቅረብ ኢንፉራ ይጠቀማል። ይህን ካነቁት ኢንፉራ እርስዎ ሊጎበኟቸው የሚፈልጓቸውን የተወሰኑ ጎራዎች ያያሉ ነገር ግን ሌሎች ጎራዎችን ማየት አይችሉም። የኢንፉራ <ph name="BEGIN_INFURA_TOU_LINK"/> የአጠቃቀም ውል<ph name="END_INFURA_TOU_LINK"/> እና <ph name="BEGIN_INFURA_PRIVACY_LINK"/>የግላዊነት ፖሊሲን<ph name="END_INFURA_PRIVACY_LINK"/> ይመልከቱ።</translation>
+<translation id="8037420924417098685">ነጻ የስልክ ጥሪ ለመጀመር፣ Brave ሽልማቶችን ያብሩ</translation>
+<translation id="8961724619078500274">ከBrave ሽልማቶች ጋር፣ ግላዊ ማስታወቂያዎችን ስለተመለከቱ ቶክኖችን ያገኛሉ (ውሂብዎ ደህንነቱ የተጠበቀ ነው)። እነዚያን ቶክኖች ወደ ጥሬ ገንዘብ፣ የስጦታ ካርዶች... ይለውጡ ወይም ለሚወዱት የድር ጣቢያ ስጦታ ያበርኩት። ክትትል የለም። ቀስ ማለት የለም።</translation>
+<translation id="7307847920988946894">ሽልማቶችን አብራ</translation>
+<translation id="799591303418199877">ይህን በመቀጠል፣ ለ <ph name="TOS_LINK_BEGIN"/> የአገልግሎት ውሎች <ph name="TOS_LINK_END"/> እና <ph name="PP_LINK_BEGIN"/>የግላዊነት ፖሊሲ <ph name="PP_LINK_END"/> ተስማምተዋል።</translation>
+<translation id="6128511569382736135">ነጻ የስልክ ጥሪ ለመጀመር፣ Brave Private ማስታወቂያዎችን ያስጀምሩ</translation>
+<translation id="7930006085154756245">በBrave Private ማስታወቂያዎች፣ ግላዊ ማስታወቂያዎችን ስለተመለከቱ ቶክኖችን ያገኛሉ (ውሂብዎ ደህንነቱ የተጠበቀ ነው)። እነዚያን ቶክኖች ወደ ጥሬ ገንዘብ፣ የስጦታ ካርዶች... ይለውጡ ወይም ለሚወዱት የድር ጣቢያ ስጦታ ያበርኩት። ክትትል የለም። ቀስ ማለት የለም።</translation>
+<translation id="4992617448154987397">የBrave Private ማስታወቂያዎችን ያብሩ</translation>
+<translation id="3415016869273103668">አሁን ነጻ የስልክ ጥሪ መጀመር ይችላሉ</translation>
+<translation id="7073631403665023390">ወደ  Brave Talk ለመቀጠል በማያ ገጽዎ ላይ የትም ቦታ ላይ ጠቅ ያድርጉ ወይም ይንኩ።</translation>
+<translation id="9115939801961482572">ስለ Brave ሽልማቶች የበለጠ ማወቅ ይፈልጋሉ? <ph name="TOUR_LINK_BEGIN"/>ፈጣን ጉብኝት ያድርጉ<ph name="TOUR_LINK_END"/>።</translation>
+<translation id="8222322431155185238">ጠቃሚ ምክር በ Brave Rewards ላይ</translation>
+<translation id="1895476463085410109">የ Brave የግል ማስታወቂያዎችን በማየት ሽልማቶችን ያግኙ እንዲሁም የይዘት ፈጣሪዎችን በራስ -ሰር ይደግፉ</translation>
 </translationbundle>

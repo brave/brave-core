@@ -865,4 +865,43 @@
 <translation id="8423380132356660250">开启 <ph name="APP_NAME"/> 应用程序</translation>
 <translation id="168154537623654021">正在更新 VPN 配置文件...</translation>
 <translation id="7457027586454688423">输入您的 Brave Wallet 密码</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">可用 <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">购买 <ph name="COIN_NAME"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> 存款地址</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> 存款单</translation>
+<translation id="6755546361496900700">预览兑换</translation>
+<translation id="5110244215256675209">购买 Crypto</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="7144878232160441200">重试</translation>
+<translation id="1366855498335432549">存入</translation>
+<translation id="1301340234286078471">兑换</translation>
+<translation id="4584930231524505442">我想兑换...</translation>
+<translation id="5749014321384313843">我想消费...</translation>
+<translation id="2480674848181564169">余额不足，无法转换</translation>
+<translation id="2215334405220411393">最低转换金额为：<ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">无法连接</translation>
+<translation id="7742417737698031726">费用</translation>
+<translation id="2122225204180056042">你会收到</translation>
+<translation id="6432284126416751397">确认兑换</translation>
+<translation id="3891414008432200754">价格</translation>
+<translation id="3733576242118819803">确认 (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">转换失败。请重试。</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="8037420924417098685">要开始免费通话，请开启 Brave 奖励</translation>
+<translation id="8961724619078500274">使用 Brave 奖励，您可以通过查看专属广告获得代币（您的数据是安全的）。把这些代币变成现金、礼品卡……或是给您喜欢的网站打赏。不会跟踪您的足迹。不会拖慢网站速度。</translation>
+<translation id="7307847920988946894">开启奖励</translation>
+<translation id="7872993190040589450">启用该服务即表示您同意<ph name="TERMS_OF_SERVICE"/>和<ph name="PRIVACY_POLICY"/>。</translation>
+<translation id="6128511569382736135">要开始免费通话，请启用 Brave 专属广告</translation>
+<translation id="7930006085154756245">使用 Brave 专属广告，您可以通过查看专属广告获得代币（您的数据是安全的）。把这些代币变成现金、礼品卡……或是给您喜欢的网站打赏。不会跟踪您的足迹。不会拖慢网站速度。</translation>
+<translation id="4992617448154987397">开启 Brave 专属广告</translation>
+<translation id="3415016869273103668">你现在可以开始免费通话</translation>
+<translation id="7073631403665023390">单击或轻按屏幕上的任何地方，继续使用 Brave 通话。</translation>
+<translation id="626339649633171286">想要了解 Brave 奖励更多详情？<ph name="TAKE_QUICK_TOUR"/>。</translation>
+<translation id="3604285424134705930">您将<ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> 兑换成了 <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>！</translation>
+<translation id="392587271502873865">请检查您的网络连接。</translation>
+<translation id="2490428413101944234">测试水龙头</translation>
+<translation id="2581671693710952401">获取 Ether</translation>
+<translation id="8165484222652118977">从水管获取 Ether 以用于 <ph name="NETWORK"/> 测试网络</translation>
 </translationbundle>

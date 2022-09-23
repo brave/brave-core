@@ -1499,4 +1499,28 @@
 <translation id="6973157709854838218">Itago ang iyong mga balanse sa display</translation>
 <translation id="4548946945059463969">Ipakita ang iyong mga balanse sa screen</translation>
 <translation id="242959166945779492">Wala kang anumang balanse sa iyong account. Bisitahin ang FTX para bumili ng ganito.</translation>
+<translation id="2532127066761785857">Maximum na bilang ng mga ad na ipinapakita</translation>
+<translation id="6177749339095882127">0 ad kada oras</translation>
+<translation id="5171071066587880677">1 ad kada oras</translation>
+<translation id="7885315050812316860">2 ad kada oras</translation>
+<translation id="2232753742630178222">3 ad kada oras</translation>
+<translation id="905529390827000221">4 ad kada oras</translation>
+<translation id="7694167481321619202">5 ad kada oras</translation>
+<translation id="3705420658531870884">10 ad kada oras</translation>
+<translation id="3669086939205397942">Teka lang, hindi ka pa makakapagbigay ng tip</translation>
+<translation id="7354412786785889047">Maaari mong suportahan ang content creator na ito sa pamamagitan ng pagpapadala ng tip. Isa itong paraan ng pagpapasalamat sa kanila dahil sa paggawa ng magandang content. Ang mga verfied creator ay binabayaran para sa kanilang mga tip sa unang linggo ng bawat buwan sa kalendaryo.</translation>
+<translation id="5119190679543565400">I-restore ang site na ito</translation>
+<translation id="6783637972818687030">Gagamit ang Brave ng Infura para magbigay ng mga Ethereum JSON-RPC na pagtawag sa smart contract mula sa Mga Hindi Napipigilang Domain para lutasin ang mga kahilingan sa paghahanap ng .crypto (pati ng .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin, .zil) na domain name. Kung io-on mo ito, makikita ng Infura ang mga partikular na domain na sinusubukan mong bisitahin pero hindi nila makikita ang iba pang domain. Tingnan ang <ph name="BEGIN_INFURA_TOU_LINK"/>mga tuntunin ng paggamit<ph name="END_INFURA_TOU_LINK"/> at <ph name="BEGIN_INFURA_PRIVACY_LINK"/>patakaran sa privacy<ph name="END_INFURA_PRIVACY_LINK"/> ng Infura.</translation>
+<translation id="8037420924417098685">Para magsimula ng libreng tawag, i-on ang Brave Rewards</translation>
+<translation id="8961724619078500274">Sa Brave Rewards, kikita ka ng mga token sa panonood ng mga pribadong ad (ligtas ang iyong data). Gawing cash o mga gift card ang mga token na iyon...o kaya'y gamitin ang mga ito para mag-tip sa mga website na gusto mo. Walang pagta-track. Walang pagbagal.</translation>
+<translation id="7307847920988946894">I-on ang Mga Reward</translation>
+<translation id="799591303418199877">Sa pag-enable, sumasang-ayon ka sa <ph name="TOS_LINK_BEGIN"/>Mga Tuntunin ng Serbisyo<ph name="TOS_LINK_END"/> at <ph name="PP_LINK_BEGIN"/>Patakaran sa Privacy <ph name="PP_LINK_END"/>.</translation>
+<translation id="6128511569382736135">Para magsimula ng libreng tawag, i-enable ang Brave Private Ads</translation>
+<translation id="7930006085154756245">Sa Brave Private Ads, kikita ka ng mga token sa panonood ng mga pribadong ad (ligtas ang iyong data). Gawing cash o mga gift card ang mga token na iyon...o kaya'y gamitin ang mga ito para mag-tip sa mga website na gusto mo. Walang pagta-track. Walang pagbagal.</translation>
+<translation id="4992617448154987397">I-on ang Brave Private Ads</translation>
+<translation id="3415016869273103668">Pwede ka nang magsimula ng libreng tawag</translation>
+<translation id="7073631403665023390">Mag-click o mag-tap saanman sa screen para ipagpatuloy ang Brave Talk.</translation>
+<translation id="9115939801961482572">Gustong matuto pa tungkol sa Brave Rewards? <ph name="TOUR_LINK_BEGIN"/>Mag-tour nang mabilis<ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">Mag-tip gamit ang Brave Rewards</translation>
+<translation id="1895476463085410109">Kumita ng Rewards sa pamamagitan ng paggamit sa Brave Private Ads at awtomatikong suportahan ang mga content creator</translation>
 </translationbundle>
