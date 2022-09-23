@@ -27,7 +27,7 @@ import {
   DropDown,
   DropDownButton,
   DropDownIcon,
-  LeftSide,
+  SelectorLeftSide,
   SubDropDown,
   SecondaryNetworkText,
   ClickAwayArea
@@ -87,12 +87,12 @@ export const NetworkFilterSelector = ({ networkListSubset }: Props) => {
     <StyledWrapper>
       <DropDownButton
         onClick={toggleShowNetworkFilter}>
-        <LeftSide>
+        <SelectorLeftSide>
           {selectedNetworkFilter.chainId !== AllNetworksOption.chainId &&
             <CreateNetworkIcon network={selectedNetworkFilter} marginRight={14} size='big' />
           }
           {selectedNetworkFilter.chainName}
-        </LeftSide>
+        </SelectorLeftSide>
         <DropDownIcon />
       </DropDownButton>
 
