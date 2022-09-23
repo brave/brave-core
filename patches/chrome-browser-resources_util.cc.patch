@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources_util.cc b/chrome/browser/resources_util.cc
-index 5c15c999788f6ecc421b7766ebbeac95a96a4ac9..5ce35d92b52739bcd42d8cd745db48e005652cf4 100644
+index e32e86a4d9063714276f8764065ee52770dd558e..88ea2cd5eb50ba63902b4ede1e44902d952766d0 100644
 --- a/chrome/browser/resources_util.cc
 +++ b/chrome/browser/resources_util.cc
 @@ -50,6 +50,7 @@ class ThemeMap {

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/tools/optimize_webui.py b/chrome/browser/resources/tools/optimize_webui.py
-index 17d94213984d1484f451065fcc55e9d6648aa892..d1a5e0953aef9fc4d89a6bfe18b50fb3a751cccf 100755
+index c8a7bd724fd63efdae3853d17d5d4cb29735933d..a479669e001242fa18e52d12c73188e96a09205b 100755
 --- a/chrome/browser/resources/tools/optimize_webui.py
 +++ b/chrome/browser/resources/tools/optimize_webui.py
 @@ -44,6 +44,9 @@ def _request_list_path(out_path, target_name):

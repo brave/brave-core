@@ -1,5 +1,5 @@
 diff --git a/services/preferences/tracked/BUILD.gn b/services/preferences/tracked/BUILD.gn
-index f17ffbc8e8f2ae894d788d29aa6843318e2c0da1..75ce1972fc27bac3ad8d3a56523b91ebb075bbff 100644
+index 551ab8ca8da7e1d6b11ba7cd6fbd44743b2418c9..efd754da15d30dd66919f4046e787a1447d0ff5d 100644
 --- a/services/preferences/tracked/BUILD.gn
 +++ b/services/preferences/tracked/BUILD.gn
 @@ -59,6 +59,7 @@ source_set("tracked") {

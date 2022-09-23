@@ -1,5 +1,5 @@
 diff --git a/components/os_crypt/key_storage_keyring.cc b/components/os_crypt/key_storage_keyring.cc
-index 1b14e4c0ee3b5510ca6c4b968fe53c66622203d4..675fa638ee9a417aafb4bbd29785276093003f27 100644
+index 531e66307032b77580ec717539416396addc2624..d6c265754a71ac58019e91425a586ab9e670c5a3 100644
 --- a/components/os_crypt/key_storage_keyring.cc
 +++ b/components/os_crypt/key_storage_keyring.cc
 @@ -45,6 +45,7 @@ absl::optional<std::string> KeyStorageKeyring::GetKeyImpl() {

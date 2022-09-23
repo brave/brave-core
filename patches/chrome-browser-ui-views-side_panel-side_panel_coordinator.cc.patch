@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/side_panel/side_panel_coordinator.cc b/chrome/browser/ui/views/side_panel/side_panel_coordinator.cc
-index 93e16373cd1c156f12e2da17d28595115a57a045..bbc33b0bf0b1cedea7e0265ca19dc6083dc0600e 100644
+index 0c432445a4ae9d72727352e1bb4efd395796302e..f44b8ef109d8e2a994e9105e099f3144930b6024 100644
 --- a/chrome/browser/ui/views/side_panel/side_panel_coordinator.cc
 +++ b/chrome/browser/ui/views/side_panel/side_panel_coordinator.cc
 @@ -175,6 +175,7 @@ SidePanelCoordinator::~SidePanelCoordinator() {
@@ -10,7 +10,7 @@ index 93e16373cd1c156f12e2da17d28595115a57a045..bbc33b0bf0b1cedea7e0265ca19dc608
    if (entry_id.has_value()) {
      Show(SidePanelEntry::Key(entry_id.value()), open_trigger);
    } else {
-@@ -502,6 +503,7 @@ std::unique_ptr<views::View> SidePanelCoordinator::CreateHeader() {
+@@ -511,6 +512,7 @@ std::unique_ptr<views::View> SidePanelCoordinator::CreateHeader() {
    header_combobox_->SetFocusBehavior(views::View::FocusBehavior::ALWAYS);
    header_close_button->SetFocusBehavior(views::View::FocusBehavior::ALWAYS);
  

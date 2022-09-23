@@ -1,8 +1,8 @@
 diff --git a/components/update_client/BUILD.gn b/components/update_client/BUILD.gn
-index e24cc2f013ec994054f7adc6152c1697a0f76a51..b414095666384a9789ac16bd7dc1c3d13b291874 100644
+index c47a8e6ae8f5f713a5887dbe1b3b01aeba8c4175..a3d40019954836a6edd99d22c8519eb13b627087 100644
 --- a/components/update_client/BUILD.gn
 +++ b/components/update_client/BUILD.gn
-@@ -186,6 +186,8 @@ static_library("update_client") {
+@@ -188,6 +188,8 @@ static_library("update_client") {
        "puffin_patcher.h",
      ]
    }

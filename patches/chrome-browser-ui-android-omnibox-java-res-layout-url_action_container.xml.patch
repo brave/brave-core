@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/omnibox/java/res/layout/url_action_container.xml b/chrome/browser/ui/android/omnibox/java/res/layout/url_action_container.xml
-index 4979cfde6fc1417c8c406cee4679145bbf1e7efc..67b6829d77f86188ad0cd8faf0b4289d4edf4a68 100644
+index d4622410efa15898fe7dca376147c1ac061368d2..01a4a89408dbfb4b6c6dcde867ddf193efbabe7d 100644
 --- a/chrome/browser/ui/android/omnibox/java/res/layout/url_action_container.xml
 +++ b/chrome/browser/ui/android/omnibox/java/res/layout/url_action_container.xml
-@@ -20,6 +20,7 @@
+@@ -22,6 +22,7 @@ found in the LICENSE file.
              android:visibility="invisible"
              android:contentDescription="@string/accessibility_toolbar_btn_delete_url" />
  

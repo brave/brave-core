@@ -1,5 +1,5 @@
 diff --git a/components/sync/driver/sync_stopped_reporter.h b/components/sync/driver/sync_stopped_reporter.h
-index 0990b5b865f6ad8532110d889f75c474b3e9999f..2357cff9ccdbb8c9e00b52f1fba16547ff78216f 100644
+index 07bc682b645a906a336dc2699008ec272498c1de..a7cd991d65d00e9884b5ac03d547a82a39804723 100644
 --- a/components/sync/driver/sync_stopped_reporter.h
 +++ b/components/sync/driver/sync_stopped_reporter.h
 @@ -35,7 +35,7 @@ class SyncStoppedReporter {

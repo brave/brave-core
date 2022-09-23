@@ -1,5 +1,5 @@
 diff --git a/components/strings/BUILD.gn b/components/strings/BUILD.gn
-index 2d73c9dbb6baf68639e07e7b978669832f7b2c2e..2468c648e8e498c8c457f49e7b8100c3e73dd384 100644
+index 48e6f4f1d2af2cfe0c2d5ec92a6dc08f27e64053..40652917d0c6ba71a5ff3b4c3d454318a682af56 100644
 --- a/components/strings/BUILD.gn
 +++ b/components/strings/BUILD.gn
 @@ -46,6 +46,7 @@ grit("components_strings") {

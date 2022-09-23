@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/cr_elements/cr_elements.gni b/ui/webui/resources/cr_elements/cr_elements.gni
-index 8641649f2982ce9c136bc9dc4d68c204dbedf67f..7895363dd662577768ffac43af67e4900641e147 100644
+index 40fe817c3f5c75c6d1f5b0ba10f52dcd54ba00e4..734bf93a06d75d01f5f0390d36ccc14357a80578 100644
 --- a/ui/webui/resources/cr_elements/cr_elements.gni
 +++ b/ui/webui/resources/cr_elements/cr_elements.gni
 @@ -65,6 +65,7 @@ if (include_polymer) {

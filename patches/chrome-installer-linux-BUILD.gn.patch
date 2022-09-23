@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index a96472b11824123801b89353350eafab5b5a6a05..1488c34247d42c8fdb111eb444964cfd25ea79e2 100644
+index b6656f99a23ebe258bd117116c3c57ac01a0bc00..3a17c92a4b4436f363d14366720fef6b06eb1829 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
 @@ -89,6 +89,7 @@ if (build_with_internal_optimization_guide) {

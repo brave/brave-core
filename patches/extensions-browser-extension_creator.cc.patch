@@ -1,5 +1,5 @@
 diff --git a/extensions/browser/extension_creator.cc b/extensions/browser/extension_creator.cc
-index 51fd994b78f8f9a5d9d07ef78ee9b4f3f97cc68f..bd42081e84b880971a69e1dc5ca9913908839325 100644
+index de7b81651327fcb3e2e0b1c884c5137d0a168efb..ad63cb0946277e683f5d5b0c5895bf179997711b 100644
 --- a/extensions/browser/extension_creator.cc
 +++ b/extensions/browser/extension_creator.cc
 @@ -229,7 +229,7 @@ bool ExtensionCreator::CreateCrx(

@@ -1,5 +1,5 @@
 diff --git a/components/download/public/background_service/clients.h b/components/download/public/background_service/clients.h
-index 0ab4e95c89b75ff47886efc823877841fa220697..d4ef2ae3919cab535b3c94681fba3ce03f75ed71 100644
+index 9943c8c5c2b230a427b13a9b32eeffeb42dae4bf..31a65ea21f9d4a15caf0ecfcd4b68e77005be39a 100644
 --- a/components/download/public/background_service/clients.h
 +++ b/components/download/public/background_service/clients.h
 @@ -46,6 +46,7 @@ enum class DownloadClient {

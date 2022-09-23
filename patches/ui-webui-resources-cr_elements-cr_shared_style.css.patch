@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/cr_elements/cr_shared_style.css b/ui/webui/resources/cr_elements/cr_shared_style.css
-index cf02488d0e7a852b7e757eebbc306a2739a9b382..b5dca33cc173d3f2dacced373da615b7aa106958 100644
+index f2ce0998a948803528bb6d689479563fe0b8b07c..f8a26613e882c821fab7587157729d97da457aaf 100644
 --- a/ui/webui/resources/cr_elements/cr_shared_style.css
 +++ b/ui/webui/resources/cr_elements/cr_shared_style.css
 @@ -7,8 +7,9 @@

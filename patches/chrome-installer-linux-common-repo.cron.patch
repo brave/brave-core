@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/common/repo.cron b/chrome/installer/linux/common/repo.cron
-index 594040185a8c1793f9e2634f301c93a79cde1e80..ad500fabe554ab9df1f2cfdc76dcc8a8fe407411 100755
+index 15bbf25f2b44366e0e269141355ecc45856b2a97..de3affee920d3e400ce479f838352e46839d51a7 100755
 --- a/chrome/installer/linux/common/repo.cron
 +++ b/chrome/installer/linux/common/repo.cron
 @@ -17,6 +17,9 @@

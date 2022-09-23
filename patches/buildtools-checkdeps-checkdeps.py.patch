@@ -1,5 +1,5 @@
 diff --git a/buildtools/checkdeps/checkdeps.py b/buildtools/checkdeps/checkdeps.py
-index 1019914aac41e9f3a029053bb70a8f5137224734..ddb3575be43eb2b679a133b136a7dc5062942c17 100755
+index 19e0854786de291fd9c94ac64dbbe181faee6180..f4e8c49b31da1e2b8f2c6e0570fbafd8564752da 100755
 --- a/buildtools/checkdeps/checkdeps.py
 +++ b/buildtools/checkdeps/checkdeps.py
 @@ -24,7 +24,7 @@ import cpp_checker
