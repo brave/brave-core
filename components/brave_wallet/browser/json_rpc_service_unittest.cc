@@ -4651,6 +4651,10 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetEthAddr_Consent) {
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash) {
+  decentralized_dns::SetEnsOffchainResolveMethod(
+      local_state_prefs(),
+      decentralized_dns::EnsOffchainResolveMethod::kEnabled);
+
   base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
   EXPECT_CALL(callback, Run(offchain_contenthash(), false,
                             mojom::ProviderError::kSuccess, ""));
@@ -4659,6 +4663,10 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash) {
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_NoResolver) {
+  decentralized_dns::SetEnsOffchainResolveMethod(
+      local_state_prefs(),
+      decentralized_dns::EnsOffchainResolveMethod::kEnabled);
+
   base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
   EXPECT_CALL(
       callback,
@@ -4669,6 +4677,10 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_NoResolver) {
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_NoEnsip10Support) {
+  decentralized_dns::SetEnsOffchainResolveMethod(
+      local_state_prefs(),
+      decentralized_dns::EnsOffchainResolveMethod::kEnabled);
+
   // TODO(apaymyshev): ENS offchain lookup should work without ensip10
   // support.
 
@@ -4684,6 +4696,10 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_NoEnsip10Support) {
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_Gateway500Error) {
+  decentralized_dns::SetEnsOffchainResolveMethod(
+      local_state_prefs(),
+      decentralized_dns::EnsOffchainResolveMethod::kEnabled);
+
   // Gateway request fails.
   offchain_gateway_handler_->SetRespondWith500();
 
@@ -4697,6 +4713,10 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_Gateway500Error) {
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_GatewayNoRecord) {
+  decentralized_dns::SetEnsOffchainResolveMethod(
+      local_state_prefs(),
+      decentralized_dns::EnsOffchainResolveMethod::kEnabled);
+
   // No data record in gateway.
   offchain_gateway_handler_->SetRespondWithNoRecord();
 
@@ -4714,10 +4734,10 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_Consent) {
       decentralized_dns::EnsOffchainResolveMethod::kAsk,
       decentralized_dns::GetEnsOffchainResolveMethod(local_state_prefs()));
 
-  // Ok by default.
+  // Ask by default.
   {
     base::MockCallback<JsonRpcService::EnsGetContentHashCallback> callback;
-    EXPECT_CALL(callback, Run(offchain_contenthash(), false,
+    EXPECT_CALL(callback, Run(std::vector<uint8_t>(), true,
                               mojom::ProviderError::kSuccess, ""));
     json_rpc_service_->EnsGetContentHash(ens_host(), callback.Get());
     base::RunLoop().RunUntilIdle();

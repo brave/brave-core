@@ -59,6 +59,8 @@ struct OffchainLookupData {
 
 struct EnsResolverTaskResult {
   EnsResolverTaskResult();
+  EnsResolverTaskResult(std::vector<uint8_t> resolved_result,
+                        bool need_to_allow_offchain);
   EnsResolverTaskResult(const EnsResolverTaskResult&);
   EnsResolverTaskResult(EnsResolverTaskResult&&);
   EnsResolverTaskResult& operator=(const EnsResolverTaskResult&);
@@ -105,6 +107,12 @@ class EnsResolverTask {
   ~EnsResolverTask();
 
   const std::string& domain() const { return domain_; }
+  const absl::optional<bool>& allow_offchain() const { return allow_offchain_; }
+
+  static base::RepeatingCallback<void(EnsResolverTask* task)>&
+  GetWorkOnTaskForTesting();
+  void SetResultForTesting(absl::optional<EnsResolverTaskResult> task_result,
+                           absl::optional<EnsResolverTaskError> task_error);
 
  private:
   template <typename T>

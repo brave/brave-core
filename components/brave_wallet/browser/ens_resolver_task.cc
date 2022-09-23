@@ -12,6 +12,7 @@
 #include "base/containers/contains.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/no_destructor.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -63,6 +64,11 @@ EnsResolverTaskError MakeInternalError() {
 }  // namespace
 
 EnsResolverTaskResult::EnsResolverTaskResult() = default;
+EnsResolverTaskResult::EnsResolverTaskResult(
+    std::vector<uint8_t> resolved_result,
+    bool need_to_allow_offchain)
+    : resolved_result(std::move(resolved_result)),
+      need_to_allow_offchain(need_to_allow_offchain) {}
 EnsResolverTaskResult::EnsResolverTaskResult(const EnsResolverTaskResult&) =
     default;
 EnsResolverTaskResult::EnsResolverTaskResult(EnsResolverTaskResult&&) = default;
@@ -185,6 +191,22 @@ EnsResolverTask::EnsResolverTask(
 
 EnsResolverTask::~EnsResolverTask() = default;
 
+// static
+base::RepeatingCallback<void(EnsResolverTask* task)>&
+EnsResolverTask::GetWorkOnTaskForTesting() {
+  static base::NoDestructor<
+      base::RepeatingCallback<void(EnsResolverTask * task)>>
+      callback;
+  return *callback.get();
+}
+
+void EnsResolverTask::SetResultForTesting(
+    absl::optional<EnsResolverTaskResult> task_result,
+    absl::optional<EnsResolverTaskError> task_error) {
+  task_result_ = std::move(task_result);
+  task_error_ = std::move(task_error);
+}
+
 void EnsResolverTask::ScheduleWorkOnTask() {
   base::SequencedTaskRunnerHandle::Get()->PostTask(
       FROM_HERE, base::BindOnce(&EnsResolverTask::WorkOnTask,
@@ -192,6 +214,10 @@ void EnsResolverTask::ScheduleWorkOnTask() {
 }
 
 void EnsResolverTask::WorkOnTask() {
+  if (!GetWorkOnTaskForTesting().is_null()) {
+    GetWorkOnTaskForTesting().Run(this);
+  }
+
   if (task_result_) {
     std::move(done_callback_).Run(this, std::move(task_result_), absl::nullopt);
     // `this` is not valid here
