@@ -59,11 +59,14 @@ struct CurrentBundleGenPlugin: BuildToolPlugin {
       private class BundleFinder {}
     }
     """
-    try source.write(
-      toFile: outputDirectory.appending("current_bundle_accessor.swift").string,
-      atomically: true,
-      encoding: .utf8
-    )
+    let filePath = outputDirectory.appending("current_bundle_accessor.swift")
+    if !FileManager.default.fileExists(atPath: filePath.string) {
+      try source.write(
+        toFile: filePath.string,
+        atomically: true,
+        encoding: .utf8
+      )
+    }
     // TODO: Generate the above file in an `executableTarget` when SPM supports building Mac tools while targetting iOS
     return [
       .buildCommand(
@@ -71,7 +74,7 @@ struct CurrentBundleGenPlugin: BuildToolPlugin {
         executable: Path("/bin/zsh"),
         arguments: [],
         inputFiles: [],
-        outputFiles: [outputDirectory.appending("current_bundle_accessor.swift")]
+        outputFiles: [filePath]
       )
     ]
   }
