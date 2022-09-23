@@ -1,8 +1,8 @@
 diff --git a/components/browser_ui/site_settings/android/java/res/menu/website_preferences_menu.xml b/components/browser_ui/site_settings/android/java/res/menu/website_preferences_menu.xml
-index 6371709bb96312fe31a1f4e48eee546e4e8bd746..e1a88694bc1d273cc1975af4731c671aff3e2354 100644
+index 6bf02fcf2f10308370d06f02c8d7fa2047638e18..9c18364d4b63ad7978761f4faba770422e037be2 100644
 --- a/components/browser_ui/site_settings/android/java/res/menu/website_preferences_menu.xml
 +++ b/components/browser_ui/site_settings/android/java/res/menu/website_preferences_menu.xml
-@@ -9,4 +9,5 @@
+@@ -11,4 +11,5 @@ found in the LICENSE file.
            android:title="@string/search"
            app:showAsAction="always"
            app:actionViewClass="androidx.appcompat.widget.SearchView" />

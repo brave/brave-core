@@ -1,5 +1,5 @@
 diff --git a/components/download/internal/background_service/proto_conversions.cc b/components/download/internal/background_service/proto_conversions.cc
-index 901bdea37306e4254acf9d980471ca6c325c0733..637e6cb430a84f30d7d543201e7e0ccddf1dee7b 100644
+index be74ae46d79fc94962e720069fc37ba9af3ff48a..a25695be644346eeab64eda68a0febf5fa7823e3 100644
 --- a/components/download/internal/background_service/proto_conversions.cc
 +++ b/components/download/internal/background_service/proto_conversions.cc
 @@ -77,6 +77,7 @@ protodb::DownloadClient ProtoConversions::DownloadClientToProto(

@@ -1,5 +1,5 @@
 diff --git a/net/dns/host_cache.cc b/net/dns/host_cache.cc
-index 042d9ff186de4d01a46e5832c21d5d7871d3bb2a..7cc8d891df34ba99509b0bd3e4159dd508b90a70 100644
+index 58a2a4a810feb74f79e73cb95c298c5f595ec6c5..8a3b9ddcb19cb8c7ffcd02ac3ec1e7350dc25b38 100644
 --- a/net/dns/host_cache.cc
 +++ b/net/dns/host_cache.cc
 @@ -387,6 +387,7 @@ HostCache::Entry HostCache::Entry::CopyWithDefaultPort(uint16_t port) const {

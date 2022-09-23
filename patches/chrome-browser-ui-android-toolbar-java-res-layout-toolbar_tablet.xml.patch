@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
-index 2d080d8f1f43e60abce91da92e07ae5dcee5940b..134cd7295b5d72c51a162bb69631871659e02d54 100644
+index 43787925b409c4e7adc8672821e6c167d5698504..f2b352f56898e0325eb9c08e22f22831392aa0f2 100644
 --- a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
 +++ b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
-@@ -80,6 +80,7 @@
+@@ -82,6 +82,7 @@ found in the LICENSE file.
              android:contentDescription="@string/accessibility_toolbar_btn_tabswitcher_toggle_default"
              android:visibility="gone" />
  

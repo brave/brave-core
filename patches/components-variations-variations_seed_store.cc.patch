@@ -1,8 +1,8 @@
 diff --git a/components/variations/variations_seed_store.cc b/components/variations/variations_seed_store.cc
-index 776181ce25330eb950ebce768cea582aaebfde16..8df5e9da5a2d14d085c02f50fe34618fe2a7f73e 100644
+index 7b7a19ef3e4667784c5af8fe760886fea0aa9445..146fbc7db4c8086961cf728664c692c330fa653e 100644
 --- a/components/variations/variations_seed_store.cc
 +++ b/components/variations/variations_seed_store.cc
-@@ -35,6 +35,7 @@ namespace {
+@@ -39,6 +39,7 @@ namespace {
  // The ECDSA public key of the variations server for verifying variations seed
  // signatures.
  const uint8_t kPublicKey[] = {

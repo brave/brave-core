@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/util/BUILD.gn b/chrome/installer/util/BUILD.gn
-index 881de4697c84fc5a46e3fbb861ccc283ff5a43d9..baf85c9b86ac33cd942a8366df7f7b6a70c53ba9 100644
+index 7782a268825828b437943047cd3cc98b70537d53..979d53fb5595abdcdda955186ba5d851d4d37276 100644
 --- a/chrome/installer/util/BUILD.gn
 +++ b/chrome/installer/util/BUILD.gn
 @@ -206,6 +206,7 @@ static_library("with_no_strings") {

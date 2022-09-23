@@ -1,8 +1,8 @@
 diff --git a/components/translate/content/renderer/per_frame_translate_agent.cc b/components/translate/content/renderer/per_frame_translate_agent.cc
-index de4d0ae4d5c3f4774bba387faf0dafebbd1a5054..cbf43a9eb2810f210767a63743ccd5180ad8e634 100644
+index 51b3fdb189b9225524873a5c56bc4f1a696c03e9..246ff15d33b24fcd25068d074369f64a268dbc60 100644
 --- a/components/translate/content/renderer/per_frame_translate_agent.cc
 +++ b/components/translate/content/renderer/per_frame_translate_agent.cc
-@@ -49,7 +49,7 @@ const int kTranslateInitCheckDelayMs = 150;
+@@ -50,7 +50,7 @@ const int kTranslateInitCheckDelayMs = 150;
  
  // The maximum number of times we'll check to see if the translate library
  // injected in the page is ready.

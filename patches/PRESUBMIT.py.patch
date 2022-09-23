@@ -1,8 +1,8 @@
 diff --git a/PRESUBMIT.py b/PRESUBMIT.py
-index 8bea3df7417c08a394a25699a45ee358369bc851..06fbbb0328e107bd775701fddc255818a669571f 100644
+index 6ad8be3d1364859899c9a7eafc1a28b62a800cd4..a168b0e763feed9d60d6825a8801714732fe69da 100644
 --- a/PRESUBMIT.py
 +++ b/PRESUBMIT.py
-@@ -6169,3 +6169,4 @@ Robolectric tests do not need a @Batch or @DoNotBatch annotations.
+@@ -6168,3 +6168,4 @@ Robolectric tests do not need a @Batch or @DoNotBatch annotations.
  """, extra_annotation_errors))
  
      return results

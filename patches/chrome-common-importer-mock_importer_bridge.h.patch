@@ -1,5 +1,5 @@
 diff --git a/chrome/common/importer/mock_importer_bridge.h b/chrome/common/importer/mock_importer_bridge.h
-index c1a976cab327b105aa24054c2c248aa4a727a66b..051cd594dec3c6f4a61198263ea69996dcae944b 100644
+index fe0a65eb48e42abc4c42d7d92ab5e8830540fb6f..1c1159b3445249dbd8f27e23bf90a4b1f98eb088 100644
 --- a/chrome/common/importer/mock_importer_bridge.h
 +++ b/chrome/common/importer/mock_importer_bridge.h
 @@ -35,7 +35,7 @@ class MockImporterBridge : public ImporterBridge {

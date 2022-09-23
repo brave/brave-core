@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/BUILD.gn b/ios/chrome/browser/BUILD.gn
-index ba8282bb573ba40ba80cc23c048a200e65397deb..ab4f14e716aef804a3c3344f3acc5292dc17436e 100644
+index 5e28b68194c3f98b0dfd4f949843233e2d80db55..8ec9efc79c444aac7fb22bb085087588395d9133 100644
 --- a/ios/chrome/browser/BUILD.gn
 +++ b/ios/chrome/browser/BUILD.gn
-@@ -102,6 +102,7 @@ source_set("browser") {
+@@ -98,6 +98,7 @@ source_set("browser") {
      "//ios/chrome/browser/paths",
      "//ios/chrome/browser/prefs:pref_names",
    ]

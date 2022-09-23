@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/debian/build.sh b/chrome/installer/linux/debian/build.sh
-index 67c0de84efcd65f3c608083cac78c31af894b0a9..e716558029a1907f94c31f918524f65fa0ddd048 100755
+index d1c4447bd34448735277c2b537258b525a6894bb..018f19c1058b7eb705d99f95e76030a9d068311d 100755
 --- a/chrome/installer/linux/debian/build.sh
 +++ b/chrome/installer/linux/debian/build.sh
 @@ -21,7 +21,7 @@ gen_changelog() {
@@ -46,7 +46,7 @@ index 67c0de84efcd65f3c608083cac78c31af894b0a9..e716558029a1907f94c31f918524f65f
        grep '^ Depends: ' | sed 's/^ Depends: //' | sed 's/, /\n/g' | \
        LANG=C sort > "${ACTUAL_DEPENDS}"
    BAD_DIFF=0
-@@ -160,8 +161,11 @@ verify_channel() {
+@@ -165,8 +166,11 @@ verify_channel() {
        ;;
      dev|unstable|alpha )
        CHANNEL=unstable
@@ -58,7 +58,7 @@ index 67c0de84efcd65f3c608083cac78c31af894b0a9..e716558029a1907f94c31f918524f65f
      * )
        echo
        echo "ERROR: '$CHANNEL' is not a valid channel type."
-@@ -169,6 +173,7 @@ verify_channel() {
+@@ -174,6 +178,7 @@ verify_channel() {
        exit 1
        ;;
    esac
@@ -66,7 +66,7 @@ index 67c0de84efcd65f3c608083cac78c31af894b0a9..e716558029a1907f94c31f918524f65f
  }
  
  process_opts() {
-@@ -248,6 +253,17 @@ fi
+@@ -253,6 +258,17 @@ fi
  eval $(sed -e "s/^\([^=]\+\)=\(.*\)$/export \1='\2'/" \
    "${OUTPUTDIR}/installer/theme/BRANDING")
  
@@ -84,7 +84,7 @@ index 67c0de84efcd65f3c608083cac78c31af894b0a9..e716558029a1907f94c31f918524f65f
  verify_channel
  
  # Some Debian packaging tools want these set.
-@@ -261,6 +277,10 @@ COMMON_PREDEPS="dpkg (>= 1.14.0)"
+@@ -266,6 +282,10 @@ COMMON_PREDEPS="dpkg (>= 1.14.0)"
  MANUAL_RECOMMENDS="${SCRIPTDIR}/manual_recommends"
  COMMON_RECOMMENDS=$(grep -v ^$ "${MANUAL_RECOMMENDS}" | grep -v ^# |
                          sed ':a;N;$!ba;s/\n/, /g')

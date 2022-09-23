@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/updater/chrome_update_client_config.h b/chrome/browser/extensions/updater/chrome_update_client_config.h
-index d756727d4a71a227a257d8be647ccf9c5a8327ee..a71bc4b437373362c608ce95445fe9efa46272c2 100644
+index e757fe43f9f3187246254e3ed37fded946c9b632..727585b97c8200f6f318ead2c269e1e1505228de 100644
 --- a/chrome/browser/extensions/updater/chrome_update_client_config.h
 +++ b/chrome/browser/extensions/updater/chrome_update_client_config.h
 @@ -79,6 +79,7 @@ class ChromeUpdateClientConfig : public update_client::Configurator {

@@ -1,5 +1,5 @@
 diff --git a/components/crx_file/crx_creator.cc b/components/crx_file/crx_creator.cc
-index e56183cbc11021d15b74607bcbe85f79da3a97ee..efde0364be8f6c69379e48e28fd305f8555fe72a 100644
+index b7c808638e8501eabab23d46ead24b75dbfa04fd..abac3171549210f51b7d43e7c873e3875ad302d6 100644
 --- a/components/crx_file/crx_creator.cc
 +++ b/components/crx_file/crx_creator.cc
 @@ -67,7 +67,7 @@ CreatorResult SignArchiveAndCreateHeader(const base::FilePath& output_path,

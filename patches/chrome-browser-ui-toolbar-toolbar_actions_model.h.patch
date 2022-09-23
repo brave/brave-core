@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/toolbar/toolbar_actions_model.h b/chrome/browser/ui/toolbar/toolbar_actions_model.h
-index a8c2e54cfb4a58315f49a52212b35213b4b27091..d607c836e98c56ffbb8130b745ebd5f6aacb6d7a 100644
+index 3ba7cd12f9f2b7febd66304907fc179aa56605db..26ac7b946c6bb776e17fbd1cc3ef5aa6e575d9e7 100644
 --- a/chrome/browser/ui/toolbar/toolbar_actions_model.h
 +++ b/chrome/browser/ui/toolbar/toolbar_actions_model.h
 @@ -27,6 +27,7 @@ class Browser;

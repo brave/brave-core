@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/websockets/websocket_channel_impl.h b/third_party/blink/renderer/modules/websockets/websocket_channel_impl.h
-index 1e8823ceed93424aa2f86a83225ac8bc57e07599..28e637adf47cbcc417ed2bf653ef4519901a1d19 100644
+index 4684eb041a159643a30eeffd65deee62eebe82d7..74cd99ddb2170f9598f2f3a762c957517d6affa1 100644
 --- a/third_party/blink/renderer/modules/websockets/websocket_channel_impl.h
 +++ b/third_party/blink/renderer/modules/websockets/websocket_channel_impl.h
 @@ -75,7 +75,7 @@ class WebSocketHandshakeThrottle;
