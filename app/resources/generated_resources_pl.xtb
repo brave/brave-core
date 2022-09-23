@@ -8596,7 +8596,7 @@ Domena <ph name="DOMAIN"/> wymaga, by karta inteligentna pozostała w gnieździ
 <translation id="1985165269306590797">Otwórz w &amp;prywatnym oknie</translation>
 <translation id="4680518314108745448">&amp;Pokaż pasek zakładek</translation>
 <translation id="7206817092936005164">Otwórz wszystko w oknie w trybie prywatnym</translation>
-<translation id="1342491857153455138">Open all (<ph name="URL_COUNT"/>) in Private window</translation>
+<translation id="1342491857153455138">Otwórz wszystkie (<ph name="URL_COUNT"/>) w prywatnym oknie</translation>
 <translation id="5556722972306334687">Otwórz okno w trybie prywatnym</translation>
 <translation id="1860933807472918250">{0, plural,
         =1 {Private}
