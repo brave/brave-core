@@ -80,11 +80,6 @@
 <translation id="3161744659507801211">সতর্কতা: Brave আপনার ব্রাউজিং ইতিহাস রেকর্ডিং থেকে এক্সটেনশনগুলিকে আটকাতে পারে না।</translation>
 <translation id="2162109630536601963">যদি এই এক্সটেনশানটি নেটওয়ার্ক অনুরোধ করে তবে তারা টর বা ব্যক্তিগত মোড ব্যবহার করবে না।</translation>
 <translation id="2725327089319971976">ব্যক্তিগত মোড এবং টোর মোডে এই এক্সটেনশনটি অক্ষম করতে, এই বিকল্পটি নির্বাচন করুন।</translation>
-<translation id="5057399635433117814">এই পৃষ্ঠাটি অনুবাদ করবেন? অনুবাদের জন্য এটি Microsoft-এ এই পৃষ্ঠায় সমস্ত পাঠ্য পাঠাবে।</translation>
-<translation id="330263065709195164">এই পৃষ্ঠাটি অনুবাদ করতে Google Translate এক্সটেনসন ইনস্টল করবেন?</translation>
-<translation id="3789841737615482174">ইনস্টল করুন</translation>
-<translation id="7658239707568436148">বাতিল করুন</translation>
-<translation id="1307431692088049276">আর জিজ্ঞাসা করবেন না</translation>
 <translation id="3371343170427636147">Brave ব্রাউজার নাইটলি অ্যাপস</translation>
 <translation id="4097979995947147464">Brave ব্রাউজার বিটা অ্যাপসে নিয়ন্ত্রিত হয়</translation>
 <translation id="8303432794159193481">Brave ব্রাউজার ডেভ অ্যাপস</translation>
@@ -107,9 +102,11 @@
 <translation id="7276554663454265692">ব্রাউজার সেটিংসে যে কোনও সময় আপনি <ph name="SETTING_TEXT"/> পরিবর্তন করতে পারবেন।</translation>
 <translation id="6873781976650514089">এই সেটিংটি</translation>
 <translation id="8915916167043355778">সবকটি বন্ধ করুন</translation>
+<translation id="7658239707568436148">বাতিল</translation>
 <translation id="4870911314065352661">সমস্ত ট্যাবগুলি বন্ধ করুন?</translation>
 <translation id="7551864359422178684">এই ব্রাউজার উইন্ডোতে আপনার <ph name="NUMBER_OF_TABS"/>টি ট্যাব খোলা আছে।</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/>টি ট্যাব</translation>
+<translation id="1307431692088049276">আর জিজ্ঞাসা করবেন না</translation>
 <translation id="2272117088509540883">- Brave সার্চ</translation>
 <translation id="2701279958223202597">উন্নত গোপনীয়তার সাথে স্বাধীন অনুসন্ধান সমর্থন করুন৷ Brave সার্চ আপনাকে, আপনার প্রশ্নগুলি বা আপনার ক্লিকগুলিকে ট্র্যাক করে না৷</translation>
 <translation id="6438467592401259882">উন্নত গোপনীয়তার সাথে স্বাধীন অনুসন্ধান সমর্থন করুন৷</translation>
@@ -126,7 +123,15 @@
 <translation id="4174337572777167894">ওয়েব আবিষ্কার প্রকল্প</translation>
 <translation id="8659271182272561965">Brave অনুসন্ধান &amp; পরিশোধন করতে কিছু অনামী অনুসন্ধান ব্রাউজিং ডেটায় অবদান রাখুন।</translation>
 <translation id="1516554614404600536">Brave টুলটিপ</translation>
+<translation id="7986278174934557414">সাইড প্যানেল আইকন লুকান</translation>
+<translation id="6915291874524466201">সাইড প্যানেল আইকন লুকান</translation>
+<translation id="9149866541089851383">সম্পাদনা...</translation>
 <translation id="1181037720776840403">সরান</translation>
+<translation id="7513769021866698486">আইটেম এডিট করুন</translation>
+<translation id="4002066346123236978">শিরোনাম</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="5877900074358050101">সাইডবার আইটেম শিরোনাম</translation>
+<translation id="1613695740874407223">সাইডবার আইটেম url</translation>
 <translation id="4877147287319222750">সাইডবারে যোগ করুন</translation>
 <translation id="5404213409401164238">সাইডবার দেখান</translation>
 <translation id="7561196759112975576">সবসময়য়</translation>
@@ -201,6 +206,7 @@
 <translation id="2370739752330685659">সম্ভবত পরে</translation>
 <translation id="961012016278832836">Microsoft Edge লেগ্যাসি</translation>
 <translation id="6436994631426134065"><ph name="BROWSER_NAME"/> থেকে আমদানি করা হয়েছে।</translation>
+<translation id="1506190932569739298">স্পষ্ট লিঙ্ক কপি করুন (শুধুমাত্র প্রধান URL)</translation>
 <translation id="9156965752763025780">আপনার পরিবর্তনগুলি পরবর্তী সময় আপনি Brave আবার চালু হলে ফলপ্রদ হবে৷</translation>
 <translation id="7179921470347911571">এখনই রিলঞ্চ করুন</translation>
 <translation id="4472575034687746823">শুরু করুন</translation>
@@ -220,6 +226,7 @@
 <translation id="4096343215397759358">পূর্বরূপ সহ কার্ড</translation>
 <translation id="5297085818601043899">টুলটিপ</translation>
 <translation id="2396127686705429331">বুকমার্ক বোতাম দেখান</translation>
+<translation id="2369560305991805099">সাইড প্যানেল বোতাম দেখান</translation>
 <translation id="2814998458708016836">ওয়াইড অ্যাড্রেস বার ব্যবহার করুন</translation>
 <translation id="4109670531935487117">ঠিকানা বারে স্বয়ংসম্পূর্ণ পরামর্শ দেখান</translation>
 <translation id="2858138569776157458">সেরা সাইট</translation>
@@ -242,8 +249,8 @@
 <translation id="6303294677342628402">শিল্ড</translation>
 <translation id="7133511168130368997">ওয়েবে আপনাকে অনুসরণ করে এমন ট্র্যাকার এবং বিজ্ঞাপনগুলিকে ব্লক করুন।</translation>
 <translation id="2761825942249694703">ডিফল্ট শীল্ড সেটিংস। একটি নির্দিষ্ট সাইটে শীল্ডস প্যানেলে আপনি কিছু পরিবর্তন না করা পর্যন্ত সেগুলি সমস্ত ওয়েবসাইটে প্রযোজ্য। এগুলির পরিবর্তন আপনার বিদ্যমান পার-সাইট সেটিংসকে ক্ষতিগ্রস্ত করবে না।</translation>
-<translation id="1485394570478670912">এটি ওয়েবসাইটগুলিতে বেশিরভাগ বিজ্ঞাপনকে ব্লক করবে, Brave Private Ads-কে নয় — সেগুলি নিয়ন্ত্রিত এখানে</translation>
-<translation id="6388201778088078932">সেটিংস।</translation>
+<translation id="1435116578479068303">এটি ওয়েবসাইটগুলিতে বেশিরভাগ বিজ্ঞাপনগুলিকে ব্লক করবে, Brave ব্যক্তিগত বিজ্ঞাপনগুলি নয় — সেগুলি <ph name="BEGIN_LINK"/>Brave পুরস্কার<ph name="END_LINK"/> সেটিংসে নিয়ন্ত্রিত হয়।</translation>
+<translation id="8452536890042542134">এটি ওয়েবসাইটগুলির বেশিরভাগ বিজ্ঞাপন ব্লক করবে।</translation>
 <translation id="4800195524776354947">শিল্ডস আইকনে অবরুদ্ধ উপকরণগুলির সংখ্যা দেখান</translation>
 <translation id="5510493033031835532">AMP পৃষ্ঠাগুলি অটো-রিডাইরেক্ট করুন</translation>
 <translation id="7630031867325944356">AMP এবং অনুরূপ সংস্করণের পরিবর্তে প্রকাশক পৃষ্ঠার URL পছন্দ করুন।</translation>
@@ -393,12 +400,12 @@
 <translation id="6554397389149987360">ব্রাউজারে স্ক্রিন শেয়ারিং এবং অন্যান্য বৈশিষ্ট্য সক্ষম করতে Hangouts উপাদানগুলি ব্যবহার করে।</translation>
 <translation id="7878791177459550035">মিডিয়া রাউটার ব্রাউজারটিতে কাস্টের বৈশিষ্ট্য সক্রিয় করেছে।</translation>
 <translation id="5927916530277631319">অপ্রতিরোধ্য ডোমেইনগুলোর সমস্যা সমাধানের উপায়</translation>
-<translation id="8412057160793088103">HTTPS এ DNS এবং ইথেরিয়াম গোপনীয়তার বিবেচ্য বিষয়গুলি সম্পর্কে <ph name="BEGIN_LINK"/>আরো জানুন<ph name="END_LINK"/>।</translation>
+<translation id="2889554198027690581">Ethereum গোপনীয়তা বিবেচনা সম্পর্কে <ph name="BEGIN_LINK"/>আরও জানুন<ph name="END_LINK"/>।</translation>
 <translation id="5248318250177143470">Ethereum Name Service (ENS) সমাধানের উপায়</translation>
 <translation id="6241402707160226266">Tor এর সাথে ব্যক্তিগত উইন্ডো</translation>
 <translation id="8762452230727230396">Tor আপনার দেখা সাইটগুলি থেকে IP ঠিকানাগুলিকে লুকায়।</translation>
 <translation id="2959986444009520721">ব্রিজগুলি ব্যবহার করুন</translation>
-<translation id="6003484976430531384">ব্রিজগুলি আপনাকে Tor ব্লকের জায়গায় Tor নেটওয়ার্ক পেতে সহায়তা করে। আপনি কোথায় আছেন তার উপর নির্ভর করে, একটি সেতু অন্যটির চেয়ে ভাল কাজ করতে পারে।</translation>
+<translation id="8416750895933172460">যে সমস্ত জায়গায় Tor ব্লক করা রয়েছে সেখানে ব্রিজগুলি আপনাকে Tor নেটওয়ার্ক অ্যাক্সেস করতে সহায়তা করে। আপনি কোথায় আছেন তার উপর নির্ভর করে, একটি ব্রিজ অন্যগুলির তুলনায় ভাল কাজ করতে পারে।</translation>
 <translation id="7206799843254049470">Tor সংযোগ সেটিংস</translation>
 <translation id="3194502271166340944">Tor সহ প্রাইভেট উইন্ডোস কীভাবে Tor নেটওয়ার্কের সাথে সংযুক্ত হবে তা নিয়ন্ত্রণ করে</translation>
 <translation id="4859228830700205299">একটি অন্তর্নির্মিত সেতু নির্বাচন করুন</translation>
@@ -415,13 +422,13 @@
 <translation id="6936835573742749135">একটি CAPTCHA অনুরোধ করতে পারবেন না। পরে আবার চেষ্টা করুন।</translation>
 <translation id="2653659639078652383">জমা দিন</translation>
 <translation id="1369311132025451972">স্বয়ংক্রিয়ভাবে .onion সাইটগুলিতে পুনঃনির্দেশিত করে</translation>
-<translation id="2843777623071353503">যখন উপলব্ধ হবে তখন Brave ওয়েবসাইটের onion পরিষেবা বা Tor উইন্ডোতে .onion ডোমেন খুলবে।</translation>
+<translation id="1658670175365815312">একটি ওয়েবসাইটের .onion সংস্করণ উপলভ্য হলে Brave সেটি খুলবে এবং স্বয়ংক্রিয়ভাবে একটি Tor উইন্ডোতে সমস্ত .onion ডোমেইন খুলবে।</translation>
 <translation id="2896916411183256228">সরাসরি ব্রাউজারে torrents প্রদর্শন করতে WebTorrent ব্যবহার করে। torrent ফাইলগুলি এবং magnet লিঙ্কগুলিকে সমর্থন করে।</translation>
 <translation id="5249433283143453448">ব্রাউজারে সুরক্ষিত ভিডিও স্ট্রিমিং এবং অন্যান্য সামগ্রী দেখতে ওয়াইডওয়াইন ডিজিটাল রাইটস ম্যানেজমেন্ট (ডিআরএম) উপাদান ব্যবহার করুন।</translation>
 <translation id="8137559199583651773">এক্সটেনশনগুলি পরিচালনা করুন</translation>
 <translation id="7013485839273047434">আরও এক্সটেনশনগুলি পান</translation>
 <translation id="4954512758656527938">ডিফল্ট ইথেরিয়াম ওয়ালেট</translation>
-<translation id="7701023802820268122">ডিফল্ট সোলানা ওয়ালেট</translation>
+<translation id="7701023802820268122">ডিফল্ট Solana ওয়ালেট</translation>
 <translation id="8488282162676695335">Brave ওয়ালেট</translation>
 <translation id="2356070529366658676">জিজ্ঞাসা করুন</translation>
 <translation id="7701040980221191251">কিছুই নয়</translation>
@@ -441,14 +448,16 @@
 <translation id="3752403403443723332">আপনার ওয়ালেট রিসেট করা হয়েছে।</translation>
 <translation id="594766067816395072">আপনার ওয়ালেটের লেনদেন রিসেট করা হয়েছে।</translation>
 <translation id="1426410128494586442">হ্যাঁ</translation>
-<translation id="2556708692502648323">ওয়ালেট নেটওয়ার্ক</translation>
+<translation id="4226543734057230801">Ethereum নেটওয়ার্ক</translation>
+<translation id="3504157706952484145">Filecoin নেটওয়ার্ক</translation>
+<translation id="1561541094377237745">Solana নেটওয়ার্ক</translation>
 <translation id="3159419679550543837">টেস্ট নেটওয়ার্ক দেখান</translation>
-<translation id="8205945804087322170">নতুন নেটওয়ার্ক যোগ করুন</translation>
-<translation id="1330032157352961756">নতুন চেইনের id</translation>
+<translation id="3215569562674795548">নতুন নেটওয়ার্ক যোগ করুন বা এডিট করুন</translation>
+<translation id="4418993400653250511">চেইনের Id</translation>
 <translation id="3423620355610881890">একটি ইতিবাচক দশমিক সংখ্যা</translation>
 <translation id="8110465398315041268">সার্চ নেটওয়ার্ক</translation>
 <translation id="3579705520805744214">চেইন আইডি বা নাম</translation>
-<translation id="726121047592132939">নতুন চেইনের নাম</translation>
+<translation id="8502525913969149079">চেইনের নাম</translation>
 <translation id="1034112277864078119">চেইনের নাম এন্টার করুন</translation>
 <translation id="4672314527143443556">চেইনের মুদ্রার নাম</translation>
 <translation id="4652114030688989556">মুদ্রার নাম এন্টার করুন</translation>

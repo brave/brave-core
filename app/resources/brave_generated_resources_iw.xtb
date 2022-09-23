@@ -79,11 +79,6 @@
 <translation id="3161744659507801211">אזהרה: Brave אינו יכול למנוע מתוספים לתעד את היסטוריית הגלישה שלכם.</translation>
 <translation id="2162109630536601963">אם תוסף זה שולח בקשות רשת, הן לא ישתמשו ב- Tor או במצב פרטי.</translation>
 <translation id="2725327089319971976">כדי להשבית תוסף זה במצב פרטי ובמצב Tor, יש לבטל הבחירה באפשרות זו.</translation>
-<translation id="5057399635433117814">לתרגם דף זה? זה ישלח את כל הטקסט של דף זה למייקרוסופט לתרגום.</translation>
-<translation id="330263065709195164">להתקין את תוסף Google Translate כדי לתרגם דף זה?</translation>
-<translation id="3789841737615482174">התקן</translation>
-<translation id="7658239707568436148">ביטול</translation>
-<translation id="1307431692088049276">אל תשאלו אותי שוב</translation>
 <translation id="3371343170427636147">יישומי לילה של דפדפן Brave</translation>
 <translation id="4097979995947147464">יישומי ביטא של דפדפן Brave</translation>
 <translation id="8303432794159193481">יישומי פיתוח של דפדפן Brave</translation>
@@ -107,9 +102,11 @@
 <translation id="7276554663454265692">ניתן לשנות  <ph name="SETTING_TEXT"/> שוב בכל עת דרך הגדרות הדפדפן.</translation>
 <translation id="6873781976650514089">הגדרה זו</translation>
 <translation id="8915916167043355778">סגור הכל</translation>
+<translation id="7658239707568436148">ביטול</translation>
 <translation id="4870911314065352661">לסגור את כל הכרטיסיות?</translation>
 <translation id="7551864359422178684">יש לך <ph name="NUMBER_OF_TABS"/> כרטיסיות פתוחות בחלון הדפדפן הזה.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> כרטיסיות</translation>
+<translation id="1307431692088049276">אל תשאלו אותי שוב</translation>
 <translation id="2272117088509540883">- Brave Search</translation>
 <translation id="2701279958223202597">לתמוך בחיפוש עצמאי המציע פרטיות טובה יותר. Brave Search אינו עוקב אחריך, אחרי הבקשות שלך, או ההקלקות שלך.</translation>
 <translation id="6438467592401259882">לתמוך בחיפוש עצמאי עם פרטיות טובה יותר</translation>
@@ -126,7 +123,10 @@
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">תרמו קצת לחיפוש אנונימי ונתוני גלישה כדי לשפר את Brave Search.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
+<translation id="9149866541089851383">ערוך...</translation>
 <translation id="1181037720776840403">הסרה</translation>
+<translation id="4002066346123236978">כותרת</translation>
+<translation id="7400418766976504921">כתובת אתר</translation>
 <translation id="4877147287319222750">הוסף לסרגל הצידי</translation>
 <translation id="5404213409401164238">הצג סרגל צידי</translation>
 <translation id="7561196759112975576">תמיד</translation>
@@ -241,8 +241,6 @@
 <translation id="6303294677342628402">הגנות</translation>
 <translation id="7133511168130368997">חסמו עוקבים ומודעות אשר עוקבים אחריכם ברחבי האינטרנט.</translation>
 <translation id="2761825942249694703">אלו הן הגדרות ברירת המחדל של Shields. הן חלות על כל אתרי האינטרנט, אלא אם תבצעו שינוי כלשהו בפאנל של Shields באתר מסוים. שינוי הגדרות אלו לא ישפיע על ההגדרות הספציפיות הקיימות עבור אתר מסוים.</translation>
-<translation id="1485394570478670912">פעולה זו תחסום את מרבית המודעות באתרים, לא את Brave Private Ads הנשלטות על ידי</translation>
-<translation id="6388201778088078932">הגדרות.</translation>
 <translation id="4800195524776354947">הצג את מספר הפריטים החסומים בסמל Shields</translation>
 <translation id="5510493033031835532">הפניה אוטומטית של דפי AMP</translation>
 <translation id="7630031867325944356">העדיפו כתובות אתרים של דפי בעלי אתרים, במקום AMP וגרסאות דומות.</translation>
@@ -392,12 +390,10 @@
 <translation id="6554397389149987360">משתמש ברכיב Hangouts כדי לאפשר שיתוף מסך ותכונות אחרות בדפדפן.</translation>
 <translation id="7878791177459550035">נתב מדיה הופך את תכונת ההעברה לזמינה בדפדפן.</translation>
 <translation id="5927916530277631319">שיטה לזיהוי דומיינים בלתי ניתנים לעצירה</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>קבל מידע נוסף<ph name="END_LINK"/> אודות פרוטוקול DNS באמצעות פרטיות פרוטוקול HTTPS ואתריום.</translation>
 <translation id="5248318250177143470">שיטה לזיהוי Ethereum Name Service (ENS)</translation>
 <translation id="6241402707160226266">חלון פרטי עם Tor</translation>
 <translation id="8762452230727230396">Tor מסתיר את כתובת ה-IP שלכם מהאתרים בהם אתם מבקרים.</translation>
 <translation id="2959986444009520721">השתמש בגשרים</translation>
-<translation id="6003484976430531384">גשרים עוזרים לך לגשת לרשת Tor במקום שבו Tor חסום. תלוי איפה אתה נמצא, גשר אחד עשוי לעבוד טוב יותר מאחר.</translation>
 <translation id="7206799843254049470">הגדרות חיבור Tor</translation>
 <translation id="3194502271166340944">שולט באופן שבו Private Windows עם  Tor מתחברים לרשת Tor</translation>
 <translation id="4859228830700205299">בחר גשר מובנה</translation>
@@ -414,7 +410,6 @@
 <translation id="6936835573742749135">לא ניתן לבקש CAPTCHA. נסה שוב מאוחר יותר.</translation>
 <translation id="2653659639078652383">שלח</translation>
 <translation id="1369311132025451972">הפנה מחדש אוטומטית אתרי .onion</translation>
-<translation id="2843777623071353503">Brave יפתח שירות onion של האתר כאשר הוא זמין או תחום .onion בחלון Tor.</translation>
 <translation id="2896916411183256228">משתמש ב-WebTorrent להצגת טורנטים ישירות בדפדפן. תומך בקבצי torrent וקישורי מגנט.</translation>
 <translation id="5249433283143453448">השתמש/י ברכיב ניהול זכויות דיגיטלית (DRM) Widevine כדי לצפות בסרטון מוגן ובתכנים אחרים בדפדפן.</translation>
 <translation id="8137559199583651773">נהל תוספים</translation>
@@ -440,14 +435,10 @@
 <translation id="3752403403443723332">הארנק שלכם אופס.</translation>
 <translation id="594766067816395072">פרטי העסקאות בארנקכם אופסו.</translation>
 <translation id="1426410128494586442">כן</translation>
-<translation id="2556708692502648323">רשתות הארנק</translation>
 <translation id="3159419679550543837">הצג רשתות בדיקה</translation>
-<translation id="8205945804087322170">הוסף רשת חדשה</translation>
-<translation id="1330032157352961756">המזהה לשרשרת חדשה</translation>
 <translation id="3423620355610881890">מספר עשרוני חיובי</translation>
 <translation id="8110465398315041268">חפש רשת</translation>
 <translation id="3579705520805744214">מזהה או שם השרשרת</translation>
-<translation id="726121047592132939">שמה של שרשרת חדשה</translation>
 <translation id="1034112277864078119">הזן שרשרת חדשה</translation>
 <translation id="4672314527143443556">שמו של מטבע השרשרת</translation>
 <translation id="4652114030688989556">הזן את שם השרשרת</translation>

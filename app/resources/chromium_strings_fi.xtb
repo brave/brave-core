@@ -134,7 +134,6 @@
 <translation id="4065288863231444640">Jätä Brave käyntiin taustalle</translation>
 <translation id="8148611988012584308">Bravein muokkaus ja hallinta</translation>
 <translation id="4427306783828095590">Parannettu suojaus torjuu tietojenkalastelua ja haittaohjelmia entistä tehokkaammin</translation>
-<translation id="5112116809696021727">Tarkista <ph name="LINK_BEGIN"/>Brave-käyttöjärjestelmän asetuksista<ph name="LINK_END"/>, onko laitteesi ajan tasalla</translation>
 <translation id="7084397798469173252">Tervetuloa Braveiin, uusi selainikkuna avattu</translation>
 <translation id="2633397153656205379">Braveia ei päivitetty, vaan jotain meni pieleen. <ph name="BEGIN_LINK"/>Korjaa Bravein päivitysongelmat ja epäonnistuneet päivitykset<ph name="END_LINK"/>.</translation>
 <translation id="3679799810790990472">Jatketaanko uudessa Brave-profiilissa?</translation>
@@ -297,8 +296,6 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Miten voit vaikuttaa dataasi:<ph name="END_BOLD"/> Yksityisyytesi suojaamiseksi poistamme automaattisesti yli neljä viikkoa vanhat kiinnostuksen kohteet. Kun jatkat selaamista, kiinnostuksen kohde voi näkyä listalla uudelleen. Voit myös poistaa kiinnostuksen kohteet, joita et halua Bravein ottavan huomioon.</translation>
 <translation id="2925193881330501265">Braveiin kirjautunut käyttäjä: <ph name="USER_EMAIL_ADDRESS"/>. Kirjaudu uudelleen sisään samalla tilillä.</translation>
 <translation id="6915252145142862992">Tämä on Bravein toissijainen asennus, eikä sitä voi asettaa oletusselaimeksi.</translation>
-<translation id="1975057837349076194">Jos asetus ei näy tällä sivulla, siirry <ph name="LINK_BEGIN"/>
-      Brave-käyttöjärjestelmän asetuksiin<ph name="LINK_END"/>.</translation>
 <translation id="7685904775439037072">Kun Braveilla on käyttöoikeus, sivustot voivat pyytää sitä sinulta.</translation>
 <translation id="80471789339884597">Kiitos asennuksesta. Kaikki selaimet pitää käynnistää uudelleen ennen kuin <ph name="BUNDLE_NAME"/> otetaan käyttöön.</translation>
 <translation id="2061155704815580583">Brave tarvitsee sijaintiluvan tällä sivustolla</translation>
