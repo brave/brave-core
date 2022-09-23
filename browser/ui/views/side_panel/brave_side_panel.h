@@ -23,13 +23,13 @@ class BraveSidePanel : public views::View,
   // LTR / RTL conversions are handled in
   // BrowserViewLayout::LayoutSidePanelView. As such, left will always be on the
   // left side of the browser regardless of LTR / RTL mode.
-  enum HorizontalAlignment { kAlignLeft = 0, kAlignRight };
+  enum HorizontalAlignment { kHorizontalAlignLeft = 0, kHorizontalAlignRight };
 
   METADATA_HEADER(BraveSidePanel);
   // Same signature as chromium SidePanel
   explicit BraveSidePanel(BrowserView* browser_view,
                           HorizontalAlignment horizontal_alignment =
-                              HorizontalAlignment::kAlignLeft);
+                              HorizontalAlignment::kHorizontalAlignLeft);
   BraveSidePanel(const BraveSidePanel&) = delete;
   BraveSidePanel& operator=(const BraveSidePanel&) = delete;
   ~BraveSidePanel() override;
@@ -54,7 +54,7 @@ class BraveSidePanel : public views::View,
   void OnChildViewAdded(View* observed_view, View* child) override;
   void OnChildViewRemoved(View* observed_view, View* child) override;
 
-  HorizontalAlignment horizontal_alighment_ = kAlignLeft;
+  HorizontalAlignment horizontal_alighment_ = kHorizontalAlignLeft;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_H_
