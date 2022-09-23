@@ -7,20 +7,19 @@
 
 package org.chromium.chrome.browser.widget.quickactionsearchandbookmark.promo;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import org.chromium.chrome.R;
-import android.content.Context;
-import androidx.cardview.widget.CardView;
-import androidx.appcompat.widget.AppCompatTextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.cardview.widget.CardView;
 
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
 
 public class SearchWidgetPromoPanel implements View.OnClickListener {
-
     private PopupWindow mPopupWindow;
 
     public SearchWidgetPromoPanel(@NonNull Context context) {

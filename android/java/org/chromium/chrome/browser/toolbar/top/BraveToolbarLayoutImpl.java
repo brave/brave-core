@@ -1046,9 +1046,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             Intent searchActivityIntent = new Intent(context, SearchActivity.class);
             context.startActivity(searchActivityIntent);
         }
-        if (hasFocus)
-            mSearchWidgetPromoPanel.showIfNeeded(this);
-        
+        if (hasFocus) mSearchWidgetPromoPanel.showIfNeeded(this);
+
         if (OnboardingPrefManager.getInstance().getUrlFocusCount() == 0) {
             OnboardingPrefManager.getInstance().updateUrlFocusCount();
         }
