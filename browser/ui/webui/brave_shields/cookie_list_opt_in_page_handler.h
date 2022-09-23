@@ -35,6 +35,9 @@ class CookieListOptInPageHandler
   void CloseUI() override;
   void EnableFilter() override;
 
+  void OnUINoClicked() override;
+  void OnUIYesClicked() override;
+
  private:
   mojo::Receiver<brave_shields::mojom::CookieListOptInPageHandler> receiver_;
   base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder_;

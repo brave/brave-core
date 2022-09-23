@@ -665,6 +665,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             @Override
             public void onClick(View v) {
                 if (mCookieListOptInPageAndroidHandler != null) {
+                    mCookieListOptInPageAndroidHandler.onTooltipYesClicked();
                     mCookieListOptInPageAndroidHandler.enableFilter(true);
                 }
                 mCookieConsentTooltip.dismiss();
@@ -675,6 +676,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         txtNoThanks.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mCookieListOptInPageAndroidHandler != null) {
+                    mCookieListOptInPageAndroidHandler.onTooltipNoClicked();
+                }
                 mCookieConsentTooltip.dismiss();
             }
         }));
@@ -683,6 +687,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             mCookieConsentTooltip.show();
             SharedPreferencesManager.getInstance().writeBoolean(
                     BravePreferenceKeys.SHOULD_SHOW_COOKIE_CONSENT_NOTICE, false);
+            if (mCookieListOptInPageAndroidHandler != null) {
+                mCookieListOptInPageAndroidHandler.onTooltipShown();
+            }
         }
     }
 

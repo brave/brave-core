@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/feature_list.h"
+#include "base/metrics/histogram_macros.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/browser/ad_block_engine.h"
@@ -146,6 +147,13 @@ void AdBlockRegionalServiceManager::UpdateFilterListPrefs(
   if (uuid == kCookieListUuid) {
     local_state_->SetBoolean(prefs::kAdBlockCookieListSettingTouched, true);
   }
+
+  RecordP3ACookieListEnabled();
+}
+
+void AdBlockRegionalServiceManager::RecordP3ACookieListEnabled() {
+  UMA_HISTOGRAM_BOOLEAN(kCookieListEnabledHistogram,
+                        IsFilterListEnabled(kCookieListUuid));
 }
 
 bool AdBlockRegionalServiceManager::Start() {
@@ -334,6 +342,7 @@ void AdBlockRegionalServiceManager::SetFilterListCatalog(
     std::vector<FilterListCatalogEntry> catalog) {
   filter_list_catalog_ = std::move(catalog);
   StartRegionalServices();
+  RecordP3ACookieListEnabled();
 }
 
 const std::vector<FilterListCatalogEntry>&

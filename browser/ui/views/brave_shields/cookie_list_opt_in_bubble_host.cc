@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/feature_list.h"
+#include "base/metrics/histogram_functions.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ui/webui/brave_shields/cookie_list_opt_in_ui.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
@@ -58,6 +59,8 @@ bool ShouldEventuallyShowBubble() {
   if (local_state->GetBoolean(prefs::kAdBlockCookieListOptInShown)) {
     return false;
   }
+
+  base::UmaHistogramExactLinear(kCookieListPromptHistogram, 0, 4);
 
   auto* regional_service_manager =
       g_brave_browser_process->ad_block_service()->regional_service_manager();

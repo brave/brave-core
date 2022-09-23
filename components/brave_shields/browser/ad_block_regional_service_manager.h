@@ -91,6 +91,8 @@ class AdBlockRegionalServiceManager
   void StartRegionalServices();
   void UpdateFilterListPrefs(const std::string& uuid, bool enabled);
 
+  void RecordP3ACookieListEnabled();
+
   raw_ptr<PrefService> local_state_;
   std::string locale_;
   bool initialized_;
