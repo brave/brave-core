@@ -17,7 +17,7 @@ base::flat_set<base::StringPiece> kEmptyFontSet =
 #if BUILDFLAG(IS_MAC)
 bool kCanRestrictFonts = true;
 // This list covers the fonts installed by default on Mac OS as of Mac OS 12.3.
-base::flat_set<base::StringPiece> kAllowedFontFamilies =
+base::flat_set<base::StringPiece> kFontWhitelist =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
         "-apple-system",
         "academy engraved let",
@@ -309,7 +309,7 @@ base::flat_set<base::StringPiece> kAllowedFontFamilies =
 bool kCanRestrictFonts = true;
 // This list covers the fonts installed by default on Windows 11.
 // See <https://docs.microsoft.com/en-us/typography/fonts/windows_11_font_list>
-base::flat_set<base::StringPiece> kAllowedFontFamilies =
+base::flat_set<base::StringPiece> kFontWhitelist =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
         "arial",
         "arial black",
@@ -627,14 +627,61 @@ base::flat_set<base::StringPiece> kAllowedFontFamilies =
         "yu gothic ui regular",
         "yu gothic ui semibold",
         "yu gothic ui semilight"});
+#elif BUILDFLAG(IS_ANDROID)
+bool kCanRestrictFonts = true;
+// This list covers the fonts and font aliases listed in data/fonts/fonts.xml of
+// the Android Open Source Project. To reduce memory and maintenance, most
+// region-specific Noto fonts are handled by wildcards outside this list.
+base::flat_set<base::StringPiece> kFontWhitelist =
+    base::MakeFlatSet<base::StringPiece>(
+        std::vector<base::StringPiece>{"androidclock",
+                                       "arial",
+                                       "baskerville",
+                                       "carrois gothic",
+                                       "coming soon",
+                                       "courier",
+                                       "courier new",
+                                       "cutive mono",
+                                       "dancing script",
+                                       "droid sans",
+                                       "droid sans mono",
+                                       "erif-bold",
+                                       "fantasy",
+                                       "georgia",
+                                       "goudy",
+                                       "helvetica",
+                                       "itc stone serif",
+                                       "monaco",
+                                       "noto color emoji",
+                                       "noto kufi arabic",
+                                       "noto naskh arabic",
+                                       "noto nastaliq urdu",
+                                       "noto sans",
+                                       "noto serif",
+                                       "palatino",
+                                       "roboto",
+                                       "roboto static",
+                                       "sans-serif-black",
+                                       "sans-serif-condensed-light",
+                                       "sans-serif-condensed-medium",
+                                       "sans-serif-light",
+                                       "sans-serif-medium",
+                                       "sans-serif-monospace",
+                                       "sans-serif-thin",
+                                       "source sans pro",
+                                       "source-sans-pro-semi-bold",
+                                       "tahoma",
+                                       "times",
+                                       "times new roman",
+                                       "verdana"});
 #else
 bool kCanRestrictFonts = false;
-base::flat_set<base::StringPiece> kAllowedFontFamilies =
+base::flat_set<base::StringPiece> kFontWhitelist =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
 #endif
 
 #if BUILDFLAG(IS_WIN)
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesAR =
+base::flat_set<base::StringPiece> kFontWhitelistAR =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
         "aldhabi", "andalus", "arabic typesetting", "microsoft uighur",
         "microsoft uighur bold", "sakkal majalla", "sakkal majalla bold",
@@ -642,37 +689,37 @@ base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesAR =
         "simplified arabic fixed", "traditional arabic",
         "traditional arabic bold", "urdu typesetting",
         "urdu typesetting bold"});
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesAS =
+base::flat_set<base::StringPiece> kFontWhitelistAS =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
         "shonar bangla", "shonar bangla bold", "vrinda", "vrinda bold"});
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesIU =
+base::flat_set<base::StringPiece> kFontWhitelistIU =
     base::MakeFlatSet<base::StringPiece>(
         std::vector<base::StringPiece>{"euphemia"});
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesHI =
+base::flat_set<base::StringPiece> kFontWhitelistHI =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
         "aparajita", "aparajita italic", "aparajita bold",
         "aparajita bold italic", "kokila", "kokila italic", "kokila bold",
         "kokila bold italic", "mangal", "mangal bold", "sanskrit text",
         "utsaah", "utsaah italic", "utsaah bold", "utsaah bold italic"});
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesAM =
+base::flat_set<base::StringPiece> kFontWhitelistAM =
     base::MakeFlatSet<base::StringPiece>(
         std::vector<base::StringPiece>{"nyala"});
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesGU =
+base::flat_set<base::StringPiece> kFontWhitelistGU =
     base::MakeFlatSet<base::StringPiece>(
         std::vector<base::StringPiece>{"shruti", "shruti bold"});
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesPA =
+base::flat_set<base::StringPiece> kFontWhitelistPA =
     base::MakeFlatSet<base::StringPiece>(
         std::vector<base::StringPiece>{"raavi", "raavi bold"});
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesZH =
+base::flat_set<base::StringPiece> kFontWhitelistZH =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
         "dengxian light", "dengxian", "dengxian bold", "fangsong", "kaiti",
         "simhei", "dfkai-sb", "mingliu", "mingliu_hkscs", "pmingliu"});
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesHE =
+base::flat_set<base::StringPiece> kFontWhitelistHE =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
         "aharoni bold", "david", "david bold", "frankruehl", "gisha",
         "gisha bold", "levenim mt", "levenim mt bold", "miriam", "miriam fixed",
         "narkisim", "rod"});
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesJA =
+base::flat_set<base::StringPiece> kFontWhitelistJA =
     base::MakeFlatSet<base::StringPiece>(
         std::vector<base::StringPiece>{"biz udgothic",
                                        "biz udgothic bold",
@@ -700,105 +747,125 @@ base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesJA =
                                        "yu mincho light",
                                        "yu mincho regular",
                                        "yu mincho demibold"});
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesKN =
+base::flat_set<base::StringPiece> kFontWhitelistKN =
     base::MakeFlatSet<base::StringPiece>(
         std::vector<base::StringPiece>{"tunga", "tunga bold"});
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesKM =
+base::flat_set<base::StringPiece> kFontWhitelistKM =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
         "daunpenh", "khmer ui", "khmer ui bold", "moolboran"});
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesKO =
+base::flat_set<base::StringPiece> kFontWhitelistKO =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
         "batang", "batangche", "dotum", "dotumche", "gulim", "gulimche",
         "gungsuh", "gungsuhche"});
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesLO =
+base::flat_set<base::StringPiece> kFontWhitelistLO =
     base::MakeFlatSet<base::StringPiece>(
         std::vector<base::StringPiece>{"dokchampa", "lao ui", "lao ui bold"});
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesML =
+base::flat_set<base::StringPiece> kFontWhitelistML =
     base::MakeFlatSet<base::StringPiece>(
         std::vector<base::StringPiece>{"kartika", "kartika bold"});
 #else
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesAR =
+base::flat_set<base::StringPiece> kFontWhitelistAR =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesAS =
+base::flat_set<base::StringPiece> kFontWhitelistAS =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesIU =
+base::flat_set<base::StringPiece> kFontWhitelistIU =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesHI =
+base::flat_set<base::StringPiece> kFontWhitelistHI =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesAM =
+base::flat_set<base::StringPiece> kFontWhitelistAM =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesGU =
+base::flat_set<base::StringPiece> kFontWhitelistGU =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesPA =
+base::flat_set<base::StringPiece> kFontWhitelistPA =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesZH =
+base::flat_set<base::StringPiece> kFontWhitelistZH =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesHE =
+base::flat_set<base::StringPiece> kFontWhitelistHE =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesJA =
+base::flat_set<base::StringPiece> kFontWhitelistJA =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesKN =
+base::flat_set<base::StringPiece> kFontWhitelistKN =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesKM =
+base::flat_set<base::StringPiece> kFontWhitelistKM =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesKO =
+base::flat_set<base::StringPiece> kFontWhitelistKO =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesLO =
+base::flat_set<base::StringPiece> kFontWhitelistLO =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
-base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesML =
+base::flat_set<base::StringPiece> kFontWhitelistML =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
 #endif
 }  // namespace
 
-bool CanRestrictFontFamiliesOnThisPlatform() {
-  return kCanRestrictFonts;
+bool AllowFontByFamilyName(const AtomicString& family_name,
+                           WTF::String default_language) {
+  if (!kCanRestrictFonts)
+    return true;
+  std::string lower_ascii_name = family_name.LowerASCII().Ascii();
+  if (kFontWhitelist.contains(lower_ascii_name))
+    return true;
+  if (GetAdditionalFontWhitelistByLocale(default_language)
+          .contains(lower_ascii_name))
+    return true;
+#if BUILDFLAG(IS_ANDROID)
+  // There are literally hundreds of region-specific Noto fonts.
+  // To reduce memory and maintenance, we allow them by wildcard.
+  if (family_name.StartsWithIgnoringASCIICase("noto sans ") ||
+      family_name.StartsWithIgnoringASCIICase("noto serif "))
+    return true;
+#endif
+  return false;
 }
 
-const base::flat_set<base::StringPiece>& GetAllowedFontFamilies() {
-  return kAllowedFontFamilies;
-}
-
-const base::flat_set<base::StringPiece>&
-GetAdditionalAllowedFontFamiliesByLocale(WTF::String locale_language) {
+const base::flat_set<base::StringPiece>& GetAdditionalFontWhitelistByLocale(
+    WTF::String locale_language) {
   if (locale_language == "ar" || locale_language == "fa" ||
       locale_language == "ur")
-    return kAdditionalAllowedFontFamiliesAR;
+    return kFontWhitelistAR;
   if (locale_language == "as")
-    return kAdditionalAllowedFontFamiliesAS;
+    return kFontWhitelistAS;
   if (locale_language == "iu")
-    return kAdditionalAllowedFontFamiliesIU;
+    return kFontWhitelistIU;
   if (locale_language == "hi" || locale_language == "mr")
-    return kAdditionalAllowedFontFamiliesHI;
+    return kFontWhitelistHI;
   if (locale_language == "am" || locale_language == "ti")
-    return kAdditionalAllowedFontFamiliesAM;
+    return kFontWhitelistAM;
   if (locale_language == "gu")
-    return kAdditionalAllowedFontFamiliesGU;
+    return kFontWhitelistGU;
   if (locale_language == "pa")
-    return kAdditionalAllowedFontFamiliesPA;
+    return kFontWhitelistPA;
   if (locale_language == "zh")
-    return kAdditionalAllowedFontFamiliesZH;
+    return kFontWhitelistZH;
   if (locale_language == "he")
-    return kAdditionalAllowedFontFamiliesHE;
+    return kFontWhitelistHE;
   if (locale_language == "ja")
-    return kAdditionalAllowedFontFamiliesJA;
+    return kFontWhitelistJA;
   if (locale_language == "kn")
-    return kAdditionalAllowedFontFamiliesKN;
+    return kFontWhitelistKN;
   if (locale_language == "km")
-    return kAdditionalAllowedFontFamiliesKM;
+    return kFontWhitelistKM;
   if (locale_language == "ko")
-    return kAdditionalAllowedFontFamiliesKO;
+    return kFontWhitelistKO;
   if (locale_language == "lo")
-    return kAdditionalAllowedFontFamiliesLO;
+    return kFontWhitelistLO;
   if (locale_language == "ml")
-    return kAdditionalAllowedFontFamiliesML;
+    return kFontWhitelistML;
   return kEmptyFontSet;
 }
 
-void set_allowed_font_families_for_testing(
+void set_font_whitelist_for_testing(
     bool can_restrict_fonts,
-    const base::flat_set<base::StringPiece>& allowed_font_families) {
+    const base::flat_set<base::StringPiece>& font_whitelist) {
   kCanRestrictFonts = can_restrict_fonts;
-  kAllowedFontFamilies = allowed_font_families;
+  kFontWhitelist = font_whitelist;
+}
+
+bool get_can_restrict_fonts_for_testing() {
+  return kCanRestrictFonts;
+}
+
+const base::flat_set<base::StringPiece>& get_font_whitelist_for_testing() {
+  return kFontWhitelist;
 }
 
 }  // namespace brave

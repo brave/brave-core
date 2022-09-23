@@ -16,7 +16,7 @@
 
 namespace {
 
-base::flat_set<base::StringPiece> kTestAllowedFontFamilies =
+base::flat_set<base::StringPiece> kTestFontWhitelist =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
         "roboto",
         "caro",
@@ -39,16 +39,20 @@ class BraveFontWhitelistTest : public testing::Test {
 };
 
 TEST(BraveFontWhitelistTest, Platforms) {
-  base::flat_set<base::StringPiece> allowed(brave::GetAllowedFontFamilies());
+  base::flat_set<base::StringPiece> allowed(
+      brave::get_font_whitelist_for_testing());
 
 #if BUILDFLAG(IS_MAC)
-  EXPECT_EQ(brave::CanRestrictFontFamiliesOnThisPlatform(), true);
+  EXPECT_EQ(brave::get_can_restrict_fonts_for_testing(), true);
   EXPECT_EQ(allowed.size(), 285UL);
 #elif BUILDFLAG(IS_WIN)
-  EXPECT_EQ(brave::CanRestrictFontFamiliesOnThisPlatform(), true);
+  EXPECT_EQ(brave::get_can_restrict_fonts_for_testing(), true);
   EXPECT_EQ(allowed.size(), 312UL);
+#elif BUILDFLAG(IS_ANDROID)
+  EXPECT_EQ(brave::get_can_restrict_fonts_for_testing(), true);
+  EXPECT_EQ(allowed.size(), 40UL);
 #else
-  EXPECT_EQ(brave::CanRestrictFontFamiliesOnThisPlatform(), false);
+  EXPECT_EQ(brave::get_can_restrict_fonts_for_testing(), false);
   EXPECT_EQ(allowed.size(), 0UL);
 #endif
 }
@@ -99,7 +103,7 @@ TEST(BraveFontWhitelistTest, Locales) {
   };
   for (const auto& c : test_cases) {
     base::flat_set<base::StringPiece> allowed(
-        brave::GetAdditionalAllowedFontFamiliesByLocale(std::get<0>(c)));
+        brave::GetAdditionalFontWhitelistByLocale(std::get<0>(c)));
     EXPECT_EQ(allowed.size(), std::get<1>(c));
   }
 }
@@ -128,23 +132,33 @@ TEST(BraveFontWhitelistTest, KnownFonts) {
     std::make_tuple<>("Helvetica Neue", false),
     std::make_tuple<>("Menlo", false),
     std::make_tuple<>("Franklin Gothic Medium", true),
+#elif BUILDFLAG(IS_ANDROID)
+    std::make_tuple<>("Arial", true),
+    std::make_tuple<>("Coming Soon", true),
+    std::make_tuple<>("Cutive Mono", true),
+    std::make_tuple<>("Georgia", true),
+    std::make_tuple<>("Noto Sans", true),
+    std::make_tuple<>("Roboto", true),
+    std::make_tuple<>("Helvetica", true),        // recognized alias
+    std::make_tuple<>("Helvetica Neue", false),  // not a recognized alias
+    std::make_tuple<>("sans-serif-black", true),
+    std::make_tuple<>("Source Sans Pro", true),
 #else
-    std::make_tuple<>("-apple-system", false),
-    std::make_tuple<>("system-ui", false),
-    std::make_tuple<>("BlinkMacSystemFont", false),
-    std::make_tuple<>("Arial Unicode MS", false),
-    std::make_tuple<>("Calibri", false),
-    std::make_tuple<>("Gill Sans", false),
-    std::make_tuple<>("Helvetica", false),
-    std::make_tuple<>("Helvetica Neue", false),
-    std::make_tuple<>("Menlo", false),
-    std::make_tuple<>("Franklin Gothic Medium", false),
+    // All fonts are allowed because there is no font whitelisting.
+    std::make_tuple<>("-apple-system", true),
+    std::make_tuple<>("system-ui", true),
+    std::make_tuple<>("BlinkMacSystemFont", true),
+    std::make_tuple<>("Arial Unicode MS", true),
+    std::make_tuple<>("Calibri", true),
+    std::make_tuple<>("Gill Sans", true),
+    std::make_tuple<>("Helvetica", true),
+    std::make_tuple<>("Helvetica Neue", true),
+    std::make_tuple<>("Menlo", true),
+    std::make_tuple<>("Franklin Gothic Medium", true),
 #endif
   };
   for (const auto& c : test_cases) {
-    EXPECT_EQ(brave::GetAllowedFontFamilies().contains(
-                  std::get<0>(c).LowerASCII().Ascii()),
-              std::get<1>(c));
+    EXPECT_EQ(brave::AllowFontByFamilyName(std::get<0>(c), ""), std::get<1>(c));
   }
 }
 
@@ -166,33 +180,42 @@ TEST(BraveFontWhitelistTest, CaseInsensitivity) {
     std::make_tuple<>("Helvetica neue", false),
     std::make_tuple<>("Menlo", false),
     std::make_tuple<>("Franklin gothic medium", true),
+#elif BUILDFLAG(IS_ANDROID)
+    std::make_tuple<>("Coming soon", true),
+    std::make_tuple<>("GeorgiA", true),
+    std::make_tuple<>("Noto sans", true),
+    std::make_tuple<>("roboto", true),
+    std::make_tuple<>("helvetica", true),        // recognized alias
+    std::make_tuple<>("helvetica neue", false),  // not a recognized alias
+    std::make_tuple<>("sans-serif-black", true),
 #else
-    std::make_tuple<>("Arial Unicode MS", false),
-    std::make_tuple<>("Calibri", false),
-    std::make_tuple<>("Gill Sans", false),
-    std::make_tuple<>("Helvetica", false),
-    std::make_tuple<>("Helvetica Neue", false),
-    std::make_tuple<>("Menlo", false),
-    std::make_tuple<>("Franklin Gothic Medium", false),
+    // All fonts are allowed because there is no font whitelisting.
+    std::make_tuple<>("Arial Unicode MS", true),
+    std::make_tuple<>("Calibri", true),
+    std::make_tuple<>("Gill Sans", true),
+    std::make_tuple<>("Helvetica", true),
+    std::make_tuple<>("Helvetica Neue", true),
+    std::make_tuple<>("Menlo", true),
+    std::make_tuple<>("Franklin Gothic Medium", true),
 #endif
   };
   for (const auto& c : test_cases) {
-    EXPECT_EQ(brave::GetAllowedFontFamilies().contains(
-                  std::get<0>(c).LowerASCII().Ascii()),
-              std::get<1>(c));
+    EXPECT_EQ(brave::AllowFontByFamilyName(std::get<0>(c), ""), std::get<1>(c));
   }
 }
 
 TEST(BraveFontWhitelistTest, API) {
-  brave::set_allowed_font_families_for_testing(true /* can_restrict_fonts */,
-                                               kTestAllowedFontFamilies);
-  EXPECT_EQ(brave::CanRestrictFontFamiliesOnThisPlatform(), true);
-  base::flat_set<base::StringPiece> allowed(brave::GetAllowedFontFamilies());
+  brave::set_font_whitelist_for_testing(true /* can_restrict_fonts */,
+                                        kTestFontWhitelist);
+  EXPECT_EQ(brave::get_can_restrict_fonts_for_testing(), true);
+  base::flat_set<base::StringPiece> allowed(
+      brave::get_font_whitelist_for_testing());
   EXPECT_EQ(allowed.size(), 4UL);
   EXPECT_EQ(allowed.contains("elfo"), true);
-  brave::set_allowed_font_families_for_testing(false /* can_restrict_fonts */,
-                                               kEmptyFontSet);
-  EXPECT_EQ(brave::CanRestrictFontFamiliesOnThisPlatform(), false);
-  base::flat_set<base::StringPiece> allowed2(brave::GetAllowedFontFamilies());
+  brave::set_font_whitelist_for_testing(false /* can_restrict_fonts */,
+                                        kEmptyFontSet);
+  EXPECT_EQ(brave::get_can_restrict_fonts_for_testing(), false);
+  base::flat_set<base::StringPiece> allowed2(
+      brave::get_font_whitelist_for_testing());
   EXPECT_EQ(allowed2.size(), 0UL);
 }
