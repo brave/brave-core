@@ -9,6 +9,42 @@
     "compiler_options": {
       "implemented_in": "brave/browser/extensions/api/brave_rewards_api.h"
     },
+    "types": [
+      {
+        "id": "Promotion",
+        "type": "object",
+        "properties": {
+          "promotionId": {
+            "type": "string",
+            "description": "promotion id"
+          },
+          "type": {
+            "type": "integer",
+            "description": "promotion type"
+          },
+          "status": {
+            "type": "integer",
+            "description": "promotion status"
+          },
+          "createdAt": {
+            "type": "number",
+            "description": "when the promotion record was created"
+          },
+          "claimableUntil": {
+            "type": "number",
+            "description": "when the promotion is no longer claimable"
+          },
+          "expiresAt": {
+            "type": "number",
+            "description": "when promotion expires"
+          },
+          "amount": {
+            "type": "number",
+            "description": "how much is this promotion worth"
+          }
+        }
+      }
+    ],
     "events": [
       {
         "name": "initialized",
@@ -39,37 +75,7 @@
             "name": "promotions",
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "promotionId": {
-                  "type": "string",
-                  "description": "promotion id"
-                },
-                "type": {
-                  "type": "integer",
-                  "description": "promotion type"
-                },
-                "status": {
-                  "type": "integer",
-                  "description": "promotion status"
-                },
-                "createdAt": {
-                  "type": "integer",
-                  "description": "when the promotion record was created"
-                },
-                "claimableUntil": {
-                  "type": "integer",
-                  "description": "when the promotion is no longer claimable"
-                },
-                "expiresAt": {
-                  "type": "integer",
-                  "description": "when promotion expires"
-                },
-                "amount": {
-                  "type": "number",
-                  "description": "how much is this promotion worth"
-                }
-              }
+              "$ref": "Promotion"
             }
           }
         ]
@@ -867,8 +873,22 @@
       {
         "name": "fetchPromotions",
         "type": "function",
-        "description": "Retrieves promotions when panel is mounted",
-        "parameters": []
+        "description": "Retrieves promotions (Rewards grants)",
+        "parameters": [
+          {
+            "name": "callback",
+            "type": "function",
+            "parameters": [
+              {
+                "name": "promotions",
+                "type": "array",
+                "items": {
+                  "$ref": "Promotion"
+                }
+              }
+            ]
+          }
+        ]
       },
       {
         "name": "claimPromotion",

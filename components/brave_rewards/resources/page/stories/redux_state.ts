@@ -2,38 +2,31 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import { defaultState } from '../reducers/default_state'
+
 export const reduxState: Rewards.ApplicationState = {
   rewardsData: {
-    version: 3,
-    createdTimestamp: null,
+    ...defaultState(),
+
     enabledAds: false,
     enabledAdsMigrated: false,
     enabledContribute: false,
-    firstLoad: false,
     contributionMinTime: 8,
     contributionMinVisits: 1,
     contributionMonthly: 5,
     contributionNonVerified: true,
     contributionVideos: true,
-    donationAbilityYT: true,
-    donationAbilityTwitter: true,
     reconcileStamp: 0,
     ui: {
       disconnectWalletError: false,
-      emptyWallet: true,
       modalBackup: false,
       modalRedirect: 'hide',
-      paymentIdCheck: true,
       walletRecoveryStatus: null,
-      walletServerProblem: false,
       promosDismissed: {}
     },
     autoContributeList: [],
     recurringList: [],
     tipsList: [],
-    contributeLoad: false,
-    recurringLoad: false,
-    tipsLoad: false,
     adsData: {
       adsEnabled: true,
       adsPerHour: 0,
@@ -133,7 +126,6 @@ export const reduxState: Rewards.ApplicationState = {
     },
     initializing: false,
     paymentId: '',
-    recoveryKey: '',
     showOnboarding: false
   }
 }

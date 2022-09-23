@@ -213,17 +213,17 @@ IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, PromotionNotQuiteOver) {
   rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
-  rewards_service_->FetchPromotions();
+  rewards_service_->FetchPromotions(base::DoNothing());
   promotion_->WaitForPromotionInitialization();
 
   removed_ = true;
-  rewards_service_->FetchPromotions();
+  rewards_service_->FetchPromotions(base::DoNothing());
   promotion_->WaitForPromotionInitialization();
 
   CheckPromotionStatus("Over");
 
   removed_ = false;
-  rewards_service_->FetchPromotions();
+  rewards_service_->FetchPromotions(base::DoNothing());
   promotion_->WaitForPromotionInitialization();
 
   CheckPromotionStatus("Active");

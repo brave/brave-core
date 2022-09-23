@@ -1071,26 +1071,27 @@ void RewardsServiceImpl::GetRewardsParameters(
   bat_ledger_->GetRewardsParameters(std::move(callback));
 }
 
-void RewardsServiceImpl::OnFetchPromotions(
-    ledger::mojom::Result result,
-    std::vector<ledger::mojom::PromotionPtr> promotions) {
-  for (auto& observer : observers_) {
-    std::vector<ledger::mojom::PromotionPtr> promotions_clone;
-    for (auto& promotion : promotions) {
-      promotions_clone.push_back(promotion->Clone());
-    }
-    observer.OnFetchPromotions(this, result, std::move(promotions_clone));
-  }
-}
-
-void RewardsServiceImpl::FetchPromotions() {
+void RewardsServiceImpl::FetchPromotions(FetchPromotionsCallback callback) {
   if (!Connected()) {
-    return;
+    return DeferCallback(FROM_HERE, std::move(callback),
+                         std::vector<ledger::mojom::PromotionPtr>());
   }
 
-  bat_ledger_->FetchPromotions(base::BindOnce(
-      &RewardsServiceImpl::OnFetchPromotions,
-      AsWeakPtr()));
+  auto on_fetch = [](base::WeakPtr<RewardsServiceImpl> self,
+                     FetchPromotionsCallback callback,
+                     ledger::mojom::Result result,
+                     std::vector<ledger::mojom::PromotionPtr> promotions) {
+    if (self) {
+      for (auto& observer : self->observers_) {
+        observer.OnFetchPromotions(self.get(), result, promotions);
+      }
+    }
+
+    std::move(callback).Run(std::move(promotions));
+  };
+
+  bat_ledger_->FetchPromotions(
+      base::BindOnce(on_fetch, AsWeakPtr(), std::move(callback)));
 }
 
 void ParseCaptchaResponse(
@@ -2003,7 +2004,7 @@ void RewardsServiceImpl::OnNotificationTimerFired() {
 
   GetReconcileStamp(base::BindOnce(
       &RewardsServiceImpl::MaybeShowAddFundsNotification, AsWeakPtr()));
-  FetchPromotions();
+  FetchPromotions(base::DoNothing());
 }
 
 void RewardsServiceImpl::MaybeShowNotificationAddFunds() {

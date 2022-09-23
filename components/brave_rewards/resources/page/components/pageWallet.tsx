@@ -77,9 +77,6 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   onModalBackupOpen = () => {
-    if (!this.props.rewardsData.recoveryKey || this.props.rewardsData.recoveryKey.length === 0) {
-      this.actions.getWalletPassphrase()
-    }
     this.actions.onModalBackupOpen()
   }
 
@@ -115,11 +112,6 @@ class PageWallet extends React.Component<Props, State> {
       }
     }
     return key
-  }
-
-  onModalBackupOnImport = () => {
-    // TODO NZ implement
-    console.log('onModalBackupOnImport')
   }
 
   onModalActivityToggle = () => {

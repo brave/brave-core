@@ -176,8 +176,7 @@ export async function getRewardsInitialData (): Promise<InitialRewardsData> {
         chrome.braveRewards.getExternalWallet((_, wallet) => resolve(wallet))
       }),
       new Promise(resolve => {
-        chrome.braveRewards.fetchPromotions()
-        resolve(true)
+        chrome.braveRewards.fetchPromotions(resolve)
       })
     ])
     return {
