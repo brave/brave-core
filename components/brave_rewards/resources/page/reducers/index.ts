@@ -25,7 +25,7 @@ function mergeReducers (state: Rewards.State|undefined, action: any) {
   state = publishersReducer(state, action)
 
   if (!state) {
-    state = defaultState
+    state = defaultState()
   }
 
   if (state !== startingState) {

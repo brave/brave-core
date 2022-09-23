@@ -304,12 +304,6 @@ export const onPaymentId = (paymentId: string) => action(types.ON_PAYMENT_ID, {
   paymentId
 })
 
-export const getWalletPassphrase = () => action(types.GET_WALLET_PASSPHRASE)
-
-export const onWalletPassphrase = (passphrase: string) => action(types.ON_WALLET_PASSPHRASE, {
-  passphrase
-})
-
 export const getOnboardingStatus = () => action(types.GET_ONBOARDING_STATUS)
 
 export const onOnboardingStatus = (showOnboarding: boolean) => action(types.ON_ONBOARDING_STATUS, {
