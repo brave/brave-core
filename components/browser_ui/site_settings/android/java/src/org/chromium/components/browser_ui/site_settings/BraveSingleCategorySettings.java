@@ -10,7 +10,7 @@ import android.view.MenuItem;
 
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.Log;
-import org.chromium.base.annotations.UsedByReflection;
+import org.chromium.build.annotations.UsedByReflection;
 import org.chromium.components.content_settings.ContentSettingsType;
 import org.chromium.content_public.browser.BrowserContextHandle;
 

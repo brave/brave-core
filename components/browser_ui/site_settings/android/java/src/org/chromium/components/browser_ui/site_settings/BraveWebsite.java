@@ -6,7 +6,7 @@
 package org.chromium.components.browser_ui.site_settings;
 
 import org.chromium.base.BraveReflectionUtil;
-import org.chromium.base.annotations.UsedByReflection;
+import org.chromium.build.annotations.UsedByReflection;
 import org.chromium.components.content_settings.ContentSettingValues;
 import org.chromium.components.content_settings.ContentSettingsType;
 import org.chromium.content_public.browser.BrowserContextHandle;
