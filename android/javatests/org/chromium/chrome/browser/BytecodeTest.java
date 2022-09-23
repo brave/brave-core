@@ -445,7 +445,7 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator",
                 "createViewProvider", true, ViewProvider.class, Context.class,
-                MVCListAdapter.ModelList.class));
+                MVCListAdapter.ModelList.class, LocationBarDataProvider.class));
 
         // Check for method type declaration changes here
         Assert.assertTrue(methodExists(
