@@ -60,8 +60,9 @@ TEST(BraveVPNUtilsUnitTest, MigrateAndMerge) {
   base::Value result = vpn_settings->Clone();
   auto& result_dict = result.GetDict();
   result_dict.Merge(p3a_settings->GetDict().Clone());
-  EXPECT_EQ(*local_state_pref_service.Get(brave_vpn::prefs::kBraveVPNRootPref),
-            result);
+  EXPECT_EQ(
+      local_state_pref_service.GetDict(brave_vpn::prefs::kBraveVPNRootPref),
+      result);
   EXPECT_TRUE(local_state_pref_service.HasPrefPath(
       brave_vpn::prefs::kBraveVPNLocalStateMigrated));
 }
@@ -92,12 +93,12 @@ TEST(BraveVPNUtilsUnitTest, Migrate) {
   profile_pref_service.Set(brave_vpn::prefs::kBraveVPNRootPref, *vpn_settings);
   brave_vpn::MigrateVPNSettings(&profile_pref_service,
                                 &local_state_pref_service);
-  EXPECT_TRUE(profile_pref_service.Get(brave_vpn::prefs::kBraveVPNShowButton));
   EXPECT_TRUE(local_state_pref_service.HasPrefPath(
       brave_vpn::prefs::kBraveVPNRootPref));
   vpn_settings->RemovePath("show_button");
-  EXPECT_EQ(*local_state_pref_service.Get(brave_vpn::prefs::kBraveVPNRootPref),
-            *vpn_settings);
+  EXPECT_EQ(
+      local_state_pref_service.GetDict(brave_vpn::prefs::kBraveVPNRootPref),
+      *vpn_settings);
   EXPECT_TRUE(local_state_pref_service.HasPrefPath(
       brave_vpn::prefs::kBraveVPNLocalStateMigrated));
 }
@@ -131,8 +132,9 @@ TEST(BraveVPNUtilsUnitTest, NoMigration) {
       profile_pref_service.HasPrefPath(brave_vpn::prefs::kBraveVPNRootPref));
   EXPECT_TRUE(local_state_pref_service.HasPrefPath(
       brave_vpn::prefs::kBraveVPNRootPref));
-  EXPECT_EQ(*local_state_pref_service.Get(brave_vpn::prefs::kBraveVPNRootPref),
-            *p3a_settings);
+  EXPECT_EQ(
+      local_state_pref_service.GetDict(brave_vpn::prefs::kBraveVPNRootPref),
+      *p3a_settings);
   EXPECT_TRUE(local_state_pref_service.HasPrefPath(
       brave_vpn::prefs::kBraveVPNLocalStateMigrated));
 }
@@ -179,8 +181,9 @@ TEST(BraveVPNUtilsUnitTest, AlreadyMigrated) {
                                 &local_state_pref_service);
   EXPECT_TRUE(local_state_pref_service.HasPrefPath(
       brave_vpn::prefs::kBraveVPNRootPref));
-  EXPECT_EQ(*local_state_pref_service.Get(brave_vpn::prefs::kBraveVPNRootPref),
-            *p3a_settings);
+  EXPECT_EQ(
+      local_state_pref_service.GetDict(brave_vpn::prefs::kBraveVPNRootPref),
+      *p3a_settings);
   EXPECT_TRUE(local_state_pref_service.HasPrefPath(
       brave_vpn::prefs::kBraveVPNLocalStateMigrated));
 }

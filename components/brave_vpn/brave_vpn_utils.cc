@@ -45,28 +45,29 @@ void MigrateVPNSettings(PrefService* profile_prefs, PrefService* local_prefs) {
     return;
   }
 
-  auto* obsolete_pref = profile_prefs->Get(prefs::kBraveVPNRootPref);
-  if (!obsolete_pref || !obsolete_pref->is_dict()) {
+  if (!profile_prefs->HasPrefPath(prefs::kBraveVPNRootPref)) {
     local_prefs->SetBoolean(prefs::kBraveVPNLocalStateMigrated, true);
     return;
   }
-  base::Value result;
+  base::Value::Dict obsolete_pref =
+      profile_prefs->GetDict(prefs::kBraveVPNRootPref).Clone();
+  base::Value::Dict result;
   if (local_prefs->HasPrefPath(prefs::kBraveVPNRootPref)) {
-    result = local_prefs->Get(prefs::kBraveVPNRootPref)->Clone();
-    auto& result_dict = result.GetDict();
-    result_dict.Merge(obsolete_pref->GetDict().Clone());
+    result = local_prefs->GetDict(prefs::kBraveVPNRootPref).Clone();
+    auto& result_dict = result;
+    result_dict.Merge(std::move(obsolete_pref));
   } else {
-    result = obsolete_pref->Clone();
+    result = std::move(obsolete_pref);
   }
   // Do not migrate brave_vpn::prefs::kBraveVPNShowButton, we want it to be
   // inside the profile preferences.
   auto tokens =
       base::SplitString(brave_vpn::prefs::kBraveVPNShowButton, ".",
                         base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-  if (result.GetDict().FindBool(tokens.back())) {
-    result.RemoveKey(tokens.back());
+  if (result.FindBool(tokens.back())) {
+    result.Remove(tokens.back());
   }
-  local_prefs->Set(prefs::kBraveVPNRootPref, result);
+  local_prefs->Set(prefs::kBraveVPNRootPref, base::Value(std::move(result)));
   local_prefs->SetBoolean(prefs::kBraveVPNLocalStateMigrated, true);
 
   bool show_button =
