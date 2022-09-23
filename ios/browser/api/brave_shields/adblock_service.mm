@@ -63,7 +63,7 @@
         for (const auto& entry : catalog) {
           [lists
               addObject:[[AdblockFilterListCatalogEntry alloc]
-                            initWithFilterList:
+                            initWithFilterListCatalogEntry:
                                 brave_shields::FilterListCatalogEntry(entry)]];
         }
         strongSelf.regionalFilterLists = lists;
