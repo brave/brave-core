@@ -104,28 +104,16 @@ class RewardsP3ABrowserTest : public InProcessBrowserTest,
     wait_for_rewards_initialization_loop_->Run();
   }
 
-  // Enabling ads needs to round-trip through the ledger process
-  // before the preference change propagates and triggers P3A
-  // measurements. Call this to wait until that happens.
-  void WaitForRewardsEnable() {
-    // Verify the ads state enable change has propagated.
-    if (ads_enabled_) {
-      return;
-    }
-
-    // Execute pending tasks until we reach the Quit sentinel
-    // inserted by OnAdsEnabled.
-    wait_for_rewards_enabled_loop_ = std::make_unique<base::RunLoop>();
-    wait_for_rewards_enabled_loop_->Run();
-    return;
-  }
-
   void TurnOnRewards() {
-    rewards_service_->SetAutoContributeEnabled(true);
-    // It is expected that |SetAdsEnabled| will start the Rewards utility
-    // process if necessary and create a Rewards payment ID for the profile.
-    rewards_service_->SetAdsEnabled(true);
-    WaitForRewardsEnable();
+    // Set the enabled pref to false so that wallet creation will automatically
+    // turn on Ads and AC.
+    browser()->profile()->GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled,
+                                                 false);
+
+    base::RunLoop run_loop;
+    rewards_service_->CreateRewardsWallet(base::BindLambdaForTesting(
+        [&run_loop](ledger::mojom::Result) { run_loop.Quit(); }));
+    run_loop.Run();
   }
 
   content::WebContents* contents() {
@@ -140,14 +128,6 @@ class RewardsP3ABrowserTest : public InProcessBrowserTest,
     }
   }
 
-  void OnAdsEnabled(brave_rewards::RewardsService* service,
-                    bool ads_enabled) override {
-    ads_enabled_ = ads_enabled;
-    if (ads_enabled && wait_for_rewards_enabled_loop_) {
-      wait_for_rewards_enabled_loop_->Quit();
-    }
-  }
-
   raw_ptr<brave_rewards::RewardsServiceImpl> rewards_service_ = nullptr;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   std::unique_ptr<RewardsBrowserTestContribution> contribution_;
@@ -157,8 +137,6 @@ class RewardsP3ABrowserTest : public InProcessBrowserTest,
 
   bool rewards_initialized_ = false;
   std::unique_ptr<base::RunLoop> wait_for_rewards_initialization_loop_;
-  std::unique_ptr<base::RunLoop> wait_for_rewards_enabled_loop_;
-  bool ads_enabled_ = false;
 };
 
 using brave_rewards::p3a::AdsEnabledDuration;

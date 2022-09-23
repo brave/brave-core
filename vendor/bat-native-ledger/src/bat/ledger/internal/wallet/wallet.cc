@@ -99,7 +99,7 @@ void Wallet::OnCreateWalletIfNecessary(
     const std::string& wallet_type,
     const base::flat_map<std::string, std::string>& args,
     mojom::Result result) {
-  if (result != mojom::Result::WALLET_CREATED) {
+  if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Wallet couldn't be created");
     callback(mojom::Result::LEDGER_ERROR, {});
     return;

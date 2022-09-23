@@ -202,8 +202,8 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment 
     }
 
     private void turnOnAds() {
+        BraveRewardsNativeWorker.getInstance().CreateRewardsWallet();
         BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
-        BraveRewardsNativeWorker.getInstance().SetAutoContributeEnabled(true);
     }
 
     private void reloadTab() {

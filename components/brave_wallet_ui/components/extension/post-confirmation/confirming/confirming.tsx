@@ -16,12 +16,7 @@ import { getLocale } from '$web-common/locale'
 
 // Styled components
 import { Panel } from '../..'
-import {
-  ConfirmationsNumber,
-  ConfirmingIcon,
-  ConfirmingText,
-  Title
-} from './confirming.style'
+import { ConfirmationsNumber, ConfirmingIcon, ConfirmingText, Title } from './confirming.style'
 import {
   ButtonRow,
   DetailButton,
@@ -37,44 +32,30 @@ interface Props {
 }
 
 export const TransactionConfirming = (props: Props) => {
-  const {
-    headerTitle,
-    confirmations,
-    confirmationsNeeded,
-    onClose
-  } = props
+  const { headerTitle, confirmations, confirmationsNeeded, onClose } = props
 
   // redux
-  const selectedNetwork = useSelector((state: { wallet: WalletState }) =>
-    state.wallet.selectedNetwork)
+  const selectedNetwork = useSelector(
+    (state: { wallet: WalletState }) => state.wallet.selectedNetwork
+  )
   const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
 
   return (
-    <Panel
-      navAction={onClose}
-      title={headerTitle}
-      headerStyle='slim'
-    >
+    <Panel navAction={onClose} title={headerTitle} headerStyle='slim'>
       <ConfirmingIcon>
-        <ConfirmingText>
-          {getLocale('braveWalletTransactionConfirmingText')}
-        </ConfirmingText>
+        <ConfirmingText>{getLocale('braveWalletTransactionConfirmingText')}</ConfirmingText>
         <ConfirmationsNumber>
           {confirmations} / {confirmationsNeeded}
         </ConfirmationsNumber>
       </ConfirmingIcon>
 
-      <Title>
-        {getLocale('braveWalletTransactionConfirmingTitle')}
-      </Title>
+      <Title>{getLocale('braveWalletTransactionConfirmingTitle')}</Title>
 
       <TransactionStatusDescription>
         {getLocale('braveWalletTransactionConfirmingDescription')}
       </TransactionStatusDescription>
       <ButtonRow>
-        <DetailButton
-          onSubmit={onClickViewOnBlockExplorer('tx', '0x1')}
-        >
+        <DetailButton onClick={onClickViewOnBlockExplorer('tx', '0x1')}>
           {getLocale('braveWalletTransactionExplorer')}
         </DetailButton>
         <LinkIcon />

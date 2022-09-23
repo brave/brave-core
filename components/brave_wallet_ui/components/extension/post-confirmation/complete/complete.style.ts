@@ -12,5 +12,5 @@ export const SuccessIcon = styled(TransactionStatusIcon)`
 `
 
 export const Title = styled(TransactionStatusText)`
-  color: ${(p) => p.theme.color.text01};
+  color: ${p => p.theme.color.text01};
 `

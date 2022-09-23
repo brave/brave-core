@@ -595,6 +595,54 @@ void BraveRewardsGetRewardsParametersFunction::OnGetRewardsParameters(
   Respond(OneArgument(base::Value(std::move(data))));
 }
 
+BraveRewardsCreateRewardsWalletFunction::
+    ~BraveRewardsCreateRewardsWalletFunction() = default;
+
+ExtensionFunction::ResponseAction
+BraveRewardsCreateRewardsWalletFunction::Run() {
+  auto* profile = Profile::FromBrowserContext(browser_context());
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    return RespondNow(Error("RewardsService not available"));
+  }
+
+  rewards_service->CreateRewardsWallet(base::BindOnce(
+      &BraveRewardsCreateRewardsWalletFunction::CreateRewardsWalletCallback,
+      this));
+
+  return RespondLater();
+}
+
+void BraveRewardsCreateRewardsWalletFunction::CreateRewardsWalletCallback(
+    ledger::mojom::Result result) {
+  Respond(OneArgument(base::Value(static_cast<int>(result))));
+}
+
+BraveRewardsGetRewardsWalletFunction::~BraveRewardsGetRewardsWalletFunction() =
+    default;
+
+ExtensionFunction::ResponseAction BraveRewardsGetRewardsWalletFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    return RespondNow(Error("RewardsService not available"));
+  }
+
+  rewards_service->GetRewardsWallet(base::BindOnce(
+      &BraveRewardsGetRewardsWalletFunction::GetRewardsWalletCallback, this));
+  return RespondLater();
+}
+
+void BraveRewardsGetRewardsWalletFunction::GetRewardsWalletCallback(
+    ledger::mojom::RewardsWalletPtr rewards_wallet) {
+  if (!rewards_wallet) {
+    return Respond(NoArguments());
+  }
+  base::Value::Dict dict;
+  dict.Set("paymentId", rewards_wallet->payment_id);
+  Respond(OneArgument(base::Value(std::move(dict))));
+}
+
 BraveRewardsGetBalanceReportFunction::~BraveRewardsGetBalanceReportFunction() =
     default;
 
@@ -755,9 +803,8 @@ ExtensionFunction::ResponseAction BraveRewardsSaveAdsSettingFunction::Run() {
   }
 
   if (params->key == "adsEnabled") {
-    const auto is_enabled =
-        params->value == "true" && ads_service->IsSupportedLocale();
-    rewards_service->SetAdsEnabled(is_enabled);
+    ads_service->SetEnabled(params->value == "true" &&
+                            ads_service->IsSupportedLocale());
   }
 
   return RespondNow(NoArguments());
@@ -1205,21 +1252,6 @@ ExtensionFunction::ResponseAction BraveRewardsIsInitializedFunction::Run() {
       base::Value(rewards_service && rewards_service->IsInitialized())));
 }
 
-BraveRewardsShouldShowOnboardingFunction::
-    ~BraveRewardsShouldShowOnboardingFunction() = default;
-
-ExtensionFunction::ResponseAction
-BraveRewardsShouldShowOnboardingFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-  if (!rewards_service) {
-    return RespondNow(Error("Rewards service is not initialized"));
-  }
-
-  const bool should_show = rewards_service->ShouldShowOnboarding();
-  return RespondNow(OneArgument(base::Value(should_show)));
-}
-
 BraveRewardsGetScheduledCaptchaInfoFunction::
     ~BraveRewardsGetScheduledCaptchaInfoFunction() = default;
 
@@ -1279,28 +1311,13 @@ BraveRewardsUpdateScheduledCaptchaResultFunction::Run() {
 #endif
 }
 
-BraveRewardsEnableRewardsFunction::~BraveRewardsEnableRewardsFunction() =
-    default;
-
-ExtensionFunction::ResponseAction BraveRewardsEnableRewardsFunction::Run() {
-  auto* profile = Profile::FromBrowserContext(browser_context());
-  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-  if (!rewards_service)
-    return RespondNow(Error("Rewards service is not initialized"));
-
-  rewards_service->EnableRewards();
-  return RespondNow(NoArguments());
-}
-
 BraveRewardsEnableAdsFunction::~BraveRewardsEnableAdsFunction() = default;
 
 ExtensionFunction::ResponseAction BraveRewardsEnableAdsFunction::Run() {
   auto* profile = Profile::FromBrowserContext(browser_context());
-  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-  if (!rewards_service)
-    return RespondNow(Error("Rewards service is not initialized"));
-
-  rewards_service->SetAdsEnabled(true);
+  if (auto* ads_service = AdsServiceFactory::GetForProfile(profile)) {
+    ads_service->SetEnabled(true);
+  }
   return RespondNow(NoArguments());
 }
 

@@ -76,6 +76,7 @@ class AdsServiceImpl : public AdsService,
                        public ads::AdsClient,
                        BackgroundHelper::Observer,
                        public ResourceComponentObserver,
+                       public brave_rewards::RewardsServiceObserver,
                        public base::SupportsWeakPtr<AdsServiceImpl> {
  public:
   explicit AdsServiceImpl(
@@ -417,6 +418,9 @@ class AdsServiceImpl : public AdsService,
 
   // ResourceComponentObserver:
   void OnDidUpdateResourceComponent(const std::string& id) override;
+
+  // RewardsServiceObserver:
+  void OnCompleteReset(bool success) override;
 
   bool is_bat_ads_initialized_ = false;
   bool did_cleanup_on_first_run_ = false;

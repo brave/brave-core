@@ -13,7 +13,6 @@
 #include "base/memory/raw_ptr.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
-#include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
 
 class Profile;
 
@@ -21,22 +20,27 @@ namespace brave_rewards {
 
 class RewardsService;
 
-class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
-                                        public RewardsServicePrivateObserver {
+class ExtensionRewardsServiceObserver : public RewardsServiceObserver {
  public:
   explicit ExtensionRewardsServiceObserver(Profile* profile);
+
   ExtensionRewardsServiceObserver(const ExtensionRewardsServiceObserver&) =
       delete;
+
   ExtensionRewardsServiceObserver& operator=(
       const ExtensionRewardsServiceObserver&) = delete;
+
   ~ExtensionRewardsServiceObserver() override;
 
-  // RewardsServiceObserver implementation
+  // RewardsServiceObserver:
   void OnRewardsInitialized(RewardsService* rewards_service) override;
+
+  void OnRewardsWalletUpdated() override;
 
   void OnPublisherListNormalized(
       RewardsService* rewards_service,
       std::vector<ledger::mojom::PublisherInfoPtr> list) override;
+
   void OnExcludedSitesChanged(RewardsService* rewards_service,
                               std::string publisher_key,
                               bool excluded) override;
@@ -66,11 +70,6 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
   void OnUnblindedTokensReady(
       brave_rewards::RewardsService* rewards_service) override;
 
-  // RewardsServicePrivateObserver implementation
-  void OnPanelPublisherInfo(RewardsService* rewards_service,
-                            const ledger::mojom::Result result,
-                            const ledger::mojom::PublisherInfo* info,
-                            uint64_t windowId) override;
   void OnFetchPromotions(
       RewardsService* rewards_service,
       const ledger::mojom::Result result,
@@ -83,10 +82,14 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
   void OnPendingContributionSaved(RewardsService* rewards_service,
                                   const ledger::mojom::Result result) override;
 
-  void OnAdsEnabled(RewardsService* rewards_service,
-                            bool ads_enabled) override;
+  void OnAdsEnabled(RewardsService* rewards_service, bool ads_enabled) override;
 
   void OnCompleteReset(const bool success) override;
+
+  void OnPanelPublisherInfo(RewardsService* rewards_service,
+                            const ledger::mojom::Result result,
+                            const ledger::mojom::PublisherInfo* info,
+                            uint64_t windowId) override;
 
  private:
   raw_ptr<Profile> profile_ = nullptr;

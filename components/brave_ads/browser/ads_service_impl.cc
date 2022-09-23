@@ -342,6 +342,7 @@ AdsServiceImpl::AdsServiceImpl(
 #endif
   DCHECK(device_id_);
   DCHECK(history_service_);
+  DCHECK(rewards_service_);
   DCHECK(brave::IsRegularProfile(profile_));
 
   MigratePrefs();
@@ -349,9 +350,13 @@ AdsServiceImpl::AdsServiceImpl(
   InitNotificationsForProfile();
 
   MigrateConfirmationState();
+
+  rewards_service_->AddObserver(this);
 }
 
-AdsServiceImpl::~AdsServiceImpl() = default;
+AdsServiceImpl::~AdsServiceImpl() {
+  rewards_service_->RemoveObserver(this);
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -700,8 +705,6 @@ void AdsServiceImpl::OnGetRewardsWallet(
 }
 
 void AdsServiceImpl::OnEnabledPrefChanged() {
-  rewards_service_->OnAdsEnabled(IsEnabled());
-
   if (!IsEnabled()) {
     SuspendP2AHistograms();
     VLOG(1) << "P2A histograms suspended";
@@ -1838,6 +1841,10 @@ void AdsServiceImpl::OnDidUpdateResourceComponent(const std::string& id) {
   }
 
   bat_ads_->OnDidUpdateResourceComponent(id);
+}
+
+void AdsServiceImpl::OnCompleteReset(bool success) {
+  WipeState(/* should_shutdown */ true);
 }
 
 void AdsServiceImpl::PrefetchNewTabPageAd() {

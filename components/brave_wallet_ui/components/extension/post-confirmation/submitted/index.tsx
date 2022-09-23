@@ -4,6 +4,4 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 import { TransactionSubmitted } from './submitted'
 
-export {
-  TransactionSubmitted
-}
+export { TransactionSubmitted }
