@@ -194,10 +194,10 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_CUSTOM_AMOUNT" desc="Text for Custom Amount">
         Custom Amount
       </message>
-      <message name="IDS_BAT" desc="Text for BAT">
+      <message name="IDS_BAT" desc="Text for BAT" translateable="false">
         BAT
       </message>
-      <message name="IDS_USD" desc="Text for USD">
+      <message name="IDS_USD" desc="Text for USD" translateable="false">
         USD
       </message>
       <message name="IDS_E_G_12_75_BAT" desc="Text for example text">

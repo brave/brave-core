@@ -122,7 +122,7 @@
 <translation id="5441565662498481293">You are automatically sending a tip to:</translation>
 <translation id="1166682575529520472">Monthly</translation>
 <translation id="1628742278973105368">Your first monthly tip will be sent on:</translation>
-<translation id="298349922412901215">This creator has not yet signed up to receive contributions from Brave users. We'll keep trying to contribute until they verify, or until 90 days have passed.</translation>
+<translation id="298349922412901215">NOTE: this creator has not yet signed up to receive contributions from Brave users. We'll keep trying to contribute until they verify, or until 90 days have passed.</translation>
 <translation id="635752162765375187">NOTE: this creator is currently not configured to receive tips from your Rewards custodial wallet service. Any tip you make will remain pending and retry automatically for 90 days.</translation>
 <translation id="1910721550319506122">Welcome!</translation>
 <translation id="3165726837666415756">You can support this site by sending a tip. It's a way of thanking them for making great content. Verified content creators get paid for their tips during the first week of each calendar month.</translation>
@@ -768,7 +768,7 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="1543259266592091784">Add funds</translation>
 <translation id="3494964159182650590">Rewards Summary</translation>
 <translation id="590733288489975971">Rewards from Ads</translation>
-<translation id="207268487070188114">One-Time Tip</translation>
+<translation id="207268487070188114">One-time tip</translation>
 <translation id="7577100371127227294">Monthly Tips</translation>
 <translation id="7091980679045978090">Estimated earnings</translation>
 <translation id="1346059596910821859">Tip</translation>

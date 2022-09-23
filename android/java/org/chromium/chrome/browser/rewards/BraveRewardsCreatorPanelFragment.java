@@ -96,6 +96,7 @@ public class BraveRewardsCreatorPanelFragment extends Fragment
             try {
                 mBannerInfo = new BraveRewardsBannerInfo(bannerInfoJson);
             } catch (JSONException e) {
+                Log.e(TAG, "TippingBanner -> CreatorPanel:onAttach JSONException error " + e);
             }
         }
     }

@@ -122,6 +122,7 @@ public class BraveRewardsTipConfirmationFragment extends Fragment implements Bra
                 startActivity(new Intent(Intent.ACTION_VIEW, uri));
             } else {
                 // error
+                Log.e(TAG, "TippingBanner -> TipConfirmation:setTweetClickListener invalid status ");
             }
         });
     }

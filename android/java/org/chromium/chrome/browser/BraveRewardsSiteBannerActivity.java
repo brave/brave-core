@@ -88,6 +88,7 @@ public class BraveRewardsSiteBannerActivity
                 try {
                     mBannerInfo = new BraveRewardsBannerInfo(jsonBannerInfo);
                 } catch (JSONException e) {
+                    Log.e(TAG, "TippingBanner -> Activity:onPublisherBanner JSONException error " + e);
                 }
 
                 progressBar.setVisibility(View.GONE);
