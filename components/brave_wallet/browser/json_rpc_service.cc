@@ -1246,7 +1246,8 @@ void JsonRpcService::OnEnsGetEthAddr(
     return;
   }
 
-  if (EthAddress::FromHex(address).IsZeroAddress()) {
+  if (address ==
+      "0x0000000000000000000000000000000000000000000000000000000000000000") {
     std::move(callback).Run(
         "", mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
