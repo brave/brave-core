@@ -134,7 +134,6 @@
 <translation id="4065288863231444640">Jalankan Brave di Background</translation>
 <translation id="8148611988012584308">Menyesuaikan dan mengontrol Brave</translation>
 <translation id="4427306783828095590">Perlindungan yang ditingkatkan akan memblokir phishing dan malware dengan lebih optimal</translation>
-<translation id="5112116809696021727">Untuk melihat apakah versi pada perangkat Anda adalah yang terbaru, buka <ph name="LINK_BEGIN"/>Setelan ChromeOS<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Selamat datang di Brave; jendela browser baru terbuka</translation>
 <translation id="2633397153656205379">Brave tidak dapat diupdate, terjadi error. <ph name="BEGIN_LINK"/>Perbaiki masalah update Brave dan update yang gagal.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Lanjutkan di profil Brave baru?</translation>
@@ -297,8 +296,6 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Cara Anda dapat mengelola data Anda:<ph name="END_BOLD"/> Untuk melindungi privasi Anda, kami otomatis menghapus minat yang tersimpan lebih dari 4 minggu. Saat Anda terus menjelajah, minat dapat kembali muncul di daftar. Atau Anda dapat menghapus minat yang tidak perlu dipertimbangkan oleh Brave.</translation>
 <translation id="2925193881330501265">Anda telah masuk ke Brave sebagai <ph name="USER_EMAIL_ADDRESS"/>. Gunakan akun yang sama untuk masuk kembali.</translation>
 <translation id="6915252145142862992">Ini adalah pemasangan Brave sekunder, dan tidak dapat digunakan sebagai browser default.</translation>
-<translation id="1975057837349076194">Jika setelan tidak muncul di halaman ini, buka <ph name="LINK_BEGIN"/>
-      setelan ChromeOS<ph name="LINK_END"/> Anda</translation>
 <translation id="7685904775439037072">Setelah Brave memiliki akses, situs dapat meminta akses dari Anda.</translation>
 <translation id="80471789339884597">Terima kasih telah menginstal. Anda harus memulai ulang semua browser sebelum menggunakan <ph name="BUNDLE_NAME"/>.</translation>
 <translation id="2061155704815580583">Brave memerlukan izin akses lokasi untuk situs ini</translation>
