@@ -93,6 +93,7 @@
 <translation id="3545804467215833536">Tap to view Brave Shields</translation>
 <translation id="1724327820822194498">See all the bad stuff Brave blocked, on every page, with Shields.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> and <ph name="TRACKER"/> other ads &amp; trackers blocked</translation>
+<translation id="7256200875155794202"><ph name="BIG_TECH"/> and other ads &amp; trackers blocked</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> ads &amp; trackers blocked</translation>
 <translation id="8281886186245836920">Skip</translation>
 <translation id="6165508094623778733">Learn more</translation>
@@ -117,6 +118,9 @@
 <translation id="19715420010996093">Select Brave Browser and tap 'Always'</translation>
 <translation id="3546439402724649282">Brave is already set as your default browser.</translation>
 <translation id="8389661903259423907">You've already set a default browser. You can change the default browser in your app settings.</translation>
+<translation id="1545749641540134597">Scan QR Code</translation>
+<translation id="5317781812114905957">Instructions</translation>
+<translation id="8515319483805157233">To search by QR code, align the QR code in the centre of frame.</translation>
 <translation id="8826007068782654809">Thank you</translation>
 <translation id="6665366815203065060">You've just sent a tip to:</translation>
 <translation id="5441565662498481293">You are automatically sending a tip to:</translation>
@@ -393,35 +397,11 @@ Are you sure you want to do this?</translation>
 <translation id="8376263745431603066">Enable "Night Mode" (Experimental)</translation>
 <translation id="1383876407941801731">Search</translation>
 <translation id="8446884382197647889">Learn More</translation>
-<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
-<translation id="558614325644656740">Available <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="3414885529641505869">Buy <ph name="COIN_NAME"/></translation>
-<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Deposit Address</translation>
-<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Deposit Memo</translation>
-<translation id="6755546361496900700">Preview conversion</translation>
-<translation id="5110244215256675209">Buy crypto</translation>
-<translation id="2271556362602437160">.com</translation>
-<translation id="3727077517986954867">.us</translation>
 <translation id="13296465911709339">Your text has been copied to the clipboard.</translation>
 <translation id="2735834606413553397">Public address has been copied to the clipboard.</translation>
-<translation id="7144878232160441200">Retry</translation>
 <translation id="2977461003134694205">Privacy Stats</translation>
-<translation id="2956070106555335453">Summary</translation>
-<translation id="1366855498335432549">Deposit</translation>
-<translation id="1301340234286078471">Convert</translation>
 <translation id="223536150967420869">Buy</translation>
-<translation id="4584930231524505442">I want to convert...</translation>
-<translation id="5749014321384313843">I want to spend...</translation>
-<translation id="2480674848181564169">Not enough balance for conversion</translation>
-<translation id="2215334405220411393">Minimum amount to convert is : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6702658079816271889">Unable to connect</translation>
-<translation id="7742417737698031726">Fee</translation>
-<translation id="2122225204180056042">You will receive</translation>
-<translation id="6432284126416751397">Confirm conversion</translation>
-<translation id="3891414008432200754">Price</translation>
-<translation id="3733576242118819803">Confirm (<ph name="REMAINING_TIME"/>s)</translation>
-<translation id="1627064138060308910">Conversion Failed. Please try again.</translation>
-<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="2956070106555335453">Summary</translation>
 <translation id="7465614181960492526">Earn Tokens &amp; Give Back</translation>
 <translation id="244362569344671266">Earn tokens by viewing Brave Private Ads and support content creators automatically.</translation>
 <translation id="631124996535890460">By proceeding, you agree to the <ph name="TERMS_OF_SERVICE"/> and <ph name="PRIVACY_POLICY"/>.</translation>
@@ -452,18 +432,6 @@ Are you sure you want to do this?</translation>
 <translation id="2434574859640694129">After you receive your first ads payout, you can come back and tip this creator!</translation>
 <translation id="207242986925259074">Quick refresher tour</translation>
 <translation id="8342862030112839977">Your 1st rewards payout will arrive by:</translation>
-<translation id="8037420924417098685">To start a free call, turn on Brave Rewards</translation>
-<translation id="8961724619078500274">With Brave Rewards, you earn tokens for viewing private ads (your data is safe). Turn those tokens into cash, gift cards…or even tip the websites you love. No tracking. No slow downs.</translation>
-<translation id="7307847920988946894">Turn on Rewards</translation>
-<translation id="7872993190040589450">By enabling, you agree to the <ph name="TERMS_OF_SERVICE"/> and <ph name="PRIVACY_POLICY"/>.</translation>
-<translation id="6128511569382736135">To start a free call, enable Brave Private Ads</translation>
-<translation id="7930006085154756245">With Brave Private Ads, you earn tokens for viewing private ads (your data is safe). Turn those tokens into cash, gift cards … or even tip the websites you love. No tracking. No slow downs.</translation>
-<translation id="4992617448154987397">Turn on Brave Private Ads</translation>
-<translation id="3415016869273103668">You can now start a free call</translation>
-<translation id="7073631403665023390">Click or tap anywhere on the screen to continue to Brave Talk.</translation>
-<translation id="626339649633171286">Want to learn more about Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
-<translation id="3604285424134705930">You converted <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
-<translation id="392587271502873865">Please check your network connection.</translation>
 <translation id="7889432931837317731">Automatically open when possible</translation>
 <translation id="8967385052772844086">View full Privacy Report</translation>
 <translation id="6864343534748973390">Most popular</translation>
@@ -591,9 +559,6 @@ Are you sure you want to do this?</translation>
 <translation id="5050890334032852465">Save account watchlist</translation>
 <translation id="7755766175599167100">Search tokens</translation>
 <translation id="3835223348537121988">Balance:</translation>
-<translation id="2490428413101944234">Test faucet</translation>
-<translation id="2581671693710952401">Get Ether</translation>
-<translation id="8165484222652118977">Get Ether from a faucet for <ph name="NETWORK"/> Test Network</translation>
 <translation id="7420359180991315365">Continue to Wyre</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="3784455785234192852">Lock</translation>
@@ -605,6 +570,12 @@ Are you sure you want to do this?</translation>
 <translation id="5693968582510626466">Clearing transactions may be useful for developers or when clearing state on a local server</translation>
 <translation id="5421107279168565467">Are you sure you want to reset transaction and nonce information? This option is mostly used by developers running a local test server. Type "<ph name="CONFIRMATION_PHRASE"/>" to confirm.</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# minute} other {# minutes}}</translation>
+<translation id="8146860193318415026">Stream videos ad free.</translation>
+<translation id="6311019535466417620">No ads before your video</translation>
+<translation id="4274652342814424451">No ads during your video</translation>
+<translation id="1721710839767183848">No ads on the page</translation>
+<translation id="4647035642622555398">No interruptions</translation>
+<translation id="4122515759479497554">Search for videos</translation>
 <translation id="4449475351935531438">Brave Firewall + VPN</translation>
 <translation id="719977489961414786">Upgrade to a VPN to protect your connection and block invasive trackers everywhere.</translation>
 <translation id="3435896845095436175">Enable</translation>
@@ -808,6 +779,9 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="5233638681132016545">New tab</translation>
 <translation id="8006088103295786154">Access Brave Wallet</translation>
 <translation id="5308380583665731573">Connect</translation>
+<translation id="8030169304546394654">Disconnected</translation>
+<translation id="3423275441470187644">Trust</translation>
+<translation id="2391762656119864333">Revoke</translation>
 <translation id="3432029672560911238">User account</translation>
 <translation id="5753378322046059140">Switch account</translation>
 <translation id="3897092660631435901">Menu</translation>
@@ -884,5 +858,11 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="7002577172732106572">Split tunnelling</translation>
 <translation id="2832270987629018596">Not a valid SOL address</translation>
 <translation id="8181161042860463420">The associated token account does not exist yet. A small amount of SOL will be spent to create and fund it. <ph name="CLICK_START"/>Learn more<ph name="CLICK_END"/></translation>
+<translation id="1304515257839771197">Open the <ph name="APP_NAME"/> app?</translation>
+<translation id="7653028065515320848"><ph name="CLICK_START"/>Learn more about using Rainbow Bridge<ph name="CLICK_END"/></translation>
+<translation id="8219806187375413057"><ph name="CLICK_START"/>Learn how to reduce risk on Rainbow Bridge<ph name="CLICK_END"/></translation>
+<translation id="1065082006518490444"><ph name="APP_NAME"/> is an independent service that helps you bridge assets across networks, and use your crypto on other networks and DApp ecosystems. Bridging assets to other networks has some risks.</translation>
+<translation id="8423380132356660250">Open the <ph name="APP_NAME"/> app</translation>
 <translation id="168154537623654021">Updating VPN Profile ...</translation>
+<translation id="7457027586454688423">Enter your Brave Wallet password</translation>
 </translationbundle>

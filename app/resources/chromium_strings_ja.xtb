@@ -134,7 +134,6 @@
 <translation id="4065288863231444640">Brave をバックグラウンドで実行する</translation>
 <translation id="8148611988012584308">Brave の設定</translation>
 <translation id="4427306783828095590">保護強化機能により、フィッシングを防ぎ、不正なソフトウェアをより強力にブロックします</translation>
-<translation id="5112116809696021727">デバイスが最新の状態かどうかを確認するには、<ph name="LINK_BEGIN"/>Chrome OS の設定<ph name="LINK_END"/>をご覧ください。</translation>
 <translation id="7084397798469173252">Brave へようこそ。新しいブラウザ ウィンドウが開いています</translation>
 <translation id="2633397153656205379">エラーが発生したため、Brave が更新されませんでした。<ph name="BEGIN_LINK"/>Brave の更新に関する問題を解決してください。<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">新しい Brave プロフィールで続行しますか？</translation>
@@ -217,7 +216,7 @@
 <translation id="1819119299840995223">Brave で別の処理が行われています。しばらくしてからもう一度お試しください。</translation>
 <translation id="8616874628011103667">共有パソコンの Brave で Brave アカウントが簡単に使用できるようになりました。</translation>
 <translation id="335632367599648646">Brave をアンインストールしてもよろしいですか？</translation>
-<translation id="4867486350347355096"><ph name="BEGIN_BOLD"/>このデータの利用方法:<ph name="END_BOLD"/> Brave はユーザーの興味 / 関心を推定する場合があります。その後、アクセスしたサイトは、表示する広告をカスタマイズするために、Brave にユーザーの興味 / 関心を提示するよう依頼できます。</translation>
+<translation id="4867486350347355096"><ph name="BEGIN_BOLD"/>このデータの利用方法:<ph name="END_BOLD"/> Brave はユーザーの興味 / 関心を推定する場合があります。その後、アクセスしたサイトは、表示する広告をパーソナライズするために、Brave にユーザーの興味 / 関心を提示するよう依頼できます。</translation>
 <translation id="6373767849825830651">Brave は、ウェブページやアプリケーションを高速に実行できるスピードと、高い安定性を兼ね備えた非常に使いやすいウェブブラウザです。不正なソフトウェアやフィッシングに対する保護機能が組み込まれており、ウェブを安全にブラウジングできます。</translation>
 <translation id="2139300032719313227">Chrome OS を再起動してください</translation>
 <translation id="1684121725014454063">Brave プロフィールへようこそ</translation>
@@ -247,7 +246,7 @@
 <translation id="2301993384336631869">Brave が更新されましたが、30 日以上使用されていません。</translation>
 <translation id="8828443087767259398">Brave でペアリングを続行するには、Bluetooth へのアクセスが必要です。<ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="126871877963043118">試用期間中の広告の測定により、アクセスしたサイトは、サイトが広告のパフォーマンスを測定する際に役立つ Brave の情報をリクエストできます。広告の測定は、サイト間で転送する情報をできるだけ少なくすることで、クロスサイト トラッキングを制限します。</translation>
-<translation id="4392161457256085190">その後、アクセスしたサイトは、表示する広告をカスタマイズするために、Brave にユーザーの興味 / 関心を提示するよう依頼できます。Brave では、興味 / 関心を 3 つまで共有できます。</translation>
+<translation id="4392161457256085190">その後、アクセスしたサイトは、表示する広告をパーソナライズするために、Brave にユーザーの興味 / 関心を提示するよう依頼できます。Brave では、興味 / 関心を 3 つまで共有できます。</translation>
 <translation id="6418340404893954563">脆弱なパスワードは簡単に推測されてしまいます。Brave で<ph name="BEGIN_LINK"/>安全性の高いパスワードを自動生成して保存する<ph name="END_LINK"/>ことができます。</translation>
 <translation id="3453763134178591239">Chrome OS 利用規約</translation>
 <translation id="3335606533094650083">このサイトを利用するには、Brave でマイクの使用を許可する必要があります</translation>
@@ -276,7 +275,7 @@
 <translation id="2619516027171717873">実行中の Brave と同じバージョンをインストールすることはできません。Brave を閉じてからもう一度お試しください。</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave は 1 分後に再起動されます}other{Brave は # 分後に再起動されます}}</translation>
 <translation id="8516116288943000095">Brave のデータ（<ph name="URL"/>）も消去する</translation>
-<translation id="6378857626787254617">Brave はユーザーの興味 / 関心を推定する場合があります。その後、アクセスしたサイトは、表示する広告をカスタマイズするために、Brave にユーザーの興味 / 関心を提示するよう依頼できます。</translation>
+<translation id="6378857626787254617">Brave はユーザーの興味 / 関心を推定する場合があります。その後、アクセスしたサイトは、表示する広告をパーソナライズするために、Brave にユーザーの興味 / 関心を提示するよう依頼できます。</translation>
 <translation id="7583399374488819119"><ph name="COMPANY_NAME"/> インストーラ</translation>
 <translation id="155309785154426906">アカウントでセーフ ブラウジング保護強化機能がオンになっています。Brave にも適用します。</translation>
 <translation id="3293668930608086049">Brave がカメラとマイクを使用しています。</translation>
@@ -296,7 +295,6 @@
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>データを管理する方法:<ph name="END_BOLD"/> ユーザーのプライバシーを保護するために、4 週間以上経過したユーザーの興味 / 関心は自動削除されます。ブラウジングを続けていると、興味 / 関心がリストに再度表示される場合もあります。Brave に認識してほしくない興味 / 関心は削除できます。</translation>
 <translation id="2925193881330501265">Brave に <ph name="USER_EMAIL_ADDRESS"/> としてログインしていました。再度ログインするには同じアカウントを使用してください。</translation>
 <translation id="6915252145142862992">この Brave はセカンダリ インストールのため、既定のブラウザには設定できません。</translation>
-<translation id="1975057837349076194">このページに設定が表示されない場合は、<ph name="LINK_BEGIN"/>Chrome OS の設定<ph name="LINK_END"/>を確認してください</translation>
 <translation id="7685904775439037072">Brave にアクセスを許可すると、ウェブサイトからアクセスをリクエストできるようになります。</translation>
 <translation id="80471789339884597">インストールいただきありがとうございます。<ph name="BUNDLE_NAME"/> を使用するにはすべてのブラウザを再起動してください。</translation>
 <translation id="2061155704815580583">このサイトを利用するには、Brave で位置情報の使用を許可する必要があります</translation>

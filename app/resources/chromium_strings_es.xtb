@@ -136,7 +136,6 @@ Es posible que algunas funciones no estén disponibles y que no se guarden los c
 <translation id="4065288863231444640">Permitir que Brave se ejecute en segundo plano</translation>
 <translation id="8148611988012584308">Personaliza y controla Brave</translation>
 <translation id="4427306783828095590">La protección mejorada es más eficaz para bloquear ataques de suplantación de identidad y software malicioso.</translation>
-<translation id="5112116809696021727">Para comprobar si tu dispositivo está actualizado, ve a los <ph name="LINK_BEGIN"/>ajustes de ChromeOS<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Te damos la bienvenida a Brave. Se ha abierto una nueva ventana del navegador.</translation>
 <translation id="2633397153656205379">Brave no se ha actualizado, algo no va bien. <ph name="BEGIN_LINK"/>Soluciona los problemas y errores de actualización de Brave<ph name="END_LINK"/>.</translation>
 <translation id="3679799810790990472">¿Continuar en un nuevo perfil de Brave?</translation>
@@ -299,8 +298,6 @@ Brave no puede recuperar tu configuración.</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Cómo puedes gestionar tus datos:<ph name="END_BOLD"/> para proteger tu privacidad, eliminamos automáticamente tus intereses si tienen una antigüedad superior a 4 semanas. A medida que sigas navegando, es posible que un interés vuelva a aparecer en la lista. También puedes eliminar los intereses que no quieras que Brave tenga en cuenta.</translation>
 <translation id="2925193881330501265">Habías iniciado sesión en Brave como <ph name="USER_EMAIL_ADDRESS"/>. Utiliza la misma cuenta para volver a iniciar sesión.</translation>
 <translation id="6915252145142862992">Esta instalación de Brave es secundaria, por lo que no se puede establecer como navegador predeterminado.</translation>
-<translation id="1975057837349076194">Si no se muestra algún ajuste en esta página, consulta la <ph name="LINK_BEGIN"/>
-      configuración de ChromeOS<ph name="LINK_END"/></translation>
 <translation id="7685904775439037072">Una vez que Brave tenga acceso, los sitios web podrán solicitarlo también.</translation>
 <translation id="80471789339884597">Gracias por realizar la instalación. Debes reiniciar todos tus navegadores para poder usar <ph name="BUNDLE_NAME"/>.</translation>
 <translation id="2061155704815580583">Brave necesita el permiso de ubicación para este sitio</translation>

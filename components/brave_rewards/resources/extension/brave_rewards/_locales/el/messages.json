@@ -1,6 +1,6 @@
 {
   "summary": {
-    "message": "Περίληψη",
+    "message": "Σύνοψη",
     "description": ""
   },
   "tip": {
@@ -8,7 +8,7 @@
     "description": ""
   },
   "unverifiedCreator": {
-    "message": "Μη επαληθευμένος Δημιουργός",
+    "message": "Μη επαληθευμένος δημιουργός",
     "description": ""
   },
   "verifiedCreator": {
@@ -55,15 +55,15 @@
     "description": ""
   },
   "sendTip": {
-    "message": "Αποστολή Φιλοδωρήματος",
+    "message": "Αποστολή φιλοδωρήματος",
     "description": ""
   },
   "includeInAutoContribute": {
-    "message": "Συμπερίληψη στο Auto-Contribute",
+    "message": "Συμπερίληψη στην Αυτόματη συνεισφορά",
     "description": ""
   },
   "monthlyTip": {
-    "message": "Μηνιαίο Φιλοδώρημα",
+    "message": "Μηνιαίο φιλοδώρημα",
     "description": ""
   },
   "ok": {
@@ -87,7 +87,7 @@
     "description": ""
   },
   "grantCaptchaFailedTitle": {
-    "message": "Χμμ... Όχι ακριβώς. Προσπάθησε ξανά.",
+    "message": "Χμμ... Όχι ακριβώς. Προσπαθήστε ξανά.",
     "description": ""
   },
   "grantCaptchaHint": {
@@ -104,11 +104,11 @@
     "description": ""
   },
   "grantCaptchaPassedTextUGP": {
-    "message": "Σε λίγο θα λάβετε την τοκέν χορηγία σας.",
+    "message": "Σε λίγο θα λάβετε την επιχορήγηση token σας.",
     "description": ""
   },
   "grantCaptchaAmountUGP": {
-    "message": "Δωρεάν Χορηγία Τόκεν",
+    "message": "Δωρεάν επιχορήγηση Token",
     "description": ""
   },
   "grantCaptchaPassedTitleAds": {
@@ -124,19 +124,19 @@
     "description": ""
   },
   "grantCaptchaExpiration": {
-    "message": "Ημερομηνία Λήξης Χορηγίας",
+    "message": "Ημερομηνία λήξης επιχορήγησης",
     "description": ""
   },
   "grantCaptchaErrorTitle": {
-    "message": "Ωχ, κάτι πήγε λάθος. Παρακαλώ προσπαθήστε ξανά αργότερα.",
+    "message": "Ωχ, κάτι πήγε λάθος. Προσπαθήστε ξανά αργότερα.",
     "description": ""
   },
   "grantCaptchaErrorText": {
-    "message": "Οι Brave ανταμοιβές παρουσιάζουν κάποιο πρόβλημα. Παρακαλώ προσπαθήστε ξανά αργότερα.",
+    "message": "Οι Ανταμοιβές Brave παρουσιάζουν κάποιο πρόβλημα. Προσπαθήστε ξανά αργότερα.",
     "description": ""
   },
   "rewardsLogInToSeeBalance": {
-    "message": "$begin_bold$Συνδεθείτε στο $provider$ $end_bold$για να δείτε το υπόλοιπό σας",
+    "message": "$begin_bold$Συνδεθείτε στο $provider$$end_bold$ για να δείτε το υπόλοιπό σας",
     "description": "",
     "placeholders": {
       "begin_bold": {
@@ -200,11 +200,11 @@
     }
   },
   "walletAddFunds": {
-    "message": "Προσθήκη Κεφαλαίων",
+    "message": "Προσθήκη κεφαλαίων",
     "description": ""
   },
   "walletAutoContribute": {
-    "message": "Αυτόματη Συνεισφορά",
+    "message": "Αυτόματη συνεισφορά",
     "description": ""
   },
   "walletDisconnected": {
@@ -234,11 +234,11 @@
     }
   },
   "walletMonthlyTips": {
-    "message": "Μηνιαία Tips",
+    "message": "Μηνιαία φιλοδωρήματα",
     "description": ""
   },
   "walletOneTimeTips": {
-    "message": "Φιλοδώρημα για μια φορά",
+    "message": "Εφάπαξ φιλοδωρήματα",
     "description": ""
   },
   "walletPending": {
@@ -246,7 +246,7 @@
     "description": ""
   },
   "walletPendingText": {
-    "message": "Υπάρχει προσωρινά πρόβλημα με την επαλήθευση από $provider$. Οι Ανταμοιβές Brave σας θα παραμείνουν σε κατάσταση εκκρεμότητας και θα γίνει αυτόματα επανάληψη της προσπάθειας, αλλά μπορείτε να προσπαθήσετε ξανά αργότερα.",
+    "message": "Υπάρχει προσωρινά πρόβλημα με την επαλήθευση με $provider$. Οι Ανταμοιβές Brave σας θα παραμείνουν σε κατάσταση εκκρεμότητας και θα γίνει αυτόματα επανάληψη της προσπάθειας, αλλά μπορείτε να προσπαθήσετε ξανά αργότερα.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -255,7 +255,7 @@
     }
   },
   "walletRewardsFromAds": {
-    "message": "Brave Rewards από διαφημίσεις Brave Ads",
+    "message": "Ανταμοιβές από Διαφημίσεις",
     "description": ""
   },
   "walletRewardsSummary": {
@@ -263,19 +263,19 @@
     "description": ""
   },
   "walletUnverified": {
-    "message": "Ανεπιβεβαίωτο",
+    "message": "Μη επαληθευμένο",
     "description": ""
   },
   "walletVerified": {
-    "message": "Επαληθεύτηκε",
+    "message": "Επαληθευμένο",
     "description": ""
   },
   "walletYourBalance": {
-    "message": "Το Υπόλοιπό Σας",
+    "message": "Το υπόλοιπό σας",
     "description": ""
   },
   "notificationAddFunds": {
-    "message": "Προσθήκη Κεφαλαίων",
+    "message": "Προσθήκη κεφαλαίων",
     "description": ""
   },
   "notificationReconnect": {
@@ -291,7 +291,7 @@
     "description": ""
   },
   "notificationAddFundsTitle": {
-    "message": "Ανεπαρκείς Πόροι",
+    "message": "Ανεπαρκείς πόροι",
     "description": ""
   },
   "notificationAddFundsText": {
@@ -299,7 +299,7 @@
     "description": ""
   },
   "notificationAutoContributeCompletedTitle": {
-    "message": "Αυτόματη Συνεισφορά",
+    "message": "Αυτόματη συνεισφορά",
     "description": ""
   },
   "notificationAutoContributeCompletedText": {
@@ -324,7 +324,7 @@
     "description": ""
   },
   "notificationTokenGrantTitle": {
-    "message": "Είναι διαθέσιμη μια επιβράβευση σε token!",
+    "message": "Είναι διαθέσιμη μια επιχορήγηση token!",
     "description": ""
   },
   "notificationAdGrantAmount": {
@@ -340,7 +340,7 @@
     }
   },
   "notificationAdGrantTitle": {
-    "message": "Οι Ανταμοιβές Διαφήμισης για τον $month$ είναι εδώ!",
+    "message": "Οι Ανταμοιβές Διαφήμισης για τον μήνα $month$ είναι εδώ!",
     "description": "",
     "placeholders": {
       "month": {
@@ -358,19 +358,19 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "Η προγραμματισμένη σου μηνιαία πληρωμή για το Auto-Contribute και τα μηνιαία tips δεν ήταν δυνατόν να ολοκληρωθεί λόγω ανεπαρκών πόρων. Θα προσπαθήσουμε ξανά μετά από 30 ημέρες.",
+    "message": "Η προγραμματισμένη σας μηνιαία πληρωμή για την Αυτόματη συνεισφορά και τα μηνιαία φιλοδωρήματα δεν ήταν δυνατόν να ολοκληρωθούν λόγω ανεπαρκών πόρων. Θα προσπαθήσουμε ξανά μετά από 30 ημέρες.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
-    "message": "Παρουσιάστηκε σφάλμα κατά την επεξεργασία της εισφοράς σου.",
+    "message": "Παρουσιάστηκε σφάλμα κατά την επεξεργασία της συνεισφοράς σας.",
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Το μηνιαίο tip απέτυχε",
+    "message": "Το μηνιαίο φιλοδώρημα απέτυχε",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
-    "message": "Συνεισφορές και συμβουλές",
+    "message": "Συνεισφορές και φιλοδωρήματα",
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
@@ -395,15 +395,15 @@
     "description": ""
   },
   "notificationPendingTipFailedText": {
-    "message": "Έχετε εκκρεμείς βραβεύσεις λόγω ανεπαρκούς υπολοίπου",
+    "message": "Έχετε εκκρεμή φιλοδωρήματα λόγω ανεπαρκούς υπολοίπου",
     "description": ""
   },
   "onboardingEarnHeader": {
-    "message": "Κερδίστε μάρκες και δώστε πίσω",
+    "message": "Κερδίστε token και ανταμείψτε",
     "description": ""
   },
   "onboardingEarnText": {
-    "message": "Κερδίστε μάρκες προβάλλοντας διαφημίσεις που σέβονται το απόρρητο και υποστηρίξτε αυτόματα τους αγαπημένους σας ιστότοπους και δημιουργούς περιεχομένου.",
+    "message": "Κερδίστε token προβάλλοντας διαφημίσεις που σέβονται το απόρρητο και υποστηρίξτε αυτόματα τους αγαπημένους σας ιστότοπους και δημιουργούς περιεχομένου.",
     "description": ""
   },
   "onboardingSetupAdsHeader": {
@@ -423,7 +423,7 @@
     "description": ""
   },
   "onboardingStartUsingRewards": {
-    "message": "Ξεκινήστε να χρησιμοποιείτε το Brave Rewards",
+    "message": "Ξεκινήστε να χρησιμοποιείτε τις Ανταμοιβές Brave",
     "description": ""
   },
   "onboardingTakeTour": {
@@ -431,7 +431,7 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "Συνεχίζοντας, συμφωνείτε με τους $tos_link_begin$Όρους Υπηρεσίας$tos_link_end$ και την $pp_link_begin$Πολιτική Απορρήτου$pp_link_end$.",
+    "message": "Συνεχίζοντας, συμφωνείτε με τους $tos_link_begin$Όρους υπηρεσίας$tos_link_end$ και την $pp_link_begin$Πολιτική απορρήτου$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -449,7 +449,7 @@
     }
   },
   "onboardingTourBack": {
-    "message": "Επιστρέψτε",
+    "message": "Πίσω",
     "description": ""
   },
   "onboardingTourBegin": {
@@ -461,7 +461,7 @@
     "description": ""
   },
   "onboardingTourDone": {
-    "message": "Έγινε",
+    "message": "Τέλος",
     "description": ""
   },
   "onboardingTourSkip": {
@@ -473,11 +473,11 @@
     "description": ""
   },
   "onboardingPanelWelcomeHeader": {
-    "message": "Καλώς ήρθατε στο Brave Rewards!",
+    "message": "Καλώς ήρθατε στις Ανταμοιβές Brave!",
     "description": ""
   },
   "onboardingPanelWelcomeText": {
-    "message": "Σε αντίθεση με τις παραδοσιακές διαφημίσεις, οι Ιδιωτικές Διαφημίσεις Brave σας ανταμείβουν με token για την υποστήριξη δημιουργών περιεχομένου, διατηρώντας ταυτόχρονα απόρρητα τα προσωπικά σας στοιχεία.",
+    "message": "Οι Ιδιωτικές διαφημίσεις Brave σας ανταμείβουν με token για την υποστήριξη των δημιουργών περιεχομένου σε αντίθεση με τις παραδοσιακές διαφημίσεις, διατηρώντας παράλληλα τα προσωπικά σας στοιχεία ιδιωτικά.",
     "description": ""
   },
   "onboardingPanelAdsHeader": {
@@ -485,15 +485,15 @@
     "description": ""
   },
   "onboardingPanelAdsText": {
-    "message": "Οι Ιδιωτικές Διαφημίσεις Brave εμφανίζονται ως κανονικές ειδοποιήσεις. Εσείς ελέγχετε πόσο συχνά βλέπετε αυτές τις διαφημίσεις στις ρυθμίσεις.",
+    "message": "Οι Ιδιωτικές διαφημίσεις Brave εμφανίζονται ως κανονικές ειδοποιήσεις. Εσείς ελέγχετε πόσο συχνά βλέπετε αυτές τις διαφημίσεις στις ρυθμίσεις.",
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Πότε λαμβάνετε τις ανταμοιβές",
+    "message": "Πότε λαμβάνετε τις ανταμοιβές;",
     "description": ""
   },
   "onboardingPanelScheduleText": {
-    "message": "Τα κερδισμένα token που αποκτήσατε από τις Ιδιωτικές Διαφημίσεις Brave κατά τη διάρκεια του τρέχοντος μήνα θα είναι διαθέσιμα στις 5 του επόμενου μήνα.",
+    "message": "Τα κερδισμένα token που αποκτήσατε από τις Ιδιωτικές διαφημίσεις Brave κατά τη διάρκεια του τρέχοντος μήνα θα είναι διαθέσιμα στις 5 του επόμενου μήνα.",
     "description": ""
   },
   "onboardingPanelAcHeader": {
@@ -513,7 +513,7 @@
     "description": ""
   },
   "onboardingPanelRedeemHeader": {
-    "message": "Τι μπορείτε να κάνετε με τις μάρκες;",
+    "message": "Τι μπορείτε να κάνετε με τα token;",
     "description": ""
   },
   "onboardingPanelRedeemText": {
@@ -525,11 +525,11 @@
     "description": ""
   },
   "onboardingPanelSetupText": {
-    "message": "Ξεκινήστε να χρησιμοποιείτε το Brave Rewards",
+    "message": "Μπορείτε να το αλλάξετε αργότερα.",
     "description": ""
   },
   "onboardingPanelCompleteHeader": {
-    "message": "Γιούπι! Είναι όλα έτοιμα!",
+    "message": "Γιούπι! Είστε πανέτοιμοι!",
     "description": ""
   },
   "onboardingPanelCompleteText": {
@@ -561,7 +561,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {
-    "message": "$link_begin$Μάθετε περισσότερα$link_end$ σχετικά με τον τρόπο σύνδεσης του Brave browser με τον λογαριασμό σας bitFlyer. ",
+    "message": "$link_begin$Μάθετε περισσότερα$link_end$ σχετικά με τον τρόπο σύνδεσης του προγράμματος περιήγησης Brave με τον λογαριασμό σας bitFlyer. ",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -573,7 +573,7 @@
     }
   },
   "captchaMaxAttemptsExceededText": {
-    "message": "Δεν φαίνεται να λειτουργεί. Οι διαφημίσεις Brave Ads θα παραμείνουν ανενεργές. Επικοινωνήστε μαζί μας, αν χρειάζεστε βοήθεια με το captcha.",
+    "message": "Δεν φαίνεται να λειτουργεί. Οι διαφημίσεις Brave θα παραμείνουν ανενεργές. Επικοινωνήστε μαζί μας, αν χρειάζεστε βοήθεια με το captcha.",
     "description": ""
   },
   "captchaMaxAttemptsExceededTitle": {
@@ -585,7 +585,7 @@
     "description": ""
   },
   "captchaSolvedText": {
-    "message": "Οι διαφημίσεις και τα κέρδη τώρα θα συνεχίσουν. Σας ευχαριστούμε που μας βοηθάτε να προστατεύσουμε το Brave Rewards και τις διαφημίσεις με βάση το απόρρητο.",
+    "message": "Οι διαφημίσεις και τα κέρδη τώρα θα συνεχίσουν. Σας ευχαριστούμε που μας βοηθάτε να προστατεύσουμε τις Αταμοιβές Brave και τις διαφημίσεις με βάση το απόρρητο.",
     "description": ""
   },
   "captchaContactSupport": {
@@ -601,7 +601,7 @@
     "description": ""
   },
   "braveTalkBraveRewardsDescription": {
-    "message": "Με τις Ανταμοιβές Brave, κερδίζετε μάρκες για την προβολή ιδιωτικών διαφημίσεων (τα δεδομένα σας είναι ασφαλή). Μετατρέψτε αυτά τα διακριτικά σε μετρητά, δωροκάρτες… ή ακόμα και συμβουλές στους ιστότοπους που αγαπάτε. Χωρίς εντοπισμό. Χωρίς καθυστερήσεις.",
+    "message": "Με τις Ανταμοιβές Brave, κερδίζετε token για την προβολή ιδιωτικών διαφημίσεων (τα δεδομένα σας είναι ασφαλή). Μετατρέψτε αυτά τα token σε μετρητά, δωροκάρτες… ή ακόμα και φιλοδωρήματα στους ιστότοπους που αγαπάτε. Χωρίς εντοπισμό. Χωρίς καθυστερήσεις.",
     "description": ""
   },
   "braveTalkTurnOnRewards": {
@@ -609,7 +609,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "Με την ενεργοποίηση, συμφωνείτε με τους $tos_link_begin$Όρους Παροχής Υπηρεσιών$tos_link_end$ και την $pp_link_begin$Πολιτική Απορρήτου$pp_link_end$.",
+    "message": "Με την ενεργοποίηση, συμφωνείτε με τους $tos_link_begin$Όρους παροχής υπηρεσιών$tos_link_end$ και την $pp_link_begin$Πολιτική απορρήτου$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -631,7 +631,7 @@
     "description": ""
   },
   "braveTalkPrivateAdsDescription": {
-    "message": "Με τις Ιδιωτικές διαφημίσεις Brave, κερδίζετε μάρκες για την προβολή ιδιωτικών διαφημίσεων (τα δεδομένα σας είναι ασφαλή). Μετατρέψτε αυτά τα διακριτικά σε μετρητά, δωροκάρτες… ή ακόμα και συμβουλές στους ιστότοπους που αγαπάτε. Χωρίς εντοπισμό. Χωρίς καθυστερήσεις.",
+    "message": "Με τις Ιδιωτικές διαφημίσεις Brave, κερδίζετε token για την προβολή ιδιωτικών διαφημίσεων (τα δεδομένα σας είναι ασφαλή). Μετατρέψτε αυτά τα token σε μετρητά, δωροκάρτες… ή ακόμα και φιλοδωρήματα στους ιστότοπους που αγαπάτε. Χωρίς εντοπισμό. Χωρίς καθυστερήσεις.",
     "description": ""
   },
   "braveTalkTurnOnPrivateAds": {
