@@ -8,6 +8,7 @@
 #include <memory>
 #include <vector>
 
+#include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/task_environment.h"
 #include "brave/components/ipfs/ipfs_constants.h"
@@ -18,6 +19,7 @@
 #include "components/version_info/channel.h"
 #include "net/base/url_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 class IpfsUtilsUnitTest : public testing::Test {
@@ -712,4 +714,50 @@ TEST_F(IpfsUtilsUnitTest, TranslateXIPFSPath) {
   ASSERT_EQ(GURL("ipns://abc"), ipfs::TranslateXIPFSPath("/ipns/abc"));
   ASSERT_FALSE(ipfs::TranslateXIPFSPath("/ipfs/"));
   ASSERT_FALSE(ipfs::TranslateXIPFSPath("/ipns/"));
+}
+
+TEST_F(IpfsUtilsUnitTest, TranslateToCurrentGatewayUrl) {
+  {
+    GURL url =
+        ipfs::TranslateToCurrentGatewayUrl(
+            GURL("https://ipfs.io/ipfs/"
+                 "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"))
+            .value();
+    EXPECT_EQ(url, GURL("ipfs://"
+                        "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy"
+                        "avhwq"));
+  }
+
+  {
+    GURL url = ipfs::TranslateToCurrentGatewayUrl(
+                   GURL("https://ipfs.io/ipfs//////"
+                        "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy"
+                        "avhwq////p1////Index.html"))
+                   .value();
+    EXPECT_EQ(url, GURL("ipfs://"
+                        "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy"
+                        "avhwq/p1/Index.html"));
+  }
+
+  {
+    GURL url = ipfs::TranslateToCurrentGatewayUrl(
+                   GURL("https://ipfs.io/ipfs////"
+                        "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy"
+                        "avhwq////p1/Index.html?a=b"))
+                   .value();
+    EXPECT_EQ(url, GURL("ipfs://"
+                        "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy"
+                        "avhwq/p1/Index.html?a=b"));
+  }
+
+  {
+    GURL url = ipfs::TranslateToCurrentGatewayUrl(
+                   GURL("https://"
+                        "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy"
+                        "avhwq.ipfs.ipfs.io/p1/Index.html?a=b"))
+                   .value();
+    EXPECT_EQ(url, GURL("ipfs://"
+                        "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy"
+                        "avhwq/p1/Index.html?a=b"));
+  }
 }

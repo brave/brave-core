@@ -94,6 +94,11 @@ int OnHeadersReceived_IPFSRedirectWork(
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
   if (!ctx->browser_context)
     return net::OK;
+
+  if (ctx->resource_type == blink::mojom::ResourceType::kSubFrame) {
+    return net::OK;
+  }
+
   auto* prefs = user_prefs::UserPrefs::Get(ctx->browser_context);
   if (IsIpfsResolveMethodDisabled(prefs)) {
     return net::OK;
@@ -104,25 +109,19 @@ int OnHeadersReceived_IPFSRedirectWork(
   if (ctx->ipfs_auto_fallback && !api_gateway && response_headers &&
       response_headers->GetNormalizedHeader("x-ipfs-path", &ipfs_path) &&
       // Make sure we don't infinite redirect
-      !ctx->request_url.DomainIs(ctx->ipfs_gateway_url.host()) &&
-      // Do not redirect if the frame is not ipfs/ipns
-      IsIPFSScheme(ctx->initiator_url)) {
-    GURL::Replacements replacements;
-    replacements.SetPathStr(ipfs_path);
+      !ctx->request_url.DomainIs(ctx->ipfs_gateway_url.host())) {
+    auto translated_url = ipfs::TranslateToCurrentGatewayUrl(ctx->request_url);
 
-    if (ctx->request_url.has_query()) {
-      replacements.SetQueryStr(ctx->request_url.query_piece());
+    if (translated_url) {
+      *override_response_headers =
+          new net::HttpResponseHeaders(response_headers->raw_headers());
+      (*override_response_headers)
+          ->ReplaceStatusLine("HTTP/1.1 307 Temporary Redirect");
+      (*override_response_headers)->RemoveHeader("Location");
+      (*override_response_headers)
+          ->AddHeader("Location", translated_url.value().spec());
+      *allowed_unsafe_redirect_url = translated_url.value();
     }
-
-    GURL new_url = ctx->ipfs_gateway_url.ReplaceComponents(replacements);
-
-    *override_response_headers =
-        new net::HttpResponseHeaders(response_headers->raw_headers());
-    (*override_response_headers)
-        ->ReplaceStatusLine("HTTP/1.1 307 Temporary Redirect");
-    (*override_response_headers)->RemoveHeader("Location");
-    (*override_response_headers)->AddHeader("Location", new_url.spec());
-    *allowed_unsafe_redirect_url = new_url;
   }
 
   return net::OK;
