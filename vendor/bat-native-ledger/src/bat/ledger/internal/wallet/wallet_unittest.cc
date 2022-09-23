@@ -72,7 +72,7 @@ TEST_F(WalletTest, CreateWallet) {
   // Create a wallet when there is no current wallet information.
   GetTestLedgerClient()->SetStringState(state::kWalletBrave, "");
   mojom::Result result = CreateWalletIfNecessary();
-  EXPECT_EQ(result, mojom::Result::WALLET_CREATED);
+  EXPECT_EQ(result, mojom::Result::LEDGER_OK);
   mojom::RewardsWalletPtr wallet = ledger->wallet()->GetWallet();
   ASSERT_TRUE(wallet);
   EXPECT_TRUE(!wallet->payment_id.empty());
@@ -81,7 +81,7 @@ TEST_F(WalletTest, CreateWallet) {
   // Create a wallet when there is corrupted wallet information.
   GetTestLedgerClient()->SetStringState(state::kWalletBrave, "BAD-DATA");
   result = CreateWalletIfNecessary();
-  EXPECT_EQ(result, mojom::Result::WALLET_CREATED);
+  EXPECT_EQ(result, mojom::Result::LEDGER_OK);
   wallet = ledger->wallet()->GetWallet();
   ASSERT_TRUE(wallet);
   EXPECT_TRUE(!wallet->payment_id.empty());

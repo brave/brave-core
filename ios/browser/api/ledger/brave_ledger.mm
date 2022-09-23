@@ -436,7 +436,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 - (void)createWallet:(void (^)(NSError* _Nullable))completion {
   const auto __weak weakSelf = self;
   // Results that can come from CreateRewardsWallet():
-  //   - WALLET_CREATED: Good to go
+  //   - LEDGER_OK: Good to go
   //   - LEDGER_ERROR: Already initialized
   //   - BAD_REGISTRATION_RESPONSE: Request credentials call failure or
   //   malformed data
@@ -448,7 +448,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
       return;
     }
     NSError* error = nil;
-    if (result != ledger::mojom::Result::WALLET_CREATED) {
+    if (result != ledger::mojom::Result::LEDGER_OK) {
       std::map<ledger::mojom::Result, std::string> errorDescriptions{
           {ledger::mojom::Result::LEDGER_ERROR,
            "The wallet was already initialized"},

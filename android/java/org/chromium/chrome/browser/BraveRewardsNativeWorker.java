@@ -48,7 +48,6 @@ public class BraveRewardsNativeWorker {
 
     public static final int LEDGER_OK = 0;
     public static final int LEDGER_ERROR = 1;
-    public static final int WALLET_CREATED = 12;
     public static final int BAT_NOT_ALLOWED = 25;
     public static final int SAFETYNET_ATTESTATION_FAILED = 27;
 
@@ -165,6 +164,12 @@ public class BraveRewardsNativeWorker {
     public boolean IsGrantClaimInProcess() {
         synchronized(lock) {
           return grantClaimInProcess;
+        }
+    }
+
+    public void CreateRewardsWallet() {
+        synchronized (lock) {
+            BraveRewardsNativeWorkerJni.get().createRewardsWallet(mNativeBraveRewardsNativeWorker);
         }
     }
 
@@ -407,13 +412,6 @@ public class BraveRewardsNativeWorker {
     public void SetAdsPerHour(int value) {
         synchronized (lock) {
             BraveRewardsNativeWorkerJni.get().setAdsPerHour(mNativeBraveRewardsNativeWorker, value);
-        }
-    }
-
-    public boolean isRewardsEnabled() {
-        synchronized (lock) {
-            return BraveRewardsNativeWorkerJni.get().isRewardsEnabled(
-                    mNativeBraveRewardsNativeWorker);
         }
     }
 
@@ -731,11 +729,11 @@ public class BraveRewardsNativeWorker {
         void fetchGrants(long nativeBraveRewardsNativeWorker);
         int getAdsPerHour(long nativeBraveRewardsNativeWorker);
         void setAdsPerHour(long nativeBraveRewardsNativeWorker, int value);
-        boolean isRewardsEnabled(long nativeBraveRewardsNativeWorker);
         void getExternalWallet(long nativeBraveRewardsNativeWorker);
         void disconnectWallet(long nativeBraveRewardsNativeWorker);
         void recoverWallet(long nativeBraveRewardsNativeWorker, String passPhrase);
         void refreshPublisher(long nativeBraveRewardsNativeWorker, String publisherKey);
+        void createRewardsWallet(long nativeBraveRewardsNativeWorker);
         void getRewardsParameters(long nativeBraveRewardsNativeWorker);
         void setAutoContributeEnabled(
                 long nativeBraveRewardsNativeWorker, boolean isSetAutoContributeEnabled);

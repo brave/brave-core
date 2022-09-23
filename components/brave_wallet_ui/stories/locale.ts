@@ -663,12 +663,13 @@ provideStrings({
   braveWalletTransactionFailedNextCTA: 'New transaction',
   braveWalletTransactionFailedViewErrorCTA: 'View error',
   braveWalletTransactionFailedReceiptCTA: 'Receipt',
-  braveWalletTransactionFailedModalTitle: 'Error code',
+  braveWalletTransactionFailedModalTitle: 'Error message',
+  braveWalletTransactionFailedModalSubtitle: 'Please save the error message for future reference.',
 
   // Complete
   braveWalletTransactionCompleteSwapHeaderTitle: 'Swapped $1 to $2',
   braveWalletTransactionCompleteTitle: 'Transaction complete!',
-  braveWalletTransactionCompleteSwapDescription: '$1 has been successfully deposited into your wallet.',
+  braveWalletTransactionCompleteDescription: 'Transaction was successful. Please wait for confirmations, to avoid the risk of double-spend.',
   braveWalletTransactionCompleteReceiptCTA: 'Receipt',
 
   // Confirming
@@ -676,6 +677,11 @@ provideStrings({
   // [FIXME]: change the wording after ETH2.
   braveWalletTransactionConfirmingDescription: 'Transaction was successfully included in a block. To avoid the risk of double spending, we recommend waiting for block confirmations.',
   braveWalletTransactionConfirmingText: 'Confirming',
+
+  // Transaction intents for confirmation panels
+  braveWalletTransactionIntentDappInteraction: 'Dapp interaction',
+  braveWalletTransactionIntentSend: 'Send $1',
+  braveWalletTransactionIntentSwap: 'Swap $1 to $2',
 
   // Solana ProgramID Names
   braveWalletSolanaSystemProgram: 'System Program',

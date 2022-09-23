@@ -74,8 +74,8 @@ public class NTPUtil {
         new HashMap<String, SoftReference<Bitmap>>();
 
     public static void turnOnAds() {
+        BraveRewardsNativeWorker.getInstance().CreateRewardsWallet();
         BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
-        BraveRewardsNativeWorker.getInstance().SetAutoContributeEnabled(true);
     }
 
     public static int checkForNonDisruptiveBanner(NTPImage ntpImage, SponsoredTab sponsoredTab) {

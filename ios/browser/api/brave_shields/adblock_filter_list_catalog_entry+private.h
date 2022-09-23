@@ -16,7 +16,8 @@ class FilterListCatalogEntry;
 NS_ASSUME_NONNULL_BEGIN
 
 @interface AdblockFilterListCatalogEntry (Private)
-- (instancetype)initWithFilterList:(brave_shields::FilterListCatalogEntry)entry;
+- (instancetype)initWithFilterListCatalogEntry:
+    (brave_shields::FilterListCatalogEntry)entry;
 - (brave_shields::FilterListCatalogEntry)entry;
 @end
 

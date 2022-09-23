@@ -197,17 +197,12 @@ export function getGrants () {
 
 export function getRewardsEnabled () {
   return new Promise<boolean>((resolve) => {
-    // Currently, we must use the |showShowOnboarding| function to infer whether
-    // the user has enabled rewards.
-    chrome.braveRewards.shouldShowOnboarding((showOnboarding) => {
-      resolve(!showOnboarding)
-    })
+    chrome.braveRewards.getRewardsEnabled(resolve)
   })
 }
 
 export function onRewardsEnabled (callback: () => void) {
-  // The extension does not currently support an |onRewardsEnabled| function.
-  chrome.braveRewards.onAdsEnabled.addListener(() => { callback() })
+  chrome.braveRewards.onRewardsWalletUpdated.addListener(() => { callback() })
 }
 
 function getMonthlyTipAmount (publisherKey: string) {

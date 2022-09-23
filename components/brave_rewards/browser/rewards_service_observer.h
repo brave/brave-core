@@ -24,6 +24,10 @@ class RewardsServiceObserver : public base::CheckedObserver {
   virtual void OnRewardsInitialized(
       RewardsService* rewards_service) {}
 
+  // Called when the user's Rewards wallet information has been created or
+  // updated.
+  virtual void OnRewardsWalletUpdated() {}
+
   virtual void OnFetchPromotions(
       RewardsService* rewards_service,
       const ledger::mojom::Result result,
@@ -91,6 +95,11 @@ class RewardsServiceObserver : public base::CheckedObserver {
   virtual void ReconcileStampReset() {}
 
   virtual void OnCompleteReset(const bool success) {}
+
+  virtual void OnPanelPublisherInfo(RewardsService* rewards_service,
+                                    const ledger::mojom::Result result,
+                                    const ledger::mojom::PublisherInfo* info,
+                                    uint64_t windowId) {}
 
   // DO NOT ADD ANY MORE METHODS HERE UNLESS IT IS A BROADCAST NOTIFICATION
   // RewardsServiceObserver should not be used to return responses to the

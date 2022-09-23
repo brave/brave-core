@@ -57,9 +57,11 @@ class MockRewardsServiceObserver : public RewardsServiceObserver {
                     std::vector<ledger::mojom::PublisherInfoPtr> list));
   MOCK_METHOD2(OnPublisherBanner,
                void(RewardsService*, ledger::mojom::PublisherBannerPtr banner));
-  MOCK_METHOD4(
-      OnPanelPublisherInfo,
-      void(RewardsService*, int, ledger::mojom::PublisherInfoPtr, uint64_t));
+  MOCK_METHOD4(OnPanelPublisherInfo,
+               void(RewardsService*,
+                    ledger::mojom::Result,
+                    const ledger::mojom::PublisherInfo*,
+                    uint64_t));
   MOCK_METHOD2(OnAdsEnabled, void(RewardsService*, bool));
 };
 

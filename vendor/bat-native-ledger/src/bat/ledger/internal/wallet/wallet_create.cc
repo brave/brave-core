@@ -48,7 +48,7 @@ void WalletCreate::Start(ledger::ResultCallback callback) {
 
   if (!wallet->payment_id.empty()) {
     BLOG(1, "Wallet already exists");
-    std::move(callback).Run(mojom::Result::WALLET_CREATED);
+    std::move(callback).Run(mojom::Result::LEDGER_OK);
     return;
   }
 
@@ -81,7 +81,7 @@ void WalletCreate::OnCreate(ledger::ResultCallback callback,
     ledger_->state()->SetPromotionCorruptedMigrated(true);
   }
   ledger_->state()->SetCreationStamp(util::GetCurrentTimeStamp());
-  std::move(callback).Run(mojom::Result::WALLET_CREATED);
+  std::move(callback).Run(mojom::Result::LEDGER_OK);
 }
 
 }  // namespace wallet

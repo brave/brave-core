@@ -395,8 +395,11 @@ export function createHost (): Host {
     getString,
 
     enableRewards () {
-      chrome.braveRewards.enableRewards()
-      stateManager.update({ rewardsEnabled: true })
+      chrome.braveRewards.createRewardsWallet((errorCode) => {
+        if (!errorCode) {
+          stateManager.update({ rewardsEnabled: true })
+        }
+      })
     },
 
     openAdaptiveCaptchaSupport () {

@@ -106,7 +106,6 @@ declare namespace RewardsExtension {
     NOT_FOUND = 9,
     REGISTRATION_VERIFICATION_FAILED = 10,
     BAD_REGISTRATION_RESPONSE = 11,
-    WALLET_CREATED = 12,
     WALLET_CORRUPT = 17
   }
 

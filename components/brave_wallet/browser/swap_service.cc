@@ -49,7 +49,8 @@ bool IsMainnetEVMNetworkSupported(const std::string& chain_id) {
           chain_id == brave_wallet::mojom::kAvalancheMainnetChainId ||
           chain_id == brave_wallet::mojom::kFantomMainnetChainId ||
           chain_id == brave_wallet::mojom::kCeloMainnetChainId ||
-          chain_id == brave_wallet::mojom::kOptimismMainnetChainId);
+          chain_id == brave_wallet::mojom::kOptimismMainnetChainId ||
+          chain_id == brave_wallet::mojom::kArbitrumMainnetChainId);
 }
 
 bool IsEVMNetworkSupported(const std::string& chain_id) {
@@ -176,6 +177,8 @@ std::string SwapService::GetBaseSwapURL(const std::string& chain_id) {
     url = brave_wallet::kCeloSwapBaseAPIURL;
   } else if (chain_id == brave_wallet::mojom::kOptimismMainnetChainId) {
     url = brave_wallet::kOptimismSwapBaseAPIURL;
+  } else if (chain_id == brave_wallet::mojom::kArbitrumMainnetChainId) {
+    url = brave_wallet::kArbitrumSwapBaseAPIURL;
   } else if (chain_id == brave_wallet::mojom::kSolanaMainnet) {
     url = brave_wallet::kSolanaSwapBaseAPIURL;
   }

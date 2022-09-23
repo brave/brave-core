@@ -15,7 +15,6 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
-#include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_notification_types.h"
@@ -78,13 +77,10 @@ RewardsServiceFactory::RewardsServiceFactory()
 KeyedService* RewardsServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   std::unique_ptr<RewardsServiceObserver> extension_observer = nullptr;
-  std::unique_ptr<RewardsServicePrivateObserver> private_observer = nullptr;
   std::unique_ptr<RewardsNotificationServiceObserver> notification_observer =
       nullptr;
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   extension_observer = std::make_unique<ExtensionRewardsServiceObserver>(
-      Profile::FromBrowserContext(context));
-  private_observer = std::make_unique<ExtensionRewardsServiceObserver>(
       Profile::FromBrowserContext(context));
   notification_observer =
       std::make_unique<ExtensionRewardsNotificationServiceObserver>(
@@ -100,7 +96,6 @@ KeyedService* RewardsServiceFactory::BuildServiceInstanceFor(
       new RewardsServiceImpl(Profile::FromBrowserContext(context)));
 #endif
   rewards_service->Init(std::move(extension_observer),
-                        std::move(private_observer),
                         std::move(notification_observer));
   return rewards_service.release();
 }

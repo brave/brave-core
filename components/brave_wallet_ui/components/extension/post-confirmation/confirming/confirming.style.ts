@@ -12,13 +12,13 @@ export const ConfirmingIcon = styled(TransactionStatusIcon)`
 `
 
 export const Title = styled(TransactionStatusText)`
-  color: ${(p) => p.theme.color.text01};
+  color: ${p => p.theme.color.text01};
 `
 
 export const ConfirmingText = styled.div`
   position: relative;
   top: 40px;
-  
+
   font-family: 'Poppins';
   font-style: normal;
   font-weight: 400;
@@ -34,7 +34,7 @@ export const ConfirmingText = styled.div`
 export const ConfirmationsNumber = styled.div`
   position: relative;
   top: 42px;
-  
+
   font-family: 'Poppins';
   font-style: normal;
   font-weight: 600;

@@ -182,6 +182,32 @@ class BraveRewardsGetRewardsParametersFunction : public ExtensionFunction {
   void OnGetRewardsParameters(ledger::mojom::RewardsParametersPtr parameters);
 };
 
+class BraveRewardsCreateRewardsWalletFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.createRewardsWallet", UNKNOWN)
+
+ protected:
+  ~BraveRewardsCreateRewardsWalletFunction() override;
+
+  ResponseAction Run() override;
+
+ private:
+  void CreateRewardsWalletCallback(ledger::mojom::Result result);
+};
+
+class BraveRewardsGetRewardsWalletFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getRewardsWallet", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetRewardsWalletFunction() override;
+
+  ResponseAction Run() override;
+
+ private:
+  void GetRewardsWalletCallback(ledger::mojom::RewardsWalletPtr rewards_wallet);
+};
+
 class BraveRewardsGetBalanceReportFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getBalanceReport", UNKNOWN)
@@ -484,16 +510,6 @@ class BraveRewardsIsInitializedFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsShouldShowOnboardingFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.shouldShowOnboarding", UNKNOWN)
-
- protected:
-  ~BraveRewardsShouldShowOnboardingFunction() override;
-
-  ResponseAction Run() override;
-};
-
 class BraveRewardsGetScheduledCaptchaInfoFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getScheduledCaptchaInfo", UNKNOWN)
@@ -512,16 +528,6 @@ class BraveRewardsUpdateScheduledCaptchaResultFunction
 
  protected:
   ~BraveRewardsUpdateScheduledCaptchaResultFunction() override;
-
-  ResponseAction Run() override;
-};
-
-class BraveRewardsEnableRewardsFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.enableRewards", UNKNOWN)
-
- protected:
-  ~BraveRewardsEnableRewardsFunction() override;
 
   ResponseAction Run() override;
 };

@@ -73,10 +73,17 @@ export function wireApiEventsToStore () {
 }
 
 export function rewardsInitData () {
-  getRewardsPreInitialData()
-  .then((preInitialRewardsData) => {
+  getRewardsPreInitialData().then((preInitialRewardsData) => {
     getActions().setPreInitialRewardsData(preInitialRewardsData)
-    fetchRewardsData()
+
+    chrome.braveRewards.isInitialized((isInitialized) => {
+      if (isInitialized) {
+        getRewardsInitialData().then((data) => {
+          getActions().setInitialRewardsData(data)
+        })
+      }
+    })
+
     setRewardsFetchInterval()
   })
   .catch(e => {
@@ -84,31 +91,30 @@ export function rewardsInitData () {
   })
 }
 
+let intervalId = 0
 function setRewardsFetchInterval () {
-  window.setInterval(() => {
-    fetchRewardsData()
-  }, 30000)
+  if (!intervalId) {
+    intervalId = window.setInterval(() => { fetchRewardsData() }, 30000)
+  }
 }
 
 function fetchRewardsData () {
-  chrome.braveRewards.isInitialized((initialized: boolean) => {
-    if (!initialized) {
+  chrome.braveRewards.isInitialized((isInitialized) => {
+    if (!isInitialized) {
       return
     }
 
-    getRewardsInitialData()
-    .then((initialRewardsData) => {
-      getActions().setInitialRewardsData(initialRewardsData)
-    })
-    .catch(e => {
-      console.error('Error fetching initial rewards data: ', e)
-    })
+    Promise.all([getRewardsPreInitialData(), getRewardsInitialData()]).then(
+      ([preInitialData, initialData]) => {
+        getActions().setPreInitialRewardsData(preInitialData)
+        getActions().setInitialRewardsData(initialData)
+      })
   })
 }
 
-chrome.braveRewards.initialized.addListener((result: any | NewTab.RewardsResult) => {
-  fetchRewardsData()
-})
+chrome.braveRewards.initialized.addListener(fetchRewardsData)
+
+chrome.braveRewards.onRewardsWalletUpdated.addListener(fetchRewardsData)
 
 chrome.braveRewards.onAdsEnabled.addListener((enabled: boolean) => {
   getActions().onAdsEnabled(enabled)
