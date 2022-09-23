@@ -80,11 +80,6 @@
 <translation id="3161744659507801211">警告：Braveは拡張機能が閲覧履歴を記録するのを防ぐことはできません。</translation>
 <translation id="2162109630536601963">この拡張機能がネットワーク要求を行う場合、Torまたはプライベートモードは使用されません。</translation>
 <translation id="2725327089319971976">プライベートモードとTorモードでこの拡張機能を無効にするには、このオプションの選択を解除します。</translation>
-<translation id="5057399635433117814">このページを翻訳しますか？このページのテキストはマイクロソフトに送られて翻訳されます。</translation>
-<translation id="330263065709195164">Google翻訳拡張機能をインストールしてこのページを翻訳しますか。</translation>
-<translation id="3789841737615482174">インストール</translation>
-<translation id="7658239707568436148">キャンセル</translation>
-<translation id="1307431692088049276">次回から質問しない</translation>
 <translation id="3371343170427636147">Brave Nightly</translation>
 <translation id="4097979995947147464">Brave Beta</translation>
 <translation id="8303432794159193481">Brave Dev</translation>
@@ -107,9 +102,11 @@
 <translation id="7276554663454265692"><ph name="SETTING_TEXT"/>はブラウザ設定でいつでも変更できます。</translation>
 <translation id="6873781976650514089">この設定</translation>
 <translation id="8915916167043355778">すべてを閉じる</translation>
+<translation id="7658239707568436148">Cancel</translation>
 <translation id="4870911314065352661">すべてのタブを閉じますか？</translation>
 <translation id="7551864359422178684">このブラウザウィンドウで<ph name="NUMBER_OF_TABS"/>個のタブを開いています。</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/>個のタブ</translation>
+<translation id="1307431692088049276">次回から質問しない</translation>
 <translation id="2272117088509540883">- Brave Search</translation>
 <translation id="2701279958223202597">よりプライバシーが保護され、ビッグテックに依存しない検索をサポートしてください。Brave Searchは、お客様の情報や検索したクエリ、クリックを追跡することはありません。</translation>
 <translation id="6438467592401259882">よりプライバシーが保護され、ビッグテックに依存しない検索をサポートしてください。</translation>
@@ -126,7 +123,15 @@
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">Brave Search の改善のために匿名の検索ブラウジングデータを提供します。</translation>
 <translation id="1516554614404600536">Braveのツールヒント</translation>
+<translation id="7986278174934557414">サイドパネルのアイコンを非表示</translation>
+<translation id="6915291874524466201">サイドパネルのアイコンを非表示</translation>
+<translation id="9149866541089851383">編集...</translation>
 <translation id="1181037720776840403">削除</translation>
+<translation id="7513769021866698486">アイテムを編集</translation>
+<translation id="4002066346123236978">タイトル</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="5877900074358050101">サイドバーアイテムのタイトル</translation>
+<translation id="1613695740874407223">サイドバーアイテムのURL</translation>
 <translation id="4877147287319222750">サイドバーに追加</translation>
 <translation id="5404213409401164238">サイドバーを表示</translation>
 <translation id="7561196759112975576">常に</translation>
@@ -201,6 +206,7 @@
 <translation id="2370739752330685659">あとで</translation>
 <translation id="961012016278832836">Microsoft Edgeレガシー</translation>
 <translation id="6436994631426134065"><ph name="BROWSER_NAME"/>からインポート</translation>
+<translation id="1506190932569739298">クリーンリンクをコピー（メインURLのみ）</translation>
 <translation id="9156965752763025780">変更内容は次に Brave を再起動したときに有効になります。</translation>
 <translation id="7179921470347911571">今すぐ再起動</translation>
 <translation id="4472575034687746823">Get started</translation>
@@ -220,6 +226,7 @@
 <translation id="4096343215397759358">プレビュー付きカード</translation>
 <translation id="5297085818601043899">ツールヒント</translation>
 <translation id="2396127686705429331">ブックマークボタンを表示する</translation>
+<translation id="2369560305991805099">サイドパネルのボタンを表示</translation>
 <translation id="2814998458708016836">ワイドアドレスバーを使用する</translation>
 <translation id="4109670531935487117">アドレスバー入力中に自動でサイト候補を表示</translation>
 <translation id="2858138569776157458">トップサイトをサイト候補に含める</translation>
@@ -242,8 +249,8 @@
 <translation id="6303294677342628402">Shields</translation>
 <translation id="7133511168130368997">しつこく追跡してくるトラッカーや不快な広告をブロックできます。</translation>
 <translation id="2761825942249694703">これはShieldsのデフォルト設定です。特定のサイト上のShieldsパネルで変更しない限り、すべてのウェブサイトにこの設定が適用されます。この設定を変更しても、既存のサイト設定には影響しません。</translation>
-<translation id="1485394570478670912">これにより、ウェブサイトのほとんどの広告がブロックされます。ただし、Brave Private Adsは以下で制御されます —</translation>
-<translation id="6388201778088078932">設定で管理できます。</translation>
+<translation id="1435116578479068303">ウェブサイト上のほとんどの広告をブロックします。ただし、<ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/>の設定で制御されるBraveプライベート広告はブロックされません。</translation>
+<translation id="8452536890042542134">ウェブサイト上でほとんどの広告をブロックします。</translation>
 <translation id="4800195524776354947">シールドアイコン上でブロックされているアイテムの数を表示</translation>
 <translation id="5510493033031835532">AMPページを自動でリダイレクト</translation>
 <translation id="7630031867325944356">AMPや類似のバージョンではなく、パブリッシャーページのURLを優先します。</translation>
@@ -394,12 +401,12 @@
 <translation id="6554397389149987360">ハングアウトコンポーネントでスクリーン共有やその他の機能を有効にします</translation>
 <translation id="7878791177459550035">メディアルーターは、ブラウザのキャスト機能を有効にします。</translation>
 <translation id="5927916530277631319">「Unstoppable Domains」を解決する方法</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>こちら<ph name="END_LINK"/>からDNS over HTTPSとイーサリアムのプライバシーに関連する考慮事項を確認できます。</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>こちら<ph name="END_LINK"/>でイーサリアムのプライバシーに関する考慮事項をご確認ください。</translation>
 <translation id="5248318250177143470">イーサリアムネームサービス（ENS）を解決する方法</translation>
 <translation id="6241402707160226266">Tor搭載のプライベートウィンドウ</translation>
 <translation id="8762452230727230396">Torは訪問サイトからあなたのIPアドレスを隠します。</translation>
 <translation id="2959986444009520721">ブリッジの使用</translation>
-<translation id="6003484976430531384">ブリッジはTorがブロックされている場所でTorネットワークにアクセスするのに役立ちます。あなたがいる場所によって、あるブリッジは他のブリッジよりうまく機能するかもしれません。</translation>
+<translation id="8416750895933172460">ブリッジは、Torがブロックされている場所でTorネットワークにアクセスするのに役立ちます。いる場所によって、よく機能するブリッジが異なる場合があります。</translation>
 <translation id="7206799843254049470">Tor接続設定</translation>
 <translation id="3194502271166340944">プライベートウィンドウのTorネットワークへの接続方法を制御します。</translation>
 <translation id="4859228830700205299">内蔵ブリッジを選択</translation>
@@ -416,7 +423,7 @@
 <translation id="6936835573742749135">CAPTCHAを要求できません。後で再試行してください。</translation>
 <translation id="2653659639078652383">送信</translation>
 <translation id="1369311132025451972">.onionサイトに自動的にリダイレクトします</translation>
-<translation id="2843777623071353503">Braveは、利用可能な場合はウェブサイトのオニオンサービスを開くか、またはTorウィンドウで.onionドメインを開きます。</translation>
+<translation id="1658670175365815312">Braveは、利用可能な場合は.onionバージョンのウェブサイトに切り替え、自動的にTorウィンドウですべての.onionドメインを開きます。</translation>
 <translation id="2896916411183256228">WebTorrentを有効にして、直接Torrentファイルやマグネットリンクを表示</translation>
 <translation id="5249433283143453448">Widevineデジタル著作権管理 (DRM) コンポーネントを使用して、保護されたストリーミング動画と他のコンテンツをブラウザで表示しましょう。</translation>
 <translation id="8137559199583651773">拡張機能を管理</translation>
@@ -442,14 +449,16 @@
 <translation id="3752403403443723332">ウォレットをリセットしました。</translation>
 <translation id="594766067816395072">ウォレットのトランザクション情報をリセットしました。</translation>
 <translation id="1426410128494586442">はい</translation>
-<translation id="2556708692502648323">ウォレットネットワーク</translation>
+<translation id="4226543734057230801">Ethereumネットワーク</translation>
+<translation id="3504157706952484145">Filecoinネットワーク</translation>
+<translation id="1561541094377237745">Solanaネットワーク</translation>
 <translation id="3159419679550543837">テストネットワークを表示</translation>
-<translation id="8205945804087322170">新しいネットワークを追加</translation>
-<translation id="1330032157352961756">新規チェーンID</translation>
+<translation id="3215569562674795548">編集または新しいネットワークを追加</translation>
+<translation id="4418993400653250511">チェーンID</translation>
 <translation id="3423620355610881890">正の10進数</translation>
 <translation id="8110465398315041268">ネットワークを検索</translation>
 <translation id="3579705520805744214">チェーン ID または氏名</translation>
-<translation id="726121047592132939">新規チェーン名</translation>
+<translation id="8502525913969149079">チェーン名</translation>
 <translation id="1034112277864078119">チェーン名を入力</translation>
 <translation id="4672314527143443556">チェーンの通貨名</translation>
 <translation id="4652114030688989556">暗号資産名を入力</translation>

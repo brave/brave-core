@@ -136,7 +136,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="4065288863231444640">Let Brave Run in the Background</translation>
 <translation id="8148611988012584308">Customise and control Brave</translation>
 <translation id="4427306783828095590">Enhanced protection does more to block phishing and malware</translation>
-<translation id="5112116809696021727">To see if your device is up to date, go to <ph name="LINK_BEGIN"/>Chrome OS Settings<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Welcome to Brave; new browser window opened</translation>
 <translation id="2633397153656205379">Brave didn't update. Something went wrong. <ph name="BEGIN_LINK"/>Fix Brave update problems and failed updates.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Continue in a new Brave profile?</translation>
@@ -298,8 +297,6 @@ Brave is unable to recover your settings.</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>How you can manage your data:<ph name="END_BOLD"/> To protect your privacy, we auto-delete your interests that are older than four weeks. As you keep browsing, an interest might appear on the list again. Or you can remove interests that you don’t want Brave to consider.</translation>
 <translation id="2925193881330501265">You were signed in to Brave as <ph name="USER_EMAIL_ADDRESS"/>. Please use the same account to sign in again.</translation>
 <translation id="6915252145142862992">This is a secondary installation of Brave, and cannot be made your default browser.</translation>
-<translation id="1975057837349076194">If a setting doesn't show on this page, look in your <ph name="LINK_BEGIN"/>
-      Chrome OS settings<ph name="LINK_END"/></translation>
 <translation id="7685904775439037072">Once Brave has access, websites will be able to ask you for access.</translation>
 <translation id="80471789339884597">Thanks for installing. You must restart all your browsers before using <ph name="BUNDLE_NAME"/>.</translation>
 <translation id="2061155704815580583">Brave needs location permission for this site</translation>

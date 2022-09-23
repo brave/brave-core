@@ -136,7 +136,6 @@
 <translation id="4065288863231444640">Deixar que Brave se execute en segundo plano</translation>
 <translation id="8148611988012584308">Personaliza e controla Brave</translation>
 <translation id="4427306783828095590">A protección mellorada é máis eficaz á hora de bloquear o phishing e o software malicioso</translation>
-<translation id="5112116809696021727">Para ver ser o teu dispositivo está actualizado, accede á <ph name="LINK_BEGIN"/>configuración de Chrome OS<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Dámosche a benvida a Brave. Abriuse unha nova ventá do navegador</translation>
 <translation id="2633397153656205379">Brave non se actualizou, xa que se produciu un erro. <ph name="BEGIN_LINK"/>Soluciona os problemas de actualización de Brave e as actualizacións que non se puidesen realizar<ph name="END_LINK"/>.</translation>
 <translation id="3679799810790990472">Queres continuar nun perfil de Brave novo?</translation>
@@ -270,7 +269,7 @@ Brave non pode recuperar a túa configuración.</translation>
 <translation id="939305735877869636">Brave</translation>
 <translation id="7339898014177206373">Nova ventá</translation>
 <translation id="3511996232906761537">Aquí podes atopar as túas páxinas web, marcadores e outros contidos de Brave.</translation>
-<translation id="5380963249588143069">O teu administrador do sistema configurou Brave para abrir o navegador <ph name="TARGET_URL_HOSTNAME"/> co obxectivo de acceder a <ph name="ALTERNATIVE_BROWSER_NAME"/>.</translation>
+<translation id="5380963249588143069">A persoa que administra o teu sistema configurou Brave para abrir o navegador <ph name="TARGET_URL_HOSTNAME"/> co obxectivo de acceder a <ph name="ALTERNATIVE_BROWSER_NAME"/>.</translation>
 <translation id="38294420683216447">Cos perfís de Brave podes separar todas as cousas que teñas neste navegador. Así é máis sinxelo separar o traballo do lecer.</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> (Brave para programadores)</translation>
 <translation id="2034072705932785495">Brave necesita permiso para acceder á cámara neste sitio</translation>
@@ -298,7 +297,6 @@ Brave non pode recuperar a túa configuración.</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Como podes xestionar os teus datos?<ph name="END_BOLD"/> Para protexer a túa privacidade, eliminamos automaticamente os teus intereses cuxa antigüidade sexa superior a 4 semanas. Algúns poderían volver incluírse na lista ao seguires navegando. Se o prefires, podes quitar os intereses que non queiras que teña en conta Brave.</translation>
 <translation id="2925193881330501265">Iniciaches sesión en Brave como <ph name="USER_EMAIL_ADDRESS"/>. Utiliza a mesma conta para iniciar sesión de novo.</translation>
 <translation id="6915252145142862992">Esta é unha instalación secundaria de Brave e non se pode converter no teu navegador predeterminado.</translation>
-<translation id="1975057837349076194">Se non se mostra algunha opción de configuración nesta páxina, accede á <ph name="LINK_BEGIN"/>configuración de Chrome OS<ph name="LINK_END"/></translation>
 <translation id="7685904775439037072">Unha vez que Brave teña acceso, os sitios web poderán solicitalo tamén.</translation>
 <translation id="80471789339884597">Grazas por levar a cabo a instalación. Para utilizar <ph name="BUNDLE_NAME"/>, debes reiniciar todos os teus navegadores.</translation>
 <translation id="2061155704815580583">Brave necesita permiso de acceso á localización para este sitio</translation>
@@ -346,7 +344,7 @@ Brave non pode recuperar a túa configuración.</translation>
 <translation id="7863882214613921971">Abrir ligazón nunha nova &amp;pestana de Brave</translation>
 <translation id="911206726377975832">Queres eliminar tamén os teus datos de navegación?</translation>
 <translation id="5708733457516068434">Durante as probas, podes ver e eliminar temas de interese que usan os sitios para mostrarche anuncios. Brave estima os teus intereses en función do teu historial de navegación recente.</translation>
-<translation id="2444257125841652328">O teu administrador do sistema configurou Brave para abrir outro navegador co obxectivo de acceder a <ph name="TARGET_URL_HOSTNAME"/>.</translation>
+<translation id="2444257125841652328">A persoa que administra o teu sistema configurou Brave para abrir outro navegador co obxectivo de acceder a <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="7902365066753170041">Reiniciar para actualizar &amp;Brave</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">É posible que Brave non funcione correctamente porque xa non admite Windows XP nin Windows Vista</translation>

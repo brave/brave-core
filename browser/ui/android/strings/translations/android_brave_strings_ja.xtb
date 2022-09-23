@@ -93,6 +93,7 @@
 <translation id="3545804467215833536">タップしてBraveシールドを表示</translation>
 <translation id="1724327820822194498">シールドを使うと、Braveでブロックされたすべてのアイテムを確認できます。</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> およびその他 <ph name="TRACKER"/> 件の広告 &amp; トラッカーをブロックしました</translation>
+<translation id="7256200875155794202"><ph name="BIG_TECH"/>などの広告 &amp; トラッカーをブロックしました</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> 個の広告 &amp; トラッカーをブロックしました</translation>
 <translation id="8281886186245836920">スキップ</translation>
 <translation id="6165508094623778733">詳しく知る</translation>
@@ -117,6 +118,9 @@
 <translation id="19715420010996093">Braveブラウザーを選択して[常に]をタップします</translation>
 <translation id="3546439402724649282">Braveは、すでにデフォルトブラウザとして設定されています。</translation>
 <translation id="8389661903259423907">すでにデフォルトブラウザが設定されています。アプリの設定でデフォルトブラウザを変更するこができます。</translation>
+<translation id="1545749641540134597">Scan QR Code</translation>
+<translation id="5317781812114905957">手順</translation>
+<translation id="8515319483805157233">QRコードで検索するには、フレームの中心にQRコードを合わせます。</translation>
 <translation id="8826007068782654809">ありがとうございます</translation>
 <translation id="6665366815203065060">チップを送りました! 宛先 :</translation>
 <translation id="5441565662498481293">チップの毎月定期支払い設定が完了しました! 宛先:</translation>
@@ -393,35 +397,11 @@
 <translation id="8376263745431603066">「ナイトモード」を有効にする（実験的）</translation>
 <translation id="1383876407941801731">検索</translation>
 <translation id="8446884382197647889">詳しく知る</translation>
-<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
-<translation id="558614325644656740">利用可能な <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="3414885529641505869">購入 <ph name="COIN_NAME"/></translation>
-<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> デポジットアドレス</translation>
-<translation id="4836242416604533644"><ph name="COIN_MEMO"/> デポジットメモ</translation>
-<translation id="6755546361496900700">両替の内容を確認する</translation>
-<translation id="5110244215256675209">暗号資産を購入</translation>
-<translation id="2271556362602437160">.com</translation>
-<translation id="3727077517986954867">.us</translation>
 <translation id="13296465911709339">テキストがクリップボードにコピーされました。</translation>
 <translation id="2735834606413553397">パブリックアドレスをクリップボードにコピーしました。</translation>
-<translation id="7144878232160441200">再試行</translation>
 <translation id="2977461003134694205">プライバシー統計</translation>
-<translation id="2956070106555335453">サマリ</translation>
-<translation id="1366855498335432549">預金</translation>
-<translation id="1301340234286078471">両替</translation>
 <translation id="223536150967420869">購入</translation>
-<translation id="4584930231524505442">両替する:</translation>
-<translation id="5749014321384313843">購入する:</translation>
-<translation id="2480674848181564169">両替のための十分な残高がありません</translation>
-<translation id="2215334405220411393">両替する最小額は : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6702658079816271889">接続できません</translation>
-<translation id="7742417737698031726">料金</translation>
-<translation id="2122225204180056042">以下の資産を受け取ります</translation>
-<translation id="6432284126416751397">両替を確認する</translation>
-<translation id="3891414008432200754">価格</translation>
-<translation id="3733576242118819803">確認 (<ph name="REMAINING_TIME"/>秒)</translation>
-<translation id="1627064138060308910">両替に失敗しました。 もう一度やり直してください。</translation>
-<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="2956070106555335453">サマリ</translation>
 <translation id="7465614181960492526">トークンを獲得してクリエイターを支援する</translation>
 <translation id="244362569344671266">プライバシーを尊重したBrave広告を表示することでトークンを獲得し、コンテンツクリエイターを自動的にサポートします。</translation>
 <translation id="631124996535890460">続行することと、<ph name="TERMS_OF_SERVICE"/>および<ph name="PRIVACY_POLICY"/>に同意したことになります。</translation>
@@ -452,18 +432,6 @@
 <translation id="2434574859640694129">最初の広告の支払いを受け取ったら、ここからこのクリエイターにチップを渡すことができます！</translation>
 <translation id="207242986925259074">クイックリフレッシャーツアー</translation>
 <translation id="8342862030112839977">初めて報酬が支払われる日付:</translation>
-<translation id="8037420924417098685">無料通話を開始するには、Brave Rewards を有効にします</translation>
-<translation id="8961724619078500274">Brave Rewards を使用すると、プライバシーが保護された広告を表示してトークンを獲得できます (あなたのデータが漏洩することはありません。)。そのトークンを現金やギフトカードに変えたり、お気に入りのウェブサイトにチップを渡したりすることもできます。これによって追跡や遅延が発生することはありません。</translation>
-<translation id="7307847920988946894">「Rewards」をオンにする</translation>
-<translation id="7872993190040589450">有効にすると、<ph name="TERMS_OF_SERVICE"/>および<ph name="PRIVACY_POLICY"/>に同意したことになります。</translation>
-<translation id="6128511569382736135">無料通話を開始するには、Brave Private Ads を有効にします</translation>
-<translation id="7930006085154756245">Brave Private Ads を使用すると、プライバシーが保護された広告を表示してトークンを獲得できます (あなたのデータが漏洩することはありません)。そのトークンを現金やギフトカードに変えたり、お気に入りのウェブサイトにチップを渡したりすることもできます。これによって追跡や遅延が発生することはありません。</translation>
-<translation id="4992617448154987397">Brave Private Ads を有効にする</translation>
-<translation id="3415016869273103668">これで無料通話を開始できます</translation>
-<translation id="7073631403665023390">画面上をクリックまたはタップして、Brave Talk に進みます。</translation>
-<translation id="626339649633171286">Brave Rewards について詳しく知りたいですか？<ph name="TAKE_QUICK_TOUR"/>.</translation>
-<translation id="3604285424134705930">あなたは<ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/>を<ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>に両替しました！</translation>
-<translation id="392587271502873865">ネットワーク接続を確認してください。</translation>
 <translation id="7889432931837317731">可能な場合は自動的に開きます</translation>
 <translation id="8967385052772844086">完全なプライバシーレポートを表示します</translation>
 <translation id="6864343534748973390">最も人気のある</translation>
@@ -591,9 +559,6 @@
 <translation id="5050890334032852465">アカウントのウォッチリストを保存</translation>
 <translation id="7755766175599167100">トークンの検索</translation>
 <translation id="3835223348537121988">残高:</translation>
-<translation id="2490428413101944234">テストフォーセット</translation>
-<translation id="2581671693710952401">Etherを取得する</translation>
-<translation id="8165484222652118977"><ph name="NETWORK"/>テストネットワークのフォーセットから Ether を入手する</translation>
 <translation id="7420359180991315365">続けてWyreを使用する</translation>
 <translation id="8488282162676695335">Braveウォレット</translation>
 <translation id="3784455785234192852">ロック</translation>
@@ -605,6 +570,12 @@
 <translation id="5693968582510626466">トランザクションのクリアは、開発者にとって、またはローカルサーバーの状態をクリアするときに便利です</translation>
 <translation id="5421107279168565467">トランザクションとノンス情報をすべてリセットしてもよろしいですか？このオプションは、ローカルでテストサーバーを実行している開発者が主に使用します。確認して実行するには「<ph name="CONFIRMATION_PHRASE"/>」を入力してください。</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# 分} other {# 分}}</translation>
+<translation id="8146860193318415026">動画のストリーミング。広告はなし。</translation>
+<translation id="6311019535466417620">動画再生前に広告はありません</translation>
+<translation id="4274652342814424451">動画再生中に広告はありません</translation>
+<translation id="1721710839767183848">ページに広告はありません</translation>
+<translation id="4647035642622555398">中断されません</translation>
+<translation id="4122515759479497554">動画を検索</translation>
 <translation id="4449475351935531438">Brave Firewall + VPN</translation>
 <translation id="719977489961414786">VPN にアップグレードして、接続を保護し、あらゆる場所で侵襲的なトラッカーをブロックします。</translation>
 <translation id="3435896845095436175">有効にする</translation>
@@ -808,6 +779,9 @@
 <translation id="5233638681132016545">新しいタブ</translation>
 <translation id="8006088103295786154">Braveウォレットにアクセス</translation>
 <translation id="5308380583665731573">接続</translation>
+<translation id="8030169304546394654">切断されました</translation>
+<translation id="3423275441470187644">信頼</translation>
+<translation id="2391762656119864333">取り消し</translation>
 <translation id="3432029672560911238">ユーザーアカウント</translation>
 <translation id="5753378322046059140">アカウントを変更</translation>
 <translation id="3897092660631435901">メニュー</translation>
@@ -884,5 +858,11 @@
 <translation id="7002577172732106572">スプリットトンネリング</translation>
 <translation id="2832270987629018596">有効なSOLアドレスではありません</translation>
 <translation id="8181161042860463420">関連するトークン・アカウントはまだ存在しません。作成と資金調達のために少量のSOLが費やされます。 <ph name="CLICK_START"/>詳細<ph name="CLICK_END"/>をご覧ください。</translation>
+<translation id="1304515257839771197"><ph name="APP_NAME"/>アプリを開きますか？</translation>
+<translation id="7653028065515320848"><ph name="CLICK_START"/>Rainbow Bridgeの使用に関する詳細<ph name="CLICK_END"/></translation>
+<translation id="8219806187375413057"><ph name="CLICK_START"/>Rainbow Bridgeでのリスクを軽減する方法<ph name="CLICK_END"/></translation>
+<translation id="1065082006518490444"><ph name="APP_NAME"/>は、ネットワーク間でアセットをブリッジし、他のネットワークやDAppエコシステムで暗号を使用することを支援する独立したサービスです。他のネットワークにアセットを橋渡しすることは、いくつかのリスクを伴います。</translation>
+<translation id="8423380132356660250"><ph name="APP_NAME"/>アプリを開く</translation>
 <translation id="168154537623654021">VPNプロファイルを更新する ...</translation>
+<translation id="7457027586454688423">Brave Walletのパスワードを入力</translation>
 </translationbundle>

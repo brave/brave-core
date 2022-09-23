@@ -83,16 +83,17 @@
 <translation id="4117451092682672487">Privatsphäre. Ganz einfach gemacht.</translation>
 <translation id="7909375417585209817">Mit Brave als Standard öffnet sich jeder Link, auf den Sie tippen, mit Braves Datenschutzbestimmungen.</translation>
 <translation id="7370959926683925817">Werbung blockieren. Daten speichern. Jeden einzelnen Tag.</translation>
-<translation id="7281027579943912834">Mit Brave als Standard erhält jeder Link, den Sie antippen, den Werbeblockerschutz von Brave. Jede Seite, jedes Video und jeder Stream.</translation>
+<translation id="7281027579943912834">Mit Brave als Standardbrowser erhält jeder Link, auf den Sie tippen, den Werbeblockerschutz von Brave. Jede Seite, jedes Video und jeder Stream.</translation>
 <translation id="5148943178722443958">Brave mit Ihrer Hilfe verbessern.</translation>
 <translation id="6188781052835527980">Senden Sie anonyme Diagnoseberichte, wenn ein Absturz auftritt oder eine Website einfriert.</translation>
 <translation id="1929905278861178845">Teilen Sie vollständig private und anonyme Produkteinblicke darüber, welche Funktionen von Brave-Benutzern verwendet werden.</translation>
 <translation id="2877653791257935258">Geben Sie einen Namen einer Website oder eine URL ein.</translation>
 <translation id="5329830149661250028">Entdecken Sie den Unterschied mit Brave: Keine Werbung. Keine Tracker. Viel schnelleres Laden von Websites.</translation>
-<translation id="3941792073703079607">Sehen Sie sich den Brave-Unterschied an: Anzeigen blockieren. Daten speichern. Schneller streamen.</translation>
+<translation id="3941792073703079607">Sehen Sie sich den Unterschied mit Brave an: Anzeigen blockieren. Daten speichern. Schneller streamen.</translation>
 <translation id="3545804467215833536">Tippen, um Brave Shields anzuzeigen</translation>
 <translation id="1724327820822194498">Sehen Sie all die fiesen Dinge, die Brave auf jeder Website mit Shields blockiert hat.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> und <ph name="TRACKER"/> andere Tracker blockiert</translation>
+<translation id="7256200875155794202"><ph name="BIG_TECH"/> und andere Anzeigen und Tracker blockiert</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> Anzeigen &amp; Tracker blockiert</translation>
 <translation id="8281886186245836920">Überspringen</translation>
 <translation id="6165508094623778733">Mehr erfahren</translation>
@@ -117,6 +118,9 @@
 <translation id="19715420010996093">Wählen Sie Brave-Browser und tippen Sie auf „Immer“</translation>
 <translation id="3546439402724649282">Brave ist bereits aus Ihr Standardbrowser gesetzt.</translation>
 <translation id="8389661903259423907">Sie haben bereits einen Standardbrowser festgelegt. Sie können den Standardbrowser in Ihren App-Einstellungen ändern.</translation>
+<translation id="1545749641540134597">QR-Code scannen</translation>
+<translation id="5317781812114905957">Anleitungen</translation>
+<translation id="8515319483805157233">Um mit einem QR-Code zu suchen, richten Sie den QR-Code in der Mitte des Rahmens aus.</translation>
 <translation id="8826007068782654809">Vielen Dank</translation>
 <translation id="6665366815203065060">Sie haben gerade Trinkgeld gesendet an:</translation>
 <translation id="5441565662498481293">Sie senden automatisch Trinkgeld an:</translation>
@@ -136,7 +140,7 @@
 <translation id="8481779960444041069">Um Ihre Privatsphäre zu verbessern, legen Sie Brave als Ihren Standardbrowser fest</translation>
 <translation id="1938402585819943124">Wählen Sie auf dem nächsten Bildschirm Brave.</translation>
 <translation id="8926389886865778422">Nicht mehr fragen</translation>
-<translation id="745974920645827035">Unabhängige Suche mit besserer Privatsphäre</translation>
+<translation id="745974920645827035">Unabhängige Suche mit besserem Datenschutz</translation>
 <translation id="4717018805430015801">Die Brave-Suche verfolgt Ihre Aktivitäten, Anfragen oder Klicks nicht nach.</translation>
 <translation id="5240031343741051161">Probiere Brave Search</translation>
 <translation id="5234764350956374838">Schließen</translation>
@@ -231,7 +235,7 @@
 <translation id="4114170343590425996">Beim Zurücksetzen von Brave Rewards ist ein Fehler aufgetreten. Bitte starten Sie Brave neu und versuchen Sie es erneut.</translation>
 <translation id="6393502589311632553">Anzeigen zeigen, wenn Brave nicht verwendet wird</translation>
 <translation id="3349204812119681938">Brave Rewards zurücksetzen</translation>
-<translation id="6606319453795180219">Dadurch werden Ihre Brave Rewards gelöscht und alle Ihre Brave Rewards-Daten zurückgesetzt</translation>
+<translation id="6606319453795180219">Dadurch werden Ihre Brave-Belohnungen gelöscht und alle Ihre Brave-Belohnungs-Daten zurückgesetzt</translation>
 <translation id="6810078320346589989">Erstellen Sie ein Lesezeichen</translation>
 <translation id="3396347744975515056">Brave Sync wurde aufgerüstet und macht eine Einrichtung notwendig</translation>
 <translation id="7473245612074035141">Einrichtung beginnen</translation>
@@ -324,8 +328,8 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="5657156137487675418">Alle Cookies erlauben</translation>
 <translation id="3895527457258986253">Fingerprinting blockieren</translation>
 <translation id="7854108565842971747">Dies sind die Standardeinstellungen für Shields für neue Seiten. Wenn Sie die folgenden Einstellungen ändern, hat dies keine Auswirkung auf die Einstellungen, die Sie für bestimmte Websites gemacht haben</translation>
-<translation id="218587021686734263">Fingerabdrücke über Spracheinstellungen verhindern</translation>
-<translation id="1706099589708266367">Verringert, wie viel Websites basierend auf den Spracheinstellungen Ihres Browsers über Sie erfahren können.</translation>
+<translation id="218587021686734263">Fingerprinting über die Spracheinstellungen verhindern</translation>
+<translation id="1706099589708266367">Verringert das Ausmaß, in dem Websites anhand der Spracheinstellungen Ihres Browsers etwas über Sie erfahren können.</translation>
 <translation id="184568144098869637">Hindert den Browser, Ihr Gerät zu erkennen</translation>
 <translation id="7445306466605902444">Fingerabdruck blockiert (streng, könnte Websites kaputtmachen)</translation>
 <translation id="5582686930349810484">Fingerabdruck blockiert (Standard)</translation>
@@ -393,35 +397,11 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="8376263745431603066">"Nachtmodus" aktivieren (experimentell)</translation>
 <translation id="1383876407941801731">Suchen</translation>
 <translation id="8446884382197647889">Mehr...</translation>
-<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
-<translation id="558614325644656740">Verfügbar <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="3414885529641505869"><ph name="COIN_NAME"/> kaufen</translation>
-<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Anzahlungsadresse</translation>
-<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Memo-Anzahlung</translation>
-<translation id="6755546361496900700">Umtauschvorschau</translation>
-<translation id="5110244215256675209">Kryptowährung kaufen</translation>
-<translation id="2271556362602437160">.com</translation>
-<translation id="3727077517986954867">.us</translation>
 <translation id="13296465911709339">Ihr Text wurde in die Zwischenablage kopiert.</translation>
 <translation id="2735834606413553397">Öffentliche Adresse wurde in die Zwischenablage kopiert.</translation>
-<translation id="7144878232160441200">Erneut versuchen</translation>
 <translation id="2977461003134694205">Statistiken zur Privatsphäre</translation>
-<translation id="2956070106555335453">Zusammenfassung</translation>
-<translation id="1366855498335432549">Einzahlung</translation>
-<translation id="1301340234286078471">Umtauschen</translation>
 <translation id="223536150967420869">Kaufen</translation>
-<translation id="4584930231524505442">Ich möchte umtauschen ...</translation>
-<translation id="5749014321384313843">Ich möchte ausgeben ...</translation>
-<translation id="2480674848181564169">Nicht genügend Guthaben für Konversion</translation>
-<translation id="2215334405220411393">Mindestmenge für die Umwandlung ist: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6702658079816271889">Verbindung nicht möglich</translation>
-<translation id="7742417737698031726">Gebühr</translation>
-<translation id="2122225204180056042">Sie erhalten</translation>
-<translation id="6432284126416751397">Umtausch bestätigen</translation>
-<translation id="3891414008432200754">Preis</translation>
-<translation id="3733576242118819803">Bestätigen (<ph name="REMAINING_TIME"/>s)</translation>
-<translation id="1627064138060308910">Konversion fehlgeschlagen. Bitte erneut versuchen.</translation>
-<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="2956070106555335453">Zusammenfassung</translation>
 <translation id="7465614181960492526">Verdienen Sie Token &amp; förden Sie andere</translation>
 <translation id="244362569344671266">Verdienen Sie Token, indem Sie private Werbeanzeigen von Brave ansehen und automatisch Inhaltsersteller unterstützen.</translation>
 <translation id="631124996535890460">Durch Fortfahren stimmen Sie den <ph name="TERMS_OF_SERVICE"/> und der <ph name="PRIVACY_POLICY"/> zu.</translation>
@@ -452,18 +432,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="2434574859640694129">Nachdem Sie Ihre Werbeauszahlung erhalten haben, können Sie zurückkommen und an diesen Creator spenden!</translation>
 <translation id="207242986925259074">Kurze Tour zur Auffrischung unternehmen</translation>
 <translation id="8342862030112839977">Die Auszahlung Ihrer ersten Belohnung erfolgt vor dem oder am:</translation>
-<translation id="8037420924417098685">Um einen kostenlosen Anruf zu starten, aktivieren Sie Brave-Prämien</translation>
-<translation id="8961724619078500274">Mit Brave-Prämien verdienen Sie Token für das Ansehen privater Anzeigen (Ihre Daten sind sicher). Verwandeln Sie diese Token in Bargeld, Geschenkkarten … oder geben Sie sogar den Websites, die Sie lieben, Trinkgeld. Kein Tracking. Keine Verlangsamungen.</translation>
-<translation id="7307847920988946894">Rewards aktivieren</translation>
-<translation id="7872993190040589450">Durch die Aktivierung stimmen Sie den <ph name="TERMS_OF_SERVICE"/> und der <ph name="PRIVACY_POLICY"/> zu.</translation>
-<translation id="6128511569382736135">Um einen kostenlosen Anruf zu starten, aktivieren Sie Brave Private Ads</translation>
-<translation id="7930006085154756245">Mit Brave Private Ads verdienen Sie Token für das Anzeigen privater Anzeigen (Ihre Daten sind sicher). Verwandeln Sie diese Token in Bargeld, Geschenkkarten … oder geben Sie sogar den Websites, die Sie lieben, Trinkgeld. Keine Verfolgung. Keine Verlangsamungen.</translation>
-<translation id="4992617448154987397">Brave Private Ads aktivieren</translation>
-<translation id="3415016869273103668">Sie können jetzt einen kostenlosen Anruf starten</translation>
-<translation id="7073631403665023390">Klicken oder tippen Sie auf eine beliebige Stelle auf dem Bildschirm, um mit Brave Talk fortzufahren.</translation>
-<translation id="626339649633171286">Möchten Sie mehr über Brave-Prämien erfahren? <ph name="TAKE_QUICK_TOUR"/>.</translation>
-<translation id="3604285424134705930">Sie haben <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> in <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/> konvertiert!</translation>
-<translation id="392587271502873865">Bitte prüfen Sie Ihre Netzwerkverbindung.</translation>
 <translation id="7889432931837317731">Wenn möglich automatisch öffnen</translation>
 <translation id="8967385052772844086">Vollen Datenschutzbericht sehen</translation>
 <translation id="6864343534748973390">Beliebteste</translation>
@@ -591,9 +559,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="5050890334032852465">Konto-Überwachungsliste speichern</translation>
 <translation id="7755766175599167100">Token suchen</translation>
 <translation id="3835223348537121988">Guthaben:</translation>
-<translation id="2490428413101944234">Faucet testen</translation>
-<translation id="2581671693710952401">Ether holen</translation>
-<translation id="8165484222652118977">Holen Sie sich Ether aus einem Faucet für das <ph name="NETWORK"/>-Testnetzwerk</translation>
 <translation id="7420359180991315365">Weiter zu Wyre</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="3784455785234192852">Sperren</translation>
@@ -605,6 +570,12 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="5693968582510626466">Das Löschen von Transaktionen kann für Entwickler oder beim Löschen des Status auf einem lokalen Server nützlich sein</translation>
 <translation id="5421107279168565467">Möchten Sie die Transaktions- und Nonce-Informationen wirklich zurücksetzen? Diese Option wird hauptsächlich von Entwicklern verwendet, die einen lokalen Testserver betreiben. Geben Sie zur Bestätigung "<ph name="CONFIRMATION_PHRASE"/>" ein.</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# Minute} other {# Minuten}}</translation>
+<translation id="8146860193318415026">Streamen Sie Videos. Anzeigenfrei.</translation>
+<translation id="6311019535466417620">Keine Anzeigen vor Ihrem Video</translation>
+<translation id="4274652342814424451">Keine Anzeigen während Ihres Videos</translation>
+<translation id="1721710839767183848">Keine Anzeigen auf der Seite</translation>
+<translation id="4647035642622555398">Keine Unterbrechungen</translation>
+<translation id="4122515759479497554">Nach Videos suchen</translation>
 <translation id="4449475351935531438">Brave Firewall + VPN</translation>
 <translation id="719977489961414786">Führen Sie ein Upgrade auf ein VPN durch, um Ihre Verbindung zu schützen und invasive Tracker überall zu blockieren.</translation>
 <translation id="3435896845095436175">Aktivieren</translation>
@@ -808,6 +779,9 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="5233638681132016545">Neuer Tab</translation>
 <translation id="8006088103295786154">Zugriff auf Brave-Wallet</translation>
 <translation id="5308380583665731573">Verbinden</translation>
+<translation id="8030169304546394654">Verbindung getrennt</translation>
+<translation id="3423275441470187644">Vertrauen</translation>
+<translation id="2391762656119864333">Aufheben</translation>
 <translation id="3432029672560911238">Benutzerkonto</translation>
 <translation id="5753378322046059140">Konto wechseln</translation>
 <translation id="3897092660631435901">Menü</translation>
@@ -883,6 +857,12 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="5472400694702418949">Anwendungen hinzufügen, die vom VPN-Verkehr ausgeschlossen werden sollen.</translation>
 <translation id="7002577172732106572">Split Tunneling</translation>
 <translation id="2832270987629018596">Keine gültige SOL-Adresse</translation>
-<translation id="8181161042860463420">Das zugehörige Token-Konto existiert noch nicht. Eine kleine Menge an SOL wird ausgegeben, um es zu erstellen und zu finanzieren. <ph name="CLICK_START"/>Weitere Informationen<ph name="CLICK_END"/></translation>
-<translation id="168154537623654021">Aktualisieren des VPN-Profils ...</translation>
+<translation id="8181161042860463420">Das verbundene Token-Konto existiert noch nicht. Ein kleiner SOL-Betrag wird ausgegeben, um es zu erstellen und zu finanzieren. <ph name="CLICK_START"/>Weitere Informationen<ph name="CLICK_END"/></translation>
+<translation id="1304515257839771197"><ph name="APP_NAME"/>-App öffnen?</translation>
+<translation id="7653028065515320848"><ph name="CLICK_START"/>Mehr über die Verwendung von Rainbow Bridge erfahren<ph name="CLICK_END"/></translation>
+<translation id="8219806187375413057"><ph name="CLICK_START"/>Informationen zur Minimierung des Risikos bei Rainbow Bridge<ph name="CLICK_END"/></translation>
+<translation id="1065082006518490444"><ph name="APP_NAME"/> ist ein unabhängiger Service, mit dem Sie Assets über Netzwerke hinweg verbinden und Ihre Kryptowährung für andere Netzwerke und DApp-Ökosysteme nutzen können. Die Verbindung von Assets mit anderen Netzwerken birgt einige Risiken.</translation>
+<translation id="8423380132356660250"><ph name="APP_NAME"/>-App öffnen</translation>
+<translation id="168154537623654021">VPN-Profil wird aktualisiert …</translation>
+<translation id="7457027586454688423">Geben Sie Ihr Brave Wallet-Passwort ein</translation>
 </translationbundle>

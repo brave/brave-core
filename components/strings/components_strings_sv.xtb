@@ -182,6 +182,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="1430915738399379752">Skriv ut</translation>
 <translation id="1432187715652018471">Sidan vill installera en tjänsthanterare.</translation>
 <translation id="1432581352905426595">Hantera sökmotorer</translation>
+<translation id="1435940442311036198">Använd en nyckel på en annan enhet</translation>
 <translation id="1436185428532214179">Får begära tillstånd att redigera filer eller mappar på enheten</translation>
 <translation id="1442386063175183758">Fönsterfalsning, höger flik</translation>
 <translation id="1442987760062738829">Hålslag</translation>
@@ -402,6 +403,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="2040894699575719559">Platsen är blockerad</translation>
 <translation id="2042213636306070719">Fack 7</translation>
 <translation id="3163988908275223348">Logga in om du vill använda lösenord som har sparats i Brave-kontot</translation>
+<translation id="2048261947532620704">Översätter sida</translation>
 <translation id="205212645995975601">BBQ och grillning</translation>
 <translation id="2053111141626950936">Sidor på <ph name="LANGUAGE"/> översätts inte.</translation>
 <translation id="2064691555167957331">{COUNT,plural, =1{1 förslag}other{# förslag}}</translation>
@@ -467,6 +469,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="2219658597883514593">Starta om guiden</translation>
 <translation id="2219735899272417925">Enheten måste återställas</translation>
 <translation id="2224337661447660594">Inget internet</translation>
+<translation id="2225927550500503913">Aktiverat virtuellt kort</translation>
 <translation id="2230458221926704099">Åtgärda anslutningsproblemet med hjälp av <ph name="BEGIN_LINK"/>diagnostiseringsappen<ph name="END_LINK"/></translation>
 <translation id="2239100178324503013">Skicka nu</translation>
 <translation id="2241693394036365668">Fil laddas ned</translation>
@@ -501,7 +504,6 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="2318594867107319532">Senaste tidsstämpel för princip:</translation>
 <translation id="2324604504973636700">Hushållsapparater</translation>
 <translation id="2328651992442742497">Tillåts (standard)</translation>
-<translation id="2329182534073751090">fönsterplacering</translation>
 <translation id="2329473609445770916">På den här webbplatsen definieras intressen som andra webbplatser kan använda för sina annonser</translation>
 <translation id="2330137317877982892"><ph name="CREDIT_CARD"/> upphör att gälla den <ph name="EXPIRATION_DATE_ABBR"/></translation>
 <translation id="2337852623177822836">Inställningen styrs av administratören</translation>
@@ -604,7 +606,6 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="2604589665489080024">Popmusik</translation>
 <translation id="2610561535971892504">Klicka för att kopiera</translation>
 <translation id="2618023639789766142">C10 (kuvert)</translation>
-<translation id="2623663032199728144">Får begära att använda information om dina skärmar</translation>
 <translation id="2625385379895617796">Klockan går före</translation>
 <translation id="262745152991669301">Får begära tillstånd att ansluta till USB-enheter</translation>
 <translation id="2915787201097107005"><ph name="BEGIN_ENHANCED_PROTECTION_LINK"/>Aktivera Förbättrat skydd<ph name="END_ENHANCED_PROTECTION_LINK"/> för att få Braves högsta säkerhetsnivå</translation>
@@ -682,7 +683,6 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="1117301625415017890"><ph name="MANAGE_SECURITY_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT"/>: tryck på Tabb och sedan på Retur om du vill hantera Säker webbsökning med mera i inställningarna för Brave</translation>
 <translation id="2878197950673342043">Korsfalsning</translation>
 <translation id="2878424575911748999">A1</translation>
-<translation id="2880660355386638022">Fönsterplacering</translation>
 <translation id="2881276955470682203">Vill du spara kortet?</translation>
 <translation id="2882949212241984732">Altarskåpsfalsning</translation>
 <translation id="2893773853358652045">Fjärde rullen</translation>
@@ -877,6 +877,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="3427092606871434483">Tillåt (standard)</translation>
 <translation id="3427342743765426898">&amp;Gör om Redigera</translation>
 <translation id="3428151540071562330">Minst en av URI:erna i servermallen för DnsOverHttpsTemplates är ogiltig och kommer inte att användas.</translation>
+<translation id="3431216045099978607">Tryck på |<ph name="ACCELERATOR"/>| för att avsluta helskärmsläget och se nedladdningen.</translation>
 <translation id="3431636764301398940">Spara kortet på enheten</translation>
 <translation id="3432601291244612633">Stäng sidan</translation>
 <translation id="3435738964857648380">Säkerhet</translation>
@@ -960,12 +961,12 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="3658742229777143148">Version</translation>
 <translation id="3664782872746246217">Sökord:</translation>
 <translation id="3667704023705708645">Riskkapital</translation>
-<translation id="2770043515970619538">Bokmärken i Brave</translation>
 <translation id="3671540257457995106">Vill du tillåta att storleken ändras?</translation>
 <translation id="3675563144891642599">Tredje rullen</translation>
 <translation id="3676592649209844519">Enhets-id:</translation>
 <translation id="3677008721441257057">Menade du &lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN"/>&lt;/a&gt;?</translation>
 <translation id="3678029195006412963">Begäran kunde inte signeras</translation>
+<translation id="3678342917559046352">Ogiltigt tillägg: Värdet förväntas vara i något av följande format: &lt;extension_id&gt; eller &lt;extension_id&gt;;&lt;update_url&gt;.</translation>
 <translation id="3681007416295224113">Certifikatinformation</translation>
 <translation id="3701427423622901115">Återställning bekräftad.</translation>
 <translation id="3704162925118123524">Nätverket du använder kanske kräver att du besöker dess inloggningssida.</translation>
@@ -1031,6 +1032,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="3835233591525155343">Enhetsanvändning</translation>
 <translation id="5749930378398424146"><ph name="CREATE_GOOGLE_DOC_FOCUSED_FRIENDLY_MATCH_TEXT"/>: tryck på Tabb och sedan på Retur om du snabbt vill skapa ett nytt Brave-dokument</translation>
 <translation id="385051799172605136">Föregående</translation>
+<translation id="3853684360927654006">Kalkylator för lösenordssäkerhet</translation>
 <translation id="3858027520442213535">Uppdatera datum och tid</translation>
 <translation id="3858860766373142691">Namn</translation>
 <translation id="3872834068356954457">Vetenskap</translation>
@@ -1064,7 +1066,6 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="3969052498612555048">Kan du inte hitta koden? <ph name="BEGIN_LINK"/>Få en ny kod<ph name="END_LINK"/></translation>
 <translation id="397105322502079400">Beräknar ...</translation>
 <translation id="3973234410852337861"><ph name="HOST_NAME"/> har blockerats</translation>
-<translation id="3978338123949022456">Sökläge: skriv en sökfråga och tryck på Retur för sökning på <ph name="KEYWORD_SUFFIX"/></translation>
 <translation id="398470910934384994">Fåglar</translation>
 <translation id="3985750352229496475">Hantera adresser …</translation>
 <translation id="3986705137476756801">Inaktivera Live Caption tills vidare</translation>
@@ -1171,6 +1172,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="4305666528087210886">Ingen åtkomst till filen</translation>
 <translation id="4306529830550717874">Vill du spara adressen?</translation>
 <translation id="4306812610847412719">urklipp</translation>
+<translation id="4270648948919210881">Den här principen ignoreras eftersom användaren inte är kopplad. Om denna policy ska tillämpas måste webbläsaren Brave och profilen hanteras av samma organisation via administratörskonsolen.</translation>
 <translation id="4310070645992025887">Sök bland dina sökningar</translation>
 <translation id="4312613361423056926">B2</translation>
 <translation id="4312866146174492540">Blockera (standard)</translation>
@@ -1183,6 +1185,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="4329871760342656885">Fel vid tolkning av princip: <ph name="ERROR"/></translation>
 <translation id="4331519897422864041">Utmatningsfack 5</translation>
 <translation id="4331708818696583467">Inte säker</translation>
+<translation id="4333561522337981382">Hantera fönster på alla skärmar</translation>
 <translation id="5792122559159836842">Den här annonsen använde för många resurser för enheten, så den togs bort i Brave.</translation>
 <translation id="6116812392674177288">Den här datorn har inte identifierats som företagshanterad, så bara tillägg på Brave Web Store kan installeras automatiskt med principen. Uppdateringsadressen på Brave Web Store är <ph name="CWS_UPDATE_URL"/>.</translation>
 <translation id="4346197816712207223">Godkända kreditkort</translation>
@@ -1220,7 +1223,6 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="4435702339979719576">vykort)</translation>
 <translation id="443673843213245140">Användning av proxy är inaktiverad men en explicit proxykonfiguration har angetts.</translation>
 <translation id="4441832193888514600">Ignoreras eftersom principen bara kan ställas in som en princip för molnanvändare.</translation>
-<translation id="7607452725660354169">Brave-flikar</translation>
 <translation id="4450893287417543264">Visa inte igen</translation>
 <translation id="4451135742916150903">Får begära tillstånd att ansluta till HID-enheter</translation>
 <translation id="8416018650396907203">Lösenordet som du precis använde har läckt ut vid ett dataintrång. Du bör se över dina sparade lösenord för att skydda dina konton.</translation>
@@ -1280,6 +1282,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="464342062220857295">Sökfunktioner</translation>
 <translation id="4644670975240021822">Motsatt ordning – framsidan nedåt</translation>
 <translation id="4646534391647090355">Gå dit nu</translation>
+<translation id="4648262692072505866">Ett hashvärde måste ha formatet SHA-256.</translation>
 <translation id="4652266463001779298">Tillåts inte</translation>
 <translation id="4653167719759882810">Företagsfusioner och förvärv</translation>
 <translation id="4658638640878098064">Häfta uppe till vänster</translation>
@@ -1339,7 +1342,9 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="7110430050177876111">Uppdatera kortinformationen genom att ange sista giltighetsdatum och CVC-kod för <ph name="CREDIT_CARD"/>. När du bekräftar delas kortuppgifter från ditt Brave-konto med webbplatsen.</translation>
 <translation id="4800132727771399293">Kontrollera utgångsdatum och CVC-kod och försök igen</translation>
 <translation id="4803924862070940586"><ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
+<translation id="4806051791961048632">Använd Touch ID</translation>
 <translation id="4809079943450490359">Anvisningar från enhetsadministratören:</translation>
+<translation id="4811450222531576619">Läs mer om källan och ämnet</translation>
 <translation id="4812751092864334025">Kroppsburen teknik</translation>
 <translation id="4813512666221746211">Nätverksfel</translation>
 <translation id="4816492930507672669">Anpassa till sida</translation>
@@ -1385,6 +1390,8 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="4926340098269537727"><ph name="ACTIVE_MATCH"/>/<ph name="TOTAL_MATCHCOUNT"/></translation>
 <translation id="4929871932072157101"><ph name="KEYWORD_FOCUSED_FRIENDLY_MATCH_TEXT"/>, tryck på Tabb och sedan på Retur om du vill söka</translation>
 <translation id="4930153903256238152">Hög kapacitet</translation>
+<translation id="4934780484581617878">Fönsterhantering</translation>
+<translation id="4936134414789135531">Det gick inte att hitta de infogade värdet <ph name="VALUE_NAME"/>.</translation>
 <translation id="4936675324097895694">Ekonomi</translation>
 <translation id="4943872375798546930">Inga resultat</translation>
 <translation id="4943933359574417591">Sms och snabbmeddelanden</translation>
@@ -1395,6 +1402,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="4958444002117714549">Expandera lista</translation>
 <translation id="4964505745997821360">Sjukförsäkring</translation>
 <translation id="4968522289500246572">Den här appen har utformats för mobila enheter och kan påverkas om storleken ändras. Appen kanske inte fungerar som den ska eller startas om.</translation>
+<translation id="4968665849807487749">Kan begära tillstånd att hantera fönster på alla skärmar</translation>
 <translation id="4969341057194253438">Radera inspelningen</translation>
 <translation id="4973922308112707173">Två hål högst upp</translation>
 <translation id="4976702386844183910">Besöktes senast <ph name="DATE"/></translation>
@@ -1461,6 +1469,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="5123063207673082822">helgen</translation>
 <translation id="5123433949759960244">Basketboll</translation>
 <translation id="5125394840236832993">B-Plus</translation>
+<translation id="5125751979347152379">Ogiltig webbadress.</translation>
 <translation id="512592033764059484">Fotboll</translation>
 <translation id="5126510351761255129">Verifiera kortet</translation>
 <translation id="512670116361803001"><ph name="APP_NAME"/> kan påverkas om storleken ändras. Använd förinställda fönsterstorlekar för att appen ska fungera som avsett.</translation>
@@ -1498,6 +1507,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="5215363486134917902">Folio-Sp</translation>
 <translation id="521659676233207110">Fack 13</translation>
 <translation id="5216942107514965959">Besöktes senast i dag</translation>
+<translation id="5217759126664161410">Ogiltigt protokollformat.</translation>
 <translation id="5222812217790122047">E-postadress måste anges</translation>
 <translation id="5228404122310299359">Festartiklar</translation>
 <translation id="5229588705416009823">Massiva multiplayer-spel</translation>
@@ -1570,7 +1580,9 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="5398772614898833570">Annonser blockeras</translation>
 <translation id="5400836586163650660">Grå</translation>
 <translation id="540969355065856584">Servern kunde inte bevisa att det är <ph name="DOMAIN"/>. Dess säkerhetscertifikat är inte giltigt för närvarande. Detta kan bero på en felaktig konfiguration eller att någon kapat din anslutning.</translation>
+<translation id="5412040515238827314">Ogiltigt format: En lista med mönster förväntas.</translation>
 <translation id="9079419934310259761">Den här webbplatsen hämtar dina intressen från Brave för att visa mer relevanta annonser för dig</translation>
+<translation id="5412245327974352290"><ph name="TRADITIONAL_TEXT"/> – <ph name="ADDITIONAL_TEXT"/></translation>
 <translation id="541416427766103491">Utmatningsfack 4</translation>
 <translation id="5421136146218899937">Ta bort webbinformation...</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> vill skicka aviseringar</translation>
@@ -1602,9 +1614,11 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="5509780412636533143">Hanterade bokmärken</translation>
 <translation id="5510481203689988000">Den här inställningen styrs i inställningarna för cookies.</translation>
 <translation id="5510766032865166053">Den kan ha flyttats eller tagits bort.</translation>
+<translation id="5513528801833998679">Använd enhetsinloggning</translation>
 <translation id="5518670652865028077">Konst och underhållning</translation>
 <translation id="5519516356611866228">Med dina ändringar</translation>
 <translation id="5523118979700054094">Policynamn</translation>
+<translation id="5525755241743357906">Filen har kopierats eller flyttats</translation>
 <translation id="5526617258931667850"><ph name="MANAGE_CHROMEOS_ACCESSIBILITY_FOCUSED_FRIENDLY_MATCH_TEXT"/>: tryck på Tabb och sedan på Retur om du vill anpassa tillgänglighetsverktygen i inställningarna för Chrome OS.</translation>
 <translation id="5528532273234423708">Automatisering i hemmet</translation>
 <translation id="55293785478302737">Kanthäftning</translation>
@@ -1627,7 +1641,9 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="5571083550517324815">Utlämning erbjuds inte på den här adressen. Välj en annan adress.</translation>
 <translation id="557886905979275351">Rakhyvlar och rakapparater</translation>
 <translation id="5580958916614886209">Kontrollera utgångsmånad och försök igen</translation>
+<translation id="558420943003240152">Hantera lösenord och nycklar …</translation>
 <translation id="5586446728396275693">Inga sparade adresser</translation>
+<translation id="5586831831248371458">Sök på <ph name="KEYWORD_SUFFIX"/></translation>
 <translation id="5587987780934666589">Plattformsanvändare</translation>
 <translation id="5593349413089863479">Anslutningen är inte helt säker</translation>
 <translation id="5595485650161345191">Redigera adress</translation>
@@ -1687,9 +1703,11 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="5754400531489347219">Djur och husdjur</translation>
 <translation id="5759751709240058861">Använda och röra din kamera</translation>
 <translation id="5763042198335101085">Ange en giltig e-postadress</translation>
+<translation id="5764725887548570807">Ogiltigt ursprungsformat.</translation>
 <translation id="5765072501007116331">Välj en adress för att visa leveranssätt och krav</translation>
 <translation id="57689295674415555">Har det virtuella kortnumret inte fyllts i?</translation>
 <translation id="5776313857861697733">Prioritet</translation>
+<translation id="5778389256418062749">Använd en nyckel på en annan enhet</translation>
 <translation id="5781136890105823427">Ett experiment har aktiverats</translation>
 <translation id="578305955206182703">Bärnstensfärgad</translation>
 <translation id="57838592816432529">Stäng av ljudet</translation>
@@ -1751,6 +1769,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="5963413905009737549">Avsnitt</translation>
 <translation id="5967592137238574583">Redigera kontaktuppgifter</translation>
 <translation id="5967867314010545767">Ta bort från historiken</translation>
+<translation id="5968022600320704045">Inga sökresultat</translation>
 <translation id="5968793460449681917">Vid varje besök</translation>
 <translation id="5974052231147553524">Sjätte rullen</translation>
 <translation id="5975083100439434680">Zooma ut</translation>
@@ -1811,9 +1830,11 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="6107012941649240045">Utfärdat till</translation>
 <translation id="8233947174119245051">Det kan finnas andra former av webbhistorik i Brave-kontot på <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/></translation>
 <translation id="6116338172782435947">Tillgång till text och bilder som kopierats till Urklipp</translation>
+<translation id="6118782133429281336">Ursprungslistan är tom.</translation>
 <translation id="6120179357481664955">Vill du spara UPI-id?</translation>
 <translation id="5972135347314259717">Brave Enterprise Connectors</translation>
 <translation id="6127379762771434464">Objektet har tagits bort</translation>
+<translation id="6133984428121856852">Filnamnstillägg saknas eller har fel format.</translation>
 <translation id="6146055958333702838">Kontrollera kablar och starta om routrar, modem och andra nätverksenheter
     som används.</translation>
 <translation id="614940544461990577">Testa att</translation>
@@ -1864,6 +1885,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="6300452962057769623">{0,plural, =0{Enheten startas om nu}=1{Om 1 sekund startas enheten om}other{Om # sekunder startas enheten om}}</translation>
 <translation id="5880900081429361525">Brave-assistenten i Brave stoppas</translation>
 <translation id="6305205051461490394"><ph name="URL"/> kan inte nås.</translation>
+<translation id="6311165245110979290">Tillgängligt virtuellt kort</translation>
 <translation id="6312113039770857350">Webbsidan är inte tillgänglig</translation>
 <translation id="6316226860534107313">Vespor och mopeder</translation>
 <translation id="63172326633386613">Hantera tillgänglighetsinställningar</translation>
@@ -1884,6 +1906,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="6361757823711327522">B7</translation>
 <translation id="6364095313648930329"><ph name="BEGIN_LINK"/>Kontrollerar proxy, brandvägg och säker DNS-konfiguration<ph name="END_LINK"/></translation>
 <translation id="6366710531182496394">Två häftklamrar till vänster</translation>
+<translation id="6374865374745447009">fönsterhantering</translation>
 <translation id="6377268785556383139">1 resultat för <ph name="SEARCH_TEXT"/></translation>
 <translation id="6380497234672085559">A0</translation>
 <translation id="6383221683286411806">Du kan komma att debiteras.</translation>
@@ -1955,12 +1978,12 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="6579630537141957243">Vill du ansluta MIDI-enhet?</translation>
 <translation id="6579990219486187401">Ljusrosa</translation>
 <translation id="6583674473685352014">B6 (kuvert)</translation>
-<translation id="7784744142989128075">Brave-historik</translation>
 <translation id="5302585261530504168">Brave upptäckte att lösenordet som du precis använde har läckt ut vid ett dataintrång. Vi rekommenderar att du byter det nu och kontrollerar dina sparade lösenord för att skydda dina konton.</translation>
 <translation id="6587923378399804057">Länk som du har kopierat</translation>
 <translation id="6591833882275308647"><ph name="DEVICE_TYPE"/> hanteras inte</translation>
 <translation id="7150996650768688560">Knappen Hantera webbplatsinställningar, tryck på Retur om du vill hantera behörigheter och data som lagras på olika webbplatser i inställningarna för Brave</translation>
 <translation id="6596325263575161958">Krypteringsalternativ</translation>
+<translation id="6599642189720630047">Bevakade produkter</translation>
 <translation id="6609880536175561541">Prc7 (kuvert)</translation>
 <translation id="6611723696964473273">Ekonominyheter</translation>
 <translation id="6612010098632894193">Onlinevideo</translation>
@@ -1985,6 +2008,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="666259744093848177">(x86_64, översatt)</translation>
 <translation id="6663846344464066639">Knäppta händer</translation>
 <translation id="6665553082534466207">Tre hål till höger</translation>
+<translation id="6668389483194953109">Pappersstorleken custom hittades, men egenskapen custom_size saknas eller är ogiltig.</translation>
 <translation id="6683717648675961851">Platsannonser</translation>
 <translation id="6685834062052613830">Logga ut och slutför konfigureringen</translation>
 <translation id="6687335167692595844">Teckenstorlek begärd</translation>
@@ -1997,6 +2021,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="6696588630955820014">Knappen Dela den här fliken: tryck på Retur om du vill dela den här fliken genom att dela länken, skapa en QR-kod, casta med flera alternativ</translation>
 <translation id="6698381487523150993">Skapad av:</translation>
 <translation id="6702919718839027939">Presentera</translation>
+<translation id="6704458454638854812">Egenskapen custom_size har angetts och namnet förväntas vara custom.</translation>
 <translation id="6709133671862442373">Nyheter</translation>
 <translation id="6709888928011386878">Musikinstrument</translation>
 <translation id="6710213216561001401">Föregående</translation>
@@ -2195,6 +2220,7 @@ Mer information.
 <translation id="7305756307268530424">Starta långsammare</translation>
 <translation id="7308436126008021607">synkronisering i bakgrunden</translation>
 <translation id="7310392214323165548">Enheten startas om inom kort</translation>
+<translation id="7311244614769792472">Inga resultat hittades</translation>
 <translation id="7319430975418800333">A3</translation>
 <translation id="7320336641823683070">Anslutningshjälp</translation>
 <translation id="7323804146520582233">Dölj avsnittet <ph name="SECTION"/></translation>
@@ -2424,6 +2450,7 @@ Mer information.
 <translation id="7880146494886811634">Spara adressen</translation>
 <translation id="7882421473871500483">Brun</translation>
 <translation id="7882995332186050355">Lastbilar och släpvagnar</translation>
+<translation id="788679692472636252">Hantera lösenord och nycklar …</translation>
 <translation id="7887683347370398519">Kontrollera CVC-koden och försök igen</translation>
 <translation id="7887885240995164102">Öppna bild-i-bild-läge</translation>
 <translation id="7888575728750733395">Renderingsmetod för utskrifter</translation>
@@ -2469,6 +2496,7 @@ Mer information.
 <translation id="8004582292198964060">Webbläsare</translation>
 <translation id="8009225694047762179">Hantera Lösenord</translation>
 <translation id="8012116502927253373">{NUM_CARDS,plural, =1{Det här kortet och dess faktureringsadress sparas. Du kan använda det när du är inloggad som <ph name="USER_EMAIL"/>.}other{De här korten och deras faktureringsadresser sparas. Du kan använda dem när du är inloggad som <ph name="USER_EMAIL"/>.}}</translation>
+<translation id="8019861005170389898"><ph name="TRADITIONAL_TEXT"/> (<ph name="ADDITIONAL_TEXT"/>)</translation>
 <translation id="8025119109950072390">Angripare på den här webbplatsen kan lura dig att göra något farligt, till exempel installera programvara eller lämna ut personliga uppgifter (som lösenord, telefonnummer eller kreditkortsuppgifter).</translation>
 <translation id="8026334261755873520">Rensa webbinformation</translation>
 <translation id="8027077570865220386">Fack 15</translation>
@@ -2674,7 +2702,6 @@ Mer information:
 <translation id="865032292777205197">rörelsesensorer</translation>
 <translation id="8663226718884576429">Beställningsöversikt, <ph name="TOTAL_LABEL"/>, mer information</translation>
 <translation id="8666678546361132282">engelska</translation>
-<translation id="8669306706049782872">Använda information om dina skärmar för att öppna och placera ut fönster</translation>
 <translation id="867224526087042813">Signatur</translation>
 <translation id="8672264262457010862">Företag och industri</translation>
 <translation id="8676424191133491403">Ingen fördröjning</translation>
@@ -2728,7 +2755,6 @@ Mer information:
 <translation id="8805819170075074995">Listposten <ph name="LANGUAGE_ID"/>: Posten ignorerades eftersom den även ingår i principen SpellcheckLanguage.</translation>
 <translation id="8806285662264631610">Dusch- och badprodukter</translation>
 <translation id="8807160976559152894">Beskär efter varje sida</translation>
-<translation id="7527893726197732596">Inställningar för Brave</translation>
 <translation id="8813277370772331957">Påminn mig senare</translation>
 <translation id="7674607358106534914"><ph name="UPDATE_CHROME_FOCUSED_FRIENDLY_MATCH_TEXT"/>, tryck på Tabb och sedan på Retur om du vill uppdatera Brave i inställningarna för Brave</translation>
 <translation id="882338992931677877">Manuell plats</translation>
@@ -2827,6 +2853,7 @@ Mer information:
 <translation id="7650489975492745604"><ph name="SET_CHROME_AS_DEFAULT_BROWSER_FOCUSED_FRIENDLY_MATCH_TEXT"/>: tryck på Tabb och sedan på Retur om du vill ställa in Brave som standardwebbläsare i systeminställningarna för iOS</translation>
 <translation id="9096679202588811390">Tv-program</translation>
 <translation id="9101630580131696064">Fack 1</translation>
+<translation id="9102081333385212048">Filer som du kopierar eller flyttar skickas till Google Cloud eller tredje part för analys. De kan till exempel genomsökas efter känsliga uppgifter eller skadlig programvara.</translation>
 <translation id="9103537084693478942">Videoprogramvara</translation>
 <translation id="6373940988468425649">På <ph name="SITE"/> används normalt kryptering (SSL) för att skydda din information. När Brave försökte ansluta till <ph name="SITE"/> den här gången skickade webbplatsen tillbaka ovanliga och felaktiga uppgifter. Sådant kan hända när en angripare utger sig för att vara <ph name="SITE"/> eller när anslutningen har avbrutits av en wifi-inloggningsskärm. Din information är fortfarande säker eftersom Brave avbröt anslutningen innan någon data utbyttes.</translation>
 <translation id="9106062320799175032">Lägg till faktureringsadress</translation>

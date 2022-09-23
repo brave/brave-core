@@ -60,11 +60,11 @@
     "description": "Message for the option in the ads and trackers blocking select field in read only view"
   },
   "aggressiveAdsTrackersBlocking": {
-    "message": "Blokuj skrypty śledzące i reklamy (agresywnie)",
+    "message": "Zablokuj skrypty śledzące i reklamy (agresywnie)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
   },
   "standardAdsTrackersBlocking": {
-    "message": "Blokuj skrypty śledzące i reklamy (standardowo)",
+    "message": "Zablokuj skrypty śledzące i reklamy (standardowo)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
   },
   "allowAdsTrackers": {
