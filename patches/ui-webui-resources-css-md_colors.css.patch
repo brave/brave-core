@@ -1,12 +1,12 @@
 diff --git a/ui/webui/resources/css/md_colors.css b/ui/webui/resources/css/md_colors.css
-index 634850f1afa7cace07baf19afba0ec5fc66a1466..1a3b70be18151a5df9dbd5cad9b3221a797e4bba 100644
+index d81664bcd60aa0dd610a161f7d9cacd6e3583b63..26880f93b0a2d2650d22899f8e422f6b906bb50f 100644
 --- a/ui/webui/resources/css/md_colors.css
 +++ b/ui/webui/resources/css/md_colors.css
 @@ -1,6 +1,7 @@
- /* Copyright 2016 The Chromium Authors. All rights reserved.
+ /* Copyright 2016 The Chromium Authors
   * Use of this source code is governed by a BSD-style license that can be
   * found in the LICENSE file. */
-+ @import url("chrome://brave-resources/css/md_colors.css");
++@import url("chrome://brave-resources/css/md_colors.css");
  
  html {
    /* This is a custom, Chrome-specific color that does not have a --paper or

@@ -1,5 +1,5 @@
 diff --git a/chrome/renderer/chrome_content_renderer_client.cc b/chrome/renderer/chrome_content_renderer_client.cc
-index b069a78bce3384304a35c92271821036f4bdd28b..c8c4420cd19c350ca3292efb89f5d9ea7a04f563 100644
+index 0320c23e07862e8531253b9b182b3111d97ad3bb..ead26e9672860bce3005db62b2447ebd8fa802bb 100644
 --- a/chrome/renderer/chrome_content_renderer_client.cc
 +++ b/chrome/renderer/chrome_content_renderer_client.cc
 @@ -561,7 +561,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
@@ -18,4 +18,4 @@ index b069a78bce3384304a35c92271821036f4bdd28b..c8c4420cd19c350ca3292efb89f5d9ea
 +  BRAVE_RENDER_FRAME_CREATED
  }
  
- void ChromeContentRendererClient::WebViewCreated(blink::WebView* web_view,
+ void ChromeContentRendererClient::WebViewCreated(
