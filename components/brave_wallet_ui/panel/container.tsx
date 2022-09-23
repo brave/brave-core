@@ -69,6 +69,7 @@ import { SignTransactionPanel } from '../components/extension/sign-panel/sign-tr
 import { useDispatch, useSelector } from 'react-redux'
 import { SelectCurrency } from '../components/buy-send-swap/select-currency/select-currency'
 import { ConfirmSwapTransaction } from '../components/extension/confirm-transaction-panel/swap'
+import { TransactionStatus } from '../components/extension/post-confirmation'
 
 // Allow BigInts to be stringified
 (BigInt.prototype as any).toJSON = function () {
@@ -216,6 +217,7 @@ function Container () {
   }
 
   const onReturnToMain = () => {
+    dispatch(WalletPanelActions.setSelectedTransaction(undefined))
     dispatch(WalletPanelActions.navigateTo('main'))
   }
 
@@ -259,10 +261,15 @@ function Container () {
     }
   }
 
-  const onSelectTransaction = (transaction: BraveWallet.TransactionInfo) => {
+  const viewTransactionDetail = React.useCallback((transaction: BraveWallet.TransactionInfo) => {
     dispatch(WalletPanelActions.setSelectedTransaction(transaction))
     dispatch(WalletPanelActions.navigateTo('transactionDetails'))
-  }
+  }, [])
+
+  const viewTransactionStatus = React.useCallback((transaction: BraveWallet.TransactionInfo) => {
+    dispatch(WalletPanelActions.setSelectedTransaction(transaction))
+    dispatch(WalletPanelActions.navigateTo('transactionStatus'))
+  }, [])
 
   const onConfirmTransaction = () => {
     if (!selectedPendingTransaction) {
@@ -272,7 +279,7 @@ function Container () {
       dispatch(WalletPanelActions.approveHardwareTransaction(selectedPendingTransaction))
     } else {
       dispatch(WalletActions.approveTransaction(selectedPendingTransaction))
-      onSelectTransaction(selectedPendingTransaction)
+      viewTransactionStatus(selectedPendingTransaction)
     }
   }
 
@@ -339,7 +346,7 @@ function Container () {
   }
 
   const onGoBackToTransactions = () => {
-    dispatch(WalletPanelActions.navigateTo('transactions'))
+    dispatch(WalletPanelActions.navigateBack())
   }
 
   const onProvideEncryptionKey = () => {
@@ -407,6 +414,18 @@ function Container () {
           <LockPanel
             onSubmit={unlockWallet}
             onClickRestore={onRestore}
+          />
+        </StyledExtensionWrapper>
+      </PanelWrapper>
+    )
+  }
+
+  if (selectedPanel === 'transactionStatus' && selectedTransaction) {
+    return (
+      <PanelWrapper isLonger={false}>
+        <StyledExtensionWrapper>
+          <TransactionStatus
+            transaction={selectedTransaction}
           />
         </StyledExtensionWrapper>
       </PanelWrapper>
@@ -772,7 +791,7 @@ function Container () {
               <TransactionsPanel
                 accounts={accounts}
                 defaultCurrencies={defaultCurrencies}
-                onSelectTransaction={onSelectTransaction}
+                onSelectTransaction={viewTransactionDetail}
                 selectedNetwork={selectedNetwork}
                 selectedAccount={selectedAccount}
                 visibleTokens={userVisibleTokensInfo}

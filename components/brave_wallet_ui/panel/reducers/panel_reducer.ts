@@ -6,7 +6,7 @@
 import { createReducer } from 'redux-act'
 import {
   BraveWallet,
-  PanelState
+  PanelState, PanelTypes
 } from '../../constants/types'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import {
@@ -82,12 +82,29 @@ const defaultState: PanelState = {
 
 export const createPanelReducer = (initialState: PanelState) => {
   const reducer = createReducer<PanelState>({}, initialState)
-  reducer.on(PanelActions.navigateTo, (state: any, selectedPanel: string) => {
+  reducer.on(PanelActions.navigateTo, (state: PanelState, selectedPanel: PanelTypes) => {
     const foundTitle = PanelTitles().find((title) => selectedPanel === title.id)
     const panelTitle = foundTitle ? foundTitle.title : ''
     return {
       ...state,
       selectedPanel,
+      lastSelectedPanel: state.selectedPanel,
+      panelTitle
+    }
+  })
+
+  reducer.on(PanelActions.navigateBack, (state: PanelState) => {
+    const selectedPanel = state.lastSelectedPanel === undefined
+      ? state.selectedPanel
+      : state.lastSelectedPanel
+
+    const foundTitle = PanelTitles().find((title) => selectedPanel === title.id)
+    const panelTitle = foundTitle ? foundTitle.title : ''
+
+    return {
+      ...state,
+      selectedPanel,
+      lastSelectedPanel: state.selectedPanel,
       panelTitle
     }
   })

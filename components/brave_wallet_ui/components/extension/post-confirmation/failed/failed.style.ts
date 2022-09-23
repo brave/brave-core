@@ -12,7 +12,7 @@ export const ErrorIcon = styled(TransactionStatusIcon)`
 `
 
 export const Title = styled(TransactionStatusText)`
-  color: ${(p) => p.theme.color.errorBorder};
+  color: ${p => p.theme.color.errorBorder};
 `
 
 export const ErrorDetailTitle = styled.div`
@@ -22,6 +22,7 @@ export const ErrorDetailTitle = styled.div`
   font-size: 12px;
   line-height: 18px;
   color: ${p => p.theme.color.errorBorder};
+  margin: 0 16px;
 `
 
 export const ErrorDetailContentContainer = styled.div`
