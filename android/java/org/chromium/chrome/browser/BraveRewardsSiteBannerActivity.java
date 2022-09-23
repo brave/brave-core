@@ -54,7 +54,7 @@ public class BraveRewardsSiteBannerActivity
     public static final int TIP_SUCCESS = 2;
     public static final int TIP_PENDING = 3;
 
-    private View progressBar;
+    private View mProgressBar;
     private boolean mIsActivityIsActive;
 
     private static final String TAG = "TippingBanner";
@@ -66,14 +66,13 @@ public class BraveRewardsSiteBannerActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.brave_rewards_site_banner);
         mIsActivityIsActive = true;
-        progressBar = findViewById(R.id.progressBar);
+        mProgressBar = findViewById(R.id.progressBar);
         mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
         mBraveRewardsNativeWorker.AddObserver(this);
 
         currentTabId_ = IntentUtils.safeGetIntExtra(getIntent(), TAB_ID_EXTRA, -1);
         mIsMonthlyContribution =
                 IntentUtils.safeGetBooleanExtra(getIntent(), IS_MONTHLY_CONTRIBUTION, false);
-        mBannerInfo = null;
         if (savedInstanceState == null) {
             mBraveRewardsNativeWorker.GetPublisherBanner(
                     mBraveRewardsNativeWorker.GetPublisherId(currentTabId_));
@@ -90,10 +89,12 @@ public class BraveRewardsSiteBannerActivity
                 try {
                     mBannerInfo = new BraveRewardsBannerInfo(jsonBannerInfo);
                 } catch (JSONException e) {
-                    Log.e(TAG, "BraveRewardsSiteBannerActivity:onPublisherBanner JSONException error " + e);
+                    Log.e(TAG,
+                            "BraveRewardsSiteBannerActivity:onPublisherBanner JSONException error "
+                                    + e);
                 }
 
-                progressBar.setVisibility(View.GONE);
+                mProgressBar.setVisibility(View.GONE);
 
                 BraveRewardsCreatorPanelFragment creatorPanelFragment =
                         BraveRewardsCreatorPanelFragment.newInstance(
@@ -131,13 +132,13 @@ public class BraveRewardsSiteBannerActivity
         mAmount = amount;
         mIsMonthly = isMonthly;
         mTipUpdated = false;
-        progressBar.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.VISIBLE);
         enableTimeout(); // wait for 3 seconds
     }
 
     private void tipConfirmation(int status, double amount, boolean isMonthly) {
         if (!mIsActivityIsActive) return;
-        progressBar.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.GONE);
 
         String publisherName = "";
         if (mBannerInfo != null) publisherName = mBannerInfo.getName();

@@ -74,7 +74,6 @@ public class BraveRewardsCreatorPanelFragment extends Fragment
 
     private static final String TAG = "TippingBanner";
 
-
     public static BraveRewardsCreatorPanelFragment newInstance(
             int tabId, boolean isMonthlyContribution, String bannerInfo) {
         BraveRewardsCreatorPanelFragment fragment = new BraveRewardsCreatorPanelFragment();

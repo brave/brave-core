@@ -44,7 +44,6 @@ public class BraveRewardsTipConfirmationFragment extends Fragment implements Bra
 
     private static final String TAG = "TippingBanner";
 
-
     public static BraveRewardsTipConfirmationFragment newInstance(
             int status, String name, double amount, boolean isMonthly) {
         BraveRewardsTipConfirmationFragment fragment = new BraveRewardsTipConfirmationFragment();
@@ -125,7 +124,8 @@ public class BraveRewardsTipConfirmationFragment extends Fragment implements Bra
                 startActivity(new Intent(Intent.ACTION_VIEW, uri));
             } else {
                 // error
-                Log.e(TAG, "BraveRewardsTipConfirmationFragment -> setTweetClickListener invalid status ");
+                Log.e(TAG,
+                        "BraveRewardsTipConfirmationFragment -> setTweetClickListener invalid status ");
             }
         });
     }

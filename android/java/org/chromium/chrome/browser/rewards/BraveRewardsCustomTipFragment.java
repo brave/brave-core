@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -118,7 +119,7 @@ public class BraveRewardsCustomTipFragment extends Fragment {
         @SuppressLint("SetTextI18n")
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (s == null || s.toString().isEmpty()) s = "0";
+            if (TextUtils.isEmpty(s)) s = "0";
             Double batValue = getBatValue(s.toString());
             Double usdValue = exchangeRate * batValue;
 
@@ -156,7 +157,7 @@ public class BraveRewardsCustomTipFragment extends Fragment {
      *
      * @param inputValue : editText string passed here
      * @return
-     * convert to bat value if current editText is usd
+     * convert to bat value if current editText is USD
      * It will return multiple 0.25
      * And also return which is lower between Max and value
      * decimal points always roundedOff to floor value.
@@ -164,7 +165,7 @@ public class BraveRewardsCustomTipFragment extends Fragment {
     private double getBatValue(String inputValue) {
         double rawValue = Double.parseDouble(inputValue);
         if (!isBatCurrencyMode) {
-            // from usd to BAT
+            // from USD to BAT
             rawValue = rawValue / exchangeRate;
         }
 
