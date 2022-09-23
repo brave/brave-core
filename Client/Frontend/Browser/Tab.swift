@@ -11,6 +11,7 @@ import BraveShared
 import SwiftyJSON
 import XCGLogger
 import Data
+import BraveWallet
 
 private let log = Logger.browserLogger
 
@@ -71,6 +72,8 @@ class Tab: NSObject {
 
   var walletEthProvider: BraveWalletEthereumProvider?
   var walletEthProviderJS: String?
+  var tabDappStore: TabDappStore = .init()
+  
   var isWalletIconVisible: Bool = false {
     didSet {
       tabDelegate?.updateURLBarWalletButton()

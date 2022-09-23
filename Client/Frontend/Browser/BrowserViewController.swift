@@ -2507,9 +2507,11 @@ extension BrowserViewController: TabDelegate {
           Preferences.Wallet.displayWeb3Notifications.value else {
       return
     }
+    let origin = tab.getOrigin()
+    let tabDappStore = tab.tabDappStore
     let walletNotificaton = WalletNotification(priority: .low, origin: origin) { [weak self] action in
       if action == .connectWallet {
-        self?.presentWalletPanel(tab: tab)
+        self?.presentWalletPanel(from: origin, with: tabDappStore)
       }
     }
     notificationsPresenter.display(notification: walletNotificaton, from: self)
