@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 
+#include <utility>
+
 #include "base/feature_list.h"
 #include "base/notreached.h"
 #include "base/strings/string_split.h"
