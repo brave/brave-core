@@ -267,14 +267,13 @@ OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
   base::Value device_list_value(base::Value::Type::LIST);
 
   for (const auto& device : device_list) {
-    auto device_value = base::Value::FromUniquePtrValue(device->ToValue());
+    auto device_value = device->ToValue();
     bool is_current_device =
         local_device_info ? local_device_info->guid() == device->guid() : false;
-    device_value.SetBoolKey("isCurrentDevice", is_current_device);
-    device_value.SetStringKey("guid", device->guid());
-    device_value.SetBoolKey("supportsSelfDelete",
-                            device->is_self_delete_supported());
-    device_list_value.Append(std::move(device_value));
+    device_value.Set("isCurrentDevice", is_current_device);
+    device_value.Set("guid", device->guid());
+    device_value.Set("supportsSelfDelete", device->is_self_delete_supported());
+    device_list_value.Append(base::Value(std::move(device_value)));
   }
 
   std::string json_string;
