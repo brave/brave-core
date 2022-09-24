@@ -235,6 +235,8 @@ source_set("ui") {
       "views/side_panel/playlist/playlist_side_panel_web_view.h",
       "views/tabs/brave_browser_tab_strip_controller.cc",
       "views/tabs/brave_browser_tab_strip_controller.h",
+      "views/tabs/brave_compound_tab_container.cc",
+      "views/tabs/brave_compound_tab_container.h",
       "views/tabs/brave_tab.cc",
       "views/tabs/brave_tab.h",
       "views/tabs/brave_tab_container.cc",
