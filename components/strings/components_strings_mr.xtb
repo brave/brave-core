@@ -182,6 +182,7 @@
 <translation id="1430915738399379752">प्रिंट</translation>
 <translation id="1432187715652018471">पेजला सेवा हँडलर इंस्टॉल करायचा आहे.</translation>
 <translation id="1432581352905426595">शोध इंजीन व्यवस्थापित करा</translation>
+<translation id="1435940442311036198">वेगळ्या डिव्हाइसवर पासकी वापरा</translation>
 <translation id="1436185428532214179">तुमच्या डिव्हाइसवरील फाइल आणि फोल्डर संपादित करण्याची विनंती करू शकते</translation>
 <translation id="1442386063175183758">राइट गेट फोल्ड</translation>
 <translation id="1442987760062738829">पंच</translation>
@@ -402,6 +403,7 @@
 <translation id="2040894699575719559">स्थान ब्लॉक केले</translation>
 <translation id="2042213636306070719">ट्रे ७</translation>
 <translation id="3163988908275223348">तुमच्या Brave खाते मध्ये सेव्ह केलेले पासवर्ड वापरण्यासाठी साइन इन करा</translation>
+<translation id="2048261947532620704">पेजचे भाषांतर करत आहे</translation>
 <translation id="205212645995975601">BBQ आणि ग्रिलिंग</translation>
 <translation id="2053111141626950936"><ph name="LANGUAGE"/>मधील पेज भाषांतरीत केले जाणार नाहीत.</translation>
 <translation id="2064691555167957331">{COUNT,plural, =1{1 सूचना}other{# सूचना}}</translation>
@@ -467,6 +469,7 @@
 <translation id="2219658597883514593">ट्यूटोरियल रीस्टार्ट करा</translation>
 <translation id="2219735899272417925">डिव्हाइस रीसेट करण्याची आवश्यकता आहे</translation>
 <translation id="2224337661447660594">इंटरनेट नाही</translation>
+<translation id="2225927550500503913">व्हर्च्युअल कार्ड सुरू केले आहे</translation>
 <translation id="2230458221926704099"><ph name="BEGIN_LINK"/>निदान ॲप<ph name="END_LINK"/> वापरून आपल्या कनेक्शनचे निराकरण करा</translation>
 <translation id="2239100178324503013">आता पाठवा</translation>
 <translation id="2241693394036365668">फाइल डाउनलोड केली गेली</translation>
@@ -501,7 +504,6 @@
 <translation id="2318594867107319532">धोरणाशी संबंधित शेवटचा टाइमस्टॅंप:</translation>
 <translation id="2324604504973636700">घरातील उपकरणे</translation>
 <translation id="2328651992442742497">अनुमती आहे (डीफॉल्ट)</translation>
-<translation id="2329182534073751090">विंडो स्थान नियोजन</translation>
 <translation id="2329473609445770916">ही साइट तुम्हाला जाहिराती दाखवण्यासाठी इतर साइट वापरू शकतात अशी स्वारस्ये परिभाषित करते</translation>
 <translation id="2330137317877982892"><ph name="CREDIT_CARD"/>, <ph name="EXPIRATION_DATE_ABBR"/> रोजी एक्स्पायर होईल</translation>
 <translation id="2337852623177822836">सेटिंग तुमच्या ॲडमिनिस्ट्रेटरने नियंत्रित केलेले आहे</translation>
@@ -604,7 +606,6 @@
 <translation id="2604589665489080024">पॉप संगीत</translation>
 <translation id="2610561535971892504">कॉपी करण्यासाठी क्लिक करा</translation>
 <translation id="2618023639789766142">C10 (Envelope)</translation>
-<translation id="2623663032199728144">तुमच्या स्क्रीनशी संबंधित माहिती वापरण्यासाठी विचारू शकते</translation>
 <translation id="2625385379895617796">तुमचे घड्याळ पुढे आहे</translation>
 <translation id="262745152991669301">USB डिव्हाइसशी कनेक्ट करण्याची विनंती करू शकते</translation>
 <translation id="2915787201097107005">Brave ची सर्वोत्तम सुरक्षितता मिळवण्यासाठी, <ph name="BEGIN_ENHANCED_PROTECTION_LINK"/>सुधारित केलेली सुरक्षितता सुरू करा<ph name="END_ENHANCED_PROTECTION_LINK"/></translation>
@@ -682,7 +683,6 @@
 <translation id="1117301625415017890"><ph name="MANAGE_SECURITY_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Brave सेटिंग्जमध्ये तुमचे सुरक्षित ब्राउझिंग आणि आणखी बरेच काही व्यवस्थापित करण्यासाठी टॅब व त्यानंतर एंटर दाबा</translation>
 <translation id="2878197950673342043">पोस्टर फोल्ड</translation>
 <translation id="2878424575911748999">A1</translation>
-<translation id="2880660355386638022">विंडो स्थान नियोजन</translation>
 <translation id="2881276955470682203">कार्ड सेव्ह करायचे?</translation>
 <translation id="2882949212241984732">डबल-गेट फोल्ड</translation>
 <translation id="2893773853358652045">चौथा रोल</translation>
@@ -878,6 +878,7 @@
 <translation id="3427092606871434483">अनुमती द्या (डीफॉल्ट)</translation>
 <translation id="3427342743765426898">&amp;संपादित करा पुन्हा करा</translation>
 <translation id="3428151540071562330">DnsOverHttpsTemplates चे एकाहून अधिक सर्व्हर टेम्पलेट URI चुकीचे आहेत आणि ते वापरले जाणार नाहीत.</translation>
+<translation id="3431216045099978607">फुल स्क्रीनमधून बाहेर पडण्यासाठी आणि डाउनलोड पाहण्यासाठी |<ph name="ACCELERATOR"/>| दाबा.</translation>
 <translation id="3431636764301398940">या डिव्हाइसवर हे कार्ड सेव्ह करा</translation>
 <translation id="3432601291244612633">पेज बंद करा</translation>
 <translation id="3435738964857648380">सुरक्षितता</translation>
@@ -960,12 +961,12 @@
 <translation id="3658742229777143148">पुनरावृत्ती</translation>
 <translation id="3664782872746246217">कीवर्ड:</translation>
 <translation id="3667704023705708645">व्हेंचर कॅपिटल</translation>
-<translation id="2770043515970619538">Brave बुकमार्क</translation>
 <translation id="3671540257457995106">आकार बदलण्याची अनुमती द्यायची आहे का?</translation>
 <translation id="3675563144891642599">तिसरा रोल</translation>
 <translation id="3676592649209844519">डिव्हाइस आयडी:</translation>
 <translation id="3677008721441257057">तुम्हाला &lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN"/>&lt;/a&gt; म्हणायचे आहे का?</translation>
 <translation id="3678029195006412963">विनंती स्वाक्षरीकृत करणे शक्य झाले नाही</translation>
+<translation id="3678342917559046352">एक्स्टेंशन चुकीचे आहे: मूल्य हे पुढीलपैकी एका स्वरूपात असणे अपेक्षित आहे: &lt;extension_id&gt; किंवा &lt;extension_id&gt;;&lt;update_url&gt;.</translation>
 <translation id="3681007416295224113">सर्टिफिकेट माहिती</translation>
 <translation id="3701427423622901115">रीसेट करण्याची नोंद घेतली आहे.</translation>
 <translation id="3704162925118123524">तुम्ही वापरत असलेल्या नेटवर्कला तुम्ही त्याच्या लॉग इन पेजला भेट देण्याची आवश्यकता असू शकते.</translation>
@@ -1031,6 +1032,7 @@
 <translation id="3835233591525155343">तुमच्या डिव्हाइसचा वापर</translation>
 <translation id="5749930378398424146"><ph name="CREATE_GOOGLE_DOC_FOCUSED_FRIENDLY_MATCH_TEXT"/>, नवीन Brave दस्तऐवज झटपट तयार करण्यासाठी टॅब आणि त्यानंतर एंटर दाबा</translation>
 <translation id="385051799172605136">मागील</translation>
+<translation id="3853684360927654006">पासवर्डची क्लिष्टता कॅल्क्युलेटर</translation>
 <translation id="3858027520442213535">तारीख आणि वेळ अपडेट करा</translation>
 <translation id="3858860766373142691">नाव</translation>
 <translation id="3872834068356954457">विज्ञान</translation>
@@ -1064,7 +1066,6 @@
 <translation id="3969052498612555048">तुमचा कोड सापडत नाही का? <ph name="BEGIN_LINK"/>नवीन कोड मिळवा<ph name="END_LINK"/></translation>
 <translation id="397105322502079400">गणना करत आहे...</translation>
 <translation id="3973234410852337861"><ph name="HOST_NAME"/> ब्लॉक केले आहे</translation>
-<translation id="3978338123949022456">शोध मोड, क्वेरी टाइप करा आणि <ph name="KEYWORD_SUFFIX"/> सह शोधण्यासाठी एंटर दाबा</translation>
 <translation id="398470910934384994">पक्षी</translation>
 <translation id="3985750352229496475">पत्ते व्यवस्थापित करा…</translation>
 <translation id="3986705137476756801">आतापुरते लाइव्ह कॅप्शन बंद करा</translation>
@@ -1108,7 +1109,7 @@
 <translation id="4114146879518089587">साइटवर पुढे सुरू ठेवा</translation>
 <translation id="4116663294526079822">या साइटवर नेहमी अनुमती द्या</translation>
 <translation id="4116701314593212016">JIS B7</translation>
-<translation id="4117700440116928470">धोरण कक्षा समर्थित नाही.</translation>
+<translation id="4117700440116928470">धोरण कक्षा याला सपोर्ट नाही.</translation>
 <translation id="4121428309786185360">रोजी कालबाह्य होत आहे</translation>
 <translation id="4123572138124678573">ट्रिपल पंच बॉटम</translation>
 <translation id="4127575959421463246">ChromeOS फ्लॅग शोधत आहात का? भेट द्या</translation>
@@ -1171,6 +1172,7 @@
 <translation id="4305666528087210886">तुमची फाइल अ‍ॅक्सेस करता आली नाही</translation>
 <translation id="4306529830550717874">पत्ता सेव्ह करायचा आहे का?</translation>
 <translation id="4306812610847412719">क्लिपबोर्ड</translation>
+<translation id="4270648948919210881">हे धोरण दुर्लक्षित केले आहे, कारण वापरकर्ता अनुषंगिक नाही. हे धोरण लागू केले जाण्यासाठी, एकाच संस्थेने Brave ब्राउझर आणि प्रोफाइल ॲडमिन कन्सोलद्वारे व्यवस्थापित करणे आवश्यक आहे.</translation>
 <translation id="4310070645992025887">तुमचे प्रवास शोधा</translation>
 <translation id="4312613361423056926">B2</translation>
 <translation id="4312866146174492540">ब्लॉक करा (डीफॉल्ट)</translation>
@@ -1183,6 +1185,7 @@
 <translation id="4329871760342656885">धोरण पार्स करताना एरर: <ph name="ERROR"/></translation>
 <translation id="4331519897422864041">स्टॅकर ५</translation>
 <translation id="4331708818696583467">सुरक्षित नाही</translation>
+<translation id="4333561522337981382">तुमच्या सर्व डिस्प्लेवर विंडो व्यवस्थापित करणे</translation>
 <translation id="5792122559159836842">या जाहिरातीने तुमच्या डिव्हाइससाठी खूप जास्त स्रोत वापरल्यामुळे, Brave ने ती काढून टाकली.</translation>
 <translation id="6116812392674177288">हा कॉंप्युटर एंटरप्राइझ व्यवस्थापित म्हणून आढळला नाही म्हणून धोरण फक्त Brave वेबस्टोअरवर होस्ट केलेले एक्स्टेंशन आपोआप इंस्टॉल करू शकते. Brave वेबस्टोअर अपडेट URL <ph name="CWS_UPDATE_URL"/> ही आहे.</translation>
 <translation id="4346197816712207223">स्वीकारली जाणारी क्रेडिट कार्डे</translation>
@@ -1220,7 +1223,6 @@
 <translation id="4435702339979719576">Postcard)</translation>
 <translation id="443673843213245140">प्रॉक्सीचा वापर अक्षम करण्‍यात आला आहे पण एक सुस्पष्‍ट प्रॉक्सी कॉन्‍फिगरेशन निर्दिष्‍ट करण्‍यात आले आहे.</translation>
 <translation id="4441832193888514600">दुर्लक्ष केले आहे, कारण हे धोरण फक्त क्लाउड वापरकर्ता धोरण म्हणून सेट केले जाऊ शकते.</translation>
-<translation id="7607452725660354169">Brave टॅब</translation>
 <translation id="4450893287417543264">पुन्हा दाखवू नका</translation>
 <translation id="4451135742916150903">HID डिव्हाइसशी कनेक्ट करण्याची विनंती करू शकते</translation>
 <translation id="8416018650396907203">तुम्ही नुकताच वापरलेला पासवर्ड डेटा भंगामध्ये आढळला होता. तुमची खाती सुरक्षित करण्यासाठ, Brave पासवर्ड व्यवस्थापक तुमचे सेव्ह केलेले पासवर्ड तपासण्याची शिफारस करतो.</translation>
@@ -1280,6 +1282,7 @@
 <translation id="464342062220857295">शोध वैशिष्ट्ये</translation>
 <translation id="4644670975240021822">उलट्या क्रमाने फेस डाउन</translation>
 <translation id="4646534391647090355">आता मला तेथे घेऊन जा</translation>
+<translation id="4648262692072505866">हॅशचा फॉरमॅट SHA-256 असा असावा.</translation>
 <translation id="4652266463001779298">अनुमती नाही</translation>
 <translation id="4653167719759882810">विलीनीकरण आणि संपादने</translation>
 <translation id="4658638640878098064">स्टेपल टॉप लेफ्ट</translation>
@@ -1339,7 +1342,9 @@
 <translation id="7110430050177876111">तुमच्या कार्डाचा तपशील अपडेट करण्यासाठी <ph name="CREDIT_CARD"/> साठी कार्डची एक्स्पायरेशन तारीख आणि CVC टाका. तुम्ही निश्चित केल्यानंतर, तुमच्या Brave खात्यामधील कार्डाचा तपशील या साइटसोबत शेअर केला जाईल.</translation>
 <translation id="4800132727771399293">तुमची कालबाह्यता तारीख आणि CVC तपासा आणि पुन्हा प्रयत्न करा</translation>
 <translation id="4803924862070940586"><ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
+<translation id="4806051791961048632">टच आयडी वापरा</translation>
 <translation id="4809079943450490359">तुमच्या डिव्हाइस अ‍ॅडमिनिस्ट्रेटरकडून सूचना:</translation>
+<translation id="4811450222531576619">त्याचे स्रोत आणि विषय यांबद्दल जाणून घ्या</translation>
 <translation id="4812751092864334025">वेअरेबल तंत्रज्ञान</translation>
 <translation id="4813512666221746211">नेटवर्क एरर</translation>
 <translation id="4816492930507672669">पृष्‍ठानुरुप करा</translation>
@@ -1385,6 +1390,8 @@
 <translation id="4926340098269537727"><ph name="ACTIVE_MATCH"/>/<ph name="TOTAL_MATCHCOUNT"/></translation>
 <translation id="4929871932072157101"><ph name="KEYWORD_FOCUSED_FRIENDLY_MATCH_TEXT"/>, शोधण्यासाठी टॅब आणि त्यानंतर एंटर दाबा</translation>
 <translation id="4930153903256238152">जास्त क्षमता</translation>
+<translation id="4934780484581617878">विंडो व्यवस्थापन</translation>
+<translation id="4936134414789135531">घातलेले <ph name="VALUE_NAME"/> आढळले नाही.</translation>
 <translation id="4936675324097895694">वित्तविषयक</translation>
 <translation id="4943872375798546930">परिणाम नाहीत</translation>
 <translation id="4943933359574417591">मजकूर आणि झटपट मेसेजिंग</translation>
@@ -1395,6 +1402,7 @@
 <translation id="4958444002117714549">सूची विस्तार करा</translation>
 <translation id="4964505745997821360">आरोग्य विमा</translation>
 <translation id="4968522289500246572">हे ॲप मोबाइलसाठी डिझाइन केले असून योग्यप्रकारे आकार बदलू शकणार नाही. अ‍ॅपमध्ये समस्या येऊ शकतात किंवा ते रीस्टार्ट होऊ शकते.</translation>
+<translation id="4968665849807487749">तुमच्या सर्व डिस्प्लेवर विंडो व्यवस्थापित करण्याची विनंती करू शकते</translation>
 <translation id="4969341057194253438">रेकॉर्डिंग हटवा</translation>
 <translation id="4973922308112707173">ड्युअल पंच टॉप</translation>
 <translation id="4976702386844183910"><ph name="DATE"/> रोजी शेवटची भेट दिली</translation>
@@ -1461,6 +1469,7 @@
 <translation id="5123063207673082822">वीकेंड</translation>
 <translation id="5123433949759960244">बास्केटबॉल</translation>
 <translation id="5125394840236832993">B-Plus</translation>
+<translation id="5125751979347152379">चुकीची URL.</translation>
 <translation id="512592033764059484">सॉकर</translation>
 <translation id="5126510351761255129">तुमच्या कार्डाची पडताळणी करा</translation>
 <translation id="512670116361803001"><ph name="APP_NAME"/> योग्यप्रकारे आकार बदलू शकणार नाही. ॲपमध्ये समस्या येऊ नयेत यासाठी, प्रीसेट विंडोचे आकार वापरा.</translation>
@@ -1498,6 +1507,7 @@
 <translation id="5215363486134917902">Folio-Sp</translation>
 <translation id="521659676233207110">ट्रे १३</translation>
 <translation id="5216942107514965959">आज शेवटची भेट दिली</translation>
+<translation id="5217759126664161410">प्रोटोकॉलचा फॉरमॅट चुकीचा आहे.</translation>
 <translation id="5222812217790122047">ईमेल आवश्यक आहे</translation>
 <translation id="5228404122310299359">पार्टी आणि सुट्टीशी संबंधित साहित्य</translation>
 <translation id="5229588705416009823">खूप मल्टीप्लेअर असलेले गेम</translation>
@@ -1570,7 +1580,9 @@
 <translation id="5398772614898833570">जाहिराती ब्लॉक केल्या</translation>
 <translation id="5400836586163650660">राखाडी</translation>
 <translation id="540969355065856584">हा सर्व्हर <ph name="DOMAIN"/> असल्याचे सिद्ध करू शकला नाही; त्याचे सुरक्षितता सर्टिफिकेट यावेळी वैध नाही. हे कदाचित चुकीच्या कॉंफिगरेशनमुळे किंवा हल्लेखोर तुमचे कनेक्शन इंटरसेप्ट करत असल्‍यामुळे होऊ शकते.</translation>
+<translation id="5412040515238827314">फॉरमॅट चुकीचा आहे: सूचीचा पॅटर्न अपेक्षित आहे.</translation>
 <translation id="9079419934310259761">तुम्हाला आणखी उपयुक्त जाहिराती दाखवण्यासाठी ही साइट Brave मधून तुमची स्वारस्ये मिळवते</translation>
+<translation id="5412245327974352290"><ph name="TRADITIONAL_TEXT"/> - <ph name="ADDITIONAL_TEXT"/></translation>
 <translation id="541416427766103491">स्टॅकर ४</translation>
 <translation id="5421136146218899937">ब्राउझिंग डेटा साफ करा...</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> ला तुम्हाला सूचना पाठवायची आहे</translation>
@@ -1602,9 +1614,11 @@
 <translation id="5509780412636533143">व्यवस्थापित केलेले बुकमार्क</translation>
 <translation id="5510481203689988000">हे सेटिंग कुकी सेटिंग्जमध्ये नियंत्रित केले जाते.</translation>
 <translation id="5510766032865166053">ती कदाचित हलविली किंवा हटविली गेली आहे.</translation>
+<translation id="5513528801833998679">डिव्हाइस साइन-इन वापरा</translation>
 <translation id="5518670652865028077">कला आणि मनोरंजन</translation>
 <translation id="5519516356611866228">तुमच्या बदलांसह</translation>
 <translation id="5523118979700054094">धोरणाचे नाव</translation>
+<translation id="5525755241743357906">फाइल कॉपी केली किंवा हलवली</translation>
 <translation id="5526617258931667850"><ph name="MANAGE_CHROMEOS_ACCESSIBILITY_FOCUSED_FRIENDLY_MATCH_TEXT"/>, ChromeOS सेटिंग्जमध्ये तुमची अ‍ॅक्सेसिबिलिटी टूल पर्सनलाइझ करण्यासाठी, टॅब आणि त्यानंतर एंटर दाबा</translation>
 <translation id="5528532273234423708">होम ऑटोमेशन</translation>
 <translation id="55293785478302737">एज स्टिच</translation>
@@ -1627,12 +1641,14 @@
 <translation id="5571083550517324815">या पत्त्यावरून पिक अप करू शकत नाही. वेगळा पत्ता निवडा.</translation>
 <translation id="557886905979275351">रेझर आणि शेव्हर</translation>
 <translation id="5580958916614886209">तुमचा कालबाह्यता महिना तपासा आणि पुन्हा प्रयत्न करा</translation>
+<translation id="558420943003240152">पासवर्ड आणि पासकी व्यवस्थापित करा…</translation>
 <translation id="5586446728396275693">कोणतेही सेव्ह केलेले ॲड्रेस नाही</translation>
+<translation id="5586831831248371458"><ph name="KEYWORD_SUFFIX"/> शोधा</translation>
 <translation id="5587987780934666589">प्लॅटफॉर्म वापरकर्ता</translation>
 <translation id="5593349413089863479">कनेक्शन पूर्णपणे सुरक्षित नाही</translation>
 <translation id="5595485650161345191">पत्ता संपादित करा</translation>
 <translation id="5598944008576757369">पेमेंट पद्धत निवडा</translation>
-<translation id="560412284261940334">व्यवस्थापन समर्थित नाही</translation>
+<translation id="560412284261940334">व्यवस्थापनाला सपोर्ट नाही</translation>
 <translation id="5605670050355397069">Ledger</translation>
 <translation id="5607240918979444548">Architecture-C</translation>
 <translation id="5610142619324316209">कनेक्शन तपासणे</translation>
@@ -1687,9 +1703,11 @@
 <translation id="5754400531489347219">पाळीव प्राणी आणि पशू</translation>
 <translation id="5759751709240058861">तुमचा कॅमेरा वापरा आणि हलवा</translation>
 <translation id="5763042198335101085">वैध ईमेल ॲड्रेस एंटर करा</translation>
+<translation id="5764725887548570807">ओरिजिनचा फॉरमॅट चुकीचा आहे.</translation>
 <translation id="5765072501007116331">वितरण पद्धती आणि आवश्यकता पाहण्यासाठी, एक पत्ता निवडा</translation>
 <translation id="57689295674415555">व्हर्च्युअल कार्ड नंबर भरला नाही का?</translation>
 <translation id="5776313857861697733">प्राधान्य</translation>
+<translation id="5778389256418062749">वेगळ्या डिव्हाइसवर पासकी वापरा</translation>
 <translation id="5781136890105823427">प्रयोग सुरू केला आहे</translation>
 <translation id="578305955206182703">अंबर</translation>
 <translation id="57838592816432529">म्यूट करा</translation>
@@ -1751,6 +1769,7 @@
 <translation id="5963413905009737549">विभाग</translation>
 <translation id="5967592137238574583">संपर्क माहिती संपादित करा</translation>
 <translation id="5967867314010545767">इतिहासातून काढून टाका</translation>
+<translation id="5968022600320704045">कोणतेही शोध परिणाम नाहीत</translation>
 <translation id="5968793460449681917">प्रत्येक भेटीला</translation>
 <translation id="5974052231147553524">सहावा रोल</translation>
 <translation id="5975083100439434680">झूम कमी करा</translation>
@@ -1811,9 +1830,11 @@
 <translation id="6107012941649240045">यांना जारी केलेले</translation>
 <translation id="8233947174119245051">तुमच्या Brave खात्यामध्ये <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> वर ब्राउझिंग इतिहासाची अन्य स्वरूपे असू शकतात.</translation>
 <translation id="6116338172782435947">क्लिपबोर्डवर कॉपी केलेला मजकूर आणि इमेज पहा</translation>
+<translation id="6118782133429281336">ओरिजिनसंबंधित सूची रिकामी आहे.</translation>
 <translation id="6120179357481664955">तुमचा UPI आयडी लक्षात ठेवायचा आहे का?</translation>
 <translation id="5972135347314259717">Brave एंटरप्राइझ कनेक्टर</translation>
 <translation id="6127379762771434464">आयटम काढला</translation>
+<translation id="6133984428121856852">फाइल एक्स्टेंशन रिकामे आहे किंवा त्यामध्ये समस्या आहे.</translation>
 <translation id="6146055958333702838">कोणत्याही केबल तपासा आणि कोणतेही राउटर, मोडेम किंवा तुम्ही
 वापरत असलेले
         अन्य नेटवर्क डिव्हाइसेस रीबूट करा.</translation>
@@ -1865,6 +1886,7 @@
 <translation id="6300452962057769623">{0,plural, =0{Your device will restart now}=1{तुमचे डिव्हाइस एका सेकंदामध्ये रीस्टार्ट होईल}other{तुमचे डिव्हाइस # सेकंदांमध्ये रीस्टार्ट होईल}}</translation>
 <translation id="5880900081429361525">Brave मधील Brave असिस्टंट थांबत आहे</translation>
 <translation id="6305205051461490394"><ph name="URL"/> आवाक्याबाहेर आहे.</translation>
+<translation id="6311165245110979290">व्हर्च्युअल कार्ड उपलब्ध आहे</translation>
 <translation id="6312113039770857350">वेबपेज उपलब्ध नाही</translation>
 <translation id="6316226860534107313">स्कूटर आणि मोपेड</translation>
 <translation id="63172326633386613">अ‍ॅक्सेसिबिलिटी सेटिंग्ज व्यवस्थापित करा</translation>
@@ -1885,6 +1907,7 @@
 <translation id="6361757823711327522">B7</translation>
 <translation id="6364095313648930329"><ph name="BEGIN_LINK"/>प्रॉक्सी, फायरवॉल आणि सुरक्षित DNS कॉंफिगरेशन तपासत आहे<ph name="END_LINK"/></translation>
 <translation id="6366710531182496394">ड्युअल स्टेपल लेफ्ट</translation>
+<translation id="6374865374745447009">विंडो व्यवस्थापन</translation>
 <translation id="6377268785556383139">'<ph name="SEARCH_TEXT"/>' साठी एक परिणाम</translation>
 <translation id="6380497234672085559">A0</translation>
 <translation id="6383221683286411806">पुढे संभाव्य शुल्क आहे.</translation>
@@ -1956,12 +1979,12 @@
 <translation id="6579630537141957243">MIDI डिव्‍हाइस कनेक्ट करायचे का?</translation>
 <translation id="6579990219486187401">फिकट गुलाबी</translation>
 <translation id="6583674473685352014">B6 (Envelope)B6 (Envelope)</translation>
-<translation id="7784744142989128075">Brave इतिहास</translation>
 <translation id="5302585261530504168">Brave ला तुम्ही नुकताच डेटा भंगामध्ये वापरलेला पासवर्ड आढळळा आहे. तुमची खाती सुरक्षित करण्यासाठी, आम्ही तो आताच बदलण्याची आणि त्यानंतर तुमचे सेव्ह केलेले पासवर्ड तपासण्याची शिफारस करतो.</translation>
 <translation id="6587923378399804057">तुम्ही कॉपी केलेली लिंक</translation>
 <translation id="6591833882275308647">तुमचे <ph name="DEVICE_TYPE"/> व्यवस्थापित केलेले नाही</translation>
 <translation id="7150996650768688560">साइट सेटिंग्ज व्यवस्थापित करा बटण, Brave सेटिंग्जमध्ये परवानग्या आणि सर्व साइटवर स्टोअर केलेला डेटा व्यवस्थापित करण्यासाठी एंटर दाबा</translation>
 <translation id="6596325263575161958">एंक्रिप्शन पर्याय</translation>
+<translation id="6599642189720630047">ट्रॅक केलेली उत्पादने</translation>
 <translation id="6609880536175561541">Prc7 (Envelope)Prc7 (Envelope)</translation>
 <translation id="6611723696964473273">अर्थव्यवस्थेशी संबंधित बातम्या</translation>
 <translation id="6612010098632894193">ऑनलाइन व्हिडिओ</translation>
@@ -1986,6 +2009,7 @@
 <translation id="666259744093848177">(x86_64 भाषांतरित)</translation>
 <translation id="6663846344464066639">हात जोडलेला</translation>
 <translation id="6665553082534466207">ट्रिपल पंच राइट</translation>
+<translation id="6668389483194953109">"कस्टम" असे नाव असलेला पेपरचा आकार आढळला आहे, पण "custom_size" ही प्रॉपर्टी रिकामी किंवा चुकीची आहे.</translation>
 <translation id="6683717648675961851">नोकरीच्या सूची</translation>
 <translation id="6685834062052613830">साइन आउट करा आणि सेटअप पूर्ण करा</translation>
 <translation id="6687335167692595844">विनंती केलेल्या फॉंटचा आकार</translation>
@@ -1998,6 +2022,7 @@
 <translation id="6696588630955820014">हा टॅब शेअर करा बटण, लिंक शेअर करून, QR कोड तयार करून, कास्ट करून आणि आणखी बऱ्याच पर्यायांद्वारे हा टॅब शेअर करण्यासाठी एंटर दाबा</translation>
 <translation id="6698381487523150993">तयार केलेले:</translation>
 <translation id="6702919718839027939">सादर करा</translation>
+<translation id="6704458454638854812">"custom_size" ही प्रॉपर्टी सेट केली आहे, "custom" असे नाव अपेक्षित आहे.</translation>
 <translation id="6709133671862442373">News</translation>
 <translation id="6709888928011386878">वाद्ये</translation>
 <translation id="6710213216561001401">मागील</translation>
@@ -2052,7 +2077,7 @@
 <translation id="6886577214605505410"><ph name="LOCATION_TITLE"/> <ph name="SHORT_URL"/></translation>
 <translation id="7265969755975834932">हे पेज वाचणे सोपे करण्यासाठी Brave ने ते सुलभ केले आहे. Brave ने मूळ पेज असुरक्षित कनेक्शनवरून पुन्हा मिळवले आहे.</translation>
 <translation id="6890443033788248019">स्थानाला अनुमती द्यायची का?</translation>
-<translation id="6891596781022320156">धोरण स्तर समर्थित नाही.</translation>
+<translation id="6891596781022320156">धोरण पातळी याला सपोर्ट नाही.</translation>
 <translation id="6895143722905299846">व्हर्च्युअल नंबर:</translation>
 <translation id="6895330447102777224">आपल्या कार्डची पुष्टी केली</translation>
 <translation id="6897140037006041989">वापरकर्ता एजंट</translation>
@@ -2196,6 +2221,7 @@
 <translation id="7305756307268530424">धीम्या गतीने सुरू करा</translation>
 <translation id="7308436126008021607">बॅकग्राउंड सिंक</translation>
 <translation id="7310392214323165548">डिव्हाइस लवकरच रीस्टार्ट होईल</translation>
+<translation id="7311244614769792472">कोणतेही परिणाम आढळले नाहीत</translation>
 <translation id="7319430975418800333">A3</translation>
 <translation id="7320336641823683070">कनेक्शन मदत</translation>
 <translation id="7323804146520582233">"<ph name="SECTION"/>" विभाग लपवा</translation>
@@ -2425,6 +2451,7 @@
 <translation id="7880146494886811634">पत्ता सेव्ह करा</translation>
 <translation id="7882421473871500483">तपकिरी</translation>
 <translation id="7882995332186050355">कार्गो ट्रक आणि ट्रेलर</translation>
+<translation id="788679692472636252">पासवर्ड आणि पासकी व्यवस्थापित करा…</translation>
 <translation id="7887683347370398519">तुमचे CVC तपासा आणि पुन्हा प्रयत्न करा</translation>
 <translation id="7887885240995164102">चित्रात-चित्र एंटर करा</translation>
 <translation id="7888575728750733395">प्रस्तुतीकरण इंटेंट प्रिंट करा</translation>
@@ -2470,6 +2497,7 @@
 <translation id="8004582292198964060">ब्राउझर</translation>
 <translation id="8009225694047762179">पासवर्ड व्यवस्थापित करा</translation>
 <translation id="8012116502927253373">{NUM_CARDS,plural, =1{हे कार्ड आणि त्याचा बिलिंग पत्ता सेव्ह केला जाईल. <ph name="USER_EMAIL"/> मध्ये साइन इन केलेले असताना तुम्ही ते वापरू शकाल.}other{ही कार्डे आणि त्यांचे बिलिंग पत्ते सेव्ह केले जातील. <ph name="USER_EMAIL"/> मध्ये साइन इन केलेले असताना तुम्ही ती वापरू शकाल.}}</translation>
+<translation id="8019861005170389898"><ph name="TRADITIONAL_TEXT"/> (<ph name="ADDITIONAL_TEXT"/>)</translation>
 <translation id="8025119109950072390">या साइट वरील आक्रमणकर्ते सॉफ्‍टवेअर इंस्टॉल करणे किंवा तुमची वैयक्तिक माहिती (उदाहरणार्थ, पासवर्ड, फोन नंबर किंवा क्रेडिट कार्ड) उघड करणे यासारखे काहीतरी धोकादायक करण्‍यामध्‍ये तुम्हाला चलाखीने गुंतवू शकतात.</translation>
 <translation id="8026334261755873520">ब्राउझिंग डेटा साफ करा</translation>
 <translation id="8027077570865220386">ट्रे १५</translation>
@@ -2674,7 +2702,6 @@
 <translation id="865032292777205197">मोशन सेन्सर</translation>
 <translation id="8663226718884576429">ऑर्डर सारांश, <ph name="TOTAL_LABEL"/>, आणखी तपशील</translation>
 <translation id="8666678546361132282">इंग्रजी</translation>
-<translation id="8669306706049782872">विंडो उघडण्यासाठी आणि त्यांचे स्थान नियोजित करण्यासाठी तुमच्या स्क्रीनशी संबंधित माहिती वापरा</translation>
 <translation id="867224526087042813">स्वाक्षरी</translation>
 <translation id="8672264262457010862">व्यवसाय आणि औद्योगिक</translation>
 <translation id="8676424191133491403">विलंब नाही</translation>
@@ -2728,7 +2755,6 @@
 <translation id="8805819170075074995">सूची एंट्री "<ph name="LANGUAGE_ID"/>": एंट्री SpellcheckLanguage धोरणामध्येदेखील समाविष्ट असल्यामुळे तिच्याकडे दुर्लक्ष केले गेले आहे.</translation>
 <translation id="8806285662264631610">प्रसाधने</translation>
 <translation id="8807160976559152894">प्रत्येक पेजनंतर ट्रिम करा</translation>
-<translation id="7527893726197732596">Brave सेटिंग्ज</translation>
 <translation id="8813277370772331957">मला नंतर आठवण करून द्या</translation>
 <translation id="7674607358106534914"><ph name="UPDATE_CHROME_FOCUSED_FRIENDLY_MATCH_TEXT"/>, तुमच्या Brave सेटिंग्जमधून Brave अपडेट करण्यासाठी टॅब आणि त्यानंतर एंटर दाबा</translation>
 <translation id="882338992931677877">मॅन्‍युअल स्लॉट</translation>
@@ -2827,6 +2853,7 @@
 <translation id="7650489975492745604"><ph name="SET_CHROME_AS_DEFAULT_BROWSER_FOCUSED_FRIENDLY_MATCH_TEXT"/>, iOS सेटिंग्जमध्ये Brave ला सिस्टीमचा डीफॉल्ट ब्राउझर म्हणून सेट करण्यासाठी एंटर दाबा</translation>
 <translation id="9096679202588811390">टीव्हीवरील शो आणि कार्यक्रम</translation>
 <translation id="9101630580131696064">ट्रे १</translation>
+<translation id="9102081333385212048">तुम्ही कॉपी केलेल्या किंवा हलवलेल्या फाइल विश्लेषणासाठी Google Cloud किंवा तृतीय पक्षांकडे पाठवल्या जातात. उदाहरणार्थ, त्या संवेदनशील डेटा किंवा मालवेअरसाठी स्कॅन केल्या जाऊ शकतात.</translation>
 <translation id="9103537084693478942">व्हिडिओशी संबंधित सॉफ्टवेअर</translation>
 <translation id="6373940988468425649"><ph name="SITE"/> तुमची माहिती संरक्षित करण्यासाठी सामान्यतः एंक्रिप्शन वापरते. Brave ने यावेळी <ph name="SITE"/> शी कनेक्‍ट करण्‍याचा प्रयत्न केला तेव्‍हा, वेबसाइटने असामान्य आणि अयोग्य क्रेडेंशियल परत पाठवले. एकतर आक्रमणकर्ता <ph name="SITE"/> असल्याची बतावणी करण्याचा प्रयत्न करतो तेव्‍हा किंवा वाय-फाय साइन इन स्क्रीनने कनेक्शनमध्ये व्यत्यय आणले तेव्‍हा हे घडू शकते. कोणत्याही डेटाची अदलाबदल करण्यापूर्वी Brave ने कनेक्शन थांबविल्यामुळे तुमची माहिती अद्याप सुरक्षित आहे.</translation>
 <translation id="9106062320799175032">बिलिंग पत्ता जोडा</translation>

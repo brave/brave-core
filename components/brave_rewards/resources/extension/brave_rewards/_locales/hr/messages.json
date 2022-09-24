@@ -32,11 +32,11 @@
     }
   },
   "pendingTipTitle": {
-    "message": "Autor još nije prijavljen.",
+    "message": "Staratelj još nije registriran.",
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "Ovaj autor trenutačno nije konfiguriran za primanje napojnica iz vaše usluge skrbničkog novčanika za Nagrade.",
+    "message": "Taj stvaratelj trenutačno nije konfiguriran za primanje napojnica iz vaše usluge skrbničkog novčanika za nagrade.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -132,7 +132,7 @@
     "description": ""
   },
   "grantCaptchaErrorText": {
-    "message": "Imamo poteškoća sa značajkom Brave Rewards. Pokušajte kasnije.",
+    "message": "Imamo poteškoća s uslugom Nagrade Brave. Pokušajte kasnije.",
     "description": ""
   },
   "rewardsLogInToSeeBalance": {
@@ -246,7 +246,7 @@
     "description": ""
   },
   "walletPendingText": {
-    "message": "Nastao je privremeni problem pri provjeravanju autentičnosti s pružateljem usluge $provider$. Vaše Nagrade Brave ostaju u stanju čekanja i automatski se vraćaju, no također možete pokušati ponovno kasnije.",
+    "message": "Nastao je privremeni problem pri provjeravanju autentičnosti s pružateljem usluge $provider$. Vaše nagrade Brave ostaju u stanju čekanja i automatski se vraćaju, no također možete pokušati ponovno kasnije.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -295,7 +295,7 @@
     "description": ""
   },
   "notificationAddFundsText": {
-    "message": "Na vašem se računu za Brave Rewards očekuje depozit.",
+    "message": "Na vašem se računu za nagrade Brave očekuje depozit.",
     "description": ""
   },
   "notificationAutoContributeCompletedTitle": {
@@ -403,7 +403,7 @@
     "description": ""
   },
   "onboardingEarnText": {
-    "message": "Zaradite tokene pregledavanjem oglasa kojima se poštuje privatnost i automatski dajte podršku svojim omiljenim mrežnim mjestima i autorima sadržaja.",
+    "message": "Zaradite tokene pregledavanjem oglasa kojima se poštuje privatnost i automatski dajte podršku svojim omiljenim mrežnim mjestima i stvarateljima sadržaja.",
     "description": ""
   },
   "onboardingSetupAdsHeader": {
@@ -415,7 +415,7 @@
     "description": ""
   },
   "onboardingSetupContributeHeader": {
-    "message": "Koliki mjesečni doprinos želite dati svojim omiljenim autorima?",
+    "message": "Koliki mjesečni doprinos želite dati svojim omiljenim stvarateljima?",
     "description": ""
   },
   "onboardingSetupContributeSubheader": {
@@ -423,7 +423,7 @@
     "description": ""
   },
   "onboardingStartUsingRewards": {
-    "message": "Počni upotrebljavati uslugu Brave Rewards",
+    "message": "Počni upotrebljavati uslugu Nagrade Brave",
     "description": ""
   },
   "onboardingTakeTour": {
@@ -473,11 +473,11 @@
     "description": ""
   },
   "onboardingPanelWelcomeHeader": {
-    "message": "Dobro došli u uslugu Brave Rewards!",
+    "message": "Dobro došli u uslugu Nagrade Brave!",
     "description": ""
   },
   "onboardingPanelWelcomeText": {
-    "message": "Putem privatnih oglasa preglednika Brave dobivate tokene za pružanje podrške autorima sadržaja za razliku od tradicionalnih oglasa, a istovremeno vaši osobni podatci ostaju privatni.",
+    "message": "Putem privatnih oglasa preglednika Brave dobivate tokene za pružanje podrške stvarateljima sadržaja za razliku od tradicionalnih oglasa, a istovremeno vaši osobni podatci ostaju privatni.",
     "description": ""
   },
   "onboardingPanelAdsHeader": {
@@ -501,7 +501,7 @@
     "description": ""
   },
   "onboardingPanelAcText": {
-    "message": "Autori automatski dobivaju vaše doprinose u obliku tokena na temelju vaših razina sudjelovanja koje mjerimo kao „Pažnja”.",
+    "message": "Stvaratelji automatski dobivaju vaše doprinose u obliku tokena na temelju vaših razina sudjelovanja koje mjerimo kao „Pažnja”.",
     "description": ""
   },
   "onboardingPanelTippingHeader": {
@@ -509,7 +509,7 @@
     "description": ""
   },
   "onboardingPanelTippingText": {
-    "message": "Davanje napojnica osobni je način poticanja i pružanja podrške omiljenom sadržaju ili autorima. Krenite!",
+    "message": "Davanje napojnica osobni je način poticanja i pružanja podrške omiljenom sadržaju ili stvarateljima. Krenite!",
     "description": ""
   },
   "onboardingPanelRedeemHeader": {
@@ -517,7 +517,7 @@
     "description": ""
   },
   "onboardingPanelRedeemText": {
-    "message": "Tokeni se mogu upotrijebiti i za druge svrhe osim davanja podrške autorima. Možete kupiti digitalni sadržaj i dobra kako se trgovci pridružuju na platformi.",
+    "message": "Tokeni se mogu upotrijebiti i za druge svrhe osim davanja podrške stvarateljima. Možete kupiti digitalni sadržaj i dobra kako se trgovci pridružuju na platformi.",
     "description": ""
   },
   "onboardingPanelSetupHeader": {
@@ -533,7 +533,7 @@
     "description": ""
   },
   "onboardingPanelCompleteText": {
-    "message": "Uporabom usluge Brave Rewards doprinosite stvaranju boljeg okruženja na mreži za sve. A to je odlično!",
+    "message": "Uporabom usluge Nagrade Brave doprinosite stvaranju boljeg okruženja na mreži za sve. A to je odlično!",
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
@@ -585,7 +585,7 @@
     "description": ""
   },
   "captchaSolvedText": {
-    "message": "Nastavljaju se oglasi i zarade. Hvala vam što nam pomažete u zaštiti značajke Brave Rewards i oglasa temeljenih na privatnosti.",
+    "message": "Nastavljaju se oglasi i zarade. Hvala vam što nam pomažete u zaštiti usluge Nagrade Brave i oglasa temeljenih na privatnosti.",
     "description": ""
   },
   "captchaContactSupport": {
@@ -597,11 +597,11 @@
     "description": ""
   },
   "braveTalkTurnOnRewardsToStartCall": {
-    "message": "Za besplatan poziv uključite značajku Nagrade Brave",
+    "message": "Za besplatan poziv uključite uslugu Nagrade Brave",
     "description": ""
   },
   "braveTalkBraveRewardsDescription": {
-    "message": "Značajkom Nagrade Brave zarađujete tokene za pregledavanje privatnih oglasa (vaši su podatci sigurni). Pretvorite te tokene u novac, darovne kartice ili čak u napojnice za mrežna mjesta koja vam se sviđaju. Nema praćenja. Nema usporavanja.",
+    "message": "Uslugom Nagrade Brave zarađujete tokene za pregledavanje privatnih oglasa (vaši su podatci sigurni). Pretvorite te tokene u novac, darovne kartice ili čak u napojnice za mrežna mjesta koja vam se sviđaju. Nema praćenja. Nema usporavanja.",
     "description": ""
   },
   "braveTalkTurnOnRewards": {
@@ -647,7 +647,7 @@
     "description": ""
   },
   "braveTalkWantLearnMore": {
-    "message": "Želite doznati više o značajki Nagrade Brave? $tour_link_begin$Krenite u brzi obilazak$tour_link_end$.",
+    "message": "Želite doznati više o usluzi Nagrade Brave? $tour_link_begin$Krenite u brzi obilazak$tour_link_end$.",
     "description": "",
     "placeholders": {
       "tour_link_begin": {

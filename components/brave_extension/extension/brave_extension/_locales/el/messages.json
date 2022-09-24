@@ -8,19 +8,19 @@
     "description": "The Shields feature name"
   },
   "up": {
-    "message": "πανω",
+    "message": "ενεργοποιημένο",
     "description": "Message for when shields is enabled"
   },
   "down": {
-    "message": "κατω",
+    "message": "απενεργοποιημένο",
     "description": "Message for when shields is disabled"
   },
   "forThisSite": {
-    "message": "γι' αυτόν το ιστότοπο",
+    "message": "γι' αυτόν τον ιστότοπο",
     "description": "Partial string for the phrase `shields is up *for this site*`"
   },
   "enabledMessage": {
-    "message": "Αν μια ιστοσελίδα δείχνει να μην δουλεύει, δοκιμάστε να κατεβάσετε τις ασπίδες",
+    "message": "Αν μια ιστοσελίδα δείχνει να μη λειτουργεί, δοκιμάστε να απενεργοποιήσετε τις ασπίδες",
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
@@ -36,7 +36,7 @@
     "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
   "itemBlocked": {
-    "message": "Το στοιχείο είναι αποκλεισμένο",
+    "message": "Αποκλεισμένο στοιχείο",
     "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
   },
   "and": {
@@ -56,19 +56,19 @@
     "description": "Message for the scripts blocked row label"
   },
   "readOnlyAdsTrackersBlocking": {
-    "message": "Ιχνηλάτες & διαφημίσεις μπλοκαρίστηκαν",
+    "message": "Ιχνηλάτες & διαφημίσεις αποκλείστηκαν",
     "description": "Message for the option in the ads and trackers blocking select field in read only view"
   },
   "aggressiveAdsTrackersBlocking": {
-    "message": "Trackers & διαφημίσεις αποκλείστηκαν (επιθετικό)",
+    "message": "Ιχνηλάτες & διαφημίσεις αποκλείστηκαν (επιθετικό)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
   },
   "standardAdsTrackersBlocking": {
-    "message": "Trackers & διαφημίσεις αποκλείστηκαν (συμβατικό)",
+    "message": "Ιχνηλάτες & διαφημίσεις αποκλείστηκαν (τυπικό)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
   },
   "allowAdsTrackers": {
-    "message": "Αποδοχή όλων των trackers & διαφημίσεων",
+    "message": "Να επιτρέπονται όλοι οι ιχνηλάτες & διαφημίσεις",
     "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
   },
   "connectionsUpgradedHTTPS": {
@@ -80,7 +80,7 @@
     "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
   "scriptsBlocked": {
-    "message": "Scripts σε φραγή",
+    "message": "Αποκλείστηκαν δέσμες ενεργειών",
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
@@ -92,7 +92,7 @@
     "description": "Message for the option in the cookies select field to block all cookies"
   },
   "allCookiesAllowed": {
-    "message": "Αποδοχή όλων των cookies",
+    "message": "Να επιτρέπονται όλα τα cookies",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "readOnlyFingerprinting": {
@@ -108,7 +108,7 @@
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allowAllFingerprinting": {
-    "message": "Επιτρέψτε όλα τα δακτυλικά αποτυπώματα",
+    "message": "Να επιτρέπονται όλα τα δακτυλικά αποτυπώματα",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
@@ -116,43 +116,43 @@
     "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
-    "message": "Scripts σε αυτή την ιστοσελίδα",
+    "message": "Δέσμες ενεργειών σε αυτήν την ιστοσελίδα",
     "description": "Message for the script resources blocked panel"
   },
   "blockedScripts": {
-    "message": "Scripts σε φραγή",
+    "message": "Αποκλεισμένες δέσμες ενεργειών",
     "description": "Message for the script resources blocked"
   },
   "allowedScripts": {
-    "message": "Επιτρεπόμενα scripts",
+    "message": "Επιτρεπόμενες δέσμες ενεργειών",
     "description": "Message for the script resources allowed"
   },
   "blockAll": {
-    "message": "Φραγή όλων",
+    "message": "Αποκλεισμός όλων",
     "description": "Message for the resources blocked *block all* option"
   },
   "allowAll": {
-    "message": "Αποδοχή όλων",
+    "message": "Να επιτρέπονται όλα",
     "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
-    "message": "Φραγή",
+    "message": "Αποκλεισμός",
     "description": "Message for the resources blocked *block* option"
   },
   "allow": {
-    "message": "Αποδοχή",
+    "message": "Να επιτρέπεται",
     "description": "Message for the resources blocked *allow* option"
   },
   "blockedOnce": {
-    "message": "Να αποκλειστεί μία φορά",
+    "message": "Αποκλείστηκε μία φορά",
     "description": "Message for the resources blocked *blocked once* option"
   },
   "allowedOnce": {
-    "message": "Να επιτραπεί μία φορά",
+    "message": "Επιτράπηκε μία φορά",
     "description": "Message for the resources blocked *allowed once* option"
   },
   "allowScriptsOnce": {
-    "message": "Να επιτρέπονται οι διάλογοι μία φορά",
+    "message": "Να επιτρέπονται οι δέσμες ενεργειών μία φορά",
     "description": "Message for the shortcut in the main interface to allow all scripts once"
   },
   "cancel": {
@@ -180,15 +180,15 @@
     "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
-    "message": "Εμφάνιση για Προχωρημένους",
+    "message": "Προβολή για Προχωρημένους",
     "description": "Message for the advanced view option"
   },
   "simpleView": {
-    "message": "Απλή Εμφάνιση",
+    "message": "Απλή προβολή",
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Οι ιστοσελίδες περιλαμβάνουν συχνά cookies και δέσμες ενεργειών που προσπαθούν να αναγνωρίσουν εσάς και τη συσκευή σας (συχνά ενσωματωμένα σε διαφημίσεις). Θέλουν να βρουν ποιος είστε και σας ακολουθούν στον ιστό — παρακολουθώντας τι κάνετε σε κάθε ιστοσελίδα. Το Brave μπλοκάρει αυτά τα πράγματα έτσι ώστε να μπορείτε να περιηγείστε χωρίς να σας ακολουθούν.",
+    "message": "Οι ιστοσελίδες περιλαμβάνουν συχνά cookies και δέσμες ενεργειών που προσπαθούν να αναγνωρίσουν εσάς και τη συσκευή σας (συχνά ενσωματωμένα σε διαφημίσεις). Θέλουν να βρουν ποιος είστε και σας ακολουθούν στον ιστό — παρακολουθώντας τι κάνετε σε κάθε ιστοσελίδα. Το Brave αποκλείει αυτά τα πράγματα έτσι ώστε να μπορείτε να περιηγείστε χωρίς να σας ακολουθούν.",
     "description": "Message in read-only view explaining what Brave Shields do"
   },
   "blockedResoucesExplanation": {
@@ -196,7 +196,7 @@
     "description": "Message for the main trackers count in Shields simple view"
   },
   "webCompatWarning": {
-    "message": "Η αλλαγή των ρυθμίσεων Θωράκισης σ' αυτήν την προβολή μπορεί να επηρεάσει τη συμβατότητα με τον ιστό σ' αυτήν την ιστοσελίδα.",
+    "message": "Η αλλαγή των ρυθμίσεων Ασπίδων σ' αυτήν την προβολή μπορεί να επηρεάσει τη συμβατότητα με τον ιστό σ' αυτήν την ιστοσελίδα.",
     "description": "Message for web compat warning when switching from simple to advanced view"
   },
   "gotIt": {
@@ -204,7 +204,7 @@
     "description": "Message for the button that confirms the advanced view"
   },
   "learnMore": {
-    "message": "Μάθε περισσότερα",
+    "message": "Μάθετε περισσότερα",
     "description": "Message inviting the user to learn more about Shields"
   }
 }

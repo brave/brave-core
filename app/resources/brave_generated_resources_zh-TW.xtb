@@ -80,11 +80,6 @@
 <translation id="3161744659507801211">警告：Brave 無法防止擴充功能記錄您的瀏覽歷程記錄。</translation>
 <translation id="2162109630536601963">若此擴充功能提出網路要求，將不會使用 Tor 或私人模式。</translation>
 <translation id="2725327089319971976">若要在私人模式和 Tor 模式下停用此擴充功能，請取消選取此選項。</translation>
-<translation id="5057399635433117814">翻譯此頁面？這將會把此頁面上的所有文字傳送給微軟以進行翻譯。</translation>
-<translation id="330263065709195164">安裝 Google Translate 擴充功能來翻譯這個頁面？</translation>
-<translation id="3789841737615482174">安裝</translation>
-<translation id="7658239707568436148">取消</translation>
-<translation id="1307431692088049276">不要再問了</translation>
 <translation id="3371343170427636147">Brave 瀏覽器 Nightly 應用程式</translation>
 <translation id="4097979995947147464">Brave 瀏覽器 Beta 應用程式</translation>
 <translation id="8303432794159193481">Brave 瀏覽器 Dev 應用程式</translation>
@@ -107,9 +102,11 @@
 <translation id="7276554663454265692">您隨時可以在瀏覽器設定變更 <ph name="SETTING_TEXT"/>。</translation>
 <translation id="6873781976650514089">這項設定</translation>
 <translation id="8915916167043355778">全部關閉</translation>
+<translation id="7658239707568436148">取消</translation>
 <translation id="4870911314065352661">關閉所有分頁？</translation>
 <translation id="7551864359422178684">這個瀏覽器視窗中還有 <ph name="NUMBER_OF_TABS"/> 個分頁維持於開啟狀態。</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> 個分頁</translation>
+<translation id="1307431692088049276">不要再問了</translation>
 <translation id="2272117088509540883">- Brave 搜尋</translation>
 <translation id="2701279958223202597">支援隱私權更佳的獨立搜尋。Brave 搜尋不會追蹤您、您的查詢或您的點選行為。</translation>
 <translation id="6438467592401259882">支援隱私權更佳的獨立搜尋。</translation>
@@ -126,7 +123,15 @@
 <translation id="4174337572777167894">Web 發現專案</translation>
 <translation id="8659271182272561965">貢獻一些匿名搜尋與瀏覽資料來改進 Brave 搜尋。</translation>
 <translation id="1516554614404600536">Brave 工具提示</translation>
+<translation id="7986278174934557414">隱藏側邊面板圖示</translation>
+<translation id="6915291874524466201">隱藏側邊面板圖示</translation>
+<translation id="9149866541089851383">編輯...</translation>
 <translation id="1181037720776840403">移除</translation>
+<translation id="7513769021866698486">編輯項目</translation>
+<translation id="4002066346123236978">標題</translation>
+<translation id="7400418766976504921">網址</translation>
+<translation id="5877900074358050101">側邊欄項目標題</translation>
+<translation id="1613695740874407223">側邊欄項目 URL</translation>
 <translation id="4877147287319222750">新增到側邊欄</translation>
 <translation id="5404213409401164238">顯示側邊欄</translation>
 <translation id="7561196759112975576">總是</translation>
@@ -201,6 +206,7 @@
 <translation id="2370739752330685659">稍後再說</translation>
 <translation id="961012016278832836">Microsoft Edge 舊版</translation>
 <translation id="6436994631426134065">已從 <ph name="BROWSER_NAME"/> 匯入。</translation>
+<translation id="1506190932569739298">複製清潔連結（僅主要 URL）</translation>
 <translation id="9156965752763025780">你的變更將於下次重新啟動 Brave 時生效。</translation>
 <translation id="7179921470347911571">立刻重新啟動</translation>
 <translation id="4472575034687746823">開始使用</translation>
@@ -220,6 +226,7 @@
 <translation id="4096343215397759358">顯示預覽的圖卡</translation>
 <translation id="5297085818601043899">工具提示</translation>
 <translation id="2396127686705429331">顯示書籤按鈕</translation>
+<translation id="2369560305991805099">顯示側邊面板按鈕</translation>
 <translation id="2814998458708016836">使用寬網址列</translation>
 <translation id="4109670531935487117">在網址列顯示自動完成建議</translation>
 <translation id="2858138569776157458">熱門網站</translation>
@@ -242,8 +249,8 @@
 <translation id="6303294677342628402">防護</translation>
 <translation id="7133511168130368997">封鎖在整個網路上追蹤您的追蹤器與廣告。</translation>
 <translation id="2761825942249694703">這些是預設的防護設定。它們會套用到所有的網頁，除非您在特定的網頁上於防護面板中修改了某些東西才會有所不同。變更這些不會影響您既有的每個網站的設定。</translation>
-<translation id="1485394570478670912">這會封鎖網站上的大部分廣告，但不會封鎖 Brave Private Ads。如要控管，請前往</translation>
-<translation id="6388201778088078932">設定。</translation>
+<translation id="1435116578479068303">這會封鎖網站上的大部分廣告，但不會封鎖 Brave 私人廣告，如要對此進行控管，請前往 <ph name="BEGIN_LINK"/>Brave 獎勵<ph name="END_LINK"/> 設定。</translation>
+<translation id="8452536890042542134">這將封鎖網站上的大部分廣告。</translation>
 <translation id="4800195524776354947">在 Shields 圖示上顯示封鎖項目的數量</translation>
 <translation id="5510493033031835532">自動重新導向 AMP 頁面</translation>
 <translation id="7630031867325944356">首選發佈商頁面 URL，而不是 AMP 和類似版本。</translation>
@@ -393,12 +400,12 @@
 <translation id="6554397389149987360">使用 Hangouts 元件來啟用畫面分享和其它瀏覽器功能。</translation>
 <translation id="7878791177459550035">媒體路由器可在瀏覽器中啟用投影功能。</translation>
 <translation id="5927916530277631319">處理 Unstoppable Domains 的方式</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/>關於基於 HTTPS 的 DNS  與以太坊隱私注意事項。</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>詳細瞭解<ph name="END_LINK"/>以太坊隱私權注意事項。</translation>
 <translation id="5248318250177143470">處理以太坊域名服務 (ENS) 的方式</translation>
 <translation id="6241402707160226266">使用 Tor 的隱私視窗</translation>
 <translation id="8762452230727230396">Tor 會讓您對您造訪的網站隱藏 IP 位置。</translation>
 <translation id="2959986444009520721">使用橋接器</translation>
-<translation id="6003484976430531384">橋接器可幫助您在 Tor 遭到阻擋的地方存取 Tor 網路。橋接器的效能可能會因為您所在的位置而有所不同。</translation>
+<translation id="8416750895933172460">橋接器可幫助您在 Tor 受封鎖的地方存取 Tor 網路。橋接器的效能可能會因為您所在的位置而有所不同。</translation>
 <translation id="7206799843254049470">Tor 連線設定</translation>
 <translation id="3194502271166340944">控制 Tor 私密視窗連結到 Tor 網路的方式</translation>
 <translation id="4859228830700205299">選擇內建的橋接器</translation>
@@ -415,7 +422,7 @@
 <translation id="6936835573742749135">無法申請 CAPTCHA，請稍後再試。</translation>
 <translation id="2653659639078652383">提交</translation>
 <translation id="1369311132025451972">自動重新導向 .onion 網站</translation>
-<translation id="2843777623071353503">Brave 會在服務可用時開啟網站的洋蔥服務，或在 Tor 視窗中開啟 .onion 網域。</translation>
+<translation id="1658670175365815312">在可用情況下，Brave 將切換為網站的 .onion 版本，並在 Tor 視窗中自動開啟所有 .onion 網域。</translation>
 <translation id="2896916411183256228">使用 WebTorrent 直接在瀏覽器顯示種子檔案。支援種子檔案和磁力連結。</translation>
 <translation id="5249433283143453448">使用 Widevine 數位版權管理 (DRM) 元件以在瀏覽器中檢視受保護的串流影片與其他內容。</translation>
 <translation id="8137559199583651773">管理擴充功能</translation>
@@ -441,14 +448,16 @@
 <translation id="3752403403443723332">您的錢包已重設。</translation>
 <translation id="594766067816395072">您的錢包交易資訊已重設。</translation>
 <translation id="1426410128494586442">是</translation>
-<translation id="2556708692502648323">錢包網路</translation>
+<translation id="4226543734057230801">以太坊網路</translation>
+<translation id="3504157706952484145">Filecoin 網路</translation>
+<translation id="1561541094377237745">Solana 網路</translation>
 <translation id="3159419679550543837">顯示測試網站</translation>
-<translation id="8205945804087322170">新增網路</translation>
-<translation id="1330032157352961756">新鏈 ID</translation>
+<translation id="3215569562674795548">編輯或新增新網路</translation>
+<translation id="4418993400653250511">鏈結 ID</translation>
 <translation id="3423620355610881890">十進位正數</translation>
 <translation id="8110465398315041268">搜尋網路</translation>
 <translation id="3579705520805744214">區塊鏈 ID 或名稱</translation>
-<translation id="726121047592132939">新鏈名稱</translation>
+<translation id="8502525913969149079">鏈結名稱</translation>
 <translation id="1034112277864078119">輸入鏈名稱</translation>
 <translation id="4672314527143443556">鏈的貨幣名稱</translation>
 <translation id="4652114030688989556">輸入貨幣名稱</translation>

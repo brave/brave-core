@@ -4,6 +4,11 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+
+// actions
+import { WalletPageActions } from '../../../../page/actions'
+import { AccountsTabActions, AccountsTabState } from '../../../../page/reducers/accounts-tab-reducer'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
@@ -27,17 +32,13 @@ import {
   StyledWrapper
 } from './confirm-password-modal.style'
 
-interface Props {
-  title: string
-  onClose: () => void
-  onSuccess: (password: string) => void
-}
+export const ConfirmPasswordModal = () => {
+  // redux
+  const dispatch = useDispatch()
 
-export const ConfirmPasswordModal = ({
-  onClose,
-  onSuccess,
-  title
-}: Props) => {
+  // accounts tab state
+  const accountToRemove = useSelector(({ accountsTab }: { accountsTab: AccountsTabState }) => accountsTab.accountToRemove)
+
   // state
   const [password, setPassword] = React.useState<string>('')
   const [isCorrectPassword, setIsCorrectPassword] = React.useState<boolean>(true)
@@ -46,6 +47,24 @@ export const ConfirmPasswordModal = ({
   const { attemptPasswordEntry } = usePasswordAttempts()
 
   // methods
+  const onConfirmRemoveAccount = React.useCallback((password: string) => {
+    if (!accountToRemove) {
+      return
+    }
+
+    const { address, coin, hardware } = accountToRemove
+
+    if (hardware) {
+      dispatch(WalletPageActions.removeHardwareAccount({ address, coin, password }))
+    }
+
+    if (!hardware) {
+      dispatch(WalletPageActions.removeImportedAccount({ address, coin, password }))
+    }
+
+    dispatch(AccountsTabActions.setAccountToRemove(undefined)) // close modal
+  }, [accountToRemove, dispatch])
+
   const onSubmit = React.useCallback(async () => {
     if (!password) { // require password to view key
       return
@@ -63,11 +82,11 @@ export const ConfirmPasswordModal = ({
     setPassword('')
     setIsCorrectPassword(true)
 
-    onSuccess(password)
+    onConfirmRemoveAccount(password)
   }, [
     attemptPasswordEntry,
     password,
-    onSuccess
+    onConfirmRemoveAccount
   ])
 
   const onPasswordChange = React.useCallback((value: string): void => {
@@ -81,11 +100,20 @@ export const ConfirmPasswordModal = ({
     }
   }, [onSubmit])
 
+  // memos
+  const title = React.useMemo(() => {
+    if (!accountToRemove) {
+      return
+    }
+    return getLocale('braveWalletRemoveAccountModalTitle')
+      .replace('$1', accountToRemove.name ?? accountToRemove.address)
+  }, [accountToRemove])
+
   // render
   return (
     <PopupModal
       title=''
-      onClose={onClose}
+      onClose={() => dispatch(AccountsTabActions.setAccountToRemove(undefined))}
       width={modalWidth}
     >
       <StyledWrapper>

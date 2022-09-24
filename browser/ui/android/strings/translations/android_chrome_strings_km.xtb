@@ -104,7 +104,6 @@
 <translation id="1474893630593443211">ការគ្រប់គ្រងបន្ថែមលើការផ្សាយពាណិជ្ជកម្មដែលអ្នកមើលឃើញ</translation>
 <translation id="1477626028522505441">ការដោនឡូត <ph name="FILE_NAME"/> បានបរាជ័យដោយសារមានបញ្ហាផ្នែកម៉ាស៊ីនមេ។</translation>
 <translation id="148482509007564431">លំហូរនៃការរក្សាទុកចំណាំ</translation>
-<translation id="1488775391433859242">អ្នកអាចប្រើទូរសព្ទនេះ ដើម្បីចូលគណនីនៅលើកុំព្យូទ័រ ដែលកំពុងបង្ហាញកូដ QR នេះ។</translation>
 <translation id="1492417797159476138">អ្នកបានរក្សាទុក​ឈ្មោះអ្នកប្រើប្រាស់​នេះសម្រាប់គេហទំព័រនេះ​រួចហើយ</translation>
 <translation id="1493287004536771723">អ្នកកំពុងតាមដាន <ph name="SITE_NAME"/></translation>
 <translation id="1502010315804028179">ដើម្បី​គ្រប់គ្រង​ពាក្យសម្ងាត់​របស់​អ្នក សូម​ធ្វើ​បច្ចុប្បន្នភាព​សេវាកម្ម Google Play</translation>
@@ -227,6 +226,7 @@
 <translation id="2239812875700136898">គ្រប់គ្រងអត្ថបទរបស់អ្នកពី "ជម្រើស" សម្រាប់ប៊ូតុង Discover</translation>
 <translation id="4808014761134300692">ពាក្យសម្ងាត់​របស់អ្នក​ត្រូវបាន​អ៊ីនគ្រីប​នៅលើឧបករណ៍​របស់អ្នក មុនពេលរក្សាទុក​ពាក្យសម្ងាត់​ទាំងនោះទៅ​កម្មវិធីគ្រប់គ្រង​ពាក្យសម្ងាត់ Brave</translation>
 <translation id="2259659629660284697">នាំ​ចេញ​ពាក្យ​សម្ងាត់…</translation>
+<translation id="8820144752830692527">អ្នកអាចជ្រើសរើស​អ្វីដែលត្រូវធ្វើសមកាលកម្ម​នៅក្នុង<ph name="BEGIN_LINK1"/>ការកំណត់<ph name="END_LINK1"/>បានជានិច្ច។ Brave អាច​កំណត់​ឱ្យ​ម៉ាស៊ីន​​ស្វែងរក និង​សេវាកម្ម​ផ្សេង​ទៀតមាន​លក្ខណៈ​ផ្ទាល់​ខ្លួន​ ផ្អែក​តាម​ប្រវត្តិ​របស់​អ្នក។</translation>
 <translation id="781982477617612877">ចូលគណនី Brave របស់អ្នក ដើម្បីពិនិត្យ​ពាក្យសម្ងាត់​របស់អ្នក</translation>
 <translation id="2278052315791335171">ការលុបពាក្យសម្ងាត់នេះ​នឹងមិន​លុបគណនីរបស់អ្នក​នៅលើ <ph name="SITE"/>​ ទេ</translation>
 <translation id="2279146068164892489">បើកកម្មវិធីសម្រាប់ <ph name="APPNAME"/> ឬ?</translation>
@@ -273,7 +273,6 @@
 <translation id="2534155362429831547">បានលុបធាតុ <ph name="NUMBER_OF_ITEMS"/></translation>
 <translation id="2536728043171574184">កំពុងមើលច្បាប់ចម្លងនៃទំព័រនេះនៅក្រៅបណ្តាញ</translation>
 <translation id="2546283357679194313">ខុកឃី និងទិន្នន័យគេហទំព័រ</translation>
-<translation id="2549516196460093976">អ្នកអាចប្រើថេប្លេតនេះ ដើម្បីចូលគណនីនៅលើកុំព្យូទ័រ ដែលកំពុងបង្ហាញកូដ QR នេះ។</translation>
 <translation id="2558569818338050235">ប្រវត្តិរុករកតាមអ៊ីនធឺណិតរបស់អ្នកមានឥទ្ធិពលលើការផ្សាយពាណិជ្ជកម្មដែលអ្នកមើលឃើញ</translation>
 <translation id="2561519700418191927">មើលវីដេអូសាកល្បង</translation>
 <translation id="2567385386134582609">រូបភាព</translation>
@@ -298,6 +297,7 @@
 <translation id="2702516483241149200">ថ្មី៖ ចែករំលែកតំណ ដែលរំកិលទៅអត្ថបទនេះ</translation>
 <translation id="2704606927547763573">បានថតចម្លង</translation>
 <translation id="2707726405694321444">ធ្វើឲ្យទំព័រថ្មីឡើងវិញ</translation>
+<translation id="2709516037105925701">បំពេញស្វ័យប្រវត្តិ</translation>
 <translation id="271033894570825754">ថ្មី</translation>
 <translation id="2711073837061989559">ការសាកល្បង</translation>
 <translation id="2718352093833049315">នៅលើ Wi-Fi តែប៉ុណ្ណោះ</translation>
@@ -383,6 +383,7 @@
 <translation id="3114507951000454849">អាន​ព័ត៌មាននៅថ្ងៃនេះ <ph name="NEWS_ICON"/></translation>
 <translation id="311958134571892113">ភ្ជាប់​ជាមួយ</translation>
 <translation id="3123734510202723619">សេចក្តីប្រកាស</translation>
+<translation id="3130863904455712965">ប្រវត្តិ និង​អ្វីៗ​ជាច្រើនទៀត</translation>
 <translation id="3134784203083076891">”</translation>
 <translation id="5063487983358782016">ទំព័រដើម​របស់ Brave</translation>
 <translation id="3166827708714933426">ផ្លូវកាត់ផ្ទាំង និងផ្ទាំងវិនដូ</translation>
@@ -419,6 +420,7 @@
 <translation id="3290249595466894471">ក៏បញ្ជូន​គំរូមួយចំនួនតូចនៃទំព័រ ការទាញយក សកម្មភាពកម្មវិធីបន្ថែម និងព័ត៌មាន​ប្រព័ន្ធ ដើម្បីជួយរកមើល​ការគំរាមកំហែងថ្មីផងដែរ</translation>
 <translation id="3297344142967351106">ជំនួយជាសំឡេង</translation>
 <translation id="3303414029551471755">បន្តដើម្បីទាញយកមាតិកានេះ?</translation>
+<translation id="3305795716056605962">បកប្រែ​ទំព័រ​ពី​ប៊ូតុង​ "ជម្រើស​ច្រើន​ទៀត"</translation>
 <translation id="3334729583274622784">ប្ដូរកន្ទុយ​ឯកសារឬ?</translation>
 <translation id="3341262203274374114">មិនអាចឈប់​តាមដានបានទេ។ មានអ្វីមួយខុសប្រក្រតី។</translation>
 <translation id="3359667936385849800">ប្រើ​ក្រុមហ៊ុនផ្ដល់សេវាបច្ចុប្បន្ន​របស់អ្នក</translation>
@@ -459,6 +461,7 @@
 <translation id="3557336313807607643">បញ្ចូល​ទៅ​ក្នុង​ទំនាក់ទំនង</translation>
 <translation id="3560491354538957576">គេហទំព័រ​អាច​កំណត់​ចំណាប់​អារម្មណ៍</translation>
 <translation id="3563767357928833671">ខ្លឹមសារឃ្លីបបតត្រូវបានបង្ហាញ</translation>
+<translation id="3566639033325271639">ធ្វើបច្ចុប្បន្នភាព​ការកំណត់</translation>
 <translation id="1908301351964700579">Brave កំពុងរៀបចំសម្រាប់ VR នៅឡើយ។ ចាប់ផ្តើម Brave ឡើងវិញនៅពេលក្រោយ។</translation>
 <translation id="3568688522516854065">ដើម្បីទទួលបានផ្ទាំងរបស់អ្នកពីឧបករណ៍ផ្សេងទៀតរបស់អ្នក សូមចូល​គណនី និងបើកសមកាលកម្ម</translation>
 <translation id="357465026686164600">ទូរសព្ទជាសោសុវត្ថិភាព​</translation>
@@ -536,6 +539,7 @@
 <translation id="4062305924942672200">ព័ត៌មានផ្លូវច្បាប់</translation>
 <translation id="4084682180776658562">ចំណាំ</translation>
 <translation id="4521874409998847950">ពី <ph name="PUBLISHER_ORIGIN"/> – <ph name="BEGIN_DEEMPHASIZED"/>បានបញ្ជូន​ដោយ Brave<ph name="END_DEEMPHASIZED"/></translation>
+<translation id="409109920254068737">អ្នកអាចប្រើថេប្លេតនេះ ដើម្បីចូលគណនីនៅលើឧបករណ៍ដែលកំពុងបង្ហាញកូដ QR នេះ។</translation>
 <translation id="4095146165863963773">លុបទិន្នន័យកម្មវិធីឬ?</translation>
 <translation id="4096227151372679484">លំហូរនៃការរក្សាទុកចំណាំបានបើកពាក់កណ្ដាលអេក្រង់</translation>
 <translation id="673197144963363525">ជួយធ្វើឲ្យ Brave ប្រសើរជាងមុនដោយផ្ញើស្ថិតិប្រើប្រាស់ និងរបាយការណ៍ការគាំងទៅ Brave។</translation>
@@ -547,6 +551,7 @@
 <translation id="4116038641877404294">ទាញយក​ទំព័រ​ដើម្បី​ប្រើ​ពួកវាដោយគ្មានអ៊ីនធឺណិត</translation>
 <translation id="4135200667068010335">បានបិទ​បញ្ជីឧបករណ៍​ដែលត្រូវ​ចែករំលែក​ផ្ទាំងជាមួយ។</translation>
 <translation id="4137746084635924146">ភាសា​ឧបករណ៍​បច្ចុប្បន្ន</translation>
+<translation id="414128724510021958">គេហទំព័រកុំព្យូទ័រត្រូវបានស្នើសុំតាមលំនាំដើម</translation>
 <translation id="4159350418181625094">ស្វែងយល់អំពី Brave</translation>
 <translation id="4162867837470729563">បញ្ជីជម្រើសចែករំលែកបានបើកពេញអេក្រង់។</translation>
 <translation id="4165986682804962316">ការកំណត់គេហទំព័រ</translation>
@@ -568,8 +573,8 @@
 <translation id="4256782883801055595">អាជ្ញាប័ណ្ណប្រភពបើកចំហ</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>ប្រភេទទិន្នន័យ​ដែលត្រូវបានប្រើប្រាស់៖<ph name="END_BOLD"/> ប្រវត្តិ​រុករក​តាមអ៊ីនធឺណិត​របស់អ្នក កំណត់ត្រាអំពី​គេហទំព័រ​ដែលអ្នកបានចូលមើល​ដោយប្រើ Brave នៅលើ​ឧបករណ៍នេះ។</translation>
 <translation id="4263656433980196874">បានបើក​ពេញអេក្រង់នូវ ui នៃ​ការយល់ព្រម​ឱ្យប្រើជំនួយការ​សម្រាប់​ការស្វែងរក​តាមសំឡេង</translation>
-<translation id="2385182004391178819">ចូល​គេហទំព័រ​នេះ និង Brave ដោយប្រើគណនី Brave របស់អ្នក។</translation>
 <translation id="4269820728363426813">ចម្លងអាសយដ្ឋានតំណ</translation>
+<translation id="4283102315569707115">ស្នើសុំគេហទំព័រកុំព្យូទ័រតាម​លំនាំដើមឬ?</translation>
 <translation id="4291407919474070700"><ph name="BEGIN_LINK"/>បើក​ការចាក់សោអេក្រង់​នៅក្នុង​ការកំណត់ Android<ph name="END_LINK"/></translation>
 <translation id="6299940168852877221">ប្រសិនបើប្រើ Brave មានន័យថា​អ្នកយល់ព្រមតាម<ph name="BEGIN_TOS_LINK"/>លក្ខខណ្ឌ​ប្រើប្រាស់ Brave<ph name="END_TOS_LINK"/> និង<ph name="BEGIN_ATOS_LINK"/>លក្ខខណ្ឌ​ប្រើប្រាស់​បន្ថែមរបស់ Brave និង ChromeOS<ph name="END_ATOS_LINK"/>។ <ph name="BEGIN_PRIVACY_LINK"/>គោលការណ៍​ឯកជនភាព<ph name="END_PRIVACY_LINK"/>ក៏អនុវត្តផងដែរ។</translation>
 <translation id="4298388696830689168">គេហទំព័រ​ដែលបានតភ្ជាប់</translation>
@@ -942,6 +947,7 @@
 <translation id="6342069812937806050">អំបាញ់មិញនេះ</translation>
 <translation id="6343495912647200061">{SHIPPING_ADDRESS,plural, =1{<ph name="SHIPPING_ADDRESS_PREVIEW"/>\u2026 និង <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> ទៀត}other{<ph name="SHIPPING_ADDRESS_PREVIEW"/>\u2026 និង <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> ទៀត}}</translation>
 <translation id="6345878117466430440">សម្គាល់​ថា​បានអាន​ហើយ</translation>
+<translation id="6357653805084533597">អ្នកអាចប្រើទូរសព្ទនេះ ដើម្បីចូលគណនីនៅលើឧបករណ៍ដែលកំពុងបង្ហាញកូដ QR នេះ។</translation>
 <translation id="6363990818884053551">ដើម្បី​ចាប់ផ្ដើម​សមកាលកម្ម សូមផ្ទៀងផ្ទាត់ថា​ជាអ្នក</translation>
 <translation id="6364438453358674297">យកការផ្តល់យោបល់ចេញពីប្រវត្តិ?</translation>
 <translation id="806493401838431801">ផ្ទុកទំព័រជាមុន​កាន់តែញឹកញាប់​ដែល Brave គិតថា​អ្នកទំនង​ជាចូលមើល។ ការកំណត់នេះ​អាចបណ្ដាលឱ្យ​ការប្រើប្រាស់ទិន្នន័យ​មានការកើនឡើង។</translation>
@@ -950,6 +956,7 @@
 <translation id="6397616442223433927">មានអ៊ីនធឺណិត​វិញ</translation>
 <translation id="8789425457808164956">ដើម្បីបញ្ជូន​ផ្ទាំងនេះ​ទៅ​ឧបករណ៍​ផ្សេង សូម​ចូល Brave នៅ​លើ​នោះ</translation>
 <translation id="6402652558933147609"><ph name="ERROR_CODE"/> នៅលើ <ph name="VIOLATED_URL"/></translation>
+<translation id="6403371459378431832">ធ្វើ​សម​កាល​កម្មទិន្នន័យរបស់អ្នកនៅលើឧបករណ៍ទាំងអស់</translation>
 <translation id="6404511346730675251">កែប្រែចំណាំ</translation>
 <translation id="6406506848690869874">សមកាលកម្ម</translation>
 <translation id="6407224748847589805">មិនអាចភ្ជាប់ជាមួយកុំព្យូទ័ររបស់អ្នកបានទេ។ សូមសាកល្បងប្រើជម្រើសផ្ទៀងផ្ទាត់ផ្សេងទៀត។</translation>
@@ -1019,6 +1026,7 @@
 <translation id="6671495933530132209">ចម្លងរូបភាព</translation>
 <translation id="6674571176963658787">ដើម្បី​ចាប់ផ្ដើម​សមកាលកម្ម សូមបញ្ចូល​ឃ្លាសម្ងាត់​របស់អ្នក</translation>
 <translation id="8581481290581777242">សម្អាតទិន្នន័យ​ Brave ​របស់អ្នកពី​ឧបករណ៍នេះមែនទេ?</translation>
+<translation id="3683330416566109578">ចូលគេហទំព័រនេះ និង Brave</translation>
 <translation id="3385384709865894288">ធ្វើឱ្យ Brave ប្រសើរឡើង</translation>
 <translation id="670498945988402717">បានពិនិត្យមើល​កាលពីម្សិលមិញ</translation>
 <translation id="6710213216561001401">មុន</translation>
@@ -1105,6 +1113,7 @@
 <translation id="7196215469483532480">បានបើក​ការពន្យល់ពី​ការណែនាំអំពីឯកជនភាព​ពេញអេក្រង់</translation>
 <translation id="7207760545532569765">ស្ដារ​ផ្ទាំង <ph name="TAB_COUNT"/> ជា​ផ្ទាំង​ផ្ទៃខាងក្រោយ​ថ្មី។</translation>
 <translation id="7208109991155904980">បានផ្លាស់ទី​ប្រតិកម្ម</translation>
+<translation id="6302653771627628530">ផ្ទាំងឯកជននឹងត្រូវបានចាក់សោ នៅពេលអ្នកចាកចេញពី Brave</translation>
 <translation id="7222235798733126207">ដាក់កំហិតការចែករំលែករវាងគេហទំព័រនានា</translation>
 <translation id="7227218174981371415">{FILE_COUNT,plural, =1{ការទាញយក 1 មិនទាន់​សម្រេចទេ}other{ការទាញយក # មិនទាន់​សម្រេចទេ}}</translation>
 <translation id="7242755609445462077">ការរំលេចដែលបានកំណត់រចនាប័ទ្ម <ph name="CURRENT_DATE"/></translation>
@@ -1224,6 +1233,7 @@
 <translation id="7853202427316060426">សកម្មភាព</translation>
 <translation id="7857691613771368249">សួររកពេលដែលត្រូវរក្សាទុក​ឯកសារ</translation>
 <translation id="7859988229622350291">កុំបកប្រែ</translation>
+<translation id="7866213166286285359">បកប្រែ​ទំព័រ​នៅ​ទីនេះ</translation>
 <translation id="78707286264420418"><ph name="PRODUCT_NAME"/> ត្រូវការការអនុញ្ញាតឧបករណ៍នៅជិត ដើម្បីភ្ជាប់ជាមួយឧបករណ៍របស់អ្នក</translation>
 <translation id="7875915731392087153">បង្កើតអ៊ីមែល</translation>
 <translation id="7876243839304621966">ដកចេញទាំងអស់</translation>
@@ -1262,6 +1272,7 @@
 <translation id="8037750541064988519">នៅសល់ <ph name="DAYS"/> ថ្ងៃទៀត</translation>
 <translation id="8037801708772278989">ទើបបាន​ពិនិត្យមើល​អម្បាញ់មិញ</translation>
 <translation id="804335162455518893">រកមិន​ឃើញកាត SD ទេ</translation>
+<translation id="8048728378294435881">បម្រុង​ទុក​ទិន្នន័យ​របស់​អ្នក ហើយ​ប្រើ​​វា​នៅ​លើ​ឧបករណ៍​ណា​ក៏បាន</translation>
 <translation id="8051695050440594747">ទំនេរ <ph name="MEGABYTES"/> MB</translation>
 <translation id="8058655154417507695">ឆ្នាំផុតកំណត់</translation>
 <translation id="2317945146070194624">បើក​នៅក្នុង​ផ្ទាំង​ថ្មី​របស់ Brave</translation>

@@ -318,6 +318,9 @@ provideStrings({
   braveWalletWatchListCoingeckoId: 'Coingecko ID',
   braveWalletIconURL: 'Icon URL',
   braveWalletAddAsset: 'Add asset',
+  braveWalletAccountsExport: 'Export',
+  braveWalletAccountsDeposit: 'Deposit',
+  braveWalletAccountsRemove: 'Remove',
 
   // AmountPresets
   braveWalletPreset25: '25%',

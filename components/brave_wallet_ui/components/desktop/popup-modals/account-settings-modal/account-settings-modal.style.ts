@@ -14,7 +14,7 @@ export const StyledWrapper = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 0px 15px 15px 15px;
+  padding: 20px 15px 20px 15px;
   min-height: 320px;
 `
 
@@ -73,8 +73,8 @@ export const AddressButton = styled(WalletButton)`
   justify-content: center;
   flex-direction: row;
   font-family: Poppins;
-  font-size: 20px;
-  line-height: 30px;
+  font-size: 16px;
+  line-height: 20px;
   letter-spacing: 0.02em;
   color: ${(p) => p.theme.color.text03};
   cursor: pointer;
@@ -88,7 +88,6 @@ export const ButtonRow = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-top: 24px;
 `
 
 export const CopyIcon = styled.div`
@@ -97,6 +96,7 @@ export const CopyIcon = styled.div`
   background-color: ${(p) => p.theme.color.interactive07};
   -webkit-mask-image: url(${ClipboardIcon});
   mask-image: url(${ClipboardIcon});
+  mask-size: cover;
   margin-left: 10px;
 `
 
@@ -169,5 +169,40 @@ export const ErrorText = styled.span`
   font-size: 12px;
   line-height: 18px;
   color: ${(p) => p.theme.color.errorText};
-  margin-bottom: 10px;
+  margin-bottom: 16px;
+`
+
+export const Line = styled.div`
+  display: flex;
+  width: 100%;
+  height: 2px;
+  background: ${(p) => p.theme.color.divider01};
+`
+
+export const AccountCircle = styled.div<{
+  orb: string
+}>`
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  background-image: url(${(p) => p.orb});
+  background-size: cover;
+  margin-right: 12px;
+`
+
+export const NameAndIcon = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  margin-bottom: 20px;
+`
+
+export const AccountName = styled.span`
+  font-family: Poppins;
+  font-size: 13px;
+  line-height: 20px;
+  letter-spacing: 0.01em;
+  font-weight: 600;
+  color: ${(p) => p.theme.color.text01};
 `

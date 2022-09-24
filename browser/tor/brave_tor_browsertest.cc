@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/callback_helpers.h"
+#include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
@@ -32,11 +33,14 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/chrome_switches.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
 #include "gmock/gmock.h"
+#include "third_party/blink/public/common/features.h"
 
 namespace {
 
@@ -340,4 +344,27 @@ IN_PROC_BROWSER_TEST_F(BraveTorTest, ResetBridges) {
   // removed.
   EXPECT_TRUE(CheckComponentExists(tor::kTorClientComponentId));
   EXPECT_FALSE(CheckComponentExists(tor::kTorPluggableTransportComponentId));
+}
+
+class BraveTorTest_EnableTorHttpsOnlyFlag : public BraveTorTest {
+ public:
+  BraveTorTest_EnableTorHttpsOnlyFlag() {
+    feature_list_.InitAndEnableFeature(
+        blink::features::kBraveTorWindowsHttpsOnly);
+  }
+
+ protected:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(BraveTorTest_EnableTorHttpsOnlyFlag,
+                       TorWindowHttpsOnly) {
+  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled());
+  DownloadTorClient();
+
+  Profile* tor_profile = OpenTorWindow();
+  PrefService* prefs = tor_profile->GetPrefs();
+
+  // Check that HTTPS-Only Mode has been enabled for the Tor window.
+  EXPECT_TRUE(prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled));
 }

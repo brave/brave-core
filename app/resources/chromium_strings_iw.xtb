@@ -132,7 +132,6 @@
 <translation id="4065288863231444640">‏Brave יכול לפעול ברקע</translation>
 <translation id="8148611988012584308">‏התאמה אישית ושליטה ב-Brave</translation>
 <translation id="4427306783828095590">עם ההגנה המשופרת, החסימה של פישינג ותוכנות זדוניות מקיפה יותר</translation>
-<translation id="5112116809696021727">‏כדי לבדוק אם המכשיר מעודכן, יש לעבור אל <ph name="LINK_BEGIN"/>הגדרות ChromeOS<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">‏ברוך בואך אל Brave. נפתח חלון חדש בדפדפן</translation>
 <translation id="2633397153656205379">‏Brave לא התעדכן, משהו השתבש. <ph name="BEGIN_LINK"/>לטיפול בבעיות בעדכון של Brave ובעדכונים שנכשלו<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">‏להמשיך בפרופיל Brave חדש?</translation>
@@ -295,8 +294,6 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="1977195831772110829">‏<ph name="BEGIN_BOLD"/>איך ניתן לנהל את הנתונים שלך:<ph name="END_BOLD"/> כדי להגן על הפרטיות שלך, תחומי עניין שהוגדרו לפני יותר מ-4 שבועות נמחקים אוטומטית. עם המשך הגלישה, תחום עניין כלשהו עשוי להופיע שוב ברשימה. יש גם אפשרות להסיר תחומי עניין מ-Brave כדי שלא יילקחו בחשבון.</translation>
 <translation id="2925193881330501265">‏נכנסת ל-Brave כ-<ph name="USER_EMAIL_ADDRESS"/>. יש להשתמש באותו חשבון כדי להיכנס שוב.</translation>
 <translation id="6915252145142862992">‏זוהי התקנה משנית של Brave, ולא ניתן להפוך אותו לדפדפן ברירת המחדל שלך.</translation>
-<translation id="1975057837349076194">‏אם הגדרה מסוימת לא מופיעה בדף הזה, אפשר לחפש אותה <ph name="LINK_BEGIN"/>
-      בהגדרות של ChromeOS<ph name="LINK_END"/></translation>
 <translation id="7685904775439037072">‏אחרי מתן גישה ל-Brave, אתרים יוכלו לבקש ממך גישה.</translation>
 <translation id="80471789339884597">תודה שהתקנת. עליך להפעיל מחדש את כל הדפדפנים לפני השימוש ב-<ph name="BUNDLE_NAME"/>.</translation>
 <translation id="2061155704815580583">‏נדרשת הרשאת מיקום ב-Brave עבור האתר הזה</translation>

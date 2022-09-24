@@ -34,6 +34,15 @@ const SkColor kDarkLocationBarHoverBg = SkColorSetRGB(0x23, 0x25, 0x2F);
 constexpr float kOmniboxOpacityHovered = 0.10f;
 constexpr float kOmniboxOpacitySelected = 0.16f;
 
+SkColor GetToolbarInkDropColor(const ui::ColorMixer& mixer) {
+  // Copied from
+  // chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h
+  // to use same hover background with toolbar button.
+  constexpr float kToolbarInkDropHighlightVisibleOpacity = 0.08f;
+  return SkColorSetA(mixer.GetResultColor(kColorToolbarInkDrop),
+                     0xFF * kToolbarInkDropHighlightVisibleOpacity);
+}
+
 enum class ProfileType {
   kNormalProfile,
   kPrivateProfile,
@@ -217,13 +226,7 @@ void AddBraveFeaturesColors(const ui::ColorProviderManager::Key& key,
       }
       case BraveThemeProperties::COLOR_SIDEBAR_ARROW_BACKGROUND_HOVERED:
       case BraveThemeProperties::COLOR_SIDEBAR_ITEM_BACKGROUND_HOVERED: {
-        // Copied from
-        // chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h
-        // to use same hover background with toolbar button.
-        constexpr float kToolbarInkDropHighlightVisibleOpacity = 0.08f;
-        mixer[entry.color_id] = {
-            SkColorSetA(mixer.GetResultColor(kColorToolbarInkDrop),
-                        0xFF * kToolbarInkDropHighlightVisibleOpacity)};
+        mixer[entry.color_id] = {GetToolbarInkDropColor(mixer)};
         break;
       }
 #endif
@@ -334,6 +337,13 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[ui::kColorToggleButtonTrackOff] = {SkColorSetRGB(0xDA, 0xDC, 0xE8)};
   mixer[ui::kColorToggleButtonTrackOn] = {SkColorSetRGB(0xE1, 0xE2, 0xF6)};
 
+  // Colors for HelpBubble. IDs are defined in
+  // chrome/browser/ui/color/chrome_color_id.h
+  mixer[kColorFeaturePromoBubbleBackground] = {SK_ColorWHITE};
+  mixer[kColorFeaturePromoBubbleForeground] = {SkColorSetRGB(0x42, 0x45, 0x52)};
+  mixer[kColorFeaturePromoBubbleCloseButtonInkDrop] = {
+      GetToolbarInkDropColor(mixer)};
+
   AddBraveFeaturesColors(key, &mixer, ProfileType::kNormalProfile);
 }
 
@@ -371,6 +381,13 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[ui::kColorToggleButtonThumbOn] = {SkColorSetRGB(0x44, 0x36, 0xE1)};
   mixer[ui::kColorToggleButtonTrackOff] = {SkColorSetRGB(0x5E, 0x61, 0x75)};
   mixer[ui::kColorToggleButtonTrackOn] = {SkColorSetRGB(0x76, 0x79, 0xB1)};
+
+  // Colors for HelpBubble. IDs are defined in
+  // chrome/browser/ui/color/chrome_color_id.h
+  mixer[kColorFeaturePromoBubbleBackground] = {SkColorSetRGB(0x12, 0x13, 0x16)};
+  mixer[kColorFeaturePromoBubbleForeground] = {SkColorSetRGB(0xC6, 0xC8, 0xD0)};
+  mixer[kColorFeaturePromoBubbleCloseButtonInkDrop] = {
+      GetToolbarInkDropColor(mixer)};
 
   AddBraveFeaturesColors(key, &mixer, ProfileType::kNormalProfile);
 }

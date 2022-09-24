@@ -5,6 +5,10 @@
 
 import * as React from 'react'
 import { Route, useHistory, useParams, Switch, Redirect } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+
+// actions
+import { AccountsTabState } from '../../../../page/reducers/accounts-tab-reducer'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
@@ -13,7 +17,6 @@ import { getLocale } from '../../../../../common/locale'
 import {
   BraveWallet,
   TopTabNavTypes,
-  UpdateAccountNamePayloadType,
   WalletRoutes
 } from '../../../../constants/types'
 import { TOP_NAV_OPTIONS } from '../../../../options/top-nav-options'
@@ -30,6 +33,8 @@ import { Accounts } from '../accounts/accounts'
 import { Account } from '../accounts/account'
 import { AddAccountModal } from '../../popup-modals/add-account-modal/add-account-modal'
 import { NftView } from '../nfts/nft-view'
+import { ConfirmPasswordModal } from '../../popup-modals/confirm-password-modal/confirm-password-modal'
+import { AccountSettingsModal } from '../../popup-modals/account-settings-modal/account-settings-modal'
 
 interface ParamsType {
   category?: TopTabNavTypes
@@ -37,7 +42,6 @@ interface ParamsType {
 }
 
 export interface Props {
-  onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   onOpenWalletSettings: () => void
   needsBackup: boolean
   defaultEthereumWallet: BraveWallet.DefaultWallet
@@ -48,7 +52,6 @@ export interface Props {
 
 const CryptoView = (props: Props) => {
   const {
-    onUpdateAccountName,
     onOpenWalletSettings,
     defaultEthereumWallet,
     defaultSolanaWallet,
@@ -57,8 +60,13 @@ const CryptoView = (props: Props) => {
     sessionRoute
   } = props
 
+  // accounts tab state
+  const accountToRemove = useSelector(({ accountsTab }: { accountsTab: AccountsTabState }) => accountsTab.accountToRemove)
+  const showAccountModal = useSelector(({ accountsTab }: { accountsTab: AccountsTabState }) => accountsTab.showAccountModal)
+  const selectedAccount = useSelector(({ accountsTab }: { accountsTab: AccountsTabState }) => accountsTab.selectedAccount)
+
   // state
-  const [hideNav, setHideNav] = React.useState<boolean>(false)
+  // const [hideNav, setHideNav] = React.useState<boolean>(false)
   const [showBackupWarning, setShowBackupWarning] = React.useState<boolean>(needsBackup)
   const [showDefaultWalletBanner, setShowDefaultWalletBanner] = React.useState<boolean>(needsBackup)
   const [showMore, setShowMore] = React.useState<boolean>(false)
@@ -84,10 +92,6 @@ const CryptoView = (props: Props) => {
     history.push(`/crypto/${path}`)
   }, [])
 
-  const toggleNav = React.useCallback(() => {
-    setHideNav(!hideNav)
-  }, [hideNav])
-
   const onDismissBackupWarning = React.useCallback(() => {
     setShowBackupWarning(false)
   }, [])
@@ -98,7 +102,6 @@ const CryptoView = (props: Props) => {
 
   const goBack = React.useCallback(() => {
     history.push(WalletRoutes.Accounts)
-    setHideNav(false)
   }, [])
 
   const onClickSettings = React.useCallback(() => {
@@ -209,8 +212,6 @@ const CryptoView = (props: Props) => {
 
         <Route path={WalletRoutes.Account}>
           <Account
-            toggleNav={toggleNav}
-            onUpdateAccountName={onUpdateAccountName}
             goBack={goBack}
           />
         </Route>
@@ -253,6 +254,14 @@ const CryptoView = (props: Props) => {
           <AddAccountModal />
         </Route>
       </Switch>
+
+      {accountToRemove !== undefined &&
+        <ConfirmPasswordModal />
+      }
+
+      {showAccountModal && selectedAccount &&
+        <AccountSettingsModal />
+      }
     </StyledWrapper>
   )
 }
