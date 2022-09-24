@@ -19,6 +19,7 @@
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/common/pref_names.h"
 #include "components/spellcheck/browser/pref_names.h"
+#include "ui/color/system_theme.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "extensions/browser/extension_pref_store.h"
@@ -48,7 +49,11 @@ void RegisterProfilePrefs(bool is_signin_profile,
                                 base::Value(false));
 #if BUILDFLAG(IS_LINUX)
   // Use brave theme by default instead of gtk theme.
-  registry->SetDefaultPrefValue(prefs::kUsesSystemTheme, base::Value(false));
+  registry->SetDefaultPrefValue(prefs::kUsesSystemThemeDeprecated,
+                                base::Value(false));
+  registry->SetDefaultPrefValue(
+      prefs::kSystemTheme,
+      base::Value(static_cast<int>(ui::SystemTheme::kDefault)));
 #endif
 }
 
