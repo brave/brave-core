@@ -48,7 +48,7 @@ constexpr char kObsoleteShieldCookies[] =
 constexpr char kBraveShieldsFPSettingsMigration[] =
     "brave.shields_fp_settings_migration";
 
-constexpr char kGoogleAuthPattern[] = "https://accounts.google.com/*";
+constexpr char kGoogleAuthPattern[] = "https://accounts.google.com/o/oauth2/auth/*";
 constexpr char kFirebasePattern[] = "https://[*.]firebaseapp.com/__/auth/*";
 
 const char kExpirationPath[] = "expiration";
