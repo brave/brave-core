@@ -159,7 +159,8 @@
 - (void)setTitle:(NSString*)title {
   DCHECK(node_);
   DCHECK(model_);
-  model_->SetTitle(node_, base::SysNSStringToUTF16(title));
+  model_->SetTitle(node_, base::SysNSStringToUTF16(title),
+                   bookmarks::metrics::BookmarkEditSource::kUser);
 }
 
 - (NSUInteger)nodeId {
@@ -180,7 +181,8 @@
 - (void)setUrl:(NSURL*)url {
   DCHECK(node_);
   DCHECK(model_);
-  model_->SetURL(node_, net::GURLWithNSURL(url));
+  model_->SetURL(node_, net::GURLWithNSURL(url),
+                 bookmarks::metrics::BookmarkEditSource::kUser);
 }
 
 - (NSURL*)iconUrl {
