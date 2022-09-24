@@ -802,3 +802,16 @@ export type AbbreviationOptions =
   | 'million'
   | 'billion'
   | 'trillion'
+
+export type AccountModalTypes =
+  | 'deposit'
+  | 'privateKey'
+  | 'edit'
+  | 'details'
+  | 'remove'
+
+export interface AccountButtonOptionsObjectType {
+  name: string
+  id: AccountModalTypes
+  icon: string
+}

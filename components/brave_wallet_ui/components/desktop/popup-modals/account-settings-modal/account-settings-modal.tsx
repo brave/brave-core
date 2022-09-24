@@ -5,8 +5,20 @@
 
 import * as React from 'react'
 
+// redux
+import {
+  useDispatch,
+  useSelector
+} from 'react-redux'
+
+// // actions
+import { WalletPageActions } from '../../../../page/actions'
+import {
+  AccountsTabState,
+  AccountsTabActions
+} from '../../../../page/reducers/accounts-tab-reducer'
+
 // utils
-import { reduceAddress } from '../../../../utils/reduce-address'
 import { getLocale, getLocaleWithTag } from '../../../../../common/locale'
 import { generateQRCode } from '../../../../utils/qr-code-utils'
 
@@ -14,30 +26,24 @@ import { generateQRCode } from '../../../../utils/qr-code-utils'
 import { FILECOIN_FORMAT_DESCRIPTION_URL } from '../../../../common/constants/urls'
 
 // options
-import {
-  AccountSettingsNavOptions,
-  HardwareAccountSettingsNavOptions
-} from '../../../../options/account-settings-nav-options'
+import { AccountButtonOptions } from '../../../../options/account-list-button-options'
 
 // types
 import {
-  AccountSettingsNavTypes,
-  BraveWallet,
-  WalletAccountType,
-  UpdateAccountNamePayloadType,
-  TopTabNavObjectType
+  BraveWallet
 } from '../../../../constants/types'
 
 // components
 import { NavButton } from '../../../extension'
 import { CopyTooltip } from '../../../shared/copy-tooltip/copy-tooltip'
-import TopTabNav from '../../top-tab-nav/index'
 import PopupModal from '../index'
 import PasswordInput from '../../../shared/password-input/index'
+import { create } from 'ethereum-blockies'
 
 // hooks
 import { useIsMounted } from '../../../../common/hooks/useIsMounted'
 import { usePasswordAttempts } from '../../../../common/hooks/use-password-attempts'
+import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
 
 // style
 import {
@@ -52,44 +58,27 @@ import {
   WarningWrapper,
   PrivateKeyBubble,
   ButtonWrapper,
-  ErrorText
+  ErrorText,
+  Line,
+  NameAndIcon,
+  AccountCircle,
+  AccountName
 } from './account-settings-modal.style'
-import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
+import { VerticalSpacer } from '../../../shared/style'
 
-interface Props {
-  onClose: () => void
-  onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
-  onChangeTab: (id: AccountSettingsNavTypes) => void
-  onRemoveAccount: (
-    address: string,
-    hardware: boolean,
-    coin: BraveWallet.CoinType,
-    password: string
-  ) => void
-  onToggleNav: () => void
-  hideNav: boolean
-  tab: AccountSettingsNavTypes
-  title: string
-  account: WalletAccountType
-}
-
-export const AccountSettingsModal = ({
-  title,
-  account,
-  tab,
-  hideNav,
-  onClose,
-  onToggleNav,
-  onUpdateAccountName,
-  onChangeTab,
-  onRemoveAccount
-}: Props) => {
+export const AccountSettingsModal = () => {
   // custom hooks
   const isMounted = useIsMounted()
   const { keyringService } = useApiProxy()
+  // redux
+  const dispatch = useDispatch()
+
+  // accounts tab state
+  const selectedAccount = useSelector(({ accountsTab }: { accountsTab: AccountsTabState }) => accountsTab.selectedAccount)
+  const accountModalType = useSelector(({ accountsTab }: { accountsTab: AccountsTabState }) => accountsTab.accountModalType)
 
   // state
-  const [accountName, setAccountName] = React.useState<string>(account.name)
+  const [accountName, setAccountName] = React.useState<string>(selectedAccount?.name ?? '')
   const [updateError, setUpdateError] = React.useState<boolean>(false)
   const [password, setPassword] = React.useState<string>('')
   const [privateKey, setPrivateKey] = React.useState<string>('')
@@ -126,37 +115,36 @@ export const AccountSettingsModal = ({
     setUpdateError(false)
   }
 
-  const onSubmitUpdateName = () => {
-    const isDerived = account?.accountType === 'Primary'
-    const payload = {
-      address: account.address,
-      name: accountName,
-      isDerived: isDerived
-    }
-    onUpdateAccountName(payload).success ? onClose() : setUpdateError(true)
+  const onClose = () => {
+    dispatch(AccountsTabActions.setShowAccountModal(false))
+    dispatch(AccountsTabActions.setAccountModalType('deposit'))
   }
+
+  const onSubmitUpdateName = React.useCallback(() => {
+    if (selectedAccount) {
+      const isDerived = selectedAccount.accountType === 'Primary'
+      const payload = {
+        address: selectedAccount.address,
+        name: accountName,
+        isDerived: isDerived
+      }
+      const result = dispatch(WalletPageActions.updateAccountName(payload))
+      return result ? onClose() : setUpdateError(true)
+    }
+  }, [selectedAccount, accountName, dispatch, onClose])
 
   const generateQRData = React.useCallback(() => {
-    generateQRCode(account.address).then(qr => {
-      if (isMounted) {
-        setQRCode(qr)
-      }
-    })
-  }, [account.address, isMounted])
-
-  const onSelectTab = (id: AccountSettingsNavTypes) => {
-    setPrivateKey('')
-    onChangeTab(id)
-  }
-
-  const removeAccount = () => {
-    onRemoveAccount(account.address, false, account.coin, password)
-    onToggleNav()
-    onClose()
-  }
+    if (selectedAccount) {
+      generateQRCode(selectedAccount.address).then(qr => {
+        if (isMounted) {
+          setQRCode(qr)
+        }
+      })
+    }
+  }, [selectedAccount, isMounted])
 
   const onShowPrivateKey = async () => {
-    if (!password) { // require password to view key
+    if (!password || !selectedAccount) { // require password to view key
       return
     }
 
@@ -173,8 +161,8 @@ export const AccountSettingsModal = ({
     setIsCorrectPassword(true)
 
     onViewPrivateKey(
-      account?.address ?? '',
-      account?.coin
+      selectedAccount?.address ?? '',
+      selectedAccount?.coin
     )
   }
 
@@ -206,17 +194,23 @@ export const AccountSettingsModal = ({
     }
   }
 
-  // memos / computed
-  const tabList = React.useMemo((): TopTabNavObjectType[] => {
-    return account.accountType === 'Trezor' ||
-      account.accountType === 'Ledger'
-      ? HardwareAccountSettingsNavOptions()
-      : AccountSettingsNavOptions()
-  }, [account])
-
   const filPrivateKeyFormatDescriptionTextParts = getLocaleWithTag(
     'braveWalletFilExportPrivateKeyFormatDescription'
   )
+
+  // memos
+  const modalTitle = React.useMemo((): string => {
+    if (accountModalType) {
+      return AccountButtonOptions.find((option) => option.id === accountModalType)?.name ?? ''
+    }
+    return ''
+  }, [accountModalType])
+
+  const orb = React.useMemo(() => {
+    if (selectedAccount) {
+      return create({ seed: selectedAccount.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
+    }
+  }, [selectedAccount])
 
   // effects
   React.useEffect(() => {
@@ -225,16 +219,23 @@ export const AccountSettingsModal = ({
 
   // render
   return (
-    <PopupModal title={title} onClose={onClickClose}>
-      {!hideNav &&
-        <TopTabNav
-          tabList={tabList}
-          onSelectTab={onSelectTab}
-          selectedTab={tab}
-        />
-      }
+    <PopupModal title={getLocale(modalTitle)} onClose={onClickClose}>
+      <Line />
       <StyledWrapper>
-        {tab === 'details' &&
+        {accountModalType === 'deposit' &&
+          <>
+            <NameAndIcon>
+              <AccountCircle orb={orb} />
+              <AccountName>{selectedAccount?.name ?? ''}</AccountName>
+            </NameAndIcon>
+            <QRCodeWrapper src={qrCode} />
+            <CopyTooltip text={selectedAccount?.address ?? ''}>
+              <AddressButton>{selectedAccount?.address ?? ''}<CopyIcon /></AddressButton>
+            </CopyTooltip>
+            <VerticalSpacer space={20} />
+          </>
+        }
+        {accountModalType === 'edit' &&
           <>
             <Input
               value={accountName}
@@ -245,10 +246,6 @@ export const AccountSettingsModal = ({
             {updateError &&
               <ErrorText>{getLocale('braveWalletAccountSettingsUpdateError')}</ErrorText>
             }
-            <QRCodeWrapper src={qrCode} />
-            <CopyTooltip text={account.address}>
-              <AddressButton>{reduceAddress(account.address)}<CopyIcon /></AddressButton>
-            </CopyTooltip>
             <ButtonRow>
               <NavButton
                 onSubmit={onSubmitUpdateName}
@@ -256,32 +253,25 @@ export const AccountSettingsModal = ({
                 text={getLocale('braveWalletAccountSettingsSave')}
                 buttonType='secondary'
               />
-              {account?.accountType === 'Secondary' &&
-                <NavButton
-                  onSubmit={removeAccount}
-                  text={getLocale('braveWalletAccountSettingsRemove')}
-                  buttonType='danger'
-                />
-              }
             </ButtonRow>
           </>
         }
-        {tab === 'privateKey' &&
+        {accountModalType === 'privateKey' &&
           <PrivateKeyWrapper>
             <WarningWrapper>
               <WarningText>{getLocale('braveWalletAccountSettingsDisclaimer')}</WarningText>
             </WarningWrapper>
             {privateKey
               ? <>
-                {account.coin === BraveWallet.CoinType.FIL &&
+                {selectedAccount?.coin === BraveWallet.CoinType.FIL &&
                   <WarningWrapper>
                     <WarningText>
                       {filPrivateKeyFormatDescriptionTextParts.beforeTag}
-                        <a target='_blank' href={FILECOIN_FORMAT_DESCRIPTION_URL} rel='noopener noreferrer'>
-                          {filPrivateKeyFormatDescriptionTextParts.duringTag}
-                        </a>
-                        {filPrivateKeyFormatDescriptionTextParts.afterTag}
-                      </WarningText>
+                      <a target='_blank' href={FILECOIN_FORMAT_DESCRIPTION_URL} rel='noopener noreferrer'>
+                        {filPrivateKeyFormatDescriptionTextParts.duringTag}
+                      </a>
+                      {filPrivateKeyFormatDescriptionTextParts.afterTag}
+                    </WarningText>
                   </WarningWrapper>
                 }
                 <CopyTooltip text={privateKey}>
@@ -289,14 +279,14 @@ export const AccountSettingsModal = ({
                 </CopyTooltip>
               </>
               : <PasswordInput
-                  placeholder={getLocale('braveWalletEnterYourPassword')}
-                  onChange={onPasswordChange}
-                  hasError={!!password && !isCorrectPassword}
-                  error={getLocale('braveWalletLockScreenError')}
-                  autoFocus={false}
-                  value={password}
-                  onKeyDown={handlePasswordKeyDown}
-                />
+                placeholder={getLocale('braveWalletEnterYourPassword')}
+                onChange={onPasswordChange}
+                hasError={!!password && !isCorrectPassword}
+                error={getLocale('braveWalletLockScreenError')}
+                autoFocus={false}
+                value={password}
+                onKeyDown={handlePasswordKeyDown}
+              />
             }
             <ButtonWrapper>
               <NavButton
