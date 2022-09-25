@@ -145,7 +145,6 @@ Sayt va ilovalarga berilgan ruxsatlar bu hisobga tatbiq etilishi mumkin. Brave h
 <translation id="4065288863231444640">Brave fonda ishlashiga ruxsat</translation>
 <translation id="8148611988012584308">Brave’ni sozlash va boshqarish</translation>
 <translation id="4427306783828095590">Kengaytirilgan himoya fishing va zararli dasturlarni bloklaydi</translation>
-<translation id="5112116809696021727">Qurilmangiz tizimi yangilanganligini <ph name="LINK_BEGIN"/>ChromeOS sozlamalari<ph name="LINK_END"/> orqali bilish mumkin</translation>
 <translation id="7084397798469173252">Brave brauzeriga xush kelibsiz, yangi oyna ochildi</translation>
 <translation id="2633397153656205379">Notanish xatolik tufayli Brave yangilanmadi. <ph name="BEGIN_LINK"/>Bravedagi yangilanish muammolari va xatoliklarni tuzatish.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Yangi Brave profilida davom etasizmi?</translation>
@@ -310,8 +309,6 @@ Brave sozlamalaringizni qaytadan tiklay olmadi.</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Maʼlumotlaringizni qanday boshqarish mumkin:<ph name="END_BOLD"/> Maxfliylikni himoya qilish maqsadida biz 4 haftadan uzoq saqlangan qiziqishlarni avtomatik oʻchiramiz. Sahifalar takroriy ochilganida qiziqish roʻyxatda yana chiqishi mumkin. Yoki Brave foydalanmasligini istasangiz, qiziqishlarni olib tashlashingiz mumkin.</translation>
 <translation id="2925193881330501265">Avvallari siz Brave‘ga <ph name="USER_EMAIL_ADDRESS"/> hisobidan kirgandingiz. O‘sha hisobdan foydalanib yana qaytadan kiring.</translation>
 <translation id="6915252145142862992">Brave takroran o‘rnatilgan, shuning uchun u asosiy brauzer bo‘la olmaydi.</translation>
-<translation id="1975057837349076194">Agar sozlama bu sahifada chiqmasa, <ph name="LINK_BEGIN"/>
-      ChromeOS sozlamalarini<ph name="LINK_END"/> tekshiring.</translation>
 <translation id="1743665722170667430">Nomaʼlum manbalar kengaytmalari, ilovalari va mavzulari qurilmangizni zararlashi mumkin. Brave ularni faqat <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> orqali oʻrnatishni tavsiya qiladi</translation>
 <translation id="7685904775439037072">Brave saytlarga ulanganda sizdan ruxsat so‘raydi.</translation>
 <translation id="80471789339884597">Oʻrnatganingiz uchun tashakkur! <ph name="BUNDLE_NAME"/>ni ishlatishdan oldin barcha brauzerlarni qayta ishga tushirishingiz kerak.</translation>

@@ -93,6 +93,7 @@
 <translation id="3545804467215833536">Коснитесь, чтобы открыть окно настройки Brave Щита.</translation>
 <translation id="1724327820822194498">Узнайте, сколько объявлений и трекеров заблокировал Brave Щит на каждой странице.</translation>
 <translation id="5386259141409498372">Заблокированные объявления и трекеры: <ph name="BIG_TECH"/> и еще <ph name="TRACKER"/>.</translation>
+<translation id="7256200875155794202"><ph name="BIG_TECH"/>, другие рекламные объявления и трекеры заблокированы</translation>
 <translation id="3092683655478890840">Заблокировано объявлений и трекеров: <ph name="TRACKER_COUNT"/></translation>
 <translation id="8281886186245836920">Пропустить</translation>
 <translation id="6165508094623778733">Подробнее</translation>
@@ -117,6 +118,9 @@
 <translation id="19715420010996093">Выберите Brave Browser в списке и нажмите 'Всегда'</translation>
 <translation id="3546439402724649282">Brave уже установлен в качестве браузера по умолчанию.</translation>
 <translation id="8389661903259423907">Вы уже установили браузер по умолчанию. Вы можете изменить браузер по умолчанию в настройках вашего приложения.</translation>
+<translation id="1545749641540134597">Scan QR Code</translation>
+<translation id="5317781812114905957">Инструкции</translation>
+<translation id="8515319483805157233">Чтобы выполнить поиск по QR-коду, поместите его в центр кадра.</translation>
 <translation id="8826007068782654809">Спасибо</translation>
 <translation id="6665366815203065060">Вы только что отправили чаевые:</translation>
 <translation id="5441565662498481293">Вы автоматически отправляете чаевые:</translation>
@@ -393,35 +397,11 @@
 <translation id="8376263745431603066">Включить "Ночной режим" (Экспериментальная функция)</translation>
 <translation id="1383876407941801731">Поиск</translation>
 <translation id="8446884382197647889">Подробнее…</translation>
-<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
-<translation id="558614325644656740">Доступно <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="3414885529641505869">Купить <ph name="COIN_NAME"/></translation>
-<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Адрес депозита</translation>
-<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Памятка по депозиту</translation>
-<translation id="6755546361496900700">Предварительный просмотр конвертации</translation>
-<translation id="5110244215256675209">Купить криптовалюту</translation>
-<translation id="2271556362602437160">.com</translation>
-<translation id="3727077517986954867">.us</translation>
 <translation id="13296465911709339">Ваш текст скопирован в буфер обмена.</translation>
 <translation id="2735834606413553397">Общедоступный адрес скопирован в буфер обмена.</translation>
-<translation id="7144878232160441200">Повторить</translation>
 <translation id="2977461003134694205">Статистика конфиденциальности</translation>
-<translation id="2956070106555335453">Сводка</translation>
-<translation id="1366855498335432549">Депозит</translation>
-<translation id="1301340234286078471">Конвертировать</translation>
 <translation id="223536150967420869">Купить</translation>
-<translation id="4584930231524505442">Я хочу конвертировать...</translation>
-<translation id="5749014321384313843">Я хочу потратить...</translation>
-<translation id="2480674848181564169">Недостаточный для конвертации баланс</translation>
-<translation id="2215334405220411393">Минимальная сумма конвертирования: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6702658079816271889">Не удается подключиться</translation>
-<translation id="7742417737698031726">Комиссия</translation>
-<translation id="2122225204180056042">Вы получите</translation>
-<translation id="6432284126416751397">Подтвердить конвертацию</translation>
-<translation id="3891414008432200754">Цена</translation>
-<translation id="3733576242118819803">Подтвердить (<ph name="REMAINING_TIME"/>s)</translation>
-<translation id="1627064138060308910">Конвертация не удалась. Пожалуйста, попробуйте еще раз.</translation>
-<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="2956070106555335453">Сводка</translation>
 <translation id="7465614181960492526">Зарабатывайте жетоны и выражайте благодарность</translation>
 <translation id="244362569344671266">Зарабатывайте жетоны, просматривая Brave Private Ads, и поддерживайте создателей контента автоматически.</translation>
 <translation id="631124996535890460">Продолжая, вы соглашаетесь с <ph name="TERMS_OF_SERVICE"/> and <ph name="PRIVACY_POLICY"/>.</translation>
@@ -452,18 +432,6 @@
 <translation id="2434574859640694129">Получив первую выплату за рекламу, вы можете вернуться и дать чаевые этому создателю!</translation>
 <translation id="207242986925259074">Быстрый тур, освежающий информацию</translation>
 <translation id="8342862030112839977">Ваша первая выплата вознаграждений будет произведена к:</translation>
-<translation id="8037420924417098685">Чтобы начать бесплатный звонок, включите Brave Rewards.</translation>
-<translation id="8961724619078500274">Brave Rewards позволяет зарабатывать баллы за просмотр рекламы в режиме инкогнито. Ваши данные будут в полной безопасности. Обменивайте баллы на деньги и подарочные карты или перечисляйте их любимым сайтам. Работа в браузере не отслеживается и не замедляется!</translation>
-<translation id="7307847920988946894">Включить Rewards</translation>
-<translation id="7872993190040589450">Продолжая, вы соглашаетесь с <ph name="TERMS_OF_SERVICE"/> и <ph name="PRIVACY_POLICY"/>.</translation>
-<translation id="6128511569382736135">Чтобы начать бесплатный звонок, включите Brave Private Ads.</translation>
-<translation id="7930006085154756245">Brave Private Ads позволяет зарабатывать баллы за просмотр рекламы в режиме инкогнито. Ваши данные будут в полной безопасности. Обменивайте баллы на деньги и подарочные карты или перечисляйте их любимым сайтам. Работа в браузере не отслеживается и не замедляется!</translation>
-<translation id="4992617448154987397">Включить Brave Private Ads</translation>
-<translation id="3415016869273103668">Теперь вы можете начать бесплатный звонок</translation>
-<translation id="7073631403665023390">Чтобы перейти в Brave Talk, нажмите на любое место экрана.</translation>
-<translation id="626339649633171286">Хотите узнать больше о Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
-<translation id="3604285424134705930">Вы конвертировали <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> в <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
-<translation id="392587271502873865">Пожалуйста, проверьте ваше сетевое соединение.</translation>
 <translation id="7889432931837317731">Открывать автоматически, когда возможно</translation>
 <translation id="8967385052772844086">Просмотреть полный отчет о конфиденциальности</translation>
 <translation id="6864343534748973390">Самый популярный</translation>
@@ -591,9 +559,6 @@
 <translation id="5050890334032852465">Сохранить список просмотра</translation>
 <translation id="7755766175599167100">Поиск баллов</translation>
 <translation id="3835223348537121988">Баланс:</translation>
-<translation id="2490428413101944234">Тестирование крана</translation>
-<translation id="2581671693710952401">Получить Ether</translation>
-<translation id="8165484222652118977">Получите ETH из крана для <ph name="NETWORK"/> Test Network</translation>
 <translation id="7420359180991315365">Продолжить с Wyre</translation>
 <translation id="8488282162676695335">Кошелек Brave</translation>
 <translation id="3784455785234192852">Заблокировать</translation>
@@ -605,6 +570,12 @@
 <translation id="5693968582510626466">Сброс информации о транзакциях может пригодиться разработчикам или при очистке state локального сервера.</translation>
 <translation id="5421107279168565467">Удалить информацию о транзакциях и одноразовых кодах? Обычно это делают разработчики, запускающие локальный тестовый сервер. Для подтверждения введите <ph name="CONFIRMATION_PHRASE"/>.</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# мин.} other {# мин.}}</translation>
+<translation id="8146860193318415026">Транслируйте видео. Без рекламы.</translation>
+<translation id="6311019535466417620">Никакой рекламы перед вашим видео</translation>
+<translation id="4274652342814424451">Никакой рекламы при просмотре вашего видео</translation>
+<translation id="1721710839767183848">Никакой рекламы на странице</translation>
+<translation id="4647035642622555398">Без прерывания просмотра</translation>
+<translation id="4122515759479497554">Искать видео</translation>
 <translation id="4449475351935531438">Брандмауэр Brave + VPN</translation>
 <translation id="719977489961414786">VPN обеспечивает безопасность интернет-подключения и защищает вас от трекеров.</translation>
 <translation id="3435896845095436175">Включить</translation>
@@ -808,6 +779,9 @@
 <translation id="5233638681132016545">Новая вкладка</translation>
 <translation id="8006088103295786154">Доступ к Brave Кошельку</translation>
 <translation id="5308380583665731573">Connect</translation>
+<translation id="8030169304546394654">Отключен</translation>
+<translation id="3423275441470187644">Доверять</translation>
+<translation id="2391762656119864333">Отменить</translation>
 <translation id="3432029672560911238">Аккаунт пользователя</translation>
 <translation id="5753378322046059140">Сменить аккаунт</translation>
 <translation id="3897092660631435901">Menu</translation>
@@ -884,5 +858,50 @@
 <translation id="7002577172732106572">Раздельное туннелирование</translation>
 <translation id="2832270987629018596">Недействительный адрес SOL.</translation>
 <translation id="8181161042860463420">Связанный счет токена еще не существует. На его создание и пополнение будет потрачено небольшое количество SOL. <ph name="CLICK_START"/>Узнать больше<ph name="CLICK_END"/></translation>
+<translation id="1304515257839771197">Открыть приложение <ph name="APP_NAME"/>?</translation>
+<translation id="7653028065515320848"><ph name="CLICK_START"/>Узнать больше о Rainbow Bridge<ph name="CLICK_END"/></translation>
+<translation id="8219806187375413057"><ph name="CLICK_START"/>Как снизить риски при использовании Rainbow Bridge<ph name="CLICK_END"/></translation>
+<translation id="1065082006518490444"><ph name="APP_NAME"/> — независимый сервис, который соединяет активы из разных сетей, а также позволяет использовать вашу криптовалюту в экосистемах децентрализованных приложений и других сетях. Однако с этой функцией связаны определенные риски.</translation>
+<translation id="8423380132356660250">Открыть <ph name="APP_NAME"/></translation>
 <translation id="168154537623654021">Обновление профиля VPN…</translation>
+<translation id="7457027586454688423">Введите пароль от Brave Кошелька</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">Доступно <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">Купить <ph name="COIN_NAME"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Адрес депозита</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Памятка по депозиту</translation>
+<translation id="6755546361496900700">Предварительный просмотр конвертации</translation>
+<translation id="5110244215256675209">Купить криптовалюту</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="7144878232160441200">Повторить</translation>
+<translation id="1366855498335432549">Депозит</translation>
+<translation id="1301340234286078471">Конвертировать</translation>
+<translation id="4584930231524505442">Я хочу конвертировать...</translation>
+<translation id="5749014321384313843">Я хочу потратить...</translation>
+<translation id="2480674848181564169">Недостаточный для конвертации баланс</translation>
+<translation id="2215334405220411393">Минимальная сумма конвертирования: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Не удается подключиться</translation>
+<translation id="7742417737698031726">Комиссия</translation>
+<translation id="2122225204180056042">Вы получите</translation>
+<translation id="6432284126416751397">Подтвердить конвертацию</translation>
+<translation id="3891414008432200754">Цена</translation>
+<translation id="3733576242118819803">Подтвердить (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Конвертация не удалась. Пожалуйста, попробуйте еще раз.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="8037420924417098685">Чтобы начать бесплатный звонок, включите Brave Rewards.</translation>
+<translation id="8961724619078500274">Brave Rewards позволяет зарабатывать баллы за просмотр рекламы в режиме инкогнито. Ваши данные будут в полной безопасности. Обменивайте баллы на деньги и подарочные карты или перечисляйте их любимым сайтам. Работа в браузере не отслеживается и не замедляется!</translation>
+<translation id="7307847920988946894">Включить Rewards</translation>
+<translation id="7872993190040589450">Продолжая, вы соглашаетесь с <ph name="TERMS_OF_SERVICE"/> и <ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="6128511569382736135">Чтобы начать бесплатный звонок, включите Brave Private Ads.</translation>
+<translation id="7930006085154756245">Brave Private Ads позволяет зарабатывать баллы за просмотр рекламы в режиме инкогнито. Ваши данные будут в полной безопасности. Обменивайте баллы на деньги и подарочные карты или перечисляйте их любимым сайтам. Работа в браузере не отслеживается и не замедляется!</translation>
+<translation id="4992617448154987397">Включить Brave Private Ads</translation>
+<translation id="3415016869273103668">Теперь вы можете начать бесплатный звонок</translation>
+<translation id="7073631403665023390">Чтобы перейти в Brave Talk, нажмите на любое место экрана.</translation>
+<translation id="626339649633171286">Хотите узнать больше о Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">Вы конвертировали <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> в <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Пожалуйста, проверьте ваше сетевое соединение.</translation>
+<translation id="2490428413101944234">Тестирование крана</translation>
+<translation id="2581671693710952401">Получить Ether</translation>
+<translation id="8165484222652118977">Получите ETH из крана для <ph name="NETWORK"/> Test Network</translation>
 </translationbundle>

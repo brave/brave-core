@@ -81,11 +81,6 @@ vindue med Tor</translation>
 <translation id="3161744659507801211">Advarsel: Brave kan ikke forhindre udvidelser i at gemme din browserhistorik.</translation>
 <translation id="2162109630536601963">Hvis denne udvidelse foretager netværksanmodninger, vil de ikke bruge Tor eller privat tilstand.</translation>
 <translation id="2725327089319971976">Fjern markeringen af denne indstilling for at deaktivere denne udvidelse i privat tilstand og Tor-tilstand.</translation>
-<translation id="5057399635433117814">Oversæt denne side? Dette vil sende al tekst på denne side til Microsoft, for at få den oversat.</translation>
-<translation id="330263065709195164">Vil du installere Google Translate udvidelsen for at oversætte denne side?</translation>
-<translation id="3789841737615482174">Installer</translation>
-<translation id="7658239707568436148">Afbryd</translation>
-<translation id="1307431692088049276">Spørg mig ikke igen</translation>
 <translation id="3371343170427636147">Brave Browser natlige apps</translation>
 <translation id="4097979995947147464">Brave Browser beta-apps</translation>
 <translation id="8303432794159193481">Brave Browser udvikler-apps</translation>
@@ -108,9 +103,11 @@ vindue med Tor</translation>
 <translation id="7276554663454265692">Du kan når som helst ændre <ph name="SETTING_TEXT"/> i browserindstillingerne.</translation>
 <translation id="6873781976650514089">denne indstilling</translation>
 <translation id="8915916167043355778">Luk alle</translation>
+<translation id="7658239707568436148">Annuller</translation>
 <translation id="4870911314065352661">Luk alle faner?</translation>
 <translation id="7551864359422178684">Du har <ph name="NUMBER_OF_TABS"/> faner åbne i dette vindue.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> faner</translation>
+<translation id="1307431692088049276">Spørg mig ikke igen</translation>
 <translation id="2272117088509540883">- Brave-søgning</translation>
 <translation id="2701279958223202597">Støt uafhængig søgning med bedre privatliv. Brave-søgninger registrerer hverken dig, dine søgninger eller dine klik.</translation>
 <translation id="6438467592401259882">Støt uafhængig søgning med bedre privatliv.</translation>
@@ -127,7 +124,15 @@ vindue med Tor</translation>
 <translation id="4174337572777167894">Web Discovery-projekt</translation>
 <translation id="8659271182272561965">Bidrag med anonym søge- &amp; browsingdata for at forbedre Brave Search.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
+<translation id="7986278174934557414">Skjul sidepanel-ikonet</translation>
+<translation id="6915291874524466201">Skjul sidepanel-ikonet</translation>
+<translation id="9149866541089851383">Rediger...</translation>
 <translation id="1181037720776840403">Fjern</translation>
+<translation id="7513769021866698486">Redigér genstand</translation>
+<translation id="4002066346123236978">Titel</translation>
+<translation id="7400418766976504921">Webadresse</translation>
+<translation id="5877900074358050101">Titel på sidepanelgenstand</translation>
+<translation id="1613695740874407223">URL på sidepanelgenstand</translation>
 <translation id="4877147287319222750">Føj til sidepanel</translation>
 <translation id="5404213409401164238">Vis sidepanel</translation>
 <translation id="7561196759112975576">Altid</translation>
@@ -202,6 +207,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="2370739752330685659">Måske senere</translation>
 <translation id="961012016278832836">Microsoft Edge Legacy</translation>
 <translation id="6436994631426134065">Importeret fra<ph name="BROWSER_NAME"/>.</translation>
+<translation id="1506190932569739298">Kopiér rent link (kun hoved-url)</translation>
 <translation id="9156965752763025780">Dine ændringer træder i kraft, næste gang du genstarter Brave.</translation>
 <translation id="7179921470347911571">Genstart nu</translation>
 <translation id="4472575034687746823">Kom godt i gang</translation>
@@ -221,6 +227,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="4096343215397759358">Kort med forhåndsvisning</translation>
 <translation id="5297085818601043899">Værktøjstip</translation>
 <translation id="2396127686705429331">Vis bogmærkeknap</translation>
+<translation id="2369560305991805099">Vis sidepanelknap</translation>
 <translation id="2814998458708016836">Brug bred adresselinje</translation>
 <translation id="4109670531935487117">Vis autofuldførelsesforslag i adressefeltet</translation>
 <translation id="2858138569776157458">Topwebsites</translation>
@@ -243,8 +250,8 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="6303294677342628402">Afskærmning</translation>
 <translation id="7133511168130368997">Bloker trackere og annoncer, som følger dig over hele nettet.</translation>
 <translation id="2761825942249694703">Dette er standardindstillingerne for Shields. De gælder for alle websider, medmindre du ændrer noget i Shields-kontrolpanelet på en bestemt side. En ændring af dette vil ikke påvirke dine eksisterende individuelle sideindstillinger.</translation>
-<translation id="1485394570478670912">Dette vil blokere de fleste reklamer på websider, men ikke Brave Private Ads — de kontrolleres i</translation>
-<translation id="6388201778088078932">indstillinger.</translation>
+<translation id="1435116578479068303">Dette vil blokere de fleste annoncer på hjemmeside, men ikke Brave Private Ads, da disse tilpasses i <ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/>-indstillingerne .</translation>
+<translation id="8452536890042542134">Dette vil blokere de fleste annoncer på hjemmesider.</translation>
 <translation id="4800195524776354947">Vis antallet af blokerede emner på Skjold-ikonet</translation>
 <translation id="5510493033031835532">Omdirigér automatisk AMP-sider</translation>
 <translation id="7630031867325944356">Foretrækker udgiversidewebadresser i stedet for AMP og lignende versioner.</translation>
@@ -394,12 +401,12 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="6554397389149987360">Bruger Hangouts-komponent til at aktivere skærmdeling samt andre browserfunktioner.</translation>
 <translation id="7878791177459550035">Medierouter slår cast-funktionen i browseren til.</translation>
 <translation id="5927916530277631319">Metode til at løsning af Unstoppable-domæner</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Læs mere<ph name="END_LINK"/> om overvejelser af DNS over HTTPS- og Ethereum-anonymitet.</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Læs mere<ph name="END_LINK"/> om overvejelser af HTTPS- og Ethereum-anonymitet.</translation>
 <translation id="5248318250177143470">Metode til løsning af Ethereum Name Service (ENS)</translation>
 <translation id="6241402707160226266">Privat vindue med Tor</translation>
 <translation id="8762452230727230396">Tor skjuler din IP-adresse fra de sider du besøger.</translation>
 <translation id="2959986444009520721">Brug broer</translation>
-<translation id="6003484976430531384">Broer hjælper dig med at få adgang til Tor-netværket på det sted, hvor Tor er blokeret. Afhængigt af hvor du er, kan en bro fungere bedre end en anden.</translation>
+<translation id="8416750895933172460">Broer hjælper dig med at få adgang til Tor-netværket på de steder, hvor Tor er blokeret. Afhængigt af hvor du er, kan en bro fungere bedre end en anden.</translation>
 <translation id="7206799843254049470">Tor-forbindelsesindstillinger</translation>
 <translation id="3194502271166340944">Styrer, hvordan Private Windows med Tor opretter forbindelse til Tor-netværket</translation>
 <translation id="4859228830700205299">Vælg en indbygget bro</translation>
@@ -416,7 +423,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="6936835573742749135">Kan ikke anmode om en CAPTCHA. Prøv igen senere.</translation>
 <translation id="2653659639078652383">Indsend</translation>
 <translation id="1369311132025451972">Omdiriger automatisk .onion-hjemmesider</translation>
-<translation id="2843777623071353503">Brave vil åbne en onion-udgave af websiden, når den er tilgængelig, eller et .onion-donæne i et Tor-vindue.</translation>
+<translation id="1658670175365815312">Brave vil skifte til .onion-versionen af en hjemmeside, når den er tilgængelig, og automatisk åbne alle .onion-domæner i et Tor-vindue.</translation>
 <translation id="2896916411183256228">Bruger WebTorrent til at vise torrents direkte i browseren. Understøtter torrent-filer og magnetlinks.</translation>
 <translation id="5249433283143453448">Brug Widevine Digital Rights Management (DRM) komponentet til at vise beskyttet streaming af video og andet indhold i browseren.</translation>
 <translation id="8137559199583651773">Administrer udvidelser</translation>
@@ -442,14 +449,16 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="3752403403443723332">Din tegnebog  blev nulstillet.</translation>
 <translation id="594766067816395072">Oplysninger om dine tegnebogstransaktioner blev nulstillet.</translation>
 <translation id="1426410128494586442">Ja</translation>
-<translation id="2556708692502648323">Wallet-netværk</translation>
+<translation id="4226543734057230801">Ethereum-netværker</translation>
+<translation id="3504157706952484145">Filecoin-netværker</translation>
+<translation id="1561541094377237745">Solana-netværker</translation>
 <translation id="3159419679550543837">Vis testnetværk</translation>
-<translation id="8205945804087322170">Tilføj nyt netværk</translation>
-<translation id="1330032157352961756">Id for ny kæde</translation>
+<translation id="3215569562674795548">Redigér eller tilføj et netværk</translation>
+<translation id="4418993400653250511">Kædens id</translation>
 <translation id="3423620355610881890">Et positivt decimaltal</translation>
 <translation id="8110465398315041268">Søg netværk</translation>
 <translation id="3579705520805744214">Kæde-ID eller navn</translation>
-<translation id="726121047592132939">Navn på ny kæde</translation>
+<translation id="8502525913969149079">Kædens navn</translation>
 <translation id="1034112277864078119">Angiv kædenavn</translation>
 <translation id="4672314527143443556">Kædens valutanavn</translation>
 <translation id="4652114030688989556">Skriv valutanavn</translation>
@@ -555,4 +564,15 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="5318548116565208315">Avatar Bonbon Corn</translation>
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
+<translation id="5057399635433117814">Oversæt denne side? Dette vil sende al tekst på denne side til Microsoft, for at få den oversat.</translation>
+<translation id="330263065709195164">Vil du installere Google Translate udvidelsen for at oversætte denne side?</translation>
+<translation id="3789841737615482174">Installer</translation>
+<translation id="1485394570478670912">Dette vil blokere de fleste reklamer på websider, men ikke Brave Private Ads — de kontrolleres i</translation>
+<translation id="6388201778088078932">indstillinger.</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Læs mere<ph name="END_LINK"/> om overvejelser af DNS over HTTPS- og Ethereum-anonymitet.</translation>
+<translation id="2843777623071353503">Brave vil åbne en onion-udgave af websiden, når den er tilgængelig, eller et .onion-donæne i et Tor-vindue.</translation>
+<translation id="2556708692502648323">Wallet-netværk</translation>
+<translation id="8205945804087322170">Tilføj nyt netværk</translation>
+<translation id="1330032157352961756">Id for ny kæde</translation>
+<translation id="726121047592132939">Navn på ny kæde</translation>
 </translationbundle>

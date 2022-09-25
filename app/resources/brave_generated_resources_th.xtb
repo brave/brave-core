@@ -80,11 +80,6 @@
 <translation id="3161744659507801211">คำเตือน: Brave ไม่สามารถป้องกันไม่ให้ส่วนขยายต่างๆ บันทึกประวัติการท่องเว็บของคุณ</translation>
 <translation id="2162109630536601963">หากส่วนขยายนี้มีคำขอเครือข่าย จะไม่ใช้โหมด Tor หรือโหมดส่วนตัว</translation>
 <translation id="2725327089319971976">หากต้องการปิดใช้ส่วนขยายนี้ในโหมดส่วนตัวและโหมด Tor ให้ยกเลิกการเลือกข้อนี้</translation>
-<translation id="5057399635433117814">แปลหน้านี้หรือไม่ การดำเนินการนี้จะส่งข้อความทั้งหมดในหน้านี้ไปยัง Microsoft เพื่อทำการแปล</translation>
-<translation id="330263065709195164">ติดตั้งส่วนขยาย Google Translate เพื่อแปลหน้านี้หรือไม่</translation>
-<translation id="3789841737615482174">ติดตั้ง</translation>
-<translation id="7658239707568436148">ยกเลิก</translation>
-<translation id="1307431692088049276">อย่าถามฉันอีก</translation>
 <translation id="3371343170427636147">แอป Brave Browser Nightly</translation>
 <translation id="4097979995947147464">แอป Brave Browser Beta</translation>
 <translation id="8303432794159193481">แอป Brave Browser Dev</translation>
@@ -107,9 +102,11 @@
 <translation id="7276554663454265692">คุณสามารถเปลี่ยน<ph name="SETTING_TEXT"/>อีกครั้งเมื่อใดก็ได้ในการตั้งค่าเบราว์เซอร์</translation>
 <translation id="6873781976650514089">การตั้งค่านี้</translation>
 <translation id="8915916167043355778">ปิดทั้งหมด</translation>
+<translation id="7658239707568436148">ยกเลิก</translation>
 <translation id="4870911314065352661">ปิดแท็บทั้งหมดหรือไม่</translation>
 <translation id="7551864359422178684">คุณเปิดแท็บทั้งหมด <ph name="NUMBER_OF_TABS"/> แท็บในหน้าต่างเบราว์เซอร์นี้</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> แท็บ</translation>
+<translation id="1307431692088049276">อย่าถามฉันอีก</translation>
 <translation id="2272117088509540883">- เครื่องมือค้นหา Brave</translation>
 <translation id="2701279958223202597">ค้นหาได้อย่างอิสระกับความเป็นส่วนตัวยิ่งขึ้น เครื่องมือค้นหา Brave จะไม่ติดตามคุณ คำค้นหา หรือการคลิกของคุณ</translation>
 <translation id="6438467592401259882">ค้นหาได้อย่างอิสระกับความเป็นส่วนตัวยิ่งขึ้น</translation>
@@ -126,7 +123,15 @@
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">ร่วมให้ข้อมูลการค้นหาและการเลือกดูแบบไม่ระบุตัวตน เพื่อช่วยให้ Brave Search ทำงานได้ดีขึ้น</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
+<translation id="7986278174934557414">ซ่อนไอคอนแผงด้านข้าง</translation>
+<translation id="6915291874524466201">ซ่อนไอคอนแผงด้านข้าง</translation>
+<translation id="9149866541089851383">แก้ไข...</translation>
 <translation id="1181037720776840403">นำออก</translation>
+<translation id="7513769021866698486">แก้ไขรายการ</translation>
+<translation id="4002066346123236978">ชื่อ</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="5877900074358050101">หัวเรื่องรายการแถบด้านข้าง</translation>
+<translation id="1613695740874407223">url รายการแถบด้านข้าง</translation>
 <translation id="4877147287319222750">เพิ่มลงในแถบด้านข้าง</translation>
 <translation id="5404213409401164238">แสดงแถบด้านข้าง</translation>
 <translation id="7561196759112975576">เสมอ</translation>
@@ -201,6 +206,7 @@
 <translation id="2370739752330685659">ภายหลัง</translation>
 <translation id="961012016278832836">Microsoft Edge เวอร์ชันเก่า</translation>
 <translation id="6436994631426134065">นำเข้าจาก <ph name="BROWSER_NAME"/></translation>
+<translation id="1506190932569739298">คัดลอกลิงก์เท่านั้น (URL หลักเท่านั้น)</translation>
 <translation id="9156965752763025780">การเปลี่ยนแปลงของคุณจะมีผลในครั้งถัดไปที่คุณเปิด Brave ขึ้นอีก</translation>
 <translation id="7179921470347911571">เปิดใหม่อีกครั้ง</translation>
 <translation id="4472575034687746823">เริ่มต้น</translation>
@@ -220,6 +226,7 @@
 <translation id="4096343215397759358">การ์ดพร้อมตัวอย่าง</translation>
 <translation id="5297085818601043899">เคล็ดลับเครื่องมือ</translation>
 <translation id="2396127686705429331">แสดงปุ่มบุ๊กมาร์ก</translation>
+<translation id="2369560305991805099">แสดงปุ่มแผงด้านข้าง</translation>
 <translation id="2814998458708016836">ใช้แถบที่อยู่แบบกว้าง</translation>
 <translation id="4109670531935487117">แสดงคำแนะนำการเติมข้อความอัตโนมัติในแถบที่อยู่</translation>
 <translation id="2858138569776157458">เว็บไซต์อันดับสูงสุด</translation>
@@ -242,8 +249,8 @@
 <translation id="6303294677342628402">ปกป้อง</translation>
 <translation id="7133511168130368997">บล็อกตัวติดตามและโฆษณาที่ติดตามคุณข้ามเว็บ</translation>
 <translation id="2761825942249694703">นี่คือการตั้งค่า Shields เริ่มต้น การตั้งค่าเหล่านี้จะมีผลกับเว็บไซต์ทั้งหมด เว้นแต่ว่าคุณจะเปลี่ยนแปลงอะไรบางอย่างในแผง Shields บนไซต์ใดไซต์หนึ่งโดยเฉพาะ การเปลี่ยนแปลงค่าเหล่านี้จะไม่มีผลกับการตั้งค่าต่อไซต์ที่มีอยู่แล้วของคุณ</translation>
-<translation id="1485394570478670912">วิธีนี้จะบล็อกโฆษณาส่วนใหญ่บนเว็บไซต์ แต่ไม่รวม Brave Private Ads ซึ่งได้รับการควบคุมใน</translation>
-<translation id="6388201778088078932">การตั้งค่า</translation>
+<translation id="1435116578479068303">วิธีนี้จะบล็อกโฆษณาส่วนใหญ่บนเว็บไซต์ แต่ไม่รวม Brave Private Ads ซึ่งได้รับการควบคุมในการตั้งค่า <ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/></translation>
+<translation id="8452536890042542134">สิ่งนี้จะบล็อคโฆษณาส่วนใหญ่บนเว็บไซต์</translation>
 <translation id="4800195524776354947">แสดงจำนวนรายการที่ถูกบล็อคบนไอคอนชิลด์</translation>
 <translation id="5510493033031835532">เปลี่ยนเส้นทางหน้า AMP อัตโนมัติ</translation>
 <translation id="7630031867325944356">ต้องการ URL หน้าเพจของผู้เผยแพร่โฆษณา แทนที่จะเป็น AMP และเวอร์ชันที่คล้ายกัน</translation>
@@ -393,12 +400,12 @@
 <translation id="6554397389149987360">ใช้ส่วนประกอบ Hangouts เพื่อเปิดใช้งานการแชร์หน้าจอและฟีเจอร์อื่น ๆ ในเบราว์เซอร์</translation>
 <translation id="7878791177459550035">เราเตอร์สื่อจะเปิดใช้งานฟีเจอร์การส่งภาพในเบราว์เซอร์</translation>
 <translation id="5927916530277631319">วิธีการแปลงที่อยู่ของ Unstoppable Domains</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>เรียนรู้เพิ่มเติม<ph name="END_LINK"/>เกี่ยวกับ DNS ตลอดจนการพิจารณาความเป็นส่วนตัวของ HTTPS และ Ethereum</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>เรียนรู้เพิ่มเติม<ph name="END_LINK"/> เกี่ยวกับการพิจารณาความเป็นส่วนตัวของ Ethereum</translation>
 <translation id="5248318250177143470">วิธีการแปลงที่อยู่ของ Ethereum Name Service (ENS)</translation>
 <translation id="6241402707160226266">หน้าต่างส่วนตัวด้วย Tor</translation>
 <translation id="8762452230727230396">Tor จะซ่อนที่อยู่ IP ของคุณจากเว็บไซต์ที่คุณเยี่ยมชม</translation>
 <translation id="2959986444009520721">ใช้สะพาน</translation>
-<translation id="6003484976430531384">สะพานช่วยให้คุณเข้าถึงเครือข่ายทอร์ในตำแหน่งที่ทอร์ถูกบล็อก บริดจ์ตัวหนึ่งอาจทำงานได้ดีกว่าสะพานตัวอื่น ทั้งนี้ขึ้นอยู่กับว่าคุณอยู่ที่ไหน</translation>
+<translation id="8416750895933172460">บริดจ์ช่วยให้คุณเข้าถึงเครือข่าย Tor ในตำแหน่งที่ Tor ถูกบล็อก บริดจ์ตัวหนึ่งอาจทำงานได้ดีกว่าตัวอื่นขึ้นอยู่กับตำแหน่งของคุณ</translation>
 <translation id="7206799843254049470">การตั้งค่าการเชื่อมต่อทอร์</translation>
 <translation id="3194502271166340944">ควบคุมวิธีที่วินโดว์ส่วนบุคคลด้วยทอร์เชื่อมต่อกับเครือข่ายทอร์</translation>
 <translation id="4859228830700205299">เลือกสะพานในตัว</translation>
@@ -415,7 +422,7 @@
 <translation id="6936835573742749135">ไม่สามารถขอ CAPTCHA ได้ โปรดลองอีกครั้งภายหลัง</translation>
 <translation id="2653659639078652383">ส่ง</translation>
 <translation id="1369311132025451972">ย้ายไปที่เว็บ .onion โดยอัตโนมัติ</translation>
-<translation id="2843777623071353503">Brave จะเปิดบริการเว็บไซต์แบบหัวหอมเมื่อมีให้บริการหรือโดเมนแบบหัวหอมในหน้าต่าง Tor</translation>
+<translation id="1658670175365815312">Brave จะเปลี่ยนเป็นเวอร์ชันเว็บไซต์เป็น .onion เมื่อใช้งานได้ และจะเปิดโดเมน .onion ทั้งหมดอัตโนมัติในหน้าต่าง Tor</translation>
 <translation id="2896916411183256228">ใช้ WebTorrent สำหรับแสดงทอร์เรนต์ในเบราว์เซอร์โดยตรง รองรับไฟล์ทอร์เรนต์และแม็กเน็ตลิงก์</translation>
 <translation id="5249433283143453448">ใช้องค์ประกอบการจัดการสิทธิ์ทางดิจิทัล Widevine (DRM) เพื่อดูสตรีมมิ่งวิดีโอที่มีการป้องกันและเนื้อหาอื่น ๆ ในเบราว์เซอร์</translation>
 <translation id="8137559199583651773">จัดการส่วนขยาย</translation>
@@ -441,14 +448,16 @@
 <translation id="3752403403443723332">รีเซ็ตกระเป๋าเงินของคุณแล้ว!</translation>
 <translation id="594766067816395072">รีเซ็ตข้อมูลธุรกรรมในกระเป๋าเงินของคุณแล้ว</translation>
 <translation id="1426410128494586442">ใช่</translation>
-<translation id="2556708692502648323">เครือข่ายกระเป๋าเงิน</translation>
+<translation id="4226543734057230801">เครือข่าย Ethereum</translation>
+<translation id="3504157706952484145">เครือข่าย Filecoin</translation>
+<translation id="1561541094377237745">เครือข่าย Solana</translation>
 <translation id="3159419679550543837">แสดงเครือข่ายทดสอบ</translation>
-<translation id="8205945804087322170">เพิ่มเครือข่ายใหม่</translation>
-<translation id="1330032157352961756">ID ของ Chain ใหม่</translation>
+<translation id="3215569562674795548">แก้ไขหรือเพิ่มเครือข่ายใหม่</translation>
+<translation id="4418993400653250511">หมายเลขของเชน</translation>
 <translation id="3423620355610881890">เลขทศนิยมฐานสิบ</translation>
 <translation id="8110465398315041268">ค้นหาเครือข่าย</translation>
 <translation id="3579705520805744214">Chain ID หรือชื่อ</translation>
-<translation id="726121047592132939">ชื่อ Chain ใหม่</translation>
+<translation id="8502525913969149079">ชื่อของเชน</translation>
 <translation id="1034112277864078119">ระบุชื่อ Chain</translation>
 <translation id="4672314527143443556">ชื่อสกุลเงินของ Chain</translation>
 <translation id="4652114030688989556">ระบุชื่อสกุลเงิน</translation>
@@ -554,4 +563,15 @@
 <translation id="5318548116565208315">อวทาร์ Bonbon Corn</translation>
 <translation id="1959966725083452288">อวทาร์ Bonbon Royal</translation>
 <translation id="2039034364578911089">อวทาร์ Bonbon Ninja</translation>
+<translation id="5057399635433117814">แปลหน้านี้หรือไม่ การดำเนินการนี้จะส่งข้อความทั้งหมดในหน้านี้ไปยัง Microsoft เพื่อทำการแปล</translation>
+<translation id="330263065709195164">ติดตั้งส่วนขยาย Google Translate เพื่อแปลหน้านี้หรือไม่</translation>
+<translation id="3789841737615482174">ติดตั้ง</translation>
+<translation id="1485394570478670912">วิธีนี้จะบล็อกโฆษณาส่วนใหญ่บนเว็บไซต์ แต่ไม่รวม Brave Private Ads ซึ่งได้รับการควบคุมใน</translation>
+<translation id="6388201778088078932">การตั้งค่า</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>เรียนรู้เพิ่มเติม<ph name="END_LINK"/>เกี่ยวกับ DNS ตลอดจนการพิจารณาความเป็นส่วนตัวของ HTTPS และ Ethereum</translation>
+<translation id="2843777623071353503">Brave จะเปิดบริการเว็บไซต์แบบหัวหอมเมื่อมีให้บริการหรือโดเมนแบบหัวหอมในหน้าต่าง Tor</translation>
+<translation id="2556708692502648323">เครือข่ายกระเป๋าเงิน</translation>
+<translation id="8205945804087322170">เพิ่มเครือข่ายใหม่</translation>
+<translation id="1330032157352961756">ID ของ Chain ใหม่</translation>
+<translation id="726121047592132939">ชื่อ Chain ใหม่</translation>
 </translationbundle>

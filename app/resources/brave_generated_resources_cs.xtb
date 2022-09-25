@@ -80,11 +80,6 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="3161744659507801211">Upozornění: Brave nemůže zabránit rozšířením v zaznamenávání vaší historie procházení.</translation>
 <translation id="2162109630536601963">Pokud toto rozšíření provádí požadavky na síť, nebude používat Tor ani soukromý režim.</translation>
 <translation id="2725327089319971976">Chcete-li toto rozšíření deaktivovat v soukromém režimu a v režimu Tor, zrušte výběr této možnosti.</translation>
-<translation id="5057399635433117814">Chcete tuto stránku přeložit? Tím odešlete veškerý text na této stránce společnosti Microsoft, která provede překlad.</translation>
-<translation id="330263065709195164">Chcete za účelem překladu této stránky nainstalovat rozšíření Google Translate?</translation>
-<translation id="3789841737615482174">Instalovat</translation>
-<translation id="7658239707568436148">Zrušit</translation>
-<translation id="1307431692088049276">Znovu se neptat</translation>
 <translation id="3371343170427636147">Noční aplikace prohlížeče Brave</translation>
 <translation id="4097979995947147464">Beta aplikace prohlížeče Brave</translation>
 <translation id="8303432794159193481">Vývojové aplikace prohlížeče Brave</translation>
@@ -107,9 +102,11 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="7276554663454265692"><ph name="SETTING_TEXT"/> můžete kdykoli změnit v nastavení prohlížeče.</translation>
 <translation id="6873781976650514089">Toto nastavení</translation>
 <translation id="8915916167043355778">Zavřít vše</translation>
+<translation id="7658239707568436148">Zrušit</translation>
 <translation id="4870911314065352661">Chcete zavřít všechny karty?</translation>
 <translation id="7551864359422178684">V tomto okně prohlížeče máte otevřeny karty: <ph name="NUMBER_OF_TABS"/>.</translation>
 <translation id="2571596981920752023">Počet karet: <ph name="NUMBER_OF_TABS"/></translation>
+<translation id="1307431692088049276">Znovu se neptat</translation>
 <translation id="2272117088509540883">- vyhledávání ve službě Brave</translation>
 <translation id="2701279958223202597">Podpora nezávislého vyhledávání s lepší ochranou soukromí. Vyhledávání Brave nesleduje vás, vaše dotazy ani kliknutí.</translation>
 <translation id="6438467592401259882">Podpora nezávislého vyhledávání s lepší ochranou soukromí.</translation>
@@ -126,7 +123,15 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="4174337572777167894">Projekt Web Discovery</translation>
 <translation id="8659271182272561965">Přispějte anonymními údaji o vyhledávání a prohlížení ke zdokonalení služby Brave Search.</translation>
 <translation id="1516554614404600536">Popis Brave</translation>
+<translation id="7986278174934557414">Skrýt ikonu bočního panelu</translation>
+<translation id="6915291874524466201">Skrýt ikonu bočního panelu</translation>
+<translation id="9149866541089851383">Upravit...</translation>
 <translation id="1181037720776840403">Odebrat</translation>
+<translation id="7513769021866698486">Upravit položku</translation>
+<translation id="4002066346123236978">Název</translation>
+<translation id="7400418766976504921">Adresa URL</translation>
+<translation id="5877900074358050101">Název položky na postranním panelu</translation>
+<translation id="1613695740874407223">Adresa URL položky na postranním panelu</translation>
 <translation id="4877147287319222750">Přidat na postranní panel</translation>
 <translation id="5404213409401164238">Zobrazit postranní panel</translation>
 <translation id="7561196759112975576">Vždy</translation>
@@ -201,6 +206,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="2370739752330685659">Možná později</translation>
 <translation id="961012016278832836">Microsoft Edge Legacy</translation>
 <translation id="6436994631426134065">Importováno z <ph name="BROWSER_NAME"/>.</translation>
+<translation id="1506190932569739298">Zkopírovat čistý odkaz (pouze hlavní adresa URL)</translation>
 <translation id="9156965752763025780">Změny se projeví po příštím restartu prohlížeče Brave.</translation>
 <translation id="7179921470347911571">Znovu spustit</translation>
 <translation id="4472575034687746823">Začít</translation>
@@ -215,11 +221,12 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="8721331068159819483">Stejné jako macOS</translation>
 <translation id="1692470335103807198">Získejte další témata</translation>
 <translation id="2906510232093002459">Výchozí obrázky Brave</translation>
-<translation id="3367129510799209147">Režim vznáší tabulátor</translation>
-<translation id="2113977810652731515">Pohled</translation>
+<translation id="3367129510799209147">Režim Najetí na kartu</translation>
+<translation id="2113977810652731515">Karta</translation>
 <translation id="4096343215397759358">Karta s náhledem</translation>
 <translation id="5297085818601043899">Nápověda</translation>
 <translation id="2396127686705429331">Zobrazit tlačítko záložek</translation>
+<translation id="2369560305991805099">Zobrazit tlačítko na bočním panelu</translation>
 <translation id="2814998458708016836">Použít široký adresní řádek</translation>
 <translation id="4109670531935487117">Zobrazovat návrhy automatického doplňování v adresním řádku</translation>
 <translation id="2858138569776157458">Top weby</translation>
@@ -242,8 +249,8 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="6303294677342628402">Štíty</translation>
 <translation id="7133511168130368997">Blokujte trackery a reklamy, které vás následují na internetu.</translation>
 <translation id="2761825942249694703">Toto jsou výchozí nastavení Štítů. Fungují na všech internetových stránkách, pokud něco nezměníte na panelu Štítů na určité stránce. Jejich změna neovlivní vaše existující nastavení u konkrétních stránek.</translation>
-<translation id="1485394570478670912">Tím zablokujete většinu reklam na webových stránkách, nikoli však Brave Private Ads; ty se ovládají v</translation>
-<translation id="6388201778088078932">nastavení.</translation>
+<translation id="1435116578479068303">Tohle zablokuje většinu reklam na webových stránkách, nikoli reklamy Brave Private – ty jsou kontrolovány v <ph name="BEGIN_LINK"/>nastavení<ph name="END_LINK"/> Brave Rewards.</translation>
+<translation id="8452536890042542134">Tohle zablokuje většinu reklam na webových stránkách.</translation>
 <translation id="4800195524776354947">Ukázat na ikoně štítů počet zablokovaných položek</translation>
 <translation id="5510493033031835532">Automaticky přesměrovávat AMP stránky</translation>
 <translation id="7630031867325944356">Upřednostňujte adresy URL stránek vydavatele namísto AMP a podobných verzí.</translation>
@@ -384,7 +391,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 Zkontrolujte, zda byla tato kódová slova vygenerována zařízením, které vlastníte.
 
 Jste si jisti, že chcete tuto akci provést?</translation>
-<translation id="7443185843787879670">Brave nemohl získat přístup k bezpečnému úložišti vašeho operačního systému. To je to, co se používá k zabezpečení dat, jako jsou hesla a soubory cookie; je také nutné, aby Brave Sync propojil váš profil prohlížeče mezi zařízeními. To znamená, že Brave Sync není spuštěna. Chcete-li tento problém vyřešit, přečtěte si <ph name="BEGIN_LINK_SYNC_GUIDE"/>příručku pro řešení potíží s aplikací Brave Sync<ph name="END_LINK_SYNC_GUIDE"/>.</translation>
+<translation id="7443185843787879670">Brave nemohla získat přístup k bezpečnému úložišti vašeho operačního systému. To je to, co se používá k zabezpečení dat, jako jsou hesla a soubory cookie; je také nutné, aby Brave Sync propojil váš profil prohlížeče mezi zařízeními. To znamená, že Brave Sync není spuštěna. Chcete-li tento problém vyřešit, přečtěte si příručku pro řešení potíží <ph name="BEGIN_LINK_SYNC_GUIDE"/> s aplikací Brave Sync<ph name="END_LINK_SYNC_GUIDE"/>.</translation>
 <translation id="6285118765755298263">Indexovat ostatní vyhledávače</translation>
 <translation id="919715748352669592">Automaticky indexovat webové stránky, které se řídí specifikacemi OpenSearch.</translation>
 <translation id="842628013524824194">Normální okno – vyhledávač používaný v adresním řádku</translation>
@@ -393,12 +400,12 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="6554397389149987360">Používá komponentu Hangouts k umožnění sdílení obrazovek a dalších funkcí prohlížeče.</translation>
 <translation id="7878791177459550035">Směrovač médií umožňuje funkci odesílání v prohlížeči.</translation>
 <translation id="5927916530277631319">Způsob řešení služby Unstoppable Domains</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/> o ochraně osobních údajů pomocí protokolu DNS přes HTTPS a Ethereum.</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Zjistit více<ph name="END_LINK"/> o zohlednění ochrany soukromí Ethereum.</translation>
 <translation id="5248318250177143470">Způsob řešení služby ENS (Ethereum Name Service)</translation>
 <translation id="6241402707160226266">Soukromé okno s Torem</translation>
 <translation id="8762452230727230396">Tor skryje vaši IP adresu před navštívenými weby.</translation>
 <translation id="2959986444009520721">Použít mosty</translation>
-<translation id="6003484976430531384">Mosty vám pomohou získat přístup k síti Tor na místě, kde je Tor blokován. Podle toho, kde jste, jeden most může fungovat lépe než jiný.</translation>
+<translation id="8416750895933172460">Mosty vám pomohou získat přístup k síti Tor v místech, kde je Tor blokován. V závislosti na tom, kde se nacházíte, může jeden most fungovat lépe než ostatní.</translation>
 <translation id="7206799843254049470">Nastavení připojení Tor</translation>
 <translation id="3194502271166340944">Řídí, jak se Private Windows s Tor připojují k síti Tor</translation>
 <translation id="4859228830700205299">Vyberte vestavěný most</translation>
@@ -415,7 +422,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="6936835573742749135">Nelze požádat o CAPTCHA. Zkuste to znovu později.</translation>
 <translation id="2653659639078652383">Submit</translation>
 <translation id="1369311132025451972">Automaticky přesměrovávat weby .onion</translation>
-<translation id="2843777623071353503">Brave otevře službu onion webové stránky, pokud je k dispozici, nebo doménu .onion v okně Tor.</translation>
+<translation id="1658670175365815312">Brave se přepne na verzi webu .onion, jakmile bude k dispozici, a automaticky otevře všechny domény .onion v okně Tor.</translation>
 <translation id="2896916411183256228">Používá WebTorrent k zobrazení torrentů přímo v prohlížeči. Podporuje torrentové soubory a odkazy magnet.</translation>
 <translation id="5249433283143453448">Používat k prohlížení chráněného streamovaného videa a dalšího obsahu v prohlížeči komponent Widevine pro správu digitálních práv (DRM).</translation>
 <translation id="8137559199583651773">Správa rozšíření</translation>
@@ -441,14 +448,16 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="3752403403443723332">Vaše peněženka byla resetována.</translation>
 <translation id="594766067816395072">Informace o transakcích vaší peněženky byly resetovány.</translation>
 <translation id="1426410128494586442">Ano</translation>
-<translation id="2556708692502648323">Sítě peněženek</translation>
+<translation id="4226543734057230801">Sítě Ethereum</translation>
+<translation id="3504157706952484145">Sítě Filecoin</translation>
+<translation id="1561541094377237745">Sítě Solana</translation>
 <translation id="3159419679550543837">Zobrazit zkušební sítě</translation>
-<translation id="8205945804087322170">Přidat novou síť</translation>
-<translation id="1330032157352961756">ID nového řetězce</translation>
+<translation id="3215569562674795548">Upravit nebo přidat novou síť</translation>
+<translation id="4418993400653250511">ID řetězce</translation>
 <translation id="3423620355610881890">Kladné desetinné číslo</translation>
 <translation id="8110465398315041268">Vyhledejte síť</translation>
 <translation id="3579705520805744214">ID nebo název řetězu</translation>
-<translation id="726121047592132939">Název nového řetězce</translation>
+<translation id="8502525913969149079">Název řetězce</translation>
 <translation id="1034112277864078119">Zadejte název řetězce</translation>
 <translation id="4672314527143443556">Název měny řetězce</translation>
 <translation id="4652114030688989556">Zadejte název měny</translation>
@@ -554,4 +563,15 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="5318548116565208315">Profilový obrázek Bonbon Corn</translation>
 <translation id="1959966725083452288">Profilový obrázek Bonbon</translation>
 <translation id="2039034364578911089">Profilový obrázek Bonbon Ninja</translation>
+<translation id="5057399635433117814">Chcete tuto stránku přeložit? Tím odešlete veškerý text na této stránce společnosti Microsoft, která provede překlad.</translation>
+<translation id="330263065709195164">Chcete za účelem překladu této stránky nainstalovat rozšíření Google Translate?</translation>
+<translation id="3789841737615482174">Instalovat</translation>
+<translation id="1485394570478670912">Tím zablokujete většinu reklam na webových stránkách, nikoli však Brave Private Ads; ty se ovládají v</translation>
+<translation id="6388201778088078932">nastavení.</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/> o ochraně osobních údajů pomocí protokolu DNS přes HTTPS a Ethereum.</translation>
+<translation id="2843777623071353503">Brave otevře službu onion webové stránky, pokud je k dispozici, nebo doménu .onion v okně Tor.</translation>
+<translation id="2556708692502648323">Sítě peněženek</translation>
+<translation id="8205945804087322170">Přidat novou síť</translation>
+<translation id="1330032157352961756">ID nového řetězce</translation>
+<translation id="726121047592132939">Název nového řetězce</translation>
 </translationbundle>

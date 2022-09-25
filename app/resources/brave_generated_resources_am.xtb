@@ -80,11 +80,6 @@
 <translation id="3161744659507801211">ማስጠንቀቂያ፡ Brave ቅጥያዎች የእርስዎን የአሰሳ ታሪክ እንዳይመዘግቡ ሊያግድ አይችልም።</translation>
 <translation id="2162109630536601963">ይህ ቅጥያ የአውታረ መረብ ጥያቄዎችን የሚያቀርብ ከሆነ Tor ን ወይም የግል ሁነታን አይጠቀሙም።</translation>
 <translation id="2725327089319971976">ይህንን ቅጥያ በግል ሁነታ እና በTor ሁነታ እንዳይሠራ ለማድረግ፣ ይህንን አማራጭ አይምረጡ።</translation>
-<translation id="5057399635433117814">ይህ ገጽ ይተርጎም? ይሄ ሁሉንም ጽሁፎች ለትርጉም ወደ Microsoft እንዲላኩ ያደርጋቸዋል።</translation>
-<translation id="330263065709195164">ይህን ገጽ ለመተርጎም የጉግል ትርጉም ቅጥያ ይጫኑ?</translation>
-<translation id="3789841737615482174">ጫን</translation>
-<translation id="7658239707568436148">አቋርጥ</translation>
-<translation id="1307431692088049276">በድጋሚ አትጠይቀኝ</translation>
 <translation id="3371343170427636147">Brave የመዳሰሻ የምሽት መተግበሪያዎች</translation>
 <translation id="4097979995947147464">በ Brave የመዳሰሻ ቤታ መተግበሪያዎች ነው</translation>
 <translation id="8303432794159193481">የ Brave መዳሰሻ ማጎልበቻ መተግበሪያዎች</translation>
@@ -107,12 +102,14 @@
 <translation id="7276554663454265692">በማንኛውም ጊዜ <ph name="SETTING_TEXT"/> በማሰሻ ቅንብሮች ውስጥ መቀየር ይችላሉ።</translation>
 <translation id="6873781976650514089">ይህ ቅንብር</translation>
 <translation id="8915916167043355778">ሁሉንም ዝጋ</translation>
+<translation id="7658239707568436148">ሰርዝ</translation>
 <translation id="4870911314065352661">ሁሉንም ትሮች ይዘጉ?</translation>
 <translation id="7551864359422178684">በዚህ አሳሽ መስኮት ውስጥ 
 1<ph name="NUMBER_OF_TABS"/> 
 የተከፈቱ ትሮች አሉዎት።</translation>
 <translation id="2571596981920752023">1 <ph name="NUMBER_OF_TABS"/> 
 ትሮች</translation>
+<translation id="1307431692088049276">በድጋሚ አትጠየቀኝ</translation>
 <translation id="2272117088509540883">- ብሬቭ ፍለጋ</translation>
 <translation id="2701279958223202597">ገለልተኛ ፍለጋን ከተሻለ ግላዊነት ጋር ይደግፋል። ብሬቭ ፍለጋ እርስዎን፣ መጠይቆችዎን ወይም ጠቅታዎችዎን አይከታተልም።</translation>
 <translation id="6438467592401259882">ገለልተኛ ፍለጋን ከተሻለ ግላዊነት ጋር ይደግፋል።</translation>
@@ -129,7 +126,15 @@
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">Brave Searchን ለማሻሻል የተወሰነ የስም አልባ የፍለጋ &amp; የአሰሳ ውሂብ አስተዋጾ ያድርጉ።</translation>
 <translation id="1516554614404600536">Brave  መሣሪያ ጠቃሚ ምክር</translation>
+<translation id="7986278174934557414">የጎን አምድ አዶን ደብቅ</translation>
+<translation id="6915291874524466201">የጎን አምድ አዶን ደብቅ</translation>
+<translation id="9149866541089851383">አርትዕ…</translation>
 <translation id="1181037720776840403">አስወግድ</translation>
+<translation id="7513769021866698486">ንጥሉን ያርትዑ</translation>
+<translation id="4002066346123236978">ርዕስ</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="5877900074358050101">የጎን አምድ ንጥል ርዕስ</translation>
+<translation id="1613695740874407223">የጎን አምድ ንጥል url</translation>
 <translation id="4877147287319222750">ወደ Sidebar ያክሉ</translation>
 <translation id="5404213409401164238">Sidebar አሳይ</translation>
 <translation id="7561196759112975576">ሁልጊዜ</translation>
@@ -204,6 +209,7 @@
 <translation id="2370739752330685659">ምናልባት በኋላ</translation>
 <translation id="961012016278832836">የማይክሮሶፍት ኤጅ ቅርስ</translation>
 <translation id="6436994631426134065">ከ<ph name="BROWSER_NAME"/> የመጣ።</translation>
+<translation id="1506190932569739298">ንጹህ አገናኝ ቅዳ (ዋናውን URL ብቻ)</translation>
 <translation id="9156965752763025780">ለውጦችዎ Brave በሚያስጀምሩበት ቀጣዩ ጊዜ ላይ ይተገበራሉ።</translation>
 <translation id="7179921470347911571">አሁን እንደገና ያስጀምሩ</translation>
 <translation id="4472575034687746823">ይጀምሩ</translation>
@@ -223,6 +229,7 @@
 <translation id="4096343215397759358">ካርድ ከቅድመ እይታ ጋር</translation>
 <translation id="5297085818601043899">አጭር መረጃ</translation>
 <translation id="2396127686705429331">የዕልባቶች አዝራር አሳይ</translation>
+<translation id="2369560305991805099">የጎን አምዱን አዝራር አሳይ</translation>
 <translation id="2814998458708016836">ሰፊ የአድራሻ አሞሌን ተጠቀም</translation>
 <translation id="4109670531935487117">በአድራሻ ማስገቢያው ላይ የራስ-አጠናቅቅ ጥቆማዎችን አሳይ</translation>
 <translation id="2858138569776157458">ከፍተኛ ጣቢያዎች</translation>
@@ -245,8 +252,8 @@
 <translation id="6303294677342628402">መከላከያዎች</translation>
 <translation id="7133511168130368997">በድረ ገጽ ውስጥ የሚከተሉህን ተከታታዮችና ማስታወቂያዎች አግድ።</translation>
 <translation id="2761825942249694703">እነዚህ ነባሪ የጋሻ ቅንብሮች ናቸው። በአንድ የተወሰነ ድረ ገጽ ውስጥ በጋሻዎች ውስን ቦታ ውስጥ የቀየሩት ነገር ከሌለ በስተቀር በሁሉም ድረ ገጾች ላይ ተግባራዊ ይሆናሉ። እነዚህን መቀየር ነባር የድረ ገጽ ቅንብሮችዎ ላይ ተጽእኖ አያሳድርም።</translation>
-<translation id="1485394570478670912">ይህ በድር ጣቢያዎች ላይ ብዙ ማስታወቂያዎችን ያግዳል፣ የ Brave የግል ማስታወቂያዎችን አይደለም — እነዚያ በ... ውስጥ ቁጥጥር ይደረግባቸዋል</translation>
-<translation id="6388201778088078932">ቅንብሮች።</translation>
+<translation id="1435116578479068303">ይህ በድህረ ገጾች ላይ የሚገኙ አብዛኛዎቹን ማስታወቂያዎች የሚያገድ ሆኖ፣ ነገር ግን የ Brave የግል ማስታወቂያዎችን አያግድም — እነዚያን መቆጣጠር የሚቻለው በ <ph name="BEGIN_LINK"/>Brave ሽልማቶች<ph name="END_LINK"/> ማቀናበሪያ ነው።</translation>
+<translation id="8452536890042542134">ይህ በድረ-ገጾች ላይ ያሉትን አብዛኛዎቹን ማስታወቂያዎች ያግዳል።</translation>
 <translation id="4800195524776354947">የታገዱ ንጥሎችን በጋሻዎች አዶ ላይ አሳይ</translation>
 <translation id="5510493033031835532">የ AMP ገጾችን በራስ ሰር አዙር</translation>
 <translation id="7630031867325944356">ከAMP እና ተመሳሳይ ስሪቶች ይልቅ የአሳታሚ ገጽ ዩአርኤሎችን ይምረጡ።</translation>
@@ -393,12 +400,12 @@
 <translation id="6554397389149987360">በማሰሻው ላይ የማያ መጋራትን እና ሌሎች ባህሪያትን ለመጠቀም የ Hangouts ክፍሎችን ይጠቀሙ።</translation>
 <translation id="7878791177459550035">የሚዲያ ራውተር በአሳሽ ውስጥ የcast ባህሪ እንዲሰራ ያደርጋል።</translation>
 <translation id="5927916530277631319">የማይቆሙ ጎራዎችን የመፍታት ዘዴ</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Learn More<ph name="END_LINK"/> ስለ DNS over HTTPS እና Ethereum ግላዊነትን በተመለከተ ታሳቢ የሚደረጉ ጉዳዮች።</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>ስለ<ph name="END_LINK"/> Ethereum የግላዊነት ጥበቃዎች ተጨማሪ መረጃን ያግኙ።</translation>
 <translation id="5248318250177143470">የEthereum ስም አገልግሎት (ENS) የአፈታት ዘዴ</translation>
 <translation id="6241402707160226266">የግል መስኮት በ Tor</translation>
 <translation id="8762452230727230396">Tor የ IP አድራሻዎን ከሚጎበኟቸው ጣቢያዎች ይደብቃል።</translation>
 <translation id="2959986444009520721">ድልድዮችን ተጠቀም</translation>
-<translation id="6003484976430531384">ድልድዮች ቶር በተከለከሉበት ቦታ የቶር ኔትወርክን እንዲደርሱ ይረዱዎታል። እርስዎ እንዳሉበት ቦታ፣ አንዱ ድልድይ ከሌላው በተሻለ ሁኔታ ሊሠራ ይችላል።</translation>
+<translation id="8416750895933172460">Bridges Tor በታገደባቸው ቦታዎች ላይ የ Tor አውታረ መረብን እንዲጠቀሙ የሚያግዙ ናቸው። እንደ እሚገኙበት አከባቢ፣ አንድ ድልድይ ከሌሎቹ የበለጠ ሊሰራ ይችላል።</translation>
 <translation id="7206799843254049470">የቶር ግንኙነት ቅንብሮች</translation>
 <translation id="3194502271166340944">ቶር ያላቸው የግል መስኮቶች እንዴት ከቶር ኔትወርክ ጋር እንደሚገናኙ ይቆጣጠራል</translation>
 <translation id="4859228830700205299">አብሮ የተሰራ ድልድይ ይምረጡ</translation>
@@ -415,7 +422,7 @@
 <translation id="6936835573742749135">CAPTCHA መጠየቅ አልተቻለም። ቆይተው እንደገና ይሞክሩ።</translation>
 <translation id="2653659639078652383">አስገባ</translation>
 <translation id="1369311132025451972">.onion ጣቢያዎችን በራስ-ሰር አዛውር</translation>
-<translation id="2843777623071353503">Brave በሚገኝበት ጊዜ የድር ጣቢያውን ኦንዬን አገልግሎት ወይም በ Tor መስኮት ውስጥ .onion ዶሜንን ይከፍታል።</translation>
+<translation id="1658670175365815312">Brave የሚገኝ ከሆነ ወደ ድህረ-ገጹ የ .onion ስሪት ይቀየርና ወዲያው ሁሉንም የ .onion ዶሜይኖችን በ Tor ዊንዶው ይከፍታል።</translation>
 <translation id="2896916411183256228">WebTorrent ን በመጠቀም በቀጥታ ቶረንቶችን ማሰሻ ላይ ያሳያል። ለቶረንት ፋይሎች እና ማግኔት ሊንኮች ድጋፍ ያደርጋል።</translation>
 <translation id="5249433283143453448">በአሳሹ ውስጥ ያለ ጥበቃ የተደረገለት የቀጥታ ቪዲዮን እና ሌላ ይዘት ን ለመመልከት የ Widevine ዲጂታል መብቶች መተዳደሪያ (DRM) ክፍሉን ይጠቀሙ።</translation>
 <translation id="8137559199583651773">ቅጥያዎችን ያስተዳድሩ</translation>
@@ -441,14 +448,16 @@
 <translation id="3752403403443723332">ዋሌትዎ ዳግም ተጀምሯል።</translation>
 <translation id="594766067816395072">የዋሌትዎ የግብይት መረጃ ዳግም ተጀምሯል።</translation>
 <translation id="1426410128494586442">አዎ</translation>
-<translation id="2556708692502648323">የዋሌት አውታረ መረቦች</translation>
+<translation id="4226543734057230801">የ Ethereum አውታረ መረቦች</translation>
+<translation id="3504157706952484145">የ Filecoin አውታረ መረቦች</translation>
+<translation id="1561541094377237745">የ Solana አውታረ መረቦች</translation>
 <translation id="3159419679550543837">አውታረ መረቦችን አሳይ</translation>
-<translation id="8205945804087322170">አዲስ አውታረ መረብ ያክሉ</translation>
-<translation id="1330032157352961756">የአዲስ ሰንሰለት መታወቂያ</translation>
+<translation id="3215569562674795548">አስተካክል ወይም አዲስ አውታረ መረብ ጨምር</translation>
+<translation id="4418993400653250511">የሰንሰለት መታወቂያ</translation>
 <translation id="3423620355610881890">አወንታዊ የአስርዮሽ ቁጥር</translation>
 <translation id="8110465398315041268">የፍለጋ አውታረ መረብ</translation>
 <translation id="3579705520805744214">የሰንሰለት መታወቂያ ወይም ስም</translation>
-<translation id="726121047592132939">የአዲሱ ሰንሰለት ስም</translation>
+<translation id="8502525913969149079">የሰንሰለት ስም</translation>
 <translation id="1034112277864078119">የሰንሰለት ስም አስገባ</translation>
 <translation id="4672314527143443556">የሰንሰለት መገበያያ ገንዘብ ስም</translation>
 <translation id="4652114030688989556">የመገበያያ ገንዘብ ስም አስገባ</translation>
@@ -554,4 +563,15 @@
 <translation id="5318548116565208315">Avatar Bonbon Corn</translation>
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
+<translation id="5057399635433117814">ይህ ገጽ ይተርጎም? ይሄ ሁሉንም ጽሁፎች ለትርጉም ወደ Microsoft እንዲላኩ ያደርጋቸዋል።</translation>
+<translation id="330263065709195164">ይህን ገጽ ለመተርጎም የጉግል ትርጉም ቅጥያ ይጫኑ?</translation>
+<translation id="3789841737615482174">ጫን</translation>
+<translation id="1485394570478670912">ይህ በድር ጣቢያዎች ላይ ብዙ ማስታወቂያዎችን ያግዳል፣ የ Brave የግል ማስታወቂያዎችን አይደለም — እነዚያ በ... ውስጥ ቁጥጥር ይደረግባቸዋል</translation>
+<translation id="6388201778088078932">ቅንብሮች።</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Learn More<ph name="END_LINK"/> ስለ DNS over HTTPS እና Ethereum ግላዊነትን በተመለከተ ታሳቢ የሚደረጉ ጉዳዮች።</translation>
+<translation id="2843777623071353503">Brave በሚገኝበት ጊዜ የድር ጣቢያውን ኦንዬን አገልግሎት ወይም በ Tor መስኮት ውስጥ .onion ዶሜንን ይከፍታል።</translation>
+<translation id="2556708692502648323">የዋሌት አውታረ መረቦች</translation>
+<translation id="8205945804087322170">አዲስ አውታረ መረብ ያክሉ</translation>
+<translation id="1330032157352961756">የአዲስ ሰንሰለት መታወቂያ</translation>
+<translation id="726121047592132939">የአዲሱ ሰንሰለት ስም</translation>
 </translationbundle>

@@ -93,6 +93,7 @@
 <translation id="3545804467215833536">Brave Shieldsን ለማየት መታ ያድርጉ</translation>
 <translation id="1724327820822194498">Brave ያገዳቸውን ሁሉንም መጥፎ ነገሮች በእያንዳንዱ ገጽ ላይ በጋሻዎች ይመልከቱ።</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> እና <ph name="TRACKER"/>ሌሎች ማስታወቂያዎች &amp; መከታተያዎች ታግደዋል</translation>
+<translation id="7256200875155794202"><ph name="BIG_TECH"/>እንዲሁም ሌሎች ማስታወቂያዎች እና መከታተያዎች ታግደዋል</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/>ማስታወቂያዎች &amp; መከታተያዎች ታግደዋል</translation>
 <translation id="8281886186245836920">ዝለል</translation>
 <translation id="6165508094623778733">በተጨማሪ ይወቁ</translation>
@@ -117,6 +118,9 @@
 <translation id="19715420010996093">የ Brave አሳሹን ይምረጡ እና «ሁልጊዜ» የሚለውን መታ ያድርጉ</translation>
 <translation id="3546439402724649282">Brave ቀደም ሲል ነባሪ አሳሽዎ ሆኗል።</translation>
 <translation id="8389661903259423907">ነባሪ አሳሽዎን ቀደም ሲል አዘጋጅተዋል። በመተግበሪያ ቅንብሮችዎ ውስጥ ነባሪ አሳሹን መቀየር ይችላሉ።</translation>
+<translation id="1545749641540134597">የ QR ኮድ ስካን ያድርጉ</translation>
+<translation id="5317781812114905957">መመሪያዎች</translation>
+<translation id="8515319483805157233">በ QR ኮድ ለመፈለግ QR ኮዱን በፍሬሙ መሃል ላይ አስተካክለው ያስቀምጡ።</translation>
 <translation id="8826007068782654809">እናመሰግናለን</translation>
 <translation id="6665366815203065060">አሁን ጉርሻ ሰጥተዋል ለ:</translation>
 <translation id="5441565662498481293">ጉርሻ በራስ-ሰር እየላኩ ነው ለ:</translation>
@@ -393,35 +397,11 @@
 <translation id="8376263745431603066">የ "ማታ ሁነታ" አንቃ (የሙከራ)</translation>
 <translation id="1383876407941801731">ፍለጋ</translation>
 <translation id="8446884382197647889">የበለጠ ይወቁ</translation>
-<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
-<translation id="558614325644656740">የሚገኝ <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="3414885529641505869">ይግዙ <ph name="COIN_NAME"/></translation>
-<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> ገቢ ማድረጊያ አድራሻ</translation>
-<translation id="4836242416604533644"><ph name="COIN_MEMO"/> ገቢ ማድረጊያ ሜሞ</translation>
-<translation id="6755546361496900700">የልወጣ ቅድመ እይታ</translation>
-<translation id="5110244215256675209">Crypto ግዛ</translation>
-<translation id="2271556362602437160">.com</translation>
-<translation id="3727077517986954867">.us</translation>
 <translation id="13296465911709339">የእርስዎ ጽሑፍ ወደ ቅንጥብ ሰሌዳው ተቀድቷል</translation>
 <translation id="2735834606413553397">የህዝብ አድራሻ ወደ ቅንጥብ ሰሌዳ ተቀድቷል።</translation>
-<translation id="7144878232160441200">ይሞክሩ</translation>
 <translation id="2977461003134694205">የግላዊነት መረጃ</translation>
-<translation id="2956070106555335453">ማጠቃለያ</translation>
-<translation id="1366855498335432549">ማጠራቀም</translation>
-<translation id="1301340234286078471">ለውጥ</translation>
 <translation id="223536150967420869">ይግዙ</translation>
-<translation id="4584930231524505442">መለወጥ እፈልጋለሁ...</translation>
-<translation id="5749014321384313843">ወጪ ማድረግ እፈልጋለሁ...</translation>
-<translation id="2480674848181564169">ለመለወጥ በቂ ያልሆነ ሒሳብ</translation>
-<translation id="2215334405220411393">ለመለወጥ የሚቻለው ዝቅተኛ መጠን : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6702658079816271889">ማገናኘት አልተቻለም</translation>
-<translation id="7742417737698031726">የገንዘብ ክፍያ</translation>
-<translation id="2122225204180056042">ያገኛሉ</translation>
-<translation id="6432284126416751397">ልወጣን ያረጋግጡ</translation>
-<translation id="3891414008432200754">ዋጋ</translation>
-<translation id="3733576242118819803">አረጋግጥ (<ph name="REMAINING_TIME"/>s)</translation>
-<translation id="1627064138060308910">ቅያሪው ውድቅ ሁኗል። እባክዎ እንደገና ይሞክሩ።</translation>
-<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="2956070106555335453">ማጠቃለያ</translation>
 <translation id="7465614181960492526">ማስመሰያዎች ያግኙ &amp; መልሶ መስጠት</translation>
 <translation id="244362569344671266">Brave የግል ማስታወቂያዎች በማየት ማስመሰያዎች ያግኙ እና የሚወዷቸውን የ ይዘት ፈጣሪዎች በራስ-ሰር ይደግፉ።</translation>
 <translation id="631124996535890460">በመቀጠል፣ እርስዎ በ <ph name="TERMS_OF_SERVICE"/> እና <ph name="PRIVACY_POLICY"/>ተስማምተዋል።</translation>
@@ -452,18 +432,6 @@
 <translation id="2434574859640694129">የመጀመሪያዎን ማስታወቂያዎች ክፍያ ከተቀበሉ በኋላ ፣ ተመልሰው መጥተው ለዚህ ፈጣሪ ጠቃሚ ምክር መስጠት ይችላሉ!</translation>
 <translation id="207242986925259074">ፈጣን የማደሻ ጉብኝት</translation>
 <translation id="8342862030112839977">የእርስዎ 1ኛ ሽልማት ክፍያ በሚከተለው ይደርሳል፥</translation>
-<translation id="8037420924417098685">ነጻ የስልክ ጥሪ ለመጀመር፣ Brave ሽልማቶችን ያብሩ</translation>
-<translation id="8961724619078500274">ከBrave Rewards ጋር፣ ግላዊ ማስታወቂያዎችን ስለተመለከቱ ቶክኖችን ያገኛሉ (ውሂብዎ ደህንነቱ የተጠበቀ ነው)። እነዚያን ቶክኖች ወደ ጥሬ ገንዘብ፣ የስጦታ ካርዶች... ይለውጡ ወይም ለሚወዱት የድር ጣቢያ ስጦታ ያበርኩት። ክትትል የለም። ቀስ ማለት የለም።</translation>
-<translation id="7307847920988946894">ሽልማቶችን አብራ</translation>
-<translation id="7872993190040589450">ይህንን በመፍቀድዎ፣ በ <ph name="TERMS_OF_SERVICE"/> እና <ph name="PRIVACY_POLICY"/>ተስማምተዋል።</translation>
-<translation id="6128511569382736135">ነጻ የስልክ ጥሪ ለመጀመር፣ Brave Private ማስታወቂያዎችን ያስጀምሩ</translation>
-<translation id="7930006085154756245">በBrave Private ማስታወቂያዎች፣ ግላዊ ማስታወቂያዎችን ስለተመለከቱ ቶክኖችን ያገኛሉ (ውሂብዎ ደህንነቱ የተጠበቀ ነው)። እነዚያን ቶክኖች ወደ ጥሬ ገንዘብ፣ የስጦታ ካርዶች... ይለውጡ ወይም ለሚወዱት የድር ጣቢያ ስጦታ ያበርኩት። ክትትል የለም። ቀስ ማለት የለም።</translation>
-<translation id="4992617448154987397">የBrave Private ማስታወቂያዎችን ያብሩ</translation>
-<translation id="3415016869273103668">አሁን ነጻ የስልክ ጥሪ መጀመር ይችላሉ</translation>
-<translation id="7073631403665023390">ወደ  Brave Talk ለመቀጠል በማያ ገጽዎ ላይ የትም ቦታ ላይ ጠቅ ያድርጉ ወይም ይንኩ።</translation>
-<translation id="626339649633171286">ስለ Brave ሽልማቶች የበለጠ ማወቅ ይፈልጋሉ? <ph name="TAKE_QUICK_TOUR"/>.</translation>
-<translation id="3604285424134705930">እርስዎ <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>ለውጠዋል!</translation>
-<translation id="392587271502873865">እባክዎ የኔትዎርክዎ ግንኙነት ያጣሩ።</translation>
 <translation id="7889432931837317731">ሲቻል በራስ-ሰር ይክፈቱ</translation>
 <translation id="8967385052772844086">ሙሉውን የግላዊነት ሪፖርት ይመልከቱ</translation>
 <translation id="6864343534748973390">በጣም ታዋቂ</translation>
@@ -591,9 +559,6 @@
 <translation id="5050890334032852465">የመለያ የክትትል ዝርዝርን ኣስቀምጥ</translation>
 <translation id="7755766175599167100">ቶክኖችን ፈልግ</translation>
 <translation id="3835223348537121988">ሂሳብ፡</translation>
-<translation id="2490428413101944234">የሙከራ faucet</translation>
-<translation id="2581671693710952401">Ether ያግኙ</translation>
-<translation id="8165484222652118977">ለ <ph name="NETWORK"/> የሙከራ አውታረመረብ Etherን ከፋሴት ያግኙ</translation>
 <translation id="7420359180991315365">ወደ Wyre ይቀጥሉ</translation>
 <translation id="8488282162676695335">የBrave ዋሌት</translation>
 <translation id="3784455785234192852">ቆልፍ</translation>
@@ -605,6 +570,12 @@
 <translation id="5693968582510626466">ግብይቶችን ማጽዳት ለገንቢዎች ጠቃሚ ሊሆን ይችላል ወይም ሁኔታን በአካባቢያዊ ሰርቨር ላይ ሲያጸዱ</translation>
 <translation id="5421107279168565467">እርግጠኛ ነዎት፣ ግብይቱን እና የ nonce መረጃ እንደገና ማስጀመር ይፈልጋሉ? ይህ አማራጭ በአብዛኛው ጥቅም ላይ የሚውለው የአካባቢያዊ የሙከራ ሰርቨር በሚያስኬዱ ገንቢዎች ነው። ለማረጋገጥ "<ph name="CONFIRMATION_PHRASE"/>" ይተይቡ።</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# ደቂቃ} other {# ደቂቃዎች}}</translation>
+<translation id="8146860193318415026">ቪድዮዎችን ለቀው ይመልከቱ። ከማስታወቂያ ነፃ።</translation>
+<translation id="6311019535466417620">ከቪድዮዎ በፊት ምንም ማስታወቂያ የሉም</translation>
+<translation id="4274652342814424451">በቪድዮዎ ጊዜ ምንም ማስታወቂያ የሉም</translation>
+<translation id="1721710839767183848">በገጹ ላይ ምንም ማስታወቂያዎች የሉም</translation>
+<translation id="4647035642622555398">ምንም መቆራረጥ የለም</translation>
+<translation id="4122515759479497554">ቪድዮዎችን ይፈልጉ</translation>
 <translation id="4449475351935531438">Brave Firewall + VPN</translation>
 <translation id="719977489961414786">ግንኙነትዎን ለመጠበቅ እና ወራሪ መከታተያዎችን በሁሉም ቦታ ለማገድ ወደ VPN ያሻሽሉ።</translation>
 <translation id="3435896845095436175">አንቃ</translation>
@@ -808,6 +779,9 @@
 <translation id="5233638681132016545">አዲስ ትር</translation>
 <translation id="8006088103295786154">የ Brave ን ዋሌት ይድረሱበት</translation>
 <translation id="5308380583665731573">አገናኝ</translation>
+<translation id="8030169304546394654">ግንኙነቱ ተቋርጧል</translation>
+<translation id="3423275441470187644">እምነት</translation>
+<translation id="2391762656119864333">ሻር</translation>
 <translation id="3432029672560911238">የተጠቃሚ መለያ</translation>
 <translation id="5753378322046059140">መለያ ይቀይሩ</translation>
 <translation id="3897092660631435901">ምናሌ</translation>
@@ -888,5 +862,50 @@
 <translation id="7002577172732106572">የተከፈለ መሿለኪያ</translation>
 <translation id="2832270987629018596">የሚሰራ የSOL አድራሻ አይደለም</translation>
 <translation id="8181161042860463420">የተያያዘው የቶክን መለያ እስካሁን የለም። አነስተኛ መጠን ያለው SOL ለመፍጠር እና ለመደገፍ ወጪ ይደረጋል። <ph name="CLICK_START"/>ተጨማሪ ይወቁ<ph name="CLICK_END"/></translation>
+<translation id="1304515257839771197">የ<ph name="APP_NAME"/>መተግበሪያ ይከፈት?</translation>
+<translation id="7653028065515320848"><ph name="CLICK_START"/>Rainbow Bridgeን ስለመጠቀም የበለጠ ይረዱ<ph name="CLICK_END"/></translation>
+<translation id="8219806187375413057"><ph name="CLICK_START"/>በRainbow Bridge ላይ ስጋትን እንዴት መቀነስ እንደሚችሉ ይወቁ<ph name="CLICK_END"/></translation>
+<translation id="1065082006518490444"><ph name="APP_NAME"/> በአውታረ መረቦች ላይ ያሉ ንብረቶችን እንዲያገናኙና የእርስዎን crypto በሌሎች አውታረ መረቦች እና በDApp ስነ-ምህዳሮች ላይ እንዲጠቀሙ የሚያግዝዎ ገለልተኛ አገልግሎት ነው። ንብረቶችን ወደ ሌሎች አውታረ መረቦች ማገናኘት አንዳንድ አደጋዎች አሉት።</translation>
+<translation id="8423380132356660250"><ph name="APP_NAME"/> መተግበሪያን ይክፈቱ</translation>
 <translation id="168154537623654021">የቪፒኤን መገለጫን በማዘመን ላይ...</translation>
+<translation id="7457027586454688423">የ Brave Wallet የ ይለፍ ቃልዎን ያስገቡ</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">የሚገኝ <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">ይግዙ <ph name="COIN_NAME"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> ገቢ ማድረጊያ አድራሻ</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> ገቢ ማድረጊያ ሜሞ</translation>
+<translation id="6755546361496900700">የልወጣ ቅድመ እይታ</translation>
+<translation id="5110244215256675209">Crypto ግዛ</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="7144878232160441200">ይሞክሩ</translation>
+<translation id="1366855498335432549">ማጠራቀም</translation>
+<translation id="1301340234286078471">ለውጥ</translation>
+<translation id="4584930231524505442">መለወጥ እፈልጋለሁ...</translation>
+<translation id="5749014321384313843">ወጪ ማድረግ እፈልጋለሁ...</translation>
+<translation id="2480674848181564169">ለመለወጥ በቂ ያልሆነ ሒሳብ</translation>
+<translation id="2215334405220411393">ለመለወጥ የሚቻለው ዝቅተኛ መጠን : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">ማገናኘት አልተቻለም</translation>
+<translation id="7742417737698031726">የገንዘብ ክፍያ</translation>
+<translation id="2122225204180056042">ያገኛሉ</translation>
+<translation id="6432284126416751397">ልወጣን ያረጋግጡ</translation>
+<translation id="3891414008432200754">ዋጋ</translation>
+<translation id="3733576242118819803">አረጋግጥ (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">ቅያሪው ውድቅ ሁኗል። እባክዎ እንደገና ይሞክሩ።</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="8037420924417098685">ነጻ የስልክ ጥሪ ለመጀመር፣ Brave ሽልማቶችን ያብሩ</translation>
+<translation id="8961724619078500274">ከBrave Rewards ጋር፣ ግላዊ ማስታወቂያዎችን ስለተመለከቱ ቶክኖችን ያገኛሉ (ውሂብዎ ደህንነቱ የተጠበቀ ነው)። እነዚያን ቶክኖች ወደ ጥሬ ገንዘብ፣ የስጦታ ካርዶች... ይለውጡ ወይም ለሚወዱት የድር ጣቢያ ስጦታ ያበርኩት። ክትትል የለም። ቀስ ማለት የለም።</translation>
+<translation id="7307847920988946894">ሽልማቶችን አብራ</translation>
+<translation id="7872993190040589450">ይህንን በመፍቀድዎ፣ በ <ph name="TERMS_OF_SERVICE"/> እና <ph name="PRIVACY_POLICY"/>ተስማምተዋል።</translation>
+<translation id="6128511569382736135">ነጻ የስልክ ጥሪ ለመጀመር፣ Brave Private ማስታወቂያዎችን ያስጀምሩ</translation>
+<translation id="7930006085154756245">በBrave Private ማስታወቂያዎች፣ ግላዊ ማስታወቂያዎችን ስለተመለከቱ ቶክኖችን ያገኛሉ (ውሂብዎ ደህንነቱ የተጠበቀ ነው)። እነዚያን ቶክኖች ወደ ጥሬ ገንዘብ፣ የስጦታ ካርዶች... ይለውጡ ወይም ለሚወዱት የድር ጣቢያ ስጦታ ያበርኩት። ክትትል የለም። ቀስ ማለት የለም።</translation>
+<translation id="4992617448154987397">የBrave Private ማስታወቂያዎችን ያብሩ</translation>
+<translation id="3415016869273103668">አሁን ነጻ የስልክ ጥሪ መጀመር ይችላሉ</translation>
+<translation id="7073631403665023390">ወደ  Brave Talk ለመቀጠል በማያ ገጽዎ ላይ የትም ቦታ ላይ ጠቅ ያድርጉ ወይም ይንኩ።</translation>
+<translation id="626339649633171286">ስለ Brave ሽልማቶች የበለጠ ማወቅ ይፈልጋሉ? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">እርስዎ <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>ለውጠዋል!</translation>
+<translation id="392587271502873865">እባክዎ የኔትዎርክዎ ግንኙነት ያጣሩ።</translation>
+<translation id="2490428413101944234">የሙከራ faucet</translation>
+<translation id="2581671693710952401">Ether ያግኙ</translation>
+<translation id="8165484222652118977">ለ <ph name="NETWORK"/> የሙከራ አውታረመረብ Etherን ከፋሴት ያግኙ</translation>
 </translationbundle>

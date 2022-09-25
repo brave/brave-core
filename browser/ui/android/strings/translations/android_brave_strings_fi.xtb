@@ -93,6 +93,7 @@
 <translation id="3545804467215833536">Tarkastele Brave Shieldisiä napauttamalla</translation>
 <translation id="1724327820822194498">Näet kaikki Braven jokaisella sivulla estämät huonot asiat Shieldsillä.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> ja <ph name="TRACKER"/> muuta mainosta ja seurantavälinettä estetty</translation>
+<translation id="7256200875155794202"><ph name="BIG_TECH"/> ja muita mainoksia ja seurantavälineitä estetty</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> mainosta ja seurantavälinettä estetty</translation>
 <translation id="8281886186245836920">Ohita</translation>
 <translation id="6165508094623778733">Lisätietoa</translation>
@@ -117,6 +118,9 @@
 <translation id="19715420010996093">Valitse Brave Browser ja paina 'Aina'</translation>
 <translation id="3546439402724649282">Brave on jo asetettu oletusselaimeksi.</translation>
 <translation id="8389661903259423907">Olet jo asettanut oletusselaimen. Voit vaihtaa oletusselainta sovelluksen asetuksista.</translation>
+<translation id="1545749641540134597">Lue QR-koodi</translation>
+<translation id="5317781812114905957">Ohjeet</translation>
+<translation id="8515319483805157233">Hae QR-koodilla kohdistamalla QR-koodi kehyksen keskiosaan.</translation>
 <translation id="8826007068782654809">Kiitos</translation>
 <translation id="6665366815203065060">Olet juuri lähettänyt vinkin kohteelle:</translation>
 <translation id="5441565662498481293">Lähetät automaattisesti vinkin kohteelle:</translation>
@@ -393,35 +397,11 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="8376263745431603066">Ota yötila käyttöön (kokeellinen)</translation>
 <translation id="1383876407941801731">Hae</translation>
 <translation id="8446884382197647889">Lue lisää</translation>
-<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
-<translation id="558614325644656740">Tarjolla <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="3414885529641505869">Osta <ph name="COIN_NAME"/></translation>
-<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Talletusosoite</translation>
-<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Talletusmuistio</translation>
-<translation id="6755546361496900700">Muuntamisen esikatselu</translation>
-<translation id="5110244215256675209">Osta kryptovaluuttaa</translation>
-<translation id="2271556362602437160">.com</translation>
-<translation id="3727077517986954867">.us</translation>
 <translation id="13296465911709339">Tekstisi on kopioitu leikepöydälle.</translation>
 <translation id="2735834606413553397">Julkinen osoite on kopioitu leikepöydälle.</translation>
-<translation id="7144878232160441200">Yritä uudestaan</translation>
 <translation id="2977461003134694205">Yksityisyysstatistiikka</translation>
-<translation id="2956070106555335453">Yhteenveto</translation>
-<translation id="1366855498335432549">Talleta</translation>
-<translation id="1301340234286078471">Muunna</translation>
 <translation id="223536150967420869">Osta</translation>
-<translation id="4584930231524505442">Haluan muuntaa...</translation>
-<translation id="5749014321384313843">Haluan käyttää...</translation>
-<translation id="2480674848181564169">Ei tarpeeksi saldoa muunnokseen</translation>
-<translation id="2215334405220411393">Pienin muunnettava määrä on: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6702658079816271889">Yhdistäminen ei onnistu</translation>
-<translation id="7742417737698031726">Maksu</translation>
-<translation id="2122225204180056042">Saat</translation>
-<translation id="6432284126416751397">Vahvista muuntaminen</translation>
-<translation id="3891414008432200754">Hinta</translation>
-<translation id="3733576242118819803">Vahvista (<ph name="REMAINING_TIME"/>s)</translation>
-<translation id="1627064138060308910">Muuntaminen epäonnistui. Yritä uudestaan.</translation>
-<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="2956070106555335453">Yhteenveto</translation>
 <translation id="7465614181960492526">Ansaitse maksutunnuksia &amp; osoita anteliaisuutta</translation>
 <translation id="244362569344671266">Ansaitse maksutunnuksia katsomalla Braven yksityismainoksia sekä tukemalla sisällönkehittäjiä automaattisesti.</translation>
 <translation id="631124996535890460">Jatkamalla ilmaiset hyväksyväsi <ph name="TERMS_OF_SERVICE"/> sekä <ph name="PRIVACY_POLICY"/>.</translation>
@@ -452,18 +432,6 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="2434574859640694129">Kun olet saanut ensimmäisen mainosmaksusi, voit palata ja jättää tipin tälle tekijälle!</translation>
 <translation id="207242986925259074">Pikakertaus</translation>
 <translation id="8342862030112839977">Ensimmäinen palkintosi saapuu:</translation>
-<translation id="8037420924417098685">Aloita ilmainen puhelu ottamalla Brave Rewards käyttöön</translation>
-<translation id="8961724619078500274">Brave Rewardsin kautta ansaitset tokeneita yksityisten mainosten katselusta (tietosi ovat turvassa). Muuta rahakkeet rahaksi, lahjakortteiksi… voit jopa antaa suosikkisivustoillesi tipin. Ei seurantaa. Ei hidastuksia.</translation>
-<translation id="7307847920988946894">Ota Rewards käyttöön</translation>
-<translation id="7872993190040589450">Ottamalla käyttöön hyväksyt kohteen <ph name="TERMS_OF_SERVICE"/> ja kohteen <ph name="PRIVACY_POLICY"/>.</translation>
-<translation id="6128511569382736135">Aloita ilmainen puhelu ottamalla Brave Private Ads käyttöön</translation>
-<translation id="7930006085154756245">Brave Private Adsin kautta ansaitset tokeneita yksityisten mainosten katselusta (tietosi ovat turvassa). Muuta rahakkeet rahaksi, lahjakortteiksi… voit jopa antaa suosikkisivustoillesi tipin. Ei seurantaa. Ei hidastuksia.</translation>
-<translation id="4992617448154987397">Ota Brave Private Ads käyttöön</translation>
-<translation id="3415016869273103668">Voit nyt aloittaa ilmaisen puhelun</translation>
-<translation id="7073631403665023390">Napsauta tai napauta mitä tahansa näytön kohtaa jatkaaksesi Brave Talk -videopuheluun.</translation>
-<translation id="626339649633171286">Haluatko lisää tietoja Brave Rewardsista? <ph name="TAKE_QUICK_TOUR"/>.</translation>
-<translation id="3604285424134705930">Muunsit <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> arvoksi <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
-<translation id="392587271502873865">Valitse verkkoyhteytesi.</translation>
 <translation id="7889432931837317731">Avaa automaattisesti aina kun mahdollista</translation>
 <translation id="8967385052772844086">Näytä yksityisyysraportti kokonaisuudessaan</translation>
 <translation id="6864343534748973390">Suosituimmat</translation>
@@ -591,9 +559,6 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="5050890334032852465">Tallenna tilin seurantalista</translation>
 <translation id="7755766175599167100">Hae tokeneista</translation>
 <translation id="3835223348537121988">Saldo:</translation>
-<translation id="2490428413101944234">Ilmaisia kolikoita jakava palvelu</translation>
-<translation id="2581671693710952401">Hanki Etheriä</translation>
-<translation id="8165484222652118977">Hanki Ether-kolikkoa kolikoita jakavasta palvelusta <ph name="NETWORK"/>-testiverkkoa varten</translation>
 <translation id="7420359180991315365">Jatka Wyreen</translation>
 <translation id="8488282162676695335">Brave-lompakko</translation>
 <translation id="3784455785234192852">Lukitse</translation>
@@ -605,6 +570,12 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="5693968582510626466">Maksutapahtumien tyhjennys voi olla hyödyllinen kehittäjille tai, kun tyhjennetään tilaa paikallisella palvelimella</translation>
 <translation id="5421107279168565467">Haluatko varmasti nollata maksutapahtuma- ja nonce-tiedot? Tätä vaihtoehtoa käyttävät lähinnä kehittäjät, jotka käyttävät paikallista testipalvelinta. Kirjoita "<ph name="CONFIRMATION_PHRASE"/>" vahvistaaksesi.</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# minuutti} other {# minuuttia}}</translation>
+<translation id="8146860193318415026">Suoratoista videoita. Ilman mainoksia.</translation>
+<translation id="6311019535466417620">Ei mainoksia ennen videota</translation>
+<translation id="4274652342814424451">Ei mainoksia videon aikana</translation>
+<translation id="1721710839767183848">Ei mainoksia sivulla</translation>
+<translation id="4647035642622555398">Ei keskeytyksiä</translation>
+<translation id="4122515759479497554">Hae videoita</translation>
 <translation id="4449475351935531438">Brave-palomuuri ja -VPN</translation>
 <translation id="719977489961414786">Päivitä VPN:ksi, jotta voit suojata yhteytesi ja estää invasiivisen seurannan kaikkialla.</translation>
 <translation id="3435896845095436175">Ota käyttöön</translation>
@@ -808,6 +779,9 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="5233638681132016545">Uusi välilehti</translation>
 <translation id="8006088103295786154">Käytä Brave-lompakkoa</translation>
 <translation id="5308380583665731573">Muodosta yhteys</translation>
+<translation id="8030169304546394654">Yhteys katkaistu</translation>
+<translation id="3423275441470187644">Luota</translation>
+<translation id="2391762656119864333">Peruuta</translation>
 <translation id="3432029672560911238">Käyttäjätili</translation>
 <translation id="5753378322046059140">Vaihda tiliä</translation>
 <translation id="3897092660631435901">Valikko</translation>
@@ -884,5 +858,50 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="7002577172732106572">Jaettu tunnelointi</translation>
 <translation id="2832270987629018596">Virheellinen SOL-osoite</translation>
 <translation id="8181161042860463420">Liitettyä tokentiliä ei ole vielä olemassa. Sen luomiseen ja rahoittamiseen käytetään pieni määrä SOL-tokeneita. <ph name="CLICK_START"/>Lisätietoja<ph name="CLICK_END"/></translation>
+<translation id="1304515257839771197">Avataanko <ph name="APP_NAME"/> -sovellus?</translation>
+<translation id="7653028065515320848"><ph name="CLICK_START"/>Lue lisää Rainbow Bridge -sovelluksen käytöstä<ph name="CLICK_END"/></translation>
+<translation id="8219806187375413057"><ph name="CLICK_START"/>Lue riskien pienentämisestä Rainbow Bridge -sovelluksessa<ph name="CLICK_END"/></translation>
+<translation id="1065082006518490444"><ph name="APP_NAME"/> on riippumaton palvelu, joka auttaa sinua yhdistämään varoja eri verkoissa ja käyttämään kryptovaluuttaa muissa verkoissa ja DApp-ekosysteemeissä. Varojen yhdistämisessä muihin verkkoihin on riskejä.</translation>
+<translation id="8423380132356660250">Avaa <ph name="APP_NAME"/> -sovellus</translation>
 <translation id="168154537623654021">Päivitetään VPN-profiilia...</translation>
+<translation id="7457027586454688423">Anna Brave-lompakkosi salasanasi</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">Tarjolla <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">Osta <ph name="COIN_NAME"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Talletusosoite</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Talletusmuistio</translation>
+<translation id="6755546361496900700">Muuntamisen esikatselu</translation>
+<translation id="5110244215256675209">Osta kryptovaluuttaa</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="7144878232160441200">Yritä uudestaan</translation>
+<translation id="1366855498335432549">Talleta</translation>
+<translation id="1301340234286078471">Muunna</translation>
+<translation id="4584930231524505442">Haluan muuntaa...</translation>
+<translation id="5749014321384313843">Haluan käyttää...</translation>
+<translation id="2480674848181564169">Ei tarpeeksi saldoa muunnokseen</translation>
+<translation id="2215334405220411393">Pienin muunnettava määrä on: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Yhdistäminen ei onnistu</translation>
+<translation id="7742417737698031726">Maksu</translation>
+<translation id="2122225204180056042">Saat</translation>
+<translation id="6432284126416751397">Vahvista muuntaminen</translation>
+<translation id="3891414008432200754">Hinta</translation>
+<translation id="3733576242118819803">Vahvista (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Muuntaminen epäonnistui. Yritä uudestaan.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="8037420924417098685">Aloita ilmainen puhelu ottamalla Brave Rewards käyttöön</translation>
+<translation id="8961724619078500274">Brave Rewardsin kautta ansaitset tokeneita yksityisten mainosten katselusta (tietosi ovat turvassa). Muuta rahakkeet rahaksi, lahjakortteiksi… voit jopa antaa suosikkisivustoillesi tipin. Ei seurantaa. Ei hidastuksia.</translation>
+<translation id="7307847920988946894">Ota Rewards käyttöön</translation>
+<translation id="7872993190040589450">Ottamalla käyttöön hyväksyt kohteen <ph name="TERMS_OF_SERVICE"/> ja kohteen <ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="6128511569382736135">Aloita ilmainen puhelu ottamalla Brave Private Ads käyttöön</translation>
+<translation id="7930006085154756245">Brave Private Adsin kautta ansaitset tokeneita yksityisten mainosten katselusta (tietosi ovat turvassa). Muuta rahakkeet rahaksi, lahjakortteiksi… voit jopa antaa suosikkisivustoillesi tipin. Ei seurantaa. Ei hidastuksia.</translation>
+<translation id="4992617448154987397">Ota Brave Private Ads käyttöön</translation>
+<translation id="3415016869273103668">Voit nyt aloittaa ilmaisen puhelun</translation>
+<translation id="7073631403665023390">Napsauta tai napauta mitä tahansa näytön kohtaa jatkaaksesi Brave Talk -videopuheluun.</translation>
+<translation id="626339649633171286">Haluatko lisää tietoja Brave Rewardsista? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">Muunsit <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> arvoksi <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Valitse verkkoyhteytesi.</translation>
+<translation id="2490428413101944234">Ilmaisia kolikoita jakava palvelu</translation>
+<translation id="2581671693710952401">Hanki Etheriä</translation>
+<translation id="8165484222652118977">Hanki Ether-kolikkoa kolikoita jakavasta palvelusta <ph name="NETWORK"/>-testiverkkoa varten</translation>
 </translationbundle>

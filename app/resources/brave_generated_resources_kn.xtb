@@ -80,11 +80,6 @@
 <translation id="3161744659507801211">ಎಚ್ಚರಿಕೆ: ನಿಮ್ಮ ಬ್ರೌಸಿಂಗ್‌ ಇತಿಹಾಸದಲ್ಲಿ ರೆಕಾರ್ಡಿಂಗ್‌ನಿಂದ ವಿಸ್ತರಣೆಗಳನ್ನು ಪಡೆಯುವುದನ್ನು ತಡೆಯಲು Brave ಗೆ ಸಾಧ್ಯವಿಲ್ಲ.</translation>
 <translation id="2162109630536601963">ಈ ವಿಸ್ತರಣೆಯು ನೆಟ್‌ವರ್ಕ್ ವಿನಂತಿಗಳನ್ನು ಮಾಡಿದರೆ, ಆಗ Tor ಅಥವಾ ಖಾಸಗಿ ಮೋಡ್ ಅನ್ನು ಅವುಗಳು ಬಳಸುವುದಿಲ್ಲ.</translation>
 <translation id="2725327089319971976">ಖಾಸಗಿ ಮೋಡ್‌ ಮತ್ತು Tor ಮೋಡ್‌ನಲ್ಲಿ ಈ ವಿಸ್ತರಣೆಯನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲು, ಈ ಆಯ್ಕೆಯನ್ನು ಅನ್‌ಸೆಲೆಕ್ಟ್ ಮಾಡಿ.</translation>
-<translation id="5057399635433117814">ಈ ಪುಟವನ್ನು ಅನುವಾದಿಸುವುದೇ? ಇದು ಅನುವಾದಕ್ಕಾಗಿ Microsoft ಗೆ ಈ ಪುಟವು ಎಲ್ಲಾ ಪಠ್ಯಗಳನ್ನು ಕಳುಹಿಸುತ್ತದೆ.</translation>
-<translation id="330263065709195164">ಈ ಪುಟವನ್ನು ಭಾಷಾಂತರಿಸಲು Google Translate ವಿಸ್ತರಣೆಯನ್ನು ಸ್ಥಾಪಿಸಬೇಕೆ?</translation>
-<translation id="3789841737615482174">ಸ್ಥಾಪಿಸು</translation>
-<translation id="7658239707568436148">ರದ್ದುಮಾಡಿ</translation>
-<translation id="1307431692088049276">ನನಗೆ ಮತ್ತೊಮ್ಮೆ ಕೇಳಬೇಡ</translation>
 <translation id="3371343170427636147">Brave ಬ್ರೌಸರ್ ನೈಟ್ಲಿ ಆ್ಯಪ್‌‌ಗಳು</translation>
 <translation id="4097979995947147464">Brave ಬ್ರೌಸರ್ ಬೀಟಾ ಆ್ಯಪ್‌ಗಳು</translation>
 <translation id="8303432794159193481">Brave ಬ್ರೌಸರ್ ಡೆವ್ ಆ್ಯಪ್‌‌ಗಳು</translation>
@@ -107,9 +102,11 @@
 <translation id="7276554663454265692">ಬ್ರೌಸರ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ ಯಾವುದೇ ಸಮಯದಲ್ಲಿ <ph name="SETTING_TEXT"/> ನೀವು ಬದಲಾಯಿಸಬಹುದು.</translation>
 <translation id="6873781976650514089">ಈ ಸೆಟ್ಟಿಂಗ್</translation>
 <translation id="8915916167043355778">ಎಲ್ಲವನ್ನೂ ಮುಚ್ಚಿ</translation>
+<translation id="7658239707568436148">ರದ್ದುಮಾಡಿ</translation>
 <translation id="4870911314065352661">ಎಲ್ಲಾ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಮುಚ್ಚುವುದೇ?</translation>
 <translation id="7551864359422178684">ಈ ಬ್ರೌಸರ್ ವಿಂಡೋದಲ್ಲಿ ನೀವು <ph name="NUMBER_OF_TABS"/> ಟ್ಯಾಬ್‌ಗಳನ್ನು ತೆರೆದಿರುವಿರಿ.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> ಟ್ಯಾಬ್‌ಗಳು</translation>
+<translation id="1307431692088049276">ನನಗೆ ಮತ್ತೊಮ್ಮೆ ಕೇಳಬೇಡ</translation>
 <translation id="2272117088509540883">- Brave ಹುಡುಕಾಟ</translation>
 <translation id="2701279958223202597">ಉತ್ತಮ ಗೌಪ್ಯತೆಯೊಂದಿಗೆ ಸ್ವತಂತ್ರ ಹುಡುಕಾಟಕ್ಕೆ ಬೆಂಬಲ ನೀಡಿ. Brave ಹುಡುಕಾಟ ನಿಮ್ಮನ್ನು, ನಿಮ್ಮ ಪ್ರಶ್ನೆಗಳನ್ನು ಅಥವಾ ನಿಮ್ಮ ಕ್ಲಿಕ್‌ಗಳನ್ನು ಟ್ರ್ಯಾಕ್ ಮಾಡುವುದಿಲ್ಲ.</translation>
 <translation id="6438467592401259882">ಉತ್ತಮ ಗೌಪ್ಯತೆಯೊಂದಿಗೆ ಸ್ವತಂತ್ರ ಹುಡುಕಾಟಕ್ಕೆ ಬೆಂಬಲ ನೀಡಿ.</translation>
@@ -126,7 +123,15 @@
 <translation id="4174337572777167894">ವೆಬ್ ಅನ್ವೇಷಣೆ ಪ್ರಾಜೆಕ್ಟ್</translation>
 <translation id="8659271182272561965">Brave ಹುಡುಕಾಟ ಸುಧಾರಿಸುವುದಕ್ಕಾಗಿ ಕೆಲವು ಅನಾಮಧೇಯ ಹುಡುಕಾಟ &amp; ಬ್ರೌಸಿಂಗ್ ಡೇಟಾದ ಕೊಡುಗೆ ನೀಡಿ.</translation>
 <translation id="1516554614404600536">Brave ಟೂಲ್‌ಟಿಪ್</translation>
+<translation id="7986278174934557414">ಸೈಡ್ ಪ್ಯಾನಲ್ ಐಕಾನ್ ಮರೆಮಾಡಿ</translation>
+<translation id="6915291874524466201">ಸೈಡ್ ಪ್ಯಾನಲ್ ಐಕಾನ್ ಮರೆಮಾಡಿ</translation>
+<translation id="9149866541089851383">ಎಡಿಟ್...</translation>
 <translation id="1181037720776840403">ತೆಗೆದುಹಾಕು</translation>
+<translation id="7513769021866698486">ಐಟಂ ಎಡಿಟ್ ಮಾಡಿ</translation>
+<translation id="4002066346123236978">ಶೀರ್ಷಿಕೆ</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="5877900074358050101">ಸೈಡ್‌ಬಾರ್ ಐಟಂ ಶೀರ್ಷಿಕೆ</translation>
+<translation id="1613695740874407223">ಸೈಡ್‌ಬಾರ್ ಐಟಂ url</translation>
 <translation id="4877147287319222750">ಸೈಡ್‌ಬಾರ್‌ಗೆ ಸೇರಿಸಿ</translation>
 <translation id="5404213409401164238">ಸೈಡ್‌ಬಾರ್ ತೋರಿಸಿ</translation>
 <translation id="7561196759112975576">ಯಾವಾಗಲೂ</translation>
@@ -201,6 +206,7 @@
 <translation id="2370739752330685659">ಬಹುಶಃ ನಂತರ</translation>
 <translation id="961012016278832836">Microsoft Edge ಪಾರಂಪರಿಕ</translation>
 <translation id="6436994631426134065"><ph name="BROWSER_NAME"/> ನಿಂದ ಆಮದು ಮಾಡಲಾಗಿದೆ.</translation>
+<translation id="1506190932569739298">ಕ್ಲೀನ್ ಲಿಂಕ್ ಅನ್ನು ನಕಲಿಸಿ (ಕೇವಲ ಮುಖ್ಯ URL)</translation>
 <translation id="9156965752763025780">ನೀವು ಮುಂದಿನ ಬಾರಿ Brave ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಿದಾಗ ನಿಮ್ಮ ಬದಲಾವಣೆಗಳು ಕಾರ್ಯಗತಗೊಳ್ಳುತ್ತವೆ.</translation>
 <translation id="7179921470347911571">ಇದೀಗ ಮರುಆರಂಭಿಸಿ</translation>
 <translation id="4472575034687746823">ಪ್ರಾರಂಭ</translation>
@@ -220,6 +226,7 @@
 <translation id="4096343215397759358">ಪೂರ್ವವೀಕ್ಷಣೆಯೊಂದಿಗೆ ಕಾರ್ಡ್</translation>
 <translation id="5297085818601043899">ಟೂಲ್‌ಟಿಪ್</translation>
 <translation id="2396127686705429331">ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳ ಬಟನ್ ಅನ್ನು ತೋರಿಸಿ</translation>
+<translation id="2369560305991805099">ಸೈಡ್ ಪ್ಯಾನಲ್ ಬಟನ್ ತೋರಿಸಿ</translation>
 <translation id="2814998458708016836">ವೈಡ್ ಅಡ್ರೆಸ್ ಬಾರ್ ಬಳಸಿ</translation>
 <translation id="4109670531935487117">ವಿಳಾಸ ಪಟ್ಟಿಯಲ್ಲಿ ಸ್ವಯಂಪೂರ್ಣಗೊಳಿಸಿದ ಸಲಹೆಗಳನ್ನು ತೋರಿಸಿ</translation>
 <translation id="2858138569776157458">ಟಾಪ್ ಸೈಟ್</translation>
@@ -242,8 +249,8 @@
 <translation id="6303294677342628402">ಶೀಲ್ಡ್‌ಗಳು</translation>
 <translation id="7133511168130368997">ವೆಬ್ ನಾದ್ಯಂತ‌ ನಿಮ್ಮನ್ನು ಅನುಸರಿಸುವ‌ ಟ್ರ್ಯಾಕರ್‌‌ಗಳು ಹಾಗೂ ಜಾಹೀರಾತುಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ.</translation>
 <translation id="2761825942249694703">ಇವು ಡೀಫಾಲ್ಟ್ ಶೀಲ್ಡ್ಸ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳು. ನೀವು ಶೀಲ್ಡ್ಸ್ ಪ್ಯಾನೆಲ್‌ನಲ್ಲಿ ಏನನ್ನಾದರೂ ನಿರ್ದಿಷ್ಟ ಸೈಟಿನಲ್ಲಿ ಬದಲಾಯಿಸದೇ ಇದ್ದಲ್ಲಿ ಅವು ಎಲ್ಲ ವೆಬ್‌ಸೈಟ್‌ಗಳಿಗೆ ಅನ್ವಯಿಸುತ್ತವೆ. ಇವುಗಳನ್ನು ಬದಲಾಯಿಸುವುದು ನಿಮ್ಮ ಸದ್ಯದ ಪ್ರತಿ ಸೈಟಿನ ಸೆಟ್ಟಿಂಗ್‌‌ಗಳನ್ನು ಪ್ರಭಾವಿಸುವುದಿಲ್ಲ.</translation>
-<translation id="1485394570478670912">ಇದು ವೆಬ್‌ಸೈಟ್‌ನಲ್ಲಿನ ಹೆಚ್ಚಿನ ಜಾಹೀರಾತುಗಳನ್ನು ನಿರ್ಬಂಧಿಸುತ್ತದೆ, ಆದರೆ Brave Private Ads ಲ್ಲ — ಅವುಗಳನ್ನು ಇಲ್ಲಿ ನಿಯಂತ್ರಿಸಲಾಗಿದೆ</translation>
-<translation id="6388201778088078932">ಸೆಟ್ಟಿಂಗ್‌‌ಗಳು.</translation>
+<translation id="1435116578479068303">ಇದು ವೆಬ್‌ಸೈಟ್‌ನಲ್ಲಿ ಹೆಚ್ಚಿನ ಜಾಹೀರಾತುಗಳನ್ನು ನಿರ್ಬಂಧಿಸುತ್ತದೆ, ಆದರೆ Brave ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳನ್ನಲ್ಲ — ಇವುಗಳನ್ನು <ph name="BEGIN_LINK"/>Brave ರಿವಾರ್ಡ್ಸ್<ph name="END_LINK"/> ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ ನಿಯಂತ್ರಿಸಲಾಗುತ್ತದೆ.</translation>
+<translation id="8452536890042542134">ಇದು ವೆಬ್‌ಸೈಟ್‌ಗಳಲ್ಲಿ ಹೆಚ್ಚಿನ ಜಾಹೀರಾತುಗಳನ್ನು ನಿರ್ಬಂಧಿಸುತ್ತದೆ.</translation>
 <translation id="4800195524776354947">ಶೀಲ್ಡ್‌ಗಳ ಐಕಾನ್‌ನಲ್ಲಿ ನಿರ್ಬಂಧಿಸಲಾದ ಐಟಂಗಳ ಸಂಖ್ಯೆಯನ್ನು ತೋರಿಸಿ</translation>
 <translation id="5510493033031835532">AMP ಪೇಜ್‌ಗಳನ್ನು ಸ್ವಯಂ ಮರುನಿರ್ದೇಶನಗೊಳಿಸಿ</translation>
 <translation id="7630031867325944356">AMP ಮತ್ತು ಅಂತಹುದೇ ಆವೃತ್ತಿಗಳ ಬದಲಿಗೆ ಪ್ರಕಾಶಕರ ಪುಟ URL ಗಳಿಗೆ ಆದ್ಯತೆ ನೀಡಿ.</translation>
@@ -393,12 +400,12 @@
 <translation id="6554397389149987360">ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಪರದೆ ಹಂಚಿಕೆ ಮತ್ತು ಇತರ ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲು Hangouts ಅಂಶವನ್ನು ಬಳಸುತ್ತದೆ.</translation>
 <translation id="7878791177459550035">ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಕಾಸ್ಟ್ ಫೀಚರ್ ಅನ್ನು ಮೀಡಿಯಾ ರೂಟರ್ ಸಕ್ರಿಯಗೊಳಿಸುತ್ತದೆ.</translation>
 <translation id="5927916530277631319">ನಿಲ್ಲಿಸಲು ಸಾಧ್ಯವಾಗದ ಡೊಮೇನ್‍ಗಳನ್ನು ಪರಿಹರಿಸಲು ಇರುವ ವಿಧಾನಗಳು</translation>
-<translation id="8412057160793088103">HTTPS ಮತ್ತು ಈಥೆರಿಯಮ್ ಗೌಪ್ಯತೆ ಪರಿಗಣನೆಗಳಲ್ಲಿ DNS ಕುರಿತು <ph name="BEGIN_LINK"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ<ph name="END_LINK"/>.</translation>
+<translation id="2889554198027690581">Ethereum ಗೌಪ್ಯತೆ ಪರಿಗಣನೆಗಳ ಕುರಿತು <ph name="BEGIN_LINK"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ<ph name="END_LINK"/>.</translation>
 <translation id="5248318250177143470">ಈಥೇರೆಯಮ್ ನೇಮ್ ಸರ್ವೀಸ್ (ENS) ಪರಿಹರಿಸಲು ವಿಧಾನ</translation>
 <translation id="6241402707160226266">Tor ಜೊತೆಗೆ ಖಾಸಗಿ ವಿಂಡೋ</translation>
 <translation id="8762452230727230396">ನೀವು ಭೇಟಿ ನೀಡುವ ಸೈಟ್ಗಳಿಂದ ನಿಮ್ಮ IP ವಿಳಾಸವನ್ನು Tor ಮರೆಮಾಡುತ್ತದೆ.</translation>
 <translation id="2959986444009520721">ಬ್ರಿಡ್ಜ್‌ಗಳನ್ನು ಬಳಸಿ</translation>
-<translation id="6003484976430531384">Tor ಅನ್ನು ನಿರ್ಬಂಧಿಸಿದ ಸ್ಥಳದಲ್ಲಿ Tor ನೆಟ್‌ವರ್ಕ್ ಅನ್ನು ಪ್ರವೇಶಿಸಲು ಬ್ರಿಡ್ಜ್‌ಗಳು ನಿಮಗೆ ಸಹಾಯ ಮಾಡುತ್ತವೆ. ನೀವು ಎಲ್ಲಿದ್ದೀರಿ ಎಂಬುದರ ಆಧಾರದ ಮೇಲೆ, ಒಂದು ಬ್ರಿಡ್ಜ್ ಇನ್ನೊಂದಕ್ಕಿಂತ ಉತ್ತಮವಾಗಿ ಕಾರ್ಯನಿರ್ವಹಿಸಬಹುದು.</translation>
+<translation id="8416750895933172460">Tor ನಿರ್ಬಂಧಗೊಂಡಿರುವಲ್ಲಿ Tor ನೆಟ್‌ವರ್ಕ್ ಅನ್ನು ಪ್ರವೇಶಿಸಲು ಬ್ರಿಡ್ಜ್‌ಗಳು ನಿಮಗೆ ಸಹಾಯ ಮಾಡುತ್ತವೆ. ನೀವು ಎಲ್ಲಿದ್ದೀರಿ ಎಂಬುದನ್ನು ಆಧರಿಸಿ, ಒಂದು ಬ್ರಿಡ್ಜ್ ಇನ್ನೊಂದಕ್ಕಿಂತ ಉತ್ತಮವಾಗಿ ಕಾರ್ಯನಿರ್ವಹಿಸಬಹುದು.</translation>
 <translation id="7206799843254049470">Tor ಸಂಪರ್ಕ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
 <translation id="3194502271166340944">Tor ಜೊತೆಗಿನ ಖಾಸಗಿ ವಿಂಡೋಸ್ Tor ನೆಟ್‌ವರ್ಕ್‌ಗೆ ಹೇಗೆ ಸಂಪರ್ಕಿಸುತ್ತದೆ ಎಂಬುದನ್ನು ನಿಯಂತ್ರಿಸುತ್ತದೆ</translation>
 <translation id="4859228830700205299">ಅಂತರ್ನಿರ್ಮಿತ ಬ್ರಿಡ್ಜ್ ಆಯ್ಕೆಮಾಡಿ</translation>
@@ -415,7 +422,7 @@
 <translation id="6936835573742749135">CAPTCHA ಗೆ ವಿನಂತಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ. ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="2653659639078652383">ಸಲ್ಲಿಸಿ</translation>
 <translation id="1369311132025451972">.onion ಸೈಟ್‌ಗಳನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಮರುನಿರ್ದೇಶಿಸಿ</translation>
-<translation id="2843777623071353503">ಲಭ್ಯವಿದ್ದಾಗ ವೆಬ್‌ಸೈಟ್‌ನ onion ಸೇವೆಯನ್ನು ಅಥವಾ Tor ವಿಂಡೋದಲ್ಲಿ .onion ಡೊಮೇನ್ ಅನ್ನು Brave ತೆರೆಯುತ್ತದೆ.</translation>
+<translation id="1658670175365815312">ಲಭ್ಯವಿರುವಾಗ ವೆಬ್‌ಸೈಟ್‌ನ .onion ಆವೃತ್ತಿಗೆ Brave ಬದಲಾಗುತ್ತದೆ ಮತ್ತು Tor ವಿಂಡೋದಲ್ಲಿ ಎಲ್ಲಾ .onion ಡೊಮೇನ್‌ಗಳನ್ನು ತೆರೆಯುತ್ತದೆ.</translation>
 <translation id="2896916411183256228">ಬ್ರೌಸರ್‌ನಲ್ಲಿ ನೇರವಾಗಿ torrent ಗಳನ್ನು ಪ್ರದರ್ಶಿಸಲು WebTorrent ಅನ್ನು ಬಳಸುತ್ತದೆ. torrent ಫೈಲ್‌ಗಳು ಮತ್ತು ಮ್ಯಾಗ್ನೆಟ್ ಲಿಂಕ್‌ಗಳನ್ನು ಬೆಂಬಲಿಸುತ್ತದೆ.</translation>
 <translation id="5249433283143453448">ಬ್ರೌಸರ್‌ನಲ್ಲಿ ರಕ್ಷಿಸಲಾದ ಸ್ಟ್ರೀಮಿಂಗ್ ವೀಡಿಯೊ ಮತ್ತು ಇತರ ವಿಷಯವನ್ನು ವೀಕ್ಷಿಸಲು Widevine ಡಿಜಿಟಲ್ ಹಕ್ಕುಗಳ ನಿರ್ವಹಣೆ (DRM) ಅಂಶವನ್ನು ಬಳಸಿ</translation>
 <translation id="8137559199583651773">ವಿಸ್ತರಣೆಗಳನ್ನು ನಿರ್ವಹಿಸಿ</translation>
@@ -441,14 +448,16 @@
 <translation id="3752403403443723332">ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಮರುಹೊಂದಿಸಲಾಗಿದೆ.</translation>
 <translation id="594766067816395072">ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ವಹಿವಾಟು ಮಾಹಿತಿಯನ್ನು ಮರುಹೊಂದಿಸಲಾಗಿದೆ.</translation>
 <translation id="1426410128494586442">ಹೌದು</translation>
-<translation id="2556708692502648323">ವ್ಯಾಲೆಟ್ ನೆಟ್‌ವರ್ಕ್‌ಗಳು</translation>
+<translation id="4226543734057230801">Ethereum ನೆಟ್‌ವರ್ಕ್‌ಗಳು</translation>
+<translation id="3504157706952484145">Filecoin ನೆಟ್‌ವರ್ಕ್‌ಗಳು</translation>
+<translation id="1561541094377237745">Solana ನೆಟ್‌ವರ್ಕ್‌ಗಳು</translation>
 <translation id="3159419679550543837">ಟೆಸ್ಟ್ ನೆಟ್‌ವರ್ಕ್‌ಗಳನ್ನು ತೋರಿಸಿ</translation>
-<translation id="8205945804087322170">ಹೊಸ ನೆಟ್‌ವರ್ಕ್ ಸೇರಿಸಿ</translation>
-<translation id="1330032157352961756">ಹೊಸ ಚೈನ್‌ನ ಐಡಿ</translation>
+<translation id="3215569562674795548">ಹೊಸ ನೆಟ್‌ವರ್ಕ್ ಎಡಿಟ್ ಮಾಡಿ ಅಥವಾ ಸೇರಿಸಿ</translation>
+<translation id="4418993400653250511">ಚೈನ್‌ನ ಐಡಿ</translation>
 <translation id="3423620355610881890">ಧನಾತ್ಮಕ ದಶಮಾಂಶ ಸಂಖ್ಯೆ</translation>
 <translation id="8110465398315041268">ನೆಟ್‌ವರ್ಕ್ ಹುಡುಕಿ</translation>
 <translation id="3579705520805744214">ಚೈನ್ ಐಡಿ ಅಥವಾ ಹೆಸರು</translation>
-<translation id="726121047592132939">ಹೊಸ ಚೈನ್‌ನ ಹೆಸರು</translation>
+<translation id="8502525913969149079">ಚೈನ್‌ನ ಹೆಸರು</translation>
 <translation id="1034112277864078119">ಚೈನ್ ಹೆಸರು ಹೆಸರು</translation>
 <translation id="4672314527143443556">ಚೈನ್‌ನ ಕರೆನ್ಸಿ ಹೆಸರು</translation>
 <translation id="4652114030688989556">ಕರೆನ್ಸಿ ಹೆಸರು ನಮೂದಿಸಿ</translation>
@@ -554,4 +563,15 @@
 <translation id="5318548116565208315">ಅವತಾರ್ ಬೋನ್‍ಬೋನ್ ಕಾರ್ನ್</translation>
 <translation id="1959966725083452288">ಅವತಾರ್ ಬೋನ್‌ಬೋನ್ ರಾಯಲ್</translation>
 <translation id="2039034364578911089">ಅವತಾರ್ ಬೋನ್‍ಬೋನ್ ನಿಂಜಾ</translation>
+<translation id="5057399635433117814">ಈ ಪುಟವನ್ನು ಅನುವಾದಿಸುವುದೇ? ಇದು ಅನುವಾದಕ್ಕಾಗಿ Microsoft ಗೆ ಈ ಪುಟವು ಎಲ್ಲಾ ಪಠ್ಯಗಳನ್ನು ಕಳುಹಿಸುತ್ತದೆ.</translation>
+<translation id="330263065709195164">ಈ ಪುಟವನ್ನು ಭಾಷಾಂತರಿಸಲು Google Translate ವಿಸ್ತರಣೆಯನ್ನು ಸ್ಥಾಪಿಸಬೇಕೆ?</translation>
+<translation id="3789841737615482174">ಸ್ಥಾಪಿಸು</translation>
+<translation id="1485394570478670912">ಇದು ವೆಬ್‌ಸೈಟ್‌ನಲ್ಲಿನ ಹೆಚ್ಚಿನ ಜಾಹೀರಾತುಗಳನ್ನು ನಿರ್ಬಂಧಿಸುತ್ತದೆ, ಆದರೆ Brave Private Ads ಲ್ಲ — ಅವುಗಳನ್ನು ಇಲ್ಲಿ ನಿಯಂತ್ರಿಸಲಾಗಿದೆ</translation>
+<translation id="6388201778088078932">ಸೆಟ್ಟಿಂಗ್‌‌ಗಳು.</translation>
+<translation id="8412057160793088103">HTTPS ಮತ್ತು ಈಥೆರಿಯಮ್ ಗೌಪ್ಯತೆ ಪರಿಗಣನೆಗಳಲ್ಲಿ DNS ಕುರಿತು <ph name="BEGIN_LINK"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ<ph name="END_LINK"/>.</translation>
+<translation id="2843777623071353503">ಲಭ್ಯವಿದ್ದಾಗ ವೆಬ್‌ಸೈಟ್‌ನ onion ಸೇವೆಯನ್ನು ಅಥವಾ Tor ವಿಂಡೋದಲ್ಲಿ .onion ಡೊಮೇನ್ ಅನ್ನು Brave ತೆರೆಯುತ್ತದೆ.</translation>
+<translation id="2556708692502648323">ವ್ಯಾಲೆಟ್ ನೆಟ್‌ವರ್ಕ್‌ಗಳು</translation>
+<translation id="8205945804087322170">ಹೊಸ ನೆಟ್‌ವರ್ಕ್ ಸೇರಿಸಿ</translation>
+<translation id="1330032157352961756">ಹೊಸ ಚೈನ್‌ನ ಐಡಿ</translation>
+<translation id="726121047592132939">ಹೊಸ ಚೈನ್‌ನ ಹೆಸರು</translation>
 </translationbundle>

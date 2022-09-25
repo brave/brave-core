@@ -79,11 +79,6 @@
 <translation id="3161744659507801211">警告：Brave 无法阻止扩展程序记录您的浏览活动。</translation>
 <translation id="2162109630536601963">如果此扩展程序发出网络请求，则它们将不会使用 Tor 或专用模式。</translation>
 <translation id="2725327089319971976">要在无痕模式下停用该扩展程序，请取消选中此选项。</translation>
-<translation id="5057399635433117814">翻译此页面？该操作会将此页面的所有文本发送至 Microsoft 进行翻译。</translation>
-<translation id="330263065709195164">是否按照 Google 翻译插件以翻译此页面？</translation>
-<translation id="3789841737615482174">安装</translation>
-<translation id="7658239707568436148">取消</translation>
-<translation id="1307431692088049276">不要再问我了</translation>
 <translation id="3371343170427636147">Brave 浏览器夜间模式应用</translation>
 <translation id="4097979995947147464">Brave 浏览器 Beta 应用</translation>
 <translation id="8303432794159193481">Brave 浏览器开发应用</translation>
@@ -106,9 +101,11 @@
 <translation id="7276554663454265692">您可以随时在浏览器设置中更改 <ph name="SETTING_TEXT"/>。</translation>
 <translation id="6873781976650514089">此设置</translation>
 <translation id="8915916167043355778">全部关闭</translation>
+<translation id="7658239707568436148">取消</translation>
 <translation id="4870911314065352661">关闭所有标签页？</translation>
 <translation id="7551864359422178684">在此浏览器窗口中还有 <ph name="NUMBER_OF_TABS"/> 个标签页处于开启状态。</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> 个标签页</translation>
+<translation id="1307431692088049276">不要再问我了</translation>
 <translation id="2272117088509540883">- Brave 搜索</translation>
 <translation id="2701279958223202597">支持隐私性更好的独立搜索。Brave 的搜索功能不会追踪您、您的查询或您的点击行为。</translation>
 <translation id="6438467592401259882">支持隐私性更好的独立搜索。</translation>
@@ -125,7 +122,15 @@
 <translation id="4174337572777167894">Web 发现项目</translation>
 <translation id="8659271182272561965">提供一些匿名搜索和浏览数据来完善 Brave 搜索。</translation>
 <translation id="1516554614404600536">Brave 工具提示</translation>
+<translation id="7986278174934557414">隐藏侧边栏面板图标</translation>
+<translation id="6915291874524466201">隐藏侧边栏面板图标</translation>
+<translation id="9149866541089851383">编辑...</translation>
 <translation id="1181037720776840403">删除</translation>
+<translation id="7513769021866698486">编辑项目</translation>
+<translation id="4002066346123236978">标题</translation>
+<translation id="7400418766976504921">网址</translation>
+<translation id="5877900074358050101">侧边栏项目标题</translation>
+<translation id="1613695740874407223">侧边栏项目 URL</translation>
 <translation id="4877147287319222750">添加到侧边栏</translation>
 <translation id="5404213409401164238">显示侧边栏</translation>
 <translation id="7561196759112975576">始终</translation>
@@ -200,6 +205,7 @@
 <translation id="2370739752330685659">回头再说</translation>
 <translation id="961012016278832836">Microsoft Edge 旧版</translation>
 <translation id="6436994631426134065">已从 <ph name="BROWSER_NAME"/> 导入。</translation>
+<translation id="1506190932569739298">复制清洁链接（仅主 URL）</translation>
 <translation id="9156965752763025780">您所做的更改会在下次重新启动 Brave 时生效。</translation>
 <translation id="7179921470347911571">立即重新启动</translation>
 <translation id="4472575034687746823">开始使用</translation>
@@ -219,6 +225,7 @@
 <translation id="4096343215397759358">带预览的卡片</translation>
 <translation id="5297085818601043899">工具提示</translation>
 <translation id="2396127686705429331">显示书签栏按钮</translation>
+<translation id="2369560305991805099">显示侧边栏面板按钮</translation>
 <translation id="2814998458708016836">使用宽地址栏</translation>
 <translation id="4109670531935487117">在地址栏中显示自动完成建议</translation>
 <translation id="2858138569776157458">热门网站</translation>
@@ -241,8 +248,8 @@
 <translation id="6303294677342628402">屏蔽</translation>
 <translation id="7133511168130368997">拦截在网络上无所不在的跟踪器和广告。</translation>
 <translation id="2761825942249694703">这些是默认屏蔽设置，适用于所有网站（除非您更改了某特定网站的屏蔽面板中的某些设置）。更改这些设置不会影响您现有的每个站点的设置。</translation>
-<translation id="1485394570478670912">这会拦截网站上的多数广告，但不包括 Brave Private Ads。那些广告由以下设定控制：</translation>
-<translation id="6388201778088078932">控制的）。</translation>
+<translation id="1435116578479068303">这将屏蔽网站上的大多数广告，但不会屏蔽 Brave Private Ads。要对此进行管控，请前往 <ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/> 设置。</translation>
+<translation id="8452536890042542134">这将屏蔽网站上的大多数广告。</translation>
 <translation id="4800195524776354947">在屏蔽图标上显示被拦截的项目的数量</translation>
 <translation id="5510493033031835532">自动重定向 AMP 页面</translation>
 <translation id="7630031867325944356">首选发布商页面的 URL，而不是 AMP 和类似版本。</translation>
@@ -392,12 +399,12 @@
 <translation id="6554397389149987360">使用环聊组件在浏览器中启用屏幕共享和其他功能。</translation>
 <translation id="7878791177459550035">媒体路由器在浏览器中启用投射功能。</translation>
 <translation id="5927916530277631319">解决无法停止域这个问题的方法</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/>关于 DNS over HTTPS 和以太坊隐私注意事项。</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>详细了解<ph name="END_LINK"/>太坊隐私注意事项。</translation>
 <translation id="5248318250177143470">解决以太坊名称服务（ENS）相关问题的方法</translation>
 <translation id="6241402707160226266">带 Tor 的私人窗户</translation>
 <translation id="8762452230727230396">Tor 对你访问的网站隐藏了你的 IP 地址。</translation>
 <translation id="2959986444009520721">使用网桥</translation>
-<translation id="6003484976430531384">网桥可帮助您在 Tor 被阻止的地方访问 Tor 网络。根据您所在的位置，一个网桥可能会比另一个网桥的性能更好。</translation>
+<translation id="8416750895933172460">网桥可帮助您在 Tor 被封锁的地方访问 Tor 网络。网桥的效能可能会因您所在的位置不同而有所不同。</translation>
 <translation id="7206799843254049470">Tor 连接设置</translation>
 <translation id="3194502271166340944">控制带有 Tor 的私密窗口如何连接到 Tor 网络</translation>
 <translation id="4859228830700205299">选择内置网桥</translation>
@@ -414,7 +421,7 @@
 <translation id="6936835573742749135">无法请求验证码。请稍后再试。</translation>
 <translation id="2653659639078652383">提交</translation>
 <translation id="1369311132025451972">自动重定向 .onion 网站</translation>
-<translation id="2843777623071353503">如果可用，Brave 会在 Tor 窗口中打开网站的 onion 服务或 .onion 域名</translation>
+<translation id="1658670175365815312">在在可用情况下，Brave 将切换为网站的 .onion 版本，并在 Tor 窗口中自动打开所有 .onion 域。</translation>
 <translation id="2896916411183256228">使用 WebTorrent 直接在浏览器中显示种子。支持种子文件和磁力链接。</translation>
 <translation id="5249433283143453448">使用 Widevine 数字版权管理（DRM）组件在浏览器中查看受保护的流视频和其他内容。</translation>
 <translation id="8137559199583651773">管理扩展程序</translation>
@@ -440,14 +447,16 @@
 <translation id="3752403403443723332">您的钱包已重置。</translation>
 <translation id="594766067816395072">您的钱包交易信息已重置。</translation>
 <translation id="1426410128494586442">是</translation>
-<translation id="2556708692502648323">钱包网络</translation>
+<translation id="4226543734057230801">以太坊网络</translation>
+<translation id="3504157706952484145">Filecoin 网络</translation>
+<translation id="1561541094377237745">Solana 网络</translation>
 <translation id="3159419679550543837">显示测试网站</translation>
-<translation id="8205945804087322170">添加新网络</translation>
-<translation id="1330032157352961756">新链 ID</translation>
+<translation id="3215569562674795548">编辑或添加新网络</translation>
+<translation id="4418993400653250511">链 ID</translation>
 <translation id="3423620355610881890">正的十进制数</translation>
 <translation id="8110465398315041268">搜索网络</translation>
 <translation id="3579705520805744214">区块链 ID 或名称</translation>
-<translation id="726121047592132939">新链名称</translation>
+<translation id="8502525913969149079">链名称</translation>
 <translation id="1034112277864078119">输入链名称</translation>
 <translation id="4672314527143443556">链的货币名</translation>
 <translation id="4652114030688989556">输入货币名</translation>
@@ -553,4 +562,15 @@
 <translation id="5318548116565208315">邦邦 Corn 的头像</translation>
 <translation id="1959966725083452288">邦邦 Royal 的头像</translation>
 <translation id="2039034364578911089">邦邦 Ninja 的头像</translation>
+<translation id="5057399635433117814">翻译此页面？该操作会将此页面的所有文本发送至 Microsoft 进行翻译。</translation>
+<translation id="330263065709195164">是否按照 Google 翻译插件以翻译此页面？</translation>
+<translation id="3789841737615482174">安装</translation>
+<translation id="1485394570478670912">这会拦截网站上的多数广告，但不包括 Brave Private Ads。那些广告由以下设定控制：</translation>
+<translation id="6388201778088078932">控制的）。</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/>关于 DNS over HTTPS 和以太坊隐私注意事项。</translation>
+<translation id="2843777623071353503">如果可用，Brave 会在 Tor 窗口中打开网站的 onion 服务或 .onion 域名</translation>
+<translation id="2556708692502648323">钱包网络</translation>
+<translation id="8205945804087322170">添加新网络</translation>
+<translation id="1330032157352961756">新链 ID</translation>
+<translation id="726121047592132939">新链名称</translation>
 </translationbundle>

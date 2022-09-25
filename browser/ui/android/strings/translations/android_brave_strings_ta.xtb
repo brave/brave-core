@@ -58,6 +58,7 @@
 <translation id="19715420010996093">பிரேவ் உலாவியைத் தேர்ந்தெடுத்து 'எப்போதும்'-ஐத் தட்டு</translation>
 <translation id="3546439402724649282">பிரேவ் முன்னரே உம் இயல்புநிலை உலாவியாக அமைக்கப்பட்டுள்ளது.</translation>
 <translation id="8389661903259423907">நீங்கள் ஏற்கனவே இயல்புநிலை உலாவியை அமைத்துள்ளீர்கள். செயலி அமைப்புகளில் இயல்புநிலை உலாவியை நீங்கள் மாற்றலாம்.</translation>
+<translation id="1545749641540134597">விரைவுக்குறியை ஒளிவருடு</translation>
 <translation id="8826007068782654809">நன்றி</translation>
 <translation id="1166682575529520472">மாதாந்திர</translation>
 <translation id="1910721550319506122">வாருங்கள்!</translation>
@@ -199,9 +200,7 @@
 <translation id="8446884382197647889">மேலும் அறிக</translation>
 <translation id="13296465911709339">உம் சொற்சரம் நகலகத்திற்கு நகலெடுக்கப்பட்டுவிட்டது.</translation>
 <translation id="2735834606413553397">பொது முகவரி நகலகத்திற்கு நகலெடுக்கப்பட்டுவிட்டது.</translation>
-<translation id="7144878232160441200">மீண்டும் முயலவும்</translation>
 <translation id="2977461003134694205">தனியுரிமை புள்ளிவிவரங்கள்</translation>
-<translation id="1366855498335432549">வைப்பு</translation>
 <translation id="8804164990146287819">தனியுரிமை கொள்கை</translation>
 <translation id="7930505144430343145">பிரேவ் வெகுமதிகளைக்கு வருக!</translation>
 <translation id="7889432931837317731">சாத்தியமெனில் தானாக திற</translation>
@@ -270,6 +269,7 @@
 <translation id="2653659639078652383">சமர்ப்பி</translation>
 <translation id="5233638681132016545">புதிய தாவல்</translation>
 <translation id="5308380583665731573">இணை</translation>
+<translation id="2391762656119864333">திரும்பப்பெறு</translation>
 <translation id="385051799172605136">முந்தைய பக்கம்</translation>
 <translation id="3355936511340229503">இணைப்புப் பிழை</translation>
 <translation id="4804818685124855865">தொடர்பைத் துண்டி</translation>
@@ -278,4 +278,6 @@
 <translation id="714506544401754321">தகவலை மறைநீக்கு</translation>
 <translation id="5039804452771397117">அனுமதி</translation>
 <translation id="1324417023773393937">பிரேவ் உலாவி</translation>
+<translation id="7144878232160441200">மீண்டும் முயலவும்</translation>
+<translation id="1366855498335432549">வைப்பு</translation>
 </translationbundle>

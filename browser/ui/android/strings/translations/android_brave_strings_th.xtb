@@ -93,6 +93,7 @@
 <translation id="3545804467215833536">แตะเพื่อดู Brave Shields</translation>
 <translation id="1724327820822194498">ดูสิ่งรบกวนทั้งหมดที่ Brave บล็อกในทุกหน้าด้วย Brave Shields</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> และ <ph name="TRACKER"/> บล็อกโฆษณาอื่นๆ &amp; ตัวติดตามแล้ว</translation>
+<translation id="7256200875155794202"><ph name="BIG_TECH"/> และโฆษณาอื่น ๆ &amp; การติดตาม ถูกบล็อก</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> บล็อกโฆษณา &amp; ตัวติดตามแล้ว</translation>
 <translation id="8281886186245836920">ข้าม</translation>
 <translation id="6165508094623778733">ดูข้อมูลเพิ่มเติม</translation>
@@ -117,6 +118,9 @@
 <translation id="19715420010996093">เลือกเบราว์เซอร์ Brave แล้วแตะ 'เสมอ'</translation>
 <translation id="3546439402724649282">Brave ถูกตั้งเป็นเบราว์เซอร์เริ่มต้นของคุณอยู่แล้ว</translation>
 <translation id="8389661903259423907">คุณตั้งเบราว์เซอร์เริ่มต้นไปแล้ว คุณสามารถเปลี่ยนเบราว์เซอร์เริ่มต้นได้ในการตั้งค่าแอป</translation>
+<translation id="1545749641540134597">Scan QR Code</translation>
+<translation id="5317781812114905957">คำแนะนำ</translation>
+<translation id="8515319483805157233">หากต้องการค้นหาด้วย QR Code ให้นำ QR Code มาไว้ตรงกลางกรอบ</translation>
 <translation id="8826007068782654809">ขอบคุณ</translation>
 <translation id="6665366815203065060">คุณเพิ่งส่งทิปให้กับ:</translation>
 <translation id="5441565662498481293">คุณกำลังส่งทิปโดยอัตโนมัติไปยัง:</translation>
@@ -393,35 +397,11 @@
 <translation id="8376263745431603066">เปิดใช้งาน "โหมดการคืน" (ทดลอง)</translation>
 <translation id="1383876407941801731">ค้นหา</translation>
 <translation id="8446884382197647889">เรียนรู้เพิ่มเติม</translation>
-<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
-<translation id="558614325644656740">พร้อมใช้งาน <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="3414885529641505869">ซื้อ <ph name="COIN_NAME"/></translation>
-<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> ที่อยู่การฝาก</translation>
-<translation id="4836242416604533644"><ph name="COIN_MEMO"/> บันทึกฝากเงิน</translation>
-<translation id="6755546361496900700">ดูตัวอย่างการแปลงหน่วย</translation>
-<translation id="5110244215256675209">ซื้อสกุลเงินดิจิทัล</translation>
-<translation id="2271556362602437160">.com</translation>
-<translation id="3727077517986954867">.us</translation>
 <translation id="13296465911709339">ข้อความของคุณได้ถูกคัดลอกไปยังคลิปบอร์ดแล้ว</translation>
 <translation id="2735834606413553397">คัดลอกที่อยู่สาธารณะไปยังคลิปบอร์ดแล้ว</translation>
-<translation id="7144878232160441200">ลองใหม่</translation>
 <translation id="2977461003134694205">สถิติความเป็นส่วนตัว</translation>
-<translation id="2956070106555335453">สรุป</translation>
-<translation id="1366855498335432549">ฝาก</translation>
-<translation id="1301340234286078471">แปลงหน่วย</translation>
 <translation id="223536150967420869">ซื้อ</translation>
-<translation id="4584930231524505442">ฉันต้องการแปลงหน่วย...</translation>
-<translation id="5749014321384313843">ฉันต้องการจ่าย...</translation>
-<translation id="2480674848181564169">ยอดเงินไม่เพียงพอต่อการแปลงสกุลเงิน</translation>
-<translation id="2215334405220411393">จำนวนขั้นต่ำในเพื่อแปลงค่าอยู่ที่ : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6702658079816271889">ไม่สามารถเชื่อมต่อได้</translation>
-<translation id="7742417737698031726">ค่าธรรมเนียม</translation>
-<translation id="2122225204180056042">คุณจะได้รับ</translation>
-<translation id="6432284126416751397">ยืนยันการแปลงหน่วย</translation>
-<translation id="3891414008432200754">ราคา</translation>
-<translation id="3733576242118819803">ยืนยัน (<ph name="REMAINING_TIME"/>s)</translation>
-<translation id="1627064138060308910">การสนทนาล้มเหลว โปรดลองอีกครั้ง</translation>
-<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="2956070106555335453">สรุป</translation>
 <translation id="7465614181960492526">รับโทเค็นเพื่อนำไปตอบแทน</translation>
 <translation id="244362569344671266">รับโทเค็นผ่านการดูโฆษณาส่วนตัวของ Brave เพื่อนำไปสนับสนุนผู้สร้างเนื้อหาโดยอัตโนมัติ</translation>
 <translation id="631124996535890460">หากดำเนินการต่อ จะถือว่าคุณยอมรับ <ph name="TERMS_OF_SERVICE"/> และ <ph name="PRIVACY_POLICY"/></translation>
@@ -452,18 +432,6 @@
 <translation id="2434574859640694129">หลังจากที่คุณได้รับเงินค่าโฆษณาก้อนแรกแล้ว คุณสามารถกลับมาให้ทิปครีเอเตอร์คนนี้ได้!</translation>
 <translation id="207242986925259074">การแนะนำสั้นๆ สำหรับผู้เริ่มต้น</translation>
 <translation id="8342862030112839977">การจ่าย Reward ครั้งที่ 1 จะเข้าบัญชีภายใน:</translation>
-<translation id="8037420924417098685">หากต้องการเริ่มการโทรฟรี ให้เปิดการทำงานของ Brave รีวอร์ด</translation>
-<translation id="8961724619078500274">ด้วย Brave รีวอร์ด คุณจะสามารถรับโทเค็นจากการดูโฆษณาแบบส่วนตัว (ข้อมูลของคุณจะปลอดภัย) เปลี่ยนโทเค็นเหล่านั้นเป็นเงินสด บัตรของขวัญ… หรือแม้แต่เป็นทิปให้แก่เว็บไซต์ที่คุณชื่นชอบ โดยไม่มีการติดตาม และไม่ทำให้การทำงานช้าลง</translation>
-<translation id="7307847920988946894">เปิดใช้งาน Rewards</translation>
-<translation id="7872993190040589450">การเปิดใช้งานจะถือว่าคุณยอมรับ<ph name="TERMS_OF_SERVICE"/>และ<ph name="PRIVACY_POLICY"/></translation>
-<translation id="6128511569382736135">หากต้องการเริ่มการโทรฟรี ให้เปิดใช้งาน Brave Private Ads</translation>
-<translation id="7930006085154756245">ด้วย Brave Private Ads คุณจะสามารถรับโทเค็นจากการดูโฆษณาแบบส่วนตัว (ข้อมูลของคุณจะปลอดภัย) เปลี่ยนโทเค็นเหล่านั้นเป็นเงินสด บัตรของขวัญ… หรือแม้แต่เป็นทิปให้แก่เว็บไซต์ที่คุณชื่นชอบ โดยไม่มีการติดตาม และไม่ทำให้การทำงานช้าลง</translation>
-<translation id="4992617448154987397">เปิดการทำงานของ Brave Private Ads</translation>
-<translation id="3415016869273103668">คุณสามารถเริ่มการโทรฟรีได้เลยตอนนี้</translation>
-<translation id="7073631403665023390">คลิกหรือแตะที่ใดก็ได้บนหน้าจอเพื่อดำเนินการต่อใน Brave Talk</translation>
-<translation id="626339649633171286">ต้องการดูข้อมูลเพิ่มเติมเกี่ยวกับ Brave รีวอร์ดใช่ไหม <ph name="TAKE_QUICK_TOUR"/></translation>
-<translation id="3604285424134705930">แปลง <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> เป็น <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/> เรียบร้อยแล้ว</translation>
-<translation id="392587271502873865">โปรดตรวจสอบการเชื่อมต่อเครือข่าย</translation>
 <translation id="7889432931837317731">เปิดโดยอัตโนมัติเมื่อเป็นไปได้</translation>
 <translation id="8967385052772844086">ดูรายงานความเป็นส่วนตัวฉบับเต็ม</translation>
 <translation id="6864343534748973390">ยอดนิยม</translation>
@@ -591,9 +559,6 @@
 <translation id="5050890334032852465">บันทึกรายการเฝ้าดูของบัญชี</translation>
 <translation id="7755766175599167100">ค้นหาโทเค็น</translation>
 <translation id="3835223348537121988">ยอดคงเหลือ:</translation>
-<translation id="2490428413101944234">Test faucet</translation>
-<translation id="2581671693710952401">รับอีเธอร์</translation>
-<translation id="8165484222652118977">รับ Ether จาก Faucet สำหรับเครือข่ายทดสอบ <ph name="NETWORK"/></translation>
 <translation id="7420359180991315365">ไปที่ Wyre</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="3784455785234192852">ล็อค</translation>
@@ -605,6 +570,12 @@
 <translation id="5693968582510626466">การล้างข้อมูลธุรกรรมอาจเป็นประโยชน์ต่อนักพัฒนาหรือเป็นประโยชน์เมื่อล้างสถานะบนเซิร์ฟเวอร์ภายใน</translation>
 <translation id="5421107279168565467">คุณแน่ใจหรือว่าต้องการรีเซ็ตข้อมูลธุรกรรมและข้อมูล Nonce ซึ่งตัวเลือกนี้ส่วนใหญ่จะใช้โดยนักพัฒนาที่รันเซิร์ฟเวอร์ทดสอบในเครื่อง กรุณาพิมพ์ "<ph name="CONFIRMATION_PHRASE"/>" เพื่อยืนยัน</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# นาที} other {# นาที}}</translation>
+<translation id="8146860193318415026">สตรีมวิดีโอโดยไม่มีโฆษณา</translation>
+<translation id="6311019535466417620">ไม่มีโฆษณาก่อนเริ่มวิดีโอ</translation>
+<translation id="4274652342814424451">ไม่มีโฆษณาระหว่างดูวิดีโอ</translation>
+<translation id="1721710839767183848">ไม่มีโฆษณาบนหน้า</translation>
+<translation id="4647035642622555398">ปราศจากการรบกวน</translation>
+<translation id="4122515759479497554">ค้นหาวิดีโอ</translation>
 <translation id="4449475351935531438">Brave Firewall + VPN</translation>
 <translation id="719977489961414786">อัปเกรดเป็น VPN เพื่อปกป้องการเชื่อมต่อของคุณและบล็อกตัวติดตามที่เข้าแทรกแซงได้ทุกที่</translation>
 <translation id="3435896845095436175">เปิดการใช้งาน</translation>
@@ -808,6 +779,9 @@
 <translation id="5233638681132016545">แท็บใหม่</translation>
 <translation id="8006088103295786154">เข้าถึง Brave Wallet</translation>
 <translation id="5308380583665731573">เชื่อมต่อ</translation>
+<translation id="8030169304546394654">ไม่ได้เชื่อมต่อ</translation>
+<translation id="3423275441470187644">เชื่อถือ</translation>
+<translation id="2391762656119864333">เพิกถอน</translation>
 <translation id="3432029672560911238">บัญชีผู้ใช้</translation>
 <translation id="5753378322046059140">สลับบัญชี</translation>
 <translation id="3897092660631435901">Menu</translation>
@@ -884,5 +858,50 @@
 <translation id="7002577172732106572">แยกอุโมงค์ VPN</translation>
 <translation id="2832270987629018596">ที่อยู่ SOL ไม่ถูกต้อง</translation>
 <translation id="8181161042860463420">ยังไม่มีบัญชีโทเค็นที่เกี่ยวข้อง SOL จำนวนเล็กน้อยจะถูกใช้เพื่อสร้างและจัดหาทุน <ph name="CLICK_START"/>เรียนรู้เพิ่มเติม<ph name="CLICK_END"/></translation>
+<translation id="1304515257839771197">เปิดแอป <ph name="APP_NAME"/> หรือไม่</translation>
+<translation id="7653028065515320848"><ph name="CLICK_START"/>เรียนรู้เพิ่มเติมเกี่ยวกับการใช้ Rainbow Bridge<ph name="CLICK_END"/></translation>
+<translation id="8219806187375413057"><ph name="CLICK_START"/>เรียนรู้วิธีลดความเสี่ยงบน Rainbow Bridge<ph name="CLICK_END"/></translation>
+<translation id="1065082006518490444"><ph name="APP_NAME"/> เป็นบริการอิสระที่ช่วยให้คุณเชื่อมต่อทรัพย์สินของคุณข้ามเครือข่ายได้ และใช้คริปโตของคุณในเครือข่ายอื่นหรือในระบบนิเวศน์ DApp ทั้งนี้การเชื่อมต่อทรัพย์สินไปยังเครือข่ายอื่นมีความเสี่ยง</translation>
+<translation id="8423380132356660250">เปิดแอป <ph name="APP_NAME"/></translation>
 <translation id="168154537623654021">กำลังอัปเดตโปรไฟล์ VPN ...</translation>
+<translation id="7457027586454688423">ใส่รหัสผ่าน Brave Wallet ของคุณ</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">พร้อมใช้งาน <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">ซื้อ <ph name="COIN_NAME"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> ที่อยู่การฝาก</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> บันทึกฝากเงิน</translation>
+<translation id="6755546361496900700">ดูตัวอย่างการแปลงหน่วย</translation>
+<translation id="5110244215256675209">ซื้อสกุลเงินดิจิทัล</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="7144878232160441200">ลองใหม่</translation>
+<translation id="1366855498335432549">ฝาก</translation>
+<translation id="1301340234286078471">แปลงหน่วย</translation>
+<translation id="4584930231524505442">ฉันต้องการแปลงหน่วย...</translation>
+<translation id="5749014321384313843">ฉันต้องการจ่าย...</translation>
+<translation id="2480674848181564169">ยอดเงินไม่เพียงพอต่อการแปลงสกุลเงิน</translation>
+<translation id="2215334405220411393">จำนวนขั้นต่ำในเพื่อแปลงค่าอยู่ที่ : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">ไม่สามารถเชื่อมต่อได้</translation>
+<translation id="7742417737698031726">ค่าธรรมเนียม</translation>
+<translation id="2122225204180056042">คุณจะได้รับ</translation>
+<translation id="6432284126416751397">ยืนยันการแปลงหน่วย</translation>
+<translation id="3891414008432200754">ราคา</translation>
+<translation id="3733576242118819803">ยืนยัน (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">การสนทนาล้มเหลว โปรดลองอีกครั้ง</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="8037420924417098685">หากต้องการเริ่มการโทรฟรี ให้เปิดการทำงานของ Brave รีวอร์ด</translation>
+<translation id="8961724619078500274">ด้วย Brave รีวอร์ด คุณจะสามารถรับโทเค็นจากการดูโฆษณาแบบส่วนตัว (ข้อมูลของคุณจะปลอดภัย) เปลี่ยนโทเค็นเหล่านั้นเป็นเงินสด บัตรของขวัญ… หรือแม้แต่เป็นทิปให้แก่เว็บไซต์ที่คุณชื่นชอบ โดยไม่มีการติดตาม และไม่ทำให้การทำงานช้าลง</translation>
+<translation id="7307847920988946894">เปิดใช้งาน Rewards</translation>
+<translation id="7872993190040589450">การเปิดใช้งานจะถือว่าคุณยอมรับ<ph name="TERMS_OF_SERVICE"/>และ<ph name="PRIVACY_POLICY"/></translation>
+<translation id="6128511569382736135">หากต้องการเริ่มการโทรฟรี ให้เปิดใช้งาน Brave Private Ads</translation>
+<translation id="7930006085154756245">ด้วย Brave Private Ads คุณจะสามารถรับโทเค็นจากการดูโฆษณาแบบส่วนตัว (ข้อมูลของคุณจะปลอดภัย) เปลี่ยนโทเค็นเหล่านั้นเป็นเงินสด บัตรของขวัญ… หรือแม้แต่เป็นทิปให้แก่เว็บไซต์ที่คุณชื่นชอบ โดยไม่มีการติดตาม และไม่ทำให้การทำงานช้าลง</translation>
+<translation id="4992617448154987397">เปิดการทำงานของ Brave Private Ads</translation>
+<translation id="3415016869273103668">คุณสามารถเริ่มการโทรฟรีได้เลยตอนนี้</translation>
+<translation id="7073631403665023390">คลิกหรือแตะที่ใดก็ได้บนหน้าจอเพื่อดำเนินการต่อใน Brave Talk</translation>
+<translation id="626339649633171286">ต้องการดูข้อมูลเพิ่มเติมเกี่ยวกับ Brave รีวอร์ดใช่ไหม <ph name="TAKE_QUICK_TOUR"/></translation>
+<translation id="3604285424134705930">แปลง <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> เป็น <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/> เรียบร้อยแล้ว</translation>
+<translation id="392587271502873865">โปรดตรวจสอบการเชื่อมต่อเครือข่าย</translation>
+<translation id="2490428413101944234">Test faucet</translation>
+<translation id="2581671693710952401">รับอีเธอร์</translation>
+<translation id="8165484222652118977">รับ Ether จาก Faucet สำหรับเครือข่ายทดสอบ <ph name="NETWORK"/></translation>
 </translationbundle>

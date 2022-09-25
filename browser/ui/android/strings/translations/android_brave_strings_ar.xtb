@@ -93,6 +93,7 @@
 <translation id="3545804467215833536">انقر لعرض Brave Shields</translation>
 <translation id="1724327820822194498">شاهد كل الأشياء السيئةالتي تم حظرها بواسطة Brave، في كل صفحة، باستخدام Shields.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> و<ph name="TRACKER"/> إعلانات أخرى &amp; تم حظر أجهزة التعقب</translation>
+<translation id="7256200875155794202"><ph name="BIG_TECH"/> وتم حظر أدوات تتبُّع الإعلانات الأخرى &amp;</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> إعلانات &amp;تم حظر أجهزة التعقب</translation>
 <translation id="8281886186245836920">تخطّي</translation>
 <translation id="6165508094623778733">اعرف المزيد</translation>
@@ -117,6 +118,9 @@
 <translation id="19715420010996093">حدد متصفح Brave وانقر على "دائماً"</translation>
 <translation id="3546439402724649282">تم تعيين Brave بالفعل كمتصفح افتراضي.</translation>
 <translation id="8389661903259423907">لقد قمت بالفعل بتعيين المتصفح الافتراضي. يمكنك تغيير المتصفح الافتراضي في إعدادات التطبيق الخاصة بك.</translation>
+<translation id="1545749641540134597">مسح كود الاستجابة السريعة QR</translation>
+<translation id="5317781812114905957">تعليمات</translation>
+<translation id="8515319483805157233">للبحث عن طريق رمز الاستجابة السريعة، قم بمحاذاة رمز الاستجابة السريعة في وسط الإطار.</translation>
 <translation id="8826007068782654809">شكراً لك</translation>
 <translation id="6665366815203065060">تم إرسال إكراميتك للتو إلى:</translation>
 <translation id="5441565662498481293">إنك ترسل الإكراميات تلقائيًا إلى:</translation>
@@ -389,35 +393,11 @@
 <translation id="8376263745431603066">تمكين "الوضع الليلي" (تجريبي)</translation>
 <translation id="1383876407941801731">بحث</translation>
 <translation id="8446884382197647889">مزيد من المعلومات</translation>
-<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
-<translation id="558614325644656740">متاح <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="3414885529641505869">اشترِ <ph name="COIN_NAME"/></translation>
-<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> عنوان الإيداع</translation>
-<translation id="4836242416604533644"><ph name="COIN_MEMO"/> مذكرة الإيداع</translation>
-<translation id="6755546361496900700">معاينة التحويل</translation>
-<translation id="5110244215256675209">اشتر عملة رقمية مشفرة</translation>
-<translation id="2271556362602437160">.com</translation>
-<translation id="3727077517986954867">.us</translation>
 <translation id="13296465911709339">تم نسخ النص الخاص بك إلى الحافظة.</translation>
 <translation id="2735834606413553397">تم نسخ العنوان العام إلى الحافظة.</translation>
-<translation id="7144878232160441200">إعادة المحاولة</translation>
 <translation id="2977461003134694205">إحصائيات الخصوصية</translation>
-<translation id="2956070106555335453">ملخص</translation>
-<translation id="1366855498335432549">إيداع</translation>
-<translation id="1301340234286078471">تحويل</translation>
 <translation id="223536150967420869">شراء</translation>
-<translation id="4584930231524505442">أريد تحويل ...</translation>
-<translation id="5749014321384313843">أريد أن أنفق ...</translation>
-<translation id="2480674848181564169">لا يوجد رصيد كافي للتحويل</translation>
-<translation id="2215334405220411393">الحد الأدنى للمبلغ المراد تحويله هو <ph name="COIN_BALANCE"/><ph name="COIN_NAME"/></translation>
-<translation id="6702658079816271889">غير قادر على الاتصال</translation>
-<translation id="7742417737698031726">الرسوم</translation>
-<translation id="2122225204180056042">سوف تحصل على</translation>
-<translation id="6432284126416751397">تأكيد التحويل</translation>
-<translation id="3891414008432200754">السعر</translation>
-<translation id="3733576242118819803">تأكيد (<ph name="REMAINING_TIME"/>s)</translation>
-<translation id="1627064138060308910">فشل التحويل. يُرجى المحاولة مرة أخرى.</translation>
-<translation id="1449790603979388000"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
+<translation id="2956070106555335453">ملخص</translation>
 <translation id="7465614181960492526">اكسب العملات الرمزية &amp; وأعطها مرة أخرى</translation>
 <translation id="244362569344671266">اربح العملات الرمزية من خلال عرض إعلانات Brave الخاصة وادعم منشئي المحتوى تلقائياً.</translation>
 <translation id="631124996535890460">بالمتابعة، فإنك توافق على <ph name="TERMS_OF_SERVICE"/> and <ph name="PRIVACY_POLICY"/>.</translation>
@@ -448,18 +428,6 @@
 <translation id="2434574859640694129">بعد تلقي أول عائد لإعلاناتك، يمكنك العودة ودفع إكرامية لمنشئ المحتوى هذا!</translation>
 <translation id="207242986925259074">جولة تنشيطية سريعة</translation>
 <translation id="8342862030112839977">سوف تصل دفعة المكافآت الأولى الخاصة بك عن طريق:</translation>
-<translation id="8037420924417098685">للبدء في إجراء مكالمة مجانية، قم بتشغيل Brave Rewards.</translation>
-<translation id="8961724619078500274">مع Brave Rewards ، تكسب رموزًا لعرض الإعلانات الخاصة (بياناتك آمنة). حوّل هذه الرموز إلى نقود أو بطاقات هدايا ... أو حتى بقشيش للمواقع التي تحبها. لا نتبع سياسة التعقب أو التباطؤ.</translation>
-<translation id="7307847920988946894">تشغيل المكافآت</translation>
-<translation id="7872993190040589450">من خلال التمكين، فإنك بذلك توافق على <ph name="TERMS_OF_SERVICE"/>و<ph name="PRIVACY_POLICY"/>.</translation>
-<translation id="6128511569382736135">للبدء في إجراء مكالمة مجانية، قم بتمكين Brave Private Ads.</translation>
-<translation id="7930006085154756245">مع Brave Private Ads، تربح رموزًا لعرض الإعلانات الخاصة (بياناتك آمنة). حوّل هذه الرموز إلى نقود أو بطاقات هدايا ... أو حتى بقشيش للمواقع التي تحبها. لا نتبع سياسة التعقب أو التباطؤ.</translation>
-<translation id="4992617448154987397">تشغيل Brave Private Ads</translation>
-<translation id="3415016869273103668">يمكنك إجراء مكالمة مجانية الآن</translation>
-<translation id="7073631403665023390">انقر أو اضغط في أي مكان على الشاشة للمتابعة إلى Brave Talk.</translation>
-<translation id="626339649633171286">هل ترغب في معرفة المزيد عن Brave Rewards؟<ph name="TAKE_QUICK_TOUR"/>.</translation>
-<translation id="3604285424134705930">لقد قمت بتحويل <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> إلى <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
-<translation id="392587271502873865">يُرجى التحقق من اتصالك بالشبكة.</translation>
 <translation id="7889432931837317731">الفتح تلقائياً عندما يكون ذلك ممكناً</translation>
 <translation id="8967385052772844086">عرض تقرير الخصوصية الكامل</translation>
 <translation id="6864343534748973390">الأكثر شهرة</translation>
@@ -587,9 +555,6 @@
 <translation id="5050890334032852465">حفظ قائمة مراقبة الحساب</translation>
 <translation id="7755766175599167100">البحث عن الرموز المميزة</translation>
 <translation id="3835223348537121988">الرصيد:</translation>
-<translation id="2490428413101944234">اختبار الصنبور</translation>
-<translation id="2581671693710952401">احصل على إيثر</translation>
-<translation id="8165484222652118977">احصل على الإيثريوم من صنبور<ph name="NETWORK"/>لاختبار الشبكة</translation>
 <translation id="7420359180991315365">الاستمرار إلى Wyre</translation>
 <translation id="8488282162676695335">محفظة Brave</translation>
 <translation id="3784455785234192852">القفل بإحكام</translation>
@@ -601,6 +566,12 @@
 <translation id="5693968582510626466">قد يكون مسح التداولات مفيدًا للمطورين أو عند مسح الحالة على خادم محلي</translation>
 <translation id="5421107279168565467">هل أنت متأكد من أنك تريد إعادة تعيين المعاملة ومعلومات الرقم الخاص؟ يستخدم هذا الخيار في الغالب من قبل المطورين الذين يقومون بتشغيل خادم اختبار محلي. اكتب "<ph name="CONFIRMATION_PHRASE"/> " للتأكيد.</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# دقيقة} other {# دقائق}}</translation>
+<translation id="8146860193318415026">بث مقاطع الفيديو. بدون إعلانات.</translation>
+<translation id="6311019535466417620">بدون إعلانات قبل تشغيل مقطع الفيديو لديك</translation>
+<translation id="4274652342814424451">بدون إعلانات أثناء تشغيل مقطع الفيديو</translation>
+<translation id="1721710839767183848">بدون إعلانات على الصفحة</translation>
+<translation id="4647035642622555398">بدون انقطاعات</translation>
+<translation id="4122515759479497554">البحث عن مقطع الفيديو</translation>
 <translation id="4449475351935531438">Brave Firewall + VPN</translation>
 <translation id="719977489961414786">قم بالترقية إلى VPN لحماية اتصالك وحظر أجهزة التتبع الغازية في كل مكان.</translation>
 <translation id="3435896845095436175">تفعيل الإضافات</translation>
@@ -804,6 +775,9 @@
 <translation id="5233638681132016545">علامة تبويب جديدة</translation>
 <translation id="8006088103295786154">الدخول إلى محفظة Brave</translation>
 <translation id="5308380583665731573">اتصال</translation>
+<translation id="8030169304546394654">قُطع الاتصال</translation>
+<translation id="3423275441470187644">الثقة</translation>
+<translation id="2391762656119864333">إبطال</translation>
 <translation id="3432029672560911238">حساب المستخدم</translation>
 <translation id="5753378322046059140">تبديل الحساب</translation>
 <translation id="3897092660631435901">القائمة</translation>
@@ -880,5 +854,50 @@
 <translation id="7002577172732106572">الانقسام النفقي</translation>
 <translation id="2832270987629018596">عنوان SOL غير صالح</translation>
 <translation id="8181161042860463420">حساب العملة الرمزية المرتبط غير موجود حتى الآن. سينفق مبلغًا صغيرًا من SOL لإنشائه وتمويله. <ph name="CLICK_START"/>تعرف على المزيد<ph name="CLICK_END"/></translation>
+<translation id="1304515257839771197">هل ترغب في فتح تطبيق <ph name="APP_NAME"/>؟</translation>
+<translation id="7653028065515320848"><ph name="CLICK_START"/>تعرّف على المزيد حول استخدام تطبيق Rainbow Bridge<ph name="CLICK_END"/></translation>
+<translation id="8219806187375413057"><ph name="CLICK_START"/>تعرّف على كيفية تقليل المخاطر على تطبيق Rainbow Bridge<ph name="CLICK_END"/></translation>
+<translation id="1065082006518490444"><ph name="APP_NAME"/> هي خدمة مستقلة تساعدك على ربط الأصول عبر الشبكات، واستخدام العملة المشفرة الخاصة بك على الشبكات الأخرى ونُظم الاتصال المشترك الأخرى لـ DApp. ينطوي ربط الأصول عبر شبكات أخرى على بعض المخاطر.</translation>
+<translation id="8423380132356660250">فتح التطبيق <ph name="APP_NAME"/></translation>
 <translation id="168154537623654021">جارٍ تحديث ملف تعريف VPN ...</translation>
+<translation id="7457027586454688423">أدخل كلمة مرور محفظة Brave الخاصة بك</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">متاح <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">اشترِ <ph name="COIN_NAME"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> عنوان الإيداع</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> مذكرة الإيداع</translation>
+<translation id="6755546361496900700">معاينة التحويل</translation>
+<translation id="5110244215256675209">اشتر عملة رقمية مشفرة</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="7144878232160441200">إعادة المحاولة</translation>
+<translation id="1366855498335432549">إيداع</translation>
+<translation id="1301340234286078471">تحويل</translation>
+<translation id="4584930231524505442">أريد تحويل ...</translation>
+<translation id="5749014321384313843">أريد أن أنفق ...</translation>
+<translation id="2480674848181564169">لا يوجد رصيد كافي للتحويل</translation>
+<translation id="2215334405220411393">الحد الأدنى للمبلغ المراد تحويله هو <ph name="COIN_BALANCE"/><ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">غير قادر على الاتصال</translation>
+<translation id="7742417737698031726">الرسوم</translation>
+<translation id="2122225204180056042">سوف تحصل على</translation>
+<translation id="6432284126416751397">تأكيد التحويل</translation>
+<translation id="3891414008432200754">السعر</translation>
+<translation id="3733576242118819803">تأكيد (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">فشل التحويل. يُرجى المحاولة مرة أخرى.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
+<translation id="8037420924417098685">للبدء في إجراء مكالمة مجانية، قم بتشغيل Brave Rewards.</translation>
+<translation id="8961724619078500274">مع Brave Rewards ، تكسب رموزًا لعرض الإعلانات الخاصة (بياناتك آمنة). حوّل هذه الرموز إلى نقود أو بطاقات هدايا ... أو حتى بقشيش للمواقع التي تحبها. لا نتبع سياسة التعقب أو التباطؤ.</translation>
+<translation id="7307847920988946894">تشغيل المكافآت</translation>
+<translation id="7872993190040589450">من خلال التمكين، فإنك بذلك توافق على <ph name="TERMS_OF_SERVICE"/>و<ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="6128511569382736135">للبدء في إجراء مكالمة مجانية، قم بتمكين Brave Private Ads.</translation>
+<translation id="7930006085154756245">مع Brave Private Ads، تربح رموزًا لعرض الإعلانات الخاصة (بياناتك آمنة). حوّل هذه الرموز إلى نقود أو بطاقات هدايا ... أو حتى بقشيش للمواقع التي تحبها. لا نتبع سياسة التعقب أو التباطؤ.</translation>
+<translation id="4992617448154987397">تشغيل Brave Private Ads</translation>
+<translation id="3415016869273103668">يمكنك إجراء مكالمة مجانية الآن</translation>
+<translation id="7073631403665023390">انقر أو اضغط في أي مكان على الشاشة للمتابعة إلى Brave Talk.</translation>
+<translation id="626339649633171286">هل ترغب في معرفة المزيد عن Brave Rewards؟<ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">لقد قمت بتحويل <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> إلى <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">يُرجى التحقق من اتصالك بالشبكة.</translation>
+<translation id="2490428413101944234">اختبار الصنبور</translation>
+<translation id="2581671693710952401">احصل على إيثر</translation>
+<translation id="8165484222652118977">احصل على الإيثريوم من صنبور<ph name="NETWORK"/>لاختبار الشبكة</translation>
 </translationbundle>

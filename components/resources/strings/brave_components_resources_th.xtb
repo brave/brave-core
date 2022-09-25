@@ -66,6 +66,10 @@
 <translation id="6274899614137380422">แสดง Binance</translation>
 <translation id="5585019845078534178">บัตร</translation>
 <translation id="3870475560794762985">แสดงรูปที่ได้รับการสนับสนุน</translation>
+<translation id="8466529005131466476">คุณสามารถได้รายได้จากการดูไซต์ผู้สนับสนุน</translation>
+<translation id="3955742714798578476">คุณกำลังได้รายได้จากการดูรูปภาพของสนับสนุน</translation>
+<translation id="7822618650711767369">รูปภาพของผู้สนับสนุนเกื้อหนุน Brave ซึ่งใน Brave Reward คุณสามารถรับส่วนหนึ่งของรายได้จากรูปภาพของผู้สนับสนุนและสนับสนุนเนื้อหาของผู้สร้างด้วย!</translation>
+<translation id="5579480493856401823">การปิดไซต์ผู้สนับสนุนจะลดโทเค็นที่คุณได้รับลงและลดการสนับสนุนผู้สร้างเนื้อหาในแต่ละเดือนลง</translation>
 <translation id="2875302873837723333">ไซต์ยอดนิยม</translation>
 <translation id="8173998484743827990">สถิติ Brave</translation>
 <translation id="383680190590774040">นาฬิกา</translation>
@@ -73,6 +77,8 @@
 <translation id="3159285901314605198">ภาพพื้นหลัง</translation>
 <translation id="385051799172605136">กลับ</translation>
 <translation id="4225429340218993596">สีทึบ</translation>
+<translation id="7610541582755894669">ไล่โทนสี</translation>
+<translation id="1606851618930975029">รีเฟรชทุกแท็บใหม่</translation>
 <translation id="9024104284526126630">คุณสามารถเริ่มโทรแบบส่วนตัวใน Brave</translation>
 <translation id="4903286433687221248">เริ่มการโทรแบบไม่จำกัดกับเพื่อนและเพื่อนร่วมงานใน Brave Talk</translation>
 <translation id="7115051913071512405">ลองเลย</translation>
@@ -199,14 +205,14 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="4428871418618312983">โฆษณาที่ได้รับในเดือนนี้</translation>
 <translation id="4229016885653790965">ขออภัย! ยังไม่มีโฆษณาในพื้นที่ของคุณ</translation>
 <translation id="2539279826042558064">Brave Rewards และโฆษณายังทำงานบนอุปกรณ์ของคุณไม่ได้ในขณะนี้</translation>
-<translation id="2532127066761785857">จำนวนโฆษณาสูงสุดที่แสดง</translation>
-<translation id="6177749339095882127">0 Ads ต่อชั่วโมง</translation>
-<translation id="5171071066587880677">1 โฆษณาต่อชั่วโมง</translation>
-<translation id="7885315050812316860">2 โฆษณาต่อชั่วโมง</translation>
-<translation id="2232753742630178222">3 โฆษณาต่อชั่วโมง</translation>
-<translation id="905529390827000221">4 โฆษณาต่อชั่วโมง</translation>
-<translation id="7694167481321619202">5 โฆษณาต่อชั่วโมง</translation>
-<translation id="3705420658531870884">10 Ads ต่อชั่วโมง</translation>
+<translation id="5736977383725358876">ความถี่การแจ้งเตือนโฆษณา</translation>
+<translation id="7701040980221191251">ไม่มี</translation>
+<translation id="767929144984201135">สูงสุด 1 โฆษณาต่อชั่วโมง</translation>
+<translation id="3122281951051829161">สูงสุด 2 โฆษณาต่อชั่วโมง</translation>
+<translation id="3431180326971210034">สูงสุด 3 โฆษณาต่อชั่วโมง</translation>
+<translation id="8718553520664259870">สูงสุด 4 โฆษณาต่อชั่วโมง</translation>
+<translation id="8827015466803589071">สูงสุด 5 โฆษณาต่อชั่วโมง</translation>
+<translation id="2293009346092992234">สูงสุด 10 โฆษณาต่อชั่วโมง</translation>
 <translation id="2356652719351432565">โฆษณาในภูมิภาค</translation>
 <translation id="3216275550298493597">การดำเนินการนี้จะอนุญาตให้ Brave แสดงโฆษณาสำหรับภูมิภาคของคุณโดยเฉพาะ</translation>
 <translation id="8446884382197647889">เรียนรู้เพิ่มเติม</translation>
@@ -273,8 +279,9 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="5955021799827127089">ข้อผิดพลาด: ภูมิภาคบัญชีอื่น</translation>
 <translation id="5260522591743022748">ดูเหมือนว่า Brave Rewards ของคุณจะได้รับการยืนยันด้วยบัญชีผู้ใช้ <ph name="PROVIDER"/> อีกบัญชีหนึ่ง กรุณายืนยันอีกครั้งโดยใช้บัญชีก่อนหน้าของคุณ</translation>
 <translation id="5111921830714291902">ข้อผิดพลาด: บัญชีแตกต่างกัน</translation>
-<translation id="6933939911547091461">ขออภัย ไม่สามารถยืนยัน Brave Rewards ของคุณได้ เนื่องจากภูมิภาคของคุณยังไม่รองรับการยืนยัน Brave Rewards ในขณะนี้</translation>
-<translation id="8218538368080510976">ข้อผิดพลาด: ไม่รองรับสำหรับภูมิภาคนี้</translation>
+<translation id="1024520300696337331">บัญชี <ph name="PROVIDER"/> ของคุณไม่สามารถเชื่อมต่อโพรไฟล์ Brave Rewards ได้ในขณะนี้ บัญชี <ph name="PROVIDER"/> ของคุณสมัครในประเทศที่ยังไม่รองรับการเชื่อมต่อไปยัง Brave Rewards</translation>
+<translation id="619384413404021992">ดู <ph name="LINK_BEGIN"/>รายการภูมิภาคที่รองรับในปัจจุบันและเรียนรู้เพิ่มเติม<ph name="END_LINK"/>เกี่ยวกับการเชื่อมต่อบัญชีที่ไม่รับรองไปที่ Brave Rewards</translation>
+<translation id="7193389978208728181">ข้อผิดพลาด: ภูมิภาคปัจจุบันไม่รองรับ</translation>
 <translation id="5382684862562314222">ยังไม่รองรับ BAT ในภูมิภาคของคุณบน Uphold</translation>
 <translation id="9074594632540931067">เกิดข้อผิดพลาด: BAT ไม่พร้อมใช้งาน</translation>
 <translation id="5376524136040178759">ขณะนี้มีข้อจำกัดบางประการสำหรับบัญชี Uphold ของคุณ กรุณาลงชื่อเข้าใช้บัญชี Uphold ของคุณและตรวจสอบว่ามีการแจ้งเตือนหรือข้อกำหนดบัญชีที่เหลือที่ต้องดำเนินการให้เสร็จสิ้นหรือไม่ แล้วลองอีกครั้ง ตัวอย่างเช่น คุณอาจต้องส่งข้อมูลเพิ่มเติมไปยัง Uphold</translation>
@@ -293,11 +300,10 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3222002542796906461">รับ Rewards ของคุณได้โดยตรงในบัญชีของคุณ</translation>
 <translation id="8304979233901023264">ฉันได้อ่านและยอมรับ <ph name="TOS_LINK_BEGIN"/>ข้อกำหนดในการให้บริการ<ph name="TOS_LINK_END"/> &amp;<ph name="PP_LINK_BEGIN"/>นโยบายความเป็นส่วนตัว<ph name="PP_LINK_END"/> ของ Brave</translation>
 <translation id="2359808026110333948">ดำเนินการต่อ</translation>
-<translation id="5112354605357157725">ดำเนินการต่อเพื่อเข้าสู่ระบบ</translation>
-<translation id="1280764044837262633"><ph name="PROVIDER"/> ต้องมียอดคงเหลือขั้นต่ำที่ <ph name="AMOUNT"/> BAT เพื่อสร้างบัญชี หากคุณเชื่อมต่อบัญชีก่อนหน้านี้</translation>
 <translation id="1892970806832316900">รอดำเนินการจนถึง <ph name="DATE"/></translation>
 <translation id="7849926087559412554">ขออภัย! เบราว์เซอร์ของคุณไม่สามารถรับโฆษณาส่วนตัวของ Brave ได้</translation>
 <translation id="5177429570315095022">คุณต้องอัปเดตเบราว์เซอร์ของคุณเพื่อดูโฆษณาต่อ</translation>
+<translation id="7352651011704765696">มีบางอย่างผิดพลาด</translation>
 <translation id="752216563428219524">โฆษณายังไม่ได้รับกำหนดค่าริ่มต้น กรุณารีเฟรชหน้า</translation>
 <translation id="7422678632904904341">จำนวน:</translation>
 <translation id="6969783933307596818">รีเฟรชอัตโนมัติทุก 5 วินาที</translation>
@@ -405,7 +411,6 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3586352807094428968">Brave จะเรียกเก็บ 5% ของจำนวนเงินทิปเพื่อเป็นค่าธรรมเนียมในการประมวลผล</translation>
 <translation id="207268487070188114">ทิปครั้งเดียว</translation>
 <translation id="69861679024013299">จำนวนทิปครั้งเดียว:</translation>
-<translation id="3669086939205397942">ช้าก่อน คุณยังไม่สามารถให้ทิปได้</translation>
 <translation id="3288812755711687300">โพสต์ของ <ph name="USER"/></translation>
 <translation id="5851002232791947896">ทวีตของ <ph name="USER"/></translation>
 <translation id="5531915212947569943">รู้สึกเสียใจที่เห็นคุณไปนะ…</translation>
@@ -490,10 +495,11 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="5530851178552343773">คุณได้กำหนดจำนวนเงิน [[reservedAmount]] [[currency]] ไว้ให้แก่ผู้สร้างสรรค์ที่ยังไม่ได้สมัครรับเงินสนับสนุน เบราว์เซอร์ของคุณจะพยายามส่งเงินสนับสนุนจนกว่าผู้สร้างสรรค์จะยืนยัน หรือจนกว่าจะครบ 90 วัน</translation>
 <translation id="5939518447894949180">รีเซ็ต</translation>
 <translation id="3157931365184549694">คืนค่า</translation>
+<translation id="5669281110673664811">ล้างรายการที่แยกออก</translation>
 <translation id="1797334173232638045">ไซต์ที่คุณปักหมุดไว้ได้ถูกย้ายไปยัง</translation>
 <translation id="542042553430131913">หากไม่มีการยืนยัน Brave Rewards ของคุณ ยอดคงเหลือ BAT ของคุณจะถูกจัดเก็บอยู่ในไฟล์บนอุปกรณ์ของคุณ</translation>
 <translation id="2142973554991645476">หากคุณต้องการเก็บรักษา BAT ของคุณในกรณีที่คุณจำเป็นต้องติดตั้งเบราว์เซอร์ใหม่หมดหรือฟอร์แมตอุปกรณ์ของคุณใหม่ และต้องการรับสิทธิประโยชน์อื่นๆ เช่น การเพิ่มหรือการถอน BAT ของคุณ เราขอแนะนำให้<ph name="LINK_BEGIN"/>ยืนยันความถูกต้อง<ph name="LINK_END"/></translation>
-<translation id="7354412786785889047">คุณสามารถสนับสนุนผู้สร้างเนื้อหานี้ได้โดยการส่งทิป ซึ่งเป็นหนึ่งในช่องทางการแสดงความขอบคุณที่ช่วยสร้างเนื้อหาดีๆ ผู้สร้างที่ยืนยันตัวตนแล้วจะได้รับเงินค่าทิปในช่วงสัปดาห์แรกของแต่ละเดือนปฏิทิน</translation>
+<translation id="5317144262906129592">คุณสามารถสนับสนุนผู้สร้างเนื้อหานี้ได้โดยการให้เงินสนับสนุน ถือเป็นวิธีขอบคุณผู้สร้างที่สร้างเนื้อหาดี ๆ</translation>
 <translation id="3074127054582480056">โปรดระวัง</translation>
 <translation id="3034163433136515805">ดูคิวอาร์โค้ด</translation>
 <translation id="1640793619390890218">สำหรับผู้ใช้ Rewards บน iOS ที่จะโอน BAT</translation>
@@ -534,7 +540,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="7410549756000115387">ไม่มีการบริจาคที่รอพิจารณา…</translation>
 <translation id="1963227389609234879">นำออกทั้งหมด</translation>
 <translation id="8706157865312453070">ไซต์ที่ยกเว้น</translation>
-<translation id="5119190679543565400">กู้คืนไซต์นี้</translation>
+<translation id="2501059654604370822">เลิกแยกออก</translation>
 <translation id="9075700728717335924">คุณได้ยกเว้น</translation>
 <translation id="4862817811647633830">ไซต์จากการสนับสนุนอัตโนมัติ</translation>
 <translation id="923467487918828349">แสดงทั้งหมด</translation>
@@ -605,7 +611,6 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="7604416013180651887">เชื่อมต่อกับ Gemini</translation>
 <translation id="2349109114223854255">โทเคนเข้าถึง Gemini ของคุณหมดอายุและไม่สามารถรีเฟรชได้ โปรดเชื่อมต่อใหม่อีกครั้ง</translation>
 <translation id="4848984536030986115">ไม่สามารถทำการเทรดได้</translation>
-<translation id="7352651011704765696">มีบางอย่างผิดพลาด</translation>
 <translation id="7097088316781182926">ยืนยันการเทรด</translation>
 <translation id="3488255243387417752">ขาย</translation>
 <translation id="7969910554171263591">รับ Quote</translation>
@@ -639,7 +644,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="1164622162816276433">ระดับช่วง 24่ชม.</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">เปิดใช้การรองรับ Unstoppable Domains ใน Brave หรือไม่</translation>
-<translation id="6783637972818687030">Brave จะใช้ Infura เพื่อออกคำสั่ง Ethereum JSON-RPC ไปเรียกสมาร์ทคอนแทรคจาก Unstoppable Domains เพื่อแก้ไขคำขอค้นหาชื่อโดเมน .crypto (และ .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin, .zil) หากคุณเปิดใช้งานคำสั่งนี้ Infura จะมองเห็นโดเมนดังกล่าวที่คุณพยายามเข้าชม แต่จะไม่เห็นโดเมนอื่นๆ โปรดอ่าน<ph name="BEGIN_INFURA_TOU_LINK"/>ข้อกำหนดและเงื่อนไขการใช้งาน<ph name="END_INFURA_TOU_LINK"/>และ<ph name="BEGIN_INFURA_PRIVACY_LINK"/>นโยบายความเป็นส่วนตัว<ph name="END_INFURA_PRIVACY_LINK"/></translation>
+<translation id="689573545156113164">Brave จะใช้ Infura เพื่อออกคำสั่ง Ethereum JSON-RPC ไปเรียกสมาร์ทคอนแทรคจาก Unstoppable Domains เพื่อแก้ไขคำขอค้นหาชื่อโดเมน .crypto (และ .x, .coin, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) หากคุณเปิดใช้งานคำสั่งนี้ Infura จะมองเห็นโดเมนดังกล่าวที่คุณพยายามเข้าชม แต่จะไม่เห็นโดเมนอื่น ๆ โปรดอ่าน <ph name="BEGIN_INFURA_TOU_LINK"/>เงื่อนไขการใช้งาน<ph name="END_INFURA_TOU_LINK"/> และ<ph name="BEGIN_INFURA_PRIVACY_LINK"/>นโยบายความเป็นส่วนตัว<ph name="END_INFURA_PRIVACY_LINK"/></translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">เปิดใช้การรองรับ Ethereum Name Service (ENS) ใน Brave หรือไม่</translation>
 <translation id="8328137586971750853">Brave จะใช้ Infura เพื่อออกคำสั่ง Ethereum JSON-RPC ไปยัง Smart Contract จาก Ethereum Name Service เพื่อแก้ไขคำขอค้นหาชื่อโดเมน .eth หากคุณเปิดใช้งานคำสั่งนี้ Infura จะมองเห็นโดเมน .eth ที่คุณพยายามเข้าชม แต่จะไม่เห็นโดเมนอื่นๆ โปรดอ่าน<ph name="BEGIN_INFURA_TOU_LINK"/>เงื่อนไขการใช้บริการ<ph name="END_INFURA_TOU_LINK"/>และ<ph name="BEGIN_INFURA_PRIVACY_LINK"/>นโยบายความเป็นส่วนตัว<ph name="END_INFURA_PRIVACY_LINK"/></translation>
@@ -802,16 +807,6 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="1512837998731269583">Ads และรายได้จะกลับมาอีกครั้งแล้ว ขอบคุณที่ช่วยเราปกป้อง Brave Rewards และโฆษณาที่รักษาความเป็นส่วนตัว</translation>
 <translation id="3247549836099021862">ติดต่อฝ่ายสนับสนุน</translation>
 <translation id="5234764350956374838">ปิด</translation>
-<translation id="8037420924417098685">หากต้องการเริ่มการโทรฟรี ให้เปิดการทำงานของ Brave Rewards</translation>
-<translation id="8961724619078500274">ด้วย Brave รีวอร์ด คุณจะสามารถรับโทเค็นจากการดูโฆษณาแบบส่วนตัว (ข้อมูลของคุณจะปลอดภัย) เปลี่ยนโทเค็นเหล่านั้นเป็นเงินสด บัตรของขวัญ… หรือแม้แต่เป็นทิปให้แก่เว็บไซต์ที่คุณชื่นชอบ โดยไม่มีการติดตาม และไม่ทำให้การทำงานช้าลง</translation>
-<translation id="7307847920988946894">เปิดใช้ Rewards</translation>
-<translation id="799591303418199877">การเปิดใช้งานจะถือว่าคุณยอมรับ <ph name="TOS_LINK_BEGIN"/>ข้อกำหนดในการให้บริการ<ph name="TOS_LINK_END"/> และ <ph name="PP_LINK_BEGIN"/>นโยบายความเป็นส่วนตัว<ph name="PP_LINK_END"/></translation>
-<translation id="6128511569382736135">หากต้องการเริ่มการโทรฟรี ให้เปิดใช้งาน Brave Private Ads</translation>
-<translation id="7930006085154756245">ด้วย Brave Private Ads คุณจะสามารถรับโทเค็นจากการดูโฆษณาแบบส่วนตัว (ข้อมูลของคุณจะปลอดภัย) เปลี่ยนโทเค็นเหล่านั้นเป็นเงินสด บัตรของขวัญ… หรือแม้แต่เป็นทิปให้แก่เว็บไซต์ที่คุณชื่นชอบ โดยไม่มีการติดตาม และไม่ทำให้การทำงานช้าลง</translation>
-<translation id="4992617448154987397">เปิดการทำงานของ Brave Private Ads</translation>
-<translation id="3415016869273103668">คุณสามารถเริ่มการโทรฟรีได้เลยตอนนี้</translation>
-<translation id="7073631403665023390">คลิกหรือแตะที่ใดก็ได้บนหน้าจอเพื่อดำเนินการต่อใน Brave Talk</translation>
-<translation id="9115939801961482572">ต้องการเรียนรู้เพิ่มเติมเกี่ยวกับ Brave Rewards ใช่ไหม <ph name="TOUR_LINK_BEGIN"/>ดูรายละเอียดคร่าวๆ<ph name="TOUR_LINK_END"/></translation>
 <translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>ดูรายละเอียดคร่าวๆ<ph name="TOUR_LINK_END"/> หรือ <ph name="LEARN_LINK_BEGIN"/>เรียนรู้<ph name="LEARN_LINK_END"/> รายละเอียดเพิ่มเติม</translation>
 <translation id="7465614181960492526">รับโทเค็นเพื่อนำไปตอบแทน</translation>
 <translation id="2731539192954672606">รับโทเค็นผ่านการดูโฆษณาที่เกี่ยวข้องกับความเป็นส่วนตัวเพื่อนำไปสนับสนุนเว็บไซต์และผู้สร้างเนื้อหาที่คุณชื่นชอบโดยอัตโนมัติ</translation>
@@ -824,8 +819,6 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3164498053837913829">(จากรายได้โฆษณาของคุณ)</translation>
 <translation id="6318696841371191107">ดูการแนะนำสั้นๆ</translation>
 <translation id="8465790416279415448">หากดำเนินการต่อ จะถือว่าคุณยอมรับ <ph name="TOS_LINK_BEGIN"/>ข้อกำหนดในการให้บริการ<ph name="TOS_LINK_END"/> และ <ph name="PP_LINK_BEGIN"/>นโยบายความเป็นส่วนตัว<ph name="PP_LINK_END"/></translation>
-<translation id="8222322431155185238">ให้ทิปด้วย Brave Rewards</translation>
-<translation id="1895476463085410109">รับ Rewards จากการชม Brave Private Ads และสนับสนุนคอนเทนต์ครีเอเตอร์โดยอัตโนมัติ</translation>
 <translation id="5705882733397021510">ย้อนกลับ</translation>
 <translation id="185034574799484512">มาดูรายละเอียดคร่าวๆ กัน</translation>
 <translation id="8281886186245836920">ข้าม</translation>
@@ -852,6 +845,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6609621505400013054">กระเป๋าเงิน bitFlyer เป็นบริการที่จัดการโดย bitFlyer, Inc</translation>
 <translation id="4361456403643555676">เมื่อยืนยัน Brave Rewards ของคุณและเชื่อมโยงกับบัญชี bitFlyer คุณจะสามารถจัดเก็บและจัดการโทเค็นที่คุณได้รับผ่าน Brave Rewards ได้ง่ายขึ้น</translation>
 <translation id="1411121707906693782"><ph name="LINK_BEGIN"/>เรียนรู้เพิ่มเติม<ph name="LINK_END"/>เกี่ยวกับวิธีเชื่อมโยงเบราว์เซอร์ Brave กับบัญชี bitFlyer ของคุณ</translation>
+<translation id="8303087505226646884">Brave Speedreader</translation>
 <translation id="7701466644604753106">เปิด Speedreader</translation>
 <translation id="763042262431778831">ปิด Speedreader</translation>
 <translation id="1148827340205946630">ผู้ใช้ปฏิเสธคำขอ</translation>
@@ -1208,6 +1202,9 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3292453499915466604">สภาพคล่องไม่เพียงพอ</translation>
 <translation id="805808215102934711">เปิดใช้งาน <ph name="FROM_ASSET_SYMBOL"/></translation>
 <translation id="3380365263193509176">ข้อผิดพลาดที่ไม่รู้จัก</translation>
+<translation id="471055802670233033">คุณใช้</translation>
+<translation id="7916618590403748182">คุณจะได้รับ</translation>
+<translation id="8328657208304368165">ยืนยันคำสั่งซื้อ</translation>
 <translation id="5071303414930953888">บัญชี <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">ต้องปลดล็อกกระเป๋าเงินก่อน</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> ไม่ใช่ที่อยู่ที่ถูกต้อง</translation>
@@ -1293,9 +1290,12 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="2095142195578664632">ต้องการความช่วยเหลือใช่ไหม โปรดดู</translation>
 <translation id="3253669416991680932">ฮาร์ดแวร์วอลเล็ตนี้ไม่รองรับการทำงานนี้</translation>
 <translation id="7457027586454688423">ใส่รหัสผ่าน Brave Wallet ของคุณ</translation>
-<translation id="2021055898001510484">เปิด rainbowbridge.app ไหม</translation>
-<translation id="6550403756693197933">การเชื่อมโยงสินทรัพย์ข้ามเครือข่ายทำให้คุณสามารถใช้คริปโตของคุณบนเครือข่ายอื่นและระบบนิเวศ DApp อื่นๆ ซึ่งการเชื่อมโยงสินทรัพย์กับเครือข่ายอื่นมีความเสี่ยงอยู่บ้าง</translation>
-<translation id="8315999527212828722">เปิด rainbowbridge.app</translation>
+<translation id="2873714185189940594">เปิดแอป Rainbow Bridge ไหม</translation>
+<translation id="2069777099181262239">Rainbow Bridge คือบริการอิสระที่ช่วยให้คุณเชื่อมต่อทรัพย์สินของคุณข้ามเครือข่ายได้ และใช้คริปโตในเครือข่ายอื่นหรือในระบบนิเวศน์ DApp ทั้งนี้การเชื่อมบริดจ์ทรัพย์สินไปยังเครือข่ายอื่นมีความเสี่ยง</translation>
+<translation id="7387899248733396663">เรียนรู้เพิ่มเติมเกี่ยวกับการใช้ Rainbow Bridge</translation>
+<translation id="3890567288132019108">เรียนรู้เพิ่มเติมเกี่ยวกับการลดความเสี่ยงบน Rainbow Bridge</translation>
+<translation id="1792917191129448067">เปิดแอป Rainbow Bridge</translation>
+<translation id="1522775706527775647">เชื่อมต่อ Aurora</translation>
 <translation id="4903322403594141291">เรียนรู้เพิ่มเติมเกี่ยวกับ Brave Wallet</translation>
 <translation id="3875185448438395303">อย่างน้อย:</translation>
 <translation id="2029465635925899949">8 ตัวอักษร</translation>
@@ -1304,7 +1304,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="574392208103952083">ปานกลาง</translation>
 <translation id="8297006494302853456">อ่อน</translation>
 <translation id="6782556046178425980">ก่อนที่คุณจะเริ่มสำรองข้อมูลกระเป๋าเงิน</translation>
-<translation id="9080057079069917346">วลีกู้คืน 12 คำเป็นกุญแจส่วนบุคคลที่คุณสามารถใช้เพื่อเข้าถึงกระเป๋าเงินของคุณอีกครั้งในกรณีที่อุปกรณ์เชื่อมต่อสูญหาย โปรดเก็บไว้ในที่ปลอดภัยและเรียงตามลำดับที่ปรากฏด้านล่าง</translation>
+<translation id="7119749028647909394">วลีกู้คืน 12-24 คำเป็นกุญแจส่วนบุคคลที่คุณสามารถใช้เพื่อเข้าถึงกระเป๋าเงินของคุณอีกครั้งในกรณีที่อุปกรณ์เชื่อมต่อสูญหาย โปรดเก็บไว้ในที่ปลอดภัยและเรียงตามลำดับที่ปรากฏด้านล่าง</translation>
 <translation id="3259018319025894691">Brave ไม่สามารถเข้าถึงวลีกู้คืนของคุณได้ โปรดเก็บไว้ในที่ปลอดภัยและอย่าเปิดเผยกับผู้อื่น</translation>
 <translation id="7650284207965419234"><ph name="TAG_BEFORE"/>คำเตือน: <ph name="TAG_AFTER"/>โปรดอย่าเปิดเผยวลีกู้คืนของคุณ เนื่องจากใครก็ตามที่มีวลีนี้จะสามารถนำสินทรัพย์ของคุณไปตลอดกาล</translation>
 <translation id="7509948206688764960">สำรองวลีกู้คืนกระเป๋าเงินของคุณ</translation>
@@ -1340,11 +1340,11 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3551682252653406110">ในการเชื่อมต่อกระเป๋าเงินที่คุณมีอยู่แล้ว คุณอาจต้องป้อนวลีกู้คืน ขณะนี้เรารองรับการกู้คืน/นำเข้าจากกระเป๋าเงิน Ethereum และ Solana</translation>
 <translation id="346929827081904572">กู้คืนจากวลีชุดคำศัพท์</translation>
 <translation id="5645597512426471834">12-24 คำ</translation>
-<translation id="6560930409313980969">พิมพ์วลีกู้คืน Brave Wallet 12 คำของคุณ</translation>
+<translation id="8158505311297755780">พิมพ์วลีกู้คืน Brave Wallet ของคุณ 12-24 คำ</translation>
 <translation id="5419707890586509000">นำเข้าจาก MetaMask</translation>
 <translation id="2265945811107390939">ใช้รหัสผ่าน MetaMask เพื่อนำเข้าวลีชุดคำศัพท์ของคุณ</translation>
 <translation id="7060680423657442298">ไม่เป็นไร ฉันจะสร้างกระเป๋าเงินใหม่</translation>
-<translation id="4570057016351082582">พิมพ์วลีกู้คืน MetaMask 12 คำของคุณ</translation>
+<translation id="5913194823092185468">พิมพ์วลีกู้คืน MetaMask ของคุณ 12-24 คำ</translation>
 <translation id="7720392926833259937">พิมพ์รหัสผ่าน MetaMask</translation>
 <translation id="6657585470893396449">รหัสผ่าน</translation>
 <translation id="6260144012548445299">เรียนรู้เพิ่มเติมเกี่ยวกับกระเป๋าเงินใหม่ของฉัน</translation>
@@ -1380,10 +1380,22 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6646456430109279404">อันดับที่ยี่สิบสอง</translation>
 <translation id="1961743941324393172">อันดับที่ยี่สิบสาม</translation>
 <translation id="9079035825546416393">อันดับที่ยี่สิบสี่</translation>
+<translation id="1558531209852594808">พบอักขระที่ไม่ใช่ ASCII!</translation>
+<translation id="442709594176931966">ดูข้อความดั้งเดิม</translation>
+<translation id="2239252396088484499">ดูข้อความแบบเข้ารหัส ASCII</translation>
 <translation id="2894654529758326923">ข้อมูล</translation>
 <translation id="152455748535966757">อันดับ</translation>
 <translation id="4958716607782044952">ปริมาณการซื้อขาย 24 ชั่วโมง</translation>
 <translation id="128834189395075789">มูลค่าตามราคาตลาด</translation>
+<translation id="1763942310723636241">รายละเอียดโทเค็น</translation>
+<translation id="2938264474197978104">ซ่อน <ph name="SYMBOL"/></translation>
+<translation id="3614009429760094268">ซ่อนโทเค็นหรือไม่</translation>
+<translation id="4038384774641714579">คุณสามารถทำให้ทรัพย์สินนี้แสดงอีกครั้งในอนาคตโดนคลิกที่ปุ่ม "+ Visible assets" ที่ด้านล่างของแท็บ "Portfolio"</translation>
+<translation id="1026825928738055872">คุณแน่ใจหรือว่าต้องการนำ "<ph name="ACCOUNT_NAME"/>" ออก</translation>
+<translation id="3910551537328657217">ขอฟีเจอร์</translation>
+<translation id="7657322905916621147">วลีกู้คืนต้องมีความยาว 12, 15, 18, 21 หรือ 24 คำ</translation>
+<translation id="5307206077701819797">ไม่พบ NFTs ในกระเป๋าเงินของคุณ คุณสามารถเพิ่ม NFTs ได้โดยคลิกปุ่ม "+ Visible assets" ที่ด้านล่างของแท็บ "Portfolio"</translation>
+<translation id="3528540388456395658">ไม่พบ NFTs ที่ตรงกับการค้นหากหรือการกรอง</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">ข้อมูลทั่วไป</translation>
 <translation id="4045404575593562245">เหตุการณ์การควบคุม Tor</translation>
@@ -1488,4 +1500,28 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6973157709854838218">ซ่อนยอดคงเหลือของคุณจากจอแสดงผล</translation>
 <translation id="4548946945059463969">เปิดเผยยอดคงเหลือของคุณบนหน้าจอ</translation>
 <translation id="242959166945779492">คุณไม่มียอดคงเหลือในบัญชีของคุณ โปรดไปยัง FTX เพื่อซื้อเพิ่ม</translation>
+<translation id="2532127066761785857">จำนวนโฆษณาสูงสุดที่แสดง</translation>
+<translation id="6177749339095882127">0 Ads ต่อชั่วโมง</translation>
+<translation id="5171071066587880677">1 โฆษณาต่อชั่วโมง</translation>
+<translation id="7885315050812316860">2 โฆษณาต่อชั่วโมง</translation>
+<translation id="2232753742630178222">3 โฆษณาต่อชั่วโมง</translation>
+<translation id="905529390827000221">4 โฆษณาต่อชั่วโมง</translation>
+<translation id="7694167481321619202">5 โฆษณาต่อชั่วโมง</translation>
+<translation id="3705420658531870884">10 Ads ต่อชั่วโมง</translation>
+<translation id="3669086939205397942">ช้าก่อน คุณยังไม่สามารถให้ทิปได้</translation>
+<translation id="7354412786785889047">คุณสามารถสนับสนุนผู้สร้างเนื้อหานี้ได้โดยการส่งทิป ซึ่งเป็นหนึ่งในช่องทางการแสดงความขอบคุณที่ช่วยสร้างเนื้อหาดีๆ ผู้สร้างที่ยืนยันตัวตนแล้วจะได้รับเงินค่าทิปในช่วงสัปดาห์แรกของแต่ละเดือนปฏิทิน</translation>
+<translation id="5119190679543565400">กู้คืนไซต์นี้</translation>
+<translation id="6783637972818687030">Brave จะใช้ Infura เพื่อออกคำสั่ง Ethereum JSON-RPC ไปเรียกสมาร์ทคอนแทรคจาก Unstoppable Domains เพื่อแก้ไขคำขอค้นหาชื่อโดเมน .crypto (และ .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin, .zil) หากคุณเปิดใช้งานคำสั่งนี้ Infura จะมองเห็นโดเมนดังกล่าวที่คุณพยายามเข้าชม แต่จะไม่เห็นโดเมนอื่นๆ โปรดอ่าน<ph name="BEGIN_INFURA_TOU_LINK"/>ข้อกำหนดและเงื่อนไขการใช้งาน<ph name="END_INFURA_TOU_LINK"/>และ<ph name="BEGIN_INFURA_PRIVACY_LINK"/>นโยบายความเป็นส่วนตัว<ph name="END_INFURA_PRIVACY_LINK"/></translation>
+<translation id="8037420924417098685">หากต้องการเริ่มการโทรฟรี ให้เปิดการทำงานของ Brave Rewards</translation>
+<translation id="8961724619078500274">ด้วย Brave รีวอร์ด คุณจะสามารถรับโทเค็นจากการดูโฆษณาแบบส่วนตัว (ข้อมูลของคุณจะปลอดภัย) เปลี่ยนโทเค็นเหล่านั้นเป็นเงินสด บัตรของขวัญ… หรือแม้แต่เป็นทิปให้แก่เว็บไซต์ที่คุณชื่นชอบ โดยไม่มีการติดตาม และไม่ทำให้การทำงานช้าลง</translation>
+<translation id="7307847920988946894">เปิดใช้ Rewards</translation>
+<translation id="799591303418199877">การเปิดใช้งานจะถือว่าคุณยอมรับ <ph name="TOS_LINK_BEGIN"/>ข้อกำหนดในการให้บริการ<ph name="TOS_LINK_END"/> และ <ph name="PP_LINK_BEGIN"/>นโยบายความเป็นส่วนตัว<ph name="PP_LINK_END"/></translation>
+<translation id="6128511569382736135">หากต้องการเริ่มการโทรฟรี ให้เปิดใช้งาน Brave Private Ads</translation>
+<translation id="7930006085154756245">ด้วย Brave Private Ads คุณจะสามารถรับโทเค็นจากการดูโฆษณาแบบส่วนตัว (ข้อมูลของคุณจะปลอดภัย) เปลี่ยนโทเค็นเหล่านั้นเป็นเงินสด บัตรของขวัญ… หรือแม้แต่เป็นทิปให้แก่เว็บไซต์ที่คุณชื่นชอบ โดยไม่มีการติดตาม และไม่ทำให้การทำงานช้าลง</translation>
+<translation id="4992617448154987397">เปิดการทำงานของ Brave Private Ads</translation>
+<translation id="3415016869273103668">คุณสามารถเริ่มการโทรฟรีได้เลยตอนนี้</translation>
+<translation id="7073631403665023390">คลิกหรือแตะที่ใดก็ได้บนหน้าจอเพื่อดำเนินการต่อใน Brave Talk</translation>
+<translation id="9115939801961482572">ต้องการเรียนรู้เพิ่มเติมเกี่ยวกับ Brave Rewards ใช่ไหม <ph name="TOUR_LINK_BEGIN"/>ดูรายละเอียดคร่าวๆ<ph name="TOUR_LINK_END"/></translation>
+<translation id="8222322431155185238">ให้ทิปด้วย Brave Rewards</translation>
+<translation id="1895476463085410109">รับ Rewards จากการชม Brave Private Ads และสนับสนุนคอนเทนต์ครีเอเตอร์โดยอัตโนมัติ</translation>
 </translationbundle>

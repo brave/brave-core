@@ -66,6 +66,10 @@
 <translation id="6274899614137380422">Tunjukkan Binance</translation>
 <translation id="5585019845078534178">Kad</translation>
 <translation id="3870475560794762985">Tunjukkan Imej Tajaan</translation>
+<translation id="8466529005131466476">Anda boleh memperoleh pendapatan dengan melihat laman tajaan.</translation>
+<translation id="3955742714798578476">Anda memperoleh pendapatan dengan melihat imej tajaan.</translation>
+<translation id="7822618650711767369">Imej tajaan menyokong Brave. Dengan Brave Rewards, anda boleh memperoleh sebahagian daripada pendapatan daripada imej tajaan dan turut menyokong pencipta kandungan!</translation>
+<translation id="5579480493856401823">Langkah mematikan laman tajaan akan mengurangkan bilangan token yang anda peroleh dan sokongan yang diberikan kepada pencipta kandungan setiap bulan.</translation>
 <translation id="2875302873837723333">laman popular</translation>
 <translation id="8173998484743827990">Statistik Brave</translation>
 <translation id="383680190590774040">jam</translation>
@@ -73,6 +77,8 @@
 <translation id="3159285901314605198">Imej Latar Belakang</translation>
 <translation id="385051799172605136">Kembali</translation>
 <translation id="4225429340218993596">Warna padu</translation>
+<translation id="7610541582755894669">Kecerunan</translation>
+<translation id="1606851618930975029">Segarkan semula pada setiap tab baharu</translation>
 <translation id="9024104284526126630">Anda boleh memulakan panggilan peribadi dalam Brave.</translation>
 <translation id="4903286433687221248">Mulakan panggilan tanpa had bersama rakan dan rakan sekerja dalam Brave Talk.</translation>
 <translation id="7115051913071512405">Cubalah ia</translation>
@@ -198,14 +204,14 @@
 <translation id="4428871418618312983">Iklan yang diterima bulan ini</translation>
 <translation id="4229016885653790965">Maaf! Iklan belum ada di kawasan anda.</translation>
 <translation id="2539279826042558064">Ganjaran dan Iklan Brave tidak tersedia pada peranti anda pada masa ini.</translation>
-<translation id="2532127066761785857">Bilangan maksimum iklan dipaparkan</translation>
-<translation id="6177749339095882127">0 iklan setiap jam</translation>
-<translation id="5171071066587880677">1 iklan setiap jam</translation>
-<translation id="7885315050812316860">2 iklan setiap jam</translation>
-<translation id="2232753742630178222">3 iklan setiap jam</translation>
-<translation id="905529390827000221">4 iklan setiap jam</translation>
-<translation id="7694167481321619202">5 iklan setiap jam</translation>
-<translation id="3705420658531870884">10 iklan setiap jam</translation>
+<translation id="5736977383725358876">Kekerapan iklan pemberitahuan</translation>
+<translation id="7701040980221191251">Tiada</translation>
+<translation id="767929144984201135">Hingga 1 iklan pada setiap jam</translation>
+<translation id="3122281951051829161">Hingga 2 iklan pada setiap jam</translation>
+<translation id="3431180326971210034">Hingga 3 iklan pada setiap jam</translation>
+<translation id="8718553520664259870">Hingga 4 iklan pada setiap jam</translation>
+<translation id="8827015466803589071">Hingga 5 iklan pada setiap jam</translation>
+<translation id="2293009346092992234">Hingga 10 iklan pada setiap jam</translation>
 <translation id="2356652719351432565">Keterkaitan iklan serantau</translation>
 <translation id="3216275550298493597">Ciri ini membolehkan Brave memaparkan iklan yang khusus untuk rantau anda.</translation>
 <translation id="8446884382197647889">Ketahui Lebih Lanjut</translation>
@@ -272,8 +278,9 @@
 <translation id="5955021799827127089">Ralat: Rantau akaun yang berbeza</translation>
 <translation id="5260522591743022748">Oh, nampaknya Brave Rewards anda telahpun disahkan dengan akaun<ph name="PROVIDER"/> yang lain. Sila cuba sahkan sekali lagi menggunakan akaun anda yang sebelumnya.</translation>
 <translation id="5111921830714291902">Ralat: Akaun berbeza</translation>
-<translation id="6933939911547091461">Malangnya, Brave Rewards anda tidak dapat disahkan kerana wilayah anda tidak disokong untuk pengesahan Brave Rewards buat masa ini.</translation>
-<translation id="8218538368080510976">Ralat: Wilayah tidak disokong</translation>
+<translation id="1024520300696337331">Akaun <ph name="PROVIDER"/> anda tidak boleh disambungkan dengan profil Ganjaran Brave anda buat masa ini. Akaun <ph name="PROVIDER"/> anda didaftarkan di negara yang tidak disokong untuk disambungkan dengan Ganjaran Brave buat masa ini.</translation>
+<translation id="619384413404021992">Lihat senarai semasa <ph name="LINK_BEGIN"/>bagi wilayah yang disokong dan ketahui lebih lanjut<ph name="END_LINK"/> tentang menyambungkan akaun jagaan dengan Ganjaran Brave.</translation>
+<translation id="7193389978208728181">Ralat: Wilayah tidak disokong buat masa ini</translation>
 <translation id="5382684862562314222">BAT belum lagi disokong di rantau anda di Uphold.</translation>
 <translation id="9074594632540931067">Ralat: BAT tidak tersedia</translation>
 <translation id="5376524136040178759">Menurut Uphold, terdapat beberapa had pada akaun Uphold anda buat masa ini. Sila log masuk ke akaun Uphold anda dan semak sama ada terdapat sebarang notis atau masih ada keperluan akaun untuk dilengkapkan, kemudian cuba lagi. Sebagai contoh, anda mungkin perlu menyerahkan maklumat lanjut kepada Uphold.</translation>
@@ -292,11 +299,10 @@
 <translation id="3222002542796906461">Terima Rewards anda terus ke akaun anda</translation>
 <translation id="8304979233901023264">Saya telah membaca dan bersetuju dengan <ph name="TOS_LINK_BEGIN"/>Terma Perkhidmatan<ph name="TOS_LINK_END"/> &amp; <ph name="PP_LINK_BEGIN"/>Dasar Privasi<ph name="PP_LINK_END"/> Brave.</translation>
 <translation id="2359808026110333948">Teruskan</translation>
-<translation id="5112354605357157725">Teruskan untuk log masuk</translation>
-<translation id="1280764044837262633"><ph name="PROVIDER"/> memerlukan baki minimum sebanyak <ph name="AMOUNT"/> BAT untuk mencipta akaun. Sekiranya anda menyambung akaun sebelum ini,</translation>
 <translation id="1892970806832316900">Menunggu hingga <ph name="DATE"/></translation>
 <translation id="7849926087559412554">Op! Pelayar anda tidak boleh menerima Iklan Peribadi Brave.</translation>
 <translation id="5177429570315095022">Pelayar anda perlu dikemas kini untuk meneruskan paparan iklan.</translation>
+<translation id="7352651011704765696">Ada sesuatu yang tidak kena</translation>
 <translation id="752216563428219524">Iklan tidak dimulakan, sila segarkan semula halaman.</translation>
 <translation id="7422678632904904341">Jumlah:</translation>
 <translation id="6969783933307596818">Segarkan semula setiap 5 saat</translation>
@@ -404,7 +410,6 @@
 <translation id="3586352807094428968">Brave mengumpulkan 5% daripada jumlah tip sebagai yuran pemprosesan.</translation>
 <translation id="207268487070188114">Petua Satu Kali</translation>
 <translation id="69861679024013299">Amaun tip satu kali:</translation>
-<translation id="3669086939205397942">Nanti dulu, anda masih belum boleh memberi tip lagi</translation>
 <translation id="3288812755711687300">SIaran <ph name="USER"/></translation>
 <translation id="5851002232791947896">Ciapan <ph name="USER"/></translation>
 <translation id="5531915212947569943">Kami kesal melihat anda pergi…</translation>
@@ -489,10 +494,11 @@
 <translation id="5530851178552343773">Anda telah memperuntukkan [[reservedAmount]] [[currency]] untuk pencipta yang belum lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang hinggalah mereka mengesahkan akaun mereka, atau hingga 90 hari berlalu.</translation>
 <translation id="5939518447894949180">Tetapkan semula</translation>
 <translation id="3157931365184549694">Pulihkan</translation>
+<translation id="5669281110673664811">Kosongkan senarai pengecualian</translation>
 <translation id="1797334173232638045">Tapak anda yang dipin telah dialihkan ke</translation>
 <translation id="542042553430131913">Jika Brave Rewards anda tidak disahkan, baki BAT anda disimpan dalam fail setempat pada peranti anda.</translation>
 <translation id="2142973554991645476">Jika anda ingin melindungi BAT anda sekiranya anda perlu melakukan pemasangan semula bersih penyemak imbas atau memformatkan semula peranti anda, dan ingin menikmati manfaat lain seperti menambah atau menarik balik BAT anda, kami syorkan <ph name="LINK_BEGIN"/>pengesahan<ph name="LINK_END"/>.</translation>
-<translation id="7354412786785889047">Anda boleh menyokong pencipta kandungan dengan menghantar tip. Ia merupakan cara untuk mengucapkan terima kasih kepada mereka kerana menghasilkan kandungan yang hebat. Pencipta yang disahkan akan dibayar tipnya pada minggu pertama setiap bulan kalendar.</translation>
+<translation id="5317144262906129592">Anda boleh menyokong pencipta kandungan ini dengan menghantar tip. Tindakan ini merupakan cara untuk mengucapkan terima kasih atas penghasilan kandungan yang hebat.</translation>
 <translation id="3074127054582480056">Perhatian</translation>
 <translation id="3034163433136515805">Lihat Kod QR</translation>
 <translation id="1640793619390890218">untuk pengguna Ganjaran iOS memindahkan BAT.</translation>
@@ -533,7 +539,7 @@
 <translation id="7410549756000115387">Tiada sumbangan menunggu…</translation>
 <translation id="1963227389609234879">Buang Semua</translation>
 <translation id="8706157865312453070">Laman Web Dikecualikan</translation>
-<translation id="5119190679543565400">Pulihkan laman ini</translation>
+<translation id="2501059654604370822">Alih keluar daripada pengecualian</translation>
 <translation id="9075700728717335924">Anda telah mengecualikan</translation>
 <translation id="4862817811647633830">laman daripada Autosumbang.</translation>
 <translation id="923467487918828349">Paparkan Semua</translation>
@@ -604,7 +610,6 @@
 <translation id="7604416013180651887">Bersambung ke Gemini</translation>
 <translation id="2349109114223854255">Token akses Gemini anda telah tamat tempoh dan tidak boleh disegarkan semula. Sila sambung semula.</translation>
 <translation id="4848984536030986115">Tidak dapat melaksanakan dagangan</translation>
-<translation id="7352651011704765696">Ada sesuatu yang tidak kena</translation>
 <translation id="7097088316781182926">Sahkan Dagangan</translation>
 <translation id="3488255243387417752">Jual</translation>
 <translation id="7969910554171263591">Dapatkan Sebut Harga</translation>
@@ -638,7 +643,7 @@
 <translation id="1164622162816276433">Jumlah 24JAM</translation>
 <translation id="7534079972563542000">Domain yang tidak dapat Dihentikan</translation>
 <translation id="4492298165410552103">Mengaktifkan sokongan Domain yang tidak dapat Dihentikan di Brave?</translation>
-<translation id="6783637972818687030">Brave akan menggunakan Infura untuk mengeluarkan panggilan Ethereum JSON-RPC kepada kontrak pintar daripada Unstoppable Domains untuk menyelesaikan permintaan carian nama domain .crypto (dan juga .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin, .zil). Jika anda mendayakan ini, Infura akan melihat domain khusus yang anda cuba lawati tetapi mereka tidak akan dapat melihat domain lain. Lihat <ph name="BEGIN_INFURA_TOU_LINK"/>syarat penggunaan<ph name="END_INFURA_TOU_LINK"/> dan <ph name="BEGIN_INFURA_PRIVACY_LINK"/>dasar privasi Infura<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="689573545156113164">Brave akan menggunakan Infura untuk mengeluarkan panggilan Ethereum JSON-RPC kepada kontrak pintar daripada Unstoppable Domains untuk menyelesaikan permintaan carian nama domain .crypto (dan juga .x, .coin, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil). Jika anda mendayakan ciri ini, Infura akan melihat domain khusus yang anda cuba lawati tetapi mereka tidak akan dapat melihat domain lain. Lihat <ph name="BEGIN_INFURA_TOU_LINK"/>syarat penggunaan<ph name="END_INFURA_TOU_LINK"/> dan <ph name="BEGIN_INFURA_PRIVACY_LINK"/>dasar privasi<ph name="END_INFURA_PRIVACY_LINK"/> Infura.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">Mengaktifkan sokongan Ethereum Name Service (ENS) di Brave?</translation>
 <translation id="8328137586971750853">Brave akan menggunakan Infura untuk mengeluarkan panggilan Ethereum JSON-RPC kepada kontrak pintar daripada Ethereum Name Service bagi menyelesaikan permintaan carian nama domain .eth. Jika anda mendayakan tetapan ini, Infura dapat melihat domain .eth yang cuba anda lawati tetapi Infura tidak dapat melihat domain lain. Lihat <ph name="BEGIN_INFURA_TOU_LINK"/>syarat penggunaan<ph name="END_INFURA_TOU_LINK"/> dan <ph name="BEGIN_INFURA_PRIVACY_LINK"/>dasar privasi<ph name="END_INFURA_PRIVACY_LINK"/> Infura.</translation>
@@ -801,16 +806,6 @@
 <translation id="1512837998731269583">Iklan dan pendapatan kini akan disambung semula. Terima kasih kerana membantu kami melindungi Brave Rewards dan iklan berdasarkan privasi.</translation>
 <translation id="3247549836099021862">Hubungi sokongan</translation>
 <translation id="5234764350956374838">Singkirkan</translation>
-<translation id="8037420924417098685">Untuk memulakan panggilan percuma, hidupkan Brave Rewards</translation>
-<translation id="8961724619078500274">Dengan Brave Rewards, anda memperoleh token hasil tontonan iklan peribadi (data anda selamat). Tukarkan token kepada wang tunai, kad hadiah...atau berikan tip kepada laman web yang anda gemari. Tiada penjejakan. Tidak diperlahankan.</translation>
-<translation id="7307847920988946894">Hidupkan Ganjaran</translation>
-<translation id="799591303418199877">Dengan mendayakan, maksudnya anda bersetuju menerima <ph name="TOS_LINK_BEGIN"/>Syarat Perkhidmatan<ph name="TOS_LINK_END"/> dan <ph name="PP_LINK_BEGIN"/>Dasar Privasi<ph name="PP_LINK_END"/>.</translation>
-<translation id="6128511569382736135">Untuk memulakan panggilan percuma, dayakan Brave Private Ads</translation>
-<translation id="7930006085154756245">Dengan Brave Private Ads, anda memperoleh token hasil tontonan iklan peribadi (data anda selamat). Tukarkan token kepada wang tunai, kad hadiah...atau berikan tip kepada laman web yang anda gemari. Tiada penjejakan. Tidak diperlahankan.</translation>
-<translation id="4992617448154987397">Hidupkan Brave Private Ads</translation>
-<translation id="3415016869273103668">Anda kini boleh memulakan panggilan percuma</translation>
-<translation id="7073631403665023390">Klik atau ketik di mana-mana sahaja pada skrin untuk terus ke Brave Talk.</translation>
-<translation id="9115939801961482572">Ingin ketahui lebih lanjut tentang Ganjaran Brave? <ph name="TOUR_LINK_BEGIN"/>Ikuti jelajah pantas<ph name="TOUR_LINK_END"/>.</translation>
 <translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>Take a quick tour<ph name="TOUR_LINK_END"/> or <ph name="LEARN_LINK_BEGIN"/>ketahui lebih lanjut<ph name="LEARN_LINK_END"/> untuk butiran.</translation>
 <translation id="7465614181960492526">Dapatkan Token &amp; Beri Balik</translation>
 <translation id="2731539192954672606">Dapatkan token dengan melihat iklan yang menghormati privasi dan sokong laman-laman dan pencipta kandungan kegemaran anda secara automatik.</translation>
@@ -823,8 +818,6 @@
 <translation id="3164498053837913829">(daripada pendapatan iklan anda)</translation>
 <translation id="6318696841371191107">Jelajah pantas</translation>
 <translation id="8465790416279415448">Dengan meneruskan, anda bersetuju dengan <ph name="TOS_LINK_BEGIN"/>Terma Perkhidmatan<ph name="TOS_LINK_END"/> dan <ph name="PP_LINK_BEGIN"/>Dasar Privasi<ph name="PP_LINK_END"/>.</translation>
-<translation id="8222322431155185238">Beri tip dengan Ganjaran Brave</translation>
-<translation id="1895476463085410109">Dapatkan Ganjaran dengan melihat Brave Private Ads dan menyokong pencipta kandungan secara automatik</translation>
 <translation id="5705882733397021510">Kembali</translation>
 <translation id="185034574799484512">Mari terokai dengan pantas</translation>
 <translation id="8281886186245836920">Langkau</translation>
@@ -851,6 +844,7 @@
 <translation id="6609621505400013054">Dompet bitFlyer adalah perkhidmatan yang diuruskan oleh bitFlyer, Inc.</translation>
 <translation id="4361456403643555676">Dengan mengesahkan Brave Rewards anda dan mengaitkannya dengan akaun bitFlyer, anda boleh menyimpan dan mengurus token yang anda peroleh melalui Brave Rewards dengan lebih mudah</translation>
 <translation id="1411121707906693782"><ph name="LINK_BEGIN"/>Ketahui lebih lanjut<ph name="LINK_END"/> mengenai cara memautkan pelayar Brave anda dengan akaun bitFlyer anda.</translation>
+<translation id="8303087505226646884">Pembaca Laju Brave</translation>
 <translation id="7701466644604753106">HIDUPKAN Pembaca Kelajuan</translation>
 <translation id="763042262431778831">MATIKAN Pembaca Kelajuan</translation>
 <translation id="1148827340205946630">Pengguna menolak permintaan</translation>
@@ -1207,6 +1201,9 @@
 <translation id="3292453499915466604">Kecairan tidak mencukupi</translation>
 <translation id="805808215102934711">Aktifkan <ph name="FROM_ASSET_SYMBOL"/></translation>
 <translation id="3380365263193509176">Ralat tidak diketahui</translation>
+<translation id="471055802670233033">Anda telah berbelanja</translation>
+<translation id="7916618590403748182">Anda akan menerima</translation>
+<translation id="8328657208304368165">Sahkan pesanan</translation>
 <translation id="5071303414930953888">Akaun <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Dompet perlu dibuka kunci dahulu</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> bukan alamat yang sah</translation>
@@ -1292,9 +1289,12 @@
 <translation id="2095142195578664632">Perlukan bantuan? Lihat</translation>
 <translation id="3253669416991680932">Dompet perkakasan ini tidak menyokong kendalian ini.</translation>
 <translation id="7457027586454688423">Masukkan kata laluan Dompet Brave anda</translation>
-<translation id="2021055898001510484">Buka rainbowbridge.app?</translation>
-<translation id="6550403756693197933">Penyambungan aset pada seluruh rangkaian membolehkan anda menggunakan kripto anda pada rangkaian lain dan ekosistem DApp yang lain. Penyambungan aset dengan rangkaian lain mempunyai beberapa risiko.</translation>
-<translation id="8315999527212828722">Buka rainbowbridge.app</translation>
+<translation id="2873714185189940594">Buka apl Rainbow Bridge?</translation>
+<translation id="2069777099181262239">Rainbow Bridge adalah perkhidmatan bebas yang membantu anda menghubung aset ke seluruh rangkaian dan menggunakan kripto anda pada rangkaian lain dan ekosistem DApp. Penghubungan aset kepada rangkaian lain mempunyai beberapa risiko.</translation>
+<translation id="7387899248733396663">Ketahui lebih lanjut tentang penggunaan Rainbow Bridge</translation>
+<translation id="3890567288132019108">Ketahui lebih lanjut tentang cara mengurangkan risiko di Rainbow Bridge</translation>
+<translation id="1792917191129448067">Buka apl Rainbow Bridge</translation>
+<translation id="1522775706527775647">Bridge kepada Aurora</translation>
 <translation id="4903322403594141291">Ketahui lebih lanjut tentang Dompet Brave</translation>
 <translation id="3875185448438395303">Sekurang-kurangnya:</translation>
 <translation id="2029465635925899949">8 aksara</translation>
@@ -1303,7 +1303,7 @@
 <translation id="574392208103952083">Sederhana</translation>
 <translation id="8297006494302853456">Lemah</translation>
 <translation id="6782556046178425980">Sebelum anda mula membuat sandaran dompet</translation>
-<translation id="9080057079069917346">Frasa pemulihan 12 perkataan ialah kunci peribadi yang boleh anda gunakan untuk mendapatkan semula akses kepada dompet anda sekiranya anda kehilangan peranti yang bersambung. Simpan di tempat yang selamat, dan dalam urutan sama seperti yang dipaparkan di bawah.</translation>
+<translation id="7119749028647909394">Frasa pemulihan 12-24 perkataan ialah kunci peribadi yang boleh anda gunakan untuk mendapatkan semula akses kepada dompet anda sekiranya anda kehilangan peranti yang bersambung. Simpan di tempat yang selamat, dan dalam urutan sama seperti yang dipaparkan di bawah.</translation>
 <translation id="3259018319025894691">Brave tidak boleh mengakses frasa pemulihan rahsia anda. Pastikan ia selamat, dan jangan sekali-kali berkongsi dengan orang lain.</translation>
 <translation id="7650284207965419234"><ph name="TAG_BEFORE"/>Penting: <ph name="TAG_AFTER"/>Jangan sekali-kali berkongsi frasa pemulihan anda. Sesiapa sahaja yang mempunyai frasa ini boleh mengambil aset anda selama-lamanya.</translation>
 <translation id="7509948206688764960">Sandarkan frasa pemulihan dompet anda</translation>
@@ -1339,11 +1339,11 @@
 <translation id="3551682252653406110">Untuk menyambungkan dompet yang sudah anda miliki, anda mungkin perlu memasukkan frasa pemulihan anda. Pada masa ini kami menyokong pemulihan / pengimportan daripada dompet Ethereum dan Solana.</translation>
 <translation id="346929827081904572">Pulihkan daripada frasa benih</translation>
 <translation id="5645597512426471834">12-24 patah perkataan</translation>
-<translation id="6560930409313980969">Taip frasa pemulihan 12 perkataan Dompet Brave anda.</translation>
+<translation id="8158505311297755780">Taip frasa pemulihan 12-24 perkataan Dompet Brave anda.</translation>
 <translation id="5419707890586509000">Import daripada MetaMask</translation>
 <translation id="2265945811107390939">Gunakan kata laluan MetaMask anda untuk mengimport frasa benih anda</translation>
 <translation id="7060680423657442298">Tidak mengapa, saya akan mencipta dompet baharu</translation>
-<translation id="4570057016351082582">Taip frasa pemulihan 12 perkataan MetaMask anda.</translation>
+<translation id="5913194823092185468">Taip frasa pemulihan 12-24 perkataan MetaMask anda.</translation>
 <translation id="7720392926833259937">Taip kata laluan MetaMask</translation>
 <translation id="6657585470893396449">Kata laluan</translation>
 <translation id="6260144012548445299">Ketahui lebih lanjut tentang dompet baharu saya</translation>
@@ -1379,10 +1379,22 @@
 <translation id="6646456430109279404">Dua puluh dua</translation>
 <translation id="1961743941324393172">Dua puluh tiga</translation>
 <translation id="9079035825546416393">Dua puluh empat</translation>
+<translation id="1558531209852594808">Aksara bukan ASCII dikesan!</translation>
+<translation id="442709594176931966">Paparkan mesej asal</translation>
+<translation id="2239252396088484499">Paparkan mesej dalam pengekodan ASCII</translation>
 <translation id="2894654529758326923">Maklumat</translation>
 <translation id="152455748535966757">Pangkat</translation>
 <translation id="4958716607782044952">Kelantangan 24j</translation>
 <translation id="128834189395075789">Modal Pasaran</translation>
+<translation id="1763942310723636241">Butiran token</translation>
+<translation id="2938264474197978104">Sembunyikan <ph name="SYMBOL"/></translation>
+<translation id="3614009429760094268">Sembunyikan token?</translation>
+<translation id="4038384774641714579">Anda boleh memperlihatkan semula aset ini pada masa hadapan dengan mengklik butang "+ Aset boleh dilihat" di bahagian bawah tab "Portfolio"</translation>
+<translation id="1026825928738055872">Betulkah anda mahu mengalih keluar "<ph name="ACCOUNT_NAME"/>"?</translation>
+<translation id="3910551537328657217">Ciri permintaan</translation>
+<translation id="7657322905916621147">Frasa pemulihan mestilah sepanjang 12, 15, 18, 21 atau 24 patah perkataan</translation>
+<translation id="5307206077701819797">Tiada NFT yang ditemukan dalam dompet anda. Anda boleh menambah NFT dengan mengklik butang "+ Aset boleh dilihat" di bahagian bawah tab "Portfolio"</translation>
+<translation id="3528540388456395658">Tiada NFT yang sepadan dengan carian atau penapis ditemukan</translation>
 <translation id="3155170474926428993">Pelancar Tor</translation>
 <translation id="3745016858329272300">Maklumat Umum</translation>
 <translation id="4045404575593562245">Acara Kawalan Tor</translation>
@@ -1487,4 +1499,28 @@
 <translation id="6973157709854838218">Sembunyikan baki anda dari paparan</translation>
 <translation id="4548946945059463969">Dedahkan baki anda di skrin</translation>
 <translation id="242959166945779492">Anda tidak mempunyai sebarang baki dalam akaun anda. Lawati FTX untuk membeli sedikit.</translation>
+<translation id="2532127066761785857">Bilangan maksimum iklan dipaparkan</translation>
+<translation id="6177749339095882127">0 iklan setiap jam</translation>
+<translation id="5171071066587880677">1 iklan setiap jam</translation>
+<translation id="7885315050812316860">2 iklan setiap jam</translation>
+<translation id="2232753742630178222">3 iklan setiap jam</translation>
+<translation id="905529390827000221">4 iklan setiap jam</translation>
+<translation id="7694167481321619202">5 iklan setiap jam</translation>
+<translation id="3705420658531870884">10 iklan setiap jam</translation>
+<translation id="3669086939205397942">Nanti dulu, anda masih belum boleh memberi tip lagi</translation>
+<translation id="7354412786785889047">Anda boleh menyokong pencipta kandungan dengan menghantar tip. Ia merupakan cara untuk mengucapkan terima kasih kepada mereka kerana menghasilkan kandungan yang hebat. Pencipta yang disahkan akan dibayar tipnya pada minggu pertama setiap bulan kalendar.</translation>
+<translation id="5119190679543565400">Pulihkan laman ini</translation>
+<translation id="6783637972818687030">Brave akan menggunakan Infura untuk mengeluarkan panggilan Ethereum JSON-RPC kepada kontrak pintar daripada Unstoppable Domains untuk menyelesaikan permintaan carian nama domain .crypto (dan juga .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin, .zil). Jika anda mendayakan ini, Infura akan melihat domain khusus yang anda cuba lawati tetapi mereka tidak akan dapat melihat domain lain. Lihat <ph name="BEGIN_INFURA_TOU_LINK"/>syarat penggunaan<ph name="END_INFURA_TOU_LINK"/> dan <ph name="BEGIN_INFURA_PRIVACY_LINK"/>dasar privasi Infura<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="8037420924417098685">Untuk memulakan panggilan percuma, hidupkan Brave Rewards</translation>
+<translation id="8961724619078500274">Dengan Brave Rewards, anda memperoleh token hasil tontonan iklan peribadi (data anda selamat). Tukarkan token kepada wang tunai, kad hadiah...atau berikan tip kepada laman web yang anda gemari. Tiada penjejakan. Tidak diperlahankan.</translation>
+<translation id="7307847920988946894">Hidupkan Ganjaran</translation>
+<translation id="799591303418199877">Dengan mendayakan, maksudnya anda bersetuju menerima <ph name="TOS_LINK_BEGIN"/>Syarat Perkhidmatan<ph name="TOS_LINK_END"/> dan <ph name="PP_LINK_BEGIN"/>Dasar Privasi<ph name="PP_LINK_END"/>.</translation>
+<translation id="6128511569382736135">Untuk memulakan panggilan percuma, dayakan Brave Private Ads</translation>
+<translation id="7930006085154756245">Dengan Brave Private Ads, anda memperoleh token hasil tontonan iklan peribadi (data anda selamat). Tukarkan token kepada wang tunai, kad hadiah...atau berikan tip kepada laman web yang anda gemari. Tiada penjejakan. Tidak diperlahankan.</translation>
+<translation id="4992617448154987397">Hidupkan Brave Private Ads</translation>
+<translation id="3415016869273103668">Anda kini boleh memulakan panggilan percuma</translation>
+<translation id="7073631403665023390">Klik atau ketik di mana-mana sahaja pada skrin untuk terus ke Brave Talk.</translation>
+<translation id="9115939801961482572">Ingin ketahui lebih lanjut tentang Ganjaran Brave? <ph name="TOUR_LINK_BEGIN"/>Ikuti jelajah pantas<ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">Beri tip dengan Ganjaran Brave</translation>
+<translation id="1895476463085410109">Dapatkan Ganjaran dengan melihat Brave Private Ads dan menyokong pencipta kandungan secara automatik</translation>
 </translationbundle>

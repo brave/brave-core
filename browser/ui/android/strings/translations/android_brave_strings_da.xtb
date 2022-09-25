@@ -93,6 +93,7 @@
 <translation id="3545804467215833536">Klik for at se Brave Shields</translation>
 <translation id="1724327820822194498">Med Shields kan du se alt det skadelige fra hver eneste side, som Brave har blokeret.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> og <ph name="TRACKER"/> andre annoncer &amp; trackere blokeret</translation>
+<translation id="7256200875155794202"><ph name="BIG_TECH"/> og andre annoncer og trackere er blokeret</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> annoncer &amp; trackere blokeret</translation>
 <translation id="8281886186245836920">Spring over</translation>
 <translation id="6165508094623778733">Få mere at vide</translation>
@@ -117,6 +118,9 @@
 <translation id="19715420010996093">Vælg Brave Browser, og tryk på "Altid"</translation>
 <translation id="3546439402724649282">Brave er allerede indstillet som din standardbrowser.</translation>
 <translation id="8389661903259423907">Du har allerede indstillet en standardbrowser. Du kan ændre standardbrowser i dine appindstillinger.</translation>
+<translation id="1545749641540134597">Scan QR-kode</translation>
+<translation id="5317781812114905957">Instruktioner</translation>
+<translation id="8515319483805157233">For at søge efter QR-kode skal du sørge for, at QR-koden er i midten af rammen.</translation>
 <translation id="8826007068782654809">Tak</translation>
 <translation id="6665366815203065060">Du har lige sendt drikkepenge til:</translation>
 <translation id="5441565662498481293">Du sender automatisk drikkepenge til:</translation>
@@ -393,35 +397,11 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="8376263745431603066">Aktivér "Nattilstand" (eksperimentel)</translation>
 <translation id="1383876407941801731">Søg</translation>
 <translation id="8446884382197647889">Få mere at vide</translation>
-<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
-<translation id="558614325644656740">Tilgængelig <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="3414885529641505869">Køb <ph name="COIN_NAME"/></translation>
-<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Indbetalingsadresse</translation>
-<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Indbetalingsbemærkning</translation>
-<translation id="6755546361496900700">Forhåndsvis Konvertering</translation>
-<translation id="5110244215256675209">Køb krypto</translation>
-<translation id="2271556362602437160">.com</translation>
-<translation id="3727077517986954867">.us</translation>
 <translation id="13296465911709339">Din tekst er kopieret til udklipsholderen.</translation>
 <translation id="2735834606413553397">Offentlig adresse blev kopieret til udklipsholderen.</translation>
-<translation id="7144878232160441200">Prøv igen</translation>
 <translation id="2977461003134694205">Databeskyttelsesstatistik</translation>
-<translation id="2956070106555335453">Resumé</translation>
-<translation id="1366855498335432549">Indsæt</translation>
-<translation id="1301340234286078471">Konverter</translation>
 <translation id="223536150967420869">Køb</translation>
-<translation id="4584930231524505442">Jeg vil konvertere ...</translation>
-<translation id="5749014321384313843">Jeg vil bruge...</translation>
-<translation id="2480674848181564169">Ikke høj nok saldo til konvertering</translation>
-<translation id="2215334405220411393">Minimumsbeløb, der kan konverteres er: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6702658079816271889">Kunne ikke forbinde</translation>
-<translation id="7742417737698031726">Gebyr</translation>
-<translation id="2122225204180056042">Du vil modtage</translation>
-<translation id="6432284126416751397">Bekræft konvertering</translation>
-<translation id="3891414008432200754">Pris</translation>
-<translation id="3733576242118819803">Bekræft (<ph name="REMAINING_TIME"/>s)</translation>
-<translation id="1627064138060308910">Konvertering mislykkedes. Prøv igen.</translation>
-<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="2956070106555335453">Resumé</translation>
 <translation id="7465614181960492526">Optjen tokens og giv tilbage</translation>
 <translation id="244362569344671266">Optjen tokens ved at se private Brave-annoncer og støtte indholdsskabere automatisk.</translation>
 <translation id="631124996535890460">Før du fortsætter, skal du acceptere <ph name="TERMS_OF_SERVICE"/> og <ph name="PRIVACY_POLICY"/>.</translation>
@@ -452,18 +432,6 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="2434574859640694129">Når du har modtaget din første annonceudbetaling, kan du vende tilbage og give drikkepenge til denne indholdsskaber!</translation>
 <translation id="207242986925259074">Hurtig genopfriskningstur</translation>
 <translation id="8342862030112839977">Din første udbetaling af belønninger kommer senest:</translation>
-<translation id="8037420924417098685">For at starte et gratis opkald skal du aktivere Brave Rewards</translation>
-<translation id="8961724619078500274">Med Brave Rewards kan du optjene poletter for at se privatreklamer (din data er sikker). Konvertér disse poletter til kontanter, gavekort ... eller giv dem i drikkepenge til hjemmesider, du elsker. Der er ingen tracking og ingen forsinkelser.</translation>
-<translation id="7307847920988946894">Slå Rewards til</translation>
-<translation id="7872993190040589450">Ved at aktivere accepterer du <ph name="TERMS_OF_SERVICE"/> og <ph name="PRIVACY_POLICY"/>.</translation>
-<translation id="6128511569382736135">For at starte et gratis opkald skal du aktivere Brave Private Ads</translation>
-<translation id="7930006085154756245">Med Brave Private Ads kan du optjene poletter for at se privatreklamer (din data er sikker). Konvertér disse poletter til kontanter, gavekort ... eller giv dem i drikkepenge til hjemmesider, du elsker. Der er ingen tracking og ingen forsinkelser.</translation>
-<translation id="4992617448154987397">Aktivér Brave Private Ads</translation>
-<translation id="3415016869273103668">Du kan nu startet et gratis opkald</translation>
-<translation id="7073631403665023390">Klik eller tryk hvor som helst på skærmen for at fortsætte Brave Talk.</translation>
-<translation id="626339649633171286">Vil du have mere at vide om Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
-<translation id="3604285424134705930">Du konverterede <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> til <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
-<translation id="392587271502873865">Tjek venligst din netværksforbindelse.</translation>
 <translation id="7889432931837317731">Åbn automatisk, når det er muligt</translation>
 <translation id="8967385052772844086">Se fuld databeskyttelsesrapport</translation>
 <translation id="6864343534748973390">Mest populær</translation>
@@ -591,9 +559,6 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="5050890334032852465">Gem kontoens overvågningsliste</translation>
 <translation id="7755766175599167100">Søg i tokens</translation>
 <translation id="3835223348537121988">Saldo:</translation>
-<translation id="2490428413101944234">Test hane</translation>
-<translation id="2581671693710952401">Hent Ether</translation>
-<translation id="8165484222652118977">Få Ether fra en hane til  <ph name="NETWORK"/> test af netværk</translation>
 <translation id="7420359180991315365">Fortsæt til Wyre</translation>
 <translation id="8488282162676695335">Brave-wallet</translation>
 <translation id="3784455785234192852">Lås</translation>
@@ -605,6 +570,12 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="5693968582510626466">At rydde transaktioner kan være nyttigt for udviklere eller når status ryddes på en lokal server</translation>
 <translation id="5421107279168565467">Er du sikker på, at du vil nulstille transaktionen og nonce-information? Denne indstilling bruges som regel af udviklere, der kører en lokal testserver. Skriv "<ph name="CONFIRMATION_PHRASE"/>" for at bekræfte.</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# minut} other {# minut}}</translation>
+<translation id="8146860193318415026">Stream videoer uden annoncer.</translation>
+<translation id="6311019535466417620">Ingen annoncer inden din video</translation>
+<translation id="4274652342814424451">Ingen annoncer i din video</translation>
+<translation id="1721710839767183848">Ingen annoncer på siden</translation>
+<translation id="4647035642622555398">Ingen afbrydelser</translation>
+<translation id="4122515759479497554">Søg efter videoer</translation>
 <translation id="4449475351935531438">Brave Firewall + VPN</translation>
 <translation id="719977489961414786">Opgradér til en VPN, der beskytter din forbindelse og blokerer invasive trackere over alt.</translation>
 <translation id="3435896845095436175">Aktivér</translation>
@@ -808,6 +779,9 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="5233638681132016545">Ny fane</translation>
 <translation id="8006088103295786154">Tilgå Brave Wallet</translation>
 <translation id="5308380583665731573">Få forbindelse</translation>
+<translation id="8030169304546394654">Afbrudt</translation>
+<translation id="3423275441470187644">Stol på siden</translation>
+<translation id="2391762656119864333">Tilbagekald</translation>
 <translation id="3432029672560911238">Brugerkonto</translation>
 <translation id="5753378322046059140">Skift konto</translation>
 <translation id="3897092660631435901">Menu</translation>
@@ -884,5 +858,50 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="7002577172732106572">Split-tunneling</translation>
 <translation id="2832270987629018596">Ugyldig SOL-adresse</translation>
 <translation id="8181161042860463420">Den tilknyttede token-konto eksisterer ikke endnu. En lille mængde SOL vil blive brugt til at oprette og finansiere den. <ph name="CLICK_START"/>Find ud af mere<ph name="CLICK_END"/></translation>
+<translation id="1304515257839771197">Åbn <ph name="APP_NAME"/>-appen?</translation>
+<translation id="7653028065515320848"><ph name="CLICK_START"/>Få mere at vide om at bruge Rainbow Bridge<ph name="CLICK_END"/></translation>
+<translation id="8219806187375413057"><ph name="CLICK_START"/>Få mere at vide om risikoreducering på Rainbow Bridge<ph name="CLICK_END"/></translation>
+<translation id="1065082006518490444"><ph name="APP_NAME"/> er en selvstændig tjeneste, der hjælper dig med at bygge bro mellem aktiver på tvær af netværk, og bruge din kryptovaluta på andre netværk og DApp-økosystemer. Brobygning mellem aktiver til andre netværk har visse risici.</translation>
+<translation id="8423380132356660250">Åbn <ph name="APP_NAME"/>-appen</translation>
 <translation id="168154537623654021">Opdaterer VPN-profil ...</translation>
+<translation id="7457027586454688423">Indtast din Brave Wallet-adgangskode</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">Tilgængelig <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">Køb <ph name="COIN_NAME"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Indbetalingsadresse</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Indbetalingsbemærkning</translation>
+<translation id="6755546361496900700">Forhåndsvis Konvertering</translation>
+<translation id="5110244215256675209">Køb krypto</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="7144878232160441200">Prøv igen</translation>
+<translation id="1366855498335432549">Indsæt</translation>
+<translation id="1301340234286078471">Konverter</translation>
+<translation id="4584930231524505442">Jeg vil konvertere ...</translation>
+<translation id="5749014321384313843">Jeg vil bruge...</translation>
+<translation id="2480674848181564169">Ikke høj nok saldo til konvertering</translation>
+<translation id="2215334405220411393">Minimumsbeløb, der kan konverteres er: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Kunne ikke forbinde</translation>
+<translation id="7742417737698031726">Gebyr</translation>
+<translation id="2122225204180056042">Du vil modtage</translation>
+<translation id="6432284126416751397">Bekræft konvertering</translation>
+<translation id="3891414008432200754">Pris</translation>
+<translation id="3733576242118819803">Bekræft (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Konvertering mislykkedes. Prøv igen.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="8037420924417098685">For at starte et gratis opkald skal du aktivere Brave Rewards</translation>
+<translation id="8961724619078500274">Med Brave Rewards kan du optjene poletter for at se privatreklamer (din data er sikker). Konvertér disse poletter til kontanter, gavekort ... eller giv dem i drikkepenge til hjemmesider, du elsker. Der er ingen tracking og ingen forsinkelser.</translation>
+<translation id="7307847920988946894">Slå Rewards til</translation>
+<translation id="7872993190040589450">Ved at aktivere accepterer du <ph name="TERMS_OF_SERVICE"/> og <ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="6128511569382736135">For at starte et gratis opkald skal du aktivere Brave Private Ads</translation>
+<translation id="7930006085154756245">Med Brave Private Ads kan du optjene poletter for at se privatreklamer (din data er sikker). Konvertér disse poletter til kontanter, gavekort ... eller giv dem i drikkepenge til hjemmesider, du elsker. Der er ingen tracking og ingen forsinkelser.</translation>
+<translation id="4992617448154987397">Aktivér Brave Private Ads</translation>
+<translation id="3415016869273103668">Du kan nu startet et gratis opkald</translation>
+<translation id="7073631403665023390">Klik eller tryk hvor som helst på skærmen for at fortsætte Brave Talk.</translation>
+<translation id="626339649633171286">Vil du have mere at vide om Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">Du konverterede <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> til <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Tjek venligst din netværksforbindelse.</translation>
+<translation id="2490428413101944234">Test hane</translation>
+<translation id="2581671693710952401">Hent Ether</translation>
+<translation id="8165484222652118977">Få Ether fra en hane til  <ph name="NETWORK"/> test af netværk</translation>
 </translationbundle>

@@ -79,11 +79,6 @@
 <translation id="3161744659507801211">هشدار: Brave نمی‌تواند مانع از ثبت سابقه مرورتان توسط افزونه‌ها شود.</translation>
 <translation id="2162109630536601963">اگر این افزونه درخواست‌های شبکه ارائه می‌دهد، از Tor یا حالت خصوصی استفاده نمی‌کند.</translation>
 <translation id="2725327089319971976">برای غیرفعال کردن این افزونه در حالت خصوصی و حالت Tor، این گزینه را لغو انتخاب کنید.</translation>
-<translation id="5057399635433117814">این صفحه ترجمه شود؟ با این کار کل نوشتار موجود در این صفحه برای ترجمه به Microsoft ارسال خواهد شد.</translation>
-<translation id="330263065709195164">افزونه Google Translate را برای ترجمه این صفحه نصب کنید؟</translation>
-<translation id="3789841737615482174">نصب</translation>
-<translation id="7658239707568436148">لغو</translation>
-<translation id="1307431692088049276">دیگر از من سؤال نشود</translation>
 <translation id="3371343170427636147">برنامه‌های Nightly مرورگر Brave</translation>
 <translation id="4097979995947147464">برنامه‌های Beta مرورگر Brave</translation>
 <translation id="8303432794159193481">برنامه‌های Dev مرورگر Brave</translation>
@@ -106,9 +101,11 @@
 <translation id="7276554663454265692">هروقت بخواهید می‌توانید <ph name="SETTING_TEXT"/> را در تنظیمات مرورگر تغییر دهید.</translation>
 <translation id="6873781976650514089">این تنظیم</translation>
 <translation id="8915916167043355778">بستن همه</translation>
+<translation id="7658239707568436148">لغو</translation>
 <translation id="4870911314065352661">همه زبانه‌ها بسته شود؟</translation>
 <translation id="7551864359422178684">شما <ph name="NUMBER_OF_TABS"/> زبانه باز در این پنجره مرورگر دارید.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> زبانه</translation>
+<translation id="1307431692088049276">دیگر از من سؤال نشود</translation>
 <translation id="2272117088509540883">- جستجوی Brave</translation>
 <translation id="2701279958223202597">از جستجوی مستقل با حریم خصوصی بیشتر حمایت کنید. جستجوی Brave شما، عباراتی که جستجو می‌کنید یا کلیک‌هایتان را ردیابی نمی‌کند.</translation>
 <translation id="6438467592401259882">از جستجوی مستقل با حریم خصوصی بیشتر حمایت کنید.</translation>
@@ -125,7 +122,15 @@
 <translation id="4174337572777167894">پروژه کشف وب</translation>
 <translation id="8659271182272561965">در جستجوی ناشناس مشارکت کنید تا داده‌های جستجو و مرور را برای جستجوی Brave پالایش کنید.</translation>
 <translation id="1516554614404600536">نکته‌ابزار Brave</translation>
+<translation id="7986278174934557414">مخفی کردن آیکون دریچه کناری</translation>
+<translation id="6915291874524466201">مخفی کردن آیکون دریچه کناری</translation>
+<translation id="9149866541089851383">ویرایش...</translation>
 <translation id="1181037720776840403">حذف</translation>
+<translation id="7513769021866698486">ویرایش مورد</translation>
+<translation id="4002066346123236978">عنوان</translation>
+<translation id="7400418766976504921">نشانی وب</translation>
+<translation id="5877900074358050101">عنوان مورد نوار کناری</translation>
+<translation id="1613695740874407223">نشانی وب مورد نوار کناری</translation>
 <translation id="4877147287319222750">افزودن به نوار جانبی</translation>
 <translation id="5404213409401164238">نمایش نوار جانبی</translation>
 <translation id="7561196759112975576">همیشه</translation>
@@ -200,6 +205,7 @@
 <translation id="2370739752330685659">شاید بعداً</translation>
 <translation id="961012016278832836">Microsoft Edge Legacy</translation>
 <translation id="6436994631426134065">درون‌برد از <ph name="BROWSER_NAME"/></translation>
+<translation id="1506190932569739298">کپی کردن لینک خالص (فقط نشانی وب اصلی)</translation>
 <translation id="9156965752763025780">‏دفعه بعدی که Brave را مجدداً راه‌اندازی می‌کنید، این تغییرات اعمال می‌شوند.</translation>
 <translation id="7179921470347911571">اکنون راه‌اندازی مجدد شود</translation>
 <translation id="4472575034687746823">شروع به کار</translation>
@@ -219,6 +225,7 @@
 <translation id="4096343215397759358">کارت با پیش نمایش</translation>
 <translation id="5297085818601043899">راهنمای ابزار</translation>
 <translation id="2396127686705429331">نمایش دکمه نشانک‌ها</translation>
+<translation id="2369560305991805099">نشان دادن دکمه نوار کناری</translation>
 <translation id="2814998458708016836">استفاده از نوار نشانی عریض</translation>
 <translation id="4109670531935487117">نشان دادن پیشنهادهای تکمیل خودکار در نوار نشانی</translation>
 <translation id="2858138569776157458">سایت‌های برتر</translation>
@@ -241,8 +248,8 @@
 <translation id="6303294677342628402">سپر ایمنی</translation>
 <translation id="7133511168130368997">ردیاب‌ها و آگهی‌هایی که شما را در سراسر وب دنبال می‌کنند، مسدود کنید.</translation>
 <translation id="2761825942249694703">این‌ها تنظیمات پیش‌فرض «سپر ایمنی» هستند. برای همه وب‌سایت‌ها اعمال می‌شوند مگراینکه موردی را در پانل «سپرایمنی» در سایت خاصی تغییر دهید. تغییر این موارد، تأثیری بر تنظیمات موجود هر سایت نمی‌گذارد.</translation>
-<translation id="1485394570478670912">با این کار اکثر آگهی‌ها در وب‌سایت‌ها مسدود می‌شوند، اما «Brave Private Ads» ‏— مسدود نمی‌شود. این آگهی‌ها در اینجا کنترل می‌شود</translation>
-<translation id="6388201778088078932">تنظیمات.</translation>
+<translation id="1435116578479068303">با این کار بیشتر آگهی سایت‌ها مسدود می‌شوند، به جز آگهی‌های شخصی Brave که در قسمت تنظیمات <ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/> کنترل می‌شوند.</translation>
+<translation id="8452536890042542134">با این کار بیشتر آگهی سایت‌ها مسدود می‌شوند.</translation>
 <translation id="4800195524776354947">نمایش تعداد موارد مسدودشده روی نماد سپر ایمنی</translation>
 <translation id="5510493033031835532">تغییر مسیر خودکار صفحات AMP</translation>
 <translation id="7630031867325944356">به جای AMP و نسخه‌های مشابه، نشانی‌های وب صفحه ناشر را ترجیح دهید.</translation>
@@ -391,12 +398,12 @@
 <translation id="6554397389149987360">از مؤلفه‌های Hangouts برای فعال کردن اشتراک‌گذاری صفحه و سایر ویژگی‌ها در مرورگر استفاده می‌کند.</translation>
 <translation id="7878791177459550035">روتر رسانه قابلیت پخش را در مرورگر ممکن می‌سازد.</translation>
 <translation id="5927916530277631319">روش تحلیل دامنه‌های توقف‌ناپذیر</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/>در مورد DNS در مورد HTTPS و ملاحظات حفظ حریم خصوصی Ethereum.</translation>
+<translation id="2889554198027690581">درباره رعایت حریم خصوصی Ethereum<ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/>.</translation>
 <translation id="5248318250177143470">روشی برای تحلیل «سرویس نام اتریوم» (ENS)</translation>
 <translation id="6241402707160226266">پنجره خصوصی با Tor</translation>
 <translation id="8762452230727230396">Tor نشانی IP شما را از سایت‌هایی که بازدید می‌کنید، مخفی می‌کند.</translation>
 <translation id="2959986444009520721">از پل ها استفاده کنید</translation>
-<translation id="6003484976430531384">پل ها به شما کمک می کنند به شبکه Tor در جایی که Tor مسدود شده است دسترسی پیدا کنید. بسته به جایی که هستید، یک پل ممکن است بهتر از پل دیگر کار کند.</translation>
+<translation id="8416750895933172460">پل‌ها به شما کمک می‌کنند تا در مکان‌هایی که Tor مسدود است به شبکه Tor دسترسی پیدا کنید. بسته به مکانی که در آن قرار دارید، ممکن است یک پل بهتر از پل‌های دیگر عمل کند.</translation>
 <translation id="7206799843254049470">تنظیمات اتصال Tor</translation>
 <translation id="3194502271166340944">نحوه اتصال ویندوز خصوصی با Tor به شبکه Tor را کنترل می کند</translation>
 <translation id="4859228830700205299">یک پل داخلی را انتخاب کنید</translation>
@@ -413,7 +420,7 @@
 <translation id="6936835573742749135">نمی توان CAPTCHA درخواست کرد. بعدا دوباره تلاش کنید.</translation>
 <translation id="2653659639078652383">ارائه</translation>
 <translation id="1369311132025451972">هدایت خودکار سایت‌های ‎Onion</translation>
-<translation id="2843777623071353503">در صورت وجود، Brave سرویس onion وب‌سایت یا دامنه ‎.onion را در پنجره Tor باز خواهد کرد.</translation>
+<translation id="1658670175365815312">Brave در صورت داشتن دسترسی به نسخه ‎.onion وب‌سایت، به آن تغییر مسیر خواهد داد و به‌طور خودکار تمام دامنه‌های ‎.onion را در پنجره Tor باز خواهد کرد.</translation>
 <translation id="2896916411183256228">از WebTorrent برای نمایش مستقیم تورنت‌ها در مرورگر استفاده می‌کند. از فایل‌های تورنت و پیوندهای آهنربایی پشتیبانی می‌کند.</translation>
 <translation id="5249433283143453448">از مؤلفه مدیریت حقوق دیجیتال (DRM) Widevine برای مشاهده ویدیوی محافظت‌شده در حال پخش جریانی و سایر محتواها در مرورگر استفاده کنید.</translation>
 <translation id="8137559199583651773">مدیریت افزونه‌ها</translation>
@@ -439,14 +446,16 @@
 <translation id="3752403403443723332">کیف پول شما بازنشانی شده است.</translation>
 <translation id="594766067816395072">اطلاعات تراکنش کیف پول شما بازنشانی شده است.</translation>
 <translation id="1426410128494586442">بله</translation>
-<translation id="2556708692502648323">شبکه‌های کیف پول</translation>
+<translation id="4226543734057230801">شبکه‌های Ethereum</translation>
+<translation id="3504157706952484145">شبکه‌های Filecoin</translation>
+<translation id="1561541094377237745">شبکه‌های Solana</translation>
 <translation id="3159419679550543837">نمایش شبکه‌های آزمایشی</translation>
-<translation id="8205945804087322170">افزودن شبکه جدید</translation>
-<translation id="1330032157352961756">شناسه زنجیره جدید</translation>
+<translation id="3215569562674795548">اصلاح یا افزودن شبکه جدید</translation>
+<translation id="4418993400653250511">شناسه زنجیره</translation>
 <translation id="3423620355610881890">یک عدد اعشاری مثبت</translation>
 <translation id="8110465398315041268">جستجوی شبکه</translation>
 <translation id="3579705520805744214">نام یا شناسه زنجیره</translation>
-<translation id="726121047592132939">نام زنجیره جدید</translation>
+<translation id="8502525913969149079">نام زنجیره</translation>
 <translation id="1034112277864078119">نام زنجیره را وارد کنید</translation>
 <translation id="4672314527143443556">نام ارز زنجیره</translation>
 <translation id="4652114030688989556">نام ارز را وارد کنید</translation>
@@ -552,4 +561,15 @@
 <translation id="5318548116565208315">آواتار ذرت آب‌نبات</translation>
 <translation id="1959966725083452288">آواتار سلطنتی آب‌نبات</translation>
 <translation id="2039034364578911089">آواتار نینجای آب‌نبات</translation>
+<translation id="5057399635433117814">این صفحه ترجمه شود؟ با این کار کل نوشتار موجود در این صفحه برای ترجمه به Microsoft ارسال خواهد شد.</translation>
+<translation id="330263065709195164">افزونه Google Translate را برای ترجمه این صفحه نصب کنید؟</translation>
+<translation id="3789841737615482174">نصب</translation>
+<translation id="1485394570478670912">با این کار اکثر آگهی‌ها در وب‌سایت‌ها مسدود می‌شوند، اما «Brave Private Ads» ‏— مسدود نمی‌شود. این آگهی‌ها در اینجا کنترل می‌شود</translation>
+<translation id="6388201778088078932">تنظیمات.</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/>در مورد DNS در مورد HTTPS و ملاحظات حفظ حریم خصوصی Ethereum.</translation>
+<translation id="2843777623071353503">در صورت وجود، Brave سرویس onion وب‌سایت یا دامنه ‎.onion را در پنجره Tor باز خواهد کرد.</translation>
+<translation id="2556708692502648323">شبکه‌های کیف پول</translation>
+<translation id="8205945804087322170">افزودن شبکه جدید</translation>
+<translation id="1330032157352961756">شناسه زنجیره جدید</translation>
+<translation id="726121047592132939">نام زنجیره جدید</translation>
 </translationbundle>

@@ -80,11 +80,6 @@
 <translation id="3161744659507801211">Προειδοποίηση: Το Brave δεν μπορεί να αποτρέψει τις επεκτάσεις να καταγράψουν το ιστορικό περιήγησής σας.</translation>
 <translation id="2162109630536601963">Εάν αυτή η επέκταση υποβάλλει αιτήματα δικτύου, δεν θα χρησιμοποιηθεί Tor ή ιδιωτική λειτουργία.</translation>
 <translation id="2725327089319971976">Για να απενεργοποιήσετε αυτήν την επέκταση σε απόρρητη ή Tor λειτουργία, καταργήστε την επιλογή της.</translation>
-<translation id="5057399635433117814">Να μεταφραστεί αυτή η σελίδα; Με την επιλογή αυτή θα σταλεί όλο το κείμενο στη Microsoft για μετάφραση.</translation>
-<translation id="330263065709195164">Να εγκατασταθεί η επέκταση  Google Translate για να μεταφραστεί αυτή η σελίδα;</translation>
-<translation id="3789841737615482174">Εγκατάσταση</translation>
-<translation id="7658239707568436148">Ακύρωση</translation>
-<translation id="1307431692088049276">Να μην ερωτηθώ ξανά</translation>
 <translation id="3371343170427636147">Εφαρμογές Nightly Του Brave Προγράμματος Περιήγησης</translation>
 <translation id="4097979995947147464">Εφαρμογές Beta Tου Brave Προγράμματος Περιήγησης</translation>
 <translation id="8303432794159193481">Εφαρμογές Dev Του Brave Προγράμματος Περιήγησης</translation>
@@ -107,9 +102,11 @@
 <translation id="7276554663454265692">Μπορείτε να αλλάξετε <ph name="SETTING_TEXT"/> ανά πάσα στιγμή στις ρυθμίσεις προγράμματος περιήγησης.</translation>
 <translation id="6873781976650514089">αυτήν τη ρύθμιση</translation>
 <translation id="8915916167043355778">Κλείσιμο όλων</translation>
+<translation id="7658239707568436148">Ακύρωση</translation>
 <translation id="4870911314065352661">Κλείσιμο όλων των καρτελών;</translation>
 <translation id="7551864359422178684">Έχετε ανοιχτές <ph name="NUMBER_OF_TABS"/> καρτέλες σε αυτό το παράθυρο του προγράμματος περιήγησης.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> καρτέλες</translation>
+<translation id="1307431692088049276">Να μην ερωτηθώ ξανά</translation>
 <translation id="2272117088509540883">- Αναζήτηση Brave</translation>
 <translation id="2701279958223202597">Υποστηρίξτε την ανεξάρτητη αναζήτηση με καλύτερη προστασία απορρήτου. Η λειτουργία Aναζήτηση Brave δεν παρακολουθεί εσάς, τα ερωτήματα αναζήτησής σας ή τα κλικ σας.</translation>
 <translation id="6438467592401259882">Υποστηρίξτε την ανεξάρτητη αναζήτηση, με καλύτερο ιδιωτικό απόρρητο.</translation>
@@ -118,7 +115,7 @@
 <translation id="5240031343741051161">Δοκιμάστε την Αναζήτηση Brave</translation>
 <translation id="5026874946691314267">Να μην εμφανιστεί αυτό ξανά</translation>
 <translation id="5234764350956374838">Παράβλεψη</translation>
-<translation id="5100490448228945668">Παράβλεψη μετατροπής Brave αναζήτησης, πατήστε Enter για να καταργήσετε αυτήν την πρόταση</translation>
+<translation id="5100490448228945668">Παράβλεψη μετατροπής αναζήτησης Brave, πατήστε Enter για να καταργήσετε αυτήν την πρόταση</translation>
 <translation id="2515126961943087659">Υπηρεσία διαφημίσεων BAT</translation>
 <translation id="7924918279836988121">Υπηρεσία Bat Ledger</translation>
 <translation id="6040143037577758943">Κλείσιμο</translation>
@@ -126,7 +123,15 @@
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">Συμβολή σε κάποια ανώνυμη αναζήτηση &amp; περιήγηση δεδομένων για βελτίωση της Αναζήτησης Brave.</translation>
 <translation id="1516554614404600536">Συμβουλή εργαλείου Brave</translation>
+<translation id="7986278174934557414">Απόκρυψη του εικονιδίου πλαϊνού πλαισίου</translation>
+<translation id="6915291874524466201">Απόκρυψη του εικονιδίου πλαϊνού πλαισίου</translation>
+<translation id="9149866541089851383">Επεξεργασία...</translation>
 <translation id="1181037720776840403">Κατάργηση</translation>
+<translation id="7513769021866698486">Επεξεργασία στοιχείου</translation>
+<translation id="4002066346123236978">Τίτλος</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="5877900074358050101">Τίτλος στοιχείου πλαϊνής γραμμής</translation>
+<translation id="1613695740874407223">URL στοιχείου πλαϊνής γραμμής</translation>
 <translation id="4877147287319222750">Προσθήκη στην Πλευρική Γραμμή</translation>
 <translation id="5404213409401164238">Εμφάνιση Πλευρικής Γραμμής</translation>
 <translation id="7561196759112975576">Πάντα</translation>
@@ -201,6 +206,7 @@
 <translation id="2370739752330685659">Ίσως αργότερα</translation>
 <translation id="961012016278832836">Κληρονομιά Microsoft Edge</translation>
 <translation id="6436994631426134065">Εισήχθηκε από <ph name="BROWSER_NAME"/>.</translation>
+<translation id="1506190932569739298">Αντιγραφή καθαρού συνδέσμου (μόνο κύριο URL)</translation>
 <translation id="9156965752763025780">Οι αλλαγές που πραγματοποιήσατε θα ισχύσουν την επόμενη φορά που θα εκκινήσετε το Brave.</translation>
 <translation id="7179921470347911571">Επανεκκίνηση Τώρα</translation>
 <translation id="4472575034687746823">Έναρξη</translation>
@@ -220,6 +226,7 @@
 <translation id="4096343215397759358">Κάρτα με προεπισκόπηση</translation>
 <translation id="5297085818601043899">Επεξήγηση εργαλείου</translation>
 <translation id="2396127686705429331">Εμφάνιση κουμπιού σελιδοδεικτών</translation>
+<translation id="2369560305991805099">Εμφάνιση κουμπιού πλαϊνού πλαισίου</translation>
 <translation id="2814998458708016836">Χρησιμοποιήστε φαρδιά γραμμή διευθύνσεων</translation>
 <translation id="4109670531935487117">Εμφάνιση προτάσεων αυτόματης συμπλήρωσης στη γραμμή διευθύνσεων</translation>
 <translation id="2858138569776157458">Κορ. ιστότοποι</translation>
@@ -242,8 +249,8 @@
 <translation id="6303294677342628402">Ασπίδες</translation>
 <translation id="7133511168130368997">Αποκλείστε τους ιχνηλάτες και τις διαφημίσεις οι οποίες σας ακολουθούν στον ιστό.</translation>
 <translation id="2761825942249694703">Αυτές είναι οι προεπιλεγμένες ρυθμίσεις Ασπιδών. Ισχύουν σε όλους τις ιστότοπους εκτός αν αλλάξετε κάτι στον πίνακα Ασπίδες σε έναν συγκεκριμένο ιστότοπο. Η αλλαγή αυτών δεν θα επηρεάσει τις υπάρχουσες ρυθμίσεις ανά ιστότοπο.</translation>
-<translation id="1485394570478670912">Αυτό θα μπλοκάρει τις περισσότερες διαφημίσεις σε ιστότοπους, όχι τις διαφημίσεις Brave Private Ads — ο έλεγχος αυτών των διαφημίσεων γίνεται στο</translation>
-<translation id="6388201778088078932">ρυθμίσεις.</translation>
+<translation id="1435116578479068303">Αυτό θα αποκλείσει τις περισσότερες διαφημίσεις σε ιστοτόπους, με εξαίρεση τις Ιδιωτικές διαφημίσεις Brave — αυτές ελέγχονται στις ρυθμίσεις των <ph name="BEGIN_LINK"/>Ανταμοιβών Brave<ph name="END_LINK"/>.</translation>
+<translation id="8452536890042542134">Αυτό θα αποκλείσει τις περισσότερες διαφημίσεις σε ιστοτόπους.</translation>
 <translation id="4800195524776354947">Εμφάνιση του αριθμού των μπλοκαρισμένων στοιχείων στο εικονίδιο Ασπίδες</translation>
 <translation id="5510493033031835532">Αυτόματη ανακατεύθυνση σελίδων AMP</translation>
 <translation id="7630031867325944356">Προτιμήστε διευθύνσεις URL σελίδων εκδοτών, αντί για AMP και παρόμοιες εκδόσεις.</translation>
@@ -394,12 +401,12 @@
 <translation id="6554397389149987360">Χρησιμοποιεί το στοιχείο Hangouts για να ενεργοποιήσει την κοινή χρήση οθόνης και άλλες λειτουργίες στο πρόγραμμα περιήγησης.</translation>
 <translation id="7878791177459550035">Ο δρομολογητής μέσων ενεργοποιεί τη λειτουργία μετάδοσης στο πρόγραμμα περιήγησης.</translation>
 <translation id="5927916530277631319">Μέθοδος επίλυσης Ασταμάτητων Τομέων</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Μάθετε περισσότερα<ph name="END_LINK"/> για θέματα απορρήτου του DNS μέσω HTTPS και του Ethereum.</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Μάθετε περισσότερα<ph name="END_LINK"/> για θέματα απορρήτου του Ethereum.</translation>
 <translation id="5248318250177143470">Μέθοδος επίλυσης Υπηρεσίας Ονόματος Ethereum (ΥΟΕ)</translation>
 <translation id="6241402707160226266">Ιδιωτικό παράθυρο με Tor</translation>
 <translation id="8762452230727230396">Ο Τor αποκρύπτει τη διεύθυνση IP σας από τις ιστοσελίδες που επισκέπτεστε.</translation>
-<translation id="2959986444009520721">Χρησιμοποιήστε Γέφυρες</translation>
-<translation id="6003484976430531384">Οι γέφυρες σάς βοηθούν να αποκτήσετε πρόσβαση στο δίκτυο Tor στο σημείο όπου το Tor είναι αποκλεισμένο. Ανάλογα με το πού βρίσκεστε, μια γέφυρα μπορεί να λειτουργεί καλύτερα από μια άλλη.</translation>
+<translation id="2959986444009520721">Χρησιμοποιήστε γέφυρες</translation>
+<translation id="8416750895933172460">Οι γέφυρες σάς βοηθούν να αποκτήσετε πρόσβαση στο δίκτυο Tor στα σημεία όπου το Tor είναι αποκλεισμένο. Ανάλογα με το πού βρίσκεστε, μια γέφυρα μπορεί να λειτουργεί καλύτερα από μια άλλη.</translation>
 <translation id="7206799843254049470">Ρυθμίσεις σύνδεσης Tor</translation>
 <translation id="3194502271166340944">Ελέγχει τον τρόπο σύνδεσης των ιδιωτικών Windows με Tor στο δίκτυο Tor</translation>
 <translation id="4859228830700205299">Επιλέξτε μια ενσωματωμένη γέφυρα</translation>
@@ -409,14 +416,14 @@
 <translation id="454073978993625597">Εισαγάγετε πληροφορίες γεφύρωσης από αξιόπιστη πηγή.</translation>
 <translation id="4425607417590286548">Εφαρμόστε αλλαγές</translation>
 <translation id="2128143836897950793">Κάντε κλικ στο «Αίτημα νέας γέφυρας...» για να λάβετε γέφυρες</translation>
-<translation id="3314921753580327793">Πληκτρολογήστε διεύθυνση: θύρα (ένα ανά γραμμή)</translation>
-<translation id="3755189300481406891">Γέφυρα αιτήματος</translation>
-<translation id="6924425739431382319">Επικοινωνία με το BridgeDB. Παρακαλώ περιμένετε.</translation>
+<translation id="3314921753580327793">Πληκτρολογήστε διεύθυνση: θύρα (μία ανά γραμμή)</translation>
+<translation id="3755189300481406891">Αίτημα γέφυρας</translation>
+<translation id="6924425739431382319">Επικοινωνία με το BridgeDB. Περιμένετε.</translation>
 <translation id="811745063252080651">Λύστε το CAPTCHA για να ζητήσετε μια γέφυρα.</translation>
 <translation id="6936835573742749135">Δεν είναι δυνατή η αίτηση CAPTCHA. Προσπαθήστε ξανά αργότερα.</translation>
 <translation id="2653659639078652383">Υποβολή</translation>
 <translation id="1369311132025451972">Αυτόματη ανακατεύθυνση ιστότοπων .onion</translation>
-<translation id="2843777623071353503">Το Brave θα ανοίξει την υπηρεσία onion του ιστότοπου, όταν θα είναι διαθέσιμη ή τον τομέα .onion σε παράθυρο Tor</translation>
+<translation id="1658670175365815312">Το Brave θα μεταβαίνει στην έκδοση .onion ενός ιστοτόπου όταν είναι διαθέσιμος και θα ανοίγει αυτόματα όλους τους τομείς .onion σε ένα παράθυρο Tor.</translation>
 <translation id="2896916411183256228">Χρησιμοποιεί το WebTorrent για την εμφάνιση torrents απευθείας στο πρόγραμμα περιήγησης. Υποστηρίζει αρχεία torrent και magnet συνδέσμους.</translation>
 <translation id="5249433283143453448">Χρησιμοποιήστε το στοιχείο Widevine διαχείριση ψηφιακών δικαιωμάτων (DRM) για να προβάλετε προστατευμένη ροή βίντεο και άλλο περιεχόμενο στο πρόγραμμα περιήγησης.</translation>
 <translation id="8137559199583651773">Διαχείριση επεκτάσεων</translation>
@@ -442,14 +449,16 @@
 <translation id="3752403403443723332">Έγινε επαναφορά του πορτοφολιού σας.</translation>
 <translation id="594766067816395072">Έγινε επαναφορά των πληροφοριών συναλλαγών του πορτοφολιού σας.</translation>
 <translation id="1426410128494586442">Ναι</translation>
-<translation id="2556708692502648323">Δίκτυα πορτοφολιού</translation>
+<translation id="4226543734057230801">Δίκτυα Ethereum</translation>
+<translation id="3504157706952484145">Δίκτυα Filecoin</translation>
+<translation id="1561541094377237745">Δίκτυα Solana</translation>
 <translation id="3159419679550543837">Εμφάνιση δοκιμαστικών δικτύων</translation>
-<translation id="8205945804087322170">Προσθήκη νέου δικτύου</translation>
-<translation id="1330032157352961756">Το αναγνωριστικό της νέας αλυσίδας</translation>
+<translation id="3215569562674795548">Επεξεργασία ή προσθήκη νέου δικτύου</translation>
+<translation id="4418993400653250511">Το αναγνωριστικό της αλυσίδας</translation>
 <translation id="3423620355610881890">Θετικός δεκαδικός αριθμός</translation>
 <translation id="8110465398315041268">Αναζήτηση δικτύου</translation>
 <translation id="3579705520805744214">Αναγνωριστικό ή όνομα αλυσίδας</translation>
-<translation id="726121047592132939">Όνομα της νέας αλυσίδας</translation>
+<translation id="8502525913969149079">Το όνομα της αλυσίδας</translation>
 <translation id="1034112277864078119">Καταχωρήστε το όνομα της αλυσίδας</translation>
 <translation id="4672314527143443556">Όνομα νομίσματος αλυσίδας</translation>
 <translation id="4652114030688989556">Καταχωρήστε το όνομα κρυπτονομίσματος</translation>
@@ -460,7 +469,7 @@
 <translation id="2727514928168763432">URL για RPC</translation>
 <translation id="7059127752542505809">Εισαγάγετε διεύθυνση URL</translation>
 <translation id="3047726704186619366">Διευθύνσεις URL εικονιδίων</translation>
-<translation id="2487558607408469181">URL εξερευνητών block</translation>
+<translation id="2487558607408469181">Διευθύνσεις URL Block Explorer</translation>
 <translation id="2156993118928861787">Μη έγκυρη διεύθυνση</translation>
 <translation id="6301398959353668507">Το πεδίο δεν μπορεί να είναι κενό</translation>
 <translation id="7504462451153306677">Μη έγκυρη μορφή, το αναγνωριστικό αλυσίδας είναι θετικός αριθμός</translation>
@@ -555,4 +564,15 @@
 <translation id="5318548116565208315">Άβαταρ Σοκολατάκι Καλαμπόκι</translation>
 <translation id="1959966725083452288">Άβαταρ Σοκολατάκι Βασιλικός</translation>
 <translation id="2039034364578911089">Άβαταρ Σοκολατάκι Νίντζα</translation>
+<translation id="5057399635433117814">Να μεταφραστεί αυτή η σελίδα; Με την επιλογή αυτή θα σταλεί όλο το κείμενο στη Microsoft για μετάφραση.</translation>
+<translation id="330263065709195164">Να εγκατασταθεί η επέκταση  Google Translate για να μεταφραστεί αυτή η σελίδα;</translation>
+<translation id="3789841737615482174">Εγκατάσταση</translation>
+<translation id="1485394570478670912">Αυτό θα μπλοκάρει τις περισσότερες διαφημίσεις σε ιστότοπους, όχι τις διαφημίσεις Brave Private Ads — ο έλεγχος αυτών των διαφημίσεων γίνεται στο</translation>
+<translation id="6388201778088078932">ρυθμίσεις.</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Μάθετε περισσότερα<ph name="END_LINK"/> για θέματα απορρήτου του DNS μέσω HTTPS και του Ethereum.</translation>
+<translation id="2843777623071353503">Το Brave θα ανοίξει την υπηρεσία onion του ιστότοπου, όταν θα είναι διαθέσιμη ή τον τομέα .onion σε παράθυρο Tor</translation>
+<translation id="2556708692502648323">Δίκτυα πορτοφολιού</translation>
+<translation id="8205945804087322170">Προσθήκη νέου δικτύου</translation>
+<translation id="1330032157352961756">Το αναγνωριστικό της νέας αλυσίδας</translation>
+<translation id="726121047592132939">Όνομα της νέας αλυσίδας</translation>
 </translationbundle>

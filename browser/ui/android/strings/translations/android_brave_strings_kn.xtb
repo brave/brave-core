@@ -93,6 +93,7 @@
 <translation id="3545804467215833536">Brave ಶೀಲ್ಡ್ಸ್ ವೀಕ್ಷಿಸಲು ಟ್ಯಾಪ್ ಮಾಡಿ</translation>
 <translation id="1724327820822194498">ಶೀಲ್ಡ್ಸ್ ಮೂಲಕ ಪ್ರತಿ ಪುಟದಲ್ಲಿ Brave ನಿರ್ಬಂಧಿಸಿರುವ ಎಲ್ಲಾ ಕೆಟ್ಟ ವಿಷಯವನ್ನು ನೋಡಿ.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> ಮತ್ತು <ph name="TRACKER"/> ಇತರ ಜಾಹೀರಾತುಗಳು ಮತ್ತು ಟ್ರ್ಯಾಕರ್‌ಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ</translation>
+<translation id="7256200875155794202"><ph name="BIG_TECH"/> ಮತ್ತು ಇತರ ಜಾಹೀರಾತುಗಳು ಮತ್ತು ಟ್ರ್ಯಾಕರ್‌ಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> ಜಾಹೀರಾತುಗಳು ಮತ್ತು ಟ್ರ್ಯಾಕರ್‌ಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ</translation>
 <translation id="8281886186245836920">ಸ್ಕಿಪ್‌</translation>
 <translation id="6165508094623778733">ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ</translation>
@@ -117,6 +118,9 @@
 <translation id="19715420010996093">Brave ಬ್ರೌಸರ್ ಆಯ್ಕೆಮಾಡಿ ಮತ್ತು 'ಯಾವಾಗಲೂ' ಅನ್ನು ಟ್ಯಾಪ್ ಮಾಡಿ</translation>
 <translation id="3546439402724649282">ಬ್ರೇವ್‌ ಈಗಾಗಲೇ ನಿಮ್ಮ ಡಿಫಾಲ್ಟ್‌ ಬ್ರೌಸರ್‌ ಆಗಿ ಸೆಟ್‌ ಆಗಿದೆ</translation>
 <translation id="8389661903259423907">ನೀವು ಈಗಾಗಲೇ ಡೀಫಾಲ್ಟ್ ಬ್ರೌಸರ್ ಅನ್ನು ಸೆಟ್‌ ಮಾಡಿರುವಿರಿ. ನಿಮ್ಮ ಅಪ್ಲಿಕೇಶನ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ ನೀವು ಡೀಫಾಲ್ಟ್ ಬ್ರೌಸರ್ ಅನ್ನು ಬದಲಾಯಿಸಬಹುದು</translation>
+<translation id="1545749641540134597">QR ಕೋಡ್ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ</translation>
+<translation id="5317781812114905957">ಸೂಚನೆಗಳು</translation>
+<translation id="8515319483805157233">QR ಕೋಡ್ ಪ್ರಕಾರ ಹುಡುಕಾಟ ಮಾಡಲು, ಫ್ರೇಮ್ ಮಧ್ಯಭಾಗದಲ್ಲಿ QR ಕೋಡ್ ಅನ್ನು ಒಗ್ಗೂಡಿಸಿ.</translation>
 <translation id="8826007068782654809">ಧನ್ಯವಾದಗಳು</translation>
 <translation id="6665366815203065060">ನೀವು ಇದಕ್ಕೆ ಈಗಷ್ಟೇ ಒಂದು ಟಿಪ್ ಕಳುಹಿಸಿದ್ದೀರಿ:</translation>
 <translation id="5441565662498481293">ನೀವು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಇಲ್ಲಿಗೆ ಟಿಪ್ ಕಳುಹಿಸುತ್ತಿದ್ದೀರಿ:</translation>
@@ -393,35 +397,11 @@
 <translation id="8376263745431603066">"ರಾತ್ರಿ ಮೋಡ್" ಸಕ್ರಿಯಗೊಳಿಸಿ (ಪ್ರಾಯೋಗಿಕ)</translation>
 <translation id="1383876407941801731">ಹುಡುಕಿ</translation>
 <translation id="8446884382197647889">ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ</translation>
-<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
-<translation id="558614325644656740"><ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/> ಲಭ್ಯವಿದೆ</translation>
-<translation id="3414885529641505869"><ph name="COIN_NAME"/> ಖರೀದಿಸಿ</translation>
-<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> ಡೆಪಾಸಿಟ್ ವಿಳಾಸ</translation>
-<translation id="4836242416604533644"><ph name="COIN_MEMO"/> ಡೆಪಾಸಿಟ್ ಮೆಮೋ</translation>
-<translation id="6755546361496900700">ಪರಿವರ್ತನೆಯನ್ನು ಪೂರ್ವವೀಕ್ಷಣೆ ಮಾಡಿ</translation>
-<translation id="5110244215256675209">ಕ್ರಿಪ್ಟೋ ಖರೀದಿಸಿ</translation>
-<translation id="2271556362602437160">.com</translation>
-<translation id="3727077517986954867">.us</translation>
 <translation id="13296465911709339">ನಿಮ್ಮ ಪಠ್ಯವನ್ನು ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ನಕಲಿಸಲಾಗಿದೆ.</translation>
 <translation id="2735834606413553397">ಸಾರ್ವಜನಿಕ ವಿಳಾಸವನ್ನು ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ನಕಲಿಸಲಾಗಿದೆ.</translation>
-<translation id="7144878232160441200">ಮರುಪ್ರಯತ್ನಿಸಿ</translation>
 <translation id="2977461003134694205">ಗೌಪ್ಯತೆ ಅಂಕಿಅಂಶಗಳು</translation>
-<translation id="2956070106555335453">ಸಾರಾಂಶ</translation>
-<translation id="1366855498335432549">ಡೆಪಾಸಿಟ್ ಮಾಡಿ</translation>
-<translation id="1301340234286078471">ಪರಿವರ್ತಿಸಿ</translation>
 <translation id="223536150967420869">ಖರೀದಿಸಿ</translation>
-<translation id="4584930231524505442">ನಾನು ಪರಿವರ್ತಿಸಲು ಬಯಸುತ್ತೇನೆ…</translation>
-<translation id="5749014321384313843">ನಾನು ಖರ್ಚು ಮಾಡಲು ಬಯಸುತ್ತೇನೆ...</translation>
-<translation id="2480674848181564169">ಪರಿವರ್ತಿಸಲು ಸಾಕಷ್ಟು ಬ್ಯಾಲೆನ್ಸ್ ಇಲ್ಲ</translation>
-<translation id="2215334405220411393">ಪರಿವರ್ತಿಸಲು ಕನಿಷ್ಠ ಮೊತ್ತ : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6702658079816271889">ಸಂಪರ್ಕಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ</translation>
-<translation id="7742417737698031726">ಶುಲ್ಕ</translation>
-<translation id="2122225204180056042">ನೀವು ಇದನ್ನು ಸ್ವೀಕರಿಸುತ್ತೀರಿ</translation>
-<translation id="6432284126416751397">ಪರಿವರ್ತನೆಯನ್ನು ದೃಢೀಕರಿಸಿ</translation>
-<translation id="3891414008432200754">ದರ</translation>
-<translation id="3733576242118819803">ದೃಢಪಡಿಸಿ (<ph name="REMAINING_TIME"/>ಗಳು)</translation>
-<translation id="1627064138060308910">ಪರಿವರ್ತನೆ ವಿಫಲಗೊಂಡಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
-<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="2956070106555335453">ಸಾರಾಂಶ</translation>
 <translation id="7465614181960492526">ಟೋಕನ್‌ಗಳನ್ನು ಗಳಿಸಿ &amp; ಹಿಂದಕ್ಕೆ ನೀಡಿ</translation>
 <translation id="244362569344671266">Brave ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸುವ ಮೂಲಕ ಟೋಕನ್‌ಗಳನ್ನು ಸಂಪಾದಿಸಿ ಮತ್ತು ವಿಷಯ ರಚನೆಕಾರರನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಬೆಂಬಲಿಸಿ.</translation>
 <translation id="631124996535890460">ಮುಂದುವರಿಯುವ ಮೂಲಕ, ನೀವು <ph name="TERMS_OF_SERVICE"/> ಮತ್ತು <ph name="PRIVACY_POLICY"/> ಗೆ ಸಮ್ಮತಿಸಿದ್ದೀರಿ.</translation>
@@ -452,18 +432,6 @@
 <translation id="2434574859640694129">ನಿಮ್ಮ ಮೊದಲ ಜಾಹೀರಾತುಗಳ ಪಾವತಿಯನ್ನು ನೀವು ಸ್ವೀಕರಿಸಿದ ನಂತರ ನೀವು ಹಿಂತಿರುಗಬಹುದು ಮತ್ತು ಈ ರಚಿಸುವವರಿಗೆ ಸಲಹೆ ನೀಡಬಹುದು!</translation>
 <translation id="207242986925259074">ತ್ವರಿತ ರಿಫ್ರೆಶ್ ಪ್ರವಾಸ</translation>
 <translation id="8342862030112839977">ನಿಮ್ಮ 1 ನೇ ರಿವಾರ್ಡ್‌ಗಳ ಪಾವತಿಯು ಇವರಿಂದ ಬರುತ್ತದೆ:</translation>
-<translation id="8037420924417098685">ಉಚಿತ ಕರೆಯನ್ನು ಆರಂಭಿಸಲು, Brave ರಿವಾರ್ಡ್ಸ್ ಆನ್ ಮಾಡಿ</translation>
-<translation id="8961724619078500274">Brave Rewards ಮೂಲಕ, ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸಲು ಟೋಕನ್‌ಗಳನ್ನು ಗಳಿಸುತ್ತೀರಿ (ನಿಮ್ಮ ಡೇಟಾ ಸುರಕ್ಷಿತವಾಗಿರುತ್ತದೆ). ಆ ಟೋಕನ್‌ಗಳನ್ನು ನಗದು, ಉಡುಗೊರೆ ಕಾರ್ಡ್‌ಗಳಾಗಿ ಪರಿವರ್ತಿಸಿ…ಅಥವಾ ನೀವು ಇಷ್ಟಪಡುವ ವೆಬ್‌ಸೈಟ್‌ಗಳಿಗೆ ಟಿಪ್ ನೀಡಿ. ಟ್ರ್ಯಾಕಿಂಗ್ ಇಲ್ಲ. ಯಾವುದೇ ಸ್ಧಗಿತಗಳಿಲ್ಲ.</translation>
-<translation id="7307847920988946894">ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಆನ್ ಮಾಡಿ</translation>
-<translation id="7872993190040589450">ಸಕ್ರಿಯಗೊಳಿಸುವ ಮೂಲಕ, ನೀವು <ph name="TERMS_OF_SERVICE"/> ಮತ್ತು <ph name="PRIVACY_POLICY"/> ಗೆ ಒಪ್ಪುತ್ತೀರಿ.</translation>
-<translation id="6128511569382736135">ಉಚಿತ ಕರೆಯನ್ನು ಆರಂಭಿಸಲು, Brave ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳು ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
-<translation id="7930006085154756245">Brave ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳು ಮೂಲಕ, ನೀವು ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸಲು ಟೋಕನ್‌ಗಳನ್ನು ಗಳಿಸುತ್ತೀರಿ (ನಿಮ್ಮ ಡೇಟಾ ಸುರಕ್ಷಿತವಾಗಿರುತ್ತದೆ). ಆ ಟೋಕನ್‌ಗಳನ್ನು ನಗದು, ಉಡುಗೊರೆ ಕಾರ್ಡ್‌ಗಳಾಗಿ ಪರಿವರ್ತಿಸಿ…ಅಥವಾ ನೀವು ಇಷ್ಟಪಡುವ ವೆಬ್‌ಸೈಟ್‌ಗಳಿಗೆ ಸಲಹೆ ನೀಡಿ. ಟ್ರ್ಯಾಕಿಂಗ್ ಇಲ್ಲ. ಯಾವುದೇ ಸ್ಧಗಿತಗಳಿಲ್ಲ.</translation>
-<translation id="4992617448154987397">Brave ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳನ್ನು ಆನ್ ಮಾಡಿ</translation>
-<translation id="3415016869273103668">ನೀವು ಇದೀಗ ಉಚಿತ ಕರೆಯನ್ನು ಆರಂಭಿಸಬಹುದು</translation>
-<translation id="7073631403665023390">Brave ಟಾಕ್‌ಗೆ ಮುಂದುವರಿಯಲು ಸ್ಕ್ರೀನ್‌ನಲ್ಲಿ ಎಲ್ಲಿಯಾದರೂ ಕ್ಲಿಕ್ ಮಾಡಿ ಅಥವಾ ಟ್ಯಾಪ್ ಮಾಡಿ.</translation>
-<translation id="626339649633171286">Brave ರಿವಾರ್ಡ್ಸ್ ಕುರಿತು ಹೆಚ್ಚು ತಿಳಿಯಲು ಬಯಸುವಿರಾ? <ph name="TAKE_QUICK_TOUR"/>.</translation>
-<translation id="3604285424134705930">ನೀವು <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> ರಿಂದ <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/> ಗೆ ಪರಿವರ್ತಿಸಿದ್ದೀರಿ!</translation>
-<translation id="392587271502873865">ದಯವಿಟ್ಟು ನಿಮ್ಮ ನೆಟ್‌ವರ್ಕ್ ಸಂಪರ್ಕವನ್ನು ಪರಿಶೀಲಿಸಿ.</translation>
 <translation id="7889432931837317731">ಸಾಧ್ಯವಿರುವಾಗ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ತೆರೆಯಿರಿ</translation>
 <translation id="8967385052772844086">ಪೂರ್ಣ ಗೌಪ್ಯತೆ ವರದಿಯನ್ನು ವೀಕ್ಷಿಸಿ</translation>
 <translation id="6864343534748973390">ಹೆಚ್ಚು ಜನಪ್ರಿಯ</translation>
@@ -591,9 +559,6 @@
 <translation id="5050890334032852465">ಖಾತೆ ವೀಕ್ಷಣೆಪಟ್ಟಿ ಉಳಿಸಿ</translation>
 <translation id="7755766175599167100">ಟೋಕನ್‌ಗಳನ್ನು ಹುಡುಕಿ</translation>
 <translation id="3835223348537121988">ಬ್ಯಾಲೆನ್ಸ್:</translation>
-<translation id="2490428413101944234">ಫಾಸೆಟ್ ಪರೀಕ್ಷಿಸಿ</translation>
-<translation id="2581671693710952401">ಎಥರ್ ಪಡೆಯಿರಿ</translation>
-<translation id="8165484222652118977"><ph name="NETWORK"/> ಪರೀಕ್ಷಾರ್ಥ ನೆಟ್‌ವರ್ಕ್‌ಗೆ ಫೌಸೆಟ್‌ನಿಂದ ಈಥರ್ ಪಡೆಯಿರಿ</translation>
 <translation id="7420359180991315365">Wyre ಗೆ ಮುಂದುವರಿಸಿ</translation>
 <translation id="8488282162676695335">Brave ವ್ಯಾಲೆಟ್</translation>
 <translation id="3784455785234192852">ಲಾಕ್ ಮಾಡಿ</translation>
@@ -605,6 +570,12 @@
 <translation id="5693968582510626466">ವಹಿವಾಟುಗಳನ್ನು ತೆರವುಗೊಳಿಸುವುದು ಡೆವಲಪರ್‌ಗಳಿಗೆ ಅಥವಾ ಸ್ಥಳೀಯ ಸರ್ವರ್‌ನಲ್ಲಿ ಸ್ಥಿತಿಯನ್ನು ತೆರವುಗೊಳಿಸುವಾಗ ಉಪಯುಕ್ತವಾಗಿರಬಹುದು</translation>
 <translation id="5421107279168565467">ವಹಿವಾಟನ್ನು ಮತ್ತು ನೋನ್ಸ್ ಮಾಹಿತಿಯನ್ನು ಮರುಹೊಂದಿಸಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ? ಈ ಆಯ್ಕೆಯನ್ನು ಸ್ಥಳೀಯ ಟೆಸ್ಟ್ ಸರ್ವರ್ ಅನ್ನು ರನ್ ಮಾಡುತ್ತಿರುವ ಡೆವಲಪರ್‌ಗಳು ಹೆಚ್ಚಿನದಾಗಿ ಬಳಸುತ್ತಾರೆ. ದೃಢೀಕರಿಸಲು "<ph name="CONFIRMATION_PHRASE"/>" ಟೈಪ್ ಮಾಡಿ.</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# ನಿಮಿಷ} other {# ನಿಮಿಷಗಳು}}</translation>
+<translation id="8146860193318415026">ವೀಡಿಯೋಗಳನ್ನು ಸ್ಟ್ರೀಮ್ ಮಾಡಿ. ಜಾಹೀರಾತು ಮುಕ್ತ.</translation>
+<translation id="6311019535466417620">ನಿಮ್ಮ ವೀಡಿಯೋಗೂ ಮೊದಲು ಯಾವುದೇ ಜಾಹೀರಾತುಗಳಿಲ್ಲ</translation>
+<translation id="4274652342814424451">ನಿಮ್ಮ ವೀಡಿಯೋ ಸಮಯದಲ್ಲಿ ಯಾವುದೇ ಜಾಹೀರಾತುಗಳಿಲ್ಲ</translation>
+<translation id="1721710839767183848">ಪುಟದಲ್ಲಿ ಯಾವುದೇ ಜಾಹೀರಾತುಗಳಿಲ್ಲ</translation>
+<translation id="4647035642622555398">ಯಾವುದೇ ಅಡಚಣೆಗಳಿಲ್ಲ</translation>
+<translation id="4122515759479497554">ವೀಡಿಯೋಗಳಿಗಾಗಿ ಹುಡುಕಿ</translation>
 <translation id="4449475351935531438">Brave ಫೈರ್‌ವಾಲ್ + VPN</translation>
 <translation id="719977489961414786">ನಿಮ್ಮ ಸಂಪರ್ಕವನ್ನು ರಕ್ಷಿಸುವುದಕ್ಕಾಗಿ VPN ಗೆ ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡಿ ಮತ್ತು ಪ್ರತಿಯೊಂದು ಕಡೆ ಆಕ್ರಮಣಶೀಲ ಟ್ರ್ಯಾಕರ್‌ಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ.</translation>
 <translation id="3435896845095436175">ಸಕ್ರಿಯಗೊಳಿಸು</translation>
@@ -808,6 +779,9 @@
 <translation id="5233638681132016545">ಹೊಸ ಟ್ಯಾಬ್</translation>
 <translation id="8006088103295786154">Brave ವ್ಯಾಲೆಟ್ ಎಕ್ಸೆಸ್ ಮಾಡಿ</translation>
 <translation id="5308380583665731573">ಸಂಪರ್ಕಿಸಿ</translation>
+<translation id="8030169304546394654">ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಲಾಗಿದೆ</translation>
+<translation id="3423275441470187644">ನಂಬಿಕೆ</translation>
+<translation id="2391762656119864333">ಹಿಂತೆಗೆದುಕೊ</translation>
 <translation id="3432029672560911238">ಬಳಕೆದಾರ ಖಾತೆ</translation>
 <translation id="5753378322046059140">ಖಾತೆಯನ್ನು ಬದಲಾಯಿಸಿ</translation>
 <translation id="3897092660631435901">ಮೆನು</translation>
@@ -884,5 +858,50 @@
 <translation id="7002577172732106572">ಸ್ಪ್ಲಿಟ್ ಟನೆಲಿಂಗ್</translation>
 <translation id="2832270987629018596">ಇದು ಮಾನ್ಯವಾದ SOL ವಿಳಾಸವಲ್ಲ</translation>
 <translation id="8181161042860463420">ಸಂಬಂಧಿತ ಟೋಕನ್ ಖಾತೆಯು ಇನ್ನೂ ಅಸ್ತಿತ್ವದಲ್ಲಿಲ್ಲ. ಸಣ್ಣ ಪ್ರಮಾಣದ SOL ಅನ್ನು ಅದನ್ನು ರಚಿಸಲು ಮತ್ತು ಧನಸಹಾಯ ಮಾಡಲು ಖರ್ಚು ಮಾಡಲಾಗುತ್ತದೆ. <ph name="CLICK_START"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="CLICK_END"/></translation>
+<translation id="1304515257839771197"><ph name="APP_NAME"/> ಆ್ಯಪ್ ತೆರೆಯುವುದೇ?</translation>
+<translation id="7653028065515320848"><ph name="CLICK_START"/>Rainbow Bridge ಬಳಸುವ ಕುರಿತು ಹೆಚ್ಚು ತಿಳಿಯಿರಿ<ph name="CLICK_END"/></translation>
+<translation id="8219806187375413057"><ph name="CLICK_START"/>Rainbow Bridgeನಲ್ಲಿ ಅಪಾಯವನ್ನು ತಗ್ಗಿಸುವ ಕುರಿತು ಹೆಚ್ಚು ತಿಳಿಯಿರಿ<ph name="CLICK_END"/></translation>
+<translation id="1065082006518490444"><ph name="APP_NAME"/> ಎನ್ನುವುದು ಸ್ವತಂತ್ರ ಸೇವೆಯಾಗಿದ್ದು ಅದು ನಿಮಗೆ ನೆಟ್‌ವರ್ಕ್‌ಗಳಾದ್ಯಂತ ಸ್ವತ್ತುಗಳನ್ನು ಸಂಪರ್ಕಿಸಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ ಮತ್ತು ನಿಮ್ಮ ಕ್ರಿಪ್ಟೋ ಅನ್ನು ಇತರ ನೆಟ್‌ವರ್ಕ್‌ಗಳು ಮತ್ತು DApp ಎಕೋಸಿಸ್ಟಂಗಳಲ್ಲಿ ಬಳಕೆ ಮಾಡುತ್ತದೆ. ಇತರ ನೆಟ್‌ವರ್ಕ್‌ಗಳಿಗೆ ಅಸೆಟ್‌ಗಳನ್ನು ಬ್ರಿಡ್ಜ್ ಮಾಡುವುದು ಕೆಲವು ಅಪಾಯಗಳನ್ನು ಹೊಂದಿದೆ.</translation>
+<translation id="8423380132356660250"><ph name="APP_NAME"/> ಆ್ಯಪ್ ತೆರೆಯಿರಿ</translation>
 <translation id="168154537623654021">VPN ಪ್ರೊಫೈಲ್ ಅನ್ನು ನವೀಕರಿಸಲಾಗುತ್ತಿದೆ ...</translation>
+<translation id="7457027586454688423">ನಿಮ್ಮ Brave ವ್ಯಾಲೆಟ್ ಪಾಸ್‌ವರ್ಡ್ ಅನ್ನು ನಮೂದಿಸಿ</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740"><ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/> ಲಭ್ಯವಿದೆ</translation>
+<translation id="3414885529641505869"><ph name="COIN_NAME"/> ಖರೀದಿಸಿ</translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> ಡೆಪಾಸಿಟ್ ವಿಳಾಸ</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> ಡೆಪಾಸಿಟ್ ಮೆಮೋ</translation>
+<translation id="6755546361496900700">ಪರಿವರ್ತನೆಯನ್ನು ಪೂರ್ವವೀಕ್ಷಣೆ ಮಾಡಿ</translation>
+<translation id="5110244215256675209">ಕ್ರಿಪ್ಟೋ ಖರೀದಿಸಿ</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="7144878232160441200">ಮರುಪ್ರಯತ್ನಿಸಿ</translation>
+<translation id="1366855498335432549">ಡೆಪಾಸಿಟ್ ಮಾಡಿ</translation>
+<translation id="1301340234286078471">ಪರಿವರ್ತಿಸಿ</translation>
+<translation id="4584930231524505442">ನಾನು ಪರಿವರ್ತಿಸಲು ಬಯಸುತ್ತೇನೆ…</translation>
+<translation id="5749014321384313843">ನಾನು ಖರ್ಚು ಮಾಡಲು ಬಯಸುತ್ತೇನೆ...</translation>
+<translation id="2480674848181564169">ಪರಿವರ್ತಿಸಲು ಸಾಕಷ್ಟು ಬ್ಯಾಲೆನ್ಸ್ ಇಲ್ಲ</translation>
+<translation id="2215334405220411393">ಪರಿವರ್ತಿಸಲು ಕನಿಷ್ಠ ಮೊತ್ತ : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">ಸಂಪರ್ಕಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ</translation>
+<translation id="7742417737698031726">ಶುಲ್ಕ</translation>
+<translation id="2122225204180056042">ನೀವು ಇದನ್ನು ಸ್ವೀಕರಿಸುತ್ತೀರಿ</translation>
+<translation id="6432284126416751397">ಪರಿವರ್ತನೆಯನ್ನು ದೃಢೀಕರಿಸಿ</translation>
+<translation id="3891414008432200754">ದರ</translation>
+<translation id="3733576242118819803">ದೃಢಪಡಿಸಿ (<ph name="REMAINING_TIME"/>ಗಳು)</translation>
+<translation id="1627064138060308910">ಪರಿವರ್ತನೆ ವಿಫಲಗೊಂಡಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="8037420924417098685">ಉಚಿತ ಕರೆಯನ್ನು ಆರಂಭಿಸಲು, Brave ರಿವಾರ್ಡ್ಸ್ ಆನ್ ಮಾಡಿ</translation>
+<translation id="8961724619078500274">Brave Rewards ಮೂಲಕ, ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸಲು ಟೋಕನ್‌ಗಳನ್ನು ಗಳಿಸುತ್ತೀರಿ (ನಿಮ್ಮ ಡೇಟಾ ಸುರಕ್ಷಿತವಾಗಿರುತ್ತದೆ). ಆ ಟೋಕನ್‌ಗಳನ್ನು ನಗದು, ಉಡುಗೊರೆ ಕಾರ್ಡ್‌ಗಳಾಗಿ ಪರಿವರ್ತಿಸಿ…ಅಥವಾ ನೀವು ಇಷ್ಟಪಡುವ ವೆಬ್‌ಸೈಟ್‌ಗಳಿಗೆ ಟಿಪ್ ನೀಡಿ. ಟ್ರ್ಯಾಕಿಂಗ್ ಇಲ್ಲ. ಯಾವುದೇ ಸ್ಧಗಿತಗಳಿಲ್ಲ.</translation>
+<translation id="7307847920988946894">ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಆನ್ ಮಾಡಿ</translation>
+<translation id="7872993190040589450">ಸಕ್ರಿಯಗೊಳಿಸುವ ಮೂಲಕ, ನೀವು <ph name="TERMS_OF_SERVICE"/> ಮತ್ತು <ph name="PRIVACY_POLICY"/> ಗೆ ಒಪ್ಪುತ್ತೀರಿ.</translation>
+<translation id="6128511569382736135">ಉಚಿತ ಕರೆಯನ್ನು ಆರಂಭಿಸಲು, Brave ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳು ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
+<translation id="7930006085154756245">Brave ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳು ಮೂಲಕ, ನೀವು ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸಲು ಟೋಕನ್‌ಗಳನ್ನು ಗಳಿಸುತ್ತೀರಿ (ನಿಮ್ಮ ಡೇಟಾ ಸುರಕ್ಷಿತವಾಗಿರುತ್ತದೆ). ಆ ಟೋಕನ್‌ಗಳನ್ನು ನಗದು, ಉಡುಗೊರೆ ಕಾರ್ಡ್‌ಗಳಾಗಿ ಪರಿವರ್ತಿಸಿ…ಅಥವಾ ನೀವು ಇಷ್ಟಪಡುವ ವೆಬ್‌ಸೈಟ್‌ಗಳಿಗೆ ಸಲಹೆ ನೀಡಿ. ಟ್ರ್ಯಾಕಿಂಗ್ ಇಲ್ಲ. ಯಾವುದೇ ಸ್ಧಗಿತಗಳಿಲ್ಲ.</translation>
+<translation id="4992617448154987397">Brave ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳನ್ನು ಆನ್ ಮಾಡಿ</translation>
+<translation id="3415016869273103668">ನೀವು ಇದೀಗ ಉಚಿತ ಕರೆಯನ್ನು ಆರಂಭಿಸಬಹುದು</translation>
+<translation id="7073631403665023390">Brave ಟಾಕ್‌ಗೆ ಮುಂದುವರಿಯಲು ಸ್ಕ್ರೀನ್‌ನಲ್ಲಿ ಎಲ್ಲಿಯಾದರೂ ಕ್ಲಿಕ್ ಮಾಡಿ ಅಥವಾ ಟ್ಯಾಪ್ ಮಾಡಿ.</translation>
+<translation id="626339649633171286">Brave ರಿವಾರ್ಡ್ಸ್ ಕುರಿತು ಹೆಚ್ಚು ತಿಳಿಯಲು ಬಯಸುವಿರಾ? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="3604285424134705930">ನೀವು <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> ರಿಂದ <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/> ಗೆ ಪರಿವರ್ತಿಸಿದ್ದೀರಿ!</translation>
+<translation id="392587271502873865">ದಯವಿಟ್ಟು ನಿಮ್ಮ ನೆಟ್‌ವರ್ಕ್ ಸಂಪರ್ಕವನ್ನು ಪರಿಶೀಲಿಸಿ.</translation>
+<translation id="2490428413101944234">ಫಾಸೆಟ್ ಪರೀಕ್ಷಿಸಿ</translation>
+<translation id="2581671693710952401">ಎಥರ್ ಪಡೆಯಿರಿ</translation>
+<translation id="8165484222652118977"><ph name="NETWORK"/> ಪರೀಕ್ಷಾರ್ಥ ನೆಟ್‌ವರ್ಕ್‌ಗೆ ಫೌಸೆಟ್‌ನಿಂದ ಈಥರ್ ಪಡೆಯಿರಿ</translation>
 </translationbundle>

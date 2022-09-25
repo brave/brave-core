@@ -66,6 +66,10 @@
 <translation id="6274899614137380422">Pokaži Binance</translation>
 <translation id="5585019845078534178">Kartice</translation>
 <translation id="3870475560794762985">Prikaži sponzorirano sliko</translation>
+<translation id="8466529005131466476">Zaslužite lahko z obiski sponzoriranih spletnih mest.</translation>
+<translation id="3955742714798578476">Zaslužite z ogledovanjem sponzoriranih slik.</translation>
+<translation id="7822618650711767369">Sponzorirane slike podpirajo Brave. Z nagradami Brave lahko zaslužite del prihodkov od sponzoriranih slik in podprete tudi ustvarjalce vsebin!</translation>
+<translation id="5579480493856401823">Če izklopite sponzorirana spletna mesta, se zmanjša število žetonov, ki jih zaslužite, in podpora, ki jo vsak mesec prejmejo ustvarjalci vsebine.</translation>
 <translation id="2875302873837723333">Najb. prilj.</translation>
 <translation id="8173998484743827990">Brave statistika</translation>
 <translation id="383680190590774040">ura</translation>
@@ -73,6 +77,8 @@
 <translation id="3159285901314605198">Slika ozadja</translation>
 <translation id="385051799172605136">Nazaj</translation>
 <translation id="4225429340218993596">Enobarvne</translation>
+<translation id="7610541582755894669">Gradienti</translation>
+<translation id="1606851618930975029">Osveži ob vsakem novem zavihku</translation>
 <translation id="9024104284526126630">V Brave lahko opravite zasebni klic.</translation>
 <translation id="4903286433687221248">Začnite klicati prijatelje in sodelavce brez omejitev v programu Brave Talk.</translation>
 <translation id="7115051913071512405">Poskusite</translation>
@@ -198,14 +204,14 @@
 <translation id="4428871418618312983">Oglasi, prejeti ta mesec</translation>
 <translation id="4229016885653790965">Oprostite! Oglasi v vaši regiji še niso na voljo.</translation>
 <translation id="2539279826042558064">Nagrade Brave Rewards in oglasi trenutno niso na voljo v vaši napravi.</translation>
-<translation id="2532127066761785857">Največje število prikazanih oglasov</translation>
-<translation id="6177749339095882127">0 oglasov na uro</translation>
-<translation id="5171071066587880677">1 oglas na uro</translation>
-<translation id="7885315050812316860">2 oglasa na uro</translation>
-<translation id="2232753742630178222">3 oglasi na uro</translation>
-<translation id="905529390827000221">4 oglasi na uro</translation>
-<translation id="7694167481321619202">5 oglasov na uro</translation>
-<translation id="3705420658531870884">10 oglasov na uro</translation>
+<translation id="5736977383725358876">Pogostost oglaševanja obvestil</translation>
+<translation id="7701040980221191251">Brez</translation>
+<translation id="767929144984201135">Največ 1 oglas na uro</translation>
+<translation id="3122281951051829161">Največ 2 oglasa na uro</translation>
+<translation id="3431180326971210034">Največ 3 oglasi na uro</translation>
+<translation id="8718553520664259870">Največ 4 oglasi na uro</translation>
+<translation id="8827015466803589071">Največ 5 oglasov na uro</translation>
+<translation id="2293009346092992234">Največ 10 oglasov na uro</translation>
 <translation id="2356652719351432565">Relevantnost regionalnih oglasov</translation>
 <translation id="3216275550298493597">Tako vam lahko Brave prikazuje oglase, namenjene posebej za vašo regijo.</translation>
 <translation id="8446884382197647889">Več informacij</translation>
@@ -272,8 +278,9 @@
 <translation id="5955021799827127089">Napaka: Različna regija računa</translation>
 <translation id="5260522591743022748">Hmm, zdi se, da so bile vaše nagrade Brave Rewards že preverjene z drugim računom <ph name="PROVIDER"/>. Poskusite znova preveriti s svojim prejšnjim računom.</translation>
 <translation id="5111921830714291902">Napaka: Drugi račun</translation>
-<translation id="6933939911547091461">Vaših nagrad Brave na žalost ni mogoče preveriti, ker vaša regija trenutno ni podprta za preverjanje nagrad Brave.</translation>
-<translation id="8218538368080510976">Napaka: Regija ni podprta</translation>
+<translation id="1024520300696337331">Vašega računa <ph name="PROVIDER"/> trenutno ni mogoče povezati z vašim profilom Brave Rewards. Vaš račun <ph name="PROVIDER"/> je registriran v državi, ki trenutno ni podprta za povezavo z nagradami Brave.</translation>
+<translation id="619384413404021992">Oglejte si <ph name="LINK_BEGIN"/>trenutni seznam podprtih regij in izvedite več<ph name="END_LINK"/> o povezavi skrbniškega računa z nagradami Brave.</translation>
+<translation id="7193389978208728181">Napaka: Regija trenutno ni podprta</translation>
 <translation id="5382684862562314222">BAT še ni podprt v vaši regiji v okviru Uphold.</translation>
 <translation id="9074594632540931067">Napaka: BAT ni na voljo</translation>
 <translation id="5376524136040178759">Po podatkih Uphold so v računu Uphold trenutno določene omejitve. Prijavite se v svoj račun Uphold in preverite, ali so na računu še kakšna obvestila ali preostale zahteve, ki jih morate izpolniti, nato pa poskusite znova. Morda boste morali na primer podjetju Uphold predložiti več informacij.</translation>
@@ -292,11 +299,10 @@
 <translation id="3222002542796906461">Prejmite svoje nagrade neposredno na svoj račun</translation>
 <translation id="8304979233901023264">Prebral-a sem in razumem Brave’s <ph name="TOS_LINK_BEGIN"/>Pogoje storitve<ph name="TOS_LINK_END"/> &amp; <ph name="PP_LINK_BEGIN"/>Politiko zasebnosti<ph name="PP_LINK_END"/>.</translation>
 <translation id="2359808026110333948">Naprej</translation>
-<translation id="5112354605357157725">Nadaljujte s prijavo</translation>
-<translation id="1280764044837262633"><ph name="PROVIDER"/> zahteva minimalno stanje<ph name="AMOUNT"/> BAT za odprtje računa. Če ste račun že povezali,</translation>
 <translation id="1892970806832316900">V obravnavi do <ph name="DATE"/></translation>
 <translation id="7849926087559412554">Ups! Vaš brskalnik ne more sprejemati zasebnih oglasov Brave.</translation>
 <translation id="5177429570315095022">Če želite še naprej prikazovati oglase, morate posodobiti brskalnik.</translation>
+<translation id="7352651011704765696">Prišlo je do napake</translation>
 <translation id="752216563428219524">Oglasi niso bili uvedeni, osvežite stran.</translation>
 <translation id="7422678632904904341">Znesek:</translation>
 <translation id="6969783933307596818">Samodejno osveži vsakih 5 sekund</translation>
@@ -404,7 +410,6 @@
 <translation id="3586352807094428968">Brave zbira 5% zneska kot pristojbino za obdelavo.</translation>
 <translation id="207268487070188114">Enkratna napitnina</translation>
 <translation id="69861679024013299">Znesek enkratne napitnine:</translation>
-<translation id="3669086939205397942">Počakajte, ne morete še prispevati</translation>
 <translation id="3288812755711687300"><ph name="USER"/>’jeva objava</translation>
 <translation id="5851002232791947896"><ph name="USER"/>’jev tvit</translation>
 <translation id="5531915212947569943">Žal nam je, da odhajate…</translation>
@@ -489,10 +494,11 @@
 <translation id="5530851178552343773">Določili ste [[rezerviranZnesek]] [[valuta]] za ustvarjalce, ki se še niso prijavili za prejemanje prispevkov. Vaš brskalnik bo še naprej poskušal prispevati, dokler ne preveri ali dokler ne mine 90 dni.</translation>
 <translation id="5939518447894949180">Ponastavi</translation>
 <translation id="3157931365184549694">Obnovi</translation>
+<translation id="5669281110673664811">Počisti seznam izključitev</translation>
 <translation id="1797334173232638045">Vaša pripeta spletna mesta so bila premaknjena v</translation>
 <translation id="542042553430131913">Če vaše nagrade Brave Rewards ne potrdite, bo vaše stanje BAT shranjeno v lokalnih datotekah v vaši napravi.</translation>
 <translation id="2142973554991645476">Če želite zavarovati svoj BAT v primeru, da morate znova namestiti brskalnik ali ponovno formatirati svojo napravo in bi radi uživali v drugih ugodnostih, kot je dodajanje ali umik svojega BAT, priporočamo, <ph name="LINK_BEGIN"/>da to potrdite<ph name="LINK_END"/>.</translation>
-<translation id="7354412786785889047">Tega ustvarjalca vsebine lahko podprete z donacijo. Tako se jim lahko zahvalite za odlično vsebino. Potrjeni ustvarjalci prejmejo plačilo za njihove donacije v prvem tednu posameznega koledarskega meseca.</translation>
+<translation id="5317144262906129592">Ustvarjalca vsebine lahko podprete tako, da mu pošljete prispevek. Tako se mu zahvalite za ustvarjanje odlične vsebine.</translation>
 <translation id="3074127054582480056">Pozor</translation>
 <translation id="3034163433136515805">Ogled kode QR</translation>
 <translation id="1640793619390890218">Gemini denarnica za iOS nagrajuje uporabnike, ki pošiljajo BAT.</translation>
@@ -533,7 +539,7 @@
 <translation id="7410549756000115387">Ni donacij na čakanju ...</translation>
 <translation id="1963227389609234879">Odstrani vse</translation>
 <translation id="8706157865312453070">Izključene strani</translation>
-<translation id="5119190679543565400">Obnovi to mesto</translation>
+<translation id="2501059654604370822">Odstrani iz izključenih</translation>
 <translation id="9075700728717335924">Vi ste izključili</translation>
 <translation id="4862817811647633830">mesta iz samodejnih prispevkov.</translation>
 <translation id="923467487918828349">Pokaži vse</translation>
@@ -604,7 +610,6 @@
 <translation id="7604416013180651887">Poveži z Gemini</translation>
 <translation id="2349109114223854255">Vaš žeton za dostop do Gemini je potekel in ni ga mogoče osvežiti. Povežite se ponovno.</translation>
 <translation id="4848984536030986115">Trgovanje ni mogoče</translation>
-<translation id="7352651011704765696">Prišlo je do napake</translation>
 <translation id="7097088316781182926">Transakcija potrjena</translation>
 <translation id="3488255243387417752">Prodaj</translation>
 <translation id="7969910554171263591">Pridobi podatek o ceni</translation>
@@ -638,7 +643,7 @@
 <translation id="1164622162816276433">24-urna količina</translation>
 <translation id="7534079972563542000">Neustavljive domene</translation>
 <translation id="4492298165410552103">Omogočim podporo neustavljivih domen v Brave-u?</translation>
-<translation id="6783637972818687030">Brave bo uporabljal Infuro za izdajanje klicev Ethereum JSON-RPC pametni pogodbi iz Unstoppable Domains za razrešitev .crypto (in tudi .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin, .zil) zahteve za iskanje imena domene. Če to omogočite, bo Infura videla tiste določene domene, ki jih poskušate obiskati, vendar ne bo mogla videti drugih domen. Oglejte si <ph name="BEGIN_INFURA_TOU_LINK"/>pogoje uporabe<ph name="END_INFURA_TOU_LINK"/> in <ph name="BEGIN_INFURA_PRIVACY_LINK"/>pravilnik o zasebnosti<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="689573545156113164">Podjetje Brave bo uporabljalo aplikacijo Infura za izdajanje klicev Ethereum JSON-RPC pametni pogodbi podjetja Unstoppable Domains za reševanje zahtevkov za iskanje domenskih imen .crypto (in tudi .x, .coin, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil). Če to omogočite, bo Infura videla te določene domene, ki jih poskušate obiskati, ne bo pa mogla videti drugih domen. Oglejte si podjetje <ph name="BEGIN_INFURA_TOU_LINK"/>pogoje uporabe<ph name="END_INFURA_TOU_LINK"/> in <ph name="BEGIN_INFURA_PRIVACY_LINK"/>pravilnik o zasebnosti podjetja Infura<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
 <translation id="6513892817556267573">Imenske storitve Ethereum</translation>
 <translation id="4335039108389860301">Omogočiti podporo imensko storitev Ethereum (ENS) v Brave-u?</translation>
 <translation id="8328137586971750853">Brave bo uporabljal Infuro za izdajanje klicev Ethereum JSON-RPC pametni pogodbi iz storitve Ethereum Name Service za reševanje zahtevkov za iskanje domenskega imena .eth. Če to omogočite, bo Infura videla domeno .eth, ki jo poskušate obiskati, ne bo pa mogla videti drugih domen. Oglejte si <ph name="BEGIN_INFURA_TOU_LINK"/>pogoje uporabe<ph name="END_INFURA_TOU_LINK"/> in <ph name="BEGIN_INFURA_PRIVACY_LINK"/>politiko zasebnosti<ph name="END_INFURA_PRIVACY_LINK"/> družbe Infura..</translation>
@@ -801,16 +806,6 @@
 <translation id="1512837998731269583">Oglasi in zaslužki se bodo zdaj nadaljevali. Hvala, ker ste nam pomagali zaščititi Brave Rewards in oglase, ki temeljijo na zasebnosti.</translation>
 <translation id="3247549836099021862">Obrnite se na podporo</translation>
 <translation id="5234764350956374838">Opusti</translation>
-<translation id="8037420924417098685">Če želite začeti brezplačen klic, vklopite Brave Rewards</translation>
-<translation id="8961724619078500274">Z nagradami Brave Rewards si prislužite žetone za ogled zasebnih oglasov (vaši podatki so varni). Pretvarjajte te žetone v gotovino, darilne kartice... ali jih dajte kot prispevek za spletna mesta, ki jih imate radi. Brez sledenja. Brez upočasnitev.</translation>
-<translation id="7307847920988946894">Vklopite storitev Rewards</translation>
-<translation id="799591303418199877">Če to omogočite, se strinjate s <ph name="TOS_LINK_BEGIN"/>Pogoji uporabe storitev<ph name="TOS_LINK_END"/> in <ph name="PP_LINK_BEGIN"/>Politiko zasebnosti<ph name="PP_LINK_END"/>.</translation>
-<translation id="6128511569382736135">Če želite klicati brezplačno, omogočite Brave Private Ads</translation>
-<translation id="7930006085154756245">Z zasebnimi oglasi Brave Private Ads si prislužite žetone za ogled zasebnih oglasov (vaši podatki so varni). Pretvarjajte te žetone v gotovino, darilne kartice... ali jih dajte kot prispevek za spletna mesta, ki jih imate radi. Brez sledenja. Brez upočasnitev.</translation>
-<translation id="4992617448154987397">Vklopi zasebne oglase Brave Private Ads</translation>
-<translation id="3415016869273103668">Zdaj lahko kličete brezplačno</translation>
-<translation id="7073631403665023390">Kliknite ali tapnite kjer koli na zaslonu, da nadaljujete na Brave Talk.</translation>
-<translation id="9115939801961482572">Želite izvedeti več o nagradah Brave?<ph name="TOUR_LINK_BEGIN"/>Kratek ogled<ph name="TOUR_LINK_END"/>.</translation>
 <translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>Pojdite na kratek ogled<ph name="TOUR_LINK_END"/> ali <ph name="LEARN_LINK_BEGIN"/>si preberite več<ph name="LEARN_LINK_END"/> podrobnosti.</translation>
 <translation id="7465614181960492526">Prejmite žetone &amp; Dajte svojo podporo</translation>
 <translation id="2731539192954672606">Žetone prejmete z ogledom oglasov, ki spoštujejo zasebnost in samodejno podprite svoja najljubša spletna mesta in ustvarjalce vsebin.</translation>
@@ -823,8 +818,6 @@
 <translation id="3164498053837913829">(od zaslužka od oglasov)</translation>
 <translation id="6318696841371191107">Pojdimo na hiter ogled</translation>
 <translation id="8465790416279415448">Z nadaljevanjem se strinjate s <ph name="TOS_LINK_BEGIN"/>Pogoji storitev<ph name="TOS_LINK_END"/> in <ph name="PP_LINK_BEGIN"/>Politiko zasebnosti<ph name="PP_LINK_END"/>.</translation>
-<translation id="8222322431155185238">Namig za Brave Rewards</translation>
-<translation id="1895476463085410109">Z ogledom Brave Private Ads si prislužite nagrade in samodejno podprite ustvarjalce vsebine</translation>
 <translation id="5705882733397021510">Pojdi nazaj</translation>
 <translation id="185034574799484512">Pojdimo na kratek ogled</translation>
 <translation id="8281886186245836920">Preskoči</translation>
@@ -851,6 +844,7 @@
 <translation id="6609621505400013054">Denarnica bitFlyer je storitev, ki jo upravlja bitFlyer, Inc.</translation>
 <translation id="4361456403643555676">Če preverite svoje Brave Rewards in jih povežete z računom bitFlyer, boste lahko lažje shranjevali in upravljali žetone, ki ste jih prislužili s Brave Rewards.</translation>
 <translation id="1411121707906693782"><ph name="LINK_BEGIN"/>Preberite več o tem<ph name="LINK_END"/> kako povezati svoj brskalnik Brave z vašim računom bitFlyer.</translation>
+<translation id="8303087505226646884">Hitri bralnik Brave Speedreader</translation>
 <translation id="7701466644604753106">Vklopi Speedreader</translation>
 <translation id="763042262431778831">Izklopi Speedreader</translation>
 <translation id="1148827340205946630">Uporabnik je zahtevo zavrnil.</translation>
@@ -1207,6 +1201,9 @@
 <translation id="3292453499915466604">Nezadostna likvidnost</translation>
 <translation id="805808215102934711">Aktiviraj <ph name="FROM_ASSET_SYMBOL"/></translation>
 <translation id="3380365263193509176">Neznana napaka</translation>
+<translation id="471055802670233033">Porabite</translation>
+<translation id="7916618590403748182">Prejeli boste</translation>
+<translation id="8328657208304368165">Potrdi naročilo</translation>
 <translation id="5071303414930953888">Račun <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Denarnico je treba najprej odkleniti</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> ni veljaven naslov</translation>
@@ -1292,9 +1289,12 @@
 <translation id="2095142195578664632">Potrebujete pomoč? Oglejte si stran</translation>
 <translation id="3253669416991680932">Ta strojna denarnica tega dejanja ne podpira.</translation>
 <translation id="7457027586454688423">Vnesite geslo za Brave Wallet</translation>
-<translation id="2021055898001510484">Odpreti rainbowbridge.app?</translation>
-<translation id="6550403756693197933">Premostitev sredstev v omrežjih vam omogoča uporabo vaše kriptovalute v drugih omrežjih in drugih ekosistemih DApp. Premostitev sredstev z drugimi omrežji prinaša nekaj tveganj.</translation>
-<translation id="8315999527212828722">Odprite rainbowbridge.app</translation>
+<translation id="2873714185189940594">Odprem aplikacijo Rainbow Bridge?</translation>
+<translation id="2069777099181262239">Rainbow Bridge je neodvisna storitev, ki vam pomaga pri premostitvi sredstev med omrežji in uporabi kriptovalut v drugih omrežjih in ekosistemih DApp. Premostitev sredstev v druga omrežja prinaša nekatera tveganja.</translation>
+<translation id="7387899248733396663">Preberite več o uporabi storitvi Rainbow Bridge</translation>
+<translation id="3890567288132019108">Preberite več o zmanjševanju tveganja na strani Rainbow Bridge</translation>
+<translation id="1792917191129448067">Odpri aplikacijo Rainbow Bridge</translation>
+<translation id="1522775706527775647">Most do Aurore</translation>
 <translation id="4903322403594141291">Izvedite več o Brave Wallet</translation>
 <translation id="3875185448438395303">Vsaj:</translation>
 <translation id="2029465635925899949">8 znakov</translation>
@@ -1303,7 +1303,7 @@
 <translation id="574392208103952083">Srednje</translation>
 <translation id="8297006494302853456">Šibek</translation>
 <translation id="6782556046178425980">Preden začnete varnostno kopirati denarnico</translation>
-<translation id="9080057079069917346">12-besedna besedna zveza za obnovitev je zasebni ključ, ki ga lahko uporabite za ponovno pridobitev dostopa do vaše denarnice, če izgubite povezano(-e) napravo(-e). Shranite ga nekje na varno in v točno takšnem vrstnem redu, kot je prikazano spodaj.</translation>
+<translation id="7119749028647909394">Beseda fraza z dolžino med 12 in 24 besed za obnovitev je zasebni ključ, ki ga lahko uporabite za ponovni dostop do denarnice, če izgubite povezano(-e) napravo(-e). Shranjujte ga na varnem mestu in v točno takšnem vrstnem redu, kot je prikazan spodaj.</translation>
 <translation id="3259018319025894691">Brave ne more dostopati do skrivne obnovitvene besedne zveze. Shranjujte jo na varnem in jo nikoli ne delite z nikomer drugim.</translation>
 <translation id="7650284207965419234"><ph name="TAG_BEFORE"/>Pomembno: <ph name="TAG_AFTER"/>Nikoli ne delite svoje besedne zveze za obnovitev. Vsakdo s to besedno zvezo lahko za vedno vzame vaše premoženje.</translation>
 <translation id="7509948206688764960">Varnostno kopirajte besedno zvezo za obnovitev denarnice</translation>
@@ -1339,11 +1339,11 @@
 <translation id="3551682252653406110">Če želite povezati denarnico, ki jo že imate, boste morda morali vnesti obnovitveno besedno zvezo. Trenutno podpiramo obnovitev/uvoz iz denarnic Ethereum in Solana.</translation>
 <translation id="346929827081904572">Obnovi iz semenske besedne zveze</translation>
 <translation id="5645597512426471834">12-24 besed</translation>
-<translation id="6560930409313980969">Vnesite 12-besedno besedno zvezo za obnovitev Brave Wallet.</translation>
+<translation id="8158505311297755780">Vnesite besedno zvezo za obnovitev denarnice Brave, ki obsega od 12 do 24 besed.</translation>
 <translation id="5419707890586509000">Uvoz iz MetaMask</translation>
 <translation id="2265945811107390939">Uporabite svoje geslo MetaMask, da uvozite svojo semensko besedno zvezo</translation>
 <translation id="7060680423657442298">Nič hudega, ustvaril bom novo denarnico</translation>
-<translation id="4570057016351082582">Vnesite 12-besedno obnovitveno besedno zvezo MetaMask.</translation>
+<translation id="5913194823092185468">Vnesite besedno zvezo za obnovitev MetaMask dolžine med 12 in 24 besed.</translation>
 <translation id="7720392926833259937">Vnesite geslo MetaMask</translation>
 <translation id="6657585470893396449">Geslo</translation>
 <translation id="6260144012548445299">Več o moji novi denarnici</translation>
@@ -1379,10 +1379,22 @@
 <translation id="6646456430109279404">Dvaindvajseta</translation>
 <translation id="1961743941324393172">Triindvajseta</translation>
 <translation id="9079035825546416393">Štiriindvajseta</translation>
+<translation id="1558531209852594808">Zaznani so znaki, ki niso ASCII!</translation>
+<translation id="442709594176931966">Prikaži izvirno sporočilo</translation>
+<translation id="2239252396088484499">Prikaži sporočilo v kodiranju ASCII</translation>
 <translation id="2894654529758326923">Informacije</translation>
 <translation id="152455748535966757">Uvrstitev</translation>
 <translation id="4958716607782044952">24-urni obseg</translation>
 <translation id="128834189395075789">Tržna kapitalizacija</translation>
+<translation id="1763942310723636241">Podrobnosti o žetonu</translation>
+<translation id="2938264474197978104">Skrij <ph name="SYMBOL"/></translation>
+<translation id="3614009429760094268">Skrijem žeton?</translation>
+<translation id="4038384774641714579">To sredstvo lahko v prihodnosti ponovno naredite vidno tako, da kliknete gumb "+ Vidna sredstva" na dnu zavihka "Portfolio"</translation>
+<translation id="1026825928738055872">Ali ste prepričani, da želite odstraniti "<ph name="ACCOUNT_NAME"/>"?</translation>
+<translation id="3910551537328657217">Zahteva za funkcijo</translation>
+<translation id="7657322905916621147">Stavek za obnovitev mora biti dolg 12, 15, 18, 21 ali 24 besed</translation>
+<translation id="5307206077701819797">V denarnici niste našli nobenih NFT. NFT lahko dodate tako, da kliknete gumb "+ Vidno premoženje" na dnu zavihka "Portfolio"</translation>
+<translation id="3528540388456395658">NFT, ki ustrezajo iskanju ali filtriranju, niso bili najdeni</translation>
 <translation id="3155170474926428993">Zaganjalnik brskalnika Tor</translation>
 <translation id="3745016858329272300">Splošne informacije</translation>
 <translation id="4045404575593562245">Tor nadzorni dogodki</translation>
@@ -1487,4 +1499,28 @@
 <translation id="6973157709854838218">Skrijte svoje stanje pred prikazom</translation>
 <translation id="4548946945059463969">Razkrijte svoje stanje na zaslonu</translation>
 <translation id="242959166945779492">Na vašem računu ni nobenih sredstev. Obiščite FTX, če jih želite kupiti.</translation>
+<translation id="2532127066761785857">Največje število prikazanih oglasov</translation>
+<translation id="6177749339095882127">0 oglasov na uro</translation>
+<translation id="5171071066587880677">1 oglas na uro</translation>
+<translation id="7885315050812316860">2 oglasa na uro</translation>
+<translation id="2232753742630178222">3 oglasi na uro</translation>
+<translation id="905529390827000221">4 oglasi na uro</translation>
+<translation id="7694167481321619202">5 oglasov na uro</translation>
+<translation id="3705420658531870884">10 oglasov na uro</translation>
+<translation id="3669086939205397942">Počakajte, ne morete še prispevati</translation>
+<translation id="7354412786785889047">Tega ustvarjalca vsebine lahko podprete z donacijo. Tako se jim lahko zahvalite za odlično vsebino. Potrjeni ustvarjalci prejmejo plačilo za njihove donacije v prvem tednu posameznega koledarskega meseca.</translation>
+<translation id="5119190679543565400">Obnovi to mesto</translation>
+<translation id="6783637972818687030">Brave bo uporabljal Infuro za izdajanje klicev Ethereum JSON-RPC pametni pogodbi iz Unstoppable Domains za razrešitev .crypto (in tudi .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin, .zil) zahteve za iskanje imena domene. Če to omogočite, bo Infura videla tiste določene domene, ki jih poskušate obiskati, vendar ne bo mogla videti drugih domen. Oglejte si <ph name="BEGIN_INFURA_TOU_LINK"/>pogoje uporabe<ph name="END_INFURA_TOU_LINK"/> in <ph name="BEGIN_INFURA_PRIVACY_LINK"/>pravilnik o zasebnosti<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="8037420924417098685">Če želite začeti brezplačen klic, vklopite Brave Rewards</translation>
+<translation id="8961724619078500274">Z nagradami Brave Rewards si prislužite žetone za ogled zasebnih oglasov (vaši podatki so varni). Pretvarjajte te žetone v gotovino, darilne kartice... ali jih dajte kot prispevek za spletna mesta, ki jih imate radi. Brez sledenja. Brez upočasnitev.</translation>
+<translation id="7307847920988946894">Vklopite storitev Rewards</translation>
+<translation id="799591303418199877">Če to omogočite, se strinjate s <ph name="TOS_LINK_BEGIN"/>Pogoji uporabe storitev<ph name="TOS_LINK_END"/> in <ph name="PP_LINK_BEGIN"/>Politiko zasebnosti<ph name="PP_LINK_END"/>.</translation>
+<translation id="6128511569382736135">Če želite klicati brezplačno, omogočite Brave Private Ads</translation>
+<translation id="7930006085154756245">Z zasebnimi oglasi Brave Private Ads si prislužite žetone za ogled zasebnih oglasov (vaši podatki so varni). Pretvarjajte te žetone v gotovino, darilne kartice... ali jih dajte kot prispevek za spletna mesta, ki jih imate radi. Brez sledenja. Brez upočasnitev.</translation>
+<translation id="4992617448154987397">Vklopi zasebne oglase Brave Private Ads</translation>
+<translation id="3415016869273103668">Zdaj lahko kličete brezplačno</translation>
+<translation id="7073631403665023390">Kliknite ali tapnite kjer koli na zaslonu, da nadaljujete na Brave Talk.</translation>
+<translation id="9115939801961482572">Želite izvedeti več o nagradah Brave?<ph name="TOUR_LINK_BEGIN"/>Kratek ogled<ph name="TOUR_LINK_END"/>.</translation>
+<translation id="8222322431155185238">Namig za Brave Rewards</translation>
+<translation id="1895476463085410109">Z ogledom Brave Private Ads si prislužite nagrade in samodejno podprite ustvarjalce vsebine</translation>
 </translationbundle>
