@@ -134,7 +134,6 @@
 <translation id="4065288863231444640">Neka Brave radi u pozadini</translation>
 <translation id="8148611988012584308">Prilagodite Brave i upravljajte njime</translation>
 <translation id="4427306783828095590">Poboljšana zaštita blokira krađu identiteta i zlonamjerni softver na više načina</translation>
-<translation id="5112116809696021727">Ažuriranost uređaja možete provjeriti u <ph name="LINK_BEGIN"/>postavkama Chrome OS-a<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Dobro došli u Brave; otvorio se novi prozor preglednika</translation>
 <translation id="2633397153656205379">Brave se nije ažurirao zbog pogreške. <ph name="BEGIN_LINK"/>Riješite probleme s ažuriranjem i neuspjela ažuriranja Bravea.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Želite li nastaviti na novom profilu u Braveu?</translation>
@@ -297,7 +296,6 @@ Brave ne može oporaviti vaše postavke.</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Kako možete upravljati svojim podacima<ph name="END_BOLD"/>: da bismo zaštitili vašu privatnost, automatski brišemo vaše interese starije od četiri tjedna. Tijekom vašeg daljnjeg pregledavanja neki se interes može ponovo pojaviti na popisu. Možete i ukloniti interese za koje ne želite da ih Brave razmatra.</translation>
 <translation id="2925193881330501265">Bili ste prijavljeni na Brave kao <ph name="USER_EMAIL_ADDRESS"/>. Prijavite se ponovo istim računom.</translation>
 <translation id="6915252145142862992">Ovo je sekundarna instalacija Bravea, pa on ne može biti vaš zadani preglednik.</translation>
-<translation id="1975057837349076194">Ako se postavka ne prikazuje na ovoj stranici, pogledajte <ph name="LINK_BEGIN"/>postavke Chrome OS-a<ph name="LINK_END"/></translation>
 <translation id="7685904775439037072">Kada Brave dobije pristup, web-lokacije će vas moći tražiti pristup.</translation>
 <translation id="80471789339884597">Zahvaljujemo što ste izvršili instaliranje. Da biste mogli koristiti <ph name="BUNDLE_NAME"/>, morate ponovno pokrenuti sve preglednike.</translation>
 <translation id="2061155704815580583">Brave treba dopuštenje za lokaciju za ovu web-lokaciju</translation>

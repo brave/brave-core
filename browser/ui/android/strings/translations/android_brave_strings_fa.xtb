@@ -93,6 +93,7 @@
 <translation id="3545804467215833536">برای مشاهده «سپرهای ایمنی Brave» ضربه بزنید</translation>
 <translation id="1724327820822194498">با «سپرهای ایمنی» همه موارد بدی را که Brave در هر صفحه مسدود کرده است ببینید.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> و <ph name="TRACKER"/> آگهی و ردیاب دیگر مسدود شدند</translation>
+<translation id="7256200875155794202"><ph name="BIG_TECH"/> و سایر آگهی‌ها ‎‎و‏ ردیاب‌ها مسدود می‌شوند.</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> آگهی و ردیاب مسدود شدند</translation>
 <translation id="8281886186245836920">رد شدن</translation>
 <translation id="6165508094623778733">بیشتر بدانید</translation>
@@ -117,6 +118,9 @@
 <translation id="19715420010996093">مرورگر Brave را انتخاب کنید و روی «همیشه» ضربه بزنید</translation>
 <translation id="3546439402724649282">Brave در حال حاضر به‌عنوان مرورگر پیش‌فرض شما تنظیم شده است.</translation>
 <translation id="8389661903259423907">در حال حاضر مرورگر پیش‌فرض را تنظیم کرده‌اید. می‌توانید در تنظیمات برنامه خود آن را تغییر دهید.</translation>
+<translation id="1545749641540134597">سکن کود QR</translation>
+<translation id="5317781812114905957">دستورالعمل‌ها</translation>
+<translation id="8515319483805157233">برای اینکه بتوانید از طریق کد QR جستجو کنید، کد QR را در وسط کادر قرار دهید.</translation>
 <translation id="8826007068782654809">سپاسگزاریم</translation>
 <translation id="6665366815203065060">به‌تازگی انعامی را به این مورد ارسال کردید:</translation>
 <translation id="5441565662498481293">به‌طور خودکار انعامی به این مورد ارسال می‌کنید:</translation>
@@ -393,35 +397,11 @@
 <translation id="8376263745431603066">فعال کردن «حالت شب» (آزمایشی)</translation>
 <translation id="1383876407941801731">جستجو</translation>
 <translation id="8446884382197647889">بیشتر بدانید</translation>
-<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
-<translation id="558614325644656740">موجود <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="3414885529641505869"><ph name="COIN_NAME"/> بخرید</translation>
-<translation id="1080611582879541635">آدرس سپرده <ph name="COIN_ADDRESS"/></translation>
-<translation id="4836242416604533644">اعلامیه سپرده <ph name="COIN_MEMO"/></translation>
-<translation id="6755546361496900700">پیش‌نمایش تبدیل</translation>
-<translation id="5110244215256675209">خرید کریپتو</translation>
-<translation id="2271556362602437160">‎.com</translation>
-<translation id="3727077517986954867">‎.us</translation>
 <translation id="13296465911709339">نوشتار شما در بریده‌دان کپی شده است.</translation>
 <translation id="2735834606413553397">نشانی عمومی در بریده‌دان کپی شده است.</translation>
-<translation id="7144878232160441200">امتحان دوباره</translation>
 <translation id="2977461003134694205">آمار حریم خصوصی</translation>
-<translation id="2956070106555335453">خلاصه</translation>
-<translation id="1366855498335432549">سپرده‌گذاری</translation>
-<translation id="1301340234286078471">تبدیل</translation>
 <translation id="223536150967420869">خرید</translation>
-<translation id="4584930231524505442">می‌خواهم تبدیل کنم…</translation>
-<translation id="5749014321384313843">می‌خواهم هزینه کنم…</translation>
-<translation id="2480674848181564169">عدم موجودی کافی برای تبدیل</translation>
-<translation id="2215334405220411393">حداقل مقدار برای تبدیل به این صورت است: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6702658079816271889">اتصال امکان‌پذیر نیست.</translation>
-<translation id="7742417737698031726">هزینه</translation>
-<translation id="2122225204180056042">آنچه دریافت خواهید کرد</translation>
-<translation id="6432284126416751397">تأیید تبدیل</translation>
-<translation id="3891414008432200754">قیمت</translation>
-<translation id="3733576242118819803">(<ph name="REMAINING_TIME"/>s) را تأیید کنید</translation>
-<translation id="1627064138060308910">تبدیل انجام نشد. لطفاً دوباره امتحان کنید.</translation>
-<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="2956070106555335453">خلاصه</translation>
 <translation id="7465614181960492526">کسب توکن و برگرداندن</translation>
 <translation id="244362569344671266">با مشاهده «آگهی‌های خصوصی Brave»، توکن کسب کنید و به‌طور خودکار از سازندگان محتوا پشتیبانی کنید.</translation>
 <translation id="631124996535890460">با ادامه دادن، با <ph name="TERMS_OF_SERVICE"/> و <ph name="PRIVACY_POLICY"/> موافقت می‌کنید.</translation>
@@ -452,18 +432,6 @@
 <translation id="2434574859640694129">پس از دریافت اولین بازپرداخت تبلیغات، می‌توانید دوباره برگردید و به این سازنده انعام دهید!</translation>
 <translation id="207242986925259074">گشت بازخوانی سریع</translation>
 <translation id="8342862030112839977">مبلغ قابل پرداخت اولین پاداش‌هایتان دریافت خواهد شد:</translation>
-<translation id="8037420924417098685">برای شروع تماس رایگان، Brave Rewards را روشن کنید</translation>
-<translation id="8961724619078500274">با «پاداش‌های Brave»، برای مشاهده تبلیغات خصوصی توکن دریافت می‌کنید (داده‌های شما ایمن هستند). آن توکن‌ها را به پول نقد، کارت هدیه یا... تبدیل کنید یا حتی به وب‌سایت‌هایی که دوست دارید انعام دهید. ردیابی در کار نیست. بدون افت سرعت.</translation>
-<translation id="7307847920988946894">روشن کردن «پاداش‌ها»</translation>
-<translation id="7872993190040589450">با فعال‌سازی، با <ph name="TERMS_OF_SERVICE"/> و <ph name="PRIVACY_POLICY"/> موافقت می‌کنید.</translation>
-<translation id="6128511569382736135">برای شروع تماس رایگان، Brave Private Ads را فعال کنید</translation>
-<translation id="7930006085154756245">با Brave Private Ads، شما برای مشاهده آگهی‌های خصوصی توکن دریافت می‌کنید  (اطلاعات شما ایمن است). آن توکن‌ها را به پول نقد، کارت هدیه یا... تبدیل کنید یا حتی به وب‌سایت‌های موردعلاقه‌تان انعام دهید. ردیابی در کار نیست. بدون افت سرعت.</translation>
-<translation id="4992617448154987397">روشن کردن Brave Private Ads</translation>
-<translation id="3415016869273103668">اکنون می‌توانید تماس رایگان برقرار کنید</translation>
-<translation id="7073631403665023390">برای ادامه و رفتن به Brave Talk، روی جایی از صفحه کلیک کنید یا ضربه بزنید.</translation>
-<translation id="626339649633171286">می‌خواهید درباره Brave Rewards اطلاعات بیشتری کسب کنید؟ <ph name="TAKE_QUICK_TOUR"/>.</translation>
-<translation id="3604285424134705930">شما <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/> را تبدیل کردید!</translation>
-<translation id="392587271502873865">لطفاً اتصال شبکه را بررسی کنید</translation>
 <translation id="7889432931837317731">باز کردن خودکار، در صورت امکان</translation>
 <translation id="8967385052772844086">مشاهده گزارش حریم خصوصی کامل</translation>
 <translation id="6864343534748973390">پرطرفدارترین</translation>
@@ -591,9 +559,6 @@
 <translation id="5050890334032852465">ذخیره فهرست دیده‌بان حساب</translation>
 <translation id="7755766175599167100">جستجوی توکن‌ها</translation>
 <translation id="3835223348537121988">موجودی:</translation>
-<translation id="2490428413101944234">تست فاست</translation>
-<translation id="2581671693710952401">اتر را بگیرید</translation>
-<translation id="8165484222652118977">دریافت اتر از فاست برای شبکه تست <ph name="NETWORK"/></translation>
 <translation id="7420359180991315365">ادامه به Wyre</translation>
 <translation id="8488282162676695335">کیف پول Brave</translation>
 <translation id="3784455785234192852">قفل کردن</translation>
@@ -605,6 +570,12 @@
 <translation id="5693968582510626466">ممکن است پاک کردن تراکنش‌ها برای توسعه‌دهندگان یا هنگام پاک کردن وضعیت در سرور محلی مفید باشد</translation>
 <translation id="5421107279168565467">مطمئنید می‌خواهید همه اطلاعات نانس و تراکنش‌ها را بازنشانی کنید؟ این گزینه اغلب مورد استفاده توسعه‌دهندگانی است که با سرور آزمایشی محلی کار می‌کنند. برای تأیید، «<ph name="CONFIRMATION_PHRASE"/>» را تایپ کنید.</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# دقیقه} other {# دقیقه}}</translation>
+<translation id="8146860193318415026">ویدیوها را به‌صورت آنلاین پخش کنید. بدون اینکه آگهی ببینید.</translation>
+<translation id="6311019535466417620">قبل از پخش ویدیوی شما هیچ آگهی نشان داده نمی‌شود</translation>
+<translation id="4274652342814424451">در حین پخش ویدیوی شما هیچ آگهی نشان داده نمی‌شود</translation>
+<translation id="1721710839767183848">هیچ آگهی در صفحه وجود ندارد</translation>
+<translation id="4647035642622555398">بدون وقفه</translation>
+<translation id="4122515759479497554">جستجوی ویدیوها</translation>
 <translation id="4449475351935531438">دیوار آتش Brave ‏+ VPN</translation>
 <translation id="719977489961414786">برای محافظت از اتصال خود و مسدود کردن ردیاب‌های مهاجم در همه جا، به یک شبکه VPN ارتقا دهید.</translation>
 <translation id="3435896845095436175">فعال کردن</translation>
@@ -808,6 +779,9 @@
 <translation id="5233638681132016545">برگه جدید</translation>
 <translation id="8006088103295786154">دسترسی به کیف پول Brave</translation>
 <translation id="5308380583665731573">اتصال</translation>
+<translation id="8030169304546394654">ارتباط قطع شد</translation>
+<translation id="3423275441470187644">اعتماد</translation>
+<translation id="2391762656119864333">ابطال</translation>
 <translation id="3432029672560911238">حساب کاربر</translation>
 <translation id="5753378322046059140">تغییر حساب</translation>
 <translation id="3897092660631435901">مینو</translation>
@@ -884,5 +858,11 @@
 <translation id="7002577172732106572">تونل‌زنی تقسیم‌شده</translation>
 <translation id="2832270987629018596">نشانی SOL معتبر نیست</translation>
 <translation id="8181161042860463420">حساب رمز مرتبط هنوز وجود ندارد. مقدار کمی از SOL برای ایجاد و تامین مالی آن هزینه خواهد شد. <ph name="CLICK_START"/>بیشتر بیاموزید<ph name="CLICK_END"/></translation>
+<translation id="1304515257839771197">برنامه <ph name="APP_NAME"/> باز شود؟</translation>
+<translation id="7653028065515320848"><ph name="CLICK_START"/>درباره استفاده از Rainbow Bridge بیشتر بدانید<ph name="CLICK_END"/></translation>
+<translation id="8219806187375413057"><ph name="CLICK_START"/>با نحوه کاهش خطرات احتمالی در Rainbow Bridge آشنا شوید<ph name="CLICK_END"/></translation>
+<translation id="1065082006518490444"><ph name="APP_NAME"/> سرویس مستقلی است که به شما کمک می‌کند تا بین دارایی‌ها از میان شبکه‌ها پل بزنید و از رمزارزتان روی شبکه‌های دیگر و یا اکوسیستم‌های DApp استفاده کنید. پل زدن بین دارایی با شبکه‌های دیگر، خطرات احتمالی به همراه دارد.</translation>
+<translation id="8423380132356660250">باز کردن برنامه <ph name="APP_NAME"/></translation>
 <translation id="168154537623654021">در حال به روز رسانی نمایه VPN ...</translation>
+<translation id="7457027586454688423">رمز Brave Wallet خود را وارد کنید</translation>
 </translationbundle>

@@ -132,7 +132,6 @@
 <translation id="4065288863231444640">Permitir que Brave se ejecute en segundo plano</translation>
 <translation id="8148611988012584308">Personaliza y controla Brave</translation>
 <translation id="4427306783828095590">La protección mejorada permite bloquear mejor la suplantación de identidad (phishing) y el software malicioso.</translation>
-<translation id="5112116809696021727">Para saber si tu dispositivo está actualizado, ve a la <ph name="LINK_BEGIN"/>configuración de Brave OS<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Te damos la bienvenida a Brave; se abrió una nueva ventana del navegador</translation>
 <translation id="2633397153656205379">No se actualizó Brave porque se produjo un error. <ph name="BEGIN_LINK"/>Soluciona los problemas de actualización y las actualizaciones con error de Brave.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">¿Deseas continuar en un nuevo perfil de Brave?</translation>
@@ -291,8 +290,6 @@
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Cómo puedes administrar tu información:<ph name="END_BOLD"/> Para proteger tu privacidad, borramos los intereses automáticamente después de 4 semanas. Es posible que, a medida que navegues, un interés vuelva a aparecer en la lista. O bien, puedes quitar los intereses que no quieres que Brave tenga en cuenta.</translation>
 <translation id="2925193881330501265">Accediste a Brave con <ph name="USER_EMAIL_ADDRESS"/>. Usa la misma cuenta para volver a acceder.</translation>
 <translation id="6915252145142862992">Como esta es una instalación secundaria de Brave, no puede establecerse como tu navegador predeterminado.</translation>
-<translation id="1975057837349076194">Si no ves una opción de configuración en esta página, consulta la <ph name="LINK_BEGIN"/>
-      configuración de Brave OS<ph name="LINK_END"/></translation>
 <translation id="7685904775439037072">Una vez que Brave tenga acceso, los sitios web podrán solicitarte acceso.</translation>
 <translation id="80471789339884597">Gracias por instalar <ph name="BUNDLE_NAME"/>. Debes reiniciar todos los navegadores antes de usarlo.</translation>
 <translation id="2061155704815580583">Brave necesita permiso de acceso a la ubicación para este sitio.</translation>

@@ -93,6 +93,7 @@
 <translation id="3545804467215833536">Tryck för att visa Brave Shields</translation>
 <translation id="1724327820822194498">Se alla dåliga saker som Brave har blockerat, på varje sida, med Shields.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> och <ph name="TRACKER"/> andra annonser och spårare har blockerats</translation>
+<translation id="7256200875155794202"><ph name="BIG_TECH"/> och andra annonser och spårare blockerades</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> annonser och spårare har blockerats</translation>
 <translation id="8281886186245836920">Hoppa över</translation>
 <translation id="6165508094623778733">Lär dig mer</translation>
@@ -117,6 +118,9 @@
 <translation id="19715420010996093">Välj webbläsaren Brave och tryck på ”Alltid”.</translation>
 <translation id="3546439402724649282">Brave är redan inställd som din standardwebbläsare.</translation>
 <translation id="8389661903259423907">Du har redan angett en standardwebbläsare. Du kan ändra din standardwebbläsare i appinställningarna.</translation>
+<translation id="1545749641540134597">Skanna QR-koden</translation>
+<translation id="5317781812114905957">Instruktioner</translation>
+<translation id="8515319483805157233">Om du vill söka med en QR-kod ska du placera QR-koden inom ramen.</translation>
 <translation id="8826007068782654809">Tack</translation>
 <translation id="6665366815203065060">Du skickade precis dricks till:</translation>
 <translation id="5441565662498481293">Du skickar automatiskt dricks till:</translation>
@@ -393,35 +397,11 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="8376263745431603066">Aktivera "Nattläge" (experimentellt)</translation>
 <translation id="1383876407941801731">Sök</translation>
 <translation id="8446884382197647889">Läs mer</translation>
-<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
-<translation id="558614325644656740">Tillgängligt <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="3414885529641505869">Köp <ph name="COIN_NAME"/></translation>
-<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Insättningsadress</translation>
-<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Insättningsmemo</translation>
-<translation id="6755546361496900700">Förhandsgranska omvandling</translation>
-<translation id="5110244215256675209">Köp kryptovaluta</translation>
-<translation id="2271556362602437160">.com</translation>
-<translation id="3727077517986954867">.us</translation>
 <translation id="13296465911709339">Din text har kopierats till urklipp.</translation>
 <translation id="2735834606413553397">Den offentliga adressen har kopierats till urklipp.</translation>
-<translation id="7144878232160441200">Försök igen</translation>
 <translation id="2977461003134694205">Sekretessstatistik</translation>
-<translation id="2956070106555335453">Sammanfattning</translation>
-<translation id="1366855498335432549">Sätt in</translation>
-<translation id="1301340234286078471">Omvandla</translation>
 <translation id="223536150967420869">Köp</translation>
-<translation id="4584930231524505442">Jag vill omvandla ...</translation>
-<translation id="5749014321384313843">Jag vill spendera ...</translation>
-<translation id="2480674848181564169">Otillräcklig balans för konvertering</translation>
-<translation id="2215334405220411393">Minsta belopp att konvertera är : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6702658079816271889">Kan inte ansluta</translation>
-<translation id="7742417737698031726">Avgift</translation>
-<translation id="2122225204180056042">Du erhåller</translation>
-<translation id="6432284126416751397">Bekräfta omvandling</translation>
-<translation id="3891414008432200754">Pris</translation>
-<translation id="3733576242118819803">Bekräfta (<ph name="REMAINING_TIME"/>s)</translation>
-<translation id="1627064138060308910">Konvertering misslyckades. Var god försök igen.</translation>
-<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="2956070106555335453">Sammanfattning</translation>
 <translation id="7465614181960492526">Tjäna tokens och ge tillbaka</translation>
 <translation id="244362569344671266">Tjäna tokens genom att visa Brave privata annonser och stöd innehållsskapare automatiskt.</translation>
 <translation id="631124996535890460">Genom att fortsätta godkänner du <ph name="TERMS_OF_SERVICE"/> och <ph name="PRIVACY_POLICY"/>.</translation>
@@ -452,18 +432,6 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="2434574859640694129">Efter att du har fått din första utbetalning kan du komma tillbaka och ge ett bidrag till denna skapare!</translation>
 <translation id="207242986925259074">Snabb uppdatering</translation>
 <translation id="8342862030112839977">Din första belöningsutbetalning kommer att anlända:</translation>
-<translation id="8037420924417098685">För att starta ett kostnadsfritt samtal, starta Brave Rewards</translation>
-<translation id="8961724619078500274">Med Brave Rewards tjänar du tokens för att se privata annonser (din data är säker). Gör dessa tokens till kontanter, presentkort... eller till och med tipsa de webbplatser som du älskar. Ingen spårning. Inga långsamma nedgångar.</translation>
-<translation id="7307847920988946894">Aktivera Rewards</translation>
-<translation id="7872993190040589450">Genom att aktivera samtycker du till <ph name="TERMS_OF_SERVICE"/> och <ph name="PRIVACY_POLICY"/>.</translation>
-<translation id="6128511569382736135">För att starta ett kostnadsfritt samtal, aktivera Brave Private Ads</translation>
-<translation id="7930006085154756245">Med Brave Private Ads tjänar du tokens för att visa privata annonser (din data är säker). Gör dessa tokens till kontanter, presentkort... eller till och med tipsa de webbplatser som du älskar. Ingen spårning. Inga långsamma nedgångar.</translation>
-<translation id="4992617448154987397">Aktivera Brave privata annonser</translation>
-<translation id="3415016869273103668">Du kan nu starta ett kostnadsfritt samtal</translation>
-<translation id="7073631403665023390">Klicka eller tryck någonstans på skärmen för att fortsätt‏a Brave Talk.</translation>
-<translation id="626339649633171286">Vill du lära dig mer om Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
-<translation id="3604285424134705930">Du konverterade <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> till <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
-<translation id="392587271502873865">Kontrollera din nätverksanslutning.</translation>
 <translation id="7889432931837317731">Öppna automatiskt när det är möjligt</translation>
 <translation id="8967385052772844086">Se hela sekretessrapporten</translation>
 <translation id="6864343534748973390">Populäraste</translation>
@@ -591,9 +559,6 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="5050890334032852465">Spara kontobevakningslista</translation>
 <translation id="7755766175599167100">Sök tokens</translation>
 <translation id="3835223348537121988">Saldo:</translation>
-<translation id="2490428413101944234">Testkran</translation>
-<translation id="2581671693710952401">Skaffa Ether</translation>
-<translation id="8165484222652118977">Hämta Ether från en kran för <ph name="NETWORK"/>-testnätverk</translation>
 <translation id="7420359180991315365">Fortsätt till Wyre</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="3784455785234192852">Lås</translation>
@@ -605,6 +570,12 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="5693968582510626466">Att rensa transaktioner kan vara användbart för utvecklare eller vid rensning av status på en lokal server</translation>
 <translation id="5421107279168565467">Är du säker på att du vill återställa transaktions- och nonce-informationen? Det här alternativet används oftast av utvecklare som kör en lokal testserver. Skriv <ph name="CONFIRMATION_PHRASE"/> för att bekräfta.</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# minut} other {# minuter}}</translation>
+<translation id="8146860193318415026">Streama videor utan annonser.</translation>
+<translation id="6311019535466417620">Inga annonser före videon</translation>
+<translation id="4274652342814424451">Inga annonser i videon</translation>
+<translation id="1721710839767183848">Inga annonser på sidan</translation>
+<translation id="4647035642622555398">Inga avbrott</translation>
+<translation id="4122515759479497554">Sök efter videor</translation>
 <translation id="4449475351935531438">Brave Firewall + VPN</translation>
 <translation id="719977489961414786">Uppgradera till en VPN för att skydda din anslutning och blockera invasiva spårare överallt.</translation>
 <translation id="3435896845095436175">Aktivera</translation>
@@ -808,6 +779,9 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="5233638681132016545">Ny flik</translation>
 <translation id="8006088103295786154">Åtkomst till Brave Wallet</translation>
 <translation id="5308380583665731573">Ansluta</translation>
+<translation id="8030169304546394654">Frånkopplad</translation>
+<translation id="3423275441470187644">Lita på</translation>
+<translation id="2391762656119864333">Återkalla</translation>
 <translation id="3432029672560911238">Användarkonto</translation>
 <translation id="5753378322046059140">Byt konto</translation>
 <translation id="3897092660631435901">Meny</translation>
@@ -884,5 +858,11 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="7002577172732106572">Split tunneling</translation>
 <translation id="2832270987629018596">Ogiltig SOL-adress</translation>
 <translation id="8181161042860463420">Det associerade tokenkontot finns inte ännu. En liten mängd SOL kommer att spenderas för att skapa och finansiera den.<ph name="CLICK_START"/>Läs mer<ph name="CLICK_END"/></translation>
+<translation id="1304515257839771197">Vill du öppna <ph name="APP_NAME"/>-appen?</translation>
+<translation id="7653028065515320848"><ph name="CLICK_START"/>Läs mer om hur man använder Rainbow Bridge<ph name="CLICK_END"/></translation>
+<translation id="8219806187375413057"><ph name="CLICK_START"/>Läs mer om hur man minskar risken på Rainbow Bridge<ph name="CLICK_END"/></translation>
+<translation id="1065082006518490444"><ph name="APP_NAME"/> är en oberoende tjänst som hjälper dig att överbrygga tillgångar mellan nätverk och använda din krypto på andra nätverk och DApp-ekosystem. Att överbrygga tillgångar till andra nätverk har vissa risker.</translation>
+<translation id="8423380132356660250">Öppna <ph name="APP_NAME"/>-appen</translation>
 <translation id="168154537623654021">Uppdaterar VPN-profil ...</translation>
+<translation id="7457027586454688423">Ange ditt lösenord för Brave Wallet</translation>
 </translationbundle>

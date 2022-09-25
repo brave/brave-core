@@ -134,7 +134,6 @@
 <translation id="4065288863231444640">Luba Braveil taustal töötada</translation>
 <translation id="8148611988012584308">Bravei kohandamine ja juhtimine</translation>
 <translation id="4427306783828095590">Täiustatud kaitse aitab andmepüüki ja pahavara paremini blokeerida</translation>
-<translation id="5112116809696021727">Kui soovite teada saada, kas teie seade on ajakohane, avage <ph name="LINK_BEGIN"/>Chrome OS-i seaded<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Tere tulemast Bravei; avati uus brauseriaken</translation>
 <translation id="2633397153656205379">Braveit ei värskendatud, midagi läks valesti. <ph name="BEGIN_LINK"/>Lahendage Bravei värskendamisprobleemid ja parandage ebaõnnestunud värskendused.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Kas jätkata uuel Bravei profiilil?</translation>
@@ -296,8 +295,6 @@ Brave ei saa teie seadeid taastada.</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Kuidas saate oma andmeid hallata?<ph name="END_BOLD"/> Teie privaatsuse kaitsmiseks kustutame automaatselt huvid, mis on vanemad kui 4 nädalat. Kui jätkate sirvimist, võib huvi uuesti loendis ilmuda. Võite ka eemaldada huvid, mida te ei soovi lasta Braveil arvesse võtta.</translation>
 <translation id="2925193881330501265">Olite Braveisse sisse logitud kasutajana <ph name="USER_EMAIL_ADDRESS"/>. Kasutage uuesti sisselogimiseks sama kontot.</translation>
 <translation id="6915252145142862992">See on Bravei sekundaarne install ja seda ei saa määrata vaikebrauseriks.</translation>
-<translation id="1975057837349076194">Kui seadet sellel lehel ei kuvata, vaadake oma <ph name="LINK_BEGIN"/>
-      Chrome OS-i seadeid<ph name="LINK_END"/></translation>
 <translation id="7685904775439037072">Kui annate Braveile juurdepääsu, saavad veebisaidid küsida teilt juurdepääsuluba.</translation>
 <translation id="80471789339884597">Täname teid installimise eest. Enne brauseri <ph name="BUNDLE_NAME"/> kasutamist peate taaskäivitama kõik brauserid.</translation>
 <translation id="2061155704815580583">Brave vajab selle saidi puhul asukohale juurdepääsu luba</translation>

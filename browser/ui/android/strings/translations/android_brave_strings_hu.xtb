@@ -93,6 +93,7 @@
 <translation id="3545804467215833536">Koppintson a Brave pajzsok megtekintéséhez</translation>
 <translation id="1724327820822194498">Nézze meg, oldalanként mi mindent blokkolt a Brave a pajzsok segítségével.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> és további <ph name="TRACKER"/> reklám és nyomkövető blokkolva</translation>
+<translation id="7256200875155794202"><ph name="BIG_TECH"/> és más hirdetések illetve nyomkövetők blokkolva</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> reklám és nyomkövető blokkolva</translation>
 <translation id="8281886186245836920">Kihagyás</translation>
 <translation id="6165508094623778733">Tudjon meg többet</translation>
@@ -117,6 +118,9 @@
 <translation id="19715420010996093">Válaszd ki a Brave böngészőt és kattints a 'Mindig'-re</translation>
 <translation id="3546439402724649282">A Brave már be van állítva alapértelmezett böngészőként.</translation>
 <translation id="8389661903259423907">Már beállított egy alapértelmezett böngészőt. Az alapértelmezett böngészőt az alkalmazás beállításaiban lehet változtatni.</translation>
+<translation id="1545749641540134597">QR-kód beolvasása</translation>
+<translation id="5317781812114905957">Utasítások</translation>
+<translation id="8515319483805157233">A QR-kód alapján történő kereséshez helyezze a QR-kódot a keret közepéhez.</translation>
 <translation id="8826007068782654809">Köszönjük</translation>
 <translation id="6665366815203065060">Borravalót küldött neki:</translation>
 <translation id="5441565662498481293">Automatikusan borravalót küldesz ide:</translation>
@@ -393,35 +397,11 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="8376263745431603066">"Éjszakai mód” engedélyezése (kísérleti)</translation>
 <translation id="1383876407941801731">Keresés</translation>
 <translation id="8446884382197647889">További információ</translation>
-<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
-<translation id="558614325644656740">Rendelkezésre álló <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="3414885529641505869"><ph name="COIN_NAME"/> vásárlása</translation>
-<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> letéti cím</translation>
-<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Letéti emlékeztető</translation>
-<translation id="6755546361496900700">Átváltás előnézete</translation>
-<translation id="5110244215256675209">Vásárolj kriptot</translation>
-<translation id="2271556362602437160">.com</translation>
-<translation id="3727077517986954867">.us</translation>
 <translation id="13296465911709339">A szöveged a vágólapra lett másolva.</translation>
 <translation id="2735834606413553397">A nyilvános cím át lett másolva a vágólapra.</translation>
-<translation id="7144878232160441200">Újrapróbál</translation>
 <translation id="2977461003134694205">Adatvédelmi statisztikák</translation>
-<translation id="2956070106555335453">Összefoglalás</translation>
-<translation id="1366855498335432549">Letétbe helyezés</translation>
-<translation id="1301340234286078471">Átváltás</translation>
 <translation id="223536150967420869">Vásárolj</translation>
-<translation id="4584930231524505442">Szeretnék átváltani...</translation>
-<translation id="5749014321384313843">Költeni szeretnék...</translation>
-<translation id="2480674848181564169">Nincs elég egyenleg az átváltáshoz</translation>
-<translation id="2215334405220411393">A minimális átváltható összeg: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6702658079816271889">Nem sikerült csatlakozni</translation>
-<translation id="7742417737698031726">Díj</translation>
-<translation id="2122225204180056042">Kapni fogsz</translation>
-<translation id="6432284126416751397">Átváltás megerősítése</translation>
-<translation id="3891414008432200754">Ár</translation>
-<translation id="3733576242118819803">Megerősítés: (<ph name="REMAINING_TIME"/>s)</translation>
-<translation id="1627064138060308910">Az átváltás nem sikerült. Próbáld újra.</translation>
-<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="2956070106555335453">Összefoglalás</translation>
 <translation id="7465614181960492526">Szerezzen tokeneket és adjon vissza</translation>
 <translation id="244362569344671266">Szerezzen tokeneket Brave privát hirdetések nézésével, és támogassa automatikusan a tartalomkészítőket.</translation>
 <translation id="631124996535890460">A folytatással elfogadja a  <ph name="TERMS_OF_SERVICE"/> és az <ph name="PRIVACY_POLICY"/>.</translation>
@@ -452,18 +432,6 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="2434574859640694129">Miután megkapod első fizetésed a reklámok után, térj vissza és adj borravalót ennek az alkotónak!</translation>
 <translation id="207242986925259074">Gyors frissítő bemutató</translation>
 <translation id="8342862030112839977">Az 1. jutalom kifizetés eddig fog megérkezni:</translation>
-<translation id="8037420924417098685">Ingyenes hívás indításához kapcsolja be a Brave jutalmakat</translation>
-<translation id="8961724619078500274">A Brave Rewards privát reklámainak megtekintése után tokeneket kap (az adatai biztonságban maradnak). Váltsa be ezeket a tokeneket készpénzre, ajándékutalványra… vagy adjon borravalót a kedvenc weboldalainak. Nincs nyomon követés. Nincs belassulás.</translation>
-<translation id="7307847920988946894">Rewards bekapcsolása</translation>
-<translation id="7872993190040589450">Az engedélyezéssel elfogadja a következőket: <ph name="TERMS_OF_SERVICE"/> és <ph name="PRIVACY_POLICY"/>.</translation>
-<translation id="6128511569382736135">Ingyenes hívás indításához engedélyezze a Brave Private Adst.</translation>
-<translation id="7930006085154756245">A Brave Private Ads privát reklámainak megtekintése után tokeneket kap (az adatai biztonságban maradnak). Váltsa be ezeket a tokeneket készpénzre, ajándékutalványra… vagy adjon borravalót a kedvenc weboldalainak. Nincs nyomon követés. Nincs belassulás.</translation>
-<translation id="4992617448154987397">Brave Private Ads bekapcsolása</translation>
-<translation id="3415016869273103668">Most már indíthat ingyenes hívást</translation>
-<translation id="7073631403665023390">Kattintson vagy koppintson bárhova a képernyőn, hogy továbblépjen a Brave beszélgetésekhez.</translation>
-<translation id="626339649633171286">Többet szeretne megtudni a Brave jutalmakról? <ph name="TAKE_QUICK_TOUR"/>.</translation>
-<translation id="3604285424134705930">Átváltott <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to<ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
-<translation id="392587271502873865">Ellenőrizze a hálózati kapcsolatot.</translation>
 <translation id="7889432931837317731">Automatikus megnyitás, ha lehetséges</translation>
 <translation id="8967385052772844086">Teljes adatvédelmi jelentés megtekintése</translation>
 <translation id="6864343534748973390">Legnépszerűbb</translation>
@@ -591,9 +559,6 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="5050890334032852465">Számla figyelőlistájának elmentése</translation>
 <translation id="7755766175599167100">Token keresése</translation>
 <translation id="3835223348537121988">Egyenleg:</translation>
-<translation id="2490428413101944234">Pénzcsap tesztelése</translation>
-<translation id="2581671693710952401">Ether beszerzése</translation>
-<translation id="8165484222652118977">Szerezzen Ethert pénzcsapból ehhez: <ph name="NETWORK"/> Teszthálózat</translation>
 <translation id="7420359180991315365">Tovább a Wyre-re</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="3784455785234192852">Zárolás</translation>
@@ -605,6 +570,12 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="5693968582510626466">A tranzakciók törlése hasznos lehet fejlesztők számára, vagy pedig helyi kiszolgáló állapotának nullázásakor</translation>
 <translation id="5421107279168565467">Biztosan visszaállítja a tranzakciós- és nonce-adatokat? Ezt a funkciót általában helyi tesztkiszolgálót üzemeltető fejlesztők használják. A megerősítéshez gépelje be a következőt: „<ph name="CONFIRMATION_PHRASE"/>".</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# perc} other {# perc}}</translation>
+<translation id="8146860193318415026">Videostreamelés, reklámok nélkül.</translation>
+<translation id="6311019535466417620">Nem jelennek meg reklámok a videók előtt</translation>
+<translation id="4274652342814424451">Nem jelennek meg reklámok a videók közben</translation>
+<translation id="1721710839767183848">Nem jelennek meg hirdetések a weblapokon</translation>
+<translation id="4647035642622555398">Nincsenek zavaró tényezők</translation>
+<translation id="4122515759479497554">Videók keresése</translation>
 <translation id="4449475351935531438">Brave tűzfal + VPN</translation>
 <translation id="719977489961414786">Váltson VPN-re, hogy megvédje a kapcsolatát és bárhonnan blokkolhassa az invazív nyomkövetőket.</translation>
 <translation id="3435896845095436175">Engedélyezés</translation>
@@ -808,6 +779,9 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="5233638681132016545">Új lap</translation>
 <translation id="8006088103295786154">Hozzáférés a Brave pénztárcához</translation>
 <translation id="5308380583665731573">Csatlakozás</translation>
+<translation id="8030169304546394654">Nincs kapcsolat</translation>
+<translation id="3423275441470187644">Megbízható</translation>
+<translation id="2391762656119864333">Visszavonás</translation>
 <translation id="3432029672560911238">Felhasználói fiók</translation>
 <translation id="5753378322046059140">Fiókváltás</translation>
 <translation id="3897092660631435901">Menü</translation>
@@ -884,5 +858,11 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="7002577172732106572">Osztott alagút mód (Split Tunneling)</translation>
 <translation id="2832270987629018596">Érvénytelen SOL-cím</translation>
 <translation id="8181161042860463420">A kapcsolódó tokenszámla még nem létezik. Ennek létrehozására és fenntartására egy kisebb SOL-összeg lesz felhasználva. <ph name="CLICK_START"/>További információ:<ph name="CLICK_END"/></translation>
+<translation id="1304515257839771197">Megnyitja a <ph name="APP_NAME"/> alkalmazást?</translation>
+<translation id="7653028065515320848"><ph name="CLICK_START"/>További tudnivalók a Rainbow Bridge használatáról<ph name="CLICK_END"/></translation>
+<translation id="8219806187375413057"><ph name="CLICK_START"/>További tudnivalók a kockázatcsökkentésről a Rainbow Bridge-en<ph name="CLICK_END"/></translation>
+<translation id="1065082006518490444">A <ph name="APP_NAME"/> egy független szolgáltatás, amely segít az eszközök hálózatok közötti áthidalásában, valamint a kriptovaluták más hálózatokon és DApp-ökoszisztémákban történő használatában. Az eszközök más hálózatokhoz való áthidalása bizonyos kockázatokkal jár.</translation>
+<translation id="8423380132356660250">A <ph name="APP_NAME"/> alkalmazás megnyitása</translation>
 <translation id="168154537623654021">VPN-profil frissítése...</translation>
+<translation id="7457027586454688423">Adja meg Brave-pénztárcája jelszavát</translation>
 </translationbundle>

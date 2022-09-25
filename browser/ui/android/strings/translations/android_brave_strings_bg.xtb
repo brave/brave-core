@@ -82,14 +82,14 @@
 <translation id="7207456302801184289">Добре дошли в Brave</translation>
 <translation id="4117451092682672487">Поверителност. Опростена.</translation>
 <translation id="7909375417585209817">Когато Brave е избран по подразбиране, всяка връзка, която докоснете, се отваря със защитите на поверителността на Brave.</translation>
-<translation id="7370959926683925817">Блокиране на реклами. Запазване на данни. Всеки ден.</translation>
-<translation id="7281027579943912834">С Brave по подразбиране, всяка връзка, която докоснете, получава защитата на Brave от блокиране на реклами. Всяка страница, видеоклип и поток.</translation>
+<translation id="7370959926683925817">Блокирайте реклами. Запазете своите данните. Всеки ден.</translation>
+<translation id="7281027579943912834">При използване на Brave по подразбиране всяка връзка, която натиснете, получава защитата на Brave против реклами. Отнася се за всяка страница, видеоклип и излъчване.</translation>
 <translation id="5148943178722443958">Помогнете ни да направим Brave по-добър.</translation>
 <translation id="6188781052835527980">Изпратете анонимни диагностични отчети, ако възникне срив или блокиране.</translation>
 <translation id="1929905278861178845">Споделете поверителна и изцяло анонимна информация за продукти относно това какви функции се използват от потребителите на Brave.</translation>
 <translation id="2877653791257935258">Въведете име на уебсайт или URL адрес</translation>
 <translation id="5329830149661250028">Вижте разликата с Brave: без реклами. Без проследяващи елементи. Много по-бързо зареждане на страниците.</translation>
-<translation id="3941792073703079607">Вижте разликата на Brave: Блокирайте реклами. Запазване на данни. Предавайте по-бързо.</translation>
+<translation id="3941792073703079607">Вижте разликата с Brave: Блокирайте реклами. Запазете своите данни. Излъчвайте с по-висока скорост.</translation>
 <translation id="3545804467215833536">Докоснете, за да видите щитовете на Brave</translation>
 <translation id="1724327820822194498">Вижте всички лоши неща, които Brave е блокирал, на всяка страница с помощта на „Щитове“.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> и <ph name="TRACKER"/> други реклами и проследяващи елемента са блокирани</translation>
@@ -117,6 +117,8 @@
 <translation id="19715420010996093">Изберете Brave Browser и докоснете „Винаги“</translation>
 <translation id="3546439402724649282">Brave вече е зададен като браузърът ви по подразбиране.</translation>
 <translation id="8389661903259423907">Вече сте задали браузър по подразбиране. Можете да промените браузъра по подразбиране в настройките на приложението си.</translation>
+<translation id="1545749641540134597">Сканиране на QR код</translation>
+<translation id="5317781812114905957">Инструкции</translation>
 <translation id="8826007068782654809">Благодарим Ви</translation>
 <translation id="6665366815203065060">Току-що изпратихте бакшиш на:</translation>
 <translation id="5441565662498481293">Автоматично изпращате бакшиш на:</translation>
@@ -137,7 +139,7 @@
 <translation id="1938402585819943124">Изберете Brave на следващия екран.</translation>
 <translation id="8926389886865778422">Без повторно питане</translation>
 <translation id="745974920645827035">Независимо търсене с по-добра поверителност</translation>
-<translation id="4717018805430015801">Brave Search не проследява вас, вашите заявки или кликвания.</translation>
+<translation id="4717018805430015801">Brave Търсене не следи нито вас, нито заявките ви, или кликванията ви.</translation>
 <translation id="5240031343741051161">Опитайте Brave Търсене</translation>
 <translation id="5234764350956374838">Отхвърляне</translation>
 <translation id="6639570430554986719">ЯНУАРИ</translation>
@@ -324,8 +326,8 @@
 <translation id="5657156137487675418">Разрешаване на всички „бисквитки“</translation>
 <translation id="3895527457258986253">Блокиране снемането на пръстови отпечатъци</translation>
 <translation id="7854108565842971747">Това са настройките по подразбиране за щитовете за нови сайтове. Промяната им няма да повлияе на съществуващите настройки за всеки сайт.</translation>
-<translation id="218587021686734263">Предотвратяване на пръстови отпечатъци чрез езикови настройки</translation>
-<translation id="1706099589708266367">Намалява колко уебсайтове могат да научат за вас въз основа на езиковите настройки на браузъра ви.</translation>
+<translation id="218587021686734263">Предотвратяване на пръстови отпечатъци чрез езиковите настройки</translation>
+<translation id="1706099589708266367">Намалява количеството информация, която уебсайтовете могат да научат за вас въз основа на езиковите настройки на браузъра ви.</translation>
 <translation id="184568144098869637">Предотвратява разпознаването на вашето устройство от браузъра</translation>
 <translation id="7445306466605902444">Запазването на цифрови отпечатъци е блокирано (строго, може да повреди сайтове)</translation>
 <translation id="5582686930349810484">Запазването на цифрови отпечатъци е блокирано (стандартно)</translation>
@@ -393,35 +395,11 @@
 <translation id="8376263745431603066">Активиране на „Нощен режим“ (експериментално)</translation>
 <translation id="1383876407941801731">Търсене</translation>
 <translation id="8446884382197647889">Научете повече</translation>
-<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
-<translation id="558614325644656740">Налично <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="3414885529641505869">Купете <ph name="COIN_NAME"/></translation>
-<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Адрес за депозиране</translation>
-<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Депозитна бележка</translation>
-<translation id="6755546361496900700">Преглед на конвертирането</translation>
-<translation id="5110244215256675209">Купете криптовалути</translation>
-<translation id="2271556362602437160">.com</translation>
-<translation id="3727077517986954867">.us</translation>
 <translation id="13296465911709339">Текстът ви е копиран в клипборда.</translation>
 <translation id="2735834606413553397">Публичният адрес е копиран в клипборда.</translation>
-<translation id="7144878232160441200">Повторен опит</translation>
 <translation id="2977461003134694205">Статистика за поверителност</translation>
-<translation id="2956070106555335453">Резюме</translation>
-<translation id="1366855498335432549">Депозиране</translation>
-<translation id="1301340234286078471">Конвертиер</translation>
 <translation id="223536150967420869">Купете</translation>
-<translation id="4584930231524505442">Искам да конвертирам...</translation>
-<translation id="5749014321384313843">Искам да похарча...</translation>
-<translation id="2480674848181564169">Недостатъчно салдо за конвертиране</translation>
-<translation id="2215334405220411393">Минималната сума за конвертиране е : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6702658079816271889">Не може да осъществи връзка</translation>
-<translation id="7742417737698031726">Такса</translation>
-<translation id="2122225204180056042">Ще получите</translation>
-<translation id="6432284126416751397">Потвърди конвертирането</translation>
-<translation id="3891414008432200754">Цена</translation>
-<translation id="3733576242118819803">Потвърдете (<ph name="REMAINING_TIME"/>s)</translation>
-<translation id="1627064138060308910">Конвертирането не беше успешно. Опитайте отново.</translation>
-<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="2956070106555335453">Резюме</translation>
 <translation id="7465614181960492526">Печелете токени и върнете обратно</translation>
 <translation id="244362569344671266">Печелете токени, като гледате частни реклами с Brave и автоматично подкрепяте създателите на съдържание.</translation>
 <translation id="631124996535890460">Продължавайки, вие приемате <ph name="TERMS_OF_SERVICE"/> и <ph name="PRIVACY_POLICY"/>.</translation>
@@ -452,18 +430,6 @@
 <translation id="2434574859640694129">След като получите първото си изплащане за реклами, можете да се върнете и да дадете бакшиш на този автор!</translation>
 <translation id="207242986925259074">Бърза опреснителна обиколка</translation>
 <translation id="8342862030112839977">Първото ви изплащане на награди ще пристигне до:</translation>
-<translation id="8037420924417098685">За да започнете безплатно обаждане, активирайте Brave Rewards</translation>
-<translation id="8961724619078500274">С Brave Rewards можете да спечелите жетони от гледането на поверителни реклами (вашите данни са в безопасност). Превърнете жетоните в пари в брой, карти за подаръци…или дори дарение за уебсайтовете, които харесвате. Без проследяване. Без забавания.</translation>
-<translation id="7307847920988946894">Включете Rewards</translation>
-<translation id="7872993190040589450">Разрешавайки, се съгласявате с <ph name="TERMS_OF_SERVICE"/> и <ph name="PRIVACY_POLICY"/>.</translation>
-<translation id="6128511569382736135">За да започнете безплатно обаждане, активирайте Brave Private Ads</translation>
-<translation id="7930006085154756245">С Brave Private Ads можете да спечелите жетони от гледането на поверителни реклами (вашите данни са в безопасност). Превърнете жетоните в пари в брой, карти за подаръци…или дори дарение за уебсайтовете, които харесвате. Без проследяване. Без забавяния.</translation>
-<translation id="4992617448154987397">Включете Brave Private Ads</translation>
-<translation id="3415016869273103668">Вече можете да започнете безплатно обаждане</translation>
-<translation id="7073631403665023390">Щракнете или натиснете където и да е по екрана, за да продължите към Brave Talk.</translation>
-<translation id="626339649633171286">Искате ли да научите повече за Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
-<translation id="3604285424134705930">Превърнахте <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> в <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
-<translation id="392587271502873865">Проверете вашата мрежова връзка.</translation>
 <translation id="7889432931837317731">Автоматично отваряне, когато е възможно</translation>
 <translation id="8967385052772844086">Вижте пълния доклад за поверителност</translation>
 <translation id="6864343534748973390">Най-популярен</translation>
@@ -591,9 +557,6 @@
 <translation id="5050890334032852465">Запазване на списъка за наблюдение на акаунта</translation>
 <translation id="7755766175599167100">Търсене на маркери</translation>
 <translation id="3835223348537121988">Баланс:</translation>
-<translation id="2490428413101944234">Тестване на faucet</translation>
-<translation id="2581671693710952401">Вземете етер</translation>
-<translation id="8165484222652118977">Вземете Ether от faucet за <ph name="NETWORK"/> тестова мрежа</translation>
 <translation id="7420359180991315365">Продължете към Wyre</translation>
 <translation id="8488282162676695335">Портфейл в Brave</translation>
 <translation id="3784455785234192852">Заключване</translation>
@@ -808,6 +771,9 @@
 <translation id="5233638681132016545">Нов раздел</translation>
 <translation id="8006088103295786154">Достъп до Brave Wallet</translation>
 <translation id="5308380583665731573">Свързване</translation>
+<translation id="8030169304546394654">Разкачен</translation>
+<translation id="3423275441470187644">Довери се</translation>
+<translation id="2391762656119864333">Оттегляне</translation>
 <translation id="3432029672560911238">Потребителски акаунт</translation>
 <translation id="5753378322046059140">Превключване на акаунт</translation>
 <translation id="3897092660631435901">Меню</translation>
@@ -883,6 +849,7 @@
 <translation id="5472400694702418949">Добавете приложения, които да бъдат изключени от VPN трафика.</translation>
 <translation id="7002577172732106572">Разделено тунелиране</translation>
 <translation id="2832270987629018596">SOL адресът не е валиден</translation>
-<translation id="8181161042860463420">Свързаният токен акаунт все още не съществува. Малка сума SOL ще бъде изразходвана за създаването и финансирането му. <ph name="CLICK_START"/>Научете повече<ph name="CLICK_END"/></translation>
-<translation id="168154537623654021">VPN профилът се актуализира...</translation>
+<translation id="8181161042860463420">Съответният токен акаунт все още не съществува. За създаването и финансирането му ще бъде изразходвано малко сума SOL. <ph name="CLICK_START"/>Научете повече<ph name="CLICK_END"/></translation>
+<translation id="168154537623654021">Актуализиране на VPN профила ...</translation>
+<translation id="7457027586454688423">Въведете вашата парола за Brave Wallet</translation>
 </translationbundle>

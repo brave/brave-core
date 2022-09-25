@@ -93,6 +93,7 @@
 <translation id="3545804467215833536">Pulsa para ver Protecciones de Brave</translation>
 <translation id="1724327820822194498">Mira todos los elementos no deseados que ha bloqueado Brave en cada página con Protecciones.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> y <ph name="TRACKER"/> anuncios y rastreadores más bloqueados</translation>
+<translation id="7256200875155794202"><ph name="BIG_TECH"/> y otros anuncios y rastreadores bloqueados</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> anuncios y rastreadores bloqueados</translation>
 <translation id="8281886186245836920">Saltar</translation>
 <translation id="6165508094623778733">Más información</translation>
@@ -117,6 +118,9 @@
 <translation id="19715420010996093">Selecciona Brave Browser y pulsa en «Siempre».</translation>
 <translation id="3546439402724649282">Brave ya está configurado como tu navegador predeterminado.</translation>
 <translation id="8389661903259423907">Ya has configurado un navegador predeterminado. Puedes cambiar el navegador predeterminado en la configuración de la aplicación.</translation>
+<translation id="1545749641540134597">Escanear código QR</translation>
+<translation id="5317781812114905957">Instrucciones</translation>
+<translation id="8515319483805157233">Para buscar por código QR, debes situar el código QR en el centro del marco.</translation>
 <translation id="8826007068782654809">Gracias</translation>
 <translation id="6665366815203065060">Acabas de enviar una propina a:</translation>
 <translation id="5441565662498481293">Estás enviando automáticamente una propina a:</translation>
@@ -393,35 +397,11 @@ Verifica que ha sido un dispositivo tuyo el que ha generado estas palabras clave
 <translation id="8376263745431603066">Habilitar "Modo nocturno" (experimental)</translation>
 <translation id="1383876407941801731">Búsqueda</translation>
 <translation id="8446884382197647889">Más información</translation>
-<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
-<translation id="558614325644656740">Disponible <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="3414885529641505869">Compra <ph name="COIN_NAME"/></translation>
-<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Dirección del depósito</translation>
-<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Nota de depósito</translation>
-<translation id="6755546361496900700">Vista previa de conversión</translation>
-<translation id="5110244215256675209">Comprar Crypto</translation>
-<translation id="2271556362602437160">.com</translation>
-<translation id="3727077517986954867">.us</translation>
 <translation id="13296465911709339">Tu texto se ha copiado en el portapapeles.</translation>
 <translation id="2735834606413553397">La dirección pública se ha copiado en el portapapeles.</translation>
-<translation id="7144878232160441200">Reintentar</translation>
 <translation id="2977461003134694205">Estadísticas de privacidad</translation>
-<translation id="2956070106555335453">Resumen</translation>
-<translation id="1366855498335432549">Depósito</translation>
-<translation id="1301340234286078471">Convertir</translation>
 <translation id="223536150967420869">Comprar</translation>
-<translation id="4584930231524505442">Quiero convertir...</translation>
-<translation id="5749014321384313843">Quiero gastar...</translation>
-<translation id="2480674848181564169">No hay suficiente saldo para la conversión</translation>
-<translation id="2215334405220411393">La cantidad mínima a convertir es: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6702658079816271889">No se puede conectar</translation>
-<translation id="7742417737698031726">Comisión</translation>
-<translation id="2122225204180056042">Recibirás</translation>
-<translation id="6432284126416751397">Confirmar la conversión</translation>
-<translation id="3891414008432200754">Precio</translation>
-<translation id="3733576242118819803">Confirma (<ph name="REMAINING_TIME"/>s)</translation>
-<translation id="1627064138060308910">La conversión ha fallado. Por favor, inténtalo de nuevo.</translation>
-<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="2956070106555335453">Resumen</translation>
 <translation id="7465614181960492526">Gane tokens y retribuya algo</translation>
 <translation id="244362569344671266">Gane tokens por ver Brave Ads privados y apoye a los creadores de contenido automáticamente.</translation>
 <translation id="631124996535890460">Al continuar, acepta las <ph name="TERMS_OF_SERVICE"/> y la <ph name="PRIVACY_POLICY"/>.</translation>
@@ -452,18 +432,6 @@ Verifica que ha sido un dispositivo tuyo el que ha generado estas palabras clave
 <translation id="2434574859640694129">Cuando reciba su primer pago por publicidad, puede volver y dar una propina a este creador.</translation>
 <translation id="207242986925259074">Repaso rápido</translation>
 <translation id="8342862030112839977">Tu primer pago de Rewards llegará antes del:</translation>
-<translation id="8037420924417098685">Para iniciar una llamada gratuita, activa Brave Rewards</translation>
-<translation id="8961724619078500274">Con Brave Rewards, ganas tokens por ver anuncios privados (tus datos estarán protegidos). Puedes canjear esos tokens por efectivo o tarjetas de regalo, o bien dar una propina a los sitios web que más te gustan. Sin registro de datos ni demoras.</translation>
-<translation id="7307847920988946894">Activar recompensas</translation>
-<translation id="7872993190040589450">Al activalo, aceptas las <ph name="TERMS_OF_SERVICE"/> y la <ph name="PRIVACY_POLICY"/>.</translation>
-<translation id="6128511569382736135">Para iniciar una llamada gratuita, activa Brave Private Ads</translation>
-<translation id="7930006085154756245">Con Brave Private Ads, ganas tokens por ver anuncios en modo privado (tus datos estarán protegidos). Puedes canjear esos tokens por efectivo o tarjetas de regalo, o bien dar una propina a los sitios web que más te gustan. Sin registro de datos ni demoras.</translation>
-<translation id="4992617448154987397">Activar Brave Private Ads</translation>
-<translation id="3415016869273103668">Ya puedes iniciar una llamada gratuita</translation>
-<translation id="7073631403665023390">Haz clic o toca en cualquier lugar de la pantalla para continuar con Brave Talk.</translation>
-<translation id="626339649633171286">¿Quieres obtener más información sobre Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
-<translation id="3604285424134705930">Ha convertido <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> en <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
-<translation id="392587271502873865">Compruebe su conexión de red.</translation>
 <translation id="7889432931837317731">Abrir automáticamente cuando sea posible</translation>
 <translation id="8967385052772844086">Ver informe de privacidad completo</translation>
 <translation id="6864343534748973390">El más popular</translation>
@@ -591,9 +559,6 @@ Verifica que ha sido un dispositivo tuyo el que ha generado estas palabras clave
 <translation id="5050890334032852465">Guardar la lista de seguimiento de la cuenta</translation>
 <translation id="7755766175599167100">Buscar tokens</translation>
 <translation id="3835223348537121988">Saldo:</translation>
-<translation id="2490428413101944234">Probar Faucet</translation>
-<translation id="2581671693710952401">Conseguir Ether</translation>
-<translation id="8165484222652118977">Obtener ETH a partir de un faucet de la red de prueba de <ph name="NETWORK"/></translation>
 <translation id="7420359180991315365">Continuar con Wyre</translation>
 <translation id="8488282162676695335">Cartera de Brave</translation>
 <translation id="3784455785234192852">Bloquear</translation>
@@ -605,6 +570,12 @@ Verifica que ha sido un dispositivo tuyo el que ha generado estas palabras clave
 <translation id="5693968582510626466">Borrar transacciones puede ser útil para los desarrolladores o cuando se borra el estado en un servidor local</translation>
 <translation id="5421107279168565467">¿Seguro que quieres restablecer toda la información sobre transacciones y valores de seguridad ("nonce")? Esta opción suelen seleccionarla los desarrolladores que tienen un servidor de prueba local. Escribe "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# minuto} other {# minutos}}</translation>
+<translation id="8146860193318415026">Transmisiones de vídeos sin publicidad.</translation>
+<translation id="6311019535466417620">Sin anuncios antes del vídeo</translation>
+<translation id="4274652342814424451">Sin anuncios durante el vídeo</translation>
+<translation id="1721710839767183848">Sin anuncios en la página</translation>
+<translation id="4647035642622555398">Sin interrupciones</translation>
+<translation id="4122515759479497554">Buscar vídeos</translation>
 <translation id="4449475351935531438">Cortafuegos + VPN de Brave</translation>
 <translation id="719977489961414786">Pásate a una VPN para proteger tu conexión y bloquear a los rastreadores invasivos que están por todas partes.</translation>
 <translation id="3435896845095436175">Habilitar</translation>
@@ -808,6 +779,9 @@ Si no la aceptas, la VPN no se volverá a conectar y tu conexión a Internet no 
 <translation id="5233638681132016545">Nueva pestaña</translation>
 <translation id="8006088103295786154">Acceder a Cartera de Brave</translation>
 <translation id="5308380583665731573">Connect</translation>
+<translation id="8030169304546394654">Desconectada</translation>
+<translation id="3423275441470187644">Confiar</translation>
+<translation id="2391762656119864333">Revocar</translation>
 <translation id="3432029672560911238">Cuenta de usuario</translation>
 <translation id="5753378322046059140">Cambia de cuenta</translation>
 <translation id="3897092660631435901">Menú</translation>
@@ -884,5 +858,11 @@ Si no la aceptas, la VPN no se volverá a conectar y tu conexión a Internet no 
 <translation id="7002577172732106572">Túnel dividido</translation>
 <translation id="2832270987629018596">No es una dirección de SOL válida</translation>
 <translation id="8181161042860463420">La cuenta de token asociada aún no existe. Se gastará una pequeña cantidad de SOL para crearla y añadir fondos. <ph name="CLICK_START"/>Más información<ph name="CLICK_END"/></translation>
+<translation id="1304515257839771197">¿Abrir la aplicación de <ph name="APP_NAME"/>?</translation>
+<translation id="7653028065515320848"><ph name="CLICK_START"/>Más información acerca de cómo usar Rainbow Bridge<ph name="CLICK_END"/></translation>
+<translation id="8219806187375413057"><ph name="CLICK_START"/>Descubre cómo reducir riesgos en Rainbow Bridge<ph name="CLICK_END"/></translation>
+<translation id="1065082006518490444"><ph name="APP_NAME"/> es un servicio independiente que te ayuda a establecer puentes entre activos a través de las redes, así como a utilizar tus criptoactivos en otras redes y ecosistemas de aplicaciones descentralizadas. Usar puentes entre activos y otras redes conlleva algunos riesgos.</translation>
+<translation id="8423380132356660250">Abrir la aplicación de <ph name="APP_NAME"/></translation>
 <translation id="168154537623654021">Actualización del perfil VPN ...</translation>
+<translation id="7457027586454688423">Escribe la contraseña de tu cartera de Brave</translation>
 </translationbundle>

@@ -134,7 +134,6 @@
 <translation id="4065288863231444640">Ļaut pārlūkam Brave darboties fonā</translation>
 <translation id="8148611988012584308">Pielāgot un kontrolēt Brave</translation>
 <translation id="4427306783828095590">Uzlabotā aizsardzība labāk bloķē pikšķerēšanas mēģinājumus un ļaunprātīgu programmatūru</translation>
-<translation id="5112116809696021727">Lai noskaidrotu, vai ierīce ir atjaunināta, pārejiet uz <ph name="LINK_BEGIN"/>Brave OS iestatījumiem<ph name="LINK_END"/>.</translation>
 <translation id="7084397798469173252">Laipni lūdzam pārlūkā Brave (tika atvērts jauns pārlūka logs)!</translation>
 <translation id="2633397153656205379">Pārlūkprogramma Brave netika atjaunināta. Radās problēma. <ph name="BEGIN_LINK"/>Novērsiet Brave atjaunināšanas problēmas.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Vai turpināt jaunā Brave profilā?</translation>
@@ -294,8 +293,6 @@ Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai iz
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Kā varat pārvaldīt savus datus:<ph name="END_BOLD"/> lai aizsargātu jūsu konfidencialitāti, mēs automātiski dzēšam intereses, kas ir glabātas ilgāk par četrām nedēļām. Intereses var tikt atkārtoti pievienotas sarakstam, kad turpināsiet pārlūkošanu. Varat arī noņemt intereses, ja nevēlaties, lai Brave tās apsvērtu.</translation>
 <translation id="2925193881330501265">Operētājsistēmā Brave iepriekš pierakstījāties kā lietotājs <ph name="USER_EMAIL_ADDRESS"/>. Lai pierakstītos vēlreiz, lūdzu, izmantojiet to pašu kontu.</translation>
 <translation id="6915252145142862992">Šī ir Brave papildu instalācija, un to nevar izmantot kā noklusējuma pārlūku.</translation>
-<translation id="1975057837349076194">Ja iestatījums nav redzams šajā lapā, meklējiet to <ph name="LINK_BEGIN"/>
-      Brave OS iestatījumos<ph name="LINK_END"/>.</translation>
 <translation id="7685904775439037072">Tiklīdz pārlūkam Brave tiks sniegta piekļuve, vietnes varēs lūgt jums piekļuvi.</translation>
 <translation id="80471789339884597">Pateicamies, ka veicāt instalēšanu. Pirms <ph name="BUNDLE_NAME"/> izmantošanas ir jārestartē visas pārlūkprogrammas.</translation>
 <translation id="2061155704815580583">Pārlūkam Brave ir nepieciešama atrašanās vietas atļauja šai vietnei.</translation>

@@ -80,11 +80,6 @@
 <translation id="3161744659507801211">Внимание: Brave не может запретить расширениям сохранять историю просмотров.</translation>
 <translation id="2162109630536601963">Если это расширение отправляет запросы по сети, то они не будут идти через Tor или использовать приватный режим.</translation>
 <translation id="2725327089319971976">Чтобы отключить расширение в приватном режиме и режиме Tor, снимите эту галочку.</translation>
-<translation id="5057399635433117814">Перевести эту страницу? Весь ее текст будет отправлен в Microsoft для перевода.</translation>
-<translation id="330263065709195164">Установить расширение Google Переводчик для перевода этой страницы?</translation>
-<translation id="3789841737615482174">Установить</translation>
-<translation id="7658239707568436148">Отмена</translation>
-<translation id="1307431692088049276">Не спрашивать снова</translation>
 <translation id="3371343170427636147">Ночные сборки приложений браузера Brave</translation>
 <translation id="4097979995947147464">Бета-приложения браузера Brave</translation>
 <translation id="8303432794159193481">Приложения разработчика для браузера Brave</translation>
@@ -107,9 +102,11 @@
 <translation id="7276554663454265692">Вы можете изменить <ph name="SETTING_TEXT"/> в любое время.</translation>
 <translation id="6873781976650514089">эту настройку</translation>
 <translation id="8915916167043355778">Закрыть все</translation>
+<translation id="7658239707568436148">Cancel</translation>
 <translation id="4870911314065352661">Закрыть все вкладки?</translation>
 <translation id="7551864359422178684">У вас остались открытые вкладки (<ph name="NUMBER_OF_TABS"/>) в этом окне браузера.</translation>
 <translation id="2571596981920752023">Вкладок: <ph name="NUMBER_OF_TABS"/></translation>
+<translation id="1307431692088049276">Не спрашивать снова</translation>
 <translation id="2272117088509540883">- Brave Поиск</translation>
 <translation id="2701279958223202597">Обеспечение конфиденциальности во время поиска. Brave Поиск не следит за вами, вашими запросами и нажатиями.</translation>
 <translation id="6438467592401259882">Обеспечение конфиденциальности во время поиска.</translation>
@@ -126,7 +123,15 @@
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">Анонимно предоставлять Brave Search данные поиска и сведения о действиях в браузере для улучшения работы сервиса</translation>
 <translation id="1516554614404600536">Подсказки Brave</translation>
+<translation id="7986278174934557414">Скрыть значок боковой панели</translation>
+<translation id="6915291874524466201">Скрыть значок боковой панели</translation>
+<translation id="9149866541089851383">Изменить...</translation>
 <translation id="1181037720776840403">Удалить</translation>
+<translation id="7513769021866698486">Изменить элемент</translation>
+<translation id="4002066346123236978">Название</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="5877900074358050101">Название элемента боковой панели</translation>
+<translation id="1613695740874407223">URL элемента боковой панели</translation>
 <translation id="4877147287319222750">Добавить к боковой панели</translation>
 <translation id="5404213409401164238">Показать боковую панель</translation>
 <translation id="7561196759112975576">Всегда</translation>
@@ -201,6 +206,7 @@
 <translation id="2370739752330685659">Не сейчас</translation>
 <translation id="961012016278832836">Устаревшая версия Microsoft Edge</translation>
 <translation id="6436994631426134065">Импортировано из <ph name="BROWSER_NAME"/>.</translation>
+<translation id="1506190932569739298">Скопировать ссылку (только основной URL)</translation>
 <translation id="9156965752763025780">Изменения вступят в силу при следующем входе в Brave.</translation>
 <translation id="7179921470347911571">Перезапустить</translation>
 <translation id="4472575034687746823">Начало работы</translation>
@@ -220,6 +226,7 @@
 <translation id="4096343215397759358">Карточка с предварительным просмотром</translation>
 <translation id="5297085818601043899">Всплывающая подсказка</translation>
 <translation id="2396127686705429331">Показывать кнопку закладок</translation>
+<translation id="2369560305991805099">Показывать кнопку боковой панели</translation>
 <translation id="2814998458708016836">Использовать широкую адресную строку</translation>
 <translation id="4109670531935487117">Показывать предложения для автозаполнения в адресной строке</translation>
 <translation id="2858138569776157458">Топ сайтов</translation>
@@ -242,8 +249,8 @@
 <translation id="6303294677342628402">Защита</translation>
 <translation id="7133511168130368997">Блокировать рекламу и скрытые трекеры.</translation>
 <translation id="2761825942249694703">Это настройки щитов по умолчанию. Они применяются ко всем веб-сайтам, пока вы не измените что-либо на панели «Щиты» определенного сайта. Эти изменения не повлияет на существующие настройки для каждого сайта.</translation>
-<translation id="1485394570478670912">Большинство объявлений будет блокироваться. Однако это не касается рекламы Brave Private Ads, ее параметры можно изменить здесь:</translation>
-<translation id="6388201778088078932">настройки.</translation>
+<translation id="1435116578479068303">Это заблокирует большинство объявлений на сайтах, кроме персональной Brave Рекламы. Ее можно настроить в <ph name="BEGIN_LINK"/>Brave Наградах<ph name="END_LINK"/>.</translation>
+<translation id="8452536890042542134">Большинство рекламных объявлений на сайтах будет заблокировано.</translation>
 <translation id="4800195524776354947">Показывать количество заблокированных элементов на значке Shields</translation>
 <translation id="5510493033031835532">Автоматически перенаправлять с AMP-страниц</translation>
 <translation id="7630031867325944356">Использовать ссылки на страницы издателей, а не ускоренные мобильные версии (AMP) или аналогичные варианты.</translation>
@@ -392,12 +399,12 @@
 <translation id="6554397389149987360">С помощью компонента Hangouts можно прямо в браузере демонстрировать свой экран и пользоваться другими возможностями.</translation>
 <translation id="7878791177459550035">Расширение Media router включает в браузере функцию трансляции.</translation>
 <translation id="5927916530277631319">Метод устранения Unstoppable Domains</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Узнайте больше<ph name="END_LINK"/> о технологии «DNS поверх HTTPS» и обеспечении конфиденциальности Ethereum.</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Узнайте больше<ph name="END_LINK"/> об обеспечении конфиденциальности Ethereum.</translation>
 <translation id="5248318250177143470">Метод разрешения службы имен Ethereum (ENS)</translation>
 <translation id="6241402707160226266">Приватное окно с Tor</translation>
 <translation id="8762452230727230396">Tor скрывает ваш IP-адрес от веб-сайтов, которые вы посещае</translation>
 <translation id="2959986444009520721">Использовать мосты</translation>
-<translation id="6003484976430531384">Мосты помогают получить доступ к сети Tor там, где он заблокирован. Мосты работают с разной эффективностью в зависимости от вашего местоположения.</translation>
+<translation id="8416750895933172460">Мосты помогают получить доступ к сети Tor там, где она заблокирована. Они могут отличаться по эффективности в зависимости от вашего местоположения.</translation>
 <translation id="7206799843254049470">Настройки подключения Tor</translation>
 <translation id="3194502271166340944">Управляет тем, как окна инкогнито с Tor подключаются к сети Tor</translation>
 <translation id="4859228830700205299">Выбрать встроенный мост</translation>
@@ -414,7 +421,7 @@
 <translation id="6936835573742749135">Не удалось запросить капчу. Повторите попытку позже.</translation>
 <translation id="2653659639078652383">Submit</translation>
 <translation id="1369311132025451972">Автоматически перенаправлять с сайтов .onion</translation>
-<translation id="2843777623071353503">Brave откроет onion-версию сайта, если она доступна, или домен .onion в окне с режимом Tor.</translation>
+<translation id="1658670175365815312">Brave перейдет на версию сайта .onion, если она доступна, и автоматически откроет все домены .onion в окне с Tor.</translation>
 <translation id="2896916411183256228">WebTorrent позволит отображать информацию о торрентах прямо в браузере. Поддерживаются торрент-файлы и magnet-ссылки.</translation>
 <translation id="5249433283143453448">Использоывть компонент управления цифровыми правами (DRM) Widevine  для просмотра защищенной видео трансляции и другого контента в браузере.</translation>
 <translation id="8137559199583651773">Управление расширениями</translation>
@@ -440,14 +447,16 @@
 <translation id="3752403403443723332">Настройки кошелька сброшены.</translation>
 <translation id="594766067816395072">Информация о транзакциях в кошельке сброшена.</translation>
 <translation id="1426410128494586442">Да</translation>
-<translation id="2556708692502648323">Сети кошелька</translation>
+<translation id="4226543734057230801">Сети Ethereum</translation>
+<translation id="3504157706952484145">Сети Filecoin</translation>
+<translation id="1561541094377237745">Сети Solana</translation>
 <translation id="3159419679550543837">Показывать тестовые сети</translation>
-<translation id="8205945804087322170">Добавление сети</translation>
-<translation id="1330032157352961756">Идентификатор новой цепи</translation>
+<translation id="3215569562674795548">Изменить или добавить новую сеть</translation>
+<translation id="4418993400653250511">Идентификатор цепочки</translation>
 <translation id="3423620355610881890">Положительное десятичное число</translation>
 <translation id="8110465398315041268">Поиск сети</translation>
 <translation id="3579705520805744214">Цепочка ID или название</translation>
-<translation id="726121047592132939">Название новой цепи</translation>
+<translation id="8502525913969149079">Название цепочки</translation>
 <translation id="1034112277864078119">Введите название цепи</translation>
 <translation id="4672314527143443556">Название валюты цепи</translation>
 <translation id="4652114030688989556">Введите название валюты</translation>
