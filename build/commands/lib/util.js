@@ -411,7 +411,7 @@ const util = {
     // Return true when original file of |file| should be touched.
     const applyFileFilter = (file) => {
       // Only include overridable files.
-      const supported_exts = ['.cc','.h', '.mm', '.mojom', '.py'];
+      const supported_exts = ['.cc','.h', '.mm', '.mojom', '.py', '.pdl'];
       return supported_exts.includes(path.extname(file))
     }
 

@@ -7,7 +7,7 @@ import importlib.util
 import os.path
 
 
-def _find_src_dir():
+def get_src_dir():
     """Searches for src/ dir which includes brave/ dir."""
     current_file = globals().get('__file__')
     if current_file and os.path.isabs(current_file):
@@ -23,6 +23,10 @@ def _find_src_dir():
             # We hit the system root directory.
             raise RuntimeError("Can't find src/ directory")
         path = parent_dir
+
+
+def join_src_dir(*args):
+    return os.path.join(get_src_dir(), *args)
 
 
 def _inline_file(location, _globals, _locals):
@@ -46,4 +50,4 @@ def inline_module(module_name, _globals, _locals):
 def inline_file_from_src(location, _globals, _locals):
     """Locates src/ dir and inlines relative file by executing it using passed
     scopes."""
-    _inline_file(os.path.join(_find_src_dir(), location), _globals, _locals)
+    _inline_file(join_src_dir(location), _globals, _locals)

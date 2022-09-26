@@ -1,0 +1,25 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+domain Page
+  experimental type PermissionsPolicyFeature extends string
+    enum
+      ethereum
+      solana
+
+  # Generates a Page Graph report for the page.
+  experimental command generatePageGraph
+    returns
+      # Generated page graph GraphML.
+      string data
+
+  # Generates a report from a node's Page Graph info.
+  experimental command generatePageGraphNodeReport
+    parameters
+      # Id of the element to report on.
+      DOM.NodeId nodeId
+    returns
+      # Generated report lines
+      array of string report
