@@ -492,6 +492,7 @@
   <message name="IDS_BRAVE_WALLET_ASSET_FILTER_NFTS" desc="Aseet Filter Selector NFTs">NFTs</message>
   <message name="IDS_BRAVE_WALLET_ASSET_FILTER_LOW_TO_HIGH" desc="Aseet Filter Selector Low to High">Balance ↑</message>
   <message name="IDS_BRAVE_WALLET_ASSET_FILTER_HIGHT_TO_LOW" desc="Aseet Filter Selector High to Low">Balance ↓</message>
+  <message name="IDS_BRAVE_WALLET_ACCOUNT_FILTER_ALL_ACCOUNTS" desc="Account Filter Selector All Accounts">All Accounts</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SUBMITTED_TITLE" desc="Transaction submitted title">Transaction submitted</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SUBMITTED_DESCRIPTION" desc="Transaction submitted description">Transaction has been successfully sent to the network and awaits confirmation.</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_HEADER_TITLE" desc="Transaction failed header title"><ph name="VALUE">$1<ex>1 ETH</ex></ph> was returned to your wallet</message>

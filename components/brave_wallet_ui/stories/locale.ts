@@ -652,6 +652,9 @@ provideStrings({
   braveWalletAssetFilterLowToHigh: 'Balance ↑',
   braveWalletAssetFilterHighToLow: 'Balance ↓',
 
+  // Account Filter
+  braveWalletAccountFilterAllAccounts: 'All Accounts',
+
   // Transaction post-confirmation
 
   // Submitted

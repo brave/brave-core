@@ -23,6 +23,7 @@ import { getLocale } from '../../../../../../../common/locale'
 import SearchBar from '../../../../../shared/search-bar/index'
 import AddButton from '../../../../add-button/index'
 import NetworkFilterSelector from '../../../../network-filter-selector/index'
+import { AccountFilterSelector } from '../../../../account-filter-selector/account-filter-selector'
 import { AssetFilterSelector } from '../../../../asset-filter-selector/asset-filter-selector'
 import { NFTGridView } from '../nft-grid-view/nft-grid-view'
 
@@ -45,6 +46,7 @@ interface Props {
   renderToken: RenderTokenFunc
   hideAddButton?: boolean
   hideAssetFilter?: boolean
+  hideAccountFilter?: boolean
   enableScroll?: boolean
   maxListHeight?: string
   estimatedItemSize: number
@@ -58,6 +60,7 @@ export const TokenLists = ({
   enableScroll,
   maxListHeight,
   hideAssetFilter,
+  hideAccountFilter,
   estimatedItemSize = 58
 }: Props) => {
   // routing
@@ -197,6 +200,10 @@ export const TokenLists = ({
 
         {!hideAssetFilter &&
           <AssetFilterSelector />
+        }
+
+        {!hideAccountFilter &&
+          <AccountFilterSelector />
         }
 
       </FilterTokenRow>

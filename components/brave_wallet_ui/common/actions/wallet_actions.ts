@@ -134,6 +134,7 @@ export const getCoinMarkets = createAction<GetCoinMarketPayload>('getCoinMarkets
 export const setCoinMarkets = createAction<GetCoinMarketsResponse>('setCoinMarkets')
 export const setSelectedNetworkFilter = createAction<BraveWallet.NetworkInfo>('setSelectedNetworkFilter')
 export const setSelectedAssetFilterItem = createAction<AssetFilterOption>('setSelectedAssetFilterItem')
+export const setSelectedAccountFilterItem = createAction<WalletAccountType>('setSelectedAccountFilterItem')
 export const setDefaultAccounts = createAction<BraveWallet.AccountInfo[]>('setDefaultAccounts')
 export const setShowTestNetworks = createAction<boolean>('setShowTestNetworks')
 export const addAccount = createAction<AddAccountPayloadType>('addAccount')

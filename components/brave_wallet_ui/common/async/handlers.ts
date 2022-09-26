@@ -659,6 +659,12 @@ handler.on(WalletActions.setSelectedNetworkFilter.getType(), async (store: Store
   await store.dispatch(refreshTokenPriceHistory(selectedPortfolioTimeline))
 })
 
+handler.on(WalletActions.setSelectedAccountFilterItem.getType(), async (store: Store, payload: BraveWallet.NetworkInfo) => {
+  const state = getWalletState(store)
+  const { selectedPortfolioTimeline } = state
+  await store.dispatch(refreshTokenPriceHistory(selectedPortfolioTimeline))
+})
+
 handler.on(WalletActions.addAccount.getType(), async (_store: Store, payload: AddAccountPayloadType) => {
   const { keyringService } = getAPIProxy()
   const result = await keyringService.addAccount(payload.accountName, payload.coin)

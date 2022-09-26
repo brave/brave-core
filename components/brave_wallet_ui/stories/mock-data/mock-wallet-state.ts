@@ -9,6 +9,7 @@ import { LAMPORTS_PER_SOL } from '@solana/web3.js'
 import { BraveWallet, WalletAccountType, WalletState } from '../../constants/types'
 import { AllNetworksOption } from '../../options/network-filter-options'
 import { AllAssetsFilterOption } from '../../options/asset-filter-options'
+import { AllAccountsOption } from '../../options/account-filter-options'
 
 // mocks
 import { mockNetwork } from '../../common/constants/mocks'
@@ -367,6 +368,7 @@ export const mockWalletState: WalletState = {
   selectedCoin: BraveWallet.CoinType.ETH,
   selectedNetworkFilter: AllNetworksOption,
   selectedAssetFilter: AllAssetsFilterOption,
+  selectedAccountFilter: AllAccountsOption,
   defaultAccounts: [
     {
       address: mockAccount.address,
