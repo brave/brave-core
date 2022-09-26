@@ -693,6 +693,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_ASSET_FILTER_LOW_TO_HIGH},
     {"braveWalletAssetFilterHighToLow",
      IDS_BRAVE_WALLET_ASSET_FILTER_HIGHT_TO_LOW},
+    {"braveWalletAccountFilterAllAccounts",
+     IDS_BRAVE_WALLET_ACCOUNT_FILTER_ALL_ACCOUNTS},
     {"braveWalletTransactionSubmittedTitle",
      IDS_BRAVE_WALLET_TRANSACTION_SUBMITTED_TITLE},
     {"braveWalletTransactionSubmittedDescription",
