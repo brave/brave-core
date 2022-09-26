@@ -71,7 +71,7 @@ TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
 
   std::string expected_params(R"(
     {
-      "feeAccount": "6qzJdco58Q4VN76mX4c6rjkRSsvpaBz6wsnJxW4uWswC",
+      "feeAccount": "9ogHW3wZ4unrLhQJNWnRsoggsV27QURAnb6iDptmg46j",
       "route": {
         "inAmount": 10000,
         "outAmount": 261273,

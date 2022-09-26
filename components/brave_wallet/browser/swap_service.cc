@@ -107,8 +107,12 @@ GURL AppendJupiterQuoteParams(
   url = net::AppendQueryParameter(url, "feeBps",
                                   brave_wallet::SwapService::GetFee(chain_id));
   url = net::AppendQueryParameter(
-      url, "slippagePercentage",
-      base::StringPrintf("%.6f", params.slippage_percentage));
+      url, "slippage", base::StringPrintf("%.6f", params.slippage_percentage));
+
+  // Indirect routes requires multiple transactions to complete the swap,
+  // which must be confirmed sequentially. We currently use direct routes only
+  // until there's a reliable way to get around this UX issue.
+  url = net::AppendQueryParameter(url, "onlyDirectRoutes", "true");
   return url;
 }
 
