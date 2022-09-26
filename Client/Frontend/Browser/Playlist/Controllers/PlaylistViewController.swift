@@ -381,6 +381,8 @@ class PlaylistViewController: UIViewController {
           videoDomain: item.pageSrc,
           videoTitle: item.pageTitle)
       }
+      
+      self.highlightActiveItem()
     }.store(in: &playerStateObservers)
 
     player.publisher(for: .pause).sink { [weak self] event in
@@ -752,6 +754,8 @@ extension PlaylistViewController: VideoViewDelegate {
 
     if index >= 0 {
       let indexPath = IndexPath(row: index, section: 0)
+      
+      highlightActiveItem()
       listController.prepareToPlayItem(at: indexPath) { [weak self] item in
         guard let self = self,
           let item = item
@@ -881,6 +885,15 @@ extension PlaylistViewController: VideoViewDelegate {
     }
   }
 
+  func highlightActiveItem() {
+    let activeItemIndex = PlaylistCarplayManager.shared.currentlyPlayingItemIndex
+    
+    listController.tableView.selectRow(
+      at: IndexPath(row: activeItemIndex, section: 0),
+      animated: false,
+      scrollPosition: .none)
+  }
+  
   func setPlaybackRate(_ videoView: VideoView, rate: Float) {
     player.setPlaybackRate(rate: rate)
   }
