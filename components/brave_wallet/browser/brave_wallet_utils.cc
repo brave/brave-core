@@ -485,18 +485,6 @@ const base::flat_map<std::string, std::string>
 constexpr const char kEnsRegistryContractAddress[] =
     "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e";
 
-GURL GetInfuraURLForKnownChainId(const std::string& chain_id) {
-  auto endpoint = brave_wallet::GetInfuraEndpointForKnownChainId(chain_id);
-  if (!endpoint.empty())
-    return GURL(endpoint);
-
-  auto subdomain = brave_wallet::GetInfuraSubdomainForKnownChainId(chain_id);
-  if (subdomain.empty())
-    return GURL();
-  return GURL(
-      base::StringPrintf("https://%s-infura.brave.com/", subdomain.c_str()));
-}
-
 const base::Value::List* GetCustomNetworksList(PrefService* prefs,
                                                mojom::CoinType coin) {
   const base::Value* custom_networks =
@@ -623,6 +611,18 @@ mojom::NetworkInfoPtr GetChain(PrefService* prefs,
   }
 
   return nullptr;
+}
+
+GURL GetInfuraURLForKnownChainId(const std::string& chain_id) {
+  auto endpoint = brave_wallet::GetInfuraEndpointForKnownChainId(chain_id);
+  if (!endpoint.empty())
+    return GURL(endpoint);
+
+  auto subdomain = brave_wallet::GetInfuraSubdomainForKnownChainId(chain_id);
+  if (subdomain.empty())
+    return GURL();
+  return GURL(
+      base::StringPrintf("https://%s-infura.brave.com/", subdomain.c_str()));
 }
 
 std::string GetInfuraEndpointForKnownChainId(const std::string& chain_id) {

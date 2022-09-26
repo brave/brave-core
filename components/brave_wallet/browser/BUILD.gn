@@ -53,6 +53,8 @@ static_library("browser") {
     "eth_requests.h",
     "eth_response_parser.cc",
     "eth_response_parser.h",
+    "eth_topics_builder.cc",
+    "eth_topics_builder.h",
     "eth_tx_manager.cc",
     "eth_tx_manager.h",
     "eth_tx_meta.cc",

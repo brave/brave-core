@@ -75,6 +75,14 @@ absl::optional<base::Value::Dict> ParseResultDict(const std::string& json) {
   return std::move(result->GetDict());
 }
 
+absl::optional<base::Value::List> ParseResultList(const std::string& json) {
+  auto result = ParseResultValue(json);
+  if (!result || !result->is_list())
+    return absl::nullopt;
+
+  return std::move(result->GetList());
+}
+
 bool ParseBoolResult(const std::string& json, bool* value) {
   DCHECK(value);
 
