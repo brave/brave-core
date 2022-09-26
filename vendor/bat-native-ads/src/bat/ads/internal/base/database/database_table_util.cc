@@ -50,8 +50,8 @@ void CreateTableIndex(mojom::DBTransactionInfo* transaction,
   DCHECK(!key.empty());
 
   const std::string query = base::StringPrintf(
-      "CREATE INDEX %s_%s_index ON %s (%s)", table_name.c_str(), key.c_str(),
-      table_name.c_str(), key.c_str());
+      "CREATE INDEX IF NOT EXISTS %s_%s_index ON %s (%s)", table_name.c_str(),
+      key.c_str(), table_name.c_str(), key.c_str());
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;

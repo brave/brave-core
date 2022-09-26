@@ -291,7 +291,7 @@ void Transactions::MigrateToV18(mojom::DBTransactionInfo* transaction) {
   DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
-      "CREATE TABLE transactions "
+      "CREATE TABLE IF NOT EXISTS transactions "
       "(id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE, "
       "created_at TIMESTAMP NOT NULL, "
       "creative_instance_id TEXT, "
