@@ -18,10 +18,6 @@
 		279A9BCE2823370100F40FC6 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 279A9BCD2823370100F40FC6 /* SDWebImage */; };
 		279C432E2853E51E00A9F708 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 279C432D2853E51E00A9F708 /* DesignSystem */; };
 		27AAA115283D2BC6004C9B5E /* BraveWidgetsModels in Frameworks */ = {isa = PBXBuildFile; productRef = 27AAA114283D2BC6004C9B5E /* BraveWidgetsModels */; };
-		27AD20C326851C5400889AA7 /* BraveCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27AD20C226851C5400889AA7 /* BraveCore.xcframework */; };
-		27AD20C426851C5400889AA7 /* BraveCore.xcframework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 27AD20C226851C5400889AA7 /* BraveCore.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		27B68DF025C48F39002D0826 /* MaterialComponents.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B68DD625C48EE9002D0826 /* MaterialComponents.xcframework */; };
-		27B68DF125C48F39002D0826 /* MaterialComponents.xcframework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 27B68DD625C48EE9002D0826 /* MaterialComponents.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		27BEDCCC28AD37CE0073425E /* BraveWidgets.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = CA0391E5271E1382000EB13C /* BraveWidgets.intentdefinition */; settings = {ATTRIBUTES = (no_codegen, ); }; };
 		27D6761A282DA10700BCE16E /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27D67619282DA10700BCE16E /* Icons.xcassets */; };
 		27D67623282DAD3700BCE16E /* BrowserIntents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 27D67621282DAD3700BCE16E /* BrowserIntents.intentdefinition */; settings = {ATTRIBUTES = (no_codegen, ); }; };
@@ -88,18 +84,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		E6B09CD31C74EEDB00C63FA1 /* Copy Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				27B68DF125C48F39002D0826 /* MaterialComponents.xcframework in Copy Frameworks */,
-				27AD20C426851C5400889AA7 /* BraveCore.xcframework in Copy Frameworks */,
-			);
-			name = "Copy Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		F84B22531A0920C600AAB793 /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -346,7 +330,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				27B68DF025C48F39002D0826 /* MaterialComponents.xcframework in Frameworks */,
 				270ECFC82838210F0089B8B7 /* Brave in Frameworks */,
 				279A9BCC2823370100F40FC6 /* SwiftKeychainWrapper in Frameworks */,
 				27FA218B2837FB0100FA2C45 /* Storage in Frameworks */,
@@ -357,7 +340,6 @@
 				5EE5918123A290E000E8E8DE /* CoreNFC.framework in Frameworks */,
 				279A9BCE2823370100F40FC6 /* SDWebImage in Frameworks */,
 				5E8CD8E123D5E3DA00548FC0 /* libarchive.2.tbd in Frameworks */,
-				27AD20C326851C5400889AA7 /* BraveCore.xcframework in Frameworks */,
 				E6231C051B90A472005ABB0D /* libxml2.2.tbd in Frameworks */,
 				E6231C011B90A44F005ABB0D /* libz.tbd in Frameworks */,
 				27D972E628BD4D9900DDCF79 /* BraveNews in Frameworks */,
@@ -747,7 +729,6 @@
 				F84B21BC1A090F8100AAB793 /* Resources */,
 				28CE83DE1A1D1E7C00576538 /* Frameworks */,
 				F84B22531A0920C600AAB793 /* Embed App Extensions */,
-				E6B09CD31C74EEDB00C63FA1 /* Copy Frameworks */,
 				27C2856425D5CDEF00429881 /* Fix MaterialComponents Info.plist */,
 				272FC6BF25DC19A0000F2EFC /* Fix Embedded Frameworks Signing */,
 			);

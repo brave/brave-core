@@ -58,6 +58,7 @@ let package = Package(
         "Shared",
         "BraveWallet",
         "BraveCore",
+        "MaterialComponents",
         "BraveUI",
         "DesignSystem",
         "Data",
@@ -201,6 +202,7 @@ let package = Package(
       name: "Shared",
       dependencies: [
         "BraveCore",
+        "MaterialComponents",
         "Strings",
         "SDWebImage",
         "SwiftKeychainWrapper",
@@ -269,6 +271,7 @@ let package = Package(
       dependencies: [
         "Data",
         "BraveCore",
+        "MaterialComponents",
         "BraveShared",
         "BraveUI",
         "DesignSystem",
@@ -325,6 +328,7 @@ let package = Package(
         "DesignSystem",
         "CodableHelpers",
         "BraveCore",
+        "MaterialComponents",
         "Static",
         "FeedKit",
         "Fuzi",
