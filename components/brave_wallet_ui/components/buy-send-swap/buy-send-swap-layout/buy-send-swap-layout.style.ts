@@ -52,12 +52,17 @@ export const ButtonRow = styled.div`
   justify-content: center;
   position: relative;
   top: 2px;
+  & > * {
+    min-width: 33.33%;
+  }
 `
 
 export const TabButton = styled(WalletButton) <Partial<StyleProps>>`
   flex: 1;
   display: flex;
+  width: 100%;
   height: 100%;
+  min-height: 40px;
   align-items: center;
   justify-content: center;
   cursor: ${(p) => p.isDisabled ? 'default' : 'pointer'};

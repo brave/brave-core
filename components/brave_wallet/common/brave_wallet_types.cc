@@ -9,6 +9,22 @@
 
 namespace brave_wallet {
 
+Log::Log() = default;
+Log::~Log() = default;
+Log::Log(const Log&) = default;
+
+bool Log::operator==(const Log& log) const {
+  return address == log.address && block_hash == log.block_hash &&
+         block_number == log.block_number && data == log.data &&
+         log_index == log.log_index && removed == log.removed &&
+         topics == log.topics && transaction_hash == log.transaction_hash &&
+         transaction_index == log.transaction_index;
+}
+
+bool Log::operator!=(const Log& log) const {
+  return !operator==(log);
+}
+
 TransactionReceipt::TransactionReceipt() = default;
 TransactionReceipt::~TransactionReceipt() = default;
 TransactionReceipt::TransactionReceipt(const TransactionReceipt&) = default;
@@ -23,7 +39,8 @@ bool TransactionReceipt::operator==(
          cumulative_gas_used == tx_receipt.cumulative_gas_used &&
          gas_used == tx_receipt.gas_used &&
          contract_address == tx_receipt.contract_address &&
-         logs_bloom == tx_receipt.logs_bloom && status == tx_receipt.status;
+         logs_bloom == tx_receipt.logs_bloom && status == tx_receipt.status &&
+         logs == tx_receipt.logs;
 }
 
 bool TransactionReceipt::operator!=(

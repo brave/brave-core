@@ -25,6 +25,7 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser/eth_nonce_tracker_unittest.cc",
     "//brave/components/brave_wallet/browser/eth_requests_unittest.cc",
     "//brave/components/brave_wallet/browser/eth_response_parser_unittest.cc",
+    "//brave/components/brave_wallet/browser/eth_topics_builder_unittest.cc",
     "//brave/components/brave_wallet/browser/eth_transaction_unittest.cc",
     "//brave/components/brave_wallet/browser/eth_tx_manager_unittest.cc",
     "//brave/components/brave_wallet/browser/eth_tx_meta_unittest.cc",

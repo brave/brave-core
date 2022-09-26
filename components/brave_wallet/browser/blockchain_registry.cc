@@ -38,6 +38,12 @@ void BlockchainRegistry::UpdateTokenList(TokenListMap token_list_map) {
   token_list_map_ = std::move(token_list_map);
 }
 
+void BlockchainRegistry::UpdateTokenList(
+    const std::string key,
+    std::vector<mojom::BlockchainTokenPtr> list) {
+  token_list_map_[key] = std::move(list);
+}
+
 void BlockchainRegistry::UpdateChainList(ChainList chains) {
   chain_list_ = std::move(chains);
 }

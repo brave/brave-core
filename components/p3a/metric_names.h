@@ -53,6 +53,8 @@ constexpr inline auto kCollectedHistograms =
     "Brave.Search.SwitchEngine",
     "Brave.Search.WebDiscoveryEnabled",
     "Brave.Shields.AdBlockSetting",
+    "Brave.Shields.CookieListEnabled",
+    "Brave.Shields.CookieListPrompt",
     "Brave.Shields.DomainAdsSettingsAboveGlobal",
     "Brave.Shields.DomainAdsSettingsBelowGlobal",
     "Brave.Shields.DomainFingerprintSettingsAboveGlobal",

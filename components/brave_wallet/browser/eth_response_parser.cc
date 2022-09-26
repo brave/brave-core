@@ -262,6 +262,96 @@ bool ParseEthGasPrice(const std::string& json, std::string* result) {
   return ParseSingleStringResult(json, result);
 }
 
+bool ParseEthGetLogs(const std::string& json, std::vector<Log>* logs) {
+  DCHECK(logs);
+  auto result = ParseResultList(json);
+  if (!result)
+    return false;
+
+  DCHECK(result);
+
+  for (const auto& logs_list_it : *result) {
+    Log log;
+    const auto* log_dict = logs_list_it.GetIfDict();
+    if (!log_dict) {
+      return false;
+    }
+
+    const std::string* address = log_dict->FindString("address");
+    if (!address) {
+      return false;
+    }
+    log.address = *address;
+
+    const std::string* block_hash = log_dict->FindString("blockHash");
+    if (!block_hash) {
+      return false;
+    }
+    log.block_hash = *block_hash;
+
+    const std::string* block_number = log_dict->FindString("blockNumber");
+    if (!block_number) {
+      return false;
+    }
+    uint256_t block_number_int = 0;
+    if (!HexValueToUint256(*block_number, &block_number_int))
+      return false;
+    log.block_number = block_number_int;
+
+    const std::string* data = log_dict->FindString("data");
+    if (!data) {
+      return false;
+    }
+    log.data = *data;
+
+    const std::string* log_index = log_dict->FindString("logIndex");
+    if (!log_index) {
+      return false;
+    }
+    uint32_t log_index_int = 0;
+    if (!base::HexStringToUInt(*log_index, &log_index_int))
+      return false;
+    log.log_index = log_index_int;
+
+    absl::optional<bool> removed = log_dict->FindBool("removed");
+    if (!removed.has_value())
+      return false;
+    log.removed = removed.value_or(false);
+
+    const std::string* transaction_hash =
+        log_dict->FindString("transactionHash");
+    if (!transaction_hash) {
+      return false;
+    }
+    log.transaction_hash = *transaction_hash;
+
+    const std::string* transaction_index =
+        log_dict->FindString("transactionIndex");
+    if (!transaction_index) {
+      return false;
+    }
+    uint32_t transaction_index_int = 0;
+    if (!base::HexStringToUInt(*transaction_index, &transaction_index_int))
+      return false;
+    log.transaction_index = transaction_index_int;
+
+    std::vector<std::string> topics;
+    const auto* topics_list = log_dict->FindList("topics");
+    if (!topics_list) {
+      return false;
+    }
+    for (const auto& entry : *topics_list) {
+      if (!entry.is_string())
+        continue;
+      topics.push_back(entry.GetString());
+    }
+    log.topics = topics;
+    logs->push_back(log);
+  }
+
+  return true;
+}
+
 bool ParseEnsResolverContentHash(const std::string& json,
                                  std::vector<uint8_t>* content_hash) {
   content_hash->clear();
