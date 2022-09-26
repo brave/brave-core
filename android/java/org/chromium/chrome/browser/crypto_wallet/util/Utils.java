@@ -1609,15 +1609,12 @@ public class Utils {
         return result;
     }
 
-    public static boolean allowBuyAndSwap(String chainId) {
-        switch (chainId) {
-            case BraveWalletConstants.MAINNET_CHAIN_ID:
-                return true;
-            default:
-                break;
-        }
+    public static boolean allowBuy(String chainId) {
+        return WalletConstants.BUY_SUPPORTED_NETWORKS.contains(chainId);
+    }
 
-        return false;
+    public static boolean allowSwap(String chainId) {
+        return WalletConstants.SWAP_SUPPORTED_NETWORKS.contains(chainId);
     }
 
     public static double parseDouble(String s) throws ParseException {

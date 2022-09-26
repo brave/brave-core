@@ -1512,7 +1512,8 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                     mNetworks = mActivityType != ActivityType.SEND
                             ? mWalletModel.getCryptoModel()
                                       .getNetworkModel()
-                                      .stripNoBuySwapNetworks(chainAllNetworksAllNetwork.third)
+                                      .stripNoBuySwapNetworks(
+                                              chainAllNetworksAllNetwork.third, mActivityType)
                             : chainAllNetworksAllNetwork.third;
 
                     mNetworkAdapter.setNetworks(mNetworks);

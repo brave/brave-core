@@ -14,6 +14,7 @@ import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.JsonRpcServiceObserver;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
+import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkResponsesCollector;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -214,10 +215,13 @@ public class NetworkModel implements JsonRpcServiceObserver {
         _mNeedToCreateAccountForNetwork.postValue(null);
     }
 
-    public NetworkInfo[] stripNoBuySwapNetworks(NetworkInfo[] networkInfos) {
+    public NetworkInfo[] stripNoBuySwapNetworks(
+            NetworkInfo[] networkInfos, BuySendSwapActivity.ActivityType type) {
         List<NetworkInfo> networkInfosFiltered = new ArrayList<>();
         for (NetworkInfo networkInfo : networkInfos) {
-            if (Utils.allowBuyAndSwap(networkInfo.chainId)) {
+            if (type == BuySendSwapActivity.ActivityType.BUY && Utils.allowBuy(networkInfo.chainId)
+                    || (type == BuySendSwapActivity.ActivityType.SWAP
+                            && Utils.allowSwap(networkInfo.chainId))) {
                 networkInfosFiltered.add(networkInfo);
             }
         }

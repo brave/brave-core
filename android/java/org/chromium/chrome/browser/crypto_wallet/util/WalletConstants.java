@@ -55,4 +55,7 @@ public final class WalletConstants {
     //            support */ BraveWalletConstants.FANTOM_MAINNET_CHAIN_ID, /* not yet supported */
     //            BraveWalletConstants.SOLANA_MAINNET, /* not yet supported */
     //            BraveWalletConstants.FILECOIN_MAINNET); , /* not yet supported */
+
+    public static List<String> SWAP_SUPPORTED_NETWORKS = Arrays.asList(
+            BraveWalletConstants.MAINNET_CHAIN_ID, BraveWalletConstants.ROPSTEN_CHAIN_ID);
 }

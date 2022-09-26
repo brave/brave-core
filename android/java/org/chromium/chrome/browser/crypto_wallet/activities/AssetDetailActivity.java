@@ -444,13 +444,16 @@ public class AssetDetailActivity
     }
 
     private void adjustButtonsVisibilities() {
-        if (Utils.allowBuyAndSwap(mChainId)) {
+        if (Utils.allowBuy(mChainId)) {
             mBtnBuy.setVisibility(View.VISIBLE);
+        } else {
+            mBtnBuy.setVisibility(View.GONE);
+        }
+        if (Utils.allowSwap(mChainId)) {
             if (!AssetUtils.isAuroraAddress(mContractAddress, mChainId)) {
                 mBtnSwap.setVisibility(View.VISIBLE);
             }
         } else {
-            mBtnBuy.setVisibility(View.GONE);
             mBtnSwap.setVisibility(View.GONE);
         }
     }
