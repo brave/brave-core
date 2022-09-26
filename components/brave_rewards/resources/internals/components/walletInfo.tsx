@@ -42,11 +42,11 @@ export const WalletInfo = (props: Props) => {
     <>
       <h3>{getLocale('walletInfo')}</h3>
       {
-        info.bootStamp === 0
-        ? <div>
-          {getLocale('walletNotCreated')}
-        </div>
-        : getInfo(props.state)
+        info.bootStamp
+          ? getInfo(props.state)
+          : <div>
+            {getLocale('walletNotCreated')}
+          </div>
       }
 
     </>
