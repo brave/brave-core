@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/events/event_target.cc b/third_party/blink/renderer/core/dom/events/event_target.cc
-index af75276bc27efeb8ec32fa98cdb613bb92c43c7a..d03b096ab9f673aa7d7999d5065460e2678da0e1 100644
+index af75276bc27efeb8ec32fa98cdb613bb92c43c7a..377f672c7882a58c3b2a3645f7cd9d9d3e6505cc 100644
 --- a/third_party/blink/renderer/core/dom/events/event_target.cc
 +++ b/third_party/blink/renderer/core/dom/events/event_target.cc
 @@ -469,6 +469,7 @@ bool EventTarget::AddEventListenerInternal(
@@ -18,11 +18,3 @@ index af75276bc27efeb8ec32fa98cdb613bb92c43c7a..d03b096ab9f673aa7d7999d5065460e2
  
    // Notify firing events planning to invoke the listener at 'index' that
    // they have one less listener to invoke.
-@@ -656,6 +658,7 @@ bool EventTarget::SetAttributeEventListener(const AtomicString& event_type,
-       listener->async_task_context()->Schedule(GetExecutionContext(),
-                                                event_type);
-     }
-+    BRAVE_EVENT_TARGET_SET_ATTRIBUTE_EVENT_LISTENER
-     registered_listener->SetCallback(listener);
-     return true;
-   }
