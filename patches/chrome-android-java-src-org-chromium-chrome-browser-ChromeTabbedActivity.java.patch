@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
+index 419cbde4e1cdf431d3035b3c6ba2bbde955350cc..0122db0889699c77d85183313c39df95e367fec8 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
+@@ -1041,7 +1041,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+                                     this, getModalDialogManager()));
+             NotificationPermissionController.attach(
+                     getWindowAndroid(), mNotificationPermissionController);
+-            mNotificationPermissionController.requestPermissionIfNeeded(false /* contextual */);
++            if(false) mNotificationPermissionController.requestPermissionIfNeeded(false /* contextual */);
+             if (BackPressManager.isEnabled()) initializeBackPressHandlers();
+         }
+     }
