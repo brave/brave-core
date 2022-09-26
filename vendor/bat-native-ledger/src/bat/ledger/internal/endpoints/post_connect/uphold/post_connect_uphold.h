@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_REQUEST_POST_CONNECT_UPHOLD_POST_CONNECT_UPHOLD_H_
-#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_REQUEST_POST_CONNECT_UPHOLD_POST_CONNECT_UPHOLD_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINTS_POST_CONNECT_UPHOLD_POST_CONNECT_UPHOLD_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINTS_POST_CONNECT_UPHOLD_POST_CONNECT_UPHOLD_H_
 
 #include <string>
 #include <vector>
 
-#include "bat/ledger/internal/request/post_connect/post_connect.h"
+#include "bat/ledger/internal/endpoints/post_connect/post_connect.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 // POST /v3/wallet/uphold/{rewards_payment_id}/claim
@@ -38,20 +38,12 @@
 //
 // clang-format on
 //
-// Success code:
-// HTTP_OK (200)
-//
-// Error codes:
-// HTTP_BAD_REQUEST (400)
-// HTTP_FORBIDDEN (403)
-// HTTP_NOT_FOUND (404)
-// HTTP_CONFLICT (409)
-// HTTP_INTERNAL_SERVER_ERROR (500)
+// Response body: -
 
 namespace ledger {
 class LedgerImpl;
 
-namespace request::connect {
+namespace endpoints {
 
 class PostConnectUphold final : public PostConnect {
  public:
@@ -60,14 +52,15 @@ class PostConnectUphold final : public PostConnect {
 
  private:
   absl::optional<std::string> Content() const override;
-  absl::optional<std::vector<std::string>> Headers() const override;
+  absl::optional<std::vector<std::string>> Headers(
+      const std::string& content) const override;
 
   const char* Path() const override;
 
   std::string address_;
 };
 
-}  // namespace request::connect
+}  // namespace endpoints
 }  // namespace ledger
 
-#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_REQUEST_POST_CONNECT_UPHOLD_POST_CONNECT_UPHOLD_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINTS_POST_CONNECT_UPHOLD_POST_CONNECT_UPHOLD_H_

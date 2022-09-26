@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_REQUEST_REQUEST_BUILDER_H_
-#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_REQUEST_REQUEST_BUILDER_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINTS_REQUEST_BUILDER_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINTS_REQUEST_BUILDER_H_
 
 #include <string>
 #include <vector>
@@ -15,10 +15,12 @@
 namespace ledger {
 class LedgerImpl;
 
-namespace request {
+namespace endpoints {
 
 class RequestBuilder {
  public:
+  static constexpr char kApplicationJson[] = "application/json; charset=utf-8";
+
   virtual ~RequestBuilder();
 
   absl::optional<mojom::UrlRequestPtr> Request() const;
@@ -30,7 +32,8 @@ class RequestBuilder {
 
   virtual mojom::UrlMethod Method() const;
 
-  virtual absl::optional<std::vector<std::string>> Headers() const;
+  virtual absl::optional<std::vector<std::string>> Headers(
+      const std::string& content) const;
 
   virtual absl::optional<std::string> Content() const;
 
@@ -43,7 +46,7 @@ class RequestBuilder {
   LedgerImpl* ledger_;  // NOT OWNED
 };
 
-}  // namespace request
+}  // namespace endpoints
 }  // namespace ledger
 
-#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_REQUEST_REQUEST_BUILDER_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINTS_REQUEST_BUILDER_H_

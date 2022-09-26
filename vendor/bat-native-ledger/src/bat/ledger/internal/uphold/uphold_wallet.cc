@@ -10,17 +10,18 @@
 
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/common/random_util.h"
+#include "bat/ledger/internal/endpoints/post_connect/uphold/post_connect_uphold.h"
+#include "bat/ledger/internal/endpoints/request_for.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/logging/event_log_util.h"
 #include "bat/ledger/internal/notifications/notification_keys.h"
-#include "bat/ledger/internal/request/post_connect/uphold/post_connect_uphold.h"
-#include "bat/ledger/internal/request/request_for.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "bat/ledger/internal/wallet/wallet_util.h"
 
-using ledger::request::RequestFor;
-using ledger::request::connect::PostConnectUphold;
+using ledger::endpoints::PostConnect;
+using ledger::endpoints::PostConnectUphold;
+using ledger::endpoints::RequestFor;
 using ledger::uphold::Capabilities;
 using ledger::wallet::OnWalletStatusChange;
 
@@ -213,16 +214,15 @@ void UpholdWallet::OnCreateCard(ledger::ResultCallback callback,
       base::BindOnce(&UpholdWallet::OnConnectWallet, base::Unretained(this),
                      std::move(callback), id);
 
-  if (RequestFor<PostConnectUphold> request{ledger_, std::move(id)}) {
-    std::move(request).Send(std::move(on_connect));
-  } else {
-    std::move(on_connect).Run(mojom::Result::LEDGER_ERROR);
-  }
+  RequestFor<PostConnectUphold>(ledger_, std::move(id))
+      .Send(std::move(on_connect));
 }
 
 void UpholdWallet::OnConnectWallet(ledger::ResultCallback callback,
                                    std::string&& id,
-                                   mojom::Result result) const {
+                                   PostConnect::Result&& result) const {
+  const auto legacy_result = PostConnect::ToLegacyResult(result);
+
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");
@@ -237,7 +237,7 @@ void UpholdWallet::OnConnectWallet(ledger::ResultCallback callback,
   DCHECK(!id.empty());
   const std::string abbreviated_address = id.substr(0, 5);
 
-  switch (result) {
+  switch (legacy_result) {
     case mojom::Result::DEVICE_LIMIT_REACHED:
     case mojom::Result::MISMATCHED_PROVIDER_ACCOUNTS:
     case mojom::Result::NOT_FOUND:  // KYC required
@@ -248,11 +248,11 @@ void UpholdWallet::OnConnectWallet(ledger::ResultCallback callback,
       // Entering NOT_CONNECTED.
       ledger_->uphold()->DisconnectWallet("");
       ledger_->database()->SaveEventLog(
-          log::GetEventLogKeyForLinkingResult(result),
+          log::GetEventLogKeyForLinkingResult(legacy_result),
           constant::kWalletUphold + std::string("/") + abbreviated_address);
-      return std::move(callback).Run(result);
+      return std::move(callback).Run(legacy_result);
     default:
-      if (result != mojom::Result::LEDGER_OK) {
+      if (legacy_result != mojom::Result::LEDGER_OK) {
         BLOG(0, "Couldn't claim wallet!");
         return std::move(callback).Run(mojom::Result::CONTINUE);
       }

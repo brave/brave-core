@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
+#include "bat/ledger/internal/endpoints/post_connect/post_connect.h"
 #include "bat/ledger/ledger.h"
 
 namespace ledger {
@@ -40,7 +41,7 @@ class BitflyerAuthorization {
   void OnConnectWallet(ledger::ExternalWalletAuthorizationCallback,
                        std::string&& token,
                        std::string&& address,
-                       mojom::Result);
+                       endpoints::PostConnect::Result&&);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::BitflyerServer> bitflyer_server_;

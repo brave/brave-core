@@ -11,16 +11,17 @@
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/common/random_util.h"
 #include "bat/ledger/internal/endpoint/gemini/gemini_server.h"
+#include "bat/ledger/internal/endpoints/post_connect/gemini/post_connect_gemini.h"
+#include "bat/ledger/internal/endpoints/request_for.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/logging/event_log_util.h"
-#include "bat/ledger/internal/request/post_connect/gemini/post_connect_gemini.h"
-#include "bat/ledger/internal/request/request_for.h"
 #include "bat/ledger/internal/wallet/wallet_util.h"
 #include "crypto/sha2.h"
 
-using ledger::request::RequestFor;
-using ledger::request::connect::PostConnectGemini;
+using ledger::endpoints::PostConnect;
+using ledger::endpoints::PostConnectGemini;
+using ledger::endpoints::RequestFor;
 using ledger::wallet::OnWalletStatusChange;
 
 namespace ledger {
@@ -202,19 +203,18 @@ void GeminiAuthorization::OnPostAccount(
                                    base::Unretained(this), std::move(callback),
                                    std::move(token), recipient_id);
 
-  if (RequestFor<PostConnectGemini> request{ledger_, std::move(linking_info),
-                                            std::move(recipient_id)}) {
-    std::move(request).Send(std::move(on_connect));
-  } else {
-    std::move(on_connect).Run(mojom::Result::LEDGER_ERROR);
-  }
+  RequestFor<PostConnectGemini>(ledger_, std::move(linking_info),
+                                std::move(recipient_id))
+      .Send(std::move(on_connect));
 }
 
 void GeminiAuthorization::OnConnectWallet(
     ledger::ExternalWalletAuthorizationCallback callback,
     std::string&& token,
     std::string&& recipient_id,
-    mojom::Result result) {
+    PostConnect::Result&& result) {
+  const auto legacy_result = PostConnect::ToLegacyResult(result);
+
   auto wallet_ptr = ledger_->gemini()->GetWallet();
   if (!wallet_ptr) {
     BLOG(0, "Gemini wallet is null!");
@@ -225,7 +225,7 @@ void GeminiAuthorization::OnConnectWallet(
   DCHECK(!recipient_id.empty());
   const std::string abbreviated_address = recipient_id.substr(0, 5);
 
-  switch (result) {
+  switch (legacy_result) {
     case mojom::Result::DEVICE_LIMIT_REACHED:
     case mojom::Result::MISMATCHED_PROVIDER_ACCOUNTS:
     case mojom::Result::REQUEST_SIGNATURE_VERIFICATION_FAILURE:
@@ -233,13 +233,13 @@ void GeminiAuthorization::OnConnectWallet(
     case mojom::Result::REGION_NOT_SUPPORTED:
     case mojom::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS:
       ledger_->database()->SaveEventLog(
-          log::GetEventLogKeyForLinkingResult(result),
+          log::GetEventLogKeyForLinkingResult(legacy_result),
           constant::kWalletGemini + std::string("/") + abbreviated_address);
-      return callback(result, {});
+      return callback(legacy_result, {});
     default:
-      if (result != mojom::Result::LEDGER_OK) {
+      if (legacy_result != mojom::Result::LEDGER_OK) {
         BLOG(0, "Couldn't claim wallet!");
-        return callback(result, {});
+        return callback(legacy_result, {});
       }
   }
 

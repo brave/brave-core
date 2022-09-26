@@ -3,14 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ledger/internal/request/post_connect/gemini/post_connect_gemini.h"
+#include "bat/ledger/internal/endpoints/post_connect/gemini/post_connect_gemini.h"
 
 #include <utility>
 
 #include "base/json/json_writer.h"
 #include "bat/ledger/internal/logging/logging.h"
 
-namespace ledger::request::connect {
+namespace ledger::endpoints {
 
 PostConnectGemini::PostConnectGemini(LedgerImpl* ledger,
                                      std::string&& linking_info,
@@ -49,4 +49,4 @@ const char* PostConnectGemini::Path() const {
   return "/v3/wallet/gemini/%s/claim";
 }
 
-}  // namespace ledger::request::connect
+}  // namespace ledger::endpoints

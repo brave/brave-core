@@ -3,17 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <memory>
 #include <string>
 #include <tuple>
 #include <utility>
 
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "bat/ledger/internal/endpoints/post_connect/post_connect.h"
+#include "bat/ledger/internal/endpoints/request_for.h"
 #include "bat/ledger/internal/ledger_client_mock.h"
 #include "bat/ledger/internal/ledger_impl_mock.h"
-#include "bat/ledger/internal/request/post_connect/post_connect.h"
-#include "bat/ledger/internal/request/request_for.h"
 #include "bat/ledger/internal/state/state_keys.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -27,9 +26,11 @@ using ::testing::TestParamInfo;
 using ::testing::TestWithParam;
 using ::testing::Values;
 
-namespace ledger::request::connect::test {
+namespace ledger::endpoints::test {
+using Error = PostConnect::Error;
+using Result = PostConnect::Result;
 
-class PostConnectMock final : public request::PostConnect {
+class PostConnectMock final : public PostConnect {
  public:
   explicit PostConnectMock(LedgerImpl* ledger) : PostConnect(ledger) {}
   ~PostConnectMock() override = default;
@@ -43,7 +44,7 @@ using PostConnectParamType = std::tuple<
     std::string,          // test name suffix
     net::HttpStatusCode,  // connect endpoint response status code
     std::string,          // connect endpoint response body
-    mojom::Result          // expected result
+    Result                // expected result
 >;
 // clang-format on
 
@@ -65,10 +66,10 @@ class PostConnect : public TestWithParam<PostConnectParamType> {
   void SetUp() override {
     const std::string wallet =
         R"(
-         {
-           "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
-           "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
-         }
+          {
+            "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
+            "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
+          }
         )";
 
     ON_CALL(mock_ledger_client_, GetStringState(state::kWalletBrave))
@@ -92,13 +93,11 @@ TEST_P(PostConnect, Paths) {
             std::move(callback).Run(response);
           }));
 
-  RequestFor<PostConnectMock> request{&mock_ledger_impl_};
-  EXPECT_TRUE(request);
-
-  std::move(request).Send(base::BindLambdaForTesting(
-      [expected_result = expected_result](mojom::Result result) {
-        EXPECT_EQ(result, expected_result);
-      }));
+  RequestFor<PostConnectMock>(&mock_ledger_impl_)
+      .Send(base::BindLambdaForTesting(
+          [expected_result = expected_result](Result&& result) {
+            EXPECT_EQ(result, expected_result);
+          }));
 }
 
 // clang-format off
@@ -107,10 +106,10 @@ INSTANTIATE_TEST_SUITE_P(
   PostConnect,
   Values(
     PostConnectParamType{
-      "00_HTTP_200",
+      "00_HTTP_200_success",
       net::HTTP_OK,
       "",
-      mojom::Result::LEDGER_OK
+      {}
     },
     PostConnectParamType{
       "01_HTTP_400_flagged_wallet",
@@ -121,7 +120,7 @@ INSTANTIATE_TEST_SUITE_P(
           "code": 400
         }
       )",
-      mojom::Result::FLAGGED_WALLET
+      base::unexpected(Error::kFlaggedWallet)
     },
     PostConnectParamType{
       "02_HTTP_400_mismatched_provider_account_regions",
@@ -132,7 +131,7 @@ INSTANTIATE_TEST_SUITE_P(
           "code": 400
         }
       )",
-      mojom::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS
+      base::unexpected(Error::kMismatchedProviderAccountRegions)
     },
     PostConnectParamType{
       "03_HTTP_400_region_not_supported",
@@ -143,7 +142,7 @@ INSTANTIATE_TEST_SUITE_P(
           "code": 400
         }
       )",
-      mojom::Result::REGION_NOT_SUPPORTED
+      base::unexpected(Error::kRegionNotSupported)
     },
     PostConnectParamType{
       "04_HTTP_400_unknown_message",
@@ -154,7 +153,7 @@ INSTANTIATE_TEST_SUITE_P(
           "code": 400
         }
       )",
-      mojom::Result::LEDGER_ERROR
+      base::unexpected(Error::kUnknownMessage)
     },
     PostConnectParamType{
       "05_HTTP_403_kyc_required",
@@ -165,7 +164,7 @@ INSTANTIATE_TEST_SUITE_P(
           "code": 403
         }
       )",
-      mojom::Result::NOT_FOUND
+      base::unexpected(Error::kKycRequired)
     },
     PostConnectParamType{
       "06_HTTP_403_mismatched_provider_accounts",
@@ -176,7 +175,7 @@ INSTANTIATE_TEST_SUITE_P(
           "code": 403
         }
       )",
-      mojom::Result::MISMATCHED_PROVIDER_ACCOUNTS
+      base::unexpected(Error::kMismatchedProviderAccounts)
     },
     PostConnectParamType{
       "07_HTTP_403_request_signature_verification_failure",
@@ -187,7 +186,7 @@ INSTANTIATE_TEST_SUITE_P(
           "code": 403
         }
       )",
-      mojom::Result::REQUEST_SIGNATURE_VERIFICATION_FAILURE
+      base::unexpected(Error::kRequestSignatureVerificationFailure)
     },
     PostConnectParamType{
       "08_HTTP_403_transaction_verification_failure",
@@ -198,7 +197,7 @@ INSTANTIATE_TEST_SUITE_P(
           "code": 403
         }
       )",
-      mojom::Result::UPHOLD_TRANSACTION_VERIFICATION_FAILURE
+      base::unexpected(Error::kTransactionVerificationFailure)
     },
     PostConnectParamType{
       "09_HTTP_403_unknown_message",
@@ -209,31 +208,31 @@ INSTANTIATE_TEST_SUITE_P(
           "code": 403
         }
       )",
-      mojom::Result::LEDGER_ERROR
+      base::unexpected(Error::kUnknownMessage)
     },
     PostConnectParamType{
       "10_HTTP_404_kyc_required",
       net::HTTP_NOT_FOUND,
       "",
-      mojom::Result::NOT_FOUND
+      base::unexpected(Error::kKycRequired)
     },
     PostConnectParamType{
       "11_HTTP_409_device_limit_reached",
       net::HTTP_CONFLICT,
       "",
-      mojom::Result::DEVICE_LIMIT_REACHED
+      base::unexpected(Error::kDeviceLimitReached)
     },
     PostConnectParamType{
-      "12_HTTP_500_http_internal_server_error",
+      "12_HTTP_500_unexpected_error",
       net::HTTP_INTERNAL_SERVER_ERROR,
       "",
-      mojom::Result::LEDGER_ERROR
+      base::unexpected(Error::kUnexpectedError)
     },
     PostConnectParamType{
-      "13_HTTP_504_random_server_error",
-      net::HTTP_GATEWAY_TIMEOUT,
+      "13_HTTP_503_unexpected_status_code",
+      net::HTTP_SERVICE_UNAVAILABLE,
       "",
-      mojom::Result::LEDGER_ERROR
+      base::unexpected(Error::kUnexpectedStatusCode)
     }),
   [](const TestParamInfo<PostConnectParamType>& info) {
     return std::get<0>(info.param);
@@ -241,4 +240,4 @@ INSTANTIATE_TEST_SUITE_P(
 );
 // clang-format on
 
-}  // namespace ledger::request::connect::test
+}  // namespace ledger::endpoints::test

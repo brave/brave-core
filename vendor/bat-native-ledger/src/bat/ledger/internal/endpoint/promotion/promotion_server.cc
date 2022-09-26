@@ -17,7 +17,6 @@ PromotionServer::PromotionServer(LedgerImpl* ledger)
       post_clobbered_claims_(
           std::make_unique<promotion::PostClobberedClaims>(ledger)),
       post_bat_loss_(std::make_unique<promotion::PostBatLoss>(ledger)),
-      post_wallet_brave_(std::make_unique<promotion::PostWalletBrave>(ledger)),
       get_recover_wallet_(
           std::make_unique<promotion::GetRecoverWallet>(ledger)),
       get_wallet_(std::make_unique<promotion::GetWallet>(ledger)),
@@ -54,10 +53,6 @@ promotion::PostClobberedClaims* PromotionServer::post_clobbered_claims() const {
 
 promotion::PostBatLoss* PromotionServer::post_bat_loss() const {
   return post_bat_loss_.get();
-}
-
-promotion::PostWalletBrave* PromotionServer::post_wallet_brave() const {
-  return post_wallet_brave_.get();
 }
 
 promotion::GetRecoverWallet* PromotionServer::get_recover_wallet() const {

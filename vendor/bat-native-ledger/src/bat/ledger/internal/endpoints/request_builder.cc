@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ledger/internal/request/request_builder.h"
+#include "bat/ledger/internal/endpoints/request_builder.h"
 
 #include <utility>
 
-namespace ledger::request {
+namespace ledger::endpoints {
 
 RequestBuilder::~RequestBuilder() = default;
 
@@ -17,13 +17,13 @@ absl::optional<mojom::UrlRequestPtr> RequestBuilder::Request() const {
     return absl::nullopt;
   }
 
-  auto headers = Headers();
-  if (!headers) {
+  const auto content = Content();
+  if (!content) {
     return absl::nullopt;
   }
 
-  const auto content = Content();
-  if (!content) {
+  auto headers = Headers(*content);
+  if (!headers) {
     return absl::nullopt;
   }
 
@@ -39,7 +39,8 @@ mojom::UrlMethod RequestBuilder::Method() const {
   return mojom::UrlMethod::POST;
 }
 
-absl::optional<std::vector<std::string>> RequestBuilder::Headers() const {
+absl::optional<std::vector<std::string>> RequestBuilder::Headers(
+    const std::string&) const {
   return std::vector<std::string>{};
 }
 
@@ -59,4 +60,4 @@ uint32_t RequestBuilder::LoadFlags() const {
   return 0;
 }
 
-};  // namespace ledger::request
+};  // namespace ledger::endpoints
