@@ -37,8 +37,6 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/origin.h"
 
-#define DAT_FILE "rs-ABPFilterParserData.dat"
-
 namespace {
 
 const char kAdBlockComponentName[] = "Brave Ad Block Updater";
