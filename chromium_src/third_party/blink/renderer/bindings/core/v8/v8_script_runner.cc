@@ -16,7 +16,7 @@ v8::MaybeLocal<v8::Script> V8ScriptRunner::CompileScript(
     v8::ScriptOrigin origin,
     v8::ScriptCompiler::CompileOptions compile_options,
     v8::ScriptCompiler::NoCacheReason no_cache_reason) {
-  v8::MaybeLocal<v8::Script> result = V8ScriptRunner_CompileScript_ChromiumImpl(
+  v8::MaybeLocal<v8::Script> result = CompileScript_ChromiumImpl(
       script_state, classic_script, origin, compile_options, no_cache_reason);
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
   if (CoreProbeSink::HasAgentsGlobal(CoreProbeSink::kPageGraph)) {
@@ -42,7 +42,7 @@ v8::MaybeLocal<v8::Module> V8ScriptRunner::CompileModule(
     v8::ScriptCompiler::CompileOptions compile_options,
     v8::ScriptCompiler::NoCacheReason no_cache_reason,
     const ReferrerScriptInfo& referrer_info) {
-  v8::MaybeLocal<v8::Module> result = V8ScriptRunner_CompileModule_ChromiumImpl(
+  v8::MaybeLocal<v8::Module> result = CompileModule_ChromiumImpl(
       isolate, params, start_position, compile_options, no_cache_reason,
       referrer_info);
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
