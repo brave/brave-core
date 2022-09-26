@@ -1,15 +1,15 @@
 diff --git a/BUILD.gn b/BUILD.gn
-index 83082271b8b76179b41e943190303e31fa639a95..2363c63c56598b785a9647ebcfaefde08f671067 100644
+index 83082271b8b76179b41e943190303e31fa639a95..1908e4043933e87ce1ca7aca9c32e271d3d6dcbe 100644
 --- a/BUILD.gn
 +++ b/BUILD.gn
-@@ -643,6 +643,7 @@ config("internal_config_base") {
-   configs = [ ":v8_tracing_config" ]
- 
-   include_dirs = [
-+    "//brave/chromium_src/v8",  # v8-specific //brave/chromium_src support.
-     ".",
-     "include",
+@@ -648,6 +648,7 @@ config("internal_config_base") {
      "$target_gen_dir",
+     "$target_gen_dir/include",
+   ]
++  _include_dirs = include_dirs include_dirs = [] include_dirs = [ "//brave/chromium_src/v8" ] + _include_dirs
+ }
+ 
+ config("internal_config") {
 @@ -2713,6 +2714,7 @@ v8_header_set("v8_headers") {
      ":cppgc_headers",
      ":v8_version",
