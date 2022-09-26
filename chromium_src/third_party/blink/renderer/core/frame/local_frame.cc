@@ -6,12 +6,14 @@
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 
 #include "brave/components/brave_page_graph/common/buildflags.h"
+#include "third_party/blink/renderer/core/probe/core_probes.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 #include "brave/third_party/blink/renderer/core/brave_page_graph/page_graph.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
-#define BRAVE_LOCAL_FRAME_CONSTRUCTOR                                \
+#define FrameAttachedToParent(frame, ad_script_on_stack)             \
+  FrameAttachedToParent(frame, ad_script_on_stack);                  \
   IF_BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH, {                            \
     if (IsLocalRoot()) {                                             \
       /* InstallSupplements call is too late, do it here instead. */ \
@@ -21,4 +23,4 @@
 
 #include "src/third_party/blink/renderer/core/frame/local_frame.cc"
 
-#undef BRAVE_LOCAL_FRAME_CONSTRUCTOR
+#undef FrameAttachedToParent
