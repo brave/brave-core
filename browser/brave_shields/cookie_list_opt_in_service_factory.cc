@@ -9,6 +9,7 @@
 
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/browser/cookie_list_opt_in_service.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 
@@ -55,7 +56,8 @@ CookieListOptInServiceFactory::~CookieListOptInServiceFactory() = default;
 KeyedService* CookieListOptInServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   auto* ad_block_service = g_brave_browser_process->ad_block_service();
-  return new CookieListOptInService(ad_block_service);
+  return new CookieListOptInService(ad_block_service,
+                                    g_browser_process->local_state());
 }
 
 content::BrowserContext* CookieListOptInServiceFactory::GetBrowserContextToUse(

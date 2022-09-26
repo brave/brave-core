@@ -13,10 +13,17 @@ interface CookieListOptInPageHandler {
   ShowUI();
   CloseUI();
   EnableFilter();
+
+  OnUINoClicked();
+  OnUIYesClicked();
 };
 
 interface CookieListOptInPageAndroidHandler {
   ShouldShowDialog() => (bool should_show_dialog);
   IsFilterListEnabled() => (bool is_enabled);
   EnableFilter(bool should_enable_filter);
+
+  OnTooltipShown();
+  OnTooltipNoClicked();
+  OnTooltipYesClicked();
 };

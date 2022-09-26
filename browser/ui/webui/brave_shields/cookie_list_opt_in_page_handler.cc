@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/metrics/histogram_functions.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
@@ -27,6 +28,8 @@ CookieListOptInPageHandler::CookieListOptInPageHandler(
 CookieListOptInPageHandler::~CookieListOptInPageHandler() = default;
 
 void CookieListOptInPageHandler::ShowUI() {
+  base::UmaHistogramExactLinear(brave_shields::kCookieListPromptHistogram, 1,
+                                4);
   if (embedder_) {
     embedder_->ShowUI();
   }
@@ -42,4 +45,14 @@ void CookieListOptInPageHandler::EnableFilter() {
   g_brave_browser_process->ad_block_service()
       ->regional_service_manager()
       ->EnableFilterList(brave_shields::kCookieListUuid, true);
+}
+
+void CookieListOptInPageHandler::OnUINoClicked() {
+  base::UmaHistogramExactLinear(brave_shields::kCookieListPromptHistogram, 2,
+                                4);
+}
+
+void CookieListOptInPageHandler::OnUIYesClicked() {
+  base::UmaHistogramExactLinear(brave_shields::kCookieListPromptHistogram, 3,
+                                4);
 }

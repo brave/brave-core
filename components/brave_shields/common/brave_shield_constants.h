@@ -87,6 +87,9 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_SHIELDS_BLOCKED_SCRIPTS_LABEL},
 };
 
+const char kCookieListEnabledHistogram[] = "Brave.Shields.CookieListEnabled";
+const char kCookieListPromptHistogram[] = "Brave.Shields.CookieListPrompt";
+
 }  // namespace brave_shields
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_COMMON_BRAVE_SHIELD_CONSTANTS_H_
