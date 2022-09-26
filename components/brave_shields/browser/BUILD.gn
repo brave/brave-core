@@ -76,6 +76,7 @@ if (!is_ios) {
       "//components/content_settings/core/common",
       "//components/pref_registry:pref_registry",
       "//components/prefs",
+      "//components/proxy_config",
       "//components/security_interstitials/content:security_interstitial_page",
       "//components/security_interstitials/core",
       "//components/user_prefs",

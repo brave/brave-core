@@ -16,20 +16,19 @@
 #include "base/no_destructor.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/net/url_context.h"
+#include "brave/components/brave_shields/browser/ad_block_pref_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/constants/network_constants.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/net/proxy_service_factory.h"
 #include "chrome/browser/net/secure_dns_config.h"
 #include "chrome/browser/net/system_network_context_manager.h"
-#include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
-#include "components/proxy_config/pref_proxy_config_tracker.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_frame_host.h"
@@ -39,9 +38,6 @@
 #include "extensions/common/url_pattern.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "net/dns/public/dns_query_type.h"
-#include "net/proxy_resolution/proxy_config.h"
-#include "net/proxy_resolution/proxy_config_service.h"
-#include "net/proxy_resolution/proxy_config_with_annotation.h"
 #include "services/network/host_resolver.h"
 #include "services/network/network_context.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -272,18 +268,13 @@ bool ProxySettingsAllowUncloaking(content::BrowserContext* browser_context,
 
   bool can_uncloak = true;
 
-  Profile* profile = Profile::FromBrowserContext(browser_context);
-
-  std::unique_ptr<PrefProxyConfigTracker> config_tracker =
-      ProxyServiceFactory::CreatePrefProxyConfigTrackerOfProfile(
-          profile->GetPrefs(), nullptr);
-  std::unique_ptr<net::ProxyConfigService> proxy_config_service =
-      ProxyServiceFactory::CreateProxyConfigService(config_tracker.get(),
-                                                    profile);
+  auto* ad_block_pref_service =
+      brave_shields::AdBlockPrefServiceFactory::GetForBrowserContext(
+          browser_context);
 
   net::ProxyConfigWithAnnotation config;
   net::ProxyConfigService::ConfigAvailability availability =
-      proxy_config_service->GetLatestProxyConfig(&config);
+      ad_block_pref_service->GetLatestProxyConfig(&config);
 
   if (availability ==
       net::ProxyConfigService::ConfigAvailability::CONFIG_VALID) {
@@ -302,8 +293,6 @@ bool ProxySettingsAllowUncloaking(content::BrowserContext* browser_context,
       can_uncloak = false;
     }
   }
-
-  config_tracker->DetachFromPrefService();
 
   return can_uncloak;
 }
