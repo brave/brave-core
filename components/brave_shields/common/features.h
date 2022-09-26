@@ -6,7 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_COMMON_FEATURES_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_COMMON_FEATURES_H_
 
+#include <string>
+
 #include "base/feature_list.h"
+#include "base/metrics/field_trial_params.h"
 
 namespace brave_shields {
 namespace features {
@@ -24,6 +27,14 @@ extern const base::Feature kBraveExtensionNetworkBlocking;
 extern const base::Feature kBraveReduceLanguage;
 extern const base::Feature kBraveDarkModeBlock;
 extern const base::Feature kCosmeticFilteringSyncLoad;
+extern const base::Feature kCosmeticFilteringExtraPerfMetrics;
+extern const base::Feature kCosmeticFilteringJsPerformance;
+extern const base::FeatureParam<std::string>
+    kCosmeticFilteringSubFrameFirstSelectorsPollingDelayMs;
+extern const base::FeatureParam<std::string>
+    kCosmeticFilteringswitchToSelectorsPollingThreshold;
+extern const base::FeatureParam<std::string>
+    kCosmeticFilteringFetchNewClassIdRulesThrottlingMs;
 }  // namespace features
 }  // namespace brave_shields
 

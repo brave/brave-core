@@ -67,6 +67,8 @@ class CosmeticFiltersJSHandler {
   void CSSRulesRoutine(const base::Value::Dict& resources_dict);
   void OnHiddenClassIdSelectors(base::Value::Dict result);
   bool OnIsFirstParty(const std::string& url_string);
+  int OnEventBegin(const std::string& event_name);
+  void OnEventEnd(const std::string& event_name, int);
 
   void InjectStylesheet(const std::string& stylesheet);
 
@@ -83,6 +85,8 @@ class CosmeticFiltersJSHandler {
 
   // True if the content_cosmetic.bundle.js has injected in the current frame.
   bool bundle_injected_ = false;
+
+  std::unique_ptr<class CosmeticFilterPerfTracker> perf_tracker_;
 
   base::WeakPtrFactory<CosmeticFiltersJSHandler> weak_ptr_factory_{this};
 };
