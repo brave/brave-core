@@ -28,6 +28,8 @@ if (window.isSecureContext) {
       chainId: undefined,
       networkVersion: undefined,
       selectedAddress: undefined,
+      isMetaMask: true,
+      isBraveWallet: true,
       request: function (args) /* -> Promise<unknown> */  {
         return post('request', args)
       },
