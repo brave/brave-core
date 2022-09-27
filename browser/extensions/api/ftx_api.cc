@@ -12,6 +12,7 @@
 #include "brave/browser/ftx/ftx_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/extensions/api/ftx.h"
+#include "brave/components/brave_wallet/common/common_util.h"
 #include "brave/components/ftx/browser/ftx_service.h"
 #include "brave/components/ftx/browser/regions.h"
 #include "brave/components/ftx/common/pref_names.h"
@@ -186,8 +187,10 @@ void FtxGetAccountBalancesFunction::OnGetAccountBalances(
 
 ExtensionFunction::ResponseAction FtxIsSupportedFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  bool is_supported = ntp_widget_utils::IsRegionSupported(
-      profile->GetPrefs(), ::ftx::unsupported_regions, false);
+  bool is_supported =
+      ntp_widget_utils::IsRegionSupported(profile->GetPrefs(),
+                                          ::ftx::unsupported_regions, false) &&
+      brave_wallet::IsAllowed(profile->GetPrefs());
   return RespondNow(OneArgument(base::Value(is_supported)));
 }
 

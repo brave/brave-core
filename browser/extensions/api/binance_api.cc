@@ -15,6 +15,7 @@
 #include "brave/browser/binance/binance_service_factory.h"
 #include "brave/common/extensions/api/binance.h"
 #include "brave/components/binance/browser/binance_service.h"
+#include "brave/components/brave_wallet/common/common_util.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
@@ -32,7 +33,8 @@ BinanceService* GetBinanceService(content::BrowserContext* context) {
 
 bool IsBinanceAPIAvailable(content::BrowserContext* context) {
   Profile* profile = Profile::FromBrowserContext(context);
-  return !profile->IsIncognitoProfile() && !profile->IsGuestSession();
+  return !profile->IsIncognitoProfile() && !profile->IsGuestSession() &&
+         brave_wallet::IsAllowed(profile->GetPrefs());
 }
 
 }  // namespace

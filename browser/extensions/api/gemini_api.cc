@@ -10,11 +10,12 @@
 #include <utility>
 #include <vector>
 
-#include "brave/common/extensions/api/gemini.h"
 #include "brave/browser/gemini/gemini_service_factory.h"
-#include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
+#include "brave/common/extensions/api/gemini.h"
+#include "brave/components/brave_wallet/common/common_util.h"
 #include "brave/components/gemini/browser/gemini_service.h"
 #include "brave/components/gemini/browser/regions.h"
+#include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
@@ -233,8 +234,10 @@ void GeminiExecuteOrderFunction::OnOrderExecuted(bool success) {
 ExtensionFunction::ResponseAction
 GeminiIsSupportedFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  bool is_supported = ntp_widget_utils::IsRegionSupported(
-      profile->GetPrefs(), ::gemini::supported_regions, true);
+  bool is_supported =
+      ntp_widget_utils::IsRegionSupported(profile->GetPrefs(),
+                                          ::gemini::supported_regions, true) &&
+      brave_wallet::IsAllowed(profile->GetPrefs());
   return RespondNow(OneArgument(base::Value(is_supported)));
 }
 
