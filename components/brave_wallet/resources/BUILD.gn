@@ -22,24 +22,3 @@ pack_web_resources("ethereum_provider_generated_resources") {
   output_dir = "$root_gen_dir/brave/components/brave_wallet/resources"
   deps = [ ":brave_wallet_script_resources" ]
 }
-
-action("solana_web3_js_resources") {
-  script = "//brave/script/solana_web3_js.py"
-
-  gen_build_dir = "$root_gen_dir/brave/components/brave_wallet/resources"
-
-  args = [
-    "--build",
-    "--output_path",
-    rebase_path(gen_build_dir),
-  ]
-
-  inputs = [
-    "//brave/vendor/solana-web3-js/.git/HEAD",
-    "//brave/vendor/solana-web3-js/package.json",
-  ]
-
-  outputs = [
-    "$gen_build_dir/solana_web3.min.js",
-  ]
-}
