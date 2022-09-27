@@ -1,0 +1,18 @@
+{
+   "name": "test theme",
+   "manifest_version": 2,
+   "theme": {
+      "colors": {
+         "frame": [ 71, 105, 91 ],
+         "frame_inactive": [ 255, 255, 255 ],
+         "ntp_link": [ 36, 70, 0 ],
+         "ntp_section": [ 207, 221, 192 ],
+         "ntp_text": [ 20, 40, 0 ],
+         "toolbar": [ 207, 221, 192 ]
+      },
+      "tints": {
+         "buttons": [ 0.33, 0.5, 0.47 ]
+      }
+   },
+   "version": "2.0"
+}

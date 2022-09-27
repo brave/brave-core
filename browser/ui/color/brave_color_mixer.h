@@ -17,10 +17,11 @@ class ColorProvider;
 SkColor GetLocationBarBackground(bool dark, bool priv, bool hover);
 SkColor GetOmniboxResultBackground(int id, bool dark, bool priv);
 
-void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
-                                  const ui::ColorProviderManager::Key& key);
-void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
-                                 const ui::ColorProviderManager::Key& key);
+void AddBraveThemeColorMixer(ui::ColorProvider* provider,
+                             const ui::ColorProviderManager::Key& key);
+void AddBravifiedChromeThemeColorMixer(
+    ui::ColorProvider* provider,
+    const ui::ColorProviderManager::Key& key);
 void AddBravePrivateThemeColorMixer(ui::ColorProvider* provider,
                                     const ui::ColorProviderManager::Key& key);
 void AddBraveTorThemeColorMixer(ui::ColorProvider* provider,

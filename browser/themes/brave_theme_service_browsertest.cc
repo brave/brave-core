@@ -3,14 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/path_service.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/color/brave_color_mixer.h"
 #include "brave/browser/ui/color/color_palette.h"
+#include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/themes/test/theme_service_changed_waiter.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser.h"
@@ -20,6 +23,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
+#include "extensions/buildflags/buildflags.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest-spi.h"
 #include "ui/color/color_provider.h"
@@ -33,7 +37,57 @@
 #include "base/win/registry.h"
 #endif
 
-using BraveThemeServiceTest = InProcessBrowserTest;
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "chrome/browser/extensions/crx_installer.h"
+#include "chrome/browser/extensions/extension_install_prompt.h"
+#include "chrome/browser/extensions/extension_service.h"
+#include "chrome/common/extensions/extension_constants.h"
+#include "components/crx_file/crx_verifier.h"
+#include "extensions/browser/crx_file_info.h"
+#include "extensions/browser/extension_dialog_auto_confirm.h"
+#include "extensions/browser/extension_system.h"
+#include "extensions/browser/test_extension_registry_observer.h"
+#endif
+
+class BraveThemeServiceTest : public InProcessBrowserTest {
+ public:
+  BraveThemeServiceTest() { brave::RegisterPathProvider(); }
+  ~BraveThemeServiceTest() override = default;
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  bool UsingCustomTheme(const ThemeService& theme_service) const {
+    return !theme_service.UsingSystemTheme() &&
+           !theme_service.UsingDefaultTheme();
+  }
+
+  base::FilePath GetTestDataDir() {
+    base::FilePath test_data_dir;
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    CHECK(base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir));
+    return test_data_dir;
+  }
+
+  void InstallExtension(const char* filename) {
+    base::FilePath path =
+        GetTestDataDir().AppendASCII("extensions").AppendASCII(filename);
+
+    extensions::TestExtensionRegistryObserver observer(
+        extensions::ExtensionRegistry::Get(browser()->profile()));
+
+    auto installer = extensions::CrxInstaller::CreateSilent(
+        extensions::ExtensionSystem::Get(browser()->profile())
+            ->extension_service());
+    installer->set_allow_silent_install(true);
+    installer->set_install_cause(extension_misc::INSTALL_CAUSE_USER_DOWNLOAD);
+    installer->set_creation_flags(extensions::Extension::FROM_WEBSTORE);
+
+    installer->InstallCrxFile(
+        extensions::CRXFileInfo(path, crx_file::VerifierFormat::CRX3));
+
+    observer.WaitForExtensionLoaded();
+  }
+#endif
+};
 
 namespace {
 
@@ -199,6 +253,23 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, ColorProviderTest) {
   SkColor frame_active_color = cp->GetColor(ui::kColorFrameActive);
   EXPECT_TRUE(frame_active_color == kLightFrame ||
               frame_active_color == kDarkFrame);
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  // Check frame color is not ours when theme extension is installed.
+  ThemeService* theme_service =
+      ThemeServiceFactory::GetForProfile(browser()->profile());
+  test::ThemeServiceChangedWaiter waiter(theme_service);
+
+  EXPECT_FALSE(UsingCustomTheme(*theme_service));
+  InstallExtension("theme.crx");
+  waiter.WaitForThemeChanged();
+  EXPECT_TRUE(UsingCustomTheme(*theme_service));
+
+  cp = browser_view->GetColorProvider();
+  frame_active_color = cp->GetColor(ui::kColorFrameActive);
+  EXPECT_TRUE(frame_active_color != kLightFrame &&
+              frame_active_color != kDarkFrame);
+#endif
 
   auto* private_browser = CreateIncognitoBrowser();
   browser_view = BrowserView::GetBrowserViewForBrowser(private_browser);
