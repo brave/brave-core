@@ -15,7 +15,6 @@ import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 
 // components
-import { Tooltip } from '../../shared/tooltip/index'
 import { SelectNetworkButton } from '../../shared/select-network-button/select-network-button'
 import { CopyTooltip } from '../../shared/copy-tooltip/copy-tooltip'
 
@@ -58,12 +57,10 @@ export const SwapHeader = ({ onChangeSwapView }: Props) => {
   return (
     <StyledWrapper>
 
-       <Tooltip text={selectedNetwork.chainName}>
-        <SelectNetworkButton
-          selectedNetwork={selectedNetwork}
-          onClick={onShowNetworks}
-        />
-      </Tooltip>
+      <SelectNetworkButton
+        selectedNetwork={selectedNetwork}
+        onClick={onShowNetworks}
+      />
 
       <VerticalSpace space='8px' />
 
