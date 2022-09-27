@@ -8,33 +8,22 @@ import { defaultState } from './default_state'
 describe('local storage', () => {
   describe('loading', () => {
     it('returns default state if local storage data is not present', () => {
-      expect(loadState()).toEqual(defaultState)
+      expect(loadState()).toEqual(defaultState())
     })
 
     it('returns default state if local storage is not JSON', () => {
       localStorage['rewards-data'] = 'abc'
-      expect(loadState()).toEqual(defaultState)
+      expect(loadState()).toEqual(defaultState())
     })
 
     it('returns default state if local storage is not JSON object', () => {
       localStorage['rewards-data'] = '[]'
-      expect(loadState()).toEqual(defaultState)
+      expect(loadState()).toEqual(defaultState())
     })
 
     it('returns default state if local storage is empty JSON object', () => {
       localStorage['rewards-data'] = '{}'
-      expect(loadState()).toEqual(defaultState)
-    })
-
-    it('returns default state if local storage version does not match', () => {
-      localStorage['rewards-data'] = '{ "version": 0 }'
-      expect(loadState()).toEqual(defaultState)
-    })
-
-    it('returns loaded state with initializing flag set', () => {
-      const mockData = { version: defaultState.version }
-      localStorage['rewards-data'] = JSON.stringify(mockData)
-      expect(loadState()).toEqual({ ...mockData, initializing: true })
+      expect(loadState()).toEqual(defaultState())
     })
   })
 })

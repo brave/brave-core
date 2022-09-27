@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 
 #include <memory>
+#include <unordered_set>
 #include <utility>
 
 #include "base/base64.h"
@@ -14,13 +15,17 @@
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
+#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/ens_resolver_task.h"
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_requests.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
+#include "brave/components/brave_wallet/browser/eth_topics_builder.h"
 #include "brave/components/brave_wallet/browser/fil_requests.h"
 #include "brave/components/brave_wallet/browser/fil_response_parser.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
@@ -1142,9 +1147,12 @@ void JsonRpcService::EnsGetContentHash(const std::string& domain,
       return;
     }
 
-    // TODO(apaymyshev): Implement UI for contenthash offchain lookup consent.
-    absl::optional<bool> allow_offchain =
-        !EnsOffchainPrefDisabled(local_state_prefs_);
+    absl::optional<bool> allow_offchain;
+    if (EnsOffchainPrefEnabled(local_state_prefs_)) {
+      allow_offchain = true;
+    } else if (EnsOffchainPrefDisabled(local_state_prefs_)) {
+      allow_offchain = false;
+    }
 
     GURL network_url = GetNetworkURL(
         prefs_, brave_wallet::mojom::kMainnetChainId, mojom::CoinType::ETH);
@@ -1339,8 +1347,6 @@ void JsonRpcService::OnEnsGetContentHashTaskDone(
   if (callbacks.empty()) {
     return;
   }
-
-  DCHECK(!(task_result && task_result->need_to_allow_offchain));
 
   absl::optional<std::vector<uint8_t>> content_hash;
   mojom::ProviderError error =
@@ -2089,6 +2095,191 @@ void JsonRpcService::GetERC1155TokenBalance(
   RequestInternal(
       eth::eth_call("", contract_address, "", "", "", data, "latest"), true,
       network_url, std::move(internal_callback));
+}
+
+// Called by KeyringService::CreateWallet, KeyringService::RestoreWallet,
+// KeyringService::AddAccount, KeyringService::ImportAccountForKeyring,
+// and KeyringService::AddHardwareAccounts
+void JsonRpcService::DiscoverAssets(
+    const std::string& chain_id,
+    mojom::CoinType coin,
+    const std::vector<std::string>& account_addresses) {
+  auto callback = base::BindOnce(&JsonRpcService::OnDiscoverAssetsCompleted,
+                                 weak_ptr_factory_.GetWeakPtr());
+  DiscoverAssetsInternal(chain_id, coin, account_addresses,
+                         std::move(callback));
+}
+
+void JsonRpcService::OnDiscoverAssetsCompleted(
+    const std::vector<mojom::BlockchainTokenPtr> discovered_assets,
+    mojom::ProviderError error,
+    const std::string& error_message) {
+  if (error != mojom::ProviderError::kSuccess) {
+    VLOG(1) << __func__ << "Encountered error during asset discovery "
+            << error_message;
+  }
+}
+
+void JsonRpcService::DiscoverAssetsInternal(
+    const std::string& chain_id,
+    mojom::CoinType coin,
+    const std::vector<std::string>& account_addresses,
+    DiscoverAssetsCallback callback) {
+  if (coin != mojom::CoinType::ETH || chain_id != mojom::kMainnetChainId) {
+    std::move(callback).Run(
+        std::vector<mojom::BlockchainTokenPtr>(),
+        mojom::ProviderError::kMethodNotSupported,
+        l10n_util::GetStringUTF8(IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR));
+    return;
+  }
+
+  // Asset discovery only supported when using Infura proxy
+  GURL infura_url = GetInfuraURLForKnownChainId(chain_id);
+  GURL active_url = GetNetworkURL(prefs_, chain_id, coin);
+  if (infura_url.host() != active_url.host()) {
+    std::move(callback).Run(
+        std::vector<mojom::BlockchainTokenPtr>(),
+        mojom::ProviderError::kMethodNotSupported,
+        l10n_util::GetStringUTF8(IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR));
+    return;
+  }
+
+  if (account_addresses.empty()) {
+    std::move(callback).Run(
+        std::vector<mojom::BlockchainTokenPtr>(),
+        mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  for (const auto& account_address : account_addresses) {
+    if (!EthAddress::IsValidAddress(account_address)) {
+      std::move(callback).Run(
+          std::vector<mojom::BlockchainTokenPtr>(),
+          mojom::ProviderError::kInvalidParams,
+          l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+      return;
+    }
+  }
+
+  std::vector<mojom::BlockchainTokenPtr> user_assets =
+      BraveWalletService::GetUserAssets(chain_id, mojom::CoinType::ETH, prefs_);
+  auto internal_callback = base::BindOnce(
+      &JsonRpcService::OnGetAllTokensDiscoverAssets,
+      weak_ptr_factory_.GetWeakPtr(), chain_id, account_addresses,
+      std::move(user_assets), std::move(callback));
+
+  BlockchainRegistry::GetInstance()->GetAllTokens(
+      chain_id, mojom::CoinType::ETH, std::move(internal_callback));
+}
+
+void JsonRpcService::OnGetAllTokensDiscoverAssets(
+    const std::string& chain_id,
+    const std::vector<std::string>& account_addresses,
+    std::vector<mojom::BlockchainTokenPtr> user_assets,
+    DiscoverAssetsCallback callback,
+    std::vector<mojom::BlockchainTokenPtr> token_registry) {
+  auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH);
+  if (!network_url.is_valid()) {
+    std::move(callback).Run(
+        std::vector<mojom::BlockchainTokenPtr>(),
+        mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  base::Value::List topics;
+  if (!MakeAssetDiscoveryTopics(account_addresses, &topics)) {
+    std::move(callback).Run(
+        std::vector<mojom::BlockchainTokenPtr>(),
+        mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  // Create set of contract addresses the user already has for easy lookups
+  base::flat_set<std::string> user_asset_contract_addresses;
+  for (const auto& user_asset : user_assets) {
+    user_asset_contract_addresses.insert(user_asset->contract_address);
+  }
+
+  // Create a list of contract addresses to search by removing
+  // all erc20s and assets the user has already added.
+  base::Value::List contract_addresses_to_search;
+  // Also create a map for addresses to blockchain tokens for easy lookup
+  // for blockchain tokens in OnGetTransferLogs
+  base::flat_map<std::string, mojom::BlockchainTokenPtr> tokens_to_search;
+  for (auto& registry_token : token_registry) {
+    if (registry_token->is_erc20 && !registry_token->contract_address.empty() &&
+        !user_asset_contract_addresses.contains(
+            registry_token->contract_address)) {
+      // Use lowercase representation of hex address for comparisons
+      // because providers may return all lowercase addresses.
+      const std::string lower_case_contract_address =
+          base::ToLowerASCII(registry_token->contract_address);
+      contract_addresses_to_search.Append(lower_case_contract_address);
+      tokens_to_search[lower_case_contract_address] = std::move(registry_token);
+    }
+  }
+
+  if (contract_addresses_to_search.size() == 0) {
+    std::move(callback).Run(std::vector<mojom::BlockchainTokenPtr>(),
+                            mojom::ProviderError::kSuccess, "");
+    return;
+  }
+
+  auto internal_callback = base::BindOnce(
+      &JsonRpcService::OnGetTransferLogs, weak_ptr_factory_.GetWeakPtr(),
+      std::move(callback), base::OwnedRef(std::move(tokens_to_search)));
+
+  RequestInternal(eth::eth_getLogs("earliest", "latest",
+                                   std::move(contract_addresses_to_search),
+                                   std::move(topics), ""),
+                  true, network_url, std::move(internal_callback));
+}
+
+void JsonRpcService::OnGetTransferLogs(
+    DiscoverAssetsCallback callback,
+    base::flat_map<std::string, mojom::BlockchainTokenPtr>& tokens_to_search,
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run(
+        std::vector<mojom::BlockchainTokenPtr>(),
+        mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  std::vector<Log> logs;
+  if (!eth::ParseEthGetLogs(api_request_result.body(), &logs)) {
+    std::move(callback).Run(std::vector<mojom::BlockchainTokenPtr>(),
+                            mojom::ProviderError::kParsingError,
+                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+    return;
+  }
+
+  // Create unique list of addresses that matched eth_getLogs query
+  base::flat_set<std::string> matching_contract_addresses;
+  for (const auto& log : logs) {
+    matching_contract_addresses.insert(base::ToLowerASCII(log.address));
+  }
+  std::vector<mojom::BlockchainTokenPtr> discovered_assets;
+
+  for (const auto& contract_address : matching_contract_addresses) {
+    if (!tokens_to_search.contains(contract_address)) {
+      continue;
+    }
+    mojom::BlockchainTokenPtr token =
+        std::move(tokens_to_search.at(contract_address));
+
+    if (!BraveWalletService::AddUserAsset(token.Clone(), prefs_)) {
+      continue;
+    }
+    discovered_assets.push_back(std::move(token));
+  }
+
+  std::move(callback).Run(std::move(discovered_assets),
+                          mojom::ProviderError::kSuccess, "");
 }
 
 void JsonRpcService::GetSupportsInterface(

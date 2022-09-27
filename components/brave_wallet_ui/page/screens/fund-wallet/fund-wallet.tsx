@@ -244,6 +244,7 @@ export const FundWalletScreen = () => {
                       networks={networksFilterOptions}
                       hideAddButton
                       hideAssetFilter
+                      hideAccountFilter
                       estimatedItemSize={100}
                       renderToken={({ item: { asset } }) => {
                         return <BuyAssetOptionItem

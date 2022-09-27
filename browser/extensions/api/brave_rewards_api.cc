@@ -682,10 +682,31 @@ ExtensionFunction::ResponseAction BraveRewardsFetchPromotionsFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsService* rewards_service =
       RewardsServiceFactory::GetForProfile(profile);
-  if (rewards_service) {
-    rewards_service->FetchPromotions();
+  if (!rewards_service) {
+    return RespondNow(Error("Rewards service is not available"));
   }
-  return RespondNow(NoArguments());
+
+  rewards_service->FetchPromotions(base::BindOnce(
+      &BraveRewardsFetchPromotionsFunction::OnPromotionsFetched, this));
+
+  return RespondLater();
+}
+
+void BraveRewardsFetchPromotionsFunction::OnPromotionsFetched(
+    std::vector<ledger::mojom::PromotionPtr> promotions) {
+  base::Value::List list;
+  for (auto& item : promotions) {
+    base::Value::Dict dict;
+    dict.Set("promotionId", item->id);
+    dict.Set("type", static_cast<int>(item->type));
+    dict.Set("status", static_cast<int>(item->status));
+    dict.Set("createdAt", static_cast<double>(item->created_at));
+    dict.Set("claimableUntil", static_cast<double>(item->claimable_until));
+    dict.Set("expiresAt", static_cast<double>(item->expires_at));
+    dict.Set("amount", item->approximate_value);
+    list.Append(std::move(dict));
+  }
+  Respond(OneArgument(base::Value(std::move(list))));
 }
 
 BraveRewardsClaimPromotionFunction::~BraveRewardsClaimPromotionFunction() =

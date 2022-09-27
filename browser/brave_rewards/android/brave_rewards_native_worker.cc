@@ -350,7 +350,7 @@ double BraveRewardsNativeWorker::GetWalletRate(JNIEnv* env) {
 
 void BraveRewardsNativeWorker::FetchGrants(JNIEnv* env) {
   if (brave_rewards_service_) {
-    brave_rewards_service_->FetchPromotions();
+    brave_rewards_service_->FetchPromotions(base::DoNothing());
   }
 }
 

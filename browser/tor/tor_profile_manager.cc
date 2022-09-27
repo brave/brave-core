@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/feature_list.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -20,6 +21,7 @@
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
+#include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/common/peerconnection/webrtc_ip_handling_policy.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
@@ -120,6 +122,10 @@ void TorProfileManager::InitTorProfileUserPrefs(Profile* profile) {
   pref_service->SetString(prefs::kWebRTCIPHandlingPolicy,
                           blink::kWebRTCIPHandlingDisableNonProxiedUdp);
   pref_service->SetBoolean(prefs::kSafeBrowsingEnabled, false);
+  if (base::FeatureList::IsEnabled(
+          blink::features::kBraveTorWindowsHttpsOnly)) {
+    pref_service->SetBoolean(prefs::kHttpsOnlyModeEnabled, true);
+  }
   // https://blog.torproject.org/bittorrent-over-tor-isnt-good-idea
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   pref_service->SetBoolean(kWebTorrentEnabled, false);

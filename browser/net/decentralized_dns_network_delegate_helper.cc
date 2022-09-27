@@ -23,6 +23,8 @@ namespace decentralized_dns {
 int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
+  DCHECK(!next_callback.is_null());
+
   if (!ctx->browser_context || ctx->browser_context->IsOffTheRecord() ||
       !g_browser_process) {
     return net::OK;
@@ -65,12 +67,16 @@ void OnBeforeURLRequest_EnsRedirectWork(
     bool require_offchain_consent,
     brave_wallet::mojom::ProviderError error,
     const std::string& error_message) {
-  // TODO(apaymyshev): implement interstitial page.
-  DCHECK(!require_offchain_consent);
+  DCHECK(!next_callback.is_null());
 
   if (error != brave_wallet::mojom::ProviderError::kSuccess) {
-    if (!next_callback.is_null())
-      next_callback.Run();
+    next_callback.Run();
+    return;
+  }
+
+  if (require_offchain_consent) {
+    ctx->pending_error = net::ERR_ENS_OFFCHAIN_LOOKUP_NOT_SELECTED;
+    next_callback.Run();
     return;
   }
 
@@ -79,8 +85,7 @@ void OnBeforeURLRequest_EnsRedirectWork(
     ctx->new_url_spec = ipfs_uri.spec();
   }
 
-  if (!next_callback.is_null())
-    next_callback.Run();
+  next_callback.Run();
 }
 
 void OnBeforeURLRequest_UnstoppableDomainsRedirectWork(

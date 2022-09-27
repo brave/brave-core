@@ -24,7 +24,6 @@
 #include "bat/ledger/internal/endpoint/promotion/post_safetynet/post_safetynet.h"
 #include "bat/ledger/internal/endpoint/promotion/post_suggestions/post_suggestions.h"
 #include "bat/ledger/internal/endpoint/promotion/post_suggestions_claim/post_suggestions_claim.h"
-#include "bat/ledger/internal/endpoint/promotion/post_wallet_brave/post_wallet_brave.h"
 #include "bat/ledger/internal/endpoint/promotion/put_captcha/put_captcha.h"
 #include "bat/ledger/internal/endpoint/promotion/put_devicecheck/put_devicecheck.h"
 #include "bat/ledger/internal/endpoint/promotion/put_safetynet/put_safetynet.h"
@@ -49,8 +48,6 @@ class PromotionServer {
   promotion::PostClobberedClaims* post_clobbered_claims() const;
 
   promotion::PostBatLoss* post_bat_loss() const;
-
-  promotion::PostWalletBrave* post_wallet_brave() const;
 
   promotion::GetRecoverWallet* get_recover_wallet() const;
 
@@ -87,7 +84,6 @@ class PromotionServer {
   std::unique_ptr<promotion::GetSignedCreds> get_signed_creds_;
   std::unique_ptr<promotion::PostClobberedClaims> post_clobbered_claims_;
   std::unique_ptr<promotion::PostBatLoss> post_bat_loss_;
-  std::unique_ptr<promotion::PostWalletBrave> post_wallet_brave_;
   std::unique_ptr<promotion::GetRecoverWallet> get_recover_wallet_;
   std::unique_ptr<promotion::GetWallet> get_wallet_;
   std::unique_ptr<promotion::PostCaptcha> post_captcha_;

@@ -71,6 +71,7 @@ script/generate_licenses.py @fmarier
 browser/brave_wallet/ @brave/crypto-wallets
 components/brave_wallet/ @brave/crypto-wallets
 components/brave_wallet/browser/brave_wallet_provider_delegate.h @brave/crypto-wallets @brave/ios
+components/brave_wallet/resources/*.js @brave/crypto-wallets @brave/ios
 
 # Brave Referrals Service
 components/brave_referrals/browser/brave_referrals_service* @simonhong
@@ -116,3 +117,6 @@ browser/net/brave_network_audit_allowed_lists.h @brave/sec-team
 # iOS
 ios/ @brave/ios
 build/ios/ @brave/ios
+
+# Android tests
+android/android_browser_tests.gni @brave/android-tests-reviewers

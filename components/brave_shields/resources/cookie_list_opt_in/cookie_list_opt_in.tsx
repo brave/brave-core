@@ -19,7 +19,13 @@ function App () {
     proxy.handler.closeUI()
   }
 
+  const onDecline = () => {
+    proxy.handler.onUINoClicked()
+    closeBubble()
+  }
+
   const onEnable = () => {
+    proxy.handler.onUIYesClicked()
     proxy.handler.enableFilter()
   }
 
@@ -49,7 +55,7 @@ function App () {
       key={openedAt}
       onEnable={onEnable}
       onDismiss={closeBubble}
-      onDecline={closeBubble}
+      onDecline={onDecline}
       onAnimationComplete={closeBubble}
     />
   )

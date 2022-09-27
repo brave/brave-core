@@ -15,7 +15,6 @@ import * as WalletActions from '../common/actions/wallet_actions'
 import {
   BuySendSwapTypes,
   PageState,
-  UpdateAccountNamePayloadType,
   WalletAccountType,
   WalletRoutes,
   WalletState
@@ -113,11 +112,6 @@ export const Container = () => {
     }
   }, [hasIncorrectPassword])
 
-  const onUpdateAccountName = React.useCallback((payload: UpdateAccountNamePayloadType): { success: boolean } => {
-    const result = dispatch(WalletPageActions.updateAccountName(payload))
-    return result ? { success: true } : { success: false }
-  }, [])
-
   const onOpenWalletSettings = React.useCallback(() => {
     dispatch(WalletPageActions.openWalletSettings())
   }, [])
@@ -183,68 +177,67 @@ export const Container = () => {
             // Post-onboarding flows
             : <Switch>
 
-                <Route path={WalletRoutes.OnboardingComplete} exact>
-                  <OnboardingSuccess />
-                </Route>
+              <Route path={WalletRoutes.OnboardingComplete} exact>
+                <OnboardingSuccess />
+              </Route>
 
-                <Route path={WalletRoutes.FundWalletPage} exact>
-                  <FundWalletScreen />
-                </Route>
+              <Route path={WalletRoutes.FundWalletPage} exact>
+                <FundWalletScreen />
+              </Route>
 
-                <Route path={WalletRoutes.DepositFundsPage} exact>
-                  <DepositFundsScreen />
-                </Route>
+              <Route path={WalletRoutes.DepositFundsPage} exact>
+                <DepositFundsScreen />
+              </Route>
 
-                <Route path={WalletRoutes.Restore} exact={true}>
+              <Route path={WalletRoutes.Restore} exact={true}>
+                <SimplePageWrapper>
+                  <RestoreWallet />
+                </SimplePageWrapper>
+              </Route>
+
+              {isWalletLocked &&
+                <Route path={WalletRoutes.Unlock} exact={true}>
                   <SimplePageWrapper>
-                    <RestoreWallet />
+                    <LockScreen
+                      value={inputValue}
+                      onSubmit={unlockWallet}
+                      disabled={inputValue === ''}
+                      onPasswordChanged={handlePasswordChanged}
+                      hasPasswordError={hasIncorrectPassword}
+                      onShowRestore={onToggleShowRestore}
+                    />
                   </SimplePageWrapper>
                 </Route>
+              }
 
-                {isWalletLocked &&
-                  <Route path={WalletRoutes.Unlock} exact={true}>
-                    <SimplePageWrapper>
-                      <LockScreen
-                        value={inputValue}
-                        onSubmit={unlockWallet}
-                        disabled={inputValue === ''}
-                        onPasswordChanged={handlePasswordChanged}
-                        hasPasswordError={hasIncorrectPassword}
-                        onShowRestore={onToggleShowRestore}
-                      />
-                    </SimplePageWrapper>
-                  </Route>
-                }
-
-                {!isWalletLocked &&
-                  <Route path={WalletRoutes.Backup} exact={true}>
-                    <SimplePageWrapper>
-                      <BackupWallet
-                        isOnboarding={false}
-                        onCancel={onHideBackup}
-                      />
-                    </SimplePageWrapper>
-                  </Route>
-                }
-
-                {!isWalletLocked &&
-                  <Route path={WalletRoutes.CryptoPage}>
-                    <CryptoView
-                      needsBackup={!isWalletBackedUp}
-                      onUpdateAccountName={onUpdateAccountName}
-                      defaultEthereumWallet={defaultEthereumWallet}
-                      defaultSolanaWallet={defaultSolanaWallet}
-                      onOpenWalletSettings={onOpenWalletSettings}
-                      isMetaMaskInstalled={isMetaMaskInstalled}
-                      sessionRoute={sessionRoute}
+              {!isWalletLocked &&
+                <Route path={WalletRoutes.Backup} exact={true}>
+                  <SimplePageWrapper>
+                    <BackupWallet
+                      isOnboarding={false}
+                      onCancel={onHideBackup}
                     />
-                  </Route>
-                }
+                  </SimplePageWrapper>
+                </Route>
+              }
 
-                {isWalletLocked && <Redirect to={WalletRoutes.Unlock} />}
-                {!isWalletLocked && <Redirect to={WalletRoutes.Portfolio} />}
+              {!isWalletLocked &&
+                <Route path={WalletRoutes.CryptoPage}>
+                  <CryptoView
+                    needsBackup={!isWalletBackedUp}
+                    defaultEthereumWallet={defaultEthereumWallet}
+                    defaultSolanaWallet={defaultSolanaWallet}
+                    onOpenWalletSettings={onOpenWalletSettings}
+                    isMetaMaskInstalled={isMetaMaskInstalled}
+                    sessionRoute={sessionRoute}
+                  />
+                </Route>
+              }
 
-              </Switch>
+              {isWalletLocked && <Redirect to={WalletRoutes.Unlock} />}
+              {!isWalletLocked && <Redirect to={WalletRoutes.Portfolio} />}
+
+            </Switch>
           }
         </Switch>
       </WalletSubViewLayout>

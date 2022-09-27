@@ -86,11 +86,10 @@ void ExtensionRewardsServiceObserver::OnFetchPromotions(
     return;
   }
 
-  std::vector<extensions::api::brave_rewards::OnPromotions::
-        PromotionsType> promotions;
+  std::vector<extensions::api::brave_rewards::Promotion> promotions;
 
   for (const auto& item : list) {
-    extensions::api::brave_rewards::OnPromotions::PromotionsType promotion;
+    extensions::api::brave_rewards::Promotion promotion;
     promotion.promotion_id = item->id;
     promotion.type = static_cast<int>(item->type);
     promotion.status = static_cast<int>(item->status);

@@ -149,7 +149,12 @@ class RewardsService : public KeyedService {
                                    ledger::mojom::ActivityInfoFilterPtr filter,
                                    GetPublisherInfoListCallback callback) = 0;
   virtual void GetExcludedList(GetPublisherInfoListCallback callback) = 0;
-  virtual void FetchPromotions() = 0;
+
+  using FetchPromotionsCallback =
+      base::OnceCallback<void(std::vector<ledger::mojom::PromotionPtr>)>;
+
+  virtual void FetchPromotions(FetchPromotionsCallback callback) = 0;
+
   // Used by desktop
   virtual void ClaimPromotion(
       const std::string& promotion_id,

@@ -98,11 +98,16 @@ import org.chromium.ui.widget.Toast;
 import org.chromium.url.GURL;
 
 import java.io.InputStream;
+import java.lang.Number;
 import java.lang.NumberFormatException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -387,33 +392,34 @@ public class Utils {
         return 0;
     }
 
+    // Supposedly toWei shall always end up with an integer
+    private static BigInteger toWeiInternal(String number, int decimals) throws ParseException {
+        NumberFormat nf = NumberFormat.getInstance(Locale.getDefault());
+        ParsePosition parsePosition = new ParsePosition(0);
+        BigDecimal parsed = null;
+        if (nf instanceof DecimalFormat) {
+            DecimalFormat df = (DecimalFormat) nf;
+            df.setParseBigDecimal(true);
+            parsed = (BigDecimal) df.parse(number, parsePosition);
+        }
+
+        if (parsed == null || parsePosition.getIndex() != number.length())
+            throw new ParseException(
+                    "Invalid input string to BigDecimal at ", parsePosition.getIndex());
+        BigDecimal multiplier = BigDecimal.TEN.pow(decimals);
+        return parsed.multiply(multiplier).toBigInteger();
+    }
+
     public static String toWei(String number, int decimals, boolean calculateOtherAsset) {
         if (number.isEmpty() || calculateOtherAsset) {
             return "";
         }
 
-        int dotPosition = number.indexOf(".");
-        String multiplier = Utils.getDecimalsDepNumber(decimals);
-        if (dotPosition != -1) {
-            int zeroToRemove = number.length() - dotPosition - 1;
-            if (zeroToRemove < multiplier.length()) {
-                multiplier = multiplier.substring(0, multiplier.length() - zeroToRemove);
-            } else {
-                number = number.substring(
-                        0, number.length() - (zeroToRemove - multiplier.length() + 1));
-                multiplier = "1";
-            }
-            number = number.replace(".", "");
-        }
         try {
-            BigInteger bigNumber = new BigInteger(number, 10);
-            BigInteger res = bigNumber.multiply(new BigInteger(multiplier));
-
-            return res.equals(BigInteger.ZERO) ? "" : res.toString();
-        } catch (NumberFormatException ex) {
+            return toWeiInternal(number, decimals).toString();
+        } catch (ParseException ex) {
+            return "";
         }
-
-        return "";
     }
 
     public static double fromWei(String number, int decimals) {
@@ -437,23 +443,12 @@ public class Utils {
         if (number.isEmpty()) {
             return "0x0";
         }
-        int dotPosition = number.indexOf(".");
-        String multiplier = Utils.getDecimalsDepNumber(decimals);
-        if (dotPosition != -1) {
-            int zeroToRemove = number.length() - dotPosition - 1;
-            if (zeroToRemove < multiplier.length()) {
-                multiplier = multiplier.substring(0, multiplier.length() - zeroToRemove);
-            } else {
-                number = number.substring(
-                        0, number.length() - (zeroToRemove - multiplier.length() + 1));
-                multiplier = "1";
-            }
-            number = number.replace(".", "");
-        }
-        BigInteger bigNumber = new BigInteger(number, 10);
-        BigInteger res = bigNumber.multiply(new BigInteger(multiplier));
 
-        return "0x" + res.toString(16);
+        try {
+            return "0x" + toWeiInternal(number, decimals).toString(16);
+        } catch (ParseException ex) {
+            return "0x0";
+        }
     }
 
     public static String toHexGWeiFromGWEI(String number) {
@@ -1623,5 +1618,20 @@ public class Utils {
         }
 
         return false;
+    }
+
+    public static double parseDouble(String s) throws ParseException {
+        if (s.isEmpty()) return 0d;
+
+        NumberFormat nf = NumberFormat.getNumberInstance(Locale.getDefault());
+        ParsePosition parsePosition = new ParsePosition(0);
+        Number num = nf.parse(s, parsePosition);
+
+        if (parsePosition.getIndex() != s.length()) {
+            throw new ParseException(
+                    "Invalid input string to parseDouble at ", parsePosition.getIndex());
+        }
+
+        return num.doubleValue();
     }
 }

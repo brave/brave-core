@@ -66,5 +66,28 @@ const base::Feature kBraveDarkModeBlock{"BraveDarkModeBlock",
 // load the cosmetic filter rules using sync ipc
 const base::Feature kCosmeticFilteringSyncLoad{
     "CosmeticFilterSyncLoad", base::FEATURE_ENABLED_BY_DEFAULT};
+
+// Enables extra TRACE_EVENTs in content filter js. The feature is
+// primary designed for local debugging.
+const base::Feature kCosmeticFilteringExtraPerfMetrics{
+    "CosmeticFilteringExtraPerfMetrics", base::FEATURE_DISABLED_BY_DEFAULT};
+
+const base::Feature kCosmeticFilteringJsPerformance{
+    "CosmeticFilteringJsPerformance", base::FEATURE_DISABLED_BY_DEFAULT};
+
+constexpr base::FeatureParam<std::string>
+    kCosmeticFilteringSubFrameFirstSelectorsPollingDelayMs{
+        &kCosmeticFilteringJsPerformance, "subframes_first_query_delay_ms",
+        "undefined"};
+
+constexpr base::FeatureParam<std::string>
+    kCosmeticFilteringswitchToSelectorsPollingThreshold{
+        &kCosmeticFilteringJsPerformance, "switch_to_polling_threshold",
+        "undefined"};
+
+constexpr base::FeatureParam<std::string>
+    kCosmeticFilteringFetchNewClassIdRulesThrottlingMs{
+        &kCosmeticFilteringJsPerformance, "fetch_throttling_ms", "undefined"};
+
 }  // namespace features
 }  // namespace brave_shields

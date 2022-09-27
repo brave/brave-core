@@ -242,6 +242,7 @@ export interface WalletState {
   coinMarketData: BraveWallet.CoinMarket[]
   selectedNetworkFilter: BraveWallet.NetworkInfo
   selectedAssetFilter: AssetFilterOption
+  selectedAccountFilter: WalletAccountType
   defaultAccounts: BraveWallet.AccountInfo[]
   onRampCurrencies: BraveWallet.OnRampCurrency[]
   selectedCurrency: BraveWallet.OnRampCurrency | undefined
@@ -802,3 +803,16 @@ export type AbbreviationOptions =
   | 'million'
   | 'billion'
   | 'trillion'
+
+export type AccountModalTypes =
+  | 'deposit'
+  | 'privateKey'
+  | 'edit'
+  | 'details'
+  | 'remove'
+
+export interface AccountButtonOptionsObjectType {
+  name: string
+  id: AccountModalTypes
+  icon: string
+}

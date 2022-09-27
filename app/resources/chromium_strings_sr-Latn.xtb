@@ -136,7 +136,6 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="4065288863231444640">Neka Brave radi u pozadini</translation>
 <translation id="8148611988012584308">Prilagodite i kontrolišite Brave</translation>
 <translation id="4427306783828095590">Poboljšana zaštita nudi više mogućnosti za blokiranje „pecanja“ i malvera</translation>
-<translation id="5112116809696021727">Da biste proverili da li je uređaj ažuriran, idite u <ph name="LINK_BEGIN"/>Podešavanja Chrome OS-a<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Dobro došli u Brave; otvoren je novi prozor pregledača</translation>
 <translation id="2633397153656205379">Brave se nije ažurirao. Došlo je do greške. <ph name="BEGIN_LINK"/>Otklonite probleme sa ažuriranjem Brave-a i neuspela ažuriranja.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Želite da nastavite na novom Brave profilu?</translation>
@@ -299,8 +298,6 @@ Brave ne može da vrati podešavanja.</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Kako možete da upravljate podacima:<ph name="END_BOLD"/> Radi zaštite privatnosti automatski brišemo interesovanja starija od 4 nedelje. Kada nastavite da pregledate, interesovanje će se možda ponovo pojaviti na listi. Možete i da uklanjate interesovanja za koja ne želite da ih Brave uzima u obzir.</translation>
 <translation id="2925193881330501265">Bili ste prijavljeni na Brave kao <ph name="USER_EMAIL_ADDRESS"/>. Koristite isti nalog da biste se ponovo prijavili.</translation>
 <translation id="6915252145142862992">Ovo je sekundarna instalacija Brave-a pa ne možete da ga podesite kao podrazumevani pregledač.</translation>
-<translation id="1975057837349076194">Ako se podešavanje ne prikazuje na ovoj stranici, potražite ga u <ph name="LINK_BEGIN"/>
-      podešavanjima Chrome OS-a<ph name="LINK_END"/></translation>
 <translation id="7685904775439037072">Kada Brave dobije pristup, veb-sajtovi će moći da zatraže pristup.</translation>
 <translation id="80471789339884597">Hvala vam na instalaciji. Morate da restartujete sve pregledače pre nego što počnete da koristite <ph name="BUNDLE_NAME"/>.</translation>
 <translation id="2061155704815580583">Brave-u treba dozvola za lokaciju za ovaj sajt</translation>

@@ -15,6 +15,7 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/logging.h"
+#include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
@@ -26,6 +27,7 @@
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
 #include "crypto/sha2.h"
+#include "services/data_decoder/public/cpp/json_sanitizer.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
@@ -50,55 +52,66 @@ static_assert(std::size(kWalletDataFilesSha2Hash) == crypto::kSHA256Length,
 
 absl::optional<base::Version> last_installed_wallet_version;
 
+void OnSanitizedTokenList(mojom::CoinType coin,
+                          data_decoder::JsonSanitizer::Result result) {
+  TokenListMap lists;
+  if (result.error) {
+    VLOG(1) << "TokenList JSON validation error:" << *result.error;
+    return;
+  }
+
+  std::string json;
+  if (result.value.has_value()) {
+    json = result.value.value();
+  }
+  if (!ParseTokenList(json, &lists, coin)) {
+    VLOG(1) << "Can't parse token list.";
+    return;
+  }
+
+  for (auto& list_pair : lists) {
+    BlockchainRegistry::GetInstance()->UpdateTokenList(
+        list_pair.first, std::move(list_pair.second));
+  }
+}
+
+void OnSanitizedChainList(data_decoder::JsonSanitizer::Result result) {
+  ChainList chains;
+  if (result.error) {
+    VLOG(1) << "TokenList JSON validation error:" << *result.error;
+    return;
+  }
+
+  std::string json;
+  if (result.value.has_value()) {
+    json = result.value.value();
+  }
+  if (!ParseChainList(json, &chains)) {
+    VLOG(1) << "Can't parse chain list.";
+    return;
+  }
+
+  BlockchainRegistry::GetInstance()->UpdateChainList(std::move(chains));
+}
+
 void HandleParseTokenList(base::FilePath absolute_install_dir,
                           const std::string& filename,
-                          TokenListMap* token_list_map,
                           mojom::CoinType coin_type) {
   const base::FilePath token_list_json_path =
       absolute_install_dir.AppendASCII(filename);
   std::string token_list_json;
   if (!base::ReadFileToString(token_list_json_path, &token_list_json)) {
-    LOG(ERROR) << "Can't read token list file: " << filename;
+    VLOG(1) << "Can't read token list file: " << filename;
     return;
   }
 
-  if (!ParseTokenList(token_list_json, token_list_map, coin_type)) {
-    LOG(ERROR) << "Can't parse token list: " << filename;
-  }
-}
-
-TokenListMap TokenListReady(const base::FilePath& install_dir) {
-  TokenListMap lists;
-  // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
-  // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
-  // requires IO so it can only be done in this function.
-  const base::FilePath absolute_install_dir =
-      base::MakeAbsoluteFilePath(install_dir);
-
-  if (absolute_install_dir.empty()) {
-    LOG(ERROR) << "Failed to get absolute install path.";
-    return lists;
-  }
-
-  // Used for Ethereum mainnet
-  HandleParseTokenList(absolute_install_dir, "contract-map.json", &lists,
-                       mojom::CoinType::ETH);
-  // Used for EVM compatabile networks including testnets
-  HandleParseTokenList(absolute_install_dir, "evm-contract-map.json", &lists,
-                       mojom::CoinType::ETH);
-  HandleParseTokenList(absolute_install_dir, "solana-contract-map.json", &lists,
-                       mojom::CoinType::SOL);
-
-  return lists;
-}
-
-void UpdateTokenRegistry(TokenListMap lists) {
-  BlockchainRegistry::GetInstance()->UpdateTokenList(std::move(lists));
+  data_decoder::JsonSanitizer::Sanitize(
+      std::move(token_list_json),
+      base::BindOnce(&OnSanitizedTokenList, coin_type));
 }
 
 void HandleParseChainList(base::FilePath absolute_install_dir,
-                          const std::string& filename,
-                          ChainList* chain_list) {
+                          const std::string& filename) {
   const base::FilePath chain_list_json_path =
       absolute_install_dir.AppendASCII(filename);
   std::string chain_list_json;
@@ -107,13 +120,11 @@ void HandleParseChainList(base::FilePath absolute_install_dir,
     return;
   }
 
-  if (!ParseChainList(chain_list_json, chain_list)) {
-    LOG(ERROR) << "Can't parse chain list: " << filename;
-  }
+  data_decoder::JsonSanitizer::Sanitize(std::move(chain_list_json),
+                                        base::BindOnce(&OnSanitizedChainList));
 }
 
-ChainList ChainListReady(const base::FilePath& install_dir) {
-  ChainList chains;
+void ParseTokenListAndUpdateRegistry(const base::FilePath& install_dir) {
   // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
   // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
   // requires IO so it can only be done in this function.
@@ -122,16 +133,28 @@ ChainList ChainListReady(const base::FilePath& install_dir) {
 
   if (absolute_install_dir.empty()) {
     LOG(ERROR) << "Failed to get absolute install path.";
-    return chains;
   }
 
-  HandleParseChainList(absolute_install_dir, "chainlist.json", &chains);
-
-  return chains;
+  HandleParseTokenList(absolute_install_dir, "contract-map.json",
+                       mojom::CoinType::ETH);
+  HandleParseTokenList(absolute_install_dir, "evm-contract-map.json",
+                       mojom::CoinType::ETH);
+  HandleParseTokenList(absolute_install_dir, "solana-contract-map.json",
+                       mojom::CoinType::SOL);
 }
 
-void UpdateChainListRegistry(ChainList chains) {
-  BlockchainRegistry::GetInstance()->UpdateChainList(std::move(chains));
+void ParseChainListAndUpdateRegistry(const base::FilePath& install_dir) {
+  // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
+  // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
+  // requires IO so it can only be done in this function.
+  const base::FilePath absolute_install_dir =
+      base::MakeAbsoluteFilePath(install_dir);
+
+  if (absolute_install_dir.empty()) {
+    LOG(ERROR) << "Failed to get absolute install path.";
+  }
+
+  HandleParseChainList(absolute_install_dir, "chainlist.json");
 }
 
 }  // namespace
@@ -143,6 +166,7 @@ class WalletDataFilesInstallerPolicy
   ~WalletDataFilesInstallerPolicy() override = default;
 
  private:
+  scoped_refptr<base::SequencedTaskRunner> sequenced_task_runner_;
   // The following methods override ComponentInstallerPolicy.
   bool SupportsGroupPolicyEnabledComponentUpdates() const override;
   bool RequiresNetworkEncryption() const override;
@@ -166,7 +190,11 @@ class WalletDataFilesInstallerPolicy
       const WalletDataFilesInstallerPolicy&) = delete;
 };
 
-WalletDataFilesInstallerPolicy::WalletDataFilesInstallerPolicy() = default;
+WalletDataFilesInstallerPolicy::WalletDataFilesInstallerPolicy() {
+  sequenced_task_runner_ = base::ThreadPool::CreateSequencedTaskRunner(
+      {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+       base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
+}
 
 bool WalletDataFilesInstallerPolicy::
     SupportsGroupPolicyEnabledComponentUpdates() const {
@@ -191,15 +219,11 @@ void WalletDataFilesInstallerPolicy::ComponentReady(
     const base::FilePath& path,
     base::Value manifest) {
   last_installed_wallet_version = version;
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock(), base::TaskPriority::BEST_EFFORT},
-      base::BindOnce(TokenListReady, path),
-      base::BindOnce(UpdateTokenRegistry));
+  sequenced_task_runner_->PostTask(
+      FROM_HERE, base::BindOnce(&ParseTokenListAndUpdateRegistry, path));
 
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock(), base::TaskPriority::BEST_EFFORT},
-      base::BindOnce(ChainListReady, path),
-      base::BindOnce(UpdateChainListRegistry));
+  sequenced_task_runner_->PostTask(
+      FROM_HERE, base::BindOnce(&ParseChainListAndUpdateRegistry, path));
 }
 
 bool WalletDataFilesInstallerPolicy::VerifyInstallation(

@@ -6,6 +6,7 @@
 #include "brave/browser/ntp_background/ntp_background_prefs.h"
 
 #include "brave/components/constants/pref_names.h"
+#include "chrome/test/base/testing_profile.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -70,7 +71,7 @@ TEST_F(NTPBackgroundPrefsTest, SelectedValue) {
 
   background_prefs_.SetType(NTPBackgroundPrefs::Type::kCustomImage);
   selected_value = background_prefs_.GetSelectedValue();
-  EXPECT_TRUE(absl::holds_alternative<GURL>(selected_value));
+  EXPECT_TRUE(absl::holds_alternative<std::string>(selected_value));
 
   background_prefs_.SetType(NTPBackgroundPrefs::Type::kColor);
   background_prefs_.SetSelectedValue("red");

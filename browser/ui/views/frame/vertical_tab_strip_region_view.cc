@@ -8,11 +8,14 @@
 #include <memory>
 #include <utility>
 
+#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
+#include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
 #include "chrome/grit/generated_resources.h"
@@ -144,8 +147,9 @@ END_METADATA
 }  // namespace
 
 VerticalTabStripRegionView::VerticalTabStripRegionView(
+    Browser* browser,
     TabStripRegionView* region_view)
-    : region_view_(region_view) {
+    : browser_(browser), region_view_(region_view) {
   scroll_view_ = AddChildView(std::make_unique<CustomScrollView>());
   scroll_view_header_ =
       scroll_view_->SetHeader(std::make_unique<ScrollHeaderView>(
@@ -179,7 +183,20 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
   UpdateLayout();
 }
 
-VerticalTabStripRegionView::~VerticalTabStripRegionView() {}
+VerticalTabStripRegionView::~VerticalTabStripRegionView() = default;
+
+bool VerticalTabStripRegionView::IsTabFullscreen() const {
+  auto* exclusive_access_manager = browser_->exclusive_access_manager();
+  if (!exclusive_access_manager)
+    return false;
+
+  auto* fullscreen_controller =
+      exclusive_access_manager->fullscreen_controller();
+  if (!fullscreen_controller)
+    return false;
+
+  return fullscreen_controller->IsWindowFullscreenForTabOrPending();
+}
 
 void VerticalTabStripRegionView::SetState(State state) {
   if (state_ == state)
@@ -191,6 +208,9 @@ void VerticalTabStripRegionView::SetState(State state) {
 
 gfx::Size VerticalTabStripRegionView::CalculatePreferredSize() const {
   if (!tabs::features::ShouldShowVerticalTabs())
+    return {};
+
+  if (IsTabFullscreen())
     return {};
 
   if (state_ == State::kExpanded) {

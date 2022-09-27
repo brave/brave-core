@@ -190,6 +190,12 @@ constexpr char kBraveBlockScreenFingerprintingDescription[] =
     "Prevents JavaScript and CSS from learning the user's screen dimensions "
     "or window position.";
 
+constexpr char kBraveTorWindowsHttpsOnlyName[] =
+    "Use HTTPS-Only Mode in Private Windows with Tor";
+constexpr char kBraveTorWindowsHttpsOnlyDescription[] =
+    "Prevents Private Windows with Tor from making any insecure HTTP "
+    "connections without warning the user first.";
+
 constexpr char kBraveSpeedreaderName[] = "Enable SpeedReader";
 constexpr char kBraveSpeedreaderDescription[] =
     "Enables faster loading of simplified article-style web pages.";
@@ -678,6 +684,11 @@ constexpr char kBraveVerticalTabsDescription[] =
       flag_descriptions::kBraveBlockScreenFingerprintingDescription,        \
       kOsAll, FEATURE_VALUE_TYPE(                                           \
           blink::features::kBraveBlockScreenFingerprinting)},               \
+    {"brave-tor-windows-https-only",                                        \
+      flag_descriptions::kBraveTorWindowsHttpsOnlyName,                     \
+      flag_descriptions::kBraveTorWindowsHttpsOnlyDescription,              \
+      kOsAll, FEATURE_VALUE_TYPE(                                           \
+          blink::features::kBraveTorWindowsHttpsOnly)},                     \
     BRAVE_IPFS_FEATURE_ENTRIES                                              \
     BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                     \
     BRAVE_NEWS_FEATURE_ENTRIES                                              \

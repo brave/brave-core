@@ -330,6 +330,9 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_WATCH_LIST_COINGECKO_ID},
     {"braveWalletIconURL", IDS_BRAVE_WALLET_ICON_URL},
     {"braveWalletAddAsset", IDS_BRAVE_WALLET_ADD_ASSET},
+    {"braveWalletAccountsExport", IDS_BRAVE_WALLET_ACCOUNTS_EXPORT},
+    {"braveWalletAccountsDeposit", IDS_BRAVE_WALLET_ACCOUNTS_DEPOSIT},
+    {"braveWalletAccountsRemove", IDS_BRAVE_WALLET_ACCOUNTS_REMOVE},
     {"braveWalletAccountSettingsDisclaimer",
      IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_DISCLAIMER},
     {"braveWalletFilExportPrivateKeyFormatDescription",
@@ -690,6 +693,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_ASSET_FILTER_LOW_TO_HIGH},
     {"braveWalletAssetFilterHighToLow",
      IDS_BRAVE_WALLET_ASSET_FILTER_HIGHT_TO_LOW},
+    {"braveWalletAccountFilterAllAccounts",
+     IDS_BRAVE_WALLET_ACCOUNT_FILTER_ALL_ACCOUNTS},
     {"braveWalletTransactionSubmittedTitle",
      IDS_BRAVE_WALLET_TRANSACTION_SUBMITTED_TITLE},
     {"braveWalletTransactionSubmittedDescription",
@@ -956,7 +961,7 @@ constexpr char kAffiliateAddress[] =
 constexpr char kSolanaSwapBaseAPIURL[] = "https://quote-api.jup.ag/";
 constexpr char kSolanaBuyTokenFeeBps[] = "85";
 constexpr char kSolanaFeeRecipient[] =
-    "8eekKfUAGSJbq3CdA2TmHb8tKuyzd5gtEas3MYAtXzrT";
+    "3NUW8hWoCnLgJwWCVnwdFo2Dsz8bKwLac9A3VgS2jLUQ";
 
 constexpr int64_t kBlockTrackerDefaultTimeInSeconds = 20;
 

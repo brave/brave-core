@@ -40,10 +40,12 @@ class DecentralizedDnsNavigationThrottle : public content::NavigationThrottle {
 
   // content::NavigationThrottle implementation:
   ThrottleCheckResult WillStartRequest() override;
+  ThrottleCheckResult WillFailRequest() override;
   const char* GetNameForLogging() override;
 
  private:
   void ShowInterstitial();
+  void ShowEnsOffchainLookupInterstitial();
 
   PrefService* user_prefs_ = nullptr;
   PrefService* local_state_ = nullptr;

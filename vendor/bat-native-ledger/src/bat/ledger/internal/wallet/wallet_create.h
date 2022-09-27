@@ -6,13 +6,10 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_WALLET_WALLET_CREATE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_WALLET_WALLET_CREATE_H_
 
-#include <stdint.h>
-
-#include <memory>
 #include <string>
 
-#include "bat/ledger/internal/endpoint/promotion/promotion_server.h"
 #include "bat/ledger/ledger.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ledger {
 class LedgerImpl;
@@ -21,20 +18,20 @@ namespace wallet {
 
 class WalletCreate {
  public:
-  explicit WalletCreate(LedgerImpl* ledger);
-  ~WalletCreate();
+  explicit WalletCreate(LedgerImpl*);
 
-  void Start(ledger::ResultCallback callback);
+  void CreateWallet(absl::optional<std::string>&& geo_country, ResultCallback);
 
  private:
-  void OnCreate(ledger::ResultCallback callback,
-                mojom::Result result,
-                const std::string& payment_id);
+  template <typename Result>
+  void OnResult(ResultCallback,
+                absl::optional<std::string>&& geo_country,
+                Result&&);
 
   LedgerImpl* ledger_;  // NOT OWNED
-  std::unique_ptr<endpoint::PromotionServer> promotion_server_;
 };
 
 }  // namespace wallet
 }  // namespace ledger
+
 #endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_WALLET_WALLET_CREATE_H_

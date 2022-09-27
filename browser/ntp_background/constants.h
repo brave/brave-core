@@ -8,7 +8,10 @@
 
 namespace ntp_background_images {
 
-constexpr char kSanitizedImageFileName[] = "sanitized_background_image.png";
+constexpr char kSanitizedImageFileNameDeprecated[] =
+    "sanitized_background_image.png";
+
+constexpr char kSanitizedImageDirName[] = "sanitized_background_images";
 
 }  // namespace ntp_background_images
 

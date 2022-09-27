@@ -114,6 +114,8 @@ import org.chromium.chrome.browser.dependency_injection.ChromeActivityComponent;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.informers.BraveAndroidSyncDisabledInformer;
+import org.chromium.chrome.browser.notifications.permissions.NotificationPermissionController;
+import org.chromium.chrome.browser.notifications.permissions.NotificationPermissionRationaleDialogController;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.ntp.NewTabPageManager;
 import org.chromium.chrome.browser.ntp_background_images.util.NewTabPageListener;
@@ -245,6 +247,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private int mLastTabId;
     private boolean mNativeInitialized;
     private NewTabPageManager mNewTabPageManager;
+    private NotificationPermissionController mNotificationPermissionController;
 
     @SuppressLint("VisibleForTests")
     public BraveActivity() {
@@ -369,6 +372,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     @Override
     protected void onDestroyInternal() {
+        if (mNotificationPermissionController != null) {
+            NotificationPermissionController.detach(mNotificationPermissionController);
+            mNotificationPermissionController = null;
+        }
         super.onDestroyInternal();
         cleanUpNativeServices();
     }
@@ -978,6 +985,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                                 if (viewGroup != null && highlightView != null) {
                                     viewGroup.removeView(highlightView);
                                 }
+                                maybeShowNotificationPermissionRetionale();
                             })
                             .modal(true)
                             .contentView(R.layout.brave_onboarding_searchbox)
@@ -994,6 +1002,16 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             highlightView.setHighlightItem(item);
             popupWindowTooltip.show();
         }, 500);
+    }
+
+    private void maybeShowNotificationPermissionRetionale() {
+        NotificationPermissionController mNotificationPermissionController =
+                new NotificationPermissionController(getWindowAndroid(),
+                        new NotificationPermissionRationaleDialogController(
+                                this, getModalDialogManager()));
+        NotificationPermissionController.attach(
+                getWindowAndroid(), mNotificationPermissionController);
+        mNotificationPermissionController.requestPermissionIfNeeded(false /* contextual */);
     }
 
     public void setDormantUsersPrefs() {

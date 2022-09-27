@@ -29,6 +29,7 @@ import { computeFiatAmount } from '../../../../utils/pricing-utils'
 // Options
 import { ChartTimelineOptions } from '../../../../options/chart-timeline-options'
 import { AllNetworksOption } from '../../../../options/network-filter-options'
+import { AllAccountsOption } from '../../../../options/account-filter-options'
 
 // Components
 import { LoadingSkeleton } from '../../../shared'
@@ -70,6 +71,7 @@ export const PortfolioOverview = () => {
   const isFetchingPortfolioPriceHistory = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isFetchingPortfolioPriceHistory)
   const transactionSpotPrices = useSelector(({ wallet }: { wallet: WalletState }) => wallet.transactionSpotPrices)
   const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
+  const selectedAccountFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedAccountFilter)
   const selectedTimeline = useSelector(({ page }: { page: PageState }) => page.selectedTimeline)
   const nftMetadata = useSelector(({ page }: { page: PageState }) => page.nftMetadata)
 
@@ -119,13 +121,22 @@ export const PortfolioOverview = () => {
     networkList
   ])
 
+  // Filters visibleTokensForSupportedChains if a selectedAccountFilter is selected.
+  const visibleTokensForFilteredAccount: BraveWallet.BlockchainToken[] = React.useMemo(() => {
+    return selectedAccountFilter.id === AllAccountsOption.id
+      ? visibleTokensForSupportedChains
+      : visibleTokensForSupportedChains.filter((token) => token.coin === selectedAccountFilter.coin)
+  }, [visibleTokensForSupportedChains, selectedAccountFilter])
+
   // This looks at the users asset list and returns the full balance for each asset
   const userAssetList: UserAssetInfoType[] = React.useMemo(() => {
-    return visibleTokensForSupportedChains.map((asset) => ({
+    return visibleTokensForFilteredAccount.map((asset) => ({
       asset: asset,
-      assetBalance: fullAssetBalance(asset)
+      assetBalance: selectedAccountFilter.id === AllAccountsOption.id
+        ? fullAssetBalance(asset)
+        : getBalance(networkList, selectedAccountFilter, asset)
     }))
-  }, [visibleTokensForSupportedChains, fullAssetBalance])
+  }, [visibleTokensForFilteredAccount, selectedAccountFilter, networkList, fullAssetBalance])
 
   const visibleAssetOptions = React.useMemo((): UserAssetInfoType[] => {
     return userAssetList.filter(({ asset }) => asset.visible && !asset.isErc721)

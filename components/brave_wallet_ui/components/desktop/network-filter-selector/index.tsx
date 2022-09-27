@@ -16,10 +16,13 @@ import { CreateNetworkIcon } from '../../shared'
 // Utils
 import { WalletActions } from '../../../common/actions'
 import { getLocale } from '../../../../common/locale'
+
+// Options
 import {
   AllNetworksOption,
   SupportedTopLevelChainIds
 } from '../../../options/network-filter-options'
+import { AllAccountsOption } from '../../../options/account-filter-options'
 
 // Styled Components
 import {
@@ -27,7 +30,7 @@ import {
   DropDown,
   DropDownButton,
   DropDownIcon,
-  LeftSide,
+  SelectorLeftSide,
   SubDropDown,
   SecondaryNetworkText,
   ClickAwayArea
@@ -44,13 +47,18 @@ export const NetworkFilterSelector = ({ networkListSubset }: Props) => {
   // redux
   const dispatch = useDispatch()
   const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
+  const selectedAccountFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedAccountFilter)
   const reduxNetworkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
   const isTestNetworksEnabled = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isTestNetworksEnabled)
 
   // memos
-  const networkList = React.useMemo(() => {
-    return networkListSubset || reduxNetworkList
-  }, [networkListSubset, reduxNetworkList])
+  const networkList: BraveWallet.NetworkInfo[] = React.useMemo(() => {
+    // Filters networks by coinType is a selectedAccountFilter is selected
+    const networks = selectedAccountFilter.id === AllAccountsOption.id
+      ? networkListSubset
+      : networkListSubset?.filter((network) => network.coin === selectedAccountFilter.coin)
+    return networks || reduxNetworkList
+  }, [networkListSubset, reduxNetworkList, selectedAccountFilter])
 
   const sortedNetworks = React.useMemo(() => {
     const onlyMainnets = networkList.filter((network) => SupportedTopLevelChainIds.includes(network.chainId))
@@ -87,12 +95,12 @@ export const NetworkFilterSelector = ({ networkListSubset }: Props) => {
     <StyledWrapper>
       <DropDownButton
         onClick={toggleShowNetworkFilter}>
-        <LeftSide>
+        <SelectorLeftSide>
           {selectedNetworkFilter.chainId !== AllNetworksOption.chainId &&
             <CreateNetworkIcon network={selectedNetworkFilter} marginRight={14} size='big' />
           }
           {selectedNetworkFilter.chainName}
-        </LeftSide>
+        </SelectorLeftSide>
         <DropDownIcon />
       </DropDownButton>
 

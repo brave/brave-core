@@ -93,6 +93,7 @@
 <translation id="3545804467215833536">轻击以查看 Brave 防护盾</translation>
 <translation id="1724327820822194498">使用防护盾可在每一个页面上查看 Brave 阻止的所有不良内容。</translation>
 <translation id="5386259141409498372">已阻止 <ph name="BIG_TECH"/> 和其他 <ph name="TRACKER"/> 个广告和跟踪器</translation>
+<translation id="7256200875155794202">已屏蔽<ph name="BIG_TECH"/> 和其他广告及跟踪器</translation>
 <translation id="3092683655478890840">已阻止 <ph name="TRACKER_COUNT"/> 个广告和跟踪器</translation>
 <translation id="8281886186245836920">跳过</translation>
 <translation id="6165508094623778733">了解详情</translation>
@@ -117,6 +118,9 @@
 <translation id="19715420010996093">选择 Brave 浏览器并轻按 "始终"</translation>
 <translation id="3546439402724649282">Brave 已被设置为您的默认浏览器。</translation>
 <translation id="8389661903259423907">您已经设置了默认浏览器。您可以在应用设置中更改默认浏览器。</translation>
+<translation id="1545749641540134597">扫描二维码</translation>
+<translation id="5317781812114905957">说明</translation>
+<translation id="8515319483805157233">要按 QR 码搜索，请将 QR 码放在方框中央。</translation>
 <translation id="8826007068782654809">谢谢</translation>
 <translation id="6665366815203065060">您刚刚已发送打赏至：</translation>
 <translation id="5441565662498481293">您正在自动发送打赏至：</translation>
@@ -393,35 +397,11 @@
 <translation id="8376263745431603066">启用“夜间模式”（实验性功能）</translation>
 <translation id="1383876407941801731">搜索</translation>
 <translation id="8446884382197647889">详细了解</translation>
-<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
-<translation id="558614325644656740">可用 <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="3414885529641505869">购买 <ph name="COIN_NAME"/></translation>
-<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> 存款地址</translation>
-<translation id="4836242416604533644"><ph name="COIN_MEMO"/> 存款单</translation>
-<translation id="6755546361496900700">预览兑换</translation>
-<translation id="5110244215256675209">购买 Crypto</translation>
-<translation id="2271556362602437160">.com</translation>
-<translation id="3727077517986954867">.us</translation>
 <translation id="13296465911709339">您的文本已复制到剪贴板。</translation>
 <translation id="2735834606413553397">公共地址已复制到剪贴板。</translation>
-<translation id="7144878232160441200">重试</translation>
 <translation id="2977461003134694205">隐私统计数据</translation>
-<translation id="2956070106555335453">摘要</translation>
-<translation id="1366855498335432549">存入</translation>
-<translation id="1301340234286078471">兑换</translation>
 <translation id="223536150967420869">购买</translation>
-<translation id="4584930231524505442">我想兑换...</translation>
-<translation id="5749014321384313843">我想消费...</translation>
-<translation id="2480674848181564169">余额不足，无法转换</translation>
-<translation id="2215334405220411393">最低转换金额为：<ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6702658079816271889">无法连接</translation>
-<translation id="7742417737698031726">费用</translation>
-<translation id="2122225204180056042">你会收到</translation>
-<translation id="6432284126416751397">确认兑换</translation>
-<translation id="3891414008432200754">价格</translation>
-<translation id="3733576242118819803">确认 (<ph name="REMAINING_TIME"/>s)</translation>
-<translation id="1627064138060308910">转换失败。请重试。</translation>
-<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="2956070106555335453">摘要</translation>
 <translation id="7465614181960492526">赚取代币和回报</translation>
 <translation id="244362569344671266">通过查看 Brave Private Ads 赚取代币并自动支持内容创作者。</translation>
 <translation id="631124996535890460">继续进行即表示您同意<ph name="TERMS_OF_SERVICE"/>和<ph name="PRIVACY_POLICY"/>.</translation>
@@ -452,18 +432,6 @@
 <translation id="2434574859640694129">收到第一笔广告付款后，您可以返回并打赏这位创建者！</translation>
 <translation id="207242986925259074">快速复习教程</translation>
 <translation id="8342862030112839977">您的第一笔奖励将通过以下方式获得：</translation>
-<translation id="8037420924417098685">要开始免费通话，请开启 Brave 奖励</translation>
-<translation id="8961724619078500274">使用 Brave 奖励，您可以通过查看专属广告获得代币（您的数据是安全的）。把这些代币变成现金、礼品卡……或是给您喜欢的网站打赏。不会跟踪您的足迹。不会拖慢网站速度。</translation>
-<translation id="7307847920988946894">开启奖励</translation>
-<translation id="7872993190040589450">启用该服务即表示您同意<ph name="TERMS_OF_SERVICE"/>和<ph name="PRIVACY_POLICY"/>。</translation>
-<translation id="6128511569382736135">要开始免费通话，请启用 Brave 专属广告</translation>
-<translation id="7930006085154756245">使用 Brave 专属广告，您可以通过查看专属广告获得代币（您的数据是安全的）。把这些代币变成现金、礼品卡……或是给您喜欢的网站打赏。不会跟踪您的足迹。不会拖慢网站速度。</translation>
-<translation id="4992617448154987397">开启 Brave 专属广告</translation>
-<translation id="3415016869273103668">你现在可以开始免费通话</translation>
-<translation id="7073631403665023390">单击或轻按屏幕上的任何地方，继续使用 Brave 通话。</translation>
-<translation id="626339649633171286">想要了解 Brave 奖励更多详情？<ph name="TAKE_QUICK_TOUR"/>。</translation>
-<translation id="3604285424134705930">您将<ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> 兑换成了 <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>！</translation>
-<translation id="392587271502873865">请检查您的网络连接。</translation>
 <translation id="7889432931837317731">可能时自动打开</translation>
 <translation id="8967385052772844086">查看完整的隐私报告</translation>
 <translation id="6864343534748973390">最受欢迎的</translation>
@@ -591,9 +559,6 @@
 <translation id="5050890334032852465">保存账户监视清单</translation>
 <translation id="7755766175599167100">搜索代币</translation>
 <translation id="3835223348537121988">余额：</translation>
-<translation id="2490428413101944234">测试水龙头</translation>
-<translation id="2581671693710952401">获取 Ether</translation>
-<translation id="8165484222652118977">从水管获取 Ether 以用于 <ph name="NETWORK"/> 测试网络</translation>
 <translation id="7420359180991315365">继续前往 Wyre</translation>
 <translation id="8488282162676695335">Brave 钱包</translation>
 <translation id="3784455785234192852">锁定</translation>
@@ -605,6 +570,12 @@
 <translation id="5693968582510626466">清除交易可能对开发人员有用，或者在清除本地服务器的状态时有用</translation>
 <translation id="5421107279168565467">确定要重设交易和 Nonce 信息吗？这个选项主要供运行本机测试服务器的开发人员使用。输入“<ph name="CONFIRMATION_PHRASE"/>”即可确认。</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# 分钟} other {# 分钟}}</translation>
+<translation id="8146860193318415026">流式传输视频。无广告。</translation>
+<translation id="6311019535466417620">在您的视频播放前没有广告</translation>
+<translation id="4274652342814424451">在您的视频播放期间没有广告</translation>
+<translation id="1721710839767183848">网页上没有广告</translation>
+<translation id="4647035642622555398">无中断</translation>
+<translation id="4122515759479497554">搜索视频</translation>
 <translation id="4449475351935531438">Brave 防火墙 + VPN</translation>
 <translation id="719977489961414786">升级到 VPN 来保护您的连接，并阻止无处不在的入侵跟踪器。</translation>
 <translation id="3435896845095436175">启用</translation>
@@ -808,6 +779,9 @@
 <translation id="5233638681132016545">打开新的标签页</translation>
 <translation id="8006088103295786154">存取 Brave 钱包</translation>
 <translation id="5308380583665731573">连接</translation>
+<translation id="8030169304546394654">已断开连接</translation>
+<translation id="3423275441470187644">信任</translation>
+<translation id="2391762656119864333">撤消</translation>
 <translation id="3432029672560911238">用户帐户</translation>
 <translation id="5753378322046059140">切换帐号</translation>
 <translation id="3897092660631435901">菜单</translation>
@@ -884,5 +858,11 @@
 <translation id="7002577172732106572">分离式隧道</translation>
 <translation id="2832270987629018596">SOL 地址无效</translation>
 <translation id="8181161042860463420">关联的代币账户不存在。将花费少量 SOL 来创建账户并进行充值。<ph name="CLICK_START"/>了解详情<ph name="CLICK_END"/></translation>
+<translation id="1304515257839771197">开启 <ph name="APP_NAME"/> 应用程序？</translation>
+<translation id="7653028065515320848"><ph name="CLICK_START"/>进一步了解如何使用 Rainbow Bridge<ph name="CLICK_END"/></translation>
+<translation id="8219806187375413057"><ph name="CLICK_START"/>了解如何减少 Rainbow Bridge 上的风险<ph name="CLICK_END"/></translation>
+<translation id="1065082006518490444"><ph name="APP_NAME"/> 是一项独立的服务，可帮助您跨网络桥接资产，并在其他网络和 DApp 生态系统上使用您的加密货币。将资产桥接到其他网络存在一些风险。</translation>
+<translation id="8423380132356660250">开启 <ph name="APP_NAME"/> 应用程序</translation>
 <translation id="168154537623654021">正在更新 VPN 配置文件...</translation>
+<translation id="7457027586454688423">输入您的 Brave Wallet 密码</translation>
 </translationbundle>

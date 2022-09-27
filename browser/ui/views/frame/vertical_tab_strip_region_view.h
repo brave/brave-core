@@ -12,6 +12,8 @@ namespace views {
 class ScrollView;
 }
 
+class Browser;
+
 // Wraps TabStripRegion and show it vertically.
 class VerticalTabStripRegionView : public views::View {
  public:
@@ -19,7 +21,7 @@ class VerticalTabStripRegionView : public views::View {
 
   enum class State { kCollapsed, kExpanded };
 
-  explicit VerticalTabStripRegionView(TabStripRegionView* region_view);
+  VerticalTabStripRegionView(Browser* browser, TabStripRegionView* region_view);
   ~VerticalTabStripRegionView() override;
 
   // views::View:
@@ -28,12 +30,16 @@ class VerticalTabStripRegionView : public views::View {
   void OnThemeChanged() override;
 
  private:
+  bool IsTabFullscreen() const;
+
   void SetState(State state);
 
   void UpdateLayout();
 
   void UpdateNewTabButtonVisibility();
   void UpdateTabSearchButtonVisibility();
+
+  raw_ptr<Browser> browser_ = nullptr;
 
   raw_ptr<views::View> original_parent_of_region_view_ = nullptr;
   raw_ptr<TabStripRegionView> region_view_ = nullptr;
