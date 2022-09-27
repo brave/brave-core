@@ -13,6 +13,7 @@ import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags.gni")
@@ -325,6 +326,10 @@ test("brave_unit_tests") {
   }
 
   data = [ "data/" ]
+
+  if (enable_custom_background) {
+    sources += [ "//brave/browser/ntp_background/ntp_custom_background_images_service_delegate_unittest.cc" ]
+  }
 
   public_deps = [
     ":brave_test_support_unit",
@@ -1117,6 +1122,12 @@ test("brave_browser_tests") {
       "//brave/browser/ui/sidebar:browser_tests",
       "//brave/components/sidebar",
     ]
+  }
+
+  if (enable_custom_background) {
+    sources += [ "//brave/browser/ntp_background/custom_background_file_manager_browsertest.cc" ]
+
+    data = [ "data/ntp_background/background.jpg" ]
   }
 
   # API tests

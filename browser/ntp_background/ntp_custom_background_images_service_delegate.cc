@@ -5,9 +5,12 @@
 
 #include "brave/browser/ntp_background/ntp_custom_background_images_service_delegate.h"
 
+#include <utility>
+
 #include "base/files/file_path.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ntp_background/constants.h"
+#include "brave/browser/ntp_background/custom_background_file_manager.h"
 #include "brave/browser/ntp_background/ntp_background_prefs.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
@@ -20,26 +23,84 @@
 
 NTPCustomBackgroundImagesServiceDelegate::
     NTPCustomBackgroundImagesServiceDelegate(Profile* profile)
-    : profile_(profile) {}
+    : profile_(profile),
+      file_manager_(std::make_unique<CustomBackgroundFileManager>(profile_)) {
+  if (ShouldMigrateCustomImagePref()) {
+    DVLOG(2) << "Migrate old custom background image";
+
+    MigrateCustomImage();
+  }
+}
 
 NTPCustomBackgroundImagesServiceDelegate::
     ~NTPCustomBackgroundImagesServiceDelegate() = default;
 
+bool NTPCustomBackgroundImagesServiceDelegate::ShouldMigrateCustomImagePref()
+    const {
+  auto prefs = NTPBackgroundPrefs(profile_->GetPrefs());
+  return prefs.IsCustomImageType() && prefs.GetCustomImageList().empty();
+}
+
+void NTPCustomBackgroundImagesServiceDelegate::MigrateCustomImage(
+    base::OnceCallback<void(bool)> callback) {
+  auto prefs = NTPBackgroundPrefs(profile_->GetPrefs());
+  file_manager_->MoveImage(
+      base::FilePath(profile_->GetPath().AppendASCII(
+          ntp_background_images::kSanitizedImageFileNameDeprecated)),
+      base::BindOnce(
+          [](Profile* profile, bool result) {
+            auto prefs = NTPBackgroundPrefs(profile->GetPrefs());
+            if (!result) {
+              LOG(ERROR) << "Failed to migrate Custom background image. "
+                            "Resets to default background";
+              prefs.SetType(NTPBackgroundPrefs::Type::kBrave);
+              prefs.SetShouldUseRandomValue(true);
+              prefs.SetSelectedValue(std::string());
+              return false;
+            }
+
+            prefs.SetSelectedValue(
+                ntp_background_images::kSanitizedImageFileNameDeprecated);
+            prefs.AddCustomImageToList(
+                ntp_background_images::kSanitizedImageFileNameDeprecated);
+            return true;
+          },
+          profile_)
+          .Then(std::move(callback)));
+}
+
 bool NTPCustomBackgroundImagesServiceDelegate::IsCustomImageBackgroundEnabled()
     const {
-  auto* prefs = profile_->GetPrefs();
-  if (prefs->IsManagedPreference(prefs::kNtpCustomBackgroundDict))
+  if (profile_->GetPrefs()->IsManagedPreference(
+          prefs::kNtpCustomBackgroundDict)) {
     return false;
+  }
 
-  return NTPBackgroundPrefs(prefs).IsCustomImageType();
+  return NTPBackgroundPrefs(profile_->GetPrefs()).IsCustomImageType();
 }
 
 base::FilePath NTPCustomBackgroundImagesServiceDelegate::
     GetCustomBackgroundImageLocalFilePath() const {
   if (!IsCustomImageBackgroundEnabled())
     return base::FilePath();
-  return profile_->GetPath().AppendASCII(
-      ntp_background_images::kSanitizedImageFileName);
+
+  auto value = NTPBackgroundPrefs(profile_->GetPrefs()).GetSelectedValue();
+  if (!absl::holds_alternative<std::string>(value)) {
+    // This can happen during migration.
+    return base::FilePath();
+  }
+
+#if defined(OS_WIN)
+  // On Windows path is wchar type and we should convert it to utf8.
+  // So we suppose |value| is utf8.
+  const auto file_name =
+      base::FilePath::FromUTF8Unsafe(absl::get<std::string>(value)).value();
+#else
+  // On other platform, path's encoding is not specified, and we store value
+  // as it was given.
+  const auto file_name = absl::get<std::string>(value);
+#endif
+  return file_manager_->GetCustomBackgroundDirectory().Append(file_name);
 }
 
 bool NTPCustomBackgroundImagesServiceDelegate::IsColorBackgroundEnabled()
