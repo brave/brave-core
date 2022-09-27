@@ -125,6 +125,8 @@ extension Preferences {
     
     /// Global Page Zoom-Level
     static var defaultPageZoomLevel = Option<Double>(key: "general.default-page-zoom-level", default: 1.0)
+    
+    static let isUsingBottomBar = Option<Bool>(key: "general.bottom-bar", default: false)
   }
 
   final public class FullScreenCallout {

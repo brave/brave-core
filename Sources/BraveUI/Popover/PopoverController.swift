@@ -266,7 +266,7 @@ public class PopoverController: UIViewController {
       }
 
       size.width = min(size.width, UIScreen.main.bounds.width - outerMargins.left - outerMargins.right)
-      size.height = min(size.height, UIScreen.main.bounds.height - containerView.frame.origin.y - view.safeAreaInsets.bottom - arrowDistance)
+      size.height = min(size.height, UIScreen.main.bounds.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom - outerMargins.top - outerMargins.bottom - arrowDistance)
       if contentController.view.bounds.size == size { return }
 
       contentController.view.setNeedsLayout()

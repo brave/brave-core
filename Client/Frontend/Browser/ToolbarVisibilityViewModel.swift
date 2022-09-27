@@ -70,6 +70,9 @@ import SwiftUI
     }
   }
   
+  /// Whether or not actions should be handled
+  var isEnabled: Bool = true
+  
   /// The current toolbar state based on previous actions sent
   @Published var toolbarState: ToolbarState = .expanded {
     didSet {
@@ -144,6 +147,7 @@ import SwiftUI
   }
   
   func send(action: Action) {
+    if !isEnabled { return }
     switch action {
     case .dragged(let snapshot, let panData):
       if initialSnapshot == nil {

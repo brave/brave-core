@@ -21,12 +21,18 @@ enum DismissPolicy {
   case explicit
 }
 
+enum PresentationOrigin {
+  case top
+  case bottom
+}
+
 protocol BraveNotification: AnyObject {
   var priority: BraveNotificationPriority { get }
   var view: UIView { get }
   var dismissAction: (() -> Void)? { get set }
   var dismissPolicy: DismissPolicy { get }
   var id: String { get }
+  var presentationOrigin: PresentationOrigin { get }
   
   func willDismiss(timedOut: Bool)
 }
@@ -34,4 +40,5 @@ protocol BraveNotification: AnyObject {
 extension BraveNotification {
   public var dismissPolicy: DismissPolicy { .automatic() }
   public var priority: BraveNotificationPriority { .high }
+  public var presentationOrigin: PresentationOrigin { .top }
 }

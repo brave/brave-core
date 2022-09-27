@@ -18,6 +18,14 @@ class HeaderContainerView: UIView {
   let collapsedBarContainerView = UIControl().then {
     $0.alpha = 0
   }
+  var isUsingBottomBar: Bool = false {
+    didSet {
+      updateConstraints()
+    }
+  }
+  let line = UIView().then {
+    $0.backgroundColor = .urlBarSeparator
+  }
   
   /// Container view for both the expanded & collapsed variants of the bar
   let contentView = UIView()
@@ -30,6 +38,7 @@ class HeaderContainerView: UIView {
     addSubview(contentView)
     contentView.addSubview(expandedBarStackView)
     contentView.addSubview(collapsedBarContainerView)
+    addSubview(line)
     
     contentView.snp.makeConstraints {
       $0.edges.equalToSuperview()
@@ -56,6 +65,28 @@ class HeaderContainerView: UIView {
         self?.updateColors(PrivateBrowsingManager.shared.isPrivateBrowsing)
       }
       .store(in: &cancellables)
+  }
+  
+  override func updateConstraints() {
+    super.updateConstraints()
+    
+    collapsedBarContainerView.snp.remakeConstraints {
+      if isUsingBottomBar {
+        $0.top.equalToSuperview()
+      } else {
+        $0.bottom.equalToSuperview()
+      }
+      $0.leading.trailing.equalTo(safeAreaLayoutGuide)
+    }
+    line.snp.remakeConstraints {
+      if self.isUsingBottomBar {
+        $0.bottom.equalTo(self.snp.top)
+      } else {
+        $0.top.equalTo(self.snp.bottom)
+      }
+      $0.leading.trailing.equalToSuperview()
+      $0.height.equalTo(1.0 / UIScreen.main.scale)
+    }
   }
   
   private func updateColors(_ isPrivateBrowsing: Bool) {

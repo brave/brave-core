@@ -50,11 +50,6 @@ open class PopoverNavigationController: UINavigationController, PopoverContentCo
     fatalError()
   }
 
-  public override var additionalSafeAreaInsets: UIEdgeInsets {
-    get { return UIEdgeInsets(top: PopoverArrowHeight, left: 0, bottom: 0, right: 0) }
-    set {}
-  }
-
   open override func viewDidLoad() {
     super.viewDidLoad()
     activateFullscreenDismiss()

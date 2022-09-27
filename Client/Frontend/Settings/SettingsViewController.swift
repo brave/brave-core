@@ -124,6 +124,7 @@ class SettingsViewController: TableViewController {
       featuresSection,
       generalSection,
       displaySection,
+      tabsSection,
       securitySection,
       supportSection,
       aboutSection,
@@ -322,6 +323,66 @@ class SettingsViewController: TableViewController {
     return general
   }()
 
+  private lazy var tabsSection: Static.Section = {
+    var tabs = Static.Section(header: .title(Strings.tabsSettingsSectionTitle), rows: [])
+    
+    if UIDevice.current.userInterfaceIdiom == .phone {
+      tabs.rows.append(
+        Row(cellClass: LocationViewPositionPickerCell.self)
+      )
+    }
+    
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      tabs.rows.append(
+        Row(text: Strings.showTabsBar, image: UIImage(named: "settings-show-tab-bar", in: .current, compatibleWith: nil)!.template, accessory: .switchToggle(value: Preferences.General.tabBarVisibility.value == TabBarVisibility.always.rawValue, { Preferences.General.tabBarVisibility.value = $0 ? TabBarVisibility.always.rawValue : TabBarVisibility.never.rawValue }), cellClass: MultilineValue1Cell.self)
+      )
+    } else {
+      var row = Row(text: Strings.showTabsBar, detailText: TabBarVisibility(rawValue: Preferences.General.tabBarVisibility.value)?.displayString, image: UIImage(named: "settings-show-tab-bar", in: .current, compatibleWith: nil)!.template, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self)
+      row.selection = { [unowned self] in
+        // Show options for tab bar visibility
+        let optionsViewController = OptionSelectionViewController<TabBarVisibility>(
+          options: TabBarVisibility.allCases,
+          selectedOption: TabBarVisibility(rawValue: Preferences.General.tabBarVisibility.value),
+          optionChanged: { _, option in
+            Preferences.General.tabBarVisibility.value = option.rawValue
+            self.dataSource.reloadCell(row: row, section: tabs, displayText: option.displayString)
+          }
+        )
+        optionsViewController.headerText = Strings.showTabsBar
+        self.navigationController?.pushViewController(optionsViewController, animated: true)
+      }
+      tabs.rows.append(row)
+    }
+    
+    let autoCloseSetting =
+    Preferences
+      .AutoCloseTabsOption(rawValue: Preferences.General.autocloseTabs.value)?.displayString
+    var autoCloseTabsRow =
+    Row(
+      text: Strings.Settings.autocloseTabsSetting,
+      detailText: autoCloseSetting, image: UIImage(named: "settings-autoclose-tabs", in: .current, compatibleWith: nil)!.template,
+      accessory: .disclosureIndicator,
+      cellClass: MultilineSubtitleCell.self)
+    autoCloseTabsRow.selection = { [unowned self] in
+      let optionsViewController = OptionSelectionViewController<Preferences.AutoCloseTabsOption>(
+        options: Preferences.AutoCloseTabsOption.allCases,
+        selectedOption:
+          Preferences.AutoCloseTabsOption(rawValue: Preferences.General.autocloseTabs.value),
+        optionChanged: { _, option in
+          Preferences.General.autocloseTabs.value = option.rawValue
+          self.dataSource.reloadCell(row: autoCloseTabsRow, section: tabs, displayText: option.displayString)
+        }
+      )
+      optionsViewController.headerText = Strings.Settings.autocloseTabsSetting
+      optionsViewController.footerText = Strings.Settings.autocloseTabsSettingFooter
+      self.navigationController?.pushViewController(optionsViewController, animated: true)
+    }
+    
+    tabs.rows.append(autoCloseTabsRow)
+    
+    return tabs
+  }()
+  
   private lazy var displaySection: Static.Section = {
     var display = Static.Section(
       header: .title(Strings.displaySettingsSection),
@@ -361,66 +422,16 @@ class SettingsViewController: TableViewController {
       self.navigationController?.pushViewController(optionsViewController, animated: true)
     }
     display.rows.append(row)
+    display.rows.append(Row(
+      text: Strings.NTP.settingsTitle,
+      selection: { [unowned self] in
+        self.navigationController?.pushViewController(NTPTableViewController(), animated: true)
+      },
+      image: UIImage(named: "settings-ntp", in: .current, compatibleWith: nil)!.template,
+      accessory: .disclosureIndicator,
+      cellClass: MultilineValue1Cell.self
+    ))
 
-    display.rows.append(
-      Row(
-        text: Strings.NTP.settingsTitle,
-        selection: { [unowned self] in
-          self.navigationController?.pushViewController(NTPTableViewController(), animated: true)
-        },
-        image: UIImage(named: "settings-ntp", in: .current, compatibleWith: nil)!.template,
-        accessory: .disclosureIndicator,
-        cellClass: MultilineValue1Cell.self
-      ))
-
-    if UIDevice.current.userInterfaceIdiom == .pad {
-      display.rows.append(
-        Row(text: Strings.showTabsBar, image: UIImage(named: "settings-show-tab-bar", in: .current, compatibleWith: nil)!.template, accessory: .switchToggle(value: Preferences.General.tabBarVisibility.value == TabBarVisibility.always.rawValue, { Preferences.General.tabBarVisibility.value = $0 ? TabBarVisibility.always.rawValue : TabBarVisibility.never.rawValue }), cellClass: MultilineValue1Cell.self)
-      )
-    } else {
-      var row = Row(text: Strings.showTabsBar, detailText: TabBarVisibility(rawValue: Preferences.General.tabBarVisibility.value)?.displayString, image: UIImage(named: "settings-show-tab-bar", in: .current, compatibleWith: nil)!.template, accessory: .disclosureIndicator, cellClass: MultilineSubtitleCell.self)
-      row.selection = { [unowned self] in
-        // Show options for tab bar visibility
-        let optionsViewController = OptionSelectionViewController<TabBarVisibility>(
-          options: TabBarVisibility.allCases,
-          selectedOption: TabBarVisibility(rawValue: Preferences.General.tabBarVisibility.value),
-          optionChanged: { _, option in
-            Preferences.General.tabBarVisibility.value = option.rawValue
-            self.dataSource.reloadCell(row: row, section: display, displayText: option.displayString)
-          }
-        )
-        optionsViewController.headerText = Strings.showTabsBar
-        self.navigationController?.pushViewController(optionsViewController, animated: true)
-      }
-      display.rows.append(row)
-    }
-
-    let autoCloseSetting =
-      Preferences
-      .AutoCloseTabsOption(rawValue: Preferences.General.autocloseTabs.value)?.displayString
-    var autoCloseTabsRow =
-      Row(
-        text: Strings.Settings.autocloseTabsSetting,
-        detailText: autoCloseSetting, image: UIImage(named: "settings-autoclose-tabs", in: .current, compatibleWith: nil)!.template,
-        accessory: .disclosureIndicator,
-        cellClass: MultilineSubtitleCell.self)
-    autoCloseTabsRow.selection = { [unowned self] in
-      let optionsViewController = OptionSelectionViewController<Preferences.AutoCloseTabsOption>(
-        options: Preferences.AutoCloseTabsOption.allCases,
-        selectedOption:
-          Preferences.AutoCloseTabsOption(rawValue: Preferences.General.autocloseTabs.value),
-        optionChanged: { _, option in
-          Preferences.General.autocloseTabs.value = option.rawValue
-          self.dataSource.reloadCell(row: autoCloseTabsRow, section: display, displayText: option.displayString)
-        }
-      )
-      optionsViewController.headerText = Strings.Settings.autocloseTabsSetting
-      optionsViewController.footerText = Strings.Settings.autocloseTabsSettingFooter
-      self.navigationController?.pushViewController(optionsViewController, animated: true)
-    }
-
-    display.rows.append(autoCloseTabsRow)
-    
     // We do NOT persistently save page-zoom settings in Private Browsing
     if !PrivateBrowsingManager.shared.isPrivateBrowsing {
       display.rows.append(

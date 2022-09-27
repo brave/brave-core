@@ -53,15 +53,6 @@ class TabsBarViewController: UIViewController {
     return view
   }()
 
-  private let bottomLine = UIView().then {
-    $0.backgroundColor = .init { traitCollection in
-      if traitCollection.userInterfaceStyle == .dark {
-        return UIColor(white: 0.0, alpha: 0.3)
-      }
-      return .braveSeparator
-    }
-  }
-
   private weak var tabManager: TabManager?
   private var tabList = WeakList<Tab>()
 
@@ -102,17 +93,9 @@ class TabsBarViewController: UIViewController {
       }
     }
 
-    view.addSubview(bottomLine)
-
     collectionView.snp.makeConstraints { make in
       make.bottom.top.left.equalTo(view)
       make.right.equalTo(view).inset(UX.TabsBar.buttonWidth)
-    }
-
-    bottomLine.snp.makeConstraints { make in
-      make.height.equalTo(1.0 / UIScreen.main.scale)
-      make.bottom.equalTo(view.snp.bottom)
-      make.left.right.equalTo(view)
     }
 
     var newTabMenu: [UIAction] = []

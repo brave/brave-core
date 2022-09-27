@@ -138,6 +138,7 @@ extension BrowserViewController {
 
       let controller = PopupViewController(rootView: privacyEverywhereView)
       present(controller, animated: true, completion: nil)
+      view.endEditing(true)
       isOnboardingOrFullScreenCalloutPresented = true
     }
   }

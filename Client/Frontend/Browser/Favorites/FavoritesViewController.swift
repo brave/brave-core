@@ -218,7 +218,7 @@ class FavoritesViewController: UIViewController {
 extension FavoritesViewController: KeyboardHelperDelegate {
   func updateKeyboardInset(_ state: KeyboardState, animated: Bool = true) {
     if collectionView.bounds.size == .zero { return }
-    let keyboardHeight = state.intersectionHeightForView(self.view) - view.safeAreaInsets.bottom
+    let keyboardHeight = state.intersectionHeightForView(self.view) - view.safeAreaInsets.bottom + additionalSafeAreaInsets.bottom
     UIViewPropertyAnimator(duration: animated ? state.animationDuration : 0.0, curve: state.animationCurve) {
       self.collectionView.contentInset = self.collectionView.contentInset.with {
         $0.bottom = keyboardHeight

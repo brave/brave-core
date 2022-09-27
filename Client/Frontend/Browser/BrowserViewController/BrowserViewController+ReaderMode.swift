@@ -114,12 +114,6 @@ extension BrowserViewController {
       readerModeBar.delegate = self
       view.insertSubview(readerModeBar, belowSubview: header)
       self.readerModeBar = readerModeBar
-
-      readerModeBar.snp.makeConstraints { make in
-        make.top.equalTo(self.header.snp.bottom)
-        make.height.equalTo(UIConstants.toolbarHeight)
-        make.leading.trailing.equalTo(self.view)
-      }
     }
 
     updateViewConstraints()
