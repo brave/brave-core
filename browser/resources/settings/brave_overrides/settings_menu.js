@@ -136,6 +136,7 @@ RegisterStyleOverride(
         height: 170%;
         width: 4px;
         border-radius: 0px 2px 2px 0px;
+        background: linear-gradient(122.53deg, #4C54D2 0%, #BF14A2 56.25%, #F73A1C 100%)
       }
 
       @media (prefers-color-scheme: dark) {
