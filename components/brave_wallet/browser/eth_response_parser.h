@@ -37,6 +37,7 @@ absl::optional<std::vector<std::string>> DecodeEthCallResponse(
     const std::vector<std::string>& abi_types);
 bool ParseEthEstimateGas(const std::string& json, std::string* result);
 bool ParseEthGasPrice(const std::string& json, std::string* result);
+bool ParseEthGetLogs(const std::string& json, std::vector<Log>* logs);
 
 bool ParseEnsResolverContentHash(const std::string& json,
                                  std::vector<uint8_t>* content_hash);

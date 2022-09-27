@@ -223,6 +223,12 @@ void BraveRequestHandler::RunNextCallback(
     return;
   }
 
+  if (ctx->pending_error.has_value()) {
+    RunCallbackForRequestIdentifier(ctx->request_identifier,
+                                    ctx->pending_error.value());
+    return;
+  }
+
   // Continue processing callbacks until we hit one that returns PENDING
   int rv = net::OK;
 

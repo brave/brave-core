@@ -1,4 +1,3 @@
-
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -362,22 +361,16 @@ int BraveSessionCache::FarbledInteger(FarbleKey key,
 bool BraveSessionCache::AllowFontFamily(
     blink::WebContentSettingsClient* settings,
     const AtomicString& family_name) {
-  if (!CanRestrictFontFamiliesOnThisPlatform() || !farbling_enabled_ ||
-      !settings || !settings->IsReduceLanguageEnabled())
+  if (!farbling_enabled_ || !settings || !settings->IsReduceLanguageEnabled())
     return true;
   switch (settings->GetBraveFarblingLevel()) {
     case BraveFarblingLevel::OFF:
       break;
     case BraveFarblingLevel::BALANCED:
     case BraveFarblingLevel::MAXIMUM: {
-      if (GetAllowedFontFamilies().contains(family_name.LowerASCII().Ascii()))
+      if (AllowFontByFamilyName(family_name,
+                                blink::DefaultLanguage().GetString().Left(2)))
         return true;
-#if BUILDFLAG(IS_WIN)
-      WTF::String locale = blink::DefaultLanguage().GetString().Left(2);
-      if (GetAdditionalAllowedFontFamiliesByLocale(locale).contains(
-              family_name.LowerASCII().Ascii()))
-        return true;
-#endif
       FarblingPRNG prng = MakePseudoRandomGenerator();
       prng.discard(family_name.Impl()->GetHash() % 16);
       return ((prng() % 2) == 0);

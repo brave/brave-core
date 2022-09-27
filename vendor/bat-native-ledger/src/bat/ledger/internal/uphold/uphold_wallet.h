@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "bat/ledger/internal/endpoints/post_connect/post_connect.h"
 #include "bat/ledger/internal/uphold/uphold_capabilities.h"
 #include "bat/ledger/internal/uphold/uphold_user.h"
 #include "bat/ledger/ledger.h"
@@ -38,7 +39,7 @@ class UpholdWallet {
 
   void OnConnectWallet(ledger::ResultCallback,
                        std::string&& id,
-                       mojom::Result) const;
+                       endpoints::PostConnect::Result&&) const;
 
   void OnTransferTokens(ledger::ResultCallback,
                         mojom::Result,

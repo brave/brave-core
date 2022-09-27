@@ -717,11 +717,13 @@ void KeyringService::CreateWallet(const std::string& password,
 
   auto* keyring = CreateKeyring(mojom::kDefaultKeyringId, password);
   if (keyring) {
-    auto address =
+    const auto address =
         AddAccountForKeyring(mojom::kDefaultKeyringId, GetAccountName(1));
     if (address) {
       SetPrefForKeyring(prefs_, kSelectedAccount, base::Value(*address),
                         mojom::kDefaultKeyringId);
+      json_rpc_service_->DiscoverAssets(
+          mojom::kMainnetChainId, mojom::CoinType::ETH, {address.value()});
     }
   }
 
@@ -753,11 +755,13 @@ void KeyringService::RestoreWallet(const std::string& mnemonic,
   auto* keyring = RestoreKeyring(mojom::kDefaultKeyringId, mnemonic, password,
                                  is_legacy_brave_wallet);
   if (keyring && !keyring->GetAccountsNumber()) {
-    auto address =
+    const auto address =
         AddAccountForKeyring(mojom::kDefaultKeyringId, GetAccountName(1));
     if (address) {
       SetPrefForKeyring(prefs_, kSelectedAccount, base::Value(*address),
                         mojom::kDefaultKeyringId);
+      json_rpc_service_->DiscoverAssets(
+          mojom::kMainnetChainId, mojom::CoinType::ETH, {address.value()});
     }
   }
 
@@ -899,6 +903,8 @@ void KeyringService::AddAccount(const std::string& account_name,
   if (address) {
     SetSelectedAccountForCoinSilently(coin, address.value());
     SetSelectedCoin(prefs_, coin);
+    json_rpc_service_->DiscoverAssets(mojom::kMainnetChainId,
+                                      mojom::CoinType::ETH, {address.value()});
   }
 
   NotifyAccountsChanged();
@@ -1337,6 +1343,8 @@ absl::optional<std::string> KeyringService::ImportAccountForKeyring(
   SetSelectedAccountForCoinSilently(GetCoinForKeyring(keyring_id), address);
   SetSelectedCoin(prefs_, GetCoinForKeyring(keyring_id));
 
+  json_rpc_service_->DiscoverAssets(mojom::kMainnetChainId,
+                                    mojom::CoinType::ETH, {address});
   NotifyAccountsChanged();
 
   return address;
@@ -1419,7 +1427,7 @@ void KeyringService::AddHardwareAccounts(
     return;
 
   bool account_selected = false;
-
+  std::vector<std::string> addresses;
   for (const auto& info : infos) {
     const auto& hardware_vendor = info->hardware_vendor;
     std::string device_id = info->device_id;
@@ -1450,7 +1458,7 @@ void KeyringService::AddHardwareAccounts(
     }
 
     meta_value->SetKey(info->address, std::move(hw_account));
-
+    addresses.push_back(info->address);
     if (!account_selected) {
       SetSelectedAccountForCoinSilently(infos[0]->coin, infos[0]->address);
       SetSelectedCoin(prefs_, infos[0]->coin);
@@ -1458,6 +1466,8 @@ void KeyringService::AddHardwareAccounts(
     }
   }
 
+  json_rpc_service_->DiscoverAssets(mojom::kMainnetChainId,
+                                    mojom::CoinType::ETH, addresses);
   NotifyAccountsChanged();
 }
 

@@ -134,7 +134,6 @@
 <translation id="4065288863231444640">让 Brave 在后台运行</translation>
 <translation id="8148611988012584308">自定义及控制 Brave</translation>
 <translation id="4427306783828095590">“增强型保护”选项在防范网上诱骗和恶意软件方面更高一筹</translation>
-<translation id="5112116809696021727">如需确认您设备上的操作系统是否是最新版本，请前往 <ph name="LINK_BEGIN"/>Brave 操作系统设置<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">欢迎使用 Brave；已打开新的浏览器窗口</translation>
 <translation id="2633397153656205379">Brave 未能更新，因为出了点问题。<ph name="BEGIN_LINK"/>请解决导致 Brave 更新失败的问题<ph name="END_LINK"/>。</translation>
 <translation id="3679799810790990472">使用一份新的 Brave 个人资料继续浏览？</translation>
@@ -296,7 +295,6 @@ Brave 无法恢复您的设置。</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>您可以如何管理自己的数据<ph name="END_BOLD"/>：为了保护您的隐私，如果您的兴趣保留时间超过 4 周，系统便会自动将其删除。随着您继续浏览，某项兴趣可能会再次出现在列表中。您也可以移除不希望纳入 Brave 考虑范围的兴趣。</translation>
 <translation id="2925193881330501265">您之前登录 Brave 时使用的帐号为 <ph name="USER_EMAIL_ADDRESS"/>，请使用同一帐号再次登录。</translation>
 <translation id="6915252145142862992">这是 Brave 的并行安装，您无法将此浏览器设为默认浏览器。</translation>
-<translation id="1975057837349076194">如果此页面中未显示某项设置，请在 <ph name="LINK_BEGIN"/>Brave 操作系统设置<ph name="LINK_END"/>中查找</translation>
 <translation id="7685904775439037072">一旦 Brave 获得了使用权限，网站便能请求您向其授予使用权限。</translation>
 <translation id="80471789339884597">感谢您完成安装。您必须重启所有浏览器才能使用 <ph name="BUNDLE_NAME"/>。</translation>
 <translation id="2061155704815580583">Brave 需要为此网站授予位置信息权限</translation>

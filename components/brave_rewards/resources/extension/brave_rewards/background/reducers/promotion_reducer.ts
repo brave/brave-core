@@ -42,7 +42,7 @@ export const promotionPanelReducer: Reducer<RewardsExtension.State | undefined> 
   const payload = action.payload
   switch (action.type) {
     case types.FETCH_PROMOTIONS: {
-      chrome.braveRewards.fetchPromotions()
+      chrome.braveRewards.fetchPromotions(() => null)
       break
     }
     case types.ON_PROMOTIONS: {

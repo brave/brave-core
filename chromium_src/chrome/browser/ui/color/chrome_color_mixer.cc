@@ -16,9 +16,8 @@ namespace {
 void AddBraveColorMixer(ui::ColorProvider* provider,
                         const ui::ColorProviderManager::Key& key) {
 #if !BUILDFLAG(IS_ANDROID)
-  key.color_mode == ui::ColorProviderManager::ColorMode::kDark
-      ? AddBraveDarkThemeColorMixer(provider, key)
-      : AddBraveLightThemeColorMixer(provider, key);
+  AddBraveThemeColorMixer(provider, key);
+  AddBravifiedChromeThemeColorMixer(provider, key);
 #endif  // #if !BUILDFLAG(IS_ANDROID)
 }
 

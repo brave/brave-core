@@ -195,10 +195,6 @@ class RewardsDOMHandler
 
   void OnGetPaymentId(ledger::mojom::RewardsWalletPtr wallet);
 
-  void GetWalletPassphrase(const base::Value::List& args);
-
-  void OnGetRewardsWalletPassphrase(const std::string& pass);
-
   void GetOnboardingStatus(const base::Value::List& args);
   void EnableRewards(const base::Value::List& args);
   void GetExternalWalletProviders(const base::Value::List& args);
@@ -509,10 +505,6 @@ void RewardsDOMHandler::RegisterMessages() {
       base::BindRepeating(&RewardsDOMHandler::GetPaymentId,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "brave_rewards.getWalletPassphrase",
-      base::BindRepeating(&RewardsDOMHandler::GetWalletPassphrase,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
       "brave_rewards.getOnboardingStatus",
       base::BindRepeating(&RewardsDOMHandler::GetOnboardingStatus,
                           base::Unretained(this)));
@@ -769,7 +761,7 @@ void RewardsDOMHandler::OnFetchPromotions(
 void RewardsDOMHandler::FetchPromotions(const base::Value::List& args) {
   if (rewards_service_) {
     AllowJavascript();
-    rewards_service_->FetchPromotions();
+    rewards_service_->FetchPromotions(base::DoNothing());
   }
 }
 
@@ -2002,27 +1994,6 @@ void RewardsDOMHandler::OnGetPaymentId(ledger::mojom::RewardsWalletPtr wallet) {
   }
 
   CallJavascriptFunction("brave_rewards.paymentId", base::Value(payment_id));
-}
-
-void RewardsDOMHandler::GetWalletPassphrase(const base::Value::List& args) {
-  if (!rewards_service_) {
-    return;
-  }
-
-  AllowJavascript();
-  rewards_service_->GetRewardsWalletPassphrase(
-      base::BindOnce(&RewardsDOMHandler::OnGetRewardsWalletPassphrase,
-                     weak_factory_.GetWeakPtr()));
-}
-
-void RewardsDOMHandler::OnGetRewardsWalletPassphrase(
-    const std::string& passphrase) {
-  if (!IsJavascriptAllowed()) {
-    return;
-  }
-
-  CallJavascriptFunction("brave_rewards.walletPassphrase",
-                         base::Value(passphrase));
 }
 
 void RewardsDOMHandler::GetOnboardingStatus(const base::Value::List& args) {

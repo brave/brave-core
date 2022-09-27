@@ -149,7 +149,6 @@ Heimildir sem þú hefur þegar veitt vefsvæðum og forritum kunna að gilda á
 <translation id="4065288863231444640">Leyfa Brave að keyra í bakgrunni</translation>
 <translation id="8148611988012584308">Sérsníða og stjórna Brave</translation>
 <translation id="4427306783828095590">Aukin vernd gengur lengra í að loka á vefveiðar og spilliforrit</translation>
-<translation id="5112116809696021727">Opnaðu <ph name="LINK_BEGIN"/>stillingar ChromeOS<ph name="LINK_END"/> til að athuga hvort tækið sé uppfært</translation>
 <translation id="7084397798469173252">Velkomin(n) í Brave; nýr vafragluggi opnaður</translation>
 <translation id="2633397153656205379">Brave uppfærðist ekki þar sem eitthvað fór úrskeiðis. <ph name="BEGIN_LINK"/>Lagaðu uppfærsluvandamál Brave og uppfærslur sem mistókust.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Halda áfram á nýjum Brave prófíl?</translation>
@@ -314,8 +313,6 @@ Brave getur ekki endurheimt stillingarnar þínar.</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Svona geturðu stjórnað gögnunum þínum:<ph name="END_BOLD"/> Til að gæta persónuverndar þinnar eyðum við áhugasviðunum þínum sem eru eldri en 4 vikna sjálfkrafa. Áhugasvið kann að birtast aftur á listanum þegar þú heldur áfram að vafra. Þú getur einnig fjarlægt áhugasvið sem þú vilt ekki að Brave taki tillit til.</translation>
 <translation id="2925193881330501265">Þú varst skráð(ur) inn í Brave sem <ph name="USER_EMAIL_ADDRESS"/>. Notaðu sama reikning til að skrá þig inn aftur.</translation>
 <translation id="6915252145142862992">Þetta er aukaleg uppsetning á Brave sem ekki er hægt að gera að sjálfgefnum vafra.</translation>
-<translation id="1975057837349076194">Ef stilling sést ekki á þessari síðu skaltu athuga <ph name="LINK_BEGIN"/>
-      stillingar ChromeOS<ph name="LINK_END"/></translation>
 <translation id="1743665722170667430">Viðbætur, forrit og þemu frá óþekktum uppruna geta skaðað tækið þitt. Brave mælir með að sækja slíkar skrár aðeins í <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/></translation>
 <translation id="7685904775439037072">Þegar Brave hefur aðgang munu vefsvæði geta beðið þig um aðgang.</translation>
 <translation id="80471789339884597">Takk fyrir að setja upp. Þú þarft að endurræsa alla vafra áður en þú getur notað <ph name="BUNDLE_NAME"/>.</translation>

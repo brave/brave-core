@@ -37,6 +37,7 @@ import { GetAccountsHardwareOperationResult } from '../hardware/types'
 import EthereumLedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
 import { AllNetworksOption } from '../../options/network-filter-options'
+import { AllAccountsOption } from '../../options/account-filter-options'
 import SolanaLedgerBridgeKeyring from '../hardware/ledgerjs/sol_ledger_bridge_keyring'
 import FilecoinLedgerBridgeKeyring from '../hardware/ledgerjs/fil_ledger_bridge_keyring'
 
@@ -530,7 +531,7 @@ export function refreshTokenPriceHistory (selectedPortfolioTimeline: BraveWallet
     const apiProxy = getAPIProxy()
     const { assetRatioService } = apiProxy
 
-    const { wallet: { accounts, defaultCurrencies, userVisibleTokensInfo, selectedNetworkFilter, networkList } } = getState()
+    const { wallet: { accounts, defaultCurrencies, userVisibleTokensInfo, selectedNetworkFilter, selectedAccountFilter, networkList } } = getState()
 
     // By default we do not fetch Price history for Test Networks Tokens if
     // Selected Network Filter is all
@@ -545,8 +546,14 @@ export function refreshTokenPriceHistory (selectedPortfolioTimeline: BraveWallet
         // Fetch Price History for Tokens by Selected Network Filter's chainId
         : userVisibleTokensInfo.filter((token) => token.chainId === selectedNetworkFilter.chainId)
 
+    // If a selectedAccountFilter is selected, we only return the selectedAccountFilter
+    // in the the list.
+    const accountsList = selectedAccountFilter.id === AllAccountsOption.id
+      ? accounts
+      : [selectedAccountFilter]
+
     // Get all Price History
-    const priceHistory = await Promise.all(getFlattenedAccountBalances(accounts, filteredTokenInfo)
+    const priceHistory = await Promise.all(getFlattenedAccountBalances(accountsList, filteredTokenInfo)
       // If a tokens balance is 0 we do not make an unnecessary api call for price history of that token
       .filter(({ token, balance }) => !token.isErc721 && balance > 0)
       .map(async ({ token }) => ({
@@ -560,7 +567,7 @@ export function refreshTokenPriceHistory (selectedPortfolioTimeline: BraveWallet
     )
 
     // Combine Price History and Balances
-    const priceHistoryWithBalances = accounts.map((account) => {
+    const priceHistoryWithBalances = accountsList.map((account) => {
       return filteredTokenInfo
         .filter((token) => !token.isErc721)
         .map((token) => {

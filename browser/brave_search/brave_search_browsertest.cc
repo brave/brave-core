@@ -5,10 +5,13 @@
 
 #include <memory>
 
+#include "base/callback.h"
+#include "base/containers/contains.h"
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
+#include "bat/ads/pref_names.h"
 #include "brave/components/brave_search/browser/brave_search_fallback_host.h"
 #include "brave/components/brave_search/common/features.h"
 #include "brave/components/constants/brave_paths.h"
@@ -20,6 +23,7 @@
 #include "chrome/test/base/search_test_utils.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/network_session_configurator/common/network_switches.h"
+#include "components/prefs/pref_service.h"
 #include "components/search_engines/template_url_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/test/browser_test.h"
@@ -30,6 +34,8 @@
 #include "net/test/embedded_test_server/http_response.h"
 
 using extensions::ExtensionBrowserTest;
+using RequestExpectationsCallback =
+    base::RepeatingCallback<void(const net::test_server::HttpRequest& request)>;
 
 namespace {
 
@@ -37,6 +43,8 @@ const char kEmbeddedTestServerDirectory[] = "brave-search";
 const char kAllowedDomain[] = "search.brave.com";
 const char kAllowedDomainDev[] = "search-dev.brave.com";
 const char kNotAllowedDomain[] = "brave.com";
+const char kAdsStatusHeaderName[] = "X-Brave-Ads-Enabled";
+const char kAdsStatusHeaderValue[] = "1";
 const char kBackupSearchContent[] = "<html><body>results</body></html>";
 const char kScriptDefaultAPIExists[] =
     "window.domAutomationController.send("
@@ -119,6 +127,10 @@ class BraveSearchTest : public InProcessBrowserTest {
 
   std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
       const net::test_server::HttpRequest& request) {
+    if (request_expectations_callback_) {
+      request_expectations_callback_.Run(request);
+    }
+
     GURL url = request.GetURL();
     auto path = url.path_piece();
 
@@ -141,10 +153,15 @@ class BraveSearchTest : public InProcessBrowserTest {
 
   net::EmbeddedTestServer* https_server() { return https_server_.get(); }
 
+  void SetRequestExpectationsCallback(RequestExpectationsCallback callback) {
+    request_expectations_callback_ = std::move(callback);
+  }
+
  protected:
   base::test::ScopedFeatureList feature_list_;
 
  private:
+  RequestExpectationsCallback request_expectations_callback_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
 };
@@ -300,4 +317,24 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTestDisabled, DefaultAPIInvisibleKnownHost) {
   EXPECT_TRUE(
       ExecuteScriptAndExtractBool(contents, kScriptDefaultAPIExists, &has_api));
   EXPECT_FALSE(has_api);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeader) {
+  SetRequestExpectationsCallback(
+      base::BindRepeating([](const net::test_server::HttpRequest& request) {
+        const GURL url = request.GetURL();
+        if (url.path_piece() == "/bravesearch.html") {
+          EXPECT_TRUE(base::Contains(request.headers, kAdsStatusHeaderName));
+          EXPECT_EQ(kAdsStatusHeaderValue,
+                    request.headers.at(kAdsStatusHeaderName));
+        } else {
+          EXPECT_FALSE(base::Contains(request.headers, kAdsStatusHeaderName));
+        }
+      }));
+
+  PrefService* prefs = browser()->profile()->GetPrefs();
+  prefs->SetBoolean(ads::prefs::kEnabled, true);
+
+  GURL url = https_server()->GetURL(kAllowedDomain, "/bravesearch.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 }

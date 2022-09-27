@@ -68,7 +68,7 @@ TEST_F(BraveFontWhitelistRenderViewTest, MAYBE_FontLocalSource) {
   // Clear the font whitelist. This creates a situation where we know there is a
   // font installed locally (Helvetica, preinstalled on every Mac) that is not
   // on the font whitelist.
-  brave::set_allowed_font_families_for_testing(
+  brave::set_font_whitelist_for_testing(
       true,
       base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{}));
 

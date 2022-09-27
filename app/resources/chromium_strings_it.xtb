@@ -134,7 +134,6 @@
 <translation id="4065288863231444640">Lascia Brave in esecuzione in background</translation>
 <translation id="8148611988012584308">Personalizza e controlla Brave</translation>
 <translation id="4427306783828095590">La protezione avanzata blocca malware e tentativi di phishing con maggiore efficacia</translation>
-<translation id="5112116809696021727">Per controllare se il tuo dispositivo è aggiornato, vai a <ph name="LINK_BEGIN"/>Impostazioni di Chrome OS<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Ti diamo il benvenuto in Brave; nuova finestra del browser aperta</translation>
 <translation id="2633397153656205379">Si è verificato un errore: Brave non si è aggiornato. <ph name="BEGIN_LINK"/>Risolvi i problemi di aggiornamento e gli aggiornamenti non riusciti di Brave.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Vuoi continuare con un nuovo profilo Brave?</translation>
@@ -296,8 +295,6 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Come puoi gestire i tuoi dati:<ph name="END_BOLD"/> per tutelare la tua privacy, eliminiamo automaticamente i tuoi interessi risalenti a più di 4 settimane prima della data corrente. Mentre continui a navigare, un interesse potrebbe essere nuovamente visualizzato nell'elenco. Puoi anche rimuovere gli interessi che non vuoi che Brave prenda in considerazione.</translation>
 <translation id="2925193881330501265">Hai eseguito l'accesso a Brave come <ph name="USER_EMAIL_ADDRESS"/>. Utilizza lo stesso account per eseguire di nuovo l'accesso.</translation>
 <translation id="6915252145142862992">Questa è un'installazione secondaria, di conseguenza Brave non può essere impostato come browser predefinito.</translation>
-<translation id="1975057837349076194">Se un'impostazione non viene mostrata in questa pagina, cercala nelle <ph name="LINK_BEGIN"/>
-     impostazioni di Chrome OS<ph name="LINK_END"/>.</translation>
 <translation id="7685904775439037072">Dopo che Brave avrà ottenuto l'accesso, i siti web potranno chiederti l'accesso.</translation>
 <translation id="80471789339884597">L'installazione è terminata. Dovrai riavviare tutti i browser per poter utilizzare <ph name="BUNDLE_NAME"/>.</translation>
 <translation id="2061155704815580583">Brave deve avere l'autorizzazione di accesso alla posizione per questo sito</translation>

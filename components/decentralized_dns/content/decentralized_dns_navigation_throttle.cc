@@ -11,6 +11,8 @@
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/decentralized_dns/content/decentralized_dns_interstitial_controller_client.h"
 #include "brave/components/decentralized_dns/content/decentralized_dns_opt_in_page.h"
+#include "brave/components/decentralized_dns/content/ens_offchain_lookup_interstitial_controller_client.h"
+#include "brave/components/decentralized_dns/content/ens_offchain_lookup_opt_in_page.h"
 #include "brave/components/decentralized_dns/core/utils.h"
 #include "components/prefs/pref_service.h"
 #include "components/security_interstitials/content/security_interstitial_tab_helper.h"
@@ -68,6 +70,20 @@ DecentralizedDnsNavigationThrottle::WillStartRequest() {
   return content::NavigationThrottle::PROCEED;
 }
 
+content::NavigationThrottle::ThrottleCheckResult
+DecentralizedDnsNavigationThrottle::WillFailRequest() {
+  auto* handle = navigation_handle();
+  if (handle &&
+      handle->GetNetErrorCode() == net::ERR_ENS_OFFCHAIN_LOOKUP_NOT_SELECTED) {
+    base::SequencedTaskRunnerHandle::Get()->PostTask(
+        FROM_HERE, base::BindOnce(&DecentralizedDnsNavigationThrottle::
+                                      ShowEnsOffchainLookupInterstitial,
+                                  weak_ptr_factory_.GetWeakPtr()));
+    return content::NavigationThrottle::DEFER;
+  }
+  return content::NavigationThrottle::PROCEED;
+}
+
 void DecentralizedDnsNavigationThrottle::ShowInterstitial() {
   content::NavigationHandle* handle = navigation_handle();
   content::WebContents* web_contents = handle->GetWebContents();
@@ -77,6 +93,28 @@ void DecentralizedDnsNavigationThrottle::ShowInterstitial() {
       std::make_unique<DecentralizedDnsInterstitialControllerClient>(
           web_contents, request_url, user_prefs_, local_state_, locale_);
   auto page = std::make_unique<DecentralizedDnsOptInPage>(
+      web_contents, handle->GetURL(), std::move(controller_client));
+
+  // Get the page content before giving up ownership of |page|.
+  std::string page_content = page->GetHTMLContents();
+
+  security_interstitials::SecurityInterstitialTabHelper::AssociateBlockingPage(
+      handle, std::move(page));
+
+  CancelDeferredNavigation(content::NavigationThrottle::ThrottleCheckResult(
+      content::NavigationThrottle::CANCEL, net::ERR_BLOCKED_BY_CLIENT,
+      page_content));
+}
+
+void DecentralizedDnsNavigationThrottle::ShowEnsOffchainLookupInterstitial() {
+  content::NavigationHandle* handle = navigation_handle();
+  content::WebContents* web_contents = handle->GetWebContents();
+  const GURL& request_url = handle->GetURL();
+
+  auto controller_client =
+      std::make_unique<EnsOffchainLookupInterstitialControllerClient>(
+          web_contents, request_url, user_prefs_, local_state_, locale_);
+  auto page = std::make_unique<EnsOffchainLookupOptInPage>(
       web_contents, handle->GetURL(), std::move(controller_client));
 
   // Get the page content before giving up ownership of |page|.

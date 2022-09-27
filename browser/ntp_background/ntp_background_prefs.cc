@@ -12,6 +12,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "services/preferences/public/cpp/dictionary_value_update.h"
 #include "services/preferences/public/cpp/scoped_pref_update.h"
 
@@ -61,6 +62,9 @@ void NTPBackgroundPrefs::RegisterPref(
   dict.Set(kRandomKey, false);
   dict.Set(kSelectedValueKey, "");
   registry->RegisterDictionaryPref(kPrefName, base::Value(std::move(dict)));
+
+  registry->RegisterListPref(kCustomImageListPrefName,
+                             base::Value(base::Value::Type::LIST));
 }
 
 void NTPBackgroundPrefs::MigrateOldPref() {
@@ -120,10 +124,24 @@ absl::variant<GURL, std::string> NTPBackgroundPrefs::GetSelectedValue() const {
   const auto* selected_value = value->FindString(kSelectedValueKey);
   DCHECK(selected_value);
 
-  if (IsColorType())
+  if (IsColorType() || IsCustomImageType())
     return *selected_value;
 
   return GURL(*selected_value);
+}
+
+void NTPBackgroundPrefs::AddCustomImageToList(const std::string& file_name) {
+  ListPrefUpdate update(service_, NTPBackgroundPrefs::kCustomImageListPrefName);
+  update->GetList().Append(file_name);
+}
+
+std::vector<std::string> NTPBackgroundPrefs::GetCustomImageList() const {
+  const auto* list = service_->GetList(kCustomImageListPrefName);
+  std::vector<std::string> result;
+  for (const auto& item : list->GetList())
+    result.push_back(item.GetString());
+
+  return result;
 }
 
 const base::Value::Dict* NTPBackgroundPrefs::GetPrefValue() const {

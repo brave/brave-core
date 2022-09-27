@@ -62,6 +62,7 @@ void ParseErrorResult(const std::string& json,
 }
 
 absl::optional<base::Value::Dict> ParseResultDict(const std::string& json);
+absl::optional<base::Value::List> ParseResultList(const std::string& json);
 bool ParseBoolResult(const std::string& json, bool* value);
 
 absl::optional<std::string> ConvertInt64ToString(const std::string& path,

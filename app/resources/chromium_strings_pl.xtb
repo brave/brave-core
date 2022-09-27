@@ -132,7 +132,6 @@
 <translation id="4065288863231444640">Zezwalaj Brave na działanie w tle</translation>
 <translation id="8148611988012584308">Dostosowywanie i kontrolowanie Brave</translation>
 <translation id="4427306783828095590">Silniejsza ochrona lepiej chroni przed phishingiem i złośliwym oprogramowaniem</translation>
-<translation id="5112116809696021727">Aby sprawdzić, czy urządzenie jest zaktualizowane, otwórz <ph name="LINK_BEGIN"/>ustawienia systemu operacyjnego Brave<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Witamy w Brave. Zostało otwarte nowe okno przeglądarki.</translation>
 <translation id="2633397153656205379">Coś poszło nie tak i nie udało się zaktualizować Brave. <ph name="BEGIN_LINK"/>Napraw nieudane aktualizacje Brave i rozwiąż inne problemy z aktualizacjami<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Kontynuować w nowym profilu Brave?</translation>
@@ -294,7 +293,6 @@ Brave nie może odzyskać ustawień.</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>W jaki sposób możesz zarządzać swoimi danymi:<ph name="END_BOLD"/> żeby chronić Twoją prywatność, automatycznie usuwamy Twoje zainteresowania, które są starsze niż 4 tygodnie. Podczas dalszego przeglądania zainteresowanie może się pojawić ponownie na liście. Możesz też usunąć zainteresowania, których Brave ma nie brać pod uwagę.</translation>
 <translation id="2925193881330501265">Byłeś zalogowany w Brave jako <ph name="USER_EMAIL_ADDRESS"/>. Zaloguj się ponownie, korzystając z tego samego konta.</translation>
 <translation id="6915252145142862992">To jest druga instalacja Brave. Nie można ustawić jej jako przeglądarki domyślnej.</translation>
-<translation id="1975057837349076194">Jeśli ustawienia nie widać na tej stronie, zajrzyj do <ph name="LINK_BEGIN"/>ustawień systemu operacyjnego Brave<ph name="LINK_END"/></translation>
 <translation id="7685904775439037072">Gdy Brave będzie mieć dostęp, strony będą mogły prosić Cię o dostęp.</translation>
 <translation id="80471789339884597">Dziękujemy za instalację. Przed rozpoczęciem korzystania z programu <ph name="BUNDLE_NAME"/> musisz ponownie uruchomić wszystkie przeglądarki.</translation>
 <translation id="2061155704815580583">Ta strona musi mieć w Brave dostęp do lokalizacji</translation>

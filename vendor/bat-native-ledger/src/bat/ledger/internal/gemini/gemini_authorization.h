@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
+#include "bat/ledger/internal/endpoints/post_connect/post_connect.h"
 #include "bat/ledger/ledger.h"
 
 namespace ledger {
@@ -45,7 +46,7 @@ class GeminiAuthorization {
   void OnConnectWallet(ledger::ExternalWalletAuthorizationCallback,
                        std::string&& token,
                        std::string&& address,
-                       mojom::Result);
+                       endpoints::PostConnect::Result&&);
 
   void OnFetchRecipientId(ledger::ExternalWalletAuthorizationCallback,
                           std::string&& token,

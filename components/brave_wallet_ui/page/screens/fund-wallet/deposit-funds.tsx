@@ -303,6 +303,7 @@ export const DepositFundsScreen = () => {
                     networks={mainnetsList}
                     hideAddButton
                     hideAssetFilter
+                    hideAccountFilter
                     estimatedItemSize={100}
                     renderToken={({
                       index,

@@ -186,6 +186,81 @@ TEST(EthResponseParserUnitTest, ParseAddressResult) {
   EXPECT_TRUE(addr.empty());
 }
 
+TEST(EthResponseParserUnitTest, ParseEthGetLogs) {
+  std::vector<Log> logs;
+  std::string json(R"({
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": [
+      {
+        "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
+        "blockHash": "0x2961ceb6c16bab72a55f79e394a35f2bf1c62b30446e3537280f7c22c3115e6e",
+        "blockNumber": "0xd6464c",
+        "data": "0x00000000000000000000000000000000000000000000000555aff1f0fae8c000",
+        "logIndex": "0x159",
+        "removed": false,
+        "topics": [
+          "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+          "0x000000000000000000000000503828976d22510aad0201ac7ec88293211d23da",
+          "0x000000000000000000000000b4b2802129071b2b9ebb8cbb01ea1e4d14b34961"
+        ],
+        "transactionHash": "0x2e652b70966c6a05f4b3e68f20d6540b7a5ab712385464a7ccf62774d39b7066",
+        "transactionIndex": "0x9f"
+      }
+    ]
+  })");
+  EXPECT_TRUE(ParseEthGetLogs(json, &logs));
+  EXPECT_EQ(logs[0].address, "0x6b175474e89094c44da98b954eedeac495271d0f");
+  EXPECT_EQ(
+      logs[0].block_hash,
+      "0x2961ceb6c16bab72a55f79e394a35f2bf1c62b30446e3537280f7c22c3115e6e");
+  EXPECT_EQ(logs[0].block_number, static_cast<uint256_t>(14042700));
+  EXPECT_EQ(
+      logs[0].data,
+      "0x00000000000000000000000000000000000000000000000555aff1f0fae8c000");
+  EXPECT_EQ(logs[0].log_index, static_cast<uint256_t>(345));
+  EXPECT_EQ(logs[0].removed, false);
+  EXPECT_EQ(
+      logs[0].transaction_hash,
+      "0x2e652b70966c6a05f4b3e68f20d6540b7a5ab712385464a7ccf62774d39b7066");
+  std::vector<std::string> expected_topics = {
+      "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+      "0x000000000000000000000000503828976d22510aad0201ac7ec88293211d23da",
+      "0x000000000000000000000000b4b2802129071b2b9ebb8cbb01ea1e4d14b34961"};
+  ASSERT_EQ(logs[0].topics.size(), expected_topics.size());
+  for (size_t i = 0; i < expected_topics.size(); ++i) {
+    EXPECT_EQ(logs[0].topics[i], expected_topics[i]);
+  }
+  EXPECT_EQ(logs[0].transaction_index, static_cast<uint32_t>(159));
+
+  // Invalid JSON
+  EXPECT_FALSE(ParseEthGetLogs("", &logs));
+
+  // Missing address
+  json = R"({
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": [
+      {
+        "blockHash": "0x2961ceb6c16bab72a55f79e394a35f2bf1c62b30446e3537280f7c22c3115e6e",
+        "blockNumber": "0xd6464c",
+        "data": "0x00000000000000000000000000000000000000000000000555aff1f0fae8c000",
+        "logIndex": "0x159",
+        "removed": false,
+        "topics": [
+          "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+          "0x000000000000000000000000503828976d22510aad0201ac7ec88293211d23da",
+          "0x000000000000000000000000b4b2802129071b2b9ebb8cbb01ea1e4d14b34961"
+        ],
+        "transactionHash": "0x2e652b70966c6a05f4b3e68f20d6540b7a5ab712385464a7ccf62774d39b7066",
+        "transactionIndex": "0x9f"
+      }
+    ]
+  })";
+
+  EXPECT_FALSE(ParseEthGetLogs(json, &logs));
+}
+
 TEST(EthResponseParserUnitTest, ParseEnsResolverContentHash) {
   std::string json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"

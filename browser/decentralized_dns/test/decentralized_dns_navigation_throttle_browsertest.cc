@@ -3,10 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/components/brave_wallet/browser/ens_resolver_task.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/decentralized_dns/content/decentralized_dns_opt_in_page.h"
+#include "brave/components/decentralized_dns/content/ens_offchain_lookup_opt_in_page.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/pref_names.h"
+#include "brave/components/decentralized_dns/core/utils.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -20,6 +25,10 @@
 #include "content/public/test/test_navigation_observer.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
+
+using brave_wallet::EnsResolverTask;
+using brave_wallet::EnsResolverTaskError;
+using brave_wallet::EnsResolverTaskResult;
 
 namespace {
 
@@ -57,9 +66,6 @@ void SendInterstitialCommandSync(
   content::WebContents* web_contents =
       browser->tab_strip_model()->GetActiveWebContents();
 
-  EXPECT_EQ(decentralized_dns::DecentralizedDnsOptInPage::kTypeForTesting,
-            GetInterstitialType(web_contents));
-
   content::TestNavigationObserver navigation_observer(web_contents, 1);
   SendInterstitialCommand(web_contents, command);
   navigation_observer.Wait();
@@ -76,10 +82,6 @@ class DecentralizedDnsNavigationThrottleBrowserTest
  public:
   DecentralizedDnsNavigationThrottleBrowserTest() = default;
   ~DecentralizedDnsNavigationThrottleBrowserTest() override = default;
-
-  void SetUpOnMainThread() override {
-    InProcessBrowserTest::SetUpOnMainThread();
-  }
 
   PrefService* local_state() { return g_browser_process->local_state(); }
 };
@@ -164,6 +166,95 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
       security_interstitials::SecurityInterstitialCommand::CMD_DONT_PROCEED);
   EXPECT_EQ(static_cast<int>(ResolveMethodTypes::DISABLED),
             local_state()->GetInteger(kENSResolveMethod));
+}
+
+class EnsL2OffchanLookupNavigationThrottleBrowserTest
+    : public DecentralizedDnsNavigationThrottleBrowserTest {
+ public:
+  EnsL2OffchanLookupNavigationThrottleBrowserTest() = default;
+  ~EnsL2OffchanLookupNavigationThrottleBrowserTest() override = default;
+
+  PrefService* local_state() { return g_browser_process->local_state(); }
+
+ protected:
+  void SetEnsResolverResult(absl::optional<EnsResolverTaskResult> task_result,
+                            absl::optional<EnsResolverTaskError> task_error) {
+    ens_resolved_task_result_ = std::move(task_result);
+    ens_resolved_task_error_ = std::move(task_error);
+  }
+
+  absl::optional<EnsResolverTaskResult> ens_resolved_task_result_;
+  absl::optional<EnsResolverTaskError> ens_resolved_task_error_;
+
+ private:
+  base::test::ScopedFeatureList scoped_feature{
+      brave_wallet::features::kBraveWalletENSL2Feature};
+};
+
+IN_PROC_BROWSER_TEST_F(EnsL2OffchanLookupNavigationThrottleBrowserTest,
+                       ShowENSOffchainLookupInterstitialAndProceed) {
+  local_state()->SetInteger(kENSResolveMethod,
+                            static_cast<int>(ResolveMethodTypes::ETHEREUM));
+  SetEnsResolverResult(EnsResolverTaskResult({}, true), absl::nullopt);
+
+  EnsResolverTask::GetWorkOnTaskForTesting() =
+      base::BindLambdaForTesting([](EnsResolverTask* task) {
+        EXPECT_FALSE(task->allow_offchain().has_value());
+        task->SetResultForTesting(EnsResolverTaskResult({}, true),
+                                  absl::nullopt);
+      });
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("http://test.eth")));
+
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetPrimaryMainFrame()));
+  EXPECT_EQ(EnsOffchainLookupOptInPage::kTypeForTesting,
+            GetInterstitialType(web_contents));
+
+  EnsResolverTask::GetWorkOnTaskForTesting() = base::BindLambdaForTesting(
+      [](EnsResolverTask* task) { EXPECT_TRUE(*task->allow_offchain()); });
+  EXPECT_EQ(EnsOffchainResolveMethod::kAsk,
+            GetEnsOffchainResolveMethod(local_state()));
+  SendInterstitialCommandSync(
+      browser(),
+      security_interstitials::SecurityInterstitialCommand::CMD_PROCEED);
+  EXPECT_EQ(EnsOffchainResolveMethod::kEnabled,
+            GetEnsOffchainResolveMethod(local_state()));
+}
+
+IN_PROC_BROWSER_TEST_F(EnsL2OffchanLookupNavigationThrottleBrowserTest,
+                       ShowENSOffchainLookupInterstitialAndDontProceed) {
+  local_state()->SetInteger(kENSResolveMethod,
+                            static_cast<int>(ResolveMethodTypes::ETHEREUM));
+  SetEnsResolverResult(EnsResolverTaskResult({}, true), absl::nullopt);
+
+  EnsResolverTask::GetWorkOnTaskForTesting() =
+      base::BindLambdaForTesting([](EnsResolverTask* task) {
+        EXPECT_FALSE(task->allow_offchain().has_value());
+        task->SetResultForTesting(EnsResolverTaskResult({}, true),
+                                  absl::nullopt);
+      });
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("http://test.eth")));
+
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetPrimaryMainFrame()));
+  EXPECT_EQ(EnsOffchainLookupOptInPage::kTypeForTesting,
+            GetInterstitialType(web_contents));
+
+  EnsResolverTask::GetWorkOnTaskForTesting() = base::BindLambdaForTesting(
+      [](EnsResolverTask* task) { EXPECT_FALSE(*task->allow_offchain()); });
+  EXPECT_EQ(EnsOffchainResolveMethod::kAsk,
+            GetEnsOffchainResolveMethod(local_state()));
+  SendInterstitialCommandSync(
+      browser(),
+      security_interstitials::SecurityInterstitialCommand::CMD_DONT_PROCEED);
+  EXPECT_EQ(EnsOffchainResolveMethod::kDisabled,
+            GetEnsOffchainResolveMethod(local_state()));
 }
 
 }  // namespace decentralized_dns

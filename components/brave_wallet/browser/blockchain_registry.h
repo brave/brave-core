@@ -30,6 +30,8 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
   void Bind(mojo::PendingReceiver<mojom::BlockchainRegistry> receiver);
 
   void UpdateTokenList(TokenListMap tokens);
+  void UpdateTokenList(const std::string key,
+                       std::vector<mojom::BlockchainTokenPtr> list);
   void UpdateChainList(ChainList chains);
 
   mojom::BlockchainTokenPtr GetTokenByAddress(const std::string& chain_id,

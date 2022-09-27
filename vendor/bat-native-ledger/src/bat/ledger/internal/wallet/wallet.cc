@@ -37,7 +37,7 @@ Wallet::Wallet(LedgerImpl* ledger)
 Wallet::~Wallet() = default;
 
 void Wallet::CreateWalletIfNecessary(ledger::ResultCallback callback) {
-  create_->Start(std::move(callback));
+  create_->CreateWallet(absl::nullopt, std::move(callback));
 }
 
 std::string Wallet::GetWalletPassphrase(mojom::RewardsWalletPtr wallet) {
@@ -268,6 +268,10 @@ mojom::RewardsWalletPtr Wallet::GetWallet(bool* corrupted) {
   vector_seed.assign(decoded_seed.begin(), decoded_seed.end());
   wallet->recovery_seed = vector_seed;
 
+  if (const auto* geo_country = dict.FindString("geo_country")) {
+    wallet->geo_country = *geo_country;
+  }
+
   return wallet;
 }
 
@@ -292,6 +296,7 @@ bool Wallet::SetWallet(mojom::RewardsWalletPtr wallet) {
   base::Value::Dict new_wallet;
   new_wallet.Set("payment_id", wallet->payment_id);
   new_wallet.Set("recovery_seed", seed_string);
+  new_wallet.Set("geo_country", wallet->geo_country);
 
   std::string json;
   base::JSONWriter::Write(new_wallet, &json);

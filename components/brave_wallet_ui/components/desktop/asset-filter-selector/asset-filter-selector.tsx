@@ -23,7 +23,7 @@ import {
   DropDown,
   DropDownButton,
   DropDownIcon,
-  LeftSide,
+  SelectorLeftSide,
   ClickAwayArea
 } from '../network-filter-selector/style'
 
@@ -52,9 +52,9 @@ export const AssetFilterSelector = () => {
 
       <DropDownButton
         onClick={toggleShowAssetFilter}>
-        <LeftSide>
+        <SelectorLeftSide>
           {selectedAssetFilter.name}
-        </LeftSide>
+        </SelectorLeftSide>
         <DropDownIcon />
       </DropDownButton>
 

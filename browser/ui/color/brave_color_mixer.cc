@@ -34,6 +34,15 @@ const SkColor kDarkLocationBarHoverBg = SkColorSetRGB(0x23, 0x25, 0x2F);
 constexpr float kOmniboxOpacityHovered = 0.10f;
 constexpr float kOmniboxOpacitySelected = 0.16f;
 
+SkColor GetToolbarInkDropColor(const ui::ColorMixer& mixer) {
+  // Copied from
+  // chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h
+  // to use same hover background with toolbar button.
+  constexpr float kToolbarInkDropHighlightVisibleOpacity = 0.08f;
+  return SkColorSetA(mixer.GetResultColor(kColorToolbarInkDrop),
+                     0xFF * kToolbarInkDropHighlightVisibleOpacity);
+}
+
 enum class ProfileType {
   kNormalProfile,
   kPrivateProfile,
@@ -217,13 +226,7 @@ void AddBraveFeaturesColors(const ui::ColorProviderManager::Key& key,
       }
       case BraveThemeProperties::COLOR_SIDEBAR_ARROW_BACKGROUND_HOVERED:
       case BraveThemeProperties::COLOR_SIDEBAR_ITEM_BACKGROUND_HOVERED: {
-        // Copied from
-        // chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h
-        // to use same hover background with toolbar button.
-        constexpr float kToolbarInkDropHighlightVisibleOpacity = 0.08f;
-        mixer[entry.color_id] = {
-            SkColorSetA(mixer.GetResultColor(kColorToolbarInkDrop),
-                        0xFF * kToolbarInkDropHighlightVisibleOpacity)};
+        mixer[entry.color_id] = {GetToolbarInkDropColor(mixer)};
         break;
       }
 #endif
@@ -251,6 +254,89 @@ void AddBraveFeaturesColors(const ui::ColorProviderManager::Key& key,
         NOTREACHED();
     }
   }
+}
+
+void AddChromeLightThemeColorMixer(ui::ColorProvider* provider,
+                                   const ui::ColorProviderManager::Key& key) {
+  ui::ColorMixer& mixer = provider->AddMixer();
+
+  mixer[kColorBookmarkBarForeground] = {kColorTabForegroundActiveFrameActive};
+  mixer[kColorDownloadShelfButtonText] = {gfx::kBraveGrey800};
+  mixer[kColorForTest] = {SkColorSetRGB(0xFF, 0xFF, 0xFF)};
+  mixer[kColorNewTabButtonBackgroundFrameActive] = {ui::kColorFrameActive};
+  mixer[kColorNewTabButtonBackgroundFrameInactive] = {ui::kColorFrameInactive};
+  mixer[kColorNewTabPageBackground] = {kBraveNewTabBackgroundLight};
+  mixer[kColorTabBackgroundActiveFrameActive] = {kColorToolbar};
+  mixer[kColorTabBackgroundActiveFrameInactive] = {kColorToolbar};
+  mixer[kColorTabBackgroundInactiveFrameActive] = {ui::kColorFrameActive};
+  mixer[kColorTabBackgroundInactiveFrameInactive] = {ui::kColorFrameInactive};
+  mixer[kColorTabForegroundActiveFrameActive] = {kLightToolbarIcon};
+  mixer[kColorTabForegroundInactiveFrameActive] = {
+      kColorTabForegroundActiveFrameActive};
+  mixer[kColorToolbar] = {kLightToolbar};
+  mixer[kColorToolbarButtonIcon] = {kColorTabForegroundActiveFrameActive};
+  mixer[kColorToolbarButtonIconInactive] = {
+      color_utils::AlphaBlend(kLightToolbarIcon, kLightToolbar, 0.3f)};
+  mixer[kColorToolbarContentAreaSeparator] = {ui::kColorFrameActive};
+  mixer[kColorToolbarTopSeparatorFrameActive] = {kColorToolbar};
+  mixer[kColorToolbarTopSeparatorFrameInactive] = {kColorToolbar};
+  mixer[ui::kColorFrameActive] = {kLightFrame};
+  mixer[ui::kColorFrameInactive] = {
+      color_utils::HSLShift(kLightFrame, {-1, -1, 0.6})};
+  mixer[ui::kColorToggleButtonThumbOff] = {SK_ColorWHITE};
+  mixer[ui::kColorToggleButtonThumbOn] = {SkColorSetRGB(0x4C, 0x54, 0xD2)};
+  mixer[ui::kColorToggleButtonTrackOff] = {SkColorSetRGB(0xDA, 0xDC, 0xE8)};
+  mixer[ui::kColorToggleButtonTrackOn] = {SkColorSetRGB(0xE1, 0xE2, 0xF6)};
+
+  // Colors for HelpBubble. IDs are defined in
+  // chrome/browser/ui/color/chrome_color_id.h
+  mixer[kColorFeaturePromoBubbleBackground] = {SK_ColorWHITE};
+  mixer[kColorFeaturePromoBubbleForeground] = {SkColorSetRGB(0x42, 0x45, 0x52)};
+  mixer[kColorFeaturePromoBubbleCloseButtonInkDrop] = {
+      GetToolbarInkDropColor(mixer)};
+}
+
+void AddChromeDarkThemeColorMixer(ui::ColorProvider* provider,
+                                  const ui::ColorProviderManager::Key& key) {
+  ui::ColorMixer& mixer = provider->AddMixer();
+
+  mixer[kColorBookmarkBarForeground] = {kColorTabForegroundActiveFrameActive};
+  mixer[kColorDownloadShelfButtonText] = {SK_ColorWHITE};
+  mixer[kColorForTest] = {SkColorSetRGB(0x00, 0x00, 0x00)};
+  mixer[kColorNewTabButtonBackgroundFrameActive] = {ui::kColorFrameActive};
+  mixer[kColorNewTabButtonBackgroundFrameInactive] = {ui::kColorFrameInactive};
+  mixer[kColorNewTabPageBackground] = {kBraveNewTabBackgroundDark};
+  mixer[kColorTabBackgroundActiveFrameActive] = {kColorToolbar};
+  mixer[kColorTabBackgroundActiveFrameInactive] = {kColorToolbar};
+  mixer[kColorTabBackgroundInactiveFrameActive] = {ui::kColorFrameActive};
+  mixer[kColorTabBackgroundInactiveFrameInactive] = {ui::kColorFrameInactive};
+  mixer[kColorTabForegroundActiveFrameActive] = {
+      SkColorSetRGB(0xF3, 0xF3, 0xF3)};
+  mixer[kColorTabForegroundInactiveFrameActive] = {
+      kColorTabForegroundActiveFrameActive};
+  mixer[kColorTabStrokeFrameActive] = {kColorToolbar};
+  mixer[kColorTabStrokeFrameInactive] = {kColorToolbar};
+  mixer[kColorToolbar] = {kDarkToolbar};
+  mixer[kColorToolbarButtonIcon] = {kDarkToolbarIcon};
+  mixer[kColorToolbarButtonIconInactive] = {
+      color_utils::AlphaBlend(kDarkToolbarIcon, kDarkToolbar, 0.3f)};
+  mixer[kColorToolbarContentAreaSeparator] = {kColorToolbar};
+  mixer[kColorToolbarTopSeparatorFrameActive] = {kColorToolbar};
+  mixer[kColorToolbarTopSeparatorFrameInactive] = {kColorToolbar};
+  mixer[ui::kColorFrameActive] = {kDarkFrame};
+  mixer[ui::kColorFrameInactive] = {
+      color_utils::HSLShift(kDarkFrame, {-1, -1, 0.6})};
+  mixer[ui::kColorToggleButtonThumbOff] = {SK_ColorWHITE};
+  mixer[ui::kColorToggleButtonThumbOn] = {SkColorSetRGB(0x44, 0x36, 0xE1)};
+  mixer[ui::kColorToggleButtonTrackOff] = {SkColorSetRGB(0x5E, 0x61, 0x75)};
+  mixer[ui::kColorToggleButtonTrackOn] = {SkColorSetRGB(0x76, 0x79, 0xB1)};
+
+  // Colors for HelpBubble. IDs are defined in
+  // chrome/browser/ui/color/chrome_color_id.h
+  mixer[kColorFeaturePromoBubbleBackground] = {SkColorSetRGB(0x12, 0x13, 0x16)};
+  mixer[kColorFeaturePromoBubbleForeground] = {SkColorSetRGB(0xC6, 0xC8, 0xD0)};
+  mixer[kColorFeaturePromoBubbleCloseButtonInkDrop] = {
+      GetToolbarInkDropColor(mixer)};
 }
 
 }  // namespace
@@ -302,82 +388,28 @@ SkColor GetOmniboxResultBackground(int id, bool dark, bool priv) {
       color, base::ClampRound(omnibox_opacity * 0xff));
 }
 
-void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
-                                  const ui::ColorProviderManager::Key& key) {
-  ui::ColorMixer& mixer = provider->AddMixer();
+void AddBravifiedChromeThemeColorMixer(
+    ui::ColorProvider* provider,
+    const ui::ColorProviderManager::Key& key) {
+  if (key.custom_theme)
+    return;
 
-  mixer[kColorBookmarkBarForeground] = {kColorTabForegroundActiveFrameActive};
-  mixer[kColorDownloadShelfButtonText] = {gfx::kBraveGrey800};
-  mixer[kColorForTest] = {SkColorSetRGB(0xFF, 0xFF, 0xFF)};
-  mixer[kColorNewTabButtonBackgroundFrameActive] = {ui::kColorFrameActive};
-  mixer[kColorNewTabButtonBackgroundFrameInactive] = {ui::kColorFrameInactive};
-  mixer[kColorNewTabPageBackground] = {kBraveNewTabBackgroundLight};
-  mixer[kColorTabBackgroundActiveFrameActive] = {kColorToolbar};
-  mixer[kColorTabBackgroundActiveFrameInactive] = {kColorToolbar};
-  mixer[kColorTabBackgroundInactiveFrameActive] = {ui::kColorFrameActive};
-  mixer[kColorTabBackgroundInactiveFrameInactive] = {ui::kColorFrameInactive};
-  mixer[kColorTabForegroundActiveFrameActive] = {kLightToolbarIcon};
-  mixer[kColorTabForegroundInactiveFrameActive] = {
-      kColorTabForegroundActiveFrameActive};
-  mixer[kColorToolbar] = {kLightToolbar};
-  mixer[kColorToolbarButtonIcon] = {kColorTabForegroundActiveFrameActive};
-  mixer[kColorToolbarButtonIconInactive] = {
-      color_utils::AlphaBlend(kLightToolbarIcon, kLightToolbar, 0.3f)};
-  mixer[kColorToolbarContentAreaSeparator] = {ui::kColorFrameActive};
-  mixer[kColorToolbarTopSeparatorFrameActive] = {kColorToolbar};
-  mixer[kColorToolbarTopSeparatorFrameInactive] = {kColorToolbar};
-  mixer[ui::kColorFrameActive] = {kLightFrame};
-  mixer[ui::kColorFrameInactive] = {
-      color_utils::HSLShift(kLightFrame, {-1, -1, 0.6})};
-  mixer[ui::kColorToggleButtonThumbOff] = {SK_ColorWHITE};
-  mixer[ui::kColorToggleButtonThumbOn] = {SkColorSetRGB(0x4C, 0x54, 0xD2)};
-  mixer[ui::kColorToggleButtonTrackOff] = {SkColorSetRGB(0xDA, 0xDC, 0xE8)};
-  mixer[ui::kColorToggleButtonTrackOn] = {SkColorSetRGB(0xE1, 0xE2, 0xF6)};
-
-  AddBraveFeaturesColors(key, &mixer, ProfileType::kNormalProfile);
+  key.color_mode == ui::ColorProviderManager::ColorMode::kDark
+      ? AddChromeDarkThemeColorMixer(provider, key)
+      : AddChromeLightThemeColorMixer(provider, key);
 }
 
-void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
-                                 const ui::ColorProviderManager::Key& key) {
+void AddBraveThemeColorMixer(ui::ColorProvider* provider,
+                             const ui::ColorProviderManager::Key& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
-
-  mixer[kColorBookmarkBarForeground] = {kColorTabForegroundActiveFrameActive};
-  mixer[kColorDownloadShelfButtonText] = {SK_ColorWHITE};
-  mixer[kColorForTest] = {SkColorSetRGB(0x00, 0x00, 0x00)};
-  mixer[kColorNewTabButtonBackgroundFrameActive] = {ui::kColorFrameActive};
-  mixer[kColorNewTabButtonBackgroundFrameInactive] = {ui::kColorFrameInactive};
-  mixer[kColorNewTabPageBackground] = {kBraveNewTabBackgroundDark};
-  mixer[kColorTabBackgroundActiveFrameActive] = {kColorToolbar};
-  mixer[kColorTabBackgroundActiveFrameInactive] = {kColorToolbar};
-  mixer[kColorTabBackgroundInactiveFrameActive] = {ui::kColorFrameActive};
-  mixer[kColorTabBackgroundInactiveFrameInactive] = {ui::kColorFrameInactive};
-  mixer[kColorTabForegroundActiveFrameActive] = {
-      SkColorSetRGB(0xF3, 0xF3, 0xF3)};
-  mixer[kColorTabForegroundInactiveFrameActive] = {
-      kColorTabForegroundActiveFrameActive};
-  mixer[kColorTabStrokeFrameActive] = {kColorToolbar};
-  mixer[kColorTabStrokeFrameInactive] = {kColorToolbar};
-  mixer[kColorToolbar] = {kDarkToolbar};
-  mixer[kColorToolbarButtonIcon] = {kDarkToolbarIcon};
-  mixer[kColorToolbarButtonIconInactive] = {
-      color_utils::AlphaBlend(kDarkToolbarIcon, kDarkToolbar, 0.3f)};
-  mixer[kColorToolbarContentAreaSeparator] = {kColorToolbar};
-  mixer[kColorToolbarTopSeparatorFrameActive] = {kColorToolbar};
-  mixer[kColorToolbarTopSeparatorFrameInactive] = {kColorToolbar};
-  mixer[ui::kColorFrameActive] = {kDarkFrame};
-  mixer[ui::kColorFrameInactive] = {
-      color_utils::HSLShift(kDarkFrame, {-1, -1, 0.6})};
-  mixer[ui::kColorToggleButtonThumbOff] = {SK_ColorWHITE};
-  mixer[ui::kColorToggleButtonThumbOn] = {SkColorSetRGB(0x44, 0x36, 0xE1)};
-  mixer[ui::kColorToggleButtonTrackOff] = {SkColorSetRGB(0x5E, 0x61, 0x75)};
-  mixer[ui::kColorToggleButtonTrackOn] = {SkColorSetRGB(0x76, 0x79, 0xB1)};
 
   AddBraveFeaturesColors(key, &mixer, ProfileType::kNormalProfile);
 }
 
 void AddBravePrivateThemeColorMixer(ui::ColorProvider* provider,
                                     const ui::ColorProviderManager::Key& key) {
-  AddBraveDarkThemeColorMixer(provider, key);
+  AddBraveThemeColorMixer(provider, key);
+  AddChromeDarkThemeColorMixer(provider, key);
 
   ui::ColorMixer& mixer = provider->AddMixer();
 

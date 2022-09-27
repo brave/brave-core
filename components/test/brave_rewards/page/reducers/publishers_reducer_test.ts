@@ -27,7 +27,7 @@ describe('publishers reducer', () => {
         }
       })
 
-      const expectedState: Rewards.State = { ...defaultState }
+      const expectedState: Rewards.State = defaultState()
       expectedState.excludedList = [
         {
           id: 'foo.com',
@@ -45,7 +45,7 @@ describe('publishers reducer', () => {
     })
 
     it('does not update on bad payload', () => {
-      const initialState = { ...defaultState }
+      const initialState = defaultState()
       initialState.excludedList = [
         {
           id: 'foo.com',
@@ -62,7 +62,7 @@ describe('publishers reducer', () => {
         payload: {}
       })
 
-      const expectedState: Rewards.State = { ...defaultState }
+      const expectedState: Rewards.State = defaultState()
       expectedState.excludedList = [
         {
           id: 'foo.com',

@@ -11,16 +11,17 @@
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/common/random_util.h"
 #include "bat/ledger/internal/endpoint/bitflyer/bitflyer_server.h"
+#include "bat/ledger/internal/endpoints/post_connect/bitflyer/post_connect_bitflyer.h"
+#include "bat/ledger/internal/endpoints/request_for.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/logging/event_log_util.h"
-#include "bat/ledger/internal/request/post_connect/bitflyer/post_connect_bitflyer.h"
-#include "bat/ledger/internal/request/request_for.h"
 #include "bat/ledger/internal/wallet/wallet_util.h"
 #include "crypto/sha2.h"
 
-using ledger::request::RequestFor;
-using ledger::request::connect::PostConnectBitflyer;
+using ledger::endpoints::PostConnect;
+using ledger::endpoints::PostConnectBitflyer;
+using ledger::endpoints::RequestFor;
 using ledger::wallet::OnWalletStatusChange;
 
 namespace ledger::bitflyer {
@@ -170,19 +171,17 @@ void BitflyerAuthorization::OnAuthorize(
                                    base::Unretained(this), std::move(callback),
                                    std::move(token), std::move(address));
 
-  if (RequestFor<PostConnectBitflyer> request{ledger_,
-                                              std::move(linking_info)}) {
-    std::move(request).Send(std::move(on_connect));
-  } else {
-    std::move(on_connect).Run(mojom::Result::LEDGER_ERROR);
-  }
+  RequestFor<PostConnectBitflyer>(ledger_, std::move(linking_info))
+      .Send(std::move(on_connect));
 }
 
 void BitflyerAuthorization::OnConnectWallet(
     ledger::ExternalWalletAuthorizationCallback callback,
     std::string&& token,
     std::string&& address,
-    mojom::Result result) {
+    PostConnect::Result&& result) {
+  const auto legacy_result = PostConnect::ToLegacyResult(result);
+
   auto wallet_ptr = ledger_->bitflyer()->GetWallet();
   if (!wallet_ptr) {
     BLOG(0, "bitFlyer wallet is null!");
@@ -193,7 +192,7 @@ void BitflyerAuthorization::OnConnectWallet(
   DCHECK(!address.empty());
   const std::string abbreviated_address = address.substr(0, 5);
 
-  switch (result) {
+  switch (legacy_result) {
     case mojom::Result::DEVICE_LIMIT_REACHED:
     case mojom::Result::MISMATCHED_PROVIDER_ACCOUNTS:
     case mojom::Result::REQUEST_SIGNATURE_VERIFICATION_FAILURE:
@@ -201,13 +200,13 @@ void BitflyerAuthorization::OnConnectWallet(
     case mojom::Result::REGION_NOT_SUPPORTED:
     case mojom::Result::MISMATCHED_PROVIDER_ACCOUNT_REGIONS:
       ledger_->database()->SaveEventLog(
-          log::GetEventLogKeyForLinkingResult(result),
+          log::GetEventLogKeyForLinkingResult(legacy_result),
           constant::kWalletBitflyer + std::string("/") + abbreviated_address);
-      return callback(result, {});
+      return callback(legacy_result, {});
     default:
-      if (result != mojom::Result::LEDGER_OK) {
+      if (legacy_result != mojom::Result::LEDGER_OK) {
         BLOG(0, "Couldn't claim wallet!");
-        return callback(result, {});
+        return callback(legacy_result, {});
       }
   }
 

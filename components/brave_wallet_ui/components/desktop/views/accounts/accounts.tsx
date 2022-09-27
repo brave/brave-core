@@ -4,12 +4,11 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
 import {
   WalletAccountType,
-  BraveWallet,
   AddAccountNavTypes,
   WalletState,
   WalletRoutes
@@ -18,9 +17,6 @@ import {
 // utils
 import { getLocale } from '../../../../../common/locale'
 import { groupAccountsById, sortAccountsByName } from '../../../../utils/account-utils'
-
-// actions
-import { WalletPageActions } from '../../../../page/actions'
 
 // Styled Components
 import {
@@ -42,23 +38,13 @@ import {
   AccountListItem,
   AddButton
 } from '../..'
-import { ConfirmPasswordModal } from '../../popup-modals/confirm-password-modal/confirm-password-modal'
 
 export const Accounts = () => {
   // routing
   const history = useHistory()
 
-  // redux
-  const dispatch = useDispatch()
+  // wallet state
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
-
-  // state
-  const [accountToRemove, setAccountToRemove] = React.useState<{
-    address: string
-    hardware: boolean
-    coin: BraveWallet.CoinType
-    name: string
-  } | undefined>(undefined)
 
   // methods
   const onSelectAccount = React.useCallback((account: WalletAccountType | undefined) => {
@@ -75,38 +61,6 @@ export const Accounts = () => {
       default: return history.push(WalletRoutes.AddAccountModal)
     }
   }, [])
-
-  const onRemoveAccount = React.useCallback((
-    address: string,
-    hardware: boolean,
-    coin: BraveWallet.CoinType,
-    name: string
-  ) => {
-    setAccountToRemove({
-      address,
-      coin,
-      hardware,
-      name
-    })
-  }, [])
-
-  const onConfirmRemoveAccount = React.useCallback((password: string) => {
-    if (!accountToRemove) {
-      return
-    }
-
-    const { address, coin, hardware } = accountToRemove
-
-    if (hardware) {
-      dispatch(WalletPageActions.removeHardwareAccount({ address, coin, password }))
-    }
-
-    if (!hardware) {
-      dispatch(WalletPageActions.removeImportedAccount({ address, coin, password }))
-    }
-
-    setAccountToRemove(undefined) // close modal
-  }, [accountToRemove])
 
   // memos
   const primaryAccounts = React.useMemo(() => {
@@ -143,7 +97,6 @@ export const Accounts = () => {
             key={account.id}
             isHardwareWallet={false}
             onClick={onSelectAccount}
-            onRemoveAccount={onRemoveAccount}
             account={account}
           />
         )}
@@ -169,7 +122,6 @@ export const Accounts = () => {
             key={account.id}
             isHardwareWallet={false}
             onClick={onSelectAccount}
-            onRemoveAccount={onRemoveAccount}
             account={account}
           />
         )}
@@ -182,7 +134,6 @@ export const Accounts = () => {
               key={account.id}
               isHardwareWallet={true}
               onClick={onSelectAccount}
-              onRemoveAccount={onRemoveAccount}
               account={account}
             />
           )}
@@ -196,7 +147,6 @@ export const Accounts = () => {
               key={account.id}
               isHardwareWallet={true}
               onClick={onSelectAccount}
-              onRemoveAccount={onRemoveAccount}
               account={account}
             />
           )}
@@ -213,17 +163,6 @@ export const Accounts = () => {
           <ButtonText>{getLocale('braveWalletAddAccountImportHardware')}</ButtonText>
         </StyledButton>
       </ButtonRow>
-
-      {/* Modals */}
-      {accountToRemove !== undefined &&
-        <ConfirmPasswordModal
-          title={getLocale('braveWalletRemoveAccountModalTitle')
-            .replace('$1', accountToRemove.name ?? accountToRemove.address)
-          }
-          onClose={() => setAccountToRemove(undefined)}
-          onSuccess={onConfirmRemoveAccount}
-        />
-      }
     </StyledWrapper>
   )
 }

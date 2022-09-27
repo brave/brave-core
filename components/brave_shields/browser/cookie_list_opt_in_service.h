@@ -14,6 +14,8 @@
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 
+class PrefService;
+
 namespace brave_shields {
 class AdBlockService;
 
@@ -21,7 +23,8 @@ class AdBlockService;
 class CookieListOptInService : public KeyedService,
                                public mojom::CookieListOptInPageAndroidHandler {
  public:
-  explicit CookieListOptInService(AdBlockService* ad_block_service);
+  CookieListOptInService(AdBlockService* ad_block_service,
+                         PrefService* local_state);
   ~CookieListOptInService() override;
 
   mojo::PendingRemote<mojom::CookieListOptInPageAndroidHandler> MakeRemote();
@@ -32,8 +35,13 @@ class CookieListOptInService : public KeyedService,
   void IsFilterListEnabled(IsFilterListEnabledCallback callback) override;
   void EnableFilter(bool shouldEnableFilter) override;
 
+  void OnTooltipShown() override;
+  void OnTooltipNoClicked() override;
+  void OnTooltipYesClicked() override;
+
  private:
   raw_ptr<AdBlockService> ad_block_service_ = nullptr;
+  raw_ptr<PrefService> local_state_ = nullptr;
   mojo::ReceiverSet<mojom::CookieListOptInPageAndroidHandler> receivers_;
   base::WeakPtrFactory<CookieListOptInService> discovery_weak_factory_{this};
 

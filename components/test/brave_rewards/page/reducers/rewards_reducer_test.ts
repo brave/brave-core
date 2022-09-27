@@ -22,8 +22,7 @@ describe('rewards reducer', () => {
   describe('ON_AUTO_CONTRIBUTE_PROPERTIES', () => {
     describe('empty wallet', () => {
       it('import flow - empty', () => {
-        const expectedState: Rewards.State = { ...defaultState }
-        expectedState.ui.emptyWallet = true
+        const expectedState: Rewards.State = defaultState()
 
         const assertion = reducers(undefined, {
           type: types.ON_AUTO_CONTRIBUTE_PROPERTIES,
@@ -41,8 +40,7 @@ describe('rewards reducer', () => {
       })
 
       it('import flow - funded', () => {
-        const expectedState: Rewards.State = { ...defaultState }
-        expectedState.ui.emptyWallet = false
+        const expectedState: Rewards.State = defaultState()
 
         const assertion = reducers(undefined, {
           type: types.ON_AUTO_CONTRIBUTE_PROPERTIES,
@@ -61,12 +59,10 @@ describe('rewards reducer', () => {
       })
 
       it('import flow - existing state', () => {
-        const initState: Rewards.State = { ...defaultState }
-        initState.ui.emptyWallet = false
+        const initState: Rewards.State = defaultState()
         initState.ui.walletRecoveryStatus = 1
 
-        const expectedState: Rewards.State = { ...defaultState }
-        expectedState.ui.emptyWallet = false
+        const expectedState: Rewards.State = defaultState()
         expectedState.ui.walletRecoveryStatus = 1
 
         const assertion = reducers({
@@ -92,7 +88,7 @@ describe('rewards reducer', () => {
   describe('ON_ADS_DATA', () => {
     describe('updates ads data', () => {
       it('updates existing properties', () => {
-        const initState: Rewards.State = { ...defaultState }
+        const initState: Rewards.State = defaultState()
         initState.adsData = {
           adsEnabled: false,
           adsPerHour: 2,
@@ -107,7 +103,7 @@ describe('rewards reducer', () => {
           adsReceivedThisMonth: 0
         }
 
-        const expectedState: Rewards.State = { ...defaultState }
+        const expectedState: Rewards.State = defaultState()
         expectedState.adsData = {
           adsEnabled: true,
           adsPerHour: 5,
@@ -142,61 +138,13 @@ describe('rewards reducer', () => {
           rewardsData: expectedState
         })
       })
-
-      it('updates properties when state member doesn\'t exist', () => {
-        const initState: Rewards.State = { ...defaultState }
-        delete initState.adsData
-
-        const expectedState: Rewards.State = { ...defaultState }
-        expectedState.adsData = {
-          adsEnabled: false,
-          adsPerHour: 2,
-          shouldAllowAdsSubdivisionTargeting: true,
-          adsUIEnabled: true,
-          adsIsSupported: true,
-          adsNextPaymentDate: 0,
-          adsReceivedThisMonth: 0,
-          adsEarningsThisMonth: 0,
-          adsEarningsLastMonth: 0
-        }
-
-        const assertion = reducers({
-          rewardsData: initState
-        }, {
-          type: types.ON_ADS_DATA,
-          payload: {
-            adsData: {
-              adsEnabled: false,
-              adsPerHour: 2,
-              shouldAllowAdsSubdivisionTargeting: true,
-              adsUIEnabled: true,
-              adsIsSupported: true
-            }
-          }
-        })
-        expect(assertion).toEqual({
-          rewardsData: expectedState
-        })
-      })
     })
   })
 
   describe('ON_INLINE_TIP_SETTINGS_CHANGE', () => {
     it('state does not have inlineTip', () => {
-      const initState: Rewards.State = { }
-      initState.adsData = {
-        adsEnabled: false,
-        shouldOptOutfAdConversions: true,
-        adsPerHour: 2,
-        shouldAllowAdsSubdivisionTargeting: true,
-        adsUIEnabled: false,
-        adsIsSupported: false,
-        adsEstimatedPendingRewards: 0,
-        adsNextPaymentDate: 0,
-        adsReceivedThisMonth: 0
-      }
-
       const expectedState: Rewards.State = {
+        ...defaultState(),
         inlineTip: {
           twitter: true,
           reddit: true,
@@ -205,7 +153,7 @@ describe('rewards reducer', () => {
       }
 
       const assertion = reducers({
-        rewardsData: {}
+        rewardsData: defaultState()
       }, {
         type: types.ON_INLINE_TIP_SETTINGS_CHANGE,
         payload: {
@@ -219,9 +167,9 @@ describe('rewards reducer', () => {
     })
 
     it('value is empty', () => {
-      const initState: Rewards.State = { ...defaultState }
+      const initState: Rewards.State = defaultState()
 
-      const expectedState: Rewards.State = { ...defaultState }
+      const expectedState: Rewards.State = defaultState()
       expectedState.inlineTip = {
         twitter: true,
         reddit: true,
@@ -243,9 +191,9 @@ describe('rewards reducer', () => {
     })
 
     it('key is empty', () => {
-      const initState: Rewards.State = { ...defaultState }
+      const initState: Rewards.State = defaultState()
 
-      const expectedState: Rewards.State = { ...defaultState }
+      const expectedState: Rewards.State = defaultState()
       expectedState.inlineTip = {
         twitter: true,
         reddit: true,
@@ -267,9 +215,9 @@ describe('rewards reducer', () => {
     })
 
     it('all ok for twitter', () => {
-      const initState: Rewards.State = { ...defaultState }
+      const initState: Rewards.State = defaultState()
 
-      const expectedState: Rewards.State = { ...defaultState }
+      const expectedState: Rewards.State = defaultState()
       expectedState.inlineTip = {
         twitter: false,
         reddit: true,
@@ -291,11 +239,11 @@ describe('rewards reducer', () => {
     })
 
     it('all ok for reddit', () => {
-      const initState: Rewards.State = { ...defaultState }
+      const initState: Rewards.State = defaultState()
 
-      const expectedState: Rewards.State = { ...defaultState }
+      const expectedState: Rewards.State = defaultState()
       expectedState.inlineTip = {
-        twitter: false,
+        twitter: true,
         reddit: false,
         github: true
       }
@@ -315,12 +263,12 @@ describe('rewards reducer', () => {
     })
 
     it('all ok for github', () => {
-      const initState: Rewards.State = { ...defaultState }
+      const initState: Rewards.State = defaultState()
 
-      const expectedState: Rewards.State = { ...defaultState }
+      const expectedState: Rewards.State = defaultState()
       expectedState.inlineTip = {
-        twitter: false,
-        reddit: false,
+        twitter: true,
+        reddit: true,
         github: false
       }
 

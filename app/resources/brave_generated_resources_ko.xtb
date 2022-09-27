@@ -80,11 +80,6 @@
 <translation id="3161744659507801211">경고: Brave는 확장 기능이 여러분의 브라우징 기록을 기록하는 것을 막을 수 없습니다.</translation>
 <translation id="2162109630536601963">이 확장 기능이 네트워크 요청을 생성할 경우, 이는 Tor나 프라이빗 모드를 사용하지 않을 것입니다.</translation>
 <translation id="2725327089319971976">이 확장 기능을 개인 정보 보호 모드와 Tor 모드에서 비활성화하려면, 이 옵션을 선택 해제하십시오.</translation>
-<translation id="5057399635433117814">이 페이지를 번역할까요? 번역을 위해 이 페이지상의 모든 글을 Microsoft 로 보냅니다.</translation>
-<translation id="330263065709195164">Google 번역 확장 프로그램을 설치하여 이 페이지를 번역하시겠습니까?</translation>
-<translation id="3789841737615482174">설치</translation>
-<translation id="7658239707568436148">취소</translation>
-<translation id="1307431692088049276">다시 묻지 않기</translation>
 <translation id="3371343170427636147">Brave 브라우저 야간 앱</translation>
 <translation id="4097979995947147464">Brave 브라우저 베타 앱</translation>
 <translation id="8303432794159193481">Brave 브라우저 개발 앱</translation>
@@ -107,9 +102,11 @@
 <translation id="7276554663454265692"><ph name="SETTING_TEXT"/>은 언제든지 브라우저 설정에서 다시 변경할 수 있습니다.</translation>
 <translation id="6873781976650514089">이 설정</translation>
 <translation id="8915916167043355778">모두 닫기</translation>
+<translation id="7658239707568436148">취소</translation>
 <translation id="4870911314065352661">모든 탭을 닫으시겠습니까?</translation>
 <translation id="7551864359422178684">이 브라우저 창에 탭 <ph name="NUMBER_OF_TABS"/>개가 열려 있습니다.</translation>
 <translation id="2571596981920752023">탭 <ph name="NUMBER_OF_TABS"/>개</translation>
+<translation id="1307431692088049276">다시 묻지 않기</translation>
 <translation id="2272117088509540883">- Brave 검색</translation>
 <translation id="2701279958223202597">강화된 프라이버시로 독립적 검색을 지향합니다. Brave 검색은 귀하의 신원, 검색 내역, 클릭 활동을 추적하지 않습니다.</translation>
 <translation id="6438467592401259882">강화된 프라이버시로 독립적 검색을 지향합니다.</translation>
@@ -126,7 +123,15 @@
 <translation id="4174337572777167894">웹 디스커버리 프로젝트</translation>
 <translation id="8659271182272561965">익명 검색 및 인터넷 사용 기록 데이터 일부를 보내 Brave Search 개선에 도움을 주세요.</translation>
 <translation id="1516554614404600536">Brave 툴팁</translation>
+<translation id="7986278174934557414">측면 패널 아이콘 숨기기</translation>
+<translation id="6915291874524466201">측면 패널 아이콘 숨기기</translation>
+<translation id="9149866541089851383">수정...</translation>
 <translation id="1181037720776840403">삭제</translation>
+<translation id="7513769021866698486">항목 편집</translation>
+<translation id="4002066346123236978">제목</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="5877900074358050101">사이드바 항목 제목</translation>
+<translation id="1613695740874407223">사이드바 항목 URL</translation>
 <translation id="4877147287319222750">사이드바에 추가</translation>
 <translation id="5404213409401164238">사이드바 표시</translation>
 <translation id="7561196759112975576">항상</translation>
@@ -201,6 +206,7 @@
 <translation id="2370739752330685659">나중에</translation>
 <translation id="961012016278832836">Microsoft Edge 레거시</translation>
 <translation id="6436994631426134065"><ph name="BROWSER_NAME"/>에서 가져왔습니다.</translation>
+<translation id="1506190932569739298">클린 링크(메인 URL만 포함) 복사</translation>
 <translation id="9156965752763025780">변경사항은 다음에 Brave을 다시 시작할 때 적용됩니다.</translation>
 <translation id="7179921470347911571">지금 다시 실행</translation>
 <translation id="4472575034687746823">시작하기</translation>
@@ -220,6 +226,7 @@
 <translation id="4096343215397759358">미리보기가 있는 카드</translation>
 <translation id="5297085818601043899">툴팁</translation>
 <translation id="2396127686705429331">북마크 버튼 표시</translation>
+<translation id="2369560305991805099">측면 패널 버튼 표시</translation>
 <translation id="2814998458708016836">넓은 주소 표시줄 사용</translation>
 <translation id="4109670531935487117">주소 표시줄에 자동 완성 추천 표시</translation>
 <translation id="2858138569776157458">인기 사이트</translation>
@@ -242,8 +249,8 @@
 <translation id="6303294677342628402">보호</translation>
 <translation id="7133511168130368997">웹에서 귀하를 따라오는 추적기 및 광고를 차단하세요.</translation>
 <translation id="2761825942249694703">이는 기본 Shields 설정입니다. 특정 사이트에 대해 Shields 패널에서 무언가를 바꾸지 않는 한 모든 웹사이트에 적용됩니다. 이를 바꾼다고 해도 기존 사이트별 설정에는 영향을 미치지 않습니다.</translation>
-<translation id="1485394570478670912">이렇게 하면 다음 옵션에서 관리하는 Brave Private Ads가 아닌 대부분의 광고가 웹사이트에서 차단됩니다.</translation>
-<translation id="6388201778088078932">설정.</translation>
+<translation id="1435116578479068303">이렇게 하면 <ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/> 설정에서 관리하는 Brave Private Ads가 아닌 대부분의 광고가 웹사이트에서 차단됩니다.</translation>
+<translation id="8452536890042542134">대부분의 광고가 웹사이트에서 차단됩니다.</translation>
 <translation id="4800195524776354947">방패 아이콘에 차단된 항목 수 표시</translation>
 <translation id="5510493033031835532">AMP 페이지 자동 리디렉션</translation>
 <translation id="7630031867325944356">AMP와 이와 유사한 버전 대신 게시자 페이지 URL을 선호합니다.</translation>
@@ -392,12 +399,12 @@
 <translation id="6554397389149987360">화면 공유와 다른 기능들을 브라우저에서 사용하시려면 행아웃 요소들을 사용하세요.</translation>
 <translation id="7878791177459550035">미디어 라우터가 브라우저 내  전송 기능을 활성화합니다.</translation>
 <translation id="5927916530277631319">Unstoppable Domains 해석 방법</translation>
-<translation id="8412057160793088103">HTTPS를 통한 DNS 및 이더리움 개인정보 보호 고려 사항에 대해 <ph name="BEGIN_LINK"/>자세히 알아보세요<ph name="END_LINK"/>.</translation>
+<translation id="2889554198027690581">이더리움 개인정보 보호 고려 사항에 대해 <ph name="BEGIN_LINK"/>자세히 알아보세요<ph name="END_LINK"/>.</translation>
 <translation id="5248318250177143470">Ethereum Name Service(ENS) 해석 방법</translation>
 <translation id="6241402707160226266">Tor와 함께하는 개인정보 보호 창</translation>
 <translation id="8762452230727230396">Tor는 방문하는 사이트에서 IP 주소를 숨깁니다.</translation>
 <translation id="2959986444009520721">Bridges 사용</translation>
-<translation id="6003484976430531384">Bridges는 Tor가 차단된 장소에서 Tor 네트워크에 액세스하는 데 도움을 줍니다. 현재 위치에 따라 가장 나은 브리지가 선택됩니다.</translation>
+<translation id="8416750895933172460">Bridges는 Tor가 차단된 장소에서 Tor 네트워크에 액세스하는 데 도움을 줍니다. 현재 위치에 따라 다른 것보다 가장 나은 브리지 하나가 선택됩니다.</translation>
 <translation id="7206799843254049470">Tor 연결 설정</translation>
 <translation id="3194502271166340944">Tor가 있는 비공개 창이 Tor 네트워크에 연결되는 방법 제어</translation>
 <translation id="4859228830700205299">내장 브리지 선택</translation>
@@ -414,7 +421,7 @@
 <translation id="6936835573742749135">CAPTCHA를 요청할 수 없습니다. 다시 시도하세요.</translation>
 <translation id="2653659639078652383">제출</translation>
 <translation id="1369311132025451972">.onion 사이트 자동 리디렉션</translation>
-<translation id="2843777623071353503">Tor 창에서 .onion 도메인을 사용할 수 있을 때 Brave가 웹사이트의 onion 서비스를 엽니다.</translation>
+<translation id="1658670175365815312">웹사이트의 .onion 버전을 사용할 수 있을 때 Brave가 자동으로 Tor 창에서 모든 .onion 도메인을 엽니다.</translation>
 <translation id="2896916411183256228">브라우저에 직접 토렌트를 표시하려면 웹 토렌트를 사용하세요. 토렌트 파일들과 마그넷 링크들을 지원하세요.</translation>
 <translation id="5249433283143453448">Widevine 디지털 권리 관리(DRM) 구성 요소 사용으로 브라우저에서 보호된 스트리밍 동영상 및 기타 콘텐츠를 볼 수 있습니다.</translation>
 <translation id="8137559199583651773">확장 프로그램 관리</translation>
@@ -440,14 +447,16 @@
 <translation id="3752403403443723332">월렛이 초기화되었습니다.</translation>
 <translation id="594766067816395072">월렛 트랜잭션 정보가 초기화되었습니다.</translation>
 <translation id="1426410128494586442">예</translation>
-<translation id="2556708692502648323">월렛 네트워크</translation>
+<translation id="4226543734057230801">이더리움 네트워크</translation>
+<translation id="3504157706952484145">Filecoin 네트워크</translation>
+<translation id="1561541094377237745">Solana 네트워크</translation>
 <translation id="3159419679550543837">테스트 네트워크 표시</translation>
-<translation id="8205945804087322170">새 네트워크 추가</translation>
-<translation id="1330032157352961756">새 체인의 ID</translation>
+<translation id="3215569562674795548">네트워크 편집 또는 새로 추가</translation>
+<translation id="4418993400653250511">체인의 ID</translation>
 <translation id="3423620355610881890">양의 십진수</translation>
 <translation id="8110465398315041268">네트워크 검색</translation>
 <translation id="3579705520805744214">체인 ID 또는 이름</translation>
-<translation id="726121047592132939">새 체인의 이름</translation>
+<translation id="8502525913969149079">체인의 이름</translation>
 <translation id="1034112277864078119">체인 이름 입력</translation>
 <translation id="4672314527143443556">체인의 통화 이름</translation>
 <translation id="4652114030688989556">통화 이름 입력</translation>

@@ -5,9 +5,7 @@
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
-import {
-  useSelector
-} from 'react-redux'
+import { useSelector } from 'react-redux'
 
 // Types
 import {
@@ -16,6 +14,7 @@ import {
   WalletRoutes,
   WalletState
 } from '../../../../../../constants/types'
+import { RenderTokenFunc } from './virtualized-tokens-list'
 
 // Utils
 import { getLocale } from '../../../../../../../common/locale'
@@ -24,6 +23,7 @@ import { getLocale } from '../../../../../../../common/locale'
 import SearchBar from '../../../../../shared/search-bar/index'
 import AddButton from '../../../../add-button/index'
 import NetworkFilterSelector from '../../../../network-filter-selector/index'
+import { AccountFilterSelector } from '../../../../account-filter-selector/account-filter-selector'
 import { AssetFilterSelector } from '../../../../asset-filter-selector/asset-filter-selector'
 import { NFTGridView } from '../nft-grid-view/nft-grid-view'
 
@@ -39,8 +39,6 @@ import {
   Spacer,
   FilterTokenRow
 } from '../../style'
-import { RenderTokenFunc, VirtualizedTokensList } from './virtualized-tokens-list'
-import { HorizontallyPaddedDiv } from './token-list.style'
 
 interface Props {
   userAssetList: UserAssetInfoType[]
@@ -48,6 +46,7 @@ interface Props {
   renderToken: RenderTokenFunc
   hideAddButton?: boolean
   hideAssetFilter?: boolean
+  hideAccountFilter?: boolean
   enableScroll?: boolean
   maxListHeight?: string
   estimatedItemSize: number
@@ -61,6 +60,7 @@ export const TokenLists = ({
   enableScroll,
   maxListHeight,
   hideAssetFilter,
+  hideAccountFilter,
   estimatedItemSize = 58
 }: Props) => {
   // routing
@@ -150,39 +150,23 @@ export const TokenLists = ({
 
   const listUi = React.useMemo(() => {
     return selectedAssetFilter.id !== 'nfts' ? (
-      <VirtualizedTokensList
-        key={`${selectedAssetFilter.id}-${Number(firstNftIndex)}`}
-        getItemSize={
-          // only the first Nft element has a bigger height due to the section divider
-          (index) => index === firstNftIndex ? 94 : estimatedItemSize
-        }
-        renderToken={(args) => {
-          if (args.index === firstNftIndex) {
-            return <HorizontallyPaddedDiv>
+        <>
+          {sortedFungibleTokensList.map((token, index) => renderToken({ index, item: token, viewMode: 'list' }))}
+          {nonFungibleTokens.length !== 0 &&
+            <>
               <Spacer />
               <DividerText>{getLocale('braveWalletTopNavNFTS')}</DividerText>
               <SubDivider />
-              {renderToken(args)}
-            </HorizontallyPaddedDiv>
+              {nonFungibleTokens.map((token, index) => renderToken({ index, item: token, viewMode: 'list' }))}
+            </>
           }
-          return <HorizontallyPaddedDiv>
-            {renderToken(args)}
-          </HorizontallyPaddedDiv>
-        }}
-        userAssetList={sortedFungibleTokensAndNftsList}
-        estimatedItemSize={estimatedItemSize}
-      />
-    ) : (
-      <NFTGridView
-        key={selectedAssetFilter.id}
-        nonFungibleTokens={nonFungibleTokens}
-        renderToken={(token, index) => renderToken({
-          index,
-          item: token,
-          viewMode: 'grid'
-        })}
-      />
-    )
+        </>
+      ) : (
+        <NFTGridView
+          nonFungibleTokens={nonFungibleTokens}
+          renderToken={(token, index) => renderToken({ index, item: token, viewMode: 'list' })}
+        />
+      )
   }, [
     firstNftIndex,
     selectedAssetFilter.id,
@@ -216,6 +200,10 @@ export const TokenLists = ({
 
         {!hideAssetFilter &&
           <AssetFilterSelector />
+        }
+
+        {!hideAccountFilter &&
+          <AccountFilterSelector />
         }
 
       </FilterTokenRow>

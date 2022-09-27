@@ -36,9 +36,12 @@ import * as WalletActions from '../actions/wallet_actions'
 import { mojoTimeDeltaToJSDate } from '../../../common/mojomUtils'
 import { sortTransactionByDate } from '../../utils/tx-utils'
 import Amount from '../../utils/amount'
-import { AllNetworksOption } from '../../options/network-filter-options'
 import { createTokenBalanceRegistryKey } from '../../utils/account-utils'
+
+// Options
 import { AllAssetsFilterOption } from '../../options/asset-filter-options'
+import { AllNetworksOption } from '../../options/network-filter-options'
+import { AllAccountsOption } from '../../options/account-filter-options'
 
 const defaultState: WalletState = {
   hasInitialized: false,
@@ -104,6 +107,7 @@ const defaultState: WalletState = {
   defaultAccounts: [] as BraveWallet.AccountInfo[],
   selectedNetworkFilter: AllNetworksOption,
   selectedAssetFilter: AllAssetsFilterOption,
+  selectedAccountFilter: AllAccountsOption,
   solFeeEstimates: undefined,
   onRampCurrencies: [] as BraveWallet.OnRampCurrency[],
   selectedCurrency: undefined,
@@ -583,6 +587,16 @@ export const createWalletReducer = (initialState: WalletState) => {
     return {
       ...state,
       selectedAssetFilter: payload
+    }
+  })
+
+  reducer.on(WalletActions.setSelectedAccountFilterItem, (state: WalletState, payload: WalletAccountType): WalletState => {
+    // We need to add a getPortfolioAccountFilter and setPortfolioAccountFilter pref to persist this value
+    // https://github.com/brave/brave-browser/issues/25620
+    return {
+      ...state,
+      isFetchingPortfolioPriceHistory: true,
+      selectedAccountFilter: payload
     }
   })
 

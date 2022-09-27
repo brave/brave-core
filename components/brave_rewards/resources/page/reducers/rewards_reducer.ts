@@ -5,7 +5,6 @@
 import { Reducer } from 'redux'
 
 import { types } from '../actions/rewards_types'
-import { defaultState } from './default_state'
 
 const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   if (!state) {
@@ -124,11 +123,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       }
 
       state = { ...state }
-
-      if (!state.adsData) {
-        state.adsData = defaultState.adsData
-      }
-
       state.adsData.adsEnabled = action.payload.adsData.adsEnabled
       state.adsData.adsPerHour = action.payload.adsData.adsPerHour
       state.adsData.adsSubdivisionTargeting = action.payload.adsData.adsSubdivisionTargeting
@@ -149,11 +143,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       }
 
       state = { ...state }
-
-      if (!state.adsHistory) {
-        state.adsHistory = defaultState.adsHistory
-      }
-
       state.adsHistory = action.payload.adsHistory
       break
     }
@@ -216,7 +205,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         if (key === 'adsEnabledMigrated') {
           state.enabledAdsMigrated = true
         } else {
-          state.adsData = { ...(state.adsData || defaultState.adsData) }
+          state.adsData = { ...state.adsData }
           state.adsData[key] = value
         }
       }
@@ -233,10 +222,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       }
 
       state = { ...state }
-
-      if (!state.adsData) {
-        state.adsData = defaultState.adsData
-      }
 
       const data = action.payload.data
       state.adsData.adsNextPaymentDate = data.adsNextPaymentDate
@@ -414,10 +399,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     case types.DISMISS_PROMO_PROMPT: {
       const ui = state.ui
       const promoKey = action.payload.promo
-
-      if (!ui.promosDismissed) {
-        ui.promosDismissed = {}
-      }
 
       ui.promosDismissed[promoKey] = true
 
