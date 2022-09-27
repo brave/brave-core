@@ -20,7 +20,6 @@ namespace {
 constexpr char kTransactionIdKey[] = "transactionId";
 constexpr char kCreativeInstanceIdKey[] = "creativeInstanceId";
 constexpr char kTypeKey[] = "type";
-constexpr char kPayloadKey[] = "payload";
 constexpr char kBlindedTokensKey[] = "blindedPaymentTokens";
 constexpr char kPublicKeyKey[] = "publicKey";
 
@@ -28,10 +27,12 @@ constexpr char kPublicKeyKey[] = "publicKey";
 
 std::string WriteConfirmationPayload(const ConfirmationInfo& confirmation) {
   base::Value::Dict payload;
+
   payload.Set(kTransactionIdKey, confirmation.transaction_id);
+
   payload.Set(kCreativeInstanceIdKey, confirmation.creative_instance_id);
+
   payload.Set(kTypeKey, confirmation.type.ToString());
-  payload.Set(kPayloadKey, base::Value::Dict());
 
   if (confirmation.opted_in) {
     base::Value::List blinded_tokens;
