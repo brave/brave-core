@@ -1,3 +1,53 @@
+##
+## Upstream tests to disable
+##
+## When adding a new filter to this list, please include a short description of
+## why the filter is required and create an associated tracking issue if needed.
+##
+
+# These tests fail because they expect the infobar count to be 1, but we
+# display an additional confirmation infobar for P3A
+-All/PageSpecificSiteDataDialogBrowserTest.*/*
+
+# This test fails because of the following failed expectation in prerender_test_util.cc:
+# Expected: (host_id) != (RenderFrameHost::kNoFrameTreeNodeId), actual: -1 vs -1
+-AutofillTestPrerendering.DeferWhilePrerendering
+
+# This test fails because we intentionally disable trust tokens via
+# network::features::kTrustTokens
+-BrowsingDataModelTrustTokenBrowserTest.TrustTokenIssuance
+
+# These tests fail because we intentionally disable direct/raw sockets via
+# policy::policy_prefs::kIsolatedAppsDeveloperModeAllowed. See
+# https://github.com/brave/brave-browser/issues/11546 for additional
+# information.
+
+-DirectSocketsTcpApiTest.*
+-DirectSocketsUdpApiTest.*
+
+# This test fails because we've already implemented similar changes to prevent
+# language fingerprinting, regardless of the feature flag state
+-DisableFeatureReduceAcceptLanguageBrowserTest.NoAcceptLanguageHeader
+
+# These tests fail because BookmarkUndoService::Start fails a DCHECK due to its
+# this pointer being null
+-IdleServiceTest.*
+
+# These tests fail because the primary account consent level is null instead of
+# signin::ConsentLevel::kSignin
+-TurnSyncOnHelperBrowserTest.PrimaryAccountResetAfterSyncOptInFlowAborted/*
+
+# This test fails because BRAVE_COSMETIC_FILTERING has an initial default value
+# of CONTENT_SETTING_DEFAULT which is not allowed as an integer value by
+# content_settings::ParseContentSettingValue
+# https://github.com/brave/brave-browser/issues/25733
+-UnusedSitePermissionsServiceBrowserTest.TestNavigationUpdatesLastUsedDate
+
+# These tests fail because of the following failed DCHECK in web_view_guest.cc:
+# render_frame_host->IsActive() || (content::SiteIsolationPolicy::IsSiteIsolationForGuestsEnabled() && render_frame_host->IsInLifecycleState( RenderFrameHost::LifecycleState::kPendingDeletion))
+-WebViewSSLErrorTests/WebViewSSLErrorTest.*/SiteIsolationForGuestsEnabled
+
+# Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
 -AccessCodeCastHandlerBrowserTest.*
 -AccessContextAuditBrowserTest.*
@@ -36,6 +86,7 @@
 -All/LoginPromptPrerenderBrowserTest.*
 -All/LookalikeUrlNavigationThrottleBrowserTest.*
 -All/LookalikeUrlNavigationThrottleDigitalAssetLinksBrowserTest.*
+-All/LookalikeUrlNavigationThrottlePrerenderBrowserTest.ShowInterstitialAfterActivation/*
 -All/LookalikeUrlNavigationThrottleSignedExchangeBrowserTest.*
 -All/MultiActionAPICanvasTest.*
 -All/MultiActionAPITest.*
@@ -120,6 +171,7 @@
 -AppSessionRestoreTest.NoAppRestore
 -AppSessionRestoreTest.OpeningAppDoesNotAffectBrowserSession
 -AutofillServerTest.*
+-AvatarMenuBrowserTest.AddNewProfile
 -AvatarMenuBrowserTest.EditProfile_NotLoaded
 -AvatarToolbarButtonBrowserTest.*
 -BackForwardCacheFileSystemAccessBrowserTest.*
@@ -243,11 +295,6 @@
 -DIPSBounceDetectorBrowserTest.Histograms_BounceCategory_Server
 -DIPSTabHelperBrowserTest.Histograms_ClickThenStorage
 -DIPSTabHelperBrowserTest.Histograms_StorageThenClick
-
-# Disabled as we've already implemented similar changes to prevent language
-# fingerprinting, regardless of the feature flag state
--DisableFeatureReduceAcceptLanguageBrowserTest.NoAcceptLanguageHeader
-
 -DiskCachesizeExperiment.*
 -DistillablePageUtilsBrowserTestAllArticles.*
 -DNSErrorPageTest.*
@@ -500,6 +547,7 @@
 -PageInfoBubbleViewAboutThisSiteBrowserTest.*
 -PageInfoBubbleViewAboutThisSiteDialogBrowserTest.*
 -PageInfoBubbleViewAboutThisSiteDisabledBrowserTest.*
+-PageInfoBubbleViewAboutThisSiteWithoutSidePanelBrowserTest.*
 -PageInfoBubbleViewPrerenderBrowserTest.*
 -PageInfoBubbleViewSyncBrowserTest.*
 -PageLoadMetricsBrowserTest.*
@@ -525,6 +573,7 @@
 -PDFExtensionTest.ContextMenuPrintCommandExtensionMainFrame
 -PDFExtensionTest.ContextMenuPrintCommandPluginFrame
 -PDFExtensionTest.PdfAccessibilityContextMenuAction
+-PDFExtensionTest.PdfExtensionLoadedWhileOldPdfCloses
 -PDFExtensionTestWithTestGuestViewManager.PdfExtensionLoadedWhileOldPdfCloses
 -PDFIFrameNavigationThrottleBrowserTest.*
 -PKIMetadataComponentUpdater/PKIMetadataComponentUpdaterTest.*
@@ -588,6 +637,7 @@
 -PrivacyBudgetBrowserTestWithScopedConfig.*
 -PrivacyBudgetBrowserTestWithTestRecorder.*
 -PrivacyBudgetBrowserTestWithUkmRecording.*
+-PrivacyBudgetReidScoreBrowserTestWithUkmRecording.ReidIsReported
 -PrivacySandboxDialogHelperTestWithParamInstance/PrivacySandboxDialogHelperTestWithParam.*
 -PrivacySandboxSettingsBrowserTest.*
 -PrivateNetworkAccessWithFeatureEnabledBrowserTest.*
@@ -597,6 +647,8 @@
 -ProfileBrowserTestWithoutDestroyProfile.*
 -ProfileCustomizationBubbleBrowserTest.*
 -ProfileCustomizationDialogBrowserTest.*
+-ProfileKeyedServiceBrowserTest.GuestProfileOTR_NeededServices
+-ProfileKeyedServiceBrowserTest.GuestProfileParent_NeededServices
 -ProfileKeyedServiceBrowserTest.SystemProfileOTR_NeededServices
 -ProfileKeyedServiceBrowserTest.SystemProfileParent_NeededServices
 -ProfileListDesktopBrowserTest.*
@@ -625,10 +677,13 @@
 -ProfileNetworkContextTrustTokensBrowsertest.*
 -ProfilePickerCreationFlowBrowserTest.*
 -ProfilePickerEnterpriseCreationFlowBrowserTest.*
+-ProfilePickerLocalProfileCreationDialogBrowserTest.CreateLocalProfile
+-ProfilePickerLocalProfileCreationDialogBrowserTest.CreateLocalProfile.*
 -ProfileSigninConfirmationHelperBrowserTest.*
 -ProfileThemeUpdateServiceBrowserTest.*
 -ProtocolHandlerApiTest.*
 -PushMessagingBrowserTest.*
+-PushMessagingExpWebFeaturesBrowserTest/PushMessagingExpWebFeaturesBrowserTest.CrossOriginFrame/*
 -PushMessagingIncognitoBrowserTest.*
 -PwaInstallViewBrowserTest.*
 -QuicAllowedPolicyIsFalse.*
@@ -722,6 +777,7 @@
 -SharedStorageChromeBrowserTest.AddModule_LoadFailureError
 -SharedStorageChromeBrowserTest.AddModule_MultipleAddModuleError
 -SharedStorageChromeBrowserTest.AddModule_UnexpectedRedirectError
+-SharedStorageChromeBrowserTest.DocumentTiming
 -SharedStorageChromeBrowserTest.Run_FunctionError
 -SharedStorageChromeBrowserTest.Run_NotAPromiseError
 -SharedStorageChromeBrowserTest.Run_NotLoadedError
@@ -741,9 +797,14 @@
 -SharedStorageChromeBrowserTest.WorkletKeysEntries_AllIteratedNoKeys
 -SharedStorageChromeBrowserTest.WorkletKeysEntries_PartiallyIterated
 -SharedStorageChromeBrowserTest.WorkletKeysEntries_PartiallyIteratedLessThanTenKeys
+-SharedStorageChromeBrowserTest.WorkletNumPerPage_Three
+-SharedStorageChromeBrowserTest.WorkletNumPerPage_Two
+-SharedStorageChromeBrowserTest.WorkletTiming
 -SignedExchangePolicyBrowserTest.BlockList
 -SignedExchangePolicyTest.*
+-SignedExchangeSecurityStateTest.SecurityLevelIsSecure
 -SignedExchangeSecurityStateTest.SecurityLevelIsSecure/*
+-SignedExchangeSecurityStateTest.SecurityLevelIsSecureAfterPrefetch
 -SignedExchangeSecurityStateTest.SecurityLevelIsSecureAfterPrefetch/*
 -SigninInterceptFirstRunExperienceDialogBrowserTest.*
 -SigninReauthViewControllerBrowserTest.*
@@ -773,9 +834,12 @@
 -StartupBrowserWithWebAppTest.*
 -StartupHelperBrowserTest.*
 -StorageAccessAPIBrowserTest.*
+-StorageAccessAPIForSiteExtensionBrowserTest.GrantGivesCrossSiteCookieAccess/*
 -StorageAccessAPIStorageBrowserTest.MultiTabTest/*
 -StorageAccessAPIStorageBrowserTest.NestedThirdPartyIFrameStorage/*
 -StorageAccessAPIStorageBrowserTest.ThirdPartyIFrameStorageRequestsAccess/*
+-StorageAccessAPIWithFirstPartySetsAndImplicitGrantsBrowserTest.*
+-StorageAccessAPIWithFirstPartySetsBrowserTest.*
 -SubframeTaskBrowserTest.*
 -SubresourceFilterPrerenderingBrowserTest.*
 -SyncAwareCounterTest.*
