@@ -71,7 +71,7 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
   var pageZoomBar: UIHostingController<PageZoomView>?
   private var pageZoomListener: NSObjectProtocol?
   private var openTabsModelStateListener: SendTabToSelfModelStateListener?
-  private let collapsedURLBarView = CollapsedURLBarView()
+  let collapsedURLBarView = CollapsedURLBarView()
 
   // Single data source used for all favorites vcs
   public let backgroundDataSource = NTPDataSource()
@@ -113,6 +113,11 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
   var footer: UIView!
   fileprivate var topTouchArea: UIButton!
   fileprivate let bottomTouchArea = UIButton()
+  // A view to place behind the bottom bar down to the toolbar during keyboard animations to avoid
+  // the odd look for the URL bar floating
+  private let bottomBarKeyboardBackground = UIView().then {
+    $0.isUserInteractionEnabled = false
+  }
 
   // These constraints allow to show/hide tabs bar
   var webViewContainerTopOffset: Constraint?
@@ -584,7 +589,21 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
       alertStackView.isHidden = true
     }
   }
+  
+  private func updateUsingBottomBar(using traitCollection: UITraitCollection) {
+    isUsingBottomBar = Preferences.General.isUsingBottomBar.value &&
+    traitCollection.horizontalSizeClass == .compact &&
+    traitCollection.verticalSizeClass == .regular &&
+    traitCollection.userInterfaceIdiom == .phone
+  }
 
+  public override func viewSafeAreaInsetsDidChange() {
+    super.viewSafeAreaInsetsDidChange()
+    
+    topTouchArea.isEnabled = view.safeAreaInsets.top > 0
+    statusBarOverlay.isHidden = view.safeAreaInsets.top.isZero
+  }
+  
   fileprivate func updateToolbarStateForTraitCollection(_ newCollection: UITraitCollection, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator? = nil) {
     let showToolbar = shouldShowFooterForTraitCollection(newCollection)
 
@@ -602,7 +621,8 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
       toolbar?.menuButton.setBadges(Array(topToolbar.menuButton.badges.keys))
     }
     updateToolbarUsingTabManager(tabManager)
-
+    updateUsingBottomBar(using: newCollection)
+    
     view.setNeedsUpdateConstraints()
 
     if let tab = tabManager.selectedTab,
@@ -640,6 +660,7 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
       alongsideTransition: { context in
         if self.isViewLoaded {
           self.statusBarOverlay.backgroundColor = self.topToolbar.backgroundColor
+          self.bottomBarKeyboardBackground.backgroundColor = self.topToolbar.backgroundColor
           self.setNeedsStatusBarAppearanceUpdate()
         }
       },
@@ -666,6 +687,14 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
     displayedPopoverController?.dismiss(animated: false) {
       self.updateDisplayedPopoverProperties = nil
       self.displayedPopoverController = nil
+    }
+  }
+  
+  @objc private func tappedCollapsedURLBar() {
+    if keyboardState != nil && isUsingBottomBar && !topToolbar.inOverlayMode {
+      view.endEditing(true)
+    } else {
+      tappedTopArea()
     }
   }
 
@@ -715,6 +744,18 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
         self.webViewContainerBackdrop.alpha = 0
       })
   }
+  
+  private(set) var isUsingBottomBar: Bool = false {
+    didSet {
+      header.isUsingBottomBar = isUsingBottomBar
+      collapsedURLBarView.isUsingBottomBar = isUsingBottomBar
+      searchController?.isUsingBottomBar = isUsingBottomBar
+      bottomBarKeyboardBackground.isHidden = !isUsingBottomBar
+      topToolbar.displayTabTraySwipeGestureRecognizer?.isEnabled = isUsingBottomBar
+      updateTabsBarVisibility()
+      updateViewConstraints()
+    }
+  }
 
   override public func viewDidLoad() {
     super.viewDidLoad()
@@ -756,16 +797,13 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
     // Temporary work around for covering the non-clipped web view content
     statusBarOverlay = UIView()
     statusBarOverlay.backgroundColor = Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
-    view.addSubview(statusBarOverlay)
 
     topTouchArea = UIButton()
     topTouchArea.isAccessibilityElement = false
     topTouchArea.addTarget(self, action: #selector(tappedTopArea), for: .touchUpInside)
-    view.addSubview(topTouchArea)
-
+    
     bottomTouchArea.isAccessibilityElement = false
     bottomTouchArea.addTarget(self, action: #selector(tappedTopArea), for: .touchUpInside)
-    view.addSubview(bottomTouchArea)
     
     // Setup the URL bar, wrapped in a view to get transparency effect
     topToolbar = TopToolbarView()
@@ -780,20 +818,22 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
 
     tabsBar = TabsBarViewController(tabManager: tabManager)
     tabsBar.delegate = self
-    header.expandedBarStackView.addArrangedSubview(tabsBar.view)
 
     header.collapsedBarContainerView.addSubview(collapsedURLBarView)
-    header.collapsedBarContainerView.addTarget(self, action: #selector(tappedTopArea), for: .touchUpInside)
+    header.collapsedBarContainerView.addTarget(self, action: #selector(tappedCollapsedURLBar), for: .touchUpInside)
     
-    view.addSubview(header)
-
     addChild(tabsBar)
     tabsBar.didMove(toParent: self)
 
     view.addSubview(alertStackView)
     footer = UIView()
     footer.translatesAutoresizingMaskIntoConstraints = false
+    view.addSubview(bottomTouchArea)
+    view.addSubview(topTouchArea)
+    view.addSubview(bottomBarKeyboardBackground)
     view.addSubview(footer)
+    view.addSubview(header)
+    view.addSubview(statusBarOverlay)
     alertStackView.axis = .vertical
     alertStackView.alignment = .center
 
@@ -867,6 +907,7 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
           self?.statusBarOverlay.backgroundColor =
           Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
         }
+        self?.bottomBarKeyboardBackground.backgroundColor = self?.statusBarOverlay.backgroundColor
       })
     
     Preferences.General.nightModeEnabled.objectWillChange
@@ -878,6 +919,16 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
           self?.statusBarOverlay.backgroundColor =
           Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
         }
+        self?.bottomBarKeyboardBackground.backgroundColor = self?.statusBarOverlay.backgroundColor
+      }
+      .store(in: &cancellables)
+    
+    Preferences.General.isUsingBottomBar.objectWillChange
+      .receive(on: RunLoop.main)
+      .sink { [weak self] _ in
+        guard let self = self else { return }
+        self.updateTabsBarVisibility()
+        self.updateUsingBottomBar(using: self.traitCollection)
       }
       .store(in: &cancellables)
     
@@ -967,11 +1018,6 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
   }
 
   fileprivate func setupConstraints() {
-    header.snp.makeConstraints { make in
-      make.top.equalTo(toolbarLayoutGuide)
-      make.left.right.equalTo(self.view)
-    }
-
     collapsedURLBarView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
@@ -1005,6 +1051,15 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
     // Since the height of the WKWebView changes while collapsing we need to use a stable value to determine
     // if the toolbars can collapse
     toolbarVisibilityViewModel.minimumCollapsableContentHeight = webViewContainer.bounds.height + header.bounds.height + footer.bounds.height + view.safeAreaInsets.top + view.safeAreaInsets.bottom
+    
+    var additionalInsets: UIEdgeInsets = .zero
+    if isUsingBottomBar {
+      additionalInsets = .init(top: 0, left: 0, bottom: topToolbar.bounds.height, right: 0)
+    } else {
+      additionalInsets = .init(top: header.bounds.height, left: 0, bottom: 0, right: 0)
+    }
+    searchController?.additionalSafeAreaInsets = additionalInsets
+    favoritesController?.additionalSafeAreaInsets = additionalInsets
   }
 
   override public var canBecomeFirstResponder: Bool {
@@ -1130,13 +1185,53 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
   let pageOverlayLayoutGuide = UILayoutGuide()
 
   override public func updateViewConstraints() {
+    readerModeBar?.snp.remakeConstraints { make in
+      if self.isUsingBottomBar {
+        make.top.equalTo(self.view.safeArea.top)
+      } else {
+        make.top.equalTo(self.header.snp.bottom)
+      }
+      make.height.equalTo(UIConstants.toolbarHeight)
+      make.leading.trailing.equalTo(self.view)
+    }
+    
     webViewContainer.snp.remakeConstraints { make in
       make.left.right.equalTo(self.view)
-
-      webViewContainerTopOffset = make.top.equalTo(self.readerModeBar?.snp.bottom ?? self.header.snp.bottom).constraint
+      
+      if self.isUsingBottomBar {
+        webViewContainerTopOffset = make.top.equalTo(self.readerModeBar?.snp.bottom ?? self.toolbarLayoutGuide.snp.top).constraint
+      } else {
+        webViewContainerTopOffset = make.top.equalTo(self.readerModeBar?.snp.bottom ?? self.header.snp.bottom).constraint
+      }
 
       let findInPageHeight = (findInPageBar == nil) ? 0 : UIConstants.toolbarHeight
-      make.bottom.equalTo(self.footer.snp.top).offset(-findInPageHeight)
+      if self.isUsingBottomBar {
+        make.bottom.equalTo(self.header.snp.top).offset(-findInPageHeight)
+      } else {
+        make.bottom.equalTo(self.footer.snp.top).offset(-findInPageHeight)
+      }
+    }
+
+    header.snp.remakeConstraints { make in
+      if self.isUsingBottomBar {
+        if let keyboardHeight = keyboardState?.intersectionHeightForView(self.view), keyboardHeight > 0 {
+          var offset = -keyboardHeight
+          if !topToolbar.inOverlayMode {
+            // Showing collapsed URL bar while the keyboard is up
+            offset += toolbarVisibilityViewModel.transitionDistance
+          }
+          make.bottom.equalTo(self.view).offset(offset)
+        } else {
+          if topToolbar.inOverlayMode {
+            make.bottom.equalTo(self.view.safeArea.bottom)
+          } else {
+            make.bottom.equalTo(footer.snp.top)
+          }
+        }
+      } else {
+        make.top.equalTo(toolbarLayoutGuide)
+      }
+      make.left.right.equalTo(self.view)
     }
 
     footer.snp.remakeConstraints { make in
@@ -1146,20 +1241,50 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
       make.height.equalTo(height)
     }
 
+    bottomBarKeyboardBackground.snp.remakeConstraints {
+      if self.isUsingBottomBar {
+        $0.top.equalTo(header)
+        $0.bottom.equalTo(footer)
+      } else {
+        $0.top.bottom.equalTo(footer)
+      }
+      $0.leading.trailing.equalToSuperview()
+    }
+    
     // Remake constraints even if we're already showing the home controller.
     // The home controller may change sizes if we tap the URL bar while on about:home.
     pageOverlayLayoutGuide.snp.remakeConstraints { make in
-      webViewContainerTopOffset = make.top.equalTo(readerModeBar?.snp.bottom ?? self.header.snp.bottom).constraint
+      if self.isUsingBottomBar {
+        webViewContainerTopOffset = make.top.equalTo(readerModeBar?.snp.bottom ?? self.toolbarLayoutGuide).constraint
+      } else {
+        webViewContainerTopOffset = make.top.equalTo(readerModeBar?.snp.bottom ?? self.header.snp.bottom).constraint
+      }
 
       make.left.right.equalTo(self.view)
-      make.bottom.equalTo(self.footer.snp.top)
+      if self.isUsingBottomBar {
+        make.bottom.equalTo(self.footer.snp.top).offset(-self.header.bounds.height)
+      } else {
+        make.bottom.equalTo(self.footer.snp.top)
+      }
     }
 
     alertStackView.snp.remakeConstraints { make in
       make.centerX.equalTo(self.view)
       make.width.equalTo(self.view.safeArea.width)
+      
       if let keyboardHeight = keyboardState?.intersectionHeightForView(self.view), keyboardHeight > 0 {
-        make.bottom.equalTo(self.view).offset(-keyboardHeight)
+        if self.isUsingBottomBar {
+          var offset = -keyboardHeight
+          if !topToolbar.inOverlayMode {
+            // Showing collapsed URL bar while the keyboard is up
+            offset += toolbarVisibilityViewModel.transitionDistance
+          }
+          make.bottom.equalTo(header.snp.top)
+        } else {
+          make.bottom.equalTo(self.view).offset(-keyboardHeight)
+        }
+      } else if isUsingBottomBar {
+        make.bottom.equalTo(header.snp.top)
       } else if let toolbar = self.toolbar {
         make.bottom.lessThanOrEqualTo(toolbar.snp.top)
         make.bottom.lessThanOrEqualTo(self.view.safeArea.bottom)
@@ -1211,7 +1336,7 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
       activeNewTabPageViewController = ntpController
 
       addChild(ntpController)
-      view.addSubview(ntpController.view)
+      view.insertSubview(ntpController.view, belowSubview: header)
       ntpController.didMove(toParent: self)
 
       ntpController.view.snp.makeConstraints {
@@ -1303,7 +1428,14 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
 
   func updateTabsBarVisibility() {
     defer {
-      topToolbar?.line.isHidden = tabsBar?.view.isHidden == false
+      toolbar?.line.isHidden = isUsingBottomBar
+    }
+    
+    header.expandedBarStackView.removeArrangedSubview(tabsBar.view)
+    if isUsingBottomBar {
+      header.expandedBarStackView.insertArrangedSubview(tabsBar.view, at: 0)
+    } else {
+      header.expandedBarStackView.addArrangedSubview(tabsBar.view)
     }
 
     if tabManager.selectedTab == nil {
@@ -1312,6 +1444,9 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
     }
 
     func shouldShowTabBar() -> Bool {
+      if (topToolbar.inOverlayMode || keyboardState != nil) && isUsingBottomBar {
+        return false
+      }
       let tabCount = tabManager.tabsForCurrentMode.count
       guard let tabBarVisibility = TabBarVisibility(rawValue: Preferences.General.tabBarVisibility.value) else {
         // This should never happen
@@ -2165,13 +2300,14 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
           topToolbar.actionButtons.forEach { $0.alpha = topToolbar.locationContainer.alpha }
           header.collapsedBarContainerView.alpha = 1 - topToolbar.locationContainer.alpha
           tabsBar.view.subviews.forEach { $0.alpha = topToolbar.locationContainer.alpha }
+          toolbar?.actionButtons.forEach { $0.alpha = topToolbar.locationContainer.alpha }
         }
         animator.startAnimation()
       }
       return
     }
     let headerHeight = toolbarVisibilityViewModel.transitionDistance
-    let footerHeight = footer.bounds.height
+    let footerHeight = footer.bounds.height + (isUsingBottomBar ? headerHeight - view.safeAreaInsets.bottom : 0)
     // Changing the web view size while scrolling and a PDF is visible causes strange flickering, so only show
     // final expanded/collapsed states while a PDF is visible
     if let progress = progress, tab.mimeType != MIMEType.PDF {
@@ -2188,6 +2324,7 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
       topToolbar.actionButtons.forEach { $0.alpha = topToolbar.locationContainer.alpha }
       tabsBar.view.subviews.forEach { $0.alpha = topToolbar.locationContainer.alpha }
       header.collapsedBarContainerView.alpha = 1 - topToolbar.locationContainer.alpha
+      toolbar?.actionButtons.forEach { $0.alpha = topToolbar.locationContainer.alpha }
       return
     }
     switch state {
@@ -2203,6 +2340,7 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
     tabsBar.view.subviews.forEach { $0.alpha = topToolbar.locationContainer.alpha }
     topToolbar.actionButtons.forEach { $0.alpha = topToolbar.locationContainer.alpha }
     header.collapsedBarContainerView.alpha = 1 - topToolbar.locationContainer.alpha
+    toolbar?.actionButtons.forEach { $0.alpha = topToolbar.locationContainer.alpha }
     let animator = toolbarVisibilityViewModel.toolbarChangePropertyAnimator
     animator.addAnimations {
       self.view.layoutIfNeeded()
@@ -2402,7 +2540,6 @@ extension BrowserViewController: TabDelegate {
 
   func showBar(_ bar: SnackBar, animated: Bool) {
     view.layoutIfNeeded()
-    self.view.bringSubviewToFront(self.alertStackView)
     UIView.animate(
       withDuration: animated ? 0.25 : 0,
       animations: {
@@ -2509,7 +2646,7 @@ extension BrowserViewController: TabDelegate {
     }
     let origin = tab.getOrigin()
     let tabDappStore = tab.tabDappStore
-    let walletNotificaton = WalletNotification(priority: .low, origin: origin) { [weak self] action in
+    let walletNotificaton = WalletNotification(priority: .low, origin: origin, isUsingBottomBar: isUsingBottomBar) { [weak self] action in
       if action == .connectWallet {
         self?.presentWalletPanel(from: origin, with: tabDappStore)
       }

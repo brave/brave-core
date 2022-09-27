@@ -114,10 +114,6 @@ class TopToolbarView: UIView, ToolbarProtocol {
     $0.accessibilityLabel = Strings.quickActionScanQRCode
   }
 
-  let line = UIView().then {
-    $0.backgroundColor = .urlBarSeparator
-  }
-
   let tabsButton = TabsButton()
 
   fileprivate lazy var progressBar: GradientProgressBar = {
@@ -208,6 +204,8 @@ class TopToolbarView: UIView, ToolbarProtocol {
       backgroundColor = Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
     }
   }
+  
+  private(set) var displayTabTraySwipeGestureRecognizer: UISwipeGestureRecognizer?
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -216,7 +214,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
 
     locationContainer.addSubview(locationView)
 
-    [scrollToTopButton, line, tabsButton, progressBar, cancelButton].forEach(addSubview(_:))
+    [scrollToTopButton, tabsButton, progressBar, cancelButton].forEach(addSubview(_:))
     addSubview(mainStackView)
 
     helper = ToolbarHelper(toolbar: self)
@@ -271,6 +269,13 @@ class TopToolbarView: UIView, ToolbarProtocol {
     updateURLBarButtonsVisibility()
     helper?.updateForTraitCollection(traitCollection, additionalButtons: [bookmarkButton])
     updateForTraitCollection()
+    
+    let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipedLocationView))
+    swipeGestureRecognizer.direction = .up
+    swipeGestureRecognizer.isEnabled = false
+    locationView.addGestureRecognizer(swipeGestureRecognizer)
+    
+    self.displayTabTraySwipeGestureRecognizer = swipeGestureRecognizer
   }
 
   @available(*, unavailable)
@@ -322,11 +327,6 @@ class TopToolbarView: UIView, ToolbarProtocol {
     mainStackView.snp.remakeConstraints { make in
       make.top.bottom.equalTo(self)
       make.leading.trailing.equalTo(self.safeAreaLayoutGuide)
-    }
-
-    line.snp.makeConstraints { make in
-      make.bottom.leading.trailing.equalTo(self)
-      make.height.equalTo(1.0 / UIScreen.main.scale)
     }
 
     scrollToTopButton.snp.makeConstraints { make in
@@ -626,6 +626,10 @@ class TopToolbarView: UIView, ToolbarProtocol {
   @objc func topToolbarDidPressQrCodeButton() {
     leaveOverlayMode(didCancel: true)
     delegate?.topToolbarDidPressQrCodeButton(self)
+  }
+  
+  @objc private func swipedLocationView() {
+    delegate?.topToolbarDidPressTabs(self)
   }
 }
 

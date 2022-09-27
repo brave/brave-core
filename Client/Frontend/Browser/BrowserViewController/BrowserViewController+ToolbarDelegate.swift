@@ -249,6 +249,7 @@ extension BrowserViewController: TopToolbarDelegate {
     if let toast = clipboardBarDisplayHandler?.clipboardToast {
       toast.removeFromSuperview()
     }
+    updateTabsBarVisibility()
     displayFavoritesController()
   }
 
@@ -256,6 +257,7 @@ extension BrowserViewController: TopToolbarDelegate {
     hideSearchController()
     hideFavoritesController()
     updateInContentHomePanel(tabManager.selectedTab?.url as URL?)
+    updateTabsBarVisibility()
   }
 
   func topToolbarDidBeginDragInteraction(_ topToolbar: TopToolbarView) {
@@ -363,6 +365,7 @@ extension BrowserViewController: TopToolbarDelegate {
     
     // Setting up controller for SearchSuggestions
     searchController = SearchViewController(with: searchDataSource)
+    searchController?.isUsingBottomBar = isUsingBottomBar
     guard let searchController = searchController else { return }
     searchController.setupSearchEngineList()
     searchController.searchDelegate = self
@@ -378,14 +381,19 @@ extension BrowserViewController: TopToolbarDelegate {
     }
 
     addChild(searchController)
-    view.addSubview(searchController.view)
+    if let favoritesController = favoritesController {
+      view.insertSubview(searchController.view, aboveSubview: favoritesController.view)
+    } else {
+      view.insertSubview(searchController.view, belowSubview: header)
+    }
     searchController.view.snp.makeConstraints { make in
-      make.top.equalTo(self.topToolbar.snp.bottom)
-      make.left.right.bottom.equalTo(self.view)
+      make.top.bottom.equalTo(self.view)
+      make.left.right.equalTo(self.view)
       return
     }
-
     searchController.didMove(toParent: self)
+    searchController.view.setNeedsLayout()
+    searchController.view.layoutIfNeeded()
   }
 
   private func displayFavoritesController() {
@@ -464,13 +472,19 @@ extension BrowserViewController: TopToolbarDelegate {
       self.favoritesController = favoritesController
 
       addChild(favoritesController)
-      view.addSubview(favoritesController.view)
+      if let ntpController = self.activeNewTabPageViewController, ntpController.parent != nil {
+        view.insertSubview(favoritesController.view, aboveSubview: ntpController.view)
+      } else {
+        view.insertSubview(favoritesController.view, aboveSubview: footer)
+      }
       favoritesController.didMove(toParent: self)
 
       favoritesController.view.snp.makeConstraints {
-        $0.top.leading.trailing.equalTo(pageOverlayLayoutGuide)
-        $0.bottom.equalTo(view)
+        $0.leading.trailing.equalTo(pageOverlayLayoutGuide)
+        $0.top.bottom.equalTo(view)
       }
+      favoritesController.view.setNeedsLayout()
+      favoritesController.view.layoutIfNeeded()
     }
     guard let favoritesController = favoritesController else { return }
     favoritesController.view.alpha = 0.0

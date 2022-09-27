@@ -13,6 +13,28 @@ import XCTest
     XCTAssertEqual(viewModel.toolbarState, .expanded)
     XCTAssertNil(viewModel.interactiveTransitionProgress)
     XCTAssertEqual(viewModel.transitionDistance, 32)
+    XCTAssertTrue(viewModel.isEnabled)
+  }
+  
+  func testDisablingActions() {
+    let viewModel = ToolbarVisibilityViewModel(estimatedTransitionDistance: 100)
+    let initialState = viewModel.toolbarState
+    viewModel.isEnabled = false
+    var snapshot: ToolbarVisibilityViewModel.ScrollViewSnapshot = .init(
+      contentOffset: .init(x: 0, y: 50),
+      contentInset: .zero,
+      contentHeight: 960,
+      frameHeight: 480,
+      isDecelerating: false
+    )
+    viewModel.send(action: .dragged(snapshot: snapshot, panData: .init(yTranslation: -50, yVelocity: 0)))
+    XCTAssertNil(viewModel.interactiveTransitionProgress)
+    XCTAssertEqual(viewModel.toolbarState, initialState)
+    
+    snapshot.contentOffset = .init(x: 0, y: 100)
+    viewModel.send(action: .dragged(snapshot: snapshot, panData: .init(yTranslation: -100, yVelocity: 0)))
+    XCTAssertNil(viewModel.interactiveTransitionProgress)
+    XCTAssertEqual(viewModel.toolbarState, initialState)
   }
   
   /// Tests pages that are too small to collapse should not collapse regardless of passing the

@@ -242,38 +242,3 @@ extension BrowserViewController {
     self.present(alert, animated: true, completion: {})
   }
 }
-
-// MARK: - KeyboardHelperDelegate
-
-extension BrowserViewController: KeyboardHelperDelegate {
-  public func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillShowWithState state: KeyboardState) {
-    keyboardState = state
-    updateViewConstraints()
-
-    UIViewPropertyAnimator(duration: state.animationDuration, curve: state.animationCurve) {
-      self.alertStackView.layoutIfNeeded()
-    }
-    .startAnimation()
-
-    guard let webView = tabManager.selectedTab?.webView else { return }
-
-    self.evaluateWebsiteSupportOpenSearchEngine(webView)
-  }
-
-  public func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillHideWithState state: KeyboardState) {
-    keyboardState = nil
-    updateViewConstraints()
-
-    customSearchBarButtonItemGroup?.barButtonItems.removeAll()
-    customSearchBarButtonItemGroup = nil
-
-    if customSearchEngineButton.superview != nil {
-      customSearchEngineButton.removeFromSuperview()
-    }
-
-    UIViewPropertyAnimator(duration: state.animationDuration, curve: state.animationCurve) {
-      self.alertStackView.layoutIfNeeded()
-    }
-    .startAnimation()
-  }
-}

@@ -68,6 +68,11 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     action: #selector(onSuggestionLongPressed(_:)))
 
   var searchDelegate: SearchViewControllerDelegate?
+  var isUsingBottomBar: Bool = false {
+    didSet {
+      layoutSearchEngineScrollView()
+    }
+  }
 
   private let dataSource: SearchSuggestionDataSource
   public static var userAgent: String?
@@ -87,6 +92,11 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
 
   deinit {
     NotificationCenter.default.removeObserver(self, name: .dynamicFontChanged, object: nil)
+  }
+  
+  public override func viewSafeAreaInsetsDidChange() {
+    super.viewSafeAreaInsetsDidChange()
+    layoutSearchEngineScrollView()
   }
 
   override public func viewDidLoad() {
@@ -179,7 +189,17 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
 
     searchEngineScrollView.snp.remakeConstraints { make in
       make.leading.trailing.equalTo(view)
-      make.bottom.equalTo(view).offset(-keyboardHeight)
+      if isUsingBottomBar {
+        let offset: CGFloat
+        if keyboardHeight > 0 {
+          offset = keyboardHeight - abs(additionalSafeAreaInsets.bottom - view.safeAreaInsets.bottom)
+        } else {
+          offset = 0
+        }
+        make.bottom.equalTo(view.safeArea.bottom).offset(-offset)
+      } else {
+        make.bottom.equalTo(view).offset(-keyboardHeight)
+      }
     }
   }
 

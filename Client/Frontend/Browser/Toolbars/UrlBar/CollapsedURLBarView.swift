@@ -36,6 +36,12 @@ class CollapsedURLBarView: UIView {
     $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
   }
   
+  var isUsingBottomBar: Bool = false {
+    didSet {
+      setNeedsUpdateConstraints()
+    }
+  }
+  
   private func updateLockImageView() {
     lockImageView.isHidden = false
     
@@ -67,31 +73,32 @@ class CollapsedURLBarView: UIView {
     }
   }
   
+  var isKeyboardVisible: Bool = false {
+    didSet {
+      setNeedsUpdateConstraints()
+      updateConstraints()
+    }
+  }
+  
+  private var topConstraint: Constraint?
   private var bottomConstraint: Constraint?
   
   override init(frame: CGRect) {
     super.init(frame: frame)
     
     isUserInteractionEnabled = false
+    clipsToBounds = false
     
     addSubview(stackView)
     stackView.addArrangedSubview(lockImageView)
     stackView.addArrangedSubview(urlLabel)
     
-    let line = UIView.separatorLine
-    addSubview(line)
-    
     stackView.snp.makeConstraints {
-      $0.top.equalToSuperview()
+      topConstraint = $0.top.equalToSuperview().constraint
       bottomConstraint = $0.bottom.equalToSuperview().constraint
       $0.leading.greaterThanOrEqualToSuperview().inset(12)
       $0.trailing.lessThanOrEqualToSuperview().inset(12)
       $0.centerX.equalToSuperview()
-    }
-    
-    line.snp.makeConstraints {
-      $0.top.equalTo(self.snp.bottom)
-      $0.leading.trailing.equalToSuperview()
     }
     
     updateForTraitCollection()
@@ -117,10 +124,17 @@ class CollapsedURLBarView: UIView {
     urlLabel.font = .preferredFont(forTextStyle: .caption1, compatibleWith: clampedTraitCollection)
   }
   
-  override func layoutSubviews() {
-    super.layoutSubviews()
-    let topSafeAreaInset = window.map(\.safeAreaInsets.top) ?? 0.0
-    bottomConstraint?.update(inset: topSafeAreaInset > 0 ? 4 : 0)
+  override func updateConstraints() {
+    super.updateConstraints()
+    
+    if isKeyboardVisible && isUsingBottomBar {
+      bottomConstraint?.update(inset: 0)
+      topConstraint?.update(inset: 0)
+    } else {
+      let safeAreaInset = window.map(\.safeAreaInsets) ?? .zero
+      bottomConstraint?.update(inset: safeAreaInset.top > 0 && !isUsingBottomBar ? 4 : 0)
+      topConstraint?.update(inset: safeAreaInset.bottom > 0 && isUsingBottomBar ? 4 : 0)
+    }
   }
   
   @available(*, unavailable)

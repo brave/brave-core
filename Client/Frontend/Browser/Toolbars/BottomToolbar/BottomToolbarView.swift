@@ -25,6 +25,7 @@ class BottomToolbarView: UIView, ToolbarProtocol {
   var helper: ToolbarHelper?
   private let contentView = UIStackView()
   private var cancellables: Set<AnyCancellable> = []
+  let line = UIView.separatorLine
 
   fileprivate override init(frame: CGRect) {
     actionButtons = [backButton, forwardButton, addTabButton, searchButton, tabsButton, menuButton]
@@ -34,12 +35,18 @@ class BottomToolbarView: UIView, ToolbarProtocol {
     backgroundColor = Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
 
     addSubview(contentView)
+    addSubview(line)
     helper = ToolbarHelper(toolbar: self)
     addButtons(actionButtons)
     contentView.axis = .horizontal
     contentView.distribution = .fillEqually
 
     addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(didSwipeToolbar(_:))))
+    
+    line.snp.makeConstraints {
+      $0.bottom.equalTo(self.snp.top)
+      $0.leading.trailing.equalToSuperview()
+    }
 
     privateModeCancellable = PrivateBrowsingManager.shared
       .$isPrivateBrowsing
@@ -115,20 +122,6 @@ class BottomToolbarView: UIView, ToolbarProtocol {
 
   func addButtons(_ buttons: [UIButton]) {
     buttons.forEach { contentView.addArrangedSubview($0) }
-  }
-
-  override func draw(_ rect: CGRect) {
-    if let context = UIGraphicsGetCurrentContext() {
-      drawLine(context, start: .zero, end: CGPoint(x: frame.width, y: 0))
-    }
-  }
-
-  fileprivate func drawLine(_ context: CGContext, start: CGPoint, end: CGPoint) {
-    context.setStrokeColor(UIColor.black.withAlphaComponent(0.05).cgColor)
-    context.setLineWidth(2)
-    context.move(to: CGPoint(x: start.x, y: start.y))
-    context.addLine(to: CGPoint(x: end.x, y: end.y))
-    context.strokePath()
   }
 
   private var previousX: CGFloat = 0.0

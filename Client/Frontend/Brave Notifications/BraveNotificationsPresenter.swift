@@ -84,8 +84,14 @@ class BraveNotificationsPresenter: UIViewController {
       $0.leading.greaterThanOrEqualTo(view).inset(8)
       $0.trailing.lessThanOrEqualTo(view).inset(8)
       $0.centerX.equalTo(view)
-      $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-      $0.top.greaterThanOrEqualTo(view).offset(4) // Makes sure in landscape its at least 4px from the top
+      switch notification.presentationOrigin {
+      case .top:
+        $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+        $0.top.greaterThanOrEqualTo(view).offset(4) // Makes sure in landscape its at least 4px from the top
+      case .bottom:
+        $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+        $0.bottom.lessThanOrEqualTo(view).inset(4) // Makes sure in landscape its at least 4px from the bottom
+      }
       
       if UIDevice.current.userInterfaceIdiom != .pad {
         $0.width.equalTo(view).priority(.high)
@@ -104,7 +110,7 @@ class BraveNotificationsPresenter: UIViewController {
       guard let self = self else { return }
       self.hide(notification)
     }
-    animateIn(adView: notificationView)
+    animateIn(notification: notification)
     if case .automatic(let interval) = notification.dismissPolicy {
       setupTimeoutTimer(for: notification, interval: interval)
     }
@@ -155,8 +161,9 @@ class BraveNotificationsPresenter: UIViewController {
   }
   
   private func hide(notificationView: UIView, velocity: CGFloat?) {
+    guard let notification = visibleNotification else { return }
     visibleNotification = nil
-    animateOut(adView: notificationView, velocity: velocity) { [weak self] in
+    animateOut(notification: notification, velocity: velocity) { [weak self] in
       guard let self = self else { return }
       notificationView.removeFromSuperview()
       if self.visibleNotification == nil {
@@ -213,38 +220,42 @@ class BraveNotificationsPresenter: UIViewController {
   
   private var panState: CGPoint = .zero
   @objc private func dismissPannedAdView(_ pan: UIPanGestureRecognizer) {
-    guard let notificationView = pan.view else { return }
+    // must be the current visible notification
+    guard let notification = visibleNotification, let notificationView = pan.view, notification.view == notificationView else { return }
     
     switch pan.state {
     case .began:
       panState = notificationView.center
-      // must be the current visible notification
-      guard let notification = visibleNotification, notification.view == notificationView else {
-        return
-      }
       // Make sure to stop the dismiss timer
       dismissTimers[notification.id]?.invalidate()
     case .changed:
-      notificationView.transform.ty = min(0, pan.translation(in: notificationView).y)
+      var ty = pan.translation(in: notificationView).y
+      switch notification.presentationOrigin {
+      case .top:
+        ty = min(0, ty)
+      case .bottom:
+        ty = max(0, ty)
+      }
+      notificationView.transform.ty = ty
     case .ended:
       let velocity = pan.velocity(in: notificationView).y
-      let y = min(panState.y, panState.y + pan.translation(in: notificationView).y)
+      var y = panState.y + pan.translation(in: notificationView).y
+      switch notification.presentationOrigin {
+      case .top:
+        y = min(panState.y, y)
+      case .bottom:
+        y = max(panState.y, y)
+      }
       let projected = project(initialVelocity: velocity, decelerationRate: UIScrollView.DecelerationRate.normal.rawValue)
-      if y + projected < 0 {
-        // must be the current visible notification
-        guard let notification = visibleNotification, notification.view == notificationView else {
-          return
-        }
+      let endY = y + projected
+      let shouldHide = notification.presentationOrigin == .top ? endY < 0 : endY > view.bounds.maxY
+      if shouldHide {
         hide(notificationView: notificationView, velocity: velocity)
         notification.willDismiss(timedOut: false)
         break
       }
       fallthrough
     case .cancelled:
-      // must be the current visible notification
-      guard let notification = visibleNotification, notification.view == notificationView else {
-        return
-      }
       // Re-setup timeout timer
       if case .automatic(let interval) = notification.dismissPolicy {
         setupTimeoutTimer(for: notification, interval: interval)
@@ -260,22 +271,35 @@ class BraveNotificationsPresenter: UIViewController {
   
   // MARK: - Animations
   
-  private func animateIn(adView: UIView) {
-    adView.layoutIfNeeded()
-    adView.layer.transform = CATransform3DMakeTranslation(0, -adView.bounds.size.height, 0)
+  private func animateIn(notification: BraveNotification) {
+    var offset: CGFloat = notification.view.bounds.size.height
+    if notification.presentationOrigin == .top {
+      offset *= -1
+    }
+    
+    notification.view.layoutIfNeeded()
+    notification.view.layer.transform = CATransform3DMakeTranslation(0, offset, 0)
     
     UIViewPropertyAnimator(duration: 0.3, dampingRatio: 0.9) {
-      adView.transform = CGAffineTransform(translationX: 0, y: 0)
+      notification.view.transform = CGAffineTransform(translationX: 0, y: 0)
     }
     .startAnimation()
   }
   
-  private func animateOut(adView: UIView, velocity: CGFloat? = nil, completion: @escaping () -> Void) {
-    adView.layoutIfNeeded()
+  private func animateOut(notification: BraveNotification, velocity: CGFloat? = nil, completion: @escaping () -> Void) {
+    let offset: CGFloat
+    switch notification.presentationOrigin {
+    case .top:
+      offset = -(view.frame.origin.y + notification.view.bounds.size.height + 4)
+    case .bottom:
+      offset = view.frame.maxY - notification.view.frame.minY + notification.view.bounds.size.height
+    }
+    
+    notification.view.layoutIfNeeded()
     let springTiming = UISpringTimingParameters(dampingRatio: 0.9, initialVelocity: velocity.map { CGVector(dx: 0, dy: $0) } ?? .zero)
     let animator = UIViewPropertyAnimator(duration: 0.3, timingParameters: springTiming)
-    animator.addAnimations { [self] in
-      adView.transform = CGAffineTransform(translationX: 0, y: -(view.frame.origin.y + adView.bounds.size.height))
+    animator.addAnimations {
+      notification.view.transform = CGAffineTransform(translationX: 0, y: offset)
     }
     animator.addCompletion { _ in
       completion()

@@ -43,9 +43,11 @@ public class Migration {
       movePlaylistV1Items()
     }
     
-    // Default Value for preference of tab bar visibility for new users changed to landscape only
     if Preferences.General.isFirstLaunch.value {
+      // Default Value for preference of tab bar visibility for new users changed to landscape only
       Preferences.General.tabBarVisibility.value = TabBarVisibility.landscapeOnly.rawValue
+      // Default url bar location for new users is bottom
+      Preferences.General.isUsingBottomBar.value = true
     }
 
     // Adding Observer to enable sync types
