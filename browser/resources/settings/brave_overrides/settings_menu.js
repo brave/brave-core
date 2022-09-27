@@ -133,8 +133,9 @@ RegisterStyleOverride(
         left: calc(-1 * var(--brave-settings-menu-padding));
         transform: translateY(-50%);
         display: block;
-        height: 170%;
+        height: 32px;
         width: 4px;
+        background: linear-gradient(96.98deg, #E51D00 0%, #E5007B 78.13%);
         border-radius: 0px 2px 2px 0px;
       }
 
