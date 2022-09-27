@@ -81,6 +81,7 @@ import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
+import org.chromium.chrome.browser.toolbar.ButtonDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
@@ -583,7 +584,7 @@ public class BytecodeTest {
                 List.class, OneshotSupplier.class, ThemeColorProvider.class,
                 ThemeColorProvider.class, MenuButtonCoordinator.class, MenuButtonCoordinator.class,
                 ObservableSupplier.class, ObservableSupplier.class, ObservableSupplier.class,
-                ObservableSupplier.class, Callback.class, Supplier.class, Supplier.class,
+                ButtonDataProvider.class, Callback.class, Supplier.class, Supplier.class,
                 ObservableSupplier.class, BooleanSupplier.class, boolean.class, boolean.class,
                 boolean.class, boolean.class, boolean.class, HistoryDelegate.class,
                 BooleanSupplier.class, OfflineDownloader.class, boolean.class, Callback.class,
