@@ -409,6 +409,9 @@ Config.prototype.buildArgs = function () {
   }
 
   // Enable Page Graph only in desktop builds.
+  // Page Graph gn args should always be set explicitly, because they are parsed
+  // from out/<dir>/args.gn by Python scripts during the build. We do this to
+  // handle gn args in upstream build scripts without introducing git conflict.
   if (this.targetOS !== 'android' && this.targetOS !== 'ios') {
     args.enable_brave_page_graph = true
   } else {
