@@ -16,11 +16,8 @@ source_set("brave_news_unit_tests") {
     "//brave/components/brave_today/browser/publishers_controller_unittest.cc",
     "//brave/components/brave_today/browser/publishers_parsing_unittest.cc",
     "//brave/components/brave_today/browser/unsupported_publisher_migrator_unittest.cc",
+    "//brave/components/brave_today/browser/urls_unittest.cc",
   ]
-
-  if (!is_android) {
-    sources += [ "//brave/components/brave_today/browser/urls_unittest.cc" ]
-  }
 
   deps = [
     "//base/test:test_support",
@@ -29,7 +26,7 @@ source_set("brave_news_unit_tests") {
     "//brave/components/brave_today/common",
     "//brave/components/brave_today/common:mojom",
     "//brave/components/l10n/browser",
-    "//brave/test:brave_browser_tests",
+    "//brave/components/l10n/browser:test_support",
     "//chrome/browser",
     "//chrome/test:test_support",
     "//content/test:test_support",
