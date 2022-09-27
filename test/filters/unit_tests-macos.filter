@@ -1,2 +1,9 @@
+##
+## Upstream tests to disable
+##
+## When adding a new filter to this list, please include a short description of
+## why the filter is required and create an associated tracking issue.
+##
+
 # Unit tests crash systematically on MacOS, disable them all for now.
 -*
