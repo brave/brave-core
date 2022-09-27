@@ -68,7 +68,7 @@ public class BraveQAPreferences extends BravePreferenceFragment
 
     private static final int CHOOSE_FILE_FOR_IMPORT_REQUEST_CODE = STORAGE_PERMISSION_IMPORT_REQUEST_CODE + 1;
 
-    private static final int MAX_ADS = 50;
+    private static final int MAX_ADS = 10;
     private static final int DEFAULT_ADS_PER_HOUR = 2;
 
     private ChromeSwitchPreference mBraveVpnFeature;
