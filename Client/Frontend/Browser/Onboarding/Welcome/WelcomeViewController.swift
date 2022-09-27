@@ -415,7 +415,7 @@ extension WelcomeViewController: UIViewControllerTransitioningDelegate {
 // Disabling orientation changes
 extension WelcomeViewController {
   override var preferredStatusBarStyle: UIStatusBarStyle {
-    return .default
+    return .lightContent
   }
 
   override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
