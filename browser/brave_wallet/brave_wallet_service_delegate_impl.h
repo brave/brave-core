@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
@@ -25,8 +26,6 @@ class BrowserContext;
 }
 
 namespace brave_wallet {
-
-class ExternalWalletsImporter;
 
 class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate,
                                        public TabStripModelObserver,
@@ -84,20 +83,22 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate,
  private:
   friend class BraveWalletServiceDelegateImplUnitTest;
 
-  void ContinueIsExternalWalletInitialized(
-      std::unique_ptr<ExternalWalletsImporter> importer,
-      IsExternalWalletInitializedCallback,
-      bool init_success);
-  void ContinueGetImportInfoFromExternalWallet(
-      std::unique_ptr<ExternalWalletsImporter> importer,
-      const std::string& password,
-      GetImportInfoCallback callback,
-      bool init_success);
+  void ContinueIsExternalWalletInitialized(mojom::ExternalWalletType type,
+                                           IsExternalWalletInitializedCallback,
+                                           bool init_success);
+  void ContinueGetImportInfoFromExternalWallet(mojom::ExternalWalletType type,
+                                               const std::string& password,
+                                               GetImportInfoCallback callback,
+                                               bool init_success);
 
   url::Origin GetActiveOriginInternal();
   void FireActiveOriginChanged();
 
   raw_ptr<content::BrowserContext> context_ = nullptr;
+  base::flat_map<mojom::ExternalWalletType,
+                 std::unique_ptr<ExternalWalletsImporter>>
+      importers_;
+
   BrowserTabStripTracker browser_tab_strip_tracker_;
   base::ObserverList<BraveWalletServiceDelegate::Observer> observer_list_;
 
