@@ -7,11 +7,16 @@ import re
 
 import override_utils
 
+# Get gn arg to enable WebAPI probes.
 _IS_PG_WEBAPI_PROBES_ENABLED = override_utils.get_gn_arg(
     "enable_brave_page_graph_webapi_probes")
 
+# Workaround attribute to set when is_observable_array codegen is active. This
+# codegen breaks "return value" assumption, i.e. it says that a return value
+# exists, but in fact it doesn't exist.
 _IS_OBSERVABLE_ARRAY_SETTER = "pg_is_observable_array_setter"
 
+# Allowed WebAPIs to track.
 _PAGE_GRAPH_TRACKED_ITEMS = {
     "OffscreenCanvasRenderingContext2D": {
         "measureText",
@@ -90,6 +95,7 @@ def _to_page_graph_blink_arg(arg):
 ### Helpers end.
 
 
+# probe::RegisterPageGraphBindingEvent() generator.
 def _make_report_page_graph_binding_event(cg_context):
     assert isinstance(cg_context, CodeGenContext)
     if not _should_track_in_page_graph(cg_context):
@@ -125,6 +131,8 @@ def _make_report_page_graph_binding_event(cg_context):
     return TextNode(_format(pattern, _1=_1, _2=_2))
 
 
+# Adds PageGraph-specific variables to the function scope so they can be used by
+# all probe::* calls without reintroducing these vars again and again.
 def _bind_page_graph_local_vars(code_node, cg_context):
     assert isinstance(cg_context, CodeGenContext)
     if not _should_track_in_page_graph(cg_context):
@@ -160,7 +168,7 @@ def _bind_page_graph_local_vars(code_node, cg_context):
 
     code_node.register_code_symbol(page_graph_binding_name_node)
 
-
+# probe::RegisterPageGraphWebAPICallWithResult() generator.
 def _append_report_page_graph_api_call_event(cg_context, expr):
     assert isinstance(cg_context, CodeGenContext)
     if not _should_track_in_page_graph(cg_context):
@@ -168,6 +176,9 @@ def _append_report_page_graph_api_call_event(cg_context, expr):
 
     if cg_context.no_alloc_direct_call_for_testing:
         return expr
+    # `expr`` is a C++ code (a simple string) that contains the call and the
+    # return value assignment. Make sure it's a single-lined expression as it's
+    # originally implemented in upstream `_make_blink_api_call` function.
     assert "\n" not in expr
 
     # Extract blink_receiver and args from a string like:
@@ -177,16 +188,19 @@ def _append_report_page_graph_api_call_event(cg_context, expr):
     else:
         receiver_data = "{}"
 
+    # Extract call arguments.
     args = re.findall((r"(\${(?:"
                        r"arg\d+\w+|blink_property_name|blink_property_value"
                        r")})"), expr)
     args = ", ".join(map(_to_page_graph_blink_arg, args))
 
+    # Extract exception state.
     if cg_context.may_throw_exception:
         exception_state = "&${exception_state}"
     else:
         exception_state = "nullptr"
 
+    # Extract return value. See `bind_return_value` in upstream interface.py.
     is_return_type_void = ((not cg_context.return_type
                             or cg_context.return_type.unwrap().is_void)
                            and not cg_context.does_override_idl_return_type)
