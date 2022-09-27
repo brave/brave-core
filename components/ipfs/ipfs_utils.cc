@@ -141,12 +141,12 @@ bool HasIPFSOrIPNSPath(const GURL& gurl) {
 
 bool HasIPFSPath(const GURL& gurl) {
   const auto& path = gurl.path();
-  return gurl.is_valid() && base::Contains(path, "/ipfs/");
+  return gurl.is_valid() && base::StartsWith(path, "/ipfs/");
 }
 
 bool HasIPNSPath(const GURL& gurl) {
   const auto& path = gurl.path();
-  return gurl.is_valid() && base::Contains(path, "/ipns/");
+  return gurl.is_valid() && base::StartsWith(path, "/ipns/");
 }
 
 bool IsDefaultGatewayURL(const GURL& url, PrefService* prefs) {

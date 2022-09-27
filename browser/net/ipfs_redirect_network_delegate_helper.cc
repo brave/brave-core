@@ -20,7 +20,7 @@
 
 namespace ipfs {
 
-int OnBeforeStartTransaction_AddXForwardedProtoHeader(
+int OnBeforeStartTransaction_IPFSHeadersWork(
     net::HttpRequestHeaders* headers,
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {

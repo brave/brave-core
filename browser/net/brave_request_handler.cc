@@ -85,27 +85,10 @@ void BraveRequestHandler::SetupCallbacks() {
   callback = base::BindRepeating(brave_rewards::OnBeforeURLRequest);
   before_url_request_callbacks_.push_back(callback);
 
-#if BUILDFLAG(ENABLE_IPFS)
-  if (base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
-    callback = base::BindRepeating(ipfs::OnBeforeURLRequest_IPFSRedirectWork);
-    before_url_request_callbacks_.push_back(callback);
-    brave::OnHeadersReceivedCallback ipfs_headers_received_callback =
-        base::BindRepeating(ipfs::OnHeadersReceived_IPFSRedirectWork);
-    headers_received_callbacks_.push_back(ipfs_headers_received_callback);
-  }
-#endif
-
   brave::OnBeforeStartTransactionCallback start_transaction_callback =
       base::BindRepeating(brave::OnBeforeStartTransaction_SiteHacksWork);
   before_start_transaction_callbacks_.push_back(start_transaction_callback);
 
-#if BUILDFLAG(ENABLE_IPFS)
-  if (base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
-    start_transaction_callback = base::BindRepeating(
-        ipfs::OnBeforeStartTransaction_AddXForwardedProtoHeader);
-    before_start_transaction_callbacks_.push_back(start_transaction_callback);
-  }
-#endif
   start_transaction_callback = base::BindRepeating(
       brave::OnBeforeStartTransaction_GlobalPrivacyControlWork);
   before_start_transaction_callbacks_.push_back(start_transaction_callback);
@@ -113,6 +96,19 @@ void BraveRequestHandler::SetupCallbacks() {
   start_transaction_callback =
       base::BindRepeating(brave::OnBeforeStartTransaction_BraveServiceKey);
   before_start_transaction_callbacks_.push_back(start_transaction_callback);
+
+#if BUILDFLAG(ENABLE_IPFS)
+  if (base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
+    callback = base::BindRepeating(ipfs::OnBeforeURLRequest_IPFSRedirectWork);
+    before_url_request_callbacks_.push_back(callback);
+    brave::OnHeadersReceivedCallback ipfs_headers_received_callback =
+        base::BindRepeating(ipfs::OnHeadersReceived_IPFSRedirectWork);
+    headers_received_callbacks_.push_back(ipfs_headers_received_callback);
+    start_transaction_callback = base::BindRepeating(
+        ipfs::OnBeforeStartTransaction_IPFSHeadersWork);
+    before_start_transaction_callbacks_.push_back(start_transaction_callback);
+  }
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   start_transaction_callback =

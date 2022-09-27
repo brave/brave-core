@@ -413,7 +413,7 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, XForwardedProtoHeaderAdded) {
 
   net::HttpRequestHeaders headers;
 
-  int rc = ipfs::OnBeforeStartTransaction_AddXForwardedProtoHeader(
+  int rc = ipfs::OnBeforeStartTransaction_IPFSHeadersWork(
       &headers, brave::ResponseCallback(), brave_request_info);
 
   EXPECT_EQ(rc, net::OK);
@@ -432,7 +432,7 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest,
 
   net::HttpRequestHeaders headers;
 
-  int rc = ipfs::OnBeforeStartTransaction_AddXForwardedProtoHeader(
+  int rc = ipfs::OnBeforeStartTransaction_IPFSHeadersWork(
       &headers, brave::ResponseCallback(), brave_request_info);
 
   EXPECT_EQ(rc, net::OK);
@@ -451,7 +451,7 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest,
 
   net::HttpRequestHeaders headers;
 
-  int rc = ipfs::OnBeforeStartTransaction_AddXForwardedProtoHeader(
+  int rc = ipfs::OnBeforeStartTransaction_IPFSHeadersWork(
       &headers, brave::ResponseCallback(), brave_request_info);
 
   EXPECT_EQ(rc, net::OK);
@@ -472,7 +472,7 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest,
 
   net::HttpRequestHeaders headers;
 
-  int rc = ipfs::OnBeforeStartTransaction_AddXForwardedProtoHeader(
+  int rc = ipfs::OnBeforeStartTransaction_IPFSHeadersWork(
       &headers, brave::ResponseCallback(), brave_request_info);
 
   EXPECT_EQ(rc, net::OK);
