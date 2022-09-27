@@ -1,13 +1,8 @@
 diff --git a/third_party/inspector_protocol/pdl.py b/third_party/inspector_protocol/pdl.py
-index 9a9fec9898823d716ec99d9624be7e5aacf532f5..b27dc4f1ec1e8113a25781bf570055e0d97f2226 100644
+index 9a9fec9898823d716ec99d9624be7e5aacf532f5..212b9911aabf0eb3f1f461cb6179e6c8057d8988 100644
 --- a/third_party/inspector_protocol/pdl.py
 +++ b/third_party/inspector_protocol/pdl.py
-@@ -1,3 +1,4 @@
-+
- # Copyright 2018 The Chromium Authors. All rights reserved.
- # Use of this source code is governed by a BSD-style license that can be
- # found in the LICENSE file.
-@@ -179,3 +180,4 @@ def loads(data, file_name, map_binary_to_string=False):
+@@ -179,3 +179,4 @@ def loads(data, file_name, map_binary_to_string=False):
    if file_name.endswith(".pdl"):
      return parse(data, file_name, map_binary_to_string)
    return json.loads(data)
