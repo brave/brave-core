@@ -63,26 +63,28 @@ void BraveWalletServiceDelegateImpl::IsExternalWalletInstalled(
 void BraveWalletServiceDelegateImpl::IsExternalWalletInitialized(
     mojom::ExternalWalletType type,
     IsExternalWalletInitializedCallback callback) {
-  std::unique_ptr<ExternalWalletsImporter> importer =
-      std::make_unique<ExternalWalletsImporter>(type, context_);
+  importers_[type] = std::make_unique<ExternalWalletsImporter>(type, context_);
   // Do not try to init the importer when external wallet is not installed
-  if (!importer->IsExternalWalletInstalled()) {
+  if (!importers_[type]->IsExternalWalletInstalled()) {
     std::move(callback).Run(false);
     return;
   }
-  importer->Initialize(base::BindOnce(
-      &BraveWalletServiceDelegateImpl::ContinueIsExternalWalletInitialized,
-      weak_ptr_factory_.GetWeakPtr(), std::move(importer),
-      std::move(callback)));
+  if (importers_[type]->IsInitialized()) {
+    ContinueIsExternalWalletInitialized(type, std::move(callback), true);
+  } else {
+    importers_[type]->Initialize(base::BindOnce(
+        &BraveWalletServiceDelegateImpl::ContinueIsExternalWalletInitialized,
+        weak_ptr_factory_.GetWeakPtr(), type, std::move(callback)));
+  }
 }
 
 void BraveWalletServiceDelegateImpl::ContinueIsExternalWalletInitialized(
-    std::unique_ptr<ExternalWalletsImporter> importer,
+    mojom::ExternalWalletType type,
     IsExternalWalletInitializedCallback callback,
     bool init_success) {
-  DCHECK(importer);
+  DCHECK(importers_[type]);
   if (init_success) {
-    std::move(callback).Run(importer->IsExternalWalletInitialized());
+    std::move(callback).Run(importers_[type]->IsExternalWalletInitialized());
   } else {
     std::move(callback).Run(false);
   }
@@ -92,23 +94,29 @@ void BraveWalletServiceDelegateImpl::GetImportInfoFromExternalWallet(
     mojom::ExternalWalletType type,
     const std::string& password,
     GetImportInfoCallback callback) {
-  std::unique_ptr<ExternalWalletsImporter> importer =
-      std::make_unique<ExternalWalletsImporter>(type, context_);
-  importer->Initialize(base::BindOnce(
-      &BraveWalletServiceDelegateImpl::ContinueGetImportInfoFromExternalWallet,
-      weak_ptr_factory_.GetWeakPtr(), std::move(importer), password,
-      std::move(callback)));
+  if (!importers_[type])
+    importers_[type] =
+        std::make_unique<ExternalWalletsImporter>(type, context_);
+  if (importers_[type]->IsInitialized()) {
+    ContinueGetImportInfoFromExternalWallet(type, password, std::move(callback),
+                                            true);
+  } else {
+    importers_[type]->Initialize(base::BindOnce(
+        &BraveWalletServiceDelegateImpl::
+            ContinueGetImportInfoFromExternalWallet,
+        weak_ptr_factory_.GetWeakPtr(), type, password, std::move(callback)));
+  }
 }
 
 void BraveWalletServiceDelegateImpl::ContinueGetImportInfoFromExternalWallet(
-    std::unique_ptr<ExternalWalletsImporter> importer,
+    mojom::ExternalWalletType type,
     const std::string& password,
     GetImportInfoCallback callback,
     bool init_success) {
-  DCHECK(importer);
+  DCHECK(importers_[type]);
   if (init_success) {
-    DCHECK(importer->IsInitialized());
-    importer->GetImportInfo(password, std::move(callback));
+    DCHECK(importers_[type]->IsInitialized());
+    importers_[type]->GetImportInfo(password, std::move(callback));
   } else {
     std::move(callback).Run(false, ImportInfo(), ImportError::kInternalError);
   }
