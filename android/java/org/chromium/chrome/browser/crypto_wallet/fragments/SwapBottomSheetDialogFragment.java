@@ -98,13 +98,13 @@ public class SwapBottomSheetDialogFragment
     private void updateViewState() {
         if (getView() == null) return;
         if (!mIsCustomNetwork && mNetworkInfo.coin == CoinType.ETH
-                && WalletConstants.BUY_SUPPORTED_NETWORKS.contains(mNetworkInfo.chainId)) {
+                && Utils.allowSwap(mNetworkInfo.chainId)) {
             mSwapLayout.setVisibility(View.VISIBLE);
         } else {
             mSwapLayout.setVisibility(View.GONE);
         }
 
-        if (!WalletConstants.BUY_SUPPORTED_NETWORKS.contains(mNetworkInfo.chainId)) {
+        if (!Utils.allowBuy(mNetworkInfo.chainId)) {
             mBuyLayout.setVisibility(View.GONE);
         }
     }
