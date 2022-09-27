@@ -89,19 +89,16 @@ export default function Stats (props: Props) {
   return <StatsContainer>
     <StatsItem
       description={getLocale('adsTrackersBlocked')}
-      counter={adblockCount.toLocaleString()}
-      overriddenTextColor={props.overriddenTextColor} />
+      counter={adblockCount.toLocaleString()}/>
     {bandwidthSaved &&
       <StatsItem
         counter={bandwidthSaved.value}
         text={getLocale(bandwidthSaved.id)}
-        description={getLocale('estimatedBandwidthSaved')}
-        overriddenTextColor={props.overriddenTextColor} />
+        description={getLocale('estimatedBandwidthSaved')}/>
     }
     <StatsItem
       counter={timeSaved.value}
       text={getLocale(timeSaved.id)}
-      description={getLocale('estimatedTimeSaved')}
-      overriddenTextColor={props.overriddenTextColor} />
+      description={getLocale('estimatedTimeSaved')}/>
   </StatsContainer>
 }

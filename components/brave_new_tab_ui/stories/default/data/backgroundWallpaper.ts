@@ -8,11 +8,7 @@ import { addons } from '@storybook/addons'
 
 import { images, solidColorsForBackground, gradientColorsForBackground } from '../../../data/backgrounds'
 
-import isReadableOnBackground from '../../../helpers/colorUtil'
-
 const addonsChannel = addons.getChannel()
-
-export let backgroundWallpapers: any
 
 const generateWallpapers = function (images: NewTab.BackgroundWallpaper[],
                                       solidColors: NewTab.ColorBackground[],
@@ -38,12 +34,6 @@ const generateWallpapers = function (images: NewTab.BackgroundWallpaper[],
   }
 
   const reducer = (prev: any, colorBackground: NewTab.ColorBackground) => {
-    if (isReadableOnBackground(colorBackground)) {
-      colorBackground.overriddenForegroundColor = undefined
-    } else {
-      colorBackground.overriddenForegroundColor = '#000000'
-    }
-
     return {
       ...prev,
       [colorBackground.wallpaperColor]: colorBackground
@@ -56,10 +46,7 @@ const generateWallpapers = function (images: NewTab.BackgroundWallpaper[],
   return staticImages
 }.bind(null, images, solidColorsForBackground, gradientColorsForBackground)
 
-export const resetWallpapers = () => {
-  backgroundWallpapers = generateWallpapers()
-}
-resetWallpapers()
+export const backgroundWallpapers = generateWallpapers()
 
 /**
  * Mock handler for colored backgrounds. Emits a change event to knobs

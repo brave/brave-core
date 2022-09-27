@@ -40,6 +40,7 @@ import {
   fetchCryptoDotComSupportedPairs
 } from '../../api/cryptoDotCom'
 import { generateQRData } from '../../binance-utils'
+import * as ColorUtil from '../../helpers/colorUtil'
 
 // Types
 import { GeminiAssetAddress } from '../../actions/gemini_actions'
@@ -54,6 +55,7 @@ import { FTXState } from '../../widgets/ftx/ftx_state'
 import Settings, { TabType as SettingsTabType } from './settings'
 import { MAX_GRID_SIZE } from '../../constants/new_tab_ui'
 import GridWidget from './gridWidget'
+import isReadableOnBackground from '../../helpers/colorUtil'
 
 interface Props {
   newTabData: NewTab.State
@@ -185,6 +187,8 @@ class NewTabPage extends React.Component<Props, State> {
       forceToHideWidget: GetShouldForceToHideWidget(this.props, searchPromotionEnabled)
     })
     window.addEventListener('resize', this.handleResize.bind(this))
+
+    this.updateOverrideReadabilityColor()
   }
 
   componentWillUnmount () {
@@ -192,6 +196,9 @@ class NewTabPage extends React.Component<Props, State> {
       window.clearTimeout(this.braveNewsPromptTimerId)
     }
     window.removeEventListener('resize', this.handleResize.bind(this))
+
+    document.documentElement.style.removeProperty('--override-readability-color-rgb')
+    document.documentElement.style.removeProperty('--override-readability-color')
   }
 
   componentDidUpdate (prevProps: Props) {
@@ -214,6 +221,28 @@ class NewTabPage extends React.Component<Props, State> {
     if (GetShouldShowBrandedWallpaperNotification(prevProps) &&
         !GetShouldShowBrandedWallpaperNotification(this.props)) {
       this.stopWaitingForBrandedWallpaperNotificationAutoDismiss()
+    }
+
+    if (prevProps.newTabData.readabilityThreshold !== this.props.newTabData.readabilityThreshold ||
+        this.shouldOverrideReadabilityColor(prevProps.newTabData) !== this.shouldOverrideReadabilityColor(this.props.newTabData)) {
+      if (this.props.newTabData.readabilityThreshold) {
+        ColorUtil.setThresholdForReadability(this.props.newTabData.readabilityThreshold)
+      }
+      this.updateOverrideReadabilityColor()
+    }
+  }
+
+  shouldOverrideReadabilityColor (newTabData: NewTab.State) {
+    return !newTabData.brandedWallpaper && newTabData.backgroundWallpaper?.type === 'color' && !isReadableOnBackground(newTabData.backgroundWallpaper)
+  }
+
+  updateOverrideReadabilityColor () {
+    if (this.shouldOverrideReadabilityColor(this.props.newTabData)) {
+      document.body.style.setProperty('--override-readability-color-rgb', '0, 0, 0')
+      document.body.style.setProperty('--override-readability-color', 'rgb(0, 0, 0)')
+    } else {
+      document.body.style.removeProperty('--override-readability-color-rgb')
+      document.body.style.removeProperty('--override-readability-color')
     }
   }
 
@@ -1158,11 +1187,6 @@ class NewTabPage extends React.Component<Props, State> {
       cryptoContent = null
     }
 
-    let overriddenForegroundColor: string | undefined
-    if (!newTabData.brandedWallpaper && newTabData.backgroundWallpaper?.type === 'color') {
-      overriddenForegroundColor = newTabData.backgroundWallpaper.overriddenForegroundColor
-    }
-
     return (
       <Page.App
         dataIsReady={newTabData.initialDataLoaded}
@@ -1189,9 +1213,8 @@ class NewTabPage extends React.Component<Props, State> {
             paddingType={'right'}
             widgetTitle={getLocale('statsTitle')}
             textDirection={newTabData.textDirection}
-            menuPosition={'right'}
-            color={overriddenForegroundColor ?? '#ffffff'}>
-            <Stats stats={newTabData.stats} overriddenTextColor={overriddenForegroundColor}/>
+            menuPosition={'right'}>
+            <Stats stats={newTabData.stats} />
           </GridWidget>
           <GridWidget
             pref='showClock'
@@ -1200,7 +1223,7 @@ class NewTabPage extends React.Component<Props, State> {
             widgetTitle={getLocale('clockTitle')}
             textDirection={newTabData.textDirection}
             menuPosition='left'>
-            <Clock color={overriddenForegroundColor ?? '#ffffff'}/>
+            <Clock />
           </GridWidget>
           {
             showTopSites
@@ -1253,13 +1276,12 @@ class NewTabPage extends React.Component<Props, State> {
               showPhotoInfo={!isShowingBrandedWallpaper && hasWallpaperInfo && newTabData.showBackgroundImage}
               onClickSettings={this.openSettings}
               onDismissBraveTalkPrompt={this.props.actions.dismissBraveTalkPrompt}
-              color={overriddenForegroundColor ?? '#ffffff'}
             />
             </Page.FooterContent>
           </Page.Footer>
           {newTabData.showToday &&
           <Page.GridItemNavigationBraveToday>
-            <BraveTodayHint color={overriddenForegroundColor ?? 'white'}/>
+            <BraveTodayHint />
           </Page.GridItemNavigationBraveToday>
           }
         </Page.Page>

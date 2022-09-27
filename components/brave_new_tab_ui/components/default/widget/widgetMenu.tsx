@@ -7,7 +7,7 @@ import * as React from 'react'
 
 import { StyledWidgetMenuContainer, StyledWidgetMenu, StyledWidgetButton, StyledWidgetIcon, StyledSpan, StyledWidgetLink, StyledEllipsis } from './styles'
 import { IconButton } from '../../default'
-import EllipsisIcon from './assets/ellipsis'
+import EllipsisIcon from '../../popupMenu/ellipsisIcon'
 import HideIcon from './assets/hide'
 import AddSiteIcon from './assets/add-site'
 import FrecencyIcon from './assets/frecency'
@@ -106,8 +106,7 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
       onRefreshData,
       onAddSite,
       onToggleCustomLinksEnabled,
-      customLinksEnabled,
-      color
+      customLinksEnabled
     } = this.props
     const { showMenu } = this.state
     const hideString = widgetTitle ? `${getLocale('hide')} ${widgetTitle}` : getLocale('hide')
@@ -115,7 +114,7 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
     return (
       <StyledWidgetMenuContainer ref={this.settingsMenuRef} paddingType={paddingType}>
         <StyledEllipsis widgetMenuPersist={widgetMenuPersist} isForeground={isForeground}>
-          <IconButton isClickMenu={true} onClick={this.toggleMenu} color={color ?? '#ffffff'}>
+          <IconButton isClickMenu={true} onClick={this.toggleMenu}>
             <EllipsisIcon />
           </IconButton>
         </StyledEllipsis>

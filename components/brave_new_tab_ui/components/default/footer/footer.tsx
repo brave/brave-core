@@ -39,7 +39,6 @@ export interface Props {
   showPhotoInfo: boolean
   onClickSettings: () => any
   onDismissBraveTalkPrompt: OnDismissBraveTalkPrompt
-  color: string
 }
 
 export default class FooterInfo extends React.PureComponent<Props, {}> {
@@ -49,8 +48,7 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
       supportsBraveTalk,
       backgroundImageInfo,
       showPhotoInfo,
-      onClickSettings,
-      color
+      onClickSettings
     } = this.props
 
     return (
@@ -70,21 +68,21 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
         }
         <S.GridItemNavigation>
           <Navigation>
-            <IconButtonContainer textDirection={textDirection} color={color}>
+            <IconButtonContainer textDirection={textDirection}>
               <IconButtonSideText textDirection={textDirection}>
-                <IconButton onClick={onClickSettings} color={color}>
+                <IconButton onClick={onClickSettings}>
                   <SettingsIcon />
                 </IconButton>
                 {getLocale('customize')}
               </IconButtonSideText>
             </IconButtonContainer>
-            <IconLink title={getLocale('preferencesPageTitle')} href='chrome://settings' color={color}>
+            <IconLink title={getLocale('preferencesPageTitle')} href='chrome://settings'>
               <SettingsAdvancedIcon />
             </IconLink>
-            <IconLink title={getLocale('bookmarksPageTitle')} href='chrome://bookmarks' color={color}>
+            <IconLink title={getLocale('bookmarksPageTitle')} href='chrome://bookmarks'>
               <BookmarkBook />
             </IconLink>
-            <IconLink title={getLocale('historyPageTitle')} href='chrome://history' color={color}>
+            <IconLink title={getLocale('historyPageTitle')} href='chrome://history'>
               <HistoryIcon />
             </IconLink>
             {supportsBraveTalk &&

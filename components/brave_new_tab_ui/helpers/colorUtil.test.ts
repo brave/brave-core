@@ -108,21 +108,21 @@ describe('isReadable()', () => {
   describe('When background is black, stats are visible', () => {
     const background = new ColorUtil.ColorData('#000')
     it('returns true for tracker stat color', () => { expect(ColorUtil.isReadable(background, new ColorUtil.ColorData('#FB542B'/* --interactive2 */))).toBeTruthy() })
-    it('returns false for bandwidth saved stat color', () => { expect(ColorUtil.isReadable(background, new ColorUtil.ColorData('#A0A5EB'/* --interactive9 */))).toBeTruthy() })
-    it('returns false for time saved stat color', () => { expect(ColorUtil.isReadable(background, new ColorUtil.ColorData('#FFFFFF'))).toBeTruthy() })
+    it('returns true for bandwidth saved stat color', () => { expect(ColorUtil.isReadable(background, new ColorUtil.ColorData('#A0A5EB'/* --interactive9 */))).toBeTruthy() })
+    it('returns true for time saved stat color', () => { expect(ColorUtil.isReadable(background, new ColorUtil.ColorData('#FFFFFF'))).toBeTruthy() })
   })
 
   describe('When background is #F0CB44, stats are not visible', () => {
     const background = new ColorUtil.ColorData('#F0CB44')
     it('returns true for tracker stat color', () => { expect(ColorUtil.isReadable(background, new ColorUtil.ColorData('#FB542B'/* --interactive2 */))).toBeTruthy() })
     it('returns false for bandwidth saved stat color', () => { expect(ColorUtil.isReadable(background, new ColorUtil.ColorData('#A0A5EB'/* --interactive9 */))).toBeFalsy() })
-    it('returns false for time saved stat color', () => { expect(ColorUtil.isReadable(background, new ColorUtil.ColorData('#FFFFFF'))).toBeFalsy() })
+    it('returns true for time saved stat color', () => { expect(ColorUtil.isReadable(background, new ColorUtil.ColorData('#FFFFFF'))).toBeTruthy() })
   })
 
   describe('When background is #2197F9 stats are not visible', () => {
     const background = new ColorUtil.ColorData('#2197F9')
-    it('returns true for tracker stat color', () => { expect(ColorUtil.isReadable(background, new ColorUtil.ColorData('#FB542B'/* --interactive2 */))).toBeFalsy() })
+    it('returns false for tracker stat color', () => { expect(ColorUtil.isReadable(background, new ColorUtil.ColorData('#FB542B'/* --interactive2 */))).toBeFalsy() })
     it('returns false for bandwidth saved stat color', () => { expect(ColorUtil.isReadable(background, new ColorUtil.ColorData('#A0A5EB'/* --interactive9 */))).toBeFalsy() })
-    it('returns false for time saved stat color', () => { expect(ColorUtil.isReadable(background, new ColorUtil.ColorData('#FFFFFF'))).toBeTruthy() })
+    it('returns true for time saved stat color', () => { expect(ColorUtil.isReadable(background, new ColorUtil.ColorData('#FFFFFF'))).toBeTruthy() })
   })
 })

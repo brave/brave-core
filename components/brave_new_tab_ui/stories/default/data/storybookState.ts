@@ -9,7 +9,7 @@ import dummyBrandedWallpaper from './brandedWallpaper'
 import * as Background from './backgroundWallpaper'
 import { newTabPrefManager } from '../../../hooks/usePref'
 import { useEffect } from 'react'
-import isReadableOnBackground, * as ColorUtil from '../../../helpers/colorUtil'
+import * as ColorUtil from '../../../helpers/colorUtil'
 
 const addonsChannel = addons.getChannel()
 
@@ -113,15 +113,6 @@ export const useNewTabData = (state: NewTab.State = defaultState) => {
     // },
     initialDataLoaded: true,
     widgetStackOrder: getWidgetStackOrder(select('First widget', ['braveTalk', 'rewards'], 'rewards'))
-  }
-
-  if (state.readabilityThreshold !== result.readabilityThreshold) {
-    ColorUtil.setThresholdForReadability(result.readabilityThreshold!)
-    Background.resetWallpapers()
-    if (result.backgroundWallpaper?.type === 'color') {
-      result.backgroundWallpaper.overriddenForegroundColor = isReadableOnBackground(result.backgroundWallpaper)
-          ? undefined : '#000000'
-    }
   }
 
   // On all updates, notify that the prefs might've changed. Listeners are

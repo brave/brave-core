@@ -39,7 +39,7 @@ function BraveTalkTooltipItem (props: Props) {
   }
   return (
     <BraveTalkTooltip ref={tooltipRef} onClose={handleClose}>
-      <IconLink title={getLocale('braveTalkPromptTitle')} href='https://talk.brave.com/widget' color={props.color}>
+      <IconLink title={getLocale('braveTalkPromptTitle')} href='https://talk.brave.com/widget'>
         <BraveTalkIcon />
       </IconLink>
     </BraveTalkTooltip>
@@ -51,7 +51,7 @@ export default function BraveTalkItem (props: Props) {
     return <BraveTalkTooltipItem {...props} />
   }
   return (
-    <IconLink title={getLocale('braveTalkPromptTitle')} href='https://talk.brave.com/widget' color={props.color}>
+    <IconLink title={getLocale('braveTalkPromptTitle')} href='https://talk.brave.com/widget'>
       <BraveTalkIcon />
     </IconLink>
   )

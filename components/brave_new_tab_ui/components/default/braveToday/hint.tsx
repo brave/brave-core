@@ -8,18 +8,14 @@ import styled from 'styled-components'
 import { CaratStrongDownIcon } from 'brave-ui/components/icons'
 import { getLocale } from '../../../../common/locale'
 
-interface Props {
-  color: string
-}
-
-const Hint = styled('div')<Props>`
+const Hint = styled('div')<{}>`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
   text-align: center;
   font-size: 15px;
-  color: ${p => p.color};
+  color: var(--override-readability-color, #FFFFFF);
   > p {
     margin: 0;
   }
@@ -30,9 +26,9 @@ const Graphic = styled('div')`
   height: 16px;
 `
 
-export default function BraveTodayHint (props: Props) {
+export default function BraveTodayHint () {
   return (
-    <Hint color={props.color}>
+    <Hint>
       <p>{getLocale('braveTodayScrollHint')}</p>
       <Graphic>
         <CaratStrongDownIcon />
