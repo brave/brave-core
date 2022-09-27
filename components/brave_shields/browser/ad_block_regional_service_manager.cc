@@ -13,6 +13,7 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
+#include "brave/components/brave_shields/browser/ad_block_component_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
@@ -114,7 +115,7 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
       if (catalog_entry != filter_list_catalog_.end() &&
           existing_engine == regional_services_.end()) {
         auto regional_filters_provider =
-            std::make_unique<AdBlockRegionalFiltersProvider>(
+            std::make_unique<AdBlockComponentFiltersProvider>(
                 component_update_service_, *catalog_entry);
         auto regional_service =
             std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>(
@@ -255,7 +256,7 @@ void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
   if (enabled) {
     DCHECK(it == regional_services_.end());
     auto regional_filters_provider =
-        std::make_unique<AdBlockRegionalFiltersProvider>(
+        std::make_unique<AdBlockComponentFiltersProvider>(
             component_update_service_, *catalog_entry);
     auto regional_service =
         std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>(

@@ -20,6 +20,36 @@
 
 namespace {
 
+bool GetComponentId(const base::Value* value, std::string* field) {
+  if (value == nullptr || !value->is_dict()) {
+    return false;
+  } else {
+    const base::Value::Dict& dict = value->GetDict();
+    const auto* component_id = dict.FindString("component_id");
+    if (component_id) {
+      *field = *component_id;
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+
+bool GetBase64PublicKey(const base::Value* value, std::string* field) {
+  if (value == nullptr || !value->is_dict()) {
+    return false;
+  } else {
+    const base::Value::Dict& dict = value->GetDict();
+    const auto* component_id = dict.FindString("base64_public_key");
+    if (component_id) {
+      *field = *component_id;
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+
 bool GetStringVector(const base::Value* value,
                      std::vector<std::string>* field) {
   DCHECK(field);
@@ -54,7 +84,9 @@ FilterListCatalogEntry::FilterListCatalogEntry(
     const std::string& support_url,
     const std::string& component_id,
     const std::string& base64_public_key,
-    const std::string& desc)
+    const std::string& desc,
+    const std::string& ios_component_id,
+    const std::string& ios_base64_public_key)
     : uuid(uuid),
       url(url),
       title(title),
@@ -62,7 +94,9 @@ FilterListCatalogEntry::FilterListCatalogEntry(
       support_url(support_url),
       component_id(component_id),
       base64_public_key(base64_public_key),
-      desc(desc) {}
+      desc(desc),
+      ios_component_id(ios_component_id),
+      ios_base64_public_key(ios_base64_public_key) {}
 
 FilterListCatalogEntry::FilterListCatalogEntry(
     const FilterListCatalogEntry& other) = default;
@@ -78,11 +112,17 @@ void FilterListCatalogEntry::RegisterJSONConverter(
       "langs", &FilterListCatalogEntry::langs, &GetStringVector);
   converter->RegisterStringField("support_url",
                                  &FilterListCatalogEntry::support_url);
-  converter->RegisterStringField("component_id",
-                                 &FilterListCatalogEntry::component_id);
-  converter->RegisterStringField("base64_public_key",
-                                 &FilterListCatalogEntry::base64_public_key);
+  converter->RegisterCustomValueField("list_text_component",
+                                      &FilterListCatalogEntry::component_id,
+                                      &GetComponentId);
+  converter->RegisterCustomValueField(
+      "list_text_component", &FilterListCatalogEntry::base64_public_key,
+      &GetBase64PublicKey);
   converter->RegisterStringField("desc", &FilterListCatalogEntry::desc);
+  converter->RegisterStringField("component_id",
+                                 &FilterListCatalogEntry::ios_component_id);
+  converter->RegisterStringField(
+      "base64_public_key", &FilterListCatalogEntry::ios_base64_public_key);
 }
 
 std::vector<FilterListCatalogEntry>::const_iterator FindAdBlockFilterListByUUID(

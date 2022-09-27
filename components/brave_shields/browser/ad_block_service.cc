@@ -18,9 +18,11 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
+#include "brave/components/brave_shields/browser/ad_block_component_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_provider.h"
-#include "brave/components/brave_shields/browser/ad_block_default_filters_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_default_resource_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_engine.h"
+#include "brave/components/brave_shields/browser/ad_block_filter_list_catalog_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
@@ -35,7 +37,24 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/origin.h"
 
-#define DAT_FILE "rs-ABPFilterParserData.dat"
+namespace {
+
+const char kAdBlockComponentName[] = "Brave Ad Block Updater";
+const char kAdBlockComponentId[] = "iodkpdagapdfkphljnddpjlldadblomo";
+const char kAdBlockComponentBase64PublicKey[] =
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsD/B/MGdz0gh7WkcFARn"
+    "ZTBX9KAw2fuGeogijoI+fET38IK0L+P/trCT2NshqhRNmrDpLzV2+Dmes6PvkA+O"
+    "dQkUV6VbChJG+baTfr3Oo5PdE0WxmP9Xh8XD7p85DQrk0jJilKuElxpK7Yq0JhcT"
+    "Sc3XNHeTwBVqCnHwWZZ+XysYQfjuDQ0MgQpS/s7U04OZ63NIPe/iCQm32stvS/pE"
+    "ya7KdBZXgRBQ59U6M1n1Ikkp3vfECShbBld6VrrmNrl59yKWlEPepJ9oqUc2Wf2M"
+    "q+SDNXROG554RnU4BnDJaNETTkDTZ0Pn+rmLmp1qY5Si0yGsfHkrv3FS3vdxVozO"
+    "PQIDAQAB";
+
+std::string g_ad_block_component_id_(kAdBlockComponentId);
+std::string g_ad_block_component_base64_public_key_(
+    kAdBlockComponentBase64PublicKey);
+
+}  // namespace
 
 namespace brave_shields {
 
@@ -257,8 +276,8 @@ AdBlockRegionalServiceManager* AdBlockService::regional_service_manager() {
     regional_service_manager_ =
         brave_shields::AdBlockRegionalServiceManagerFactory(
             local_state_, locale_, component_update_service_, GetTaskRunner());
-    regional_service_manager_->Init(default_filters_provider_.get(),
-                                    default_filters_provider_.get());
+    regional_service_manager_->Init(resource_provider_.get(),
+                                    filter_list_catalog_provider_.get());
   }
   return regional_service_manager_.get();
 }
@@ -270,7 +289,7 @@ AdBlockEngine* AdBlockService::default_service() {
             new AdBlockEngine(), base::OnTaskRunnerDeleter(GetTaskRunner()));
     default_service_observer_ = std::make_unique<SourceProviderObserver>(
         default_service_->AsWeakPtr(), default_filters_provider_.get(),
-        default_filters_provider_.get(), GetTaskRunner());
+        resource_provider_.get(), GetTaskRunner());
   }
   return default_service_.get();
 }
@@ -282,7 +301,7 @@ AdBlockEngine* AdBlockService::custom_filters_service() {
             new AdBlockEngine(), base::OnTaskRunnerDeleter(GetTaskRunner()));
     custom_filters_service_observer_ = std::make_unique<SourceProviderObserver>(
         custom_filters_service_->AsWeakPtr(), custom_filters_provider_.get(),
-        default_filters_provider_.get(), GetTaskRunner());
+        resource_provider_.get(), GetTaskRunner());
   }
   return custom_filters_service_.get();
 }
@@ -295,7 +314,7 @@ AdBlockService::custom_filters_provider() {
 brave_shields::AdBlockSubscriptionServiceManager*
 AdBlockService::subscription_service_manager() {
   if (!subscription_service_manager_->IsInitialized()) {
-    subscription_service_manager_->Init(default_filters_provider_.get());
+    subscription_service_manager_->Init(resource_provider_.get());
   }
   return subscription_service_manager_.get();
 }
@@ -318,7 +337,14 @@ AdBlockService::AdBlockService(
   adblock::SetDomainResolver(AdBlockServiceDomainResolver);
 
   default_filters_provider_ =
-      std::make_unique<brave_shields::AdBlockDefaultFiltersProvider>(
+      std::make_unique<brave_shields::AdBlockComponentFiltersProvider>(
+          component_update_service_, g_ad_block_component_id_,
+          g_ad_block_component_base64_public_key_, kAdBlockComponentName);
+  resource_provider_ =
+      std::make_unique<brave_shields::AdBlockDefaultResourceProvider>(
+          component_update_service_);
+  filter_list_catalog_provider_ =
+      std::make_unique<brave_shields::AdBlockFilterListCatalogProvider>(
           component_update_service_);
   custom_filters_provider_ =
       std::make_unique<brave_shields::AdBlockCustomFiltersProvider>(
@@ -361,7 +387,7 @@ void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
 }
 
 AdBlockResourceProvider* AdBlockService::resource_provider() {
-  return default_filters_provider_.get();
+  return resource_provider_.get();
 }
 
 void AdBlockService::UseSourceProvidersForTest(
@@ -382,6 +408,14 @@ void AdBlockService::UseCustomSourceProvidersForTest(
 
 bool AdBlockService::TagExistsForTest(const std::string& tag) {
   return default_service()->TagExists(tag);
+}
+
+// static
+void SetDefaultAdBlockComponentIdAndBase64PublicKeyForTest(
+    const std::string& component_id,
+    const std::string& component_base64_public_key) {
+  g_ad_block_component_id_ = component_id;
+  g_ad_block_component_base64_public_key_ = component_base64_public_key;
 }
 
 }  // namespace brave_shields

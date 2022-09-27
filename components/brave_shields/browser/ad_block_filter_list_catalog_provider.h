@@ -14,7 +14,13 @@
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-using brave_component_updater::DATFileDataBuffer;
+namespace component_updater {
+class ComponentUpdateService;
+}  // namespace component_updater
+
+namespace base {
+class FilePath;
+}
 
 namespace brave_shields {
 
@@ -25,20 +31,29 @@ class AdBlockFilterListCatalogProvider {
     virtual void OnFilterListCatalogLoaded(const std::string& catalog_json) = 0;
   };
 
-  AdBlockFilterListCatalogProvider();
-  virtual ~AdBlockFilterListCatalogProvider();
+  explicit AdBlockFilterListCatalogProvider(
+      component_updater::ComponentUpdateService* cus);
+  ~AdBlockFilterListCatalogProvider();
+  AdBlockFilterListCatalogProvider(const AdBlockFilterListCatalogProvider&) =
+      delete;
+  AdBlockFilterListCatalogProvider& operator=(
+      const AdBlockFilterListCatalogProvider&) = delete;
+
+  void LoadFilterListCatalog(
+      base::OnceCallback<void(const std::string& catalog_json)>);
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  virtual void LoadFilterListCatalog(
-      base::OnceCallback<void(const std::string& catalog_json)>) = 0;
-
- protected:
-  void OnFilterListCatalogLoaded(const std::string& catalog_json);
-
  private:
+  void OnFilterListCatalogLoaded(const std::string& catalog_json);
+  void OnComponentReady(const base::FilePath&);
+
+  base::FilePath component_path_;
+
   base::ObserverList<Observer> observers_;
+
+  base::WeakPtrFactory<AdBlockFilterListCatalogProvider> weak_factory_{this};
 };
 
 }  // namespace brave_shields

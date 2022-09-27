@@ -21,7 +21,6 @@
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/ad_block_component_installer.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_provider.h"
-#include "brave/components/brave_shields/browser/ad_block_default_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
@@ -268,7 +267,7 @@ bool AdBlockServiceTest::InstallRegionalAdBlockExtension(
       uuid, "https://easylist-downloads.adblockplus.org/liste_fr.txt",
       "EasyList Liste FR", {"fr"}, "https://forums.lanik.us/viewforum.php?f=91",
       kRegionalAdBlockComponentTestId, kRegionalAdBlockComponentTest64PublicKey,
-      "Removes advertisements from French websites"));
+      "Removes advertisements from French websites", "", ""));
   g_brave_browser_process->ad_block_service()
       ->regional_service_manager()
       ->SetFilterListCatalog(filter_list_catalog);
@@ -276,8 +275,7 @@ bool AdBlockServiceTest::InstallRegionalAdBlockExtension(
   if (enable_list) {
     const extensions::Extension* ad_block_extension =
         InstallExtension(test_data_dir.AppendASCII("adblock-data")
-                             .AppendASCII("adblock-regional")
-                             .AppendASCII(uuid),
+                             .AppendASCII("adblock-regional"),
                          1);
     if (!ad_block_extension)
       return false;
@@ -492,31 +490,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                          "setExpectations(1, 0, 0, 0);"
                          "addImage('logo.png')"));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
-}
-
-// Upgrade from v3 to v4 format data file and make sure v4-specific ad
-// is blocked.
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
-                       AdsGetBlockedAfterDataFileVersionUpgrade) {
-  // Install AdBlock extension with a version 3 format data file and
-  // expect a new install
-  ASSERT_TRUE(InstallDefaultAdBlockExtension("adblock-v3", 1));
-
-  // Install AdBlock extension with a version 4 format data file and
-  // expect an upgrade install
-  ASSERT_TRUE(InstallDefaultAdBlockExtension("adblock-v4", 0));
-
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
-
-  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  content::WebContents* contents =
-      browser()->tab_strip_model()->GetActiveWebContents();
-
-  ASSERT_EQ(true, EvalJs(contents,
-                         "setExpectations(0, 1, 0, 0);"
-                         "addImage('v4_specific_banner.png')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
 // Load a page with several of the same adblocked xhr requests, it should only

@@ -20,6 +20,8 @@ OBJC_EXPORT
 @property(readonly) NSString* componentId;
 @property(readonly) NSString* base64PublicKey;
 @property(readonly) NSString* desc;
+@property(readonly) NSString* iosComponentId;
+@property(readonly) NSString* iosBase64PublicKey;
 - (instancetype)init NS_UNAVAILABLE;
 @end
 
