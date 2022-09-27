@@ -10,6 +10,7 @@
 
 #include "base/feature_list.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
@@ -107,6 +108,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
       "isNativeBraveWalletFeatureEnabled",
       base::FeatureList::IsEnabled(
           brave_wallet::features::kNativeBraveWalletFeature));
+  html_source->AddBoolean("isBraveWalletAllowed",
+                          brave_wallet::IsAllowedForContext(profile));
   html_source->AddBoolean(
       "isDeAmpFeatureEnabled",
       base::FeatureList::IsEnabled(de_amp::features::kBraveDeAMP));
