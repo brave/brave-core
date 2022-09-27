@@ -32,8 +32,8 @@ interface Props {
   onAddSite?: () => void
   customLinksEnabled?: boolean
   onToggleCustomLinksEnabled?: () => void
-  lightWidget?: boolean
   paddingType: 'none' | 'right' | 'default'
+  color?: string
 }
 
 interface State {
@@ -100,14 +100,14 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
       widgetMenuPersist,
       widgetTitle,
       isForeground,
-      lightWidget,
       paddingType,
       onLearnMore,
       onDisconnect,
       onRefreshData,
       onAddSite,
       onToggleCustomLinksEnabled,
-      customLinksEnabled
+      customLinksEnabled,
+      color
     } = this.props
     const { showMenu } = this.state
     const hideString = widgetTitle ? `${getLocale('hide')} ${widgetTitle}` : getLocale('hide')
@@ -115,8 +115,8 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
     return (
       <StyledWidgetMenuContainer ref={this.settingsMenuRef} paddingType={paddingType}>
         <StyledEllipsis widgetMenuPersist={widgetMenuPersist} isForeground={isForeground}>
-          <IconButton isClickMenu={true} onClick={this.toggleMenu}>
-            <EllipsisIcon lightWidget={lightWidget} />
+          <IconButton isClickMenu={true} onClick={this.toggleMenu} color={color ?? '#ffffff'}>
+            <EllipsisIcon />
           </IconButton>
         </StyledEllipsis>
         {showMenu && <StyledWidgetMenu

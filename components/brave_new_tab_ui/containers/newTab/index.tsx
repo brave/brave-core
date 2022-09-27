@@ -1158,6 +1158,11 @@ class NewTabPage extends React.Component<Props, State> {
       cryptoContent = null
     }
 
+    let overriddenForegroundColor: string | undefined
+    if (!newTabData.brandedWallpaper && newTabData.backgroundWallpaper?.type === 'color') {
+      overriddenForegroundColor = newTabData.backgroundWallpaper.overriddenForegroundColor
+    }
+
     return (
       <Page.App
         dataIsReady={newTabData.initialDataLoaded}
@@ -1184,8 +1189,9 @@ class NewTabPage extends React.Component<Props, State> {
             paddingType={'right'}
             widgetTitle={getLocale('statsTitle')}
             textDirection={newTabData.textDirection}
-            menuPosition={'right'}>
-            <Stats stats={newTabData.stats}/>
+            menuPosition={'right'}
+            color={overriddenForegroundColor ?? '#ffffff'}>
+            <Stats stats={newTabData.stats} overriddenTextColor={overriddenForegroundColor}/>
           </GridWidget>
           <GridWidget
             pref='showClock'
@@ -1194,7 +1200,7 @@ class NewTabPage extends React.Component<Props, State> {
             widgetTitle={getLocale('clockTitle')}
             textDirection={newTabData.textDirection}
             menuPosition='left'>
-            <Clock />
+            <Clock color={overriddenForegroundColor ?? '#ffffff'}/>
           </GridWidget>
           {
             showTopSites
@@ -1247,12 +1253,13 @@ class NewTabPage extends React.Component<Props, State> {
               showPhotoInfo={!isShowingBrandedWallpaper && hasWallpaperInfo && newTabData.showBackgroundImage}
               onClickSettings={this.openSettings}
               onDismissBraveTalkPrompt={this.props.actions.dismissBraveTalkPrompt}
+              color={overriddenForegroundColor ?? '#ffffff'}
             />
             </Page.FooterContent>
           </Page.Footer>
           {newTabData.showToday &&
           <Page.GridItemNavigationBraveToday>
-            <BraveTodayHint />
+            <BraveTodayHint color={overriddenForegroundColor ?? 'white'}/>
           </Page.GridItemNavigationBraveToday>
           }
         </Page.Page>

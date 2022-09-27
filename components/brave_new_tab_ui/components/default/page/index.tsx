@@ -382,18 +382,22 @@ export const Navigation = styled('nav')<{}>`
   align-items: center;
 `
 
+interface ColorButtonProps {
+  color: string
+}
+
 interface IconButtonProps {
   clickDisabled?: boolean
   isClickMenu?: boolean
 }
 
-export const IconLink = styled('a')<{}>`
+export const IconLink = styled('a')<ColorButtonProps>`
   display: block;
   width: 24px;
   height: 24px;
   margin: 8px;
   cursor: pointer;
-  color: #ffffff;
+  color: ${p => p.color};
   opacity: 0.7;
   transition: opacity 0.15s ease, filter 0.15s ease;
 
@@ -402,7 +406,7 @@ export const IconLink = styled('a')<{}>`
   }
 `
 
-export const IconButton = styled('button')<IconButtonProps>`
+export const IconButton = styled('button')<IconButtonProps & ColorButtonProps>`
   pointer-events: ${p => p.clickDisabled && 'none'};
   display: flex;
   width: 24px;
@@ -412,7 +416,7 @@ export const IconButton = styled('button')<IconButtonProps>`
   outline: none;
   margin: ${p => p.isClickMenu ? '7' : '0 12'}px;
   cursor: pointer;
-  color: #ffffff;
+  color: ${p => p.color};
   background-color: transparent;
   opacity: 0.7;
   transition: opacity 0.15s ease, filter 0.15s ease;
@@ -461,19 +465,20 @@ export const IconButtonSideText = styled('label')<IconButtonSideTextProps>`
 
 interface IconButtonContainerProps {
   textDirection: string
+  color: string
 }
 
 export const IconButtonContainer = styled('div')<IconButtonContainerProps>`
   font-family: ${p => p.theme.fontFamily.heading};
   font-size: 13px;
   font-weight: 600;
-  color: rgba(255,255,255,0.8);
+  color: ${p => p.color + 'CC' /* == 0.8 */};
   margin-right: ${p => p.textDirection === 'ltr' && '8px'};
   margin-left: ${p => p.textDirection === 'rtl' && '8px'};
-  border-right: ${p => p.textDirection === 'ltr' && '1px solid rgba(255, 255, 255, 0.6)'};
-  border-left: ${p => p.textDirection === 'rtl' && '1px solid rgba(255, 255, 255, 0.6)'};
+  border-right: ${p => p.textDirection === 'ltr' && `1px solid ${p.color + '99' /* == 0.6 */}`};
+  border-left: ${p => p.textDirection === 'rtl' && `1px solid ${p.color + '99' /* == 0.6 */}`};
 
   &:hover {
-    color: #ffffff;
+    color: ${p => p.color};
   }
 `

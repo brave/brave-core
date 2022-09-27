@@ -5,8 +5,12 @@
 
 import styled from 'styled-components'
 
-export const StyledClock = styled('div')<{}>`
-  color: #FFFFFF;
+interface ClockProps {
+  color: string
+}
+
+export const StyledClock = styled('div')<ClockProps>`
+  color: ${p => p.color};
   box-sizing: border-box;
   line-height: 1;
   user-select: none;

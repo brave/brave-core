@@ -9,6 +9,7 @@ declare namespace NewTab {
     type: 'color'
     wallpaperColor: string
     random?: boolean
+    overriddenForegroundColor?: string
   }
 
   // Backgrounds based on image. Custom image background or Brave background.
@@ -315,6 +316,7 @@ declare namespace NewTab {
 
   interface StorybookStateExtras {
     forceSettingsTab?: string // SettingsTabType
+    readabilityThreshold?: number
   }
 
   // In-memory state is a superset of PersistentState

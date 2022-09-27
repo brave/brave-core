@@ -10,6 +10,7 @@ import { getLocale } from '../../../common/locale'
 
 interface Props {
   stats: NewTab.Stats
+  overriddenTextColor?: string
 }
 
 const MILLISECONDS_PER_ITEM = 50
@@ -88,16 +89,19 @@ export default function Stats (props: Props) {
   return <StatsContainer>
     <StatsItem
       description={getLocale('adsTrackersBlocked')}
-      counter={adblockCount.toLocaleString()} />
+      counter={adblockCount.toLocaleString()}
+      overriddenTextColor={props.overriddenTextColor} />
     {bandwidthSaved &&
       <StatsItem
         counter={bandwidthSaved.value}
         text={getLocale(bandwidthSaved.id)}
-        description={getLocale('estimatedBandwidthSaved')} />
+        description={getLocale('estimatedBandwidthSaved')}
+        overriddenTextColor={props.overriddenTextColor} />
     }
     <StatsItem
       counter={timeSaved.value}
       text={getLocale(timeSaved.id)}
-      description={getLocale('estimatedTimeSaved')} />
+      description={getLocale('estimatedTimeSaved')}
+      overriddenTextColor={props.overriddenTextColor} />
   </StatsContainer>
 }

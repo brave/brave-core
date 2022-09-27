@@ -7,9 +7,13 @@ import { useNewTabPref } from '../../../hooks/usePref'
 
 import { StyledClock, StyledTime } from './style'
 
+interface Props {
+  color: string
+}
+
 // Tick once every two seconds.
 const TICK_RATE = 2000
-export function Clock () {
+export function Clock ({ color }: Props) {
   const [now, setNow] = React.useState<Date>()
   const [clockFormat, setClockFormat] = useNewTabPref('clockFormat')
   const toggleClockFormat = () => {
@@ -42,7 +46,7 @@ export function Clock () {
       ? null
       : t.value), [formatter, now])
 
-  return <StyledClock onDoubleClick={toggleClockFormat}>
+  return <StyledClock onDoubleClick={toggleClockFormat} color={color}>
     <StyledTime>{formattedTime}</StyledTime>
   </StyledClock>
 }

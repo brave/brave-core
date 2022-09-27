@@ -2,7 +2,7 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 export const StyledStatsItemContainer = styled('ul')<{}>`
   -webkit-font-smoothing: antialiased;
@@ -18,22 +18,18 @@ export const StyledStatsItemContainer = styled('ul')<{}>`
   font-family: inherit;
 `
 
-export const StyledStatsItem = styled('li')<{}>`
+export const StyledStatsItem = styled('li')<{overriddenTextColor?: string}>`
   list-style-type: none;
   font-size: inherit;
   font-family: inherit;
   margin: 10px 16px;
+  &:last-child { margin-right: 0; }
 
-  &:first-child {
-    color: #FB542B;
-  }
-  &:nth-child(2) {
-    color: #A0A5EB;
-  }
-  &:last-child {
-    color: #FFFFFF;
-    margin-right: 0;
-  }
+  ${p => p.overriddenTextColor
+    ? css`color: ${p.overriddenTextColor};`
+    : css`&:first-child { color: var(--interactive2); }
+          &:nth-child(2) { color: var(--interactive9); }
+          &:last-child { color: #FFFFFF; }`}
 `
 
 export const StyledStatsItemCounter = styled('span')<{}>`
@@ -56,10 +52,10 @@ export const StyledStatsItemText = styled('span')<{}>`
   letter-spacing: 0;
 `
 
-export const StyledStatsItemDescription = styled('div')<{}>`
+export const StyledStatsItemDescription = styled('div')<{overriddenTextColor?: string}>`
   font-size: 16px;
   font-weight: 500;
-  color: #FFFFFF;
+  ${p => !p.overriddenTextColor && css`color: #FFFFFF;`}
   margin-top: 8px;
   font-family: ${p => p.theme.fontFamily.heading};
 `

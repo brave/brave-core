@@ -18,8 +18,8 @@ export interface WidgetProps {
   widgetTitle?: string
   hideMenu?: boolean
   isForeground?: boolean
-  lightWidget?: boolean
   paddingType: 'none' | 'right' | 'default'
+  color?: string
   onLearnMore?: () => void
   onDisconnect?: () => void
   onRefreshData?: () => void
@@ -42,7 +42,6 @@ export function Widget ({
   widgetTitle,
   hideMenu,
   isForeground,
-  lightWidget,
   paddingType,
   onLearnMore,
   onDisconnect,
@@ -50,7 +49,8 @@ export function Widget ({
   onAddSite,
   customLinksEnabled,
   onToggleCustomLinksEnabled,
-  children
+  children,
+  color
 }: WidgetProps & { children: React.ReactNode }) {
   const [widgetMenuPersist, setWidgetMenuPersist] = React.useState(!!isForeground)
   return <StyledWidgetContainer menuPosition={menuPosition} textDirection={textDirection}>
@@ -78,8 +78,8 @@ export function Widget ({
         hideWidget={hideWidget}
         persistWidget={() => setWidgetMenuPersist(true)}
         unpersistWidget={() => setWidgetMenuPersist(false)}
-        lightWidget={lightWidget}
-        paddingType={paddingType} />}
+        paddingType={paddingType}
+        color={color} />}
   </StyledWidgetContainer>
 }
 

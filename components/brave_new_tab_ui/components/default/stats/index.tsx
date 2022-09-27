@@ -31,6 +31,7 @@ export interface StatsItemProps {
   counter: string | number
   text?: string
   description: string
+  overriddenTextColor?: string
 }
 
 /**
@@ -40,10 +41,10 @@ export interface StatsItemProps {
  * @prop {string} text - descriptive text that goes along the stat
  * @prop {string} description - describes what the counter is showing
  */
-export function StatsItem ({ testId, counter, text, description }: StatsItemProps) {
-    return <StyledStatsItem data-test-id={testId}>
+export function StatsItem ({ testId, counter, text, description, overriddenTextColor }: StatsItemProps) {
+    return <StyledStatsItem data-test-id={testId} overriddenTextColor={overriddenTextColor}>
         <StyledStatsItemCounter>{counter}</StyledStatsItemCounter>
           {text && <StyledStatsItemText>{text}</StyledStatsItemText>}
-        <StyledStatsItemDescription>{description}</StyledStatsItemDescription>
+        <StyledStatsItemDescription overriddenTextColor={overriddenTextColor}>{description}</StyledStatsItemDescription>
       </StyledStatsItem>
 }
