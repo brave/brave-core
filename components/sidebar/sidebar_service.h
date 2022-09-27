@@ -108,6 +108,8 @@ class SidebarService : public KeyedService {
 
   void LoadSidebarItems();
   void UpdateSidebarItemsToPrefStore();
+  std::vector<SidebarItem> GetDefaultSidebarItems() const;
+  SidebarItem GetBuiltInItemForType(SidebarItem::BuiltInItemType type) const;
   std::vector<SidebarItem::BuiltInItemType> GetCurrentlyPresentBuiltInTypes()
       const;
   void OnPreferenceChanged(const std::string& pref_name);
