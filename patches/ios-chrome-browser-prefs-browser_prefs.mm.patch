@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/prefs/browser_prefs.mm b/ios/chrome/browser/prefs/browser_prefs.mm
-index 3bb081791231cb284626472c55648d14c31ed934..035c9c6c845ddf004ee44bb71890e79671618f4b 100644
+index 2c80c4a63d8f9342c712968866175871e933ee44..06150e19153490e8642a333b512945b72c1c2c10 100644
 --- a/ios/chrome/browser/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/prefs/browser_prefs.mm
-@@ -193,6 +193,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -194,6 +194,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
    // times a user should see autofill branding animation after installation.
    registry->RegisterIntegerPref(
        prefs::kAutofillBrandingIconAnimationRemainingCountPrefName, 2);
@@ -10,7 +10,7 @@ index 3bb081791231cb284626472c55648d14c31ed934..035c9c6c845ddf004ee44bb71890e796
  }
  
  void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -310,6 +311,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -312,6 +313,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
                               PrefRegistry::LOSSY_PREF);
  
    registry->RegisterDictionaryPref(kPrefPromoObject);
