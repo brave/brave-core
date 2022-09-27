@@ -28,21 +28,23 @@ enum WelcomeViewCalloutState {
 }
 
 class WelcomeViewCallout: UIView {
-  private struct DesignUX {
+  private struct UX {
     static let padding = 20.0
     static let contentPadding = 24.0
     static let cornerRadius = 16.0
+    static let verticalLayoutMargin = 15.0
+    static let horizontalLayoutMargin = 8.0
   }
 
-  private let backgroundView = RoundedBackgroundView(cornerRadius: DesignUX.cornerRadius)
+  private let backgroundView = RoundedBackgroundView(cornerRadius: UX.cornerRadius)
 
   private let arrowView = CalloutArrowView().then {
     $0.backgroundColor = .secondaryBraveBackground
   }
 
-  private let contentView = UIStackView().then {
+  private let contentStackView = UIStackView().then {
     $0.axis = .vertical
-    $0.layoutMargins = UIEdgeInsets(equalInset: DesignUX.contentPadding)
+    $0.layoutMargins = UIEdgeInsets(equalInset: UX.contentPadding)
     $0.isLayoutMarginsRelativeArrangement = true
   }
 
@@ -103,6 +105,9 @@ class WelcomeViewCallout: UIView {
     $0.titleLabel?.minimumScaleFactor = 0.7
     $0.titleLabel?.adjustsFontSizeToFitWidth = true
   }
+  
+  private var verticalLayoutMargin = UX.verticalLayoutMargin
+  private var horizontalLayoutMargin = UX.horizontalLayoutMargin
 
   // MARK: - State
   private(set) var state: WelcomeViewCalloutState?
@@ -112,7 +117,7 @@ class WelcomeViewCallout: UIView {
     doLayout()
 
     [titleLabel, detailsLabel, primaryButton, secondaryButtonContentView].forEach {
-      contentView.addArrangedSubview($0)
+      contentStackView.addArrangedSubview($0)
 
       $0.alpha = 0.0
       $0.isHidden = true
@@ -132,6 +137,11 @@ class WelcomeViewCallout: UIView {
     [titleLabel, detailsLabel].forEach {
       $0.contentMode = .top
     }
+    
+    if traitCollection.horizontalSizeClass == .regular && traitCollection.verticalSizeClass == .regular {
+      verticalLayoutMargin = 3 * UX.verticalLayoutMargin / 2
+      horizontalLayoutMargin = 3 * UX.horizontalLayoutMargin / 2
+    }
   }
 
   required init?(coder: NSCoder) {
@@ -140,20 +150,20 @@ class WelcomeViewCallout: UIView {
 
   private func doLayout() {
     arrowView.removeFromSuperview()
-    contentView.removeFromSuperview()
+    contentStackView.removeFromSuperview()
    
-      addSubview(backgroundView)
-      addSubview(contentView)
-      addSubview(arrowView)
-      arrowView.transform = CGAffineTransform(rotationAngle: .pi)
+    addSubview(backgroundView)
+    addSubview(contentStackView)
+    addSubview(arrowView)
+    arrowView.transform = CGAffineTransform(rotationAngle: .pi)
 
-      contentView.snp.makeConstraints {
+    contentStackView.snp.makeConstraints {
         if traitCollection.horizontalSizeClass == .compact && traitCollection.verticalSizeClass == .regular {
-          $0.leading.trailing.equalToSuperview().inset(DesignUX.padding)
+          $0.leading.trailing.equalToSuperview().inset(UX.padding)
         } else {
           $0.centerX.equalToSuperview()
           $0.leading.trailing.equalToSuperview().priority(.high)
-          $0.width.lessThanOrEqualTo(BraveUX.baseDimensionValue)
+          $0.width.equalToSuperview().multipliedBy(0.5)
         }
         $0.top.equalToSuperview()
         $0.bottom.equalTo(arrowView.snp.top)
@@ -167,7 +177,7 @@ class WelcomeViewCallout: UIView {
       }
 
     backgroundView.snp.makeConstraints {
-      $0.edges.equalTo(contentView.snp.edges)
+      $0.edges.equalTo(contentStackView.snp.edges)
     }
   }
 
@@ -211,7 +221,7 @@ class WelcomeViewCallout: UIView {
         $0.isHidden = true
       }
     case .welcome(let title):
-      contentView.do {
+      contentStackView.do {
         $0.layoutMargins = UIEdgeInsets(top: 0, left: -15, bottom: 0, right: -15)
       }
       backgroundView.isHidden = true
@@ -251,8 +261,8 @@ class WelcomeViewCallout: UIView {
         $0.isHidden = true
       }
     case .defaultBrowser(let info):
-      contentView.do {
-        $0.layoutMargins = UIEdgeInsets(top: 30, left: 30, bottom: 15, right: 30)
+      contentStackView.do {
+        $0.layoutMargins = UIEdgeInsets(top: 2 * verticalLayoutMargin, left: 30, bottom: verticalLayoutMargin, right: 30)
       }
       titleLabel.do {
         $0.text = info.title
@@ -306,11 +316,11 @@ class WelcomeViewCallout: UIView {
         $0.isHidden = false
       }
 
-      contentView.setCustomSpacing(8.0, after: titleLabel)
-      contentView.setCustomSpacing(24.0, after: detailsLabel)
-      contentView.setCustomSpacing(10.0, after: primaryButton)
+      contentStackView.setCustomSpacing(horizontalLayoutMargin, after: titleLabel)
+      contentStackView.setCustomSpacing(3 * horizontalLayoutMargin, after: detailsLabel)
+      contentStackView.setCustomSpacing(horizontalLayoutMargin, after: primaryButton)
     case .settings(let title, let details):
-      contentView.do {
+      contentStackView.do {
         $0.layoutMargins = UIEdgeInsets(top: 120, left: -30, bottom: -20, right: -30)
       }
       
@@ -355,10 +365,10 @@ class WelcomeViewCallout: UIView {
         $0.isHidden = true
       }
       
-      contentView.setCustomSpacing(20.0, after: titleLabel)
+      contentStackView.setCustomSpacing(20.0, after: titleLabel)
     case .defaultBrowserCallout(let info):
-      contentView.do {
-        $0.layoutMargins = UIEdgeInsets(top: 20, left: 20, bottom: 10, right: 20)
+      contentStackView.do {
+        $0.layoutMargins = UIEdgeInsets(top: 2 * UX.verticalLayoutMargin, left: 20, bottom: UX.verticalLayoutMargin, right: 20)
       }
 
       titleLabel.do {
@@ -418,9 +428,9 @@ class WelcomeViewCallout: UIView {
         $0.isHidden = false
       }
 
-      contentView.setCustomSpacing(8.0, after: titleLabel)
-      contentView.setCustomSpacing(24.0, after: detailsLabel)
-      contentView.setCustomSpacing(10.0, after: primaryButton)
+      contentStackView.setCustomSpacing(horizontalLayoutMargin, after: titleLabel)
+      contentStackView.setCustomSpacing(3 * horizontalLayoutMargin, after: detailsLabel)
+      contentStackView.setCustomSpacing(horizontalLayoutMargin, after: primaryButton)
     }
   }
   
