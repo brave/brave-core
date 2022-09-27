@@ -8,9 +8,14 @@
 
 #include "base/callback.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_web_view.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "chrome/app/vector_icons/vector_icons.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_content_proxy.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_registry.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_util.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -33,8 +38,26 @@ void PlaylistSidePanelCoordinator::CreateAndRegisterEntry(
 }
 
 std::unique_ptr<views::View> PlaylistSidePanelCoordinator::CreateWebView() {
-  return std::make_unique<PlaylistSidePanelWebView>(&GetBrowser(),
-                                                    base::RepeatingClosure());
+  const bool should_create_contents_wrapper = !contents_wrapper_;
+  if (should_create_contents_wrapper) {
+    contents_wrapper_ =
+        std::make_unique<BubbleContentsWrapperT<playlist::PlaylistUI>>(
+            GURL(kPlaylistURL), GetBrowser().profile(), 0,
+            /*webui_resizes_host=*/false,
+            /*esc_closes_ui=*/false);
+    contents_wrapper_->ReloadWebContents();
+  }
+
+  auto web_view = std::make_unique<PlaylistSidePanelWebView>(
+      &GetBrowser(), base::RepeatingClosure(), contents_wrapper_.get());
+  if (!should_create_contents_wrapper) {
+    // SidePanelWebView's initial visibility is hidden. Thus, we need to
+    // call this manually when we don't reload the web contents.
+    // Calling this will also mark that the web contents is ready to go.
+    web_view->ShowUI();
+  }
+
+  return web_view;
 }
 
 BROWSER_USER_DATA_KEY_IMPL(PlaylistSidePanelCoordinator);

@@ -5,24 +5,13 @@
 
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_web_view.h"
 
-#include <memory>
-
-#include "brave/components/constants/webui_url_constants.h"
-#include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/views/bubble/bubble_contents_wrapper.h"
-
 PlaylistSidePanelWebView::PlaylistSidePanelWebView(
     Browser* browser,
-    base::RepeatingClosure close_cb)
-    : SidePanelWebUIViewT(
+    base::RepeatingClosure close_cb,
+    BubbleContentsWrapper* contents_wrapper)
+    : SidePanelWebUIView(
           /* on_show_cb = */ base::RepeatingClosure(),
           close_cb,
-          std::make_unique<BubbleContentsWrapperT<playlist::PlaylistUI>>(
-              GURL(kPlaylistURL),
-              browser->profile(),
-              0,
-              /*webui_resizes_host=*/false,
-              /*esc_closes_ui=*/false)) {}
+          contents_wrapper) {}
 
 PlaylistSidePanelWebView::~PlaylistSidePanelWebView() = default;

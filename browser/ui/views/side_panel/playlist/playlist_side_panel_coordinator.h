@@ -9,13 +9,18 @@
 #include <memory>
 
 #include "chrome/browser/ui/browser_user_data.h"
+#include "chrome/browser/ui/views/bubble/bubble_contents_wrapper.h"
 
-class Browser;
-class SidePanelRegistry;
+namespace playlist {
+class PlaylistUI;
+}  // namespace playlist
 
 namespace views {
 class View;
 }  // namespace views
+
+class Browser;
+class SidePanelRegistry;
 
 class PlaylistSidePanelCoordinator
     : public BrowserUserData<PlaylistSidePanelCoordinator> {
@@ -32,6 +37,9 @@ class PlaylistSidePanelCoordinator
   friend class BrowserUserData<PlaylistSidePanelCoordinator>;
 
   std::unique_ptr<views::View> CreateWebView();
+
+  std::unique_ptr<BubbleContentsWrapperT<playlist::PlaylistUI>>
+      contents_wrapper_;
 
   BROWSER_USER_DATA_KEY_DECL();
 };
