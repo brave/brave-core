@@ -146,7 +146,7 @@ class IPFSHostResolverTest : public testing::Test {
   void SetResolvedCallbackCalled(bool value) {
     resolved_callback_called_ = value;
   }
-  int resolved_callback_called() const { return resolved_callback_called_; }
+  bool resolved_callback_called() const { return resolved_callback_called_; }
 
   content::BrowserTaskEnvironment task_environment_;
   bool resolved_callback_called_ = false;
@@ -170,7 +170,7 @@ TEST_F(IPFSHostResolverTest, PrefixRunSuccess) {
   base::RunLoop run_loop;
   ipfs::IPFSHostResolver ipfs_resolver(network_context, prefix);
 
-  SetResolvedCallbackCalled(0);
+  SetResolvedCallbackCalled(false);
   ipfs_resolver.Resolve(
       net::HostPortPair(host, 11), net::NetworkIsolationKey(),
       net::DnsQueryType::TXT,
@@ -198,7 +198,7 @@ TEST_F(IPFSHostResolverTest, SuccessOnReuse) {
   network_context->SetHostResolver(std::move(fake_host_resolver));
   ipfs::IPFSHostResolver ipfs_resolver(network_context, prefix);
 
-  SetResolvedCallbackCalled(0);
+  SetResolvedCallbackCalled(false);
   {
     base::RunLoop run_loop;
     ipfs_resolver.Resolve(
@@ -241,7 +241,6 @@ TEST_F(IPFSHostResolverTest, ResolutionFailed) {
   auto* fake_host_resolver_raw = fake_host_resolver.get();
   network_context->SetHostResolver(std::move(fake_host_resolver));
   ipfs::IPFSHostResolver ipfs_resolver(network_context);
-  SetResolvedCallbackCalled(false);
   base::RunLoop run_loop;
   ipfs_resolver.Resolve(
       net::HostPortPair(host, 11), net::NetworkIsolationKey(),
