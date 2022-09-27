@@ -36,7 +36,11 @@ export default function useAssetManagement () {
 
   const onAddCustomAsset = (token: BraveWallet.BlockchainToken) => {
     onAddUserAsset(token)
-    dispatch(WalletActions.refreshBalancesAndPriceHistory())
+
+    // We handle refreshing balances for ERC721 tokens in the addUserAsset handler.
+    if (!token.isErc721) {
+      dispatch(WalletActions.refreshBalancesAndPriceHistory())
+    }
   }
 
   const findVisibleTokenInfo = React.useCallback((token: BraveWallet.BlockchainToken) =>
