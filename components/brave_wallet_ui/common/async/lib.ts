@@ -288,7 +288,8 @@ export const getAllBuyAssets = async (): Promise<{
     sardineAssetOptions: sortedSardineOptions,
     allAssetOptions: getUniqueAssets([
       ...sortedRampOptions,
-      ...sortedWyreOptions
+      ...sortedWyreOptions,
+      ...sortedSardineOptions
     ])
   }
 
