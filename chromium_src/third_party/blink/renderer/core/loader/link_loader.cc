@@ -8,10 +8,14 @@
 #include "brave/components/brave_page_graph/common/buildflags.h"
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 #include "third_party/blink/renderer/core/html/html_link_element.h"
+#include "third_party/blink/renderer/core/probe/core_probes.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
-#define initiator_info                                                     \
-  initiator_info.dom_node_id = DOMNodeIds::IdForNode(client_->GetOwner()); \
+#define initiator_info                                          \
+  initiator_info.dom_node_id =                                  \
+      CoreProbeSink::HasAgentsGlobal(CoreProbeSink::kPageGraph) \
+          ? DOMNodeIds::IdForNode(client_->GetOwner())          \
+          : kInvalidDOMNodeId;                                  \
   options.initiator_info
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
