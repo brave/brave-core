@@ -5,13 +5,15 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_builder.h"
 
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_model.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_model.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_model.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
+#include "brave/components/brave_ads/core/internal/features/epsilon_greedy_bandit_features.h"
+#include "brave/components/brave_ads/core/internal/features/purchase_intent_features.h"
+#include "brave/components/brave_ads/core/internal/features/text_classification_features.h"
+#include "brave/components/brave_ads/core/internal/features/text_embedding_features.h"
+#include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
 
 namespace brave_ads::targeting {
 
@@ -32,6 +34,17 @@ UserModelInfo BuildUserModel() {
   if (features::IsPurchaseIntentEnabled()) {
     const model::PurchaseIntent purchase_intent_model;
     user_model.purchase_intent_segments = purchase_intent_model.GetSegments();
+  }
+
+  if (features::IsTextEmbeddingEnabled()) {
+    GetTextEmbeddingHtmlEventsFromDatabase(
+      [](const bool success,
+         const TextEmbeddingHtmlEventList& text_embedding_html_events) {
+        if (!success) return;
+
+        const int text_embedding_html_event_count =
+            text_embedding_html_events.size();
+      });
   }
 
   return user_model;
