@@ -33,6 +33,8 @@ fi
 echo "${COLOR_ORANGE}Signing BraveCore frameworks…${COLOR_NONE}"
 find "node_modules/brave-core-ios" -name '*.framework' -print0 | while read -d $'\0' framework
 do
+  # MaterialComponents.framework doesn't seem to have a `CFBundleShortVersionString`
+  /usr/libexec/PlistBuddy -c 'Add :CFBundleShortVersionString string 1.0' "${framework}/Info.plist" || true
   codesign --force --deep --sign "-" --preserve-metadata=identifier,entitlements --timestamp=none "${framework}"
 done
 
