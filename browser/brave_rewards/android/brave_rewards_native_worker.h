@@ -55,6 +55,8 @@ class BraveRewardsNativeWorker
 
     void GetAdsAccountStatement(JNIEnv* env);
 
+    base::android::ScopedJavaLocalRef<jdoubleArray> GetTipChoices(JNIEnv* env);
+
     double GetWalletRate(JNIEnv* env);
 
     base::android::ScopedJavaLocalRef<jstring> GetPublisherURL(JNIEnv* env,
@@ -88,7 +90,7 @@ class BraveRewardsNativeWorker
 
     void Donate(JNIEnv* env,
                 const base::android::JavaParamRef<jstring>& publisher_key,
-                int amount,
+                double amount,
                 bool recurring);
 
     void GetAllNotifications(JNIEnv* env);
@@ -136,6 +138,10 @@ class BraveRewardsNativeWorker
 
     void GetExternalWallet(JNIEnv* env);
 
+    void GetPublisherBanner(
+        JNIEnv* env,
+        const base::android::JavaParamRef<jstring>& publisher_key);
+
     void DisconnectWallet(JNIEnv* env);
 
     void RecoverWallet(JNIEnv* env,
@@ -180,6 +186,10 @@ class BraveRewardsNativeWorker
         const ledger::mojom::RewardsType type,
         const ledger::mojom::ContributionProcessor processor) override;
 
+    void OnPendingContributionSaved(
+        brave_rewards::RewardsService* rewards_service,
+        const ledger::mojom::Result result) override;
+
     void OnNotificationAdded(
       brave_rewards::RewardsNotificationService* rewards_notification_service,
       const brave_rewards::RewardsNotificationService::RewardsNotification&
@@ -206,6 +216,10 @@ class BraveRewardsNativeWorker
 
     void OnGetExternalWallet(const ledger::mojom::Result result,
                              ledger::mojom::ExternalWalletPtr wallet);
+
+    void onPublisherBanner(ledger::mojom::PublisherBannerPtr wallet);
+
+    void OnOneTimeTip(ledger::mojom::Result result);
 
     void OnDisconnectWallet(brave_rewards::RewardsService* rewards_service,
                             const ledger::mojom::Result result,

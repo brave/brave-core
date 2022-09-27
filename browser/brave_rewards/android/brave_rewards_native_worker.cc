@@ -128,6 +128,15 @@ void BraveRewardsNativeWorker::OnReconcileComplete(
       static_cast<int>(result), static_cast<int>(type), amount);
 }
 
+void BraveRewardsNativeWorker::OnPendingContributionSaved(
+    brave_rewards::RewardsService* rewards_service,
+    const ledger::mojom::Result result) {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_OnPendingContributionSaved(
+      env, weak_java_brave_rewards_native_worker_.get(env),
+      static_cast<int>(result));
+}
+
 base::android::ScopedJavaLocalRef<jstring>
 BraveRewardsNativeWorker::GetPublisherURL(JNIEnv* env, uint64_t tabId) {
   base::android::ScopedJavaLocalRef<jstring> res =
@@ -330,6 +339,11 @@ void BraveRewardsNativeWorker::OnGetAdsAccountStatement(
       statement->earnings_last_month);
 }
 
+base::android::ScopedJavaLocalRef<jdoubleArray>
+BraveRewardsNativeWorker::GetTipChoices(JNIEnv* env) {
+  return base::android::ToJavaDoubleArray(env, parameters_.tip_choices);
+}
+
 double BraveRewardsNativeWorker::GetWalletRate(JNIEnv* env) {
   return parameters_.rate;
 }
@@ -385,18 +399,25 @@ void BraveRewardsNativeWorker::OnGetCurrentBalanceReport(
         weak_java_brave_rewards_native_worker_.get(env), java_array);
 }
 
-void BraveRewardsNativeWorker::Donate(JNIEnv* env,
-        const base::android::JavaParamRef<jstring>& publisher_key,
-        int amount, bool recurring) {
+void BraveRewardsNativeWorker::Donate(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& publisher_key,
+    double amount,
+    bool recurring) {
   if (brave_rewards_service_) {
     brave_rewards_service_->OnTip(
         base::android::ConvertJavaStringToUTF8(env, publisher_key), amount,
-        recurring, base::DoNothing());
-    if (!recurring) {
-      Java_BraveRewardsNativeWorker_OnOneTimeTip(env,
-        weak_java_brave_rewards_native_worker_.get(env));
-    }
+        recurring,
+        base::BindOnce(&BraveRewardsNativeWorker::OnOneTimeTip,
+                       weak_factory_.GetWeakPtr()));
   }
+}
+
+void BraveRewardsNativeWorker::OnOneTimeTip(ledger::mojom::Result result) {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_OnOneTimeTip(
+      env, weak_java_brave_rewards_native_worker_.get(env),
+      static_cast<int>(result));
 }
 
 void BraveRewardsNativeWorker::GetAllNotifications(JNIEnv* env) {
@@ -709,6 +730,48 @@ void BraveRewardsNativeWorker::GetExternalWallet(JNIEnv* env) {
         base::BindOnce(&BraveRewardsNativeWorker::OnGetExternalWallet,
                        weak_factory_.GetWeakPtr()));
   }
+}
+
+void BraveRewardsNativeWorker::GetPublisherBanner(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& publisher_key) {
+  if (brave_rewards_service_) {
+    brave_rewards_service_->GetPublisherBanner(
+        base::android::ConvertJavaStringToUTF8(env, publisher_key),
+        base::BindOnce(&BraveRewardsNativeWorker::onPublisherBanner,
+                       weak_factory_.GetWeakPtr()));
+  }
+}
+
+void BraveRewardsNativeWorker::onPublisherBanner(
+    ledger::mojom::PublisherBannerPtr banner) {
+  std::string json_banner_info;
+  if (!banner) {
+    json_banner_info = "";
+  } else {
+    base::Value::Dict dict;
+    dict.Set("publisher_key", banner->publisher_key);
+    dict.Set("title", banner->title);
+
+    dict.Set("name", banner->name);
+    dict.Set("description", banner->description);
+    dict.Set("background", banner->background);
+    dict.Set("logo", banner->logo);
+    dict.Set("provider", banner->provider);
+
+    base::Value::Dict links;
+    for (auto const& link : banner->links) {
+      links.Set(link.first, link.second);
+    }
+    dict.Set("links", std::move(links));
+
+    dict.Set("status", static_cast<int32_t>(banner->status));
+    base::JSONWriter::Write(dict, &json_banner_info);
+  }
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_onPublisherBanner(
+      env, weak_java_brave_rewards_native_worker_.get(env),
+      base::android::ConvertUTF8ToJavaString(env, json_banner_info));
 }
 
 void BraveRewardsNativeWorker::OnGetExternalWallet(
