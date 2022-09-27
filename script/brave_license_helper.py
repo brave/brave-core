@@ -90,6 +90,11 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
             "URL": "https://github.com/brave/web-discovery-project",
             "License": "MPL-2.0",
         },
+        os.path.join('brave', 'vendor', 'solana-web3-js'): {
+            "Name": "Solana JavaScript API",
+            "URL": "https://github.com/solana-labs/solana-web3.js",
+            "License": "MIT",
+        },
         os.path.join('brave', 'vendor', 'omaha'): {
             "Name": "Omaha",
             "URL": "https://github.com/brave/omaha",

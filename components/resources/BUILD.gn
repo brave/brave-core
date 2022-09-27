@@ -24,6 +24,7 @@ brave_grit("static_resources") {
   deps = [
     ":strings",
     "//brave/components/brave_rewards/resources",
+    "//brave/components/brave_wallet/resources:solana_web3_js_resources",
   ]
 
   if (enable_extensions) {
