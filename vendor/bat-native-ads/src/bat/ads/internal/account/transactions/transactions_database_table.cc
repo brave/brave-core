@@ -273,7 +273,7 @@ void Transactions::OnGetTransactions(const GetTransactionsCallback& callback,
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get transactions");
-    callback(/*success*/ false, {});
+    callback(/*success*/ false, /*transactions*/ {});
     return;
   }
 

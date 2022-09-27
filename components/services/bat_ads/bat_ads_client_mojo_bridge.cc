@@ -204,7 +204,7 @@ void BatAdsClientMojoBridge::Load(
     const std::string& name,
     ads::LoadCallback callback) {
   if (!connected()) {
-    std::move(callback).Run(/*success*/ false, {});
+    std::move(callback).Run(/*success*/ false, /*value*/ {});
     return;
   }
 
