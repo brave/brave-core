@@ -61,7 +61,7 @@ PlaylistUI::PlaylistUI(content::WebUI* web_ui, const std::string& name)
       std::string("img-src 'self' chrome-untrusted://playlist-data;"));
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::MediaSrc,
-      std::string("media-src 'self' chrome-untrusted://playlist-data;"));
+      std::string("media-src 'self' chrome-untrusted://playlist-data https://*.googlevideo.com;"));
 }
 
 PlaylistUI::~PlaylistUI() = default;

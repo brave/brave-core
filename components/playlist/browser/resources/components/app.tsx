@@ -50,12 +50,16 @@ export class PlaylistPage extends React.Component<Props, State> {
     return this.props.playlistData.lists.find(playlist => playlist.id === playlistId)
   }
 
-  getImgSrc = (itemId: string) => {
-    return 'chrome-untrusted://playlist-data/' + itemId + '/thumbnail/'
+  getImgSrc = (item: PlaylistMojo.PlaylistItem) => {
+    return 'chrome-untrusted://playlist-data/' + item.id + '/thumbnail/'
   }
 
-  getMediaSrc = (itemId: string) => {
-    return 'chrome-untrusted://playlist-data/' + itemId + '/media'
+  getMediaSrc = (item: PlaylistMojo.PlaylistItem) => {
+    if (!item.cached) {
+      return item.mediaPath.url
+    }
+
+    return 'chrome-untrusted://playlist-data/' + item.id + '/media'
   }
 
   get lazyButtonStyle () {
@@ -97,9 +101,7 @@ export class PlaylistPage extends React.Component<Props, State> {
           {
             content: (
                 <PlaylistItem id={item.id} name={item.name} onClick={this.onClickItem.bind(this)}
-                    thumbnailUrl={item.thumbnailPath.url.startsWith('http')
-                        ? '' // TODO(sko): currently, requesting for other host isn't allowed for this page
-                        : this.getImgSrc(item.id)}/>
+                    thumbnailUrl={this.getImgSrc(item)}/>
             )
           },
           { content: (<span>{item.cached ? 'Cached' : 'Not cached'}</span>) },
@@ -159,11 +161,11 @@ export class PlaylistPage extends React.Component<Props, State> {
       return item.id === itemId
     })
 
-    if (!item || !item.cached) {
+    if (!item) {
       return
     }
 
-    document.getElementById('player')?.setAttribute('src', this.getMediaSrc(itemId))
+    document.getElementById('player')?.setAttribute('src', this.getMediaSrc(item))
   }
 
   createPlaylist = (playlist: PlaylistMojo.Playlist) => {
