@@ -899,24 +899,24 @@ public class Utils {
     }
 
     public static String getContractAddress(String chainId, String symbol, String contractAddress) {
-        if (!chainId.equals(BraveWalletConstants.ROPSTEN_CHAIN_ID)) {
+        if (!chainId.equals(BraveWalletConstants.GOERLI_CHAIN_ID)) {
             return contractAddress;
         }
         if (symbol.equals("USDC")) {
-            return "0x07865c6e87b9f70255377e024ace6630c1eaa37f";
+            return "0x2f3a40a3db8a7e3d09b0adfefbce4f6f81927557";
         } else if (symbol.equals("DAI")) {
-            return "0xad6d458402f60fd3bd25163575031acdce07538d";
+            return "0x73967c6a0904aa032c103b4104747e88c566b1a2";
         }
 
         return contractAddress;
     }
 
-    public static String getRopstenContractAddress(String mainnetContractAddress) {
+    public static String getGoerliContractAddress(String mainnetContractAddress) {
         String lowerCaseAddress = mainnetContractAddress.toLowerCase(Locale.getDefault());
         if (lowerCaseAddress.equals("0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48")) {
-            return "0x07865c6e87b9f70255377e024ace6630c1eaa37f";
+            return "0x2f3a40a3db8a7e3d09b0adfefbce4f6f81927557";
         } else if (lowerCaseAddress.equals("0x6b175474e89094c44da98b954eedeac495271d0f")) {
-            return "0xad6d458402f60fd3bd25163575031acdce07538d";
+            return "0x73967c6a0904aa032c103b4104747e88c566b1a2";
         }
 
         return "";
@@ -1031,7 +1031,7 @@ public class Utils {
         return asset;
     }
 
-    // Replace USDC and DAI contract addresses for Ropsten network
+    // Replace USDC and DAI contract addresses for Goerli network
     public static BlockchainToken[] fixupTokensRegistry(BlockchainToken[] tokens, String chainId) {
         for (BlockchainToken token : tokens) {
             token.contractAddress =

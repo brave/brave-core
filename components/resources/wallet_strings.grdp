@@ -242,10 +242,8 @@
   <message name="IDS_BRAVE_WALLET_NETWORK_E_T_H" desc="Network Ethereum title">Ethereum</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_MAIN" desc="Network Main title">Mainnet</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_TEST" desc="Network Test Network title">Test Network</message>
-  <message name="IDS_BRAVE_WALLET_NETWORK_ROPSTEN" desc="Network Ropsten title">Ropsten</message>
-  <message name="IDS_BRAVE_WALLET_NETWORK_KOVAN" desc="Network Kovan title">Kovan</message>
-  <message name="IDS_BRAVE_WALLET_NETWORK_RINKEBY" desc="Network Rinkeby title">Rinkeby</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_GOERLI" desc="Network Goerli title">Goerli</message>
+  <message name="IDS_BRAVE_WALLET_NETWORK_SEPOLIA" desc="Network Sepolia title">Sepolia</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_BINANCE" desc="Network Binance Smart Chain title">Binance Smart Chain</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_BINANCE_ABBR" desc="Network BSC abbreviation title">BSC</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_LOCALHOST" desc="Network Localhost title">Localhost</message>
@@ -261,7 +259,7 @@
   <message name="IDS_BRAVE_WALLET_SWAP_LIMIT" desc="Swap tab limit button">Limit</message>
   <message name="IDS_BRAVE_WALLET_SWAP_PRICE_IN" desc="Swap tab price label">Price in</message>
   <message name="IDS_BRAVE_WALLET_BUY_TITLE" desc="Buy tab faucet button">Test faucet</message>
-  <message name="IDS_BRAVE_WALLET_BUY_DESCRIPTION" desc="Buy tab faucet description to get test crypto">Get Ether from a faucet for <ph name="SELECTED_NETWORK"><ex>Ropsten Network</ex>$1</ph></message>
+  <message name="IDS_BRAVE_WALLET_BUY_DESCRIPTION" desc="Buy tab faucet description to get test crypto">Get Ether from a faucet for <ph name="SELECTED_NETWORK"><ex>Goerli Network</ex>$1</ph></message>
   <message name="IDS_BRAVE_WALLET_BUY_CONTINUE_BUTTON" desc="Buy tab continue button">Select purchase method</message>
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_TITLE" desc="Sign panel title">Your signature is being requested</message>
   <message name="IDS_BRAVE_WALLET_SIGN_WARNING" desc="Sign panel warning message">Note that Brave can’t verify what will happen if you sign. A signature could authorize nearly any operation in your account or on your behalf, including (but not limited to) giving total control of your account and crypto assets to the site making the request. Only sign if you’re sure you want to take this action, and trust the requesting site.</message>

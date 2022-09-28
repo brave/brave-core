@@ -28,6 +28,9 @@ extern const char kBraveWalletUserAssets[];
 extern const char kBraveWalletUserAssetEthContractAddressMigrated[];
 // Added 06/2022 to add native assets of preloading networks to user assets.
 extern const char kBraveWalletUserAssetsAddPreloadingNetworksMigrated[];
+// Added 10/2022 to replace ETH selected network with mainnet if selected
+// network is one of the Ethereum testnets deprecated on 10/5/2022.
+extern const char kBraveWalletDeprecateEthereumTestNetworksMigrated[];
 extern const char kBraveWalletAutoLockMinutes[];
 extern const char kSupportEip1559OnLocalhostChain[];
 // Added 02/2022 to migrate ethereum transactions to be under ethereum coin
