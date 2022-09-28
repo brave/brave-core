@@ -58,7 +58,7 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
     ButtonStyle loading_dark;
   };
 
-  enum Kind { CTA, PRIMARY, SECONDARY, TERTIARY };
+  enum Kind { OLD, PRIMARY, SECONDARY, TERTIARY };
 
   explicit MdTextButton(PressedCallback callback = PressedCallback(),
                         const std::u16string& text = std::u16string(),
@@ -74,6 +74,10 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
 
   void SetIcon(const gfx::VectorIcon* icon);
 
+  // Until we decide to update the whole UI to use the new Leo colors, we
+  // need to keep this logic around. Currently the new colors are opt-in only.
+  void UpdateOldColorsForBrave();
+
   // MdTextButtonBase:
   void UpdateColorsForBrave() override;
   void UpdateIconForBrave() override;
@@ -83,7 +87,7 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
   void OnPaintBackground(gfx::Canvas* canvas) override;
 
  private:
-  Kind kind_ = CTA;
+  Kind kind_ = OLD;
   absl::optional<ButtonTheme> theme_;
   raw_ptr<const gfx::VectorIcon> icon_ = nullptr;
 };

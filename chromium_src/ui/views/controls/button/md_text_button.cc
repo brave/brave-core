@@ -131,8 +131,6 @@ MdTextButton::MdTextButton(PressedCallback callback,
             boundsF.CenterPoint(), fill_color);
       },
       this));
-  SetKind(SECONDARY);
-  SetImageLabelSpacing(6);
 }
 
 MdTextButton::~MdTextButton() = default;
@@ -146,7 +144,7 @@ SkPath MdTextButton::GetHighlightPath() const {
 }
 
 MdTextButton::Kind MdTextButton::GetKind() const {
-  return GetProminent() ? CTA : kind_;
+  return kind_;
 }
 
 void MdTextButton::SetKind(Kind kind) {
@@ -166,9 +164,13 @@ void MdTextButton::SetKind(Kind kind) {
       break;
   }
 
-  // Unfortunately we also have to deal with |IsProminent| from the
-  // MdTextButtonBase. This theme corresponds to the CTA theme in Leo.
-  SetProminent(kind == CTA);
+  // We don't want to affect the OLD style buttons, and we want them to be the
+  // default (for now), so don't change the image-label spacing unless we set
+  // the button kind to something that isn't OLD.
+  if (kind != Kind::OLD) {
+    SetImageLabelSpacing(6);
+  }
+
   UpdateColors();
 }
 
@@ -177,9 +179,43 @@ void MdTextButton::SetIcon(const gfx::VectorIcon* icon) {
   UpdateColors();
 }
 
+void MdTextButton::UpdateOldColorsForBrave() {
+  if (GetProminent()) {
+    return;
+  }
+
+  const ui::NativeTheme* theme = GetNativeTheme();
+  // Override different text hover color
+  if (theme->GetPlatformHighContrastColorScheme() !=
+      ui::NativeTheme::PlatformHighContrastColorScheme::kDark) {
+    SetTextColor(ButtonState::STATE_HOVERED, kBraveBrandColor);
+    SetTextColor(ButtonState::STATE_PRESSED, kBraveBrandColor);
+  }
+  // Override border color for hover on non-prominent
+  if (GetState() == ButtonState::STATE_PRESSED ||
+      GetState() == ButtonState::STATE_HOVERED) {
+    // First, get the same background fill color that MdTextButtonBase does.
+    // It is undfortunate to copy these lines almost as-is. Consider otherwise
+    // patching it in via a #define.
+    SkColor bg_color = GetColorProvider()->GetColor(ui::kColorDialogBackground);
+    if (GetBgColorOverride()) {
+      bg_color = *GetBgColorOverride();
+    }
+    if (GetState() == STATE_PRESSED) {
+      bg_color = GetNativeTheme()->GetSystemButtonPressedColor(bg_color);
+    }
+    // The only thing that differs for Brave is the stroke color
+    SkColor stroke_color = kBraveBrandColor;
+    SetBackground(CreateBackgroundFromPainter(
+        Painter::CreateRoundRectWith1PxBorderPainter(bg_color, stroke_color,
+                                                     GetCornerRadius())));
+  }
+}
+
 // To be called from MdTextButtonBase::UpdateColors().
 void MdTextButton::UpdateColorsForBrave() {
-  if (GetProminent()) {
+  if (GetKind() == Kind::OLD) {
+    UpdateOldColorsForBrave();
     return;
   }
 
