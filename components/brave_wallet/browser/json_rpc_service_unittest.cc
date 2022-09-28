@@ -1227,10 +1227,10 @@ TEST_F(JsonRpcServiceUnitTest, GetKnownNetworks) {
   values.push_back(NetworkInfoToValue(chain1));
   UpdateCustomNetworks(prefs(), &values);
 
-  EXPECT_CALL(callback,
-              Run(ElementsAreArray({"0x1", "0x89", "0x38", "0xa4ec", "0xa86a",
-                                    "0xfa", "0xa", "0x4e454152", "0x4", "0x3",
-                                    "0x5", "0x2a", "0x539"})));
+  EXPECT_CALL(
+      callback,
+      Run(ElementsAreArray({"0x1", "0x89", "0x38", "0xa4ec", "0xa86a", "0xfa",
+                            "0xa", "0x4e454152", "0x5", "0xaa36a7", "0x539"})));
   json_rpc_service_->GetKnownNetworks(mojom::CoinType::ETH, callback.Get());
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
@@ -1778,8 +1778,8 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainForOriginError) {
 TEST_F(JsonRpcServiceUnitTest, StartWithNetwork) {
   ValidateStartWithNetwork(std::string(), std::string());
   ValidateStartWithNetwork("SomeBadChainId", std::string());
-  ValidateStartWithNetwork(brave_wallet::mojom::kRopstenChainId,
-                           brave_wallet::mojom::kRopstenChainId);
+  ValidateStartWithNetwork(brave_wallet::mojom::kGoerliChainId,
+                           brave_wallet::mojom::kGoerliChainId);
 }
 
 TEST_F(JsonRpcServiceUnitTest, Request) {

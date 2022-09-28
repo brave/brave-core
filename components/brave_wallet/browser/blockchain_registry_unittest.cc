@@ -43,7 +43,7 @@ const char token_list_json[] = R"(
      "erc20": true,
      "symbol": "UNI",
      "decimals": 18,
-     "chainId": "0x3"
+     "chainId": "0x5"
    },
    "0x6090A6e47849629b7245Dfa1Ca21D94cd15878Ef": {
     "name": "ENS Registrar",
@@ -233,7 +233,7 @@ TEST(BlockchainRegistryUnitTest, GetAllTokens) {
   // Can get other chain tokens
   base::RunLoop run_loop2;
   registry->GetAllTokens(
-      mojom::kRopstenChainId, mojom::CoinType::ETH,
+      mojom::kGoerliChainId, mojom::CoinType::ETH,
       base::BindLambdaForTesting(
           [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
             ASSERT_EQ(token_list.size(), 1UL);
@@ -251,7 +251,7 @@ TEST(BlockchainRegistryUnitTest, GetAllTokens) {
   // chainId which has no tokens
   base::RunLoop run_loop3;
   registry->GetAllTokens(
-      mojom::kRinkebyChainId, mojom::CoinType::ETH,
+      mojom::kSepoliaChainId, mojom::CoinType::ETH,
       base::BindLambdaForTesting(
           [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
             // ENS Registrar should not be parsed because it doesn't have
@@ -298,7 +298,7 @@ TEST(BlockchainRegistryUnitTest, GetTokenByAddress) {
   // Can get other chain tokens
   base::RunLoop run_loop2;
   registry->GetTokenByAddress(
-      mojom::kRopstenChainId, mojom::CoinType::ETH,
+      mojom::kGoerliChainId, mojom::CoinType::ETH,
       "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
       base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
         EXPECT_EQ(token->symbol, "UNI");
@@ -320,7 +320,7 @@ TEST(BlockchainRegistryUnitTest, GetTokenByAddress) {
   // chainId which has no tokens
   base::RunLoop run_loop4;
   registry->GetTokenByAddress(
-      mojom::kRinkebyChainId, mojom::CoinType::ETH,
+      mojom::kGoerliChainId, mojom::CoinType::ETH,
       "0xCCC775F648430679A709E98d2b0Cb6250d2887EF",
       base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
         EXPECT_FALSE(token);
@@ -362,7 +362,7 @@ TEST(BlockchainRegistryUnitTest, GetTokenBySymbol) {
   // Can get other chain tokens
   base::RunLoop run_loop2;
   registry->GetTokenBySymbol(
-      mojom::kRopstenChainId, mojom::CoinType::ETH, "UNI",
+      mojom::kGoerliChainId, mojom::CoinType::ETH, "UNI",
       base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
         EXPECT_EQ(token->contract_address,
                   "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984");
@@ -383,7 +383,7 @@ TEST(BlockchainRegistryUnitTest, GetTokenBySymbol) {
   // chainId which has no tokens
   base::RunLoop run_loop4;
   registry->GetTokenBySymbol(
-      mojom::kRinkebyChainId, mojom::CoinType::ETH, "BRB",
+      mojom::kGoerliChainId, mojom::CoinType::ETH, "BRB",
       base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
         EXPECT_FALSE(token);
         run_loop4.Quit();

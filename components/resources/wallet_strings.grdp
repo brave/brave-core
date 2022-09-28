@@ -242,10 +242,8 @@
   <message name="IDS_BRAVE_WALLET_NETWORK_E_T_H" desc="Network Ethereum title">Ethereum</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_MAIN" desc="Network Main title">Mainnet</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_TEST" desc="Network Test Network title">Test Network</message>
-  <message name="IDS_BRAVE_WALLET_NETWORK_ROPSTEN" desc="Network Ropsten title">Ropsten</message>
-  <message name="IDS_BRAVE_WALLET_NETWORK_KOVAN" desc="Network Kovan title">Kovan</message>
-  <message name="IDS_BRAVE_WALLET_NETWORK_RINKEBY" desc="Network Rinkeby title">Rinkeby</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_GOERLI" desc="Network Goerli title">Goerli</message>
+  <message name="IDS_BRAVE_WALLET_NETWORK_SEPOLIA" desc="Network Sepolia title">Sepolia</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_BINANCE" desc="Network Binance Smart Chain title">Binance Smart Chain</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_BINANCE_ABBR" desc="Network BSC abbreviation title">BSC</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_LOCALHOST" desc="Network Localhost title">Localhost</message>
