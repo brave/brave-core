@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index a3b0ac4f938183817cbd294d219c7294a4ff60e1..d36fd43f4ddea20bfe695277923f403e415f21c5 100644
+index a3b0ac4f938183817cbd294d219c7294a4ff60e1..c0b03d13fb395e275aa8ac688f485009de67db44 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -26,6 +26,7 @@ by a child template that "extends" this file.
@@ -79,6 +79,21 @@ index a3b0ac4f938183817cbd294d219c7294a4ff60e1..d36fd43f4ddea20bfe695277923f403e
              <meta-data android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
          </activity-alias>
+@@ -970,12 +985,12 @@ by a child template that "extends" this file.
+             </intent-filter>
+         </service>
+         <!-- GcmListenerService for messages from GCM. -->
+-        <service android:name="org.chromium.chrome.browser.services.gcm.ChromeGcmListenerService"
++        <!--<service android:name="org.chromium.chrome.browser.services.gcm.ChromeGcmListenerService"
+             android:exported="false" >
+             <intent-filter>
+                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
+             </intent-filter>
+-        </service>
++        </service>-->
+         <service android:name="org.chromium.chrome.browser.services.gcm.GCMBackgroundService"
+             android:exported="false"/>
+         <service android:name="org.chromium.chrome.browser.services.gcm.InvalidationGcmUpstreamSender"
 @@ -1188,6 +1203,7 @@ by a child template that "extends" this file.
              android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize" >
          </activity>

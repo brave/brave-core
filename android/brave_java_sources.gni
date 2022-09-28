@@ -423,10 +423,13 @@ brave_java_base_sources = [
 ]
 
 brave_java_base_module_sources = [
+  "//brave/android/java/org/chromium/chrome/browser/base/SplitCompatGcmListenerService.java",
   "//brave/android/java/org/chromium/chrome/browser/base/SplitCompatJobIntentService.java",
   "//brave/android/java/org/chromium/chrome/browser/upgrade/BraveUpgradeJobIntentService.java",
   "//brave/android/java/org/chromium/chrome/browser/vpn/wireguard/WireguardService.java",
 ]
+
+brave_java_base_module_sources_exclude = [ "java/src/org/chromium/chrome/browser/base/SplitCompatGcmListenerService.java" ]
 
 brave_java_base_module_deps = [
   "//brave/third_party/android_deps:com_wireguard_android_java",

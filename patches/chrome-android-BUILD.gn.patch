@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 929b1f5742d52294fb0dfa03601662744911d036..b6dbf051424fae3541b5a17b977d293fef3f6df5 100644
+index 929b1f5742d52294fb0dfa03601662744911d036..e20b8879a6ca071a55121b2e7678d7fcd6da4087 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -207,6 +207,7 @@ android_resources("chrome_base_module_resources") {
@@ -78,7 +78,7 @@ index 929b1f5742d52294fb0dfa03601662744911d036..b6dbf051424fae3541b5a17b977d293f
      "//components/payments/content/android:service_java",
      "//third_party/androidx:androidx_browser_browser_java",
    ]
-+  sources += brave_java_base_module_sources deps += brave_java_base_module_deps
++  sources += brave_java_base_module_sources deps += brave_java_base_module_deps sources -= brave_java_base_module_sources_exclude deps -= ["$google_play_services_package:google_firebase_firebase_iid_java", "$google_play_services_package:google_firebase_firebase_messaging_java",]
  
    # More deps for DFMs.
    if (dfmify_dev_ui) {
