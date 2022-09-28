@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index 47c398ccdf8e4a5a28a07611d227f7bc0eb83a48..c585550ebfdb5c4f7a7c1b0cd10a2df41f425e16 100644
+index eb864a7eaa7ee2f367904d74a26d3dd9405bffd1..d5afa354c14afb3ffc83440a8bf8ecac35a8d34e 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-@@ -372,6 +372,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -377,6 +377,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
          if (mOptionalButton != null) {
              mOptionalButton.setBackgroundColorFilter(color);
          }
@@ -10,7 +10,7 @@ index 47c398ccdf8e4a5a28a07611d227f7bc0eb83a48..c585550ebfdb5c4f7a7c1b0cd10a2df4
      }
  
      private void updateModernLocationBarCorners() {
-@@ -533,6 +534,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -538,6 +539,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
                          EventConstants.PARTNER_HOME_PAGE_BUTTON_PRESSED);
              }
          }
@@ -18,7 +18,7 @@ index 47c398ccdf8e4a5a28a07611d227f7bc0eb83a48..c585550ebfdb5c4f7a7c1b0cd10a2df4
      }
  
      @Override
-@@ -729,6 +731,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -734,6 +736,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
       * @return The right bounds of the location bar after accounting for any visible right buttons.
       */
      private int getBoundsAfterAccountingForRightButtons() {
@@ -26,7 +26,7 @@ index 47c398ccdf8e4a5a28a07611d227f7bc0eb83a48..c585550ebfdb5c4f7a7c1b0cd10a2df4
          if (mStartSurfaceScrollFraction == 1.0f) return mToolbarSidePadding;
  
          int toolbarButtonsContainerWidth = mToolbarButtonsContainer.getMeasuredWidth();
-@@ -978,6 +981,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -983,6 +986,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
       * New Tab Page.
       */
      private void updateLocationBarLayoutForExpansionAnimation() {
@@ -34,7 +34,7 @@ index 47c398ccdf8e4a5a28a07611d227f7bc0eb83a48..c585550ebfdb5c4f7a7c1b0cd10a2df4
          TraceEvent.begin("ToolbarPhone.updateLocationBarLayoutForExpansionAnimation");
          if (mOptimizationsEnabled && isInTabSwitcherMode()) return;
  
-@@ -1968,6 +1972,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -1973,6 +1977,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
          } else {
              populateUrlClearExpansionAnimatorSet(animators);
          }
