@@ -35,7 +35,7 @@ Channels ChannelsController::GetChannelsFromPublishers(
     const Publishers& publishers,
     PrefService* prefs) {
   Channels channels;
-  auto* subscriptions = prefs->GetDictionary(prefs::kBraveNewsSubscriptions);
+  auto* channel_subscriptions = prefs->GetDictionary(prefs::kBraveNewsChannels);
 
   for (const auto& it : publishers) {
     for (const auto& channel_id : it.second->channels) {
@@ -46,7 +46,7 @@ Channels ChannelsController::GetChannelsFromPublishers(
       auto channel = mojom::Channel::New();
       channel->channel_name = channel_id;
       channel->subscribed =
-          subscriptions->FindBoolPath(locale + "." + channel_id)
+          channel_subscriptions->FindBoolPath(locale + "." + channel_id)
               .value_or(false);
 
       channels.insert({channel_id, std::move(channel)});
@@ -70,7 +70,7 @@ mojom::ChannelPtr ChannelsController::SetChannelSubscribed(
     const std::string& locale,
     const std::string& channel_id,
     bool subscribed) {
-  DictionaryPrefUpdate update(prefs_, prefs::kBraveNewsSubscriptions);
+  DictionaryPrefUpdate update(prefs_, prefs::kBraveNewsChannels);
   update->SetBoolPath(locale + "." + channel_id, subscribed);
 
   auto result = mojom::Channel::New();
@@ -81,7 +81,7 @@ mojom::ChannelPtr ChannelsController::SetChannelSubscribed(
 
 bool ChannelsController::GetChannelSubscribed(const std::string& locale,
                                               const std::string& channel_id) {
-  auto* subscriptions = prefs_->GetDictionary(prefs::kBraveNewsSubscriptions);
+  auto* subscriptions = prefs_->GetDictionary(prefs::kBraveNewsChannels);
   return subscriptions->FindBoolPath(locale + "." + channel_id).value_or(false);
 }
 }  // namespace brave_news

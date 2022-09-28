@@ -27,8 +27,8 @@
 #include "brave/components/brave_today/browser/channels_controller.h"
 #include "brave/components/brave_today/browser/direct_feed_controller.h"
 #include "brave/components/brave_today/browser/network.h"
-#include "brave/components/brave_today/browser/urls.h"
 #include "brave/components/brave_today/browser/unsupported_publisher_migrator.h"
+#include "brave/components/brave_today/browser/urls.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_today/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
@@ -68,7 +68,7 @@ void BraveNewsController::RegisterProfilePrefs(PrefRegistrySimple* registry) {
                                 brave_news_enabled_default);
   registry->RegisterBooleanPref(prefs::kBraveTodayOptedIn, false);
   registry->RegisterDictionaryPref(prefs::kBraveTodaySources);
-  registry->RegisterDictionaryPref(prefs::kBraveNewsSubscriptions);
+  registry->RegisterDictionaryPref(prefs::kBraveNewsChannels);
   registry->RegisterDictionaryPref(prefs::kBraveTodayDirectFeeds);
 
   p3a::RegisterProfilePrefs(registry);
@@ -111,10 +111,14 @@ BraveNewsController::BraveNewsController(
       base::BindRepeating(&BraveNewsController::ConditionallyStartOrStopTimer,
                           base::Unretained(this)));
 
-  auto* subscriptions = prefs_->GetDictionary(prefs::kBraveNewsSubscriptions);
-  if (subscriptions->DictEmpty()) {
-    channels_controller_.SetChannelSubscribed(brave_today::GetRegionUrlPart(),
-                                              kTopSourcesChannel, true);
+  auto* channels = prefs_->GetDictionary(prefs::kBraveNewsChannels);
+  if (channels->DictEmpty()) {
+    publishers_controller_.GetLocale(base::BindOnce(
+        [](ChannelsController* channels_controller, const std::string& locale) {
+          channels_controller->SetChannelSubscribed(locale, kTopSourcesChannel,
+                                                    true);
+        },
+        base::Unretained(&channels_controller_)));
   }
 
   p3a::RecordAtInit(prefs);
