@@ -1450,13 +1450,13 @@ TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetEthContractAddress) {
     value.Set("decimals", 18);
     value.Set("visible", true);
     user_assets_list.Append(std::move(value));
-    user_assets_pref->Set("rinkeby", std::move(user_assets_list));
+    user_assets_pref->Set("goerli", std::move(user_assets_list));
   }
 
   const base::Value* pref =
       GetPrefs()->GetDictionary(kBraveWalletUserAssetsDeprecated);
   ASSERT_TRUE(pref);
-  const auto* user_assets_list = pref->GetDict().FindList("rinkeby");
+  const auto* user_assets_list = pref->GetDict().FindList("goerli");
   ASSERT_TRUE(user_assets_list);
   ASSERT_EQ(user_assets_list->size(), 1u);
   EXPECT_EQ(*(*user_assets_list)[0].GetDict().FindString("contract_address"),

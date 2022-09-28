@@ -450,10 +450,7 @@ bool ParseJSON(base::StringPiece json,
       // Wallet
       { "name": "goerli-infura.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "sepolia-infura.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "kovan-infura.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "mainnet-infura.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "rinkeby-infura.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "ropsten-infura.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "mainnet-beta-solana.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "mainnet-polygon.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
 
