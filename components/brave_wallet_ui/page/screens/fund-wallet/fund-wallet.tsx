@@ -55,6 +55,7 @@ import { NavButton } from '../../../components/extension/buttons/nav-button/inde
 import CreateAccountTab from '../../../components/buy-send-swap/create-account'
 import SwapInputComponent from '../../../components/buy-send-swap/swap-input-component'
 import SelectHeader from '../../../components/buy-send-swap/select-header'
+import { SelectCurrency } from '../../../components/buy-send-swap/select-currency/select-currency'
 
 export const FundWalletScreen = () => {
   // routing
@@ -84,6 +85,7 @@ export const FundWalletScreen = () => {
 
   // state
   const [showBuyOptions, setShowBuyOptions] = React.useState<boolean>(false)
+  const [showFiatSelection, setShowFiatSelection] = React.useState<boolean>(false)
   const [showAccountSearch, setShowAccountSearch] = React.useState<boolean>(false)
   const [accountSearchText, setAccountSearchText] = React.useState<string>('')
 
@@ -209,7 +211,7 @@ export const FundWalletScreen = () => {
         <StyledWrapper>
 
           {/* Hide nav when creating or searching accounts */}
-          {!showAccountSearch && !(
+          {!showAccountSearch && !showFiatSelection && !(
             needsAccount && showBuyOptions
           ) &&
             <StepsNavigation
@@ -221,8 +223,19 @@ export const FundWalletScreen = () => {
             />
           }
 
+          {/* Fiat Selection */}
+          {showFiatSelection &&
+            <SelectCurrency
+              onSelectCurrency={
+                // this internally sets the currency via redux, so just hide the UI when selected
+                () => setShowFiatSelection(false)
+              }
+              onBack={() => setShowFiatSelection(false)}
+            />
+          }
+
           {/* Asset Selection */}
-          {!showBuyOptions &&
+          {!showBuyOptions && !showFiatSelection &&
             <>
               <SelectAssetWrapper>
                 <SwapInputComponent
@@ -234,6 +247,7 @@ export const FundWalletScreen = () => {
                   selectedAsset={selectedAsset}
                   selectedNetwork={selectedAssetNetwork || selectedNetworkFilter}
                   autoFocus={true}
+                  onShowCurrencySelection={() => setShowFiatSelection(true)}
                 />
 
                 {assetsForFilteredNetwork.length
