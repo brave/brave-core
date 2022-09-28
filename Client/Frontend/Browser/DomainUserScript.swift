@@ -11,8 +11,6 @@ import WebKit
 private let log = Logger.browserLogger
 
 enum DomainUserScript: CaseIterable {
-  case youtubeAdBlock
-  case archive
   case braveSearchHelper
   case braveTalkHelper
   case braveSkus
@@ -39,9 +37,7 @@ enum DomainUserScript: CaseIterable {
   /// Returns nil if the domain's user script can't be turned off via a shield toggle. (i.e. it's always enabled)
   var shieldType: BraveShield? {
     switch self {
-    case .youtubeAdBlock:
-      return .AdblockAndTp
-    case .archive, .braveSearchHelper, .braveTalkHelper, .bravePlaylistFolderSharingHelper, .braveSkus:
+    case .braveSearchHelper, .braveTalkHelper, .bravePlaylistFolderSharingHelper, .braveSkus:
       return nil
     }
   }
@@ -49,10 +45,6 @@ enum DomainUserScript: CaseIterable {
   /// The domains associated with this script.
   var associatedDomains: Set<String> {
     switch self {
-    case .youtubeAdBlock:
-      return Set(["youtube.com"])
-    case .archive:
-      return Set(["archive.is", "archive.today", "archive.vn", "archive.fo"])
     case .braveSearchHelper:
       return Set(["search.brave.com", "search-dev.brave.com", "search.brave.software"])
     case .braveTalkHelper:

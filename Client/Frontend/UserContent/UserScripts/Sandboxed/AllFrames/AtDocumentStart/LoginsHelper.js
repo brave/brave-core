@@ -20,10 +20,31 @@ window.__firefox__.includeOnce("LoginsHelper", function() {
       return;
     alert(pieces);
   }
+  
+  // Secure replacement for Math.random()
+  // Float = Mantissa * (2^Exponent)
+  function secure_random_float() {
+    // Float64 = 8 Bytes in JS.
+    let buffer = new ArrayBuffer(8);
+    let intView = new Int8Array(buffer);
+    crypto.getRandomValues(intView);
+    intView[7] = 63; // Sign Bit = 0.
+    intView[6] |= 0xF0; //Set exponent to all 1's except the highest bit.
+    
+    // View buffer as Float64, and minus 1 for the range [0, 1).
+    // [0 Inclusive, 1 Exclusive).
+    return new DataView(buffer).getFloat64(0, true) - 1;
+  }
 
   var LoginManagerContent = {
     _getRandomId: function() {
-      return Math.round(Math.random() * (Number.MAX_VALUE - Number.MIN_VALUE) + Number.MIN_VALUE).toString()
+      // If UUID is available, return a UUIDv4
+      // Otherwise return a secure random int.
+      if (crypto.randomUUID) {
+        return crypto.randomUUID().replaceAll("-", "");
+      }
+      
+      return Math.round(secure_random_float() * (Number.MAX_VALUE - Number.MIN_VALUE) + Number.MIN_VALUE).toString()
     },
 
     _messages: [ "RemoteLogins:loginsFound" ],

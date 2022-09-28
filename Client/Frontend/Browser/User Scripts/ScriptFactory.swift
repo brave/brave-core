@@ -82,21 +82,6 @@ class ScriptFactory {
       
     case .domainUserScript(let domainUserScript):
       switch domainUserScript {
-      case .youtubeAdBlock:
-        // Verify that the application itself is making a call to the JS script instead of other scripts on the page.
-        // This variable will be unique amongst scripts loaded in the page.
-        // When the script is called, the token is provided in order to access the script variable.
-        let securityToken = UserScriptManager.securityTokenString
-        
-        source = source
-          .replacingOccurrences(of: "$<prunePaths>", with: "ABSPP\(securityToken)", options: .literal)
-          .replacingOccurrences(of: "$<findOwner>", with: "ABSFO\(securityToken)", options: .literal)
-          .replacingOccurrences(of: "$<setJS>", with: "ABSSJ\(securityToken)", options: .literal)
-        
-      case .archive:
-        // No modifications needed
-        break
-        
       case .braveSearchHelper:
         let securityToken = UserScriptManager.securityTokenString
         let messageToken = "BraveSearchHelper_\(UserScriptManager.messageHandlerTokenString)"
@@ -121,7 +106,6 @@ class ScriptFactory {
           .replacingOccurrences(of: "$<security_token>", with: securityToken, options: .literal)
       case .braveSkus:
         let securityToken = UserScriptManager.securityTokenString
-        let messageToken = "BraveSkusHelper_\(UserScriptManager.messageHandlerTokenString)"
         source = source
           .replacingOccurrences(of: "$<security_token>", with: securityToken)
         

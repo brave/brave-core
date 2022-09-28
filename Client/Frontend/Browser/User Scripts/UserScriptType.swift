@@ -27,10 +27,6 @@ enum UserScriptType: Hashable {
       return .farblingProtection
     case .domainUserScript(let domainUserScript):
       switch domainUserScript {
-      case .youtubeAdBlock:
-        return .youtubeAdBlock
-      case .archive:
-        return .archive
       case .braveSearchHelper:
         return .braveSearchHelper
       case .braveTalkHelper:
