@@ -74,6 +74,9 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
 
   void SetIcon(const gfx::VectorIcon* icon);
 
+  bool GetLoading() const;
+  void SetLoading(bool loading);
+
   // Until we decide to update the whole UI to use the new Leo colors, we
   // need to keep this logic around. Currently the new colors are opt-in only.
   void UpdateOldColorsForBrave();
@@ -88,6 +91,7 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
 
  private:
   Kind kind_ = OLD;
+  bool loading_ = false;
   absl::optional<ButtonTheme> theme_;
   raw_ptr<const gfx::VectorIcon> icon_ = nullptr;
 };

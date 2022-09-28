@@ -50,11 +50,9 @@ namespace views {
 SkColor kBravePrimaryColor = SkColorSetRGB(32, 74, 227);
 MdTextButton::ButtonTheme g_primary_theme = {
     // Normal Light
-    MdTextButton::ButtonStyle{kBravePrimaryColor, absl::nullopt,
-                              SK_ColorWHITE},
+    MdTextButton::ButtonStyle{kBravePrimaryColor, absl::nullopt, SK_ColorWHITE},
     // Normal Dark
-    MdTextButton::ButtonStyle{kBravePrimaryColor, absl::nullopt,
-                              SK_ColorWHITE},
+    MdTextButton::ButtonStyle{kBravePrimaryColor, absl::nullopt, SK_ColorWHITE},
     // Hover Light
     MdTextButton::ButtonStyle{SkColorSetRGB(24, 56, 172), absl::nullopt,
                               SK_ColorWHITE},
@@ -62,17 +60,17 @@ MdTextButton::ButtonTheme g_primary_theme = {
     MdTextButton::ButtonStyle{SkColorSetRGB(77, 92, 253), absl::nullopt,
                               SK_ColorWHITE},
     // Disabled Light
-    MdTextButton::ButtonStyle{SkColorSetARGB(128, 172, 175, 187), absl::nullopt,
-                              SkColorSetA(SK_ColorWHITE, 128)},
+    MdTextButton::ButtonStyle{SkColorSetA(kBravePrimaryColor, 128),
+                              absl::nullopt, SkColorSetA(SK_ColorWHITE, 128)},
     // Disabled Dark
-    MdTextButton::ButtonStyle{SkColorSetARGB(128, 88, 92, 109), absl::nullopt,
-                              SkColorSetA(SK_ColorWHITE, 128)},
+    MdTextButton::ButtonStyle{SkColorSetA(kBravePrimaryColor, 128),
+                              absl::nullopt, SkColorSetA(SK_ColorWHITE, 128)},
     // Loading Light
-    MdTextButton::ButtonStyle{SkColorSetARGB(192, 32, 74, 227), absl::nullopt,
-                              SkColorSetA(SK_ColorWHITE, 192)},
+    MdTextButton::ButtonStyle{SkColorSetA(kBravePrimaryColor, 192),
+                              absl::nullopt, SkColorSetA(SK_ColorWHITE, 192)},
     // Loading Dark
-    MdTextButton::ButtonStyle{SkColorSetARGB(192, 32, 74, 227), absl::nullopt,
-                              SkColorSetA(SK_ColorWHITE, 192)}};
+    MdTextButton::ButtonStyle{SkColorSetA(kBravePrimaryColor, 192),
+                              absl::nullopt, SkColorSetA(SK_ColorWHITE, 192)}};
 
 MdTextButton::ButtonTheme g_secondary_theme = {
     // Normal Light
@@ -80,21 +78,23 @@ MdTextButton::ButtonTheme g_secondary_theme = {
     // Normal Dark
     MdTextButton::ButtonStyle{absl::nullopt, SK_ColorWHITE, SK_ColorWHITE},
     // Hover Light
-    MdTextButton::ButtonStyle{absl::nullopt, kBravePrimaryColor, kBravePrimaryColor},
+    MdTextButton::ButtonStyle{absl::nullopt, kBravePrimaryColor,
+                              kBravePrimaryColor},
     // Hover Dark
-    MdTextButton::ButtonStyle{absl::nullopt, kBravePrimaryColor, kBravePrimaryColor},
+    MdTextButton::ButtonStyle{absl::nullopt, kBravePrimaryColor,
+                              kBravePrimaryColor},
     // Disabled Light
-    MdTextButton::ButtonStyle{absl::nullopt, SkColorSetARGB(128, 226, 227, 231),
-                              SkColorSetARGB(128, 107, 112, 132)},
+    MdTextButton::ButtonStyle{absl::nullopt, SkColorSetA(SK_ColorBLACK, 128),
+                              SkColorSetA(SK_ColorBLACK, 128)},
     // Disabled Dark
-    MdTextButton::ButtonStyle{absl::nullopt, SkColorSetARGB(128, 46, 48, 57),
-                              SkColorSetARGB(128, 140, 144, 161)},
+    MdTextButton::ButtonStyle{absl::nullopt, SkColorSetA(SK_ColorWHITE, 128),
+                              SkColorSetA(SK_ColorWHITE, 128)},
     // Loading Light
-    MdTextButton::ButtonStyle{absl::nullopt, SkColorSetARGB(192, 226, 227, 231),
-                              SkColorSetARGB(192, 107, 112, 132)},
+    MdTextButton::ButtonStyle{absl::nullopt, SkColorSetA(kBravePrimaryColor, 192),
+                              SkColorSetA(kBravePrimaryColor, 192)},
     // Loading Dark
-    MdTextButton::ButtonStyle{absl::nullopt, SkColorSetARGB(192, 46, 48, 57),
-                              SkColorSetARGB(192, 140, 144, 161)}};
+    MdTextButton::ButtonStyle{absl::nullopt, SkColorSetA(kBravePrimaryColor, 192),
+                              SkColorSetA(kBravePrimaryColor, 192)}};
 
 MdTextButton::ButtonTheme g_tertiary_theme = {
     // Normal Light
@@ -109,6 +109,18 @@ MdTextButton::ButtonTheme g_tertiary_theme = {
     // Hover Dark
     MdTextButton::ButtonStyle{absl::nullopt, absl::nullopt,
                               SkColorSetRGB(186, 199, 247)},
+    // Disabled Light
+    MdTextButton::ButtonStyle{absl::nullopt, absl::nullopt,
+                              SkColorSetARGB(128, 32, 74, 227)},
+    // Disabled Dark
+    MdTextButton::ButtonStyle{absl::nullopt, absl::nullopt,
+                              SkColorSetARGB(128, 153, 173, 243)},
+    // Loading Light
+    MdTextButton::ButtonStyle{absl::nullopt, absl::nullopt,
+                              SkColorSetARGB(192, 32, 74, 227)},
+    // Loading Dark
+    MdTextButton::ButtonStyle{absl::nullopt, absl::nullopt,
+                              SkColorSetARGB(192, 153, 173, 243)},
 };
 
 MdTextButton::MdTextButton(PressedCallback callback,
@@ -179,6 +191,14 @@ void MdTextButton::SetIcon(const gfx::VectorIcon* icon) {
   UpdateColors();
 }
 
+bool MdTextButton::GetLoading() const {
+  return loading_;
+}
+
+void MdTextButton::SetLoading(bool loading) {
+  loading_ = loading;
+}
+
 void MdTextButton::UpdateOldColorsForBrave() {
   if (GetProminent()) {
     return;
@@ -228,9 +248,10 @@ void MdTextButton::UpdateColorsForBrave() {
   auto state = GetVisualState();
   if (theme_) {
     style = is_dark ? theme_->normal_dark : theme_->normal_light;
-    if (state == STATE_HOVERED)
+    if (state == STATE_HOVERED || state == STATE_PRESSED)
       style = is_dark ? theme_->hover_dark : theme_->hover_light;
-    // TODO: Loading
+    if (GetLoading())
+      style = is_dark ? theme_->loading_dark : theme_->loading_light;
     if (!GetEnabled() || state == STATE_DISABLED)
       style = is_dark ? theme_->disabled_dark : theme_->disabled_light;
 

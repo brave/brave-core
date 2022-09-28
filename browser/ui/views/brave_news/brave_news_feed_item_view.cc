@@ -71,7 +71,7 @@ void BraveNewsFeedItemView::Update() {
       is_subscribed ? IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_UNSUBSCRIBE
                     : IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_SUBSCRIBE));
 
-  // subscribe_button_->SetLoading(loading_);
+  subscribe_button_->SetLoading(loading_);
   subscribe_button_->SetKind(is_subscribed ? views::MdTextButton::SECONDARY
                                            : views::MdTextButton::PRIMARY);
   subscribe_button_->SetIcon(is_subscribed ? &kBraveNewsUnfollowButtonIcon
