@@ -6,6 +6,10 @@
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 
 brave_browser_ntp_background_sources = [
+  "//brave/browser/ntp_background/ntp_p3a_helper_impl.cc",
+  "//brave/browser/ntp_background/ntp_p3a_helper_impl.h",
+  "//brave/browser/ntp_background/ntp_tab_helper.cc",
+  "//brave/browser/ntp_background/ntp_tab_helper.h",
   "//brave/browser/ntp_background/view_counter_service_factory.cc",
   "//brave/browser/ntp_background/view_counter_service_factory.h",
 ]
@@ -20,6 +24,8 @@ brave_browser_ntp_background_deps = [
   "//brave/components/ntp_background_images/browser",
   "//brave/components/ntp_background_images/buildflags",
   "//brave/components/ntp_background_images/common",
+  "//brave/components/p3a",
+  "//brave/components/p3a_utils",
   "//chrome/browser:browser_process",
   "//chrome/browser/profiles:profile",
   "//chrome/common",
