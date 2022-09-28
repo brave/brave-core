@@ -21,6 +21,7 @@ export const SelectWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  max-height: 100%;
 `
 
 export const SelectScrollSearchContainer = styled.div`
@@ -30,11 +31,8 @@ export const SelectScrollSearchContainer = styled.div`
   justify-content: flex-start;
   overflow-y: scroll;
   overflow-x: hidden;
-  position: absolute;
-  top: 96px;
-  bottom: 18px;
-  left: 18px;
-  right: 18px;
+  width: 100%;
+  max-height: 100%;
 `
 
 export const SelectScrollContainer = styled.div`
