@@ -87,17 +87,18 @@ class FakeIPFSHostResolver : public ipfs::IPFSHostResolver {
                const net::NetworkIsolationKey& isolation_key,
                net::DnsQueryType dns_query_type,
                HostTextResultsCallback callback) override {
-    resolve_called_++;
+    resolve_called_ = true;
     if (callback)
       std::move(callback).Run(host.host(), dnslink_);
   }
 
-  bool resolve_called() const { return resolve_called_ == 1; }
+  void ResetResolveCalled() { resolve_called_ = false; }
+  bool resolve_called() const { return resolve_called_; }
 
   void SetDNSLinkToRespond(const std::string& dnslink) { dnslink_ = dnslink; }
 
  private:
-  int resolve_called_ = 0;
+  bool resolve_called_ = false;
   std::string dnslink_;
 };
 
@@ -127,55 +128,44 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolvedIPFSLinkLocal) {
   ASSERT_TRUE(WaitForLoadStop(active_contents()));
   ASSERT_TRUE(resolver_raw->resolve_called());
   auto resolved_url = helper->GetIPFSResolvedURL();
-  EXPECT_EQ(resolved_url.host(), gateway.host());
-  EXPECT_EQ(resolved_url.path(), "/ipfs/bafybeiemx/empty.html");
-  EXPECT_EQ(resolved_url.query(), "query");
-  EXPECT_EQ(resolved_url.ref(), "ref");
+  EXPECT_EQ(resolved_url, GURL("ipfs://bafybeiemx/empty.html?query#ref"));
 
+  resolver_raw->ResetResolveCalled();
   test_url = https_server_.GetURL("/another.html?query#ref");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url));
   ASSERT_TRUE(WaitForLoadStop(active_contents()));
-  ASSERT_FALSE(resolver_raw->resolve_called());
+  ASSERT_TRUE(resolver_raw->resolve_called());
   resolved_url = helper->GetIPFSResolvedURL();
-  EXPECT_EQ(resolved_url.host(), gateway.host());
-  EXPECT_EQ(resolved_url.path(), "/ipfs/bafybeiemx/empty.html");
-  EXPECT_EQ(resolved_url.query(), "query");
-  EXPECT_EQ(resolved_url.ref(), "ref");
+  EXPECT_EQ(resolved_url, GURL("ipfs://bafybeiemx/empty.html?query#ref"));
 
+  resolver_raw->ResetResolveCalled();
   SetXIpfsPathHeader("/ipns/brave.eth/empty.html");
   test_url = https_server_.GetURL("/?query#ref");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url));
   ASSERT_TRUE(WaitForLoadStop(active_contents()));
-  ASSERT_FALSE(resolver_raw->resolve_called());
+  ASSERT_TRUE(resolver_raw->resolve_called());
   resolved_url = helper->GetIPFSResolvedURL();
-  EXPECT_EQ(resolved_url.host(), gateway.host());
-  EXPECT_EQ(resolved_url.path(), "/ipns/brave.eth/empty.html");
-  EXPECT_EQ(resolved_url.query(), "query");
-  EXPECT_EQ(resolved_url.ref(), "ref");
+  EXPECT_EQ(resolved_url, GURL("ipns://brave.eth/empty.html?query#ref"));
 
+  resolver_raw->ResetResolveCalled();
   SetXIpfsPathHeader("/ipfs/bafy");
   test_url = embedded_test_server()->GetURL(
       "a.com", "/ipfs/bafy/wiki/empty.html?query#ref");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url));
   ASSERT_TRUE(WaitForLoadStop(active_contents()));
-  ASSERT_FALSE(resolver_raw->resolve_called());
+  ASSERT_TRUE(resolver_raw->resolve_called());
   resolved_url = helper->GetIPFSResolvedURL();
-  EXPECT_EQ(resolved_url.host(), gateway.host());
-  EXPECT_EQ(resolved_url.path(), "/ipfs/bafy");
-  EXPECT_EQ(resolved_url.query(), "query");
-  EXPECT_EQ(resolved_url.ref(), "ref");
+  EXPECT_EQ(resolved_url, GURL("ipfs://bafy?query#ref"));
 
+  resolver_raw->ResetResolveCalled();
   SetXIpfsPathHeader("/ipns/bafyb");
   test_url = embedded_test_server()->GetURL(
       "a.com", "/ipns/bafyb/wiki/empty.html?query#ref");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url));
   ASSERT_TRUE(WaitForLoadStop(active_contents()));
-  ASSERT_FALSE(resolver_raw->resolve_called());
+  ASSERT_TRUE(resolver_raw->resolve_called());
   resolved_url = helper->GetIPFSResolvedURL();
-  EXPECT_EQ(resolved_url.host(), gateway.host());
-  EXPECT_EQ(resolved_url.path(), "/ipns/bafyb");
-  EXPECT_EQ(resolved_url.query(), "query");
-  EXPECT_EQ(resolved_url.ref(), "ref");
+  EXPECT_EQ(resolved_url, GURL("ipns://bafyb?query#ref"));
 }
 
 IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolvedIPFSLinkGateway) {
@@ -202,7 +192,7 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolvedIPFSLinkGateway) {
   ASSERT_TRUE(WaitForLoadStop(active_contents()));
   ASSERT_TRUE(resolver_raw->resolve_called());
   EXPECT_EQ(helper->GetIPFSResolvedURL().spec(),
-            "https://dweb.link/ipfs/bafybeiemx/empty.html");
+            "ipfs://bafybeiemx/empty.html");
 }
 
 IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, NoResolveIPFSLinkCalledMode) {
@@ -220,8 +210,9 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, NoResolveIPFSLinkCalledMode) {
   helper->SetResolverForTesting(std::move(resolver));
   auto* prefs =
       user_prefs::UserPrefs::Get(active_contents()->GetBrowserContext());
-  prefs->SetInteger(kIPFSResolveMethod,
-                    static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
+  prefs->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_DISABLED));
   SetXIpfsPathHeader("/ipfs/bafybeiemx/empty.html");
   GURL test_url = https_server_.GetURL("/empty.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url));
@@ -311,8 +302,9 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolveNotCalled5xx) {
   helper->SetResolverForTesting(std::move(resolver));
   auto* prefs =
       user_prefs::UserPrefs::Get(active_contents()->GetBrowserContext());
-  prefs->SetInteger(kIPFSResolveMethod,
-                    static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
+  prefs->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_DISABLED));
   EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), std::string());
   ASSERT_FALSE(resolver_raw->resolve_called());
   const GURL test_url = https_server_.GetURL("/5xx.html");
@@ -411,9 +403,10 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest,
   GURL another_test_url =
       embedded_test_server()->GetURL("/another.html?query#ref");
 
+  resolver_raw->ResetResolveCalled();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), another_test_url));
   ASSERT_TRUE(WaitForLoadStop(active_contents()));
-  ASSERT_FALSE(resolver_raw->resolve_called());
+  ASSERT_TRUE(resolver_raw->resolve_called());
 
   // Url will be translated to ipns:// scheme which will be translated to
   // gateway url.

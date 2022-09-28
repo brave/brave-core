@@ -149,6 +149,17 @@ bool IsDefaultGatewayURL(const GURL& url, PrefService* prefs) {
           url.DomainIs(std::string("ipns.") + gateway_host));
 }
 
+absl::optional<GURL> TranslateXIPFSPath(const std::string& x_ipfs_path_header) {
+  if (base::StartsWith(x_ipfs_path_header, "/ipfs/")) {
+    return GURL("ipfs://" +
+                x_ipfs_path_header.substr(6, x_ipfs_path_header.size()));
+  } else if (base::StartsWith(x_ipfs_path_header, "/ipns/")) {
+    return GURL("ipns://" +
+                x_ipfs_path_header.substr(6, x_ipfs_path_header.size()));
+  }
+  return absl::nullopt;
+}
+
 bool IsAPIGateway(const GURL& url, version_info::Channel channel) {
   if (!url.is_valid())
     return false;

@@ -241,10 +241,7 @@ TEST_F(IpfsTabHelperUnitTest, XIpfsPathHeaderUsed_IfNoDnsLinkRecord_IPFS) {
   EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
   GURL resolved_url = helper->GetIPFSResolvedURL();
 
-  EXPECT_EQ(resolved_url.host(), gateway.host());
-  EXPECT_EQ(resolved_url.path(), "/ipfs/bafy");
-  EXPECT_EQ(resolved_url.query(), "query");
-  EXPECT_EQ(resolved_url.ref(), "ref");
+  EXPECT_EQ(resolved_url.spec(), "ipfs://bafy?query#ref");
 }
 
 TEST_F(IpfsTabHelperUnitTest, XIpfsPathHeaderUsed_IfNoDnsLinkRecord_IPNS) {
@@ -266,10 +263,7 @@ TEST_F(IpfsTabHelperUnitTest, XIpfsPathHeaderUsed_IfNoDnsLinkRecord_IPNS) {
   EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
   GURL resolved_url = helper->GetIPFSResolvedURL();
 
-  EXPECT_EQ(resolved_url.host(), gateway.host());
-  EXPECT_EQ(resolved_url.path(), "/ipns/brantly.eth/");
-  EXPECT_EQ(resolved_url.query(), "query");
-  EXPECT_EQ(resolved_url.ref(), "ref");
+  EXPECT_EQ(resolved_url, GURL("ipns://brantly.eth/?query#ref"));
 }
 
 TEST_F(IpfsTabHelperUnitTest, ResolveXIPFSPathUrl) {
@@ -281,10 +275,7 @@ TEST_F(IpfsTabHelperUnitTest, ResolveXIPFSPathUrl) {
     GURL gateway = ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
                                                   chrome::GetChannel());
     GURL url = helper->ResolveXIPFSPathUrl("/ipfs/bafy");
-    EXPECT_EQ(url.host(), gateway.host());
-    EXPECT_EQ(url.path(), "/ipfs/bafy");
-    EXPECT_EQ(url.query(), "");
-    EXPECT_EQ(url.ref(), "");
+    EXPECT_EQ(url, GURL("ipfs://bafy"));
   }
 
   {
@@ -292,10 +283,15 @@ TEST_F(IpfsTabHelperUnitTest, ResolveXIPFSPathUrl) {
     GURL gateway = ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
                                                   chrome::GetChannel());
     GURL url = helper->ResolveXIPFSPathUrl("/ipfs/bafy");
-    EXPECT_EQ(url.host(), gateway.host());
-    EXPECT_EQ(url.path(), "/ipfs/bafy");
-    EXPECT_EQ(url.query(), "");
-    EXPECT_EQ(url.ref(), "");
+    EXPECT_EQ(url, GURL("ipfs://bafy"));
+  }
+
+  {
+    SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_ASK);
+    GURL gateway = ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
+                                                  chrome::GetChannel());
+    GURL url = helper->ResolveXIPFSPathUrl("/ipfs/bafy");
+    EXPECT_EQ(url, GURL("ipfs://bafy"));
   }
 }
 
