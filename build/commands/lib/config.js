@@ -392,8 +392,14 @@ Config.prototype.buildArgs = function () {
     args.cc_wrapper = path.join(this.nativeRedirectCCDir, 'redirect_cc')
   }
 
-  if (this.targetArch === 'x86' && process.platform === 'linux') {
-    // Minimal symbols for target Linux x86, because ELF32 cannot be > 4GiB
+  if ((this.targetArch === 'x86' && process.platform === 'linux') ||
+      this.getTargetOS() === 'win') {
+    // Minimal symbols to work around size restrictions:
+    // On Linux x86, ELF32 cannot be > 4GiB.
+    // On Windows, chrome.dll.pdb sometimes becomes 4 GiB and llvm-pdbutil on
+    // that file errors out with "The data is in an unexpected format. Too many
+    // directory blocks". Associated llvm issue:
+    // https://github.com/llvm/llvm-project/issues/54445
     args.symbol_level = 1
   }
 
