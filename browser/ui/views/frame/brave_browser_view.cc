@@ -10,7 +10,6 @@
 #include "base/bind.h"
 #include "brave/browser/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
@@ -44,10 +43,6 @@
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
 #include "brave/components/brave_vpn/pref_names.h"
-#endif
-
-#if BUILDFLAG(ENABLE_SPARKLE)
-#include "brave/browser/ui/views/update_recommended_message_box_mac.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -312,15 +307,6 @@ void BraveBrowserView::HideSpeedreaderWebUIBubble() {
       speedreader_webui_bubble_manager_->GetBubbleWidget()) {
     speedreader_webui_bubble_manager_->CloseBubble();
   }
-}
-
-void BraveBrowserView::ShowUpdateChromeDialog() {
-#if BUILDFLAG(ENABLE_SPARKLE)
-  // On mac, sparkle frameworks's relaunch api is used.
-  UpdateRecommendedMessageBoxMac::Show(GetNativeWindow());
-#else
-  BrowserView::ShowUpdateChromeDialog();
-#endif
 }
 
 // The translate bubble will be shown if ENABLE_BRAVE_TRANSLATE_GO build flag

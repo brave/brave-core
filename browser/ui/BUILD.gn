@@ -169,13 +169,6 @@ source_set("ui") {
       sources += [ "webui/settings/brave_import_data_handler.cc" ]
     }
 
-    if (enable_sparkle) {
-      sources += [
-        "webui/settings/brave_relaunch_handler_mac.h",
-        "webui/settings/brave_relaunch_handler_mac.mm",
-      ]
-    }
-
     if (enable_tor) {
       sources += [
         "webui/settings/brave_tor_handler.cc",
@@ -256,13 +249,6 @@ source_set("ui") {
       sources += [
         "views/renderer_context_menu/brave_render_view_context_menu_views.cc",
         "views/renderer_context_menu/brave_render_view_context_menu_views.h",
-      ]
-    }
-
-    if (enable_sparkle) {
-      sources += [
-        "views/update_recommended_message_box_mac.h",
-        "views/update_recommended_message_box_mac.mm",
       ]
     }
 

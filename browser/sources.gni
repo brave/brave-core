@@ -218,7 +218,11 @@ if (is_mac) {
   brave_chrome_browser_sources += [
     "//brave/browser/brave_browser_main_parts_mac.h",
     "//brave/browser/brave_browser_main_parts_mac.mm",
+    "//brave/browser/lifetime/brave_application_lifetime_mac.h",
+    "//brave/browser/lifetime/brave_application_lifetime_mac.mm",
   ]
+
+  brave_chrome_browser_deps += [ "//brave/browser:sparkle_buildflags" ]
 }
 
 if (enable_sparkle) {
