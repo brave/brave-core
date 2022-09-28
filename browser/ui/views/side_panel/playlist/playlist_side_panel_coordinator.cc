@@ -42,14 +42,15 @@ std::unique_ptr<views::View> PlaylistSidePanelCoordinator::CreateWebView() {
   if (should_create_contents_wrapper) {
     contents_wrapper_ =
         std::make_unique<BubbleContentsWrapperT<playlist::PlaylistUI>>(
-            GURL(kPlaylistURL), GetBrowser().profile(), 0,
+            GURL(kPlaylistURL), GetBrowser().profile(),
+            IDS_SIDEBAR_PLAYLIST_ITEM_TITLE,
             /*webui_resizes_host=*/false,
             /*esc_closes_ui=*/false);
     contents_wrapper_->ReloadWebContents();
   }
 
   auto web_view = std::make_unique<PlaylistSidePanelWebView>(
-      &GetBrowser(), base::RepeatingClosure(), contents_wrapper_.get());
+      &GetBrowser(), base::DoNothing(), contents_wrapper_.get());
   if (!should_create_contents_wrapper) {
     // SidePanelWebView's initial visibility is hidden. Thus, we need to
     // call this manually when we don't reload the web contents.
@@ -57,7 +58,21 @@ std::unique_ptr<views::View> PlaylistSidePanelCoordinator::CreateWebView() {
     web_view->ShowUI();
   }
 
+  view_observation_.Observe(web_view.get());
+
   return web_view;
+}
+
+void PlaylistSidePanelCoordinator::OnViewIsDeleting(views::View* view) {
+  DestroyWebContentsIfNeeded();
+
+  view_observation_.Reset();
+}
+
+void PlaylistSidePanelCoordinator::DestroyWebContentsIfNeeded() {
+  DCHECK(contents_wrapper_);
+  if (!contents_wrapper_->web_contents()->GetCurrentlyPlayingVideoCount())
+    contents_wrapper_.reset();
 }
 
 BROWSER_USER_DATA_KEY_IMPL(PlaylistSidePanelCoordinator);
