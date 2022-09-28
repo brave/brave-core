@@ -37,11 +37,6 @@ namespace sidebar {
 
 namespace {
 
-// A list of preferred item types
-constexpr SidebarItem::BuiltInItemType kPreferredPanelOrder[] = {
-    SidebarItem::BuiltInItemType::kReadingList,
-    SidebarItem::BuiltInItemType::kBookmarks};
-
 SidebarItem GetBuiltInItemForType(SidebarItem::BuiltInItemType type) {
   switch (type) {
     case SidebarItem::BuiltInItemType::kBraveTalk:
@@ -483,6 +478,14 @@ SidebarService::ShowSidebarOption SidebarService::GetSidebarShowOption() const {
 }
 
 absl::optional<SidebarItem> SidebarService::GetDefaultPanelItem() const {
+  // A list of preferred item types
+  // Use this order for picking active panel when panel is opened as
+  // we don't cache previous active panel.
+  constexpr SidebarItem::BuiltInItemType kPreferredPanelOrder[] = {
+      SidebarItem::BuiltInItemType::kReadingList,
+      SidebarItem::BuiltInItemType::kBookmarks,
+      SidebarItem::BuiltInItemType::kPlaylist};
+
   absl::optional<SidebarItem> default_item;
   for (const auto& type : kPreferredPanelOrder) {
     auto found_item_iter =
