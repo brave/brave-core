@@ -117,9 +117,11 @@ using PurchasedState = mojom::PurchasedState;
 BraveVpnService::BraveVpnService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs,
+    PrefService* profile_prefs,
     base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
         skus_service_getter)
     : local_prefs_(local_prefs),
+      profile_prefs_(profile_prefs),
       skus_service_getter_(skus_service_getter),
       api_request_helper_(GetNetworkTrafficAnnotationTag(),
                           url_loader_factory) {
@@ -887,24 +889,25 @@ void BraveVpnService::GetPurchaseToken(GetPurchaseTokenCallback callback) {
   // Get the Android purchase token (for Google Play Store).
   // The value for this is validated on the account.brave.com side
   auto* purchase_token =
-      local_prefs_->FindPreference(prefs::kBraveVPNPurchaseTokenAndroid);
+      profile_prefs_->FindPreference(prefs::kBraveVPNPurchaseTokenAndroid);
   if (purchase_token && !purchase_token->IsDefaultValue()) {
     purchase_token_string =
-        local_prefs_->GetString(prefs::kBraveVPNPurchaseTokenAndroid);
+        profile_prefs_->GetString(prefs::kBraveVPNPurchaseTokenAndroid);
   }
 
   // Package name is important; for real users, it'll be the Release package.
   // For testing we do have the ability to use the Nightly package.
-  auto* package = local_prefs_->FindPreference(prefs::kBraveVPNPackageAndroid);
+  auto* package =
+      profile_prefs_->FindPreference(prefs::kBraveVPNPackageAndroid);
   if (package && !package->IsDefaultValue()) {
-    package_string = local_prefs_->GetString(prefs::kBraveVPNPackageAndroid);
+    package_string = profile_prefs_->GetString(prefs::kBraveVPNPackageAndroid);
   }
 
   auto* product_id =
-      local_prefs_->FindPreference(prefs::kBraveVPNProductIdAndroid);
+      profile_prefs_->FindPreference(prefs::kBraveVPNProductIdAndroid);
   if (product_id && !product_id->IsDefaultValue()) {
     product_id_string =
-        local_prefs_->GetString(prefs::kBraveVPNProductIdAndroid);
+        profile_prefs_->GetString(prefs::kBraveVPNProductIdAndroid);
   }
 
   base::Value::Dict response;

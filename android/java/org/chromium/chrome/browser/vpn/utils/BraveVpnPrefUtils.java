@@ -153,8 +153,7 @@ public class BraveVpnPrefUtils {
         sharedPreferencesEditor.putString(PREF_BRAVE_VPN_PRODUCT_ID, value);
         sharedPreferencesEditor.apply();
         UserPrefs.get(Profile.getLastUsedRegularProfile())
-                .setString(BravePref.BRAVE_VPN_PRODUCT_ID_ANDROID,
-                        ContextUtils.getApplicationContext().getPackageName());
+                .setString(BravePref.BRAVE_VPN_PRODUCT_ID_ANDROID, value);
     }
 
     public static String getProductId() {
