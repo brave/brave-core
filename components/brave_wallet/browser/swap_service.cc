@@ -53,7 +53,7 @@ bool IsMainnetEVMNetworkSupported(const std::string& chain_id) {
 }
 
 bool IsEVMNetworkSupported(const std::string& chain_id) {
-  return (chain_id == brave_wallet::mojom::kRopstenChainId ||
+  return (chain_id == brave_wallet::mojom::kGoerliChainId ||
           IsMainnetEVMNetworkSupported(chain_id));
 }
 
@@ -163,8 +163,8 @@ std::string SwapService::GetFee(const std::string& chain_id) {
 std::string SwapService::GetBaseSwapURL(const std::string& chain_id) {
   std::string url;
 
-  if (chain_id == brave_wallet::mojom::kRopstenChainId) {
-    url = brave_wallet::kRopstenSwapBaseAPIURL;
+  if (chain_id == brave_wallet::mojom::kGoerliChainId) {
+    url = brave_wallet::kGoerliSwapBaseAPIURL;
   } else if (chain_id == brave_wallet::mojom::kMainnetChainId) {
     url = brave_wallet::kSwapBaseAPIURL;
   } else if (chain_id == brave_wallet::mojom::kPolygonMainnetChainId) {
@@ -193,8 +193,8 @@ std::string SwapService::GetFeeRecipient(const std::string& chain_id) {
 
   // For easy testability on test networks, we use an address different from
   // the production multisig address.
-  if (chain_id == brave_wallet::mojom::kRopstenChainId) {
-    feeRecipient = brave_wallet::kRopstenFeeRecipient;
+  if (chain_id == brave_wallet::mojom::kGoerliChainId) {
+    feeRecipient = brave_wallet::kGoerliFeeRecipient;
   } else if (IsMainnetEVMNetworkSupported(chain_id)) {
     feeRecipient = brave_wallet::kFeeRecipient;
   } else if (IsSolanaNetworkSupported(chain_id)) {

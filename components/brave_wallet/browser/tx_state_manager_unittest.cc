@@ -282,7 +282,7 @@ TEST_F(TxStateManagerUnitTest, SwitchNetwork) {
   meta.set_id("001");
   tx_state_manager_->AddOrUpdateTx(meta);
 
-  SetNetwork("0x3", mojom::CoinType::ETH);
+  SetNetwork("0x5", mojom::CoinType::ETH);
   // Wait for network info
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(tx_state_manager_->GetTx("001"), nullptr);
@@ -303,10 +303,10 @@ TEST_F(TxStateManagerUnitTest, SwitchNetwork) {
   ASSERT_TRUE(mainnet_dict);
   EXPECT_EQ(mainnet_dict->size(), 1u);
   EXPECT_TRUE(mainnet_dict->FindDict("001"));
-  const auto* ropsten_dict = ethereum_dict->FindDict("ropsten");
-  ASSERT_TRUE(ropsten_dict);
-  EXPECT_EQ(ropsten_dict->size(), 1u);
-  EXPECT_TRUE(ropsten_dict->FindDict("001"));
+  const auto* goerli_dict = ethereum_dict->FindDict("goerli");
+  ASSERT_TRUE(goerli_dict);
+  EXPECT_EQ(goerli_dict->size(), 1u);
+  EXPECT_TRUE(goerli_dict->FindDict("001"));
   auto localhost_url_spec =
       brave_wallet::GetNetworkURL(&prefs_, mojom::kLocalhostChainId,
                                   mojom::CoinType::ETH)

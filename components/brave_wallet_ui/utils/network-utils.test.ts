@@ -58,7 +58,7 @@ describe('getTokensNetwork', () => {
   it('Ethereum with chainId 0x1, should return ETH Mainnet info', () => {
     expect(getTokensNetwork(mockNetworks, ethToken)).toEqual(ethMainNetwork)
   })
-  it('Binance Coin with chainId 0x3, should return ETH Ropsten Testnetwork info', () => {
+  it('Binance Coin with chainId 0x5, should return ETH Goerli Testnetwork info', () => {
     expect(getTokensNetwork(mockNetworks, bnbToken)).toEqual(mockNetworks[1])
   })
 })
