@@ -20,6 +20,8 @@
 
 class PrefService;
 
+class GURL;
+
 namespace brave_ads {
 class AdsService;
 }  // namespace brave_ads
@@ -37,6 +39,8 @@ class WeeklyStorage;
 namespace ntp_background_images {
 
 class NTPCustomBackgroundImagesService;
+class NTPP3AHelper;
+
 struct NTPBackgroundImagesData;
 struct NTPSponsoredImagesData;
 struct TopSite;
@@ -49,6 +53,7 @@ class ViewCounterService : public KeyedService,
                      brave_ads::AdsService* ads_service,
                      PrefService* prefs,
                      PrefService* local_state,
+                     std::unique_ptr<NTPP3AHelper> ntp_p3a_helper,
                      bool is_supported_locale);
   ~ViewCounterService() override;
 
@@ -88,6 +93,8 @@ class ViewCounterService : public KeyedService,
   NTPSponsoredImagesData* GetCurrentBrandedWallpaperData() const;
 
   void InitializeWebUIDataSource(content::WebUIDataSource* html_source);
+
+  void OnTabURLChanged(const GURL& url);
 
  private:
   // Sync with themeValues in brave_appearance_page.js
@@ -166,6 +173,8 @@ class ViewCounterService : public KeyedService,
   // and the ratio of those which are branded images.
   std::unique_ptr<WeeklyStorage> new_tab_count_state_;
   std::unique_ptr<WeeklyStorage> branded_new_tab_count_state_;
+
+  std::unique_ptr<NTPP3AHelper> ntp_p3a_helper_;
 };
 
 }  // namespace ntp_background_images

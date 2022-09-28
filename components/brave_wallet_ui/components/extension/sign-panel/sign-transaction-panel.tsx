@@ -166,11 +166,11 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
 
   const onQueueNextSignTransaction = React.useCallback(() => {
     if (signTransactionQueueInfo.queueNumber === signTransactionQueueInfo.queueLength) {
-      setSelectedQueueData(selectedQueueData)
+      setSelectedQueueData(signTransactionData[0])
       return
     }
     setSelectedQueueData(signTransactionData[signTransactionQueueInfo.queueNumber])
-  }, [signTransactionQueueInfo, selectedQueueData, signTransactionData])
+  }, [signTransactionQueueInfo, signTransactionData])
 
   // effects
   React.useEffect(() => {

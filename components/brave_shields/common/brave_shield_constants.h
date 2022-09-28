@@ -43,6 +43,7 @@ const char kCookieListUuid[] = "AC023D22-AE88-4060-A978-4FEEEC4221693";
 
 constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveShields", IDS_BRAVE_SHIELDS},
+    {"braveShieldsStandalone", IDS_BRAVE_SHIELDS_STANDALONE},
     {"braveShieldsEnable", IDS_BRAVE_SHIELDS_ENABLE},
     {"braveShieldsUp", IDS_BRAVE_SHIELDS_UP},
     {"braveShieldsDown", IDS_BRAVE_SHIELDS_DOWN},

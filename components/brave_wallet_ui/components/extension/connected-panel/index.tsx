@@ -42,7 +42,7 @@ import {
   ConnectedBottomNav,
   ConnectedHeader
 } from '../'
-import { Tooltip, SelectNetworkButton, LoadingSkeleton } from '../../shared'
+import { SelectNetworkButton, LoadingSkeleton } from '../../shared'
 
 // Styled Components
 import {
@@ -230,16 +230,11 @@ export const ConnectedPanel = (props: Props) => {
       <CenterColumn>
 
         <StatusRow>
-          <Tooltip
-            text={selectedNetwork.chainName}
-            position='right'
-          >
-            <SelectNetworkButton
-              onClick={navigate('networks')}
-              selectedNetwork={selectedNetwork}
-              isPanel={true}
-            />
-          </Tooltip>
+          <SelectNetworkButton
+            onClick={navigate('networks')}
+            selectedNetwork={selectedNetwork}
+            isPanel={true}
+          />
         </StatusRow>
 
         {showConnectButton ? (

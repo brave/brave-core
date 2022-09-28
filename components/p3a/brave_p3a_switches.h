@@ -17,7 +17,12 @@ constexpr char kP3ADoNotRandomizeUploadInterval[] =
     "p3a-do-not-randomize-upload-interval";
 
 // Interval between restarting the uploading process for all gathered values.
-constexpr char kP3ARotationIntervalSeconds[] = "p3a-rotation-interval-seconds";
+constexpr char kP3ATypicalRotationIntervalSeconds[] =
+    "p3a-rotation-interval-seconds";
+
+// Interval between restarting the uploading process for all gathered values.
+constexpr char kP3AExpressRotationIntervalSeconds[] =
+    "p3a-express-rotation-interval-seconds";
 
 // P3A cloud backend URL.
 constexpr char kP3AUploadServerUrl[] = "p3a-upload-server-url";

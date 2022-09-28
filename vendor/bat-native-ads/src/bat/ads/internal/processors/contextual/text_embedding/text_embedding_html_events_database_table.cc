@@ -216,7 +216,7 @@ void TextEmbeddingHtmlEvents::MigrateToV25(
   DCHECK(transaction);
 
   const std::string& query = base::StringPrintf(
-      "CREATE TABLE text_embedding_html_events "
+      "CREATE TABLE IF NOT EXISTS text_embedding_html_events "
       "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
       "created_at TIMESTAMP NOT NULL, "
       "locale TEXT NOT NULL, "

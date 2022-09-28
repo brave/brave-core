@@ -11,6 +11,7 @@
 
 #include "base/callback.h"
 #include "base/memory/ref_counted.h"
+#include "brave/components/p3a/metric_log_type.h"
 #include "url/gurl.h"
 
 namespace network {
@@ -20,14 +21,22 @@ class SimpleURLLoader;
 
 namespace brave {
 
+constexpr char kP2AUploadType[] = "p2a";
+constexpr char kP3AUploadType[] = "p3a";
+constexpr char kP3ACreativeUploadType[] = "p3a_creative";
+
 // Handle uploading logged metrics to the correct endpoints.
 class BraveP3AUploader {
  public:
-  using UploadCallback = base::RepeatingCallback<void(int, int, bool)>;
+  using UploadCallback = base::RepeatingCallback<void(int response_code,
+                                                      int error_code,
+                                                      bool was_https,
+                                                      MetricLogType log_type)>;
 
   BraveP3AUploader(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       const GURL& p3a_endpoint,
+      const GURL& p3a_creative_endpoint,
       const GURL& p2a_endpoint,
       const UploadCallback& on_upload_complete);
 
@@ -38,13 +47,16 @@ class BraveP3AUploader {
 
   // From metrics::MetricsLogUploader
   void UploadLog(const std::string& compressed_log_data,
-                 const std::string& upload_type);
+                 const std::string& upload_type,
+                 MetricLogType log_type);
 
-  void OnUploadComplete(std::unique_ptr<std::string> response_body);
+  void OnUploadComplete(MetricLogType log_type,
+                        std::unique_ptr<std::string> response_body);
 
  private:
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   const GURL p3a_endpoint_;
+  const GURL p3a_creative_endpoint_;
   const GURL p2a_endpoint_;
   const UploadCallback on_upload_complete_;
   std::unique_ptr<network::SimpleURLLoader> url_loader_;

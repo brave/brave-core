@@ -75,7 +75,7 @@ function TreeList (props: Props) {
           onClick={() => setViewType?.(ViewType.Main)}
         >
           <svg fill="currentColor" viewBox="0 0 32 32" aria-hidden="true"><path d="M28 15H6.28l4.85-5.25a1 1 0 0 0-.05-1.42 1 1 0 0 0-1.41.06l-6.4 6.93a.7.7 0 0 0-.1.16.75.75 0 0 0-.09.15 1 1 0 0 0 0 .74.75.75 0 0 0 .09.15.7.7 0 0 0 .1.16l6.4 6.93a1 1 0 0 0 1.41.06 1 1 0 0 0 .05-1.42L6.28 17H28a1 1 0 0 0 0-2z"/></svg>
-          <span>{getLocale('braveShields').replace('Brave ', '').trim()}</span>
+          <span>{getLocale('braveShieldsStandalone')}</span>
         </Button>
       </S.Footer>
     </S.Box>
