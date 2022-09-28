@@ -34,11 +34,6 @@ struct FilterListsView: View {
       
     }.navigationTitle(Strings.filterLists)
   }
-  
-  /// Get an index for the given filter list.
-  func getIndex(for filterList: FilterList) -> Int? {
-    return downloader.filterLists.firstIndex(where: { $0.id == filterList.id })
-  }
 }
 
 #if DEBUG
