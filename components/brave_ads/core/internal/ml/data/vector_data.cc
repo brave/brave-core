@@ -11,6 +11,7 @@
 
 #include "base/check_op.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 
 namespace brave_ads::ml {
@@ -91,6 +92,20 @@ VectorData::VectorData(int dimension_count,
   }
   storage_ = std::make_unique<VectorDataStorage>(
       dimension_count, std::move(points), std::move(values));
+}
+
+VectorData::VectorData(std::string& string) : Data(DataType::kVector) {
+  std::vector<std::string> vector_string = base::SplitString(
+      string, " ", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  std::vector<float> vector;
+  for (const std::string& element_string : vector_string) {
+    double element;
+    base::StringToDouble(element_string, &element);
+    vector.push_back(element);
+  }
+
+  storage_ = std::make_unique<VectorDataStorage>(
+      vector.size(), std::vector<uint32_t>(), std::move(vector));
 }
 
 VectorData::~VectorData() = default;
@@ -190,6 +205,10 @@ void VectorData::Normalize() {
       entry /= vector_length;
     }
   }
+}
+
+float VectorData::ComputeSimilarity(const VectorData& v_sim) const {
+  return 0.5;
 }
 
 int VectorData::GetDimensionCount() const {

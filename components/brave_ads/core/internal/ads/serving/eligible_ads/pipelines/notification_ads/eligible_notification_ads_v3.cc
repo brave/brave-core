@@ -8,7 +8,7 @@
 #include "absl/types/optional.h"
 #include "base/bind.h"
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
-#include "bat/ads/internal/ads/serving/choose/predict_ad.h"
+#include "bat/ads/internal/ads/serving/choose/predict_ad_embeddings.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rules_util.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/notification_ads/notification_ad_exclusion_rules.h"
 #include "bat/ads/internal/ads/serving/serving_features.h"
@@ -88,20 +88,19 @@ void EligibleAdsV3::GetEligibleAds(
       return;
     }
 
-    // TODO(lminto): Figure out how to subclass PredictAd (that way we can use v2's interface directly)
-    //               as we only need to change the prediction function (and prevent the reporting to p2a)
-    const absl::optional<CreativeNotificationAdInfo> creative_ad =
-        PredictAd(user_model, ad_events, eligible_creative_ads);
-    if (!creative_ad) {
-      BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
-      callback(/*had_opportunity*/ false, {});
-      return;
-    }
+    PredictAdEmbeddings<CreativeNotificationAdInfo>(user_model, ad_events, eligible_creative_ads,
+        [=](const absl::optional<CreativeNotificationAdInfo> creative_ad) {
+          if (!creative_ad) {
+            BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
+            callback(/*had_opportunity*/ false, {});
+            return;
+          }
 
-    BLOG(1, eligible_creative_ads.size()
-                << " eligible ads out of " << creative_ads.size() << " ads");
+          BLOG(1, eligible_creative_ads.size()
+                      << " eligible ads out of " << creative_ads.size() << " ads");
 
-    callback(/*had_opportunity*/ false, {*creative_ad});
+          callback(/*had_opportunity*/ false, {*creative_ad});
+      });
   });
 }
 
