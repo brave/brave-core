@@ -18,13 +18,13 @@
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/renderer/resource_helper.h"
-#include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
@@ -41,7 +41,7 @@ using brave_wallet::mojom::SolanaProviderError;
 
 namespace {
 
-static base::NoDestructor<std::string> g_provider_internal_script("");
+static base::NoDestructor<std::string> g_provider_solana_web3_script("");
 
 // error returns from browser process
 constexpr char kErrorMessage[] = "error from browser";
@@ -171,6 +171,16 @@ std::string ConnectScript(const std::string& args) {
           }
         } connect())",
       args.c_str());
+}
+
+std::string CreateTransactionScript(const std::vector<uint8_t>& serialized_tx) {
+  const std::string serialized_tx_str = VectorToArrayString(serialized_tx);
+  return base::StringPrintf(
+      R"((function() {
+          %s
+          return solanaWeb3.Transaction.from(new Uint8Array([%s]))
+         })())",
+      g_provider_solana_web3_script->c_str(), serialized_tx_str.c_str());
 }
 
 std::string SignTransactionScript(const std::string& args) {
@@ -527,10 +537,10 @@ class SolanaProviderRendererTest : public InProcessBrowserTest {
     ASSERT_TRUE(base::FeatureList::IsEnabled(
         brave_wallet::features::kNativeBraveWalletFeature));
 
-    // setup _brave_solana
-    if (g_provider_internal_script->empty()) {
-      *g_provider_internal_script = brave_wallet::LoadDataResource(
-          IDR_BRAVE_WALLET_SCRIPT_SOLANA_PROVIDER_INTERNAL_SCRIPT_BUNDLE_JS);
+    // load solana web3 script
+    if (g_provider_solana_web3_script->empty()) {
+      *g_provider_solana_web3_script =
+          brave_wallet::LoadDataResource(IDR_BRAVE_WALLET_SOLANA_WEB3_JS);
     }
   }
 
@@ -541,14 +551,6 @@ class SolanaProviderRendererTest : public InProcessBrowserTest {
   void ReloadAndWaitForLoadStop(Browser* browser) {
     chrome::Reload(browser, WindowOpenDisposition::CURRENT_TAB);
     ASSERT_TRUE(content::WaitForLoadStop(web_contents(browser)));
-  }
-
-  void LoadInternalScriptForCreatingTestData() {
-    constexpr char BypassSafeBuiltins[] = "$Object = Object";
-    // Bypass loading safe builtins because we only use this script to create
-    // test data.
-    ASSERT_TRUE(ExecJs(web_contents(browser()), BypassSafeBuiltins));
-    ASSERT_TRUE(ExecJs(web_contents(browser()), *g_provider_internal_script));
   }
 
  protected:
@@ -645,19 +647,6 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, NonWritable) {
       EXPECT_EQ(base::Value(true), result.value) << result.error;
     }
   }
-  // window._brave_solana.* (methods)
-  for (const std::string& method : {"createPublickey", "createTransaction"}) {
-    auto result = EvalJs(web_contents(browser()),
-                         NonWriteableScriptMethod("_brave_solana", method),
-                         content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
-    EXPECT_EQ(base::Value(true), result.value) << result.error;
-  }
-  // We don't allow adding new property to window._brave_solana
-  auto result =
-      EvalJs(web_contents(browser()),
-             NonWriteableScriptProperty("_brave_solana", "newProperty"),
-             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
-  EXPECT_EQ(base::Value(true), result.value) << result.error;
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, IsPhantomAndIsBraveWallet) {
@@ -783,11 +772,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Disconnect) {
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignTransaction) {
-  LoadInternalScriptForCreatingTestData();
-  const std::string serialized_tx_str = VectorToArrayString(kSerializedTx);
   const std::string tx =
-      base::StrCat({"(window._brave_solana.createTransaction(new Uint8Array([",
-                    serialized_tx_str, "])))"});
+      base::StrCat({"(", CreateTransactionScript(kSerializedTx), ")"});
   auto result = EvalJs(web_contents(browser()), SignTransactionScript(tx),
                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(true), result.value);
@@ -829,21 +815,16 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignTransaction) {
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAllTransactions) {
-  LoadInternalScriptForCreatingTestData();
-  const std::string serialized_tx_str = VectorToArrayString(kSerializedTx);
-  const std::string txs = base::StrCat(
-      {"([window._brave_solana.createTransaction(new Uint8Array([",
-       serialized_tx_str,
-       "])), window._brave_solana.createTransaction(new Uint8Array([",
-       serialized_tx_str, "]))])"});
+  const std::string txs =
+      base::StrCat({"([", CreateTransactionScript(kSerializedTx), ",",
+                    CreateTransactionScript(kSerializedTx), "])"});
   auto result = EvalJs(web_contents(browser()), SignAllTransactionsScript(txs),
                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(true), result.value);
 
   // allow extra parameters
   const std::string txs2 =
-      base::StrCat({"([window._brave_solana.createTransaction(new Uint8Array([",
-                    serialized_tx_str, "]))], 1234)"});
+      base::StrCat({"([", CreateTransactionScript(kSerializedTx), "], 1234)"});
   auto result2 =
       EvalJs(web_contents(browser()), SignAllTransactionsScript(txs2),
              content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
@@ -867,8 +848,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAllTransactions) {
 
   // not entirely solanaWeb3.Transaction[]
   const std::string txs3 =
-      base::StrCat({"([window._brave_solana.createTransaction(new Uint8Array([",
-                    serialized_tx_str, "])), 1234])"});
+      base::StrCat({"([", CreateTransactionScript(kSerializedTx), ", 1234])"});
   auto result5 =
       EvalJs(web_contents(browser()), SignAllTransactionsScript("({})"),
              content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
@@ -891,15 +871,12 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAllTransactions) {
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAndSendTransaction) {
-  LoadInternalScriptForCreatingTestData();
-  const std::string serialized_tx_str = VectorToArrayString(kSerializedTx);
   const std::string send_options =
       R"({"maxRetries": 9007199254740991,
           "preflightCommitment": "confirmed",
           "skipPreflight": true})";
-  const std::string tx_with_send_options =
-      base::StrCat({"(window._brave_solana.createTransaction(new Uint8Array([",
-                    serialized_tx_str, "])), ", send_options, ")"});
+  const std::string tx_with_send_options = base::StrCat(
+      {"(", CreateTransactionScript(kSerializedTx), ",", send_options, ")"});
 
   TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
       web_contents(browser())->GetPrimaryMainFrame());
@@ -915,8 +892,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAndSendTransaction) {
 
   provider->SetSendOptions(absl::nullopt);
   const std::string tx =
-      base::StrCat({"(window._brave_solana.createTransaction(new Uint8Array([",
-                    serialized_tx_str, "])))"});
+      base::StrCat({"(", CreateTransactionScript(kSerializedTx), ")"});
 
   for (const std::string& valid_case :
        {tx, base::StrCat({"(", tx, ", undefined, {})"}),
@@ -1103,9 +1079,6 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, NonConfigurable) {
   EXPECT_TRUE(
       content::EvalJs(web_contents(browser()), NonConfigurableScript("solana"))
           .ExtractBool());
-  EXPECT_TRUE(content::EvalJs(web_contents(browser()),
-                              NonConfigurableScript("_brave_solana"))
-                  .ExtractBool());
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Iframe3P) {
@@ -1277,35 +1250,4 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SecureContextOnly) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   main_frame = web_contents(browser())->GetPrimaryMainFrame();
   EXPECT_TRUE(content::EvalJs(main_frame, kEvalSolana).ExtractBool());
-}
-
-IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SafeBuiltins) {
-  // defineProperties
-  auto result = EvalJs(web_contents(browser()), R"(
-    async function test() {
-      Object.defineProperties = ()=>{}
-      await window.braveSolana.connect()
-      window._brave_solana.createPublickey = ()=>'0x00'
-      window.domAutomationController.send(
-        window._brave_solana.createPublickey('5STiJLNtCLiNaeD6vwrEfvikNi9NbfVpEbxU7KrUv4uo').toString())
-    } test())",
-                       content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
-  EXPECT_EQ(base::Value("5STiJLNtCLiNaeD6vwrEfvikNi9NbfVpEbxU7KrUv4uo"),
-            result.value);
-
-  ReloadAndWaitForLoadStop(browser());
-
-  // freeze
-  auto result2 = EvalJs(web_contents(browser()), R"(
-    async function test() {
-      Object.freeze = ()=>{}
-      await window.braveSolana.connect()
-      window._brave_solana.abc = 123
-      if (window._brave_solana.abc === 123)
-        window.domAutomationController.send(false)
-      else
-        window.domAutomationController.send(true)
-    } test())",
-                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
-  EXPECT_EQ(base::Value(true), result2.value);
 }
