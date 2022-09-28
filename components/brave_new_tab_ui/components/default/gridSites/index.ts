@@ -13,7 +13,7 @@ export const TileTitle = styled('p')<{}>`
   line-height: 17px;
   max-width: 100%;
   height: 17px;
-  color: white;
+  color: var(--override-readability-color, white);
   padding: 0 2px;
   overflow: hidden;
   white-space: nowrap;
