@@ -455,7 +455,7 @@ describe('useSwap hook', () => {
             ...mockAccount,
             nativeBalanceRegistry: {
               [BraveWallet.MAINNET_CHAIN_ID]: '1000000000000000000', // 1 ETH
-              [BraveWallet.ROPSTEN_CHAIN_ID]: '1000000000000000000' // 1 ETH
+              [BraveWallet.GOERLI_CHAIN_ID]: '1000000000000000000' // 1 ETH
             },
             tokenBalanceRegistry: {
               [USDC.contractAddress.toLowerCase()]: '20000000000000000000' // 20 BAT
