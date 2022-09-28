@@ -396,7 +396,7 @@ Config.prototype.buildArgs = function () {
       this.getTargetOS() === 'win') {
     // Minimal symbols to work around size restrictions:
     // On Linux x86, ELF32 cannot be > 4GiB.
-    // On Windows, chrome.dll.pdb sometimes becomes 4 GiB and llvm-pdbutil on
+    // On Windows, chrome.dll.pdb sometimes becomes > 4 GiB and llvm-pdbutil on
     // that file errors out with "The data is in an unexpected format. Too many
     // directory blocks". Associated llvm issue:
     // https://github.com/llvm/llvm-project/issues/54445
