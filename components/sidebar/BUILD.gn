@@ -38,6 +38,7 @@ source_set("unit_tests") {
     deps = [
       "//base",
       "//base/test:test_support",
+      "//brave/components/playlist:playlist_features",
       "//brave/components/sidebar",
       "//components/prefs",
       "//components/prefs:test_support",

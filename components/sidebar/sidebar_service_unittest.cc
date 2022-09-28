@@ -8,6 +8,8 @@
 
 #include "base/containers/contains.h"
 #include "base/ranges/algorithm.h"
+#include "base/test/scoped_feature_list.h"
+#include "brave/components/playlist/features.h"
 #include "brave/components/sidebar/constants.h"
 #include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
@@ -19,6 +21,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 using ::testing::Eq;
+using ::testing::NiceMock;
 using ::testing::Optional;
 using version_info::Channel;
 
@@ -70,7 +73,7 @@ class SidebarServiceTest : public testing::Test {
   }
 
   TestingPrefServiceSimple prefs_;
-  MockSidebarServiceObserver observer_;
+  NiceMock<MockSidebarServiceObserver> observer_;
   std::unique_ptr<SidebarService> service_;
 };
 
@@ -676,6 +679,49 @@ TEST_F(SidebarServiceTest, SidebarShowOptionsDefaultTestNonStable) {
   InitService();
   EXPECT_EQ(SidebarService::ShowSidebarOption::kShowAlways,
             service_->GetSidebarShowOption());
+}
+
+class SidebarServiceTestWithPlaylist : public SidebarServiceTest {
+ public:
+  SidebarServiceTestWithPlaylist() {
+    scoped_feature_list_.InitAndEnableFeature(playlist::features::kPlaylist);
+  }
+  ~SidebarServiceTestWithPlaylist() override = default;
+
+  bool SidebarHasDefaultPanelItem() const {
+    const auto items = service_->items();
+    auto iter = base::ranges::find_if(items, [](const SidebarItem& item) {
+      return item.type == SidebarItem::Type::kTypeBuiltIn && item.open_in_panel;
+    });
+    return iter != items.end();
+  }
+
+  void RemoveAnySidebarPanelItem() {
+    const auto items = service_->items();
+    auto iter = base::ranges::find_if(items, [](const SidebarItem& item) {
+      return item.type == SidebarItem::Type::kTypeBuiltIn && item.open_in_panel;
+    });
+    if (iter == items.end())
+      return;
+
+    const int index = std::distance(items.begin(), iter);
+    service_->RemoveItemAt(index);
+  }
+
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+// Check GetDefaultPanelItem() returns valid panel item.
+TEST_F(SidebarServiceTestWithPlaylist, GetDefaultPanelItem) {
+  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::BETA);
+  InitService();
+
+  while (SidebarHasDefaultPanelItem()) {
+    EXPECT_TRUE(service_->GetDefaultPanelItem());
+    RemoveAnySidebarPanelItem();
+  }
+
+  EXPECT_FALSE(service_->GetDefaultPanelItem());
 }
 
 }  // namespace sidebar
