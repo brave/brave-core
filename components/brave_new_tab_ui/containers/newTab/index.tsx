@@ -19,7 +19,8 @@ import {
   CryptoDotComWidget as CryptoDotCom,
   EditTopSite,
   SearchPromotion,
-  EditCards
+  EditCards,
+  OverrideReadabilityColor
 } from '../../components/default'
 import { FTXWidget as FTX } from '../../widgets/ftx/components'
 import * as Page from '../../components/default/page'
@@ -40,7 +41,7 @@ import {
   fetchCryptoDotComSupportedPairs
 } from '../../api/cryptoDotCom'
 import { generateQRData } from '../../binance-utils'
-import * as ColorUtil from '../../helpers/colorUtil'
+import isReadableOnBackground from '../../helpers/colorUtil'
 
 // Types
 import { GeminiAssetAddress } from '../../actions/gemini_actions'
@@ -55,7 +56,6 @@ import { FTXState } from '../../widgets/ftx/ftx_state'
 import Settings, { TabType as SettingsTabType } from './settings'
 import { MAX_GRID_SIZE } from '../../constants/new_tab_ui'
 import GridWidget from './gridWidget'
-import isReadableOnBackground from '../../helpers/colorUtil'
 
 interface Props {
   newTabData: NewTab.State
@@ -187,8 +187,6 @@ class NewTabPage extends React.Component<Props, State> {
       forceToHideWidget: GetShouldForceToHideWidget(this.props, searchPromotionEnabled)
     })
     window.addEventListener('resize', this.handleResize.bind(this))
-
-    this.updateOverrideReadabilityColor()
   }
 
   componentWillUnmount () {
@@ -222,28 +220,10 @@ class NewTabPage extends React.Component<Props, State> {
         !GetShouldShowBrandedWallpaperNotification(this.props)) {
       this.stopWaitingForBrandedWallpaperNotificationAutoDismiss()
     }
-
-    if (prevProps.newTabData.readabilityThreshold !== this.props.newTabData.readabilityThreshold ||
-        this.shouldOverrideReadabilityColor(prevProps.newTabData) !== this.shouldOverrideReadabilityColor(this.props.newTabData)) {
-      if (this.props.newTabData.readabilityThreshold) {
-        ColorUtil.setThresholdForReadability(this.props.newTabData.readabilityThreshold)
-      }
-      this.updateOverrideReadabilityColor()
-    }
   }
 
   shouldOverrideReadabilityColor (newTabData: NewTab.State) {
     return !newTabData.brandedWallpaper && newTabData.backgroundWallpaper?.type === 'color' && !isReadableOnBackground(newTabData.backgroundWallpaper)
-  }
-
-  updateOverrideReadabilityColor () {
-    if (this.shouldOverrideReadabilityColor(this.props.newTabData)) {
-      document.body.style.setProperty('--override-readability-color-rgb', '0, 0, 0')
-      document.body.style.setProperty('--override-readability-color', 'rgb(0, 0, 0)')
-    } else {
-      document.body.style.removeProperty('--override-readability-color-rgb')
-      document.body.style.removeProperty('--override-readability-color')
-    }
   }
 
   handleResize () {
@@ -1195,6 +1175,7 @@ class NewTabPage extends React.Component<Props, State> {
         imageHasLoaded={this.state.backgroundHasLoaded}
         colorForBackground={colorForBackground}
         data-show-news-prompt={((this.state.backgroundHasLoaded || colorForBackground) && this.state.isPromptingBraveToday) ? true : undefined}>
+        <OverrideReadabilityColor override={ this.shouldOverrideReadabilityColor(this.props.newTabData) } />
         <Page.Page
             hasImage={hasImage}
             imageSrc={this.imageSource}

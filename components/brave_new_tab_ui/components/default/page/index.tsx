@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import styled, { css } from 'styled-components'
+import styled, { createGlobalStyle, css } from 'styled-components'
 import { requestAnimationFrameThrottle } from '../../../../common/throttle'
 
 const breakpointLargeBlocks = '980px'
@@ -475,5 +475,18 @@ export const IconButtonContainer = styled('div')<IconButtonContainerProps>`
 
   &:hover {
     color: ${p => p.color};
+  }
+`
+
+export const OverrideReadabilityColor = createGlobalStyle<{override: boolean}>`
+  body {
+    ${p => p.override && css`
+      --override-readability-color-rgb: 0, 0, 0;
+      --override-readability-color: rgb(0, 0, 0);
+      
+      // override color property in resets.css. Not sure why this happens but,
+      // the value in the stylesheet wins over variables above.
+      color: inherit
+    `}
   }
 `
