@@ -72,7 +72,7 @@ const char token_list_json[] = R"(
    }
   })";
 
-const char ropsten_list_json[] = R"(
+const char goerli_list_json[] = R"(
   {
    "0x6B175474E89094C44Da98b954EedeAC495271d0F": {
     "name": "USD Coin",
@@ -81,7 +81,7 @@ const char ropsten_list_json[] = R"(
     "erc721": false,
     "symbol": "USDC",
     "decimals": 6,
-    "chainId": "0x2a"
+    "chainId": "0x5"
    },
    "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d": {
      "name": "Crypto Kitties",
@@ -90,7 +90,7 @@ const char ropsten_list_json[] = R"(
      "erc721": true,
      "symbol": "CK",
      "decimals": 0,
-     "chainId": "0x2a"
+     "chainId": "0x5"
    },
    "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984": {
      "name": "Uniswap",
@@ -98,7 +98,7 @@ const char ropsten_list_json[] = R"(
      "erc20": true,
      "symbol": "UNI",
      "decimals": 18,
-     "chainId": "0x2a"
+     "chainId": "0x5"
    }
   })";
 
@@ -273,7 +273,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
     TokenListMap token_list_map;
     ASSERT_TRUE(
         ParseTokenList(token_list_json, &token_list_map, mojom::CoinType::ETH));
-    ASSERT_TRUE(ParseTokenList(ropsten_list_json, &token_list_map,
+    ASSERT_TRUE(ParseTokenList(goerli_list_json, &token_list_map,
                                mojom::CoinType::ETH));
     ASSERT_TRUE(ParseTokenList(solana_token_list_json, &token_list_map,
                                mojom::CoinType::SOL));
@@ -656,7 +656,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
     EXPECT_EQ(requests[0]->token, expected_token);
 
     if (run_switch_network) {
-      json_rpc_service_->SetNetwork(mojom::kRopstenChainId,
+      json_rpc_service_->SetNetwork(mojom::kGoerliChainId,
                                     mojom::CoinType::ETH);
     } else {
       service_->NotifyAddSuggestTokenRequestsProcessed(
@@ -721,14 +721,14 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAssets) {
   EXPECT_EQ(tokens[0], GetEthToken());
   EXPECT_EQ(tokens[1], GetBatToken());
 
-  // Create ETH token with 0x3 chain_id.
-  mojom::BlockchainTokenPtr eth_0x3_token = GetEthToken();
-  eth_0x3_token->chain_id = "0x3";
+  // Create ETH token with 0x5 chain_id.
+  mojom::BlockchainTokenPtr eth_0x5_token = GetEthToken();
+  eth_0x5_token->chain_id = "0x5";
 
   // ETH should be returned before any token is added.
-  GetUserAssets("0x3", mojom::CoinType::ETH, &tokens);
+  GetUserAssets("0x5", mojom::CoinType::ETH, &tokens);
   EXPECT_EQ(tokens.size(), 1u);
-  EXPECT_EQ(tokens[0], eth_0x3_token);
+  EXPECT_EQ(tokens[0], eth_0x5_token);
 
   // Prepare tokens to add.
   mojom::BlockchainTokenPtr token1 = GetToken1();
@@ -741,15 +741,15 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAssets) {
   // Adding token with lower case contract address should be converted to
   // checksum address.
   auto unchecked_token = token1.Clone();
-  unchecked_token->chain_id = "0x4";
+  unchecked_token->chain_id = "0xaa36a7";
   unchecked_token->contract_address =
       base::ToLowerASCII(unchecked_token->contract_address);
   AddUserAsset(std::move(unchecked_token), &success);
   EXPECT_TRUE(success);
 
-  auto token2_0x4 = token2.Clone();
-  token2_0x4->chain_id = "0x4";
-  AddUserAsset(token2_0x4.Clone(), &success);
+  auto token2_0xaa36a7 = token2.Clone();
+  token2_0xaa36a7->chain_id = "0xaa36a7";
+  AddUserAsset(token2_0xaa36a7.Clone(), &success);
   EXPECT_TRUE(success);
 
   // Create Token1 with 0x1 chain_id.
@@ -762,23 +762,23 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAssets) {
   EXPECT_EQ(GetBatToken(), tokens[1]);
   EXPECT_EQ(token1_0x1, tokens[2]);
 
-  // Create Tokens with 0x4 chain_id.
-  mojom::BlockchainTokenPtr eth_0x4_token = GetEthToken();
-  eth_0x4_token->chain_id = "0x4";
-  mojom::BlockchainTokenPtr token1_0x4 = token1.Clone();
-  token1_0x4->chain_id = "0x4";
+  // Create Tokens with 0xaa36a7 chain_id.
+  mojom::BlockchainTokenPtr eth_0xaa36a7_token = GetEthToken();
+  eth_0xaa36a7_token->chain_id = "0xaa36a7";
+  mojom::BlockchainTokenPtr token1_0xaa36a7 = token1.Clone();
+  token1_0xaa36a7->chain_id = "0xaa36a7";
 
-  GetUserAssets("0x4", mojom::CoinType::ETH, &tokens);
+  GetUserAssets("0xaa36a7", mojom::CoinType::ETH, &tokens);
   EXPECT_EQ(tokens.size(), 3u);
-  EXPECT_EQ(eth_0x4_token, tokens[0]);
-  EXPECT_EQ(token1_0x4, tokens[1]);
-  EXPECT_EQ(token2_0x4, tokens[2]);
+  EXPECT_EQ(eth_0xaa36a7_token, tokens[0]);
+  EXPECT_EQ(token1_0xaa36a7, tokens[1]);
+  EXPECT_EQ(token2_0xaa36a7, tokens[2]);
 
-  // Remove token1 from "0x1" and token2 from "0x4" and test GetUserAssets.
+  // Remove token1 from "0x1" and token2 from "0xaa36a7" and test GetUserAssets.
   RemoveUserAsset(token1_0x1.Clone(), &success);
   EXPECT_TRUE(success);
 
-  RemoveUserAsset(token2_0x4.Clone(), &success);
+  RemoveUserAsset(token2_0xaa36a7.Clone(), &success);
   EXPECT_TRUE(success);
 
   GetUserAssets("0x1", mojom::CoinType::ETH, &tokens);
@@ -786,10 +786,10 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAssets) {
   EXPECT_EQ(tokens[0], GetEthToken());
   EXPECT_EQ(tokens[1], GetBatToken());
 
-  GetUserAssets("0x4", mojom::CoinType::ETH, &tokens);
+  GetUserAssets("0xaa36a7", mojom::CoinType::ETH, &tokens);
   EXPECT_EQ(tokens.size(), 2u);
-  EXPECT_EQ(eth_0x4_token, tokens[0]);
-  EXPECT_EQ(token1_0x4, tokens[1]);
+  EXPECT_EQ(eth_0xaa36a7_token, tokens[0]);
+  EXPECT_EQ(token1_0xaa36a7, tokens[1]);
 }
 
 TEST_F(BraveWalletServiceUnitTest, DefaultAssets) {
@@ -849,7 +849,7 @@ TEST_F(BraveWalletServiceUnitTest, AddUserAsset) {
   // already should fail, in this case, it was eth.
   auto token_with_empty_contract_address = token.Clone();
   token_with_empty_contract_address->contract_address = "";
-  token_with_empty_contract_address->chain_id = "0x4";
+  token_with_empty_contract_address->chain_id = "0xaa36a7";
   AddUserAsset(std::move(token_with_empty_contract_address), &success);
   EXPECT_FALSE(success);
 
@@ -885,26 +885,26 @@ TEST_F(BraveWalletServiceUnitTest, AddUserAsset) {
   AddUserAsset(token_with_unchecked_address.Clone(), &success);
   EXPECT_FALSE(success);
 
-  // Create Tokens with 0x4 chain_id.
-  mojom::BlockchainTokenPtr eth_0x4_token = GetEthToken();
-  eth_0x4_token->chain_id = "0x4";
-  mojom::BlockchainTokenPtr token1_0x4 = GetToken1();
-  token1_0x4->chain_id = "0x4";
+  // Create Tokens with 0xaa36a7 chain_id.
+  mojom::BlockchainTokenPtr eth_0xaa36a7_token = GetEthToken();
+  eth_0xaa36a7_token->chain_id = "0xaa36a7";
+  mojom::BlockchainTokenPtr token1_0xaa36a7 = GetToken1();
+  token1_0xaa36a7->chain_id = "0xaa36a7";
 
   // Adding token with same address in a different chain will succeed.
   // And the address will be converted to checksum address.
-  GetUserAssets("0x4", mojom::CoinType::ETH, &tokens);
+  GetUserAssets("0xaa36a7", mojom::CoinType::ETH, &tokens);
   EXPECT_EQ(tokens.size(), 1u);
-  EXPECT_EQ(tokens[0], eth_0x4_token);
+  EXPECT_EQ(tokens[0], eth_0xaa36a7_token);
 
-  token_with_unchecked_address->chain_id = "0x4";
+  token_with_unchecked_address->chain_id = "0xaa36a7";
   AddUserAsset(token_with_unchecked_address.Clone(), &success);
   EXPECT_TRUE(success);
 
-  GetUserAssets("0x4", mojom::CoinType::ETH, &tokens);
+  GetUserAssets("0xaa36a7", mojom::CoinType::ETH, &tokens);
   EXPECT_EQ(tokens.size(), 2u);
-  EXPECT_EQ(tokens[0], eth_0x4_token);
-  EXPECT_EQ(tokens[1], token1_0x4);
+  EXPECT_EQ(tokens[0], eth_0xaa36a7_token);
+  EXPECT_EQ(tokens[1], token1_0xaa36a7);
 }
 
 TEST_F(BraveWalletServiceUnitTest, RemoveUserAsset) {
@@ -914,10 +914,10 @@ TEST_F(BraveWalletServiceUnitTest, RemoveUserAsset) {
   token1_0x1->chain_id = "0x1";
   mojom::BlockchainTokenPtr token2_0x1 = GetToken2();
   token2_0x1->chain_id = "0x1";
-  mojom::BlockchainTokenPtr token2_0x4 = GetToken2();
-  token2_0x4->chain_id = "0x4";
-  mojom::BlockchainTokenPtr eth_0x4_token = GetEthToken();
-  eth_0x4_token->chain_id = "0x4";
+  mojom::BlockchainTokenPtr token2_0xaa36a7 = GetToken2();
+  token2_0xaa36a7->chain_id = "0xaa36a7";
+  mojom::BlockchainTokenPtr eth_0xaa36a7_token = GetEthToken();
+  eth_0xaa36a7_token->chain_id = "0xaa36a7";
 
   bool success = false;
   std::vector<mojom::BlockchainTokenPtr> tokens;
@@ -929,7 +929,7 @@ TEST_F(BraveWalletServiceUnitTest, RemoveUserAsset) {
   AddUserAsset(token2.Clone(), &success);
   EXPECT_TRUE(success);
 
-  AddUserAsset(token2_0x4.Clone(), &success);
+  AddUserAsset(token2_0xaa36a7.Clone(), &success);
   EXPECT_TRUE(success);
 
   GetUserAssets("0x1", mojom::CoinType::ETH, &tokens);
@@ -939,10 +939,10 @@ TEST_F(BraveWalletServiceUnitTest, RemoveUserAsset) {
   EXPECT_EQ(tokens[2], token1_0x1);
   EXPECT_EQ(tokens[3], token2_0x1);
 
-  GetUserAssets("0x4", mojom::CoinType::ETH, &tokens);
+  GetUserAssets("0xaa36a7", mojom::CoinType::ETH, &tokens);
   EXPECT_EQ(tokens.size(), 2u);
-  EXPECT_EQ(tokens[0], eth_0x4_token);
-  EXPECT_EQ(tokens[1], token2_0x4);
+  EXPECT_EQ(tokens[0], eth_0xaa36a7_token);
+  EXPECT_EQ(tokens[1], token2_0xaa36a7);
 
   // Remove token with invalid contract_address returns false.
   auto invalid_eth_token = GetEthToken().Clone();
@@ -963,9 +963,9 @@ TEST_F(BraveWalletServiceUnitTest, RemoveUserAsset) {
   EXPECT_FALSE(success);
 
   // Remove non-exist token returns true.
-  auto token1_0x4 = token1.Clone();
-  token1_0x4->chain_id = "0x4";
-  RemoveUserAsset(std::move(token1_0x4), &success);
+  auto token1_0xaa36a7 = token1.Clone();
+  token1_0xaa36a7->chain_id = "0xaa36a7";
+  RemoveUserAsset(std::move(token1_0xaa36a7), &success);
   EXPECT_TRUE(success);
 
   // Remove existing token.
@@ -993,10 +993,10 @@ TEST_F(BraveWalletServiceUnitTest, SetUserAssetVisible) {
   token1_0x1->chain_id = "0x1";
   mojom::BlockchainTokenPtr token2_0x1 = GetToken2();
   token2_0x1->chain_id = "0x1";
-  mojom::BlockchainTokenPtr token2_0x4 = GetToken2();
-  token2_0x4->chain_id = "0x4";
-  mojom::BlockchainTokenPtr eth_0x4_token = GetEthToken();
-  eth_0x4_token->chain_id = "0x4";
+  mojom::BlockchainTokenPtr token2_0xaa36a7 = GetToken2();
+  token2_0xaa36a7->chain_id = "0xaa36a7";
+  mojom::BlockchainTokenPtr eth_0xaa36a7_token = GetEthToken();
+  eth_0xaa36a7_token->chain_id = "0xaa36a7";
 
   bool success = false;
   std::vector<mojom::BlockchainTokenPtr> tokens;
@@ -1008,7 +1008,7 @@ TEST_F(BraveWalletServiceUnitTest, SetUserAssetVisible) {
   AddUserAsset(token2.Clone(), &success);
   EXPECT_TRUE(success);
 
-  AddUserAsset(token2_0x4.Clone(), &success);
+  AddUserAsset(token2_0xaa36a7.Clone(), &success);
   EXPECT_TRUE(success);
 
   GetUserAssets("0x1", mojom::CoinType::ETH, &tokens);
@@ -1018,10 +1018,10 @@ TEST_F(BraveWalletServiceUnitTest, SetUserAssetVisible) {
   EXPECT_EQ(tokens[2], token1_0x1);
   EXPECT_EQ(tokens[3], token2_0x1);
 
-  GetUserAssets("0x4", mojom::CoinType::ETH, &tokens);
+  GetUserAssets("0xaa36a7", mojom::CoinType::ETH, &tokens);
   EXPECT_EQ(tokens.size(), 2u);
-  EXPECT_EQ(tokens[0], eth_0x4_token);
-  EXPECT_EQ(tokens[1], token2_0x4);
+  EXPECT_EQ(tokens[0], eth_0xaa36a7_token);
+  EXPECT_EQ(tokens[1], token2_0xaa36a7);
 
   // Invalid contract_address return false.
   auto invalid_eth = GetEthToken();
@@ -1036,18 +1036,18 @@ TEST_F(BraveWalletServiceUnitTest, SetUserAssetVisible) {
   EXPECT_FALSE(success);
 
   // List for this network_id is not existed should return false.
-  auto token1_0x3 = token1.Clone();
-  token1_0x3->chain_id = "0x3";
-  SetUserAssetVisible(std::move(token1_0x3), false, &success);
+  auto token1_0x5 = token1.Clone();
+  token1_0x5->chain_id = "0x5";
+  SetUserAssetVisible(std::move(token1_0x5), false, &success);
   EXPECT_FALSE(success);
 
-  auto token1_0x4 = token1.Clone();
-  token1_0x4->chain_id = "0x4";
+  auto token1_0xaa36a7 = token1.Clone();
+  token1_0xaa36a7->chain_id = "0xaa36a7";
   // No entry with this contract address exists in the list.
-  SetUserAssetVisible(token1_0x4.Clone(), false, &success);
+  SetUserAssetVisible(token1_0xaa36a7.Clone(), false, &success);
   EXPECT_FALSE(success);
 
-  // Set visible to false for BAT & token1 in "0x1" and token2 in "0x4".
+  // Set visible to false for BAT & token1 in "0x1" and token2 in "0xaa36a7".
   SetUserAssetVisible(token1.Clone(), false, &success);
   EXPECT_TRUE(success);
 
@@ -1058,7 +1058,7 @@ TEST_F(BraveWalletServiceUnitTest, SetUserAssetVisible) {
   SetUserAssetVisible(std::move(BAT_lower_case_addr), false, &success);
   EXPECT_TRUE(success);
 
-  SetUserAssetVisible(token2_0x4.Clone(), false, &success);
+  SetUserAssetVisible(token2_0xaa36a7.Clone(), false, &success);
   EXPECT_TRUE(success);
 
   GetUserAssets("0x1", mojom::CoinType::ETH, &tokens);
@@ -1072,7 +1072,7 @@ TEST_F(BraveWalletServiceUnitTest, SetUserAssetVisible) {
   EXPECT_EQ(tokens[3]->contract_address, token2->contract_address);
   EXPECT_TRUE(tokens[3]->visible);
 
-  GetUserAssets("0x4", mojom::CoinType::ETH, &tokens);
+  GetUserAssets("0xaa36a7", mojom::CoinType::ETH, &tokens);
   EXPECT_EQ(tokens.size(), 2u);
   EXPECT_EQ(tokens[0]->contract_address, GetEthToken()->contract_address);
   EXPECT_TRUE(tokens[0]->visible);
@@ -1189,47 +1189,47 @@ TEST_F(BraveWalletServiceUnitTest, SelectedCoin) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, EthAddRemoveSetUserAssetVisible) {
-  mojom::BlockchainTokenPtr eth_0x4_token = GetEthToken();
-  eth_0x4_token->chain_id = "0x4";
+  mojom::BlockchainTokenPtr eth_0xaa36a7_token = GetEthToken();
+  eth_0xaa36a7_token->chain_id = "0xaa36a7";
   bool success = false;
   std::vector<mojom::BlockchainTokenPtr> tokens;
 
-  GetUserAssets("0x4", mojom::CoinType::ETH, &tokens);
+  GetUserAssets("0xaa36a7", mojom::CoinType::ETH, &tokens);
   EXPECT_EQ(tokens.size(), 1u);
-  EXPECT_EQ(eth_0x4_token, tokens[0]);
+  EXPECT_EQ(eth_0xaa36a7_token, tokens[0]);
 
   // Add ETH again will fail.
-  AddUserAsset(eth_0x4_token.Clone(), &success);
+  AddUserAsset(eth_0xaa36a7_token.Clone(), &success);
   EXPECT_FALSE(success);
 
   // Test setting visibility of ETH.
-  SetUserAssetVisible(eth_0x4_token.Clone(), false, &success);
+  SetUserAssetVisible(eth_0xaa36a7_token.Clone(), false, &success);
   EXPECT_TRUE(success);
 
-  GetUserAssets("0x4", mojom::CoinType::ETH, &tokens);
+  GetUserAssets("0xaa36a7", mojom::CoinType::ETH, &tokens);
   EXPECT_EQ(tokens.size(), 1u);
   EXPECT_FALSE(tokens[0]->visible);
 
   // Test removing ETH from user asset list.
-  RemoveUserAsset(eth_0x4_token.Clone(), &success);
+  RemoveUserAsset(eth_0xaa36a7_token.Clone(), &success);
   EXPECT_TRUE(success);
 
-  GetUserAssets("0x4", mojom::CoinType::ETH, &tokens);
+  GetUserAssets("0xaa36a7", mojom::CoinType::ETH, &tokens);
   EXPECT_TRUE(tokens.empty());
 
   // Add ETH with eth as the contract address will fail.
-  auto invalid_eth = eth_0x4_token.Clone();
+  auto invalid_eth = eth_0xaa36a7_token.Clone();
   invalid_eth->contract_address = "eth";
   AddUserAsset(std::move(invalid_eth), &success);
   EXPECT_FALSE(success);
 
   // Add ETH with empty contract address.
-  AddUserAsset(eth_0x4_token.Clone(), &success);
+  AddUserAsset(eth_0xaa36a7_token.Clone(), &success);
   EXPECT_TRUE(success);
 
-  GetUserAssets("0x4", mojom::CoinType::ETH, &tokens);
+  GetUserAssets("0xaa36a7", mojom::CoinType::ETH, &tokens);
   EXPECT_EQ(tokens.size(), 1u);
-  EXPECT_EQ(eth_0x4_token, tokens[0]);
+  EXPECT_EQ(eth_0xaa36a7_token, tokens[0]);
 }
 
 TEST_F(BraveWalletServiceUnitTest, NetworkListChangedEvent) {
@@ -1304,7 +1304,7 @@ TEST_F(BraveWalletServiceUnitTest, ERC721TokenAddRemoveSetUserAssetVisible) {
   std::vector<mojom::BlockchainTokenPtr> tokens;
 
   auto erc721_token_with_empty_token_id = GetErc721Token();
-  erc721_token_with_empty_token_id->chain_id = "0x4";
+  erc721_token_with_empty_token_id->chain_id = "0xaa36a7";
   auto erc721_token_1 = erc721_token_with_empty_token_id.Clone();
   erc721_token_1->token_id = "0x1";
   auto erc721_token_2 = erc721_token_with_empty_token_id.Clone();
@@ -1334,12 +1334,12 @@ TEST_F(BraveWalletServiceUnitTest, ERC721TokenAddRemoveSetUserAssetVisible) {
   AddUserAsset(erc721_token_2.Clone(), &success);
   EXPECT_TRUE(success);
 
-  mojom::BlockchainTokenPtr eth_0x4_token = GetEthToken();
-  eth_0x4_token->chain_id = "0x4";
+  mojom::BlockchainTokenPtr eth_0xaa36a7_token = GetEthToken();
+  eth_0xaa36a7_token->chain_id = "0xaa36a7";
 
-  GetUserAssets("0x4", mojom::CoinType::ETH, &tokens);
+  GetUserAssets("0xaa36a7", mojom::CoinType::ETH, &tokens);
   EXPECT_EQ(tokens.size(), 3u);
-  EXPECT_EQ(eth_0x4_token, tokens[0]);
+  EXPECT_EQ(eth_0xaa36a7_token, tokens[0]);
   EXPECT_EQ(erc721_token_1, tokens[1]);
   EXPECT_EQ(erc721_token_2, tokens[2]);
 
@@ -1351,9 +1351,9 @@ TEST_F(BraveWalletServiceUnitTest, ERC721TokenAddRemoveSetUserAssetVisible) {
 
   auto erc721_token_1_visible_false = erc721_token_1.Clone();
   erc721_token_1_visible_false->visible = false;
-  GetUserAssets("0x4", mojom::CoinType::ETH, &tokens);
+  GetUserAssets("0xaa36a7", mojom::CoinType::ETH, &tokens);
   EXPECT_EQ(tokens.size(), 2u);
-  EXPECT_EQ(eth_0x4_token, tokens[0]);
+  EXPECT_EQ(eth_0xaa36a7_token, tokens[0]);
   EXPECT_EQ(erc721_token_1_visible_false, tokens[1]);
 }
 
@@ -1450,13 +1450,13 @@ TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetEthContractAddress) {
     value.Set("decimals", 18);
     value.Set("visible", true);
     user_assets_list.Append(std::move(value));
-    user_assets_pref->Set("rinkeby", std::move(user_assets_list));
+    user_assets_pref->Set("goerli", std::move(user_assets_list));
   }
 
   const base::Value* pref =
       GetPrefs()->GetDictionary(kBraveWalletUserAssetsDeprecated);
   ASSERT_TRUE(pref);
-  const auto* user_assets_list = pref->GetDict().FindList("rinkeby");
+  const auto* user_assets_list = pref->GetDict().FindList("goerli");
   ASSERT_TRUE(user_assets_list);
   ASSERT_EQ(user_assets_list->size(), 1u);
   EXPECT_EQ(*(*user_assets_list)[0].GetDict().FindString("contract_address"),
@@ -1898,7 +1898,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessage) {
 
 TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
   std::vector<std::string> chain_ids = {mojom::kMainnetChainId,
-                                        mojom::kKovanChainId};
+                                        mojom::kGoerliChainId};
   for (const std::string& chain_id : chain_ids) {
     json_rpc_service_->SetNetwork(chain_id, mojom::CoinType::ETH);
     mojom::BlockchainTokenPtr usdc_from_blockchain_registry =
@@ -2041,16 +2041,16 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
 TEST_F(BraveWalletServiceUnitTest, GetUserAsset) {
   mojom::BlockchainTokenPtr usdc = mojom::BlockchainToken::New(
       "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USD Coin", "usdc.png",
-      true, false, "USDC", 6, true, "", "", mojom::kRopstenChainId,
+      true, false, "USDC", 6, true, "", "", mojom::kGoerliChainId,
       mojom::CoinType::ETH);
   ASSERT_TRUE(service_->AddUserAsset(usdc.Clone()));
-  EXPECT_EQ(usdc, service_->GetUserAsset(
-                      usdc->contract_address, usdc->token_id, usdc->is_erc721,
-                      mojom::kRopstenChainId, mojom::CoinType::ETH));
+  EXPECT_EQ(usdc, service_->GetUserAsset(usdc->contract_address, usdc->token_id,
+                                         usdc->is_erc721, mojom::kGoerliChainId,
+                                         mojom::CoinType::ETH));
   EXPECT_EQ(usdc,
             service_->GetUserAsset(
                 base::ToLowerASCII(usdc->contract_address), usdc->token_id,
-                usdc->is_erc721, mojom::kRopstenChainId, mojom::CoinType::ETH));
+                usdc->is_erc721, mojom::kGoerliChainId, mojom::CoinType::ETH));
   EXPECT_FALSE(service_->GetUserAsset(usdc->contract_address, usdc->token_id,
                                       usdc->is_erc721, mojom::kMainnetChainId,
                                       mojom::CoinType::ETH));
@@ -2058,16 +2058,16 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAsset) {
   auto erc721_token_with_empty_token_id = GetErc721Token();
   auto erc721_token_1 = erc721_token_with_empty_token_id.Clone();
   erc721_token_1->token_id = "0x1";
-  erc721_token_1->chain_id = mojom::kRopstenChainId;
+  erc721_token_1->chain_id = mojom::kGoerliChainId;
   ASSERT_TRUE(service_->AddUserAsset(erc721_token_1.Clone()));
   EXPECT_EQ(erc721_token_1,
             service_->GetUserAsset(
                 erc721_token_1->contract_address, erc721_token_1->token_id,
-                erc721_token_1->is_erc721, mojom::kRopstenChainId,
+                erc721_token_1->is_erc721, mojom::kGoerliChainId,
                 mojom::CoinType::ETH));
   EXPECT_FALSE(service_->GetUserAsset(
       erc721_token_1->contract_address, "0x2", erc721_token_1->is_erc721,
-      mojom::kRopstenChainId, mojom::CoinType::ETH));
+      mojom::kGoerliChainId, mojom::CoinType::ETH));
 }
 
 TEST_F(BraveWalletServiceUnitTest, Reset) {

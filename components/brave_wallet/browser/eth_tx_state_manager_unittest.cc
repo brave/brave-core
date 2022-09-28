@@ -174,8 +174,8 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
 
 TEST_F(EthTxStateManagerUnitTest, GetTxPrefPathPrefix) {
   EXPECT_EQ("ethereum.mainnet", eth_tx_state_manager_->GetTxPrefPathPrefix());
-  SetNetwork("0x3");
-  EXPECT_EQ("ethereum.ropsten", eth_tx_state_manager_->GetTxPrefPathPrefix());
+  SetNetwork("0x5");
+  EXPECT_EQ("ethereum.goerli", eth_tx_state_manager_->GetTxPrefPathPrefix());
   SetNetwork(brave_wallet::mojom::kLocalhostChainId);
   EXPECT_EQ("ethereum.http://localhost:7545/",
             eth_tx_state_manager_->GetTxPrefPathPrefix());

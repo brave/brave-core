@@ -32,7 +32,7 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
     private HashMap<String, TransactionInfo[]> mTxInfos;
     private boolean mReturnAll;
     private String mFilterByContractAddress;
-    private String mRopstenContractAddress;
+    private String mGoerliContractAddress;
     private final List<TransactionInfo> mTransactionInfos;
     private final List<TransactionCacheRecord> mCacheTransactionInfos;
     private boolean isFetchingTx;

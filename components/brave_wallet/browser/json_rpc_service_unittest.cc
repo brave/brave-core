@@ -1202,10 +1202,10 @@ TEST_F(JsonRpcServiceUnitTest, GetKnownNetworks) {
   values.push_back(NetworkInfoToValue(chain1));
   UpdateCustomNetworks(prefs(), &values);
 
-  EXPECT_CALL(callback,
-              Run(ElementsAreArray({"0x1", "0x89", "0x38", "0xa4ec", "0xa86a",
-                                    "0xfa", "0xa", "0x4e454152", "0x4", "0x3",
-                                    "0x5", "0x2a", "0x539"})));
+  EXPECT_CALL(
+      callback,
+      Run(ElementsAreArray({"0x1", "0x89", "0x38", "0xa4ec", "0xa86a", "0xfa",
+                            "0xa", "0x4e454152", "0x5", "0xaa36a7", "0x539"})));
   json_rpc_service_->GetKnownNetworks(mojom::CoinType::ETH, callback.Get());
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
@@ -1742,8 +1742,8 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainForOriginError) {
 TEST_F(JsonRpcServiceUnitTest, StartWithNetwork) {
   ValidateStartWithNetwork(std::string(), std::string());
   ValidateStartWithNetwork("SomeBadChainId", std::string());
-  ValidateStartWithNetwork(brave_wallet::mojom::kRopstenChainId,
-                           brave_wallet::mojom::kRopstenChainId);
+  ValidateStartWithNetwork(brave_wallet::mojom::kGoerliChainId,
+                           brave_wallet::mojom::kGoerliChainId);
 }
 
 TEST_F(JsonRpcServiceUnitTest, Request) {
@@ -3475,6 +3475,75 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaLatestBlockhash) {
   TestGetSolanaLatestBlockhash(
       "", 0, mojom::SolanaProviderError::kInternalError,
       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+}
+
+TEST_F(JsonRpcServiceUnitTest, MigrateDeprecatedEthereumTestnets) {
+  // If Ropsten (0x3), Rinkeby (0x4), or Kovan (0x2a) is set as selected network
+  // it should be switched to mainnet after migration
+  const std::vector<std::string> deprecated_chain_ids = {"0x3", "0x4", "0x2a"};
+  for (const std::string& deprecated_chain_id : deprecated_chain_ids) {
+    // Set up test by setting migrated pref to false
+    prefs()->SetBoolean(kBraveWalletDeprecateEthereumTestNetworksMigrated,
+                        false);
+    ASSERT_FALSE(
+        prefs()->GetBoolean(kBraveWalletDeprecateEthereumTestNetworksMigrated));
+
+    // Set selected network to deprecated network and validate
+    DictionaryPrefUpdate update(prefs(), kBraveWalletSelectedNetworks);
+    auto& selected_networks_pref = update.Get()->GetDict();
+    selected_networks_pref.Set(kEthereumPrefKey, deprecated_chain_id);
+    const base::Value* selected_networks =
+        prefs()->GetDictionary(kBraveWalletSelectedNetworks);
+    ASSERT_TRUE(selected_networks);
+    const std::string* selected_eth_network =
+        selected_networks->FindStringKey(kEthereumPrefKey);
+    ASSERT_TRUE(selected_eth_network);
+    EXPECT_EQ(*selected_eth_network, deprecated_chain_id);
+
+    // Run deprecation migration and validate network is set to mainnet and
+    // migrated pref flag is set to true
+    JsonRpcService::MigrateDeprecatedEthereumTestnets(prefs());
+    const base::Value* new_selected_networks =
+        prefs()->GetDictionary(kBraveWalletSelectedNetworks);
+    ASSERT_TRUE(new_selected_networks);
+    selected_eth_network =
+        new_selected_networks->FindStringKey(kEthereumPrefKey);
+    EXPECT_EQ(*selected_eth_network, mojom::kMainnetChainId);
+    EXPECT_TRUE(
+        prefs()->GetBoolean(kBraveWalletDeprecateEthereumTestNetworksMigrated));
+    EXPECT_EQ(GetCurrentChainId(prefs(), mojom::CoinType::ETH),
+              mojom::kMainnetChainId);
+  }
+
+  // Nothing happens if non deprecated network is selected
+  prefs()->SetBoolean(kBraveWalletDeprecateEthereumTestNetworksMigrated, false);
+  ASSERT_FALSE(
+      prefs()->GetBoolean(kBraveWalletDeprecateEthereumTestNetworksMigrated));
+
+  // Set selected network to deprecated network and validate
+  DictionaryPrefUpdate update(prefs(), kBraveWalletSelectedNetworks);
+  auto& selected_networks_pref = update.Get()->GetDict();
+  selected_networks_pref.Set(kEthereumPrefKey, mojom::kSepoliaChainId);
+  const base::Value* selected_networks =
+      prefs()->GetDictionary(kBraveWalletSelectedNetworks);
+  ASSERT_TRUE(selected_networks);
+  const std::string* selected_eth_network =
+      selected_networks->FindStringKey(kEthereumPrefKey);
+  ASSERT_TRUE(selected_eth_network);
+  EXPECT_EQ(*selected_eth_network, mojom::kSepoliaChainId);
+
+  // Run migration and validate network is unchanged and migrated
+  // pref flag is set to true
+  JsonRpcService::MigrateDeprecatedEthereumTestnets(prefs());
+  const base::Value* new_selected_networks =
+      prefs()->GetDictionary(kBraveWalletSelectedNetworks);
+  ASSERT_TRUE(new_selected_networks);
+  selected_eth_network = new_selected_networks->FindStringKey(kEthereumPrefKey);
+  EXPECT_EQ(*selected_eth_network, mojom::kSepoliaChainId);
+  EXPECT_TRUE(
+      prefs()->GetBoolean(kBraveWalletDeprecateEthereumTestNetworksMigrated));
+  EXPECT_EQ(GetCurrentChainId(prefs(), mojom::CoinType::ETH),
+            mojom::kSepoliaChainId);
 }
 
 TEST_F(JsonRpcServiceUnitTest, MigrateMultichainNetworks) {

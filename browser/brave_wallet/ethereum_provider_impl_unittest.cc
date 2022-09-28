@@ -1227,7 +1227,7 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559TransactionNoChainId) {
   AddAccount();
   GURL url("https://brave.com");
   Navigate(url);
-  SetNetwork("0x4");
+  SetNetwork("0xaa36a7");
   // Wait for EthTxStateManager::ChainChangedEvent to be called.
   browser_task_environment_.RunUntilIdle();
 
@@ -1283,8 +1283,10 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559TransactionNoChainId) {
   std::vector<mojom::TransactionInfoPtr> infos = GetAllTransactionInfo();
   ASSERT_EQ(infos.size(), 2UL);
   ASSERT_TRUE(infos[0]->tx_data_union->is_eth_tx_data_1559());
-  EXPECT_EQ(infos[0]->tx_data_union->get_eth_tx_data_1559()->chain_id, "0x4");
-  EXPECT_EQ(infos[1]->tx_data_union->get_eth_tx_data_1559()->chain_id, "0x4");
+  EXPECT_EQ(infos[0]->tx_data_union->get_eth_tx_data_1559()->chain_id,
+            "0xaa36a7");
+  EXPECT_EQ(infos[1]->tx_data_union->get_eth_tx_data_1559()->chain_id,
+            "0xaa36a7");
 }
 
 TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559TransactionError) {
@@ -1731,8 +1733,8 @@ TEST_F(EthereumProviderImplUnitTest, SignTypedMessage) {
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
 
-  domain.Set("chainId", 4);
-  std::string chain_id = "0x4";
+  domain.Set("chainId", 11155111);
+  std::string chain_id = "0xaa36a7";
   // not active network
   SignTypedMessage(absl::nullopt, address, "{...}", domain_hash, primary_hash,
                    domain.Clone(), &signature, &error, &error_message);
@@ -1913,9 +1915,9 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
 
 TEST_F(EthereumProviderImplUnitTest, ChainChangedEvent) {
   EXPECT_FALSE(observer_->ChainChangedFired());
-  SetNetwork(mojom::kRinkebyChainId);
+  SetNetwork(mojom::kGoerliChainId);
   EXPECT_TRUE(observer_->ChainChangedFired());
-  EXPECT_EQ(mojom::kRinkebyChainId, observer_->GetChainId());
+  EXPECT_EQ(mojom::kGoerliChainId, observer_->GetChainId());
 
   // Works a second time
   observer_->Reset();
@@ -2142,7 +2144,7 @@ TEST_F(EthereumProviderImplUnitTest, SwitchEthereumChain) {
   EXPECT_FALSE(brave_wallet_tab_helper()->IsShowingBubble());
 
   // user rejected
-  SwitchEthereumChain("0x4", false, &error, &error_message);
+  SwitchEthereumChain("0xaa36a7", false, &error, &error_message);
   EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
@@ -2151,13 +2153,13 @@ TEST_F(EthereumProviderImplUnitTest, SwitchEthereumChain) {
   EXPECT_FALSE(brave_wallet_tab_helper()->IsShowingBubble());
 
   // user approved
-  SwitchEthereumChain("0x4", true, &error, &error_message);
+  SwitchEthereumChain("0xaa36a7", true, &error, &error_message);
   EXPECT_EQ(error, mojom::ProviderError::kSuccess);
   EXPECT_TRUE(error_message.empty());
   EXPECT_TRUE(brave_wallet_tab_helper()->IsShowingBubble());
   brave_wallet_tab_helper()->CloseBubble();
   EXPECT_FALSE(brave_wallet_tab_helper()->IsShowingBubble());
-  EXPECT_EQ(json_rpc_service()->GetChainId(mojom::CoinType::ETH), "0x4");
+  EXPECT_EQ(json_rpc_service()->GetChainId(mojom::CoinType::ETH), "0xaa36a7");
 
   // one request per origin
   base::RunLoop run_loop;
@@ -2188,9 +2190,9 @@ TEST_F(EthereumProviderImplUnitTest, AddEthereumChainSwitchesForInnactive) {
 
   // AddEthereumChain switches for already added networks
   std::string params = R"({"params": [{
-        "chainId": "0x3",
-        "chainName": "Ropsten",
-        "rpcUrls": ["https://ropsten-infura.brave.com/"]
+        "chainId": "0x5",
+        "chainName": "Goerli",
+        "rpcUrls": ["https://goerli-infura.brave.com/"]
       }]})";
   base::RunLoop run_loop;
   provider()->AddEthereumChain(
@@ -2213,7 +2215,7 @@ TEST_F(EthereumProviderImplUnitTest, AddEthereumChainSwitchesForInnactive) {
   run_loop.Run();
   brave_wallet_tab_helper()->CloseBubble();
   EXPECT_FALSE(brave_wallet_tab_helper()->IsShowingBubble());
-  EXPECT_EQ(json_rpc_service()->GetChainId(mojom::CoinType::ETH), "0x3");
+  EXPECT_EQ(json_rpc_service()->GetChainId(mojom::CoinType::ETH), "0x5");
 }
 
 TEST_F(EthereumProviderImplUnitTest, AddSuggestToken) {

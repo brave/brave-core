@@ -115,6 +115,10 @@ void RegisterProfilePrefsForMigration(
   // Added 06/2022
   registry->RegisterBooleanPref(
       kBraveWalletUserAssetsAddPreloadingNetworksMigrated, false);
+
+  // Added 10/2022
+  registry->RegisterBooleanPref(
+      kBraveWalletDeprecateEthereumTestNetworksMigrated, false);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
@@ -194,6 +198,9 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
     }
     prefs->SetBoolean(kBraveWalletEthereumTransactionsCoinTypeMigrated, true);
   }
+
+  // Added 10/2022
+  JsonRpcService::MigrateDeprecatedEthereumTestnets(prefs);
 }
 
 }  // namespace brave_wallet

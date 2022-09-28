@@ -40,7 +40,7 @@ TEST(ParseTokenListUnitTest, ParseTokenList) {
        "erc20": true,
        "symbol": "UNI",
        "decimals": 18,
-       "chainId": "0x3"
+       "chainId": "0x5"
      }
     }
   )");
@@ -49,7 +49,7 @@ TEST(ParseTokenListUnitTest, ParseTokenList) {
   ASSERT_TRUE(ParseTokenList(json, &token_list_map, mojom::CoinType::ETH));
   ASSERT_EQ(token_list_map["ethereum.0x1"].size(), 2UL);
   EXPECT_EQ(token_list_map["ethereum.0x2"].size(), 0UL);
-  ASSERT_EQ(token_list_map["ethereum.0x3"].size(), 1UL);
+  ASSERT_EQ(token_list_map["ethereum.0x5"].size(), 1UL);
 
   const auto& mainnet_token_list = token_list_map["ethereum.0x1"];
   EXPECT_EQ(mainnet_token_list[0]->name, "Crypto Kitties");
@@ -72,15 +72,15 @@ TEST(ParseTokenListUnitTest, ParseTokenList) {
   EXPECT_EQ(mainnet_token_list[1]->decimals, 18);
   EXPECT_EQ(mainnet_token_list[1]->coingecko_id, "basic-attention-token");
 
-  const auto& ropsten_token_list = token_list_map["ethereum.0x3"];
-  EXPECT_EQ(ropsten_token_list[0]->name, "Uniswap");
-  EXPECT_EQ(ropsten_token_list[0]->contract_address,
+  const auto& goerli_token_list = token_list_map["ethereum.0x5"];
+  EXPECT_EQ(goerli_token_list[0]->name, "Uniswap");
+  EXPECT_EQ(goerli_token_list[0]->contract_address,
             "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984");
-  EXPECT_TRUE(ropsten_token_list[0]->is_erc20);
-  EXPECT_FALSE(ropsten_token_list[0]->is_erc721);
-  EXPECT_EQ(ropsten_token_list[0]->symbol, "UNI");
-  EXPECT_EQ(ropsten_token_list[0]->logo, "uni.svg");
-  EXPECT_EQ(ropsten_token_list[0]->decimals, 18);
+  EXPECT_TRUE(goerli_token_list[0]->is_erc20);
+  EXPECT_FALSE(goerli_token_list[0]->is_erc721);
+  EXPECT_EQ(goerli_token_list[0]->symbol, "UNI");
+  EXPECT_EQ(goerli_token_list[0]->logo, "uni.svg");
+  EXPECT_EQ(goerli_token_list[0]->decimals, 18);
   EXPECT_TRUE(mainnet_token_list[0]->coingecko_id.empty());
 
   std::string solana_json(R"(
