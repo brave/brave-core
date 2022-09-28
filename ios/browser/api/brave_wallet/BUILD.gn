@@ -40,6 +40,7 @@ source_set("brave_wallet") {
     "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/common:solana_utils",
     "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
+    "//brave/components/resources:static_resources_grit",
     "//brave/ios/browser/api/url",
     "//brave/ios/browser/brave_wallet",
     "//ios/chrome/browser",
