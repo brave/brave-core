@@ -17,9 +17,6 @@ enum ScriptSourceType {
   /// This script farbles certian system methods to output slightly randomized output.
   /// This script has a dependency on `nacl`.
   case farblingProtection
-  /// A YouTube ad blocking script
-  case youtubeAdBlock
-  case archive
   case braveSearchHelper
   case braveTalkHelper
   case braveSkus
@@ -30,8 +27,6 @@ enum ScriptSourceType {
     case .siteStateListener: return "SiteStateListener"
     case .nacl: return "nacl.min"
     case .farblingProtection: return "FarblingProtection"
-    case .youtubeAdBlock: return "YoutubeAdblock"
-    case .archive: return "ArchiveIsCompat"
     case .braveSearchHelper: return "BraveSearchHelper"
     case .braveTalkHelper: return "BraveTalkHelper"
     case .bravePlaylistFolderSharingHelper: return "PlaylistFolderSharing"
