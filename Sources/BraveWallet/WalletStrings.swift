@@ -2522,7 +2522,7 @@ extension Strings {
       comment: "The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently not connected his/her current selected Solana account to the Solana Dapp."
     )
     public static let walletPanelBlocked = NSLocalizedString(
-      "wallet.walletPanelDisconnected",
+      "wallet.walletPanelBlocked",
       tableName: "BraveWallet",
       bundle: .strings,
       value: "Blocked",
