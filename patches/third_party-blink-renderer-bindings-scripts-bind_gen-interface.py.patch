@@ -1,0 +1,10 @@
+diff --git a/third_party/blink/renderer/bindings/scripts/bind_gen/interface.py b/third_party/blink/renderer/bindings/scripts/bind_gen/interface.py
+index 2b18b6a5905a192e1938afa4765504803fc5a6cf..e6cbaf93162442f77a8da92be28bf2a9556aa731 100644
+--- a/third_party/blink/renderer/bindings/scripts/bind_gen/interface.py
++++ b/third_party/blink/renderer/bindings/scripts/bind_gen/interface.py
+@@ -8094,3 +8094,4 @@ def generate_interfaces(task_queue):
+                          "InitIDLInterfacesForTesting",
+                          "init_idl_interfaces_for_testing",
+                          for_testing=True)
++from import_inline import inline_file_from_src; inline_file_from_src("brave/chromium_src/third_party/blink/renderer/bindings/scripts/bind_gen/interface.py", globals(), locals())
+\ No newline at end of file

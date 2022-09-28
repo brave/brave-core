@@ -1,3 +1,5 @@
 include_rules = [
+  "+brave/v8/include",
+  "+brave/components/brave_page_graph/common/buildflags.h",
   "+net/base",
 ]

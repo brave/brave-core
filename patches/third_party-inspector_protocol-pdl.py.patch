@@ -1,0 +1,9 @@
+diff --git a/third_party/inspector_protocol/pdl.py b/third_party/inspector_protocol/pdl.py
+index 9a9fec9898823d716ec99d9624be7e5aacf532f5..212b9911aabf0eb3f1f461cb6179e6c8057d8988 100644
+--- a/third_party/inspector_protocol/pdl.py
++++ b/third_party/inspector_protocol/pdl.py
+@@ -179,3 +179,4 @@ def loads(data, file_name, map_binary_to_string=False):
+   if file_name.endswith(".pdl"):
+     return parse(data, file_name, map_binary_to_string)
+   return json.loads(data)
++from import_inline import inline_file_from_src; inline_file_from_src("brave/chromium_src/third_party/inspector_protocol/pdl.py", globals(), locals())

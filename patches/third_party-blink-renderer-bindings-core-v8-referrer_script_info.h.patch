@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/renderer/bindings/core/v8/referrer_script_info.h b/third_party/blink/renderer/bindings/core/v8/referrer_script_info.h
+index a488b931fa0bd9a3e57376781ab5049fbc59d4cd..d595b9938ebe9b39f1a0311352a43f4472745f4f 100644
+--- a/third_party/blink/renderer/bindings/core/v8/referrer_script_info.h
++++ b/third_party/blink/renderer/bindings/core/v8/referrer_script_info.h
+@@ -39,7 +39,7 @@ class CORE_EXPORT ReferrerScriptInfo {
+                            options.CredentialsMode(),
+                            options.Nonce(),
+                            options.ParserState(),
+-                           options.GetReferrerPolicy()) {}
++                           options.GetReferrerPolicy()) { BRAVE_REFERRER_SCRIPT_INFO_CONSTRUCTOR }
+ 
+   static ReferrerScriptInfo FromV8HostDefinedOptions(
+       v8::Local<v8::Context>,
