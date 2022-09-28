@@ -16,6 +16,7 @@
 
 #include "base/base64.h"
 #include "base/bind.h"
+#include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
@@ -70,6 +71,7 @@
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
 #include "net/http/http_status_code.h"
+#include "services/data_decoder/public/cpp/json_sanitizer.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -1057,6 +1059,27 @@ void RewardsServiceImpl::OnURLLoaderComplete(
         response.headers[key] = value;
       }
     }
+  }
+
+  if (response_body && loader->ResponseInfo() &&
+      base::Contains(loader->ResponseInfo()->mime_type, "json")) {
+    return data_decoder::JsonSanitizer::Sanitize(
+        *response_body,
+        base::BindOnce(
+            [](ledger::client::LoadURLCallback callback,
+               ledger::mojom::UrlResponse response,
+               data_decoder::JsonSanitizer::Result result) {
+              if (result.value) {
+                response.body = std::move(*result.value);
+              } else {
+                response.body = {};
+                VLOG(0) << "Response sanitization error: "
+                        << (result.error ? *result.error : "unknown");
+              }
+
+              std::move(callback).Run(response);
+            },
+            std::move(callback), std::move(response)));
   }
 
   std::move(callback).Run(response);

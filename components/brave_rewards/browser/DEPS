@@ -7,6 +7,7 @@ include_rules = [
   "+content/public/common",
   "+extensions/buildflags",
   "+extensions/common",
+  "+services/data_decoder/public",
   "+services/network/public",
   "+ui/base",
   "+ui/gfx",
