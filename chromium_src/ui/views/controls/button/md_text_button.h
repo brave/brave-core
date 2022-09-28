@@ -6,9 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_UI_VIEWS_CONTROLS_BUTTON_MD_TEXT_BUTTON_H_
 #define BRAVE_CHROMIUM_SRC_UI_VIEWS_CONTROLS_BUTTON_MD_TEXT_BUTTON_H_
 
-// Rename MdTextButton to MdTextButtonBase
-#include "absl/types/optional.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/gfx/vector_icon_types.h"
+
+// Rename MdTextButton to MdTextButtonBase
 #define MdTextButton MdTextButtonBase
 
 // Define a Brave-specific method we can get called from UpdateColors() to

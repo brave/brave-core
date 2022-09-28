@@ -116,10 +116,11 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
   layout->SetCrossAxisAlignment(views::LayoutAlignment::kStretch);
   layout->SetCollapseMargins(true);
 
-  auto* manage_feeds_button = AddChildView(std::make_unique<views::MdTextButton>(
-      base::BindRepeating(&BraveNewsBubbleView::OpenManageFeeds,
-                          base::Unretained(this)),
-      l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_BUBBLE_MANAGE_FEEDS)));
+  auto* manage_feeds_button =
+      AddChildView(std::make_unique<views::MdTextButton>(
+          base::BindRepeating(&BraveNewsBubbleView::OpenManageFeeds,
+                              base::Unretained(this)),
+          l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_BUBBLE_MANAGE_FEEDS)));
   manage_feeds_button->SetKind(views::MdTextButton::Kind::TERTIARY);
   manage_feeds_button->SetProperty(views::kMarginsKey,
                                    gfx::Insets::TLBR(10, 0, 0, 0));

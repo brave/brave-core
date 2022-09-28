@@ -5,8 +5,8 @@
 
 #include "ui/views/controls/button/md_text_button.h"
 
-#include "absl/types/optional.h"
-#include "include/core/SkColor.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "third_party/skia/include/core/SkColor.h"
 #include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"
 #include "ui/gfx/geometry/rect_f.h"
@@ -90,10 +90,12 @@ MdTextButton::ButtonTheme g_secondary_theme = {
     MdTextButton::ButtonStyle{absl::nullopt, SkColorSetA(SK_ColorWHITE, 128),
                               SkColorSetA(SK_ColorWHITE, 128)},
     // Loading Light
-    MdTextButton::ButtonStyle{absl::nullopt, SkColorSetA(kBravePrimaryColor, 192),
+    MdTextButton::ButtonStyle{absl::nullopt,
+                              SkColorSetA(kBravePrimaryColor, 192),
                               SkColorSetA(kBravePrimaryColor, 192)},
     // Loading Dark
-    MdTextButton::ButtonStyle{absl::nullopt, SkColorSetA(kBravePrimaryColor, 192),
+    MdTextButton::ButtonStyle{absl::nullopt,
+                              SkColorSetA(kBravePrimaryColor, 192),
                               SkColorSetA(kBravePrimaryColor, 192)}};
 
 MdTextButton::ButtonTheme g_tertiary_theme = {
