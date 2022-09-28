@@ -367,7 +367,14 @@ export default function useSend () {
     } else if (selectedAccount?.coin === BraveWallet.CoinType.SOL) {
       processSolanaAddress(toAddressOrUrl)
     }
-  }, [toAddressOrUrl, selectedAccount?.coin, ensOffchainLookupOptions])
+  }, [
+    toAddressOrUrl,
+    selectedAccount?.coin,
+    ensOffchainLookupOptions,
+    processEthereumAddress,
+    processFilecoinAddress,
+    processSolanaAddress
+  ])
 
   return {
     setSendAmount,
