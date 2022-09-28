@@ -640,7 +640,7 @@ provideStrings({
   braveWalletRankStat: 'Rank',
   braveWalletVolumeStat: '24h Volume',
   braveWalletMarketCapStat: 'Market Cap',
-  braveWalletMarketDataCoinNotSupported: 'This asset is not supported by brave wallet',
+  braveWalletMarketDataCoinNotSupported: 'This asset is not supported by Brave Wallet',
 
   // Network Filter
   braveWalletNetworkFilterAll: 'All Networks',
