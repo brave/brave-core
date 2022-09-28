@@ -231,10 +231,10 @@ void SidebarItemsScrollView::OnActiveIndexChanged(
   contents_view_->OnActiveIndexChanged(old_index, new_index);
 }
 
-void SidebarItemsScrollView::OnWillUpdateFavicon(
+void SidebarItemsScrollView::OnItemUpdated(
     const sidebar::SidebarItem& item,
-    size_t index) {
-  contents_view_->SetDefaultImageAt(index, item);
+    const sidebar::SidebarItemUpdate& update) {
+  contents_view_->UpdateItem(item, update);
 }
 
 void SidebarItemsScrollView::OnFaviconUpdatedForItem(

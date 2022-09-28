@@ -13,9 +13,8 @@
 #include "ui/color/color_provider.h"
 #include "ui/gfx/canvas.h"
 
-SidebarItemView::SidebarItemView(Delegate* delegate,
-                                 const std::u16string& accessible_name)
-    : SidebarButtonView(delegate, accessible_name) {}
+SidebarItemView::SidebarItemView(const std::u16string& accessible_name)
+    : SidebarButtonView(accessible_name) {}
 
 SidebarItemView::~SidebarItemView() = default;
 

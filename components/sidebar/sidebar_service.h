@@ -24,7 +24,7 @@ class PrefService;
 namespace sidebar {
 
 struct SidebarItemUpdate {
-  int index = -1;
+  size_t index = 0;
   bool title_updated = false;
   bool url_updated = false;
 

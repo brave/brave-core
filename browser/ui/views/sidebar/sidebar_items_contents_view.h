@@ -31,7 +31,6 @@ class BraveBrowser;
 class SidebarItemView;
 
 class SidebarItemsContentsView : public views::View,
-                                 public SidebarButtonView::Delegate,
                                  public views::ContextMenuController,
                                  public views::WidgetObserver,
                                  public ui::SimpleMenuModel::Delegate {
@@ -47,9 +46,6 @@ class SidebarItemsContentsView : public views::View,
   // views::View overrides:
   gfx::Size CalculatePreferredSize() const override;
   void OnThemeChanged() override;
-
-  // SidebarButtonView::Delegate overrides:
-  std::u16string GetTooltipTextFor(const views::View* view) const override;
 
   // views::ContextMenuController overrides:
   void ShowContextMenuForViewImpl(views::View* source,
@@ -75,6 +71,8 @@ class SidebarItemsContentsView : public views::View,
 
   void SetImageForItem(const sidebar::SidebarItem& item,
                        const gfx::ImageSkia& image);
+  void UpdateItem(const sidebar::SidebarItem& item,
+                  const sidebar::SidebarItemUpdate& update);
 
   // |source| is drag source view.
   // |position| is in local coordinate space of |source|.

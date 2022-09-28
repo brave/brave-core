@@ -131,12 +131,12 @@ void SidebarModel::OnItemMoved(const SidebarItem& item,
 
 void SidebarModel::OnItemUpdated(const SidebarItem& item,
                                  const SidebarItemUpdate& update) {
+  for (Observer& obs : observers_)
+    obs.OnItemUpdated(item, update);
+
   // New url needs its favicon.
-  if (update.url_updated) {
-    for (Observer& obs : observers_)
-      obs.OnWillUpdateFavicon(item, update.index);
+  if (update.url_updated)
     FetchFavicon(item);
-  }
 }
 
 void SidebarModel::OnWillRemoveItem(const SidebarItem& item, size_t index) {

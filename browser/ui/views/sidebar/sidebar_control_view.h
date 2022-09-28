@@ -35,7 +35,6 @@ class SidebarBrowserTest;
 class SidebarControlView : public views::View,
                            public views::ContextMenuController,
                            public ui::SimpleMenuModel::Delegate,
-                           public SidebarButtonView::Delegate,
                            public sidebar::SidebarModel::Observer {
  public:
   METADATA_HEADER(SidebarControlView);
@@ -66,9 +65,6 @@ class SidebarControlView : public views::View,
   void ExecuteCommand(int command_id, int event_flags) override;
   bool IsCommandIdChecked(int command_id) const override;
   void MenuClosed(ui::SimpleMenuModel* source) override;
-
-  // SidebarButtonView::Delegate overrides:
-  std::u16string GetTooltipTextFor(const views::View* view) const override;
 
   // sidebar::SidebarModel::Observer overrides:
   void OnItemAdded(const sidebar::SidebarItem& item,

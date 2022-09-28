@@ -14,7 +14,6 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/sidebar/sidebar_add_item_bubble_delegate_view.h"
 #include "brave/components/l10n/common/locale_util.h"
-#include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -24,7 +23,7 @@
 SidebarItemAddButton::SidebarItemAddButton(
     BraveBrowser* browser,
     const std::u16string& accessible_name)
-    : SidebarButtonView(nullptr, accessible_name), browser_(browser) {
+    : SidebarButtonView(accessible_name), browser_(browser) {
   UpdateButtonImages();
 
   on_enabled_changed_subscription_ =
@@ -39,8 +38,6 @@ SidebarItemAddButton::SidebarItemAddButton(
                           base::Unretained(this)),
       std::make_unique<views::Button::DefaultButtonControllerDelegate>(this));
   SetButtonController(std::move(menu_button_controller));
-  SetTooltipText(brave_l10n::GetLocalizedResourceUTF16String(
-      IDS_SIDEBAR_ADD_ITEM_BUTTON_TOOLTIP));
 }
 
 SidebarItemAddButton::~SidebarItemAddButton() = default;

@@ -58,7 +58,8 @@ class SidebarModel : public SidebarService::Observer,
     virtual void OnItemRemoved(size_t index) {}
     virtual void OnActiveIndexChanged(absl::optional<size_t> old_index,
                                       absl::optional<size_t> new_index) {}
-    virtual void OnWillUpdateFavicon(const SidebarItem& item, size_t index) {}
+    virtual void OnItemUpdated(const SidebarItem& item,
+                               const SidebarItemUpdate& update) {}
     virtual void OnFaviconUpdatedForItem(const SidebarItem& item,
                                          const gfx::ImageSkia& image) {}
 

@@ -173,15 +173,6 @@ void SidebarControlView::MenuClosed(ui::SimpleMenuModel* source) {
   delegate_->MenuClosed();
 }
 
-std::u16string SidebarControlView::GetTooltipTextFor(
-    const views::View* view) const {
-  if (view == sidebar_settings_view_)
-    return brave_l10n::GetLocalizedResourceUTF16String(
-        IDS_SIDEBAR_SETTINGS_BUTTON_TOOLTIP);
-
-  return std::u16string();
-}
-
 void SidebarControlView::OnItemAdded(const sidebar::SidebarItem& item,
                                      size_t index,
                                      bool user_gesture) {
@@ -198,12 +189,12 @@ void SidebarControlView::AddChildViews() {
 
   sidebar_item_add_view_ = AddChildView(std::make_unique<SidebarItemAddButton>(
       browser_, brave_l10n::GetLocalizedResourceUTF16String(
-                    IDS_SIDEBAR_ADD_ITEM_BUBBLE_TITLE)));
+                    IDS_SIDEBAR_ADD_ITEM_BUTTON_TOOLTIP)));
   sidebar_item_add_view_->set_context_menu_controller(this);
 
   sidebar_settings_view_ = AddChildView(std::make_unique<SidebarButtonView>(
-      this, brave_l10n::GetLocalizedResourceUTF16String(
-                IDS_SIDEBAR_SETTINGS_BUTTON_TOOLTIP)));
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_SIDEBAR_SETTINGS_BUTTON_TOOLTIP)));
 
   sidebar_settings_view_->SetCallback(
       base::BindRepeating(&SidebarControlView::OnButtonPressed,

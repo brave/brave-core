@@ -8,9 +8,7 @@
 #include "ui/gfx/color_palette.h"
 #include "ui/views/controls/focus_ring.h"
 
-SidebarButtonView::SidebarButtonView(Delegate* delegate,
-                                     const std::u16string& accessible_name)
-    : delegate_(delegate) {
+SidebarButtonView::SidebarButtonView(const std::u16string& accessible_name) {
   // Locate image at center of the button.
   SetImageHorizontalAlignment(views::ImageButton::ALIGN_CENTER);
   SetImageVerticalAlignment(views::ImageButton::ALIGN_MIDDLE);
@@ -29,10 +27,7 @@ gfx::Size SidebarButtonView::CalculatePreferredSize() const {
 }
 
 std::u16string SidebarButtonView::GetTooltipText(const gfx::Point& p) const {
-  if (!delegate_)
-    return views::ImageButton::GetTooltipText(p);
-
-  return delegate_->GetTooltipTextFor(this);
+  return GetAccessibleName();
 }
 
 BEGIN_METADATA(SidebarButtonView, views::ImageButton)

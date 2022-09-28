@@ -48,8 +48,8 @@ class MockSidebarModelObserver : public SidebarModel::Observer {
                absl::optional<size_t> new_index),
               (override));
   MOCK_METHOD(void,
-              OnWillUpdateFavicon,
-              (const SidebarItem& item, size_t index),
+              OnItemUpdated,
+              (const SidebarItem& item, const SidebarItemUpdate& update),
               (override));
   MOCK_METHOD(void,
               OnFaviconUpdatedForItem,
@@ -100,15 +100,17 @@ TEST_F(SidebarModelTest, ItemsChangedTest) {
   EXPECT_EQ(items_count, service()->items().size());
 
   // Update last item w/ url change.
-  EXPECT_CALL(observer_, OnWillUpdateFavicon(testing::_, items_count - 1))
-      .Times(1);
+  SidebarItemUpdate expected_update{(items_count - 1), false, true};
+  EXPECT_CALL(observer_, OnItemUpdated(testing::_, expected_update)).Times(1);
   service()->UpdateItem(GURL("https://www.brave.com/"),
                         GURL("https://brave.com/"), u"brave software",
                         u"brave software");
   testing::Mock::VerifyAndClearExpectations(&observer_);
 
   // Update last item w/o url change.
-  EXPECT_CALL(observer_, OnWillUpdateFavicon(testing::_, testing::_)).Times(0);
+  expected_update.url_updated = false;
+  expected_update.title_updated = true;
+  EXPECT_CALL(observer_, OnItemUpdated(testing::_, expected_update)).Times(1);
   service()->UpdateItem(GURL("https://brave.com/"), GURL("https://brave.com/"),
                         u"brave software", u"brave");
   testing::Mock::VerifyAndClearExpectations(&observer_);
