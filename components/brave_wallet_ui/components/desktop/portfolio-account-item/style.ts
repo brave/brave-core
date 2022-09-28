@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { MoreVertRIcon } from 'brave-ui/components/icons'
 import { WalletButton } from '../../shared/style'
+import ClipboardIcon from '../../../assets/svg-icons/copy-to-clipboard-icon.svg'
 
 interface StyleProps {
   orb: string
@@ -23,18 +24,18 @@ export const NameAndIcon = styled.div`
   flex-direction: row;
 `
 
-export const AccountAndAddress = styled(WalletButton)`
+export const AccountAndAddress = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: center;
   flex-direction: column;
+`
+
+export const AccountNameButton = styled(WalletButton)`
   cursor: pointer;
   outline: none;
   background: none;
   border: none;
-`
-
-export const AccountName = styled.span`
   font-family: Poppins;
   font-size: 13px;
   line-height: 20px;
@@ -43,12 +44,18 @@ export const AccountName = styled.span`
   color: ${(p) => p.theme.color.text01};
 `
 
-export const AccountAddress = styled.span`
-  font-family: Poppins;
+export const AccountAddressButton = styled(AccountNameButton)`
   font-size: 12px;
   line-height: 18px;
-  letter-spacing: 0.01em;
+  font-weight: 400;
   color: ${(p) => p.theme.color.text02};
+`
+
+export const AddressAndButtonRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
 `
 
 export const BalanceColumn = styled.div`
@@ -106,4 +113,15 @@ export const MoreIcon = styled(MoreVertRIcon)`
   height: 26px;
   transform: rotate(90deg);
   color: ${(p) => p.theme.color.interactive08};
+`
+
+export const CopyIcon = styled.div`
+  cursor: pointer;
+  width: 14px;
+  height: 14px;
+  background-color: ${(p) => p.theme.color.interactive07};
+  -webkit-mask-image: url(${ClipboardIcon});
+  mask-image: url(${ClipboardIcon});
+  mask-size: cover;
+  margin-left: 6px;
 `
