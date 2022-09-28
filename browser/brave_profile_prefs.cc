@@ -29,7 +29,6 @@
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_today/browser/brave_news_controller.h"
 #include "brave/components/brave_today/common/features.h"
-#include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
@@ -141,10 +140,6 @@
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "extensions/common/feature_switch.h"
 using extensions::FeatureSwitch;
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-#include "brave/components/brave_vpn/brave_vpn_utils.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
@@ -274,9 +269,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // change it in upstream.
   registry->SetDefaultPrefValue(prefs::kSafeBrowsingScoutReportingEnabled,
                                 base::Value(false));
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  brave_vpn::RegisterAndroidProfilePrefs(registry);
-#endif
 #endif
 
   // Hangouts
