@@ -7,12 +7,15 @@
 
 #include <cmath>
 #include <memory>
+#include <string>
 #include <unordered_set>
 #include <utility>
 #include <vector>
 
 #include "base/bind.h"
+#include "base/callback_forward.h"
 #include "base/callback_helpers.h"
+#include "base/containers/flat_set.h"
 #include "base/guid.h"
 #include "base/time/time.h"
 #include "base/values.h"
@@ -23,6 +26,7 @@
 #include "brave/components/brave_today/browser/brave_news_p3a.h"
 #include "brave/components/brave_today/browser/direct_feed_controller.h"
 #include "brave/components/brave_today/browser/network.h"
+#include "brave/components/brave_today/browser/unsupported_publisher_migrator.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_today/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
@@ -77,8 +81,14 @@ BraveNewsController::BraveNewsController(
       api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
       private_cdn_request_helper_(GetNetworkTrafficAnnotationTag(),
                                   url_loader_factory),
-      publishers_controller_(prefs, &api_request_helper_),
-      direct_feed_controller_(url_loader_factory),
+      direct_feed_controller_(prefs, url_loader_factory),
+      unsupported_publisher_migrator_(prefs,
+                                      &direct_feed_controller_,
+                                      &api_request_helper_),
+      publishers_controller_(prefs,
+                             &direct_feed_controller_,
+                             &unsupported_publisher_migrator_,
+                             &api_request_helper_),
       feed_controller_(&publishers_controller_,
                        &direct_feed_controller_,
                        history_service,
@@ -121,6 +131,10 @@ BraveNewsController::MakeRemote() {
   return remote;
 }
 
+void BraveNewsController::GetLocale(GetLocaleCallback callback) {
+  publishers_controller_.GetLocale(std::move(callback));
+}
+
 void BraveNewsController::GetFeed(GetFeedCallback callback) {
   feed_controller_.GetOrFetchFeed(std::move(callback));
 }
@@ -156,37 +170,13 @@ void BraveNewsController::SubscribeToNewDirectFeed(
               std::move(callback).Run(false, false, absl::nullopt);
               return;
             }
-            // Check if feed url already exists
-            auto* existing_items = controller->prefs_->GetDictionary(
-                prefs::kBraveTodayDirectFeeds);
-            for (const auto kv : existing_items->DictItems()) {
-              if (!kv.second.is_dict()) {
-                // This will be flagged as an issue in the error log elsewhere.
-                continue;
-              }
-              auto existing_url = *kv.second.FindStringKey(
-                  prefs::kBraveTodayDirectFeedsKeySource);
-              if (GURL(existing_url) == feed_url.spec()) {
-                // Handle is duplicate
-                std::move(callback).Run(true, true, absl::nullopt);
-                return;
-              }
+
+            if (!controller->direct_feed_controller_.AddDirectFeedPref(
+                    feed_url, feed_title)) {
+              std::move(callback).Run(true, true, absl::nullopt);
+              return;
             }
-            // Feed is valid, we can add the url now
-            // UUID for each entry as feed url might change via redirects etc
-            auto id = base::GUID::GenerateRandomV4().AsLowercaseString();
-            std::string entry_feed_title =
-                feed_title.empty() ? feed_url.spec() : feed_title;
-            // We use a dictionary pref, but that's to reserve space for more
-            // future customization on a feed. For now we just store a bool, and
-            // remove the entire entry if a user unsubscribes from a user feed.
-            DictionaryPrefUpdate update(controller->prefs_,
-                                        prefs::kBraveTodayDirectFeeds);
-            // Get is valid and name
-            base::Value::Dict value;
-            value.Set(prefs::kBraveTodayDirectFeedsKeySource, feed_url.spec());
-            value.Set(prefs::kBraveTodayDirectFeedsKeyTitle, entry_feed_title);
-            update->SetPath(id, base::Value(std::move(value)));
+
             // Mark feed as requiring update
             // TODO(petemill): expose function to mark direct feeds as dirty
             // and not require re-download of sources.json
@@ -210,8 +200,7 @@ void BraveNewsController::SubscribeToNewDirectFeed(
 }
 
 void BraveNewsController::RemoveDirectFeed(const std::string& publisher_id) {
-  DictionaryPrefUpdate update(prefs_, prefs::kBraveTodayDirectFeeds);
-  update->RemoveKey(publisher_id);
+  direct_feed_controller_.RemoveDirectFeedPref(publisher_id);
 
   // Mark feed as requiring update
   publishers_controller_.EnsurePublishersIsUpdating();

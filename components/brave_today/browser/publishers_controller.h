@@ -14,12 +14,14 @@
 #include "base/observer_list_types.h"
 #include "base/one_shot_event.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_today/browser/unsupported_publisher_migrator.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave_news {
 
+class DirectFeedController;
 using GetPublishersCallback = mojom::BraveNewsController::GetPublishersCallback;
 using Publishers = base::flat_map<std::string, mojom::PublisherPtr>;
 
@@ -27,6 +29,8 @@ class PublishersController {
  public:
   PublishersController(
       PrefService* prefs,
+      DirectFeedController* direct_feed_controller,
+      UnsupportedPublisherMigrator* unsupported_publisher_migrator,
       api_request_helper::APIRequestHelper* api_request_helper);
   ~PublishersController();
   PublishersController(const PublishersController&) = delete;
@@ -48,18 +52,23 @@ class PublishersController {
   void RemoveObserver(Observer* observer);
   void GetOrFetchPublishers(GetPublishersCallback callback,
                             bool wait_for_current_update = false);
+  void GetLocale(mojom::BraveNewsController::GetLocaleCallback);
   void EnsurePublishersIsUpdating();
   void ClearCache();
 
  private:
   void GetOrFetchPublishers(base::OnceClosure callback,
                             bool wait_for_current_update);
+  void UpdateDefaultLocale();
 
-  raw_ptr<PrefService> prefs_ = nullptr;
-  raw_ptr<api_request_helper::APIRequestHelper> api_request_helper_ = nullptr;
+  raw_ptr<PrefService> prefs_;
+  raw_ptr<DirectFeedController> direct_feed_controller_;
+  raw_ptr<UnsupportedPublisherMigrator> unsupported_publisher_migrator_;
+  raw_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
 
   std::unique_ptr<base::OneShotEvent> on_current_update_complete_;
   base::ObserverList<Observer> observers_;
+  std::string default_locale_;
   Publishers publishers_;
   bool is_update_in_progress_ = false;
 };

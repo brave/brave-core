@@ -31,6 +31,7 @@
 #include "brave/components/translate/core/common/buildflags.h"
 #include "build/build_config.h"
 #include "components/content_settings/core/common/features.h"
+#include "components/flags_ui/flags_state.h"
 #include "components/translate/core/browser/translate_prefs.h"
 #include "net/base/features.h"
 #include "third_party/blink/public/common/features.h"
@@ -302,6 +303,10 @@ constexpr char kBraveNewsDescription[] =
     "Brave News is completely private and includes anonymized ads matched on "
     "your device.";
 
+constexpr char kBraveNewsV2Name[] = "Enable Brave News V2";
+constexpr char kBraveNewsV2Description[] =
+    "Use the new Brave News UI and sources lists";
+
 constexpr char kBraveNewsCardPeekFeatureName[] =
     "Brave News prompts on New Tab Page";
 constexpr char kBraveNewsCardPeekFeatureDescription[] =
@@ -477,6 +482,11 @@ constexpr char kBraveVerticalTabsDescription[] =
      flag_descriptions::kBraveNewsDescription,                              \
      kOsDesktop | kOsAndroid,                                               \
      FEATURE_VALUE_TYPE(brave_today::features::kBraveNewsFeature)},         \
+    {"brave-news-v2",                                                       \
+     flag_descriptions::kBraveNewsV2Name,                                   \
+     flag_descriptions::kBraveNewsV2Description,                            \
+     kOsDesktop | flags_ui::kOsAndroid,                                     \
+     FEATURE_VALUE_TYPE(brave_today::features::kBraveNewsV2Feature)},       \
     {"brave-news-peek",                                                     \
      flag_descriptions::kBraveNewsCardPeekFeatureName,                      \
      flag_descriptions::kBraveNewsCardPeekFeatureDescription,               \

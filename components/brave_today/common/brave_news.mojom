@@ -91,6 +91,10 @@ struct Publisher {
   string publisher_name;
   string category_name;
   bool is_enabled;
+
+  // All the locales this publisher is available within.
+  array<string> locales;
+
   // Only really used for direct feeds, though this information would
   // be useful for combined-source feeds so that the user doesn't add
   // a direct feed for a data source already contained in the combined-source
@@ -125,6 +129,9 @@ struct FeedSearchResultItem {
 
 // Browser-side handler
 interface BraveNewsController {
+  // Gets the current locale.
+  GetLocale() => (string locale);
+
   GetFeed() => (Feed feed);
   GetPublishers() => (map<string, Publisher> publishers);
   // Look at the incoming url and return results
