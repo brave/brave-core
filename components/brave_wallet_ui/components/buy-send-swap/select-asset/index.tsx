@@ -1,13 +1,29 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Fuse from 'fuse.js'
+import { useHistory } from 'react-router-dom'
 
-import SelectAssetItem from '../select-asset-item'
+// types
 import { BraveWallet, WalletRoutes, WalletState } from '../../../constants/types'
+
+// actions
 import { WalletActions } from '../../../common/actions'
+import { PanelActions } from '../../../panel/actions'
+
+// utils
+import { getLocale } from '../../../../common/locale'
+import { getAssetIdKey } from '../../../utils/asset-utils'
+
+// components
+import SelectAssetItem from '../select-asset-item'
 import { SearchBar } from '../../shared'
 import Header from '../select-header'
-import { getLocale } from '../../../../common/locale'
+
 // Styled Components
 import {
   SelectWrapper,
@@ -15,8 +31,6 @@ import {
   DivderTextWrapper,
   DividerText
 } from '../shared-styles'
-import { useHistory } from 'react-router-dom'
-import { PanelActions } from '../../../panel/actions'
 
 export interface Props {
   assets: BraveWallet.BlockchainToken[]
@@ -95,7 +109,7 @@ function SelectAsset (props: Props) {
           // Temp filtering out erc721 tokens, sending will be handled in a different PR
           filteredAssetList.filter((token) => !token.isErc721).map((asset: BraveWallet.BlockchainToken) =>
             <SelectAssetItem
-              key={asset.contractAddress}
+              key={getAssetIdKey(asset)}
               asset={asset}
               selectedNetwork={selectedNetwork}
               onSelectAsset={onSelectAsset(asset)}
@@ -109,7 +123,7 @@ function SelectAsset (props: Props) {
             </DivderTextWrapper>
             {erc271Tokens.map((asset: BraveWallet.BlockchainToken) =>
               <SelectAssetItem
-                key={asset.contractAddress}
+                key={getAssetIdKey(asset)}
                 asset={asset}
                 selectedNetwork={selectedNetwork}
                 onSelectAsset={onSelectAsset(asset)}
