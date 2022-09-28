@@ -55,16 +55,6 @@ constexpr char kSignatures[] = "signatures";
 constexpr char kToString[] = "toString";
 constexpr char kSolanaProviderSript[] = "solana_provider.js";
 
-v8::Local<v8::Value> LoadSolanaWeb3Module(v8::Local<v8::Context> context,
-                                          blink::WebLocalFrame* web_frame) {
-  std::string solana_web3_module_str =
-      base::StrCat({"(function() {", *g_provider_solana_web3_script,
-                    "return solanaWeb3; })()"});
-
-  return web_frame->ExecuteScriptAndReturnValue(blink::WebScriptSource(
-      blink::WebString::FromUTF8(solana_web3_module_str)));
-}
-
 }  // namespace
 
 JSSolanaProvider::JSSolanaProvider(content::RenderFrame* render_frame)
@@ -879,21 +869,38 @@ mojom::SolanaSignTransactionParamPtr JSSolanaProvider::GetSignTransactionParam(
                                                 std::move(*signatures));
 }
 
+bool JSSolanaProvider::LoadSolanaWeb3ModuleIfNeeded(v8::Isolate* isolate) {
+  if (!solana_web3_module_.IsEmpty())
+    return true;
+
+  std::string solana_web3_module_str =
+      base::StrCat({"(function() {", *g_provider_solana_web3_script,
+                    "return solanaWeb3; })()"});
+
+  solana_web3_module_.Reset(
+      isolate, render_frame()->GetWebFrame()->ExecuteScriptAndReturnValue(
+                   blink::WebScriptSource(
+                       blink::WebString::FromUTF8(solana_web3_module_str))));
+  // loading SolanaWeb3 module failed
+  if (solana_web3_module_.IsEmpty())
+    return false;
+  return true;
+}
+
 v8::Local<v8::Value> JSSolanaProvider::CreatePublicKey(
     v8::Local<v8::Context> context,
     const std::string& base58_str) {
-  v8::MicrotasksScope microtasks(context->GetIsolate(),
+  v8::Isolate* isolate = context->GetIsolate();
+  v8::MicrotasksScope microtasks(isolate,
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Context::Scope context_scope(context);
 
-  v8::Local<v8::Value> solana_web3_module =
-      LoadSolanaWeb3Module(context, render_frame()->GetWebFrame());
-  if (solana_web3_module.IsEmpty()) {
-    return v8::Undefined(context->GetIsolate());
+  if (!LoadSolanaWeb3ModuleIfNeeded(isolate)) {
+    return v8::Undefined(isolate);
   }
 
   v8::Local<v8::Value> public_key_module;
-  CHECK(GetProperty(context, solana_web3_module, kPublicKeyModule)
+  CHECK(GetProperty(context, solana_web3_module_.Get(isolate), kPublicKeyModule)
             .ToLocal(&public_key_module));
 
   const base::Value base58_str_value(base58_str);
@@ -905,7 +912,7 @@ v8::Local<v8::Value> JSSolanaProvider::CreatePublicKey(
           context, sizeof(args) / sizeof(args[0]), args);
 
   if (public_key.IsEmpty()) {
-    return v8::Undefined(context->GetIsolate());
+    return v8::Undefined(isolate);
   }
 
   return public_key.ToLocalChecked();
@@ -914,19 +921,19 @@ v8::Local<v8::Value> JSSolanaProvider::CreatePublicKey(
 v8::Local<v8::Value> JSSolanaProvider::CreateTransaction(
     v8::Local<v8::Context> context,
     const std::vector<uint8_t> serialized_tx) {
-  v8::MicrotasksScope microtasks(context->GetIsolate(),
+  v8::Isolate* isolate = context->GetIsolate();
+  v8::MicrotasksScope microtasks(isolate,
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Context::Scope context_scope(context);
 
-  v8::Local<v8::Value> solana_web3_module =
-      LoadSolanaWeb3Module(context, render_frame()->GetWebFrame());
-  if (solana_web3_module.IsEmpty()) {
-    return v8::Undefined(context->GetIsolate());
+  if (!LoadSolanaWeb3ModuleIfNeeded(isolate)) {
+    return v8::Undefined(isolate);
   }
 
   v8::Local<v8::Value> transaction_module;
-  CHECK(GetProperty(context, solana_web3_module, kTransactionModule)
-            .ToLocal(&transaction_module));
+  CHECK(
+      GetProperty(context, solana_web3_module_.Get(isolate), kTransactionModule)
+          .ToLocal(&transaction_module));
 
   const base::Value serialized_tx_value(serialized_tx);
   v8::Local<v8::ArrayBuffer> serialized_tx_array_buffer =
@@ -941,7 +948,7 @@ v8::Local<v8::Value> JSSolanaProvider::CreateTransaction(
                          kTransactionFrom, std::move(args));
 
   if (transaction.IsEmpty()) {
-    return v8::Undefined(context->GetIsolate());
+    return v8::Undefined(isolate);
   }
 
   return transaction.ToLocalChecked();
