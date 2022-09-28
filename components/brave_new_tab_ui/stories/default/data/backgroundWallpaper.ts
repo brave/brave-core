@@ -23,8 +23,7 @@ const generateWallpapers = function (images: NewTab.BackgroundWallpaper[],
     Object.assign(staticImages, {
       [image.author]: {
         ...image,
-        // wallpaperImageUrl: require('../../../../img/newtab/backgrounds/' + image.wallpaperImageUrl)
-        wallpaperImageUrl: ''
+        wallpaperImageUrl: require('../../../../img/newtab/backgrounds/' + image.wallpaperImageUrl)
       }
     })
 

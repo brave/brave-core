@@ -42,7 +42,7 @@ export function Clock () {
       ? null
       : t.value), [formatter, now])
 
-  return <StyledClock onDoubleClick={toggleClockFormat} >
+  return <StyledClock onDoubleClick={toggleClockFormat}>
     <StyledTime>{formattedTime}</StyledTime>
   </StyledClock>
 }

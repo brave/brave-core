@@ -18,7 +18,7 @@ export const StyledStatsItemContainer = styled('ul')<{}>`
   font-family: inherit;
 `
 
-export const StyledStatsItem = styled('li')<{overriddenTextColor?: string}>`
+export const StyledStatsItem = styled('li')<{}>`
   list-style-type: none;
   font-size: inherit;
   font-family: inherit;
@@ -51,7 +51,7 @@ export const StyledStatsItemText = styled('span')<{}>`
   letter-spacing: 0;
 `
 
-export const StyledStatsItemDescription = styled('div')<{overriddenTextColor?: string}>`
+export const StyledStatsItemDescription = styled('div')<{}>`
   font-size: 16px;
   font-weight: 500;
   color: var(--override-readability-color-rgb, #FFFFFF);

@@ -23,7 +23,6 @@ import { setMostVisitedSettings } from '../api/topSites'
 import { handleWidgetPrefsChange } from './stack_widget_reducer'
 import { NewTabAdsData } from '../api/newTabAdsData'
 import { Background } from '../api/background'
-import isReadableOnBackground from '../helpers/colorUtil'
 
 let sideEffectState: NewTab.State = storage.load()
 
@@ -60,14 +59,8 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
 
       if (initialDataPayload.wallpaperData) {
         let backgroundWallpaper = initialDataPayload.wallpaperData.backgroundWallpaper
-        if (backgroundWallpaper?.type === 'color') {
-          if (backgroundWallpaper.random) {
-            backgroundWallpaper = backgroundAPI.randomColorBackground(backgroundWallpaper.wallpaperColor)
-          }
-
-          if (!isReadableOnBackground(backgroundWallpaper)) {
-            (backgroundWallpaper as NewTab.ColorBackground).overriddenForegroundColor = '#000000'
-          }
+        if (backgroundWallpaper?.type === 'color' && backgroundWallpaper.random) {
+          backgroundWallpaper = backgroundAPI.randomColorBackground(backgroundWallpaper.wallpaperColor)
         }
 
         state = {
@@ -144,9 +137,6 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
           state.backgroundWallpaper = { type: 'image', wallpaperImageUrl: url }
         } else if (color) {
           state.backgroundWallpaper = random ? backgroundAPI.randomColorBackground(color) : { type: 'color', wallpaperColor: color, random }
-          if (!isReadableOnBackground(state.backgroundWallpaper)) {
-            (state.backgroundWallpaper as NewTab.ColorBackground).overriddenForegroundColor = '#000000'
-          }
         }
       }
 

@@ -9,7 +9,6 @@ declare namespace NewTab {
     type: 'color'
     wallpaperColor: string
     random?: boolean
-    overriddenForegroundColor?: string
   }
 
   // Backgrounds based on image. Custom image background or Brave background.

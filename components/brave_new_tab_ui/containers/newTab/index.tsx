@@ -194,9 +194,6 @@ class NewTabPage extends React.Component<Props, State> {
       window.clearTimeout(this.braveNewsPromptTimerId)
     }
     window.removeEventListener('resize', this.handleResize.bind(this))
-
-    document.documentElement.style.removeProperty('--override-readability-color-rgb')
-    document.documentElement.style.removeProperty('--override-readability-color')
   }
 
   componentDidUpdate (prevProps: Props) {
@@ -1195,7 +1192,7 @@ class NewTabPage extends React.Component<Props, State> {
             widgetTitle={getLocale('statsTitle')}
             textDirection={newTabData.textDirection}
             menuPosition={'right'}>
-            <Stats stats={newTabData.stats} />
+            <Stats stats={newTabData.stats}/>
           </GridWidget>
           <GridWidget
             pref='showClock'
