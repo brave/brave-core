@@ -179,6 +179,13 @@ preprocess_if_expr("preprocess_generated") {
     "getting_started_page/getting_started.js",
     "social_blocking_page/social_blocking_page.m.js",
   ]
+
+  if (is_win) {
+    in_files += [
+      "pin_shortcut_page/pin_shortcut_page.js",
+      "pin_shortcut_page/pin_shortcut_page_browser_proxy.m.js",
+    ]
+  }
 }
 
 group("web_modules") {
@@ -201,8 +208,13 @@ group("web_modules") {
     "brave_wallet_page:web_modules",
     "default_brave_shields_page:web_modules",
     "getting_started_page:web_modules",
+    "pin_shortcut_page:web_modules",
     "social_blocking_page:web_modules",
   ]
+
+  if (is_win) {
+    public_deps += [ "pin_shortcut_page:web_modules" ]
+  }
 }
 
 polymer_modulizer("icons") {

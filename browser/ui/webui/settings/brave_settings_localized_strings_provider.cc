@@ -270,6 +270,12 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"braveNewTabNewTabPageShows", IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS},
     {"braveNewTabNewTabCustomizeWidgets",
      IDS_SETTINGS_NEW_TAB_NEW_TAB_CUSTOMIZE_WIDGETS},
+  // Pin shortcut page
+#if BUILDFLAG(IS_WIN)
+    {"canPinShortcut", IDS_SETTINGS_CAN_PIN_SHORTCUT},
+    {"pinShortcut", IDS_SETTINGS_PIN_SHORTCUT},
+    {"shortcutPinned", IDS_SETTINGS_SHORTCUT_PINNED},
+#endif
     // Rewards page
     {"braveRewards", IDS_SETTINGS_BRAVE_REWARDS_TITLE},
     {"braveRewardsDisabledLabel", IDS_SETTINGS_BRAVE_REWARDS_DISABLED_LABEL},

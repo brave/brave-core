@@ -29,11 +29,16 @@
 #include "brave/components/speedreader/common/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
 #include "components/sync/base/command_line_switches.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/content_features.h"
+
+#if BUILDFLAG(IS_WIN)
+#include "brave/browser/ui/webui/settings/pin_shortcut_handler.h"
+#endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/common/features.h"
@@ -63,6 +68,9 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
   web_ui->AddMessageHandler(std::make_unique<BraveAdBlockHandler>());
 #if BUILDFLAG(ENABLE_TOR)
   web_ui->AddMessageHandler(std::make_unique<BraveTorHandler>());
+#endif
+#if BUILDFLAG(IS_WIN)
+  web_ui->AddMessageHandler(std::make_unique<PinShortcutHandler>());
 #endif
 }
 

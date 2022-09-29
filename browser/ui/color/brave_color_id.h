@@ -18,7 +18,9 @@
     E_CPONLY(kColorIconBase)                    \
     E_CPONLY(kColorMenuItemSubText)             \
     E_CPONLY(kColorBookmarkBarInstructionsText) \
-    E_CPONLY(kColorLocationBarFocusRing)
+    E_CPONLY(kColorLocationBarFocusRing)        \
+    E_CPONLY(kColorDialogDontAskAgainButton)    \
+    E_CPONLY(kColorDialogDontAskAgainButtonHovered) \
 
 #define BRAVE_SEARCH_CONVERSION_COLOR_IDS                             \
     E_CPONLY(kColorSearchConversionBannerTypeBackgroundBorder)        \

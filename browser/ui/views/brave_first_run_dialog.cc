@@ -11,16 +11,16 @@
 #include "base/bind.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "build/build_config.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/first_run/first_run_dialog.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/grit/chromium_strings.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/font.h"
 #include "ui/gfx/geometry/insets.h"
+#include "ui/views/controls/button/checkbox.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/window/dialog_delegate.h"
@@ -32,8 +32,6 @@
 #include "chrome/browser/shell_integration.h"
 #endif
 
-namespace first_run {
-
 namespace {
 
 void ShowBraveFirstRunDialogViews(Profile* profile) {
@@ -42,7 +40,37 @@ void ShowBraveFirstRunDialogViews(Profile* profile) {
   run_loop.Run();
 }
 
+#if BUILDFLAG(IS_WIN)
+class PinShortcutCheckbox : public views::Checkbox {
+ public:
+  METADATA_HEADER(PinShortcutCheckbox);
+
+  PinShortcutCheckbox() {
+    SetFontList();
+    SetText(brave_l10n::GetLocalizedResourceUTF16String(
+        IDS_FIRSTRUN_DLG_PIN_SHORTCUT_TEXT));
+  }
+  ~PinShortcutCheckbox() override = default;
+  PinShortcutCheckbox(const PinShortcutCheckbox&) = delete;
+  PinShortcutCheckbox& operator=(const PinShortcutCheckbox&) = delete;
+
+ private:
+  void SetFontList() {
+    gfx::FontList font_list;
+    constexpr int kFontSize = 14;
+    font_list.Derive(kFontSize - font_list.GetFontSize(),
+                     font_list.GetFontStyle(), gfx::Font::Weight::NORMAL);
+    label()->SetFontList(font_list);
+  }
+};
+
+BEGIN_METADATA(PinShortcutCheckbox, views::Checkbox)
+END_METADATA
+#endif  // BUILDFLAG(IS_WIN)
+
 }  // namespace
+
+namespace first_run {
 
 void ShowFirstRunDialog(Profile* profile) {
 #if BUILDFLAG(IS_MAC)
@@ -71,19 +99,11 @@ BraveFirstRunDialog::BraveFirstRunDialog(base::RepeatingClosure quit_runloop)
   SetTitle(IDS_FIRST_RUN_DIALOG_WINDOW_TITLE);
 #endif
   SetButtonLabel(ui::DIALOG_BUTTON_OK,
-                 l10n_util::GetStringUTF16(IDS_FIRSTRUN_DLG_OK_BUTTON_LABEL));
-  SetButtonLabel(
-      ui::DIALOG_BUTTON_CANCEL,
-      l10n_util::GetStringUTF16(IDS_FIRSTRUN_DLG_CANCEL_BUTTON_LABEL));
-  constexpr int kChildSpacing = 16;
-  constexpr int kPadding = 24;
-  constexpr int kTopPadding = 20;
-  constexpr int kBottomPadding = 55;
-
-  SetLayoutManager(std::make_unique<views::BoxLayout>(
-      views::BoxLayout::Orientation::kVertical,
-      gfx::Insets::TLBR(kTopPadding, kPadding, kBottomPadding, kPadding),
-      kChildSpacing));
+                 brave_l10n::GetLocalizedResourceUTF16String(
+                     IDS_FIRSTRUN_DLG_OK_BUTTON_LABEL));
+  SetButtonLabel(ui::DIALOG_BUTTON_CANCEL,
+                 brave_l10n::GetLocalizedResourceUTF16String(
+                     IDS_FIRSTRUN_DLG_CANCEL_BUTTON_LABEL));
 
   constexpr int kHeaderFontSize = 16;
   int size_diff =
@@ -93,7 +113,8 @@ BraveFirstRunDialog::BraveFirstRunDialog(base::RepeatingClosure quit_runloop)
           .DeriveWithSizeDelta(size_diff)
           .DeriveWithWeight(gfx::Font::Weight::SEMIBOLD)};
   auto* header_label = AddChildView(std::make_unique<views::Label>(
-      l10n_util::GetStringUTF16(IDS_FIRSTRUN_DLG_HEADER_TEXT), header_font));
+      brave_l10n::GetLocalizedResourceUTF16String(IDS_FIRSTRUN_DLG_HEADER_TEXT),
+      header_font));
   header_label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
 
   constexpr int kContentFontSize = 15;
@@ -104,12 +125,32 @@ BraveFirstRunDialog::BraveFirstRunDialog(base::RepeatingClosure quit_runloop)
           .DeriveWithSizeDelta(size_diff)
           .DeriveWithWeight(gfx::Font::Weight::NORMAL)};
   auto* contents_label = AddChildView(std::make_unique<views::Label>(
-      l10n_util::GetStringUTF16(IDS_FIRSTRUN_DLG_CONTENTS_TEXT),
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_FIRSTRUN_DLG_CONTENTS_TEXT),
       contents_font));
   contents_label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
   contents_label->SetMultiLine(true);
   constexpr int kMaxWidth = 350;
   contents_label->SetMaximumWidth(kMaxWidth);
+
+#if BUILDFLAG(IS_WIN)
+  pin_shortcut_checkbox_ =
+      AddChildView(std::make_unique<PinShortcutCheckbox>());
+#endif
+
+  constexpr int kChildSpacing = 16;
+  constexpr int kPadding = 24;
+  constexpr int kTopPadding = 20;
+  int kBottomPadding = 55;
+
+#if BUILDFLAG(IS_WIN)
+  kBottomPadding -= pin_shortcut_checkbox_->GetPreferredSize().height();
+#endif
+
+  SetLayoutManager(std::make_unique<views::BoxLayout>(
+      views::BoxLayout::Orientation::kVertical,
+      gfx::Insets::TLBR(kTopPadding, kPadding, kBottomPadding, kPadding),
+      kChildSpacing));
 }
 
 BraveFirstRunDialog::~BraveFirstRunDialog() = default;
@@ -124,13 +165,16 @@ bool BraveFirstRunDialog::Accept() {
 
 #if BUILDFLAG(IS_WIN)
   base::MakeRefCounted<shell_integration::BraveDefaultBrowserWorker>()
-      ->StartSetAsDefault(
-          base::BindOnce([](shell_integration::DefaultWebClientState state) {
-            if (state == shell_integration::DefaultWebClientState::IS_DEFAULT) {
+      ->StartSetAsDefault(base::BindOnce(
+          [](bool pin_to_shortcut,
+             shell_integration::DefaultWebClientState state) {
+            if (pin_to_shortcut &&
+                state == shell_integration::DefaultWebClientState::IS_DEFAULT) {
               // Try to pin to taskbar when Brave is set as a default browser.
               shell_integration::win::PinToTaskbar();
             }
-          }));
+          },
+          pin_shortcut_checkbox_->GetChecked()));
 #else
   shell_integration::SetAsDefaultBrowser();
 #endif
