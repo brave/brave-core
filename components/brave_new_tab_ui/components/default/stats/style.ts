@@ -23,15 +23,10 @@ export const StyledStatsItem = styled('li')<{}>`
   font-size: inherit;
   font-family: inherit;
   margin: 10px 16px;
-
-  &:first-child {
-    color: #FB542B;
-  }
-  &:nth-child(2) {
-    color: #A0A5EB;
-  }
-  &:last-child {
-    color: #FFFFFF;
+  &:first-child { color: var(--override-readability-color, var(--interactive2)); }
+  &:nth-child(2) { color: var(--override-readability-color, var(--interactive9)); }
+  &:last-child { 
+    color: var(--override-readability-color, #FFFFFF); 
     margin-right: 0;
   }
 `
@@ -59,7 +54,7 @@ export const StyledStatsItemText = styled('span')<{}>`
 export const StyledStatsItemDescription = styled('div')<{}>`
   font-size: 16px;
   font-weight: 500;
-  color: #FFFFFF;
+  color: var(--override-readability-color-rgb, #FFFFFF);
   margin-top: 8px;
   font-family: ${p => p.theme.fontFamily.heading};
 `

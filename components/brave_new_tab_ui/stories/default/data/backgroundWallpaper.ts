@@ -10,9 +10,9 @@ import { images, solidColorsForBackground, gradientColorsForBackground } from '.
 
 const addonsChannel = addons.getChannel()
 
-export const backgroundWallpapers = (function (images: NewTab.BackgroundWallpaper[],
-                                               solidColors: NewTab.ColorBackground[],
-                                               gradientColors: NewTab.ColorBackground[]) {
+const generateWallpapers = function (images: NewTab.BackgroundWallpaper[],
+                                      solidColors: NewTab.ColorBackground[],
+                                      gradientColors: NewTab.ColorBackground[]) {
   let staticImages = { defaultImage: undefined }
   for (const image of images) {
     // author is optional field.
@@ -43,7 +43,9 @@ export const backgroundWallpapers = (function (images: NewTab.BackgroundWallpape
   staticImages = gradientColors.reduce(reducer, staticImages)
 
   return staticImages
-})(images, solidColorsForBackground, gradientColorsForBackground)
+}.bind(null, images, solidColorsForBackground, gradientColorsForBackground)
+
+export const backgroundWallpapers = generateWallpapers()
 
 /**
  * Mock handler for colored backgrounds. Emits a change event to knobs
