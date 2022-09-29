@@ -153,7 +153,12 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
   const isMounted = useIsMounted()
   const getBalance = useBalance(networkList)
   const { makeTokenVisible } = useAssetManagement()
-  const { getIsSwapSupported, getERC20Allowance, sendSolanaSerializedTransaction } = useLib()
+  const {
+    getIsSwapSupported,
+    getERC20Allowance,
+    sendSolanaSerializedTransaction,
+    hasEIP1559Support
+  } = useLib()
 
   // memos
   const nativeAsset = React.useMemo(() => makeNetworkAsset(selectedNetwork), [selectedNetwork])
@@ -407,16 +412,17 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
         // order to ensure a swap with minimum slippage.
         const { estimation: gasEstimates } = await ethTxManagerProxy.getGasEstimation1559()
 
+        const isEIP1559 = hasEIP1559Support(selectedAccount, selectedNetwork) && gasEstimates
         let maxPriorityFeePerGas
         let maxFeePerGas
-        if (gasEstimates && gasEstimates.fastMaxPriorityFeePerGas === gasEstimates.avgMaxPriorityFeePerGas) {
+        if (isEIP1559 && gasEstimates.fastMaxPriorityFeePerGas === gasEstimates.avgMaxPriorityFeePerGas) {
           // Bump fast priority fee and max fee by 1 GWei if same as average fees.
           const maxPriorityFeePerGasBN = new BigNumber(gasEstimates.fastMaxPriorityFeePerGas).plus(10 ** 9)
           const maxFeePerGasBN = new BigNumber(gasEstimates.fastMaxFeePerGas).plus(10 ** 9)
 
           maxPriorityFeePerGas = `0x${maxPriorityFeePerGasBN.toString(16)}`
           maxFeePerGas = `0x${maxFeePerGasBN.toString(16)}`
-        } else if (gasEstimates) {
+        } else if (isEIP1559) {
           // Always suggest fast gas fees as default
           maxPriorityFeePerGas = gasEstimates.fastMaxPriorityFeePerGas
           maxFeePerGas = gasEstimates.fastMaxFeePerGas
@@ -452,7 +458,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
         console.error(`[swap] error querying 0x API: ${quote.errorResponse}`)
       }
     }
-  }, [isMounted])
+  }, [isMounted, selectedAccount, selectedNetwork])
 
   const fetchJupiterSwapQuote = React.useCallback(async (payload: SwapParamsPayloadType) => {
     if (!isMounted) {
