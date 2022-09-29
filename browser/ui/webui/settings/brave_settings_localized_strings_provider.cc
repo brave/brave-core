@@ -652,6 +652,11 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
   BravePrivacyHandler::AddLoadTimeData(html_source, profile);
   BraveAddSyncStrings(html_source);
 
+  // Hide side panel option for showing left or right side.
+  // TODO(simonhong): Delete this when we can show sidebar on left.
+  // https://github.com/brave/brave-browser/issues/25332
+  html_source->AddBoolean("showSidePanelOptions", false);
+
   // Load time data for brave://settings/extensions
   html_source->AddBoolean(
       "signInAllowedOnNextStartupInitialValue",
