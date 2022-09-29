@@ -24,7 +24,7 @@ import { defaultState as newTabData } from '../../../../storage/new_tab_storage'
  * @param channels All the current channels, with up to date subscriptions
  * @returns Whether the publisher is current enabled.
  */
-function isPublisherContentAllowed (publisher: Publisher, channels: Channels): boolean {
+function isPublisherContentAllowed(publisher: Publisher, channels: Channels): boolean {
   // If the user has an explicit preference for this feed, use that.
   if (publisher.userEnabledStatus === UserEnabled.ENABLED) return true
   if (publisher.userEnabledStatus === UserEnabled.DISABLED) return false
@@ -38,20 +38,16 @@ function isPublisherContentAllowed (publisher: Publisher, channels: Channels): b
 }
 
 /**
- * While we're in the process of migrating to the new sources system, we may or
- * may not have channels specified, so we use this function to decide whether
- * to return the category, or the channels.
- *
- * Each source should be in at least one channel, so if there are no channels
- * then it's safe to assume we aren't receiving channels from the server (and
- * thus, that we're on the old sources.json).
+ * Depending on whether we're using the V2 version of Brave News, either return
+ * the list of channels or an array containing the categoryName, for backwards
+ * compatibility.
  *
  * Once we've turned on the new sources.json for everyone, we can simply remove
  * this function and always use channels.
  * @param publisher The publisher to get channels for.
  */
 export function getPublisherChannels (publisher: Publisher) {
-  return publisher.channels.length ? publisher.channels : [publisher.categoryName]
+  return newTabData.featureFlagBraveNewsV2Enabled ? publisher.channels : [publisher.categoryName]
 }
 
 export const DynamicListContext = React.createContext<
@@ -74,7 +70,7 @@ type ListItemProps = {
 
 // Component for each item. Measures height to let virtual
 // list know.
-function ListItem (props: ListItemProps) {
+function ListItem(props: ListItemProps) {
   const { setSize } = React.useContext(DynamicListContext)
   const rowRoot = React.useRef<null | HTMLDivElement>(null)
 
@@ -121,7 +117,7 @@ function ListItem (props: ListItemProps) {
 // channels. For now though, this is fine.
 const channelsPromise = getBraveNewsController().getChannels().then(r => r.channels as Channels)
 
-export default function PublisherPrefs (props: PublisherPrefsProps) {
+export default function PublisherPrefs(props: PublisherPrefsProps) {
   const listRef = React.useRef<VariableSizeList | null>(null)
   const sizeMap = React.useRef<{ [key: string]: number }>({})
   const { result: channels = {} } = usePromise(() => channelsPromise, [])
