@@ -24,8 +24,8 @@ class BraveNewsFeedItemView : public views::View,
  public:
   METADATA_HEADER(BraveNewsFeedItemView);
 
-  explicit BraveNewsFeedItemView(BraveNewsTabHelper::FeedDetails details,
-                                 content::WebContents* contents);
+  BraveNewsFeedItemView(BraveNewsTabHelper::FeedDetails details,
+                        content::WebContents* contents);
   BraveNewsFeedItemView(const BraveNewsFeedItemView&) = delete;
   BraveNewsFeedItemView& operator=(const BraveNewsFeedItemView&) = delete;
   ~BraveNewsFeedItemView() override;

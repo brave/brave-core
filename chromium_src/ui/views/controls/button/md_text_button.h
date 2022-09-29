@@ -39,26 +39,6 @@ namespace views {
 //  - No shadow for prominent background
 class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
  public:
-  struct ButtonStyle {
-    absl::optional<SkColor> background_color;
-    absl::optional<SkColor> border_color;
-    SkColor text_color;
-  };
-
-  struct ButtonTheme {
-    ButtonStyle normal_light;
-    ButtonStyle normal_dark;
-
-    ButtonStyle hover_light;
-    ButtonStyle hover_dark;
-
-    ButtonStyle disabled_light;
-    ButtonStyle disabled_dark;
-
-    ButtonStyle loading_light;
-    ButtonStyle loading_dark;
-  };
-
   enum Kind { kOld, kPrimary, kSecondary, kTertiary };
 
   explicit MdTextButton(PressedCallback callback = PressedCallback(),
@@ -93,7 +73,6 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
  private:
   Kind kind_ = kOld;
   bool loading_ = false;
-  absl::optional<ButtonTheme> theme_;
   raw_ptr<const gfx::VectorIcon> icon_ = nullptr;
 };
 
