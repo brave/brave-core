@@ -370,17 +370,18 @@ extension URL {
 
   // Check if the website is supporting showing Add To playlist toast
   public var isPlaylistSupportedSiteURL: Bool {
-    let domain = self.baseDomain ?? self.host ?? self.hostSLD
+    let urlHost = self.host ?? self.hostSLD
+    
     var siteList = Set<String>([
-      "youtube.com", "vimeo.com", "twitch.tv", "floatplane.com",
-      "soundcloud.com", "newness.com", "ted.com", "dailymotion.com",
-      "pandora.tv", "watchnebula.com", "pbs.org", "curiositystream.com",
-      "soccer-douga.com", "sports.yahoo.com.jp", "soccer.skyperfectv.co.jp",
-      "bitchute.com", "rumble.com", "gorf.tv", "odysee.com", "brighteon.com",
-      "lbry.tv", "luminarypodcasts.com", "marthastewart.com", "bbcgoodfood.com",
-      "bt.com", "skysports.com",
-      "sky.co.nz", "kayosports.com.au", "udemy.com",
-      "listennotes.com",
+      "youtube.com", "vimeo.com", "twitch.tv",
+      "soundcloud.com", "dailymotion.com", "udemy.com",
+      "floatplane.com", "newness.com", "ted.com",
+      "pandora.tv", "watchnebula.com", "pbs.org",
+      "curiositystream.com", "soccer-douga.com", "bitchute.com",
+      "rumble.com", "gorf.tv", "odysee.com", "brighteon.com",
+      "lbry.tv", "luminarypodcasts.com", "marthastewart.com",
+      "bbcgoodfood.com", "bt.com", "skysports.com", "sky.co.nz",
+      "kayosports.com.au", "listennotes.com", "vid.puffyan.us"
     ])
 
     /// Additional sites for Japanese locale
@@ -395,12 +396,12 @@ extension URL {
         "asuka-academy.com", "chugakujuken.com", "ic0.tv",
         "aoi-zemi.com", "prog-8.com", "jmooc.jp", "schoo.jp",
         "nlp.netlearning.co.jp", "gacco.org", "dic.okedou.app",
-        "okedou.app",
+        "okedou.app", "sports.yahoo.co.jp", "soccer.skyperfectv.co.jp"
       ])
       siteList.formUnion(japanList)
     }
 
-    return siteList.contains(where: domain.contains)
+    return siteList.contains(where: urlHost.contains)
   }
 
   public func uniquePathForFilename(_ filename: String) throws -> URL {
