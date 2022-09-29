@@ -387,7 +387,7 @@ void SidebarService::UpdateItem(const GURL& old_url,
 
   auto item_iter = base::ranges::find(items_, old_url, &SidebarItem::url);
   if (item_iter != items_.end()) {
-    const int index = std::distance(items_.begin(), item_iter);
+    const size_t index = std::distance(items_.begin(), item_iter);
     DCHECK(IsEditableItemAt(index));
     item_iter->url = new_url;
     item_iter->title = new_title;
