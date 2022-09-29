@@ -15,9 +15,22 @@ import BraveWallet
 
 private let log = Logger.browserLogger
 
-protocol TabContentScript {
-  static func name() -> String
-  func scriptMessageHandlerName() -> String?
+protocol TabContentScriptLoader {
+  static func loadUserScript(named: String) -> String?
+  static func secureScript(handlerName: String, securityToken: String, script: String) -> String
+  static func secureScript(handlerNamesMap: [String: String], securityToken: String, script: String) -> String
+}
+
+protocol TabContentScript: TabContentScriptLoader {
+  static var scriptName: String { get }
+  static var scriptId: String { get }
+  static var messageHandlerName: String { get }
+  static var scriptSandbox: WKContentWorld { get }
+  static var userScript: WKUserScript? { get }
+  
+  func verifyMessage(message: WKScriptMessage) -> Bool
+  func verifyMessage(message: WKScriptMessage, securityToken: String) -> Bool
+  
   func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: @escaping (Any?, String?) -> Void)
 }
 
@@ -71,9 +84,8 @@ class Tab: NSObject {
   var secureContentState: TabSecureContentState = .unknown
 
   var walletEthProvider: BraveWalletEthereumProvider?
-  var walletEthProviderJS: String?
+  var walletEthProviderScript: WKUserScript?
   var tabDappStore: TabDappStore = .init()
-  
   var isWalletIconVisible: Bool = false {
     didSet {
       tabDelegate?.updateURLBarWalletButton()
@@ -194,7 +206,7 @@ class Tab: NSObject {
 
   // There is no 'available macro' on props, we currently just need to store ownership.
   lazy var contentBlocker = ContentBlockerHelper(tab: self)
-  lazy var requestBlockingContentHelper = RequestBlockingContentHelper(tab: self)
+  lazy var requestBlockingContentHelper = RequestBlockingContentScriptHandler(tab: self)
 
   /// The last title shown by this tab. Used by the tab tray to show titles for zombie tabs.
   var lastTitle: String?
@@ -218,7 +230,7 @@ class Tab: NSObject {
   private var userAgentOverrides: [String: Bool] = [:]
 
   var readerModeAvailableOrActive: Bool {
-    if let readerMode = self.getContentScript(name: "ReaderMode") as? ReaderMode {
+    if let readerMode = self.getContentScript(name: ReaderModeScriptHandler.scriptName) as? ReaderModeScriptHandler {
       return readerMode.state != .unavailable
     }
     return false
@@ -236,7 +248,8 @@ class Tab: NSObject {
   var parent: Tab?
 
   fileprivate var contentScriptManager = TabContentScriptManager()
-  private(set) var userScriptManager: UserScriptManager?
+  private var userScripts = Set<UserScriptManager.ScriptType>()
+  private var customUserScripts = Set<UserScriptType>()
 
   fileprivate var configuration: WKWebViewConfiguration?
 
@@ -252,18 +265,11 @@ class Tab: NSObject {
         isNightModeEnabled = true
       }
       
-      webView?.evaluateSafeJavaScript(
-        functionName: "window.__firefox__.NightMode.setEnabled",
-        args: [isNightModeEnabled],
-        contentWorld: .defaultClient,
-        asFunction: true
-      ) { _, error in
-        if let error = error {
-          log.error("Error executing script: \(error)")
-        }
+      if let webView = webView {
+        NightModeScriptHandler.executeScript(for: webView, isNightModeEnabled: isNightModeEnabled)
       }
-
-      userScriptManager?.isNightModeEnabled = isNightModeEnabled
+      
+      self.setScript(script: .nightMode, enabled: isNightModeEnabled)
     }
   }
 
@@ -328,18 +334,18 @@ class Tab: NSObject {
 
       self.webView = webView
       self.webView?.addObserver(self, forKeyPath: KVOConstants.URL.rawValue, options: .new, context: nil)
-      self.userScriptManager = UserScriptManager(
-        tab: self,
-        isCookieBlockingEnabled: Preferences.Privacy.blockAllCookies.value,
-        isPaymentRequestEnabled: webView.hasOnlySecureContent,
-        isWebCompatibilityMediaSourceAPIEnabled: Preferences.Playlist.webMediaSourceCompatibility.value,
-        isMediaBackgroundPlaybackEnabled: Preferences.General.mediaAutoBackgrounding.value,
-        isNightModeEnabled: Preferences.General.nightModeEnabled.value,
-        isDeAMPEnabled: Preferences.Shields.autoRedirectAMPPages.value,
-        walletEthProviderJS: walletEthProviderJS
-      )
+      
+      let scriptPreferences: [UserScriptManager.ScriptType: Bool] = [
+        .cookieBlocking: Preferences.Privacy.blockAllCookies.value,
+        .playlistMediaSource: Preferences.Playlist.webMediaSourceCompatibility.value,
+        .mediaBackgroundPlay: Preferences.General.mediaAutoBackgrounding.value,
+        .nightMode: Preferences.General.nightModeEnabled.value,
+        .deAmp: Preferences.Shields.autoRedirectAMPPages.value
+      ]
+      
+      userScripts = Set(scriptPreferences.filter({ $0.value }).map({ $0.key }))
+      self.updateInjectedScripts()
       tabDelegate?.tab(self, didCreateWebView: webView)
-
       nightMode = Preferences.General.nightModeEnabled.value
     }
   }
@@ -787,19 +793,17 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply
 
   func uninstall(from tab: Tab) {
     helpers.forEach {
-      if let name = $0.value.scriptMessageHandlerName() {
-        tab.webView?.configuration.userContentController.removeScriptMessageHandler(forName: name)
-      }
+      let name = type(of: $0.value).messageHandlerName
+      tab.webView?.configuration.userContentController.removeScriptMessageHandler(forName: name)
     }
   }
 
   @objc func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage, replyHandler: @escaping (Any?, String?) -> Void) {
     for helper in helpers.values {
-      if let scriptMessageHandlerName = helper.scriptMessageHandlerName() {
-        if scriptMessageHandlerName == message.name {
-          helper.userContentController(userContentController, didReceiveScriptMessage: message, replyHandler: replyHandler)
-          return
-        }
+      let scriptMessageHandlerName = type(of: helper).messageHandlerName
+      if scriptMessageHandlerName == message.name {
+        helper.userContentController(userContentController, didReceiveScriptMessage: message, replyHandler: replyHandler)
+        return
       }
     }
   }
@@ -813,12 +817,11 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply
 
     // If this helper handles script messages, then get the handler name and register it. The Tab
     // receives all messages and then dispatches them to the right TabHelper.
-    if let scriptMessageHandlerName = helper.scriptMessageHandlerName() {
-      if #available(iOS 14.3, *) {
-        tab.webView?.configuration.userContentController.addScriptMessageHandler(self, contentWorld: contentWorld, name: scriptMessageHandlerName)
-      } else {
-        tab.webView?.configuration.userContentController.addScriptMessageHandler(self, contentWorld: .page, name: scriptMessageHandlerName)
-      }
+    let scriptMessageHandlerName = type(of: helper).messageHandlerName
+    if #available(iOS 14.3, *) {
+      tab.webView?.configuration.userContentController.addScriptMessageHandler(self, contentWorld: contentWorld, name: scriptMessageHandlerName)
+    } else {
+      tab.webView?.configuration.userContentController.addScriptMessageHandler(self, contentWorld: .page, name: scriptMessageHandlerName)
     }
   }
 
@@ -855,7 +858,7 @@ class TabWebView: BraveWebView, MenuHelperInterface {
     if let string = UIPasteboard.general.string {
       evaluateSafeJavaScript(
         functionName: "window.__firefox__.forcePaste",
-        args: [string, UserScriptManager.messageHandlerTokenString],
+        args: [string, UserScriptManager.securityToken],
         contentWorld: .defaultClient
       ) { _, _ in }
     }
@@ -970,7 +973,7 @@ extension Tab {
         self.webView?.evaluateSafeJavaScript(
           functionName: "window.onFetchedBackupResults",
           args: [queryResult],
-          contentWorld: .page,
+          contentWorld: BraveSearchScriptHandler.scriptSandbox,
           escapeArgs: false)
 
         // Cleanup
@@ -985,6 +988,57 @@ extension Tab {
   func injectSessionStorageItem(key: String, value: String) {
     self.webView?.evaluateSafeJavaScript(functionName: "sessionStorage.setItem",
                                          args: [key, value],
-                                         contentWorld: .page)
+                                         contentWorld: BraveSkusScriptHandler.scriptSandbox)
+  }
+}
+
+// MARK: Script Injection
+extension Tab {
+  func setScript(script: UserScriptManager.ScriptType, enabled: Bool) {
+    setScripts(scripts: [script: enabled])
+  }
+  
+  func setScripts(scripts: Set<UserScriptManager.ScriptType>, enabled: Bool) {
+    var scriptMap = [UserScriptManager.ScriptType: Bool]()
+    scripts.forEach({ scriptMap[$0] = enabled })
+    setScripts(scripts: scriptMap)
+  }
+  
+  func setScripts(scripts: [UserScriptManager.ScriptType: Bool]) {
+    var scriptsToAdd = Set<UserScriptManager.ScriptType>()
+    var scriptsToRemove = Set<UserScriptManager.ScriptType>()
+    
+    for (script, enabled) in scripts {
+      let scriptExists = userScripts.contains(script)
+      
+      if !scriptExists && enabled {
+        scriptsToAdd.insert(script)
+      } else if scriptExists && !enabled {
+        scriptsToRemove.insert(script)
+      }
+    }
+    
+    if scriptsToAdd.isEmpty && scriptsToRemove.isEmpty {
+      // Scripts already enabled or disabled
+      return
+    }
+    
+    userScripts.formUnion(scriptsToAdd)
+    userScripts.subtract(scriptsToRemove)
+    updateInjectedScripts()
+  }
+  
+  func setCustomUserScript(scripts: Set<UserScriptType>) {
+    if customUserScripts != scripts {
+      customUserScripts = scripts
+      updateInjectedScripts()
+    }
+  }
+  
+  private func updateInjectedScripts() {
+    UserScriptManager.shared.loadCustomScripts(into: self,
+                                               userScripts: userScripts,
+                                               customScripts: customUserScripts,
+                                               walletEthProviderScript: walletEthProviderScript)
   }
 }

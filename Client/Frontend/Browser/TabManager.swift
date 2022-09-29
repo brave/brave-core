@@ -486,9 +486,20 @@ class TabManager: NSObject {
     }
 
     if let (provider, js) = makeWalletEthProvider?(tab) {
+      let providerJS = """
+      (function() {
+        if (window.isSecureContext) {
+          \(js)
+        }
+      })();
+      """
+      
       tab.walletEthProvider = provider
       tab.walletEthProvider?.`init`(tab)
-      tab.walletEthProviderJS = js
+      tab.walletEthProviderScript = WKUserScript.create(source: providerJS,
+                                                        injectionTime: .atDocumentStart,
+                                                        forMainFrameOnly: true,
+                                                        in: .page)
     }
     
     delegates.forEach { $0.get()?.tabManager(self, willAddTab: tab) }
@@ -1036,7 +1047,7 @@ extension TabManager: WKNavigationDelegate {
     guard let tab = self[webView] else { return }
 
     if !tab.contentBlocker.isEnabled {
-      webView.evaluateSafeJavaScript(functionName: "window.__firefox__.TrackingProtectionStats.setEnabled", args: [false, UserScriptManager.securityTokenString], contentWorld: .page)
+      webView.evaluateSafeJavaScript(functionName: "window.__firefox__.TrackingProtectionStats.setEnabled", args: [false, UserScriptManager.securityToken], contentWorld: ContentBlockerHelper.scriptSandbox)
     }
   }
 
@@ -1098,7 +1109,7 @@ extension TabManager: PreferencesObserver {
       // The default tab configurations also need to change.
       configuration.preferences.javaScriptCanOpenWindowsAutomatically = allowPopups
     case Preferences.General.nightModeEnabled.key:
-      NightModeHelper.setNightMode(tabManager: self, enabled: Preferences.General.nightModeEnabled.value)
+      NightModeScriptHandler.setNightMode(tabManager: self, enabled: Preferences.General.nightModeEnabled.value)
     default:
       break
     }

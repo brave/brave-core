@@ -68,21 +68,22 @@ public struct ReaderModeHandlers {
             ReadabilityService.sharedInstance.process(url, cache: readerModeCache)
             if let readerViewLoadingPath = Bundle.current.path(forResource: "ReaderViewLoading", ofType: "html") {
               do {
-                let readerViewLoading = try NSMutableString(contentsOfFile: readerViewLoadingPath, encoding: String.Encoding.utf8.rawValue)
-                readerViewLoading.replaceOccurrences(
-                  of: "%ORIGINAL-URL%", with: url.absoluteString,
-                  options: .literal, range: NSRange(location: 0, length: readerViewLoading.length))
-                readerViewLoading.replaceOccurrences(
-                  of: "%LOADING-TEXT%", with: Strings.readerModeLoadingContentDisplayText,
-                  options: .literal, range: NSRange(location: 0, length: readerViewLoading.length))
-                readerViewLoading.replaceOccurrences(
-                  of: "%LOADING-FAILED-TEXT%", with: Strings.readerModePageCantShowDisplayText,
-                  options: .literal, range: NSRange(location: 0, length: readerViewLoading.length))
-                readerViewLoading.replaceOccurrences(
-                  of: "%LOAD-ORIGINAL-TEXT%", with: Strings.readerModeLoadOriginalLinkText,
-                  options: .literal, range: NSRange(location: 0, length: readerViewLoading.length))
-                return GCDWebServerDataResponse(html: readerViewLoading as String)
-              } catch _ {
+                var contents = try String(contentsOfFile: readerViewLoadingPath)
+                let mapping = [
+                  "%message_handler%": LocalRequestHelper.messageHandlerName,
+                  "%ORIGINAL-URL%": url.absoluteString,
+                  "%LOADING-TEXT%": Strings.readerModeLoadingContentDisplayText,
+                  "%LOADING-FAILED-TEXT%": Strings.readerModePageCantShowDisplayText,
+                  "%LOAD-ORIGINAL-TEXT%": Strings.readerModeLoadOriginalLinkText
+                ]
+                
+                mapping.forEach {
+                  contents = contents.replacingOccurrences(of: $0.key, with: $0.value)
+                }
+                
+                return GCDWebServerDataResponse(html: contents)
+              } catch {
+                assertionFailure("CANNOT LOAD  ReaderViewLoading.html: \(error)")
               }
             }
           }

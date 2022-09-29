@@ -12,7 +12,7 @@ import UIKit
 
 private let log = Logger.browserLogger
 
-extension BrowserViewController: PlaylistHelperDelegate, PlaylistFolderSharingHelperDelegate {
+extension BrowserViewController: PlaylistScriptHandlerDelegate, PlaylistFolderSharingScriptHandlerDelegate {
 
   private func createPlaylistPopover(tab: Tab?, state: PlaylistPopoverState) -> PopoverController {
     return PopoverController(
@@ -45,7 +45,7 @@ extension BrowserViewController: PlaylistHelperDelegate, PlaylistFolderSharingHe
             self.dismiss(animated: true) {
               DispatchQueue.main.async {
                 if let webView = tab?.webView {
-                  PlaylistHelper.getCurrentTime(webView: webView, nodeTag: item.tagId) { [weak self] currentTime in
+                  PlaylistScriptHandler.getCurrentTime(webView: webView, nodeTag: item.tagId) { [weak self] currentTime in
                     self?.openPlaylist(tab: tab, item: item, playbackOffset: currentTime)
                   }
                 } else {
@@ -188,7 +188,7 @@ extension BrowserViewController: PlaylistHelperDelegate, PlaylistFolderSharingHe
 
             DispatchQueue.main.async {
               if let webView = tab?.webView {
-                PlaylistHelper.getCurrentTime(webView: webView, nodeTag: item.tagId) { [weak self] currentTime in
+                PlaylistScriptHandler.getCurrentTime(webView: webView, nodeTag: item.tagId) { [weak self] currentTime in
                   self?.openPlaylist(tab: tab, item: item, playbackOffset: currentTime)
                 }
               } else {

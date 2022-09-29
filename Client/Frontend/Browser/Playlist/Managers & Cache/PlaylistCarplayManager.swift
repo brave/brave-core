@@ -135,7 +135,7 @@ public class PlaylistCarplayManager: NSObject {
       let item = tab.playlistItem,
       let webView = tab.webView,
       let tag = tab.playlistItem?.tagId {
-      PlaylistHelper.getCurrentTime(webView: webView, nodeTag: tag) { [unowned self] currentTime in
+      PlaylistScriptHandler.getCurrentTime(webView: webView, nodeTag: tag) { [unowned self] currentTime in
         completion(
           self.getPlaylistController(
             tab: tab,

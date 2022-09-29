@@ -96,7 +96,7 @@ public class SessionRestoreHandler: InternalSchemeResponse {
     }
 
     html = html.replacingOccurrences(of: "%INSERT_UUID_VALUE%", with: InternalURL.uuid)
-    html = html.replacingOccurrences(of: "%security_token%", with: UserScriptManager.securityTokenString)
+    html = html.replacingOccurrences(of: "%security_token%", with: SessionRestoreScriptHandler.scriptId)
 
     guard let data = html.data(using: .utf8) else {
       assert(false)

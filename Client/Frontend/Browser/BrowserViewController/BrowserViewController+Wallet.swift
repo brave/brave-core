@@ -302,7 +302,7 @@ extension Tab: BraveWalletEventsListener {
     webView?.evaluateSafeJavaScript(
       functionName: "window.ethereum.emit",
       args: arguments,
-      contentWorld: .page,
+      contentWorld: EthereumProviderScriptHandler.scriptSandbox,
       completion: nil
     )
   }
@@ -353,14 +353,14 @@ extension Tab: BraveWalletEventsListener {
       let chainId = await provider.chainId()
       webView.evaluateSafeJavaScript(
         functionName: "window.ethereum.chainId = \"\(chainId)\"",
-        contentWorld: .page,
+        contentWorld: EthereumProviderScriptHandler.scriptSandbox,
         asFunction: false,
         completion: nil
       )
       let networkVersion = valueOrUndefined(Int(chainId.removingHexPrefix, radix: 16))
       webView.evaluateSafeJavaScript(
         functionName: "window.ethereum.networkVersion = \(networkVersion)",
-        contentWorld: .page,
+        contentWorld: EthereumProviderScriptHandler.scriptSandbox,
         asFunction: false,
         completion: nil
       )
@@ -369,7 +369,7 @@ extension Tab: BraveWalletEventsListener {
       let selectedAccount = valueOrUndefined(await allowedAccounts(coin, accounts: accounts).1.first)
       webView.evaluateSafeJavaScript(
         functionName: "window.ethereum.selectedAddress = \(selectedAccount)",
-        contentWorld: .page,
+        contentWorld: EthereumProviderScriptHandler.scriptSandbox,
         asFunction: false,
         completion: nil
       )

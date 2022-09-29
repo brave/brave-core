@@ -23,8 +23,8 @@ enum VisitType: Int {
 
 // MARK: - ReaderModeDelegate
 
-extension BrowserViewController: ReaderModeDelegate {
-  func readerMode(_ readerMode: ReaderMode, didChangeReaderModeState state: ReaderModeState, forTab tab: Tab) {
+extension BrowserViewController: ReaderModeScriptHandlerDelegate {
+  func readerMode(_ readerMode: ReaderModeScriptHandler, didChangeReaderModeState state: ReaderModeState, forTab tab: Tab) {
     // If this reader mode availability state change is for the tab that we currently show, then update
     // the button. Otherwise do nothing and the button will be updated when the tab is made active.
     if tabManager.selectedTab === tab {
@@ -32,12 +32,12 @@ extension BrowserViewController: ReaderModeDelegate {
     }
   }
 
-  func readerMode(_ readerMode: ReaderMode, didDisplayReaderizedContentForTab tab: Tab) {
+  func readerMode(_ readerMode: ReaderModeScriptHandler, didDisplayReaderizedContentForTab tab: Tab) {
     showReaderModeBar(animated: true)
     tab.showContent(true)
   }
 
-  func readerMode(_ readerMode: ReaderMode, didParseReadabilityResult readabilityResult: ReadabilityResult, forTab tab: Tab) {}
+  func readerMode(_ readerMode: ReaderModeScriptHandler, didParseReadabilityResult readabilityResult: ReadabilityResult, forTab tab: Tab) {}
 }
 
 // MARK: - ReaderModeStyleViewControllerDelegate
@@ -50,7 +50,7 @@ extension BrowserViewController: ReaderModeStyleViewControllerDelegate {
     // Change the reader mode style on all tabs that have reader mode active
     for tabIndex in 0..<tabManager.count {
       if let tab = tabManager[tabIndex] {
-        if let readerMode = tab.getContentScript(name: "ReaderMode") as? ReaderMode {
+        if let readerMode = tab.getContentScript(name: ReaderModeScriptHandler.scriptName) as? ReaderModeScriptHandler {
           if readerMode.state == ReaderModeState.active {
             readerMode.style = style
           }
@@ -64,7 +64,7 @@ extension BrowserViewController: ReaderModeStyleViewControllerDelegate {
 
 extension BrowserViewController: ReaderModeBarViewDelegate {
   func readerModeSettingsTapped(_ view: UIView) {
-    guard let readerMode = tabManager.selectedTab?.getContentScript(name: "ReaderMode") as? ReaderMode,
+    guard let readerMode = tabManager.selectedTab?.getContentScript(name: ReaderModeScriptHandler.scriptName) as? ReaderModeScriptHandler,
       readerMode.state == ReaderModeState.active
     else {
       return
@@ -143,20 +143,20 @@ extension BrowserViewController {
     if backList.count > 1 && backList.last?.url == readerModeURL {
       let playlistItem = tab.playlistItem
       webView.go(to: backList.last!)
-      PlaylistHelper.updatePlaylistTab(tab: tab, item: playlistItem)
+      PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
     } else if !forwardList.isEmpty && forwardList.first?.url == readerModeURL {
       let playlistItem = tab.playlistItem
       webView.go(to: forwardList.first!)
-      PlaylistHelper.updatePlaylistTab(tab: tab, item: playlistItem)
+      PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
     } else {
       // Store the readability result in the cache and load it. This will later move to the ReadabilityHelper.
-      webView.evaluateSafeJavaScript(functionName: "\(ReaderModeNamespace).readerize", contentWorld: .defaultClient) { (object, error) -> Void in
+      webView.evaluateSafeJavaScript(functionName: "\(ReaderModeNamespace).readerize", contentWorld: ReaderModeScriptHandler.scriptSandbox) { (object, error) -> Void in
         if let readabilityResult = ReadabilityResult(object: object as AnyObject?) {
           let playlistItem = tab.playlistItem
           try? self.readerModeCache.put(currentURL, readabilityResult)
           if let nav = webView.load(PrivilegedRequest(url: readerModeURL) as URLRequest) {
             self.ignoreNavigationInTab(tab, navigation: nav)
-            PlaylistHelper.updatePlaylistTab(tab: tab, item: playlistItem)
+            PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
           }
         }
       }
@@ -179,16 +179,16 @@ extension BrowserViewController {
           if backList.count > 1 && backList.last?.url == originalURL {
             let playlistItem = tab.playlistItem
             webView.go(to: backList.last!)
-            PlaylistHelper.updatePlaylistTab(tab: tab, item: playlistItem)
+            PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
           } else if !forwardList.isEmpty && forwardList.first?.url == originalURL {
             let playlistItem = tab.playlistItem
             webView.go(to: forwardList.first!)
-            PlaylistHelper.updatePlaylistTab(tab: tab, item: playlistItem)
+            PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
           } else {
             let playlistItem = tab.playlistItem
             if let nav = webView.load(URLRequest(url: originalURL)) {
               ignoreNavigationInTab(tab, navigation: nav)
-              PlaylistHelper.updatePlaylistTab(tab: tab, item: playlistItem)
+              PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
             }
           }
         }

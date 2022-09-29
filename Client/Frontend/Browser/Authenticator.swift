@@ -12,7 +12,7 @@ private let log = Logger.browserLogger
 class Authenticator {
   fileprivate static let maxAuthenticationAttempts = 3
 
-  static func handleAuthRequest(_ viewController: UIViewController, challenge: URLAuthenticationChallenge, loginsHelper: LoginsHelper?) async throws -> LoginData {
+  static func handleAuthRequest(_ viewController: UIViewController, challenge: URLAuthenticationChallenge, loginsHelper: LoginsScriptHandler?) async throws -> LoginData {
     // If there have already been too many login attempts, we'll just fail.
     if challenge.previousFailureCount >= Authenticator.maxAuthenticationAttempts {
       throw LoginDataError(description: "Too many attempts to open site")
@@ -99,7 +99,7 @@ class Authenticator {
     return credentials
   }
 
-  @MainActor fileprivate static func promptForUsernamePassword(_ viewController: UIViewController, credentials: URLCredential?, protectionSpace: URLProtectionSpace, loginsHelper: LoginsHelper?) async throws -> LoginData {
+  @MainActor fileprivate static func promptForUsernamePassword(_ viewController: UIViewController, credentials: URLCredential?, protectionSpace: URLProtectionSpace, loginsHelper: LoginsScriptHandler?) async throws -> LoginData {
     if protectionSpace.host.isEmpty {
       print("Unable to show a password prompt without a hostname")
       throw LoginDataError(description: "Unable to show a password prompt without a hostname")

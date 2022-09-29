@@ -338,20 +338,20 @@ class PlaylistWebLoader: UIView {
     $0.webView?.scrollView.layer.masksToBounds = true
   }
 
-  private let playlistDetectorScript: WKUserScript? = {
-    guard let path = Bundle.current.path(forResource: "PlaylistDetector", ofType: "js"), let source = try? String(contentsOfFile: path) else {
+  private let playlistDetectorScript = { () -> WKUserScript? in
+    guard let path = Bundle.current.path(forResource: "PlaylistDetectorScript", ofType: "js"), let source = try? String(contentsOfFile: path) else {
       log.error("Failed to load PlaylistDetector.js")
       return nil
     }
 
     var alteredSource = source
-    let token = UserScriptManager.securityTokenString
+    let token = UserScriptManager.securityToken
 
     let replacements = [
       "$<PlaylistDetector>": "PlaylistDetector_\(token)",
       "$<security_token>": "\(token)",
       "$<sendMessage>": "playlistDetector_sendMessage_\(token)",
-      "$<handler>": "playlistCacheLoader_\(UserScriptManager.messageHandlerTokenString)",
+      "$<handler>": "playlistCacheLoader_\(UserScriptManager.securityToken)",
       "$<notify>": "notify_\(token)",
       "$<onLongPressActivated>": "onLongPressActivated_\(token)",
       "$<setupLongPress>": "setupLongPress_\(token)",
@@ -419,14 +419,14 @@ class PlaylistWebLoader: UIView {
     // This webView is invisible and we don't want any UI being handled.
     webView.uiDelegate = nil
     webView.navigationDelegate = self
-    tab.addContentScript(PlaylistWebLoaderContentHelper(self), name: PlaylistWebLoaderContentHelper.name(), contentWorld: .page)
+    tab.addContentScript(PlaylistWebLoaderContentHelper(self), name: PlaylistWebLoaderContentHelper.scriptName, contentWorld: .page)
 
     if let script = playlistDetectorScript {
       // Do NOT inject the PlaylistHelper script!
       // The Playlist Detector script will interfere with it.
       // The detector script is only to be used in the background in an invisible webView
       // but the helper script is to be used in the foreground!
-      tab.userScriptManager?.isPlaylistEnabled = false
+      tab.setScript(script: .playlist, enabled: false)
 
       tab.webView?.configuration.userContentController.do {
         $0.addUserScript(script)
@@ -456,13 +456,21 @@ class PlaylistWebLoader: UIView {
       self.webLoader = webLoader
     }
 
-    static func name() -> String {
-      return "PlaylistWebLoader"
-    }
-
-    func scriptMessageHandlerName() -> String? {
-      return "playlistCacheLoader_\(UserScriptManager.messageHandlerTokenString)"
-    }
+    static let scriptName = "PlaylistWebLoaderContentHelper"
+    static let scriptId = UUID().uuidString
+    static let messageHandlerName = "\(scriptName)_\(messageUUID)"
+    static let scriptSandbox: WKContentWorld = .page
+    static let userScript: WKUserScript? = {
+      guard var script = loadUserScript(named: scriptName) else {
+        return nil
+      }
+      return WKUserScript.create(source: secureScript(handlerName: messageHandlerName,
+                                                      securityToken: scriptId,
+                                                      script: script),
+                                 injectionTime: .atDocumentStart,
+                                 forMainFrameOnly: false,
+                                 in: scriptSandbox)
+    }()
 
     func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
       defer { replyHandler(nil, nil) }
@@ -626,9 +634,11 @@ extension PlaylistWebLoader: WKNavigationDelegate {
       return
     }
 
-    tab.userScriptManager?.userScriptTypes = UserScriptHelper.getUserScriptTypes(
+    let customUserScripts = UserScriptHelper.getUserScriptTypes(
       for: navigationAction, options: .playlistCacheLoader
     )
+    
+    tab.setCustomUserScript(scripts: customUserScripts)
 
     // For Playlist automatic detection since the above `handleDomainUserScript` removes ALL scripts!
     if let script = playlistDetectorScript {
@@ -680,7 +690,7 @@ extension PlaylistWebLoader: WKNavigationDelegate {
       }
 
       // Cookie Blocking code below
-      tab.userScriptManager?.isCookieBlockingEnabled = Preferences.Privacy.blockAllCookies.value
+      tab.setScript(script: .cookieBlocking, enabled: Preferences.Privacy.blockAllCookies.value)
 
       decisionHandler(.allow, preferences)
       return

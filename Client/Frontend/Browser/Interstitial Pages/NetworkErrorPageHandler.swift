@@ -60,7 +60,6 @@ class NetworkErrorPageHandler: InterstitialPageHandler {
       "error_try_list": Strings.errorPagesNoInternetTry,
       "error_list_1": Strings.errorPagesNoInternetTryItem1,
       "error_list_2": Strings.errorPagesNoInternetTryItem2,
-      "security_token": UserScriptManager.messageHandlerTokenString,
     ]
 
     variables.forEach { (arg, value) in

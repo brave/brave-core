@@ -52,7 +52,8 @@ class CertificateErrorPageHandler: InterstitialPageHandler {
         "back_to_safety": Strings.errorPagesBackToSafetyButton,
         "visit_unsafe": String(format: Strings.errorPagesProceedAnywayButton, host),
         "has_certificate": "\(hasCertificate)",
-        "security_token": UserScriptManager.messageHandlerTokenString,
+        "message_handler": ErrorPageHelper.messageHandlerName,
+        "security_token": ErrorPageHelper.scriptId,
         "actions": "<button onclick='history.back()'>\(Strings.errorPagesBackToSafetyButton)</button>",
       ]
     } else {
@@ -69,7 +70,8 @@ class CertificateErrorPageHandler: InterstitialPageHandler {
         "back_to_safety": "",
         "visit_unsafe": "",
         "has_certificate": "\(hasCertificate)",
-        "security_token": UserScriptManager.messageHandlerTokenString,
+        "message_handler": ErrorPageHelper.messageHandlerName,
+        "security_token": ErrorPageHelper.scriptId,
         "actions": "",
       ]
     }

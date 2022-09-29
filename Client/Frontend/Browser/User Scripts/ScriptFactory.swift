@@ -59,17 +59,21 @@ class ScriptFactory {
   /// - On the unmodified source file (per `ScriptSourceType`)
   /// - On the modfied source file (per `UserScriptType`)
   func makeScript(for domainType: UserScriptType) throws -> WKUserScript {
-    var source = try makeScriptSource(of: domainType.sourceType)
-
     // First check for and return cached value
     if let script = cachedDomainScriptsSources[domainType] {
       return script
     }
     
+    var source = try makeScriptSource(of: domainType.sourceType)
+    
     switch domainType {
     case .siteStateListener:
-      let fakeParams = try UserScriptHelper.makeSiteStateParams(securityToken: UserScriptManager.securityTokenString) ?? "{}"
-      source = source.replacingOccurrences(of: "$<args>", with: fakeParams)
+      guard let script = SiteStateListenerScriptHandler.userScript else {
+        assertionFailure("Cannot load script. This should not happen as it's part of the codebase")
+        throw ScriptLoadFailure.notFound
+      }
+      cachedDomainScriptsSources[domainType] = script
+      return script
       
     case .farblingProtection(let etld):
       let randomConfiguration = RandomConfiguration(etld: etld)
@@ -83,33 +87,36 @@ class ScriptFactory {
     case .domainUserScript(let domainUserScript):
       switch domainUserScript {
       case .braveSearchHelper:
-        let securityToken = UserScriptManager.securityTokenString
-        let messageToken = "BraveSearchHelper_\(UserScriptManager.messageHandlerTokenString)"
-        
-        source = source
-          .replacingOccurrences(of: "$<brave-search-helper>", with: messageToken, options: .literal)
-          .replacingOccurrences(of: "$<security_token>", with: securityToken)
+        guard let script = BraveSearchScriptHandler.userScript else {
+          assertionFailure("Cannot load script. This should not happen as it's part of the codebase")
+          throw ScriptLoadFailure.notFound
+        }
+        cachedDomainScriptsSources[domainType] = script
+        return script
         
       case .braveTalkHelper:
-        let securityToken = UserScriptManager.securityTokenString
-        let messageToken = "BraveTalkHelper_\(UserScriptManager.messageHandlerTokenString)"
+        guard let script = BraveTalkScriptHandler.userScript else {
+          assertionFailure("Cannot load script. This should not happen as it's part of the codebase")
+          throw ScriptLoadFailure.notFound
+        }
+        cachedDomainScriptsSources[domainType] = script
+        return script
         
-        source = source
-          .replacingOccurrences(of: "$<brave-talk-helper>", with: messageToken, options: .literal)
-          .replacingOccurrences(of: "$<security_token>", with: securityToken)
+      case .braveSkus:
+        guard let script = BraveSkusScriptHandler.userScript else {
+          assertionFailure("Cannot load script. This should not happen as it's part of the codebase")
+          throw ScriptLoadFailure.notFound
+        }
+        cachedDomainScriptsSources[domainType] = script
+        return script
         
       case .bravePlaylistFolderSharingHelper:
-        let securityToken = UserScriptManager.securityTokenString
-        
-        source = source
-          .replacingOccurrences(of: "$<handler>", with: "playlistFolderSharingHelper_\(UserScriptManager.messageHandlerTokenString)", options: .literal)
-          .replacingOccurrences(of: "$<security_token>", with: securityToken, options: .literal)
-      case .braveSkus:
-        let securityToken = UserScriptManager.securityTokenString
-        source = source
-          .replacingOccurrences(of: "$<security_token>", with: securityToken)
-        
-        return WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: true, in: .page)
+        guard let script = PlaylistFolderSharingScriptHandler.userScript else {
+          assertionFailure("Cannot load script. This should not happen as it's part of the codebase")
+          throw ScriptLoadFailure.notFound
+        }
+        cachedDomainScriptsSources[domainType] = script
+        return script
       }
     }
     

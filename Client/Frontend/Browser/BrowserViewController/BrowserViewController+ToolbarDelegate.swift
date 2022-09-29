@@ -135,7 +135,7 @@ extension BrowserViewController: TopToolbarDelegate {
 
   func topToolbarDidPressReaderMode(_ topToolbar: TopToolbarView) {
     if let tab = tabManager.selectedTab {
-      if let readerMode = tab.getContentScript(name: "ReaderMode") as? ReaderMode {
+      if let readerMode = tab.getContentScript(name: ReaderModeScriptHandler.scriptName) as? ReaderModeScriptHandler {
         switch readerMode.state {
         case .available:
           enableReaderMode()

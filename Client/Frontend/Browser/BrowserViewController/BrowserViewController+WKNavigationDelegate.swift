@@ -258,22 +258,27 @@ extension BrowserViewController: WKNavigationDelegate {
       
       // Set some additional user scripts
       if navigationAction.targetFrame?.isMainFrame == true {
-        // Add de-amp script
-        // The user script manager will take care to not reload scripts if this value doesn't change
-        tab?.userScriptManager?.isDeAMPEnabled = Preferences.Shields.autoRedirectAMPPages.value
-        
-        // Add request blocking script
-        // This script will block certian `xhr` and `window.fetch()` requests
-        tab?.userScriptManager?.isRequestBlockingEnabled = url.isWebPage(includeDataURIs: false) &&
-          domainForMainFrame.isShieldExpected(.AdblockAndTp, considerAllShieldsOption: true)
+        tab?.setScripts(scripts: [
+          // Add de-amp script
+          // The user script manager will take care to not reload scripts if this value doesn't change
+          .deAmp: Preferences.Shields.autoRedirectAMPPages.value,
+          
+          // Add request blocking script
+          // This script will block certian `xhr` and `window.fetch()` requests
+          .requestBlocking: url.isWebPage(includeDataURIs: false) &&
+                            domainForMainFrame.isShieldExpected(.AdblockAndTp, considerAllShieldsOption: true)
+        ])
       }
     }
 
     // Check if custom user scripts must be added to or removed from the web view.
-    tab?.userScriptManager?.userScriptTypes = UserScriptHelper.getUserScriptTypes(
-      for: navigationAction,
-      options: isPrivateBrowsing ? .privateBrowsing : .default
+    let scripts = UserScriptHelper.getUserScriptTypes(
+      for: navigationAction, options: isPrivateBrowsing ? .privateBrowsing : .default
     )
+    
+    // TODO: Convert this to `UserScriptManagerType` so we can inject all scripts at once.
+    // IE: De-Amp, RequestBlocking + These.
+    tab?.setCustomUserScript(scripts: scripts)
     
     // Load engine scripts for this request and add it to the tab
     // We can't execute them yet because the page is not yet ready
@@ -284,8 +289,8 @@ extension BrowserViewController: WKNavigationDelegate {
     if let frameInfo = navigationAction.targetFrame {
       do {
         let sources = try AdBlockStats.shared.makeEngineScriptSouces(for: url)
-        let evaluations = sources.map { source -> Tab.FrameEvaluation in
-          return (frameInfo: frameInfo, source: source)
+        let evaluations = sources.map {
+          Tab.FrameEvaluation(frameInfo: frameInfo, source: $0)
         }
         
         tab?.frameEvaluations[url] = evaluations
@@ -376,7 +381,9 @@ extension BrowserViewController: WKNavigationDelegate {
       }
 
       // Cookie Blocking code below
-      tab?.userScriptManager?.isCookieBlockingEnabled = Preferences.Privacy.blockAllCookies.value
+      if let tab = tab {
+        tab.setScript(script: .cookieBlocking, enabled: Preferences.Privacy.blockAllCookies.value)
+      }
 
       // Reset the block alert bool on new host.
       if let newHost: String = url.host, let oldHost: String = webView.url?.host, newHost != oldHost {
@@ -520,7 +527,7 @@ extension BrowserViewController: WKNavigationDelegate {
     // The challenge may come from a background tab, so ensure it's the one visible.
     tabManager.selectTab(tab)
 
-    let loginsHelper = tab.getContentScript(name: LoginsHelper.name()) as? LoginsHelper
+    let loginsHelper = tab.getContentScript(name: LoginsScriptHandler.scriptName) as? LoginsScriptHandler
     Task { @MainActor in
       do {
         let credentials = try await Authenticator.handleAuthRequest(self, challenge: challenge, loginsHelper: loginsHelper)
