@@ -44,31 +44,31 @@ class LoginsHelperTests: XCTestCase {
       return
     }
 
-    let modifiedFrameCheck1 = LoginsHelper.checkIsSameFrame(
+    let modifiedFrameCheck1 = LoginsScriptHandler.checkIsSameFrame(
       url: testTabURL1,
       frameScheme: testFrameInfo1.scheme,
       frameHost: testFrameInfo1.host,
       framePort: testFrameInfo1.port)
 
-    let modifiedFrameCheck2 = LoginsHelper.checkIsSameFrame(
+    let modifiedFrameCheck2 = LoginsScriptHandler.checkIsSameFrame(
       url: testTabURL2,
       frameScheme: testFrameInfo2.scheme,
       frameHost: testFrameInfo2.host,
       framePort: testFrameInfo2.port)
 
-    let modifiedFrameCheck3 = LoginsHelper.checkIsSameFrame(
+    let modifiedFrameCheck3 = LoginsScriptHandler.checkIsSameFrame(
       url: testTabURL3,
       frameScheme: testFrameInfo3.scheme,
       frameHost: testFrameInfo3.host,
       framePort: testFrameInfo3.port)
 
-    let modifiedFrameCheck4 = LoginsHelper.checkIsSameFrame(
+    let modifiedFrameCheck4 = LoginsScriptHandler.checkIsSameFrame(
       url: testTabURL4,
       frameScheme: testFrameInfo4.scheme,
       frameHost: testFrameInfo4.host,
       framePort: testFrameInfo4.port)
 
-    let modifiedFrameCheck5 = LoginsHelper.checkIsSameFrame(
+    let modifiedFrameCheck5 = LoginsScriptHandler.checkIsSameFrame(
       url: testTabURL5,
       frameScheme: testFrameInfo5.scheme,
       frameHost: testFrameInfo5.host,

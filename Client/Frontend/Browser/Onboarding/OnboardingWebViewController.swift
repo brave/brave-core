@@ -93,7 +93,7 @@ class OnboardingWebViewController: UIViewController, WKNavigationDelegate {
 
   private func setupScripts() {
     let errorHelper = ErrorPageHelper(certStore: profile.certStore)
-    addScript(errorHelper, for: ErrorPageHelper.name())
+    addScript(errorHelper, for: ErrorPageHelper.scriptName)
   }
 
   override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
@@ -220,8 +220,8 @@ class OnboardingWebViewController: UIViewController, WKNavigationDelegate {
 extension OnboardingWebViewController: WKScriptMessageHandlerWithReply {
   func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage, replyHandler: @escaping (Any?, String?) -> Void) {
     for helper in helpers.values {
-      if let scriptMessageHandlerName = helper.scriptMessageHandlerName(),
-        scriptMessageHandlerName == message.name {
+      let scriptMessageHandlerName = type(of: helper).messageHandlerName
+      if scriptMessageHandlerName == message.name {
         return helper.userContentController(userContentController, didReceiveScriptMessage: message, replyHandler: replyHandler)
       }
     }
@@ -229,10 +229,8 @@ extension OnboardingWebViewController: WKScriptMessageHandlerWithReply {
 
   private func addScript(_ helper: TabContentScript, for name: String) {
     helpers[name] = helper
-
-    if let scriptMessageHandlerName = helper.scriptMessageHandlerName() {
-      webView.configuration.userContentController.addScriptMessageHandler(self, contentWorld: .page, name: scriptMessageHandlerName)
-    }
+    let scriptMessageHandlerName = type(of: helper).messageHandlerName
+    webView.configuration.userContentController.addScriptMessageHandler(self, contentWorld: .page, name: scriptMessageHandlerName)
   }
 }
 

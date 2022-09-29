@@ -247,7 +247,7 @@ extension BrowserViewController {
                   let tab = browserViewController.tabManager.selectedTab
 
                   if let webView = tab?.webView {
-                    PlaylistHelper.getCurrentTime(webView: webView, nodeTag: item.tagId) { [weak browserViewController] currentTime in
+                    PlaylistScriptHandler.getCurrentTime(webView: webView, nodeTag: item.tagId) { [weak browserViewController] currentTime in
                       browserViewController?.openPlaylist(tab: tab, item: item, playbackOffset: currentTime)
                     }
                   } else {

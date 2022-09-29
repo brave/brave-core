@@ -100,6 +100,7 @@ yubikit.log
 .env.*
 
 # Packed Scripts
+Client/Assets/__firefox__.js
 Client/Assets/AllFramesAtDocumentStart.js
 Client/Assets/AllFramesAtDocumentEnd.js
 Client/Assets/MainFrameAtDocumentStart.js

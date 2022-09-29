@@ -24,13 +24,13 @@ enum ScriptSourceType {
 
   var fileName: String {
     switch self {
-    case .siteStateListener: return "SiteStateListener"
+    case .siteStateListener: return "SiteStateListenerScript"
     case .nacl: return "nacl.min"
-    case .farblingProtection: return "FarblingProtection"
-    case .braveSearchHelper: return "BraveSearchHelper"
-    case .braveTalkHelper: return "BraveTalkHelper"
-    case .bravePlaylistFolderSharingHelper: return "PlaylistFolderSharing"
-    case .braveSkus: return "BraveSkusHelper"
+    case .farblingProtection: return "FarblingProtectionScript"
+    case .braveSearchHelper: return "BraveSearchScript"
+    case .braveTalkHelper: return "BraveTalkScript"
+    case .bravePlaylistFolderSharingHelper: return "PlaylistFolderSharingScript"
+    case .braveSkus: return "BraveSkusScript"
     }
   }
 

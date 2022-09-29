@@ -14,13 +14,21 @@ class BraveGetUA: TabContentScript {
     self.tab = tab
   }
 
-  static func name() -> String {
-    return "BraveGetUA"
-  }
-
-  func scriptMessageHandlerName() -> String? {
-    return BraveGetUA.name()
-  }
+  static let scriptName = "BraveGetUA"
+  static let scriptId = UUID().uuidString
+  static let messageHandlerName = "\(scriptName)_\(messageUUID)"
+  static let scriptSandbox: WKContentWorld = .page
+  static let userScript: WKUserScript? = {
+    guard var script = loadUserScript(named: scriptName) else {
+      return nil
+    }
+    return WKUserScript.create(source: secureScript(handlerName: messageHandlerName,
+                                                    securityToken: scriptId,
+                                                    script: script),
+                               injectionTime: .atDocumentStart,
+                               forMainFrameOnly: false,
+                               in: scriptSandbox)
+  }()
 
   func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
     // 🙀 😭 🏃‍♀️💨

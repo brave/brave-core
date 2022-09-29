@@ -18,9 +18,9 @@ You can obtain one at https://mozilla.org/MPL/2.0/.
             if (fresh) {
                 fresh = false;
             } else {
-                webkit.messageHandlers.localRequestHelper.postMessage({
-                    securitytoken: "%security_token%",
-                    type: "reload"
+                webkit.messageHandlers["%message_handler%"].postMessage({
+                    "securityToken": "%security_token%",
+                    "type": "reload"
                 });
             }
         });

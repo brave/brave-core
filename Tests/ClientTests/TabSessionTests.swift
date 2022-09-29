@@ -569,7 +569,7 @@ class TabSessionTests: XCTestCase {
            if (typeof value == "undefined" || typeof value.indexOf == "undefined") {
              return false;
            }
-           if (value.indexOf("\(UserScriptManager.messageHandlerTokenString)") >= 0 || value.indexOf("\(UserScriptManager.messageHandlerTokenString)") >= 0) {
+           if (value.indexOf("\(UserScriptManager.securityToken)") >= 0 || value.indexOf("\(UserScriptManager.securityToken)") >= 0) {
              return true;
            }
            return false;
@@ -625,12 +625,14 @@ class TabSessionTests: XCTestCase {
          return found
        })();
       """
+    
+    let scripts = Set<UserScriptManager.ScriptType>(UserScriptManager.ScriptType.allCases)
+    let customScripts = Set<UserScriptType>([.farblingProtection(etld: "fake.com")])
 
     let group = DispatchGroup()
     for tab in self.tabManager.allTabs {
       // include all scripts
-      tab.userScriptManager?.userScriptTypes = [.farblingProtection(etld: "fake.com")]
-      tab.userScriptManager?.isCookieBlockingEnabled = true
+      UserScriptManager.shared.loadCustomScripts(into: tab, userScripts: scripts, customScripts: customScripts, walletEthProviderScript: nil)
 
       group.enter()
     }

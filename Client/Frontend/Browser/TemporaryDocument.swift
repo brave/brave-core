@@ -59,7 +59,7 @@ class TemporaryDocument: NSObject {
         
         if let tab = self.tab, let url = request.url {
           // Calls `onDocumentDownloaded` on completion
-          ResourceDownloadManager.downloadResource(for: tab, url: url)
+          ResourceDownloadScriptHandler.downloadResource(for: tab, url: url)
         } else {
           onDocumentDownloaded(document: nil, error: nil)
         }

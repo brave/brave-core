@@ -67,35 +67,4 @@ class UserScriptHelper {
 
     return userScriptTypes
   }
-  
-  static func makeDeAmpScriptParamters() throws -> String? {
-    let arguments: [String: String] = [
-      "handlerName": DeAmpHelper.scriptMessageHandlerName(),
-      "securityToken": UserScriptManager.securityTokenString
-    ]
-    
-    let encoder = JSONEncoder()
-    let data = try encoder.encode(arguments)
-    return String(data: data, encoding: .utf8)
-  }
-
-  static func makeRequestBlockingParams(securityToken: String) throws -> String? {
-    let params: [String: String] = [
-      "securityToken": securityToken,
-      "handlerName": RequestBlockingContentHelper.scriptMessageHandlerName()
-    ]
-    let encoder = JSONEncoder()
-    let data = try encoder.encode(params)
-    return String(data: data, encoding: .utf8)
-  }
-  
-  static func makeSiteStateParams(securityToken: String) throws -> String? {
-    let params: [String: String] = [
-      "securityToken": securityToken,
-      "handlerName": SiteStateListenerContentHelper.scriptMessageHandlerName()
-    ]
-    let encoder = JSONEncoder()
-    let data = try encoder.encode(params)
-    return String(data: data, encoding: .utf8)
-  }
 }

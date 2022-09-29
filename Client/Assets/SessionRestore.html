@@ -70,7 +70,7 @@
       // For some reason (maybe a WebKit bug?), document.location still points to SessionRestore.html at this point,
       // so wait until the next tick when the location points to the correct index and URL.
       setTimeout(function () {
-          webkit.messageHandlers.sessionRestoreHelper.postMessage({ securitytoken: "%security_token%", name: "didRestoreSession" });
+          webkit.messageHandlers.sessionRestoreHelper.postMessage({ "securityToken": "%security_token%", name: "didRestoreSession" });
       }, 0);
   }) ();
 </script>

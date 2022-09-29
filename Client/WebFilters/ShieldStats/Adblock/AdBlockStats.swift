@@ -131,15 +131,15 @@ extension AdblockEngine {
     if !cssRules.isEmpty {
       cssInjectScript = """
       (function() {
-        var head = document.head || document.getElementsByTagName('head')[0];
-        if (head == null) {
+        const head = document.head || document.getElementsByTagName('head')[0];
+        if (!head) {
           return;
         }
         
-        var style = document.createElement('style');
+        const style = document.createElement('style');
         style.type = 'text/css';
       
-        var styles = atob("\(cssRules.toBase64())");
+        const styles = atob("\(cssRules.toBase64())");
         
         if (style.styleSheet) {
           style.styleSheet.cssText = styles;
@@ -147,7 +147,22 @@ extension AdblockEngine {
           style.appendChild(document.createTextNode(styles));
         }
 
-        head.appendChild(style);
+        const body = document.body || document.getElementsByTagName('body')[0];
+        if (!body) {
+          head.appendChild(style);
+        } else {
+          // Insert the element at a random position.
+          // This way pages cannot remove first or last element.
+          const min = 0;
+          const max = body.children.length;
+          const index = Math.floor(Math.random() * (max - min)) + min;
+      
+          const div = document.createElement('div');
+          body.insertBefore(div, body.children[index]);
+      
+          const shadow = div.attachShadow({ mode: 'closed' });
+          shadow.appendChild(style);
+        }
       })();
       """
     } else {
