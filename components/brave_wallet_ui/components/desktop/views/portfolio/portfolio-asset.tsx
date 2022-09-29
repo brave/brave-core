@@ -535,7 +535,7 @@ export const PortfolioAsset = (props: Props) => {
             <ChartControlBar
               onSubmit={onChangeTimeline}
               selectedTimeline={selectedAsset ? selectedTimeline : selectedPortfolioTimeline}
-              timelineOptions={ChartTimelineOptions()}
+              timelineOptions={ChartTimelineOptions}
             />
           }
           <ShowBalanceButton

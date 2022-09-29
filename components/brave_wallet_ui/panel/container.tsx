@@ -816,10 +816,8 @@ function Container () {
           >
             <ScrollContainer>
               <AssetsPanel
-                defaultCurrencies={defaultCurrencies}
                 selectedAccount={selectedAccount}
                 userAssetList={panelUserAssetList}
-                spotPrices={transactionSpotPrices}
                 networkList={networkList}
                 onAddAsset={onAddAsset}
               />

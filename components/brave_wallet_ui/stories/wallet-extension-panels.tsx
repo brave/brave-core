@@ -799,9 +799,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                       }
                       {selectedPanel === 'assets' &&
                         <AssetsPanel
-                          defaultCurrencies={mockDefaultCurrencies}
                           selectedAccount={selectedAccount}
-                          spotPrices={[]}
                           userAssetList={mockAccountAssetOptions}
                           onAddAsset={onAddAsset}
                           networkList={[selectedNetwork]}

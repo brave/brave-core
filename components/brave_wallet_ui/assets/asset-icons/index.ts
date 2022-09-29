@@ -6,14 +6,18 @@ import ETHIconUrl from './eth-asset-icon.svg'
 import ZRXIconUrl from './zrx-asset-icon.svg'
 import SOLIconUrl from './sol-asset-icon.svg'
 import FILECOINIconUrl from './filecoin-asset-icon.svg'
+import MATICIconUrl from './matic-asset-icon.svg'
+import AVAXIconUrl from './avax-asset-icon.svg'
 
 export {
-  BATIconUrl,
   ALGOIconUrl,
+  AVAXIconUrl,
+  BATIconUrl,
   BNBIconUrl,
   BTCIconUrl,
   ETHIconUrl,
-  ZRXIconUrl,
+  FILECOINIconUrl,
+  MATICIconUrl,
   SOLIconUrl,
-  FILECOINIconUrl
+  ZRXIconUrl
 }
