@@ -14,6 +14,7 @@ import {
 import { Toggle } from '../../../../components/toggle'
 import * as s from './style'
 import usePromise from '../../../../hooks/usePromise'
+import { defaultState as newTabData } from '../../../../storage/new_tab_storage'
 
 /**
  * Determines whether a publishers content is shown in the feed. This might mean
@@ -28,11 +29,8 @@ function isPublisherContentAllowed (publisher: Publisher, channels: Channels): b
   if (publisher.userEnabledStatus === UserEnabled.ENABLED) return true
   if (publisher.userEnabledStatus === UserEnabled.DISABLED) return false
 
-  console.log(channels)
-
-  // If there are no channels, we're using the old API, so content is allowed
-  // if the source is default enabled.
-  if (Object.keys(channels).length === 0) return publisher.isEnabled
+  // If we're using the old API, check if the source is default enabled.
+  if (newTabData.featureFlagBraveNewsV2Enabled) return publisher.isEnabled
 
   // Otherwise, we're using the channels API - the publisher is allowed if it's
   // in one of the channels we're subscribed to.
