@@ -59,7 +59,7 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
     ButtonStyle loading_dark;
   };
 
-  enum Kind { OLD, PRIMARY, SECONDARY, TERTIARY };
+  enum Kind { kOld, kPrimary, kSecondary, kTertiary };
 
   explicit MdTextButton(PressedCallback callback = PressedCallback(),
                         const std::u16string& text = std::u16string(),
@@ -91,7 +91,7 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
   void OnPaintBackground(gfx::Canvas* canvas) override;
 
  private:
-  Kind kind_ = OLD;
+  Kind kind_ = kOld;
   bool loading_ = false;
   absl::optional<ButtonTheme> theme_;
   raw_ptr<const gfx::VectorIcon> icon_ = nullptr;

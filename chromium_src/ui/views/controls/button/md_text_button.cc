@@ -196,13 +196,13 @@ MdTextButton::Kind MdTextButton::GetKind() const {
 void MdTextButton::SetKind(Kind kind) {
   kind_ = kind;
   switch (kind_) {
-    case PRIMARY:
+    case kPrimary:
       theme_ = g_primary_theme;
       break;
-    case SECONDARY:
+    case kSecondary:
       theme_ = g_secondary_theme;
       break;
-    case TERTIARY:
+    case kTertiary:
       theme_ = g_tertiary_theme;
       break;
     default:
@@ -213,7 +213,7 @@ void MdTextButton::SetKind(Kind kind) {
   // We don't want to affect the OLD style buttons, and we want them to be the
   // default (for now), so don't change the image-label spacing unless we set
   // the button kind to something that isn't OLD.
-  if (kind != Kind::OLD) {
+  if (kind != Kind::kOld) {
     SetImageLabelSpacing(6);
   }
 
@@ -268,7 +268,7 @@ void MdTextButton::UpdateOldColorsForBrave() {
 
 // To be called from MdTextButtonBase::UpdateColors().
 void MdTextButton::UpdateColorsForBrave() {
-  if (GetKind() == Kind::OLD) {
+  if (GetKind() == Kind::kOld) {
     UpdateOldColorsForBrave();
     return;
   }
