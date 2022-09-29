@@ -899,7 +899,7 @@ public class Utils {
     }
 
     public static String getContractAddress(String chainId, String symbol, String contractAddress) {
-        if (!chainId.equals(BraveWalletConstants.ROPSTEN_CHAIN_ID)) {
+        if (!chainId.equals(BraveWalletConstants.GOERLI_CHAIN_ID)) {
             return contractAddress;
         }
         if (symbol.equals("USDC")) {

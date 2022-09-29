@@ -223,13 +223,13 @@ public class BraveWalletUtilsTest {
     @Test
     @SmallTest
     public void getContractAddressTest() {
-        assertEquals(Utils.getContractAddress(BraveWalletConstants.ROPSTEN_CHAIN_ID, "USDC",
+        assertEquals(Utils.getContractAddress(BraveWalletConstants.GOERLI_CHAIN_ID, "USDC",
                              "0xdef1c0ded9bec7f1a1670819833240f027b25eff"),
                 "0x07865c6e87b9f70255377e024ace6630c1eaa37f");
-        assertEquals(Utils.getContractAddress(BraveWalletConstants.ROPSTEN_CHAIN_ID, "DAI",
+        assertEquals(Utils.getContractAddress(BraveWalletConstants.GOERLI_CHAIN_ID, "DAI",
                              "0xdef1c0ded9bec7f1a1670819833240f027b25eff"),
                 "0xad6d458402f60fd3bd25163575031acdce07538d");
-        assertEquals(Utils.getContractAddress(BraveWalletConstants.ROPSTEN_CHAIN_ID, "BAT",
+        assertEquals(Utils.getContractAddress(BraveWalletConstants.GOERLI_CHAIN_ID, "BAT",
                              "0xdef1c0ded9bec7f1a1670819833240f027b25eff"),
                 "0xdef1c0ded9bec7f1a1670819833240f027b25eff");
         assertEquals(Utils.getContractAddress(BraveWalletConstants.RINKEBY_CHAIN_ID, "USDC",
