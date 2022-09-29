@@ -88,7 +88,7 @@ brave_deps_chrome_browser_resources_settings_in_files = [
 
 if (is_win) {
   brave_deps_chrome_browser_resources_settings_in_files += [
-    "pin_shortcut_page/pin_shortcut_page.js",
+    "pin_shortcut_page/pin_shortcut_page.html.js",
     "pin_shortcut_page/pin_shortcut_page_browser_proxy.m.js",
   ]
 }

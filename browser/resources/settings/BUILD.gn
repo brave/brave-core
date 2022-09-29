@@ -181,7 +181,7 @@ preprocess_if_expr("preprocess_generated") {
 
   if (is_win) {
     in_files += [
-      "pin_shortcut_page/pin_shortcut_page.js",
+      "pin_shortcut_page/pin_shortcut_page.html.js",
       "pin_shortcut_page/pin_shortcut_page_browser_proxy.m.js",
     ]
   }
