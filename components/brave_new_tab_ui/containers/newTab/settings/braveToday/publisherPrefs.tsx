@@ -24,7 +24,7 @@ import { defaultState as newTabData } from '../../../../storage/new_tab_storage'
  * @param channels All the current channels, with up to date subscriptions
  * @returns Whether the publisher is current enabled.
  */
-function isPublisherContentAllowed (publisher: Publisher, channels: Channels): boolean {
+function isPublisherContentAllowed(publisher: Publisher, channels: Channels): boolean {
   // If the user has an explicit preference for this feed, use that.
   if (publisher.userEnabledStatus === UserEnabled.ENABLED) return true
   if (publisher.userEnabledStatus === UserEnabled.DISABLED) return false
@@ -70,7 +70,7 @@ type ListItemProps = {
 
 // Component for each item. Measures height to let virtual
 // list know.
-function ListItem (props: ListItemProps) {
+function ListItem(props: ListItemProps) {
   const { setSize } = React.useContext(DynamicListContext)
   const rowRoot = React.useRef<null | HTMLDivElement>(null)
 
@@ -117,7 +117,7 @@ function ListItem (props: ListItemProps) {
 // channels. For now though, this is fine.
 const channelsPromise = getBraveNewsController().getChannels().then(r => r.channels as Channels)
 
-export default function PublisherPrefs (props: PublisherPrefsProps) {
+export default function PublisherPrefs(props: PublisherPrefsProps) {
   const listRef = React.useRef<VariableSizeList | null>(null)
   const sizeMap = React.useRef<{ [key: string]: number }>({})
   const { result: channels = {} } = usePromise(() => channelsPromise, [])
