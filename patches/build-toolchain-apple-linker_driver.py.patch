@@ -1,0 +1,12 @@
+diff --git a/build/toolchain/apple/linker_driver.py b/build/toolchain/apple/linker_driver.py
+index ad1e12c28d3a24e455b4778e8208e751de012fd9..47e83e5d816602c80d8370c86e1830c1d90ebb30 100755
+--- a/build/toolchain/apple/linker_driver.py
++++ b/build/toolchain/apple/linker_driver.py
+@@ -352,6 +352,7 @@ def _remove_path(path):
+             os.unlink(path)
+ 
+ 
++from import_inline import inline_file_from_src; inline_file_from_src('brave/chromium_src/build/toolchain/apple/linker_driver.py', globals(), locals())
+ if __name__ == '__main__':
+     LinkerDriver(sys.argv).run()
+     sys.exit(0)
