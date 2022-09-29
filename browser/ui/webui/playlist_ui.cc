@@ -27,6 +27,39 @@
 
 namespace playlist {
 
+namespace {
+
+class UntrustedPlayerUI : public ui::UntrustedWebUIController {
+ public:
+  explicit UntrustedPlayerUI(content::WebUI* web_ui)
+      : UntrustedWebUIController(web_ui) {
+    auto* source = CreateAndAddWebUIDataSource(
+        web_ui, kPlaylistPlayerURL, kPlaylistGenerated, kPlaylistGeneratedSize,
+        IDR_PLAYLIST_PLAYER_HTML);
+    source->AddFrameAncestor(GURL(kPlaylistURL));
+    source->OverrideContentSecurityPolicy(
+        network::mojom::CSPDirectiveName::ScriptSrc,
+        std::string("script-src 'self' chrome-untrusted://resources "
+                    "chrome-untrusted://brave-resources;"));
+    source->OverrideContentSecurityPolicy(
+        network::mojom::CSPDirectiveName::MediaSrc,
+        std::string("media-src 'self' chrome-untrusted://playlist-data "
+                    "https://*.googlevideo.com;"));
+
+    auto* browser_context = web_ui->GetWebContents()->GetBrowserContext();
+    content::WebUIDataSource::Add(browser_context, source);
+  }
+
+  UntrustedPlayerUI(const UntrustedPlayerUI&) = delete;
+  UntrustedPlayerUI& operator=(const UntrustedPlayerUI&) = delete;
+  ~UntrustedPlayerUI() override = default;
+};
+
+}  // namespace
+
+////////////////////////////////////////////////////////////////////////////////
+// PlaylistUI
+//
 // static
 bool PlaylistUI::ShouldBlockPlaylistWebUI(
     content::BrowserContext* browser_context,
@@ -45,6 +78,7 @@ PlaylistUI::PlaylistUI(content::WebUI* web_ui, const std::string& name)
   auto* source =
       CreateAndAddWebUIDataSource(web_ui, name, kPlaylistGenerated,
                                   kPlaylistGeneratedSize, IDR_PLAYLIST_HTML);
+  source->AddString("bravePlaylistPlayerUrl", kPlaylistURL);
 
   // Allow to load untrusted resources.
   source->OverrideContentSecurityPolicy(
@@ -59,9 +93,11 @@ PlaylistUI::PlaylistUI(content::WebUI* web_ui, const std::string& name)
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
       std::string("img-src 'self' chrome-untrusted://playlist-data;"));
+
+  web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
   source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::MediaSrc,
-      std::string("media-src 'self' chrome-untrusted://playlist-data https://*.googlevideo.com;"));
+      network::mojom::CSPDirectiveName::FrameSrc,
+      std::string("frame-src ") + kPlaylistPlayerURL + ";");
 }
 
 PlaylistUI::~PlaylistUI() = default;
@@ -93,6 +129,9 @@ void PlaylistUI::CreatePageHandler(
 
 WEB_UI_CONTROLLER_TYPE_IMPL(PlaylistUI)
 
+////////////////////////////////////////////////////////////////////////////////
+// UntrustedPlaylistUIConfig
+//
 std::unique_ptr<content::WebUIController>
 UntrustedPlaylistUIConfig::CreateWebUIController(content::WebUI* web_ui) {
   return std::make_unique<PlaylistUI>(web_ui, kPlaylistURL);
@@ -105,5 +144,16 @@ bool UntrustedPlaylistUIConfig::IsWebUIEnabled(
 
 UntrustedPlaylistUIConfig::UntrustedPlaylistUIConfig()
     : WebUIConfig(content::kChromeUIUntrustedScheme, kPlaylistHost) {}
+
+////////////////////////////////////////////////////////////////////////////////
+// UntrustedPlaylistPlayerUIConfig
+//
+UntrustedPlaylistPlayerUIConfig::UntrustedPlaylistPlayerUIConfig()
+    : WebUIConfig(content::kChromeUIUntrustedScheme, kPlaylistPlayerHost) {}
+
+std::unique_ptr<content::WebUIController>
+UntrustedPlaylistPlayerUIConfig::CreateWebUIController(content::WebUI* web_ui) {
+  return std::make_unique<UntrustedPlayerUI>(web_ui);
+}
 
 }  // namespace playlist

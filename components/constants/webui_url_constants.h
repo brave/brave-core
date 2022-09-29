@@ -61,6 +61,8 @@ extern const char kFederatedInternalsHost[];
 extern const char kContentFiltersPath[];
 extern const char kPlaylistHost[];
 extern const char kPlaylistURL[];
+extern const char kPlaylistPlayerHost[];
+extern const char kPlaylistPlayerURL[];
 extern const char kSpeedreaderPanelURL[];
 extern const char kSpeedreaderPanelHost[];
 extern const char kCommandsHost[];

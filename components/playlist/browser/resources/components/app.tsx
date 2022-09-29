@@ -20,6 +20,8 @@ import { getPlaylistAPI } from '../api/api'
 
 import * as PlaylistMojo from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
 import { getAllActions } from '../api/getAllActions'
+import postMessageToPlayer from '../api/playerApi'
+import { types } from '../constants/playlist_types'
 
 interface Props {
   actions: any
@@ -51,6 +53,11 @@ export class PlaylistPage extends React.Component<Props, State> {
   }
 
   getImgSrc = (item: PlaylistMojo.PlaylistItem) => {
+    if (item.thumbnailPath.url.startsWith('http')) {
+      // Not cached yet. in this case we should show the default image
+      return ''
+    }
+
     return 'chrome-untrusted://playlist-data/' + item.id + '/thumbnail/'
   }
 
@@ -165,7 +172,10 @@ export class PlaylistPage extends React.Component<Props, State> {
       return
     }
 
-    document.getElementById('player')?.setAttribute('src', this.getMediaSrc(item))
+    postMessageToPlayer({
+     actionType: types.PLAYLIST_ITEM_SELECTED,
+     data: { ...item, mediaPath: { url: this.getMediaSrc(item) } }
+})
   }
 
   createPlaylist = (playlist: PlaylistMojo.Playlist) => {
@@ -200,7 +210,7 @@ export class PlaylistPage extends React.Component<Props, State> {
           </Table>
         </div>
 
-        <video id="player" controls autoPlay />
+        <iframe id="player" src="chrome-untrusted://playlist-player" style={{ width: '512px', height: '288px', border: 'none' }} allow="autoplay" scrolling='no'/>
 
         <div>
           <h1>Experimental</h1>

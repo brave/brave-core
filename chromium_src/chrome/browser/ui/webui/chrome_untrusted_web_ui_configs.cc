@@ -55,6 +55,8 @@ void RegisterChromeUntrustedWebUIConfigs() {
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
         std::make_unique<playlist::UntrustedPlaylistUIConfig>());
+    content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
+        std::make_unique<playlist::UntrustedPlaylistPlayerUIConfig>());
   }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #endif  // !BUILDFLAG(IS_ANDROID)

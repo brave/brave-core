@@ -15,3 +15,6 @@ export const playlistLoaded = (playlists: PlaylistMojo.Playlist[]) =>
 
 export const selectPlaylist = (playlist: PlaylistMojo.Playlist) =>
     action(types.PLAYLIST_SELECTED, playlist)
+
+export const selectPlaylistItem = (playlist: PlaylistMojo.PlaylistItem) =>
+    action(types.PLAYLIST_ITEM_SELECTED, playlist)
