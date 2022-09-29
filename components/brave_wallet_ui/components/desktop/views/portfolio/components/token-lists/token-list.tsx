@@ -5,9 +5,7 @@
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
-import {
-  useSelector
-} from 'react-redux'
+import { useSelector } from 'react-redux'
 
 // Types
 import {
@@ -16,6 +14,7 @@ import {
   WalletRoutes,
   WalletState
 } from '../../../../../../constants/types'
+import { RenderTokenFunc } from './virtualized-tokens-list'
 
 // Utils
 import { getLocale } from '../../../../../../../common/locale'
@@ -39,8 +38,6 @@ import {
   Spacer,
   FilterTokenRow
 } from '../../style'
-import { RenderTokenFunc, VirtualizedTokensList } from './virtualized-tokens-list'
-import { HorizontallyPaddedDiv } from './token-list.style'
 
 interface Props {
   userAssetList: UserAssetInfoType[]
@@ -150,39 +147,23 @@ export const TokenLists = ({
 
   const listUi = React.useMemo(() => {
     return selectedAssetFilter.id !== 'nfts' ? (
-      <VirtualizedTokensList
-        key={`${selectedAssetFilter.id}-${Number(firstNftIndex)}`}
-        getItemSize={
-          // only the first Nft element has a bigger height due to the section divider
-          (index) => index === firstNftIndex ? 94 : estimatedItemSize
-        }
-        renderToken={(args) => {
-          if (args.index === firstNftIndex) {
-            return <HorizontallyPaddedDiv>
+        <>
+          {sortedFungibleTokensList.map((token, index) => renderToken({ index, item: token, viewMode: 'list' }))}
+          {nonFungibleTokens.length !== 0 &&
+            <>
               <Spacer />
               <DividerText>{getLocale('braveWalletTopNavNFTS')}</DividerText>
               <SubDivider />
-              {renderToken(args)}
-            </HorizontallyPaddedDiv>
+              {nonFungibleTokens.map((token, index) => renderToken({ index, item: token, viewMode: 'list' }))}
+            </>
           }
-          return <HorizontallyPaddedDiv>
-            {renderToken(args)}
-          </HorizontallyPaddedDiv>
-        }}
-        userAssetList={sortedFungibleTokensAndNftsList}
-        estimatedItemSize={estimatedItemSize}
-      />
-    ) : (
-      <NFTGridView
-        key={selectedAssetFilter.id}
-        nonFungibleTokens={nonFungibleTokens}
-        renderToken={(token, index) => renderToken({
-          index,
-          item: token,
-          viewMode: 'grid'
-        })}
-      />
-    )
+        </>
+      ) : (
+        <NFTGridView
+          nonFungibleTokens={nonFungibleTokens}
+          renderToken={(token, index) => renderToken({ index, item: token, viewMode: 'list' })}
+        />
+      )
   }, [
     firstNftIndex,
     selectedAssetFilter.id,
