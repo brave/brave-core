@@ -48,12 +48,11 @@ BraveNewsFeedsContainerView::BraveNewsFeedsContainerView(
     }
   }
 
-  views::FlexLayout* const layout =
-      SetLayoutManager(std::make_unique<views::FlexLayout>());
-  layout->SetOrientation(views::LayoutOrientation::kVertical);
-  layout->SetMainAxisAlignment(views::LayoutAlignment::kStart);
-  layout->SetCrossAxisAlignment(views::LayoutAlignment::kStretch);
-  layout->SetCollapseMargins(false);
+  SetLayoutManager(std::make_unique<views::FlexLayout>())
+      ->SetOrientation(views::LayoutOrientation::kVertical)
+      .SetMainAxisAlignment(views::LayoutAlignment::kStart)
+      .SetCrossAxisAlignment(views::LayoutAlignment::kStretch)
+      .SetCollapseMargins(false);
 }
 
 BraveNewsFeedsContainerView::~BraveNewsFeedsContainerView() = default;

@@ -194,6 +194,9 @@ MdTextButton::Kind MdTextButton::GetKind() const {
 }
 
 void MdTextButton::SetKind(Kind kind) {
+  if (kind == kind_)
+    return;
+
   kind_ = kind;
   switch (kind_) {
     case kPrimary:

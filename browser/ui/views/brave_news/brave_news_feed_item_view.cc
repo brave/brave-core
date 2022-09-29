@@ -30,10 +30,10 @@ BraveNewsFeedItemView::BraveNewsFeedItemView(
   tab_helper_ = BraveNewsTabHelper::FromWebContents(contents);
   tab_helper_observation_.Observe(tab_helper_);
 
-  auto* const layout = SetLayoutManager(std::make_unique<views::FlexLayout>());
-  layout->SetOrientation(views::LayoutOrientation::kHorizontal);
-  layout->SetMainAxisAlignment(views::LayoutAlignment::kStart);
-  layout->SetCrossAxisAlignment(views::LayoutAlignment::kStretch);
+  SetLayoutManager(std::make_unique<views::FlexLayout>())
+      ->SetOrientation(views::LayoutOrientation::kHorizontal)
+      .SetMainAxisAlignment(views::LayoutAlignment::kStart)
+      .SetCrossAxisAlignment(views::LayoutAlignment::kStretch);
 
   auto* title = AddChildView(
       std::make_unique<views::Label>(base::UTF8ToUTF16(details.title)));

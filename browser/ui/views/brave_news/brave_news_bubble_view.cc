@@ -109,12 +109,11 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
   feeds_container_ =
       AddChildView(std::make_unique<BraveNewsFeedsContainerView>(contents));
 
-  views::FlexLayout* const layout =
-      SetLayoutManager(std::make_unique<views::FlexLayout>());
-  layout->SetOrientation(views::LayoutOrientation::kVertical);
-  layout->SetMainAxisAlignment(views::LayoutAlignment::kStart);
-  layout->SetCrossAxisAlignment(views::LayoutAlignment::kStretch);
-  layout->SetCollapseMargins(true);
+  SetLayoutManager(std::make_unique<views::FlexLayout>())
+      ->SetOrientation(views::LayoutOrientation::kVertical)
+      .SetMainAxisAlignment(views::LayoutAlignment::kStart)
+      .SetCrossAxisAlignment(views::LayoutAlignment::kStretch)
+      .SetCollapseMargins(true);
 
   auto* manage_feeds_button =
       AddChildView(std::make_unique<views::MdTextButton>(
