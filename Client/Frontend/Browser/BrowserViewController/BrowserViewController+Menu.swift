@@ -55,13 +55,8 @@ extension BrowserViewController {
         }
       )
 
-      MenuItemButton(
-        icon: UIImage(named: "playlist_menu", in: .current, compatibleWith: nil)!.template,
-        title: Strings.OptionsMenu.bravePlaylistItemTitle,
-        subtitle: Strings.OptionsMenu.bravePlaylistItemDescription
-      ) { [weak self] in
+      MenuItemFactory.button(for: .playlist(subtitle: Strings.OptionsMenu.bravePlaylistItemDescription)) { [weak self] in
         guard let self = self else { return }
-
         self.presentPlaylistController()
       }
 
@@ -69,11 +64,7 @@ extension BrowserViewController {
       if !PrivateBrowsingManager.shared.isPrivateBrowsing {
         // Show Brave News if it is first launch and after first launch If the new is enabled
         if Preferences.General.isFirstLaunch.value || (!Preferences.General.isFirstLaunch.value && Preferences.BraveNews.isEnabled.value) {
-          MenuItemButton(
-            icon: UIImage(named: "menu_brave_news", in: .current, compatibleWith: nil)!.template,
-            title: Strings.OptionsMenu.braveNewsItemTitle,
-            subtitle: Strings.OptionsMenu.braveNewsItemDescription
-          ) { [weak self] in
+          MenuItemFactory.button(for: .news) { [weak self] in
             guard let self = self, let newTabPageController = self.tabManager.selectedTab?.newTabPageViewController else {
               return
             }
@@ -82,24 +73,15 @@ extension BrowserViewController {
             newTabPageController.scrollToBraveNews()
           }
         }
-
-        MenuItemButton(
-          icon: UIImage(named: "menu-brave-talk", in: .current, compatibleWith: nil)!.template,
-          title: Strings.OptionsMenu.braveTalkItemTitle,
-          subtitle: Strings.OptionsMenu.braveTalkItemDescription
-        ) { [weak self] in
-          guard let self = self, let url = URL(string: "https://talk.brave.com/") else { return }
+        MenuItemFactory.button(for: .talk) {
+          guard let url = URL(string: "https://talk.brave.com/") else { return }
 
           self.popToBVC()
           self.finishEditingAndSubmit(url, visitType: .typed)
         }
       }
-
-      MenuItemButton(
-        icon: UIImage(named: "menu-crypto", in: .current, compatibleWith: nil)!.template,
-        title: Strings.Wallet.wallet,
-        subtitle: Strings.OptionsMenu.braveWalletItemDescription
-      ) { [unowned self] in
+      
+      MenuItemFactory.button(for: .wallet(subtitle: Strings.OptionsMenu.braveWalletItemDescription)) { [unowned self] in
         self.presentWallet()
       }
     }
@@ -110,7 +92,7 @@ extension BrowserViewController {
 
   func destinationMenuSection(_ menuController: MenuViewController, isShownOnWebPage: Bool) -> some View {
     VStack(spacing: 0) {
-      MenuItemButton(icon: UIImage(named: "menu_bookmarks", in: .current, compatibleWith: nil)!.template, title: Strings.bookmarksMenuItem) { [unowned self, unowned menuController] in
+      MenuItemFactory.button(for: .bookmarks) { [unowned self, unowned menuController] in
         let vc = BookmarksViewController(
           folder: bookmarkManager.lastVisitedFolder(),
           bookmarkManager: bookmarkManager,
@@ -118,35 +100,32 @@ extension BrowserViewController {
         vc.toolbarUrlActionsDelegate = self
         menuController.presentInnerMenu(vc)
       }
-
-      MenuItemButton(icon: UIImage(named: "menu-history", in: .current, compatibleWith: nil)!.template, title: Strings.historyMenuItem) { [unowned self, unowned menuController] in
+      MenuItemFactory.button(for: .history) { [unowned self, unowned menuController] in
         let vc = HistoryViewController(
           isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing,
-          historyAPI: braveCore.historyAPI,
-          tabManager: tabManager)
+          historyAPI: self.braveCore.historyAPI,
+          tabManager: self.tabManager)
         vc.toolbarUrlActionsDelegate = self
         menuController.pushInnerMenu(vc)
       }
-      MenuItemButton(icon: UIImage(named: "menu-downloads", in: .current, compatibleWith: nil)!.template, title: Strings.downloadsMenuItem) { [unowned self] in
+      MenuItemFactory.button(for: .downloads) {
         FileManager.default.openBraveDownloadsFolder { success in
           if !success {
             self.displayOpenDownloadsError()
           }
         }
       }
+
       if isShownOnWebPage {
-        MenuItemButton(
-          icon: UIImage(named: "menu-crypto", in: .current, compatibleWith: nil)!.template,
-          title: Strings.Wallet.wallet
-        ) { [weak self] in
+        MenuItemFactory.button(for: .wallet()) {[weak self] in
           self?.presentWallet()
         }
-        MenuItemButton(icon: UIImage(named: "playlist_menu", in: .current, compatibleWith: nil)!.template, title: Strings.playlistMenuItem) { [weak self] in
+        MenuItemFactory.button(for: .playlist()) { [weak self] in
           guard let self = self else { return }
           self.presentPlaylistController()
         }
       }
-      MenuItemButton(icon: UIImage(named: "menu-settings", in: .current, compatibleWith: nil)!.template, title: Strings.settingsMenuItem) { [unowned self, unowned menuController] in
+      MenuItemFactory.button(for: .settings) { [unowned self, unowned menuController] in
         let isPrivateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
         let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: isPrivateMode)
         let walletService = BraveWallet.ServiceFactory.get(privateMode: isPrivateMode)
