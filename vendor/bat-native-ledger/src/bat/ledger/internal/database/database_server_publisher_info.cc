@@ -145,12 +145,6 @@ void DatabaseServerPublisherInfo::OnGetRecord(
   info->updated_at = GetInt64Column(record, 2);
   info->banner = banner.Clone();
 
-  // The `CONNECTED` status is deprecated. If this value appears in the database
-  // convert it to a valid status.
-  if (info->status == mojom::PublisherStatus::CONNECTED) {
-    info->status = mojom::PublisherStatus::NOT_VERIFIED;
-  }
-
   callback(std::move(info));
 }
 
