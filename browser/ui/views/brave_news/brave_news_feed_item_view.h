@@ -9,11 +9,14 @@
 #include <vector>
 
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
-#include "ui/views/controls/button/md_text_button.h"
 #include "ui/views/view.h"
 
 namespace content {
 class WebContents;
+}
+
+namespace views {
+class MdTextButton;
 }
 
 class BraveNewsFeedItemView : public views::View,
