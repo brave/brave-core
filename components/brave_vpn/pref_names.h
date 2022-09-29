@@ -25,6 +25,7 @@ constexpr char kBraveVPNEEnvironment[] = "brave.brave_vpn.env";
 #if BUILDFLAG(IS_ANDROID)
 extern const char kBraveVPNPurchaseTokenAndroid[];
 extern const char kBraveVPNPackageAndroid[];
+extern const char kBraveVPNProductIdAndroid[];
 #endif
 
 constexpr char kBraveVPNFirstUseTime[] = "brave.brave_vpn.first_use_time";

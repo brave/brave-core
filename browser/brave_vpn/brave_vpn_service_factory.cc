@@ -71,7 +71,8 @@ KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
       },
       context);
 
-  return new BraveVpnService(shared_url_loader_factory, local_state, callback);
+  return new BraveVpnService(shared_url_loader_factory, local_state,
+                             user_prefs::UserPrefs::Get(context), callback);
 }
 
 void BraveVpnServiceFactory::RegisterProfilePrefs(
