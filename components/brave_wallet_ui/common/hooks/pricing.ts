@@ -19,7 +19,7 @@ export default function usePricing (spotPrices: BraveWallet.AssetPrice[]) {
 
   const _computeFiatAmount = React.useCallback((value: string, symbol: string, decimals: number): Amount => {
     return computeFiatAmount(spotPrices, { decimals, symbol, value })
-  }, [findAssetPrice])
+  }, [spotPrices])
 
   return {
     computeFiatAmount: _computeFiatAmount,
