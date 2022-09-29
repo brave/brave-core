@@ -28,11 +28,11 @@ class BraveNewsFeedItemView : public views::View,
   ~BraveNewsFeedItemView() override;
 
   void Update();
+  void OnPressed();
 
+  // BraveNewsTabHelper::PageFeedsObserver:
   void OnAvailableFeedsChanged(
       const std::vector<BraveNewsTabHelper::FeedDetails>& feeds) override;
-
-  void OnPressed();
 
  private:
   bool loading_ = false;

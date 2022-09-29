@@ -7,7 +7,6 @@
 #define BRAVE_BROWSER_UI_VIEWS_BRAVE_NEWS_BRAVE_NEWS_BUBBLE_VIEW_H_
 
 #include "base/memory/raw_ptr.h"
-#include "brave/browser/ui/views/brave_news/brave_news_feeds_container_view.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/geometry/size.h"
@@ -15,6 +14,8 @@
 #include "ui/views/controls/label.h"
 #include "ui/views/view.h"
 #include "ui/views/widget/widget.h"
+
+class BraveNewsFeedsContainerView;
 
 class BraveNewsBubbleView : public views::BubbleDialogDelegateView {
  public:

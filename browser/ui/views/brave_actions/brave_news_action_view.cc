@@ -188,7 +188,7 @@ void BraveNewsActionView::ButtonPressed() {
       BraveNewsBubbleView::Show(this, tab_strip_->GetActiveWebContents());
 }
 
-SkColor BraveNewsActionView::GetIconColor(bool subscribed) {
+SkColor BraveNewsActionView::GetIconColor(bool subscribed) const {
   if (!subscribed)
     return GetCurrentTextColor();
 

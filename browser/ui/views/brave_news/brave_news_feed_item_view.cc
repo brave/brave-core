@@ -78,12 +78,6 @@ void BraveNewsFeedItemView::Update() {
                                            : &kBraveNewsFollowButtonIcon);
 }
 
-void BraveNewsFeedItemView::OnAvailableFeedsChanged(
-    const std::vector<BraveNewsTabHelper::FeedDetails>& feeds) {
-  loading_ = false;
-  Update();
-}
-
 void BraveNewsFeedItemView::OnPressed() {
   // Don't queue multiple toggles.
   if (loading_)
@@ -91,6 +85,12 @@ void BraveNewsFeedItemView::OnPressed() {
 
   tab_helper_->ToggleSubscription(feed_details_);
   loading_ = true;
+  Update();
+}
+
+void BraveNewsFeedItemView::OnAvailableFeedsChanged(
+    const std::vector<BraveNewsTabHelper::FeedDetails>& feeds) {
+  loading_ = false;
   Update();
 }
 

@@ -52,11 +52,11 @@
 #include "ui/views/widget/widget.h"
 
 namespace {
-SkColor kSubtitleColorLight = SkColorSetRGB(134, 142, 150);
-SkColor kSubtitleColorDark = SkColorSetRGB(134, 142, 150);
+constexpr SkColor kSubtitleColorLight = SkColorSetRGB(134, 142, 150);
+constexpr SkColor kSubtitleColorDark = SkColorSetRGB(134, 142, 150);
 
-SkColor kBackgroundColorLight = SkColorSetRGB(248, 249, 250);
-SkColor kBackgroundColorDark = SkColorSetRGB(30, 32, 41);
+constexpr SkColor kBackgroundColorLight = SkColorSetRGB(248, 249, 250);
+constexpr SkColor kBackgroundColorDark = SkColorSetRGB(30, 32, 41);
 
 }  // namespace
 

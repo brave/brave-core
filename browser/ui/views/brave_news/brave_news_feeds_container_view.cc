@@ -4,6 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "brave/browser/ui/views/brave_news/brave_news_feeds_container_view.h"
+
 #include <memory>
 
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
