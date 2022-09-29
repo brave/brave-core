@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "base/files/file_util.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/pref_names.h"
@@ -166,6 +167,28 @@ void TorProfileServiceImpl::OnExecutableReady(const base::FilePath& path) {
 void TorProfileServiceImpl::OnPluggableTransportReady(bool success) {
   if (!success || !tor_launcher_factory_)
     return;
+
+#if DCHECK_IS_ON()
+  // Check we can touch pluggable transport executables from the tor's working
+  // dir.
+  const auto snowflake_path = base::FilePath::FromASCII("../../").Append(
+      tor_pluggable_transport_updater_->GetSnowflakeExecutable());
+  const auto obfs4_path = base::FilePath::FromASCII("../../").Append(
+      tor_pluggable_transport_updater_->GetObfs4Executable());
+  tor_pluggable_transport_updater_->GetTaskRunner()->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          [](const base::FilePath& tor, const base::FilePath& snowflake_path,
+             const base::FilePath& obfs4_path) {
+            if (tor.empty())
+              return;
+            const auto tor_path = tor.DirName();
+            DCHECK(base::PathExists(tor_path.Append(snowflake_path)));
+            DCHECK(base::PathExists(tor_path.Append(obfs4_path)));
+          },
+          GetTorExecutablePath(), snowflake_path, obfs4_path));
+#endif
+
   OnBridgesConfigChanged();
 }
 
