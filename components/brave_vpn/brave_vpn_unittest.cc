@@ -184,6 +184,7 @@ class BraveVPNServiceTest : public testing::Test {
     }
     skus::RegisterLocalStatePrefs(local_pref_service_.registry());
     brave_vpn::RegisterLocalStatePrefs(local_pref_service_.registry());
+    brave_vpn::RegisterProfilePrefs(profile_pref_service_.registry());
     shared_url_loader_factory_ =
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &url_loader_factory_);
@@ -205,6 +206,7 @@ class BraveVPNServiceTest : public testing::Test {
     }
     service_ = std::make_unique<BraveVpnService>(
         url_loader_factory_.GetSafeWeakWrapper(), &local_pref_service_,
+        &profile_pref_service_,
         base::BindRepeating(&BraveVPNServiceTest::GetSkusService,
                             base::Unretained(this)));
   }
@@ -513,6 +515,7 @@ class BraveVPNServiceTest : public testing::Test {
   base::test::ScopedFeatureList scoped_feature_list_;
   content::BrowserTaskEnvironment task_environment_;
   TestingPrefServiceSimple local_pref_service_;
+  sync_preferences::TestingPrefServiceSyncable profile_pref_service_;
   std::unique_ptr<skus::SkusServiceImpl> skus_service_;
   std::unique_ptr<BraveVpnService> service_;
   network::TestURLLoaderFactory url_loader_factory_;
