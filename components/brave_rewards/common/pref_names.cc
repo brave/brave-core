@@ -82,6 +82,8 @@ const char kWalletUphold[] =
     "brave.rewards.wallets.uphold";
 const char kWalletBitflyer[] = "brave.rewards.wallets.bitflyer";
 const char kWalletGemini[] = "brave.rewards.wallets.gemini";
+const char kWalletCreationEnvironment[] =
+    "brave.rewards.wallet_creation_environment";
 
 }  // namespace prefs
 }  // namespace brave_rewards

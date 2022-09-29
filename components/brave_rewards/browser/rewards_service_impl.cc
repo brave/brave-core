@@ -517,14 +517,8 @@ void RewardsServiceImpl::StartLedgerProcessIfNecessary() {
         base::BindOnce(&RewardsServiceImpl::ConnectionClosed, AsWeakPtr()));
   }
 
-  ledger::mojom::Environment environment = ledger::mojom::Environment::STAGING;
   // Environment
-#if defined(OFFICIAL_BUILD) && BUILDFLAG(IS_ANDROID)
-  environment = GetServerEnvironmentForAndroid();
-#elif defined(OFFICIAL_BUILD)
-  environment = ledger::mojom::Environment::PRODUCTION;
-#endif
-  SetEnvironment(environment);
+  SetEnvironment(GetDefaultServerEnvironment());
 
   SetDebug(false);
 
@@ -587,6 +581,18 @@ void RewardsServiceImpl::CreateRewardsWallet(
 
       auto* prefs = self->profile_->GetPrefs();
       prefs->SetString(prefs::kDeclaredGeo, country);
+
+      // Record in which environment the wallet was created (for display on the
+      // rewards internals page).
+      auto on_get_environment = [](base::WeakPtr<RewardsServiceImpl> self,
+                                   ledger::mojom::Environment environment) {
+        if (self) {
+          self->profile_->GetPrefs()->SetInteger(
+              prefs::kWalletCreationEnvironment, static_cast<int>(environment));
+        }
+      };
+
+      self->GetEnvironment(base::BindOnce(on_get_environment, self));
 
       // After successfully creating a Rewards wallet for the first time,
       // automatically enable Ads and AC.
@@ -2369,6 +2375,10 @@ void RewardsServiceImpl::StartMonthlyContributionForTest() {
 }
 
 void RewardsServiceImpl::GetEnvironment(GetEnvironmentCallback callback) {
+  if (!bat_ledger_service_.is_bound()) {
+    return DeferCallback(FROM_HERE, std::move(callback),
+                         GetDefaultServerEnvironment());
+  }
   bat_ledger_service_->GetEnvironment(std::move(callback));
 }
 
@@ -2733,9 +2743,19 @@ void RewardsServiceImpl::OnRecordBackendP3AStatsAC(
                                     auto_contributions);
 }
 
+ledger::mojom::Environment RewardsServiceImpl::GetDefaultServerEnvironment() {
+  ledger::mojom::Environment environment = ledger::mojom::Environment::STAGING;
+#if defined(OFFICIAL_BUILD) && BUILDFLAG(IS_ANDROID)
+  environment = GetDefaultServerEnvironmentForAndroid();
+#elif defined(OFFICIAL_BUILD)
+  environment = ledger::mojom::Environment::PRODUCTION;
+#endif
+  return environment;
+}
+
 #if BUILDFLAG(IS_ANDROID)
 ledger::mojom::Environment
-RewardsServiceImpl::GetServerEnvironmentForAndroid() {
+RewardsServiceImpl::GetDefaultServerEnvironmentForAndroid() {
   auto result = ledger::mojom::Environment::PRODUCTION;
   bool use_staging = false;
   if (profile_ && profile_->GetPrefs()) {

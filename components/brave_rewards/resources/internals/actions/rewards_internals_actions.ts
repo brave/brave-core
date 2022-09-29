@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -78,3 +79,10 @@ export const setAdDiagnosticId = (adDiagnosticId: string) =>
   action(types.SET_AD_DIAGNOSTIC_ID, {
     adDiagnosticId
   })
+
+export const getEnvironment = () => action(types.GET_ENVIRONMENT)
+
+export const onEnvironment = (environment: RewardsInternals.Environment) =>
+  action(types.ON_ENVIRONMENT, {
+    environment
+})
