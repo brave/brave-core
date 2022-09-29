@@ -12,13 +12,14 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
 #include "brave/components/brave_today/browser/channels_controller.h"
 #include "brave/components/brave_today/browser/feed_building.h"
 #include "brave/components/brave_today/browser/feed_parsing.h"
-#include "brave/components/brave_today/common/brave_news.mojom-forward.h"
-#include "brave/components/brave_today/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
+#include "brave/components/brave_today/common/features.h"
+#include "brave/components/brave_today/common/pref_names.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -273,6 +274,49 @@ TEST_F(BraveNewsFeedBuildingTest, IncludesUserEnabledItems) {
 
   Channels channels;
   ASSERT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
+}
+
+TEST_F(BraveNewsFeedBuildingTest, ChannelIsUsedWhenV2IsEnabled) {
+  // Enable the BraveNewsV2 Feature.
+  base::test::ScopedFeatureList features;
+  features.InitAndEnableFeature(brave_today::features::kBraveNewsV2Feature);
+
+  Publishers publisher_list;
+  PopulatePublishers(&publisher_list);
+  auto* publisher = publisher_list["111"].get();
+
+  Channels channels;
+  channels.insert(
+      {"Top News", brave_news::mojom::Channel::New("Top News", true)});
+  auto* channel = channels["Top News"].get();
+
+  auto feed_item = mojom::FeedItem::NewArticle(
+      mojom::Article::New(mojom::FeedItemMetadata::New(
+          "Technology", base::Time::Now(), "Title", "Description",
+          GURL("https://example.com/article"),
+          "7bb5d8b3e2eee9d317f0568dcb094850fdf2862b2ed6d583c62b2245ea507ab8",
+          mojom::Image::NewPaddedImageUrl(
+              GURL("https://example.com/article/image")),
+          publisher->publisher_id, "Source", 10, "a minute ago")));
+
+  // Publisher: NOT_MODIFIED, Channel: Subscribed, Should display.
+  ASSERT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
+
+  // Publisher: NOT_MODIFIED, Channel: Not subscribed, Should not display.
+  channel->subscribed = false;
+  ASSERT_FALSE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
+
+  // Publisher: ENABLED, Channel: Not subscribed, Should display.
+  publisher->user_enabled_status = mojom::UserEnabled::ENABLED;
+  ASSERT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
+
+  // Publisher: Disabled, Channel: Not subscribed, Should not display.
+  publisher->user_enabled_status = mojom::UserEnabled::DISABLED;
+  ASSERT_FALSE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
+
+  // Publisher: DISABLED, Channel: Subscribed, Should not display.
+  channel->subscribed = true;
+  ASSERT_FALSE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
 }
 
 }  // namespace brave_news
