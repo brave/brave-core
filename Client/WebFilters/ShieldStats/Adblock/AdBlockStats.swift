@@ -147,22 +147,7 @@ extension AdblockEngine {
           style.appendChild(document.createTextNode(styles));
         }
 
-        const body = document.body || document.getElementsByTagName('body')[0];
-        if (!body) {
-          head.appendChild(style);
-        } else {
-          // Insert the element at a random position.
-          // This way pages cannot remove first or last element.
-          const min = 0;
-          const max = body.children.length;
-          const index = Math.floor(Math.random() * (max - min)) + min;
-      
-          const div = document.createElement('div');
-          body.insertBefore(div, body.children[index]);
-      
-          const shadow = div.attachShadow({ mode: 'closed' });
-          shadow.appendChild(style);
-        }
+        head.appendChild(style);
       })();
       """
     } else {
