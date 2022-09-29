@@ -13,8 +13,6 @@ namespace translate {
 
 bool IsTranslateExtensionEnabled(content::BrowserContext* context);
 
-bool IsInternalTranslationEnabled(content::BrowserContext* context);
-
 }  // namespace translate
 
 #endif  // BRAVE_BROWSER_TRANSLATE_BRAVE_TRANSLATE_UTILS_H_
