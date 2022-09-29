@@ -16,6 +16,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
@@ -26,6 +27,7 @@
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_today/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
+#include "brave/components/brave_today/common/features.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/prefs/pref_service.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -247,16 +249,23 @@ bool ShouldDisplayFeedItem(const mojom::FeedItemPtr& feed_item,
   }
   if (publisher->user_enabled_status ==
       brave_news::mojom::UserEnabled::NOT_MODIFIED) {
-    // If the publisher is NOT_MODIFIED then display it if any of the categories
-    // it belongs to are subscribed to.
-    for (const auto& channel_id : publisher->channels) {
-      const auto& channel = channels.at(channel_id);
-      if (channel->subscribed) {
-        VLOG(2) << "Showing article because publisher " << data->publisher_id
-                << ": " << publisher->publisher_name << " is in channel "
-                << channel_id << " which is subscribed to.";
-        return true;
+    if (base::FeatureList::IsEnabled(
+            brave_today::features::kBraveNewsV2Feature)) {
+      // If the publisher is NOT_MODIFIED then display it if any of the channels
+      // it belongs to are subscribed to.
+      for (const auto& channel_id : publisher->channels) {
+        const auto& channel = channels.at(channel_id);
+        if (channel->subscribed) {
+          VLOG(2) << "Showing article because publisher " << data->publisher_id
+                  << ": " << publisher->publisher_name << " is in channel "
+                  << channel_id << " which is subscribed to.";
+          return true;
+        }
       }
+
+      // The publisher isn't in a subscribed channel, and the user hasn't
+      // enabled it, so it must be hidden.
+      return false;
     }
 
     if (!publisher->is_enabled) {
@@ -265,6 +274,7 @@ bool ShouldDisplayFeedItem(const mojom::FeedItemPtr& feed_item,
       return false;
     }
   }
+
   // None of the filters match, we can display
   VLOG(2) << "None of the filters matched, will display item for publisher "
           << data->publisher_id;

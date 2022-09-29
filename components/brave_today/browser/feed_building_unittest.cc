@@ -6,17 +6,21 @@
 #include <algorithm>
 #include <iterator>
 #include <memory>
+#include <string>
 #include <unordered_set>
 #include <utility>
 #include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/time/time.h"
+#include "brave/components/brave_today/browser/channels_controller.h"
 #include "brave/components/brave_today/browser/feed_building.h"
 #include "brave/components/brave_today/browser/feed_parsing.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_today/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
+#include "chrome/test/base/testing_profile.h"
+#include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/mojom/url.mojom.h"
 
@@ -94,20 +98,20 @@ std::string GetFeedJson() {
 void PopulatePublishers(Publishers* publisher_list) {
   auto publisher1 = mojom::Publisher::New(
       "111", mojom::PublisherType::COMBINED_SOURCE, "First Publisher",
-      "Top News", true, std::vector<std::string>{"en_US"},
-      GURL("https://www.example.com"),
+      "Top News", std::vector<std::string>{"Top News"}, true,
+      std::vector<std::string>{"en_US"}, GURL("https://www.example.com"),
       GURL("https://first-publisher.com/feed.xml"),
       mojom::UserEnabled::NOT_MODIFIED);
   auto publisher2 = mojom::Publisher::New(
       "222", mojom::PublisherType::COMBINED_SOURCE, "Second Publisher",
-      "Top News", true, std::vector<std::string>{"en_US"},
-      GURL("https://www.example.com"),
+      "Top News", std::vector<std::string>{"Top News"}, true,
+      std::vector<std::string>{"en_US"}, GURL("https://www.example.com"),
       GURL("https://second-publisher.com/feed.xml"),
       mojom::UserEnabled::NOT_MODIFIED);
   auto publisher3 = mojom::Publisher::New(
       "333", mojom::PublisherType::COMBINED_SOURCE, "Third Publisher",
-      "Top News", true, std::vector<std::string>{"en_US"},
-      GURL("https://www.example.com"),
+      "Top News", std::vector<std::string>{"Top News"}, true,
+      std::vector<std::string>{"en_US"}, GURL("https://www.example.com"),
       GURL("https://third-publisher.com/feed.xml"),
       mojom::UserEnabled::NOT_MODIFIED);
   publisher_list->insert_or_assign(publisher1->publisher_id,
@@ -120,7 +124,20 @@ void PopulatePublishers(Publishers* publisher_list) {
 
 }  // namespace
 
-TEST(BraveNewsFeedBuilding, BuildFeed) {
+class BraveNewsFeedBuildingTest : public testing::Test {
+ public:
+  BraveNewsFeedBuildingTest() = default;
+  BraveNewsFeedBuildingTest(const BraveNewsFeedBuildingTest&) = delete;
+  BraveNewsFeedBuildingTest& operator=(const BraveNewsFeedBuildingTest&) =
+      delete;
+  ~BraveNewsFeedBuildingTest() override {}
+
+ protected:
+  content::BrowserTaskEnvironment browser_task_environment_;
+  TestingProfile profile_;
+};
+
+TEST_F(BraveNewsFeedBuildingTest, BuildFeed) {
   Publishers publisher_list;
   PopulatePublishers(&publisher_list);
 
@@ -131,7 +148,8 @@ TEST(BraveNewsFeedBuilding, BuildFeed) {
 
   mojom::Feed feed;
 
-  ASSERT_TRUE(BuildFeed(feed_items, history_hosts, &publisher_list, &feed));
+  ASSERT_TRUE(BuildFeed(feed_items, history_hosts, &publisher_list, &feed,
+                        profile_.GetPrefs()));
   ASSERT_EQ(feed.pages.size(), 1u);
   // Validate featured article is top news
   ASSERT_TRUE(feed.featured_item->is_article());
@@ -156,7 +174,7 @@ TEST(BraveNewsFeedBuilding, BuildFeed) {
             "https://www.example.com/an-article/");
 }
 
-TEST(BraveNewsFeedBuilding, RemovesDefaultOffItems) {
+TEST_F(BraveNewsFeedBuildingTest, RemovesDefaultOffItems) {
   Publishers publisher_list;
   PopulatePublishers(&publisher_list);
   std::unordered_set<std::string> history_hosts = {};
@@ -184,10 +202,11 @@ TEST(BraveNewsFeedBuilding, RemovesDefaultOffItems) {
           publisher_id_to_hide, "ESPN - Football", 14.525910905005045,
           "a minute ago")));
 
-  ASSERT_FALSE(ShouldDisplayFeedItem(feed_item, &publisher_list));
+  Channels channels;
+  ASSERT_FALSE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
 }
 
-TEST(BraveNewsFeedBuilding, RemovesUserDisabledItems) {
+TEST_F(BraveNewsFeedBuildingTest, RemovesUserDisabledItems) {
   Publishers publisher_list;
   PopulatePublishers(&publisher_list);
   std::unordered_set<std::string> history_hosts = {};
@@ -217,11 +236,13 @@ TEST(BraveNewsFeedBuilding, RemovesUserDisabledItems) {
           publisher_id_to_hide, "ESPN - Football", 14.525910905005045,
           "a minute ago")));
 
-  ASSERT_FALSE(ShouldDisplayFeedItem(feed_item, &publisher_list));
+  Channels channels;
+  ASSERT_FALSE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
 }
 
-TEST(BraveNewsFeedBuilding, IncludesUserEnabledItems) {
+TEST_F(BraveNewsFeedBuildingTest, IncludesUserEnabledItems) {
   Publishers publisher_list;
+
   PopulatePublishers(&publisher_list);
   std::unordered_set<std::string> history_hosts = {};
 
@@ -250,7 +271,8 @@ TEST(BraveNewsFeedBuilding, IncludesUserEnabledItems) {
           publisher_id_to_hide, "ESPN - Football", 14.525910905005045,
           "a minute ago")));
 
-  ASSERT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list));
+  Channels channels;
+  ASSERT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
 }
 
 }  // namespace brave_news
