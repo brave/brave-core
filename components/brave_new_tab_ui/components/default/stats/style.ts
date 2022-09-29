@@ -23,10 +23,10 @@ export const StyledStatsItem = styled('li')<{}>`
   font-size: inherit;
   font-family: inherit;
   margin: 10px 16px;
-  &:first-child { color: var(--override-readability-color-rgb, var(--interactive2)); }
-  &:nth-child(2) { color: var(--override-readability-color-rgb, var(--interactive9)); }
+  &:first-child { color: var(--override-readability-color, var(--interactive2)); }
+  &:nth-child(2) { color: var(--override-readability-color, var(--interactive9)); }
   &:last-child { 
-    color: var(--override-readability-color-rgb, #FFFFFF); 
+    color: var(--override-readability-color, #FFFFFF); 
     margin-right: 0;
   }
 `

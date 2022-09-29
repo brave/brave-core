@@ -470,8 +470,8 @@ export const IconButtonContainer = styled('div')<IconButtonContainerProps>`
   color: rgba(var(--override-readability-color-rgb, 255, 255, 255), 0.8);
   margin-right: ${p => p.textDirection === 'ltr' && '8px'};
   margin-left: ${p => p.textDirection === 'rtl' && '8px'};
-  border-right: ${p => p.textDirection === 'ltr' && 'rgba(var(--override-readability-color-rgb, 255, 255, 255), 0.6)'};
-  border-left: ${p => p.textDirection === 'rtl' && 'rgba(var(--override-readability-color-rgb, 255, 255, 255), 0.6)'};
+  border-right: ${p => p.textDirection === 'ltr' && '1px solid rgba(var(--override-readability-color-rgb, 255, 255, 255), 0.6)'};
+  border-left: ${p => p.textDirection === 'rtl' && '1px solid rgba(var(--override-readability-color-rgb, 255, 255, 255), 0.6)'};
 
   &:hover {
     color: ${p => p.color};
@@ -479,14 +479,9 @@ export const IconButtonContainer = styled('div')<IconButtonContainerProps>`
 `
 
 export const OverrideReadabilityColor = createGlobalStyle<{override: boolean}>`
-  body {
+  :root {
     ${p => p.override && css`
       --override-readability-color-rgb: 0, 0, 0;
-      --override-readability-color: rgb(0, 0, 0);
-      
-      // override color property in resets.css. Not sure why this happens but,
-      // the value in the stylesheet wins over variables above.
-      color: inherit
-    `}
+      --override-readability-color: rgb(0, 0, 0);`}
   }
 `

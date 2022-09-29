@@ -33,7 +33,6 @@ interface Props {
   customLinksEnabled?: boolean
   onToggleCustomLinksEnabled?: () => void
   paddingType: 'none' | 'right' | 'default'
-  color?: string
 }
 
 interface State {

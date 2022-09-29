@@ -6,7 +6,7 @@
 import styled from 'styled-components'
 
 export const StyledClock = styled('div')<{}>`
-  color: var(--override-readability-color-rgb, #FFFFFF);
+  color: var(--override-readability-color, #FFFFFF);
   box-sizing: border-box;
   line-height: 1;
   user-select: none;
