@@ -7,7 +7,7 @@
 #include <tuple>
 
 #include "base/containers/flat_map.h"
-#include "brave/browser/themes/brave_dark_mode_utils.h"
+#include "base/notreached.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/color/color_id.h"
@@ -101,20 +101,20 @@ const base::flat_map<MdTextButtonStyleKey, ButtonStyle> g_button_themes = {
 
     {{Kind::kTertiary, ColorScheme::kLight, ButtonState::STATE_NORMAL},
      {.background_color = absl::nullopt,
-      .border_color = SK_ColorBLACK,
-      .text_color = SK_ColorBLACK}},
+      .border_color = absl::nullopt,
+      .text_color = SkColorSetRGB(32, 74, 227)}},
     {{Kind::kTertiary, ColorScheme::kDark, ButtonState::STATE_NORMAL},
      {.background_color = absl::nullopt,
-      .border_color = SK_ColorWHITE,
-      .text_color = SK_ColorWHITE}},
+      .border_color = absl::nullopt,
+      .text_color = SkColorSetRGB(153, 173, 243)}},
     {{Kind::kTertiary, ColorScheme::kLight, ButtonState::STATE_HOVERED},
      {.background_color = absl::nullopt,
-      .border_color = kBravePrimaryColor,
-      .text_color = kBravePrimaryColor}},
+      .border_color = absl::nullopt,
+      .text_color = SkColorSetRGB(24, 56, 172)}},
     {{Kind::kTertiary, ColorScheme::kDark, ButtonState::STATE_HOVERED},
      {.background_color = absl::nullopt,
-      .border_color = kBravePrimaryColor,
-      .text_color = kBravePrimaryColor}}};
+      .border_color = absl::nullopt,
+      .text_color = SkColorSetRGB(186, 199, 247)}}};
 
 class BraveTextButtonHighlightPathGenerator
     : public views::HighlightPathGenerator {
@@ -264,7 +264,14 @@ void MdTextButton::UpdateColorsForBrave() {
   }
 
   MdTextButtonStyleKey style_lookup{GetKind(), color_scheme, state};
-  auto style = g_button_themes.at(style_lookup);
+  auto it = g_button_themes.find(style_lookup);
+  if (it == g_button_themes.end()) {
+    NOTREACHED() << "No style found for ButtonKind: " << kind_
+                 << ", ColorScheme: "
+                 << (color_scheme == ColorScheme::kDark ? "dark" : "light")
+                 << ", ButtonState: " << state;
+  }
+  auto style = it->second;
 
   SetTextColor(GetVisualState(), AddOpacity(style.text_color, opacity));
 

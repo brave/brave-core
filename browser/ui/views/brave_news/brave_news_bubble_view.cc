@@ -57,7 +57,6 @@ constexpr SkColor kSubtitleColorDark = SkColorSetRGB(134, 142, 150);
 
 constexpr SkColor kBackgroundColorLight = SkColorSetRGB(248, 249, 250);
 constexpr SkColor kBackgroundColorDark = SkColorSetRGB(30, 32, 41);
-
 }  // namespace
 
 // static
