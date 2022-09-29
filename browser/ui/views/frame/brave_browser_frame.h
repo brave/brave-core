@@ -26,6 +26,7 @@ class BraveBrowserFrame : public BrowserFrame {
 #endif
   ui::ColorProviderManager::ThemeInitializerSupplier* GetCustomTheme()
       const override;
+  views::internal::RootView* CreateRootView() override;
 
  private:
   raw_ptr<BrowserView> view_ = nullptr;
