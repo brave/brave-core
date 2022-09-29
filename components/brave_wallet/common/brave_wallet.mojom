@@ -766,6 +766,7 @@ const string kFantomMainnetChainId = "0xfa"; // Fantom Opera
 const string kCeloMainnetChainId = "0xa4ec";
 const string kOptimismMainnetChainId = "0xa";
 const string kAuroraMainnetChainId = "0x4e454152";
+const string kArbitrumMainnetChainId = "0xa4b1";
 const string kSolanaMainnet = "0x65";
 const string kSolanaTestnet = "0x66";
 const string kSolanaDevnet = "0x67";
