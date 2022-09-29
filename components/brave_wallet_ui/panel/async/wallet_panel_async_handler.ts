@@ -521,6 +521,10 @@ handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData
   const info = hardwareAccount.hardware
   const signed = await signMessageWithHardwareKeyring(info.vendor as HardwareVendor, info.path, messageData)
   if (!signed.success && signed.code) {
+    if (signed.code === 'unauthorized') {
+      await store.dispatch(PanelActions.setHardwareWalletInteractionError(signed.code))
+      return
+    }
     const deviceError = (info.vendor === BraveWallet.TREZOR_HARDWARE_VENDOR)
       ? dialogErrorFromTrezorErrorCode(signed.code) : dialogErrorFromLedgerErrorCode(signed.code)
     if (deviceError !== 'transactionRejected') {
