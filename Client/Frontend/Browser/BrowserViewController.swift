@@ -2304,8 +2304,8 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
       }
       return
     }
-    let headerHeight = toolbarVisibilityViewModel.transitionDistance
-    let footerHeight = footer.bounds.height + (isUsingBottomBar ? headerHeight - view.safeAreaInsets.bottom : 0)
+    let headerHeight = isUsingBottomBar ? 0 : toolbarVisibilityViewModel.transitionDistance
+    let footerHeight = footer.bounds.height + (isUsingBottomBar ? toolbarVisibilityViewModel.transitionDistance - view.safeAreaInsets.bottom : 0)
     // Changing the web view size while scrolling and a PDF is visible causes strange flickering, so only show
     // final expanded/collapsed states while a PDF is visible
     if let progress = progress, tab.mimeType != MIMEType.PDF {
