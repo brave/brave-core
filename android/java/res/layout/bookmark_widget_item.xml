@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2022 The Chromium Authors. All rights reserved.
+     Use of this source code is governed by a BSD-style license that can be
+     found in the LICENSE file. -->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="UseCompoundDrawables"
+    android:id="@+id/list_item"
+    android:layout_marginVertical="4dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal" >
+
+    <!-- Below textview is added to avoid unused warning for bookmark_widget_background --> 
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        android:background="@color/bookmark_widget_background" />
+
+    <ImageView
+        android:id="@+id/favicon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        tools:ignore="ContentDescription"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:background="@drawable/quick_action_search_and_bookmark_widget_bookmark_bg" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:paddingEnd="16dp"
+        android:singleLine="true"
+        android:textSize="24sp"
+        android:textAlignment="viewStart"
+        android:textAppearance="@style/TextAppearance.TextLarge.Primary.Baseline" />
+
+</LinearLayout>

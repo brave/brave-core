@@ -279,7 +279,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (!mBraveShieldsHandler.isDisconnectEntityLoaded
                 && !BraveShieldsUtils.hasShieldsTooltipShown(
                         BraveShieldsUtils.PREF_SHIELDS_TOOLTIP)) {
-            mBraveShieldsHandler.loadDisconnectEntityList();
+            mBraveShieldsHandler.loadDisconnectEntityList(getContext());
         }
         mBraveShieldsHandler.addObserver(new BraveShieldsMenuObserver() {
             @Override
