@@ -513,13 +513,13 @@ const util = {
 
     console.log('generate Widevine sig files...')
 
-    util.run('python', [sig_generator, '--input_file=' + path.join(src_dir, 'brave.exe'),
+    util.run('python3', [sig_generator, '--input_file=' + path.join(src_dir, 'brave.exe'),
         '--flags=1',
         '--certificate=' + cert,
         '--private_key=' + key,
         '--output_file=' + path.join(config.outputDir, 'brave.exe.sig'),
         '--private_key_passphrase=' + passwd])
-    util.run('python', [sig_generator, '--input_file=' + path.join(src_dir, 'chrome.dll'),
+    util.run('python3', [sig_generator, '--input_file=' + path.join(src_dir, 'chrome.dll'),
         '--flags=0',
         '--certificate=' + cert,
         '--private_key=' + key,

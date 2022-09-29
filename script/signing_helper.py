@@ -69,7 +69,7 @@ def GenerateBraveWidevineSigFile(paths, config, part):
         assert file_exists(
             sig_source_file), 'Wrong source path for sig generation'
 
-        command = ['python', sig_generator_path, '--input_file',
+        command = ['vpython3', sig_generator_path, '--input_file',
                    sig_source_file,
                    '--output_file', sig_target_file, '--flags', '1',
                    '--certificate', sign_widevine_cert,
