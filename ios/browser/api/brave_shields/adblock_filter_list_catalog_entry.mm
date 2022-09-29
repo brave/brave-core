@@ -56,3 +56,25 @@
 }
 
 @end
+
+/// Object used for registering a component
+@interface ComponentRegistrationInfo ()
+@property(nonatomic, copy) NSString* title;
+@property(nonatomic, copy) NSString* componentId;
+@property(nonatomic, copy) NSString* base64PublicKey;
+@end
+
+@implementation ComponentRegistrationInfo
+
+- (instancetype)initWithTitle:(NSString*)title
+                  componentId:(NSString*)componentId
+              base64PublicKey:(NSString*)base64PublicKey {
+  if ((self = [super init])) {
+    self.title = title;
+    self.componentId = componentId;
+    self.base64PublicKey = base64PublicKey;
+  }
+  return self;
+}
+
+@end

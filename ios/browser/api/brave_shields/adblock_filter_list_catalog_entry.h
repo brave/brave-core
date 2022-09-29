@@ -25,6 +25,19 @@ OBJC_EXPORT
 - (instancetype)init NS_UNAVAILABLE;
 @end
 
+OBJC_EXPORT
+/// Object used for registering a component
+@interface ComponentRegistrationInfo : NSObject
+@property(readonly) NSString* title;
+@property(readonly) NSString* componentId;
+@property(readonly) NSString* base64PublicKey;
+
+- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithTitle:(NSString*)title
+                  componentId:(NSString*)componentId
+              base64PublicKey:(NSString*)base64PublicKey;
+@end
+
 NS_ASSUME_NONNULL_END
 
 #endif  // BRAVE_IOS_BROWSER_API_BRAVE_SHIELDS_ADBLOCK_FILTER_LIST_CATALOG_ENTRY_H_

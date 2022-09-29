@@ -37,6 +37,14 @@ OBJC_EXPORT
 - (void)unregisterFilterListComponent:(AdblockFilterListCatalogEntry*)entry
                    useLegacyComponent:(bool)useLegacyComponent;
 
+/// Registers a component with the component updater and calls
+/// `componentReady` each time the component is updated
+- (void)registerComponentForComponentInfo:(ComponentRegistrationInfo*)info
+                           componentReady:(void (^)(NSString* _Nullable installPath)) componentReady;
+
+/// Unregisters a component with the component updater
+- (void)unregisterFilterListComponentForComponentId:(NSString*)componentId;
+
 - (instancetype)init NS_UNAVAILABLE;
 
 @end

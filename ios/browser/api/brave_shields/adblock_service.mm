@@ -103,4 +103,20 @@
   }
 }
 
+- (void)registerComponentForComponentInfo:(ComponentRegistrationInfo*)info
+                           componentReady:(void (^)(NSString* _Nullable installPath)) componentReady {
+  brave_shields::RegisterAdBlockFiltersComponent(
+      _cus, base::SysNSStringToUTF8(info.base64PublicKey),
+      base::SysNSStringToUTF8(info.componentId),
+      base::SysNSStringToUTF8(info.title),
+      base::BindRepeating(^(const base::FilePath& install_path) {
+        const auto installPath = base::SysUTF8ToNSString(install_path.value());
+        componentReady(installPath);
+      }));
+}
+
+- (void)unregisterFilterListComponentForComponentId:(NSString*)componentId {
+  _cus->UnregisterComponent(base::SysNSStringToUTF8(componentId));
+}
+
 @end
