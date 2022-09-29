@@ -55,6 +55,7 @@ import {
 // actions
 import { WalletActions } from '../../../../common/actions'
 import { WalletPageActions } from '../../../../page/actions'
+import { getAssetIdKey } from '../../../../utils/asset-utils'
 
 export const PortfolioOverview = () => {
   // routing
@@ -233,7 +234,7 @@ export const PortfolioOverview = () => {
           <ChartControlBar
             onSubmit={onChangeTimeline}
             selectedTimeline={selectedPortfolioTimeline}
-            timelineOptions={ChartTimelineOptions()}
+            timelineOptions={ChartTimelineOptions}
           />
           <ShowBalanceButton
             hideBalances={hideBalances}
@@ -270,18 +271,11 @@ export const PortfolioOverview = () => {
         renderToken={({ item, viewMode }) =>
           viewMode === 'list'
           ? <PortfolioAssetItem
-              spotPrices={transactionSpotPrices}
-              defaultCurrencies={defaultCurrencies}
               action={() => onSelectAsset(item.asset)}
-              key={
-                !item.asset.isErc721
-                  ? `${item.asset.contractAddress}-${item.asset.symbol}-${item.asset.chainId}`
-                  : `${item.asset.contractAddress}-${item.asset.tokenId}-${item.asset.chainId}`
-              }
+              key={getAssetIdKey(item.asset)}
               assetBalance={item.assetBalance}
               token={item.asset}
               hideBalances={hideBalances}
-              networks={networkList}
             />
           : <NFTGridViewItem
               key={`${item.asset.tokenId}-${item.asset.contractAddress}`}

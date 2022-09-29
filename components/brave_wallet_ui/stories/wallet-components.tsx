@@ -64,15 +64,12 @@ _DesktopTopTabNav.story = {
 export const _LineChartControls = () => {
   const [selectedTimeline, setSelectedTimeline] = React.useState<BraveWallet.AssetPriceTimeframe>(BraveWallet.AssetPriceTimeframe.OneDay)
 
-  const changeTimline = (path: BraveWallet.AssetPriceTimeframe) => {
-    setSelectedTimeline(path)
-  }
   return (
     <DesktopComponentWrapper>
       <ChartControlBar
-        onSubmit={changeTimline}
+        onSubmit={setSelectedTimeline}
         selectedTimeline={selectedTimeline}
-        timelineOptions={ChartTimelineOptions()}
+        timelineOptions={ChartTimelineOptions}
       />
     </DesktopComponentWrapper>
   )
