@@ -2,7 +2,10 @@ import("//brave/build/cargo.gni")
 import("//brave/build/rust/rust_cxx.gni")
 
 rust_crate("rust_lib") {
-  inputs = [ "lib.rs" ]
+  inputs = [
+    "lib.rs",
+    "Cargo.toml",
+  ]
 }
 
 rust_cxx("rust-rs") {

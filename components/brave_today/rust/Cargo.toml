@@ -13,9 +13,6 @@ lazy_static = "1.4.0"
 regex = "1.5.5"
 voca_rs = "1.14.0"
 
-[build-dependencies]
-cxx-build = "1.0"
-
 [lib]
 name = "brave_news_cxx"
 path = "lib.rs"

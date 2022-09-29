@@ -10,9 +10,6 @@ cxx = { path = "../../../../third_party/rust/cxx/v1/crate"}
 ed25519-dalek-bip32 = "0.2.0"
 curve25519-dalek = "3.2.0"
 
-[build-dependencies]
-cxx-build = "1.0"
-
 [lib]
 name = "brave_wallet_cxx"
 path = "lib.rs"
