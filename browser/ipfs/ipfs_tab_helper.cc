@@ -94,9 +94,15 @@ bool IPFSTabHelper::MaybeCreateForWebContents(
   return true;
 }
 
-void IPFSTabHelper::IPFSLinkResolved(const GURL& ipfs) {
-  ipfs_resolved_url_ = ipfs;
-  if (pref_service_->GetBoolean(kIPFSAutoRedirectDNSLink)) {
+void IPFSTabHelper::XIPFSPathLinkResolved(const GURL& ipfs) {
+  ipfs_resolved_url_ = ipfs.is_valid() ? ipfs : GURL();
+  UpdateLocationBar();
+}
+
+void IPFSTabHelper::DNSLinkResolved(const GURL& ipfs) {
+  DCHECK(!ipfs.is_valid() || ipfs.SchemeIs(kIPNSScheme));
+  ipfs_resolved_url_ = ipfs.is_valid() ? ipfs : GURL();
+  if (ipfs.is_valid() && pref_service_->GetBoolean(kIPFSAutoRedirectDNSLink)) {
     content::OpenURLParams params(GetIPFSResolvedURL(), content::Referrer(),
                                   WindowOpenDisposition::CURRENT_TAB,
                                   ui::PAGE_TRANSITION_LINK, false);
@@ -107,18 +113,21 @@ void IPFSTabHelper::IPFSLinkResolved(const GURL& ipfs) {
   UpdateLocationBar();
 }
 
-void IPFSTabHelper::HostResolvedCallback(const std::string& host,
-                                         const std::string& dnslink) {
+void IPFSTabHelper::HostResolvedCallback(
+    absl::optional<std::string> x_ipfs_path_header,
+    const std::string& host,
+    const absl::optional<std::string>& dnslink) {
   GURL current = web_contents()->GetURL();
+
   if (current.host() != host || !current.SchemeIsHTTPOrHTTPS())
     return;
-  if (dnslink.empty())
+  if (!dnslink || dnslink.value().empty()) {
+    if (x_ipfs_path_header) {
+      XIPFSPathLinkResolved(ResolveXIPFSPathUrl(x_ipfs_path_header.value()));
+    }
     return;
-  GURL::Replacements replacements;
-  replacements.SetSchemeStr(kIPNSScheme);
-  GURL resolved_url(current.ReplaceComponents(replacements));
-  if (resolved_url.is_valid())
-    IPFSLinkResolved(resolved_url);
+  }
+  DNSLinkResolved(ResolveDNSLinkUrl(current));
 }
 
 void IPFSTabHelper::UpdateLocationBar() {
@@ -143,7 +152,8 @@ GURL IPFSTabHelper::GetIPFSResolvedURL() const {
   return ipfs_resolved_url_.ReplaceComponents(replacements);
 }
 
-void IPFSTabHelper::ResolveIPFSLink() {
+void IPFSTabHelper::CheckDNSLinkRecord(
+    absl::optional<std::string> x_ipfs_path_header) {
   GURL current = web_contents()->GetURL();
   if (!current.SchemeIsHTTPOrHTTPS())
     return;
@@ -151,7 +161,8 @@ void IPFSTabHelper::ResolveIPFSLink() {
   const auto& host_port_pair = net::HostPortPair::FromURL(current);
 
   auto resolved_callback = base::BindOnce(&IPFSTabHelper::HostResolvedCallback,
-                                          weak_ptr_factory_.GetWeakPtr());
+                                          weak_ptr_factory_.GetWeakPtr(),
+                                          std::move(x_ipfs_path_header));
   const auto& key =
       web_contents()->GetPrimaryMainFrame()
           ? web_contents()->GetPrimaryMainFrame()->GetNetworkIsolationKey()
@@ -196,48 +207,42 @@ bool IPFSTabHelper::CanResolveURL(const GURL& url) const {
   return resolve;
 }
 
-std::string IPFSTabHelper::GetPathForDNSLink(GURL url) {
-  if (ipfs::IsIPFSScheme(url)) {
-    std::string path = url.path();
-    if (base::StartsWith(path, "//"))
-      return path.substr(1, path.size());
-    return path;
-  }
-  return "/ipns/" + url.host() + url.path();
-}
-// For DNSLink we are making urls like
-// <gateway>/ipns/<dnslink-domain>/<dnslink-path>
-GURL IPFSTabHelper::ResolveDNSLinkURL(GURL url) {
-  if (!url.is_valid())
-    return url;
+// For x-ipfs-path header we are making urls like
+// <gateway>/<x-ipfs-path>
+GURL IPFSTabHelper::ResolveXIPFSPathUrl(
+    const std::string& x_ipfs_path_header_value) {
   GURL gateway =
       ipfs::GetConfiguredBaseGateway(pref_service_, chrome::GetChannel());
   GURL::Replacements replacements;
-  auto path = GetPathForDNSLink(url);
-  replacements.SetPathStr(path);
+  replacements.SetPathStr(x_ipfs_path_header_value);
   return gateway.ReplaceComponents(replacements);
 }
 
-void IPFSTabHelper::MaybeShowDNSLinkButton(
+// For _dnslink we just translate url to ipns:// scheme
+GURL IPFSTabHelper::ResolveDNSLinkUrl(const GURL& url) {
+  GURL::Replacements replacements;
+  replacements.SetSchemeStr(kIPNSScheme);
+  return url.ReplaceComponents(replacements);
+}
+
+void IPFSTabHelper::MaybeCheckDNSLinkRecord(
     const net::HttpResponseHeaders* headers) {
   UpdateDnsLinkButtonState();
   auto current_url = GetCurrentPageURL();
+
   if (!IsDNSLinkCheckEnabled() || !headers || ipfs_resolved_url_.is_valid() ||
-      !CanResolveURL(current_url))
+      !CanResolveURL(current_url)) {
     return;
+  }
 
   int response_code = headers->response_code();
-  if (response_code >= net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR &&
-      response_code <= net::HttpStatusCode::HTTP_VERSION_NOT_SUPPORTED) {
-    ResolveIPFSLink();
-  } else if (headers->HasHeader(kIfpsPathHeader)) {
-    std::string ipfs_path_value;
-    if (!headers->GetNormalizedHeader(kIfpsPathHeader, &ipfs_path_value) ||
-        ipfs_path_value.empty())
-      return;
-    auto resolved_url = ResolveDNSLinkURL(current_url);
-    if (resolved_url.is_valid())
-      IPFSLinkResolved(resolved_url);
+  std::string normalized_header;
+  if ((response_code >= net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR &&
+       response_code <= net::HttpStatusCode::HTTP_VERSION_NOT_SUPPORTED)) {
+    CheckDNSLinkRecord(absl::nullopt);
+  } else if (headers->GetNormalizedHeader(kIfpsPathHeader,
+                                          &normalized_header)) {
+    CheckDNSLinkRecord(normalized_header);
   }
 }
 
@@ -265,7 +270,7 @@ void IPFSTabHelper::DidFinishNavigation(content::NavigationHandle* handle) {
       handle->GetResponseHeaders()->HasHeader(kIfpsPathHeader)) {
     MaybeSetupIpfsProtocolHandlers(handle->GetURL());
   }
-  MaybeShowDNSLinkButton(handle->GetResponseHeaders());
+  MaybeCheckDNSLinkRecord(handle->GetResponseHeaders());
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(IPFSTabHelper);

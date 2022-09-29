@@ -41,3 +41,18 @@ static_library("browser") {
     ]
   }
 }
+
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "locale_helper_mock.cc",
+    "locale_helper_mock.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/l10n/browser",
+    "//testing/gmock",
+  ]
+}

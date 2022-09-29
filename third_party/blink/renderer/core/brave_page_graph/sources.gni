@@ -5,12 +5,14 @@
 import("//brave/components/brave_page_graph/common/buildflags.gni")
 
 brave_page_graph_core_public_deps = []
-brave_page_graph_core_sources = []
 brave_page_graph_core_deps = []
+brave_page_graph_core_sources = []
 
 if (enable_brave_page_graph) {
   brave_page_graph_core_public_deps +=
       [ "//brave/components/brave_page_graph/common" ]
+
+  brave_page_graph_core_deps += [ "//brave/components/brave_shields/common" ]
 
   brave_page_graph_core_sources += [
     "//brave/third_party/blink/renderer/core/brave_page_graph/blink_converters.cc",

@@ -31,7 +31,7 @@ class IPFSHostResolver : public network::ResolveHostClientBase {
 
   using HostTextResultsCallback =
       base::OnceCallback<void(const std::string& host,
-                              const std::string& dnslink)>;
+                              const absl::optional<std::string>& dnslink)>;
 
   virtual void Resolve(const net::HostPortPair& host,
                        const net::NetworkIsolationKey& isolation_key,
@@ -39,11 +39,7 @@ class IPFSHostResolver : public network::ResolveHostClientBase {
                        HostTextResultsCallback callback);
 
   std::string host() const { return resolving_host_; }
-  std::string dnslink() const { return dnslink_; }
-
-  void SetCompleteCallbackForTesting(base::OnceClosure complete_callback) {
-    complete_callback_for_testing_ = std::move(complete_callback);
-  }
+  absl::optional<std::string> dnslink() const { return dnslink_; }
 
  private:
   // network::mojom::ResolveHostClient implementation:
@@ -55,11 +51,10 @@ class IPFSHostResolver : public network::ResolveHostClientBase {
 
   std::string resolving_host_;
   std::string prefix_;
-  std::string dnslink_;
+  absl::optional<std::string> dnslink_;
 
   network::mojom::NetworkContext* network_context_ = nullptr;
   HostTextResultsCallback resolved_callback_;
-  base::OnceClosure complete_callback_for_testing_;
 
   mojo::Receiver<network::mojom::ResolveHostClient> receiver_{this};
 };

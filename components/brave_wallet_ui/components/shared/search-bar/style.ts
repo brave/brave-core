@@ -6,7 +6,7 @@ export const StyledWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
-  height: 36px;
+  min-height: 36px;
   width: 100%;
   border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
   border-radius: 4px;

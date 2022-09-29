@@ -12,26 +12,37 @@
 #include <utility>
 #include <vector>
 
+#include "base/barrier_callback.h"
 #include "base/bind.h"
 #include "base/callback_forward.h"
+#include "base/containers/contains.h"
+#include "base/feature_list.h"
 #include "base/location.h"
 #include "base/one_shot_event.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_private_cdn/headers.h"
 #include "brave/components/brave_today/browser/direct_feed_controller.h"
 #include "brave/components/brave_today/browser/publishers_parsing.h"
+#include "brave/components/brave_today/browser/unsupported_publisher_migrator.h"
 #include "brave/components/brave_today/browser/urls.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
+#include "brave/components/brave_today/common/features.h"
 #include "brave/components/brave_today/common/pref_names.h"
+#include "brave/components/l10n/browser/locale_helper.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "url/origin.h"
 
 namespace brave_news {
 
 PublishersController::PublishersController(
     PrefService* prefs,
+    DirectFeedController* direct_feed_controller,
+    UnsupportedPublisherMigrator* unsupported_publisher_migrator,
     api_request_helper::APIRequestHelper* api_request_helper)
     : prefs_(prefs),
+      direct_feed_controller_(direct_feed_controller),
+      unsupported_publisher_migrator_(unsupported_publisher_migrator),
       api_request_helper_(api_request_helper),
       on_current_update_complete_(new base::OneShotEvent()) {}
 
@@ -113,6 +124,16 @@ void PublishersController::GetOrFetchPublishers(base::OnceClosure callback,
   EnsurePublishersIsUpdating();
 }
 
+void PublishersController::GetLocale(
+    mojom::BraveNewsController::GetLocaleCallback callback) {
+  GetOrFetchPublishers(base::BindOnce(
+      [](PublishersController* controller,
+         mojom::BraveNewsController::GetLocaleCallback callback, Publishers _) {
+        std::move(callback).Run(controller->default_locale_);
+      },
+      base::Unretained(this), std::move(callback)));
+}
+
 void PublishersController::EnsurePublishersIsUpdating() {
   // Only 1 update at a time, other calls for data will wait for
   // the current operation via the `on_current_update_complete_` OneShotEvent.
@@ -131,6 +152,8 @@ void PublishersController::EnsurePublishersIsUpdating() {
         // Add user enabled statuses
         const base::Value* publisher_prefs =
             controller->prefs_->GetDictionary(prefs::kBraveTodaySources);
+        std::vector<std::string> missing_publishers_;
+
         for (auto kv : publisher_prefs->DictItems()) {
           auto publisher_id = kv.first;
           auto is_user_enabled = kv.second.GetIfBool();
@@ -143,14 +166,15 @@ void PublishersController::EnsurePublishersIsUpdating() {
           } else {
             VLOG(1) << "Publisher list did not contain publisher found in"
                        "user prefs: "
-                    << publisher_id;
+                    << publisher_id
+                    << ". This could be because we've removed the publisher. "
+                       "Attempting to migrate to a direct feed.";
+            missing_publishers_.push_back(publisher_id);
           }
         }
         // Add direct feeds
-        std::vector<mojom::PublisherPtr> direct_publishers;
-        ParseDirectPublisherList(
-            controller->prefs_->GetDictionary(prefs::kBraveTodayDirectFeeds),
-            &direct_publishers);
+        std::vector<mojom::PublisherPtr> direct_publishers =
+            controller->direct_feed_controller_->ParseDirectFeedsPref();
         for (auto it = direct_publishers.begin(); it != direct_publishers.end();
              it++) {
           auto move_it = std::make_move_iterator(it);
@@ -161,6 +185,7 @@ void PublishersController::EnsurePublishersIsUpdating() {
 
         // Set memory cache
         controller->publishers_ = std::move(publisher_list);
+        controller->UpdateDefaultLocale();
         // Let any callback know that the data is ready.
         VLOG(1) << "Notify subscribers to publishers data";
         // One-shot subscribers
@@ -172,11 +197,49 @@ void PublishersController::EnsurePublishersIsUpdating() {
         for (auto& observer : controller->observers_) {
           observer.OnPublishersUpdated(controller);
         }
+
+        if (base::FeatureList::IsEnabled(
+                brave_today::features::kBraveNewsV2Feature) &&
+            !missing_publishers_.empty()) {
+          controller->unsupported_publisher_migrator_->MigrateUnsupportedFeeds(
+              missing_publishers_,
+              base::BindOnce(
+                  [](PublishersController* controller,
+                     uint64_t migrated_count) {
+                    // If any publisher was migrated, ensure we update the list
+                    // of publishers.
+                    if (migrated_count != 0)
+                      controller->EnsurePublishersIsUpdating();
+                  },
+                  base::Unretained(controller)));
+        }
       },
       base::Unretained(this));
   api_request_helper_->Request("GET", sources_url, "", "", true,
                                std::move(onRequest),
                                brave::private_cdn_headers);
+}
+
+void PublishersController::UpdateDefaultLocale() {
+  base::flat_set<std::string> available_locales;
+  for (const auto& it : publishers_) {
+    for (const auto& locale : it.second->locales)
+      available_locales.insert(locale);
+  }
+
+  // Locale is lang-COUNTRY but Brave News wants the format to be
+  // lang_COUNTRY.
+  const std::string locale =
+      brave_l10n::LocaleHelper::GetInstance()->GetLocale();
+  const std::string language_code = brave_l10n::GetLanguageCode(locale);
+  const std::string country_code = brave_l10n::GetCountryCode(locale);
+  const std::string brave_news_locale = language_code + "_" + country_code;
+
+  // Fallback to en_US, if we can't match anything else.
+  // TODO(fallaciousreasoning): Implement more complicated fallback
+  default_locale_ = base::Contains(available_locales, brave_news_locale)
+                        ? brave_news_locale
+                        : "en_US";
 }
 
 void PublishersController::ClearCache() {
