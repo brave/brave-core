@@ -206,6 +206,8 @@ source_set("ui") {
       "views/download/brave_download_item_view.h",
       "views/frame/brave_browser_frame.cc",
       "views/frame/brave_browser_frame.h",
+      "views/frame/brave_browser_root_view.cc",
+      "views/frame/brave_browser_root_view.h",
       "views/frame/brave_browser_view.cc",
       "views/frame/brave_browser_view.h",
       "views/frame/brave_browser_view_layout.cc",
