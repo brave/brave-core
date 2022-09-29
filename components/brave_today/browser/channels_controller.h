@@ -36,8 +36,8 @@ class ChannelsController {
   mojom::ChannelPtr SetChannelSubscribed(const std::string& locale,
                                          const std::string& channel_id,
                                          bool subscribed);
-  bool GetChannelSubscribed(
-                            const std::string& locale, const std::string& channel_id);
+  bool GetChannelSubscribed(const std::string& locale,
+                            const std::string& channel_id);
 
  private:
   raw_ptr<PrefService> prefs_;
