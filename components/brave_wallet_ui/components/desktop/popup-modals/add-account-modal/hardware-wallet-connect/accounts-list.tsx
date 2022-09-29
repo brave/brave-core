@@ -202,7 +202,7 @@ export default function (props: Props) {
           onSubmit={onAddAccounts}
           text={getLocale('braveWalletAddCheckedAccountsHardwareWallet')}
           buttonType='primary'
-          disabled={accounts.length === 0}
+          disabled={accounts.length === 0 || selectedDerivationPaths.length === 0}
         />
       </ButtonsContainer>
     </>
