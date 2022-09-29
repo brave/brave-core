@@ -57,9 +57,9 @@
   }
 
   function solanaSignAndSendTransaction(serializedTx, sendOptions, pubkeyString, signature) {
-    let tx = window._brave_solana.createTransaction(serializedTx)
+    let tx = solanaWeb3.Transaction.from(serializedTx)
     if (pubkeyString) {
-      const pubkey = window._brave_solana.createPublickey(pubkeyString)
+      const pubkey = new solanaWeb3.PublicKey(pubkeyString)
       tx.addSignature(pubkey, signature)
     }
     window.braveSolana.signAndSendTransaction(tx, sendOptions)
@@ -73,9 +73,9 @@
   }
 
   function solanaSignTransaction(serializedTx, pubkeyString, signature) {
-    let tx = window._brave_solana.createTransaction(serializedTx)
+    let tx = solanaWeb3.Transaction.from(serializedTx)
     if (pubkeyString) {
-      const pubkey = window._brave_solana.createPublickey(pubkeyString)
+      const pubkey = new solanaWeb3.PublicKey(pubkeyString)
       tx.addSignature(pubkey, signature)
     }
     window.braveSolana.signTransaction(tx)
@@ -89,9 +89,9 @@
     }
 
   function solanaSignAllTransactions(serializedTx, expectedSignTx, pubkeyString, signature) {
-    tx = window._brave_solana.createTransaction(serializedTx)
+    let tx = solanaWeb3.Transaction.from(serializedTx)
     if (pubkeyString) {
-      const pubkey = window._brave_solana.createPublickey(pubkeyString)
+      const pubkey = new solanaWeb3.PublicKey(pubkeyString)
       tx.addSignature(pubkey, signature)
     }
     const expectedTx = expectedSignTx.join()

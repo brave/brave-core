@@ -23,7 +23,7 @@ OBJC_EXPORT BraveWalletProviderScriptKey const
 OBJC_EXPORT BraveWalletProviderScriptKey const
     BraveWalletProviderScriptKeySolana;
 OBJC_EXPORT BraveWalletProviderScriptKey const
-    BraveWalletProviderScriptKeySolanaInternal;
+    BraveWalletProviderScriptKeySolanaWeb3;
 
 OBJC_EXPORT
 @interface BraveWalletAPI : NSObject
