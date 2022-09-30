@@ -32,15 +32,20 @@ import { AccountListItemOptionButton } from './account-list-item-option-button'
 // style
 import {
   StyledWrapper,
-  AccountName,
-  AccountAddress,
-  AccountAndAddress,
   NameAndIcon,
   AccountCircle,
   RightSide,
   HardwareIcon,
   AccountNameRow
 } from './style'
+
+import {
+  AccountAddressButton,
+  AccountAndAddress,
+  AccountNameButton,
+  AddressAndButtonRow,
+  CopyIcon
+} from '../portfolio-account-item/style'
 
 export interface Props {
   onDelete?: () => void
@@ -109,11 +114,14 @@ export const AccountListItem = ({
         <AccountAndAddress>
           <AccountNameRow>
             {isHardwareWallet && <HardwareIcon />}
-            <AccountName onClick={onSelectAccount}>{account.name}</AccountName>
+            <AccountNameButton onClick={onSelectAccount}>{account.name}</AccountNameButton>
           </AccountNameRow>
-          <CopyTooltip text={account.address}>
-            <AccountAddress>{reduceAddress(account.address)}</AccountAddress>
-          </CopyTooltip>
+          <AddressAndButtonRow>
+            <AccountAddressButton onClick={onSelectAccount}>{reduceAddress(account.address)}</AccountAddressButton>
+            <CopyTooltip text={account.address}>
+              <CopyIcon />
+            </CopyTooltip>
+          </AddressAndButtonRow>
         </AccountAndAddress>
       </NameAndIcon>
       <RightSide>
