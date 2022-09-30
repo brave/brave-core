@@ -190,7 +190,7 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
   if (!origin || origin->IsOpaque())
     return;
   const auto host = origin->Host();
-  if (host.IsNull() || host.IsEmpty())
+  if (host.IsNull() || host.empty())
     return;
   const std::string domain =
       blink::network_utils::GetDomainAndRegistry(

@@ -40,7 +40,7 @@ String GetResourceIdInUse(const SecurityOrigin* origin,
   StringBuilder string_builder;
   string_builder.AppendNumber(static_cast<int>(resource_type));
   String origin_id = origin->RegistrableDomain();
-  if (origin_id.IsEmpty())
+  if (origin_id.empty())
     origin_id = origin->Host();
   string_builder.Append(origin_id);
   return string_builder.ToString();

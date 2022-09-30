@@ -13,7 +13,7 @@
 
 #define BRAVE_SCHEDULED_ACTION_STRING_HANDLER_CONSTRUCTOR                \
   IF_BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH, {                                \
-    if (!code_.IsEmpty() &&                                              \
+    if (!code_.empty() &&                                                \
         CoreProbeSink::HasAgentsGlobal(CoreProbeSink::kPageGraph)) {     \
       parent_script_id_ =                                                \
           v8::page_graph::GetExecutingScript(script_state->GetIsolate()) \
