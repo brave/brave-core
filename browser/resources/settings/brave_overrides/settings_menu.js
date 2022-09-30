@@ -295,13 +295,17 @@ RegisterPolymerTemplateModifications({
     )
     searchEl.insertAdjacentElement('afterend', extensionEl)
 
-    const walletEl = createMenuElement(
-      loadTimeData.getString('braveWallet'),
-      '/wallet',
-      'brave_settings:wallet',
-      'wallet',
-    )
-    extensionEl.insertAdjacentElement('afterend', walletEl)
+    const isBraveWalletAllowed = loadTimeData.getBoolean('isBraveWalletAllowed')
+    let walletEl = undefined
+    if (isBraveWalletAllowed) {
+      walletEl = createMenuElement(
+        loadTimeData.getString('braveWallet'),
+        '/wallet',
+        'brave_settings:wallet',
+        'wallet',
+      )
+      extensionEl.insertAdjacentElement('afterend', walletEl)
+    }
 
     const ipfsEl = createMenuElement(
       loadTimeData.getString('braveIPFS'),
@@ -309,7 +313,11 @@ RegisterPolymerTemplateModifications({
       'brave_settings:ipfs',
       'ipfs',
     )
-    walletEl.insertAdjacentElement('afterend', ipfsEl)
+    if (isBraveWalletAllowed) {
+      walletEl.insertAdjacentElement('afterend', ipfsEl)
+    } else {
+      extensionEl.insertAdjacentElement('afterend', ipfsEl)
+    }
 
     // Move autofill to advanced
     const autofillEl = getMenuElement(templateContent, '/autofill')

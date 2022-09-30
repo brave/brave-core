@@ -5,13 +5,17 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/components/brave_wallet/common/common_util.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 
 namespace brave_wallet {
 
 bool IsAllowedForContext(content::BrowserContext* context) {
-  if (context && !brave::IsRegularProfile(context))
+  if (context && (!brave::IsRegularProfile(context) ||
+                  !IsAllowed(user_prefs::UserPrefs::Get(context)))) {
     return false;
+  }
 
   return true;
 }

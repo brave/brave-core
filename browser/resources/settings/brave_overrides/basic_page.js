@@ -165,18 +165,22 @@ RegisterPolymerTemplateModifications({
           prefs: '{{prefs}}'
         }
       ))
-      const sectionWallet = document.createElement('template')
-      sectionWallet.setAttribute('is', 'dom-if')
-      sectionWallet.setAttribute('restamp', true)
-      sectionWallet.setAttribute('if', '[[showPage_(pageVisibility.braveWallet)]]')
-      sectionWallet.content.appendChild(createSectionElement(
-        'wallet',
-        'braveWallet',
-        'settings-brave-wallet-page',
-        {
-          prefs: '{{prefs}}'
-        }
-      ))
+      const isBraveWalletAllowed = loadTimeData.getBoolean('isBraveWalletAllowed')
+      let sectionWallet = undefined
+      if (isBraveWalletAllowed) {
+        sectionWallet = document.createElement('template')
+        sectionWallet.setAttribute('is', 'dom-if')
+        sectionWallet.setAttribute('restamp', true)
+        sectionWallet.setAttribute('if', '[[showPage_(pageVisibility.braveWallet)]]')
+        sectionWallet.content.appendChild(createSectionElement(
+          'wallet',
+          'braveWallet',
+          'settings-brave-wallet-page',
+          {
+            prefs: '{{prefs}}'
+          }
+        ))
+      }
       const sectionSync = document.createElement('template')
       sectionSync.setAttribute('is', 'dom-if')
       sectionSync.setAttribute('restamp', true)
@@ -277,12 +281,15 @@ RegisterPolymerTemplateModifications({
       sectionSync.insertAdjacentElement('afterend', sectionSearch)
       // Insert extensions
       sectionSearch.insertAdjacentElement('afterend', sectionExtensions)
-      // Insert Wallet
-      sectionExtensions.insertAdjacentElement('afterend', sectionWallet)
-      // Insert IPFS
-      sectionWallet.insertAdjacentElement('afterend', sectionIPFS)
+      // Insert Wallet and IPFS
+      if (isBraveWalletAllowed) {
+        sectionExtensions.insertAdjacentElement('afterend', sectionWallet)
+        sectionWallet.insertAdjacentElement('afterend', sectionIPFS)
+      } else {
+        sectionExtensions.insertAdjacentElement('afterend', sectionIPFS)
+      }
       // Insert Tor
-      sectionWallet.insertAdjacentElement('afterend', sectionTor)
+      sectionIPFS.insertAdjacentElement('afterend', sectionTor)
       // Advanced
       const advancedTemplate = templateContent.querySelector('template[if="[[showAdvancedSettings_(pageVisibility.advancedSettings)]]"]')
       if (!advancedTemplate) {

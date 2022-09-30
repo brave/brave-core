@@ -48,6 +48,7 @@ function getPageVisibility () {
     privacy: alwaysTrueProxy,
     // custom properties
     braveSync: !loadTimeData.getBoolean('isSyncDisabled'),
+    braveWallet: loadTimeData.getBoolean('isBraveWalletAllowed'),
   }
   // Proxy so we can respond to any other property
   return new Proxy(staticProps, {

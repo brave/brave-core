@@ -9,9 +9,10 @@
 #include <string>
 #include <utility>
 
+#include "brave/browser/crypto_dot_com/crypto_dot_com_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/extensions/api/crypto_dot_com.h"
-#include "brave/browser/crypto_dot_com/crypto_dot_com_service_factory.h"
+#include "brave/components/brave_wallet/common/common_util.h"
 #include "brave/components/crypto_dot_com/browser/crypto_dot_com_service.h"
 #include "brave/components/crypto_dot_com/browser/regions.h"
 #include "brave/components/crypto_dot_com/common/pref_names.h"
@@ -31,7 +32,9 @@ CryptoDotComService* GetCryptoDotComService(content::BrowserContext* context) {
 }
 
 bool IsCryptoDotComAPIAvailable(content::BrowserContext* context) {
-  return brave::IsRegularProfile(context);
+  return brave::IsRegularProfile(context) &&
+         brave_wallet::IsAllowed(
+             Profile::FromBrowserContext(context)->GetPrefs());
 }
 
 }  // namespace

@@ -17,6 +17,7 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/common_util.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
@@ -135,7 +136,9 @@ void BraveBrowserCommandController::InitBraveCommandState() {
     if (brave_rewards::IsSupported(browser_->profile()->GetPrefs())) {
       UpdateCommandForBraveRewards();
     }
-    UpdateCommandForBraveWallet();
+    if (brave_wallet::IsAllowed(browser_->profile()->GetPrefs())) {
+      UpdateCommandForBraveWallet();
+    }
     if (syncer::IsSyncAllowedByFlag())
       UpdateCommandForBraveSync();
   }

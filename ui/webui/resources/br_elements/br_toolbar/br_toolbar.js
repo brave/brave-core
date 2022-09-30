@@ -86,6 +86,11 @@ Polymer({
       type: Boolean,
       value: true,
     },
+
+    isBraveWalletAllowed_: {
+      type: Boolean,
+      value: true,
+    },
   },
 
   /** @return {!CrToolbarSearchFieldElement} */
@@ -184,6 +189,7 @@ Polymer({
   /** @override */
   attached: function () {
     this.isBraveRewardsSupported_ = loadTimeData.getBoolean('isBraveRewardsSupported')
+    this.isBraveWalletAllowed_ = loadTimeData.getBoolean('isBraveWalletAllowed')
     this.initSlotFilledDetection()
     this.initStrings()
     this.initFontLoadDetection()

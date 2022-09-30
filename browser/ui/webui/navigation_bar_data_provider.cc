@@ -6,6 +6,7 @@
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 
 #include "brave/browser/brave_rewards/rewards_util.h"
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/strings/grit/components_strings.h"
@@ -27,4 +28,6 @@ void NavigationBarDataProvider::Initialize(content::WebUIDataSource* source,
 
   source->AddBoolean("isBraveRewardsSupported",
                      brave_rewards::IsSupportedForProfile(profile));
+  source->AddBoolean("isBraveWalletAllowed",
+                     brave_wallet::IsAllowedForContext(profile));
 }

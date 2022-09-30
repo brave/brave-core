@@ -479,6 +479,7 @@ source_set("ui") {
     deps += [
       "//brave/app:brave_generated_resources_grit",
       "//brave/browser/brave_rewards:util",
+      "//brave/browser/brave_wallet",
       "//brave/browser/resources/bookmarks:resources",
       "//brave/browser/resources/history:resources",
       "//brave/browser/resources/settings:resources",
@@ -501,6 +502,7 @@ source_set("ui") {
       "//brave/components/brave_sync:sync_service_impl_helper",
       "//brave/components/brave_today/browser",
       "//brave/components/brave_today/common",
+      "//brave/components/brave_wallet/common:common_utils",
       "//brave/components/brave_welcome/common",
       "//brave/components/brave_welcome_ui:generated_resources",
       "//brave/components/speedreader/common",
