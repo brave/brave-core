@@ -334,6 +334,7 @@ class Tab: NSObject {
 
       self.webView = webView
       self.webView?.addObserver(self, forKeyPath: KVOConstants.URL.rawValue, options: .new, context: nil)
+      tabDelegate?.tab(self, didCreateWebView: webView)
       
       let scriptPreferences: [UserScriptManager.ScriptType: Bool] = [
         .cookieBlocking: Preferences.Privacy.blockAllCookies.value,
@@ -345,7 +346,6 @@ class Tab: NSObject {
       
       userScripts = Set(scriptPreferences.filter({ $0.value }).map({ $0.key }))
       self.updateInjectedScripts()
-      tabDelegate?.tab(self, didCreateWebView: webView)
       nightMode = Preferences.General.nightModeEnabled.value
     }
   }

@@ -33,6 +33,10 @@ extension TabContentScriptLoader {
   }
   
   static func secureScript(handlerNamesMap: [String: String], securityToken: String, script: String) -> String {
+    guard !script.isEmpty else {
+      return script
+    }
+    
     var script = script
     for (obfuscatedHandlerName, actualHandlerName) in handlerNamesMap {
       script = script.replacingOccurrences(of: obfuscatedHandlerName, with: actualHandlerName)

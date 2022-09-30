@@ -29,10 +29,10 @@ if (!window.__firefox__) {
   let $Reflect = secureCopy(Reflect);
   let $Array = secureCopy(Array);
   let $webkit = window.webkit;
-  let $messageHandlers = $webkit.messageHandlers;
+  let $MessageHandlers = $webkit.messageHandlers;
   
   secureCopy = undefined;
-  let secureObjects = [$Object, $Function, $Reflect, $Array];
+  let secureObjects = [$Object, $Function, $Reflect, $Array, $MessageHandlers];
   
   /*
    *  Prevent recursive calls if a page overrides these.
@@ -131,11 +131,16 @@ if (!window.__firefox__) {
   };
     
   $.postNativeMessage = function(messageHandlerName, message) {
+    if (!window.webkit || !window.webkit.messageHandlers) {
+      return Promise.reject(new TypeError("undefined is not an object (evaluating 'webkit.messageHandlers')"));
+    }
+    
     let webkit = window.webkit;
-    delete window.webkit;
+    delete window.webkit.messageHandlers[messageHandlerName].postMessage;
+    delete window.webkit.messageHandlers[messageHandlerName];
     delete window.webkit.messageHandlers;
-    delete $messageHandlers[messageHandlerName].postMessage;
-    let result = $messageHandlers[messageHandlerName].postMessage(message);
+    delete window.webkit;
+    let result = $MessageHandlers[messageHandlerName].postMessage(message);
     window.webkit = webkit;
     return result;
   }
