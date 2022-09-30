@@ -31,7 +31,7 @@
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/hit_test.h"
-#include "ui/base/window_open_disposition.h"
+#include "ui/base/window_open_disposition_utils.h"
 #include "ui/events/event.h"
 #include "ui/views/window/hit_test_utils.h"
 
