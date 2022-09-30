@@ -7,13 +7,26 @@
 
 #include <utility>
 
+#include "base/android/jni_android.h"
+#include "base/android/jni_string.h"
 #include "base/callback.h"
+#include "brave/browser/brave_ads/android/jni_headers/DeviceIdImplAndroid_jni.h"
 
 namespace brave_ads {
 
 // static
 void DeviceIdImpl::GetRawDeviceId(DeviceIdCallback callback) {
-  std::move(callback).Run({});
+  JNIEnv* env = base::android::AttachCurrentThread();
+  base::android::ScopedJavaLocalRef<jstring> android_id =
+      Java_DeviceIdImplAndroid_getAndroidId(env);
+  if (!android_id) {
+    std::move(callback).Run({});
+    return;
+  }
+
+  std::string device_id =
+      base::android::ConvertJavaStringToUTF8(env, android_id.obj());
+  std::move(callback).Run(std::move(device_id));
 }
 
 }  // namespace brave_ads
