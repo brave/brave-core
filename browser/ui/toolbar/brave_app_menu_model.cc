@@ -138,8 +138,9 @@ bool IpnsKeysAvailable(content::BrowserContext* browser_context) {
 BraveAppMenuModel::BraveAppMenuModel(
     ui::AcceleratorProvider* provider,
     Browser* browser,
-    AppMenuIconController* app_menu_icon_controller)
-    : AppMenuModel(provider, browser, app_menu_icon_controller)
+    AppMenuIconController* app_menu_icon_controller,
+    AlertMenuItem alert_item)
+    : AppMenuModel(provider, browser, app_menu_icon_controller, alert_item)
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
       ,
       ipfs_submenu_model_(this),
