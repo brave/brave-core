@@ -3711,6 +3711,36 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaLatestBlockhash) {
       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
+TEST_F(JsonRpcServiceUnitTest, MigrateDeprecatedEthereumTestnets) {
+  ASSERT_FALSE(prefs()->GetBoolean(
+      kBraveWalletDeprecateEthereumTestNetworksMigrated));
+
+  // Set to deprecated network 0x3 and validate
+  DictionaryPrefUpdate update(prefs(), kBraveWalletSelectedNetworks);
+  auto& selected_networks_pref = update.Get()->GetDict();
+  selected_networks_pref.Set(kEthereumPrefKey, "0x3");
+  const base::Value* selected_networks =
+      prefs()->GetDictionary(kBraveWalletSelectedNetworks);
+  ASSERT_TRUE(selected_networks);
+  const std::string* eth_selected_networks =
+      selected_networks->FindStringKey(kEthereumPrefKey);
+  ASSERT_TRUE(eth_selected_networks);
+  EXPECT_EQ(*eth_selected_networks, "0x3");
+
+  // Run deprecation migration and validate network is set to mainnet
+  JsonRpcService::MigrateDeprecatedEthereumTestnets(prefs());
+  const base::Value* new_selected_networks =
+      prefs()->GetDictionary(kBraveWalletSelectedNetworks);
+  ASSERT_TRUE(new_selected_networks);
+  const std::string* selected_eth_network =
+      new_selected_networks->FindStringKey(kEthereumPrefKey);
+  EXPECT_EQ(*selected_eth_network, mojom::kMainnetChainId);
+  EXPECT_TRUE(prefs()->GetBoolean(
+      kBraveWalletDeprecateEthereumTestNetworksMigrated));
+
+  EXPECT_EQ(GetCurrentChainId(prefs(), mojom::CoinType::ETH), mojom::kMainnetChainId);
+}
+
 TEST_F(JsonRpcServiceUnitTest, MigrateMultichainNetworks) {
   prefs()->ClearPref(kBraveWalletCustomNetworks);
   prefs()->ClearPref(kBraveWalletSelectedNetworks);

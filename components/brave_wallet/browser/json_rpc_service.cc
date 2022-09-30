@@ -228,6 +228,49 @@ void JsonRpcService::MigrateMultichainNetworks(PrefService* prefs) {
   }
 }
 
+// static
+void JsonRpcService::MigrateDeprecatedEthereumTestnets(PrefService* prefs) {
+  if (prefs->GetBoolean(kBraveWalletDeprecateEthereumTestNetworksMigrated))
+    return;
+
+  if (prefs->HasPrefPath(kBraveWalletSelectedNetworks)) {
+    DictionaryPrefUpdate update(prefs, kBraveWalletSelectedNetworks);
+    auto& selected_networks_pref = update.Get()->GetDict();
+    // const base::Value::Dict& selected_networks = prefs->GetValueDict(kBraveWalletSelectedNetworks);
+    const std::string* selected_eth_network = selected_networks_pref.FindString(kEthereumPrefKey);
+    if ((*selected_eth_network == "0x3") || (*selected_eth_network == "0x4")
+        || (*selected_eth_network == "0x2a")) {
+      selected_networks_pref.Set(kEthereumPrefKey, mojom::kMainnetChainId);
+    }
+  }
+
+  prefs->SetBoolean(kBraveWalletDeprecateEthereumTestNetworksMigrated, true);
+  // // custom networks
+  // if (prefs->HasPrefPath(kBraveWalletCustomNetworksDeprecated)) {
+  //   const base::Value::List& custom_networks =
+  //       prefs->GetValueList(kBraveWalletCustomNetworksDeprecated);
+
+
+  //   base::Value::Dict new_custom_networks;
+  //   new_custom_networks.Set(kEthereumPrefKey, custom_networks.Clone());
+
+  //   prefs->SetDict(kBraveWalletCustomNetworks, std::move(new_custom_networks));
+
+  //   prefs->ClearPref(kBraveWalletCustomNetworksDeprecated);
+  // }
+
+  // // selected networks
+  // if (prefs->HasPrefPath(kBraveWalletCurrentChainId)) {
+  //   const std::string chain_id = prefs->GetString(kBraveWalletCurrentChainId);
+  //   DictionaryPrefUpdate update(prefs, kBraveWalletSelectedNetworks);
+  //   base::Value::Dict* selected_networks = update.Get()->GetIfDict();
+  //   if (selected_networks) {
+  //     selected_networks->Set(kEthereumPrefKey, chain_id);
+  //     prefs->ClearPref(kBraveWalletCurrentChainId);
+  //   }
+  // }
+}
+
 mojo::PendingRemote<mojom::JsonRpcService> JsonRpcService::MakeRemote() {
   mojo::PendingRemote<mojom::JsonRpcService> remote;
   receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
