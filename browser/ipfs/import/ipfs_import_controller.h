@@ -82,7 +82,7 @@ class IpfsImportController : public ui::SelectFileDialog::Listener {
                                 const ipfs::ImportedData& data);
 
   std::unique_ptr<SavePackageFinishedObserver> save_package_observer_;
-  scoped_refptr<ui::SelectFileDialog> select_file_dialog_;
+  std::unique_ptr<ui::SelectFileDialog> select_file_dialog_;
   ui::SelectFileDialog::Type dialog_type_ = ui::SelectFileDialog::SELECT_NONE;
   std::string dialog_key_;
 
