@@ -738,6 +738,7 @@ export const SupportedOnRampNetworks = [
 
 export const SupportedTestNetworks = [
   BraveWallet.GOERLI_CHAIN_ID,
+  BraveWallet.SEPOLIA_CHAIN_ID,
   BraveWallet.LOCALHOST_CHAIN_ID,
   BraveWallet.SOLANA_DEVNET,
   BraveWallet.SOLANA_TESTNET,
