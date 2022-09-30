@@ -54,7 +54,7 @@ void BraveContentRendererClient::
   // These features don't have dedicated WebRuntimeFeatures wrappers.
   blink::WebRuntimeFeatures::EnableFeatureFromString("DigitalGoods", false);
   if (!base::FeatureList::IsEnabled(blink::features::kFileSystemAccessAPI)) {
-    blink::WebRuntimeFeatures::EnableFeatureFromString("FileSystemAccess",
+    blink::WebRuntimeFeatures::EnableFeatureFromString("FileSystemAccessLocal",
                                                        false);
     blink::WebRuntimeFeatures::EnableFeatureFromString(
         "FileSystemAccessAPIExperimental", false);
