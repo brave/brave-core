@@ -122,9 +122,11 @@ class TestDelegate : public NTPCustomBackgroundImagesService::Delegate {
   bool IsCustomImageBackgroundEnabled() const override {
     return image_enabled_;
   }
-  base::FilePath GetCustomBackgroundImageLocalFilePath() const override {
+  base::FilePath GetCustomBackgroundImageLocalFilePath(
+      const GURL& url) const override {
     return base::FilePath();
   }
+  GURL GetCustomBackgroundImageURL() const override { return GURL(); }
 
   bool IsColorBackgroundEnabled() const override { return color_enabled_; }
   std::string GetColor() const override { return "#ff0000"; }

@@ -66,7 +66,9 @@ export interface Props {
   toggleShowFTX: () => void
   toggleBrandedWallpaperOptIn: () => void
   toggleCards: (show: boolean) => void
-  useCustomBackgroundImage: () => void
+  chooseNewCustomImageBackground: () => void
+  setCustomImageBackground: (selectedBackground: string) => void
+  removeCustomImageBackground: (background: string) => void
   setBraveBackground: (selectedBackground: string) => void
   setColorBackground: (color: string, useRandomColor: boolean) => void
   onEnableRewards: () => void
@@ -182,10 +184,6 @@ export default class Settings extends React.PureComponent<Props, State> {
 
   toggleShowBackgroundImage = () => {
     this.props.toggleShowBackgroundImage()
-  }
-
-  useCustomBackgroundImage = () => {
-    this.props.useCustomBackgroundImage()
   }
 
   setBraveBackground = (selectedBackground: string) => {
@@ -354,7 +352,9 @@ export default class Settings extends React.PureComponent<Props, State> {
                     newTabData={this.props.newTabData}
                     toggleBrandedWallpaperOptIn={toggleBrandedWallpaperOptIn}
                     toggleShowBackgroundImage={this.toggleShowBackgroundImage}
-                    useCustomBackgroundImage={this.useCustomBackgroundImage}
+                    chooseNewCustomImageBackground={this.props.chooseNewCustomImageBackground}
+                    setCustomImageBackground={this.props.setCustomImageBackground}
+                    removeCustomImageBackground={this.props.removeCustomImageBackground}
                     setBraveBackground={this.setBraveBackground}
                     setColorBackground={this.setColorBackground}
                     brandedWallpaperOptIn={brandedWallpaperOptIn}

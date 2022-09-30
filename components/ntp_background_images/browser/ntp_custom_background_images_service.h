@@ -28,7 +28,9 @@ class NTPCustomBackgroundImagesService : public KeyedService {
   class Delegate {
    public:
     virtual bool IsCustomImageBackgroundEnabled() const = 0;
-    virtual base::FilePath GetCustomBackgroundImageLocalFilePath() const = 0;
+    virtual base::FilePath GetCustomBackgroundImageLocalFilePath(
+        const GURL& url) const = 0;
+    virtual GURL GetCustomBackgroundImageURL() const = 0;
 
     virtual bool IsColorBackgroundEnabled() const = 0;
     virtual std::string GetColor() const = 0;
@@ -50,7 +52,7 @@ class NTPCustomBackgroundImagesService : public KeyedService {
 
   bool ShouldShowCustomBackground() const;
   base::Value::Dict GetBackground() const;
-  base::FilePath GetImageFilePath();
+  base::FilePath GetImageFilePath(const GURL& url);
 
  private:
   // KeyedService overrides:

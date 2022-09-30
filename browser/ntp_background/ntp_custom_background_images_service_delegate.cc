@@ -15,6 +15,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
+#include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/url_constants.h"
@@ -79,28 +80,20 @@ bool NTPCustomBackgroundImagesServiceDelegate::IsCustomImageBackgroundEnabled()
   return NTPBackgroundPrefs(profile_->GetPrefs()).IsCustomImageType();
 }
 
-base::FilePath NTPCustomBackgroundImagesServiceDelegate::
-    GetCustomBackgroundImageLocalFilePath() const {
-  if (!IsCustomImageBackgroundEnabled())
-    return base::FilePath();
+base::FilePath
+NTPCustomBackgroundImagesServiceDelegate::GetCustomBackgroundImageLocalFilePath(
+    const GURL& url) const {
+  return CustomBackgroundFileManager::Converter(url, file_manager_.get())
+      .To<base::FilePath>();
+}
 
-  auto value = NTPBackgroundPrefs(profile_->GetPrefs()).GetSelectedValue();
-  if (!absl::holds_alternative<std::string>(value)) {
-    // This can happen during migration.
-    return base::FilePath();
-  }
+GURL NTPCustomBackgroundImagesServiceDelegate::GetCustomBackgroundImageURL()
+    const {
+  DCHECK(IsCustomImageBackgroundEnabled());
 
-#if defined(OS_WIN)
-  // On Windows path is wchar type and we should convert it to utf8.
-  // So we suppose |value| is utf8.
-  const auto file_name =
-      base::FilePath::FromUTF8Unsafe(absl::get<std::string>(value)).value();
-#else
-  // On other platform, path's encoding is not specified, and we store value
-  // as it was given.
-  const auto file_name = absl::get<std::string>(value);
-#endif
-  return file_manager_->GetCustomBackgroundDirectory().Append(file_name);
+  auto prefs = NTPBackgroundPrefs(profile_->GetPrefs());
+  auto name = absl::get<std::string>(prefs.GetSelectedValue());
+  return CustomBackgroundFileManager::Converter(name).To<GURL>();
 }
 
 bool NTPCustomBackgroundImagesServiceDelegate::IsColorBackgroundEnabled()

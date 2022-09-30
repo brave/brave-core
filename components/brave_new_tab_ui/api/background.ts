@@ -34,10 +34,12 @@ interface API {
   pageCallbackRouter: BraveNewTabPage.PageCallbackRouter
   pageHandler: BraveNewTabPage.PageHandlerRemote
   addBackgroundUpdatedListener: (listener: BackgroundUpdated) => void
+  addCustomImageBackgroundsUpdatedListener: (listener: CustomImageBackgroundsUpdated) => void
   addSearchPromotionDisabledListener: (listener: () => void) => void
 }
 
 type BackgroundUpdated = (background: BraveNewTabPage.Background) => void
+type CustomImageBackgroundsUpdated = (backgrounds: BraveNewTabPage.CustomBackground[]) => void
 
 let ntpBrowserAPIInstance: API
 
@@ -55,6 +57,10 @@ class NTPBrowserAPI implements API {
 
   addBackgroundUpdatedListener (listener: BackgroundUpdated) {
     this.pageCallbackRouter.onBackgroundUpdated.addListener(listener)
+  }
+
+  addCustomImageBackgroundsUpdatedListener (listener: CustomImageBackgroundsUpdated) {
+    this.pageCallbackRouter.onCustomImageBackgroundsUpdated.addListener(listener)
   }
 
   addSearchPromotionDisabledListener (listener: () => void) {

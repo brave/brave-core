@@ -48,6 +48,10 @@ interface PageHandlerFactory {
 interface PageHandler {
   // Choose custom background from local file system.
   ChooseLocalCustomBackground();
+  // When |seleteceBackground| is empty, should use random background.
+  UseCustomImageBackground(string selectedBackground);
+  GetCustomImageBackgrounds() => (array<CustomBackground> backgrounds);
+  RemoveCustomImageBackground(string selectedBackground);
 
   // When |seleteceBackground| is empty, should use random background.
   UseBraveBackground(string selected_background);
@@ -60,7 +64,6 @@ interface PageHandler {
   //     |use_random_color| is true
   UseColorBackground(string color, bool use_random_color);
 
-
   TryBraveSearchPromotion(string input, bool open_new_tab);
   DismissBraveSearchPromotion();
   IsSearchPromotionEnabled() => (bool enabled);
@@ -69,6 +72,8 @@ interface PageHandler {
 // WebUI-side handler for requests from the browser.
 interface Page {
   OnBackgroundUpdated(Background? background);
+
+  OnCustomImageBackgroundsUpdated(array<CustomBackground> backgrounds);
 
   OnSearchPromotionDisabled();
 };

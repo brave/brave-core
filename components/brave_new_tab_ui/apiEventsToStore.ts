@@ -9,7 +9,7 @@ import * as statsAPI from './api/stats'
 import * as topSitesAPI from './api/topSites'
 import * as privateTabDataAPI from './api/privateTabData'
 import * as newTabAdsDataAPI from './api/newTabAdsData'
-import getNTPBrowserAPI, { Background } from './api/background'
+import getNTPBrowserAPI, { Background, CustomBackground } from './api/background'
 import { getInitialData, getRewardsInitialData, getRewardsPreInitialData } from './api/initialData'
 import * as backgroundData from './data/backgrounds'
 
@@ -44,6 +44,10 @@ async function onBackgroundUpdated (background: Background) {
   getActions().customBackgroundUpdated(background)
 }
 
+async function onCustomImageBackgroundsUpdated (backgrounds: CustomBackground[]) {
+  getActions().customImageBackgroundsUpdated(backgrounds)
+}
+
 // Not marked as async so we don't return a promise
 // and confuse callers
 export function wireApiEventsToStore () {
@@ -65,6 +69,7 @@ export function wireApiEventsToStore () {
     backgroundData.updateImages(initialData.braveBackgrounds)
 
     getNTPBrowserAPI().addBackgroundUpdatedListener(onBackgroundUpdated)
+    getNTPBrowserAPI().addCustomImageBackgroundsUpdatedListener(onCustomImageBackgroundsUpdated)
     getNTPBrowserAPI().addSearchPromotionDisabledListener(() => getActions().searchPromotionDisabled())
   })
   .catch(e => {

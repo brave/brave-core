@@ -48,9 +48,10 @@ base::Value::Dict NTPCustomBackgroundImagesService::GetBackground() const {
   base::Value::Dict data;
   data.Set(kIsBackgroundKey, true);
   if (delegate_->IsCustomImageBackgroundEnabled()) {
-    data.Set(kWallpaperImageURLKey, kCustomWallpaperURL);
+    data.Set(kWallpaperImageURLKey,
+             delegate_->GetCustomBackgroundImageURL().spec());
     data.Set(kWallpaperTypeKey, "image");
-    data.Set(kWallpaperRandomKey, false);
+    data.Set(kWallpaperRandomKey, delegate_->ShouldUseRandomValue());
   } else if (delegate_->IsColorBackgroundEnabled()) {
     data.Set(kWallpaperColorKey, delegate_->GetColor());
     data.Set(kWallpaperTypeKey, "color");
@@ -59,8 +60,9 @@ base::Value::Dict NTPCustomBackgroundImagesService::GetBackground() const {
   return data;
 }
 
-base::FilePath NTPCustomBackgroundImagesService::GetImageFilePath() {
-  return delegate_->GetCustomBackgroundImageLocalFilePath();
+base::FilePath NTPCustomBackgroundImagesService::GetImageFilePath(
+    const GURL& url) {
+  return delegate_->GetCustomBackgroundImageLocalFilePath(url);
 }
 
 void NTPCustomBackgroundImagesService::Shutdown() {
