@@ -700,3 +700,16 @@ TEST_F(IpfsUtilsUnitTest, IsValidCIDOrDomain) {
   ASSERT_FALSE(ipfs::IsValidCIDOrDomain("a.b.c.com:11112"));
   ASSERT_FALSE(ipfs::IsValidCIDOrDomain("wrongdomainandcid"));
 }
+
+TEST_F(IpfsUtilsUnitTest, TranslateXIPFSPath) {
+  ASSERT_FALSE(ipfs::TranslateXIPFSPath(""));
+  ASSERT_FALSE(ipfs::TranslateXIPFSPath("abc"));
+  ASSERT_FALSE(ipfs::TranslateXIPFSPath("ipfs/abc"));
+  ASSERT_FALSE(ipfs::TranslateXIPFSPath("ipns/abc"));
+  ASSERT_FALSE(ipfs::TranslateXIPFSPath("/ipfsabc"));
+  ASSERT_FALSE(ipfs::TranslateXIPFSPath("/ipnsabc"));
+  ASSERT_EQ(GURL("ipfs://abc"), ipfs::TranslateXIPFSPath("/ipfs/abc"));
+  ASSERT_EQ(GURL("ipns://abc"), ipfs::TranslateXIPFSPath("/ipns/abc"));
+  ASSERT_FALSE(ipfs::TranslateXIPFSPath("/ipfs/"));
+  ASSERT_FALSE(ipfs::TranslateXIPFSPath("/ipns/"));
+}

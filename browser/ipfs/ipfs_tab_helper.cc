@@ -207,7 +207,7 @@ bool IPFSTabHelper::CanResolveURL(const GURL& url) const {
 }
 
 // For x-ipfs-path header we are making urls like
-// <gateway>/<x-ipfs-path>
+// ipfs://<x-ipfs-path>
 GURL IPFSTabHelper::ResolveXIPFSPathUrl(
     const std::string& x_ipfs_path_header_value) {
   return TranslateXIPFSPath(x_ipfs_path_header_value).value_or(GURL());

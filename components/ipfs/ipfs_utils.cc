@@ -150,14 +150,23 @@ bool IsDefaultGatewayURL(const GURL& url, PrefService* prefs) {
 }
 
 absl::optional<GURL> TranslateXIPFSPath(const std::string& x_ipfs_path_header) {
+  std::string scheme;
   if (base::StartsWith(x_ipfs_path_header, "/ipfs/")) {
-    return GURL("ipfs://" +
-                x_ipfs_path_header.substr(6, x_ipfs_path_header.size()));
+    scheme = kIPFSScheme;
   } else if (base::StartsWith(x_ipfs_path_header, "/ipns/")) {
-    return GURL("ipns://" +
-                x_ipfs_path_header.substr(6, x_ipfs_path_header.size()));
+    scheme = kIPNSScheme;
+  } else {
+    return absl::nullopt;
   }
-  return absl::nullopt;
+  std::string content = x_ipfs_path_header.substr(6, x_ipfs_path_header.size());
+  if (content.empty()) {
+    return absl::nullopt;
+  }
+  GURL result = GURL(scheme + "://" + content);
+  if (!result.is_valid()) {
+    return absl::nullopt;
+  }
+  return result;
 }
 
 bool IsAPIGateway(const GURL& url, version_info::Channel channel) {
