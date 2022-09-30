@@ -30,7 +30,7 @@ function isPublisherContentAllowed (publisher: Publisher, channels: Channels): b
   if (publisher.userEnabledStatus === UserEnabled.DISABLED) return false
 
   // If we're using the old API, check if the source is default enabled.
-  if (newTabData.featureFlagBraveNewsV2Enabled) return publisher.isEnabled
+  if (!newTabData.featureFlagBraveNewsV2Enabled) return publisher.isEnabled
 
   // Otherwise, we're using the channels API - the publisher is allowed if it's
   // in one of the channels we're subscribed to.
