@@ -68,7 +68,7 @@ provideStrings({
   braveWalletPrice: 'Price',
   braveWalletBack: 'Back',
   braveWalletAddAccount: 'Add Account',
-  braveWalletPoweredByCoinGecko: 'Price data powered by CoinGecko',
+  braveWalletPoweredByCoinGecko: 'Prices are updated on 5 minute intervals. Price data powered by CoinGecko',
 
   // Actions
   braveWalletClickToSwitch: 'Click to switch',

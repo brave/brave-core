@@ -81,7 +81,7 @@
   <message name="IDS_BRAVE_WALLET_PRICE" desc="Portfolio Price title">Price</message>
   <message name="IDS_BRAVE_WALLET_BACK" desc="General back button">Back</message>
   <message name="IDS_BRAVE_WALLET_ADD_ACCOUNT" desc="Portfolio Add Account button">Add Account</message>
-  <message name="IDS_BRAVE_WALLET_POWERED_BY_COIN_GECKO" desc="Disclaimer on assets details page for GoinGecko contract agreement">Price data powered by CoinGecko</message>
+  <message name="IDS_BRAVE_WALLET_POWERED_BY_COIN_GECKO" desc="Disclaimer on assets details page for GoinGecko contract agreement">Prices are updated on 5 minute intervals. Price data powered by CoinGecko</message>
   <message name="IDS_BRAVE_WALLET_BUY" desc="Buy tab button">Buy</message>
   <message name="IDS_BRAVE_WALLET_SEND" desc="Send tab button">Send</message>
   <message name="IDS_BRAVE_WALLET_SWAP" desc="Swap tab button">Swap</message>
