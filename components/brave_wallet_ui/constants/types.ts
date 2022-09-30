@@ -138,6 +138,10 @@ export type AccountSettingsNavTypes =
   | 'details'
   | 'privateKey'
 
+export type AddCustomAssetFormNavTypes =
+  | 'token'
+  | 'nft'
+
 export type HardwareAccountSettingsNavTypes =
   | 'details'
 
@@ -160,9 +164,11 @@ export interface BuySendSwapObjectType {
   id: BuySendSwapTypes
 }
 
+export type TabNavTypes = TopTabNavTypes | AddAccountNavTypes | AccountSettingsNavTypes | HardwareAccountSettingsNavTypes | AddCustomAssetFormNavTypes
+
 export interface TopTabNavObjectType {
   name: string
-  id: TopTabNavTypes | AddAccountNavTypes | AccountSettingsNavTypes | HardwareAccountSettingsNavTypes
+  id: TabNavTypes
 }
 
 export interface NavObjectType {

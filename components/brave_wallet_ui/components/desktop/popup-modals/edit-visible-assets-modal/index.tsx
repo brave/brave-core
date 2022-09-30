@@ -3,16 +3,21 @@ import {
   BraveWallet,
   WalletState
 } from '../../../../constants/types'
+
+// utils
+import { getLocale } from '../../../../../common/locale'
+
+// components
 import {
   PopupModal
 } from '../..'
 import { NavButton } from '../../../extension'
 import { SearchBar } from '../../../shared'
-import { getLocale } from '../../../../../common/locale'
+import { VirtualizedVisibleAssetsList } from './virtualized-visible-assets-list'
+import { AddAsset } from '../../add-asset/add-asset'
 
 // Styled Components
 import {
-  Divider,
   LoadIcon,
   LoadingWrapper,
   NoAssetButton,
@@ -25,8 +30,6 @@ import {
 // hooks
 import { useAssetManagement } from '../../../../common/hooks'
 import { useSelector } from 'react-redux'
-import { AddCustomTokenForm } from '../../../shared/add-custom-token-form/add-custom-token-form'
-import { VirtualizedVisibleAssetsList } from './virtualized-visible-assets-list'
 
 export interface Props {
   onClose: () => void
@@ -223,10 +226,6 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
       }
       onClose={onClose}
     >
-      {showAddCustomToken &&
-        <Divider />
-      }
-
       <StyledWrapper>
         {(filteredTokenList.length === 0 && searchValue === '') || isLoading ? (
           <LoadingWrapper>
@@ -235,10 +234,10 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
         ) : (
           <>
             {showAddCustomToken
-              ? <AddCustomTokenForm
-                contractAddress={tokenContractAddress}
-                onHideForm={toggleShowAddCustomToken}
-              />
+              ? <AddAsset
+                  contractAddress={tokenContractAddress}
+                  onHideForm={toggleShowAddCustomToken}
+                />
               : <>
                 <SearchBar
                   value={searchValue}
