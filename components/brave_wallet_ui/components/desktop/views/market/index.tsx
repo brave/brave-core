@@ -72,6 +72,19 @@ export const MarketView = () => {
   }, [allCoins])
 
   React.useEffect(() => {
+    const interval = window.setInterval(() => {
+      if (allCoins.length !== 0) {
+        dispatch(WalletActions.getCoinMarkets({
+          vsAsset: defaultCurrency,
+          limit: assetsRequestLimit
+        }))
+      }
+    }, 300000) // 300000 every 5 minutes
+
+    return () => clearInterval(interval)
+  }, [allCoins])
+
+  React.useEffect(() => {
     if (!iframeLoaded || !marketDataIframeRef?.current) return
 
     const updateCoinsMsg: UpdateCoinMarketMessage = {
