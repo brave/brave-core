@@ -23,6 +23,8 @@ const char kAutomaticSettingsResetLearnMoreURL[] =
 const char kAdvancedProtectionDownloadLearnMoreURL[] =
     "https://support.brave.com";
 
+const char kBatterySaverModeLearnMoreUrl[] = "https://support.brave.com";
+
 const char kBluetoothAdapterOffHelpURL[] =
     "https://support.brave.com/";
 
