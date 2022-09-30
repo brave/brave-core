@@ -9,9 +9,9 @@
 #include "third_party/blink/renderer/platform/loader/fetch/memory_cache.h"
 
 // Replace DefaultCacheIdentifier call with our method using this macro.
-#define DefaultCacheIdentifier                                     \
-  DefaultCacheIdentifier().IsEmpty() ? GetContextCacheIdentifier() \
-                                     : GetContextCacheIdentifier
+#define DefaultCacheIdentifier                                   \
+  DefaultCacheIdentifier().empty() ? GetContextCacheIdentifier() \
+                                   : GetContextCacheIdentifier
 
 #include "src/third_party/blink/renderer/platform/loader/fetch/resource_fetcher.cc"
 
