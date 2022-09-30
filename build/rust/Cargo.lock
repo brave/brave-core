@@ -21,6 +21,7 @@ dependencies = [
  "rmp-serde 0.15.5",
  "seahash",
  "serde",
+ "serde_json",
  "twoway",
  "url",
 ]
