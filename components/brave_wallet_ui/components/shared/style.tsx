@@ -332,6 +332,8 @@ export const SwitchAccountIcon = styled.div`
   width: 14px;
   height: 14px;
   background: url(${SwitchDown});
+  margin-left: 6px;
+  margin-right: 6px;
 `
 
 // Asset Icon containers
