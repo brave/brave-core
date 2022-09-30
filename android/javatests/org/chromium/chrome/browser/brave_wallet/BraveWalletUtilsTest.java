@@ -232,7 +232,7 @@ public class BraveWalletUtilsTest {
         assertEquals(Utils.getContractAddress(BraveWalletConstants.GOERLI_CHAIN_ID, "BAT",
                              "0xdef1c0ded9bec7f1a1670819833240f027b25eff"),
                 "0xdef1c0ded9bec7f1a1670819833240f027b25eff");
-        assertEquals(Utils.getContractAddress(BraveWalletConstants.RINKEBY_CHAIN_ID, "USDC",
+        assertEquals(Utils.getContractAddress(BraveWalletConstants.GOERLI_CHAIN_ID, "USDC",
                              "0xdef1c0ded9bec7f1a1670819833240f027b25eff"),
                 "0xdef1c0ded9bec7f1a1670819833240f027b25eff");
     }
