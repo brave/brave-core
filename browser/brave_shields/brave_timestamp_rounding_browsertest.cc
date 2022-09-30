@@ -80,4 +80,3 @@ TEST_F(BraveTimeStampRoundingRenderViewTest_Disable,
        SynchronousApisRounded_Disable) {
   RunRoundingTests(false);
 }
-
