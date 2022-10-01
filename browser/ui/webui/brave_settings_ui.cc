@@ -34,6 +34,7 @@
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
+#include "components/permissions/features.h"
 #include "components/sync/base/command_line_switches.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/content_features.h"
@@ -126,6 +127,10 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isDebounceFeatureEnabled",
       base::FeatureList::IsEnabled(debounce::features::kBraveDebounce));
+  html_source->AddBoolean(
+      "isGoogleSignInFeatureEnabled",
+      base::FeatureList::IsEnabled(
+          permissions::features::kBraveGoogleSignInPermission));
   html_source->AddBoolean("isBraveRewardsSupported",
                           brave_rewards::IsSupportedForProfile(profile));
 
