@@ -59,6 +59,7 @@ extern const char kParametersAutoContributeChoices[];
 extern const char kParametersTipChoices[];
 extern const char kParametersMonthlyTipChoices[];
 extern const char kParametersPayoutStatus[];
+extern const char kParametersWalletProviderRegions[];
 extern const char kFetchOldBalance[];  // DEPRECATED
 extern const char kEmptyBalanceChecked[];
 extern const char kWalletBrave[];

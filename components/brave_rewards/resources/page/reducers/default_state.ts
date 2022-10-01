@@ -62,7 +62,12 @@ export function defaultState (): Rewards.State {
       autoContributeChoice: 0,
       autoContributeChoices: [],
       rate: 0,
-      payoutStatus: {}
+      payoutStatus: {},
+      walletProviderRegions: {
+        bitflyer: { allow: [], block: [] },
+        gemini: { allow: [], block: [] },
+        uphold: { allow: [], block: [] }
+      }
     },
     initializing: true,
     paymentId: '',

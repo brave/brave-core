@@ -67,6 +67,8 @@ const char kParametersTipChoices[] =
 const char kParametersMonthlyTipChoices[] =
     "brave.rewards.parameters.tip.monthly_choices";
 const char kParametersPayoutStatus[] = "brave.rewards.parameters.payout_status";
+const char kParametersWalletProviderRegions[] =
+    "brave.rewards.parameters.wallet_provider_regions";
 const char kFetchOldBalance[] =
     "brave.rewards.fetch_old_balance";
 const char kEmptyBalanceChecked[] =

@@ -265,7 +265,7 @@ void BraveRewardsNativeWorker::OnGetRewardsParameters(
     brave_rewards::RewardsService* rewards_service,
     ledger::mojom::RewardsParametersPtr parameters) {
   if (parameters) {
-    parameters_ = *parameters;
+    parameters_ = std::move(parameters);
   }
 
   if (rewards_service) {
@@ -341,11 +341,12 @@ void BraveRewardsNativeWorker::OnGetAdsAccountStatement(
 
 base::android::ScopedJavaLocalRef<jdoubleArray>
 BraveRewardsNativeWorker::GetTipChoices(JNIEnv* env) {
-  return base::android::ToJavaDoubleArray(env, parameters_.tip_choices);
+  return base::android::ToJavaDoubleArray(
+      env, parameters_ ? parameters_->tip_choices : std::vector<double>());
 }
 
 double BraveRewardsNativeWorker::GetWalletRate(JNIEnv* env) {
-  return parameters_.rate;
+  return parameters_ ? parameters_->rate : 0.0;
 }
 
 void BraveRewardsNativeWorker::FetchGrants(JNIEnv* env) {

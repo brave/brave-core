@@ -18,6 +18,8 @@ export const localeStrings = {
   connectWalletInfoText: 'However, your current Brave Rewards features are limited. Verifying with a custodial wallet partner allows you to:',
   connectWalletInfoListItem1: 'Freely withdraw and deposit funds',
   connectWalletInfoListItem2: 'Receive your Rewards directly to your account',
+  connectWalletLearnMore: 'Learn more about regions and support',
+  connectWalletProviderNotAvailable: 'Currently not available in your region',
   continue: 'Continue',
   rewardsAdGrantTitle: 'Your $1 Ad Rewards are here!',
   rewardsGrantDaysRemaining: 'You have $1 left to claim',

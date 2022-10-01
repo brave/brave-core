@@ -301,7 +301,7 @@ class RewardsServiceImpl : public RewardsService,
 
   std::string GetExternalWalletType() const override;
 
-  const std::vector<std::string> GetExternalWalletProviders() const override;
+  std::vector<std::string> GetExternalWalletProviders() const override;
 
   void ExternalWalletAuthorization(
       const std::string& wallet_type,
@@ -521,6 +521,8 @@ class RewardsServiceImpl : public RewardsService,
   int64_t GetInt64State(const std::string& name) const override;
   void SetUint64State(const std::string& name, uint64_t value) override;
   uint64_t GetUint64State(const std::string& name) const override;
+  void SetValueState(const std::string& name, base::Value value) override;
+  base::Value GetValueState(const std::string& name) const override;
   void ClearState(const std::string& name) override;
 
   bool GetBooleanOption(const std::string& name) const override;

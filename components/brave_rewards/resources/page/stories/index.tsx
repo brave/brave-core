@@ -37,11 +37,13 @@ export function ConnectWallet () {
   const providers = [
     {
       type: 'uphold',
-      name: 'Uphold'
+      name: 'Uphold',
+      enabled: true
     },
     {
       type: 'gemini',
-      name: 'Gemini'
+      name: 'Gemini',
+      enabled: false
     }
   ]
 

@@ -112,6 +112,10 @@ class TestLedgerClient : public LedgerClient {
 
   uint64_t GetUint64State(const std::string& name) const override;
 
+  void SetValueState(const std::string& name, base::Value value) override;
+
+  base::Value GetValueState(const std::string& name) const override;
+
   void ClearState(const std::string& name) override;
 
   bool GetBooleanOption(const std::string& name) const override;
