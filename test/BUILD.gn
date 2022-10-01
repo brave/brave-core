@@ -135,6 +135,7 @@ test("brave_unit_tests") {
     "//brave/components/brave_sync/crypto/crypto_unittest.cc",
     "//brave/components/content_settings/core/browser/brave_content_settings_pref_provider_unittest.cc",
     "//brave/components/content_settings/core/browser/brave_content_settings_utils_unittest.cc",
+    "//brave/components/l10n/common/locale_subtag_parser_util_unittest.cc",
     "//brave/components/l10n/common/locale_util_unittest.cc",
     "//brave/components/ntp_background_images/browser/ntp_background_images_service_unittest.cc",
     "//brave/components/ntp_background_images/browser/ntp_background_images_source_unittest.cc",

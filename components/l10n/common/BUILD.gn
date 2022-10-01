@@ -5,6 +5,10 @@ static_library("common") {
   ]
 
   sources = [
+    "locale_subtag_info.cc",
+    "locale_subtag_info.h",
+    "locale_subtag_parser_util.cc",
+    "locale_subtag_parser_util.h",
     "locale_util.cc",
     "locale_util.h",
   ]
