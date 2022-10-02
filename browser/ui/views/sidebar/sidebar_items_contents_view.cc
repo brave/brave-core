@@ -133,17 +133,6 @@ void SidebarItemsContentsView::UpdateAllBuiltInItemsViewState() {
   }
 }
 
-std::u16string SidebarItemsContentsView::GetTooltipTextFor(
-    const views::View* view) const {
-  auto index = GetIndexOf(view);
-  DCHECK(index);
-  auto& item = sidebar_model_->GetAllSidebarItems()[*index];
-  if (!item.title.empty())
-    return item.title;
-
-  return base::UTF8ToUTF16(item.url.spec());
-}
-
 void SidebarItemsContentsView::ShowContextMenuForViewImpl(
     views::View* source,
     const gfx::Point& point,
@@ -260,10 +249,10 @@ void SidebarItemsContentsView::OnItemMoved(const sidebar::SidebarItem& item,
 void SidebarItemsContentsView::AddItemView(const sidebar::SidebarItem& item,
                                            int index,
                                            bool user_gesture) {
-  auto* item_view = AddChildViewAt(
-      std::make_unique<SidebarItemView>(
-          this, sidebar_model_->GetAllSidebarItems()[index].title),
-      index);
+  auto* item_view =
+      AddChildViewAt(std::make_unique<SidebarItemView>(
+                         sidebar_model_->GetAllSidebarItems()[index].title),
+                     index);
   item_view->set_context_menu_controller(this);
   item_view->set_paint_background_on_hovered(true);
   item_view->SetCallback(
@@ -298,6 +287,22 @@ void SidebarItemsContentsView::SetDefaultImageAt(
 
   SetImageForItem(item,
                   gfx::ImageSkia(gfx::ImageSkiaRep(canvas.GetBitmap(), scale)));
+}
+
+void SidebarItemsContentsView::UpdateItem(
+    const sidebar::SidebarItem& item,
+    const sidebar::SidebarItemUpdate& update) {
+  //  Set default for new url. Then waiting favicon update event.
+  if (update.url_updated)
+    SetDefaultImageAt(update.index, item);
+
+  // Each item button uses accessible name as a title.
+  if (update.title_updated) {
+    auto title = item.title;
+    if (title.empty())
+      title = base::UTF8ToUTF16(item.url.spec());
+    GetItemViewAt(update.index)->SetAccessibleName(title);
+  }
 }
 
 void SidebarItemsContentsView::ShowItemAddedFeedbackBubble() {

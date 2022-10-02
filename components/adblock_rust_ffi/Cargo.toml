@@ -17,6 +17,7 @@ name = "adblock"
 
 [features]
 cbindgen = []
+ios = ["adblock/content-blocking"]
 
 [profile.dev]
 panic = "abort"

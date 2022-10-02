@@ -145,8 +145,6 @@ source_set("ui") {
       "webui/settings/brave_privacy_handler.h",
       "webui/settings/brave_search_engines_handler.cc",
       "webui/settings/brave_search_engines_handler.h",
-      "webui/settings/brave_settings_default_browser_handler.cc",
-      "webui/settings/brave_settings_default_browser_handler.h",
       "webui/settings/brave_settings_localized_strings_provider.cc",
       "webui/settings/brave_settings_localized_strings_provider.h",
       "webui/settings/brave_sync_handler.cc",
@@ -162,6 +160,13 @@ source_set("ui") {
       "webui/speedreader/speedreader_panel_ui.cc",
       "webui/speedreader/speedreader_panel_ui.h",
     ]
+
+    if (is_win) {
+      sources += [
+        "webui/settings/pin_shortcut_handler.cc",
+        "webui/settings/pin_shortcut_handler.h",
+      ]
+    }
 
     if (is_mac) {
       sources += [ "webui/settings/brave_import_data_handler_mac.mm" ]
@@ -206,6 +211,8 @@ source_set("ui") {
       "views/download/brave_download_item_view.h",
       "views/frame/brave_browser_frame.cc",
       "views/frame/brave_browser_frame.h",
+      "views/frame/brave_browser_root_view.cc",
+      "views/frame/brave_browser_root_view.h",
       "views/frame/brave_browser_view.cc",
       "views/frame/brave_browser_view.h",
       "views/frame/brave_browser_view_layout.cc",
@@ -472,6 +479,7 @@ source_set("ui") {
     deps += [
       "//brave/app:brave_generated_resources_grit",
       "//brave/browser/brave_rewards:util",
+      "//brave/browser/brave_wallet",
       "//brave/browser/resources/bookmarks:resources",
       "//brave/browser/resources/history:resources",
       "//brave/browser/resources/settings:resources",
@@ -494,6 +502,7 @@ source_set("ui") {
       "//brave/components/brave_sync:sync_service_impl_helper",
       "//brave/components/brave_today/browser",
       "//brave/components/brave_today/common",
+      "//brave/components/brave_wallet/common:common_utils",
       "//brave/components/brave_welcome/common",
       "//brave/components/brave_welcome_ui:generated_resources",
       "//brave/components/speedreader/common",

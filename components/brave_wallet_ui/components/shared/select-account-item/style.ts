@@ -69,3 +69,8 @@ export const LeftSide = styled.div`
   flex-direction: row;
   margin-right: 6px;
 `
+
+export const SwitchAccountIconContainer = styled.div`
+  padding-left: 8;
+  padding-right: 8;
+`

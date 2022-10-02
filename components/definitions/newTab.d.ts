@@ -315,6 +315,7 @@ declare namespace NewTab {
 
   interface StorybookStateExtras {
     forceSettingsTab?: string // SettingsTabType
+    readabilityThreshold?: number
   }
 
   // In-memory state is a superset of PersistentState

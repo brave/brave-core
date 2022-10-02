@@ -42,6 +42,11 @@ typedef C_DomainResolverCallback DomainResolverCallback;
 
 bool ADBLOCK_EXPORT SetDomainResolver(DomainResolverCallback resolver);
 
+#if BUILDFLAG(IS_IOS)
+const std::string ADBLOCK_EXPORT
+ConvertRulesToContentBlockingRules(const std::string& rules);
+#endif
+
 typedef ADBLOCK_EXPORT struct FilterListMetadata {
   FilterListMetadata();
   explicit FilterListMetadata(C_FilterListMetadata* metadata);

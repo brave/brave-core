@@ -36,6 +36,7 @@ public class BraveReferrer implements InstallReferrerStateListener {
     private static final String APP_CHROME_DIR = "app_chrome";
     private static final String PROMO_CODE_FILE_NAME = "promoCode";
     private static final String BRAVE_REFERRER_RECEIVED = "brave_referrer_received";
+    private static final String GOOGLE_ADS_REFERRAL_CODE = "UAC001";
 
     private String promoCodeFilePath;
     private InstallReferrerClient referrerClient;
@@ -130,6 +131,13 @@ public class BraveReferrer implements InstallReferrerStateListener {
                     Uri uri = Uri.parse("http://www.stub.co/?" + referrer);
                     // Get and save user referal program code
                     String urpc = uri.getQueryParameter("urpc");
+                    // If there is no our referral code, double check if it comes from Google Ads.
+                    if (urpc == null || urpc.isEmpty()) {
+                        urpc = uri.getQueryParameter("gclid");
+                        if (urpc != null && !urpc.isEmpty()) {
+                            urpc = GOOGLE_ADS_REFERRAL_CODE;
+                        }
+                    }
                     if (urpc != null && !urpc.isEmpty()) {
                         urpcEmtpy = false;
                         PostTask.postTask(

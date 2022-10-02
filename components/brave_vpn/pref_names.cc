@@ -12,6 +12,7 @@ namespace prefs {
 const char kBraveVPNPurchaseTokenAndroid[] =
     "brave.brave_vpn.purchase_token_android";
 const char kBraveVPNPackageAndroid[] = "brave.brave_vpn.package_android";
+const char kBraveVPNProductIdAndroid[] = "brave.brave_vpn.product_id_android";
 #endif
 
 }  // namespace prefs

@@ -69,6 +69,24 @@ def AddBravePolicies(template_file_contents):
             'desc': ('''This policy allows an admin to specify that Brave '''
                      '''Rewards feature will be disabled.'''),
         },
+        {
+            'name': 'BraveWalletDisabled',
+            'type': 'main',
+            'schema': {'type': 'boolean'},
+            'supported_on': ['chrome.*:106-'],
+            'features': {
+                'dynamic_refresh': False,
+                'per_profile': True,
+                'can_be_recommended': False,
+                'can_be_mandatory': True
+            },
+            'example_value': True,
+            'id': 3,
+            'caption': '''Disable Brave Wallet feature.''',
+            'tags': [],
+            'desc': ('''This policy allows an admin to specify that Brave '''
+                     '''Wallet feature will be disabled.'''),
+        },
     ]
 
     # Our new polices are added with highest id

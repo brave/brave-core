@@ -24,7 +24,6 @@
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/renderer/resource_helper.h"
-#include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -34,6 +33,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
@@ -48,7 +48,7 @@ namespace brave_wallet {
 
 namespace {
 
-static base::NoDestructor<std::string> g_provider_internal_script("");
+static base::NoDestructor<std::string> g_provider_solana_web3_script("");
 
 constexpr char kFirstAccount[] = "8J7fu34oNJSKXcauNQMXRdKAHY7zQ7rEaQng8xtQNpSu";
 constexpr char kSecondAccount[] =
@@ -254,12 +254,11 @@ class SolanaProviderTest : public InProcessBrowserTest {
 
     StartRPCServer(base::BindRepeating(&HandleRequest));
 
-    // setup _brave_solana
-    if (g_provider_internal_script->empty()) {
-      *g_provider_internal_script = brave_wallet::LoadDataResource(
-          IDR_BRAVE_WALLET_SCRIPT_SOLANA_PROVIDER_INTERNAL_SCRIPT_BUNDLE_JS);
+    // load solana web3 script
+    if (g_provider_solana_web3_script->empty()) {
+      *g_provider_solana_web3_script =
+          LoadDataResource(IDR_BRAVE_WALLET_SOLANA_WEB3_JS);
     }
-    ASSERT_TRUE(ExecJs(web_contents(), *g_provider_internal_script));
   }
 
   void StartRPCServer(
@@ -438,10 +437,12 @@ class SolanaProviderTest : public InProcessBrowserTest {
     const std::string script =
         pubkey.empty()
             ? base::StringPrintf(
-                  R"(solanaSignAndSendTransaction(new Uint8Array([%s]), %s))",
+                  R"(%s solanaSignAndSendTransaction(new Uint8Array([%s]), %s))",
+                  g_provider_solana_web3_script->c_str(),
                   unsigned_tx_array_string.c_str(), send_options_string.c_str())
             : base::StringPrintf(
-                  R"(solanaSignAndSendTransaction(new Uint8Array([%s]), %s, "%s", new Uint8Array([%s])))",
+                  R"(%s solanaSignAndSendTransaction(new Uint8Array([%s]), %s, "%s", new Uint8Array([%s])))",
+                  g_provider_solana_web3_script->c_str(),
                   unsigned_tx_array_string.c_str(), send_options_string.c_str(),
                   pubkey.c_str(), signature_array_string.c_str());
     ASSERT_TRUE(ExecJs(web_contents(), script));
@@ -460,10 +461,12 @@ class SolanaProviderTest : public InProcessBrowserTest {
     const std::string script =
         pubkey.empty()
             ? base::StringPrintf(
-                  R"(solanaSignTransaction(new Uint8Array([%s])))",
+                  R"(%s solanaSignTransaction(new Uint8Array([%s])))",
+                  g_provider_solana_web3_script->c_str(),
                   unsigned_tx_array_string.c_str())
             : base::StringPrintf(
-                  R"(solanaSignTransaction(new Uint8Array([%s]), "%s", new Uint8Array([%s])))",
+                  R"(%s solanaSignTransaction(new Uint8Array([%s]), "%s", new Uint8Array([%s])))",
+                  g_provider_solana_web3_script->c_str(),
                   unsigned_tx_array_string.c_str(), pubkey.c_str(),
                   signature_array_string.c_str());
     ASSERT_TRUE(ExecJs(web_contents(), script));
@@ -477,10 +480,12 @@ class SolanaProviderTest : public InProcessBrowserTest {
     const std::string script =
         pubkey.empty()
             ? base::StringPrintf(
-                  R"(solanaSignAllTransactions(new Uint8Array([%s]), new Uint8Array([%s])))",
+                  R"(%s solanaSignAllTransactions(new Uint8Array([%s]), new Uint8Array([%s])))",
+                  g_provider_solana_web3_script->c_str(),
                   unsigned_tx_array_str.c_str(), signed_tx_array_str.c_str())
             : base::StringPrintf(
-                  R"(solanaSignAllTransactions(new Uint8Array([%s]), new Uint8Array([%s]), "%s", new Uint8Array([%s])))",
+                  R"(%s solanaSignAllTransactions(new Uint8Array([%s]), new Uint8Array([%s]), "%s", new Uint8Array([%s])))",
+                  g_provider_solana_web3_script->c_str(),
                   unsigned_tx_array_str.c_str(), signed_tx_array_str.c_str(),
                   pubkey.c_str(), signature_array_string.c_str());
     ASSERT_TRUE(ExecJs(web_contents(), script));

@@ -8,6 +8,9 @@
 
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
+#include "build/build_config.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/window/dialog_delegate.h"
 
 namespace views {
@@ -17,6 +20,8 @@ class Label;
 
 class BraveDefaultBrowserDialogView : public views::DialogDelegateView {
  public:
+  METADATA_HEADER(BraveDefaultBrowserDialogView);
+
   BraveDefaultBrowserDialogView();
   ~BraveDefaultBrowserDialogView() override;
 
@@ -27,8 +32,6 @@ class BraveDefaultBrowserDialogView : public views::DialogDelegateView {
   // views::DialogDelegateView overrides:
   ui::ModalType GetModalType() const override;
   bool ShouldShowCloseButton() const override;
-  std::unique_ptr<views::NonClientFrameView> CreateNonClientFrameView(
-      views::Widget* widget) override;
   void OnWidgetInitialized() override;
 
  private:
@@ -36,9 +39,18 @@ class BraveDefaultBrowserDialogView : public views::DialogDelegateView {
   void OnAcceptButtonClicked();
   void CreateChildViews();
 
-  views::Label* header_label_ = nullptr;
-  views::Label* contents_label_ = nullptr;
-  views::Checkbox* dont_ask_again_checkbox_ = nullptr;
+#if BUILDFLAG(IS_WIN)
+  void OnDontAskAgainButtonPressed();
+#endif
+
+  raw_ptr<views::Label> header_label_ = nullptr;
+  raw_ptr<views::Label> contents_label_ = nullptr;
+
+#if BUILDFLAG(IS_WIN)
+  raw_ptr<views::Checkbox> pin_shortcut_checkbox_ = nullptr;
+#else
+  raw_ptr<views::Checkbox> dont_ask_again_checkbox_ = nullptr;
+#endif
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_DEFAULT_BROWSER_DIALOG_VIEW_H_

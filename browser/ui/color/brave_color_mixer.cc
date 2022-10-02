@@ -280,6 +280,9 @@ void AddChromeLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorToolbarContentAreaSeparator] = {ui::kColorFrameActive};
   mixer[kColorToolbarTopSeparatorFrameActive] = {kColorToolbar};
   mixer[kColorToolbarTopSeparatorFrameInactive] = {kColorToolbar};
+  mixer[kColorDialogDontAskAgainButton] = {SkColorSetRGB(0x86, 0x8E, 0x96)};
+  mixer[kColorDialogDontAskAgainButtonHovered] = {
+      SkColorSetRGB(0x49, 0x50, 0x57)};
   mixer[ui::kColorFrameActive] = {kLightFrame};
   mixer[ui::kColorFrameInactive] = {
       color_utils::HSLShift(kLightFrame, {-1, -1, 0.6})};
@@ -323,6 +326,9 @@ void AddChromeDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorToolbarContentAreaSeparator] = {kColorToolbar};
   mixer[kColorToolbarTopSeparatorFrameActive] = {kColorToolbar};
   mixer[kColorToolbarTopSeparatorFrameInactive] = {kColorToolbar};
+  mixer[kColorDialogDontAskAgainButton] = {SkColorSetRGB(0x84, 0x88, 0x9C)};
+  mixer[kColorDialogDontAskAgainButtonHovered] = {
+      SkColorSetRGB(0xC2, 0xC4, 0xCF)};
   mixer[ui::kColorFrameActive] = {kDarkFrame};
   mixer[ui::kColorFrameInactive] = {
       color_utils::HSLShift(kDarkFrame, {-1, -1, 0.6})};

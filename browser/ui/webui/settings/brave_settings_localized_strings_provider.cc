@@ -270,6 +270,12 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"braveNewTabNewTabPageShows", IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS},
     {"braveNewTabNewTabCustomizeWidgets",
      IDS_SETTINGS_NEW_TAB_NEW_TAB_CUSTOMIZE_WIDGETS},
+  // Pin shortcut page
+#if BUILDFLAG(IS_WIN)
+    {"canPinShortcut", IDS_SETTINGS_CAN_PIN_SHORTCUT},
+    {"pinShortcut", IDS_SETTINGS_PIN_SHORTCUT},
+    {"shortcutPinned", IDS_SETTINGS_SHORTCUT_PINNED},
+#endif
     // Rewards page
     {"braveRewards", IDS_SETTINGS_BRAVE_REWARDS_TITLE},
     {"braveRewardsDisabledLabel", IDS_SETTINGS_BRAVE_REWARDS_DISABLED_LABEL},
@@ -651,6 +657,11 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
   BraveAddAboutStrings(html_source, profile);
   BravePrivacyHandler::AddLoadTimeData(html_source, profile);
   BraveAddSyncStrings(html_source);
+
+  // Hide side panel option for showing left or right side.
+  // TODO(simonhong): Delete this when we can show sidebar on left.
+  // https://github.com/brave/brave-browser/issues/25332
+  html_source->AddBoolean("showSidePanelOptions", false);
 
   // Load time data for brave://settings/extensions
   html_source->AddBoolean(

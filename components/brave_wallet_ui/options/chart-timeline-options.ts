@@ -1,7 +1,7 @@
 import { ChartTimelineObjectType } from '../constants/types'
 import { getLocale } from '../../common/locale'
 
-export const ChartTimelineOptions = (): ChartTimelineObjectType[] => [
+export const ChartTimelineOptions: ChartTimelineObjectType[] = [
   {
     name: getLocale('braveWalletChartLive'),
     id: 0

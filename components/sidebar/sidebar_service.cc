@@ -18,6 +18,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/common/common_util.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/playlist/features.h"
 #include "brave/components/sidebar/constants.h"
@@ -36,70 +37,6 @@ using version_info::Channel;
 namespace sidebar {
 
 namespace {
-
-SidebarItem GetBuiltInItemForType(SidebarItem::BuiltInItemType type) {
-  switch (type) {
-    case SidebarItem::BuiltInItemType::kBraveTalk:
-      return SidebarItem::Create(GURL(kBraveTalkURL),
-                                 brave_l10n::GetLocalizedResourceUTF16String(
-                                     IDS_SIDEBAR_BRAVE_TALK_ITEM_TITLE),
-                                 SidebarItem::Type::kTypeBuiltIn,
-                                 SidebarItem::BuiltInItemType::kBraveTalk,
-                                 /* open_in_panel = */ false);
-    case SidebarItem::BuiltInItemType::kWallet:
-      return SidebarItem::Create(GURL("chrome://wallet/"),
-                                 brave_l10n::GetLocalizedResourceUTF16String(
-                                     IDS_SIDEBAR_WALLET_ITEM_TITLE),
-                                 SidebarItem::Type::kTypeBuiltIn,
-                                 SidebarItem::BuiltInItemType::kWallet,
-                                 /* open_in_panel = */ false);
-    case SidebarItem::BuiltInItemType::kBookmarks:
-      return SidebarItem::Create(brave_l10n::GetLocalizedResourceUTF16String(
-                                     IDS_SIDEBAR_BOOKMARKS_ITEM_TITLE),
-                                 SidebarItem::Type::kTypeBuiltIn,
-                                 SidebarItem::BuiltInItemType::kBookmarks,
-                                 /* open_in_panel = */ true);
-    case SidebarItem::BuiltInItemType::kReadingList:
-      return SidebarItem::Create(
-          // TODO(petemill): Have these items created under brave/browser
-          // so that we can access common strings, like IDS_READ_LATER_TITLE.
-          brave_l10n::GetLocalizedResourceUTF16String(
-              IDS_SIDEBAR_READING_LIST_ITEM_TITLE),
-          SidebarItem::Type::kTypeBuiltIn,
-          SidebarItem::BuiltInItemType::kReadingList,
-          /* open_in_panel = */ true);
-    case SidebarItem::BuiltInItemType::kHistory: {
-      // TODO(sko) When should we show history item?
-      constexpr bool kShowHistoryButton = false;
-      if constexpr (kShowHistoryButton) {
-        return SidebarItem::Create(GURL("chrome://history/"),
-                                   brave_l10n::GetLocalizedResourceUTF16String(
-                                       IDS_SIDEBAR_HISTORY_ITEM_TITLE),
-                                   SidebarItem::Type::kTypeBuiltIn,
-                                   SidebarItem::BuiltInItemType::kHistory,
-                                   /* open_in_panel = */ true);
-      } else {
-        return SidebarItem();
-      }
-    }
-    case SidebarItem::BuiltInItemType::kPlaylist: {
-      if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
-        return SidebarItem::Create(brave_l10n::GetLocalizedResourceUTF16String(
-                                       IDS_SIDEBAR_PLAYLIST_ITEM_TITLE),
-                                   SidebarItem::Type::kTypeBuiltIn,
-                                   SidebarItem::BuiltInItemType::kPlaylist,
-                                   /* open_in_panel = */ true);
-      }
-
-      return SidebarItem();
-    }
-    case SidebarItem::BuiltInItemType::kNone: {
-      NOTREACHED();
-      break;
-    }
-  }
-  return SidebarItem();
-}
 
 SidebarItem::BuiltInItemType GetBuiltInItemTypeForLegacyURL(
     const std::string& url) {
@@ -121,17 +58,6 @@ SidebarItem::BuiltInItemType GetBuiltInItemTypeForLegacyURL(
 
   NOTREACHED() << url;
   return SidebarItem::BuiltInItemType::kNone;
-}
-
-std::vector<SidebarItem> GetDefaultSidebarItems() {
-  std::vector<SidebarItem> items;
-  for (const auto& item_type : SidebarService::kDefaultBuiltInItemTypes) {
-    if (auto item = GetBuiltInItemForType(item_type);
-        item.built_in_item_type != SidebarItem::BuiltInItemType::kNone) {
-      items.push_back(item);
-    }
-  }
-  return items;
 }
 
 }  // namespace
@@ -387,7 +313,7 @@ void SidebarService::UpdateItem(const GURL& old_url,
 
   auto item_iter = base::ranges::find(items_, old_url, &SidebarItem::url);
   if (item_iter != items_.end()) {
-    const int index = std::distance(items_.begin(), item_iter);
+    const size_t index = std::distance(items_.begin(), item_iter);
     DCHECK(IsEditableItemAt(index));
     item_iter->url = new_url;
     item_iter->title = new_title;
@@ -612,6 +538,86 @@ void SidebarService::LoadSidebarItems() {
             << " at actual index: " << index;
     items_.insert(items_.begin() + index, std::move(item));
   }
+}
+
+std::vector<SidebarItem> SidebarService::GetDefaultSidebarItems() const {
+  std::vector<SidebarItem> items;
+  for (const auto& item_type : SidebarService::kDefaultBuiltInItemTypes) {
+    if (auto item = GetBuiltInItemForType(item_type);
+        item.built_in_item_type != SidebarItem::BuiltInItemType::kNone) {
+      items.push_back(item);
+    }
+  }
+  return items;
+}
+
+SidebarItem SidebarService::GetBuiltInItemForType(
+    SidebarItem::BuiltInItemType type) const {
+  switch (type) {
+    case SidebarItem::BuiltInItemType::kBraveTalk:
+      return SidebarItem::Create(GURL(kBraveTalkURL),
+                                 brave_l10n::GetLocalizedResourceUTF16String(
+                                     IDS_SIDEBAR_BRAVE_TALK_ITEM_TITLE),
+                                 SidebarItem::Type::kTypeBuiltIn,
+                                 SidebarItem::BuiltInItemType::kBraveTalk,
+                                 /* open_in_panel = */ false);
+    case SidebarItem::BuiltInItemType::kWallet: {
+      if (brave_wallet::IsAllowed(prefs_)) {
+        return SidebarItem::Create(GURL("chrome://wallet/"),
+                                   brave_l10n::GetLocalizedResourceUTF16String(
+                                       IDS_SIDEBAR_WALLET_ITEM_TITLE),
+                                   SidebarItem::Type::kTypeBuiltIn,
+                                   SidebarItem::BuiltInItemType::kWallet,
+                                   /* open_in_panel = */ false);
+      }
+      return SidebarItem();
+    }
+    case SidebarItem::BuiltInItemType::kBookmarks:
+      return SidebarItem::Create(brave_l10n::GetLocalizedResourceUTF16String(
+                                     IDS_SIDEBAR_BOOKMARKS_ITEM_TITLE),
+                                 SidebarItem::Type::kTypeBuiltIn,
+                                 SidebarItem::BuiltInItemType::kBookmarks,
+                                 /* open_in_panel = */ true);
+    case SidebarItem::BuiltInItemType::kReadingList:
+      return SidebarItem::Create(
+          // TODO(petemill): Have these items created under brave/browser
+          // so that we can access common strings, like IDS_READ_LATER_TITLE.
+          brave_l10n::GetLocalizedResourceUTF16String(
+              IDS_SIDEBAR_READING_LIST_ITEM_TITLE),
+          SidebarItem::Type::kTypeBuiltIn,
+          SidebarItem::BuiltInItemType::kReadingList,
+          /* open_in_panel = */ true);
+    case SidebarItem::BuiltInItemType::kHistory: {
+      // TODO(sko) When should we show history item?
+      constexpr bool kShowHistoryButton = false;
+      if constexpr (kShowHistoryButton) {
+        return SidebarItem::Create(GURL("chrome://history/"),
+                                   brave_l10n::GetLocalizedResourceUTF16String(
+                                       IDS_SIDEBAR_HISTORY_ITEM_TITLE),
+                                   SidebarItem::Type::kTypeBuiltIn,
+                                   SidebarItem::BuiltInItemType::kHistory,
+                                   /* open_in_panel = */ true);
+      } else {
+        return SidebarItem();
+      }
+    }
+    case SidebarItem::BuiltInItemType::kPlaylist: {
+      if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+        return SidebarItem::Create(brave_l10n::GetLocalizedResourceUTF16String(
+                                       IDS_SIDEBAR_PLAYLIST_ITEM_TITLE),
+                                   SidebarItem::Type::kTypeBuiltIn,
+                                   SidebarItem::BuiltInItemType::kPlaylist,
+                                   /* open_in_panel = */ true);
+      }
+
+      return SidebarItem();
+    }
+    case SidebarItem::BuiltInItemType::kNone: {
+      NOTREACHED();
+      break;
+    }
+  }
+  return SidebarItem();
 }
 
 void SidebarService::OnPreferenceChanged(const std::string& pref_name) {

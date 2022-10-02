@@ -6,12 +6,21 @@
 #ifndef BRAVE_BROWSER_BRAVE_SHELL_INTEGRATION_WIN_H_
 #define BRAVE_BROWSER_BRAVE_SHELL_INTEGRATION_WIN_H_
 
+#include "base/callback.h"
+#include "base/callback_helpers.h"
+
 class Profile;
 
 namespace shell_integration::win {
 
 // Pin profile-specific shortcut when |profile| is non-null.
-void PinToTaskbar(Profile* profile = nullptr);
+void PinToTaskbar(
+    Profile* profile = nullptr,
+    base::OnceCallback<void(bool)> result_callback = base::DoNothing());
+
+// Returns true when taskbar has any shortcuts(default or profile-specific
+// ones).
+void IsShortcutPinned(base::OnceCallback<void(bool)> result_callback);
 
 }  // namespace shell_integration::win
 

@@ -268,15 +268,30 @@ export function createHost (): Host {
     }
   }
 
+  function setLoadingTimer () {
+    // Set a maximum time to display the loading indicator. Several calls to
+    // the `braveRewards` extension API can block on network requests. If the
+    // network is unavailable or an endpoint is unresponsive, we want to display
+    // the data that we have, rather than a stalled loading indicator.
+    setTimeout(() => { stateManager.update({ loading: false }) }, 3000)
+  }
+
   function addListeners () {
     // If a Rewards panel request occurs when we are still open or cached,
     // reload data and re-render the app.
     proxy.callbackRouter.onRewardsPanelRequested.addListener(
       (panelArgs: mojom.RewardsPanelArgs) => {
+        stateManager.update({
+          openTime: Date.now(),
+          loading: true
+        })
+
+        setLoadingTimer()
+
         loadPanelData().then(() => {
           stateManager.update({
-            openTime: Date.now(),
-            requestedView: null
+            requestedView: null,
+            loading: false
           })
           handleRewardsPanelArgs(panelArgs)
         }).catch(console.error)
@@ -361,12 +376,7 @@ export function createHost (): Host {
     })
 
     addListeners()
-
-    // Set a maximum time to display the loading indicator. Several calls to
-    // the `braveRewards` extension API can block on network requests. If the
-    // network is unavailable or an endpoint is unresponsive, we want to display
-    // the data that we have, rather than a stalled loading indicator.
-    setTimeout(() => { stateManager.update({ loading: false }) }, 3000)
+    setLoadingTimer()
 
     await proxy.handler.startRewards()
 

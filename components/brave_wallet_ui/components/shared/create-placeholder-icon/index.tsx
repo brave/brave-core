@@ -11,7 +11,7 @@ import { stripERC20TokenImageURL, isRemoteImageURL, isValidIconExtension, httpif
 import { IconWrapper, PlaceholderText } from './style'
 
 // Options
-import { makeNetworkAsset } from '../../../options/asset-options'
+import { getNetworkLogo } from '../../../options/asset-options'
 
 interface Config {
   size: 'big' | 'small'
@@ -38,14 +38,11 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
       return null
     }
 
-    const nativeAsset = React.useMemo(
-      () => makeNetworkAsset(network),
-      [network]
-    )
+    const networkLogo = getNetworkLogo(network)
 
     const isNativeAsset = React.useMemo(() =>
-      asset.symbol.toLowerCase() === nativeAsset.symbol.toLowerCase(),
-      [nativeAsset, asset]
+      asset.symbol.toLowerCase() === network.symbol.toLowerCase(),
+      [network.symbol, asset.symbol]
     )
 
     const tokenImageURL = stripERC20TokenImageURL(asset.logo)
@@ -61,24 +58,24 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
         return true
       }
       return false
-    }, [isRemoteURL, isDataURL, tokenImageURL])
+    }, [isRemoteURL, isDataURL, tokenImageURL, asset.logo, isStorybook])
 
     const needsPlaceholder = isNativeAsset
-      ? (tokenImageURL === '' || !isValidIcon) && nativeAsset.logo === ''
+      ? (tokenImageURL === '' || !isValidIcon) && networkLogo === ''
       : tokenImageURL === '' || !isValidIcon
 
     const bg = React.useMemo(() => {
       if (needsPlaceholder) {
         return background({ seed: asset.contractAddress ? asset.contractAddress.toLowerCase() : asset.name })
       }
-    }, [asset])
+    }, [needsPlaceholder, asset.contractAddress, asset.name])
 
     const remoteImage = React.useMemo(() => {
       if (isRemoteURL) {
         return `chrome://image?${httpifyIpfsUrl(tokenImageURL)}`
       }
       return ''
-    }, [tokenImageURL])
+    }, [isRemoteURL, tokenImageURL])
 
     if (needsPlaceholder) {
       return (
@@ -103,8 +100,8 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
       >
         <WrappedComponent
           icon={
-            isNativeAsset && nativeAsset.logo
-              ? nativeAsset.logo
+            isNativeAsset && networkLogo
+              ? networkLogo
               : isRemoteURL ? remoteImage : asset.logo
           }
         />

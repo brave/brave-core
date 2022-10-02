@@ -713,6 +713,10 @@ interface SwapService {
 
   // Obtains whether the given chain id supports swap
   IsSwapSupported(string chain_id) => (bool result);
+
+  // Obtains whether the given Solana token mint should have fees for Jupiter
+  // swaps.
+  HasJupiterFeesForTokenMint(string mint) => (bool result);
 };
 
 interface JsonRpcServiceObserver {

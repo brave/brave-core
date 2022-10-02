@@ -131,4 +131,9 @@
   return brave_shields::AdBlockServiceDomainResolver;
 }
 
++ (NSString*)contentBlockerRulesFromFilterSet:(NSString*)filterSet {
+  return base::SysUTF8ToNSString(adblock::ConvertRulesToContentBlockingRules(
+      base::SysNSStringToUTF8(filterSet)));
+}
+
 @end

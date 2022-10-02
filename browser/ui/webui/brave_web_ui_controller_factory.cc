@@ -33,6 +33,7 @@
 #include "url/gurl.h"
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_shields/cookie_list_opt_in_ui.h"
@@ -45,6 +46,7 @@
 #include "brave/browser/ui/webui/speedreader/speedreader_panel_ui.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_util.h"
 #endif
 
 #include "brave/browser/brave_vpn/vpn_utils.h"
@@ -91,7 +93,11 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     return new IPFSUI(web_ui, url.host());
 #endif
 #if !BUILDFLAG(IS_ANDROID)
-  } else if (host == kWalletPageHost) {
+  } else if (host == kWalletPageHost &&
+             // We don't want to check for supported profile type here because
+             // we want private windows to redirect to the regular profile.
+             // Guest session will just show an error page.
+             brave_wallet::IsAllowed(profile->GetPrefs())) {
     if (brave_wallet::IsNativeWalletEnabled()) {
       auto default_wallet =
           brave_wallet::GetDefaultEthereumWallet(profile->GetPrefs());
@@ -102,7 +108,8 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
     return new EthereumRemoteClientUI(web_ui, url.host());
 #endif
-  } else if (host == kWalletPanelHost) {
+  } else if (host == kWalletPanelHost &&
+             brave_wallet::IsAllowedForContext(profile)) {
     return new WalletPanelUI(web_ui);
 #endif  // BUILDFLAG(OS_ANDROID)
   } else if (host == kRewardsPageHost &&

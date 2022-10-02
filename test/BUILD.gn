@@ -841,6 +841,7 @@ test("brave_browser_tests") {
     "//brave/browser/brave_rewards:browser_tests",
     "//brave/browser/brave_rewards/rewards_panel",
     "//brave/browser/brave_wallet",
+    "//brave/browser/brave_wallet:browser_tests",
     "//brave/browser/brave_wallet:tab_helper",
     "//brave/browser/browsing_data:browser_tests",
     "//brave/browser/decentralized_dns/test:browser_tests",

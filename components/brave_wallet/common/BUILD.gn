@@ -50,6 +50,7 @@ static_library("common") {
     "//brave/third_party/argon2",
     "//brave/third_party/ethash",
     "//components/base32",
+    "//components/prefs",
     "//net",
     "//url",
   ]
@@ -76,6 +77,23 @@ source_set("solana_utils") {
     ":common_constants",
     "//base",
     "//brave/third_party/bitcoin-core",  # for base58
+  ]
+}
+
+source_set("pref_names") {
+  sources = [ "pref_names.h" ]
+}
+
+source_set("common_utils") {
+  sources = [
+    "common_util.cc",
+    "common_util.h",
+  ]
+
+  deps = [
+    ":pref_names",
+    "//base",
+    "//components/prefs",
   ]
 }
 

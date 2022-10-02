@@ -71,9 +71,7 @@ export const Account = ({
   const dispatch = useDispatch()
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
   const transactions = useSelector(({ wallet }: { wallet: WalletState }) => wallet.transactions)
-  const transactionSpotPrices = useSelector(({ wallet }: { wallet: WalletState }) => wallet.transactionSpotPrices)
   const userVisibleTokensInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.userVisibleTokensInfo)
-  const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
   const networkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
 
   // custom hooks
@@ -204,11 +202,8 @@ export const Account = ({
 
       {funigbleTokens.map((item) =>
         <PortfolioAssetItem
-          spotPrices={transactionSpotPrices}
-          defaultCurrencies={defaultCurrencies}
           key={`${item.contractAddress}-${item.symbol}-${item.chainId}`}
           assetBalance={getBalance(selectedAccount, item)}
-          networks={networkList}
           token={item}
         />
       )}
@@ -222,9 +217,6 @@ export const Account = ({
           <SubDivider />
           {nonFungibleTokens?.map((item) =>
             <PortfolioAssetItem
-              spotPrices={transactionSpotPrices}
-              networks={networkList}
-              defaultCurrencies={defaultCurrencies}
               key={`${item.contractAddress}-${item.symbol}-${item.chainId}-${item.tokenId}`}
               assetBalance={getBalance(selectedAccount, item)}
               token={item}

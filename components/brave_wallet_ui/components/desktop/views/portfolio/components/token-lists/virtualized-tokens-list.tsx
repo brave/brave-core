@@ -18,7 +18,7 @@ type RenderTokenProps = {
   index: number
 }
 
-export type RenderTokenFunc = (props: RenderTokenProps) => JSX.Element
+export type RenderTokenFunc = (props: RenderTokenProps) => JSX.Element | undefined | null
 
 type VirtualizedTokensListProps = {
   userAssetList: UserAssetInfoType[]

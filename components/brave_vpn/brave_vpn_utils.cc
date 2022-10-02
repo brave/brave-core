@@ -30,9 +30,6 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kBraveVPNSelectedRegion, "");
   registry->RegisterBooleanPref(prefs::kBraveVPNShowDNSPolicyWarningDialog,
                                 true);
-#elif BUILDFLAG(IS_ANDROID)
-  registry->RegisterStringPref(prefs::kBraveVPNPurchaseTokenAndroid, "");
-  registry->RegisterStringPref(prefs::kBraveVPNPackageAndroid, "");
 #endif
   registry->RegisterStringPref(prefs::kBraveVPNEEnvironment,
                                skus::GetDefaultEnvironment());
@@ -100,6 +97,11 @@ std::string GetManageUrl(const std::string& env) {
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterDictionaryPref(prefs::kBraveVPNRootPref);
   registry->RegisterBooleanPref(prefs::kBraveVPNShowButton, true);
+#if BUILDFLAG(IS_ANDROID)
+  registry->RegisterStringPref(prefs::kBraveVPNPurchaseTokenAndroid, "");
+  registry->RegisterStringPref(prefs::kBraveVPNPackageAndroid, "");
+  registry->RegisterStringPref(prefs::kBraveVPNProductIdAndroid, "");
+#endif
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {

@@ -937,7 +937,12 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletEnsOffchainDontShowAgain",
      IDS_BRAVE_WALLET_ENS_OFFCHAIN_DONT_SHOW_AGAIN},
     {"braveWalletEnsOffchainWarning", IDS_BRAVE_WALLET_ENS_OFFCHAIN_WARNING},
-};
+    {"braveWalletNftsEmptyStateSearch",
+     IDS_BRAVE_WALLET_NFTS_EMPTY_STATE_SEARCH_FILTER},
+    {"braveWalletAddAssetTokenTabTitle",
+     IDS_BRAVE_WALLET_ADD_ASSET_TOKEN_TAB_TITLE},
+    {"braveWalletAddAssetNftTabTitle",
+     IDS_BRAVE_WALLET_ADD_ASSET_NFT_TAB_TITLE}};
 
 // 0x swap constants
 constexpr char kRopstenSwapBaseAPIURL[] = "https://ropsten.api.0x.org/";
@@ -986,6 +991,7 @@ const std::vector<mojom::OnRampCurrency>& GetOnRampCurrenciesList();
 const std::vector<mojom::BlockchainToken>& GetSardineBuyTokens();
 const std::string GetSardineNetworkName(const std::string& chain_id);
 const base::flat_map<std::string, std::string>& GetInfuraChainEndpoints();
+bool HasJupiterFeesForTokenMint(const std::string& mint);
 
 }  // namespace brave_wallet
 

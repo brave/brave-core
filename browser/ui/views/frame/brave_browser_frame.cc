@@ -7,6 +7,7 @@
 
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_private_window_theme_supplier.h"
+#include "brave/browser/ui/views/frame/brave_browser_root_view.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
@@ -50,4 +51,9 @@ BraveBrowserFrame::GetCustomTheme() const {
   }
 
   return BrowserFrame::GetCustomTheme();
+}
+
+views::internal::RootView* BraveBrowserFrame::CreateRootView() {
+  root_view_ = new BraveBrowserRootView(browser_view_, this);
+  return root_view_;
 }
