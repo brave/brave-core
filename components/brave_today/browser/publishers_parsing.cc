@@ -38,9 +38,9 @@ bool ParseCombinedPublisherList(const std::string& json,
     publisher->publisher_name = *publisher_raw.FindStringKey("publisher_name");
 
     publisher->category_name = *publisher_raw.FindStringKey("category");
-    auto* channels_raw = publisher_raw.FindListKey("channels");
+    auto* channels_raw = publisher_raw.GetDict().FindList("channels");
     if (channels_raw) {
-      for (const auto& channel : channels_raw->GetList()) {
+      for (const auto& channel : *channels_raw) {
         publisher->channels.push_back(channel.GetString());
       }
     }
@@ -51,9 +51,9 @@ bool ParseCombinedPublisherList(const std::string& json,
       publisher->feed_source = feed_source;
     }
 
-    auto* locales_raw = publisher_raw.FindListKey("locales");
+    auto* locales_raw = publisher_raw.GetDict().FindList("locales");
     if (locales_raw) {
-      for (const auto& locale : locales_raw->GetList()) {
+      for (const auto& locale : *locales_raw) {
         if (!locale.is_string())
           continue;
         publisher->locales.push_back(locale.GetString());
