@@ -3,7 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+import * as React from 'react'
+import { Button } from 'brave-ui'
+import { getLocale } from '../../../../../common/locale'
+import {
+  SettingsRow,
+  SettingsText
+} from '../../../../components/default'
+import { Toggle } from '../../../../components/toggle'
 import { Publishers } from '../../../../api/brave_news'
+import * as Styled from './style'
+import Sources from './sources'
 
 export interface Props {
   publishers?: Publishers
@@ -18,5 +28,57 @@ export interface Props {
 }
 
 export default function BraveTodayPrefs (props: Props) {
-  return null
+  // Ensure publishers data is fetched, which won't happen
+  // if user has not interacted with Brave Today on this page
+  // view.
+  React.useEffect(() => {
+    if (props.showToday) {
+      props.onDisplay()
+    }
+  }, [props.onDisplay, props.showToday])
+
+  const [category, setCategory] = React.useState<string>('')
+
+  const confirmAction = React.useCallback(() => {
+    if (confirm(getLocale('braveTodayResetConfirm'))) {
+      props.onClearPrefs()
+    }
+  }, [props.onClearPrefs])
+
+  const shouldShowSources = !!(props.showToday &&
+    props.publishers &&
+    Object.keys(props.publishers).length !== 0)
+
+  return (
+    <Styled.Section>
+      {!category && (
+        <SettingsRow>
+          <SettingsText>{getLocale('braveTodayOptInActionLabel')}</SettingsText>
+          <Toggle
+            checked={props.showToday}
+            onChange={props.toggleShowToday}
+            size='large'
+          />
+        </SettingsRow>
+      )}
+      {!category &&
+        props.showToday &&
+        props.featureFlagBraveNewsSubscribeButtonEnabled &&
+        <SettingsRow>
+          <SettingsText>{getLocale('braveTodayShowToolbarButton')}</SettingsText>
+          <Toggle
+            checked={props.showBraveNewsButton}
+            onChange={props.toggleShowBraveNewsButton}
+            size='large'/>
+        </SettingsRow>}
+      {shouldShowSources &&
+      <Sources category={category} setCategory={setCategory} {...props} />
+      }
+      {!category && (
+      <SettingsRow>
+        <Button type='warn' level='tertiary' onClick={confirmAction} text={getLocale('braveTodayResetAction')} />
+      </SettingsRow>
+      )}
+    </Styled.Section>
+  )
 }
